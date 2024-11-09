@@ -2,36 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17BE49C2CB9
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 13:12:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7587B9C2CC0
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 13:13:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t9kHi-0001xH-3G; Sat, 09 Nov 2024 07:09:46 -0500
+	id 1t9kHo-0002Rn-68; Sat, 09 Nov 2024 07:09:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t9kHG-00017c-1Y; Sat, 09 Nov 2024 07:09:18 -0500
+ id 1t9kHJ-0001Qq-2L; Sat, 09 Nov 2024 07:09:21 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t9kHE-0003vy-BM; Sat, 09 Nov 2024 07:09:17 -0500
+ id 1t9kHH-0003xc-Ci; Sat, 09 Nov 2024 07:09:20 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 9EE40A15F9;
+ by isrv.corpit.ru (Postfix) with ESMTP id ACE06A15FA;
  Sat,  9 Nov 2024 15:07:07 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 6689B167F87;
+ by tsrv.corpit.ru (Postfix) with SMTP id 746B1167F88;
  Sat,  9 Nov 2024 15:08:02 +0300 (MSK)
-Received: (nullmailer pid 3295301 invoked by uid 1000);
+Received: (nullmailer pid 3295304 invoked by uid 1000);
  Sat, 09 Nov 2024 12:08:01 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Akihiko Odaki <akihiko.odaki@daynix.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.0.4 17/57] hw/audio/hda: free timer on exit
-Date: Sat,  9 Nov 2024 15:07:19 +0300
-Message-Id: <20241109120801.3295120-17-mjt@tls.msk.ru>
+Subject: [Stable-9.0.4 18/57] ui/dbus: fix leak on message filtering
+Date: Sat,  9 Nov 2024 15:07:20 +0300
+Message-Id: <20241109120801.3295120-18-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.0.4-20241109150303@cover.tls.msk.ru>
 References: <qemu-stable-9.0.4-20241109150303@cover.tls.msk.ru>
@@ -63,27 +63,29 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-Fixes: 280c1e1cd ("audio/hda: create millisecond timers that handle IO")
+A filter function that wants to drop a message should return NULL, in
+which case it must also unref the message itself.
+
+Fixes: fa88b85de ("ui/dbus: filter out pending messages when scanout")
 
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 Reviewed-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Message-ID: <20241008125028.1177932-2-marcandre.lureau@redhat.com>
-(cherry picked from commit f27206ceedbe2efae37c8d143c5eb2db05251508)
+Message-ID: <20241008125028.1177932-4-marcandre.lureau@redhat.com>
+(cherry picked from commit 244d52ff736fefc3dd364ed091720aa896af306d)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/audio/hda-codec.c b/hw/audio/hda-codec.c
-index b22e486fda..ee3d0a7dec 100644
---- a/hw/audio/hda-codec.c
-+++ b/hw/audio/hda-codec.c
-@@ -751,7 +751,7 @@ static void hda_audio_exit(HDACodecDevice *hda)
-             continue;
-         }
-         if (a->use_timer) {
--            timer_del(st->buft);
-+            timer_free(st->buft);
-         }
-         if (st->output) {
-             AUD_close_out(&a->card, st->voice.out);
+diff --git a/ui/dbus-listener.c b/ui/dbus-listener.c
+index 4a0a5d78f9..83140f602d 100644
+--- a/ui/dbus-listener.c
++++ b/ui/dbus-listener.c
+@@ -996,6 +996,7 @@ dbus_filter(GDBusConnection *connection,
+     serial = g_dbus_message_get_serial(message);
+     if (serial <= ddl->out_serial_to_discard) {
+         trace_dbus_filter(serial, ddl->out_serial_to_discard);
++        g_object_unref(message);
+         return NULL;
+     }
+ 
 -- 
 2.39.5
 
