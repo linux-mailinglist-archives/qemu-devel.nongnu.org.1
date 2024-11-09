@@ -2,68 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EED69C2D33
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 13:44:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3546B9C2D6B
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 13:53:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t9kh5-0002D1-RF; Sat, 09 Nov 2024 07:35:59 -0500
+	id 1t9kwy-0000o1-Hd; Sat, 09 Nov 2024 07:52:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1t9kgy-00029V-6u
- for qemu-devel@nongnu.org; Sat, 09 Nov 2024 07:35:55 -0500
-Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
+ id 1t9kwv-0000no-I6
+ for qemu-devel@nongnu.org; Sat, 09 Nov 2024 07:52:21 -0500
+Received: from mail-ej1-x629.google.com ([2a00:1450:4864:20::629])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1t9kgw-0007g5-B8
- for qemu-devel@nongnu.org; Sat, 09 Nov 2024 07:35:51 -0500
-Received: by mail-ed1-x536.google.com with SMTP id
- 4fb4d7f45d1cf-5c9693dc739so4275786a12.3
- for <qemu-devel@nongnu.org>; Sat, 09 Nov 2024 04:35:49 -0800 (PST)
+ id 1t9kwt-00012g-GD
+ for qemu-devel@nongnu.org; Sat, 09 Nov 2024 07:52:20 -0500
+Received: by mail-ej1-x629.google.com with SMTP id
+ a640c23a62f3a-a99fa009adcso189153666b.0
+ for <qemu-devel@nongnu.org>; Sat, 09 Nov 2024 04:52:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1731155748; x=1731760548; darn=nongnu.org;
+ d=linaro.org; s=google; t=1731156736; x=1731761536; darn=nongnu.org;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=wQj7c48AbPYKWDjcAFIQD2C/0zwufoXtdrabuHjcR0k=;
- b=ammS0RDPHCA/j0mS6yk4mVli3GtnTBrzvBKuDmZxzc1QFC02Atv4YatciEVUjau1P6
- zcLJBE+K4bTrfrUkiXplvs+wxdH7Yy9t0GMEPP/2M3AwNx6IIOuYl2kyu47E/X41trRa
- RXIUlJUtWexkdyXLqrioon6C8nYIDAX/PL3J4xZSHn/chwp4fOmjOQnweiJnAFkhstdJ
- 3nW0MoSGzlwDWDqwPpyS4+blAh+SRw48OWOFty72Ah9w8F6ZLf8opnHysEvqWh8FqmVH
- KId1NrUtalt/I37PXEWGrB/wIPL+dXjrm1F8LyOOLB+px5ndtbObtk/JhLTZS70jjY5h
- QJBw==
+ bh=8VhMlyb1PEfm6xmMm/ce+z6MJGnI6NIJGXv2xr/3Nc8=;
+ b=u9BhAm290eFD2/VdX6VhDZxnWEadsHATANz5aQMMB1P52JfhLS7QEAWWVe0xW8TXIc
+ AaY6Ii5MP8gojm46vobR0qWpDq3qIMD8oln4OwrFwNUm/Tnl2Aj4MGuy4CogN5Cx7l2I
+ NQT2B59BMQ2cQERpi3Cuql9tcnwBTb607xeXaW8KHptwi629ceArDc69kzHGm1Futxxr
+ A+QkWFNlJo5+P5ULbFgv9bge5Tv8b7/M9A6qMZvj0m4RGbRzWrOPy9WDnRS6u2ft+m0F
+ S0hbCOJCGgM9NoOCtVE16FtXnEc/brDVufN7zRbK4kMh+nUFm6/1XpYQto6/J/ekIMLd
+ 3Yng==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731155748; x=1731760548;
+ d=1e100.net; s=20230601; t=1731156736; x=1731761536;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=wQj7c48AbPYKWDjcAFIQD2C/0zwufoXtdrabuHjcR0k=;
- b=whj6A9mYo18o/pGeHTBEFvsoxvyPLn9Wn6/KYKwgxErO2NOIjrtZTjNc0XERBgkhOc
- nXZaPvwD5rCSEnUjke8Pqliru89CHRY0AfiuL53KIp6KqtFL8QA+P4dy5KvqWD+E9/bo
- TYZuP6RVC/vgG5z8QKoQVMSdnN7sWd2trcovnErW3vu5QI1cW+T5rBZpdORNoIazpVry
- SxYWnQwzncCCKE3oZodPzaYebOrRsY+FRCTA8Qt3o0cha3cBLl/EPm/8vGBIEQBSoLcK
- f+xL7mXO5h/S2C2MOAzbdvj+PN5ta6obY95Uo7wbZRaD6qXn/Sr/5J3zkd/XTQOvYKsZ
- Veag==
-X-Gm-Message-State: AOJu0Ywlhmrd4MOBcVs/Oblqb13atHFx1Np4dmGM0zgGe4IMNrPK/KQh
- arU5VRcrg4qPlV+GgSTlLxRN27lbc9BL3ZL7tPJ+xTtyZsIzu9O02nqXzRB+plytz5G/vcxqOzb
- JddN+AqEXfhRfnrjsXL7V0A3bFMMEgFZsWMxn/A==
-X-Google-Smtp-Source: AGHT+IHuDnMLL2ype4HXiTByUGhEEtkbcUrRTQ6OjH2LAkcFCjw7xk5mSfBIBlS1MsjVjAFnl9o1Y4/agkrE+NxojQI=
-X-Received: by 2002:a05:6402:13d1:b0:5ce:d6a0:be32 with SMTP id
- 4fb4d7f45d1cf-5cf0a30878fmr4600127a12.1.1731155747856; Sat, 09 Nov 2024
- 04:35:47 -0800 (PST)
+ bh=8VhMlyb1PEfm6xmMm/ce+z6MJGnI6NIJGXv2xr/3Nc8=;
+ b=MfU7QJwcNsNWG8TFEssx6zbGOorypenoq7C4lHegBlrM450tntBhG/CNVmtiA8op4e
+ 4oVZw/9F++oFdKFrWXbU88rExl5tiQfa2ChZtm63W0nb6Lt5N04DeQZ3yW2paCnmirD0
+ TrPGYoIiG0uxR85St5wv7+PD3sW1DMUJbLQFf1rkYf8FXGMxoEKAVqRRgcXM/2X06yYq
+ A9UUA//3kvQ845q1eteVIpJ/NGQCto5Iwwe1fG+7hED17y7IuN2CiscbyD4U1aQYcv/a
+ CvfEsDL8CQB/IDMvnzmu2R+yh3t4YEiJjSn3cttyHxLOLf1LY9KC5JH7Rx78I95ID0Xh
+ 7rBw==
+X-Gm-Message-State: AOJu0Ywt5Ah+laXk2O31kB6Aymnn+/kmTVw0v+MaYzFTlba6b3XZZYY+
+ KRiWiKdXP08rRtVONypxjx0GTEjnlYPgejbklkrIqGTSusypTEmF6XK5Ofyc4GbAXsVT/LCu5LJ
+ 94lrP7tYB98lmYATkmkVu7hOVsBB7OkMO6RruEg==
+X-Google-Smtp-Source: AGHT+IFTWyPUilgZQszjyRxOtIPHJhpabvLqiRiBBTzY/qTIx5ZXNa2BonLg0AO8nh6DeSef0Pq7U7c24Ufs1eXzWQg=
+X-Received: by 2002:a05:6402:1482:b0:5cf:14fa:d24d with SMTP id
+ 4fb4d7f45d1cf-5cf14fad2e8mr5225851a12.22.1731156736109; Sat, 09 Nov 2024
+ 04:52:16 -0800 (PST)
 MIME-Version: 1.0
 References: <20241109073555.162151-1-pbonzini@redhat.com>
-In-Reply-To: <20241109073555.162151-1-pbonzini@redhat.com>
+ <CAFEAcA9+7h6naG2zCGPu16Yxk+Xti95WwnR6N1HBcfv80Fv8xA@mail.gmail.com>
+In-Reply-To: <CAFEAcA9+7h6naG2zCGPu16Yxk+Xti95WwnR6N1HBcfv80Fv8xA@mail.gmail.com>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Sat, 9 Nov 2024 12:35:37 +0000
-Message-ID: <CAFEAcA9+7h6naG2zCGPu16Yxk+Xti95WwnR6N1HBcfv80Fv8xA@mail.gmail.com>
+Date: Sat, 9 Nov 2024 12:52:05 +0000
+Message-ID: <CAFEAcA8i5VYWkf44R8-XTrkUdRHBtRtctMMp9nYKR=5RrmPeNA@mail.gmail.com>
 Subject: Re: [PULL v2 00/13] (Almost entirely) bugfix changes for QEMU 9.2
  hard freeze
 To: Paolo Bonzini <pbonzini@redhat.com>
 Cc: qemu-devel@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::536;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x536.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::629;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ej1-x629.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -86,38 +87,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sat, 9 Nov 2024 at 07:36, Paolo Bonzini <pbonzini@redhat.com> wrote:
+On Sat, 9 Nov 2024 at 12:35, Peter Maydell <peter.maydell@linaro.org> wrote:
 >
-> The following changes since commit a1dacb66915eb7d08a0596cc97068a37c39930d3:
+> On Sat, 9 Nov 2024 at 07:36, Paolo Bonzini <pbonzini@redhat.com> wrote:
+> >
+> > The following changes since commit a1dacb66915eb7d08a0596cc97068a37c39930d3:
+> >
+> >   Merge tag 'for-upstream-rust' of https://gitlab.com/bonzini/qemu into staging (2024-11-06 21:27:47 +0000)
+> >
+> > are available in the Git repository at:
+> >
+> >   https://gitlab.com/bonzini/qemu.git tags/for-upstream
+> >
+> > for you to fetch changes up to bd0e501e1a4813fa36a4cf9842aaf430323a03c3:
+> >
+> >   hw/i386/pc: Don't try to init PCI NICs if there is no PCI bus (2024-11-09 08:34:07 +0100)
+> >
+> > ----------------------------------------------------------------
+> > * i386: fix -M isapc with ubsan
+> > * i386: add sha512, sm3, sm4 feature bits
+> > * eif: fix Coverity issues
+> > * i386/hvf: x2APIC support
+> > * i386/hvf: fixes
+> > * i386/tcg: fix 2-stage page walk
+> > * eif: fix coverity issues
+> > * rust: fix subproject warnings with new rust, avoid useless cmake fallback
+> >
+> > ----------------------------------------------------------------
 >
->   Merge tag 'for-upstream-rust' of https://gitlab.com/bonzini/qemu into staging (2024-11-06 21:27:47 +0000)
->
-> are available in the Git repository at:
->
->   https://gitlab.com/bonzini/qemu.git tags/for-upstream
->
-> for you to fetch changes up to bd0e501e1a4813fa36a4cf9842aaf430323a03c3:
->
->   hw/i386/pc: Don't try to init PCI NICs if there is no PCI bus (2024-11-09 08:34:07 +0100)
->
-> ----------------------------------------------------------------
-> * i386: fix -M isapc with ubsan
-> * i386: add sha512, sm3, sm4 feature bits
-> * eif: fix Coverity issues
-> * i386/hvf: x2APIC support
-> * i386/hvf: fixes
-> * i386/tcg: fix 2-stage page walk
-> * eif: fix coverity issues
-> * rust: fix subproject warnings with new rust, avoid useless cmake fallback
->
-> ----------------------------------------------------------------
+> Hi -- just a note to say that although I've just kicked off the
+> CI process for this pullreq I'm off work for a couple of days
+> at the start of next week so I won't be able to actually merge
+> it to master til Wednesday. I plan to do that before tagging rc0
+> (which I will also be doing Wednesday).
 
-Hi -- just a note to say that although I've just kicked off the
-CI process for this pullreq I'm off work for a couple of days
-at the start of next week so I won't be able to actually merge
-it to master til Wednesday. I plan to do that before tagging rc0
-(which I will also be doing Wednesday).
+PS: feel free to keep an eye on the pipeline and hit 'retry' on
+stuff that looks like the usual intermittents due to k8s
+or s390 flakiness:
+https://gitlab.com/qemu-project/qemu/-/pipelines/1534706168
 
-thanks
+(one of the container jobs just failed because docker.io
+gave a "429 Too Many Requests - Server message: toomanyrequests:
+You have reached your pull rate limit" error but I'm assuming
+that's an intermittent...
+https://gitlab.com/qemu-project/qemu/-/jobs/8315557677 )
+
 -- PMM
 
