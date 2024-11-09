@@ -2,91 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 948B59C3F24
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Nov 2024 14:04:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A0849C405B
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Nov 2024 15:08:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tAU4x-0006go-6W; Mon, 11 Nov 2024 08:03:39 -0500
+	id 1tAV4x-0001nH-CT; Mon, 11 Nov 2024 09:07:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <paolo.savini@embecosm.com>)
- id 1tAU4t-0006fj-Af
- for qemu-devel@nongnu.org; Mon, 11 Nov 2024 08:03:35 -0500
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <paolo.savini@embecosm.com>)
- id 1tAU4q-0006Hu-2e
- for qemu-devel@nongnu.org; Mon, 11 Nov 2024 08:03:35 -0500
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-4314fa33a35so35867105e9.1
- for <qemu-devel@nongnu.org>; Mon, 11 Nov 2024 05:03:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=embecosm.com; s=google; t=1731330210; x=1731935010; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=J8yDKyWbmtFqQm/1q6UNx7fp/2A/xfLVE88F3Uo7oZw=;
- b=SCavKtul7SSZuMKRpZwuvl3dpAlkzX5Q7yEk2Jw/OKS6mNtnv0mFmrGISCTtp67Qug
- wcOtmnGJAlnIOHGrufiI3tPiLfuW44GX8hQSnFQvdqB6nOvVkbOHQX305XNUvNQ9hGH3
- tX1zkZ6fyGl9dzztYYdz9r0Ca/kUQxNmmwOs8UH62E0nPcXf2sHIYl54Vdj7yuZD4wGa
- mh0NSG5yQHxu9zcvukITtVRD2nms/GsIPTKzSMBp6/z1KppqSUTHqlkVaVYNUAo5pLcD
- iG1VQJQyplIcZkccmvSUgFffFNs6x71Jvn58MprQpPkk7NXIv9qVmZuNqauvgu3xOFGh
- slpA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731330210; x=1731935010;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=J8yDKyWbmtFqQm/1q6UNx7fp/2A/xfLVE88F3Uo7oZw=;
- b=ZN8YU6gGZ/ItYF4Ca5IUgCb4J341gOTnLfaCTPW+hkPTotB9nWKRZoTZuTZdcOb2tn
- p90MMduKo87pg8bepFXZmWOatrXq0v1lvQeDHkZw4UbDUly7SEsiVfcAh+9GsMZYqEW/
- rRALX8b+NNjP8h25y4s1rX3MZo3xqce7YZgaZJfI4qW15HmUjCzZ5RnbIYIJ3heG25nS
- W7MloQXJBe6fyqATjqic2g9ub2C53qBImUrEcACDrUCoHRHgrdLER2CFACAgboHakDAT
- yaEhAWn5pjhgilQevIGS282wgCLBkVmO9lXkqDt2HHAT2TkzGKaituHr/+h3rsHbCMRh
- Nr6w==
-X-Gm-Message-State: AOJu0YwaqHxi4nIYnfCso6g9P0OT1fYdgDryHxJRvav6vIgJTp4cgGCB
- DeCWbbC4Y0DldLMFBesANwlQCls1LGTMez9QUeKlWWpNhmQ0VffZvXeEyafukRJQNOuUwlk3qIz
- vl9c=
-X-Google-Smtp-Source: AGHT+IE1kZQhXD/1pNVPJ1rk7eJ9wv2mv2SAxobLM0OhJ9iiV9q7t/XFjb3rNkZ3Had9gtIuv8C+aQ==
-X-Received: by 2002:a05:600c:3584:b0:431:6153:a258 with SMTP id
- 5b1f17b1804b1-432b7501fd3mr107860165e9.13.1731330210035; 
- Mon, 11 Nov 2024 05:03:30 -0800 (PST)
-Received: from paolo-laptop-amd.sou.embecosm-corp.com ([212.69.42.53])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-432b05e5d1bsm178611505e9.40.2024.11.11.05.03.29
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 11 Nov 2024 05:03:29 -0800 (PST)
-From: Paolo Savini <paolo.savini@embecosm.com>
-To: qemu-devel@nongnu.org,
-	qemu-riscv@nongnu.org
-Cc: Paolo Savini <paolo.savini@embecosm.com>,
- Richard Handerson <richard.henderson@linaro.org>,
- Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>, Bin Meng <bmeng.cn@gmail.com>,
- Weiwei Li <liwei1518@gmail.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Helene Chelin <helene.chelin@embecosm.com>, Nathan Egge <negge@google.com>,
- Max Chou <max.chou@sifive.com>
-Subject: [RFC v5 1/1] target/riscv: rvv: reduce the overhead for simple RISC-V
- vector unit-stride loads and stores
-Date: Mon, 11 Nov 2024 13:03:24 +0000
-Message-ID: <20241111130324.32487-2-paolo.savini@embecosm.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20241111130324.32487-1-paolo.savini@embecosm.com>
-References: <20241111130324.32487-1-paolo.savini@embecosm.com>
+ (Exim 4.90_1) (envelope-from <slp@redhat.com>) id 1tAV4r-0001mu-96
+ for qemu-devel@nongnu.org; Mon, 11 Nov 2024 09:07:37 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <slp@redhat.com>) id 1tAV4p-0005sL-JJ
+ for qemu-devel@nongnu.org; Mon, 11 Nov 2024 09:07:36 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1731334050;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=R4A7LnVN8nShOWsZ/3tQfyajfBFCH/UTE3ow0+2HLKU=;
+ b=LsYydFh31D7j1HNQE2j/6v+jO7ffFqW0E9BqP8TcEde/CLmhtABeM/dGHGhJ4XfsMIUc1Q
+ T26ol1TidQMwAjcOYaWuXTTml/ZsRnfAVy+MRd8mY7vxwJlRECrXv0JrA5LFc1J3Ce9yMt
+ XKNKQ2hwNyfRLb1L9jfWOSAPH6QZ+Jg=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-604-K0p11xppPPGqmhBLCqA87Q-1; Mon,
+ 11 Nov 2024 09:07:27 -0500
+X-MC-Unique: K0p11xppPPGqmhBLCqA87Q-1
+X-Mimecast-MFC-AGG-ID: K0p11xppPPGqmhBLCqA87Q
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id AD3E71955F44; Mon, 11 Nov 2024 14:07:25 +0000 (UTC)
+Received: from localhost.localdomain.com (unknown [10.39.194.92])
+ by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id F11891956054; Mon, 11 Nov 2024 14:07:21 +0000 (UTC)
+From: Sergio Lopez <slp@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Sergio Lopez <slp@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v2] hw/i386/elfboot: allocate "header" in heap
+Date: Sat,  9 Nov 2024 06:37:48 +0100
+Message-ID: <20241109053748.13183-1-slp@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=paolo.savini@embecosm.com; helo=mail-wm1-x332.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=slp@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.122,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,87 +82,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patch improves the performance of the emulation of the RVV unit-stride
-loads and stores in the following cases:
+In x86_load_linux(), we were using a stack-allocated array as data for
+fw_cfg_add_bytes(). Since the latter just takes a reference to the
+pointer instead of copying the data, it can happen that the contents
+have been overridden by the time the guest attempts to access them.
 
-- when the data being loaded/stored per iteration amounts to 8 bytes or less.
-- when the vector length is 16 bytes (VLEN=128) and there's no grouping of the
-  vector registers (LMUL=1).
+Instead of using the stack-allocated array, allocate some memory from
+the heap, copy the contents of the array, and use it for fw_cfg.
 
-The optimization consists of avoiding the overhead of probing the RAM of the
-host machine and doing a loop load/store on the input data grouped in chunks
-of as many bytes as possible (8,4,2,1 bytes).
-
-Co-authored-by: Helene CHELIN <helene.chelin@embecosm.com>
-Co-authored-by: Paolo Savini <paolo.savini@embecosm.com>
-
-Signed-off-by: Helene CHELIN <helene.chelin@embecosm.com>
-Signed-off-by: Paolo Savini <paolo.savini@embecosm.com>
-
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Signed-off-by: Sergio Lopez <slp@redhat.com>
+Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/riscv/vector_helper.c | 47 ++++++++++++++++++++++++++++++++++++
- 1 file changed, 47 insertions(+)
 
-diff --git a/target/riscv/vector_helper.c b/target/riscv/vector_helper.c
-index 4479726acf..75c24653f0 100644
---- a/target/riscv/vector_helper.c
-+++ b/target/riscv/vector_helper.c
-@@ -635,6 +635,53 @@ vext_ldst_us(void *vd, target_ulong base, CPURISCVState *env, uint32_t desc,
+v2:
+- Use g_memdup2 (thanks Philippe).
+- Collect reviews.
+---
+ hw/i386/x86-common.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/hw/i386/x86-common.c b/hw/i386/x86-common.c
+index bc360a9ea4..dc031af662 100644
+--- a/hw/i386/x86-common.c
++++ b/hw/i386/x86-common.c
+@@ -697,9 +697,11 @@ void x86_load_linux(X86MachineState *x86ms,
+                 strlen(kernel_cmdline) + 1);
+             fw_cfg_add_string(fw_cfg, FW_CFG_CMDLINE_DATA, kernel_cmdline);
  
-     VSTART_CHECK_EARLY_EXIT(env);
++            setup = g_memdup2(header, sizeof(header));
++
+             fw_cfg_add_i32(fw_cfg, FW_CFG_SETUP_SIZE, sizeof(header));
+             fw_cfg_add_bytes(fw_cfg, FW_CFG_SETUP_DATA,
+-                             header, sizeof(header));
++                             setup, sizeof(header));
  
-+#if defined(CONFIG_USER_ONLY) && !HOST_BIG_ENDIAN
-+    /* For data sizes <= 64 bits and for LMUL=1 with VLEN=128 bits we get a
-+     * better performance by doing a simple simulation of the load/store
-+     * without the overhead of prodding the host RAM */
-+    if ((nf == 1) && ((evl << log2_esz) <= 8 ||
-+	((vext_lmul(desc) == 0) && (simd_maxsz(desc) == 16)))) {
-+
-+	uint32_t evl_b = evl << log2_esz;
-+
-+        for (uint32_t j = env->vstart; j < evl_b;) {
-+	    addr = base + j;
-+            if ((evl_b - j) >= 8) {
-+                if (is_load)
-+                    lde_d_tlb(env, adjust_addr(env, addr), j, vd, ra);
-+                else
-+                    ste_d_tlb(env, adjust_addr(env, addr), j, vd, ra);
-+                j += 8;
-+            }
-+            else if ((evl_b - j) >= 4) {
-+                if (is_load)
-+                    lde_w_tlb(env, adjust_addr(env, addr), j, vd, ra);
-+                else
-+                    ste_w_tlb(env, adjust_addr(env, addr), j, vd, ra);
-+                j += 4;
-+            }
-+            else if ((evl_b - j) >= 2) {
-+                if (is_load)
-+                    lde_h_tlb(env, adjust_addr(env, addr), j, vd, ra);
-+                else
-+                    ste_h_tlb(env, adjust_addr(env, addr), j, vd, ra);
-+                j += 2;
-+            }
-+            else {
-+                if (is_load)
-+                    lde_b_tlb(env, adjust_addr(env, addr), j, vd, ra);
-+                else
-+                    ste_b_tlb(env, adjust_addr(env, addr), j, vd, ra);
-+                j += 1;
-+            }
-+        }
-+
-+        env->vstart = 0;
-+        vext_set_tail_elems_1s(evl, vd, desc, nf, esz, max_elems);
-+        return;
-+    }
-+#endif
-+
-     vext_cont_ldst_elements(&info, base, env->vreg, env->vstart, evl, desc,
-                             log2_esz, false);
-     /* Probe the page(s).  Exit with exception for any invalid page. */
+             /* load initrd */
+             if (initrd_filename) {
 -- 
-2.34.1
+2.45.2
 
 
