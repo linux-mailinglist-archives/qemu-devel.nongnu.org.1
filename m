@@ -2,37 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1E639C2C9B
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 13:10:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A98319C2C97
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 13:10:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t9kGS-0008Ez-1M; Sat, 09 Nov 2024 07:08:28 -0500
+	id 1t9kGQ-0008DK-HP; Sat, 09 Nov 2024 07:08:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t9kGH-00087A-Io; Sat, 09 Nov 2024 07:08:17 -0500
+ id 1t9kGH-00087E-J7; Sat, 09 Nov 2024 07:08:17 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t9kGE-0003dH-8B; Sat, 09 Nov 2024 07:08:17 -0500
+ id 1t9kGF-0003e6-Rl; Sat, 09 Nov 2024 07:08:17 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id CB850A15EC;
+ by isrv.corpit.ru (Postfix) with ESMTP id DA442A15ED;
  Sat,  9 Nov 2024 15:07:06 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 90912167F7A;
+ by tsrv.corpit.ru (Postfix) with SMTP id A0881167F7B;
  Sat,  9 Nov 2024 15:08:01 +0300 (MSK)
-Received: (nullmailer pid 3295261 invoked by uid 1000);
+Received: (nullmailer pid 3295264 invoked by uid 1000);
  Sat, 09 Nov 2024 12:08:01 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Fabiano Rosas <farosas@suse.de>,
- Claudio Fontana <cfontana@suse.de>, Ilya Leoshkevich <iii@linux.ibm.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.0.4 04/57] target/ppc: Fix lxvx/stxvx facility check
-Date: Sat,  9 Nov 2024 15:07:06 +0300
-Message-Id: <20241109120801.3295120-4-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ David Woodhouse <dwmw@amazon.co.uk>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-9.0.4 05/57] hw/mips/jazz: fix typo in in-built NIC alias
+Date: Sat,  9 Nov 2024 15:07:07 +0300
+Message-Id: <20241109120801.3295120-5-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.0.4-20241109150303@cover.tls.msk.ru>
 References: <qemu-stable-9.0.4-20241109150303@cover.tls.msk.ru>
@@ -62,56 +61,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Fabiano Rosas <farosas@suse.de>
+From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 
-The XT check for the lxvx/stxvx instructions is currently
-inverted. This was introduced during the move to decodetree.
+Commit e104edbb9d ("hw/mips/jazz: use qemu_find_nic_info()") contained a typo
+in the NIC alias which caused initialisation of the in-built dp83932 NIC to fail
+when using the normal -nic user,model=dp83932 command line.
 
->From the ISA:
-  Chapter 7. Vector-Scalar Extension Facility
-  Load VSX Vector Indexed X-form
-
-  lxvx XT,RA,RB
-  if TX=0 & MSR.VSX=0 then VSX_Unavailable()
-  if TX=1 & MSR.VEC=0 then Vector_Unavailable()
-  ...
-  Let XT be the value 32×TX + T.
-
-The code currently does the opposite:
-
-    if (paired || a->rt >= 32) {
-        REQUIRE_VSX(ctx);
-    } else {
-        REQUIRE_VECTOR(ctx);
-    }
-
-This was already fixed for lxv/stxv at commit "2cc0e449d1 (target/ppc:
-Fix lxv/stxv MSR facility check)", but the indexed forms were missed.
-
-Cc: qemu-stable@nongnu.org
-Fixes: 70426b5bb7 ("target/ppc: moved stxvx and lxvx from legacy to decodtree")
-Signed-off-by: Fabiano Rosas <farosas@suse.de>
-Reviewed-by: Claudio Fontana <cfontana@suse.de>
-Acked-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Reviewed-by: Fabiano Rosas <farosas@suse.de>
-Message-ID: <20240911141651.6914-1-farosas@suse.de>
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-(cherry picked from commit 8bded2e73e80823a67f730140788a3c5e60bf4b5)
+Fixes: e104edbb9d ("hw/mips/jazz: use qemu_find_nic_info()")
+Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: David Woodhouse <dwmw@amazon.co.uk>
+Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
+Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+(cherry picked from commit 2e4fdf566062c03456230fd8136b88c5c1e5c4bf)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/ppc/translate/vsx-impl.c.inc b/target/ppc/translate/vsx-impl.c.inc
-index 0266f09119..986453d35f 100644
---- a/target/ppc/translate/vsx-impl.c.inc
-+++ b/target/ppc/translate/vsx-impl.c.inc
-@@ -2292,7 +2292,7 @@ static bool do_lstxv_PLS_D(DisasContext *ctx, arg_PLS_D *a,
+diff --git a/hw/mips/jazz.c b/hw/mips/jazz.c
+index 1bc17e69d3..0d44e19707 100644
+--- a/hw/mips/jazz.c
++++ b/hw/mips/jazz.c
+@@ -128,7 +128,7 @@ static void mips_jazz_init_net(IOMMUMemoryRegion *rc4030_dma_mr,
+     uint8_t *prom;
+     NICInfo *nd;
  
- static bool do_lstxv_X(DisasContext *ctx, arg_X *a, bool store, bool paired)
- {
--    if (paired || a->rt >= 32) {
-+    if (paired || a->rt < 32) {
-         REQUIRE_VSX(ctx);
-     } else {
-         REQUIRE_VECTOR(ctx);
+-    nd = qemu_find_nic_info("dp8393x", true, "dp82932");
++    nd = qemu_find_nic_info("dp8393x", true, "dp83932");
+     if (!nd) {
+         return;
+     }
 -- 
 2.39.5
 
