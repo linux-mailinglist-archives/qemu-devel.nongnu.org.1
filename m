@@ -2,42 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6C8B9C2CC5
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 13:14:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BC379C2CAF
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 13:12:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t9kIu-0004Dy-Da; Sat, 09 Nov 2024 07:11:00 -0500
+	id 1t9kJB-0004fL-VY; Sat, 09 Nov 2024 07:11:18 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t9kI9-0003GB-Nr; Sat, 09 Nov 2024 07:10:13 -0500
+ id 1t9kIB-0003R2-8o; Sat, 09 Nov 2024 07:10:15 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t9kI7-00043K-SI; Sat, 09 Nov 2024 07:10:13 -0500
+ id 1t9kI8-0004Hd-Ix; Sat, 09 Nov 2024 07:10:14 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 3D0F2A1602;
+ by isrv.corpit.ru (Postfix) with ESMTP id 4EACEA1603;
  Sat,  9 Nov 2024 15:07:08 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 0365A167F90;
+ by tsrv.corpit.ru (Postfix) with SMTP id 12598167F91;
  Sat,  9 Nov 2024 15:08:03 +0300 (MSK)
-Received: (nullmailer pid 3295331 invoked by uid 1000);
+Received: (nullmailer pid 3295334 invoked by uid 1000);
  Sat, 09 Nov 2024 12:08:01 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Kevin Wolf <kwolf@redhat.com>,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Hanna Czenczek <hreitz@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.0.4 26/57] raw-format: Fix error message for invalid
- offset/size
-Date: Sat,  9 Nov 2024 15:07:28 +0300
-Message-Id: <20241109120801.3295120-26-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ LIU Zhiwei <zhiwei_liu@linux.alibaba.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-9.0.4 27/57] tcg: Reset data_gen_ptr correctly
+Date: Sat,  9 Nov 2024 15:07:29 +0300
+Message-Id: <20241109120801.3295120-27-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.0.4-20241109150303@cover.tls.msk.ru>
 References: <qemu-stable-9.0.4-20241109150303@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -62,43 +61,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Kevin Wolf <kwolf@redhat.com>
+From: Richard Henderson <richard.henderson@linaro.org>
 
-s->offset and s->size are only set at the end of the function and still
-contain the old values when formatting the error message. Print the
-parameters with the new values that we actually checked instead.
+This pointer needs to be reset after overflow just like
+code_buf and code_ptr.
 
-Fixes: 500e2434207d ('raw-format: Split raw_read_options()')
-Signed-off-by: Kevin Wolf <kwolf@redhat.com>
-Message-ID: <20240829185527.47152-1-kwolf@redhat.com>
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Reviewed-by: Hanna Czenczek <hreitz@redhat.com>
-Signed-off-by: Kevin Wolf <kwolf@redhat.com>
-(cherry picked from commit 04bbc3ee52b32ac465547bb40c1f090a1b8f315a)
+Cc: qemu-stable@nongnu.org
+Fixes: 57a269469db ("tcg: Infrastructure for managing constant pools")
+Acked-by: Alistair Francis <alistair.francis@wdc.com>
+Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Reviewed-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+(cherry picked from commit a7cfd751fb269de4a93bf1658cb13911c7ac77cc)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/block/raw-format.c b/block/raw-format.c
-index ac7e8495f6..e08526e2ec 100644
---- a/block/raw-format.c
-+++ b/block/raw-format.c
-@@ -111,7 +111,7 @@ raw_apply_options(BlockDriverState *bs, BDRVRawState *s, uint64_t offset,
-     if (offset > real_size) {
-         error_setg(errp, "Offset (%" PRIu64 ") cannot be greater than "
-                    "size of the containing file (%" PRId64 ")",
--                   s->offset, real_size);
-+                   offset, real_size);
-         return -EINVAL;
+diff --git a/tcg/tcg.c b/tcg/tcg.c
+index 0c0bb9d169..183db00b16 100644
+--- a/tcg/tcg.c
++++ b/tcg/tcg.c
+@@ -1411,7 +1411,6 @@ TranslationBlock *tcg_tb_alloc(TCGContext *s)
+         goto retry;
      }
+     qatomic_set(&s->code_gen_ptr, next);
+-    s->data_gen_ptr = NULL;
+     return tb;
+ }
  
-@@ -119,7 +119,7 @@ raw_apply_options(BlockDriverState *bs, BDRVRawState *s, uint64_t offset,
-         error_setg(errp, "The sum of offset (%" PRIu64 ") and size "
-                    "(%" PRIu64 ") has to be smaller or equal to the "
-                    " actual size of the containing file (%" PRId64 ")",
--                   s->offset, s->size, real_size);
-+                   offset, size, real_size);
-         return -EINVAL;
-     }
+@@ -6156,6 +6155,7 @@ int tcg_gen_code(TCGContext *s, TranslationBlock *tb, uint64_t pc_start)
+      */
+     s->code_buf = tcg_splitwx_to_rw(tb->tc.ptr);
+     s->code_ptr = s->code_buf;
++    s->data_gen_ptr = NULL;
  
+ #ifdef TCG_TARGET_NEED_LDST_LABELS
+     QSIMPLEQ_INIT(&s->ldst_labels);
 -- 
 2.39.5
 
