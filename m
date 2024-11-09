@@ -2,36 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6649D9C2CD5
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 13:18:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D8659C2CB1
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 13:12:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t9kIK-0003IK-5s; Sat, 09 Nov 2024 07:10:25 -0500
+	id 1t9kI7-0002eN-Px; Sat, 09 Nov 2024 07:10:12 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t9kHg-000223-8x; Sat, 09 Nov 2024 07:09:44 -0500
+ id 1t9kHg-00027a-FK; Sat, 09 Nov 2024 07:09:44 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t9kHe-0003yA-Du; Sat, 09 Nov 2024 07:09:44 -0500
+ id 1t9kHe-0003yF-La; Sat, 09 Nov 2024 07:09:44 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id D5A85A15FC;
+ by isrv.corpit.ru (Postfix) with ESMTP id E3B06A15FD;
  Sat,  9 Nov 2024 15:07:07 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 91AC3167F8A;
+ by tsrv.corpit.ru (Postfix) with SMTP id AB39B167F8B;
  Sat,  9 Nov 2024 15:08:02 +0300 (MSK)
-Received: (nullmailer pid 3295312 invoked by uid 1000);
+Received: (nullmailer pid 3295316 invoked by uid 1000);
  Sat, 09 Nov 2024 12:08:01 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Akihiko Odaki <akihiko.odaki@daynix.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.0.4 20/57] ui/dbus: fix filtering all update messages
-Date: Sat,  9 Nov 2024 15:07:22 +0300
-Message-Id: <20241109120801.3295120-20-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-9.0.4 21/57] tcg/s390x: fix constraint for 32-bit TSTEQ/TSTNE
+Date: Sat,  9 Nov 2024 15:07:23 +0300
+Message-Id: <20241109120801.3295120-21-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.0.4-20241109150303@cover.tls.msk.ru>
 References: <qemu-stable-9.0.4-20241109150303@cover.tls.msk.ru>
@@ -61,134 +61,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Marc-André Lureau <marcandre.lureau@redhat.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
 
-Filtering pending messages when a new scanout is given shouldn't discard
-pending cursor changes, for example.
+32-bit TSTEQ and TSTNE is subject to the same constraints as
+for 64-bit, but setcond_i32 and negsetcond_i32 were incorrectly
+using TCG_CT_CONST ("i") instead of TCG_CT_CONST_CMP ("C").
 
-Since filtering happens in a different thread, use atomic set/get.
+Adjust the constraint and make tcg_target_const_match use the
+same sequence as tgen_cmp2: first check if the constant is a
+valid operand for TSTEQ/TSTNE, then accept everything for 32-bit
+non-test comparisons, finally check if the constant is a valid
+operand for 64-bit non-test comparisons.
 
-Fixes: fa88b85dea ("ui/dbus: filter out pending messages when scanout")
+Reported-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Cc: qemu-stable@nongnu.org
 
-Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Reviewed-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Message-ID: <20241008125028.1177932-6-marcandre.lureau@redhat.com>
-(cherry picked from commit cf59889781297a5618f1735a5f31402caa806b42)
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+(cherry picked from commit 615586cb356811e46c2e5f85c36db4b93f8381cd)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/ui/dbus-listener.c b/ui/dbus-listener.c
-index 83140f602d..b4b7e2666b 100644
---- a/ui/dbus-listener.c
-+++ b/ui/dbus-listener.c
-@@ -26,6 +26,7 @@
- #include "qapi/error.h"
- #include "sysemu/sysemu.h"
- #include "dbus.h"
-+#include "glib.h"
- #ifdef G_OS_UNIX
- #include <gio/gunixfdlist.h>
- #endif
-@@ -85,7 +86,7 @@ struct _DBusDisplayListener {
- #endif
- 
-     guint dbus_filter;
--    guint32 out_serial_to_discard;
-+    guint32 display_serial_to_discard;
- };
- 
- G_DEFINE_TYPE(DBusDisplayListener, dbus_display_listener, G_TYPE_OBJECT)
-@@ -93,10 +94,12 @@ G_DEFINE_TYPE(DBusDisplayListener, dbus_display_listener, G_TYPE_OBJECT)
- static void dbus_gfx_update(DisplayChangeListener *dcl,
-                             int x, int y, int w, int h);
- 
--static void ddl_discard_pending_messages(DBusDisplayListener *ddl)
-+static void ddl_discard_display_messages(DBusDisplayListener *ddl)
- {
--    ddl->out_serial_to_discard = g_dbus_connection_get_last_serial(
-+    guint32 serial = g_dbus_connection_get_last_serial(
-         g_dbus_proxy_get_connection(G_DBUS_PROXY(ddl->proxy)));
-+
-+    g_atomic_int_set(&ddl->display_serial_to_discard, serial);
- }
- 
- #ifdef CONFIG_OPENGL
-@@ -285,7 +288,7 @@ static void dbus_scanout_dmabuf(DisplayChangeListener *dcl,
-         return;
+diff --git a/tcg/s390x/tcg-target.c.inc b/tcg/s390x/tcg-target.c.inc
+index ad587325fc..a27e346602 100644
+--- a/tcg/s390x/tcg-target.c.inc
++++ b/tcg/s390x/tcg-target.c.inc
+@@ -563,6 +563,20 @@ static bool tcg_target_const_match(int64_t val, int ct,
      }
  
--    ddl_discard_pending_messages(ddl);
-+    ddl_discard_display_messages(ddl);
- 
-     /* FIXME: add missing x/y/w/h support */
-     qemu_dbus_display1_listener_call_scanout_dmabuf(
-@@ -334,7 +337,7 @@ static bool dbus_scanout_map(DBusDisplayListener *ddl)
-         return false;
-     }
- 
--    ddl_discard_pending_messages(ddl);
-+    ddl_discard_display_messages(ddl);
- 
-     if (!qemu_dbus_display1_listener_win32_map_call_scanout_map_sync(
-             ddl->map_proxy,
-@@ -397,7 +400,7 @@ dbus_scanout_share_d3d_texture(
-         return false;
-     }
- 
--    ddl_discard_pending_messages(ddl);
-+    ddl_discard_display_messages(ddl);
- 
-     qemu_dbus_display1_listener_win32_d3d11_call_scanout_texture2d(
-         ddl->d3d11_proxy,
-@@ -654,7 +657,7 @@ static void ddl_scanout(DBusDisplayListener *ddl)
-         surface_stride(ddl->ds) * surface_height(ddl->ds), TRUE,
-         (GDestroyNotify)pixman_image_unref, pixman_image_ref(ddl->ds->image));
- 
--    ddl_discard_pending_messages(ddl);
-+    ddl_discard_display_messages(ddl);
- 
-     qemu_dbus_display1_listener_call_scanout(
-         ddl->proxy, surface_width(ddl->ds), surface_height(ddl->ds),
-@@ -987,17 +990,35 @@ dbus_filter(GDBusConnection *connection,
-             gpointer         user_data)
- {
-     DBusDisplayListener *ddl = DBUS_DISPLAY_LISTENER(user_data);
--    guint32 serial;
-+    guint32 serial, discard_serial;
- 
-     if (incoming) {
-         return message;
-     }
- 
-     serial = g_dbus_message_get_serial(message);
--    if (serial <= ddl->out_serial_to_discard) {
--        trace_dbus_filter(serial, ddl->out_serial_to_discard);
--        g_object_unref(message);
--        return NULL;
-+
-+    discard_serial = g_atomic_int_get(&ddl->display_serial_to_discard);
-+    if (serial <= discard_serial) {
-+        const char *member = g_dbus_message_get_member(message);
-+        static const char *const display_messages[] = {
-+            "Scanout",
-+            "Update",
-+#ifdef CONFIG_GBM
-+            "ScanoutDMABUF",
-+            "UpdateDMABUF",
-+#endif
-+            "ScanoutMap",
-+            "UpdateMap",
-+            "Disable",
-+            NULL,
-+        };
-+
-+        if (g_strv_contains(display_messages, member)) {
-+            trace_dbus_filter(serial, discard_serial);
-+            g_object_unref(message);
-+            return NULL;
+     if (ct & TCG_CT_CONST_CMP) {
++        if (is_tst_cond(cond)) {
++            if (is_const_p16(uval) >= 0) {
++                return true;  /* TMxx */
++            }
++            if (risbg_mask(uval)) {
++                return true;  /* RISBG */
++            }
++            return false;
 +        }
-     }
- 
-     return message;
++
++        if (type == TCG_TYPE_I32) {
++            return true;
++        }
++
+         switch (cond) {
+         case TCG_COND_EQ:
+         case TCG_COND_NE:
+@@ -582,13 +596,7 @@ static bool tcg_target_const_match(int64_t val, int ct,
+             break;
+         case TCG_COND_TSTNE:
+         case TCG_COND_TSTEQ:
+-            if (is_const_p16(uval) >= 0) {
+-                return true;  /* TMxx */
+-            }
+-            if (risbg_mask(uval)) {
+-                return true;  /* RISBG */
+-            }
+-            break;
++            /* checked above, fallthru */
+         default:
+             g_assert_not_reached();
+         }
+@@ -3221,9 +3229,9 @@ static TCGConstraintSetIndex tcg_target_op_def(TCGOpcode op)
+     case INDEX_op_rotl_i64:
+     case INDEX_op_rotr_i32:
+     case INDEX_op_rotr_i64:
++        return C_O1_I2(r, r, ri);
+     case INDEX_op_setcond_i32:
+     case INDEX_op_negsetcond_i32:
+-        return C_O1_I2(r, r, ri);
+     case INDEX_op_setcond_i64:
+     case INDEX_op_negsetcond_i64:
+         return C_O1_I2(r, r, rC);
 -- 
 2.39.5
 
