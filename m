@@ -2,39 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5FEA9C2BBB
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 11:26:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 91CFB9C2BC2
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 11:27:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t9id0-0000Dz-Hr; Sat, 09 Nov 2024 05:23:39 -0500
+	id 1t9idE-0001e1-CH; Sat, 09 Nov 2024 05:23:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t9iXV-0007pj-B4; Sat, 09 Nov 2024 05:17:58 -0500
+ id 1t9iXr-0001Ev-3d; Sat, 09 Nov 2024 05:18:19 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t9iXS-0008Av-TW; Sat, 09 Nov 2024 05:17:56 -0500
+ id 1t9iXp-0008B8-E1; Sat, 09 Nov 2024 05:18:18 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 78ABBA140B;
+ by isrv.corpit.ru (Postfix) with ESMTP id 80117A140C;
  Sat,  9 Nov 2024 13:13:51 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 1A96D167EF6;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 2DA1C167EF7;
  Sat,  9 Nov 2024 13:14:46 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Rob Bradford <rbradford@rivosinc.com>,
+Cc: qemu-stable@nongnu.org, Anup Patel <apatel@ventanamicro.com>,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Alistair Francis <alistair.francis@wdc.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.8 38/49] target/riscv: Set vtype.vill on CPU reset
-Date: Sat,  9 Nov 2024 13:14:29 +0300
-Message-Id: <20241109101443.312701-38-mjt@tls.msk.ru>
+Subject: [Stable-8.2.8 39/49] hw/intc/riscv_aplic: Fix in_clrip[x] read
+ emulation
+Date: Sat,  9 Nov 2024 13:14:30 +0300
+Message-Id: <20241109101443.312701-39-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-8.2.8-20241109131339@cover.tls.msk.ru>
 References: <qemu-stable-8.2.8-20241109131339@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -59,35 +61,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Rob Bradford <rbradford@rivosinc.com>
+From: Anup Patel <apatel@ventanamicro.com>
 
-The RISC-V unprivileged specification "31.3.11. State of Vector
-Extension at Reset" has a note that recommends vtype.vill be set on
-reset as part of ensuring that the vector extension have a consistent
-state at reset.
+The reads to in_clrip[x] registers return rectified input values of the
+interrupt sources.
 
-This change now makes QEMU consistent with Spike which sets vtype.vill
-on reset.
+A rectified input value of an interrupt source is defined by the section
+"4.5.2 Source configurations (sourcecfg[1]–sourcecfg[1023])" of the RISC-V
+AIA specification as:
+"rectified input value = (incoming wire value) XOR (source is inverted)"
 
-Signed-off-by: Rob Bradford <rbradford@rivosinc.com>
+Update the riscv_aplic_read_input_word() implementation to match the above.
+
+Fixes: e8f79343cfc8 ("hw/intc: Add RISC-V AIA APLIC device emulation")
+Signed-off-by: Anup Patel <apatel@ventanamicro.com>
 Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Message-ID: <20240930165258.72258-1-rbradford@rivosinc.com>
+Message-ID: <20240306095722.463296-3-apatel@ventanamicro.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
-(cherry picked from commit f8c1f36a2e3dab4935e7c5690e578ac71765766b)
+(cherry picked from commit 0678e9f29c2301d0a1afc8d01a78cdfa7ad2ddbd)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 77cb59b8a1..eb0e856056 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -910,6 +910,7 @@ static void riscv_cpu_reset_hold(Object *obj)
-     cs->exception_index = RISCV_EXCP_NONE;
-     env->load_res = -1;
-     set_default_nan_mode(1, &env->fp_status);
-+    env->vill = true;
+diff --git a/hw/intc/riscv_aplic.c b/hw/intc/riscv_aplic.c
+index ab23399a8d..71978b9870 100644
+--- a/hw/intc/riscv_aplic.c
++++ b/hw/intc/riscv_aplic.c
+@@ -162,7 +162,7 @@ static bool is_kvm_aia(bool msimode)
+ static uint32_t riscv_aplic_read_input_word(RISCVAPLICState *aplic,
+                                             uint32_t word)
+ {
+-    uint32_t i, irq, ret = 0;
++    uint32_t i, irq, sourcecfg, sm, raw_input, irq_inverted, ret = 0;
  
- #ifndef CONFIG_USER_ONLY
-     if (cpu->cfg.debug) {
+     for (i = 0; i < 32; i++) {
+         irq = word * 32 + i;
+@@ -170,7 +170,20 @@ static uint32_t riscv_aplic_read_input_word(RISCVAPLICState *aplic,
+             continue;
+         }
+ 
+-        ret |= ((aplic->state[irq] & APLIC_ISTATE_INPUT) ? 1 : 0) << i;
++        sourcecfg = aplic->sourcecfg[irq];
++        if (sourcecfg & APLIC_SOURCECFG_D) {
++            continue;
++        }
++
++        sm = sourcecfg & APLIC_SOURCECFG_SM_MASK;
++        if (sm == APLIC_SOURCECFG_SM_INACTIVE) {
++            continue;
++        }
++
++        raw_input = (aplic->state[irq] & APLIC_ISTATE_INPUT) ? 1 : 0;
++        irq_inverted = (sm == APLIC_SOURCECFG_SM_LEVEL_LOW ||
++                        sm == APLIC_SOURCECFG_SM_EDGE_FALL) ? 1 : 0;
++        ret |= (raw_input ^ irq_inverted) << i;
+     }
+ 
+     return ret;
 -- 
 2.39.5
 
