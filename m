@@ -2,50 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3EE89C2BB2
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 11:23:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 933F89C2B8C
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 11:14:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t9iZ5-0002s0-Uc; Sat, 09 Nov 2024 05:19:38 -0500
+	id 1t9iU2-0003cx-LA; Sat, 09 Nov 2024 05:14:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t9iVe-0005AI-AR; Sat, 09 Nov 2024 05:16:02 -0500
-Received: from isrv.corpit.ru ([86.62.121.231])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t9iVc-0007ux-Ky; Sat, 09 Nov 2024 05:16:02 -0500
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 33DCAA13F7;
- Sat,  9 Nov 2024 13:13:50 +0300 (MSK)
-Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id D3417167EE3;
- Sat,  9 Nov 2024 13:14:44 +0300 (MSK)
-From: Michael Tokarev <mjt@tls.msk.ru>
-To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Stefan Berger <stefanb@linux.ibm.com>,
- Fabiano Rosas <farosas@suse.de>,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.8 19/49] tests: Wait for migration completion on
- destination QEMU to avoid failures
-Date: Sat,  9 Nov 2024 13:14:10 +0300
-Message-Id: <20241109101443.312701-19-mjt@tls.msk.ru>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <qemu-stable-8.2.8-20241109131339@cover.tls.msk.ru>
-References: <qemu-stable-8.2.8-20241109131339@cover.tls.msk.ru>
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1t9iU0-0003cn-A9
+ for qemu-devel@nongnu.org; Sat, 09 Nov 2024 05:14:20 -0500
+Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1t9iTy-0007Up-Eh
+ for qemu-devel@nongnu.org; Sat, 09 Nov 2024 05:14:20 -0500
+Received: by mail-pf1-x435.google.com with SMTP id
+ d2e1a72fcca58-71e4244fdc6so2631624b3a.0
+ for <qemu-devel@nongnu.org>; Sat, 09 Nov 2024 02:14:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1731147257; x=1731752057;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=1TaikMtotvXpNsA8CnfB8Qm/Dttpc9MPhPa7eP32lvw=;
+ b=aiSFFPMydKa7QrmZGLLYePQ+q/uHCDn6Y5b2ayCI3DtucS+c3dCTyd207a/DpAeYZX
+ j6P3yA6MHcafMfOFMLIYBE67+lJNIEylljdD/RLXA9QxNLWsI09ZaiQpWvAjNRCzHlWi
+ 0amdesdo2WVqAJLtPSifMxNiDpbHYbzf24t0hf10uvmfSwHRRhjRav/UQpPntTUiLH+T
+ N3sBalqm9TTM2jpTS5Un/msJ4w2FgyQfvpG4zQGE6S23kpdNRRYUj4N4TurQz0E7QKt9
+ TwZiWYlklGGH88+8wglg4pk73BVPkUu5inUnF1sgmfu5C+bdcBEU3l/sM25OoN5UM94m
+ Rc1Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1731147257; x=1731752057;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=1TaikMtotvXpNsA8CnfB8Qm/Dttpc9MPhPa7eP32lvw=;
+ b=HPPest79rbOICaC4yzns+I/EWcLI56ANbFjeJ6h6boHGCAHrsGQJuP4P1JOmd8AxvL
+ hDEoA2HSYSHti4GAZsPZEOC7+8q+SdX0RkZ2aB7iPFu2qxnQk0PVHWzI33Wb4xLGDnvd
+ Vioii9MTz4l89j8eT9HCi6uZHRbkLfQW4Hl0ucG7t31HgutKVg99xrxDPIKc7XrenNUZ
+ mL784eB7xNxgga/CjL6v6lJ8aKoWedFh7yHWq+zLulGF0F3LUNvcYIoXyoeFGCK6fQD7
+ eTIwc0n7rwCVRb/Tah6zoo1GXQJGPUI/u9WVMCkC5YuQuUCVnfEBHxrhFo8SzzgSjZhs
+ BlKQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCV/FSDPT7l2vchZfBmMarfv1xsLGYm1O0h1wMjFgOulnamm+Pqs8Blypo66NcUUnNYyMJOsQMCMcfqT@nongnu.org
+X-Gm-Message-State: AOJu0Yzpa8oYlFPDS3GVqBrW3bC6S+lujGHWZo53FDQvKKak1DQ88k52
+ CdivoAm9L6IaE0zGU7CP1nHVIEIqaxJOcuYbk5gUnh1sJTkJ7LiXfzyhjw5tMV0=
+X-Google-Smtp-Source: AGHT+IF54p8Bbp3oCEAC5leRijz+h4krDCGInuYi8jSBTIRcuFa67AqRlbNeNLSTcQHoYCM87Qhlkw==
+X-Received: by 2002:a05:6a21:9101:b0:1db:e3c7:9974 with SMTP id
+ adf61e73a8af0-1dc228ef1damr8242592637.12.1731147256906; 
+ Sat, 09 Nov 2024 02:14:16 -0800 (PST)
+Received: from [157.82.207.107] ([157.82.207.107])
+ by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-7240799bb25sm5424973b3a.109.2024.11.09.02.14.12
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sat, 09 Nov 2024 02:14:16 -0800 (PST)
+Message-ID: <25ed843e-b250-4613-9819-72ed4e381d33@daynix.com>
+Date: Sat, 9 Nov 2024 19:14:11 +0900
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -68
-X-Spam_score: -6.9
-X-Spam_bar: ------
-X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v10 0/8] memory: prevent dma-reentracy issues
+To: Alexander Bulekov <alxndr@bu.edu>, qemu-devel@nongnu.org
+Cc: Stefan Hajnoczi <stefanha@redhat.com>,
+ Philippe Mathieu-Daud?? <philmd@linaro.org>,
+ Mauro Matteo Cascella <mcascell@redhat.com>, Peter Xu <peterx@redhat.com>,
+ Jason Wang <jasowang@redhat.com>, David Hildenbrand <david@redhat.com>,
+ Gerd Hoffmann <kraxel@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ Laurent Vivier <lvivier@redhat.com>, Bandan Das <bsd@redhat.com>,
+ "Edgar E . Iglesias" <edgar.iglesias@gmail.com>,
+ Darren Kenny <darren.kenny@oracle.com>, Bin Meng <bin.meng@windriver.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ "Daniel P . Berrang??" <berrange@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>, Jon Maloy <jmaloy@redhat.com>,
+ Siqi Chen <coc.cyqh@gmail.com>, Michael Tokarev <mjt@tls.msk.ru>
+References: <20230427211013.2994127-1-alxndr@bu.edu>
+ <jsmj5q7adyvvkuvspny4xxvfczdsrxfbjqt4irattz3gfrrhfh@bmpvza45wkze>
+Content-Language: en-US
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+In-Reply-To: <jsmj5q7adyvvkuvspny4xxvfczdsrxfbjqt4irattz3gfrrhfh@bmpvza45wkze>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: none client-ip=2607:f8b0:4864:20::435;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x435.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -61,39 +108,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Stefan Berger <stefanb@linux.ibm.com>
+On 2024/11/09 4:56, Alexander Bulekov wrote:
+> On 230427 1710, Alexander Bulekov wrote:
+> 
+> <snip>
+>> These patches aim to solve two types of DMA-reentrancy issues:
+>>
+>> 1.) mmio -> dma -> mmio case
+>> To solve this, we track whether the device is engaged in io by
+>> checking/setting a reentrancy-guard within APIs used for MMIO access.
+>>
+>> 2.) bh -> dma write -> mmio case
+>> This case is trickier, since we dont have a generic way to associate a
+>> bh with the underlying Device/DeviceState. Thus, this version allows a
+>> device to associate a reentrancy-guard with a bh, when creating it.
+>> (Instead of calling qemu_bh_new, you call qemu_bh_new_guarded)
+> <snip>
+> 
+> Later on there was also a guard added by Akihiko Odaki for
+> network-backends.
+> 7d0fefdf81f: net: Provide MemReentrancyGuard * to qemu_new_nic()
+> 
+> Recently a talk came out about re-entrancy bugs in qemu
+> (unfortuantely I could not find a non-video version of the slides):
+> https://www.youtube.com/watch?v=wL3LK9Dp4os
+> 
+> The talk gives an overview of these bugs and also demonstrates how they
+> can be used for VM escapes. It lists the following vectors:
+>   1. MMIO
+>   2. Bottom-Halves
+>   3. Netqueues
+>   4. IOEventfd
+>   5. Timers
+> 
+> The first three should be covered by the current defenses. However,
+> afaik IOEventfds and Timers are still unprotected. The talk demonstates
+> an attack via IOEventFd, but not one with timers. In any case, it might
+> make sense to revist the guard to ensure that we are covering all types
+> of code that perform DMA.
 
-Rather than waiting for the completion of migration on the source side,
-wait for it on the destination QEMU side to avoid accessing the TPM TIS
-memory mapped registers before QEMU could restore their state. This
-error condition could be triggered on busy systems where the destination
-QEMU did not have enough time to restore the TIS state while the test case
-was already reading its registers. The test case was for example reading
-the STS register and received an unexpected value (0xffffffff), which
-lead to a segmentation fault later on due to trying to read 0xffff bytes
-from the TIS into a buffer.
+Hi,
 
-Cc:  <qemu-stable@nongnu.org>
-Reported-by: Fabiano Rosas <farosas@suse.de>
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
-(cherry picked from commit d9280ea3174700170d39c4cdd3f587f260757711)
-Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+Thank you for reporting this.
 
-diff --git a/tests/qtest/tpm-tests.c b/tests/qtest/tpm-tests.c
-index fb94496bbd..197714f8d9 100644
---- a/tests/qtest/tpm-tests.c
-+++ b/tests/qtest/tpm-tests.c
-@@ -114,7 +114,7 @@ void tpm_test_swtpm_migration_test(const char *src_tpm_path,
-                      sizeof(tpm_pcrread_resp));
- 
-     tpm_util_migrate(src_qemu, uri);
--    tpm_util_wait_for_migration_complete(src_qemu);
-+    tpm_util_wait_for_migration_complete(dst_qemu);
- 
-     tpm_util_pcrread(dst_qemu, tx, tpm_pcrread_resp,
-                      sizeof(tpm_pcrread_resp));
--- 
-2.39.5
-
+Was this problem reported at qemu-security or is the presentation the first?
 
