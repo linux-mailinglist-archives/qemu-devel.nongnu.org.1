@@ -2,42 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9DB09C2CB5
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 13:12:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B12CC9C2C98
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 13:10:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t9kGw-0000Vr-2w; Sat, 09 Nov 2024 07:08:58 -0500
+	id 1t9kHZ-0001Mg-LU; Sat, 09 Nov 2024 07:09:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t9kGs-0000TB-Tr; Sat, 09 Nov 2024 07:08:55 -0500
+ id 1t9kHF-000172-Vt; Sat, 09 Nov 2024 07:09:18 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t9kGr-0003vQ-4m; Sat, 09 Nov 2024 07:08:54 -0500
+ id 1t9kHE-0003vw-9W; Sat, 09 Nov 2024 07:09:17 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 82E7EA15F7;
+ by isrv.corpit.ru (Postfix) with ESMTP id 91161A15F8;
  Sat,  9 Nov 2024 15:07:07 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 4A60B167F85;
+ by tsrv.corpit.ru (Postfix) with SMTP id 58791167F86;
  Sat,  9 Nov 2024 15:08:02 +0300 (MSK)
-Received: (nullmailer pid 3295295 invoked by uid 1000);
+Received: (nullmailer pid 3295298 invoked by uid 1000);
  Sat, 09 Nov 2024 12:08:01 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.0.4 15/57] target/m68k: Always return a temporary from
- gen_lea_mode
-Date: Sat,  9 Nov 2024 15:07:17 +0300
-Message-Id: <20241109120801.3295120-15-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Alexandra Diupina <adiupina@astralinux.ru>,
+ Peter Maydell <peter.maydell@linaro.org>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-9.0.4 16/57] hw/intc/arm_gicv3_cpuif: Add cast to match the
+ documentation
+Date: Sat,  9 Nov 2024 15:07:18 +0300
+Message-Id: <20241109120801.3295120-16-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.0.4-20241109150303@cover.tls.msk.ru>
 References: <qemu-stable-9.0.4-20241109150303@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -62,61 +60,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Richard Henderson <richard.henderson@linaro.org>
+From: Alexandra Diupina <adiupina@astralinux.ru>
 
-Returning a raw areg does not preserve the value if the areg
-is subsequently modified.  Fixes, e.g. "jsr (sp)", where the
-return address is pushed before the branch.
+The result of 1 << regbit with regbit==31 has a 1 in the 32nd bit.
+When cast to uint64_t (for further bitwise OR), the 32 most
+significant bits will be filled with 1s. However, the documentation
+states that the upper 32 bits of ICH_AP[0/1]R<n>_EL2 are reserved.
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2483
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20240813000737.228470-1-richard.henderson@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-(cherry picked from commit 352cc9f300d83ea48b8154bfd2ff985fece887d0)
+Add an explicit cast to match the documentation.
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Cc: qemu-stable@nongnu.org
+Fixes: c3f21b065a ("hw/intc/arm_gicv3_cpuif: Support vLPIs")
+Signed-off-by: Alexandra Diupina <adiupina@astralinux.ru>
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+(cherry picked from commit 3db74afec3ca87f81fbdf5918ed1e21d837fbfab)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/m68k/translate.c b/target/m68k/translate.c
-index 8a194f2f21..f2420b92e1 100644
---- a/target/m68k/translate.c
-+++ b/target/m68k/translate.c
-@@ -722,7 +722,9 @@ static TCGv gen_lea_mode(CPUM68KState *env, DisasContext *s,
-         }
-         /* fallthru */
-     case 2: /* Indirect register */
--        return get_areg(s, reg0);
-+        tmp = tcg_temp_new();
-+        tcg_gen_mov_i32(tmp, get_areg(s, reg0));
-+        return tmp;
-     case 4: /* Indirect predecrememnt.  */
-         if (opsize == OS_UNSIZED) {
-             return NULL_QREG;
-@@ -749,20 +751,23 @@ static TCGv gen_lea_mode(CPUM68KState *env, DisasContext *s,
-         switch (reg0) {
-         case 0: /* Absolute short.  */
-             offset = (int16_t)read_im16(env, s);
--            return tcg_constant_i32(offset);
-+            break;
-         case 1: /* Absolute long.  */
-             offset = read_im32(env, s);
--            return tcg_constant_i32(offset);
-+            break;
-         case 2: /* pc displacement  */
-             offset = s->pc;
-             offset += (int16_t)read_im16(env, s);
--            return tcg_constant_i32(offset);
-+            break;
-         case 3: /* pc index+displacement.  */
-             return gen_lea_indexed(env, s, NULL_QREG);
-         case 4: /* Immediate.  */
-         default:
-             return NULL_QREG;
-         }
-+        tmp = tcg_temp_new();
-+        tcg_gen_movi_i32(tmp, offset);
-+        return tmp;
-     }
-     /* Should never happen.  */
-     return NULL_QREG;
+diff --git a/hw/intc/arm_gicv3_cpuif.c b/hw/intc/arm_gicv3_cpuif.c
+index 67d8fd07b7..ed0a080173 100644
+--- a/hw/intc/arm_gicv3_cpuif.c
++++ b/hw/intc/arm_gicv3_cpuif.c
+@@ -753,7 +753,7 @@ static void icv_activate_vlpi(GICv3CPUState *cs)
+     int regno = aprbit / 32;
+     int regbit = aprbit % 32;
+ 
+-    cs->ich_apr[cs->hppvlpi.grp][regno] |= (1 << regbit);
++    cs->ich_apr[cs->hppvlpi.grp][regno] |= (1U << regbit);
+     gicv3_redist_vlpi_pending(cs, cs->hppvlpi.irq, 0);
+ }
+ 
 -- 
 2.39.5
 
