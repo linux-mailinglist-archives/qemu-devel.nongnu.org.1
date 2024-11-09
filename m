@@ -2,39 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31D959C2CDC
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 13:21:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A40B9C2D0B
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 13:34:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t9kQL-0007jm-4K; Sat, 09 Nov 2024 07:18:42 -0500
+	id 1t9kPo-0006c3-Vy; Sat, 09 Nov 2024 07:18:09 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t9kOa-0005DF-Jv; Sat, 09 Nov 2024 07:16:54 -0500
+ id 1t9kOe-0005ER-Cz; Sat, 09 Nov 2024 07:16:58 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t9kOY-0005AX-Qa; Sat, 09 Nov 2024 07:16:52 -0500
+ id 1t9kOc-0005CP-0W; Sat, 09 Nov 2024 07:16:55 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id C0111A163B;
+ by isrv.corpit.ru (Postfix) with ESMTP id D0598A163C;
  Sat,  9 Nov 2024 15:08:07 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 8567C167FC2;
+ by tsrv.corpit.ru (Postfix) with SMTP id 95B8D167FC3;
  Sat,  9 Nov 2024 15:09:02 +0300 (MSK)
-Received: (nullmailer pid 3296182 invoked by uid 1000);
+Received: (nullmailer pid 3296185 invoked by uid 1000);
  Sat, 09 Nov 2024 12:09:01 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Thomas Huth <thuth@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Robbin Ehn <rehn@rivosinc.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.1.2 18/58] dockerfiles: fix default targets for
- debian-loongarch-cross
-Date: Sat,  9 Nov 2024 15:08:19 +0300
-Message-Id: <20241109120901.3295995-18-mjt@tls.msk.ru>
+Subject: [Stable-9.1.2 19/58] plugins: fix qemu_plugin_reset
+Date: Sat,  9 Nov 2024 15:08:20 +0300
+Message-Id: <20241109120901.3295995-19-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.1.2-20241109150812@cover.tls.msk.ru>
 References: <qemu-stable-9.1.2-20241109150812@cover.tls.msk.ru>
@@ -66,35 +65,44 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
-fix system target name, and remove --disable-system (which deactivates
-system target).
+34e5e1 refactored the plugin context initialization. After this change,
+tcg_ctx->plugin_insn is not reset inconditionnally anymore, but only if
+one plugin at least is active.
 
-Found using: make docker-test-build@debian-loongarch-cross V=1
+When uninstalling the last plugin active, we stopped reinitializing
+tcg_ctx->plugin_insn, which leads to memory callbacks being emitted.
+This results in an error as they don't appear in a plugin op sequence as
+expected.
 
+The correct fix is to make sure we reset plugin translation variables
+after current block translation ends. This way, we can catch any
+potential misuse of those after a given block, in more than fixing the
+current bug.
+
+Fixes: https://gitlab.com/qemu-project/qemu/-/issues/2570
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Message-Id: <20241020213759.2168248-1-pierrick.bouvier@linaro.org>
+Tested-by: Robbin Ehn <rehn@rivosinc.com>
+Message-Id: <20241015003819.984601-1-pierrick.bouvier@linaro.org>
+[AJB: trim patch version details from commit msg]
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20241023113406.1284676-10-alex.bennee@linaro.org>
-(cherry picked from commit 24be5341fbeea341cca38b59d4c0928a8cf5fac1)
+Message-Id: <20241023113406.1284676-19-alex.bennee@linaro.org>
+(cherry picked from commit b56f7dd203c301231d3bb2d071b4e32b345f49d6)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/tests/docker/dockerfiles/debian-loongarch-cross.docker b/tests/docker/dockerfiles/debian-loongarch-cross.docker
-index 79eab5621e..538ab53490 100644
---- a/tests/docker/dockerfiles/debian-loongarch-cross.docker
-+++ b/tests/docker/dockerfiles/debian-loongarch-cross.docker
-@@ -43,8 +43,8 @@ RUN curl -#SL https://github.com/loongson/build-tools/releases/download/2023.08.
- ENV PATH $PATH:/opt/cross-tools/bin
- ENV LD_LIBRARY_PATH /opt/cross-tools/lib:/opt/cross-tools/loongarch64-unknown-linux-gnu/lib:$LD_LIBRARY_PATH
+diff --git a/accel/tcg/plugin-gen.c b/accel/tcg/plugin-gen.c
+index ec89a085b4..99643dd960 100644
+--- a/accel/tcg/plugin-gen.c
++++ b/accel/tcg/plugin-gen.c
+@@ -468,4 +468,8 @@ void plugin_gen_tb_end(CPUState *cpu, size_t num_insns)
  
--ENV QEMU_CONFIGURE_OPTS --disable-system --disable-docs --disable-tools
--ENV DEF_TARGET_LIST loongarch64-linux-user,loongarch-softmmu
-+ENV QEMU_CONFIGURE_OPTS --disable-docs --disable-tools
-+ENV DEF_TARGET_LIST loongarch64-linux-user,loongarch64-softmmu
- ENV MAKE /usr/bin/make
- 
- # As a final step configure the user (if env is defined)
+     /* inject the instrumentation at the appropriate places */
+     plugin_gen_inject(ptb);
++
++    /* reset plugin translation state (plugin_tb is reused between blocks) */
++    tcg_ctx->plugin_db = NULL;
++    tcg_ctx->plugin_insn = NULL;
+ }
 -- 
 2.39.5
 
