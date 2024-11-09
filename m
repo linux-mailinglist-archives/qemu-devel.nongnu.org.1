@@ -2,42 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 068A09C2AC0
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 07:41:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E30249C2ABB
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 07:40:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t9f8N-0003AE-8h; Sat, 09 Nov 2024 01:39:47 -0500
+	id 1t9f8I-000376-A9; Sat, 09 Nov 2024 01:39:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t9f7v-0002vg-O1; Sat, 09 Nov 2024 01:39:21 -0500
+ id 1t9f7x-0002wP-Tz; Sat, 09 Nov 2024 01:39:23 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t9f7t-0001xD-KZ; Sat, 09 Nov 2024 01:39:19 -0500
+ id 1t9f7u-0001xR-ON; Sat, 09 Nov 2024 01:39:20 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 76A8DA12E9;
+ by isrv.corpit.ru (Postfix) with ESMTP id 908B4A12EA;
  Sat,  9 Nov 2024 09:38:09 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id DE940167DCD;
+ by tsrv.corpit.ru (Postfix) with SMTP id EF3CB167DCE;
  Sat,  9 Nov 2024 09:39:03 +0300 (MSK)
-Received: (nullmailer pid 3272497 invoked by uid 1000);
+Received: (nullmailer pid 3272500 invoked by uid 1000);
  Sat, 09 Nov 2024 06:39:03 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Fabiano Rosas <farosas@suse.de>,
- Claudio Fontana <cfontana@suse.de>, Ilya Leoshkevich <iii@linux.ibm.com>,
- Richard Henderson <richard.henderson@linaro.org>,
+Cc: qemu-stable@nongnu.org, Fiona Ebner <f.ebner@proxmox.com>,
+ Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.15 02/33] target/ppc: Fix lxvx/stxvx facility check
-Date: Sat,  9 Nov 2024 09:38:28 +0300
-Message-Id: <20241109063903.3272404-2-mjt@tls.msk.ru>
+Subject: [Stable-7.2.15 03/33] block/reqlist: allow adding overlapping requests
+Date: Sat,  9 Nov 2024 09:38:29 +0300
+Message-Id: <20241109063903.3272404-3-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-7.2.15-20241109093832@cover.tls.msk.ru>
 References: <qemu-stable-7.2.15-20241109093832@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -62,56 +60,107 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Fabiano Rosas <farosas@suse.de>
+From: Fiona Ebner <f.ebner@proxmox.com>
 
-The XT check for the lxvx/stxvx instructions is currently
-inverted. This was introduced during the move to decodetree.
+Allow overlapping request by removing the assert that made it
+impossible. There are only two callers:
 
->From the ISA:
-  Chapter 7. Vector-Scalar Extension Facility
-  Load VSX Vector Indexed X-form
+1. block_copy_task_create()
 
-  lxvx XT,RA,RB
-  if TX=0 & MSR.VSX=0 then VSX_Unavailable()
-  if TX=1 & MSR.VEC=0 then Vector_Unavailable()
-  ...
-  Let XT be the value 32×TX + T.
+It already asserts the very same condition before calling
+reqlist_init_req().
 
-The code currently does the opposite:
+2. cbw_snapshot_read_lock()
 
-    if (paired || a->rt >= 32) {
-        REQUIRE_VSX(ctx);
-    } else {
-        REQUIRE_VECTOR(ctx);
-    }
+There is no need to have read requests be non-overlapping in
+copy-before-write when used for snapshot-access. In fact, there was no
+protection against two callers of cbw_snapshot_read_lock() calling
+reqlist_init_req() with overlapping ranges and this could lead to an
+assertion failure [1].
 
-This was already fixed for lxv/stxv at commit "2cc0e449d1 (target/ppc:
-Fix lxv/stxv MSR facility check)", but the indexed forms were missed.
+In particular, with the reproducer script below [0], two
+cbw_co_snapshot_block_status() callers could race, with the second
+calling reqlist_init_req() before the first one finishes and removes
+its conflicting request.
+
+[0]:
+
+> #!/bin/bash -e
+> dd if=/dev/urandom of=/tmp/disk.raw bs=1M count=1024
+> ./qemu-img create /tmp/fleecing.raw -f raw 1G
+> (
+> ./qemu-system-x86_64 --qmp stdio \
+> --blockdev raw,node-name=node0,file.driver=file,file.filename=/tmp/disk.raw \
+> --blockdev raw,node-name=node1,file.driver=file,file.filename=/tmp/fleecing.raw \
+> <<EOF
+> {"execute": "qmp_capabilities"}
+> {"execute": "blockdev-add", "arguments": { "driver": "copy-before-write", "file": "node0", "target": "node1", "node-name": "node3" } }
+> {"execute": "blockdev-add", "arguments": { "driver": "snapshot-access", "file": "node3", "node-name": "snap0" } }
+> {"execute": "nbd-server-start", "arguments": {"addr": { "type": "unix", "data": { "path": "/tmp/nbd.socket" } } } }
+> {"execute": "block-export-add", "arguments": {"id": "exp0", "node-name": "snap0", "type": "nbd", "name": "exp0"}}
+> EOF
+> ) &
+> sleep 5
+> while true; do
+> ./qemu-nbd -d /dev/nbd0
+> ./qemu-nbd -c /dev/nbd0 nbd:unix:/tmp/nbd.socket:exportname=exp0 -f raw -r
+> nbdinfo --map 'nbd+unix:///exp0?socket=/tmp/nbd.socket'
+> done
+
+[1]:
+
+> #5  0x000071e5f0088eb2 in __GI___assert_fail (...) at ./assert/assert.c:101
+> #6  0x0000615285438017 in reqlist_init_req (...) at ../block/reqlist.c:23
+> #7  0x00006152853e2d98 in cbw_snapshot_read_lock (...) at ../block/copy-before-write.c:237
+> #8  0x00006152853e3068 in cbw_co_snapshot_block_status (...) at ../block/copy-before-write.c:304
+> #9  0x00006152853f4d22 in bdrv_co_snapshot_block_status (...) at ../block/io.c:3726
+> #10 0x000061528543a63e in snapshot_access_co_block_status (...) at ../block/snapshot-access.c:48
+> #11 0x00006152853f1a0a in bdrv_co_do_block_status (...) at ../block/io.c:2474
+> #12 0x00006152853f2016 in bdrv_co_common_block_status_above (...) at ../block/io.c:2652
+> #13 0x00006152853f22cf in bdrv_co_block_status_above (...) at ../block/io.c:2732
+> #14 0x00006152853d9a86 in blk_co_block_status_above (...) at ../block/block-backend.c:1473
+> #15 0x000061528538da6c in blockstatus_to_extents (...) at ../nbd/server.c:2374
+> #16 0x000061528538deb1 in nbd_co_send_block_status (...) at ../nbd/server.c:2481
+> #17 0x000061528538f424 in nbd_handle_request (...) at ../nbd/server.c:2978
+> #18 0x000061528538f906 in nbd_trip (...) at ../nbd/server.c:3121
+> #19 0x00006152855a7caf in coroutine_trampoline (...) at ../util/coroutine-ucontext.c:175
 
 Cc: qemu-stable@nongnu.org
-Fixes: 70426b5bb7 ("target/ppc: moved stxvx and lxvx from legacy to decodtree")
-Signed-off-by: Fabiano Rosas <farosas@suse.de>
-Reviewed-by: Claudio Fontana <cfontana@suse.de>
-Acked-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Reviewed-by: Fabiano Rosas <farosas@suse.de>
-Message-ID: <20240911141651.6914-1-farosas@suse.de>
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-(cherry picked from commit 8bded2e73e80823a67f730140788a3c5e60bf4b5)
+Suggested-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
+Message-Id: <20240712140716.517911-1-f.ebner@proxmox.com>
+Reviewed-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+(cherry picked from commit 6475155d519209c80fdda53e05130365aa769838)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/ppc/translate/vsx-impl.c.inc b/target/ppc/translate/vsx-impl.c.inc
-index de1709809d..9e10291010 100644
---- a/target/ppc/translate/vsx-impl.c.inc
-+++ b/target/ppc/translate/vsx-impl.c.inc
-@@ -2542,7 +2542,7 @@ static bool do_lstxv_PLS_D(DisasContext *ctx, arg_PLS_D *a,
+diff --git a/block/copy-before-write.c b/block/copy-before-write.c
+index 4abaa7339e..8748aad5a4 100644
+--- a/block/copy-before-write.c
++++ b/block/copy-before-write.c
+@@ -64,7 +64,8 @@ typedef struct BDRVCopyBeforeWriteState {
  
- static bool do_lstxv_X(DisasContext *ctx, arg_X *a, bool store, bool paired)
+     /*
+      * @frozen_read_reqs: current read requests for fleecing user in bs->file
+-     * node. These areas must not be rewritten by guest.
++     * node. These areas must not be rewritten by guest. There can be multiple
++     * overlapping read requests.
+      */
+     BlockReqList frozen_read_reqs;
+ 
+diff --git a/block/reqlist.c b/block/reqlist.c
+index 08cb57cfa4..098e807378 100644
+--- a/block/reqlist.c
++++ b/block/reqlist.c
+@@ -20,8 +20,6 @@
+ void reqlist_init_req(BlockReqList *reqs, BlockReq *req, int64_t offset,
+                       int64_t bytes)
  {
--    if (paired || a->rt >= 32) {
-+    if (paired || a->rt < 32) {
-         REQUIRE_VSX(ctx);
-     } else {
-         REQUIRE_VECTOR(ctx);
+-    assert(!reqlist_find_conflict(reqs, offset, bytes));
+-
+     *req = (BlockReq) {
+         .offset = offset,
+         .bytes = bytes,
 -- 
 2.39.5
 
