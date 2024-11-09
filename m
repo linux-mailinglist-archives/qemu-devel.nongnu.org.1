@@ -2,40 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DED039C2BC4
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 11:27:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C4D079C2BC5
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 11:27:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t9idM-0002TB-2K; Sat, 09 Nov 2024 05:24:00 -0500
+	id 1t9idZ-00032P-Q3; Sat, 09 Nov 2024 05:24:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t9iYK-00029P-N4; Sat, 09 Nov 2024 05:18:52 -0500
+ id 1t9iYM-00029s-HG; Sat, 09 Nov 2024 05:18:52 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t9iYJ-0008Dq-6O; Sat, 09 Nov 2024 05:18:48 -0500
+ id 1t9iYK-0008EW-Jf; Sat, 09 Nov 2024 05:18:50 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id C81B9A1412;
+ by isrv.corpit.ru (Postfix) with ESMTP id D0099A1413;
  Sat,  9 Nov 2024 13:13:51 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 64F91167EFD;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 7CF79167EFE;
  Sat,  9 Nov 2024 13:14:46 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Nicholas Piggin <npiggin@gmail.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+Cc: qemu-stable@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.8 45/49] target/ppc: Fix mtDPDES targeting SMT siblings
-Date: Sat,  9 Nov 2024 13:14:36 +0300
-Message-Id: <20241109101443.312701-45-mjt@tls.msk.ru>
+Subject: [Stable-8.2.8 46/49] target/arm: Fix SVE SDOT/UDOT/USDOT (4-way,
+ indexed)
+Date: Sat,  9 Nov 2024 13:14:37 +0300
+Message-Id: <20241109101443.312701-46-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-8.2.8-20241109131339@cover.tls.msk.ru>
 References: <qemu-stable-8.2.8-20241109131339@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -60,32 +59,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Nicholas Piggin <npiggin@gmail.com>
+From: Peter Maydell <peter.maydell@linaro.org>
 
-A typo in the loop over SMT threads to set irq level for doorbells
-when storing to DPDES meant everything was aimed at the CPU executing
-the instruction.
+Our implementation of the indexed version of SVE SDOT/UDOT/USDOT got
+the calculation of the inner loop terminator wrong.  Although we
+correctly account for the element size when we calculate the
+terminator for the first iteration:
+   intptr_t segend = MIN(16 / sizeof(TYPED), opr_sz_n);
+we don't do that when we move it forward after the first inner loop
+completes.  The intention is that we process the vector in 128-bit
+segments, which for a 64-bit element size should mean (1, 2), (3, 4),
+(5, 6), etc.  This bug meant that we would iterate (1, 2), (3, 4, 5,
+6), (7, 8, 9, 10) etc and apply the wrong indexed element to some of
+the operations, and also index off the end of the vector.
+
+You don't see this bug if the vector length is small enough that we
+don't need to iterate the outer loop, i.e.  if it is only 128 bits,
+or if it is the 64-bit special case from AA32/AA64 AdvSIMD.  If the
+vector length is 256 bits then we calculate the right results for the
+elements in the vector but do index off the end of the vector. Vector
+lengths greater than 256 bits see wrong answers. The instructions
+that produce 32-bit results behave correctly.
+
+Fix the recalculation of 'segend' for subsequent iterations, and
+restore a version of the comment that was lost in the refactor of
+commit 7020ffd656a5 that explains why we only need to clamp segend to
+opr_sz_n for the first iteration, not the later ones.
 
 Cc: qemu-stable@nongnu.org
-Fixes: d24e80b2ae ("target/ppc: Add msgsnd/p and DPDES SMT support")
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2595
+Fixes: 7020ffd656a5 ("target/arm: Macroize helper_gvec_{s,u}dot_idx_{b,h}")
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-(cherry picked from commit 0324d236d2918c18a9ad4a1081b1083965a1433b)
+Message-id: 20241101185544.2130972-1-peter.maydell@linaro.org
+(cherry picked from commit e6b2fa1b81ac6b05c4397237c846a295a9857920)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/ppc/misc_helper.c b/target/ppc/misc_helper.c
-index a05bdf78c9..a8d0501996 100644
---- a/target/ppc/misc_helper.c
-+++ b/target/ppc/misc_helper.c
-@@ -283,7 +283,7 @@ void helper_store_dpdes(CPUPPCState *env, target_ulong val)
-         PowerPCCPU *ccpu = POWERPC_CPU(ccs);
-         uint32_t thread_id = ppc_cpu_tir(ccpu);
- 
--        ppc_set_irq(cpu, PPC_INTERRUPT_DOORBELL, val & (0x1 << thread_id));
-+        ppc_set_irq(ccpu, PPC_INTERRUPT_DOORBELL, val & (0x1 << thread_id));
-     }
-     qemu_mutex_unlock_iothread();
+diff --git a/target/arm/tcg/vec_helper.c b/target/arm/tcg/vec_helper.c
+index cc7cab338c..83b49ef009 100644
+--- a/target/arm/tcg/vec_helper.c
++++ b/target/arm/tcg/vec_helper.c
+@@ -692,6 +692,13 @@ void HELPER(NAME)(void *vd, void *vn, void *vm, void *va, uint32_t desc)  \
+ {                                                                         \
+     intptr_t i = 0, opr_sz = simd_oprsz(desc);                            \
+     intptr_t opr_sz_n = opr_sz / sizeof(TYPED);                           \
++    /*                                                                    \
++     * Special case: opr_sz == 8 from AA64/AA32 advsimd means the         \
++     * first iteration might not be a full 16 byte segment. But           \
++     * for vector lengths beyond that this must be SVE and we know        \
++     * opr_sz is a multiple of 16, so we need not clamp segend            \
++     * to opr_sz_n when we advance it at the end of the loop.             \
++     */                                                                   \
+     intptr_t segend = MIN(16 / sizeof(TYPED), opr_sz_n);                  \
+     intptr_t index = simd_data(desc);                                     \
+     TYPED *d = vd, *a = va;                                               \
+@@ -709,7 +716,7 @@ void HELPER(NAME)(void *vd, void *vn, void *vm, void *va, uint32_t desc)  \
+                     n[i * 4 + 2] * m2 +                                   \
+                     n[i * 4 + 3] * m3);                                   \
+         } while (++i < segend);                                           \
+-        segend = i + 4;                                                   \
++        segend = i + (16 / sizeof(TYPED));                                \
+     } while (i < opr_sz_n);                                               \
+     clear_tail(d, opr_sz, simd_maxsz(desc));                              \
  }
 -- 
 2.39.5
