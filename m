@@ -2,38 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7133A9C2CE3
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 13:24:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 684549C2D2D
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 13:38:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t9kMz-0002gM-U6; Sat, 09 Nov 2024 07:15:14 -0500
+	id 1t9kN4-00030D-Tb; Sat, 09 Nov 2024 07:15:18 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t9kMn-0002DQ-6y; Sat, 09 Nov 2024 07:15:01 -0500
+ id 1t9kMq-0002Pp-QQ; Sat, 09 Nov 2024 07:15:05 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t9kMk-0004m0-Tf; Sat, 09 Nov 2024 07:15:00 -0500
+ id 1t9kMo-0004mN-RN; Sat, 09 Nov 2024 07:15:04 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id C7CF7A162B;
+ by isrv.corpit.ru (Postfix) with ESMTP id D5B93A162C;
  Sat,  9 Nov 2024 15:08:06 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 8CFDD167FB3;
+ by tsrv.corpit.ru (Postfix) with SMTP id 9D5A7167FB4;
  Sat,  9 Nov 2024 15:09:01 +0300 (MSK)
-Received: (nullmailer pid 3296135 invoked by uid 1000);
+Received: (nullmailer pid 3296138 invoked by uid 1000);
  Sat, 09 Nov 2024 12:09:01 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- "Robert R . Henry" <rrh.henry@gmail.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.1.2 03/58] target/i386/tcg: Use DPL-level accesses for
- interrupts and call gates
-Date: Sat,  9 Nov 2024 15:08:04 +0300
-Message-Id: <20241109120901.3295995-3-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Tom Dohrmann <erbse.13@gmx.de>,
+ Paolo Bonzini <pbonzini@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-9.1.2 04/58] accel/kvm: check for KVM_CAP_READONLY_MEM on VM
+Date: Sat,  9 Nov 2024 15:08:05 +0300
+Message-Id: <20241109120901.3295995-4-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.1.2-20241109150812@cover.tls.msk.ru>
 References: <qemu-stable-9.1.2-20241109150812@cover.tls.msk.ru>
@@ -62,117 +59,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Paolo Bonzini <pbonzini@redhat.com>
+From: Tom Dohrmann <erbse.13@gmx.de>
 
-Stack accesses should be explicit and use the privilege level of the
-target stack.  This ensures that SMAP is not applied when the target
-stack is in ring 3.
+KVM_CAP_READONLY_MEM used to be a global capability, but with the
+introduction of AMD SEV-SNP confidential VMs, this extension is not
+always available on all VM types [1,2].
 
-This fixes a bug wherein i386/tcg assumed that an interrupt return, or a
-far call using the CALL or JMP instruction, was always going from kernel
-or user mode to kernel mode when using a call gate. This assumption is
-violated if the call gate has a DPL that is greater than 0.
+Query the extension on the VM level instead of on the KVM level.
 
-Analyzed-by: Robert R. Henry <rrh.henry@gmail.com>
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/249
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+[1] https://patchwork.kernel.org/project/kvm/patch/20240809190319.1710470-2-seanjc@google.com/
+[2] https://patchwork.kernel.org/project/kvm/patch/20240902144219.3716974-1-erbse.13@gmx.de/
+
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Signed-off-by: Tom Dohrmann <erbse.13@gmx.de>
+Link: https://lore.kernel.org/r/20240903062953.3926498-1-erbse.13@gmx.de
+Cc: qemu-stable@nongnu.org
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-(cherry picked from commit e136648c5c95ee4ea233cccf999c07e065bef26d)
+(cherry picked from commit 64e0e63ea16aa0122dc0c41a0679da0ae4616208)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/i386/tcg/seg_helper.c b/target/i386/tcg/seg_helper.c
-index 3b8fd827e1..02ae6a0d1f 100644
---- a/target/i386/tcg/seg_helper.c
-+++ b/target/i386/tcg/seg_helper.c
-@@ -695,7 +695,6 @@ static void do_interrupt_protected(CPUX86State *env, int intno, int is_int,
- 
-     sa.env = env;
-     sa.ra = 0;
--    sa.mmu_index = cpu_mmu_index_kernel(env);
- 
-     if (type == 5) {
-         /* task gate */
-@@ -705,7 +704,9 @@ static void do_interrupt_protected(CPUX86State *env, int intno, int is_int,
-         }
-         shift = switch_tss(env, intno * 8, e1, e2, SWITCH_TSS_CALL, old_eip);
-         if (has_error_code) {
--            /* push the error code */
-+            /* push the error code on the destination stack */
-+            cpl = env->hflags & HF_CPL_MASK;
-+            sa.mmu_index = x86_mmu_index_pl(env, cpl);
-             if (env->segs[R_SS].flags & DESC_B_MASK) {
-                 sa.sp_mask = 0xffffffff;
-             } else {
-@@ -750,6 +751,7 @@ static void do_interrupt_protected(CPUX86State *env, int intno, int is_int,
-     if (e2 & DESC_C_MASK) {
-         dpl = cpl;
+diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
+index 4db866f0ca..8c5e71f20c 100644
+--- a/accel/kvm/kvm-all.c
++++ b/accel/kvm/kvm-all.c
+@@ -2660,7 +2660,7 @@ static int kvm_init(MachineState *ms)
      }
-+    sa.mmu_index = x86_mmu_index_pl(env, dpl);
-     if (dpl < cpl) {
-         /* to inner privilege */
-         uint32_t esp;
-@@ -1001,7 +1003,7 @@ static void do_interrupt64(CPUX86State *env, int intno, int is_int,
  
-     sa.env = env;
-     sa.ra = 0;
--    sa.mmu_index = cpu_mmu_index_kernel(env);
-+    sa.mmu_index = x86_mmu_index_pl(env, dpl);
-     sa.sp_mask = -1;
-     sa.ss_base = 0;
-     if (dpl < cpl || ist != 0) {
-@@ -1135,7 +1137,7 @@ static void do_interrupt_real(CPUX86State *env, int intno, int is_int,
-     sa.sp = env->regs[R_ESP];
-     sa.sp_mask = 0xffff;
-     sa.ss_base = env->segs[R_SS].base;
--    sa.mmu_index = cpu_mmu_index_kernel(env);
-+    sa.mmu_index = x86_mmu_index_pl(env, 0);
+     kvm_readonly_mem_allowed =
+-        (kvm_check_extension(s, KVM_CAP_READONLY_MEM) > 0);
++        (kvm_vm_check_extension(s, KVM_CAP_READONLY_MEM) > 0);
  
-     if (is_int) {
-         old_eip = next_eip;
-@@ -1599,7 +1601,7 @@ void helper_lcall_real(CPUX86State *env, uint32_t new_cs, uint32_t new_eip,
-     sa.sp = env->regs[R_ESP];
-     sa.sp_mask = get_sp_mask(env->segs[R_SS].flags);
-     sa.ss_base = env->segs[R_SS].base;
--    sa.mmu_index = cpu_mmu_index_kernel(env);
-+    sa.mmu_index = x86_mmu_index_pl(env, 0);
- 
-     if (shift) {
-         pushl(&sa, env->segs[R_CS].selector);
-@@ -1639,9 +1641,9 @@ void helper_lcall_protected(CPUX86State *env, int new_cs, target_ulong new_eip,
- 
-     sa.env = env;
-     sa.ra = GETPC();
--    sa.mmu_index = cpu_mmu_index_kernel(env);
- 
-     if (e2 & DESC_S_MASK) {
-+        /* "normal" far call, no stack switch possible */
-         if (!(e2 & DESC_CS_MASK)) {
-             raise_exception_err_ra(env, EXCP0D_GPF, new_cs & 0xfffc, GETPC());
-         }
-@@ -1665,6 +1667,7 @@ void helper_lcall_protected(CPUX86State *env, int new_cs, target_ulong new_eip,
-             raise_exception_err_ra(env, EXCP0B_NOSEG, new_cs & 0xfffc, GETPC());
-         }
- 
-+        sa.mmu_index = x86_mmu_index_pl(env, cpl);
- #ifdef TARGET_X86_64
-         /* XXX: check 16/32 bit cases in long mode */
-         if (shift == 2) {
-@@ -1792,6 +1795,7 @@ void helper_lcall_protected(CPUX86State *env, int new_cs, target_ulong new_eip,
- 
-         if (!(e2 & DESC_C_MASK) && dpl < cpl) {
-             /* to inner privilege */
-+            sa.mmu_index = x86_mmu_index_pl(env, dpl);
- #ifdef TARGET_X86_64
-             if (shift == 2) {
-                 ss = dpl;  /* SS = NULL selector with RPL = new CPL */
-@@ -1870,6 +1874,7 @@ void helper_lcall_protected(CPUX86State *env, int new_cs, target_ulong new_eip,
-             new_stack = 1;
-         } else {
-             /* to same privilege */
-+            sa.mmu_index = x86_mmu_index_pl(env, cpl);
-             sa.sp = env->regs[R_ESP];
-             sa.sp_mask = get_sp_mask(env->segs[R_SS].flags);
-             sa.ss_base = env->segs[R_SS].base;
+     kvm_resamplefds_allowed =
+         (kvm_check_extension(s, KVM_CAP_IRQFD_RESAMPLE) > 0);
 -- 
 2.39.5
 
