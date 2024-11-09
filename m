@@ -2,41 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 524359C2BAB
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 11:22:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A646B9C2BA5
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 11:20:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t9iYn-0002FM-Hw; Sat, 09 Nov 2024 05:19:18 -0500
+	id 1t9iZY-0003ML-W7; Sat, 09 Nov 2024 05:20:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t9iW6-00060h-SD; Sat, 09 Nov 2024 05:16:34 -0500
+ id 1t9iWT-0006Ii-O9; Sat, 09 Nov 2024 05:16:56 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t9iW5-0007yu-AP; Sat, 09 Nov 2024 05:16:30 -0500
+ id 1t9iWS-00080V-0s; Sat, 09 Nov 2024 05:16:53 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 88111A13FD;
+ by isrv.corpit.ru (Postfix) with ESMTP id 95940A13FE;
  Sat,  9 Nov 2024 13:13:50 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 358B6167EE8;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 3E050167EE9;
  Sat,  9 Nov 2024 13:14:45 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+Cc: qemu-stable@nongnu.org, Ilya Leoshkevich <iii@linux.ibm.com>,
+ Laurent Vivier <laurent@vivier.eu>,
+ Richard Henderson <richard.henderson@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.8 24/49] target/i386: Use probe_access_full_mmu in
- ptw_translate
-Date: Sat,  9 Nov 2024 13:14:15 +0300
-Message-Id: <20241109101443.312701-24-mjt@tls.msk.ru>
+Subject: [Stable-8.2.8 25/49] linux-user: Emulate /proc/self/maps under
+ mmap_lock
+Date: Sat,  9 Nov 2024 13:14:16 +0300
+Message-Id: <20241109101443.312701-25-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-8.2.8-20241109131339@cover.tls.msk.ru>
 References: <qemu-stable-8.2.8-20241109131339@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -61,51 +60,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Richard Henderson <richard.henderson@linaro.org>
+From: Ilya Leoshkevich <iii@linux.ibm.com>
 
-The probe_access_full_mmu function was designed for this purpose,
-and does not report the memory operation event to plugins.
+If one thread modifies the mappings and another thread prints them,
+a situation may occur that the printer thread sees a guest mapping
+without a corresponding host mapping, leading to a crash in
+open_self_maps_2().
 
 Cc: qemu-stable@nongnu.org
-Fixes: 6d03226b422 ("plugins: force slow path when plugins instrument memory ops")
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
+Fixes: 7b7a3366e142 ("linux-user: Use walk_memory_regions for open_self_maps")
+Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
+Reviewed-by: Laurent Vivier <laurent@vivier.eu>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-ID: <20241014203441.387560-1-iii@linux.ibm.com>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20241013184733.1423747-3-richard.henderson@linaro.org>
-(cherry picked from commit 115ade42d50144c15b74368d32dc734ea277d853)
+(cherry picked from commit bbd5630a75e70a0f1bcf04de74c94aa94a145628)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+(Mjt: context fix in linux-user/syscall.c due to missing v9.0.0-421-g59272469bd13
+ "user: Use get_task_state() helper")
 
-diff --git a/target/i386/tcg/sysemu/excp_helper.c b/target/i386/tcg/sysemu/excp_helper.c
-index 319b23762c..31c5032ace 100644
---- a/target/i386/tcg/sysemu/excp_helper.c
-+++ b/target/i386/tcg/sysemu/excp_helper.c
-@@ -61,12 +61,11 @@ typedef struct PTETranslate {
- 
- static bool ptw_translate(PTETranslate *inout, hwaddr addr, uint64_t ra)
+diff --git a/linux-user/syscall.c b/linux-user/syscall.c
+index d9212aa966..e178366093 100644
+--- a/linux-user/syscall.c
++++ b/linux-user/syscall.c
+@@ -8120,17 +8120,19 @@ static int open_self_maps_1(CPUArchState *env, int fd, bool smaps)
  {
--    CPUTLBEntryFull *full;
-     int flags;
+     struct open_self_maps_data d = {
+         .ts = env_cpu(env)->opaque,
+-        .host_maps = read_self_maps(),
+         .fd = fd,
+         .smaps = smaps
+     };
  
-     inout->gaddr = addr;
--    flags = probe_access_full(inout->env, addr, 0, MMU_DATA_STORE,
--                              inout->ptw_idx, true, &inout->haddr, &full, ra);
-+    flags = probe_access_full_mmu(inout->env, addr, 0, MMU_DATA_STORE,
-+                                  inout->ptw_idx, &inout->haddr, NULL);
++    mmap_lock();
++    d.host_maps = read_self_maps();
+     if (d.host_maps) {
+         walk_memory_regions(&d, open_self_maps_2);
+         free_self_maps(d.host_maps);
+     } else {
+         walk_memory_regions(&d, open_self_maps_3);
+     }
++    mmap_unlock();
+     return 0;
+ }
  
-     if (unlikely(flags & TLB_INVALID_MASK)) {
-         TranslateFault *err = inout->err;
-@@ -439,9 +438,8 @@ do_check_protect_pse36:
-         CPUTLBEntryFull *full;
-         int flags, nested_page_size;
- 
--        flags = probe_access_full(env, paddr, 0, access_type,
--                                  MMU_NESTED_IDX, true,
--                                  &pte_trans.haddr, &full, 0);
-+        flags = probe_access_full_mmu(env, paddr, 0, access_type,
-+                                      MMU_NESTED_IDX, &pte_trans.haddr, &full);
-         if (unlikely(flags & TLB_INVALID_MASK)) {
-             *err = (TranslateFault){
-                 .error_code = env->error_code,
 -- 
 2.39.5
 
