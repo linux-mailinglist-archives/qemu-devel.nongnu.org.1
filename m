@@ -2,69 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D595B9C2AAA
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 07:33:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BA5E49C2AB8
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 07:39:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t9f2N-00086Y-O7; Sat, 09 Nov 2024 01:33:35 -0500
+	id 1t9f78-0002Iy-Fc; Sat, 09 Nov 2024 01:38:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lulu@redhat.com>) id 1t9f2L-000829-AE
- for qemu-devel@nongnu.org; Sat, 09 Nov 2024 01:33:33 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lulu@redhat.com>) id 1t9f2J-0001Uw-VZ
- for qemu-devel@nongnu.org; Sat, 09 Nov 2024 01:33:33 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1731134011;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=0tiPZPS6Shh5GDPNeFDtpssQLVwX/B4YuknKiDeV/Uc=;
- b=fKSdM3wK6qZtlejA0NvbODGfOGo8KK30hm17mxfU1b7vr0md9gpZtZVczqtvzN8hb0K0j6
- /iMEuI0FTw8voLEa13VsddNNMgI2qc1dYh3OKecHf0kG+52EVr5u33w80minBsyFJYuFCW
- S/yodCK496MjK4P81J9NMa1h4jEtjRU=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-111-KxE2G5asOoixBymEnIfiTA-1; Sat,
- 09 Nov 2024 01:33:29 -0500
-X-MC-Unique: KxE2G5asOoixBymEnIfiTA-1
-X-Mimecast-MFC-AGG-ID: KxE2G5asOoixBymEnIfiTA
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id CC2F519560AD
- for <qemu-devel@nongnu.org>; Sat,  9 Nov 2024 06:33:28 +0000 (UTC)
-Received: from server.redhat.com (unknown [10.72.112.21])
- by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id D310D300019E; Sat,  9 Nov 2024 06:33:25 +0000 (UTC)
-From: Cindy Lu <lulu@redhat.com>
-To: lulu@redhat.com, mst@redhat.com, jasowang@redhat.com, qemu-devel@nongnu.org
-Subject: [PATCH v4 4/4] virtio_net: Add third acceptable configuration for MAC
- setup.
-Date: Sat,  9 Nov 2024 14:31:26 +0800
-Message-ID: <20241109063241.1039433-5-lulu@redhat.com>
-In-Reply-To: <20241109063241.1039433-1-lulu@redhat.com>
-References: <20241109063241.1039433-1-lulu@redhat.com>
+ (Exim 4.90_1) (envelope-from <th.huth@gmail.com>) id 1t9f74-0002II-Cd
+ for qemu-devel@nongnu.org; Sat, 09 Nov 2024 01:38:26 -0500
+Received: from mail-ed1-f51.google.com ([209.85.208.51])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <th.huth@gmail.com>) id 1t9f71-0001s3-5e
+ for qemu-devel@nongnu.org; Sat, 09 Nov 2024 01:38:25 -0500
+Received: by mail-ed1-f51.google.com with SMTP id
+ 4fb4d7f45d1cf-5c96b2a10e1so4039346a12.2
+ for <qemu-devel@nongnu.org>; Fri, 08 Nov 2024 22:38:22 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1731134302; x=1731739102;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=Yh9OIV9oZswSsFPCTF0kPB7VF1ucoQK7O4BeLuZMrcY=;
+ b=H8Z4nFZcKztIkQxXs4v892Je8GUoxUpS2c0tgdsg9b+boV+jBtUaUDRTHMuBNlvjc7
+ PHd3xq87pykefTJVhBrrCgLO+HiBKPH8jW2AMI5C2vUQKq4wndZ8jnZmHoKhkqrAVXxJ
+ iC1HTLNnhrGIuEqbW/FbJTMsIEW4i2C4REFpXiIUOvK3APkJ+KrM0/78Q8tC3v763WQJ
+ n3uwz8bInfmc4h+/YasrWIA6RN6xZqJYaxqQwxxteGvu2xzM0mrw6gy3QodzRV5f5OMg
+ 1h4dLju/fG2vCbL97S9NoX57TupVhedzVSyFCuXiuWPnpvjuU4GfmG2WCeDTMhuGNr8R
+ DaUw==
+X-Gm-Message-State: AOJu0YxPTGiXVLtSdGCsz6paORoz73tl1pAvc3XKfpmgloBC3hl211Gi
+ aHd8D5kK4IkV8ta08RQrY4ZphLGVFXTTVBgTl4IEZ87LRbdL/6UM
+X-Google-Smtp-Source: AGHT+IHPajL9uDCipqaoWRFvEDIWChGJwvUQQ3wq/EqOC6SQN31/8hSCkCC0GORuyRX1TGgUbym+oA==
+X-Received: by 2002:a05:6402:1ed4:b0:5ca:14f3:2883 with SMTP id
+ 4fb4d7f45d1cf-5cf0a2faec8mr4822397a12.4.1731134301339; 
+ Fri, 08 Nov 2024 22:38:21 -0800 (PST)
+Received: from tpx1 (ip-109-42-51-55.web.vodafone.de. [109.42.51.55])
+ by smtp.gmail.com with ESMTPSA id
+ 4fb4d7f45d1cf-5cf03b7e803sm2718538a12.22.2024.11.08.22.38.18
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 08 Nov 2024 22:38:20 -0800 (PST)
+Date: Sat, 9 Nov 2024 07:38:17 +0100
+From: Thomas Huth <huth@tuxfamily.org>
+To: Philippe =?UTF-8?B?TWF0aGlldS1EYXVkw6k=?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, Artyom Tarasenko <atar4qemu@gmail.com>, Stefano
+ Stabellini <sstabellini@kernel.org>, Richard Henderson
+ <richard.henderson@linaro.org>, xen-devel@lists.xenproject.org, Paolo
+ Bonzini <pbonzini@redhat.com>, Marcel Apfelbaum
+ <marcel.apfelbaum@gmail.com>, "Edgar E. Iglesias"
+ <edgar.iglesias@gmail.com>, Bastian Koppelmann
+ <kbastian@mail.uni-paderborn.de>, Anthony PERARD <anthony@xenproject.org>,
+ Eduardo Habkost <eduardo@habkost.net>, Jia Liu <proljc@gmail.com>, Stafford
+ Horne <shorne@gmail.com>, Paul Durrant <paul@xen.org>, Mark Cave-Ayland
+ <mark.cave-ayland@ilande.co.uk>, "Michael S. Tsirkin" <mst@redhat.com>
+Subject: Re: [PATCH 2/5] hw/tricore: Mark devices as little-endian
+Message-ID: <20241109073817.40177d87@tpx1>
+In-Reply-To: <20241106184612.71897-3-philmd@linaro.org>
+References: <20241106184612.71897-1-philmd@linaro.org>
+ <20241106184612.71897-3-philmd@linaro.org>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=lulu@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -23
-X-Spam_score: -2.4
-X-Spam_bar: --
-X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.34,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=209.85.208.51; envelope-from=th.huth@gmail.com;
+ helo=mail-ed1-f51.google.com
+X-Spam_score_int: -15
+X-Spam_score: -1.6
+X-Spam_bar: -
+X-Spam_report: (-1.6 / 5.0 requ) BAYES_00=-1.9,
+ FREEMAIL_FORGED_FROMDOMAIN=0.001, FREEMAIL_FROM=0.001,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.249, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_MSPIKE_H2=-0.001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,39 +90,19 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-For VDPA devices, Allow configurations where both the hardware MAC address
-and QEMU command line MAC address are zero.
+Am Wed,  6 Nov 2024 18:46:09 +0000
+schrieb Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>:
 
-Signed-off-by: Cindy Lu <lulu@redhat.com>
----
- hw/net/virtio-net.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+> These devices are only used by the TriCore target, which is
+> only built as little-endian. Therefore the DEVICE_NATIVE_ENDIAN
+> definition expand to DEVICE_LITTLE_ENDIAN (besides, the
+> DEVICE_BIG_ENDIAN case isn't tested). Simplify directly using
+> DEVICE_LITTLE_ENDIAN.
+>=20
+> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+> ---
+>  hw/tricore/tricore_testdevice.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
-index f74aa4f8db..66f21f74f4 100644
---- a/hw/net/virtio-net.c
-+++ b/hw/net/virtio-net.c
-@@ -3627,6 +3627,19 @@ static bool virtio_net_check_vdpa_mac(NetClientState *nc, VirtIONet *n,
-             return true;
-         }
-     }
-+    /*
-+     * 3.The hardware MAC address is 0,
-+     *  and the MAC address in the QEMU command line is also 0.
-+     *  In this situation, qemu will generate a random mac address
-+     *  QEMU will try to use CVQ/set_config to set this address to
-+     *  device
-+     */
-+    if ((memcmp(&hwcfg.mac, &zero, sizeof(MACAddr)) == 0) &&
-+        (memcmp(cmdline_mac, &zero, sizeof(MACAddr)) == 0)) {
-+        memcpy(&n->mac[0], &n->nic_conf.macaddr, sizeof(n->mac));
-+
-+        return true;
-+    }
- 
-     error_setg(errp,
-                "vDPA device's mac %02x:%02x:%02x:%02x:%02x:%02x"
--- 
-2.45.0
-
+Reviewed-by: Thomas Huth <huth@tuxfamily.org>
 
