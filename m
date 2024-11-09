@@ -2,41 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A98319C2C97
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 13:10:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 053429C2C99
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 13:10:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t9kGQ-0008DK-HP; Sat, 09 Nov 2024 07:08:26 -0500
+	id 1t9kGT-0008I0-RL; Sat, 09 Nov 2024 07:08:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t9kGH-00087E-J7; Sat, 09 Nov 2024 07:08:17 -0500
+ id 1t9kGL-0008BC-Hw; Sat, 09 Nov 2024 07:08:21 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t9kGF-0003e6-Rl; Sat, 09 Nov 2024 07:08:17 -0500
+ id 1t9kGJ-0003gb-GS; Sat, 09 Nov 2024 07:08:21 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id DA442A15ED;
- Sat,  9 Nov 2024 15:07:06 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 000D4A15EE;
+ Sat,  9 Nov 2024 15:07:07 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id A0881167F7B;
+ by tsrv.corpit.ru (Postfix) with SMTP id AF64E167F7C;
  Sat,  9 Nov 2024 15:08:01 +0300 (MSK)
-Received: (nullmailer pid 3295264 invoked by uid 1000);
+Received: (nullmailer pid 3295267 invoked by uid 1000);
  Sat, 09 Nov 2024 12:08:01 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- David Woodhouse <dwmw@amazon.co.uk>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.0.4 05/57] hw/mips/jazz: fix typo in in-built NIC alias
-Date: Sat,  9 Nov 2024 15:07:07 +0300
-Message-Id: <20241109120801.3295120-5-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Fiona Ebner <f.ebner@proxmox.com>,
+ Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-9.0.4 06/57] block/reqlist: allow adding overlapping requests
+Date: Sat,  9 Nov 2024 15:07:08 +0300
+Message-Id: <20241109120801.3295120-6-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.0.4-20241109150303@cover.tls.msk.ru>
 References: <qemu-stable-9.0.4-20241109150303@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -61,34 +60,107 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+From: Fiona Ebner <f.ebner@proxmox.com>
 
-Commit e104edbb9d ("hw/mips/jazz: use qemu_find_nic_info()") contained a typo
-in the NIC alias which caused initialisation of the in-built dp83932 NIC to fail
-when using the normal -nic user,model=dp83932 command line.
+Allow overlapping request by removing the assert that made it
+impossible. There are only two callers:
 
-Fixes: e104edbb9d ("hw/mips/jazz: use qemu_find_nic_info()")
-Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: David Woodhouse <dwmw@amazon.co.uk>
-Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
+1. block_copy_task_create()
+
+It already asserts the very same condition before calling
+reqlist_init_req().
+
+2. cbw_snapshot_read_lock()
+
+There is no need to have read requests be non-overlapping in
+copy-before-write when used for snapshot-access. In fact, there was no
+protection against two callers of cbw_snapshot_read_lock() calling
+reqlist_init_req() with overlapping ranges and this could lead to an
+assertion failure [1].
+
+In particular, with the reproducer script below [0], two
+cbw_co_snapshot_block_status() callers could race, with the second
+calling reqlist_init_req() before the first one finishes and removes
+its conflicting request.
+
+[0]:
+
+> #!/bin/bash -e
+> dd if=/dev/urandom of=/tmp/disk.raw bs=1M count=1024
+> ./qemu-img create /tmp/fleecing.raw -f raw 1G
+> (
+> ./qemu-system-x86_64 --qmp stdio \
+> --blockdev raw,node-name=node0,file.driver=file,file.filename=/tmp/disk.raw \
+> --blockdev raw,node-name=node1,file.driver=file,file.filename=/tmp/fleecing.raw \
+> <<EOF
+> {"execute": "qmp_capabilities"}
+> {"execute": "blockdev-add", "arguments": { "driver": "copy-before-write", "file": "node0", "target": "node1", "node-name": "node3" } }
+> {"execute": "blockdev-add", "arguments": { "driver": "snapshot-access", "file": "node3", "node-name": "snap0" } }
+> {"execute": "nbd-server-start", "arguments": {"addr": { "type": "unix", "data": { "path": "/tmp/nbd.socket" } } } }
+> {"execute": "block-export-add", "arguments": {"id": "exp0", "node-name": "snap0", "type": "nbd", "name": "exp0"}}
+> EOF
+> ) &
+> sleep 5
+> while true; do
+> ./qemu-nbd -d /dev/nbd0
+> ./qemu-nbd -c /dev/nbd0 nbd:unix:/tmp/nbd.socket:exportname=exp0 -f raw -r
+> nbdinfo --map 'nbd+unix:///exp0?socket=/tmp/nbd.socket'
+> done
+
+[1]:
+
+> #5  0x000071e5f0088eb2 in __GI___assert_fail (...) at ./assert/assert.c:101
+> #6  0x0000615285438017 in reqlist_init_req (...) at ../block/reqlist.c:23
+> #7  0x00006152853e2d98 in cbw_snapshot_read_lock (...) at ../block/copy-before-write.c:237
+> #8  0x00006152853e3068 in cbw_co_snapshot_block_status (...) at ../block/copy-before-write.c:304
+> #9  0x00006152853f4d22 in bdrv_co_snapshot_block_status (...) at ../block/io.c:3726
+> #10 0x000061528543a63e in snapshot_access_co_block_status (...) at ../block/snapshot-access.c:48
+> #11 0x00006152853f1a0a in bdrv_co_do_block_status (...) at ../block/io.c:2474
+> #12 0x00006152853f2016 in bdrv_co_common_block_status_above (...) at ../block/io.c:2652
+> #13 0x00006152853f22cf in bdrv_co_block_status_above (...) at ../block/io.c:2732
+> #14 0x00006152853d9a86 in blk_co_block_status_above (...) at ../block/block-backend.c:1473
+> #15 0x000061528538da6c in blockstatus_to_extents (...) at ../nbd/server.c:2374
+> #16 0x000061528538deb1 in nbd_co_send_block_status (...) at ../nbd/server.c:2481
+> #17 0x000061528538f424 in nbd_handle_request (...) at ../nbd/server.c:2978
+> #18 0x000061528538f906 in nbd_trip (...) at ../nbd/server.c:3121
+> #19 0x00006152855a7caf in coroutine_trampoline (...) at ../util/coroutine-ucontext.c:175
+
+Cc: qemu-stable@nongnu.org
+Suggested-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
+Message-Id: <20240712140716.517911-1-f.ebner@proxmox.com>
+Reviewed-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+(cherry picked from commit 6475155d519209c80fdda53e05130365aa769838)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-(cherry picked from commit 2e4fdf566062c03456230fd8136b88c5c1e5c4bf)
-Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/mips/jazz.c b/hw/mips/jazz.c
-index 1bc17e69d3..0d44e19707 100644
---- a/hw/mips/jazz.c
-+++ b/hw/mips/jazz.c
-@@ -128,7 +128,7 @@ static void mips_jazz_init_net(IOMMUMemoryRegion *rc4030_dma_mr,
-     uint8_t *prom;
-     NICInfo *nd;
+diff --git a/block/copy-before-write.c b/block/copy-before-write.c
+index 8aba27a71d..3698b3bc60 100644
+--- a/block/copy-before-write.c
++++ b/block/copy-before-write.c
+@@ -65,7 +65,8 @@ typedef struct BDRVCopyBeforeWriteState {
  
--    nd = qemu_find_nic_info("dp8393x", true, "dp82932");
-+    nd = qemu_find_nic_info("dp8393x", true, "dp83932");
-     if (!nd) {
-         return;
-     }
+     /*
+      * @frozen_read_reqs: current read requests for fleecing user in bs->file
+-     * node. These areas must not be rewritten by guest.
++     * node. These areas must not be rewritten by guest. There can be multiple
++     * overlapping read requests.
+      */
+     BlockReqList frozen_read_reqs;
+ 
+diff --git a/block/reqlist.c b/block/reqlist.c
+index 08cb57cfa4..098e807378 100644
+--- a/block/reqlist.c
++++ b/block/reqlist.c
+@@ -20,8 +20,6 @@
+ void reqlist_init_req(BlockReqList *reqs, BlockReq *req, int64_t offset,
+                       int64_t bytes)
+ {
+-    assert(!reqlist_find_conflict(reqs, offset, bytes));
+-
+     *req = (BlockReq) {
+         .offset = offset,
+         .bytes = bytes,
 -- 
 2.39.5
 
