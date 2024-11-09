@@ -2,43 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A40B9C2D0B
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 13:34:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E90A9C2CD7
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 13:19:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t9kPo-0006c3-Vy; Sat, 09 Nov 2024 07:18:09 -0500
+	id 1t9kPw-0006uW-Mx; Sat, 09 Nov 2024 07:18:16 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t9kOe-0005ER-Cz; Sat, 09 Nov 2024 07:16:58 -0500
+ id 1t9kOh-0005GJ-JR; Sat, 09 Nov 2024 07:17:01 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t9kOc-0005CP-0W; Sat, 09 Nov 2024 07:16:55 -0500
+ id 1t9kOf-0005Co-QZ; Sat, 09 Nov 2024 07:16:59 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id D0598A163C;
+ by isrv.corpit.ru (Postfix) with ESMTP id E0830A163D;
  Sat,  9 Nov 2024 15:08:07 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 95B8D167FC3;
+ by tsrv.corpit.ru (Postfix) with SMTP id A628F167FC4;
  Sat,  9 Nov 2024 15:09:02 +0300 (MSK)
-Received: (nullmailer pid 3296185 invoked by uid 1000);
+Received: (nullmailer pid 3296188 invoked by uid 1000);
  Sat, 09 Nov 2024 12:09:01 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Robbin Ehn <rehn@rivosinc.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+Cc: qemu-stable@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.1.2 19/58] plugins: fix qemu_plugin_reset
-Date: Sat,  9 Nov 2024 15:08:20 +0300
-Message-Id: <20241109120901.3295995-19-mjt@tls.msk.ru>
+Subject: [Stable-9.1.2 20/58] net: Check if nc is NULL in
+ qemu_get_vnet_hdr_len()
+Date: Sat,  9 Nov 2024 15:08:21 +0300
+Message-Id: <20241109120901.3295995-20-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.1.2-20241109150812@cover.tls.msk.ru>
 References: <qemu-stable-9.1.2-20241109150812@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -63,46 +62,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-34e5e1 refactored the plugin context initialization. After this change,
-tcg_ctx->plugin_insn is not reset inconditionnally anymore, but only if
-one plugin at least is active.
+A netdev may not have a peer specified, resulting in NULL. We should
+make it behave like /dev/null in such a case instead of letting it
+cause segmentatin fault.
 
-When uninstalling the last plugin active, we stopped reinitializing
-tcg_ctx->plugin_insn, which leads to memory callbacks being emitted.
-This results in an error as they don't appear in a plugin op sequence as
-expected.
-
-The correct fix is to make sure we reset plugin translation variables
-after current block translation ends. This way, we can catch any
-potential misuse of those after a given block, in more than fixing the
-current bug.
-
-Fixes: https://gitlab.com/qemu-project/qemu/-/issues/2570
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Tested-by: Robbin Ehn <rehn@rivosinc.com>
-Message-Id: <20241015003819.984601-1-pierrick.bouvier@linaro.org>
-[AJB: trim patch version details from commit msg]
-Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20241023113406.1284676-19-alex.bennee@linaro.org>
-(cherry picked from commit b56f7dd203c301231d3bb2d071b4e32b345f49d6)
+Fixes: 4b52d63249a5 ("tap: Remove qemu_using_vnet_hdr()")
+Cc: qemu-stable@nongnu.org
+Reported-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+Tested-by; Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: Jason Wang <jasowang@redhat.com>
+(cherry picked from commit 76240dd2a37c7b361740616a7d6080beafdb8a71)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/accel/tcg/plugin-gen.c b/accel/tcg/plugin-gen.c
-index ec89a085b4..99643dd960 100644
---- a/accel/tcg/plugin-gen.c
-+++ b/accel/tcg/plugin-gen.c
-@@ -468,4 +468,8 @@ void plugin_gen_tb_end(CPUState *cpu, size_t num_insns)
+diff --git a/net/net.c b/net/net.c
+index fc1125111c..264c4e9c5c 100644
+--- a/net/net.c
++++ b/net/net.c
+@@ -542,6 +542,10 @@ void qemu_set_offload(NetClientState *nc, int csum, int tso4, int tso6,
  
-     /* inject the instrumentation at the appropriate places */
-     plugin_gen_inject(ptb);
+ int qemu_get_vnet_hdr_len(NetClientState *nc)
+ {
++    if (!nc) {
++        return 0;
++    }
 +
-+    /* reset plugin translation state (plugin_tb is reused between blocks) */
-+    tcg_ctx->plugin_db = NULL;
-+    tcg_ctx->plugin_insn = NULL;
+     return nc->vnet_hdr_len;
  }
+ 
 -- 
 2.39.5
 
