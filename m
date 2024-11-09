@@ -2,34 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37C699C2BB4
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 11:24:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 945B49C2B9E
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 11:19:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t9iYH-0001eb-Nf; Sat, 09 Nov 2024 05:18:47 -0500
+	id 1t9iXi-0008Gf-2A; Sat, 09 Nov 2024 05:18:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t9iVD-0004fO-NF; Sat, 09 Nov 2024 05:15:37 -0500
+ id 1t9iVZ-0004xC-Io; Sat, 09 Nov 2024 05:15:58 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1t9iVA-0007p9-Ry; Sat, 09 Nov 2024 05:15:34 -0500
+ id 1t9iVX-0007q6-QL; Sat, 09 Nov 2024 05:15:57 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id E995CA13F3;
+ by isrv.corpit.ru (Postfix) with ESMTP id F1D84A13F4;
  Sat,  9 Nov 2024 13:13:49 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 8ACDE167EDF;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 9F22C167EE0;
  Sat,  9 Nov 2024 13:14:44 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Akihiko Odaki <akihiko.odaki@daynix.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.8 15/49] hw/audio/hda: free timer on exit
-Date: Sat,  9 Nov 2024 13:14:06 +0300
-Message-Id: <20241109101443.312701-15-mjt@tls.msk.ru>
+Subject: [Stable-8.2.8 16/49] ui/win32: fix potential use-after-free with dbus
+ shared memory
+Date: Sat,  9 Nov 2024 13:14:07 +0300
+Message-Id: <20241109101443.312701-16-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-8.2.8-20241109131339@cover.tls.msk.ru>
 References: <qemu-stable-8.2.8-20241109131339@cover.tls.msk.ru>
@@ -61,27 +62,155 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-Fixes: 280c1e1cd ("audio/hda: create millisecond timers that handle IO")
+DisplaySurface may be free before the pixman image is freed, since the
+image is refcounted and used by different objects, including pending
+dbus messages.
+
+Furthermore, setting the destroy function in
+create_displaysurface_from() isn't appropriate, as it may not be used,
+and may be overriden as in ramfb.
+
+Set the destroy function when the shared handle is set, use the HANDLE
+directly for destroy data, using a single common helper
+qemu_pixman_win32_image_destroy().
 
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 Reviewed-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Message-ID: <20241008125028.1177932-2-marcandre.lureau@redhat.com>
-(cherry picked from commit f27206ceedbe2efae37c8d143c5eb2db05251508)
+Message-ID: <20241008125028.1177932-5-marcandre.lureau@redhat.com>
+(cherry picked from commit 330ef31deb2e5461cff907488b710f5bd9cd2327)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/audio/hda-codec.c b/hw/audio/hda-codec.c
-index 0bc20d49f6..19f401cabe 100644
---- a/hw/audio/hda-codec.c
-+++ b/hw/audio/hda-codec.c
-@@ -751,7 +751,7 @@ static void hda_audio_exit(HDACodecDevice *hda)
-             continue;
+diff --git a/hw/display/virtio-gpu.c b/hw/display/virtio-gpu.c
+index a7b16ba072..746160a175 100644
+--- a/hw/display/virtio-gpu.c
++++ b/hw/display/virtio-gpu.c
+@@ -239,16 +239,6 @@ static uint32_t calc_image_hostmem(pixman_format_code_t pformat,
+     return height * stride;
+ }
+ 
+-#ifdef WIN32
+-static void
+-win32_pixman_image_destroy(pixman_image_t *image, void *data)
+-{
+-    HANDLE handle = data;
+-
+-    qemu_win32_map_free(pixman_image_get_data(image), handle, &error_warn);
+-}
+-#endif
+-
+ static void virtio_gpu_resource_create_2d(VirtIOGPU *g,
+                                           struct virtio_gpu_ctrl_command *cmd)
+ {
+@@ -309,7 +299,7 @@ static void virtio_gpu_resource_create_2d(VirtIOGPU *g,
+             bits, c2d.height ? res->hostmem / c2d.height : 0);
+ #ifdef WIN32
+         if (res->image) {
+-            pixman_image_set_destroy_function(res->image, win32_pixman_image_destroy, res->handle);
++            pixman_image_set_destroy_function(res->image, qemu_pixman_win32_image_destroy, res->handle);
          }
-         if (a->use_timer) {
--            timer_del(st->buft);
-+            timer_free(st->buft);
+ #endif
+     }
+@@ -1303,7 +1293,7 @@ static int virtio_gpu_load(QEMUFile *f, void *opaque, size_t size,
+             return -EINVAL;
          }
-         if (st->output) {
-             AUD_close_out(&a->card, st->voice.out);
+ #ifdef WIN32
+-        pixman_image_set_destroy_function(res->image, win32_pixman_image_destroy, res->handle);
++        pixman_image_set_destroy_function(res->image, qemu_pixman_win32_image_destroy, res->handle);
+ #endif
+ 
+         res->addrs = g_new(uint64_t, res->iov_cnt);
+diff --git a/include/ui/qemu-pixman.h b/include/ui/qemu-pixman.h
+index ef13a8210c..e3dd72b9e3 100644
+--- a/include/ui/qemu-pixman.h
++++ b/include/ui/qemu-pixman.h
+@@ -97,6 +97,8 @@ void qemu_pixman_glyph_render(pixman_image_t *glyph,
+ 
+ void qemu_pixman_image_unref(pixman_image_t *image);
+ 
++void qemu_pixman_win32_image_destroy(pixman_image_t *image, void *data);
++
+ G_DEFINE_AUTOPTR_CLEANUP_FUNC(pixman_image_t, qemu_pixman_image_unref)
+ 
+ #endif /* QEMU_PIXMAN_H */
+diff --git a/ui/console.c b/ui/console.c
+index 832055675c..c462b8f228 100644
+--- a/ui/console.c
++++ b/ui/console.c
+@@ -504,24 +504,6 @@ void qemu_displaysurface_win32_set_handle(DisplaySurface *surface,
+     surface->handle = h;
+     surface->handle_offset = offset;
+ }
+-
+-static void
+-win32_pixman_image_destroy(pixman_image_t *image, void *data)
+-{
+-    DisplaySurface *surface = data;
+-
+-    if (!surface->handle) {
+-        return;
+-    }
+-
+-    assert(surface->handle_offset == 0);
+-
+-    qemu_win32_map_free(
+-        pixman_image_get_data(surface->image),
+-        surface->handle,
+-        &error_warn
+-    );
+-}
+ #endif
+ 
+ DisplaySurface *qemu_create_displaysurface(int width, int height)
+@@ -547,6 +529,8 @@ DisplaySurface *qemu_create_displaysurface(int width, int height)
+ 
+ #ifdef WIN32
+     qemu_displaysurface_win32_set_handle(surface, handle, 0);
++    pixman_image_set_destroy_function(surface->image,
++                                      qemu_pixman_win32_image_destroy, handle);
+ #endif
+     return surface;
+ }
+@@ -562,10 +546,6 @@ DisplaySurface *qemu_create_displaysurface_from(int width, int height,
+                                               width, height,
+                                               (void *)data, linesize);
+     assert(surface->image != NULL);
+-#ifdef WIN32
+-    pixman_image_set_destroy_function(surface->image,
+-                                      win32_pixman_image_destroy, surface);
+-#endif
+ 
+     return surface;
+ }
+diff --git a/ui/qemu-pixman.c b/ui/qemu-pixman.c
+index 5ca55dd199..de6c88151c 100644
+--- a/ui/qemu-pixman.c
++++ b/ui/qemu-pixman.c
+@@ -4,6 +4,7 @@
+  */
+ 
+ #include "qemu/osdep.h"
++#include "qapi/error.h"
+ #include "ui/console.h"
+ #include "standard-headers/drm/drm_fourcc.h"
+ #include "trace.h"
+@@ -268,3 +269,17 @@ void qemu_pixman_glyph_render(pixman_image_t *glyph,
+     pixman_image_unref(ibg);
+ }
+ #endif /* CONFIG_PIXMAN */
++
++#ifdef WIN32
++void
++qemu_pixman_win32_image_destroy(pixman_image_t *image, void *data)
++{
++    HANDLE handle = data;
++
++    qemu_win32_map_free(
++        pixman_image_get_data(image),
++        handle,
++        &error_warn
++    );
++}
++#endif
 -- 
 2.39.5
 
