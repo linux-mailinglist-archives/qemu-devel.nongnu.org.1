@@ -2,83 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAD209C2FCD
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Nov 2024 23:47:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DBFB79C30C5
+	for <lists+qemu-devel@lfdr.de>; Sun, 10 Nov 2024 04:41:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1t9uDk-0004LA-2u; Sat, 09 Nov 2024 17:46:20 -0500
+	id 1t9yo9-0007c8-0Q; Sat, 09 Nov 2024 22:40:13 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <antonb@tenstorrent.com>)
- id 1t9uDh-0004KG-PV
- for qemu-devel@nongnu.org; Sat, 09 Nov 2024 17:46:17 -0500
-Received: from mail-yb1-xb29.google.com ([2607:f8b0:4864:20::b29])
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1t9yo6-0007aN-VS
+ for qemu-devel@nongnu.org; Sat, 09 Nov 2024 22:40:10 -0500
+Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <antonb@tenstorrent.com>)
- id 1t9uDf-0005SY-Mw
- for qemu-devel@nongnu.org; Sat, 09 Nov 2024 17:46:17 -0500
-Received: by mail-yb1-xb29.google.com with SMTP id
- 3f1490d57ef6-e29267b4dc4so3000235276.0
- for <qemu-devel@nongnu.org>; Sat, 09 Nov 2024 14:46:15 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1t9yo5-0000Ni-IV
+ for qemu-devel@nongnu.org; Sat, 09 Nov 2024 22:40:10 -0500
+Received: by mail-pf1-x42d.google.com with SMTP id
+ d2e1a72fcca58-720d5ada03cso3522457b3a.1
+ for <qemu-devel@nongnu.org>; Sat, 09 Nov 2024 19:40:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=tenstorrent.com; s=google; t=1731192374; x=1731797174; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=on65vZ9eyegTreiHezAgauYBQCExFVG4sEO5EQG3PPQ=;
- b=Hhj3WJaQSAEmMvNPk7VPYdugwR45OR/h/GkKdE56l7kalCfhl+lTWMumZiJugxIxAb
- UMaKuUIx7K0Py2mPqnKRyHHRx/V9QATA/TD//Q++RnS0Q22DCeCi2cTrRdrtKqZfpLdG
- Am/mBcFt59yf3DhuDoQxuhQskDd48YEjNZTzsKJ+kir+Z/DYL6vnngW4bbmNmnfrIbS5
- oK8wPHxrxZYnOXuhTezfmnxtgXWQxbK15Oc+RUvF44Yx2XWnk4dO4Q8ZpOhFZU4sFdM9
- 7u0xbSlyWzR2K2Y+EJbUP7c8G8K1p8Lkzlqxw5OGmYLfixe+4fLp6d5jYL+JUUfWF+pj
- eO4Q==
+ d=gmail.com; s=20230601; t=1731210007; x=1731814807; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=A7pEvf43qIJ2aRmyxx8UOLulspcDWFI0ipGvQq0BBgM=;
+ b=mZVI4WReWpY2yMWQvsu/f1mc2XfZnXyidyvL4IR4kFHrPBfJAmZh6lO9v/491c2Yc/
+ gJUqjJmE0IE6Y92qIOw1MKCS7X+aUYwvMURfNH+Yy9lQqPFd6Fw9qexnyRNTe9vHSYYR
+ Ujv9fgBPw9Sq1pgRVNwMth+mtx5w7kFcIWXEf7XAPpA8RyqyajduRfBemNpbKClCKqHh
+ E4uwfs0osizIsufB1/t6o1A1VRkvuU4JvV5jITRlkXb+oCL8yDzP7rdXIIPDKufYNp8G
+ wqq8bhEjhKIZkJjGCSipZ3A21lVJ/1//w90ltrBJF45LfNLUTZFshUOonZQ3tN0NJtRn
+ gbHA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731192374; x=1731797174;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=on65vZ9eyegTreiHezAgauYBQCExFVG4sEO5EQG3PPQ=;
- b=ozW4+UosfSzIbPSi/G3/aSzVWJ+/opqF7egHkiYcSHEMsfX+uqXwDIfo4QNhdJHJah
- AfmVU6qwTFIYoZgSnuNuoIdgS2qBdhL02q26Ps02z+TuTmDEqg1LPnTca68cVQKtoWNW
- 1XBGiuLrYM+EcUUtrcmlY5ZkFvchuowztGolHibHVk8ubVkoO1psfNXYop6VGv8Niky5
- mkuiXQgnw+47z+ffFRyc59qXttSflit1K04q/ZFDZhFe5h1K2HtRhGknmuRUFl2wXH39
- LLLM6RH0modo2PICwZ9MCElAuurYfbzCYbNOUY0GX6igm9dub3yNKG5ScMeEdoi6ye6d
- XVow==
-X-Forwarded-Encrypted: i=1;
- AJvYcCX0AYS+4CVbE2eg5kU5W8TU67KKzo9OPl3i3HQLTx/D3sEjf6ZD9H7bKcvtE2/lCI0SPTYi0Wwa9JaA@nongnu.org
-X-Gm-Message-State: AOJu0Yzk1j+q1Kiruv61SEqA8sjGKyuTiggvt1hzZ0C6dvJkNPk7TP5+
- qr3x2/L5kak+v7Zko2dWNwsZv2/xrtXNzqbCHsuhfgW7BYwktG4dGMDIsPtah0y9j9hPpqSlVIc
- wgTRaeZLFdze2EWkF6ac/GXWPWo7uEao45IUONw==
-X-Google-Smtp-Source: AGHT+IFZRrq3f7IX9SJCz0lSa6rpUg3e094vNoRxmd6/2ju9cDrqZYx9cmUXWpXV9AWAJW3Z7G8Bw6N/6rgYIZllRIQ=
-X-Received: by 2002:a05:6902:2a4a:b0:e30:c4b2:7c62 with SMTP id
- 3f1490d57ef6-e337f8e458emr7418200276.46.1731192374350; Sat, 09 Nov 2024
- 14:46:14 -0800 (PST)
+ d=1e100.net; s=20230601; t=1731210007; x=1731814807;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=A7pEvf43qIJ2aRmyxx8UOLulspcDWFI0ipGvQq0BBgM=;
+ b=VK2T4qN0mgy1WTKZhh7JdbMa1kygN/wwy3+6tPV0RQpSUgWj1o9gNONCu/wB5DLSuh
+ yhxPluYi6EzSRBOi3ac383Zi9CfIKpsk2UjU00YWIb95czyA3Hz7F1krU54ZbrZ+KDHO
+ tJB5+nQl9AsOwH67J9yLqaMcg9mRv1JwrqAgcHqo41oPDyNYsCZ4puTTp84dYbOswxX+
+ EUrbLZ2cFES3i9j/KDl41Mxg08sjGbx9OVN3F8B7HfUGxU9I1Ne7a9Thn2OlMzur8ldJ
+ jrSiek6dC2rFIG52qGQf6MF9rIZKelT5Y9DtqeHtGWsMPNL1EN5Kz1701h72nVBpQEpD
+ kr0Q==
+X-Gm-Message-State: AOJu0YzEKoPTbKM7VXK3kf3WlVTKiAmpRlkXFbN9jpP8AMYKS+hvE9hB
+ +mlR+sU9xSXxwdVlbrXjJmy78qF3XTvJBDDznVrbJj9mc8WM8O4ZPHk8gQ==
+X-Google-Smtp-Source: AGHT+IEhMcNvJomgsX/7LrXt1jHfxh4gyDPYFtASXBn1cn7UKRr1udkr0twadJqVswmXRIqqvQCgaQ==
+X-Received: by 2002:a05:6a00:3d01:b0:71e:7c25:8217 with SMTP id
+ d2e1a72fcca58-72413380e56mr9764620b3a.25.1731210007530; 
+ Sat, 09 Nov 2024 19:40:07 -0800 (PST)
+Received: from wheely.local0.net (124-171-217-17.tpgi.com.au. [124.171.217.17])
+ by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-7240799bb78sm6345273b3a.95.2024.11.09.19.40.05
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sat, 09 Nov 2024 19:40:06 -0800 (PST)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: qemu-devel@nongnu.org
+Cc: Nicholas Piggin <npiggin@gmail.com>,
+	Gerd Hoffmann <kraxel@redhat.com>
+Subject: [RFC PATCH 0/2] usb/msd: Permit relaxed ordering of IN packets
+Date: Sun, 10 Nov 2024 13:39:58 +1000
+Message-ID: <20241110034000.379463-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.45.2
 MIME-Version: 1.0
-References: <20241108230709.1466634-1-antonb@tenstorrent.com>
- <4e7a4a10-bea3-4f43-b091-6a30c400b8bd@linaro.org>
-In-Reply-To: <4e7a4a10-bea3-4f43-b091-6a30c400b8bd@linaro.org>
-From: Anton Blanchard <antonb@tenstorrent.com>
-Date: Sun, 10 Nov 2024 09:46:03 +1100
-Message-ID: <CAN7m+mCqXz1YaBZpA-TFWz_TX0HiRorzXbaadn+L3fnigWBR1g@mail.gmail.com>
-Subject: Re: [CAUTION - External Sender] Re: [PATCH] target/riscv: Add
- Tenstorrent Ascalon CPU
-To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-riscv@nongnu.org, qemu-devel@nongnu.org, 
- Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>, 
- Bin Meng <bmeng.cn@gmail.com>, Weiwei Li <liwei1518@gmail.com>, 
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::b29;
- envelope-from=antonb@tenstorrent.com; helo=mail-yb1-xb29.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x42d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -96,24 +87,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Philippe,
+Hi,
 
-On Sun, Nov 10, 2024 at 5:21=E2=80=AFAM Philippe Mathieu-Daud=C3=A9
-<philmd@linaro.org> wrote:
-> Generally speaking (I'm not objecting to this patch as is), for
-> DEFINE_VENDOR_CPU() it would be nice to have reference to some
-> documentation -- at least to review whether the cpu features
-> announced make sense or not --.
->
-> For this particular IP I'm not finding anything on the company
-> website...:
-> https://docs.tenstorrent.com/search.html?q=3DAscalon
+This allows MSD Data-In and CSW packets before the CBW packet.
 
-This has some more details, including a 1 page PDF. Should I add the URL to
-the commit message?
+This is just for RFC for now, but it does work. Patch 2 has the main
+description of the problem and solution.
 
-https://tenstorrent.com/ip/tt-ascalon
+I've not found a good way to split this into smaller pieces yet, but I
+will try, also migration is currently broken, I'm not sure the best way
+to test that. I would like to add a MSD qtest and hopefully the XHCI
+transfer ring qtest could help with that, but it's still quite a big job
+I think.
 
 Thanks,
-Anton
+Nick
+
+Nicholas Piggin (2):
+  usb/msd: Add status to usb_msd_packet_complete() function
+  usb/msd: Permit relaxed ordering of IN packets
+
+ include/hw/usb/msd.h |  20 +-
+ hw/usb/dev-storage.c | 512 ++++++++++++++++++++++++++++---------------
+ 2 files changed, 352 insertions(+), 180 deletions(-)
+
+-- 
+2.45.2
+
 
