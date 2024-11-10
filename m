@@ -2,91 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF4669C32B6
-	for <lists+qemu-devel@lfdr.de>; Sun, 10 Nov 2024 15:04:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 83F039C324D
+	for <lists+qemu-devel@lfdr.de>; Sun, 10 Nov 2024 14:48:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tA8Xh-0002h5-F1; Sun, 10 Nov 2024 09:03:53 -0500
+	id 1tA8HR-0005nL-P5; Sun, 10 Nov 2024 08:47:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1tA8Xf-0002gZ-Cz
- for qemu-devel@nongnu.org; Sun, 10 Nov 2024 09:03:51 -0500
-Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1tA8Xd-0001Fm-TQ
- for qemu-devel@nongnu.org; Sun, 10 Nov 2024 09:03:51 -0500
-Received: by mail-pl1-x634.google.com with SMTP id
- d9443c01a7336-20caccadbeeso39846215ad.2
- for <qemu-devel@nongnu.org>; Sun, 10 Nov 2024 06:03:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1731247428; x=1731852228; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=7t8XK0j/sjGRGokMZU8V5Gp0m13efuWjV/DsVFeZVmQ=;
- b=TEy7S6OTscW3v2fQ0bA12BMOn7y7Vt+QKppF2jv8djrs0Y3FoyTy/GsLPOdVondCsd
- hw7rmBLg4NJ5NCQAr7Owru247RLuNh9GQ9dZMWyHTYJXwJrwFrn8WOz+uimnQGeuHzEo
- VOroAcCPp1SttADlwf6glupH2iDoe3dpUlhc+nD347710aj1qtw8PPZe26D2RO5Z+HRw
- NEZ0BR+QnATBmcOGBpyIefvv5nqF1Y3diQqsXGTJVuXOJTMvuxmdBktemhnxGTk6k1/a
- 6QMBWkooC6b4Gmznf/+wM9hEzUq4MdCHQayva8L7a+/rtpjCtAvp7/djZHro1ywxD0IS
- voCg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731247428; x=1731852228;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=7t8XK0j/sjGRGokMZU8V5Gp0m13efuWjV/DsVFeZVmQ=;
- b=d0mM3DKBoOTp+YF1ac55LnmmRUmTZVakqlNc4AkF1hp6RyRif6/KhCvky8WanA513N
- cimuv+jKMvzMo7JvviGEh5uDHG9BpSi8TN0+J27qMKejcXuJEcJhs4jgV1cav9EEum1u
- rzYyAvK/sXYtCmwItIwP5MMDk90I4DuMgqt3wGaWi1EAsodPaF1SkZpEGUCXiVzlvPoU
- Lzz7tz5oYUk760UyBIVvezpVjQAYRgj6tCl5j2xuoH42sMxiRdhERcEHtJ77wIfa9K2Y
- /uRi8nX+6m8GR5inFPTA8bDqe7ms93GPXsL7yIqSONxIRGKi903W6Stp6bPXcjmadcU/
- hxxA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUTfIDO6wmoQIF/S1p6z1L6ftYfJMm0PSuRKVvgQ/A02SwfMelQRlSePQ80FeTc0DOnZvHUC6HpCsoj@nongnu.org
-X-Gm-Message-State: AOJu0Yz1+MvGt3JCNxbC1MVLCMHKvI04Zt4+dNeQSBs83qNwfOiD1bYN
- brFDJIM2yUk2eC4XS/fBuQoI/nexKXZYCtPzHNs1qI+uYxyBOpT/5BDVYV1aCW8=
-X-Google-Smtp-Source: AGHT+IGUrrce6zXrxEKQB4uK+oZyuNFFV3aq8ZMfLLsotNTatrflyx43dRq5VKRvjAhEBAxKH5TL6w==
-X-Received: by 2002:a17:902:cec7:b0:20b:b7b2:b6c5 with SMTP id
- d9443c01a7336-211835cd1a9mr119107755ad.54.1731247428436; 
- Sun, 10 Nov 2024 06:03:48 -0800 (PST)
-Received: from [192.168.68.110] ([189.79.22.174])
- by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-7f41f5e1576sm6763474a12.40.2024.11.10.06.03.45
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 10 Nov 2024 06:03:48 -0800 (PST)
-Message-ID: <8c38c37f-2c86-498c-96fb-1999f546a497@ventanamicro.com>
-Date: Sun, 10 Nov 2024 11:03:43 -0300
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1tA8HP-0005nC-Q8
+ for qemu-devel@nongnu.org; Sun, 10 Nov 2024 08:47:04 -0500
+Received: from mgamail.intel.com ([192.198.163.8])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1tA8HN-0007U4-H7
+ for qemu-devel@nongnu.org; Sun, 10 Nov 2024 08:47:03 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1731246421; x=1762782421;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=mj8RWUkT099zyRgSs1U7m5aBP9vxolu8PsRl+Yo8xbw=;
+ b=J0vriBnIx6PMTojVt/n4R7WCJrbTOA7E5rkQVlCeWIvBv/M9B8m5MB8p
+ c/K88z+Va4cuXDeUMTdtOIs27+2Kbz+EYglZWcvXmca1/kbqjHHJRc2+2
+ Wnj363fM/TZp3OViM0kMLYt73Mu774I62JEMaKC8wwmHKeGx1luJc5FBK
+ DeLOjVZSvAHpWiNCFffKvNl5qSCfeIYxukYrJ8MHvigHwGguT+I589T11
+ N9UGU1ujOI7yogi26CWcbStTZ3o7FE5b1gSSsnh/3XFOhnu0QWTDQAYeX
+ 7RBY/TrMD2j+CjTud+LgrzmnLsf2oUtzopys0UKgY7iXy7ycxDaHrvkek g==;
+X-CSE-ConnectionGUID: Imy1mo5uQT2vaQc/eJ+pWw==
+X-CSE-MsgGUID: mqlc4oMyT6OZEO7Ff+EGiA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11252"; a="48583983"
+X-IronPort-AV: E=Sophos;i="6.12,143,1728975600"; d="scan'208";a="48583983"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+ by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Nov 2024 05:46:56 -0800
+X-CSE-ConnectionGUID: 5MbU2qUGSeqHXP2caah4OQ==
+X-CSE-MsgGUID: IfKX+GpTTz6009VOlMsU9w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,143,1728975600"; d="scan'208";a="86182106"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by fmviesa007.fm.intel.com with ESMTP; 10 Nov 2024 05:46:55 -0800
+Date: Sun, 10 Nov 2024 22:04:52 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org, "Daniel P . Berrange" <berrange@redhat.com>,
+ Yongwei Ma <yongwei.ma@intel.com>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: Re: [PULL 09/29] qapi/qom: Define cache enumeration and properties
+ for machine
+Message-ID: <ZzC9hCPd7vbGrGDa@intel.com>
+References: <20241105224727.53059-1-philmd@linaro.org>
+ <20241105224727.53059-10-philmd@linaro.org>
+ <CAFEAcA_+ZSZF1VYFcPRq1AD+i4=nT2RsdVhhaj7wiL4xD=R_-A@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [CAUTION - External Sender] Re: [PATCH] target/riscv: Add
- Tenstorrent Ascalon CPU
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Anton Blanchard <antonb@tenstorrent.com>
-Cc: qemu-riscv@nongnu.org, qemu-devel@nongnu.org,
- Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>, Bin Meng <bmeng.cn@gmail.com>,
- Weiwei Li <liwei1518@gmail.com>, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
-References: <20241108230709.1466634-1-antonb@tenstorrent.com>
- <4e7a4a10-bea3-4f43-b091-6a30c400b8bd@linaro.org>
- <CAN7m+mCqXz1YaBZpA-TFWz_TX0HiRorzXbaadn+L3fnigWBR1g@mail.gmail.com>
- <1dc240cd-c35e-46da-959d-cf93783ee87e@linaro.org>
-Content-Language: en-US
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <1dc240cd-c35e-46da-959d-cf93783ee87e@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x634.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+In-Reply-To: <CAFEAcA_+ZSZF1VYFcPRq1AD+i4=nT2RsdVhhaj7wiL4xD=R_-A@mail.gmail.com>
+Received-SPF: pass client-ip=192.198.163.8; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -44
+X-Spam_score: -4.5
+X-Spam_bar: ----
+X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.118,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -103,40 +87,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Hi Peter,
 
-
-On 11/10/24 10:54 AM, Philippe Mathieu-Daudé wrote:
-> On 9/11/24 22:46, Anton Blanchard wrote:
->> Hi Philippe,
->>
->> On Sun, Nov 10, 2024 at 5:21 AM Philippe Mathieu-Daudé
->> <philmd@linaro.org> wrote:
->>> Generally speaking (I'm not objecting to this patch as is), for
->>> DEFINE_VENDOR_CPU() it would be nice to have reference to some
->>> documentation -- at least to review whether the cpu features
->>> announced make sense or not --.
->>>
->>> For this particular IP I'm not finding anything on the company
->>> website...:
->>> https://docs.tenstorrent.com/search.html?q=Ascalon
->>
->> This has some more details, including a 1 page PDF. Should I add the URL to
->> the commit message?
->>
->> https://tenstorrent.com/ip/tt-ascalon
+On Fri, Nov 08, 2024 at 07:10:42PM +0000, Peter Maydell wrote:
+> Date: Fri, 8 Nov 2024 19:10:42 +0000
+> From: Peter Maydell <peter.maydell@linaro.org>
+> Subject: Re: [PULL 09/29] qapi/qom: Define cache enumeration and properties
+>  for machine
 > 
-> This seems a sales presentation, not very useful technically, so better
-> no IMHO.
+> On Tue, 5 Nov 2024 at 22:49, Philippe Mathieu-Daud� <philmd@linaro.org> wrote:
+> >
+> > From: Zhao Liu <zhao1.liu@intel.com>
+> >
+> > The x86 and ARM need to allow user to configure cache properties
+> > (current only topology):
+> >  * For x86, the default cache topology model (of max/host CPU) does not
+> >    always match the Host's real physical cache topology. Performance can
+> >    increase when the configured virtual topology is closer to the
+> >    physical topology than a default topology would be.
+> >  * For ARM, QEMU can't get the cache topology information from the CPU
+> >    registers, then user configuration is necessary. Additionally, the
+> >    cache information is also needed for MPAM emulation (for TCG) to
+> >    build the right PPTT.
+> >
+> 
+> Hi; Coverity points out an issue with this change (CID 1565389):
+> 
+> > diff --git a/hw/core/machine-smp.c b/hw/core/machine-smp.c
+> > index 5d8d7edcbd3..c6d90cd6d41 100644
+> > --- a/hw/core/machine-smp.c
+> > +++ b/hw/core/machine-smp.c
+> > @@ -261,6 +261,31 @@ void machine_parse_smp_config(MachineState *ms,
+> >      }
+> >  }
+> >
+> > +bool machine_parse_smp_cache(MachineState *ms,
+> > +                             const SmpCachePropertiesList *caches,
+> > +                             Error **errp)
+> > +{
+> > +    const SmpCachePropertiesList *node;
+> > +    DECLARE_BITMAP(caches_bitmap, CACHE_LEVEL_AND_TYPE__MAX);
+> 
+> DECLARE_BITMAP() defines the caches_bitmap bitmap, but it
+> does not initialize it...
 
+Yes, I missed this...
 
-The link has a 'Download One-Pager' button where you can download a PDF.
+> > +
+> > +    for (node = caches; node; node = node->next) {
+> > +        /* Prohibit users from repeating settings. */
+> > +        if (test_bit(node->value->cache, caches_bitmap)) {
+> 
+> ...so here we are reading the variable when it is uninitialized.
+> 
+> If you want to zero-initialize the bitmap you can use
+>    bitmap_zero(caches_bitmap, CACHE_LEVEL_AND_TYPE__MAX);
 
-The PDF is a bit more technical and it mentions that the CPU is RVA23 compliant,
-which give us an idea of the extensions that the CPU provides. I think this is
-enough.
+Thank you for your advice! I'll submit a patch to fix this!
 
-Alistair, what do you think?
+Regards,
+Zhao
 
-
-Daniel
 
