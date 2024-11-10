@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DD9A9C32DD
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B4D89C32DC
 	for <lists+qemu-devel@lfdr.de>; Sun, 10 Nov 2024 15:52:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tA9Hd-0002Mz-5O; Sun, 10 Nov 2024 09:51:21 -0500
+	id 1tA9Hc-0002MK-Je; Sun, 10 Nov 2024 09:51:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tA9HZ-0002LT-LX
+ id 1tA9HZ-0002LV-Lk
  for qemu-devel@nongnu.org; Sun, 10 Nov 2024 09:51:17 -0500
 Received: from mgamail.intel.com ([192.198.163.7])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tA9HV-0007vo-SW
+ id 1tA9HX-0007wA-TE
  for qemu-devel@nongnu.org; Sun, 10 Nov 2024 09:51:17 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1731250274; x=1762786274;
+ t=1731250276; x=1762786276;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=DLoKPf8HDhR5vL9yp8aBE1IcEuQs/AazsQNNAV9UMHk=;
- b=ZDAfM6WLplkXXoRYOYPl28Y/xVzUSWCfDSmc1FHkgpnuFVE0qUpwdZ0R
- iXUBRHPcQNxhZDgCS6hVIwdd1nlCjZnSQFQBF3lPfjo/uh2zyKaIAR0RW
- iN7ojCXVjdYVHQ8FWajR8Exg9asBA81kEgBsN1Lhms4/L9F2HbChD9Iw/
- 96CzwW24mxS8lqg+tCyTTCh3dqgN6mxeyHZseYRLFWo09leXT02ivUN9q
- Vep2L+KDniuwz0Hujj+F8EbSRQ/53wPo2DiHeDAgU+eBjif2+eIp80KeG
- l5+8RHbIXI4KIqC6qh/AbHEikT7vZLiZeDwMFM+JT7eis4aFP3PI2RV2l g==;
-X-CSE-ConnectionGUID: GB2tTpaMToGJEvWSlSQi4Q==
-X-CSE-MsgGUID: a2bQQHwGTMW7RcIJo2YCdQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11252"; a="56467595"
-X-IronPort-AV: E=Sophos;i="6.12,143,1728975600"; d="scan'208";a="56467595"
+ bh=d9l7L0xCB5UR2k2nHxVrAPYNnYlVC0ryQ8tN0nsNAlI=;
+ b=ldodhYj+pry7jVKGTaohLKsD2ILSy7yfkrzJ5iHDnXye/4F2T+HhR/R6
+ qsNv0xmrQIe72tjrtTAijP9CjxwWxL7cxNX9mEZaAF2F3O1jbUbOWUzGh
+ ttbncWPnIm1hVWAg930GDxDGmJ80UAuZ6H7YtcdQ9TImcLoWlVI9OpdNj
+ nkIKXvDRmlC8IiKsh9q8XJep0jMIcFLTEKcobIVw/kRrFNyftBEsLmx04
+ xYA1j9Z+VyJXqvUE8Z2A/3U0Lsnkg4xf7/XnWNRirmYR6eLZCADAcNh3k
+ mBrcxHMc2T3m54KBsv8QI6kvrMp1+UqcfzS5oKdgEf4TdTAzXK+pRHMqk w==;
+X-CSE-ConnectionGUID: Evmr1fKATtCGmkoqp2lzMA==
+X-CSE-MsgGUID: qZeFHCT1SDaxXaCZDFyEfw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11252"; a="56467600"
+X-IronPort-AV: E=Sophos;i="6.12,143,1728975600"; d="scan'208";a="56467600"
 Received: from orviesa010.jf.intel.com ([10.64.159.150])
  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Nov 2024 06:51:12 -0800
-X-CSE-ConnectionGUID: ppq9d18OTuqN123xLCQj0Q==
-X-CSE-MsgGUID: oI6Wj1jvT3uksukWiNquUg==
+ 10 Nov 2024 06:51:14 -0800
+X-CSE-ConnectionGUID: lcG8gB3JTSuYwjtV9QX7tA==
+X-CSE-MsgGUID: cGCVGWdDTfyyWCd0/8lXKQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,143,1728975600"; d="scan'208";a="86467577"
+X-IronPort-AV: E=Sophos;i="6.12,143,1728975600"; d="scan'208";a="86467591"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
- by orviesa010.jf.intel.com with ESMTP; 10 Nov 2024 06:51:11 -0800
+ by orviesa010.jf.intel.com with ESMTP; 10 Nov 2024 06:51:13 -0800
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Eduardo Habkost <eduardo@habkost.net>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
@@ -51,10 +51,9 @@ To: Eduardo Habkost <eduardo@habkost.net>,
  Peter Maydell <peter.maydell@linaro.org>
 Cc: qemu-devel@nongnu.org,
 	Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH for 9.2 1/2] hw/core/machine-smp: Initialize caches_bitmap
- before reading
-Date: Sun, 10 Nov 2024 23:09:00 +0800
-Message-Id: <20241110150901.130647-2-zhao1.liu@intel.com>
+Subject: [PATCH for 9.2 2/2] hw/core/machine-smp: Fix error message parameter
+Date: Sun, 10 Nov 2024 23:09:01 +0800
+Message-Id: <20241110150901.130647-3-zhao1.liu@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241110150901.130647-1-zhao1.liu@intel.com>
 References: <20241110150901.130647-1-zhao1.liu@intel.com>
@@ -85,31 +84,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The caches_bitmap is defined in machine_parse_smp_cache(), but it was
-not initialized.
+In the loop checking smp cache support, the error message should report
+the current cache level and type.
 
-Initialize caches_bitmap by clearing all its bits to zero.
+Fix the parameter of error_setg() to ensure it reports the correct cache
+level and type.
 
-Resolves: Coverity CID 1565389
-Fixes: 4e88e7e3403d ("qapi/qom: Define cache enumeration and properties for machine")
+Resolves: Coverity CID 1565391
+Fixes: f35c0221fef8 ("hw/core: Check smp cache topology support for machine")
 Reported-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- hw/core/machine-smp.c | 1 +
- 1 file changed, 1 insertion(+)
+ hw/core/machine-smp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/hw/core/machine-smp.c b/hw/core/machine-smp.c
-index 640b2114b429..b87637c78f6f 100644
+index b87637c78f6f..b954eb849027 100644
 --- a/hw/core/machine-smp.c
 +++ b/hw/core/machine-smp.c
-@@ -290,6 +290,7 @@ bool machine_parse_smp_cache(MachineState *ms,
-     const SmpCachePropertiesList *node;
-     DECLARE_BITMAP(caches_bitmap, CACHE_LEVEL_AND_TYPE__MAX);
+@@ -317,7 +317,7 @@ bool machine_parse_smp_cache(MachineState *ms,
+             !mc->smp_props.cache_supported[props->cache]) {
+             error_setg(errp,
+                        "%s cache topology not supported by this machine",
+-                       CacheLevelAndType_str(node->value->cache));
++                       CacheLevelAndType_str(props->cache));
+             return false;
+         }
  
-+    bitmap_zero(caches_bitmap, CACHE_LEVEL_AND_TYPE__MAX);
-     for (node = caches; node; node = node->next) {
-         /* Prohibit users from repeating settings. */
-         if (test_bit(node->value->cache, caches_bitmap)) {
 -- 
 2.34.1
 
