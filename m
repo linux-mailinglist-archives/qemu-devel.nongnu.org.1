@@ -2,81 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61FD29C32BA
-	for <lists+qemu-devel@lfdr.de>; Sun, 10 Nov 2024 15:12:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 26DC29C32A9
+	for <lists+qemu-devel@lfdr.de>; Sun, 10 Nov 2024 14:55:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tA8eZ-00044h-Hp; Sun, 10 Nov 2024 09:10:59 -0500
+	id 1tA8Oc-00083T-4C; Sun, 10 Nov 2024 08:54:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <j.neuschaefer@gmx.net>)
- id 1tA8eW-00044W-VS
- for qemu-devel@nongnu.org; Sun, 10 Nov 2024 09:10:57 -0500
-Received: from mout.gmx.net ([212.227.17.21])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1tA8OV-000835-Vn
+ for qemu-devel@nongnu.org; Sun, 10 Nov 2024 08:54:24 -0500
+Received: from mgamail.intel.com ([192.198.163.7])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <j.neuschaefer@gmx.net>)
- id 1tA8eV-0002Hy-BA
- for qemu-devel@nongnu.org; Sun, 10 Nov 2024 09:10:56 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.net;
- s=s31663417; t=1731247851; x=1731852651; i=j.neuschaefer@gmx.net;
- bh=3HZ8tIoD2v6/CwNMCE0bOIZhoFfD4wTlSJqw6RyLhh4=;
- h=X-UI-Sender-Class:Date:From:To:Cc:Subject:Message-ID:References:
- MIME-Version:Content-Type:Content-Transfer-Encoding:In-Reply-To:
- cc:content-transfer-encoding:content-type:date:from:message-id:
- mime-version:reply-to:subject:to;
- b=oMTq2KacR0T+r68fXo1aVovihfWtRsQBDHzJJJ6GIaR+qB7ToqUuGTuw/elMyNdI
- EFVQnbU26YwX6xKON6/IiZlp+72C27XsTbyEpPLx0qMFRKq63u8hp32oizipkfluI
- lRzcEEeez51nYZoqZMa8ia6J1EzPuJcWdEc47LN6MdkXLILWFzNKnm94AEo95wavK
- GZYKTXTlSA9Z+mzc+kmYM+GjMbkNQRSE5+pT35dmtQUtilLb0y6Ct6QecVYEnV1Yx
- YofHEGeSLiUzRPm7oqtm37hS7wz03AqPvTvV2PuMbDEDLbvbKqFJVVHx76q5LKzEt
- PVlpd0vibfXsA/diGQ==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from probook ([89.1.58.244]) by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MVvPJ-1tKLMs3iBZ-00Tniy; Sun, 10
- Nov 2024 15:10:51 +0100
-Date: Sun, 10 Nov 2024 15:10:49 +0100
-From: =?utf-8?Q?J=2E_Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>
-To: =?utf-8?Q?J=2E_Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>
-Cc: Laurent Vivier <laurent@vivier.eu>,
- All patches CC here <qemu-devel@nongnu.org>
-Subject: Re: [PATCH] linux-user/strace: show TID instead of PID
-Message-ID: <ZzC-6Yg6XwUoWHbS@probook>
-References: <20241024-strace-v1-1-56c4161431cd@gmx.net>
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1tA8OR-0000DZ-4f
+ for qemu-devel@nongnu.org; Sun, 10 Nov 2024 08:54:23 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1731246859; x=1762782859;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=VfG2+AfLmgSmjDjUO/b/kaRO2O/x4lH7i4GEVGEUQ/w=;
+ b=O5v5uj32iRTmdzjpPv4mQNdLLgM7b5U1FCRH77/aWSAm3NOBN5IAhjTn
+ WWthsVkJeu56DzMcTbXlzHnrQORJuIeEKqtDAHa10UBG7tgxwd1CKrbQ1
+ CTy3ETFmJWpCaOuaNcVryM5aZN9KJ7Mcvv8qXfRJjhf7impWfVHJ0IML4
+ eaaRDhK+sgmjcI2mOgNIa4zKaoRhXoKtmWRNavgJtAe0jlIISZFRLAL16
+ P9kZHO2CcapzuS3aM858KrRResOfNVJb6+DSv0qZwvSDa9rTCNocwzUtt
+ zNJ5kLRsN3mGvctDPJPOJbA3dvRUZAIjgL224XTlZzt3a/FfIttFUialV A==;
+X-CSE-ConnectionGUID: nw98eTXhRAyAslkqDDEQvQ==
+X-CSE-MsgGUID: Hm51+Wt5ReC13gypAkLgKg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11252"; a="56465299"
+X-IronPort-AV: E=Sophos;i="6.12,143,1728975600"; d="scan'208";a="56465299"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+ by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Nov 2024 05:54:14 -0800
+X-CSE-ConnectionGUID: mr7cXgrXTa+3SPxOE/v1Tw==
+X-CSE-MsgGUID: 0ogGfTP6SpW1PhDMkHK5SQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,143,1728975600"; d="scan'208";a="86576163"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by orviesa006.jf.intel.com with ESMTP; 10 Nov 2024 05:54:13 -0800
+Date: Sun, 10 Nov 2024 22:12:10 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org, Yongwei Ma <yongwei.ma@intel.com>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: Re: [PULL 10/29] hw/core: Check smp cache topology support for machine
+Message-ID: <ZzC/Otesa2X4fLwo@intel.com>
+References: <20241105224727.53059-1-philmd@linaro.org>
+ <20241105224727.53059-11-philmd@linaro.org>
+ <CAFEAcA-6e-o480iPeesKPnvcBtjVwWsL=zYOuNNddPNZu7Uc6g@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20241024-strace-v1-1-56c4161431cd@gmx.net>
-X-Provags-ID: V03:K1:FUI2R5OzNdhz41n+v9oqWKfEpmmaml9B6dSun40kMzfDXRoq/kR
- 45fOmQ46aubkNY+TjsSM6q673snfqESgpEQLHq7rjQvmfuF5UoP4hA/3bisdob/DVsBcVaD
- ZV19od7bCyGFpk2X0bVCQoGc/z+DnEbCIYGhj9dQSfL+7gXylkPpXgHjidVVBQraqqonZEw
- SkmRBl4LIAHXhPbaCA0Hg==
-UI-OutboundReport: notjunk:1;M01:P0:aw0YIyBvumA=;NqyYpooOg4iJpMOjIe2dNFC0Rrn
- sdLLimJCKLPBdITVwPBAtxTHtuOgLH2jBf8lcqMs3ILEFIQnqkId24lKeO9g148pw5ZYI9raR
- GwAI68CM797TAScjGK1Rto7FL+h9loK37nx+CvoIkE9OYs/+CggX/fSOtC+FQNRm5EW7eGvYT
- SKmnwqEQp7/mPhW6A8hnDXas1ta3Z297BWHYsPgFPAHbWxKJwVgEPE3nHp1ueJak5nfey9zls
- CHLltKHG1jNDxNEIp5qCbiaieTmjnLdV53+MtaDTUDmxZ/rbibJnyGUsP9uSC4vqsbhEX55jX
- 33us9On9S3R/q+IAznGIBc0qXbE4qlC+DTivl3XTrN2uF+y4o7Z5jxJnXekCKG1vDAX6xKXUK
- 5tQluu5RVYKKnHzd2FLYy3yNoMGh308NRjX4Es/rokTUDwtUrFo6B/JRZ2LAsAviwuJt8H7o8
- GZXwjgr2H6JvEdYR768muqZanu+3ItrvL/Q6BOAuK+g3Oe0SAk8IRpUp+m05n70mwvuhtrn2f
- ssRg0ppK7etOoiURmUjP+/G5ZBfGlkuCIj3w+FCkaUwOxsY4Bzcx0hA2VvYONwi/qj5bWnN1D
- bPpnp9u7jIQ3cUoOQ84qO4UQ9Op1ARGrrpWuef+2ui3Mh3SFdicwr0qwOmt896BReq20fNhXi
- M//K18IFIfdzpejy+nvbifRoEzGATOdT1VvyYIxuUCcAjFvwcqxoD2EpAlqCd4VnLa8LrcJLV
- p80FqDaJjqMGs2i9NV1FhejEXvqU1lGps7xw/wRKIggPqvd7WyXifFY7IVwOzSN7P3F4QGUKv
- 4qnTsxlaQetWgcA9kHq2ukrSAliOMCUctay7nQedFRLUJsnxVOWHii5ABpVAdnezCA0ta3sCV
- IqwNZASByQvNADariLbRolK+xydcYH7yxbt6y4hoZL5Q/yhJ5CNqGQfitam6Ww6Muy9QYuRUP
- Y8oWKQ==
-Received-SPF: pass client-ip=212.227.17.21; envelope-from=j.neuschaefer@gmx.net;
- helo=mout.gmx.net
-X-Spam_score_int: 5
-X-Spam_score: 0.5
-X-Spam_bar: /
-X-Spam_report: (0.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
- DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_SBL_CSS=3.335,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAFEAcA-6e-o480iPeesKPnvcBtjVwWsL=zYOuNNddPNZu7Uc6g@mail.gmail.com>
+Received-SPF: pass client-ip=192.198.163.7; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -44
+X-Spam_score: -4.5
+X-Spam_bar: ----
+X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.118,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,47 +85,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Oct 24, 2024 at 01:47:31AM +0200, J. Neusch=C3=A4fer wrote:
-> This aligns with strace, and is very useful when tracing multi-threaded
-> programs. The result is the same in single-threaded programs.
->
-> gettid() requires the _GNU_SOURCE feature test macro, so it might be
-> unavailable in rare cases. I don't expect it to be a problem though,
-> because it's implemented by both glibc and musl.
->
-> Signed-off-by: J. Neusch=C3=A4fer <j.neuschaefer@gmx.net>
-> ---
+Hi Peter,
 
-Ping!  Any opinions on this patch?
+On Fri, Nov 08, 2024 at 07:16:50PM +0000, Peter Maydell wrote:
+> Date: Fri, 8 Nov 2024 19:16:50 +0000
+> From: Peter Maydell <peter.maydell@linaro.org>
+> Subject: Re: [PULL 10/29] hw/core: Check smp cache topology support for
+>  machine
+> 
+> On Tue, 5 Nov 2024 at 22:49, Philippe Mathieu-Daudé <philmd@linaro.org> wrote:
+> >
+> > From: Zhao Liu <zhao1.liu@intel.com>
+> >
+> > Add cache_supported flags in SMPCompatProps to allow machines to
+> > configure various caches support.
+> >
+> > And check the compatibility of the cache properties with the
+> > machine support in machine_parse_smp_cache().
+> 
+> Hi; Coverity points out an issue in this code (CID 1565391):
+> 
+> >  bool machine_parse_smp_cache(MachineState *ms,
+> >                               const SmpCachePropertiesList *caches,
+> >                               Error **errp)
+> >  {
+> > +    MachineClass *mc = MACHINE_GET_CLASS(ms);
+> >      const SmpCachePropertiesList *node;
+> >      DECLARE_BITMAP(caches_bitmap, CACHE_LEVEL_AND_TYPE__MAX);
+> >
+> > @@ -283,6 +305,25 @@ bool machine_parse_smp_cache(MachineState *ms,
+> >          set_bit(node->value->cache, caches_bitmap);
+> >      }
+> >
+> > +    for (int i = 0; i < CACHE_LEVEL_AND_TYPE__MAX; i++) {
+> > +        const SmpCacheProperties *props = &ms->smp_cache.props[i];
+> > +
+> > +        /*
+> > +         * Reject non "default" topology level if the cache isn't
+> > +         * supported by the machine.
+> > +         */
+> > +        if (props->topology != CPU_TOPOLOGY_LEVEL_DEFAULT &&
+> > +            !mc->smp_props.cache_supported[props->cache]) {
+> > +            error_setg(errp,
+> > +                       "%s cache topology not supported by this machine",
+> > +                       CacheLevelAndType_str(node->value->cache));
+> 
+> This error message looks at "node", but "node" was the iteration
+> variable in the first loop in this function, so generally at
+> this point it will be NULL because that is the loop termination
+> condition.
+> 
+> The code looks like it ought to be reporting an error relating
+> to the 'props' variable, not 'node' ?
 
-Best regards,
-J. Neusch=C3=A4fer
+Thank you! My fault and you're right, here I should use "props->cache"
+instead of "node->value->cache". I'll submit a patch to fix this.
 
->  linux-user/strace.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/linux-user/strace.c b/linux-user/strace.c
-> index c3eb3a2706a93fdcaf693b3413b13921a3c97e8e..93e8c73de8a4a307e6e0df55=
-55bee4c769e41e64 100644
-> --- a/linux-user/strace.c
-> +++ b/linux-user/strace.c
-> @@ -4337,7 +4337,7 @@ print_syscall(CPUArchState *cpu_env, int num,
->      if (!f) {
->          return;
->      }
-> -    fprintf(f, "%d ", getpid());
-> +    fprintf(f, "%d ", gettid());
->
->      for (i =3D 0; i < nsyscalls; i++) {
->          if (scnames[i].nr =3D=3D num) {
->
-> ---
-> base-commit: 6f625ce2f21d6a1243065d236298277c56f972d5
-> change-id: 20241024-strace-a52bd8e3d305
->
-> Best regards,
-> --
-> J. Neusch=C3=A4fer <j.neuschaefer@gmx.net>
->
->
+Regards,
+Zhao
+
 
