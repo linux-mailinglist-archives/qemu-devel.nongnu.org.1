@@ -2,90 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62A4B9C3EBF
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Nov 2024 13:53:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E0449C3F25
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Nov 2024 14:04:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tATts-0004ds-Fp; Mon, 11 Nov 2024 07:52:12 -0500
+	id 1tAU4v-0006fu-4b; Mon, 11 Nov 2024 08:03:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ppandit@redhat.com>)
- id 1tATtj-0004dd-Ac
- for qemu-devel@nongnu.org; Mon, 11 Nov 2024 07:52:03 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ppandit@redhat.com>)
- id 1tATth-0004ge-FV
- for qemu-devel@nongnu.org; Mon, 11 Nov 2024 07:52:02 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1731329519;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=x7kdfKYghpMxpcAfUWIgBcc9NkXNJ5wGHoe5byYILq8=;
- b=GSAdPN979Cdz0/oYojgjm/xRDyIzgxZh9gIowNOao2Z1idD+Ay0XT+oG6EgpeJWQCvw9Qd
- dzwrTFmFXHPBQ+2jVClI4rbqc0fkDm6mm4tk+vLw49PX5ZrAoeICFVHvuqZ8mDjJYWBNuU
- vUmAIsBI6AvP9OBP2OIELnF6h8mmywY=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-657-aL8fVU_GMWeQ0kXaXj_IMw-1; Mon, 11 Nov 2024 07:51:56 -0500
-X-MC-Unique: aL8fVU_GMWeQ0kXaXj_IMw-1
-X-Mimecast-MFC-AGG-ID: aL8fVU_GMWeQ0kXaXj_IMw
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-43159603c92so31842905e9.2
- for <qemu-devel@nongnu.org>; Mon, 11 Nov 2024 04:51:56 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <paolo.savini@embecosm.com>)
+ id 1tAU4r-0006fH-Ok
+ for qemu-devel@nongnu.org; Mon, 11 Nov 2024 08:03:34 -0500
+Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <paolo.savini@embecosm.com>)
+ id 1tAU4q-0006Hi-0n
+ for qemu-devel@nongnu.org; Mon, 11 Nov 2024 08:03:33 -0500
+Received: by mail-wr1-x431.google.com with SMTP id
+ ffacd0b85a97d-37d6a2aa748so2677549f8f.1
+ for <qemu-devel@nongnu.org>; Mon, 11 Nov 2024 05:03:29 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=embecosm.com; s=google; t=1731330208; x=1731935008; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=1+3Y9fA88Q5SrhGJAp9HbCVKGDgvbtPbKpfCsaMsFD4=;
+ b=bL1OlQ32hNG/Atef9wmjccXXr6DKdDHkvXWVYbHA9XnRfesQwmPQJ0D44xPE6I27Hg
+ 7XHzBL6Qb1MdDRLcaejaAJp640jKO/jV2dtA+orIf5RjyrgiYJbWJZ8qOm42zQcxaoQP
+ AHeJl6k8aOLpinrKLl9AzDZ4GnOTmp0BekuZsgTqbJj60nm9fFeTNZYsYJMubPXHRghq
+ Io/Gty6ZY0FX5HhXBiDRzPebsDiBn5ToRtYn+SojGXZg8dmygntGkxVVZ/rBvkbRWDJP
+ 3cYV3bb/skYTTsKN6UK63Tz0IPdhHrzCRFLf4tBCDpIIku3WYuzz2sLp9WkaV92EPySO
+ X7mw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731329515; x=1731934315;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=x7kdfKYghpMxpcAfUWIgBcc9NkXNJ5wGHoe5byYILq8=;
- b=S7EdSBmY3SyldLHshCvZWoKzfGWd9ygUFBcAtkejVp7La+L4pLGocf9hetI3Iq27Ch
- sJGcy4PpF6u5cxsi0bomksKcl46QLsceB3yrbxBOkugZxvpceBHffDkxi84coQ/ZP2ZF
- UC2lRoaqCs9MwGPAKmhjeqdOr0i9dN8zi240kHq8qlISi3ImLqSEP0te6UW/z+ul9sdx
- UaNAJ/8TPIc1pmM02BLGxhHlkbRNZyCRlYuhOQW7eUjJ3DEJl4UgW/W2fLM2NTzZKp3P
- CwLyJFjIvARth4f3RQ3QnKbnngUI5USPvBY30dZra6AqxfqgJFHKsnD2vp8G9REEg8jE
- vk0w==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVohSztWVIUgC6yd+NB8GvnI9GXoTGUDtOPREmpYS7v2ALNwHsPZINX1SRrHTupDtsVhe9l3AZIM8r0@nongnu.org
-X-Gm-Message-State: AOJu0Yz5rovIyuqHxXoSze2uItC9nTpC3TugEIq5rlCziQYGV2pFcFgY
- BOdW6z0I8pkUPGbmfm2UNzQjbcRnAApDwgODuvaTV2omZ4wceKa3zVvnHRJnVUXcyzxHUA3YVMa
- VhO1C2YEdGoiSo/hGJX8EKSTZwMhuu8XdaSd1MrjzseA+13lxRhDcDzzLxOKPiUqALeAZ6Rdtd5
- 6Lt7A55fRvp9CdyNEAc8G03U5kLTA=
-X-Received: by 2002:a05:600c:1d0e:b0:42d:a024:d6bb with SMTP id
- 5b1f17b1804b1-432b7517ac2mr96382945e9.20.1731329515490; 
- Mon, 11 Nov 2024 04:51:55 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IED4O6fI8z7ZRHxPdAY2JtgF7U6teQ5XA7GE8YsrL8K95/hXBjDNSFps6SQamDJFOQmYejPcrTWf744DwXtHWc=
-X-Received: by 2002:a05:600c:1d0e:b0:42d:a024:d6bb with SMTP id
- 5b1f17b1804b1-432b7517ac2mr96382555e9.20.1731329514600; Mon, 11 Nov 2024
- 04:51:54 -0800 (PST)
+ d=1e100.net; s=20230601; t=1731330208; x=1731935008;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=1+3Y9fA88Q5SrhGJAp9HbCVKGDgvbtPbKpfCsaMsFD4=;
+ b=LxeesVHElroAygsB8n3PJikC0haEkHC/CdfL5v50QNGBUpzGvY9lG4TQZyW2iQOeIE
+ yfeObZJDQHRScgoWQwbAr7wvbzQd+4nn1p/PZ0Bf8+Y20dSHPo1dhNWwr3C2U2Mm8oB2
+ KD/X/OP82rD4N0angZIlAnqUYk4MRm5BcPYVua4xrzpIxhJMxAw8caUfhmoGxvwNDRrY
+ Ez7/ssiPMJ9nk02VsF+oiRpkL/6RDDXDU6fPhrrdHWwixQ0pndl3Cc74BdSORGH1TMxf
+ iKeQX9j3idy616NVbrMBGvMg1aH4KTldqErOsMd5/RSfiTssunx0tWH67awh7BcfqBzu
+ AddA==
+X-Gm-Message-State: AOJu0YxeYIvUZjKcEBfzdkdPcZrXZhCBD5ZvvjO/1MVOBCtnnXZ2uTqB
+ rX05hOrRkVenD87wmgVAHyU7DM8XBbTsG7iPSWd1J/1i8eoL4VagKBoYCFe8Y1H9RX/fUFLc8/C
+ qsqI=
+X-Google-Smtp-Source: AGHT+IG0MwqmB9PXLjra61lAlD/iSuRTxgek4uOmOTyWbdJaTksHotIYM7PaKDUf4oCaLMDKtuHkMw==
+X-Received: by 2002:a05:6000:18a8:b0:37d:3985:8871 with SMTP id
+ ffacd0b85a97d-381f188130bmr10161172f8f.39.1731330208327; 
+ Mon, 11 Nov 2024 05:03:28 -0800 (PST)
+Received: from paolo-laptop-amd.sou.embecosm-corp.com ([212.69.42.53])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-432b05e5d1bsm178611505e9.40.2024.11.11.05.03.27
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 11 Nov 2024 05:03:27 -0800 (PST)
+From: Paolo Savini <paolo.savini@embecosm.com>
+To: qemu-devel@nongnu.org,
+	qemu-riscv@nongnu.org
+Cc: Paolo Savini <paolo.savini@embecosm.com>,
+ Richard Handerson <richard.henderson@linaro.org>,
+ Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>, Bin Meng <bmeng.cn@gmail.com>,
+ Weiwei Li <liwei1518@gmail.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Helene Chelin <helene.chelin@embecosm.com>, Nathan Egge <negge@google.com>,
+ Max Chou <max.chou@sifive.com>
+Subject: [RFC v5 0/1] target/riscv: rvv: reduce the overhead for simple RISC-V
+ vector.
+Date: Mon, 11 Nov 2024 13:03:23 +0000
+Message-ID: <20241111130324.32487-1-paolo.savini@embecosm.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-References: <20241111090534.66439-2-frolov@swemel.ru>
- <CAE8KmOw75c9Vja5dnGy50b2Dqp9wgfMfxRWjHDdqEUkLBUcP+A@mail.gmail.com>
- <60535722-1a11-42f9-a678-d103e227942f@swemel.ru>
-In-Reply-To: <60535722-1a11-42f9-a678-d103e227942f@swemel.ru>
-From: Prasad Pandit <ppandit@redhat.com>
-Date: Mon, 11 Nov 2024 18:21:38 +0530
-Message-ID: <CAE8KmOyvCJoOHAw7+Y=2-pDD3co5kcwshJCjGfdsmEpsQLRgow@mail.gmail.com>
-Subject: Re: [PATCH] tests/qtest: fix heap-use-after-free
-To: =?UTF-8?B?0JTQvNC40YLRgNC40Lkg0KTRgNC+0LvQvtCy?= <frolov@swemel.ru>
-Cc: farosas@suse.de, lvivier@redhat.com, sdl.qemu@linuxtesting.org, 
- qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=ppandit@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -28
-X-Spam_score: -2.9
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::431;
+ envelope-from=paolo.savini@embecosm.com; helo=mail-wr1-x431.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.122,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.671,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,30 +99,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 11 Nov 2024 at 17:41, =D0=94=D0=BC=D0=B8=D1=82=D1=80=D0=B8=D0=B9 =
-=D0=A4=D1=80=D0=BE=D0=BB=D0=BE=D0=B2 <frolov@swemel.ru> wrote:
-> Above loop dereferences the pointer env, which is pointing to
-> the memory area, which is not allowed to read.
+The version 5 of the patch set splits the patches into independent submissions
+so to simplify the review process.
 
-* Not allowed to read environment variables? Is it because
-Debian/clang does not support the '**envp' parameter? Is '**envp' set
-to NULL on Debian? If '**envp' is not supported, then the compiler
-should throw an error at build time, no?
+Previous versions:
+- v1: https://lore.kernel.org/all/20240717153040.11073-1-paolo.savini@embecosm.com/
+- v2: https://lore.kernel.org/all/20241002135708.99146-1-paolo.savini@embecosm.com/
+- v3: https://lore.kernel.org/all/20241014220153.196183-1-paolo.savini@embecosm.com/
+- v4: https://lore.kernel.org/all/20241029194348.59574-1-paolo.savini@embecosm.com/
 
-> I am pointing on 2 facts:
-> 1. "env" is Microsoft`s extension, not a standard
-> 2. There is exact example, where standards violation raises
-> undefined behavior: debian13/clang16
->
+Cc: Richard Handerson <richard.henderson@linaro.org>
+Cc: Palmer Dabbelt <palmer@dabbelt.com>
+Cc: Alistair Francis <alistair.francis@wdc.com>
+Cc: Bin Meng <bmeng.cn@gmail.com>
+Cc: Weiwei Li <liwei1518@gmail.com>
+Cc: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Cc: Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
+Cc: Helene Chelin <helene.chelin@embecosm.com>
+Cc: Nathan Egge <negge@google.com>
+Cc: Max Chou <max.chou@sifive.com>
 
-* If this is about Debian not supporting '**envp' parameter, then
-it'll help if the commit message says "...Debian does not support this
-non-standard extension and crashes QEMU". The asan error makes it
-sound like the patch fixes the use-after-free issue. What happens if
-the -lasan is not used? Does it still crash QEMUt?
+Helene CHELIN (1):
+  target/riscv: rvv: reduce the overhead for simple RISC-V vector
+    unit-stride loads and stores
 
-Thank you.
----
-  - Prasad
+ target/riscv/vector_helper.c | 47 ++++++++++++++++++++++++++++++++++++
+ 1 file changed, 47 insertions(+)
 
+-- 
+2.34.1
 
