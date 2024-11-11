@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F21E29C3AB0
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Nov 2024 10:17:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BCEC9C3A6C
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Nov 2024 10:08:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tAQWe-0004vC-Sl; Mon, 11 Nov 2024 04:16:00 -0500
+	id 1tAQO3-0001ld-6m; Mon, 11 Nov 2024 04:07:07 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zuoboqun@baidu.com>)
- id 1tAQUy-0004ad-D2
- for qemu-devel@nongnu.org; Mon, 11 Nov 2024 04:14:16 -0500
-Received: from mx22.baidu.com ([220.181.50.185] helo=baidu.com)
+ (Exim 4.90_1) (envelope-from <frolov@swemel.ru>) id 1tAQMu-0001iW-GK
+ for qemu-devel@nongnu.org; Mon, 11 Nov 2024 04:05:56 -0500
+Received: from mx.swemel.ru ([95.143.211.150])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zuoboqun@baidu.com>)
- id 1tAQUt-0006qq-LE
- for qemu-devel@nongnu.org; Mon, 11 Nov 2024 04:14:15 -0500
-To: qemu-devel <qemu-devel@nongnu.org>
-CC: "Michael S . Tsirkin" <mst@redhat.com>, Stefano Garzarella
- <sgarzare@redhat.com>, Jason Wang <jasowang@redhat.com>, zuoboqun
- <zuoboqun@baidu.com>, Gao Shiyuan <gaoshiyuan@baidu.com>
-Subject: [PATCH] vhost_net: fix assertion triggered by batch of host notifiers
- processing
-Date: Mon, 11 Nov 2024 16:57:25 +0800
-Message-ID: <20241111085725.2924-1-zuoboqun@baidu.com>
-X-Mailer: git-send-email 2.42.0.windows.2
+ (Exim 4.90_1) (envelope-from <frolov@swemel.ru>) id 1tAQMs-0006Bg-F4
+ for qemu-devel@nongnu.org; Mon, 11 Nov 2024 04:05:56 -0500
+From: Dmitry Frolov <frolov@swemel.ru>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=swemel.ru; s=mail;
+ t=1731315946;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=sm2i/vgTJGaFpYJCWaUbk4eUv57Ol+LvmF111NzlXuU=;
+ b=tHvITxI8LqM1o91c5Hz0IkCaI6D5dT2HgOodNfEG549bSM1OBVbzudWNyxHczPYOL0IceG
+ ot8eo+MvydpF8db/HuKqdWA60uvyQfeaJ398S4zwDKlGY+2Xha/0Udnf3btWWFLyJw1jaQ
+ CWG88akS+xFzAsokiNYWVudtt2ybYTY=
+To: farosas@suse.de,
+	lvivier@redhat.com
+Cc: sdl.qemu@linuxtesting.org, qemu-devel@nongnu.org,
+ Dmitry Frolov <frolov@swemel.ru>
+Subject: [PATCH] tests/qtest: fix heap-use-after-free
+Date: Mon, 11 Nov 2024 12:05:31 +0300
+Message-ID: <20241111090534.66439-2-frolov@swemel.ru>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.127.72.15]
-X-ClientProxiedBy: BC-Mail-EX05.internal.baidu.com (172.31.51.45) To
- BJHW-MAIL-EX26.internal.baidu.com (10.127.64.41)
-X-Baidu-BdMsfe-DateCheck: 1_BJHW-Mail-Ex15_2024-11-11 16:57:34:714
-X-FEAS-Client-IP: 10.127.64.38
-X-FE-Policy-ID: 52:10:53:SYSTEM
-Received-SPF: pass client-ip=220.181.50.185; envelope-from=zuoboqun@baidu.com;
- helo=baidu.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+Received-SPF: pass client-ip=95.143.211.150; envelope-from=frolov@swemel.ru;
+ helo=mx.swemel.ru
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -56,94 +56,42 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Zuo boqun <zuoboqun@baidu.com>
-From:  Zuo boqun via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: zuoboqun <zuoboqun@baidu.com>
+"int main(int argc, char **argv, char** envp)" is non-standart
+Microsoft`s extention of the C language and it`s not portable.
+In my particular case (Debian 13, clang-16) this raises wild-pointer
+dereference with ASAN message "heap-use-after-free".
 
-When the backend of vhost_net restarts during the vm is running, vhost_net
-is stopped and started. The virtio_device_grab_ioeventfd() fucntion in
-vhost_net_enable_notifiers() will result in a call to
-virtio_bus_set_host_notifier()(assign=false).
-
-And now virtio_device_grab_ioeventfd() is batched in a single transaction
-with virtio_bus_set_host_notifier()(assign=true).
-
-This triggers the following assertion:
-
-kvm_mem_ioeventfd_del: error deleting ioeventfd: Bad file descriptor
-
-This patch moves virtio_device_grab_ioeventfd() out of the batch to fix
-this problem.
-
-Fixes: 6166799f6 ("vhost_net: configure all host notifiers in a single MR transaction")
-Reported-by: Gao Shiyuan <gaoshiyuan@baidu.com>
-Signed-off-by: Zuo Boqun <zuoboqun@baidu.com>
+Signed-off-by: Dmitry Frolov <frolov@swemel.ru>
 ---
- hw/net/vhost_net.c | 31 ++++++++++++++++++++-----------
- 1 file changed, 20 insertions(+), 11 deletions(-)
+ tests/qtest/qos-test.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/hw/net/vhost_net.c b/hw/net/vhost_net.c
-index 997aab0557..eb3e92ca0d 100644
---- a/hw/net/vhost_net.c
-+++ b/hw/net/vhost_net.c
-@@ -229,9 +229,24 @@ static int vhost_net_enable_notifiers(VirtIODevice *dev,
-     int nvhosts = data_queue_pairs + cvq;
-     struct vhost_net *net;
-     struct vhost_dev *hdev;
--    int r, i, j;
-+    int r, i, j, k;
-     NetClientState *peer;
+diff --git a/tests/qtest/qos-test.c b/tests/qtest/qos-test.c
+index 114f6bef27..e8ac00f0f7 100644
+--- a/tests/qtest/qos-test.c
++++ b/tests/qtest/qos-test.c
+@@ -326,7 +326,7 @@ static void walk_path(QOSGraphNode *orig_path, int len)
+  *   machine/drivers/test objects
+  * - Cleans up everything
+  */
+-int main(int argc, char **argv, char** envp)
++int main(int argc, char **argv)
+ {
+     g_test_init(&argc, &argv, NULL);
  
-+    /*
-+     * We will pass the notifiers to the kernel, make sure that QEMU
-+     * doesn't interfere.
-+     */
-+    for (i = 0; i < nvhosts; i++) {
-+        r = virtio_device_grab_ioeventfd(dev);
-+        if (r < 0) {
-+            error_report("vhost %d binding does not support host notifiers", i);
-+            for (k = 0; k < i; k++) {
-+                virtio_device_release_ioeventfd(dev);
-+            }
-+            return r;
-+        }
-+    }
-+
-     /*
-      * Batch all the host notifiers in a single transaction to avoid
-      * quadratic time complexity in address_space_update_ioeventfds().
-@@ -247,16 +262,6 @@ static int vhost_net_enable_notifiers(VirtIODevice *dev,
+@@ -336,7 +336,7 @@ int main(int argc, char **argv, char** envp)
  
-         net = get_vhost_net(peer);
-         hdev = &net->dev;
--        /*
--         * We will pass the notifiers to the kernel, make sure that QEMU
--         * doesn't interfere.
--         */
--        r = virtio_device_grab_ioeventfd(dev);
--        if (r < 0) {
--            error_report("binding does not support host notifiers");
--            memory_region_transaction_commit();
--            goto fail_nvhosts;
--        }
- 
-         for (j = 0; j < hdev->nvqs; j++) {
-             r = virtio_bus_set_host_notifier(VIRTIO_BUS(qbus),
-@@ -277,6 +282,10 @@ static int vhost_net_enable_notifiers(VirtIODevice *dev,
-     return 0;
- fail_nvhosts:
-     vhost_net_disable_notifiers_nvhosts(dev, ncs, data_queue_pairs, i);
-+    for (k = i + 1; k < nvhosts; k++) {
-+        virtio_device_release_ioeventfd(dev);
-+    }
-+
-     return r;
- }
- 
+     if (g_test_verbose()) {
+         qos_printf("ENVIRONMENT VARIABLES: {\n");
+-        for (char **env = envp; *env != 0; env++) {
++        for (char **env = environ; *env != 0; env++) {
+             qos_printf("\t%s\n", *env);
+         }
+         qos_printf("}\n");
 -- 
-2.42.0.windows.2
+2.43.0
 
 
