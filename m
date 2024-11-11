@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D1A19C423B
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Nov 2024 16:57:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A3A69C4232
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Nov 2024 16:57:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tAWmI-00047b-9f; Mon, 11 Nov 2024 10:56:34 -0500
+	id 1tAWmN-00049e-00; Mon, 11 Nov 2024 10:56:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1tAWm7-00046M-7x
- for qemu-devel@nongnu.org; Mon, 11 Nov 2024 10:56:27 -0500
+ id 1tAWm9-00046X-Ni
+ for qemu-devel@nongnu.org; Mon, 11 Nov 2024 10:56:28 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1tAWm4-0000o8-Ff
- for qemu-devel@nongnu.org; Mon, 11 Nov 2024 10:56:21 -0500
+ id 1tAWm7-0000oh-0Z
+ for qemu-devel@nongnu.org; Mon, 11 Nov 2024 10:56:24 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1731340579;
+ s=mimecast20190719; t=1731340582;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=3RLA2LvhoRZELB6SKfMNWBJg+Gq4+HNddrgQKNW6k3I=;
- b=Uaum3iUeXohtrHWthmZ2WuxxJgg4FMfi6OcUFH8f4WjzhdI1zxvhGboOXq5AdSZggCkyUX
- /j+2jNx9ngXWJhnQ2FR+EAPU/knwueMFrLCjAMM08L5AWMJRil39Xv/9uIIRooB3Y9u/Qs
- FpwVj0vqbae997gp+1bbCyX3pgCDFg4=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ bh=YJ/sefR0gmKBw7tRqDLJgbx0M+MEzLALmRAE6Z+urmU=;
+ b=NX+/SuCc4oq8V2e0+wfSwmlrRvUOZjbEZVLADMo8RhZm8DY2X+h0F6gzDeg6MxwSz96c+E
+ 7zrJ1b8sk2ias512B+aFvrgw7UAYNhqi6be/MdOW3JUJ/hXdRwFrL0LcPAcS5aUsGyyW/v
+ +4A1o6Lj/0EkUL5FUVKMTf10CRVNrfg=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-6-9kK-89eFPv2AMClKBHygFg-1; Mon,
- 11 Nov 2024 10:56:17 -0500
-X-MC-Unique: 9kK-89eFPv2AMClKBHygFg-1
-X-Mimecast-MFC-AGG-ID: 9kK-89eFPv2AMClKBHygFg
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-78-o5mszVNxOVi35_1MG_M4gA-1; Mon,
+ 11 Nov 2024 10:56:19 -0500
+X-MC-Unique: o5mszVNxOVi35_1MG_M4gA-1
+X-Mimecast-MFC-AGG-ID: o5mszVNxOVi35_1MG_M4gA
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 875F81955EE9
- for <qemu-devel@nongnu.org>; Mon, 11 Nov 2024 15:56:16 +0000 (UTC)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id E9F3919560AD
+ for <qemu-devel@nongnu.org>; Mon, 11 Nov 2024 15:56:18 +0000 (UTC)
 Received: from toolbox.redhat.com (unknown [10.42.28.238])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 0C9FC19560A3; Mon, 11 Nov 2024 15:56:13 +0000 (UTC)
+ id 2458719560A3; Mon, 11 Nov 2024 15:56:16 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>, Markus Armbruster <armbru@redhat.com>,
  Peter Xu <peterx@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH v2 6/8] qom: introduce qdev_new_dynamic()
-Date: Mon, 11 Nov 2024 15:55:53 +0000
-Message-ID: <20241111155555.90091-7-berrange@redhat.com>
+Subject: [PATCH v2 7/8] convert code to qdev_new_dynamic() where appropriate
+Date: Mon, 11 Nov 2024 15:55:54 +0000
+Message-ID: <20241111155555.90091-8-berrange@redhat.com>
 In-Reply-To: <20241111155555.90091-1-berrange@redhat.com>
 References: <20241111155555.90091-1-berrange@redhat.com>
 MIME-Version: 1.0
@@ -85,143 +85,352 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-qdev_new() has a failure scenario where it will assert() if given
-an abstract type. Callers which are creating qdevs based on user
-input, or unknown/untrusted type names, must manually check the
-result of qdev_class_is_abstract() before calling qdev_new()
-to propagate an Error, instead of asserting.
+In cases where qdev_new() is not being passed a static, const
+string, the caller cannot be sure what type they are instantiating.
+There is a risk that instantiation could fail, if it is an abstract
+type.
 
-Introduce a qdev_new_dynamic() method which is a counterpart to
-qdev_new() that directly returns an Error, instead of asserting.
-This new method is to be used where the typename is specified
-dynamically by code separate from the immediate caller.
-
-Do likewise with qdev_try_new_dynamic() as a counterpart to
-qdev_try_new().
+Convert such cases over to use qdev_new_dynamic() such that they
+are forced to expect failure. In some cases failure can be easily
+propagated, but in others using &error_abort or &error_fatal will
+maintain existing behaviour.
 
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- hw/core/qdev.c         | 14 +++++++++++
- include/hw/qdev-core.h | 54 ++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 68 insertions(+)
+ hw/arm/aspeed.c            | 2 +-
+ hw/arm/npcm7xx_boards.c    | 2 +-
+ hw/arm/sbsa-ref.c          | 4 ++--
+ hw/arm/vexpress.c          | 2 +-
+ hw/arm/virt.c              | 4 ++--
+ hw/audio/soundhw.c         | 2 +-
+ hw/block/xen-block.c       | 7 ++++++-
+ hw/core/sysbus.c           | 2 +-
+ hw/i2c/core.c              | 2 +-
+ hw/isa/isa-bus.c           | 4 ++--
+ hw/pci/pci.c               | 2 +-
+ hw/ppc/pnv.c               | 2 +-
+ hw/s390x/s390-virtio-ccw.c | 2 +-
+ hw/scsi/scsi-bus.c         | 5 ++++-
+ hw/ssi/ssi.c               | 2 +-
+ include/hw/usb.h           | 4 ++--
+ include/qom/object.h       | 4 ++--
+ net/net.c                  | 4 ++--
+ system/qdev-monitor.c      | 5 ++++-
+ 19 files changed, 36 insertions(+), 25 deletions(-)
 
-diff --git a/hw/core/qdev.c b/hw/core/qdev.c
-index b32db8618e..10a7b87c3d 100644
---- a/hw/core/qdev.c
-+++ b/hw/core/qdev.c
-@@ -149,6 +149,11 @@ DeviceState *qdev_new(const char *name)
-     return DEVICE(object_new_dynamic(name, &error_abort));
- }
+diff --git a/hw/arm/aspeed.c b/hw/arm/aspeed.c
+index 71196b0a4b..19dbcee64a 100644
+--- a/hw/arm/aspeed.c
++++ b/hw/arm/aspeed.c
+@@ -320,7 +320,7 @@ void aspeed_board_init_flashes(AspeedSMCState *s, const char *flashtype,
+         DriveInfo *dinfo = drive_get(IF_MTD, 0, unit0 + i);
+         DeviceState *dev;
  
-+DeviceState *qdev_new_dynamic(const char *name, Error **errp)
-+{
-+    return DEVICE(object_new_dynamic(name, errp));
-+}
-+
- DeviceState *qdev_try_new(const char *name)
+-        dev = qdev_new(flashtype);
++        dev = qdev_new_dynamic(flashtype, &error_fatal);
+         if (dinfo) {
+             qdev_prop_set_drive(dev, "drive", blk_by_legacy_dinfo(dinfo));
+         }
+diff --git a/hw/arm/npcm7xx_boards.c b/hw/arm/npcm7xx_boards.c
+index e229efb447..098beeab63 100644
+--- a/hw/arm/npcm7xx_boards.c
++++ b/hw/arm/npcm7xx_boards.c
+@@ -83,7 +83,7 @@ static void npcm7xx_connect_flash(NPCM7xxFIUState *fiu, int cs_no,
+     DeviceState *flash;
+     qemu_irq flash_cs;
+ 
+-    flash = qdev_new(flash_type);
++    flash = qdev_new_dynamic(flash_type, &error_fatal);
+     if (dinfo) {
+         qdev_prop_set_drive(flash, "drive", blk_by_legacy_dinfo(dinfo));
+     }
+diff --git a/hw/arm/sbsa-ref.c b/hw/arm/sbsa-ref.c
+index a0006c9af0..12e0a70981 100644
+--- a/hw/arm/sbsa-ref.c
++++ b/hw/arm/sbsa-ref.c
+@@ -419,7 +419,7 @@ static void create_its(SBSAMachineState *sms)
+     const char *itsclass = its_class_name();
+     DeviceState *dev;
+ 
+-    dev = qdev_new(itsclass);
++    dev = qdev_new_dynamic(itsclass, &error_fatal);
+ 
+     object_property_set_link(OBJECT(dev), "parent-gicv3", OBJECT(sms->gic),
+                              &error_abort);
+@@ -438,7 +438,7 @@ static void create_gic(SBSAMachineState *sms, MemoryRegion *mem)
+ 
+     gictype = gicv3_class_name();
+ 
+-    sms->gic = qdev_new(gictype);
++    sms->gic = qdev_new_dynamic(gictype, &error_fatal);
+     qdev_prop_set_uint32(sms->gic, "revision", 3);
+     qdev_prop_set_uint32(sms->gic, "num-cpu", smp_cpus);
+     /*
+diff --git a/hw/arm/vexpress.c b/hw/arm/vexpress.c
+index 98ad6299a8..e13c66b838 100644
+--- a/hw/arm/vexpress.c
++++ b/hw/arm/vexpress.c
+@@ -239,7 +239,7 @@ static void init_cpus(MachineState *ms, const char *cpu_type,
+      * this must happen after the CPUs are created because a15mpcore_priv
+      * wires itself up to the CPU's generic_timer gpio out lines.
+      */
+-    dev = qdev_new(privdev);
++    dev = qdev_new_dynamic(privdev, &error_fatal);
+     qdev_prop_set_uint32(dev, "num-cpu", smp_cpus);
+     busdev = SYS_BUS_DEVICE(dev);
+     sysbus_realize_and_unref(busdev, &error_fatal);
+diff --git a/hw/arm/virt.c b/hw/arm/virt.c
+index f80ab50d41..57b1735380 100644
+--- a/hw/arm/virt.c
++++ b/hw/arm/virt.c
+@@ -715,7 +715,7 @@ static void create_its(VirtMachineState *vms)
+         return;
+     }
+ 
+-    dev = qdev_new(itsclass);
++    dev = qdev_new_dynamic(itsclass, &error_fatal);
+ 
+     object_property_set_link(OBJECT(dev), "parent-gicv3", OBJECT(vms->gic),
+                              &error_abort);
+@@ -791,7 +791,7 @@ static void create_gic(VirtMachineState *vms, MemoryRegion *mem)
+     default:
+         g_assert_not_reached();
+     }
+-    vms->gic = qdev_new(gictype);
++    vms->gic = qdev_new_dynamic(gictype, &error_fatal);
+     qdev_prop_set_uint32(vms->gic, "revision", revision);
+     qdev_prop_set_uint32(vms->gic, "num-cpu", smp_cpus);
+     /* Note that the num-irq property counts both internal and external
+diff --git a/hw/audio/soundhw.c b/hw/audio/soundhw.c
+index d18fd9fa05..17ed3a8084 100644
+--- a/hw/audio/soundhw.c
++++ b/hw/audio/soundhw.c
+@@ -132,7 +132,7 @@ void soundhw_init(void)
+     }
+ 
+     if (c->typename) {
+-        DeviceState *dev = qdev_new(c->typename);
++        DeviceState *dev = qdev_new_dynamic(c->typename, &error_fatal);
+         qdev_prop_set_string(dev, "audiodev", audiodev_id);
+         qdev_realize_and_unref(dev, bus, &error_fatal);
+     } else {
+diff --git a/hw/block/xen-block.c b/hw/block/xen-block.c
+index aed1d5c330..fd5fa7b6e7 100644
+--- a/hw/block/xen-block.c
++++ b/hw/block/xen-block.c
+@@ -1034,6 +1034,7 @@ static void xen_block_device_create(XenBackendInstance *backend,
+     XenDevice *xendev = NULL;
+     const char *type;
+     XenBlockDevice *blockdev;
++    DeviceState *dev;
+ 
+     if (qemu_strtoul(name, NULL, 10, &number)) {
+         error_setg(errp, "failed to parse name '%s'", name);
+@@ -1075,7 +1076,11 @@ static void xen_block_device_create(XenBackendInstance *backend,
+         goto fail;
+     }
+ 
+-    xendev = XEN_DEVICE(qdev_new(type));
++    dev = qdev_new_dynamic(type, errp);
++    if (!dev) {
++        goto fail;
++    }
++    xendev = XEN_DEVICE(dev);
+     blockdev = XEN_BLOCK_DEVICE(xendev);
+ 
+     if (!object_property_set_str(OBJECT(xendev), "vdev", vdev,
+diff --git a/hw/core/sysbus.c b/hw/core/sysbus.c
+index e64d99c8ed..e472a969f1 100644
+--- a/hw/core/sysbus.c
++++ b/hw/core/sysbus.c
+@@ -221,7 +221,7 @@ DeviceState *sysbus_create_varargs(const char *name,
+     qemu_irq irq;
+     int n;
+ 
+-    dev = qdev_new(name);
++    dev = qdev_new_dynamic(name, &error_fatal);
+     s = SYS_BUS_DEVICE(dev);
+     sysbus_realize_and_unref(s, &error_fatal);
+     if (addr != (hwaddr)-1) {
+diff --git a/hw/i2c/core.c b/hw/i2c/core.c
+index 4cf30b2c86..a430f4e767 100644
+--- a/hw/i2c/core.c
++++ b/hw/i2c/core.c
+@@ -369,7 +369,7 @@ I2CSlave *i2c_slave_new(const char *name, uint8_t addr)
  {
-     ObjectClass *oc = module_object_class_by_name(name);
-@@ -158,6 +163,15 @@ DeviceState *qdev_try_new(const char *name)
-     return DEVICE(object_new_with_class(oc, &error_abort));
+     DeviceState *dev;
+ 
+-    dev = qdev_new(name);
++    dev = qdev_new_dynamic(name, &error_fatal);
+     qdev_prop_set_uint8(dev, "address", addr);
+     return I2C_SLAVE(dev);
+ }
+diff --git a/hw/isa/isa-bus.c b/hw/isa/isa-bus.c
+index f1e0f14007..11795df8cf 100644
+--- a/hw/isa/isa-bus.c
++++ b/hw/isa/isa-bus.c
+@@ -155,12 +155,12 @@ int isa_register_portio_list(ISADevice *dev,
+ 
+ ISADevice *isa_new(const char *name)
+ {
+-    return ISA_DEVICE(qdev_new(name));
++    return ISA_DEVICE(qdev_new_dynamic(name, &error_fatal));
  }
  
-+DeviceState *qdev_try_new_dynamic(const char *name, Error **errp)
-+{
-+    ObjectClass *oc = module_object_class_by_name(name);
-+    if (!oc) {
+ ISADevice *isa_try_new(const char *name)
+ {
+-    return ISA_DEVICE(qdev_try_new(name));
++    return ISA_DEVICE(qdev_try_new_dynamic(name, &error_fatal));
+ }
+ 
+ ISADevice *isa_create_simple(ISABus *bus, const char *name)
+diff --git a/hw/pci/pci.c b/hw/pci/pci.c
+index 1416ae202c..51338320c1 100644
+--- a/hw/pci/pci.c
++++ b/hw/pci/pci.c
+@@ -2186,7 +2186,7 @@ static PCIDevice *pci_new_internal(int devfn, bool multifunction,
+ {
+     DeviceState *dev;
+ 
+-    dev = qdev_new(name);
++    dev = qdev_new_dynamic(name, &error_fatal);
+     qdev_prop_set_int32(dev, "addr", devfn);
+     qdev_prop_set_bit(dev, "multifunction", multifunction);
+     return PCI_DEVICE(dev);
+diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
+index 75420c9413..e81c562967 100644
+--- a/hw/ppc/pnv.c
++++ b/hw/ppc/pnv.c
+@@ -1115,7 +1115,7 @@ static void pnv_init(MachineState *machine)
+     pnv->chips = g_new0(PnvChip *, pnv->num_chips);
+     for (i = 0; i < pnv->num_chips; i++) {
+         char chip_name[32];
+-        Object *chip = OBJECT(qdev_new(chip_typename));
++        Object *chip = OBJECT(qdev_new_dynamic(chip_typename, &error_fatal));
+         uint64_t chip_ram_size =  pnv_chip_get_ram_size(pnv, i);
+ 
+         pnv->chips[i] = PNV_CHIP(chip);
+diff --git a/hw/s390x/s390-virtio-ccw.c b/hw/s390x/s390-virtio-ccw.c
+index 5441dc4c32..b276b5e77f 100644
+--- a/hw/s390x/s390-virtio-ccw.c
++++ b/hw/s390x/s390-virtio-ccw.c
+@@ -242,7 +242,7 @@ static void s390_create_sclpconsole(SCLPDevice *sclp,
+     BusState *ev_fac_bus = sclp_get_event_facility_bus(ef);
+     DeviceState *dev;
+ 
+-    dev = qdev_new(type);
++    dev = qdev_new_dynamic(type, &error_fatal);
+     object_property_add_child(OBJECT(ef), type, OBJECT(dev));
+     qdev_prop_set_chr(dev, "chardev", chardev);
+     qdev_realize_and_unref(dev, ev_fac_bus, &error_fatal);
+diff --git a/hw/scsi/scsi-bus.c b/hw/scsi/scsi-bus.c
+index 53eff5dd3d..23be8ebca4 100644
+--- a/hw/scsi/scsi-bus.c
++++ b/hw/scsi/scsi-bus.c
+@@ -396,7 +396,10 @@ SCSIDevice *scsi_bus_legacy_add_drive(SCSIBus *bus, BlockBackend *blk,
+             driver = "scsi-hd";
+         }
+     }
+-    dev = qdev_new(driver);
++    dev = qdev_new_dynamic(driver, errp);
++    if (!dev) {
 +        return NULL;
 +    }
-+    return DEVICE(object_new_with_class(oc, errp));
-+}
-+
- static QTAILQ_HEAD(, DeviceListener) device_listeners
-     = QTAILQ_HEAD_INITIALIZER(device_listeners);
+     name = g_strdup_printf("legacy[%d]", unit);
+     object_property_add_child(OBJECT(bus), name, OBJECT(dev));
+     g_free(name);
+diff --git a/hw/ssi/ssi.c b/hw/ssi/ssi.c
+index 3f357e8f16..712bb1781c 100644
+--- a/hw/ssi/ssi.c
++++ b/hw/ssi/ssi.c
+@@ -141,7 +141,7 @@ bool ssi_realize_and_unref(DeviceState *dev, SSIBus *bus, Error **errp)
  
-diff --git a/include/hw/qdev-core.h b/include/hw/qdev-core.h
-index 5be9844412..68ebaec058 100644
---- a/include/hw/qdev-core.h
-+++ b/include/hw/qdev-core.h
-@@ -435,26 +435,80 @@ compat_props_add(GPtrArray *arr,
-  * qdev_new: Create a device on the heap
-  * @name: device type to create (we assert() that this type exists)
+ DeviceState *ssi_create_peripheral(SSIBus *bus, const char *name)
+ {
+-    DeviceState *dev = qdev_new(name);
++    DeviceState *dev = qdev_new_dynamic(name, &error_fatal);
+ 
+     ssi_realize_and_unref(dev, bus, &error_fatal);
+     return dev;
+diff --git a/include/hw/usb.h b/include/hw/usb.h
+index d46d96779a..97d76b11c0 100644
+--- a/include/hw/usb.h
++++ b/include/hw/usb.h
+@@ -581,12 +581,12 @@ void usb_pcap_data(USBPacket *p, bool setup);
+ 
+ static inline USBDevice *usb_new(const char *name)
+ {
+-    return USB_DEVICE(qdev_new(name));
++    return USB_DEVICE(qdev_new_dynamic(name, &error_fatal));
+ }
+ 
+ static inline USBDevice *usb_try_new(const char *name)
+ {
+-    return USB_DEVICE(qdev_try_new(name));
++    return USB_DEVICE(qdev_try_new_dynamic(name, &error_fatal));
+ }
+ 
+ static inline bool usb_realize_and_unref(USBDevice *dev, USBBus *bus, Error **errp)
+diff --git a/include/qom/object.h b/include/qom/object.h
+index 2d5a0d84b5..4e660da84a 100644
+--- a/include/qom/object.h
++++ b/include/qom/object.h
+@@ -654,7 +654,7 @@ Object *object_new_internal(const char *typename);
+  * @typename: The name of the type of the object to instantiate.
+  * @errp: pointer to be filled with error details on failure
   *
-+ * This method should be used where @name is statically specified
-+ * from a const string at build time, where the caller does not expect
-+ * failure to be possible.
-+ *
-  * This only allocates the memory and initializes the device state
-  * structure, ready for the caller to set properties if they wish.
-  * The device still needs to be realized.
+- * This method should be used where @typename is dynamically chosen
++ * This method must be used where @typename is dynamically chosen
+  * at runtime, which has the possibility of unexpected choices leading
+  * to failures.
   *
-+ * If an instance of @name is not permitted to be instantiated, an
-+ * assert will be raised. This can happen if @name is abstract.
-+ *
-  * Return: a derived DeviceState object with a reference count of 1.
+@@ -663,7 +663,7 @@ Object *object_new_internal(const char *typename);
+  * the last reference is dropped.
+  *
+  * If an instance of @typename is not permitted to be instantiated, an
+- * error will be raised. This can happen if @typename is abstract.
++ * error will be reported. This can happen if @typename is abstract.
+  *
+  * Returns: The newly allocated and instantiated object.
   */
- DeviceState *qdev_new(const char *name);
+diff --git a/net/net.c b/net/net.c
+index fbbfe602a4..fa89ec8e03 100644
+--- a/net/net.c
++++ b/net/net.c
+@@ -1175,7 +1175,7 @@ DeviceState *qemu_create_nic_device(const char *typename, bool match_default,
+         return NULL;
+     }
  
-+/**
-+ * qdev_new_dynamic: Create a device on the heap
-+ * @name: device type to create (we assert() that this type exists)
-+ * @errp: pointer to be filled with error details on failure
-+ *
-+ * This method must be used where @name is dynamically chosen
-+ * at runtime, which has the possibility of unexpected choices leading
-+ * to failures.
-+ *
-+ * This only allocates the memory and initializes the device state
-+ * structure, ready for the caller to set properties if they wish.
-+ * The device still needs to be realized.
-+ *
-+ * If an instance of @name is not permitted to be instantiated, an
-+ * error will be reported. This can happen if @name is abstract.
-+ *
-+ * Return: a derived DeviceState object with a reference count of 1.
-+ */
-+DeviceState *qdev_new_dynamic(const char *name, Error **errp);
-+
- /**
-  * qdev_try_new: Try to create a device on the heap
-  * @name: device type to create
-  *
-+ * This method should be used where @name is statically specified
-+ * from a const string at build time, where the caller does not expect
-+ * failure to be possible.
-+ *
-  * This is like qdev_new(), except it returns %NULL when type @name
-  * does not exist, rather than asserting.
-  *
-+ * If an instance of @name is not permitted to be instantiated, an
-+ * assert will be raised. This can happen if @name is abstract.
-+ *
-  * Return: a derived DeviceState object with a reference count of 1 or
-  * NULL if type @name does not exist.
-  */
- DeviceState *qdev_try_new(const char *name);
+-    dev = qdev_new(typename);
++    dev = qdev_new_dynamic(typename, &error_fatal);
+     qdev_set_nic_properties(dev, nd);
+     return dev;
+ }
+@@ -1225,7 +1225,7 @@ void qemu_create_nic_bus_devices(BusState *bus, const char *parent_type,
+             continue;
+         }
  
-+/**
-+ * qdev_try_new_dynamic: Try to create a device on the heap
-+ * @name: device type to create
-+ * @errp: pointer to be filled with error details on failure
-+ *
-+ * This method must be used where @name is dynamically chosen
-+ * at runtime, which has the possibility of unexpected choices leading
-+ * to failures.
-+ *
-+ * This is like qdev_new_dynamic(), except it returns %NULL when type @name
-+ * does not exist, rather than asserting.
-+ *
-+ * If an instance of @name is not permitted to be instantiated, an
-+ * error will be reported. This can happen if @name is abstract.
-+ *
-+ * Return: a derived DeviceState object with a reference count of 1 or
-+ * NULL if type @name does not exist.
-+ */
-+DeviceState *qdev_try_new_dynamic(const char *name, Error **errp);
-+
- /**
-  * qdev_is_realized() - check if device is realized
-  * @dev: The device to check.
+-        dev = qdev_new(model);
++        dev = qdev_new_dynamic(model, &error_fatal);
+         qdev_set_nic_properties(dev, nd);
+         qdev_realize_and_unref(dev, bus, &error_fatal);
+     }
+diff --git a/system/qdev-monitor.c b/system/qdev-monitor.c
+index 4c09b38ffb..3138192cf8 100644
+--- a/system/qdev-monitor.c
++++ b/system/qdev-monitor.c
+@@ -686,7 +686,10 @@ DeviceState *qdev_device_add_from_qdict(const QDict *opts,
+     }
+ 
+     /* create device */
+-    dev = qdev_new(driver);
++    dev = qdev_new_dynamic(driver, errp);
++    if (!dev) {
++        return NULL;
++    }
+ 
+     /* Check whether the hotplug is allowed by the machine */
+     if (phase_check(PHASE_MACHINE_READY)) {
 -- 
 2.46.0
 
