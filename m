@@ -2,78 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 726659C4943
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Nov 2024 23:46:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8874E9C4984
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Nov 2024 00:02:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tAd9w-00066u-Vy; Mon, 11 Nov 2024 17:45:25 -0500
+	id 1tAdP7-0000uj-Jh; Mon, 11 Nov 2024 18:01:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tAd9m-00066Z-DM
- for qemu-devel@nongnu.org; Mon, 11 Nov 2024 17:45:14 -0500
-Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1tAdOp-0000tJ-8L
+ for qemu-devel@nongnu.org; Mon, 11 Nov 2024 18:00:48 -0500
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tAd9k-0008SL-QC
- for qemu-devel@nongnu.org; Mon, 11 Nov 2024 17:45:14 -0500
-Received: by mail-wr1-x429.google.com with SMTP id
- ffacd0b85a97d-37d47b38336so3869227f8f.3
- for <qemu-devel@nongnu.org>; Mon, 11 Nov 2024 14:45:12 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1tAdOn-0001iw-Hc
+ for qemu-devel@nongnu.org; Mon, 11 Nov 2024 18:00:47 -0500
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-43155abaf0bso44316705e9.0
+ for <qemu-devel@nongnu.org>; Mon, 11 Nov 2024 15:00:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1731365106; x=1731969906; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Zn8f/p6DL92t0jLH33Kyf5vwc7bUOJ3AokPYLSOVB2Q=;
- b=jO25ZuAnB26XwL4wB6HdwAI1qYtsYbG6PqNlP2qIN6KxCrbzUdWV8y09UcoBn37djJ
- 7E4ZXaCab61ju2I7iOObHMHGXa/Wc2O1mih+zV5Qzx24igm2vXPYaoCBlhRz8c1KAt6R
- qqDz97ukQn5MZ78J3FZTEoSwaULps6LNPWs6AXLIwHHyYCsHwqWBaVgaoZ0YwgZTnm8k
- 03JYindaVWt/SlLpuf02ijVeGl19e9RDKOI16BGn+uyYKDamQJRiGhTA330b6rCGZ0aj
- xV186yQe/LgWCEwtcKOYCJSWfZWj/W71moqElwr1l6uYFvLctDdueDGG5CDXu4f+QiD3
- Hm4g==
+ d=linaro.org; s=google; t=1731366044; x=1731970844; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=2jf5eXU7OOog4JuRVBDPTFD6Bzvpvpk+NdEpqLWLXPQ=;
+ b=IoE37ueuKqoPRlj3EYv5uN/MghZc6R+FKcmQc1RUcCDr9ZmcOBngUtLhdeD1NSx6xH
+ UCK02Mr8aMtNExAUxyTtRrglxU1EsgJaZB1FMHoVpfLATreY0SI224SOmbR4l9w7DFKM
+ 86gFCK3yjGvnxaVvgaS9sR0ZRBqqvaAQX2uwN6hIoIoNTYnpK04EXEUPmhn2Sp58WmpE
+ N15v7idB3Q7tOSIwgw6m9MLpxtaCJjvPF9lcJBzShCtwL11WO3WEHvbinpyu04g9s3wr
+ QT4AvZrUpN9k88QNGtLRVCC7lOWsgP5W66oiUotY7P09MDTQgQrc1NmuHA3puKsDtnZh
+ eS5w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731365106; x=1731969906;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=Zn8f/p6DL92t0jLH33Kyf5vwc7bUOJ3AokPYLSOVB2Q=;
- b=b2Uuyrc9t8oHWwYK5RLOJWjj6bC74IRrVPgYUF8nEpBkG2O164SMGPszqpTusIDCCZ
- WmRQr6tp/62Lq6mVGROk2wYSOqpcdW7stxeyp+KdWMOEbjZVmSX6QDx7TsoI5lOQmZkh
- uyII81KCpNtNIKNiiSzfv9Mo7/iLyDwNUDaFjoi4gs9XHrRA+j4eyB3OyVbWoN2xbFmD
- OLQj48TXaEEaYQfH320qBJIGGNOM8FX5hXmNGcmr9YBfD1lt00e6aAmJ3oPqx3+wFcnz
- 0x9UiPSnt+L9Ac1B0ClJsru2wzeD+IVeBoiwbfFWugL9DThzUR+fjIm6aakopo15XLvD
- cg5Q==
-X-Gm-Message-State: AOJu0Yww8AJkUARW4n3dQs9R9X+u+NtWMG/jjlF7JoFmio/8ebOqCnIk
- Jn0Vbz29X+DSvg5KUL+0ZIgEGYvqwxq1SgZwrTErFncMUQ8PbT2S6Hz4uDFIsSRwRM0WjRjmBxc
- n
-X-Google-Smtp-Source: AGHT+IGnufGpLnu08DnDRVPEGWej0Z30bJDJugPkzqjLjYqYAPVbW6vJke45qQD1ovd9e0OvPxD+8A==
-X-Received: by 2002:a05:6000:2709:b0:381:f443:21d0 with SMTP id
- ffacd0b85a97d-381f443253dmr7670163f8f.59.1731365106061; 
- Mon, 11 Nov 2024 14:45:06 -0800 (PST)
-Received: from localhost.localdomain
- (vau06-h02-176-184-43-163.dsl.sta.abo.bbox.fr. [176.184.43.163])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-381edc1104asm14091743f8f.88.2024.11.11.14.45.04
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 11 Nov 2024 14:45:05 -0800 (PST)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+ d=1e100.net; s=20230601; t=1731366044; x=1731970844;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=2jf5eXU7OOog4JuRVBDPTFD6Bzvpvpk+NdEpqLWLXPQ=;
+ b=WH8WliFA6+dbwfKwwkyLC9mXt7ASpozEHsm2KyOI+wFpG4v7XxpRe0HQtS8ptcRWPN
+ pkl/wTVqz4mH7rzvY53VYN3fEyKngGqlQjT3QZAqfd+7TRoMDHyzyv1h76C1k8WgdTFI
+ Gq9xqAEhs/fM61dDJ9shSTsFGefX7EQUzNgHyXc5PPRFU8A5+jVDeCfJDxOy7011zYit
+ Sq8FgxG77bmokJXWbGxU0ssJU04Pmo7dPgxPRHBEJXakiYVb0bI+3gF48guZAXQrrfk4
+ x//X/W/+EzfBnFtGVI9L4sUO105uobudcPjwyn/nCViyT8V3e5R2wkA5EblDIRbwlZUr
+ hlkA==
+X-Gm-Message-State: AOJu0YwLrg2OtTrhSW5AUa8hbxtlE9dBHxyLtfiM8TjBqQj7/H97ZHep
+ i1+I2ENOpwMDcf4ixq2ZjZp/idryka5ZVUn7PSslZcq6KudwEaj8S+S26AF1QXk=
+X-Google-Smtp-Source: AGHT+IEq9GXXvNz3qT3s9LLbsuPrJX2omf/Ud09M8MWKy6b+lP70CDjxIxfV7fItTfySXEjr7D+qow==
+X-Received: by 2002:a05:600c:3584:b0:432:7c08:d121 with SMTP id
+ 5b1f17b1804b1-432b750331emr127277875e9.12.1731366043862; 
+ Mon, 11 Nov 2024 15:00:43 -0800 (PST)
+Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-432aa5b5fb1sm234004665e9.8.2024.11.11.15.00.41
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 11 Nov 2024 15:00:41 -0800 (PST)
+Received: from draig.lan (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id C7B8F5FA35;
+ Mon, 11 Nov 2024 23:00:40 +0000 (GMT)
+From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Aleksandar Rikalo <arikalo@gmail.com>,
- Aurelien Jarno <aurelien@aurel32.net>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <f4bug@amsat.org>
-Subject: [PATCH 2/2] target/mips: Convert nanoMIPS LSA opcode to decodetree
-Date: Mon, 11 Nov 2024 23:44:52 +0100
-Message-ID: <20241111224452.61276-3-philmd@linaro.org>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20241111224452.61276-1-philmd@linaro.org>
-References: <20241111224452.61276-1-philmd@linaro.org>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+Subject: [PATCH v2 0/2] virtio-gpu: coverity fixes
+Date: Mon, 11 Nov 2024 23:00:38 +0000
+Message-Id: <20241111230040.68470-1-alex.bennee@linaro.org>
+X-Mailer: git-send-email 2.39.5
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::429;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x429.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x331.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,86 +92,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Philippe Mathieu-Daudé <f4bug@amsat.org>
+v2,
 
-Simply call the generic gen_lsa() helper, taking care
-to substract 1 to the shift field.
+Fixes after Dimitry's review.
 
-Signed-off-by: Philippe Mathieu-Daudé <f4bug@amsat.org>
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- target/mips/tcg/nanomips32.decode        |  8 ++++++++
- target/mips/tcg/nanomips_translate.c     | 12 ++++++++++++
- target/mips/tcg/nanomips_translate.c.inc |  9 ---------
- 3 files changed, 20 insertions(+), 9 deletions(-)
+Alex.
 
-diff --git a/target/mips/tcg/nanomips32.decode b/target/mips/tcg/nanomips32.decode
-index 9cecf1e13d..11bf5cd6c4 100644
---- a/target/mips/tcg/nanomips32.decode
-+++ b/target/mips/tcg/nanomips32.decode
-@@ -6,3 +6,11 @@
- #
- # Reference: nanoMIPS32 Instruction Set Technical Reference Manual
- #            (Document Number: MD01247)
-+
-+&r                  rs rt rd sa
-+
-+%lsa_u2             9:2  !function=minus_1
-+
-+@lsa                ...... rt:5 rs:5 rd:5 .. --- ... ...    &r sa=%lsa_u2
-+
-+LSA                 001000 ..... ..... ..... .. ... 001 111 @lsa
-diff --git a/target/mips/tcg/nanomips_translate.c b/target/mips/tcg/nanomips_translate.c
-index c148c13ed9..9a6db4a828 100644
---- a/target/mips/tcg/nanomips_translate.c
-+++ b/target/mips/tcg/nanomips_translate.c
-@@ -9,6 +9,18 @@
- #include "qemu/osdep.h"
- #include "translate.h"
- 
-+static inline int minus_1(DisasContext *ctx, int x)
-+{
-+    return x - 1;
-+}
-+
- /* Include the auto-generated decoders.  */
- #include "decode-nanomips16.c.inc"
- #include "decode-nanomips32.c.inc"
-+
-+static bool trans_LSA(DisasContext *ctx, arg_r *a)
-+{
-+    gen_lsa(ctx, a->rd, a->rt, a->rs, a->sa);
-+
-+    return true;
-+}
-diff --git a/target/mips/tcg/nanomips_translate.c.inc b/target/mips/tcg/nanomips_translate.c.inc
-index e401b92bfd..0e012ab3d0 100644
---- a/target/mips/tcg/nanomips_translate.c.inc
-+++ b/target/mips/tcg/nanomips_translate.c.inc
-@@ -399,7 +399,6 @@ enum {
- /* POOL32A7 instruction pool */
- enum {
-     NM_P_LSX        = 0x00,
--    NM_LSA          = 0x01,
-     NM_EXTW         = 0x03,
-     NM_POOL32AXF    = 0x07,
- };
-@@ -3625,14 +3624,6 @@ static int decode_nanomips_32_48_opc(CPUMIPSState *env, DisasContext *ctx)
-             case NM_P_LSX:
-                 gen_p_lsx(ctx, rd, rs, rt);
-                 break;
--            case NM_LSA:
--                /*
--                 * In nanoMIPS, the shift field directly encodes the shift
--                 * amount, meaning that the supported shift values are in
--                 * the range 0 to 3 (instead of 1 to 4 in MIPSR6).
--                 */
--                gen_lsa(ctx, rd, rt, rs, extract32(ctx->opcode, 9, 2) - 1);
--                break;
-             case NM_EXTW:
-                 gen_ext(ctx, 32, rd, rs, rt, extract32(ctx->opcode, 6, 5));
-                 break;
+Alex Bennée (2):
+  hw/display: factor out the scanout blob to fb conversion
+  hw/display: check frame buffer can hold blob
+
+ include/hw/virtio/virtio-gpu.h | 15 +++++++++
+ hw/display/virtio-gpu-virgl.c  | 22 +------------
+ hw/display/virtio-gpu.c        | 59 +++++++++++++++++++++-------------
+ 3 files changed, 52 insertions(+), 44 deletions(-)
+
 -- 
-2.45.2
+2.39.5
 
 
