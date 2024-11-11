@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19F229C37C3
+	by mail.lfdr.de (Postfix) with ESMTPS id 09DD19C37C2
 	for <lists+qemu-devel@lfdr.de>; Mon, 11 Nov 2024 06:27:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tAMvn-0001Ye-Mi; Mon, 11 Nov 2024 00:25:44 -0500
+	id 1tAMw6-0001c6-3i; Mon, 11 Nov 2024 00:26:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1tAMoY-0000s3-5W
- for qemu-devel@nongnu.org; Mon, 11 Nov 2024 00:18:14 -0500
-Received: from mail-pg1-x534.google.com ([2607:f8b0:4864:20::534])
+ id 1tAMvr-0001bj-Sk
+ for qemu-devel@nongnu.org; Mon, 11 Nov 2024 00:25:47 -0500
+Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1tAMoV-0000b4-Ob
- for qemu-devel@nongnu.org; Mon, 11 Nov 2024 00:18:13 -0500
-Received: by mail-pg1-x534.google.com with SMTP id
- 41be03b00d2f7-7ee7e87f6e4so3083142a12.2
- for <qemu-devel@nongnu.org>; Sun, 10 Nov 2024 21:18:11 -0800 (PST)
+ id 1tAMvp-0001BF-S8
+ for qemu-devel@nongnu.org; Mon, 11 Nov 2024 00:25:47 -0500
+Received: by mail-pf1-x42f.google.com with SMTP id
+ d2e1a72fcca58-71e8235f0b6so3422513b3a.3
+ for <qemu-devel@nongnu.org>; Sun, 10 Nov 2024 21:25:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1731302290; x=1731907090;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1731302744; x=1731907544;
  darn=nongnu.org; 
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=bGTdGE3aVW2/2Ja67NIBqxnIhoynkF5Bpp02IpBQolg=;
- b=Ur+LySpgI/qB0Rrf/C5qJRFI9jgWJHY0CdohwT6egyznnILoHI9T4DehYwIxHACVoo
- lMTXgHhGUx0NoS4iHDsJuR2QjKWM5cXo3GMe5LDx4m5BI3LCh0lw209cVD94d1JMYON6
- lSpd0a86VfET9maRj8tM+kICliA+3E3GAiVH/DMa6eR+LFpxy4m0Yu1MQ4GnwME1U4Rc
- qRHHBbGs1OtCUWF8vIZrXa1OC5bZH0IFWCGMOrv47PkZYv89x8Bm7Tnj471t3Shw37nh
- CfGtyUuRri326ahA/uq6qmuowjTAO8iSaLWcvGfHAevSVkbIm3g+gWuBnkEjCfcNE3UZ
- WbsQ==
+ bh=JQYjJd5gL9uXMjBsqxuTk8zxVaVAcJ1ldHebPG2etTs=;
+ b=SxFOfogK/4+zY6OBu8haaTO959hFaIEJ/D+j1fQEaPwzkCPc8NKGxVQGAxu3DcOWnZ
+ tXKFltGn6MMtrOjlaLSndCIPgSbJNUExhN3vmBN0drP448YLyqnUDLLzx0rcShJD858O
+ qb+oWhYoNG+GVsCUDY0ACJZZGycyBVcWpR2oT9NIkfNypkDZzzd1JEDFumbfzAw/FKnG
+ xi/X4vN0SVYxagaOGoQGQPvq4Qadkc6cGKHk16PSjK6TFyQ58aNLdnQoHGyfnupQw+qF
+ PhwE4GS2LCmT7GuxyjuRLJh29xVxnZ59OGp313W64999UbUaaaPJn7QpCYptYcele5Yv
+ 9RpQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731302290; x=1731907090;
+ d=1e100.net; s=20230601; t=1731302744; x=1731907544;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=bGTdGE3aVW2/2Ja67NIBqxnIhoynkF5Bpp02IpBQolg=;
- b=mgIrW8sXnNd05zvR4EL+FZUcKuQTKtrhTmVrQfEpiFJDluTc5oTxskNZW8Qxngh4aJ
- ViBtBiaGAqn+VNYjYT3oV/i1WeQ/SRPnKSvKU4+KLMsE6zGRoDCfMaAfUln58nKxZqte
- k5NO6PPRU+qny4/eqTTlv56u3YTFmp/j8VXDQRzKH8QEPDQD6O7b8nMhqeFAM0EqVesp
- SwffP1avWzMZejGtZgFQyliREfo8bIVB6cJuPxnjU6wY8pH2jBQ2vErgkfTGYbs6SJZc
- FvbFP1jRKSGP1j5zyosx/mEmL40gEWe3rjZpl4Bh4ux248l3n9JFCBfpSfPZDtceBSYG
- N9sg==
+ bh=JQYjJd5gL9uXMjBsqxuTk8zxVaVAcJ1ldHebPG2etTs=;
+ b=Wl4mbAKPorQdiwmt6nD9oqe61tUPT/vKd4eg8ZTWMXaK4Mz/YZCDlkWKfzDh648/ev
+ TXifH1HYJ4dK0PtvI8vU6Hm1Q3OCQ9548RApWol1ijt6oKLPQUI2xTg5XbbtkXtOcGQf
+ jJMXBXrP5rXXNSwEU1bcNdIhlEU4ods5pG2ZIUk229HjilQb6PuDmzg/Y1i0vOyh5dQW
+ oAtzcTMdZqGFuzoarIAlolMxKouPu6EjwbE0DtFXLGAyxO0L2eL0OuSxTxoQ3RZiZmzx
+ n9BbCvs7K2mk5DgmaUimEECBLG04dlipw6B+++rnOXXgH9jO5EUXhWQNBfJbJzk5uDZC
+ X1jQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWX89GFqpUEiTU1K9IIekHDHBwz/yc9ZOT7KxB7PwObrZZPyqB14UW14tiNe8s6kJI1rFIi0+dYbp1F@nongnu.org
-X-Gm-Message-State: AOJu0Yx0jGjLoMi+gYpTXA0r4CaUv4oIbVkFCP00JeEVIayen0vYj5hy
- sGXMCxJ2OE6AJLqDLa+xbU29dfjW5mVBqcYlHWo0HjwiGLbkD3E0njS16EfGB7Y=
-X-Google-Smtp-Source: AGHT+IEyAaGZ1hl0TQr7GvsiTZcJwdkNPswa9ed33GM2MGACMgK6BtSltmfTiIzN8GLz7tO9iCffJw==
-X-Received: by 2002:a05:6a20:9147:b0:1db:ee51:6d7b with SMTP id
- adf61e73a8af0-1dc22a1f504mr18248699637.24.1731302289716; 
- Sun, 10 Nov 2024 21:18:09 -0800 (PST)
+ AJvYcCXIo8EN49bS40DL4iYY2d/odnAi/bJjpQ+ck8cP4EZeviS2Ni0ixlYslIjjh4g8mIW62Qr5COBlvQ4a@nongnu.org
+X-Gm-Message-State: AOJu0YxKls+VNbCH1Vxlx9eJkPE/OL/cA6aDKJbOKXQguTB0WltUuJUL
+ 8RmItDMtssnGkTavggvPAk9sCt8O2W0JNRkm32hf1vKO4omjxSAiV8KtKFpKZZk=
+X-Google-Smtp-Source: AGHT+IGmX5sh61h8hWbVwWLZ5poDORNEGVAyNGdS0sdJ6gJaAWAkAj/pXnaJecJlkjp/TcufARkO2A==
+X-Received: by 2002:aa7:88c4:0:b0:71e:594:f1ef with SMTP id
+ d2e1a72fcca58-724133600ddmr13904479b3a.16.1731302744218; 
+ Sun, 10 Nov 2024 21:25:44 -0800 (PST)
 Received: from [157.82.207.107] ([157.82.207.107])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-724078a7d75sm8351680b3a.68.2024.11.10.21.18.05
+ d2e1a72fcca58-724078cd28asm8145655b3a.85.2024.11.10.21.25.39
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 10 Nov 2024 21:18:09 -0800 (PST)
-Message-ID: <9295fab8-6675-4b58-a91b-64214b0f1375@daynix.com>
-Date: Mon, 11 Nov 2024 14:18:04 +0900
+ Sun, 10 Nov 2024 21:25:43 -0800 (PST)
+Message-ID: <91c98764-c9ab-4299-8bbb-2d1a60e4d73c@daynix.com>
+Date: Mon, 11 Nov 2024 14:25:38 +0900
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 0/5] Support virtio-gpu DRM native context
-To: Dmitry Osipenko <dmitry.osipenko@collabora.com>,
- Huang Rui <ray.huang@amd.com>,
+Subject: Re: [PATCH v3 6/6] virtio-gpu: Support DRM native context
+To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Dmitry Osipenko <dmitry.osipenko@collabora.com>
+Cc: Huang Rui <ray.huang@amd.com>,
  =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
  =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Gerd Hoffmann <kraxel@redhat.com>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
- <alex.bennee@linaro.org>, "Michael S . Tsirkin" <mst@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>
-Cc: Gert Wollny <gert.wollny@collabora.com>, qemu-devel@nongnu.org,
+ Gerd Hoffmann <kraxel@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Gert Wollny
+ <gert.wollny@collabora.com>, qemu-devel@nongnu.org,
  Gurchetan Singh <gurchetansingh@chromium.org>, Alyssa Ross <hi@alyssa.is>,
  =?UTF-8?Q?Roger_Pau_Monn=C3=A9?= <roger.pau@citrix.com>,
  Alex Deucher <alexander.deucher@amd.com>,
@@ -82,14 +82,16 @@ Cc: Gert Wollny <gert.wollny@collabora.com>, qemu-devel@nongnu.org,
  Honglei Huang <honglei1.huang@amd.com>, Julia Zhang <julia.zhang@amd.com>,
  Chen Jiqian <Jiqian.Chen@amd.com>, Rob Clark <robdclark@gmail.com>,
  Yiwei Zhang <zzyiwei@chromium.org>, Sergio Lopez Pascual <slp@redhat.com>
-References: <20241110221838.2241356-1-dmitry.osipenko@collabora.com>
+References: <20241024233355.136867-1-dmitry.osipenko@collabora.com>
+ <20241024233355.136867-7-dmitry.osipenko@collabora.com>
+ <87sescin4u.fsf@draig.linaro.org>
 Content-Language: en-US
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <20241110221838.2241356-1-dmitry.osipenko@collabora.com>
+In-Reply-To: <87sescin4u.fsf@draig.linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::534;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pg1-x534.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x42f.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -111,156 +113,174 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2024/11/11 7:18, Dmitry Osipenko wrote:
-> This patchset adds DRM native context support to VirtIO-GPU on Qemu.
+On 2024/10/31 19:26, Alex Bennée wrote:
+> Dmitry Osipenko <dmitry.osipenko@collabora.com> writes:
 > 
-> Contarary to Virgl and Venus contexts which mediate high level GFX APIs,
-> DRM native context [1] mediates lower level kernel driver UAPI, which
-> reflects in a less CPU overhead and less/simpler code needed to support it.
-> DRM context consists of a host and guest parts that have to be implemented
-> for each GPU driver. On a guest side, DRM context presents a virtual GPU as
-> a real/native host GPU device for GL/VK applications.
+>> Add support for DRM native contexts to VirtIO-GPU. DRM context is enabled
+>> using a new virtio-gpu-gl device option "drm=on".
 > 
-> [1] https://www.youtube.com/watch?v=9sFP_yddLLQ
+> I feel like using "drm" is confusing in this context because drm exists
+> for the host and guest. What about "native-context" or even
+> "context=[opengl|vulkan|wayland|native]"?
+
+The terminology in the specification is "capset". Multiple capabilities 
+can be enabled at a time (e.g., DRM and VENUS) and we don't have a means 
+to express that with one property.
+
+The best option I came up with is to strip the VIRTIO_GPU_ prefix from 
+definitions in the specification. i.e.,:
+
+VIRTIO_GPU_CAPSET_VIRGL -> capset-virgl
+VIRTIO_GPU_CAPSET_VIRGL2 -> capset-virgl2
+VIRTIO_GPU_CAPSET_GFXSTREAM -> capset-gfxstream
+VIRTIO_GPU_CAPSET_GFXSTREAM_VULKAN -> capset-gfxstream-vulkan
+VIRTIO_GPU_CAPSET_VENUS -> capset-venus
+VIRTIO_GPU_CAPSET_CROSS_DOMAIN -> capset-cross-domain
+VIRTIO_GPU_CAPSET_DRM -> capset-drm
+
 > 
-> Today there are four known DRM native context drivers existing in a wild:
+> The GPU command line is already getting complex so now might be the time
+> to rationalise it.
 > 
->    - Freedreno (Qualcomm SoC GPUs), completely upstreamed
->    - AMDGPU, mostly merged into upstreams
->    - Intel (i915), merge requests are opened
->    - Asahi (Apple SoC GPUs), WIP status
+> As an aside can mesa build the intel drivers on non-x86 systems as now I
+> could potentially pass my native intel context to my emulated aarch64
+> guests?
 > 
-> 
-> # How to try out DRM context:
-> 
-> 1. DRM context uses host blobs and requires latest developer version
-> of Linux kernel [2] that has necessary KVM fixes.
-> 
-> [2] https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/
-> 
-> 2. Use latest libvirglrenderer from upstream git/main for Freedreno
-> and AMDGPU native contexts. For Intel use patches [3].
-> 
-> [3] https://gitlab.freedesktop.org/virgl/virglrenderer/-/merge_requests/1384
-> 
-> 3. On guest, use latest Mesa version for Freedreno. For AMDGPU use
-> Mesa patches [4], for Intel [5].
-> 
-> [4] https://gitlab.freedesktop.org/mesa/mesa/-/merge_requests/21658
-> [5] https://gitlab.freedesktop.org/mesa/mesa/-/merge_requests/29870
-> 
-> 4. On guest, use latest Linux kernel v6.6+. Apply patch [6] if you're
->     running Xorg in guest.
-> 
-> [6] https://lore.kernel.org/dri-devel/20241020224725.179937-1-dmitry.osipenko@collabora.com/
-> 
-> Example Qemu cmdline that enables DRM context:
-> 
->    qemu-system-x86_64 -device virtio-vga-gl,hostmem=4G,blob=on,drm_native_context=on \
->        -machine q35,accel=kvm,memory-backend=mem1 \
->        -object memory-backend-memfd,id=mem1,size=8G -m 8G
-> 
-> 
-> # Note about known performance problem in Qemu:
-> 
-> DRM contexts are mapping host blobs extensively and these mapping
-> operations work slowly in Qemu. Exact reason is unknown. Mappings work
-> fast on Crosvm For DRM contexts this problem is more visible than for
-> Venus/Virgl.
-> 
-> Changelog:
-> 
-> v4: - Improved SDL2/dmabuf patch by reusing existing Meson X11 config
->        option, better handling EGL error and extending comment telling
->        that it's safe to enable SDL2 EGL preference hint. As was suggested
->        by Akihiko Odaki.
-> 
->      - Replaced another QSLIST_FOREACH_SAFE with QSLIST_EMPTY+FIRST in
->        the async-fencing patch for more consistency of the code. As was
->        suggested by Akihiko Odaki.
-> 
->      - Added missing braces around if-statement that was spotted by
->        Alex Bennée.
-> 
->      - Renamed 'drm=on' option of virtio-gpu-gl device to
->        'drm_native_context=on' for more clarity as was suggested by
->        Alex Bennée. Haven't added added new context-type option that
->        was also proposed by Alex, might do it with a separate patch.
->        This context-type option will duplicate and depecate existing
->        options, but in a longer run likely will be worthwhile adding
->        it.
-> 
->      - Dropped Linux headers-update patch as headers has been updated
->        in the staging tree.
-> 
-> v3: - Improved EGL presence-check code on X11 systems for the SDL2
->        hint that prefers EGL over GLX by using better ifdefs and checking
->        Xlib presence at a build time to avoid build failure if lib SDL2
->        and system are configured with a disabled X11 support. Also added
->        clarifying comment telling that X11 hint doesn't affect Wayland
->        systems. Suggested by Akihiko Odaki.
-> 
->      - Corrected strerror(err) that used negative error where it should
->        be positive and vice versa that was caught by Akihiko Odaki. Added
->        clarifying comment for the case where we get positive error code
->        from virglrenderer that differs from other virglrenderer API functions.
-> 
->      - Improved QSLIST usage by dropping mutex protecting the async fence
->        list and using atomic variant of QSLIST helpers instead. Switched away
->        from using FOREACH helper to improve readability of the code, showing
->        that we don't precess list in unoptimal way. Like was suggested by
->        Akihiko Odaki.
-> 
->      - Updated patchset base to Venus v18.
-> 
-> v2: - Updated SDL2-dmabuf patch by making use of error_report() and
->        checking presense of X11+EGL in the system before making SDL2
->        to prefer EGL backend over GLX, suggested by Akihiko Odaki.
-> 
->      - Improved SDL2's dmabuf-presence check that wasn't done properly
->        in v1, where EGL was set up only after first console was fully
->        inited, and thus, SDL's display .has_dmabuf callback didn't work
->        for the first console. Now dmabuf support status is pre-checked
->        before console is registered.
-> 
->      - Updated commit description of the patch that fixes SDL2's context
->        switching logic with a more detailed explanation of the problem.
->        Suggested by Akihiko Odaki.
-> 
->      - Corrected rebase typo in the async-fencing patch and switched
->        async-fencing to use a sigle-linked list instead of the double,
->        as was suggested by Akihiko Odaki.
-> 
->      - Replaced "=true" with "=on" in the DRM native context documentation
->        example and made virtio_gpu_virgl_init() to fail with a error message
->        if DRM context can't be initialized instead of giving a warning
->        message, as was suggested by Akihiko Odaki.
-> 
->      - Added patchew's dependecy tag to the cover letter as was suggested by
->        Akihiko Odaki.
-> 
-> Dmitry Osipenko (4):
->    ui/sdl2: Restore original context after new context creation
->    virtio-gpu: Handle virgl fence creation errors
->    virtio-gpu: Support asynchronous fencing
->    virtio-gpu: Support DRM native context
-> 
-> Pierre-Eric Pelloux-Prayer (1):
->    ui/sdl2: Implement dpy dmabuf functions
-> 
->   docs/system/devices/virtio-gpu.rst |  11 ++
->   hw/display/virtio-gpu-gl.c         |   5 +
->   hw/display/virtio-gpu-virgl.c      | 158 ++++++++++++++++++++++++++---
->   hw/display/virtio-gpu.c            |  15 +++
->   include/hw/virtio/virtio-gpu.h     |  16 +++
->   include/ui/sdl2.h                  |   7 ++
->   meson.build                        |   6 +-
->   ui/sdl2-gl.c                       |  67 ++++++++++++
->   ui/sdl2.c                          |  42 ++++++++
->   9 files changed, 309 insertions(+), 18 deletions(-)
+>>
+>> Unlike Virgl and Venus contexts that operate on application API level,
+>> DRM native contexts work on a kernel UAPI level. This lower level results
+>> in a lightweight context implementations that yield better performance.
+>>
+>> Signed-off-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+>> ---
+>>   docs/system/devices/virtio-gpu.rst | 11 +++++++++++
+>>   hw/display/virtio-gpu-gl.c         |  2 ++
+>>   hw/display/virtio-gpu-virgl.c      | 22 ++++++++++++++++++++++
+>>   hw/display/virtio-gpu.c            | 15 +++++++++++++++
+>>   include/hw/virtio/virtio-gpu.h     |  3 +++
+>>   5 files changed, 53 insertions(+)
+>>
+>> diff --git a/docs/system/devices/virtio-gpu.rst b/docs/system/devices/virtio-gpu.rst
+>> index b7eb0fc0e727..49a75138f7ef 100644
+>> --- a/docs/system/devices/virtio-gpu.rst
+>> +++ b/docs/system/devices/virtio-gpu.rst
+>> @@ -82,6 +82,17 @@ of virtio-gpu host memory window. This is typically between 256M and 8G.
+>>   
+>>   .. _venus: https://gitlab.freedesktop.org/virgl/venus-protocol/
+>>   
+>> +DRM native context is supported since release of `virglrenderer`_ v1.0.0
+>> +using `drm`_ protocol. ``DRM`` virtio-gpu capability set ("capset") requires
+>> +host blob support (``hostmem`` and ``blob`` fields) and should be enabled
+>> +using ``drm`` field. The ``hostmem`` field specifies the size of virtio-gpu
+>> +host memory window. This is typically between 256M and 8G.
+>> +
+>> +.. parsed-literal::
+>> +    -device virtio-gpu-gl,hostmem=8G,blob=on,drm=on
+>> +
+>> +.. _drm: https://gitlab.freedesktop.org/virgl/virglrenderer/-/tree/main/src/drm
+>> +
+>>   virtio-gpu rutabaga
+>>   -------------------
+>>   
+>> diff --git a/hw/display/virtio-gpu-gl.c b/hw/display/virtio-gpu-gl.c
+>> index 53d938f23f20..bd0c0692a5c4 100644
+>> --- a/hw/display/virtio-gpu-gl.c
+>> +++ b/hw/display/virtio-gpu-gl.c
+>> @@ -159,6 +159,8 @@ static Property virtio_gpu_gl_properties[] = {
+>>                       VIRTIO_GPU_FLAG_STATS_ENABLED, false),
+>>       DEFINE_PROP_BIT("venus", VirtIOGPU, parent_obj.conf.flags,
+>>                       VIRTIO_GPU_FLAG_VENUS_ENABLED, false),
+>> +    DEFINE_PROP_BIT("drm", VirtIOGPU, parent_obj.conf.flags,
+>> +                    VIRTIO_GPU_FLAG_DRM_ENABLED, false),
+>>       DEFINE_PROP_END_OF_LIST(),
+>>   };
+>>   
+>> diff --git a/hw/display/virtio-gpu-virgl.c b/hw/display/virtio-gpu-virgl.c
+>> index 37b40e258398..89ca1878fb7c 100644
+>> --- a/hw/display/virtio-gpu-virgl.c
+>> +++ b/hw/display/virtio-gpu-virgl.c
+>> @@ -1232,6 +1232,19 @@ int virtio_gpu_virgl_init(VirtIOGPU *g)
+>>       if (virtio_gpu_venus_enabled(g->parent_obj.conf)) {
+>>           flags |= VIRGL_RENDERER_VENUS | VIRGL_RENDERER_RENDER_SERVER;
+>>       }
+>> +    if (virtio_gpu_drm_enabled(g->parent_obj.conf)) {
+>> +        flags |= VIRGL_RENDERER_DRM;
+>> +
+>> +        if (!gl->context_fence_enabled) {
+>> +            /*
+>> +             * Virglrenderer skips enabling DRM context support without
+>> +             * enabled async-fence feature. VirtIO-GPU will initialize
+>> +             * successfully, but DRM context won't be available in guest.
+>> +             */
+>> +            error_report("DRM native context requires EGL display");
+>> +            return -EINVAL;
+>> +        }
+>> +    }
+>>   #endif
+>>   
+>>       ret = virgl_renderer_init(g, flags, &virtio_gpu_3d_cbs);
+>> @@ -1294,5 +1307,14 @@ GArray *virtio_gpu_virgl_get_capsets(VirtIOGPU *g)
+>>           }
+>>       }
+>>   
+>> +    if (virtio_gpu_drm_enabled(g->parent_obj.conf)) {
+>> +        virgl_renderer_get_cap_set(VIRTIO_GPU_CAPSET_DRM,
+>> +                                   &capset_max_ver,
+>> +                                   &capset_max_size);
+>> +        if (capset_max_size) {
+>> +            virtio_gpu_virgl_add_capset(capset_ids, VIRTIO_GPU_CAPSET_DRM);
+>> +        }
+>> +    }
+>> +
+>>       return capset_ids;
+>>   }
+>> diff --git a/hw/display/virtio-gpu.c b/hw/display/virtio-gpu.c
+>> index c0570ef8565a..c1acafe6246b 100644
+>> --- a/hw/display/virtio-gpu.c
+>> +++ b/hw/display/virtio-gpu.c
+>> @@ -1492,6 +1492,21 @@ void virtio_gpu_device_realize(DeviceState *qdev, Error **errp)
+>>   #endif
+>>       }
+>>   
+>> +    if (virtio_gpu_drm_enabled(g->parent_obj.conf)) {
+>> +#ifdef VIRGL_VERSION_MAJOR
+>> +    #if VIRGL_VERSION_MAJOR >= 1
+>> +        if (!virtio_gpu_blob_enabled(g->parent_obj.conf) ||
+>> +            !virtio_gpu_hostmem_enabled(g->parent_obj.conf)) {
+>> +            error_setg(errp, "drm requires enabled blob and hostmem options");
+>> +            return;
+>> +        }
+>> +    #else
+>> +        error_setg(errp, "old virglrenderer, drm unsupported");
+>> +        return;
+>> +    #endif
+>> +#endif
+>> +    }
+>> +
+>>       if (!virtio_gpu_base_device_realize(qdev,
+>>                                           virtio_gpu_handle_ctrl_cb,
+>>                                           virtio_gpu_handle_cursor_cb,
+>> diff --git a/include/hw/virtio/virtio-gpu.h b/include/hw/virtio/virtio-gpu.h
+>> index 99cc6286f473..f1799fcb6eee 100644
+>> --- a/include/hw/virtio/virtio-gpu.h
+>> +++ b/include/hw/virtio/virtio-gpu.h
+>> @@ -98,6 +98,7 @@ enum virtio_gpu_base_conf_flags {
+>>       VIRTIO_GPU_FLAG_CONTEXT_INIT_ENABLED,
+>>       VIRTIO_GPU_FLAG_RUTABAGA_ENABLED,
+>>       VIRTIO_GPU_FLAG_VENUS_ENABLED,
+>> +    VIRTIO_GPU_FLAG_DRM_ENABLED,
+>>   };
+>>   
+>>   #define virtio_gpu_virgl_enabled(_cfg) \
+>> @@ -118,6 +119,8 @@ enum virtio_gpu_base_conf_flags {
+>>       (_cfg.hostmem > 0)
+>>   #define virtio_gpu_venus_enabled(_cfg) \
+>>       (_cfg.flags & (1 << VIRTIO_GPU_FLAG_VENUS_ENABLED))
+>> +#define virtio_gpu_drm_enabled(_cfg) \
+>> +    (_cfg.flags & (1 << VIRTIO_GPU_FLAG_DRM_ENABLED))
+>>   
+>>   struct virtio_gpu_base_conf {
+>>       uint32_t max_outputs;
 > 
 
-Now this series looks good to me.
-
-Reviewed-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 
