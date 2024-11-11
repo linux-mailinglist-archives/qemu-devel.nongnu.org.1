@@ -2,76 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD2CF9C4318
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Nov 2024 18:00:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E4F5B9C4328
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Nov 2024 18:04:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tAXkW-0002V8-9T; Mon, 11 Nov 2024 11:58:48 -0500
+	id 1tAXpH-0005st-Bk; Mon, 11 Nov 2024 12:03:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tAXkQ-0002UD-5G
- for qemu-devel@nongnu.org; Mon, 11 Nov 2024 11:58:43 -0500
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tAXpE-0005sM-El
+ for qemu-devel@nongnu.org; Mon, 11 Nov 2024 12:03:40 -0500
+Received: from mail-lf1-x129.google.com ([2a00:1450:4864:20::129])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tAXkO-000710-E6
- for qemu-devel@nongnu.org; Mon, 11 Nov 2024 11:58:41 -0500
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-4314f38d274so60026505e9.1
- for <qemu-devel@nongnu.org>; Mon, 11 Nov 2024 08:58:39 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tAXpC-0007g0-Vw
+ for qemu-devel@nongnu.org; Mon, 11 Nov 2024 12:03:40 -0500
+Received: by mail-lf1-x129.google.com with SMTP id
+ 2adb3069b0e04-539f76a6f0dso5310871e87.1
+ for <qemu-devel@nongnu.org>; Mon, 11 Nov 2024 09:03:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1731344318; x=1731949118; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=8AmOQtOa2eUZ3qI/PBB2peqkJbi3LdI1LBE4863rqZ4=;
- b=q24S8zNTvmo3C9ZRDiR33zHSSvwTjVUXjVvDNahRK/THMLRJ5rQJJczIOHyndJkAEc
- giE5hisNo6++vDJzO6bhlaQYgyTlaz9Q0z6kMayC9YJYvDrs6nhI/4MUoaiOMCC3xZsE
- TM83/SapIqEX6Dm8lDu5Hw1fOSjMJYnXiGmc/r/xViYxFCs+c6DumpAFJn4WnkA6nsvK
- +/9IIhKYB6JHVK0md+uT0ALbOPyIK1z8CTXFS334R7jwIpkt6XUsqS/CUcNtpM5jcGzF
- wj18GNQMkqLpGYPO147ydtITaxcyDqTCPf9nbbq6yXxYo9oUKBB+LCsyrB6btotXzSx9
- 7a6A==
+ d=linaro.org; s=google; t=1731344617; x=1731949417; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=tneVgwOxeXMOJV2em6Sql32Iu0L2oPoZoYGFpR4RHFQ=;
+ b=zl9Py3+M+FoFA4dSZJJjN7RhxvZV7yJY2AHdCsYbP7SBxkDPeGWkAdwjoVIn4M+Ub7
+ gLLVQzdBF71VJ97Js1/HrV+u/5RXLDbqeWAfSVk6eYLPjMdCsNaRQTts57DKognqitSt
+ l8O0R2Hm9rU1NMDPzJuKmBLkaxEiKEQ/OuFALvGIFJiE7wli3+8IE3P8dL4o57TdB5AM
+ PSTeSKd7IXNX9+v306Z/J6P3mmj9jCJohQe5DzUXqgOKFbAvFW8W2tPSOMVsyh9Lnu8K
+ l7CqnZHt37ET2clBVC3W+bP8VWGuWhJa//ZsfZ0ZKE4A6CpvyGmlOFLcWINJ/nZ0OePw
+ cl7w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731344318; x=1731949118;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=8AmOQtOa2eUZ3qI/PBB2peqkJbi3LdI1LBE4863rqZ4=;
- b=xVYiGLYoJ2699XLs4OBzxLtQNQxUZYlBA8HJBXsN16OFiGcGPLE4mpMIQ1xCglrE8H
- /V9rvVlfw/Jq6YGqNumNuhurDf70xOjtoWBJ46P7pO7nML9M1S7a/Jdv8zGHbz/pA10q
- TESHOp+AivDOGHcql3cWstHc3IPdg0wxZAGJ59rBDHBp2pQaDkWMoxMZjktrrmgB7cmn
- cIcZR7gfLDJKDp17b0CxV7rZIeR2D7hSvMtQ+UE1G0ySnJvFiKFy9ISQaMpX747Au2Sn
- e/DsuBGB7aPgP7afxFiBR3rUc2NarSe3+xwXKLuksQNxg69dzW+w8R7JhW/tXHtEGOWx
- ZNHw==
+ d=1e100.net; s=20230601; t=1731344617; x=1731949417;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=tneVgwOxeXMOJV2em6Sql32Iu0L2oPoZoYGFpR4RHFQ=;
+ b=jXpaJsfJH3rZZgq4ONaSUdK3NnjMNQrbalNHk1JjeS1GugyKKKYjVE5mDUTLFE6doG
+ TBn3InhRGIlXlgn/V5eKNrVB7ck0M7tZPomN+3TZ8lWn5eopfdEa8/6bEppw+VuCMDe5
+ mC/cQVpqTy/qjW1vNs6eB4fbbvJWz4dFIlQTutARxho+HEMKd1s0sUJs3oW1/2H9CdUP
+ rVRcipD/VrWwBEGv6aspKxWawjRqWb9Ddsprm/d9p+nbCE56uvfWVHUHr2JRRTNyaMKa
+ QlNtBOnoiTdIJl+tnxGbtc4phQNqMYeHG0NibqAUg4nD3vquDx8fjK0JRfjki+/5+U0N
+ +G7g==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVroG4Fqo2yWpfrUEciAzHMGSOfJ60HsJuGpsQpCpFDH4u8kO60Q0HZZuN6Al8/Ck8XIAchN92Sd7/y@nongnu.org
-X-Gm-Message-State: AOJu0YyponNphefchYBf1aZez3OzqFf3dEt4GzyimU4Hn0JdvynpDUPj
- X4oJa/+dO6V03RQp0FNCO19VNhvFq3QbdK7RBQ4+KQmsKnYTCmaaz0VUk3wLklg=
-X-Google-Smtp-Source: AGHT+IHbcRxfe9BdF4KZT+b2ny9kLf6U0vZd6f6Fh3i6WmZxtUuNzXMq9g/TN4a//7SY5/ubyVNTdg==
-X-Received: by 2002:a05:600c:4f4a:b0:431:9a26:3cf6 with SMTP id
- 5b1f17b1804b1-432b74fed4amr149921835e9.4.1731344318392; 
- Mon, 11 Nov 2024 08:58:38 -0800 (PST)
-Received: from [192.168.69.126] (vau06-h02-176-184-43-163.dsl.sta.abo.bbox.fr.
- [176.184.43.163]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-432aa6b3505sm215035645e9.15.2024.11.11.08.58.36
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 11 Nov 2024 08:58:37 -0800 (PST)
-Message-ID: <aeef7f22-1102-4d03-a473-564d65e29892@linaro.org>
-Date: Mon, 11 Nov 2024 17:58:35 +0100
+ AJvYcCUEJVteEIRhjTyKdgSVZUNT7kReXX/Xs9MKbGJADGvR+LIQkOuIt9aa7OwM29B2BwDA4uU4Wnq8mLgM@nongnu.org
+X-Gm-Message-State: AOJu0YyelEbopg9kmJwQE8+DaDrx9HH7UzT/O/auy8yWKdsZWLV+ocVc
+ 8bLYA+e4xlJJY+o22QPHZkQQcuRBvs+0/gHlQ2zhvygdhmfvX+encN+OMy5q0WA=
+X-Google-Smtp-Source: AGHT+IGfLnFqlqbWTJxLgMF3x0EK3XTwiNWJ1yjCQJ9EP9/TnuJadWqAN4VdgZOy3pi8+h1M1C/1qA==
+X-Received: by 2002:a05:6512:2256:b0:536:568f:c5ed with SMTP id
+ 2adb3069b0e04-53d8627ced8mr6197116e87.1.1731344616446; 
+ Mon, 11 Nov 2024 09:03:36 -0800 (PST)
+Received: from localhost.localdomain
+ (vau06-h02-176-184-43-163.dsl.sta.abo.bbox.fr. [176.184.43.163])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-432b05e5871sm182492055e9.37.2024.11.11.09.03.35
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Mon, 11 Nov 2024 09:03:35 -0800 (PST)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: Fabiano Rosas <farosas@suse.de>,
+	qemu-devel@nongnu.org
+Cc: Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
+ qemu-block@nongnu.org,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v2 0/2] block: Fix leak in send_qmp_error_event
+Date: Mon, 11 Nov 2024 18:03:31 +0100
+Message-ID: <20241111170333.43833-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.45.2
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] block: Fix leak in send_qmp_error_event
-To: Fabiano Rosas <farosas@suse.de>, qemu-devel@nongnu.org
-Cc: qemu-block@nongnu.org, Kevin Wolf <kwolf@redhat.com>,
- Hanna Reitz <hreitz@redhat.com>
-References: <20241111145214.8261-1-farosas@suse.de>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20241111145214.8261-1-farosas@suse.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::129;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x129.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,123 +93,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/11/24 14:52, Fabiano Rosas wrote:
-> ASAN detected a leak when running the ahci-test
-> /ahci/io/dma/lba28/retry:
-> 
-> Direct leak of 35 byte(s) in 1 object(s) allocated from:
->      #0 in malloc
->      #1 in __vasprintf_internal
->      #2 in vasprintf
->      #3 in g_vasprintf
->      #4 in g_strdup_vprintf
->      #5 in g_strdup_printf
->      #6 in object_get_canonical_path ../qom/object.c:2096:19
->      #7 in blk_get_attached_dev_id_or_path ../block/block-backend.c:1033:12
->      #8 in blk_get_attached_dev_path ../block/block-backend.c:1047:12
->      #9 in send_qmp_error_event ../block/block-backend.c:2140:36
->      #10 in blk_error_action ../block/block-backend.c:2172:9
->      #11 in ide_handle_rw_error ../hw/ide/core.c:875:5
->      #12 in ide_dma_cb ../hw/ide/core.c:894:13
->      #13 in dma_complete ../system/dma-helpers.c:107:9
->      #14 in dma_blk_cb ../system/dma-helpers.c:129:9
->      #15 in blk_aio_complete ../block/block-backend.c:1552:9
->      #16 in blk_aio_write_entry ../block/block-backend.c:1619:5
->      #17 in coroutine_trampoline ../util/coroutine-ucontext.c:175:9
-> 
-> Plug the leak by freeing the device path string.
-> 
-> Signed-off-by: Fabiano Rosas <farosas@suse.de>
-> ---
->   block/block-backend.c | 5 +++--
->   1 file changed, 3 insertions(+), 2 deletions(-)
-> 
-> diff --git a/block/block-backend.c b/block/block-backend.c
-> index 85bcdedcef..a3b7f00188 100644
-> --- a/block/block-backend.c
-> +++ b/block/block-backend.c
-> @@ -2134,13 +2134,14 @@ static void send_qmp_error_event(BlockBackend *blk,
->   {
->       IoOperationType optype;
->       BlockDriverState *bs = blk_bs(blk);
-> +    char *path = blk_get_attached_dev_path(blk);
+Respin of Fabiano patch using g_autofree,
+and clarifying method docstrings.
 
-Preferably using g_autofree,
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Fabiano Rosas (1):
+  block: Fix leak in send_qmp_error_event
 
->   
->       optype = is_read ? IO_OPERATION_TYPE_READ : IO_OPERATION_TYPE_WRITE;
-> -    qapi_event_send_block_io_error(blk_name(blk),
-> -                                   blk_get_attached_dev_path(blk),
-> +    qapi_event_send_block_io_error(blk_name(blk), path,
->                                      bs ? bdrv_get_node_name(bs) : NULL, optype,
->                                      action, blk_iostatus_is_enabled(blk),
->                                      error == ENOSPC, strerror(error));
-> +    g_free(path);
->   }
->   
->   /* This is done by device models because, while the block layer knows
+Philippe Mathieu-Daudé (1):
+  block: Improve blk_get_attached_dev_id() docstring
 
-Having read this patch, we should improve the doc for this methods.
-I'll post the following later:
+ include/sysemu/block-backend-io.h |  7 +++++++
+ block/block-backend.c             | 16 ++++++++++------
+ 2 files changed, 17 insertions(+), 6 deletions(-)
 
--- >8 --
-diff --git a/include/sysemu/block-backend-io.h 
-b/include/sysemu/block-backend-io.h
-index d174275a5c..ba8dfcc7d0 100644
---- a/include/sysemu/block-backend-io.h
-+++ b/include/sysemu/block-backend-io.h
-@@ -32,6 +32,13 @@ void blk_set_allow_aio_context_change(BlockBackend 
-*blk, bool allow);
-  void blk_set_disable_request_queuing(BlockBackend *blk, bool disable);
-  bool blk_iostatus_is_enabled(const BlockBackend *blk);
+-- 
+2.45.2
 
-+/*
-+ * Return the qdev ID, or if no ID is assigned the QOM path,
-+ * of the block device attached to the BlockBackend.
-+ *
-+ * The caller is responsible for releasing the value returned
-+ * with g_free() after use.
-+ */
-  char *blk_get_attached_dev_id(BlockBackend *blk);
-
-  BlockAIOCB *blk_aio_pwrite_zeroes(BlockBackend *blk, int64_t offset,
-diff --git a/block/block-backend.c b/block/block-backend.c
-index 85bcdedcef..6128012953 100644
---- a/block/block-backend.c
-+++ b/block/block-backend.c
-@@ -1019,6 +1019,10 @@ DeviceState *blk_get_attached_dev(BlockBackend *blk)
-      return blk->dev;
-  }
-
-+/*
-+ * The caller is responsible for releasing the value returned
-+ * with g_free() after use.
-+ */
-  static char *blk_get_attached_dev_id_or_path(BlockBackend *blk, bool 
-want_id)
-  {
-      DeviceState *dev = blk->dev;
-@@ -1033,15 +1037,15 @@ static char 
-*blk_get_attached_dev_id_or_path(BlockBackend *blk, bool want_id)
-      return object_get_canonical_path(OBJECT(dev)) ?: g_strdup("");
-  }
-
--/*
-- * Return the qdev ID, or if no ID is assigned the QOM path, of the block
-- * device attached to the BlockBackend.
-- */
-  char *blk_get_attached_dev_id(BlockBackend *blk)
-  {
-      return blk_get_attached_dev_id_or_path(blk, true);
-  }
-
-+/*
-+ * The caller is responsible for releasing the value returned
-+ * with g_free() after use.
-+ */
-  static char *blk_get_attached_dev_path(BlockBackend *blk)
-  {
-      return blk_get_attached_dev_id_or_path(blk, false);
----
 
