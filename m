@@ -2,76 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 498EA9C3888
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Nov 2024 07:42:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D3C59C388A
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Nov 2024 07:42:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tAO6k-0006lV-R7; Mon, 11 Nov 2024 01:41:07 -0500
+	id 1tAO6j-0006kB-1V; Mon, 11 Nov 2024 01:41:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1tAO6S-0006j5-0U
- for qemu-devel@nongnu.org; Mon, 11 Nov 2024 01:40:49 -0500
-Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
+ id 1tAO6U-0006jE-IK
+ for qemu-devel@nongnu.org; Mon, 11 Nov 2024 01:40:51 -0500
+Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1tAO6P-0000eL-Nt
- for qemu-devel@nongnu.org; Mon, 11 Nov 2024 01:40:47 -0500
-Received: by mail-pl1-x633.google.com with SMTP id
- d9443c01a7336-20c693b68f5so42156815ad.1
- for <qemu-devel@nongnu.org>; Sun, 10 Nov 2024 22:40:44 -0800 (PST)
+ id 1tAO6S-0000ec-LX
+ for qemu-devel@nongnu.org; Mon, 11 Nov 2024 01:40:50 -0500
+Received: by mail-pl1-x62d.google.com with SMTP id
+ d9443c01a7336-20cdbe608b3so41254435ad.1
+ for <qemu-devel@nongnu.org>; Sun, 10 Nov 2024 22:40:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1731307243; x=1731912043;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1731307247; x=1731912047;
  darn=nongnu.org; 
- h=cc:to:content-transfer-encoding:mime-version:message-id:date
- :subject:from:from:to:cc:subject:date:message-id:reply-to;
- bh=d8EInCBInFT9bMPoGZ81egh/E5CE0qOVnR6CTtbGXQA=;
- b=naO4sDDoA1EOJkLGsmyG8GbMGAzvduSbs2+6oFfCy3a067q7RFLldsc5hAyTpGLpKx
- zL/b9Zhgr4CQ3AfJL4wjP2Em5vFxqKLE8KDrhIWKPfeqhg1/PCdwwvFsTp1RRnFCaDUP
- DV0M+eIpylPOF7qjVdQ9jEa86VCdymGm0T8uTFPvoW7UMDPRrh9AgzOGtC1HhBedCR4C
- Xl0sJECWEVc/lWnNcJewOS+MNB96oAuOr5qKctZSQZcTdhgAJOpLyRMUf4hqyBUV0FOw
- 8j6lZqqP+OBPcmmZSoVwm4pUkbwkGbHRZGpnEzpXAm81VefjlcM7ZJdcglhAymuL8GmM
- DsYg==
+ h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+ :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=Pcm3TKfU601RmQ0HaOlFX8GbZkHqQu7xV7Of6HtMoeg=;
+ b=EvCnIlpKLaEdDxaAhXv3vQRk0TX07Mg5SwaSNUU5EXSmvhZHG1yFxMTtIH2sO2TzYA
+ /kcURRUpKzBBBXpCC1p1Uv+v6oPRcpSPeuj2m9augUlSvpLAPegSZbZ8zklmCMxva7hO
+ VG4+HMu0MR14rgJNthxXX0XgRiZ1Nc69+j+KnBe//zg4Vka5HcmxuK9rITgEzHFmMN3M
+ nvd2EwaQqA6hnaejjTdnRicMK+bRXysCGk8LETMYpXmjWGa9cy7oI0z9fzuhD1U8sp98
+ laPygwQZX1cl98x3v8wAP8RnLSJ5WeYPOYAX+WKlWpwslHSkBeLs2F6us+98Mq0k38hj
+ DVtQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731307243; x=1731912043;
- h=cc:to:content-transfer-encoding:mime-version:message-id:date
- :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=d8EInCBInFT9bMPoGZ81egh/E5CE0qOVnR6CTtbGXQA=;
- b=gz21bWXAhmNE88Mqomn7+3c7kbLgUMZFLBw7Y8dikLOZwLvOcP3ZRdvUcivGxDQEO9
- NjDyDm3dGR2En24nn/T+OpLwic5oHXpj7r+S3a0yQnw/gzfi0By6IjcybNccv7QTqmpM
- 8RIoSonCwldy8dd8vF3ngnV54QTTtTORbr7Z0xNIGUPEnPK3yh/p4NsnuLHEzF+KXhJ7
- ERfKlCthIf+bO0ed1cAYV15lxuRBbuy5YgNiu2KA6Z3GkEIY6P0/sQaPUD8QtpE7f224
- z3QHXKdIjbnfPEuCiB/F+UNjMbcFN+df3CBangOcEWrvEUgNW1JiXRtxvUMRLc4wympO
- 9Y+w==
-X-Gm-Message-State: AOJu0YzhU1wkt1JrzaDIE2z48NkWyug8lwuOSomVg57HRucfBe1Dtj/9
- UVaoMd1z0vHXKH95BloqgbsZa3L15WIIT7yfYNU7uu473UNqzeCJIA1qSQ28J+s=
-X-Google-Smtp-Source: AGHT+IFZqCM70kzWoSmN5/3+XyUY32emKQ8Vlw76RaTRJOYPU6rGuPenp6M9X0HCyCH4PCZBVS/Jdg==
-X-Received: by 2002:a17:90b:4d07:b0:2e2:bd10:599d with SMTP id
- 98e67ed59e1d1-2e9b16950d9mr15904624a91.11.1731307243289; 
- Sun, 10 Nov 2024 22:40:43 -0800 (PST)
+ d=1e100.net; s=20230601; t=1731307247; x=1731912047;
+ h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+ :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=Pcm3TKfU601RmQ0HaOlFX8GbZkHqQu7xV7Of6HtMoeg=;
+ b=ie/OoBI63t/ph878rdmGbK5Sss6EKwOeWSDwpqcDJM0X7ZHQyRIuE6ZmmKbtIftXyH
+ E9+prr7enz2nAuLkkSPTpqVr/IsNRSOa5VBOkYUcMO2uYUPKjKjsuD5EsvS+3OZREPYb
+ A52b5cfmDQ4Po6zYuLiKiPnwwrDEzky7QwncC6VqjndZuO1gV0aZqRqwnYFntiglF+gY
+ UCO1XCRn1Otkt/24a0aBxKLtNPGg/YputN0U/AuPMkQnP4VXQL5Kux606XZ1qsrBefIO
+ TgsBf/v+NcObtOQxXiWH1pIrUQEMd269wWr+lyhQ4HudgXLCOme9IslU/S7k8/lcm4Il
+ o/kQ==
+X-Gm-Message-State: AOJu0YwLx3o/J6ZFwooLebnzC+m5E3bGNAfAfWU0ACapvsEnivTWEeS0
+ 9AGGdx2mOpycBY5+dvHFi7hPcH3K/1p+wbYG+RL6g+7bXpzZ0aQldKioPiAzN+U=
+X-Google-Smtp-Source: AGHT+IFG+NV9N7pZBuK0NILGjfQCnzQXU937TWZovCxgRrjEZt4rZSfXFO5Xyw8qXEi8aHtdEX1Apg==
+X-Received: by 2002:a17:903:298c:b0:20c:ee32:759f with SMTP id
+ d9443c01a7336-211835d8bc0mr173901275ad.39.1731307247144; 
+ Sun, 10 Nov 2024 22:40:47 -0800 (PST)
 Received: from localhost ([157.82.207.107])
  by smtp.gmail.com with UTF8SMTPSA id
- 98e67ed59e1d1-2e99a541da0sm11103276a91.13.2024.11.10.22.40.41
+ d9443c01a7336-21177dc7de7sm69635665ad.47.2024.11.10.22.40.45
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 10 Nov 2024 22:40:42 -0800 (PST)
+ Sun, 10 Nov 2024 22:40:46 -0800 (PST)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PATCH v2 0/6] virtio-net fixes
-Date: Mon, 11 Nov 2024 15:40:17 +0900
-Message-Id: <20241111-queue-v2-0-2f7883a1004f@daynix.com>
+Date: Mon, 11 Nov 2024 15:40:18 +0900
+Subject: [PATCH v2 1/6] net: checksum: Convert data to void *
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIANGmMWcC/y3MQQ6DIBCF4auYWZcGEEvoqvdoXKgMdRaVCpVoD
- HcvNS5m8U9evh0iBsII92qHgIki+amEvFQwjN30Qka2NEguFTdcs3nBBZlTsjG17nTNHZTtJ6C
- j9XCebemR4teH7WCT+H9PQTSnkATjrFemt+WMvNmH7baJ1uvg39DmnH9D+w7ImwAAAA==
+Message-Id: <20241111-queue-v2-1-2f7883a1004f@daynix.com>
+References: <20241111-queue-v2-0-2f7883a1004f@daynix.com>
+In-Reply-To: <20241111-queue-v2-0-2f7883a1004f@daynix.com>
 To: Jason Wang <jasowang@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>
 Cc: qemu-devel@nongnu.org, devel@daynix.com, 
- Akihiko Odaki <akihiko.odaki@daynix.com>, qemu-stable@nongnu.org
+ Akihiko Odaki <akihiko.odaki@daynix.com>
 X-Mailer: b4 0.14-dev-fd6e3
-Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x633.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x62d.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -93,44 +92,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Most of this series are fixes for software RSS and hash reporting, which
-should have no production user.
-
-However there is one exception; patch "virtio-net: Fix size check in
-dhclient workaround" fixes an out-of-bound access that can be triggered
-for anyone who don't use vhost. It has Cc: qemu-stable@nongnu.org and
-can be applied independently.
+Convert the data parameter of net_checksum_calculate() to void * to
+save unnecessary casts for callers.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
-Changes in v2:
-- Dropped patch "virtio-net: Fix num_buffers for version 1" in favor of
-  fixing the spec. See:
-  https://lore.kernel.org/r/CACGkMEt0spn59oLyoCwcJDdLeYUEibePF7gppxdVX1YvmAr72Q@mail.gmail.com
-- Added a Buglink to patch
-  "virtio-net: Fix hash reporting when the queue changes".
-- Rebased.
-- Link to v1: https://lore.kernel.org/r/20240915-queue-v1-0-b49bd49b926d@daynix.com
+ include/net/checksum.h | 2 +-
+ net/checksum.c         | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
----
-Akihiko Odaki (6):
-      net: checksum: Convert data to void *
-      virtio-net: Fix size check in dhclient workaround
-      virtio-net: Do not check for the queue before RSS
-      virtio-net: Fix hash reporting when the queue changes
-      virtio-net: Initialize hash reporting values
-      virtio-net: Copy received header to buffer
+diff --git a/include/net/checksum.h b/include/net/checksum.h
+index 7dec37e56c78..188e4cca0b7f 100644
+--- a/include/net/checksum.h
++++ b/include/net/checksum.h
+@@ -30,7 +30,7 @@ uint32_t net_checksum_add_cont(int len, uint8_t *buf, int seq);
+ uint16_t net_checksum_finish(uint32_t sum);
+ uint16_t net_checksum_tcpudp(uint16_t length, uint16_t proto,
+                              uint8_t *addrs, uint8_t *buf);
+-void net_checksum_calculate(uint8_t *data, int length, int csum_flag);
++void net_checksum_calculate(void *data, int length, int csum_flag);
+ 
+ static inline uint32_t
+ net_checksum_add(int len, uint8_t *buf)
+diff --git a/net/checksum.c b/net/checksum.c
+index 1a957e4c0b10..537457d89d07 100644
+--- a/net/checksum.c
++++ b/net/checksum.c
+@@ -57,7 +57,7 @@ uint16_t net_checksum_tcpudp(uint16_t length, uint16_t proto,
+     return net_checksum_finish(sum);
+ }
+ 
+-void net_checksum_calculate(uint8_t *data, int length, int csum_flag)
++void net_checksum_calculate(void *data, int length, int csum_flag)
+ {
+     int mac_hdr_len, ip_len;
+     struct ip_header *ip;
+@@ -101,7 +101,7 @@ void net_checksum_calculate(uint8_t *data, int length, int csum_flag)
+         return;
+     }
+ 
+-    ip = (struct ip_header *)(data + mac_hdr_len);
++    ip = (struct ip_header *)((uint8_t *)data + mac_hdr_len);
+ 
+     if (IP_HEADER_VERSION(ip) != IP_HEADER_VERSION_4) {
+         return; /* not IPv4 */
 
- include/net/checksum.h |   2 +-
- hw/net/virtio-net.c    | 108 +++++++++++++++++++++++++++----------------------
- net/checksum.c         |   4 +-
- 3 files changed, 63 insertions(+), 51 deletions(-)
----
-base-commit: 7e3b6d8063f245d27eecce5aabe624b5785f2a77
-change-id: 20240907-queue-f425937a730f
-
-Best regards,
 -- 
-Akihiko Odaki <akihiko.odaki@daynix.com>
+2.47.0
 
 
