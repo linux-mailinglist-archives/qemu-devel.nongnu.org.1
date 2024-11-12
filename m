@@ -2,87 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C9899C5A81
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Nov 2024 15:37:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A42999C5A8B
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Nov 2024 15:39:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tAs0O-0000RT-IZ; Tue, 12 Nov 2024 09:36:32 -0500
+	id 1tAs2b-0001A0-Fe; Tue, 12 Nov 2024 09:38:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tAs0I-0000MI-GK
- for qemu-devel@nongnu.org; Tue, 12 Nov 2024 09:36:26 -0500
-Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tAs0H-0000Ea-2x
- for qemu-devel@nongnu.org; Tue, 12 Nov 2024 09:36:26 -0500
-Received: by mail-pf1-x42b.google.com with SMTP id
- d2e1a72fcca58-71e8235f0b6so4790835b3a.3
- for <qemu-devel@nongnu.org>; Tue, 12 Nov 2024 06:36:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1731422183; x=1732026983; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=x886+rp6KvccbKprmkYzQc4c4qH5gn/nioBAMMQaMTs=;
- b=wzWhvMn1LLAq1OREGdZ9EQdfBp4QoNp7MQJKUkmpZKx4kBNBIDY7tWqWRHWVDD+BNS
- J3Ov6sdMbDmBjoAWzJV/7NtQjJKMW+qVZKAE3ib5qp8jvmOMZFN2YtaEv6ie1td6BvzJ
- bZhS+KovG0GCorjJYxDKky1Kx+yIduemlH/SOJ3WDQ9HkBmY9itdIusqJ81AHv+o9yza
- sVEsflj3hJoUAEMPbkRAQRMqAcNwilu4BxclwlE1fN6edTFlIzYeC+ROoa/vmsRXuyqU
- GXUcv3xoQHEi1itcACaWEJ5PBNSaT52NTRky09XVabiwBBf5/dhofTc5Rfk16uOPZlgm
- V/hg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731422183; x=1732026983;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=x886+rp6KvccbKprmkYzQc4c4qH5gn/nioBAMMQaMTs=;
- b=oWWYnKUJiSlwlB1SBhPYPaBCqkA+bRxtjZmfd82OVe4uE8oBmHyLGOz+GxBAK6yq71
- /XatCt3Qk39ZGTNK/o+TH1xJKlzcw68rV9EqfVczPrdyV0xgfZYK5GtyXYR+J0RYC6gI
- kBaes/G6NM3aHBn35fj9rR4zFOB3SjZTtVc7+zUqbZsSrJpr4AAyozDjfQXeU3a67z6c
- HdH3TR9HakLMlM39MG6Zkg/K1Lo5diNTCOavzIQMVbDV/XYODtGIFT+pw76ZnlEMr4Uy
- Ox7fg08PnJELHivwQVvPYNkQ9a6WD/LseE7trTWLGOPol2GZzrL/1/hpsxmWZULd6gzJ
- BdmQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXs8GZP8x8g7WpOUfMRVJ1Mjg3x7sFIGJyE/MnOhvTy6zI74kXTYpglVkjiwrRdx44HDYGYmBrUfY5Q@nongnu.org
-X-Gm-Message-State: AOJu0YwqRPs+oZYtugT4YA42qGHxUUHnMj470n8foRDB/U/Uqrs9h4Q8
- ZqqF7K2ktD3c6J/ZNKQNThT76f4AEdPhiieZxZ0MpfENsy9UVYS4EUNKuNYoKjM=
-X-Google-Smtp-Source: AGHT+IH04zWtSZ+PJfc08phtlGQ6bN0Vzm7tyhRrf9a/bAxR+2erf8qiilFH/spbc5wPgJ0el0H/EQ==
-X-Received: by 2002:a05:6a20:3d87:b0:1db:9367:d018 with SMTP id
- adf61e73a8af0-1dc229d6d4dmr24781109637.20.1731422183610; 
- Tue, 12 Nov 2024 06:36:23 -0800 (PST)
-Received: from [192.168.52.227] (wsip-24-120-228-34.lv.lv.cox.net.
- [24.120.228.34]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7240799babesm11109821b3a.111.2024.11.12.06.36.22
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 12 Nov 2024 06:36:23 -0800 (PST)
-Message-ID: <09a587f5-4727-4d2e-9e80-ef158d86318a@linaro.org>
-Date: Tue, 12 Nov 2024 06:36:20 -0800
+ (Exim 4.90_1) (envelope-from <ivan.klokov@syntacore.com>)
+ id 1tAs2X-00019C-F8; Tue, 12 Nov 2024 09:38:46 -0500
+Received: from mta-03.yadro.com ([89.207.88.253])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <ivan.klokov@syntacore.com>)
+ id 1tAs2V-0000OF-Gl; Tue, 12 Nov 2024 09:38:45 -0500
+DKIM-Filter: OpenDKIM Filter v2.11.0 mta-03.yadro.com CB68DE0002
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=syntacore.com;
+ s=mta-04; t=1731422314;
+ bh=gROn1cEJ7NEAs7MLcq2gpRDzWtiIjqPpmcsTBUo98ds=;
+ h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:From;
+ b=z/gmvgoxGmwim7nI/Akf+uShAd4sZ8NHw70dJet1z/dlKehSu2LUR3WFJ3/QF2hbs
+ +KHWEhe6rq9llT0Ols+YIRzS97B2/D7wlEkHPpQXtpGFpyTGIXMQPFGWGpne8UpGoL
+ dQxmdas/SS3OUezvqQT/jIvl62fkPESC1aiUYyo4YSTBiMiAr42srba5tY6mOYwJGZ
+ KUKEG12d1ODJlAEwE+Hvt/gzreUTLptkcmXCWaD7dYw6/yOcbbl0xhNZJ3E2BDZHEl
+ 8R2POObsm/g2+uIrMk/LavLK6wNwiTWkSNWd9GntKYPnU4yGOxXUWFefqNXbVpGl/j
+ TnOwlQBK8f9Cg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=syntacore.com;
+ s=mta-03; t=1731422314;
+ bh=gROn1cEJ7NEAs7MLcq2gpRDzWtiIjqPpmcsTBUo98ds=;
+ h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:From;
+ b=EzqFSO93OxHBC/6dyTGRnOPowNoDbFukmUdEPd8dxejt6AQ+T/kJw/GOeR9/PX3vf
+ ibMTZvjv9GWVys5Wlknko5LiSM5ud5f5iALDkyiURLWCyMuQ3XzarE+NOWMpqy1S9A
+ SgU35iOli1r+pIESIAJmfqfEQouxNhY0k3vp5xXHjPw9G4b6MllIhSV5utLLqR5qxg
+ FZ7oAstC5iC0ISBtMKUhCWgQyv7AD23aTb5fY/8M4ehiC2QmdhdP6MwL8d1jA+RMuz
+ zj/LW9DsGdGMAfHjA2qmdIMxzK9ARCm22QfG5HKQr97qcw3iFR+PlW5CZh1BGKQWK3
+ cayWPCbIJTDSA==
+From: Ivan Klokov <ivan.klokov@syntacore.com>
+To: <qemu-devel@nongnu.org>
+CC: <qemu-riscv@nongnu.org>, <palmer@dabbelt.com>, <alistair.francis@wdc.com>, 
+ <bmeng.cn@gmail.com>, <liwei1518@gmail.com>, <dbarboza@ventanamicro.com>, 
+ <zhiwei_liu@linux.alibaba.com>, <farosas@suse.de>, <lvivier@redhat.com>,
+ <pbonzini@redhat.com>, Ivan Klokov <ivan.klokov@syntacore.com>
+Subject: [RFC PATCH v6 0/2] Support RISC-V CSR read/write in Qtest environment
+Date: Tue, 12 Nov 2024 17:38:24 +0300
+Message-ID: <20241112143826.88130-1-ivan.klokov@syntacore.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/3] target/mips: Convert Octeon LX instructions to
- decodetree
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org, Pavel Dovgalyuk <pavel.dovgalyuk@ispras.ru>
-Cc: Aleksandar Rikalo <arikalo@gmail.com>,
- Aurelien Jarno <aurelien@aurel32.net>, Jiaxun Yang <jiaxun.yang@flygoat.com>
-References: <20241111222936.59869-1-philmd@linaro.org>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20241111222936.59869-1-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42b;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42b.google.com
+Content-Type: text/plain
+X-ClientProxiedBy: T-Exch-05.corp.yadro.com (172.17.10.109) To
+ S-Exch-01.corp.yadro.com (10.78.5.241)
+Received-SPF: permerror client-ip=89.207.88.253;
+ envelope-from=ivan.klokov@syntacore.com; helo=mta-03.yadro.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, T_SPF_PERMERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,26 +76,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/11/24 14:29, Philippe Mathieu-Daudé wrote:
-> Hi,
-> 
-> Few old patches lingering on an old branch I'm trying to rebase...
-> 
-> Extract gen_lx() and call it via decodetree. Trivial IMHO.
-> 
-> Philippe Mathieu-Daudé (3):
->    target/mips: Extract gen_base_index_addr() helper
->    target/mips: Extract generic gen_lx() helper
->    target/mips: Convert Octeon LX instructions to decodetree
-> 
->   target/mips/tcg/translate.h        |  2 +
->   target/mips/tcg/octeon.decode      |  8 +++
->   target/mips/tcg/octeon_translate.c | 12 +++++
->   target/mips/tcg/translate.c        | 78 +++++++++++-------------------
->   4 files changed, 51 insertions(+), 49 deletions(-)
-> 
+These patches add functionality for unit testing RISC-V-specific registers.
+The first patch adds a Qtest backend, and the second implements a simple test.
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+---
+v6:
+   - Refactor code and fix checkpatch errors.
+---
 
-r~
+Ivan Klokov (2):
+  target/riscv: Add RISC-V CSR qtest support
+  tests/qtest: QTest example for RISC-V CSR register
+
+ hw/riscv/riscv_hart.c        | 55 +++++++++++++++++++++++++++++++++++
+ tests/qtest/libqtest.c       | 27 +++++++++++++++++
+ tests/qtest/libqtest.h       | 14 +++++++++
+ tests/qtest/meson.build      |  2 +-
+ tests/qtest/riscv-csr-test.c | 56 ++++++++++++++++++++++++++++++++++++
+ 5 files changed, 153 insertions(+), 1 deletion(-)
+ create mode 100644 tests/qtest/riscv-csr-test.c
+
+-- 
+2.34.1
+
 
