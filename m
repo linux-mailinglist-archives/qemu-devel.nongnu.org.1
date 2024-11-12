@@ -2,104 +2,172 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 659679C5C97
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Nov 2024 16:59:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DD0DA9C5D4E
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Nov 2024 17:31:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tAtHe-0002LV-DR; Tue, 12 Nov 2024 10:58:26 -0500
+	id 1tAtlM-00039Z-8X; Tue, 12 Nov 2024 11:29:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <chalapathi.v@linux.ibm.com>)
- id 1tAtHN-0002Ke-6g; Tue, 12 Nov 2024 10:58:10 -0500
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <Babu.Moger@amd.com>)
+ id 1tAtlJ-00038p-P6
+ for qemu-devel@nongnu.org; Tue, 12 Nov 2024 11:29:05 -0500
+Received: from mail-dm6nam11on2041.outbound.protection.outlook.com
+ ([40.107.223.41] helo=NAM11-DM6-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <chalapathi.v@linux.ibm.com>)
- id 1tAtHL-0001eE-90; Tue, 12 Nov 2024 10:58:08 -0500
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4ACFeCwo003041;
- Tue, 12 Nov 2024 15:58:03 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=pp1; bh=RsHom+cV/PCnrj3ze
- xPa05UgTEsdBBRlm3sBdGiz7d0=; b=I0OZs7U57s5lkjXebx29S2Q+m3Jk4Cpvj
- d1s69V/+NthX/9c3wp8K54NoM9XQ5EX7vH5G7R3fry9xc2pJsRkMFpOQUjxMLjwW
- QmCfXOCfjzPXEPAKDMaCdR3NgaL81N3LRWZk97Kc/CtbLB98S7LB5+4hYYuPbH+S
- k+K/nr72cj1+jVrv1AGjHfjiHbDL105mtFOopk4eGfujJ1EHOqMAU/iCnMr54WhK
- uodJ8nfYr3XOj7jTD2KrPm1Rm9feQvTzG8DgZX+J5RI8KDLvWtb0OVqs8sv7omV8
- 6UveXOE7giu617iRUgUzHCSC5JflL5D+iSbvypyKRTpSj4TxHtFSA==
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42v9uy82gh-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 12 Nov 2024 15:58:02 +0000 (GMT)
-Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
- by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 4ACFrkmS001348;
- Tue, 12 Nov 2024 15:58:02 GMT
-Received: from ppma23.wdc07v.mail.ibm.com
- (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42v9uy82ge-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 12 Nov 2024 15:58:02 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4ACFvoR7029698;
- Tue, 12 Nov 2024 15:58:01 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
- by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 42tkjktf99-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 12 Nov 2024 15:58:01 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com
- [10.20.54.101])
- by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 4ACFvqgO18940380
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 12 Nov 2024 15:57:52 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4E4A520043;
- Tue, 12 Nov 2024 15:57:52 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 2982220040;
- Tue, 12 Nov 2024 15:57:50 +0000 (GMT)
-Received: from gfwr515.rchland.ibm.com (unknown [9.10.239.103])
- by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Tue, 12 Nov 2024 15:57:49 +0000 (GMT)
-From: Chalapathi V <chalapathi.v@linux.ibm.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-ppc@nongnu.org, fbarrat@linux.ibm.com, npiggin@gmail.com,
- clg@kaod.org, calebs@linux.ibm.com, chalapathi.v@ibm.com,
- chalapathi.v@linux.ibm.com, saif.abrar@linux.ibm.com,
- dantan@linux.vnet.ibm.com, milesg@linux.ibm.com, philmd@linaro.org,
- alistair@alistair23.me
-Subject: [PATCH v4 2/2] hw/ssi/pnv_spi: Coverity CID 1558827: Use local var
- seq_index instead of get_seq_index().
-Date: Tue, 12 Nov 2024 09:57:39 -0600
-Message-Id: <20241112155739.4447-3-chalapathi.v@linux.ibm.com>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20241112155739.4447-1-chalapathi.v@linux.ibm.com>
-References: <20241112155739.4447-1-chalapathi.v@linux.ibm.com>
-MIME-Version: 1.0
+ (Exim 4.90_1) (envelope-from <Babu.Moger@amd.com>)
+ id 1tAtlG-0005c3-8W
+ for qemu-devel@nongnu.org; Tue, 12 Nov 2024 11:29:05 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=oEpba5DWHJdbV3vFkb87PBVDkM8xED8AWuWyyYZXWMNmYCKkj3DVGJugKMX4RcSLLbR7HyZm7Q019/kufb64guLez0Xc9+jeuloAvMOcVceGBUgDEypzg9Dp8MM0SbnP8W3ArNZOnAhOTZhLR9WN67uKFg1elzsxTINPlV8V+SIgI6wQIIFMQHLErpOb8k/a8ZZlxjoam2UAHrE1xiXHDc0sm7W+4SALELjh6wGC2gopuSwLkBYtfTxSjrrYJGkmgIRptK4qw37J9qXLCESQkL+5p8LRCHlzWLtcNZm5qghXhjJlFXD2MKeAVa6S8fWEeYVeYRRl6lfV39Hor/31xg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ycr+2cYAwCIKToCiUnwg6cEAHHJ9NRFyA3HizlIVPA4=;
+ b=G8Qs7wIblMubgEvqHIY0nvPrJ69oqH4QHa/t1ThkFAqNRHuxspBAlWrkk/0ecEYwxzf1N6nTwdbyLMWqJ/o/NKgV3quZz0gnfZcMf6vCodMWhNwCO1w25p5RinaDg4FtBuTM35YgTi6rIT3ck4TDEuwIsNXpTyYYv/FZpCZVxVczSdaugNnJf50KvvoRFSbq6r08QBpeNBgT+CjJnXELCuw1Kw6hcvxsD6itAUNLrxucIq/H1np5hFUR4zyYO71LY44X/dJHVcCFldxbE+xKLSGQXgVMtuNgf3xi4HBIKspv1dqebwOcF5k57mzjwDMXl25isfS8bcInI9mPvylecQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ycr+2cYAwCIKToCiUnwg6cEAHHJ9NRFyA3HizlIVPA4=;
+ b=gXYV+U56miXf0WxmZ/RT+iynBfkmyi6CJQD4FcjjFws+X8WwDZxK0djB4UqcG3IxlkOywOT+D0sMjwZG2rGBk15QcHhMDh6l7gFnP2Dgb35TQ/l/6yiVZqf8nqU/j2TKWCoO3Lozu6Njfjdaf1IDsbU3Vgp8FdOBltRZ12KXZis=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from MW3PR12MB4553.namprd12.prod.outlook.com (2603:10b6:303:2c::19)
+ by CY5PR12MB6406.namprd12.prod.outlook.com (2603:10b6:930:3d::18)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8137.28; Tue, 12 Nov
+ 2024 16:23:55 +0000
+Received: from MW3PR12MB4553.namprd12.prod.outlook.com
+ ([fe80::b0ef:2936:fec1:3a87]) by MW3PR12MB4553.namprd12.prod.outlook.com
+ ([fe80::b0ef:2936:fec1:3a87%5]) with mapi id 15.20.8137.022; Tue, 12 Nov 2024
+ 16:23:55 +0000
+Message-ID: <7f7bf82f-c550-48c8-af38-e0992829f57d@amd.com>
+Date: Tue, 12 Nov 2024 10:23:50 -0600
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 7/7] target/i386: Add EPYC-Genoa model to support Zen 4
+ processor series
+To: Maksim Davydov <davydov-max@yandex-team.ru>
+Cc: weijiang.yang@intel.com, philmd@linaro.org, dwmw@amazon.co.uk,
+ paul@xen.org, joao.m.martins@oracle.com, qemu-devel@nongnu.org,
+ mtosatti@redhat.com, kvm@vger.kernel.org, mst@redhat.com,
+ marcel.apfelbaum@gmail.com, yang.zhong@intel.com, jing2.liu@intel.com,
+ vkuznets@redhat.com, michael.roth@amd.com, wei.huang2@amd.com,
+ berrange@redhat.com, bdas@redhat.com, pbonzini@redhat.com,
+ richard.henderson@linaro.org
+References: <20230504205313.225073-1-babu.moger@amd.com>
+ <20230504205313.225073-8-babu.moger@amd.com>
+ <e8e0bc10-07ea-4678-a319-fc8d6938d9bd@yandex-team.ru>
+ <4b38c071-ecb0-112b-f4c4-d1d68e5db63d@amd.com>
+ <24462567-e486-4b7f-b869-a1fab48d739c@yandex-team.ru>
+Content-Language: en-US
+From: "Moger, Babu" <babu.moger@amd.com>
+In-Reply-To: <24462567-e486-4b7f-b869-a1fab48d739c@yandex-team.ru>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: PXwOKOlqX8Q6qwR0YUDUuSzXkq0bKPpP
-X-Proofpoint-GUID: dcWYGF_9Q44wa0WqZ1e3qOyiWJ_0-Owb
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 mlxscore=0
- suspectscore=0 phishscore=0 priorityscore=1501 impostorscore=0
- mlxlogscore=852 bulkscore=0 malwarescore=0 adultscore=0 lowpriorityscore=0
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2409260000 definitions=main-2411120125
-Received-SPF: pass client-ip=148.163.158.5;
- envelope-from=chalapathi.v@linux.ibm.com; helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
+X-ClientProxiedBy: SA1P222CA0145.NAMP222.PROD.OUTLOOK.COM
+ (2603:10b6:806:3c2::29) To MW3PR12MB4553.namprd12.prod.outlook.com
+ (2603:10b6:303:2c::19)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MW3PR12MB4553:EE_|CY5PR12MB6406:EE_
+X-MS-Office365-Filtering-Correlation-Id: 52dbbfb1-92ae-41c5-2123-08dd033666af
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|7416014|366016|376014;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?WnYxWU1rK2YvblFTalBMZmJPcytrUTZYbXdYdUcrZnprUUhiajUwS0lVY05j?=
+ =?utf-8?B?cGg3TlFENjQwajdnOG5ndmtGRXNmS3Rwd1U3TU8weTVlVy9WYTQ4K2tSY1J2?=
+ =?utf-8?B?NUtWVldhT2ROd0pTcm54OVBpekFhUVBYVzJXb1M1cFRwZG91bTV0TXRRTkpC?=
+ =?utf-8?B?enVCRUh4NXFBSVNsS1ppUDlvd0lpaUFtOCtIcXdTWXZSTUtqMUNuMFlUeVVv?=
+ =?utf-8?B?S1hvdXBJYmtlalJLeDY5cVZKdk5IMlRGKzBqOS9HZEx6WStIUDBINGFiT3Fk?=
+ =?utf-8?B?NmZPZmluVGlwUTAzcUVCTTdjQTMwNlRzM1A0ZmJRQXh5dUcvOU4yZHFWOWV6?=
+ =?utf-8?B?a2d0SDB2ZmZtSEhhNnNEQW5lLytpTjdudEhORXo1WVVSRXpWRFlIOTBpUS8y?=
+ =?utf-8?B?ckM5RHB6T2JEZVhJTnpmTVdpUUxRYURWSlB2cTdsTG9leG12eGxHenFmNlBI?=
+ =?utf-8?B?TlNDUTk2QkdlTjYvM3c5ZzBHZDlHYXYrZkxyakpRUjA3K1krcEJ2SHN6ZUoz?=
+ =?utf-8?B?cXJhbkVBem9uNzlBMmNmOWw2UFI0TUhHcXMxOE5hamk5eGRHWFY3akFLWjh2?=
+ =?utf-8?B?RURrdzh0emNqRU45VUR3TnkrU1ZuOFNWaFdFeFZQRmRObmduRmdtUEpENEZu?=
+ =?utf-8?B?dlpPUTVPcEFnRUVnTHBjUVZvQUhDOE1qOHBNcUkyN1BXdjU3WTltcFRzVVFG?=
+ =?utf-8?B?TzNQTXNLVkRkbU9qZEhOVitaaUdhbVZQRzVTZCtzUlo2NFFlN01jSmd3TDNP?=
+ =?utf-8?B?VE92QjBUTmV2UEhFR3B5K254eVgwNFh2OVhDOXFLREVwUnE0a2hLekJUWCtQ?=
+ =?utf-8?B?cUpDem54dXhWN0FwRW9mcFJGL0RBMkFORnpPaFJSWkxRTFRNMkZkRlZYbkRH?=
+ =?utf-8?B?aExHSXFTdU5MejdlbmlrRzNhN2dQMTRsR3JCOXpjbFRHdUltd2ZQV21qTWE5?=
+ =?utf-8?B?bHUxdFlna01hVnlRUDg5RHExOVJ0ZUFWVDlIV053eUlCYmFtVzZMQ2pBYXdn?=
+ =?utf-8?B?WlU0UWIvRGZqei9WUCtQVGpmUVpBLzNmRm9WcFZoTkppR1J5M1hjVVNOdFZ5?=
+ =?utf-8?B?UW9aRHc1c1hqY0pXa1RYY0g5Rk1lYzBpc3E4Z1hxdWVTWGViem5nL3ByZFVZ?=
+ =?utf-8?B?aUdLUndObmpueGt6L2M5TCtDMCt5T0NRQ29TVVE4YWpabllYTjQzWGVqWHdG?=
+ =?utf-8?B?eUJjVXF5ZlY3b3pKVmIyellJZ1RUeGg1d0ZidUx2U0RzRCtxN1VhQ2drSWlp?=
+ =?utf-8?B?V1U4WUdhbkZueHd1OGlESWtna2ltTWhWWlFaNEdwalRjODY2S3piL0E0Zmdp?=
+ =?utf-8?B?N0J3RnlsWXZ4TkF0MDVYdHVBUnFFOGdNZlJFNGo0eU5pZ2p0ZmxVVndSQmZk?=
+ =?utf-8?B?R2RKWXg3cHpDOUd1V0d5RlFhenJ4cURmZnJEVFh6TkZRSDZWWFpsYUVHT3lT?=
+ =?utf-8?B?a0JkSWRsVHM0YWVkVk81UXpEWXowZnZ4dTc1Y2VQcTFyczhSKzdIK0VjdkJ4?=
+ =?utf-8?B?THNkM0hLSkxpd0UyTmx1dEJNQ1IyMTVvYnZROFNaaTJ6YVZ2ZnVSTk92Y1g1?=
+ =?utf-8?B?Z1Y3Myt6OGJTRTVFNCtXL1ZzbXdDNkgvWGRQbnBTQmlPeXpaWjV2UlRSaVVr?=
+ =?utf-8?B?Ykc0ZHVFWFFNZ2l0cUx6b0MvRnNTVUtYSm44WG80L1lQYjMreHFQQlZPQUUr?=
+ =?utf-8?B?ekVDWk5lTHNnVlJHS3oxTjRsR0xvMlljWmJSWEJaRWo3dElBdWJnRVp4N2hw?=
+ =?utf-8?Q?89IXPli3+IcjguFuCWivT/IucoGaRhseBRmY/rN?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:MW3PR12MB4553.namprd12.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(1800799024)(7416014)(366016)(376014); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?c0dFb1R2TkJjaGFKZGYrOXNpRzZvU1dQU0RhVXdPbHFXc04reDhSRzdFcGox?=
+ =?utf-8?B?L1NWNGFEWmwvTFZkWUk4QUFBVW15bmJjZ2YzUHE0UmJDV3MyMWh5d3YvaVVt?=
+ =?utf-8?B?Ni8vV1Y1bEdzV01rYmNuRVlGaHNoemttTDF2bzNxYVFzaVlFWGlGMVRFRXJw?=
+ =?utf-8?B?VDBtZlJ4NHpGeGxORUZRMXlnZ0xxSDIxcnFHbHI4MXN2bjZnVW9qRVFSc1pG?=
+ =?utf-8?B?WnRkR0ZpeDc2RCtwd0YvQlAxSk5hMFpOdVF6YWVTZnYzakN0MWRoWjZYTWJy?=
+ =?utf-8?B?emkxL3ovdXNMamYxMmhrdUJRalBJK24yTnYzdmIrZVRXdlU3TVNYQkdkbUQy?=
+ =?utf-8?B?UEkxMHd0Q0M3RU5ERklzUkd3OFVVVklxRXgzNmNtSFhaREdmNkRPTFNlODFB?=
+ =?utf-8?B?VUV1U0hZSW9rNDJQeDFDbnFSSkFJZkJaQ1YySmhndEgwamFrYlYvRHNVbitj?=
+ =?utf-8?B?aGo3cUVRM2tpa3FsaHhrbWUyM2ZBZnJBNTlsVk5ZYVE3WUNYYkhiRXRBc2g1?=
+ =?utf-8?B?YmQzUm9CNktGRitGajY4Z3l6ZnhNMXZPMWdscVFPemgwKzZxN2JySWhjOUlN?=
+ =?utf-8?B?SnJnT1ZkN0NFamtkYWRVUzJCdnJrQytPa3pFY0o2KzR5dGtmWUZnbmhqM0Zi?=
+ =?utf-8?B?ckxOd0Nuby9jV0gwVDhyMHN3cSt6c1QrM29Pb2VRVlJuQW5KVFozb0dxakxa?=
+ =?utf-8?B?UHBXQlN5WDBjWXNBeStHQUlSWlJKWTlPN3M1YVBwSXlwL09nTlB6Vkw1ck9Z?=
+ =?utf-8?B?SzZlT2hWRzJEQi9CVi9DYnBSWnhqMyswWVpkY2ovWnhJbEFRODhmMWNnS2tI?=
+ =?utf-8?B?cUpReEN4Qy9VZjZHWEpya0tOSGl3bGZkMFl3bnhBT3RRaXRYaklIanFXMmJ5?=
+ =?utf-8?B?SkpkY0kyc0VDeVJrbW9ON3REeGMva2JqSU04Zk5SVTJLK0ZEOE1HUUxWNThY?=
+ =?utf-8?B?amovUEJnbGtPemhQUHdrRHRXMFI1UUYzWmYxdHNIREx1T0JSOFo3YVZodG5z?=
+ =?utf-8?B?ZTVrRWM1QjlMN0F1a0RQdlZNc2UrSjk2UlliYnEzN2libitKdkF5ajhPUCt4?=
+ =?utf-8?B?QlozZ1JzSXN2T2lwOEszWnZFNWk2M1oydC9qbDRrbG9wb3hKQzFmYlc3dVl1?=
+ =?utf-8?B?OXA4YU9PVnpxMGxMeDF2MmNRc0JFZjlzQ090VXBBbGlIZ1h5Y2l1UGdFYUcy?=
+ =?utf-8?B?MnVOcHZPeGpwcjhwNFpla3hZRzljSXhiajFPR2Jub3pwcytFOVJDMzcrOTZX?=
+ =?utf-8?B?UDdVaGhXSGZ5bWZUOGJQRi8zYS91a2hIQmZJbTY3bTFoQWEydjl3TGdyT1J3?=
+ =?utf-8?B?MU04a0I3eUpyY1RlbjZXZExMQlpGV1ZWK2RVbWg5R3VTc2hRN1JJbXpFYVNM?=
+ =?utf-8?B?Ukg0dStISDlFREdZbEdBVHljaEJka2hwQjJnemJLTFJZMU5IWVcxQUxlRDZ3?=
+ =?utf-8?B?Njdud1VaM05jTXA2RFBrR2RRNEtMQTc0MU5sempOcU5FcXFYRmJvWitqSy9P?=
+ =?utf-8?B?V21hSnYwNG04b01UOUFoUDR0QVdVb0Vnalh2ODdiRy9lc1Q5UENSTS9oOGhQ?=
+ =?utf-8?B?UW5KOVYyaEFNZ0xSRG9rdjYvd1Z1Y0tRenlzTmNkLzlKNHFibEFxQ2pLVXo2?=
+ =?utf-8?B?Sk96dG9SdFR4SzZPNlQ3OUROcytVemIyemdZaTRjUEFKSWtybFExS3dZUG96?=
+ =?utf-8?B?aTlHQXo0UVF6dHFGZklVNlFTZUV6RDVzNnNEcEtjVkZvMExkTUdyakRiU0JR?=
+ =?utf-8?B?ZGNlaUMxWkZiZHVaUWs5QU9nanhnRlZrTXVCWGlvSEtFUjRqM3VINjY2d3Q4?=
+ =?utf-8?B?ZGF4VmhkZjV4SXFxdzBBQ3o3MnBGNUdUTXMrTjN0MVE2MnFwbUlhOVgvNGQw?=
+ =?utf-8?B?UGFDN2Z0Vk8vTk9OQTk0NHhqWDZ5U1lwb1JCdU5GSW50RVVlOTMrNHpaRTM1?=
+ =?utf-8?B?QWZSV2U3WG1uaUZVNTJDbWl2WW5jdTRMRkIwQkdRL0pTSk9pU0ZKU2E4WUdn?=
+ =?utf-8?B?WGdEdnNkdktDaXVNWjIrUS80endNMGt4WktXRGhHMzFXOHNhRFdrMDB6NEgx?=
+ =?utf-8?B?SldwdzEwckNxRkJuaGxKcDZGT0dhSGl6MU5oTG9ac1h2SHVEVUVKRUF5TkRZ?=
+ =?utf-8?Q?vF8o=3D?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 52dbbfb1-92ae-41c5-2123-08dd033666af
+X-MS-Exchange-CrossTenant-AuthSource: MW3PR12MB4553.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Nov 2024 16:23:54.7375 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: KdDEt3YOhZEEg6B5wN/u6btuVZA7ZNYtLY0JbnvQGwgWWzdn2KKsGx+Pf3Tdtwry
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR12MB6406
+Received-SPF: permerror client-ip=40.107.223.41;
+ envelope-from=Babu.Moger@amd.com;
+ helo=NAM11-DM6-obe.outbound.protection.outlook.com
+X-Spam_score_int: -28
+X-Spam_score: -2.9
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-Spam_report: (-2.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.122,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.671,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -112,284 +180,322 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: babu.moger@amd.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Use a local variable seq_index instead of repeatedly calling
-get_seq_index() method and open-code next_sequencer_fsm().
+Hi Maksim,
 
-Signed-off-by: Chalapathi V <chalapathi.v@linux.ibm.com>
----
- hw/ssi/pnv_spi.c | 93 +++++++++++++++++++++++++-----------------------
- 1 file changed, 48 insertions(+), 45 deletions(-)
+On 11/12/24 04:09, Maksim Davydov wrote:
+> 
+> 
+> On 11/8/24 23:56, Moger, Babu wrote:
+>> Hi Maxim,
+>>
+>> Thanks for looking into this. I will fix the bits I mentioned below in
+>> upcoming Genoa/Turin model update.
+>>
+>> I have few comments below.
+>>
+>> On 11/8/2024 12:15 PM, Maksim Davydov wrote:
+>>> Hi!
+>>> I compared EPYC-Genoa CPU model with CPUID output from real EPYC Genoa
+>>> host. I found some mismatches that confused me. Could you help me to
+>>> understand them?
+>>>
+>>> On 5/4/23 23:53, Babu Moger wrote:
+>>>> Adds the support for AMD EPYC Genoa generation processors. The model
+>>>> display for the new processor will be EPYC-Genoa.
+>>>>
+>>>> Adds the following new feature bits on top of the feature bits from
+>>>> the previous generation EPYC models.
+>>>>
+>>>> avx512f         : AVX-512 Foundation instruction
+>>>> avx512dq        : AVX-512 Doubleword & Quadword Instruction
+>>>> avx512ifma      : AVX-512 Integer Fused Multiply Add instruction
+>>>> avx512cd        : AVX-512 Conflict Detection instruction
+>>>> avx512bw        : AVX-512 Byte and Word Instructions
+>>>> avx512vl        : AVX-512 Vector Length Extension Instructions
+>>>> avx512vbmi      : AVX-512 Vector Byte Manipulation Instruction
+>>>> avx512_vbmi2    : AVX-512 Additional Vector Byte Manipulation Instruction
+>>>> gfni            : AVX-512 Galois Field New Instructions
+>>>> avx512_vnni     : AVX-512 Vector Neural Network Instructions
+>>>> avx512_bitalg   : AVX-512 Bit Algorithms, add bit algorithms Instructions
+>>>> avx512_vpopcntdq: AVX-512 AVX-512 Vector Population Count Doubleword and
+>>>>                    Quadword Instructions
+>>>> avx512_bf16    : AVX-512 BFLOAT16 instructions
+>>>> la57            : 57-bit virtual address support (5-level Page Tables)
+>>>> vnmi            : Virtual NMI (VNMI) allows the hypervisor to inject
+>>>> the NMI
+>>>>                    into the guest without using Event Injection mechanism
+>>>>                    meaning not required to track the guest NMI and
+>>>> intercepting
+>>>>                    the IRET.
+>>>> auto-ibrs       : The AMD Zen4 core supports a new feature called
+>>>> Automatic IBRS.
+>>>>                    It is a "set-and-forget" feature that means that,
+>>>> unlike e.g.,
+>>>>                    s/w-toggled SPEC_CTRL.IBRS, h/w manages its IBRS
+>>>> mitigation
+>>>>                    resources automatically across CPL transitions.
+>>>>
+>>>> Signed-off-by: Babu Moger <babu.moger@amd.com>
+>>>> ---
+>>>>   target/i386/cpu.c | 122 ++++++++++++++++++++++++++++++++++++++++++++++
+>>>>   1 file changed, 122 insertions(+)
+>>>>
+>>>> diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+>>>> index d50ace84bf..71fe1e02ee 100644
+>>>> --- a/target/i386/cpu.c
+>>>> +++ b/target/i386/cpu.c
+>>>> @@ -1973,6 +1973,56 @@ static const CPUCaches epyc_milan_v2_cache_info
+>>>> = {
+>>>>       },
+>>>>   };
+>>>> +static const CPUCaches epyc_genoa_cache_info = {
+>>>> +    .l1d_cache = &(CPUCacheInfo) {
+>>>> +        .type = DATA_CACHE,
+>>>> +        .level = 1,
+>>>> +        .size = 32 * KiB,
+>>>> +        .line_size = 64,
+>>>> +        .associativity = 8,
+>>>> +        .partitions = 1,
+>>>> +        .sets = 64,
+>>>> +        .lines_per_tag = 1,
+>>>> +        .self_init = 1,
+>>>> +        .no_invd_sharing = true,
+>>>> +    },
+>>>> +    .l1i_cache = &(CPUCacheInfo) {
+>>>> +        .type = INSTRUCTION_CACHE,
+>>>> +        .level = 1,
+>>>> +        .size = 32 * KiB,
+>>>> +        .line_size = 64,
+>>>> +        .associativity = 8,
+>>>> +        .partitions = 1,
+>>>> +        .sets = 64,
+>>>> +        .lines_per_tag = 1,
+>>>> +        .self_init = 1,
+>>>> +        .no_invd_sharing = true,
+>>>> +    },
+>>>> +    .l2_cache = &(CPUCacheInfo) {
+>>>> +        .type = UNIFIED_CACHE,
+>>>> +        .level = 2,
+>>>> +        .size = 1 * MiB,
+>>>> +        .line_size = 64,
+>>>> +        .associativity = 8,
+>>>> +        .partitions = 1,
+>>>> +        .sets = 2048,
+>>>> +        .lines_per_tag = 1,
+>>>
+>>> 1. Why L2 cache is not shown as inclusive and self-initializing?
+>>>
+>>> PPR for AMD Family 19h Model 11 says for L2 (0x8000001d):
+>>> * cache inclusive. Read-only. Reset: Fixed,1.
+>>> * cache is self-initializing. Read-only. Reset: Fixed,1.
+>>
+>> Yes. That is correct. This needs to be fixed. I Will fix it.
+>>>
+>>>> +    },
+>>>> +    .l3_cache = &(CPUCacheInfo) {
+>>>> +        .type = UNIFIED_CACHE,
+>>>> +        .level = 3,
+>>>> +        .size = 32 * MiB,
+>>>> +        .line_size = 64,
+>>>> +        .associativity = 16,
+>>>> +        .partitions = 1,
+>>>> +        .sets = 32768,
+>>>> +        .lines_per_tag = 1,
+>>>> +        .self_init = true,
+>>>> +        .inclusive = true,
+>>>> +        .complex_indexing = false,
+>>>
+>>> 2. Why L3 cache is shown as inclusive? Why is it not shown in L3 that
+>>> the WBINVD/INVD instruction is not guaranteed to invalidate all lower
+>>> level caches (0 bit)?
+>>>
+>>> PPR for AMD Family 19h Model 11 says for L2 (0x8000001d):
+>>> * cache inclusive. Read-only. Reset: Fixed,0.
+>>> * Write-Back Invalidate/Invalidate. Read-only. Reset: Fixed,1.
+>>>
+>>
+>> Yes. Both of this needs to be fixed. I Will fix it.
+>>
+>>>
+>>>
+>>> 3. Why the default stub is used for TLB, but not real values as for
+>>> other caches?
+>>
+>> Can you please eloberate on this?
+>>
+> 
+> For L1i, L1d, L2 and L3 cache we provide the correct information about
+> characteristics. In contrast, for L1i TLB, L1d TLB, L2i TLB and L2d TLB
+> (0x80000005 and 0x80000006) we use the same value for all CPU models.
+> Sometimes it seems strange. For instance, the current default value in
+> QEMU for L2 TLB associativity for 4 KB pages is 4. But 4 is a reserved
+> value for Genoa (as PPR for Family 19h Model 11h says)
 
-diff --git a/hw/ssi/pnv_spi.c b/hw/ssi/pnv_spi.c
-index c2f1c6ca8e..f26b0da1fc 100644
---- a/hw/ssi/pnv_spi.c
-+++ b/hw/ssi/pnv_spi.c
-@@ -212,18 +212,6 @@ static void transfer(PnvSpi *s)
-     fifo8_reset(&s->rx_fifo);
- }
- 
--static inline uint8_t get_seq_index(PnvSpi *s)
--{
--    return GETFIELD(SPI_STS_SEQ_INDEX, s->status);
--}
--
--static inline void next_sequencer_fsm(PnvSpi *s)
--{
--    uint8_t seq_index = get_seq_index(s);
--    s->status = SETFIELD(SPI_STS_SEQ_INDEX, s->status, (seq_index + 1));
--    s->status = SETFIELD(SPI_STS_SEQ_FSM, s->status, SEQ_STATE_INDEX_INCREMENT);
--}
--
- /*
-  * Calculate the N1 counters based on passed in opcode and
-  * internal register values.
-@@ -637,6 +625,7 @@ static void operation_sequencer(PnvSpi *s)
-     bool stop = false; /* Flag to stop the sequencer */
-     uint8_t opcode = 0;
-     uint8_t masked_opcode = 0;
-+    uint8_t seq_index;
- 
-     /*
-      * Clear the sequencer FSM error bit - general_SPI_status[3]
-@@ -650,12 +639,13 @@ static void operation_sequencer(PnvSpi *s)
-     if (GETFIELD(SPI_STS_SEQ_FSM, s->status) == SEQ_STATE_IDLE) {
-         s->status = SETFIELD(SPI_STS_SEQ_INDEX, s->status, 0);
-     }
-+    seq_index = GETFIELD(SPI_STS_SEQ_INDEX, s->status);
-     /*
-      * There are only 8 possible operation IDs to iterate through though
-      * some operations may cause more than one frame to be sequenced.
-      */
--    while (get_seq_index(s) < NUM_SEQ_OPS) {
--        opcode = s->seq_op[get_seq_index(s)];
-+    while (seq_index < NUM_SEQ_OPS) {
-+        opcode = s->seq_op[seq_index];
-         /* Set sequencer state to decode */
-         s->status = SETFIELD(SPI_STS_SEQ_FSM, s->status, SEQ_STATE_DECODE);
-         /*
-@@ -672,7 +662,7 @@ static void operation_sequencer(PnvSpi *s)
-         case SEQ_OP_STOP:
-             s->status = SETFIELD(SPI_STS_SEQ_FSM, s->status, SEQ_STATE_EXECUTE);
-             /* A stop operation in any position stops the sequencer */
--            trace_pnv_spi_sequencer_op("STOP", get_seq_index(s));
-+            trace_pnv_spi_sequencer_op("STOP", seq_index);
- 
-             stop = true;
-             s->status = SETFIELD(SPI_STS_SHIFTER_FSM, s->status, FSM_IDLE);
-@@ -683,7 +673,7 @@ static void operation_sequencer(PnvSpi *s)
- 
-         case SEQ_OP_SELECT_SLAVE:
-             s->status = SETFIELD(SPI_STS_SEQ_FSM, s->status, SEQ_STATE_EXECUTE);
--            trace_pnv_spi_sequencer_op("SELECT_SLAVE", get_seq_index(s));
-+            trace_pnv_spi_sequencer_op("SELECT_SLAVE", seq_index);
-             /*
-              * This device currently only supports a single responder
-              * connection at position 0.  De-selecting a responder is fine
-@@ -694,8 +684,7 @@ static void operation_sequencer(PnvSpi *s)
-             if (s->responder_select == 0) {
-                 trace_pnv_spi_shifter_done();
-                 qemu_set_irq(s->cs_line[0], 1);
--                s->status = SETFIELD(SPI_STS_SEQ_INDEX, s->status,
--                                (get_seq_index(s) + 1));
-+                seq_index++;
-                 s->status = SETFIELD(SPI_STS_SHIFTER_FSM, s->status, FSM_DONE);
-             } else if (s->responder_select != 1) {
-                 qemu_log_mask(LOG_GUEST_ERROR, "Slave selection other than 1 "
-@@ -720,13 +709,15 @@ static void operation_sequencer(PnvSpi *s)
-                  * applies once a valid responder select has occurred.
-                  */
-                 s->shift_n1_done = false;
--                next_sequencer_fsm(s);
-+                seq_index++;
-+                s->status = SETFIELD(SPI_STS_SEQ_FSM, s->status,
-+                                SEQ_STATE_INDEX_INCREMENT);
-             }
-             break;
- 
-         case SEQ_OP_SHIFT_N1:
-             s->status = SETFIELD(SPI_STS_SEQ_FSM, s->status, SEQ_STATE_EXECUTE);
--            trace_pnv_spi_sequencer_op("SHIFT_N1", get_seq_index(s));
-+            trace_pnv_spi_sequencer_op("SHIFT_N1", seq_index);
-             /*
-              * Only allow a shift_n1 when the state is not IDLE or DONE.
-              * In either of those two cases the sequencer is not in a proper
-@@ -758,8 +749,9 @@ static void operation_sequencer(PnvSpi *s)
-                  * transmission to the responder without requiring a refill of
-                  * the TDR between the two operations.
-                  */
--                if (PNV_SPI_MASKED_OPCODE(s->seq_op[get_seq_index(s) + 1])
--                                == SEQ_OP_SHIFT_N2) {
-+                if ((seq_index != 7) &&
-+                    PNV_SPI_MASKED_OPCODE(s->seq_op[(seq_index + 1)]) ==
-+                    SEQ_OP_SHIFT_N2) {
-                     send_n1_alone = false;
-                 }
-                 s->status = SETFIELD(SPI_STS_SHIFTER_FSM, s->status, FSM_SHIFT_N1);
-@@ -779,9 +771,8 @@ static void operation_sequencer(PnvSpi *s)
-                     if (GETFIELD(SPI_STS_TDR_UNDERRUN, s->status)) {
-                         s->shift_n1_done = true;
-                         s->status = SETFIELD(SPI_STS_SHIFTER_FSM, s->status,
--                                        FSM_SHIFT_N2);
--                        s->status = SETFIELD(SPI_STS_SEQ_INDEX, s->status,
--                                        (get_seq_index(s) + 1));
-+                                                  FSM_SHIFT_N2);
-+                        seq_index++;
-                     } else {
-                         /*
-                          * This is case (1) or (2) so the sequencer needs to
-@@ -792,14 +783,16 @@ static void operation_sequencer(PnvSpi *s)
-                 } else {
-                     /* Ok to move on to the next index */
-                     s->shift_n1_done = true;
--                    next_sequencer_fsm(s);
-+                    seq_index++;
-+                    s->status = SETFIELD(SPI_STS_SEQ_FSM, s->status,
-+                                    SEQ_STATE_INDEX_INCREMENT);
-                 }
-             }
-             break;
- 
-         case SEQ_OP_SHIFT_N2:
-             s->status = SETFIELD(SPI_STS_SEQ_FSM, s->status, SEQ_STATE_EXECUTE);
--            trace_pnv_spi_sequencer_op("SHIFT_N2", get_seq_index(s));
-+            trace_pnv_spi_sequencer_op("SHIFT_N2", seq_index);
-             if (!s->shift_n1_done) {
-                 qemu_log_mask(LOG_GUEST_ERROR, "Shift_N2 is not allowed if a "
-                               "Shift_N1 is not done, shifter state = 0x%llx",
-@@ -824,14 +817,16 @@ static void operation_sequencer(PnvSpi *s)
-                     s->status = SETFIELD(SPI_STS_SHIFTER_FSM, s->status, FSM_WAIT);
-                 } else {
-                     /* Ok to move on to the next index */
--                    next_sequencer_fsm(s);
-+                    seq_index++;
-+                    s->status = SETFIELD(SPI_STS_SEQ_FSM, s->status,
-+                                    SEQ_STATE_INDEX_INCREMENT);
-                 }
-             }
-             break;
- 
-         case SEQ_OP_BRANCH_IFNEQ_RDR:
-             s->status = SETFIELD(SPI_STS_SEQ_FSM, s->status, SEQ_STATE_EXECUTE);
--            trace_pnv_spi_sequencer_op("BRANCH_IFNEQ_RDR", get_seq_index(s));
-+            trace_pnv_spi_sequencer_op("BRANCH_IFNEQ_RDR", seq_index);
-             /*
-              * The memory mapping register RDR match value is compared against
-              * the 16 rightmost bytes of the RDR (potentially with masking).
-@@ -847,15 +842,16 @@ static void operation_sequencer(PnvSpi *s)
-                 if (rdr_matched) {
-                     trace_pnv_spi_RDR_match("success");
-                     /* A match occurred, increment the sequencer index. */
--                    next_sequencer_fsm(s);
-+                    seq_index++;
-+                    s->status = SETFIELD(SPI_STS_SEQ_FSM, s->status,
-+                                    SEQ_STATE_INDEX_INCREMENT);
-                 } else {
-                     trace_pnv_spi_RDR_match("failed");
-                     /*
-                      * Branch the sequencer to the index coded into the op
-                      * code.
-                      */
--                    s->status = SETFIELD(SPI_STS_SEQ_INDEX, s->status,
--                                    PNV_SPI_OPCODE_LO_NIBBLE(opcode));
-+                    seq_index = PNV_SPI_OPCODE_LO_NIBBLE(opcode);
-                 }
-                 /*
-                  * Regardless of where the branch ended up we want the
-@@ -874,12 +870,13 @@ static void operation_sequencer(PnvSpi *s)
-         case SEQ_OP_TRANSFER_TDR:
-             s->status = SETFIELD(SPI_STS_SEQ_FSM, s->status, SEQ_STATE_EXECUTE);
-             qemu_log_mask(LOG_GUEST_ERROR, "Transfer TDR is not supported\n");
--            next_sequencer_fsm(s);
-+            seq_index++;
-+            s->status = SETFIELD(SPI_STS_SEQ_FSM, s->status, SEQ_STATE_INDEX_INCREMENT);
-             break;
- 
-         case SEQ_OP_BRANCH_IFNEQ_INC_1:
-             s->status = SETFIELD(SPI_STS_SEQ_FSM, s->status, SEQ_STATE_EXECUTE);
--            trace_pnv_spi_sequencer_op("BRANCH_IFNEQ_INC_1", get_seq_index(s));
-+            trace_pnv_spi_sequencer_op("BRANCH_IFNEQ_INC_1", seq_index);
-             /*
-              * The spec says the loop should execute count compare + 1 times.
-              * However we learned from engineering that we really only loop
-@@ -893,19 +890,21 @@ static void operation_sequencer(PnvSpi *s)
-                  * mask off all but the first three bits so we don't try to
-                  * access beyond the sequencer_operation_reg boundary.
-                  */
--                s->status = SETFIELD(SPI_STS_SEQ_INDEX, s->status,
--                                PNV_SPI_OPCODE_LO_NIBBLE(opcode));
-+                seq_index = PNV_SPI_OPCODE_LO_NIBBLE(opcode);
-                 s->loop_counter_1++;
-             } else {
-                 /* Continue to next index if loop counter is reached */
--                next_sequencer_fsm(s);
-+                seq_index++;
-+                s->status = SETFIELD(SPI_STS_SEQ_FSM, s->status,
-+                                SEQ_STATE_INDEX_INCREMENT);
-             }
-             break;
- 
-         case SEQ_OP_BRANCH_IFNEQ_INC_2:
-             s->status = SETFIELD(SPI_STS_SEQ_FSM, s->status, SEQ_STATE_EXECUTE);
--            trace_pnv_spi_sequencer_op("BRANCH_IFNEQ_INC_2", get_seq_index(s));
--            uint8_t condition2 = GETFIELD(SPI_CTR_CFG_CMP2, s->regs[SPI_CTR_CFG_REG]);
-+            trace_pnv_spi_sequencer_op("BRANCH_IFNEQ_INC_2", seq_index);
-+            uint8_t condition2 = GETFIELD(SPI_CTR_CFG_CMP2,
-+                              s->regs[SPI_CTR_CFG_REG]);
-             /*
-              * The spec says the loop should execute count compare + 1 times.
-              * However we learned from engineering that we really only loop
-@@ -918,19 +917,21 @@ static void operation_sequencer(PnvSpi *s)
-                  * mask off all but the first three bits so we don't try to
-                  * access beyond the sequencer_operation_reg boundary.
-                  */
--                s->status = SETFIELD(SPI_STS_SEQ_INDEX,
--                                s->status, PNV_SPI_OPCODE_LO_NIBBLE(opcode));
-+                seq_index = PNV_SPI_OPCODE_LO_NIBBLE(opcode);
-                 s->loop_counter_2++;
-             } else {
-                 /* Continue to next index if loop counter is reached */
--                next_sequencer_fsm(s);
-+                seq_index++;
-+                s->status = SETFIELD(SPI_STS_SEQ_FSM, s->status,
-+                                SEQ_STATE_INDEX_INCREMENT);
-             }
-             break;
- 
-         default:
-             s->status = SETFIELD(SPI_STS_SEQ_FSM, s->status, SEQ_STATE_EXECUTE);
-             /* Ignore unsupported operations. */
--            next_sequencer_fsm(s);
-+            seq_index++;
-+            s->status = SETFIELD(SPI_STS_SEQ_FSM, s->status, SEQ_STATE_INDEX_INCREMENT);
-             break;
-         } /* end of switch */
-         /*
-@@ -938,10 +939,10 @@ static void operation_sequencer(PnvSpi *s)
-          * we need to go ahead and end things as if there was a STOP at the
-          * end.
-          */
--        if (get_seq_index(s) == NUM_SEQ_OPS) {
-+        if (seq_index == NUM_SEQ_OPS) {
-             /* All 8 opcodes completed, sequencer idling */
-             s->status = SETFIELD(SPI_STS_SHIFTER_FSM, s->status, FSM_IDLE);
--            s->status = SETFIELD(SPI_STS_SEQ_INDEX, s->status, 0);
-+            seq_index = 0;
-             s->loop_counter_1 = 0;
-             s->loop_counter_2 = 0;
-             s->status = SETFIELD(SPI_STS_SEQ_FSM, s->status, SEQ_STATE_IDLE);
-@@ -952,6 +953,8 @@ static void operation_sequencer(PnvSpi *s)
-             break;
-         }
-     } /* end of while */
-+    /* Update sequencer index field in status.*/
-+    s->status = SETFIELD(SPI_STS_SEQ_INDEX, s->status, seq_index);
-     return;
- } /* end of operation_sequencer() */
- 
+Yes. I see that. We may need to address this sometime in the future.
+
+> 
+>>>
+>>>> +    },
+>>>> +};
+>>>> +
+>>>>   /* The following VMX features are not supported by KVM and are left
+>>>> out in the
+>>>>    * CPU definitions:
+>>>>    *
+>>>> @@ -4472,6 +4522,78 @@ static const X86CPUDefinition
+>>>> builtin_x86_defs[] = {
+>>>>               { /* end of list */ }
+>>>>           }
+>>>>       },
+>>>> +    {
+>>>> +        .name = "EPYC-Genoa",
+>>>> +        .level = 0xd,
+>>>> +        .vendor = CPUID_VENDOR_AMD,
+>>>> +        .family = 25,
+>>>> +        .model = 17,
+>>>> +        .stepping = 0,
+>>>> +        .features[FEAT_1_EDX] =
+>>>> +            CPUID_SSE2 | CPUID_SSE | CPUID_FXSR | CPUID_MMX |
+>>>> CPUID_CLFLUSH |
+>>>> +            CPUID_PSE36 | CPUID_PAT | CPUID_CMOV | CPUID_MCA |
+>>>> CPUID_PGE |
+>>>> +            CPUID_MTRR | CPUID_SEP | CPUID_APIC | CPUID_CX8 |
+>>>> CPUID_MCE |
+>>>> +            CPUID_PAE | CPUID_MSR | CPUID_TSC | CPUID_PSE | CPUID_DE |
+>>>> +            CPUID_VME | CPUID_FP87,
+>>>> +        .features[FEAT_1_ECX] =
+>>>> +            CPUID_EXT_RDRAND | CPUID_EXT_F16C | CPUID_EXT_AVX |
+>>>> +            CPUID_EXT_XSAVE | CPUID_EXT_AES |  CPUID_EXT_POPCNT |
+>>>> +            CPUID_EXT_MOVBE | CPUID_EXT_SSE42 | CPUID_EXT_SSE41 |
+>>>> +            CPUID_EXT_PCID | CPUID_EXT_CX16 | CPUID_EXT_FMA |
+>>>> +            CPUID_EXT_SSSE3 | CPUID_EXT_MONITOR | CPUID_EXT_PCLMULQDQ |
+>>>> +            CPUID_EXT_SSE3,
+>>>> +        .features[FEAT_8000_0001_EDX] =
+>>>> +            CPUID_EXT2_LM | CPUID_EXT2_RDTSCP | CPUID_EXT2_PDPE1GB |
+>>>> +            CPUID_EXT2_FFXSR | CPUID_EXT2_MMXEXT | CPUID_EXT2_NX |
+>>>> +            CPUID_EXT2_SYSCALL,
+>>>> +        .features[FEAT_8000_0001_ECX] =
+>>>> +            CPUID_EXT3_OSVW | CPUID_EXT3_3DNOWPREFETCH |
+>>>> +            CPUID_EXT3_MISALIGNSSE | CPUID_EXT3_SSE4A | CPUID_EXT3_ABM |
+>>>> +            CPUID_EXT3_CR8LEG | CPUID_EXT3_SVM | CPUID_EXT3_LAHF_LM |
+>>>> +            CPUID_EXT3_TOPOEXT | CPUID_EXT3_PERFCORE,
+>>>> +        .features[FEAT_8000_0008_EBX] =
+>>>> +            CPUID_8000_0008_EBX_CLZERO |
+>>>> CPUID_8000_0008_EBX_XSAVEERPTR |
+>>>> +            CPUID_8000_0008_EBX_WBNOINVD | CPUID_8000_0008_EBX_IBPB |
+>>>> +            CPUID_8000_0008_EBX_IBRS | CPUID_8000_0008_EBX_STIBP |
+>>>> +            CPUID_8000_0008_EBX_STIBP_ALWAYS_ON |
+>>>> +            CPUID_8000_0008_EBX_AMD_SSBD | CPUID_8000_0008_EBX_AMD_PSFD,
+>>>
+>>> 4. Why 0x80000008_EBX features related to speculation vulnerabilities
+>>> (BTC_NO, IBPB_RET, IbrsPreferred, INT_WBINVD) are not set?
+>>
+>> KVM does not expose these bits to the guests yet.
+>>
+>> I normally check using the ioctl KVM_GET_SUPPORTED_CPUID.
+>>
+> 
+> I'm not sure, but at least the first two of these features seem to be
+> helpful to choose the appropriate mitigation. Do you think that we should
+> add them to KVM?
+
+Yes. Sure.
+
+> 
+>>
+>>>
+>>>> +        .features[FEAT_8000_0021_EAX] =
+>>>> +            CPUID_8000_0021_EAX_No_NESTED_DATA_BP |
+>>>> +            CPUID_8000_0021_EAX_LFENCE_ALWAYS_SERIALIZING |
+>>>> +            CPUID_8000_0021_EAX_NULL_SEL_CLR_BASE |
+>>>> +            CPUID_8000_0021_EAX_AUTO_IBRS,
+>>>
+>>> 5. Why some 0x80000021_EAX features are not set?
+>>> (FsGsKernelGsBaseNonSerializing, FSRC and FSRS)
+>>
+>> KVM does not expose FSRC and FSRS bits to the guests yet.
+> 
+> But KVM exposes the same features (0x7 ecx=1, bits 10 and 11) for Intel
+> CPU models. Do we have to add these bits for AMD to KVM?
+
+Yes. Sure.
+> 
+>>
+>> The KVM reports the bit FsGsKernelGsBaseNonSerializing. I will check if
+>> we can add this bit to the Genoa and Turin.
+
+Will add this in my qemu series.
+
+>>
+>>>
+>>>> +        .features[FEAT_7_0_EBX] =
+>>>> +            CPUID_7_0_EBX_FSGSBASE | CPUID_7_0_EBX_BMI1 |
+>>>> CPUID_7_0_EBX_AVX2 |
+>>>> +            CPUID_7_0_EBX_SMEP | CPUID_7_0_EBX_BMI2 |
+>>>> CPUID_7_0_EBX_ERMS |
+>>>> +            CPUID_7_0_EBX_INVPCID | CPUID_7_0_EBX_AVX512F |
+>>>> +            CPUID_7_0_EBX_AVX512DQ | CPUID_7_0_EBX_RDSEED |
+>>>> CPUID_7_0_EBX_ADX |
+>>>> +            CPUID_7_0_EBX_SMAP | CPUID_7_0_EBX_AVX512IFMA |
+>>>> +            CPUID_7_0_EBX_CLFLUSHOPT | CPUID_7_0_EBX_CLWB |
+>>>> +            CPUID_7_0_EBX_AVX512CD | CPUID_7_0_EBX_SHA_NI |
+>>>> +            CPUID_7_0_EBX_AVX512BW | CPUID_7_0_EBX_AVX512VL,
+>>>> +        .features[FEAT_7_0_ECX] =
+>>>> +            CPUID_7_0_ECX_AVX512_VBMI | CPUID_7_0_ECX_UMIP |
+>>>> CPUID_7_0_ECX_PKU |
+>>>> +            CPUID_7_0_ECX_AVX512_VBMI2 | CPUID_7_0_ECX_GFNI |
+>>>> +            CPUID_7_0_ECX_VAES | CPUID_7_0_ECX_VPCLMULQDQ |
+>>>> +            CPUID_7_0_ECX_AVX512VNNI | CPUID_7_0_ECX_AVX512BITALG |
+>>>> +            CPUID_7_0_ECX_AVX512_VPOPCNTDQ | CPUID_7_0_ECX_LA57 |
+>>>> +            CPUID_7_0_ECX_RDPID,
+>>>> +        .features[FEAT_7_0_EDX] =
+>>>> +            CPUID_7_0_EDX_FSRM,
+>>>
+>>> 6. Why L1D_FLUSH is not set? Because only vulnerable MMIO stale data
+>>> processors have to use it, am I right?
+>>
+>> KVM does not expose L1D_FLUSH to the guests. Not sure why. Need to
+>> investigate.
+>>
+> 
+> It seems that KVM has exposed L1D_FLUSH since da3db168fb67
+
+Sure. Will update my patch series.
+
+> 
+>>
+>>>
+>>>> +        .features[FEAT_7_1_EAX] =
+>>>> +            CPUID_7_1_EAX_AVX512_BF16,
+>>>> +        .features[FEAT_XSAVE] =
+>>>> +            CPUID_XSAVE_XSAVEOPT | CPUID_XSAVE_XSAVEC |
+>>>> +            CPUID_XSAVE_XGETBV1 | CPUID_XSAVE_XSAVES,
+>>>> +        .features[FEAT_6_EAX] =
+>>>> +            CPUID_6_EAX_ARAT,
+>>>> +        .features[FEAT_SVM] =
+>>>> +            CPUID_SVM_NPT | CPUID_SVM_NRIPSAVE | CPUID_SVM_VNMI |
+>>>> +            CPUID_SVM_SVME_ADDR_CHK,
+>>>> +        .xlevel = 0x80000022,
+>>>> +        .model_id = "AMD EPYC-Genoa Processor",
+>>>> +        .cache_info = &epyc_genoa_cache_info,
+>>>> +    },
+>>>>   };
+>>>>   /*
+>>>
+>>
+> 
+> So, If you don't mind, I will send a patch to KVM within a few hours. I
+> will add bits for FSRC, FSRS and some bits from 0x80000008_EBX
+> 
+
+FSRC and FSRS are not used anywhere in the kernel. It is mostly FYI kind
+of information. It does not hurt to add.  Please go ahead.
+
 -- 
-2.39.5
-
+Thanks
+Babu Moger
 
