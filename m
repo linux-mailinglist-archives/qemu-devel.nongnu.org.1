@@ -2,92 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D77AE9C5303
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Nov 2024 11:18:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D69F89C5349
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Nov 2024 11:26:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tAnxo-0000hm-K5; Tue, 12 Nov 2024 05:17:37 -0500
+	id 1tAo5e-0008GO-EW; Tue, 12 Nov 2024 05:25:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <francescolavra.fl@gmail.com>)
- id 1tAnxl-0000TD-4h
- for qemu-devel@nongnu.org; Tue, 12 Nov 2024 05:17:33 -0500
-Received: from mail-ed1-x52c.google.com ([2a00:1450:4864:20::52c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tAo5b-0008G9-Uo
+ for qemu-devel@nongnu.org; Tue, 12 Nov 2024 05:25:39 -0500
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <francescolavra.fl@gmail.com>)
- id 1tAnxi-0000Ar-JN
- for qemu-devel@nongnu.org; Tue, 12 Nov 2024 05:17:32 -0500
-Received: by mail-ed1-x52c.google.com with SMTP id
- 4fb4d7f45d1cf-5cf04f75e1aso6626770a12.1
- for <qemu-devel@nongnu.org>; Tue, 12 Nov 2024 02:17:29 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tAo5a-00017a-Dt
+ for qemu-devel@nongnu.org; Tue, 12 Nov 2024 05:25:39 -0500
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-431695fa98bso43062535e9.3
+ for <qemu-devel@nongnu.org>; Tue, 12 Nov 2024 02:25:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1731406649; x=1732011449; darn=nongnu.org;
- h=mime-version:user-agent:content-transfer-encoding:references
- :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
- :date:message-id:reply-to;
- bh=3LE/uQCFRzD9AYK90x3fGGWlE6ZUcSfNuzikrT/rsEM=;
- b=fr22+IxmrxoOaqIyDdcRT8TvORKO8BPdM7FoM0Dl9Jz90nVaEoIOxpKdhmgoQnwipo
- mIJCGvyLUeFI8dqryXomVv45AZp2sX/8xEGnx1G1iz9NcvzHb5wyNfMt/2Sb7NywRr2B
- 84GpNFmuTN8q7ZtbjU0NRTJUxim+bcaeAaLa5EZmIe3GEsrEuHGjxlT48cjT/jx8rmtY
- nahaP3D7tWDsp7a9UWP2bF85a5nR+iekLnUiKsdXWcbIrO3IjUZYCu0s6SJJwRvAE2T4
- H2Xak5bpRGu3LppYDNBseSZK3d3YuvQFlhh7pxkgZCDCW5IEuc/v7D6EoAxy43CGyqWn
- jmOg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731406649; x=1732011449;
- h=mime-version:user-agent:content-transfer-encoding:references
- :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+ d=linaro.org; s=google; t=1731407137; x=1732011937; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=3LE/uQCFRzD9AYK90x3fGGWlE6ZUcSfNuzikrT/rsEM=;
- b=XozywvfLvGwLqdDCWHlXQYH8+GfKrpNeQJrhNyC1pyXubnR99DANR2mTAS/ujLlvZZ
- XJA5GRgUZuw1oZ9/xcmkfTH0IMt2keGDZPW2iGRZGixGPibCzCGiVex8i/xZvJK6rnvS
- aI9leFXbZ4V4v6fmDANRdoowvmYMBdy+bKuiIDEgcF83aHizW6bxVkn5H9bgm1NjQdjy
- iphIE1nyDICn+LtxOH9euUJ3Zoxm4nbptYIOFUYMMJwk3BDGwpT6Edd3kH6MkxUMDnTG
- TEaZ8oOdozEsbEDZE6P0iPpokIVJ+zhDHGLHPjWiHolcPCRP2seY7zerI4S0u4RUDufz
- MMSw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUk9QCGrtrld+57jQ8kv08A/hRgBiLMK17pTf8ScNa2rM7fZkRCWSu5rX2qqUXcZplIG2VYcKKBHy8D@nongnu.org
-X-Gm-Message-State: AOJu0YyydXLk1ff16xBN8NFqGXodL4X84o9emf5XcF+Gbjpd4JpnO1Zg
- 5NMbz63O0gBHHuEWR1vcErJjpH82t9D3VwYwRwpC8EMimQpZ+iX0
-X-Google-Smtp-Source: AGHT+IEb5ELpA9GlL2palg2Q4wuZ8cY7EssS8HMyUxKWbS47/oLRn+cYjuGANhR2YPA5JkbkzzkiPg==
-X-Received: by 2002:a05:6402:2067:b0:5cd:5499:8dbb with SMTP id
- 4fb4d7f45d1cf-5cf0a32388cmr9660204a12.20.1731406648264; 
- Tue, 12 Nov 2024 02:17:28 -0800 (PST)
-Received: from ?IPv6:2001:b07:5d29:f42d:fb75:3035:4c0:20e9?
- ([2001:b07:5d29:f42d:fb75:3035:4c0:20e9])
- by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5cf03b5d76esm5735357a12.9.2024.11.12.02.17.26
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 12 Nov 2024 02:17:27 -0800 (PST)
-Message-ID: <17f00e24648b3f4f2ad5b941d848ca1d1fc075ae.camel@gmail.com>
-Subject: Re: [PATCH v6 60/60] docs: Add TDX documentation
-From: Francesco Lavra <francescolavra.fl@gmail.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>, Paolo Bonzini <pbonzini@redhat.com>, 
- Riku Voipio <riku.voipio@iki.fi>, Richard Henderson
- <richard.henderson@linaro.org>, Zhao Liu <zhao1.liu@intel.com>, "Michael S.
- Tsirkin" <mst@redhat.com>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>
-Cc: Philippe =?ISO-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>, Yanan
- Wang <wangyanan55@huawei.com>, Cornelia Huck <cohuck@redhat.com>, "Daniel
- P." =?ISO-8859-1?Q?Berrang=E9?= <berrange@redhat.com>, Eric Blake
- <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>, Marcelo Tosatti
- <mtosatti@redhat.com>,  rick.p.edgecombe@intel.com, kvm@vger.kernel.org,
- qemu-devel@nongnu.org
-Date: Tue, 12 Nov 2024 11:17:25 +0100
-In-Reply-To: <20241105062408.3533704-61-xiaoyao.li@intel.com>
-References: <20241105062408.3533704-1-xiaoyao.li@intel.com>
- <20241105062408.3533704-61-xiaoyao.li@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.46.4-2 
+ bh=Xy4UuM2QMxM9UiRnRfdnixF0H2+1fnYxvg3KvFylEt4=;
+ b=VBoJDe63VtXXWf8ScpO9N6E3xuyAbFzZB3gchflYFzmfO1QCqzNaH3+zWTRl+dL5q0
+ qf/PmwR/SJjPTatbI4gnLkqj7vmpvpES3RSm2vhy+Jix6S9/Xf3+N+RTl/Clh6VurpvN
+ Bf8g/bDO1/eKnRaK/CNXIcqgf77alZ245eiTX6NNDkDTm6I2zn1tP+ezDOYF7/MGG+7m
+ eOOd6vfYtezSbMIT7Gqp6TxY8ta/rxd/MqSr5uGc4gqy9yTUi4gxf3/uzzPoTXajKkE2
+ uT5kB6vQvPWmWaxd+Y/agCaoULmjRJnRi3w6eH1nONK0P3h2QK/J6yrywatW7KhJ1l+L
+ M1bw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1731407137; x=1732011937;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Xy4UuM2QMxM9UiRnRfdnixF0H2+1fnYxvg3KvFylEt4=;
+ b=u6Y/HtCfT9jcV8DVYqVpqTjfB39M6vQVhM9IMAYgWs0wqSliNNy2dE9Q2aIoAfQC0/
+ 3G16tuvHXmwRGc+N+fpGHRnd1kQ+IxaoZCO6k27uzXVbfldCMR3/p6nxH6izffjGJBew
+ VvCk5thdMTWax9WfYEMYwFs6vm3pRpYRz1DLPrV7e7bJ5WGD4hWicNaw3CDP9Y83MxRv
+ wUhlLM7EUUNV9tG8zimoNJvcA+kFhWiI47PaJd561lfhyZlieRw83BxOoI1SfJWXoN/i
+ 9B6Q/wehXbNstBnJmbmOk0I+nGK33hcRLUNjTBJwVTKiaZEyT2ZXOb47u2ymN4jgkJlX
+ vlUg==
+X-Gm-Message-State: AOJu0YxmPMu7nS1+p0lY7HakZLnsqZySJ42JrXZt8TYFc0ud3u8skUay
+ sYbTvJI6nVv+DRgVE9fEVv+oIzGMfiOrWp14In1DVOd9q3gbhenKXtESO6uBDu5PyZXYYK91FQe
+ r
+X-Google-Smtp-Source: AGHT+IHKH2DJnRmT9ehGAuHonn65l2Gasrpjq8q3KCdFuCEmpSDGCFePiEOcr7iZayqkaWIBIwbcaw==
+X-Received: by 2002:a5d:6d85:0:b0:37d:4e9d:233f with SMTP id
+ ffacd0b85a97d-381f186b5eemr14625605f8f.24.1731407136706; 
+ Tue, 12 Nov 2024 02:25:36 -0800 (PST)
+Received: from [192.168.69.126] (vau06-h02-176-184-43-163.dsl.sta.abo.bbox.fr.
+ [176.184.43.163]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-381ed9ea841sm15517487f8f.70.2024.11.12.02.25.35
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 12 Nov 2024 02:25:36 -0800 (PST)
+Message-ID: <24fe8063-c2cb-454a-9bed-00988948f188@linaro.org>
+Date: Tue, 12 Nov 2024 11:25:34 +0100
 MIME-Version: 1.0
-Received-SPF: pass client-ip=2a00:1450:4864:20::52c;
- envelope-from=francescolavra.fl@gmail.com; helo=mail-ed1-x52c.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] MAINTAINERS: add myself as the maintainer for LoongArch
+ VirtMachine
+To: Bibo Mao <maobibo@loongson.cn>, Thomas Huth <thuth@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Song Gao <gaosong@loongson.cn>
+Cc: qemu-devel@nongnu.org
+References: <20241112073714.1953481-1-maobibo@loongson.cn>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20241112073714.1953481-1-maobibo@loongson.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -105,222 +97,17 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 2024-11-05 at 01:24 -0500, Xiaoyao Li wrote:
+On 12/11/24 07:37, Bibo Mao wrote:
+> Song Gao is will be sick leave for a long time, I apply for maintainer
+> for LoongArch VirtMachien during this period, LoongArch TCG keeps unchanged
+> since I am not familiar with it. The maintainer duty will transfer to him
+> after he comes back to work.
+> 
+> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+> ---
+>   MAINTAINERS | 1 +
+>   1 file changed, 1 insertion(+)
 
-> diff --git a/docs/system/confidential-guest-support.rst
-> b/docs/system/confidential-guest-support.rst
-> index 0c490dbda2b7..66129fbab64c 100644
-> --- a/docs/system/confidential-guest-support.rst
-> +++ b/docs/system/confidential-guest-support.rst
-> @@ -38,6 +38,7 @@ Supported mechanisms
-> =C2=A0Currently supported confidential guest mechanisms are:
-> =C2=A0
-> =C2=A0* AMD Secure Encrypted Virtualization (SEV) (see :doc:`i386/amd-
-> memory-encryption`)
-> +* Intel Trust Domain Extension (TDX) (see :doc:`i386/tdx`)
-> =C2=A0* POWER Protected Execution Facility (PEF) (see :ref:`power-papr-
-> protected-execution-facility-pef`)
-> =C2=A0* s390x Protected Virtualization (PV) (see :doc:`s390x/protvirt`)
-> =C2=A0
-> diff --git a/docs/system/i386/tdx.rst b/docs/system/i386/tdx.rst
-> new file mode 100644
-> index 000000000000..60106b29bf72
-> --- /dev/null
-> +++ b/docs/system/i386/tdx.rst
-> @@ -0,0 +1,155 @@
-> +Intel Trusted Domain eXtension (TDX)
-> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> +
-> +Intel Trusted Domain eXtensions (TDX) refers to an Intel technology
-> that extends
-> +Virtual Machine Extensions (VMX) and Multi-Key Total Memory
-> Encryption (MKTME)
-> +with a new kind of virtual machine guest called a Trust Domain (TD).
-> A TD runs
-> +in a CPU mode that is designed to protect the confidentiality of its
-> memory
-> +contents and its CPU state from any other software, including the
-> hosting
-> +Virtual Machine Monitor (VMM), unless explicitly shared by the TD
-> itself.
-> +
-> +Prerequisites
-> +-------------
-> +
-> +To run TD, the physical machine needs to have TDX module loaded and
-> initialized
-> +while KVM hypervisor has TDX support and has TDX enabled. If those
-> requirements
-> +are met, the ``KVM_CAP_VM_TYPES`` will report the support of
-> ``KVM_X86_TDX_VM``.
-> +
-> +Trust Domain Virtual Firmware (TDVF)
-> +~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> +
-> +Trust Domain Virtual Firmware (TDVF) is required to provide TD
-> services to boot
-> +TD Guest OS. TDVF needs to be copied to guest private memory and
-> measured before
-> +the TD boots.
-> +
-> +KVM vcpu ioctl ``KVM_TDX_INIT_MEM_REGION`` can be used to populates
-
-s/populates/populate
-
-> the TDVF
-> +content into its private memory.
-> +
-> +Since TDX doesn't support readonly memslot, TDVF cannot be mapped as
-> pflash
-> +device and it actually works as RAM. "-bios" option is chosen to
-> load TDVF.
-> +
-> +OVMF is the opensource firmware that implements the TDVF support.
-> Thus the
-> +command line to specify and load TDVF is ``-bios OVMF.fd``
-> +
-> +Feature Configuration
-> +---------------------
-> +
-> +Unlike non-TDX VM, the CPU features (enumerated by CPU or MSR) of a
-> TD is not
-
-s/is/are
-
-> +under full control of VMM. VMM can only configure part of features
-> of a TD on
-> +``KVM_TDX_INIT_VM`` command of VM scope ``MEMORY_ENCRYPT_OP`` ioctl.
-> +
-> +The configurable features have three types:
-> +
-> +- Attributes:
-> +=C2=A0 - PKS (bit 30) controls whether Supervisor Protection Keys is
-> exposed to TD,
-> +=C2=A0 which determines related CPUID bit and CR4 bit;
-> +=C2=A0 - PERFMON (bit 63) controls whether PMU is exposed to TD.
-> +
-> +- XSAVE related features (XFAM):
-> +=C2=A0 XFAM is a 64b mask, which has the same format as XCR0 or IA32_XSS
-> MSR. It
-> +=C2=A0 determines the set of extended features available for use by the
-> guest TD.
-> +
-> +- CPUID features:
-> +=C2=A0 Only some bits of some CPUID leaves are directly configurable by
-> VMM.
-> +
-> +What features can be configured is reported via TDX capabilities.
-> +
-> +TDX capabilities
-> +~~~~~~~~~~~~~~~~
-> +
-> +The VM scope ``MEMORY_ENCRYPT_OP`` ioctl provides command
-> ``KVM_TDX_CAPABILITIES``
-> +to get the TDX capabilities from KVM. It returns a data structure of
-> +``struct kvm_tdx_capabilities``, which tells the supported
-> configuration of
-> +attributes, XFAM and CPUIDs.
-> +
-> +TD attributes
-> +~~~~~~~~~~~~~
-> +
-> +QEMU supports configuring raw 64-bit TD attributes directly via
-> "attributes"
-> +property of "tdx-guest" object. Note, it's users' responsibility to
-> provide a
-> +valid value because some bits may not supported by current QEMU or
-> KVM yet.
-> +
-> +QEMU also supports the configuration of individual attribute bits
-> that are
-> +supported by it, via propertyies of "tdx-guest" object.
-
-s/propertyies/properties
-
-> +E.g., "sept-ve-disable" (bit 63).
-> +
-> +MSR based features
-> +~~~~~~~~~~~~~~~~
-> +
-> +Current KVM doesn't support MSR based feature (e.g.,
-> MSR_IA32_ARCH_CAPABILITIES)
-> +configuration for TDX, and it's a future work to enable it in QEMU
-> when KVM adds
-> +support of it.
-> +
-> +Feature check
-> +~~~~~~~~~~~~~
-> +
-> +QEMU checks if the final (CPU) features, determined by given cpu
-> model and
-> +explicit feature adjustment of "+featureA/-featureB", can be
-> supported or not.
-> +It can produce feature not supported warnning like
-> +
-> +=C2=A0 "warning: host doesn't support requested feature:
-> CPUID.07H:EBX.intel-pt [bit 25]"
-> +
-> +It will also procude warning like
-
-s/procude/produce
-
-> +
-> +=C2=A0 "warning: TDX forcibly sets the feature:
-> CPUID.80000007H:EDX.invtsc [bit 8]"
-> +
-> +if the fixed-1 feature is requested to be disabled explicitly. This
-> is newly
-> +added to QEMU for TDX because TDX has fixed-1 features that are
-> enfored enabled
-
-s/enfored/enforced
-
-> +by TDX module and VMM cannot disable them.
-> +
-> +Launching a TD (TDX VM)
-> +-----------------------
-> +
-> +To launch a TDX guest, below are new added and required:
-
-This sentence is missing a subject (such as "command line options").
-
-> +
-> +.. parsed-literal::
-> +
-> +=C2=A0=C2=A0=C2=A0 |qemu_system_x86| \\
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 -object tdx-guest,id=3Dtdx0 \=
-\
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 -machine ...,kernel-irqchip=
-=3Dsplit,confidential-guest-
-> support=3Dtdx0 \\
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 -bios OVMF.fd \\
-> +
-> +restrictions
-> +------------
-> +
-> + - kernel-irqchip must be split;
-> +
-> + - No readonly support for private memory;
-> +
-> + - No SMM support: SMM support requires manipulating the guset
-
-s/guset/guest
-
-> register states
-> +=C2=A0=C2=A0 which is not allowed;
-> +
-> +Debugging
-> +---------
-> +
-> +Bit 0 of TD attributes, is DEBUG bit, which decides if the TD runs
-> in off-TD
-> +debug mode. When in off-TD debug mode, TD's VCPU state and private
-> memory are
-> +accessible via given SEAMCALLs. This requires KVM to expose APIs to
-> invoke those
-> +SEAMCALLs and resonponding QEMU change.
-
-s/resonponding/corresponding
+Acked-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
