@@ -2,60 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8F9B9C601E
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Nov 2024 19:16:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 535769C601F
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Nov 2024 19:16:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tAvNa-0007B2-Aa; Tue, 12 Nov 2024 13:12:42 -0500
+	id 1tAvNe-0007YO-Bg; Tue, 12 Nov 2024 13:12:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tAvNG-0006CT-Rr
- for qemu-devel@nongnu.org; Tue, 12 Nov 2024 13:12:23 -0500
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tAvNO-0006uK-OG
+ for qemu-devel@nongnu.org; Tue, 12 Nov 2024 13:12:30 -0500
+Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tAvNF-00021s-8w
- for qemu-devel@nongnu.org; Tue, 12 Nov 2024 13:12:22 -0500
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-431688d5127so47762005e9.0
- for <qemu-devel@nongnu.org>; Tue, 12 Nov 2024 10:12:20 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tAvNM-00022H-NX
+ for qemu-devel@nongnu.org; Tue, 12 Nov 2024 13:12:30 -0500
+Received: by mail-wr1-x436.google.com with SMTP id
+ ffacd0b85a97d-37d518f9abcso4331882f8f.2
+ for <qemu-devel@nongnu.org>; Tue, 12 Nov 2024 10:12:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1731435139; x=1732039939; darn=nongnu.org;
+ d=linaro.org; s=google; t=1731435145; x=1732039945; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=33ai2lENeDpCfbtpntzIEqfDXZ63d2DBrrpSSg3fCCg=;
- b=Y3L9CiDNfV+OM23aekSPqhFEtu4gvBB+r/uRNW8dYTQFWTFRJeHg6v1t3X/egn8tj3
- QVEQ7Uhs+3wsDuhv7GwQFpk6o7qs8hGnJDNjnQvCPjW450Ppwj5+73pkPyxe86IY2wya
- W3c4i8NKIQ4Xun9srLa2iGIxiLPNJ4e+KyBk8WZB790GgP9sRY52VmCHDt0btrYmeGoW
- QD/BZCbZYAfay0lcEvIqeLmGGgji8VwywkVXVB9e5TxiTw3s3BWv5eaaVw3eqN9Uv3JS
- xSxdh5yCrjZtA5XL6AfGQwNjvM35wq1wCSaC2+V1LzVzPYVPNUVdPrrI4Tbb8agdBhNa
- fKiw==
+ bh=vGBo3n6UAnKrx1s/4bgTSsf0dXQKvd5mL1bf1mP4VKA=;
+ b=qBkdv6jyWCtN8zjpBJWyuWiJX8yGSfdNNvIj9VLOoCk+sxL7ADaniBmSLhIEa5DQ1/
+ Vypk9eUNaBhsCgj3aagxVVPuJuQFvk4SXo0kVZTtNxm59phJfY8TZyOCGOToQckUET5U
+ mWWf7vCydBRjY+XhosN6ikG3Cv6FeQiic7vDk+yT3E/Nm3x/FRQq5sytVx+BhRfwaF/N
+ JrjIhh7P+Qj2/A2l5M3VBkSeG82108Qx5qJ05Ae2MmGRUZRCSTvT9nQxN7QXbhTxVrPJ
+ LRvTVyqCw/iDYlNBoOsm+4BnZ0wib39+5N64e7BEn8H0+8izT3NGnq0nNAM2bAN7Id+Q
+ A9jQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731435139; x=1732039939;
+ d=1e100.net; s=20230601; t=1731435145; x=1732039945;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=33ai2lENeDpCfbtpntzIEqfDXZ63d2DBrrpSSg3fCCg=;
- b=GPdW76qtjUt4SuctLIgNGxg7fh3D9k71SIXBx6hlh1QsnKGQLC/YyL5EzdpYiLWf79
- ReEG2Au7yPS2UFWT3j/ZvRuF76sYLQEierypOf47gUNhD7XpFcrfzXlGiiHvDFjr91v4
- bvCoMLThzwNyU5yd5lIr+UUX0b4kyHulEFzyIustX0z5W6p7+pzsM+BQ+kToS+E+nPEZ
- xhK5L4QX1pY+SqZSxM83Ndp5XF9DsnkuUlQnsDWn3AurvfTp3qwsnfn9VxQFJC34DjmS
- vhFqLudhTtiwlBizF4zyaxwKbOZw7rtGsF6z9NznN3iqkUgecev2qaaAlEXjU4pwHW2p
- 1wfQ==
-X-Gm-Message-State: AOJu0YwyJj1KgTc3VBzjMh3yhyyuQJSWb28Ug5XCFNm2DsAEKsVj2R9N
- BU6AU3Ah2ysTm8yMI2bPR/4+cqlRgEtnRjRoyxflXU08p6TrJWj4H8MzUJHgn5bjJBzDAcxwXXN
- Z
-X-Google-Smtp-Source: AGHT+IHpLteupMmSsopbmh2qzKKmKV0Wv9cZXs7WjQtinWx8atg2Uyt1sVnggiZzkL3xdK/BY56puA==
-X-Received: by 2002:a05:6000:4107:b0:381:f604:30c2 with SMTP id
- ffacd0b85a97d-381f6043253mr12399576f8f.35.1731435139511; 
- Tue, 12 Nov 2024 10:12:19 -0800 (PST)
+ bh=vGBo3n6UAnKrx1s/4bgTSsf0dXQKvd5mL1bf1mP4VKA=;
+ b=oT+OVxxj/LqxrFOMiNVbxTxfwN3BW/h8UGpwqxXTF+A5uP4uGvYmgFRLe5HGTlJe9y
+ cLB1ytuZw2f7pwU5GHmjgL4jMndwMp3lCrXISaDuKhqxJiDEISZ5hTkuWhG0rAoElKWC
+ 79Qb1/hzGj0pAe9eG8xhr6JM+eWwXRlLolQhhJ5Zo229H//eGLvdtqJ/ZZyRDBIqTFsb
+ lG+elwWZQvF1KVSmf+U5ifKopD27n10lJSZrTxl19jdjZPeSyOQPCUXC2hy5qsm+MF3B
+ GQbNk8uB/T54mxzFVtO1FYJ98wou+KJnSy1z69Ca6ounb1XX0pD+SeVkMObzibCxKdp/
+ P6zw==
+X-Gm-Message-State: AOJu0Yw4GT253a3vqVyV9DPLMdhVM3bUWWMSbZcSNK4sSEbfQKvjM9yS
+ ddQ8H+I2AGFz3JlIA3FS+iAZKxAm8TRm+U/AsU7Ag73HN+oEhanQ++AQ03GPkXAidRrj/0SfPR3
+ x
+X-Google-Smtp-Source: AGHT+IHAM2pwkgrLR2TnCGdm16wR68240SOagncYTL8Mt//7CKDK2CJti6oNBn9nOlRjKlJhFwVZBw==
+X-Received: by 2002:a5d:6484:0:b0:37e:d92f:c14a with SMTP id
+ ffacd0b85a97d-381f188583bmr13802823f8f.42.1731435145331; 
+ Tue, 12 Nov 2024 10:12:25 -0800 (PST)
 Received: from localhost.localdomain
  (cnf78-h01-176-184-27-250.dsl.sta.abo.bbox.fr. [176.184.27.250])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-381ed97071esm15832992f8f.12.2024.11.12.10.12.17
+ ffacd0b85a97d-381fc0f5f91sm7530136f8f.62.2024.11.12.10.12.23
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 12 Nov 2024 10:12:18 -0800 (PST)
+ Tue, 12 Nov 2024 10:12:24 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
@@ -67,17 +67,17 @@ Cc: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
  Paolo Bonzini <pbonzini@redhat.com>,
  Gustavo Romero <gustavo.romero@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 15/20] hw/net/xilinx_ethlite: Map RX_CTRL as MMIO
-Date: Tue, 12 Nov 2024 19:10:39 +0100
-Message-ID: <20241112181044.92193-16-philmd@linaro.org>
+Subject: [PATCH 16/20] hw/net/xilinx_ethlite: Map TX_LEN as MMIO
+Date: Tue, 12 Nov 2024 19:10:40 +0100
+Message-ID: <20241112181044.92193-17-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241112181044.92193-1-philmd@linaro.org>
 References: <20241112181044.92193-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::436;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,71 +100,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Declare RX registers as MMIO region, split it out
+Declare TX registers as MMIO region, split it out
 of the current mixed RAM/MMIO region.
-The memory flat view becomes:
-
-  FlatView #0
-   Root memory region: system
-    0000000081000000-00000000810007e3 (prio 0, i/o): xlnx.xps-ethernetlite
-    00000000810007e4-00000000810007f3 (prio 0, i/o): ethlite.mdio
-    00000000810007f4-00000000810017fb (prio 0, i/o): xlnx.xps-ethernetlite @00000000000007f4
-    00000000810017fc-00000000810017ff (prio 0, i/o): ethlite.rx[0]io
-    0000000081001800-0000000081001ffb (prio 0, i/o): xlnx.xps-ethernetlite @0000000000001800
-    0000000081001ffc-0000000081001fff (prio 0, i/o): ethlite.rx[1]io
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/net/xilinx_ethlite.c | 79 +++++++++++++++++++++++++++++++++--------
- 1 file changed, 65 insertions(+), 14 deletions(-)
+ hw/net/xilinx_ethlite.c | 71 ++++++++++++++++++++++++++++++++++-------
+ 1 file changed, 59 insertions(+), 12 deletions(-)
 
 diff --git a/hw/net/xilinx_ethlite.c b/hw/net/xilinx_ethlite.c
-index 4d86851f38..161fd97f06 100644
+index 161fd97f06..159b2b0c64 100644
 --- a/hw/net/xilinx_ethlite.c
 +++ b/hw/net/xilinx_ethlite.c
-@@ -46,13 +46,18 @@
+@@ -38,11 +38,11 @@
+ #define A_MDIO_BASE   0x07e4
+ 
+ #define R_TX_BUF0     0
+-#define R_TX_LEN0     (0x07f4 / 4)
++#define A_TX_BASE0    0x07f4
+ #define R_TX_GIE0     (0x07f8 / 4)
+ #define R_TX_CTRL0    (0x07fc / 4)
+ #define R_TX_BUF1     (0x0800 / 4)
+-#define R_TX_LEN1     (0x0ff4 / 4)
++#define A_TX_BASE1    0x0ff4
  #define R_TX_CTRL1    (0x0ffc / 4)
  
  #define R_RX_BUF0     (0x1000 / 4)
--#define R_RX_CTRL0    (0x17fc / 4)
-+#define A_RX_BASE0    0x17fc
- #define R_RX_BUF1     (0x1800 / 4)
--#define R_RX_CTRL1    (0x1ffc / 4)
-+#define A_RX_BASE1    0x1ffc
- #define R_MAX         (0x2000 / 4)
+@@ -53,6 +53,11 @@
  
  #define RX_BUFSZ_MAX  0x07e0
  
 +enum {
-+    RX_CTRL = 0,
-+    RX_MAX
++    TX_LEN =  0,
++    TX_MAX
 +};
 +
- #define GIE_GIE    0x80000000
- 
- #define CTRL_I     0x8
-@@ -61,6 +66,8 @@
- 
- typedef struct XlnxXpsEthLitePort
- {
-+    MemoryRegion rxio;
-+
-     struct {
-         uint32_t tx_len;
-         uint32_t tx_gie;
-@@ -118,6 +125,53 @@ static void *rxbuf_ptr(XlnxXpsEthLite *s, unsigned port_index)
+ enum {
+     RX_CTRL = 0,
+     RX_MAX
+@@ -125,6 +130,51 @@ static void *rxbuf_ptr(XlnxXpsEthLite *s, unsigned port_index)
      return &s->regs[rxbase + R_RX_BUF0];
  }
  
-+static uint64_t port_rx_read(void *opaque, hwaddr addr, unsigned int size)
++static uint64_t port_tx_read(void *opaque, hwaddr addr, unsigned int size)
 +{
 +    XlnxXpsEthLite *s = opaque;
 +    unsigned port_index = addr_to_port_index(addr);
 +    uint32_t r = 0;
 +
 +    switch (addr >> 2) {
-+        case RX_CTRL:
-+            r = s->port[port_index].reg.rx_ctrl;
++        case TX_LEN:
++            r = s->port[port_index].reg.tx_len;
 +            break;
 +        default:
 +            g_assert_not_reached();
@@ -173,25 +159,23 @@ index 4d86851f38..161fd97f06 100644
 +    return r;
 +}
 +
-+static void port_rx_write(void *opaque, hwaddr addr, uint64_t value,
++static void port_tx_write(void *opaque, hwaddr addr, uint64_t value,
 +                          unsigned int size)
 +{
 +    XlnxXpsEthLite *s = opaque;
 +
 +    switch (addr >> 2) {
-+        case RX_CTRL:
-+            if (!(value & CTRL_S)) {
-+                qemu_flush_queued_packets(qemu_get_queue(s->nic));
-+            }
++        case TX_LEN:
++            s->port[port_index].reg.tx_len = value;
 +            break;
 +        default:
 +            g_assert_not_reached();
 +    }
 +}
 +
-+static const MemoryRegionOps eth_portrx_ops = {
-+        .read = port_rx_read,
-+        .write = port_rx_write,
++static const MemoryRegionOps eth_porttx_ops = {
++        .read = port_tx_read,
++        .write = port_tx_write,
 +        .endianness = DEVICE_NATIVE_ENDIAN,
 +        .impl = {
 +            .min_access_size = 4,
@@ -203,51 +187,47 @@ index 4d86851f38..161fd97f06 100644
 +        },
 +};
 +
- static uint64_t
- eth_read(void *opaque, hwaddr addr, unsigned int size)
+ static uint64_t port_rx_read(void *opaque, hwaddr addr, unsigned int size)
  {
-@@ -143,10 +197,6 @@ eth_read(void *opaque, hwaddr addr, unsigned int size)
-             r = s->port[port_index].reg.tx_ctrl;
+     XlnxXpsEthLite *s = opaque;
+@@ -187,11 +237,6 @@ eth_read(void *opaque, hwaddr addr, unsigned int size)
+             r = s->port[port_index].reg.tx_gie;
              break;
  
--        case R_RX_CTRL1:
--        case R_RX_CTRL0:
--            r = s->port[port_index].reg.rx_ctrl;
+-        case R_TX_LEN0:
+-        case R_TX_LEN1:
+-            r = s->port[port_index].reg.tx_len;
+-            break;
 -
-         default:
-             r = tswap32(s->regs[addr]);
-             break;
-@@ -187,14 +237,6 @@ eth_write(void *opaque, hwaddr addr,
+         case R_TX_CTRL1:
+         case R_TX_CTRL0:
+             r = s->port[port_index].reg.tx_ctrl;
+@@ -237,11 +282,6 @@ eth_write(void *opaque, hwaddr addr,
              break;
  
          /* Keep these native.  */
--        case R_RX_CTRL0:
--        case R_RX_CTRL1:
--            if (!(value & CTRL_S)) {
--                qemu_flush_queued_packets(qemu_get_queue(s->nic));
--            }
--            s->port[port_index].reg.rx_ctrl = value;
+-        case R_TX_LEN0:
+-        case R_TX_LEN1:
+-            s->port[port_index].reg.tx_len = value;
 -            break;
 -
-         case R_TX_LEN0:
-         case R_TX_LEN1:
-             s->port[port_index].reg.tx_len = value;
-@@ -287,6 +329,15 @@ static void xilinx_ethlite_realize(DeviceState *dev, Error **errp)
-     memory_region_add_subregion(&s->mmio, A_MDIO_BASE,
+         case R_TX_GIE0:
+             s->port[port_index].reg.tx_gie = value;
+             break;
+@@ -330,6 +370,13 @@ static void xilinx_ethlite_realize(DeviceState *dev, Error **errp)
                              sysbus_mmio_get_region(SYS_BUS_DEVICE(&s->mdio), 0));
  
-+    for (unsigned i = 0; i < 2; i++) {
-+        memory_region_init_io(&s->port[i].rxio, OBJECT(dev),
-+                              &eth_portrx_ops, s,
-+                              i ? "ethlite.rx[1]io" : "ethlite.rx[0]io",
-+                              4 * RX_MAX);
-+        memory_region_add_subregion(&s->mmio, i ? A_RX_BASE1 : A_RX_BASE0,
-+                                    &s->port[i].rxio);
-+    }
+     for (unsigned i = 0; i < 2; i++) {
++        memory_region_init_io(&s->port[i].txio, OBJECT(dev),
++                              &eth_porttx_ops, s,
++                              i ? "ethlite.tx[1]io" : "ethlite.tx[0]io",
++                              4 * TX_MAX);
++        memory_region_add_subregion(&s->mmio, i ? A_TX_BASE1 : A_TX_BASE0,
++                                    &s->port[i].txio);
 +
-     qemu_macaddr_default_if_unset(&s->conf.macaddr);
-     s->nic = qemu_new_nic(&net_xilinx_ethlite_info, &s->conf,
-                           object_get_typename(OBJECT(dev)), dev->id,
+         memory_region_init_io(&s->port[i].rxio, OBJECT(dev),
+                               &eth_portrx_ops, s,
+                               i ? "ethlite.rx[1]io" : "ethlite.rx[0]io",
 -- 
 2.45.2
 
