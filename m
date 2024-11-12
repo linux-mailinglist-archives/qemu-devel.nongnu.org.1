@@ -2,92 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B0B69C5E34
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Nov 2024 18:05:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C8CB99C5E56
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Nov 2024 18:07:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tAuJs-0004NJ-2S; Tue, 12 Nov 2024 12:04:49 -0500
+	id 1tAuKe-0006HR-5A; Tue, 12 Nov 2024 12:05:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <groeck7@gmail.com>)
- id 1tAuHk-0003L6-J8; Tue, 12 Nov 2024 12:02:48 -0500
-Received: from mail-pg1-x532.google.com ([2607:f8b0:4864:20::532])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <groeck7@gmail.com>)
- id 1tAuHj-0001Vf-4Q; Tue, 12 Nov 2024 12:02:36 -0500
-Received: by mail-pg1-x532.google.com with SMTP id
- 41be03b00d2f7-7ae3d7222d4so4275040a12.3; 
- Tue, 12 Nov 2024 09:02:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1731430952; x=1732035752; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:sender:from:to:cc:subject:date
- :message-id:reply-to;
- bh=fcTg55TVLZf6OfSuBaidjAn4zuepTjhmMHoIrKI/Xb4=;
- b=Fb4xriYcGpyCCSmMags/421Dozpn2UaIw2I8jNA80R2zIzPZKQ+CZo2rrBrcHbfx8L
- RnCVHmwytguLQPEPvV3PXIcFA87+0qyaa5z7sgwkGZ9XbZ+eKk3VpbCyP2hKp7jvPNgb
- OOiHFt5u1PgdykNneAwdQhosjREleGexg+Tdcr+ySCsLsfEOBlDg+AXsdAX2Hxg5HhC6
- JRbhjGSSVviowakAp5p3P+EQCgvJH3p3BKy+0rcduiVwlZGf2fgMKyNRzdpdN9PiJJlF
- D5FPELENmuIXUOvbuczOeNGzKkveqs+R/NGJgM4S/hfyJhdyYfxL496PnzZOzfx50AuL
- Skpg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731430952; x=1732035752;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:sender:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=fcTg55TVLZf6OfSuBaidjAn4zuepTjhmMHoIrKI/Xb4=;
- b=MVX8Iav1VdWS0DmvB2tWwFd7Cu2BkGEvNcsSd+xSlGtnGwQbDjGeBytH9WU72EMqz9
- ri34nCq2QVDlkPTLzKi4Nr+y2u0FxB/EJT1uJeEPFAvJ0tNnpDXeIYf1IZRD0ERgEB/G
- w3ys7/3Gm8X612BIHpoerDBFbQcnjGwI1+S9SclyY4+cys0V4t3Yh4R+80iZFtaOxbz/
- es6xsbYR+fAQYJ7nsfRvpiC04Q2Utl6Ipww64sVDOW20OCBFyD6rlfiXcb65jHDSO1Ho
- H5fn8tEPEzcx1PYXReQaXbAW4iNDeFTj0MQwHWLRSImmN8qns8Mj+gKq86pQIwVJpLRV
- 0zBg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWCLfr0yMt0NbG8oZ8qmTLFiXSWzd2Xyzbt/bqdcdqS6vIQGpUEsyVj6Tz+GrRttMTItqQcNWC3Hg==@nongnu.org
-X-Gm-Message-State: AOJu0YyVQMiYHtYFnQ1Nnbao7S1Zj38eJ92trMUpdbAZXK31t6ZnPyr6
- 7ej/bWpnegY7FsRHOBKFPyDTX1MG1eg/pEu+ToyHK4+VRXQAcyOVvXgHuw==
-X-Google-Smtp-Source: AGHT+IEo0iBRS8PRdHLawG2F8k7ytxnHA6MKmimMdTNLSR/HGwzY1IKpyhxTro1TN3tvLPQvi0i04w==
-X-Received: by 2002:a17:90b:4c4c:b0:2e2:cf6d:33fd with SMTP id
- 98e67ed59e1d1-2e9b174821bmr22673530a91.31.1731430952418; 
- Tue, 12 Nov 2024 09:02:32 -0800 (PST)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
- by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2e9a5f8f4e2sm12046793a91.26.2024.11.12.09.02.31
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 12 Nov 2024 09:02:31 -0800 (PST)
-From: Guenter Roeck <linux@roeck-us.net>
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1tAuIa-0003Vd-6S
+ for qemu-devel@nongnu.org; Tue, 12 Nov 2024 12:03:29 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1tAuIV-0001Yt-V2
+ for qemu-devel@nongnu.org; Tue, 12 Nov 2024 12:03:26 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1731430996;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=W2lFTbP2bem4vtB4O18XLYQH/DWUqw1c48IaJI5uXA8=;
+ b=gLcfr13/ZxTcSNqLMpEXmUybvTbIkA8XOTI2/wy5/SHvtpzx6BNNI8pDFjqJwSvrGwNXG4
+ jKS/hWG5Q0nH3LVpGmMzt1F9G3twtjZS+Ha+/gX9XUtl0KfFpjNnMS8PqOUp+D48Mn5BMg
+ ys72tiHuggQsevOFL66gPPqnEf4fdzM=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-404-iHI5z0RHOPSB52ekFpbS3w-1; Tue,
+ 12 Nov 2024 12:03:10 -0500
+X-MC-Unique: iHI5z0RHOPSB52ekFpbS3w-1
+X-Mimecast-MFC-AGG-ID: iHI5z0RHOPSB52ekFpbS3w
+Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id D06D81953951; Tue, 12 Nov 2024 17:03:05 +0000 (UTC)
+Received: from dell-r430-03.lab.eng.brq2.redhat.com
+ (dell-r430-03.lab.eng.brq2.redhat.com [10.37.153.18])
+ by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id E9D901944CC9; Tue, 12 Nov 2024 17:03:00 +0000 (UTC)
+From: Igor Mammedov <imammedo@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- Steven Lee <steven_lee@aspeedtech.com>, Troy Lee <leetroy@gmail.com>,
- Jamin Lin <jamin_lin@aspeedtech.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Andrew Jeffery <andrew@codeconstruct.com.au>,
- Joel Stanley <joel@jms.id.au>, BALATON Zoltan <balaton@eik.bme.hu>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- =?UTF-8?q?Herv=C3=A9=20Poussineau?= <hpoussin@reactos.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
- qemu-arm@nongnu.org, Guenter Roeck <linux@roeck-us.net>
-Subject: [RESEND PATCH 10/10] usb-hub: Fix handling port power control messages
-Date: Tue, 12 Nov 2024 09:01:52 -0800
-Message-ID: <20241112170152.217664-11-linux@roeck-us.net>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20241112170152.217664-1-linux@roeck-us.net>
-References: <20241112170152.217664-1-linux@roeck-us.net>
+Cc: salil.mehta@huawei.com, mst@redhat.com, imammedo@redhat.com,
+ jonathan.cameron@huawei.com, linuxarm@huawei.com, anisinha@redhat.com,
+ karl.heubaum@oracle.com, miguel.luis@oracle.com, gustavo.romero@linaro.org
+Subject: [PATCH 0/7 for-9.2] Fix broken cpu hotplug after migration
+Date: Tue, 12 Nov 2024 18:02:51 +0100
+Message-ID: <20241112170258.2996640-1-imammedo@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::532;
- envelope-from=groeck7@gmail.com; helo=mail-pg1-x532.google.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_ENVFROM_END_DIGIT=0.25,
- FREEMAIL_FORGED_FROMDOMAIN=0.001, FREEMAIL_FROM=0.001,
- HEADER_FROM_DIFFERENT_DOMAINS=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=no autolearn_force=no
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=imammedo@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.122,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,31 +82,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The ClearPortFeature control message fails for PORT_POWER because there
-is no break; at the end of the case statement, causing it to fall through
-to the failure handler. Add the missing break; to solve the problem.
+1st 4 patches are fixing regression and getting rid of not needed changes
+that were merged out of context (ARM CPU hotplug) without proper review,
+by simply reverting offendining patches to keep history clean as patches
+not 9.2 material to begin with.
 
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
----
-Change from RFC:
-    New patch
+The rest [5-7/7] are not tested RFC (not for merging to 9.2) for how problem
+could be dealt with and could be adopted/changed for the future ARM CPU hotplug
+series. 
 
- hw/usb/dev-hub.c | 1 +
- 1 file changed, 1 insertion(+)
+Igor Mammedov (6):
+  Revert "hw/acpi: Update ACPI `_STA` method with QOM vCPU ACPI Hotplug
+    states"
+  Revert "hw/acpi: Make CPUs ACPI `presence` conditional during vCPU
+    hot-unplug"
+  tests/acpi: update expected blobs
+  acpi: cpuhp: add option to AML genrator to opt-in to always present
+    vCPUs
+  acpi: cpuhp: use 'realized' status of vCPU to check if CPU is enabled
+  acpi: cpuhp: preserve always present vCPUs on unplug
 
-diff --git a/hw/usb/dev-hub.c b/hw/usb/dev-hub.c
-index 4da91d151c..2872c6712a 100644
---- a/hw/usb/dev-hub.c
-+++ b/hw/usb/dev-hub.c
-@@ -532,6 +532,7 @@ static void usb_hub_handle_control(USBDevice *dev, USBPacket *p,
-                     usb_hub_port_clear(port, PORT_STAT_SUSPEND);
-                     port->wPortChange = 0;
-                 }
-+                break;
-             default:
-                 goto fail;
-             }
+Salil Mehta (1):
+  qtest: allow ACPI DSDT Table changes
+
+ include/hw/acpi/cpu.h                         |   5 +-
+ include/hw/core/cpu.h                         |   2 -
+ hw/acpi/acpi-cpu-hotplug-stub.c               |   3 +-
+ hw/acpi/cpu.c                                 |  72 +++++-------------
+ hw/acpi/cpu_hotplug.c                         |   2 +-
+ hw/acpi/generic_event_device.c                |   2 +-
+ tests/data/acpi/x86/pc/DSDT                   | Bin 8560 -> 8526 bytes
+ tests/data/acpi/x86/pc/DSDT.acpierst          | Bin 8471 -> 8437 bytes
+ tests/data/acpi/x86/pc/DSDT.acpihmat          | Bin 9885 -> 9851 bytes
+ tests/data/acpi/x86/pc/DSDT.bridge            | Bin 15431 -> 15397 bytes
+ tests/data/acpi/x86/pc/DSDT.cphp              | Bin 9024 -> 8990 bytes
+ tests/data/acpi/x86/pc/DSDT.dimmpxm           | Bin 10214 -> 10180 bytes
+ tests/data/acpi/x86/pc/DSDT.hpbridge          | Bin 8511 -> 8477 bytes
+ tests/data/acpi/x86/pc/DSDT.hpbrroot          | Bin 5067 -> 5033 bytes
+ tests/data/acpi/x86/pc/DSDT.ipmikcs           | Bin 8632 -> 8598 bytes
+ tests/data/acpi/x86/pc/DSDT.memhp             | Bin 9919 -> 9885 bytes
+ tests/data/acpi/x86/pc/DSDT.nohpet            | Bin 8418 -> 8384 bytes
+ tests/data/acpi/x86/pc/DSDT.numamem           | Bin 8566 -> 8532 bytes
+ tests/data/acpi/x86/pc/DSDT.roothp            | Bin 12353 -> 12319 bytes
+ tests/data/acpi/x86/q35/DSDT                  | Bin 8389 -> 8355 bytes
+ tests/data/acpi/x86/q35/DSDT.acpierst         | Bin 8406 -> 8372 bytes
+ tests/data/acpi/x86/q35/DSDT.acpihmat         | Bin 9714 -> 9680 bytes
+ .../acpi/x86/q35/DSDT.acpihmat-noinitiator    | Bin 8668 -> 8634 bytes
+ tests/data/acpi/x86/q35/DSDT.applesmc         | Bin 8435 -> 8401 bytes
+ tests/data/acpi/x86/q35/DSDT.bridge           | Bin 12002 -> 11968 bytes
+ tests/data/acpi/x86/q35/DSDT.core-count       | Bin 12947 -> 12913 bytes
+ tests/data/acpi/x86/q35/DSDT.core-count2      | Bin 33804 -> 33770 bytes
+ tests/data/acpi/x86/q35/DSDT.cphp             | Bin 8853 -> 8819 bytes
+ tests/data/acpi/x86/q35/DSDT.cxl              | Bin 13180 -> 13146 bytes
+ tests/data/acpi/x86/q35/DSDT.dimmpxm          | Bin 10043 -> 10009 bytes
+ tests/data/acpi/x86/q35/DSDT.ipmibt           | Bin 8464 -> 8430 bytes
+ tests/data/acpi/x86/q35/DSDT.ipmismbus        | Bin 8477 -> 8443 bytes
+ tests/data/acpi/x86/q35/DSDT.ivrs             | Bin 8406 -> 8372 bytes
+ tests/data/acpi/x86/q35/DSDT.memhp            | Bin 9748 -> 9714 bytes
+ tests/data/acpi/x86/q35/DSDT.mmio64           | Bin 9519 -> 9485 bytes
+ tests/data/acpi/x86/q35/DSDT.multi-bridge     | Bin 13242 -> 13208 bytes
+ tests/data/acpi/x86/q35/DSDT.noacpihp         | Bin 8269 -> 8235 bytes
+ tests/data/acpi/x86/q35/DSDT.nohpet           | Bin 8247 -> 8213 bytes
+ tests/data/acpi/x86/q35/DSDT.numamem          | Bin 8395 -> 8361 bytes
+ tests/data/acpi/x86/q35/DSDT.pvpanic-isa      | Bin 8490 -> 8456 bytes
+ tests/data/acpi/x86/q35/DSDT.thread-count     | Bin 12947 -> 12913 bytes
+ tests/data/acpi/x86/q35/DSDT.thread-count2    | Bin 33804 -> 33770 bytes
+ tests/data/acpi/x86/q35/DSDT.tis.tpm12        | Bin 8995 -> 8961 bytes
+ tests/data/acpi/x86/q35/DSDT.tis.tpm2         | Bin 9021 -> 8987 bytes
+ tests/data/acpi/x86/q35/DSDT.type4-count      | Bin 18623 -> 18589 bytes
+ tests/data/acpi/x86/q35/DSDT.viot             | Bin 14646 -> 14612 bytes
+ tests/data/acpi/x86/q35/DSDT.xapic            | Bin 35752 -> 35718 bytes
+ 47 files changed, 29 insertions(+), 57 deletions(-)
+
 -- 
-2.45.2
+2.43.0
 
 
