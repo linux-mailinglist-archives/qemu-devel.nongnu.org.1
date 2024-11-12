@@ -2,79 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCA119C61EB
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Nov 2024 20:56:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 324EE9C62B6
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Nov 2024 21:39:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tAwyJ-0001hD-L5; Tue, 12 Nov 2024 14:54:43 -0500
+	id 1tAxek-0001Io-Ln; Tue, 12 Nov 2024 15:38:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tAwyI-0001h4-1x
- for qemu-devel@nongnu.org; Tue, 12 Nov 2024 14:54:42 -0500
-Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
+ id 1tAxeV-0001HM-8j
+ for qemu-devel@nongnu.org; Tue, 12 Nov 2024 15:38:23 -0500
+Received: from mail-pg1-x52e.google.com ([2607:f8b0:4864:20::52e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tAwyG-00042G-Lw
- for qemu-devel@nongnu.org; Tue, 12 Nov 2024 14:54:41 -0500
-Received: by mail-pf1-x42c.google.com with SMTP id
- d2e1a72fcca58-720d01caa66so5811551b3a.2
- for <qemu-devel@nongnu.org>; Tue, 12 Nov 2024 11:54:39 -0800 (PST)
+ id 1tAxeK-0008Sn-6d
+ for qemu-devel@nongnu.org; Tue, 12 Nov 2024 15:38:12 -0500
+Received: by mail-pg1-x52e.google.com with SMTP id
+ 41be03b00d2f7-7f43259d220so3259951a12.3
+ for <qemu-devel@nongnu.org>; Tue, 12 Nov 2024 12:38:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1731441278; x=1732046078; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=O2JMyessd0hYaWg0ucv7u5P7Fnn7u92EWbl8vOlw/8E=;
- b=U1AYFlEnr4eXBLBECW2ScFboAJWwSVqZ5mIHCNr5hXJmiFOsJ0oS37Fp/8rwkIanSw
- 6UVMe8AEvuQnqYpk5spWafznwKf57djKvh7/pz4i9Wqc7X11QrjjjZZ2aboAohvFY0A7
- mFv4aBfmjHwmaqUf5M78MHeuKL4SJGelCb8UckS+dHPvatm4Qa2oUIW911A98rxwfip8
- x0Ce2zycbzi51VpFoxxrIK0KnVG4kXfTurIbSRg2vzOlv6OXbbZgyx5VBHv77hYx+I48
- Jsy6hysBZ5sEz2/KPhopGxsqvdXMSoSvyEkCJsH6cTlQGUcw4vP29mPJB1dwQnyV8u76
- bg2A==
+ d=linaro.org; s=google; t=1731443881; x=1732048681; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=szuHMevCrKC+EdwnnmTePxCBnHN0QrWML9ZRboDaHSc=;
+ b=U0eLAzAB+SmHkAw/MsrXahxRoH4xFcxctLqK4jOi8k9sZWNqEj8/EPBLAvfhOImyg0
+ iTASiJxWpyMsktAtblj87398URBdmSuRY+2Lbdz0A2cnmTBLkwLJv2et/6ZU/WoVfrRZ
+ kPiHA1QOISrPcsIN5+a8CmQYYoPNaRW/woD7wJi38k/N2x/khjRr/Ih46+wPlTuDJCUc
+ n7tRG26nYYfNO8npo5YgZAHXz7fG2zszPH+rLG6BwgFQRobu1mL9mPuVbI+ay4WFxOuE
+ RepKAdI61YTpQ43fsB0nwqyERUJBeY0rq9qynM4rjVe4AbimLrm3MQ2dZUgCP05F7XTz
+ 5nVg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731441278; x=1732046078;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=O2JMyessd0hYaWg0ucv7u5P7Fnn7u92EWbl8vOlw/8E=;
- b=Q3cwzH2AwC1iKSDhYQjBU6sP4ktilZ49tdllSJqfyeWWQDsSqQn7k1x1a96baOF/CO
- JfQrjDuh86dbIZnOLG0OvQ6v4cPk043sb3+tFJ0ob56LtbB4y53S4ozn8wjxwKFIW/Xe
- ywBGIk8XvVJX4kcLup8fe7w9zJAQwZYDb1UXBxiIqN+g2VwrxlIZv81idZkg4h2yXeqU
- xl4KYeu7BvCad0W69yM62F8xW0W37MDTQ+LZFwtfd51T+3WU1zwVT4bvhVpCagVSlGpZ
- sHzBVAy9DHbZOXwAWJEFelScCQMMDeau9UCqPccrn4+fC4hhrabaNH221/I4QR3kLLRl
- Woxw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVNQA+TfA5Euiq9ndPzEBLKqwk67hVgi4J71fAexx6E3vVKTk73yRNSm59eV9w1/NJrwgQYTLNeF+Wx@nongnu.org
-X-Gm-Message-State: AOJu0YzVfO9BiO1A7KHdnzHRa27XyGsg4fMXIJFUVl1getM2mC2q281B
- WxAS7hb+hjuGakW4CpipQt09QA2GeqBiMTcWc+pK8yo/EIZe/MhPUUujflLN0ZE=
-X-Google-Smtp-Source: AGHT+IHCb6Q0CYhgyMXybulj5wgISzOA7vKDJhBVfVo/At/7t9rWz+eiUJ2RAzgoU9LTghIBbFYZXg==
-X-Received: by 2002:a05:6a20:12d3:b0:1d5:10c1:4939 with SMTP id
- adf61e73a8af0-1dc70338a9dmr534271637.8.1731441278504; 
- Tue, 12 Nov 2024 11:54:38 -0800 (PST)
-Received: from [192.168.52.227] (wsip-24-120-228-34.lv.lv.cox.net.
- [24.120.228.34]) by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-7f41f5b3f8fsm10847368a12.19.2024.11.12.11.54.37
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 12 Nov 2024 11:54:38 -0800 (PST)
-Message-ID: <764e5746-ee61-471a-a90b-886f78c606ea@linaro.org>
-Date: Tue, 12 Nov 2024 11:54:17 -0800
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] GTM19-448: Fix script to work without realpath
-To: Aleksandar Rakic <rakicaleksandar1999@gmail.com>, qemu-devel@nongnu.org
-Cc: djordje.todorovic@htecgroup.com, cfu@mips.com, arikalo@gmail.com,
- philmd@linaro.org, Aleksandar Rakic <aleksandar.rakic@htecgroup.com>,
- Faraz Shahbazker <fshahbazker@wavecomp.com>
-References: <20241112183849.2577570-1-aleksandar.rakic@htecgroup.com>
-Content-Language: en-US
+ d=1e100.net; s=20230601; t=1731443881; x=1732048681;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=szuHMevCrKC+EdwnnmTePxCBnHN0QrWML9ZRboDaHSc=;
+ b=Nrjyic5kipwzGv8dQXf6YoEYSVjyB8T0QODOxyVulTaks5bQaZcHjzl5GH4vF9TLV5
+ 2wBT8PgphhHBD3atMeFv4a9NlDVD91KpdEpX4UYQOmoNLD5NECCnrgPPIb8pyJGT6beN
+ FSjDgpRETUL0KcCku5+3a6RKxHmeE9ijARVbzaOCjHEGbRRJprVpSC3NmaSo/+w8W5Ss
+ SBNT6v22DNBtl+4/PTgbYGFVclnJ5aSXI5M+G/tUIuqVcAuZ/sa2oyNRuorlVV0EKxkX
+ Xo2luBj889rSvXUoTjD7xflgN07c6gZLMsUQWdaLTQIGz6xCYpLa/mU9kFJSfLBV0GH1
+ ZVJw==
+X-Gm-Message-State: AOJu0YzDqqle0/+hoFqqBsri06iiPaRGPpDVkhASw8IULiILA7dIskT4
+ TD3F22WXJ01ASMjG3kV4yGFCG3C5tklJiz2dx/3tVbAbvA1PwI/kWyqmykE3qJZa8VfhLjP9Doa
+ 6
+X-Google-Smtp-Source: AGHT+IHJMPfPsIFIc8c6dKAefZea2i0RCOpSsOe8kl9VuU0QARM+pjdyylKWv8W3blUhknIjPdBftg==
+X-Received: by 2002:a17:90b:33c8:b0:2e2:bfb0:c06 with SMTP id
+ 98e67ed59e1d1-2e9b17058camr23137447a91.12.1731443881252; 
+ Tue, 12 Nov 2024 12:38:01 -0800 (PST)
+Received: from stoup.. (wsip-24-120-228-34.lv.lv.cox.net. [24.120.228.34])
+ by smtp.gmail.com with ESMTPSA id
+ 98e67ed59e1d1-2e9f3894192sm9860a91.21.2024.11.12.12.38.00
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 12 Nov 2024 12:38:00 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20241112183849.2577570-1-aleksandar.rakic@htecgroup.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42c.google.com
+To: qemu-devel@nongnu.org
+Subject: [PATCH for-9.2 0/6] linux-user: Fix elf load and vdso alignment
+Date: Tue, 12 Nov 2024 12:37:51 -0800
+Message-ID: <20241112203757.804320-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.43.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,14 +88,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/12/24 10:38, Aleksandar Rakic wrote:
-> The archive-source.sh script depends on realpath command, which was
-> introduced in coreutils-8.15. CentOS-6 build systems use coreutils-4.7,
-> which does not have realpath, so fix the script to use 'readlink -e' to
-> perform the same action.
-
-Centos 6 is not supported.  Neither is Centos 7, come to that.
+GDB picked up that we weren't properly honoring alignment.
+After fixing that, reduce vdso alignment to minimum page size.
 
 
 r~
+
+
+Richard Henderson (6):
+  linux-user: Honor elf alignment when placing images
+  linux-user: Drop image_info.alignment
+  linux-user/aarch64: Reduce vdso alignment to 4k
+  linux-user/arm: Reduce vdso alignment to 4k
+  linux-user/loongarch64: Reduce vdso alignment to 4k
+  linux-user/ppc: Reduce vdso alignment to 4k
+
+ linux-user/qemu.h                    |   1 -
+ linux-user/elfload.c                 |  38 ++++++++++++++++++++-------
+ linux-user/aarch64/Makefile.vdso     |   5 ++--
+ linux-user/aarch64/vdso-be.so        | Bin 3224 -> 3224 bytes
+ linux-user/aarch64/vdso-le.so        | Bin 3224 -> 3224 bytes
+ linux-user/arm/Makefile.vdso         |   2 +-
+ linux-user/arm/vdso-be.so            | Bin 2648 -> 2648 bytes
+ linux-user/arm/vdso-le.so            | Bin 2648 -> 2648 bytes
+ linux-user/loongarch64/Makefile.vdso |   3 ++-
+ linux-user/loongarch64/vdso.so       | Bin 3560 -> 3560 bytes
+ linux-user/ppc/Makefile.vdso         |   6 +++--
+ linux-user/ppc/vdso-32.so            | Bin 3020 -> 3020 bytes
+ linux-user/ppc/vdso-64.so            | Bin 3896 -> 3896 bytes
+ linux-user/ppc/vdso-64le.so          | Bin 3896 -> 3896 bytes
+ 14 files changed, 39 insertions(+), 16 deletions(-)
+
+-- 
+2.43.0
+
 
