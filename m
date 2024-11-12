@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1718D9C62B4
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A9C19C62B5
 	for <lists+qemu-devel@lfdr.de>; Tue, 12 Nov 2024 21:39:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tAxep-0001LC-Qp; Tue, 12 Nov 2024 15:38:39 -0500
+	id 1tAxeh-0001If-1o; Tue, 12 Nov 2024 15:38:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tAxeY-0001Ha-99
+ id 1tAxeY-0001Hb-9y
  for qemu-devel@nongnu.org; Tue, 12 Nov 2024 15:38:23 -0500
-Received: from mail-pg1-x529.google.com ([2607:f8b0:4864:20::529])
+Received: from mail-pg1-x531.google.com ([2607:f8b0:4864:20::531])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tAxeL-0008T9-CY
- for qemu-devel@nongnu.org; Tue, 12 Nov 2024 15:38:20 -0500
-Received: by mail-pg1-x529.google.com with SMTP id
- 41be03b00d2f7-7ea8de14848so3825307a12.2
- for <qemu-devel@nongnu.org>; Tue, 12 Nov 2024 12:38:08 -0800 (PST)
+ id 1tAxeQ-0008TL-9k
+ for qemu-devel@nongnu.org; Tue, 12 Nov 2024 15:38:21 -0500
+Received: by mail-pg1-x531.google.com with SMTP id
+ 41be03b00d2f7-7f3e30a43f1so4177870a12.1
+ for <qemu-devel@nongnu.org>; Tue, 12 Nov 2024 12:38:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1731443887; x=1732048687; darn=nongnu.org;
+ d=linaro.org; s=google; t=1731443889; x=1732048689; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=77EDcqqX9a5GfiHvqq5TNPelFIgzWuyhNUEmQuL3org=;
- b=sFhFvfhlDdXfau31+BvCaSc8PAT8lw3K2VcSafE8YF8bMhRqhiwajoHyEMo7n3xJq9
- iz5X9alsIgpYW5MW/DNo3DQca89oeuJ7QInz51uKzvyBfV7NuezITao7OrTEBtx2WVPT
- Sh3K0otg1gYIreV/X8Tvy3FSf4p1Ylj3kNa8LUYbGQYwTH6BKxP2MXBbXc7AR35a7JZw
- fAvQP8yksnUMBVuWjY9EcFofLhmfkx40W4VyoTJScd/oKFQDYkEj4IKqHcyxP2ZYFLU0
- Saq24geoKkRcevTmAN78bb01JLUIQdjUa7hmE+b9UvXcvvvmg2MHNMBKFK+wAWHeKZxW
- IJ4w==
+ :reply-to; bh=Ytqfxtz/gze+FwFK7EX85c9S/fEjNCvGmfsL22P/YbA=;
+ b=e8zmBcewnXKz2nTlDlJw5ToNxpIMby2rf31oxgdIQptD2p1s15/JjmgPK5C9H1tIth
+ Wkvhnq/OJLbsMCHpoqZiWIOr/Aw0QGvLntnTJKtqJ99cBGU1hpKZuuxGiC7Ile0GOmbb
+ SFJDiZVtOxuu1neiMaQQO5GBRlSeeQO/Fi3wlhiD9cv7lPQ5E4B+pxgtGp/ov5fr9Oyr
+ QU51VmMvj1dqXJkfvG6RzcH421VIWQNT8FVbqzUees/atVE1iGcjQhcj6hWF2DDlxQY5
+ jXhq0lSdtdecj7tPsz8HWGIYOp/+HYhvrKKHLGkjDuZw1wREMuC6dT55ksAH3d4IftVJ
+ Blrg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731443887; x=1732048687;
+ d=1e100.net; s=20230601; t=1731443889; x=1732048689;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=77EDcqqX9a5GfiHvqq5TNPelFIgzWuyhNUEmQuL3org=;
- b=HU2se/2eagKTcpRYPnoZCZ4c/rpExsZghq4W8Sj3mr2z0DJXmOmWfqnKmga+w5PWUj
- fc1g0n/KB4Qs6joWYmZX0nAdUEfhZ0aHCEUFFBSWwEQTCB73X/90OECUKZmyZYfzqtqK
- zLE46Wp+bTRRjr465QMEH+rWnpe5ZGkriILZyzMGMN4A4AeVdl/+PCKsZPM0A2GxuOCK
- 4lWMYxBFvkrubMQ1OI54ZzaBWoaQnHEB1CB1E2q2RndeiCBkrNySlDG9CRNrmnpJgFXF
- 3KozrklYnZMTYxm/EalchKMKnR9TsQOqEZ9OTk6LY9zRHsSVD0x0vTNL7BgmnACdAWsb
- FQBw==
-X-Gm-Message-State: AOJu0YyRiCB50z5znkYg+4ne/1RZ53dTNDxNgkl4MxgQPp8JiysJsweO
- kxvDOmhSOT7ZMEQXudjQlRZLYNPf33N0xFYKvSFEpbzAB040gO7wlPNE91l81Mnnh51uXH4zFYM
- s
-X-Google-Smtp-Source: AGHT+IHRJsRJkKSnQuPZ+mEvBkBR/WUcdtxWnP3JIaoiLg06i9MoTpOsZeTP2FFkuLQkTfiJfFVj8w==
-X-Received: by 2002:a17:90b:3b4e:b0:2e2:d879:7cfc with SMTP id
- 98e67ed59e1d1-2e9f2c9062amr348877a91.21.1731443887247; 
- Tue, 12 Nov 2024 12:38:07 -0800 (PST)
+ bh=Ytqfxtz/gze+FwFK7EX85c9S/fEjNCvGmfsL22P/YbA=;
+ b=M5vzL94cqPQM4wpvAR5pAG4GunQAIYN23uM5k0J/8mklaQyVbwf8wtdOpNvZvgXh6Z
+ 3F9DWveUN2Rf9ISxqf1OxgJfcGkg34JbyWLfJRqJ5L0re7rKd3ziDBkWKQkMgguz8pEe
+ oAUBc60CkKBMI5+jj13VEHFyMl7no1pBSj55e+VMWK+MzDv+cJn4YRhvn6Y+T4b9VCHa
+ AeOs30bTsMdVIa8t+No5G9RrX9nUwJsUc25Yqxi0qUalegAOKyfiSX9H0ThMWuYH3pdq
+ K06RqSEe//206oDg6CKkMHjPHH/ElRubfJEqwsvh9B1RFJumMqKi2kVsr5zB9nXCnvKC
+ cvnQ==
+X-Gm-Message-State: AOJu0YyEpgen5DctNxoIMrBfGAK3Au3sIpkpLIAOt/TMQxLTtbtBNY/E
+ 4cfm++sJ49Zh5YDVbwx9Il2Sy+WoBHEXp56uU40cLcM7UAxmnRW5CivJBupKiZtQHB1GlonfFOz
+ m
+X-Google-Smtp-Source: AGHT+IHyd0s5OgtOnlH14ilGdOWMRh+3wrunmqSCHRD7Jy7gOgyIyJbFnSO8Es1iZerCbagdiXWZJQ==
+X-Received: by 2002:a17:90b:3b47:b0:2c8:647:1600 with SMTP id
+ 98e67ed59e1d1-2e9b16fc9d0mr23850605a91.9.1731443888602; 
+ Tue, 12 Nov 2024 12:38:08 -0800 (PST)
 Received: from stoup.. (wsip-24-120-228-34.lv.lv.cox.net. [24.120.228.34])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2e9f3894192sm9860a91.21.2024.11.12.12.38.06
+ 98e67ed59e1d1-2e9f3894192sm9860a91.21.2024.11.12.12.38.07
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 12 Nov 2024 12:38:06 -0800 (PST)
+ Tue, 12 Nov 2024 12:38:08 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 5/6] linux-user/loongarch64: Reduce vdso alignment to 4k
-Date: Tue, 12 Nov 2024 12:37:56 -0800
-Message-ID: <20241112203757.804320-6-richard.henderson@linaro.org>
+Subject: [PATCH 6/6] linux-user/ppc: Reduce vdso alignment to 4k
+Date: Tue, 12 Nov 2024 12:37:57 -0800
+Message-ID: <20241112203757.804320-7-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241112203757.804320-1-richard.henderson@linaro.org>
 References: <20241112203757.804320-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::529;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x529.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::531;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x531.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,29 +93,57 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/loongarch64/Makefile.vdso |   3 ++-
- linux-user/loongarch64/vdso.so       | Bin 3560 -> 3560 bytes
- 2 files changed, 2 insertions(+), 1 deletion(-)
+ linux-user/ppc/Makefile.vdso |   6 ++++--
+ linux-user/ppc/vdso-32.so    | Bin 3020 -> 3020 bytes
+ linux-user/ppc/vdso-64.so    | Bin 3896 -> 3896 bytes
+ linux-user/ppc/vdso-64le.so  | Bin 3896 -> 3896 bytes
+ 4 files changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/linux-user/loongarch64/Makefile.vdso b/linux-user/loongarch64/Makefile.vdso
-index 369de13344..1d760b1e47 100644
---- a/linux-user/loongarch64/Makefile.vdso
-+++ b/linux-user/loongarch64/Makefile.vdso
-@@ -8,4 +8,5 @@ all: $(SUBDIR)/vdso.so
- $(SUBDIR)/vdso.so: vdso.S vdso.ld vdso-asmoffset.h
- 	$(CC) -o $@ -nostdlib -shared -fpic -Wl,-h,linux-vdso.so.1 \
- 	  -Wl,--build-id=sha1 -Wl,--hash-style=both \
--	  -Wl,--no-warn-rwx-segments -Wl,-T,$(SUBDIR)/vdso.ld $<
-+	  -Wl,--no-warn-rwx-segments -Wl,-z,max-page-size=4096 \
-+	  -Wl,-T,$(SUBDIR)/vdso.ld $<
-diff --git a/linux-user/loongarch64/vdso.so b/linux-user/loongarch64/vdso.so
-index bfaa26f2bfe1aaa01d9a349b8b030ef6323e1f8e..7c2de6c50e706164225e82f652d4becc04c71ff0 100755
+diff --git a/linux-user/ppc/Makefile.vdso b/linux-user/ppc/Makefile.vdso
+index 3ca3c6b83e..e2b8facbb5 100644
+--- a/linux-user/ppc/Makefile.vdso
++++ b/linux-user/ppc/Makefile.vdso
+@@ -6,9 +6,11 @@ VPATH += $(SUBDIR)
+ all: $(SUBDIR)/vdso-32.so $(SUBDIR)/vdso-64.so $(SUBDIR)/vdso-64le.so
+ 
+ LDFLAGS32 = -nostdlib -shared -Wl,-T,$(SUBDIR)/vdso-32.ld \
+-            -Wl,-h,linux-vdso32.so.1 -Wl,--hash-style=both -Wl,--build-id=sha1
++            -Wl,-h,linux-vdso32.so.1 -Wl,--hash-style=both \
++	    -Wl,--build-id=sha1 -Wl,-z,max-page-size=4096
+ LDFLAGS64 = -nostdlib -shared -Wl,-T,$(SUBDIR)/vdso-64.ld \
+-            -Wl,-h,linux-vdso64.so.1 -Wl,--hash-style=both -Wl,--build-id=sha1
++            -Wl,-h,linux-vdso64.so.1 -Wl,--hash-style=both \
++	    -Wl,--build-id=sha1 -Wl,-z,max-page-size=4096
+ 
+ $(SUBDIR)/vdso-32.so: vdso.S vdso-32.ld vdso-asmoffset.h
+ 	$(CC) -o $@ $(LDFLAGS32) -m32 $<
+diff --git a/linux-user/ppc/vdso-32.so b/linux-user/ppc/vdso-32.so
+index b19baafb0d38e15b4a24def5c44a6d684714be45..0dc55e0dddff618b954dbb939335e99956daf64a 100755
 GIT binary patch
-delta 37
-tcmaDM{X%-eN=AW+tM-YA3hb&jk8@2<QS14Vzx}<pii5+a%{7cUJOC|W51jx2
+delta 42
+zcmV+_0M-A@7t9xsCINtvCrSbU5Rr3n6lq1YQP%3b&XBjV4sl%JXqmbIL$UbO3Tx34
+A(f|Me
 
-delta 37
-tcmaDM{X%-eN=Ao?tM-WmX?HPm)y|eS*?us!At};x;l^g2%{7cUJOC+;4-)_Y
+delta 42
+xcmX>jenxzP8Y9C*buT6$SzIX6c=(tjbAN``v6&a|RP{JtzgDQRW#f-4TmVmR5>WsE
+
+diff --git a/linux-user/ppc/vdso-64.so b/linux-user/ppc/vdso-64.so
+index 913c831b3819fc09912b9b31f7fbe9ee311ae12f..ac1ab2582e4675979ffca3ce90dce17df579ab2a 100755
+GIT binary patch
+delta 38
+wcmV+>0NMYz9=INmtpWfLk*~QFqejR%tq=sGFts+qF9Cf{%e>^#vwQ)(4KYR#WB>pF
+
+delta 38
+wcmV+>0NMYz9=INmtpWi6k*~QF<@TF=qRS8+wHM`Qf0n_&>m=ZivwQ)(4PLhrs{jB1
+
+diff --git a/linux-user/ppc/vdso-64le.so b/linux-user/ppc/vdso-64le.so
+index 258a03b807c4eca23547d978c16d1ad5ebd08bc5..424abb4290b7d3100e9dede2f3059483608ba703 100755
+GIT binary patch
+delta 38
+wcmV+>0NMYz9=INmsR9rHk*mEFj|Vri9^_Z(nV0Nw;)4VN>*aZovwQ)(4Mvj@kpKVy
+
+delta 38
+wcmV+>0NMYz9=INmsR952k*mEF`$9%&`;)~jB!C2C?=itIoQ(CfvwQ)(4MbHDMgRZ+
 
 -- 
 2.43.0
