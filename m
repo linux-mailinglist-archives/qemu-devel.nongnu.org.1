@@ -2,75 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC6299C5E4E
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Nov 2024 18:07:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D68999C5E5F
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Nov 2024 18:09:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tAuL5-0007g4-Lg; Tue, 12 Nov 2024 12:06:03 -0500
+	id 1tAuOQ-0007Q7-5u; Tue, 12 Nov 2024 12:09:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1tAuIo-0003nq-B6
- for qemu-devel@nongnu.org; Tue, 12 Nov 2024 12:03:44 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1tAuIk-0001cZ-FJ
- for qemu-devel@nongnu.org; Tue, 12 Nov 2024 12:03:41 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1731431017;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=+2axKaCW1Z2fkq8aW+kN1R6He+CoS5FSvi1e/Yf1gaQ=;
- b=exQ121wkadvIn8E/tFVcbw8orkzF1m3Hf+xyMeLW8LxvBmYDHYtpTTryh59YqJg1ITmuUO
- s2CjZpOCaYe8FU/wj9JxhxpGOXhrqKRc2HZYv8376mlMHqvLdJ/Pw9Lf5gGpVcamopoHcT
- EIJ4mqdaIzzlos8r/p0T56qEhqzK1LI=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-204-B4s0NHw1MPekBbUsA14cpw-1; Tue,
- 12 Nov 2024 12:03:31 -0500
-X-MC-Unique: B4s0NHw1MPekBbUsA14cpw-1
-X-Mimecast-MFC-AGG-ID: B4s0NHw1MPekBbUsA14cpw
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id D7DE51954230; Tue, 12 Nov 2024 17:03:28 +0000 (UTC)
-Received: from dell-r430-03.lab.eng.brq2.redhat.com
- (dell-r430-03.lab.eng.brq2.redhat.com [10.37.153.18])
- by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id BCD4B1956089; Tue, 12 Nov 2024 17:03:25 +0000 (UTC)
-From: Igor Mammedov <imammedo@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: salil.mehta@huawei.com, mst@redhat.com, imammedo@redhat.com,
- jonathan.cameron@huawei.com, linuxarm@huawei.com, anisinha@redhat.com,
- karl.heubaum@oracle.com, miguel.luis@oracle.com, gustavo.romero@linaro.org
-Subject: [RFC 7/7] DO NOT MERGE: acpi: cpuhp: preserve always present vCPUs on
- unplug
-Date: Tue, 12 Nov 2024 18:02:58 +0100
-Message-ID: <20241112170258.2996640-8-imammedo@redhat.com>
-In-Reply-To: <20241112170258.2996640-1-imammedo@redhat.com>
-References: <20241112170258.2996640-1-imammedo@redhat.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tAuOG-0007DF-FE
+ for qemu-devel@nongnu.org; Tue, 12 Nov 2024 12:09:21 -0500
+Received: from mail-ej1-x62a.google.com ([2a00:1450:4864:20::62a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tAuOE-0002I8-1e
+ for qemu-devel@nongnu.org; Tue, 12 Nov 2024 12:09:20 -0500
+Received: by mail-ej1-x62a.google.com with SMTP id
+ a640c23a62f3a-aa1f1f2d508so14356066b.2
+ for <qemu-devel@nongnu.org>; Tue, 12 Nov 2024 09:09:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1731431350; x=1732036150; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=DXASbETSb82QL2+dQcsQo12SIa2OEz+NYoPmnWeJwtA=;
+ b=fH/6aTKMvxWMJh7O0olNz9b4jKG+49XDXJ0pIkJh23f9a+acFrvi4otxOD6nfq/zM0
+ 1QBtNJmfZOituLsVYTw3gGORy4mIJRlhYYZt0p7JBfS8JaBHTomrUj0qOC2/8jOBFNHJ
+ 4DKEgXJaPydQGdN7E38M6wo1buFN3u8e5pMYvyONvnKePocBgKvxWyLir567F0XNMQDY
+ ILh+juBxlwb2490DTzNAI5xpyU9bcfegBxiHWoWdGOnkRIPlKS5o+xGdDGZ+51g+zkfo
+ bpQLqUQfpiOAQ8mDzITj5HOz7vxgB+vf0VZWhZucF95ktJ8r342s/mqm96G/ysh0iIvA
+ khmg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1731431350; x=1732036150;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=DXASbETSb82QL2+dQcsQo12SIa2OEz+NYoPmnWeJwtA=;
+ b=lp3YMFULuKLnnNicdEng4BW1zERamUWHQJPEFpttdSavunuB1nwjDqb2fG+SxaIN7q
+ R5qyeu9XIetLiBTDlZhbzovJ9Dx7RgweAGogr0qOGK0g+FCF9Urowqmi3J+Rd+Nqq+8G
+ szNZ3c8VqW3qH0FbOms5kkMhi6XM87dKpSW4Xcphmq0esv4Oga09mLxQKWGvHo9h6KJP
+ mUCQ9YOzrZx1bJrx4i0+gPY1MhfjNBqLjN7H4FHlWhxqaKmwbFZIm/tox4LrSLPc2mah
+ bBjDKDcvIA3QHzHkxiHbM3I/rmMgQyWJKKa7F9UC8vO+YILzLmqdPqH3lIShtfj4yZXG
+ ZdpA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXrakdrplM0w0ySnVHpZwDDZOh7ht/fKoTokS/yX5qR6YSrCEbRWpV9GDRfDz9sdxm+p8tWFqFp7Ofd@nongnu.org
+X-Gm-Message-State: AOJu0YwQUHK7LW6XY0E7kct2sERRmkjpZz0/LRyKL7bIRp2Crz5iG9Ly
+ WZS7GwwjyKDRRuWFfocV1CcreruBGmfob33AkRgcjr2l4p6lQVL4QFaPfNCSnAM=
+X-Google-Smtp-Source: AGHT+IGqmpJQSvxaMMj41OZzFx9Bfw3xyy8QBi5MK8GJ9CsUg7PAkEy6Tle+C+6nJ52VW7XIpfAvKQ==
+X-Received: by 2002:a17:907:2d11:b0:a9a:161:8da4 with SMTP id
+ a640c23a62f3a-a9ef004b241mr1770655566b.55.1731431349700; 
+ Tue, 12 Nov 2024 09:09:09 -0800 (PST)
+Received: from [192.168.69.126] (cnf78-h01-176-184-27-250.dsl.sta.abo.bbox.fr.
+ [176.184.27.250]) by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-a9ee0abe369sm736216366b.83.2024.11.12.09.09.08
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 12 Nov 2024 09:09:09 -0800 (PST)
+Message-ID: <ac2bd629-4d3c-4f8f-9315-a16161b4b2c2@linaro.org>
+Date: Tue, 12 Nov 2024 18:09:07 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] target/mips: Convert nanoMIPS LSA opcode to decodetree
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: Aleksandar Rikalo <arikalo@gmail.com>,
+ Aurelien Jarno <aurelien@aurel32.net>, Jiaxun Yang
+ <jiaxun.yang@flygoat.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
+ <f4bug@amsat.org>
+References: <20241111224452.61276-1-philmd@linaro.org>
+ <20241111224452.61276-3-philmd@linaro.org>
+ <a014d0a3-6692-41b1-84e0-6da07ed1e58b@linaro.org>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <a014d0a3-6692-41b1-84e0-6da07ed1e58b@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=imammedo@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Received-SPF: pass client-ip=2a00:1450:4864:20::62a;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62a.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.122,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,130 +98,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-do not drop reference to always present vCPU and also
-avoid destroying it (unparent) on unplug.
+On 12/11/24 14:30, Richard Henderson wrote:
+> On 11/11/24 14:44, Philippe Mathieu-Daudé wrote:
+>> From: Philippe Mathieu-Daudé <f4bug@amsat.org>
+>>
+>> Simply call the generic gen_lsa() helper, taking care
+>> to substract 1 to the shift field.
+>>
+>> Signed-off-by: Philippe Mathieu-Daudé <f4bug@amsat.org>
+>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>> ---
+>>   target/mips/tcg/nanomips32.decode        |  8 ++++++++
+>>   target/mips/tcg/nanomips_translate.c     | 12 ++++++++++++
+>>   target/mips/tcg/nanomips_translate.c.inc |  9 ---------
+>>   3 files changed, 20 insertions(+), 9 deletions(-)
 
-Based-on: 2d6cfbaf174 (hw/acpi: Make CPUs ACPI `presence` conditional during vCPU hot-unplug)
-Signed-off-by: Igor Mammedov <imammedo@redhat.com>
----
- include/hw/acpi/cpu.h           |  4 +++-
- hw/acpi/acpi-cpu-hotplug-stub.c |  3 ++-
- hw/acpi/cpu.c                   | 10 ++++++++--
- hw/acpi/cpu_hotplug.c           |  2 +-
- hw/acpi/generic_event_device.c  |  2 +-
- 5 files changed, 15 insertions(+), 6 deletions(-)
 
-diff --git a/include/hw/acpi/cpu.h b/include/hw/acpi/cpu.h
-index e9e9c28359..f6708cafba 100644
---- a/include/hw/acpi/cpu.h
-+++ b/include/hw/acpi/cpu.h
-@@ -36,6 +36,7 @@ typedef struct CPUHotplugState {
-     uint32_t selector;
-     uint8_t command;
-     uint32_t dev_count;
-+    bool always_present_cpus;
-     AcpiCpuStatus *devs;
- } CPUHotplugState;
- 
-@@ -50,7 +51,8 @@ void acpi_cpu_unplug_cb(CPUHotplugState *cpu_st,
-                         DeviceState *dev, Error **errp);
- 
- void cpu_hotplug_hw_init(MemoryRegion *as, Object *owner,
--                         CPUHotplugState *state, hwaddr base_addr);
-+                         CPUHotplugState *state, hwaddr base_addr,
-+                         bool always_present_cpus);
- 
- typedef struct CPUHotplugFeatures {
-     bool acpi_1_compatible;
-diff --git a/hw/acpi/acpi-cpu-hotplug-stub.c b/hw/acpi/acpi-cpu-hotplug-stub.c
-index c6c61bb9cd..748fd04006 100644
---- a/hw/acpi/acpi-cpu-hotplug-stub.c
-+++ b/hw/acpi/acpi-cpu-hotplug-stub.c
-@@ -20,7 +20,8 @@ void legacy_acpi_cpu_hotplug_init(MemoryRegion *parent, Object *owner,
- }
- 
- void cpu_hotplug_hw_init(MemoryRegion *as, Object *owner,
--                         CPUHotplugState *state, hwaddr base_addr)
-+                         CPUHotplugState *state, hwaddr base_addr,
-+                         bool always_present_cpus)
- {
-     return;
- }
-diff --git a/hw/acpi/cpu.c b/hw/acpi/cpu.c
-index 992ae5d233..d85d4add60 100644
---- a/hw/acpi/cpu.c
-+++ b/hw/acpi/cpu.c
-@@ -145,7 +145,6 @@ static void cpu_hotplug_wr(void *opaque, hwaddr addr, uint64_t data,
-             dev = DEVICE(cdev->cpu);
-             hotplug_ctrl = qdev_get_hotplug_handler(dev);
-             hotplug_handler_unplug(hotplug_ctrl, dev, NULL);
--            object_unparent(OBJECT(dev));
-             cdev->fw_remove = false;
-         } else if (data & 16) {
-             if (!cdev->cpu || cdev->cpu == first_cpu) {
-@@ -215,7 +214,8 @@ static const MemoryRegionOps cpu_hotplug_ops = {
- };
- 
- void cpu_hotplug_hw_init(MemoryRegion *as, Object *owner,
--                         CPUHotplugState *state, hwaddr base_addr)
-+                         CPUHotplugState *state, hwaddr base_addr,
-+                         bool always_present_cpus)
- {
-     MachineState *machine = MACHINE(qdev_get_machine());
-     MachineClass *mc = MACHINE_GET_CLASS(machine);
-@@ -226,6 +226,7 @@ void cpu_hotplug_hw_init(MemoryRegion *as, Object *owner,
-     id_list = mc->possible_cpu_arch_ids(machine);
-     state->dev_count = id_list->len;
-     state->devs = g_new0(typeof(*state->devs), state->dev_count);
-+    state->always_present_cpus = always_present_cpus;
-     for (i = 0; i < id_list->len; i++) {
-         state->devs[i].cpu =  CPU(id_list->cpus[i].cpu);
-         state->devs[i].arch_id = id_list->cpus[i].arch_id;
-@@ -286,12 +287,17 @@ void acpi_cpu_unplug_cb(CPUHotplugState *cpu_st,
- {
-     AcpiCpuStatus *cdev;
- 
-+    if (cpu_st->always_present_cpus) {
-+        return;
-+    }
-+
-     cdev = get_cpu_status(cpu_st, dev);
-     if (!cdev) {
-         return;
-     }
- 
-     cdev->cpu = NULL;
-+    object_unparent(OBJECT(dev));
- }
- 
- static const VMStateDescription vmstate_cpuhp_sts = {
-diff --git a/hw/acpi/cpu_hotplug.c b/hw/acpi/cpu_hotplug.c
-index 83b8bc5deb..8c3618680f 100644
---- a/hw/acpi/cpu_hotplug.c
-+++ b/hw/acpi/cpu_hotplug.c
-@@ -115,7 +115,7 @@ void acpi_switch_to_modern_cphp(AcpiCpuHotplug *gpe_cpu,
-     MemoryRegion *parent = pci_address_space_io(PCI_DEVICE(gpe_cpu->device));
- 
-     memory_region_del_subregion(parent, &gpe_cpu->io);
--    cpu_hotplug_hw_init(parent, gpe_cpu->device, cpuhp_state, io_port);
-+    cpu_hotplug_hw_init(parent, gpe_cpu->device, cpuhp_state, io_port, false);
- }
- 
- void build_legacy_cpu_hotplug_aml(Aml *ctx, MachineState *machine,
-diff --git a/hw/acpi/generic_event_device.c b/hw/acpi/generic_event_device.c
-index 663d9cb093..9099b76f80 100644
---- a/hw/acpi/generic_event_device.c
-+++ b/hw/acpi/generic_event_device.c
-@@ -427,7 +427,7 @@ static void acpi_ged_realize(DeviceState *dev, Error **errp)
-                                 ACPI_CPU_HOTPLUG_REG_LEN);
-             sysbus_init_mmio(sbd, &s->container_cpuhp);
-             cpu_hotplug_hw_init(&s->container_cpuhp, OBJECT(dev),
--                                &s->cpuhp_state, 0);
-+                                &s->cpuhp_state, 0, false);
-             break;
-         }
-         ged_events--;
--- 
-2.43.0
+>> diff --git a/target/mips/tcg/nanomips_translate.c 
+>> b/target/mips/tcg/nanomips_translate.c
+>> index c148c13ed9..9a6db4a828 100644
+>> --- a/target/mips/tcg/nanomips_translate.c
+>> +++ b/target/mips/tcg/nanomips_translate.c
+>> @@ -9,6 +9,18 @@
+>>   #include "qemu/osdep.h"
+>>   #include "translate.h"
+>> +static inline int minus_1(DisasContext *ctx, int x)
+>> +{
+>> +    return x - 1;
+>> +}
+>> +
+>>   /* Include the auto-generated decoders.  */
+>>   #include "decode-nanomips16.c.inc"
+>>   #include "decode-nanomips32.c.inc"
+>> +
+>> +static bool trans_LSA(DisasContext *ctx, arg_r *a)
+>> +{
+>> +    gen_lsa(ctx, a->rd, a->rt, a->rs, a->sa);
+> 
+> I think decoding shift-amount - 1 is misleading.
+
+Yeah I thought the same while rebasing ...
+
+> Surely it would be better for other callers to pass extract(...) + 1?
+
+... but was too lazy to do the changes :p
+
+> 
+> 
+> r~
+> 
 
 
