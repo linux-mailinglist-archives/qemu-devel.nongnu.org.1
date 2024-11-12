@@ -2,83 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59AC89C602D
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Nov 2024 19:18:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6441A9C6024
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Nov 2024 19:17:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tAvPT-00020N-LE; Tue, 12 Nov 2024 13:14:40 -0500
+	id 1tAvRJ-0004T9-JM; Tue, 12 Nov 2024 13:16:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tAvPC-0001oN-Cv
- for qemu-devel@nongnu.org; Tue, 12 Nov 2024 13:14:23 -0500
-Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
+ id 1tAvRE-0004IU-P4
+ for qemu-devel@nongnu.org; Tue, 12 Nov 2024 13:16:29 -0500
+Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tAvPA-0002Ae-T2
- for qemu-devel@nongnu.org; Tue, 12 Nov 2024 13:14:22 -0500
-Received: by mail-pl1-x632.google.com with SMTP id
- d9443c01a7336-20cb7139d9dso56385325ad.1
- for <qemu-devel@nongnu.org>; Tue, 12 Nov 2024 10:14:20 -0800 (PST)
+ id 1tAvRD-0002X0-A0
+ for qemu-devel@nongnu.org; Tue, 12 Nov 2024 13:16:28 -0500
+Received: by mail-pf1-x42f.google.com with SMTP id
+ d2e1a72fcca58-71e953f4e7cso4628575b3a.3
+ for <qemu-devel@nongnu.org>; Tue, 12 Nov 2024 10:16:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1731435259; x=1732040059; darn=nongnu.org;
+ d=linaro.org; s=google; t=1731435386; x=1732040186; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=h6PywBD/Fr0P6tN4i55wogc5cLse9fY5T8ZfgSvr0ws=;
- b=ySqhkTj7Aqb+Jx6ORrUaqVWR/tIZgIwCFrRsnOZ/L+Nq9mguqtd8Aax1mZ7vrldJ4R
- FlgpC7vUeOuXIcdSxCm1PteYKY6KSJYiMp5DKMi00gQSSty9pGrrFU242OrpHyLjHJFy
- Vm+M/RH2cxSKgcHP4O/k1qm2Amzd5DwWoAQvAY3skLmsUJXjlZdZYCa4C+ootlqoTY7f
- akTLikGx41PUUJhiYPmntEXOIcm9mrS9S8oFaT3H8yLwCaTTJTcmqlrCCs5Av4eIMs56
- MIBNMT1rDvpvvBiT9wY+YAx9yzTwaB9sBz6nEAPOPwPcdDbMqsNNYFFtmXUj33juEFeY
- oGsw==
+ bh=WxuLnudgs+LMgiDxmn3RS1osC6WEyxk74V0/n0i8aOc=;
+ b=hqxiUVYOmHwPpBjeVf/eslyyvoaKkNXkb1/CgF2wdgRxpbXRNs72pwxtNdPykagioB
+ tQMU5sYeNstsyOxHCiv/h4M8KNTW8SQ1XPm7hr88DPlWt5vTFkj2Q8rXEvDhaPcd34Sf
+ YXW3FQghCWgilUTgIFic/gJBlx2tcvE+hNtk8vLRmGCKLTFf8Vb0iXzCWE4fSo1UpJ2T
+ Bd06spfZhMkrn//cNlANloELuBNAYLZhh9ZuvhvJ06d7Gf36CpoPPOiTLIg5Tm9jO2Ih
+ teYbnf0Wj3zu58zp6kj3Mz0GnwgM7AA0SYf7iX5cQXc/q2gxBjD5SaAu/7EWN1IgaTsh
+ IfSA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731435259; x=1732040059;
+ d=1e100.net; s=20230601; t=1731435386; x=1732040186;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=h6PywBD/Fr0P6tN4i55wogc5cLse9fY5T8ZfgSvr0ws=;
- b=oX/6cj4ku8WyQtIqCWMO2Ed/waTBJ3swfofdhX57bqomIHFbhHyH7VOW8Ty4+h2NZ7
- OcGYePmd9VhCh5zHKS//3Qk6Q9tbvJ1PafJdTuxSA7ax5caDO38LZNW42gntNT3sVQcV
- /eM9b2ptOgvFCYcLcTLaJrUz//piaNajN6G9S84gMxuy/2RoSRL1J7qDxvcpQYsOAsPx
- Ve1siVWJaVE/it09QzunlQpkc3Ao9BwKJ6JUogG+Ht1co4wkKDSGgowmz6pw8PDvYFfr
- BeHGOoVeeIuTtnM2+/Sp+EtgKwb7XjaPGaixENCR6NLkV8u2V7hoMoXrWPefULhOxs5I
- dSbw==
+ bh=WxuLnudgs+LMgiDxmn3RS1osC6WEyxk74V0/n0i8aOc=;
+ b=MUSSSTjMrM73znb3dQu7X7w+7vxxDuq5NXvnUtuogEB5vBC1aX/zXRRhFknFj1eSY3
+ 2i8cuDYI5T3YZuyBjsPXW8fA03d4rVMUxANzO+9QR52Sy3+p7mNtQvIMePY944cXq45D
+ 2bsO3aW8ild1kzAsiuAs8IEg1cGtFP0Bb0byq6lRARAqjZ40SlJtS/mGAKOlzhmyh3R6
+ 4QVDRMXSMGGuWMmyR7T6PCFGGwfjBZnIg3g30lOAEdOzdDxnExT2nPDzpQyO/B5e+dLd
+ Wg02c1kGl9ylW+dvdkqxoOxspitZg2cIXGYqYfC4HOXg3D+lTmXLyDbkLoYndWDdJjhv
+ ml9g==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVsmvIWT47BfqYso9qbcwLquGxHVWinggcekPkU8DT7A+Jhtoe0mbtF+c9u8MsvgrEpAMZgSU3jFZKf@nongnu.org
-X-Gm-Message-State: AOJu0Yw4u7vti7nmDoo0/ekecplL3FM4RZNsys3rTHOAIk1s+rBFsf8F
- k4TNrIu6gDuj9iHnbqhQHHJoTZoUTRTTSQOLoBS1f/0bengzpQXi1xEK1aVYBpg=
-X-Google-Smtp-Source: AGHT+IF/n1L0xncygsagip7rvwozWxfw9/zGKy2j9JkjWXYoZZhJJjRTFcGzXq3mko4NPz2JB4pV8w==
-X-Received: by 2002:a17:902:ce92:b0:20c:f648:e3a7 with SMTP id
- d9443c01a7336-21183e40826mr240944595ad.50.1731435259433; 
- Tue, 12 Nov 2024 10:14:19 -0800 (PST)
+ AJvYcCUgxp/eFpon294DeKmOU/g4nTK6OZV9UaRqYDlbmgOejJtFDFCpV9o248fbnVwhB/bPFLH9Q8+oQ4Zy@nongnu.org
+X-Gm-Message-State: AOJu0YyCy46vGWEixjkTC4gd16b1cCyGNmGBQE5KHYKr/uEq0xTw4l1Y
+ nehHpLppznTnD7+hVzQlbU0u/CmYJ1kn53slCmOsY1Dq/lECQK54pyO+Jbkev88=
+X-Google-Smtp-Source: AGHT+IGNhLZhUKWVkrN8oP2ziWDwN0QSgw6LwcIt1LLpCQ5KgdsHuLigJf0YSlUi+TVqy9XQv+uVWA==
+X-Received: by 2002:a05:6a21:338c:b0:1db:b808:af25 with SMTP id
+ adf61e73a8af0-1dc2286581dmr22561928637.9.1731435385766; 
+ Tue, 12 Nov 2024 10:16:25 -0800 (PST)
 Received: from [192.168.52.227] (wsip-24-120-228-34.lv.lv.cox.net.
  [24.120.228.34]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-21177e42053sm96956515ad.138.2024.11.12.10.14.18
+ 41be03b00d2f7-7f41f5bee9asm10852260a12.28.2024.11.12.10.16.24
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 12 Nov 2024 10:14:19 -0800 (PST)
-Message-ID: <f5e4946a-7050-4df4-b509-0a868736d7ca@linaro.org>
-Date: Tue, 12 Nov 2024 10:14:16 -0800
+ Tue, 12 Nov 2024 10:16:25 -0800 (PST)
+Message-ID: <a26d7e97-f32f-4a7a-8685-fecb8f155f04@linaro.org>
+Date: Tue, 12 Nov 2024 10:16:21 -0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/6] target/mips: Introduce decode tree bindings for
- microMIPS ISA
+Subject: Re: [PATCH v2 3/6] target/mips: Have gen_[d]lsa() callers add 1 to
+ shift amount argument
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
 Cc: Aleksandar Rikalo <arikalo@gmail.com>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>, Aurelien Jarno
- <aurelien@aurel32.net>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
- <f4bug@amsat.org>
+ Jiaxun Yang <jiaxun.yang@flygoat.com>, Aurelien Jarno <aurelien@aurel32.net>
 References: <20241112172022.88348-1-philmd@linaro.org>
- <20241112172022.88348-2-philmd@linaro.org>
+ <20241112172022.88348-4-philmd@linaro.org>
 Content-Language: en-US
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20241112172022.88348-2-philmd@linaro.org>
+In-Reply-To: <20241112172022.88348-4-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x632.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,23 +100,20 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 11/12/24 09:20, Philippe Mathieu-Daudé wrote:
-> From: Philippe Mathieu-Daudé<f4bug@amsat.org>
+> Having the callee add 1 to shift amount is misleading (see the
+> NM_LSA case in decode_nanomips_32_48_opc() where we have to
+> manually substract 1). Rather have the callers pass a modified
+> $sa.
 > 
-> Introduce the microMIPS decodetree configs for the 16-bit
-> and 32-bit instructions.
-> 
+> Suggested-by: Richard Henderson<richard.henderson@linaro.org>
 > Signed-off-by: Philippe Mathieu-Daudé<philmd@linaro.org>
 > ---
->   target/mips/tcg/translate.h               |  2 ++
->   target/mips/tcg/micromips16.decode        |  9 +++++++++
->   target/mips/tcg/micromips32.decode        |  9 +++++++++
->   target/mips/tcg/micromips_translate.c     | 14 ++++++++++++++
->   target/mips/tcg/micromips_translate.c.inc |  6 ++++++
->   target/mips/tcg/meson.build               |  3 +++
->   6 files changed, 43 insertions(+)
->   create mode 100644 target/mips/tcg/micromips16.decode
->   create mode 100644 target/mips/tcg/micromips32.decode
->   create mode 100644 target/mips/tcg/micromips_translate.c
+>   target/mips/tcg/msa_translate.c           | 4 ++--
+>   target/mips/tcg/rel6_translate.c          | 4 ++--
+>   target/mips/tcg/translate_addr_const.c    | 4 ++--
+>   target/mips/tcg/micromips_translate.c.inc | 2 +-
+>   target/mips/tcg/nanomips_translate.c.inc  | 7 +------
+>   5 files changed, 8 insertions(+), 13 deletions(-)
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
