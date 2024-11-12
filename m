@@ -2,94 +2,120 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB3689C58D9
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Nov 2024 14:22:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 18DCB9C59BB
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Nov 2024 14:58:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tAqpY-000483-MY; Tue, 12 Nov 2024 08:21:16 -0500
+	id 1tArOj-0004Ku-OO; Tue, 12 Nov 2024 08:57:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tAqpS-00047i-73; Tue, 12 Nov 2024 08:21:10 -0500
-Received: from isrv.corpit.ru ([86.62.121.231])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tAqpN-0007Hj-F1; Tue, 12 Nov 2024 08:21:09 -0500
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 8ADBAA272B;
- Tue, 12 Nov 2024 16:20:45 +0300 (MSK)
-Received: from [192.168.177.146] (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 82F8C16B1DC;
- Tue, 12 Nov 2024 16:20:50 +0300 (MSK)
-Message-ID: <46953498-7e90-47e3-8dcf-7288ff5823c2@tls.msk.ru>
-Date: Tue, 12 Nov 2024 16:20:49 +0300
+ (Exim 4.90_1) (envelope-from <ukleinek@baylibre.com>)
+ id 1tAmNV-0001VK-3g
+ for qemu-devel@nongnu.org; Tue, 12 Nov 2024 03:36:01 -0500
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <ukleinek@baylibre.com>)
+ id 1tAmNS-0002IC-ME
+ for qemu-devel@nongnu.org; Tue, 12 Nov 2024 03:36:00 -0500
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-43155afca99so35510805e9.1
+ for <qemu-devel@nongnu.org>; Tue, 12 Nov 2024 00:35:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1731400555; x=1732005355;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=C6QofcCdQmsLqvy2bS7OgsAFd+Nwlz5uz8nWM8QdfQg=;
+ b=0X+m/+WjLAZcn/J5CrAcDnvX2UGvt9as753nyfDHg+CpbgAQQFHOOEY/kJTowUsak9
+ tz0z1kMe/ScawsFSx4UAjdDuRWWQO0t6xf8GpjiFJtRX6yUGHecRPBWotT9iB4OpC4VY
+ WSgCa+xf0c8+mIUl56gYggKHUsfjvnFLHlanD3fS07zEBzhCOXYy/1OIloC7ue4xjCQH
+ ZlwuGKG3iY5xqMBU56u3F/zSlxOnbYG4XPGdaTFLDdlIq4ppuEtR3bg67oVs2MY0wXy9
+ /qMzChkifoRTeT4UFxaXp0rOdxV/zDaz1C4TDm2l4QfQbHuyKYKh8PyKQ5qSeyebSEER
+ 3GgA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1731400556; x=1732005356;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=C6QofcCdQmsLqvy2bS7OgsAFd+Nwlz5uz8nWM8QdfQg=;
+ b=H8eLAcOpGBTSyue8cd7EkUAVxj53uRe2KnAQ8kUXDJUCTtrw3BDUxHhfspwaFiZvFz
+ tprXE5EvJFti50KO99jNuB6p3VLkh43KsEPwIy6sDYB/TwB8tNXdtSXtLXUHrtC7hfrt
+ 9/1CWo3umXHJYye10UYE0w2oCqUpjLPsDuYwwlIqM8cXw+FGyU57hk4N7MtrHjo7eTAZ
+ ZjeG/6ikBBgo08Fpyzove94XCCf5x12ckB2vsCo4zSDhiAyBhHiOiRGpYPy8BFzVXOQQ
+ cZrW0cwa+hnNZN/o33Qs4bL0prq1BLehViYSQfYiqaby1GXWdt9Ph9Gfrmuccc8mlLjZ
+ OF+w==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVJjo2ATJbynScdQXR/+5YXjoayKe82H5nBq7QeAMkhkGdUsg1Z27apzj7jjoCam1/wunKJIbrMHyPd@nongnu.org
+X-Gm-Message-State: AOJu0Yy91HyALVJr0Fn8w7+sgtT7t4hDK/WBT3YiQyAxPwTlqE9G4gMj
+ h2nqVHk/TRWIuvrQMWgo55nKZR/gj599Sohd1dp1afmezXDwSpbnIYfM3SgLmpM=
+X-Google-Smtp-Source: AGHT+IGW+y3BR7dFB04YA4ES3C1lW4o7kCU2hloqBgpq+LKWd/AQDkgHN2jgVjcYHfhMS3JEIGnWwQ==
+X-Received: by 2002:a05:600c:4690:b0:431:5226:1633 with SMTP id
+ 5b1f17b1804b1-432b744ef66mr130754775e9.6.1731400555594; 
+ Tue, 12 Nov 2024 00:35:55 -0800 (PST)
+Received: from localhost (p509159f1.dip0.t-ipconnect.de. [80.145.89.241])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-432aa523a0esm233176195e9.0.2024.11.12.00.35.54
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 12 Nov 2024 00:35:55 -0800 (PST)
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
+To: Sudeep Holla <sudeep.holla@arm.com>
+Cc: Cristian Marussi <cristian.marussi@arm.com>,
+ Tzung-Bi Shih <tzungbi@kernel.org>,
+ Brian Norris <briannorris@chromium.org>,
+ Julius Werner <jwerner@chromium.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>,
+ Conor Dooley <conor.dooley@microchip.com>,
+ Daire McNamara <daire.mcnamara@microchip.com>,
+ Matthias Brugger <matthias.bgg@gmail.com>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+ Gabriel Somlo <somlo@cmu.edu>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Florian Fainelli <florian.fainelli@broadcom.com>,
+ Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
+ Dinh Nguyen <dinguyen@kernel.org>, Michal Simek <michal.simek@amd.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Stefan Wahren <wahrenst@gmx.net>,
+ Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+ Jay Buddhabhatti <jay.buddhabhatti@amd.com>,
+ Ronak Jain <ronak.jain@amd.com>,
+ Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
+ Praveen Teja Kundanala <praveen.teja.kundanala@amd.com>,
+ arm-scmi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, chrome-platform@lists.linux.dev,
+ imx@lists.linux.dev, linux-riscv@lists.infradead.org,
+ linux-mediatek@lists.infradead.org, qemu-devel@nongnu.org,
+ linux-rpi-kernel@lists.infradead.org
+Subject: [PATCH] firmware: Switch back to struct platform_driver::remove()
+Date: Tue, 12 Nov 2024 09:35:20 +0100
+Message-ID: <36974feb6035201d53384557259ec72fe311053b.1731397962.git.u.kleine-koenig@baylibre.com>
+X-Mailer: git-send-email 2.45.2
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [Stable-7.2.15 17/33] target/i386: Walk NPT in guest real mode
-To: Alexander Graf <graf@amazon.com>, qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Eduard Vlad <evlad@amazon.de>,
- Richard Henderson <richard.henderson@linaro.org>
-References: <qemu-stable-7.2.15-20241109093832@cover.tls.msk.ru>
- <20241109063903.3272404-17-mjt@tls.msk.ru>
- <d9c983ca-bc47-4e80-960e-5e40c43df48d@amazon.com>
-Content-Language: en-US, ru-RU
-From: Michael Tokarev <mjt@tls.msk.ru>
-Autocrypt: addr=mjt@tls.msk.ru; keydata=
- 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
-In-Reply-To: <d9c983ca-bc47-4e80-960e-5e40c43df48d@amazon.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -68
-X-Spam_score: -6.9
-X-Spam_bar: ------
-X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=UTF-8
+X-Developer-Signature: v=1; a=openpgp-sha256; l=7555;
+ i=u.kleine-koenig@baylibre.com; h=from:subject:message-id;
+ bh=Mu/o9Qv5X4vFA1jVqoDuiGcIFYCOHs8UofluQ4+eEKY=;
+ b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBnMxNYRTU/Z/YcH9oKPyjD1Bi3PtTwnTXisZzZA
+ y+s+3m+Wv2JATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZzMTWAAKCRCPgPtYfRL+
+ TnzXB/wIb7KWzpl9KhF1WQm264Rj2ne8x5AR+YU2GkZbmy5FZrtPt6HXJuJgBDULzpxixsmxIJF
+ VlvB5dKowmesjkiHP1AFIiR2D9fWHM+CZMEFlqVCJGrdEQrW9D+UmULcTNI3XB222G4b7YLFHM0
+ ed5WNuOnohzkIvJSnXdnFm/sx4bu902DDKuNLJAvDs03YbVOb2skn28UEl0B7lXZ76AcJCc3CkS
+ wV70cKyYkGbRAjHgBNtbZcxR/2sZ1BL6KTlE4IXgb8MxxwahMWg2nbcdW/xI3OHYzt0LTeREnhL
+ 2dc2WNr0WcclVbruKzpBOsuQEfd3vxFF7Hm2ApRGzKe6CE3/
+X-Developer-Key: i=u.kleine-koenig@baylibre.com; a=openpgp;
+ fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=ukleinek@baylibre.com; helo=mail-wm1-x331.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Tue, 12 Nov 2024 08:57:32 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -104,16 +130,196 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12.11.2024 15:16, Alexander Graf wrote:
-> Hey Michael,
-> 
-> Does this queue also include the fix for the fix ("target/i386: Fix 
-> legacy page table walk")?
-> 
-> https://lore.kernel.org/qemu-devel/20241106154329.67218-1-graf@amazon.com/
+After commit 0edb555a65d1 ("platform: Make platform_driver::remove()
+return void") .remove() is (again) the right callback to implement for
+platform drivers.
 
-Not yet, I'm waiting for it to land in master first.
-Yes, I'm aware of the issue, - thank you for pointing this out.
+Convert all platform drivers below drivers/firmware to use .remove(),
+with the eventual goal to drop struct platform_driver::remove_new(). As
+.remove() and .remove_new() have the same prototypes, conversion is done
+by just changing the structure member name in the driver initializer.
 
-/mjt
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+---
+Hello,
+
+I did a single patch for all of drivers/firmware. While I usually prefer
+to do one logical change per patch, this seems to be overengineering
+here as the individual changes are really trivial and shouldn't be much
+in the way for stable backports.
+
+There is no dedicated maintainer for drivers/firmware, maybe Sudeep as
+biggest committer there can take it? Or would it be sensible to split
+this patch?
+
+This is based on yesterday's next, if conflicts arise when you apply it
+at some later time and don't want to resolve them, feel free to just
+drop the changes to the conflicting files. I'll notice and followup at a
+later time then. Or ask me for a fixed resend. (Having said that, I
+recommend b4 am -3 + git am -3 which should resolve most conflicts just
+fine.)
+
+Best regards
+Uwe
+
+ drivers/firmware/arm_scmi/driver.c            | 2 +-
+ drivers/firmware/arm_scpi.c                   | 2 +-
+ drivers/firmware/google/coreboot_table.c      | 2 +-
+ drivers/firmware/imx/imx-dsp.c                | 2 +-
+ drivers/firmware/microchip/mpfs-auto-update.c | 2 +-
+ drivers/firmware/mtk-adsp-ipc.c               | 2 +-
+ drivers/firmware/qemu_fw_cfg.c                | 2 +-
+ drivers/firmware/raspberrypi.c                | 2 +-
+ drivers/firmware/stratix10-rsu.c              | 2 +-
+ drivers/firmware/stratix10-svc.c              | 2 +-
+ drivers/firmware/xilinx/zynqmp.c              | 2 +-
+ 11 files changed, 11 insertions(+), 11 deletions(-)
+
+diff --git a/drivers/firmware/arm_scmi/driver.c b/drivers/firmware/arm_scmi/driver.c
+index 1f53ca1f87e3..1b5fb2c4ce86 100644
+--- a/drivers/firmware/arm_scmi/driver.c
++++ b/drivers/firmware/arm_scmi/driver.c
+@@ -3333,7 +3333,7 @@ static struct platform_driver scmi_driver = {
+ 		   .dev_groups = versions_groups,
+ 		   },
+ 	.probe = scmi_probe,
+-	.remove_new = scmi_remove,
++	.remove = scmi_remove,
+ };
+ 
+ static struct dentry *scmi_debugfs_init(void)
+diff --git a/drivers/firmware/arm_scpi.c b/drivers/firmware/arm_scpi.c
+index f4d47577f83e..87c323de17b9 100644
+--- a/drivers/firmware/arm_scpi.c
++++ b/drivers/firmware/arm_scpi.c
+@@ -1049,7 +1049,7 @@ static struct platform_driver scpi_driver = {
+ 		.dev_groups = versions_groups,
+ 	},
+ 	.probe = scpi_probe,
+-	.remove_new = scpi_remove,
++	.remove = scpi_remove,
+ };
+ module_platform_driver(scpi_driver);
+ 
+diff --git a/drivers/firmware/google/coreboot_table.c b/drivers/firmware/google/coreboot_table.c
+index 208652a8087c..882db32e51be 100644
+--- a/drivers/firmware/google/coreboot_table.c
++++ b/drivers/firmware/google/coreboot_table.c
+@@ -220,7 +220,7 @@ MODULE_DEVICE_TABLE(of, coreboot_of_match);
+ 
+ static struct platform_driver coreboot_table_driver = {
+ 	.probe = coreboot_table_probe,
+-	.remove_new = coreboot_table_remove,
++	.remove = coreboot_table_remove,
+ 	.driver = {
+ 		.name = "coreboot_table",
+ 		.acpi_match_table = ACPI_PTR(cros_coreboot_acpi_match),
+diff --git a/drivers/firmware/imx/imx-dsp.c b/drivers/firmware/imx/imx-dsp.c
+index 01c8ef14eaec..ed79e823157a 100644
+--- a/drivers/firmware/imx/imx-dsp.c
++++ b/drivers/firmware/imx/imx-dsp.c
+@@ -180,7 +180,7 @@ static struct platform_driver imx_dsp_driver = {
+ 		.name = "imx-dsp",
+ 	},
+ 	.probe = imx_dsp_probe,
+-	.remove_new = imx_dsp_remove,
++	.remove = imx_dsp_remove,
+ };
+ builtin_platform_driver(imx_dsp_driver);
+ 
+diff --git a/drivers/firmware/microchip/mpfs-auto-update.c b/drivers/firmware/microchip/mpfs-auto-update.c
+index 0f7ec8848202..38a03698cec9 100644
+--- a/drivers/firmware/microchip/mpfs-auto-update.c
++++ b/drivers/firmware/microchip/mpfs-auto-update.c
+@@ -458,7 +458,7 @@ static struct platform_driver mpfs_auto_update_driver = {
+ 		.name = "mpfs-auto-update",
+ 	},
+ 	.probe = mpfs_auto_update_probe,
+-	.remove_new = mpfs_auto_update_remove,
++	.remove = mpfs_auto_update_remove,
+ };
+ module_platform_driver(mpfs_auto_update_driver);
+ 
+diff --git a/drivers/firmware/mtk-adsp-ipc.c b/drivers/firmware/mtk-adsp-ipc.c
+index fdb083f42ebf..2b79371c61c9 100644
+--- a/drivers/firmware/mtk-adsp-ipc.c
++++ b/drivers/firmware/mtk-adsp-ipc.c
+@@ -132,7 +132,7 @@ static struct platform_driver mtk_adsp_ipc_driver = {
+ 		.name = "mtk-adsp-ipc",
+ 	},
+ 	.probe = mtk_adsp_ipc_probe,
+-	.remove_new = mtk_adsp_ipc_remove,
++	.remove = mtk_adsp_ipc_remove,
+ };
+ builtin_platform_driver(mtk_adsp_ipc_driver);
+ 
+diff --git a/drivers/firmware/qemu_fw_cfg.c b/drivers/firmware/qemu_fw_cfg.c
+index 85c525745b31..d58da3e4500a 100644
+--- a/drivers/firmware/qemu_fw_cfg.c
++++ b/drivers/firmware/qemu_fw_cfg.c
+@@ -757,7 +757,7 @@ MODULE_DEVICE_TABLE(acpi, fw_cfg_sysfs_acpi_match);
+ 
+ static struct platform_driver fw_cfg_sysfs_driver = {
+ 	.probe = fw_cfg_sysfs_probe,
+-	.remove_new = fw_cfg_sysfs_remove,
++	.remove = fw_cfg_sysfs_remove,
+ 	.driver = {
+ 		.name = "fw_cfg",
+ 		.of_match_table = fw_cfg_sysfs_mmio_match,
+diff --git a/drivers/firmware/raspberrypi.c b/drivers/firmware/raspberrypi.c
+index 18cc34987108..7ecde6921a0a 100644
+--- a/drivers/firmware/raspberrypi.c
++++ b/drivers/firmware/raspberrypi.c
+@@ -406,7 +406,7 @@ static struct platform_driver rpi_firmware_driver = {
+ 	},
+ 	.probe		= rpi_firmware_probe,
+ 	.shutdown	= rpi_firmware_shutdown,
+-	.remove_new	= rpi_firmware_remove,
++	.remove		= rpi_firmware_remove,
+ };
+ module_platform_driver(rpi_firmware_driver);
+ 
+diff --git a/drivers/firmware/stratix10-rsu.c b/drivers/firmware/stratix10-rsu.c
+index e20cee9c2d32..1ea39a0a76c7 100644
+--- a/drivers/firmware/stratix10-rsu.c
++++ b/drivers/firmware/stratix10-rsu.c
+@@ -802,7 +802,7 @@ static void stratix10_rsu_remove(struct platform_device *pdev)
+ 
+ static struct platform_driver stratix10_rsu_driver = {
+ 	.probe = stratix10_rsu_probe,
+-	.remove_new = stratix10_rsu_remove,
++	.remove = stratix10_rsu_remove,
+ 	.driver = {
+ 		.name = "stratix10-rsu",
+ 		.dev_groups = rsu_groups,
+diff --git a/drivers/firmware/stratix10-svc.c b/drivers/firmware/stratix10-svc.c
+index 528f37417aea..c5c78b869561 100644
+--- a/drivers/firmware/stratix10-svc.c
++++ b/drivers/firmware/stratix10-svc.c
+@@ -1271,7 +1271,7 @@ static void stratix10_svc_drv_remove(struct platform_device *pdev)
+ 
+ static struct platform_driver stratix10_svc_driver = {
+ 	.probe = stratix10_svc_drv_probe,
+-	.remove_new = stratix10_svc_drv_remove,
++	.remove = stratix10_svc_drv_remove,
+ 	.driver = {
+ 		.name = "stratix10-svc",
+ 		.of_match_table = stratix10_svc_drv_match,
+diff --git a/drivers/firmware/xilinx/zynqmp.c b/drivers/firmware/xilinx/zynqmp.c
+index cdb565c41119..720fa8b5d8e9 100644
+--- a/drivers/firmware/xilinx/zynqmp.c
++++ b/drivers/firmware/xilinx/zynqmp.c
+@@ -2118,6 +2118,6 @@ static struct platform_driver zynqmp_firmware_driver = {
+ 		.dev_groups = zynqmp_firmware_groups,
+ 	},
+ 	.probe = zynqmp_firmware_probe,
+-	.remove_new = zynqmp_firmware_remove,
++	.remove = zynqmp_firmware_remove,
+ };
+ module_platform_driver(zynqmp_firmware_driver);
+
+base-commit: 6d59cab07b8d74d0f0422b750038123334f6ecc2
+-- 
+2.45.2
+
 
