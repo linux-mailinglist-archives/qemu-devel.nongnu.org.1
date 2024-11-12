@@ -2,88 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB2449C6030
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Nov 2024 19:18:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BCA849C6056
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Nov 2024 19:24:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tAvT4-0002nx-4a; Tue, 12 Nov 2024 13:18:22 -0500
+	id 1tAvYV-0001Ea-EQ; Tue, 12 Nov 2024 13:24:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tAvSz-0002PJ-Ax
- for qemu-devel@nongnu.org; Tue, 12 Nov 2024 13:18:17 -0500
-Received: from mail-pg1-x531.google.com ([2607:f8b0:4864:20::531])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tAvSx-0002gG-D3
- for qemu-devel@nongnu.org; Tue, 12 Nov 2024 13:18:17 -0500
-Received: by mail-pg1-x531.google.com with SMTP id
- 41be03b00d2f7-7ea76a12c32so4387080a12.1
- for <qemu-devel@nongnu.org>; Tue, 12 Nov 2024 10:18:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1731435493; x=1732040293; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=G8yHe7sgb3xTGCU+Xandjyk48Xf2bteWD1TWngN3Hi8=;
- b=VJcHfiw7Dc0SgUCmdi+Fmc1O4KXSLKiJCXGFYi0NYIJmyuOnaT2md3MsN6wUiV4U1j
- xduIYzfFQmFUmX8RCpJteKVt8cdrg+RCWIamD9am6UGKW2/Hi1Uz0IXqlotxCojl2dgg
- 8PwobazTusdZUGU13xACbhUznxpDG/2jQ14Ncc9zUSc0Lpyc+4uc7gKr3iK8WszVcB9W
- XNxd7ruDegf/+Rh0SS1/nMWAU4Jua59VqTdjn1JKoBMCszYGxz7jkZL5zOPYor3MQD+9
- Wfrw2UCQs1AALB3N3hP2w1jbVWeiUgxocm4d2psioXGy174/5qERRPmXCYvs8VJKh8ba
- oGgg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731435493; x=1732040293;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=G8yHe7sgb3xTGCU+Xandjyk48Xf2bteWD1TWngN3Hi8=;
- b=efXGdUQnOZ8JVZn/nGUFC+q56Z4sgpf7VABAqhF4QkBQFfKZwzcRJunuewHyNtniDW
- m43B3BaOTKeeGVCj3LfpOYxFUzuuQ0Eq9CWX8feltpqwFfCarWt/GpIiS9lcPmuCzG8g
- ZNKfkOIr5p6R5SRzGj1iQ3zE3ldnwfhL0VuGtdB59sR6IzAiL+x3uaNjkGR8fU368wEW
- 715FS4sNtvVatfLp0zdDV7Kee0koyxLIWCk6EKYlc+DQnIx8bIytYnI/I3Qq9K61h9wG
- E7E7IaqtFYuLUa13FswOC0uNHQQUmm/3s38suaNkhikRfHDREvdQxwOUSE4+vEj1jVDF
- nkvg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUOqzdp2Q44gwWcNhwNm2DaAnMDLsyr7Xu8kcp79PHr82IjKpgzNGbFMZ/vsZQhP1DJGf9fHZqTxaOL@nongnu.org
-X-Gm-Message-State: AOJu0YzsUKF5aXpbCU9Ah3FIL9VNXOIwSLD2Q4XkG+USPiYnfrN1G0ZD
- owXkx5dLtmUAlyA+sPHm9R7cg8ZpJYZpMeBrvrqS+uKheXZXwS8z8D9QYakMfDE=
-X-Google-Smtp-Source: AGHT+IGAJ4/q1UBcVlgXeWXxB+YbjRxOMRgKT4hfbP7uYfev+6+RhrUB+a2evTldDA05VyLWO1Nsqg==
-X-Received: by 2002:a17:90b:3890:b0:2e2:ca4d:9164 with SMTP id
- 98e67ed59e1d1-2e9b168241fmr21375466a91.12.1731435493306; 
- Tue, 12 Nov 2024 10:18:13 -0800 (PST)
-Received: from [192.168.52.227] (wsip-24-120-228-34.lv.lv.cox.net.
- [24.120.228.34]) by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2e99a541cf0sm12837491a91.12.2024.11.12.10.18.12
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 12 Nov 2024 10:18:12 -0800 (PST)
-Message-ID: <1e36011d-6ffb-4f93-a5d5-4f5055e8924c@linaro.org>
-Date: Tue, 12 Nov 2024 10:18:11 -0800
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1tAvYM-0001D3-It
+ for qemu-devel@nongnu.org; Tue, 12 Nov 2024 13:23:51 -0500
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1tAvYI-0003IP-J2
+ for qemu-devel@nongnu.org; Tue, 12 Nov 2024 13:23:48 -0500
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4ACIAPV4028085;
+ Tue, 12 Nov 2024 18:23:41 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=pp1; bh=E+UyhZ
+ 63WJDcVRCiEeSdFE7Ystc+gJHlypql91UTYLk=; b=ge4ibZc1DzClIkzZDDlm+J
+ Ff6UMjzmAbHUZZmPnAjBC9CcvZFVzmMrmh6aTFl21VLdAWUPCUGjWanj24f3HFby
+ HUlBpT+0J28C6J+UDRiAlGnPghIAqc1yEe8CrndI25WQYFDQlQv0aPzUngf0I7hN
+ LzALZl3XlDVpGsssIUrvSJxZmKqBygECtF4iumqR7ivldZYyrU6eB42AUE0Okix8
+ tk9c3l+y1AY8FrJK3vePhglpE6xqPVcQqpusFC7u3+Yu5usH/HSkY/KeDlBNJegN
+ +/PLoqvSlU7+iIlcU9tiJCORFYVeL5ZCFg8GmVa1qvfJ2GEBX+bLMNjI6bQKv/dw
+ ==
+Received: from ppma23.wdc07v.mail.ibm.com
+ (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42vc2901r3-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 12 Nov 2024 18:23:41 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4ACHZ20Y029698;
+ Tue, 12 Nov 2024 18:23:40 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+ by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 42tkjkuu4b-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 12 Nov 2024 18:23:40 +0000
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com
+ [10.20.54.100])
+ by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 4ACINcqB54460766
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 12 Nov 2024 18:23:38 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 33C122004D;
+ Tue, 12 Nov 2024 18:23:38 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 3D6FF20043;
+ Tue, 12 Nov 2024 18:23:37 +0000 (GMT)
+Received: from [127.0.0.1] (unknown [9.152.108.100])
+ by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Tue, 12 Nov 2024 18:23:37 +0000 (GMT)
+Message-ID: <c741c9d92729ef51334fd50bd014796f983789e9.camel@linux.ibm.com>
+Subject: Ping: [PATCH v2] tests/tcg: Stop using exit() in the gdbstub testcases
+From: Ilya Leoshkevich <iii@linux.ibm.com>
+To: Alex =?ISO-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>, Philippe
+ =?ISO-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
+Cc: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org, Gustavo
+ Romero <gustavo.romero@linaro.org>, Richard Henderson
+ <richard.henderson@linaro.org>
+Date: Tue, 12 Nov 2024 19:23:36 +0100
+In-Reply-To: <20241022113939.19989-1-iii@linux.ibm.com>
+References: <20241022113939.19989-1-iii@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.52.4 (3.52.4-2.fc40) 
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: m70zxgPTbmBH5xty9zM1icb-tWA-aeIq
+X-Proofpoint-ORIG-GUID: m70zxgPTbmBH5xty9zM1icb-tWA-aeIq
+Content-Transfer-Encoding: quoted-printable
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 6/6] target/mips: Convert nanoMIPS LSA opcode to
- decodetree
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Aleksandar Rikalo <arikalo@gmail.com>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>, Aurelien Jarno <aurelien@aurel32.net>
-References: <20241112172022.88348-1-philmd@linaro.org>
- <20241112172022.88348-7-philmd@linaro.org>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20241112172022.88348-7-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::531;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x531.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 mlxscore=0
+ priorityscore=1501 impostorscore=0 lowpriorityscore=0 clxscore=1015
+ phishscore=0 bulkscore=0 malwarescore=0 spamscore=0 mlxlogscore=999
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2409260000 definitions=main-2411120145
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=iii@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,20 +109,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/12/24 09:20, Philippe Mathieu-Daudé wrote:
-> From: Philippe Mathieu-Daudé<f4bug@amsat.org>
-> 
-> Simply call the generic gen_lsa() helper.
-> 
-> Signed-off-by: Philippe Mathieu-Daudé<f4bug@amsat.org>
-> Signed-off-by: Philippe Mathieu-Daudé<philmd@linaro.org>
+On Tue, 2024-10-22 at 13:37 +0200, Ilya Leoshkevich wrote:
+> GDB 15 does not like exit() anymore:
+>=20
+> =C2=A0=C2=A0=C2=A0 (gdb) python exit(0)
+> =C2=A0=C2=A0=C2=A0 Python Exception <class 'SystemExit'>: 0
+> =C2=A0=C2=A0=C2=A0 Error occurred in Python: 0
+>=20
+> Use the GDB's own exit command, like it's already done in a couple
+> places, everywhere. This is the same fix as commit 93a3048dcf45
+> ("tests: Gently exit from GDB when tests complete"), but applied to
+> more places.
+>=20
+> Acked-by: Gustavo Romero <gustavo.romero@linaro.org>
+> Reviewed-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+> Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
 > ---
->   target/mips/tcg/nanomips32.decode        | 6 ++++++
->   target/mips/tcg/nanomips_translate.c     | 7 +++++++
->   target/mips/tcg/nanomips_translate.c.inc | 4 ----
->   3 files changed, 13 insertions(+), 4 deletions(-)
+> v1:
+> https://lore.kernel.org/qemu-devel/20241021150153.487057-1-iii@linux.ibm.=
+com/
+> v1 -> v2: Mention 93a3048dcf45 (Peter, Gustavo, Philippe).
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Collect A-b and R-=
+b.
+>=20
+> =C2=A0tests/guest-debug/test_gdbstub.py=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 14 ++++++=
+++++---
+> -
+> =C2=A0tests/tcg/multiarch/gdbstub/interrupt.py=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 4 ++--
+> =C2=A0tests/tcg/multiarch/gdbstub/prot-none.py=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 4 ++--
+> =C2=A0tests/tcg/multiarch/gdbstub/test-proc-mappings.py |=C2=A0 4 ++--
+> =C2=A04 files changed, 16 insertions(+), 10 deletions(-)
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Hello,
 
-r~
+I would like to ping this fix, and also the s390x FMA NaN fix
+series [1].
+
+Best regards,
+Ilya
+
+[1]
+https://lore.kernel.org/qemu-devel/20241023000147.34035-1-iii@linux.ibm.com/
 
