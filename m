@@ -2,69 +2,51 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B52899C4C14
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Nov 2024 02:53:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 30C089C4C71
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Nov 2024 03:19:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tAg3m-0003qs-Oz; Mon, 11 Nov 2024 20:51:14 -0500
+	id 1tAgTl-0007Ci-T9; Mon, 11 Nov 2024 21:18:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1tAg3e-0003pK-9f; Mon, 11 Nov 2024 20:51:06 -0500
-Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1tAg3Z-0001sM-J9; Mon, 11 Nov 2024 20:51:05 -0500
-Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 74B2B4E6001;
- Tue, 12 Nov 2024 02:50:56 +0100 (CET)
-X-Virus-Scanned: amavisd-new at eik.bme.hu
-Received: from zero.eik.bme.hu ([127.0.0.1])
- by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
- with ESMTP id wARPds8jdvKh; Tue, 12 Nov 2024 02:50:54 +0100 (CET)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 170FD4E6000; Tue, 12 Nov 2024 02:50:54 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 114FC746F60;
- Tue, 12 Nov 2024 02:50:54 +0100 (CET)
-Date: Tue, 12 Nov 2024 02:50:54 +0100 (CET)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: Phil Dennis-Jordan <phil@philjordan.eu>
-cc: =?ISO-8859-15?Q?Daniel_P=2E_Berrang=E9?= <berrange@redhat.com>, 
- Akihiko Odaki <akihiko.odaki@daynix.com>, qemu-devel@nongnu.org, 
- agraf@csgraf.de, peter.maydell@linaro.org, pbonzini@redhat.com, 
- rad@semihalf.com, quic_llindhol@quicinc.com, stefanha@redhat.com, 
- mst@redhat.com, slp@redhat.com, richard.henderson@linaro.org, 
- eduardo@habkost.net, marcel.apfelbaum@gmail.com, gaosong@loongson.cn, 
- jiaxun.yang@flygoat.com, chenhuacai@kernel.org, kwolf@redhat.com, 
- hreitz@redhat.com, philmd@linaro.org, shorne@gmail.com, palmer@dabbelt.com, 
- alistair.francis@wdc.com, bmeng.cn@gmail.com, liwei1518@gmail.com, 
- dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com, 
- jcmvbkbc@gmail.com, marcandre.lureau@redhat.com, qemu-arm@nongnu.org, 
- qemu-block@nongnu.org, qemu-riscv@nongnu.org
-Subject: Re: [PATCH v8 01/15] ui & main loop: Redesign of system-specific
- main thread event handling
-In-Reply-To: <CAAibmn2MPxgB+HQPMz_U=1LEeg8GzQEovKzoLe-gYRYv9EX89A@mail.gmail.com>
-Message-ID: <a1d15bf8-68b1-2650-daa5-1595d9d4b8e9@eik.bme.hu>
-References: <20241108144709.95498-1-phil@philjordan.eu>
- <20241108144709.95498-2-phil@philjordan.eu>
- <9c2e0b96-2125-4041-9f66-116d54accb04@daynix.com>
- <CAAibmn3NbtOEwWLQFOo_UmAGTehOj+dDP04A=-JGMZVK9AYMDw@mail.gmail.com>
- <ZzHJgAbBJZYrSt84@redhat.com>
- <CAAibmn2+pT_kpcdHd26KsFggRNRR3yPep11fToOK=GZ9AEDHpw@mail.gmail.com>
- <e08017b1-5b38-f482-5534-cea4dcc0f000@eik.bme.hu>
- <CAAibmn2MPxgB+HQPMz_U=1LEeg8GzQEovKzoLe-gYRYv9EX89A@mail.gmail.com>
+ (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
+ id 1tAgTd-0007BI-Vt
+ for qemu-devel@nongnu.org; Mon, 11 Nov 2024 21:17:59 -0500
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <maobibo@loongson.cn>) id 1tAgTa-00045o-MH
+ for qemu-devel@nongnu.org; Mon, 11 Nov 2024 21:17:57 -0500
+Received: from loongson.cn (unknown [10.2.5.213])
+ by gateway (Coremail) with SMTP id _____8CxC+LDujJnHbg7AA--.52216S3;
+ Tue, 12 Nov 2024 10:17:39 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.2.5.213])
+ by front1 (Coremail) with SMTP id qMiowMCx98DCujJniixSAA--.12416S2;
+ Tue, 12 Nov 2024 10:17:39 +0800 (CST)
+From: Bibo Mao <maobibo@loongson.cn>
+To: Song Gao <gaosong@loongson.cn>, Paolo Bonzini <pbonzini@redhat.com>,
+ Zhao Liu <zhao1.liu@intel.com>, Igor Mammedov <imammedo@redhat.com>
+Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ Xianglai Li <lixianglai@loongson.cn>, qemu-devel@nongnu.org
+Subject: [PATCH v4 0/6] hw/loongarch/virt: Add cpu hotplug support
+Date: Tue, 12 Nov 2024 10:17:32 +0800
+Message-Id: <20241112021738.1952851-1-maobibo@loongson.cn>
+X-Mailer: git-send-email 2.39.3
 MIME-Version: 1.0
-Content-Type: multipart/mixed;
- boundary="3866299591-323661804-1731376254=:34944"
-Received-SPF: pass client-ip=2001:738:2001:2001::2001;
- envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: qMiowMCx98DCujJniixSAA--.12416S2
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
+ ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
+ nUUI43ZEXa7xR_UUUUUUUUU==
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
+ helo=mail.loongson.cn
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,149 +62,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+LoongArch cpu hotplug is based on ACPI GED device, there is a little
+change about ipi and extioi device, the value of num-cpu property is
+maximum cpu number rather than present cpu number.
 
---3866299591-323661804-1731376254=:34944
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8BIT
+It can be verified with qemu command:
+  qemu-system-loongarch64 -smp 2,maxcpus=16,sockets=4,cores=4,threads=1
+and vcpu can be added or remove with hmp command:
+  device_add la464-loongarch-cpu,socket-id=0,core-id=2,thread-id=0,id=cpu-2
+  device_del cpu-2
 
-On Mon, 11 Nov 2024, Phil Dennis-Jordan wrote:
-> On Mon, 11 Nov 2024 at 13:41, BALATON Zoltan <balaton@eik.bme.hu> wrote:
->> On Mon, 11 Nov 2024, Phil Dennis-Jordan wrote:
->>> On Mon, 11 Nov 2024 at 10:08, Daniel P. Berrangé <berrange@redhat.com>
->>> wrote:
->>>
->>>> On Sun, Nov 10, 2024 at 08:08:16AM +0100, Phil Dennis-Jordan wrote:
->>>>> On Sun 10. Nov 2024 at 08:01, Akihiko Odaki <akihiko.odaki@daynix.com>
->>>>> wrote:
->>>>>
->>>>>> On 2024/11/08 23:46, Phil Dennis-Jordan wrote:
->>>>>>> macOS's Cocoa event handling must be done on the initial (main)
->>>> thread
->>>>>>> of the process. Furthermore, if library or application code uses
->>>>>>> libdispatch, the main dispatch queue must be handling events on the
->>>> main
->>>>>>> thread as well.
->>>>>>>
->>>>>>> So far, this has affected Qemu in both the Cocoa and SDL UIs,
->>>> although
->>>>>>> in different ways: the Cocoa UI replaces the default qemu_main
->>>> function
->>>>>>> with one that spins Qemu's internal main event loop off onto a
->>>>>>> background thread. SDL (which uses Cocoa internally) on the other
->>>> hand
->>>>>>> uses a polling approach within Qemu's main event loop. Events are
->>>>>>> polled during the SDL UI's dpy_refresh callback, which happens to run
->>>>>>> on the main thread by default.
->>>>>>
->>>>>> GTK should also do the same as SDL and requires treatment; I forgot to
->>>>>> note that in previous reviews.
->>>>>
->>>>>
->>>>> Although it‘s possible to build Qemu with GTK support enabled on macOS,
->>>>> that UI doesn’t actually work on macOS at all, and apparently hasn’t
->> been
->>>>> supported since 2018, see:
->>>>> https://stackoverflow.com/a/51474795
->>>>>
->>>>> I don’t think there’s any point making adjustments to the GTK code by
->>>>> guessing what might be needed if someone did fix that to work with
->> macOS
->>>> at
->>>>> some point.
->>>>
->>>> If we don't support GTK on macOS, then we should update meson.build
->>>> to actively prevent users enabling GTK on macOS builds, rather than
->>>> letting them suffer random runtime crashes.
->>>>
->>>>
->>> Agreed - I'm now more confused than ever though because
->>> https://gitlab.com/qemu-project/qemu/-/issues/2539 sort of implies that
->>> Philippe has previously been using it successfully. Or perhaps this was
->>> created in response to
->> https://gitlab.com/qemu-project/qemu/-/issues/2515 ?
->>> But it seems like even the SDL implementation isn't perfect:
->>> https://gitlab.com/qemu-project/qemu/-/issues/2537
->>>
->>> Basically, it seems like Qemu's UI threading on macOS is currently a bit
->> of
->>> a mess, except in the Cocoa UI.
->>
->> Maybe it worked with older MacOS X releases but broke around the same time
->> when commit 5588840ff77800 was needed to fix the cocoa UI? Maybe gtk needs
->> a similar fix or whatever cocoa was changed to use since somewhere in gtk
->> or QEMU?
->>
->
-> Possible! Calling the Cocoa UI APIs from anything other than the main
-> thread has never officially been supported as far as I'm aware, but perhaps
-> some subset silently worked on earlier releases. Modern versions definitely
-> enforce the rule to some extent.
->
-> Also I find it strange to require UI backends to NULL init a global. If
->> the cocoa UI is the only one that needs it could that also set it instead
->> of doing it in /system? That would also confine macOS specific code to
->> cocoa.m and the other UIs would not need any change that way.
->>
->
-> Well, that's the whole point, it's not just the Cocoa UI - other macOS
-> system frameworks also need a runloop or libdispatch to be handling events
-> on thread 0. Relevant here are the ParavirtualizedGraphics.framework that's
-> integrated with patches 2-4 from this patch set, as well as the
-> Metal.framework, which PVG uses internally, and which we need to use
-> directly to some extent to complete the generated guest frames. These
-> frameworks internally use libdispatch, and they just don't work if nothing
-> is processing events on the main dispatch queue/runloop. So without patch
-> 01/16, PV graphics will only work in conjunction with Cocoa or SDL, because
-> those do process the runloop on the main thread. But if you were to run
-> with -nographic, or VNC/SPICE-only, Mac PV graphics just wouldn't work. So
-> the idea is to uncouple the main thread's runloop from the Cocoa UI.
+---
+v3 ... v4:
+  1. For cold-plug CPUs, move socket-id/core-id/thread-id property
+     setting from preplug function to CPU object creating loop, since
+     there is topo information calculation already in CPU object creating
+     loop.
+  2. Init interrupt pin of CPU object in cpu plug interface for both
+     cold-plug CPUs and hot-plug CPUs.
+  3. Apply the patch based on latest qemu version.
 
-OK, I think I got that now.
+v2 ... v3:
+  1. Use qdev_realize_and_unref() with qdev_realize() and object_unref().
+  2. Set vcpus_count with 1 since vcpu object is created for every thread.
+  3. Remove property hw-id, use internal variable hw_id to differentiate
+     cold-plug cpus and hot-plug cpus.
+  4. Add generic function virt_init_cpu_irq() to init interrupt pin
+     of CPU object, used by both cold-plug and hot-plug CPUs
 
-> An then, the GTK+ and SDL libraries themselves call down into Cocoa on
-> macOS. Windows also has specific rules about its Win32 UI API and
-> threading. SDL says outright that everything needs to be done from the main
-> thread. GTK+ says everything needs to be called from a single thread on
-> Win32; it seems like the rule on macOS is the same, except that thread must
-> be thread 0. Both those UIs in Qemu seem to violate the threading rules of
-> the libraries they integrate, as evidenced by the bug reports listed above.
-> This brokenness is entirely independent of this patch set here, it's just
-> that we're bumping up against the same underlying issue of needing runloop
-> handling on thread 0 in macOS.
->
-> With regard to NULL'ing the qemu_main function pointer from the SDL or GTK
-> UIs in Qemu: I had implemented a different approach to solving the problem
-> in v4, where each UI declared up-front what kind of threading arrangement
-> it needed rather than each one just overwriting a global variable. This was
-> somewhat more complex than the current one though.
-> https://patchew.org/QEMU/20241024102813.9855-1-phil@philjordan.eu/20241024102813.9855-2-phil@philjordan.eu/
+v1 ... v2:
+  1. Add new property hw-id, property hw-id is set for cold-added CPUs,
+     and property socket-id/core-id/thread-id is set for hot-added CPUs.
+     The two properties can be generated from each other.
+  2. Use general hotplug api such as hotplug_handler_pre_plug etc
+  3. Reorganize the patch order, split the patch set into 4 small
+     patches.
+---
+Bibo Mao (6):
+  hw/loongarch/virt: Add CPU topology support
+  hw/loongarch/virt: Implement cpu plug interface
+  hw/loongarch/virt: Add generic function to init interrupt pin of CPU
+  hw/loongarch/virt: Init interrupt pin of CPU during plug interface
+  hw/loongarch/virt: Update the ACPI table for hotplug cpu
+  hw/loongarch/virt: Enable cpu hotplug feature on virt machine
 
-That does not seem to be better than the current version.
+ docs/system/loongarch/virt.rst |  31 +++
+ hw/loongarch/Kconfig           |   1 +
+ hw/loongarch/acpi-build.c      |  35 ++-
+ hw/loongarch/virt.c            | 374 ++++++++++++++++++++++++++++-----
+ include/hw/loongarch/virt.h    |   3 +
+ target/loongarch/cpu.c         |  25 +++
+ target/loongarch/cpu.h         |  17 ++
+ 7 files changed, 428 insertions(+), 58 deletions(-)
 
-> Ultimately, it seems like someone needs to take a look at the SDL and GTK
-> integrations in Qemu and rework them in a way that doesn't violate the SDL
-> and GTK+ libraries' own threading rules. Once we've figured out what
-> requirements fall out of that, we can tidy up the qemu_main arrangement.
->
-> But that's an undertaking that's out of scope for this patch - I see the
-> current patch as a step towards a global solution to the problem.
-> Definitely not the last word on the matter, but at least starting to get
-> away from the situation where each UI does whatever it wants with zero
-> regard for the rest of the code base.
 
-Agreed. As long as it's not more broken than it is already, i.e. the 
-current behaviour is preserved, that should be good enough but I'm not a 
-maintainer who has a word in this so that's just my opinion. Then maybe 
-you could add a comment when the global variable needs to be set to NULL 
-to note that this may not be the correct way and some hint of the above 
-that this may need fixing later. I think we don't have a graphics 
-maintainer at the moment who has time to look at this so then at least 
-leave a comment to help whoever comes later who wants to fix this 
-eventually.
+base-commit: 134b443512825bed401b6e141447b8cdc22d2efe
+-- 
+2.39.3
 
-Regards,
-BALATON Zoltan
---3866299591-323661804-1731376254=:34944--
 
