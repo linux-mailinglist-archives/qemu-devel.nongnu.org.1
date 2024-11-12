@@ -2,77 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6DA59C5EC8
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Nov 2024 18:22:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE8569C5EC7
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Nov 2024 18:22:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tAuZz-0003UZ-Ee; Tue, 12 Nov 2024 12:21:28 -0500
+	id 1tAuaB-0003nG-3X; Tue, 12 Nov 2024 12:21:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tAuZV-0003Id-Fd
- for qemu-devel@nongnu.org; Tue, 12 Nov 2024 12:20:58 -0500
-Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tAuZb-0003Jl-0i
+ for qemu-devel@nongnu.org; Tue, 12 Nov 2024 12:21:03 -0500
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tAuZT-0003je-6D
- for qemu-devel@nongnu.org; Tue, 12 Nov 2024 12:20:56 -0500
-Received: by mail-wr1-x436.google.com with SMTP id
- ffacd0b85a97d-37d5689eea8so3500866f8f.1
- for <qemu-devel@nongnu.org>; Tue, 12 Nov 2024 09:20:54 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tAuZY-0003kM-Rs
+ for qemu-devel@nongnu.org; Tue, 12 Nov 2024 12:21:02 -0500
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-43162cf1eaaso74894095e9.0
+ for <qemu-devel@nongnu.org>; Tue, 12 Nov 2024 09:21:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1731432053; x=1732036853; darn=nongnu.org;
+ d=linaro.org; s=google; t=1731432059; x=1732036859; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=nVHYeh1YDzWSED7TwW1/YlH+4Ccsrjl+CRCHaxyGxEU=;
- b=NG3FPliJ4ryYo5GMmpe4EsFE+618dosTs/sSJGAyvyM0M/OYPKknPl1PGBbqJp1aER
- 0DHTebSd7qJAPNhrA2GNXUQsryar2hd6EsXBmpceKq1HeRyXvD0qBK4APNmQAjQYlBzK
- 5p2w+8fiNtG9v9MxSltL3L/O7+wNOXdQDARUJ94ZyFrSuMwo4rrZEK3RSK4eJ+Dt2EUy
- i5DU3PbyzjSrBz0tzpQMYhAeQej5vJSbabw1nAWoL49Ovkl+dclaWWP37PSzgSN9xaOe
- sD0ewtzX2O1jgx7VAGa1k/GaSUfOgaq1eAoUzvc1RdPbSu90EK+GolkvnEV+YN4aZ7ho
- /Lew==
+ bh=kDP/lIwlRm+EPmYlmR49NSb6qEjZ/RID3Kmdg460Duk=;
+ b=FtrsSTMm0VjDLU1peflxDKOXKoVhh34tq8OqMOVl2kk8kW45Ih0WzeeGfoHHNBhW7O
+ T/a4iwJD8PHpTOEA56NpJdhM6eJSPw+SO5xY+LDPwMxIZYo6xkHBta2qcWQkYaR4iNl2
+ u8PscAxUjdNI9SxVJ147XnS2SHamxLKkIRdz0p/jXcNmVVVa7X5ru2iVT3a2f7t5FC0Y
+ vPruH0EfNP6shBPIjJjJdJvYIWcQ+6OBGnesWzVoJYTdB0fPrljDWI4KKJ/Df20gxcJW
+ ChisNYy3OleDnQKOimXcU9Rm4jkE1vsFD893oqT8H0dSUnXsjXWJl2a5OFHKhriAXIJu
+ evAA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731432053; x=1732036853;
+ d=1e100.net; s=20230601; t=1731432059; x=1732036859;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=nVHYeh1YDzWSED7TwW1/YlH+4Ccsrjl+CRCHaxyGxEU=;
- b=RnpHy2d6vqcuPOmKP5HNTIAqinBmUQhYFK4cXTrxB61BGI65A3ZrBAHvaiOJY9SEJj
- PD5/pH8N7SxROM037gUF1D6LWcWKOQxXk6NAkE5rFEqHFBjmWWIvztHXOlM0zugsJl5N
- TOeew5IIBq+0iR9caCn+I2onRpm9SE6uohcYoKEXWuD3xwDBbMgklvrPO6AbWlIBNCNR
- iiH1x8hZrnhUkrINu74eGlXyxIXdcGTu7C4y/VJi2AUfcvW12xdzCuH3SLHJR4JNcJyM
- vIWoeJYKeQkpxlNQ3ppyccTfgmPfn6/qyxs/CFqhuZepm3B0WUE0seX03PWY2PWuBVXn
- ujEw==
-X-Gm-Message-State: AOJu0Yy2nJwQhEWREGSSGUiTu8889DKiMv1PCIFdkul4bo+6gzlNEuRc
- xFxBJYXLVmIs5cy2Hpdq0PvB5giU4I4V8wX8r2EeaBGeHUewFklCZfpJswC3b9HlfpU8bPj9ySO
- Y
-X-Google-Smtp-Source: AGHT+IE6u3sfJEhBBn7cjY0i6tmzDCe85gJ1qP8pY/puTpnUnjdXucYnGZT9hrmiHpf3tSBAZABS5Q==
-X-Received: by 2002:a5d:64e5:0:b0:37d:481e:fca with SMTP id
- ffacd0b85a97d-381f186fa0bmr16431218f8f.27.1731432053215; 
- Tue, 12 Nov 2024 09:20:53 -0800 (PST)
+ bh=kDP/lIwlRm+EPmYlmR49NSb6qEjZ/RID3Kmdg460Duk=;
+ b=IW0wyTSALAvTCDgVDTiwst/vtBED08TLrd+AZqC3ruc9VmsDiRJANvT8lJ/eFj19//
+ VqNDp7ROOks4Ml8J70sRN7FUGZEEAQhRy5sZ/eJeQgLGOYgSuzWsMgVb5wlCK2ZoX3ow
+ 3EeSBwC3PTNraHR0brKtJFVIeW0VtPA+g1uFyRLWjeBVuAV1BHLu4yCcF/7pc3bbD1C2
+ tJG0BnuY+nhamdN3yFveRljyHzafE9wDlV3xIh6o2BuhSnWKOH6y6LM7MBh8Kyc9JyZ3
+ Kxtcz9uFKU9i5mlglLstjQPxCkA9JZfhYDbEeb0mBLrOkJHCoWl2l2hP9Yz8slMVHO3A
+ Bfww==
+X-Gm-Message-State: AOJu0Yz7sSWObZ5HnwX/chnLLqYr4jwgxmB+r6tGrKO3DHJbgGu4yEqx
+ zK4o0Ib7sSJE61V1VVcm+3d3jlrr8z7o/8UMraVUElrPrGZdMoQB8fGUmsZJYBNvjpzyFKIVPMl
+ t
+X-Google-Smtp-Source: AGHT+IG0yx6oy4jTEJyjt349X7gFgH3zWoCWXVedC3njOhbNOi3Td84JaejW2E1ypzcFz0A/Tkh5+Q==
+X-Received: by 2002:a05:600c:1c9b:b0:431:5c7b:e939 with SMTP id
+ 5b1f17b1804b1-432b750b52amr202064115e9.18.1731432058977; 
+ Tue, 12 Nov 2024 09:20:58 -0800 (PST)
 Received: from localhost.localdomain
  (cnf78-h01-176-184-27-250.dsl.sta.abo.bbox.fr. [176.184.27.250])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-432aa70a234sm256216705e9.34.2024.11.12.09.20.51
+ ffacd0b85a97d-381eda04ad0sm15834386f8f.100.2024.11.12.09.20.57
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 12 Nov 2024 09:20:52 -0800 (PST)
+ Tue, 12 Nov 2024 09:20:58 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Aleksandar Rikalo <arikalo@gmail.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Jiaxun Yang <jiaxun.yang@flygoat.com>,
- Aurelien Jarno <aurelien@aurel32.net>
-Subject: [PATCH v2 5/6] target/mips: Convert microMIPS LSA opcode to decodetree
-Date: Tue, 12 Nov 2024 18:20:21 +0100
-Message-ID: <20241112172022.88348-6-philmd@linaro.org>
+ Aurelien Jarno <aurelien@aurel32.net>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <f4bug@amsat.org>
+Subject: [PATCH v2 6/6] target/mips: Convert nanoMIPS LSA opcode to decodetree
+Date: Tue, 12 Nov 2024 18:20:22 +0100
+Message-ID: <20241112172022.88348-7-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241112172022.88348-1-philmd@linaro.org>
 References: <20241112172022.88348-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::436;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,76 +96,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Simply call the generic gen_lsa(), using the plus_1()
-helper to add 1 to the shift amount.
+From: Philippe Mathieu-Daudé <f4bug@amsat.org>
 
+Simply call the generic gen_lsa() helper.
+
+Signed-off-by: Philippe Mathieu-Daudé <f4bug@amsat.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/mips/tcg/micromips32.decode        |  8 ++++++++
- target/mips/tcg/micromips_translate.c     | 10 ++++++++++
- target/mips/tcg/micromips_translate.c.inc |  5 -----
- 3 files changed, 18 insertions(+), 5 deletions(-)
+ target/mips/tcg/nanomips32.decode        | 6 ++++++
+ target/mips/tcg/nanomips_translate.c     | 7 +++++++
+ target/mips/tcg/nanomips_translate.c.inc | 4 ----
+ 3 files changed, 13 insertions(+), 4 deletions(-)
 
-diff --git a/target/mips/tcg/micromips32.decode b/target/mips/tcg/micromips32.decode
-index c115ed2eab..958883ce84 100644
---- a/target/mips/tcg/micromips32.decode
-+++ b/target/mips/tcg/micromips32.decode
-@@ -7,3 +7,11 @@
- # Reference: MIPS Architecture for Programmers, Volume II-B
- #            microMIPS32 Instruction Set
- #            (Document Number: MD00582)
+diff --git a/target/mips/tcg/nanomips32.decode b/target/mips/tcg/nanomips32.decode
+index 9cecf1e13d..96d2299bfb 100644
+--- a/target/mips/tcg/nanomips32.decode
++++ b/target/mips/tcg/nanomips32.decode
+@@ -6,3 +6,9 @@
+ #
+ # Reference: nanoMIPS32 Instruction Set Technical Reference Manual
+ #            (Document Number: MD01247)
 +
 +&r                  rs rt rd sa
 +
-+%lsa_sa             9:2  !function=plus_1
++@lsa                ...... rt:5 rs:5 rd:5 sa:2 --- ... ...  &r
 +
-+@lsa                ...... rt:5  rs:5  rd:5  .. ... ......  &r sa=%lsa_sa
-+
-+LSA                 000000 ..... ..... ..... .. 000 001111  @lsa
-diff --git a/target/mips/tcg/micromips_translate.c b/target/mips/tcg/micromips_translate.c
-index 49e90e7eca..f0b5dbf655 100644
---- a/target/mips/tcg/micromips_translate.c
-+++ b/target/mips/tcg/micromips_translate.c
-@@ -9,6 +9,16 @@
- #include "qemu/osdep.h"
- #include "translate.h"
- 
-+static inline int plus_1(DisasContext *ctx, int x)
-+{
-+    return x + 1;
-+}
-+
++LSA                 001000 ..... ..... ..... .. ... 001 111 @lsa
+diff --git a/target/mips/tcg/nanomips_translate.c b/target/mips/tcg/nanomips_translate.c
+index c148c13ed9..43a934d857 100644
+--- a/target/mips/tcg/nanomips_translate.c
++++ b/target/mips/tcg/nanomips_translate.c
+@@ -12,3 +12,10 @@
  /* Include the auto-generated decoders.  */
- #include "decode-micromips16.c.inc"
- #include "decode-micromips32.c.inc"
+ #include "decode-nanomips16.c.inc"
+ #include "decode-nanomips32.c.inc"
 +
 +static bool trans_LSA(DisasContext *ctx, arg_r *a)
 +{
-+    return gen_lsa(ctx, a->rd, a->rt, a->rs, a->sa);
++    gen_lsa(ctx, a->rd, a->rt, a->rs, a->sa);
++
++    return true;
 +}
-diff --git a/target/mips/tcg/micromips_translate.c.inc b/target/mips/tcg/micromips_translate.c.inc
-index e8ec5a0ff2..4b4550872f 100644
---- a/target/mips/tcg/micromips_translate.c.inc
-+++ b/target/mips/tcg/micromips_translate.c.inc
-@@ -191,7 +191,6 @@ enum {
-     /* The following can be distinguished by their lower 6 bits. */
-     BREAK32 = 0x07,
-     INS = 0x0c,
--    LSA = 0x0f,
-     ALIGN = 0x1f,
-     EXT = 0x2c,
-     POOL32AXF = 0x3c,
-@@ -1793,10 +1792,6 @@ static void decode_micromips32_opc(CPUMIPSState *env, DisasContext *ctx)
-         case INS:
-             gen_bitops(ctx, OPC_INS, rt, rs, rr, rd);
-             return;
--        case LSA:
--            check_insn(ctx, ISA_MIPS_R6);
--            gen_lsa(ctx, rd, rt, rs, extract32(ctx->opcode, 9, 2) + 1);
--            break;
-         case ALIGN:
-             check_insn(ctx, ISA_MIPS_R6);
-             gen_align(ctx, 32, rd, rs, rt, extract32(ctx->opcode, 9, 2));
+diff --git a/target/mips/tcg/nanomips_translate.c.inc b/target/mips/tcg/nanomips_translate.c.inc
+index e118013edc..0e012ab3d0 100644
+--- a/target/mips/tcg/nanomips_translate.c.inc
++++ b/target/mips/tcg/nanomips_translate.c.inc
+@@ -399,7 +399,6 @@ enum {
+ /* POOL32A7 instruction pool */
+ enum {
+     NM_P_LSX        = 0x00,
+-    NM_LSA          = 0x01,
+     NM_EXTW         = 0x03,
+     NM_POOL32AXF    = 0x07,
+ };
+@@ -3625,9 +3624,6 @@ static int decode_nanomips_32_48_opc(CPUMIPSState *env, DisasContext *ctx)
+             case NM_P_LSX:
+                 gen_p_lsx(ctx, rd, rs, rt);
+                 break;
+-            case NM_LSA:
+-                gen_lsa(ctx, rd, rt, rs, extract32(ctx->opcode, 9, 2));
+-                break;
+             case NM_EXTW:
+                 gen_ext(ctx, 32, rd, rs, rt, extract32(ctx->opcode, 6, 5));
+                 break;
 -- 
 2.45.2
 
