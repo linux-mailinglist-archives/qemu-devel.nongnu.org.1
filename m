@@ -2,80 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CA029C6341
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Nov 2024 22:20:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA4B69C6368
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Nov 2024 22:27:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tAyHT-00028R-BB; Tue, 12 Nov 2024 16:18:35 -0500
+	id 1tAyPQ-0003hB-HM; Tue, 12 Nov 2024 16:26:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tAyHQ-000282-Ay
- for qemu-devel@nongnu.org; Tue, 12 Nov 2024 16:18:32 -0500
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1tAyPE-0003gt-0y
+ for qemu-devel@nongnu.org; Tue, 12 Nov 2024 16:26:37 -0500
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tAyHN-0003lo-DO
- for qemu-devel@nongnu.org; Tue, 12 Nov 2024 16:18:31 -0500
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-37d5689eea8so3628529f8f.1
- for <qemu-devel@nongnu.org>; Tue, 12 Nov 2024 13:18:28 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1tAyPC-0004Sf-FH
+ for qemu-devel@nongnu.org; Tue, 12 Nov 2024 16:26:35 -0500
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-431695fa98bso49108525e9.3
+ for <qemu-devel@nongnu.org>; Tue, 12 Nov 2024 13:26:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1731446307; x=1732051107; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=oBEDXQIHr58JSmTF4s/1h1xSHIZph2x02RwZ4yllt1c=;
- b=fBZ9IbCsGsusv2Y8dH42TknFAUNEi0phQ1D9wVCrQteHPrWGHkT0XFGwklLUq1nxMD
- MNGqsJJOkaDkkVm+8FK7xKazEavcmneWN8xpxwaDKI8U5aR6dhusy/QuV4p7bqrAF3id
- c87465UUD4kzqHyiV0vucVKYnhsJQNLEW0X91kLFvjopmgAhUAE2DuR/GMtBAUJ30yZs
- nONc8q0H7golstiruby6yglECYoJM9A7NrjYgXkpwHXBoFZ/NKiJF8xH/14jQ7rL6gFw
- /jtoTLHooSmlrCyYozwtdc6LfpzppwVXGwao86LCm7tUc03FS+oxPJAlslDPHVlLEmKk
- 5qYA==
+ d=linaro.org; s=google; t=1731446792; x=1732051592; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=VCin0/w2synzn0FZGIgr1vxI2X92dhBNZih1bphjULs=;
+ b=ibHexu1DI792LjNvaOBfB1IbL+fYkTHDVac7Y6HdCADewfcbLMX/iEAq0H+AgoTup8
+ DHX1ntwnMnAuNzA5CZShd+Psfth9BvFBLXP9sAvdKLR4eD+pKRyySEBsLuLs463T1ghm
+ fDcfCAGDzrt5YN/ZpHE8RrSZc6r1lVj7vlcEgKCnSMJkgYnlWKxgY1imlA2uWzY9pFX3
+ o2OVVg8zrCAz33YZDloQh8CQ96/ZC5XIGiOm1cdeurM6TIjy3i13brhSOXJGkzePo60f
+ CeUiORrbQZVvoznofOGeGtj6hC6aWAuxGA8ur72tmjmU5Hu6T9M+rh1FiXT3JiQQBGyG
+ yfBw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731446307; x=1732051107;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=oBEDXQIHr58JSmTF4s/1h1xSHIZph2x02RwZ4yllt1c=;
- b=qzRiOTyT25hiHEnqTR56S1XYQv+Icp3y/64anlWUshFfCWvRPNnwF+3JwekZveS/YW
- DaKkMIu1+dd8hLce5auLOdVF+AO19KgF5khQiCp3SjrlUWSYdUhU/xypCvsROw+4SIJW
- wxoaObBtFLHMrAo4QsRGG39DkS/ducgJMe5LcKlFX+S6yq8cwiXVaJc6N7Uk36MRiPzx
- GXIlS1PWegfDC9xhZie5HBj4Fp5OWB7qjLfWvF9SF0tEmWorOlCHCpVKpHXs5SKF52sw
- ARV5kBVqvRZCoggZ4Cg3mt6D+KnjXS5t9ZsiXk7syF0PYesmXQXBZDISGwVvENBaSfvP
- fxRQ==
-X-Gm-Message-State: AOJu0Yzd2ke0Qvz5xfMvCcUKDEAkclTsJiLBKXNfX6rGJXJFRTFqZOq1
- nGxnTVYl+yHctYhqOlkiChFTz6uJVAuonDnv/0Exn5upJD32VJrSOO64K42t+RM=
-X-Google-Smtp-Source: AGHT+IGS+vqVnjnTvQP4zWKmXz+RdV0gjGgqHHIOdLm2klPfJaS9oEPQhhvWECnIfraHAW7+tQw98A==
-X-Received: by 2002:a5d:5e0a:0:b0:382:ce0:a7c8 with SMTP id
- ffacd0b85a97d-3820ce0a843mr1190024f8f.42.1731446307259; 
- Tue, 12 Nov 2024 13:18:27 -0800 (PST)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-381ed970f85sm16674171f8f.6.2024.11.12.13.18.26
+ d=1e100.net; s=20230601; t=1731446792; x=1732051592;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=VCin0/w2synzn0FZGIgr1vxI2X92dhBNZih1bphjULs=;
+ b=d+Tw7hOJX6shQzIzYFziSWjQrUvswYq3JTb9d7Qw7ilo6i9V0FMieaMPwKSlYydyZV
+ HGP1U4i7BmtOfaof3//P4ufkrcceXl10JF1jFeQd5OpZUQku0bq0orNgvruteFk8O/65
+ 5KAdeZSq+M2tgSY/wU5ZN3YaFqKg2SmDCOJPKlZSxrZ+AxSzALpsgz3FhCrPZkltHtQd
+ e4hEHXvDpoxECGi2fpMKRMzz8fZfpD2ndEh6XYM+YvwOQCSBHJUNJAHc4NmBK+SfcdwV
+ i1o4asWBdqGMPg1LxiJHACT13Kijv3KehUI0X6HFJRSqC5ZCg/tIkLWZwW+2CsFWphs3
+ hIug==
+X-Gm-Message-State: AOJu0YwSRWNVDy9r+qwbK2sV2BxU0swcMvtnUAIKJdB7CMsEYgKHDD0j
+ dryp9nZnCDrdTIdxomkLFm4zgYdy4aQimk8NJbhrFqtI68f/xjAgJ6hRc0fXiKEfJRk8BgvZ3Hg
+ BbxRKvA==
+X-Google-Smtp-Source: AGHT+IEKUxTM3kAaSJqUMJ1RJyE5mOhE2BWAIKYXKc6R6vindGnFUrgnrdhAy8/cKC8pXH53Yv4+Gw==
+X-Received: by 2002:a5d:47ae:0:b0:37d:34f6:92a with SMTP id
+ ffacd0b85a97d-381f1888ce3mr14167634f8f.51.1731446791891; 
+ Tue, 12 Nov 2024 13:26:31 -0800 (PST)
+Received: from linaro.. ([193.32.126.214]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-381ed9ec202sm16613515f8f.83.2024.11.12.13.26.30
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 12 Nov 2024 13:18:26 -0800 (PST)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id CCFC25F7CB;
- Tue, 12 Nov 2024 21:18:25 +0000 (GMT)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Aleksandar Rakic <rakicaleksandar1999@gmail.com>
-Cc: qemu-devel@nongnu.org,  djordje.todorovic@htecgroup.com,  cfu@mips.com,
- arikalo@gmail.com,  philmd@linaro.org,  Aleksandar Rakic
- <aleksandar.rakic@htecgroup.com>,  Faraz Shahbazker
- <fshahbazker@wavecomp.com>
-Subject: Re: [PATCH] GTM19-448: Fix script to work without realpath
-In-Reply-To: <20241112183849.2577570-1-aleksandar.rakic@htecgroup.com>
- (Aleksandar Rakic's message of "Tue, 12 Nov 2024 19:38:49 +0100")
-References: <20241112183849.2577570-1-aleksandar.rakic@htecgroup.com>
-User-Agent: mu4e 1.12.7; emacs 29.4
-Date: Tue, 12 Nov 2024 21:18:25 +0000
-Message-ID: <87zfm4tala.fsf@draig.linaro.org>
+ Tue, 12 Nov 2024 13:26:31 -0800 (PST)
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Mahmoud Mandour <ma.mandourr@gmail.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Alexandre Iooss <erdnaxe@crans.org>, Cleber Rosa <crosa@redhat.com>,
+ John Snow <jsnow@redhat.com>
+Subject: [PATCH v4 0/3] plugins: generate list of symbols automatically
+Date: Tue, 12 Nov 2024 13:26:19 -0800
+Message-Id: <20241112212622.3590693-1-pierrick.bouvier@linaro.org>
+X-Mailer: git-send-email 2.39.5
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::431;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x431.google.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-wm1-x32b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,55 +93,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Aleksandar Rakic <rakicaleksandar1999@gmail.com> writes:
+Now that meson build for plugins was merged, we can cleanup another part with
+the symbols file.
+It has to be kept in sync between the header (qemu-plugin.h) and the symbols
+file. This has proved to be error prone and tedious.
 
-> The archive-source.sh script depends on realpath command, which was
-> introduced in coreutils-8.15. CentOS-6 build systems use coreutils-4.7,
-> which does not have realpath, so fix the script to use 'readlink -e' to
-> perform the same action.
+We solve this by generating this list from header directly using a python
+script. Dependencies are triggered correctly, and the file is regenerated if the
+header is modified, as expected.
 
-Isn't CentOS-6 outside of our supported build platform range? We aim for
-latest stable release + 5 years. CentOS got to 8 before being replaced
-with CentOS Stream.
+v4:
+fix second patch to apply cleanly on master (was applied from a previous series
+to enable windows clang build before).
 
->
-> Cherry-picked 5d1d5766f0219ce2bec4e41c2467317df920ec0a
-> and 8003ab4032772a0e5b46e5983fe06268d3469289
-> from https://github.com/MIPS/gnutools-qemu
->
-> An instance of a pipeline of QEMU CI jobs run with input
-> variable QEMU_CI=3D1 for this patch is available here:
-> https://gitlab.com/rakicaleksandar1999/qemu/-/pipelines/1538854588
-> and for the master branch is available here:
-> https://gitlab.com/rakicaleksandar1999/qemu/-/pipelines/1533465414
->
-> Signed-off-by: Faraz Shahbazker <fshahbazker@wavecomp.com>
-> Signed-off-by: Chao-ying Fu <cfu@mips.com>
-> Signed-off-by: Aleksandar Rakic <aleksandar.rakic@htecgroup.com>
-> ---
->  scripts/archive-source.sh | 8 +++++++-
->  1 file changed, 7 insertions(+), 1 deletion(-)
->
-> diff --git a/scripts/archive-source.sh b/scripts/archive-source.sh
-> index 30677c3ec9..bfaa0c1483 100755
-> --- a/scripts/archive-source.sh
-> +++ b/scripts/archive-source.sh
-> @@ -18,7 +18,13 @@ if test $# -lt 1; then
->      error "Usage: $0 <output tarball>"
->  fi
->=20=20
-> -tar_file=3D$(realpath "$1")
-> +which realpath
-> +if [ $? -eq 0 ]; then
-> +    tar_file=3D$(realpath -s "$1")
-> +else
-> +    d=3D$(dirname "$1")
-> +    tar_file=3D$(readlink -e "$d")"/"$(basename "$1")
-> +fi
->  sub_tdir=3D$(mktemp -d "${tar_file%.tar}.sub.XXXXXXXX")
->  sub_file=3D"${sub_tdir}/submodule.tar"
+Pierrick Bouvier (3):
+  plugins: add missing export for qemu_plugin_num_vcpus
+  plugins: detect qemu plugin API symbols from header
+  plugins: eradicate qemu-plugins.symbols static file
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+ MAINTAINERS                    |  1 +
+ include/qemu/qemu-plugin.h     |  1 +
+ plugins/meson.build            | 12 +++++--
+ plugins/qemu-plugins.symbols   | 59 ----------------------------------
+ scripts/qemu-plugin-symbols.py | 45 ++++++++++++++++++++++++++
+ 5 files changed, 56 insertions(+), 62 deletions(-)
+ delete mode 100644 plugins/qemu-plugins.symbols
+ create mode 100755 scripts/qemu-plugin-symbols.py
+
+-- 
+2.39.5
+
 
