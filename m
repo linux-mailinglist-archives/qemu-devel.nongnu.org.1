@@ -2,82 +2,142 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F26639C59BA
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Nov 2024 14:58:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E9199C59DA
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Nov 2024 15:04:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tArOk-0004LG-D0; Tue, 12 Nov 2024 08:57:38 -0500
+	id 1tAr4O-0006q7-G1; Tue, 12 Nov 2024 08:36:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peternewman@google.com>)
- id 1tAo8C-0000ze-5A
- for qemu-devel@nongnu.org; Tue, 12 Nov 2024 05:28:20 -0500
-Received: from mail-ej1-x62b.google.com ([2a00:1450:4864:20::62b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peternewman@google.com>)
- id 1tAo8A-0001ES-Mi
- for qemu-devel@nongnu.org; Tue, 12 Nov 2024 05:28:19 -0500
-Received: by mail-ej1-x62b.google.com with SMTP id
- a640c23a62f3a-a9e8522445dso968538366b.1
- for <qemu-devel@nongnu.org>; Tue, 12 Nov 2024 02:28:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20230601; t=1731407296; x=1732012096; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=eg3RrlTKyDjzp7z3nB5GMKe0hLLj/sCNp4qRuY388Bw=;
- b=OMT0WfUol0mU1l1HmUCEHuA6MzK11Yd/14oOKVUmT0sNvtmFBWlBwVhIb0hRwPHb0p
- nLAxhc1sXse4ECk675+yCW0L32PbdJijCTb0CZQZ6NBKxcDPXCVqqW10P2iNL4c0jquW
- liSFWSbBBRvN+e2CPOJ+jMICcGMbYkvM2ECn6scTMYn46mmyIhQE1KtTCg0uJHvcu5ZV
- qtqRgVxSIdG1tX+p++8PeWg7gSZNEHbLSIIl7QS9S33G2izmBBdFhYfa3HqmQPVSxAji
- sjBOuhYGsarEmrVtBivxklzMiY1H7TtFszY5ulPqtHDm3Yk1GtfCRfpZ3d13JPp88Obx
- q1uw==
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tAr4D-0006oR-HJ
+ for qemu-devel@nongnu.org; Tue, 12 Nov 2024 08:36:26 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tAr4B-0001K8-EM
+ for qemu-devel@nongnu.org; Tue, 12 Nov 2024 08:36:25 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1731418581;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=pKzBLcMcXHy5XpA8wTRqmi6vMEHO+sLY8chTa4yGjVk=;
+ b=FpZflWh31Ns9T8ltGAybZPLSgYN5IhkewzYZSyr85+QGHzwBthgcB0Fmz7eUGhr3UOCjao
+ /fNkyKce6B28N5/NVQH7lFuWJHMBEuo0j/KxKiUWhotoLn8RALm1OuTh2rISBrN/4KG3DJ
+ eYdeWMOv889FXZshp5O1A4FLgUnf9CE=
+Received: from mail-ot1-f71.google.com (mail-ot1-f71.google.com
+ [209.85.210.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-466-8K59gFK3O6mMfPAFBN_ppg-1; Tue, 12 Nov 2024 08:36:19 -0500
+X-MC-Unique: 8K59gFK3O6mMfPAFBN_ppg-1
+X-Mimecast-MFC-AGG-ID: 8K59gFK3O6mMfPAFBN_ppg
+Received: by mail-ot1-f71.google.com with SMTP id
+ 46e09a7af769-7180c44f9dfso4831048a34.3
+ for <qemu-devel@nongnu.org>; Tue, 12 Nov 2024 05:36:19 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731407296; x=1732012096;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=eg3RrlTKyDjzp7z3nB5GMKe0hLLj/sCNp4qRuY388Bw=;
- b=tS8+mlwxFwUil2/ogdpS1+8yDgDjDJE+N6z+V07gQjgHN6bKCOy/0rp6eP60sv8txO
- MJgLITvId1Osscp3xKH5HSle+GyQWsRox57XyDupxaZWIZYnN/TGVZOuTq8gF6Eaugnn
- h4yx9TiB24ac7UmJqpZgrybx4omoEHgVwGck1jUQCYgHpzpLqA0lu5x4YhzruX4SLvQm
- mqTIVnpI/gytNS3yl8105TrGUOiWtelO69t4pLRqhg6tFCo4/maj4dH1FVgrHuAwigxI
- KvHTPHcINlph+2UmyUYKYnFU2YjUpeBkP3nWK4wTNNl/GjDdbpCOgUC3UUcpC1Qy9mad
- pYXg==
-X-Gm-Message-State: AOJu0Yx026JR2F1jdLwcUqfbbi6yLvA6n/VPeS7KwZ8EeSzU0vNrltEE
- DhgMqwuuSl1Eo4/EZ1uB8NslCvVO1RO3givi9wtpf/fX0fv6znYmuteHtodlXC2ubkJM3CKEhmo
- C/yaP2wPNIvFZzT39YG29MJQ1f2R1d/R8UN+C
-X-Google-Smtp-Source: AGHT+IEAEaBuXYpA6xr+MYKjUhxeZfl0cut4cVQcf6wT9HUpvpVutgsyxGlTKuf6xw50oUTRxyvYxbkEkNAIw9qJjh8=
-X-Received: by 2002:a17:907:7e8e:b0:a99:37f5:de59 with SMTP id
- a640c23a62f3a-a9ef001919bmr1544916366b.53.1731407296101; Tue, 12 Nov 2024
- 02:28:16 -0800 (PST)
+ d=1e100.net; s=20230601; t=1731418578; x=1732023378;
+ h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+ :from:references:cc:to:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=pKzBLcMcXHy5XpA8wTRqmi6vMEHO+sLY8chTa4yGjVk=;
+ b=G7TCb+wZW6IjrEoOWpSznciVaY+VSOMq+WMDwIS2Fc8z+Qz2hU5/qLG+GgdTww0NBE
+ RZGEZDL4K8g2IcutfOyLx98itg+emsudDI19zMw/kbTr/LnU3kU1A0RB4DhczsDOd/oR
+ aRDEtrERG+7AVoHC4G9fDf+CZo57sRpEIRiJVNLZblej0qNHMJV3PNyDhfWS4Uij+BF8
+ CJUSdBsQ6HI/r9KRDbYsuD3zENAAgasgOD5sXqvdUteJ7iYnUIGd5Qr6COtTuE9IpQI3
+ 5OwaQow4KeHl8Af8QBpREw40alK8LpRYxlzz4+1nwYvLAOM+RSwndrDtlJwAAuKtHq/9
+ teuA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWEFZmWCuD/YL0y86aGxA7jl88TjsviVMvY8qdn/vUErXSR1RcDTiq8Sglu/lNBbM2tcCaUIbVSNyAY@nongnu.org
+X-Gm-Message-State: AOJu0YzXZgavzhQ93ELaTmTk+rVy/lvom/H6JYroUkHhe9ks5DQff0Of
+ EuHJkIgV4KvvIYZaBnVd+LkXoljBrCCYjXA7BOtq84yY4c7JP67f6Q+VphVKkzLaIGM/QGWoTuR
+ kdsdud0nXWfNkfhVAVT4bACHlYF0pw0fbTiq2XqT5Jj7RO43kOQMV
+X-Received: by 2002:a05:6358:d047:b0:1c3:81a4:d0f7 with SMTP id
+ e5c5f4694b2df-1c641f66142mr640595555d.22.1731418578606; 
+ Tue, 12 Nov 2024 05:36:18 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHeNFb5EAKNR+DIOpsY1Y7XLCXn8HcwZCqIAtxyEe9wYNhIzOj5ZqtoP1P2eJgMZ0moCB0t0w==
+X-Received: by 2002:a05:6358:d047:b0:1c3:81a4:d0f7 with SMTP id
+ e5c5f4694b2df-1c641f66142mr640593955d.22.1731418578239; 
+ Tue, 12 Nov 2024 05:36:18 -0800 (PST)
+Received: from [192.168.0.7] (ip-109-42-49-115.web.vodafone.de.
+ [109.42.49.115]) by smtp.gmail.com with ESMTPSA id
+ 6a1803df08f44-6d39643aeb2sm71326836d6.80.2024.11.12.05.36.15
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 12 Nov 2024 05:36:17 -0800 (PST)
+Message-ID: <c2fe0e26-9dcf-458c-926a-5be0a2a39181@redhat.com>
+Date: Tue, 12 Nov 2024 14:36:12 +0100
 MIME-Version: 1.0
-References: <20240905112237.3586972-1-whendrik@google.com>
- <20240905112237.3586972-6-whendrik@google.com>
-In-Reply-To: <20240905112237.3586972-6-whendrik@google.com>
-From: Peter Newman <peternewman@google.com>
-Date: Tue, 12 Nov 2024 11:28:05 +0100
-Message-ID: <CALPaoCjtrn=EcuYxqH7rT5tn5u_EPJeQMx1gq1+5gdVuUvAJhg@mail.gmail.com>
-Subject: Re: [PATCH v2 5/8] i386: Add CPUID enumeration for RDT
-To: Hendrik Wuethrich <whendrik@google.com>
-Cc: qemu-devel@nongnu.org, Jonathan.Cameron@huawei.com, eduardo@habkost.net, 
- richard.henderson@linaro.org, marcel.apfelbaum@gmail.com, mst@redhat.com, 
- pbonzini@redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::62b;
- envelope-from=peternewman@google.com; helo=mail-ej1-x62b.google.com
-X-Spam_score_int: -175
-X-Spam_score: -17.6
-X-Spam_bar: -----------------
-X-Spam_report: (-17.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 4/4] tests/functional: Remove sleep workarounds from
+ Aspeed tests
+To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>,
+ qemu-devel@nongnu.org, qemu-arm@nongnu.org
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ Steven Lee <steven_lee@aspeedtech.com>, Troy Lee <leetroy@gmail.com>,
+ Jamin Lin <jamin_lin@aspeedtech.com>,
+ Andrew Jeffery <andrew@codeconstruct.com.au>, Joel Stanley <joel@jms.id.au>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+References: <20241112130246.970281-1-clg@redhat.com>
+ <20241112130246.970281-5-clg@redhat.com>
+From: Thomas Huth <thuth@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <20241112130246.970281-5-clg@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.122,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- ENV_AND_HDR_SPF_MATCH=-0.5, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, USER_IN_DEF_DKIM_WL=-7.5,
- USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Tue, 12 Nov 2024 08:57:34 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,45 +152,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Hendrik,
+On 12/11/2024 14.02, Cédric Le Goater wrote:
+> These were introduced in the avocado tests to workaround read issues
+> when interacting with console. They are no longer necessary and we can
+> use the expected  "login:" string now.
+> 
+> Signed-off-by: Cédric Le Goater <clg@redhat.com>
+> ---
+>   tests/functional/test_arm_aspeed.py | 12 +++++-------
+>   1 file changed, 5 insertions(+), 7 deletions(-)
+> 
+> diff --git a/tests/functional/test_arm_aspeed.py b/tests/functional/test_arm_aspeed.py
+> index 7644ecbae750..2c9009f686fd 100755
+> --- a/tests/functional/test_arm_aspeed.py
+> +++ b/tests/functional/test_arm_aspeed.py
+> @@ -136,10 +136,8 @@ def do_test_arm_aspeed_buildroot_start(self, image, cpu_id, pattern='Aspeed EVB'
+>           self.wait_for_console_pattern('lease of 10.0.2.15')
+>           # the line before login:
+>           self.wait_for_console_pattern(pattern)
+> -        time.sleep(0.1)
+> -        exec_command(self, 'root')
+> -        time.sleep(0.1)
+> -        exec_command(self, "passw0rd")
+> +        exec_command_and_wait_for_pattern(self, 'root', 'Password:')
+> +        exec_command_and_wait_for_pattern(self, 'passw0rd', '#')
+>   
+>       def do_test_arm_aspeed_buildroot_poweroff(self):
+>           exec_command_and_wait_for_pattern(self, 'poweroff',
+> @@ -158,7 +156,7 @@ def test_arm_ast2500_evb_buildroot(self):
+>           self.vm.add_args('-device',
+>                            'tmp105,bus=aspeed.i2c.bus.3,address=0x4d,id=tmp-test');
+>           self.do_test_arm_aspeed_buildroot_start(image_path, '0x0',
+> -                                                'Aspeed AST2500 EVB')
+> +                                                'ast2500-evb login:')
+>   
+>           exec_command_and_wait_for_pattern(self,
+>                'echo lm75 0x4d > /sys/class/i2c-dev/i2c-3/device/new_device',
+> @@ -188,7 +186,8 @@ def test_arm_ast2600_evb_buildroot(self):
+>                            'ds1338,bus=aspeed.i2c.bus.3,address=0x32');
+>           self.vm.add_args('-device',
+>                            'i2c-echo,bus=aspeed.i2c.bus.3,address=0x42');
+> -        self.do_test_arm_aspeed_buildroot_start(image_path, '0xf00', 'Aspeed AST2600 EVB')
+> +        self.do_test_arm_aspeed_buildroot_start(image_path, '0xf00',
+> +                                                'ast2600-evb login:')
+>   
+>           exec_command_and_wait_for_pattern(self,
+>                'echo lm75 0x4d > /sys/class/i2c-dev/i2c-3/device/new_device',
+> @@ -210,7 +209,6 @@ def test_arm_ast2600_evb_buildroot(self):
+>                'echo slave-24c02 0x1064 > /sys/bus/i2c/devices/i2c-3/new_device',
+>                'i2c i2c-3: new_device: Instantiated device slave-24c02 at 0x64');
+>           exec_command(self, 'i2cset -y 3 0x42 0x64 0x00 0xaa i');
 
-On Thu, Sep 5, 2024 at 1:22=E2=80=AFPM Hendrik Wuethrich <whendrik@google.c=
-om> wrote:
-> diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-> index 4688d140c2..a5c4e3c463 100644
-> --- a/target/i386/cpu.c
-> +++ b/target/i386/cpu.c
-> @@ -42,6 +42,7 @@
->  #include "hw/boards.h"
->  #include "hw/i386/sgx-epc.h"
->  #endif
-> +#include "hw/i386/rdt.h"
->
->  #include "disas/capstone.h"
->  #include "cpu-internal.h"
-> @@ -6629,6 +6630,68 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t inde=
-x, uint32_t count,
->          assert(!(*eax & ~0x1f));
->          *ebx &=3D 0xffff; /* The count doesn't need to be reliable. */
->          break;
-> +#ifndef CONFIG_USER_ONLY
-> +    case 0xF:
-> +        /* Shared Resource Monitoring Enumeration Leaf */
-> +        *eax =3D 0;
-> +        *ebx =3D 0;
-> +        *ecx =3D 0;
-> +        *edx =3D 0;
-> +        if (!(env->features[FEAT_7_0_EBX] & CPUID_7_0_EBX_PQM))
-> +            break;
-> +        assert(cpu->rdt);
+Could we please wait for the shell prompt here now? i.e.:
 
-If I just add the command line from the cover-letter: "-cpu
-Skylake-Server,+l3-cmt,+rdt-m,+rdt-a,+mba", this assertion fires. I
-needed to add "-device rdt" to the command-line as well.
+          exec_command_and_wait_for_pattern(self,
+              'i2cset -y 3 0x42 0x64 0x00 0xaa i', '#')
 
-Would it be friendlier to warn the user that there's no rdt device and brea=
-k?
+or something similar?
 
-Thanks!
--Peter
+With such a fix included:
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+
+
+> -        time.sleep(0.1)
+>           exec_command_and_wait_for_pattern(self,
+>                'hexdump /sys/bus/i2c/devices/3-1064/slave-eeprom',
+>                '0000000 ffaa ffff ffff ffff ffff ffff ffff ffff');
+
 
