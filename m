@@ -2,71 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 073FD9C5EC4
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Nov 2024 18:22:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 52FDB9C5EBD
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Nov 2024 18:21:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tAuZG-0003GP-DG; Tue, 12 Nov 2024 12:20:42 -0500
+	id 1tAuZJ-0003Gj-Lw; Tue, 12 Nov 2024 12:20:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tAuZB-0003FU-E9
- for qemu-devel@nongnu.org; Tue, 12 Nov 2024 12:20:37 -0500
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tAuZF-0003GM-Ce
+ for qemu-devel@nongnu.org; Tue, 12 Nov 2024 12:20:41 -0500
 Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tAuZ7-0003hb-Kv
- for qemu-devel@nongnu.org; Tue, 12 Nov 2024 12:20:35 -0500
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tAuZD-0003iJ-O5
+ for qemu-devel@nongnu.org; Tue, 12 Nov 2024 12:20:41 -0500
 Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-4319399a411so56459555e9.2
- for <qemu-devel@nongnu.org>; Tue, 12 Nov 2024 09:20:32 -0800 (PST)
+ 5b1f17b1804b1-43155abaf0bso52733535e9.0
+ for <qemu-devel@nongnu.org>; Tue, 12 Nov 2024 09:20:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1731432031; x=1732036831; darn=nongnu.org;
+ d=linaro.org; s=google; t=1731432037; x=1732036837; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=YFVkGXPUlThiD5pzlhxgmCFBmWmFouX3sMfYVHk+NQc=;
- b=TWrdGYjVHt+0MouA8p2tEn+S7Byl6Ey6KJELQYfGM4aoE1whUvyGEA2o0233hTX6w8
- NVdc8Kok+WlkTk11UQ/GUi6tkQwgEMRS3gRF83b+jr5oXmMTmM1T+QsBNdWehkL6v+5a
- Db576SzlQ/wcvJoGpELurR4HM/sa3ciXe80JfxqfoOVQglA1DGmlEUNOOsW6vX1GWxU3
- wBlLRAYsIqvKz0FRnoDoy/Dr4gKbbfdzBdSZgcZuFIImOVD6Q99stA+ayoTkMhjbsrZe
- SlxFObE4p2FfRDiwGl7PZBsiJRg++xmD6a5Xz4uOybuoP3KKAaNS6qSqNA8Kd1563qVc
- M/pA==
+ bh=3OZAjdiF+IZHqejHSQfF1+0YI+1SBj9mTB6uv3MpehI=;
+ b=KdGjJjxmjOMdsUqSqbrEYVIJh5dsTRs5vyh+xzubv66q4aP6pIZ8zqYuAAHUSl8d8g
+ rF32jNObZVRbY5eWHfdz/k9jQtxMidRnHbALPBRdWoZUcSP+Iv4AcIvKWqaKsqLS8vwW
+ fPzd8v7RHO6WjwS0yxsby7N6i5IRCifXA+YWPY9tzAbCKK4Ocl9Me9hJY5MX+KQNXd15
+ THeAkYN8NNAJjWSmRDA3/RiZehgQV9WqBSZ3AT4mNvUo7mQK8bt9gHYIVzwohrvCPUp3
+ SzY+FE/KOXItPp2Ljwb7Q1yoChPZfj5+jXoIbJOHMngtJRvCLvcnIznUU4APp5GZG7n0
+ npjw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731432031; x=1732036831;
+ d=1e100.net; s=20230601; t=1731432037; x=1732036837;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=YFVkGXPUlThiD5pzlhxgmCFBmWmFouX3sMfYVHk+NQc=;
- b=XzVwzGE5aSazpavlbeRwE8jrvDEA05z8LeccoR0/OEC+OJvi48/Ejba2SNW21xi9xV
- eQq9maftwsGpjH/tcupDrVbdZDHe7aChuxC3S+8j/R5zVVL79EfHvZTggRDAyYmz2UVv
- Y0hIPsPKGedQHYl7LqpScjNkRHOaDtd4qa/aP8Yn1HUV3HoKvE1n5Dz6/7XHxH/VzfnF
- BellJW9enuTyAJkeL1GicHQz1JfsgMyQ8B2bzHpaqm2c9umDt+iYPOTnXMMyWjzBlHuY
- 1sTVR5Xe3S1xH0ygpLTjwbhR5+raVlAdKNvPjpVMCqt6cYNdZOwieeKFYERnEoN9IblA
- 6Vog==
-X-Gm-Message-State: AOJu0Ywjrn9OwSpgN1sMEyWaxhxwsFXfpQmvWVwQDBZN4Qrk2Plpp5RK
- KACmyTxMz41rRHUeNtbTabP7ZPYvqzjfQpgKssjv4DfJA69wlYut1qSHHzpEIV9ftxGiRT8gpXt
- Z
-X-Google-Smtp-Source: AGHT+IGS510vuWmuTuxYsaoiRAsWd3JOclltR5V0xdf/hjUkVF0OLTNEtRRnDQCQRAyD2KKEhuYgGg==
-X-Received: by 2002:a5d:64c9:0:b0:37d:890c:63e4 with SMTP id
- ffacd0b85a97d-381f188c859mr14729106f8f.55.1731432030947; 
- Tue, 12 Nov 2024 09:20:30 -0800 (PST)
+ bh=3OZAjdiF+IZHqejHSQfF1+0YI+1SBj9mTB6uv3MpehI=;
+ b=N3Oms3+5j0UfAMUA0LBHSMB8Px+9VhCgNxb5v7NRxeFIW0Sh+ZawTD4ncazGLoMZbn
+ j6fn6ZbMzWGNGyw1Vz/3DAURuHuqNdugXRUYHyshi2vZXyddYOMOoeUC2iOve8+FPZep
+ 8gu3yakTPZeQQjCGVzlk+YtAdh7B+WCC5tB55jN43g4GVTvSuAqO4AXup7XWd/ECXWsJ
+ yXNi1uHNSZjkc/QfE2rbpQ/jXKdxwMYnLnZ86uPoLeTv8pQnWEsqqrysJoZmLYavswn0
+ AyUE5krpXIHVdcolxqeRkd2v+b1upo4S80Thdna1pgnZGChUa3fOEkSoZdpMse31ru9r
+ NPjg==
+X-Gm-Message-State: AOJu0Yz4J4kyfdytsaki6gujxX13Qq/J+mwS695vnXAcyEGk9GYnPzJV
+ OSKNl40fMzzqkBAhtVUzVmV3/9zGAs9/Wsy5vta5qdidTIdvpOEEPh/0LMeMo/ezMIA7oix0UGD
+ F
+X-Google-Smtp-Source: AGHT+IHgl+OT9L+nCpF+45zQQHAurKifqjAJCfo7/IsXMKkNglsxc2ksija2GvbvwngYnjkcEf0i0w==
+X-Received: by 2002:a05:600c:1d0e:b0:42d:a024:d6bb with SMTP id
+ 5b1f17b1804b1-432b7517ac2mr134836165e9.20.1731432036668; 
+ Tue, 12 Nov 2024 09:20:36 -0800 (PST)
 Received: from localhost.localdomain
  (cnf78-h01-176-184-27-250.dsl.sta.abo.bbox.fr. [176.184.27.250])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-432aa6bee9asm259559555e9.19.2024.11.12.09.20.29
+ 5b1f17b1804b1-432b05c0d33sm220339195e9.27.2024.11.12.09.20.35
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 12 Nov 2024 09:20:29 -0800 (PST)
+ Tue, 12 Nov 2024 09:20:36 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Aleksandar Rikalo <arikalo@gmail.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Jiaxun Yang <jiaxun.yang@flygoat.com>,
  Aurelien Jarno <aurelien@aurel32.net>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <f4bug@amsat.org>
-Subject: [PATCH v2 1/6] target/mips: Introduce decode tree bindings for
- microMIPS ISA
-Date: Tue, 12 Nov 2024 18:20:17 +0100
-Message-ID: <20241112172022.88348-2-philmd@linaro.org>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <f4bug@amsat.org>,
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: [PATCH v2 2/6] target/mips: Introduce decode tree bindings for
+ nanoMIPS ISA
+Date: Tue, 12 Nov 2024 18:20:18 +0100
+Message-ID: <20241112172022.88348-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241112172022.88348-1-philmd@linaro.org>
 References: <20241112172022.88348-1-philmd@linaro.org>
@@ -99,73 +100,74 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <f4bug@amsat.org>
 
-Introduce the microMIPS decodetree configs for the 16-bit
+Introduce the nanoMIPS decodetree configs for the 16-bit
 and 32-bit instructions.
 
+Signed-off-by: Philippe Mathieu-Daudé <f4bug@amsat.org>
+Reviewed-by: Aleksandar Rikalo <arikalo@gmail.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/mips/tcg/translate.h               |  2 ++
- target/mips/tcg/micromips16.decode        |  9 +++++++++
- target/mips/tcg/micromips32.decode        |  9 +++++++++
- target/mips/tcg/micromips_translate.c     | 14 ++++++++++++++
- target/mips/tcg/micromips_translate.c.inc |  6 ++++++
- target/mips/tcg/meson.build               |  3 +++
- 6 files changed, 43 insertions(+)
- create mode 100644 target/mips/tcg/micromips16.decode
- create mode 100644 target/mips/tcg/micromips32.decode
- create mode 100644 target/mips/tcg/micromips_translate.c
+ target/mips/tcg/translate.h              |  2 ++
+ target/mips/tcg/nanomips16.decode        |  8 ++++++++
+ target/mips/tcg/nanomips32.decode        |  8 ++++++++
+ target/mips/tcg/nanomips_translate.c     | 14 ++++++++++++++
+ target/mips/tcg/nanomips_translate.c.inc |  7 +++++++
+ target/mips/tcg/meson.build              |  3 +++
+ 6 files changed, 42 insertions(+)
+ create mode 100644 target/mips/tcg/nanomips16.decode
+ create mode 100644 target/mips/tcg/nanomips32.decode
+ create mode 100644 target/mips/tcg/nanomips_translate.c
 
 diff --git a/target/mips/tcg/translate.h b/target/mips/tcg/translate.h
-index a65ab4a747..816453f2be 100644
+index 816453f2be..a91c003f96 100644
 --- a/target/mips/tcg/translate.h
 +++ b/target/mips/tcg/translate.h
-@@ -222,6 +222,8 @@ bool decode_ase_mxu(DisasContext *ctx, uint32_t insn);
- bool decode_64bit_enabled(DisasContext *ctx);
- 
+@@ -224,6 +224,8 @@ bool decode_64bit_enabled(DisasContext *ctx);
  /* decodetree generated */
-+bool decode_isa_micromips16(DisasContext *ctx, uint16_t insn);
-+bool decode_isa_micromips32(DisasContext *ctx, uint32_t insn);
+ bool decode_isa_micromips16(DisasContext *ctx, uint16_t insn);
+ bool decode_isa_micromips32(DisasContext *ctx, uint32_t insn);
++bool decode_isa_nanomips16(DisasContext *ctx, uint16_t insn);
++bool decode_isa_nanomips32(DisasContext *ctx, uint32_t insn);
  bool decode_isa_rel6(DisasContext *ctx, uint32_t insn);
  bool decode_ase_msa(DisasContext *ctx, uint32_t insn);
  bool decode_ext_txx9(DisasContext *ctx, uint32_t insn);
-diff --git a/target/mips/tcg/micromips16.decode b/target/mips/tcg/micromips16.decode
+diff --git a/target/mips/tcg/nanomips16.decode b/target/mips/tcg/nanomips16.decode
 new file mode 100644
-index 0000000000..207e9c69f9
+index 0000000000..81fdc68e98
 --- /dev/null
-+++ b/target/mips/tcg/micromips16.decode
-@@ -0,0 +1,9 @@
-+# microMIPS32 16-bit instruction set extensions
++++ b/target/mips/tcg/nanomips16.decode
+@@ -0,0 +1,8 @@
++# nanoMIPS32 16-bit instruction set extensions
 +#
 +# Copyright (C) 2021  Philippe Mathieu-Daudé
 +#
 +# SPDX-License-Identifier: LGPL-2.1-or-later
 +#
-+# Reference: MIPS Architecture for Programmers, Volume II-B
-+#            microMIPS32 Instruction Set
-+#            (Document Number: MD00582)
-diff --git a/target/mips/tcg/micromips32.decode b/target/mips/tcg/micromips32.decode
++# Reference: nanoMIPS32 Instruction Set Technical Reference Manual
++#            (Document Number: MD01247)
+diff --git a/target/mips/tcg/nanomips32.decode b/target/mips/tcg/nanomips32.decode
 new file mode 100644
-index 0000000000..c115ed2eab
+index 0000000000..9cecf1e13d
 --- /dev/null
-+++ b/target/mips/tcg/micromips32.decode
-@@ -0,0 +1,9 @@
-+# microMIPS32 32-bit instruction set extensions
++++ b/target/mips/tcg/nanomips32.decode
+@@ -0,0 +1,8 @@
++# nanoMIPS32 32-bit instruction set extensions
 +#
 +# Copyright (C) 2021  Philippe Mathieu-Daudé
 +#
 +# SPDX-License-Identifier: LGPL-2.1-or-later
 +#
-+# Reference: MIPS Architecture for Programmers, Volume II-B
-+#            microMIPS32 Instruction Set
-+#            (Document Number: MD00582)
-diff --git a/target/mips/tcg/micromips_translate.c b/target/mips/tcg/micromips_translate.c
++# Reference: nanoMIPS32 Instruction Set Technical Reference Manual
++#            (Document Number: MD01247)
+diff --git a/target/mips/tcg/nanomips_translate.c b/target/mips/tcg/nanomips_translate.c
 new file mode 100644
-index 0000000000..49e90e7eca
+index 0000000000..c148c13ed9
 --- /dev/null
-+++ b/target/mips/tcg/micromips_translate.c
++++ b/target/mips/tcg/nanomips_translate.c
 @@ -0,0 +1,14 @@
 +/*
-+ * MIPS emulation for QEMU - microMIPS translation routines
++ * MIPS emulation for QEMU - nanoMIPS translation routines
 + *
 + * Copyright (c) 2021 Philippe Mathieu-Daudé <f4bug@amsat.org>
 + *
@@ -176,51 +178,47 @@ index 0000000000..49e90e7eca
 +#include "translate.h"
 +
 +/* Include the auto-generated decoders.  */
-+#include "decode-micromips16.c.inc"
-+#include "decode-micromips32.c.inc"
-diff --git a/target/mips/tcg/micromips_translate.c.inc b/target/mips/tcg/micromips_translate.c.inc
-index c479bec108..f504e15fa7 100644
---- a/target/mips/tcg/micromips_translate.c.inc
-+++ b/target/mips/tcg/micromips_translate.c.inc
-@@ -3000,6 +3000,9 @@ static int decode_isa_micromips(CPUMIPSState *env, DisasContext *ctx)
-                 gen_reserved_instruction(ctx);
-                 return 2;
-             }
-+            if (decode_isa_micromips32(ctx, ctx->opcode)) {
-+                return 4;
-+            }
-             break;
-         case 1:
-         /* POOL16A, POOL16B, POOL16C, LWGP16, POOL16F */
-@@ -3011,6 +3014,9 @@ static int decode_isa_micromips(CPUMIPSState *env, DisasContext *ctx)
-                 gen_reserved_instruction(ctx);
-                 return 2;
-             }
-+            if (decode_isa_micromips16(ctx, ctx->opcode)) {
-+                return 2;
-+            }
-             break;
-         }
++#include "decode-nanomips16.c.inc"
++#include "decode-nanomips32.c.inc"
+diff --git a/target/mips/tcg/nanomips_translate.c.inc b/target/mips/tcg/nanomips_translate.c.inc
+index 1e274143bb..e401b92bfd 100644
+--- a/target/mips/tcg/nanomips_translate.c.inc
++++ b/target/mips/tcg/nanomips_translate.c.inc
+@@ -4482,6 +4482,13 @@ static int decode_isa_nanomips(CPUMIPSState *env, DisasContext *ctx)
+         return 2;
      }
+ 
++    if (decode_isa_nanomips16(ctx, ctx->opcode)) {
++        return 2;
++    }
++    if (decode_isa_nanomips32(ctx, ctx->opcode)) {
++        return 4;
++    }
++
+     op = extract32(ctx->opcode, 10, 6);
+     switch (op) {
+     case NM_P16_MV:
 diff --git a/target/mips/tcg/meson.build b/target/mips/tcg/meson.build
-index 7b18e6c4c8..5db5681eb1 100644
+index 5db5681eb1..f815174ed1 100644
 --- a/target/mips/tcg/meson.build
 +++ b/target/mips/tcg/meson.build
-@@ -1,4 +1,6 @@
- gen = [
-+  decodetree.process('micromips16.decode', extra_args: ['--decode=decode_isa_micromips16', '--insnwidth=16']),
-+  decodetree.process('micromips32.decode', extra_args: ['--decode=decode_isa_micromips32']),
+@@ -2,6 +2,8 @@ gen = [
+   decodetree.process('micromips16.decode', extra_args: ['--decode=decode_isa_micromips16', '--insnwidth=16']),
+   decodetree.process('micromips32.decode', extra_args: ['--decode=decode_isa_micromips32']),
    decodetree.process('rel6.decode', extra_args: ['--decode=decode_isa_rel6']),
++  decodetree.process('nanomips16.decode', extra_args: ['--decode=decode_isa_nanomips16', '--insnwidth=16']),
++  decodetree.process('nanomips32.decode', extra_args: ['--decode=decode_isa_nanomips32']),
    decodetree.process('msa.decode', extra_args: '--decode=decode_ase_msa'),
    decodetree.process('tx79.decode', extra_args: '--static-decode=decode_tx79'),
-@@ -16,6 +18,7 @@ mips_ss.add(files(
-   'fpu_helper.c',
-   'ldst_helper.c',
-   'lmmi_helper.c',
-+  'micromips_translate.c',
+   decodetree.process('vr54xx.decode', extra_args: '--decode=decode_ext_vr54xx'),
+@@ -21,6 +23,7 @@ mips_ss.add(files(
+   'micromips_translate.c',
    'msa_helper.c',
    'msa_translate.c',
++  'nanomips_translate.c',
    'op_helper.c',
+   'rel6_translate.c',
+   'translate.c',
 -- 
 2.45.2
 
