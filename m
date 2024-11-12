@@ -2,142 +2,133 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB5029C52CE
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Nov 2024 11:10:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 961B09C5326
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Nov 2024 11:23:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tAnqr-0002e6-8Z; Tue, 12 Nov 2024 05:10:25 -0500
+	id 1tAo3D-0007Xa-9Y; Tue, 12 Nov 2024 05:23:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1tAnqd-0002Ta-9O
- for qemu-devel@nongnu.org; Tue, 12 Nov 2024 05:10:12 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <junjie.mao@hotmail.com>)
+ id 1tAo3B-0007X0-4D; Tue, 12 Nov 2024 05:23:09 -0500
+Received: from mail-me3aus01olkn20802.outbound.protection.outlook.com
+ ([2a01:111:f403:2818::802]
+ helo=AUS01-ME3-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1tAnqa-00080f-LA
- for qemu-devel@nongnu.org; Tue, 12 Nov 2024 05:10:09 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1731406207;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=uOlPu1uR6BMshuRA9RSTlabpnlI4Be5pGvXZI+eqNMc=;
- b=dYmXzIwgJ5hBpilca+5SZTdt5RE6wddYccSafNoL8Ui20J2K8sf8jw1xaZ4aAhDPa5J+Qa
- jwtJOfIXVX0+DQH1cbVfKbNAYdfBPY2e5d2pc+lcW11EaXYIVDfE+ZGWFllklJfOGxT/u9
- wuRqubfUwgEvbhF11KAQ73BugDx1PQs=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-119-TlcsG1nOOAebNSBL2PlfDQ-1; Tue, 12 Nov 2024 05:10:06 -0500
-X-MC-Unique: TlcsG1nOOAebNSBL2PlfDQ-1
-X-Mimecast-MFC-AGG-ID: TlcsG1nOOAebNSBL2PlfDQ
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-4315af466d9so38978565e9.3
- for <qemu-devel@nongnu.org>; Tue, 12 Nov 2024 02:10:06 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731406205; x=1732011005;
- h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
- :content-language:references:cc:to:subject:user-agent:mime-version
- :date:message-id:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=uOlPu1uR6BMshuRA9RSTlabpnlI4Be5pGvXZI+eqNMc=;
- b=DBY+6PgKsux1gT+bgrbKIYCAuE0GD0xiTQSe9JxAUbBviXPR7s1JycgQtIYsWe+i6c
- rOFX7kZqophRL1jqTr5hUYxcBR/Ojwek2CJT2bq9NEszrwwcOygZwXey9i4uaeWX/ovo
- aygPnjsXjgxC7YvUo84swYL+To5VSwK5K1hhMZV+UYwsrkr57WOf3ZFBtm0lPYxkuRyv
- Z87qkZVT6S5C5NWGQp5t9zU1uBMYKVEZWFeJXBhS+Ju/5hiqTA0tB7eoMgq/lq2+YOAX
- NMp34HSVH+LgWYZDrmshENmkorrqi4I6koKqtT2HK/TGUoUiSkI8DgFrl6jfNPFEao8b
- ax3g==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWmcC/b43qGaAI2P0gJUXJela1PqZU0zLbv9rEkNy9+WnMUaSd7MfiHoKRoBUCj8O2t/pkF9n3lXRMS@nongnu.org
-X-Gm-Message-State: AOJu0YyAyb6m1KI1aPf/j/u++47y5qUq7a56hj1keG0Sm5Eq/rCcRYCT
- HQZWamER8UDGO4xwijLDomgzf5OrjkSdwK1JU8KvKNgAj8/ATxDXJqiBqpCQg9MGQyo4eLljr3M
- OkDl+NkqwJaN1ZSSIgkGFiaxaX6cAXKkRjVcXvOddwFmpgoDyGQEQ
-X-Received: by 2002:a05:600c:1d0e:b0:42d:a024:d6bb with SMTP id
- 5b1f17b1804b1-432b7517ac2mr122455495e9.20.1731406205290; 
- Tue, 12 Nov 2024 02:10:05 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHxdmTb31TatCbDSNeLhpnsI96z0E/vN5VxwfcJwlq0AnEbFsjPMIWkgscdLbQvG6wJgvyQsA==
-X-Received: by 2002:a05:600c:1d0e:b0:42d:a024:d6bb with SMTP id
- 5b1f17b1804b1-432b7517ac2mr122455335e9.20.1731406204980; 
- Tue, 12 Nov 2024 02:10:04 -0800 (PST)
-Received: from ?IPV6:2003:cb:c739:8e00:7a46:1b8c:8b13:d3d?
- (p200300cbc7398e007a461b8c8b130d3d.dip0.t-ipconnect.de.
- [2003:cb:c739:8e00:7a46:1b8c:8b13:d3d])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-432aa523a0esm235788255e9.0.2024.11.12.02.10.03
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 12 Nov 2024 02:10:03 -0800 (PST)
-Message-ID: <b9b795a0-487c-4750-b4ed-31c79770c8cb@redhat.com>
-Date: Tue, 12 Nov 2024 11:10:02 +0100
+ (Exim 4.90_1) (envelope-from <junjie.mao@hotmail.com>)
+ id 1tAo36-0000lY-Rv; Tue, 12 Nov 2024 05:23:08 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Ut/qFpjP/Qa2aftupF92dJgvsh10FnoXKEPSo/hg98hD55mRLsl5brYPRzetRD9BS5mGsKX9VxD/aNQGvgkMqerKcH18OvsI47zhsHGRy4uHoMviQwSccRyQZxRYXBRrjo/aaGmD2j0c6bm7trZOoqYpcHNmNntQewXMEAiUrdrJlALlCLNwkhk8urk0Bd3ohE/ivCg1yO/5hvi8Oml8vRLg5dsyug74iDdRmtwMK9q3A4Qvpfh1XUYGy/d6goDPgsSCop4tQARq9oyzo0W7roxCPVHe41qQLfzNdvmekb+MWHaE0NYG3gEFwx7+fKQ6V2QV1PUF2EOJlV+DNYvz6Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=tYgZcX8h4j/blbkmwVXrEetZdfWwceejxvyWAK7ASj8=;
+ b=jw5vDI3/YIIJ5Ndfqx31DRsyM9qbvJiTetg4csNRCyp2vg8HZEVUQG46zDL1mQ5izjzyPj+n4vrYGJGid/p8Vc+0QaQ1bhnxGvao1AENBYyXfQfp3PIJvGMeioYWOUlhhTBRoyNoYnw3ThsBej2T7bBLyco7aNgPdSUW0GpRzVeidJZg/olX+nRI/lJyO1j85pFfaiyrAWOoiT/o+FEfPZsN47WfNT/livtFNW5RCWQd9xiOEBWWmWcuo53KWGyeUy0sY3Jsx0V24Xemr5HU+ASx+e06rbpbdLMVbqderThgns2yeXLXtSiuhhzpcUJZHHlXk7v4bVISCIsg0f0Vkw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hotmail.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=tYgZcX8h4j/blbkmwVXrEetZdfWwceejxvyWAK7ASj8=;
+ b=HdThIat/av9KkDIs3VzKprayMI5m+O0qJONgn/+8XSwa+jk63WpdxVrD6nu1vnRGzb8kKCzoS17G4GqpZ3cbjK1ezaQKSkyDT6KJMew6+pyT42BlthNqvj9QiWvY2qWmt0+GEL4Qm5oRwaFuFtIhIjMPiZ3oDb+KXnyBUWnrxg6T+RZbpFt1baLFBb46dfHI/78+52mOuqq3cSzjnuy088wmd1fwLBjcUp0UUWCeOJ9ZbPLOmBsrxee+y4vaZ8T07IqyS2W6wP18H/zftqJK6EHTKh6t0AyYYjQDokXCKtWSuXiDKS/uJK3yqTIU5z6CM/3h0eHZfByRRE1TVWVF6w==
+Received: from SY0P300MB1026.AUSP300.PROD.OUTLOOK.COM (2603:10c6:10:282::22)
+ by SY0P300MB0626.AUSP300.PROD.OUTLOOK.COM (2603:10c6:10:286::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8137.29; Tue, 12 Nov
+ 2024 10:22:59 +0000
+Received: from SY0P300MB1026.AUSP300.PROD.OUTLOOK.COM
+ ([fe80::aea3:2365:f9e8:5bd]) by SY0P300MB1026.AUSP300.PROD.OUTLOOK.COM
+ ([fe80::aea3:2365:f9e8:5bd%2]) with mapi id 15.20.8137.027; Tue, 12 Nov 2024
+ 10:22:59 +0000
+References: <20241108180139.117112-1-pbonzini@redhat.com>
+ <20241108180139.117112-2-pbonzini@redhat.com>
+ <SY0P300MB102699E99096F482F06296EF95592@SY0P300MB1026.AUSP300.PROD.OUTLOOK.COM>
+ <CABgObfb9ujpoRrNUUqyiAefSfTOWSV-SGmo2YrSoMdfxBeAD9A@mail.gmail.com>
+User-agent: mu4e 1.6.10; emacs 27.1
+From: Junjie Mao <junjie.mao@hotmail.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel <qemu-devel@nongnu.org>, Emmanouil Pitsidianakis
+ <manos.pitsidianakis@linaro.org>, "Wolf, Kevin" <kwolf@redhat.com>, Zhao
+ Liu <zhao1.liu@intel.com>, qemu-rust@nongnu.org
+Subject: Re: [RFC PATCH 01/11] rust: qemu_api: do not disable lints outside
+ bindgen-generated code
+Date: Tue, 12 Nov 2024 18:10:47 +0800
+In-reply-to: <CABgObfb9ujpoRrNUUqyiAefSfTOWSV-SGmo2YrSoMdfxBeAD9A@mail.gmail.com>
+Message-ID: <SY0P300MB10263A5B33FAAEDCB04CDCD295592@SY0P300MB1026.AUSP300.PROD.OUTLOOK.COM>
+Content-Type: text/plain
+X-ClientProxiedBy: SI2P153CA0022.APCP153.PROD.OUTLOOK.COM (2603:1096:4:190::8)
+ To SY0P300MB1026.AUSP300.PROD.OUTLOOK.COM
+ (2603:10c6:10:282::22)
+X-Microsoft-Original-Message-ID: <87bjykkayw.fsf@hotmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 1/2] virtio-balloon: Enable free page hinting during
- PRECOPY_NOTIFY_SETUP
-To: Hyman Huang <yong.huang@smartx.com>, qemu-devel@nongnu.org
-Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
- Wei Wang <wei.w.wang@intel.com>, "Michael S . Tsirkin" <mst@redhat.com>
-References: <cover.1731128180.git.yong.huang@smartx.com>
- <c799b1f96e55c5eb9c07e5a70a51b8ba67e7bcc9.1731128180.git.yong.huang@smartx.com>
-Content-Language: en-US
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- WNyWQQ==
-Organization: Red Hat
-In-Reply-To: <c799b1f96e55c5eb9c07e5a70a51b8ba67e7bcc9.1731128180.git.yong.huang@smartx.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=david@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -28
-X-Spam_score: -2.9
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SY0P300MB1026:EE_|SY0P300MB0626:EE_
+X-MS-Office365-Filtering-Correlation-Id: c7882577-7fc0-4703-903f-08dd0303faf7
+X-Microsoft-Antispam: BCL:0;
+ ARA:14566002|461199028|19110799003|15080799006|8060799006|5072599009|7092599003|10035399004|440099028|3412199025|4302099013|1602099012;
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?WZDiAGUKkMiidbOAu8zo7EJ/MJ/q2htKzY2F+Zi0UBspWgMN6ggxr+xhpUWU?=
+ =?us-ascii?Q?p9AyphCiKKOYjLhsCjsz7PFswBPkQ7cWpT7V95na9FOyqdHlR+0sdicrE717?=
+ =?us-ascii?Q?PYuvsXfATyxwtsFbF4nzxgZWvGouKo8B3AzT99cy5PYaBDgc9To0s0MYdCSI?=
+ =?us-ascii?Q?jEoW+f34XZhSktojHbG+BMJw+IdnxsbiWQ2M5Gq89NXxfZU2Gws1r6UOsUpV?=
+ =?us-ascii?Q?OEWiRxsyIUHhNro51S0nvAo4jcUJj642ZCfPXbdiHCYrH7/EabvKH819zNxK?=
+ =?us-ascii?Q?F4QKmMZS5o7CLmnZkgK1wdw0Z3X7E5VAUCTeN6YORcs3Ruwy60dUHYTNlDA5?=
+ =?us-ascii?Q?ppZUsdGnEj2iAKke41hv/EBKzakfHduLuW0l2pay1Jb7WHeW8KwIuh8bK89p?=
+ =?us-ascii?Q?9WE9YAqz6YgSTlWZpl9Y81i4Wnt/A+I5SQGcr38nomdzHcmLafj6R8t2KHS/?=
+ =?us-ascii?Q?omUseUYTmpZAMQUlUyGZOpNsdg7V4mEPA63sdzdO7WcGSsGuUmb30EKH3/Nk?=
+ =?us-ascii?Q?Axa2gP0ZJuY0F8UDlqORQsn7ShhCRBlEJfWgB4PaK2mUOmr01PuaLi4wxXVw?=
+ =?us-ascii?Q?ULW50ih77OsF2mNSp1VxrK63hzlzuxKYZwqFZuv8nzCtzNhQSwDEbLkwdiub?=
+ =?us-ascii?Q?o1Ca9zvCWvbwQajcINmieDHTf5dhBoaHqnQLPcc2kMobt4WmJhdGGtZJL1At?=
+ =?us-ascii?Q?G2/VS7YPj4Rkxbldur9WqtzFqvzffm/rGWTTr7MTFkstEdSS28Ead8yUERLP?=
+ =?us-ascii?Q?EDBvprtG/ZMNUqx6AzX+QwKwN1zkRZaaQAY8NQB/cTVVhoi129A5Un0RI9qH?=
+ =?us-ascii?Q?+WD+SbU6Dp8xHm2ApmdlqrKaKY3c3eQfVkGRVbkXjnFXiUdMsjMDzydrFJiC?=
+ =?us-ascii?Q?VM7Bejdoh80mHirpnDkE9mKc75zPX09WfgMFz58K9mIDC0cO1if8wENUzVWN?=
+ =?us-ascii?Q?HlT4Fga/VDdWzc/rFu0Xxh92h0KodIo8m6KoK+iXBMTYefhvPbADA6EthNpf?=
+ =?us-ascii?Q?6cbdOSgLx2dAVRqoRpDgwzOyHesTrJdVDMjpJNQAOdojBTkUOqDi7w+Svqrs?=
+ =?us-ascii?Q?O2xFk7zkfcXxK2ualyiDyjdUK3FmIlkG4jRG8SN8m3Pu7Cp5JdYdO8TeaaUy?=
+ =?us-ascii?Q?URqo5jk66Nol4oENUCmb+MLz6nL2K/vhow=3D=3D?=
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?iAWLEURzeMhuxn+3g2al/M6bf6DiCgM40KLY+Or1rdWc/OEDLjuSyahMVfCw?=
+ =?us-ascii?Q?Pv7FzFthOGbKoqjh7tzx+Kl758XGFLrc+W1t3DPWoOBqjg20XGOiAZK8Lli4?=
+ =?us-ascii?Q?WXNESdxN0nqQ5K5o6NMk1xs3IN2MssZxO+Qt4j+nBGBX/BvMgJI6CwrMngyu?=
+ =?us-ascii?Q?ZJi2ouSYDJTtALhkxUEGOgc0QpcB0o/3UeE3BD5J6prkCchFlUphsWU0TS8p?=
+ =?us-ascii?Q?AnaJi+AdIMFyFIBktqCtcOEJt+G+gCvnXT26khKpjBlLZjN3UKhHVX0su3De?=
+ =?us-ascii?Q?oZUb6LASmvl2yjq4rN9yyNpxttQsyKnqtysLsctARdRUNhUcVCAe8gDXmm1Z?=
+ =?us-ascii?Q?xz+eNbZES1W4cYeExV2qeCwiG8oZRIspm85rwsMdLqow1vFFk+/uNcP3mmhW?=
+ =?us-ascii?Q?D9pxTupFBuqLfxxkUysB8Krr3EMZj9tbGHRaEjUTIQzPjTveDp5x38fJubbS?=
+ =?us-ascii?Q?X8F0Rm7Yp246M7Bj98vcAv4OuVODkRstii3NWVUOwFhsQhBLDzDZfUtl64Ou?=
+ =?us-ascii?Q?bB2t35/TVQ4kO6e96hFCL8sWjiQ+IvdzkijiWyrVXdLtJ+SCVOYR9GA/id+M?=
+ =?us-ascii?Q?Bwxr6yIFhZ/okQB1R2CGg3o0LLcoiEA5hueVmguXNCPTX75XXjsQSq8ysbhc?=
+ =?us-ascii?Q?92OqQaDT41EShycoWN2qiiBBxUU12Tl/nZEUkBGolJF4DfrnaBYexRqGZPwc?=
+ =?us-ascii?Q?g0dFKnitO//69E8xD08ZjoepwlivbhUYKOlPRH8TMl5OglPnVGdCcJuLbwu/?=
+ =?us-ascii?Q?r/740qYJggG+Jq2wcc19vEC2cmWRgnXW1zD/QR2OyoK0gxT+Lq4qUVdtmQnA?=
+ =?us-ascii?Q?dOmsLrn7cAICBaNkPehcTE4QYVtjOtAhTIPsEslfaxjHYaRJOJtIWkaOjKr5?=
+ =?us-ascii?Q?y2RBuP+gsjZU7huefN0S/sVjRBAv4v6J+al+dahol6pgo4MihHi9CCmj2+5z?=
+ =?us-ascii?Q?aYBHfnwA85gvCFXxQjUIFVrHACXUseSiJVDiymzz5HByTLuolj1QUBck4hxY?=
+ =?us-ascii?Q?Nx8X7w0ggBo7P89jXDVnbYFIjW4RSE9fkfyvEeOTrtoyLF/0+yKIyVMo1Zf5?=
+ =?us-ascii?Q?Z1rC92R3j6aAtYqW09GC6KVvjQvD26zD7KO2FsI50psHG9GiWkO+4M3MeLXH?=
+ =?us-ascii?Q?Tir008lrV8Hm9LMT9UPK2GSRVhiZ59pGDE/a2ycNyorCmBHfUI8ga+r03n0b?=
+ =?us-ascii?Q?nd5rhqhewkqJ2KebsNTbGcLrO+q6tKPj7JfhOWoyQfWyg7QZ8ySkdQSF6ro?=
+ =?us-ascii?Q?=3D?=
+X-OriginatorOrg: sct-15-20-7719-20-msonline-outlook-448bf.templateTenant
+X-MS-Exchange-CrossTenant-Network-Message-Id: c7882577-7fc0-4703-903f-08dd0303faf7
+X-MS-Exchange-CrossTenant-AuthSource: SY0P300MB1026.AUSP300.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Nov 2024 10:22:59.0709 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SY0P300MB0626
+Received-SPF: pass client-ip=2a01:111:f403:2818::802;
+ envelope-from=junjie.mao@hotmail.com;
+ helo=AUS01-ME3-obe.outbound.protection.outlook.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.122,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.671,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -153,19 +144,139 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 09.11.24 05:59, Hyman Huang wrote:
-> PRECOPY_NOTIFY_AFTER_BITMAP_SYNC was interpreted by free page hinting
-> optimization as an indication to begin freeing pages. But there's no
-> assurance that a sync is required when beginning a migration. Therefore,
-> during PRECOPY_NOTIFY_SETUP, as well as PRECOPY_NOTIFY_AFTER_BITMAP_SYNC,
-> enable free page hinting.
 
-But what does this change bring us in practice? How was it tested that 
-this makes any difference?
+Paolo Bonzini <pbonzini@redhat.com> writes:
 
--- 
-Cheers,
+> Il mar 12 nov 2024, 03:47 Junjie Mao <junjie.mao@hotmail.com> ha scritto:
+>
+>  I agree that storing generated stuff in the source directory should not
+>  be encouraged.
+>
+>  Just want to mention that such changes can lead to trouble to
+>  rust-analyzer. Today there are two ways to inform rust-analyzer of the
+>  project structure:
+>
+>    1. Use rust/Cargo.toml. In this case we'll hit an issue in
+>    rust-analyzer [1] that prevents it from including sources outside the
+>    crate directory. Thus, definitions in the bindgen-generated code
+>    cannot be found.
+>
+>    2. Use the meson-generated rust-project.json. Due to the use of
+>    structured_sources(), that json file refers to the copied sources of
+>    qemu-api in the build directory. Rust-analyzer can find every symbol
+>    in the qemu-api crate but will jump to those copied files, making it a
+>    bit more annoying when developing the crate.
+>
+> Would it help to move the bindgen-generated code to a completely separate crate (e.g. qemu-api-sys), and avoid structured_sources for qemu-api? It might even help build times.
 
-David / dhildenb
+I just noticed that rust-analyzer is able to include files under
+OUT_DIR. With the following changes, rust-analyzer under meson devenv
+works nicely:
 
+  1. Rust-analyzer refers to rust/qemu-api/src/* unless the definition
+  is in bindings.inc.rs.
+
+  2. No manual copy / symbolic link required, neither bindings.inc.rs
+  nor rust-project.json.
+
+The bindgen-generated file is renamed to bindings.inc.rs only because
+rust-analyzer seems to refuse including a file without the .rs suffix.
+
+That's at the cost of another file copy, though.
+
+--- diff starts here ---
+
+diff --git a/meson.build b/meson.build
+index 1239f5c48c..8cea09ffe1 100644
+--- a/meson.build
++++ b/meson.build
+@@ -4,6 +4,7 @@ project('qemu', ['c'], meson_version: '>=1.5.0',
+         version: files('VERSION'))
+
+ meson.add_devenv({ 'MESON_BUILD_ROOT' : meson.project_build_root() })
++meson.add_devenv({ 'CARGO_TARGET_DIR' : meson.project_build_root() / 'cargo' })
+
+ add_test_setup('quick', exclude_suites: ['slow', 'thorough'], is_default: true)
+ add_test_setup('slow', exclude_suites: ['thorough'], env: ['G_TEST_SLOW=1', 'SPEED=slow'])
+@@ -4083,7 +4084,7 @@ if have_rust
+   bindings_rs = rust.bindgen(
+     input: 'rust/wrapper.h',
+     dependencies: common_ss.all_dependencies(),
+-    output: 'bindings.rs.inc',
++    output: 'bindings.inc.rs',
+     include_directories: include_directories('.', 'include'),
+     bindgen_version: ['>=0.60.0'],
+     args: bindgen_args,
+diff --git a/rust/qemu-api/build.rs b/rust/qemu-api/build.rs
+index d7b6d76828..1de86c721b 100644
+--- a/rust/qemu-api/build.rs
++++ b/rust/qemu-api/build.rs
+@@ -2,17 +2,17 @@
+ // Author(s): Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+ // SPDX-License-Identifier: GPL-2.0-or-later
+
+-use std::{env, path::Path};
++use std::{env, fs::copy, io::Result, path::Path};
+
+ use version_check as rustc;
+
+-fn main() {
++fn main() -> Result<()> {
+     // Placing bindings.rs.inc in the source directory is supported
+     // but not documented or encouraged.
+     let path = env::var("MESON_BUILD_ROOT")
+         .unwrap_or_else(|_| format!("{}/src", env!("CARGO_MANIFEST_DIR")));
+
+-    let file = format!("{}/bindings.rs.inc", path);
++    let file = format!("{}/bindings.inc.rs", path);
+     if !Path::new(&file).exists() {
+         panic!(concat!(
+             "\n",
+@@ -24,7 +24,9 @@ fn main() {
+         ));
+     }
+
+-    println!("cargo:rustc-env=BINDINGS_RS_INC={}", file);
++    let out_dir = env::var("OUT_DIR").unwrap();
++    let dest_path = format!("{}/bindings.inc.rs", out_dir);
++    copy(&file, Path::new(&dest_path))?;
+
+     // Check for available rustc features
+     if rustc::is_min_version("1.77.0").unwrap_or(false) {
+@@ -32,4 +34,6 @@ fn main() {
+     }
+
+     println!("cargo:rerun-if-changed=build.rs");
++
++    Ok(())
+ }
+diff --git a/rust/qemu-api/src/bindings.rs b/rust/qemu-api/src/bindings.rs
+index 972b1f1ee9..8a9b821bb9 100644
+--- a/rust/qemu-api/src/bindings.rs
++++ b/rust/qemu-api/src/bindings.rs
+@@ -16,10 +16,10 @@
+ )]
+
+ #[cfg(MESON)]
+-include!("bindings.rs.inc");
++include!("bindings.inc.rs");
+
+ #[cfg(not(MESON))]
+-include!(env!("BINDINGS_RS_INC"));
++include!(concat!(env!("OUT_DIR"), "/bindings.inc.rs"));
+
+ unsafe impl Send for Property {}
+ unsafe impl Sync for Property {}
+
+--
+Best Regards
+Junjie Mao
+
+>
+> Paolo
+>
+>  We can perhaps leave it as a separate topic for another series.
+>
+>  [1] https://github.com/rust-lang/rust-analyzer/issues/17040
+>
 
