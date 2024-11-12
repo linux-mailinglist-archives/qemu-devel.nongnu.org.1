@@ -2,46 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1530D9C5886
+	by mail.lfdr.de (Postfix) with ESMTPS id 049C89C5884
 	for <lists+qemu-devel@lfdr.de>; Tue, 12 Nov 2024 14:04:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tAqXx-0005Z9-IK; Tue, 12 Nov 2024 08:03:05 -0500
+	id 1tAqY1-0005aP-7b; Tue, 12 Nov 2024 08:03:09 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tAqXv-0005YU-Ha
- for qemu-devel@nongnu.org; Tue, 12 Nov 2024 08:03:03 -0500
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tAqXz-0005Zi-RZ
+ for qemu-devel@nongnu.org; Tue, 12 Nov 2024 08:03:07 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tAqXs-0003bh-Pl
- for qemu-devel@nongnu.org; Tue, 12 Nov 2024 08:03:03 -0500
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tAqXx-0003dY-55
+ for qemu-devel@nongnu.org; Tue, 12 Nov 2024 08:03:06 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1731416579;
+ s=mimecast20190719; t=1731416582;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=DK53IjCHi6Qbc7tXpbI4et1d8ofBb39k/MJbVROcd/s=;
- b=hYfFfWAfggSJjfyjpq6w3LilE/Up5hGB7xHjfv+HcGnTvCbBaure5QSnumhFlLMo+LZCu8
- OLW5Ag4O/NxQiWlCdHEoIZy75jDNQ76D1i5ZnPPlXvZ5yEgMMHtTEFEp/DzoZ9aD7n2sqG
- wYAi5thayUSSaPpa4yKSGMBPyoh8g5w=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=7r9JlPFy+XMoABJs96fi5S295SlSc5Rou8kBzhpJxAw=;
+ b=Trb/QGGtoQPL5b9NkDfSGiEca3/CbqaAso5jXUUnzjYH29EeUpJYr/6bW4zZO3M0NHPl67
+ shlaOImYoJq/UQKFgftTfWkkxg9Q8dnY3JIbe6RZWvPgY9INzT/bw1pM7acA/o/4gFI9Lt
+ 6l5XPVqM9qk/pAltLZxfy3AT0QxsaKg=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-373-3ItCtIKQNdq6VD8HFdYuLg-1; Tue,
- 12 Nov 2024 08:02:56 -0500
-X-MC-Unique: 3ItCtIKQNdq6VD8HFdYuLg-1
-X-Mimecast-MFC-AGG-ID: 3ItCtIKQNdq6VD8HFdYuLg
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-115-yaIZ3q02MqKbzmLK-1qh4Q-1; Tue,
+ 12 Nov 2024 08:02:59 -0500
+X-MC-Unique: yaIZ3q02MqKbzmLK-1qh4Q-1
+X-Mimecast-MFC-AGG-ID: yaIZ3q02MqKbzmLK-1qh4Q
 Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 0A6611955EEA; Tue, 12 Nov 2024 13:02:54 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 97FF91955D44; Tue, 12 Nov 2024 13:02:57 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.39.193.48])
  by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 6024A1955F40; Tue, 12 Nov 2024 13:02:48 +0000 (UTC)
+ id 906FF1956054; Tue, 12 Nov 2024 13:02:54 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org,
 	qemu-arm@nongnu.org
@@ -52,9 +53,11 @@ Cc: Thomas Huth <thuth@redhat.com>, Peter Maydell <peter.maydell@linaro.org>,
  Joel Stanley <joel@jms.id.au>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PATCH v2 0/4] tests/functional: Finish conversion of Aspeed tests
-Date: Tue, 12 Nov 2024 14:02:42 +0100
-Message-ID: <20241112130246.970281-1-clg@redhat.com>
+Subject: [PATCH v2 1/4] tests/functional: Introduce _console_read()
+Date: Tue, 12 Nov 2024 14:02:43 +0100
+Message-ID: <20241112130246.970281-2-clg@redhat.com>
+In-Reply-To: <20241112130246.970281-1-clg@redhat.com>
+References: <20241112130246.970281-1-clg@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -68,7 +71,7 @@ X-Spam_report: (-2.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.122,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.671,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,43 +87,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hello,
+Interaction with the console has been a problem in our avocado
+tests. In some cases, the expected string does not match in the
+output, causing the test to fail with a timeout. These were worked
+around by sleeping before reading the console and even with SSH
+connections in some places.
 
-The first patch is a proposal to fix a long-standing issue when
-capturing the console output. In some cases, the expected string does
-not match in the output, causing the test to fail with a timeout. The
-change introduces a _console_read() routine that processes the console
-output character by character as a possible fix.
+To fix, process the console output char by char and not with
+readline. This routine was largely inspired by console_wait() in
+tests/vm/basevm.py.
 
-Last patches complete the conversion of the Aspeed tests and remove
-the console workarounds.
+Signed-off-by: Cédric Le Goater <clg@redhat.com>
+---
+ tests/functional/qemu_test/cmd.py | 22 ++++++++++++++++++++--
+ 1 file changed, 20 insertions(+), 2 deletions(-)
 
-Thanks,
-
-C.
-
-Changes in v2:
-
- - Redirected all console output in console.log file
- - Added a "found" prefix when an expected string is captured
- - Used a user mode network backend in SDK tests
- - Changed the expected string to "login:" in buildroot tests
+diff --git a/tests/functional/qemu_test/cmd.py b/tests/functional/qemu_test/cmd.py
+index cbabb1ceed3c..5bca29d1d721 100644
+--- a/tests/functional/qemu_test/cmd.py
++++ b/tests/functional/qemu_test/cmd.py
+@@ -12,6 +12,7 @@
+ # later.  See the COPYING file in the top-level directory.
  
-Cédric Le Goater (4):
-  tests/functional: Introduce _console_read()
-  tests/functional: Convert Aspeed aarch64 SDK tests
-  tests/functional: Convert Aspeed arm SDK tests
-  tests/functional: Remove sleep workarounds from Aspeed tests
-
- tests/avocado/machine_aspeed.py         | 202 ------------------------
- tests/functional/meson.build            |   2 +
- tests/functional/qemu_test/cmd.py       |  22 ++-
- tests/functional/test_aarch64_aspeed.py |  97 ++++++++++++
- tests/functional/test_arm_aspeed.py     |  79 ++++++++-
- 5 files changed, 191 insertions(+), 211 deletions(-)
- delete mode 100644 tests/avocado/machine_aspeed.py
- create mode 100644 tests/functional/test_aarch64_aspeed.py
-
+ import logging
++import re
+ import os
+ import os.path
+ import subprocess
+@@ -78,6 +79,23 @@ def run_cmd(args):
+ def is_readable_executable_file(path):
+     return os.path.isfile(path) and os.access(path, os.R_OK | os.X_OK)
+ 
++def _console_read(vm, expect):
++    console_logger = logging.getLogger('console')
++    output = ""
++    while True:
++        data = vm.console_socket.recv(1)
++        if not data:
++            break
++        output += data.decode("latin1")
++        if expect in output:
++            break
++        if "\r" in output or "\n" in output:
++            lines = re.split("[\r\n]", output)
++            if lines[0]:
++                console_logger.debug(lines[0])
++            output = lines.pop()
++    return output
++
+ def _console_interaction(test, success_message, failure_message,
+                          send_string, keep_sending=False, vm=None):
+     assert not keep_sending or send_string
+@@ -98,12 +116,12 @@ def _console_interaction(test, success_message, failure_message,
+             continue
+ 
+         try:
+-            msg = console.readline().decode().strip()
++            msg = _console_read(vm, success_message)
+         except UnicodeDecodeError:
+             msg = None
+         if not msg:
+             continue
+-        console_logger.debug(msg)
++        console_logger.debug('found "%s"', msg)
+         if success_message is None or success_message in msg:
+             break
+         if failure_message and failure_message in msg:
 -- 
 2.47.0
 
