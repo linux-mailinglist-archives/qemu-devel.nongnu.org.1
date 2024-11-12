@@ -2,60 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 733359C5E3F
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Nov 2024 18:06:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EE1A49C5E55
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Nov 2024 18:07:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tAuJf-00045i-Cm; Tue, 12 Nov 2024 12:04:37 -0500
+	id 1tAuKc-00068f-9R; Tue, 12 Nov 2024 12:05:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <groeck7@gmail.com>)
- id 1tAuHh-0003Kg-8r; Tue, 12 Nov 2024 12:02:48 -0500
-Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
+ id 1tAuHj-0003L3-9P; Tue, 12 Nov 2024 12:02:48 -0500
+Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <groeck7@gmail.com>)
- id 1tAuHf-0001Us-Ov; Tue, 12 Nov 2024 12:02:33 -0500
-Received: by mail-pl1-x62e.google.com with SMTP id
- d9443c01a7336-211a4682fcaso15906785ad.2; 
- Tue, 12 Nov 2024 09:02:30 -0800 (PST)
+ id 1tAuHh-0001VI-9P; Tue, 12 Nov 2024 12:02:35 -0500
+Received: by mail-pf1-x431.google.com with SMTP id
+ d2e1a72fcca58-71e49ad46b1so5135967b3a.1; 
+ Tue, 12 Nov 2024 09:02:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1731430949; x=1732035749; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1731430951; x=1732035751; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:sender:from:to:cc:subject:date
  :message-id:reply-to;
- bh=46KVdS+/Hw1rTusRxdJmkbj33EFntnxAICo5vL0yryE=;
- b=SKamliY2Z/SHtUcHtJ54vNfIxmzTdVAC/4nOhO7g1q1PxJgHyrTNw4OhZyFmHBRF7D
- QzESEDIYgQrgw1Zku/kMIAGnYzLlxSkJGLw2w4Eb4oawoEdQ9mbeucw7QOx4wgYhSDhg
- bwLIJkxECsmfsh8RcHbdi9IyuIWEHJzNfZTz2rQIWfXSlwmt3vFPeNfTW7g5OkbGFMw0
- Y4Vb/UAeeZDXrjc/e1nQkRFlNzaBwWaKFr5fbqqBRPe8u0zND1g4hphM9RHmGF03jTrB
- e9kul5tdGIlQZQLVCKY+64QDepRXvFf3inolzWS7p+GprK0PA5cR0FyOisL4QjxUfpC8
- qz1Q==
+ bh=Ov5WN5Qnk9W75jTisVRah+9h5c0nBp5r2UmUapO7Zv8=;
+ b=H0J7wflgmGPTqTF1/Pk/N1kauHtvd53UW3zPNI8XR3ADZ8hrzAekF2YMcmJWrLsBbQ
+ 2BRa6Clj88RGZF0Y5Pl3ZGgYcOoXs8baS4M3r91dN3r/Gz9ecNAIsx5M+ALMEMmqu1JL
+ lehEZyOhoLFxugaQln988KXIRkzh3vcyr29VJ7YI91I5osssUSy3sbjFticlyyn99TVk
+ X98KsSR/OJlaYzIWVToZUPYvCYQo7BZQ1RR+D+aEJNg8psPcgxO/bqb/ANMjvmJDEvOP
+ 6ZaD8S/YTnCcgeuPAz1k0pMArmDIoJFBZkk/lYctQL7vfuzzTxe9PSQrHwzOxQZPqVo1
+ hDYQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731430949; x=1732035749;
+ d=1e100.net; s=20230601; t=1731430951; x=1732035751;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:sender:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=46KVdS+/Hw1rTusRxdJmkbj33EFntnxAICo5vL0yryE=;
- b=CKxUtmNWjQfnKGCIInTfJQ3sfClzK7skTsxVoGrjPZ1CfQ5gDumuBvRnXRMotGzBsr
- Rca6EUZRtR3C5DUjYVG0FQay1eNqJpR/ZcB3pJgI9uge3nhmDz2gIqsEhHFWq+0hkA+P
- Aznz6/NNfybI17lcw8rHg3dAUPZQLM/H4/Iszef0dpIL1SLmFan/8JcaORhxpr8DhG2R
- mr9dyRc7h76vcbLtX6+1acNAu9ZnNhG618qzCTzIBZrtJRTOxRX4nOexg9csfhQLEtXh
- SV3FI5R432RI2aLJlJD91N1M3/sgMKpwX6eXxThVy6wtRSH0VxwU9rnOAQyZsGZtO6/R
- jC2w==
+ bh=Ov5WN5Qnk9W75jTisVRah+9h5c0nBp5r2UmUapO7Zv8=;
+ b=f5g8Do2AzladUbNXX1wvfpADuX0VywQyYkB15HnLd9x+ODnhIhU3r91fRt7tihknmy
+ T6DtlLHtIu3zOCBQZXqUfY/3E8XBP+bVZ7WR9PbBfB4CmsL1/IHDudSavpnAMtlbDc1z
+ cLimCNHPXG2imNZr3/03KqN76ALUcOLt39qpEjXHJFeynj3KK+n1CfN6OIcuG3tpIGqv
+ vWsQNRV6EmkGupQkUEw9cMEzjtfMw+suf64CyWJTxSj8FXmJK/iMBWPvjHQeZnFSjh77
+ sAZ/loRV/hNDb2p/wmVdSj7AxvCHALuV+m5DuErtENGy2kqIEzgvwsdg+Ez4gU+Zcr1P
+ D1og==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXcC7KjkIBH0pEznK5B6myajmicIK9NKd8HwGhmp5PLprYK/Hw9nqsDCEfQGZNpHiv0j1JK6OkD5g==@nongnu.org
-X-Gm-Message-State: AOJu0Yy/E1f/R2j7MCLvNzWl0UabQCN5iAA+dLF9Ho+W2VAgI2ILMtne
- 18dh/mV863a30ux+NL5FySFQ3PZjqKQumxYhqtUpjRXmn1NAPxr51iRmVA==
-X-Google-Smtp-Source: AGHT+IE9eoYQ2NAHlYG9Cnav4fTYVd5p31IH4zKONO59XzhMVlljLu6kBC95Eb4P1aK/0Q2cUPr4rQ==
-X-Received: by 2002:a17:903:11c9:b0:20c:cccd:17a3 with SMTP id
- d9443c01a7336-2118359c11amr235120975ad.46.1731430948985; 
- Tue, 12 Nov 2024 09:02:28 -0800 (PST)
+ AJvYcCXXLM534099l0vsXSWsH+JSMeSMtZyUoPRul115Dwy5CPc06AIV1yLEpXYQqJoy5oh9U8YIcz+Zug==@nongnu.org
+X-Gm-Message-State: AOJu0YwIcSXQslRKk3WbJhYBJn9drmS3n3GpXRSR0S6KY71qjaTfWSIk
+ /EP9WXRhN/OyVN1eOZH0+Vk2WD7byEUDYjP7aRL6O3TWp3ueuvCVdyY1ew==
+X-Google-Smtp-Source: AGHT+IGT5dex+/usLt9UzLvDzIuVJ+WfZBt0gQ5v5XEPjEPtQVv0gvFK16zXPtr18glUWBPrDU4Hhg==
+X-Received: by 2002:a05:6a00:3998:b0:71e:b1dc:f229 with SMTP id
+ d2e1a72fcca58-7241334b18emr23415568b3a.19.1731430950791; 
+ Tue, 12 Nov 2024 09:02:30 -0800 (PST)
 Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-21177cfb0ecsm95635775ad.0.2024.11.12.09.02.28
+ d2e1a72fcca58-72407860a2bsm11821663b3a.21.2024.11.12.09.02.29
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 12 Nov 2024 09:02:28 -0800 (PST)
+ Tue, 12 Nov 2024 09:02:30 -0800 (PST)
 From: Guenter Roeck <linux@roeck-us.net>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
@@ -69,19 +69,17 @@ Cc: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
  =?UTF-8?q?Herv=C3=A9=20Poussineau?= <hpoussin@reactos.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
- qemu-arm@nongnu.org, Guenter Roeck <linux@roeck-us.net>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [RESEND PATCH 08/10] aspeed: Add uhci support for ast2400 and ast2500
-Date: Tue, 12 Nov 2024 09:01:50 -0800
-Message-ID: <20241112170152.217664-9-linux@roeck-us.net>
+ qemu-arm@nongnu.org, Guenter Roeck <linux@roeck-us.net>
+Subject: [RESEND PATCH 09/10] usb-hub: Add support for v2.0 hubs
+Date: Tue, 12 Nov 2024 09:01:51 -0800
+Message-ID: <20241112170152.217664-10-linux@roeck-us.net>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241112170152.217664-1-linux@roeck-us.net>
 References: <20241112170152.217664-1-linux@roeck-us.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
- envelope-from=groeck7@gmail.com; helo=mail-pl1-x62e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
+ envelope-from=groeck7@gmail.com; helo=mail-pf1-x431.google.com
 X-Spam_score_int: -16
 X-Spam_score: -1.7
 X-Spam_bar: -
@@ -105,77 +103,256 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add UHCI support for ast2400 and ast2500 SoCs. With this patch,
-the UHCI port is successfully enabled on the ast2500-evb machine.
+When adding a high speed USB device to the USB hub supported by qemu,
+it is added in full speed mode. Here is an example for a storage device.
 
-Note that the EHCI controller on AST2400 and AST2500 does not support
-companion mode, so the UHCI controller is instantiated as stand-alone
-device and creates an additional USB bus.
+/:  Bus 001.Port 001: Dev 001, Class=root_hub, Driver=platform-uhci/2p, 12M
+    |__ Port 002: Dev 002, If 0, Class=Hub, Driver=hub/8p, 12M
+        |__ Port 001: Dev 003, If 0, Class=Human Interface Device, Driver=usbhid, 12M
+        |__ Port 002: Dev 004, If 0, Class=Human Interface Device, Driver=usbhid, 12M
+        |__ Port 003: Dev 005, If 0, Class=Mass Storage, Driver=usb-storage, 12M
 
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
+This also triggers messages such as
+
+usb 1-2.3: new full-speed USB device number 5 using platform-uhci
+usb 1-2.3: not running at top speed; connect to a high speed hub
+
+when such devices are instantiated in the host (example from Linux).
+
+Add basic support for USB v2.0 hubs to solve the problem. The usb_version
+device parameter configures the USB version; version 1 is default for
+compatibility reasons. Example:
+
+-device usb-hub,bus=usb-bus.1,port=1,usb_version=2
+
+This command line parameter can be used to attach devices to the hub in
+high speed mode, as seen in the following example.
+
+/:  Bus 002.Port 001: Dev 001, Class=root_hub, Driver=ehci-platform/6p, 480M
+    |__ Port 001: Dev 002, If 0, Class=Hub, Driver=hub/8p, 480M
+        |__ Port 002: Dev 004, If 0, Class=Mass Storage, Driver=usb-storage, 480M
+
+and
+
+usb 2-1.2: new high-speed USB device number 4 using ehci-platform
+usb 2-1.2: New USB device found, idVendor=46f4, idProduct=0001, bcdDevice= 0.00
+
+To distinguish v1 from v2 instantiated hubs, the device version is set to
+2.01 (from 1.01) if the hub ist instantiated as USB v2 hub. The product
+name is set to "QEMU USB v2.0 Hub".
+
 Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 ---
 Changes since RFC:
-- Rebased to v9.1.0-1673-g134b443512
-- Added Reviewed-by: tag
-- Added explanation for not using EHCI companion mode
+- New patch
 
- hw/arm/aspeed_ast2400.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ hw/usb/dev-hub.c | 84 +++++++++++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 76 insertions(+), 8 deletions(-)
 
-diff --git a/hw/arm/aspeed_ast2400.c b/hw/arm/aspeed_ast2400.c
-index ecc81ecc79..8a5d21459d 100644
---- a/hw/arm/aspeed_ast2400.c
-+++ b/hw/arm/aspeed_ast2400.c
-@@ -31,6 +31,7 @@ static const hwaddr aspeed_soc_ast2400_memmap[] = {
-     [ASPEED_DEV_FMC]    = 0x1E620000,
-     [ASPEED_DEV_SPI1]   = 0x1E630000,
-     [ASPEED_DEV_EHCI1]  = 0x1E6A1000,
-+    [ASPEED_DEV_UHCI]   = 0x1E6B0000,
-     [ASPEED_DEV_VIC]    = 0x1E6C0000,
-     [ASPEED_DEV_SDMC]   = 0x1E6E0000,
-     [ASPEED_DEV_SCU]    = 0x1E6E2000,
-@@ -68,6 +69,7 @@ static const hwaddr aspeed_soc_ast2500_memmap[] = {
-     [ASPEED_DEV_SPI2]   = 0x1E631000,
-     [ASPEED_DEV_EHCI1]  = 0x1E6A1000,
-     [ASPEED_DEV_EHCI2]  = 0x1E6A3000,
-+    [ASPEED_DEV_UHCI]   = 0x1E6B0000,
-     [ASPEED_DEV_VIC]    = 0x1E6C0000,
-     [ASPEED_DEV_SDMC]   = 0x1E6E0000,
-     [ASPEED_DEV_SCU]    = 0x1E6E2000,
-@@ -107,6 +109,7 @@ static const int aspeed_soc_ast2400_irqmap[] = {
-     [ASPEED_DEV_FMC]    = 19,
-     [ASPEED_DEV_EHCI1]  = 5,
-     [ASPEED_DEV_EHCI2]  = 13,
-+    [ASPEED_DEV_UHCI]   = 14,
-     [ASPEED_DEV_SDMC]   = 0,
-     [ASPEED_DEV_SCU]    = 21,
-     [ASPEED_DEV_ADC]    = 31,
-@@ -199,6 +202,8 @@ static void aspeed_ast2400_soc_init(Object *obj)
-                                 TYPE_PLATFORM_EHCI);
-     }
+diff --git a/hw/usb/dev-hub.c b/hw/usb/dev-hub.c
+index 06e9537d03..4da91d151c 100644
+--- a/hw/usb/dev-hub.c
++++ b/hw/usb/dev-hub.c
+@@ -46,6 +46,7 @@ struct USBHubState {
+     USBDevice dev;
+     USBEndpoint *intr;
+     uint32_t num_ports;
++    uint32_t usb_version;
+     bool port_power;
+     QEMUTimer *port_timer;
+     USBHubPort ports[MAX_PORTS];
+@@ -100,12 +101,14 @@ OBJECT_DECLARE_SIMPLE_TYPE(USBHubState, USB_HUB)
+ enum {
+     STR_MANUFACTURER = 1,
+     STR_PRODUCT,
++    STR_PRODUCT_V2,
+     STR_SERIALNUMBER,
+ };
  
-+    object_initialize_child(obj, "uhci", &s->uhci, TYPE_ASPEED_UHCI);
+ static const USBDescStrings desc_strings = {
+     [STR_MANUFACTURER] = "QEMU",
+     [STR_PRODUCT]      = "QEMU USB Hub",
++    [STR_PRODUCT_V2]   = "QEMU USB v2.0 Hub",
+     [STR_SERIALNUMBER] = "314159",
+ };
+ 
+@@ -123,6 +126,20 @@ static const USBDescIface desc_iface_hub = {
+     }
+ };
+ 
++static const USBDescIface desc_iface_hub_v2 = {
++    .bInterfaceNumber              = 0,
++    .bNumEndpoints                 = 1,
++    .bInterfaceClass               = USB_CLASS_HUB,
++    .eps = (USBDescEndpoint[]) {
++        {
++            .bEndpointAddress      = USB_DIR_IN | 0x01,
++            .bmAttributes          = USB_ENDPOINT_XFER_INT,
++            .wMaxPacketSize        = 512,
++            .bInterval             = 10,
++        },
++    }
++};
 +
-     snprintf(typename, sizeof(typename), "aspeed.sdmc-%s", socname);
-     object_initialize_child(obj, "sdmc", &s->sdmc, typename);
-     object_property_add_alias(obj, "ram-size", OBJECT(&s->sdmc),
-@@ -393,6 +398,15 @@ static void aspeed_ast2400_soc_realize(DeviceState *dev, Error **errp)
-                            aspeed_soc_get_irq(s, ASPEED_DEV_EHCI1 + i));
-     }
+ static const USBDescDevice desc_device_hub = {
+     .bcdUSB                        = 0x0110,
+     .bDeviceClass                  = USB_CLASS_HUB,
+@@ -140,6 +157,23 @@ static const USBDescDevice desc_device_hub = {
+     },
+ };
  
-+    /* UHCI */
-+    if (!sysbus_realize(SYS_BUS_DEVICE(&s->uhci), errp)) {
++static const USBDescDevice desc_device_hub_v2 = {
++    .bcdUSB                        = 0x0200,
++    .bDeviceClass                  = USB_CLASS_HUB,
++    .bMaxPacketSize0               = 64,
++    .bNumConfigurations            = 1,
++    .confs = (USBDescConfig[]) {
++        {
++            .bNumInterfaces        = 1,
++            .bConfigurationValue   = 1,
++            .bmAttributes          = USB_CFG_ATT_ONE | USB_CFG_ATT_SELFPOWER |
++                                     USB_CFG_ATT_WAKEUP,
++            .nif = 1,
++            .ifs = &desc_iface_hub_v2,
++        },
++    },
++};
++
+ static const USBDesc desc_hub = {
+     .id = {
+         .idVendor          = 0x0409,
+@@ -153,6 +187,20 @@ static const USBDesc desc_hub = {
+     .str  = desc_strings,
+ };
+ 
++static const USBDesc desc_hub_v2 = {
++    .id = {
++        .idVendor          = 0x0409,
++        .idProduct         = 0x55aa,
++        .bcdDevice         = 0x0201,
++        .iManufacturer     = STR_MANUFACTURER,
++        .iProduct          = STR_PRODUCT_V2,
++        .iSerialNumber     = STR_SERIALNUMBER,
++    },
++    .full = &desc_device_hub,
++    .high = &desc_device_hub_v2,
++    .str  = desc_strings,
++};
++
+ static const uint8_t qemu_hub_hub_descriptor[] =
+ {
+         0x00,                   /*  u8  bLength; patched in later */
+@@ -195,15 +243,20 @@ static bool usb_hub_port_clear(USBHubPort *port, uint16_t status)
+     return usb_hub_port_change(port, status);
+ }
+ 
+-static bool usb_hub_port_update(USBHubPort *port)
++static bool usb_hub_port_update(USBHubState *s, USBHubPort *port)
+ {
+     bool notify = false;
+ 
+     if (port->port.dev && port->port.dev->attached) {
+         notify = usb_hub_port_set(port, PORT_STAT_CONNECTION);
+-        if (port->port.dev->speed == USB_SPEED_LOW) {
++        if (s->usb_version == 2 && port->port.dev->speed == USB_SPEED_HIGH) {
++            usb_hub_port_clear(port, PORT_STAT_LOW_SPEED);
++            usb_hub_port_set(port, PORT_STAT_HIGH_SPEED);
++        } else if (port->port.dev->speed == USB_SPEED_LOW) {
++            usb_hub_port_clear(port, PORT_STAT_HIGH_SPEED);
+             usb_hub_port_set(port, PORT_STAT_LOW_SPEED);
+         } else {
++            usb_hub_port_clear(port, PORT_STAT_HIGH_SPEED);
+             usb_hub_port_clear(port, PORT_STAT_LOW_SPEED);
+         }
+     }
+@@ -217,7 +270,7 @@ static void usb_hub_port_update_timer(void *opaque)
+     int i;
+ 
+     for (i = 0; i < s->num_ports; i++) {
+-        notify |= usb_hub_port_update(&s->ports[i]);
++        notify |= usb_hub_port_update(s, &s->ports[i]);
+     }
+     if (notify) {
+         usb_wakeup(s->intr, 0);
+@@ -230,7 +283,7 @@ static void usb_hub_attach(USBPort *port1)
+     USBHubPort *port = &s->ports[port1->index];
+ 
+     trace_usb_hub_attach(s->dev.addr, port1->index + 1);
+-    usb_hub_port_update(port);
++    usb_hub_port_update(s, port);
+     usb_wakeup(s->intr, 0);
+ }
+ 
+@@ -318,7 +371,7 @@ static void usb_hub_handle_reset(USBDevice *dev)
+         port->wPortStatus = 0;
+         port->wPortChange = 0;
+         usb_hub_port_set(port, PORT_STAT_POWER);
+-        usb_hub_port_update(port);
++        usb_hub_port_update(s, port);
+     }
+ }
+ 
+@@ -593,6 +646,19 @@ static void usb_hub_realize(USBDevice *dev, Error **errp)
+     USBHubPort *port;
+     int i;
+ 
++    switch (s->usb_version) {
++    case 1:
++        dev->usb_desc = &desc_hub;
++        break;
++    case 2:
++        dev->usb_desc = &desc_hub_v2;
++        break;
++    default:
++        error_setg(errp, "Unsupported usb version %d for usb hub",
++                   s->usb_version);
 +        return;
 +    }
-+    aspeed_mmio_map(s, SYS_BUS_DEVICE(&s->uhci), 0,
-+                    sc->memmap[ASPEED_DEV_UHCI]);
-+    sysbus_connect_irq(SYS_BUS_DEVICE(&s->uhci), 0,
-+                       aspeed_soc_get_irq(s, ASPEED_DEV_UHCI));
 +
-     /* SDMC - SDRAM Memory Controller */
-     if (!sysbus_realize(SYS_BUS_DEVICE(&s->sdmc), errp)) {
-         return;
+     if (s->num_ports < 1 || s->num_ports > MAX_PORTS) {
+         error_setg(errp, "num_ports (%d) out of range (1..%d)",
+                    s->num_ports, MAX_PORTS);
+@@ -613,7 +679,8 @@ static void usb_hub_realize(USBDevice *dev, Error **errp)
+         port = &s->ports[i];
+         usb_register_port(usb_bus_from_device(dev),
+                           &port->port, s, i, &usb_hub_port_ops,
+-                          USB_SPEED_MASK_LOW | USB_SPEED_MASK_FULL);
++                          USB_SPEED_MASK_LOW | USB_SPEED_MASK_FULL |
++                          ((s->usb_version == 2) ? USB_SPEED_MASK_HIGH : 0));
+         usb_port_location(&port->port, dev->port, i+1);
+     }
+     usb_hub_handle_reset(dev);
+@@ -650,7 +717,7 @@ static const VMStateDescription vmstate_usb_hub_port_timer = {
+ 
+ static const VMStateDescription vmstate_usb_hub = {
+     .name = "usb-hub",
+-    .version_id = 1,
++    .version_id = 2,
+     .minimum_version_id = 1,
+     .fields = (const VMStateField[]) {
+         VMSTATE_USB_DEVICE(dev, USBHubState),
+@@ -667,6 +734,7 @@ static const VMStateDescription vmstate_usb_hub = {
+ static Property usb_hub_properties[] = {
+     DEFINE_PROP_UINT32("ports", USBHubState, num_ports, 8),
+     DEFINE_PROP_BOOL("port-power", USBHubState, port_power, false),
++    DEFINE_PROP_UINT32("usb_version", USBHubState, usb_version, 1),
+     DEFINE_PROP_END_OF_LIST(),
+ };
+ 
+@@ -677,12 +745,12 @@ static void usb_hub_class_initfn(ObjectClass *klass, void *data)
+ 
+     uc->realize        = usb_hub_realize;
+     uc->product_desc   = "QEMU USB Hub";
+-    uc->usb_desc       = &desc_hub;
+     uc->find_device    = usb_hub_find_device;
+     uc->handle_reset   = usb_hub_handle_reset;
+     uc->handle_control = usb_hub_handle_control;
+     uc->handle_data    = usb_hub_handle_data;
+     uc->unrealize      = usb_hub_unrealize;
++    uc->handle_attach  = usb_desc_attach;
+     set_bit(DEVICE_CATEGORY_BRIDGE, dc->categories);
+     dc->fw_name = "hub";
+     dc->vmsd = &vmstate_usb_hub;
 -- 
 2.45.2
 
