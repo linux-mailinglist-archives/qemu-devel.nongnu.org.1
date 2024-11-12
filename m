@@ -2,60 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 770309C5E57
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Nov 2024 18:08:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 733359C5E3F
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Nov 2024 18:06:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tAuJF-0003xH-3W; Tue, 12 Nov 2024 12:04:12 -0500
+	id 1tAuJf-00045i-Cm; Tue, 12 Nov 2024 12:04:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <groeck7@gmail.com>)
- id 1tAuHg-0003KG-Bw; Tue, 12 Nov 2024 12:02:42 -0500
-Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
+ id 1tAuHh-0003Kg-8r; Tue, 12 Nov 2024 12:02:48 -0500
+Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <groeck7@gmail.com>)
- id 1tAuHd-0001US-M9; Tue, 12 Nov 2024 12:02:32 -0500
-Received: by mail-pl1-x629.google.com with SMTP id
- d9443c01a7336-20c714cd9c8so60650155ad.0; 
- Tue, 12 Nov 2024 09:02:29 -0800 (PST)
+ id 1tAuHf-0001Us-Ov; Tue, 12 Nov 2024 12:02:33 -0500
+Received: by mail-pl1-x62e.google.com with SMTP id
+ d9443c01a7336-211a4682fcaso15906785ad.2; 
+ Tue, 12 Nov 2024 09:02:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1731430947; x=1732035747; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1731430949; x=1732035749; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:sender:from:to:cc:subject:date
  :message-id:reply-to;
- bh=f2Mkn+a1ArVn/Zal2kb6KrZbuO2GIdq8fyFe0czvqzo=;
- b=WU3WdzgNhGSWWXCch3/FuiVzW9fhdFj/2PjKid8RISZA4LW351s2SYNtpjHs2IU4/W
- 5VkuKTtdZsqA49sCHKKUKo54RhNgdkicWuWZ3VmIXHFWAOFHKDUEn7tnDUiag/0Kqobg
- Xw9Ofsr/swrdrcZEb1EEnmbwBEi7g8KMxbr+e1LXcZlaSLXMdJKkSgCve+rgbQ2UoYbS
- QK60DD1IQEwzIplAHrccFbuKWZc2VepHwgvkuPkCFModYn4iyNCvedVVlsMozWkCcaOA
- HS9rhsXfZxyCE3YGhd57RqIbhqKBp9Tfh0OXLgq2uLrXOihtNEgKZs36DGVnkoWFnWLD
- ENKw==
+ bh=46KVdS+/Hw1rTusRxdJmkbj33EFntnxAICo5vL0yryE=;
+ b=SKamliY2Z/SHtUcHtJ54vNfIxmzTdVAC/4nOhO7g1q1PxJgHyrTNw4OhZyFmHBRF7D
+ QzESEDIYgQrgw1Zku/kMIAGnYzLlxSkJGLw2w4Eb4oawoEdQ9mbeucw7QOx4wgYhSDhg
+ bwLIJkxECsmfsh8RcHbdi9IyuIWEHJzNfZTz2rQIWfXSlwmt3vFPeNfTW7g5OkbGFMw0
+ Y4Vb/UAeeZDXrjc/e1nQkRFlNzaBwWaKFr5fbqqBRPe8u0zND1g4hphM9RHmGF03jTrB
+ e9kul5tdGIlQZQLVCKY+64QDepRXvFf3inolzWS7p+GprK0PA5cR0FyOisL4QjxUfpC8
+ qz1Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731430947; x=1732035747;
+ d=1e100.net; s=20230601; t=1731430949; x=1732035749;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:sender:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=f2Mkn+a1ArVn/Zal2kb6KrZbuO2GIdq8fyFe0czvqzo=;
- b=sDmuFgwdgSBuJW28hGdWJHVvxnYwoH1vblZC2pQWO/EienZivF3Ly+D4ronxLBdmda
- 3P0Cp67JiTqFQ4wtpTzyq2Qlx8/odJReXKFu4dsoRXrJimHIeSBLz/rrUdtOq6ZIHKc1
- WNiwfI7E+j6NOACMSGDlh2Z7710EpYF0XzLHjSF2aWDe7tV6HGg1pcMICKvArQM34kGs
- PnzDWvmENCzaP1zZY1GefVto6upPzFUJAKgHHApZ/inzA6KcwIJN5Dt3K+JUfHnt3eJs
- fyZpaDG1+LDdCbKk/wqh4ZbuqMYtw41SVLcCVP+LErv+NAu5pYXNo9PrN9Cu1XLzXzsz
- t42A==
+ bh=46KVdS+/Hw1rTusRxdJmkbj33EFntnxAICo5vL0yryE=;
+ b=CKxUtmNWjQfnKGCIInTfJQ3sfClzK7skTsxVoGrjPZ1CfQ5gDumuBvRnXRMotGzBsr
+ Rca6EUZRtR3C5DUjYVG0FQay1eNqJpR/ZcB3pJgI9uge3nhmDz2gIqsEhHFWq+0hkA+P
+ Aznz6/NNfybI17lcw8rHg3dAUPZQLM/H4/Iszef0dpIL1SLmFan/8JcaORhxpr8DhG2R
+ mr9dyRc7h76vcbLtX6+1acNAu9ZnNhG618qzCTzIBZrtJRTOxRX4nOexg9csfhQLEtXh
+ SV3FI5R432RI2aLJlJD91N1M3/sgMKpwX6eXxThVy6wtRSH0VxwU9rnOAQyZsGZtO6/R
+ jC2w==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUrgld+a5l89MJhjbAexMZRfNnXYNlGT4sJaI399A1ys904Q4FfZdPtqsKewXP0SwvwmUqwufpfGA==@nongnu.org
-X-Gm-Message-State: AOJu0YwYvdDg7ragLXYiw0fy/K9xPjfhUGaAAmsiOyLG9DqNJv8FpbO9
- /o3jLyfulqE443nFaC5JTYDVIlezIzYcDxoZIBK21HgpHSg4bP0E9T0s/w==
-X-Google-Smtp-Source: AGHT+IGlKEhf4/Kyg/O/oLUCFB9s113ug/DPAof1vGrRM4XQhrw4+EmsENyiwRp+ds3QNu/yPW/RHg==
-X-Received: by 2002:a17:902:c405:b0:20c:7ae1:92cb with SMTP id
- d9443c01a7336-21183d2ebddmr227088045ad.15.1731430947371; 
- Tue, 12 Nov 2024 09:02:27 -0800 (PST)
+ AJvYcCXcC7KjkIBH0pEznK5B6myajmicIK9NKd8HwGhmp5PLprYK/Hw9nqsDCEfQGZNpHiv0j1JK6OkD5g==@nongnu.org
+X-Gm-Message-State: AOJu0Yy/E1f/R2j7MCLvNzWl0UabQCN5iAA+dLF9Ho+W2VAgI2ILMtne
+ 18dh/mV863a30ux+NL5FySFQ3PZjqKQumxYhqtUpjRXmn1NAPxr51iRmVA==
+X-Google-Smtp-Source: AGHT+IE9eoYQ2NAHlYG9Cnav4fTYVd5p31IH4zKONO59XzhMVlljLu6kBC95Eb4P1aK/0Q2cUPr4rQ==
+X-Received: by 2002:a17:903:11c9:b0:20c:cccd:17a3 with SMTP id
+ d9443c01a7336-2118359c11amr235120975ad.46.1731430948985; 
+ Tue, 12 Nov 2024 09:02:28 -0800 (PST)
 Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-21177e42782sm95357005ad.157.2024.11.12.09.02.26
+ d9443c01a7336-21177cfb0ecsm95635775ad.0.2024.11.12.09.02.28
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 12 Nov 2024 09:02:26 -0800 (PST)
+ Tue, 12 Nov 2024 09:02:28 -0800 (PST)
 From: Guenter Roeck <linux@roeck-us.net>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
@@ -69,17 +69,19 @@ Cc: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
  =?UTF-8?q?Herv=C3=A9=20Poussineau?= <hpoussin@reactos.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
- qemu-arm@nongnu.org, Guenter Roeck <linux@roeck-us.net>
-Subject: [RESEND PATCH 07/10] aspeed: Add uhci support for ast2600
-Date: Tue, 12 Nov 2024 09:01:49 -0800
-Message-ID: <20241112170152.217664-8-linux@roeck-us.net>
+ qemu-arm@nongnu.org, Guenter Roeck <linux@roeck-us.net>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+Subject: [RESEND PATCH 08/10] aspeed: Add uhci support for ast2400 and ast2500
+Date: Tue, 12 Nov 2024 09:01:50 -0800
+Message-ID: <20241112170152.217664-9-linux@roeck-us.net>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241112170152.217664-1-linux@roeck-us.net>
 References: <20241112170152.217664-1-linux@roeck-us.net>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
- envelope-from=groeck7@gmail.com; helo=mail-pl1-x629.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
+ envelope-from=groeck7@gmail.com; helo=mail-pl1-x62e.google.com
 X-Spam_score_int: -16
 X-Spam_score: -1.7
 X-Spam_bar: -
@@ -103,40 +105,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add UHCI support for the ast2600 SoC. With this patch, UHCI support
-is successfully enabled on the rainier-bmc and ast2600-evb machines.
+Add UHCI support for ast2400 and ast2500 SoCs. With this patch,
+the UHCI port is successfully enabled on the ast2500-evb machine.
 
+Note that the EHCI controller on AST2400 and AST2500 does not support
+companion mode, so the UHCI controller is instantiated as stand-alone
+device and creates an additional USB bus.
+
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
 Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 ---
 Changes since RFC:
 - Rebased to v9.1.0-1673-g134b443512
-- Use EHCI companion mode
+- Added Reviewed-by: tag
+- Added explanation for not using EHCI companion mode
 
- hw/arm/aspeed_ast2600.c     | 20 ++++++++++++++++++++
- include/hw/arm/aspeed_soc.h |  3 +++
- 2 files changed, 23 insertions(+)
+ hw/arm/aspeed_ast2400.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/hw/arm/aspeed_ast2600.c b/hw/arm/aspeed_ast2600.c
-index be3eb70cdd..0592bfb2bf 100644
---- a/hw/arm/aspeed_ast2600.c
-+++ b/hw/arm/aspeed_ast2600.c
-@@ -33,6 +33,7 @@ static const hwaddr aspeed_soc_ast2600_memmap[] = {
-     [ASPEED_DEV_SPI2]      = 0x1E631000,
-     [ASPEED_DEV_EHCI1]     = 0x1E6A1000,
-     [ASPEED_DEV_EHCI2]     = 0x1E6A3000,
-+    [ASPEED_DEV_UHCI]      = 0x1E6B0000,
-     [ASPEED_DEV_MII1]      = 0x1E650000,
-     [ASPEED_DEV_MII2]      = 0x1E650008,
-     [ASPEED_DEV_MII3]      = 0x1E650010,
-@@ -110,6 +111,7 @@ static const int aspeed_soc_ast2600_irqmap[] = {
-     [ASPEED_DEV_SDHCI]     = 43,
-     [ASPEED_DEV_EHCI1]     = 5,
-     [ASPEED_DEV_EHCI2]     = 9,
-+    [ASPEED_DEV_UHCI]      = 10,
-     [ASPEED_DEV_EMMC]      = 15,
-     [ASPEED_DEV_GPIO]      = 40,
-     [ASPEED_DEV_GPIO_1_8V] = 11,
-@@ -206,6 +208,8 @@ static void aspeed_soc_ast2600_init(Object *obj)
+diff --git a/hw/arm/aspeed_ast2400.c b/hw/arm/aspeed_ast2400.c
+index ecc81ecc79..8a5d21459d 100644
+--- a/hw/arm/aspeed_ast2400.c
++++ b/hw/arm/aspeed_ast2400.c
+@@ -31,6 +31,7 @@ static const hwaddr aspeed_soc_ast2400_memmap[] = {
+     [ASPEED_DEV_FMC]    = 0x1E620000,
+     [ASPEED_DEV_SPI1]   = 0x1E630000,
+     [ASPEED_DEV_EHCI1]  = 0x1E6A1000,
++    [ASPEED_DEV_UHCI]   = 0x1E6B0000,
+     [ASPEED_DEV_VIC]    = 0x1E6C0000,
+     [ASPEED_DEV_SDMC]   = 0x1E6E0000,
+     [ASPEED_DEV_SCU]    = 0x1E6E2000,
+@@ -68,6 +69,7 @@ static const hwaddr aspeed_soc_ast2500_memmap[] = {
+     [ASPEED_DEV_SPI2]   = 0x1E631000,
+     [ASPEED_DEV_EHCI1]  = 0x1E6A1000,
+     [ASPEED_DEV_EHCI2]  = 0x1E6A3000,
++    [ASPEED_DEV_UHCI]   = 0x1E6B0000,
+     [ASPEED_DEV_VIC]    = 0x1E6C0000,
+     [ASPEED_DEV_SDMC]   = 0x1E6E0000,
+     [ASPEED_DEV_SCU]    = 0x1E6E2000,
+@@ -107,6 +109,7 @@ static const int aspeed_soc_ast2400_irqmap[] = {
+     [ASPEED_DEV_FMC]    = 19,
+     [ASPEED_DEV_EHCI1]  = 5,
+     [ASPEED_DEV_EHCI2]  = 13,
++    [ASPEED_DEV_UHCI]   = 14,
+     [ASPEED_DEV_SDMC]   = 0,
+     [ASPEED_DEV_SCU]    = 21,
+     [ASPEED_DEV_ADC]    = 31,
+@@ -199,6 +202,8 @@ static void aspeed_ast2400_soc_init(Object *obj)
                                  TYPE_PLATFORM_EHCI);
      }
  
@@ -145,32 +160,11 @@ index be3eb70cdd..0592bfb2bf 100644
      snprintf(typename, sizeof(typename), "aspeed.sdmc-%s", socname);
      object_initialize_child(obj, "sdmc", &s->sdmc, typename);
      object_property_add_alias(obj, "ram-size", OBJECT(&s->sdmc),
-@@ -294,6 +298,7 @@ static void aspeed_soc_ast2600_realize(DeviceState *dev, Error **errp)
-     AspeedSoCClass *sc = ASPEED_SOC_GET_CLASS(s);
-     qemu_irq irq;
-     g_autofree char *sram_name = NULL;
-+    g_autofree char *usb_bus = g_strdup_printf("usb-bus.%u", sc->ehcis_num - 1);
- 
-     /* Default boot region (SPI memory or ROMs) */
-     memory_region_init(&s->spi_boot_container, OBJECT(s),
-@@ -472,6 +477,10 @@ static void aspeed_soc_ast2600_realize(DeviceState *dev, Error **errp)
- 
-     /* EHCI */
-     for (i = 0; i < sc->ehcis_num; i++) {
-+        if (i == sc->ehcis_num - 1) {
-+            object_property_set_bool(OBJECT(&s->ehci[i]), "companion-enable",
-+                                     true, &error_fatal);
-+        }
-         if (!sysbus_realize(SYS_BUS_DEVICE(&s->ehci[i]), errp)) {
-             return;
-         }
-@@ -481,6 +490,17 @@ static void aspeed_soc_ast2600_realize(DeviceState *dev, Error **errp)
+@@ -393,6 +398,15 @@ static void aspeed_ast2400_soc_realize(DeviceState *dev, Error **errp)
                             aspeed_soc_get_irq(s, ASPEED_DEV_EHCI1 + i));
      }
  
 +    /* UHCI */
-+    object_property_set_str(OBJECT(&s->uhci), "masterbus", usb_bus,
-+                            &error_fatal);
 +    if (!sysbus_realize(SYS_BUS_DEVICE(&s->uhci), errp)) {
 +        return;
 +    }
@@ -182,34 +176,6 @@ index be3eb70cdd..0592bfb2bf 100644
      /* SDMC - SDRAM Memory Controller */
      if (!sysbus_realize(SYS_BUS_DEVICE(&s->sdmc), errp)) {
          return;
-diff --git a/include/hw/arm/aspeed_soc.h b/include/hw/arm/aspeed_soc.h
-index 689f52dae8..e579911ced 100644
---- a/include/hw/arm/aspeed_soc.h
-+++ b/include/hw/arm/aspeed_soc.h
-@@ -34,6 +34,7 @@
- #include "hw/gpio/aspeed_gpio.h"
- #include "hw/sd/aspeed_sdhci.h"
- #include "hw/usb/hcd-ehci.h"
-+#include "hw/usb/hcd-uhci-sysbus.h"
- #include "qom/object.h"
- #include "hw/misc/aspeed_lpc.h"
- #include "hw/misc/unimp.h"
-@@ -72,6 +73,7 @@ struct AspeedSoCState {
-     AspeedSMCState fmc;
-     AspeedSMCState spi[ASPEED_SPIS_NUM];
-     EHCISysBusState ehci[ASPEED_EHCIS_NUM];
-+    ASPEEDUHCIState uhci;
-     AspeedSBCState sbc;
-     AspeedSLIState sli;
-     AspeedSLIState sliio;
-@@ -193,6 +195,7 @@ enum {
-     ASPEED_DEV_SPI2,
-     ASPEED_DEV_EHCI1,
-     ASPEED_DEV_EHCI2,
-+    ASPEED_DEV_UHCI,
-     ASPEED_DEV_VIC,
-     ASPEED_DEV_INTC,
-     ASPEED_DEV_SDMC,
 -- 
 2.45.2
 
