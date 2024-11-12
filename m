@@ -2,82 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 225B89C59C3
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Nov 2024 14:59:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 54CAC9C59C7
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Nov 2024 15:00:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tArQR-0006Kd-Np; Tue, 12 Nov 2024 08:59:23 -0500
+	id 1tArQo-0006Ux-Te; Tue, 12 Nov 2024 08:59:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sjg@chromium.org>) id 1tArQP-0006KG-QG
- for qemu-devel@nongnu.org; Tue, 12 Nov 2024 08:59:21 -0500
-Received: from mail-io1-xd35.google.com ([2607:f8b0:4864:20::d35])
+ (Exim 4.90_1) (envelope-from <sjg@chromium.org>) id 1tArQm-0006SK-TG
+ for qemu-devel@nongnu.org; Tue, 12 Nov 2024 08:59:44 -0500
+Received: from mail-io1-xd2b.google.com ([2607:f8b0:4864:20::d2b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <sjg@chromium.org>) id 1tArQO-00041W-3g
- for qemu-devel@nongnu.org; Tue, 12 Nov 2024 08:59:21 -0500
-Received: by mail-io1-xd35.google.com with SMTP id
- ca18e2360f4ac-8323b555a6aso310371339f.3
- for <qemu-devel@nongnu.org>; Tue, 12 Nov 2024 05:59:19 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <sjg@chromium.org>) id 1tArQl-00042K-8x
+ for qemu-devel@nongnu.org; Tue, 12 Nov 2024 08:59:44 -0500
+Received: by mail-io1-xd2b.google.com with SMTP id
+ ca18e2360f4ac-83ab21c26f1so219907939f.2
+ for <qemu-devel@nongnu.org>; Tue, 12 Nov 2024 05:59:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=chromium.org; s=google; t=1731419958; x=1732024758; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=DtbbIOccD3ypn8aFqTUyq79fII/Aidcsb4TcLjK5hMY=;
- b=GccXvGNhpqq/VHYOQUBtyp0TC2r4rKVdJ1mhQGm+IzFM0jBo/6XZpS6eG6q41cXByp
- SOfvoFbaBK2k3IiLI+X/AP3f8Eo57EBke82gpOfByM9PMze5KlyDwi4AGTpqL8z93Q4X
- fRX/VrcpeqVRuba8pn8NTzWaiL5Itma6LGTMs=
+ d=chromium.org; s=google; t=1731419975; x=1732024775; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=wQ0or+92eQIwyIqeAnu22dTpZHJuaX9S3qy+ardMUUs=;
+ b=ey2yb/y+GRnp6ZtgU9cPNe1H/xQESU6jXqUc4spVvCpttY5+ums82TXJiZhqip3Ffu
+ xiOsTjXV71wTsTh0Nt1eqYa/F/IZuoRskkRCl5m8mkvue88XAcjNmEb8s4hh+oVbddZe
+ KwGKGkqja/l++V8y9KNgfE0Zz508tBBywJTg0=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731419958; x=1732024758;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=DtbbIOccD3ypn8aFqTUyq79fII/Aidcsb4TcLjK5hMY=;
- b=MERBE6ydVUwMy9kH8GMtj5KoM6+iAw2Wq3SilNFkQ2z50eqwfr5HvxmPHjiKfONkZa
- 7eXRVi6Zvg7qx5/JuvLwAWj9EH/gGgFUKqokxU7e5n+ezp9WTQ51n+k2F5yI4KXM6FwR
- XJFkX0ru7eOKj28njqccRO1fPOCT8V2vRIBDMfX9VmeqwRShmASAgi6VXhEI3CMhZABn
- 4qpQ7sJWUj/jXLuAN3vp8An3SOIVpNyY5txzx4hz/fnO+W6ebJS7+h00AkP2b7ATxdDV
- zBY2xDJSq8ol1CVnIdDpsBdKzyiypFOPV0AtN392KoiIWMz1u8bhbCRcWDXhJid5aEcm
- UBtw==
+ d=1e100.net; s=20230601; t=1731419975; x=1732024775;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=wQ0or+92eQIwyIqeAnu22dTpZHJuaX9S3qy+ardMUUs=;
+ b=wAx3sFDvVbyZdn2MLd1RqplufaByh+luJbYTG9Tz4A13a/x2SlViDziraCkxSggTYC
+ OjCNTvW9MXyWig/i60pOx6/RwfqDoQtuGv/pgLiqgN7sCMQr3nlFgfiORubylsgyAqUs
+ nEM8jGrgYVNSIHfzO/bSnpCxSHNhJRC+pkuqFmbujnNxd0DsC+S1ONrbJbAKr0wDIULS
+ iXGKxjweSP/gKEJcIzHDpxEUA+72R6tFWrgkOl0o8JvpVAh6SvFIq/UJYu9ysz8NI5ma
+ 5U4aP+4UKh0ehKUhQzulAMFxtq5+sAC8UDp4yX4WT2qagHpqSTARqc0nEXsnt6aSVUFz
+ Vuhw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCV6ezRV32EFYsGZuQaOa4K7JxDKmlcq+yM2t4ZWHmadViIU6LUlyarqrJGP92LMAaN0Lv8/nVIWpSN4@nongnu.org
-X-Gm-Message-State: AOJu0YwDHHwsi+vWgPzSIk0h/z7aOn0j37nwKyNT+5h0tpih7kq3/TMb
- vN8YDkSWifDeG4+ADrPJush176cA5ef4FSdy7mX/ewTpKhFS3+d9La0+FeosnQ==
-X-Google-Smtp-Source: AGHT+IHgOnnp4pNiA/5SFn1eOzk3Qyljr5fR2216TrKppaea3I8TFWkRKb0DCjzu1qnp+gSKHjt49Q==
-X-Received: by 2002:a05:6602:2d84:b0:83a:95fc:b242 with SMTP id
- ca18e2360f4ac-83e032fa8c5mr1546439339f.7.1731419958358; 
- Tue, 12 Nov 2024 05:59:18 -0800 (PST)
+ AJvYcCVMlICEcoLVg0leBw1bRHo3ojyCVIsEZE2Ak2LGOrmsrX1r8TzbvQ60IkJztXKqk5Wio9Wfs5Cq9QV0@nongnu.org
+X-Gm-Message-State: AOJu0YysNT/8EZ+qlZLqZAfv2B8/6+XALdJI5zM2pWpIoNbwbiMWUHC+
+ ioEigUQp1NrCDeY2Euj82zo81Z3J8tcQZDHDjqAKLQh1fQ9jyEmfPdQ95JARoQ==
+X-Google-Smtp-Source: AGHT+IFRbhsH3AjC0WgNlkAxNkftaUSmp70QM44N6E+zcwo2sbWOYoqBNr0YBpkJee5o8ETWAtybWQ==
+X-Received: by 2002:a05:6602:3c5:b0:83b:2da6:239a with SMTP id
+ ca18e2360f4ac-83e432ae355mr281331239f.15.1731419974877; 
+ Tue, 12 Nov 2024 05:59:34 -0800 (PST)
 Received: from chromium.org (c-107-2-138-191.hsd1.co.comcast.net.
  [107.2.138.191]) by smtp.gmail.com with ESMTPSA id
- ca18e2360f4ac-83e132c01besm189203039f.30.2024.11.12.05.59.17
+ ca18e2360f4ac-83e132c01besm189203039f.30.2024.11.12.05.59.32
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 12 Nov 2024 05:59:17 -0800 (PST)
+ Tue, 12 Nov 2024 05:59:33 -0800 (PST)
 From: Simon Glass <sjg@chromium.org>
 To: U-Boot Mailing List <u-boot@lists.denx.de>
 Cc: Bin Meng <bmeng.cn@gmail.com>, Simon Glass <sjg@chromium.org>,
- Andrew Goodbody <andrew.goodbody@linaro.org>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Angelo Dureghello <angelo@kernel-space.org>,
- Caleb Connolly <caleb.connolly@linaro.org>,
- Heinrich Schuchardt <xypron.glpk@gmx.de>,
- Ilias Apalodimas <ilias.apalodimas@linaro.org>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>, Marek Vasut <marex@denx.de>,
- Mattijs Korpershoek <mkorpershoek@baylibre.com>,
- Nathan Barrett-Morrison <nathan.morrison@timesys.com>,
- Oliver Gaskell <Oliver.Gaskell@analog.com>,
- Patrick Rudolph <patrick.rudolph@9elements.com>,
- Robert Marko <robert.marko@sartura.hr>,
- Sam Protsenko <semen.protsenko@linaro.org>,
- Sumit Garg <sumit.garg@linaro.org>, Tom Rini <trini@konsulko.com>,
- qemu-devel@nongnu.org
-Subject: [PATCH 00/18] x86: Improve operation under QEMU
-Date: Tue, 12 Nov 2024 06:58:53 -0700
-Message-Id: <20241112135911.630586-1-sjg@chromium.org>
+ Tom Rini <trini@konsulko.com>, qemu-devel@nongnu.org
+Subject: [PATCH 03/18] RFC: x86: qemu: Switch to bochs display
+Date: Tue, 12 Nov 2024 06:58:56 -0700
+Message-Id: <20241112135911.630586-4-sjg@chromium.org>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20241112135911.630586-1-sjg@chromium.org>
+References: <20241112135911.630586-1-sjg@chromium.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::d35;
- envelope-from=sjg@chromium.org; helo=mail-io1-xd35.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::d2b;
+ envelope-from=sjg@chromium.org; helo=mail-io1-xd2b.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -100,69 +89,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-U-Boot can start and boot an OS in both qemu-x86 and qemu-x86_64 but it
-is not perfect.
+The vesa display is widely used on hardware, but it is a bit of a pain
+with QEMU. It requires executing option ROMs, which either doesn't work
+with kvm, or is difficult to do in a kvm/QEMU-friendly way.
 
-With both builds, executing the VESA ROM causes an intermittent hang, at
-least on some AMD CPUs.
+THe bochs display is probably better anyway, so switch to that. It works
+fine with kvm as it doesn't need an option ROM.
 
-With qemu-x86_64 kvm cannot be used since the move to long mode (64-bit)
-is done in a way that works on real hardware but not with QEMU. This
-means that performance is 4-5x slower than it could be, at least on my
-CPU.
+Unfortunately this causes the Ubuntu 22.04 installer to stop booting,
+which needs further investigation
 
-We can work around the first problem by using Bochs, which is anyway a
-better choice than VESA for QEMU. But this results in the Ubuntu
-installer failing to boot via EFI. It isn't clear whether this due to
-a problem with the UEFI GOP, or something else. It hangs before the
-Ubuntu logo appears.
+Signed-off-by: Simon Glass <sjg@chromium.org>
+Fixes: https://source.denx.de/u-boot/custodians/u-boot-dm/-/issues/31
+---
 
-So this series is unfinished. I thought it best to post what is here in
-the hope that others can help work out the kinks.
+ configs/qemu-x86_64_defconfig | 5 ++---
+ configs/qemu-x86_defconfig    | 5 ++---
+ 2 files changed, 4 insertions(+), 6 deletions(-)
 
-
-Simon Glass (18):
-  scripts: Add a script for building and booting QEMU
-  x86: Expand x86_64 early memory
-  RFC: x86: qemu: Switch to bochs display
-  x86: qemu: Enable dhrystone
-  x86: qemu: Avoid accessing BSS too early
-  x86: Drop mpspec from the SPL build
-  x86: Add some log categories
-  x86: Drop use of CONFIG_REALMODE_DEBUG
-  x86: Avoid clearing the VESA display
-  x86: Add 64-bit entries to the GDT
-  x86: Use defines for the cache flags
-  x86: spl: Drop duplicate CPU init
-  x86: Drop the message about features missing in 64-bit
-  x86: Include stdbool.h in interrupt header
-  x86: Tidy up the GDT size in start/16.S
-  x86: Disable paging before changing to long mode
-  x86: Use the same GDT when jumping to long mode
-  x86: Use a simple jump into long mode
-
- MAINTAINERS                      |   8 ++
- arch/x86/cpu/i386/call64.S       |  35 +++----
- arch/x86/cpu/i386/cpu.c          |  18 +++-
- arch/x86/cpu/qemu/qemu.c         |  20 ++--
- arch/x86/cpu/start.S             |   4 +-
- arch/x86/cpu/start16.S           |   3 +-
- arch/x86/include/asm/interrupt.h |   1 +
- arch/x86/include/asm/processor.h |   5 +-
- arch/x86/lib/Makefile            |   2 +
- arch/x86/lib/bios.c              |  27 +++--
- arch/x86/lib/bios_interrupts.c   |   8 +-
- arch/x86/lib/i8259.c             |   2 +
- arch/x86/lib/spl.c               |   4 +-
- configs/qemu-x86_64_defconfig    |  10 +-
- configs/qemu-x86_defconfig       |   6 +-
- doc/board/emulation/index.rst    |   1 +
- doc/board/emulation/script.rst   |  61 +++++++++++
- scripts/build-qemu.sh            | 175 +++++++++++++++++++++++++++++++
- 18 files changed, 331 insertions(+), 59 deletions(-)
- create mode 100644 doc/board/emulation/script.rst
- create mode 100755 scripts/build-qemu.sh
-
+diff --git a/configs/qemu-x86_64_defconfig b/configs/qemu-x86_64_defconfig
+index 218c3535d15..1670c122002 100644
+--- a/configs/qemu-x86_64_defconfig
++++ b/configs/qemu-x86_64_defconfig
+@@ -81,9 +81,8 @@ CONFIG_SYS_NS16550_PORT_MAPPED=y
+ CONFIG_SPI=y
+ CONFIG_USB_KEYBOARD=y
+ CONFIG_CONSOLE_TRUETYPE=y
+-CONFIG_FRAMEBUFFER_SET_VESA_MODE=y
+-CONFIG_FRAMEBUFFER_VESA_MODE_USER=y
+-CONFIG_FRAMEBUFFER_VESA_MODE=0x144
++CONFIG_VIDEO_BOCHS=y
++# CONFIG_VIDEO_VESA is not set
+ CONFIG_CONSOLE_SCROLL_LINES=5
+ CONFIG_SPL_VIDEO=y
+ # CONFIG_SPL_USE_TINY_PRINTF is not set
+diff --git a/configs/qemu-x86_defconfig b/configs/qemu-x86_defconfig
+index 947d15cd727..40c2f1cd362 100644
+--- a/configs/qemu-x86_defconfig
++++ b/configs/qemu-x86_defconfig
+@@ -58,9 +58,8 @@ CONFIG_SYS_NS16550_PORT_MAPPED=y
+ CONFIG_SPI=y
+ CONFIG_USB_KEYBOARD=y
+ CONFIG_CONSOLE_TRUETYPE=y
+-CONFIG_FRAMEBUFFER_SET_VESA_MODE=y
+-CONFIG_FRAMEBUFFER_VESA_MODE_USER=y
+-CONFIG_FRAMEBUFFER_VESA_MODE=0x144
++CONFIG_VIDEO_BOCHS=y
++# CONFIG_VIDEO_VESA is not set
+ CONFIG_CONSOLE_SCROLL_LINES=5
+ CONFIG_GENERATE_ACPI_TABLE=y
+ # CONFIG_GZIP is not set
 -- 
 2.34.1
 
