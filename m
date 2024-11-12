@@ -2,89 +2,204 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 790B29C602E
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Nov 2024 19:18:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6621E9C6033
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Nov 2024 19:18:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tAvSj-0008Ml-Ew; Tue, 12 Nov 2024 13:18:01 -0500
+	id 1tAvSp-0000b7-ND; Tue, 12 Nov 2024 13:18:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tAvST-00087C-J6
- for qemu-devel@nongnu.org; Tue, 12 Nov 2024 13:17:49 -0500
-Received: from mail-pj1-x1030.google.com ([2607:f8b0:4864:20::1030])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tAvSR-0002dN-A2
- for qemu-devel@nongnu.org; Tue, 12 Nov 2024 13:17:45 -0500
-Received: by mail-pj1-x1030.google.com with SMTP id
- 98e67ed59e1d1-2e2b549799eso4778747a91.3
- for <qemu-devel@nongnu.org>; Tue, 12 Nov 2024 10:17:41 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <william.roche@oracle.com>)
+ id 1tAvSk-0000KM-K9; Tue, 12 Nov 2024 13:18:02 -0500
+Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <william.roche@oracle.com>)
+ id 1tAvSi-0002fL-L6; Tue, 12 Nov 2024 13:18:02 -0500
+Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4ACHtb03031404;
+ Tue, 12 Nov 2024 18:17:52 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+ :content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=
+ corp-2023-11-20; bh=/GC+G0+AJCdndcb/p+ne3kLzvTUxU7Udt5ovKx5QwDA=; b=
+ kBdd0RCZafVJmvyndscJugBFuX2l/ob4MVWVKfI/fWvFYRZXgYcB/Gd4RR81oFol
+ DkZwjtHDvx4AKPClBoEA9rVFtUkepxR0F4GSYBa7pGqzxHiyU9vOisDyEG/iKDVs
+ MTFQXKU3rUaaMXW4UqNDIdBd2vbeRMYNoGPNEremTdHh8UbvOtAi/iZHp20UZAIA
+ wcxpml5HoyP96enEyb4OmQ1DGojQg1U+E48mpnj1B/gDoMZl4/DR+mHvLC1KszdJ
+ Nu+jontClC+0KVmiGhcoHC8CxI/tcfY78M8vlIj+Fr1/NyZq4jCiCRSlOKLDra8H
+ 1q6iqpQlflrCkL7hCJcxLw==
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com
+ (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 42t0nwn3d2-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 12 Nov 2024 18:17:51 +0000 (GMT)
+Received: from pps.filterd
+ (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+ by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
+ with ESMTP id 4ACHLDm2036004; Tue, 12 Nov 2024 18:17:51 GMT
+Received: from nam04-bn8-obe.outbound.protection.outlook.com
+ (mail-bn8nam04lp2048.outbound.protection.outlook.com [104.47.74.48])
+ by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
+ 42sx688yhf-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 12 Nov 2024 18:17:50 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=IuEOR0qaDnvLgmddf9NzDDqv+V2gt4FoHAqiD+5mrL2PD32fu7RUJfrRrxKdZTMR9x1CKPE56C/S7BxNl7pneng1U7uOxdubqBts6h6ILFdYJ3PP9Q2qfopPRzLeSBU7U/SzZ20mOmH8zEChPjCti5AvLLF4/p+HsAwBQDAGxoneslztZYi/S6w5R1XKqqSnf9zyclIFI/yfmcPKlsUCYTEPbbcNe9WE9WQxke9waHbnoYq6E9JZdVxcGiI4l/KBxaR+dxe//V9WQWHNJfNCbEAs/cEaXEEHcfzyuxfZWQRxeYA81zoPWi9Zphbb69MzC1//26JYZkcfZXpqbfQFiQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=/GC+G0+AJCdndcb/p+ne3kLzvTUxU7Udt5ovKx5QwDA=;
+ b=YAvs7kXhwDkpxAyTh8Bp+UydcshmvUYrHXYKj4Lzl4WcvX860o5vTBMYAlMbNT3uUVxujSfHbaYG1p35A6m6XNwfjLuac4sC6A5gHOHNwF8iXyPfIcfLPs8DhqtH/HjfWgO+XAIsBgCdBP8fTxiQSXwX6Euwch7H1QdUlcVNoYLoPSa8HQ9+KfxqGeO0I5MihuvbKFxpoV4q3SIUfgAb7GMzV/12PfKY1dZOpfFoP5thVf8M6t0uVpE21czInP6Zak2C/jZih6Y9ayVfelcehIIq8zNX5oipnfzJHiS9996tJZ0H+fgWl2J6rtHX+EYPBDQ4EEriL/9IchrYuUxp0A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1731435460; x=1732040260; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=PjzY9b7/Lsii6p3P1dftCewSULtBJw3/5DnbbkLiSAQ=;
- b=Wd2jngymEMpw0mZ8EhPqeXShYW9CaCFkFQqkXuBjVJM+LpU+jfCwCuh54pzxm7KNkK
- 5UgKhw9shDvmlVOnDRJ8hv6JdOk0uGrgDxYZnNs0Dm3Q87cKIyLXF295NTWMhvv1dnxH
- Q02qRLCDAavkaB7KKkRJPZxu8X6bUUXLy/mrrQfH3qcmgUHe3Tnl//lMz4Tc1j9PPH31
- 79Fxo/84qOQ4h67i7qk5h6qYpvgVJL4AdFRwCJb0CzLE0cB0Cf8f5JqkrIG4SsHAUIMp
- do3HgKaqLcS/ZwG2cjAhPtdfQD3vN+QgpvQZnDzk4mf9BrWW8WNN1VnXWzEEL6laOzHH
- zNww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731435460; x=1732040260;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=PjzY9b7/Lsii6p3P1dftCewSULtBJw3/5DnbbkLiSAQ=;
- b=ZPS8xrkwFor8qDuIsZ/5m4KX+PKXPE5OeskFKdN/+c9cQI1HHPsdalqJuqwXUbN23n
- B5Q85pavNNmWsG4rxjzIG9rG3V2F/iUI3Gio9FYiQUIpd/hYQdVQFO3S28+WL7sw3ClZ
- S3xmPPDfAv4eePEC+LCIic8EWSvVFv0tn9oN1Jxc2/aCjP8LJdEPeJJidCnoEB+OipM3
- RM1QgQWaZO3D1nR8BDxgMRLZCBct06nGKwPYFxoFhco+jkhDdFDyny9QGSrtmAd9CoBV
- +9DqH8bxWpzLok+0ENjUnZ7YqGlYfQ1Hay3uvmA2mA8wKcuCG3XnPXQWdKGg/E2r84jK
- NuHA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXtceYiscKkWXejXwZB0K/x6V/xexwE2phpG0mt6fw2HEr6GyZBDRENWWxgTUE6gn6ZKzJ8EewK7DAa@nongnu.org
-X-Gm-Message-State: AOJu0YwmtkrzKZMm6kb43G/dfpq79S7udcN6QFNH14ikIv4Gq/qVAM5P
- O8PpRT3mNhSRtw7thaTYJd8Wv2Up1YluE1T83TSmaS8koDaH/B1nl4um1fy2+4wc+VIhA6XYb7Y
- 6
-X-Google-Smtp-Source: AGHT+IGUtukNoEZBbV8kqtWgpJoUgOIlFqDRR32wfHthuCquHcx1oJ/uWoEM4WbqMhEDF8ItafN0ZA==
-X-Received: by 2002:a17:90b:4c10:b0:2e2:b513:d534 with SMTP id
- 98e67ed59e1d1-2e9b1783a6amr22217493a91.37.1731435459989; 
- Tue, 12 Nov 2024 10:17:39 -0800 (PST)
-Received: from [192.168.52.227] (wsip-24-120-228-34.lv.lv.cox.net.
- [24.120.228.34]) by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2e99a5f935dsm14380589a91.35.2024.11.12.10.17.38
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 12 Nov 2024 10:17:39 -0800 (PST)
-Message-ID: <fefc8934-b9aa-409d-bc99-d4554aa8d571@linaro.org>
-Date: Tue, 12 Nov 2024 10:17:37 -0800
-MIME-Version: 1.0
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=/GC+G0+AJCdndcb/p+ne3kLzvTUxU7Udt5ovKx5QwDA=;
+ b=pAZdgfMuOzu0nnjOrMSXqusBTMYsCp+VApD52K3yMh9aKwuHvDEFutOfvuMnXoie/zS4XV+F0UgcVUa58T7D3Ab+nO6El7OnFeUQI0iV8udQGkGiSDICfNJb5FnwYMjF5pa2uZrMTnk73kot8dNCCg4dD8EpIdYA2co6ES2J4JM=
+Received: from IA0PR10MB7349.namprd10.prod.outlook.com (2603:10b6:208:40d::10)
+ by DM4PR10MB6157.namprd10.prod.outlook.com (2603:10b6:8:b6::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8137.28; Tue, 12 Nov
+ 2024 18:17:48 +0000
+Received: from IA0PR10MB7349.namprd10.prod.outlook.com
+ ([fe80::8940:532:a642:b608]) by IA0PR10MB7349.namprd10.prod.outlook.com
+ ([fe80::8940:532:a642:b608%5]) with mapi id 15.20.8137.027; Tue, 12 Nov 2024
+ 18:17:47 +0000
+Message-ID: <b6bdff02-4ebe-466f-93af-dda572505995@oracle.com>
+Date: Tue, 12 Nov 2024 19:17:44 +0100
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 5/6] target/mips: Convert microMIPS LSA opcode to
- decodetree
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Aleksandar Rikalo <arikalo@gmail.com>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>, Aurelien Jarno <aurelien@aurel32.net>
-References: <20241112172022.88348-1-philmd@linaro.org>
- <20241112172022.88348-6-philmd@linaro.org>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20241112172022.88348-6-philmd@linaro.org>
+Subject: Re: [PATCH v2 6/7] hostmem: Handle remapping of RAM
+To: David Hildenbrand <david@redhat.com>, kvm@vger.kernel.org,
+ qemu-devel@nongnu.org, qemu-arm@nongnu.org
+Cc: peterx@redhat.com, pbonzini@redhat.com, richard.henderson@linaro.org,
+ philmd@linaro.org, peter.maydell@linaro.org, mtosatti@redhat.com,
+ imammedo@redhat.com, eduardo@habkost.net, marcel.apfelbaum@gmail.com,
+ wangyanan55@huawei.com, zhao1.liu@intel.com, joao.m.martins@oracle.com
+References: <e2ac7ad0-aa26-4af2-8bb3-825cba4ffca0@redhat.com>
+ <20241107102126.2183152-1-william.roche@oracle.com>
+ <20241107102126.2183152-7-william.roche@oracle.com>
+ <3ed8c7c2-8059-4d51-a536-422c394f34e5@redhat.com>
+Content-Language: en-US, fr
+From: William Roche <william.roche@oracle.com>
+In-Reply-To: <3ed8c7c2-8059-4d51-a536-422c394f34e5@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1030;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1030.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-ClientProxiedBy: LO2P265CA0125.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:9f::17) To IA0PR10MB7349.namprd10.prod.outlook.com
+ (2603:10b6:208:40d::10)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: IA0PR10MB7349:EE_|DM4PR10MB6157:EE_
+X-MS-Office365-Filtering-Correlation-Id: 72539d7e-1f3a-4f40-499c-08dd03464fb3
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|1800799024|366016;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?V1RpcnVKUWpjUHJVWXJYM2NhMmw4YnIveG5aZENUZ3BjaWY2VGR4SXhFaTBJ?=
+ =?utf-8?B?bUZ3OG5wSjNmejlpOUlML2I4Ky9MRDd2My96ZGRoRGJWYTBWOG9BaDI3aTZ0?=
+ =?utf-8?B?dmRHZHpXUng0SUhLeE5jQkVJMjRrNEhqUmw2NE9Ga3hib0dVUWc0bmc4bWF5?=
+ =?utf-8?B?RU96SGhvNGtzRk82OHcrT0VwN3JxZmlCT1J3cXdrSTdBdlc2L1FVVEh5YkJW?=
+ =?utf-8?B?Qk9yWTJZMExzSHFzWUh5UmpPbTFXV3VGa21VUEpRNXgyTGhOODlEUUNUNEJW?=
+ =?utf-8?B?aU5OcTdMMUs0UFdOVEszc0VUdzJ2bXZhNHpIYWhnVG81SGMyL1hDbktiYXFS?=
+ =?utf-8?B?eFpQWE1KS2dCVHNNdlJUVWhvMWM0UVpTWTJERHE0RXBLZXN4UndlRkdqMFI3?=
+ =?utf-8?B?NWs0aE5UcGlmOUxQOEYySjk2VUVtcGxqNTllL1pMaGpPWGFCYVFVTXZCVDdX?=
+ =?utf-8?B?WGxpZEc4SStXM1p0bTRCQU1XSmpLZnhIc2hiSVMvbElmbEVJMlV5aXVEQmVU?=
+ =?utf-8?B?YVlNNVFTQ0tEUUVuL3Z5TjdsYkQzRzlSc1E0NVdzSEYweHhVYjdQSnFMR1Fm?=
+ =?utf-8?B?eXNiM3gxek1vbkEzVGwzanZNdzYxWW0xOUR5VkJBMW5JUnhETU9KMklBOHhl?=
+ =?utf-8?B?MnlwVTUwZUt1K3U1eFM0T0ZxOUVjVDlLcnE4OTV5elRKVzRQbjVEeTU4bjZM?=
+ =?utf-8?B?WkJyQ1gvWFloc0lhSTQ0dFVZQlRwMXNXOWRyZmtqWWFFZTVtc2p5YjlnWTAv?=
+ =?utf-8?B?Lyt0SktnVW5tWmNGeHBXT0hRNEp0ZEFqUzE2T3d0WGdnSlNPT1p5eFVCblVw?=
+ =?utf-8?B?MHRScmkwRHZIajFRdjdCWUh1RmdDQnR2bGRiUUFJVkx4d1F6VmZuS0txTDFa?=
+ =?utf-8?B?SlI3UmVscm44bnR2YXVnWDVhaGx5WVlkSjh4cURlUU91NDJleVFFUzdsUnlD?=
+ =?utf-8?B?NjRoSlRDN1BxUm95YXBXdUljQ0k2VFJHOFpHNDdFNHlDdWcvSG02d05zZnYr?=
+ =?utf-8?B?MVJDTHYrbDdZWndNYTUzcU03cU00RlNNWFpJalNxK3plWmlkc0wzSFRvaTVZ?=
+ =?utf-8?B?T0l1ZFlGdkRqU3RmNklYeURFMmwxdXFIL0RMak5EZzNVNU9EMlM4VVIwRmtJ?=
+ =?utf-8?B?WUhVUHJBNWhRdEFxZFE5YkpVYW5EUGo3UUFvU1pGd1c3bTRIYVo0VlVRc1Jx?=
+ =?utf-8?B?SHhJbFB5YjJmeUZzR0lISWVYNDNwN1E3NHhDRmxJK2trcE5WOFU5VlJCbFpq?=
+ =?utf-8?B?QnZRdjVWMERORTJnZXgyL1R4MUlDODdmVUE5dnpnSy9kbE94akdxMC9wNm9U?=
+ =?utf-8?B?Wkx3SnY4WUhxYnRhU2JIRldNN2QwMWdaWmlTS0lhUERCZHFpTHpqMlN4QTRp?=
+ =?utf-8?B?eGJvS0RkNEd1dGhPY29JZDRBak5rTzFRcnFmdmFvM1hPTWw5UDJBRHlDcFh1?=
+ =?utf-8?B?RytUOENhcXNyWkJYOTdOV0VYZnN4SnF2TlFvQU9jd0c1VzRxdkJWV0tyKzlx?=
+ =?utf-8?B?dlA1M21nZU1HTXhhVHN3ZlVDdno0cDBwUkI2N205dEFJZ3RVVDQrZ2QxUHR1?=
+ =?utf-8?B?Z0ZnU3VDMHlMS2VrVlphZVE2Q2orVTBlWEViV2JBcTZpemdnUlZ0OU04U0Iw?=
+ =?utf-8?B?dmcrUnVHUFdGMVNhaDhib1NtRVVDQ1VlSlhsN3FQalEwNjhnWkVqSlMwNURu?=
+ =?utf-8?B?ek5nSkJwcUJkZkZQSnpFN0RjRXQ5TWhXbWd4MnRzT3BXcGRZNXIrMlNmLzZH?=
+ =?utf-8?Q?bFUzuBPUQyUhtyEee6iZwxI3PtU/Ecjc05c5Aya?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:IA0PR10MB7349.namprd10.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(7416014)(376014)(1800799024)(366016); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?cmZXcEJJOTg1TjNTeDg5SVhwUzZ6UVVrdkRrazhxbXpXSEZsemcvSXhJYnBV?=
+ =?utf-8?B?MkJKSjNMSm9SUTNXbFdLT3JjaFk3aHE5dTc3WEp1T3hVM1BBVW1xWVpua0dW?=
+ =?utf-8?B?aWY0YVBnbHhMc1o0Z2NHN0w3Z1IxWWJDSm1ueFMvWGEvbUQ5M1VRY3dnNmRr?=
+ =?utf-8?B?RCtQRGdlcUtUK3RzbHlNaGRXQS9WR3RWblFzUVhMVm1hdmN1QXl5aXdTMW84?=
+ =?utf-8?B?TGdhdzcyMWpVZzBtcTVzNlVzejZCUWFDWEt2TUp2K3ViOXFXeXlsYkx1cjlC?=
+ =?utf-8?B?a3Z5Z0Joc2poMTRDL1ZGWHZaL0hIdzBkekNRMnhIaEcxK201U3h6d2hObEow?=
+ =?utf-8?B?Wlg5bTB2R0JaRU03cVNVWXVwTUxjOXFlL2NmL284MjgwK1NsY1dvaUR1L3Nr?=
+ =?utf-8?B?bmV2cmUrTE9aUzB3M05CM1hjVTQ2eTVybUlZY2Z3akJMdnR4VXNJcVpKS3Jy?=
+ =?utf-8?B?b2JPT3RWb1hrZ0N6bGpZck1UTGlwTnhQYTRpQ0Q3bEFTdkhrMkc3aWFKcGg0?=
+ =?utf-8?B?SGZwYjUwL29UR0VaV2d1bmQwcWtpbG1rZ09IaFRIbEFOTDkxWXNYUlNZQjdH?=
+ =?utf-8?B?YkRGN0xSNFJNQnFacjZITFVLOGRQWGl6YUZ4OFJLLzhwcW5POTZRcXkvb3o3?=
+ =?utf-8?B?WDc3STdOZGFYVGU0SHhoWnB6TWpBc3NSM3ZJMmJhMjFUcmlyVGl4eGpUNkZF?=
+ =?utf-8?B?L3JqNUk0TWNFVHMrQnQ5ZDdBOGd3ZmRVQ0hYY3BLbE96MEJTVUliY3RnQWVN?=
+ =?utf-8?B?RTVZRlBmdXN5eXVHT3JGWEhJa1I1Tm05TXd4N2YxVjVKRmhMcXIxTXNnUDM2?=
+ =?utf-8?B?Tkxmck14U2lGQlpIUTU0R2NSMWJkZDN1V0EzbU5xNGtkQmhlYVpyaVltc1Fh?=
+ =?utf-8?B?MSs0cnRvdFFKYlJTc29GcG5JV2QzcmZyUEtzelZyM0ZML2lNZ2oxYXRZZ0E2?=
+ =?utf-8?B?eXgzanNHbkZuNzBta0FZNlhIVGM1ckFsS3FUWisxaGF2Nmhha2F4cE83ZE9X?=
+ =?utf-8?B?MG1XQU5xaWE4aFFKUE81WkpjOUluMDc4aFdBVytlV0hLN08xeTM4bitMSmNU?=
+ =?utf-8?B?aENReDF4ODJnUHNXSXNzTThhN2x3ZWZjSWx0c3VtcWt4S04xQ0NTRi9zbWFN?=
+ =?utf-8?B?cGFVd1hHSXdjU3JTR0J3bnpPTU0rVVVIVmtCN0pPMXBYcHFjWmhoUWRINk9z?=
+ =?utf-8?B?dHpJbmpzQTNyTVNmZHhmWlczRGZnRHJZRm1ZdjNrc2pXOVVyZ3RLaGxmYVg2?=
+ =?utf-8?B?TFJGTGpxTW1sV3c0Nm1WaktxeW4xSVNjbTVEWkZxb0pZTHJVZ2tDR2dUd3pp?=
+ =?utf-8?B?Tjc2dk5WbXNQd1FlT21OWGM4SThQUG9oTk1RRzdxSWtlem84bnFQRVdhaS9p?=
+ =?utf-8?B?QXhoOGhlcWgycDFYdWFWL2t4K2haSnhjS3VyazhjUG5QeS8xWU5BcitWejNE?=
+ =?utf-8?B?OG9rMDduWGdudWJKV0d3WU4wVW5qTGtXU2VqYml1dnN2SzRoZ2hVbUg1a2RZ?=
+ =?utf-8?B?a0RrS2NhVXljQytIUFB6NTJZOTRWQnZTMzEzUGcxRlNRVElMVGtDc3VBTjVN?=
+ =?utf-8?B?dzBoYzhJV2l4MStsSWtBa2R5ZHk3aWJmV2d0Y0JaRFcyVmVFTG5hS1pmU01v?=
+ =?utf-8?B?U2dVdVMyeHF1U3BjendqWHR5ay9FWEdCUHlMYkpZTTdhVktyWUR3dlNyQVdZ?=
+ =?utf-8?B?L2JDSUlzNzhKZ2JvSXd6Q1c5MUw5SHVKMGl2NXBReklCLzQ3d0xCa1R4L3R3?=
+ =?utf-8?B?N3dmY3dmOWIrdFJWa1A0MHU0b01ZTzNkeU5oTUFGRVdlc1F2V1dCQTZJYXpu?=
+ =?utf-8?B?a0RCSnJNczVIVWlsSWYramtuZWRXN3JpQ3dMQnVNNldLQnFPMzBEL0tpN3pY?=
+ =?utf-8?B?dnBFaXVRSnZGcmN4ZXVWWkEvTUM5L2hnNjNwdFlJcU10V1NDcEpXL2Nqd0ZH?=
+ =?utf-8?B?U0JmNjdCem9zYWMvRU9wQzVzVlFXNWROek5YZzRPbEJyRERnV3IzRUI4RHNk?=
+ =?utf-8?B?cW0vUVZrZGlJcEhQUlV2VTVlYVJZaXhpdk5iZ1JFTTA4cXdDRmhsUHg2d2Z0?=
+ =?utf-8?B?dW55MVRzZFJKQVMrS2w3WmsyZnRRM2ZOUmhQd3J0TkVnclhZKzBXeEFYMER0?=
+ =?utf-8?B?SlFuWnZpSzhWOW1TS2NTa25JcGwwRXdESGdkYmhRQXJmbUlrMHBTaVNUS1pw?=
+ =?utf-8?B?Y2c9PQ==?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: GttqPVPj8marUKC1sZ3Q59/TIXlFg63zZVts2TFsMo3gA572O/DOvGPHkLrZNmOJjbiadnvG19iV9VoqxLV8pSeuimOcVqcx2jAWZSsHUqnmsJ6Y4YDIXOtObOyWXgJKBliXsaS35imzhzmGJPfQrI/6IXshN4YLgFaQozKAU7GHye1kqj0u1LT13mULd7anZArxB83mFoO25Vm3q3cznOj0uPbzf1zlM7xJx1Lu1bNk7tE4BJkZ4TFkwVgQWPMeNBi+cXZxduR2QzYmuAVQwrWF7bIjcQMyg6cEhGcixQiZ8mnuFaGlRbf8ACoGH3dFOIElXfEj64AwX25V6VRHhmV1liw8kHQt8D26wALu8wXNXoN6zslvFtSnA4M67B4K3+mm38xmX4JlSamorsxiKiLL7pBqYUgTM6UWcvKxShls3SW1tC0JyJv3F+t2igSvMl9owPL4092UbdfTMa3/PXyLk72w9KMTlo1bRSQNlL6AuD39NBrunTNVx0fOAynaXu9vI/SByOcsW7HaTj6OLLK0wWTq9sponpno4dlXXB+UTK2lIPK31FJ0Xkk6X/QpYKZ2bY8NejuOnKYdLpxyDgGKL56r8b+BAHWqy4PRK3w=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 72539d7e-1f3a-4f40-499c-08dd03464fb3
+X-MS-Exchange-CrossTenant-AuthSource: IA0PR10MB7349.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Nov 2024 18:17:47.8304 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: utbqAoRxvwpaL0ilypcRqHihtjGu1Db2mtL8WmdJiPf9oWBd5dIT0VPNuPleK/Ct7GSPKa9Rv+c50AYUGiunpP09DAJaM1jc1O6QBLrCGio=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR10MB6157
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-11-12_08,2024-11-12_02,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0
+ malwarescore=0 mlxscore=0
+ bulkscore=0 suspectscore=0 phishscore=0 mlxlogscore=999 spamscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2409260000
+ definitions=main-2411120146
+X-Proofpoint-GUID: eFBxJ8TOluqZvxFEsa1aOVoDHX01D0D4
+X-Proofpoint-ORIG-GUID: eFBxJ8TOluqZvxFEsa1aOVoDHX01D0D4
+Received-SPF: pass client-ip=205.220.177.32;
+ envelope-from=william.roche@oracle.com; helo=mx0b-00069f02.pphosted.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,81 +215,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/12/24 09:20, Philippe Mathieu-Daudé wrote:
-> Simply call the generic gen_lsa(), using the plus_1()
-> helper to add 1 to the shift amount.
+On 11/12/24 14:45, David Hildenbrand wrote:
+> On 07.11.24 11:21, “William Roche wrote:
+>> From: David Hildenbrand <david@redhat.com>
+>>
+>> Let's register a RAM block notifier and react on remap notifications.
+>> Simply re-apply the settings. Warn only when something goes wrong.
+>>
+>> Note: qemu_ram_remap() will not remap when RAM_PREALLOC is set. Could be
+>> that hostmem is still missing to update that flag ...
+>>
+>> Signed-off-by: David Hildenbrand <david@redhat.com>
+>> Signed-off-by: William Roche <william.roche@oracle.com>
+>> ---
+>>   backends/hostmem.c       | 29 +++++++++++++++++++++++++++++
+>>   include/sysemu/hostmem.h |  1 +
+>>   2 files changed, 30 insertions(+)
+>>
+>> diff --git a/backends/hostmem.c b/backends/hostmem.c
+>> index bf85d716e5..fbd8708664 100644
+>> --- a/backends/hostmem.c
+>> +++ b/backends/hostmem.c
+>> @@ -361,11 +361,32 @@ static void 
+>> host_memory_backend_set_prealloc_threads(Object *obj, Visitor *v,
+>>       backend->prealloc_threads = value;
+>>   }
+>> +static void host_memory_backend_ram_remapped(RAMBlockNotifier *n, 
+>> void *host,
+>> +                                             size_t offset, size_t size)
+>> +{
+>> +    HostMemoryBackend *backend = container_of(n, HostMemoryBackend,
+>> +                                              ram_notifier);
+>> +    Error *err = NULL;
+>> +
+>> +    if (!host_memory_backend_mr_inited(backend) ||
+>> +        memory_region_get_ram_ptr(&backend->mr) != host) {
+>> +        return;
+>> +    }
+>> +
+>> +    host_memory_backend_apply_settings(backend, host + offset, size, 
+>> &err);
+>> +    if (err) {
+>> +        warn_report_err(err);
 > 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> ---
->   target/mips/tcg/micromips32.decode        |  8 ++++++++
->   target/mips/tcg/micromips_translate.c     | 10 ++++++++++
->   target/mips/tcg/micromips_translate.c.inc |  5 -----
->   3 files changed, 18 insertions(+), 5 deletions(-)
-
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-
-r~
-
+> I wonder if we want to fail hard instead, or have a way to tell the 
+> notifier that something wen wrong.
 > 
-> diff --git a/target/mips/tcg/micromips32.decode b/target/mips/tcg/micromips32.decode
-> index c115ed2eab..958883ce84 100644
-> --- a/target/mips/tcg/micromips32.decode
-> +++ b/target/mips/tcg/micromips32.decode
-> @@ -7,3 +7,11 @@
->   # Reference: MIPS Architecture for Programmers, Volume II-B
->   #            microMIPS32 Instruction Set
->   #            (Document Number: MD00582)
-> +
-> +&r                  rs rt rd sa
-> +
-> +%lsa_sa             9:2  !function=plus_1
-> +
-> +@lsa                ...... rt:5  rs:5  rd:5  .. ... ......  &r sa=%lsa_sa
-> +
-> +LSA                 000000 ..... ..... ..... .. 000 001111  @lsa
-> diff --git a/target/mips/tcg/micromips_translate.c b/target/mips/tcg/micromips_translate.c
-> index 49e90e7eca..f0b5dbf655 100644
-> --- a/target/mips/tcg/micromips_translate.c
-> +++ b/target/mips/tcg/micromips_translate.c
-> @@ -9,6 +9,16 @@
->   #include "qemu/osdep.h"
->   #include "translate.h"
->   
-> +static inline int plus_1(DisasContext *ctx, int x)
-> +{
-> +    return x + 1;
-> +}
-> +
->   /* Include the auto-generated decoders.  */
->   #include "decode-micromips16.c.inc"
->   #include "decode-micromips32.c.inc"
-> +
-> +static bool trans_LSA(DisasContext *ctx, arg_r *a)
-> +{
-> +    return gen_lsa(ctx, a->rd, a->rt, a->rs, a->sa);
-> +}
-> diff --git a/target/mips/tcg/micromips_translate.c.inc b/target/mips/tcg/micromips_translate.c.inc
-> index e8ec5a0ff2..4b4550872f 100644
-> --- a/target/mips/tcg/micromips_translate.c.inc
-> +++ b/target/mips/tcg/micromips_translate.c.inc
-> @@ -191,7 +191,6 @@ enum {
->       /* The following can be distinguished by their lower 6 bits. */
->       BREAK32 = 0x07,
->       INS = 0x0c,
-> -    LSA = 0x0f,
->       ALIGN = 0x1f,
->       EXT = 0x2c,
->       POOL32AXF = 0x3c,
-> @@ -1793,10 +1792,6 @@ static void decode_micromips32_opc(CPUMIPSState *env, DisasContext *ctx)
->           case INS:
->               gen_bitops(ctx, OPC_INS, rt, rs, rr, rd);
->               return;
-> -        case LSA:
-> -            check_insn(ctx, ISA_MIPS_R6);
-> -            gen_lsa(ctx, rd, rt, rs, extract32(ctx->opcode, 9, 2) + 1);
-> -            break;
->           case ALIGN:
->               check_insn(ctx, ISA_MIPS_R6);
->               gen_align(ctx, 32, rd, rs, rt, extract32(ctx->opcode, 9, 2));
 
+It depends on what the caller would do with this information. Is there a 
+way to workaround the problem ? (I don't think so)
+Can the VM continue to run without doing anything about it ? (Maybe?)
+
+Currently all numa notifiers don't return errors.
+
+This function is only called from ram_block_notify_remap() in 
+qemu_ram_remap(), I would vote for a "fail hard" in case where the 
+settings are mandatory to continue.
+
+HTH.
 
