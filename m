@@ -2,173 +2,141 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4C189C78C8
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Nov 2024 17:24:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 151D09C78FF
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Nov 2024 17:38:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tBG9U-00011F-UY; Wed, 13 Nov 2024 11:23:32 -0500
+	id 1tBGMR-0003UD-Jk; Wed, 13 Nov 2024 11:36:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Babu.Moger@amd.com>)
- id 1tBG9S-000116-Mf
- for qemu-devel@nongnu.org; Wed, 13 Nov 2024 11:23:30 -0500
-Received: from mail-bn1nam02on20629.outbound.protection.outlook.com
- ([2a01:111:f403:2407::629]
- helo=NAM02-BN1-obe.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1tBGMO-0003TE-QH
+ for qemu-devel@nongnu.org; Wed, 13 Nov 2024 11:36:53 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Babu.Moger@amd.com>)
- id 1tBG9P-0005xi-9A
- for qemu-devel@nongnu.org; Wed, 13 Nov 2024 11:23:30 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=eBAbAYHB7B57bLhGJqWkmGSz3i7EVb5lMnX+zDTKaEO8zREa+Ftjg2NJtg7N4oCILs/KQRVx/hbP0wUkxNu/akmq3n1TKtsIN0u7MNrIpEfbySfWrsMZRXx8574MxjT5iScZqyYEvWtVBmWtgbiuoMxmiCHFNFY73mcXgvamYpUx9ZrQVy+YuBPGoa+eiRpiDJ00hj/CYEM0nGx3BO7kmdLRsM3wVZUabEIhqJcXRhnLybQ+CTKbl38sMmgI5YqfGpZBEECtQ1ZuiObmp5T1YdvqfDAqQ+r1Ir59A5x5jfISfNT++MyvKXdRD6Da092Wxpo/qB5quQSCyrEaB4Jn1A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=qb6Hz5QEhhvWRK0UAjgX+IXz2YXOxk84MHhfI+WQemo=;
- b=KDH1qJzfKo9dFNo8TvHFtYjkEctAE4e0C0r+DjCEe8Hv1CgwSj40eBzgYOwZZ5H8U6qNATBcIMheeQBulYuXYVjaVtFxdv4sk1cc1Co1qWhI7DhEp/f3cUPHBjhEP2jvhsWt9ZvwoQ1Sq9cBybzutc644QxeOXFIWX3IlRUU4yck57szJABWrsdqHiyMnlxwfBakGftmfClKVUmGrx9PO18GYi16/l3Js+6jYl6FCUUjmK/GTVR7jQw1/PDg9liAIVzas1L0Po2uC++2Ss7qptlFbWHs3UM5Qq9w0jmccYqlKCivnZxeAxB8KocJ65HrtcZFxiSwU0yIIv57BvI0iA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=qb6Hz5QEhhvWRK0UAjgX+IXz2YXOxk84MHhfI+WQemo=;
- b=Q+VITzecZ29oZK2EZ/CMVjOeF23d0VpkXGEyDr+pq4ihwXt0tFBwda/1yUQP0oSO0baIsexSrYQP/Xnln9fiq7ZZMdzQAKht9eCx+qF9NcpuvA0KTcQKbJqfgnx5DD2kCXF9CqYcBY8k73lhax45qiDGDBL4wc2uP8WRdMc0iTE=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from SA0PR12MB4557.namprd12.prod.outlook.com (2603:10b6:806:9d::10)
- by MW4PR12MB7261.namprd12.prod.outlook.com (2603:10b6:303:229::22)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8158.17; Wed, 13 Nov
- 2024 16:23:17 +0000
-Received: from SA0PR12MB4557.namprd12.prod.outlook.com
- ([fe80::d22d:666e:be69:117f]) by SA0PR12MB4557.namprd12.prod.outlook.com
- ([fe80::d22d:666e:be69:117f%6]) with mapi id 15.20.8137.022; Wed, 13 Nov 2024
- 16:23:17 +0000
-Message-ID: <2394ca75-409d-4ae5-b995-27f8b196a1fb@amd.com>
-Date: Wed, 13 Nov 2024 10:23:15 -0600
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 7/7] target/i386: Add EPYC-Genoa model to support Zen 4
- processor series
-To: Maksim Davydov <davydov-max@yandex-team.ru>,
- "pbonzini@redhat.com" <pbonzini@redhat.com>,
- "Roth, Michael" <Michael.Roth@amd.com>
-Cc: weijiang.yang@intel.com, philmd@linaro.org, dwmw@amazon.co.uk,
- paul@xen.org, joao.m.martins@oracle.com, qemu-devel@nongnu.org,
- mtosatti@redhat.com, kvm@vger.kernel.org, mst@redhat.com,
- marcel.apfelbaum@gmail.com, yang.zhong@intel.com, jing2.liu@intel.com,
- vkuznets@redhat.com, michael.roth@amd.com, wei.huang2@amd.com,
- berrange@redhat.com, bdas@redhat.com, pbonzini@redhat.com,
- richard.henderson@linaro.org
-References: <20230504205313.225073-1-babu.moger@amd.com>
- <20230504205313.225073-8-babu.moger@amd.com>
- <e8e0bc10-07ea-4678-a319-fc8d6938d9bd@yandex-team.ru>
- <4b38c071-ecb0-112b-f4c4-d1d68e5db63d@amd.com>
- <24462567-e486-4b7f-b869-a1fab48d739c@yandex-team.ru>
-Content-Language: en-US
-From: "Moger, Babu" <babu.moger@amd.com>
-In-Reply-To: <24462567-e486-4b7f-b869-a1fab48d739c@yandex-team.ru>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SN6PR2101CA0012.namprd21.prod.outlook.com
- (2603:10b6:805:106::22) To SA0PR12MB4557.namprd12.prod.outlook.com
- (2603:10b6:806:9d::10)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1tBGML-0007Cd-OC
+ for qemu-devel@nongnu.org; Wed, 13 Nov 2024 11:36:52 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1731515807;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=ZoB7bHEPr2ZQyJwgbQsINSE79T6gtdN6t7gS/CsnTtc=;
+ b=gc5n6qSaAXiVBIy9OyPL4y4B8qSrgmEgFj0msK3AQUnJTiLfMv9t89mWmp/7cp8oH9IBDN
+ 7edBXi3ZdeZQiFVZWtBWkXQZmWUIY3duYx5fV0MrL/B/J8mMJxPEtOGt6G/+f6L0wOJTvn
+ rfTXpYgD/EX7IVRxXRGkxxX2YWxU578=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-501-A1UFbdemO7m_ioFXPw9CPQ-1; Wed, 13 Nov 2024 11:36:46 -0500
+X-MC-Unique: A1UFbdemO7m_ioFXPw9CPQ-1
+X-Mimecast-MFC-AGG-ID: A1UFbdemO7m_ioFXPw9CPQ
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-37d45de8bbfso5566161f8f.3
+ for <qemu-devel@nongnu.org>; Wed, 13 Nov 2024 08:36:45 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1731515805; x=1732120605;
+ h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+ :from:references:cc:to:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=ZoB7bHEPr2ZQyJwgbQsINSE79T6gtdN6t7gS/CsnTtc=;
+ b=kKC6YkSV1zwfm9jJ4LScC2jyEVnLU7dXA3TSB8CrP2WgTHMgjSKSo8FafHDebfbrUs
+ ILtjxdF68n7YkOPDAAUP5xVyrfKJ5z2WVnt4oRet3JRZehNiX+B6S02JVbfBloQEOchM
+ 9TvRcdVJOBBHEZ+OleFhNimfSwZTTrI3kCKIuEg/dSxeNPrfMngmjGENG+bhb03Gv/9g
+ DsZiZsbOYlr6upIJRLk3i7b/YSoiWcjxGAIdAUak39Pl+JLx5gjVl/97JFXusLwq8VME
+ tT4PjkgjZ7VL3k1Q+gx+tniB0Hd5ET6coJ6DDFE90RIkEU3rn+yI0mcY1m2ZnnHFCpQu
+ AyKw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVmiWVvG3Yl9LyfsZK9UvWWkoaj2JIGRG4er3StY3hTLKWFQ7v0f9rzrVz+4rvFQhHjbo2Lbn0cR4A0@nongnu.org
+X-Gm-Message-State: AOJu0YxlMgnHSPj3zzbofTU+W4yPhS6p3V0h5vfo1JyOAMjI7oAspr8F
+ nSAegoHvted5OuxmSNxL2+WqPbRKaxyRsoOas/gFBnxKk9i8pdZQihueSfH+Ah5nkRTV0hJ9pve
+ /faRH4bZ6LcxCR+5V8dEQ12K7G9m2zHA0R3KYsEMZI2efVJDGf636
+X-Received: by 2002:a05:6000:1865:b0:37d:7e71:67a0 with SMTP id
+ ffacd0b85a97d-381f1866b1amr24546594f8f.9.1731515804873; 
+ Wed, 13 Nov 2024 08:36:44 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEPTSqbPPPLI53qChEyqKm6CWjyixEnke43e3OFPiEn+3ZuoB4mTH3x4CUkG/153Un2x6Ou7Q==
+X-Received: by 2002:a05:6000:1865:b0:37d:7e71:67a0 with SMTP id
+ ffacd0b85a97d-381f1866b1amr24546545f8f.9.1731515804409; 
+ Wed, 13 Nov 2024 08:36:44 -0800 (PST)
+Received: from [192.168.10.47] ([151.49.84.243])
+ by smtp.googlemail.com with ESMTPSA id
+ ffacd0b85a97d-381ed97d658sm18710851f8f.39.2024.11.13.08.36.42
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 13 Nov 2024 08:36:43 -0800 (PST)
+Message-ID: <c0983059-ab11-4bc5-ab60-c5b23d1c290e@redhat.com>
+Date: Wed, 13 Nov 2024 17:36:41 +0100
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA0PR12MB4557:EE_|MW4PR12MB7261:EE_
-X-MS-Office365-Filtering-Correlation-Id: 16ebc95d-9dd6-417b-4413-08dd03ff7b05
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|1800799024|366016;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?UisvVEhteUczQkd6YnJoZnZUa3Rjckl4KzB6MjQ1TVgyQXhxUXZjbmVrQ3hp?=
- =?utf-8?B?KzlsdUF1YjU1dUhOMXFxZVRHd3A5NFlZdC90Z0dmRy9sYzVUQmpRS3RlSGhF?=
- =?utf-8?B?SGN2NGFlNHRYMFRva3BKZHdwbFRWZWtqbGV5QXJkVGRxNGdudlFDWVVyb2hM?=
- =?utf-8?B?eUNJZXBTTXJxbWYrVWM2V2prSlhvQWwzd2J0VDlMNm9vSDFMS3gyUlY4STdE?=
- =?utf-8?B?M0JkeG5ZS3hnbzJHVkEzdXA0UHMwQ1ZWckpBczVpRm81QTFqYmFJNEROTzda?=
- =?utf-8?B?SEluOXRjb2R5aFl5ekdrRmZwaTQ2WGhrQUZmTytlTlVhbjBxVThnQWhncldi?=
- =?utf-8?B?bkJSa2pod3N6TXozbGY2KzMzdkRjaGdHOUc4dUY5R2ZpZGRkZW0yVVFrZG55?=
- =?utf-8?B?SUE4Zzg3aVhIYXZENkcyYXVvQXRkeitidXQ2WUNlcXNURnZiTVhRdXdUMGRS?=
- =?utf-8?B?K0pYVkVmMjdSZDg1bzd5U1BDZ0szdWpjZk4ybktxbTh1R3hPYllDcFYwN1VX?=
- =?utf-8?B?bS85RFR6S0Z5eWZwRUFKMmlYc2hOTHBqMGxTMHpOTkpKZjZPbUJ0QnFRTVY2?=
- =?utf-8?B?WnJJVFpmblNFRC9obCtjdDlVOWlSZmZkVnRuaWwrbHA4WXgxb0lSUUFSZDhY?=
- =?utf-8?B?dXlhNUhVdG51OCtxVi9BWVluUWNZcGJpMUVIV2NTR2F0OC8rVXJ1b3hxYkRw?=
- =?utf-8?B?TjRhNmJPem8zOUNOdE1QS1RsKytVMTJhaHJyZTBFUWl5cmJrb1UrOUZua2cr?=
- =?utf-8?B?QnlZN1RoazZJWTZSN3F5dk9mTEtMaDBYeTFhMDZPa1pJOXlDZmcxbDFJZko3?=
- =?utf-8?B?SDdWNCsrRFRyN3F3a2FwdHE1VHA1T2EreXNoTTFxNWlTUENNTElPRlMwYlZC?=
- =?utf-8?B?NG8rYUgvRHBOWlFFVUdMZFI3bEFIYkVLcXJES1FUYktyMFU2eml0UWlKaWhP?=
- =?utf-8?B?S2x1blFaT2lwbmRGOFdqOHpSSnl1aTFWSngrUkdyb1NJaUdFMGpBUnJUMGVy?=
- =?utf-8?B?S1RmdDRyS3lYdmI2WWRLZit1bmI4Wk1taDlIT25jY0hManlSSjk1RnFYQ1ZJ?=
- =?utf-8?B?RSthbjhLMGJacDlBM1pRRDFINXhaeitZUHp3MjhLUml4K1FwenFhQ3BVWXZR?=
- =?utf-8?B?TzBackpVdEIrVExWRWlYbm4va0dRcGl0ZVp5UGR1eUZObkNyS1JBQ01Nem5o?=
- =?utf-8?B?OVIrL2Z0SGkwTVBSTVB1Zk1BMDIwZGhZcjEzZy8yYVJBU1d0WklFZnBtOHFL?=
- =?utf-8?B?MzN6TkRjTGdWQm1mNUZrZks5dXhwWHV3MEJtZ1NxYWZRUlVlS2JtZEhiQ1Ix?=
- =?utf-8?B?T3FPVTFORlFGdFJ5eGJTTkFqa256V3FpRTQ1Z0llRHJTN0d6NERSZFYwZ2ps?=
- =?utf-8?B?Tlk4ZnBLSDlzWkdGR25UcG0wUGptSHJXenArcTRodXYyeWYwZDBvVjlyRzFS?=
- =?utf-8?B?aXZKRXNBZkkreHo5LytZUkRDbFh2NThhWCtZdTB2QUp2b0UvOHVzY3dVdWl2?=
- =?utf-8?B?WFhWU0w2UEhYcU15T3BoTnBic2lRamo2VWFQa3NtUU5uTmFyaW0zUkpsZlIx?=
- =?utf-8?B?TmhVdktXOFE2cUVpTmVjYXg5S0dZdjVPNW16M08zanNHeStueDR1K1BCNzR1?=
- =?utf-8?B?Wkt5a0xrakJOUGh5Q2x2b0U4VWU5SUZuZDJOK1Q1U1d4RDMxQlEvN0g0b09B?=
- =?utf-8?B?Z0h4K3RHRUpLK1l6UStGY3ZwTkRKV1pPZER0eUd3S1VjMzkxdC8zR0JJbkY5?=
- =?utf-8?Q?1PtmkeYlWX7pp2hkQONHSkqT/nW8Wt982jgyB+e?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:SA0PR12MB4557.namprd12.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(376014)(7416014)(1800799024)(366016); DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?TnN1RVE0N1F1aVZxdXk0Y1hYSy96NTh2RTcvZk9XQ0FxU1JwazVPeFdIMTRs?=
- =?utf-8?B?eENMdDdRUkVES0poL25KamZjemhIb2Vkcyt3QVdWdHJsYUtXU1V4WHJFMCt4?=
- =?utf-8?B?TjJ0SzRXVGh3cjBIS0R6ek93Rnc2ay9MT1hTU05JNjc5QVVjb0VwcEhLdW5P?=
- =?utf-8?B?bVdjQU9hZVVWMURCc2VYaDd1WHFrY0VPK0Q2aWozT3ZiZzYzRGNTV3pEMFBk?=
- =?utf-8?B?Yjc3M0I3aTJsNUhBaHNHRDdVSjF4NnFlOWpya0RjYjRWV0pDVC9WbWtVakho?=
- =?utf-8?B?Q0c3WWhvUWQ1Y2VhZjRlOW1ONTJiUk85NUJSbmhWZ0VPcnhmZnJVRFlFZWVu?=
- =?utf-8?B?RStWcU1KUnExRmc1RThCQVJUd3Zrek9YRUR4MUM2UGFVWTF0cjVISnk5RXkv?=
- =?utf-8?B?SDZjY2VPeXdsZzhyQ0ttaGFYWGI0SHpYOHNOdW9KVVdtdjcrWmU4NWlPc29q?=
- =?utf-8?B?T1gwd2RiZk8wcGlab2crL3V4bXFxRlRDR0d6WFpLL0Q0aVpkUXBRNzdJcEZV?=
- =?utf-8?B?TVB0eEhKcFNBSmRUYXBtZ29rdGNNd3ZmQkxraVVUcjNnelBNRkkzZzJKM29P?=
- =?utf-8?B?SERyQTVrWnEweGhzUzFxMGV0U0gzTE92VHBoZmU0cDREN3Bray9GYzBWTU1v?=
- =?utf-8?B?a2Z4Nm9hZllFVm9Nd0plRkJQSGt5WlA3MGQzYTBoeU52VTBXTXFCYkZMbUFl?=
- =?utf-8?B?VUc2dE5uNTBWRE1DYy9tT3A0MFA2NUtQODlYekFnKzJxVE82QlpPRVIyR2gx?=
- =?utf-8?B?SGpMcHg3ZWQ1NDZUS3VFSHdkV29ZbkpuV1Q1N0gwbDNLZHg4RW9VbmRWMTQ2?=
- =?utf-8?B?bzJNTXdoMHZtbDR0YnZ0ZlV1Z0NSNGN2SU1UQ1BEdDJzQ0tIMWVTZ1Nsa3pB?=
- =?utf-8?B?aGEwQXFKSjRJMG84WW83QzVPTUpwaXZ0YjZNcE02OXpyRFNiK3haYVRmSDBL?=
- =?utf-8?B?NHJtTi9FT3JOc0FPbm9XblpVeDZENHhPNE13TmVpRnZNaklnL1ROZkFwRnE2?=
- =?utf-8?B?N0s2Z0NEWmxUb0MyS1MrWFo3allmRHFDZVlSZVlveTYrK3liZDNDcjJhUjVJ?=
- =?utf-8?B?NU0xbThnUUVnN0dka2YyNXIrZk9LcFA0VXAyYmk0Yzd1N1pPYlNTQTVic0RT?=
- =?utf-8?B?Yk1iemF2RVFjK1AwTldtckovbkhZQVRtK0ZsbldIaWZCaTRQdUllanRvTU83?=
- =?utf-8?B?TnUyYi9mWHNVZ2ZQQW1uRTdLSUJ4azNIdW5ySkpON2R4ZHV4RWNVRENOeWp3?=
- =?utf-8?B?Wjd1RmRoaXNvT0NRR3l2VFhwWUJtdnVlM0JPNXFzSGRSQzB0TGZveGR2eUgz?=
- =?utf-8?B?aHNncVZTOEM3ZFFoYlRuTTJwMkY3V2RPdmFCN3UxTll6REhyYXRmS215R1R1?=
- =?utf-8?B?UFh2cjJYYXU5MWphSjVReGdCV2RWQkc1dVhSYm1UZ0FzTmNhNGo5STQ3bUc4?=
- =?utf-8?B?aDhCZ0crZS90eG9JMWJVQjlhQ3pJdktNb1pXZHo4aFNVQzFrVGVWUkNUN09k?=
- =?utf-8?B?N2NHbXBITlVPdTlCVTRpV0ZxMGVHWDlsbEx4aFlwQXJPaUNFNVZ4cmowUHdQ?=
- =?utf-8?B?UU8vMWVqNEI0aXRDc3pCbm1BeFVkdU1sZHByZ2ZNVy9zV2dkYWxvVExSNmVQ?=
- =?utf-8?B?RUo5aktLV2VwNkllNWhiWUl4RUNwZTJXaWh1YXBGS3pvcHRZNm1qdnNLUW50?=
- =?utf-8?B?b0NqajgxejFEVmZMWm90K0d4YW5XdjdMNFY2eVRsa1RsK0N4ZkZXUC9oODZR?=
- =?utf-8?B?c0pGdjhjSmZpUy9ISWdob1hXV01zdVpWNEVPQ3p0MDArcmZtclRwb0J2QVZJ?=
- =?utf-8?B?SEdlOG82NUFJRW5obkVSNWtrTHE0QU9salNSUTh6bllPRWlWVm16aFY1am1S?=
- =?utf-8?B?MXQyUklSZFliSWsvWjlSTnhMc0tsbEVxUXJ4RU9DSjA3OGgzOUZVb3cwcDJB?=
- =?utf-8?B?dGFmWldpTTJkZjRCNlQ0YnlBMlJkaS93SzExV3hWS0U3NDhpUXRkSHZpT1Iy?=
- =?utf-8?B?RFo4WkxZY1lHT1lXRG04TlV1bHdzT2l1cmNhNGlQT1dGdkNBV2dVMnY3UDlU?=
- =?utf-8?B?R2pYUzI4RS9qWHVoOHV2ZkIyMkhxendVbTBNYnc0ZHZIR2lZWnVBZVd0V3B5?=
- =?utf-8?Q?rq/A=3D?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 16ebc95d-9dd6-417b-4413-08dd03ff7b05
-X-MS-Exchange-CrossTenant-AuthSource: SA0PR12MB4557.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Nov 2024 16:23:17.5366 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: iWkQV33fDMo7bq6M/OgbNpmxTuF9aaChESrgVSlfVYEsjQ62JJdLP8K0ux/EEc3P
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB7261
-Received-SPF: permerror client-ip=2a01:111:f403:2407::629;
- envelope-from=Babu.Moger@amd.com;
- helo=NAM02-BN1-obe.outbound.protection.outlook.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.119,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v10 01/15] ui & main loop: Redesign of system-specific
+ main thread event handling
+To: Phil Dennis-Jordan <phil@philjordan.eu>, qemu-devel@nongnu.org
+Cc: agraf@csgraf.de, peter.maydell@linaro.org, rad@semihalf.com,
+ quic_llindhol@quicinc.com, stefanha@redhat.com, mst@redhat.com,
+ slp@redhat.com, richard.henderson@linaro.org, eduardo@habkost.net,
+ marcel.apfelbaum@gmail.com, gaosong@loongson.cn, jiaxun.yang@flygoat.com,
+ chenhuacai@kernel.org, kwolf@redhat.com, hreitz@redhat.com,
+ philmd@linaro.org, shorne@gmail.com, palmer@dabbelt.com,
+ alistair.francis@wdc.com, bmeng.cn@gmail.com, liwei1518@gmail.com,
+ dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com, jcmvbkbc@gmail.com,
+ marcandre.lureau@redhat.com, berrange@redhat.com, akihiko.odaki@daynix.com,
+ qemu-arm@nongnu.org, qemu-block@nongnu.org, qemu-riscv@nongnu.org,
+ balaton@eik.bme.hu
+References: <20241113142343.40832-1-phil@philjordan.eu>
+ <20241113142343.40832-2-phil@philjordan.eu>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=pbonzini@redhat.com; keydata=
+ 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
+In-Reply-To: <20241113142343.40832-2-phil@philjordan.eu>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -29
+X-Spam_score: -3.0
+X-Spam_bar: ---
+X-Spam_report: (-3.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.119,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.738,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -181,313 +149,71 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: babu.moger@amd.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Adding Paolo.
-
-On 11/12/24 04:09, Maksim Davydov wrote:
+On 11/13/24 15:23, Phil Dennis-Jordan wrote:
+> macOS's Cocoa event handling must be done on the initial (main) thread
+> of the process. Furthermore, if library or application code uses
+> libdispatch, the main dispatch queue must be handling events on the main
+> thread as well.
 > 
+> So far, this has affected Qemu in both the Cocoa and SDL UIs, although
+> in different ways: the Cocoa UI replaces the default qemu_main function
+> with one that spins Qemu's internal main event loop off onto a
+> background thread. SDL (which uses Cocoa internally) on the other hand
+> uses a polling approach within Qemu's main event loop. Events are
+> polled during the SDL UI's dpy_refresh callback, which happens to run
+> on the main thread by default.
 > 
-> On 11/8/24 23:56, Moger, Babu wrote:
->> Hi Maxim,
->>
->> Thanks for looking into this. I will fix the bits I mentioned below in
->> upcoming Genoa/Turin model update.
->>
->> I have few comments below.
->>
->> On 11/8/2024 12:15 PM, Maksim Davydov wrote:
->>> Hi!
->>> I compared EPYC-Genoa CPU model with CPUID output from real EPYC Genoa
->>> host. I found some mismatches that confused me. Could you help me to
->>> understand them?
->>>
->>> On 5/4/23 23:53, Babu Moger wrote:
->>>> Adds the support for AMD EPYC Genoa generation processors. The model
->>>> display for the new processor will be EPYC-Genoa.
->>>>
->>>> Adds the following new feature bits on top of the feature bits from
->>>> the previous generation EPYC models.
->>>>
->>>> avx512f         : AVX-512 Foundation instruction
->>>> avx512dq        : AVX-512 Doubleword & Quadword Instruction
->>>> avx512ifma      : AVX-512 Integer Fused Multiply Add instruction
->>>> avx512cd        : AVX-512 Conflict Detection instruction
->>>> avx512bw        : AVX-512 Byte and Word Instructions
->>>> avx512vl        : AVX-512 Vector Length Extension Instructions
->>>> avx512vbmi      : AVX-512 Vector Byte Manipulation Instruction
->>>> avx512_vbmi2    : AVX-512 Additional Vector Byte Manipulation Instruction
->>>> gfni            : AVX-512 Galois Field New Instructions
->>>> avx512_vnni     : AVX-512 Vector Neural Network Instructions
->>>> avx512_bitalg   : AVX-512 Bit Algorithms, add bit algorithms Instructions
->>>> avx512_vpopcntdq: AVX-512 AVX-512 Vector Population Count Doubleword and
->>>>                    Quadword Instructions
->>>> avx512_bf16    : AVX-512 BFLOAT16 instructions
->>>> la57            : 57-bit virtual address support (5-level Page Tables)
->>>> vnmi            : Virtual NMI (VNMI) allows the hypervisor to inject
->>>> the NMI
->>>>                    into the guest without using Event Injection mechanism
->>>>                    meaning not required to track the guest NMI and
->>>> intercepting
->>>>                    the IRET.
->>>> auto-ibrs       : The AMD Zen4 core supports a new feature called
->>>> Automatic IBRS.
->>>>                    It is a "set-and-forget" feature that means that,
->>>> unlike e.g.,
->>>>                    s/w-toggled SPEC_CTRL.IBRS, h/w manages its IBRS
->>>> mitigation
->>>>                    resources automatically across CPL transitions.
->>>>
->>>> Signed-off-by: Babu Moger <babu.moger@amd.com>
->>>> ---
->>>>   target/i386/cpu.c | 122 ++++++++++++++++++++++++++++++++++++++++++++++
->>>>   1 file changed, 122 insertions(+)
->>>>
->>>> diff --git a/target/i386/cpu.c b/target/i386/cpu.c
->>>> index d50ace84bf..71fe1e02ee 100644
->>>> --- a/target/i386/cpu.c
->>>> +++ b/target/i386/cpu.c
->>>> @@ -1973,6 +1973,56 @@ static const CPUCaches epyc_milan_v2_cache_info
->>>> = {
->>>>       },
->>>>   };
->>>> +static const CPUCaches epyc_genoa_cache_info = {
->>>> +    .l1d_cache = &(CPUCacheInfo) {
->>>> +        .type = DATA_CACHE,
->>>> +        .level = 1,
->>>> +        .size = 32 * KiB,
->>>> +        .line_size = 64,
->>>> +        .associativity = 8,
->>>> +        .partitions = 1,
->>>> +        .sets = 64,
->>>> +        .lines_per_tag = 1,
->>>> +        .self_init = 1,
->>>> +        .no_invd_sharing = true,
->>>> +    },
->>>> +    .l1i_cache = &(CPUCacheInfo) {
->>>> +        .type = INSTRUCTION_CACHE,
->>>> +        .level = 1,
->>>> +        .size = 32 * KiB,
->>>> +        .line_size = 64,
->>>> +        .associativity = 8,
->>>> +        .partitions = 1,
->>>> +        .sets = 64,
->>>> +        .lines_per_tag = 1,
->>>> +        .self_init = 1,
->>>> +        .no_invd_sharing = true,
->>>> +    },
->>>> +    .l2_cache = &(CPUCacheInfo) {
->>>> +        .type = UNIFIED_CACHE,
->>>> +        .level = 2,
->>>> +        .size = 1 * MiB,
->>>> +        .line_size = 64,
->>>> +        .associativity = 8,
->>>> +        .partitions = 1,
->>>> +        .sets = 2048,
->>>> +        .lines_per_tag = 1,
->>>
->>> 1. Why L2 cache is not shown as inclusive and self-initializing?
->>>
->>> PPR for AMD Family 19h Model 11 says for L2 (0x8000001d):
->>> * cache inclusive. Read-only. Reset: Fixed,1.
->>> * cache is self-initializing. Read-only. Reset: Fixed,1.
->>
->> Yes. That is correct. This needs to be fixed. I Will fix it.
->>>
->>>> +    },
->>>> +    .l3_cache = &(CPUCacheInfo) {
->>>> +        .type = UNIFIED_CACHE,
->>>> +        .level = 3,
->>>> +        .size = 32 * MiB,
->>>> +        .line_size = 64,
->>>> +        .associativity = 16,
->>>> +        .partitions = 1,
->>>> +        .sets = 32768,
->>>> +        .lines_per_tag = 1,
->>>> +        .self_init = true,
->>>> +        .inclusive = true,
->>>> +        .complex_indexing = false,
->>>
->>> 2. Why L3 cache is shown as inclusive? Why is it not shown in L3 that
->>> the WBINVD/INVD instruction is not guaranteed to invalidate all lower
->>> level caches (0 bit)?
->>>
->>> PPR for AMD Family 19h Model 11 says for L2 (0x8000001d):
->>> * cache inclusive. Read-only. Reset: Fixed,0.
->>> * Write-Back Invalidate/Invalidate. Read-only. Reset: Fixed,1.
->>>
->>
->> Yes. Both of this needs to be fixed. I Will fix it.
->>
->>>
->>>
->>> 3. Why the default stub is used for TLB, but not real values as for
->>> other caches?
->>
->> Can you please eloberate on this?
->>
+> As UIs are mutually exclusive, this works OK as long as nothing else
+> needs platform-native event handling. In the next patch, a new device is
+> introduced based on the ParavirtualizedGraphics.framework in macOS.
+> This uses libdispatch internally, and only works when events are being
+> handled on the main runloop. With the current system, it works when
+> using either the Cocoa or the SDL UI. However, it does not when running
+> headless. Moreover, any attempt to install a similar scheme to the
+> Cocoa UI's main thread replacement fails when combined with the SDL
+> UI.
 > 
-> For L1i, L1d, L2 and L3 cache we provide the correct information about
-> characteristics. In contrast, for L1i TLB, L1d TLB, L2i TLB and L2d TLB
-> (0x80000005 and 0x80000006) we use the same value for all CPU models.
-> Sometimes it seems strange. For instance, the current default value in
-> QEMU for L2 TLB associativity for 4 KB pages is 4. But 4 is a reserved
-> value for Genoa (as PPR for Family 19h Model 11h says)
+> This change tidies up main thread management to be more flexible.
 > 
->>>
->>>> +    },
->>>> +};
->>>> +
->>>>   /* The following VMX features are not supported by KVM and are left
->>>> out in the
->>>>    * CPU definitions:
->>>>    *
->>>> @@ -4472,6 +4522,78 @@ static const X86CPUDefinition
->>>> builtin_x86_defs[] = {
->>>>               { /* end of list */ }
->>>>           }
->>>>       },
->>>> +    {
->>>> +        .name = "EPYC-Genoa",
->>>> +        .level = 0xd,
->>>> +        .vendor = CPUID_VENDOR_AMD,
->>>> +        .family = 25,
->>>> +        .model = 17,
->>>> +        .stepping = 0,
->>>> +        .features[FEAT_1_EDX] =
->>>> +            CPUID_SSE2 | CPUID_SSE | CPUID_FXSR | CPUID_MMX |
->>>> CPUID_CLFLUSH |
->>>> +            CPUID_PSE36 | CPUID_PAT | CPUID_CMOV | CPUID_MCA |
->>>> CPUID_PGE |
->>>> +            CPUID_MTRR | CPUID_SEP | CPUID_APIC | CPUID_CX8 |
->>>> CPUID_MCE |
->>>> +            CPUID_PAE | CPUID_MSR | CPUID_TSC | CPUID_PSE | CPUID_DE |
->>>> +            CPUID_VME | CPUID_FP87,
->>>> +        .features[FEAT_1_ECX] =
->>>> +            CPUID_EXT_RDRAND | CPUID_EXT_F16C | CPUID_EXT_AVX |
->>>> +            CPUID_EXT_XSAVE | CPUID_EXT_AES |  CPUID_EXT_POPCNT |
->>>> +            CPUID_EXT_MOVBE | CPUID_EXT_SSE42 | CPUID_EXT_SSE41 |
->>>> +            CPUID_EXT_PCID | CPUID_EXT_CX16 | CPUID_EXT_FMA |
->>>> +            CPUID_EXT_SSSE3 | CPUID_EXT_MONITOR | CPUID_EXT_PCLMULQDQ |
->>>> +            CPUID_EXT_SSE3,
->>>> +        .features[FEAT_8000_0001_EDX] =
->>>> +            CPUID_EXT2_LM | CPUID_EXT2_RDTSCP | CPUID_EXT2_PDPE1GB |
->>>> +            CPUID_EXT2_FFXSR | CPUID_EXT2_MMXEXT | CPUID_EXT2_NX |
->>>> +            CPUID_EXT2_SYSCALL,
->>>> +        .features[FEAT_8000_0001_ECX] =
->>>> +            CPUID_EXT3_OSVW | CPUID_EXT3_3DNOWPREFETCH |
->>>> +            CPUID_EXT3_MISALIGNSSE | CPUID_EXT3_SSE4A | CPUID_EXT3_ABM |
->>>> +            CPUID_EXT3_CR8LEG | CPUID_EXT3_SVM | CPUID_EXT3_LAHF_LM |
->>>> +            CPUID_EXT3_TOPOEXT | CPUID_EXT3_PERFCORE,
->>>> +        .features[FEAT_8000_0008_EBX] =
->>>> +            CPUID_8000_0008_EBX_CLZERO |
->>>> CPUID_8000_0008_EBX_XSAVEERPTR |
->>>> +            CPUID_8000_0008_EBX_WBNOINVD | CPUID_8000_0008_EBX_IBPB |
->>>> +            CPUID_8000_0008_EBX_IBRS | CPUID_8000_0008_EBX_STIBP |
->>>> +            CPUID_8000_0008_EBX_STIBP_ALWAYS_ON |
->>>> +            CPUID_8000_0008_EBX_AMD_SSBD | CPUID_8000_0008_EBX_AMD_PSFD,
->>>
->>> 4. Why 0x80000008_EBX features related to speculation vulnerabilities
->>> (BTC_NO, IBPB_RET, IbrsPreferred, INT_WBINVD) are not set?
->>
->> KVM does not expose these bits to the guests yet.
->>
->> I normally check using the ioctl KVM_GET_SUPPORTED_CPUID.
->>
+>   * The qemu_main global function pointer is a custom function for the
+>     main thread, and it may now be NULL. When it is, the main thread
+>     runs the main Qemu loop. This represents the traditional setup.
+>   * When non-null, spawning the main Qemu event loop on a separate
+>     thread is now done centrally rather than inside the Cocoa UI code.
+>   * For most platforms, qemu_main is indeed NULL by default, but on
+>     Darwin, it defaults to a function that runs the CFRunLoop.
+>   * The Cocoa UI sets qemu_main to a function which runs the
+>     NSApplication event handling runloop, as is usual for a Cocoa app.
+>   * The SDL UI overrides the qemu_main function to NULL, thus
+>     specifying that Qemu's main loop must run on the main
+>     thread.
+>   * The GTK UI also overrides the qemu_main function to NULL.
+>   * For other UIs, or in the absence of UIs, the platform's default
+>     behaviour is followed.
 > 
-> I'm not sure, but at least the first two of these features seem to be
-> helpful to choose the appropriate mitigation. Do you think that we should
-> add them to KVM?
+> This means that on macOS, the platform's runloop events are always
+> handled, regardless of chosen UI. The new PV graphics device will
+> thus work in all configurations. There is no functional change on other
+> operating systems.
 > 
->>
->>>
->>>> +        .features[FEAT_8000_0021_EAX] =
->>>> +            CPUID_8000_0021_EAX_No_NESTED_DATA_BP |
->>>> +            CPUID_8000_0021_EAX_LFENCE_ALWAYS_SERIALIZING |
->>>> +            CPUID_8000_0021_EAX_NULL_SEL_CLR_BASE |
->>>> +            CPUID_8000_0021_EAX_AUTO_IBRS,
->>>
->>> 5. Why some 0x80000021_EAX features are not set?
->>> (FsGsKernelGsBaseNonSerializing, FSRC and FSRS)
->>
->> KVM does not expose FSRC and FSRS bits to the guests yet.
-> 
-> But KVM exposes the same features (0x7 ecx=1, bits 10 and 11) for Intel
-> CPU models. Do we have to add these bits for AMD to KVM?
-> 
->>
->> The KVM reports the bit FsGsKernelGsBaseNonSerializing. I will check if
->> we can add this bit to the Genoa and Turin.
->>
->>>
->>>> +        .features[FEAT_7_0_EBX] =
->>>> +            CPUID_7_0_EBX_FSGSBASE | CPUID_7_0_EBX_BMI1 |
->>>> CPUID_7_0_EBX_AVX2 |
->>>> +            CPUID_7_0_EBX_SMEP | CPUID_7_0_EBX_BMI2 |
->>>> CPUID_7_0_EBX_ERMS |
->>>> +            CPUID_7_0_EBX_INVPCID | CPUID_7_0_EBX_AVX512F |
->>>> +            CPUID_7_0_EBX_AVX512DQ | CPUID_7_0_EBX_RDSEED |
->>>> CPUID_7_0_EBX_ADX |
->>>> +            CPUID_7_0_EBX_SMAP | CPUID_7_0_EBX_AVX512IFMA |
->>>> +            CPUID_7_0_EBX_CLFLUSHOPT | CPUID_7_0_EBX_CLWB |
->>>> +            CPUID_7_0_EBX_AVX512CD | CPUID_7_0_EBX_SHA_NI |
->>>> +            CPUID_7_0_EBX_AVX512BW | CPUID_7_0_EBX_AVX512VL,
->>>> +        .features[FEAT_7_0_ECX] =
->>>> +            CPUID_7_0_ECX_AVX512_VBMI | CPUID_7_0_ECX_UMIP |
->>>> CPUID_7_0_ECX_PKU |
->>>> +            CPUID_7_0_ECX_AVX512_VBMI2 | CPUID_7_0_ECX_GFNI |
->>>> +            CPUID_7_0_ECX_VAES | CPUID_7_0_ECX_VPCLMULQDQ |
->>>> +            CPUID_7_0_ECX_AVX512VNNI | CPUID_7_0_ECX_AVX512BITALG |
->>>> +            CPUID_7_0_ECX_AVX512_VPOPCNTDQ | CPUID_7_0_ECX_LA57 |
->>>> +            CPUID_7_0_ECX_RDPID,
->>>> +        .features[FEAT_7_0_EDX] =
->>>> +            CPUID_7_0_EDX_FSRM,
->>>
->>> 6. Why L1D_FLUSH is not set? Because only vulnerable MMIO stale data
->>> processors have to use it, am I right?
->>
->> KVM does not expose L1D_FLUSH to the guests. Not sure why. Need to
->> investigate.
->>
-> 
-> It seems that KVM has exposed L1D_FLUSH since da3db168fb67
+> Signed-off-by: Phil Dennis-Jordan <phil@philjordan.eu>
+> Reviewed-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-Paolo,
+I checked what GTK+ does and, either way, you have to create another 
+thread: timers are handled with a CFRunLoopTimer, but file descriptors 
+are polled in a separate thread and sent to the main thread with a 
+single CFRunLoopSource.  It's a bit nicer that the main thread is in 
+charge, but it's more complex and probably slower too.
 
-I see L1D_FLUSH feature bit is masked for SEV-SNP guest.
+As long as it's clear that any handlers that go through the CFRunLoop 
+run outside the BQL, as is already the case for the Cocoa UI, I see no 
+problem with this approach.
 
-https://lore.kernel.org/qemu-devel/20240704095806.1780273-17-pbonzini@redhat.com/
+Acked-by: Paolo Bonzini <pbonzini@redhat.com>
 
-Any reason for this?
+Paolo
 
-Genoa and Turin hardware supports L1D_FLUSH feature.
-
-I tested commenting the masking line and SEV-SNP guest boots fine.
-
-diff --git a/target/i386/sev.c b/target/i386/sev.c
-index a0d271f898..f5cc37bcc7 100644
---- a/target/i386/sev.c
-+++ b/target/i386/sev.c
-@@ -962,7 +962,7 @@ sev_snp_mask_cpuid_features(X86ConfidentialGuest *cg,
-uint32_t feature, uint32_t
-         if (index == 0 && reg == R_EDX) {
-             return value & ~(CPUID_7_0_EDX_SPEC_CTRL |
-                              CPUID_7_0_EDX_STIBP |
--                             CPUID_7_0_EDX_FLUSH_L1D |
-+                             //CPUID_7_0_EDX_FLUSH_L1D |
-                              CPUID_7_0_EDX_ARCH_CAPABILITIES |
-                              CPUID_7_0_EDX_CORE_CAPABILITY |
-                              CPUID_7_0_EDX_SPEC_CTRL_SSBD);
-
-
-
-If there are no objections, I can add this patch in the Turin series.
-
-Thanks
-
--- 
-Thanks
-Babu Moger
 
