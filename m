@@ -2,138 +2,166 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99A849C7AF7
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Nov 2024 19:22:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 926189C7B2C
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Nov 2024 19:31:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tBHzS-0004u8-1j; Wed, 13 Nov 2024 13:21:18 -0500
+	id 1tBI8b-0007VW-Ks; Wed, 13 Nov 2024 13:30:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tBHzQ-0004tz-EX
- for qemu-devel@nongnu.org; Wed, 13 Nov 2024 13:21:16 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <Santosh.Shukla@amd.com>)
+ id 1tBI8W-0007Us-Rk
+ for qemu-devel@nongnu.org; Wed, 13 Nov 2024 13:30:41 -0500
+Received: from mail-dm6nam10on2066.outbound.protection.outlook.com
+ ([40.107.93.66] helo=NAM10-DM6-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tBHzO-0002Py-Fw
- for qemu-devel@nongnu.org; Wed, 13 Nov 2024 13:21:16 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1731522073;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=B163VpaRJXxp3b2iqYNrwHU/NDgSITNT/KiNnMB0IkU=;
- b=LsPDXANoDp57/h0+djePtmo1fJy0hMYacowUdmE4iwsX+ph1iqkwfHsjwG9uo10wg3z5Pt
- aNMIpGV0CqQ05F5ufFg+YVKDPvITYT6N9GFGsn4Fwo5CLofVido5Ol8sQKJ1NtD0rspocY
- Gfh033rDx9RK7fwPkBd9rfHuk+i1dsA=
-Received: from mail-lf1-f70.google.com (mail-lf1-f70.google.com
- [209.85.167.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-345-sy1bvkv7PH2e9Yr3Eh1NSQ-1; Wed, 13 Nov 2024 13:21:10 -0500
-X-MC-Unique: sy1bvkv7PH2e9Yr3Eh1NSQ-1
-X-Mimecast-MFC-AGG-ID: sy1bvkv7PH2e9Yr3Eh1NSQ
-Received: by mail-lf1-f70.google.com with SMTP id
- 2adb3069b0e04-53da4315990so260428e87.0
- for <qemu-devel@nongnu.org>; Wed, 13 Nov 2024 10:21:09 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731522068; x=1732126868;
- h=content-transfer-encoding:in-reply-to:autocrypt:content-language
- :from:references:cc:to:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=B163VpaRJXxp3b2iqYNrwHU/NDgSITNT/KiNnMB0IkU=;
- b=Ll9rF0680Zn71/RaU+Rt4he+XK9bTCSyC7T3UZg9FYXMLLMzuzVnoSEGeZFSOH47jJ
- ofWmrGxtvgG0GT1A1Gs7BFCw2n2oXdHxT5KUqDleLt/MdESnrgle+ksb497OtDZmZEL2
- 8IFfAJGMsdefo8kwew4Ft5IBwxV5gjbc2P9squcJ0xwY21Zs4wC1VdXAJLnmqQPg0RDr
- nmNreo9AhJDY6Ly8Is6/81Ie0o9UjpJh8FcJ4vl8ZMrudu85M5pnRlI1GmOAYYgPRo67
- cgVDYLk7Z/4Jeseil8C+Cyfij0QNNqjUJHkfBsrpMj330dCE5OmMDNbQM2fM2Nctg9+O
- vo6g==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXJqRivnDLs1ClMK1IkjaVKzKCwo83t+VRQFI4wrkYS/Tvt8ufV0PpnRT9VesfiAixQ9EDlDobW2NyA@nongnu.org
-X-Gm-Message-State: AOJu0YyIZnvqPjf6seMZS+TLQgby2HYxqy7WSBwDoz7dXReXszCiil9V
- /vky6u/6K4J8nEp31AxCblvItoXqVP3iThTVxDjYURVcaOO+Ox3YEMq8n2RT3Z8SiYgHatt+pQw
- 31tcVUYc5TV1g7nmBBpfWBxt7B+Zf27SRWpz1S+FhDh8WtvmoMVyG
-X-Received: by 2002:a05:6512:3a88:b0:536:a6c6:33f with SMTP id
- 2adb3069b0e04-53d862bb481mr10575544e87.13.1731522068306; 
- Wed, 13 Nov 2024 10:21:08 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGU6RcZJh/stvdvJj7BnrRRLy7n9hpCucCMPjhpTqNOETEY4/ZTyAjheZR6bbneoxly6hcFwA==
-X-Received: by 2002:a05:6512:3a88:b0:536:a6c6:33f with SMTP id
- 2adb3069b0e04-53d862bb481mr10575516e87.13.1731522067790; 
- Wed, 13 Nov 2024 10:21:07 -0800 (PST)
-Received: from [192.168.10.47] ([151.49.84.243])
- by smtp.googlemail.com with ESMTPSA id
- 5b1f17b1804b1-432d54f75f9sm32575485e9.17.2024.11.13.10.21.06
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 13 Nov 2024 10:21:07 -0800 (PST)
-Message-ID: <5a3d70f5-e135-4450-aed4-eac03abc58c0@redhat.com>
-Date: Wed, 13 Nov 2024 19:21:06 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 19/20] hw/net/xilinx_ethlite: Map the RAM buffer as RAM
- memory region
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>, Anton Johansson <anjo@rev.ng>,
- Jason Wang <jasowang@redhat.com>, qemu-arm@nongnu.org,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- Thomas Huth <thuth@redhat.com>, Alistair Francis <alistair@alistair23.me>,
- Gustavo Romero <gustavo.romero@linaro.org>
-References: <20241112181044.92193-1-philmd@linaro.org>
- <20241112181044.92193-20-philmd@linaro.org>
-From: Paolo Bonzini <pbonzini@redhat.com>
+ (Exim 4.90_1) (envelope-from <Santosh.Shukla@amd.com>)
+ id 1tBI8U-0003PA-Hh
+ for qemu-devel@nongnu.org; Wed, 13 Nov 2024 13:30:40 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=hevvBewwXuZqIgm8a+V9OkT2jxHQze5tG5nbNJcvTdXb4c9VZQJM9AbR4PDJ9iCkGUPFlZW6Gx8TKrWqYfLOuFPiTZoxzDhUbZZQTqLsf/PycZANJ6e72Oa8q/omgPT2WoNDsZvPzNMK+CbaRvXd7f8KlMBfo+m+vF1rwMDzjgkuC9KmwQcOR+dyUv3jVhmCbnh/Fn9qD+Nkvt+GMWaj2HymlkdU/USdXuyrtJ9jFcwoLlaoOcYsBT9gqMK0ES9L7tPFRZE1m6+G8xCg1XNFXgvbZ444H9jzbHgPUZaygtUO76kozlF1AI5x3jYxoWHrgzCoj29irSBOajDrBOMfOg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=DlV05eHXRX4LU1bvZ9mk4C72wcjMMFQ5aNTuO5rtYOc=;
+ b=EPpv4NpZo8HMFmRqYsnZoEjV75xf8dMa3r1NQxgZsBdMMyqKm0JmQF+T2zHA34NaT1qN1u4J3dJFPXbO9nIWjyOxErtQ02pwgwrCcDDzS6RR3y0JLTyHef00ZLDGj2fYnj/p3HWGrFieJx+bTzEqsf/NHQTlpshKIyxNwf5JsDdvYHmE13QEdijTCOj0PPQG9I3pn7aKjgfIqEVlIJu9vUyk9L4nMT+LbFAZH08kQgw5rQNFKbHsQhnFGv+yL+c7tqw/CBJ40QhHUE6Alog8hcxpz5YvRa1n/E8BqDFMFWIyeULP4ArqMOb/2KNyB6LOA7ZS4keoeKZ7+OrPoWe8HA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=DlV05eHXRX4LU1bvZ9mk4C72wcjMMFQ5aNTuO5rtYOc=;
+ b=INuQrpPnLZmL8/guryhx88g4U+epIRiD+f1JNYbIJ+D0zjUBW4oaq/bej7oB1zEYHtAssBKb2swjo6CQ9e0lXE1SvOTB8C3O89CUxNdMnQUlm3okoMDijQ2gO4iF8LUWBNl69/n5PCiieT9wiKRXZhBwbFF4REfwDVfDF22L4jg=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from CY5PR12MB6323.namprd12.prod.outlook.com (2603:10b6:930:20::11)
+ by DS0PR12MB8574.namprd12.prod.outlook.com (2603:10b6:8:166::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8158.17; Wed, 13 Nov
+ 2024 18:25:29 +0000
+Received: from CY5PR12MB6323.namprd12.prod.outlook.com
+ ([fe80::2300:2257:1877:4750]) by CY5PR12MB6323.namprd12.prod.outlook.com
+ ([fe80::2300:2257:1877:4750%7]) with mapi id 15.20.8158.013; Wed, 13 Nov 2024
+ 18:25:28 +0000
+Message-ID: <ed2246ca-3ede-918c-d18d-f47cf8758d8c@amd.com>
+Date: Wed, 13 Nov 2024 23:55:20 +0530
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.6.1
+Subject: Re: [PATCH] i386/kvm: Fix kvm_enable_x2apic link error in non-KVM
+ builds
 Content-Language: en-US
-Autocrypt: addr=pbonzini@redhat.com; keydata=
- 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
-In-Reply-To: <20241112181044.92193-20-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To: Paolo Bonzini <pbonzini@redhat.com>,
+ Phil Dennis-Jordan <phil@philjordan.eu>, qemu-devel@nongnu.org,
+ kvm@vger.kernel.org, mtosatti@redhat.com
+Cc: suravee.suthikulpanit@amd.com
+References: <20241113144923.41225-1-phil@philjordan.eu>
+ <b772f6e7-e506-4f87-98d1-5cbe59402b2b@redhat.com>
+From: "Shukla, Santosh" <santosh.shukla@amd.com>
+In-Reply-To: <b772f6e7-e506-4f87-98d1-5cbe59402b2b@redhat.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -29
-X-Spam_score: -3.0
-X-Spam_bar: ---
-X-Spam_report: (-3.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.119,
+X-ClientProxiedBy: PN2PR01CA0097.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:c01:27::12) To CY5PR12MB6323.namprd12.prod.outlook.com
+ (2603:10b6:930:20::11)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CY5PR12MB6323:EE_|DS0PR12MB8574:EE_
+X-MS-Office365-Filtering-Correlation-Id: 49e1d65e-73bc-462c-0fd2-08dd04108cd0
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?UVFWVm9NZlF0dTFUeXZKcDNVT0tFSDgrQWFEOE1tNGptU3VOcmZEcDM3TXU5?=
+ =?utf-8?B?YU9tVHhIRFJiZWUvWHdlaXJDTWdIRlRRYkJPTXQ1SzVDM3JEOFNUV2laZ3lH?=
+ =?utf-8?B?Q3d5cndMQzB0TC9iM09xc1NzWXhFclpleDNVRzZ2ektaUkRzTDFRNDRqUkFM?=
+ =?utf-8?B?ZGFta1FxbURCY1E2SUtEOWQ0NEtoaGZiZ0JDeTlaTkdzaFQ4VDZ3S1phTG9n?=
+ =?utf-8?B?WUJLOEtMcUREczR3QTRTOHArOXFQSnp1U3hMdEI5a3RUeVUrNjAxUXRCY1ZX?=
+ =?utf-8?B?d1lqUHhleENkeVZpNUJBOUR5eURLbkU3c3QrSHBQNGtXajlzblB1WmdXc1Ji?=
+ =?utf-8?B?Qmg4aXJDcnBWQXZrOWY2VlFGeERWdE5XaWdvZTNpVVhFY2tUdkhLbmhjVERK?=
+ =?utf-8?B?cnd6NkxjSnNtdmxoc0NLbWduVElPZ2VWdFVzSUZjQWpzY2o2TnNyekpiUjRr?=
+ =?utf-8?B?SWhtZ1RxUkFVZHpBYU52NmExVEZ0YmxNdHY4S3hWcWVPZEtQR2ZPVU5KVEFK?=
+ =?utf-8?B?cGRnUC8rMWpYLzUxT1FRbzRiZWVialBiRG5pTlF3S1BlbUZmWFIreGhnVTdm?=
+ =?utf-8?B?RHBTUm1hdndaamd6UjlBY3N6TVlsS25pbDMxaWN1SHdsVlNmVEExZllFR3BI?=
+ =?utf-8?B?V0NzN1pJeitPbkNlNFh5VFRVZ1RJUlhIZWR1UEhmZ0M3cThSQVFCakxFNFV3?=
+ =?utf-8?B?UWo5V0lqclNDZm94TXVzc0pOWWhTNkVnUVhLK2ZnSWFQTFJEdlBnYmwzZ095?=
+ =?utf-8?B?ZFQxc0t2UzdjVHhRMUhHU21YRmoreU1nVnlFSEhxUHJuSVFWaTE0Nmx6UlJm?=
+ =?utf-8?B?TzBYVWhJSUlFRFFZalpoUm5tT20xY2dHai8veHBYYzhCamo4TE5YMTJWZEFE?=
+ =?utf-8?B?RkNHbE9jM2tkWFROVC9MVm9vNXVSWkE4QWJFUWhvdTNvY200OXVkWk9UbTEr?=
+ =?utf-8?B?Z09jWURPdGt4cS82MDJycGdyYmU1emN1TjVXTkErNjR3dU5qWEZXbTcrWE0z?=
+ =?utf-8?B?bG92SE1ScW81NHNjeWhQemNydlZQNE1CRTBVa1hhcVdtZXNaVFR0Z0RuVU5q?=
+ =?utf-8?B?cEhNcklBQk1RWHcwOG40WnIrcFhyZVZBbGRTUmYybmxTazkvRFFLVDhjSCtt?=
+ =?utf-8?B?aFZlbXZJY1FSUDdsMTdRTDdBSWU2dHdRUUpKNVFUZ2gxeHVLVXlBZzBMOTZZ?=
+ =?utf-8?B?NXNxaHNSbk03cTR3bnZCcjNYdXlVL2FNYkJreEQxN3BsMk14MUlJMDl2Vk1r?=
+ =?utf-8?B?TVlwOFJkYnVmTlc0RGhLRktFQllmMnZzVmpXbFd1OGx5OFUwZm5yTlduZ2Q5?=
+ =?utf-8?B?TmpQWkxDWUQ5VERaUjdjZlI4Qm5IWUZHS2paY1FNL09VSGpqMnlPa0xSUU5t?=
+ =?utf-8?B?M0RiQ0NRMlMybmJNbGNlR0ZPM1E0MlVZOU50cFlJTytaZWdQcTdsRGFSaUpT?=
+ =?utf-8?B?VVdvV3JQcFlFWHNKM2E0Z1V0QWlhUU1xdFRsc0l4Qk1RN2tMVkVRcUQ0Ty92?=
+ =?utf-8?B?QTdHMG4vMXE3SVBYazVGVlFjeGUrbG5UdUxmY3Q4NTZyclBSa1VQMmFOMGZk?=
+ =?utf-8?B?SVdOZFJoN3NQVUVkTVVpSnIyWDIxdFBXSGxmN3lsUnlVQXh6MVMrb1hxeVA4?=
+ =?utf-8?B?Q2ErTDFEY1QyeFlJa3ZuekkwWkcxaWEwcmt3OU1VNmVOdW9mK3lMTTFjemhs?=
+ =?utf-8?B?ZVVaQ3lyNGFnNXlXd2FldGdVR1RvbkJVZktIWXUwUmdyZjFCU25Kc3BFaFd3?=
+ =?utf-8?Q?PcEnF/xNyOe9L8ZLrC2p9OAKcUa/9Cdq7BGxb8B?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:CY5PR12MB6323.namprd12.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(1800799024)(366016)(376014); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?WitMMjlwajFkTjYvQWtVWG5mTDRRTGVrd3k2MkJaaVNVRm5VSEJ4dUdUMUVP?=
+ =?utf-8?B?dGRncnBnL0VQRkhBbVVSR3kvWUZxYjN2dFlnS0dhanl5a0gyNVJ0OTFJN1gy?=
+ =?utf-8?B?c09zUDFzL1h3WTBVbFV2SWw4Q3UybXhReG1nbFh0bFpKNitUd2ZoK01ESzhX?=
+ =?utf-8?B?VVJHMEZPTFl3S3QvQ204TmZmdi9jQVNDcWN3UDRFcENZckVqZlFLU1lFNkJL?=
+ =?utf-8?B?bWRqdVg0VEZpQURDNWt6MGg4QTdIaGtJK0FCcFM5WWRiemp6SSthS2FPMFdm?=
+ =?utf-8?B?T3FxRDJaaUZRREt1M2hYSFdFY1RZMXNFYXllZTNabjZUejBtVDNSVCtYNFpp?=
+ =?utf-8?B?aC9tVXhra1BXdExGbnFSL0tvMFYzcm8yaE02NzVJZHRXMkpnZVhyNUM4Nlk0?=
+ =?utf-8?B?cFpKWURtZ3RYRHh6VHJNZm9zL0xlMXZ2WmIvbElONWFvN3hZZW95Q2QrazhP?=
+ =?utf-8?B?NVJ5UXNCOVNZQkxVMGlqTkhjNWIzMEpON3VYN21QSFYwdHd3MjlXNTc2T1FT?=
+ =?utf-8?B?VFNDbVJzcDhsVEZhQUhiNE9ZY1RVM09CUFNyTVVEK1hNZ0o0TVNVVzgrTWNl?=
+ =?utf-8?B?NzNuK01TYk95UlBEanJ6eXgyamM5QnMvNHgxM2w2eDVRSzJrMUNMUURYcXFH?=
+ =?utf-8?B?cVlRT2xVVWtoZVg5Vy9nUHNoS0tWK3lQQTc5VnVBL2N4clJ4MldQaHRDVmpl?=
+ =?utf-8?B?SFViU3ExSUdLY1VuVXFpKzd6b1pjS3RidzBSVW94MnFsZVlHMSsxVnlBVC9U?=
+ =?utf-8?B?VjREZE9zNExuYnhOOUErN1NtNEc2aTZKcWdVTEd4MFRJWWdsMnhHMXhuREg0?=
+ =?utf-8?B?Y1QzR2MwZWN3WE5ZYmtZZ053VU84Q0d5d3ZyUmpJRmt2SWNSSzg5TkVLc3Ay?=
+ =?utf-8?B?TUY5VHRyOGdjdFBpVGErN1BxOEkvK0lpOHQzOVYzU3l3a3phdFpJMElxcDNm?=
+ =?utf-8?B?WUNkK2VuS3lGR2VLczJkWU1lWlBMdm1xaVhDUVVTNnVoQ09XS3doWTJQV3ll?=
+ =?utf-8?B?ZDB5TVY4bVk2RGVjTE1LNFlIbVV4TkgrYkRsQjFVV1lpNjRraGR2RGE4d0t1?=
+ =?utf-8?B?NjJ6UVhmeXRBNnYrckVYZUdqU1JVaHFtU01qa0YwekpEMkliWk4zQUxyc2FM?=
+ =?utf-8?B?VFltZ0J1a3haUXRVTTRtLzd0eXNFQm5IQUhzaXBMYUlwOXZLK01sQTZGeExx?=
+ =?utf-8?B?RTNsRk9YVzZyMFNQblVEVi95Q3ZBUTNwMnRSSTl6SURSeEhVUVNjN2VaNHJM?=
+ =?utf-8?B?Q01jeWhqUGJCS0g5bnRvbDZGMnMyby9od1BiQy9uazhCdWpLM2NrdTZ0Nmho?=
+ =?utf-8?B?Y015QVlCNU4rYnY3V2dPc0FMQ0dWWHE4TTcxZUVhQ1ZCNVFFazAzcWNDTlNZ?=
+ =?utf-8?B?T0F2L1VLOW5vd2Zua0NIcTVtaDZxazZGQnRSeWZPaU9IT3FkdTE0WnppUXc1?=
+ =?utf-8?B?TStiak1RWTBBVnlSanBOaTc3L1pNTUU0VFhQOVU4T3dpK09GVzNVeUVQQ0pO?=
+ =?utf-8?B?eGllNWlMYWIzWFNzNHpNU1J1dkFSMUpScVlIcTI2TFNyVFRIN2lMMmZIVU5i?=
+ =?utf-8?B?Nmk4KzR5U05lVGZqd2tKS0kzWnJFK2xiTzdWZFl5LytXc2F0bUtETVprNTZz?=
+ =?utf-8?B?bXVFZ3UrSDBBWVoyQ1orOXl1WUJocEhuVzEzdEZOYTFsdkdHN1hnYkl5azVu?=
+ =?utf-8?B?Tldwd0NmQXZHdGlWOEdQUVk4K2tKRFBTUFRwTTRjbDlLQ2dNVU9tVExJemxH?=
+ =?utf-8?B?MFpiRFRmM1E0dmN2TUorTDRRcGlwTGxKU2NYTDNGcENXRHljL2daVC9WM2l0?=
+ =?utf-8?B?M2E5MllOcXgrWUp3REd4Y3dONHJkaldQbURzZGdHSFhLTE9YN2Nzb2JFWis5?=
+ =?utf-8?B?M25rMTNoYkt0QU00TytQK25YNmkvN3l3R1N5S0F0aWNaSFVlL3pTemorcnpX?=
+ =?utf-8?B?dmxuSldqVkg5dnYzS1h4endmMmRmam9NK0plazZmdnBpVm1wRlgyMktUR0hO?=
+ =?utf-8?B?RksxRmxJcnlDQU0zbmRxazFld2NrZlNqN1o5aUlEYis5TnpZcUNuQVhWcklN?=
+ =?utf-8?B?ZGhuU3RwdnRFbVhTZ0htdWVXZlowRi90V09lVU1aQzJURXg5WXB2ZDFoTElF?=
+ =?utf-8?Q?nXHN/RO3wMEikC9rvDbwZHRdc?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 49e1d65e-73bc-462c-0fd2-08dd04108cd0
+X-MS-Exchange-CrossTenant-AuthSource: CY5PR12MB6323.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Nov 2024 18:25:28.8692 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Nqjps2AOr+6ipnZXALCu4RaMGX0pvXxOYMXtljMHnxUW1Xrp7yGkj25h0RaPbV9q6WTwPj19VMHTHLZ+3Bidzw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB8574
+Received-SPF: permerror client-ip=40.107.93.66;
+ envelope-from=Santosh.Shukla@amd.com;
+ helo=NAM10-DM6-obe.outbound.protection.outlook.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.119,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.738,
+ NICE_REPLY_A=-1.215, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.738,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -149,201 +177,83 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/12/24 19:10, Philippe Mathieu-Daudé wrote:
-> Rather than using I/O registers for RAM buffer, having to
-> swap endianness back and forth (because the core memory layer
-> automatically swaps endiannes for us), declare the buffers
-> as RAM regions. Remove the now unused s->regs[] array.
-> 
-> The memory flat view becomes:
-> 
->    FlatView #0
->     Root memory region: system
->      0000000081000000-00000000810007f3 (prio 0, ram): ethlite.tx[0]buf
->      00000000810007f4-00000000810007ff (prio 0, i/o): ethlite.tx[0]io
->      0000000081000800-0000000081000ff3 (prio 0, ram): ethlite.tx[1]buf
->      0000000081000ff4-0000000081000fff (prio 0, i/o): ethlite.tx[1]io
->      0000000081001000-00000000810017f3 (prio 0, ram): ethlite.rx[0]buf
->      00000000810017fc-00000000810017ff (prio 0, i/o): ethlite.rx[0]io
->      0000000081001800-0000000081001ff3 (prio 0, ram): ethlite.rx[1]buf
->      0000000081001ffc-0000000081001fff (prio 0, i/o): ethlite.rx[1]io
 
-The receive buffers should end at 7fb and ffb; no need to repost of course.
 
-Paolo
+On 11/13/2024 11:41 PM, Paolo Bonzini wrote:
+> On 11/13/24 15:49, Phil Dennis-Jordan wrote:
+>> It appears that existing call sites for the kvm_enable_x2apic()
+>> function rely on the compiler eliding the calls during optimisation
+>> when building with KVM disabled, or on platforms other than Linux,
+>> where that function is declared but not defined.
+>>
+>> This fragile reliance recently broke down when commit b12cb38 added
+>> a new call site which apparently failed to be optimised away when
+>> building QEMU on macOS with clang, resulting in a link error.
+>>
+>> This change moves the function declaration into the existing
+>> #if CONFIG_KVM
+>> block in the same header file, while the corresponding
+>> #else
+>> block now #defines the symbol as 0, same as for various other
+>> KVM-specific query functions.
+>>
+>> Signed-off-by: Phil Dennis-Jordan <phil@philjordan.eu>
+> 
+> Nevermind, this actually rung a bell and seems to be the same as
+> this commit from last year:
+> 
+> commit c04cfb4596ad5032a9869a8f77fe9114ca8af9e0
+> Author: Daniel Hoffman <dhoff749@gmail.com>
+> Date:   Sun Nov 19 12:31:16 2023 -0800
+> 
+>     hw/i386: fix short-circuit logic with non-optimizing builds
+>         `kvm_enabled()` is compiled down to `0` and short-circuit logic is
+>     used to remove references to undefined symbols at the compile stage.
+>     Some build configurations with some compilers don't attempt to
+>     simplify this logic down in some cases (the pattern appears to be
+>     that the literal false must be the first term) and this was causing
+>     some builds to emit references to undefined symbols.
+>         An example of such a configuration is clang 16.0.6 with the following
+>     configure: ./configure --enable-debug --without-default-features
+>     --target-list=x86_64-softmmu --enable-tcg-interpreter
+>         Signed-off-by: Daniel Hoffman <dhoff749@gmail.com>
+>     Message-Id: <20231119203116.3027230-1-dhoff749@gmail.com>
+>     Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
+>     Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+> 
+> So, this should work:
+> 
+> diff --git a/hw/i386/amd_iommu.c b/hw/i386/amd_iommu.c
+> index 13af7211e11..af0f4da1f69 100644
+> --- a/hw/i386/amd_iommu.c
+> +++ b/hw/i386/amd_iommu.c
+> @@ -1657,9 +1657,11 @@ static void amdvi_sysbus_realize(DeviceState *dev, Error **errp)
+>          error_report("AMD IOMMU with x2APIC confguration requires xtsup=on");
+>          exit(EXIT_FAILURE);
+>      }
+> -    if (s->xtsup && kvm_irqchip_is_split() && !kvm_enable_x2apic()) {
+> -        error_report("AMD IOMMU xtsup=on requires support on the KVM side");
+> -        exit(EXIT_FAILURE);
+> +    if (s->xtsup) {
+> +        if (kvm_irqchip_is_split() && !kvm_enable_x2apic()) {
+> +            error_report("AMD IOMMU xtsup=on requires support on the KVM side");
+> +            exit(EXIT_FAILURE);
+> +        }
+>      }
+>  
+>      pci_setup_iommu(bus, &amdvi_iommu_ops, s);
+> 
+> 
+> It's admittedly a bit brittle, but it's already done in the neighboring
+> hw/i386/intel_iommu.c so I guess it's okay.
+> 
 
-> 
-> Mention the device datasheet in the file header.
-> 
-> Reported-by: Paolo Bonzini <pbonzini@redhat.com>
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> ---
->   hw/net/xilinx_ethlite.c | 79 +++++++++++------------------------------
->   1 file changed, 20 insertions(+), 59 deletions(-)
-> 
-> diff --git a/hw/net/xilinx_ethlite.c b/hw/net/xilinx_ethlite.c
-> index f681b91769..da453465ca 100644
-> --- a/hw/net/xilinx_ethlite.c
-> +++ b/hw/net/xilinx_ethlite.c
-> @@ -2,6 +2,10 @@
->    * QEMU model of the Xilinx Ethernet Lite MAC.
->    *
->    * Copyright (c) 2009 Edgar E. Iglesias.
-> + * Copyright (c) 2024 Linaro, Ltd
-> + *
-> + * DS580: https://docs.amd.com/v/u/en-US/xps_ethernetlite
-> + * LogiCORE IP XPS Ethernet Lite Media Access Controller
->    *
->    * Permission is hereby granted, free of charge, to any person obtaining a copy
->    * of this software and associated documentation files (the "Software"), to deal
-> @@ -27,7 +31,6 @@
->   #include "qemu/bitops.h"
->   #include "qom/object.h"
->   #include "qapi/error.h"
-> -#include "exec/tswap.h"
->   #include "hw/sysbus.h"
->   #include "hw/irq.h"
->   #include "hw/qdev-properties.h"
-> @@ -46,7 +49,6 @@
->   #define A_RX_BASE0    0x17fc
->   #define R_RX_BUF1     (0x1800 / 4)
->   #define A_RX_BASE1    0x1ffc
-> -#define R_MAX         (0x2000 / 4)
->   
->   #define RX_BUFSZ_MAX  0x07e0
->   
-> @@ -72,6 +74,8 @@ typedef struct XlnxXpsEthLitePort
->   {
->       MemoryRegion txio;
->       MemoryRegion rxio;
-> +    MemoryRegion txbuf;
-> +    MemoryRegion rxbuf;
->   
->       struct {
->           uint32_t tx_len;
-> @@ -100,7 +104,6 @@ struct XlnxXpsEthLite
->   
->       UnimplementedDeviceState mdio;
->       XlnxXpsEthLitePort port[2];
-> -    uint32_t regs[R_MAX];
->   };
->   
->   static inline void eth_pulse_irq(XlnxXpsEthLite *s)
-> @@ -118,16 +121,12 @@ static unsigned addr_to_port_index(hwaddr addr)
->   
->   static void *txbuf_ptr(XlnxXpsEthLite *s, unsigned port_index)
->   {
-> -    unsigned int rxbase = port_index * (0x800 / 4);
-> -
-> -    return &s->regs[rxbase + R_TX_BUF0];
-> +    return memory_region_get_ram_ptr(&s->port[port_index].txbuf);
->   }
->   
->   static void *rxbuf_ptr(XlnxXpsEthLite *s, unsigned port_index)
->   {
-> -    unsigned int rxbase = port_index * (0x800 / 4);
-> -
-> -    return &s->regs[rxbase + R_RX_BUF0];
-> +    return memory_region_get_ram_ptr(&s->port[port_index].rxbuf);
->   }
->   
->   static uint64_t port_tx_read(void *opaque, hwaddr addr, unsigned int size)
-> @@ -252,53 +251,6 @@ static const MemoryRegionOps eth_portrx_ops = {
->           },
->   };
->   
-> -static uint64_t
-> -eth_read(void *opaque, hwaddr addr, unsigned int size)
-> -{
-> -    XlnxXpsEthLite *s = opaque;
-> -    uint32_t r = 0;
-> -
-> -    addr >>= 2;
-> -
-> -    switch (addr)
-> -    {
-> -        default:
-> -            r = tswap32(s->regs[addr]);
-> -            break;
-> -    }
-> -    return r;
-> -}
-> -
-> -static void
-> -eth_write(void *opaque, hwaddr addr,
-> -          uint64_t val64, unsigned int size)
-> -{
-> -    XlnxXpsEthLite *s = opaque;
-> -    uint32_t value = val64;
-> -
-> -    addr >>= 2;
-> -    switch (addr)
-> -    {
-> -        default:
-> -            s->regs[addr] = tswap32(value);
-> -            break;
-> -    }
-> -}
-> -
-> -static const MemoryRegionOps eth_ops = {
-> -    .read = eth_read,
-> -    .write = eth_write,
-> -    .endianness = DEVICE_NATIVE_ENDIAN,
-> -    .impl = {
-> -        .min_access_size = 4,
-> -        .max_access_size = 4,
-> -    },
-> -    .valid = {
-> -        .min_access_size = 4,
-> -        .max_access_size = 4
-> -    }
-> -};
-> -
->   static bool eth_can_rx(NetClientState *nc)
->   {
->       XlnxXpsEthLite *s = qemu_get_nic_opaque(nc);
-> @@ -354,6 +306,9 @@ static void xilinx_ethlite_realize(DeviceState *dev, Error **errp)
->   {
->       XlnxXpsEthLite *s = XILINX_ETHLITE(dev);
->   
-> +    memory_region_init(&s->mmio, OBJECT(dev),
-> +                       "xlnx.xps-ethernetlite", 0x2000);
-> +
->       object_initialize_child(OBJECT(dev), "ethlite.mdio", &s->mdio,
->                              TYPE_UNIMPLEMENTED_DEVICE);
->       qdev_prop_set_string(DEVICE(&s->mdio), "name", "ethlite.mdio");
-> @@ -363,6 +318,10 @@ static void xilinx_ethlite_realize(DeviceState *dev, Error **errp)
->                               sysbus_mmio_get_region(SYS_BUS_DEVICE(&s->mdio), 0));
->   
->       for (unsigned i = 0; i < 2; i++) {
-> +        memory_region_init_ram(&s->port[i].txbuf, OBJECT(dev),
-> +                               i ? "ethlite.tx[1]buf" : "ethlite.tx[0]buf",
-> +                               0x07f4, &error_abort);
-> +        memory_region_add_subregion(&s->mmio, 0x0800 * i, &s->port[i].txbuf);
->           memory_region_init_io(&s->port[i].txio, OBJECT(dev),
->                                 &eth_porttx_ops, s,
->                                 i ? "ethlite.tx[1]io" : "ethlite.tx[0]io",
-> @@ -370,6 +329,11 @@ static void xilinx_ethlite_realize(DeviceState *dev, Error **errp)
->           memory_region_add_subregion(&s->mmio, i ? A_TX_BASE1 : A_TX_BASE0,
->                                       &s->port[i].txio);
->   
-> +        memory_region_init_ram(&s->port[i].rxbuf, OBJECT(dev),
-> +                               i ? "ethlite.rx[1]buf" : "ethlite.rx[0]buf",
-> +                               0x07f4, &error_abort);
-> +        memory_region_add_subregion(&s->mmio, 0x1000 + 0x0800 * i,
-> +                                    &s->port[i].rxbuf);
->           memory_region_init_io(&s->port[i].rxio, OBJECT(dev),
->                                 &eth_portrx_ops, s,
->                                 i ? "ethlite.rx[1]io" : "ethlite.rx[0]io",
-> @@ -390,9 +354,6 @@ static void xilinx_ethlite_init(Object *obj)
->       XlnxXpsEthLite *s = XILINX_ETHLITE(obj);
->   
->       sysbus_init_irq(SYS_BUS_DEVICE(obj), &s->irq);
-> -
-> -    memory_region_init_io(&s->mmio, obj, &eth_ops, s,
-> -                          "xlnx.xps-ethernetlite", R_MAX * 4);
->       sysbus_init_mmio(SYS_BUS_DEVICE(obj), &s->mmio);
->   }
->   
+Same proposed at https://lore.kernel.org/qemu-devel/cebca38a-5896-e2a5-8a68-5edad5dc9d8c@amd.com/
+and I think Phil confirmed that it works.
 
+Thanks,
+Santosh
+
+> Paolo
+> 
 
