@@ -2,129 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17D7A9C69CE
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Nov 2024 08:24:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB7C49C6AAF
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Nov 2024 09:39:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tB7iz-0005qS-77; Wed, 13 Nov 2024 02:23:37 -0500
+	id 1tB8sq-0005Ac-6n; Wed, 13 Nov 2024 03:37:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <junjie.mao@hotmail.com>)
- id 1tB7iw-0005pu-No
- for qemu-devel@nongnu.org; Wed, 13 Nov 2024 02:23:34 -0500
-Received: from mail-sy4aus01olkn2082f.outbound.protection.outlook.com
- ([2a01:111:f403:2819::82f]
- helo=AUS01-SY4-obe.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <mchehab+huawei@kernel.org>)
+ id 1tB8sk-00057u-TX; Wed, 13 Nov 2024 03:37:46 -0500
+Received: from dfw.source.kernel.org ([139.178.84.217])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <junjie.mao@hotmail.com>)
- id 1tB7iv-0006Rg-BL
- for qemu-devel@nongnu.org; Wed, 13 Nov 2024 02:23:34 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=CIJVUapM/LTXhmeDYqclJiifTMtVxWt+F95JhIwx9gKATRpzCLOQtgC6aBf1UsLRVr1t9ka6ZLsVhGJ/tgj6nxZMkOdqihqw1pm1g0GCaG1RbQXWE/QBFk0XGqIvzOtsfkgOB+Td0qdlnKPvrApEMPejBvboJ7S1Hz+EfJk28wSTLm9fFJu+y+z6TjwS9FlBzsNgd78T2OFOEe0c915FOr1XDLmTPrVtvWNSvds2/Dn/hvW3rjeBFy/lasHlCiBJ1w+ADO7yf+JeLgHfWstafxMK/+poHoqAMNyVTn+y2d+CZGkwKxArPuQT/MWNMXrGQaTFdqYIBIMNuOVHyifblA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=tHyWeFNLO0A4Dr+/RwcPQFD3RQiUClReko98wNwEQ7Q=;
- b=Aae+L6RX23zi80ysK9rewmTY/0d+ieSBOoGFLB4IOYjB0Lu9ZDtKKqY0IwkttDdHAGVovq5tw5pxoZHPhRnYUgcdrP7caxcZ/N4XHTjUbYwMQDlePfD2WF6ocbXUBfNUnxZ4tnipZL9RCBlr6egY8PzMy3hr5cb0/eLziCl+LJX/ojoPEMPZ/tJ1axS4jnCa1P+yt5VMpGh9pnV5/nCiPdFdpwKULS9ewrKtoea3tDaMfQ9vCE2SXwdyDr/bkOnbAR+dzwZGtD2xSave7KILxGP3xmn2cEKsDF6Uuc6GL0ibxTdPuJkfVGiH0UO+ZheihK3a6UZXIWITcCQq/38Flg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hotmail.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=tHyWeFNLO0A4Dr+/RwcPQFD3RQiUClReko98wNwEQ7Q=;
- b=JqP8Bg+XjM+jtTPcuI2rYZQMWCKa3Kt86+kTGMyjDlp9EceZSLMbGbaO9RLPeEqK5wdPLNDspPX3mhI9Nz3E/bHkwCnI/MThjgaQtdBaelCzsdSGwrfflS+WAYBoyVrDgtybq/1Q7wBzO+okJuG6pqknx6Ajs2vA088BWRJ/KFw25ssT3iF+iNvdV+5Z11kCi4WuQBtOkvU9xCm/QLzJKfyVZwTkwjYARdgfvIsuBnhtXjIkP0a5LjxeIYz2Te2Vxr95YleRUkBN6nmTOOtRlwSmTQl1iOYgOGohwQ51aNPOrrKLd49vCZO33Q/Zumn2fS/l8iEugZogeCARkgVQHg==
-Received: from ME0P300MB1040.AUSP300.PROD.OUTLOOK.COM (2603:10c6:220:231::14)
- by ME0P300MB1309.AUSP300.PROD.OUTLOOK.COM (2603:10c6:220:241::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8158.17; Wed, 13 Nov
- 2024 07:23:28 +0000
-Received: from ME0P300MB1040.AUSP300.PROD.OUTLOOK.COM
- ([fe80::f32e:6e2b:b854:7166]) by ME0P300MB1040.AUSP300.PROD.OUTLOOK.COM
- ([fe80::f32e:6e2b:b854:7166%6]) with mapi id 15.20.8137.027; Wed, 13 Nov 2024
- 07:23:27 +0000
-References: <20241108180139.117112-1-pbonzini@redhat.com>
- <20241108180139.117112-11-pbonzini@redhat.com>
-User-agent: mu4e 1.6.10; emacs 27.1
-From: Junjie Mao <junjie.mao@hotmail.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, manos.pitsidianakis@linaro.org, kwolf@redhat.com,
- zhao1.liu@intel.com, qemu-rust@nondevel.org
-Subject: Re: [RFC PATCH 10/11] rust: fix doc test syntax
-Date: Wed, 13 Nov 2024 15:22:10 +0800
-In-reply-to: <20241108180139.117112-11-pbonzini@redhat.com>
-Message-ID: <ME0P300MB1040EF31C84E7257E1A9C6EF955A2@ME0P300MB1040.AUSP300.PROD.OUTLOOK.COM>
-Content-Type: text/plain
-X-ClientProxiedBy: SI2P153CA0029.APCP153.PROD.OUTLOOK.COM
- (2603:1096:4:190::16) To ME0P300MB1040.AUSP300.PROD.OUTLOOK.COM
- (2603:10c6:220:231::14)
-X-Microsoft-Original-Message-ID: <87zfm3egwq.fsf@hotmail.com>
+ (Exim 4.90_1) (envelope-from <mchehab+huawei@kernel.org>)
+ id 1tB8sj-0005yy-Cp; Wed, 13 Nov 2024 03:37:46 -0500
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+ by dfw.source.kernel.org (Postfix) with ESMTP id 1B7875C5847;
+ Wed, 13 Nov 2024 08:36:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EDE0C4CED2;
+ Wed, 13 Nov 2024 08:37:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1731487063;
+ bh=ljIDgIu7JxJY+TgDBg2AYe+HxBnXkAlV4rGXeoF5CjE=;
+ h=From:To:Cc:Subject:Date:From;
+ b=a3vvxd3ErkcYRw6OuQLVijgwc197OF0It3DHNOzB5nXEreMdTKDyxRVOLpwURw1Bs
+ 7OcWHLDjY6AGjKaPQ3hdOp3WRuREaLwJHtnF26fO6hE1jJug0P07FkakSXrjIQDdTN
+ vlx4XTWzwPagQtwaAA1Y8Rykn30QPhCokxaz02AFJoM/OmnazJxP/rp5pq1ACUVhIW
+ N4zZYadFthcTbLxSLru+v/kS1vxCtuPGk5gC40GCsfiE9+HQUJgA8NbIyBtX7r+3VR
+ dciKDJafi+QigmJVhPMqOfKtK/WYMhH/2gAxOultcNfXN7ZhA5S3NZM5wIjsFzxJtr
+ 45NWnvHPs6q7w==
+Received: from mchehab by mail.kernel.org with local (Exim 4.98)
+ (envelope-from <mchehab+huawei@kernel.org>)
+ id 1tB8sZ-00000001Kvy-36Fs; Wed, 13 Nov 2024 09:37:35 +0100
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+To: Igor Mammedov <imammedo@redhat.com>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Shiju Jose <shiju.jose@huawei.com>,
+ Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Ani Sinha <anisinha@redhat.com>, Dongjiu Geng <gengdongjiu1@gmail.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Shannon Zhao <shannon.zhaosl@gmail.com>,
+ Yanan Wang <wangyanan55@huawei.com>, Zhao Liu <zhao1.liu@intel.com>,
+ qemu-arm@nongnu.org, qemu-devel@nongnu.org
+Subject: [PATCH 0/6] Change ghes driver to use HEST-based offsets
+Date: Wed, 13 Nov 2024 09:36:57 +0100
+Message-ID: <cover.1731486604.git.mchehab+huawei@kernel.org>
+X-Mailer: git-send-email 2.47.0
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: ME0P300MB1040:EE_|ME0P300MB1309:EE_
-X-MS-Office365-Filtering-Correlation-Id: 731444a3-03d6-4284-5910-08dd03b41156
-X-Microsoft-Antispam: BCL:0;
- ARA:14566002|15080799006|7092599003|5072599009|19110799003|461199028|8060799006|440099028|3412199025;
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?tsNVdNkBGWlgb6UB3X5zkUD/3EbtYi6jzdZgVYNZPeCHa63kInf6ASnM0kE2?=
- =?us-ascii?Q?BeK5shfeLy3uzw42wSS/uI2G0FEtULT+Z97Nam7YF7tz3GdAjRwei1zWF6LV?=
- =?us-ascii?Q?8PX6vPGfRLPhEfZiSObJAtTGR/okDX9P8TIDSp4xGVWN63UhY9RMco1NX6p6?=
- =?us-ascii?Q?NxCSw8uUikYjpOulJnn6YCB+8j45Wu0dmSuZkJZ8ECqHyOs5+py8WnzM3Vib?=
- =?us-ascii?Q?RYiXxRhcRGWnI3Of2CvUbHZH8Hw8QRxs5DlovGceQs6sCj1GHoIYS4Jb6ZGF?=
- =?us-ascii?Q?ihHX4Pcuv2Sf0wd9DszyrQI5WgUgRi47bq52GrMnIv5KmZBDwiAjsyL4svyE?=
- =?us-ascii?Q?exZTtuJbTqMkTzxjh0+ayE479l3ZRGW4DxzL5feVfrE9+6vu/5oRdP8UIHHI?=
- =?us-ascii?Q?QEdhebe2YEP0CI+wvcKWHzqW8fEdbaKGwdTtFd+md01+e/j+o4+iuMeOiabg?=
- =?us-ascii?Q?j16KRAaDGl6aITmWXcrxmmM2tJsvYiY+fUoq6owx75AtR/1miKGO32m3YWhM?=
- =?us-ascii?Q?vAgOZaC7YNWmYDLnbsEZRf3eKaAMppRKLC1S4rxO+uvA2EH2sYzw5iOqbIp0?=
- =?us-ascii?Q?g+TXSl84gUWSk02ClLMVL2ALMhZRbQyrMDH3s5EI4hzr/9qtwpXqAl5I+CHp?=
- =?us-ascii?Q?QWrEuj6IDxVkWeM1hcmP8h3U2REaG+3fLFPr+qtR/aNGtmJtiAWVSQuqcJ/e?=
- =?us-ascii?Q?Jf2O1/d3HElVw+EACsYVdkXAjg6mO2rN7JBjUXubNMujsM2rm4amAf/r6KHY?=
- =?us-ascii?Q?oPimWBpcIEKIgaWd6jHWBdXepRIBL818p3ffyLhEKvljJLp14DvcuEan8nGr?=
- =?us-ascii?Q?r+iTIX/drBHHR7dJ8NF0CdGECmsiJVhAXRUzIsg05ucISErO3gJ6rWFO8R0j?=
- =?us-ascii?Q?7WeE5MWOuqv5+CxRzzzyUiXARB8hYVFhltODTGpnsbH9KKjRzYrBN3bwizpt?=
- =?us-ascii?Q?8d23eWAPNe+BErGOWNv+fhQLtXT+FI10GJIK1Pom0/oaUHd7o5LTgrNcP3pO?=
- =?us-ascii?Q?mwuNVJfQ6jlBubS1rSGR/aO/GrQpYweI95Yws5dzWNcLn/c=3D?=
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?OWB6mefIoEnw1ESE8jFuGF5eLIJaw3y4t2L/qHhDT5OhT4e8VHTBmLe3X6/t?=
- =?us-ascii?Q?VGaGO4TGLc+TP4Aw6cix3ARskAmguLs8NBfBX7wwCEb8SrTgTbggAnUepZM8?=
- =?us-ascii?Q?pmvAAQlmIkFoQTrtAAlCg33Htpv41xY4AGP+uKQTWmyGErtxLcT7bOo3L4Tu?=
- =?us-ascii?Q?8Be707eoGc4VvnQtU0fUsapc4qU3a36mIeEEYyiW3zLSpHepe9Z5NgxZg2O6?=
- =?us-ascii?Q?CVttpgsqq/0eGv3jAzqcz3rg7e4VCNBvs7UzvgGuN/Ufn8ooaz1pBHnqGGgA?=
- =?us-ascii?Q?ZCa82tZuDzUuXiJM9wXTiR7vqmn8bydjQxWdIe0kbUtJbPFWWZBvuCTmczOc?=
- =?us-ascii?Q?C3YFgNU1kpiGdYRlIKwmMvBzblFOgllZITkkorAgnUIhq/lvYsvQGcf8JznL?=
- =?us-ascii?Q?653+eN01y0u78nzBxGhzGuA5x4wg4rtCl/heJEb4VP57EE0mYsKjSNx3Fubn?=
- =?us-ascii?Q?hMEJt9N0t9GTbGdbd6XVjKGw64kBR2qDeJhjW6MbkZf5XfqrbhmuxAdSIZAr?=
- =?us-ascii?Q?cM0w9auWL5E3i1cgnWdKUODD5XKPBj3/wQkJeVMZdQYJU9IYXx5BXI7IMbS+?=
- =?us-ascii?Q?NDDlUFQYPGtonGy8uvJCsoDm1IZ9bXBg5lfbureIxAj2p23QN856u5so5qQd?=
- =?us-ascii?Q?Zc2aW99PXtq7wmgTQy+VwZ74jHivchDs8Cd4cbxb6p+DU8o0VqcmhZUO8Pu+?=
- =?us-ascii?Q?uIbldzvwB71NQlPyQbOCcT7dQhiGz1NApHUTeurO9vNhkG/tVCa+g47NNAnQ?=
- =?us-ascii?Q?1FNENmZY+RwB5jOnzPlKxPZuo0yXschnDjaJ0tz1XTufyJq9rjRExLj8aLSb?=
- =?us-ascii?Q?apbtQTYPqw9nWYER3qkMjQ74l26TVtLSJ/SobH37wIWV4p9KJLdAGuwuig10?=
- =?us-ascii?Q?6JS8AAfuwY/SW/gxMLX5LjMQYlxoXe75eg7YqWVaSHUCtv2zesfGIMHMjnSW?=
- =?us-ascii?Q?3YRedSUuOGwZ4cT7R+6v8z2ZoI0N6mtyb7QEA2PT7Amu82Guy4MDC/6KrnVh?=
- =?us-ascii?Q?TnWylCKpjmlRsEHLG4fZ6uL0Py9R3tpU1SSN0djvaqO50V2W0rGr6NhBgJKs?=
- =?us-ascii?Q?UYopO9+7vTi1ZBwYLZVsw9iqeZe/2I8ltiKQV+w/faigdMhs8kl2HKp6f/vA?=
- =?us-ascii?Q?TbR98KD6RjcRl391M8M+dcktrw+jsm6yJVBborzM8k/TKUGmaOcsYNmKKltZ?=
- =?us-ascii?Q?H/LsqofnbYsfAAA/mODdUNjpwcaVf6FrEK7p0GThZPAEEFxut2+UKB31JVc?=
- =?us-ascii?Q?=3D?=
-X-OriginatorOrg: sct-15-20-7719-20-msonline-outlook-448bf.templateTenant
-X-MS-Exchange-CrossTenant-Network-Message-Id: 731444a3-03d6-4284-5910-08dd03b41156
-X-MS-Exchange-CrossTenant-AuthSource: ME0P300MB1040.AUSP300.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Nov 2024 07:23:27.8701 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: ME0P300MB1309
-Received-SPF: pass client-ip=2a01:111:f403:2819::82f;
- envelope-from=junjie.mao@hotmail.com;
- helo=AUS01-SY4-obe.outbound.protection.outlook.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=139.178.84.217;
+ envelope-from=mchehab+huawei@kernel.org; helo=dfw.source.kernel.org
+X-Spam_score_int: -71
+X-Spam_score: -7.2
+X-Spam_bar: -------
+X-Spam_report: (-7.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.122,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_HI=-5, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -140,16 +76,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+This  series was part of the previous PR to add generic error injection
+support on GHES. It depends on a cleanup patch series sent yesterday:
 
-Paolo Bonzini <pbonzini@redhat.com> writes:
+https://lore.kernel.org/qemu-devel/c3e608a16a795b2d2be476eddc3707febcdb1ca3.1731406254.git.mchehab+huawei@kernel.org/T/#m60839c88a009f04bc73f75832ccb6a41523259ef
 
-> Allow "cargo test --doc" to pass.
->
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+It contains the changes of the math used to calculate offsets at HEST table 
+and hardware_error firmware file. It prepares for the addition of GHES
+error injection.
 
-Reviewed-by: Junjie Mao <junjie.mao@hotmail.com>
+The first patch was previously at the cleanup series. It prepares
+the logic to support multiple sources.
 
---
-Best Regards
-Junjie Mao
+The second patch adds a new firmware file to store HEST address.
+
+The third patch use the new firmware to calculate offsets using
+HEST table.
+
+Patches 4 and 5 add migration support. They assume that this
+series will be merged for qemu 9.2 (maybe it is too late for that,
+as QEMU is now on soft freeze). 
+
+I tested migration using both virt-9.1 and virt-9.2 machines
+on qemu 9.2.
+
+I also tested migration with:
+
+	qemu-9.1 -M virt-9.1 -cpu cortex-a57 => qemu-9.2 -M virt-9.1 -cpu cortex-a57
+	qemu-9.2 -M virt-9.1 -cpu cortex-a57 => qemu-9.1 -M virt-9.1 -cpu cortex-a57
+
+Mauro Carvalho Chehab (6):
+  acpi/ghes: Prepare to support multiple sources on ghes
+  acpi/ghes: add a firmware file with HEST address
+  acpi/ghes: rename the function which gets hw error offsets
+  acpi/ghes: Use HEST table offsets when preparing GHES records
+  acpi/generic_event_device: Update GHES migration to cover hest addr
+  acpi/generic_event_device: add logic to detect if HEST addr is
+    available
+
+ hw/acpi/generic_event_device.c |  30 +++++++
+ hw/acpi/ghes.c                 | 158 +++++++++++++++++++++++++++++----
+ hw/arm/virt-acpi-build.c       |  33 ++++++-
+ hw/core/machine.c              |   2 +
+ include/hw/acpi/ghes.h         |  23 +++--
+ 5 files changed, 217 insertions(+), 29 deletions(-)
+
+-- 
+2.47.0
+
+
 
