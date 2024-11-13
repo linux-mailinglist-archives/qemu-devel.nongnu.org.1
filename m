@@ -2,70 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CA359C6AAB
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Nov 2024 09:39:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E0A09C6AD8
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Nov 2024 09:48:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tB8so-00059h-31; Wed, 13 Nov 2024 03:37:50 -0500
+	id 1tB91g-0001pE-Jw; Wed, 13 Nov 2024 03:47:00 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mchehab+huawei@kernel.org>)
- id 1tB8si-00056D-Tq; Wed, 13 Nov 2024 03:37:44 -0500
-Received: from nyc.source.kernel.org ([147.75.193.91])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mchehab+huawei@kernel.org>)
- id 1tB8sg-0005yH-67; Wed, 13 Nov 2024 03:37:44 -0500
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by nyc.source.kernel.org (Postfix) with ESMTP id 8C995A4040E;
- Wed, 13 Nov 2024 08:35:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59183C4CEDE;
- Wed, 13 Nov 2024 08:37:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1731487058;
- bh=/iAxRTnw7vCpxt41/a6sF+wbxF47+a06+AruAFNnzSg=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=NypOU/VAZkWbjlGShSU5D6T9SfMSDZylNBKKldk9mxYWIA0O32AWZqsLkhCpCUoxC
- yOrxQooMkmxpvZY3dTrz2SVmQKW6VdL+Z6V3u7icsby+45VF3qbfQS9E0AmHEgO78R
- G4AGA3Mab3+dBkJcu/cTOdqv1ZirxVwCF+3WgWR8Cdlb8PvtPWHIGhs4qb3rKZyzxq
- kWcdNJ5apcm+hyOuBPP7ZxABw+zHcwOkaVs9gHrVo6gJv15JOYJAFWW5tsYfZvvs5W
- QuK1sFMmHmoHSi1Xf04H6Slal1LFe3nKlnMAmP3dZYLGB2Kxyt4zwcIOWiRBjd0Poz
- aTZl+O/SsXlUA==
-Received: from mchehab by mail.kernel.org with local (Exim 4.98)
- (envelope-from <mchehab+huawei@kernel.org>)
- id 1tB8sZ-00000001KwG-3tFT; Wed, 13 Nov 2024 09:37:35 +0100
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-To: Igor Mammedov <imammedo@redhat.com>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Shiju Jose <shiju.jose@huawei.com>,
- Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Ani Sinha <anisinha@redhat.com>, Dongjiu Geng <gengdongjiu1@gmail.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Shannon Zhao <shannon.zhaosl@gmail.com>,
- Yanan Wang <wangyanan55@huawei.com>, Zhao Liu <zhao1.liu@intel.com>,
- linux-kernel@vger.kernel.org, qemu-arm@nongnu.org, qemu-devel@nongnu.org
-Subject: [PATCH 6/6] acpi/generic_event_device: add logic to detect if HEST
- addr is available
-Date: Wed, 13 Nov 2024 09:37:03 +0100
-Message-ID: <92fdd4cbfb0b52450cd0a2abac0a3227458c9618.1731486604.git.mchehab+huawei@kernel.org>
-X-Mailer: git-send-email 2.47.0
-In-Reply-To: <cover.1731486604.git.mchehab+huawei@kernel.org>
-References: <cover.1731486604.git.mchehab+huawei@kernel.org>
+ (Exim 4.90_1) (envelope-from <jpruiz84@gmail.com>)
+ id 1tB91e-0001oo-EY
+ for qemu-devel@nongnu.org; Wed, 13 Nov 2024 03:46:58 -0500
+Received: from mail-vk1-xa2e.google.com ([2607:f8b0:4864:20::a2e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <jpruiz84@gmail.com>)
+ id 1tB91b-00078X-RQ
+ for qemu-devel@nongnu.org; Wed, 13 Nov 2024 03:46:58 -0500
+Received: by mail-vk1-xa2e.google.com with SMTP id
+ 71dfb90a1353d-50d3365c29cso420270e0c.0
+ for <qemu-devel@nongnu.org>; Wed, 13 Nov 2024 00:46:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1731487615; x=1732092415; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=+IfjdgLpI8ScmfQxUlbtZcJaLTqvmUsnpEoMOVrYTc4=;
+ b=hLUpN34itehNv2jg1YZszFsOJi2ol8JK4lScXQB055113v1PHpsb7ubGMm7UL7vwQg
+ yyt2CeBp1NV3VM4Wzc4yPLgC94SAUBMz2ME5xbjBOube8b/7M3k34Zupv02QKKcPT0rK
+ LzFpBq/5cXkodYdAyrRbCt+ZljwIM7ZHteEaCiPaZ9WYDDAhojtqtbMJwLct3CozT3Ar
+ ibb/W068Hbziyi5p8/uD+rlZO846wsDHSBNOK/zDbfFHynm3dsM11mm32AikCWT0fwKc
+ uyLdd2K1aaf5H8lgMQ211f38UzvcMbYsurae/tubrRQ0GsoUCMZ0+UH2heJIyr0o9chT
+ qIGw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1731487615; x=1732092415;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=+IfjdgLpI8ScmfQxUlbtZcJaLTqvmUsnpEoMOVrYTc4=;
+ b=qNJfOZ8MXMHBZ784y8Tpx5FOt1D6JaW2J9JcL6N8QyqKg4oF63UjTetUPxUgD+CpPT
+ zBd+l9WltNwMjSOj0Rzf5dZ/UdtJA9+PNhgOmrYDN+RSSWrlAgNT4JDdbLjMw6Mf7iUh
+ Zcufx2B6sVQAB2kbM4OZ1E2vgJO46O8TqSfNsKSgZiwrs6FKKaFZcKj0OsuK3NQgzZPc
+ Sy9+fPxOMvi4yCt6PkZNKGjaqQY2Jq8WlwPy8CSoXIM20NsNToADiC48fk9P7OjRBCCL
+ +MPXGCt0WJ0qi19qOyPJwZx7zA1voIus3p42Wx08tQKDoHBCsZ30MO7qIB1xnLEVWzW2
+ UulQ==
+X-Gm-Message-State: AOJu0Yx4osAj2lriHPFOZyFc4eUkRkfyqmrph03itICjRrxfPxoophZu
+ gSwHE7KNT98JKBpcHA2e+hIOmirHql9hWIWm39dhJSBzpT6X7gN1Zx1/F5AcqIYRZzbbNB+tobN
+ PE0wcfZdWduYO7Psl5rratjfC7IMVm3El
+X-Google-Smtp-Source: AGHT+IF/MBfXKEzGIcrN+CGSmLjtZtKMI1fgLgHV5j6Acym+0jrCajkDA3f+TlE8PiB289ZoGhgwNQAfrfYt/mENfDY=
+X-Received: by 2002:a05:6122:3c4f:b0:50d:4b8d:6750 with SMTP id
+ 71dfb90a1353d-51402523fdcmr13345127e0c.1.1731487614507; Wed, 13 Nov 2024
+ 00:46:54 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=147.75.193.91;
- envelope-from=mchehab+huawei@kernel.org; helo=nyc.source.kernel.org
-X-Spam_score_int: -44
-X-Spam_score: -4.5
-X-Spam_bar: ----
-X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.122,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+References: <20241112220212.2237-1-juanpablo.ruiz@unikie.com>
+ <20241112164326.562406a9.alex.williamson@redhat.com>
+In-Reply-To: <20241112164326.562406a9.alex.williamson@redhat.com>
+From: Juan Pablo Ruiz <jpruiz84@gmail.com>
+Date: Wed, 13 Nov 2024 10:46:42 +0200
+Message-ID: <CAAuDais8P9Hf9XSMhXp=aNctT+ix5mjkwNMfQ5Kcv4oMSJysbQ@mail.gmail.com>
+Subject: Re: [PATCH 1/1] vfio/platform: Add mmio-base property to define start
+ address for MMIO mapping
+To: Alex Williamson <alex.williamson@redhat.com>
+Cc: qemu-devel@nongnu.org, Juan Pablo Ruiz <juanpablo.ruiz@unikie.com>, 
+ Auger Eric <eric.auger@redhat.com>,
+ =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+Content-Type: multipart/mixed; boundary="00000000000032b3b60626c76086"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::a2e;
+ envelope-from=jpruiz84@gmail.com; helo=mail-vk1-xa2e.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -82,169 +90,510 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Create a new property (x-has-hest-addr) and use it to detect if
-the GHES table offsets can be calculated from the HEST address
-(qemu 9.2 and upper) or via the legacy way via an offset obtained
-from the hardware_errors firmware file.
+--00000000000032b3b60626c76086
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
----
- hw/acpi/generic_event_device.c |  1 +
- hw/acpi/ghes.c                 | 27 ++++++++++++++++++++-------
- hw/arm/virt-acpi-build.c       | 30 ++++++++++++++++++++++++++----
- hw/core/machine.c              |  2 ++
- include/hw/acpi/ghes.h         |  1 +
- 5 files changed, 50 insertions(+), 11 deletions(-)
+On Wed, Nov 13, 2024 at 1:43=E2=80=AFAM Alex Williamson
+<alex.williamson@redhat.com> wrote:
+>
+> On Tue, 12 Nov 2024 22:02:12 +0000
+> Juan Pablo Ruiz <jpruiz84@gmail.com> wrote:
+>
+> > Some platform devices have large MMIO regions (e.g., GPU reserved memor=
+y). For
+> > certain devices, it's preferable to have a 1:1 address translation in t=
+he VM to
+> > avoid modifying driver source code.
+>
+> Why do we need 1:1 mappings?  Shouldn't the device tree describe where
+> the device lives in the VM address space and the driver should adapt
+> rather than use hard coded addresses?
+>
 
-diff --git a/hw/acpi/generic_event_device.c b/hw/acpi/generic_event_device.c
-index c1116dd8d7ae..df6b4fab2d30 100644
---- a/hw/acpi/generic_event_device.c
-+++ b/hw/acpi/generic_event_device.c
-@@ -318,6 +318,7 @@ static void acpi_ged_send_event(AcpiDeviceIf *adev, AcpiEventStatusBits ev)
- 
- static Property acpi_ged_properties[] = {
-     DEFINE_PROP_UINT32("ged-event", AcpiGedState, ged_event_bitmap, 0),
-+    DEFINE_PROP_BOOL("x-has-hest-addr", AcpiGedState, ghes_state.hest_lookup, true),
-     DEFINE_PROP_END_OF_LIST(),
- };
- 
-diff --git a/hw/acpi/ghes.c b/hw/acpi/ghes.c
-index 9ee25efe8abf..2d34a6ddf133 100644
---- a/hw/acpi/ghes.c
-+++ b/hw/acpi/ghes.c
-@@ -365,6 +365,8 @@ void acpi_build_hest(GArray *table_data, GArray *hardware_errors,
+For certain devices, especially those with large MMIO regions like GPU rese=
+rved
+memory, it's important to have 1:1 address translations to avoid extensive
+modifications to the driver source code. In platforms like the NVIDIA Jetso=
+n,
+some drivers have not integrated the dma-ranges property from the device tr=
+ee
+to set DMA address translations. This means the drivers expect devices at f=
+ixed
+physical addresses. Using 1:1 mappings allows us to passthrough these devic=
+es
+without altering the drivers, facilitating scalability and ease of deployme=
+nt.
+
+
+> How does a user know which devices need fixed base addresses and what
+> those addresses should be?
+>
+
+This is primarily only used to passthrough CMA regions that are required fo=
+r DMA
+opperatinos. For devices that do not require a specific address, users
+can omit the
+mmio-base parameter, and the platform bus will assign addresses automatical=
+ly.
+We can improve the documentation to help users determine when and how
+to specify `mmio-base`.
+
+> > This patch:
+>
+> ... should be split into at least 3 patches.
+>
+
+You're right; the patch should be split into separate commits for clarity:
+
+- Patch 1: Increase the platform bus size.
+- Patch 2: Change the `mmio_size` property from 32 to 64 bits.
+- Patch 3: Add the `mmio-base` property.
+
+> >
+> > 1. Increases the VFIO platform bus size from 32MB to 130GB.
+>
+> That's a very strange and specific size.
+
+The bus size increase to 130GB (actually 127GB or 130048MB) aligns the
+platform bus's MMIO region with the VIRT_MEM region starting at
+`0x2000000000`. This alignment is necessary to accommodate devices
+with large MMIO requirements and to maintain a contiguous address space.
+
+
+>
+> > 2. Changes the mmio_size property from 32 to 64 bits.
+> > 3. Adds an mmio-base property to define the starting MMIO address for m=
+apping
+> >    the VFIO device.
+> >
+> > Signed-off-by: Juan Pablo Ruiz juanpablo.ruiz@unikie.com
+> > ---
+> >  hw/arm/virt.c                   |  6 +++---
+> >  hw/core/platform-bus.c          | 28 ++++++++++++++++++++++++++--
+> >  hw/vfio/platform.c              |  1 +
+> >  include/hw/platform-bus.h       |  2 +-
+> >  include/hw/vfio/vfio-platform.h |  1 +
+> >  5 files changed, 32 insertions(+), 6 deletions(-)
+> >
+> > diff --git a/hw/arm/virt.c b/hw/arm/virt.c
+> > index 1a381e9a2b..9fc8f4425a 100644
+> > --- a/hw/arm/virt.c
+> > +++ b/hw/arm/virt.c
+> > @@ -183,13 +183,13 @@ static const MemMapEntry base_memmap[] =3D {
+> >      [VIRT_SECURE_GPIO] =3D        { 0x090b0000, 0x00001000 },
+> >      [VIRT_MMIO] =3D               { 0x0a000000, 0x00000200 },
+> >      /* ...repeating for a total of NUM_VIRTIO_TRANSPORTS, each of that=
+ size */
+> > -    [VIRT_PLATFORM_BUS] =3D       { 0x0c000000, 0x02000000 },
+> > +    [VIRT_PLATFORM_BUS] =3D       { 0x60000000, 0x1FC0000000 },       =
+   // 130048MB
+> >      [VIRT_SECURE_MEM] =3D         { 0x0e000000, 0x01000000 },
+> >      [VIRT_PCIE_MMIO] =3D          { 0x10000000, 0x2eff0000 },
+> >      [VIRT_PCIE_PIO] =3D           { 0x3eff0000, 0x00010000 },
+> >      [VIRT_PCIE_ECAM] =3D          { 0x3f000000, 0x01000000 },
+> >      /* Actual RAM size depends on initial RAM and device memory settin=
+gs */
+> > -    [VIRT_MEM] =3D                { GiB, LEGACY_RAMLIMIT_BYTES },
+> > +    [VIRT_MEM] =3D                { 0x2000000000, LEGACY_RAMLIMIT_BYTE=
+S },
+> >  };
+> >
+> >  /*
+> > @@ -1625,7 +1625,7 @@ static void create_platform_bus(VirtMachineState =
+*vms)
+> >      dev =3D qdev_new(TYPE_PLATFORM_BUS_DEVICE);
+> >      dev->id =3D g_strdup(TYPE_PLATFORM_BUS_DEVICE);
+> >      qdev_prop_set_uint32(dev, "num_irqs", PLATFORM_BUS_NUM_IRQS);
+> > -    qdev_prop_set_uint32(dev, "mmio_size", vms->memmap[VIRT_PLATFORM_B=
+US].size);
+> > +    qdev_prop_set_uint64(dev, "mmio_size", vms->memmap[VIRT_PLATFORM_B=
+US].size);
+> >      sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
+> >      vms->platform_bus_dev =3D dev;
+> >
+> > diff --git a/hw/core/platform-bus.c b/hw/core/platform-bus.c
+> > index dc58bf505a..f545fab6e5 100644
+> > --- a/hw/core/platform-bus.c
+> > +++ b/hw/core/platform-bus.c
+> > @@ -22,6 +22,7 @@
+> >  #include "qemu/osdep.h"
+> >  #include "hw/platform-bus.h"
+> >  #include "hw/qdev-properties.h"
+> > +#include "hw/vfio/vfio-platform.h"
+> >  #include "qapi/error.h"
+> >  #include "qemu/error-report.h"
+> >  #include "qemu/module.h"
+> > @@ -130,11 +131,29 @@ static void platform_bus_map_mmio(PlatformBusDevi=
+ce *pbus, SysBusDevice *sbdev,
+> >                                    int n)
+> >  {
+> >      MemoryRegion *sbdev_mr =3D sysbus_mmio_get_region(sbdev, n);
+> > +    VFIOPlatformDevice *vdev =3D VFIO_PLATFORM_DEVICE(sbdev);
+>
+> How do you know it's a vfio-platform device?  This completely breaks
+> device abstraction.  Thanks,
+>
+> Alex
+>
+> >      uint64_t size =3D memory_region_size(sbdev_mr);
+> >      uint64_t alignment =3D (1ULL << (63 - clz64(size + size - 1)));
+> >      uint64_t off;
+> > +    uint64_t mmio_base_off;
+> >      bool found_region =3D false;
+> >
+> > +    if (vdev->mmio_base) {
+> > +        if(vdev->mmio_base < pbus->mmio.addr ||
+> > +           vdev->mmio_base >=3D pbus->mmio.addr + pbus->mmio_size){
+> > +            error_report("Platform Bus: MMIO base 0x%"PRIx64
+> > +                " outside platform bus region [0x%"PRIx64",0x%"PRIx64"=
+]",
+> > +                vdev->mmio_base,
+> > +                pbus->mmio.addr,
+> > +                pbus->mmio.addr + pbus->mmio_size);
+> > +            exit(1);
+> > +        }
+> > +
+> > +        mmio_base_off =3D vdev->mmio_base - pbus->mmio.addr;
+> > +    } else {
+> > +        mmio_base_off =3D 0;
+> > +    }
+> > +
+> >      if (memory_region_is_mapped(sbdev_mr)) {
+> >          /* Region is already mapped, nothing to do */
+> >          return;
+> > @@ -144,7 +163,7 @@ static void platform_bus_map_mmio(PlatformBusDevice=
+ *pbus, SysBusDevice *sbdev,
+> >       * Look for empty space in the MMIO space that is naturally aligne=
+d with
+> >       * the target device's memory region
+> >       */
+> > -    for (off =3D 0; off < pbus->mmio_size; off +=3D alignment) {
+> > +    for (off =3D mmio_base_off; off < pbus->mmio_size; off +=3D alignm=
+ent) {
+> >          MemoryRegion *mr =3D memory_region_find(&pbus->mmio, off, size=
+).mr;
+> >          if (!mr) {
+> >              found_region =3D true;
+> > @@ -154,6 +173,11 @@ static void platform_bus_map_mmio(PlatformBusDevic=
+e *pbus, SysBusDevice *sbdev,
+> >          }
+> >      }
+> >
+> > +    if (vdev->mmio_base && vdev->mmio_base !=3D off + pbus->mmio.addr)=
  {
-     AcpiTable table = { .sig = "HEST", .rev = 1,
-                         .oem_id = oem_id, .oem_table_id = oem_table_id };
-+    AcpiGedState *acpi_ged_state;
-+    AcpiGhesState *ags = NULL;
-     int i;
- 
-     build_ghes_error_table(hardware_errors, linker, num_sources);
-@@ -385,10 +387,19 @@ void acpi_build_hest(GArray *table_data, GArray *hardware_errors,
-      * tell firmware to write into GPA the address of HEST via fw_cfg,
-      * once initialized.
-      */
--    bios_linker_loader_write_pointer(linker,
--                                     ACPI_HEST_ADDR_FW_CFG_FILE, 0,
--                                     sizeof(uint64_t),
--                                     ACPI_BUILD_TABLE_FILE, hest_offset);
-+
-+    acpi_ged_state = ACPI_GED(object_resolve_path_type("", TYPE_ACPI_GED,
-+                                                       NULL));
-+    if (acpi_ged_state) {
-+        ags = &acpi_ged_state->ghes_state;
-+    }
-+
-+    if (ags->hest_lookup) {
-+        bios_linker_loader_write_pointer(linker,
-+                                         ACPI_HEST_ADDR_FW_CFG_FILE, 0,
-+                                         sizeof(uint64_t),
-+                                         ACPI_BUILD_TABLE_FILE, hest_offset);
-+    }
- }
- 
- void acpi_ghes_add_fw_cfg(AcpiGhesState *ags, FWCfgState *s,
-@@ -402,8 +413,10 @@ void acpi_ghes_add_fw_cfg(AcpiGhesState *ags, FWCfgState *s,
-     fw_cfg_add_file_callback(s, ACPI_HW_ERROR_ADDR_FW_CFG_FILE, NULL, NULL,
-         NULL, &(ags->hw_error_le), sizeof(ags->hw_error_le), false);
- 
--    fw_cfg_add_file_callback(s, ACPI_HEST_ADDR_FW_CFG_FILE, NULL, NULL,
--        NULL, &(ags->hest_addr_le), sizeof(ags->hest_addr_le), false);
-+    if (ags && ags->hest_lookup) {
-+        fw_cfg_add_file_callback(s, ACPI_HEST_ADDR_FW_CFG_FILE, NULL, NULL,
-+            NULL, &(ags->hest_addr_le), sizeof(ags->hest_addr_le), false);
-+    }
- 
-     ags->present = true;
- }
-@@ -518,7 +531,7 @@ void ghes_record_cper_errors(const void *cper, size_t len,
-     }
-     ags = &acpi_ged_state->ghes_state;
- 
--    if (!ags->hest_addr_le) {
-+    if (!ags->hest_lookup) {
-         get_hw_error_offsets(le64_to_cpu(ags->hw_error_le),
-                              &cper_addr, &read_ack_register_addr);
-     } else {
-diff --git a/hw/arm/virt-acpi-build.c b/hw/arm/virt-acpi-build.c
-index 40f66792570c..930ba9e0a14c 100644
---- a/hw/arm/virt-acpi-build.c
-+++ b/hw/arm/virt-acpi-build.c
-@@ -893,6 +893,10 @@ static const AcpiNotificationSourceId hest_ghes_notify[] = {
-     {ACPI_HEST_SRC_ID_SYNC, ACPI_GHES_NOTIFY_SEA},
- };
- 
-+static const AcpiNotificationSourceId hest_ghes_notify_9_1[] = {
-+    {ACPI_HEST_SRC_ID_SYNC, ACPI_GHES_NOTIFY_SEA},
-+};
-+
- static
- void virt_acpi_build(VirtMachineState *vms, AcpiBuildTables *tables)
- {
-@@ -946,10 +950,28 @@ void virt_acpi_build(VirtMachineState *vms, AcpiBuildTables *tables)
-     build_dbg2(tables_blob, tables->linker, vms);
- 
-     if (vms->ras) {
--        acpi_add_table(table_offsets, tables_blob);
--        acpi_build_hest(tables_blob, tables->hardware_errors, tables->linker,
--                        hest_ghes_notify, ARRAY_SIZE(hest_ghes_notify),
--                        vms->oem_id, vms->oem_table_id);
-+        AcpiGhesState *ags;
-+        AcpiGedState *acpi_ged_state;
-+
-+        acpi_ged_state = ACPI_GED(object_resolve_path_type("", TYPE_ACPI_GED,
-+                                                       NULL));
-+        if (acpi_ged_state) {
-+            ags = &acpi_ged_state->ghes_state;
-+
-+            acpi_add_table(table_offsets, tables_blob);
-+
-+            if (!ags->hest_lookup) {
-+                acpi_build_hest(tables_blob, tables->hardware_errors,
-+                                tables->linker, hest_ghes_notify_9_1,
-+                                ARRAY_SIZE(hest_ghes_notify_9_1),
-+                                vms->oem_id, vms->oem_table_id);
-+            } else {
-+                acpi_build_hest(tables_blob, tables->hardware_errors,
-+                                tables->linker, hest_ghes_notify,
-+                                ARRAY_SIZE(hest_ghes_notify),
-+                                vms->oem_id, vms->oem_table_id);
-+            }
-+        }
-     }
- 
-     if (ms->numa_state->num_nodes > 0) {
-diff --git a/hw/core/machine.c b/hw/core/machine.c
-index a35c4a8faecb..00521a1963ba 100644
---- a/hw/core/machine.c
-+++ b/hw/core/machine.c
-@@ -34,10 +34,12 @@
- #include "hw/virtio/virtio-pci.h"
- #include "hw/virtio/virtio-net.h"
- #include "hw/virtio/virtio-iommu.h"
-+#include "hw/acpi/generic_event_device.h"
- #include "audio/audio.h"
- 
- GlobalProperty hw_compat_9_1[] = {
-     { TYPE_PCI_DEVICE, "x-pcie-ext-tag", "false" },
-+    { TYPE_ACPI_GED, "x-has-hest-addr", "false" },
- };
- const size_t hw_compat_9_1_len = G_N_ELEMENTS(hw_compat_9_1);
- 
-diff --git a/include/hw/acpi/ghes.h b/include/hw/acpi/ghes.h
-index a07c30ef13b7..040d6ee366b2 100644
---- a/include/hw/acpi/ghes.h
-+++ b/include/hw/acpi/ghes.h
-@@ -61,6 +61,7 @@ typedef struct AcpiGhesState {
-     uint64_t hest_addr_le;
-     uint64_t hw_error_le;
-     bool present; /* True if GHES is present at all on this board */
-+    bool hest_lookup; /* True if HEST address is present */
- } AcpiGhesState;
- 
- /*
--- 
-2.47.0
+> > +        warn_report("Platform Bus: Not able to map in mmio base: 0x%"P=
+RIx64,
+> > +            vdev->mmio_base);
+> > +    }
+> > +
+> >      if (!found_region) {
+> >          error_report("Platform Bus: Can not fit MMIO region of size %"=
+PRIx64,
+> >                       size);
+> > @@ -206,7 +230,7 @@ static void platform_bus_realize(DeviceState *dev, =
+Error **errp)
+> >
+> >  static Property platform_bus_properties[] =3D {
+> >      DEFINE_PROP_UINT32("num_irqs", PlatformBusDevice, num_irqs, 0),
+> > -    DEFINE_PROP_UINT32("mmio_size", PlatformBusDevice, mmio_size, 0),
+> > +    DEFINE_PROP_UINT64("mmio_size", PlatformBusDevice, mmio_size, 0),
+> >      DEFINE_PROP_END_OF_LIST()
+> >  };
+> >
+> > diff --git a/hw/vfio/platform.c b/hw/vfio/platform.c
+> > index a85c199c76..cfac564093 100644
+> > --- a/hw/vfio/platform.c
+> > +++ b/hw/vfio/platform.c
+> > @@ -640,6 +640,7 @@ static Property vfio_platform_dev_properties[] =3D =
+{
+> >      DEFINE_PROP_LINK("iommufd", VFIOPlatformDevice, vbasedev.iommufd,
+> >                       TYPE_IOMMUFD_BACKEND, IOMMUFDBackend *),
+> >  #endif
+> > +    DEFINE_PROP_UINT64("mmio-base", VFIOPlatformDevice, mmio_base, 0),
+> >      DEFINE_PROP_END_OF_LIST(),
+> >  };
+> >
+> > diff --git a/include/hw/platform-bus.h b/include/hw/platform-bus.h
+> > index 44f30c5353..4e9913a5d7 100644
+> > --- a/include/hw/platform-bus.h
+> > +++ b/include/hw/platform-bus.h
+> > @@ -34,7 +34,7 @@ struct PlatformBusDevice {
+> >      SysBusDevice parent_obj;
+> >
+> >      /*< public >*/
+> > -    uint32_t mmio_size;
+> > +    uint64_t mmio_size;
+> >      MemoryRegion mmio;
+> >
+> >      uint32_t num_irqs;
+> > diff --git a/include/hw/vfio/vfio-platform.h b/include/hw/vfio/vfio-pla=
+tform.h
+> > index c414c3dffc..90575b5852 100644
+> > --- a/include/hw/vfio/vfio-platform.h
+> > +++ b/include/hw/vfio/vfio-platform.h
+> > @@ -59,6 +59,7 @@ struct VFIOPlatformDevice {
+> >      uint32_t mmap_timeout; /* delay to re-enable mmaps after interrupt=
+ */
+> >      QEMUTimer *mmap_timer; /* allows fast-path resume after IRQ hit */
+> >      QemuMutex intp_mutex; /* protect the intp_list IRQ state */
+> > +    uint64_t mmio_base; /* base address to start looking for mmio */
+> >      bool irqfd_allowed; /* debug option to force irqfd on/off */
+> >  };
+> >  typedef struct VFIOPlatformDevice VFIOPlatformDevice;
+>
 
+Juan Pablo Ruiz Rosero
+
+
+
+
+On Wed, Nov 13, 2024 at 1:43=E2=80=AFAM Alex Williamson
+<alex.williamson@redhat.com> wrote:
+>
+> On Tue, 12 Nov 2024 22:02:12 +0000
+> Juan Pablo Ruiz <jpruiz84@gmail.com> wrote:
+>
+> > Some platform devices have large MMIO regions (e.g., GPU reserved memor=
+y). For
+> > certain devices, it's preferable to have a 1:1 address translation in t=
+he VM to
+> > avoid modifying driver source code.
+>
+> Why do we need 1:1 mappings?  Shouldn't the device tree describe where
+> the device lives in the VM address space and the driver should adapt
+> rather than use hard coded addresses?
+>
+> How does a user know which devices need fixed base addresses and what
+> those addresses should be?
+>
+> > This patch:
+>
+> ... should be split into at least 3 patches.
+>
+> >
+> > 1. Increases the VFIO platform bus size from 32MB to 130GB.
+>
+> That's a very strange and specific size.
+>
+> > 2. Changes the mmio_size property from 32 to 64 bits.
+> > 3. Adds an mmio-base property to define the starting MMIO address for m=
+apping
+> >    the VFIO device.
+> >
+> > Signed-off-by: Juan Pablo Ruiz juanpablo.ruiz@unikie.com
+> > ---
+> >  hw/arm/virt.c                   |  6 +++---
+> >  hw/core/platform-bus.c          | 28 ++++++++++++++++++++++++++--
+> >  hw/vfio/platform.c              |  1 +
+> >  include/hw/platform-bus.h       |  2 +-
+> >  include/hw/vfio/vfio-platform.h |  1 +
+> >  5 files changed, 32 insertions(+), 6 deletions(-)
+> >
+> > diff --git a/hw/arm/virt.c b/hw/arm/virt.c
+> > index 1a381e9a2b..9fc8f4425a 100644
+> > --- a/hw/arm/virt.c
+> > +++ b/hw/arm/virt.c
+> > @@ -183,13 +183,13 @@ static const MemMapEntry base_memmap[] =3D {
+> >      [VIRT_SECURE_GPIO] =3D        { 0x090b0000, 0x00001000 },
+> >      [VIRT_MMIO] =3D               { 0x0a000000, 0x00000200 },
+> >      /* ...repeating for a total of NUM_VIRTIO_TRANSPORTS, each of that=
+ size */
+> > -    [VIRT_PLATFORM_BUS] =3D       { 0x0c000000, 0x02000000 },
+> > +    [VIRT_PLATFORM_BUS] =3D       { 0x60000000, 0x1FC0000000 },       =
+   // 130048MB
+> >      [VIRT_SECURE_MEM] =3D         { 0x0e000000, 0x01000000 },
+> >      [VIRT_PCIE_MMIO] =3D          { 0x10000000, 0x2eff0000 },
+> >      [VIRT_PCIE_PIO] =3D           { 0x3eff0000, 0x00010000 },
+> >      [VIRT_PCIE_ECAM] =3D          { 0x3f000000, 0x01000000 },
+> >      /* Actual RAM size depends on initial RAM and device memory settin=
+gs */
+> > -    [VIRT_MEM] =3D                { GiB, LEGACY_RAMLIMIT_BYTES },
+> > +    [VIRT_MEM] =3D                { 0x2000000000, LEGACY_RAMLIMIT_BYTE=
+S },
+> >  };
+> >
+> >  /*
+> > @@ -1625,7 +1625,7 @@ static void create_platform_bus(VirtMachineState =
+*vms)
+> >      dev =3D qdev_new(TYPE_PLATFORM_BUS_DEVICE);
+> >      dev->id =3D g_strdup(TYPE_PLATFORM_BUS_DEVICE);
+> >      qdev_prop_set_uint32(dev, "num_irqs", PLATFORM_BUS_NUM_IRQS);
+> > -    qdev_prop_set_uint32(dev, "mmio_size", vms->memmap[VIRT_PLATFORM_B=
+US].size);
+> > +    qdev_prop_set_uint64(dev, "mmio_size", vms->memmap[VIRT_PLATFORM_B=
+US].size);
+> >      sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
+> >      vms->platform_bus_dev =3D dev;
+> >
+> > diff --git a/hw/core/platform-bus.c b/hw/core/platform-bus.c
+> > index dc58bf505a..f545fab6e5 100644
+> > --- a/hw/core/platform-bus.c
+> > +++ b/hw/core/platform-bus.c
+> > @@ -22,6 +22,7 @@
+> >  #include "qemu/osdep.h"
+> >  #include "hw/platform-bus.h"
+> >  #include "hw/qdev-properties.h"
+> > +#include "hw/vfio/vfio-platform.h"
+> >  #include "qapi/error.h"
+> >  #include "qemu/error-report.h"
+> >  #include "qemu/module.h"
+> > @@ -130,11 +131,29 @@ static void platform_bus_map_mmio(PlatformBusDevi=
+ce *pbus, SysBusDevice *sbdev,
+> >                                    int n)
+> >  {
+> >      MemoryRegion *sbdev_mr =3D sysbus_mmio_get_region(sbdev, n);
+> > +    VFIOPlatformDevice *vdev =3D VFIO_PLATFORM_DEVICE(sbdev);
+>
+> How do you know it's a vfio-platform device?  This completely breaks
+> device abstraction.  Thanks,
+
+Regarding your concern about breaking device abstraction by directly
+casting `sbdev`
+to `VFIOPlatformDevice`, I realize this is not ideal. I'll look into
+alternative approaches.
+
+Thanks for your comments
+
+Juan Pablo
+>
+> Alex
+>
+> >      uint64_t size =3D memory_region_size(sbdev_mr);
+> >      uint64_t alignment =3D (1ULL << (63 - clz64(size + size - 1)));
+> >      uint64_t off;
+> > +    uint64_t mmio_base_off;
+> >      bool found_region =3D false;
+> >
+> > +    if (vdev->mmio_base) {
+> > +        if(vdev->mmio_base < pbus->mmio.addr ||
+> > +           vdev->mmio_base >=3D pbus->mmio.addr + pbus->mmio_size){
+> > +            error_report("Platform Bus: MMIO base 0x%"PRIx64
+> > +                " outside platform bus region [0x%"PRIx64",0x%"PRIx64"=
+]",
+> > +                vdev->mmio_base,
+> > +                pbus->mmio.addr,
+> > +                pbus->mmio.addr + pbus->mmio_size);
+> > +            exit(1);
+> > +        }
+> > +
+> > +        mmio_base_off =3D vdev->mmio_base - pbus->mmio.addr;
+> > +    } else {
+> > +        mmio_base_off =3D 0;
+> > +    }
+> > +
+> >      if (memory_region_is_mapped(sbdev_mr)) {
+> >          /* Region is already mapped, nothing to do */
+> >          return;
+> > @@ -144,7 +163,7 @@ static void platform_bus_map_mmio(PlatformBusDevice=
+ *pbus, SysBusDevice *sbdev,
+> >       * Look for empty space in the MMIO space that is naturally aligne=
+d with
+> >       * the target device's memory region
+> >       */
+> > -    for (off =3D 0; off < pbus->mmio_size; off +=3D alignment) {
+> > +    for (off =3D mmio_base_off; off < pbus->mmio_size; off +=3D alignm=
+ent) {
+> >          MemoryRegion *mr =3D memory_region_find(&pbus->mmio, off, size=
+).mr;
+> >          if (!mr) {
+> >              found_region =3D true;
+> > @@ -154,6 +173,11 @@ static void platform_bus_map_mmio(PlatformBusDevic=
+e *pbus, SysBusDevice *sbdev,
+> >          }
+> >      }
+> >
+> > +    if (vdev->mmio_base && vdev->mmio_base !=3D off + pbus->mmio.addr)=
+ {
+> > +        warn_report("Platform Bus: Not able to map in mmio base: 0x%"P=
+RIx64,
+> > +            vdev->mmio_base);
+> > +    }
+> > +
+> >      if (!found_region) {
+> >          error_report("Platform Bus: Can not fit MMIO region of size %"=
+PRIx64,
+> >                       size);
+> > @@ -206,7 +230,7 @@ static void platform_bus_realize(DeviceState *dev, =
+Error **errp)
+> >
+> >  static Property platform_bus_properties[] =3D {
+> >      DEFINE_PROP_UINT32("num_irqs", PlatformBusDevice, num_irqs, 0),
+> > -    DEFINE_PROP_UINT32("mmio_size", PlatformBusDevice, mmio_size, 0),
+> > +    DEFINE_PROP_UINT64("mmio_size", PlatformBusDevice, mmio_size, 0),
+> >      DEFINE_PROP_END_OF_LIST()
+> >  };
+> >
+> > diff --git a/hw/vfio/platform.c b/hw/vfio/platform.c
+> > index a85c199c76..cfac564093 100644
+> > --- a/hw/vfio/platform.c
+> > +++ b/hw/vfio/platform.c
+> > @@ -640,6 +640,7 @@ static Property vfio_platform_dev_properties[] =3D =
+{
+> >      DEFINE_PROP_LINK("iommufd", VFIOPlatformDevice, vbasedev.iommufd,
+> >                       TYPE_IOMMUFD_BACKEND, IOMMUFDBackend *),
+> >  #endif
+> > +    DEFINE_PROP_UINT64("mmio-base", VFIOPlatformDevice, mmio_base, 0),
+> >      DEFINE_PROP_END_OF_LIST(),
+> >  };
+> >
+> > diff --git a/include/hw/platform-bus.h b/include/hw/platform-bus.h
+> > index 44f30c5353..4e9913a5d7 100644
+> > --- a/include/hw/platform-bus.h
+> > +++ b/include/hw/platform-bus.h
+> > @@ -34,7 +34,7 @@ struct PlatformBusDevice {
+> >      SysBusDevice parent_obj;
+> >
+> >      /*< public >*/
+> > -    uint32_t mmio_size;
+> > +    uint64_t mmio_size;
+> >      MemoryRegion mmio;
+> >
+> >      uint32_t num_irqs;
+> > diff --git a/include/hw/vfio/vfio-platform.h b/include/hw/vfio/vfio-pla=
+tform.h
+> > index c414c3dffc..90575b5852 100644
+> > --- a/include/hw/vfio/vfio-platform.h
+> > +++ b/include/hw/vfio/vfio-platform.h
+> > @@ -59,6 +59,7 @@ struct VFIOPlatformDevice {
+> >      uint32_t mmap_timeout; /* delay to re-enable mmaps after interrupt=
+ */
+> >      QEMUTimer *mmap_timer; /* allows fast-path resume after IRQ hit */
+> >      QemuMutex intp_mutex; /* protect the intp_list IRQ state */
+> > +    uint64_t mmio_base; /* base address to start looking for mmio */
+> >      bool irqfd_allowed; /* debug option to force irqfd on/off */
+> >  };
+> >  typedef struct VFIOPlatformDevice VFIOPlatformDevice;
+>
+
+--00000000000032b3b60626c76086
+Content-Type: image/png; name="image.png"
+Content-Disposition: attachment; filename="image.png"
+Content-Transfer-Encoding: base64
+Content-ID: <f_m3fmdksw0>
+X-Attachment-Id: f_m3fmdksw0
+
+iVBORw0KGgoAAAANSUhEUgAAAJEAAAAVCAYAAABG+QztAAAElUlEQVR4nO2ZfUyUdQDHP3cHKHbc
+XYmSbxQwlTRfmFLHFHnJkDdrwzeKS5mIL/MVGucQsPKFAJVCEi1TS5mpc6iHgDpnJW/W8mVmZeWg
+bCJjbgFh4Bl3HXl5lOAOH8/W9vv8c7vn99nv+zy7757f73nOyWwBgUACTv/1CQj+/4gSCSTj8BK1
+139Gbkoa20rPc82owkc7neSc9cz1UyPr4VzG+i85sDWfnUcquXSljpuugxkT+iqvr1nJtOGPPVCu
+8KR5HTi2RG1fsW5qNNltOj6uKiGqby17l8SwaEot5jPFzPOW92CyWxxLCSOxYiL6DQcpDB+BsqGc
+zQtfIzbwLAXVBhJ9FD3LFZ40z4oDS2TmRtHbvHtexSuGjcwYrrQc8yNh81sUD01g3Tun0eUH09vu
++WSo/FMoyU0ltJ/1IpQvkrp5BYbR6WRtOUN87gSc7c4VnjTPhgNL1Epl6ac095nMlEClrQruoYSN
+k1NyvJQLt4PRKq5xQBeA7vPn2FW9nzhP692k9TyZLwSxtnkepRWbCNG4ELws7Z4UeT8P+snb+fqn
+qxjpKJGduc7Ck+bZfgPHlaj9Fy7/2IJ8oDderp2Oy/vj7aXCXH2ZH26CVjOIGQW7+SIwkiVz8hh7
+LJmRLo2cStWx9tuxrDmdaSlQ97un36pPc+62Ez4jfenVk1w34UnyNLYhx5XI3MSvTWZkbmqUpu8p
+iAhh1ZVwdpRvxUOlRGZqorHJBBo5Mk0wmXvXcnZSBnGrx7Nv3PvEFzQStbOM5NH3WfBuVpOV/gkN
+mimsTxxz52LszVUKT5Knse2LHs0jvtlEe7vJ8tGOqRul16gV7LHsa7Txkfi7/MHgBcV8EOeJors5
+TXUULdax8RsPZhVuI96zi026HbnCk+45rkQyNY+rZZYbQxMtimdYeqKepX8NGClrbsEsV6NRd/7h
+FQyJnkf0wENsrxvFzIRJPNHdKmZupDz9ZeYUNhOUc5IPZw3m7kz25gpPmtcJx5VIMQTfoUpMhhpq
+W8HfzXrc1EBNbTOyIb4M6/xqx3SdoiUL+ahNy+RnL7JhTgaTy7MJVP27Sa1czJtJTM4VRqUf5WDS
+GPo8SK7wpHmdcOBy5sqEyBBU+yo5UdHCzIg7O33zjVOcOGti0OwIxt7d4Ru5vGU2ifudiD90mPd8
+jxATsAjdIn+q9sxg0N3i36amMJ6p+jM8lXQYwxsTUN9zt7I3V3jSPBsOLJEM95hUlucGk6NPIdwn
+m6i+Nexd/iZlLmEUJAVZ3zWYaa5YTezKKp5OOcmmSHfLY/pcdmyvRDt9AbP9R1K2YgQullW5/ugy
+oueXoFl4kJLsUNy7XO7szRWeNM+GYzfWvceTUWygT0o6eq0HOqMKL+10Co5nkmB962m6XsTiuFyu
+BmygYnUASuuF9H8pj93J5whbFUuaXzk5k9ow5O/iu9ZbkB/Bk/n/jHJ+PptLlXqGKezLtff8hHcf
+z4rDn84UA0LRF1ah72ZcPmAae342djHixsSsC/ye9fd3NfOPtzH/IeUK7+F4HYh/8QWSESUSSEaU
+SCAZUSKBZESJBJL5E6cqGgzxpNf4AAAAAElFTkSuQmCC
+--00000000000032b3b60626c76086--
 
