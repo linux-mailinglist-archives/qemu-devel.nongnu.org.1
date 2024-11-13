@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F7EA9C796E
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Nov 2024 17:58:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B87E99C79D0
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Nov 2024 18:20:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tBGgC-0001Wj-LV; Wed, 13 Nov 2024 11:57:20 -0500
+	id 1tBH0M-00007w-FH; Wed, 13 Nov 2024 12:18:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tBGg7-0001WM-H9
- for qemu-devel@nongnu.org; Wed, 13 Nov 2024 11:57:17 -0500
-Received: from mgamail.intel.com ([198.175.65.20])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tBGg5-0001Uv-MF
- for qemu-devel@nongnu.org; Wed, 13 Nov 2024 11:57:15 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1731517034; x=1763053034;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=iRTp/lPSHCLfmoyHvRh98VAdS2hyyRbRRx8oSbHwnpU=;
- b=ktK5k5tu9XHy39MuZ0zyifz0vyMOvXoqBtdbnFhjHKnhYR5RtAATKTcX
- vXUeAAohJCVolT/MEgkEdtbkmpzkPmOByMhbPbzlhcQcHawu3i+rI5xEf
- PjF64hzOLHI4OFOk+dgB9XJukZjepGuA1Jve4BnTAGwp4B3wlofeN20zu
- Ll1rdcRUbO7bDZjTtZy2bGmhTPWGiG8uhYttsQWB/1qAPj1FFCswR+jcO
- 1XqZhKvHCxi9JGt9f5tlGICyfen53FCJMpj9AZAb7zBCfuGqZAQyZFXXf
- iKMJjKdhB4/IYJp8Jtygq7v1er3yj3NqDTem/sYvLfX9kjQXrihhrJXXm Q==;
-X-CSE-ConnectionGUID: lgAZZS5mQnagJar2A7JkYg==
-X-CSE-MsgGUID: FBBS0cBJSrqrQj8Fy/4Mww==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="31187227"
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="31187227"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Nov 2024 08:57:10 -0800
-X-CSE-ConnectionGUID: 04/TR45hTWmiV+HKmFEs7g==
-X-CSE-MsgGUID: rr/gpLk1QsyTNIvP79nLAg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,151,1728975600"; d="scan'208";a="118742745"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by orviesa002.jf.intel.com with ESMTP; 13 Nov 2024 08:57:06 -0800
-Date: Thu, 14 Nov 2024 01:15:09 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: dongli.zhang@oracle.com
-Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, pbonzini@redhat.com,
- mtosatti@redhat.com, sandipan.das@amd.com, babu.moger@amd.com,
- likexu@tencent.com, like.xu.linux@gmail.com,
- zhenyuw@linux.intel.com, groug@kaod.org, lyan@digitalocean.com,
- khorenko@virtuozzo.com, alexander.ivanov@virtuozzo.com,
- den@virtuozzo.com, joe.jin@oracle.com, davydov-max@yandex-team.ru,
- dapeng1.mi@linux.intel.com, zide.chen@intel.com
-Subject: Re: [PATCH 2/7] target/i386/kvm: introduce 'pmu-cap-disabled' to set
- KVM_PMU_CAP_DISABLE
-Message-ID: <ZzTenX8KOOGxZCou@intel.com>
-References: <20241104094119.4131-1-dongli.zhang@oracle.com>
- <20241104094119.4131-3-dongli.zhang@oracle.com>
- <ZyxxygVaufOntpZJ@intel.com>
- <57b4b74d-67d2-4fcf-aa59-c788afc93619@oracle.com>
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1tBH0L-00007o-6L
+ for qemu-devel@nongnu.org; Wed, 13 Nov 2024 12:18:09 -0500
+Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1tBH0J-0003ju-Nj
+ for qemu-devel@nongnu.org; Wed, 13 Nov 2024 12:18:08 -0500
+Received: by mail-pl1-x62f.google.com with SMTP id
+ d9443c01a7336-20ce5e3b116so64478115ad.1
+ for <qemu-devel@nongnu.org>; Wed, 13 Nov 2024 09:18:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1731518283; x=1732123083; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=UHVe9CY4lpulvqbim1lRpytAm970j/RmzHBlLdorJnY=;
+ b=Z49xI/dEzLG1J+G+VI6p6xPseqEcjMpZpq7i4AIdd/l7OOS7IcOiQOpZoILlApWhNU
+ nI3H4DEyPNyXmEQ/B6B7CGq2/8Kyxfj7l+E/qzVcjLCRf38jIO2Vx1+6KF1I2+8/tdkN
+ Ec8AxMjoOpxes6RFD/VNQPMQ+apY2aG2SW8bfbU+IWga6gRPInnRfv/f1LX/fqfj1lBe
+ NSIB3s+dH8fEzP+kQP0GTuLdN6LwCCCKPDxCD7yTnh31M+mD5BJzzYNRHCaUrfYc4vMU
+ TiJZlf9l85saDL3HiA5+kHK1kkce0akIlDrDjJRX218KORLHF8rWYiMH99376VCqyN9F
+ WAqQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1731518283; x=1732123083;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=UHVe9CY4lpulvqbim1lRpytAm970j/RmzHBlLdorJnY=;
+ b=CCjg7hc0BjKpqhmrQF42MKU9Z8e8i2UmSZoL7fBobUXYJp6D3kcTTqy75CW7GJ+6C8
+ RA92c1U47p50mVMpcfQSmBgubHXyCqeUudhNvL7fOve3TN/6mjWcI7XERJLhIz+C23oL
+ Wsbj44oz9XuLTz4ssCbnZgJzb+ptdfhOKufod7mF4xVZ7WsciMjkQIpAQ84ZL5EUMLdn
+ PxP4gMcRMkFhKEVDk6Yb4uvMcZS4bEfrOlB71e+HByinM/2mTPI6FYtlkVh1v7BMglco
+ RThdy1XZcFyNfz8C7T54eznWY6T5gRKvO3A5ybwkJJQTFDTo2YavurAKJHfoJqUM7DTj
+ GSOQ==
+X-Gm-Message-State: AOJu0YzbjTgmkKNCSmMfPqFBfL3+sxDT4GTKP0GblqkVF5HCfvUozG1c
+ GJmoXCryLwtRw5bZgZu7OSf6z9zOb0qiIJi8dPRjQfxFljijpeaqSltyMwRPH77SudNtBFPW7mZ
+ z
+X-Google-Smtp-Source: AGHT+IG0mN+hz2Gg84ojNR+hBWeZDwlQmQmVDDzIdAy8QmB/bBciIOSV/wiPQXTE4rwlpbBNOaiXUg==
+X-Received: by 2002:a17:902:d54e:b0:20b:6d82:acb with SMTP id
+ d9443c01a7336-21183d56cf7mr268638065ad.23.1731518283244; 
+ Wed, 13 Nov 2024 09:18:03 -0800 (PST)
+Received: from grind.. ([187.101.65.72]) by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-724078a9063sm13392889b3a.75.2024.11.13.09.18.00
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 13 Nov 2024 09:18:02 -0800 (PST)
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
+ liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Subject: [PATCH for-10.0 0/9] target/riscv: add 'sha' support
+Date: Wed, 13 Nov 2024 14:17:46 -0300
+Message-ID: <20241113171755.978109-1-dbarboza@ventanamicro.com>
+X-Mailer: git-send-email 2.47.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <57b4b74d-67d2-4fcf-aa59-c788afc93619@oracle.com>
-Received-SPF: pass client-ip=198.175.65.20; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -44
-X-Spam_score: -4.5
-X-Spam_bar: ----
-X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.119,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x62f.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,18 +90,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-> > Further, considering that this is currently the only case that needs to
-> > to set the VM level's capability in the CPU context, there is no need to
-> > introduce a new kvm interface (in your previous patch), which can instead
-> > be set in kvm_cpu_realizefn(), like:
-> >
+Hi,
 
-Now your case is not the only user of kvm_arch_pre_create_vcpu(), and
-TDX also needs this [*]. So, this is the support for bringing back your
-previous solution (preferably with comments, as I suggested earlier,
-explaining why it's necessary to handle VM-level cap in the CPU
-context). :-)
+'sha' is defined in RVA22 as "augmented hypervisor extension" and
+consists of a set of named features that must be enabled.
 
-[*]: https://lore.kernel.org/qemu-devel/20241105062408.3533704-8-xiaoyao.li@intel.com/
+RVA23 makes 'sha' mandatory, so let's add official support for it in
+preparation to support RVA23 later. 
+
+Most of the named features added here are always implemented by TCG.
+Only 'ssstateen' has a runtime dependency. 
+
+
+Daniel Henrique Barboza (9):
+  target/riscv/tcg: hide warn for named feats when disabling via
+    priv_ver
+  target/riscv: add ssstateen
+  target/riscv: add shcounterenw
+  target/riscv: add shvstvala
+  target/riscv: add shtvala
+  target/riscv: add shvstvecd
+  target/riscv: add shvsatpa
+  target/riscv: add shgatpa
+  target/riscv/tcg: add sha
+
+ target/riscv/cpu.c         | 10 ++++++++++
+ target/riscv/cpu_cfg.h     |  2 ++
+ target/riscv/tcg/tcg-cpu.c | 30 ++++++++++++++++++++++++++----
+ 3 files changed, 38 insertions(+), 4 deletions(-)
+
+-- 
+2.47.0
 
 
