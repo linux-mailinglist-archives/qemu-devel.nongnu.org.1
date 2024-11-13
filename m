@@ -2,70 +2,138 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C0149C7ABE
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Nov 2024 19:12:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 99A849C7AF7
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Nov 2024 19:22:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tBHq0-0000V2-OG; Wed, 13 Nov 2024 13:11:32 -0500
+	id 1tBHzS-0004u8-1j; Wed, 13 Nov 2024 13:21:18 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <randrianasulu@gmail.com>)
- id 1tBHpy-0000UN-N9
- for qemu-devel@nongnu.org; Wed, 13 Nov 2024 13:11:30 -0500
-Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <randrianasulu@gmail.com>)
- id 1tBHpx-0001AX-6c
- for qemu-devel@nongnu.org; Wed, 13 Nov 2024 13:11:30 -0500
-Received: by mail-pl1-x62b.google.com with SMTP id
- d9443c01a7336-20c6f492d2dso80786455ad.0
- for <qemu-devel@nongnu.org>; Wed, 13 Nov 2024 10:11:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1731521487; x=1732126287; darn=nongnu.org;
- h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
- :date:message-id:reply-to;
- bh=WzGULHODnNpfjTdySYaaqQ3uIVdkpgbBDUqsLXxl1XU=;
- b=JxC/0PSL4bAhsD32nMjPwtqCS+RU1Fm/Le0/ME0T21OHagVmSGh8xJOnD5u2pFS7e1
- ia3Aso+ABxhLOadeOCp0BfKDc23aUeEvpzVuyu+2xPjs7uZQozAJta1PMCWZSMAvP734
- KGrq9SYOmVoNLzSxKC38Piikxqoe3H7NqPLM4sgrzBR2SEnOzDyS44pAsqi9VmkrPlKE
- 8twRw2gQncdOLYQNIgmwTE0nAwEhdjLmbkfM/9WXeF4mMI40ZDZACRmT5DnWwdhEJI93
- T8DoXhAwfd64ckx0nZi8C7wmr3QWGesw9mV3SWj+nK6GWogIq5Uui9VmRicUQZcC3Lfl
- 3HGQ==
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1tBHzQ-0004tz-EX
+ for qemu-devel@nongnu.org; Wed, 13 Nov 2024 13:21:16 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1tBHzO-0002Py-Fw
+ for qemu-devel@nongnu.org; Wed, 13 Nov 2024 13:21:16 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1731522073;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=B163VpaRJXxp3b2iqYNrwHU/NDgSITNT/KiNnMB0IkU=;
+ b=LsPDXANoDp57/h0+djePtmo1fJy0hMYacowUdmE4iwsX+ph1iqkwfHsjwG9uo10wg3z5Pt
+ aNMIpGV0CqQ05F5ufFg+YVKDPvITYT6N9GFGsn4Fwo5CLofVido5Ol8sQKJ1NtD0rspocY
+ Gfh033rDx9RK7fwPkBd9rfHuk+i1dsA=
+Received: from mail-lf1-f70.google.com (mail-lf1-f70.google.com
+ [209.85.167.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-345-sy1bvkv7PH2e9Yr3Eh1NSQ-1; Wed, 13 Nov 2024 13:21:10 -0500
+X-MC-Unique: sy1bvkv7PH2e9Yr3Eh1NSQ-1
+X-Mimecast-MFC-AGG-ID: sy1bvkv7PH2e9Yr3Eh1NSQ
+Received: by mail-lf1-f70.google.com with SMTP id
+ 2adb3069b0e04-53da4315990so260428e87.0
+ for <qemu-devel@nongnu.org>; Wed, 13 Nov 2024 10:21:09 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731521487; x=1732126287;
- h=to:subject:message-id:date:from:mime-version:x-gm-message-state
- :from:to:cc:subject:date:message-id:reply-to;
- bh=WzGULHODnNpfjTdySYaaqQ3uIVdkpgbBDUqsLXxl1XU=;
- b=jbV6NpAeDKT6nToBOOGxfdK4MUFLVXYaDYscVtsTHtjM+XqlAhI/TviOL5eJiIWCMZ
- mL99gkk+1cwYuvo0+KB9BGo27fnUklk5XWCz/iGfbakqAaneinvGG0Qf7N57IYe1XqzJ
- hg/FkwsckmWvfRzdIDh+4U6kFhHTXpYF+NSm3C6g6lrBVV4pcXTDlOyqqZEh4YWxa9l/
- HiderHC3Nd4uc9q4T6x26LJ8HVwTuQ2CV9cKdEWMD2SnmPBvMe2AVt1zlBPnq/rrEmsO
- M7cZhZobIPuKqXLtvAQnglrCXbiWc11ImWUQbXqi04uKrzKWj8TJ8n0A/S8xOQVN/U8a
- mbHg==
-X-Gm-Message-State: AOJu0Yzk39H/PR//oG/ZJuyY/enIo85dpAEL8Fv6v1zhTpbgy3AqSU/H
- a94ES8yL/ei8WMYeKsrTQ2o+aqEOzkPl+EiKGJjWDdb/gdySZT5nWGe3RfAN9KQK9377rW5zWCa
- hGIFiB9ZthM4RzW5Eo2NkN4MtJ/rQICXoK2w=
-X-Google-Smtp-Source: AGHT+IHCAK9JFrgSUbjDWtqfeKxqvo2pFVSenVK9Bz/y6r9swTs8lnpXN66F5edhzDm9pbSPVWd5lHPPGFz6g904Wmk=
-X-Received: by 2002:a17:903:1247:b0:20c:79bf:6793 with SMTP id
- d9443c01a7336-211834de5afmr294056965ad.3.1731521487075; Wed, 13 Nov 2024
- 10:11:27 -0800 (PST)
+ d=1e100.net; s=20230601; t=1731522068; x=1732126868;
+ h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+ :from:references:cc:to:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=B163VpaRJXxp3b2iqYNrwHU/NDgSITNT/KiNnMB0IkU=;
+ b=Ll9rF0680Zn71/RaU+Rt4he+XK9bTCSyC7T3UZg9FYXMLLMzuzVnoSEGeZFSOH47jJ
+ ofWmrGxtvgG0GT1A1Gs7BFCw2n2oXdHxT5KUqDleLt/MdESnrgle+ksb497OtDZmZEL2
+ 8IFfAJGMsdefo8kwew4Ft5IBwxV5gjbc2P9squcJ0xwY21Zs4wC1VdXAJLnmqQPg0RDr
+ nmNreo9AhJDY6Ly8Is6/81Ie0o9UjpJh8FcJ4vl8ZMrudu85M5pnRlI1GmOAYYgPRo67
+ cgVDYLk7Z/4Jeseil8C+Cyfij0QNNqjUJHkfBsrpMj330dCE5OmMDNbQM2fM2Nctg9+O
+ vo6g==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXJqRivnDLs1ClMK1IkjaVKzKCwo83t+VRQFI4wrkYS/Tvt8ufV0PpnRT9VesfiAixQ9EDlDobW2NyA@nongnu.org
+X-Gm-Message-State: AOJu0YyIZnvqPjf6seMZS+TLQgby2HYxqy7WSBwDoz7dXReXszCiil9V
+ /vky6u/6K4J8nEp31AxCblvItoXqVP3iThTVxDjYURVcaOO+Ox3YEMq8n2RT3Z8SiYgHatt+pQw
+ 31tcVUYc5TV1g7nmBBpfWBxt7B+Zf27SRWpz1S+FhDh8WtvmoMVyG
+X-Received: by 2002:a05:6512:3a88:b0:536:a6c6:33f with SMTP id
+ 2adb3069b0e04-53d862bb481mr10575544e87.13.1731522068306; 
+ Wed, 13 Nov 2024 10:21:08 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGU6RcZJh/stvdvJj7BnrRRLy7n9hpCucCMPjhpTqNOETEY4/ZTyAjheZR6bbneoxly6hcFwA==
+X-Received: by 2002:a05:6512:3a88:b0:536:a6c6:33f with SMTP id
+ 2adb3069b0e04-53d862bb481mr10575516e87.13.1731522067790; 
+ Wed, 13 Nov 2024 10:21:07 -0800 (PST)
+Received: from [192.168.10.47] ([151.49.84.243])
+ by smtp.googlemail.com with ESMTPSA id
+ 5b1f17b1804b1-432d54f75f9sm32575485e9.17.2024.11.13.10.21.06
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 13 Nov 2024 10:21:07 -0800 (PST)
+Message-ID: <5a3d70f5-e135-4450-aed4-eac03abc58c0@redhat.com>
+Date: Wed, 13 Nov 2024 19:21:06 +0100
 MIME-Version: 1.0
-From: Andrew Randrianasulu <randrianasulu@gmail.com>
-Date: Wed, 13 Nov 2024 21:20:03 +0300
-Message-ID: <CA+rFky6jM9gKvgvy5BTR9CLOOAv+KycZORiu=3udwrFCZAE=6g@mail.gmail.com>
-Subject: qemu-systems-sparc can't do 1152x900 ?
-To: QEMU <qemu-devel@nongnu.org>
-Content-Type: multipart/alternative; boundary="0000000000002880ac0626cf4339"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
- envelope-from=randrianasulu@gmail.com; helo=mail-pl1-x62b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 19/20] hw/net/xilinx_ethlite: Map the RAM buffer as RAM
+ memory region
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>, Anton Johansson <anjo@rev.ng>,
+ Jason Wang <jasowang@redhat.com>, qemu-arm@nongnu.org,
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, Alistair Francis <alistair@alistair23.me>,
+ Gustavo Romero <gustavo.romero@linaro.org>
+References: <20241112181044.92193-1-philmd@linaro.org>
+ <20241112181044.92193-20-philmd@linaro.org>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=pbonzini@redhat.com; keydata=
+ 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
+In-Reply-To: <20241112181044.92193-20-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -29
+X-Spam_score: -3.0
+X-Spam_bar: ---
+X-Spam_report: (-3.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.119,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.738,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,56 +149,201 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---0000000000002880ac0626cf4339
-Content-Type: text/plain; charset="UTF-8"
+On 11/12/24 19:10, Philippe Mathieu-Daudé wrote:
+> Rather than using I/O registers for RAM buffer, having to
+> swap endianness back and forth (because the core memory layer
+> automatically swaps endiannes for us), declare the buffers
+> as RAM regions. Remove the now unused s->regs[] array.
+> 
+> The memory flat view becomes:
+> 
+>    FlatView #0
+>     Root memory region: system
+>      0000000081000000-00000000810007f3 (prio 0, ram): ethlite.tx[0]buf
+>      00000000810007f4-00000000810007ff (prio 0, i/o): ethlite.tx[0]io
+>      0000000081000800-0000000081000ff3 (prio 0, ram): ethlite.tx[1]buf
+>      0000000081000ff4-0000000081000fff (prio 0, i/o): ethlite.tx[1]io
+>      0000000081001000-00000000810017f3 (prio 0, ram): ethlite.rx[0]buf
+>      00000000810017fc-00000000810017ff (prio 0, i/o): ethlite.rx[0]io
+>      0000000081001800-0000000081001ff3 (prio 0, ram): ethlite.rx[1]buf
+>      0000000081001ffc-0000000081001fff (prio 0, i/o): ethlite.rx[1]io
 
-Was trying to figure out if my glitches at [1] due to wrong resolution
-tried to start
-qemu like this:
+The receive buffers should end at 7fb and ffb; no need to repost of course.
 
-qemu-system-sparc -g 1152x900
-qemu-system-sparc: Unsupported resolution: 1152 x 900
+Paolo
 
-ow?
+> 
+> Mention the device datasheet in the file header.
+> 
+> Reported-by: Paolo Bonzini <pbonzini@redhat.com>
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
+>   hw/net/xilinx_ethlite.c | 79 +++++++++++------------------------------
+>   1 file changed, 20 insertions(+), 59 deletions(-)
+> 
+> diff --git a/hw/net/xilinx_ethlite.c b/hw/net/xilinx_ethlite.c
+> index f681b91769..da453465ca 100644
+> --- a/hw/net/xilinx_ethlite.c
+> +++ b/hw/net/xilinx_ethlite.c
+> @@ -2,6 +2,10 @@
+>    * QEMU model of the Xilinx Ethernet Lite MAC.
+>    *
+>    * Copyright (c) 2009 Edgar E. Iglesias.
+> + * Copyright (c) 2024 Linaro, Ltd
+> + *
+> + * DS580: https://docs.amd.com/v/u/en-US/xps_ethernetlite
+> + * LogiCORE IP XPS Ethernet Lite Media Access Controller
+>    *
+>    * Permission is hereby granted, free of charge, to any person obtaining a copy
+>    * of this software and associated documentation files (the "Software"), to deal
+> @@ -27,7 +31,6 @@
+>   #include "qemu/bitops.h"
+>   #include "qom/object.h"
+>   #include "qapi/error.h"
+> -#include "exec/tswap.h"
+>   #include "hw/sysbus.h"
+>   #include "hw/irq.h"
+>   #include "hw/qdev-properties.h"
+> @@ -46,7 +49,6 @@
+>   #define A_RX_BASE0    0x17fc
+>   #define R_RX_BUF1     (0x1800 / 4)
+>   #define A_RX_BASE1    0x1ffc
+> -#define R_MAX         (0x2000 / 4)
+>   
+>   #define RX_BUFSZ_MAX  0x07e0
+>   
+> @@ -72,6 +74,8 @@ typedef struct XlnxXpsEthLitePort
+>   {
+>       MemoryRegion txio;
+>       MemoryRegion rxio;
+> +    MemoryRegion txbuf;
+> +    MemoryRegion rxbuf;
+>   
+>       struct {
+>           uint32_t tx_len;
+> @@ -100,7 +104,6 @@ struct XlnxXpsEthLite
+>   
+>       UnimplementedDeviceState mdio;
+>       XlnxXpsEthLitePort port[2];
+> -    uint32_t regs[R_MAX];
+>   };
+>   
+>   static inline void eth_pulse_irq(XlnxXpsEthLite *s)
+> @@ -118,16 +121,12 @@ static unsigned addr_to_port_index(hwaddr addr)
+>   
+>   static void *txbuf_ptr(XlnxXpsEthLite *s, unsigned port_index)
+>   {
+> -    unsigned int rxbase = port_index * (0x800 / 4);
+> -
+> -    return &s->regs[rxbase + R_TX_BUF0];
+> +    return memory_region_get_ram_ptr(&s->port[port_index].txbuf);
+>   }
+>   
+>   static void *rxbuf_ptr(XlnxXpsEthLite *s, unsigned port_index)
+>   {
+> -    unsigned int rxbase = port_index * (0x800 / 4);
+> -
+> -    return &s->regs[rxbase + R_RX_BUF0];
+> +    return memory_region_get_ram_ptr(&s->port[port_index].rxbuf);
+>   }
+>   
+>   static uint64_t port_tx_read(void *opaque, hwaddr addr, unsigned int size)
+> @@ -252,53 +251,6 @@ static const MemoryRegionOps eth_portrx_ops = {
+>           },
+>   };
+>   
+> -static uint64_t
+> -eth_read(void *opaque, hwaddr addr, unsigned int size)
+> -{
+> -    XlnxXpsEthLite *s = opaque;
+> -    uint32_t r = 0;
+> -
+> -    addr >>= 2;
+> -
+> -    switch (addr)
+> -    {
+> -        default:
+> -            r = tswap32(s->regs[addr]);
+> -            break;
+> -    }
+> -    return r;
+> -}
+> -
+> -static void
+> -eth_write(void *opaque, hwaddr addr,
+> -          uint64_t val64, unsigned int size)
+> -{
+> -    XlnxXpsEthLite *s = opaque;
+> -    uint32_t value = val64;
+> -
+> -    addr >>= 2;
+> -    switch (addr)
+> -    {
+> -        default:
+> -            s->regs[addr] = tswap32(value);
+> -            break;
+> -    }
+> -}
+> -
+> -static const MemoryRegionOps eth_ops = {
+> -    .read = eth_read,
+> -    .write = eth_write,
+> -    .endianness = DEVICE_NATIVE_ENDIAN,
+> -    .impl = {
+> -        .min_access_size = 4,
+> -        .max_access_size = 4,
+> -    },
+> -    .valid = {
+> -        .min_access_size = 4,
+> -        .max_access_size = 4
+> -    }
+> -};
+> -
+>   static bool eth_can_rx(NetClientState *nc)
+>   {
+>       XlnxXpsEthLite *s = qemu_get_nic_opaque(nc);
+> @@ -354,6 +306,9 @@ static void xilinx_ethlite_realize(DeviceState *dev, Error **errp)
+>   {
+>       XlnxXpsEthLite *s = XILINX_ETHLITE(dev);
+>   
+> +    memory_region_init(&s->mmio, OBJECT(dev),
+> +                       "xlnx.xps-ethernetlite", 0x2000);
+> +
+>       object_initialize_child(OBJECT(dev), "ethlite.mdio", &s->mdio,
+>                              TYPE_UNIMPLEMENTED_DEVICE);
+>       qdev_prop_set_string(DEVICE(&s->mdio), "name", "ethlite.mdio");
+> @@ -363,6 +318,10 @@ static void xilinx_ethlite_realize(DeviceState *dev, Error **errp)
+>                               sysbus_mmio_get_region(SYS_BUS_DEVICE(&s->mdio), 0));
+>   
+>       for (unsigned i = 0; i < 2; i++) {
+> +        memory_region_init_ram(&s->port[i].txbuf, OBJECT(dev),
+> +                               i ? "ethlite.tx[1]buf" : "ethlite.tx[0]buf",
+> +                               0x07f4, &error_abort);
+> +        memory_region_add_subregion(&s->mmio, 0x0800 * i, &s->port[i].txbuf);
+>           memory_region_init_io(&s->port[i].txio, OBJECT(dev),
+>                                 &eth_porttx_ops, s,
+>                                 i ? "ethlite.tx[1]io" : "ethlite.tx[0]io",
+> @@ -370,6 +329,11 @@ static void xilinx_ethlite_realize(DeviceState *dev, Error **errp)
+>           memory_region_add_subregion(&s->mmio, i ? A_TX_BASE1 : A_TX_BASE0,
+>                                       &s->port[i].txio);
+>   
+> +        memory_region_init_ram(&s->port[i].rxbuf, OBJECT(dev),
+> +                               i ? "ethlite.rx[1]buf" : "ethlite.rx[0]buf",
+> +                               0x07f4, &error_abort);
+> +        memory_region_add_subregion(&s->mmio, 0x1000 + 0x0800 * i,
+> +                                    &s->port[i].rxbuf);
+>           memory_region_init_io(&s->port[i].rxio, OBJECT(dev),
+>                                 &eth_portrx_ops, s,
+>                                 i ? "ethlite.rx[1]io" : "ethlite.rx[0]io",
+> @@ -390,9 +354,6 @@ static void xilinx_ethlite_init(Object *obj)
+>       XlnxXpsEthLite *s = XILINX_ETHLITE(obj);
+>   
+>       sysbus_init_irq(SYS_BUS_DEVICE(obj), &s->irq);
+> -
+> -    memory_region_init_io(&s->mmio, obj, &eth_ops, s,
+> -                          "xlnx.xps-ethernetlite", R_MAX * 4);
+>       sysbus_init_mmio(SYS_BUS_DEVICE(obj), &s->mmio);
+>   }
+>   
 
-in source
-
-hw/sparc/sun4m.c (git commit f0cfd067867668870931c9411d96cd518564b7a8)
-
-           if (!(graphic_width == 1024 && graphic_height == 768) &&
-                !(graphic_width == 1152 && graphic_height == 900)) {
-                error_report("Unsupported resolution: %d x %d",
-graphic_width,
-                             graphic_height);
-                exit(1);
-            }
-
-may be && should be || ?
-
-[1] - https://gitlab.com/qemu-project/qemu/-/issues/2674
-
---0000000000002880ac0626cf4339
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr"><div>Was trying to figure out if my glitches at [1] due to=
- wrong resolution tried to start</div><div>qemu like this:</div><div><br></=
-div><div>qemu-system-sparc -g 1152x900<br>qemu-system-sparc: Unsupported re=
-solution: 1152 x 900</div><div><br></div><div>ow?</div><div><br></div><div>=
-in source</div><div><br></div><div>hw/sparc/sun4m.c (git commit f0cfd067867=
-668870931c9411d96cd518564b7a8)<br></div><div><br></div><div>=C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0=C2=A0 if (!(graphic_width =3D=3D 1024 &amp;&amp; graph=
-ic_height =3D=3D 768) &amp;&amp;<br>=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 !(graphic_width =3D=3D 1152 &amp;&amp; graphic_height =3D=
-=3D 900)) {<br>=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 erro=
-r_report(&quot;Unsupported resolution: %d x %d&quot;, graphic_width,<br>=C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0graphic_height);<br>=C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 exit(1);<br>=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 }</div><div><br></div><div>may be &amp;&amp; should be || ?</div><di=
-v><br></div><div>[1] - <a href=3D"https://gitlab.com/qemu-project/qemu/-/is=
-sues/2674">https://gitlab.com/qemu-project/qemu/-/issues/2674</a></div></di=
-v>
-
---0000000000002880ac0626cf4339--
 
