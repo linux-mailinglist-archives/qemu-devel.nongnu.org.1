@@ -2,78 +2,100 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D21FC9C78EE
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Nov 2024 17:31:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E1F9C9C794A
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Nov 2024 17:50:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tBGGO-0002FZ-CE; Wed, 13 Nov 2024 11:30:40 -0500
+	id 1tBGYB-0008Jn-12; Wed, 13 Nov 2024 11:49:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tBGGL-0002Eu-2L
- for qemu-devel@nongnu.org; Wed, 13 Nov 2024 11:30:37 -0500
-Received: from mgamail.intel.com ([198.175.65.11])
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1tBGY8-0008HV-Vl
+ for qemu-devel@nongnu.org; Wed, 13 Nov 2024 11:49:01 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tBGGI-0006hp-RF
- for qemu-devel@nongnu.org; Wed, 13 Nov 2024 11:30:36 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1731515435; x=1763051435;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=r5qLpRURZWKqh+qzltYbHLtKz5Eb8VMEBe7FX268juo=;
- b=OAB2rchlWe6ecjoBW056iBHneUhUZAjsQVBwSgja9gQsngkBaCvGKIrU
- YU8znfalf5r89tgdjJHg6CmeXMp7C5rCsQYcJw8D+J5xNmELuwakLXkYX
- xa5PryWHWskWiOvwfHf0bUZ4+KZxb+yJAlYUqLmeSTl+QNqPYdtn23Zyh
- ugoUY3jRaVIFmv3AZC7369hRKyfq272FyDzXhT8mgtcBEG5cDbQMT1YCR
- dK80wAehHbHRv607jZ3hc/1bZZdTi/F9RLRswI/tHZZWB3Rut3rWY/d45
- eDP/wKiVxKRu2siKbhSo5RIxUs6y9rjDwx7U0S00KYy+0Atk/O5SjmHQ0 g==;
-X-CSE-ConnectionGUID: kPIKtTIVRz6VtuI/7J5yrQ==
-X-CSE-MsgGUID: P9hm+YWvR7itdq0CRDP+Ag==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="41977184"
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="41977184"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Nov 2024 08:30:30 -0800
-X-CSE-ConnectionGUID: etMJktvSTm6SYva+9vNDyA==
-X-CSE-MsgGUID: V4tr+zkcQwWJ6CY3HotHQQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,151,1728975600"; d="scan'208";a="91961625"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by fmviesa003.fm.intel.com with ESMTP; 13 Nov 2024 08:30:25 -0800
-Date: Thu, 14 Nov 2024 00:48:24 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: dongli.zhang@oracle.com
-Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, pbonzini@redhat.com,
- mtosatti@redhat.com, sandipan.das@amd.com, babu.moger@amd.com,
- likexu@tencent.com, like.xu.linux@gmail.com,
- zhenyuw@linux.intel.com, groug@kaod.org, lyan@digitalocean.com,
- khorenko@virtuozzo.com, alexander.ivanov@virtuozzo.com,
- den@virtuozzo.com, joe.jin@oracle.com, davydov-max@yandex-team.ru
-Subject: Re: [PATCH 3/7] target/i386/kvm: init PMU information only once
-Message-ID: <ZzTYWMM9bUAkn+c8@intel.com>
-References: <20241104094119.4131-1-dongli.zhang@oracle.com>
- <20241104094119.4131-4-dongli.zhang@oracle.com>
- <ZzDRZcy7EdK40PO1@intel.com>
- <418a42f0-13d6-4f1e-8733-2d05ddd1959d@oracle.com>
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1tBGY7-0000aw-F6
+ for qemu-devel@nongnu.org; Wed, 13 Nov 2024 11:49:00 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1731516537;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=Q5lxgJju3VDJD2N/GXeMJZtK5/RQQ64Bmm3cQ/TKIEo=;
+ b=f/jtP7BwhsnIVu4rVrSadLIPKCAHZT1mZ27d1FeEdNXoKMLHBHPgapyXIjQmIR4v2AbGM2
+ +SNf14DPaDb7j6CIojTRsLjclsxYe+x2mGHy5J0bEz7KXvyUVvPsiONJqtgPHFcX31zNf8
+ LzrD7BhnFQcie0wGWF/O5q0mV85mPAo=
+Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
+ [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-475-lazXbQoIOFiQiUbgCZERJg-1; Wed, 13 Nov 2024 11:48:56 -0500
+X-MC-Unique: lazXbQoIOFiQiUbgCZERJg-1
+X-Mimecast-MFC-AGG-ID: lazXbQoIOFiQiUbgCZERJg
+Received: by mail-qv1-f69.google.com with SMTP id
+ 6a1803df08f44-6d35062e1fcso110467286d6.1
+ for <qemu-devel@nongnu.org>; Wed, 13 Nov 2024 08:48:56 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1731516536; x=1732121336;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:reply-to:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=Q5lxgJju3VDJD2N/GXeMJZtK5/RQQ64Bmm3cQ/TKIEo=;
+ b=TxG3FvxyEVHy4YXQ1Rs9MhL2ix6SRMIKFr/fSCH4Z0cMzGsKSAvBKprZ52Lx9fI8ev
+ UK9h6u2lO4CFUJ+qSIIT+dXFTvBa/rYjFzM/ulXGxYWs0uSXzhAlbYqbTjUJXfJ16O0N
+ e5K10eU+jUoOl4nX1QXQjOeyHW00ruea19wvZzk4xiRBWJkD1S+fUxmfrRy4hhzeXx66
+ 9N05AzlsGIMdvqHkteGQjnPFr2y4DLJJ5opyQwN25Lmw1my6rHOmRXPX7tK4h+1CZw6v
+ Sa+TwfySEQS6Pf/1+auLFmx6igf9gOeGFkPXuSeboT8VLMjP5SXnqcTyGSQLnju9N86f
+ cRyQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUdOnCRmOjiJRk/MekW6QnDvsG3TDYw6Roh+OyUkRwRnE2zTUH/W3lm1bND6KxF9PYzw9SfOG+t8zu1@nongnu.org
+X-Gm-Message-State: AOJu0YzMINur8T2uCU8pS/WmiYk4cCkgYq6g2DNIBKB+s8McUPAy6ApI
+ Ycd1jsiuYWnEAotVY5TFlRCxX1NIiVIutdGHsQl52MWB52lvf9SsMGFalxSEjiVQYU9EjnvlzQ1
+ Pb9QG+6fS5MbrPseT4QHiabtXctqXM7yTVMLfv/zeFx2MvnY8bvDw
+X-Received: by 2002:a05:6214:3987:b0:6ce:34d5:8882 with SMTP id
+ 6a1803df08f44-6d39e19e2a1mr284192036d6.39.1731516535722; 
+ Wed, 13 Nov 2024 08:48:55 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFjEnEsAPyBHLpbwzxknztfmiiU2Cgdkdnx7qjiRQQ561YfYORBB2F5b6kpXWAAeQPVOkB9Eg==
+X-Received: by 2002:a05:6214:3987:b0:6ce:34d5:8882 with SMTP id
+ 6a1803df08f44-6d39e19e2a1mr284191736d6.39.1731516535422; 
+ Wed, 13 Nov 2024 08:48:55 -0800 (PST)
+Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874?
+ ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
+ by smtp.gmail.com with ESMTPSA id
+ 6a1803df08f44-6d3961df2c5sm86079806d6.4.2024.11.13.08.48.52
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 13 Nov 2024 08:48:54 -0800 (PST)
+Message-ID: <f739eaee-4890-45ab-9f8c-f406bdb085cc@redhat.com>
+Date: Wed, 13 Nov 2024 17:48:45 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=gb2312
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <418a42f0-13d6-4f1e-8733-2d05ddd1959d@oracle.com>
-Received-SPF: pass client-ip=198.175.65.11; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -44
-X-Spam_score: -4.5
-X-Spam_bar: ----
-X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.119,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 1/5] hw/arm/virt: Add an SMMU_IO_LEN macro
+Content-Language: en-US
+To: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
+ qemu-arm@nongnu.org, qemu-devel@nongnu.org
+Cc: peter.maydell@linaro.org, jgg@nvidia.com, nicolinc@nvidia.com,
+ ddutile@redhat.com, linuxarm@huawei.com, wangzhou1@hisilicon.com,
+ jiangkunkun@huawei.com, jonathan.cameron@huawei.com, zhangfei.gao@linaro.org
+References: <20241108125242.60136-1-shameerali.kolothum.thodi@huawei.com>
+ <20241108125242.60136-2-shameerali.kolothum.thodi@huawei.com>
+From: Eric Auger <eric.auger@redhat.com>
+In-Reply-To: <20241108125242.60136-2-shameerali.kolothum.thodi@huawei.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124;
+ envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -29
+X-Spam_score: -3.0
+X-Spam_bar: ---
+X-Spam_report: (-3.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.119,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.738,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,61 +108,57 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Nov 12, 2024 at 05:50:26PM -0800, dongli.zhang@oracle.com wrote:
-> Date: Tue, 12 Nov 2024 17:50:26 -0800
-> From: dongli.zhang@oracle.com
-> Subject: Re: [PATCH 3/7] target/i386/kvm: init PMU information only once
-> 
-> Hi Zhao,
-> 
-> On 11/10/24 7:29 AM, Zhao Liu wrote:
-> > Hi Dongli,
-> > 
-> >>  int kvm_arch_init_vcpu(CPUState *cs)
-> >>  {
-> >>      struct {
-> >> @@ -2237,6 +2247,13 @@ int kvm_arch_init_vcpu(CPUState *cs)
-> >>      cpuid_i = kvm_x86_build_cpuid(env, cpuid_data.entries, cpuid_i);
-> >>      cpuid_data.cpuid.nent = cpuid_i;
-> >>  
-> >> +    /*
-> >> +     * Initialize PMU information only once for the first vCPU.
-> >> +     */
-> >> +    if (cs == first_cpu) {
-> >> +        kvm_init_pmu_info(env);
-> >> +    }
-> >> +
-> > 
-> > Thank you for the optimization. However, I think it¡¯s not necessary
-> > because:
-> > 
-> > * This is not a hot path and not a performance bottleneck.
-> > * Many CPUID leaves are consistent across CPUs, and 0xA is just one of them.
-> > * And encoding them all in kvm_x86_build_cpuid() is a common pattern.
-> >   Separating out 0xa disrupts code readability and fragments the CPUID encoding.
-> > 
-> > Therefore, code maintainability and correctness might be more important here,
-> > than performance concern.
-> 
-> I am going to remove this patch in v2.
-> 
-> Just a reminder, we may have more code in this function by other patches,
-> including the initialization of both Intel and AMD PMU infortmation (PerfMonV2).
+Hi,
 
-Yes, I mean we can just remove "first_cpu" check and move this function
-into kvm_x86_build_cpuid() again. Your function wrapping is fine for me.
+On 11/8/24 13:52, Shameer Kolothum wrote:
+> From: Nicolin Chen <nicolinc@nvidia.com>
+>
+> A following patch will add a new MMIO region for nested SMMU instances.
+Nit: Add a new ... is generally preferred I think
+>
+> This macro will be repeatedly used to set offsets and MMIO sizes in both
+> virt and virt-acpi-build.
+>
+> Signed-off-by: Nicolin Chen <nicolinc@nvidia.com>
+> Signed-off-by: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
+Reviewed-by: Eric Auger <eric.auger@redhat.com>
 
-> Dongli Zhang
-> 
-> > 
-> >>      if (((env->cpuid_version >> 8)&0xF) >= 6
-> >>          && (env->features[FEAT_1_EDX] & (CPUID_MCE | CPUID_MCA)) ==
-> >>             (CPUID_MCE | CPUID_MCA)) {
-> >> -- 
-> >> 2.39.3
-> >>
-> 
+Eric
+> ---
+>  hw/arm/virt.c         | 2 +-
+>  include/hw/arm/virt.h | 3 +++
+>  2 files changed, 4 insertions(+), 1 deletion(-)
+>
+> diff --git a/hw/arm/virt.c b/hw/arm/virt.c
+> index 719e83e6a1..780bcff77c 100644
+> --- a/hw/arm/virt.c
+> +++ b/hw/arm/virt.c
+> @@ -174,7 +174,7 @@ static const MemMapEntry base_memmap[] = {
+>      [VIRT_FW_CFG] =             { 0x09020000, 0x00000018 },
+>      [VIRT_GPIO] =               { 0x09030000, 0x00001000 },
+>      [VIRT_UART1] =              { 0x09040000, 0x00001000 },
+> -    [VIRT_SMMU] =               { 0x09050000, 0x00020000 },
+> +    [VIRT_SMMU] =               { 0x09050000, SMMU_IO_LEN },
+>      [VIRT_PCDIMM_ACPI] =        { 0x09070000, MEMORY_HOTPLUG_IO_LEN },
+>      [VIRT_ACPI_GED] =           { 0x09080000, ACPI_GED_EVT_SEL_LEN },
+>      [VIRT_NVDIMM_ACPI] =        { 0x09090000, NVDIMM_ACPI_IO_LEN},
+> diff --git a/include/hw/arm/virt.h b/include/hw/arm/virt.h
+> index ab961bb6a9..46f48fe561 100644
+> --- a/include/hw/arm/virt.h
+> +++ b/include/hw/arm/virt.h
+> @@ -47,6 +47,9 @@
+>  /* See Linux kernel arch/arm64/include/asm/pvclock-abi.h */
+>  #define PVTIME_SIZE_PER_CPU 64
+>  
+> +/* MMIO region size for SMMUv3 */
+> +#define SMMU_IO_LEN 0x20000
+> +
+>  enum {
+>      VIRT_FLASH,
+>      VIRT_MEM,
+
 
