@@ -2,80 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAE1E9C7B58
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Nov 2024 19:39:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DA249C7B64
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Nov 2024 19:40:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tBIGW-0002Z4-Pv; Wed, 13 Nov 2024 13:38:56 -0500
+	id 1tBIHT-0003RF-R7; Wed, 13 Nov 2024 13:39:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tBIGV-0002Yw-Ia
- for qemu-devel@nongnu.org; Wed, 13 Nov 2024 13:38:55 -0500
+ id 1tBIHF-0003Py-Vf
+ for qemu-devel@nongnu.org; Wed, 13 Nov 2024 13:39:42 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tBIGT-000496-3e
- for qemu-devel@nongnu.org; Wed, 13 Nov 2024 13:38:54 -0500
+ id 1tBIHE-0004C0-Ka
+ for qemu-devel@nongnu.org; Wed, 13 Nov 2024 13:39:41 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1731523131;
+ s=mimecast20190719; t=1731523179;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=PAFPOiHHFrOd8otSbV8pcYxP2SLQd6DQuE3W9RWP1H4=;
- b=NeapkGAbZAbM2vBMS/8d8M1ppyFBvlCM66/LNbLysZzrfTwrwDZ8f0epnSbu8Nas5pfndo
- ny9hCODRV9xGNUPBJ/ipl45hiEOqEuMXit/jiUaDLN+J52fNCAHV/lwg5eVVF3cDJhfvt4
- Hs/esi0spzWKLSXibl8GILAy7B332sk=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=9NGGxQ16BK45p9VSBjrrYc8rcurik7f9vC7s3z+C5ZM=;
+ b=MLyQZjpHC650//Rx/kPEd0/5aqiimJR8NZrctz4L0VJkZcJmV9uwpRyXgC/kkrD6T2RvUu
+ pxT4ZzosTHNfN3Ly6yN9IDwnvitcQgb1SoXTd6QpL300QC0GNtx0aHrabQzH6MNHzqtvC6
+ E3coEy7QL8Cmed7tMNFxh/hy6eaeMqk=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-307-R1apYzAcNAyg3abCeQRuXw-1; Wed, 13 Nov 2024 13:38:47 -0500
-X-MC-Unique: R1apYzAcNAyg3abCeQRuXw-1
-X-Mimecast-MFC-AGG-ID: R1apYzAcNAyg3abCeQRuXw
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-4315f48bd70so50106325e9.2
- for <qemu-devel@nongnu.org>; Wed, 13 Nov 2024 10:38:47 -0800 (PST)
+ us-mta-137-EZU_e7IDNdKEttx9jq20ag-1; Wed, 13 Nov 2024 13:39:38 -0500
+X-MC-Unique: EZU_e7IDNdKEttx9jq20ag-1
+X-Mimecast-MFC-AGG-ID: EZU_e7IDNdKEttx9jq20ag
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-4316e2dde9eso66366265e9.2
+ for <qemu-devel@nongnu.org>; Wed, 13 Nov 2024 10:39:38 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731523126; x=1732127926;
+ d=1e100.net; s=20230601; t=1731523177; x=1732127977;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=PAFPOiHHFrOd8otSbV8pcYxP2SLQd6DQuE3W9RWP1H4=;
- b=WnBZp3pLVYbBlUMIffjIgEKn5gz+OAbO3t2Te3K4Fc16eszsuJD/Ow/jLn/L4n0+QI
- NOU4GXtReMaAbzH1zCj0NSJRna5WfEZtBEuVtgbKt19KfcNcNjDfa50V2VjCUTVS/lku
- j/7e1iWXoVIl6wklMTQPbxgpR0mfjOxgMuDPa1TR23j9OBlVSMvsmsYJDej+U2uZx6dM
- VFYsJvvwVSg/yTm/J92DVPhxTnxNthxRDSIEu0ptpqmzAgik6vez4eSTeHZCQivCWQL4
- z4X/NnuHAT8apd8KSgxGOXcI3B6PcM56OhI6diEnMwUfb7CJ0Q10OywH802NvPESlV1/
- 6qUw==
+ bh=9NGGxQ16BK45p9VSBjrrYc8rcurik7f9vC7s3z+C5ZM=;
+ b=JMw3VDkYa2cS12rHr1ycUOcewrUvzy5sSbtvlHbvbQHsi6j76Tp3Pp4HrnvXBjWR2B
+ zXUDmZXR+oKBiaMsY69e6GNQ5j51Nqsyy4iewucH+Hd2HrwPo4aXwgUfe9XTp2HQXeZo
+ rM9VFHjV1HELgyQc1ZNSFpp8WGfR9TV5McNxQ8k6uLDtJq5gnZyQv0LnEenPuiM834ik
+ VZA8DiFNzG0s2PebzSdUsa72xEa/YV+WU3oUj1DJs9xKTTuLsZomd+mEP/YoU49jnBMt
+ SrxkFBAMTW0WfF4uwWKZSLdzy6rQogog0Ft27AFz3CfcNzQEGqOkGdjkifYdqWclUsxQ
+ ocQQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCV28yIdVkk8EJWubon4VGkKAT6YLJL08c+01ZQUAvHmieJ7YnnPYKeTDAqWzeEXtNlnghSXDgL8s3EL@nongnu.org
-X-Gm-Message-State: AOJu0YwwIOWrBUQKM4Y9zEWwz8zCv+KUPwdvLUZDZQCyL76QKIoviDOt
- 69Nu56efE9DxCb6KX+0YIVtyJv7+rNQBvF5KohBB4Vhriev65jNMR7DoxdPo3pzctPUgHPO6mQD
- qQfdXu7WOqXPl0Km48JL++172mBz+3NAMtSrw+/xKv4IF4jH9NUVv7CRTOyeSWGfj3OVR6DXktu
- blFjus/byfwLpmrzOwp4VHFD4nfOs=
-X-Received: by 2002:a05:6000:1566:b0:382:d79:7ce5 with SMTP id
- ffacd0b85a97d-3820df8373fmr2898165f8f.56.1731523126288; 
- Wed, 13 Nov 2024 10:38:46 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHeE1C2D+HxysOzwOrqeQ2V/hSCHdB9ht/PGTYkaJw4/dKZ6lO8VCdFc1QSiRX2CrP5vhZKqls/MVxxA5E9KFQ=
-X-Received: by 2002:a05:6000:1566:b0:382:d79:7ce5 with SMTP id
- ffacd0b85a97d-3820df8373fmr2898156f8f.56.1731523125960; Wed, 13 Nov 2024
- 10:38:45 -0800 (PST)
+ AJvYcCWyAoXU64svLCs1K83ODlde7Vu90dawR1U9q9XVuxd5TkkhNgj6tuib4JpNx5sNfWHviPiEUx129Yjg@nongnu.org
+X-Gm-Message-State: AOJu0YyfB48+RJNC4MaMz5EMlgkubcxGjsGoMLDecWWi/Ea6QM+EJioK
+ 7WRZoxfUNrppmw/Jvi7x1MHyWOq+mmB/Bg+MlNhZOeMYyzLdcIfjyuNTxZ1bg3WFnQmsHZ0vuRT
+ H/dFN/9HELXNhALKk3VIpqFVz4FAvxU3E2CAuZ25j68cyDKhcJunN0/EizBgbjCFkRkIBKKRiM7
+ s+JPd7Zf3SLzfYGYteIBt8pZt7a4g=
+X-Received: by 2002:a05:600c:34c8:b0:431:604d:b22 with SMTP id
+ 5b1f17b1804b1-432b750acc4mr241633765e9.16.1731523177448; 
+ Wed, 13 Nov 2024 10:39:37 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHQkTjNqFFxBwbztI3KElEWR8DIfZgx/lOwPE5mFGWXrnd/2X+JY85/TL2D9FlEeRFluu1DheNxmNl2Ho6uwNY=
+X-Received: by 2002:a05:600c:34c8:b0:431:604d:b22 with SMTP id
+ 5b1f17b1804b1-432b750acc4mr241633555e9.16.1731523177089; Wed, 13 Nov 2024
+ 10:39:37 -0800 (PST)
 MIME-Version: 1.0
-References: <20241113163800.355547-1-alxndr@bu.edu>
- <CABgObfZsesHr7gr8CVgW471hBkW6E5rfhpgtBTuM5owuPazPNw@mail.gmail.com>
- <xydqdaplcewxtjoz4r47zxfxospoa36vrmpmicm24wilkmdueh@x5qtvnty3nln>
-In-Reply-To: <xydqdaplcewxtjoz4r47zxfxospoa36vrmpmicm24wilkmdueh@x5qtvnty3nln>
+References: <20241113144923.41225-1-phil@philjordan.eu>
+ <b772f6e7-e506-4f87-98d1-5cbe59402b2b@redhat.com>
+ <ed2246ca-3ede-918c-d18d-f47cf8758d8c@amd.com>
+In-Reply-To: <ed2246ca-3ede-918c-d18d-f47cf8758d8c@amd.com>
 From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Wed, 13 Nov 2024 19:38:34 +0100
-Message-ID: <CABgObfaT0AdBpqM6ZgXgqPBHJZhXjspfUbEpvExPf8evF82Ejg@mail.gmail.com>
-Subject: Re: [PATCH] fuzz: disable tcg for OSS-Fuzz builds
-To: Alexander Bulekov <alxndr@bu.edu>
-Cc: Bandan Das <bsd@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
- Fabiano Rosas <farosas@suse.de>, 
- Darren Kenny <darren.kenny@oracle.com>, Qiuhao Li <Qiuhao.Li@outlook.com>, 
- "open list:All patches CC here" <qemu-devel@nongnu.org>
+Date: Wed, 13 Nov 2024 19:39:25 +0100
+Message-ID: <CABgObfYhQDmjh4MJOaqeAv0=cFUR=iaoLeSoGYh9iMnjDKM2aA@mail.gmail.com>
+Subject: Re: [PATCH] i386/kvm: Fix kvm_enable_x2apic link error in non-KVM
+ builds
+To: "Shukla, Santosh" <santosh.shukla@amd.com>
+Cc: Phil Dennis-Jordan <phil@philjordan.eu>, qemu-devel@nongnu.org,
+ kvm@vger.kernel.org, mtosatti@redhat.com, suravee.suthikulpanit@amd.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
@@ -103,24 +102,13 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Nov 13, 2024 at 7:35=E2=80=AFPM Alexander Bulekov <alxndr@bu.edu> w=
-rote:
-> > Where is the Dockerfile that's being used?
->
-> https://github.com/google/oss-fuzz/blob/master/projects/qemu/Dockerfile
->
-> Thanks for catching that... I will try to run the docker build locally.
+On Wed, Nov 13, 2024 at 7:25=E2=80=AFPM Shukla, Santosh <santosh.shukla@amd=
+.com> wrote:
+> Same proposed at https://lore.kernel.org/qemu-devel/cebca38a-5896-e2a5-8a=
+68-5edad5dc9d8c@amd.com/
+> and I think Phil confirmed that it works.
 
-You can add -Db_colorout=3Ddisabled to both glib's "meson setup" line
-and scripts/oss-fuzz/build.sh if you can reproduce that.
-
-> Probably makes sense to mimick what the glib people are doing:
-> https://github.com/google/oss-fuzz/tree/30da5abe5cd004e8a2f8c92923375d43b=
-4d8a5c7/projects/glib
-> Their builds aren't failing. (I do still think it makes sense to build
-> w/o tcg to reduce the fuzzing binary size).
-
-Yes, that's true.
+Thanks Santosh, can you post it with commit message and everything?
 
 Paolo
 
