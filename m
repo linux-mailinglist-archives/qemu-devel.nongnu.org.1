@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E42359C8F65
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Nov 2024 17:12:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 60D359C8F67
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Nov 2024 17:12:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tBcNd-00047j-HT; Thu, 14 Nov 2024 11:07:42 -0500
+	id 1tBcNg-00047h-Ua; Thu, 14 Nov 2024 11:07:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tBcLQ-0001mC-MS
+ id 1tBcLQ-0001mA-LU
  for qemu-devel@nongnu.org; Thu, 14 Nov 2024 11:05:27 -0500
-Received: from mail-pg1-x536.google.com ([2607:f8b0:4864:20::536])
+Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tBcLL-00033h-Qo
+ id 1tBcLO-00034C-0S
  for qemu-devel@nongnu.org; Thu, 14 Nov 2024 11:05:19 -0500
-Received: by mail-pg1-x536.google.com with SMTP id
- 41be03b00d2f7-7e9e38dd5f1so674386a12.0
- for <qemu-devel@nongnu.org>; Thu, 14 Nov 2024 08:05:13 -0800 (PST)
+Received: by mail-pf1-x433.google.com with SMTP id
+ d2e1a72fcca58-723db2798caso751484b3a.0
+ for <qemu-devel@nongnu.org>; Thu, 14 Nov 2024 08:05:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1731600312; x=1732205112; darn=nongnu.org;
+ d=linaro.org; s=google; t=1731600313; x=1732205113; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=PvazYVJMP5GcUwBS2MCJUYaWeFV3enL9YDBstfMYOoA=;
- b=eezgv9/Ws6bo1OcLC9OrFR8jGQBTmgBUKeB1CdpdcD6wpPen0NQBzpaPkS3eK5VtXe
- QfCyac/31cFN/uV4BuTU1szEnIDZ4uZ3LGEQ7C6I3SQPnKOU5k1h/8sio0aFWxHT1ntK
- YWZbe3oHzrWUkD0z8hhvEZYjOPULlC00TcaoaCu/Nuk2YX+O4La2rZuGM7/ZoR6dwcLg
- 4iafvvi3aFRz9PoH/Td3L8lVaqwCyvWU1rUqdBxLHb1diMZK4+W8WmRJnXgyUTSdTDF9
- 3QaO34r3/ywfMAw3wxQ38u6oJYlD2mvmTSbaeErm7Foeucak66P0FhrED+Q93ZJvzCQw
- uUrg==
+ :reply-to; bh=nc2uEpCTHuP4WgyDpbnyFTPw+frcLZQWSz4dicwWNic=;
+ b=o0XFkiQmvEzGYalgTWKCceMWsbKFRP8vYi/6a4G+l1Fa/79+7kamd2qdo/kMwuBKMQ
+ aPRJSc0V5/6A8FhUFxHw6twjn+f/AtnIWf4l5Mf39ifOTtSlRmPRuk9n498y61nJQzCV
+ FsQ14Wrh+GajGr+oYl2ewhfsd2O+1A59nHZEloAzSi5rKrDMGwpL+kz3EkXDGPHjqtmt
+ 6cLwiZKBiMFe5BuUsfiYHrrF99hDpxUxwddutaAVEpgRw747n6gwWU4ATYvzM7vMtDU2
+ BwFx0NydBuZOtyKzVnORgqLKtcDCz0+1gm0vmWAXLy97ZIiSummH1n4FV+3B7MUucMas
+ Sodw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731600312; x=1732205112;
+ d=1e100.net; s=20230601; t=1731600313; x=1732205113;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=PvazYVJMP5GcUwBS2MCJUYaWeFV3enL9YDBstfMYOoA=;
- b=B6L6JpLSsd3zNzIgwj6KUBbVsHGnP+5hQSUHf3qExwO+ZgoH9J0M/xwfczqGTZ0uP+
- w5L2baH9Z2LqJXki7PDiIeO/9UasDkiDPgUDCj07lX58+MgbFv0CRXSbV1xsgACouZBJ
- UCJ08T6Q5mGw14hr5YG2/6ScByWUzna5gT2XDArml3RuBKzGcId25Aige00MAd7/5apz
- rcbnSQF99E6lcz29TGtvkLhC9o1F+Pfyq1WAG0TFOqJ0r2SPtOiML+qDrRrLpRXsNK47
- fk6v6XsnXmAfvt4EpPJzzQZGhVHOqm5xD9PWUnYK/Ul8LzHYRRbfUTSE7GbJAbLlbOZQ
- AWSg==
-X-Gm-Message-State: AOJu0Yz96jk2V6KVhlEeJjMlCNIacCTDNA84eYMbC+RE1uXon3deDTF3
- nkXMwU4N4aghNb6KdVqy7FcpDfvaCCSBRRvBxmC0Vl0zeGD+S6NtZBKhPjg6kWmD+3NifhLqDgU
- 8
-X-Google-Smtp-Source: AGHT+IHRRECedHgC8UA8c0cg98zU4ej6leJ/NcHYkkXVAzng1uypKrz9H9pIVnN1g0TWsoz6F1d0KQ==
-X-Received: by 2002:a05:6a20:4325:b0:1d6:fb1b:d07a with SMTP id
- adf61e73a8af0-1dc22b57f1dmr30731144637.31.1731600312512; 
- Thu, 14 Nov 2024 08:05:12 -0800 (PST)
+ bh=nc2uEpCTHuP4WgyDpbnyFTPw+frcLZQWSz4dicwWNic=;
+ b=TY20KlZZGONqyzvMpMMVEfMM0Yso8CsQi/8gYm1Xk0J926iWf/aDOonrf1BxOD/1vg
+ Zv45AZlmil5Q796WYs8sEiCkaD8wITrbgOpWGZ8OTh/G4an2dy2MyQPxZGEqF05K8TwP
+ w8GNpyDjV8q9owYMEjV+PsWmy5y9R3Rb4rdgX/ObtRO3dTFIUQwkgMO89/RkBDRqhsHI
+ PXWWdNA7Jxc9jwM8QC/0X9Hg7p30Cn5XN3HbYHcohzEihEJ6kYmNX55gTnA/cl1K/1BS
+ krKLP+K5QaQwXYnwdQZgdkxP3G6E50ZSY6hy82osrFjxXKp8s8NuWa4/ZpWXjcAyd9W7
+ TY8A==
+X-Gm-Message-State: AOJu0Yz9YbSynId93uwhZ+AcWobXsUZZ77CAHcRB77eFC9nHeXJXiB79
+ Xu4GVGI5LFU4/G0bAxyMso0J8arH2aRrVUO1Ge4a9rdc8bE9t2rnGPIW3+lb6oqRhTcEjbh+RVp
+ i
+X-Google-Smtp-Source: AGHT+IHQRU9f+dWRMqldDHp7M+xVk37euYiBWfVuo+7EeuLplWzUbxFNAjcJ2Wvq4BK4cu6aKsrS3w==
+X-Received: by 2002:a05:6a00:3d01:b0:71e:8046:2728 with SMTP id
+ d2e1a72fcca58-7244a59f534mr15160202b3a.17.1731600313250; 
+ Thu, 14 Nov 2024 08:05:13 -0800 (PST)
 Received: from stoup.. ([71.212.136.242]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7246a9bab70sm1417926b3a.152.2024.11.14.08.05.11
+ d2e1a72fcca58-7246a9bab70sm1417926b3a.152.2024.11.14.08.05.12
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Thu, 14 Nov 2024 08:05:12 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH v2 44/54] target/riscv: Convert to TCGCPUOps.tlb_fill_align
-Date: Thu, 14 Nov 2024 08:01:20 -0800
-Message-ID: <20241114160131.48616-45-richard.henderson@linaro.org>
+Subject: [PATCH v2 45/54] target/rx: Convert to TCGCPUOps.tlb_fill_align
+Date: Thu, 14 Nov 2024 08:01:21 -0800
+Message-ID: <20241114160131.48616-46-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241114160131.48616-1-richard.henderson@linaro.org>
 References: <20241114160131.48616-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::536;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x536.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,97 +92,49 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/riscv/cpu.h         |  8 +++++---
- target/riscv/cpu_helper.c  | 22 +++++++++++++++++-----
- target/riscv/tcg/tcg-cpu.c |  2 +-
- 3 files changed, 23 insertions(+), 9 deletions(-)
+ target/rx/cpu.c | 19 +++++++++++--------
+ 1 file changed, 11 insertions(+), 8 deletions(-)
 
-diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-index 284b112821..f97c4f3410 100644
---- a/target/riscv/cpu.h
-+++ b/target/riscv/cpu.h
-@@ -25,6 +25,7 @@
- #include "hw/qdev-properties.h"
- #include "exec/cpu-defs.h"
- #include "exec/gdbstub.h"
-+#include "exec/memop.h"
- #include "qemu/cpu-float.h"
- #include "qom/object.h"
- #include "qemu/int128.h"
-@@ -563,9 +564,10 @@ bool cpu_get_bcfien(CPURISCVState *env);
- G_NORETURN void  riscv_cpu_do_unaligned_access(CPUState *cs, vaddr addr,
-                                                MMUAccessType access_type,
-                                                int mmu_idx, uintptr_t retaddr);
--bool riscv_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
--                        MMUAccessType access_type, int mmu_idx,
--                        bool probe, uintptr_t retaddr);
-+bool riscv_cpu_tlb_fill_align(CPUState *cs, CPUTLBEntryFull *out,
-+                              vaddr addr, MMUAccessType access_type,
-+                              int mmu_idx, MemOp memop, int size,
-+                              bool probe, uintptr_t ra);
- char *riscv_isa_string(RISCVCPU *cpu);
- int riscv_cpu_max_xlen(RISCVCPUClass *mcc);
- bool riscv_cpu_option_set(const char *optname);
-diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
-index 0a3ead69ea..edb2edfc55 100644
---- a/target/riscv/cpu_helper.c
-+++ b/target/riscv/cpu_helper.c
-@@ -1429,9 +1429,10 @@ static void pmu_tlb_fill_incr_ctr(RISCVCPU *cpu, MMUAccessType access_type)
-     riscv_pmu_incr_ctr(cpu, pmu_event_type);
+diff --git a/target/rx/cpu.c b/target/rx/cpu.c
+index 65a74ce720..c83a582141 100644
+--- a/target/rx/cpu.c
++++ b/target/rx/cpu.c
+@@ -161,16 +161,19 @@ static void rx_cpu_disas_set_info(CPUState *cpu, disassemble_info *info)
+     info->print_insn = print_insn_rx;
  }
  
--bool riscv_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
--                        MMUAccessType access_type, int mmu_idx,
--                        bool probe, uintptr_t retaddr)
-+bool riscv_cpu_tlb_fill_align(CPUState *cs, CPUTLBEntryFull *out,
-+                              vaddr address, MMUAccessType access_type,
-+                              int mmu_idx, MemOp memop, int size,
-+                              bool probe, uintptr_t retaddr)
+-static bool rx_cpu_tlb_fill(CPUState *cs, vaddr addr, int size,
+-                            MMUAccessType access_type, int mmu_idx,
+-                            bool probe, uintptr_t retaddr)
++static bool rx_cpu_tlb_fill_align(CPUState *cs, CPUTLBEntryFull *out,
++                                  vaddr addr, MMUAccessType access_type,
++                                  int mmu_idx, MemOp memop, int size,
++                                  bool probe, uintptr_t retaddr)
  {
-     RISCVCPU *cpu = RISCV_CPU(cs);
-     CPURISCVState *env = &cpu->env;
-@@ -1452,6 +1453,14 @@ bool riscv_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
-     qemu_log_mask(CPU_LOG_MMU, "%s ad %" VADDR_PRIx " rw %d mmu_idx %d\n",
-                   __func__, address, access_type, mmu_idx);
+-    uint32_t address, physical, prot;
++    /* TODO: alignment faults not currently handled. */
  
-+    if (address & ((1 << memop_alignment_bits(memop)) - 1)) {
-+        if (probe) {
-+            return false;
-+        }
-+        riscv_cpu_do_unaligned_access(cs, address, access_type,
-+                                      mmu_idx, retaddr);
-+    }
-+
-     pmu_tlb_fill_incr_ctr(cpu, access_type);
-     if (two_stage_lookup) {
-         /* Two stage lookup */
-@@ -1544,8 +1553,11 @@ bool riscv_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
-     }
+     /* Linear mapping */
+-    address = physical = addr & TARGET_PAGE_MASK;
+-    prot = PAGE_READ | PAGE_WRITE | PAGE_EXEC;
+-    tlb_set_page(cs, address, physical, prot, mmu_idx, TARGET_PAGE_SIZE);
++    memset(out, 0, sizeof(*out));
++    out->phys_addr = addr;
++    out->prot = PAGE_READ | PAGE_WRITE | PAGE_EXEC;
++    out->lg_page_size = TARGET_PAGE_BITS;
++    out->attrs = MEMTXATTRS_UNSPECIFIED;
+     return true;
+ }
  
-     if (ret == TRANSLATE_SUCCESS) {
--        tlb_set_page(cs, address & ~(tlb_size - 1), pa & ~(tlb_size - 1),
--                     prot, mmu_idx, tlb_size);
-+        memset(out, 0, sizeof(*out));
-+        out->phys_addr = pa;
-+        out->prot = prot;
-+        out->lg_page_size = ctz64(tlb_size);
-+        out->attrs = MEMTXATTRS_UNSPECIFIED;
-         return true;
-     } else if (probe) {
-         return false;
-diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
-index c62c221696..f3b436bb86 100644
---- a/target/riscv/tcg/tcg-cpu.c
-+++ b/target/riscv/tcg/tcg-cpu.c
-@@ -138,7 +138,7 @@ static const TCGCPUOps riscv_tcg_ops = {
-     .restore_state_to_opc = riscv_restore_state_to_opc,
+@@ -195,7 +198,7 @@ static const TCGCPUOps rx_tcg_ops = {
+     .initialize = rx_translate_init,
+     .synchronize_from_tb = rx_cpu_synchronize_from_tb,
+     .restore_state_to_opc = rx_restore_state_to_opc,
+-    .tlb_fill = rx_cpu_tlb_fill,
++    .tlb_fill_align = rx_cpu_tlb_fill_align,
  
  #ifndef CONFIG_USER_ONLY
--    .tlb_fill = riscv_cpu_tlb_fill,
-+    .tlb_fill_align = riscv_cpu_tlb_fill_align,
-     .cpu_exec_interrupt = riscv_cpu_exec_interrupt,
-     .cpu_exec_halt = riscv_cpu_has_work,
-     .do_interrupt = riscv_cpu_do_interrupt,
+     .cpu_exec_interrupt = rx_cpu_exec_interrupt,
 -- 
 2.43.0
 
