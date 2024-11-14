@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE1349C8F15
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Nov 2024 17:03:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F04809C8F0C
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Nov 2024 17:03:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tBcIN-0004zJ-Eu; Thu, 14 Nov 2024 11:02:13 -0500
+	id 1tBcIA-0004z4-IC; Thu, 14 Nov 2024 11:02:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tBcI0-0004xk-Nr
+ id 1tBcI1-0004xn-8e
  for qemu-devel@nongnu.org; Thu, 14 Nov 2024 11:01:49 -0500
-Received: from mail-pj1-x102e.google.com ([2607:f8b0:4864:20::102e])
+Received: from mail-pj1-x102b.google.com ([2607:f8b0:4864:20::102b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tBcHu-0002Cq-3h
- for qemu-devel@nongnu.org; Thu, 14 Nov 2024 11:01:43 -0500
-Received: by mail-pj1-x102e.google.com with SMTP id
- 98e67ed59e1d1-2e2ed2230d8so712292a91.0
- for <qemu-devel@nongnu.org>; Thu, 14 Nov 2024 08:01:41 -0800 (PST)
+ id 1tBcHu-0002D5-NU
+ for qemu-devel@nongnu.org; Thu, 14 Nov 2024 11:01:49 -0500
+Received: by mail-pj1-x102b.google.com with SMTP id
+ 98e67ed59e1d1-2e9b4a5862fso689740a91.1
+ for <qemu-devel@nongnu.org>; Thu, 14 Nov 2024 08:01:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1731600101; x=1732204901; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=hz/db0U//GrGJtv1TKp+9GNtVl8RODviEX3vH3DtlZo=;
- b=NLYWol+PQJdmkmF5vaOCTGF7mRWl+RO+T2Dab1p0wSSkr1fp67aHstLPHcIx7v69xH
- 0lOaShaXZlkuDs3h1nZETORfxvCAhqUAJgbb2a+4V2PMVjNCCZSTltys1+LB022Pr+mo
- YNQy3Q8h1BWEHQvtlb901uvrLX53DichaK4BaMqfetxA4Ppd8JXHJLQeePn8FAF8bTNz
- sdlsn71KrA+TAmMSoQWpKZ7B1F9TC2K4SSUy0LM997DR+XmJjuKvpJZ526ckGltBK2w7
- Okg0S37BhQX0OK0j3bnK67JsgX/jd8bynazgK2j9IqNrNqS4V7FRpkwK1obmDwE6urTS
- hqaA==
+ :reply-to; bh=u1afL0RFM67W2rOuMJqQQROG23LY3jQbGC8krRZVFcY=;
+ b=yVR9gF63XvgesbIfGba7n9fZZX3hgXVni7+13PJkbUps6RHYDnGg2P4+cSMPzpuy3y
+ lpDuKyNvrh09B3elyqfRp1fd269Prs2+5XyXStCq7KYjkI9+5upKjiXByxVIz1U52fA0
+ 2qsUCYtSpoPN4ZtTOlZCyj9Ur7ZW+hFuRKx0qvV0RBzrGt++jeNBUu1N/iSlbwyDqSw9
+ 7ByqYW2iyGKJIUUmTa3kLkBaNKbo/F+/9a/fArGzHg5GlcZ2+NzsRIWrSAqSon1bqBnP
+ aRYonFMxGQtFXLNCBkgek05k1QtI0zbf811nR4lBFvdWua2uv7qVYxS54IC81soNpPlY
+ pLzw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1731600101; x=1732204901;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=hz/db0U//GrGJtv1TKp+9GNtVl8RODviEX3vH3DtlZo=;
- b=Ga4/0EamY5VPjlxJ6CSNPYzW+umBLYpYrZbEZULKRYPNA4SwYxxu9YrxtiiYvqDn6x
- kNvbLhqMGIGQrYl7mlqTwdX2YnXEuGIwjCR48ws39vtZoYecGGG9DQ8XleT6laTGC+y7
- E0KTbriLskLTaTAsTfBrKFQiv7pEe8dAFCT3aLV2Z2zE+ak0JIaGi1hUQAZFurxA6BN1
- CWle/pJ9dS+iw12jOoCWs2GiqMk3ytjqSyzR+f0hIt26pRSTBjD44uBmM+Ck0WJ/lOsI
- rbWETlnY+otOT/o6TJkt9YKOQG0bEGCPKa/nLN+Ynp62K4nIP7FGg73N4uTd/hvVwjnc
- HhSA==
-X-Gm-Message-State: AOJu0YyUJ9X91t/7vSFTHuonTj5ZLuyvKwaHNY1PfwwCorDi7wAYAS46
- gEDXqAVVboj2jbaLlBX3+82Z2CY4gDu27hE6REHesc307CA8aACOlhQ7w0GRJLZz6KD80Tn5TmX
- l
-X-Google-Smtp-Source: AGHT+IHcXVH3KaUHtQLFLDkMwOtcHGIrmarOlz54PW7Z4JpmceQuSWMN25JiJlrSZXxhUbG4TyrWBQ==
-X-Received: by 2002:a17:90b:4c03:b0:2c8:65cf:e820 with SMTP id
- 98e67ed59e1d1-2ea06346505mr2754826a91.2.1731600100692; 
- Thu, 14 Nov 2024 08:01:40 -0800 (PST)
+ bh=u1afL0RFM67W2rOuMJqQQROG23LY3jQbGC8krRZVFcY=;
+ b=IQ+wS5vaSLobUmx/pgrpuOoCwhaqrajh841WkJz3H3sevGmZ8blqtBJQ4BMq+1sa44
+ zNixf5/ptjJhZyJOsfeHHWn1Tfs7oiwPDIeARN/C2qeD5EWxCFR/APGwscT3xFQBmwrS
+ kSxOQseKhVFFszkwFbNR8aUDfprQXxyXMItGcQq171uKsNKtnkl3/2ugSKqoW52GS8+Q
+ fOyPSP0br85ZKhr3oBgAp2fQp35+g1So5ERhEGcRBLhGzJlRJCtyA+PvtQ/rRP2c42xa
+ 0MnKZiZth1UuLDPf4kL/rMvvbxTGqX6gxoTQwrBuoc3hHG3gAem/1linqIMF3XrkXDZW
+ 0KkA==
+X-Gm-Message-State: AOJu0YzAlebavtB2CGB6KY3wAMboH/7N2mhFUgAmHchQOYHyWiB1KpMH
+ wni8yWuZRqiHGOZGjrq7Q7TFE7uEXa9JFQwWS+n/FxFfcd3a4/uqvxvn1YZWkof3yWrfW4zWe0U
+ 2
+X-Google-Smtp-Source: AGHT+IGd2wESbeUDZWZyULrJlD6ZhjqMg0umkV9Malj8l88C1hYJaC10rZTqQ9ZwkfZTBuGon/ZBDQ==
+X-Received: by 2002:a17:90b:4a90:b0:2d1:bf48:e767 with SMTP id
+ 98e67ed59e1d1-2e9e4c73b9bmr14198227a91.29.1731600101380; 
+ Thu, 14 Nov 2024 08:01:41 -0800 (PST)
 Received: from stoup.. ([71.212.136.242]) by smtp.gmail.com with ESMTPSA id
  98e67ed59e1d1-2ea024ec723sm1484438a91.46.2024.11.14.08.01.40
  for <qemu-devel@nongnu.org>
@@ -58,17 +58,17 @@ Received: from stoup.. ([71.212.136.242]) by smtp.gmail.com with ESMTPSA id
  Thu, 14 Nov 2024 08:01:40 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH v2 11/54] accel/tcg: Remove IntervalTree entry in
- tlb_flush_page_locked
-Date: Thu, 14 Nov 2024 08:00:47 -0800
-Message-ID: <20241114160131.48616-12-richard.henderson@linaro.org>
+Subject: [PATCH v2 12/54] accel/tcg: Remove IntervalTree entries in
+ tlb_flush_range_locked
+Date: Thu, 14 Nov 2024 08:00:48 -0800
+Message-ID: <20241114160131.48616-13-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241114160131.48616-1-richard.henderson@linaro.org>
 References: <20241114160131.48616-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102e;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102b;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,47 +91,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Flush a page from the IntervalTree cache.
+Flush a masked range of pages from the IntervalTree cache.
+When the mask is not used there is a redundant comparison,
+but that is better than duplicating code at this point.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- accel/tcg/cputlb.c | 16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
+ accel/tcg/cputlb.c | 25 +++++++++++++++++++++++++
+ 1 file changed, 25 insertions(+)
 
 diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
-index ea6a5177de..d532d69083 100644
+index d532d69083..e2c855f147 100644
 --- a/accel/tcg/cputlb.c
 +++ b/accel/tcg/cputlb.c
-@@ -568,6 +568,7 @@ static void tlb_flush_page_locked(CPUState *cpu, int midx, vaddr page)
-     CPUTLBDesc *desc = &cpu->neg.tlb.d[midx];
-     vaddr lp_addr = desc->large_page_addr;
-     vaddr lp_mask = desc->large_page_mask;
-+    CPUTLBEntryTree *node;
- 
-     /* Check if we need to flush due to large pages.  */
-     if ((page & lp_mask) == lp_addr) {
-@@ -575,10 +576,17 @@ static void tlb_flush_page_locked(CPUState *cpu, int midx, vaddr page)
-                   VADDR_PRIx "/%016" VADDR_PRIx ")\n",
-                   midx, lp_addr, lp_mask);
-         tlb_flush_one_mmuidx_locked(cpu, midx, get_clock_realtime());
--    } else {
--        tlbfast_flush_range_locked(desc, &cpu->neg.tlb.f[midx],
--                                   page, TARGET_PAGE_SIZE, -1);
--        tlb_flush_vtlb_page_locked(cpu, midx, page);
-+        return;
-+    }
-+
-+    tlbfast_flush_range_locked(desc, &cpu->neg.tlb.f[midx],
-+                               page, TARGET_PAGE_SIZE, -1);
-+    tlb_flush_vtlb_page_locked(cpu, midx, page);
-+
-+    node = tlbtree_lookup_addr(desc, page);
-+    if (node) {
-+        interval_tree_remove(&node->itree, &desc->iroot);
-+        g_free(node);
-     }
+@@ -311,6 +311,13 @@ static CPUTLBEntryTree *tlbtree_lookup_range(CPUTLBDesc *desc, vaddr s, vaddr l)
+     return i ? container_of(i, CPUTLBEntryTree, itree) : NULL;
  }
  
++static CPUTLBEntryTree *tlbtree_lookup_range_next(CPUTLBEntryTree *prev,
++                                                  vaddr s, vaddr l)
++{
++    IntervalTreeNode *i = interval_tree_iter_next(&prev->itree, s, l);
++    return i ? container_of(i, CPUTLBEntryTree, itree) : NULL;
++}
++
+ static CPUTLBEntryTree *tlbtree_lookup_addr(CPUTLBDesc *desc, vaddr addr)
+ {
+     return tlbtree_lookup_range(desc, addr, addr);
+@@ -739,6 +746,8 @@ static void tlb_flush_range_locked(CPUState *cpu, int midx,
+     CPUTLBDesc *d = &cpu->neg.tlb.d[midx];
+     CPUTLBDescFast *f = &cpu->neg.tlb.f[midx];
+     vaddr mask = MAKE_64BIT_MASK(0, bits);
++    CPUTLBEntryTree *node;
++    vaddr addr_mask, last_mask, last_imask;
+ 
+     /*
+      * Check if we need to flush due to large pages.
+@@ -759,6 +768,22 @@ static void tlb_flush_range_locked(CPUState *cpu, int midx,
+         vaddr page = addr + i;
+         tlb_flush_vtlb_page_mask_locked(cpu, midx, page, mask);
+     }
++
++    addr_mask = addr & mask;
++    last_mask = addr_mask + len - 1;
++    last_imask = last_mask | ~mask;
++    node = tlbtree_lookup_range(d, addr_mask, last_imask);
++    while (node) {
++        CPUTLBEntryTree *next =
++            tlbtree_lookup_range_next(node, addr_mask, last_imask);
++        vaddr page_mask = node->itree.start & mask;
++
++        if (page_mask >= addr_mask && page_mask < last_mask) {
++            interval_tree_remove(&node->itree, &d->iroot);
++            g_free(node);
++        }
++        node = next;
++    }
+ }
+ 
+ typedef struct {
 -- 
 2.43.0
 
