@@ -2,63 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 979CC9C85DC
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Nov 2024 10:17:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B4DE9C85D2
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Nov 2024 10:15:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tBVw3-0000TG-U5; Thu, 14 Nov 2024 04:14:43 -0500
+	id 1tBVvz-0000Cl-5S; Thu, 14 Nov 2024 04:14:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <cleger@rivosinc.com>)
- id 1tBVvL-0008L8-H8
- for qemu-devel@nongnu.org; Thu, 14 Nov 2024 04:14:00 -0500
-Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
+ id 1tBVvM-0008LD-C8
+ for qemu-devel@nongnu.org; Thu, 14 Nov 2024 04:14:08 -0500
+Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <cleger@rivosinc.com>)
- id 1tBVvH-0007iP-UV
+ id 1tBVvI-0007ic-If
  for qemu-devel@nongnu.org; Thu, 14 Nov 2024 04:13:59 -0500
-Received: by mail-wr1-x433.google.com with SMTP id
- ffacd0b85a97d-37d49a7207cso243015f8f.0
- for <qemu-devel@nongnu.org>; Thu, 14 Nov 2024 01:13:53 -0800 (PST)
+Received: by mail-wr1-x436.google.com with SMTP id
+ ffacd0b85a97d-3821c5f6eb1so143343f8f.3
+ for <qemu-devel@nongnu.org>; Thu, 14 Nov 2024 01:13:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1731575632; x=1732180432;
+ d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1731575633; x=1732180433;
  darn=nongnu.org; 
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=rhsOIHC2GPGhTuIUOV5OrweCSoluniZqBwzjLjieyy0=;
- b=ORRTONr1iM4q7OQhDCpuftApwxYYSeb6rjvj/vtaiH4xFhptagunhFUxyzI77VW1yF
- epP1fcP9n8dA9gCvYh0ES2qKyVPqT5Bjx0K6DJyQN03E5gyZjGOmOiXzTnrfj16MVJZU
- +o/UOA06A6qXbhFZ8bqxw4AIZBWBpBbQ3JkBmVVfkrdxqmgd3wV4R/OaYNmsDjmfky70
- 2+cdkk+B6+RVf13dWK8ADi9nrB2NFr5spAd1cElVX+JrkoPZZ36psjRHR4hMtETiN61p
- QxKxofKB2SslIz4ZmORXJTpqxz8Vdens9U1GMes99eSIddoZ5jz0fPJDvV8etsdCbYBm
- jpXw==
+ bh=zrlqhZAuqzC1HZX4nAGhxZk3V5yhPYxnlkqSF+GjVbk=;
+ b=FGgYjlOddPJmjmGg2ut5zlvqjzsQcmOIYrUhhZBWiBH2U2YeO7ZeAtK7ixQL/vI1wx
+ 1ZIsJqTqazyZNi4MEiajsjlByO+ffuMsFkhBTQyaC5F5t/kI3Sd06d97Opnu4t0aMv2e
+ 8kTdGAn6/ydQJXJVq/LFfnQSVDHH1GAKocm2Pj97Xs34FWIBFaLLQ6+BXcEpMA8YrenT
+ qFzYcLbfwAQ59a9LskAIvGLtctWeSW6MmDk1gURAoPvctsyEJu0aRj8mLerxoFsdF39p
+ jIX7Bo2s+Uzzgwce1MSeZ6wR5C1RHnSorRzH/ULeHqfxjfVKqEfP7dng48rquVVsl5BM
+ UDxw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731575632; x=1732180432;
+ d=1e100.net; s=20230601; t=1731575633; x=1732180433;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=rhsOIHC2GPGhTuIUOV5OrweCSoluniZqBwzjLjieyy0=;
- b=W46MgdsD1P2vRRQHif2kZHhT/PFNVms0NahEhdrJ+6//MTjgIxGW4USjROzGaFenZW
- fK4/VD6NLYAxJsx1/Mg89ZlL7nVc031ehpUNqLUncIVqgvd4uUUWbiGIgAjlXFFlPwNN
- ZFZgdrJMAzMchb5tRBDlqUW9aauhqhASNh7bNBUyWnIlsQTqt6ArnmoeUCWGivsExBZ0
- ukPS0q9sNZ1KuGgPjIVuAC4Oc7GFHkb3YdL/3kVoUZzDsySWhc7MUWqLxS/PS12Kt7bD
- YmHwqRKVYkk+ZZnqvLmjT2aBXxr5xay07beD+FsuPBWvgXbY8ne/aim1BVB/wauqFuje
- WWlg==
+ bh=zrlqhZAuqzC1HZX4nAGhxZk3V5yhPYxnlkqSF+GjVbk=;
+ b=DJEk41hnrvLXhLDMAXr3bwlurwUpWBaX9qGVsXPR2SMtrd+T4xVbdlfSMsrDboalNY
+ YqpXjIz74/h27OwTe49LDLCw3YcklIIw6A0gSnnWZM23qxDpkM/b0DgZFgpnt9+l6LQr
+ mByu0v5eS0W41qSHYtMi6jdZIHb4jVY5FrPkM4K7WJJzWJO++pXS0p+zntjBFnIkkDGi
+ oro+zFsOqXVqdbRdPUGJy/2v1tyHynn5zb9RMM7p1YuIW5tG606JdPwrQrJ1y0gQp/xF
+ OvpnuleDR6hmEiOmtHauuLmrPo/HbamUfK+iYlWricf+mllA+VrCP6U6G0j9qsGER1NM
+ 9iJw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXZWUXgo3O3Na52so7/CqKTg7eYXvyQFQeGDIIi090eDmFTdDJCrEPsNeL9FtXKEp1e2DIFBCBpBU+1@nongnu.org
-X-Gm-Message-State: AOJu0YxW2gImJAFQK2JnIMTzXKVetIo11fGRzCacl4rLmPrJowV76R6Y
- a94J3YOBr6aA5F9LJ2i+el6703gv1UVUT/2LWckgeaeSPOeT926Rui/YXjX2yZA=
-X-Google-Smtp-Source: AGHT+IE1jEjtcZStucPGHvWfPm7tNwdJGb58mm7Ps0ze9doZWu8W46uB6Y6On+JLC/aJcdMpKFjHSQ==
-X-Received: by 2002:a05:6000:400c:b0:381:c7b7:706d with SMTP id
- ffacd0b85a97d-3821851c9c4mr1368506f8f.27.1731575632370; 
- Thu, 14 Nov 2024 01:13:52 -0800 (PST)
+ AJvYcCWLGfHgml/KqqjJB2TvniA7fUGzyTp8193SUfbwf7GihKOxUgb97r0IeiOZNGnQ2uph9bVLTTF9mVF5@nongnu.org
+X-Gm-Message-State: AOJu0YwH2DWQwnsH8Plsx0ngI5WW0Yxh5ksL3MuU98DV89nxwG7+2g9y
+ 2qywWgUotDJh2tK7C0Ysfw4YmFhqsGBOLilos70hRmE7NBzUzSiSe2cqecIZ5yo=
+X-Google-Smtp-Source: AGHT+IFTA47yr4OmHfm+XxAgY9/A2HkbedU2UAoVuiALpJy1/jtwze+NZySWxDEDuSKh5uy6PTOcHA==
+X-Received: by 2002:a5d:59a3:0:b0:37d:4fe9:b6a6 with SMTP id
+ ffacd0b85a97d-381f186fb71mr18732139f8f.29.1731575633401; 
+ Thu, 14 Nov 2024 01:13:53 -0800 (PST)
 Received: from carbon-x1.. ([2a01:e0a:e17:9700:16d2:7456:6634:9626])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3821ae313e3sm899050f8f.94.2024.11.14.01.13.51
+ ffacd0b85a97d-3821ae313e3sm899050f8f.94.2024.11.14.01.13.52
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 14 Nov 2024 01:13:51 -0800 (PST)
+ Thu, 14 Nov 2024 01:13:52 -0800 (PST)
 From: =?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <cleger@rivosinc.com>
 To: qemu-riscv@nongnu.org, Palmer Dabbelt <palmer@dabbelt.com>,
  Alistair Francis <alistair.francis@wdc.com>,
@@ -69,17 +69,17 @@ Cc: =?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <cleger@rivosinc.com>,
  Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
  Ved Shanbhogue <ved@rivosinc.com>, Atish Patra <atishp@rivosinc.com>,
  qemu-devel@nongnu.org
-Subject: [PATCH v5 8/9] target/riscv: Implement Smdbltrp behavior
-Date: Thu, 14 Nov 2024 10:13:29 +0100
-Message-ID: <20241114091332.108811-9-cleger@rivosinc.com>
+Subject: [PATCH v5 9/9] target/riscv: Add Smdbltrp ISA extension enable switch
+Date: Thu, 14 Nov 2024 10:13:30 +0100
+Message-ID: <20241114091332.108811-10-cleger@rivosinc.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241114091332.108811-1-cleger@rivosinc.com>
 References: <20241114091332.108811-1-cleger@rivosinc.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::433;
- envelope-from=cleger@rivosinc.com; helo=mail-wr1-x433.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::436;
+ envelope-from=cleger@rivosinc.com; helo=mail-wr1-x436.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -101,105 +101,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When the Smsdbltrp ISA extension is enabled, if a trap happens while
-MSTATUS.MDT is already set, it will trigger an abort or an NMI is the
-Smrnmi extension is available.
+Add the switch to enable the Smdbltrp ISA extension.
 
 Signed-off-by: Clément Léger <cleger@rivosinc.com>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/cpu_helper.c | 52 +++++++++++++++++++++++++--------------
- 1 file changed, 34 insertions(+), 18 deletions(-)
+ target/riscv/cpu.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
-index 623a3abbf7..8825572d5e 100644
---- a/target/riscv/cpu_helper.c
-+++ b/target/riscv/cpu_helper.c
-@@ -1703,6 +1703,17 @@ static target_ulong riscv_transformed_insn(CPURISCVState *env,
-     return xinsn;
- }
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+index 15b21e4f7d..1323effdae 100644
+--- a/target/riscv/cpu.c
++++ b/target/riscv/cpu.c
+@@ -183,6 +183,7 @@ const RISCVIsaExtData isa_edata_arr[] = {
+     ISA_EXT_DATA_ENTRY(zhinxmin, PRIV_VERSION_1_12_0, ext_zhinxmin),
+     ISA_EXT_DATA_ENTRY(smaia, PRIV_VERSION_1_12_0, ext_smaia),
+     ISA_EXT_DATA_ENTRY(smcntrpmf, PRIV_VERSION_1_12_0, ext_smcntrpmf),
++    ISA_EXT_DATA_ENTRY(smdbltrp, PRIV_VERSION_1_13_0, ext_smdbltrp),
+     ISA_EXT_DATA_ENTRY(smepmp, PRIV_VERSION_1_12_0, ext_smepmp),
+     ISA_EXT_DATA_ENTRY(smrnmi, PRIV_VERSION_1_12_0, ext_smrnmi),
+     ISA_EXT_DATA_ENTRY(smstateen, PRIV_VERSION_1_12_0, ext_smstateen),
+@@ -1506,6 +1507,7 @@ const RISCVCPUMultiExtConfig riscv_cpu_extensions[] = {
+     MULTI_EXT_CFG_BOOL("sstc", ext_sstc, true),
  
-+static void riscv_do_nmi(CPURISCVState *env, target_ulong cause, bool virt)
-+{
-+    env->mnstatus = set_field(env->mnstatus, MNSTATUS_NMIE, false);
-+    env->mnstatus = set_field(env->mnstatus, MNSTATUS_MNPV, virt);
-+    env->mnstatus = set_field(env->mnstatus, MNSTATUS_MNPP, env->priv);
-+    env->mncause = cause;
-+    env->mnepc = env->pc;
-+    env->pc = env->rnmi_irqvec;
-+    riscv_cpu_set_mode(env, PRV_M, false);
-+}
-+
- /*
-  * Handle Traps
-  *
-@@ -1741,15 +1752,8 @@ void riscv_cpu_do_interrupt(CPUState *cs)
-     bool nnmi_excep = false;
- 
-     if (cpu->cfg.ext_smrnmi && env->rnmip && async) {
--        env->mnstatus = set_field(env->mnstatus, MNSTATUS_NMIE, false);
--        env->mnstatus = set_field(env->mnstatus, MNSTATUS_MNPV,
--                                  env->virt_enabled);
--        env->mnstatus = set_field(env->mnstatus, MNSTATUS_MNPP,
--                                  env->priv);
--        env->mncause = cause | ((target_ulong)1U << (TARGET_LONG_BITS - 1));
--        env->mnepc = env->pc;
--        env->pc = env->rnmi_irqvec;
--        riscv_cpu_set_mode(env, PRV_M, virt);
-+        riscv_do_nmi(env, cause | ((target_ulong)1U << (TARGET_LONG_BITS - 1)),
-+                     virt);
-         return;
-     }
- 
-@@ -1932,11 +1936,32 @@ void riscv_cpu_do_interrupt(CPUState *cs)
-             /* Trapping to M mode, virt is disabled */
-             virt = false;
-         }
-+        /*
-+         * If the hart encounters an exception while executing in M-mode,
-+         * with the mnstatus.NMIE bit clear, the program counter is set to
-+         * the RNMI exception trap handler address.
-+         */
-+        nnmi_excep = cpu->cfg.ext_smrnmi &&
-+                     !get_field(env->mnstatus, MNSTATUS_NMIE) &&
-+                     !async;
- 
-         s = env->mstatus;
-         s = set_field(s, MSTATUS_MPIE, get_field(s, MSTATUS_MIE));
-         s = set_field(s, MSTATUS_MPP, env->priv);
-         s = set_field(s, MSTATUS_MIE, 0);
-+        if (cpu->cfg.ext_smdbltrp) {
-+            if (env->mstatus & MSTATUS_MDT) {
-+                assert(env->priv == PRV_M);
-+                if (!cpu->cfg.ext_smrnmi || nnmi_excep) {
-+                    cpu_abort(CPU(cpu), "M-mode double trap\n");
-+                } else {
-+                    riscv_do_nmi(env, cause, false);
-+                    return;
-+                }
-+            }
-+
-+            s = set_field(s, MSTATUS_MDT, 1);
-+        }
-         env->mstatus = s;
-         mxlen = 16 << riscv_cpu_mxl(env);
-         env->mcause = cause | ((target_ulong)async << (mxlen - 1));
-@@ -1950,15 +1975,6 @@ void riscv_cpu_do_interrupt(CPUState *cs)
-         env->mtval = tval;
-         env->mtinst = tinst;
- 
--        /*
--         * If the hart encounters an exception while executing in M-mode,
--         * with the mnstatus.NMIE bit clear, the program counter is set to
--         * the RNMI exception trap handler address.
--         */
--        nnmi_excep = cpu->cfg.ext_smrnmi &&
--                     !get_field(env->mnstatus, MNSTATUS_NMIE) &&
--                     !async;
--
-         if (nnmi_excep) {
-             env->pc = env->rnmi_excpvec;
-         } else {
+     MULTI_EXT_CFG_BOOL("smaia", ext_smaia, false),
++    MULTI_EXT_CFG_BOOL("smdbltrp", ext_smdbltrp, false),
+     MULTI_EXT_CFG_BOOL("smepmp", ext_smepmp, false),
+     MULTI_EXT_CFG_BOOL("smrnmi", ext_smrnmi, false),
+     MULTI_EXT_CFG_BOOL("smstateen", ext_smstateen, false),
 -- 
 2.45.2
 
