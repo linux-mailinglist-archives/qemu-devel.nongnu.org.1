@@ -2,91 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B0159C93A6
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Nov 2024 22:01:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 89F429C93C9
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Nov 2024 22:06:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tBgx6-0008Ff-4Y; Thu, 14 Nov 2024 16:00:32 -0500
+	id 1tBh2b-00046T-Ex; Thu, 14 Nov 2024 16:06:13 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tBgx3-0008Ej-Jc
- for qemu-devel@nongnu.org; Thu, 14 Nov 2024 16:00:29 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tBgx1-0007uk-TB
- for qemu-devel@nongnu.org; Thu, 14 Nov 2024 16:00:29 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1731618025;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=+0Hut3RTDnL/voQ2ISTVQZmwUdqtrb97TOVExpaB64A=;
- b=aCkQ37JpN1pjErFO3Sa5peqXhwW2RURgxTXGGyskLfviLA0T5SRExnIv4ARhMIKou1GF5z
- zX5g7weFELKK95OYh8DGUe33BCmXqbUZvsY+oLHtPZm5Z7jfedQpyV/Cl2AqHml0OcROvQ
- i6+apmx39ChRy5v2MQwn5qa6YRcWm64=
-Received: from mail-io1-f72.google.com (mail-io1-f72.google.com
- [209.85.166.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-665-ezzcLfWgPA2qeKHJaqBqpw-1; Thu, 14 Nov 2024 16:00:24 -0500
-X-MC-Unique: ezzcLfWgPA2qeKHJaqBqpw-1
-X-Mimecast-MFC-AGG-ID: ezzcLfWgPA2qeKHJaqBqpw
-Received: by mail-io1-f72.google.com with SMTP id
- ca18e2360f4ac-83aa6bcd7b3so116649339f.2
- for <qemu-devel@nongnu.org>; Thu, 14 Nov 2024 13:00:24 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tBh25-0003RM-VR
+ for qemu-devel@nongnu.org; Thu, 14 Nov 2024 16:05:43 -0500
+Received: from mail-lj1-x233.google.com ([2a00:1450:4864:20::233])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tBh23-0000Qn-JU
+ for qemu-devel@nongnu.org; Thu, 14 Nov 2024 16:05:41 -0500
+Received: by mail-lj1-x233.google.com with SMTP id
+ 38308e7fff4ca-2fb51e00c05so18680461fa.0
+ for <qemu-devel@nongnu.org>; Thu, 14 Nov 2024 13:05:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1731618337; x=1732223137; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=pWlnoTNls266dh3rTxML6If/W5HjOvej1W8Ls+0tjpA=;
+ b=dI4ORW9L27iPzFKQEHWjhJXuc8O7WvU4r3/WcMyql/1VAXzaucIFVSHyGHe1SkRYXq
+ +hLSDD7woWne9UFN6QmYeabYKlrzqlRmTcTJISNRQBVEfYY4OCW7GZRCdSPA9yJ+pN8p
+ pHPFMtwLLkGPSnIiII2y/2ZlDAkoMTrugbQxTbzPe02xYJrrEWKBImry4SZZKXciNQgg
+ seVvDp53T5CkiPWJV77SprYIC+1UNjwhlOcv7bchEEzkpeHBRb9SkUZLOYEkCfJtdbOi
+ Icz6Mh48h/akQq6PC83+YLYfv9F/8ReUTx8zp4p/dztGLesqIuZWRq83a1BDCtwvaI0e
+ R+uw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731618023; x=1732222823;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
+ d=1e100.net; s=20230601; t=1731618337; x=1732223137;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=+0Hut3RTDnL/voQ2ISTVQZmwUdqtrb97TOVExpaB64A=;
- b=MFcTydMa09HNjTNlBC+OMa7mJ0ci6v8y5z/4F1stZRMna1nygpmI0twrph7M9CqcLY
- 2+dKFQEw2/ixna8Th//U734CvaCcyQKz0uweY7ljc36McrPKPrusbT44wTKlK5LX468g
- +iW4Cdc4bX/+hGBMPVcIBPHxvEuCX6jODRtiwg2r8y6X/eJtlm2AxH5CInV6cM7f9Anr
- c8wY0HBVbKpf6suHrOMBAGlSODTBe0ar3x9iAVs+/ri2W6aX8D+4XPN7YQAsS8sqJlio
- EZVwLemY0Be47nArYOmq6iY8sPP/Q7V3PZR9vRiQLU+vmXMYsR8GwgsTcOaq1hVV4+eO
- uXPg==
-X-Gm-Message-State: AOJu0YwLis48C2zEEiyz/aOQo9ilGB3Hf9VjN8ZDni38EG+c4BlyVqN+
- DEoXSW33S7u+1pAllbLM1e8NI3TtZGGx/dpNFGFSuBcS4tAL7aeZSrwOFxVNrP1FmNXlZ0l4XP9
- X0+0o6tJtaR98QQ8xzK6EiHQe6rVxfbv7LbWdoevBBuHD3ijjqZRG0dtoUIAj
-X-Received: by 2002:a05:6602:13c1:b0:83a:a82b:f856 with SMTP id
- ca18e2360f4ac-83e6c0a935emr64269739f.3.1731618023176; 
- Thu, 14 Nov 2024 13:00:23 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFVHr44QikO3Fu+C3sNhpyCDmG42HiHCn2f8PdXrYS5M64Z+su+CYHde7H/c5Mq9DKD0L6eHQ==
-X-Received: by 2002:a05:6602:13c1:b0:83a:a82b:f856 with SMTP id
- ca18e2360f4ac-83e6c0a935emr64266739f.3.1731618022840; 
- Thu, 14 Nov 2024 13:00:22 -0800 (PST)
-Received: from x1n (pool-99-254-114-190.cpe.net.cable.rogers.com.
- [99.254.114.190]) by smtp.gmail.com with ESMTPSA id
- 8926c6da1cb9f-4e06d6eadb2sm21405173.22.2024.11.14.13.00.22
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 14 Nov 2024 13:00:22 -0800 (PST)
-Date: Thu, 14 Nov 2024 16:00:20 -0500
-From: Peter Xu <peterx@redhat.com>
-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- Markus Armbruster <armbru@redhat.com>
-Subject: Re: [PATCH v2 7/8] convert code to qdev_new_dynamic() where
- appropriate
-Message-ID: <ZzZk5KAzbu6NVl9Z@x1n>
-References: <20241111155555.90091-1-berrange@redhat.com>
- <20241111155555.90091-8-berrange@redhat.com>
+ bh=pWlnoTNls266dh3rTxML6If/W5HjOvej1W8Ls+0tjpA=;
+ b=HAE5pjDDP/SroPOAtxMYecAm/n8N+aQuDZ1s8Kf9Y6UIy3LWLzzrBNZLl4Ul3JaGp8
+ EdzkcEnOUTs46QnnjuS75rjCtNjOdrmngo6mP4yN6GikIGn3Ym9CMb959SK42ShUqn1J
+ 3nb+Sz4GFvOuYvqixLsZBd91J1nSKJIxSlUkpy+CX/703GegtR3vlZSqRTftC7thPrYT
+ nRkpVRMr4Qdj9L3rv53BhnJP8T6CflmuVumYLjxDZoZ9Ckoc7oksGTd1RjQBr8NcHNrg
+ DR1l81476g6dg9Z0Y4SUsP1RhOoo201Ea6buCWGv7uR4EdMWQT2YAKZ82K6ea6d9lsrR
+ 16NQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUJJ+0A1zPsbn7HhTEdMdHor/ZT/nLDlO3QMkJgx2+x2hQSkthpZC/TMzg6Dp451zKLDXQelsSTvdH7@nongnu.org
+X-Gm-Message-State: AOJu0Yz3cqv7FOPIxZmYaDRspwLXQw6INz6GuUVAKfcHdUgAm19Qubq8
+ 0vtnbDMMEJ0g/WJJ9XVbXCYUBr9Q5IIz1So7NxaEtsANY+bf0muA1Du5rIMbhDM=
+X-Google-Smtp-Source: AGHT+IF/+vE2NIeTr2lZCJQFM30ZJCtPOWIen71zHtBQd5fnu7UeuvR9wsTaDjhfo7F8SNDvRzsw1Q==
+X-Received: by 2002:a05:651c:160e:b0:2fb:510c:7237 with SMTP id
+ 38308e7fff4ca-2ff60715466mr3722871fa.41.1731618336989; 
+ Thu, 14 Nov 2024 13:05:36 -0800 (PST)
+Received: from [192.168.69.126] ([176.187.209.228])
+ by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-aa20e045438sm102112866b.158.2024.11.14.13.05.34
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 14 Nov 2024 13:05:36 -0800 (PST)
+Message-ID: <c072c343-c90c-49f4-9657-3f946a02f92e@linaro.org>
+Date: Thu, 14 Nov 2024 22:05:33 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 13/24] exec: Declare tlb_reset_dirty*() in 'exec/cputlb.h'
+To: Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Anton Johansson <anjo@rev.ng>,
+ qemu-devel@nongnu.org
+Cc: qemu-ppc@nongnu.org, Thomas Huth <thuth@redhat.com>, qemu-arm@nongnu.org, 
+ Peter Xu <peterx@redhat.com>, Pierrick Bouvier
+ <pierrick.bouvier@linaro.org>, qemu-riscv@nongnu.org,
+ David Hildenbrand <david@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>, qemu-s390x@nongnu.org
+References: <20241114011310.3615-1-philmd@linaro.org>
+ <20241114011310.3615-14-philmd@linaro.org>
+ <1c700309-abc5-4b5d-9a40-d00b7a7a13a2@linaro.org>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <1c700309-abc5-4b5d-9a40-d00b7a7a13a2@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20241111155555.90091-8-berrange@redhat.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -28
-X-Spam_score: -2.9
+Received-SPF: pass client-ip=2a00:1450:4864:20::233;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x233.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.122,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.69,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,22 +102,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Nov 11, 2024 at 03:55:54PM +0000, Daniel P. Berrangé wrote:
-> In cases where qdev_new() is not being passed a static, const
-> string, the caller cannot be sure what type they are instantiating.
-> There is a risk that instantiation could fail, if it is an abstract
-> type.
+On 14/11/24 19:19, Richard Henderson wrote:
+> On 11/13/24 17:12, Philippe Mathieu-Daudé wrote:
+>> Move CPU TLB related methods to "exec/cputlb.h".
+>>
+>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>> ---
+>>   include/exec/cputlb.h   | 7 +++++++
+>>   include/exec/exec-all.h | 3 ---
+>>   include/exec/ram_addr.h | 1 +
+>>   system/physmem.c        | 1 +
+>>   4 files changed, 9 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/include/exec/cputlb.h b/include/exec/cputlb.h
+>> index ef18642a32..6cac7d530f 100644
+>> --- a/include/exec/cputlb.h
+>> +++ b/include/exec/cputlb.h
+>> @@ -32,4 +32,11 @@ void tlb_unprotect_code(ram_addr_t ram_addr);
+>>   #endif /* CONFIG_TCG */
+>> +#ifndef CONFIG_USER_ONLY
+>> +
+>> +void tlb_reset_dirty(CPUState *cpu, ram_addr_t start1, ram_addr_t 
+>> length);
+>> +void tlb_reset_dirty_range_all(ram_addr_t start, ram_addr_t length);
+>> +
+>> +#endif
+>> +
+>>   #endif
 > 
-> Convert such cases over to use qdev_new_dynamic() such that they
-> are forced to expect failure. In some cases failure can be easily
-> propagated, but in others using &error_abort or &error_fatal will
-> maintain existing behaviour.
-> 
-> Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+> This can join the existing CONFIG_TCG, !CONFIG_USER_ONLY block above.
 
-Reviewed-by: Peter Xu <peterx@redhat.com>
+Actually they are used by all accelerators (thus prototype required),
+but elided at build time:
 
--- 
-Peter Xu
+static inline
+void cpu_physical_memory_dirty_bits_cleared(ram_addr_t start,
+                                             ram_addr_t length)
+{
+     if (tcg_enabled()) {
+         tlb_reset_dirty_range_all(start, length);
+     }
 
+}
+
+That said, we can probably to smth to improve that. I'll have
+a look.
 
