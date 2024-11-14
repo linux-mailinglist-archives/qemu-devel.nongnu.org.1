@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA5139C8F11
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Nov 2024 17:03:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 857FE9C8F2B
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Nov 2024 17:07:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tBcHx-0004xA-Nx; Thu, 14 Nov 2024 11:01:45 -0500
+	id 1tBcHw-0004wK-Cp; Thu, 14 Nov 2024 11:01:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tBcHr-0004ub-Qk
+ id 1tBcHt-0004ue-0f
  for qemu-devel@nongnu.org; Thu, 14 Nov 2024 11:01:41 -0500
-Received: from mail-pg1-x529.google.com ([2607:f8b0:4864:20::529])
+Received: from mail-pg1-x532.google.com ([2607:f8b0:4864:20::532])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tBcHp-0002BG-8s
- for qemu-devel@nongnu.org; Thu, 14 Nov 2024 11:01:39 -0500
-Received: by mail-pg1-x529.google.com with SMTP id
- 41be03b00d2f7-7e6cbf6cd1dso549443a12.3
- for <qemu-devel@nongnu.org>; Thu, 14 Nov 2024 08:01:36 -0800 (PST)
+ id 1tBcHr-0002BM-3l
+ for qemu-devel@nongnu.org; Thu, 14 Nov 2024 11:01:40 -0500
+Received: by mail-pg1-x532.google.com with SMTP id
+ 41be03b00d2f7-7f45ab88e7fso619465a12.1
+ for <qemu-devel@nongnu.org>; Thu, 14 Nov 2024 08:01:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1731600095; x=1732204895; darn=nongnu.org;
+ d=linaro.org; s=google; t=1731600096; x=1732204896; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=MqnKReoBjQRrcKu52BeUjvV/aI8mQFMQp+BRc29T3cQ=;
- b=KghsZxvg5cjQ/bwK7bamKa4G8kvhTtArlXw4bi7UU7OWbWMWDNsfEIPwYO5JheIkJL
- JPYTtpo/LSkaIFgp0Y3UTn5U+fFFqquyJBcKOh9gFBJ196lNXGoX5PbAzi+LSMD5byy3
- ZanistM46CNIkIJz6psfJ4pmZaDHOXw1FssDRY/PaEFOi5tUiZ5YE8fiuVIbPYlmaURr
- 1twVE+rYyI9OltaqPfthMexlBNdPDdJNQkBJEk2PjXPY7tbnx2eSKOa6s3tgFjrTutQw
- GrONHuyDFGrwho20qHqfRYv0epqYs7tYpAh1wdY7QCl5eeYY13Vx8RuUvJ5LOhD0Bft0
- NEvw==
+ :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=xBjb7ecHDPeo10d84Jo9N+bY5e+BwxfICVTefAKQV3o=;
+ b=YKXEDKgYQAzfyWxXvedlBz+JpAG/hHBVVgcHoZH/I58mOtDblQFkV8YoER1OCQk+Ug
+ lEcpPC0113eq8uPjzqv41ppeGpfA/SQhgOOvpBzbJth8mxY2l05PKEvDhdxEdKmBmZG9
+ EaFc6AqcWuVPXLt7s6o4x6yZgL8V4LCfDTONeY1nvE8uAZfXox+huPqp1qWAlHpnj+SL
+ iJilmLyYOZtv0F4l4tMiNP15hI/ZjzRjcYYDcUvxkG3pbehjManxuzxQpSZw10F5Xkcq
+ +Pk3xSv9PFzcibjKuZ/sJyP14ZcNHOLl4Ie9QCWzKi8EZF4J3IUoOiuhvRg1pM6Np4DU
+ j6ow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731600095; x=1732204895;
+ d=1e100.net; s=20230601; t=1731600096; x=1732204896;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=MqnKReoBjQRrcKu52BeUjvV/aI8mQFMQp+BRc29T3cQ=;
- b=DqxwvDbzh2vLagOpTApuWr3LwxnSHIT14m7c1lmO67VgBEhzz+kgr6WLm6TS8toZ+y
- BBTnauonTb3IloaBsWBaxX58INFk1juvENfIfdPurfOP+whMt1Lgzxg0+fge067dV+7z
- CkdQHSQz/bxa9gTPF7DE5RprQqKQimMI3aXNKJjj+2MAnFVNzQ6rzn1DpXpomqxiAaOB
- tDuSONZf8qVEJxkSYDxdDjZnWGnaadS8C6Fj2d065tOfABPUwmGWfqd7DcX1I+Ch5l9s
- 6mRsNfAF11MjXMYbnVxXQFEt/auS+1Wez33eMlii6ibS6hanwoj20goPdCqopCIkJFrs
- 6l0A==
-X-Gm-Message-State: AOJu0Yz90LmY4+cVqUeVDLhJpq9gHk3jfRGTSCkZW32rlCctsgukUO9R
- DLnIBJJNOGHZ4WLLysUCkOSNI8EgW5xsVwOZK4/79WKzv3b9TWDkTAiesTRo3K9yxZd5d5x/FdR
- E
-X-Google-Smtp-Source: AGHT+IFoQto2KZJ9KfoG6yGpxSDOUHwph0+XFkztELwNnaAm8ESL0lU+tqb8FitL8JoOLXVb4ZFkAw==
-X-Received: by 2002:a17:90b:4cc1:b0:2d8:e7db:9996 with SMTP id
- 98e67ed59e1d1-2e9e4add8c1mr13447495a91.13.1731600095486; 
- Thu, 14 Nov 2024 08:01:35 -0800 (PST)
+ bh=xBjb7ecHDPeo10d84Jo9N+bY5e+BwxfICVTefAKQV3o=;
+ b=OsaPvOVIMGRvLhYkR7peqkD8xWe5dZiX/qFWkBO3CqYDYNOsN3417CKveHd5XKuW4/
+ qwsGg11dTc2HV+qalkWz+hEG+Siu6gmcfGkTHTdY1QoPjZ6t1wnXXHVDtUVg2I+nv8HD
+ SYFtOz2twtWAfjMQbAsw6wfspkdq+MAszt5KppKlkmOiaEU/xYFnosSurFxItYOuN8yZ
+ 39kqzdOyj/VPuO5s/90ZdNWMVSBbL4g9qZf7VfiQzZBVpUYGZkczs0P7fxw1B2WHkSjZ
+ j3KcbUdogIEwd6dqR8Cjmi1EYFWvEUjqf8TVc+08Mal3g/7GAwhYLXP5WUD3Gde0pmgd
+ ozWw==
+X-Gm-Message-State: AOJu0YyAkftRFylzmZki62qFMcLoSIi66i218xXsQuDo1H+/9dd3ROt1
+ ZjQjD5NSgm6rvsG2sykacuEgVtpwXu5KXZR56ZdcojpEwNxe6VkD4Sgz3kFSZQyAqtTKI0GZkyx
+ z
+X-Google-Smtp-Source: AGHT+IEnl0PgJGqLTR9i+8vRxjxCxE5d9vm4HYUQA/i/q9UpyST7qJtzTTkwC0BS/NulzX2uNFBPxw==
+X-Received: by 2002:a17:90b:3883:b0:2e2:d3e1:f863 with SMTP id
+ 98e67ed59e1d1-2e9b171e360mr33852391a91.12.1731600096298; 
+ Thu, 14 Nov 2024 08:01:36 -0800 (PST)
 Received: from stoup.. ([71.212.136.242]) by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2ea024ec723sm1484438a91.46.2024.11.14.08.01.34
+ 98e67ed59e1d1-2ea024ec723sm1484438a91.46.2024.11.14.08.01.35
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Thu, 14 Nov 2024 08:01:35 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH v2 04/54] accel/tcg: Split out tlbfast_flush_range_locked
-Date: Thu, 14 Nov 2024 08:00:40 -0800
-Message-ID: <20241114160131.48616-5-richard.henderson@linaro.org>
+Subject: [PATCH v2 05/54] accel/tcg: Fix flags usage in mmu_lookup1,
+ atomic_mmu_lookup
+Date: Thu, 14 Nov 2024 08:00:41 -0800
+Message-ID: <20241114160131.48616-6-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241114160131.48616-1-richard.henderson@linaro.org>
 References: <20241114160131.48616-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::529;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x529.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::532;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x532.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,125 +91,113 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-While this may at present be overly complicated for use
-by single page flushes, do so with the expectation that
-this will eventually allow simplification of large pages.
+The INVALID bit should only be auto-cleared when we have
+just called tlb_fill, not along the victim_tlb_hit path.
 
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+In atomic_mmu_lookup, rename tlb_addr to flags, as that
+is what we're actually carrying around.
+
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- accel/tcg/cputlb.c | 66 +++++++++++++++++++++++-----------------------
- 1 file changed, 33 insertions(+), 33 deletions(-)
+ accel/tcg/cputlb.c | 33 ++++++++++++++++++++++-----------
+ 1 file changed, 22 insertions(+), 11 deletions(-)
 
 diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
-index e37af24525..46fa0ae802 100644
+index 46fa0ae802..77b972fd93 100644
 --- a/accel/tcg/cputlb.c
 +++ b/accel/tcg/cputlb.c
-@@ -493,11 +493,6 @@ static bool tlb_flush_entry_mask_locked(CPUTLBEntry *tlb_entry,
-     return false;
- }
+@@ -1652,7 +1652,7 @@ static bool mmu_lookup1(CPUState *cpu, MMULookupPageData *data, MemOp memop,
+     uint64_t tlb_addr = tlb_read_idx(entry, access_type);
+     bool maybe_resized = false;
+     CPUTLBEntryFull *full;
+-    int flags;
++    int flags = TLB_FLAGS_MASK & ~TLB_FORCE_SLOW;
  
--static inline bool tlb_flush_entry_locked(CPUTLBEntry *tlb_entry, vaddr page)
--{
--    return tlb_flush_entry_mask_locked(tlb_entry, page, -1);
--}
--
- /* Called with tlb_c.lock held */
- static void tlb_flush_vtlb_page_mask_locked(CPUState *cpu, int mmu_idx,
-                                             vaddr page,
-@@ -520,10 +515,37 @@ static inline void tlb_flush_vtlb_page_locked(CPUState *cpu, int mmu_idx,
-     tlb_flush_vtlb_page_mask_locked(cpu, mmu_idx, page, -1);
- }
- 
-+static void tlbfast_flush_range_locked(CPUTLBDesc *desc, CPUTLBDescFast *fast,
-+                                       vaddr addr, vaddr len, vaddr mask)
-+{
-+    /*
-+     * If @mask is smaller than the tlb size, there may be multiple entries
-+     * within the TLB; for now, just flush the entire TLB.
-+     * Otherwise all addresses that match under @mask hit the same TLB entry.
-+     *
-+     * If @len is larger than the tlb size, then it will take longer to
-+     * test all of the entries in the TLB than it will to flush it all.
-+     */
-+    if (mask < fast->mask || len > fast->mask) {
-+        tlbfast_flush_locked(desc, fast);
-+        return;
-+    }
-+
-+    for (vaddr i = 0; i < len; i += TARGET_PAGE_SIZE) {
-+        vaddr page = addr + i;
-+        CPUTLBEntry *entry = tlbfast_entry(fast, page);
-+
-+        if (tlb_flush_entry_mask_locked(entry, page, mask)) {
-+            desc->n_used_entries--;
-+        }
-+    }
-+}
-+
- static void tlb_flush_page_locked(CPUState *cpu, int midx, vaddr page)
- {
--    vaddr lp_addr = cpu->neg.tlb.d[midx].large_page_addr;
--    vaddr lp_mask = cpu->neg.tlb.d[midx].large_page_mask;
-+    CPUTLBDesc *desc = &cpu->neg.tlb.d[midx];
-+    vaddr lp_addr = desc->large_page_addr;
-+    vaddr lp_mask = desc->large_page_mask;
- 
-     /* Check if we need to flush due to large pages.  */
-     if ((page & lp_mask) == lp_addr) {
-@@ -532,9 +554,8 @@ static void tlb_flush_page_locked(CPUState *cpu, int midx, vaddr page)
-                   midx, lp_addr, lp_mask);
-         tlb_flush_one_mmuidx_locked(cpu, midx, get_clock_realtime());
-     } else {
--        if (tlb_flush_entry_locked(tlb_entry(cpu, midx, page), page)) {
--            tlb_n_used_entries_dec(cpu, midx);
--        }
-+        tlbfast_flush_range_locked(desc, &cpu->neg.tlb.f[midx],
-+                                   page, TARGET_PAGE_SIZE, -1);
-         tlb_flush_vtlb_page_locked(cpu, midx, page);
+     /* If the TLB entry is for a different page, reload and try again.  */
+     if (!tlb_hit(tlb_addr, addr)) {
+@@ -1663,8 +1663,14 @@ static bool mmu_lookup1(CPUState *cpu, MMULookupPageData *data, MemOp memop,
+             maybe_resized = true;
+             index = tlb_index(cpu, mmu_idx, addr);
+             entry = tlb_entry(cpu, mmu_idx, addr);
++            /*
++             * With PAGE_WRITE_INV, we set TLB_INVALID_MASK immediately,
++             * to force the next access through tlb_fill.  We've just
++             * called tlb_fill, so we know that this entry *is* valid.
++             */
++            flags &= ~TLB_INVALID_MASK;
+         }
+-        tlb_addr = tlb_read_idx(entry, access_type) & ~TLB_INVALID_MASK;
++        tlb_addr = tlb_read_idx(entry, access_type);
      }
- }
-@@ -689,24 +710,6 @@ static void tlb_flush_range_locked(CPUState *cpu, int midx,
-     CPUTLBDescFast *f = &cpu->neg.tlb.f[midx];
-     vaddr mask = MAKE_64BIT_MASK(0, bits);
  
--    /*
--     * If @bits is smaller than the tlb size, there may be multiple entries
--     * within the TLB; otherwise all addresses that match under @mask hit
--     * the same TLB entry.
--     * TODO: Perhaps allow bits to be a few bits less than the size.
--     * For now, just flush the entire TLB.
--     *
--     * If @len is larger than the tlb size, then it will take longer to
--     * test all of the entries in the TLB than it will to flush it all.
--     */
--    if (mask < f->mask || len > f->mask) {
--        tlb_debug("forcing full flush midx %d ("
--                  "%016" VADDR_PRIx "/%016" VADDR_PRIx "+%016" VADDR_PRIx ")\n",
--                  midx, addr, mask, len);
--        tlb_flush_one_mmuidx_locked(cpu, midx, get_clock_realtime());
--        return;
--    }
--
+     full = &cpu->neg.tlb.d[mmu_idx].fulltlb[index];
+@@ -1814,10 +1820,10 @@ static void *atomic_mmu_lookup(CPUState *cpu, vaddr addr, MemOpIdx oi,
+     MemOp mop = get_memop(oi);
+     uintptr_t index;
+     CPUTLBEntry *tlbe;
+-    vaddr tlb_addr;
+     void *hostaddr;
+     CPUTLBEntryFull *full;
+     bool did_tlb_fill = false;
++    int flags;
+ 
+     tcg_debug_assert(mmu_idx < NB_MMU_MODES);
+ 
+@@ -1828,8 +1834,8 @@ static void *atomic_mmu_lookup(CPUState *cpu, vaddr addr, MemOpIdx oi,
+     tlbe = tlb_entry(cpu, mmu_idx, addr);
+ 
+     /* Check TLB entry and enforce page permissions.  */
+-    tlb_addr = tlb_addr_write(tlbe);
+-    if (!tlb_hit(tlb_addr, addr)) {
++    flags = TLB_FLAGS_MASK;
++    if (!tlb_hit(tlb_addr_write(tlbe), addr)) {
+         if (!victim_tlb_hit(cpu, mmu_idx, index, MMU_DATA_STORE,
+                             addr & TARGET_PAGE_MASK)) {
+             tlb_fill_align(cpu, addr, MMU_DATA_STORE, mmu_idx,
+@@ -1837,8 +1843,13 @@ static void *atomic_mmu_lookup(CPUState *cpu, vaddr addr, MemOpIdx oi,
+             did_tlb_fill = true;
+             index = tlb_index(cpu, mmu_idx, addr);
+             tlbe = tlb_entry(cpu, mmu_idx, addr);
++            /*
++             * With PAGE_WRITE_INV, we set TLB_INVALID_MASK immediately,
++             * to force the next access through tlb_fill.  We've just
++             * called tlb_fill, so we know that this entry *is* valid.
++             */
++            flags &= ~TLB_INVALID_MASK;
+         }
+-        tlb_addr = tlb_addr_write(tlbe) & ~TLB_INVALID_MASK;
+     }
+ 
      /*
-      * Check if we need to flush due to large pages.
-      * Because large_page_mask contains all 1's from the msb,
-@@ -720,13 +723,10 @@ static void tlb_flush_range_locked(CPUState *cpu, int midx,
-         return;
+@@ -1874,11 +1885,11 @@ static void *atomic_mmu_lookup(CPUState *cpu, vaddr addr, MemOpIdx oi,
+         goto stop_the_world;
      }
  
-+    tlbfast_flush_range_locked(d, f, addr, len, mask);
-+
-     for (vaddr i = 0; i < len; i += TARGET_PAGE_SIZE) {
-         vaddr page = addr + i;
--        CPUTLBEntry *entry = tlb_entry(cpu, midx, page);
--
--        if (tlb_flush_entry_mask_locked(entry, page, mask)) {
--            tlb_n_used_entries_dec(cpu, midx);
--        }
-         tlb_flush_vtlb_page_mask_locked(cpu, midx, page, mask);
+-    /* Collect tlb flags for read. */
+-    tlb_addr |= tlbe->addr_read;
++    /* Collect tlb flags for read and write. */
++    flags &= tlbe->addr_read | tlb_addr_write(tlbe);
+ 
+     /* Notice an IO access or a needs-MMU-lookup access */
+-    if (unlikely(tlb_addr & (TLB_MMIO | TLB_DISCARD_WRITE))) {
++    if (unlikely(flags & (TLB_MMIO | TLB_DISCARD_WRITE))) {
+         /* There's really nothing that can be done to
+            support this apart from stop-the-world.  */
+         goto stop_the_world;
+@@ -1887,11 +1898,11 @@ static void *atomic_mmu_lookup(CPUState *cpu, vaddr addr, MemOpIdx oi,
+     hostaddr = (void *)((uintptr_t)addr + tlbe->addend);
+     full = &cpu->neg.tlb.d[mmu_idx].fulltlb[index];
+ 
+-    if (unlikely(tlb_addr & TLB_NOTDIRTY)) {
++    if (unlikely(flags & TLB_NOTDIRTY)) {
+         notdirty_write(cpu, addr, size, full, retaddr);
      }
- }
+ 
+-    if (unlikely(tlb_addr & TLB_FORCE_SLOW)) {
++    if (unlikely(flags & TLB_FORCE_SLOW)) {
+         int wp_flags = 0;
+ 
+         if (full->slow_flags[MMU_DATA_STORE] & TLB_WATCHPOINT) {
 -- 
 2.43.0
 
