@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C57F69C8F0E
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Nov 2024 17:03:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A6129C8F70
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Nov 2024 17:13:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tBcJP-0005yJ-F9; Thu, 14 Nov 2024 11:03:15 -0500
+	id 1tBcIf-00059v-CQ; Thu, 14 Nov 2024 11:02:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tBcIR-00055R-Ef
- for qemu-devel@nongnu.org; Thu, 14 Nov 2024 11:02:16 -0500
-Received: from mail-pg1-x531.google.com ([2607:f8b0:4864:20::531])
+ id 1tBcIO-00053O-Ix
+ for qemu-devel@nongnu.org; Thu, 14 Nov 2024 11:02:13 -0500
+Received: from mail-pg1-x530.google.com ([2607:f8b0:4864:20::530])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tBcIL-0002Is-Ac
- for qemu-devel@nongnu.org; Thu, 14 Nov 2024 11:02:13 -0500
-Received: by mail-pg1-x531.google.com with SMTP id
- 41be03b00d2f7-7ee020ec76dso610587a12.3
- for <qemu-devel@nongnu.org>; Thu, 14 Nov 2024 08:02:06 -0800 (PST)
+ id 1tBcIL-0002J0-AD
+ for qemu-devel@nongnu.org; Thu, 14 Nov 2024 11:02:12 -0500
+Received: by mail-pg1-x530.google.com with SMTP id
+ 41be03b00d2f7-7f46d5d1ad5so601308a12.3
+ for <qemu-devel@nongnu.org>; Thu, 14 Nov 2024 08:02:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1731600125; x=1732204925; darn=nongnu.org;
+ d=linaro.org; s=google; t=1731600126; x=1732204926; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=SAnTQwSzdXGj8FtiG366nzj4chRAQvpTBuCvSfGJDoU=;
- b=f2cqVK+DI9DALgZuOtT/cFVU4OxXZ0XIe0VoWGVw+clCRil6WifIuy6mJXoWELClLw
- oRAXH30gtoxx3moWoiwlmL4MkZHVd/bWeKbGkcbC8Da1VAbmxc6udw5W2r1cdY4usINA
- dYepNbMiGYsFEDgm4SBQDD0TutyhPFsnwkPn+EPSNAvdkQ/KtTstTTEUQ2CEbiquIdLq
- QmpkLHj1qUoqDlu8Y3apntpIfSIppUk0D//c1OXIEd9IQukcx9E/2P7TibBS7z6WmwVg
- rBg6Xxu0Wm7PrExKmncgWDHV18FggRAjPgqwocSnac+vTblVV647fmsy4rhDPuGt5xna
- Rx2Q==
+ :reply-to; bh=mq+U5IXUnwEDeWR+OTODGDDIW/H0+4jqgpkcDbxZSzQ=;
+ b=ch3zCWn3m6vVm0/JhzFsbYEJVXMIqlFLVVNLbO4EZDhBLwzpKGC+15GnmMVEZiBSaQ
+ sE3yCWwU/G9YQgZRgZ4BUI6a2hgf9YdJAoLyvaapwxzcM7x7E2GAnz8NTzI+1mxwAIw4
+ qol8Oz2unj7GIrtYuJuAIKxBa1377IA8CTLb3Xc599KFm1+JEynCvtiA3krfgbOrlmxo
+ Owbhn6XUwGhOiAkXnc3cxeD1ZKYrhALDSHunOmez+EYrgDuvSon8bPes/dtkLm0Qx7BC
+ cPPCBiw9nuD7DLemX/dK5Q6+zCa+Z57rQK+fge+bOePsU+dDOB55+lZ2EBzMnFkkgRWe
+ esXA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731600125; x=1732204925;
+ d=1e100.net; s=20230601; t=1731600126; x=1732204926;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=SAnTQwSzdXGj8FtiG366nzj4chRAQvpTBuCvSfGJDoU=;
- b=q/ytjOIvuHz9Cd9nGg7A6YGcvpJcC23VEVeLUMGRmYR1cxsaLLY27TXNPsfNG70+E8
- sLshzWsEJ0n68Tq/NdFw/ZignkVYGawzgnoQ38alfp78I42ricOYdzGhM7ZbBZGudKWJ
- yawdJwvxK0pZQUwnbUYSzvNtLri8p8tXRAGM2VGTKkAL9agEnKWHhwqzI7M/TgAbHE5U
- coqNILimxKkbp0EDXF1xgD5VzGEl1DYaMj4QHeYfnQkalWrvsGIUOImwKORDm7JWS9ao
- jLJOeMQrkwPxXNCTY+B5Ej/KI/xnCc1gQY6p3R6QYP/sGIWU1ogBX0TeKp3RlTUuxX8R
- //Wg==
-X-Gm-Message-State: AOJu0YzmvcFZkqoDoa/UWlkTB85GMzCPkBECNjT4Jpki9QIg28z+V5cB
- lJxZKSpDKEI9H+kjZCBjrGwMiojXmfl0soZWNZRXX1nA+oUargOA6oHYvxgtsMdCzFVq7LQV6qV
- 2
-X-Google-Smtp-Source: AGHT+IEF5h1yU/MTIq/579zafoCKA9obeHgknNJhdyCc70CyiIPZtnW4cbtX0pAochofmI5hUNHq7w==
-X-Received: by 2002:a17:90b:3ec5:b0:2e2:8472:c350 with SMTP id
- 98e67ed59e1d1-2e9b173dd4cmr34193452a91.17.1731600125199; 
- Thu, 14 Nov 2024 08:02:05 -0800 (PST)
+ bh=mq+U5IXUnwEDeWR+OTODGDDIW/H0+4jqgpkcDbxZSzQ=;
+ b=MhkR77j0SdHXSWa1Y1mLxEBTliB77pPE05AT8KQAUZJ82BP4EE3Zz+OWBkL9VVzFDT
+ EiaUPvSfgCGuD7NXjJ8ZwTHpBQQgZzUtXs900+WE4vXEsCYKiVHhP7y3TztCPkI7HWGD
+ pUGASGQD9EZVvzMwWr4G1ibUrpKfA/5SJhdUuJ1mYB4u1ZYSf87uXeNeHH0f/MdZ3+eQ
+ v67Gh1RlATsefDAw3ZopeEBDqrANhOp9YNeh5pb4kr6FErl+DWb5yL49nltj8oS1GypW
+ CB0lh4NpmttUMGMPW1k9rGyCo3XAvJTOh/XMY5FauTIkY6FXS3v1eiMIOG/qtBAXFvDV
+ 6d2w==
+X-Gm-Message-State: AOJu0YxyEYNA4Qe5PK576Z3DqioWZL2vnUmA8bcYh8zzcCM0nPLwUvh5
+ BD7qmduFEopVdrwuA1/TmswX9l7ny06pDNdG9BDj/9i6fk9JAPewippImr0L9ki9x8dngOJmVxs
+ 4
+X-Google-Smtp-Source: AGHT+IGaIzzKrdFQmlHStSAhN9967MNqQOTFltJwD57bsotl36k3RDoYmyM7ot6mo6bkgjcnNC28uA==
+X-Received: by 2002:a17:90b:1d81:b0:2e2:b41b:854e with SMTP id
+ 98e67ed59e1d1-2ea0631e509mr3132742a91.20.1731600126372; 
+ Thu, 14 Nov 2024 08:02:06 -0800 (PST)
 Received: from stoup.. ([71.212.136.242]) by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2ea024ec723sm1484438a91.46.2024.11.14.08.02.04
+ 98e67ed59e1d1-2ea024ec723sm1484438a91.46.2024.11.14.08.02.05
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 14 Nov 2024 08:02:04 -0800 (PST)
+ Thu, 14 Nov 2024 08:02:05 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH v2 37/54] target/loongarch: Convert to TCGCPUOps.tlb_fill_align
-Date: Thu, 14 Nov 2024 08:01:13 -0800
-Message-ID: <20241114160131.48616-38-richard.henderson@linaro.org>
+Subject: [PATCH v2 38/54] target/m68k: Convert to TCGCPUOps.tlb_fill_align
+Date: Thu, 14 Nov 2024 08:01:14 -0800
+Message-ID: <20241114160131.48616-39-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241114160131.48616-1-richard.henderson@linaro.org>
 References: <20241114160131.48616-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::531;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x531.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::530;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x530.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,80 +92,99 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/loongarch/internals.h      |  7 ++++---
- target/loongarch/cpu.c            |  2 +-
- target/loongarch/tcg/tlb_helper.c | 17 +++++++++++------
- 3 files changed, 16 insertions(+), 10 deletions(-)
+ target/m68k/cpu.h    |  7 ++++---
+ target/m68k/cpu.c    |  2 +-
+ target/m68k/helper.c | 22 +++++++++++++---------
+ 3 files changed, 18 insertions(+), 13 deletions(-)
 
-diff --git a/target/loongarch/internals.h b/target/loongarch/internals.h
-index 1a02427627..a9f73f27b2 100644
---- a/target/loongarch/internals.h
-+++ b/target/loongarch/internals.h
-@@ -60,9 +60,10 @@ int get_physical_address(CPULoongArchState *env, hwaddr *physical,
- hwaddr loongarch_cpu_get_phys_page_debug(CPUState *cpu, vaddr addr);
+diff --git a/target/m68k/cpu.h b/target/m68k/cpu.h
+index b5bbeedb7a..4401426a0b 100644
+--- a/target/m68k/cpu.h
++++ b/target/m68k/cpu.h
+@@ -22,6 +22,7 @@
+ #define M68K_CPU_H
  
- #ifdef CONFIG_TCG
--bool loongarch_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
--                            MMUAccessType access_type, int mmu_idx,
--                            bool probe, uintptr_t retaddr);
-+bool loongarch_cpu_tlb_fill_align(CPUState *cs, CPUTLBEntryFull *out,
-+                                  vaddr addr, MMUAccessType access_type,
-+                                  int mmu_idx, MemOp memop, int size,
-+                                  bool probe, uintptr_t ra);
- #endif
- #endif /* !CONFIG_USER_ONLY */
+ #include "exec/cpu-defs.h"
++#include "exec/memop.h"
+ #include "qemu/cpu-float.h"
+ #include "cpu-qom.h"
  
-diff --git a/target/loongarch/cpu.c b/target/loongarch/cpu.c
-index 57cc4f314b..47d69f1788 100644
---- a/target/loongarch/cpu.c
-+++ b/target/loongarch/cpu.c
-@@ -798,7 +798,7 @@ static const TCGCPUOps loongarch_tcg_ops = {
-     .restore_state_to_opc = loongarch_restore_state_to_opc,
+@@ -582,10 +583,10 @@ enum {
+ #define MMU_KERNEL_IDX 0
+ #define MMU_USER_IDX 1
+ 
+-bool m68k_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
+-                       MMUAccessType access_type, int mmu_idx,
+-                       bool probe, uintptr_t retaddr);
+ #ifndef CONFIG_USER_ONLY
++bool m68k_cpu_tlb_fill_align(CPUState *cs, CPUTLBEntryFull *out, vaddr addr,
++                             MMUAccessType access_type, int mmu_idx,
++                             MemOp memop, int size, bool probe, uintptr_t ra);
+ void m68k_cpu_transaction_failed(CPUState *cs, hwaddr physaddr, vaddr addr,
+                                  unsigned size, MMUAccessType access_type,
+                                  int mmu_idx, MemTxAttrs attrs,
+diff --git a/target/m68k/cpu.c b/target/m68k/cpu.c
+index 5fe335558a..5316cf8922 100644
+--- a/target/m68k/cpu.c
++++ b/target/m68k/cpu.c
+@@ -550,7 +550,7 @@ static const TCGCPUOps m68k_tcg_ops = {
+     .restore_state_to_opc = m68k_restore_state_to_opc,
  
  #ifndef CONFIG_USER_ONLY
--    .tlb_fill = loongarch_cpu_tlb_fill,
-+    .tlb_fill_align = loongarch_cpu_tlb_fill_align,
-     .cpu_exec_interrupt = loongarch_cpu_exec_interrupt,
-     .cpu_exec_halt = loongarch_cpu_has_work,
-     .do_interrupt = loongarch_cpu_do_interrupt,
-diff --git a/target/loongarch/tcg/tlb_helper.c b/target/loongarch/tcg/tlb_helper.c
-index 97f38fc391..94d5df08a4 100644
---- a/target/loongarch/tcg/tlb_helper.c
-+++ b/target/loongarch/tcg/tlb_helper.c
-@@ -474,9 +474,10 @@ void helper_invtlb_page_asid_or_g(CPULoongArchState *env,
-     tlb_flush(env_cpu(env));
+-    .tlb_fill = m68k_cpu_tlb_fill,
++    .tlb_fill_align = m68k_cpu_tlb_fill_align,
+     .cpu_exec_interrupt = m68k_cpu_exec_interrupt,
+     .cpu_exec_halt = m68k_cpu_has_work,
+     .do_interrupt = m68k_cpu_do_interrupt,
+diff --git a/target/m68k/helper.c b/target/m68k/helper.c
+index 9bfc6ae97c..1decb6f39c 100644
+--- a/target/m68k/helper.c
++++ b/target/m68k/helper.c
+@@ -950,9 +950,10 @@ void m68k_set_irq_level(M68kCPU *cpu, int level, uint8_t vector)
+     }
  }
  
--bool loongarch_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
--                            MMUAccessType access_type, int mmu_idx,
--                            bool probe, uintptr_t retaddr)
-+bool loongarch_cpu_tlb_fill_align(CPUState *cs, CPUTLBEntryFull *out,
-+                                  vaddr address, MMUAccessType access_type,
-+                                  int mmu_idx, MemOp memop, int size,
-+                                  bool probe, uintptr_t retaddr)
+-bool m68k_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
+-                       MMUAccessType qemu_access_type, int mmu_idx,
+-                       bool probe, uintptr_t retaddr)
++bool m68k_cpu_tlb_fill_align(CPUState *cs, CPUTLBEntryFull *out,
++                             vaddr address, MMUAccessType qemu_access_type,
++                             int mmu_idx, MemOp memop, int size,
++                             bool probe, uintptr_t retaddr)
  {
-     CPULoongArchState *env = cpu_env(cs);
+     CPUM68KState *env = cpu_env(cs);
      hwaddr physical;
-@@ -488,12 +489,16 @@ bool loongarch_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
-                                access_type, mmu_idx);
+@@ -961,12 +962,14 @@ bool m68k_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
+     int ret;
+     target_ulong page_size;
  
-     if (ret == TLBRET_MATCH) {
--        tlb_set_page(cs, address & TARGET_PAGE_MASK,
--                     physical & TARGET_PAGE_MASK, prot,
--                     mmu_idx, TARGET_PAGE_SIZE);
-         qemu_log_mask(CPU_LOG_MMU,
-                       "%s address=%" VADDR_PRIx " physical " HWADDR_FMT_plx
-                       " prot %d\n", __func__, address, physical, prot);
++    memset(out, 0, sizeof(*out));
++    out->attrs = MEMTXATTRS_UNSPECIFIED;
 +
-+        memset(out, 0, sizeof(*out));
+     if ((env->mmu.tcr & M68K_TCR_ENABLED) == 0) {
+         /* MMU disabled */
+-        tlb_set_page(cs, address & TARGET_PAGE_MASK,
+-                     address & TARGET_PAGE_MASK,
+-                     PAGE_READ | PAGE_WRITE | PAGE_EXEC,
+-                     mmu_idx, TARGET_PAGE_SIZE);
++        out->phys_addr = address;
++        out->prot = PAGE_READ | PAGE_WRITE | PAGE_EXEC;
++        out->lg_page_size = TARGET_PAGE_BITS;
+         return true;
+     }
+ 
+@@ -985,8 +988,9 @@ bool m68k_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
+     ret = get_physical_address(env, &physical, &prot,
+                                address, access_type, &page_size);
+     if (likely(ret == 0)) {
+-        tlb_set_page(cs, address & TARGET_PAGE_MASK,
+-                     physical & TARGET_PAGE_MASK, prot, mmu_idx, page_size);
 +        out->phys_addr = physical;
 +        out->prot = prot;
-+        out->attrs = MEMTXATTRS_UNSPECIFIED;
-+        out->lg_page_size = TARGET_PAGE_BITS;
-+
++        out->lg_page_size = ctz32(page_size);
          return true;
-     } else {
-         qemu_log_mask(CPU_LOG_MMU,
+     }
+ 
 -- 
 2.43.0
 
