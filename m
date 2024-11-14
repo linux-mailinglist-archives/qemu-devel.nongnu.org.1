@@ -2,74 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 449559C8B40
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Nov 2024 13:57:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E252A9C8B53
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Nov 2024 14:03:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tBZPM-0008Kj-Hd; Thu, 14 Nov 2024 07:57:12 -0500
+	id 1tBZUE-0001RV-Kp; Thu, 14 Nov 2024 08:02:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1tBZPJ-0008KE-SU
- for qemu-devel@nongnu.org; Thu, 14 Nov 2024 07:57:09 -0500
-Received: from mail-qt1-x82f.google.com ([2607:f8b0:4864:20::82f])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1tBZTa-0001Kb-Ue
+ for qemu-devel@nongnu.org; Thu, 14 Nov 2024 08:01:40 -0500
+Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1tBZPH-0000E8-Ra
- for qemu-devel@nongnu.org; Thu, 14 Nov 2024 07:57:09 -0500
-Received: by mail-qt1-x82f.google.com with SMTP id
- d75a77b69052e-4635760725cso6975451cf.1
- for <qemu-devel@nongnu.org>; Thu, 14 Nov 2024 04:57:07 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1tBZTT-0000kM-F9
+ for qemu-devel@nongnu.org; Thu, 14 Nov 2024 08:01:32 -0500
+Received: by mail-ed1-x536.google.com with SMTP id
+ 4fb4d7f45d1cf-5cef772621eso772944a12.3
+ for <qemu-devel@nongnu.org>; Thu, 14 Nov 2024 05:01:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1731589025; x=1732193825; darn=nongnu.org;
+ d=linaro.org; s=google; t=1731589284; x=1732194084; darn=nongnu.org;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=IRgWLcON7fsv7VdVrLmWrCf0K//3N0zUDAu6FV+v0Us=;
- b=RQCRZ8MRen1bC7uNvAhZgEe+rce7Lxw7GRt5Y/vLLoysTC0OJi9+UybWC+vO4P/FAm
- t681W+I7hmeiVV8XQ9qy3AyMREU8LcIb2x1BXNwJ2nKQq21v1MCfgHVTE1ce9soMA6s7
- u5LLnqmC4UUvaritXImsaHhJays+Rn5Q7xugj4GonBFJ24n0GBYbHwUB+a7X6vvCjSSw
- o8t87JlIz+KVKGSt9ggZNiMdQ/doNNrKcu1jv6bW8XKmn8K5HZ7X3ej6WB1fuscSY3Yz
- I7F47L88ooQkG41bg3tCH8Lu+D/gE7wUMRAmvtywXxoNwz34jkUlxrxvZABZoAYsa2nm
- Rd6w==
+ bh=d6zhytplbAJK9UHZiJT4K7CXB6jTQ/D6FzQ5I4GUl4s=;
+ b=mDEwODrFB24eM+9nJxHB/yXJfqxtg9RPJ1kCQBZ8iP03flEwrRn7x06gpoe8XoeUex
+ 9mMRADkaNSJ6XAJmiLKcMoyunN3uppozWxa4BmZ97nd6evaaGd/ew+uD0GliixHhkmUN
+ K6NkTCz55ClnvOsMSTYI1fQNJfyrekcjk54FJzZHgdB8suF/PF/Q4IdDJLjmpw+S+vNT
+ jdCeiqVtkMICl0dvit8eFBN2RQbRWPxXapL1F6qV97gqxxZ3uBhHeHh/2Z9Rx39iVOTR
+ 1+1O7F/vuOHwipxIf/cRxs0Ho7zNR4m+MlllNEpFKapTTQW/PVedi/ja8II6Yw6s9Sml
+ D9bA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731589025; x=1732193825;
+ d=1e100.net; s=20230601; t=1731589284; x=1732194084;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=IRgWLcON7fsv7VdVrLmWrCf0K//3N0zUDAu6FV+v0Us=;
- b=CLPDxKDriG+RWWITsOBSHLDUQ0vPQW0hTKS6lGL8sV1D0XR/lm9d79EvlA+o7m/DA/
- EJdIS0a24E30mtfezoY+IEPg44WCAHHkAu/ZliGOGA07vX9vdEBSkVzIk/SRbKlOAIWy
- GjyYtQwjHtsBDflIyIXy7YEOtaB9XjsyuNbSHh2rp7f9ozorLPCqEnUGLm20YC1yijGU
- 1fY2+7D2UnVGw4Ukj2cXWAGDdgki50RV2jDuX4L/iz7hLhXieKQ9dmh47+UG6uaBfy4Z
- rl9DZdyKdaE6/hfyE/rrXHeHZrTn3vfJ33RBoqBdD9cwD3skGHWG75iAjeKARTJzXeBO
- s5aQ==
-X-Gm-Message-State: AOJu0YzRgRM7FWLgkUFtdIj7nKQImndfHtiZp6O9rcyiv3ymMK0CQP/m
- Zdekyv2urLLUNReaSHR3+Ex9LZL7a8k5Z8Hs4H+Ji+KP9nx0ZwSvFaYo07xhfUtm+YJ67SkMBa7
- lPk6kT32YodsUFUJk5efCNJ0PtV8o8Q==
-X-Google-Smtp-Source: AGHT+IHGKKBGXt+/Z0lRmOGHY16YrS6EcptHedcr7ey2OpBXqXhTTszLFpMmQ0wP5y/UfK9eCGQWz+fiKOYN5GZWUeA=
-X-Received: by 2002:a05:622a:22a3:b0:462:b447:1286 with SMTP id
- d75a77b69052e-46356b1f661mr45806691cf.7.1731589025313; Thu, 14 Nov 2024
- 04:57:05 -0800 (PST)
+ bh=d6zhytplbAJK9UHZiJT4K7CXB6jTQ/D6FzQ5I4GUl4s=;
+ b=tAnUaVoTuBpB9ccyPjjHcM3bAsNg2YkZ7WDge0gkwHZYs0/QISUos/ruAxRuq6MqGy
+ lzapc87BoYucCKuRXrzzZTG++yjEjdEtlxGOg9wiQxDyJi8Xw2U94bYrwX99z1q+bgeF
+ pWDME7o5yJwTUKKReFuOE9oIOXsH+w180lFv4/P+N4N83qLc87PecdVsdwYUE9eDriVp
+ apIQmyHD8QQDl+n2lsMNqR/RXY7yNpc81NZ2AdVdhpnu7N3fQ7h4wcn8+FWw+r4WZZsZ
+ /3xXfbUNCiAadl00eJ97Pp8cOF6FzqGlXk3gZa8eKuu7tvNe2da4kqIDl8rx3ipHqn4s
+ shuA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUDuZz0T68y1RSE7Q5zBEVSwkkkoFvpyMaotlyGs3Pb0/9FZsF7JV56tEYYYM6BSoqVY5ZqBgIDsccm@nongnu.org
+X-Gm-Message-State: AOJu0Yyy7Ae2qzrF2K9544h1rmOmvo2XAzqulgisFpOJnL4AIE3WUct0
+ SwqA3NUxSbAqtwM0TZjB025t6AbybmPy8b2UIs1BF0w5nMS+Pj9DUmOeq4uSdP0zcBUj3f8BYFQ
+ PGT+m8/B/OlsMbhO8cwfY99XYQwxfGKGB7HvQ5w==
+X-Google-Smtp-Source: AGHT+IEgN2mpyoHuvI4Dx8Q8HWJrC0UBTeI7vPYcb8bWsQFbACrULvQh1mGv7nPJ2REozEycpgJRmk/8ttnrNwbpTOE=
+X-Received: by 2002:aa7:c90f:0:b0:5cf:67c1:69e5 with SMTP id
+ 4fb4d7f45d1cf-5cf67c16ef9mr3537833a12.4.1731589283739; Thu, 14 Nov 2024
+ 05:01:23 -0800 (PST)
 MIME-Version: 1.0
-References: <20241105083203.2230983-1-marcandre.lureau@redhat.com>
-In-Reply-To: <20241105083203.2230983-1-marcandre.lureau@redhat.com>
-From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
-Date: Thu, 14 Nov 2024 16:56:52 +0400
-Message-ID: <CAJ+F1C+JTfhgOFw_4oOsOPA-JbYPQh7P7adp2EkOFY_JVpXBvw@mail.gmail.com>
-Subject: Re: [PATCH] hw/audio/hda: avoid unnecessary re-open stream on
- reconfiguration
-To: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>
-Cc: mjt@tls.msk.ru, Gerd Hoffmann <kraxel@redhat.com>
-Content-Type: multipart/alternative; boundary="000000000000c03aed0626defcfa"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::82f;
- envelope-from=marcandre.lureau@gmail.com; helo=mail-qt1-x82f.google.com
+References: <20241108191024.2931097-1-roqueh@google.com>
+ <20241108191024.2931097-4-roqueh@google.com>
+In-Reply-To: <20241108191024.2931097-4-roqueh@google.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 14 Nov 2024 13:01:12 +0000
+Message-ID: <CAFEAcA9DDVqgOs7B3kC30=OgJ8iLZ3R3RB6BdEBMEKNxx0LAjQ@mail.gmail.com>
+Subject: Re: [PATCH 3/3] tests/qtest/cmsdk-apb-watchdog-test: Test INTEN as
+ counter enable
+To: Roque Arcudia Hernandez <roqueh@google.com>
+Cc: farosas@suse.de, lvivier@redhat.com, slongfield@google.com, 
+ komlodi@google.com, pbonzini@redhat.com, venture@google.com, 
+ qemu-devel@nongnu.org, qemu-arm@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::536;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x536.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -86,130 +91,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000c03aed0626defcfa
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-Hi Paolo
-
-Did you see that patch? What do you say about it?
-
-On Tue, Nov 5, 2024 at 12:33=E2=80=AFPM <marcandre.lureau@redhat.com> wrote=
-:
-
-> From: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+On Fri, 8 Nov 2024 at 19:10, Roque Arcudia Hernandez <roqueh@google.com> wrote:
 >
-> Closing and opening a stream too quickly during reconfiguration create
-> issues with Spice.
+> The following tests focus on making sure the counter is not running
+> out of reset and the proper use of INTEN as the counter enable. As
+> described in:
 >
-> Note: the issue with Spice has been there before and still is. When the
-> audio stream is recreated, for example when using
-> `out.mixing-engine=3Dfalse`.
+> https://developer.arm.com/documentation/ddi0479/d/apb-components/apb-watchdog/programmers-model
 >
-> Fixes: https://gitlab.com/qemu-project/qemu/-/issues/2639
-> Fixes: 6d6e23361f ("hw/audio/hda: fix memory leak on audio setup")
-> Signed-off-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+> The new tests have to target an MPS2 machine because the original
+> machine used by the test (stellaris) has a variation of the
+> cmsdk_apb_watchdog that locks INTEN when it is programmed to 1. The
+> stellaris machine also does not reproduce the problem of the counter
+> running out of cold reset due to the way the clocks are initialized.
+>
+> Signed-off-by: Roque Arcudia Hernandez <roqueh@google.com>
+> Reviewed-by: Stephen Longfield <slongfield@google.com>
 > ---
->  hw/audio/hda-codec.c | 10 +++++++++-
->  1 file changed, 9 insertions(+), 1 deletion(-)
+>  tests/qtest/cmsdk-apb-watchdog-test.c | 214 ++++++++++++++++++++++++++
+>  1 file changed, 214 insertions(+)
 >
-> diff --git a/hw/audio/hda-codec.c b/hw/audio/hda-codec.c
-> index bc661504cf..b734a5c718 100644
-> --- a/hw/audio/hda-codec.c
-> +++ b/hw/audio/hda-codec.c
-> @@ -502,7 +502,15 @@ static void hda_audio_setup(HDAAudioStream *st)
->      trace_hda_audio_format(st->node->name, st->as.nchannels,
->                             fmt2name[st->as.fmt], st->as.freq);
+> diff --git a/tests/qtest/cmsdk-apb-watchdog-test.c b/tests/qtest/cmsdk-apb-watchdog-test.c
+> index fe535a553c..3777b7bd59 100644
+> --- a/tests/qtest/cmsdk-apb-watchdog-test.c
+> +++ b/tests/qtest/cmsdk-apb-watchdog-test.c
+> @@ -68,6 +68,15 @@ static const CMSDKAPBWatchdogTestArgs machine_info[] = {
+>      },
+>  };
 >
-> -    hda_close_stream(st->state, st);
-> +    /*
-> +     * Do not hda_close_stream(st->state, st), AUD_open_() handles the
-> logic for
-> +     * fixed_settings, and same format. This helps prevent race issues i=
-n
-> Spice
-> +     * server & client code too. (see #2639)
-> +     */
-> +    if (use_timer) {
-> +        timer_free(st->buft);
-> +        st->buft =3D NULL;
-> +    }
->      if (st->output) {
->          if (use_timer) {
->              cb =3D hda_audio_output_cb;
-> --
-> 2.47.0
->
->
->
+> +static void system_reset(QTestState *qtest)
+> +{
+> +    QDict *resp;
+> +
+> +    resp = qtest_qmp(qtest, "{'execute': 'system_reset'}");
+> +    g_assert(qdict_haskey(resp, "return"));
+> +    qobject_unref(resp);
+> +}
 
---=20
-Marc-Andr=C3=A9 Lureau
+The system_reset QMP command only requests a reset; it does
+not wait for it to actually happen. For that you need to
+   qtest_qmp_eventwait(qtest, "RESET");
 
---000000000000c03aed0626defcfa
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+We seem to already have several implementations of this
+kind of "reset the system under test" function, several
+of which have this bug. That suggests to me that we ought
+to provide it as a utility method qtest_system_reset()
+in libqtest.
 
-<div dir=3D"ltr"><div>Hi Paolo</div><div><br></div><div>Did you see that pa=
-tch? What do you say about it?<br></div></div><br><div class=3D"gmail_quote=
-"><div dir=3D"ltr" class=3D"gmail_attr">On Tue, Nov 5, 2024 at 12:33=E2=80=
-=AFPM &lt;<a href=3D"mailto:marcandre.lureau@redhat.com">marcandre.lureau@r=
-edhat.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=
-=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding=
--left:1ex">From: Marc-Andr=C3=A9 Lureau &lt;<a href=3D"mailto:marcandre.lur=
-eau@redhat.com" target=3D"_blank">marcandre.lureau@redhat.com</a>&gt;<br>
-<br>
-Closing and opening a stream too quickly during reconfiguration create<br>
-issues with Spice.<br>
-<br>
-Note: the issue with Spice has been there before and still is. When the<br>
-audio stream is recreated, for example when using<br>
-`out.mixing-engine=3Dfalse`.<br>
-<br>
-Fixes: <a href=3D"https://gitlab.com/qemu-project/qemu/-/issues/2639" rel=
-=3D"noreferrer" target=3D"_blank">https://gitlab.com/qemu-project/qemu/-/is=
-sues/2639</a><br>
-Fixes: 6d6e23361f (&quot;hw/audio/hda: fix memory leak on audio setup&quot;=
-)<br>
-Signed-off-by: Marc-Andr=C3=A9 Lureau &lt;<a href=3D"mailto:marcandre.lurea=
-u@redhat.com" target=3D"_blank">marcandre.lureau@redhat.com</a>&gt;<br>
----<br>
-=C2=A0hw/audio/hda-codec.c | 10 +++++++++-<br>
-=C2=A01 file changed, 9 insertions(+), 1 deletion(-)<br>
-<br>
-diff --git a/hw/audio/hda-codec.c b/hw/audio/hda-codec.c<br>
-index bc661504cf..b734a5c718 100644<br>
---- a/hw/audio/hda-codec.c<br>
-+++ b/hw/audio/hda-codec.c<br>
-@@ -502,7 +502,15 @@ static void hda_audio_setup(HDAAudioStream *st)<br>
-=C2=A0 =C2=A0 =C2=A0trace_hda_audio_format(st-&gt;node-&gt;name, st-&gt;as.=
-nchannels,<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 fmt2name[st-&gt;as.fmt], st-&gt;as.freq);<br>
-<br>
--=C2=A0 =C2=A0 hda_close_stream(st-&gt;state, st);<br>
-+=C2=A0 =C2=A0 /*<br>
-+=C2=A0 =C2=A0 =C2=A0* Do not hda_close_stream(st-&gt;state, st), AUD_open_=
-() handles the logic for<br>
-+=C2=A0 =C2=A0 =C2=A0* fixed_settings, and same format. This helps prevent =
-race issues in Spice<br>
-+=C2=A0 =C2=A0 =C2=A0* server &amp; client code too. (see #2639)<br>
-+=C2=A0 =C2=A0 =C2=A0*/<br>
-+=C2=A0 =C2=A0 if (use_timer) {<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 timer_free(st-&gt;buft);<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 st-&gt;buft =3D NULL;<br>
-+=C2=A0 =C2=A0 }<br>
-=C2=A0 =C2=A0 =C2=A0if (st-&gt;output) {<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0if (use_timer) {<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0cb =3D hda_audio_output_cb;=
-<br>
--- <br>
-2.47.0<br>
-<br>
-<br>
-</blockquote></div><div><br clear=3D"all"></div><br><span class=3D"gmail_si=
-gnature_prefix">-- </span><br><div dir=3D"ltr" class=3D"gmail_signature">Ma=
-rc-Andr=C3=A9 Lureau<br></div>
-
---000000000000c03aed0626defcfa--
+thanks
+-- PMM
 
