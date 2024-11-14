@@ -2,58 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 614979C921D
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Nov 2024 20:08:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5739E9C9220
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Nov 2024 20:09:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tBfC6-0004AR-AH; Thu, 14 Nov 2024 14:07:54 -0500
+	id 1tBfC8-0004GS-It; Thu, 14 Nov 2024 14:07:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tBfBt-00046J-01
- for qemu-devel@nongnu.org; Thu, 14 Nov 2024 14:07:41 -0500
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tBfBz-0004CD-2O
+ for qemu-devel@nongnu.org; Thu, 14 Nov 2024 14:07:50 -0500
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tBfBr-0005UG-Ap
- for qemu-devel@nongnu.org; Thu, 14 Nov 2024 14:07:40 -0500
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-4315eac969aso6082325e9.1
- for <qemu-devel@nongnu.org>; Thu, 14 Nov 2024 11:07:38 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tBfBx-0005V9-0I
+ for qemu-devel@nongnu.org; Thu, 14 Nov 2024 14:07:46 -0500
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-4315839a7c9so8979345e9.3
+ for <qemu-devel@nongnu.org>; Thu, 14 Nov 2024 11:07:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1731611257; x=1732216057; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=LwtKlFyLirVGmcUUsZN1RQkG5HiIWs+0ZyXLJLGhGNs=;
- b=bIClbqLGfPdTSYzsYAwF7qMwizMY4IGuYtBNyTrqtvxRtTyk1oUS2nA0G6GFlmYRZW
- I84mjfemzXq9lYLfnilt3fhXEP7xnFyok3j8Ti12jxp1MMZmgUfvUpTALbtn/DkJDtz3
- D/EzTkex1ogM7P6J5OnVN90wfY1IepulQGij8QfdYCeqbXsxe0Wyk+eGTqdbmFO3lZ2y
- mq6lEyz1GJWHLj1htEFM6JqxvwfS9SRzUXuf+uYxyiIZ6rceMiStVkLtvznTmEwvRMO2
- GM5/aTG0riG7z0dIBY+tvfuYibtZ5TI0O7xU3h4gsFRFfdKBH2DPIoncUt69XSahdCW2
- 3fDQ==
+ d=linaro.org; s=google; t=1731611263; x=1732216063; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=dxalhuJA3V9Mf8DxAADrs85j1mYwG4uCtR+wwxiXnFU=;
+ b=Gq5FBebUOPzHyv/KQrMpEOOseclpPCN22l+fZU+ikZucZ+wahkibEqa9FVp/B7Jn54
+ wq6MiF7Zg2uLyPnJLf11YmrZzPIYpBoHOTH6/INOy3aH/3iUetJ/GtAWa3m03MEDKWQZ
+ A3rgdIBUqfRWeVVrWt+UxtnOgLQsb01LY8ZJZJZDWAeDXZf6Aa62KJ4N2HpCS4+rjl2e
+ rzPJfJB6drqFUlVc6msPamBCKrFOUyxAjARgPtU28jWMNFsgONx5zD2VdU1397RRAURR
+ qgoKpXCoz62atGTJ1yV0jOrLjzf4YU+TUdrVX+5LgA+C9YR0Hsk6Jm1siylbKkH/x6YT
+ rUvg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731611257; x=1732216057;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=LwtKlFyLirVGmcUUsZN1RQkG5HiIWs+0ZyXLJLGhGNs=;
- b=dPfaeAWAkekLkjluhvyY2vsm8P1flIXqBSbtqRhiYaL0o4Kn2lrharU4Xy/IK7QdAl
- jFScopUwoT6b8Wxx/eMiGIx6LUrSquZz/0f4R1wyEuTpqfCOesAMnMiJou+WWuHjWEzv
- kmUIvmGOKYrKcXjvqzC/rSCoFzHUr9X6918IgCF2/PVUx7aJWq72Hm8yFC54FlcrM/F8
- 6b/XvZarehky6nUyCW/TXLDknBqouWUfLR5Y31x9zFmHjW6z5qR3o2cn+5sKwmqBW3Vg
- TKx8L6Nz16XOegJxqWrUfxanbPCTwGhNd3DDyIGnk2AcF7X0SlXM8o/oTFXuiRtpFFRG
- ss/Q==
-X-Gm-Message-State: AOJu0Yz2fATxcUVTfF9yXR8UpqA5E1l8Qg29R4pFPV+VSAwYuQ2OSaAo
- cQ5trv063SpvnwcYp3ModEOrdMxFATX8vxehS3QkbwUUsXmsUMTCu4DuKIvOAyxqfpoXuY8UbRJ
- X
-X-Google-Smtp-Source: AGHT+IHdxGN3vaV5A8Gw08sHHD8eeXx8ERO3noAvqiwpoiS6xziVL9DJLgp3wm6ZfL0VppNG/rIO+Q==
-X-Received: by 2002:a05:600c:1c2a:b0:432:7c30:abf3 with SMTP id
- 5b1f17b1804b1-432d974a829mr43262065e9.7.1731611257320; 
- Thu, 14 Nov 2024 11:07:37 -0800 (PST)
+ d=1e100.net; s=20230601; t=1731611263; x=1732216063;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=dxalhuJA3V9Mf8DxAADrs85j1mYwG4uCtR+wwxiXnFU=;
+ b=hZJX8nBQGcG6E31rqgQ3zgeXojKnrYGZ6jRnrC9T7f59E9YfUOAuEp3tiz3dWj/qDg
+ ZOt/OoxiapdIXi3AH/vkTx6oPbJUuOwCPuer2FadZYoPZgrg7ogxySEgFvkZOxp6tt4L
+ ZjatEtWXDHuorFJMhrFzntERjwchMcPDbyABFEvZoUN2ug8qWB7BkWKQ5WFWk78YXkD4
+ 93m30G1+UY0GJ5/OSZDj8sDPYcPNrUepD63LHUnfCfyfgQJF+asd0IeijjN5xD9hK9IY
+ dkHqVs/qziw+XEiS2vc4Vdlo8KOvjSSQSLobECLkKwxw2qcJeq+4zb79r1i95kEh3wpk
+ 30Mw==
+X-Gm-Message-State: AOJu0YzF2ajgI2VbO3SHGPyR0es1roHR/l0ylfTB6eDMGzVluocZYvb/
+ tdDKhDsd+hREhVr2k3XpD7hZabJmHQaHQc4ogXhng+JgcxYM4GLXDirPHyah7TYrLlpOEHqfT/l
+ Y
+X-Google-Smtp-Source: AGHT+IGG6YX5cfxscYC8Gqx9eDYO8xCkNLKrvqVHnBiuiWERHUfrvwB2To77JD5EQ3E4VRb29d7rTA==
+X-Received: by 2002:a05:600c:3b82:b0:42c:bb10:7292 with SMTP id
+ 5b1f17b1804b1-432b74fc98cmr213441365e9.1.1731611263083; 
+ Thu, 14 Nov 2024 11:07:43 -0800 (PST)
 Received: from localhost.localdomain ([176.187.209.228])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-432dab76dafsm29737835e9.10.2024.11.14.11.07.34
+ ffacd0b85a97d-3821e073e0asm1721415f8f.30.2024.11.14.11.07.41
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 14 Nov 2024 11:07:36 -0800 (PST)
+ Thu, 14 Nov 2024 11:07:42 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
@@ -66,23 +67,25 @@ Cc: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
  Peter Maydell <peter.maydell@linaro.org>, Thomas Huth <thuth@redhat.com>,
  Bernhard Beschow <shentey@gmail.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 00/19] hw/net/xilinx_ethlite: Map RAM buffers as RAM and
- remove tswap() calls
-Date: Thu, 14 Nov 2024 20:07:14 +0100
-Message-ID: <20241114190733.33902-1-philmd@linaro.org>
+Subject: [PATCH v2 01/19] hw/microblaze: Restrict MemoryRegionOps are
+ implemented as 32-bit
+Date: Thu, 14 Nov 2024 20:07:15 +0100
+Message-ID: <20241114190733.33902-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20241114190733.33902-1-philmd@linaro.org>
+References: <20241114190733.33902-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,68 +101,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Missing review: patch #19 (new)
+All these MemoryRegionOps read() and write() handlers are
+implemented expecting 32-bit accesses. Clarify that setting
+.impl.min/max_access_size fields.
 
-Since v1:
-- Addressed Edgar review comments
-- New patch to map RSVD I/O region (Paolo)
-- Added Edgar R-b tags
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Anton Johansson <anjo@rev.ng>
+---
+ hw/char/xilinx_uartlite.c | 4 ++++
+ hw/intc/xilinx_intc.c     | 4 ++++
+ hw/net/xilinx_ethlite.c   | 4 ++++
+ hw/timer/xilinx_timer.c   | 4 ++++
+ 4 files changed, 16 insertions(+)
 
-This is the result of a long discussion with Edgar (started few
-years ago!) and Paolo:
-https://lore.kernel.org/qemu-devel/34f6fe2f-06e0-4e2a-a361-2d662f6814b5@redhat.com/
-After clarification from Richard on MMIO/RAM accesses, I figured
-strengthening the model regions would make things obvious,
-eventually allowing to remove the tswap() calls for good.
-
-This costly series mostly plays around with MemoryRegions.
-
-The model has a mix of RAM/MMIO in its address range. Currently
-they are implemented as a MMIO array of u32. Since the core
-memory layer swaps accesses for MMIO, the device implementation
-has to swap them back.
-In order to avoid that, we'll map the RAM regions as RAM MRs.
-First we move each MMIO register to new MMIO regions (RX and TX).
-Then what is left are the RAM buffers; we convert them to RAM MRs,
-removing the need for tswap() at all.
-
-Once reviewed, I'll respin my "hw/microblaze: Allow running
-cross-endian vCPUs" series based on this.
-
-Tested using 'make check-functional-microblaze{,el}'.
-
-Please review,
-
-Phil.
-
-Philippe Mathieu-Daudé (19):
-  hw/microblaze: Restrict MemoryRegionOps are implemented as 32-bit
-  hw/net/xilinx_ethlite: Convert some debug logs to trace events
-  hw/net/xilinx_ethlite: Remove unuseful debug logs
-  hw/net/xilinx_ethlite: Update QOM style
-  hw/net/xilinx_ethlite: Correct maximum RX buffer size
-  hw/net/xilinx_ethlite: Map MDIO registers (as unimplemented)
-  hw/net/xilinx_ethlite: Rename rxbuf -> port_index
-  hw/net/xilinx_ethlite: Introduce txbuf_ptr() helper
-  hw/net/xilinx_ethlite: Introduce rxbuf_ptr() helper
-  hw/net/xilinx_ethlite: Access TX_GIE register for each port
-  hw/net/xilinx_ethlite: Access TX_LEN register for each port
-  hw/net/xilinx_ethlite: Access TX_CTRL register for each port
-  hw/net/xilinx_ethlite: Map RX_CTRL as MMIO
-  hw/net/xilinx_ethlite: Map TX_LEN as MMIO
-  hw/net/xilinx_ethlite: Map TX_GIE as MMIO
-  hw/net/xilinx_ethlite: Map TX_CTRL as MMIO
-  hw/net/xilinx_ethlite: Map the RAM buffer as RAM memory region
-  hw/net/xilinx_ethlite: Rename 'mmio' MR as 'container'
-  hw/net/xilinx_ethlite: Map RESERVED I/O as unimplemented
-
- hw/char/xilinx_uartlite.c |   4 +
- hw/intc/xilinx_intc.c     |   4 +
- hw/net/xilinx_ethlite.c   | 371 ++++++++++++++++++++++++--------------
- hw/timer/xilinx_timer.c   |   4 +
- hw/net/trace-events       |   4 +
- 5 files changed, 256 insertions(+), 131 deletions(-)
-
+diff --git a/hw/char/xilinx_uartlite.c b/hw/char/xilinx_uartlite.c
+index f325084f8b..3022b3d8ef 100644
+--- a/hw/char/xilinx_uartlite.c
++++ b/hw/char/xilinx_uartlite.c
+@@ -170,6 +170,10 @@ static const MemoryRegionOps uart_ops = {
+     .read = uart_read,
+     .write = uart_write,
+     .endianness = DEVICE_NATIVE_ENDIAN,
++    .impl = {
++        .min_access_size = 4,
++        .max_access_size = 4,
++    },
+     .valid = {
+         .min_access_size = 1,
+         .max_access_size = 4
+diff --git a/hw/intc/xilinx_intc.c b/hw/intc/xilinx_intc.c
+index 6e5012e66e..8fb6b4f1a5 100644
+--- a/hw/intc/xilinx_intc.c
++++ b/hw/intc/xilinx_intc.c
+@@ -144,6 +144,10 @@ static const MemoryRegionOps pic_ops = {
+     .read = pic_read,
+     .write = pic_write,
+     .endianness = DEVICE_NATIVE_ENDIAN,
++    .impl = {
++        .min_access_size = 4,
++        .max_access_size = 4,
++    },
+     .valid = {
+         .min_access_size = 4,
+         .max_access_size = 4
+diff --git a/hw/net/xilinx_ethlite.c b/hw/net/xilinx_ethlite.c
+index bd81290808..e84b4cdd35 100644
+--- a/hw/net/xilinx_ethlite.c
++++ b/hw/net/xilinx_ethlite.c
+@@ -170,6 +170,10 @@ static const MemoryRegionOps eth_ops = {
+     .read = eth_read,
+     .write = eth_write,
+     .endianness = DEVICE_NATIVE_ENDIAN,
++    .impl = {
++        .min_access_size = 4,
++        .max_access_size = 4,
++    },
+     .valid = {
+         .min_access_size = 4,
+         .max_access_size = 4
+diff --git a/hw/timer/xilinx_timer.c b/hw/timer/xilinx_timer.c
+index 32a9df69e0..383fc8b3c8 100644
+--- a/hw/timer/xilinx_timer.c
++++ b/hw/timer/xilinx_timer.c
+@@ -193,6 +193,10 @@ static const MemoryRegionOps timer_ops = {
+     .read = timer_read,
+     .write = timer_write,
+     .endianness = DEVICE_NATIVE_ENDIAN,
++    .impl = {
++        .min_access_size = 4,
++        .max_access_size = 4,
++    },
+     .valid = {
+         .min_access_size = 4,
+         .max_access_size = 4
 -- 
 2.45.2
 
