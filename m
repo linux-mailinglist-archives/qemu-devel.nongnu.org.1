@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9139F9C8F26
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Nov 2024 17:05:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C1F9F9C8F76
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Nov 2024 17:14:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tBcJ8-0005cE-3M; Thu, 14 Nov 2024 11:02:58 -0500
+	id 1tBcJT-0006DX-Nk; Thu, 14 Nov 2024 11:03:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tBcIL-00052J-Jh
+ id 1tBcIL-00052K-Kt
  for qemu-devel@nongnu.org; Thu, 14 Nov 2024 11:02:11 -0500
-Received: from mail-pg1-x536.google.com ([2607:f8b0:4864:20::536])
+Received: from mail-pj1-x1030.google.com ([2607:f8b0:4864:20::1030])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tBcIF-0002HU-Ij
- for qemu-devel@nongnu.org; Thu, 14 Nov 2024 11:02:07 -0500
-Received: by mail-pg1-x536.google.com with SMTP id
- 41be03b00d2f7-7ed9c16f687so615276a12.0
- for <qemu-devel@nongnu.org>; Thu, 14 Nov 2024 08:02:01 -0800 (PST)
+ id 1tBcIF-0002I2-JR
+ for qemu-devel@nongnu.org; Thu, 14 Nov 2024 11:02:08 -0500
+Received: by mail-pj1-x1030.google.com with SMTP id
+ 98e67ed59e1d1-2ea09a033e2so583641a91.3
+ for <qemu-devel@nongnu.org>; Thu, 14 Nov 2024 08:02:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1731600121; x=1732204921; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=C92gX+NWcvvyINoBcMpyemaXSV00oH2ZBkWs2vS0nJE=;
- b=WcY5B3wR5JMvxhfpO2pxX925ODmxlMKnsvSEdi4s6uhJhBvD3V60MqViUXf1tKzxKQ
- 7qQqrJTfolPTgB/90aj2lEiWqSj3K40nUrF5k/0k8fbfhMpd//nOWuMO6W62EuGEN5Hq
- kyzHX82LHmucwXRhzNtJvm3xapdchg7l0e7xpKk9MW+9Ca+7k0nqxSwzZq6JlipCiRAc
- yQKYW80uhuH1pLGEQrWwJV4JLKyVhRWvgeciZYLapevBONGT0EVyHAMLkFmnbN4qzXuf
- 4RJ4clkueykR+dOD9pQFJhfaf4KNDhVIHLB+3n88Xc3pnhKjVATq39pt+CJtXmGg/1Ro
- wCeg==
+ :reply-to; bh=IURXvWR9Voo5SpXlji5M2ea/nd6IIOVKEQdxMQkSin0=;
+ b=A2IqJvA2xpVtZJn3lw34e1h8A9xoVU1I3HH2NV6TTnOxUHQ8Y1ytbpVCAiJBNeN8j4
+ AbGRZ1Q8vCgI2nZprhf2ytEP8dFj2Dj28ar4Ij/bZB6eofZng1NixcmA5xbzOA2taAvJ
+ Wt53e0/RxGq8srQWiYw9pF/SZgeI18gKfwDbNx9U5DzzleI9yAf2Vt2cnSOvsNgysm6c
+ 022s1r7h/XHZZRVlZPqd+fjRbtTNmjlsK/QKSFtBtME/IqGPi5qmUWAHrKRaspPjyqkn
+ oefxhBaF598EEHHTRmWozKdiVn5AYAO26e+WnYZbVUqYIUbCowqj5SXQg8YES6au69vf
+ 8Klw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1731600121; x=1732204921;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=C92gX+NWcvvyINoBcMpyemaXSV00oH2ZBkWs2vS0nJE=;
- b=r7bcBgRxkYpdGb/QpOxgGg00rZzxp5cP8wSG4SKEYLqx4Gxdf3ywpvKppY7zhS2asG
- ujSoVfHOf8AF3T8o0N7+8d9303UJvLfoShLjOQ8EqI3gLMfge+dkjfWi8p0ncmdbxa3z
- TrYfo7H0Yw1Qxoz54yW0BZdCW1DTdT/Mw7+ny/8EbsY7D6Dx75Mue4sIkZSoOjOkA6ok
- lyjbmEFmOtEdG0xJHUeBs/ZN6VIQlkol0k84lUAZg8LmD8BKJFU3uv8Vl4l8WO3zNVkb
- gEQorTt/8TO2OAmENY5cwXJEnPLGRFW8IKwqYPosJxCANdJqu+Z1xzFrJzSjXP25x9wT
- p1XA==
-X-Gm-Message-State: AOJu0Yyxjg7d8heqz39NtD/MUermjWeP1CSea5spb9w/pIyP6rf7qlCy
- JSA2MAGsUautGIuHlprCY9uNl5pxh7wKDDSugUG/DDMFDKpWjM235VkVArX8+KxEULPF9fSqRai
- P
-X-Google-Smtp-Source: AGHT+IH1bmGFUpP5442RkaAfKsgvmPq8vkXQThC5va/ntSAMd2rmyRSBzkZHXnVp8ir6wCg57S9F4g==
-X-Received: by 2002:a17:90b:4b0f:b0:2e2:a013:859a with SMTP id
- 98e67ed59e1d1-2e9f2c4ef3bmr9095877a91.7.1731600120301; 
- Thu, 14 Nov 2024 08:02:00 -0800 (PST)
+ bh=IURXvWR9Voo5SpXlji5M2ea/nd6IIOVKEQdxMQkSin0=;
+ b=PMuWRtDpY+IxBDj37s5Vguoz92OsLdA+KHY2lm4WJcJzaFR20Urp4q433q4C0HdWqb
+ /sytLzkLOSDAT4IQRUAKRWpdG8swFaXa2uYvaAcSzX18jE9ox12riGfq5zE4ZBA0L3VE
+ RM8V+OW1FmJpWYm66VJYttMsBFrToxYD0+xTV/Z053PCUzrEHeKh+IQ7HyS2QL2atDGt
+ ibzQ+zFfiEQxzYsMM3uRmIMFGp5/VSp012wobsO975SFGyk7r9g4WFaC9Hcv3QSrckoh
+ CxE2ShaFROFP2hGNugDdwR1T2XX86HTkpb6BY+KSkKREE5nnFqDbglod7WE982Ru1eWf
+ W6Dw==
+X-Gm-Message-State: AOJu0YyfD0IeK1LxgdE2vyfx1qKlKzMK2VTLW+A0l41HdlVn/cyUSrql
+ XeViVpvMGO+Uc8bLIWKWj6XOuvUxVGSiofS95+ggv6S0PxjyxPg3EiDDDWHlBUwwO0QTOVfBgRa
+ a
+X-Google-Smtp-Source: AGHT+IEjX+Ulkz2mMI/955PVO4PcTvmrJ75S2hcYlmsqS/eC4gXSvI3ufVaBEIIueRuHWvdVSwHrMg==
+X-Received: by 2002:a17:90a:e7c3:b0:2e2:cd79:ec06 with SMTP id
+ 98e67ed59e1d1-2e9f2c77384mr9130730a91.10.1731600121352; 
+ Thu, 14 Nov 2024 08:02:01 -0800 (PST)
 Received: from stoup.. ([71.212.136.242]) by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2ea024ec723sm1484438a91.46.2024.11.14.08.01.59
+ 98e67ed59e1d1-2ea024ec723sm1484438a91.46.2024.11.14.08.02.00
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 14 Nov 2024 08:01:59 -0800 (PST)
+ Thu, 14 Nov 2024 08:02:00 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH v2 32/54] accel/tcg: Link CPUTLBEntry to CPUTLBEntryTree
-Date: Thu, 14 Nov 2024 08:01:08 -0800
-Message-ID: <20241114160131.48616-33-richard.henderson@linaro.org>
+Subject: [PATCH v2 33/54] accel/tcg: Remove CPUTLBDesc.fulltlb
+Date: Thu, 14 Nov 2024 08:01:09 -0800
+Message-ID: <20241114160131.48616-34-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241114160131.48616-1-richard.henderson@linaro.org>
 References: <20241114160131.48616-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::536;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x536.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1030;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1030.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,130 +90,141 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Link from the fast tlb entry to the interval tree node.
+This array is now write-only, and may be removed.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/exec/tlb-common.h |  2 ++
- accel/tcg/cputlb.c        | 26 +++++++++++++-------------
- 2 files changed, 15 insertions(+), 13 deletions(-)
+ include/hw/core/cpu.h |  1 -
+ accel/tcg/cputlb.c    | 34 +++++++---------------------------
+ 2 files changed, 7 insertions(+), 28 deletions(-)
 
-diff --git a/include/exec/tlb-common.h b/include/exec/tlb-common.h
-index feaa471299..3b57d61112 100644
---- a/include/exec/tlb-common.h
-+++ b/include/exec/tlb-common.h
-@@ -31,6 +31,8 @@ typedef union CPUTLBEntry {
-          * use the corresponding iotlb value.
-          */
-         uintptr_t addend;
-+        /* The defining IntervalTree entry. */
-+        struct CPUTLBEntryTree *tree;
-     };
-     /*
-      * Padding to get a power of two size, as well as index
+diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
+index 4364ddb1db..5c069f2a00 100644
+--- a/include/hw/core/cpu.h
++++ b/include/hw/core/cpu.h
+@@ -219,7 +219,6 @@ typedef struct CPUTLBDesc {
+     /* maximum number of entries observed in the window */
+     size_t window_max_entries;
+     size_t n_used_entries;
+-    CPUTLBEntryFull *fulltlb;
+     /* All active tlb entries for this address space. */
+     IntervalTreeRoot iroot;
+ } CPUTLBDesc;
 diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
-index be2ea1bc70..3282436752 100644
+index 3282436752..7f63dc3fd8 100644
 --- a/accel/tcg/cputlb.c
 +++ b/accel/tcg/cputlb.c
-@@ -490,7 +490,10 @@ static bool tlb_flush_entry_mask_locked(CPUTLBEntry *tlb_entry,
-                                         vaddr mask)
- {
-     if (tlb_hit_page_mask_anyprot(tlb_entry, page, mask)) {
--        memset(tlb_entry, -1, sizeof(*tlb_entry));
-+        tlb_entry->addr_read = -1;
-+        tlb_entry->addr_write = -1;
-+        tlb_entry->addend = 0;
-+        tlb_entry->tree = NULL;
-         return true;
-     }
-     return false;
-@@ -1183,6 +1186,7 @@ void tlb_set_page_full(CPUState *cpu, int mmu_idx,
+@@ -149,13 +149,6 @@ static inline CPUTLBEntry *tlbfast_entry(CPUTLBDescFast *fast, vaddr addr)
+     return fast->table + tlbfast_index(fast, addr);
+ }
  
-     /* Now calculate the new entry */
-     node->copy.addend = addend - addr_page;
-+    node->copy.tree = node;
- 
-     if (wp_flags & BP_MEM_READ) {
-         read_flags |= TLB_WATCHPOINT;
-@@ -1291,7 +1295,6 @@ static bool tlb_lookup(CPUState *cpu, TLBLookupOutput *o,
-     CPUTLBDescFast *fast = &cpu->neg.tlb.f[i->mmu_idx];
-     vaddr addr = i->addr;
-     MMUAccessType access_type = i->access_type;
--    CPUTLBEntryFull *full;
-     CPUTLBEntryTree *node;
-     CPUTLBEntry *entry;
-     uint64_t cmp;
-@@ -1304,9 +1307,9 @@ static bool tlb_lookup(CPUState *cpu, TLBLookupOutput *o,
- 
-     /* Primary lookup in the fast tlb. */
-     entry = tlbfast_entry(fast, addr);
--    full = &desc->fulltlb[tlbfast_index(fast, addr)];
-     if (access_type != MMU_INST_FETCH) {
-         cmp = tlb_read_idx(entry, access_type);
-+        node = entry->tree;
-         if (tlb_hit(cmp, addr)) {
-             goto found_data;
-         }
-@@ -1326,7 +1329,6 @@ static bool tlb_lookup(CPUState *cpu, TLBLookupOutput *o,
-                 qemu_spin_lock(&cpu->neg.tlb.c.lock);
-                 copy_tlb_helper_locked(entry, &node->copy);
-                 qemu_spin_unlock(&cpu->neg.tlb.c.lock);
--                *full = node->full;
-                 goto found_data;
-             }
-         }
-@@ -1347,8 +1349,8 @@ static bool tlb_lookup(CPUState *cpu, TLBLookupOutput *o,
+-/* Find the TLB index corresponding to the mmu_idx + address pair.  */
+-static inline uintptr_t tlb_index(CPUState *cpu, uintptr_t mmu_idx,
+-                                  vaddr addr)
+-{
+-    return tlbfast_index(&cpu->neg.tlb.f[mmu_idx], addr);
+-}
+-
+ /* Find the TLB entry corresponding to the mmu_idx + address pair.  */
+ static inline CPUTLBEntry *tlb_entry(CPUState *cpu, uintptr_t mmu_idx,
+                                      vaddr addr)
+@@ -270,22 +263,20 @@ static void tlb_mmu_resize_locked(CPUTLBDesc *desc, CPUTLBDescFast *fast,
      }
  
-     entry = tlbfast_entry(fast, addr);
--    full = &desc->fulltlb[tlbfast_index(fast, addr)];
-     cmp = tlb_read_idx(entry, access_type);
-+    node = entry->tree;
+     g_free(fast->table);
+-    g_free(desc->fulltlb);
+ 
+     tlb_window_reset(desc, now, 0);
+     /* desc->n_used_entries is cleared by the caller */
+     fast->mask = (new_size - 1) << CPU_TLB_ENTRY_BITS;
+     fast->table = g_try_new(CPUTLBEntry, new_size);
+-    desc->fulltlb = g_try_new(CPUTLBEntryFull, new_size);
+ 
      /*
-      * With PAGE_WRITE_INV, we set TLB_INVALID_MASK immediately,
-      * to force the next access through tlb_fill_align.  We've just
-@@ -1359,19 +1361,18 @@ static bool tlb_lookup(CPUState *cpu, TLBLookupOutput *o,
+-     * If the allocations fail, try smaller sizes. We just freed some
++     * If the allocation fails, try smaller sizes. We just freed some
+      * memory, so going back to half of new_size has a good chance of working.
+      * Increased memory pressure elsewhere in the system might cause the
+      * allocations to fail though, so we progressively reduce the allocation
+      * size, aborting if we cannot even allocate the smallest TLB we support.
+      */
+-    while (fast->table == NULL || desc->fulltlb == NULL) {
++    while (fast->table == NULL) {
+         if (new_size == (1 << CPU_TLB_DYN_MIN_BITS)) {
+             error_report("%s: %s", __func__, strerror(errno));
+             abort();
+@@ -294,9 +285,7 @@ static void tlb_mmu_resize_locked(CPUTLBDesc *desc, CPUTLBDescFast *fast,
+         fast->mask = (new_size - 1) << CPU_TLB_ENTRY_BITS;
  
-  found_data:
-     flags &= cmp;
--    flags |= full->slow_flags[access_type];
-+    flags |= node->full.slow_flags[access_type];
-     o->flags = flags;
--    o->full = *full;
--    o->haddr = (void *)((uintptr_t)addr + entry->addend);
--    goto done;
-+    goto found_common;
- 
-  found_code:
-     o->flags = node->copy.addr_read & TLB_EXEC_FLAGS_MASK;
-+    goto found_common;
-+
-+ found_common:
-     o->full = node->full;
-     o->haddr = (void *)((uintptr_t)addr + node->copy.addend);
--    goto done;
- 
-- done:
-     if (!o->did_tlb_fill) {
-         int a_bits = memop_alignment_bits(memop);
- 
-@@ -1669,7 +1670,6 @@ bool tlb_plugin_lookup(CPUState *cpu, vaddr addr, int mmu_idx,
-                        bool is_store, struct qemu_plugin_hwaddr *data)
- {
-     CPUTLBEntry *tlbe = tlb_entry(cpu, mmu_idx, addr);
--    uintptr_t index = tlb_index(cpu, mmu_idx, addr);
-     MMUAccessType access_type = is_store ? MMU_DATA_STORE : MMU_DATA_LOAD;
-     uint64_t tlb_addr = tlb_read_idx(tlbe, access_type);
-     CPUTLBEntryFull *full;
-@@ -1678,7 +1678,7 @@ bool tlb_plugin_lookup(CPUState *cpu, vaddr addr, int mmu_idx,
-         return false;
+         g_free(fast->table);
+-        g_free(desc->fulltlb);
+         fast->table = g_try_new(CPUTLBEntry, new_size);
+-        desc->fulltlb = g_try_new(CPUTLBEntryFull, new_size);
      }
+ }
  
--    full = &cpu->neg.tlb.d[mmu_idx].fulltlb[index];
-+    full = &tlbe->tree->full;
-     data->phys_addr = full->phys_addr | (addr & ~TARGET_PAGE_MASK);
+@@ -350,7 +339,6 @@ static void tlb_mmu_init(CPUTLBDesc *desc, CPUTLBDescFast *fast, int64_t now)
+     desc->n_used_entries = 0;
+     fast->mask = (n_entries - 1) << CPU_TLB_ENTRY_BITS;
+     fast->table = g_new(CPUTLBEntry, n_entries);
+-    desc->fulltlb = g_new(CPUTLBEntryFull, n_entries);
+     memset(&desc->iroot, 0, sizeof(desc->iroot));
+     tlb_mmu_flush_locked(desc, fast);
+ }
+@@ -372,15 +360,9 @@ void tlb_init(CPUState *cpu)
  
-     /* We must have an iotlb entry for MMIO */
+ void tlb_destroy(CPUState *cpu)
+ {
+-    int i;
+-
+     qemu_spin_destroy(&cpu->neg.tlb.c.lock);
+-    for (i = 0; i < NB_MMU_MODES; i++) {
+-        CPUTLBDesc *desc = &cpu->neg.tlb.d[i];
+-        CPUTLBDescFast *fast = &cpu->neg.tlb.f[i];
+-
+-        g_free(fast->table);
+-        g_free(desc->fulltlb);
++    for (int i = 0; i < NB_MMU_MODES; i++) {
++        g_free(cpu->neg.tlb.f[i].table);
+         interval_tree_free_nodes(&cpu->neg.tlb.d[i].iroot,
+                                  offsetof(CPUTLBEntryTree, itree));
+     }
+@@ -1061,7 +1043,7 @@ void tlb_set_page_full(CPUState *cpu, int mmu_idx,
+     CPUTLB *tlb = &cpu->neg.tlb;
+     CPUTLBDesc *desc = &tlb->d[mmu_idx];
+     MemoryRegionSection *section;
+-    unsigned int index, read_flags, write_flags;
++    unsigned int read_flags, write_flags;
+     uintptr_t addend;
+     CPUTLBEntry *te;
+     CPUTLBEntryTree *node;
+@@ -1140,7 +1122,6 @@ void tlb_set_page_full(CPUState *cpu, int mmu_idx,
+     wp_flags = cpu_watchpoint_address_matches(cpu, addr_page,
+                                               TARGET_PAGE_SIZE);
+ 
+-    index = tlb_index(cpu, mmu_idx, addr_page);
+     te = tlb_entry(cpu, mmu_idx, addr_page);
+ 
+     /*
+@@ -1179,8 +1160,8 @@ void tlb_set_page_full(CPUState *cpu, int mmu_idx,
+      * subtract here is that of the page base, and not the same as the
+      * vaddr we add back in io_prepare()/get_page_addr_code().
+      */
+-    desc->fulltlb[index] = *full;
+-    full = &desc->fulltlb[index];
++    node->full = *full;
++    full = &node->full;
+     full->xlat_section = iotlb - addr_page;
+     full->phys_addr = paddr_page;
+ 
+@@ -1203,7 +1184,6 @@ void tlb_set_page_full(CPUState *cpu, int mmu_idx,
+     tlb_set_compare(full, &node->copy, addr_page, write_flags,
+                     MMU_DATA_STORE, prot & PAGE_WRITE);
+ 
+-    node->full = *full;
+     copy_tlb_helper_locked(te, &node->copy);
+     desc->n_used_entries++;
+     qemu_spin_unlock(&tlb->c.lock);
 -- 
 2.43.0
 
