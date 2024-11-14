@@ -2,76 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F317C9C8F69
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Nov 2024 17:13:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 404059C8F4A
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Nov 2024 17:10:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tBcPN-0001RM-Et; Thu, 14 Nov 2024 11:09:27 -0500
+	id 1tBcQI-0003wB-2f; Thu, 14 Nov 2024 11:10:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tBcPH-0000wG-01
- for qemu-devel@nongnu.org; Thu, 14 Nov 2024 11:09:19 -0500
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1tBcQ0-0003T2-Nn
+ for qemu-devel@nongnu.org; Thu, 14 Nov 2024 11:10:06 -0500
+Received: from mail-pg1-x529.google.com ([2607:f8b0:4864:20::529])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tBcPF-0003Ul-Fb
- for qemu-devel@nongnu.org; Thu, 14 Nov 2024 11:09:18 -0500
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-431695fa98bso6849345e9.3
- for <qemu-devel@nongnu.org>; Thu, 14 Nov 2024 08:09:17 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1tBcPy-0004IW-Tm
+ for qemu-devel@nongnu.org; Thu, 14 Nov 2024 11:10:04 -0500
+Received: by mail-pg1-x529.google.com with SMTP id
+ 41be03b00d2f7-7d4f85766f0so618287a12.2
+ for <qemu-devel@nongnu.org>; Thu, 14 Nov 2024 08:10:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1731600556; x=1732205356; darn=nongnu.org;
+ d=linaro.org; s=google; t=1731600601; x=1732205401; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id:from
- :to:cc:subject:date:message-id:reply-to;
- bh=CiVkVQT8ZUMO/xGFD+WJb3tpg+3sGgL6H5+GHc5Jrtc=;
- b=xnnIip+ryswB5A45Ih2U9F7PMWCjAWUi92XsUIEebxpwMNnepho3nLg2p4yPW2uCTp
- 6WUV+uVmsR0wp9rtiIOjyiQCOUk8BDKohyIkJE9/VDYhXY3ydlsjF7FbgjQaB0nR02pM
- TJ4hYJICiO0KBC9vyr2aXDBVGHfbAemhhGKq+KWHj/Bfsi2Gj9IkdbI3zoZtMXFcS3O5
- z01SceiB3lN8Eza8Ss7nmVfqHrAt1IfAEO9VlFF1VH6RhDlK6+C1jSX6+rD2ans8W66P
- 4LWsfj9ZX3BOvwbYjROzMk42VwwLXf06/vM8wSfNn4pqiNNmFZ3UKHtyeYAWN6M0KHkc
- ZVHg==
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=AWAtYvj47Ix5qNW4Emo3QWM6YHTQcss4zfN1Zjyrw/Y=;
+ b=qD3CRLj0jGADxbiOrKZUjwZ+T9pH1EUMJcwdnS8Db0+a6QHCfKfh9YN3G+w7L0PQNg
+ wF9oLNftWlxM8TPhxbWAoIyy5tc9SWLwtcX58y6yueZtucjV/uijtfpU1rhIYSMN6H95
+ RJkZM65i9r+sq2HnFtvsh1cLiBtSCb49kIwort45OTWKagjYSGw0rXZubMgIAElVbr4l
+ Fgw0gJSiWo3AYB2PGKbbWXRfoKNrQ/tp5ogPwoimTB6jai+eKaVpYApn6OpGKGGVGo0w
+ i2NGhqOYeo1/4wxrJ8tiWiLxlb7ZztQVKm/2V9n7rmP0j9JvvRzmiCezj51ntTdGF1Xt
+ rt2Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731600556; x=1732205356;
+ d=1e100.net; s=20230601; t=1731600601; x=1732205401;
  h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=CiVkVQT8ZUMO/xGFD+WJb3tpg+3sGgL6H5+GHc5Jrtc=;
- b=iQR3NddxsD98p2j6rpPr/O7FxjmwRDx8Jrkb0lYj84HStFrx0hk2WW3xDpe79b0RCf
- HLk1roItlYcAZrnUQ8xDqjGv/j0GzDA4PcrM85e/1t4df2nvArZX4XpkKrk5/IrH0aEA
- qa4wlru6xWLWt4Ix7uHymwoXKJo5J5xFW/jaSykuBA4Hs+kAa/K8MRqTLoe8zass+/z0
- jxInrgB4CxDrGsPfeCRWybtqyJUTnQrEokzu2TVYj+ZO0VyhICCwCveRC8KjPDF7o8Ff
- 9vX3mKF3ruaMzDgueJ8pKTzYRLZGf3BfPuO53MmEIM0O0W9SkIDgIsvm7qXhrk52Dq4H
- NI7Q==
+ bh=AWAtYvj47Ix5qNW4Emo3QWM6YHTQcss4zfN1Zjyrw/Y=;
+ b=eCnJn1rLDJ1oWJabjoofbbEASxZK3gOAQRs+MPPIb7epuEDW2XMnY31UYcYF9cbifT
+ XwigqDowiziIrjXEnH04GCNo51Y8Gz5r7KkOvpWBMKam4aUTj73HwLeA0Nev5UNQdtje
+ d+XLuI/kdlZWxkoeTXQlttivLKBziQjtiDzW/t5a2qDbW3WniKkiostc1z0akWpo5Ww/
+ dxbDYk6cu2OD2InMZrJgiPaHU8yHrCcKDpo6Du8TKWjPekg/faHnZC406BPlfXiHYi1z
+ u0XcbigQ9tJPKZA6ZSK5D8/doiCWO1Zlk1AhGD5Cv3u5EP7rx7NW7er/Bk0RoJq65duJ
+ hmfA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVP1zdJSePvUshb3B0LMz4ghyDwQ9vUXEIG2ZgfGiUSwyUvPmfLlI6zzCHmzRrt51rQewQnZP46t7ze@nongnu.org
-X-Gm-Message-State: AOJu0YzLseLNRHIAP3XALd0Y62D2mt7aY0M3ZvkU4Cet3SDAlvxmrwUa
- eP5pfDpW5K4HexHuIYaLeqxG6kQpEk4Otxm+fs/zpkGFFoJfFiw2gRpMaX+H8vjsDYvMyw0cNVt
- 6
-X-Google-Smtp-Source: AGHT+IFT6PiulzySEO1L7B4gcuti7ub1k7x1n0JSDEi6oQq/tghad3wb63asRzWfN3i0p20f+QyS/A==
-X-Received: by 2002:a5d:64e5:0:b0:37d:481e:fca with SMTP id
- ffacd0b85a97d-381f186fa0bmr23411248f8f.27.1731600555762; 
- Thu, 14 Nov 2024 08:09:15 -0800 (PST)
-Received: from [192.168.69.126] ([176.187.209.228])
+ AJvYcCUW/mSBuz98L8yRsQmUvCzVs7TXzhDy9ydA0ynfITHfG3W3DTbqcZlJxTj3cUNaQU/O0FvYF5Wgc/Dd@nongnu.org
+X-Gm-Message-State: AOJu0YylqmOP+uCHP5t3oV0XGLSICHTuIR/bmHKCfQlXdkhOBx3t879D
+ +DWg8+C8BRCC8iAQNPGQ5D8At2UHgT8rYisG9JDqsPZvNrRD/jnVPHG1ZXcGG10=
+X-Google-Smtp-Source: AGHT+IHB9SPUKGaSd0XdWLK4+NjQXRX+88CX4E8NZGxkiAEFobpzf2gaA1L0QO121XQ0zhB5eWOkYQ==
+X-Received: by 2002:a17:90b:4c49:b0:2e2:9522:278f with SMTP id
+ 98e67ed59e1d1-2e9f2d793b8mr7844483a91.32.1731600601110; 
+ Thu, 14 Nov 2024 08:10:01 -0800 (PST)
+Received: from [192.168.0.4] ([71.212.136.242])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3821adad9cesm1825925f8f.37.2024.11.14.08.09.14
+ 98e67ed59e1d1-2ea02495969sm1483293a91.19.2024.11.14.08.10.00
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 14 Nov 2024 08:09:15 -0800 (PST)
-Message-ID: <f0c6c21d-353d-4c5f-a88c-23c24d30a43a@linaro.org>
-Date: Thu, 14 Nov 2024 17:09:14 +0100
+ Thu, 14 Nov 2024 08:10:00 -0800 (PST)
+Message-ID: <bee4999b-902b-43b8-ad12-c8394712b91b@linaro.org>
+Date: Thu, 14 Nov 2024 08:09:59 -0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6/6] linux-user/ppc: Reduce vdso alignment to 4k
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-References: <20241112203757.804320-1-richard.henderson@linaro.org>
- <20241112203757.804320-7-richard.henderson@linaro.org>
+Subject: Re: [RFC v4 2/2] target/riscv: rvv: improve performance of RISC-V
+ vector loads and stores on large amounts of data.
+To: Paolo Savini <paolo.savini@embecosm.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>, qemu-devel@nongnu.org,
+ qemu-riscv@nongnu.org
+Cc: Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>, Bin Meng <bmeng.cn@gmail.com>,
+ Weiwei Li <liwei1518@gmail.com>, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Helene Chelin <helene.chelin@embecosm.com>, Nathan Egge <negge@google.com>,
+ Max Chou <max.chou@sifive.com>
+References: <20241029194348.59574-1-paolo.savini@embecosm.com>
+ <20241029194348.59574-3-paolo.savini@embecosm.com>
+ <7a046c99-c4e7-4395-8dc9-9139e9bfba06@linaro.org>
+ <96e7601d-14aa-4741-8f6a-ae4a1c397a44@embecosm.com>
+ <54c99505-21ef-422c-a7fe-a2d7dabc3d6c@linaro.org>
+ <6b06b532-c53f-4b5b-b65d-d54d7c746ffc@ventanamicro.com>
+ <230f448b-07f4-413c-9be6-e10a8e55be73@linaro.org>
+ <a9f51b76-1cd7-405f-b4a7-384c7447ff88@embecosm.com>
 Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20241112203757.804320-7-richard.henderson@linaro.org>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <a9f51b76-1cd7-405f-b4a7-384c7447ff88@embecosm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::529;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x529.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,14 +109,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/11/24 20:37, Richard Henderson wrote:
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->   linux-user/ppc/Makefile.vdso |   6 ++++--
->   linux-user/ppc/vdso-32.so    | Bin 3020 -> 3020 bytes
->   linux-user/ppc/vdso-64.so    | Bin 3896 -> 3896 bytes
->   linux-user/ppc/vdso-64le.so  | Bin 3896 -> 3896 bytes
->   4 files changed, 4 insertions(+), 2 deletions(-)
+On 11/11/24 08:04, Paolo Savini wrote:
+> Hi Richard, Daniel,
+> 
+> This might be a silly question, but why do we need to ensure atomicity when emulating 
+> these guest instructions? I might be wrong but I didn't see an explicit requirement for 
+> the vector instructions to be atomic in the documentation of the RISC-V V extension.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+So that it works with threads?
+
+The rvv extension talks about loads and stores to individual elements.  The risc-v integer 
+spec talks about the atomicity of loads and stores.  The rvv extension does not talk about 
+*lowering* atomicity requirements.
+
+
+> Anyway the patches from Max have landed and since one of them already uses memcpy() where 
+> this patch does and achieves a similar performance improvement we should probably drop 
+> this particular patch. I'm wondering whether we should be concerned about atomicity there 
+> too?
+> 
+> https://github.com/qemu/qemu/blob/134b443512825bed401b6e141447b8cdc22d2efe/target/riscv/ 
+> vector_helper.c#L224
+
+It *did* go through review for exactly this. You'll notice that the memcpy path is 
+restricted to esz == 1, i.e. bytes.
+
+
+r~
+
 
