@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E1699C8F63
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Nov 2024 17:12:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 53B499C8F5F
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Nov 2024 17:12:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tBcOZ-0005pt-CP; Thu, 14 Nov 2024 11:08:35 -0500
+	id 1tBcOd-0006Cu-Oi; Thu, 14 Nov 2024 11:08:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tBcNe-0004b5-6H
- for qemu-devel@nongnu.org; Thu, 14 Nov 2024 11:07:44 -0500
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tBcOZ-0005zs-2Q
+ for qemu-devel@nongnu.org; Thu, 14 Nov 2024 11:08:35 -0500
+Received: from mail-lj1-x233.google.com ([2a00:1450:4864:20::233])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tBcNc-0003Na-2t
- for qemu-devel@nongnu.org; Thu, 14 Nov 2024 11:07:37 -0500
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-43163667f0eso7072545e9.0
- for <qemu-devel@nongnu.org>; Thu, 14 Nov 2024 08:07:35 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tBcOX-0003Rp-9G
+ for qemu-devel@nongnu.org; Thu, 14 Nov 2024 11:08:34 -0500
+Received: by mail-lj1-x233.google.com with SMTP id
+ 38308e7fff4ca-2ff5d2b8f0eso3966811fa.3
+ for <qemu-devel@nongnu.org>; Thu, 14 Nov 2024 08:08:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1731600454; x=1732205254; darn=nongnu.org;
+ d=linaro.org; s=google; t=1731600511; x=1732205311; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:to:subject:user-agent:mime-version:date:message-id:from
  :to:cc:subject:date:message-id:reply-to;
- bh=bBhHEF61l+0Qopee5hJyt7IAA+6q5Kb8PRWv833Y8XI=;
- b=bLh7xtmMPPeTYgfjM06JBSx2QcoeLkl2vjKbR99m63S//lvO0s9k5HDl71M4aO0N/q
- kcC7KZvfXQbAu8nIOpeKHHETbuQA26MhkSMfsLcRM1PsTSlTZ9nqfEHKAtP9Ge0yXgnY
- wosuYmMUnMtu0IufmYheUSK8ANc3X5AuBFG/wGt8geVqolprMIbyQegceUZCBbDlDt+O
- FPH3S2BkNjwOTApzz3/H7sb+LmUXxCodorFwsrb8CbvyyPekXGnVqTlG+rjfiCwBHk+1
- 8RyJY8wLncbaj8+KhrSMooPsk/DCGW2GSlfDk/8QBNduC68AS4ip29j8ZYNe0E1HbI7L
- GDYw==
+ bh=1mq7xSu5zTRM1yvz7hmkNwNqOpZpsyeoT61r+gsmWQ4=;
+ b=pP5eI6ctoiwgioBaFqFPTvoeZD2C1r40xSzRCUbDbOfTAJuVYY5XZw8Y3UlSGaelMZ
+ iTw+hdPB9VsPwEAy77m6kQhpRh3TbmqDZnFkyDwIXdiHtHXRd3KPnHk7PoylnnbeLjdS
+ 3C/kx9L3CEQMVR5ozpswfBQKVbsFFx0gLCndRSiWky5RZv2GDW05beexX2dI3uqsJwH3
+ 4Cvp9ueu+1wDHGx0SCfxlKDkANR4959zVXrZ5YuLxIA2L0BeoQPAJcT3yLWVxWPTwfNT
+ zPsZsVmScfIwXGE7ZK0Ma5zaBnEra7W1OK+hbUFc3bLY1bmAFVdYfQls3HJmVZjtxP5J
+ uRUg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731600454; x=1732205254;
+ d=1e100.net; s=20230601; t=1731600511; x=1732205311;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=bBhHEF61l+0Qopee5hJyt7IAA+6q5Kb8PRWv833Y8XI=;
- b=uKoMaXW+0/hKtJRiRrVjkvrUSfE0sT8BUNVguNRAh+B4QYfsh+ah+UCkoBCTLwAeUS
- QTZiVIZaj244AHALvL50mj3ofWtWRL66Bo9ZuAOyOyCuZbMuQl/+mPy9713h5B2EF/8S
- +wmh3l8xlWZvPIayojoQVhjT1z9XnDGWHTatuMnfYlRwpJ8IHVxTT5LBT9Gat7MQ+9qk
- oQu+gspkeIcgZbgOE3FzCjTHKiC4USoASC/nFoYt7f+2kKQNz3ff5VztoEQVVSHSVcs+
- etzJUky5ET1qtYAsQt6UKcdakpx/vOb2op1fy49CZ20aKK0/+Q/paJ71hHsCYbZsDgy9
- v+aA==
+ bh=1mq7xSu5zTRM1yvz7hmkNwNqOpZpsyeoT61r+gsmWQ4=;
+ b=ts8+3MPFxuPVrsR963EID0McaRKyD1wa/7lDmMK59XG2jH4sAHhnJOm2GyvD/Z9WR/
+ keh5urjPHAwOSn4WVrGOQx3fiD2BRQaVfPGsNN9X/h+pZ/TcnYM03NMEpPhxfnGNXJEP
+ Mn9NkMdeQYxXpQFWthOAFM/IyF1DwzALb6ZLk9vUCwl307scYbXHWSqxSwfoDooPhOW8
+ ms2147r9pGh4hURv5U5/X0kUYxtH7/EQlS9+zmmjHCvZzLVDQ6xa2GSB6N7O0/iiYN+b
+ N135QjiLw37U0tHAa5RDHinnvWvttjFsVxUq6LRhl1+AAbd7lF1Fym/Wsb44qgspKvI8
+ fLzg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVZ1T3jA1yscTfqat6/+MWdzyoGmU3RPX63B3Xz4+pg9J4rPjgKDV/cYRasQRXOMi3nj4N+8GfiiiVP@nongnu.org
-X-Gm-Message-State: AOJu0YzRpmXQGEBaSOg6T6ougSfDnEAyVd5eysKMTGS/5o/xHsS4EUkT
- wRIpgEMvBI2nJ0KhIY/EStyY5N6jATH1QwYlWzbzBKA+0wZ8Iqm/hRwXiwY8+os=
-X-Google-Smtp-Source: AGHT+IHjZHgUNJJg03g6FanV+yCx0iK8XBbDnxrbJNdqIZcZVahgFB8p/dsmbub+Q/AdllaExtXyTw==
-X-Received: by 2002:a05:6000:2c2:b0:382:b57:f0b5 with SMTP id
- ffacd0b85a97d-382184fd7famr2040760f8f.12.1731600453910; 
- Thu, 14 Nov 2024 08:07:33 -0800 (PST)
+ AJvYcCVUEpt/XYdXfkzxgg8alPCcS/uJBmB7hQF2PW8QmV9Y2XIatSN2B2UiqLsuY8QO9m6/kqiVYHYSZ5EG@nongnu.org
+X-Gm-Message-State: AOJu0YyLVibb1INeWnukRamoaDHA3lDLX+9Ql4o4++tLLZy9ZU12uaC8
+ 6bbgV6PG1OfWyw65I83H/lsR9mtvFoVls5a7wHpNvr8WIs/v88HoXlp6xCqfRwE=
+X-Google-Smtp-Source: AGHT+IEBlC6rqIhjiCU7Fru2UOtM7vOcZxJ+J/ivxblzdvoF85Jn89B54S35QcTtd2/2LqxzLR0D6A==
+X-Received: by 2002:a2e:bd02:0:b0:2ef:20ae:d113 with SMTP id
+ 38308e7fff4ca-2ff4271fec1mr61649311fa.40.1731600511164; 
+ Thu, 14 Nov 2024 08:08:31 -0800 (PST)
 Received: from [192.168.69.126] ([176.187.209.228])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3821ae311fbsm1816672f8f.95.2024.11.14.08.07.33
+ 5b1f17b1804b1-432dab80a28sm25101255e9.24.2024.11.14.08.08.30
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 14 Nov 2024 08:07:33 -0800 (PST)
-Message-ID: <f5c31625-78fb-4bf1-a47f-081a146a652f@linaro.org>
-Date: Thu, 14 Nov 2024 17:07:32 +0100
+ Thu, 14 Nov 2024 08:08:30 -0800 (PST)
+Message-ID: <7f38fbe6-4fc3-4486-be3c-92b7ecaa4f27@linaro.org>
+Date: Thu, 14 Nov 2024 17:08:29 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/6] linux-user: Drop image_info.alignment
+Subject: Re: [PATCH 3/6] linux-user/aarch64: Reduce vdso alignment to 4k
 To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
 References: <20241112203757.804320-1-richard.henderson@linaro.org>
- <20241112203757.804320-3-richard.henderson@linaro.org>
+ <20241112203757.804320-4-richard.henderson@linaro.org>
 Content-Language: en-US
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20241112203757.804320-3-richard.henderson@linaro.org>
+In-Reply-To: <20241112203757.804320-4-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::233;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x233.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,16 +93,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/11/24 20:37, Richard Henderson wrote:
-> This field is write-only.  Use only the function-local
-> variable within load_elf_image.
-> 
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->   linux-user/qemu.h    | 1 -
->   linux-user/elfload.c | 7 +++----
->   2 files changed, 3 insertions(+), 5 deletions(-)
+Preferably adding here and in following patches:
+
+"Reduce vdso alignment to minimum page size."
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
+On 12/11/24 20:37, Richard Henderson wrote:
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+>   linux-user/aarch64/Makefile.vdso |   5 +++--
+>   linux-user/aarch64/vdso-be.so    | Bin 3224 -> 3224 bytes
+>   linux-user/aarch64/vdso-le.so    | Bin 3224 -> 3224 bytes
+>   3 files changed, 3 insertions(+), 2 deletions(-)
 
 
