@@ -2,90 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11E8D9C93C0
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Nov 2024 22:04:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B0159C93A6
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Nov 2024 22:01:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tBh0L-0005Ty-1t; Thu, 14 Nov 2024 16:03:53 -0500
+	id 1tBgx6-0008Ff-4Y; Thu, 14 Nov 2024 16:00:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tBgzG-00046G-Pg
- for qemu-devel@nongnu.org; Thu, 14 Nov 2024 16:02:47 -0500
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tBgzE-0008DN-A1
- for qemu-devel@nongnu.org; Thu, 14 Nov 2024 16:02:46 -0500
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-4315baa51d8so281095e9.0
- for <qemu-devel@nongnu.org>; Thu, 14 Nov 2024 13:02:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1731618162; x=1732222962; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Nb6BGc20Jrn3ivl3e3d8GrejdUgzYW7qbVEFEk+JhnM=;
- b=cVQVwNdCq9YmOJpndZNgMxTLc6xKryNpSLUVIi/5DcY/MzYsrQVHTH3BNMmiXC8EE+
- 9D2sqJEuPxGUcpVNeJYFHPx896SKtIBBSfXzet8momMNk9DhgCMfzjfFeWMKSATnbFLL
- uAdXgHT35qUsZa2Ux0iDR+eM3D4JILOhoSEAUNvGdBJhfjoiP8Cd67wMSu6rt2OiQK9B
- 7+LV3CkgNCztat93Mq0kAynJ7YDN7bOnWxvQ/0D7N+FlcVbYB5vgisqBJy3V17bi/rJK
- zeZaUbBRkJLlnF1PyIsRfG0O69hNk3wwD3oKLY1SzGKR4fm/XcANmZx8/PZnKQBbS3HP
- rjRg==
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tBgx3-0008Ej-Jc
+ for qemu-devel@nongnu.org; Thu, 14 Nov 2024 16:00:29 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tBgx1-0007uk-TB
+ for qemu-devel@nongnu.org; Thu, 14 Nov 2024 16:00:29 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1731618025;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=+0Hut3RTDnL/voQ2ISTVQZmwUdqtrb97TOVExpaB64A=;
+ b=aCkQ37JpN1pjErFO3Sa5peqXhwW2RURgxTXGGyskLfviLA0T5SRExnIv4ARhMIKou1GF5z
+ zX5g7weFELKK95OYh8DGUe33BCmXqbUZvsY+oLHtPZm5Z7jfedQpyV/Cl2AqHml0OcROvQ
+ i6+apmx39ChRy5v2MQwn5qa6YRcWm64=
+Received: from mail-io1-f72.google.com (mail-io1-f72.google.com
+ [209.85.166.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-665-ezzcLfWgPA2qeKHJaqBqpw-1; Thu, 14 Nov 2024 16:00:24 -0500
+X-MC-Unique: ezzcLfWgPA2qeKHJaqBqpw-1
+X-Mimecast-MFC-AGG-ID: ezzcLfWgPA2qeKHJaqBqpw
+Received: by mail-io1-f72.google.com with SMTP id
+ ca18e2360f4ac-83aa6bcd7b3so116649339f.2
+ for <qemu-devel@nongnu.org>; Thu, 14 Nov 2024 13:00:24 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731618162; x=1732222962;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=Nb6BGc20Jrn3ivl3e3d8GrejdUgzYW7qbVEFEk+JhnM=;
- b=v7ZT6ERgMPUnK2+hFACv/dfvCAOoUpyVCc9NjzkBppJ+hMzFQNnMuA07BmW7RBIHIX
- /xct2KxpOSQ21sbgnHhg4ck0WgfT+BLt/EXj1wgH/WPLiX131bw8adUZ6sBtIXqc6PlR
- fnujxxl4VKcR8l+5/v3kCbfFNcf4HM7u/64mk0hXGSynU4QonX1ssHa9+y5/dxWibH1c
- VFBFGjNrSfJgytN38W2xdcX1lJ2Vq3I8bqzuvBpzQkKCPdCUoCwAiFcls8v6hvPiSG+V
- yX3cIE7q07DkwYnypjxfzK7/fkXMXSghMKJUdw5+hk0AjSZcTUd3u2tl6gZ9GvhNEmY4
- Cf/g==
-X-Gm-Message-State: AOJu0YzX82hLWh8+M92qELCKJJXXHfLeETXKHRq6nJZbe/Y3GfZnvAyS
- +HUqBhUzBWB/n5k/VY30SRVq3pg5dS3BTIcApUEzC5krsMfVqkIPmg2EZrtmXmFswULMOucAghe
- D
-X-Google-Smtp-Source: AGHT+IG6O/2JmtvsVbeD5xO/cbrD44NAUR/Z1mCs/lWee2Q3bz69O1TLsex669BwSygtgalXtdryyw==
-X-Received: by 2002:a5d:5f43:0:b0:37d:48ec:547 with SMTP id
- ffacd0b85a97d-38225a32a44mr185997f8f.29.1731618161876; 
- Thu, 14 Nov 2024 13:02:41 -0800 (PST)
-Received: from localhost.localdomain ([176.187.209.228])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38221c9d838sm1380709f8f.6.2024.11.14.13.02.39
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 14 Nov 2024 13:02:40 -0800 (PST)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>, qemu-arm@nongnu.org,
- Richard Henderson <richard.henderson@linaro.org>,
- Thomas Huth <thuth@redhat.com>, Anton Johansson <anjo@rev.ng>,
- Bernhard Beschow <shentey@gmail.com>,
- Alistair Francis <alistair@alistair23.me>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Gustavo Romero <gustavo.romero@linaro.org>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>, Jason Wang <jasowang@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH RESEND v2 19/19] hw/net/xilinx_ethlite: Map RESERVED I/O as
- unimplemented
-Date: Thu, 14 Nov 2024 22:00:10 +0100
-Message-ID: <20241114210010.34502-20-philmd@linaro.org>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20241114210010.34502-1-philmd@linaro.org>
-References: <20241114210010.34502-1-philmd@linaro.org>
+ d=1e100.net; s=20230601; t=1731618023; x=1732222823;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=+0Hut3RTDnL/voQ2ISTVQZmwUdqtrb97TOVExpaB64A=;
+ b=MFcTydMa09HNjTNlBC+OMa7mJ0ci6v8y5z/4F1stZRMna1nygpmI0twrph7M9CqcLY
+ 2+dKFQEw2/ixna8Th//U734CvaCcyQKz0uweY7ljc36McrPKPrusbT44wTKlK5LX468g
+ +iW4Cdc4bX/+hGBMPVcIBPHxvEuCX6jODRtiwg2r8y6X/eJtlm2AxH5CInV6cM7f9Anr
+ c8wY0HBVbKpf6suHrOMBAGlSODTBe0ar3x9iAVs+/ri2W6aX8D+4XPN7YQAsS8sqJlio
+ EZVwLemY0Be47nArYOmq6iY8sPP/Q7V3PZR9vRiQLU+vmXMYsR8GwgsTcOaq1hVV4+eO
+ uXPg==
+X-Gm-Message-State: AOJu0YwLis48C2zEEiyz/aOQo9ilGB3Hf9VjN8ZDni38EG+c4BlyVqN+
+ DEoXSW33S7u+1pAllbLM1e8NI3TtZGGx/dpNFGFSuBcS4tAL7aeZSrwOFxVNrP1FmNXlZ0l4XP9
+ X0+0o6tJtaR98QQ8xzK6EiHQe6rVxfbv7LbWdoevBBuHD3ijjqZRG0dtoUIAj
+X-Received: by 2002:a05:6602:13c1:b0:83a:a82b:f856 with SMTP id
+ ca18e2360f4ac-83e6c0a935emr64269739f.3.1731618023176; 
+ Thu, 14 Nov 2024 13:00:23 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFVHr44QikO3Fu+C3sNhpyCDmG42HiHCn2f8PdXrYS5M64Z+su+CYHde7H/c5Mq9DKD0L6eHQ==
+X-Received: by 2002:a05:6602:13c1:b0:83a:a82b:f856 with SMTP id
+ ca18e2360f4ac-83e6c0a935emr64266739f.3.1731618022840; 
+ Thu, 14 Nov 2024 13:00:22 -0800 (PST)
+Received: from x1n (pool-99-254-114-190.cpe.net.cable.rogers.com.
+ [99.254.114.190]) by smtp.gmail.com with ESMTPSA id
+ 8926c6da1cb9f-4e06d6eadb2sm21405173.22.2024.11.14.13.00.22
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 14 Nov 2024 13:00:22 -0800 (PST)
+Date: Thu, 14 Nov 2024 16:00:20 -0500
+From: Peter Xu <peterx@redhat.com>
+To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>
+Subject: Re: [PATCH v2 7/8] convert code to qdev_new_dynamic() where
+ appropriate
+Message-ID: <ZzZk5KAzbu6NVl9Z@x1n>
+References: <20241111155555.90091-1-berrange@redhat.com>
+ <20241111155555.90091-8-berrange@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+In-Reply-To: <20241111155555.90091-8-berrange@redhat.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -28
+X-Spam_score: -2.9
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.122,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.69,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,63 +102,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In order to track access to reserved I/O space, use yet
-another UnimplementedDevice covering the whole device
-memory range. Mapped with lower priority (-1).
+On Mon, Nov 11, 2024 at 03:55:54PM +0000, Daniel P. Berrangé wrote:
+> In cases where qdev_new() is not being passed a static, const
+> string, the caller cannot be sure what type they are instantiating.
+> There is a risk that instantiation could fail, if it is an abstract
+> type.
+> 
+> Convert such cases over to use qdev_new_dynamic() such that they
+> are forced to expect failure. In some cases failure can be easily
+> propagated, but in others using &error_abort or &error_fatal will
+> maintain existing behaviour.
+> 
+> Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 
-The memory flat view becomes:
+Reviewed-by: Peter Xu <peterx@redhat.com>
 
-  (qemu) info mtree -f
-  FlatView #0
-   Root memory region: system
-    0000000081000000-00000000810007e3 (prio 0, ram): ethlite.tx[0]buf
-    00000000810007e4-00000000810007f3 (prio 0, i/o): ethlite.mdio
-    00000000810007f4-00000000810007ff (prio 0, i/o): ethlite.tx[0]io
-    0000000081000800-0000000081000fe3 (prio 0, ram): ethlite.tx[1]buf
-    0000000081000fe4-0000000081000ff3 (prio -1, i/o): ethlite.reserved @0000000000000fe4
-    0000000081000ff4-0000000081000fff (prio 0, i/o): ethlite.tx[1]io
-    0000000081001000-00000000810017e3 (prio 0, ram): ethlite.rx[0]buf
-    00000000810017e4-00000000810017fb (prio -1, i/o): ethlite.reserved @00000000000017e4
-    00000000810017fc-00000000810017ff (prio 0, i/o): ethlite.rx[0]io
-    0000000081001800-0000000081001fe3 (prio 0, ram): ethlite.rx[1]buf
-    0000000081001fe4-0000000081001ffb (prio -1, i/o): ethlite.reserved @0000000000001fe4
-    0000000081001ffc-0000000081001fff (prio 0, i/o): ethlite.rx[1]io
-
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- hw/net/xilinx_ethlite.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
-
-diff --git a/hw/net/xilinx_ethlite.c b/hw/net/xilinx_ethlite.c
-index 5f1ff7b712..1be38c44dd 100644
---- a/hw/net/xilinx_ethlite.c
-+++ b/hw/net/xilinx_ethlite.c
-@@ -95,6 +95,7 @@ struct XlnxXpsEthLite
-     uint32_t c_rx_pingpong;
-     unsigned int port_index; /* dual port RAM index */
- 
-+    UnimplementedDeviceState rsvd;
-     UnimplementedDeviceState mdio;
-     XlnxXpsEthLitePort port[2];
- };
-@@ -304,6 +305,16 @@ static void xilinx_ethlite_realize(DeviceState *dev, Error **errp)
-     memory_region_init(&s->container, OBJECT(dev),
-                        "xlnx.xps-ethernetlite", 0x2000);
- 
-+    object_initialize_child(OBJECT(dev), "ethlite.reserved", &s->rsvd,
-+                            TYPE_UNIMPLEMENTED_DEVICE);
-+    qdev_prop_set_string(DEVICE(&s->rsvd), "name", "ethlite.reserved");
-+    qdev_prop_set_uint64(DEVICE(&s->rsvd), "size",
-+                         memory_region_size(&s->container));
-+    sysbus_realize(SYS_BUS_DEVICE(&s->rsvd), &error_fatal);
-+    memory_region_add_subregion_overlap(&s->container, 0,
-+                           sysbus_mmio_get_region(SYS_BUS_DEVICE(&s->rsvd), 0),
-+                           -1);
-+
-     object_initialize_child(OBJECT(dev), "ethlite.mdio", &s->mdio,
-                             TYPE_UNIMPLEMENTED_DEVICE);
-     qdev_prop_set_string(DEVICE(&s->mdio), "name", "ethlite.mdio");
 -- 
-2.45.2
+Peter Xu
 
 
