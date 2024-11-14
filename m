@@ -2,71 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 569E59C8F59
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Nov 2024 17:12:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F317C9C8F69
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Nov 2024 17:13:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tBcP8-0008P0-Jn; Thu, 14 Nov 2024 11:09:10 -0500
+	id 1tBcPN-0001RM-Et; Thu, 14 Nov 2024 11:09:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tBcP0-00088t-2Y
- for qemu-devel@nongnu.org; Thu, 14 Nov 2024 11:09:03 -0500
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tBcPH-0000wG-01
+ for qemu-devel@nongnu.org; Thu, 14 Nov 2024 11:09:19 -0500
 Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tBcOx-0003Td-Qh
- for qemu-devel@nongnu.org; Thu, 14 Nov 2024 11:09:01 -0500
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tBcPF-0003Ul-Fb
+ for qemu-devel@nongnu.org; Thu, 14 Nov 2024 11:09:18 -0500
 Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-432d9b8558aso5963585e9.0
- for <qemu-devel@nongnu.org>; Thu, 14 Nov 2024 08:08:58 -0800 (PST)
+ 5b1f17b1804b1-431695fa98bso6849345e9.3
+ for <qemu-devel@nongnu.org>; Thu, 14 Nov 2024 08:09:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1731600537; x=1732205337; darn=nongnu.org;
+ d=linaro.org; s=google; t=1731600556; x=1732205356; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:to:subject:user-agent:mime-version:date:message-id:from
  :to:cc:subject:date:message-id:reply-to;
- bh=uRbudzxjvOjvh17i77OJUOFln9vHlmvdUzGGXOeVBoM=;
- b=vVAb4dFaim+uACXuLF7O3Fz6ZvWCLSGm9nS9xKhpeFOq5KCrncFX/M5PJdXLtsSAYJ
- sGzSDS71FaUS/4yavBQz2fZCveuXWGM+u3o5ayg1Wn/ELpJ7elLNRqGFmBgx2JwIrkmh
- kNXJYhzcplSEhYdLg/QMrXAQdmqfclzc6EzkcOo0JwW4fxnUxq7QBWH7XXeTN4bfgG0P
- QPwe4OG74bBW8SB+LTHhdbPbmlr3g4zaL+kVtPclbl+J/cU1nJiqa0B6rSi4CfJLmbzW
- mTyxq7FIrw2OZZjtT/UkRLHVTSeX3g182qme2d/UQVNNpEikYggs0/uWM+VuCLcWocpK
- ligw==
+ bh=CiVkVQT8ZUMO/xGFD+WJb3tpg+3sGgL6H5+GHc5Jrtc=;
+ b=xnnIip+ryswB5A45Ih2U9F7PMWCjAWUi92XsUIEebxpwMNnepho3nLg2p4yPW2uCTp
+ 6WUV+uVmsR0wp9rtiIOjyiQCOUk8BDKohyIkJE9/VDYhXY3ydlsjF7FbgjQaB0nR02pM
+ TJ4hYJICiO0KBC9vyr2aXDBVGHfbAemhhGKq+KWHj/Bfsi2Gj9IkdbI3zoZtMXFcS3O5
+ z01SceiB3lN8Eza8Ss7nmVfqHrAt1IfAEO9VlFF1VH6RhDlK6+C1jSX6+rD2ans8W66P
+ 4LWsfj9ZX3BOvwbYjROzMk42VwwLXf06/vM8wSfNn4pqiNNmFZ3UKHtyeYAWN6M0KHkc
+ ZVHg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731600537; x=1732205337;
+ d=1e100.net; s=20230601; t=1731600556; x=1732205356;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=uRbudzxjvOjvh17i77OJUOFln9vHlmvdUzGGXOeVBoM=;
- b=jTagkPIM+tLB4Bc+wra5oILKrco7sbvm5rxiREC9Rfgfu+wHo/aSOaFigXiaDAJ9eg
- hJkzxT+0GZQ+sQDhoxKY2Ie5LopLtf+wZKqWMi7gMclm4OZnw7AOXJxQnjfutvLB1FOx
- /UMtbxGsLJRMtpB3y+ceveOh9S648XiTBY77OlcMeQkqj2sh7rpg9aqiHn1zpJgpCknH
- 8mxmm+goV1PoqhPAlkZwEhEOUz4MQKM62YFg+D83W6CNHgh14s5v3VAnH1QOs6NkvTSl
- SeJ+x0jqSp2wfk4Fvq3XZUXvQevI55AvvB9e1tMAHcO78UOl61g9HsfPvAn49eXXlqrT
- UkkA==
+ bh=CiVkVQT8ZUMO/xGFD+WJb3tpg+3sGgL6H5+GHc5Jrtc=;
+ b=iQR3NddxsD98p2j6rpPr/O7FxjmwRDx8Jrkb0lYj84HStFrx0hk2WW3xDpe79b0RCf
+ HLk1roItlYcAZrnUQ8xDqjGv/j0GzDA4PcrM85e/1t4df2nvArZX4XpkKrk5/IrH0aEA
+ qa4wlru6xWLWt4Ix7uHymwoXKJo5J5xFW/jaSykuBA4Hs+kAa/K8MRqTLoe8zass+/z0
+ jxInrgB4CxDrGsPfeCRWybtqyJUTnQrEokzu2TVYj+ZO0VyhICCwCveRC8KjPDF7o8Ff
+ 9vX3mKF3ruaMzDgueJ8pKTzYRLZGf3BfPuO53MmEIM0O0W9SkIDgIsvm7qXhrk52Dq4H
+ NI7Q==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXmhbVXuCxnX4L81boRCi9jGiLBfaAmGKldnQ3l2XXvzEs6MAFn7j0Xvr3Py2LR7TyOvlvpp5ExNl2y@nongnu.org
-X-Gm-Message-State: AOJu0YxbK8D7AJ+mU+OZPFcU4dg+Yy7OuYhDcEgIf7Ymc68KxjwLBKPW
- wUJVDKJO3Fvrc+if8uBT52vDdEEx6bTXCnHK17n4gOw7QAOWu3wDLlfRaw9t1tI=
-X-Google-Smtp-Source: AGHT+IFtj+sQe6gXh9ad87pHl8AKUHYBRm8jttpa3fTeJ03mwhk01DUgIlBTkrQ9sHD3/H23KqxhUg==
-X-Received: by 2002:a05:600c:1907:b0:431:52da:9d89 with SMTP id
- 5b1f17b1804b1-432d973dd20mr37922455e9.1.1731600537028; 
- Thu, 14 Nov 2024 08:08:57 -0800 (PST)
+ AJvYcCVP1zdJSePvUshb3B0LMz4ghyDwQ9vUXEIG2ZgfGiUSwyUvPmfLlI6zzCHmzRrt51rQewQnZP46t7ze@nongnu.org
+X-Gm-Message-State: AOJu0YzLseLNRHIAP3XALd0Y62D2mt7aY0M3ZvkU4Cet3SDAlvxmrwUa
+ eP5pfDpW5K4HexHuIYaLeqxG6kQpEk4Otxm+fs/zpkGFFoJfFiw2gRpMaX+H8vjsDYvMyw0cNVt
+ 6
+X-Google-Smtp-Source: AGHT+IFT6PiulzySEO1L7B4gcuti7ub1k7x1n0JSDEi6oQq/tghad3wb63asRzWfN3i0p20f+QyS/A==
+X-Received: by 2002:a5d:64e5:0:b0:37d:481e:fca with SMTP id
+ ffacd0b85a97d-381f186fa0bmr23411248f8f.27.1731600555762; 
+ Thu, 14 Nov 2024 08:09:15 -0800 (PST)
 Received: from [192.168.69.126] ([176.187.209.228])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-432dac1f409sm24647175e9.37.2024.11.14.08.08.56
+ ffacd0b85a97d-3821adad9cesm1825925f8f.37.2024.11.14.08.09.14
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 14 Nov 2024 08:08:56 -0800 (PST)
-Message-ID: <87e88f4c-3ca5-48b9-bcb6-5444fe2471b3@linaro.org>
-Date: Thu, 14 Nov 2024 17:08:55 +0100
+ Thu, 14 Nov 2024 08:09:15 -0800 (PST)
+Message-ID: <f0c6c21d-353d-4c5f-a88c-23c24d30a43a@linaro.org>
+Date: Thu, 14 Nov 2024 17:09:14 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5/6] linux-user/loongarch64: Reduce vdso alignment to 4k
+Subject: Re: [PATCH 6/6] linux-user/ppc: Reduce vdso alignment to 4k
 To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
 References: <20241112203757.804320-1-richard.henderson@linaro.org>
- <20241112203757.804320-6-richard.henderson@linaro.org>
+ <20241112203757.804320-7-richard.henderson@linaro.org>
 Content-Language: en-US
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20241112203757.804320-6-richard.henderson@linaro.org>
+In-Reply-To: <20241112203757.804320-7-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=2a00:1450:4864:20::329;
@@ -96,9 +97,11 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 On 12/11/24 20:37, Richard Henderson wrote:
 > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
->   linux-user/loongarch64/Makefile.vdso |   3 ++-
->   linux-user/loongarch64/vdso.so       | Bin 3560 -> 3560 bytes
->   2 files changed, 2 insertions(+), 1 deletion(-)
+>   linux-user/ppc/Makefile.vdso |   6 ++++--
+>   linux-user/ppc/vdso-32.so    | Bin 3020 -> 3020 bytes
+>   linux-user/ppc/vdso-64.so    | Bin 3896 -> 3896 bytes
+>   linux-user/ppc/vdso-64le.so  | Bin 3896 -> 3896 bytes
+>   4 files changed, 4 insertions(+), 2 deletions(-)
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
