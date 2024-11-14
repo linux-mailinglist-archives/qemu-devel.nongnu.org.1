@@ -2,68 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 257199C8C89
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Nov 2024 15:11:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D20FD9C8CAB
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Nov 2024 15:17:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tBaYs-0006iX-10; Thu, 14 Nov 2024 09:11:06 -0500
+	id 1tBae4-0000fy-D8; Thu, 14 Nov 2024 09:16:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vkuznets@redhat.com>)
- id 1tBaYp-0006iC-CZ
- for qemu-devel@nongnu.org; Thu, 14 Nov 2024 09:11:03 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vkuznets@redhat.com>)
- id 1tBaYn-0004n4-Ax
- for qemu-devel@nongnu.org; Thu, 14 Nov 2024 09:11:03 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1731593460;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=44Ld7GSzstmNorUoMdYMOBbIC7DfSIlpih808u60vlI=;
- b=b8u7dLImNpNvAyJ9+qWhSDVu+BDw00jvdPiPxCCxLb59NW3QotQg9waESyI2tqcEKom9GI
- I9aBXe5FizaXuS2CFLuhG+ulAl2m0gNj+C80Qs/WV02uPA51WKueNBewnCaPYpkOqauvzG
- BHLKDIR8In77mttyUO2tVBWj6Dz9NeQ=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-653-ZemcXSGnNLiItpm0K2sCoQ-1; Thu,
- 14 Nov 2024 09:10:51 -0500
-X-MC-Unique: ZemcXSGnNLiItpm0K2sCoQ-1
-X-Mimecast-MFC-AGG-ID: ZemcXSGnNLiItpm0K2sCoQ
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 598951955F3E; Thu, 14 Nov 2024 14:10:50 +0000 (UTC)
-Received: from fedora.redhat.com (unknown [10.45.226.10])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 7B43C1955F21; Thu, 14 Nov 2024 14:10:46 +0000 (UTC)
-From: Vitaly Kuznetsov <vkuznets@redhat.com>
-To: qemu-devel@nongnu.org, Kevin Wolf <kwolf@redhat.com>,
- Hanna Reitz <hreitz@redhat.com>, qemu-block@nongnu.org
-Subject: [PATCH] vpc: Read images exported from Azure correctly
-Date: Thu, 14 Nov 2024 15:10:45 +0100
-Message-ID: <20241114141045.374575-1-vkuznets@redhat.com>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1tBae1-0000fI-Qo
+ for qemu-devel@nongnu.org; Thu, 14 Nov 2024 09:16:25 -0500
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1tBae0-0005gx-0S
+ for qemu-devel@nongnu.org; Thu, 14 Nov 2024 09:16:25 -0500
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-43158625112so6467355e9.3
+ for <qemu-devel@nongnu.org>; Thu, 14 Nov 2024 06:16:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1731593781; x=1732198581; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=rQtG2DTe69xRGS5IpoB1b9+fEhQPKqrD0dUp2eVwI90=;
+ b=fDLFl6cRgb0vnWle7PBluA8dbjo0rBKN8tWGNFZtj30mPzW5HV5qU57j8X5trssQ6g
+ G9wkDRbSAsVzlV2K1AuPysMdqA/PxczskBl9CuM1QDYYbX5LBJkfpRitjsFGNLKm3lP3
+ 3N3R87BO/vVnRLMRlejzPTxpNl/pErSgTs8S0pmQ9x4zgLROeua4PzKHOWdRRo/s1jOU
+ 6Dj+iq3eipI8+easRXhWU/T7eISP6uGTfX4OW2h5TV65Pwezh3yo+ie2pX9efFaDHGjJ
+ Ymv1zat35w3V67FpzSW8wCjWXp6DXbm/8DL2gRCUtGCL/iYVA0tl7JLnJ4B159bMwxp3
+ BPKQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1731593781; x=1732198581;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=rQtG2DTe69xRGS5IpoB1b9+fEhQPKqrD0dUp2eVwI90=;
+ b=pdetolXyOM3oSPNJf0mWWkL5YtDPAlYaTiVJYAHy1X+Xma+QAs9eUohYj+dvqhqVBS
+ 2ghRM7y0N5xKCfiRImsEV1xqmG6npuzvbfZtd24mqRitjwsBYw3H/X4sRFCCXNd1Yngo
+ heOcwoy9aTMaZT05s522DcrjiSKF+C4W9KDLpQGzQSxhZK/00Mmcjhy7JtWqQSljSlzA
+ UgQA3KtflNXpsB+jy9nRtWQpZWUSe6s+hVjkg1ChDuWD7xy/IMpXQWGMuhdlNMRx8+7l
+ YbcShBioJPzHtnyobUQSYeWRhqjHldQ9SCLklseE9319meHQRy6coekBo1y35mP+DOoN
+ 1ARg==
+X-Gm-Message-State: AOJu0Yy2kWjtVKMqFa2EwCnKv1odyfdcpe7CMjMlBPbaMhmHBfTWyzdi
+ HsZCd7khz+jqUK8LB/Kzg/bGe4nTYRPgDRRcu9NRghwm7L2FlynYDQv/xwzgSvycKUoN7Yj92Yb
+ l
+X-Google-Smtp-Source: AGHT+IHin9Op/H/aWyh4RFh+jxZTGHlHbxx0M3SUyteKkxd0AYGbdGyVGYrTPG7iTJc6QzmR1cRqcw==
+X-Received: by 2002:a05:600c:4e08:b0:431:44fe:fd9f with SMTP id
+ 5b1f17b1804b1-432da7cb853mr18090585e9.23.1731593781203; 
+ Thu, 14 Nov 2024 06:16:21 -0800 (PST)
+Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-432da244915sm24941655e9.3.2024.11.14.06.16.20
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 14 Nov 2024 06:16:20 -0800 (PST)
+From: Peter Maydell <peter.maydell@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
+ Dmitry Fleytman <dmitry.fleytman@gmail.com>,
+ Akihiko Odaki <akihiko.odaki@daynix.com>,
+ Yuri Benditovich <ybendito@redhat.com>
+Subject: [PATCH v2 0/2] net: Make ip_header struct QEMU_PACKED
+Date: Thu, 14 Nov 2024 14:16:17 +0000
+Message-Id: <20241114141619.806652-1-peter.maydell@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=vkuznets@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -28
-X-Spam_score: -2.9
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x330.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.122,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.69,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -79,52 +92,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-It was found that 'qemu-nbd' is not able to work with some disk images
-exported from Azure. Looking at the 512b footer (which contains VPC
-metadata):
+This patchset aims to fix some clang undefined-behavior
+sanitizer warnings that you see if you run the arm
+functional-tests:
 
-00000000  63 6f 6e 65 63 74 69 78  00 00 00 02 00 01 00 00  |conectix........|
-00000010  ff ff ff ff ff ff ff ff  2e c7 9b 96 77 61 00 00  |............wa..|
-00000020  00 07 00 00 57 69 32 6b  00 00 00 01 40 00 00 00  |....Wi2k....@...|
-00000030  00 00 00 01 40 00 00 00  28 a2 10 3f 00 00 00 02  |....@...(..?....|
-00000040  ff ff e7 47 8c 54 df 94  bd 35 71 4c 94 5f e5 44  |...G.T...5qL._.D|
-00000050  44 53 92 1a 00 00 00 00  00 00 00 00 00 00 00 00  |DS..............|
-00000060  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
+         Stopping network: ../../net/checksum.c:106:9: runtime error: member access within misaligned address 0x556aad9b502e for type 'struct ip_header', which requires 4 byte alignment
+        0x556aad9b502e: note: pointer points here
+         34 56 08 00 45 00  01 48 a5 09 40 00 40 11  7c 8b 0a 00 02 0f 0a 00  02 02 00 44 00 43 01 34  19 56
+                     ^
+        SUMMARY: UndefinedBehaviorSanitizer: undefined-behavior ../../net/checksum.c:106:9 in
+        ../../net/checksum.c:106:9: runtime error: load of misaligned address 0x556aad9b502e for type 'uint8_t' (aka 'unsigned char'), which requires 4 byte alignment
+        0x556aad9b502e: note: pointer points here
+         34 56 08 00 45 00  01 48 a5 09 40 00 40 11  7c 8b 0a 00 02 0f 0a 00  02 02 00 44 00 43 01 34  19 56
+                     ^
 
-we can see that Azure uses a different 'Creator application' --
-'wa\0\0' (offset 0x1c, likely reads as 'Windows Azure') and QEMU uses this
-field to determine how it can get image size. Apparently, Azure uses 'new'
-method, just like Hyper-V.
+These result from the net_checksum_calculate() function
+creating a 'struct ip_header *' from an unaligned address.
+We try to handle the non-alignment by using functions like
+lduw_be_p(), but this is insufficient because even accessing
+a byte member within an unaligned struct is UB.
 
-Signed-off-by: Vitaly Kuznetsov <vkuznets@redhat.com>
----
-Alternatively, we can probably make 'current_size' the default and only use
-CHS for 'vpc '/'qemu'.
----
- block/vpc.c | 2 ++
- 1 file changed, 2 insertions(+)
+This patchset fixes this by marking 'struct ip_header'
+as QEMU_PACKED, which tells the compiler that it might
+be at an unaligned address.
 
-diff --git a/block/vpc.c b/block/vpc.c
-index d95a204612b7..da8662402d00 100644
---- a/block/vpc.c
-+++ b/block/vpc.c
-@@ -321,6 +321,7 @@ static int vpc_open(BlockDriverState *bs, QDict *options, int flags,
-      *      'qemu'  :  CHS              QEMU (uses disk geometry)
-      *      'qem2'  :  current_size     QEMU (uses current_size)
-      *      'win '  :  current_size     Hyper-V
-+     *      'wa\0\0':  current_size     Azure
-      *      'd2v '  :  current_size     Disk2vhd
-      *      'tap\0' :  current_size     XenServer
-      *      'CTXS'  :  current_size     XenConverter
-@@ -330,6 +331,7 @@ static int vpc_open(BlockDriverState *bs, QDict *options, int flags,
-      *  that have CHS geometry of the maximum size.
-      */
-     use_chs = (!!strncmp(footer->creator_app, "win ", 4) &&
-+               !!strncmp(footer->creator_app, "wa", 4) &&
-                !!strncmp(footer->creator_app, "qem2", 4) &&
-                !!strncmp(footer->creator_app, "d2v ", 4) &&
-                !!strncmp(footer->creator_app, "CTXS", 4) &&
+For that to work, we need to first fix the places in virtio-net.c
+which take the address of a field within an ip_header:
+the compiler will warn/error if we try to do that for a
+field in a struct which is marked QEMU_PACKED.
+
+Probably other structs in eth.h should be marked packed
+too, but I am here only addressing the case that produces
+warnings that I have seen.
+
+v1->v2 changes:
+ * patch 1 now uses the correct lduw_be_p/stw_be_p
+
+thanks
+-- PMM
+
+Peter Maydell (2):
+  hw/net/virtio-net.c: Don't assume IP length field is aligned
+  net: mark struct ip_header as QEMU_PACKED
+
+ include/hw/virtio/virtio-net.h |  2 +-
+ include/net/eth.h              |  2 +-
+ hw/net/virtio-net.c            | 23 +++++++++++++++++++----
+ 3 files changed, 21 insertions(+), 6 deletions(-)
+
 -- 
-2.47.0
+2.34.1
 
 
