@@ -2,57 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44DF59C9050
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Nov 2024 17:58:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AB2E9C905A
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Nov 2024 17:59:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tBd9z-0000Ao-8L; Thu, 14 Nov 2024 11:57:35 -0500
+	id 1tBd9y-00009R-Ou; Thu, 14 Nov 2024 11:57:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1tBd9m-0008RO-Hc
- for qemu-devel@nongnu.org; Thu, 14 Nov 2024 11:57:22 -0500
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1tBd9n-0008T3-TX
+ for qemu-devel@nongnu.org; Thu, 14 Nov 2024 11:57:24 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1tBd9k-0002bs-D2
- for qemu-devel@nongnu.org; Thu, 14 Nov 2024 11:57:21 -0500
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1tBd9m-0002c1-3W
+ for qemu-devel@nongnu.org; Thu, 14 Nov 2024 11:57:23 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1731603439;
+ s=mimecast20190719; t=1731603440;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=9P75sNr2f7388ubKnzuEESBswju/QLScY/HhvuOW+Mw=;
- b=WEaYH1vr4wsGXNKD5tdn+GQfEy4f/ZQ9xPJM/7nGHgUpG7w3SannPjeHmFUY1fkFZLZgJR
- qeeIq0oiyfYusJPBV3ruObMI6H+agOfJSSPr6muvbo2Yz8bl7WgXVt7g3TTteDzyYDxP4H
- LRqy4JARcLHX/9y98vAcs+0JfTiqZyQ=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ bh=GLF0n6qglRIqtUkQqyx7RdSXVKBg4tQ932ju2zdvhJU=;
+ b=bR3qmOCYv5xGfYY027wZbRJCJbxaTU0Wum0zq1b6VLDh1D5IhH/rbeoJKb50APjnOgFfC9
+ U8KOeoSAHU1Wq3BZ7zoBimx1MTXzS/8TcCEOdBuJtmBX0MZVmCzOlsT3P5wGrCNvwllJEH
+ osycUlXDIH5Jq12i+Xp5y3mOzd0pXEE=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-590-f30jzMZBO_enKjfR8VVTbw-1; Thu,
- 14 Nov 2024 11:57:16 -0500
-X-MC-Unique: f30jzMZBO_enKjfR8VVTbw-1
-X-Mimecast-MFC-AGG-ID: f30jzMZBO_enKjfR8VVTbw
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-606-TbRcXxjuM52LUMlLjUmddg-1; Thu,
+ 14 Nov 2024 11:57:18 -0500
+X-MC-Unique: TbRcXxjuM52LUMlLjUmddg-1
+X-Mimecast-MFC-AGG-ID: TbRcXxjuM52LUMlLjUmddg
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 1EB791954B22; Thu, 14 Nov 2024 16:57:15 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 2601A1956083; Thu, 14 Nov 2024 16:57:17 +0000 (UTC)
 Received: from merkur.redhat.com (unknown [10.39.192.6])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id E81A71955F43; Thu, 14 Nov 2024 16:57:13 +0000 (UTC)
+ id 866611955F21; Thu, 14 Nov 2024 16:57:15 +0000 (UTC)
 From: Kevin Wolf <kwolf@redhat.com>
 To: qemu-block@nongnu.org
 Cc: kwolf@redhat.com,
 	qemu-devel@nongnu.org
-Subject: [PULL 6/8] python: silence pylint raising-non-exception error
-Date: Thu, 14 Nov 2024 17:56:55 +0100
-Message-ID: <20241114165657.254256-7-kwolf@redhat.com>
+Subject: [PULL 7/8] qdev-monitor: avoid QemuOpts in QMP device_add
+Date: Thu, 14 Nov 2024 17:56:56 +0100
+Message-ID: <20241114165657.254256-8-kwolf@redhat.com>
 In-Reply-To: <20241114165657.254256-1-kwolf@redhat.com>
 References: <20241114165657.254256-1-kwolf@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
@@ -80,35 +81,119 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: John Snow <jsnow@redhat.com>
+From: Stefan Hajnoczi <stefanha@redhat.com>
 
-As of (at least) pylint 3.3.1, this code trips pylint up into believing
-we are raising something other than an Exception. We are not: the first
-two values may indeed be "None", but the last and final value must by
-definition be a SystemExit exception.
+The QMP device_add monitor command converts the QDict arguments to
+QemuOpts and then back again to QDict. This process only supports scalar
+types. Device properties like virtio-blk-pci's iothread-vq-mapping (an
+array of objects) are silently dropped by qemu_opts_from_qdict() during
+the QemuOpts conversion even though QAPI is capable of validating them.
+As a result, hotplugging virtio-blk-pci devices with the
+iothread-vq-mapping property does not work as expected (the property is
+ignored).
 
-Signed-off-by: John Snow <jsnow@redhat.com>
-Message-ID: <20241101173700.965776-5-jsnow@redhat.com>
+Get rid of the QemuOpts conversion in qmp_device_add() and call
+qdev_device_add_from_qdict() with from_json=true. Using the QMP
+command's QDict arguments directly allows non-scalar properties.
+
+The HMP is also adjusted since qmp_device_add()'s now expects properly
+typed JSON arguments and cannot be used from HMP anymore. Move the code
+that was previously in qmp_device_add() (with QemuOpts conversion and
+from_json=false) into hmp_device_add() so that its behavior is
+unchanged.
+
+This patch changes the behavior of QMP device_add but not HMP
+device_add. QMP clients that sent incorrectly typed device_add QMP
+commands no longer work. This is a breaking change but clients should be
+using the correct types already. See the netdev_add QAPIfication in
+commit db2a380c8457 for similar reasoning and object-add in commit
+9151e59a8b6e. Unlike those commits, we continue to rely on 'gen': false
+for the time being.
+
+Markus helped me figure this out and even provided a draft patch. The
+code ended up very close to what he suggested.
+
+Suggested-by: Markus Armbruster <armbru@redhat.com>
+Cc: Daniel P. Berrangé <berrange@redhat.com>
+Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+Message-ID: <20240827192751.948633-2-stefanha@redhat.com>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 Reviewed-by: Kevin Wolf <kwolf@redhat.com>
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
 ---
- python/scripts/mkvenv.py | 3 +++
- 1 file changed, 3 insertions(+)
+ system/qdev-monitor.c | 42 ++++++++++++++++++++++++++++--------------
+ 1 file changed, 28 insertions(+), 14 deletions(-)
 
-diff --git a/python/scripts/mkvenv.py b/python/scripts/mkvenv.py
-index f2526af0a0..8ac5b0b2a0 100644
---- a/python/scripts/mkvenv.py
-+++ b/python/scripts/mkvenv.py
-@@ -379,6 +379,9 @@ def make_venv(  # pylint: disable=too-many-arguments
-         try:
-             builder.create(str(env_dir))
-         except SystemExit as exc:
-+            # pylint 3.3 bug:
-+            # pylint: disable=raising-non-exception, raise-missing-from
+diff --git a/system/qdev-monitor.c b/system/qdev-monitor.c
+index 4c09b38ffb..03ae610649 100644
+--- a/system/qdev-monitor.c
++++ b/system/qdev-monitor.c
+@@ -856,18 +856,9 @@ void hmp_info_qdm(Monitor *mon, const QDict *qdict)
+ 
+ void qmp_device_add(QDict *qdict, QObject **ret_data, Error **errp)
+ {
+-    QemuOpts *opts;
+     DeviceState *dev;
+ 
+-    opts = qemu_opts_from_qdict(qemu_find_opts("device"), qdict, errp);
+-    if (!opts) {
+-        return;
+-    }
+-    if (!monitor_cur_is_qmp() && qdev_device_help(opts)) {
+-        qemu_opts_del(opts);
+-        return;
+-    }
+-    dev = qdev_device_add(opts, errp);
++    dev = qdev_device_add_from_qdict(qdict, true, errp);
+     if (!dev) {
+         /*
+          * Drain all pending RCU callbacks. This is done because
+@@ -879,9 +870,6 @@ void qmp_device_add(QDict *qdict, QObject **ret_data, Error **errp)
+          * to the user
+          */
+         drain_call_rcu();
+-
+-        qemu_opts_del(opts);
+-        return;
+     }
+     object_unref(OBJECT(dev));
+ }
+@@ -1018,8 +1006,34 @@ void qmp_device_sync_config(const char *id, Error **errp)
+ void hmp_device_add(Monitor *mon, const QDict *qdict)
+ {
+     Error *err = NULL;
++    QemuOpts *opts;
++    DeviceState *dev;
+ 
+-    qmp_device_add((QDict *)qdict, NULL, &err);
++    opts = qemu_opts_from_qdict(qemu_find_opts("device"), qdict, &err);
++    if (!opts) {
++        goto out;
++    }
++    if (qdev_device_help(opts)) {
++        qemu_opts_del(opts);
++        return;
++    }
++    dev = qdev_device_add(opts, &err);
++    if (!dev) {
++        /*
++         * Drain all pending RCU callbacks. This is done because
++         * some bus related operations can delay a device removal
++         * (in this case this can happen if device is added and then
++         * removed due to a configuration error)
++         * to a RCU callback, but user might expect that this interface
++         * will finish its job completely once qmp command returns result
++         * to the user
++         */
++        drain_call_rcu();
 +
-             # Some versions of the venv module raise SystemExit; *nasty*!
-             # We want the exception that prompted it. It might be a subprocess
-             # error that has output we *really* want to see.
++        qemu_opts_del(opts);
++    }
++    object_unref(dev);
++out:
+     hmp_handle_error(mon, err);
+ }
+ 
 -- 
 2.47.0
 
