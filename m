@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AB2E9C905A
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Nov 2024 17:59:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C4DFB9C9051
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Nov 2024 17:58:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tBd9y-00009R-Ou; Thu, 14 Nov 2024 11:57:34 -0500
+	id 1tBdA4-0000Cd-ON; Thu, 14 Nov 2024 11:57:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1tBd9n-0008T3-TX
- for qemu-devel@nongnu.org; Thu, 14 Nov 2024 11:57:24 -0500
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1tBd9q-0008Vv-LP
+ for qemu-devel@nongnu.org; Thu, 14 Nov 2024 11:57:28 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1tBd9m-0002c1-3W
- for qemu-devel@nongnu.org; Thu, 14 Nov 2024 11:57:23 -0500
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1tBd9p-0002dC-5n
+ for qemu-devel@nongnu.org; Thu, 14 Nov 2024 11:57:26 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1731603440;
+ s=mimecast20190719; t=1731603444;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=GLF0n6qglRIqtUkQqyx7RdSXVKBg4tQ932ju2zdvhJU=;
- b=bR3qmOCYv5xGfYY027wZbRJCJbxaTU0Wum0zq1b6VLDh1D5IhH/rbeoJKb50APjnOgFfC9
- U8KOeoSAHU1Wq3BZ7zoBimx1MTXzS/8TcCEOdBuJtmBX0MZVmCzOlsT3P5wGrCNvwllJEH
- osycUlXDIH5Jq12i+Xp5y3mOzd0pXEE=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ bh=lM0oP4uYaxWqpfihOrRXw+G4JgNWK9m48rCXi/c32Qk=;
+ b=TL/YTw/wtK+KCxBqOsgwXmVOP3v6GRRgPQpaXKypQXaIN+if++YP3MDFkbc5br/6gi+bos
+ z9dSnM2p/l1vsIZ7ts/Xh07HnNM/asxqxdcYmsiCmXyVSqqneqTRe7nBeKw5R4TWWUiqLP
+ R+8OF5MrOAZeYt+eTJPH0awcU5vv2vE=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-606-TbRcXxjuM52LUMlLjUmddg-1; Thu,
- 14 Nov 2024 11:57:18 -0500
-X-MC-Unique: TbRcXxjuM52LUMlLjUmddg-1
-X-Mimecast-MFC-AGG-ID: TbRcXxjuM52LUMlLjUmddg
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-634-q_aedtBNM3iGbOuD7hKhsQ-1; Thu,
+ 14 Nov 2024 11:57:19 -0500
+X-MC-Unique: q_aedtBNM3iGbOuD7hKhsQ-1
+X-Mimecast-MFC-AGG-ID: q_aedtBNM3iGbOuD7hKhsQ
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 2601A1956083; Thu, 14 Nov 2024 16:57:17 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id B285B1955BFC; Thu, 14 Nov 2024 16:57:18 +0000 (UTC)
 Received: from merkur.redhat.com (unknown [10.39.192.6])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 866611955F21; Thu, 14 Nov 2024 16:57:15 +0000 (UTC)
+ id 8FFC51955F43; Thu, 14 Nov 2024 16:57:17 +0000 (UTC)
 From: Kevin Wolf <kwolf@redhat.com>
 To: qemu-block@nongnu.org
 Cc: kwolf@redhat.com,
 	qemu-devel@nongnu.org
-Subject: [PULL 7/8] qdev-monitor: avoid QemuOpts in QMP device_add
-Date: Thu, 14 Nov 2024 17:56:56 +0100
-Message-ID: <20241114165657.254256-8-kwolf@redhat.com>
+Subject: [PULL 8/8] vl: use qmp_device_add() in qemu_create_cli_devices()
+Date: Thu, 14 Nov 2024 17:56:57 +0100
+Message-ID: <20241114165657.254256-9-kwolf@redhat.com>
 In-Reply-To: <20241114165657.254256-1-kwolf@redhat.com>
 References: <20241114165657.254256-1-kwolf@redhat.com>
 MIME-Version: 1.0
@@ -65,7 +65,7 @@ X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.122,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,117 +83,51 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Stefan Hajnoczi <stefanha@redhat.com>
 
-The QMP device_add monitor command converts the QDict arguments to
-QemuOpts and then back again to QDict. This process only supports scalar
-types. Device properties like virtio-blk-pci's iothread-vq-mapping (an
-array of objects) are silently dropped by qemu_opts_from_qdict() during
-the QemuOpts conversion even though QAPI is capable of validating them.
-As a result, hotplugging virtio-blk-pci devices with the
-iothread-vq-mapping property does not work as expected (the property is
-ignored).
+qemu_create_cli_devices() should use qmp_device_add() to match the
+behavior of the QMP monitor. A comment explained that libvirt changes
+implementing strict CLI syntax were needed.
 
-Get rid of the QemuOpts conversion in qmp_device_add() and call
-qdev_device_add_from_qdict() with from_json=true. Using the QMP
-command's QDict arguments directly allows non-scalar properties.
+Peter Krempa <pkrempa@redhat.com> has confirmed that modern libvirt uses
+the same JSON for -device (CLI) and device_add (QMP). Go ahead and use
+qmp_device_add().
 
-The HMP is also adjusted since qmp_device_add()'s now expects properly
-typed JSON arguments and cannot be used from HMP anymore. Move the code
-that was previously in qmp_device_add() (with QemuOpts conversion and
-from_json=false) into hmp_device_add() so that its behavior is
-unchanged.
-
-This patch changes the behavior of QMP device_add but not HMP
-device_add. QMP clients that sent incorrectly typed device_add QMP
-commands no longer work. This is a breaking change but clients should be
-using the correct types already. See the netdev_add QAPIfication in
-commit db2a380c8457 for similar reasoning and object-add in commit
-9151e59a8b6e. Unlike those commits, we continue to rely on 'gen': false
-for the time being.
-
-Markus helped me figure this out and even provided a draft patch. The
-code ended up very close to what he suggested.
-
-Suggested-by: Markus Armbruster <armbru@redhat.com>
-Cc: Daniel P. Berrangé <berrange@redhat.com>
+Cc: Peter Krempa <pkrempa@redhat.com>
+Reviewed-by: Markus Armbruster <armbru@redhat.com>
 Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
-Message-ID: <20240827192751.948633-2-stefanha@redhat.com>
+Message-ID: <20240827192751.948633-3-stefanha@redhat.com>
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 Reviewed-by: Kevin Wolf <kwolf@redhat.com>
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
 ---
- system/qdev-monitor.c | 42 ++++++++++++++++++++++++++++--------------
- 1 file changed, 28 insertions(+), 14 deletions(-)
+ system/vl.c | 14 ++++----------
+ 1 file changed, 4 insertions(+), 10 deletions(-)
 
-diff --git a/system/qdev-monitor.c b/system/qdev-monitor.c
-index 4c09b38ffb..03ae610649 100644
---- a/system/qdev-monitor.c
-+++ b/system/qdev-monitor.c
-@@ -856,18 +856,9 @@ void hmp_info_qdm(Monitor *mon, const QDict *qdict)
- 
- void qmp_device_add(QDict *qdict, QObject **ret_data, Error **errp)
- {
--    QemuOpts *opts;
-     DeviceState *dev;
- 
--    opts = qemu_opts_from_qdict(qemu_find_opts("device"), qdict, errp);
--    if (!opts) {
--        return;
--    }
--    if (!monitor_cur_is_qmp() && qdev_device_help(opts)) {
--        qemu_opts_del(opts);
--        return;
--    }
--    dev = qdev_device_add(opts, errp);
-+    dev = qdev_device_add_from_qdict(qdict, true, errp);
-     if (!dev) {
-         /*
-          * Drain all pending RCU callbacks. This is done because
-@@ -879,9 +870,6 @@ void qmp_device_add(QDict *qdict, QObject **ret_data, Error **errp)
-          * to the user
-          */
-         drain_call_rcu();
--
--        qemu_opts_del(opts);
--        return;
-     }
-     object_unref(OBJECT(dev));
- }
-@@ -1018,8 +1006,34 @@ void qmp_device_sync_config(const char *id, Error **errp)
- void hmp_device_add(Monitor *mon, const QDict *qdict)
- {
-     Error *err = NULL;
-+    QemuOpts *opts;
-+    DeviceState *dev;
- 
--    qmp_device_add((QDict *)qdict, NULL, &err);
-+    opts = qemu_opts_from_qdict(qemu_find_opts("device"), qdict, &err);
-+    if (!opts) {
-+        goto out;
-+    }
-+    if (qdev_device_help(opts)) {
-+        qemu_opts_del(opts);
-+        return;
-+    }
-+    dev = qdev_device_add(opts, &err);
-+    if (!dev) {
-+        /*
-+         * Drain all pending RCU callbacks. This is done because
-+         * some bus related operations can delay a device removal
-+         * (in this case this can happen if device is added and then
-+         * removed due to a configuration error)
-+         * to a RCU callback, but user might expect that this interface
-+         * will finish its job completely once qmp command returns result
-+         * to the user
-+         */
-+        drain_call_rcu();
+diff --git a/system/vl.c b/system/vl.c
+index d217b3d64d..e3f7d3a156 100644
+--- a/system/vl.c
++++ b/system/vl.c
+@@ -2653,17 +2653,11 @@ static void qemu_create_cli_devices(void)
+     qemu_opts_foreach(qemu_find_opts("device"),
+                       device_init_func, NULL, &error_fatal);
+     QTAILQ_FOREACH(opt, &device_opts, next) {
+-        DeviceState *dev;
++        QObject *ret_data = NULL;
 +
-+        qemu_opts_del(opts);
-+    }
-+    object_unref(dev);
-+out:
-     hmp_handle_error(mon, err);
- }
- 
+         loc_push_restore(&opt->loc);
+-        /*
+-         * TODO Eventually we should call qmp_device_add() here to make sure it
+-         * behaves the same, but QMP still has to accept incorrectly typed
+-         * options until libvirt is fixed and we want to be strict on the CLI
+-         * from the start, so call qdev_device_add_from_qdict() directly for
+-         * now.
+-         */
+-        dev = qdev_device_add_from_qdict(opt->opts, true, &error_fatal);
+-        object_unref(OBJECT(dev));
++        qmp_device_add(opt->opts, &ret_data, &error_fatal);
++        assert(ret_data == NULL); /* error_fatal aborts */
+         loc_pop(&opt->loc);
+     }
+     rom_reset_order_override();
 -- 
 2.47.0
 
