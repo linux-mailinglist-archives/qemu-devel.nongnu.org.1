@@ -2,78 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 626929C91F2
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Nov 2024 19:56:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 568F59C91FF
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Nov 2024 19:58:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tBeyp-0000xV-7k; Thu, 14 Nov 2024 13:54:11 -0500
+	id 1tBeys-0001Cm-4b; Thu, 14 Nov 2024 13:54:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1tBeyl-0000pm-7Q
- for qemu-devel@nongnu.org; Thu, 14 Nov 2024 13:54:07 -0500
-Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
+ id 1tBeyn-0000za-N3
+ for qemu-devel@nongnu.org; Thu, 14 Nov 2024 13:54:09 -0500
+Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1tBeyY-0007p2-Gx
- for qemu-devel@nongnu.org; Thu, 14 Nov 2024 13:54:06 -0500
-Received: by mail-pf1-x436.google.com with SMTP id
- d2e1a72fcca58-72061bfec2dso726789b3a.2
- for <qemu-devel@nongnu.org>; Thu, 14 Nov 2024 10:53:53 -0800 (PST)
+ id 1tBeyc-0007yL-6D
+ for qemu-devel@nongnu.org; Thu, 14 Nov 2024 13:54:09 -0500
+Received: by mail-pf1-x434.google.com with SMTP id
+ d2e1a72fcca58-720c286bcd6so886906b3a.3
+ for <qemu-devel@nongnu.org>; Thu, 14 Nov 2024 10:53:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1731610432; x=1732215232; darn=nongnu.org;
+ d=linaro.org; s=google; t=1731610436; x=1732215236; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=G1lhs1qpXUqWJm6ZOUt+OeEyAF4LT3tdcSBWH0PlA40=;
- b=TRNAooVNGF+iNsoOlbXjROn8leAFEioTtsK2dOe0klLkFu4ph7VtnwNFOCmIdmXidX
- 6X2uYcTvAzuWd9cyjVztlrkLEBSIksTq8QhHnR6+X3qwqddBvS5Qrh09mNxe39YGvP6h
- xpgLnzYX/Goaafzx+EAp+3EwnW8SUx8w/LelqoI8u7fbCTfr5Tk4fpb/1LBmVd5KFw9y
- WoN/iNCas8PmI+0eAD5DLfzNgtE/ZA00X+1mRmEtygmnJD4Nu66wYkfn07IL5FFnb86M
- TVkhIX6Yu66kVBnDoV3LsGsyIhbWNrbcCJ1cMQ7Il12tXltXJNCajbB2pHHz7vV9khDg
- lAkA==
+ bh=eQJ914oOJf5HJnWV+RpMv+Pzu2o/yVuyJC80hmImRvI=;
+ b=LG2fMpL8boZq+yoh5FRB9eOYwoIVy5s1qso+FMALA+WPRt7dqyH+hFo75NJmybQkVP
+ iP0xVc7qlTxyfAW2aV7M2Ygz1YDUsaiObj2h05MtYfF/sAtth85+bw9rJmOU7Q0SWtKl
+ MAD7HpA/aUAnuA5/9lpHql1n7k3K2k8Zvch5KUSpK0x7ol1HRFKwUNOnueVj9KuTVmXS
+ kaoUZaPagd6lsWBRgcbgFFG9wgXooR3Uq8SIGtsTuthgC6fnyOvk14a0z/GtTS1mL6C6
+ uHSwBwUebv+XUqiqs0P2irww0IRZ4dAEdquTr5K/o27mH6b5gqreIBBKi8u+dlp/a8si
+ ax6g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731610432; x=1732215232;
+ d=1e100.net; s=20230601; t=1731610436; x=1732215236;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=G1lhs1qpXUqWJm6ZOUt+OeEyAF4LT3tdcSBWH0PlA40=;
- b=WqmvhFDAXj3fh/YGseSnGkIndFfO8TnAVUA2sMHuMg7KtAN9Gi36F3wI81F4aAl3eV
- BTx76hMkzCyIYyxUHdE94fGQ9cB/sCz5lrfshMBphjUjwSMuYaOciASO8Ta661+A9V/n
- owAhbjeY+JBrxekMF4dDa1s4ZAgDvhLrpXea6BvazV/l/RaaCSk93nJSZE1KNXRaac2w
- TTrtSshHR4FuZkTKb9YgmpJecLGY3na6Nwa2BRRZUSVF4FzDPOM1lTYDybGH045He/m/
- NqI3ztyQjGAwnO1rxOAb6rNV3cF56W+BIcsKutEbgU8dzSWOadwjkBgS/6G+g3TKlfMD
- vlhQ==
+ bh=eQJ914oOJf5HJnWV+RpMv+Pzu2o/yVuyJC80hmImRvI=;
+ b=N4ysNSVIgW1hLbJYCDfe7znYUNVdYdP8QoQeCyfaov5Y9gvpIIPxxWbBFuNZb9nMyk
+ /4fGRxOYdZlw8e/M+2jTu/NATLsQYfbBDm5gM2DuACRKEjFPlUBwoDVoxKkVrCpQ+Mru
+ u+5yS6xzgZk0US46KvZ2w83WJoARoDCJVjhjvsXiz8wegM9toKeNxgoy3vL+DJLGdlgh
+ pDoiEQgbeGgUYY5xHRhZLS2cF5a7JoTBTZYYC1TTLldfPnSPiJacVKVFRBLS/LzTK18t
+ 6PprabK0B9CKoyBzcAtI3RqkCDOzwt3OFCydWbWIL6/0B/wYkcHIlmcwyKHdxYmNDk0l
+ KOpw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXeWtZqLyOhvF7m5do2rhD/hf7GcAQGnX61xKUToNiDHu51hj5VnRDFAWnuFVd/KbXmHXrTb9K9KYYy@nongnu.org
-X-Gm-Message-State: AOJu0YxsKr6WCVMwvT2vSCENio/72Hxm+rFxbRArk8JXXleoZSEfG9eL
- wHgM80CUDA5WbCj5gJfpBwdFPZgNroHr2XiK/+e7Qjc1xH6pwZtf/5j0O0Vn/fOrPQ2arYC40ij
- lLj/MZQ==
-X-Google-Smtp-Source: AGHT+IElj5AMsokpdsh8YY2IDvUX00X19LehbFp5MWrSJyJaBsS+d9IsXDN3j6pP43hx4q5stcafeg==
-X-Received: by 2002:a05:6a00:1ca6:b0:724:6bac:1003 with SMTP id
- d2e1a72fcca58-7246bac1753mr3523620b3a.24.1731610432502; 
- Thu, 14 Nov 2024 10:53:52 -0800 (PST)
+ AJvYcCVYWHMEBAMZE3hoiFXlcuusjRFAi1ajvMD9mqFBT50PL7BkybzHlbIBFL4Wz7nWCO0lkq9744QE4CRd@nongnu.org
+X-Gm-Message-State: AOJu0YxREt4PEDut1ivR/NDFazpZ4oDaaoCKqJwhuJ/LHgxb4xrp1/Er
+ JFJ0w9bjsdE9FqcmyK8bwQAiC4eCHreEoVIlWnfcEcrRwIG4FWJ1l0Nl43+FMyTHbQsrU/2p7kD
+ ta8Vp5A==
+X-Google-Smtp-Source: AGHT+IEuiQEKBjOlkrCYWe6h8ZpMB2WyCXD6sroq8BU4jkTwMhfgn4KrJU1eQsT4TyTb/WJNbvjRMw==
+X-Received: by 2002:a05:6a00:2385:b0:71e:cc7:c511 with SMTP id
+ d2e1a72fcca58-7241338b594mr34473327b3a.23.1731610436290; 
+ Thu, 14 Nov 2024 10:53:56 -0800 (PST)
 Received: from [192.168.1.67] (216-180-64-156.dyn.novuscom.net.
  [216.180.64.156]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7246a5ceda0sm1592394b3a.1.2024.11.14.10.53.51
+ d2e1a72fcca58-7246a5ceda0sm1592394b3a.1.2024.11.14.10.53.55
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 14 Nov 2024 10:53:52 -0800 (PST)
-Message-ID: <13f3a3c0-f7a2-433e-8f8b-ca4db4e498ad@linaro.org>
-Date: Thu, 14 Nov 2024 10:53:51 -0800
+ Thu, 14 Nov 2024 10:53:55 -0800 (PST)
+Message-ID: <6721d1c9-f8be-4e25-bc65-bf076d973ed1@linaro.org>
+Date: Thu, 14 Nov 2024 10:53:55 -0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 41/54] target/mips: Convert to TCGCPUOps.tlb_fill_align
+Subject: Re: [PATCH v2 42/54] target/openrisc: Convert to
+ TCGCPUOps.tlb_fill_align
 Content-Language: en-US
 To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
 References: <20241114160131.48616-1-richard.henderson@linaro.org>
- <20241114160131.48616-42-richard.henderson@linaro.org>
+ <20241114160131.48616-43-richard.henderson@linaro.org>
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <20241114160131.48616-42-richard.henderson@linaro.org>
+In-Reply-To: <20241114160131.48616-43-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x436.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x434.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,101 +100,115 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 On 11/14/24 08:01, Richard Henderson wrote:
 > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
->   target/mips/tcg/tcg-internal.h      |  6 +++---
->   target/mips/cpu.c                   |  2 +-
->   target/mips/tcg/sysemu/tlb_helper.c | 29 ++++++++++++++++++++---------
->   3 files changed, 24 insertions(+), 13 deletions(-)
+>   target/openrisc/cpu.h |  8 +++++---
+>   target/openrisc/cpu.c |  2 +-
+>   target/openrisc/mmu.c | 39 +++++++++++++++++++++------------------
+>   3 files changed, 27 insertions(+), 22 deletions(-)
 > 
-> diff --git a/target/mips/tcg/tcg-internal.h b/target/mips/tcg/tcg-internal.h
-> index aef032c48d..f4b00354af 100644
-> --- a/target/mips/tcg/tcg-internal.h
-> +++ b/target/mips/tcg/tcg-internal.h
-> @@ -61,9 +61,9 @@ void mips_cpu_do_transaction_failed(CPUState *cs, hwaddr physaddr,
->                                       MemTxResult response, uintptr_t retaddr);
->   void cpu_mips_tlb_flush(CPUMIPSState *env);
+> diff --git a/target/openrisc/cpu.h b/target/openrisc/cpu.h
+> index c9fe9ae12d..e177ad8b84 100644
+> --- a/target/openrisc/cpu.h
+> +++ b/target/openrisc/cpu.h
+> @@ -22,6 +22,7 @@
 >   
-> -bool mips_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
-> -                       MMUAccessType access_type, int mmu_idx,
-> -                       bool probe, uintptr_t retaddr);
-> +bool mips_cpu_tlb_fill_align(CPUState *cs, CPUTLBEntryFull *out, vaddr address,
-> +                             MMUAccessType access_type, int mmu_idx,
-> +                             MemOp memop, int size, bool probe, uintptr_t ra);
+>   #include "cpu-qom.h"
+>   #include "exec/cpu-defs.h"
+> +#include "exec/memop.h"
+>   #include "fpu/softfloat-types.h"
 >   
->   void mips_semihosting(CPUMIPSState *env);
+>   /**
+> @@ -306,9 +307,10 @@ int print_insn_or1k(bfd_vma addr, disassemble_info *info);
+>   #ifndef CONFIG_USER_ONLY
+>   hwaddr openrisc_cpu_get_phys_page_debug(CPUState *cpu, vaddr addr);
 >   
-> diff --git a/target/mips/cpu.c b/target/mips/cpu.c
-> index d0a43b6d5c..3a453c9285 100644
-> --- a/target/mips/cpu.c
-> +++ b/target/mips/cpu.c
-> @@ -556,7 +556,7 @@ static const TCGCPUOps mips_tcg_ops = {
->       .restore_state_to_opc = mips_restore_state_to_opc,
+> -bool openrisc_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
+> -                           MMUAccessType access_type, int mmu_idx,
+> -                           bool probe, uintptr_t retaddr);
+> +bool openrisc_cpu_tlb_fill_align(CPUState *cs, CPUTLBEntryFull *out,
+> +                                 vaddr addr, MMUAccessType access_type,
+> +                                 int mmu_idx, MemOp memop, int size,
+> +                                 bool probe, uintptr_t ra);
 >   
->   #if !defined(CONFIG_USER_ONLY)
-> -    .tlb_fill = mips_cpu_tlb_fill,
-> +    .tlb_fill_align = mips_cpu_tlb_fill_align,
->       .cpu_exec_interrupt = mips_cpu_exec_interrupt,
->       .cpu_exec_halt = mips_cpu_has_work,
->       .do_interrupt = mips_cpu_do_interrupt,
-> diff --git a/target/mips/tcg/sysemu/tlb_helper.c b/target/mips/tcg/sysemu/tlb_helper.c
-> index e98bb95951..ac76396525 100644
-> --- a/target/mips/tcg/sysemu/tlb_helper.c
-> +++ b/target/mips/tcg/sysemu/tlb_helper.c
-> @@ -904,15 +904,28 @@ refill:
+>   extern const VMStateDescription vmstate_openrisc_cpu;
+>   
+> diff --git a/target/openrisc/cpu.c b/target/openrisc/cpu.c
+> index b96561d1f2..6aa04ff7d3 100644
+> --- a/target/openrisc/cpu.c
+> +++ b/target/openrisc/cpu.c
+> @@ -237,7 +237,7 @@ static const TCGCPUOps openrisc_tcg_ops = {
+>       .restore_state_to_opc = openrisc_restore_state_to_opc,
+>   
+>   #ifndef CONFIG_USER_ONLY
+> -    .tlb_fill = openrisc_cpu_tlb_fill,
+> +    .tlb_fill_align = openrisc_cpu_tlb_fill_align,
+>       .cpu_exec_interrupt = openrisc_cpu_exec_interrupt,
+>       .cpu_exec_halt = openrisc_cpu_has_work,
+>       .do_interrupt = openrisc_cpu_do_interrupt,
+> diff --git a/target/openrisc/mmu.c b/target/openrisc/mmu.c
+> index c632d5230b..eafab356a6 100644
+> --- a/target/openrisc/mmu.c
+> +++ b/target/openrisc/mmu.c
+> @@ -104,39 +104,42 @@ static void raise_mmu_exception(OpenRISCCPU *cpu, target_ulong address,
+>       cpu->env.lock_addr = -1;
 >   }
->   #endif
 >   
-> -bool mips_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
-> -                       MMUAccessType access_type, int mmu_idx,
-> -                       bool probe, uintptr_t retaddr)
-> +bool mips_cpu_tlb_fill_align(CPUState *cs, CPUTLBEntryFull *out, vaddr address,
-> +                             MMUAccessType access_type, int mmu_idx,
-> +                             MemOp memop, int size,
-> +                             bool probe, uintptr_t retaddr)
+> -bool openrisc_cpu_tlb_fill(CPUState *cs, vaddr addr, int size,
+> -                           MMUAccessType access_type, int mmu_idx,
+> -                           bool probe, uintptr_t retaddr)
+> +bool openrisc_cpu_tlb_fill_align(CPUState *cs, CPUTLBEntryFull *out,
+> +                                 vaddr addr, MMUAccessType access_type,
+> +                                 int mmu_idx, MemOp memop, int size,
+> +                                 bool probe, uintptr_t retaddr)
 >   {
->       CPUMIPSState *env = cpu_env(cs);
->       hwaddr physical;
+>       OpenRISCCPU *cpu = OPENRISC_CPU(cs);
+> -    int excp = EXCP_DPF;
 >       int prot;
->       int ret = TLBRET_BADADDR;
+>       hwaddr phys_addr;
 >   
-> +    if (address & ((1 << memop_alignment_bits(memop)) - 1)) {
-> +        if (probe) {
-> +            return false;
+> +    /* TODO: alignment faults not currently handled. */
+> +
+>       if (mmu_idx == MMU_NOMMU_IDX) {
+>           /* The mmu is disabled; lookups never fail.  */
+>           get_phys_nommu(&phys_addr, &prot, addr);
+> -        excp = 0;
+>       } else {
+>           bool super = mmu_idx == MMU_SUPERVISOR_IDX;
+>           int need = (access_type == MMU_INST_FETCH ? PAGE_EXEC
+>                       : access_type == MMU_DATA_STORE ? PAGE_WRITE
+>                       : PAGE_READ);
+> -        excp = get_phys_mmu(cpu, &phys_addr, &prot, addr, need, super);
+> +        int excp = get_phys_mmu(cpu, &phys_addr, &prot, addr, need, super);
+> +
+> +        if (unlikely(excp)) {
+> +            if (probe) {
+> +                return false;
+> +            }
+> +            raise_mmu_exception(cpu, addr, excp);
+> +            cpu_loop_exit_restore(cs, retaddr);
 > +        }
-> +        mips_cpu_do_unaligned_access(cs, address, access_type,
-> +                                     mmu_idx, retaddr);
-> +    }
-> +
-> +    memset(out, 0, sizeof(*out));
-> +    out->attrs = MEMTXATTRS_UNSPECIFIED;
-> +    out->lg_page_size = TARGET_PAGE_BITS;
-> +
->       /* data access */
->       /* XXX: put correct access by using cpu_restore_state() correctly */
->       ret = get_physical_address(env, &physical, &prot, address,
-> @@ -930,9 +943,8 @@ bool mips_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
->           break;
 >       }
->       if (ret == TLBRET_MATCH) {
-> -        tlb_set_page(cs, address & TARGET_PAGE_MASK,
-> -                     physical & TARGET_PAGE_MASK, prot,
+>   
+> -    if (likely(excp == 0)) {
+> -        tlb_set_page(cs, addr & TARGET_PAGE_MASK,
+> -                     phys_addr & TARGET_PAGE_MASK, prot,
 > -                     mmu_idx, TARGET_PAGE_SIZE);
-> +        out->phys_addr = physical;
-> +        out->prot = prot;
->           return true;
->       }
->   #if !defined(TARGET_MIPS64)
-> @@ -948,9 +960,8 @@ bool mips_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
->               ret = get_physical_address(env, &physical, &prot, address,
->                                          access_type, mmu_idx);
->               if (ret == TLBRET_MATCH) {
-> -                tlb_set_page(cs, address & TARGET_PAGE_MASK,
-> -                             physical & TARGET_PAGE_MASK, prot,
-> -                             mmu_idx, TARGET_PAGE_SIZE);
-> +                out->phys_addr = physical;
-> +                out->prot = prot;
->                   return true;
->               }
->           }
+> -        return true;
+> -    }
+> -    if (probe) {
+> -        return false;
+> -    }
+> -
+> -    raise_mmu_exception(cpu, addr, excp);
+> -    cpu_loop_exit_restore(cs, retaddr);
+> +    memset(out, 0, sizeof(*out));
+> +    out->phys_addr = phys_addr;
+> +    out->prot = prot;
+> +    out->lg_page_size = TARGET_PAGE_BITS;
+> +    out->attrs = MEMTXATTRS_UNSPECIFIED;
+> +    return true;
+>   }
+>   
+>   hwaddr openrisc_cpu_get_phys_page_debug(CPUState *cs, vaddr addr)
 
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
