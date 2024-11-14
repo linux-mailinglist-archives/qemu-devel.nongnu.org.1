@@ -2,149 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBF1F9C93EE
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Nov 2024 22:17:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C7A09C94FC
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Nov 2024 23:05:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tBhDC-0003kZ-RC; Thu, 14 Nov 2024 16:17:10 -0500
+	id 1tBhua-0003OG-LM; Thu, 14 Nov 2024 17:02:00 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1tBhCx-0003hu-07
- for qemu-devel@nongnu.org; Thu, 14 Nov 2024 16:16:55 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1tBhCs-00032U-IF
- for qemu-devel@nongnu.org; Thu, 14 Nov 2024 16:16:52 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1731619007;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=NOcg5Pa9HP5/MUtcPiaIbcda4XgvaKhd5+dgrDmaFus=;
- b=CekjMUGMl5WcBs1d3H8NEU5mil/Oi5JmwHxb0JOZKv8eDG27Vg20zyNqGjjbl2bOFaL1Rw
- ny4tZhCqYTYSCjrQjkdJGv6iWQtXRcX4HcWJO6UzO2qE8NTjoJnW1NwWgbFzqzHDNPzcZe
- q8lrD74xa3Pe5waZrC7fIuywQEQMFwQ=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-626-fgbaFaQFPKS691jIbb8lSA-1; Thu, 14 Nov 2024 16:16:46 -0500
-X-MC-Unique: fgbaFaQFPKS691jIbb8lSA-1
-X-Mimecast-MFC-AGG-ID: fgbaFaQFPKS691jIbb8lSA
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-4316e350d6aso7416485e9.3
- for <qemu-devel@nongnu.org>; Thu, 14 Nov 2024 13:16:45 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <yichen.wang@bytedance.com>)
+ id 1tBhuQ-0003Mi-1x
+ for qemu-devel@nongnu.org; Thu, 14 Nov 2024 17:01:50 -0500
+Received: from mail-qv1-xf29.google.com ([2607:f8b0:4864:20::f29])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <yichen.wang@bytedance.com>)
+ id 1tBhuM-0007dg-6V
+ for qemu-devel@nongnu.org; Thu, 14 Nov 2024 17:01:49 -0500
+Received: by mail-qv1-xf29.google.com with SMTP id
+ 6a1803df08f44-6d3f3cc0585so5638716d6.1
+ for <qemu-devel@nongnu.org>; Thu, 14 Nov 2024 14:01:40 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=bytedance.com; s=google; t=1731621700; x=1732226500; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=rHb5qBsX6WFWX2t4aBcmFr+Oo8NV5lVmBt7WkdqPeGo=;
+ b=CkrTv2T7DPGG/BllNfdHWoZEmlAMk1PLhU2R+Qk28sibdbLvJRlDFgstx2/r1rI3re
+ Xt0L8lgYeGuT9PLaBatCMFqPP5PWEqA2wSly1Dzs2al7eG++/pEtob0GHXOni95r5JOn
+ oMJxakgU2Td9gxFh05h+tInWmLXIfg0/ySG2BEYB7otVQq0edXdjRVDS/MTTRoyB6zGU
+ zYSeT5EBGr6eiEhuRiSoIDb19EpIUvpA9EVM6Pna0rMSUucHdBWWMLYgSejUuCiVaeZh
+ OE9bOSsbiATlTgUJMYdlrrjXNafOkbtKbD9o9E1in3ea5ELa9e1F7rhoCiarPa9Y8FTI
+ SzSw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731619005; x=1732223805;
- h=content-transfer-encoding:in-reply-to:organization:autocrypt
- :content-language:from:references:cc:to:subject:user-agent
- :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
- :date:message-id:reply-to;
- bh=NOcg5Pa9HP5/MUtcPiaIbcda4XgvaKhd5+dgrDmaFus=;
- b=xOH52larGOCCxtlvGsu2bTchRzJu9OaZFRvF1UXoIunsatnIro13THMCrhH+WuWuZD
- Gbqp4+pBMcm7QY4dYnuUNUGemJ3m9mIctfHw6g2kkRYFKX6I9xe4Nek/xsM7WThGII0W
- g5pTCBhGD3ryFLqn1MmSE2Ej66vvpy2+aumTy/jZ/NxJrOHLtTKmhByCPOOdGFhxBs9C
- KXhimnIGTdu7EtFp7x3HVRrv7EcUI8WUngSbpobaQnw3VIZJOQflcVyrQV3t76qZ7bnD
- 8HShEywXjQ8eWfRmljRK+IkbtgTjpEFemzCxwZzlJLh/RDJCAHCTucukJEC8pUEL+QWN
- 9ebw==
+ d=1e100.net; s=20230601; t=1731621700; x=1732226500;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=rHb5qBsX6WFWX2t4aBcmFr+Oo8NV5lVmBt7WkdqPeGo=;
+ b=qHN174jxGHEIpBFDabzKGs5e5v2rwXT2e68l4OmPxoDRihhd2258j9utVJlbo8lCd2
+ 53Q/7/8gNThO7IlS6NGK94FffYJmQ1lbcKjzQWIDw+1tWKYNR6iOwoNVucHk9fTyioOr
+ bb4kUkT4mXdd6mdJz9dWX076LqtEANqLsIf45f/ZFqyaIhA9eRa0lsCPXE4kjloXy/0Z
+ e+6zF7akpFol1zSRyobUmCdeR059YRP+t3Me9/rdBCxx8LL7Uz7NAZeA3pVOmDM/f11u
+ 6bD6HX0FqUmamrJOOudomc6LisdMRjSSy8Yu/AEWxXjzhAUfvp6BBx9cxt/GvXTVpWs8
+ jlkw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWx1h+BPe0ZUvxzdLuCu1kMWmn1PBaJVCJKtUkb/TAe7+2eowuHcuTH97U0e0y/nF8Tg8t28ozcl6Gi@nongnu.org
-X-Gm-Message-State: AOJu0YxFjOjLgorEEN4v4emUEF1deQ6dcsTm5e/rtlcQBfDBcL7BT5o7
- CxXMlplQ+SZp/+ozhQPjX+QJkylay6lEXz1hJ4TvV7YR4v7mgG3QvH5Yj7Dl6KJLAUXpRyWaJJ4
- aiCdgpAbwamlJC1XuXizRThCBiB44yq8jiHxg8OWxTW+4Lkdrcta4FIRfyi9q
-X-Received: by 2002:a05:600c:1e05:b0:431:57e5:b245 with SMTP id
- 5b1f17b1804b1-432df77a838mr1485075e9.23.1731619004884; 
- Thu, 14 Nov 2024 13:16:44 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFt5ikqFgbu7iAi/GLHd4aTHyexVLKoLaCjryBGCdi3hTWA8ksaB9Os1DMq+KUGRp5DOa/2dw==
-X-Received: by 2002:a05:600c:1e05:b0:431:57e5:b245 with SMTP id
- 5b1f17b1804b1-432df77a838mr1484965e9.23.1731619004491; 
- Thu, 14 Nov 2024 13:16:44 -0800 (PST)
-Received: from ?IPV6:2003:cb:c715:6600:a077:c7da:3362:6896?
- (p200300cbc7156600a077c7da33626896.dip0.t-ipconnect.de.
- [2003:cb:c715:6600:a077:c7da:3362:6896])
+ AJvYcCVWQTmSKOC8gCmPeyBcfW3DVJ2328ONRVJOeZBT+TIk0A6x/tDKbT2NI5ccZoJsTAUQVRvtHv7feavk@nongnu.org
+X-Gm-Message-State: AOJu0Yy8YjHm9Twhg/wHM+42jAv8jI9M0Dl7AdWB4RoImypDqa1WI/dI
+ wrQsiswbM9V0YJpoG82Rep67/GiV3xiuIjOYYNvnwxl75xeNzNi4oJGU8jYA2Ks=
+X-Google-Smtp-Source: AGHT+IGlnZZ9HLyc03p+o0LE4BKSFFc2E7GFP/IttbeXvj6RcK9OYTcslfoo+JziizJRH+ezkDgLAg==
+X-Received: by 2002:a05:6214:250c:b0:6d3:f6b1:7831 with SMTP id
+ 6a1803df08f44-6d3fb857c99mr4186256d6.33.1731621699637; 
+ Thu, 14 Nov 2024 14:01:39 -0800 (PST)
+Received: from DY4X0N7X05.bytedance.net ([130.44.212.152])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-432dab721d7sm33653205e9.9.2024.11.14.13.16.42
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 14 Nov 2024 13:16:43 -0800 (PST)
-Message-ID: <5f04a1dc-ca0a-488b-812e-7cebf393f59f@redhat.com>
-Date: Thu, 14 Nov 2024 22:16:41 +0100
+ af79cd13be357-7b35ca308bdsm93742485a.83.2024.11.14.14.01.36
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Thu, 14 Nov 2024 14:01:39 -0800 (PST)
+From: Yichen Wang <yichen.wang@bytedance.com>
+To: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+ "Dr. David Alan Gilbert" <dave@treblig.org>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Cornelia Huck <cohuck@redhat.com>,
+ qemu-devel@nongnu.org
+Cc: "Hao Xiang" <hao.xiang@linux.dev>, "Liu, Yuan1" <yuan1.liu@intel.com>,
+ "Shivam Kumar" <shivam.kumar1@nutanix.com>,
+ "Ho-Ren (Jack) Chuang" <horenchuang@bytedance.com>,
+ "Yichen Wang" <yichen.wang@bytedance.com>
+Subject: [PATCH v7 00/12] Use Intel DSA accelerator to offload zero page
+ checking in multifd live migration.
+Date: Thu, 14 Nov 2024 14:01:20 -0800
+Message-Id: <20241114220132.27399-1-yichen.wang@bytedance.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 2/2] migration: Do not perform RAMBlock dirty sync
- during the first iteration
-To: Peter Xu <peterx@redhat.com>
-Cc: Yong Huang <yong.huang@smartx.com>, qemu-devel@nongnu.org,
- Fabiano Rosas <farosas@suse.de>, Wei Wang <wei.w.wang@intel.com>,
- "Michael S . Tsirkin" <mst@redhat.com>
-References: <c25abae360ac204321acc5010a745a8e594f24bd.1731128180.git.yong.huang@smartx.com>
- <b2e42ed6-d514-46c9-993c-e7ae6384592f@redhat.com>
- <CAK9dgmak97Uv_RO+WFEb+KLkiuZ5+ibO3bigm3379L4aD55TvA@mail.gmail.com>
- <43700d36-b9f8-42da-ba72-b0ec6580032d@redhat.com>
- <CAK9dgmY8BAy4JAj5y-fY_YOpM6b3=86cmckPJZFuk9k=X1TYfQ@mail.gmail.com>
- <3049bc19-2556-4fbf-9d34-578db523b63b@redhat.com> <ZzTkopUrLGL5iqSv@x1n>
- <382461ab-d620-4d2e-becd-720daadf3c55@redhat.com> <ZzUIOFPtvHKDJPei@x1n>
- <8ee7d398-0139-4628-9276-f6a89fa35245@redhat.com> <ZzZPd7Ye09bjUjyR@x1n>
-From: David Hildenbrand <david@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- WNyWQQ==
-Organization: Red Hat
-In-Reply-To: <ZzZPd7Ye09bjUjyR@x1n>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=david@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::f29;
+ envelope-from=yichen.wang@bytedance.com; helo=mail-qv1-xf29.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.122,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -160,100 +102,305 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 14.11.24 20:28, Peter Xu wrote:
-> On Thu, Nov 14, 2024 at 10:02:37AM +0100, David Hildenbrand wrote:
->> On 13.11.24 21:12, Peter Xu wrote:
->>> On Wed, Nov 13, 2024 at 07:49:44PM +0100, David Hildenbrand wrote:
->>>> I think I had precisely that, and I recall you suggested to have it only
->>>> after the initial sync. Would work for me, but I'd still like to understand
->>>> why essentially none of the "discard" was effective -- all of guest RAM got
->>>> touched.
->>>
->>> Yes it'll be interesting to know..
->>>
->>> One thing I'm wildly guessing is dirty_memory_extend(), so maybe after the
->>> ramblock is created nobody yet to clear the "1"s there for each of the
->>> client, including DIRTY_MEMORY_MIGRATION.  Then it'll be synced to ramblock
->>> bmap only in the initial sync, once for each qemu lifecycle.
->>
->>
->> In ram_block_add() we do the
->>
->> cpu_physical_memory_set_dirty_range(new_block->offset,
->> 				    new_block->used_length,
->> 				    DIRTY_CLIENTS_ALL);
->>
->> ramblock_dirty_bitmap_clear_discarded_pages()->...->migration_clear_memory_region_dirty_bitmap_range()->migration_clear_memory_region_dirty_bitmap()
->> won't end up clearing the bits in the dirty bitmap.
->>
->> First I thought because of:
->>
->> if (!rb->clear_bmap || !clear_bmap_test_and_clear(rb, page)) {
->>      return;
->> }
->>
->> But then I realized that even memory_region_clear_dirty_bitmap() will not
->> clear the ramblock_dirty_bitmap_ bits! It's only concerned about
->> listener->log_clear() calls.
->>
->> Looking for DIRTY_MEMORY_BLOCK_SIZE users, only
->> cpu_physical_memory_sync_dirty_bitmap() and
->> cpu_physical_memory_clear_dirty_range() clear them, whereby the latter is
->> only used when resizing RAMblocks.
->>
->> At first I wondered whether ramblock_dirty_bitmap_clear_discarded_pages()
->> should also call cpu_physical_memory_clear_dirty_range(), but then I am not
->> so sure if that is really the right approach.
-> 
-> That sounds actually reasonable to me so far.. What's the concern in your
-> mind?
+v7
+* Rebase on top of f0a5a31c33a8109061c2493e475c8a2f4d022432;
+* Fix a bug that will crash QEMU when DSA initialization failed;
+* Use a more generalized accel-path to support other accelerators;
+* Remove multifd-packet-size in the parameter list;
 
-I think what I had in mind was that for the initial bitmap sync, when we 
-set the bmap to all-1s already, we could just clear the whole 
-ramblock_dirty_bitmap_ + KVM ... bitmaps.
+v6
+* Rebase on top of 838fc0a8769d7cc6edfe50451ba4e3368395f5c1;
+* Refactor code to have clean history on all commits;
+* Add comments on DSA specific defines about how the value is picked;
+* Address all comments from v5 reviews about api defines, questions, etc.;
 
-So, instead of an "initial sync" we might just want to do an "initial 
-clearing" of all bitmaps.
+v5
+* Rebase on top of 39a032cea23e522268519d89bb738974bc43b6f6.
+* Rename struct definitions with typedef and CamelCase names;
+* Add build and runtime checks about DSA accelerator;
+* Address all comments from v4 reviews about typos, licenses, comments,
+error reporting, etc.
 
-> 
->>
->>
->> virtio-balloon() calls qemu_guest_free_page_hint() which calls
->>
->> migration_clear_memory_region_dirty_bitmap_range()
->> bitmap_clear()
->>
->> So it would maybe have the same issue.
-> 
-> Should virtio-balloon do the same?
+v4
+* Rebase on top of 85b597413d4370cb168f711192eaef2eb70535ac.
+* A separate "multifd zero page checking" patchset was split from this
+patchset's v3 and got merged into master. v4 re-applied the rest of all
+commits on top of that patchset, re-factored and re-tested.
+https://lore.kernel.org/all/20240311180015.3359271-1-hao.xiang@linux.dev/
+* There are some feedback from v3 I likely overlooked.
 
-virtio-balloon is more interesting, because I assume here we could run 
-after the "initial clearing" and would want to mark it clean everywhere.
+v3
+* Rebase on top of 7425b6277f12e82952cede1f531bfc689bf77fb1.
+* Fix error/warning from checkpatch.pl
+* Fix use-after-free bug when multifd-dsa-accel option is not set.
+* Handle error from dsa_init and correctly propogate the error.
+* Remove unnecessary call to dsa_stop.
+* Detect availability of DSA feature at compile time.
+* Implement a generic batch_task structure and a DSA specific one dsa_batch_task.
+* Remove all exit() calls and propagate errors correctly.
+* Use bytes instead of page count to configure multifd-packet-size option.
 
-> 
-> So I suppose the idea here is some module may want to say "we should ignore
-> these pages in the dirty bitmap", and so far that's only about migration.
-> 
-> Then cpu_physical_memory_clear_dirty_range() does look like the right thing
-> to do, in which case the bmap in ram_list used to be overlooked.. it seems.
-> 
-> But of course, cpu_physical_memory_clear_dirty_range() still doesn't cover
-> the migration bitmap itself, which is ramblock->bmap.  So we'll need to
-> switch from migration_clear_memory_region_dirty_bitmap() to use things like
-> cpu_physical_memory_clear_dirty_range(), just to cover ram_list bitmaps.
-> Then keeping the rb->bmap operations like before..
+v2
+* Rebase on top of 3e01f1147a16ca566694b97eafc941d62fa1e8d8.
+* Leave Juan's changes in their original form instead of squashing them.
+* Add a new commit to refactor the multifd_send_thread function to prepare for introducing the DSA offload functionality.
+* Use page count to configure multifd-packet-size option.
+* Don't use the FLAKY flag in DSA tests.
+* Test if DSA integration test is setup correctly and skip the test if
+* not.
+* Fixed broken link in the previous patch cover.
 
-For virtio-balloon likely yes. Regarding virtio-mem, maybe "initial 
-clearing" + only modifying the rb->bmap when processing discards could 
-work and would even be more efficient.
+* Background:
 
-(but I'm confused because we have way too many bitmaps, and maybe the 
-KVM one could be problematic without an initial sync ... we'd want an 
-initial clearing for that as well ...)
+I posted an RFC about DSA offloading in QEMU:
+https://patchew.org/QEMU/20230529182001.2232069-1-hao.xiang@bytedance.com/
+
+This patchset implements the DSA offloading on zero page checking in
+multifd live migration code path.
+
+* Overview:
+
+Intel Data Streaming Accelerator(DSA) is introduced in Intel's 4th generation
+Xeon server, aka Sapphire Rapids.
+https://cdrdv2-public.intel.com/671116/341204-intel-data-streaming-accelerator-spec.pdf
+https://www.intel.com/content/www/us/en/content-details/759709/intel-data-streaming-accelerator-user-guide.html
+One of the things DSA can do is to offload memory comparison workload from
+CPU to DSA accelerator hardware. This patchset implements a solution to offload
+QEMU's zero page checking from CPU to DSA accelerator hardware. We gain
+two benefits from this change:
+1. Reduces CPU usage in multifd live migration workflow across all use
+cases.
+2. Reduces migration total time in some use cases. 
+
+* Design:
+
+These are the logical steps to perform DSA offloading:
+1. Configure DSA accelerators and create user space openable DSA work
+queues via the idxd driver.
+2. Map DSA's work queue into a user space address space.
+3. Fill an in-memory task descriptor to describe the memory operation.
+4. Use dedicated CPU instruction _enqcmd to queue a task descriptor to
+the work queue.
+5. Pull the task descriptor's completion status field until the task
+completes.
+6. Check return status.
+
+The memory operation is now totally done by the accelerator hardware but
+the new workflow introduces overheads. The overhead is the extra cost CPU
+prepares and submits the task descriptors and the extra cost CPU pulls for
+completion. The design is around minimizing these two overheads.
+
+1. In order to reduce the overhead on task preparation and submission,
+we use batch descriptors. A batch descriptor will contain N individual
+zero page checking tasks where the default N is 128 (default packet size
+/ page size) and we can increase N by setting the packet size via a new
+migration option.
+2. The multifd sender threads prepares and submits batch tasks to DSA
+hardware and it waits on a synchronization object for task completion.
+Whenever a DSA task is submitted, the task structure is added to a
+thread safe queue. It's safe to have multiple multifd sender threads to
+submit tasks concurrently.
+3. Multiple DSA hardware devices can be used. During multifd initialization,
+every sender thread will be assigned a DSA device to work with. We
+use a round-robin scheme to evenly distribute the work across all used
+DSA devices.
+4. Use a dedicated thread dsa_completion to perform busy pulling for all
+DSA task completions. The thread keeps dequeuing DSA tasks from the
+thread safe queue. The thread blocks when there is no outstanding DSA
+task. When pulling for completion of a DSA task, the thread uses CPU
+instruction _mm_pause between the iterations of a busy loop to save some
+CPU power as well as optimizing core resources for the other hypercore.
+5. DSA accelerator can encounter errors. The most popular error is a
+page fault. We have tested using devices to handle page faults but
+performance is bad. Right now, if DSA hits a page fault, we fallback to
+use CPU to complete the rest of the work. The CPU fallback is done in
+the multifd sender thread.
+6. Added a new migration option multifd-dsa-accel to set the DSA device
+path. If set, the multifd workflow will leverage the DSA devices for
+offloading.
+7. Added a new migration option multifd-normal-page-ratio to make
+multifd live migration easier to test. Setting a normal page ratio will
+make live migration recognize a zero page as a normal page and send
+the entire payload over the network. If we want to send a large network
+payload and analyze throughput, this option is useful.
+8. Added a new migration option multifd-packet-size. This can increase
+the number of pages being zero page checked and sent over the network.
+The extra synchronization between the sender threads and the dsa
+completion thread is an overhead. Using a large packet size can reduce
+that overhead.
+
+* Performance:
+
+We use two Intel 4th generation Xeon servers for testing.
+
+Architecture:        x86_64
+CPU(s):              192
+Thread(s) per core:  2
+Core(s) per socket:  48
+Socket(s):           2
+NUMA node(s):        2
+Vendor ID:           GenuineIntel
+CPU family:          6
+Model:               143
+Model name:          Intel(R) Xeon(R) Platinum 8457C
+Stepping:            8
+CPU MHz:             2538.624
+CPU max MHz:         3800.0000
+CPU min MHz:         800.0000
+
+We perform multifd live migration with below setup:
+1. VM has 100GB memory. 
+2. Use the new migration option multifd-set-normal-page-ratio to control the total
+size of the payload sent over the network.
+3. Use 8 multifd channels.
+4. Use tcp for live migration.
+4. Use CPU to perform zero page checking as the baseline.
+5. Use one DSA device to offload zero page checking to compare with the baseline.
+6. Use "perf sched record" and "perf sched timehist" to analyze CPU usage.
+
+A) Scenario 1: 50% (50GB) normal pages on an 100GB vm.
+
+	CPU usage
+
+	|---------------|---------------|---------------|---------------|
+	|		|comm		|runtime(msec)	|totaltime(msec)|
+	|---------------|---------------|---------------|---------------|
+	|Baseline	|live_migration	|5657.58	|		|
+	|		|multifdsend_0	|3931.563	|		|
+	|		|multifdsend_1	|4405.273	|		|
+	|		|multifdsend_2	|3941.968	|		|
+	|		|multifdsend_3	|5032.975	|		|
+	|		|multifdsend_4	|4533.865	|		|
+	|		|multifdsend_5	|4530.461	|		|
+	|		|multifdsend_6	|5171.916	|		|
+	|		|multifdsend_7	|4722.769	|41922		|
+	|---------------|---------------|---------------|---------------|
+	|DSA		|live_migration	|6129.168	|		|
+	|		|multifdsend_0	|2954.717	|		|
+	|		|multifdsend_1	|2766.359	|		|
+	|		|multifdsend_2	|2853.519	|		|
+	|		|multifdsend_3	|2740.717	|		|
+	|		|multifdsend_4	|2824.169	|		|
+	|		|multifdsend_5	|2966.908	|		|
+	|		|multifdsend_6	|2611.137	|		|
+	|		|multifdsend_7	|3114.732	|		|
+	|		|dsa_completion	|3612.564	|32568		|
+	|---------------|---------------|---------------|---------------|
+
+Baseline total runtime is calculated by adding up all multifdsend_X
+and live_migration threads runtime. DSA offloading total runtime is
+calculated by adding up all multifdsend_X, live_migration and
+dsa_completion threads runtime. 41922 msec VS 32568 msec runtime and
+that is 23% total CPU usage savings.
+
+	Latency
+	|---------------|---------------|---------------|---------------|---------------|---------------|
+	|		|total time	|down time	|throughput	|transferred-ram|total-ram	|
+	|---------------|---------------|---------------|---------------|---------------|---------------|	
+	|Baseline	|10343 ms	|161 ms		|41007.00 mbps	|51583797 kb	|102400520 kb	|
+	|---------------|---------------|---------------|---------------|-------------------------------|
+	|DSA offload	|9535 ms	|135 ms		|46554.40 mbps	|53947545 kb	|102400520 kb	|	
+	|---------------|---------------|---------------|---------------|---------------|---------------|
+
+Total time is 8% faster and down time is 16% faster.
+
+B) Scenario 2: 100% (100GB) zero pages on an 100GB vm.
+
+	CPU usage
+	|---------------|---------------|---------------|---------------|
+	|		|comm		|runtime(msec)	|totaltime(msec)|
+	|---------------|---------------|---------------|---------------|
+	|Baseline	|live_migration	|4860.718	|		|
+	|	 	|multifdsend_0	|748.875	|		|
+	|		|multifdsend_1	|898.498	|		|
+	|		|multifdsend_2	|787.456	|		|
+	|		|multifdsend_3	|764.537	|		|
+	|		|multifdsend_4	|785.687	|		|
+	|		|multifdsend_5	|756.941	|		|
+	|		|multifdsend_6	|774.084	|		|
+	|		|multifdsend_7	|782.900	|11154		|
+	|---------------|---------------|-------------------------------|
+	|DSA offloading	|live_migration	|3846.976	|		|
+	|		|multifdsend_0	|191.880	|		|
+	|		|multifdsend_1	|166.331	|		|
+	|		|multifdsend_2	|168.528	|		|
+	|		|multifdsend_3	|197.831	|		|
+	|		|multifdsend_4	|169.580	|		|
+	|		|multifdsend_5	|167.984	|		|
+	|		|multifdsend_6	|198.042	|		|
+	|		|multifdsend_7	|170.624	|		|
+	|		|dsa_completion	|3428.669	|8700		|
+	|---------------|---------------|---------------|---------------|
+
+Baseline total runtime is 11154 msec and DSA offloading total runtime is
+8700 msec. That is 22% CPU savings.
+
+	Latency
+	|--------------------------------------------------------------------------------------------|
+	|		|total time	|down time	|throughput	|transferred-ram|total-ram   |
+	|---------------|---------------|---------------|---------------|---------------|------------|	
+	|Baseline	|4867 ms	|20 ms		|1.51 mbps	|565 kb		|102400520 kb|
+	|---------------|---------------|---------------|---------------|----------------------------|
+	|DSA offload	|3888 ms	|18 ms		|1.89 mbps	|565 kb		|102400520 kb|	
+	|---------------|---------------|---------------|---------------|---------------|------------|
+
+Total time 20% faster and down time 10% faster.
+
+* Testing:
+
+1. Added unit tests for cover the added code path in dsa.c
+2. Added integration tests to cover multifd live migration using DSA
+offloading.
+
+Hao Xiang (10):
+  meson: Introduce new instruction set enqcmd to the build system.
+  util/dsa: Implement DSA device start and stop logic.
+  util/dsa: Implement DSA task enqueue and dequeue.
+  util/dsa: Implement DSA task asynchronous completion thread model.
+  util/dsa: Implement zero page checking in DSA task.
+  util/dsa: Implement DSA task asynchronous submission and wait for
+    completion.
+  migration/multifd: Add new migration option for multifd DSA
+    offloading.
+  migration/multifd: Enable DSA offloading in multifd sender path.
+  util/dsa: Add unit test coverage for Intel DSA task submission and
+    completion.
+  migration/multifd: Add integration tests for multifd with Intel DSA
+    offloading.
+
+Yichen Wang (1):
+  util/dsa: Add idxd into linux header copy list.
+
+Yuan Liu (1):
+  migration/doc: Add DSA zero page detection doc
+
+ .../migration/dsa-zero-page-detection.rst     |  290 +++++
+ docs/devel/migration/features.rst             |    1 +
+ hmp-commands.hx                               |    2 +-
+ include/qemu/dsa.h                            |  188 +++
+ meson.build                                   |   14 +
+ meson_options.txt                             |    2 +
+ migration/migration-hmp-cmds.c                |   19 +-
+ migration/multifd-zero-page.c                 |  129 +-
+ migration/multifd.c                           |   29 +-
+ migration/multifd.h                           |    5 +
+ migration/options.c                           |   30 +
+ migration/options.h                           |    1 +
+ qapi/migration.json                           |   32 +-
+ scripts/meson-buildoptions.sh                 |    3 +
+ scripts/update-linux-headers.sh               |    2 +-
+ tests/qtest/migration-test.c                  |   80 +-
+ tests/unit/meson.build                        |    6 +
+ tests/unit/test-dsa.c                         |  503 ++++++++
+ util/dsa.c                                    | 1112 +++++++++++++++++
+ util/meson.build                              |    3 +
+ 20 files changed, 2427 insertions(+), 24 deletions(-)
+ create mode 100644 docs/devel/migration/dsa-zero-page-detection.rst
+ create mode 100644 include/qemu/dsa.h
+ create mode 100644 tests/unit/test-dsa.c
+ create mode 100644 util/dsa.c
 
 -- 
-Cheers,
-
-David / dhildenb
+Yichen Wang
 
 
