@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68B629C8F47
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Nov 2024 17:10:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CCE739C8F5C
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Nov 2024 17:12:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tBcJG-0005m6-VL; Thu, 14 Nov 2024 11:03:07 -0500
+	id 1tBcIg-0005FD-Qm; Thu, 14 Nov 2024 11:02:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tBcI5-0004zy-IZ
- for qemu-devel@nongnu.org; Thu, 14 Nov 2024 11:01:56 -0500
-Received: from mail-pj1-x1032.google.com ([2607:f8b0:4864:20::1032])
+ id 1tBcID-00050p-Rs
+ for qemu-devel@nongnu.org; Thu, 14 Nov 2024 11:02:05 -0500
+Received: from mail-pj1-x1029.google.com ([2607:f8b0:4864:20::1029])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tBcI3-0002F4-AO
- for qemu-devel@nongnu.org; Thu, 14 Nov 2024 11:01:52 -0500
-Received: by mail-pj1-x1032.google.com with SMTP id
- 98e67ed59e1d1-2e3d523a24dso687271a91.0
- for <qemu-devel@nongnu.org>; Thu, 14 Nov 2024 08:01:50 -0800 (PST)
+ id 1tBcI4-0002FH-Qk
+ for qemu-devel@nongnu.org; Thu, 14 Nov 2024 11:01:54 -0500
+Received: by mail-pj1-x1029.google.com with SMTP id
+ 98e67ed59e1d1-2e2fb304e7dso729060a91.1
+ for <qemu-devel@nongnu.org>; Thu, 14 Nov 2024 08:01:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1731600109; x=1732204909; darn=nongnu.org;
+ d=linaro.org; s=google; t=1731600110; x=1732204910; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=q3hq8/WORX9tjGeTrB15u911iYQPv1dQgSnGBISFTlA=;
- b=Cmlz0NUQdtgnoOegqJSXWKxJwjpM6H8bkqcetUsacOznDI5tYiS5QAMjHnjulV/Boo
- schnG8YS1m/QVMe6fAOQvjOXgo2PSvHVkSdhbcWJAXbVk0znJB9jjFi3TuLxiH0uXTUK
- ykPlO9Iz3XQpF/hoTvXREIgkZS5YS2XbCCKDAE84yWLcdHgEtV1JHIVzyyDNNuuQxJ41
- zjMotGN6ytYBqCgU//uQwVJbF+/emmQaE99minwO+E7Lp1hgoJpxSkw9gAYNjsyVMwk7
- qvLVKWmHbvvNOykIwLPZHqUAZIXy5wWmfkZwgx54BdE4egUoIIPq6ShthM3Yc5mf0dNR
- ttSg==
+ :reply-to; bh=lJHKnfJ9AOt1s0DhksJDYAiN+sOc9T9tuOMIGs7rfV8=;
+ b=eHGfoqH87XZL3ZHbSDaWpDHHsUIg9j75KUYhfgnMO6a94XefjKiHjxxismqoUh30dI
+ 7ypbwKhnJrwqcg3/slu982nntlvqpBebIE0EaJiMywfdETCO8/285ijCzDTD1SXfKdU7
+ AW9iGiPAYb5+GRuNCV0BSuJIcE9EsUBL6+l+4f0x9LXPd719ZLA8od3TGxo1JPI5wkTC
+ 4UhRO8ChTWSORpjDQ2iigaVh97CHqvNiHuejG+pcuh6JMwBwBfuN2GsEAdnKxmvDJ93f
+ 89pco8hHWafazJrcV/bO/mjR0cm0CNo/fQ7yciyCFuw9dlqmO/7XnRXb2RqWQE8UXSsX
+ opyQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731600109; x=1732204909;
+ d=1e100.net; s=20230601; t=1731600110; x=1732204910;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=q3hq8/WORX9tjGeTrB15u911iYQPv1dQgSnGBISFTlA=;
- b=e4/lOS30re3zBXimCJlJ6vy0xJhehssd6v/tEv3wTrLcUI3nEGRYhxqTDJG2RsVajz
- eR71vc9I3h57xwcOI+g0ui/ULwvd2ycJm+rtlbarwv2SXtposDsQ8Dk/f10Org2i0o1A
- 5X/6VTVBPP8UkOSZCjCo5OPxkSKjTlb52OES5RZM31WsApei9RNl0P+tiJ+h1HcgrUX6
- nwCVZK52RTpFi9gBPJ6F4YAfgLoOvr93vD4NhRtKAmAJf26JVCxUKUU3lLrwV0aE2NmF
- fCd4X+0QP/ReW2hCHiq9jmiaEhnlTmltLZUaykpzNDZvYb824L0sFxYgTUNUZaVDbdr/
- Mxdg==
-X-Gm-Message-State: AOJu0YxG/fKtYUz8sQqyD4xHtpyf7k3vIfsAl76ml0bxkUsCWltEABo1
- O3FxmluBeJiSL1OgejTawo76+S7S9W/5PeGSNkEhTav7oyAsp41e90ZNYhLMnlE0tjSEdbpm22M
- +
-X-Google-Smtp-Source: AGHT+IFtPIHgC6GpjZH9+1GsaXgTn2s1n/5wfBLUc1GdUUBRC2fxmiLGTPdJ65XmtPZb/7yBspHvrg==
-X-Received: by 2002:a17:90b:4acb:b0:2e2:d5fc:2847 with SMTP id
- 98e67ed59e1d1-2e9b177fe40mr32056117a91.30.1731600107271; 
- Thu, 14 Nov 2024 08:01:47 -0800 (PST)
+ bh=lJHKnfJ9AOt1s0DhksJDYAiN+sOc9T9tuOMIGs7rfV8=;
+ b=b5hxAgIri/DRzhiY0knkYNVSNnn/GV+46Y0feyGY67JGCWsxrZwBerBOKA547zJ8QY
+ 73cLKz0vc2h1fRfZFQ4q6A6gXWPD0xZKA2W74ZdJQag1gXSozib/QPDL11Ke7HNnh7Gk
+ J0zZtPaWci56nOlERYRUHXZQ+J7mXiYI4GRSXmDmIf3hfyNF3fXnyyO5mp64PfdjoXkX
+ rnW/PcmlFzRXYTnK4wemVZaxt8XB2Rl5RcXu2PgQasGa5zAS/ocS2lUbZdQSRMkQb/Ae
+ w3j5Uu0mKgmaiNDmAToKWGymZhZinyhwkN2bS2Ypoat2aaC+bYBA8Cosnee17qEKw7uc
+ 2Gow==
+X-Gm-Message-State: AOJu0Yz9fGpgvq9rB8lGIdV+m0gZgbskYF/m696zjhfHXb5RTfMahUlH
+ G+Na3/zbBOTiVy0ZSx7MUsshXzI77jQOrkpZohvCCjPzZeVRDaLLZDetXF6ev/Gl3xGWTyzePGw
+ 1
+X-Google-Smtp-Source: AGHT+IGsHqXaMfO75Hr/xzzH8lYuJMrFbtExhGPHDG+/XpX/lNz4Zg95GZ2tSIZmtwzMf4aX6NejRg==
+X-Received: by 2002:a17:90b:4a87:b0:2e2:aef9:8f60 with SMTP id
+ 98e67ed59e1d1-2e9b14ddb3bmr32406854a91.0.1731600110051; 
+ Thu, 14 Nov 2024 08:01:50 -0800 (PST)
 Received: from stoup.. ([71.212.136.242]) by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2ea024ec723sm1484438a91.46.2024.11.14.08.01.46
+ 98e67ed59e1d1-2ea024ec723sm1484438a91.46.2024.11.14.08.01.49
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 14 Nov 2024 08:01:46 -0800 (PST)
+ Thu, 14 Nov 2024 08:01:49 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH v2 20/54] include/exec/tlb-common: Move CPUTLBEntryFull from
- hw/core/cpu.h
-Date: Thu, 14 Nov 2024 08:00:56 -0800
-Message-ID: <20241114160131.48616-21-richard.henderson@linaro.org>
+Subject: [PATCH v2 21/54] accel/tcg: Delay plugin adjustment in
+ probe_access_internal
+Date: Thu, 14 Nov 2024 08:00:57 -0800
+Message-ID: <20241114160131.48616-22-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241114160131.48616-1-richard.henderson@linaro.org>
 References: <20241114160131.48616-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1032;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1032.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1029;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1029.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,162 +91,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-CPUTLBEntryFull structures are no longer directly included within
-the CPUState structure.  Move the structure definition out of cpu.h
-to reduce visibility.
+Remove force_mmio and place the expression into the IF
+expression, behind the short-circuit logic expressions
+that might eliminate its computation.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/exec/tlb-common.h | 63 +++++++++++++++++++++++++++++++++++++++
- include/hw/core/cpu.h     | 63 ---------------------------------------
- 2 files changed, 63 insertions(+), 63 deletions(-)
+ accel/tcg/cputlb.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/include/exec/tlb-common.h b/include/exec/tlb-common.h
-index dc5a5faa0b..300f9fae67 100644
---- a/include/exec/tlb-common.h
-+++ b/include/exec/tlb-common.h
-@@ -53,4 +53,67 @@ typedef struct CPUTLBDescFast {
-     CPUTLBEntry *table;
- } CPUTLBDescFast QEMU_ALIGNED(2 * sizeof(void *));
+diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
+index 3e24529f4f..a4c69bcbf1 100644
+--- a/accel/tcg/cputlb.c
++++ b/accel/tcg/cputlb.c
+@@ -1373,7 +1373,6 @@ static int probe_access_internal(CPUState *cpu, vaddr addr,
+     CPUTLBEntry *entry = tlb_entry(cpu, mmu_idx, addr);
+     uint64_t tlb_addr = tlb_read_idx(entry, access_type);
+     int flags = TLB_FLAGS_MASK & ~TLB_FORCE_SLOW;
+-    bool force_mmio = check_mem_cbs && cpu_plugin_mem_cbs_enabled(cpu);
+     CPUTLBEntryFull *full;
  
-+/*
-+ * The full TLB entry, which is not accessed by generated TCG code,
-+ * so the layout is not as critical as that of CPUTLBEntry. This is
-+ * also why we don't want to combine the two structs.
-+ */
-+struct CPUTLBEntryFull {
-+    /*
-+     * @xlat_section contains:
-+     *  - in the lower TARGET_PAGE_BITS, a physical section number
-+     *  - with the lower TARGET_PAGE_BITS masked off, an offset which
-+     *    must be added to the virtual address to obtain:
-+     *     + the ram_addr_t of the target RAM (if the physical section
-+     *       number is PHYS_SECTION_NOTDIRTY or PHYS_SECTION_ROM)
-+     *     + the offset within the target MemoryRegion (otherwise)
-+     */
-+    hwaddr xlat_section;
-+
-+    /*
-+     * @phys_addr contains the physical address in the address space
-+     * given by cpu_asidx_from_attrs(cpu, @attrs).
-+     */
-+    hwaddr phys_addr;
-+
-+    /* @attrs contains the memory transaction attributes for the page. */
-+    MemTxAttrs attrs;
-+
-+    /* @prot contains the complete protections for the page. */
-+    uint8_t prot;
-+
-+    /* @lg_page_size contains the log2 of the page size. */
-+    uint8_t lg_page_size;
-+
-+    /* Additional tlb flags requested by tlb_fill. */
-+    uint8_t tlb_fill_flags;
-+
-+    /*
-+     * Additional tlb flags for use by the slow path. If non-zero,
-+     * the corresponding CPUTLBEntry comparator must have TLB_FORCE_SLOW.
-+     */
-+    uint8_t slow_flags[MMU_ACCESS_COUNT];
-+
-+    /*
-+     * Allow target-specific additions to this structure.
-+     * This may be used to cache items from the guest cpu
-+     * page tables for later use by the implementation.
-+     */
-+    union {
-+        /*
-+         * Cache the attrs and shareability fields from the page table entry.
-+         *
-+         * For ARMMMUIdx_Stage2*, pte_attrs is the S2 descriptor bits [5:2].
-+         * Otherwise, pte_attrs is the same as the MAIR_EL1 8-bit format.
-+         * For shareability and guarded, as in the SH and GP fields respectively
-+         * of the VMSAv8-64 PTEs.
-+         */
-+        struct {
-+            uint8_t pte_attrs;
-+            uint8_t shareability;
-+            bool guarded;
-+        } arm;
-+    } extra;
-+};
-+
- #endif /* EXEC_TLB_COMMON_H */
-diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
-index 8eda0574b2..4364ddb1db 100644
---- a/include/hw/core/cpu.h
-+++ b/include/hw/core/cpu.h
-@@ -201,69 +201,6 @@ struct CPUClass {
-  */
- #define NB_MMU_MODES 16
+     if (!tlb_hit(tlb_addr, addr)) {
+@@ -1404,9 +1403,14 @@ static int probe_access_internal(CPUState *cpu, vaddr addr,
+     *pfull = full = &cpu->neg.tlb.d[mmu_idx].fulltlb[index];
+     flags |= full->slow_flags[access_type];
  
--/*
-- * The full TLB entry, which is not accessed by generated TCG code,
-- * so the layout is not as critical as that of CPUTLBEntry. This is
-- * also why we don't want to combine the two structs.
-- */
--struct CPUTLBEntryFull {
--    /*
--     * @xlat_section contains:
--     *  - in the lower TARGET_PAGE_BITS, a physical section number
--     *  - with the lower TARGET_PAGE_BITS masked off, an offset which
--     *    must be added to the virtual address to obtain:
--     *     + the ram_addr_t of the target RAM (if the physical section
--     *       number is PHYS_SECTION_NOTDIRTY or PHYS_SECTION_ROM)
--     *     + the offset within the target MemoryRegion (otherwise)
--     */
--    hwaddr xlat_section;
--
--    /*
--     * @phys_addr contains the physical address in the address space
--     * given by cpu_asidx_from_attrs(cpu, @attrs).
--     */
--    hwaddr phys_addr;
--
--    /* @attrs contains the memory transaction attributes for the page. */
--    MemTxAttrs attrs;
--
--    /* @prot contains the complete protections for the page. */
--    uint8_t prot;
--
--    /* @lg_page_size contains the log2 of the page size. */
--    uint8_t lg_page_size;
--
--    /* Additional tlb flags requested by tlb_fill. */
--    uint8_t tlb_fill_flags;
--
--    /*
--     * Additional tlb flags for use by the slow path. If non-zero,
--     * the corresponding CPUTLBEntry comparator must have TLB_FORCE_SLOW.
--     */
--    uint8_t slow_flags[MMU_ACCESS_COUNT];
--
--    /*
--     * Allow target-specific additions to this structure.
--     * This may be used to cache items from the guest cpu
--     * page tables for later use by the implementation.
--     */
--    union {
--        /*
--         * Cache the attrs and shareability fields from the page table entry.
--         *
--         * For ARMMMUIdx_Stage2*, pte_attrs is the S2 descriptor bits [5:2].
--         * Otherwise, pte_attrs is the same as the MAIR_EL1 8-bit format.
--         * For shareability and guarded, as in the SH and GP fields respectively
--         * of the VMSAv8-64 PTEs.
--         */
--        struct {
--            uint8_t pte_attrs;
--            uint8_t shareability;
--            bool guarded;
--        } arm;
--    } extra;
--};
--
- /*
-  * Data elements that are per MMU mode, minus the bits accessed by
-  * the TCG fast path.
+-    /* Fold all "mmio-like" bits into TLB_MMIO.  This is not RAM.  */
+-    if (unlikely(flags & ~(TLB_WATCHPOINT | TLB_NOTDIRTY | TLB_CHECK_ALIGNED))
+-        || (access_type != MMU_INST_FETCH && force_mmio)) {
++    /*
++     * Fold all "mmio-like" bits, and required plugin callbacks, to TLB_MMIO.
++     * These cannot be treated as RAM.
++     */
++    if ((flags & ~(TLB_WATCHPOINT | TLB_NOTDIRTY | TLB_CHECK_ALIGNED))
++        || (access_type != MMU_INST_FETCH
++            && check_mem_cbs
++            && cpu_plugin_mem_cbs_enabled(cpu))) {
+         *phost = NULL;
+         return TLB_MMIO;
+     }
 -- 
 2.43.0
 
