@@ -2,81 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D810D9C91FA
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Nov 2024 19:58:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A2239C9207
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Nov 2024 19:59:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tBf2I-0006No-UX; Thu, 14 Nov 2024 13:57:47 -0500
+	id 1tBf17-0004cr-DG; Thu, 14 Nov 2024 13:56:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tBf01-00029z-J7
- for qemu-devel@nongnu.org; Thu, 14 Nov 2024 13:55:29 -0500
-Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1tBf0c-00037r-6m
+ for qemu-devel@nongnu.org; Thu, 14 Nov 2024 13:56:03 -0500
+Received: from mail-ot1-x335.google.com ([2607:f8b0:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tBezy-0000Ic-Em
- for qemu-devel@nongnu.org; Thu, 14 Nov 2024 13:55:24 -0500
-Received: by mail-ed1-x52e.google.com with SMTP id
- 4fb4d7f45d1cf-5cf84214e9bso686359a12.3
- for <qemu-devel@nongnu.org>; Thu, 14 Nov 2024 10:55:16 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1tBf0a-0000RU-2R
+ for qemu-devel@nongnu.org; Thu, 14 Nov 2024 13:56:01 -0500
+Received: by mail-ot1-x335.google.com with SMTP id
+ 46e09a7af769-71a4210bcfeso568229a34.1
+ for <qemu-devel@nongnu.org>; Thu, 14 Nov 2024 10:55:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1731610515; x=1732215315; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ d=linaro.org; s=google; t=1731610558; x=1732215358; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=w0naVAqBaBhnTo/FtWYOVxr5hQzfywoobRP2hZPRLNs=;
- b=OZD85ZfsGo3NA18kQ5LDTHjS0+hhR2KkqK3x3qKjjwxNx+4vYXZ6L966+zJfqoShKw
- ANL5JqzNx39A9J0KWOEO3JBQth8ei9BSLGoIqIU41/Mj4Rk3ApxRXWI2OWWyZKCnTpE+
- z/Ttmd5chLK7WUCHe0lYtIN7zTotLMdHxt0UQ/c+LFUHeM00t4KXMzzk1lfqvikpo1Xw
- cFAckYzTRBPSa/0jnT1taCE1xrmB38DbGkOrxUvghqwjUuCcj2/o8aOZeWl4NvdkbboF
- 29LZSETgLs+FuZo8q/75SPNo2UKUwDHiDZSQljoP5x9tN8XeLlUeHQUMxMzxU75Y9vQ6
- jbXQ==
+ bh=Ojb8nBpKVYXjd2u5bC/Ui/48M1Q4AJk+hIp/A4henE0=;
+ b=dP6xISoGBCW6q7j7JdtGr9GWjZVqSW80KXAHFRTygi3TGNf6GtEE8+Ce22bPqIcTQ7
+ tZEk7QZodlwYDv8zptd7m8ndIhf6RbQlNrVXrOBbFSlC+D0CaYB6/+TOULVImdnnZqhg
+ SIYCKht/382S3eA8Tqij/Z0IHhohzIH7SoRGCBeRj1V4Trm9err3ckPW81r7/i3uXng9
+ wyAPnbIK0OWp4qX/7NIcct5jw/m4wb5qjLj0bIcnAjwbKb5QQ3iTeUkImM62k0x3kYDG
+ Dcnr/XT/5WHJk+4848u8QOYwrp6kfoY4IWsz5f4Shr9G5AWRV/9eNU81QZw3TA+lEcvm
+ K6vA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731610515; x=1732215315;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20230601; t=1731610558; x=1732215358;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=w0naVAqBaBhnTo/FtWYOVxr5hQzfywoobRP2hZPRLNs=;
- b=tXJp5lf+axWREbhTfB26Qr6Dl0Ax9oWy5Lt4inV61X1posGrN306L+rNCExEpmCgLg
- gZYQvKxOHoexFBtDYCYmS5TgxHDSKDwtNmTSGkNB5YGxDh3OehWcENqhO560j8DIRF7n
- jblVKFxVlBcnFSOLQyXKBa+0ActJK9GaLkN7TI+kwACeNYq9MYMIpfx7mj0PNYW1F+Lm
- Uk3zaq6+4EWNLZnETuzr29AQjLbc49l4VNEnY9f+WRVH6w01lhx7wCT03OtGQTvRrZcx
- Zi3ADkzlNb2XLxOLdmUyiU6wW6sQIn/+a8YIp/XhDEzk/uyUL80eQmlWSDREJYt45f4X
- 1soQ==
-X-Gm-Message-State: AOJu0Yw5AlCUefqNcf8vzKZIeaPiyea7NogprypZD7jWZsv42+wX9I76
- TGBVn2e4z3S3o+fqo9baLt8g7wLoDDw9xRKLBCsBVQQUkt2p/guHqHkRl8qbg2I=
-X-Google-Smtp-Source: AGHT+IH9DCL4VEY6XlHhsr9ETN/JO6qiX3alagG6WYIncrj6066l7GvCphN7d/OXf+rv/GKymWKM5w==
-X-Received: by 2002:a05:6402:510f:b0:5ce:af48:c2cc with SMTP id
- 4fb4d7f45d1cf-5cf0a43fd2cmr22577511a12.27.1731610515326; 
- Thu, 14 Nov 2024 10:55:15 -0800 (PST)
-Received: from [192.168.69.174] ([176.187.209.228])
- by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5cf8d0958f9sm71652a12.14.2024.11.14.10.55.13
+ bh=Ojb8nBpKVYXjd2u5bC/Ui/48M1Q4AJk+hIp/A4henE0=;
+ b=Ny9IbfV+bhD6SDxwLeO0ohvUCWBhFp/JshW7bkIlIFjaZF+ES8QIrmGxe/j6TYqB9J
+ 5S8G5Xfq/TYr/dR72fJAHGzf6W7tAee2BU5b9CygOFlETJS/17yJyPFDyzeb3Wfiu5+8
+ XSsswK6BHakoic0dPQ+B5liKODehgunIuUkZn0gU+z1Kv/6wEA8SghTaF1qpcQDWti94
+ ZcWJ05ma/uI/jJsi0ReZ1M6kYFSO6G3QFvku0ve4/VXkGl+1sGquD9yYsIb3UlhPb1vR
+ kl17ahCenHFHQ/GC9Lw+PE7FPbsfQHsVYfSTcnfw4wuxh1Uu0THRC+2FUdsUfmKyAyHe
+ 8uXg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWcDYrvsoPrOdW/QqlQX/xUDzBR8TiTUONi63Ra6Cul0d6CPUZR/YTtvFPBPhRKe/4d2MemPb+brLyI@nongnu.org
+X-Gm-Message-State: AOJu0YwvHD3iU3e07bY06gqKFz1JiGAA2kEKKykAHkJybhw421z+dWqb
+ gPIzYi440mSpq1R6JqLgOVJhKPfVh600LOlycJMFsb2yND6/lkkJ2ybKYLqnQ+w=
+X-Google-Smtp-Source: AGHT+IHIgKgf5EkqVgh/R+drOrq+cNBlP7zZ9UbqHl+FvGz/87ZENdhCzL89igDRFMDnVT/fr0VVzw==
+X-Received: by 2002:a05:6830:374c:b0:71a:21c9:cd62 with SMTP id
+ 46e09a7af769-71a77979c17mr41871a34.17.1731610558411; 
+ Thu, 14 Nov 2024 10:55:58 -0800 (PST)
+Received: from [192.168.1.67] (216-180-64-156.dyn.novuscom.net.
+ [216.180.64.156]) by smtp.gmail.com with ESMTPSA id
+ 41be03b00d2f7-7f8b39af62esm1275662a12.76.2024.11.14.10.55.57
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 14 Nov 2024 10:55:14 -0800 (PST)
-Message-ID: <0cf1cdc6-442f-45f8-b1e7-346b236b516a@linaro.org>
-Date: Thu, 14 Nov 2024 19:55:11 +0100
+ Thu, 14 Nov 2024 10:55:58 -0800 (PST)
+Message-ID: <1b6221c7-aa65-49fd-be52-1af422331806@linaro.org>
+Date: Thu, 14 Nov 2024 10:55:57 -0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 00/20] hw/net/xilinx_ethlite: Map RAM buffers as RAM and
- remove tswap() calls
-To: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
-Cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>, Anton Johansson <anjo@rev.ng>,
- Jason Wang <jasowang@redhat.com>, qemu-arm@nongnu.org,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- Thomas Huth <thuth@redhat.com>, Alistair Francis <alistair@alistair23.me>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Gustavo Romero <gustavo.romero@linaro.org>
-References: <20241112181044.92193-1-philmd@linaro.org>
- <ZzTHj3uHGfc2Z8Dd@zapote>
+Subject: Re: [PATCH v2 51/54] accel/tcg: Drop TCGCPUOps.tlb_fill
 Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <ZzTHj3uHGfc2Z8Dd@zapote>
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+References: <20241114160131.48616-1-richard.henderson@linaro.org>
+ <20241114160131.48616-52-richard.henderson@linaro.org>
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+In-Reply-To: <20241114160131.48616-52-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x52e.google.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::335;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-ot1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,86 +95,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 13/11/24 15:36, Edgar E. Iglesias wrote:
-> On Tue, Nov 12, 2024 at 07:10:24PM +0100, Philippe Mathieu-Daudé wrote:
->> This is the result of a long discussion with Edgar (started few
->> years ago!) and Paolo:
->> https://lore.kernel.org/qemu-devel/34f6fe2f-06e0-4e2a-a361-2d662f6814b5@redhat.com/
->> After clarification from Richard on MMIO/RAM accesses, I figured
->> strengthening the model regions would make things obvious,
->> eventually allowing to remove the tswap() calls for good.
->>
->> This costly series mostly plays around with MemoryRegions.
->>
->> The model has a mix of RAM/MMIO in its address range. Currently
->> they are implemented as a MMIO array of u32. Since the core
->> memory layer swaps accesses for MMIO, the device implementation
->> has to swap them back.
->> In order to avoid that, we'll map the RAM regions as RAM MRs.
->> First we move each MMIO register to new MMIO regions (RX and TX).
->> Then what is left are the RAM buffers; we convert them to RAM MRs,
->> removing the need for tswap() at all.
->>
->> Once reviewed, I'll respin my "hw/microblaze: Allow running
->> cross-endian vCPUs" series based on this.
+On 11/14/24 08:01, Richard Henderson wrote:
+> Now that all targets have been converted to tlb_fill_align,
+> remove the tlb_fill hook.
 > 
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+>   include/hw/core/tcg-cpu-ops.h | 10 ----------
+>   accel/tcg/cputlb.c            | 19 ++++---------------
+>   2 files changed, 4 insertions(+), 25 deletions(-)
 > 
-> Thanks Phil,
-> 
-> This looks good to me. Have you tested this with the Images I provied
-> a while back or some other way?
+> diff --git a/include/hw/core/tcg-cpu-ops.h b/include/hw/core/tcg-cpu-ops.h
+> index 663efb9133..70cafcc6cd 100644
+> --- a/include/hw/core/tcg-cpu-ops.h
+> +++ b/include/hw/core/tcg-cpu-ops.h
+> @@ -157,16 +157,6 @@ struct TCGCPUOps {
+>       bool (*tlb_fill_align)(CPUState *cpu, CPUTLBEntryFull *out, vaddr addr,
+>                              MMUAccessType access_type, int mmu_idx,
+>                              MemOp memop, int size, bool probe, uintptr_t ra);
+> -    /**
+> -     * @tlb_fill: Handle a softmmu tlb miss
+> -     *
+> -     * If the access is valid, call tlb_set_page and return true;
+> -     * if the access is invalid and probe is true, return false;
+> -     * otherwise raise an exception and do not return.
+> -     */
+> -    bool (*tlb_fill)(CPUState *cpu, vaddr address, int size,
+> -                     MMUAccessType access_type, int mmu_idx,
+> -                     bool probe, uintptr_t retaddr);
+>       /**
+>        * @do_transaction_failed: Callback for handling failed memory transactions
+>        * (ie bus faults or external aborts; not MMU faults)
+> diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
+> index 7f63dc3fd8..ec597ed6f5 100644
+> --- a/accel/tcg/cputlb.c
+> +++ b/accel/tcg/cputlb.c
+> @@ -1222,23 +1222,12 @@ static bool tlb_fill_align(CPUState *cpu, vaddr addr, MMUAccessType type,
+>                              int mmu_idx, MemOp memop, int size,
+>                              bool probe, uintptr_t ra)
+>   {
+> -    const TCGCPUOps *ops = cpu->cc->tcg_ops;
+>       CPUTLBEntryFull full;
+>   
+> -    if (ops->tlb_fill_align) {
+> -        if (ops->tlb_fill_align(cpu, &full, addr, type, mmu_idx,
+> -                                memop, size, probe, ra)) {
+> -            tlb_set_page_full(cpu, mmu_idx, addr, &full);
+> -            return true;
+> -        }
+> -    } else {
+> -        /* Legacy behaviour is alignment before paging. */
+> -        if (addr & ((1u << memop_alignment_bits(memop)) - 1)) {
+> -            ops->do_unaligned_access(cpu, addr, type, mmu_idx, ra);
+> -        }
+> -        if (ops->tlb_fill(cpu, addr, size, type, mmu_idx, probe, ra)) {
+> -            return true;
+> -        }
+> +    if (cpu->cc->tcg_ops->tlb_fill_align(cpu, &full, addr, type, mmu_idx,
+> +                                         memop, size, probe, ra)) {
+> +        tlb_set_page_full(cpu, mmu_idx, addr, &full);
+> +        return true;
+>       }
+>       assert(probe);
+>       return false;
 
-I'm running the same functional tests run on CI:
+Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
-$ make check-functional-microblaze{,el}
-[1/7] Generating qemu-version.h with a custom command (wrapped by meson 
-to capture output)
-[1/7] Generating qemu-version.h with a custom command (wrapped by meson 
-to capture output)
-/Users/philmd/qemu/build/pyvenv/bin/meson test  --no-rebuild -t 1 
---setup thorough   --print-errorlogs  --suite func-microblazeel  --suite 
-func-microblazeel-thorough
-/Users/philmd/qemu/build/pyvenv/bin/meson test  --no-rebuild -t 1 
---setup thorough   --print-errorlogs  --suite func-microblaze  --suite 
-func-microblaze-thorough
-1/4 qemu:func-quick+func-microblazeel / 
-func-microblazeel-empty_cpu_model                                     OK 
-              0.18s   1 subtests passed
-1/4 qemu:func-quick+func-microblaze / func-microblaze-empty_cpu_model 
-                                OK              0.18s   1 subtests passed
-2/4 qemu:func-quick+func-microblaze / func-microblaze-version 
-                                OK              0.18s   1 subtests passed
-2/4 qemu:func-quick+func-microblazeel / func-microblazeel-version 
-                                      OK              0.18s   1 subtests 
-passed
-3/4 qemu:func-quick+func-microblaze / func-microblaze-info_usernet 
-                                OK              0.28s   1 subtests passed
-3/4 qemu:func-quick+func-microblazeel / func-microblazeel-info_usernet 
-                                      OK              0.28s   1 subtests 
-passed
-4/4 qemu:func-thorough+func-microblaze-thorough+thorough / 
-func-microblaze-microblaze_s3adsp1800        OK              0.57s   1 
-subtests passed
-
-Ok:                 4
-Expected Fail:      0
-Fail:               0
-Unexpected Pass:    0
-Skipped:            0
-Timeout:            0
-
-Full log written to /Users/philmd/qemu/build/meson-logs/testlog-thorough.txt
-4/4 qemu:func-thorough+func-microblazeel-thorough+thorough / 
-func-microblazeel-microblazeel_s3adsp1800        OK              1.50s 
-1 subtests passed
-
-Ok:                 4
-Expected Fail:      0
-Fail:               0
-Unexpected Pass:    0
-Skipped:            0
-Timeout:            0
-
-Full log written to /Users/philmd/qemu/build/meson-logs/testlog-thorough.txt
-$
 
