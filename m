@@ -2,87 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D2E09C8F6B
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Nov 2024 17:13:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 335159C8F5A
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Nov 2024 17:12:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tBcKd-0000ZZ-Ie; Thu, 14 Nov 2024 11:04:31 -0500
+	id 1tBcOR-00054v-G2; Thu, 14 Nov 2024 11:08:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tBcKT-0000H2-Ob
- for qemu-devel@nongnu.org; Thu, 14 Nov 2024 11:04:23 -0500
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tBcKR-0002ie-50
- for qemu-devel@nongnu.org; Thu, 14 Nov 2024 11:04:21 -0500
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-4316f3d3c21so6888505e9.3
- for <qemu-devel@nongnu.org>; Thu, 14 Nov 2024 08:04:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1731600257; x=1732205057; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=Xx15cktm0Swu3pN2YH27/w4/Ui/AEI71K03LT+vnX7Y=;
- b=q8xi6LrBhuIjNCaJzvPA0rrpGWLCM++LRyHWfSiyHGRCWqZ4wjP3vLppYyXweLFJCw
- +EyQL4+NLm7KbsBNl+RkTMIBUEvPQEDyJn/2/mDwAAJcPDs09MAk9tw/NyBc18tXadA3
- X/00UPGLLmRPW0MXeM+KP4L4REDV+VYToNOLoLgG/31YQeaiTxJHZStnhkz7od6Jgc4m
- 8FZlEDSZUm150KWqUbyKAPvKOZ6Otz/KkrhTtcY7UFt/toM/SlLfzMcG8xSbcMAOsNBE
- vBQepUDNdcOqRX2DLxEiEQqOxjdHH2ZJP1l4Ll5pPb9dBEE2f1Q13WdofcVPGwHrZEmA
- yP1w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731600257; x=1732205057;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Xx15cktm0Swu3pN2YH27/w4/Ui/AEI71K03LT+vnX7Y=;
- b=V6CasLZNg7zLKbxGzVeDo/7DXL8tykxKOKHV1SYHZUAST7EknklHwG4plU6Ss5i+Xg
- m0Mo3Y/jdTvdL/6JPpi3P5FucKQyq9vdUYAnE+UGCMwOoet3tnovwIujLcW8ha9CqWHu
- Lv738BGiLywTHlGg7X4tnb8/DD/CDzzh75n/JSotlEtHFVM7BEm9zJ3A/+xtnc8jVLgd
- oLhl9e/wmu3tACaUze63PDAstec8eeWQJqNUO53uHb59sgX0XS9bYU8Z9txMkYDdWnWq
- CJENmL7j2sPMo967rkxBu2xc+bihwjTjjOVJazvMwzdXRyiq6EXO2qs4Wh7KBjgVwYMN
- ii8Q==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUDV+427MUu91WxwAbFyhK5AZDfxJOG4XYOKUCuONSeuLLS/dcuxaVQUkdRQV6iKcSmLyjQLvq/xTfv@nongnu.org
-X-Gm-Message-State: AOJu0Yzcu1Cnn8jlLijbGgBMFZJurwE2rjQdrJWpaWA0AWsy6Av2BpfB
- u6K2v+CZJ7CsV4gR8f+0fW7p+GLIbAksrNeBoty1FDerPhnTbeX+SQ4dozOgf2c=
-X-Google-Smtp-Source: AGHT+IFrhERMMzV68wp38SKtV0bSsRbH/yEOqZBAsqVIkMmP5Ow1zLjw2R/G/V7t01yYCNgMT291fA==
-X-Received: by 2002:a05:600c:5125:b0:431:588a:4498 with SMTP id
- 5b1f17b1804b1-432cce7295cmr98941855e9.14.1731600255773; 
- Thu, 14 Nov 2024 08:04:15 -0800 (PST)
-Received: from [192.168.69.126] ([176.187.209.228])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-432d478511dsm56723365e9.0.2024.11.14.08.04.14
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 14 Nov 2024 08:04:15 -0800 (PST)
-Message-ID: <f4bcc425-5077-42ab-996a-b2940aa566cb@linaro.org>
-Date: Thu, 14 Nov 2024 17:04:12 +0100
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1tBcM2-0002Ki-Rk
+ for qemu-devel@nongnu.org; Thu, 14 Nov 2024 11:06:02 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1tBcLy-0003DE-PB
+ for qemu-devel@nongnu.org; Thu, 14 Nov 2024 11:05:58 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1731600350;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=YBEJaiHt3W1gvBSnRMJsLsnuY8HEgsh+w64nh+jJTE8=;
+ b=W8cndow7NYTBXJ6ExH0VaV/mkQlPZnHGc7PRfxD1BC9XJalgzAp+1rsUOfmc396XpI28wz
+ iNoo+Zg54fYHIRt4WP8ThrqTaxe6X+91VrVvY2QdKzVLTnVjmIDGnFfBHl5g6+28LrRiI6
+ bYOdNWFAF31B24sfeTdsCIvt6nwtB6k=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-686-qc8JZ9qPPrKmhkrF28h35w-1; Thu,
+ 14 Nov 2024 11:05:46 -0500
+X-MC-Unique: qc8JZ9qPPrKmhkrF28h35w-1
+X-Mimecast-MFC-AGG-ID: qc8JZ9qPPrKmhkrF28h35w
+Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id CEAA11955F43; Thu, 14 Nov 2024 16:05:45 +0000 (UTC)
+Received: from redhat.com (unknown [10.39.192.6])
+ by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 52D82196BC05; Thu, 14 Nov 2024 16:05:42 +0000 (UTC)
+Date: Thu, 14 Nov 2024 17:05:40 +0100
+From: Kevin Wolf <kwolf@redhat.com>
+To: Stefan Hajnoczi <stefanha@redhat.com>
+Cc: qemu-devel@nongnu.org, Eduardo Habkost <eduardo@habkost.net>,
+ pkrempa@redhat.com,
+ Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, armbru@redhat.com
+Subject: Re: [PATCH v3 0/2] qdev-monitor: avoid QemuOpts in QMP device_add()
+Message-ID: <ZzYf1FzmPxVUb3mG@redhat.com>
+References: <20240827192751.948633-1-stefanha@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/2] hw/net/virtio-net.c: Don't assume IP length field
- is aligned
-To: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
-Cc: "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
- Dmitry Fleytman <dmitry.fleytman@gmail.com>,
- Akihiko Odaki <akihiko.odaki@daynix.com>,
- Yuri Benditovich <ybendito@redhat.com>
-References: <20241114141619.806652-1-peter.maydell@linaro.org>
- <20241114141619.806652-2-peter.maydell@linaro.org>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20241114141619.806652-2-peter.maydell@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240827192751.948633-1-stefanha@redhat.com>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.122,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,27 +82,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 14/11/24 14:16, Peter Maydell wrote:
-> In virtio-net.c we assume that the IP length field in the packet is
-> aligned, and we copy its address into a uint16_t* in the
-> VirtioNetRscUnit struct which we then dereference later.  This isn't
-> a safe assumption; it will also result in compilation failures if we
-> mark the ip_header struct as QEMU_PACKED because the compiler will
-> not let you take the address of an unaligned struct field.
+Am 27.08.2024 um 21:27 hat Stefan Hajnoczi geschrieben:
+> v3:
+> - Duplicate drain_call_rcu() into hmp_device_add() because moving it into
+>   qdev_device_add_from_qdict turned out to be unsafe.
+> v2:
+> - Rename Patch 1 to indicate that we're avoiding QemuOpts rather than doing a
+>   full conversion to QAPI. Also mention that 'gen': false is still being used.
+>   [Markus]
+> - Add Patch 2 to address a TODO comment suggesting that
+>   qemu_create_cli_devices() should call qmp_device_add(). [Markus]
+> - Move drain_call_rcu() into qdev_device_add_from_qdict() to avoid code
+>   duplication. [Markus]
 > 
-> Make the ip_plen field in VirtioNetRscUnit a void*, and make all the
-> places where we read or write through that pointer instead use some
-> new accessor functions read_unit_ip_len() and write_unit_ip_len()
-> which account for the pointer being potentially unaligned and also do
-> the network-byte-order conversion we were previously using htons() to
-> perform.
-> 
-> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-> ---
->   include/hw/virtio/virtio-net.h |  2 +-
->   hw/net/virtio-net.c            | 23 +++++++++++++++++++----
->   2 files changed, 20 insertions(+), 5 deletions(-)
+> This series enables non-scalar parameter parsing in device_add (e.g.
+> virtio-blk-pci,iothread-vq-mapping=). Stop converting from QDict to QemuOpts
+> and back again as this loses type information and cannot represent non-scalars.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Thanks, applied to the block branch.
+
+Kevin
 
 
