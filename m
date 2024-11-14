@@ -2,100 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4954E9C8ED7
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Nov 2024 16:57:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 86FB89C8F55
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Nov 2024 17:11:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tBcCc-0003U4-5U; Thu, 14 Nov 2024 10:56:14 -0500
+	id 1tBcHu-0004uG-3T; Thu, 14 Nov 2024 11:01:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jrossi@linux.ibm.com>)
- id 1tBcCY-0003TA-51; Thu, 14 Nov 2024 10:56:10 -0500
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jrossi@linux.ibm.com>)
- id 1tBcCU-00013l-ER; Thu, 14 Nov 2024 10:56:09 -0500
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4AEEZwwG003090;
- Thu, 14 Nov 2024 15:55:58 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=pp1; bh=ifyYhI
- RhR2TDFaNyyOJTNxXnwJCAH4TF7bvt0S4CQYA=; b=BPnYwokjcxRWvuamLgNK07
- ewn4kusVD/fXL/gsMY3F7Kdd1spnpI5kTLTqGjQNlUKFa7nTzc2IaOQ8nqi+GfYg
- gIKFYpJp6n3Cs0zE7HssdHezaug7bS+18VGU053eGCVwO5zIBASuGtIPqRUFNRDg
- OnYMrpdp2BONQ7JPRJo4MgIUZTEuWud9f+p2y+8vGFToNcsPzeu1zTWsSnQCosl+
- id7Ck+gWEFnGNecI5xEpi4MOsYhcoQqvnxWwNzHa64yK949USpErkG+uHt/VDY4/
- tyQqfyaBgH7zPaXO6h+/Tb8vsPZpLk34xgj/Bs7FnkcdIaBwHWv2+akU1IRr6R1Q
- ==
-Received: from ppma13.dal12v.mail.ibm.com
- (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42wjqrgf7x-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 14 Nov 2024 15:55:57 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
- by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4AEBdTNm006603;
- Thu, 14 Nov 2024 15:55:57 GMT
-Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
- by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 42tm9jgfma-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 14 Nov 2024 15:55:57 +0000
-Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com
- [10.241.53.102])
- by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 4AEFttCq47645090
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 14 Nov 2024 15:55:55 GMT
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3CE4158056;
- Thu, 14 Nov 2024 15:55:55 +0000 (GMT)
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 88E2F58060;
- Thu, 14 Nov 2024 15:55:54 +0000 (GMT)
-Received: from [9.61.167.191] (unknown [9.61.167.191])
- by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTPS;
- Thu, 14 Nov 2024 15:55:54 +0000 (GMT)
-Message-ID: <9e7cb217-a33e-48aa-b030-efb991ca33f3@linux.ibm.com>
-Date: Thu, 14 Nov 2024 10:55:53 -0500
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1tBcHp-0004tq-F6
+ for qemu-devel@nongnu.org; Thu, 14 Nov 2024 11:01:37 -0500
+Received: from mail-pj1-x1033.google.com ([2607:f8b0:4864:20::1033])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1tBcHm-0002Ap-5f
+ for qemu-devel@nongnu.org; Thu, 14 Nov 2024 11:01:35 -0500
+Received: by mail-pj1-x1033.google.com with SMTP id
+ 98e67ed59e1d1-2e9b4a5862fso689559a91.1
+ for <qemu-devel@nongnu.org>; Thu, 14 Nov 2024 08:01:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1731600092; x=1732204892; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=QVGSdFiqO43cr6UXltR0+MwH185de3YRvkOGzcDGoKM=;
+ b=BFQ4Tvu0i1loArZRewax9ylvw3tGVr/RUak59kSHb/iH3Rbc88FOfxCULg3qQt7CEj
+ /mFfpBnDRYBYVW2pUbmnCADHj0P94lGnLWzOL4kmu1zQhVmzqldTTzT6XX7h5FBlLFk4
+ 0VP5bvuLzwlIVMJ1qqFQCn53wqYc53MOwTUlplqavlaxdtE4FMhpWi6lhJbsIWxc50hU
+ iLG/5Y/lOcuYj3D90APZi6pEJc0jcKBHsmfaHNC+sXRgS4rnGb1Uffgrks13x0gFHrZE
+ 2SnUN6aQ5h14FHw0+IWyrqgChkJCrJLBZnWUt6T8KpIni4WQlS4Vt/X+KLjIO+P2bVnx
+ Q7GQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1731600092; x=1732204892;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=QVGSdFiqO43cr6UXltR0+MwH185de3YRvkOGzcDGoKM=;
+ b=KWvM3sfGVQE1AFkNY4vX3zzzuA9gpciAn7cG5AZHlWWQ1/JTb6H3nqNvSY+pPerGtU
+ 9xX691WV4mwc6k9TyCbLMvH+bJoanWLSREKZvpwwNowXrR4GBT8BpGKZ1yy4kBzfE0a7
+ 38Gxa5s9i6ZhHveBL7AMgPuqqoaBD8jGzfScsgR+NMzSKuan1YCN15+bYlDxZ/xJklpR
+ rEJehyw0X0WRWMq3M4ZM1q3O/wDFg462l+6+oXrUVRbjfUMRCe2kNYetQWK1C276WqBv
+ 7mAt6IoWrcKg9BNpuh6Bb5qAzlHeaddJ0/sUcwdG40W2bCuAMNB27Al2ISYod/TPdcYl
+ K5Yg==
+X-Gm-Message-State: AOJu0Yz2jW4Dj1hf/9JzA/ZYvu/ImSOGAueWGMXIxbFZBWTrM2Df43C1
+ Uy9MXFeKE5pmx+f8T5njf8T8XFF4yljDo1oQLjHSUZR86YP2YlzpRrk7Db3X+2WhhfPAFS8jH5z
+ O
+X-Google-Smtp-Source: AGHT+IHr7XqjA80mRhcQEo7QOcUBo6FOmux2L9l/kEv6qXO97fdzKXWRPY8zMw1SHXOB0VBPEpEfCg==
+X-Received: by 2002:a17:90b:2e46:b0:2e0:853a:af47 with SMTP id
+ 98e67ed59e1d1-2e9e4ca07e5mr14320308a91.33.1731600092202; 
+ Thu, 14 Nov 2024 08:01:32 -0800 (PST)
+Received: from stoup.. ([71.212.136.242]) by smtp.gmail.com with ESMTPSA id
+ 98e67ed59e1d1-2ea024ec723sm1484438a91.46.2024.11.14.08.01.31
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 14 Nov 2024 08:01:31 -0800 (PST)
+From: Richard Henderson <richard.henderson@linaro.org>
+To: qemu-devel@nongnu.org
+Subject: [PATCH for-10.0 v2 00/54] accel/tcg: Convert victim tlb to
+ IntervalTree
+Date: Thu, 14 Nov 2024 08:00:36 -0800
+Message-ID: <20241114160131.48616-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] hw: Add "loadparm" property to scsi disk devices for
- booting on s390x
-To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
- Boris Fiuczynski <fiuczy@linux.ibm.com>,
- Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-s390x@nongnu.org, Christian Borntraeger <borntraeger@linux.ibm.com>, 
- =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>,
- Fam Zheng <fam@euphon.net>, Eric Farman <farman@linux.ibm.com>
-References: <20241114122919.973930-1-thuth@redhat.com>
-Content-Language: en-US
-From: Jared Rossi <jrossi@linux.ibm.com>
-In-Reply-To: <20241114122919.973930-1-thuth@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: O5As_Hzbr3XFcHqSM8zj2VlIxe5TTwtE
-X-Proofpoint-GUID: O5As_Hzbr3XFcHqSM8zj2VlIxe5TTwtE
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 bulkscore=0
- priorityscore=1501 spamscore=0 mlxlogscore=999 suspectscore=0 mlxscore=0
- clxscore=1011 malwarescore=0 phishscore=0 adultscore=0 lowpriorityscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2409260000
- definitions=main-2411140122
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=jrossi@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1033;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1033.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -111,142 +88,133 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+v1: 20241009150855.804605-1-richard.henderson@linaro.org
+
+The initial idea was: how much can we do with an intelligent data
+structure for the same cost as a linear search through an array?
 
 
-On 11/14/24 7:29 AM, Thomas Huth wrote:
-> While adding the new flexible boot order feature on s390x recently,
-> we missed to add the "loadparm" property to the scsi-hd and scsi-cd
-> devices. This property is required on s390x to pass the information
-> to the boot loader about which kernel should be started or whether
-> the boot menu should be shown. But even more serious: The missing
-> property is now causing trouble with the corresponding libvirt patches
-> that assume that the "loadparm" property is either settable for all
-> bootable devices (when the "boot order" feature is implemented in
-> QEMU), or none (meaning the behaviour of older QEMUs that only allowed
-> one "loadparm" at the machine level). To fix this broken situation,
-> let's implement the "loadparm" property for the SCSI devices, too.
->
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
-> ---
->   NB: Unlike the ccw_device_set_loadparm() logic that we use for CCW
->       devices, I've decided to use a string property for the "loadparm"
->       in the SCSI devices to avoid spoiling the common code with too much
->       s390x logic. So the check for valid characters is now done after the
->       property has been set, i.e. we only print out an error instead of
->       forbidding the setting (like we do it with the CCW devices), which
->       is IMHO still perfectly acceptable. Or are there other opinions?
+r~
 
-I wasn't able to think of a way to abuse passing invalid characters, but 
-I did
-find two additional differences about the string approach:
 
-a) it is not possible to override the machine loadparm by assigning an empty
-  string (loadparm="") to the device
+Richard Henderson (54):
+  util/interval-tree: Introduce interval_tree_free_nodes
+  accel/tcg: Split out tlbfast_flush_locked
+  accel/tcg: Split out tlbfast_{index,entry}
+  accel/tcg: Split out tlbfast_flush_range_locked
+  accel/tcg: Fix flags usage in mmu_lookup1, atomic_mmu_lookup
+  accel/tcg: Assert non-zero length in tlb_flush_range_by_mmuidx*
+  accel/tcg: Assert bits in range in tlb_flush_range_by_mmuidx*
+  accel/tcg: Flush entire tlb when a masked range wraps
+  accel/tcg: Add IntervalTreeRoot to CPUTLBDesc
+  accel/tcg: Populate IntervalTree in tlb_set_page_full
+  accel/tcg: Remove IntervalTree entry in tlb_flush_page_locked
+  accel/tcg: Remove IntervalTree entries in tlb_flush_range_locked
+  accel/tcg: Process IntervalTree entries in tlb_reset_dirty
+  accel/tcg: Process IntervalTree entries in tlb_set_dirty
+  accel/tcg: Use tlb_hit_page in victim_tlb_hit
+  accel/tcg: Pass full addr to victim_tlb_hit
+  accel/tcg: Replace victim_tlb_hit with tlbtree_hit
+  accel/tcg: Remove the victim tlb
+  accel/tcg: Remove tlb_n_used_entries_inc
+  include/exec/tlb-common: Move CPUTLBEntryFull from hw/core/cpu.h
+  accel/tcg: Delay plugin adjustment in probe_access_internal
+  accel/tcg: Call cpu_ld*_code_mmu from cpu_ld*_code
+  accel/tcg: Check original prot bits for read in atomic_mmu_lookup
+  accel/tcg: Preserve tlb flags in tlb_set_compare
+  accel/tcg: Return CPUTLBEntryFull not pointer in probe_access_full_mmu
+  accel/tcg: Return CPUTLBEntryFull not pointer in probe_access_full
+  accel/tcg: Return CPUTLBEntryFull not pointer in probe_access_internal
+  accel/tcg: Introduce tlb_lookup
+  accel/tcg: Partially unify MMULookupPageData and TLBLookupOutput
+  accel/tcg: Merge mmu_lookup1 into mmu_lookup
+  accel/tcg: Always use IntervalTree for code lookups
+  accel/tcg: Link CPUTLBEntry to CPUTLBEntryTree
+  accel/tcg: Remove CPUTLBDesc.fulltlb
+  target/alpha: Convert to TCGCPUOps.tlb_fill_align
+  target/avr: Convert to TCGCPUOps.tlb_fill_align
+  target/i386: Convert to TCGCPUOps.tlb_fill_align
+  target/loongarch: Convert to TCGCPUOps.tlb_fill_align
+  target/m68k: Convert to TCGCPUOps.tlb_fill_align
+  target/m68k: Do not call tlb_set_page in helper_ptest
+  target/microblaze: Convert to TCGCPUOps.tlb_fill_align
+  target/mips: Convert to TCGCPUOps.tlb_fill_align
+  target/openrisc: Convert to TCGCPUOps.tlb_fill_align
+  target/ppc: Convert to TCGCPUOps.tlb_fill_align
+  target/riscv: Convert to TCGCPUOps.tlb_fill_align
+  target/rx: Convert to TCGCPUOps.tlb_fill_align
+  target/s390x: Convert to TCGCPUOps.tlb_fill_align
+  target/sh4: Convert to TCGCPUOps.tlb_fill_align
+  target/sparc: Convert to TCGCPUOps.tlb_fill_align
+  target/tricore: Convert to TCGCPUOps.tlb_fill_align
+  target/xtensa: Convert to TCGCPUOps.tlb_fill_align
+  accel/tcg: Drop TCGCPUOps.tlb_fill
+  accel/tcg: Unexport tlb_set_page*
+  accel/tcg: Merge tlb_fill_align into callers
+  accel/tcg: Return CPUTLBEntryTree from tlb_set_page_full
 
-b) it is possible to assign a loadparm value to a non-boot device
+ include/exec/cpu-all.h               |   3 +
+ include/exec/exec-all.h              |  65 +-
+ include/exec/tlb-common.h            |  68 +-
+ include/hw/core/cpu.h                |  75 +-
+ include/hw/core/tcg-cpu-ops.h        |  10 -
+ include/qemu/interval-tree.h         |  11 +
+ target/alpha/cpu.h                   |   6 +-
+ target/avr/cpu.h                     |   7 +-
+ target/i386/tcg/helper-tcg.h         |   6 +-
+ target/loongarch/internals.h         |   7 +-
+ target/m68k/cpu.h                    |   7 +-
+ target/microblaze/cpu.h              |   7 +-
+ target/mips/tcg/tcg-internal.h       |   6 +-
+ target/openrisc/cpu.h                |   8 +-
+ target/ppc/internal.h                |   7 +-
+ target/riscv/cpu.h                   |   8 +-
+ target/s390x/s390x-internal.h        |   7 +-
+ target/sh4/cpu.h                     |   8 +-
+ target/sparc/cpu.h                   |   8 +-
+ target/tricore/cpu.h                 |   7 +-
+ target/xtensa/cpu.h                  |   8 +-
+ accel/tcg/cputlb.c                   | 994 +++++++++++++--------------
+ target/alpha/cpu.c                   |   2 +-
+ target/alpha/helper.c                |  23 +-
+ target/arm/ptw.c                     |  10 +-
+ target/arm/tcg/helper-a64.c          |   4 +-
+ target/arm/tcg/mte_helper.c          |  15 +-
+ target/arm/tcg/sve_helper.c          |   6 +-
+ target/avr/cpu.c                     |   2 +-
+ target/avr/helper.c                  |  19 +-
+ target/i386/tcg/sysemu/excp_helper.c |  36 +-
+ target/i386/tcg/tcg-cpu.c            |   2 +-
+ target/loongarch/cpu.c               |   2 +-
+ target/loongarch/tcg/tlb_helper.c    |  17 +-
+ target/m68k/cpu.c                    |   2 +-
+ target/m68k/helper.c                 |  32 +-
+ target/microblaze/cpu.c              |   2 +-
+ target/microblaze/helper.c           |  33 +-
+ target/mips/cpu.c                    |   2 +-
+ target/mips/tcg/sysemu/tlb_helper.c  |  29 +-
+ target/openrisc/cpu.c                |   2 +-
+ target/openrisc/mmu.c                |  39 +-
+ target/ppc/cpu_init.c                |   2 +-
+ target/ppc/mmu_helper.c              |  21 +-
+ target/riscv/cpu_helper.c            |  22 +-
+ target/riscv/tcg/tcg-cpu.c           |   2 +-
+ target/rx/cpu.c                      |  19 +-
+ target/s390x/cpu.c                   |   4 +-
+ target/s390x/tcg/excp_helper.c       |  23 +-
+ target/sh4/cpu.c                     |   2 +-
+ target/sh4/helper.c                  |  24 +-
+ target/sparc/cpu.c                   |   2 +-
+ target/sparc/mmu_helper.c            |  44 +-
+ target/tricore/cpu.c                 |   2 +-
+ target/tricore/helper.c              |  19 +-
+ target/xtensa/cpu.c                  |   2 +-
+ target/xtensa/helper.c               |  28 +-
+ util/interval-tree.c                 |  20 +
+ util/selfmap.c                       |  13 +-
+ 59 files changed, 938 insertions(+), 923 deletions(-)
 
-I don't think that the inability to pass the empty string is a significant
-problem because passing a single space will have the same effect.
+-- 
+2.43.0
 
-Assigning a loadparm to a non-boot device generally does nothing, but in the
-case of device probing (i.e. no boot devices assigned at all), the 
-device with
-the loadparm assigned could be selected for IPL, but it will not use the
-assigned loadparm (because no IPLB was generated for the device). This 
-check is
-normally handled by ccw_device_set_loadparm(), but I'm not sure if there 
-is a
-way to do the validation without having a setter function for the property.
-
-When both a bootindex and a loadparm are assigned it seems to work 
-correctly.
-
-I would like to get other's opinions on if the two issues I pointed out
-are actually significant enough to justify a more robust implementation, 
-since
-I think it would require more s390x specific modifications to the common 
-code.
-
->
->   hw/s390x/ipl.c      | 22 +++++++++++++++++++---
->   hw/scsi/scsi-disk.c |  2 ++
->   2 files changed, 21 insertions(+), 3 deletions(-)
->
-> diff --git a/hw/s390x/ipl.c b/hw/s390x/ipl.c
-> index dc02b0fdda..c902b562cb 100644
-> --- a/hw/s390x/ipl.c
-> +++ b/hw/s390x/ipl.c
-> @@ -416,12 +416,10 @@ static uint64_t s390_ipl_map_iplb_chain(IplParameterBlock *iplb_chain)
->       return chain_addr;
->   }
->   
-> -void s390_ipl_fmt_loadparm(uint8_t *loadparm, char *str, Error **errp)
-> +static void s390_sanitize_loadparm(uint8_t *loadparm, char *str, Error **errp)
->   {
->       int i;
->   
-> -    /* Initialize the loadparm with spaces */
-> -    memset(loadparm, ' ', LOADPARM_LEN);
->       for (i = 0; i < LOADPARM_LEN && str[i]; i++) {
->           uint8_t c = qemu_toupper(str[i]); /* mimic HMC */
->   
-> @@ -435,6 +433,13 @@ void s390_ipl_fmt_loadparm(uint8_t *loadparm, char *str, Error **errp)
->       }
->   }
->   
-> +void s390_ipl_fmt_loadparm(uint8_t *loadparm, char *str, Error **errp)
-> +{
-> +    /* Initialize the loadparm with spaces */
-> +    memset(loadparm, ' ', LOADPARM_LEN);
-> +    s390_sanitize_loadparm(loadparm, str, errp);
-> +}
-> +
->   void s390_ipl_convert_loadparm(char *ascii_lp, uint8_t *ebcdic_lp)
->   {
->       int i;
-> @@ -452,6 +457,7 @@ static bool s390_build_iplb(DeviceState *dev_st, IplParameterBlock *iplb)
->       SCSIDevice *sd;
->       int devtype;
->       uint8_t *lp;
-> +    g_autofree void *scsi_lp = NULL;
->   
->       /*
->        * Currently allow IPL only from CCW devices.
-> @@ -463,6 +469,16 @@ static bool s390_build_iplb(DeviceState *dev_st, IplParameterBlock *iplb)
->           switch (devtype) {
->           case CCW_DEVTYPE_SCSI:
->               sd = SCSI_DEVICE(dev_st);
-> +            scsi_lp = object_property_get_str(OBJECT(sd), "loadparm", NULL);
-> +            if (scsi_lp && strlen(scsi_lp) > 0) {
-> +                Error *errp = NULL;
-> +                s390_sanitize_loadparm(scsi_lp, scsi_lp, &errp);
-> +                if (errp) {
-> +                    error_report_err(errp);
-> +                } else {
-> +                    lp = scsi_lp;
-> +                }
-> +            }
->               iplb->len = cpu_to_be32(S390_IPLB_MIN_QEMU_SCSI_LEN);
->               iplb->blk0_len =
->                   cpu_to_be32(S390_IPLB_MIN_QEMU_SCSI_LEN - S390_IPLB_HEADER_LEN);
-> diff --git a/hw/scsi/scsi-disk.c b/hw/scsi/scsi-disk.c
-> index cb222da7a5..c1fa02883d 100644
-> --- a/hw/scsi/scsi-disk.c
-> +++ b/hw/scsi/scsi-disk.c
-> @@ -111,6 +111,7 @@ struct SCSIDiskState {
->       char *vendor;
->       char *product;
->       char *device_id;
-> +    char *loadparm;
->       bool tray_open;
->       bool tray_locked;
->       /*
-> @@ -3165,6 +3166,7 @@ static const TypeInfo scsi_disk_base_info = {
->       DEFINE_PROP_STRING("vendor", SCSIDiskState, vendor),                \
->       DEFINE_PROP_STRING("product", SCSIDiskState, product),              \
->       DEFINE_PROP_STRING("device_id", SCSIDiskState, device_id),          \
-> +    DEFINE_PROP_STRING("loadparm", SCSIDiskState, loadparm),            \
->       DEFINE_PROP_BOOL("migrate-emulated-scsi-request", SCSIDiskState, migrate_emulated_scsi_request, true)
->   
->   
 
