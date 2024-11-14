@@ -2,206 +2,139 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 265999C91D9
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Nov 2024 19:46:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F10ED9C91E6
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Nov 2024 19:52:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tBerD-0005J7-LN; Thu, 14 Nov 2024 13:46:20 -0500
+	id 1tBewV-00077R-OX; Thu, 14 Nov 2024 13:51:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1tBerA-0005I3-Ci
- for qemu-devel@nongnu.org; Thu, 14 Nov 2024 13:46:16 -0500
-Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
+ (Exim 4.90_1) (envelope-from <Michael.Roth@amd.com>)
+ id 1tBewR-00076r-5H
+ for qemu-devel@nongnu.org; Thu, 14 Nov 2024 13:51:43 -0500
+Received: from mail-dm6nam12on2044.outbound.protection.outlook.com
+ ([40.107.243.44] helo=NAM12-DM6-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1tBer7-0005r4-NM
- for qemu-devel@nongnu.org; Thu, 14 Nov 2024 13:46:16 -0500
-Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4AED5wcn002334;
- Thu, 14 Nov 2024 18:46:10 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
- :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=
- corp-2023-11-20; bh=hjxiU711LXVt9wAb8CzpZbn5tUcX6UcDZ/pKnmbm6Fc=; b=
- XlaUvav9lLojI0O6svBjIbJtoxKuA7i8ifAfZwS95LfLX+UtJOKx/rNClZoVDXf9
- MGPBRi+7xmCi0XXpT6iCgFrlFFjLTjcQUolQdmOIQ4rhpcbtbHLsNoRak4RnqQfB
- n/dS72z0bTTvPwd8uDvKl/3sUH9v8ltMLmPT++AyNl4Xq3MnJjufG0/8FUFa5yhh
- 1Ga8+wTV0470rCHItBXI24kNS7ktCPe4qhJuIk8ZKxwlBIsTNYVsEWawn45zMZUr
- HvUsKYyFwu4JMW3igWNMHnEFIr07yTsSdTjhXxImtDSG1TEdQshgwuoDqiWEqlmK
- nCN1mUzmMtrL4aOpzv02EA==
-Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
- (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 42t0k5htbd-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 14 Nov 2024 18:46:10 +0000 (GMT)
-Received: from pps.filterd
- (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 4AEIF4Ph005808; Thu, 14 Nov 2024 18:46:10 GMT
-Received: from nam11-co1-obe.outbound.protection.outlook.com
- (mail-co1nam11lp2175.outbound.protection.outlook.com [104.47.56.175])
- by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 42sx6bktnw-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 14 Nov 2024 18:46:09 +0000
+ (Exim 4.90_1) (envelope-from <Michael.Roth@amd.com>)
+ id 1tBewP-00078c-33
+ for qemu-devel@nongnu.org; Thu, 14 Nov 2024 13:51:42 -0500
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Nuy+4K3IrMan3bp4jbGrV2Ae/MCewTbVWX6eWz8lTu28oRWbQC+8PTx3s2Q0htV6b02rTWOyHy5Z67KgMfeo5lDjvp2bMSSvsdNKfPVRtkM5rOdeY7rY2a3eOdtPbb1WqSvMh98gyBeEJi5EWgLfc9OkpLlskraXQE+3/RrsFmzbL5C7/IZndaQ84JBGkKAOUp+H/9uSunh1QCJhCLvRWWXkCqE92+q1nIiG6qfu6Huo4+4eYeWRNqVIVZkJdF3ZBwrnJa9U0R3LLBuxzBqt1AojgpuBNT0/4FyPGUNR0BydeuC4MV8vZxHyZ7IlhQ6LW++URFtEt/SodxGxo76OOQ==
+ b=olXY4GZdnG1CD2gAbJZPqXxybjRt8gYZ6ge81oILvmQJu6rtSbYIqbc2reLIBgUIAz0jdKvw1++i2zNbATeEjMpsUJoTxI/Tg6xI3FMzxj10MTEknpPi3ZR3WuIf8Ux0B5NMK27/2u2H6FAtEtXsK5xDj7tGijSuHmjeIYtM9c6GItAFVXIUMWVh/GkVfRhcEDtp3esgWS/sMuJHQ054hVgAAE6A1K0dcCqzqRsJWabm7wQ6GE4i5q+2u/XLnyThRPcCu2JwAVohqbrXasRB+CVEdT4coFySvbsVxFIkbaxaOtXoSKXQ62lWiCv/akfxYu8EJNUd3nOMOV7L+SuDiw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=hjxiU711LXVt9wAb8CzpZbn5tUcX6UcDZ/pKnmbm6Fc=;
- b=m1Ak4AUvgyDE+t+6Kzlpbdle+X22T1rpDR4Df+gynDQBcIReG2eyCilVDeCjAdbqDaDvEr7QfLP2XS2rT3Rejwi9cOZU0t4c+fy1zZoQkpHmyKu9wpvw2dio+JC9nlSBlXoscINbn7F7Z6AJaNbLJM2uDijO3U8lBI+GF/qYXBEKOEJ2S1WUP4gQ7QsA8Oo/xJJXpw+rDQhRVFJEX0EnYN/pfTWRLEg6RNzgMRxhQLcKhcCtdPd4N726H8LI4Sxit/SKEUptKESYbI02ZSKriKIGxUW0VYoQ80qVr5K1AgeygD0WJeBdAGCmdZT0UKVB1fppht0Fhw6JnBb0Cwza2g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ bh=QTLDmDuj3ZTrp1qejXNrTr/+ueGA1Yviiiuyx2tQN6g=;
+ b=XgzbCC646z/wLpITqwPCdwtrhonNFXMcJBP3Xd7DLLG9tVz6T0TbODBJYcT9cS8DhUC0iUiy1zm6DdKiLhiEKAtF+kKdTmtrdd3jM9yPL/a0sCl/77mWrBdUNOryIQOFio9vD5u5sCexzgQEtnYSKVvCpjxGTwKsXuVCX9B/Yqgzm2Fl+HRMPLj+HC6LHFbmZoxpf6cfBfZwbqQYFG6YZPIPR8BzQjJbmO6ZUIZctwtnkgdkPXXsnd8T7osEYk10R+D0OjJbRWP5cygpI3dd1ndenzpjpiaLkw4wl+Pl+7hkftq/cRNVy/c2XkqB7cvt4V2jqN5ynGzj9u+lu5ZGVA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=nongnu.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=hjxiU711LXVt9wAb8CzpZbn5tUcX6UcDZ/pKnmbm6Fc=;
- b=Oj8NMqt1Hnt5PLXth6mJ3kCf8xpvaqDXeTLYaz0D4LSDi8RAp4wOf224D4idfs3eFX1OyBZ4O6UWZBDwOQqOX2vqJe/H092ChTwqwzb4j5ozKXqtCmzr7Vyi0gQB4ZImSUdM6Ps9La9LxZ64a+tSiGoPAD89ZIw/Ru8rdjQYMcU=
-Received: from IA1PR10MB7447.namprd10.prod.outlook.com (2603:10b6:208:44c::10)
- by CH3PR10MB7780.namprd10.prod.outlook.com (2603:10b6:610:1b1::22)
+ bh=QTLDmDuj3ZTrp1qejXNrTr/+ueGA1Yviiiuyx2tQN6g=;
+ b=welflNLBelJQDv9u8iURdBYR7jeZ2Fz7/e7IChwFUcGNFjgceFkC4wvS8yzL4E5FFjs9ONQ+ozou4nwypRlNQwDDyKMGvLh7mdMEKZC2WcVJp2tJPWRPJ+h2AO1mk9h4MnEtnfIErLq/YCt8jvVtwi8EipYJDeOQZXaOD1HSUg0=
+Received: from BL1PR13CA0007.namprd13.prod.outlook.com (2603:10b6:208:256::12)
+ by PH8PR12MB7111.namprd12.prod.outlook.com (2603:10b6:510:22d::8)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8158.17; Thu, 14 Nov
- 2024 18:46:01 +0000
-Received: from IA1PR10MB7447.namprd10.prod.outlook.com
- ([fe80::f2fe:d6c6:70c4:4572]) by IA1PR10MB7447.namprd10.prod.outlook.com
- ([fe80::f2fe:d6c6:70c4:4572%4]) with mapi id 15.20.8158.013; Thu, 14 Nov 2024
- 18:46:00 +0000
-Message-ID: <d7867951-36d1-4e91-8349-f085a7655086@oracle.com>
-Date: Thu, 14 Nov 2024 13:45:54 -0500
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V3 13/16] tests/qtest: defer connection
-To: Fabiano Rosas <farosas@suse.de>, qemu-devel@nongnu.org
-Cc: Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Philippe Mathieu-Daude <philmd@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, "Daniel P. Berrange"
- <berrange@redhat.com>, Markus Armbruster <armbru@redhat.com>
-References: <1730468875-249970-1-git-send-email-steven.sistare@oracle.com>
- <1730468875-249970-14-git-send-email-steven.sistare@oracle.com>
- <87v7wqhics.fsf@suse.de>
-Content-Language: en-US
-From: Steven Sistare <steven.sistare@oracle.com>
-In-Reply-To: <87v7wqhics.fsf@suse.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: BY5PR13CA0022.namprd13.prod.outlook.com
- (2603:10b6:a03:180::35) To IA1PR10MB7447.namprd10.prod.outlook.com
- (2603:10b6:208:44c::10)
+ 2024 18:46:32 +0000
+Received: from BN3PEPF0000B36D.namprd21.prod.outlook.com
+ (2603:10b6:208:256:cafe::5f) by BL1PR13CA0007.outlook.office365.com
+ (2603:10b6:208:256::12) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8158.18 via Frontend
+ Transport; Thu, 14 Nov 2024 18:46:32 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ BN3PEPF0000B36D.mail.protection.outlook.com (10.167.243.164) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.8182.1 via Frontend Transport; Thu, 14 Nov 2024 18:46:31 +0000
+Received: from localhost (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Thu, 14 Nov
+ 2024 12:46:31 -0600
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Subject: [ANNOUNCE] QEMU 9.2.0-rc0 is now available
+From: Michael Roth <michael.roth@amd.com>
+To: <qemu-devel@nongnu.org>
+CC: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 14 Nov 2024 12:46:13 -0600
+Message-ID: <173160997306.3341618.1930137864330082213@amd.com>
+User-Agent: alot/0.9
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA1PR10MB7447:EE_|CH3PR10MB7780:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8445ff56-ed02-420f-adb7-08dd04dc954b
+X-MS-TrafficTypeDiagnostic: BN3PEPF0000B36D:EE_|PH8PR12MB7111:EE_
+X-MS-Office365-Filtering-Correlation-Id: 76084624-64e6-4d81-bfa2-08dd04dca810
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|7416014|376014;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?K3JrNTZrTTc3Vm5McnViQklzOTJ6TGMzRUdlVk0wZXlUQi9GbDlZSSsraUsy?=
- =?utf-8?B?UVR1dnJDMm9MeUNFNGV1djJlVmxiQXlpWldNU01uQ2lWNkdDNDlxaDlWOEN4?=
- =?utf-8?B?R21SV0xDVEEwdDJMaldUVHJFck8xUC9mRi9aSzZRdnF4d1BNVUZTWnNGZUMv?=
- =?utf-8?B?QmVjb0xQb3NXejdyWStudVhSYitFalNQWDA2UWpzZml4S3hCNUVBVjBoWUs0?=
- =?utf-8?B?azNOcWRaNEhDTFNzTnMyVm9FMmc3UXpVOEZkZ0JIeXArNktScWRDSjdnRDBv?=
- =?utf-8?B?ZEp1dXNYTG5BU3g2dW9SK3VDblRlZm9tV2QxenpWZURWUG5FV3AwUTFxVFBN?=
- =?utf-8?B?RFRDYVZ0dzJySG00UVJKcWpoOG11M2xWWTVKSjVaU0lsY3pDOHRKM3FORHFk?=
- =?utf-8?B?U2Vobm4wbnhpVEM0K21RTlBKNC9EUzNYWFFMTVIrNUUxZUl2NDc1YlpWaUZB?=
- =?utf-8?B?OWZYM0NIMEJRUnRkakwzWnZsYnczYlVLc0R6Q0lkMy9jczZxZjl1eUJWUlFq?=
- =?utf-8?B?MTd0RFZZREVER2xhUVk4SDFyNlFhWXVMUVhVb3d5dHRqRm5rV1RhV3B2cmxy?=
- =?utf-8?B?cUFCVVY2VjdEV2xETzNFUXRzVkN6cEFsZXJWdHE2LzljbEJKL0xBVXJ4Zno3?=
- =?utf-8?B?elBhdGxkZWNhM0gwU2NsZ3pqdDE3SG5TNUh3dno2QWJzeG5BT3JpRmdNVnZK?=
- =?utf-8?B?aTkrQitiM09zTW00ZlNUUTFXQ3ZsL2N3RzQxSVcvbWJuV0s2ZzRjL2lNRnVG?=
- =?utf-8?B?eXI4b1pFYk1zclY5WHdrOWNnOFZaZVd6S2xrbVpYNEdXbTVIN0M3dkxNKzF1?=
- =?utf-8?B?MzQ3SG1KRzJzWGZtQ2dmMmlNUGhmVFcwalF5K1NTQUdjdk15Sk5oanllLzA5?=
- =?utf-8?B?eUZra3E0NnhIS3h5NTFPUWl6Wm9yYmFRNm1wbEdUWGtYam9YVFNEczZtWVV6?=
- =?utf-8?B?azhScDdpcEphNk4yOXFNdzBGcGw2NHBnOXQ0RDdyM1ZwNDJGU0RXTkd0YlBl?=
- =?utf-8?B?MWN2d2xNd3RWNGpZbGYxeVF2N004T2Y4ZUpTMEdlOUNoQmxUNmJTeEdTNnEv?=
- =?utf-8?B?SzQ4M1BCU2YrYXZQZmtZcDduZzlxSFNBdGNhaWd6UllLQlB0TndOZmhyeTVZ?=
- =?utf-8?B?RWd1eFJ6cU80dUZkaUwvWi94ZUNZWXBNTEdmanhkZ3ZmaE5FRWEzbW5TQXRL?=
- =?utf-8?B?K0ltRGNNM2c1eEZ3cmxYOVhTMkdiRy9NTkttbmZCMXR4SFZaQW5wWjlkdkV2?=
- =?utf-8?B?TkFmM2NEeW8wdzRBemhrTTdmNy9ibSttN2RCcUhvMk9LS25tdkZRMWxwL1hi?=
- =?utf-8?B?RUNPYkpuUHhubkUra25US1ZqUTNQS2FuVmZyOGJQN2U0UXc2dEZGZ01QOU5q?=
- =?utf-8?B?TUFzd2hOdHA2YUw1Q3E2SmpMcENncTdkSk1tclkrcy9vVWxBUkNqMHQ1R0dJ?=
- =?utf-8?B?UldRWHh6eHFOSWtTL1ZnQzBKdFNRb3FtWGg5SHlwbThValNpRTNXSjFRN1hn?=
- =?utf-8?B?V0JQemgvOHpNYWxsR2QzcTA3dXFpWXpadFI1NStsME9wMG53L1k1ZnJxd2tq?=
- =?utf-8?B?VDVBY1NqRkpmRTNGK1BtZWRXUUg0QWI4dC9neHIyeDNnVEpna3BzdDBhejA5?=
- =?utf-8?B?bCtNOVpGRXNyU3JlQm9PejZHL0VCOC9LWVRITHJiaXAzakIzbythd2U2NElL?=
- =?utf-8?B?SjQxT2RTMVQyM25uay9sVFRkWHU4R0tOOEdkN0pmalg5dEwzdzN2MndZQVo0?=
- =?utf-8?Q?Ld/9wsTVI2smT5SWh/yN+LeikClQ5AdS8MN7YPZ?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:IA1PR10MB7447.namprd10.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(366016)(1800799024)(7416014)(376014); DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?OFplWFFxZGwzYVVHc0dWLzhwbkhxdVNqN0R5SGRaeGhCMWNoTnl4QW1ObXRL?=
- =?utf-8?B?M2RpNldKenZhWmpQRDRvanNWeEZBQS9weldjSldOR0FXOTdQSjJrSVFseEh5?=
- =?utf-8?B?YmlFZVhXTVFGQlh0bzk3NXBzTWtIVDFEL01yUENWbmpaUjljMHVvcjZSMzVt?=
- =?utf-8?B?ekNBL3pYVThFaW85cVRBRVBWSFd2NmZVKzRxN1Z2eWF6ajJjVnVnSXRSN2dO?=
- =?utf-8?B?VG4vc1Fjck1EdUNGRFM2amJPWkRFbWN2Tnhrb3JXNXZzMVN6a3JtNGo5OGwv?=
- =?utf-8?B?L043RUJZVXEwZWIvOUhlUmx3N2tHMDZ4a2thQUxZUzBOejZMUG1GWWFUWUZ6?=
- =?utf-8?B?bG5wU3U1b0Uzb2VXcyt2MTB6ZVd4WnpZYkxRUlNYQWNkL3J0TzdqSkFHSVhW?=
- =?utf-8?B?dTBhN3J3M09TdlpPNG9nMnBiMktPWkMwcmJWZVd1YUFRLzA1Z1E2Mnc3YzVM?=
- =?utf-8?B?OWw0TzR3RUZTblI4Y3dwUmNNdG1XOHdURTFEeG5CVnptZ1ZwcXQveGdOYlJw?=
- =?utf-8?B?Ym1jRTVPVm9ZRzByMnlzMHFneC9RdHpoTWVlbHNMaVRaMWxFLzFhTHlBMy94?=
- =?utf-8?B?ajhVR25QZEh4eWY4SHBucFQ3cVIvZHVoYWhodUp4U3Z0SEQyaXdkNkJtUk9T?=
- =?utf-8?B?VWFFaFdZdnRQdDdQODQxdWVpT052R2dPaEJlMjRHSlYvdG9qRzA4NE4yelRY?=
- =?utf-8?B?QUxmZWpEUys5cktRRHRxQXdiV0llTjZUYXJXZlhrUWZ2K0tsOVRJL2l6Mzla?=
- =?utf-8?B?NFFxMDN1bW9NVkllMHg2L3dpb3Y0L0FNU1E5c1VXVDdCSnNEWFNRS25BaWpy?=
- =?utf-8?B?ZGdTWjVKNjVNejVjVSt1UnVLTm5yZ21GdDlNRWQwSytkYU9KVW1GK1hLbE5y?=
- =?utf-8?B?R0srdXg3YjEvajFsM0FOQUhaVWlwNE1IRWlTcXd2WUNZQ2dEMjFhekRxczBh?=
- =?utf-8?B?S0UzRGFXWmN6Y0FZQmU0bDhneDdUNlpHcTllMnZwUGZxQ2J4NytVNk4xVC8r?=
- =?utf-8?B?UG5DYWc1R2NMMWRZQmpDWGxEaFhZTkhXaXZaeDJHZVlaV1BxY1kzV0FVakg0?=
- =?utf-8?B?Zi84QWZ5QXZhdGRJL1Vwb2ZoVVpGV002dWZGRmdKcHZZdFFMNEVlT21mQXdI?=
- =?utf-8?B?V0NrUTMxRDVZVHBoVWpLVUwzdnNmdTYvMXdPRUQwT1R1NWl6ZkFCVTR2dzBj?=
- =?utf-8?B?QTdGNkhpNkpSSmhZbVVPYTZuRHQ4bmdpOS9vN3pzQkFPSFhLM0MrR0Y4Qm5h?=
- =?utf-8?B?aUFJZk9IS0MwN2U0Q1hWalBFaW85eGptK0dadk8wRFRXK0xqSzRFNVlCOWRF?=
- =?utf-8?B?OXNYMHFyQ2UwU1VQRWQ4WkNQdlhGOWQ2a0ZSekhCdVJUQkJHcGxCUURUcnJr?=
- =?utf-8?B?YnMrTkw1bVF4NmJDSjViU01qS1U2L2JIQno2a0I4OVk3SUNSOWt5UXFCK3Bl?=
- =?utf-8?B?cEZPS1FtcGZPNy9aVEFzN01aU0ZqNXpYektzeUxmYVNNeVAyazBJQnErK2hK?=
- =?utf-8?B?OFdodlE2dzA3SDJ0OWxZcU02NjRGMnpmT251ZnB0SE9BRXVRT2hiaEFSYVlx?=
- =?utf-8?B?dGEwM2pJK1o2UEJ5QmVjMnB6elkwaXgxUFFOajYvM0pEcW5sYUFtV3VRaEM1?=
- =?utf-8?B?Y2pVdk5XUXVzb0ZyVlhWOFJoaVpjb2pzUzFESUdVZEFYcDEwMmRkTjFubzgw?=
- =?utf-8?B?TkRjbCtaa2RHS2RGdHRsVkNla1hWbkhTdGoyV3h6bFdzNmhDMTFhTi9RcjRm?=
- =?utf-8?B?ZXdId0tsMnJNWmZwNWpXTUh6K2pBRzhldVN6c2FNc2dlR3FRQWxGSkFzeVRu?=
- =?utf-8?B?NEdUbFoxUmh1OUlXbnFZbnkrcUc0K1lRdFkydmJDOFRQTnczVUtkUlZVQ3Fa?=
- =?utf-8?B?dzUxdWtEc01oZEpJbHhtVWtLa0ZzT3pCdzdlRVNLZm9lOEs4dUZGcHQ1VW90?=
- =?utf-8?B?YWVvTTJXNmRQVm91SzNRUXQwTDdzLzg3RVNualVlUFZYcml0bjh0NVRzdWtC?=
- =?utf-8?B?K1RZdVViUFJFeStvOFNaTG9UQjZGZXlUUU9mR1lZRUQ5cWlKeGtJdHo4dnZj?=
- =?utf-8?B?UjVjMkx5UXIwbTRra0N3UG9mZ2VTc2pRZk5rdi9RWTBQRU4raGZMM2VSSTg4?=
- =?utf-8?B?UThIc2g0dmRHT3ovdFMzY1FlRDZFZnVwaGIzck9MNlZoNktUVVpHTFJVeUdk?=
- =?utf-8?B?bWc9PQ==?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: j8vKE1XvCU9Ps9xQxbYsNMuq5tro7HjeQutSKLI8kAxAdVUnrjCBAOdlc/pOVHqDlCU/5ON2RiKn9LqAnyhfWQBvPg55kCkWVF9PxGEQHLQZyGpypLl9tduntfJ/OBPfOM2WvKxA/XVDqPBYpryqxCEkTwPLjEAv4W6wUIAdYQmZj+LhoU9y3CYAp14WNWm3bRwQAgC2u1Zpxh/q+zBQf+JjRnEo0luGh53Nmb7mhplAjukBsw6G/r1ZvR/J03Qn+F1SDLGv6HnJ8zHn467NKjR1yR1tqbioVGFkV/m1NaGbdMzJpcISb8nQ/KdXA5BUfYUlqd2ruI+Nr6TNi39alcfvCiHucOKyTtFNhUZsWYMkKgdG9ZLIzuyNzpWJoefv4QOoxauSKqv3XEh2/Ppe6pijmrHlBogbEPlxhf4JEgPBPcjMw9oA5jEgkiJXH6BRw0gR9/yjNvdxecxWXW89uoETkaq3xgzWFM17sQYRlDLC5GFPTrVtTl3JMInMxqiL6dt2kVir6U4nyuQ/IdLGYAKa365/mh3kycFqx8lVq8HJ7j1Q2cmSdBNtu1bys11/9a1v2dO8NJRGPgplGw5+0qa0zsioxKwz9cRq5Rhsha0=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8445ff56-ed02-420f-adb7-08dd04dc954b
-X-MS-Exchange-CrossTenant-AuthSource: IA1PR10MB7447.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Nov 2024 18:46:00.3228 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: fAHdd5AFt5E8e7PFgQFG3h9CwjmAY0KPJWbAHgwxTk0cRihKyiYtW7TouOQJq+Amax4u/kohbBXmyuXCp5mPRGuXG2i+tq+5ANP5UesyVIo=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR10MB7780
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-11-14_05,2024-11-13_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0
- malwarescore=0
- spamscore=0 adultscore=0 mlxlogscore=999 mlxscore=0 bulkscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2409260000 definitions=main-2411140147
-X-Proofpoint-ORIG-GUID: lUSm8a5xkMsrHJtf-i0Kny_cn6-m6MWw
-X-Proofpoint-GUID: lUSm8a5xkMsrHJtf-i0Kny_cn6-m6MWw
-Received-SPF: pass client-ip=205.220.177.32;
- envelope-from=steven.sistare@oracle.com; helo=mx0b-00069f02.pphosted.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|376014|1800799024|36860700013|82310400026; 
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?Qm5HSVFJamlKS1BlNjJFWGtoaVVjSUs3YXdwWldvcm1SOXNib0Y1VVM0VUlI?=
+ =?utf-8?B?YXBvWEVyWExTR2RsYk9IT1cyWEpXWWhOQzI2VjhHNFpkMUo4R0wxSGZsTXZE?=
+ =?utf-8?B?ZGlLWG0rTXFLbGtYcG1lQjdZd0VPdWNRMFVpd2g2NmEvNnJIeEtOamJHNHhq?=
+ =?utf-8?B?SDAvelRkb2tKenoyeEl2Sll3WUVLWWcwSEdaM2NOY1JPOStWNmtNKzVKNEpa?=
+ =?utf-8?B?UktaSjgwdTJVajdHNy9lWUJWODNiVzNaeUJaLzhXS3hDVkVCNTU1RFpaczI4?=
+ =?utf-8?B?eldaMWhHYVdnNUZxSmZPWkl1bVNCSUZESlkrdlFhMEhkTUNMd0FpVENyNFRV?=
+ =?utf-8?B?Y25TMk1tc2sxb0l1YjhSNXN0RXFkWHg4RUlPSmZVOXZTeTZWWS93NmdEUXBh?=
+ =?utf-8?B?UGx6S3Q1cUVjblFHYUdHUi8vQTJ2YTdsK2VEdmpTczl0R3JUV1YyejNVTG1L?=
+ =?utf-8?B?NnBFTGM0cDRtNmRiK2wrS01EWGJyaHkrcTh1RGp1TUc5WmVKaEVIa3kvUlNn?=
+ =?utf-8?B?L0dZbWxmeTBKT1BWWEtBZWlYejR0enZ1ZE9wQUh0YUx5Z1VhbHd0KzRWTVk0?=
+ =?utf-8?B?QlBoVDE5bGU5dks0OGV3Y0pYMnBpNEU1ZThkeHlHVnEzS00zY3drUCtUd3hy?=
+ =?utf-8?B?VEpieGYza0JVbTNROGdmT1hUV3NXcTQ0VXd5Z3BzRStoVFMyV1hrNDFIRE5q?=
+ =?utf-8?B?U1dWY0pSSlc5UzZQMFBjR0dTaWgvWjQ0Z3BXcFdJcjIwdWF5NGFZSXdWV21Z?=
+ =?utf-8?B?N05RY0s5LzdIMzNMQXhJZEhZYjdXaW1rMmVsU1F5akd2OEhuNFB1aVh3VFMy?=
+ =?utf-8?B?ZkhPcGx1dnRRK2tYVmZHQ0l3a0hEZzJHUHZjRkV4WUZkVEtlR1JaSVVwQjA2?=
+ =?utf-8?B?c2dKbCtmTm9QRUljRVBQV1NZRksweFlBY0g0Y2FwSEhFZVhnakVWRmRTZUZ0?=
+ =?utf-8?B?NzJJY3lxUnhpOHdoRnMvSnhveGliY2Y5eEZIaDVRL1YyTXpwSzdxZXhSdE9Q?=
+ =?utf-8?B?YjZOcG03R1N2UWxQSkczZ25ObDQxdGdoL2dlaXl5cmFLbGZuQVhYQkhCUzhE?=
+ =?utf-8?B?SnU0L3o2QmQrZXBNaDRTaTJscW1LUWN2bkdWZlh5NHZ6NWdzTFV3VXNNZisy?=
+ =?utf-8?B?NGZTSG1EMVJqTE9ETkJQNGZYbkxqN2M3Nm1lODFIbUc3RGJhWjcvRGNQZjVl?=
+ =?utf-8?B?MFVFR3RxeE9tTGxQQUZwVnlFU0hEblRwQXM0V2lNdDRZVlNuZzlyV0xIMG1Q?=
+ =?utf-8?B?N1UwTXpteWIyTUxmeXhlclltOXEyb0JoY0MyMzd2U1pHOTM1c290MHEvampr?=
+ =?utf-8?B?bVdpOUtmVlh0OGU5TVBRbThZU2FQRytnYlJiNUxDOVNWRzZrS0dXYzhXRWpn?=
+ =?utf-8?B?YkRQTlU4eUtRRDdZYTVXa1NIR0YwZUVIZG9KbEZUclZyVW9RMDBJR3hRVXc3?=
+ =?utf-8?B?RkZrbHFOZzlQaStVeXBMTG9TL2NQekxBZjRsUisxZFJoR1pQdDhLaTF4T2hz?=
+ =?utf-8?B?UlE5dzUyQ1RlSnJQSUV6cVRrcXcvSHB5SmlhSDAvUWMrNllSR0R0YWtYZE1t?=
+ =?utf-8?B?cjVMbjVMV0lVaFd2aTBxZXpyQk1jWk5BNXhEcnhvRUxjSGZMQmRsbVBLa01K?=
+ =?utf-8?B?K2VwdEpSRTVFWThYUWhJclQ5cVlpNkFzSGFJaXdKVlVBbkdVR3hTeWhBMTE2?=
+ =?utf-8?B?YWNzVzdmcElJV3FWYm5KSHhDM1NKZDZZWUhqUWZBbXZlL1Ywd0Z1eTJaenVO?=
+ =?utf-8?B?SERaK0F4eXJ0QzR1eXBuOEZBRmFUaWJpRks1RlB4ZFRmdE54NDlTYlR2MHVr?=
+ =?utf-8?Q?MCKBAsnwOX3mraGOLTEf/eI7jH80kwRTK8ba8=3D?=
+X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230040)(376014)(1800799024)(36860700013)(82310400026); DIR:OUT;
+ SFP:1101; 
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Nov 2024 18:46:31.4839 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 76084624-64e6-4d81-bfa2-08dd04dca810
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
+ Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: BN3PEPF0000B36D.namprd21.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR12MB7111
+Received-SPF: permerror client-ip=40.107.243.44;
+ envelope-from=Michael.Roth@amd.com;
+ helo=NAM12-DM6-obe.outbound.protection.outlook.com
+X-Spam_score_int: -28
+X-Spam_score: -2.9
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-Spam_report: (-2.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.122,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.69,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -217,231 +150,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/13/2024 5:36 PM, Fabiano Rosas wrote:
-> Steve Sistare <steven.sistare@oracle.com> writes:
-> 
->> Add an option to defer making the connecting to the monitor and qtest
->> sockets when calling qtest_init_with_env.  The client makes the connection
->> later by calling qtest_connect_deferred and qtest_qmp_handshake.
->>
->> Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
->> ---
->>   tests/qtest/libqtest.c       | 69 +++++++++++++++++++++++++++++---------------
->>   tests/qtest/libqtest.h       | 19 +++++++++++-
->>   tests/qtest/migration-test.c |  4 +--
->>   3 files changed, 65 insertions(+), 27 deletions(-)
->>
->> diff --git a/tests/qtest/libqtest.c b/tests/qtest/libqtest.c
->> index 9d07de1..95408fb 100644
->> --- a/tests/qtest/libqtest.c
->> +++ b/tests/qtest/libqtest.c
->> @@ -75,6 +75,8 @@ struct QTestState
->>   {
->>       int fd;
->>       int qmp_fd;
->> +    int sock;
->> +    int qmpsock;
->>       pid_t qemu_pid;  /* our child QEMU process */
->>       int wstatus;
->>   #ifdef _WIN32
->> @@ -443,7 +445,8 @@ static QTestState *G_GNUC_PRINTF(2, 3) qtest_spawn_qemu(const char *qemu_bin,
->>   }
->>   
->>   static QTestState *qtest_init_internal(const char *qemu_bin,
->> -                                       const char *extra_args)
->> +                                       const char *extra_args,
->> +                                       bool defer_connect)
->>   {
->>       QTestState *s;
->>       int sock, qmpsock, i;
->> @@ -485,22 +488,17 @@ static QTestState *qtest_init_internal(const char *qemu_bin,
->>       qtest_client_set_rx_handler(s, qtest_client_socket_recv_line);
->>       qtest_client_set_tx_handler(s, qtest_client_socket_send);
->>   
->> -    s->fd = socket_accept(sock);
->> -    if (s->fd >= 0) {
->> -        s->qmp_fd = socket_accept(qmpsock);
->> -    }
->> -    unlink(socket_path);
->> -    unlink(qmp_socket_path);
->> -    g_free(socket_path);
->> -    g_free(qmp_socket_path);
->> -
->> -    g_assert(s->fd >= 0 && s->qmp_fd >= 0);
->> -
->>       s->rx = g_string_new("");
->>       for (i = 0; i < MAX_IRQ; i++) {
->>           s->irq_level[i] = false;
->>       }
->>   
->> +    s->sock = sock;
->> +    s->qmpsock = qmpsock;
->> +    if (!defer_connect) {
->> +        qtest_connect_deferred(s);
->> +    }
-> 
-> It might be cleaner to just leave qtest_connect_deferred() to the
-> callers and not plumb defer_connect through.
+Hello,
 
-I considered that, but IMO we should not force all callers to complete
-a deferred connection when only one caller needs it.
+On behalf of the QEMU Team, I'd like to announce the availability of the
+first release candidate for the QEMU 9.2 release. This release is meant
+for testing purposes and should not be used in a production environment.
 
-- Steve
+  http://download.qemu.org/qemu-9.2.0-rc0.tar.xz
+  http://download.qemu.org/qemu-9.2.0-rc0.tar.xz.sig
 
->> +
->>       /*
->>        * Stopping QEMU for debugging is not supported on Windows.
->>        *
->> @@ -515,34 +513,57 @@ static QTestState *qtest_init_internal(const char *qemu_bin,
->>       }
->>   #endif
->>   
->> +   return s;
->> +}
->> +
->> +void qtest_connect_deferred(QTestState *s)
->> +{
->> +    g_autofree gchar *socket_path = NULL;
->> +    g_autofree gchar *qmp_socket_path = NULL;
->> +
->> +    socket_path = g_strdup_printf("%s/qtest-%d.sock",
->> +                                  g_get_tmp_dir(), getpid());
->> +    qmp_socket_path = g_strdup_printf("%s/qtest-%d.qmp",
->> +                                      g_get_tmp_dir(), getpid());
->> +
->> +    s->fd = socket_accept(s->sock);
->> +    if (s->fd >= 0) {
->> +        s->qmp_fd = socket_accept(s->qmpsock);
->> +    }
->> +    unlink(socket_path);
->> +    unlink(qmp_socket_path);
->> +    g_assert(s->fd >= 0 && s->qmp_fd >= 0);
->>       /* ask endianness of the target */
->> -
->>       s->big_endian = qtest_query_target_endianness(s);
->> -
->> -   return s;
->>   }
->>   
->>   QTestState *qtest_init_without_qmp_handshake(const char *extra_args)
->>   {
->> -    return qtest_init_internal(qtest_qemu_binary(NULL), extra_args);
->> +    return qtest_init_internal(qtest_qemu_binary(NULL), extra_args, false);
->>   }
->>   
->> -QTestState *qtest_init_with_env(const char *var, const char *extra_args)
->> +void qtest_qmp_handshake(QTestState *s)
->>   {
->> -    QTestState *s = qtest_init_internal(qtest_qemu_binary(var), extra_args);
->> -    QDict *greeting;
->> -
->>       /* Read the QMP greeting and then do the handshake */
->> -    greeting = qtest_qmp_receive(s);
->> +    QDict *greeting = qtest_qmp_receive(s);
->>       qobject_unref(greeting);
->>       qobject_unref(qtest_qmp(s, "{ 'execute': 'qmp_capabilities' }"));
->> +}
->>   
->> +QTestState *qtest_init_with_env(const char *var, const char *extra_args,
->> +                                bool defer_connect)
->> +{
->> +    QTestState *s = qtest_init_internal(qtest_qemu_binary(var), extra_args,
->> +                                        defer_connect);
->> +    if (!defer_connect) {
->> +        qtest_qmp_handshake(s);
->> +    }
->>       return s;
->>   }
->>   
->>   QTestState *qtest_init(const char *extra_args)
->>   {
->> -    return qtest_init_with_env(NULL, extra_args);
->> +    return qtest_init_with_env(NULL, extra_args, false);
->>   }
->>   
->>   QTestState *qtest_vinitf(const char *fmt, va_list ap)
->> @@ -1523,7 +1544,7 @@ static struct MachInfo *qtest_get_machines(const char *var)
->>   
->>       silence_spawn_log = !g_test_verbose();
->>   
->> -    qts = qtest_init_with_env(qemu_var, "-machine none");
->> +    qts = qtest_init_with_env(qemu_var, "-machine none", false);
->>       response = qtest_qmp(qts, "{ 'execute': 'query-machines' }");
->>       g_assert(response);
->>       list = qdict_get_qlist(response, "return");
->> @@ -1578,7 +1599,7 @@ static struct CpuModel *qtest_get_cpu_models(void)
->>   
->>       silence_spawn_log = !g_test_verbose();
->>   
->> -    qts = qtest_init_with_env(NULL, "-machine none");
->> +    qts = qtest_init_with_env(NULL, "-machine none", false);
->>       response = qtest_qmp(qts, "{ 'execute': 'query-cpu-definitions' }");
->>       g_assert(response);
->>       list = qdict_get_qlist(response, "return");
->> diff --git a/tests/qtest/libqtest.h b/tests/qtest/libqtest.h
->> index beb96b1..db76f2c 100644
->> --- a/tests/qtest/libqtest.h
->> +++ b/tests/qtest/libqtest.h
->> @@ -60,13 +60,15 @@ QTestState *qtest_init(const char *extra_args);
->>    * @var: Environment variable from where to take the QEMU binary
->>    * @extra_args: Other arguments to pass to QEMU.  CAUTION: these
->>    * arguments are subject to word splitting and shell evaluation.
->> + * @defer_connect: do not connect to qemu monitor and qtest socket.
->>    *
->>    * Like qtest_init(), but use a different environment variable for the
->>    * QEMU binary.
->>    *
->>    * Returns: #QTestState instance.
->>    */
->> -QTestState *qtest_init_with_env(const char *var, const char *extra_args);
->> +QTestState *qtest_init_with_env(const char *var, const char *extra_args,
->> +                                bool defer_connect);
->>   
->>   /**
->>    * qtest_init_without_qmp_handshake:
->> @@ -78,6 +80,21 @@ QTestState *qtest_init_with_env(const char *var, const char *extra_args);
->>   QTestState *qtest_init_without_qmp_handshake(const char *extra_args);
->>   
->>   /**
->> + * qtest_connect_deferred:
->> + * @s: #QTestState instance to connect
->> + * Connect to qemu monitor and qtest socket, after deferring them in
->> + * qtest_init_with_env.  Does not handshake with the monitor.
->> + */
->> +void qtest_connect_deferred(QTestState *s);
->> +
->> +/**
->> + * qtest_qmp_handshake:
->> + * @s: #QTestState instance to operate on.
->> + * Perform handshake after connecting to qemu monitor.
->> + */
->> +void qtest_qmp_handshake(QTestState *s);
->> +
->> +/**
->>    * qtest_init_with_serial:
->>    * @extra_args: other arguments to pass to QEMU.  CAUTION: these
->>    * arguments are subject to word splitting and shell evaluation.
->> diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
->> index a008316..d359b10 100644
->> --- a/tests/qtest/migration-test.c
->> +++ b/tests/qtest/migration-test.c
->> @@ -844,7 +844,7 @@ static int test_migrate_start(QTestState **from, QTestState **to,
->>                                    args->opts_source ? args->opts_source : "",
->>                                    ignore_stderr);
->>       if (!args->only_target) {
->> -        *from = qtest_init_with_env(QEMU_ENV_SRC, cmd_source);
->> +        *from = qtest_init_with_env(QEMU_ENV_SRC, cmd_source, false);
->>           qtest_qmp_set_event_callback(*from,
->>                                        migrate_watch_for_events,
->>                                        &src_state);
->> @@ -865,7 +865,7 @@ static int test_migrate_start(QTestState **from, QTestState **to,
->>                                    shmem_opts ? shmem_opts : "",
->>                                    args->opts_target ? args->opts_target : "",
->>                                    ignore_stderr);
->> -    *to = qtest_init_with_env(QEMU_ENV_DST, cmd_target);
->> +    *to = qtest_init_with_env(QEMU_ENV_DST, cmd_target, false);
->>       qtest_qmp_set_event_callback(*to,
->>                                    migrate_watch_for_events,
->>                                    &dst_state);
+You can help improve the quality of the QEMU 9.2 release by testing this
+release and reporting bugs using our GitLab issue tracker:
 
+  https://gitlab.com/qemu-project/qemu/-/milestones/14
+
+The release plan, as well a documented known issues for release
+candidates, are available at:
+
+  http://wiki.qemu.org/Planning/9.2
+
+Please add entries to the ChangeLog for the 9.2 release below:
+
+  http://wiki.qemu.org/ChangeLog/9.2
+
+Thank you to everyone involved!
 
