@@ -2,70 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4DFB9C9051
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Nov 2024 17:58:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E42309C905D
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Nov 2024 17:59:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tBdA4-0000Cd-ON; Thu, 14 Nov 2024 11:57:40 -0500
+	id 1tBdC3-00048i-RC; Thu, 14 Nov 2024 11:59:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1tBd9q-0008Vv-LP
- for qemu-devel@nongnu.org; Thu, 14 Nov 2024 11:57:28 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1tBd9p-0002dC-5n
- for qemu-devel@nongnu.org; Thu, 14 Nov 2024 11:57:26 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1731603444;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=lM0oP4uYaxWqpfihOrRXw+G4JgNWK9m48rCXi/c32Qk=;
- b=TL/YTw/wtK+KCxBqOsgwXmVOP3v6GRRgPQpaXKypQXaIN+if++YP3MDFkbc5br/6gi+bos
- z9dSnM2p/l1vsIZ7ts/Xh07HnNM/asxqxdcYmsiCmXyVSqqneqTRe7nBeKw5R4TWWUiqLP
- R+8OF5MrOAZeYt+eTJPH0awcU5vv2vE=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-634-q_aedtBNM3iGbOuD7hKhsQ-1; Thu,
- 14 Nov 2024 11:57:19 -0500
-X-MC-Unique: q_aedtBNM3iGbOuD7hKhsQ-1
-X-Mimecast-MFC-AGG-ID: q_aedtBNM3iGbOuD7hKhsQ
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id B285B1955BFC; Thu, 14 Nov 2024 16:57:18 +0000 (UTC)
-Received: from merkur.redhat.com (unknown [10.39.192.6])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 8FFC51955F43; Thu, 14 Nov 2024 16:57:17 +0000 (UTC)
-From: Kevin Wolf <kwolf@redhat.com>
-To: qemu-block@nongnu.org
-Cc: kwolf@redhat.com,
-	qemu-devel@nongnu.org
-Subject: [PULL 8/8] vl: use qmp_device_add() in qemu_create_cli_devices()
-Date: Thu, 14 Nov 2024 17:56:57 +0100
-Message-ID: <20241114165657.254256-9-kwolf@redhat.com>
-In-Reply-To: <20241114165657.254256-1-kwolf@redhat.com>
-References: <20241114165657.254256-1-kwolf@redhat.com>
+ (Exim 4.90_1) (envelope-from <paskripkin@gmail.com>)
+ id 1tBdBa-0003mY-Qw; Thu, 14 Nov 2024 11:59:16 -0500
+Received: from mail-lf1-x130.google.com ([2a00:1450:4864:20::130])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <paskripkin@gmail.com>)
+ id 1tBdBZ-0002lP-9S; Thu, 14 Nov 2024 11:59:14 -0500
+Received: by mail-lf1-x130.google.com with SMTP id
+ 2adb3069b0e04-539e4b7409fso786482e87.0; 
+ Thu, 14 Nov 2024 08:59:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1731603550; x=1732208350; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=OjqNSEAeDqZHUwaEAq62cXj/YVXs2ncKcqAnAF2TK3M=;
+ b=ApNjciHF1H96EaU0+SbiC8Pm7QennBIQbXUOTYWbJqrFkEbwEvvbxh6Nz21H5U+h7A
+ VemdhCaNCbNHgLiyPQJ+kuow6KiKgRjUz6hrjUYwvUrmeOymUGUAfTokeeeJqFo+ygu9
+ wFdE46qdQw1Xe6O6aiD+zr/SckrQaE8eIy+iNjnwbDidTskdQb9pI9Npdh0Ou0ACG+Xq
+ JOoEjMw1d3UJFpaRj24YjlqCh9MzJa5yGHPkCAMzgLJmYOW4IdH2En2EVjW3TsIuMV9N
+ Un3/S7QxePG/xyf0y0cFEGv1aOToVA3ur+EfIaUM2+4gCWWnyDAP71CyeMWmyPosLSMe
+ FGUQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1731603550; x=1732208350;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=OjqNSEAeDqZHUwaEAq62cXj/YVXs2ncKcqAnAF2TK3M=;
+ b=iMTNjSoNTMS7GNMEJ4wml1BOhB4LY7SKE8NkUMm9cDaNXgkUhp5MibIpTgag8I3XPJ
+ zyYRqHZKl69SYxWKRKYJp8vwFeIW3YQwo82V/5sx3Ak+ZSMJ7q1eS+27W1I1JdLBqwTo
+ 8Ca7HOA+JslaPkaZy75Cy1ICq4WbqTqPxfS5IC9bVxFhXxfTwDxw/nibXajiqKgOyHkc
+ 9CWxONQtL5bL+8osb8cx/K4qiKmw+1yjzxyjdUZO1wp6HcRx+pakQlBenfWOYqoi7oaO
+ IVOiRiyocu+0KAzlcnPhL3tkLyXBE0+FUlaLrK3aYTqnY5YU8Dt0S8QJRib4jhX1FVu+
+ UYoQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWpyeaSG96u1ouilesuKcE9is16hxfIdF5XhuNJN4xKJV3o0JR0onA5LU+S6oTWC0vwwR2LuS04jKDN@nongnu.org
+X-Gm-Message-State: AOJu0YwzjOUZTXzUmQ0sCOk5l1PRHL3/F6e9t4g0Qv7j86yZN8cszm+4
+ Bo5vJ6mENk8F/+rgRa2TnO6NK6v0p/7LqTdU87lFrlXm9ql0LAeG
+X-Google-Smtp-Source: AGHT+IG47TayMCK6l/AZ0pwBoivKfYWsYDhm11RjHii9fE03tvtnpnGzrOI4UUXXKJfIhjhOZXNbFg==
+X-Received: by 2002:a05:6512:3da4:b0:53d:a550:1efa with SMTP id
+ 2adb3069b0e04-53da5501f63mr1123684e87.11.1731603549524; 
+ Thu, 14 Nov 2024 08:59:09 -0800 (PST)
+Received: from fedora.. ([2a00:1370:8180:90b:6639:2dc0:6fb5:8401])
+ by smtp.gmail.com with ESMTPSA id
+ 2adb3069b0e04-53da64f2a33sm243453e87.16.2024.11.14.08.59.05
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 14 Nov 2024 08:59:07 -0800 (PST)
+From: Pavel Skripkin <paskripkin@gmail.com>
+To: peter.maydell@linaro.org
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org,
+ Pavel Skripkin <paskripkin@gmail.com>
+Subject: [PATCH 1/2] arm/ptw: factor out wxn logic to separate functions
+Date: Thu, 14 Nov 2024 19:59:00 +0300
+Message-ID: <20241114165900.6399-1-paskripkin@gmail.com>
+X-Mailer: git-send-email 2.46.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Received-SPF: pass client-ip=2a00:1450:4864:20::130;
+ envelope-from=paskripkin@gmail.com; helo=mail-lf1-x130.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.122,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,54 +89,89 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Stefan Hajnoczi <stefanha@redhat.com>
+The next patch will add support for WXN for short descriptor format. To
+prevent code duplication, wxn logic was factored out to separate
+functions.
 
-qemu_create_cli_devices() should use qmp_device_add() to match the
-behavior of the QMP monitor. A comment explained that libvirt changes
-implementing strict CLI syntax were needed.
-
-Peter Krempa <pkrempa@redhat.com> has confirmed that modern libvirt uses
-the same JSON for -device (CLI) and device_add (QMP). Go ahead and use
-qmp_device_add().
-
-Cc: Peter Krempa <pkrempa@redhat.com>
-Reviewed-by: Markus Armbruster <armbru@redhat.com>
-Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
-Message-ID: <20240827192751.948633-3-stefanha@redhat.com>
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Reviewed-by: Kevin Wolf <kwolf@redhat.com>
-Signed-off-by: Kevin Wolf <kwolf@redhat.com>
+Signed-off-by: Pavel Skripkin <paskripkin@gmail.com>
 ---
- system/vl.c | 14 ++++----------
- 1 file changed, 4 insertions(+), 10 deletions(-)
+ target/arm/ptw.c | 41 +++++++++++++++++++++++------------------
+ 1 file changed, 23 insertions(+), 18 deletions(-)
 
-diff --git a/system/vl.c b/system/vl.c
-index d217b3d64d..e3f7d3a156 100644
---- a/system/vl.c
-+++ b/system/vl.c
-@@ -2653,17 +2653,11 @@ static void qemu_create_cli_devices(void)
-     qemu_opts_foreach(qemu_find_opts("device"),
-                       device_init_func, NULL, &error_fatal);
-     QTAILQ_FOREACH(opt, &device_opts, next) {
--        DeviceState *dev;
-+        QObject *ret_data = NULL;
+diff --git a/target/arm/ptw.c b/target/arm/ptw.c
+index 9849949508..2a3933adec 100644
+--- a/target/arm/ptw.c
++++ b/target/arm/ptw.c
+@@ -1130,6 +1130,26 @@ do_fault:
+     return true;
+ }
+ 
++static bool arm_has_wxn(CPUARMState *env)
++{
++    /* TODO have_wxn should be replaced with
++     *   ARM_FEATURE_V8 || (ARM_FEATURE_V7 && ARM_FEATURE_EL2)
++     * when ARM_FEATURE_EL2 starts getting set. For now we assume all LPAE
++     * compatible processors have EL2, which is required for [U]WXN.
++     */
++    return arm_feature(env, ARM_FEATURE_LPAE);
++}
 +
-         loc_push_restore(&opt->loc);
--        /*
--         * TODO Eventually we should call qmp_device_add() here to make sure it
--         * behaves the same, but QMP still has to accept incorrectly typed
--         * options until libvirt is fixed and we want to be strict on the CLI
--         * from the start, so call qdev_device_add_from_qdict() directly for
--         * now.
--         */
--        dev = qdev_device_add_from_qdict(opt->opts, true, &error_fatal);
--        object_unref(OBJECT(dev));
-+        qmp_device_add(opt->opts, &ret_data, &error_fatal);
-+        assert(ret_data == NULL); /* error_fatal aborts */
-         loc_pop(&opt->loc);
++static bool arm_wxn_enabled(CPUARMState *env, ARMMMUIdx mmu_idx)
++{
++    return arm_has_wxn(env) && (regime_sctlr(env, mmu_idx) & SCTLR_WXN);
++}
++
++static bool arm_uwxn_enabled(CPUARMState *env, ARMMMUIdx mmu_idx)
++{
++    return arm_has_wxn(env) && (regime_sctlr(env, mmu_idx) & SCTLR_UWXN);
++}
++
+ static bool get_phys_addr_v6(CPUARMState *env, S1Translate *ptw,
+                              uint32_t address, MMUAccessType access_type,
+                              GetPhysAddrResult *result, ARMMMUFaultInfo *fi)
+@@ -1370,8 +1390,7 @@ static int get_S1prot(CPUARMState *env, ARMMMUIdx mmu_idx, bool is_aa64,
+     ARMCPU *cpu = env_archcpu(env);
+     bool is_user = regime_is_user(env, mmu_idx);
+     int prot_rw, user_rw;
+-    bool have_wxn;
+-    int wxn = 0;
++    int wxn = arm_wxn_enabled(env, mmu_idx);
+ 
+     assert(!regime_is_stage2(mmu_idx));
+ 
+@@ -1432,18 +1451,6 @@ static int get_S1prot(CPUARMState *env, ARMMMUIdx mmu_idx, bool is_aa64,
+             g_assert_not_reached();
+         }
      }
-     rom_reset_order_override();
+-
+-    /* TODO have_wxn should be replaced with
+-     *   ARM_FEATURE_V8 || (ARM_FEATURE_V7 && ARM_FEATURE_EL2)
+-     * when ARM_FEATURE_EL2 starts getting set. For now we assume all LPAE
+-     * compatible processors have EL2, which is required for [U]WXN.
+-     */
+-    have_wxn = arm_feature(env, ARM_FEATURE_LPAE);
+-
+-    if (have_wxn) {
+-        wxn = regime_sctlr(env, mmu_idx) & SCTLR_WXN;
+-    }
+-
+     if (is_aa64) {
+         if (regime_has_2_ranges(mmu_idx) && !is_user) {
+             xn = pxn || (user_rw & PAGE_WRITE);
+@@ -1455,10 +1462,8 @@ static int get_S1prot(CPUARMState *env, ARMMMUIdx mmu_idx, bool is_aa64,
+             if (is_user) {
+                 xn = xn || !(user_rw & PAGE_READ);
+             } else {
+-                int uwxn = 0;
+-                if (have_wxn) {
+-                    uwxn = regime_sctlr(env, mmu_idx) & SCTLR_UWXN;
+-                }
++                int uwxn = arm_uwxn_enabled(env, mmu_idx);
++
+                 xn = xn || !(prot_rw & PAGE_READ) || pxn ||
+                      (uwxn && (user_rw & PAGE_WRITE));
+             }
 -- 
-2.47.0
+2.46.0
 
 
