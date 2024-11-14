@@ -2,88 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0AF29C8C2B
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Nov 2024 14:53:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 257199C8C89
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Nov 2024 15:11:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tBaHY-0002qU-4B; Thu, 14 Nov 2024 08:53:12 -0500
+	id 1tBaYs-0006iX-10; Thu, 14 Nov 2024 09:11:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tBaHV-0002jR-EJ
- for qemu-devel@nongnu.org; Thu, 14 Nov 2024 08:53:09 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <vkuznets@redhat.com>)
+ id 1tBaYp-0006iC-CZ
+ for qemu-devel@nongnu.org; Thu, 14 Nov 2024 09:11:03 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tBaHU-0000kq-1l
- for qemu-devel@nongnu.org; Thu, 14 Nov 2024 08:53:09 -0500
+ (Exim 4.90_1) (envelope-from <vkuznets@redhat.com>)
+ id 1tBaYn-0004n4-Ax
+ for qemu-devel@nongnu.org; Thu, 14 Nov 2024 09:11:03 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1731592386;
+ s=mimecast20190719; t=1731593460;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=BRKaKRlDnbcFOqBuiFKPRjz4nqOYB9MFzJ6KIelCQ+8=;
- b=erj9GP0LUQO4VlBFV87fgWZFJmXXINKalGCex4aKQ3mxhe1Gh6xntPwViDm3cZDTVMHEqL
- ItKPgCZ+8nNsZmyXRk1fTTu8HM8jOinnWjogKzHYKMBP/pxBuayGrb3/+ilVb7deyy2GKm
- cQUO2Jp+upyQBq2KoZRRh9alRRGZmHI=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-586-BRIuEbcxPk62r2ujfmdAHw-1; Thu, 14 Nov 2024 08:53:01 -0500
-X-MC-Unique: BRIuEbcxPk62r2ujfmdAHw-1
-X-Mimecast-MFC-AGG-ID: BRIuEbcxPk62r2ujfmdAHw
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-37d3e8dccc9so337993f8f.1
- for <qemu-devel@nongnu.org>; Thu, 14 Nov 2024 05:53:01 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731592380; x=1732197180;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=BRKaKRlDnbcFOqBuiFKPRjz4nqOYB9MFzJ6KIelCQ+8=;
- b=ih8jiFmV4ymUyYoxFZ/Urcq8sOwbxt4ANt9TX72099NqXDoXXYMq62xPr2dsoLoFiJ
- /BSPkhnHC8y32kMlQK+1+s8C4FlfHWVm1zDgzP+B7iwoCRVVfWMM20gmjg3KaWCL0aiO
- 8f9QXKsjHQ9T5mL2g0JiRvKe3lhPaJ+abIvKtxH/cGh+RgnOIr1scCUToSV76bYBBZHT
- errfJo5QQEqBMX7aZfIuRtAyY2FO6WsTMg7xo7nq3DoDtCHJeY2unrElvQJ6+skEyT7x
- Z9xcuDZot1DYdvkZlMdrExh+zmZWMFDb0ALeKQuNRFlzUKnI2ifF+u7041XVEUhEGP3U
- fdcQ==
-X-Gm-Message-State: AOJu0YxU2ZiqOKhOuWy8z+oF7QrNHBzYDqB140YaZLB1RQn19FnYUqpL
- JoQqMyERaZIYbtlmmm2k+Sr963s2WpXCKCtfric9wbbbVbtd6OAyx05MsUm/pQNdPbPWhQbg6eK
- YX2kv1Ge8mqPPghy2Ctu1PVCrcxCUyJ3U12qAM9+5jbiRN2EnGw3f
-X-Received: by 2002:a05:6000:1868:b0:37c:d23f:e464 with SMTP id
- ffacd0b85a97d-3820df88833mr5931580f8f.38.1731592380406; 
- Thu, 14 Nov 2024 05:53:00 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEOPIttEe9OzOGceZlr7nRugW/ttip6umC1cL5OI0whBgIZZTFvuqefJzZuCnHzZWsZTMMqRA==
-X-Received: by 2002:a05:6000:1868:b0:37c:d23f:e464 with SMTP id
- ffacd0b85a97d-3820df88833mr5931563f8f.38.1731592380020; 
- Thu, 14 Nov 2024 05:53:00 -0800 (PST)
-Received: from redhat.com ([2a02:14f:1f9:9589:951c:36c3:75d1:5725])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38222a5640csm55812f8f.104.2024.11.14.05.52.57
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 14 Nov 2024 05:52:59 -0800 (PST)
-Date: Thu, 14 Nov 2024 08:52:54 -0500
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>
-Cc: qemu-devel@nongnu.org
-Subject: Re: [PATCH v2 0/2] virtio-gpu: coverity fixes
-Message-ID: <20241114085241-mutt-send-email-mst@kernel.org>
-References: <20241111230040.68470-1-alex.bennee@linaro.org>
+ to:to:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=44Ld7GSzstmNorUoMdYMOBbIC7DfSIlpih808u60vlI=;
+ b=b8u7dLImNpNvAyJ9+qWhSDVu+BDw00jvdPiPxCCxLb59NW3QotQg9waESyI2tqcEKom9GI
+ I9aBXe5FizaXuS2CFLuhG+ulAl2m0gNj+C80Qs/WV02uPA51WKueNBewnCaPYpkOqauvzG
+ BHLKDIR8In77mttyUO2tVBWj6Dz9NeQ=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-653-ZemcXSGnNLiItpm0K2sCoQ-1; Thu,
+ 14 Nov 2024 09:10:51 -0500
+X-MC-Unique: ZemcXSGnNLiItpm0K2sCoQ-1
+X-Mimecast-MFC-AGG-ID: ZemcXSGnNLiItpm0K2sCoQ
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 598951955F3E; Thu, 14 Nov 2024 14:10:50 +0000 (UTC)
+Received: from fedora.redhat.com (unknown [10.45.226.10])
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 7B43C1955F21; Thu, 14 Nov 2024 14:10:46 +0000 (UTC)
+From: Vitaly Kuznetsov <vkuznets@redhat.com>
+To: qemu-devel@nongnu.org, Kevin Wolf <kwolf@redhat.com>,
+ Hanna Reitz <hreitz@redhat.com>, qemu-block@nongnu.org
+Subject: [PATCH] vpc: Read images exported from Azure correctly
+Date: Thu, 14 Nov 2024 15:10:45 +0100
+Message-ID: <20241114141045.374575-1-vkuznets@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+Content-Type: text/plain
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20241111230040.68470-1-alex.bennee@linaro.org>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=vkuznets@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+X-Spam_score_int: -28
+X-Spam_score: -2.9
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.122,
+X-Spam_report: (-2.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.122,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.69,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,26 +79,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Nov 11, 2024 at 11:00:38PM +0000, Alex Bennée wrote:
-> v2,
-> 
-> Fixes after Dimitry's review.
+It was found that 'qemu-nbd' is not able to work with some disk images
+exported from Azure. Looking at the 512b footer (which contains VPC
+metadata):
 
+00000000  63 6f 6e 65 63 74 69 78  00 00 00 02 00 01 00 00  |conectix........|
+00000010  ff ff ff ff ff ff ff ff  2e c7 9b 96 77 61 00 00  |............wa..|
+00000020  00 07 00 00 57 69 32 6b  00 00 00 01 40 00 00 00  |....Wi2k....@...|
+00000030  00 00 00 01 40 00 00 00  28 a2 10 3f 00 00 00 02  |....@...(..?....|
+00000040  ff ff e7 47 8c 54 df 94  bd 35 71 4c 94 5f e5 44  |...G.T...5qL._.D|
+00000050  44 53 92 1a 00 00 00 00  00 00 00 00 00 00 00 00  |DS..............|
+00000060  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
 
-You should CC Gerd.
+we can see that Azure uses a different 'Creator application' --
+'wa\0\0' (offset 0x1c, likely reads as 'Windows Azure') and QEMU uses this
+field to determine how it can get image size. Apparently, Azure uses 'new'
+method, just like Hyper-V.
 
-> Alex.
-> 
-> Alex Bennée (2):
->   hw/display: factor out the scanout blob to fb conversion
->   hw/display: check frame buffer can hold blob
-> 
->  include/hw/virtio/virtio-gpu.h | 15 +++++++++
->  hw/display/virtio-gpu-virgl.c  | 22 +------------
->  hw/display/virtio-gpu.c        | 59 +++++++++++++++++++++-------------
->  3 files changed, 52 insertions(+), 44 deletions(-)
-> 
-> -- 
-> 2.39.5
+Signed-off-by: Vitaly Kuznetsov <vkuznets@redhat.com>
+---
+Alternatively, we can probably make 'current_size' the default and only use
+CHS for 'vpc '/'qemu'.
+---
+ block/vpc.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/block/vpc.c b/block/vpc.c
+index d95a204612b7..da8662402d00 100644
+--- a/block/vpc.c
++++ b/block/vpc.c
+@@ -321,6 +321,7 @@ static int vpc_open(BlockDriverState *bs, QDict *options, int flags,
+      *      'qemu'  :  CHS              QEMU (uses disk geometry)
+      *      'qem2'  :  current_size     QEMU (uses current_size)
+      *      'win '  :  current_size     Hyper-V
++     *      'wa\0\0':  current_size     Azure
+      *      'd2v '  :  current_size     Disk2vhd
+      *      'tap\0' :  current_size     XenServer
+      *      'CTXS'  :  current_size     XenConverter
+@@ -330,6 +331,7 @@ static int vpc_open(BlockDriverState *bs, QDict *options, int flags,
+      *  that have CHS geometry of the maximum size.
+      */
+     use_chs = (!!strncmp(footer->creator_app, "win ", 4) &&
++               !!strncmp(footer->creator_app, "wa", 4) &&
+                !!strncmp(footer->creator_app, "qem2", 4) &&
+                !!strncmp(footer->creator_app, "d2v ", 4) &&
+                !!strncmp(footer->creator_app, "CTXS", 4) &&
+-- 
+2.47.0
 
 
