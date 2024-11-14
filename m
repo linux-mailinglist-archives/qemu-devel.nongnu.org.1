@@ -2,60 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1B8E9C7FC8
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Nov 2024 02:15:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C96AD9C7FD2
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Nov 2024 02:17:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tBOQg-0007VH-97; Wed, 13 Nov 2024 20:13:50 -0500
+	id 1tBOQm-0007Z7-UR; Wed, 13 Nov 2024 20:13:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tBOQe-0007UL-OJ
- for qemu-devel@nongnu.org; Wed, 13 Nov 2024 20:13:48 -0500
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tBOQk-0007X8-QD
+ for qemu-devel@nongnu.org; Wed, 13 Nov 2024 20:13:54 -0500
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tBOQc-0001wn-Rs
- for qemu-devel@nongnu.org; Wed, 13 Nov 2024 20:13:48 -0500
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-431688d5127so1010245e9.0
- for <qemu-devel@nongnu.org>; Wed, 13 Nov 2024 17:13:45 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tBOQi-0001yA-Ou
+ for qemu-devel@nongnu.org; Wed, 13 Nov 2024 20:13:54 -0500
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-4314f38d274so1272565e9.1
+ for <qemu-devel@nongnu.org>; Wed, 13 Nov 2024 17:13:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1731546824; x=1732151624; darn=nongnu.org;
+ d=linaro.org; s=google; t=1731546830; x=1732151630; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=n4W2o+WVI2EW3XsW3lSsIks/9d2PO57Qya5v8Q7poU8=;
- b=LitgoMJUmq+gqemI4ODNsD9dB2joc/86+4Bm4D55FpaYIq3e1DyF0VyRTlNoPlsy5I
- qQ0v0P/SnY2dSch4f0h4YQfTZ7HVqsVyAoFY1PiUPiO5qrrF9CT0scM1L6TRsBCEgvaa
- bSnKWelY7q7pO5Y3V10Nr/TJpT1DDAdlnFQCWKkwZUz0Ylz2LHUaA4jRfI02gq1juL1A
- FKsb57f07L1k9Lc23Lk+5cwF9tgKFMZy3DBA2aZoL2p+0WW8GGQBFEw/rkRs8xOv/3n+
- BG1pqZKtSQ285vHI2z+8Q1Ul7tPPCACfnz6RNuNlOgbGbbxgdIjBkBMmq+JqeOZM7r+2
- /KkQ==
+ bh=5KW25vJBxhufCYPIMuRXQYWgykya5onuISdgtY2NESM=;
+ b=BXCGhH1z6w8k5PQT6nBpqrxvkJ/+Ys2CUVoCDAx/jrBXMAWHIInNkvTw5c9dwIbkv1
+ riOKJe9YAPjcKhz8pgaTx/wry8uftqtXxKTnyTbXKDWN2J9YhgG4Ts2w7SR7Kuc0wqkL
+ GMNA6hOiOKZM6ns1CXn31E04lAZlW/k7hZwc/d623TjkO2zNtyEW9NlJ1LTJqCk/x5ml
+ vYCytQCkSJ8jL8Nv6gUg4Lfi5grE+Rn8FDrvfmaWDy2BkPf3PCdbyr3hQolRCemzbBg8
+ JSqhCxCdhEk19+9KN5QHpr52R6SiLLZIwQ0cAWjHpjGhaX0H4yusvi83Tcd/h2WJ7LhU
+ 1rjw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731546824; x=1732151624;
+ d=1e100.net; s=20230601; t=1731546830; x=1732151630;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=n4W2o+WVI2EW3XsW3lSsIks/9d2PO57Qya5v8Q7poU8=;
- b=at0C7+Rro6qNY77ScRBF96m9aWKoWpsHqkubFR8cESEjMeG++gIOGbhza4e+dDKmX+
- NoTy+evfvb+39zjT3foUQ+Jx3jE+tnTodktDvIBT1q3TBf2hI98rmEDprqfwM+8GxPIg
- psW/deQ/cW8fdcqEIQdTWMkoSTivTqzSxiHqBnE2vk+0Wtj3Hl6hg3YVM8fdv2jfam0G
- 55M1BvVxKxCnZOofcetX65RrXKL7BIac86AhrgJSwVLBGALYth9f7qNCWA8yGR4Ha7gC
- 1tsj2STTI9apixjqB7eecn3kDaz6sgPu9Id+1nHBoI/DbkG9i9nmwvstu0zHqFn5FRwm
- nVOA==
+ bh=5KW25vJBxhufCYPIMuRXQYWgykya5onuISdgtY2NESM=;
+ b=DwLS0XhRPOJ1GfTFliro0psWrdeBGpKr77c6MW7NMB4Q3Yb3xPkIamO5uY2O04N1Dx
+ E8J9NyQX0vFSVysrdvxv7OsqSlpbel6psy5wAudnfxLd0QXmxu38bXEF0ULYIJEwfHbY
+ gHL7HKv36WIKLLCvTG9NaiQD4f+RzSYZnCYwZwB4yZ4otnVB1JLnAdvCGCEtxf7CpywL
+ 3t6Kn6CASdcIz39xQ2nFsmOGyPJIWGp/BWcQ6hvWqYWWa1GTHBZ39M2XVFBfE9l83ZLl
+ RqDRhtMPw7mhUPzPGWEZdovAgS+83aVI6lgB69fmJU5jqV/JaRhEG+WT4LO6OWmCtvXr
+ 23qg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWLxUZADKrBTj9Zstxhx1tExxC5dhbQX2d0Kf7iKUBpU8Bmlt9ywa1/v898PjTAgEIgEre2h0J0Y/LL@nongnu.org
-X-Gm-Message-State: AOJu0YxxKrl92poAi1G5MWL6UuQxwNHqWUii0Y38oi6YPUhezYnxlQT5
- asyitIEUDqizqopuIrdKwNREriTT4bGJ7dKORsrkPFHdtolQnpBUtfJ4vYVR6oI=
-X-Google-Smtp-Source: AGHT+IEicPSPnx9VguO/9hRNFn0r+OGPnyAza34mmQJUkip7pZQ0zwk7xapErhg7/qyCllNdtkSLxg==
-X-Received: by 2002:a05:600c:3582:b0:428:ec2a:8c94 with SMTP id
- 5b1f17b1804b1-432b75035camr195067265e9.10.1731546824041; 
- Wed, 13 Nov 2024 17:13:44 -0800 (PST)
+ AJvYcCXeNc2Nvp13fHaxgE5JZmlGXdmKXGnsl0b83kiZDbxVOBoTPD7gCUnhXRhU4nDwBu3BD4ONLuLuvI4o@nongnu.org
+X-Gm-Message-State: AOJu0YxmTrbEkJOoQOriYNBpw8l//Y1BLBmDBdPn0sS1bTvLtk9DFONX
+ FnqCrfjHsdou9uyxoDhX1QvIS7Q1u8pc+fY2xlzV9DGSIzkKLsjEtg1GmQ0aOE4=
+X-Google-Smtp-Source: AGHT+IEC5JlJku6XdBSAUB2qj+Uz9Kq0z6gAZgWwRK2JCMYVh8ykSi7sKBQbjuLQEYGTHDnr+1RcEA==
+X-Received: by 2002:a05:600c:3d16:b0:431:5c7b:e939 with SMTP id
+ 5b1f17b1804b1-432da790770mr2673155e9.18.1731546830113; 
+ Wed, 13 Nov 2024 17:13:50 -0800 (PST)
 Received: from localhost.localdomain ([176.187.209.238])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-432dab721d7sm1548395e9.9.2024.11.13.17.13.41
+ 5b1f17b1804b1-432da298c97sm4649995e9.40.2024.11.13.17.13.48
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 13 Nov 2024 17:13:43 -0800 (PST)
+ Wed, 13 Nov 2024 17:13:49 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: Paolo Bonzini <pbonzini@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
@@ -68,17 +68,18 @@ Cc: qemu-ppc@nongnu.org, Thomas Huth <thuth@redhat.com>, qemu-arm@nongnu.org,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  qemu-s390x@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 02/24] exec/cpu-defs: Remove unnecessary headers
-Date: Thu, 14 Nov 2024 02:12:47 +0100
-Message-ID: <20241114011310.3615-3-philmd@linaro.org>
+Subject: [PATCH 03/24] exec/translation-block: Include missing 'exec/vaddr.h'
+ header
+Date: Thu, 14 Nov 2024 02:12:48 +0100
+Message-ID: <20241114011310.3615-4-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241114011310.3615-1-philmd@linaro.org>
 References: <20241114011310.3615-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,33 +102,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-"exec/cpu-defs.h" should be kept as minimal as possible;
-besides these includes don't seem necessay. Remove them.
+'vaddr' is declared in "exec/vaddr.h".
+Include it in order to avoid when refactoring:
+
+  include/exec/translation-block.h:56:5: error: unknown type name 'vaddr'
+     56 |     vaddr pc;
+        |     ^
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/exec/cpu-defs.h | 8 --------
- 1 file changed, 8 deletions(-)
+ include/exec/translation-block.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/exec/cpu-defs.h b/include/exec/cpu-defs.h
-index 0dbef3010c..ae18398fa9 100644
---- a/include/exec/cpu-defs.h
-+++ b/include/exec/cpu-defs.h
-@@ -23,14 +23,6 @@
- #error cpu.h included from common code
+diff --git a/include/exec/translation-block.h b/include/exec/translation-block.h
+index a6d1af6e9b..b99afb0077 100644
+--- a/include/exec/translation-block.h
++++ b/include/exec/translation-block.h
+@@ -9,6 +9,7 @@
+ 
+ #include "qemu/thread.h"
+ #include "exec/cpu-common.h"
++#include "exec/vaddr.h"
+ #ifdef CONFIG_USER_ONLY
+ #include "qemu/interval-tree.h"
  #endif
- 
--#include "qemu/host-utils.h"
--#include "qemu/thread.h"
--#ifndef CONFIG_USER_ONLY
--#include "exec/hwaddr.h"
--#endif
--#include "exec/memattrs.h"
--#include "hw/core/cpu.h"
--
- #include "cpu-param.h"
- 
- #ifndef TARGET_LONG_BITS
 -- 
 2.45.2
 
