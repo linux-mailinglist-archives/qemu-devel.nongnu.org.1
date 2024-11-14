@@ -2,66 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCE739C8F5C
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Nov 2024 17:12:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D1E169C8F34
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Nov 2024 17:08:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tBcIg-0005FD-Qm; Thu, 14 Nov 2024 11:02:31 -0500
+	id 1tBcIk-0005Lq-DS; Thu, 14 Nov 2024 11:02:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tBcID-00050p-Rs
+ id 1tBcID-00050r-Sb
  for qemu-devel@nongnu.org; Thu, 14 Nov 2024 11:02:05 -0500
 Received: from mail-pj1-x1029.google.com ([2607:f8b0:4864:20::1029])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tBcI4-0002FH-Qk
+ id 1tBcI5-0002Fw-7B
  for qemu-devel@nongnu.org; Thu, 14 Nov 2024 11:01:54 -0500
 Received: by mail-pj1-x1029.google.com with SMTP id
- 98e67ed59e1d1-2e2fb304e7dso729060a91.1
- for <qemu-devel@nongnu.org>; Thu, 14 Nov 2024 08:01:51 -0800 (PST)
+ 98e67ed59e1d1-2e5a0177531so675744a91.2
+ for <qemu-devel@nongnu.org>; Thu, 14 Nov 2024 08:01:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1731600110; x=1732204910; darn=nongnu.org;
+ d=linaro.org; s=google; t=1731600111; x=1732204911; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=lJHKnfJ9AOt1s0DhksJDYAiN+sOc9T9tuOMIGs7rfV8=;
- b=eHGfoqH87XZL3ZHbSDaWpDHHsUIg9j75KUYhfgnMO6a94XefjKiHjxxismqoUh30dI
- 7ypbwKhnJrwqcg3/slu982nntlvqpBebIE0EaJiMywfdETCO8/285ijCzDTD1SXfKdU7
- AW9iGiPAYb5+GRuNCV0BSuJIcE9EsUBL6+l+4f0x9LXPd719ZLA8od3TGxo1JPI5wkTC
- 4UhRO8ChTWSORpjDQ2iigaVh97CHqvNiHuejG+pcuh6JMwBwBfuN2GsEAdnKxmvDJ93f
- 89pco8hHWafazJrcV/bO/mjR0cm0CNo/fQ7yciyCFuw9dlqmO/7XnRXb2RqWQE8UXSsX
- opyQ==
+ :reply-to; bh=ZzUqo5EQVmmILWK3/HrkYlBd4Dl5eFiN4ejkIAqPzrI=;
+ b=arhER/1wqg1QpTgXVPn0NDZBKZSxaiE1pt8lAv5E7XFewOz2gWk0P6b7bEQAdFDxiM
+ yCBjAEnGRjMSHd58arzyUHefPL0LZuFMRNOITl7t5OpYkJPk81ckp2+ChlXbEqC7+4D0
+ Gkjh3oGFwOYk/jIIJM8tmOLKatsn0/eOzlz0HJgNieuQjzJJKZcLfzVurpXmCtPi+jPj
+ MCpw6xTw75ivUW7ezfF81R1nUwsjnIeBMvI3P4nMfdfOjC+/7EjnTB4n4m29C/ia/JId
+ YaNvXJRCiscZzy5Y8FbeDvgQvN2U9cr3nRvn8o2ZHH/N1bp2Yv3FlP3omIvmvINaAumJ
+ Eelg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731600110; x=1732204910;
+ d=1e100.net; s=20230601; t=1731600111; x=1732204911;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=lJHKnfJ9AOt1s0DhksJDYAiN+sOc9T9tuOMIGs7rfV8=;
- b=b5hxAgIri/DRzhiY0knkYNVSNnn/GV+46Y0feyGY67JGCWsxrZwBerBOKA547zJ8QY
- 73cLKz0vc2h1fRfZFQ4q6A6gXWPD0xZKA2W74ZdJQag1gXSozib/QPDL11Ke7HNnh7Gk
- J0zZtPaWci56nOlERYRUHXZQ+J7mXiYI4GRSXmDmIf3hfyNF3fXnyyO5mp64PfdjoXkX
- rnW/PcmlFzRXYTnK4wemVZaxt8XB2Rl5RcXu2PgQasGa5zAS/ocS2lUbZdQSRMkQb/Ae
- w3j5Uu0mKgmaiNDmAToKWGymZhZinyhwkN2bS2Ypoat2aaC+bYBA8Cosnee17qEKw7uc
- 2Gow==
-X-Gm-Message-State: AOJu0Yz9fGpgvq9rB8lGIdV+m0gZgbskYF/m696zjhfHXb5RTfMahUlH
- G+Na3/zbBOTiVy0ZSx7MUsshXzI77jQOrkpZohvCCjPzZeVRDaLLZDetXF6ev/Gl3xGWTyzePGw
- 1
-X-Google-Smtp-Source: AGHT+IGsHqXaMfO75Hr/xzzH8lYuJMrFbtExhGPHDG+/XpX/lNz4Zg95GZ2tSIZmtwzMf4aX6NejRg==
-X-Received: by 2002:a17:90b:4a87:b0:2e2:aef9:8f60 with SMTP id
- 98e67ed59e1d1-2e9b14ddb3bmr32406854a91.0.1731600110051; 
- Thu, 14 Nov 2024 08:01:50 -0800 (PST)
+ bh=ZzUqo5EQVmmILWK3/HrkYlBd4Dl5eFiN4ejkIAqPzrI=;
+ b=a8UCiL/vjeFnHvDRidBZSB9ApfhtRq/Q82v2FeoL4lbWrFj8VsDxGH2JZKQvAeB6YF
+ 94UWwfJDUlxivMVcOioc9DKbA+68yNmtiXi03POiv+7mIkGRbEFGJtA6z6+JmnuXGkcu
+ 6s8Wj6gnZTYIbW8psX+57dxMKsChg0Iub0IsUiJ0iBYaRlXXV9fVw0/YSZetFJDzCLWD
+ 1pIHqzNVV97XrIjP/vcC7LC4ePOoJWKZL3waHtk3W47FCj07MkqS9rzklaVSUWFnZPKJ
+ /38s27DIZNIDUTk1pfaVS3NIg+gzmCzKLJ5qB78ONQBnb5X/x8G5AGBJMK7LZbtMDqLW
+ 2Q6Q==
+X-Gm-Message-State: AOJu0Yzow/j0oLzGsY0bAConhPJw4X9UQdU4Q95MDhbDJ64kqXhzO8lx
+ D5TmM8+a8Q3y3oA+G8Zs7ahwTaTV/1cCk8q5D6hW+b5h8l8gjGJpfNDDEoPGu5DcvSr7FUt2WWO
+ O
+X-Google-Smtp-Source: AGHT+IEC8cVZjuJs8fTcgyRwOAB4vOr7dnWsxczMYwi3IO/oI4UAakxoV9jKUiEFGz7BQpnwwUHAUw==
+X-Received: by 2002:a17:90b:1a92:b0:2d8:82a2:b093 with SMTP id
+ 98e67ed59e1d1-2e9b1720e9dmr31250421a91.13.1731600111017; 
+ Thu, 14 Nov 2024 08:01:51 -0800 (PST)
 Received: from stoup.. ([71.212.136.242]) by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2ea024ec723sm1484438a91.46.2024.11.14.08.01.49
+ 98e67ed59e1d1-2ea024ec723sm1484438a91.46.2024.11.14.08.01.50
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 14 Nov 2024 08:01:49 -0800 (PST)
+ Thu, 14 Nov 2024 08:01:50 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH v2 21/54] accel/tcg: Delay plugin adjustment in
- probe_access_internal
-Date: Thu, 14 Nov 2024 08:00:57 -0800
-Message-ID: <20241114160131.48616-22-richard.henderson@linaro.org>
+Subject: [PATCH v2 22/54] accel/tcg: Call cpu_ld*_code_mmu from cpu_ld*_code
+Date: Thu, 14 Nov 2024 08:00:58 -0800
+Message-ID: <20241114160131.48616-23-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241114160131.48616-1-richard.henderson@linaro.org>
 References: <20241114160131.48616-1-richard.henderson@linaro.org>
@@ -91,45 +90,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Remove force_mmio and place the expression into the IF
-expression, behind the short-circuit logic expressions
-that might eliminate its computation.
+Ensure a common entry point for all code lookups.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- accel/tcg/cputlb.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ accel/tcg/cputlb.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
 diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
-index 3e24529f4f..a4c69bcbf1 100644
+index a4c69bcbf1..c975dd2322 100644
 --- a/accel/tcg/cputlb.c
 +++ b/accel/tcg/cputlb.c
-@@ -1373,7 +1373,6 @@ static int probe_access_internal(CPUState *cpu, vaddr addr,
-     CPUTLBEntry *entry = tlb_entry(cpu, mmu_idx, addr);
-     uint64_t tlb_addr = tlb_read_idx(entry, access_type);
-     int flags = TLB_FLAGS_MASK & ~TLB_FORCE_SLOW;
--    bool force_mmio = check_mem_cbs && cpu_plugin_mem_cbs_enabled(cpu);
-     CPUTLBEntryFull *full;
+@@ -2924,28 +2924,28 @@ uint32_t cpu_ldub_code(CPUArchState *env, abi_ptr addr)
+ {
+     CPUState *cs = env_cpu(env);
+     MemOpIdx oi = make_memop_idx(MO_UB, cpu_mmu_index(cs, true));
+-    return do_ld1_mmu(cs, addr, oi, 0, MMU_INST_FETCH);
++    return cpu_ldb_code_mmu(env, addr, oi, 0);
+ }
  
-     if (!tlb_hit(tlb_addr, addr)) {
-@@ -1404,9 +1403,14 @@ static int probe_access_internal(CPUState *cpu, vaddr addr,
-     *pfull = full = &cpu->neg.tlb.d[mmu_idx].fulltlb[index];
-     flags |= full->slow_flags[access_type];
+ uint32_t cpu_lduw_code(CPUArchState *env, abi_ptr addr)
+ {
+     CPUState *cs = env_cpu(env);
+     MemOpIdx oi = make_memop_idx(MO_TEUW, cpu_mmu_index(cs, true));
+-    return do_ld2_mmu(cs, addr, oi, 0, MMU_INST_FETCH);
++    return cpu_ldw_code_mmu(env, addr, oi, 0);
+ }
  
--    /* Fold all "mmio-like" bits into TLB_MMIO.  This is not RAM.  */
--    if (unlikely(flags & ~(TLB_WATCHPOINT | TLB_NOTDIRTY | TLB_CHECK_ALIGNED))
--        || (access_type != MMU_INST_FETCH && force_mmio)) {
-+    /*
-+     * Fold all "mmio-like" bits, and required plugin callbacks, to TLB_MMIO.
-+     * These cannot be treated as RAM.
-+     */
-+    if ((flags & ~(TLB_WATCHPOINT | TLB_NOTDIRTY | TLB_CHECK_ALIGNED))
-+        || (access_type != MMU_INST_FETCH
-+            && check_mem_cbs
-+            && cpu_plugin_mem_cbs_enabled(cpu))) {
-         *phost = NULL;
-         return TLB_MMIO;
-     }
+ uint32_t cpu_ldl_code(CPUArchState *env, abi_ptr addr)
+ {
+     CPUState *cs = env_cpu(env);
+     MemOpIdx oi = make_memop_idx(MO_TEUL, cpu_mmu_index(cs, true));
+-    return do_ld4_mmu(cs, addr, oi, 0, MMU_INST_FETCH);
++    return cpu_ldl_code_mmu(env, addr, oi, 0);
+ }
+ 
+ uint64_t cpu_ldq_code(CPUArchState *env, abi_ptr addr)
+ {
+     CPUState *cs = env_cpu(env);
+     MemOpIdx oi = make_memop_idx(MO_TEUQ, cpu_mmu_index(cs, true));
+-    return do_ld8_mmu(cs, addr, oi, 0, MMU_INST_FETCH);
++    return cpu_ldq_code_mmu(env, addr, oi, 0);
+ }
+ 
+ uint8_t cpu_ldb_code_mmu(CPUArchState *env, abi_ptr addr,
 -- 
 2.43.0
 
