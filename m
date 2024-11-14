@@ -2,60 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C96AD9C7FD2
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Nov 2024 02:17:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F23529C7FE2
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Nov 2024 02:20:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tBOQm-0007Z7-UR; Wed, 13 Nov 2024 20:13:56 -0500
+	id 1tBOQt-0007dV-El; Wed, 13 Nov 2024 20:14:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tBOQk-0007X8-QD
- for qemu-devel@nongnu.org; Wed, 13 Nov 2024 20:13:54 -0500
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tBOQq-0007bp-Du
+ for qemu-devel@nongnu.org; Wed, 13 Nov 2024 20:14:00 -0500
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tBOQi-0001yA-Ou
- for qemu-devel@nongnu.org; Wed, 13 Nov 2024 20:13:54 -0500
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-4314f38d274so1272565e9.1
- for <qemu-devel@nongnu.org>; Wed, 13 Nov 2024 17:13:52 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tBOQo-0001zO-RM
+ for qemu-devel@nongnu.org; Wed, 13 Nov 2024 20:14:00 -0500
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-4319399a411so965915e9.2
+ for <qemu-devel@nongnu.org>; Wed, 13 Nov 2024 17:13:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1731546830; x=1732151630; darn=nongnu.org;
+ d=linaro.org; s=google; t=1731546837; x=1732151637; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=5KW25vJBxhufCYPIMuRXQYWgykya5onuISdgtY2NESM=;
- b=BXCGhH1z6w8k5PQT6nBpqrxvkJ/+Ys2CUVoCDAx/jrBXMAWHIInNkvTw5c9dwIbkv1
- riOKJe9YAPjcKhz8pgaTx/wry8uftqtXxKTnyTbXKDWN2J9YhgG4Ts2w7SR7Kuc0wqkL
- GMNA6hOiOKZM6ns1CXn31E04lAZlW/k7hZwc/d623TjkO2zNtyEW9NlJ1LTJqCk/x5ml
- vYCytQCkSJ8jL8Nv6gUg4Lfi5grE+Rn8FDrvfmaWDy2BkPf3PCdbyr3hQolRCemzbBg8
- JSqhCxCdhEk19+9KN5QHpr52R6SiLLZIwQ0cAWjHpjGhaX0H4yusvi83Tcd/h2WJ7LhU
- 1rjw==
+ bh=X3oqMeHT71R3KdP9eZWoYcjlbOfOwEShX9l191wOq00=;
+ b=n4+c/Fvo2dTX3JgaWSwTpv64eiLSaVvaJWy5x1ch0LlFGH6lVN/T2LLpSPUEHm2vd3
+ KULM1pv/8+TtEa4mheq2m/+QcoUPy78jZr3Gxg65p1UcwwKaEluP/yha0GtC8hdTRped
+ +34trvYpmLM6Lrei/Zz9+D42M/xcKAkxTM72CnVg6ZC8FKBGmDTfyjp6iRAlUho1aSMC
+ LB4GsQvr9NPKK2Qmsjt3HAM1Z9pnjgdFaGlcq77pWBqYrzcqoeuQ3xlDaTTTzaVjQUVx
+ ue4o0hjUNgB23SOmv4Z0yR1LBt9AfmNm1vQtnuIASaIzOKuuDxc6BjGnByPHgKebmxny
+ wLTw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731546830; x=1732151630;
+ d=1e100.net; s=20230601; t=1731546837; x=1732151637;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=5KW25vJBxhufCYPIMuRXQYWgykya5onuISdgtY2NESM=;
- b=DwLS0XhRPOJ1GfTFliro0psWrdeBGpKr77c6MW7NMB4Q3Yb3xPkIamO5uY2O04N1Dx
- E8J9NyQX0vFSVysrdvxv7OsqSlpbel6psy5wAudnfxLd0QXmxu38bXEF0ULYIJEwfHbY
- gHL7HKv36WIKLLCvTG9NaiQD4f+RzSYZnCYwZwB4yZ4otnVB1JLnAdvCGCEtxf7CpywL
- 3t6Kn6CASdcIz39xQ2nFsmOGyPJIWGp/BWcQ6hvWqYWWa1GTHBZ39M2XVFBfE9l83ZLl
- RqDRhtMPw7mhUPzPGWEZdovAgS+83aVI6lgB69fmJU5jqV/JaRhEG+WT4LO6OWmCtvXr
- 23qg==
+ bh=X3oqMeHT71R3KdP9eZWoYcjlbOfOwEShX9l191wOq00=;
+ b=wl8FDGegvSJY5TO4IGCumR4FLCr3qLr649cldO+Iu0Ct0qrftJ/4o36LXppoJjSOXC
+ xQkU3+KuaqTLHsVQ15+KRKvpPivRDI7iV1nkWWaA9+UKX4znnMhFTjUvsqNXHJVmFSvO
+ ibgxwRgpFsyfzzvOfwoHjEpIcUgjzpsPp5wZ97hQfQiIX9OOjZ2fDNPLjaRjG+R5VhOP
+ sDmtXODhcShY0AFhxjx5G8nrWu+tVET2m271j0wZgGMIINMrLNGhczwQPZUJXl6S4TC2
+ 1sfre/opF+C8oD5KLPVG7OC1D2g7UCehe1CDy5cq9J1gVo+cOWDu9bz4C/ioqEf3QT8v
+ 7I8w==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXeNc2Nvp13fHaxgE5JZmlGXdmKXGnsl0b83kiZDbxVOBoTPD7gCUnhXRhU4nDwBu3BD4ONLuLuvI4o@nongnu.org
-X-Gm-Message-State: AOJu0YxmTrbEkJOoQOriYNBpw8l//Y1BLBmDBdPn0sS1bTvLtk9DFONX
- FnqCrfjHsdou9uyxoDhX1QvIS7Q1u8pc+fY2xlzV9DGSIzkKLsjEtg1GmQ0aOE4=
-X-Google-Smtp-Source: AGHT+IEC5JlJku6XdBSAUB2qj+Uz9Kq0z6gAZgWwRK2JCMYVh8ykSi7sKBQbjuLQEYGTHDnr+1RcEA==
-X-Received: by 2002:a05:600c:3d16:b0:431:5c7b:e939 with SMTP id
- 5b1f17b1804b1-432da790770mr2673155e9.18.1731546830113; 
- Wed, 13 Nov 2024 17:13:50 -0800 (PST)
+ AJvYcCUDBB8rHc8bCwigXfRSBPn5cXsiDya4O0a+K/2T9psT2BfjLeg4nh2WLXnivSeuQszJ2PyFgHmuFYVi@nongnu.org
+X-Gm-Message-State: AOJu0Ywo0bouQZXpXgozEgROP0gdp1yK6RM10+HBoU3A70tQCpUZMvFl
+ NA+SiqWRHvqhHCd0mCfQfmNvAtYzLL30tRxIABOpjsdsGgL3z8LCxOmsds5zpmw=
+X-Google-Smtp-Source: AGHT+IFH/9CySRShC94nFw9UunKX2sRCoFuNlkS4DCoQU46r6V+s7M3YfRcJ8MxE5SjH5yjXwvy3Zg==
+X-Received: by 2002:a05:600c:a384:b0:431:1868:417f with SMTP id
+ 5b1f17b1804b1-432d2730ce1mr69929325e9.17.1731546837008; 
+ Wed, 13 Nov 2024 17:13:57 -0800 (PST)
 Received: from localhost.localdomain ([176.187.209.238])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-432da298c97sm4649995e9.40.2024.11.13.17.13.48
+ 5b1f17b1804b1-432dac0aea8sm1385325e9.31.2024.11.13.17.13.54
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 13 Nov 2024 17:13:49 -0800 (PST)
+ Wed, 13 Nov 2024 17:13:56 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: Paolo Bonzini <pbonzini@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
@@ -68,18 +68,18 @@ Cc: qemu-ppc@nongnu.org, Thomas Huth <thuth@redhat.com>, qemu-arm@nongnu.org,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  qemu-s390x@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 03/24] exec/translation-block: Include missing 'exec/vaddr.h'
+Subject: [PATCH 04/24] accel/tcg: Include missing 'exec/translation-block.h'
  header
-Date: Thu, 14 Nov 2024 02:12:48 +0100
-Message-ID: <20241114011310.3615-4-philmd@linaro.org>
+Date: Thu, 14 Nov 2024 02:12:49 +0100
+Message-ID: <20241114011310.3615-5-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241114011310.3615-1-philmd@linaro.org>
 References: <20241114011310.3615-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,30 +102,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-'vaddr' is declared in "exec/vaddr.h".
+TB compile flags are defined in "exec/translation-block.h".
 Include it in order to avoid when refactoring:
 
-  include/exec/translation-block.h:56:5: error: unknown type name 'vaddr'
-     56 |     vaddr pc;
-        |     ^
+  accel/tcg/tcg-accel-ops.c:62:36: error: use of undeclared identifier 'CF_CLUSTER_SHIFT'
+     62 |     cflags = cpu->cluster_index << CF_CLUSTER_SHIFT;
+        |                                    ^
+  accel/tcg/tcg-accel-ops.c:64:26: error: use of undeclared identifier 'CF_PARALLEL'
+     64 |     cflags |= parallel ? CF_PARALLEL : 0;
+        |                          ^
+  accel/tcg/tcg-accel-ops.c:65:34: error: use of undeclared identifier 'CF_USE_ICOUNT'
+     65 |     cflags |= icount_enabled() ? CF_USE_ICOUNT : 0;
+        |                                  ^
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/exec/translation-block.h | 1 +
+ accel/tcg/tcg-accel-ops.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/include/exec/translation-block.h b/include/exec/translation-block.h
-index a6d1af6e9b..b99afb0077 100644
---- a/include/exec/translation-block.h
-+++ b/include/exec/translation-block.h
-@@ -9,6 +9,7 @@
+diff --git a/accel/tcg/tcg-accel-ops.c b/accel/tcg/tcg-accel-ops.c
+index 3c19e68a79..22486c5dff 100644
+--- a/accel/tcg/tcg-accel-ops.c
++++ b/accel/tcg/tcg-accel-ops.c
+@@ -35,6 +35,7 @@
+ #include "exec/exec-all.h"
+ #include "exec/hwaddr.h"
+ #include "exec/tb-flush.h"
++#include "exec/translation-block.h"
+ #include "gdbstub/enums.h"
  
- #include "qemu/thread.h"
- #include "exec/cpu-common.h"
-+#include "exec/vaddr.h"
- #ifdef CONFIG_USER_ONLY
- #include "qemu/interval-tree.h"
- #endif
+ #include "hw/core/cpu.h"
 -- 
 2.45.2
 
