@@ -2,77 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C5309C91FC
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Nov 2024 19:58:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 715CE9C91F3
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Nov 2024 19:56:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tBf0O-0002Fl-Pj; Thu, 14 Nov 2024 13:55:49 -0500
+	id 1tBf0d-0002uh-SC; Thu, 14 Nov 2024 13:56:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1tBez5-0001P3-T6
+ id 1tBez5-0001PA-Ut
  for qemu-devel@nongnu.org; Thu, 14 Nov 2024 13:54:32 -0500
-Received: from mail-pg1-x535.google.com ([2607:f8b0:4864:20::535])
+Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1tBeyj-00087q-JW
- for qemu-devel@nongnu.org; Thu, 14 Nov 2024 13:54:15 -0500
-Received: by mail-pg1-x535.google.com with SMTP id
- 41be03b00d2f7-7e6cbf6cd1dso683995a12.3
- for <qemu-devel@nongnu.org>; Thu, 14 Nov 2024 10:54:04 -0800 (PST)
+ id 1tBeym-0008Ip-Qg
+ for qemu-devel@nongnu.org; Thu, 14 Nov 2024 13:54:16 -0500
+Received: by mail-pf1-x436.google.com with SMTP id
+ d2e1a72fcca58-71e953f4e7cso795054b3a.3
+ for <qemu-devel@nongnu.org>; Thu, 14 Nov 2024 10:54:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1731610444; x=1732215244; darn=nongnu.org;
+ d=linaro.org; s=google; t=1731610447; x=1732215247; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=iE7Pa+DLzQuXQzdq30WtcdwTpoiRLO6397q7RiDB3TA=;
- b=FyxH4FGijroHiZt1VnhUtCt1z3JaE+UPaKPXtzvD3tbDr1jji85qIrXrjgKMDC82yM
- +0y1dfiSPcAnqusECRpVpouJcETv9TWkWBhDEdxjkNaEiI0qcFG4+1NBfKlhNV1eTkLl
- Y9dB0LNhgNJxrAbFnPrUK82xs5G4qWrBSOaW2ntw1EJV5TKA+ul4nGBZVV8LpP/SEcZo
- a0mKYYf1UeDPXjKYWHauRYX44+GNbApGEdnFbZ4W6Z3sG0OGYnuATngvelyrZi34/caa
- Z8euoqY4H7oTaWHWtRG/dmIM1RAebtAHjrTLe84bezel/zc/Wzj56WF2pHi1JC2QChOh
- 8erA==
+ bh=lAbgNVWmRsGLd77zEXVM2m8mbKdHv1npY7wMUjoJjRA=;
+ b=c7GHfL0c6I4YaXBNVjPId2tSCDF1wuyrZV56N8flhzUcVF/8WcKJ9z0FWbPyrRrDB0
+ MyIsRjGwCiVPeI4CkwWONrQ2tSTmPdK6q8QExiOc3HEVd2dzVbNBykf+YKXAteZhFMGi
+ fdmiFiy/u3Tt6MAFJY5ISs4jZNmmscGRaHVPWoi+gCWYPk4ueTmZhonKSJAjGHUCuYMV
+ pe7LmDhye8cdD+t06Uh1pi+5eZZY+qEx1nlsLa2DCeO8/wr1xVX6lAokXtqXgTdeTEV/
+ 62lWH7o/J13dhZv+3eLx9F4odZ3vnPytnhjsmuE9QcxdyzlT8cJosK7cKjIW2FIzb2w/
+ mNKQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731610444; x=1732215244;
+ d=1e100.net; s=20230601; t=1731610447; x=1732215247;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=iE7Pa+DLzQuXQzdq30WtcdwTpoiRLO6397q7RiDB3TA=;
- b=MZNf+dUAJtk8nN4rvXRZocjwulTRVwRE5yuw7PwPbO6khC5tE55+dYBot+ewgJHMuv
- AGUwbvIi/F5qcaX6gKPUL22mfhMq9y6JZR5Ktb06xY7bNBqe0yOdENtczpNu8/ePFEcI
- nUitpnuThG+mi06DagKApU2fPH+0ARxLHIugToyWl7ZJ+MKeWo5qITyvqlORnzV0U53B
- Z6UU5j9ioE5B1tlih7EUAzoboZYoMZf0fJPlvROckGQWJITfq9d0MLl+zOS/k6upwfG0
- ElAIHwSU7CB53oT9BTuM1V4xrTzWlgiXshyUGw8DSgfx4oqvKZrEl8KfHo2wP0J6lmlF
- IBZg==
+ bh=lAbgNVWmRsGLd77zEXVM2m8mbKdHv1npY7wMUjoJjRA=;
+ b=RzUtOMdxvyQxwtewaHiHGawSlDuIleU8aU+xdz/FUm9w3dDQwEJZC7AvXf9iYvfsJl
+ ZBTeCbSz9Nn2AUsXe0m22m675eQ043j9XYiMJlUpH/JUFFONYrv+YxMCajN9k3Ggz2Ls
+ WgpmHAgn7P/Xfe8GrW3NyGcMWSeJ41AUB4Dz9UuyTBtzwKxW+3camwGf6LS8pK6wN6yY
+ qJwKkZAJtHURnB+wJttYlH/emAnmhc8vGLstbqyPEH6eVorWWLpiPgaeyyzP793+6llC
+ vpCR3Sn1kazZ56/6BHx8iRS9xMLxoMrmp9bMN/Nck/ddz9lgJRfj0Ea9gXo4ulQaVgxV
+ J5+g==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWzaCoxwbo63eWd1CbtUDkzrmoLZhG2MmzanYT34cwaJI1/5wRGEPguPhnS4gBSUYJ/nARiQFQ/o2qe@nongnu.org
-X-Gm-Message-State: AOJu0Yy4b+1yWz4XmB5+LKSb3480zHdtZ5Be7EpXRowIGiG7HxncvkfX
- /0Kc4zX0wvjOVLID0ItxZWJN/ZV3i9U7gYkiEiRkgPGEpIEd3cGizwqMEL1j6Vs=
-X-Google-Smtp-Source: AGHT+IEMFLnBsX5B3MZKmb/HCq6wL9Kfl6/FZMUM0ovY/KzWgp5p9zeTqKwOdZ0r2NGrR5hJG8A9yQ==
-X-Received: by 2002:a05:6300:404:b0:1db:de11:8c30 with SMTP id
- adf61e73a8af0-1dc5f982edfmr11016614637.30.1731610443680; 
- Thu, 14 Nov 2024 10:54:03 -0800 (PST)
+ AJvYcCXIXWhYLmUU8HZv+o+sbtC2Q5HND4+5Q4ELrBnw12oYCZSpmKcj08MwCh1p6pXjE1XmqN4j6UprpaQ9@nongnu.org
+X-Gm-Message-State: AOJu0Yz160Sxi+Jf05WQfNLX22YeLgpIMraHkUoH6tENqxraDHU+sF/Y
+ nKYOX+syXruDDJt90b/VVtBssoFzXzu/Y7f8keWAYumTpjcPZILXsz96gpDW3VTlLy/xMbn5Opr
+ va5RNKw==
+X-Google-Smtp-Source: AGHT+IHeTXLuUVn++MBiGjK5+0GZxmz9+rXd/PQfke1V373z2CD2GQwdQXDfPyGJqhYwm7LGSQ5dWg==
+X-Received: by 2002:a05:6a00:b85:b0:71d:f2e3:a878 with SMTP id
+ d2e1a72fcca58-72469c25370mr3404666b3a.5.1731610447357; 
+ Thu, 14 Nov 2024 10:54:07 -0800 (PST)
 Received: from [192.168.1.67] (216-180-64-156.dyn.novuscom.net.
  [216.180.64.156]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7246a5ceda0sm1592394b3a.1.2024.11.14.10.54.03
+ d2e1a72fcca58-7246a5ceda0sm1592394b3a.1.2024.11.14.10.54.06
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 14 Nov 2024 10:54:03 -0800 (PST)
-Message-ID: <6e21718e-468c-4288-b7e8-e4eb43f2c581@linaro.org>
-Date: Thu, 14 Nov 2024 10:54:03 -0800
+ Thu, 14 Nov 2024 10:54:06 -0800 (PST)
+Message-ID: <3ae7c3e5-ec40-4d06-ab90-789fc9f7d82a@linaro.org>
+Date: Thu, 14 Nov 2024 10:54:06 -0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 44/54] target/riscv: Convert to TCGCPUOps.tlb_fill_align
+Subject: Re: [PATCH v2 45/54] target/rx: Convert to TCGCPUOps.tlb_fill_align
 Content-Language: en-US
 To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
 References: <20241114160131.48616-1-richard.henderson@linaro.org>
- <20241114160131.48616-45-richard.henderson@linaro.org>
+ <20241114160131.48616-46-richard.henderson@linaro.org>
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <20241114160131.48616-45-richard.henderson@linaro.org>
+In-Reply-To: <20241114160131.48616-46-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::535;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pg1-x535.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x436.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,98 +99,48 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 On 11/14/24 08:01, Richard Henderson wrote:
 > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
->   target/riscv/cpu.h         |  8 +++++---
->   target/riscv/cpu_helper.c  | 22 +++++++++++++++++-----
->   target/riscv/tcg/tcg-cpu.c |  2 +-
->   3 files changed, 23 insertions(+), 9 deletions(-)
+>   target/rx/cpu.c | 19 +++++++++++--------
+>   1 file changed, 11 insertions(+), 8 deletions(-)
 > 
-> diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-> index 284b112821..f97c4f3410 100644
-> --- a/target/riscv/cpu.h
-> +++ b/target/riscv/cpu.h
-> @@ -25,6 +25,7 @@
->   #include "hw/qdev-properties.h"
->   #include "exec/cpu-defs.h"
->   #include "exec/gdbstub.h"
-> +#include "exec/memop.h"
->   #include "qemu/cpu-float.h"
->   #include "qom/object.h"
->   #include "qemu/int128.h"
-> @@ -563,9 +564,10 @@ bool cpu_get_bcfien(CPURISCVState *env);
->   G_NORETURN void  riscv_cpu_do_unaligned_access(CPUState *cs, vaddr addr,
->                                                  MMUAccessType access_type,
->                                                  int mmu_idx, uintptr_t retaddr);
-> -bool riscv_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
-> -                        MMUAccessType access_type, int mmu_idx,
-> -                        bool probe, uintptr_t retaddr);
-> +bool riscv_cpu_tlb_fill_align(CPUState *cs, CPUTLBEntryFull *out,
-> +                              vaddr addr, MMUAccessType access_type,
-> +                              int mmu_idx, MemOp memop, int size,
-> +                              bool probe, uintptr_t ra);
->   char *riscv_isa_string(RISCVCPU *cpu);
->   int riscv_cpu_max_xlen(RISCVCPUClass *mcc);
->   bool riscv_cpu_option_set(const char *optname);
-> diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
-> index 0a3ead69ea..edb2edfc55 100644
-> --- a/target/riscv/cpu_helper.c
-> +++ b/target/riscv/cpu_helper.c
-> @@ -1429,9 +1429,10 @@ static void pmu_tlb_fill_incr_ctr(RISCVCPU *cpu, MMUAccessType access_type)
->       riscv_pmu_incr_ctr(cpu, pmu_event_type);
+> diff --git a/target/rx/cpu.c b/target/rx/cpu.c
+> index 65a74ce720..c83a582141 100644
+> --- a/target/rx/cpu.c
+> +++ b/target/rx/cpu.c
+> @@ -161,16 +161,19 @@ static void rx_cpu_disas_set_info(CPUState *cpu, disassemble_info *info)
+>       info->print_insn = print_insn_rx;
 >   }
 >   
-> -bool riscv_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
-> -                        MMUAccessType access_type, int mmu_idx,
-> -                        bool probe, uintptr_t retaddr)
-> +bool riscv_cpu_tlb_fill_align(CPUState *cs, CPUTLBEntryFull *out,
-> +                              vaddr address, MMUAccessType access_type,
-> +                              int mmu_idx, MemOp memop, int size,
-> +                              bool probe, uintptr_t retaddr)
+> -static bool rx_cpu_tlb_fill(CPUState *cs, vaddr addr, int size,
+> -                            MMUAccessType access_type, int mmu_idx,
+> -                            bool probe, uintptr_t retaddr)
+> +static bool rx_cpu_tlb_fill_align(CPUState *cs, CPUTLBEntryFull *out,
+> +                                  vaddr addr, MMUAccessType access_type,
+> +                                  int mmu_idx, MemOp memop, int size,
+> +                                  bool probe, uintptr_t retaddr)
 >   {
->       RISCVCPU *cpu = RISCV_CPU(cs);
->       CPURISCVState *env = &cpu->env;
-> @@ -1452,6 +1453,14 @@ bool riscv_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
->       qemu_log_mask(CPU_LOG_MMU, "%s ad %" VADDR_PRIx " rw %d mmu_idx %d\n",
->                     __func__, address, access_type, mmu_idx);
+> -    uint32_t address, physical, prot;
+> +    /* TODO: alignment faults not currently handled. */
 >   
-> +    if (address & ((1 << memop_alignment_bits(memop)) - 1)) {
-> +        if (probe) {
-> +            return false;
-> +        }
-> +        riscv_cpu_do_unaligned_access(cs, address, access_type,
-> +                                      mmu_idx, retaddr);
-> +    }
-> +
->       pmu_tlb_fill_incr_ctr(cpu, access_type);
->       if (two_stage_lookup) {
->           /* Two stage lookup */
-> @@ -1544,8 +1553,11 @@ bool riscv_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
->       }
+>       /* Linear mapping */
+> -    address = physical = addr & TARGET_PAGE_MASK;
+> -    prot = PAGE_READ | PAGE_WRITE | PAGE_EXEC;
+> -    tlb_set_page(cs, address, physical, prot, mmu_idx, TARGET_PAGE_SIZE);
+> +    memset(out, 0, sizeof(*out));
+> +    out->phys_addr = addr;
+> +    out->prot = PAGE_READ | PAGE_WRITE | PAGE_EXEC;
+> +    out->lg_page_size = TARGET_PAGE_BITS;
+> +    out->attrs = MEMTXATTRS_UNSPECIFIED;
+>       return true;
+>   }
 >   
->       if (ret == TRANSLATE_SUCCESS) {
-> -        tlb_set_page(cs, address & ~(tlb_size - 1), pa & ~(tlb_size - 1),
-> -                     prot, mmu_idx, tlb_size);
-> +        memset(out, 0, sizeof(*out));
-> +        out->phys_addr = pa;
-> +        out->prot = prot;
-> +        out->lg_page_size = ctz64(tlb_size);
-> +        out->attrs = MEMTXATTRS_UNSPECIFIED;
->           return true;
->       } else if (probe) {
->           return false;
-> diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
-> index c62c221696..f3b436bb86 100644
-> --- a/target/riscv/tcg/tcg-cpu.c
-> +++ b/target/riscv/tcg/tcg-cpu.c
-> @@ -138,7 +138,7 @@ static const TCGCPUOps riscv_tcg_ops = {
->       .restore_state_to_opc = riscv_restore_state_to_opc,
+> @@ -195,7 +198,7 @@ static const TCGCPUOps rx_tcg_ops = {
+>       .initialize = rx_translate_init,
+>       .synchronize_from_tb = rx_cpu_synchronize_from_tb,
+>       .restore_state_to_opc = rx_restore_state_to_opc,
+> -    .tlb_fill = rx_cpu_tlb_fill,
+> +    .tlb_fill_align = rx_cpu_tlb_fill_align,
 >   
 >   #ifndef CONFIG_USER_ONLY
-> -    .tlb_fill = riscv_cpu_tlb_fill,
-> +    .tlb_fill_align = riscv_cpu_tlb_fill_align,
->       .cpu_exec_interrupt = riscv_cpu_exec_interrupt,
->       .cpu_exec_halt = riscv_cpu_has_work,
->       .do_interrupt = riscv_cpu_do_interrupt,
-
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+>       .cpu_exec_interrupt = rx_cpu_exec_interrupt,
 
 
