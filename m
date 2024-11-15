@@ -2,75 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DBE29CF684
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Nov 2024 22:02:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AA5D9CF688
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Nov 2024 22:03:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tC3PN-0007Z2-1R; Fri, 15 Nov 2024 15:59:14 -0500
+	id 1tC3PR-0007dB-Os; Fri, 15 Nov 2024 15:59:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tC3P9-0007WA-SF
- for qemu-devel@nongnu.org; Fri, 15 Nov 2024 15:59:00 -0500
-Received: from mail-pj1-x102f.google.com ([2607:f8b0:4864:20::102f])
+ id 1tC3PB-0007X3-6h
+ for qemu-devel@nongnu.org; Fri, 15 Nov 2024 15:59:01 -0500
+Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tC3P8-0004Nk-Gc
- for qemu-devel@nongnu.org; Fri, 15 Nov 2024 15:58:59 -0500
-Received: by mail-pj1-x102f.google.com with SMTP id
- 98e67ed59e1d1-2ea304ce809so49816a91.2
- for <qemu-devel@nongnu.org>; Fri, 15 Nov 2024 12:58:58 -0800 (PST)
+ id 1tC3P9-0004Nq-DW
+ for qemu-devel@nongnu.org; Fri, 15 Nov 2024 15:59:00 -0500
+Received: by mail-pl1-x62f.google.com with SMTP id
+ d9443c01a7336-210e5369b7dso25392745ad.3
+ for <qemu-devel@nongnu.org>; Fri, 15 Nov 2024 12:58:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1731704337; x=1732309137; darn=nongnu.org;
+ d=linaro.org; s=google; t=1731704338; x=1732309138; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Frvdm/WDiTHhmyZ4u8I9chbK5/V3/lvbxAdiykuEOlI=;
- b=mLZRT+AvDuNcrYjJpudvwvtTpwvlFIcHAZDVrpKUb+7qIjVbOl7JSemLTJOju/P9tN
- zSMj56h4YnOmGcx8HpYh7idJ3rf3fx8KOsVR3SH73Wh5Pgp/lmmQP+2oVM6a5i0z4aH/
- nT5RZAa0IfM4AnVEvJOxIh9j3XdomLaXqYuJFidFgTtNIzXCtyxWsAMyZVnUjGdW8GBW
- ri+hjA86HfGm6Yea3Gk3zLKOnpBzU8fjl1lV8rBBqBrE9iF/HpVMirMX9RJS+8fNfY+n
- DVRQN9PL178WMOXjHgumA22LSxPG/FfY1TAKTPeovFZSp9Xu2xr6FUodGC9jmhxsuG7H
- xb4Q==
+ :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=u0kRCYJEdfCPc7Ck3L3jOULPW0HIyB/R3/8bipse23E=;
+ b=jEGMkkjrhn7xohr3eMKfbimOPF0cs30YzzmAVp5G+/zavuhvIxJT6g0d13cBXb2CaQ
+ oYMXnCaGA+k/rsNjRQjZQSmSEflBmm35uVeOKnv0vIZA95O+r2u2zbcrpXUOZM5H47Qc
+ 4OSiyXc5Mg/CJzPJ/NqcZ3OfGUQLiD16hluruHJ0VgCsQ0Q9lTvfkMx6q7gq7fUzbEJH
+ mTDb35PlAYycEwryXhTzOgQJIwXBe6iQsoF2QZ5l+zzGFgD/eqXoXvG2KBUmi2xS9YKI
+ sm8YPl9F0PambcJ1yp0shSENULxzm8jMEfFt6G9fED8jYaHZvs8JrBNpBU29NDkWvIVr
+ riVQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731704337; x=1732309137;
+ d=1e100.net; s=20230601; t=1731704338; x=1732309138;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Frvdm/WDiTHhmyZ4u8I9chbK5/V3/lvbxAdiykuEOlI=;
- b=dgVSGzpISYWZnI2Npbk9HokIhCOMA0TwipVppkAVrn4amA8BujEisPXFXisEkmm2EZ
- ehTBkrWH/1iplt5st2974fRfMJq05obavAhXUQWKCEqqbX1sNhcsfK2RV4mX4lpq9fqt
- Y0MBxc3N6rP5kL9KFvJnw+GYq0p+FMasp2gJi82launiUA9EI5+Ba+ZZcFGOSlXxq+ex
- lXRYiruM8hzdeBs6gDONMfcyNHFYUsvzf4cLaf8oHMyB/BcFzqMxvGTlU1K5WsCM9VfB
- GsFvD2cJnx5jwfuLvQqKUr5HAEFxdyucrG72Q24r8w8XRCLY7Iz4riIix/NIdLwOm7cH
- 3O1A==
-X-Gm-Message-State: AOJu0YyjumnoGr7lGMONBx+grUFPF3qqy30J/fI8I3vugUSHaoip2U1l
- wVSSTED6Bo1ua1uSpjbpZ985MGUMlY6SPsGew+Gs0l1gfSPM+4n4OkhN9hayW/GsRPM2P5R8SGw
- Y
-X-Google-Smtp-Source: AGHT+IEqp1Lclgwrc244i6QUJND32vQ7ajxzU868H7LQpYhXicxnbxAaNcO/iPK4M+vGtEZTVtrc0A==
-X-Received: by 2002:a17:90b:4f4b:b0:2e2:e159:8f7b with SMTP id
- 98e67ed59e1d1-2ea154b5732mr4978132a91.3.1731704337045; 
- Fri, 15 Nov 2024 12:58:57 -0800 (PST)
+ bh=u0kRCYJEdfCPc7Ck3L3jOULPW0HIyB/R3/8bipse23E=;
+ b=bc6+aIqRGsAa2rRXQk0IOTT4qHMpaM+E6f+1PffmqjLezrGwffXUtTy9qad2OjAufV
+ A12OAKgaHnArsO1lXk/oD6mf3Ps/NMH2NXs42BTKyudsCJJxJ7CHL753UN9jjrEwvhWg
+ IveWyfb5C7i+WoRsNkDhB4qPQc88KjGL/AQk81n/p84+ZhI5y5SYPj0LzQr8abk2g8rD
+ CroI51RSq0iGCHTGapfCsVzkKiRCZ06EU4K868iravkISGv7FyT/5SUBfmHROZOD1VcQ
+ vnzhQg5cqyK/r2J5H/BhN1qbO1ku2PwTmf9BdmhRoy6rNbLs4jd130cDFaHO/SPcAxqM
+ AhUw==
+X-Gm-Message-State: AOJu0Yz10KDW58Z54fvANTZ5kEZA+fzeCybyQtjsIuM0hGftZoV7BQWh
+ CqiuGrFwMHypMstdu6etBIBodAoPec8gRWW2wpGiIuOd5XdeopTThSzL/X4ug6XR2b4EVs6X0F5
+ J
+X-Google-Smtp-Source: AGHT+IGCj7lPCykHd8gTruUFetT3faBFTBJKQBS/g6oHogyiI1Fh4nZNth+sphWQ+kHSMuG/OQboOQ==
+X-Received: by 2002:a17:902:cecf:b0:1fa:1dd8:947a with SMTP id
+ d9443c01a7336-211d0ebf182mr46472545ad.46.1731704338124; 
+ Fri, 15 Nov 2024 12:58:58 -0800 (PST)
 Received: from stoup.. ([71.212.136.242]) by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2ea024a49a8sm3362274a91.23.2024.11.15.12.58.56
+ 98e67ed59e1d1-2ea024a49a8sm3362274a91.23.2024.11.15.12.58.57
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 15 Nov 2024 12:58:56 -0800 (PST)
+ Fri, 15 Nov 2024 12:58:57 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 06/14] cpu: ensure we don't call start_exclusive from cpu_exec
-Date: Fri, 15 Nov 2024 12:58:41 -0800
-Message-ID: <20241115205849.266094-7-richard.henderson@linaro.org>
+Subject: [PULL 07/14] linux-user: Honor elf alignment when placing images
+Date: Fri, 15 Nov 2024 12:58:42 -0800
+Message-ID: <20241115205849.266094-8-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241115205849.266094-1-richard.henderson@linaro.org>
 References: <20241115205849.266094-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102f;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,31 +90,102 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Most binaries don't actually depend on more than page alignment,
+but any binary can request it.  Not honoring this was a bug.
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20241025175857.2554252-3-pierrick.bouvier@linaro.org>
+This became obvious when gdb reported
+
+    Failed to read a valid object file image from memory
+
+when examining some vdso which are marked as needing more
+than page alignment.
+
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- cpu-common.c | 3 +++
- 1 file changed, 3 insertions(+)
+ linux-user/elfload.c | 35 ++++++++++++++++++++++++++++-------
+ 1 file changed, 28 insertions(+), 7 deletions(-)
 
-diff --git a/cpu-common.c b/cpu-common.c
-index 6b262233a3..0d607bbe49 100644
---- a/cpu-common.c
-+++ b/cpu-common.c
-@@ -194,6 +194,9 @@ void start_exclusive(void)
-     CPUState *other_cpu;
-     int running_cpus;
+diff --git a/linux-user/elfload.c b/linux-user/elfload.c
+index d6ad77d27d..90e79a01b4 100644
+--- a/linux-user/elfload.c
++++ b/linux-user/elfload.c
+@@ -3179,7 +3179,8 @@ static void load_elf_image(const char *image_name, const ImageSource *src,
+                            char **pinterp_name)
+ {
+     g_autofree struct elf_phdr *phdr = NULL;
+-    abi_ulong load_addr, load_bias, loaddr, hiaddr, error;
++    abi_ulong load_addr, load_bias, loaddr, hiaddr, error, align;
++    size_t reserve_size, align_size;
+     int i, prot_exec;
+     Error *err = NULL;
  
-+    /* Ensure we are not running, or start_exclusive will be blocked. */
-+    g_assert(!current_cpu->running);
+@@ -3263,6 +3264,9 @@ static void load_elf_image(const char *image_name, const ImageSource *src,
+ 
+     load_addr = loaddr;
+ 
++    align = pow2ceil(info->alignment);
++    info->alignment = align;
 +
-     if (current_cpu->exclusive_context_count) {
-         current_cpu->exclusive_context_count++;
-         return;
+     if (pinterp_name != NULL) {
+         if (ehdr->e_type == ET_EXEC) {
+             /*
+@@ -3271,8 +3275,6 @@ static void load_elf_image(const char *image_name, const ImageSource *src,
+              */
+             probe_guest_base(image_name, loaddr, hiaddr);
+         } else {
+-            abi_ulong align;
+-
+             /*
+              * The binary is dynamic, but we still need to
+              * select guest_base.  In this case we pass a size.
+@@ -3290,10 +3292,7 @@ static void load_elf_image(const char *image_name, const ImageSource *src,
+              * Since we do not have complete control over the guest
+              * address space, we prefer the kernel to choose some address
+              * rather than force the use of LOAD_ADDR via MAP_FIXED.
+-             * But without MAP_FIXED we cannot guarantee alignment,
+-             * only suggest it.
+              */
+-            align = pow2ceil(info->alignment);
+             if (align) {
+                 load_addr &= -align;
+             }
+@@ -3317,13 +3316,35 @@ static void load_elf_image(const char *image_name, const ImageSource *src,
+      * In both cases, we will overwrite pages in this range with mappings
+      * from the executable.
+      */
+-    load_addr = target_mmap(load_addr, (size_t)hiaddr - loaddr + 1, PROT_NONE,
++    reserve_size = (size_t)hiaddr - loaddr + 1;
++    align_size = reserve_size;
++
++    if (ehdr->e_type != ET_EXEC && align > qemu_real_host_page_size()) {
++        align_size += align - 1;
++    }
++
++    load_addr = target_mmap(load_addr, align_size, PROT_NONE,
+                             MAP_PRIVATE | MAP_ANON | MAP_NORESERVE |
+                             (ehdr->e_type == ET_EXEC ? MAP_FIXED_NOREPLACE : 0),
+                             -1, 0);
+     if (load_addr == -1) {
+         goto exit_mmap;
+     }
++
++    if (align_size != reserve_size) {
++        abi_ulong align_addr = ROUND_UP(load_addr, align);
++        abi_ulong align_end = align_addr + reserve_size;
++        abi_ulong load_end = load_addr + align_size;
++
++        if (align_addr != load_addr) {
++            target_munmap(load_addr, align_addr - load_addr);
++        }
++        if (align_end != load_end) {
++            target_munmap(align_end, load_end - align_end);
++        }
++        load_addr = align_addr;
++    }
++
+     load_bias = load_addr - loaddr;
+ 
+     if (elf_is_fdpic(ehdr)) {
 -- 
 2.43.0
 
