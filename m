@@ -2,78 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59B669CDFD1
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Nov 2024 14:24:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 08AB79CE199
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Nov 2024 15:46:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tBwHl-0004n2-Ni; Fri, 15 Nov 2024 08:22:53 -0500
+	id 1tBxZG-0002uw-2i; Fri, 15 Nov 2024 09:45:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tBwHi-0004mN-Ce
- for qemu-devel@nongnu.org; Fri, 15 Nov 2024 08:22:50 -0500
-Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
+ (Exim 4.90_1) (envelope-from <zhenyzha12@gmail.com>)
+ id 1tBvfD-0006DK-FP
+ for qemu-devel@nongnu.org; Fri, 15 Nov 2024 07:43:03 -0500
+Received: from mail-pg1-x52a.google.com ([2607:f8b0:4864:20::52a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tBwHg-0006mJ-1n
- for qemu-devel@nongnu.org; Fri, 15 Nov 2024 08:22:50 -0500
-Received: by mail-ed1-x52b.google.com with SMTP id
- 4fb4d7f45d1cf-5c9404c0d50so2035772a12.3
- for <qemu-devel@nongnu.org>; Fri, 15 Nov 2024 05:22:47 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <zhenyzha12@gmail.com>)
+ id 1tBvfB-0006k3-8i
+ for qemu-devel@nongnu.org; Fri, 15 Nov 2024 07:43:02 -0500
+Received: by mail-pg1-x52a.google.com with SMTP id
+ 41be03b00d2f7-7ea76a12c32so424947a12.1
+ for <qemu-devel@nongnu.org>; Fri, 15 Nov 2024 04:43:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1731676965; x=1732281765; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=NGPP4i7QbtYZwZYRq93bb60RZTSsE/TgJjIB0NxYoKI=;
- b=rPLDjCJq/oFelSV8n2WedtlK3sUPV1xJa+yf/w64ezXpJ2EddjigoKxCgs5tbCU/m0
- gCWf/Ca2nfPMRP5Xka61n0PZ2Yw7cM4x5gEgWYFfj9Qe5KP6mGRjQB/iC7uupyinuKeJ
- e3+GoMxakjViBkIBXhjYtaPJj3E7xSE1xJc6GoH1LPKQEA0avfT3fCLLZaIxfmRMOAO0
- PRbFrH0sSyADP5V0ML/yTmj5k9rlGfCHRT0bzkb5LVEbD08Kanqc1LU/D/BnnozTU7mF
- JgWhbX+WP8dqE4mtZtK3LwwF88rugVbZAIOhK8oRI9T5OUxqHYObEEBWiwy9wVCjFik+
- HX+Q==
+ d=gmail.com; s=20230601; t=1731674579; x=1732279379; darn=nongnu.org;
+ h=in-reply-to:from:content-language:references:cc:to:subject
+ :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=cPvJq7YEFWZ58WDq02jiBM8K9QCy2XEiYtQ4HddA7Yg=;
+ b=NLYAzEue8Q0t13d2WmPBYb6aBNcuC6sHd8Ke5yf59LeQ9NE0V5y6CFuYzJd1cIeg7M
+ V3RDiO6xik0UXEEz4pGeaew88USBrT9BFrEdRujFXTzINfMGtIj8BT0HGS3KLGBaU78q
+ RGEitl8dVTN+yokZ0KR4cag2QGjHVQx2nAcXGY2ewNaIoobQpzcpvgwUu14uSduQFeib
+ 8Fau/86402IuwTicTWEgujvM4m9Evnl9x80sCjVZidzkHLPiIJhJJg6dk7QpaGza2UHV
+ yowO2u5gw0SjV44YqiT5Dik1K8MW+UfwCxE/3kkqt7XMyDBOW/58K2t7aXZg2zdbxl1I
+ ZbkA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731676965; x=1732281765;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=NGPP4i7QbtYZwZYRq93bb60RZTSsE/TgJjIB0NxYoKI=;
- b=LV2l07duMh7i+/kXT98LB6dHAtAQ/uhb1Ca1IUMGIzOrFOqSc3Ogcn6Ye4HdB6uw70
- xVwMfG2WE1Nhf27nN8SqXGeKfONuJ5GCJUXxvaifuh0kVfHGD5btnJPiQztugVridPbw
- bicya85Y9bjrRjeElLqTB/dtaQkBqNVaY25Ff3w1nmw5HyTwTvk0Pjm8sFtbxesF0uR/
- rluhTaZOJDS8ste1wXG3HZU/oo1IwH+/taQnnJx/L0ltcVIAlnZyZnjcO96F2mXWYqYh
- nThPPje+J0FxGxJ4xiPKnnkb8GgfL++ymzxd+e9uzHXEZsW5IWXztdR3MEEXiplUiwSu
- MbIg==
+ d=1e100.net; s=20230601; t=1731674579; x=1732279379;
+ h=in-reply-to:from:content-language:references:cc:to:subject
+ :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=cPvJq7YEFWZ58WDq02jiBM8K9QCy2XEiYtQ4HddA7Yg=;
+ b=ojn6qhU1ShUED7/5Ur4635MbTBW/AYNwBHTSMIcnzXJABDoeGWthcI0qKLvcA8LbTY
+ f3sDpwNZqUtpa7/p5jCRSCnjZkAArxhZCPrB5r4FBCFM2UYLkGKFYInxB4CYjgg4mxyQ
+ WRhmTayrYDF5YkPyKqgZDQeSeP7pYUVbfHcYgVWipNWEZq/afEVEVX+f+o9RBj76T3ID
+ qoVoMce0SoyER/KbX0tihW8ZDChHEgdZ5HAPdAbimCzCu4+6iN4Xw1gKmhvK4U/dcDXf
+ VehrKMuL/P/JtCK2VD36Unyhv01UYIMWQjTFX3w/toWCXJ0uk+tW4mlBoPAHUjES5dr7
+ 5zvw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVw6T3Ly83sTGyNF9vMZJzEDQ5Ce4gJG+4ZTwGKpxyNFrGy1b9XPY+ntiEfwdNG7MO9JhCF3Ohm4cFK@nongnu.org
-X-Gm-Message-State: AOJu0YxA1gx9ahaWSFJKUxHVuism0aMDavRcTXXldTeXBl3bMtoB9912
- GE3Oev4M6XrBmNkd4+xymi457b5YFtx7NsKsrHV6b+Hdn4wRqt6NVt/bMsN4DKN9GvAZM049GGZ
- Sgdo7fvqvqfZ83wh+vmCLfck02tgBXED40X8EnpU3VtakT2nq
-X-Google-Smtp-Source: AGHT+IESAv97IbXeIXpGhyudYUVOniXFk+wiC8hKy0YazJlmx9PrMxrnNcWbhZ9/ZuVx7dBR1EEd04xP5HWJa0VwmbU=
-X-Received: by 2002:a05:6402:4309:b0:5cf:704d:238d with SMTP id
- 4fb4d7f45d1cf-5cf8fbfe648mr1897399a12.1.1731676964999; Fri, 15 Nov 2024
- 05:22:44 -0800 (PST)
+ AJvYcCUgUb2VRgTpGoBMqlZ3l4uWGFRu34j7nmf50uLt3wcdotvM/SI53Qy9Seb5Cxz8PA6niGTWWM+TaRMF@nongnu.org
+X-Gm-Message-State: AOJu0YzER+TicS7MstX3BfWguL1hsXihw04LuH1PMk2RLPmga0G5B61w
+ /RQFuew2dNoLUiANmXiddZM3Dpi1XOxUQeV+L2QQwmS7Ik4szzfq
+X-Google-Smtp-Source: AGHT+IH380LSTlu5PzdBSaZ7KkATEVxETE7izKeNtiLQ969wKtC2w1045LtuHzpWnmoHZJIxBpgojg==
+X-Received: by 2002:a05:6a21:7915:b0:1d9:270a:947a with SMTP id
+ adf61e73a8af0-1dc90bcb5ecmr2905532637.30.1731674578850; 
+ Fri, 15 Nov 2024 04:42:58 -0800 (PST)
+Received: from ?IPV6:2408:8207:5443:c921:90d9:99d3:13bd:a999?
+ ([2408:8207:5443:c921:90d9:99d3:13bd:a999])
+ by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-72476c8fc47sm1264082b3a.0.2024.11.15.04.42.56
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 15 Nov 2024 04:42:58 -0800 (PST)
+Content-Type: multipart/alternative;
+ boundary="------------xU06kpixFau0cg2kJlM0tdmA"
+Message-ID: <e9392f4d-71a6-4909-bfb1-fc2d15e1ef96@gmail.com>
+Date: Fri, 15 Nov 2024 20:42:54 +0800
 MIME-Version: 1.0
-References: <20241114165900.6399-1-paskripkin@gmail.com>
- <20241114165953.6894-1-paskripkin@gmail.com>
-In-Reply-To: <20241114165953.6894-1-paskripkin@gmail.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 15 Nov 2024 13:22:34 +0000
-Message-ID: <CAFEAcA9i+YmGj5tznoc9FQkDQKqN4vx_0grOjh_ZFGyj-aPgng@mail.gmail.com>
-Subject: Re: [PATCH 2/2] arm/ptw: respect sctlr.{u}wxn in get_phys_addr_v6
-To: Pavel Skripkin <paskripkin@gmail.com>
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] pci: ensure valid link status bits for downstream ports
+To: Sebastian Ott <sebott@redhat.com>, qemu-devel@nongnu.org
+Cc: Alex Williamson <alex.williamson@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>, zhenyzha@redhat.com
+References: <20241111123756.18393-1-sebott@redhat.com>
+Content-Language: en-US
+From: Zhenyu Zhang <zhenyzha12@gmail.com>
+In-Reply-To: <20241111123756.18393-1-sebott@redhat.com>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52a;
+ envelope-from=zhenyzha12@gmail.com; helo=mail-pg1-x52a.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, HTML_MESSAGE=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Fri, 15 Nov 2024 09:45:00 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -88,38 +100,168 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 14 Nov 2024 at 16:59, Pavel Skripkin <paskripkin@gmail.com> wrote:
+This is a multi-part message in MIME format.
+--------------xU06kpixFau0cg2kJlM0tdmA
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+
+
+On 2024/11/11 20:37, Sebastian Ott wrote:
+> PCI hotplug for downstream endpoints on arm fails because Linux'
+> PCIe hotplug driver doesn't like the QEMU provided LNKSTA:
 >
-> get_phys_addr_v6() is used for decoding armv7's short descriptor format.
-> Based on ARM ARM AArch32.S1SDHasPermissionsFault(), WXN should be
-> respected in !LPAE mode as well.
+>    pcieport 0000:08:01.0: pciehp: Slot(2): Card present
+>    pcieport 0000:08:01.0: pciehp: Slot(2): Link Up
+>    pcieport 0000:08:01.0: pciehp: Slot(2): Cannot train link: status 0x2000
 >
-> Signed-off-by: Pavel Skripkin <paskripkin@gmail.com>
+> There's 2 cases where LNKSTA isn't setup properly:
+> * the downstream device has no express capability
+> * max link width of the bridge is 0
+>
+> Fix these by making the LNKSTA modifications independent of each other.
+>
+> Signed-off-by: Sebastian Ott<sebott@redhat.com>
 > ---
->  target/arm/ptw.c | 11 +++++++++++
->  1 file changed, 11 insertions(+)
+>   hw/pci/pcie.c | 28 ++++++++++++++--------------
+>   1 file changed, 14 insertions(+), 14 deletions(-)
+>
+> diff --git a/hw/pci/pcie.c b/hw/pci/pcie.c
+> index 0b455c8654..f714f4fb7c 100644
+> --- a/hw/pci/pcie.c
+> +++ b/hw/pci/pcie.c
+> @@ -1109,20 +1109,20 @@ void pcie_sync_bridge_lnk(PCIDevice *bridge_dev)
+>           lnksta = target->config_read(target,
+>                                        target->exp.exp_cap + PCI_EXP_LNKSTA,
+>                                        sizeof(lnksta));
+> -
+> -        if ((lnksta & PCI_EXP_LNKSTA_NLW) > (lnkcap & PCI_EXP_LNKCAP_MLW)) {
+> -            lnksta &= ~PCI_EXP_LNKSTA_NLW;
+> -            lnksta |= lnkcap & PCI_EXP_LNKCAP_MLW;
+> -        } else if (!(lnksta & PCI_EXP_LNKSTA_NLW)) {
+> -            lnksta |= QEMU_PCI_EXP_LNKSTA_NLW(QEMU_PCI_EXP_LNK_X1);
+> -        }
+> -
+> -        if ((lnksta & PCI_EXP_LNKSTA_CLS) > (lnkcap & PCI_EXP_LNKCAP_SLS)) {
+> -            lnksta &= ~PCI_EXP_LNKSTA_CLS;
+> -            lnksta |= lnkcap & PCI_EXP_LNKCAP_SLS;
+> -        } else if (!(lnksta & PCI_EXP_LNKSTA_CLS)) {
+> -            lnksta |= QEMU_PCI_EXP_LNKSTA_CLS(QEMU_PCI_EXP_LNK_2_5GT);
+> -        }
+> +    }
+> +    if ((lnksta & PCI_EXP_LNKSTA_NLW) > (lnkcap & PCI_EXP_LNKCAP_MLW)) {
+> +        lnksta &= ~PCI_EXP_LNKSTA_NLW;
+> +        lnksta |= lnkcap & PCI_EXP_LNKCAP_MLW;
+> +    }
+> +    if (!(lnksta & PCI_EXP_LNKSTA_NLW)) {
+> +        lnksta |= QEMU_PCI_EXP_LNKSTA_NLW(QEMU_PCI_EXP_LNK_X1);
+> +    }
+> +    if ((lnksta & PCI_EXP_LNKSTA_CLS) > (lnkcap & PCI_EXP_LNKCAP_SLS)) {
+> +        lnksta &= ~PCI_EXP_LNKSTA_CLS;
+> +        lnksta |= lnkcap & PCI_EXP_LNKCAP_SLS;
+> +    }
+> +    if (!(lnksta & PCI_EXP_LNKSTA_CLS)) {
+> +        lnksta |= QEMU_PCI_EXP_LNKSTA_CLS(QEMU_PCI_EXP_LNK_2_5GT);
+>       }
+>   
+>       pci_word_test_and_clear_mask(exp_cap + PCI_EXP_LNKSTA,
 
-Instead of this, would it be possible to have get_phys_addr_v6()
-call get_S1prot() (replacing most of the existing open-coded
-handling of PAN, simple vs classing AP model, etc) ? I haven't
-looked at the fine detail, so we might need to tweak get_S1prot()
-if it's missing logic that only matters in the short-descriptor
-case, but I think that would be better than having two places
-that need updating for new architectural features.
+|[PATCH] pci: ensure valid link status bits for downstream ports
 
-For instance, we are also missing the handling for SCR.SIF with
-short descriptors which you can see in the S1SDHasPermissionsFault()
-pseudocode and which we would get if we could make the
-short-descriptor code call get_S1Prot().
+Test on aarch64 host(v9.2.0-rc0-1-gbde0d70333)
+PCI hotplug for downstream endpoints on arm succeed
+The test results are as expected.
+|
 
-Couple of minor notes for v2:
- * if you're sending a multi-patch patchset, please use a
-   cover-letter email. Some of our automated tooling gets
-   confused by multi-patch patches without cover letters
-   (and, conversely, by single-patches with cover letters)
- * our coding style says all if() statements should have
-   braces, even for single-line bodies
+|Tested-by: Zhenyu Zhang <zhenyzha@redhat.com> |
 
-thanks
--- PMM
+--------------xU06kpixFau0cg2kJlM0tdmA
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+  <body>
+    <p><br>
+    </p>
+    <div class="moz-cite-prefix">On 2024/11/11 20:37, Sebastian Ott
+      wrote:<br>
+    </div>
+    <blockquote type="cite"
+      cite="mid:20241111123756.18393-1-sebott@redhat.com">
+      <pre wrap="" class="moz-quote-pre">PCI hotplug for downstream endpoints on arm fails because Linux'
+PCIe hotplug driver doesn't like the QEMU provided LNKSTA:
+
+  pcieport 0000:08:01.0: pciehp: Slot(2): Card present
+  pcieport 0000:08:01.0: pciehp: Slot(2): Link Up
+  pcieport 0000:08:01.0: pciehp: Slot(2): Cannot train link: status 0x2000
+
+There's 2 cases where LNKSTA isn't setup properly:
+* the downstream device has no express capability
+* max link width of the bridge is 0
+
+Fix these by making the LNKSTA modifications independent of each other.
+
+Signed-off-by: Sebastian Ott <a class="moz-txt-link-rfc2396E" href="mailto:sebott@redhat.com">&lt;sebott@redhat.com&gt;</a>
+---
+ hw/pci/pcie.c | 28 ++++++++++++++--------------
+ 1 file changed, 14 insertions(+), 14 deletions(-)
+
+diff --git a/hw/pci/pcie.c b/hw/pci/pcie.c
+index 0b455c8654..f714f4fb7c 100644
+--- a/hw/pci/pcie.c
++++ b/hw/pci/pcie.c
+@@ -1109,20 +1109,20 @@ void pcie_sync_bridge_lnk(PCIDevice *bridge_dev)
+         lnksta = target-&gt;config_read(target,
+                                      target-&gt;exp.exp_cap + PCI_EXP_LNKSTA,
+                                      sizeof(lnksta));
+-
+-        if ((lnksta &amp; PCI_EXP_LNKSTA_NLW) &gt; (lnkcap &amp; PCI_EXP_LNKCAP_MLW)) {
+-            lnksta &amp;= ~PCI_EXP_LNKSTA_NLW;
+-            lnksta |= lnkcap &amp; PCI_EXP_LNKCAP_MLW;
+-        } else if (!(lnksta &amp; PCI_EXP_LNKSTA_NLW)) {
+-            lnksta |= QEMU_PCI_EXP_LNKSTA_NLW(QEMU_PCI_EXP_LNK_X1);
+-        }
+-
+-        if ((lnksta &amp; PCI_EXP_LNKSTA_CLS) &gt; (lnkcap &amp; PCI_EXP_LNKCAP_SLS)) {
+-            lnksta &amp;= ~PCI_EXP_LNKSTA_CLS;
+-            lnksta |= lnkcap &amp; PCI_EXP_LNKCAP_SLS;
+-        } else if (!(lnksta &amp; PCI_EXP_LNKSTA_CLS)) {
+-            lnksta |= QEMU_PCI_EXP_LNKSTA_CLS(QEMU_PCI_EXP_LNK_2_5GT);
+-        }
++    }
++    if ((lnksta &amp; PCI_EXP_LNKSTA_NLW) &gt; (lnkcap &amp; PCI_EXP_LNKCAP_MLW)) {
++        lnksta &amp;= ~PCI_EXP_LNKSTA_NLW;
++        lnksta |= lnkcap &amp; PCI_EXP_LNKCAP_MLW;
++    }
++    if (!(lnksta &amp; PCI_EXP_LNKSTA_NLW)) {
++        lnksta |= QEMU_PCI_EXP_LNKSTA_NLW(QEMU_PCI_EXP_LNK_X1);
++    }
++    if ((lnksta &amp; PCI_EXP_LNKSTA_CLS) &gt; (lnkcap &amp; PCI_EXP_LNKCAP_SLS)) {
++        lnksta &amp;= ~PCI_EXP_LNKSTA_CLS;
++        lnksta |= lnkcap &amp; PCI_EXP_LNKCAP_SLS;
++    }
++    if (!(lnksta &amp; PCI_EXP_LNKSTA_CLS)) {
++        lnksta |= QEMU_PCI_EXP_LNKSTA_CLS(QEMU_PCI_EXP_LNK_2_5GT);
+     }
+ 
+     pci_word_test_and_clear_mask(exp_cap + PCI_EXP_LNKSTA,
+</pre>
+    </blockquote>
+    <p><code>[PATCH] pci: ensure valid link status bits for downstream
+        ports<br>
+        <br>
+        Test on aarch64 host(v9.2.0-rc0-1-gbde0d70333)<br>
+        PCI hotplug for downstream endpoints on arm succeed<br>
+        The test results are as expected.<br>
+      </code></p>
+    <pre><code>Tested-by: Zhenyu Zhang <a class="moz-txt-link-rfc2396E" href="mailto:zhenyzha@redhat.com">&lt;zhenyzha@redhat.com&gt;</a>
+
+</code></pre>
+  </body>
+</html>
+
+--------------xU06kpixFau0cg2kJlM0tdmA--
 
