@@ -2,90 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08AB79CE199
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Nov 2024 15:46:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C616B9CE107
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Nov 2024 15:13:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tBxZG-0002uw-2i; Fri, 15 Nov 2024 09:45:02 -0500
+	id 1tBx3p-0005S1-Pf; Fri, 15 Nov 2024 09:12:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenyzha12@gmail.com>)
- id 1tBvfD-0006DK-FP
- for qemu-devel@nongnu.org; Fri, 15 Nov 2024 07:43:03 -0500
-Received: from mail-pg1-x52a.google.com ([2607:f8b0:4864:20::52a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <zhenyzha12@gmail.com>)
- id 1tBvfB-0006k3-8i
- for qemu-devel@nongnu.org; Fri, 15 Nov 2024 07:43:02 -0500
-Received: by mail-pg1-x52a.google.com with SMTP id
- 41be03b00d2f7-7ea76a12c32so424947a12.1
- for <qemu-devel@nongnu.org>; Fri, 15 Nov 2024 04:43:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1731674579; x=1732279379; darn=nongnu.org;
- h=in-reply-to:from:content-language:references:cc:to:subject
- :user-agent:mime-version:date:message-id:from:to:cc:subject:date
- :message-id:reply-to;
- bh=cPvJq7YEFWZ58WDq02jiBM8K9QCy2XEiYtQ4HddA7Yg=;
- b=NLYAzEue8Q0t13d2WmPBYb6aBNcuC6sHd8Ke5yf59LeQ9NE0V5y6CFuYzJd1cIeg7M
- V3RDiO6xik0UXEEz4pGeaew88USBrT9BFrEdRujFXTzINfMGtIj8BT0HGS3KLGBaU78q
- RGEitl8dVTN+yokZ0KR4cag2QGjHVQx2nAcXGY2ewNaIoobQpzcpvgwUu14uSduQFeib
- 8Fau/86402IuwTicTWEgujvM4m9Evnl9x80sCjVZidzkHLPiIJhJJg6dk7QpaGza2UHV
- yowO2u5gw0SjV44YqiT5Dik1K8MW+UfwCxE/3kkqt7XMyDBOW/58K2t7aXZg2zdbxl1I
- ZbkA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731674579; x=1732279379;
- h=in-reply-to:from:content-language:references:cc:to:subject
- :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=cPvJq7YEFWZ58WDq02jiBM8K9QCy2XEiYtQ4HddA7Yg=;
- b=ojn6qhU1ShUED7/5Ur4635MbTBW/AYNwBHTSMIcnzXJABDoeGWthcI0qKLvcA8LbTY
- f3sDpwNZqUtpa7/p5jCRSCnjZkAArxhZCPrB5r4FBCFM2UYLkGKFYInxB4CYjgg4mxyQ
- WRhmTayrYDF5YkPyKqgZDQeSeP7pYUVbfHcYgVWipNWEZq/afEVEVX+f+o9RBj76T3ID
- qoVoMce0SoyER/KbX0tihW8ZDChHEgdZ5HAPdAbimCzCu4+6iN4Xw1gKmhvK4U/dcDXf
- VehrKMuL/P/JtCK2VD36Unyhv01UYIMWQjTFX3w/toWCXJ0uk+tW4mlBoPAHUjES5dr7
- 5zvw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUgUb2VRgTpGoBMqlZ3l4uWGFRu34j7nmf50uLt3wcdotvM/SI53Qy9Seb5Cxz8PA6niGTWWM+TaRMF@nongnu.org
-X-Gm-Message-State: AOJu0YzER+TicS7MstX3BfWguL1hsXihw04LuH1PMk2RLPmga0G5B61w
- /RQFuew2dNoLUiANmXiddZM3Dpi1XOxUQeV+L2QQwmS7Ik4szzfq
-X-Google-Smtp-Source: AGHT+IH380LSTlu5PzdBSaZ7KkATEVxETE7izKeNtiLQ969wKtC2w1045LtuHzpWnmoHZJIxBpgojg==
-X-Received: by 2002:a05:6a21:7915:b0:1d9:270a:947a with SMTP id
- adf61e73a8af0-1dc90bcb5ecmr2905532637.30.1731674578850; 
- Fri, 15 Nov 2024 04:42:58 -0800 (PST)
-Received: from ?IPV6:2408:8207:5443:c921:90d9:99d3:13bd:a999?
- ([2408:8207:5443:c921:90d9:99d3:13bd:a999])
- by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-72476c8fc47sm1264082b3a.0.2024.11.15.04.42.56
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 15 Nov 2024 04:42:58 -0800 (PST)
-Content-Type: multipart/alternative;
- boundary="------------xU06kpixFau0cg2kJlM0tdmA"
-Message-ID: <e9392f4d-71a6-4909-bfb1-fc2d15e1ef96@gmail.com>
-Date: Fri, 15 Nov 2024 20:42:54 +0800
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tBx3g-0005RD-U7
+ for qemu-devel@nongnu.org; Fri, 15 Nov 2024 09:12:26 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tBx3e-0007FM-H4
+ for qemu-devel@nongnu.org; Fri, 15 Nov 2024 09:12:24 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1731679939;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=mxfHEu7IUeUIGqP2NI6eVGXELXqzoqJ/wggRq8TrmGM=;
+ b=bntUOcoaOmgKgqDpTAfBsVGl7s7HiEUaN2MtY+CuQR+khsLDajWCwHYkjIvy+4uR3/jg3a
+ 5AFv+llohnTOhnn2B9aNXbenNdlsXk8tbxm0++iV5Ojifv+syvvlHEVvZMIsKwCT4gpotq
+ /LzZddp9GkFI+maL0d7A6LiMOh6y7kk=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-526-p9gD2Qf3OKaX0wpaa_A7qQ-1; Fri,
+ 15 Nov 2024 09:12:14 -0500
+X-MC-Unique: p9gD2Qf3OKaX0wpaa_A7qQ-1
+X-Mimecast-MFC-AGG-ID: p9gD2Qf3OKaX0wpaa_A7qQ
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 02177195609E; Fri, 15 Nov 2024 14:12:10 +0000 (UTC)
+Received: from thuth-p1g4.redhat.com (unknown [10.39.193.97])
+ by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 6357B1956054; Fri, 15 Nov 2024 14:12:05 +0000 (UTC)
+From: Thomas Huth <thuth@redhat.com>
+To: qemu-devel@nongnu.org, Jared Rossi <jrossi@linux.ibm.com>,
+ Boris Fiuczynski <fiuczy@linux.ibm.com>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-s390x@nongnu.org, Christian Borntraeger <borntraeger@linux.ibm.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
+ Fam Zheng <fam@euphon.net>, Eric Farman <farman@linux.ibm.com>
+Subject: [PATCH v2] hw: Add "loadparm" property to scsi disk devices for
+ booting on s390x
+Date: Fri, 15 Nov 2024 15:12:02 +0100
+Message-ID: <20241115141202.1877294-1-thuth@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] pci: ensure valid link status bits for downstream ports
-To: Sebastian Ott <sebott@redhat.com>, qemu-devel@nongnu.org
-Cc: Alex Williamson <alex.williamson@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- "Michael S . Tsirkin" <mst@redhat.com>, zhenyzha@redhat.com
-References: <20241111123756.18393-1-sebott@redhat.com>
-Content-Language: en-US
-From: Zhenyu Zhang <zhenyzha12@gmail.com>
-In-Reply-To: <20241111123756.18393-1-sebott@redhat.com>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52a;
- envelope-from=zhenyzha12@gmail.com; helo=mail-pg1-x52a.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, HTML_MESSAGE=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.12,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Fri, 15 Nov 2024 09:45:00 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -100,168 +81,215 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is a multi-part message in MIME format.
---------------xU06kpixFau0cg2kJlM0tdmA
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+While adding the new flexible boot order feature on s390x recently,
+we missed to add the "loadparm" property to the scsi-hd and scsi-cd
+devices. This property is required on s390x to pass the information
+to the boot loader about which kernel should be started or whether
+the boot menu should be shown. But even more serious: The missing
+property is now causing trouble with the corresponding libvirt patches
+that assume that the "loadparm" property is either settable for all
+bootable devices (when the "boot order" feature is implemented in
+QEMU), or none (meaning the behaviour of older QEMUs that only allowed
+one "loadparm" at the machine level). To fix this broken situation,
+let's implement the "loadparm" property in for the SCSI devices, too.
 
-
-On 2024/11/11 20:37, Sebastian Ott wrote:
-> PCI hotplug for downstream endpoints on arm fails because Linux'
-> PCIe hotplug driver doesn't like the QEMU provided LNKSTA:
->
->    pcieport 0000:08:01.0: pciehp: Slot(2): Card present
->    pcieport 0000:08:01.0: pciehp: Slot(2): Link Up
->    pcieport 0000:08:01.0: pciehp: Slot(2): Cannot train link: status 0x2000
->
-> There's 2 cases where LNKSTA isn't setup properly:
-> * the downstream device has no express capability
-> * max link width of the bridge is 0
->
-> Fix these by making the LNKSTA modifications independent of each other.
->
-> Signed-off-by: Sebastian Ott<sebott@redhat.com>
-> ---
->   hw/pci/pcie.c | 28 ++++++++++++++--------------
->   1 file changed, 14 insertions(+), 14 deletions(-)
->
-> diff --git a/hw/pci/pcie.c b/hw/pci/pcie.c
-> index 0b455c8654..f714f4fb7c 100644
-> --- a/hw/pci/pcie.c
-> +++ b/hw/pci/pcie.c
-> @@ -1109,20 +1109,20 @@ void pcie_sync_bridge_lnk(PCIDevice *bridge_dev)
->           lnksta = target->config_read(target,
->                                        target->exp.exp_cap + PCI_EXP_LNKSTA,
->                                        sizeof(lnksta));
-> -
-> -        if ((lnksta & PCI_EXP_LNKSTA_NLW) > (lnkcap & PCI_EXP_LNKCAP_MLW)) {
-> -            lnksta &= ~PCI_EXP_LNKSTA_NLW;
-> -            lnksta |= lnkcap & PCI_EXP_LNKCAP_MLW;
-> -        } else if (!(lnksta & PCI_EXP_LNKSTA_NLW)) {
-> -            lnksta |= QEMU_PCI_EXP_LNKSTA_NLW(QEMU_PCI_EXP_LNK_X1);
-> -        }
-> -
-> -        if ((lnksta & PCI_EXP_LNKSTA_CLS) > (lnkcap & PCI_EXP_LNKCAP_SLS)) {
-> -            lnksta &= ~PCI_EXP_LNKSTA_CLS;
-> -            lnksta |= lnkcap & PCI_EXP_LNKCAP_SLS;
-> -        } else if (!(lnksta & PCI_EXP_LNKSTA_CLS)) {
-> -            lnksta |= QEMU_PCI_EXP_LNKSTA_CLS(QEMU_PCI_EXP_LNK_2_5GT);
-> -        }
-> +    }
-> +    if ((lnksta & PCI_EXP_LNKSTA_NLW) > (lnkcap & PCI_EXP_LNKCAP_MLW)) {
-> +        lnksta &= ~PCI_EXP_LNKSTA_NLW;
-> +        lnksta |= lnkcap & PCI_EXP_LNKCAP_MLW;
-> +    }
-> +    if (!(lnksta & PCI_EXP_LNKSTA_NLW)) {
-> +        lnksta |= QEMU_PCI_EXP_LNKSTA_NLW(QEMU_PCI_EXP_LNK_X1);
-> +    }
-> +    if ((lnksta & PCI_EXP_LNKSTA_CLS) > (lnkcap & PCI_EXP_LNKCAP_SLS)) {
-> +        lnksta &= ~PCI_EXP_LNKSTA_CLS;
-> +        lnksta |= lnkcap & PCI_EXP_LNKCAP_SLS;
-> +    }
-> +    if (!(lnksta & PCI_EXP_LNKSTA_CLS)) {
-> +        lnksta |= QEMU_PCI_EXP_LNKSTA_CLS(QEMU_PCI_EXP_LNK_2_5GT);
->       }
->   
->       pci_word_test_and_clear_mask(exp_cap + PCI_EXP_LNKSTA,
-
-|[PATCH] pci: ensure valid link status bits for downstream ports
-
-Test on aarch64 host(v9.2.0-rc0-1-gbde0d70333)
-PCI hotplug for downstream endpoints on arm succeed
-The test results are as expected.
-|
-
-|Tested-by: Zhenyu Zhang <zhenyzha@redhat.com> |
-
---------------xU06kpixFau0cg2kJlM0tdmA
-Content-Type: text/html; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  </head>
-  <body>
-    <p><br>
-    </p>
-    <div class="moz-cite-prefix">On 2024/11/11 20:37, Sebastian Ott
-      wrote:<br>
-    </div>
-    <blockquote type="cite"
-      cite="mid:20241111123756.18393-1-sebott@redhat.com">
-      <pre wrap="" class="moz-quote-pre">PCI hotplug for downstream endpoints on arm fails because Linux'
-PCIe hotplug driver doesn't like the QEMU provided LNKSTA:
-
-  pcieport 0000:08:01.0: pciehp: Slot(2): Card present
-  pcieport 0000:08:01.0: pciehp: Slot(2): Link Up
-  pcieport 0000:08:01.0: pciehp: Slot(2): Cannot train link: status 0x2000
-
-There's 2 cases where LNKSTA isn't setup properly:
-* the downstream device has no express capability
-* max link width of the bridge is 0
-
-Fix these by making the LNKSTA modifications independent of each other.
-
-Signed-off-by: Sebastian Ott <a class="moz-txt-link-rfc2396E" href="mailto:sebott@redhat.com">&lt;sebott@redhat.com&gt;</a>
+Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- hw/pci/pcie.c | 28 ++++++++++++++--------------
- 1 file changed, 14 insertions(+), 14 deletions(-)
+ v2:
+ - Only add the property when running with the s390x target 
+   (checked via the arch_type variable during runtime)
+ - Check bootindex property before setting the loadparm property
+ - Call the sanitize function before setting the property, so we
+   can now immediately reject bad properties for the scsi devices,
+   too (had to move the sanitize function to the common code in
+   qdev-properties-system.c for this)
 
-diff --git a/hw/pci/pcie.c b/hw/pci/pcie.c
-index 0b455c8654..f714f4fb7c 100644
---- a/hw/pci/pcie.c
-+++ b/hw/pci/pcie.c
-@@ -1109,20 +1109,20 @@ void pcie_sync_bridge_lnk(PCIDevice *bridge_dev)
-         lnksta = target-&gt;config_read(target,
-                                      target-&gt;exp.exp_cap + PCI_EXP_LNKSTA,
-                                      sizeof(lnksta));
--
--        if ((lnksta &amp; PCI_EXP_LNKSTA_NLW) &gt; (lnkcap &amp; PCI_EXP_LNKCAP_MLW)) {
--            lnksta &amp;= ~PCI_EXP_LNKSTA_NLW;
--            lnksta |= lnkcap &amp; PCI_EXP_LNKCAP_MLW;
--        } else if (!(lnksta &amp; PCI_EXP_LNKSTA_NLW)) {
--            lnksta |= QEMU_PCI_EXP_LNKSTA_NLW(QEMU_PCI_EXP_LNK_X1);
--        }
--
--        if ((lnksta &amp; PCI_EXP_LNKSTA_CLS) &gt; (lnkcap &amp; PCI_EXP_LNKCAP_SLS)) {
--            lnksta &amp;= ~PCI_EXP_LNKSTA_CLS;
--            lnksta |= lnkcap &amp; PCI_EXP_LNKCAP_SLS;
--        } else if (!(lnksta &amp; PCI_EXP_LNKSTA_CLS)) {
--            lnksta |= QEMU_PCI_EXP_LNKSTA_CLS(QEMU_PCI_EXP_LNK_2_5GT);
--        }
-+    }
-+    if ((lnksta &amp; PCI_EXP_LNKSTA_NLW) &gt; (lnkcap &amp; PCI_EXP_LNKCAP_MLW)) {
-+        lnksta &amp;= ~PCI_EXP_LNKSTA_NLW;
-+        lnksta |= lnkcap &amp; PCI_EXP_LNKCAP_MLW;
-+    }
-+    if (!(lnksta &amp; PCI_EXP_LNKSTA_NLW)) {
-+        lnksta |= QEMU_PCI_EXP_LNKSTA_NLW(QEMU_PCI_EXP_LNK_X1);
-+    }
-+    if ((lnksta &amp; PCI_EXP_LNKSTA_CLS) &gt; (lnkcap &amp; PCI_EXP_LNKCAP_SLS)) {
-+        lnksta &amp;= ~PCI_EXP_LNKSTA_CLS;
-+        lnksta |= lnkcap &amp; PCI_EXP_LNKCAP_SLS;
-+    }
-+    if (!(lnksta &amp; PCI_EXP_LNKSTA_CLS)) {
-+        lnksta |= QEMU_PCI_EXP_LNKSTA_CLS(QEMU_PCI_EXP_LNK_2_5GT);
-     }
+ include/hw/qdev-properties-system.h |  3 ++
+ hw/core/qdev-properties-system.c    | 26 +++++++++++++++++
+ hw/s390x/ipl.c                      | 19 ++++---------
+ hw/scsi/scsi-disk.c                 | 43 +++++++++++++++++++++++++++++
+ 4 files changed, 78 insertions(+), 13 deletions(-)
+
+diff --git a/include/hw/qdev-properties-system.h b/include/hw/qdev-properties-system.h
+index cdcc63056e..7ec37f6316 100644
+--- a/include/hw/qdev-properties-system.h
++++ b/include/hw/qdev-properties-system.h
+@@ -3,6 +3,9 @@
  
-     pci_word_test_and_clear_mask(exp_cap + PCI_EXP_LNKSTA,
-</pre>
-    </blockquote>
-    <p><code>[PATCH] pci: ensure valid link status bits for downstream
-        ports<br>
-        <br>
-        Test on aarch64 host(v9.2.0-rc0-1-gbde0d70333)<br>
-        PCI hotplug for downstream endpoints on arm succeed<br>
-        The test results are as expected.<br>
-      </code></p>
-    <pre><code>Tested-by: Zhenyu Zhang <a class="moz-txt-link-rfc2396E" href="mailto:zhenyzha@redhat.com">&lt;zhenyzha@redhat.com&gt;</a>
+ #include "hw/qdev-properties.h"
+ 
++bool qdev_prop_sanitize_s390x_loadparm(uint8_t *loadparm, const char *str,
++                                       Error **errp);
++
+ extern const PropertyInfo qdev_prop_chr;
+ extern const PropertyInfo qdev_prop_macaddr;
+ extern const PropertyInfo qdev_prop_reserved_region;
+diff --git a/hw/core/qdev-properties-system.c b/hw/core/qdev-properties-system.c
+index 35deef05f3..a61c5ee6dd 100644
+--- a/hw/core/qdev-properties-system.c
++++ b/hw/core/qdev-properties-system.c
+@@ -58,6 +58,32 @@ static bool check_prop_still_unset(Object *obj, const char *name,
+     return false;
+ }
+ 
++bool qdev_prop_sanitize_s390x_loadparm(uint8_t *loadparm, const char *str,
++                                       Error **errp)
++{
++    int i, len;
++
++    len = strlen(str);
++    if (len > 8) {
++        error_setg(errp, "'loadparm' can only contain up to 8 characters");
++        return false;
++    }
++
++    for (i = 0; i < len; i++) {
++        uint8_t c = qemu_toupper(str[i]); /* mimic HMC */
++
++        if (qemu_isalnum(c) || c == '.' || c == ' ') {
++            loadparm[i] = c;
++        } else {
++            error_setg(errp,
++                       "invalid character in 'loadparm': '%c' (ASCII 0x%02x)",
++                       c, c);
++            return false;
++        }
++    }
++
++    return true;
++}
+ 
+ /* --- drive --- */
+ 
+diff --git a/hw/s390x/ipl.c b/hw/s390x/ipl.c
+index dc02b0fdda..30734661ad 100644
+--- a/hw/s390x/ipl.c
++++ b/hw/s390x/ipl.c
+@@ -418,21 +418,9 @@ static uint64_t s390_ipl_map_iplb_chain(IplParameterBlock *iplb_chain)
+ 
+ void s390_ipl_fmt_loadparm(uint8_t *loadparm, char *str, Error **errp)
+ {
+-    int i;
+-
+     /* Initialize the loadparm with spaces */
+     memset(loadparm, ' ', LOADPARM_LEN);
+-    for (i = 0; i < LOADPARM_LEN && str[i]; i++) {
+-        uint8_t c = qemu_toupper(str[i]); /* mimic HMC */
+-
+-        if (qemu_isalnum(c) || c == '.' || c == ' ') {
+-            loadparm[i] = c;
+-        } else {
+-            error_setg(errp, "LOADPARM: invalid character '%c' (ASCII 0x%02x)",
+-                       c, c);
+-            return;
+-        }
+-    }
++    qdev_prop_sanitize_s390x_loadparm(loadparm, str, errp);
+ }
+ 
+ void s390_ipl_convert_loadparm(char *ascii_lp, uint8_t *ebcdic_lp)
+@@ -452,6 +440,7 @@ static bool s390_build_iplb(DeviceState *dev_st, IplParameterBlock *iplb)
+     SCSIDevice *sd;
+     int devtype;
+     uint8_t *lp;
++    g_autofree void *scsi_lp = NULL;
+ 
+     /*
+      * Currently allow IPL only from CCW devices.
+@@ -463,6 +452,10 @@ static bool s390_build_iplb(DeviceState *dev_st, IplParameterBlock *iplb)
+         switch (devtype) {
+         case CCW_DEVTYPE_SCSI:
+             sd = SCSI_DEVICE(dev_st);
++            scsi_lp = object_property_get_str(OBJECT(sd), "loadparm", NULL);
++            if (scsi_lp && strlen(scsi_lp) > 0) {
++                lp = scsi_lp;
++            }
+             iplb->len = cpu_to_be32(S390_IPLB_MIN_QEMU_SCSI_LEN);
+             iplb->blk0_len =
+                 cpu_to_be32(S390_IPLB_MIN_QEMU_SCSI_LEN - S390_IPLB_HEADER_LEN);
+diff --git a/hw/scsi/scsi-disk.c b/hw/scsi/scsi-disk.c
+index cb222da7a5..8e553487d5 100644
+--- a/hw/scsi/scsi-disk.c
++++ b/hw/scsi/scsi-disk.c
+@@ -32,6 +32,7 @@
+ #include "migration/vmstate.h"
+ #include "hw/scsi/emulation.h"
+ #include "scsi/constants.h"
++#include "sysemu/arch_init.h"
+ #include "sysemu/block-backend.h"
+ #include "sysemu/blockdev.h"
+ #include "hw/block/block.h"
+@@ -111,6 +112,7 @@ struct SCSIDiskState {
+     char *vendor;
+     char *product;
+     char *device_id;
++    char *loadparm;     /* only for s390x */
+     bool tray_open;
+     bool tray_locked;
+     /*
+@@ -3135,6 +3137,43 @@ BlockAIOCB *scsi_dma_writev(int64_t offset, QEMUIOVector *iov,
+     return blk_aio_pwritev(s->qdev.conf.blk, offset, iov, 0, cb, cb_opaque);
+ }
+ 
++static char *scsi_property_get_loadparm(Object *obj, Error **errp)
++{
++    return g_strdup(SCSI_DISK_BASE(obj)->loadparm);
++}
++
++static void scsi_property_set_loadparm(Object *obj, const char *value,
++                                       Error **errp)
++{
++    void *lp_str;
++
++    if (object_property_get_int(obj, "bootindex", NULL) < 0) {
++        error_setg(errp, "'loadparm' is only valid for boot devices");
++        return;
++    }
++
++    lp_str = g_malloc0(strlen(value));
++    if (!qdev_prop_sanitize_s390x_loadparm(lp_str, value, errp)) {
++        g_free(lp_str);
++        return;
++    }
++    SCSI_DISK_BASE(obj)->loadparm = lp_str;
++}
++
++static void scsi_property_add_specifics(DeviceClass *dc)
++{
++    ObjectClass *oc = OBJECT_CLASS(dc);
++
++    /* The loadparm property is only supported on s390x */
++    if (arch_type & QEMU_ARCH_S390X) {
++        object_class_property_add_str(oc, "loadparm",
++                                      scsi_property_get_loadparm,
++                                      scsi_property_set_loadparm);
++        object_class_property_set_description(oc, "loadparm",
++                                              "load parameter (s390x only)");
++    }
++}
++
+ static void scsi_disk_base_class_initfn(ObjectClass *klass, void *data)
+ {
+     DeviceClass *dc = DEVICE_CLASS(klass);
+@@ -3218,6 +3257,8 @@ static void scsi_hd_class_initfn(ObjectClass *klass, void *data)
+     dc->desc = "virtual SCSI disk";
+     device_class_set_props(dc, scsi_hd_properties);
+     dc->vmsd  = &vmstate_scsi_disk_state;
++
++    scsi_property_add_specifics(dc);
+ }
+ 
+ static const TypeInfo scsi_hd_info = {
+@@ -3258,6 +3299,8 @@ static void scsi_cd_class_initfn(ObjectClass *klass, void *data)
+     dc->desc = "virtual SCSI CD-ROM";
+     device_class_set_props(dc, scsi_cd_properties);
+     dc->vmsd  = &vmstate_scsi_disk_state;
++
++    scsi_property_add_specifics(dc);
+ }
+ 
+ static const TypeInfo scsi_cd_info = {
+-- 
+2.47.0
 
-</code></pre>
-  </body>
-</html>
-
---------------xU06kpixFau0cg2kJlM0tdmA--
 
