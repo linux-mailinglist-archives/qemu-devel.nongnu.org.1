@@ -2,86 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 291BA9CF1F7
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Nov 2024 17:45:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DAB3F9CF21F
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Nov 2024 17:51:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tBzRn-0005Yj-66; Fri, 15 Nov 2024 11:45:27 -0500
+	id 1tBzX1-0007w7-86; Fri, 15 Nov 2024 11:50:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tBzRQ-0005TM-EP
- for qemu-devel@nongnu.org; Fri, 15 Nov 2024 11:45:07 -0500
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1tBzWy-0007uz-6b
+ for qemu-devel@nongnu.org; Fri, 15 Nov 2024 11:50:48 -0500
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tBzRO-0002jg-Q2
- for qemu-devel@nongnu.org; Fri, 15 Nov 2024 11:45:04 -0500
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-431688d5127so16065495e9.0
- for <qemu-devel@nongnu.org>; Fri, 15 Nov 2024 08:45:02 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1tBzWw-0003ah-43
+ for qemu-devel@nongnu.org; Fri, 15 Nov 2024 11:50:47 -0500
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-43159c9f617so15983695e9.2
+ for <qemu-devel@nongnu.org>; Fri, 15 Nov 2024 08:50:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1731689100; x=1732293900; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=hFU7kOYJMVilip8ZdoiHac8UNrl92jgQtD0aQrrMrmY=;
- b=ifhbf9+JO0MhCwwx+Uoh3V72gHf2rHYMYR7XqtyTIe3x2IopiSi3zVBZr4spQ8Ox7F
- 5w4ewuGNaabSrb+I7qGnvSyDXhPmFGzCka003bnm40D/eDGkYbhrIQCfDMLebCEDURy3
- S4ZRGrEE5IqGS5Kbe/bkF7pvv94xodKxiGqABAPor5QnuPpESBYOBUhvT0tqtIR51pUu
- pSuF9YiWYocfeQtaZYu4B6qBJakOhX/gLUeKwyDMYk9kJoM4VwA8iQTCfy1ub3lxv3mM
- aVRfyGe6qNKbkF9vlpuKeLs0wX9NaSaB1XqrKp634lhcLCaU4l7mueklZnKxLKpj0jco
- a0CA==
+ d=linaro.org; s=google; t=1731689443; x=1732294243; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=4o50frKdRk5B+qe4iFKjaoYsk7e3gHs+0Y11JdkCyVE=;
+ b=GPhKBvfyXeTw+9glO3VSJbXCSxcruAUWqHAor3qnskbyvUdZY5dTnCWcYXvzzixaNn
+ SL04xLf5fUW0jj7Yu40JqVBptWwB+f3m0IGynGPurB2nwYe2XE7PfTdMb1J+VdlqrQaX
+ JvcU4LzSHjt0wBevZyyXOpRQtR55dfblfFDMy9voxp7F2pKCiJe+4GKZ1TS/VP2SiDVn
+ dY0JUwAWU1vEuMqZuiGqC+sSO9Q0zfg8AhHkfDGfPjsic3evxubAhkWu08QMbEGacXmD
+ wGmaLGKb2t8sBrhyIL/e0PNdL9xShO/UwAtCPI5XZ25T+7aPaWW0cwfjMBphFO+gN02H
+ cirA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731689100; x=1732293900;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=hFU7kOYJMVilip8ZdoiHac8UNrl92jgQtD0aQrrMrmY=;
- b=Ved548Nfe7IxOFwlo46QbJDeHPdpEKkLFnlVIfpXr4+doj9FP/+KkP/KniAG4cYBsX
- X4DI0ZtuS5vmLYhEvBt7xsgL5Y3VJ0aVekhOK9uMkyawivJzwQhGFBbRflhzMbv7wnFK
- Xxz7esarMlr+cgdKwNV/4IPOM+KhqYw6cb+k+UajNUv2pOT5MamID/HBhMOm9ILqF5Bs
- EIyEOv6pQ/TajHAoVANBXBHT/ohY8lxuN13bqn0R8WX673kOVWiKLnpkx6TuGV8Blv2W
- jEiiS9y4srdw9j4FLP1OdHoH8Q1lb16cFQAdDQTR2nXRgpn2FgKlWxo5E9bEmmQAf2GJ
- o8rQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWYn8xZGUuu5Vcx66CWXAU6ZLpFXHBLIqK+bwT/fZawAmZ76w2oyhR7O4Hk0QC11ZKKEdrMfo3T95uO@nongnu.org
-X-Gm-Message-State: AOJu0Yx3VjHRNslp6j5cBmTmx1HYXqJIyy9zV8tmezm9Y5TE6ffn0v30
- ravQF1oysPFTMNebipBqjTzYgwU1ugDbt/4FKmZtJx4GkwCGdmh8IZg4BEzXxXY=
-X-Google-Smtp-Source: AGHT+IGyqc14rLuNcpUhrRoEPqDV5RaCEWOH5ykyDgS3E0nMfXZw9suY/fRIE4+VO8OTJ7wsi6EY/g==
-X-Received: by 2002:a05:600c:a4c:b0:42c:a580:71cf with SMTP id
- 5b1f17b1804b1-432df78f0f9mr31287555e9.30.1731689100556; 
- Fri, 15 Nov 2024 08:45:00 -0800 (PST)
-Received: from [192.168.69.174] ([176.187.214.209])
+ d=1e100.net; s=20230601; t=1731689443; x=1732294243;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=4o50frKdRk5B+qe4iFKjaoYsk7e3gHs+0Y11JdkCyVE=;
+ b=Cw9DKtvVX/DnPLx72SIpau7Ud3gMAzEeWXnb0qXTZ28Qpeb45D58hPepu5Y2us0ANf
+ R7LzH2ydvs89+TvQI63XzrA9cFJBFC4+7XUhCuDmrXe4FBykHsnfivbLSjgJ+L/ZK2YK
+ X36w5sk+wwoMD2eWhpJ4ncXHPxtuIw19VyovlBDxC/5bXD8MtYVLgj3HU7JYNMlCA2Az
+ 2F8oLrNdDyPFy8B14WIagCzNV+e3mpfUNUMObLn2GNW8VaCV9vwdXz5/dXudBBU04I83
+ 1RHo6o9lEbYhdxumNMBcmH5M2n9mN+hodRZCqfPeCOU3Vjt8swmpBV7F9WLm9VJV+2ip
+ wEkQ==
+X-Gm-Message-State: AOJu0YzCYgBmGf0MuXXu71335nrgErEojHBQMcfTI0DbzNpbxKSNpTct
+ Pc2zWPNMRyV3Sj0BZx64OqH9c3COB0LRMSSXUqaRmAjy4qkAsn+2lty0liMSlpJVyJYUlwrqGNq
+ a
+X-Google-Smtp-Source: AGHT+IHNDjM+GyTRBn+acy299qUSq5QHiA8J2G5pZbUOg4Q8s9wORhz3YGXSXua3Bo9Z2fF4qyTFSg==
+X-Received: by 2002:a05:600c:3b99:b0:431:6052:48c3 with SMTP id
+ 5b1f17b1804b1-432df74cbffmr32808765e9.16.1731689443342; 
+ Fri, 15 Nov 2024 08:50:43 -0800 (PST)
+Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-432dab721b7sm59326015e9.8.2024.11.15.08.44.58
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 15 Nov 2024 08:44:59 -0800 (PST)
-Message-ID: <601872ec-ac92-45e5-9ee7-a876a496b27a@linaro.org>
-Date: Fri, 15 Nov 2024 17:44:57 +0100
+ 5b1f17b1804b1-432dac0aef0sm60386405e9.28.2024.11.15.08.50.42
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 15 Nov 2024 08:50:43 -0800 (PST)
+From: Peter Maydell <peter.maydell@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Fabiano Rosas <farosas@suse.de>, Laurent Vivier <lvivier@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Roque Arcudia Hernandez <roqueh@google.com>
+Subject: [PATCH 0/3] qtest: Provide and use function for doing system reset
+Date: Fri, 15 Nov 2024 16:50:38 +0000
+Message-Id: <20241115165041.1148095-1-peter.maydell@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 02/18] hw/block:m25p80: Fix coding style
-To: Jamin Lin <jamin_lin@aspeedtech.com>, =?UTF-8?Q?C=C3=A9dric_Le_Goater?=
- <clg@kaod.org>, Peter Maydell <peter.maydell@linaro.org>,
- Steven Lee <steven_lee@aspeedtech.com>, Troy Lee <leetroy@gmail.com>,
- Andrew Jeffery <andrew@codeconstruct.com.au>, Joel Stanley <joel@jms.id.au>,
- Alistair Francis <alistair@alistair23.me>, Kevin Wolf <kwolf@redhat.com>,
- Hanna Reitz <hreitz@redhat.com>, Thomas Huth <thuth@redhat.com>,
- Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- "open list:ASPEED BMCs" <qemu-arm@nongnu.org>,
- "open list:All patches CC here" <qemu-devel@nongnu.org>,
- "open list:Block layer core" <qemu-block@nongnu.org>
-Cc: troy_lee@aspeedtech.com, yunlin.tang@aspeedtech.com,
- =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-References: <20241022094110.1574011-1-jamin_lin@aspeedtech.com>
- <20241022094110.1574011-3-jamin_lin@aspeedtech.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20241022094110.1574011-3-jamin_lin@aspeedtech.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x329.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -104,27 +91,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 22/10/24 10:40, Jamin Lin via wrote:
-> Fix coding style issues from checkpatch.pl
-> 
-> Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
-> Reviewed-by: Cédric Le Goater <clg@redhat.com>
-> ---
->   hw/block/m25p80.c | 22 ++++++++++++++--------
->   1 file changed, 14 insertions(+), 8 deletions(-)
+I noticed while reviewing Roque's patchset that adds tests
+for the CMSDK watchdog device that we are gradually accumulating
+tests in tests/qtest which open-code "now reset the QEMU system".
+Moreover, several of those tests get it wrong, by failing to
+wait for the QMP RESET event that signals that the reset has
+completed.
 
+This series adds new functions qtest_system_reset() and
+qtest_system_reset_nowait(), which send the QMP system_reset
+command and then either do or do not wait for the RESET event.
+It uses them to replace all the places in the test suite
+that currently hand-craft sending a system_reset command.
 
-> @@ -1843,7 +1849,7 @@ static void m25p80_register_types(void)
->   
->       type_register_static(&m25p80_info);
->       for (i = 0; i < ARRAY_SIZE(known_devices); ++i) {
-> -        TypeInfo ti = {
-> +        const TypeInfo ti = {
+The tests that previously forgot to wait for RESET and now
+do so are bios-tables-test, q35-test, stm32l4x5_gpio-test,
+and stm32l4x5_syscfg-test.
 
-This is a bit more than style change.
+thanks
+-- PMM
 
->               .name       = known_devices[i].part_name,
->               .parent     = TYPE_M25P80,
->               .class_init = m25p80_class_init,
+Peter Maydell (3):
+  tests/qtest: Add qtest_system_reset() utility function
+  tests/qtest: Use qtest_system_reset() instead of open-coded versions
+  tests/qtest: Use qtest_system_reset_nowait() where appropriate
+
+ tests/qtest/libqtest.h              | 25 +++++++++++++++++++++++++
+ tests/qtest/bios-tables-test.c      |  4 ++--
+ tests/qtest/boot-order-test.c       |  7 +------
+ tests/qtest/device-plug-test.c      | 11 +----------
+ tests/qtest/drive_del-test.c        |  7 +------
+ tests/qtest/hd-geo-test.c           |  9 +--------
+ tests/qtest/libqtest.c              | 16 ++++++++++++++++
+ tests/qtest/q35-test.c              | 12 ++----------
+ tests/qtest/qos-test.c              |  3 +--
+ tests/qtest/stm32l4x5_gpio-test.c   | 10 +---------
+ tests/qtest/stm32l4x5_syscfg-test.c | 12 ++----------
+ 11 files changed, 53 insertions(+), 63 deletions(-)
+
+-- 
+2.34.1
 
 
