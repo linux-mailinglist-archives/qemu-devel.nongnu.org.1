@@ -2,91 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A450A9CF1DE
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Nov 2024 17:42:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5538C9CF1D2
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Nov 2024 17:41:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tBzOI-0007EK-BV; Fri, 15 Nov 2024 11:41:50 -0500
+	id 1tBzOE-0006mn-4X; Fri, 15 Nov 2024 11:41:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tBzNr-0006fX-LE
+ id 1tBzNs-0006fq-Rb
  for qemu-devel@nongnu.org; Fri, 15 Nov 2024 11:41:25 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tBzNq-0002O1-4t
- for qemu-devel@nongnu.org; Fri, 15 Nov 2024 11:41:23 -0500
+ id 1tBzNr-0002O7-G1
+ for qemu-devel@nongnu.org; Fri, 15 Nov 2024 11:41:24 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1731688881;
+ s=mimecast20190719; t=1731688882;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=R9drXR6Ude9Syf7XBgbJFTV9jiXiqgiqWNTd79QJqvw=;
- b=Ro4lcg7hidbLeLSLXRgRGZ5x8P8XYxb48kmgJVGHMj1fSZoiscH3mUxrwla63Hq05hDuJP
- 0Pbuca2nwN6LrlL7nO0zL56yweW+QdB2YDUww7DojSYqdfHPB2ZMm/WKKi2jDGN0ue2tV/
- GDdrP3PoH3YM9HfJW/9EBnH1DV2Il4M=
-Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
- [209.85.167.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=lNF/kcmKbI8KDX0YtdYyqZMFkG7Dt2MJ7WbIuixbzu0=;
+ b=ZT4f/eDrNSnCBcKKXAw2Mx8TXPDWn2Ok1809tzvpMfyD2Gl9o9kQ6L2v6/U8EOfcVLnxjk
+ uoXBybNdVKOI7w1Lm+SJijAfwp+c1U3X9Q4dTMgtxdhwvzOC1/Lx3+Lsggew9VlrE7W23B
+ bGqEdY3Pqt4eu5zcBCxZPC17GZmy/aY=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-492-rPKb8cCfOXK6365n2uWKgQ-1; Fri, 15 Nov 2024 11:41:19 -0500
-X-MC-Unique: rPKb8cCfOXK6365n2uWKgQ-1
-X-Mimecast-MFC-AGG-ID: rPKb8cCfOXK6365n2uWKgQ
-Received: by mail-lf1-f69.google.com with SMTP id
- 2adb3069b0e04-539e13b8143so887074e87.0
- for <qemu-devel@nongnu.org>; Fri, 15 Nov 2024 08:41:17 -0800 (PST)
+ us-mta-447-zQSW2y76OzKNC2GWNhtDeQ-1; Fri, 15 Nov 2024 11:41:21 -0500
+X-MC-Unique: zQSW2y76OzKNC2GWNhtDeQ-1
+X-Mimecast-MFC-AGG-ID: zQSW2y76OzKNC2GWNhtDeQ
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-4314a22ed8bso6157915e9.1
+ for <qemu-devel@nongnu.org>; Fri, 15 Nov 2024 08:41:21 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731688873; x=1732293673;
+ d=1e100.net; s=20230601; t=1731688878; x=1732293678;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=R9drXR6Ude9Syf7XBgbJFTV9jiXiqgiqWNTd79QJqvw=;
- b=T+xYvhdT0JLK8iaOS3Nk7DwGxb+I9kB18xnmNrOnkLf+EFZLZDCRZTAFopO7uRrfTe
- sUbQY2V2AG2gvhGL9V4/InKxEJplZ6XBZLBeHDSJulu5vHHkKa4HpmloIVOfV1w3UBQV
- ZMoMebOK3UiCJDBc3IrqV3tI2TZQ3w4BR4aDPeqOiU43AdusQlHQnjCiE9vd+EipZR5R
- wymBT1MxJ3fkB5bCrXCP+1bkXwf46AK1OryOochkLOyUPFmILiIe6Dl+aXC5Q1LpMDWe
- w9lzv41QiJL4cqFZQbXLtLYGyGIPtG0Xdwmcj5zbHZ0ZB6MimV2BhPXfZym7Bzb4Wf8b
- T7mQ==
-X-Gm-Message-State: AOJu0YwkNfyT01JOqFRsDj15L6y27umW3bVQqF+MWrw5GxuA7bjoGVy5
- zFzs3Vn03TEyp7uX1Z2G4zJBQHR+zPnb7mhoGZMJsaFTTZijaff2QkpntIueEu0ao7eJn7k1M9Y
- d6A2o4c2pr9haJ6aHrX7XyxgWxSsvh1Tbs9k7LFTroVp42adYLHYlxdyQ7Wm7i/r1eZLTaxDiZQ
- HUb66SfdQR/mG4V8Nk7RLoCSfNdb3VRUjYyb0XQvs=
-X-Received: by 2002:a05:6512:a8b:b0:53d:a4ff:31d7 with SMTP id
- 2adb3069b0e04-53dab3bf5a5mr1798644e87.40.1731688872742; 
- Fri, 15 Nov 2024 08:41:12 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFBxdEuDpU02hegQikxa2pwFvauIp8Gy2nDC9GIpzg2YewMmP3fd8pNPe7EWiYWovEJeeHCLQ==
-X-Received: by 2002:a05:6512:a8b:b0:53d:a4ff:31d7 with SMTP id
- 2adb3069b0e04-53dab3bf5a5mr1798622e87.40.1731688872258; 
- Fri, 15 Nov 2024 08:41:12 -0800 (PST)
+ bh=lNF/kcmKbI8KDX0YtdYyqZMFkG7Dt2MJ7WbIuixbzu0=;
+ b=IYFuXAWFGh2KI2FVL7dz+Gw62w1tggRzusa++5emSi6U2rhkfUjuPVRQc+cccVrbhU
+ 7mK1/Y67JiBg1h92SFJF21xY5MuVIMCcbqnmL9fg1wvqQ5f0RNmg1U1br/Sy75VT7Dlf
+ o0hmQii46/gHLvSHSFo9tChaJbYRXqpSt/Q65GrNP/Vcx6TySY2X1285kOLows2zGdS7
+ arNtVgAfBl4ioW05DbV1ENAmqR0ZIufQtlnRUUZNTG4PBzAOLvBNqV7qHmkjLRHTyaHf
+ ApxNcEnlJVIUXxmXy+fOIcOl8VWYNS9gUQAtDkUblPpvKgk2WfgmmeVw5XUBfVBP1VS3
+ JjAA==
+X-Gm-Message-State: AOJu0YzmolDtHMGnOa1gruPyKK28kMIXOey6YZL/uXi3epJ54EoEoY6y
+ OhWAvCoN1jCCuS2G0zKeuxDX4Jmp3VrnkmhUiInQVs4ncl7O6jj6MoHf6IzQwq4LAgyxpCGxN6k
+ mNTkxfMYCsLWn87/pp/bRFaezFJJ6UTJThp0yFff4QYpkzza09NojOfKqjHdfterug6NLsFeGFn
+ qVW3dbRKUGq3EQL6GYygQpn8f4ys9m6BeY5cOJ7IM=
+X-Received: by 2002:a05:600c:35d2:b0:42c:c401:6d67 with SMTP id
+ 5b1f17b1804b1-432df71e8d0mr27732245e9.6.1731688878559; 
+ Fri, 15 Nov 2024 08:41:18 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEYIOmwqMaZc9Jpmv3POLb6H0rLNE34fZGiIM3liWc2MH5JMcADQ/llNm6desKG+DqCpuOlxQ==
+X-Received: by 2002:a05:600c:35d2:b0:42c:c401:6d67 with SMTP id
+ 5b1f17b1804b1-432df71e8d0mr27732005e9.6.1731688878150; 
+ Fri, 15 Nov 2024 08:41:18 -0800 (PST)
 Received: from [192.168.10.3] ([151.49.84.243])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-432dab78881sm58647175e9.13.2024.11.15.08.41.09
+ ffacd0b85a97d-3821b461a84sm4659639f8f.34.2024.11.15.08.41.13
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 15 Nov 2024 08:41:09 -0800 (PST)
+ Fri, 15 Nov 2024 08:41:13 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-rust@nongnu.org, berrange@redhat.com, junjie.mao@hotmail.com,
  manos.pitsidianakis@linaro.org, kwolf@redhat.com
-Subject: [PATCH 11/12] rust: ci: add job that runs Rust tools
-Date: Fri, 15 Nov 2024 17:40:24 +0100
-Message-ID: <20241115164025.1917618-11-pbonzini@redhat.com>
+Subject: [PATCH 12/12] rust: fix doc test syntax
+Date: Fri, 15 Nov 2024 17:40:25 +0100
+Message-ID: <20241115164025.1917618-12-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241115163944.1917393-1-pbonzini@redhat.com>
 References: <20241115163944.1917393-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+X-Spam_score_int: -28
+X-Spam_score: -2.9
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.12,
+X-Spam_report: (-2.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.12,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.658,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,101 +102,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Code checks, as well as documentation generation, are not yet tied
-to "make check" because they need new version of the Rust toolchain
-(even nightly in the case of "rustfmt").  Run them in CI using the
-existing nightly-Rust container.
+Allow "cargo test --doc" to pass.
 
+Reviewed-by: Junjie Mao <junjie.mao@hotmail.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- .gitlab-ci.d/static_checks.yml                | 23 +++++++++++++++++++
- .../dockerfiles/fedora-rust-nightly.docker    |  4 ++++
- tests/lcitool/refresh                         |  4 ++++
- 3 files changed, 31 insertions(+)
+ rust/qemu-api/src/zeroable.rs | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/.gitlab-ci.d/static_checks.yml b/.gitlab-ci.d/static_checks.yml
-index ad9f426a52f..f6f22875265 100644
---- a/.gitlab-ci.d/static_checks.yml
-+++ b/.gitlab-ci.d/static_checks.yml
-@@ -46,3 +46,26 @@ check-python-tox:
-     QEMU_JOB_OPTIONAL: 1
-   needs:
-     job: python-container
-+
-+check-rust-tools-nightly:
-+  extends: .base_job_template
-+  stage: test
-+  image: $CI_REGISTRY_IMAGE/qemu/fedora-rust-nightly:$QEMU_CI_CONTAINER_TAG
-+  script:
-+    - source scripts/ci/gitlab-ci-section
-+    - section_start test "Running Rust code checks"
-+    - cd build
-+    - pyvenv/bin/meson devenv -w ../rust ${CARGO-cargo} fmt --check
-+    - make clippy
-+    - make rustdoc
-+    - section_end test
-+  variables:
-+    GIT_DEPTH: 1
-+  needs:
-+    - job: build-system-fedora-rust-nightly
-+      artifacts: true
-+  artifacts:
-+    when: on_success
-+    expire_in: 2 days
-+    paths:
-+      - rust/target/doc
-diff --git a/tests/docker/dockerfiles/fedora-rust-nightly.docker b/tests/docker/dockerfiles/fedora-rust-nightly.docker
-index 9180c8b5222..a8e4fb279a7 100644
---- a/tests/docker/dockerfiles/fedora-rust-nightly.docker
-+++ b/tests/docker/dockerfiles/fedora-rust-nightly.docker
-@@ -155,6 +155,7 @@ ENV PYTHON "/usr/bin/python3"
- RUN dnf install -y wget
- ENV RUSTUP_HOME=/usr/local/rustup CARGO_HOME=/usr/local/cargo
- ENV RUSTC=/usr/local/rustup/toolchains/nightly-x86_64-unknown-linux-gnu/bin/rustc
-+ENV CARGO=/usr/local/rustup/toolchains/nightly-x86_64-unknown-linux-gnu/bin/cargo
- RUN set -eux && \
-   rustArch='x86_64-unknown-linux-gnu' && \
-   rustupSha256='6aeece6993e902708983b209d04c0d1dbb14ebb405ddb87def578d41f920f56d' && \
-@@ -165,10 +166,13 @@ RUN set -eux && \
-   ./rustup-init -y --no-modify-path --profile default --default-toolchain nightly --default-host ${rustArch} && \
-   chmod -R a+w $RUSTUP_HOME $CARGO_HOME && \
-   /usr/local/cargo/bin/rustup --version && \
-+  /usr/local/cargo/bin/rustup run nightly cargo --version && \
-   /usr/local/cargo/bin/rustup run nightly rustc --version && \
-+  test "$CARGO" = "$(/usr/local/cargo/bin/rustup +nightly which cargo)" && \
-   test "$RUSTC" = "$(/usr/local/cargo/bin/rustup +nightly which rustc)"
- ENV PATH=$CARGO_HOME/bin:$PATH
- RUN /usr/local/cargo/bin/rustup run nightly cargo install bindgen-cli
-+RUN $CARGO --list
- # As a final step configure the user (if env is defined)
- ARG USER
- ARG UID
-diff --git a/tests/lcitool/refresh b/tests/lcitool/refresh
-index 51012783c0f..6720516b942 100755
---- a/tests/lcitool/refresh
-+++ b/tests/lcitool/refresh
-@@ -121,6 +121,7 @@ fedora_rustup_nightly_extras = [
-     "RUN dnf install -y wget\n",
-     "ENV RUSTUP_HOME=/usr/local/rustup CARGO_HOME=/usr/local/cargo\n",
-     "ENV RUSTC=/usr/local/rustup/toolchains/nightly-x86_64-unknown-linux-gnu/bin/rustc\n",
-+    "ENV CARGO=/usr/local/rustup/toolchains/nightly-x86_64-unknown-linux-gnu/bin/cargo\n",
-     "RUN set -eux && \\\n",
-     "  rustArch='x86_64-unknown-linux-gnu' && \\\n",
-     "  rustupSha256='6aeece6993e902708983b209d04c0d1dbb14ebb405ddb87def578d41f920f56d' && \\\n",
-@@ -131,10 +132,13 @@ fedora_rustup_nightly_extras = [
-     "  ./rustup-init -y --no-modify-path --profile default --default-toolchain nightly --default-host ${rustArch} && \\\n",
-     "  chmod -R a+w $RUSTUP_HOME $CARGO_HOME && \\\n",
-     "  /usr/local/cargo/bin/rustup --version && \\\n",
-+    "  /usr/local/cargo/bin/rustup run nightly cargo --version && \\\n",
-     "  /usr/local/cargo/bin/rustup run nightly rustc --version && \\\n",
-+    '  test "$CARGO" = "$(/usr/local/cargo/bin/rustup +nightly which cargo)" && \\\n',
-     '  test "$RUSTC" = "$(/usr/local/cargo/bin/rustup +nightly which rustc)"\n',
-     'ENV PATH=$CARGO_HOME/bin:$PATH\n',
-     'RUN /usr/local/cargo/bin/rustup run nightly cargo install bindgen-cli\n',
-+    'RUN $CARGO --list\n',
- ]
- 
- ubuntu2204_bindgen_extras = [
+diff --git a/rust/qemu-api/src/zeroable.rs b/rust/qemu-api/src/zeroable.rs
+index 13cdb2ccba5..6125aeed8b4 100644
+--- a/rust/qemu-api/src/zeroable.rs
++++ b/rust/qemu-api/src/zeroable.rs
+@@ -7,9 +7,9 @@
+ /// behavior.  This trait in principle could be implemented as just:
+ ///
+ /// ```
+-///     const ZERO: Self = unsafe {
+-///         ::core::mem::MaybeUninit::<$crate::bindings::Property>::zeroed().assume_init()
+-///     },
++/// pub unsafe trait Zeroable: Default {
++///     const ZERO: Self = unsafe { ::core::mem::MaybeUninit::<Self>::zeroed().assume_init() };
++/// }
+ /// ```
+ ///
+ /// The need for a manual implementation is only because `zeroed()` cannot
 -- 
 2.47.0
 
