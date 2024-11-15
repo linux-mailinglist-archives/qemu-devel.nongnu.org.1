@@ -2,73 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A60A89CF2E1
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Nov 2024 18:27:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 49A9C9CF2E0
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Nov 2024 18:27:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tC05M-0004pA-1g; Fri, 15 Nov 2024 12:26:20 -0500
+	id 1tC05N-0004tE-0m; Fri, 15 Nov 2024 12:26:21 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tC055-0004Rl-IG
- for qemu-devel@nongnu.org; Fri, 15 Nov 2024 12:26:05 -0500
-Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1tC05D-0004Uz-Ka
+ for qemu-devel@nongnu.org; Fri, 15 Nov 2024 12:26:12 -0500
+Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tC054-0001Yy-5b
- for qemu-devel@nongnu.org; Fri, 15 Nov 2024 12:26:03 -0500
-Received: by mail-ed1-x531.google.com with SMTP id
- 4fb4d7f45d1cf-5cf6f804233so1400329a12.2
- for <qemu-devel@nongnu.org>; Fri, 15 Nov 2024 09:26:01 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1tC05C-0001Zy-AB
+ for qemu-devel@nongnu.org; Fri, 15 Nov 2024 12:26:11 -0500
+Received: by mail-pl1-x629.google.com with SMTP id
+ d9443c01a7336-20cceb8d8b4so13151375ad.1
+ for <qemu-devel@nongnu.org>; Fri, 15 Nov 2024 09:26:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1731691560; x=1732296360; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=Cy0bpqhYABl5xQS0sS5/3rdfS2dftArPARrYrzeGb04=;
- b=J8+pYP0tSZb8i5L11YZaWyC8cHEB6fzcN2PpjrFoYHHO+HED5WJO+G76Ic1IwwX4O7
- ZmbQ0AXq82/rWwtjsdL45mfzgt6Ia5KsjpkzM5Q2QevYGRMGhC+1IoQ+Vvh9TknZK5Dv
- rZfCC9ZwAJH1/lW+L/c/WlTqnpnpOoNJX4jw+NGYkvtyfZKU5k7r8sZO/jTKRy2BY/I/
- QdeanMEohABNi2mV9Y1zGwlTIzM+i3VfqO3+pgXadgN8g+sBwNIhHxqW8qtHOLQVskje
- 0Geh+y8pYhOEvVjdIJaXYCDvW8dNEQS4smsEyPHpdJ8/MnlZeLkxEvSs2XqG6J5j7RSn
- eM4g==
+ d=linaro.org; s=google; t=1731691568; x=1732296368; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=OTXHzoykZn6jR7wNYYUQyvxqZmEyX78zc1dg8S8pIgk=;
+ b=UQnto4o5WT5BDiRtzlxhN+zNC73ttI2MOqdiIvAqvZ5bfasHiKAeFFAJUHhYoXQTF3
+ o7jxKM3w/tPZX+gXcGwB/u6S5HvIkiNMbKM4sEz8lXW0QymMqlnlrVS7aOdap+CNvy82
+ 9C/Gn1tH4JSlH3b0gtto+YKJqU2kWDa/pUd+bdrEn+RhxyAgVF5iBVrByeIhBgbPkgMt
+ GzmV3YH6UrEoNkIBJvrvcc8M506pswDqE2fc0BzVQZ+HKr0fBOoWiwQ/F5VXIg23D947
+ aMZYyzcW6k0WqgZpf+fZ/Jfci7Oljx2QeVPdAyz9dMCq954IbvNyxGa9FbSf20lwh1rj
+ yQdA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731691560; x=1732296360;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=Cy0bpqhYABl5xQS0sS5/3rdfS2dftArPARrYrzeGb04=;
- b=oG6v4ymKlrhOL4b0Q+nDJbmomiyinoFjPX2EeFBSnOhJw0jsi8Aeioy9FabSIVuLMD
- CqUa8woqjQURzLddowbLmzbMmQYAoPU8i+Uoz99g96zY1CTrVhWB2IqgHgLxa2MrHNmp
- vO7NEcvSI6BQ4ea/i66I5yLQDkxGoLQBFe813L9EgF4HKA36quF1WieqAKckLjfmpvGu
- 58Zjd8wjGSUn+1W9Hw0VqaC1bPlFs5UKEmXcHyUHhfeymQsCjczTQGVxinURjFmYKe3z
- 7zEwjw9FDRTGSJPbg+uxMY+GxBQr/cTLhD1Y4+XrO5fqYHs6E5Gok5a2mdDYNYO0zhC0
- 1dIg==
+ d=1e100.net; s=20230601; t=1731691568; x=1732296368;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=OTXHzoykZn6jR7wNYYUQyvxqZmEyX78zc1dg8S8pIgk=;
+ b=J7vTJr1IrwTwAJqkP9yjEm72xPyx6Msh0P6qasJJ0qpIfaD160ZLchcUiPAUTvi1cT
+ zkZmKrz9QEVtMXFEvw24SydFjrSmUJNyecdkkfXVuH3gT7Zs+9FKcGeOx4/XoSJEe9w4
+ d80s0ZMM+RHf/PJLdoENu0lOPkx35ttfMGelJV9UZlWfCjjUTVDRSNb1uHIV0VeCBAdI
+ ECSqJeDbkbh4b/WdwUZ6PjVO/tU3aWra/P2hV2tJWgyvOoKmMiL44zk2wiIlGFK9HueZ
+ FMQbEkg5A5M/yZ53oQCvDSMZQSAvQeR31b2ko0/7BxqkMpjTiqaTw7pmExaaS1XH14cI
+ 8CAg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWHJ93/kTgbpT0iyP7nKu84WCGX0acO2d6P2R0ei+e9ZoI5waZJl8k8i+/5LNAJzqar7HaoQE7S33WP@nongnu.org
-X-Gm-Message-State: AOJu0YwT32mhS1Y0tocR0IfNIh9puUqNb5okSSoSxKrE8XQ9fKViu4oG
- Fzp0Z2X/4PO0MwHMG/qnbapKz0jIzQZ+zftmkmAuxG0XxCSbODIAlcWcjUCdUqLntDQ1+u/are5
- alsMR3DSxDQgYmoMK9ytX8pyC6UM/NvZLz3GHcw==
-X-Google-Smtp-Source: AGHT+IGCovN6x3B1ZP7h2lJTYiJm6pw/acTun/aa8G/JREOFEbSRH8Aj9O40Q7tA149aEarn5coRGqEa2KyFF7kiKT4=
-X-Received: by 2002:a05:6402:b65:b0:5c9:5c40:6d9a with SMTP id
- 4fb4d7f45d1cf-5cf8fd1b721mr1808724a12.34.1731691560442; Fri, 15 Nov 2024
- 09:26:00 -0800 (PST)
+ AJvYcCVlfTkrSBzH5qUekcrn+f/JX5NGZyNWZVdij6im1QqEiFXlvjZkOt2grNUe3XJQwNPNze5ZJDWdRT+n@nongnu.org
+X-Gm-Message-State: AOJu0YyRBtFT+9uQmqa8TuETveS1sh5WWZBi04w4Gfx/YT8on9egcX/R
+ 9GfBtrwyVWWya0grD5YcfVBbBuEg4MA5usaRzlE+JgdKLdbp0ABaAJNKFDrVHG8=
+X-Google-Smtp-Source: AGHT+IGRmX0VjyzBT0O3hDvfCDRrs6YvLeSwK89bW356B1CQt9OWCUX+dWtoFwmDVrXlagXuwT6PMw==
+X-Received: by 2002:a17:902:d4d0:b0:20c:da9a:d5a8 with SMTP id
+ d9443c01a7336-211c0f1eed6mr114583635ad.9.1731691568565; 
+ Fri, 15 Nov 2024 09:26:08 -0800 (PST)
+Received: from [192.168.0.4] ([71.212.136.242])
+ by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-724770eeac5sm1597549b3a.36.2024.11.15.09.26.08
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 15 Nov 2024 09:26:08 -0800 (PST)
+Message-ID: <fb6367f5-832d-4713-ae2b-b11af76fa909@linaro.org>
+Date: Fri, 15 Nov 2024 09:26:06 -0800
 MIME-Version: 1.0
-References: <20241115160328.1650269-1-roqueh@google.com>
- <CAKbPEtafvSf1ACPRQj2-eEGS_Son53rmyqZ_8vH8gx-uK4o78g@mail.gmail.com>
-In-Reply-To: <CAKbPEtafvSf1ACPRQj2-eEGS_Son53rmyqZ_8vH8gx-uK4o78g@mail.gmail.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 15 Nov 2024 17:25:49 +0000
-Message-ID: <CAFEAcA8zJQ+3vwWm_cEbqqRuptdLm1Ts6r+fK8nR=a5C2jZtTw@mail.gmail.com>
-Subject: Re: [PATCH 0/5] Make WDOGCONTROL.INTEN the counter enable of the
- CMSDK APB Watchdog
-To: Roque Arcudia Hernandez <roqueh@google.com>
-Cc: farosas@suse.de, lvivier@redhat.com, slongfield@google.com, 
- komlodi@google.com, pbonzini@redhat.com, venture@google.com, 
- qemu-devel@nongnu.org, qemu-arm@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::531;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x531.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 07/10] accel/tcg: Reduce log_pc() declaration scope
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+References: <20241115152053.66442-1-philmd@linaro.org>
+ <20241115152053.66442-8-philmd@linaro.org>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20241115152053.66442-8-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x629.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,15 +96,19 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 15 Nov 2024 at 17:21, Roque Arcudia Hernandez <roqueh@google.com> wrote:
->
-> Hello,
->
-> I forgot to add the -v 2 to this patch series. This is the second
-> version after Peter's feedback. Shall I resend it again or is it fine
-> like this?
+On 11/15/24 07:20, Philippe Mathieu-Daudé wrote:
+> log_pc() is only used in cpu-exec.c, move it there.
+> 
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
+>   accel/tcg/internal-target.h | 10 ----------
+>   accel/tcg/cpu-exec.c        | 10 ++++++++++
+>   2 files changed, 10 insertions(+), 10 deletions(-)
 
-It's fine like this, no need to resend just to add the v2 tag.
+Last use outside of cpu-exec.c removed in dafa0ecc9785.
 
--- PMM
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+
+
+r~
 
