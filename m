@@ -2,70 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 181B79CF59B
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Nov 2024 21:18:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 841859CF675
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Nov 2024 22:00:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tC2kZ-0001pW-Oc; Fri, 15 Nov 2024 15:17:03 -0500
+	id 1tC3P7-0007Uy-RB; Fri, 15 Nov 2024 15:58:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tC2kV-0001p8-4K
- for qemu-devel@nongnu.org; Fri, 15 Nov 2024 15:16:59 -0500
-Received: from mail-ed1-x535.google.com ([2a00:1450:4864:20::535])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1tC3P4-0007U0-R3
+ for qemu-devel@nongnu.org; Fri, 15 Nov 2024 15:58:55 -0500
+Received: from mail-pj1-x1033.google.com ([2607:f8b0:4864:20::1033])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tC2kT-0008Fs-Hl
- for qemu-devel@nongnu.org; Fri, 15 Nov 2024 15:16:58 -0500
-Received: by mail-ed1-x535.google.com with SMTP id
- 4fb4d7f45d1cf-5cedf5fe237so2632768a12.3
- for <qemu-devel@nongnu.org>; Fri, 15 Nov 2024 12:16:56 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1tC3P2-0004Lu-US
+ for qemu-devel@nongnu.org; Fri, 15 Nov 2024 15:58:54 -0500
+Received: by mail-pj1-x1033.google.com with SMTP id
+ 98e67ed59e1d1-2ea0bf6bebbso1520202a91.0
+ for <qemu-devel@nongnu.org>; Fri, 15 Nov 2024 12:58:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1731701815; x=1732306615; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=0DZ736icizDSiNlqE5YudJECLdTkNwJS11uCyrvNjz0=;
- b=h0qH4rJZBK1d4t3jW0nrhDN5S2OUCV9tpWgQlS/6Pt3No5QxLKcsJLw/Mf9wGL3fXK
- R6AcyromUXwlpaEJKdxpa4Q1+m/2aTligGJ8pWAH/lQcx9cSeOD60Jk5IESdD0rpK+dd
- qVccbeVNC/asGlAXNd0ZfbZbCxLw46e5y0g74pnweStabCKmOyR1yaGLVk+OsKjKWLy5
- sKd/oqejFU3zraoHaZm6Wzq1VcyVYzS1JKDWZCxSJXt5sd2XTtX0NEWWFCisdwvtBu1Y
- Dc3/dMfFNkznuvBjz2Lx10yaj8/wUwz2YIbVX7n+ZKOmvTafpDEh6gnIK+6fNK8wFCHE
- w4tQ==
+ d=linaro.org; s=google; t=1731704331; x=1732309131; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=HiIZ4k8MhNiSYkTLAwBKepCxeOw0tCftVCByRp32a04=;
+ b=F+Q9mS4+n+yP0crayfTAdUmGYCAqwbEn+j+kQid6tbmge8CqoPvhfr5DNR7c1tXlnc
+ JFd1A9Pg4IBi/vhL/iKM+XBsfWPe4nivTNOtBBGIfgLKcQqz4P07rQ0AoBcwL9k4jzJa
+ UDW0bpFYEtVJJOjGcqXmVxjGTi1B1NltV1vRx60YWL9dWvcp/rUmntgjS26q9s3iaZOC
+ 1ScUNNK4VqCDLDPtwhIioh6gEcQFZI92GTfhd5bMhKDSUKSJFGJ+axDApkySIGGZn2m1
+ s9h2I02pEbXPtGf4fli1DwNEbhgYAD2WGsTwaSmA2mY6P0qpSMreiMhbR73vrTuS/Zkv
+ OZSQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731701815; x=1732306615;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=0DZ736icizDSiNlqE5YudJECLdTkNwJS11uCyrvNjz0=;
- b=SWse/KIcgVBkopTKvUAPRg01YcfLBmsoDblsxxKaTWdFaqlx4fdlXoSRuB/4DW377i
- vefQ+3u3TOVMtXMEAGyS7w/uOAKltrH7LsbCtH4J4xImcn52f1oX9COZPGEwxBig1c99
- +DiArKlGedzCzSOxo5ATY4zvBOrvAQtethuNdheSEk2RZPwi3EuDCPG5+rq1G+6Vh+rc
- NMvtPsJumMQEyKXfwb95XOxrUfDyibyZJz0imjd62ms0J6QHvI7SqR30yWWpDQZzEuU5
- epvgBr2gipw1AIInd6Ghx6dVJCnUiYMbEonKy3afn1f3tr4uVFg4Byiy+jTpfGgcB3HK
- RG6g==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVS0AeaZNODNEwlM7nKM1ORUm1+srXkvLs4Wu+twyjvgN6HBtC2dELy1X4fDhG7ptXPQnF9NULdzomk@nongnu.org
-X-Gm-Message-State: AOJu0Yzf1jdaIyf8VMKSxqe2iIGWVcLdtPHFxVvApBTY3v89yvB7yZg9
- o7o6CK6dtfChC85Wh9GcDpdeCybnR0CwQh4kksEUga30Nr0KL1SLE+Nxo/kPLbxpNT7zDTf0jME
- kT7ymA+lXXiXwd61UD4fg2+ymJFYOImZkLiIG9A==
-X-Google-Smtp-Source: AGHT+IGbvtxCO1hdEUdh6bL3O1ZUZgv+DRaP2UelWtxP1e2a5bZVGnr3H55ndXEjrE+18Fr+P+UYxKtwEXAta9/H8Vo=
-X-Received: by 2002:a05:6402:2706:b0:5cf:924f:996d with SMTP id
- 4fb4d7f45d1cf-5cf924fa1dfmr2053645a12.7.1731701815280; Fri, 15 Nov 2024
- 12:16:55 -0800 (PST)
+ d=1e100.net; s=20230601; t=1731704331; x=1732309131;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=HiIZ4k8MhNiSYkTLAwBKepCxeOw0tCftVCByRp32a04=;
+ b=ijQtn6Y8JHntILultCnvJhOa9rOqNeNwUQUBw3WcLbJKlwui/pdUW9hEmkeeHyUNon
+ nvX8xNE51foavB9+o05jEMXbsmD5boIRlsry5K2FSvqLGfb7xrNjmqX+AoY4QGlMchUm
+ F92UL86qNjfUriq0/e1mQeeOpUvH8SKvdLASp3bUFsreWZrCClHXnrJhx0xYV2ZHaLMV
+ QVwHoKvgCf0wKdRElqO2/gD5w328adDcAR0PpnRu7O9egQ58hJZQWOwM97N+usvbNKmu
+ rFnIQxu84+mMPiu0dIGIeQm0NTGw6aP783YI9e/I4hWCIDqLbv5/JumBp4f/6GI9Rejh
+ mnkA==
+X-Gm-Message-State: AOJu0YwfFs3CAsHSYtI9WeRDhCRA0hisxv/7XhR098c2zJP+LJAJLTo8
+ KcD49jEltACfmm2yWcDj05/FpjrE4gnReYcSwYHIwzqzO9QY3DPPD/KaOtdMeVIMhycyZXcJzwL
+ 4
+X-Google-Smtp-Source: AGHT+IGh/jpUMGOExnPGOUNgIVrWbwBWhDLa2QLWJm4z+ZwWam0XydKmwH9zie28IHR7wt4U7FS4DA==
+X-Received: by 2002:a17:90a:d005:b0:2e2:af88:2b9f with SMTP id
+ 98e67ed59e1d1-2ea154f7448mr5409847a91.16.1731704330980; 
+ Fri, 15 Nov 2024 12:58:50 -0800 (PST)
+Received: from stoup.. ([71.212.136.242]) by smtp.gmail.com with ESMTPSA id
+ 98e67ed59e1d1-2ea024a49a8sm3362274a91.23.2024.11.15.12.58.50
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 15 Nov 2024 12:58:50 -0800 (PST)
+From: Richard Henderson <richard.henderson@linaro.org>
+To: qemu-devel@nongnu.org
+Subject: [PULL 00/14] tcg + linux-user patch queue
+Date: Fri, 15 Nov 2024 12:58:35 -0800
+Message-ID: <20241115205849.266094-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-References: <20241114165657.254256-1-kwolf@redhat.com>
-In-Reply-To: <20241114165657.254256-1-kwolf@redhat.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 15 Nov 2024 20:16:44 +0000
-Message-ID: <CAFEAcA-y2K74jbPwPwrCo=OfCn_eJpGskX5KVivAMxzQXLThrw@mail.gmail.com>
-Subject: Re: [PULL 0/8] Block layer patches
-To: Kevin Wolf <kwolf@redhat.com>
-Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org, 
- Stefan Hajnoczi <stefanha@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::535;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x535.google.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1033;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1033.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -88,69 +88,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 14 Nov 2024 at 16:58, Kevin Wolf <kwolf@redhat.com> wrote:
->
-> The following changes since commit f0a5a31c33a8109061c2493e475c8a2f4d022432:
->
->   Update version for v9.2.0-rc0 release (2024-11-13 21:44:45 +0000)
->
-> are available in the Git repository at:
->
->   https://repo.or.cz/qemu/kevin.git tags/for-upstream
->
-> for you to fetch changes up to 378a645b2f6125b1bdbd1fae3e8f30452d5b5934:
->
->   vl: use qmp_device_add() in qemu_create_cli_devices() (2024-11-14 17:55:51 +0100)
->
-> ----------------------------------------------------------------
-> Block layer patches
->
-> - Fix qmp_device_add() to not throw non-scalar options away (fixes
->   iothread-vq-mapping being silently ignored in device_add)
-> - iotests: Fix mypy failure
-> - parallels: Avoid potential integer overflow
-> - Fix crash in migration_is_running()
->
+The following changes since commit f0a5a31c33a8109061c2493e475c8a2f4d022432:
 
-Hi; this seems to cause an error for the avocado test
-tests/avocado/hotplug_blk.py:HotPlug.test
+  Update version for v9.2.0-rc0 release (2024-11-13 21:44:45 +0000)
 
-https://gitlab.com/qemu-project/qemu/-/jobs/8387009365
-https://gitlab.com/qemu-project/qemu/-/jobs/8387009383
+are available in the Git repository at:
 
-(12/51) tests/avocado/hotplug_blk.py:HotPlug.test: STARTED
-(12/51) tests/avocado/hotplug_blk.py:HotPlug.test: ERROR: Could not
-perform graceful shutdown (17.16 s)
+  https://gitlab.com/rth7680/qemu.git tags/pull-tcg-20241115
 
-If you dig through the build artefacts you can find the debug log:
-https://qemu-project.gitlab.io/-/qemu/-/jobs/8387009383/artifacts/build/tests/results/latest/test-results/12-tests_avocado_hotplug_blk.py_HotPlug.test/debug.log
+for you to fetch changes up to a020e0a807a6e34890d1f2ca02e49f814fd0b64f:
 
-and it seems like the test sends a device_add command over
-QMP and the result is that QEMU dies with an assertion failure.
-The relevant device_add is
+  tcg: Allow top bit of SIMD_DATA_BITS to be set in simd_desc() (2024-11-15 12:51:27 -0800)
 
-[stdlog]   "execute": "device_add",
-[stdlog]   "arguments": {
-[stdlog]     "driver": "virtio-blk-pci",
-[stdlog]     "drive": "disk",
-[stdlog]     "id": "virtio-disk0",
-[stdlog]     "bus": "pci.1",
-[stdlog]     "addr": 1
-[stdlog]   },
-[stdlog]   "id": "__qmp#00002"
-[stdlog] }
+----------------------------------------------------------------
+cpu: ensure we don't call start_exclusive from cpu_exec
+tcg: Allow top bit of SIMD_DATA_BITS to be set in simd_desc()
+accel/tcg: Fix user-only probe_access_internal plugin check
+linux-user: Fix setreuid and setregid to use direct syscalls
+linux-user: Tolerate CONFIG_LSM_MMAP_MIN_ADDR
+linux-user: Honor elf alignment when placing images
+linux-user/*: Reduce vdso alignment to 4k
+linux-user/arm: Select vdso for be8 and be32 modes
 
-Avocado helpfully hides the assertion message under a rock
-in a different log file:
-https://qemu-project.gitlab.io/-/qemu/-/jobs/8387009383/artifacts/build/tests/results/latest/test-results/12-tests_avocado_hotplug_blk.py_HotPlug.test/7f00b63ed810.log
+----------------------------------------------------------------
+Helge Deller (1):
+      linux-user: Fix setreuid and setregid to use direct syscalls
 
-qemu-system-x86_64: ../qapi/qobject-input-visitor.c:143:
-qobject_input_try_get_object: Assertion `removed' failed.
+Ilya Leoshkevich (2):
+      linux-user: Tolerate CONFIG_LSM_MMAP_MIN_ADDR
+      tests/tcg: Test that sigreturn() does not corrupt the signal mask
 
+Peter Maydell (1):
+      tcg: Allow top bit of SIMD_DATA_BITS to be set in simd_desc()
 
-I'm guessing this is Stefan's patches since they touch
-the device_add path.
+Pierrick Bouvier (2):
+      target/i386: fix hang when using slow path for ptw_setl
+      cpu: ensure we don't call start_exclusive from cpu_exec
 
-thanks
--- PMM
+Richard Henderson (8):
+      accel/tcg: Fix user-only probe_access_internal plugin check
+      linux-user: Honor elf alignment when placing images
+      linux-user: Drop image_info.alignment
+      linux-user/aarch64: Reduce vdso alignment to 4k
+      linux-user/arm: Reduce vdso alignment to 4k
+      linux-user/loongarch64: Reduce vdso alignment to 4k
+      linux-user/ppc: Reduce vdso alignment to 4k
+      linux-user/arm: Select vdso for be8 and be32 modes
+
+ linux-user/qemu.h                          |   1 -
+ accel/tcg/user-exec.c                      |   2 +-
+ cpu-common.c                               |   3 ++
+ linux-user/elfload.c                       |  71 ++++++++++++++++++++++-------
+ linux-user/syscall.c                       |  20 ++++++--
+ target/i386/tcg/sysemu/excp_helper.c       |   5 ++
+ tcg/tcg-op-gvec.c                          |  15 +++++-
+ tests/tcg/multiarch/sigreturn-sigmask.c    |  51 +++++++++++++++++++++
+ linux-user/aarch64/Makefile.vdso           |   5 +-
+ linux-user/aarch64/vdso-be.so              | Bin 3224 -> 3224 bytes
+ linux-user/aarch64/vdso-le.so              | Bin 3224 -> 3224 bytes
+ linux-user/arm/Makefile.vdso               |  11 +++--
+ linux-user/arm/meson.build                 |  13 ++++--
+ linux-user/arm/vdso-be32.so                | Bin 0 -> 2648 bytes
+ linux-user/arm/{vdso-be.so => vdso-be8.so} | Bin 2648 -> 2648 bytes
+ linux-user/arm/vdso-le.so                  | Bin 2648 -> 2648 bytes
+ linux-user/loongarch64/Makefile.vdso       |   3 +-
+ linux-user/loongarch64/vdso.so             | Bin 3560 -> 3560 bytes
+ linux-user/ppc/Makefile.vdso               |   6 ++-
+ linux-user/ppc/vdso-32.so                  | Bin 3020 -> 3020 bytes
+ linux-user/ppc/vdso-64.so                  | Bin 3896 -> 3896 bytes
+ linux-user/ppc/vdso-64le.so                | Bin 3896 -> 3896 bytes
+ tests/tcg/multiarch/Makefile.target        |   3 ++
+ 23 files changed, 174 insertions(+), 35 deletions(-)
+ create mode 100644 tests/tcg/multiarch/sigreturn-sigmask.c
+ create mode 100755 linux-user/arm/vdso-be32.so
+ rename linux-user/arm/{vdso-be.so => vdso-be8.so} (90%)
 
