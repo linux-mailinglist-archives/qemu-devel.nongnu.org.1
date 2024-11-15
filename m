@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53EAE9CF0F3
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Nov 2024 17:04:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B0EB49CF0F0
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Nov 2024 17:04:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tBynU-0004AS-CY; Fri, 15 Nov 2024 11:03:48 -0500
+	id 1tBynf-0004CV-J9; Fri, 15 Nov 2024 11:04:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <33nA3ZwYKCt0QNPTDGFNNFKD.BNLPDLT-CDUDKMNMFMT.NQF@flex--roqueh.bounces.google.com>)
- id 1tBynQ-00049X-PB
- for qemu-devel@nongnu.org; Fri, 15 Nov 2024 11:03:45 -0500
-Received: from mail-yb1-xb4a.google.com ([2607:f8b0:4864:20::b4a])
+ <34HA3ZwYKCt8SPRVFIHPPHMF.DPNRFNV-EFWFMOPOHOV.PSH@flex--roqueh.bounces.google.com>)
+ id 1tBynV-0004B4-Pp
+ for qemu-devel@nongnu.org; Fri, 15 Nov 2024 11:03:49 -0500
+Received: from mail-yw1-x1149.google.com ([2607:f8b0:4864:20::1149])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from
- <33nA3ZwYKCt0QNPTDGFNNFKD.BNLPDLT-CDUDKMNMFMT.NQF@flex--roqueh.bounces.google.com>)
- id 1tBynP-00040x-8X
- for qemu-devel@nongnu.org; Fri, 15 Nov 2024 11:03:44 -0500
-Received: by mail-yb1-xb4a.google.com with SMTP id
- 3f1490d57ef6-e381f9e1395so2648391276.3
- for <qemu-devel@nongnu.org>; Fri, 15 Nov 2024 08:03:42 -0800 (PST)
+ <34HA3ZwYKCt8SPRVFIHPPHMF.DPNRFNV-EFWFMOPOHOV.PSH@flex--roqueh.bounces.google.com>)
+ id 1tBynT-00042g-Ol
+ for qemu-devel@nongnu.org; Fri, 15 Nov 2024 11:03:49 -0500
+Received: by mail-yw1-x1149.google.com with SMTP id
+ 00721157ae682-6ee433bd48dso32867447b3.3
+ for <qemu-devel@nongnu.org>; Fri, 15 Nov 2024 08:03:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20230601; t=1731686622; x=1732291422; darn=nongnu.org;
+ d=google.com; s=20230601; t=1731686625; x=1732291425; darn=nongnu.org;
  h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
  :date:from:to:cc:subject:date:message-id:reply-to;
- bh=HYr7dkbjOM3DhMWGJi0XHGtksaAWQFJUXcJyP4tJoMU=;
- b=MxfYrLR7Fj6HQ8ItFqA+yYZvGb473tJSXJv/+5upqp0CYSlZdlQeaYybSEhR3E6xon
- 4Foq3KDQpG3OF/CYju318Yagbj7IpKvRNmWvUevSMixm8IsWPcTen0fJiT6GMkFJO62i
- X6e2VX5mZaBFMC7PwEQ4N9EgiCt7eWS31uIi7r2K9rUpV8rGHgKpCz8boVFvCXb74n1n
- n2xj+5t9bWagnMeYpSUiJQrybmV56DvYa0VyDEGyjka3SjvrHh5xqISVHK2df8qoETud
- MKmThUwlSBWGUZ+OSaHq2dkNPuILQaci0OM1iI5ypZx7YTA1fLZt4CBFFbxiCUaeSj4t
- IWOw==
+ bh=xdTDE/ogJexYXwONpxsosZC8K7XuyEiJo0szMh6XTpA=;
+ b=PCUf8yTghT9mySCsEhWv+S4qAJSGNLCmDYT5EjCANN5iiB9sd59pZf97Z821+WTPml
+ 0KAdi9HXt9nwIMV1h2erMdw0eIVmkaTwyJONSHwwm8UauXGBPsd0HrrBLfSstrHneu9q
+ fc5pDLOykAddlj74FQWEvPp+8gwLgow20rSgbGjYXBxployK3G4Y3hfAsdkZJIvZu354
+ dlrWuU9SWLdobi2enOM8Z3SrNMYL+ZsGRssFDQlqWB2i8149ANk/hkoH620kdYiXKFcq
+ kjDGhvobIscbzxEaa8ccTOi2meLQqkOA3fyV6V8LCMO1GHVOGjzKpOmRZiPW0C89F2nO
+ ctcA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731686622; x=1732291422;
+ d=1e100.net; s=20230601; t=1731686625; x=1732291425;
  h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
  :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=HYr7dkbjOM3DhMWGJi0XHGtksaAWQFJUXcJyP4tJoMU=;
- b=AXGJSLQ9zyoKzetjLjwK0U8Z1lB/3OYSciSBTsTF5QjS0DCRoRmeIS+NN6Yhg1wi2z
- UoF18nuzQLuc76O9+/uXbT+oqz+0t/xdz85RrXhzvonEB5LpBgGzd9mqkow7SArq+ae/
- dA699roNB4AN/IK9EhiO/pvPn1zoxHUNiLqr22qha2IWu2sD7hnE92jFKxnWGOzhjDBu
- FLE8AruQetkwwrdOy17WKk1ar2m9JamU0LMYJ5GvxTqTjshtxzSLzluYDTNiMl7nzuHi
- KtMk3wwY7EdKxJ6TkxhqnILdbC/yw4+QcHQTvwQeZhYiXBzadFS3SL/tV4/Z5yWsg6B/
- Urcw==
-X-Gm-Message-State: AOJu0YyX98wGE31S5J9yYZXCP/eK2VQ+M62IG+gvKrJwx2EARFeeTuYa
- V4lx4bMJg0NoyTZcX5ah85a3ORa61sRuPg3AbvuYbnMErJ9a/43YUfgDN82MTlPCgtQvxs6YThE
- EMQ==
-X-Google-Smtp-Source: AGHT+IFAtteKGzbsxn7wEW/AZvhVZkag2wL/KsZoSf44v9m5j4DQzTGeTKHamCAz4aMV3IOr2XkH/iE+rQU=
+ bh=xdTDE/ogJexYXwONpxsosZC8K7XuyEiJo0szMh6XTpA=;
+ b=qdj3nf4h86hrh8mHu0qP5We0lMPo+QBXycfeTYFyLBQ1ZvRu6cpwJaDh9TprEHvmn3
+ smrDBQVLTQ8YYVzygwxjrnvi95v6GXzaGrXMRajlkO0wi4ubCoJt+9bvqEYeeRn8dQ2t
+ EyH7TZBgeUIvXimgaPv/jX9UJ2qlxbQyE+DlP5sJCka68mDXrxzXp8vLDNhTxvHVErD/
+ EVMjoLCsPFiW60t1tzTSvpNQbzlHFEPIqA8XKTOOW72gVIc225lHKy+4qKW+QVeQSrI+
+ miZEHxaE1uxpB9AtjrcOdvqOdYPocfZc0M7Is4hYZxX1m/SY1/nJpKXkwHuSoagl6CE2
+ 9sbg==
+X-Gm-Message-State: AOJu0Yw4ok474nHgbZ1tvXe51OG/rfeObHlwqtNxyBxjvHcuFIjGLew+
+ 6hXVFCmKv6oVbHW0WXzpCqZOwJu7p8kbGyQ1WEN6nXgcziu9NJUbXweW4zDX7E1i3mkuF173bCM
+ rNA==
+X-Google-Smtp-Source: AGHT+IEdX55NPz+ERTCDs/jlDiGv8mgKd5FFrG0QKvViXjvac96+k673yjxxXEJUV+jTXZ8WkTY6JJxtuPA=
 X-Received: from roqueh.c.googlers.com ([fda3:e722:ac3:cc00:4e:3bc9:ac1c:1ab])
- (user=roqueh job=sendgmr) by 2002:a25:53c1:0:b0:e30:b93a:b3e4 with
- SMTP id
- 3f1490d57ef6-e382614aae1mr129379276.4.1731686622044; Fri, 15 Nov 2024
- 08:03:42 -0800 (PST)
-Date: Fri, 15 Nov 2024 16:03:25 +0000
+ (user=roqueh job=sendgmr) by 2002:a05:690c:6893:b0:6ee:4d97:9091
+ with SMTP id
+ 00721157ae682-6ee55f02ed8mr2691707b3.7.1731686624774; Fri, 15 Nov 2024
+ 08:03:44 -0800 (PST)
+Date: Fri, 15 Nov 2024 16:03:26 +0000
 In-Reply-To: <20241115160328.1650269-1-roqueh@google.com>
 Mime-Version: 1.0
 References: <20241115160328.1650269-1-roqueh@google.com>
 X-Mailer: git-send-email 2.47.0.338.g60cca15819-goog
-Message-ID: <20241115160328.1650269-3-roqueh@google.com>
-Subject: [PATCH 2/5] hw/watchdog/cmsdk_apb_watchdog: Fix INTEN issues
+Message-ID: <20241115160328.1650269-4-roqueh@google.com>
+Subject: [PATCH 3/5] tests/qtest/cmsdk-apb-watchdog-test: Parameterize tests
 From: Roque Arcudia Hernandez <roqueh@google.com>
 To: peter.maydell@linaro.org, farosas@suse.de, lvivier@redhat.com, 
  slongfield@google.com, komlodi@google.com, pbonzini@redhat.com, 
@@ -68,16 +68,16 @@ To: peter.maydell@linaro.org, farosas@suse.de, lvivier@redhat.com,
 Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, 
  Roque Arcudia Hernandez <roqueh@google.com>
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::b4a;
- envelope-from=33nA3ZwYKCt0QNPTDGFNNFKD.BNLPDLT-CDUDKMNMFMT.NQF@flex--roqueh.bounces.google.com;
- helo=mail-yb1-xb4a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1149;
+ envelope-from=34HA3ZwYKCt8SPRVFIHPPHMF.DPNRFNV-EFWFMOPOHOV.PSH@flex--roqueh.bounces.google.com;
+ helo=mail-yw1-x1149.google.com
 X-Spam_score_int: -95
 X-Spam_score: -9.6
 X-Spam_bar: ---------
 X-Spam_report: (-9.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- USER_IN_DEF_DKIM_WL=-7.5 autolearn=ham autolearn_force=no
+ USER_IN_DEF_DKIM_WL=-7.5 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,97 +93,207 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Current watchdog is free running out of reset, this combined with the
-fact that current implementation also ensures the counter is running
-when programing WDOGLOAD creates issues when the firmware defer the
-programing of WDOGCONTROL.INTEN much later after WDOGLOAD. Arm
-Programmer's Model documentation states that INTEN is also the
-counter enable:
-
-> INTEN
->
-> Enable the interrupt event, WDOGINT. Set HIGH to enable the counter
-> and the interrupt, or LOW to disable the counter and interrupt.
-> Reloads the counter from the value in WDOGLOAD when the interrupt
-> is enabled, after previously being disabled.
-
-Source of the time of writing:
+Currently the CMSDK APB watchdog tests target an specialized version
+of the device (luminaris using the lm3s811evb machine) that prevents
+the development of tests for the more generic device documented in:
 
 https://developer.arm.com/documentation/ddi0479/d/apb-components/apb-watchdog/programmers-model
 
+This patch allows the execution of the watchdog tests in an MPS2
+machine (when applicable) which uses the generic version of the CMSDK
+APB watchdog.
+
+Finally the rules for compiling the test have to change because it is
+possible not to have CONFIG_STELLARIS (required for the lm3s811evb
+machine) while still having CONFIG_CMSDK_APB_WATCHDOG and the test
+will fail. Due to the addition of the MPS2 machine CONFIG_MPS2
+becomes also a dependency for the test compilation.
+
 Signed-off-by: Roque Arcudia Hernandez <roqueh@google.com>
 Reviewed-by: Stephen Longfield <slongfield@google.com>
-Reviewed-by: Joe Komlodi <komlodi@google.com>
 ---
- hw/watchdog/cmsdk-apb-watchdog.c | 34 +++++++++++++++++++++++++-------
- 1 file changed, 27 insertions(+), 7 deletions(-)
+ tests/qtest/cmsdk-apb-watchdog-test.c | 112 +++++++++++++++++++-------
+ tests/qtest/meson.build               |   3 +-
+ 2 files changed, 84 insertions(+), 31 deletions(-)
 
-diff --git a/hw/watchdog/cmsdk-apb-watchdog.c b/hw/watchdog/cmsdk-apb-watchdog.c
-index e4d25a25f7..ed5ff4257c 100644
---- a/hw/watchdog/cmsdk-apb-watchdog.c
-+++ b/hw/watchdog/cmsdk-apb-watchdog.c
-@@ -196,16 +196,13 @@ static void cmsdk_apb_watchdog_write(void *opaque, hwaddr offset,
+diff --git a/tests/qtest/cmsdk-apb-watchdog-test.c b/tests/qtest/cmsdk-apb-watchdog-test.c
+index 00b5dbbc81..bdf6cfa256 100644
+--- a/tests/qtest/cmsdk-apb-watchdog-test.c
++++ b/tests/qtest/cmsdk-apb-watchdog-test.c
+@@ -15,14 +15,12 @@
+  */
  
-     switch (offset) {
-     case A_WDOGLOAD:
--        /*
--         * Reset the load value and the current count, and make sure
--         * we're counting.
--         */
-+        /* Reset the load value and the current count. */
-         ptimer_transaction_begin(s->timer);
-         ptimer_set_limit(s->timer, value, 1);
--        ptimer_run(s->timer, 0);
-         ptimer_transaction_commit(s->timer);
-         break;
--    case A_WDOGCONTROL:
-+    case A_WDOGCONTROL: {
-+        uint32_t prev_control = s->control;
-         if (s->is_luminary && 0 != (R_WDOGCONTROL_INTEN_MASK & s->control)) {
-             /*
-              * The Luminary version of this device ignores writes to
-@@ -215,8 +212,25 @@ static void cmsdk_apb_watchdog_write(void *opaque, hwaddr offset,
-             break;
-         }
-         s->control = value & R_WDOGCONTROL_VALID_MASK;
-+        if (R_WDOGCONTROL_INTEN_MASK & (s->control ^ prev_control)) {
-+            ptimer_transaction_begin(s->timer);
-+            if (R_WDOGCONTROL_INTEN_MASK & s->control) {
-+                /*
-+                 * Set HIGH to enable the counter and the interrupt. Reloads
-+                 * the counter from the value in WDOGLOAD when the interrupt
-+                 * is enabled, after previously being disabled.
-+                 */
-+                ptimer_set_count(s->timer, ptimer_get_limit(s->timer));
-+                ptimer_run(s->timer, 0);
-+            } else {
-+                /* Or LOW to disable the counter and interrupt. */
-+                ptimer_stop(s->timer);
-+            }
-+            ptimer_transaction_commit(s->timer);
-+        }
-         cmsdk_apb_watchdog_update(s);
-         break;
-+    }
-     case A_WDOGINTCLR:
-         s->intstatus = 0;
-         ptimer_transaction_begin(s->timer);
-@@ -305,8 +319,14 @@ static void cmsdk_apb_watchdog_reset(DeviceState *dev)
-     s->resetstatus = 0;
-     /* Set the limit and the count */
-     ptimer_transaction_begin(s->timer);
-+    /*
-+     * We need to stop the ptimer before setting its limit reset value. If the
-+     * order is the opposite when the code executes the stop after setting a new
-+     * limit it may want to recalculate the count based on the current time (if
-+     * the timer was currently running) and it won't get the proper reset value.
-+     */
-+    ptimer_stop(s->timer);
-     ptimer_set_limit(s->timer, 0xffffffff, 1);
--    ptimer_run(s->timer, 0);
-     ptimer_transaction_commit(s->timer);
+ #include "qemu/osdep.h"
++#include "exec/hwaddr.h"
+ #include "qemu/bitops.h"
+ #include "libqtest-single.h"
+ 
+-/*
+- * lm3s811evb watchdog; at board startup this runs at 200MHz / 16 == 12.5MHz,
+- * which is 80ns per tick.
+- */
+ #define WDOG_BASE 0x40000000
++#define WDOG_BASE_MPS2 0x40008000
+ 
+ #define WDOGLOAD 0
+ #define WDOGVALUE 4
+@@ -37,39 +35,87 @@
+ #define SYSDIV_SHIFT 23
+ #define SYSDIV_LENGTH 4
+ 
+-static void test_watchdog(void)
++#define WDOGLOAD_DEFAULT 0xFFFFFFFF
++#define WDOGVALUE_DEFAULT 0xFFFFFFFF
++
++typedef struct CMSDKAPBWatchdogTestArgs {
++    int64_t tick;
++    hwaddr wdog_base;
++    const char *machine;
++} CMSDKAPBWatchdogTestArgs;
++
++enum {
++    MACHINE_LM3S811EVB,
++    MACHINE_MPS2_AN385,
++};
++
++/*
++ * lm3s811evb watchdog; at board startup this runs at 200MHz / 16 == 12.5MHz,
++ * which is 80ns per tick.
++ *
++ * IoTKit/ARMSSE dualtimer; driven at 25MHz in mps2-an385, so 40ns per tick
++ */
++static const CMSDKAPBWatchdogTestArgs machine_info[] = {
++    [MACHINE_LM3S811EVB] = {
++        .tick = 80,
++        .wdog_base = WDOG_BASE,
++        .machine = "lm3s811evb",
++    },
++    [MACHINE_MPS2_AN385] = {
++        .tick = 40,
++        .wdog_base = WDOG_BASE_MPS2,
++        .machine = "mps2-an385",
++    },
++};
++
++static void test_watchdog(const void *ptr)
+ {
+-    g_assert_cmpuint(readl(WDOG_BASE + WDOGRIS), ==, 0);
++    const CMSDKAPBWatchdogTestArgs *args = ptr;
++    hwaddr wdog_base = args->wdog_base;
++    int64_t tick = args->tick;
++    g_autofree gchar *cmdline = g_strdup_printf("-machine %s", args->machine);
++    qtest_start(cmdline);
+ 
+-    writel(WDOG_BASE + WDOGCONTROL, 1);
+-    writel(WDOG_BASE + WDOGLOAD, 1000);
++    g_assert_cmpuint(readl(wdog_base + WDOGRIS), ==, 0);
++
++    writel(wdog_base + WDOGCONTROL, 1);
++    writel(wdog_base + WDOGLOAD, 1000);
+ 
+     /* Step to just past the 500th tick */
+-    clock_step(500 * 80 + 1);
+-    g_assert_cmpuint(readl(WDOG_BASE + WDOGRIS), ==, 0);
+-    g_assert_cmpuint(readl(WDOG_BASE + WDOGVALUE), ==, 500);
++    clock_step(500 * tick + 1);
++    g_assert_cmpuint(readl(wdog_base + WDOGRIS), ==, 0);
++    g_assert_cmpuint(readl(wdog_base + WDOGVALUE), ==, 500);
+ 
+     /* Just past the 1000th tick: timer should have fired */
+-    clock_step(500 * 80);
+-    g_assert_cmpuint(readl(WDOG_BASE + WDOGRIS), ==, 1);
+-    g_assert_cmpuint(readl(WDOG_BASE + WDOGVALUE), ==, 0);
++    clock_step(500 * tick);
++    g_assert_cmpuint(readl(wdog_base + WDOGRIS), ==, 1);
++    g_assert_cmpuint(readl(wdog_base + WDOGVALUE), ==, 0);
+ 
+     /* VALUE reloads at following tick */
+-    clock_step(80);
+-    g_assert_cmpuint(readl(WDOG_BASE + WDOGVALUE), ==, 1000);
++    clock_step(tick);
++    g_assert_cmpuint(readl(wdog_base + WDOGVALUE), ==, 1000);
+ 
+     /* Writing any value to WDOGINTCLR clears the interrupt and reloads */
+-    clock_step(500 * 80);
+-    g_assert_cmpuint(readl(WDOG_BASE + WDOGVALUE), ==, 500);
+-    g_assert_cmpuint(readl(WDOG_BASE + WDOGRIS), ==, 1);
+-    writel(WDOG_BASE + WDOGINTCLR, 0);
+-    g_assert_cmpuint(readl(WDOG_BASE + WDOGVALUE), ==, 1000);
+-    g_assert_cmpuint(readl(WDOG_BASE + WDOGRIS), ==, 0);
++    clock_step(500 * tick);
++    g_assert_cmpuint(readl(wdog_base + WDOGVALUE), ==, 500);
++    g_assert_cmpuint(readl(wdog_base + WDOGRIS), ==, 1);
++    writel(wdog_base + WDOGINTCLR, 0);
++    g_assert_cmpuint(readl(wdog_base + WDOGVALUE), ==, 1000);
++    g_assert_cmpuint(readl(wdog_base + WDOGRIS), ==, 0);
++
++    qtest_end();
  }
  
+-static void test_clock_change(void)
++/*
++ * This test can only be executed in the stellaris board since it relies on a
++ * component of the board to change the clocking parameters of the watchdog.
++ */
++static void test_clock_change(const void *ptr)
+ {
+     uint32_t rcc;
++    const CMSDKAPBWatchdogTestArgs *args = ptr;
++    g_autofree gchar *cmdline = g_strdup_printf("-machine %s", args->machine);
++    qtest_start(cmdline);
+ 
+     /*
+      * Test that writing to the stellaris board's RCC register to
+@@ -109,6 +155,8 @@ static void test_clock_change(void)
+     writel(WDOG_BASE + WDOGINTCLR, 0);
+     g_assert_cmpuint(readl(WDOG_BASE + WDOGVALUE), ==, 1000);
+     g_assert_cmpuint(readl(WDOG_BASE + WDOGRIS), ==, 0);
++
++    qtest_end();
+ }
+ 
+ int main(int argc, char **argv)
+@@ -117,15 +165,19 @@ int main(int argc, char **argv)
+ 
+     g_test_init(&argc, &argv, NULL);
+ 
+-    qtest_start("-machine lm3s811evb");
+-
+-    qtest_add_func("/cmsdk-apb-watchdog/watchdog", test_watchdog);
+-    qtest_add_func("/cmsdk-apb-watchdog/watchdog_clock_change",
+-                   test_clock_change);
++    if (qtest_has_machine(machine_info[MACHINE_LM3S811EVB].machine)) {
++        qtest_add_data_func("/cmsdk-apb-watchdog/watchdog",
++                            &machine_info[MACHINE_LM3S811EVB], test_watchdog);
++        qtest_add_data_func("/cmsdk-apb-watchdog/watchdog_clock_change",
++                            &machine_info[MACHINE_LM3S811EVB],
++                            test_clock_change);
++    }
++    if (qtest_has_machine(machine_info[MACHINE_MPS2_AN385].machine)) {
++        qtest_add_data_func("/cmsdk-apb-watchdog/watchdog_mps2",
++                            &machine_info[MACHINE_MPS2_AN385], test_watchdog);
++    }
+ 
+     r = g_test_run();
+ 
+-    qtest_end();
+-
+     return r;
+ }
+diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
+index aa93e98418..f2f35367ae 100644
+--- a/tests/qtest/meson.build
++++ b/tests/qtest/meson.build
+@@ -227,7 +227,8 @@ qtests_arm = \
+   (config_all_devices.has_key('CONFIG_MPS2') ? ['sse-timer-test'] : []) + \
+   (config_all_devices.has_key('CONFIG_CMSDK_APB_DUALTIMER') ? ['cmsdk-apb-dualtimer-test'] : []) + \
+   (config_all_devices.has_key('CONFIG_CMSDK_APB_TIMER') ? ['cmsdk-apb-timer-test'] : []) + \
+-  (config_all_devices.has_key('CONFIG_CMSDK_APB_WATCHDOG') ? ['cmsdk-apb-watchdog-test'] : []) + \
++  (config_all_devices.has_key('CONFIG_STELLARIS') or
++   config_all_devices.has_key('CONFIG_MPS2') ? ['cmsdk-apb-watchdog-test'] : []) + \
+   (config_all_devices.has_key('CONFIG_PFLASH_CFI02') and
+    config_all_devices.has_key('CONFIG_MUSICPAL') ? ['pflash-cfi02-test'] : []) + \
+   (config_all_devices.has_key('CONFIG_ASPEED_SOC') ? qtests_aspeed : []) + \
 -- 
 2.47.0.338.g60cca15819-goog
 
