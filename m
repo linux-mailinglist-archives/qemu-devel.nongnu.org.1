@@ -2,51 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F3CC9CF0EC
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Nov 2024 17:02:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E0F1F9CF0F1
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Nov 2024 17:04:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tBylN-00038z-BY; Fri, 15 Nov 2024 11:01:37 -0500
+	id 1tBynP-00048u-14; Fri, 15 Nov 2024 11:03:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1tBylK-00038D-4A; Fri, 15 Nov 2024 11:01:34 -0500
-Received: from zero.eik.bme.hu ([152.66.115.2])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1tBylI-00032e-5c; Fri, 15 Nov 2024 11:01:33 -0500
-Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id EF9DB4E6036;
- Fri, 15 Nov 2024 17:01:27 +0100 (CET)
-X-Virus-Scanned: amavisd-new at eik.bme.hu
-Received: from zero.eik.bme.hu ([127.0.0.1])
- by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
- with ESMTP id E1yM6xlRMxgH; Fri, 15 Nov 2024 17:01:25 +0100 (CET)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id F01AD4E6030; Fri, 15 Nov 2024 17:01:25 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id EE23E757B1C;
- Fri, 15 Nov 2024 17:01:25 +0100 (CET)
-Date: Fri, 15 Nov 2024 17:01:25 +0100 (CET)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: qemu-devel@nongnu.org, qemu-ppc@nongnu.org
-cc: Nicholas Piggin <npiggin@gmail.com>, 
- Daniel Henrique Barboza <danielhb413@gmail.com>
-Subject: Re: [PATCH v2] hw/ppc/pegasos2: Fix IRQ routing from pci.0
-In-Reply-To: <20241102121711.26F054E6013@zero.eik.bme.hu>
-Message-ID: <88eff33f-d9b8-01c7-db0e-5ac38d722f8b@eik.bme.hu>
-References: <20241102121711.26F054E6013@zero.eik.bme.hu>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII; format=flowed
-Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
- helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ (Exim 4.90_1) (envelope-from
+ <31nA3ZwYKCtUIFHL587FF7C5.3FDH5DL-45M5CEFE7EL.FI7@flex--roqueh.bounces.google.com>)
+ id 1tBynM-00048G-52
+ for qemu-devel@nongnu.org; Fri, 15 Nov 2024 11:03:40 -0500
+Received: from mail-yb1-xb4a.google.com ([2607:f8b0:4864:20::b4a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from
+ <31nA3ZwYKCtUIFHL587FF7C5.3FDH5DL-45M5CEFE7EL.FI7@flex--roqueh.bounces.google.com>)
+ id 1tBynK-0003jm-Db
+ for qemu-devel@nongnu.org; Fri, 15 Nov 2024 11:03:39 -0500
+Received: by mail-yb1-xb4a.google.com with SMTP id
+ 3f1490d57ef6-e3808cc775bso3601486276.1
+ for <qemu-devel@nongnu.org>; Fri, 15 Nov 2024 08:03:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=google.com; s=20230601; t=1731686614; x=1732291414; darn=nongnu.org;
+ h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=1Jao6wFY8gON0NOG+NANqTtWcVC5+rnyn6sEoCRpZUA=;
+ b=pOBlZSJjZ0BVU7V1uFDnRBHhSabAavTSyFfy/cYNmP3CoTbacsjAussDedwoZ0lTEq
+ 18UA16diUB9XT2jyDlbNzK2vqpZOUcrLg73UXP1DSJ3bgTsQOdpkHc9IG0iaynKzVBQC
+ G+g6t2MGOWFgdJMY9avZG4Bk9eyvRl1RqWZw6SVrkTZK6lzEqPKa9VFaqj6qNh6dsnwg
+ zwOrRguAQFVDyDk2KdWj53RMGOnZl9AiFXbrKjYuakKO1JnzfnLY0j3tauGGYmGSW3ry
+ y57Wt28a0d+HMOp9rsMxbWFUqgXQA0SiNytQnNgdXlkOIa21Y1o/6pdR9oVyqDx+sN62
+ OdbQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1731686614; x=1732291414;
+ h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=1Jao6wFY8gON0NOG+NANqTtWcVC5+rnyn6sEoCRpZUA=;
+ b=QaGCWGg3iyGhQ7nsYnsGbRI8c0+Mw2JZ/VdwgwoCldZSum6dChVcD5s7D5xMVs9Lya
+ qNhxx6/Ml68xeXg7kwA/l7rzB3TLiO+s9dxHehywjq/ZZcWA3xfz+GBmskxfxMWsDHSq
+ aQ0c0m5e0KEvuZzfl6HJsDxPlP/TMCLb7u5w2Rtwuqt7GnIY8uIvPEbF6dYik+f+j3Nt
+ jP5vOWXFN5R/4f8Cr+233bMiYwnCum9ccpuXWxMNcvu5iejmxfkrzPxOnW2NLg25mdCt
+ HHGFmXv5cIXJ/NpnFnyzZGu2QMJz0h106EtPg9S21rfpQ+6UZirAiLk6CV3+kmrb28Gi
+ 5YTw==
+X-Gm-Message-State: AOJu0YzRs7i8cb9zNs6hsgdrXkCEi63JPZgaqT1XoOnEfrWABCommTIC
+ DpVzRJRSnMUrtroRAg3E6G1R4/78fTIp9xLXHQ3/9TlIzvURSRySuvH9GEaZXHvbuyJA4iWjShA
+ cCg==
+X-Google-Smtp-Source: AGHT+IFGh0BzK4WA1jBwf6vz3UTxl1Hm0leOpmd6C0Tpqe6lMHyV0c957etRVD2xQSSkCGwb8fmMqcoIDjg=
+X-Received: from roqueh.c.googlers.com ([fda3:e722:ac3:cc00:4e:3bc9:ac1c:1ab])
+ (user=roqueh job=sendgmr) by 2002:a25:886:0:b0:e2e:3328:7a00 with
+ SMTP id
+ 3f1490d57ef6-e3825d4d1a9mr200320276.3.1731686614700; Fri, 15 Nov 2024
+ 08:03:34 -0800 (PST)
+Date: Fri, 15 Nov 2024 16:03:23 +0000
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.47.0.338.g60cca15819-goog
+Message-ID: <20241115160328.1650269-1-roqueh@google.com>
+Subject: [PATCH 0/5] Make WDOGCONTROL.INTEN the counter enable of the CMSDK
+ APB Watchdog
+From: Roque Arcudia Hernandez <roqueh@google.com>
+To: peter.maydell@linaro.org, farosas@suse.de, lvivier@redhat.com, 
+ slongfield@google.com, komlodi@google.com, pbonzini@redhat.com, 
+ venture@google.com
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, 
+ Roque Arcudia Hernandez <roqueh@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::b4a;
+ envelope-from=31nA3ZwYKCtUIFHL587FF7C5.3FDH5DL-45M5CEFE7EL.FI7@flex--roqueh.bounces.google.com;
+ helo=mail-yb1-xb4a.google.com
+X-Spam_score_int: -95
+X-Spam_score: -9.6
+X-Spam_bar: ---------
+X-Spam_report: (-9.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ USER_IN_DEF_DKIM_WL=-7.5 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -62,102 +92,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sat, 2 Nov 2024, BALATON Zoltan wrote:
-> The MV64361 has two PCI buses one of which is used for AGP on
-> PegasosII. So far we only emulated the PCI bus on pci.1 but some
-> graphics cards are only recognised by some guests when connected to
-> pci.0 corresponding to the AGP port. So far the interrupts were not
-> routed from pci.0 so this patch fixes that allowing the use of both
-> PCI buses. On real board only INTA and INTB are connected for AGP but
-> to avoid surprises we connect all 4 PCI interrupt lines so pci.0 can
-> be used for all PCI cards as well.
+The following patchset tries to address an issue where the watchdog
+counter was running as soon as the device is out of reset. This
+created a few problems with the firmware under test. It was pointed
+out that the firmware under test was already working on an emulator
+using the real RTL. Further review showed that the WDOGCONTROL.INTEN
+is also expected to be the counter enable as it is defined in this
+page from ARM:
 
-Ping? As this is a bug fix it's still not too late to merge I think.
+https://developer.arm.com/documentation/ddi0479/d/apb-components/apb-watchdog/programmers-model?lang=en
 
-Regards,
-BALATON Zoltan
+     |       | Enable the interrupt event, WDOGINT. Set to 1 to
+     |       | enable the counter and the interrupt, or to 0 to
+ [0] | INTEN | disable the counter and interrupt. Reloads the
+     |       | counter from the value in WDOGLOAD when the interrupt
+     |       | is enabled, after previously being disabled.
 
-> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
-> ---
-> hw/pci-host/mv64361.c |  1 +
-> hw/ppc/pegasos2.c     | 30 +++++++++++++++++++++++++++++-
-> 2 files changed, 30 insertions(+), 1 deletion(-)
->
-> diff --git a/hw/pci-host/mv64361.c b/hw/pci-host/mv64361.c
-> index 1036d8600d..421c287eb0 100644
-> --- a/hw/pci-host/mv64361.c
-> +++ b/hw/pci-host/mv64361.c
-> @@ -95,6 +95,7 @@ static void mv64361_pcihost_realize(DeviceState *dev, Error **errp)
->                                    &s->mem, &s->io, 0, 4, TYPE_PCI_BUS);
->     g_free(name);
->     pci_create_simple(h->bus, 0, TYPE_MV64361_PCI_BRIDGE);
-> +    qdev_init_gpio_out(dev, s->irq, ARRAY_SIZE(s->irq));
-> }
->
-> static Property mv64361_pcihost_props[] = {
-> diff --git a/hw/ppc/pegasos2.c b/hw/ppc/pegasos2.c
-> index 8ff4a00c34..16abeaac82 100644
-> --- a/hw/ppc/pegasos2.c
-> +++ b/hw/ppc/pegasos2.c
-> @@ -14,6 +14,7 @@
-> #include "hw/sysbus.h"
-> #include "hw/pci/pci_host.h"
-> #include "hw/irq.h"
-> +#include "hw/or-irq.h"
-> #include "hw/pci-host/mv64361.h"
-> #include "hw/isa/vt82c686.h"
-> #include "hw/ide/pci.h"
-> @@ -73,8 +74,11 @@ OBJECT_DECLARE_TYPE(Pegasos2MachineState, MachineClass, PEGASOS2_MACHINE)
->
-> struct Pegasos2MachineState {
->     MachineState parent_obj;
-> +
->     PowerPCCPU *cpu;
->     DeviceState *mv;
-> +    IRQState pci_irqs[PCI_NUM_PINS];
-> +    OrIRQState orirq[PCI_NUM_PINS];
->     qemu_irq mv_pirq[PCI_NUM_PINS];
->     qemu_irq via_pirq[PCI_NUM_PINS];
->     Vof *vof;
-> @@ -177,7 +181,6 @@ static void pegasos2_init(MachineState *machine)
->         pm->mv_pirq[i] = qdev_get_gpio_in_named(pm->mv, "gpp", 12 + i);
->     }
->     pci_bus = mv64361_get_pci_bus(pm->mv, 1);
-> -    pci_bus_irqs(pci_bus, pegasos2_pci_irq, pm, PCI_NUM_PINS);
->
->     /* VIA VT8231 South Bridge (multifunction PCI device) */
->     via = OBJECT(pci_new_multifunction(PCI_DEVFN(12, 0), TYPE_VT8231_ISA));
-> @@ -209,6 +212,31 @@ static void pegasos2_init(MachineState *machine)
->     /* other PC hardware */
->     pci_vga_init(pci_bus);
->
-> +    /* PCI interrupt routing: lines from pci.0 and pci.1 are ORed */
-> +    for (int h = 0; h < 2; h++) {
-> +        DeviceState *pd;
-> +        g_autofree const char *pn = g_strdup_printf("pcihost%d", h);
-> +
-> +        pd = DEVICE(object_resolve_path_component(OBJECT(pm->mv), pn));
-> +        assert(pd);
-> +        for (i = 0; i < PCI_NUM_PINS; i++) {
-> +            OrIRQState *ori = &pm->orirq[i];
-> +
-> +            if (h == 0) {
-> +                g_autofree const char *n = g_strdup_printf("pci-orirq[%d]", i);
-> +
-> +                object_initialize_child_with_props(OBJECT(pm), n,
-> +                                                   ori, sizeof(*ori),
-> +                                                   TYPE_OR_IRQ, &error_fatal,
-> +                                                   "num-lines", "2", NULL);
-> +                qdev_realize(DEVICE(ori), NULL, &error_fatal);
-> +                qemu_init_irq(&pm->pci_irqs[i], pegasos2_pci_irq, pm, i);
-> +                qdev_connect_gpio_out(DEVICE(ori), 0, &pm->pci_irqs[i]);
-> +            }
-> +            qdev_connect_gpio_out(pd, i, qdev_get_gpio_in(DEVICE(ori), h));
-> +        }
-> +    }
-> +
->     if (machine->kernel_filename) {
->         sz = load_elf(machine->kernel_filename, NULL, NULL, NULL,
->                       &pm->kernel_entry, &pm->kernel_addr, NULL, NULL, 1,
->
+The second half of the patch is focused on adding tests for this
+behavior. It was required to modify the test to be able to run some
+test cases in the MPS2 since the the stellaris machine had 2 issues:
+
+  - The stellaris machine did not run the counter out of reset
+    because of the way it is reset. The function
+    ssys_calculate_system_clock is not called until the reset phase
+    stellaris_sys_reset_hold which is after the watchdog executes its
+    reset, so the watchdog would not start the counter due to the
+    clock not being set up at the time of reset.
+
+  - The Stellaris machine uses a derived watchdog and not the
+    original CMSDK one which has a special behavior where it cannot
+    be stopped.
+
+The MPS2 machine on the other hand uses the standard CMSDK watchdog
+and could expose the problems we were dealing with.
+
+Roque Arcudia Hernandez (5):
+  hw/watchdog/cmsdk_apb_watchdog: Fix broken link
+  hw/watchdog/cmsdk_apb_watchdog: Fix INTEN issues
+  tests/qtest/cmsdk-apb-watchdog-test: Parameterize tests
+  tests/qtest/cmsdk-apb-watchdog-test: Don't abort on assertion failure
+  tests/qtest/cmsdk-apb-watchdog-test: Test INTEN as counter enable
+
+ hw/watchdog/cmsdk-apb-watchdog.c      |  38 ++-
+ tests/qtest/cmsdk-apb-watchdog-test.c | 328 +++++++++++++++++++++++---
+ tests/qtest/meson.build               |   3 +-
+ 3 files changed, 329 insertions(+), 40 deletions(-)
+
+-- 
+2.47.0.338.g60cca15819-goog
+
 
