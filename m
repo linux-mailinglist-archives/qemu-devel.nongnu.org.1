@@ -2,75 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0FEA9CEF11
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Nov 2024 16:22:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F42B9CEF02
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Nov 2024 16:22:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tBy8a-0002EQ-Vf; Fri, 15 Nov 2024 10:21:32 -0500
+	id 1tBy8i-0002ga-MI; Fri, 15 Nov 2024 10:21:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tBy8Y-0002E4-Pq
- for qemu-devel@nongnu.org; Fri, 15 Nov 2024 10:21:30 -0500
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tBy8f-0002Wu-QZ
+ for qemu-devel@nongnu.org; Fri, 15 Nov 2024 10:21:37 -0500
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tBy8W-00047L-Te
- for qemu-devel@nongnu.org; Fri, 15 Nov 2024 10:21:30 -0500
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-432d86a3085so17181895e9.2
- for <qemu-devel@nongnu.org>; Fri, 15 Nov 2024 07:21:28 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tBy8e-000485-26
+ for qemu-devel@nongnu.org; Fri, 15 Nov 2024 10:21:37 -0500
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-43168d9c6c9so16090545e9.3
+ for <qemu-devel@nongnu.org>; Fri, 15 Nov 2024 07:21:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1731684087; x=1732288887; darn=nongnu.org;
+ d=linaro.org; s=google; t=1731684092; x=1732288892; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=yp1aCpXr3wZU6pqXqUnr6GbiNobZzfh44qbynt7h1+g=;
- b=N2Wl7E5jXDQ0SsfJQ2oD+rd1jHzKElM9eihLlNQ9lls7CGnsnXf9219rjfKFVSiKLd
- DGYWaQwr6X4rt2vvK2eTyt5Mn/UL0EucdVF4lV6dkrVAwxNe0XGNjAZxf0UF9VkHaFH1
- GcNuzIiPkGPCwjBqyhLr8uoahJuHt5jZMegzkSSb5q+waBZ+bulOQRtAMT7uZUJGugn2
- ABMdHk2iqRHrFcDL8t7FMKL/O+aQK9laCdkd2Xod+SUMxLwU/9Z/w1G9gfVe3Dzr961W
- Aqm/23SC/Ylf5bhFYSs3cBdCx+uqwdIIJCWPBDVtKJ9NfAGSShFkYRZk12ZwfGLXGnT7
- UDRQ==
+ bh=u5wTkh/tztyRKNsfUcuDCaLezbrFiqbSDF32QCsIdnM=;
+ b=lTJLxhxoldrbF3mcvntkIDDDmt2DAPDfZuZgPLYKoVYqN0WGkf6/EHJyjjsFEAlxZb
+ SKZZkhSWR2258yoiTdwiYbN+tHk+lHo7sGdityBF2CLtwu175wz6wrgs1BG/jyK9niq3
+ Ns0z89k4wxzx3Gh1SKZ60kpvyvTOAFju86NWAicQgT7ZXpcwg6cKSYJDoZorAWh5laZ1
+ 5MfF0JPJRZeJ4hWBYZrA9PdnKrf/3zv5H+t9vGMs2QayMxrPUELny9pxFuAKvasnueu9
+ eSq9a16+uT/3Wx4MbVC79KsmyfW2hCpFoeTPAkjfOULoncusKdIMcPZP62xJf4hI6uMG
+ HP/A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731684087; x=1732288887;
+ d=1e100.net; s=20230601; t=1731684092; x=1732288892;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=yp1aCpXr3wZU6pqXqUnr6GbiNobZzfh44qbynt7h1+g=;
- b=rHd2xdZqgw5Ygsk8oqQaWNxJohD5IQ/kxnX/+BJ4CMHRRr5E4SDXcMn4XEk6jB0VtE
- VKQva2OlTxuaG1qtWEz2R9MBUM7EJP2yhfPBdqz7B+8UypppQ8DECjjIRCFM1hdFNff/
- 4KIdLLAmlYRCpD5tFhlVUEPjwLQ9pfKuXW+nQlM1O49EhuV7twzc/Q5oz+P2unk7/uN6
- fHwoDCYIfDtB/KLCSfkDCmOEaL2l/RdlQzofYNoGgZXgIRVaKTUoktiPCWfOUfs7b65K
- uOkUfwL01gAI16f8n1RdKE8SMlCf2JTRUPL11wlpQYObzrtbbV4XTi2YAQioV7nFiaGR
- YOIQ==
-X-Gm-Message-State: AOJu0YyYiE/OPfSI50f37rj/iCGNTMte/tbdqljFYxbja6LMSeUo4AiX
- Acq6hbnCDVm0aYlgoAJO/qMDYqRmYl1KnYUEFEZMejkwfBP4tK4Q4BGiFcbI4RJPoJMI2JDEBAe
- B
-X-Google-Smtp-Source: AGHT+IFhFoquZWowIOxNx0Ov4CvVfco7sFdbAGelYS7jLuKzzw2hgKb8CAmPZ0GVe6KqbVkhrJIUOg==
-X-Received: by 2002:a05:6000:1868:b0:37e:f1ed:67e8 with SMTP id
- ffacd0b85a97d-38225a21d77mr2952048f8f.35.1731684087066; 
- Fri, 15 Nov 2024 07:21:27 -0800 (PST)
+ bh=u5wTkh/tztyRKNsfUcuDCaLezbrFiqbSDF32QCsIdnM=;
+ b=IR35S5K3JjyRJKwXXVYjuvDqYuaSvi45G/ALjb7wEoycoTVZLm7wg/t6RUQqG0WgSA
+ vAKXHsTNznl7PmwIRA+zpKInMeQTS8L6LD9ixenVxUd373ZNH3f0995KWKEcgR8XvMet
+ 3eXwalyg7SHhkGd5PZZ2fNHr0/fbmyvbUX9huK9HlzWWxcFYn4v06bdrDR8JRiJpgR5C
+ cZWfAbwLfdTNAetWiUm2ZtLjdHvnXbBbvuD0Xqs/Nb6tAZWiImuqnUAOGhXox1M3u/kM
+ 3U1LIGZLnB1eNXxIowx11mn5sxfB0YkugXANVO2ML9RV+Y5z5h11HS0a8nEcv/1b8/Hf
+ liXQ==
+X-Gm-Message-State: AOJu0YxHNqaX8VnzGrEs48PpzDsPGFKANZq6Kle0O7gdahwFUxQ3CUW9
+ tqPkMb+Xc03qro0UM4n870RjUHHHWojphx9FFRZ6zXkrIO0I+yEens1jAxAQtX+yBs+2lEZIreB
+ R
+X-Google-Smtp-Source: AGHT+IEws/cKA1SJsZDLtdIHB5PGgZ6EERwXm23XXKlLIop7YAvzL29TZI+Sw4gSL4W0at70NsS4wQ==
+X-Received: by 2002:a05:600c:1387:b0:42c:b45d:4a7b with SMTP id
+ 5b1f17b1804b1-432df78a971mr24952685e9.25.1731684092591; 
+ Fri, 15 Nov 2024 07:21:32 -0800 (PST)
 Received: from localhost.localdomain ([176.187.214.209])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-382224253f6sm3301155f8f.111.2024.11.15.07.21.25
+ 5b1f17b1804b1-432da24459bsm61825705e9.6.2024.11.15.07.21.31
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 15 Nov 2024 07:21:25 -0800 (PST)
+ Fri, 15 Nov 2024 07:21:31 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 06/10] accel/tcg: Remove cpu_unwind_state_data() unused
- CPUState argument
-Date: Fri, 15 Nov 2024 16:20:49 +0100
-Message-ID: <20241115152053.66442-7-philmd@linaro.org>
+Subject: [PATCH 07/10] accel/tcg: Reduce log_pc() declaration scope
+Date: Fri, 15 Nov 2024 16:20:50 +0100
+Message-ID: <20241115152053.66442-8-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241115152053.66442-1-philmd@linaro.org>
 References: <20241115152053.66442-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,108 +92,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+log_pc() is only used in cpu-exec.c, move it there.
+
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/exec/translate-all.h | 3 +--
- accel/tcg/translate-all.c    | 2 +-
- target/i386/helper.c         | 3 ++-
- target/openrisc/sys_helper.c | 7 +++----
- 4 files changed, 7 insertions(+), 8 deletions(-)
+ accel/tcg/internal-target.h | 10 ----------
+ accel/tcg/cpu-exec.c        | 10 ++++++++++
+ 2 files changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/include/exec/translate-all.h b/include/exec/translate-all.h
-index f06cfedd52..9303318953 100644
---- a/include/exec/translate-all.h
-+++ b/include/exec/translate-all.h
-@@ -23,7 +23,6 @@
+diff --git a/accel/tcg/internal-target.h b/accel/tcg/internal-target.h
+index fe109724c6..750b3706b1 100644
+--- a/accel/tcg/internal-target.h
++++ b/accel/tcg/internal-target.h
+@@ -71,16 +71,6 @@ G_NORETURN void cpu_io_recompile(CPUState *cpu, uintptr_t retaddr);
  
+ bool tb_invalidate_phys_page_unwind(tb_page_addr_t addr, uintptr_t pc);
+ 
+-/* Return the current PC from CPU, which may be cached in TB. */
+-static inline vaddr log_pc(CPUState *cpu, const TranslationBlock *tb)
+-{
+-    if (tb_cflags(tb) & CF_PCREL) {
+-        return cpu->cc->get_pc(cpu);
+-    } else {
+-        return tb->pc;
+-    }
+-}
+-
  /**
-  * cpu_unwind_state_data:
-- * @cpu: the cpu context
-  * @host_pc: the host pc within the translation
-  * @data: output data
-  *
-@@ -32,7 +31,7 @@
-  * function returns false; otherwise @data is loaded.
-  * This is the same unwind info as given to restore_state_to_opc.
-  */
--bool cpu_unwind_state_data(CPUState *cpu, uintptr_t host_pc, uint64_t *data);
-+bool cpu_unwind_state_data(uintptr_t host_pc, uint64_t *data);
- 
- /* translate-all.c */
- void tb_check_watchpoint(CPUState *cpu, uintptr_t retaddr);
-diff --git a/accel/tcg/translate-all.c b/accel/tcg/translate-all.c
-index fdf6d8ac19..8d5530e341 100644
---- a/accel/tcg/translate-all.c
-+++ b/accel/tcg/translate-all.c
-@@ -243,7 +243,7 @@ bool cpu_restore_state(CPUState *cpu, uintptr_t host_pc)
-     return false;
+  * tcg_req_mo:
+  * @type: TCGBar
+diff --git a/accel/tcg/cpu-exec.c b/accel/tcg/cpu-exec.c
+index 033f5fab10..73bc9f00f7 100644
+--- a/accel/tcg/cpu-exec.c
++++ b/accel/tcg/cpu-exec.c
+@@ -433,6 +433,16 @@ const void *HELPER(lookup_tb_ptr)(CPUArchState *env)
+     return tb->tc.ptr;
  }
  
--bool cpu_unwind_state_data(CPUState *cpu, uintptr_t host_pc, uint64_t *data)
-+bool cpu_unwind_state_data(uintptr_t host_pc, uint64_t *data)
- {
-     if (in_code_gen_buffer((const void *)(host_pc - tcg_splitwx_diff))) {
-         TranslationBlock *tb = tcg_tb_lookup(host_pc);
-diff --git a/target/i386/helper.c b/target/i386/helper.c
-index 01a268a30b..b848936441 100644
---- a/target/i386/helper.c
-+++ b/target/i386/helper.c
-@@ -29,6 +29,7 @@
- #endif
- #include "qemu/log.h"
- #ifdef CONFIG_TCG
-+#include "exec/translate-all.h"
- #include "tcg/insn-start-words.h"
- #endif
- 
-@@ -526,7 +527,7 @@ static inline target_ulong get_memio_eip(CPUX86State *env)
-     uint64_t data[TARGET_INSN_START_WORDS];
-     CPUState *cs = env_cpu(env);
- 
--    if (!cpu_unwind_state_data(cs, cs->mem_io_pc, data)) {
-+    if (!cpu_unwind_state_data(cs->mem_io_pc, data)) {
-         return env->eip;
-     }
- 
-diff --git a/target/openrisc/sys_helper.c b/target/openrisc/sys_helper.c
-index 77567afba4..67e1f53fca 100644
---- a/target/openrisc/sys_helper.c
-+++ b/target/openrisc/sys_helper.c
-@@ -20,7 +20,7 @@
- 
- #include "qemu/osdep.h"
- #include "cpu.h"
--#include "exec/exec-all.h"
-+#include "exec/translate-all.h"
- #include "exec/helper-proto.h"
- #include "exception.h"
- #ifndef CONFIG_USER_ONLY
-@@ -219,7 +219,6 @@ target_ulong HELPER(mfspr)(CPUOpenRISCState *env, target_ulong rd,
- #ifndef CONFIG_USER_ONLY
-     uint64_t data[TARGET_INSN_START_WORDS];
-     MachineState *ms = MACHINE(qdev_get_machine());
--    CPUState *cs = env_cpu(env);
-     int idx;
- #endif
- 
-@@ -260,7 +259,7 @@ target_ulong HELPER(mfspr)(CPUOpenRISCState *env, target_ulong rd,
-         return env->evbar;
- 
-     case TO_SPR(0, 16): /* NPC (equals PC) */
--        if (cpu_unwind_state_data(cs, GETPC(), data)) {
-+        if (cpu_unwind_state_data(GETPC(), data)) {
-             return data[0];
-         }
-         return env->pc;
-@@ -269,7 +268,7 @@ target_ulong HELPER(mfspr)(CPUOpenRISCState *env, target_ulong rd,
-         return cpu_get_sr(env);
- 
-     case TO_SPR(0, 18): /* PPC */
--        if (cpu_unwind_state_data(cs, GETPC(), data)) {
-+        if (cpu_unwind_state_data(GETPC(), data)) {
-             if (data[1] & 2) {
-                 return data[0] - 4;
-             }
++/* Return the current PC from CPU, which may be cached in TB. */
++static inline vaddr log_pc(CPUState *cpu, const TranslationBlock *tb)
++{
++    if (tb_cflags(tb) & CF_PCREL) {
++        return cpu->cc->get_pc(cpu);
++    } else {
++        return tb->pc;
++    }
++}
++
+ /* Execute a TB, and fix up the CPU state afterwards if necessary */
+ /*
+  * Disable CFI checks.
 -- 
 2.45.2
 
