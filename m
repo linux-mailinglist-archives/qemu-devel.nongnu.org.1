@@ -2,77 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 936929CF1D9
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Nov 2024 17:42:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A450A9CF1DE
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Nov 2024 17:42:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tBzOG-00071v-Ei; Fri, 15 Nov 2024 11:41:48 -0500
+	id 1tBzOI-0007EK-BV; Fri, 15 Nov 2024 11:41:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tBzNk-0006aR-Fc
- for qemu-devel@nongnu.org; Fri, 15 Nov 2024 11:41:19 -0500
+ id 1tBzNr-0006fX-LE
+ for qemu-devel@nongnu.org; Fri, 15 Nov 2024 11:41:25 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tBzNh-0002NO-K2
- for qemu-devel@nongnu.org; Fri, 15 Nov 2024 11:41:16 -0500
+ id 1tBzNq-0002O1-4t
+ for qemu-devel@nongnu.org; Fri, 15 Nov 2024 11:41:23 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1731688873;
+ s=mimecast20190719; t=1731688881;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=21GUR4wAO6jBo8H2QNojVW9mDn5/11rbisElFvTu3Ac=;
- b=O5iBOantgcMRRkvYxy/ZajPJIu59OZa1PnKSnQ8hyN0BKfoQkXcDscGOgg9gWoPqmG6WWd
- tsgMgSHEeB5rLeHCKxmLmzXIVQLcwmSAVwkYz+p+taJhDkPOiuSVkcNtP8jATg2mjpFoEF
- 0DjcDbZ0D+pHXCnN/4msijrARMFnByE=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=R9drXR6Ude9Syf7XBgbJFTV9jiXiqgiqWNTd79QJqvw=;
+ b=Ro4lcg7hidbLeLSLXRgRGZ5x8P8XYxb48kmgJVGHMj1fSZoiscH3mUxrwla63Hq05hDuJP
+ 0Pbuca2nwN6LrlL7nO0zL56yweW+QdB2YDUww7DojSYqdfHPB2ZMm/WKKi2jDGN0ue2tV/
+ GDdrP3PoH3YM9HfJW/9EBnH1DV2Il4M=
+Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
+ [209.85.167.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-288-xhTJKQNgMh6bbdd4Vsexeg-1; Fri, 15 Nov 2024 11:41:11 -0500
-X-MC-Unique: xhTJKQNgMh6bbdd4Vsexeg-1
-X-Mimecast-MFC-AGG-ID: xhTJKQNgMh6bbdd4Vsexeg
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-432d9bb0f19so12053475e9.1
- for <qemu-devel@nongnu.org>; Fri, 15 Nov 2024 08:41:11 -0800 (PST)
+ us-mta-492-rPKb8cCfOXK6365n2uWKgQ-1; Fri, 15 Nov 2024 11:41:19 -0500
+X-MC-Unique: rPKb8cCfOXK6365n2uWKgQ-1
+X-Mimecast-MFC-AGG-ID: rPKb8cCfOXK6365n2uWKgQ
+Received: by mail-lf1-f69.google.com with SMTP id
+ 2adb3069b0e04-539e13b8143so887074e87.0
+ for <qemu-devel@nongnu.org>; Fri, 15 Nov 2024 08:41:17 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731688868; x=1732293668;
+ d=1e100.net; s=20230601; t=1731688873; x=1732293673;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=21GUR4wAO6jBo8H2QNojVW9mDn5/11rbisElFvTu3Ac=;
- b=Qo63AfI8hdexbeIPiCtasz7zTQaMsZfafLAQmzTN3sQ1FJ1gtTjdxlpLTY1+cAOlPF
- nS7uD/ox/eAstVWF/W4xPDph67obNBxKcYu0joNo5c2UHDcxrPvQXia6ZZReLmTQQunR
- 6MfkizlkD6qO9oJ4owNObLKo7z2qTtYZnmiyubHvIU9PKKykNDqkpl9ATrpDXhrhXPgN
- 6olcRPtcWA4js0UyDmRgTvCP+la1PUUAuHlWVcTpFCl5pYBo1Id4LmwGU3/12JCSW3IR
- ayqFhUF1hktxqxpnCv0DAPZOotzPln6quyLoYM1byQgB19v+/hF97stFeGQfo9lDWkiI
- vkOQ==
-X-Gm-Message-State: AOJu0YzW/QFo7vEZx65dQctwgfJmNRH+rVSFogAwn86ovNGk3yiTOUF8
- 0CGlJLyz8p5oMShMXYm/iUtwvHUbv6mTK3kseQTTcgZD9ZLbSMySLgPgbELSdXrw8F4xyWr7t6K
- mDm6CurPdd76C7E+WVw7OJeTOg3uafoMU5eZ23LN9msHNVEUIirZHF9T61CTONpoAdNCM3wFFd8
- 9T7JkWhRTJS1I6zMo9t15EI6lqHlFLEy4x0XzI7QA=
-X-Received: by 2002:a05:600c:1c2a:b0:432:7c30:abf3 with SMTP id
- 5b1f17b1804b1-432d974a829mr75294155e9.7.1731688868584; 
- Fri, 15 Nov 2024 08:41:08 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFzhsQ+zoIdjAo89HZudwP7NIBS+t5yLbVTYFq13I7ZnhEC0s+mPpebu63A/9+ErVsY9h45gA==
-X-Received: by 2002:a05:600c:1c2a:b0:432:7c30:abf3 with SMTP id
- 5b1f17b1804b1-432d974a829mr75293945e9.7.1731688868197; 
- Fri, 15 Nov 2024 08:41:08 -0800 (PST)
+ bh=R9drXR6Ude9Syf7XBgbJFTV9jiXiqgiqWNTd79QJqvw=;
+ b=T+xYvhdT0JLK8iaOS3Nk7DwGxb+I9kB18xnmNrOnkLf+EFZLZDCRZTAFopO7uRrfTe
+ sUbQY2V2AG2gvhGL9V4/InKxEJplZ6XBZLBeHDSJulu5vHHkKa4HpmloIVOfV1w3UBQV
+ ZMoMebOK3UiCJDBc3IrqV3tI2TZQ3w4BR4aDPeqOiU43AdusQlHQnjCiE9vd+EipZR5R
+ wymBT1MxJ3fkB5bCrXCP+1bkXwf46AK1OryOochkLOyUPFmILiIe6Dl+aXC5Q1LpMDWe
+ w9lzv41QiJL4cqFZQbXLtLYGyGIPtG0Xdwmcj5zbHZ0ZB6MimV2BhPXfZym7Bzb4Wf8b
+ T7mQ==
+X-Gm-Message-State: AOJu0YwkNfyT01JOqFRsDj15L6y27umW3bVQqF+MWrw5GxuA7bjoGVy5
+ zFzs3Vn03TEyp7uX1Z2G4zJBQHR+zPnb7mhoGZMJsaFTTZijaff2QkpntIueEu0ao7eJn7k1M9Y
+ d6A2o4c2pr9haJ6aHrX7XyxgWxSsvh1Tbs9k7LFTroVp42adYLHYlxdyQ7Wm7i/r1eZLTaxDiZQ
+ HUb66SfdQR/mG4V8Nk7RLoCSfNdb3VRUjYyb0XQvs=
+X-Received: by 2002:a05:6512:a8b:b0:53d:a4ff:31d7 with SMTP id
+ 2adb3069b0e04-53dab3bf5a5mr1798644e87.40.1731688872742; 
+ Fri, 15 Nov 2024 08:41:12 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFBxdEuDpU02hegQikxa2pwFvauIp8Gy2nDC9GIpzg2YewMmP3fd8pNPe7EWiYWovEJeeHCLQ==
+X-Received: by 2002:a05:6512:a8b:b0:53d:a4ff:31d7 with SMTP id
+ 2adb3069b0e04-53dab3bf5a5mr1798622e87.40.1731688872258; 
+ Fri, 15 Nov 2024 08:41:12 -0800 (PST)
 Received: from [192.168.10.3] ([151.49.84.243])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-432da28bc11sm61758915e9.31.2024.11.15.08.41.04
+ 5b1f17b1804b1-432dab78881sm58647175e9.13.2024.11.15.08.41.09
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 15 Nov 2024 08:41:04 -0800 (PST)
+ Fri, 15 Nov 2024 08:41:09 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-rust@nongnu.org, berrange@redhat.com, junjie.mao@hotmail.com,
  manos.pitsidianakis@linaro.org, kwolf@redhat.com
-Subject: [PATCH 10/12] rust: build: add "make clippy", "make rustfmt",
- "make rustdoc"
-Date: Fri, 15 Nov 2024 17:40:23 +0100
-Message-ID: <20241115164025.1917618-10-pbonzini@redhat.com>
+Subject: [PATCH 11/12] rust: ci: add job that runs Rust tools
+Date: Fri, 15 Nov 2024 17:40:24 +0100
+Message-ID: <20241115164025.1917618-11-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241115163944.1917393-1-pbonzini@redhat.com>
 References: <20241115163944.1917393-1-pbonzini@redhat.com>
@@ -103,94 +102,101 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Abstract common invocations of "cargo", that do not require copying
-the generated bindgen file or setting up MESON_BUILD_ROOT.
+Code checks, as well as documentation generation, are not yet tied
+to "make check" because they need new version of the Rust toolchain
+(even nightly in the case of "rustfmt").  Run them in CI using the
+existing nightly-Rust container.
 
-In the future these could also do completely without cargo and invoke
-the underlying programs directly.
-
-Reviewed-by: Junjie Mao <junjie.mao@hotmail.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- rust/meson.build        | 22 ++++++++++++++++++++++
- rust/qemu-api/README.md | 10 ++++++----
- rust/qemu-api/build.rs  |  9 +++++++--
- 3 files changed, 35 insertions(+), 6 deletions(-)
+ .gitlab-ci.d/static_checks.yml                | 23 +++++++++++++++++++
+ .../dockerfiles/fedora-rust-nightly.docker    |  4 ++++
+ tests/lcitool/refresh                         |  4 ++++
+ 3 files changed, 31 insertions(+)
 
-diff --git a/rust/meson.build b/rust/meson.build
-index def77389cdd..91e52b8fb8e 100644
---- a/rust/meson.build
-+++ b/rust/meson.build
-@@ -2,3 +2,25 @@ subdir('qemu-api-macros')
- subdir('qemu-api')
- 
- subdir('hw')
+diff --git a/.gitlab-ci.d/static_checks.yml b/.gitlab-ci.d/static_checks.yml
+index ad9f426a52f..f6f22875265 100644
+--- a/.gitlab-ci.d/static_checks.yml
++++ b/.gitlab-ci.d/static_checks.yml
+@@ -46,3 +46,26 @@ check-python-tox:
+     QEMU_JOB_OPTIONAL: 1
+   needs:
+     job: python-container
 +
-+cargo = find_program('cargo', required: false)
-+
-+if cargo.found()
-+  run_target('clippy',
-+    command: [config_host['MESON'], 'devenv',
-+              '--workdir', '@CURRENT_SOURCE_DIR@',
-+              cargo, 'clippy', '--tests'],
-+    depends: bindings_rs)
-+
-+  run_target('rustfmt',
-+    command: [config_host['MESON'], 'devenv',
-+              '--workdir', '@CURRENT_SOURCE_DIR@',
-+              cargo, 'fmt'],
-+    depends: bindings_rs)
-+
-+  run_target('rustdoc',
-+    command: [config_host['MESON'], 'devenv',
-+              '--workdir', '@CURRENT_SOURCE_DIR@',
-+              cargo, 'doc', '--no-deps', '--document-private-items'],
-+    depends: bindings_rs)
-+endif
-diff --git a/rust/qemu-api/README.md b/rust/qemu-api/README.md
-index 53810f48882..ed1b7ab263d 100644
---- a/rust/qemu-api/README.md
-+++ b/rust/qemu-api/README.md
-@@ -5,13 +5,15 @@ This library exports helper Rust types, Rust macros and C FFI bindings for inter
- The C bindings can be generated with `bindgen`, using this build target:
++check-rust-tools-nightly:
++  extends: .base_job_template
++  stage: test
++  image: $CI_REGISTRY_IMAGE/qemu/fedora-rust-nightly:$QEMU_CI_CONTAINER_TAG
++  script:
++    - source scripts/ci/gitlab-ci-section
++    - section_start test "Running Rust code checks"
++    - cd build
++    - pyvenv/bin/meson devenv -w ../rust ${CARGO-cargo} fmt --check
++    - make clippy
++    - make rustdoc
++    - section_end test
++  variables:
++    GIT_DEPTH: 1
++  needs:
++    - job: build-system-fedora-rust-nightly
++      artifacts: true
++  artifacts:
++    when: on_success
++    expire_in: 2 days
++    paths:
++      - rust/target/doc
+diff --git a/tests/docker/dockerfiles/fedora-rust-nightly.docker b/tests/docker/dockerfiles/fedora-rust-nightly.docker
+index 9180c8b5222..a8e4fb279a7 100644
+--- a/tests/docker/dockerfiles/fedora-rust-nightly.docker
++++ b/tests/docker/dockerfiles/fedora-rust-nightly.docker
+@@ -155,6 +155,7 @@ ENV PYTHON "/usr/bin/python3"
+ RUN dnf install -y wget
+ ENV RUSTUP_HOME=/usr/local/rustup CARGO_HOME=/usr/local/cargo
+ ENV RUSTC=/usr/local/rustup/toolchains/nightly-x86_64-unknown-linux-gnu/bin/rustc
++ENV CARGO=/usr/local/rustup/toolchains/nightly-x86_64-unknown-linux-gnu/bin/cargo
+ RUN set -eux && \
+   rustArch='x86_64-unknown-linux-gnu' && \
+   rustupSha256='6aeece6993e902708983b209d04c0d1dbb14ebb405ddb87def578d41f920f56d' && \
+@@ -165,10 +166,13 @@ RUN set -eux && \
+   ./rustup-init -y --no-modify-path --profile default --default-toolchain nightly --default-host ${rustArch} && \
+   chmod -R a+w $RUSTUP_HOME $CARGO_HOME && \
+   /usr/local/cargo/bin/rustup --version && \
++  /usr/local/cargo/bin/rustup run nightly cargo --version && \
+   /usr/local/cargo/bin/rustup run nightly rustc --version && \
++  test "$CARGO" = "$(/usr/local/cargo/bin/rustup +nightly which cargo)" && \
+   test "$RUSTC" = "$(/usr/local/cargo/bin/rustup +nightly which rustc)"
+ ENV PATH=$CARGO_HOME/bin:$PATH
+ RUN /usr/local/cargo/bin/rustup run nightly cargo install bindgen-cli
++RUN $CARGO --list
+ # As a final step configure the user (if env is defined)
+ ARG USER
+ ARG UID
+diff --git a/tests/lcitool/refresh b/tests/lcitool/refresh
+index 51012783c0f..6720516b942 100755
+--- a/tests/lcitool/refresh
++++ b/tests/lcitool/refresh
+@@ -121,6 +121,7 @@ fedora_rustup_nightly_extras = [
+     "RUN dnf install -y wget\n",
+     "ENV RUSTUP_HOME=/usr/local/rustup CARGO_HOME=/usr/local/cargo\n",
+     "ENV RUSTC=/usr/local/rustup/toolchains/nightly-x86_64-unknown-linux-gnu/bin/rustc\n",
++    "ENV CARGO=/usr/local/rustup/toolchains/nightly-x86_64-unknown-linux-gnu/bin/cargo\n",
+     "RUN set -eux && \\\n",
+     "  rustArch='x86_64-unknown-linux-gnu' && \\\n",
+     "  rustupSha256='6aeece6993e902708983b209d04c0d1dbb14ebb405ddb87def578d41f920f56d' && \\\n",
+@@ -131,10 +132,13 @@ fedora_rustup_nightly_extras = [
+     "  ./rustup-init -y --no-modify-path --profile default --default-toolchain nightly --default-host ${rustArch} && \\\n",
+     "  chmod -R a+w $RUSTUP_HOME $CARGO_HOME && \\\n",
+     "  /usr/local/cargo/bin/rustup --version && \\\n",
++    "  /usr/local/cargo/bin/rustup run nightly cargo --version && \\\n",
+     "  /usr/local/cargo/bin/rustup run nightly rustc --version && \\\n",
++    '  test "$CARGO" = "$(/usr/local/cargo/bin/rustup +nightly which cargo)" && \\\n',
+     '  test "$RUSTC" = "$(/usr/local/cargo/bin/rustup +nightly which rustc)"\n',
+     'ENV PATH=$CARGO_HOME/bin:$PATH\n',
+     'RUN /usr/local/cargo/bin/rustup run nightly cargo install bindgen-cli\n',
++    'RUN $CARGO --list\n',
+ ]
  
- ```console
--$ ninja bindings.inc.rs
-+$ make bindings.inc.rs
- ```
- 
- ## Generate Rust documentation
- 
--To generate docs for this crate, including private items:
-+Common Cargo tasks can be performed from the QEMU build directory
- 
--```sh
--pyvenv/bin/meson devenv -w ../rust cargo doc --no-deps --document-private-items
-+```console
-+$ make clippy
-+$ make rustfmt
-+$ make rustdoc
- ```
-diff --git a/rust/qemu-api/build.rs b/rust/qemu-api/build.rs
-index 06e79082b5f..33e7968ee76 100644
---- a/rust/qemu-api/build.rs
-+++ b/rust/qemu-api/build.rs
-@@ -20,8 +20,13 @@ fn main() -> Result<()> {
-     let file = Path::new(&file);
-     if !Path::new(&file).exists() {
-         panic!(concat!(
--            "No generated C bindings found! If you want to run `cargo`, start a subshell\n",
--            "with `meson devenv`, or point MESON_BUILD_ROOT to the top of the build tree."
-+            "\n",
-+            "    No generated C bindings found! Maybe you wanted one of\n",
-+            "    `make clippy`, `make rustfmt`, `make rustdoc`?\n",
-+            "\n",
-+            "    For other uses of `cargo`, start a subshell with\n",
-+            "    `pyvenv/bin/meson devenv`, or point MESON_BUILD_ROOT to\n",
-+            "    the top of the build tree."
-         ));
-     }
- 
+ ubuntu2204_bindgen_extras = [
 -- 
 2.47.0
 
