@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BAA79CF0F5
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Nov 2024 17:04:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 53EAE9CF0F3
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Nov 2024 17:04:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tBynU-00049S-1r; Fri, 15 Nov 2024 11:03:48 -0500
+	id 1tBynU-0004AS-CY; Fri, 15 Nov 2024 11:03:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <32nA3ZwYKCtkMJLP9CBJJBG9.7JHL9HP-89Q9GIJIBIP.JMB@flex--roqueh.bounces.google.com>)
- id 1tBynO-000498-Px
- for qemu-devel@nongnu.org; Fri, 15 Nov 2024 11:03:42 -0500
+ <33nA3ZwYKCt0QNPTDGFNNFKD.BNLPDLT-CDUDKMNMFMT.NQF@flex--roqueh.bounces.google.com>)
+ id 1tBynQ-00049X-PB
+ for qemu-devel@nongnu.org; Fri, 15 Nov 2024 11:03:45 -0500
 Received: from mail-yb1-xb4a.google.com ([2607:f8b0:4864:20::b4a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from
- <32nA3ZwYKCtkMJLP9CBJJBG9.7JHL9HP-89Q9GIJIBIP.JMB@flex--roqueh.bounces.google.com>)
- id 1tBynM-0003ud-Ux
- for qemu-devel@nongnu.org; Fri, 15 Nov 2024 11:03:42 -0500
+ <33nA3ZwYKCt0QNPTDGFNNFKD.BNLPDLT-CDUDKMNMFMT.NQF@flex--roqueh.bounces.google.com>)
+ id 1tBynP-00040x-8X
+ for qemu-devel@nongnu.org; Fri, 15 Nov 2024 11:03:44 -0500
 Received: by mail-yb1-xb4a.google.com with SMTP id
- 3f1490d57ef6-e2e3321aae0so1184380276.1
- for <qemu-devel@nongnu.org>; Fri, 15 Nov 2024 08:03:39 -0800 (PST)
+ 3f1490d57ef6-e381f9e1395so2648391276.3
+ for <qemu-devel@nongnu.org>; Fri, 15 Nov 2024 08:03:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20230601; t=1731686619; x=1732291419; darn=nongnu.org;
+ d=google.com; s=20230601; t=1731686622; x=1732291422; darn=nongnu.org;
  h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
  :date:from:to:cc:subject:date:message-id:reply-to;
- bh=CaMy4sZhLruE2/rOqIYreQpf3lX4IZAEpEV0rXHSsk0=;
- b=MpcRTnCe9iD4bRLSAgtIRtwoJAJJVxyfUkvfTYUOwrTUM0Kz9IwJZKQ8AR98Ui9doD
- hCc6XbFI7hMQnVPzkaKPNAyBwwuU1MqxBu2jLNd8ko0RA55T+E6J2lcnBkR2gM8gJ4bf
- YYAIWxfGVWUAKQAG/QoWpx7iWY8uWvRrkuTEBvfgfrzIavNkuQ1w9ZpkHQcMjy2+UBYy
- y+iTKJUhyW1d85aEPaVWza+aUJpTamrTDhId4PK4SVsFrPNeAHNK+zIHeelqnx0PhiNq
- ZnkxBatE5idJtbsO5XgXDWPO+22PwU7317gDbSY/hVx4dJGMCtP+woIf14XOLuOfAGLP
- nqrA==
+ bh=HYr7dkbjOM3DhMWGJi0XHGtksaAWQFJUXcJyP4tJoMU=;
+ b=MxfYrLR7Fj6HQ8ItFqA+yYZvGb473tJSXJv/+5upqp0CYSlZdlQeaYybSEhR3E6xon
+ 4Foq3KDQpG3OF/CYju318Yagbj7IpKvRNmWvUevSMixm8IsWPcTen0fJiT6GMkFJO62i
+ X6e2VX5mZaBFMC7PwEQ4N9EgiCt7eWS31uIi7r2K9rUpV8rGHgKpCz8boVFvCXb74n1n
+ n2xj+5t9bWagnMeYpSUiJQrybmV56DvYa0VyDEGyjka3SjvrHh5xqISVHK2df8qoETud
+ MKmThUwlSBWGUZ+OSaHq2dkNPuILQaci0OM1iI5ypZx7YTA1fLZt4CBFFbxiCUaeSj4t
+ IWOw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731686619; x=1732291419;
+ d=1e100.net; s=20230601; t=1731686622; x=1732291422;
  h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
  :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=CaMy4sZhLruE2/rOqIYreQpf3lX4IZAEpEV0rXHSsk0=;
- b=CdfYr03Qj/wWGFpX+gUPCxEOs/k1IEL1Bh18A4S1+vCV/0DpsmCl/5CUXsrKWMY+u4
- MkaGl030VslgnniwrF1a8UfLNp/gPa2VQbWxotlPbiRdZPka5s0Od0zOqnbGUoYV/RQa
- qYqfJNytdClGSvZIyC4SJbZGet9TlrVdv0JwToOWV0p2zYsUS2NGEJIO63SVv2Q6dx5y
- yKomnqGoB62/2ZlCCbnv59+kGUI4F+c0oWWx9otAru6RJHk13wz8JK+yeuwPlEdM/23N
- amTJU3aPulaNdaLnzbVT4At6JggsfFlCAVDJqwYh0Mt6Sjavebgt6xqM9mWMSj6YjQnd
- 6nCg==
-X-Gm-Message-State: AOJu0YzkNf142VNC4UKymBsXKZsHnmb5GuOGamt5Rjxr/Tfy6dp23CRU
- J60/25wcaEoldYeXTbE+Aa3hd7ThDquuIqYzgR47u7w9OO7qeO5bwPWGiUkCdag7Qc4nDc6+w/9
- AZQ==
-X-Google-Smtp-Source: AGHT+IErCkrS90fiHcGg+bwh6if6MtWNQjcvKN88eUJllOzKl1qmgvM2bJOUghRpSURGzaL2Lj2LKc+SzJ0=
+ bh=HYr7dkbjOM3DhMWGJi0XHGtksaAWQFJUXcJyP4tJoMU=;
+ b=AXGJSLQ9zyoKzetjLjwK0U8Z1lB/3OYSciSBTsTF5QjS0DCRoRmeIS+NN6Yhg1wi2z
+ UoF18nuzQLuc76O9+/uXbT+oqz+0t/xdz85RrXhzvonEB5LpBgGzd9mqkow7SArq+ae/
+ dA699roNB4AN/IK9EhiO/pvPn1zoxHUNiLqr22qha2IWu2sD7hnE92jFKxnWGOzhjDBu
+ FLE8AruQetkwwrdOy17WKk1ar2m9JamU0LMYJ5GvxTqTjshtxzSLzluYDTNiMl7nzuHi
+ KtMk3wwY7EdKxJ6TkxhqnILdbC/yw4+QcHQTvwQeZhYiXBzadFS3SL/tV4/Z5yWsg6B/
+ Urcw==
+X-Gm-Message-State: AOJu0YyX98wGE31S5J9yYZXCP/eK2VQ+M62IG+gvKrJwx2EARFeeTuYa
+ V4lx4bMJg0NoyTZcX5ah85a3ORa61sRuPg3AbvuYbnMErJ9a/43YUfgDN82MTlPCgtQvxs6YThE
+ EMQ==
+X-Google-Smtp-Source: AGHT+IFAtteKGzbsxn7wEW/AZvhVZkag2wL/KsZoSf44v9m5j4DQzTGeTKHamCAz4aMV3IOr2XkH/iE+rQU=
 X-Received: from roqueh.c.googlers.com ([fda3:e722:ac3:cc00:4e:3bc9:ac1c:1ab])
- (user=roqueh job=sendgmr) by 2002:a05:6902:72f:b0:e2b:da82:f695
- with SMTP id
- 3f1490d57ef6-e3826394879mr3594276.6.1731686618635; Fri, 15 Nov 2024 08:03:38
- -0800 (PST)
-Date: Fri, 15 Nov 2024 16:03:24 +0000
+ (user=roqueh job=sendgmr) by 2002:a25:53c1:0:b0:e30:b93a:b3e4 with
+ SMTP id
+ 3f1490d57ef6-e382614aae1mr129379276.4.1731686622044; Fri, 15 Nov 2024
+ 08:03:42 -0800 (PST)
+Date: Fri, 15 Nov 2024 16:03:25 +0000
 In-Reply-To: <20241115160328.1650269-1-roqueh@google.com>
 Mime-Version: 1.0
 References: <20241115160328.1650269-1-roqueh@google.com>
 X-Mailer: git-send-email 2.47.0.338.g60cca15819-goog
-Message-ID: <20241115160328.1650269-2-roqueh@google.com>
-Subject: [PATCH 1/5] hw/watchdog/cmsdk_apb_watchdog: Fix broken link
+Message-ID: <20241115160328.1650269-3-roqueh@google.com>
+Subject: [PATCH 2/5] hw/watchdog/cmsdk_apb_watchdog: Fix INTEN issues
 From: Roque Arcudia Hernandez <roqueh@google.com>
 To: peter.maydell@linaro.org, farosas@suse.de, lvivier@redhat.com, 
  slongfield@google.com, komlodi@google.com, pbonzini@redhat.com, 
@@ -69,7 +69,7 @@ Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org,
  Roque Arcudia Hernandez <roqueh@google.com>
 Content-Type: text/plain; charset="UTF-8"
 Received-SPF: pass client-ip=2607:f8b0:4864:20::b4a;
- envelope-from=32nA3ZwYKCtkMJLP9CBJJBG9.7JHL9HP-89Q9GIJIBIP.JMB@flex--roqueh.bounces.google.com;
+ envelope-from=33nA3ZwYKCt0QNPTDGFNNFKD.BNLPDLT-CDUDKMNMFMT.NQF@flex--roqueh.bounces.google.com;
  helo=mail-yb1-xb4a.google.com
 X-Spam_score_int: -95
 X-Spam_score: -9.6
@@ -93,29 +93,97 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The patch changes the comments to point to the latest Design Kit
-Technical Reference Manual.
+Current watchdog is free running out of reset, this combined with the
+fact that current implementation also ensures the counter is running
+when programing WDOGLOAD creates issues when the firmware defer the
+programing of WDOGCONTROL.INTEN much later after WDOGLOAD. Arm
+Programmer's Model documentation states that INTEN is also the
+counter enable:
+
+> INTEN
+>
+> Enable the interrupt event, WDOGINT. Set HIGH to enable the counter
+> and the interrupt, or LOW to disable the counter and interrupt.
+> Reloads the counter from the value in WDOGLOAD when the interrupt
+> is enabled, after previously being disabled.
+
+Source of the time of writing:
+
+https://developer.arm.com/documentation/ddi0479/d/apb-components/apb-watchdog/programmers-model
 
 Signed-off-by: Roque Arcudia Hernandez <roqueh@google.com>
+Reviewed-by: Stephen Longfield <slongfield@google.com>
+Reviewed-by: Joe Komlodi <komlodi@google.com>
 ---
- hw/watchdog/cmsdk-apb-watchdog.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ hw/watchdog/cmsdk-apb-watchdog.c | 34 +++++++++++++++++++++++++-------
+ 1 file changed, 27 insertions(+), 7 deletions(-)
 
 diff --git a/hw/watchdog/cmsdk-apb-watchdog.c b/hw/watchdog/cmsdk-apb-watchdog.c
-index 7ad46f9410..e4d25a25f7 100644
+index e4d25a25f7..ed5ff4257c 100644
 --- a/hw/watchdog/cmsdk-apb-watchdog.c
 +++ b/hw/watchdog/cmsdk-apb-watchdog.c
-@@ -12,8 +12,8 @@
- /*
-  * This is a model of the "APB watchdog" which is part of the Cortex-M
-  * System Design Kit (CMSDK) and documented in the Cortex-M System
-- * Design Kit Technical Reference Manual (ARM DDI0479C):
-- * https://developer.arm.com/products/system-design/system-design-kits/cortex-m-system-design-kit
-+ * Design Kit Technical Reference Manual (ARM DDI0479):
-+ * https://developer.arm.com/documentation/ddi0479/
-  *
-  * We also support the variant of this device found in the TI
-  * Stellaris/Luminary boards and documented in:
+@@ -196,16 +196,13 @@ static void cmsdk_apb_watchdog_write(void *opaque, hwaddr offset,
+ 
+     switch (offset) {
+     case A_WDOGLOAD:
+-        /*
+-         * Reset the load value and the current count, and make sure
+-         * we're counting.
+-         */
++        /* Reset the load value and the current count. */
+         ptimer_transaction_begin(s->timer);
+         ptimer_set_limit(s->timer, value, 1);
+-        ptimer_run(s->timer, 0);
+         ptimer_transaction_commit(s->timer);
+         break;
+-    case A_WDOGCONTROL:
++    case A_WDOGCONTROL: {
++        uint32_t prev_control = s->control;
+         if (s->is_luminary && 0 != (R_WDOGCONTROL_INTEN_MASK & s->control)) {
+             /*
+              * The Luminary version of this device ignores writes to
+@@ -215,8 +212,25 @@ static void cmsdk_apb_watchdog_write(void *opaque, hwaddr offset,
+             break;
+         }
+         s->control = value & R_WDOGCONTROL_VALID_MASK;
++        if (R_WDOGCONTROL_INTEN_MASK & (s->control ^ prev_control)) {
++            ptimer_transaction_begin(s->timer);
++            if (R_WDOGCONTROL_INTEN_MASK & s->control) {
++                /*
++                 * Set HIGH to enable the counter and the interrupt. Reloads
++                 * the counter from the value in WDOGLOAD when the interrupt
++                 * is enabled, after previously being disabled.
++                 */
++                ptimer_set_count(s->timer, ptimer_get_limit(s->timer));
++                ptimer_run(s->timer, 0);
++            } else {
++                /* Or LOW to disable the counter and interrupt. */
++                ptimer_stop(s->timer);
++            }
++            ptimer_transaction_commit(s->timer);
++        }
+         cmsdk_apb_watchdog_update(s);
+         break;
++    }
+     case A_WDOGINTCLR:
+         s->intstatus = 0;
+         ptimer_transaction_begin(s->timer);
+@@ -305,8 +319,14 @@ static void cmsdk_apb_watchdog_reset(DeviceState *dev)
+     s->resetstatus = 0;
+     /* Set the limit and the count */
+     ptimer_transaction_begin(s->timer);
++    /*
++     * We need to stop the ptimer before setting its limit reset value. If the
++     * order is the opposite when the code executes the stop after setting a new
++     * limit it may want to recalculate the count based on the current time (if
++     * the timer was currently running) and it won't get the proper reset value.
++     */
++    ptimer_stop(s->timer);
+     ptimer_set_limit(s->timer, 0xffffffff, 1);
+-    ptimer_run(s->timer, 0);
+     ptimer_transaction_commit(s->timer);
+ }
+ 
 -- 
 2.47.0.338.g60cca15819-goog
 
