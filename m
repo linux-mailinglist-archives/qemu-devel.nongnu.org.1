@@ -2,73 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B2BE9CF68B
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Nov 2024 22:03:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DBE29CF684
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Nov 2024 22:02:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tC3PD-0007XT-PN; Fri, 15 Nov 2024 15:59:03 -0500
+	id 1tC3PN-0007Z2-1R; Fri, 15 Nov 2024 15:59:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tC3P9-0007Vw-Dd
- for qemu-devel@nongnu.org; Fri, 15 Nov 2024 15:58:59 -0500
-Received: from mail-pg1-x52a.google.com ([2607:f8b0:4864:20::52a])
+ id 1tC3P9-0007WA-SF
+ for qemu-devel@nongnu.org; Fri, 15 Nov 2024 15:59:00 -0500
+Received: from mail-pj1-x102f.google.com ([2607:f8b0:4864:20::102f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tC3P7-0004Na-My
+ id 1tC3P8-0004Nk-Gc
  for qemu-devel@nongnu.org; Fri, 15 Nov 2024 15:58:59 -0500
-Received: by mail-pg1-x52a.google.com with SMTP id
- 41be03b00d2f7-7f8cc29aaf2so508937a12.3
- for <qemu-devel@nongnu.org>; Fri, 15 Nov 2024 12:58:57 -0800 (PST)
+Received: by mail-pj1-x102f.google.com with SMTP id
+ 98e67ed59e1d1-2ea304ce809so49816a91.2
+ for <qemu-devel@nongnu.org>; Fri, 15 Nov 2024 12:58:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1731704336; x=1732309136; darn=nongnu.org;
+ d=linaro.org; s=google; t=1731704337; x=1732309137; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=uCYl3p7NTkXg+Dt0eWVy+0t6Rq+HCybUm/IWs0g2j0w=;
- b=wfhPx2vTByQTb44lBMOctLqutMGfiuRzTnOzG4JdkqTPkSmcOaUQiBaq1luVmLsw7i
- ocjh3GF0vaGC+XrJIYRB2vu5dVCXkXFhDtLDHFlV9bYOHSYJZaqbOyXiQhAVk/6M8g9f
- An+ENYhj1W1Qip4QKKdcQ1KOYHB9nvy2Ud5auxAlECabPuG+o3auVaGMnosH6rxOOVev
- 6pS1aKEkMw66GCptMcHnmshqQV7D7GP5e0JFo2Bwsu+mcIcmQATjfdR6ELWenAqAOW85
- YaanYLKM2KUZ85Ht0+CQ+bcB6Rgf8Bs/2G+y9ccVabneTouE2lusct/Y4dVq0Uoh4yhI
- xRgg==
+ bh=Frvdm/WDiTHhmyZ4u8I9chbK5/V3/lvbxAdiykuEOlI=;
+ b=mLZRT+AvDuNcrYjJpudvwvtTpwvlFIcHAZDVrpKUb+7qIjVbOl7JSemLTJOju/P9tN
+ zSMj56h4YnOmGcx8HpYh7idJ3rf3fx8KOsVR3SH73Wh5Pgp/lmmQP+2oVM6a5i0z4aH/
+ nT5RZAa0IfM4AnVEvJOxIh9j3XdomLaXqYuJFidFgTtNIzXCtyxWsAMyZVnUjGdW8GBW
+ ri+hjA86HfGm6Yea3Gk3zLKOnpBzU8fjl1lV8rBBqBrE9iF/HpVMirMX9RJS+8fNfY+n
+ DVRQN9PL178WMOXjHgumA22LSxPG/FfY1TAKTPeovFZSp9Xu2xr6FUodGC9jmhxsuG7H
+ xb4Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731704336; x=1732309136;
+ d=1e100.net; s=20230601; t=1731704337; x=1732309137;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=uCYl3p7NTkXg+Dt0eWVy+0t6Rq+HCybUm/IWs0g2j0w=;
- b=nJENQXH4lpnPvICsPDWipPOsjoOq6Wjy2YJgwoBK02eaFEXf5RsHGzQ7PUxSAFcmoc
- Bviu53ADsHFQdhhed381FMkWbH57MKE2aX/ICspy4ZBImEpvpXdws+cRs5Bg94PKSuQX
- RlHdPLTkmwhw/UIoSVwVu554EczIeVkOTYBpfjBVcvziyiXMrPI+3kYpvlsOp0R9BY5R
- XX51F6AqjRgZTDlA/CqfnClzp6lT4G3T16XF+ZwPF/ldKlj6H/VIRylEKf22WZkf72CG
- +pmiEGnA3xXubrpizmMDeKKpKGJAm3OESBNxOEQuqlNQ4UpnVT8Kw7cjN94DRh3pdJpQ
- uqVQ==
-X-Gm-Message-State: AOJu0YxB96/O6ei9Z0v8sQoHqWnThuuEmH3y9ZIVT4exShWerT1lStHd
- dnq7yuvoTktBk0EVPW+/uB/BU1IyDBS5pCsz8h7Lu8sJ1VLps15IFLLKaLXImQOXWliOiACF6SI
- E
-X-Google-Smtp-Source: AGHT+IGefY/UTFTE1dTr55aBICS8jh/mvG5H2HvXhRnSDB0lNKb8JV1m0Hz69e0xGzSmQbmVtd9xRw==
-X-Received: by 2002:a17:90b:4c52:b0:2e9:4717:97a8 with SMTP id
- 98e67ed59e1d1-2ea1559feb9mr4091044a91.36.1731704336337; 
- Fri, 15 Nov 2024 12:58:56 -0800 (PST)
+ bh=Frvdm/WDiTHhmyZ4u8I9chbK5/V3/lvbxAdiykuEOlI=;
+ b=dgVSGzpISYWZnI2Npbk9HokIhCOMA0TwipVppkAVrn4amA8BujEisPXFXisEkmm2EZ
+ ehTBkrWH/1iplt5st2974fRfMJq05obavAhXUQWKCEqqbX1sNhcsfK2RV4mX4lpq9fqt
+ Y0MBxc3N6rP5kL9KFvJnw+GYq0p+FMasp2gJi82launiUA9EI5+Ba+ZZcFGOSlXxq+ex
+ lXRYiruM8hzdeBs6gDONMfcyNHFYUsvzf4cLaf8oHMyB/BcFzqMxvGTlU1K5WsCM9VfB
+ GsFvD2cJnx5jwfuLvQqKUr5HAEFxdyucrG72Q24r8w8XRCLY7Iz4riIix/NIdLwOm7cH
+ 3O1A==
+X-Gm-Message-State: AOJu0YyjumnoGr7lGMONBx+grUFPF3qqy30J/fI8I3vugUSHaoip2U1l
+ wVSSTED6Bo1ua1uSpjbpZ985MGUMlY6SPsGew+Gs0l1gfSPM+4n4OkhN9hayW/GsRPM2P5R8SGw
+ Y
+X-Google-Smtp-Source: AGHT+IEqp1Lclgwrc244i6QUJND32vQ7ajxzU868H7LQpYhXicxnbxAaNcO/iPK4M+vGtEZTVtrc0A==
+X-Received: by 2002:a17:90b:4f4b:b0:2e2:e159:8f7b with SMTP id
+ 98e67ed59e1d1-2ea154b5732mr4978132a91.3.1731704337045; 
+ Fri, 15 Nov 2024 12:58:57 -0800 (PST)
 Received: from stoup.. ([71.212.136.242]) by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2ea024a49a8sm3362274a91.23.2024.11.15.12.58.55
+ 98e67ed59e1d1-2ea024a49a8sm3362274a91.23.2024.11.15.12.58.56
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 15 Nov 2024 12:58:55 -0800 (PST)
+ Fri, 15 Nov 2024 12:58:56 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PULL 05/14] target/i386: fix hang when using slow path for ptw_setl
-Date: Fri, 15 Nov 2024 12:58:40 -0800
-Message-ID: <20241115205849.266094-6-richard.henderson@linaro.org>
+Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 06/14] cpu: ensure we don't call start_exclusive from cpu_exec
+Date: Fri, 15 Nov 2024 12:58:41 -0800
+Message-ID: <20241115205849.266094-7-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241115205849.266094-1-richard.henderson@linaro.org>
 References: <20241115205849.266094-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52a;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,54 +95,29 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
-When instrumenting memory accesses for plugin, we force memory accesses
-to use the slow path for mmu [1]. This create a situation where we end
-up calling ptw_setl_slow. This was fixed recently in [2] but the issue
-still could appear out of plugins use case.
-
-Since this function gets called during a cpu_exec, start_exclusive then
-hangs. This exclusive section was introduced initially for security
-reasons [3].
-
-I suspect this code path was never triggered, because ptw_setl_slow
-would always be called transitively from cpu_exec, resulting in a hang.
-
-[1] https://gitlab.com/qemu-project/qemu/-/commit/6d03226b42247b68ab2f0b3663e0f624335a4055
-[2] https://gitlab.com/qemu-project/qemu/-/commit/115ade42d50144c15b74368d32dc734ea277d853
-[3] https://gitlab.com/qemu-project/qemu/-/issues/279
-
-Fixes: https://gitlab.com/qemu-project/qemu/-/issues/2566
-Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20241025175857.2554252-2-pierrick.bouvier@linaro.org>
+Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20241025175857.2554252-3-pierrick.bouvier@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/i386/tcg/sysemu/excp_helper.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ cpu-common.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/target/i386/tcg/sysemu/excp_helper.c b/target/i386/tcg/sysemu/excp_helper.c
-index 02d3486421..b1f40040f8 100644
---- a/target/i386/tcg/sysemu/excp_helper.c
-+++ b/target/i386/tcg/sysemu/excp_helper.c
-@@ -107,6 +107,10 @@ static bool ptw_setl_slow(const PTETranslate *in, uint32_t old, uint32_t new)
- {
-     uint32_t cmp;
+diff --git a/cpu-common.c b/cpu-common.c
+index 6b262233a3..0d607bbe49 100644
+--- a/cpu-common.c
++++ b/cpu-common.c
+@@ -194,6 +194,9 @@ void start_exclusive(void)
+     CPUState *other_cpu;
+     int running_cpus;
  
-+    CPUState *cpu = env_cpu(in->env);
-+    /* We are in cpu_exec, and start_exclusive can't be called directly.*/
-+    g_assert(cpu->running);
-+    cpu_exec_end(cpu);
-     /* Does x86 really perform a rmw cycle on mmio for ptw? */
-     start_exclusive();
-     cmp = cpu_ldl_mmuidx_ra(in->env, in->gaddr, in->ptw_idx, 0);
-@@ -114,6 +118,7 @@ static bool ptw_setl_slow(const PTETranslate *in, uint32_t old, uint32_t new)
-         cpu_stl_mmuidx_ra(in->env, in->gaddr, new, in->ptw_idx, 0);
-     }
-     end_exclusive();
-+    cpu_exec_start(cpu);
-     return cmp == old;
- }
- 
++    /* Ensure we are not running, or start_exclusive will be blocked. */
++    g_assert(!current_cpu->running);
++
+     if (current_cpu->exclusive_context_count) {
+         current_cpu->exclusive_context_count++;
+         return;
 -- 
 2.43.0
 
