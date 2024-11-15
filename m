@@ -2,75 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC27C9CF2CA
+	by mail.lfdr.de (Postfix) with ESMTPS id C90299CF2CB
 	for <lists+qemu-devel@lfdr.de>; Fri, 15 Nov 2024 18:25:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tC04e-00042F-Da; Fri, 15 Nov 2024 12:25:36 -0500
+	id 1tC04Q-0003zG-Bf; Fri, 15 Nov 2024 12:25:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1tC04c-000425-U8
- for qemu-devel@nongnu.org; Fri, 15 Nov 2024 12:25:34 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1tC04b-0001W0-DS
- for qemu-devel@nongnu.org; Fri, 15 Nov 2024 12:25:34 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1731691532;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=LGGf/6SXD4klp11oD3a3PZ0lZYftk0LuT8kkItR+FyY=;
- b=IqPtp3bGy5goLt+qKNdg80E5JwyTIbdFNeKrEcFNdfLX8UQyrduudtE64ZiCg23aHPXQx3
- LiN9hscvSpE5WY7E5aMtz3ib1xyFVAWxm1NMGRW36WWPwlK9cKtJN445KJe9nf0uR6KlRt
- 1IDRA0sXhG/ksay1LFAQ4lZZKyRs9XM=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-61-na-wT9zFN4-vDBaEF4b5YQ-1; Fri,
- 15 Nov 2024 12:25:31 -0500
-X-MC-Unique: na-wT9zFN4-vDBaEF4b5YQ-1
-X-Mimecast-MFC-AGG-ID: na-wT9zFN4-vDBaEF4b5YQ
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 4B081197731C
- for <qemu-devel@nongnu.org>; Fri, 15 Nov 2024 17:25:30 +0000 (UTC)
-Received: from toolbox.redhat.com (unknown [10.42.28.102])
- by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 8B9573003B71; Fri, 15 Nov 2024 17:25:28 +0000 (UTC)
-From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
- Markus Armbruster <armbru@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH v3 2/9] qom: refactor checking abstract property when creating
- instances
-Date: Fri, 15 Nov 2024 17:25:14 +0000
-Message-ID: <20241115172521.504102-3-berrange@redhat.com>
-In-Reply-To: <20241115172521.504102-1-berrange@redhat.com>
-References: <20241115172521.504102-1-berrange@redhat.com>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1tC04O-0003yz-VD
+ for qemu-devel@nongnu.org; Fri, 15 Nov 2024 12:25:20 -0500
+Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1tC04M-0001UW-GL
+ for qemu-devel@nongnu.org; Fri, 15 Nov 2024 12:25:20 -0500
+Received: by mail-wr1-x42e.google.com with SMTP id
+ ffacd0b85a97d-3822ba3cdbcso366188f8f.0
+ for <qemu-devel@nongnu.org>; Fri, 15 Nov 2024 09:25:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1731691517; x=1732296317; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=7Y0AMU/ttgRURqOnN0XPhkHG3hk3G+OF7iF0mZeXnJQ=;
+ b=n8STFGwn/3EbTsIFfPrxlCpGz3g2Cab4bihNWvoGpv2uklYj6TLxsPptNw+iAnAyBc
+ VgDVrSfv1oA/T1TgSnUR46yjqJ57jQaERu4+QkHroQen07PhgmsSBDQ0daBbqEy7JaPv
+ ecGjZotU4cs3k7OIatfDNOm4esgSeguzRpFTUPpldtmlyJUiagk7EoGfb8pHRzeJ3Ci8
+ 3pTFHtrB/XJbgK3H40xJzLYI1CnkVPty3qVvJ35ed74Zzj2L0YQWU6QNdMzTCsYFdvWB
+ BOAujlDl/b4epOtOzobvb3KFFJNCibiyLx6SVfxvZjdbCHUbPeXkUUKdDyul1t9yqCh8
+ ANWg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1731691517; x=1732296317;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=7Y0AMU/ttgRURqOnN0XPhkHG3hk3G+OF7iF0mZeXnJQ=;
+ b=VLlil8B0m1/1nylhpZItTqj/12nEzNAF5orTmOr3jgdZe+QDUKtDrlq7CupHffo5lb
+ ppNOFr4OBJIOQ3RiNSuuKkFs1tNPuI32rcrWAwqYfXuiSGod8G5M1Q0KpFlKuafJgs2H
+ UZdSG/lrHy05e+Z2mLSwunr1sArh9ZXGO71dCTOQZhvsc8K2IzwD/dPIM8hirAur1/I4
+ e71QIDSxCcRa+nQBdSVJrCL0mfy+W30XspjRqpuE0ionk1pl3rmmVfLdKkB9JXqH2gTJ
+ FQ7dPTcLqjupHXzbHV27jNGbdnipUbyd6ipajs+v8+B941XhmA1uwsAjhvEN7YCNnuTm
+ K5/A==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCV78VMakTVoSqg2LtgjqLmNi6jiKrNGKPxOCnw0kd9i4L8YNQZcr78wy0GR6CEoofP48oTqxyFETm//@nongnu.org
+X-Gm-Message-State: AOJu0Yxlg32PSAPs7rZozN9nZKb+K25Q/X4hrK9zOAg04KcsxMtgoQUt
+ 1Bl85/D9hdVIIHTqsMMYp16t+FKroKt5jFzvDEQT7ovMl9m121+FV6CNP7m93cQ=
+X-Google-Smtp-Source: AGHT+IH9HnPAv5KKrsgFmQTe4yqyqyb78yONAyEmtd66mmIKkV71Oe6N98HEpriHgLuG1vBAsfbhlg==
+X-Received: by 2002:a05:6000:1884:b0:37d:9476:45f6 with SMTP id
+ ffacd0b85a97d-38225901ed5mr2721510f8f.7.1731691516759; 
+ Fri, 15 Nov 2024 09:25:16 -0800 (PST)
+Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-3821ae3128bsm4815080f8f.102.2024.11.15.09.25.16
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 15 Nov 2024 09:25:16 -0800 (PST)
+From: Peter Maydell <peter.maydell@linaro.org>
+To: qemu-arm@nongnu.org,
+	qemu-devel@nongnu.org
+Cc: Richard Henderson <richard.henderson@linaro.org>
+Subject: [PATCH] tcg: Allow top bit of SIMD_DATA_BITS to be set in simd_desc()
+Date: Fri, 15 Nov 2024 17:25:15 +0000
+Message-Id: <20241115172515.1229393-1-peter.maydell@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -28
-X-Spam_score: -2.9
+Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42e.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.12,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.658,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,112 +91,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Push an Error object into object_initialize_with_type, so that
-reporting of attempts to create an abstract type is handled at
-the lowest level.
+In simd_desc() we create a SIMD descriptor from various pieces
+including an arbitrary data value from the caller.  We try to
+sanitize these to make sure everything will fit: the 'data' value
+needs to fit in the SIMD_DATA_BITS (== 22) sized field.  However we
+do that sanitizing with:
+   tcg_debug_assert(data == sextract32(data, 0, SIMD_DATA_BITS));
 
-Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+This works for the case where the data is supposed to be considered
+as a signed integer (which can then be returned via simd_data()).
+However, some callers want to treat the data value as unsigned.
+
+Specifically, for the Arm SVE operations, make_svemte_desc()
+assembles a data value as a collection of fields, and it needs to use
+all 22 bits.  Currently if MTE is enabled then its MTEDESC SIZEM1
+field may have the most significant bit set, and then it will trip
+this assertion.
+
+Loosen the assertion so that we only check that the data value will
+fit into the field in some way, either as a signed or as an unsigned
+value.  This means we will fail to detect some kinds of bug in the
+callers, but we won't spuriously assert for intentional use of the
+data field as unsigned.
+
+Cc: qemu-stable@nongnu.org
+Fixes: db432672dc50e ("tcg: Add generic vector expanders")
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2601
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- qom/object.c | 30 ++++++++++++++++++++----------
- 1 file changed, 20 insertions(+), 10 deletions(-)
+ tcg/tcg-op-gvec.c | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/qom/object.c b/qom/object.c
-index 9edc06d391..9632a894ee 100644
---- a/qom/object.c
-+++ b/qom/object.c
-@@ -559,14 +559,20 @@ static void object_class_property_init_all(Object *obj)
-     }
- }
+diff --git a/tcg/tcg-op-gvec.c b/tcg/tcg-op-gvec.c
+index 78ee1ced80f..97e4df221a4 100644
+--- a/tcg/tcg-op-gvec.c
++++ b/tcg/tcg-op-gvec.c
+@@ -88,7 +88,20 @@ uint32_t simd_desc(uint32_t oprsz, uint32_t maxsz, int32_t data)
+     uint32_t desc = 0;
  
--static void object_initialize_with_type(Object *obj, size_t size, TypeImpl *type)
-+static bool object_initialize_with_type(Object *obj, size_t size,
-+                                        TypeImpl *type, Error **errp)
- {
-     type_initialize(type);
- 
-     g_assert(type->instance_size >= sizeof(Object));
--    g_assert(type->abstract == false);
-     g_assert(size >= type->instance_size);
- 
-+    if (type->abstract) {
-+        error_setg(errp, "Abstract type '%s' cannot be instantiated",
-+                   type->name);
-+        return false;
-+    }
+     check_size_align(oprsz, maxsz, 0);
+-    tcg_debug_assert(data == sextract32(data, 0, SIMD_DATA_BITS));
 +
-     memset(obj, 0, type->instance_size);
-     obj->class = type->class;
-     object_ref(obj);
-@@ -575,13 +581,15 @@ static void object_initialize_with_type(Object *obj, size_t size, TypeImpl *type
-                                             NULL, object_property_free);
-     object_init_with_type(obj, type);
-     object_post_init_with_type(obj, type);
-+
-+    return true;
- }
++    /*
++     * We want to check that 'data' will fit into SIMD_DATA_BITS.
++     * However, some callers want to treat the data as a signed
++     * value (which they can later get back with simd_data())
++     * and some want to treat it as an unsigned value.
++     * So here we assert only that the data will fit into the
++     * field in at least one way. This means that some invalid
++     * values from the caller will not be detected, e.g. if the
++     * caller wants to handle the value as a signed integer but
++     * incorrectly passes us 1 << (SIMD_DATA_BITS - 1).
++     */
++    tcg_debug_assert(data == sextract32(data, 0, SIMD_DATA_BITS) ||
++                     data == extract32(data, 0, SIMD_DATA_BITS));
  
- void object_initialize(void *data, size_t size, const char *typename)
- {
-     TypeImpl *type = type_get_or_load_by_name(typename, &error_fatal);
- 
--    object_initialize_with_type(data, size, type);
-+    object_initialize_with_type(data, size, type, &error_abort);
- }
- 
- bool object_initialize_child_with_props(Object *parentobj,
-@@ -753,7 +761,7 @@ typedef union {
- } qemu_max_align_t;
- #endif
- 
--static Object *object_new_with_type(Type type)
-+static Object *object_new_with_type(Type type, Error **errp)
- {
-     Object *obj;
-     size_t size, align;
-@@ -777,7 +785,10 @@ static Object *object_new_with_type(Type type)
-         obj_free = qemu_vfree;
-     }
- 
--    object_initialize_with_type(obj, size, type);
-+    if (!object_initialize_with_type(obj, size, type, errp)) {
-+        obj_free(obj);
-+        return NULL;
-+    }
-     obj->free = obj_free;
- 
-     return obj;
-@@ -785,14 +796,14 @@ static Object *object_new_with_type(Type type)
- 
- Object *object_new_with_class(ObjectClass *klass)
- {
--    return object_new_with_type(klass->type);
-+    return object_new_with_type(klass->type, &error_abort);
- }
- 
- Object *object_new(const char *typename)
- {
-     TypeImpl *ti = type_get_or_load_by_name(typename, &error_fatal);
- 
--    return object_new_with_type(ti);
-+    return object_new_with_type(ti, &error_abort);
- }
- 
- 
-@@ -829,11 +840,10 @@ Object *object_new_with_propv(const char *typename,
-         return NULL;
-     }
- 
--    if (object_class_is_abstract(klass)) {
--        error_setg(errp, "object type '%s' is abstract", typename);
-+    obj = object_new_with_type(klass->type, errp);
-+    if (!obj) {
-         return NULL;
-     }
--    obj = object_new_with_type(klass->type);
- 
-     if (!object_set_propv(obj, errp, vargs)) {
-         goto error;
+     oprsz = (oprsz / 8) - 1;
+     maxsz = (maxsz / 8) - 1;
 -- 
-2.46.0
+2.34.1
 
 
