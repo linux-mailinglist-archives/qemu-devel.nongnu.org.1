@@ -2,91 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FE419CF35F
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Nov 2024 18:55:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 758B19CF395
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Nov 2024 19:05:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tC0Xo-0003fy-86; Fri, 15 Nov 2024 12:55:44 -0500
+	id 1tC0gf-00066B-KE; Fri, 15 Nov 2024 13:04:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tC0Xk-0003aD-JT
- for qemu-devel@nongnu.org; Fri, 15 Nov 2024 12:55:40 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tC0Xj-0005Pv-5Q
- for qemu-devel@nongnu.org; Fri, 15 Nov 2024 12:55:40 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1731693337;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=a26qwpddi1QLJrKenqSdaW0Mj5SKv3E9JSrg4FAqSAM=;
- b=GWLV92e9lqKWuNut5d6l7OYIN36MJbiGCdnAjOALxr658Kzp18SJEW2fL7x0PTKyo2Ov35
- tSOXRlFvXvxRJ5hRI8CZDunwgI8ZCE81R6btjqqIHd8P1tNMNG4JfEzkastk/I6JFlMQpn
- SiM/tdRyNPgWjnodPBG5GH2wS1vBL7s=
-Received: from mail-il1-f197.google.com (mail-il1-f197.google.com
- [209.85.166.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-206-3D8atmR_MeqUbykBMSsCJg-1; Fri, 15 Nov 2024 12:55:33 -0500
-X-MC-Unique: 3D8atmR_MeqUbykBMSsCJg-1
-X-Mimecast-MFC-AGG-ID: 3D8atmR_MeqUbykBMSsCJg
-Received: by mail-il1-f197.google.com with SMTP id
- e9e14a558f8ab-3a3cb771556so21280825ab.3
- for <qemu-devel@nongnu.org>; Fri, 15 Nov 2024 09:55:33 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1tC0gd-00064f-QE
+ for qemu-devel@nongnu.org; Fri, 15 Nov 2024 13:04:51 -0500
+Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1tC0gc-0006ST-19
+ for qemu-devel@nongnu.org; Fri, 15 Nov 2024 13:04:51 -0500
+Received: by mail-pf1-x431.google.com with SMTP id
+ d2e1a72fcca58-71e4244fdc6so1652055b3a.0
+ for <qemu-devel@nongnu.org>; Fri, 15 Nov 2024 10:04:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1731693888; x=1732298688; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=PZtU5GCBkriYC9c6QuvY3eWUYDt+z2Pm7rxbVveCSR4=;
+ b=YZD02N3Xgu2mT62hFxv/mcluiQOLXH4Mi2CSOPcn7CdANR51Gwij36DHWKcdt0dvBX
+ 2Kyh8BwmBpB6vb0guE9vDJ9JoxZyL3003sCzCgtaR49B+emolGPhs7Ges/m7WGDFXfmq
+ 75hnOC15sCKY9T4KjMsmmBDJ0LFWuiMpGqwBGeO+RsAK4Wiw1aFnVUo20qtFgXY2t/nS
+ n+0giISnJUcumZ725v1q7tFjkhBF1HkTWiLvDONAyeVvPMHVzCkeGDn5jzm0dJM2mrzM
+ 2vK3x+eZcB/eLyehHDtIahmfqcOYupNKfZSC//b4N6uV0SfqTbMv/Nz5/yHigFCSZeqB
+ oF/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731693331; x=1732298131;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
+ d=1e100.net; s=20230601; t=1731693888; x=1732298688;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=a26qwpddi1QLJrKenqSdaW0Mj5SKv3E9JSrg4FAqSAM=;
- b=PGAsioDUE382/qtdNkR6tR76uqOSNAzqhCk7m4VK5uP+psykpulOFJQbnTqQk+NB03
- otOyl0nsTIDfdaA4CqOyIP5Aymu5YUBqPNDNhD7D5AT2QKXLSrq16ejNcZ21O9OCOMvQ
- +JOEM1lcAQIKsijzI7WrTRyugZ2J1xTmGBu7DDVugoxrm4RBQ/yvZQZQ1z5kX7wF/ujw
- no8lVgUhOJ5udjz+bxtbVwrxeKYCLq2UExMWvbr4W9n7Wx7AaOJTVESb74bjpBfRGgo+
- tuIrJ5w3eHQe4FFyYCRi/CQaM5ahu94AYCrjUHys9ebj0/bkF+DNp4Kx8SwmexW2+JnU
- EOzw==
-X-Gm-Message-State: AOJu0YwNf16FVtAKY68vXAdoT2sh9ViPCeROBrgOXj+3OjL6oIowhSnp
- z4jUQr/Q85AuW1NS9EgWV079wEvMg/n0GlNHhfcbvUgqxdoH/HTlbDrEK5i7qhGmMq1mdAyPQuv
- B5N3RPZeanj6gXXeynozOF12mP3a2BiAUvyVm76jsmOYaolcds+ZQ
-X-Received: by 2002:a05:6e02:214f:b0:3a7:159d:2dd8 with SMTP id
- e9e14a558f8ab-3a74801389bmr33748345ab.7.1731693331363; 
- Fri, 15 Nov 2024 09:55:31 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGu+5PavVXELBAEana7IPzbowkTkOVV1bMP554wp2HtPMuuZ/kcw7F6ipXr9TjhfscXAAjO8Q==
-X-Received: by 2002:a05:6e02:214f:b0:3a7:159d:2dd8 with SMTP id
- e9e14a558f8ab-3a74801389bmr33748185ab.7.1731693331028; 
- Fri, 15 Nov 2024 09:55:31 -0800 (PST)
-Received: from x1n (pool-99-254-114-190.cpe.net.cable.rogers.com.
- [99.254.114.190]) by smtp.gmail.com with ESMTPSA id
- e9e14a558f8ab-3a74808dc69sm4241575ab.36.2024.11.15.09.55.29
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 15 Nov 2024 09:55:30 -0800 (PST)
-Date: Fri, 15 Nov 2024 12:55:28 -0500
-From: Peter Xu <peterx@redhat.com>
-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- Markus Armbruster <armbru@redhat.com>
-Subject: Re: [PATCH v3 9/9] hw: enforce use of static, const string with
- qdev_new()
-Message-ID: <ZzeLEJpx_Yg-LNwT@x1n>
-References: <20241115172521.504102-1-berrange@redhat.com>
- <20241115172521.504102-10-berrange@redhat.com>
+ bh=PZtU5GCBkriYC9c6QuvY3eWUYDt+z2Pm7rxbVveCSR4=;
+ b=vxg9RQWLetmp071CjL9AnnTxOlgTrmBrRV4wX19u95rQ0zsgkbLu1rR9yRIUqv5HKo
+ 2vR1CvYYRnn6Q3ylFg2SyioGLGGautF97RrczBtLF033a/vDOE6xwMyTG3w5rj7VC6tw
+ Pb32b+6eysFWPJivm0zdSH4NO1G6Sr2D36w5/LTvDVcUV8kYMj99Pv7Udlad7oMPqvb2
+ OSBSlLRww9kg1wLvWarxKL5OS4uXiGR9l1BJfHuHUk2tU02xWothrMVtDESyWdAwGuU2
+ ucJ9nnxG4VJdVw9ckXCQLE9XRzt2TWO28bmZGNMQI55de5AXIP3kW0hEEi75EkuWOIiw
+ 5y5w==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVV9HWyk9pMyJdmERVCk2GPhvJtKznCtSaY5jWSV3CZUGr4Ri3BTorbQ39fY8Z6j4Vqmuc9nhev/U02@nongnu.org
+X-Gm-Message-State: AOJu0YyHDg/R802cLMCe8cnCPgq6r9CNvRgqne1eerTR1sWKu71nCO/2
+ bevlIgu1g2SrcIifi1UH/Dcuob9P6zQZ458x9rs3Gxl1AVsvQx+zGYt6Adv78Yk=
+X-Google-Smtp-Source: AGHT+IEuH3E5RE0MG4gZfGh2oIkH3IgU6/7+agJgKrRRhH9C7KduQ6QRP2x+9npeKXQMByTiZ1l4UA==
+X-Received: by 2002:a17:90b:4c52:b0:2e2:b45f:53b4 with SMTP id
+ 98e67ed59e1d1-2ea1559acbfmr4126179a91.25.1731693888256; 
+ Fri, 15 Nov 2024 10:04:48 -0800 (PST)
+Received: from [192.168.0.4] ([71.212.136.242])
+ by smtp.gmail.com with ESMTPSA id
+ 98e67ed59e1d1-2ea2bb905e9sm381662a91.48.2024.11.15.10.04.47
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 15 Nov 2024 10:04:47 -0800 (PST)
+Message-ID: <06663fe0-9001-497f-8652-ed3c079555d3@linaro.org>
+Date: Fri, 15 Nov 2024 10:04:46 -0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20241115172521.504102-10-berrange@redhat.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] tcg: Allow top bit of SIMD_DATA_BITS to be set in
+ simd_desc()
+To: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
+ qemu-devel@nongnu.org
+References: <20241115172515.1229393-1-peter.maydell@linaro.org>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20241115172515.1229393-1-peter.maydell@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x431.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.12,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,20 +96,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Nov 15, 2024 at 05:25:21PM +0000, Daniel P. Berrangé wrote:
-> Since qdev_new() will assert(), it should only be used in scenarios
-> where the caller knows exactly what type it is asking to be created,
-> and can thus be confident in avoiding abstract types.
+On 11/15/24 09:25, Peter Maydell wrote:
+> In simd_desc() we create a SIMD descriptor from various pieces
+> including an arbitrary data value from the caller.  We try to
+> sanitize these to make sure everything will fit: the 'data' value
+> needs to fit in the SIMD_DATA_BITS (== 22) sized field.  However we
+> do that sanitizing with:
+>     tcg_debug_assert(data == sextract32(data, 0, SIMD_DATA_BITS));
 > 
-> Enforce this by using a macro wrapper which types to paste "" to the
-> type name. This will generate a compile error if not passed a static
-> const string, forcing callers to use qdev_new_dynamic() instead.
+> This works for the case where the data is supposed to be considered
+> as a signed integer (which can then be returned via simd_data()).
+> However, some callers want to treat the data value as unsigned.
 > 
-> Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+> Specifically, for the Arm SVE operations, make_svemte_desc()
+> assembles a data value as a collection of fields, and it needs to use
+> all 22 bits.  Currently if MTE is enabled then its MTEDESC SIZEM1
+> field may have the most significant bit set, and then it will trip
+> this assertion.
+> 
+> Loosen the assertion so that we only check that the data value will
+> fit into the field in some way, either as a signed or as an unsigned
+> value.  This means we will fail to detect some kinds of bug in the
+> callers, but we won't spuriously assert for intentional use of the
+> data field as unsigned.
+> 
+> Cc: qemu-stable@nongnu.org
+> Fixes: db432672dc50e ("tcg: Add generic vector expanders")
+> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2601
+> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+> ---
+>   tcg/tcg-op-gvec.c | 15 ++++++++++++++-
+>   1 file changed, 14 insertions(+), 1 deletion(-)
 
-Reviewed-by: Peter Xu <peterx@redhat.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
--- 
-Peter Xu
+And queued.
 
+
+r~
 
