@@ -2,71 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 714E89CEE71
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Nov 2024 16:21:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 62DBE9CEE80
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Nov 2024 16:21:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tBy8B-0001n1-Ru; Fri, 15 Nov 2024 10:21:07 -0500
+	id 1tBy8D-0001nN-Jd; Fri, 15 Nov 2024 10:21:09 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tBy86-0001md-9d
- for qemu-devel@nongnu.org; Fri, 15 Nov 2024 10:21:03 -0500
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tBy89-0001nD-W6
+ for qemu-devel@nongnu.org; Fri, 15 Nov 2024 10:21:06 -0500
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tBy82-00043J-Ck
- for qemu-devel@nongnu.org; Fri, 15 Nov 2024 10:21:00 -0500
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-4314b316495so6761275e9.2
- for <qemu-devel@nongnu.org>; Fri, 15 Nov 2024 07:20:57 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tBy87-00043e-MT
+ for qemu-devel@nongnu.org; Fri, 15 Nov 2024 10:21:05 -0500
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-4315df7b43fso16214175e9.0
+ for <qemu-devel@nongnu.org>; Fri, 15 Nov 2024 07:21:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1731684055; x=1732288855; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=2oVIoGN5+KTiuTHFLsyY+4yDft6p5jyzLihrKyZIft8=;
- b=tLeeiGU6uhNpyupeJOrIifXpX/nl4bCp9ukjJk0UDuoNhGLRUb0LWNbHg3ErmUb2J7
- 2ivVQC97BmEdziLjC1Hj3ILFglzbZ1JVkFNMIzvjnUzj8CP91q0OHqVl/3wAtmoK0a9l
- D6uUZNLpkyDYsPdFYablv92kTu4Xu/PNYw84/gKJCHHTKcKPGH28GlwTVr9uqx16D103
- ri2rvvlagJuttvPVGNq5EYfTe+kEXas/kFMp8ZQ2+f/pu9Crv+ZtYMxT6Gm5rWDoUR4Y
- KaF9FsRiVNo9gAWGnpTxupFCRGWejMpKWye+V/0JuDUvN+FLH2FQSLqGxi8/00oBHPAg
- WM1w==
+ d=linaro.org; s=google; t=1731684061; x=1732288861; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=ZHhL6wb85s4vVZ9BFDdlVsTHRSAYWS3+Ku4UPdQPugs=;
+ b=kwQghvE43+ZoRdzJTiKU8xE0miAcJaXEO0apx7YYj66PN0B3Zhm+Ajn0geIZIGdyAX
+ dWekkX5+xj0wnXUt8XSvBdH7BHKa//s5AXkPUFQa//AphWcyfoe2ebtyx7t6p8JTw7lK
+ LyVU0WzXchJYc0rnZDmDmzgj3/2gGPxnUu5xB3sK0DjE/ndsnO9B+V5mqR+g0yOYhFJ/
+ JXoTV+RjEnm8mQmdK1q0cl/Uj/JiaRtPtrejjPR2curnpW5gkzd2xzySgfAw4QvRKXFN
+ BB9GNtQzW/75aBSqYHGpBAf8wADo81CqaxLY1U1expkcTIJAqCFOcuicxZ3BjrlPnYl5
+ Tllw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731684055; x=1732288855;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=2oVIoGN5+KTiuTHFLsyY+4yDft6p5jyzLihrKyZIft8=;
- b=hQAJ+NdzD2hkZSbYlmezD8G/G4+T6fsN/B/RjcKmD6qw8A6LWGIc5u9aCGHTH+oHiT
- QhiiGQ/JfRCgVrfedu0Zqu+aLcLRtz4Hx4tHkaDD4kAnvGW77I2F0C+YqjkyKvYduZO7
- hujQiZhjQS1210dOFRt2zqTUT6x+/i3GTvfMHqLMkjsh4fdWxK3u0GTYd1BgDi8sPTX9
- FSibPB0Y0hmwLWcY/nZZe5n0UWH74sEe3V79h/ctvitgx/5iRhThL466SrLszhlzWK40
- RNIYG8DdYiaYKfZeX+9k+hk5Qo76ooktyPGDGHMwWiIiaQ17QJZVi7KkzdTWFw+QlHPj
- +wmw==
-X-Gm-Message-State: AOJu0YwhmYFBCgofjHJe5/ietKlJp/3nOMeASBrtpwJR0+3cWOazRRwF
- Q3dkviP+R+XfCO1YWpgbM9yp3R9kkdUDEArnFJl600GmEeo51X2mo1FRUqkwOR9AxBc4Ht1hIFf
- +
-X-Google-Smtp-Source: AGHT+IGZ+D0kW+eVIuhsTpoVZxTfbxtiFRj4jDVOjwh9wZcIaOH2iCbuqeg3ffOOW5+k9VW0/3U+SA==
-X-Received: by 2002:a05:600c:4693:b0:431:55af:a22f with SMTP id
- 5b1f17b1804b1-432df72c9e7mr26704305e9.13.1731684055592; 
- Fri, 15 Nov 2024 07:20:55 -0800 (PST)
+ d=1e100.net; s=20230601; t=1731684061; x=1732288861;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=ZHhL6wb85s4vVZ9BFDdlVsTHRSAYWS3+Ku4UPdQPugs=;
+ b=ai8sWhkaQCm+JgUlPT/so9PNIIHnLyawcfOxhW6md38deWPb9WnnXkc49ZEYHpFR0H
+ PQuFjXlc6j263i7th4yKZ0xlRkaHIKPlVXiB8czMrOd66qP8QQeF0xzlte3bkJ+BgIVy
+ Q7nm6Pet0B1iClArzOj1W3JSbpdU1pOam9JizQ1cGPjw3EpGI41cnpcPsUZyothJ18Ik
+ q/yBsUUGYNP3TXZC4R8qq8+QPlRRZjwQssM519VltRykDDeA50qNXN+qoBb2rST0kx2e
+ 6hlTBzdHEH+Zne07wHPoUdRDa4WTNw0qDu4XiF/znmzuH8fubLJVFT/7BLH7mKg5AAua
+ 1v0g==
+X-Gm-Message-State: AOJu0Yy9INRXZcC1GweCOhjgdqapyiF2N+hWVpHkP3z4eC/BcxV3C04a
+ ZXXU+TDertlrAgIIUi0RB3c0EdIMTvc4aypnHe9rpxBhoQ4yyhnL/8mxPBZsQpOFa5gUSVxH9zZ
+ 5
+X-Google-Smtp-Source: AGHT+IFcZqtj0nrYajCPzZ2ZxHFcoOHUpsn12FX+AoPttX2uVp/ShhRLVZMmFwr0HU4t65Eh76cQ9g==
+X-Received: by 2002:a05:600c:1382:b0:431:5d4f:73a3 with SMTP id
+ 5b1f17b1804b1-432df74f0d4mr23861875e9.18.1731684060699; 
+ Fri, 15 Nov 2024 07:21:00 -0800 (PST)
 Received: from localhost.localdomain ([176.187.214.209])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-432dab7878esm57379325e9.14.2024.11.15.07.20.54
+ 5b1f17b1804b1-432dab721d7sm58337185e9.9.2024.11.15.07.20.59
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 15 Nov 2024 07:20:55 -0800 (PST)
+ Fri, 15 Nov 2024 07:21:00 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 00/10] accel/tcg: API prototype cleanups
-Date: Fri, 15 Nov 2024 16:20:43 +0100
-Message-ID: <20241115152053.66442-1-philmd@linaro.org>
+Subject: [PATCH 01/10] target/mips: Drop left-over comment about Jazz machine
+Date: Fri, 15 Nov 2024 16:20:44 +0100
+Message-ID: <20241115152053.66442-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20241115152053.66442-1-philmd@linaro.org>
+References: <20241115152053.66442-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -89,93 +92,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Preparatory cleanup patches extracted to bigger series which
-rename TCG frontend functions to avoid name clash when linking
-multiple target into the same binary.
+Commit 3803b6b427 ("target/mips: Fold jazz behaviour into
+mips_cpu_do_transaction_failed") removed update on TCGCPUOps
+and commit 119065574d ("hw/core: Constify TCGCPUOps") made
+it const. Remove the now irrelevant comment.
 
-Worth to remove few QOM cast boilerplate, per diff-stat:
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ target/mips/cpu.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
- 64 files changed, 230 insertions(+), 355 deletions(-)
-                   ---                ^^^
-
-Philippe Mathieu-Daudé (10):
-  target/mips: Drop left-over comment about Jazz machine
-  target/loongarch: Declare loongarch_cpu_dump_state() locally
-  target/sparc: Move sparc_restore_state_to_opc() to cpu.c
-  accel/tcg: Ensure frontends define restore_state_to_opc handler
-  accel/tcg: Move cpu_unwind_state_data() declaration
-  accel/tcg: Remove cpu_unwind_state_data() unused CPUState argument
-  accel/tcg: Reduce log_pc() declaration scope
-  hw/core/cpu: Pass CPUArchState to set/get_pc() handlers
-  hw/core/cpu: Pass CPUArchState to restore_state_to_opc() handler
-  hw/core/cpu: Pass CPUArchState to cpu_dump_state() handler
-
- accel/tcg/internal-target.h    | 10 ---------
- include/exec/cpu-common.h      | 13 ------------
- include/exec/translate-all.h   | 11 ++++++++++
- include/hw/core/cpu.h          |  8 +++----
- include/hw/core/tcg-cpu-ops.h  |  2 +-
- target/alpha/cpu.h             |  2 +-
- target/arm/internals.h         |  2 +-
- target/hppa/cpu.h              |  2 +-
- target/i386/cpu.h              |  2 +-
- target/loongarch/internals.h   |  2 --
- target/m68k/cpu.h              |  2 +-
- target/microblaze/cpu.h        |  2 +-
- target/mips/tcg/tcg-internal.h |  2 +-
- target/openrisc/cpu.h          |  2 +-
- target/ppc/cpu.h               |  2 +-
- target/rx/cpu.h                |  2 +-
- target/s390x/s390x-internal.h  |  4 ++--
- target/sh4/cpu.h               |  2 +-
- target/sparc/cpu.h             | 11 +++++++---
- target/tricore/cpu.h           |  2 +-
- target/xtensa/cpu.h            |  2 +-
- accel/tcg/cpu-exec.c           | 25 +++++++++++++++++-----
- accel/tcg/translate-all.c      |  6 +++---
- hw/core/cpu-common.c           |  2 +-
- hw/core/generic-loader.c       |  2 +-
- target/alpha/cpu.c             | 10 +++------
- target/alpha/helper.c          |  3 +--
- target/arm/cpu.c               | 28 ++++++++----------------
- target/avr/cpu.c               | 19 ++++++-----------
- target/hexagon/cpu.c           | 21 +++++++-----------
- target/hppa/cpu.c              | 18 ++++++----------
- target/hppa/helper.c           |  3 +--
- target/hppa/int_helper.c       |  2 +-
- target/hppa/sys_helper.c       |  6 ++----
- target/i386/cpu-dump.c         |  5 ++---
- target/i386/cpu.c              | 12 ++++-------
- target/i386/helper.c           |  3 ++-
- target/i386/tcg/tcg-cpu.c      |  4 +---
- target/loongarch/cpu.c         | 15 ++++++-------
- target/m68k/cpu.c              | 19 ++++++-----------
- target/m68k/translate.c        |  3 +--
- target/microblaze/cpu.c        | 22 +++++++------------
- target/microblaze/translate.c  |  3 +--
- target/mips/cpu.c              | 17 +++++----------
- target/mips/tcg/translate.c    |  4 +---
- target/openrisc/cpu.c          | 24 ++++++++-------------
- target/openrisc/sys_helper.c   |  7 +++---
- target/openrisc/translate.c    |  3 +--
- target/ppc/cpu_init.c          | 23 +++++++-------------
- target/riscv/cpu.c             | 16 ++++----------
- target/riscv/tcg/tcg-cpu.c     |  4 +---
- target/rx/cpu.c                | 18 ++++++----------
- target/rx/translate.c          |  3 +--
- target/s390x/cpu-dump.c        |  3 +--
- target/s390x/cpu.c             | 12 ++++-------
- target/s390x/tcg/translate.c   |  3 +--
- target/sh4/cpu.c               | 20 ++++++-----------
- target/sh4/translate.c         |  3 +--
- target/sparc/cpu.c             | 39 ++++++++++++++++++++++++----------
- target/sparc/translate.c       | 32 ----------------------------
- target/tricore/cpu.c           | 12 +++++------
- target/tricore/translate.c     |  3 +--
- target/xtensa/cpu.c            | 18 ++++++----------
- target/xtensa/translate.c      |  3 +--
- 64 files changed, 230 insertions(+), 355 deletions(-)
-
+diff --git a/target/mips/cpu.c b/target/mips/cpu.c
+index d0a43b6d5c..7c6f438e5d 100644
+--- a/target/mips/cpu.c
++++ b/target/mips/cpu.c
+@@ -546,10 +546,6 @@ static Property mips_cpu_properties[] = {
+ 
+ #ifdef CONFIG_TCG
+ #include "hw/core/tcg-cpu-ops.h"
+-/*
+- * NB: cannot be const, as some elements are changed for specific
+- * mips hardware (see hw/mips/jazz.c).
+- */
+ static const TCGCPUOps mips_tcg_ops = {
+     .initialize = mips_tcg_init,
+     .synchronize_from_tb = mips_cpu_synchronize_from_tb,
 -- 
 2.45.2
 
