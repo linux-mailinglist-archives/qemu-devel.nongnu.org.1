@@ -2,91 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5538C9CF1D2
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Nov 2024 17:41:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 291BA9CF1F7
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Nov 2024 17:45:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tBzOE-0006mn-4X; Fri, 15 Nov 2024 11:41:46 -0500
+	id 1tBzRn-0005Yj-66; Fri, 15 Nov 2024 11:45:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tBzNs-0006fq-Rb
- for qemu-devel@nongnu.org; Fri, 15 Nov 2024 11:41:25 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tBzNr-0002O7-G1
- for qemu-devel@nongnu.org; Fri, 15 Nov 2024 11:41:24 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1731688882;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=lNF/kcmKbI8KDX0YtdYyqZMFkG7Dt2MJ7WbIuixbzu0=;
- b=ZT4f/eDrNSnCBcKKXAw2Mx8TXPDWn2Ok1809tzvpMfyD2Gl9o9kQ6L2v6/U8EOfcVLnxjk
- uoXBybNdVKOI7w1Lm+SJijAfwp+c1U3X9Q4dTMgtxdhwvzOC1/Lx3+Lsggew9VlrE7W23B
- bGqEdY3Pqt4eu5zcBCxZPC17GZmy/aY=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-447-zQSW2y76OzKNC2GWNhtDeQ-1; Fri, 15 Nov 2024 11:41:21 -0500
-X-MC-Unique: zQSW2y76OzKNC2GWNhtDeQ-1
-X-Mimecast-MFC-AGG-ID: zQSW2y76OzKNC2GWNhtDeQ
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-4314a22ed8bso6157915e9.1
- for <qemu-devel@nongnu.org>; Fri, 15 Nov 2024 08:41:21 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tBzRQ-0005TM-EP
+ for qemu-devel@nongnu.org; Fri, 15 Nov 2024 11:45:07 -0500
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tBzRO-0002jg-Q2
+ for qemu-devel@nongnu.org; Fri, 15 Nov 2024 11:45:04 -0500
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-431688d5127so16065495e9.0
+ for <qemu-devel@nongnu.org>; Fri, 15 Nov 2024 08:45:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1731689100; x=1732293900; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=hFU7kOYJMVilip8ZdoiHac8UNrl92jgQtD0aQrrMrmY=;
+ b=ifhbf9+JO0MhCwwx+Uoh3V72gHf2rHYMYR7XqtyTIe3x2IopiSi3zVBZr4spQ8Ox7F
+ 5w4ewuGNaabSrb+I7qGnvSyDXhPmFGzCka003bnm40D/eDGkYbhrIQCfDMLebCEDURy3
+ S4ZRGrEE5IqGS5Kbe/bkF7pvv94xodKxiGqABAPor5QnuPpESBYOBUhvT0tqtIR51pUu
+ pSuF9YiWYocfeQtaZYu4B6qBJakOhX/gLUeKwyDMYk9kJoM4VwA8iQTCfy1ub3lxv3mM
+ aVRfyGe6qNKbkF9vlpuKeLs0wX9NaSaB1XqrKp634lhcLCaU4l7mueklZnKxLKpj0jco
+ a0CA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731688878; x=1732293678;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=lNF/kcmKbI8KDX0YtdYyqZMFkG7Dt2MJ7WbIuixbzu0=;
- b=IYFuXAWFGh2KI2FVL7dz+Gw62w1tggRzusa++5emSi6U2rhkfUjuPVRQc+cccVrbhU
- 7mK1/Y67JiBg1h92SFJF21xY5MuVIMCcbqnmL9fg1wvqQ5f0RNmg1U1br/Sy75VT7Dlf
- o0hmQii46/gHLvSHSFo9tChaJbYRXqpSt/Q65GrNP/Vcx6TySY2X1285kOLows2zGdS7
- arNtVgAfBl4ioW05DbV1ENAmqR0ZIufQtlnRUUZNTG4PBzAOLvBNqV7qHmkjLRHTyaHf
- ApxNcEnlJVIUXxmXy+fOIcOl8VWYNS9gUQAtDkUblPpvKgk2WfgmmeVw5XUBfVBP1VS3
- JjAA==
-X-Gm-Message-State: AOJu0YzmolDtHMGnOa1gruPyKK28kMIXOey6YZL/uXi3epJ54EoEoY6y
- OhWAvCoN1jCCuS2G0zKeuxDX4Jmp3VrnkmhUiInQVs4ncl7O6jj6MoHf6IzQwq4LAgyxpCGxN6k
- mNTkxfMYCsLWn87/pp/bRFaezFJJ6UTJThp0yFff4QYpkzza09NojOfKqjHdfterug6NLsFeGFn
- qVW3dbRKUGq3EQL6GYygQpn8f4ys9m6BeY5cOJ7IM=
-X-Received: by 2002:a05:600c:35d2:b0:42c:c401:6d67 with SMTP id
- 5b1f17b1804b1-432df71e8d0mr27732245e9.6.1731688878559; 
- Fri, 15 Nov 2024 08:41:18 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEYIOmwqMaZc9Jpmv3POLb6H0rLNE34fZGiIM3liWc2MH5JMcADQ/llNm6desKG+DqCpuOlxQ==
-X-Received: by 2002:a05:600c:35d2:b0:42c:c401:6d67 with SMTP id
- 5b1f17b1804b1-432df71e8d0mr27732005e9.6.1731688878150; 
- Fri, 15 Nov 2024 08:41:18 -0800 (PST)
-Received: from [192.168.10.3] ([151.49.84.243])
+ d=1e100.net; s=20230601; t=1731689100; x=1732293900;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=hFU7kOYJMVilip8ZdoiHac8UNrl92jgQtD0aQrrMrmY=;
+ b=Ved548Nfe7IxOFwlo46QbJDeHPdpEKkLFnlVIfpXr4+doj9FP/+KkP/KniAG4cYBsX
+ X4DI0ZtuS5vmLYhEvBt7xsgL5Y3VJ0aVekhOK9uMkyawivJzwQhGFBbRflhzMbv7wnFK
+ Xxz7esarMlr+cgdKwNV/4IPOM+KhqYw6cb+k+UajNUv2pOT5MamID/HBhMOm9ILqF5Bs
+ EIyEOv6pQ/TajHAoVANBXBHT/ohY8lxuN13bqn0R8WX673kOVWiKLnpkx6TuGV8Blv2W
+ jEiiS9y4srdw9j4FLP1OdHoH8Q1lb16cFQAdDQTR2nXRgpn2FgKlWxo5E9bEmmQAf2GJ
+ o8rQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWYn8xZGUuu5Vcx66CWXAU6ZLpFXHBLIqK+bwT/fZawAmZ76w2oyhR7O4Hk0QC11ZKKEdrMfo3T95uO@nongnu.org
+X-Gm-Message-State: AOJu0Yx3VjHRNslp6j5cBmTmx1HYXqJIyy9zV8tmezm9Y5TE6ffn0v30
+ ravQF1oysPFTMNebipBqjTzYgwU1ugDbt/4FKmZtJx4GkwCGdmh8IZg4BEzXxXY=
+X-Google-Smtp-Source: AGHT+IGyqc14rLuNcpUhrRoEPqDV5RaCEWOH5ykyDgS3E0nMfXZw9suY/fRIE4+VO8OTJ7wsi6EY/g==
+X-Received: by 2002:a05:600c:a4c:b0:42c:a580:71cf with SMTP id
+ 5b1f17b1804b1-432df78f0f9mr31287555e9.30.1731689100556; 
+ Fri, 15 Nov 2024 08:45:00 -0800 (PST)
+Received: from [192.168.69.174] ([176.187.214.209])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3821b461a84sm4659639f8f.34.2024.11.15.08.41.13
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 15 Nov 2024 08:41:13 -0800 (PST)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-rust@nongnu.org, berrange@redhat.com, junjie.mao@hotmail.com,
- manos.pitsidianakis@linaro.org, kwolf@redhat.com
-Subject: [PATCH 12/12] rust: fix doc test syntax
-Date: Fri, 15 Nov 2024 17:40:25 +0100
-Message-ID: <20241115164025.1917618-12-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115163944.1917393-1-pbonzini@redhat.com>
-References: <20241115163944.1917393-1-pbonzini@redhat.com>
+ 5b1f17b1804b1-432dab721b7sm59326015e9.8.2024.11.15.08.44.58
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 15 Nov 2024 08:44:59 -0800 (PST)
+Message-ID: <601872ec-ac92-45e5-9ee7-a876a496b27a@linaro.org>
+Date: Fri, 15 Nov 2024 17:44:57 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 02/18] hw/block:m25p80: Fix coding style
+To: Jamin Lin <jamin_lin@aspeedtech.com>, =?UTF-8?Q?C=C3=A9dric_Le_Goater?=
+ <clg@kaod.org>, Peter Maydell <peter.maydell@linaro.org>,
+ Steven Lee <steven_lee@aspeedtech.com>, Troy Lee <leetroy@gmail.com>,
+ Andrew Jeffery <andrew@codeconstruct.com.au>, Joel Stanley <joel@jms.id.au>,
+ Alistair Francis <alistair@alistair23.me>, Kevin Wolf <kwolf@redhat.com>,
+ Hanna Reitz <hreitz@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ "open list:ASPEED BMCs" <qemu-arm@nongnu.org>,
+ "open list:All patches CC here" <qemu-devel@nongnu.org>,
+ "open list:Block layer core" <qemu-block@nongnu.org>
+Cc: troy_lee@aspeedtech.com, yunlin.tang@aspeedtech.com,
+ =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+References: <20241022094110.1574011-1-jamin_lin@aspeedtech.com>
+ <20241022094110.1574011-3-jamin_lin@aspeedtech.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20241022094110.1574011-3-jamin_lin@aspeedtech.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -28
-X-Spam_score: -2.9
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.12,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.658,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,32 +104,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Allow "cargo test --doc" to pass.
+On 22/10/24 10:40, Jamin Lin via wrote:
+> Fix coding style issues from checkpatch.pl
+> 
+> Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
+> Reviewed-by: Cédric Le Goater <clg@redhat.com>
+> ---
+>   hw/block/m25p80.c | 22 ++++++++++++++--------
+>   1 file changed, 14 insertions(+), 8 deletions(-)
 
-Reviewed-by: Junjie Mao <junjie.mao@hotmail.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- rust/qemu-api/src/zeroable.rs | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/rust/qemu-api/src/zeroable.rs b/rust/qemu-api/src/zeroable.rs
-index 13cdb2ccba5..6125aeed8b4 100644
---- a/rust/qemu-api/src/zeroable.rs
-+++ b/rust/qemu-api/src/zeroable.rs
-@@ -7,9 +7,9 @@
- /// behavior.  This trait in principle could be implemented as just:
- ///
- /// ```
--///     const ZERO: Self = unsafe {
--///         ::core::mem::MaybeUninit::<$crate::bindings::Property>::zeroed().assume_init()
--///     },
-+/// pub unsafe trait Zeroable: Default {
-+///     const ZERO: Self = unsafe { ::core::mem::MaybeUninit::<Self>::zeroed().assume_init() };
-+/// }
- /// ```
- ///
- /// The need for a manual implementation is only because `zeroed()` cannot
--- 
-2.47.0
+> @@ -1843,7 +1849,7 @@ static void m25p80_register_types(void)
+>   
+>       type_register_static(&m25p80_info);
+>       for (i = 0; i < ARRAY_SIZE(known_devices); ++i) {
+> -        TypeInfo ti = {
+> +        const TypeInfo ti = {
+
+This is a bit more than style change.
+
+>               .name       = known_devices[i].part_name,
+>               .parent     = TYPE_M25P80,
+>               .class_init = m25p80_class_init,
 
 
