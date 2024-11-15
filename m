@@ -2,80 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C90299CF2CB
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Nov 2024 18:25:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E05A9CF2DD
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Nov 2024 18:27:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tC04Q-0003zG-Bf; Fri, 15 Nov 2024 12:25:22 -0500
+	id 1tC04s-00043B-SW; Fri, 15 Nov 2024 12:25:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tC04O-0003yz-VD
- for qemu-devel@nongnu.org; Fri, 15 Nov 2024 12:25:20 -0500
-Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tC04M-0001UW-GL
- for qemu-devel@nongnu.org; Fri, 15 Nov 2024 12:25:20 -0500
-Received: by mail-wr1-x42e.google.com with SMTP id
- ffacd0b85a97d-3822ba3cdbcso366188f8f.0
- for <qemu-devel@nongnu.org>; Fri, 15 Nov 2024 09:25:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1731691517; x=1732296317; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=7Y0AMU/ttgRURqOnN0XPhkHG3hk3G+OF7iF0mZeXnJQ=;
- b=n8STFGwn/3EbTsIFfPrxlCpGz3g2Cab4bihNWvoGpv2uklYj6TLxsPptNw+iAnAyBc
- VgDVrSfv1oA/T1TgSnUR46yjqJ57jQaERu4+QkHroQen07PhgmsSBDQ0daBbqEy7JaPv
- ecGjZotU4cs3k7OIatfDNOm4esgSeguzRpFTUPpldtmlyJUiagk7EoGfb8pHRzeJ3Ci8
- 3pTFHtrB/XJbgK3H40xJzLYI1CnkVPty3qVvJ35ed74Zzj2L0YQWU6QNdMzTCsYFdvWB
- BOAujlDl/b4epOtOzobvb3KFFJNCibiyLx6SVfxvZjdbCHUbPeXkUUKdDyul1t9yqCh8
- ANWg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731691517; x=1732296317;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=7Y0AMU/ttgRURqOnN0XPhkHG3hk3G+OF7iF0mZeXnJQ=;
- b=VLlil8B0m1/1nylhpZItTqj/12nEzNAF5orTmOr3jgdZe+QDUKtDrlq7CupHffo5lb
- ppNOFr4OBJIOQ3RiNSuuKkFs1tNPuI32rcrWAwqYfXuiSGod8G5M1Q0KpFlKuafJgs2H
- UZdSG/lrHy05e+Z2mLSwunr1sArh9ZXGO71dCTOQZhvsc8K2IzwD/dPIM8hirAur1/I4
- e71QIDSxCcRa+nQBdSVJrCL0mfy+W30XspjRqpuE0ionk1pl3rmmVfLdKkB9JXqH2gTJ
- FQ7dPTcLqjupHXzbHV27jNGbdnipUbyd6ipajs+v8+B941XhmA1uwsAjhvEN7YCNnuTm
- K5/A==
-X-Forwarded-Encrypted: i=1;
- AJvYcCV78VMakTVoSqg2LtgjqLmNi6jiKrNGKPxOCnw0kd9i4L8YNQZcr78wy0GR6CEoofP48oTqxyFETm//@nongnu.org
-X-Gm-Message-State: AOJu0Yxlg32PSAPs7rZozN9nZKb+K25Q/X4hrK9zOAg04KcsxMtgoQUt
- 1Bl85/D9hdVIIHTqsMMYp16t+FKroKt5jFzvDEQT7ovMl9m121+FV6CNP7m93cQ=
-X-Google-Smtp-Source: AGHT+IH9HnPAv5KKrsgFmQTe4yqyqyb78yONAyEmtd66mmIKkV71Oe6N98HEpriHgLuG1vBAsfbhlg==
-X-Received: by 2002:a05:6000:1884:b0:37d:9476:45f6 with SMTP id
- ffacd0b85a97d-38225901ed5mr2721510f8f.7.1731691516759; 
- Fri, 15 Nov 2024 09:25:16 -0800 (PST)
-Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3821ae3128bsm4815080f8f.102.2024.11.15.09.25.16
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 15 Nov 2024 09:25:16 -0800 (PST)
-From: Peter Maydell <peter.maydell@linaro.org>
-To: qemu-arm@nongnu.org,
-	qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>
-Subject: [PATCH] tcg: Allow top bit of SIMD_DATA_BITS to be set in simd_desc()
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1tC04f-00042f-I2
+ for qemu-devel@nongnu.org; Fri, 15 Nov 2024 12:25:37 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1tC04d-0001WJ-NF
+ for qemu-devel@nongnu.org; Fri, 15 Nov 2024 12:25:37 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1731691534;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=cgD9ehYu1Tjdp6JJALrItoKNs/50PojM5Ut2/ekClU8=;
+ b=W1nCyjgS9Antc71kDz0lU183T+/DKFw15E10OM5ciltLAW8EMjlCrxvXKITL1luD/0E8eQ
+ CnQHKUHPrf9X97MyQHAePxwEO7PKVWd/m9fuAvQIyWI7LNgdUJ8O9wpzb7jwpwW2acexrH
+ muwvVnTpckcWXKWRrIqmvWJLXTHOWmM=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-307-dJgSnjdRNA-3jkhsTJWWgA-1; Fri,
+ 15 Nov 2024 12:25:33 -0500
+X-MC-Unique: dJgSnjdRNA-3jkhsTJWWgA-1
+X-Mimecast-MFC-AGG-ID: dJgSnjdRNA-3jkhsTJWWgA
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id A30211955F42
+ for <qemu-devel@nongnu.org>; Fri, 15 Nov 2024 17:25:32 +0000 (UTC)
+Received: from toolbox.redhat.com (unknown [10.42.28.102])
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id D4AD13003B74; Fri, 15 Nov 2024 17:25:30 +0000 (UTC)
+From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+Subject: [PATCH v3 3/9] qom: allow failure of object_new_with_class
 Date: Fri, 15 Nov 2024 17:25:15 +0000
-Message-Id: <20241115172515.1229393-1-peter.maydell@linaro.org>
-X-Mailer: git-send-email 2.34.1
+Message-ID: <20241115172521.504102-4-berrange@redhat.com>
+In-Reply-To: <20241115172521.504102-1-berrange@redhat.com>
+References: <20241115172521.504102-1-berrange@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42e.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -28
+X-Spam_score: -2.9
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.12,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.658,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,64 +85,280 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In simd_desc() we create a SIMD descriptor from various pieces
-including an arbitrary data value from the caller.  We try to
-sanitize these to make sure everything will fit: the 'data' value
-needs to fit in the SIMD_DATA_BITS (== 22) sized field.  However we
-do that sanitizing with:
-   tcg_debug_assert(data == sextract32(data, 0, SIMD_DATA_BITS));
+Since object_new_with_class() accepts a non-const parameter for
+the class, callers should be prepared for failures from unexpected
+input. Add an Error parameter for this and make callers check.
+If the caller does not already have an Error parameter, it is
+satisfactory to use &error_abort if the class parameter choice is
+not driven by untrusted user input.
 
-This works for the case where the data is supposed to be considered
-as a signed integer (which can then be returned via simd_data()).
-However, some callers want to treat the data value as unsigned.
+This conversion allows removal of any object_class_is_abstract()
+checks immediately before object_new_with_class().
 
-Specifically, for the Arm SVE operations, make_svemte_desc()
-assembles a data value as a collection of fields, and it needs to use
-all 22 bits.  Currently if MTE is enabled then its MTEDESC SIZEM1
-field may have the most significant bit set, and then it will trip
-this assertion.
-
-Loosen the assertion so that we only check that the data value will
-fit into the field in some way, either as a signed or as an unsigned
-value.  This means we will fail to detect some kinds of bug in the
-callers, but we won't spuriously assert for intentional use of the
-data field as unsigned.
-
-Cc: qemu-stable@nongnu.org
-Fixes: db432672dc50e ("tcg: Add generic vector expanders")
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2601
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Peter Xu <peterx@redhat.com>
+Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- tcg/tcg-op-gvec.c | 15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+ accel/accel-user.c               |  4 +++-
+ include/qom/object.h             |  9 +++++++--
+ net/net.c                        |  3 ++-
+ qom/object.c                     |  4 ++--
+ qom/object_interfaces.c          |  7 +++----
+ qom/qom-qmp-cmds.c               | 11 ++++++-----
+ system/vl.c                      |  6 ++++--
+ target/i386/cpu-apic.c           |  8 +++++++-
+ target/i386/cpu-sysemu.c         | 11 ++++++++---
+ target/i386/cpu.c                |  4 ++--
+ target/s390x/cpu_models_sysemu.c |  7 +++++--
+ 11 files changed, 49 insertions(+), 25 deletions(-)
 
-diff --git a/tcg/tcg-op-gvec.c b/tcg/tcg-op-gvec.c
-index 78ee1ced80f..97e4df221a4 100644
---- a/tcg/tcg-op-gvec.c
-+++ b/tcg/tcg-op-gvec.c
-@@ -88,7 +88,20 @@ uint32_t simd_desc(uint32_t oprsz, uint32_t maxsz, int32_t data)
-     uint32_t desc = 0;
+diff --git a/accel/accel-user.c b/accel/accel-user.c
+index 22b6a1a1a8..df673ec0e4 100644
+--- a/accel/accel-user.c
++++ b/accel/accel-user.c
+@@ -9,6 +9,7 @@
  
-     check_size_align(oprsz, maxsz, 0);
--    tcg_debug_assert(data == sextract32(data, 0, SIMD_DATA_BITS));
-+
-+    /*
-+     * We want to check that 'data' will fit into SIMD_DATA_BITS.
-+     * However, some callers want to treat the data as a signed
-+     * value (which they can later get back with simd_data())
-+     * and some want to treat it as an unsigned value.
-+     * So here we assert only that the data will fit into the
-+     * field in at least one way. This means that some invalid
-+     * values from the caller will not be detected, e.g. if the
-+     * caller wants to handle the value as a signed integer but
-+     * incorrectly passes us 1 << (SIMD_DATA_BITS - 1).
-+     */
-+    tcg_debug_assert(data == sextract32(data, 0, SIMD_DATA_BITS) ||
-+                     data == extract32(data, 0, SIMD_DATA_BITS));
+ #include "qemu/osdep.h"
+ #include "qemu/accel.h"
++#include "qapi/error.h"
  
-     oprsz = (oprsz / 8) - 1;
-     maxsz = (maxsz / 8) - 1;
+ AccelState *current_accel(void)
+ {
+@@ -18,7 +19,8 @@ AccelState *current_accel(void)
+         AccelClass *ac = accel_find("tcg");
+ 
+         g_assert(ac != NULL);
+-        accel = ACCEL(object_new_with_class(OBJECT_CLASS(ac)));
++        accel = ACCEL(object_new_with_class(OBJECT_CLASS(ac),
++                                            &error_abort));
+     }
+     return accel;
+ }
+diff --git a/include/qom/object.h b/include/qom/object.h
+index 43c135984a..11ee472719 100644
+--- a/include/qom/object.h
++++ b/include/qom/object.h
+@@ -606,14 +606,19 @@ struct InterfaceClass
+ /**
+  * object_new_with_class:
+  * @klass: The class to instantiate.
++ * @errp: pointer to be filled with error details on failure
+  *
+  * This function will initialize a new object using heap allocated memory.
+  * The returned object has a reference count of 1, and will be freed when
+  * the last reference is dropped.
+  *
+- * Returns: The newly allocated and instantiated object.
++ * If an instance of @klass is not permitted to be instantiated, an
++ * error will be raised. This can happen if @klass is abstract.
++ *
++ * Returns: The newly allocated and instantiated object, or NULL
++ * on error.
+  */
+-Object *object_new_with_class(ObjectClass *klass);
++Object *object_new_with_class(ObjectClass *klass, Error **errp);
+ 
+ /**
+  * object_new:
+diff --git a/net/net.c b/net/net.c
+index 7ef6885876..fbbfe602a4 100644
+--- a/net/net.c
++++ b/net/net.c
+@@ -948,7 +948,8 @@ GPtrArray *qemu_get_nic_models(const char *device_type)
+              * create this property during instance_init, so we have to create
+              * a temporary instance here to be able to check it.
+              */
+-            Object *obj = object_new_with_class(OBJECT_CLASS(dc));
++            Object *obj = object_new_with_class(OBJECT_CLASS(dc),
++                                                &error_abort);
+             if (object_property_find(obj, "netdev")) {
+                 g_ptr_array_add(nic_models, (gpointer)name);
+             }
+diff --git a/qom/object.c b/qom/object.c
+index 9632a894ee..ad5b3b9582 100644
+--- a/qom/object.c
++++ b/qom/object.c
+@@ -794,9 +794,9 @@ static Object *object_new_with_type(Type type, Error **errp)
+     return obj;
+ }
+ 
+-Object *object_new_with_class(ObjectClass *klass)
++Object *object_new_with_class(ObjectClass *klass, Error **errp)
+ {
+-    return object_new_with_type(klass->type, &error_abort);
++    return object_new_with_type(klass->type, errp);
+ }
+ 
+ Object *object_new(const char *typename)
+diff --git a/qom/object_interfaces.c b/qom/object_interfaces.c
+index 1a6f29c053..967b906755 100644
+--- a/qom/object_interfaces.c
++++ b/qom/object_interfaces.c
+@@ -102,13 +102,12 @@ Object *user_creatable_add_type(const char *type, const char *id,
+         return NULL;
+     }
+ 
+-    if (object_class_is_abstract(klass)) {
+-        error_setg(errp, "object type '%s' is abstract", type);
++    assert(qdict);
++    obj = object_new_with_class(klass, errp);
++    if (!obj) {
+         return NULL;
+     }
+ 
+-    assert(qdict);
+-    obj = object_new_with_class(klass);
+     object_set_properties_from_qdict(obj, qdict, v, &local_err);
+     if (local_err) {
+         goto out;
+diff --git a/qom/qom-qmp-cmds.c b/qom/qom-qmp-cmds.c
+index 46e4562300..4a8e269fef 100644
+--- a/qom/qom-qmp-cmds.c
++++ b/qom/qom-qmp-cmds.c
+@@ -134,14 +134,15 @@ ObjectPropertyInfoList *qmp_device_list_properties(const char *typename,
+         return NULL;
+     }
+ 
+-    if (!object_class_dynamic_cast(klass, TYPE_DEVICE)
+-        || object_class_is_abstract(klass)) {
+-        error_setg(errp, QERR_INVALID_PARAMETER_VALUE, "typename",
+-                   "a non-abstract device type");
++    if (!object_class_dynamic_cast(klass, TYPE_DEVICE)) {
++        error_setg(errp, "Object '%s' is not a device type", typename);
+         return NULL;
+     }
+ 
+-    obj = object_new_with_class(klass);
++    obj = object_new_with_class(klass, errp);
++    if (!obj) {
++        return NULL;
++    }
+ 
+     object_property_iter_init(&iter, obj);
+     while ((prop = object_property_iter_next(&iter))) {
+diff --git a/system/vl.c b/system/vl.c
+index d217b3d64d..f4eec7f35c 100644
+--- a/system/vl.c
++++ b/system/vl.c
+@@ -2117,7 +2117,8 @@ static void qemu_create_machine(QDict *qdict)
+     MachineClass *machine_class = select_machine(qdict, &error_fatal);
+     object_set_machine_compat_props(machine_class->compat_props);
+ 
+-    current_machine = MACHINE(object_new_with_class(OBJECT_CLASS(machine_class)));
++    current_machine = MACHINE(object_new_with_class(OBJECT_CLASS(machine_class),
++                                                    &error_fatal));
+     object_property_add_child(object_get_root(), "machine",
+                               OBJECT(current_machine));
+     object_property_add_child(container_get(OBJECT(current_machine),
+@@ -2327,7 +2328,8 @@ static int do_configure_accelerator(void *opaque, QemuOpts *opts, Error **errp)
+         }
+         goto bad;
+     }
+-    accel = ACCEL(object_new_with_class(OBJECT_CLASS(ac)));
++    accel = ACCEL(object_new_with_class(OBJECT_CLASS(ac),
++                                        &error_fatal));
+     object_apply_compat_props(OBJECT(accel));
+     qemu_opt_foreach(opts, accelerator_set_property,
+                      accel,
+diff --git a/target/i386/cpu-apic.c b/target/i386/cpu-apic.c
+index d397ec94dc..8a518c50c7 100644
+--- a/target/i386/cpu-apic.c
++++ b/target/i386/cpu-apic.c
+@@ -43,12 +43,18 @@ void x86_cpu_apic_create(X86CPU *cpu, Error **errp)
+ {
+     APICCommonState *apic;
+     APICCommonClass *apic_class = apic_get_class(errp);
++    Object *apicobj;
+ 
+     if (!apic_class) {
+         return;
+     }
+ 
+-    cpu->apic_state = DEVICE(object_new_with_class(OBJECT_CLASS(apic_class)));
++    apicobj = object_new_with_class(OBJECT_CLASS(apic_class),
++                                    errp);
++    if (!apicobj) {
++        return;
++    }
++    cpu->apic_state = DEVICE(apicobj);
+     object_property_add_child(OBJECT(cpu), "lapic",
+                               OBJECT(cpu->apic_state));
+     object_unref(OBJECT(cpu->apic_state));
+diff --git a/target/i386/cpu-sysemu.c b/target/i386/cpu-sysemu.c
+index 227ac021f6..612ff09e57 100644
+--- a/target/i386/cpu-sysemu.c
++++ b/target/i386/cpu-sysemu.c
+@@ -156,15 +156,20 @@ static X86CPU *x86_cpu_from_model(const char *model, QObject *props,
+ {
+     X86CPU *xc = NULL;
+     X86CPUClass *xcc;
++    Object *xcobj;
+     Error *err = NULL;
+ 
+     xcc = X86_CPU_CLASS(cpu_class_by_name(TYPE_X86_CPU, model));
+     if (xcc == NULL) {
+-        error_setg(&err, "CPU model '%s' not found", model);
+-        goto out;
++        error_setg(errp, "CPU model '%s' not found", model);
++        return NULL;
+     }
+ 
+-    xc = X86_CPU(object_new_with_class(OBJECT_CLASS(xcc)));
++    xcobj = object_new_with_class(OBJECT_CLASS(xcc), errp);
++    if (!xcobj) {
++        return NULL;
++    }
++    xc = X86_CPU(xcobj);
+     if (props) {
+         object_apply_props(OBJECT(xc), props, props_arg_name, &err);
+         if (err) {
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index 3725dbbc4b..d4315df29f 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -5973,7 +5973,7 @@ static GSList *get_sorted_cpu_model_list(void)
+ 
+ static char *x86_cpu_class_get_model_id(X86CPUClass *xc)
+ {
+-    Object *obj = object_new_with_class(OBJECT_CLASS(xc));
++    Object *obj = object_new_with_class(OBJECT_CLASS(xc), &error_abort);
+     char *r = object_property_get_str(obj, "model-id", &error_abort);
+     object_unref(obj);
+     return r;
+@@ -6071,7 +6071,7 @@ static void x86_cpu_class_check_missing_features(X86CPUClass *xcc,
+         return;
+     }
+ 
+-    xc = X86_CPU(object_new_with_class(OBJECT_CLASS(xcc)));
++    xc = X86_CPU(object_new_with_class(OBJECT_CLASS(xcc), &error_abort));
+ 
+     x86_cpu_expand_features(xc, &err);
+     if (err) {
+diff --git a/target/s390x/cpu_models_sysemu.c b/target/s390x/cpu_models_sysemu.c
+index f6df691b66..7fe3093056 100644
+--- a/target/s390x/cpu_models_sysemu.c
++++ b/target/s390x/cpu_models_sysemu.c
+@@ -69,7 +69,7 @@ static void create_cpu_model_list(ObjectClass *klass, void *opaque)
+     if (cpu_list_data->model) {
+         Object *obj;
+         S390CPU *sc;
+-        obj = object_new_with_class(klass);
++        obj = object_new_with_class(klass, &error_abort);
+         sc = S390_CPU(obj);
+         if (sc->model) {
+             info->has_unavailable_features = true;
+@@ -116,7 +116,10 @@ static void cpu_model_from_info(S390CPUModel *model, const CpuModelInfo *info,
+         error_setg(errp, "The CPU definition '%s' requires KVM", info->name);
+         return;
+     }
+-    obj = object_new_with_class(oc);
++    obj = object_new_with_class(oc, errp);
++    if (!obj) {
++        return;
++    }
+     cpu = S390_CPU(obj);
+ 
+     if (!cpu->model) {
 -- 
-2.34.1
+2.46.0
 
 
