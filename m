@@ -2,75 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AAF79CF671
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D17D9CF672
 	for <lists+qemu-devel@lfdr.de>; Fri, 15 Nov 2024 22:00:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tC3P8-0007VX-N2; Fri, 15 Nov 2024 15:58:58 -0500
+	id 1tC3P9-0007Vc-Ij; Fri, 15 Nov 2024 15:58:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tC3P5-0007U2-4Z
- for qemu-devel@nongnu.org; Fri, 15 Nov 2024 15:58:55 -0500
-Received: from mail-pj1-x1033.google.com ([2607:f8b0:4864:20::1033])
+ id 1tC3P6-0007UH-3s
+ for qemu-devel@nongnu.org; Fri, 15 Nov 2024 15:58:56 -0500
+Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tC3P3-0004M4-99
- for qemu-devel@nongnu.org; Fri, 15 Nov 2024 15:58:54 -0500
-Received: by mail-pj1-x1033.google.com with SMTP id
- 98e67ed59e1d1-2ea0f91d381so57714a91.1
- for <qemu-devel@nongnu.org>; Fri, 15 Nov 2024 12:58:52 -0800 (PST)
+ id 1tC3P4-0004MF-5A
+ for qemu-devel@nongnu.org; Fri, 15 Nov 2024 15:58:55 -0500
+Received: by mail-pf1-x42c.google.com with SMTP id
+ d2e1a72fcca58-72410cc7be9so1997032b3a.0
+ for <qemu-devel@nongnu.org>; Fri, 15 Nov 2024 12:58:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1731704332; x=1732309132; darn=nongnu.org;
+ d=linaro.org; s=google; t=1731704333; x=1732309133; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=IefchHLUObrdReiKezDwvf7im5w8O51AN5OkZQmzJ08=;
- b=CoNftJ7QhOgSBwunaGQ4fNfpun+k9w/yh4yNaKe0rOwSZi5wFeUWi0xCYL6aThu+9o
- pSKBsQHX9IRzfyWy0c84Q4mPte606+8ZlssYM+507H3dG6wYLlENTEORqDhRA5Qwc0VH
- n5DDGXECJMCU4c83QbOTixckYTLcaPqLe/gs7K8Qov7p4U9I1m1SYszgFlatPE3ETu2L
- 9jda/cfemuuiX92xe42zHFH5GzsWXOa1LCgtv27Go5eWyuPDDh/iLbFEeW59o4URCOnL
- UHFccIhqBe8YQxlHqyWCnhqw0KoFoGf8QvT7JdUxyTijSjSd3d9Z0N8TDXHM/IHBGh+Q
- isCw==
+ bh=7URjfhdJJgJViY9xy3HGWdoffZ4Bx5+TNtC2smFn9cA=;
+ b=v8Hy9w5muerd/afaeZpO4O9jmJVNH0mG8o0/TYRNzmfiujoBYex5a9zRAJETUj16Gu
+ LLgX/+9AZG0dqPG+ewSUJtyl79LSN0/MjmerAbcALvdwRxHlc1m1x89ltXCqVVaVhpDh
+ zi3tQMok9PM8s4/LAzeriJJH1bM71AND2Zp5ZdFvsF7xIJ0DcI2pz3QcOS2AR+rb8sT/
+ 8DnFDJ6YnnouwOnckeseVu1XUQMJr2Azl1KSS8j0tWmmHeC7lYH9cRt6eovKbRgVM5hF
+ kEMa/Vy6twvBylEneupoZIHikOP3ClnN1ZYX+dTc6QELw5QUQ3WJ1w+lFb3/nlRTV9HL
+ X2Kw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731704332; x=1732309132;
+ d=1e100.net; s=20230601; t=1731704333; x=1732309133;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=IefchHLUObrdReiKezDwvf7im5w8O51AN5OkZQmzJ08=;
- b=wehsNO3P/IUp+jElAzlZFUNmSLiQ5+CmFEb7AEItadkKsIe61tvHYOWdZH2EhUCGu6
- tuMy/DKnSb0MVzvIjEtpyByiRRHqGwxmZQct+bI+lRPg0pfm2qIkbNNesDMCaMu56GTJ
- a6JMII3KDOTxL86PwT3Pc5gNdZ37+x5iZzfBLgV1lzguzfXwk/nYsNtOZ2+x6S0atCCY
- QLhQS+MnIXrNeVXfWGDAdsQTJN4iZHPLUMgJhsJ6IzUPaHF/ocyPPPYgDWbEfCod5uQE
- qTw9vk/8FCnO1jWrzae58fpBtGbW2ykNQtjoJLN19ypwqnLLdYBpvFq1c0NqHost4fcb
- XjdQ==
-X-Gm-Message-State: AOJu0YwVb7bAKaJ1hMxpbIAuf/u2512we8ypP69n+0quISr9QBf6+2/J
- ANF1oCd2owJLeZEGsSH0Hm5+rl4HZnLBjE+TH2INlhiAGmWwsnY9pCnOgCOIG/vm3wUsUcAw65+
- n
-X-Google-Smtp-Source: AGHT+IFHx7sIjbr4ApO0qtgF2eY/po5ggleeYSrk/CM4h+lI7xYr5xavt+RFNzCE23dD/KEbmuzUtg==
-X-Received: by 2002:a17:90b:4ecd:b0:2e2:cd5e:7eef with SMTP id
- 98e67ed59e1d1-2ea15585ba3mr4287368a91.27.1731704331827; 
- Fri, 15 Nov 2024 12:58:51 -0800 (PST)
+ bh=7URjfhdJJgJViY9xy3HGWdoffZ4Bx5+TNtC2smFn9cA=;
+ b=Xe5FmI5ZsNw4xH8Lq0UJwB8JqEn8yK/atSOYka4ssx+sctKU7FsWWa7PXJuOMGwVk2
+ FVvu1xqz8z+rrluZWMcyOZdpzXbVBWX+ZduGFd68T2mG4+D+Y5O6heyD0kf1HjiCNGvw
+ 4PiS26JfM0H6Qk1GTEs1KoBHFlBDsjb62DbntY75i9kx5iU4M1+L2CBYxjwQxgmIoBdw
+ 3nINoHq0MDH3q/sFd7KT8Pg/oeiGY1Kcb/5d1W3Nt9+FcXk4xW5df/42Xeep/YeIm9uh
+ /W6DAD/i8Lg2RJY2PTbEbtBs1KfWBe4Q0/RcI7QYPnC5LcYIhlyZmTM92rmzuaZonLRv
+ NU0Q==
+X-Gm-Message-State: AOJu0YyYVHUMZaIpsCHQTaS8LL7iNMhosIrCRIyiOcd7sy8V0Huan4Qc
+ 6LI+sBjqSfRVWYYwO5h738uaQlMJeItVkCwAmMUhHt+HJherPlgDucef/smAEjgBfAJH61fX2Ab
+ q
+X-Google-Smtp-Source: AGHT+IGuugmg9lz3iI9zEvOz+IDioBQPoCN5tRhsAIB+TY0DesBFHUpOeoUFRwBgPuoL4DHJKaaoSg==
+X-Received: by 2002:a17:90b:1d05:b0:2e9:2e69:ee10 with SMTP id
+ 98e67ed59e1d1-2ea1552274bmr4652293a91.19.1731704332696; 
+ Fri, 15 Nov 2024 12:58:52 -0800 (PST)
 Received: from stoup.. ([71.212.136.242]) by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2ea024a49a8sm3362274a91.23.2024.11.15.12.58.51
+ 98e67ed59e1d1-2ea024a49a8sm3362274a91.23.2024.11.15.12.58.52
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 15 Nov 2024 12:58:51 -0800 (PST)
+ Fri, 15 Nov 2024 12:58:52 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Helge Deller <deller@kernel.org>, qemu-stable@nongnu.org,
- Helge Deller <deller@gmx.de>, Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: [PULL 01/14] linux-user: Fix setreuid and setregid to use direct
- syscalls
-Date: Fri, 15 Nov 2024 12:58:36 -0800
-Message-ID: <20241115205849.266094-2-richard.henderson@linaro.org>
+Cc: qemu-stable@nongnu.org,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+Subject: [PULL 02/14] accel/tcg: Fix user-only probe_access_internal plugin
+ check
+Date: Fri, 15 Nov 2024 12:58:37 -0800
+Message-ID: <20241115205849.266094-3-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241115205849.266094-1-richard.henderson@linaro.org>
 References: <20241115205849.266094-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1033;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1033.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,83 +94,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Helge Deller <deller@kernel.org>
-
-The commit fd6f7798ac30 ("linux-user: Use direct syscalls for setuid(),
-etc") added direct syscall wrappers for setuid(), setgid(), etc since the
-system calls have different semantics than the libc functions.
-
-Add and use the corresponding wrappers for setreuid and setregid which
-were missed in that commit.
-
-This fixes the build of the debian package of the uid_wrapper library
-(https://cwrap.org/uid_wrapper.html) when running linux-user.
+The acc_flag check for write should have been against PAGE_WRITE_ORG,
+not PAGE_WRITE.  But it is better to combine two acc_flag checks
+to a single check against access_type.  This matches the system code
+in cputlb.c.
 
 Cc: qemu-stable@nongnu.org
-Signed-off-by: Helge Deller <deller@gmx.de>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Message-ID: <Zyo2jMKqq8hG8Pkz@p100>
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2647
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Message-Id: 20241111145002.144995-1-richard.henderson@linaro.org
+Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- linux-user/syscall.c | 20 ++++++++++++++++----
- 1 file changed, 16 insertions(+), 4 deletions(-)
+ accel/tcg/user-exec.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-index 59b2080b98..0279f23576 100644
---- a/linux-user/syscall.c
-+++ b/linux-user/syscall.c
-@@ -7233,12 +7233,24 @@ static inline int tswapid(int id)
- #else
- #define __NR_sys_setgroups __NR_setgroups
- #endif
-+#ifdef __NR_sys_setreuid32
-+#define __NR_sys_setreuid __NR_setreuid32
-+#else
-+#define __NR_sys_setreuid __NR_setreuid
-+#endif
-+#ifdef __NR_sys_setregid32
-+#define __NR_sys_setregid __NR_setregid32
-+#else
-+#define __NR_sys_setregid __NR_setregid
-+#endif
- 
- _syscall1(int, sys_setuid, uid_t, uid)
- _syscall1(int, sys_setgid, gid_t, gid)
- _syscall3(int, sys_setresuid, uid_t, ruid, uid_t, euid, uid_t, suid)
- _syscall3(int, sys_setresgid, gid_t, rgid, gid_t, egid, gid_t, sgid)
- _syscall2(int, sys_setgroups, int, size, gid_t *, grouplist)
-+_syscall2(int, sys_setreuid, uid_t, ruid, uid_t, euid);
-+_syscall2(int, sys_setregid, gid_t, rgid, gid_t, egid);
- 
- void syscall_init(void)
- {
-@@ -11932,9 +11944,9 @@ static abi_long do_syscall1(CPUArchState *cpu_env, int num, abi_long arg1,
-         return get_errno(high2lowgid(getegid()));
- #endif
-     case TARGET_NR_setreuid:
--        return get_errno(setreuid(low2highuid(arg1), low2highuid(arg2)));
-+        return get_errno(sys_setreuid(low2highuid(arg1), low2highuid(arg2)));
-     case TARGET_NR_setregid:
--        return get_errno(setregid(low2highgid(arg1), low2highgid(arg2)));
-+        return get_errno(sys_setregid(low2highgid(arg1), low2highgid(arg2)));
-     case TARGET_NR_getgroups:
-         { /* the same code as for TARGET_NR_getgroups32 */
-             int gidsetsize = arg1;
-@@ -12264,11 +12276,11 @@ static abi_long do_syscall1(CPUArchState *cpu_env, int num, abi_long arg1,
- #endif
- #ifdef TARGET_NR_setreuid32
-     case TARGET_NR_setreuid32:
--        return get_errno(setreuid(arg1, arg2));
-+        return get_errno(sys_setreuid(arg1, arg2));
- #endif
- #ifdef TARGET_NR_setregid32
-     case TARGET_NR_setregid32:
--        return get_errno(setregid(arg1, arg2));
-+        return get_errno(sys_setregid(arg1, arg2));
- #endif
- #ifdef TARGET_NR_getgroups32
-     case TARGET_NR_getgroups32:
+diff --git a/accel/tcg/user-exec.c b/accel/tcg/user-exec.c
+index aa8af52cc3..06016eb030 100644
+--- a/accel/tcg/user-exec.c
++++ b/accel/tcg/user-exec.c
+@@ -800,7 +800,7 @@ static int probe_access_internal(CPUArchState *env, vaddr addr,
+     if (guest_addr_valid_untagged(addr)) {
+         int page_flags = page_get_flags(addr);
+         if (page_flags & acc_flag) {
+-            if ((acc_flag == PAGE_READ || acc_flag == PAGE_WRITE)
++            if (access_type != MMU_INST_FETCH
+                 && cpu_plugin_mem_cbs_enabled(env_cpu(env))) {
+                 return TLB_MMIO;
+             }
 -- 
 2.43.0
 
