@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6779A9CEEBA
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Nov 2024 16:21:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A7E89CEECC
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Nov 2024 16:22:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tBy8K-0001oX-QG; Fri, 15 Nov 2024 10:21:16 -0500
+	id 1tBy8P-0001sc-SU; Fri, 15 Nov 2024 10:21:21 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tBy8J-0001oM-DC
- for qemu-devel@nongnu.org; Fri, 15 Nov 2024 10:21:15 -0500
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tBy8O-0001ru-1I
+ for qemu-devel@nongnu.org; Fri, 15 Nov 2024 10:21:20 -0500
+Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tBy8H-00045H-QW
- for qemu-devel@nongnu.org; Fri, 15 Nov 2024 10:21:15 -0500
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-4314fa33a35so15834675e9.1
- for <qemu-devel@nongnu.org>; Fri, 15 Nov 2024 07:21:13 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tBy8M-000467-HQ
+ for qemu-devel@nongnu.org; Fri, 15 Nov 2024 10:21:19 -0500
+Received: by mail-wr1-x433.google.com with SMTP id
+ ffacd0b85a97d-37d55f0cf85so590172f8f.3
+ for <qemu-devel@nongnu.org>; Fri, 15 Nov 2024 07:21:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1731684071; x=1732288871; darn=nongnu.org;
+ d=linaro.org; s=google; t=1731684076; x=1732288876; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=LzsaTbH/TKzp8tqs/UlH1bp9VqSjjTrJOViR/Wph0HQ=;
- b=SSD8KP13PVIm5XMoKG/p7LRjIqGP3pT9fqdQ/xNTpYWlW63kQxSwdBMIVd30QPix/u
- 9E68mf5o0r1nwz86983LC9mHBr0Cl18v4J5U7cBKeJEONXOK5GWF09xFK9skTf7x/S3v
- Y72Hn6+CoPM7FNIwpv7D6IKtN3p3epT5rT1Dk7ULi0vRtE/TI611+9Q1dOWXa3zK44X1
- d3XEc5S5DpJQyugPDvIbdTmTb35AsH942oH5w5gXwkilxsuNLEOB1lvYooN1+Ui8ztEs
- eDBoXNAwy9aNtOlnp7BdYi03ZNsJ6FKtQCWfpXlbKWmkczsCQf9z0PTv64yV98UTMUS5
- FoPA==
+ bh=TnuuZBWq4DxU5k19EAiGN+H/ymSE9dnfe0SjDUoaWnw=;
+ b=NKdojp/n8YqKb99tZfKol2/ejbqDVmOXRt6LvJV1E3+O0C4zo96WosMZ6YoWP8HCdG
+ 1U7KJNH2TZ9ovKzRfi7P+L+MaonTciC7DtXZQvASwObLCP14eVaZV7xoc/QOEFQdNXoa
+ OB6GxqdM/AZ31VqZPE1ny9wHAyvPdtE3IyKPSbsWe/J6XcgyKVhuGRaYzCSyIhr8rker
+ MSIQsQTld3JUI6ZsnUF3ml68FgKtwpbrCoNYFHPUkJzkUkoAQYPYtJRuP/sdP8tyS8le
+ QguEO2mkF6VI0cejgKiY0lL6oOKQ/sqCelW9Ivgcr04AwTUd9+4prRW5klQdkrzlB0+8
+ 8avA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731684071; x=1732288871;
+ d=1e100.net; s=20230601; t=1731684076; x=1732288876;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=LzsaTbH/TKzp8tqs/UlH1bp9VqSjjTrJOViR/Wph0HQ=;
- b=az9Sz/++sJpukaoCBHzW15QBihKwrMP3FXb33GSpQLRNUN9abjmXBa3OXRbXSJRtrP
- mrOV5SiHzLdlt3vsLkjps5ZeQIynk5+Tq2d9VBApcpOSJ0Jl4WGccbxqiScjp0pNSGiY
- OrVNOj0DYxrB8Jvrko2JaHs2/8icWL1C2mb7sblwhqEMyiz8p90TaluLG9Hwn4gdsQ+n
- 7LmbPImsHRf/vQIxOHa5aUYPKC5NlLFNd8QsiQpXvpQ9ZU0Uu382W/mPaf9sMoSCX0pC
- sxQm3PxvtyZR3ytpJb3w6tyABfj5OHkG9gsHg+wfkskZAe47fcdtL9yov02WFeVBFTVb
- 7Oug==
-X-Gm-Message-State: AOJu0Yytw5jQnKgBsr26sinlzcMxJIA6Wcf9ytjmm3KvYpUSsQeH+udb
- QmBsrDhQCJY9YwPgK8IfkCExcEPHXHLFbkK2IW5tn6V1f3AyZR5pGX0XKAH7Li+tDWfK3U1qZs7
- y
-X-Google-Smtp-Source: AGHT+IF3yC99cTCgXvfRbDp7cGVEg27uPQx9XuZipM7vsZvLqMT12uoo+ojpjZ8Virl5ejx+xIh1FA==
-X-Received: by 2002:a05:600c:4595:b0:42c:b80e:5e50 with SMTP id
- 5b1f17b1804b1-432df67991emr26832545e9.0.1731684070978; 
- Fri, 15 Nov 2024 07:21:10 -0800 (PST)
+ bh=TnuuZBWq4DxU5k19EAiGN+H/ymSE9dnfe0SjDUoaWnw=;
+ b=mMunJWBjYI/G4rmFZcxujBQOVVcgXbolgxj4rS/sSs0NssqC8eMVEWW9xl7FHy1Tpq
+ 7+m8PNvbDz2Z8AwHCIjtbkOxL19db2Uj4pifY2p/ABu7DLZxJy7gEp9poXbmwh+g67/v
+ kFsykFDGjc/1HJv1NJJJU362qp4NttdP8YTNPy7YZGg1LhbCC5VKEiWU/HWv9nggslFZ
+ nL5XK9pFGAXt0viXyfuNatVQXQDbzRXBwccoj27lwsFpvJstFke4nHKalQdXjiiRtoxQ
+ KWo0pWU6sxjs4MMRv2NdaaRlNrcxCUVbhtQZmdoI++Hg+5BvCMk/OpyoGdVNmlXIdI+L
+ vuYw==
+X-Gm-Message-State: AOJu0YwlUZAmEHTuI1zE/fx42P6v/SAKQfNTyoq8JBljHwi3X2Gpr+On
+ tCc3CuPxoZJJZlYZ25FoCeCh42JMso8eo9q9TL5tMOQRQAP2LC+024b3jTfM/nsTn66YJfuDjL3
+ 0
+X-Google-Smtp-Source: AGHT+IHJEK9nrCJnYKqpuOG3J0/aAbqkOzbkrvNzGWjvnnG1Ks0RAKBCfAD4a+3hIIUYR9iwy1i9ZA==
+X-Received: by 2002:a5d:598e:0:b0:37c:cee0:96e6 with SMTP id
+ ffacd0b85a97d-38225a0d457mr2875097f8f.27.1731684076105; 
+ Fri, 15 Nov 2024 07:21:16 -0800 (PST)
 Received: from localhost.localdomain ([176.187.214.209])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-432dac0ae45sm57136675e9.30.2024.11.15.07.21.09
+ ffacd0b85a97d-3821ae311fbsm4551060f8f.95.2024.11.15.07.21.15
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 15 Nov 2024 07:21:10 -0800 (PST)
+ Fri, 15 Nov 2024 07:21:15 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 03/10] target/sparc: Move sparc_restore_state_to_opc() to cpu.c
-Date: Fri, 15 Nov 2024 16:20:46 +0100
-Message-ID: <20241115152053.66442-4-philmd@linaro.org>
+Subject: [PATCH 04/10] accel/tcg: Ensure frontends define restore_state_to_opc
+ handler
+Date: Fri, 15 Nov 2024 16:20:47 +0100
+Message-ID: <20241115152053.66442-5-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241115152053.66442-1-philmd@linaro.org>
 References: <20241115152053.66442-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::433;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,124 +93,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Most targets define their restore_state_to_opc() handler in cpu.c.
-In order to keep SPARC aligned, move sparc_restore_state_to_opc()
-from translate.c to cpu.c.
-
-Suggested-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/sparc/cpu.h       | 11 ++++++++---
- target/sparc/cpu.c       | 23 +++++++++++++++++++++++
- target/sparc/translate.c | 32 --------------------------------
- 3 files changed, 31 insertions(+), 35 deletions(-)
+ accel/tcg/cpu-exec.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/target/sparc/cpu.h b/target/sparc/cpu.h
-index f517e5a383..bcb3566a92 100644
---- a/target/sparc/cpu.h
-+++ b/target/sparc/cpu.h
-@@ -607,12 +607,17 @@ int sparc_cpu_memory_rw_debug(CPUState *cpu, vaddr addr,
-                               uint8_t *buf, int len, bool is_write);
- #endif
+diff --git a/accel/tcg/cpu-exec.c b/accel/tcg/cpu-exec.c
+index 8163295f34..033f5fab10 100644
+--- a/accel/tcg/cpu-exec.c
++++ b/accel/tcg/cpu-exec.c
+@@ -1074,11 +1074,15 @@ bool tcg_exec_realizefn(CPUState *cpu, Error **errp)
  
-+/* Dynamic PC, must exit to main loop. */
-+#define DYNAMIC_PC         1
-+/* Dynamic PC, one of two values according to jump_pc[T2]. */
-+#define JUMP_PC            2
-+/* Dynamic PC, may lookup next TB. */
-+#define DYNAMIC_PC_LOOKUP  3
+     if (!tcg_target_initialized) {
+         /* Check mandatory TCGCPUOps handlers */
++        const TCGCPUOps *tcg_ops = cpu->cc->tcg_ops;
 +
-+#define DISAS_EXIT  DISAS_TARGET_0
- 
- /* translate.c */
- void sparc_tcg_init(void);
--void sparc_restore_state_to_opc(CPUState *cs,
--                                const TranslationBlock *tb,
--                                const uint64_t *data);
- 
- /* fop_helper.c */
- target_ulong cpu_get_fsr(CPUSPARCState *);
-diff --git a/target/sparc/cpu.c b/target/sparc/cpu.c
-index dd7af86de7..59db8c8472 100644
---- a/target/sparc/cpu.c
-+++ b/target/sparc/cpu.c
-@@ -713,6 +713,29 @@ static void sparc_cpu_synchronize_from_tb(CPUState *cs,
-     cpu->env.npc = tb->cs_base;
- }
- 
-+static void sparc_restore_state_to_opc(CPUState *cs,
-+                                       const TranslationBlock *tb,
-+                                       const uint64_t *data)
-+{
-+    CPUSPARCState *env = cpu_env(cs);
-+    target_ulong pc = data[0];
-+    target_ulong npc = data[1];
++        assert(tcg_ops->restore_state_to_opc);
+ #ifndef CONFIG_USER_ONLY
+-        assert(cpu->cc->tcg_ops->cpu_exec_halt);
+-        assert(cpu->cc->tcg_ops->cpu_exec_interrupt);
++        assert(tcg_ops->cpu_exec_halt);
++        assert(tcg_ops->cpu_exec_interrupt);
+ #endif /* !CONFIG_USER_ONLY */
+-        cpu->cc->tcg_ops->initialize();
 +
-+    env->pc = pc;
-+    if (npc == DYNAMIC_PC) {
-+        /* dynamic NPC: already stored */
-+    } else if (npc & JUMP_PC) {
-+        /* jump PC: use 'cond' and the jump targets of the translation */
-+        if (env->cond) {
-+            env->npc = npc & ~3;
-+        } else {
-+            env->npc = pc + 4;
-+        }
-+    } else {
-+        env->npc = npc;
-+    }
-+}
-+
- static bool sparc_cpu_has_work(CPUState *cs)
- {
-     return (cs->interrupt_request & CPU_INTERRUPT_HARD) &&
-diff --git a/target/sparc/translate.c b/target/sparc/translate.c
-index cdd0a95c03..9942e78412 100644
---- a/target/sparc/translate.c
-+++ b/target/sparc/translate.c
-@@ -101,15 +101,6 @@
- # define MAXTL_MASK                             0
- #endif
- 
--/* Dynamic PC, must exit to main loop. */
--#define DYNAMIC_PC         1
--/* Dynamic PC, one of two values according to jump_pc[T2]. */
--#define JUMP_PC            2
--/* Dynamic PC, may lookup next TB. */
--#define DYNAMIC_PC_LOOKUP  3
--
--#define DISAS_EXIT  DISAS_TARGET_0
--
- /* global register indexes */
- static TCGv_ptr cpu_regwptr;
- static TCGv cpu_pc, cpu_npc;
-@@ -5881,26 +5872,3 @@ void sparc_tcg_init(void)
-                                          gregnames[i]);
++        tcg_ops->initialize();
+         tcg_target_initialized = true;
      }
- }
--
--void sparc_restore_state_to_opc(CPUState *cs,
--                                const TranslationBlock *tb,
--                                const uint64_t *data)
--{
--    CPUSPARCState *env = cpu_env(cs);
--    target_ulong pc = data[0];
--    target_ulong npc = data[1];
--
--    env->pc = pc;
--    if (npc == DYNAMIC_PC) {
--        /* dynamic NPC: already stored */
--    } else if (npc & JUMP_PC) {
--        /* jump PC: use 'cond' and the jump targets of the translation */
--        if (env->cond) {
--            env->npc = npc & ~3;
--        } else {
--            env->npc = pc + 4;
--        }
--    } else {
--        env->npc = npc;
--    }
--}
+ 
 -- 
 2.45.2
 
