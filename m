@@ -2,75 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 469DC9CF0F8
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Nov 2024 17:05:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0296E9CF15D
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Nov 2024 17:21:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tByoS-0004rM-Gt; Fri, 15 Nov 2024 11:04:48 -0500
+	id 1tBz3Q-0002UZ-3r; Fri, 15 Nov 2024 11:20:16 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tByo8-0004m4-VL
- for qemu-devel@nongnu.org; Fri, 15 Nov 2024 11:04:29 -0500
-Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1tBz3O-0002TF-Cz
+ for qemu-devel@nongnu.org; Fri, 15 Nov 2024 11:20:14 -0500
+Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tByo2-00046g-T9
- for qemu-devel@nongnu.org; Fri, 15 Nov 2024 11:04:28 -0500
-Received: by mail-wr1-x42d.google.com with SMTP id
- ffacd0b85a97d-37d495d217bso1556095f8f.0
- for <qemu-devel@nongnu.org>; Fri, 15 Nov 2024 08:04:22 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1tBz3G-0006he-Jj
+ for qemu-devel@nongnu.org; Fri, 15 Nov 2024 11:20:13 -0500
+Received: by mail-ed1-x52d.google.com with SMTP id
+ 4fb4d7f45d1cf-5cefa22e9d5so2236472a12.3
+ for <qemu-devel@nongnu.org>; Fri, 15 Nov 2024 08:20:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1731686661; x=1732291461; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=tRwx5X6o7HQU5QotGoEOz/I/pAt5G+gNOGikPtmFw1w=;
- b=L5t+dR86nKik4g9gRVz/ZCKuZFUGv1fdAqthbaIytnWpKgeQuMOzQ1wfOxAJpK3sL4
- Dt5Rnh/OL6qbJHR4YhyrV/2F7F6NH+WurPy0FVhXh1DITNbfAXj0mYeWXayAY2cFSK+8
- rXh3MA2DhuCqBaCRR2/EIT1C3dpnWXHJuEUNoRwE9WWDlIeucbtPPt+m9wYaXmvX29Gv
- TaIZQG/Pg71vcsxg13gwdBlfnuWe8Hbq/LkseVSrrV1QC5WsHhjr+HMawt++qAnskrk0
- wVHVIB2xDio0p9/TyNItRBCmZhUyqzwTBPLjfdCikxskh64yjCL0JPZzBNn+IUK7Orm1
- 5c4w==
+ d=linaro.org; s=google; t=1731687603; x=1732292403; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=hi3IYa1oiebpItviUFMRjKe37lDdfcXpu3Iq6daonLs=;
+ b=j4PQFTmY/NaIyFlcD239nrF6EiSrJBVzmeJsUsM0oM3yslW7UqLRtNARqJX6cdCzzN
+ wHOCODg5d08VqPbpUwIW0axaBPnlihYbrOFm5EXGfgmDC15TxNp154mK7P9xYXfMvfT9
+ ooyKsjG3pU8CiHrXJlQrrjpgmUkabsTs4BDVP7OQb9y7v8hXQoCwnWl7f9GsCrCYQUei
+ /Fc4RdsrRjcLTdaxikZYJNDwcz1b4n6QdNGFDZUAYBTX2nCjZsunyhUrLGlKmtpD+p5F
+ Zcv688XS5SQ+gSDkCP0DteqW/ctSGTvMGAk1s7GSTLDa672zsWM2NwczeqiwsyaXG3A3
+ G+Dg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731686661; x=1732291461;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=tRwx5X6o7HQU5QotGoEOz/I/pAt5G+gNOGikPtmFw1w=;
- b=dZ+zOzy81VqUKlzWrFrbuSNpZYa9HbprJNdYgfzX0lkyI2wdOt2f/RRIz+LVSBlYKK
- Vqd+iDoGNvONe52a/PZtG6Pi9YWRpF4u5hGDFC9+xY5uiVhGQ9Herw+glCmLFZImRhW4
- h8V6u1SUbACPL5odqcRc3l2kssx7XIunwOXyx3gN+sgJD2wLhg8tZW54QGP/JPW212zi
- ZBatGCo3oM+kHBaAuXahMAGlzgYt71i/igVTdFyxoI6MYwgvcD2zT7+h83kzSHSKHzxn
- iFpjWWo+fQmV03A5j7m86x93Qtw1lu4XQlTJlFhcxsHCvtFnmYcjdVTMwDE7foZxcuqg
- G5gA==
-X-Gm-Message-State: AOJu0YzuAx/L7NiXySAFuwNj3zpEt5k+VY23Qyh3/2PuUSdTl/Ctn0Dw
- Ms0epurdIIdj38OIpY96RO5tlE+dOB1HlrR+hfSVdXlJIx26Ais32tAAk+9TQ84=
-X-Google-Smtp-Source: AGHT+IFf2ANL/uzhkv+XzVax/Yp8GKMTByS9TdobmoT22iUoRfmlH8O0uw7HSOaFApSDtuIfJ/xntA==
-X-Received: by 2002:a05:6000:4289:b0:381:eb8a:b81b with SMTP id
- ffacd0b85a97d-38225a83ba1mr3158251f8f.33.1731686659294; 
- Fri, 15 Nov 2024 08:04:19 -0800 (PST)
-Received: from [192.168.69.174] ([176.187.214.209])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3821ae2f651sm4901689f8f.87.2024.11.15.08.04.18
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 15 Nov 2024 08:04:18 -0800 (PST)
-Message-ID: <26531687-7f5b-49d4-8a1f-e7a414d971e5@linaro.org>
-Date: Fri, 15 Nov 2024 17:04:17 +0100
+ d=1e100.net; s=20230601; t=1731687603; x=1732292403;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=hi3IYa1oiebpItviUFMRjKe37lDdfcXpu3Iq6daonLs=;
+ b=ZV80+PkfDs9QeJeg6YKDVN7GOKZtQQp7XLa134NdyzYW8yFkHzVqB7Yw6aazO6HDDL
+ C31ezvHqJrwwqLVtOvDDCHXr5m0WT/guRy8wx1ZDJBu2XAkhX3wIwzZUWVOHuGytH8l0
+ LatM+cZEODXyKCl+MSu+ODJjzJJ3eeqrqhOJSXyMyHiKJrVlTr1hbkcul6+S8vlrH1oT
+ LTD63jSGlqFRCEoDIpKPXCg1Rvp5jxdxU5nzhhBwe/P0I5kXtuSLwpIv/PKO9cNXiaAW
+ y2NAtnpyG2Jb7F8YEFytcx+Vl6AQHK7lysFuofeEafj4Qut6OH6fqt5KfxbA2jLisVKl
+ WBEQ==
+X-Gm-Message-State: AOJu0YzIahx3ORum+zls3BKKzq3+X+ENOfzm8RQF3u+Q2QX4FdPn5MxP
+ 1g1r/gIc6F/yXXAh115kQ0exJUSPNtf0LpfEEt4NyiIw5AQLIE14+YtXYjPYHYddYTrn6lCArlu
+ y
+X-Google-Smtp-Source: AGHT+IFr/imrEzVAd48SzRZ2iZRFWKpMvRL2CwlMOpIn2vrZ4zzGLNKdWeAXHNKQJuwrSLZTVe+DVA==
+X-Received: by 2002:a17:907:7ba3:b0:a9e:45e6:42cb with SMTP id
+ a640c23a62f3a-aa4834263aemr308562166b.18.1731687603240; 
+ Fri, 15 Nov 2024 08:20:03 -0800 (PST)
+Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-aa20df571a1sm192364866b.80.2024.11.15.08.20.02
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 15 Nov 2024 08:20:02 -0800 (PST)
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id A5A515F75D;
+ Fri, 15 Nov 2024 16:20:01 +0000 (GMT)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Daniel P. =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>
+Cc: qemu-devel@nongnu.org
+Subject: Re: [PATCH] docs: explicitly permit a "commonly known identity"
+ with SoB
+In-Reply-To: <20241021190939.1482466-1-berrange@redhat.com> ("Daniel P.
+ =?utf-8?Q?Berrang=C3=A9=22's?= message of "Mon, 21 Oct 2024 20:09:39
+ +0100")
+References: <20241021190939.1482466-1-berrange@redhat.com>
+User-Agent: mu4e 1.12.7; emacs 29.4
+Date: Fri, 15 Nov 2024 16:20:01 +0000
+Message-ID: <87iksoqxji.fsf@draig.linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 05/10] accel/tcg: Move cpu_unwind_state_data() declaration
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>
-References: <20241115152053.66442-1-philmd@linaro.org>
- <20241115152053.66442-6-philmd@linaro.org>
- <CAFEAcA-07TbFe1RYs47qb5jsmdQ1eH70+5nVVB5+3jRaFKhzAQ@mail.gmail.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <CAFEAcA-07TbFe1RYs47qb5jsmdQ1eH70+5nVVB5+3jRaFKhzAQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42d.google.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::52d;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x52d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,78 +98,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 15/11/24 15:48, Peter Maydell wrote:
-> On Fri, 15 Nov 2024 at 15:21, Philippe Mathieu-Daudé <philmd@linaro.org> wrote:
->>
->> cpu_unwind_state_data() is specific to TCG accelerator,
->> move it to "exec/translate-all.h".
->>
->> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->> ---
->>   include/exec/cpu-common.h    | 13 -------------
->>   include/exec/translate-all.h | 12 ++++++++++++
->>   2 files changed, 12 insertions(+), 13 deletions(-)
->>
->> diff --git a/include/exec/cpu-common.h b/include/exec/cpu-common.h
->> index 638dc806a5..b36fbf2a39 100644
->> --- a/include/exec/cpu-common.h
->> +++ b/include/exec/cpu-common.h
->> @@ -193,19 +193,6 @@ void tcg_cflags_set(CPUState *cpu, uint32_t flags);
->>   /* current cflags for hashing/comparison */
->>   uint32_t curr_cflags(CPUState *cpu);
->>
->> -/**
->> - * cpu_unwind_state_data:
->> - * @cpu: the cpu context
->> - * @host_pc: the host pc within the translation
->> - * @data: output data
->> - *
->> - * Attempt to load the the unwind state for a host pc occurring in
->> - * translated code.  If @host_pc is not in translated code, the
->> - * function returns false; otherwise @data is loaded.
->> - * This is the same unwind info as given to restore_state_to_opc.
->> - */
->> -bool cpu_unwind_state_data(CPUState *cpu, uintptr_t host_pc, uint64_t *data);
->> -
->>   /**
->>    * cpu_restore_state:
->>    * @cpu: the cpu context
->> diff --git a/include/exec/translate-all.h b/include/exec/translate-all.h
->> index 85c9460c7c..f06cfedd52 100644
->> --- a/include/exec/translate-all.h
->> +++ b/include/exec/translate-all.h
->> @@ -21,6 +21,18 @@
->>
->>   #include "exec/exec-all.h"
->>
->> +/**
->> + * cpu_unwind_state_data:
->> + * @cpu: the cpu context
->> + * @host_pc: the host pc within the translation
->> + * @data: output data
->> + *
->> + * Attempt to load the the unwind state for a host pc occurring in
->> + * translated code.  If @host_pc is not in translated code, the
->> + * function returns false; otherwise @data is loaded.
->> + * This is the same unwind info as given to restore_state_to_opc.
->> + */
->> +bool cpu_unwind_state_data(CPUState *cpu, uintptr_t host_pc, uint64_t *data);
->>
->>   /* translate-all.c */
->>   void tb_check_watchpoint(CPUState *cpu, uintptr_t retaddr);
-> 
-> This function is used by some code in target/i386 and
-> target/openrisc, but a quick grep suggests that they don't
-> include translate-all.h or any other header that would pull
-> it in indirectly.
+Daniel P. Berrang=C3=A9 <berrange@redhat.com> writes:
 
-Oops, this slipped to the next patch.
+> The docs for submitting a patch describe using your "Real Name" with
+> the Signed-off-by line. Although somewhat ambiguous, this has often
+> been interpreted to mean someone's legal name.
+>
+<snip>
+>
+> [1] Raised in many contexts at many times, but a decent overall summary
+>     can be read at https://drewdevault.com/2023/10/31/On-real-names.html
+> [2] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/co=
+mmit/?id=3Dd4563201f33a022fc0353033d9dfeb1606a88330
+> [3] https://github.com/cncf/foundation/blob/659fd32c86dc/dco-guidelines.md
+> [4] Excluding the rare GPG key signing parties for regular maintainers
 
-> It also seems a bit odd to move the cpu_unwind_state_data()
-> prototype but not the similar cpu_restore_state() (which is
-> also TCG-only).
+Seem reasonable to me:
 
-OK I'll move them together (clearing "exec/cpu-common.h" is
-not easy...)
+Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
 
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
