@@ -2,74 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A158D9CFFF7
-	for <lists+qemu-devel@lfdr.de>; Sat, 16 Nov 2024 18:07:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EFB1E9D006B
+	for <lists+qemu-devel@lfdr.de>; Sat, 16 Nov 2024 19:17:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tCMFR-00038H-GG; Sat, 16 Nov 2024 12:06:13 -0500
+	id 1tCNL5-00031e-Sf; Sat, 16 Nov 2024 13:16:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tCMFG-00036Q-MJ
- for qemu-devel@nongnu.org; Sat, 16 Nov 2024 12:06:02 -0500
-Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1tCNKv-000319-QJ
+ for qemu-devel@nongnu.org; Sat, 16 Nov 2024 13:15:57 -0500
+Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tCMFD-00014g-OS
- for qemu-devel@nongnu.org; Sat, 16 Nov 2024 12:06:02 -0500
-Received: by mail-pl1-x631.google.com with SMTP id
- d9443c01a7336-20cdb889222so16651525ad.3
- for <qemu-devel@nongnu.org>; Sat, 16 Nov 2024 09:05:58 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1tCNKt-0000Lc-Ua
+ for qemu-devel@nongnu.org; Sat, 16 Nov 2024 13:15:57 -0500
+Received: by mail-ed1-x52e.google.com with SMTP id
+ 4fb4d7f45d1cf-5ceb03aadb1so2285461a12.0
+ for <qemu-devel@nongnu.org>; Sat, 16 Nov 2024 10:15:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1731776758; x=1732381558; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=IaLGhjAOYy2IzboAb4IO24QLbt6fV2I1geEVofMzaw4=;
- b=QMxmQDAOtJdRzGPFNxEMavSae8hz/Ne3eIJbvvmRlQIiinU3Nb5OLfNicwdqAw1jtH
- +OvKop9rQdEn6B6EhGWUDaYO9Evj5jyTqvaLxgeVxBj/OekgkgwKMUL6W4p2Sv6TEcyv
- c4JLoEZbaiZ11mBFj0fmy40hEHcfqmorBASsPwob5Cq/VxeAj0w3DMp37cJLYF6sv561
- VjpaGLmAsaem82O2PJKCIo5hWyJKnCp2bwwV+M0zydWqwG+VXLsweEe5EpDTxvTFL824
- 5GV5ILTq/Tn4WcRxI0akdwVgFQeyqOPsGun5HjRInYVJi55dWKoll+gvOHiZSFHl48j7
- ot7A==
+ d=linaro.org; s=google; t=1731780952; x=1732385752; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=q6tr4L5Awk6MF5nkShlTZsV/p9lj5pTzBeIQEchqGPY=;
+ b=tVcAdw8ytc5UDb2ADQb4oUFb0rth+tKGXUuN2fjxMgaR71+R0Wwa3aN1P1g8MiMdak
+ NOGUjOw1u12eCkIqltGV7HFMxM9NdGd/uNDl+zhICdD6ZKH1FYx47Cx2Gu8EZc4J2goT
+ AhCUCqbhRyAx6g0Gy4ZGMEfOfZP7WCKs2hz3gWTRKJcOyJSB0LvN08mg+dI5QNBHE84j
+ 15t6fioxlHi/eq4GwNqbzB4tV7M5F32xg3D3CKII+1Ux5NQ5LIf+N66+ls3JHhJpDGb8
+ xfgn0Zfmis4OisAYvs1ED6oaqORYh5WvRo60iPRW72BYZ5PCvmkJM/L2R1p/G38Xoihp
+ INCw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731776758; x=1732381558;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=IaLGhjAOYy2IzboAb4IO24QLbt6fV2I1geEVofMzaw4=;
- b=PM5+DD/hkvDOQkkhBKXAxGNlc7C6XrkSRErb5ap89OTi5EkXRCYxxxriyFYAifGsAT
- AUhebg6O/tn5A/KsLgXGfz/QF3L31+TejiVLSw+ykocuxlEqkNsMNVjEEd+iF5zDEefu
- 846SpBrzOh+jJzu0ietxpmu0rVhvRwE4DIG0Z1/TMZU2QOPQ2CokBQXmVHzY3HTF6EqD
- VrlLT9BStEMkTUp8i1A2CBRxBJrMro9djonmZx3iku5WomZtqepoPge+K/afODqeHPY2
- /lga6mXGAHhp4BatGU8ODip/Xkyo4KUZPvOhV2xtCsHwrBet+0UbAQ71Ir0kkryFNxdu
- 8WQQ==
-X-Gm-Message-State: AOJu0YwOQih3/t2CkrTLUv1snT9dYSsxPM7KfUlWL8fSwsLjwESUe5lx
- O0gxuEahTB1x3WyljoA9UjmLoyoarDvUdavP78Ve7KmznGbWSxJfw12xr3ezWln0I4FTE7qZpJ+
- n
-X-Google-Smtp-Source: AGHT+IGB5w7YRfujTLQOLCVpavBsoQyRuMV3GMZwHnjYKp43G9A05O5ubkyWj/jZoASZXaOC+izcJQ==
-X-Received: by 2002:a17:903:2310:b0:20b:6d47:a3b0 with SMTP id
- d9443c01a7336-211d0d7fabamr86941145ad.21.1731776757794; 
- Sat, 16 Nov 2024 09:05:57 -0800 (PST)
-Received: from stoup.. ([71.212.136.242]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-211d0f51ca8sm29574585ad.230.2024.11.16.09.05.57
+ d=1e100.net; s=20230601; t=1731780952; x=1732385752;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=q6tr4L5Awk6MF5nkShlTZsV/p9lj5pTzBeIQEchqGPY=;
+ b=stQ7EPEPsmQ6bPmtzdu23HPWjgux253yvgB4goMvPiYzqr9rjiuVktKw8hLWnvFuHU
+ Mm0G8+DCnk+hHKAcgBLgqxjMfV0FJ0U+G2eAy/xhQB1FszAYDvxlonxQf45UpHBPJ6aF
+ mR7T0B+4mhL2+otdt7o9cX4GHGKnLpGH1VnI0ENjaQyqDAESbPIQT9bGIAAnmfO2bNmT
+ dc11Rw70bfJs4TOAPcv+I1G2CTrE94cxiA5WoUSyrxDVb16Da0s4ko8X6eB64bKEfpEr
+ 6Kz96E1PEN7Ky33pT7suNP8OeWY37x5O3HAj9DOkbUfPOhB0ht7QM3QevvrsO3NRmi0Q
+ 2oPA==
+X-Gm-Message-State: AOJu0Yz+xCu/Ah+nxjg47XpjDK9ehUGxWzwSsapEP0SalVU5BVqPboso
+ ZVLciDYqVfObIRmoGSjYSm14Nw7k3PflpnRHBGZf6JAnGRc1YVXH0Va/pca3JGzQa9w6fPfiaQG
+ iNi4=
+X-Google-Smtp-Source: AGHT+IFQHfHmFdH8kcxV7YarABAGbtbo1ZDIj3wmKqiWDqSgoUYUTwslymTqBxEUcp7Vj8TlZ3eouw==
+X-Received: by 2002:a17:907:a4b:b0:aa1:e04f:e37f with SMTP id
+ a640c23a62f3a-aa4833e9adamr558597966b.6.1731780952164; 
+ Sat, 16 Nov 2024 10:15:52 -0800 (PST)
+Received: from localhost.localdomain (adsl-27.37.6.161.tellas.gr.
+ [37.6.161.27]) by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-aa20df508f8sm337078666b.63.2024.11.16.10.15.50
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 16 Nov 2024 09:05:57 -0800 (PST)
-From: Richard Henderson <richard.henderson@linaro.org>
+ Sat, 16 Nov 2024 10:15:51 -0800 (PST)
+From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: peter.maydell@linaro.org,
-	qemu-stable@nongnu.org
-Subject: [PULL v2 02/15] target/arm: Drop user-only special case in sve_stN_r
-Date: Sat, 16 Nov 2024 09:05:55 -0800
-Message-ID: <20241116170555.461462-2-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20241116170555.461462-1-richard.henderson@linaro.org>
-References: <20241116170555.461462-1-richard.henderson@linaro.org>
+Cc: qemu-arm@nongnu.org, qemu-rust@nongnu.org,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Gustavo Romero <gustavo.romero@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: [PATCH v1] rust/pl011: Fix DeviceID reads
+Date: Sat, 16 Nov 2024 20:15:47 +0200
+Message-ID: <20241116181549.3430225-1-manos.pitsidianakis@linaro.org>
+X-Mailer: git-send-email 2.45.2
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x631.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-ed1-x52e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,40 +96,180 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This path is reachable with plugins enabled, and provoked
-with run-plugin-catch-syscalls-with-libinline.so.
+DeviceId, which maps the peripheral and PCell registers of a PL011
+device, was not treating each register value as a 32 bit value.
 
-Cc: qemu-stable@nongnu.org
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20241112141232.321354-1-richard.henderson@linaro.org>
+Change DeviceId enum to return register values via constified getter
+functions instead of leveraging the std::ops::Index<_> trait.
+
+Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 ---
- target/arm/tcg/sve_helper.c | 4 ----
- 1 file changed, 4 deletions(-)
+ rust/hw/char/pl011/src/device.rs | 79 +++++++++++++++++++++++++-------
+ rust/hw/char/pl011/src/lib.rs    | 22 ++++++++-
+ 2 files changed, 83 insertions(+), 18 deletions(-)
 
-diff --git a/target/arm/tcg/sve_helper.c b/target/arm/tcg/sve_helper.c
-index f1ee0e060f..904296705c 100644
---- a/target/arm/tcg/sve_helper.c
-+++ b/target/arm/tcg/sve_helper.c
-@@ -6317,9 +6317,6 @@ void sve_stN_r(CPUARMState *env, uint64_t *vg, target_ulong addr,
+diff --git a/rust/hw/char/pl011/src/device.rs b/rust/hw/char/pl011/src/device.rs
+index 2a85960b81..98dd97dbfd 100644
+--- a/rust/hw/char/pl011/src/device.rs
++++ b/rust/hw/char/pl011/src/device.rs
+@@ -5,7 +5,7 @@
+ use core::ptr::{addr_of, addr_of_mut, NonNull};
+ use std::{
+     ffi::CStr,
+-    os::raw::{c_int, c_uchar, c_uint, c_void},
++    os::raw::{c_int, c_uint, c_void},
+ };
  
-     flags = info.page[0].flags | info.page[1].flags;
-     if (unlikely(flags != 0)) {
--#ifdef CONFIG_USER_ONLY
--        g_assert_not_reached();
--#else
-         /*
-          * At least one page includes MMIO.
-          * Any bus operation can fail with cpu_transaction_failed,
-@@ -6350,7 +6347,6 @@ void sve_stN_r(CPUARMState *env, uint64_t *vg, target_ulong addr,
-             } while (reg_off & 63);
-         } while (reg_off <= reg_last);
-         return;
--#endif
+ use qemu_api::{
+@@ -32,6 +32,7 @@
+ /// QEMU sourced constant.
+ pub const PL011_FIFO_DEPTH: usize = 16_usize;
+ 
++/// State enum that represents the values of the peripheral and PCell registers of a PL011 device.
+ #[derive(Clone, Copy, Debug)]
+ enum DeviceId {
+     #[allow(dead_code)]
+@@ -39,20 +40,55 @@ enum DeviceId {
+     Luminary,
+ }
+ 
+-impl std::ops::Index<hwaddr> for DeviceId {
+-    type Output = c_uchar;
+-
+-    fn index(&self, idx: hwaddr) -> &Self::Output {
+-        match self {
+-            Self::Arm => &Self::PL011_ID_ARM[idx as usize],
+-            Self::Luminary => &Self::PL011_ID_LUMINARY[idx as usize],
+-        }
+-    }
+-}
+-
+ impl DeviceId {
+-    const PL011_ID_ARM: [c_uchar; 8] = [0x11, 0x10, 0x14, 0x00, 0x0d, 0xf0, 0x05, 0xb1];
+-    const PL011_ID_LUMINARY: [c_uchar; 8] = [0x11, 0x00, 0x18, 0x01, 0x0d, 0xf0, 0x05, 0xb1];
++    /// Value of `UARTPeriphID0` register, which contains the `PartNumber0` value.
++    const fn uart_periph_id0(self) -> u64 {
++        0x11
++    }
++
++    /// Value of `UARTPeriphID1` register, which contains the `Designer0` and `PartNumber1` values.
++    const fn uart_periph_id1(self) -> u64 {
++        (match self {
++            Self::Arm => 0x10,
++            Self::Luminary => 0x00,
++        }) as u64
++    }
++
++    /// Value of `UARTPeriphID2` register, which contains the `Revision` and `Designer1` values.
++    const fn uart_periph_id2(self) -> u64 {
++        (match self {
++            Self::Arm => 0x14,
++            Self::Luminary => 0x18,
++        }) as u64
++    }
++
++    /// Value of `UARTPeriphID3` register, which contains the `Configuration` value.
++    const fn uart_periph_id3(self) -> u64 {
++        (match self {
++            Self::Arm => 0x0,
++            Self::Luminary => 0x1,
++        }) as u64
++    }
++
++    /// Value of `UARTPCellID0` register.
++    const fn uart_pcell_id0(self) -> u64 {
++        0x0d
++    }
++
++    /// Value of `UARTPCellID1` register.
++    const fn uart_pcell_id1(self) -> u64 {
++        0xf0
++    }
++
++    /// Value of `UARTPCellID2` register.
++    const fn uart_pcell_id2(self) -> u64 {
++        0x05
++    }
++
++    /// Value of `UARTPCellID3` register.
++    const fn uart_pcell_id3(self) -> u64 {
++        0xb1
++    }
+ }
+ 
+ #[repr(C)]
+@@ -182,9 +218,14 @@ pub fn read(&mut self, offset: hwaddr, _size: c_uint) -> std::ops::ControlFlow<u
+         use RegisterOffset::*;
+ 
+         std::ops::ControlFlow::Break(match RegisterOffset::try_from(offset) {
+-            Err(v) if (0x3f8..0x400).contains(&v) => {
+-                u64::from(self.device_id[(offset - 0xfe0) >> 2])
+-            }
++            Ok(PeriphID0) => self.device_id.uart_periph_id0(),
++            Ok(PeriphID1) => self.device_id.uart_periph_id1(),
++            Ok(PeriphID2) => self.device_id.uart_periph_id2(),
++            Ok(PeriphID3) => self.device_id.uart_periph_id3(),
++            Ok(PCellID0) => self.device_id.uart_pcell_id0(),
++            Ok(PCellID1) => self.device_id.uart_pcell_id1(),
++            Ok(PCellID2) => self.device_id.uart_pcell_id2(),
++            Ok(PCellID3) => self.device_id.uart_pcell_id3(),
+             Err(_) => {
+                 // qemu_log_mask(LOG_GUEST_ERROR, "pl011_read: Bad offset 0x%x\n", (int)offset);
+                 0
+@@ -236,6 +277,10 @@ pub fn write(&mut self, offset: hwaddr, value: u64) {
+         use RegisterOffset::*;
+         let value: u32 = value as u32;
+         match RegisterOffset::try_from(offset) {
++            Ok(PeriphID0) | Ok(PeriphID1) | Ok(PeriphID2) | Ok(PeriphID3) | Ok(PCellID0)
++            | Ok(PCellID1) | Ok(PCellID2) | Ok(PCellID3) => {
++                // Ignore writes to read-only registers.
++            }
+             Err(_bad_offset) => {
+                 eprintln!("write bad offset {offset} value {value}");
+             }
+diff --git a/rust/hw/char/pl011/src/lib.rs b/rust/hw/char/pl011/src/lib.rs
+index cd0a49acb9..1f305aa13f 100644
+--- a/rust/hw/char/pl011/src/lib.rs
++++ b/rust/hw/char/pl011/src/lib.rs
+@@ -111,6 +111,22 @@ pub enum RegisterOffset {
+     /// DMA control Register
+     #[doc(alias = "UARTDMACR")]
+     DMACR = 0x048,
++    #[doc(alias = "UARTPeriphID0")]
++    PeriphID0 = 0xFE0,
++    #[doc(alias = "UARTPeriphID1")]
++    PeriphID1 = 0xFE4,
++    #[doc(alias = "UARTPeriphID2")]
++    PeriphID2 = 0xFE8,
++    #[doc(alias = "UARTPeriphID3")]
++    PeriphID3 = 0xFEC,
++    #[doc(alias = "UARTPCellID0")]
++    PCellID0 = 0xFF0,
++    #[doc(alias = "UARTPCellID1")]
++    PCellID1 = 0xFF4,
++    #[doc(alias = "UARTPCellID2")]
++    PCellID2 = 0xFF8,
++    #[doc(alias = "UARTPCellID3")]
++    PCellID3 = 0xFFC,
+     ///// Reserved, offsets `0x04C` to `0x07C`.
+     //Reserved = 0x04C,
+ }
+@@ -137,7 +153,11 @@ const fn _assert_exhaustive(val: RegisterOffset) {
+                 }
+             }
+         }
+-        case! { DR, RSR, FR, FBRD, ILPR, IBRD, LCR_H, CR, FLS, IMSC, RIS, MIS, ICR, DMACR }
++        case! {
++            DR, RSR, FR, FBRD, ILPR, IBRD, LCR_H, CR, FLS, IMSC, RIS, MIS, ICR, DMACR,
++            PeriphID0, PeriphID1, PeriphID2, PeriphID3,
++            PCellID0, PCellID1, PCellID2, PCellID3,
++        }
      }
+ }
  
-     mem_off = info.mem_off_first[0];
+
+base-commit: 43f2def68476697deb0d119cbae51b20019c6c86
 -- 
-2.43.0
+γαῖα πυρί μιχθήτω
 
 
