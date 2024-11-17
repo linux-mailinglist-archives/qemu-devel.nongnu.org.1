@@ -2,26 +2,26 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CF259D0576
-	for <lists+qemu-devel@lfdr.de>; Sun, 17 Nov 2024 20:23:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C6C919D056F
+	for <lists+qemu-devel@lfdr.de>; Sun, 17 Nov 2024 20:23:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tCkqK-0002ij-Ln; Sun, 17 Nov 2024 14:21:56 -0500
+	id 1tCkqQ-0002jU-37; Sun, 17 Nov 2024 14:22:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1tCkqJ-0002iZ-5S
- for qemu-devel@nongnu.org; Sun, 17 Nov 2024 14:21:55 -0500
+ id 1tCkqN-0002j7-OB
+ for qemu-devel@nongnu.org; Sun, 17 Nov 2024 14:21:59 -0500
 Received: from vps-ovh.mhejs.net ([145.239.82.108])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1tCkqH-0005tl-IQ
- for qemu-devel@nongnu.org; Sun, 17 Nov 2024 14:21:54 -0500
+ id 1tCkqM-0005uD-8j
+ for qemu-devel@nongnu.org; Sun, 17 Nov 2024 14:21:59 -0500
 Received: from MUA
  by vps-ovh.mhejs.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
  (Exim 4.98) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1tCkqD-00000002GU4-40YE; Sun, 17 Nov 2024 20:21:49 +0100
+ id 1tCkqJ-00000002GUE-0OxZ; Sun, 17 Nov 2024 20:21:55 +0100
 From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
 To: Peter Xu <peterx@redhat.com>,
 	Fabiano Rosas <farosas@suse.de>
@@ -31,9 +31,10 @@ Cc: Alex Williamson <alex.williamson@redhat.com>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Avihai Horon <avihaih@nvidia.com>,
  Joao Martins <joao.m.martins@oracle.com>, qemu-devel@nongnu.org
-Subject: [PATCH v3 08/24] migration: Add thread pool of optional load threads
-Date: Sun, 17 Nov 2024 20:20:03 +0100
-Message-ID: <877b7108c9cb9064615606d4c731cb12c549b7f9.1731773021.git.maciej.szmigiero@oracle.com>
+Subject: [PATCH v3 09/24] migration/multifd: Split packet into header and RAM
+ data
+Date: Sun, 17 Nov 2024 20:20:04 +0100
+Message-ID: <8cb65952e475c0236d66047270fd3ed907f7404e.1731773021.git.maciej.szmigiero@oracle.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <cover.1731773021.git.maciej.szmigiero@oracle.com>
 References: <cover.1731773021.git.maciej.szmigiero@oracle.com>
@@ -65,177 +66,125 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
 
-Some drivers might want to make use of auxiliary helper threads during VM
-state loading, for example to make sure that their blocking (sync) I/O
-operations don't block the rest of the migration process.
+Read packet header first so in the future we will be able to
+differentiate between a RAM multifd packet and a device state multifd
+packet.
 
-Add a migration core managed thread pool to facilitate this use case.
-
-The migration core will wait for these threads to finish before
-(re)starting the VM at destination.
+Since these two are of different size we can't read the packet body until
+we know which packet type it is.
 
 Signed-off-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
 ---
- include/migration/misc.h |  3 ++
- include/qemu/typedefs.h  |  1 +
- migration/savevm.c       | 77 ++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 81 insertions(+)
+ migration/multifd.c | 49 +++++++++++++++++++++++++++++++++++----------
+ migration/multifd.h |  5 +++++
+ 2 files changed, 43 insertions(+), 11 deletions(-)
 
-diff --git a/include/migration/misc.h b/include/migration/misc.h
-index 804eb23c0607..c92ca018ab3b 100644
---- a/include/migration/misc.h
-+++ b/include/migration/misc.h
-@@ -45,9 +45,12 @@ bool migrate_ram_is_ignored(RAMBlock *block);
- /* migration/block.c */
+diff --git a/migration/multifd.c b/migration/multifd.c
+index 498e71fd1024..999b88b7ebcb 100644
+--- a/migration/multifd.c
++++ b/migration/multifd.c
+@@ -209,10 +209,10 @@ void multifd_send_fill_packet(MultiFDSendParams *p)
  
- AnnounceParameters *migrate_announce_params(void);
-+
- /* migration/savevm.c */
+     memset(packet, 0, p->packet_len);
  
- void dump_vmstate_json_to_file(FILE *out_fp);
-+void qemu_loadvm_start_load_thread(MigrationLoadThread function,
-+                                   void *opaque);
+-    packet->magic = cpu_to_be32(MULTIFD_MAGIC);
+-    packet->version = cpu_to_be32(MULTIFD_VERSION);
++    packet->hdr.magic = cpu_to_be32(MULTIFD_MAGIC);
++    packet->hdr.version = cpu_to_be32(MULTIFD_VERSION);
  
- /* migration/migration.c */
- void migration_object_init(void);
-diff --git a/include/qemu/typedefs.h b/include/qemu/typedefs.h
-index 3d84efcac47a..8c8ea5c2840d 100644
---- a/include/qemu/typedefs.h
-+++ b/include/qemu/typedefs.h
-@@ -131,5 +131,6 @@ typedef struct IRQState *qemu_irq;
-  * Function types
-  */
- typedef void (*qemu_irq_handler)(void *opaque, int n, int level);
-+typedef int (*MigrationLoadThread)(bool *abort_flag, void *opaque);
+-    packet->flags = cpu_to_be32(p->flags);
++    packet->hdr.flags = cpu_to_be32(p->flags);
+     packet->next_packet_size = cpu_to_be32(p->next_packet_size);
  
- #endif /* QEMU_TYPEDEFS_H */
-diff --git a/migration/savevm.c b/migration/savevm.c
-index 1f58a2fa54ae..6ea9054c4083 100644
---- a/migration/savevm.c
-+++ b/migration/savevm.c
-@@ -54,6 +54,7 @@
- #include "qemu/job.h"
- #include "qemu/main-loop.h"
- #include "block/snapshot.h"
-+#include "block/thread-pool.h"
- #include "qemu/cutils.h"
- #include "io/channel-buffer.h"
- #include "io/channel-file.h"
-@@ -71,6 +72,10 @@
+     packet_num = qatomic_fetch_inc(&multifd_send_state->packet_num);
+@@ -228,12 +228,12 @@ void multifd_send_fill_packet(MultiFDSendParams *p)
+                             p->flags, p->next_packet_size);
+ }
  
- const unsigned int postcopy_ram_discard_version;
+-static int multifd_recv_unfill_packet(MultiFDRecvParams *p, Error **errp)
++static int multifd_recv_unfill_packet_header(MultiFDRecvParams *p,
++                                             const MultiFDPacketHdr_t *hdr,
++                                             Error **errp)
+ {
+-    const MultiFDPacket_t *packet = p->packet;
+-    uint32_t magic = be32_to_cpu(packet->magic);
+-    uint32_t version = be32_to_cpu(packet->version);
+-    int ret = 0;
++    uint32_t magic = be32_to_cpu(hdr->magic);
++    uint32_t version = be32_to_cpu(hdr->version);
  
-+static ThreadPool *load_threads;
-+static int load_threads_ret;
-+static bool load_threads_abort;
-+
- /* Subcommands for QEMU_VM_COMMAND */
- enum qemu_vm_cmd {
-     MIG_CMD_INVALID = 0,   /* Must be 0 */
-@@ -2788,6 +2793,12 @@ static int qemu_loadvm_state_setup(QEMUFile *f, Error **errp)
-     int ret;
- 
-     trace_loadvm_state_setup();
-+
-+    assert(!load_threads);
-+    load_threads = thread_pool_new();
-+    load_threads_ret = 0;
-+    load_threads_abort = false;
-+
-     QTAILQ_FOREACH(se, &savevm_state.handlers, entry) {
-         if (!se->ops || !se->ops->load_setup) {
-             continue;
-@@ -2806,19 +2817,72 @@ static int qemu_loadvm_state_setup(QEMUFile *f, Error **errp)
-             return ret;
-         }
+     if (magic != MULTIFD_MAGIC) {
+         error_setg(errp, "multifd: received packet magic %x, expected %x",
+@@ -247,7 +247,16 @@ static int multifd_recv_unfill_packet(MultiFDRecvParams *p, Error **errp)
+         return -1;
      }
+ 
+-    p->flags = be32_to_cpu(packet->flags);
++    p->flags = be32_to_cpu(hdr->flags);
 +
 +    return 0;
 +}
 +
-+struct LoadThreadData {
-+    MigrationLoadThread function;
-+    void *opaque;
-+};
-+
-+static int qemu_loadvm_load_thread(void *thread_opaque)
++static int multifd_recv_unfill_packet(MultiFDRecvParams *p, Error **errp)
 +{
-+    struct LoadThreadData *data = thread_opaque;
-+    int ret;
++    const MultiFDPacket_t *packet = p->packet;
++    int ret = 0;
 +
-+    ret = data->function(&load_threads_abort, data->opaque);
-+    if (ret && !qatomic_read(&load_threads_ret)) {
-+        /*
-+         * Racy with the above read but that's okay - which thread error
-+         * return we report is purely arbitrary anyway.
-+         */
-+        qatomic_set(&load_threads_ret, ret);
-+    }
-+
-     return 0;
- }
+     p->next_packet_size = be32_to_cpu(packet->next_packet_size);
+     p->packet_num = be64_to_cpu(packet->packet_num);
+     p->packets_recved++;
+@@ -1126,8 +1135,12 @@ static void *multifd_recv_thread(void *opaque)
+     rcu_register_thread();
  
-+void qemu_loadvm_start_load_thread(MigrationLoadThread function,
-+                                   void *opaque)
-+{
-+    struct LoadThreadData *data;
+     while (true) {
++        MultiFDPacketHdr_t hdr;
+         uint32_t flags = 0;
+         bool has_data = false;
++        uint8_t *pkt_buf;
++        size_t pkt_len;
 +
-+    /* We only set it from this thread so it's okay to read it directly */
-+    assert(!load_threads_abort);
-+
-+    data = g_new(struct LoadThreadData, 1);
-+    data->function = function;
-+    data->opaque = opaque;
-+
-+    thread_pool_submit(load_threads, qemu_loadvm_load_thread,
-+                       data, g_free);
-+    thread_pool_adjust_max_threads_to_work(load_threads);
-+}
-+
- void qemu_loadvm_state_cleanup(void)
- {
-     SaveStateEntry *se;
+         p->normal_num = 0;
  
-     trace_loadvm_state_cleanup();
-+
-     QTAILQ_FOREACH(se, &savevm_state.handlers, entry) {
-         if (se->ops && se->ops->load_cleanup) {
-             se->ops->load_cleanup(se->opaque);
-         }
-     }
-+
-+    /*
-+     * We might be called even without earlier qemu_loadvm_state_setup()
-+     * call if qemu_loadvm_state() fails very early.
-+     */
-+    if (load_threads) {
-+        qatomic_set(&load_threads_abort, true);
-+        bql_unlock(); /* Load threads might be waiting for BQL */
-+        thread_pool_wait(load_threads);
-+        bql_lock();
-+        g_clear_pointer(&load_threads, thread_pool_free);
-+    }
- }
+         if (use_packets) {
+@@ -1135,8 +1148,22 @@ static void *multifd_recv_thread(void *opaque)
+                 break;
+             }
  
- /* Return true if we should continue the migration, or false. */
-@@ -3007,6 +3071,19 @@ int qemu_loadvm_state(QEMUFile *f)
-         return ret;
-     }
- 
-+    if (ret == 0) {
-+        bql_unlock(); /* Let load threads do work requiring BQL */
-+        thread_pool_wait(load_threads);
-+        bql_lock();
+-            ret = qio_channel_read_all_eof(p->c, (void *)p->packet,
+-                                           p->packet_len, &local_err);
++            ret = qio_channel_read_all_eof(p->c, (void *)&hdr,
++                                           sizeof(hdr), &local_err);
++            if (ret == 0 || ret == -1) {   /* 0: EOF  -1: Error */
++                break;
++            }
 +
-+        ret = load_threads_ret;
-+    }
-+    /*
-+     * Set this flag unconditionally so we'll catch further attempts to
-+     * start additional threads via an appropriate assert()
-+     */
-+    qatomic_set(&load_threads_abort, true);
++            ret = multifd_recv_unfill_packet_header(p, &hdr, &local_err);
++            if (ret) {
++                break;
++            }
 +
-     if (ret == 0) {
-         ret = qemu_file_get_error(f);
-     }
++            pkt_buf = (uint8_t *)p->packet + sizeof(hdr);
++            pkt_len = p->packet_len - sizeof(hdr);
++
++            ret = qio_channel_read_all_eof(p->c, (char *)pkt_buf, pkt_len,
++                                           &local_err);
+             if (ret == 0 || ret == -1) {   /* 0: EOF  -1: Error */
+                 break;
+             }
+diff --git a/migration/multifd.h b/migration/multifd.h
+index 50d58c0c9cec..106a48496dc6 100644
+--- a/migration/multifd.h
++++ b/migration/multifd.h
+@@ -53,6 +53,11 @@ typedef struct {
+     uint32_t magic;
+     uint32_t version;
+     uint32_t flags;
++} __attribute__((packed)) MultiFDPacketHdr_t;
++
++typedef struct {
++    MultiFDPacketHdr_t hdr;
++
+     /* maximum number of allocated pages */
+     uint32_t pages_alloc;
+     /* non zero pages */
 
