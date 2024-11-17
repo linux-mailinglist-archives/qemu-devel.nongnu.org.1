@@ -2,26 +2,26 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F4E89D057D
-	for <lists+qemu-devel@lfdr.de>; Sun, 17 Nov 2024 20:24:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D3CD9D057E
+	for <lists+qemu-devel@lfdr.de>; Sun, 17 Nov 2024 20:24:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tCkrP-00057n-7l; Sun, 17 Nov 2024 14:23:03 -0500
+	id 1tCkrS-0005Vz-ST; Sun, 17 Nov 2024 14:23:07 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1tCkr8-0004ux-67
- for qemu-devel@nongnu.org; Sun, 17 Nov 2024 14:22:46 -0500
+ id 1tCkrD-00058E-8h
+ for qemu-devel@nongnu.org; Sun, 17 Nov 2024 14:22:52 -0500
 Received: from vps-ovh.mhejs.net ([145.239.82.108])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1tCkr6-0005xk-EY
- for qemu-devel@nongnu.org; Sun, 17 Nov 2024 14:22:45 -0500
+ id 1tCkrB-0005yH-PW
+ for qemu-devel@nongnu.org; Sun, 17 Nov 2024 14:22:51 -0500
 Received: from MUA
  by vps-ovh.mhejs.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
  (Exim 4.98) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1tCkr3-00000002GW1-1duI; Sun, 17 Nov 2024 20:22:41 +0100
+ id 1tCkr8-00000002GWD-2D0b; Sun, 17 Nov 2024 20:22:46 +0100
 From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
 To: Peter Xu <peterx@redhat.com>,
 	Fabiano Rosas <farosas@suse.de>
@@ -31,10 +31,10 @@ Cc: Alex Williamson <alex.williamson@redhat.com>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Avihai Horon <avihaih@nvidia.com>,
  Joao Martins <joao.m.martins@oracle.com>, qemu-devel@nongnu.org
-Subject: [PATCH v3 18/24] vfio/migration: Don't run load cleanup if load setup
- didn't run
-Date: Sun, 17 Nov 2024 20:20:13 +0100
-Message-ID: <72424ece45968b1ae6b39750917a041867c415ab.1731773021.git.maciej.szmigiero@oracle.com>
+Subject: [PATCH v3 19/24] vfio/migration: Add x-migration-multifd-transfer
+ VFIO property
+Date: Sun, 17 Nov 2024 20:20:14 +0100
+Message-ID: <b34680f99e294532a5d095b34b5ef0e4f778b1f2.1731773021.git.maciej.szmigiero@oracle.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <cover.1731773021.git.maciej.szmigiero@oracle.com>
 References: <cover.1731773021.git.maciej.szmigiero@oracle.com>
@@ -66,70 +66,76 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
 
-It's possible for load_cleanup SaveVMHandler to get called without
-load_setup handler being called first.
+This property allows configuring at runtime whether to transfer the
+particular device state via multifd channels when live migrating that
+device.
 
-Since we'll be soon running cleanup operations there that access objects
-that need earlier initialization in load_setup let's make sure these
-cleanups only run when load_setup handler had indeed been called
-earlier.
+It defaults to AUTO, which means that VFIO device state transfer via
+multifd channels is attempted in configurations that otherwise support it.
 
 Signed-off-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
 ---
- hw/vfio/migration.c           | 21 +++++++++++++++++++--
- include/hw/vfio/vfio-common.h |  1 +
- 2 files changed, 20 insertions(+), 2 deletions(-)
+ hw/core/machine.c             | 1 +
+ hw/vfio/pci.c                 | 9 +++++++++
+ include/hw/vfio/vfio-common.h | 1 +
+ 3 files changed, 11 insertions(+)
 
-diff --git a/hw/vfio/migration.c b/hw/vfio/migration.c
-index 01aa11013e42..9e2657073012 100644
---- a/hw/vfio/migration.c
-+++ b/hw/vfio/migration.c
-@@ -688,16 +688,33 @@ static void vfio_save_state(QEMUFile *f, void *opaque)
- static int vfio_load_setup(QEMUFile *f, void *opaque, Error **errp)
- {
-     VFIODevice *vbasedev = opaque;
-+    VFIOMigration *migration = vbasedev->migration;
-+    int ret;
-+
-+    assert(!migration->load_setup);
-+
-+    ret = vfio_migration_set_state(vbasedev, VFIO_DEVICE_STATE_RESUMING,
-+                                   migration->device_state, errp);
-+    if (ret) {
-+        return ret;
-+    }
+diff --git a/hw/core/machine.c b/hw/core/machine.c
+index ed8d39fd769f..fda0f8280edd 100644
+--- a/hw/core/machine.c
++++ b/hw/core/machine.c
+@@ -39,6 +39,7 @@
+ GlobalProperty hw_compat_9_1[] = {
+     { TYPE_PCI_DEVICE, "x-pcie-ext-tag", "false" },
+     { "migration", "send-switchover-start", "off"},
++    { "vfio-pci", "x-migration-multifd-transfer", "off" },
+ };
+ const size_t hw_compat_9_1_len = G_N_ELEMENTS(hw_compat_9_1);
  
--    return vfio_migration_set_state(vbasedev, VFIO_DEVICE_STATE_RESUMING,
--                                    vbasedev->migration->device_state, errp);
-+    migration->load_setup = true;
-+
-+    return 0;
+diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
+index 14bcc725c301..9d547cb5cdff 100644
+--- a/hw/vfio/pci.c
++++ b/hw/vfio/pci.c
+@@ -3354,6 +3354,8 @@ static void vfio_instance_init(Object *obj)
+     pci_dev->cap_present |= QEMU_PCI_CAP_EXPRESS;
  }
  
- static int vfio_load_cleanup(void *opaque)
- {
-     VFIODevice *vbasedev = opaque;
-+    VFIOMigration *migration = vbasedev->migration;
++static PropertyInfo qdev_prop_on_off_auto_mutable;
 +
-+    if (!migration->load_setup) {
-+        return 0;
-+    }
+ static Property vfio_pci_dev_properties[] = {
+     DEFINE_PROP_PCI_HOST_DEVADDR("host", VFIOPCIDevice, host),
+     DEFINE_PROP_UUID_NODEFAULT("vf-token", VFIOPCIDevice, vf_token),
+@@ -3378,6 +3380,10 @@ static Property vfio_pci_dev_properties[] = {
+                     VFIO_FEATURE_ENABLE_IGD_OPREGION_BIT, false),
+     DEFINE_PROP_ON_OFF_AUTO("enable-migration", VFIOPCIDevice,
+                             vbasedev.enable_migration, ON_OFF_AUTO_AUTO),
++    DEFINE_PROP("x-migration-multifd-transfer", VFIOPCIDevice,
++                vbasedev.migration_multifd_transfer,
++                qdev_prop_on_off_auto_mutable, OnOffAuto,
++                .set_default = true, .defval.i = ON_OFF_AUTO_AUTO),
+     DEFINE_PROP_BOOL("migration-events", VFIOPCIDevice,
+                      vbasedev.migration_events, false),
+     DEFINE_PROP_BOOL("x-no-mmap", VFIOPCIDevice, vbasedev.no_mmap, false),
+@@ -3475,6 +3481,9 @@ static const TypeInfo vfio_pci_nohotplug_dev_info = {
  
-     vfio_migration_cleanup(vbasedev);
-+    migration->load_setup = false;
-     trace_vfio_load_cleanup(vbasedev->name);
- 
-     return 0;
+ static void register_vfio_pci_dev_type(void)
+ {
++    qdev_prop_on_off_auto_mutable = qdev_prop_on_off_auto;
++    qdev_prop_on_off_auto_mutable.realized_set_allowed = true;
++
+     type_register_static(&vfio_pci_dev_info);
+     type_register_static(&vfio_pci_nohotplug_dev_info);
+ }
 diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
-index e0ce6ec3a9b3..246250ed8b75 100644
+index 246250ed8b75..b1c03a82eec8 100644
 --- a/include/hw/vfio/vfio-common.h
 +++ b/include/hw/vfio/vfio-common.h
-@@ -66,6 +66,7 @@ typedef struct VFIOMigration {
-     VMChangeStateEntry *vm_state;
-     NotifierWithReturn migration_state;
-     uint32_t device_state;
-+    bool load_setup;
-     int data_fd;
-     void *data_buffer;
-     size_t data_buffer_size;
+@@ -134,6 +134,7 @@ typedef struct VFIODevice {
+     bool no_mmap;
+     bool ram_block_discard_allowed;
+     OnOffAuto enable_migration;
++    OnOffAuto migration_multifd_transfer;
+     bool migration_events;
+     VFIODeviceOps *ops;
+     unsigned int num_irqs;
 
