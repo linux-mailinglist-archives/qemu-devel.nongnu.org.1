@@ -2,26 +2,26 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0F819D0587
-	for <lists+qemu-devel@lfdr.de>; Sun, 17 Nov 2024 20:25:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B7C079D0584
+	for <lists+qemu-devel@lfdr.de>; Sun, 17 Nov 2024 20:24:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tCkqx-0003g6-TD; Sun, 17 Nov 2024 14:22:36 -0500
+	id 1tCkr3-0004BY-7j; Sun, 17 Nov 2024 14:22:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1tCkqu-0003XX-BH
- for qemu-devel@nongnu.org; Sun, 17 Nov 2024 14:22:32 -0500
+ id 1tCkqz-0003u7-5C
+ for qemu-devel@nongnu.org; Sun, 17 Nov 2024 14:22:37 -0500
 Received: from vps-ovh.mhejs.net ([145.239.82.108])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1tCkqr-0005we-Mq
- for qemu-devel@nongnu.org; Sun, 17 Nov 2024 14:22:32 -0500
+ id 1tCkqx-0005x2-Et
+ for qemu-devel@nongnu.org; Sun, 17 Nov 2024 14:22:36 -0500
 Received: from MUA
  by vps-ovh.mhejs.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
  (Exim 4.98) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1tCkqn-00000002GVP-43q7; Sun, 17 Nov 2024 20:22:25 +0100
+ id 1tCkqt-00000002GVd-0SzF; Sun, 17 Nov 2024 20:22:31 +0100
 From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
 To: Peter Xu <peterx@redhat.com>,
 	Fabiano Rosas <farosas@suse.de>
@@ -31,10 +31,10 @@ Cc: Alex Williamson <alex.williamson@redhat.com>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Avihai Horon <avihaih@nvidia.com>,
  Joao Martins <joao.m.martins@oracle.com>, qemu-devel@nongnu.org
-Subject: [PATCH v3 15/24] migration/multifd: Add
- migration_has_device_state_support()
-Date: Sun, 17 Nov 2024 20:20:10 +0100
-Message-ID: <ca43afdc742ccf8070b1146014ce33c333e85d8b.1731773021.git.maciej.szmigiero@oracle.com>
+Subject: [PATCH v3 16/24] migration/multifd: Send final SYNC only after device
+ state is complete
+Date: Sun, 17 Nov 2024 20:20:11 +0100
+Message-ID: <0b8131dc6107841969d254e88e9d6e14220f1ea5.1731773021.git.maciej.szmigiero@oracle.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <cover.1731773021.git.maciej.szmigiero@oracle.com>
 References: <cover.1731773021.git.maciej.szmigiero@oracle.com>
@@ -66,48 +66,132 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
 
-Since device state transfer via multifd channels requires multifd
-channels with packets and is currently not compatible with multifd
-compression add an appropriate query function so device can learn
-whether it can actually make use of it.
+Currently, ram_save_complete() sends a final SYNC multifd packet near this
+function end, after sending all of the remaining RAM data.
+
+On the receive side, this SYNC packet will cause multifd channel threads
+to block, waiting for the final sem_sync posting in
+multifd_recv_terminate_threads().
+
+However, multifd_recv_terminate_threads() won't be called until the
+migration is complete, which causes a problem if multifd channels are
+still required for transferring device state data after RAM transfer is
+complete but before finishing the migration process.
+
+Defer sending the final SYNC packet to the end of sending of
+post-switchover iterable data instead if device state transfer is possible.
 
 Signed-off-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
 ---
- include/migration/misc.h         | 1 +
- migration/multifd-device-state.c | 7 +++++++
- 2 files changed, 8 insertions(+)
+ migration/multifd-nocomp.c | 18 +++++++++++++++++-
+ migration/multifd.h        |  1 +
+ migration/ram.c            | 10 +++++++++-
+ migration/savevm.c         | 11 +++++++++++
+ 4 files changed, 38 insertions(+), 2 deletions(-)
 
-diff --git a/include/migration/misc.h b/include/migration/misc.h
-index 118e205bbcc6..43558d9198f7 100644
---- a/include/migration/misc.h
-+++ b/include/migration/misc.h
-@@ -112,5 +112,6 @@ bool migration_in_bg_snapshot(void);
- /* migration/multifd-device-state.c */
- bool multifd_queue_device_state(char *idstr, uint32_t instance_id,
-                                 char *data, size_t len);
-+bool migration_has_device_state_support(void);
- 
- #endif
-diff --git a/migration/multifd-device-state.c b/migration/multifd-device-state.c
-index 8cf5a6c2668c..bcbea926b6be 100644
---- a/migration/multifd-device-state.c
-+++ b/migration/multifd-device-state.c
-@@ -11,6 +11,7 @@
- #include "qemu/lockable.h"
- #include "migration/misc.h"
- #include "multifd.h"
-+#include "options.h"
- 
- static QemuMutex queue_job_mutex;
- 
-@@ -99,3 +100,9 @@ bool multifd_queue_device_state(char *idstr, uint32_t instance_id,
- 
+diff --git a/migration/multifd-nocomp.c b/migration/multifd-nocomp.c
+index 90c0927b9bcb..db87b1262ffa 100644
+--- a/migration/multifd-nocomp.c
++++ b/migration/multifd-nocomp.c
+@@ -348,7 +348,7 @@ retry:
      return true;
  }
-+
-+bool migration_has_device_state_support(void)
-+{
-+    return migrate_multifd() && !migrate_mapped_ram() &&
-+        migrate_multifd_compression() == MULTIFD_COMPRESSION_NONE;
+ 
+-int multifd_ram_flush_and_sync(void)
++int multifd_ram_flush(void)
+ {
+     if (!migrate_multifd()) {
+         return 0;
+@@ -361,6 +361,22 @@ int multifd_ram_flush_and_sync(void)
+         }
+     }
+ 
++    return 0;
 +}
++
++int multifd_ram_flush_and_sync(void)
++{
++    int ret;
++
++    if (!migrate_multifd()) {
++        return 0;
++    }
++
++    ret = multifd_ram_flush();
++    if (ret) {
++        return ret;
++    }
++
+     return multifd_send_sync_main();
+ }
+ 
+diff --git a/migration/multifd.h b/migration/multifd.h
+index 05ddfb4bf119..3abf9578e2ae 100644
+--- a/migration/multifd.h
++++ b/migration/multifd.h
+@@ -376,6 +376,7 @@ static inline uint32_t multifd_ram_page_count(void)
+ 
+ void multifd_ram_save_setup(void);
+ void multifd_ram_save_cleanup(void);
++int multifd_ram_flush(void);
+ int multifd_ram_flush_and_sync(void);
+ void multifd_ram_payload_alloc(MultiFDPages_t *pages);
+ void multifd_ram_payload_free(MultiFDPages_t *pages);
+diff --git a/migration/ram.c b/migration/ram.c
+index 05ff9eb32876..cf7bea3f073b 100644
+--- a/migration/ram.c
++++ b/migration/ram.c
+@@ -3283,7 +3283,15 @@ static int ram_save_complete(QEMUFile *f, void *opaque)
+         }
+     }
+ 
+-    ret = multifd_ram_flush_and_sync();
++    if (migration_has_device_state_support()) {
++        /*
++         * Can't do the final SYNC here since device state might still
++         * be transferring via multifd channels.
++         */
++        ret = multifd_ram_flush();
++    } else {
++        ret = multifd_ram_flush_and_sync();
++    }
+     if (ret < 0) {
+         return ret;
+     }
+diff --git a/migration/savevm.c b/migration/savevm.c
+index 6ea9054c4083..98049cb9b09a 100644
+--- a/migration/savevm.c
++++ b/migration/savevm.c
+@@ -37,6 +37,7 @@
+ #include "migration/register.h"
+ #include "migration/global_state.h"
+ #include "migration/channel-block.h"
++#include "multifd.h"
+ #include "ram.h"
+ #include "qemu-file.h"
+ #include "savevm.h"
+@@ -1496,6 +1497,7 @@ int qemu_savevm_state_complete_precopy_iterable(QEMUFile *f, bool in_postcopy)
+     int64_t start_ts_each, end_ts_each;
+     SaveStateEntry *se;
+     int ret;
++    bool multifd_device_state = migration_has_device_state_support();
+ 
+     QTAILQ_FOREACH(se, &savevm_state.handlers, entry) {
+         if (!se->ops ||
+@@ -1528,6 +1530,15 @@ int qemu_savevm_state_complete_precopy_iterable(QEMUFile *f, bool in_postcopy)
+                                     end_ts_each - start_ts_each);
+     }
+ 
++    if (multifd_device_state) {
++        /* Send the final SYNC */
++        ret = multifd_send_sync_main();
++        if (ret) {
++            qemu_file_set_error(f, ret);
++            return -1;
++        }
++    }
++
+     trace_vmstate_downtime_checkpoint("src-iterable-saved");
+ 
+     return 0;
 
