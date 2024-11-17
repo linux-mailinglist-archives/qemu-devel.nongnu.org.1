@@ -2,54 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 037BE9D0588
-	for <lists+qemu-devel@lfdr.de>; Sun, 17 Nov 2024 20:25:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB9FD9D06E1
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Nov 2024 00:02:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tCkru-0007ap-C7; Sun, 17 Nov 2024 14:23:34 -0500
+	id 1tCoGM-0008DC-3p; Sun, 17 Nov 2024 18:01:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1tCkrn-0007Mw-9P
- for qemu-devel@nongnu.org; Sun, 17 Nov 2024 14:23:27 -0500
-Received: from vps-ovh.mhejs.net ([145.239.82.108])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1tCkrl-000609-Bv
- for qemu-devel@nongnu.org; Sun, 17 Nov 2024 14:23:26 -0500
-Received: from MUA
- by vps-ovh.mhejs.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
- (Exim 4.98) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1tCkrY-00000002GX6-11Vn; Sun, 17 Nov 2024 20:23:12 +0100
-From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
-To: Peter Xu <peterx@redhat.com>,
-	Fabiano Rosas <farosas@suse.de>
-Cc: Alex Williamson <alex.williamson@redhat.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
- Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Avihai Horon <avihaih@nvidia.com>,
- Joao Martins <joao.m.martins@oracle.com>, qemu-devel@nongnu.org
-Subject: [PATCH v3 24/24] vfio/migration: Multifd device state transfer
- support - send side
-Date: Sun, 17 Nov 2024 20:20:19 +0100
-Message-ID: <4f5c33b97be09fcb4e1885073e31c5e930a39ad0.1731773021.git.maciej.szmigiero@oracle.com>
-X-Mailer: git-send-email 2.47.0
-In-Reply-To: <cover.1731773021.git.maciej.szmigiero@oracle.com>
-References: <cover.1731773021.git.maciej.szmigiero@oracle.com>
+ (Exim 4.90_1) (envelope-from <jean.christian.cirstea@gmail.com>)
+ id 1tCoCp-0007gu-Oz
+ for qemu-devel@nongnu.org; Sun, 17 Nov 2024 17:57:23 -0500
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <jean.christian.cirstea@gmail.com>)
+ id 1tCoCn-0002rp-Vl
+ for qemu-devel@nongnu.org; Sun, 17 Nov 2024 17:57:23 -0500
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-4314f38d274so22193485e9.1
+ for <qemu-devel@nongnu.org>; Sun, 17 Nov 2024 14:57:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1731884239; x=1732489039; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=1NcEwOeWHFjScd3fyiWygZ/Gn+PwBjhmbkNrTkjnAq0=;
+ b=mupT/e7qdYOYXt7+377+465MdHDdTAL3RMBh5s2FDz04dxM6h3VeHww7cTej85Y7Ct
+ F/1klm5+e+VyZnITo3AOmiunE3GJtDobz0xyDpJ7vaYLlZYlWoB9J2Qai/PFJicru6nR
+ lKHxfUy/BLiRB8D42vGgTOD5bkWs14mhIZim5cFIlNjcAo/58P6l49znOGleUDe+2TS+
+ rB4nl4Zd1SbSH/pNXQjJeq8rk9159Bsq8hDNHv/uBX/Z68tM5DoaXdvvSDuF40mb1Iic
+ fs42ONvCOXT2JCxP53gMuhsFj8Af1GGg2i9Kg02oCjwoB8904Mt8+YM7j7/tX+guPQuz
+ S3hA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1731884239; x=1732489039;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=1NcEwOeWHFjScd3fyiWygZ/Gn+PwBjhmbkNrTkjnAq0=;
+ b=nwQD8s0L/Q0ZQav7oU2FHmiJM1Fs/RQw2l3eZaGnD8vQ7QB1sRwWgpTjmlVlvywqq/
+ uKz8EBRp+XL5JBeMt/XtDCLoGuhmxkIJkECcI6Cm1kbPLWQxN9SHjmrq8JlUcBgnm5JF
+ WD9awAjc8grFiWhx4q+rkCZPust6lDhlQ1lCUi9s0Kxai0KPvY1zsQo2JWuU7oICUY0c
+ H07zdT98gbQmKs8n4IhnjCsHXQO0v32IobP0n0L4nOfunrtaxm0S99S5dIubXc8FhsuM
+ 7ZUlTI0w7MY3IlJ4i6z9pudRJQPS6/K7dZ3sguc5wtXR2z0ZhPWTU7ufGvVNfPoLBAOW
+ C3bQ==
+X-Gm-Message-State: AOJu0Yy+k5x1q5YsHlUPZaFiDvuSrJbk5KRItgRmhcpMakoltrxGP1UJ
+ oLrzHIO4tFrsmvA8TKl823uZ8FY0jrviy2UKbwTS2w68n4yc3cEAGxf7RJ4of46pWg==
+X-Google-Smtp-Source: AGHT+IGityb++P2QNHfzL1tQFPXgnzhhnm2gEnYCP+wueEUgsHkCwmXS8D9lwl3W2HTByrQFFEvmeA==
+X-Received: by 2002:a05:600c:501e:b0:431:4847:47c0 with SMTP id
+ 5b1f17b1804b1-432df722c63mr103673425e9.7.1731884238771; 
+ Sun, 17 Nov 2024 14:57:18 -0800 (PST)
+Received: from asus-xubuntu.. ([82.78.167.190])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-432da2800absm136351505e9.25.2024.11.17.14.57.17
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 17 Nov 2024 14:57:18 -0800 (PST)
+From: "=?UTF-8?q?Ioan-Cristian=20C=C3=8ERSTEA?="
+ <jean.christian.cirstea@gmail.com>
+X-Google-Original-From: =?UTF-8?q?Ioan-Cristian=20C=C3=8ERSTEA?=
+ <ioan-cristian.cirstea@tutanota.com>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Ioan-Cristian=20C=C3=8ERSTEA?=
+ <ioan-cristian.cirstea@tutanota.com>
+Subject: [PATCH 1/7] [BCM2835 AUX 1/7] Replace hard-coded FIFO
+Date: Mon, 18 Nov 2024 00:56:37 +0200
+Message-Id: <20241117225643.768322-1-ioan-cristian.cirstea@tutanota.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=145.239.82.108;
- envelope-from=mhej@vps-ovh.mhejs.net; helo=vps-ovh.mhejs.net
-X-Spam_score_int: -15
-X-Spam_score: -1.6
-X-Spam_bar: -
-X-Spam_report: (-1.6 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.249, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=no autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=jean.christian.cirstea@gmail.com; helo=mail-wm1-x334.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Sun, 17 Nov 2024 18:00:54 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,232 +94,208 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
+The previous BCM2835 mini UART implementation used a hard-coded FIFO.
+This commit changes the implementation by making use of the provided
+Fifo8.
 
-Implement the multifd device state transfer via additional per-device
-thread inside save_live_complete_precopy_thread handler.
-
-Switch between doing the data transfer in the new handler and doing it
-in the old save_state handler depending on the
-x-migration-multifd-transfer device property value.
-
-Signed-off-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
+Signed-off-by: Ioan-Cristian CÎRSTEA <ioan-cristian.cirstea@tutanota.com>
 ---
- hw/vfio/migration.c  | 155 +++++++++++++++++++++++++++++++++++++++++++
- hw/vfio/trace-events |   2 +
- 2 files changed, 157 insertions(+)
+ hw/char/bcm2835_aux.c         | 61 ++++++++++++++++++-----------------
+ include/hw/char/bcm2835_aux.h | 10 +++---
+ 2 files changed, 37 insertions(+), 34 deletions(-)
 
-diff --git a/hw/vfio/migration.c b/hw/vfio/migration.c
-index b54879fe6209..8709672ada48 100644
---- a/hw/vfio/migration.c
-+++ b/hw/vfio/migration.c
-@@ -771,6 +771,24 @@ static int vfio_save_setup(QEMUFile *f, void *opaque, Error **errp)
-     uint64_t stop_copy_size = VFIO_MIG_DEFAULT_DATA_BUFFER_SIZE;
-     int ret;
+diff --git a/hw/char/bcm2835_aux.c b/hw/char/bcm2835_aux.c
+index fca2f27a55..540cb30872 100644
+--- a/hw/char/bcm2835_aux.c
++++ b/hw/char/bcm2835_aux.c
+@@ -47,14 +47,23 @@
+ #define RX_INT  0x1
+ #define TX_INT  0x2
  
-+    /*
-+     * Make a copy of this setting at the start in case it is changed
-+     * mid-migration.
++/* FIFOs length */
++#define BCM2835_AUX_RX_FIFO_LEN 8
++#define BCM2835_AUX_TX_FIOF_LEN 8
++
++/* TODO: Add separate functions for RX and TX interrupts */
+ static void bcm2835_aux_update(BCM2835AuxState *s)
+ {
++    /* TODO: this should be a pointer to const data. However, the fifo8 API
++     * requires a pointer to non-const data.
 +     */
-+    if (vbasedev->migration_multifd_transfer == ON_OFF_AUTO_AUTO) {
-+        migration->multifd_transfer = vfio_multifd_transfer_supported();
-+    } else {
-+        migration->multifd_transfer =
-+            vbasedev->migration_multifd_transfer == ON_OFF_AUTO_ON;
-+    }
-+
-+    if (migration->multifd_transfer && !vfio_multifd_transfer_supported()) {
-+        error_setg(errp,
-+                   "%s: Multifd device transfer requested but unsupported in the current config",
-+                   vbasedev->name);
-+        return -EINVAL;
-+    }
-+
-     qemu_put_be64(f, VFIO_MIG_FLAG_DEV_SETUP_STATE);
++    Fifo8 *rx_fifo = &s->rx_fifo;
+     /* signal an interrupt if either:
+      * 1. rx interrupt is enabled and we have a non-empty rx fifo, or
+      * 2. the tx interrupt is enabled (since we instantly drain the tx fifo)
+      */
+     s->iir = 0;
+-    if ((s->ier & RX_INT) && s->read_count != 0) {
++    if ((s->ier & RX_INT) && fifo8_is_empty(rx_fifo) == false) {
+         s->iir |= RX_INT;
+     }
+     if (s->ier & TX_INT) {
+@@ -66,7 +75,10 @@ static void bcm2835_aux_update(BCM2835AuxState *s)
+ static uint64_t bcm2835_aux_read(void *opaque, hwaddr offset, unsigned size)
+ {
+     BCM2835AuxState *s = opaque;
+-    uint32_t c, res;
++    Fifo8 *rx_fifo = &s->rx_fifo;
++    const bool is_rx_fifo_not_empty = !fifo8_is_empty(rx_fifo);
++    const uint32_t rx_fifo_fill_level = fifo8_num_used(rx_fifo);
++    uint32_t c = 0, res;
  
-     vfio_query_stop_copy_size(vbasedev, &stop_copy_size);
-@@ -942,13 +960,32 @@ static int vfio_save_iterate(QEMUFile *f, void *opaque)
-     return !migration->precopy_init_size && !migration->precopy_dirty_size;
+     switch (offset) {
+     case AUX_IRQ:
+@@ -77,12 +89,8 @@ static uint64_t bcm2835_aux_read(void *opaque, hwaddr offset, unsigned size)
+ 
+     case AUX_MU_IO_REG:
+         /* "DLAB bit set means access baudrate register" is NYI */
+-        c = s->read_fifo[s->read_pos];
+-        if (s->read_count > 0) {
+-            s->read_count--;
+-            if (++s->read_pos == BCM2835_AUX_RX_FIFO_LEN) {
+-                s->read_pos = 0;
+-            }
++        if (is_rx_fifo_not_empty) {
++            c = fifo8_pop(rx_fifo);
+         }
+         qemu_chr_fe_accept_input(&s->chr);
+         bcm2835_aux_update(s);
+@@ -98,7 +106,7 @@ static uint64_t bcm2835_aux_read(void *opaque, hwaddr offset, unsigned size)
+          * interrupts are active, besides that this cannot occur. At
+          * present, we choose to prioritise the rx interrupt, since
+          * the tx fifo is always empty. */
+-        if (s->read_count != 0) {
++        if (is_rx_fifo_not_empty) {
+             res |= 0x4;
+         } else {
+             res |= 0x2;
+@@ -118,7 +126,7 @@ static uint64_t bcm2835_aux_read(void *opaque, hwaddr offset, unsigned size)
+ 
+     case AUX_MU_LSR_REG:
+         res = 0x60; /* tx idle, empty */
+-        if (s->read_count != 0) {
++        if (is_rx_fifo_not_empty) {
+             res |= 0x1;
+         }
+         return res;
+@@ -136,10 +144,10 @@ static uint64_t bcm2835_aux_read(void *opaque, hwaddr offset, unsigned size)
+ 
+     case AUX_MU_STAT_REG:
+         res = 0x30e; /* space in the output buffer, empty tx fifo, idle tx/rx */
+-        if (s->read_count > 0) {
++        if (is_rx_fifo_not_empty) {
+             res |= 0x1; /* data in input buffer */
+-            assert(s->read_count <= BCM2835_AUX_RX_FIFO_LEN);
+-            res |= ((uint32_t)s->read_count) << 16; /* rx fifo fill level */
++            assert(rx_fifo_fill_level <= BCM2835_AUX_RX_FIFO_LEN);
++            res |= ((uint32_t)rx_fifo_fill_level) << 16; /* rx fifo fill level */
+         }
+         return res;
+ 
+@@ -158,6 +166,7 @@ static void bcm2835_aux_write(void *opaque, hwaddr offset, uint64_t value,
+                               unsigned size)
+ {
+     BCM2835AuxState *s = opaque;
++    Fifo8 *rx_fifo = &s->rx_fifo;
+     unsigned char ch;
+ 
+     switch (offset) {
+@@ -185,7 +194,7 @@ static void bcm2835_aux_write(void *opaque, hwaddr offset, uint64_t value,
+ 
+     case AUX_MU_IIR_REG:
+         if (value & 0x2) {
+-            s->read_count = 0;
++            fifo8_reset(rx_fifo);
+         }
+         break;
+ 
+@@ -221,24 +230,18 @@ static int bcm2835_aux_can_receive(void *opaque)
+ {
+     BCM2835AuxState *s = opaque;
+ 
+-    return s->read_count < BCM2835_AUX_RX_FIFO_LEN;
++    return !fifo8_is_full(&s->rx_fifo);
  }
  
-+static void vfio_save_multifd_emit_dummy_eos(VFIODevice *vbasedev, QEMUFile *f)
-+{
-+    VFIOMigration *migration = vbasedev->migration;
-+
-+    assert(migration->multifd_transfer);
-+
-+    /*
-+     * Emit dummy NOP data on the main migration channel since the actual
-+     * device state transfer is done via multifd channels.
-+     */
-+    qemu_put_be64(f, VFIO_MIG_FLAG_END_OF_STATE);
-+}
-+
- static int vfio_save_complete_precopy(QEMUFile *f, void *opaque)
+ static void bcm2835_aux_put_fifo(void *opaque, uint8_t value)
  {
-     VFIODevice *vbasedev = opaque;
-+    VFIOMigration *migration = vbasedev->migration;
-     ssize_t data_size;
-     int ret;
-     Error *local_err = NULL;
+     BCM2835AuxState *s = opaque;
+-    int slot;
++    Fifo8 *rx_fifo = &s->rx_fifo;
  
-+    if (migration->multifd_transfer) {
-+        vfio_save_multifd_emit_dummy_eos(vbasedev, f);
-+        return 0;
-+    }
-+
-     trace_vfio_save_complete_precopy_start(vbasedev->name);
- 
-     /* We reach here with device state STOP or STOP_COPY only */
-@@ -974,12 +1011,129 @@ static int vfio_save_complete_precopy(QEMUFile *f, void *opaque)
-     return ret;
+-    slot = s->read_pos + s->read_count;
+-    if (slot >= BCM2835_AUX_RX_FIFO_LEN) {
+-        slot -= BCM2835_AUX_RX_FIFO_LEN;
+-    }
+-    s->read_fifo[slot] = value;
+-    s->read_count++;
+-    if (s->read_count == BCM2835_AUX_RX_FIFO_LEN) {
+-        /* buffer full */
++    if (fifo8_is_full(rx_fifo) == false) {
++        fifo8_push(rx_fifo, value);
++        bcm2835_aux_update(s);
+     }
+-    bcm2835_aux_update(s);
  }
  
-+static int
-+vfio_save_complete_precopy_async_thread_config_state(VFIODevice *vbasedev,
-+                                                     char *idstr,
-+                                                     uint32_t instance_id,
-+                                                     uint32_t idx)
-+{
-+    g_autoptr(QIOChannelBuffer) bioc = NULL;
-+    g_autoptr(QEMUFile) f = NULL;
-+    int ret;
-+    g_autofree VFIODeviceStatePacket *packet = NULL;
-+    size_t packet_len;
-+
-+    bioc = qio_channel_buffer_new(0);
-+    qio_channel_set_name(QIO_CHANNEL(bioc), "vfio-device-config-save");
-+
-+    f = qemu_file_new_output(QIO_CHANNEL(bioc));
-+
-+    ret = vfio_save_device_config_state(f, vbasedev, NULL);
-+    if (ret) {
-+        return ret;
-+    }
-+
-+    ret = qemu_fflush(f);
-+    if (ret) {
-+        return ret;
-+    }
-+
-+    packet_len = sizeof(*packet) + bioc->usage;
-+    packet = g_malloc0(packet_len);
-+    packet->idx = idx;
-+    packet->flags = VFIO_DEVICE_STATE_CONFIG_STATE;
-+    memcpy(&packet->data, bioc->data, bioc->usage);
-+
-+    if (!multifd_queue_device_state(idstr, instance_id,
-+                                    (char *)packet, packet_len)) {
-+        return -1;
-+    }
-+
-+    qatomic_add(&bytes_transferred, packet_len);
-+
-+    return 0;
-+}
-+
-+static int vfio_save_complete_precopy_thread(char *idstr,
-+                                             uint32_t instance_id,
-+                                             bool *abort_flag,
-+                                             void *opaque)
-+{
-+    VFIODevice *vbasedev = opaque;
-+    VFIOMigration *migration = vbasedev->migration;
-+    int ret;
-+    g_autofree VFIODeviceStatePacket *packet = NULL;
-+    uint32_t idx;
-+
-+    if (!migration->multifd_transfer) {
-+        /* Nothing to do, vfio_save_complete_precopy() does the transfer. */
-+        return 0;
-+    }
-+
-+    trace_vfio_save_complete_precopy_thread_start(vbasedev->name,
-+                                                  idstr, instance_id);
-+
-+    /* We reach here with device state STOP or STOP_COPY only */
-+    ret = vfio_migration_set_state(vbasedev, VFIO_DEVICE_STATE_STOP_COPY,
-+                                   VFIO_DEVICE_STATE_STOP, NULL);
-+    if (ret) {
-+        goto ret_finish;
-+    }
-+
-+    packet = g_malloc0(sizeof(*packet) + migration->data_buffer_size);
-+
-+    for (idx = 0; ; idx++) {
-+        ssize_t data_size;
-+        size_t packet_size;
-+
-+        if (qatomic_read(abort_flag)) {
-+            ret = -ECANCELED;
-+            goto ret_finish;
-+        }
-+
-+        data_size = read(migration->data_fd, &packet->data,
-+                         migration->data_buffer_size);
-+        if (data_size < 0) {
-+            ret = -errno;
-+            goto ret_finish;
-+        } else if (data_size == 0) {
-+            break;
-+        }
-+
-+        packet->idx = idx;
-+        packet_size = sizeof(*packet) + data_size;
-+
-+        if (!multifd_queue_device_state(idstr, instance_id,
-+                                        (char *)packet, packet_size)) {
-+            ret = -1;
-+            goto ret_finish;
-+        }
-+
-+        qatomic_add(&bytes_transferred, packet_size);
-+    }
-+
-+    ret = vfio_save_complete_precopy_async_thread_config_state(vbasedev, idstr,
-+                                                               instance_id,
-+                                                               idx);
-+
-+ret_finish:
-+    trace_vfio_save_complete_precopy_thread_end(vbasedev->name, ret);
-+
-+    return ret;
-+}
-+
- static void vfio_save_state(QEMUFile *f, void *opaque)
- {
-     VFIODevice *vbasedev = opaque;
-+    VFIOMigration *migration = vbasedev->migration;
-     Error *local_err = NULL;
-     int ret;
+ static void bcm2835_aux_receive(void *opaque, const uint8_t *buf, int size)
+@@ -261,10 +264,8 @@ static const VMStateDescription vmstate_bcm2835_aux = {
+     .version_id = 1,
+     .minimum_version_id = 1,
+     .fields = (const VMStateField[]) {
+-        VMSTATE_UINT8_ARRAY(read_fifo, BCM2835AuxState,
+-                            BCM2835_AUX_RX_FIFO_LEN),
+-        VMSTATE_UINT8(read_pos, BCM2835AuxState),
+-        VMSTATE_UINT8(read_count, BCM2835AuxState),
++        VMSTATE_FIFO8(rx_fifo, BCM2835AuxState),
++        VMSTATE_FIFO8(_tx_fifo, BCM2835AuxState),
+         VMSTATE_UINT8(ier, BCM2835AuxState),
+         VMSTATE_UINT8(iir, BCM2835AuxState),
+         VMSTATE_END_OF_LIST()
+@@ -276,6 +277,8 @@ static void bcm2835_aux_init(Object *obj)
+     SysBusDevice *sbd = SYS_BUS_DEVICE(obj);
+     BCM2835AuxState *s = BCM2835_AUX(obj);
  
-+    if (migration->multifd_transfer) {
-+        vfio_save_multifd_emit_dummy_eos(vbasedev, f);
-+        return;
-+    }
++    fifo8_create(&s->rx_fifo, BCM2835_AUX_RX_FIFO_LEN);
 +
-     ret = vfio_save_device_config_state(f, opaque, &local_err);
-     if (ret) {
-         error_prepend(&local_err,
-@@ -1210,6 +1364,7 @@ static const SaveVMHandlers savevm_vfio_handlers = {
-     .is_active_iterate = vfio_is_active_iterate,
-     .save_live_iterate = vfio_save_iterate,
-     .save_live_complete_precopy = vfio_save_complete_precopy,
-+    .save_live_complete_precopy_thread = vfio_save_complete_precopy_thread,
-     .save_state = vfio_save_state,
-     .load_setup = vfio_load_setup,
-     .load_cleanup = vfio_load_cleanup,
-diff --git a/hw/vfio/trace-events b/hw/vfio/trace-events
-index 418b378ebd29..039979bdd98f 100644
---- a/hw/vfio/trace-events
-+++ b/hw/vfio/trace-events
-@@ -168,6 +168,8 @@ vfio_save_block_precopy_empty_hit(const char *name) " (%s)"
- vfio_save_cleanup(const char *name) " (%s)"
- vfio_save_complete_precopy(const char *name, int ret) " (%s) ret %d"
- vfio_save_complete_precopy_start(const char *name) " (%s)"
-+vfio_save_complete_precopy_thread_start(const char *name, const char *idstr, uint32_t instance_id) " (%s) idstr %s instance %"PRIu32
-+vfio_save_complete_precopy_thread_end(const char *name, int ret) " (%s) ret %d"
- vfio_save_device_config_state(const char *name) " (%s)"
- vfio_save_iterate(const char *name, uint64_t precopy_init_size, uint64_t precopy_dirty_size) " (%s) precopy initial size %"PRIu64" precopy dirty size %"PRIu64
- vfio_save_iterate_start(const char *name) " (%s)"
+     memory_region_init_io(&s->iomem, OBJECT(s), &bcm2835_aux_ops, s,
+                           TYPE_BCM2835_AUX, 0x100);
+     sysbus_init_mmio(sbd, &s->iomem);
+diff --git a/include/hw/char/bcm2835_aux.h b/include/hw/char/bcm2835_aux.h
+index 9e081793a0..cb1a824994 100644
+--- a/include/hw/char/bcm2835_aux.h
++++ b/include/hw/char/bcm2835_aux.h
+@@ -9,15 +9,14 @@
+ #ifndef BCM2835_AUX_H
+ #define BCM2835_AUX_H
+ 
+-#include "hw/sysbus.h"
+ #include "chardev/char-fe.h"
++#include "hw/sysbus.h"
++#include "qemu/fifo8.h"
+ #include "qom/object.h"
+ 
+ #define TYPE_BCM2835_AUX "bcm2835-aux"
+ OBJECT_DECLARE_SIMPLE_TYPE(BCM2835AuxState, BCM2835_AUX)
+ 
+-#define BCM2835_AUX_RX_FIFO_LEN 8
+-
+ struct BCM2835AuxState {
+     /*< private >*/
+     SysBusDevice parent_obj;
+@@ -27,8 +26,9 @@ struct BCM2835AuxState {
+     CharBackend chr;
+     qemu_irq irq;
+ 
+-    uint8_t read_fifo[BCM2835_AUX_RX_FIFO_LEN];
+-    uint8_t read_pos, read_count;
++    Fifo8 rx_fifo;
++    /* Unused for now */
++    Fifo8 _tx_fifo;
+     uint8_t ier, iir;
+ };
+ 
+-- 
+2.34.1
+
 
