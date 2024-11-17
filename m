@@ -2,26 +2,26 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 746109D056E
-	for <lists+qemu-devel@lfdr.de>; Sun, 17 Nov 2024 20:22:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E3F69D0570
+	for <lists+qemu-devel@lfdr.de>; Sun, 17 Nov 2024 20:23:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tCkqB-0002gu-3n; Sun, 17 Nov 2024 14:21:47 -0500
+	id 1tCkqG-0002iJ-JQ; Sun, 17 Nov 2024 14:21:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1tCkq8-0002gm-Tk
- for qemu-devel@nongnu.org; Sun, 17 Nov 2024 14:21:45 -0500
+ id 1tCkqE-0002hs-7Z
+ for qemu-devel@nongnu.org; Sun, 17 Nov 2024 14:21:50 -0500
 Received: from vps-ovh.mhejs.net ([145.239.82.108])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1tCkq7-0005sq-EG
- for qemu-devel@nongnu.org; Sun, 17 Nov 2024 14:21:44 -0500
+ id 1tCkqC-0005tG-Qx
+ for qemu-devel@nongnu.org; Sun, 17 Nov 2024 14:21:50 -0500
 Received: from MUA
  by vps-ovh.mhejs.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
  (Exim 4.98) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1tCkq3-00000002GTj-2VyB; Sun, 17 Nov 2024 20:21:39 +0100
+ id 1tCkq8-00000002GTt-37PJ; Sun, 17 Nov 2024 20:21:44 +0100
 From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
 To: Peter Xu <peterx@redhat.com>,
 	Fabiano Rosas <farosas@suse.de>
@@ -31,10 +31,10 @@ Cc: Alex Williamson <alex.williamson@redhat.com>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Avihai Horon <avihaih@nvidia.com>,
  Joao Martins <joao.m.martins@oracle.com>, qemu-devel@nongnu.org
-Subject: [PATCH v3 06/24] migration: Add qemu_loadvm_load_state_buffer() and
- its handler
-Date: Sun, 17 Nov 2024 20:20:01 +0100
-Message-ID: <d791cb76e8c43a30b49758ed641bf566f5325e2a.1731773021.git.maciej.szmigiero@oracle.com>
+Subject: [PATCH v3 07/24] migration: Document the BQL behavior of load
+ SaveVMHandlers
+Date: Sun, 17 Nov 2024 20:20:02 +0100
+Message-ID: <e1949839932efaa531e2fe63ac13324e5787439c.1731773021.git.maciej.szmigiero@oracle.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <cover.1731773021.git.maciej.szmigiero@oracle.com>
 References: <cover.1731773021.git.maciej.szmigiero@oracle.com>
@@ -66,90 +66,53 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
 
-qemu_loadvm_load_state_buffer() and its load_state_buffer
-SaveVMHandler allow providing device state buffer to explicitly
-specified device via its idstr and instance id.
+Some of these SaveVMHandlers were missing the BQL behavior annotation,
+making people wonder what it exactly is.
 
-Reviewed-by: Fabiano Rosas <farosas@suse.de>
 Signed-off-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
 ---
- include/migration/register.h | 17 +++++++++++++++++
- migration/savevm.c           | 23 +++++++++++++++++++++++
- migration/savevm.h           |  3 +++
- 3 files changed, 43 insertions(+)
+ include/migration/register.h | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
 diff --git a/include/migration/register.h b/include/migration/register.h
-index ff0faf5f68c8..39991f3cc5d0 100644
+index 39991f3cc5d0..761e4e4d8bcb 100644
 --- a/include/migration/register.h
 +++ b/include/migration/register.h
-@@ -229,6 +229,23 @@ typedef struct SaveVMHandlers {
-      */
-     int (*load_state)(QEMUFile *f, void *opaque, int version_id);
+@@ -212,6 +212,8 @@ typedef struct SaveVMHandlers {
+     void (*state_pending_exact)(void *opaque, uint64_t *must_precopy,
+                                 uint64_t *can_postcopy);
  
-+    /* This runs outside the BQL. */
++    /* This runs inside the BQL. */
 +
-+    /**
-+     * @load_state_buffer
-+     *
-+     * Load device state buffer provided to qemu_loadvm_load_state_buffer().
-+     *
-+     * @opaque: data pointer passed to register_savevm_live()
-+     * @buf: the data buffer to load
-+     * @len: the data length in buffer
-+     * @errp: pointer to Error*, to store an error if it happens.
-+     *
-+     * Returns zero to indicate success and negative for error
-+     */
-+    int (*load_state_buffer)(void *opaque, char *buf, size_t len,
-+                             Error **errp);
+     /**
+      * @load_state
+      *
+@@ -246,6 +248,8 @@ typedef struct SaveVMHandlers {
+     int (*load_state_buffer)(void *opaque, char *buf, size_t len,
+                              Error **errp);
+ 
++    /* The following handlers run inside the BQL. */
 +
      /**
       * @load_setup
       *
-diff --git a/migration/savevm.c b/migration/savevm.c
-index a254c38edcca..1f58a2fa54ae 100644
---- a/migration/savevm.c
-+++ b/migration/savevm.c
-@@ -3085,6 +3085,29 @@ int qemu_loadvm_approve_switchover(void)
-     return migrate_send_rp_switchover_ack(mis);
- }
+@@ -272,6 +276,9 @@ typedef struct SaveVMHandlers {
+      */
+     int (*load_cleanup)(void *opaque);
  
-+int qemu_loadvm_load_state_buffer(const char *idstr, uint32_t instance_id,
-+                                  char *buf, size_t len, Error **errp)
-+{
-+    SaveStateEntry *se;
 +
-+    se = find_se(idstr, instance_id);
-+    if (!se) {
-+        error_setg(errp,
-+                   "Unknown idstr %s or instance id %u for load state buffer",
-+                   idstr, instance_id);
-+        return -1;
-+    }
++    /* This runs outside the BQL. */
 +
-+    if (!se->ops || !se->ops->load_state_buffer) {
-+        error_setg(errp,
-+                   "idstr %s / instance %u has no load state buffer operation",
-+                   idstr, instance_id);
-+        return -1;
-+    }
-+
-+    return se->ops->load_state_buffer(se->opaque, buf, len, errp);
-+}
-+
- bool save_snapshot(const char *name, bool overwrite, const char *vmstate,
-                   bool has_devices, strList *devices, Error **errp)
- {
-diff --git a/migration/savevm.h b/migration/savevm.h
-index 4d402723bc3c..b5a4f8c8b440 100644
---- a/migration/savevm.h
-+++ b/migration/savevm.h
-@@ -71,4 +71,7 @@ int qemu_loadvm_approve_switchover(void);
- int qemu_savevm_state_complete_precopy_non_iterable(QEMUFile *f,
-         bool in_postcopy, bool inactivate_disks);
+     /**
+      * @resume_prepare
+      *
+@@ -284,6 +291,8 @@ typedef struct SaveVMHandlers {
+      */
+     int (*resume_prepare)(MigrationState *s, void *opaque);
  
-+int qemu_loadvm_load_state_buffer(const char *idstr, uint32_t instance_id,
-+                                  char *buf, size_t len, Error **errp);
++    /* The following handlers run inside the BQL. */
 +
- #endif
+     /**
+      * @switchover_ack_needed
+      *
 
