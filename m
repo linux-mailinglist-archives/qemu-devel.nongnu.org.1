@@ -2,148 +2,146 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9E419D0C21
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Nov 2024 10:46:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 41ADB9D0DC1
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Nov 2024 11:07:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tCyKs-0007SA-Tg; Mon, 18 Nov 2024 04:46:24 -0500
+	id 1tCyeK-0002o7-4P; Mon, 18 Nov 2024 05:06:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1tCyK8-0007Mr-49
- for qemu-devel@nongnu.org; Mon, 18 Nov 2024 04:45:37 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <junjie.mao@hotmail.com>)
+ id 1tCye6-0002jT-1O
+ for qemu-devel@nongnu.org; Mon, 18 Nov 2024 05:06:14 -0500
+Received: from mail-me3aus01olkn2054.outbound.protection.outlook.com
+ ([40.92.63.54] helo=AUS01-ME3-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1tCyK4-0004Rc-SZ
- for qemu-devel@nongnu.org; Mon, 18 Nov 2024 04:45:35 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1731923130;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=cwJ8uSoV1kHu/a8TCuNxsNaBsx3fE7CkO6alNVgX5X0=;
- b=HzkCECuiY8a4y14RafilFUAZ6NRxmbjzzWLqJfqP29IR4gKf/Hudg8ktYiFrQfvYUPL9i5
- UwffyLvsWP3NXdcksB/cWmiEohR499DJgsDOj5yM4yBr70Jk0ETEzkC0JZooX7C/0lGMvx
- 4Vs1J0JPgA1YcSdNklH5eMJ6eLYloR4=
-Received: from mail-lj1-f198.google.com (mail-lj1-f198.google.com
- [209.85.208.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-199-2oDxCKcoPYimdPJIdNCPyw-1; Mon, 18 Nov 2024 04:45:29 -0500
-X-MC-Unique: 2oDxCKcoPYimdPJIdNCPyw-1
-X-Mimecast-MFC-AGG-ID: 2oDxCKcoPYimdPJIdNCPyw
-Received: by mail-lj1-f198.google.com with SMTP id
- 38308e7fff4ca-2fcda6c1906so21587991fa.1
- for <qemu-devel@nongnu.org>; Mon, 18 Nov 2024 01:45:28 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731923127; x=1732527927;
- h=content-transfer-encoding:in-reply-to:organization:autocrypt
- :content-language:from:references:cc:to:subject:user-agent
- :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
- :date:message-id:reply-to;
- bh=cwJ8uSoV1kHu/a8TCuNxsNaBsx3fE7CkO6alNVgX5X0=;
- b=J7HrObm8NNX2HctxOlR8z4ATyYXOL1TklLwyZA2Jyy9cgU7+hK0WhX62k+JXhXh2hw
- ZzjYN99bf/MGUnmXAMTGeaL3QEN1XnTnp6jyX9xrhJYbHS1ePS61ODI3uRpYcYqNsm4u
- pvtMRlaSfmA4Mb5gWUBLHU6Qwx/MLTBaTi8gUMj4WzoXtjnJ4q2y/spSOugFlQelCDCi
- s/uJt1Yd3DIEQIOgkMRc1XW1uEop6UjXoY+LeKn4IxXABuHsHHdZzwlSODicW1i/1DEi
- +Bq56+uVkOHJjoMVumVQZw/FzN3XX9y+geOhwN/eCOCTm6eZsHlz59El1YzmDazTkbUP
- jH5A==
-X-Forwarded-Encrypted: i=1;
- AJvYcCV+4lC8zdfMqjkf994pN4KSsbbGL7EEQHNKuy8bPooyUfFNmNczNmRu8vLLQGcoOgmdhaSn21bWgMp9@nongnu.org
-X-Gm-Message-State: AOJu0Yw5bgFu+89rdXaCcIbPndZqrbCGw2G0iq63UmcbLdkExNbIYOY5
- KyGyx/bejkqMYcN55YxgzYtyfVjIgMbbZ0+QncDtQSxQIpUipLcScbcMxKPjkM63lEcOmlWyBt1
- oD4bBQwviuISYX69n47jbQ4m5p8B56ZJ9AIwUiUk+sbyc1XItpMrt
-X-Received: by 2002:ac2:4e14:0:b0:539:e58a:9704 with SMTP id
- 2adb3069b0e04-53dab2a9517mr4701760e87.33.1731923127379; 
- Mon, 18 Nov 2024 01:45:27 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEA8FS7rY5tWZSAezskr6Y4KTNRqCPcgI2GRmvTYZlxH68ufQY2j7mWrLw82jHfzpD1wa7R7Q==
-X-Received: by 2002:ac2:4e14:0:b0:539:e58a:9704 with SMTP id
- 2adb3069b0e04-53dab2a9517mr4701734e87.33.1731923126973; 
- Mon, 18 Nov 2024 01:45:26 -0800 (PST)
-Received: from ?IPV6:2a09:80c0:192:0:5dac:bf3d:c41:c3e7?
- ([2a09:80c0:192:0:5dac:bf3d:c41:c3e7])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38243e09ff9sm3702928f8f.68.2024.11.18.01.45.25
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 18 Nov 2024 01:45:26 -0800 (PST)
-Message-ID: <439e280e-bc82-4a79-b325-d18fcf65feec@redhat.com>
-Date: Mon, 18 Nov 2024 10:45:25 +0100
+ (Exim 4.90_1) (envelope-from <junjie.mao@hotmail.com>)
+ id 1tCye4-0007Is-Fu
+ for qemu-devel@nongnu.org; Mon, 18 Nov 2024 05:06:13 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=PaesoDyLXSpGE4la4MaekYk9/fNgr+3MdN9muf8lNu9IOqnFaThVY/T5jS4loqNKvy+nEakuqxpdP+BO2PqihJ1Vb3wkcSS5ElKpe7ybRicC1f4Lh/sWi+FD9qYoU/ul1EVBCQA2Ne0STfna5IRa9fR0xqYEgs9gGsq3kQqijzOnm/2rk9ssu5r1ieJfUM/jxRDnN3W4l9ZF09eI4oOWgl35HJ5w+hQm6FIZCKrqqSZXEL8IubtGwljYhXhRN1l/y8H6O7wMTcw6WYbP3klj6SOzaRwq6n192bX86xchvI9quCimhXcjFlWtf1o8MGCrYTIgc4lJ3/KLqTgoMZyCkw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=3HkmAmuH0VeXaaJyr4+HqZRlLYWqxwu85my8j4nAg80=;
+ b=HbbLMQCfOp33nDla/UKSUbjmIoVGZ1GJdevOR4VDU5IE7chOCfI9kqW/fzDwrOVqJNyijDPNwSEJGGKXsYrMREvk+q+jrejzZRtNSx5D/NcMRjiWlqIPThJBrz2SxiBoHywEV+sI2UJBR1Ug68qMtedoDGoKflNl/w+9Z72ZuqClxNyybmixGNd+u1XqAYeDzmHftPkihLQtu4prgZOiKe+RhhwFsaDLNIbWfDEmcwrA/gXeD6RWeXpf8AoM251sFx61ApcUFLgqEwzq/A9J5XJqR7RiQO+IIh64kR+zpGhoWbdvOJgxbwgolUO1HtC8ws5navdu31hIQPVlPh01ow==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hotmail.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=3HkmAmuH0VeXaaJyr4+HqZRlLYWqxwu85my8j4nAg80=;
+ b=iw6mZEehSlxLBKSM0ul5mjE0UURP50Pc+ZPDs05jZtOe1l0xWL0mAiZ5Xs1J3GmG5EYzFFgxXKk0AuE7a/q4eJf5h8PE3qZHssHbTBtbj9mjmhQuVDk+IIMp02BNceMrkhVOf4pKj8ZfW14H9OSScnOdjcZOrSvsDMuR2k/bBQJ1AoeiSQbRNMhrK/x1SbGNghZFluaVK2HJXi65OMNliBAK/vnkmQBHdU0tJVMBG7rzZT1qPGNBmpvFL/bRl8DbOxJSoSXW5z4nQ9DIBpzFQ+ycCd5X5BIjwajWcu9zsWac35FF6AeIB9E1b9inuCe5LeVi6XzxyUP0g9M1uYFO8Q==
+Received: from SY0P300MB1026.AUSP300.PROD.OUTLOOK.COM (2603:10c6:10:282::22)
+ by SY7P300MB1515.AUSP300.PROD.OUTLOOK.COM (2603:10c6:10:2c9::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8158.23; Mon, 18 Nov
+ 2024 10:01:00 +0000
+Received: from SY0P300MB1026.AUSP300.PROD.OUTLOOK.COM
+ ([fe80::aea3:2365:f9e8:5bd]) by SY0P300MB1026.AUSP300.PROD.OUTLOOK.COM
+ ([fe80::aea3:2365:f9e8:5bd%4]) with mapi id 15.20.8158.023; Mon, 18 Nov 2024
+ 10:01:00 +0000
+References: <SY0P300MB102644C4AC34A3AAD75DC4D5955C2@SY0P300MB1026.AUSP300.PROD.OUTLOOK.COM>
+ <87seroubaw.fsf@draig.linaro.org>
+User-agent: mu4e 1.6.10; emacs 27.1
+From: Junjie Mao <junjie.mao@hotmail.com>
+To: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+Cc: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>, Paolo Bonzini
+ <pbonzini@redhat.com>, qemu-devel@nongnu.org, Peter Maydell
+ <peter.maydell@linaro.org>
+Subject: Re: [PATCH] rust/pl011: Fix range checks for device ID accesses
+Date: Mon, 18 Nov 2024 17:54:29 +0800
+In-reply-to: <87seroubaw.fsf@draig.linaro.org>
+Message-ID: <SY0P300MB10265E91E369AB15B611018D95272@SY0P300MB1026.AUSP300.PROD.OUTLOOK.COM>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-ClientProxiedBy: SG2PR02CA0134.apcprd02.prod.outlook.com
+ (2603:1096:4:188::14) To SY0P300MB1026.AUSP300.PROD.OUTLOOK.COM
+ (2603:10c6:10:282::22)
+X-Microsoft-Original-Message-ID: <87bjyc3lpr.fsf@hotmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/7] accel/kvm: Report the loss of a large memory page
-To: William Roche <william.roche@oracle.com>, kvm@vger.kernel.org,
- qemu-devel@nongnu.org, qemu-arm@nongnu.org
-Cc: peterx@redhat.com, pbonzini@redhat.com, richard.henderson@linaro.org,
- philmd@linaro.org, peter.maydell@linaro.org, mtosatti@redhat.com,
- imammedo@redhat.com, eduardo@habkost.net, marcel.apfelbaum@gmail.com,
- wangyanan55@huawei.com, zhao1.liu@intel.com, joao.m.martins@oracle.com
-References: <e2ac7ad0-aa26-4af2-8bb3-825cba4ffca0@redhat.com>
- <20241107102126.2183152-1-william.roche@oracle.com>
- <20241107102126.2183152-4-william.roche@oracle.com>
- <f5b43126-acbd-4e3f-8ec4-3a5c20957445@redhat.com>
- <08e03987-3c9a-49b2-adf5-fd40e7ede0c0@oracle.com>
- <e5d6bae8-a3bd-4225-b38f-65de6b1a2b54@redhat.com>
- <386af93d-5a61-4a90-9af0-1f33fa04b0bd@oracle.com>
-From: David Hildenbrand <david@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- WNyWQQ==
-Organization: Red Hat
-In-Reply-To: <386af93d-5a61-4a90-9af0-1f33fa04b0bd@oracle.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=david@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SY0P300MB1026:EE_|SY7P300MB1515:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7a4101c3-132b-48dd-ff81-08dd07b7e74c
+X-Microsoft-Antispam: BCL:0;
+ ARA:14566002|8060799006|7092599003|19110799003|15080799006|5072599009|6090799003|461199028|440099028|4302099013|3412199025|1602099012|10035399004;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?ZXVmcFZLV3lqMHJZODA0OUVxV1p3TmVxQkVjbVp3VHdUamJLUnBJYjYwMDhw?=
+ =?utf-8?B?eEw5OHlVZW1MUzA2SXljd3VoVWtrRjk0eHlBTTlPSzk0NWQ4RE10VDhSWEs0?=
+ =?utf-8?B?QzF4ZzZubzRWaVZyTEhqQnJBajNnYnpFa0ZtWWM3RkJFcEFYdDhoUXVyS2Nl?=
+ =?utf-8?B?Vll0OVp0SGJXa2dTaElqOFplQ255NXMyVitSa002YWlxaUw2azJDU1lMZ1d2?=
+ =?utf-8?B?c2pFU3Z1NmoxazhZOXJVVjNUanZ3WTAwbHVOSEpTMEZUMnMxWVhRakdBTkJF?=
+ =?utf-8?B?dHZ1RFFmN0N4WENBVzU2L3hjbHJLbDdOMXBrYUNTMTJMa1M4a3FZZnp4R1Bv?=
+ =?utf-8?B?aDZTbDhXWnB3eWJDdUZSMEJBY2s4aitZaDQvbU1DbmxGbFRRSlp1TW56WFB4?=
+ =?utf-8?B?MDZjYzAzQVN4bkx6R0dOWm5XUmVoSzREQVV0VXg3UjIxVnJ1bVdtNWxxNkZE?=
+ =?utf-8?B?Q3FDWG92cDZEQU5BcU1uaWF6bnZnVmtIR3gycHRrMWNyOENBOXZHWGhYV1hu?=
+ =?utf-8?B?dFNnZGVDQndRNHRBcFVZaU1FZkg1SUZtYkNnTVJ3ZW5oZ2V3a0NRaW14KzVQ?=
+ =?utf-8?B?cWxJRWxKbWVaV0pnclViOUZwNkxsLzZrMUd1WFZwYU1WSW5LSUh1czhCUkRO?=
+ =?utf-8?B?QVVLVDZDTCt0c2VTeXdQNFptMjJWZHBVU0JBWlpXZlBtUUVDVmZ2WVV1U1lx?=
+ =?utf-8?B?d29KbWhFckpaSDBId1BjMGtSd21pTEdsbEtoTDdMeXhBeWl5ZjZ0RFhvcEZ2?=
+ =?utf-8?B?eXp1VzVVS3h0cXBoeHhmakthT3ptNjVtR2ZIdmRlaER1dVE2ZmRPbWxCK05n?=
+ =?utf-8?B?dXZ2akZZMDBGWi8waWJyb2RmQTg2ZUI0cGhycEU4bTNySUxkeDBRV2hyT0tQ?=
+ =?utf-8?B?UWwycFBITldxeGZiZTRXd2VYY1JIN0ZHN0gzYlF4Mi8rdnIxZ2NjeGxZaVZa?=
+ =?utf-8?B?THJKWkt2YUhaamFETTlZWksreDAvRmNobDZDWmRKTTBHa2lrL09hdnhRcEpV?=
+ =?utf-8?B?d0k1bERKZEs5cVBpL3k1aEwreldmaEhabEZRL3p0SHExK2VGOVo1YUtZclBl?=
+ =?utf-8?B?eHEvN0tmYjUyem00LytnWGpUVDVSb1RUUVBtMTdvL3dFbkNnR0hqYzhMUkNN?=
+ =?utf-8?B?K0JCdXZQazNkZ2tMR282OGYxQUxzVHh5UjlibHRoOFhkVzZkQjdueU9uRG9T?=
+ =?utf-8?B?MzZlZkR1dzV3RWMveEI4enFKUVZJK2pUU3V1VXJXRk1JUWNEMDcyL1J1VmtH?=
+ =?utf-8?B?NnB0aVMxdGY0SHZOdlNHZ2gzYTJwQ2tWYlppYU4xV0Y3NEVQS0tEMXI0MnJy?=
+ =?utf-8?B?cjAvUlg5VEoyazlGZ3lFMDB3NnpObW1JYUR1dXhZZmU1WXBhVzBhWm82Wjc0?=
+ =?utf-8?B?YVYvRFJzL1BibEhLYkVIWURMRWFNZFJLT2dVK2JoV2YwQVFkSGJON2pHS2cv?=
+ =?utf-8?B?NTMvUEhNc0dUMWltQ1gyM0dKMkVjRHhWQnJGYktxVTZzd2pYRzlEcTZzRzBu?=
+ =?utf-8?B?eWRKYWVBRkdjTlFlbW1EUXFXMDRERU9IWWpUeWVwSFg5U3RHZ2JvbU5mWDRF?=
+ =?utf-8?B?Q09LaGZZSlhuZ2JDa0Y5MzlGcHh5UW8rT04yTFVpVUMxVzFNbW9jZE5oc05k?=
+ =?utf-8?Q?f/oDVLCFj+YH47h/mwbfJx3esoEI1YKCa0iLbEP9JIr4=3D?=
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?RnYwTExrd0ZsRSttL0h3am9SZVk1b3lyRUhwWVQ3aXArRU1xbzExRndScGNn?=
+ =?utf-8?B?UEh2Nnp2NmlrbG01WEs1bS9rZVp5MFFPZXhKWDBNMHlJUlV6WHVNWUlzWUJ3?=
+ =?utf-8?B?YUp2NFZ0ZURRTWVaVTkyQVlsSEdmVmJyVGY1UVM4QUh6R21BdnQrUnVPWWVi?=
+ =?utf-8?B?cGUrR2VjTElxS0xDV011Umdnc20yQm9hOUp0cGdvNFM1OU5EMHhsT21SQlBk?=
+ =?utf-8?B?ZW1lZFJ5TzlZanZucUZjRWVicDBGdEV1eG5lODBGYW81OEdEUWRwMVdBSW5I?=
+ =?utf-8?B?Z2hnYmQ5aHBLZkdXNVNPMzBBTVdtbjhGYUJ5MHhvcEFOZ3pjakNSbG1FaVkz?=
+ =?utf-8?B?K1lNclVHeEFVUXErMGx3MlBHcGNhTmVJVmJWa0hPanozNTNKVlNHSUFiSFdQ?=
+ =?utf-8?B?RDN5OS9Qbkk4MHBVaFhtVTNJOVZkVnc4RThPbU85aUZaS1gxWmNLck8zYncy?=
+ =?utf-8?B?VllBTFA4cGI2YUZQMXZaTjFaa3Aza3phazVJS2JOMWtFaGpuWWo4QlhXN1pU?=
+ =?utf-8?B?MDlNTkFpQUlGTjNFeUcySVNMMTJCSDkrWFJJcnplN1N1TGVUeUd3MjN1L0xy?=
+ =?utf-8?B?eU9yZjVDSWtNYnRwaFpQM0FnMld5cWM5ajVtaHV4VzV3b0wzZ2k4L0xZOXNs?=
+ =?utf-8?B?OHllbjl3Zms5OWxkdkxwSTJqOHhWL0pWYjBFS0VrY0hjbnN3eGhLSHlsSWpM?=
+ =?utf-8?B?RVFacEFxTVRISE12aFNnakd5Sm9ya29xOWRacGJzYVgwRVVJZE5XQ3FUT2ZY?=
+ =?utf-8?B?N0tCbk16WmhuS0xVdE5YUnRRRGZvNjFBZ1RxaTM5K3FEdENRc3NHd0hYVDZm?=
+ =?utf-8?B?UVhVWjFVNlJjTSttSkEvWjd1TkkyY0JubkFUWWwzM2NQNkhtNkxwOWFscmVK?=
+ =?utf-8?B?OTR5dFJWUUVOczM0eWJNZ2J4bkdLRFpQdjBxYjh4Q2RMYkM5Y0FxZEo1YzYr?=
+ =?utf-8?B?dm1iVVhIM2pydXFkeXozdFhOUUE2ank1eDVrN1pjemZpQTA5QjZHNENRWVhU?=
+ =?utf-8?B?ZGZHT0VPRGpVemsxUFRQdUpnSGt0bXBVVnNIaFIrbUowZlNpTXA0SG81ZGZn?=
+ =?utf-8?B?SnVlNzc5VWs5MHlSa1hXSk1acVBLSVI0OGgxNnE5QVd6UGtSUTU4VUpvSU5x?=
+ =?utf-8?B?KzcyN3BTeUJ5c0JWZ2NiR0FZQmMrZ1A5Q1JxcHpjUHFBd3ZvTDdvTEVDYU5q?=
+ =?utf-8?B?aHV3Q0ZuZW9XK0syUnloc04ycGk1Mjh3ZE5HUGI5bC9zdFpVTDM4WmtmNEFL?=
+ =?utf-8?B?WUpyanNmUm1zRGQySEdnTmovUDRHZy94a0pIeCtLUUVuTWU3MEQ2emxUbTFV?=
+ =?utf-8?B?bm9CR2lpWFpMaUJNU0REOS9WSGhRdmNGYWdMY0htUHBLaVp6UEx4KzI0akRa?=
+ =?utf-8?B?N05FRHJuMjJZMUF5STBMM2F5UVlmbHp0M2F1UCtoYXdJWEhIa3dZc1dHNEVU?=
+ =?utf-8?B?d2dzQS9Yc202a2FyNHJFOWs5eGdTNEhhK29hS3RGRVVncW5CUnpuTGRGTkZD?=
+ =?utf-8?B?WERzdURqdkFuYkxMc3lGMSt1elpkTW50eWxDcFJEM2cvRnJwWXhhQjhCTFAv?=
+ =?utf-8?B?cUpod2lCTE43bVZBaUJhdWw4NjRHT2tteFA4MThTdHhlQkp5VnhVMnUzcGlF?=
+ =?utf-8?Q?+CFg8Qh2SZHcCfYd1LZ9WKNs7neqd8njCVc/q6MtJsSc=3D?=
+X-OriginatorOrg: sct-15-20-7719-20-msonline-outlook-448bf.templateTenant
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7a4101c3-132b-48dd-ff81-08dd07b7e74c
+X-MS-Exchange-CrossTenant-AuthSource: SY0P300MB1026.AUSP300.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Nov 2024 10:01:00.0846 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SY7P300MB1515
+Received-SPF: pass client-ip=40.92.63.54; envelope-from=junjie.mao@hotmail.com;
+ helo=AUS01-ME3-obe.outbound.protection.outlook.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.141,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -159,117 +157,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
->> Hm, I think we should definitely be including the size in the existing
->> one. That code was written without huge pages in mind.
-> 
-> Yes we can do that, and get the page size at this level to pass as a
-> 'page_sise' argument to kvm_hwpoison_page_add().
-> 
-> It would make the message longer as we will have the extra information
-> about the large page on all messages when an error impacts a large page.
-> We could change the messages only when we are dealing with a large page,
-> so that the standard (4k) case isn't modified.
 
-Right. And likely we should call it "huge page" instead, which is the 
-Linux term for anything larger than a single page.
+Alex Benn=C3=A9e <alex.bennee@linaro.org> writes:
 
-[...]
-
+> Junjie Mao <junjie.mao@hotmail.com> writes:
+>
+>> The peripheral and PrimeCell identification registers of pl011 are locat=
+ed at
+>> offset 0xFE0 - 0xFFC. To check if a read falls to such registers, the C
+>> implementation checks if the offset-shifted-by-2 (not the offset itself)=
+ is in
+>> the range 0x3F8 - 0x3FF.
 >>
->> With the "large page" hint you can highlight that this is special.
-> 
-> Right, we can do it that way. It also gives the impression that we
-> somehow inject errors on a large range of the memory. Which is not the
-> case. I'll send a proposal with a different formulation, so that you can
-> choose.
-> 
-
-Make sense.
-
-> 
-> 
->> On a related note ...I think we have a problem. Assume we got a SIGBUS
->> on a huge page (e.g., somewhere in a 1 GiB page).
+>> Use the same check in the Rust implementation.
 >>
->> We will call kvm_mce_inject(cpu, paddr, code) /
->> acpi_ghes_record_errors(ACPI_HEST_SRC_ID_SEA, paddr)
+>> This fixes the timeout of the following avocado tests:
 >>
->> But where is the size information? :// Won't the VM simply assume that
->> there was a MCE on a single 4k page starting at paddr?
-> 
-> This is absolutely right !
-> It's exactly what happens: The VM kernel received the information and
-> considers that only the impacted page has to be poisoned.
- > > That's also the reason why Qemu repeats the error injections every time
-> the poisoned large page is accessed (for all other touched 4k pages
-> located on this "memory hole").
-
-:/
-
-So we always get from Linux the full 1Gig range and always report the 
-first 4k page essentially, on any such access, right?
-
-
-BTW, should we handle duplicates in our poison list?
-
-> 
+>>   * tests/avocado/boot_linux_console.py:BootLinuxConsole.test_arm_virt
+>>   * tests/avocado/replay_kernel.py:ReplayKernelNormal.test_arm_virt
+>>   * tests/avocado/replay_kernel.py:ReplayKernelNormal.test_arm_vexpressa=
+9
 >>
->> I'm not sure if we can inject ranges, or if we would have to issue one
->> MCE per page ... hm, what's your take on this?
-> 
-> I don't know of any size information about a memory error reported by
-> the hardware. The kernel doesn't seem to expect any such information.
-> It explains why there is no impact/blast size information provided when
-> an error is relayed to the VM.
-> 
-> We could take the "memory hole" size into account in Qemu, but repeating
-> error injections is not going to help a lot either: We'd need to give
-> the VM some time to deal with an error injection before producing a new
-> error for the next page etc... in the case (x86 only) where an
+>> Reported-by: Peter Maydell <peter.maydell@linaro.org>
+>> Signed-off-by: Junjie Mao <junjie.mao@hotmail.com>
+>
+> This certainly fixes the avocado failures.
+>
+> Tested-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+> Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+>
 
-I had the same thoughts.
+Thanks for reviewing and testing, Alex!
 
-> asynchronous error is relayed with BUS_MCEERR_AO, we would also have to
-> repeat the error for all the 4k pages located on the lost large page too.
-> 
-> We can see that the Linux kernel has some mechanisms to deal with a
-> seldom 4k page loss, but a larger blast is very likely to crash the VM
-> (which is fine).
+Meanwhile, Manos has submitted another fix [1] which also replaces
+arrays of constant register values with more explicit register
+getters. His change may supercedes mine.
 
-Right, and that will inevitably happen when we get a MVE on a 1GiG 
-hugetlb page, correct? The whole thing will be inaccessible.
+[1] https://lore.kernel.org/qemu-devel/20241117161039.3758840-1-manos.pitsi=
+dianakis@linaro.org
 
-> And as a significant part of the memory is no longer
-> accessible, dealing with the error itself can be impaired and we
-> increase the risk of loosing data, even though most of the memory on the
-> large page could still be used.
-> 
-> Now if we can recover the 'still valid' memory of the impacted large
-> page, we can significantly reduce this blast and give a much better
-> chance to the VM to survive the incident or crash more gracefully.
-
-Right. That cannot be sorted out in user space alone, unfortunately.
-
-> 
-> I've looked at the project you indicated me, which is not ready to be
-> adopted:
-> https://lore.kernel.org/linux-mm/20240924043924.3562257-2-jiaqiyan@google.com/T/
-> 
-
-Yes, that goes into a better direction, though.
-
-> But we see that, this large page enhancement is needed, sometimes just
-> to give a chance to the VM to survive a little longer before being
-> terminated or moved.
-> Injecting multiple MCEs or ACPI error records doesn't help, according to me.
-
-I suspect that in most cases, when we get an MCE on a 1Gig page in the 
-hypervisor, our running Linux guest will soon crash, because it really 
-lost 1 Gig of contiguous memory. :(
-
--- 
-Cheers,
-
-David / dhildenb
-
+--
+Best Regards
+Junjie Mao
 
