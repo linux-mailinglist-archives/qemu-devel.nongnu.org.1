@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2827B9D1A27
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Nov 2024 22:11:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 09EA09D1A2F
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Nov 2024 22:12:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tD90I-0003AA-G0; Mon, 18 Nov 2024 16:09:50 -0500
+	id 1tD90G-00033y-3A; Mon, 18 Nov 2024 16:09:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tD8zR-0001va-N7; Mon, 18 Nov 2024 16:08:58 -0500
+ id 1tD8zT-0001w0-Ao; Mon, 18 Nov 2024 16:08:59 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tD8zP-0005Ow-PR; Mon, 18 Nov 2024 16:08:57 -0500
+ id 1tD8zR-0005PS-Cz; Mon, 18 Nov 2024 16:08:58 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id B6D99A560F;
+ by isrv.corpit.ru (Postfix) with ESMTP id C44B7A5610;
  Tue, 19 Nov 2024 00:08:31 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 504EC173628;
+ by tsrv.corpit.ru (Postfix) with SMTP id 5D939173629;
  Tue, 19 Nov 2024 00:08:35 +0300 (MSK)
-Received: (nullmailer pid 2366121 invoked by uid 1000);
+Received: (nullmailer pid 2366125 invoked by uid 1000);
  Mon, 18 Nov 2024 21:08:34 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+Cc: qemu-stable@nongnu.org, Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.0.4 66/71] tcg: Allow top bit of SIMD_DATA_BITS to be set
- in simd_desc()
-Date: Tue, 19 Nov 2024 00:08:23 +0300
-Message-Id: <20241118210834.2366046-9-mjt@tls.msk.ru>
+Subject: [Stable-9.0.4 67/71] target/i386: fix hang when using slow path for
+ ptw_setl
+Date: Tue, 19 Nov 2024 00:08:24 +0300
+Message-Id: <20241118210834.2366046-10-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.0.4-20241118223714@cover.tls.msk.ru>
 References: <qemu-stable-9.0.4-20241118223714@cover.tls.msk.ru>
@@ -61,67 +61,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Peter Maydell <peter.maydell@linaro.org>
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
-In simd_desc() we create a SIMD descriptor from various pieces
-including an arbitrary data value from the caller.  We try to
-sanitize these to make sure everything will fit: the 'data' value
-needs to fit in the SIMD_DATA_BITS (== 22) sized field.  However we
-do that sanitizing with:
-   tcg_debug_assert(data == sextract32(data, 0, SIMD_DATA_BITS));
+When instrumenting memory accesses for plugin, we force memory accesses
+to use the slow path for mmu [1]. This create a situation where we end
+up calling ptw_setl_slow. This was fixed recently in [2] but the issue
+still could appear out of plugins use case.
 
-This works for the case where the data is supposed to be considered
-as a signed integer (which can then be returned via simd_data()).
-However, some callers want to treat the data value as unsigned.
+Since this function gets called during a cpu_exec, start_exclusive then
+hangs. This exclusive section was introduced initially for security
+reasons [3].
 
-Specifically, for the Arm SVE operations, make_svemte_desc()
-assembles a data value as a collection of fields, and it needs to use
-all 22 bits.  Currently if MTE is enabled then its MTEDESC SIZEM1
-field may have the most significant bit set, and then it will trip
-this assertion.
+I suspect this code path was never triggered, because ptw_setl_slow
+would always be called transitively from cpu_exec, resulting in a hang.
 
-Loosen the assertion so that we only check that the data value will
-fit into the field in some way, either as a signed or as an unsigned
-value.  This means we will fail to detect some kinds of bug in the
-callers, but we won't spuriously assert for intentional use of the
-data field as unsigned.
+[1] https://gitlab.com/qemu-project/qemu/-/commit/6d03226b42247b68ab2f0b3663e0f624335a4055
+[2] https://gitlab.com/qemu-project/qemu/-/commit/115ade42d50144c15b74368d32dc734ea277d853
+[2] https://gitlab.com/qemu-project/qemu/-/commit/88442869cf709f885a9c09fad00b96f802d58ffe in 9.0.x series
+[3] https://gitlab.com/qemu-project/qemu/-/issues/279
 
-Cc: qemu-stable@nongnu.org
-Fixes: db432672dc50e ("tcg: Add generic vector expanders")
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2601
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Message-ID: <20241115172515.1229393-1-peter.maydell@linaro.org>
+Fixes: https://gitlab.com/qemu-project/qemu/-/issues/2566
+Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-ID: <20241025175857.2554252-2-pierrick.bouvier@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-(cherry picked from commit 8377e3fb854d126ba10e61cb6b60885af8443ad4)
+(cherry picked from commit 7ba055b49b74c4d2f4a338c5198485bdff373fb1)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+(Mjt: mention [2] in 9.0.x series)
 
-diff --git a/tcg/tcg-op-gvec.c b/tcg/tcg-op-gvec.c
-index 566fd6eef7..8117e4fb39 100644
---- a/tcg/tcg-op-gvec.c
-+++ b/tcg/tcg-op-gvec.c
-@@ -88,7 +88,20 @@ uint32_t simd_desc(uint32_t oprsz, uint32_t maxsz, int32_t data)
-     uint32_t desc = 0;
+diff --git a/target/i386/tcg/sysemu/excp_helper.c b/target/i386/tcg/sysemu/excp_helper.c
+index bdf7b0df42..44b1b2ded6 100644
+--- a/target/i386/tcg/sysemu/excp_helper.c
++++ b/target/i386/tcg/sysemu/excp_helper.c
+@@ -106,6 +106,10 @@ static bool ptw_setl_slow(const PTETranslate *in, uint32_t old, uint32_t new)
+ {
+     uint32_t cmp;
  
-     check_size_align(oprsz, maxsz, 0);
--    tcg_debug_assert(data == sextract32(data, 0, SIMD_DATA_BITS));
-+
-+    /*
-+     * We want to check that 'data' will fit into SIMD_DATA_BITS.
-+     * However, some callers want to treat the data as a signed
-+     * value (which they can later get back with simd_data())
-+     * and some want to treat it as an unsigned value.
-+     * So here we assert only that the data will fit into the
-+     * field in at least one way. This means that some invalid
-+     * values from the caller will not be detected, e.g. if the
-+     * caller wants to handle the value as a signed integer but
-+     * incorrectly passes us 1 << (SIMD_DATA_BITS - 1).
-+     */
-+    tcg_debug_assert(data == sextract32(data, 0, SIMD_DATA_BITS) ||
-+                     data == extract32(data, 0, SIMD_DATA_BITS));
++    CPUState *cpu = env_cpu(in->env);
++    /* We are in cpu_exec, and start_exclusive can't be called directly.*/
++    g_assert(cpu->running);
++    cpu_exec_end(cpu);
+     /* Does x86 really perform a rmw cycle on mmio for ptw? */
+     start_exclusive();
+     cmp = cpu_ldl_mmuidx_ra(in->env, in->gaddr, in->ptw_idx, 0);
+@@ -113,6 +117,7 @@ static bool ptw_setl_slow(const PTETranslate *in, uint32_t old, uint32_t new)
+         cpu_stl_mmuidx_ra(in->env, in->gaddr, new, in->ptw_idx, 0);
+     }
+     end_exclusive();
++    cpu_exec_start(cpu);
+     return cmp == old;
+ }
  
-     oprsz = (oprsz / 8) - 1;
-     maxsz = (maxsz / 8) - 1;
 -- 
 2.39.5
 
