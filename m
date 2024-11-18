@@ -2,109 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 461CA9D1784
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Nov 2024 19:01:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 65CFF9D17A2
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Nov 2024 19:08:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tD62l-00031H-MC; Mon, 18 Nov 2024 13:00:11 -0500
+	id 1tD69C-0004Z7-Gj; Mon, 18 Nov 2024 13:06:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1tD62i-000312-OF
- for qemu-devel@nongnu.org; Mon, 18 Nov 2024 13:00:09 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1tD697-0004YW-AF; Mon, 18 Nov 2024 13:06:45 -0500
+Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1tD62e-0007Pr-T4
- for qemu-devel@nongnu.org; Mon, 18 Nov 2024 13:00:07 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1731952803;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=YWAj8ZogZjR+IZnXH6mLyiZiLZQ6Ryb13oIqtQO94wI=;
- b=ajfv9mqT8kz0+fEZ1bFHDbi87Mn+lMWVvs0HJZ70paxJTc7zQWv0KILHm6tTLvp1oM4VWo
- RpfH6Sqi8VMiHuAZxgKwR57w8/iJyqWGaJqqi+xneAtfuH/pBMMcosuAAenYUMJBWijFGN
- KyGi5zKtraWMvweQzsHyRG0XybjTVrE=
-Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
- [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-690-wCto82HqOUKhgT3ebgczqQ-1; Mon, 18 Nov 2024 12:59:59 -0500
-X-MC-Unique: wCto82HqOUKhgT3ebgczqQ-1
-X-Mimecast-MFC-AGG-ID: wCto82HqOUKhgT3ebgczqQ
-Received: by mail-qv1-f70.google.com with SMTP id
- 6a1803df08f44-6d41a460386so917116d6.1
- for <qemu-devel@nongnu.org>; Mon, 18 Nov 2024 09:59:59 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731952799; x=1732557599;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:reply-to:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=YWAj8ZogZjR+IZnXH6mLyiZiLZQ6Ryb13oIqtQO94wI=;
- b=bmotO/2IIHKtrJgBeLwiOEo1YyOJ+5eU9lBAMTvAvIDajEOYr81+JWspM++iktUgUf
- //E0sZ7V+W7kdhopQVHWWwUdTcMv4oYcQkxlB7Pa99DltI6unkZcGJ2biEt1KHH4mWV6
- lBr5I2VHA6x3AJneQhKVaOhgByYf1oSpBIbO7UjLXaHHZ/UutwyXlNm3MpQk/dYwFzTW
- Y8fYFLswKLxIXlOJRssVYh/U9QuUnaHWm/VPEVQcnP5ThHUL7XOaQc4nmljMSk6chE0w
- ADx5N9lM+m9K8vtGIB2c7XdYUa7R4G/HzhhaaTzfSPKt095Hy9gB6PALdN6ZnjWF5BNW
- rYTg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUsnE6qrvxsc7e06x88cb7sqT9G59VLXXLwX6UKQVvOGZELqRioyACOuuZLyUcCRrP3d5JFP16MVXT3@nongnu.org
-X-Gm-Message-State: AOJu0YwELAJAPkiRjl5l44Aa+5ChujIxun5c4x/KC+MWC1d0I2LIEu5S
- u6T6XPWKv20aBqpMYQrBZSCuazjV1YvUUH35bUQR6gAu4OMP3ScI2rfWuXZphdCXdUG1ibP543F
- gbwBKXayW51T0oaoINN78ecAlBjrQuEmj/vLRNMlNjIsSuXfK8CuA
-X-Received: by 2002:a05:6214:20c3:b0:6d4:f8d:144e with SMTP id
- 6a1803df08f44-6d40f8d16d2mr181873046d6.36.1731952799306; 
- Mon, 18 Nov 2024 09:59:59 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEY0+Q4kTCmJn2w25wuCjW8UMMl554D2XIGOt84bi2Vg8fE9cVVoCsiIQ0Hoxk9HJe4EGqZNg==
-X-Received: by 2002:a05:6214:20c3:b0:6d4:f8d:144e with SMTP id
- 6a1803df08f44-6d40f8d16d2mr181872516d6.36.1731952798940; 
- Mon, 18 Nov 2024 09:59:58 -0800 (PST)
-Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874?
- ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
- by smtp.gmail.com with ESMTPSA id
- af79cd13be357-7b37a85cf6fsm11858985a.47.2024.11.18.09.59.55
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 18 Nov 2024 09:59:58 -0800 (PST)
-Message-ID: <e36a1c1c-c880-4c64-82f9-34d55a04bd00@redhat.com>
-Date: Mon, 18 Nov 2024 18:59:53 +0100
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1tD690-0008Q6-4H; Mon, 18 Nov 2024 13:06:41 -0500
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id 170DCA547F;
+ Mon, 18 Nov 2024 21:06:31 +0300 (MSK)
+Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with SMTP id 6651A173518;
+ Mon, 18 Nov 2024 21:06:34 +0300 (MSK)
+Received: (nullmailer pid 2302442 invoked by uid 1000);
+ Mon, 18 Nov 2024 18:06:34 -0000
+From: Michael Tokarev <mjt@tls.msk.ru>
+To: qemu-devel@nongnu.org
+Cc: qemu-stable@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.15 v2 00/39] Patch Round-up for stable 7.2.15,
+ freeze on 2024-11-18
+Date: Mon, 18 Nov 2024 21:06:20 +0300
+Message-Id: <qemu-stable-7.2.15-20241118210517@cover.tls.msk.ru>
+X-Mailer: git-send-email 2.39.5
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: nested-smmuv3 topic for QEMU/libvirt, Nov 2024
-Content-Language: en-US
-To: Nicolin Chen <nicolinc@nvidia.com>
-Cc: Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>,
- Mostafa Saleh <smostafa@google.com>,
- "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- Peter Maydell <peter.maydell@linaro.org>, Jason Gunthorpe <jgg@nvidia.com>,
- Jean-Philippe Brucker <jean-philippe@linaro.org>,
- Moritz Fischer <mdf@kernel.org>, Michael Shavit <mshavit@google.com>,
- Andrea Bolognani <abologna@redhat.com>, "Michael S. Tsirkin"
- <mst@redhat.com>, Peter Xu <peterx@redhat.com>,
- Zhangfei Gao <zhangfei.gao@linaro.org>, nathanc@nvidia.com,
- arighi@nvidia.com, ianm@nvidia.com, jan@nvidia.com, mochs@nvidia.com,
- Don Dutile <ddutile@redhat.com>, Zhenzhong Duan <zhenzhong.duan@intel.com>
-References: <ZyRUcGKKS6NbIV5O@Asurada-Nvidia>
- <1845a6b8-5214-4379-85f4-3d36b61059dd@redhat.com>
- <Zy0jiPItu8A3wNTL@Asurada-Nvidia>
-From: Eric Auger <eric.auger@redhat.com>
-In-Reply-To: <Zy0jiPItu8A3wNTL@Asurada-Nvidia>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124;
- envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.142,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -68
+X-Spam_score: -6.9
+X-Spam_bar: ------
+X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -117,145 +55,106 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Nicolin,
+The following patches are queued for QEMU stable v7.2.15:
 
-On 11/7/24 21:31, Nicolin Chen wrote:
-> Hi Eric,
->
-> On Thu, Nov 07, 2024 at 12:11:05PM +0100, Eric Auger wrote:
->> On 11/1/24 05:09, Nicolin Chen wrote:
->>> Hi,
->>>
->>> This is a continued discussion following previous month's:
->>> https://lore.kernel.org/qemu-devel/Zvr%2Fbf7KgLN1cjOl@Asurada-Nvidia/
->>>
->>> Kernel changes are getting closer to merge, as Jason's planning to
->>> take vIOMMU series and smmuv3_nesting series into the iommufd tree:
->>> https://lore.kernel.org/all/cover.1730313494.git.nicolinc@nvidia.com/
->>> https://lore.kernel.org/all/cover.1730313494.git.nicolinc@nvidia.com/
->>> https://lore.kernel.org/all/0-v4-9e99b76f3518+3a8-smmuv3_nesting_jgg@nvidia.com/
->>>
->>> So, I think it's probably a good time to align with each others and
->>> talk about kicking off some QEMU upstream work in the month ahead.
->>>
->>> @Shameer,
->>> Do you have some update on the pluggable smmuv3 module?
->>>
->>> Updates on my side:
->>> 1) I have kept uAPI updated to the latest version and verified too.
->>>    There should be some polishing changes depending on how the basic
->>>    nesting infrastructure would look like from Intel/Duan's work.
->>> 2) I got some help from NVIDIA folks for the libvirt task. And they
->>>    have done some drafting and are now verifying the PCI topology
->>>    with "iommu=none".
->>>
->>> Once the pluggable smmuv3 module is ready to test, we will make some
->>> change to libvirt for that and drop the auto-assigning patches from
->>> the VIRT code, so as to converge for a libvirt+QEMU test.
->>>
->>> FWIW, Robin requested a different solution for MSI mapping [1], v.s.
->>> the RMR one that we have been using since Eric's work. I drafted a
->>> few VFIO/IOMMUFD patches for that, yet paused for getting the vIOMMU
->>> series merged to this kernel cycle. I plan to continue in Nov/Dec.
->>> So, for the near term we will continue with the RMR solution, until
->>> we have something solid later.
->>>
->>> [1] https://lore.kernel.org/linux-iommu/ZrVN05VylFq8lK4q@Asurada-Nvidia/
->> At Red Hat we may find some cycles to resume working on the QEMU
->> integration. Please can you sketch some tasks we could carry out in
->> coordination with you and Shameer? Adding Don in the loop.
-> That is great!
->
-> So, given that Shameer is working on pluggable module part and we
-> have folks working on libvirt. I think the only big thing here is
-> the SMMUv3 series itself. Please refer to the changes in the link:
->  - cover-letter: Add HW accelerated nesting support for arm SMMUv3
->  - https://github.com/nicolinc/qemu/commits/wip/for_smmuv3_nesting-v4/
-Looking at your branch I see the following series (marked with cover-letter)
-*
+  https://gitlab.com/qemu-project/qemu/-/commits/staging-7.2
 
-  *
+Patch freeze is 2024-11-18 (today), and the release is planned for 2024-11-20:
 
-    cover-letter: Add RMR WAR for MSI mappings (based on former RMR flat
-    mapping and not related to *[PATCH RFCv1 0/7] vfio: Allow userspace
-    to specify the address for each MSI vector
-    <https://lore.kernel.org/kvm/cover.1731130093.git.nicolinc@nvidia.com/#r>
-    I guess)*
+  https://wiki.qemu.org/Planning/7.2
 
-  *
+Please respond here or CC qemu-stable@nongnu.org on any additional patches
+you think should (or shouldn't) be included in the release.
 
-    cover-letter: hw/arm/virt: Add multiple nested SMMUs (Nicolin ->
-    Shameer)
+The changes which are staging for inclusion, with the original commit hash
+from master branch, are given below the bottom line.
 
-  *
+Thanks!
 
-    cover-letter: Add HW accelerated nesting support for arm SMMUv3
-    (Nicolin)
+/mjt
 
-  *
+--------------------------------------
+01* d8d5ca40048b Fea.Wang:
+   softmmu/physmem.c: Keep transaction attribute in address_space_map()
+02* 8bded2e73e80 Fabiano Rosas:
+   target/ppc: Fix lxvx/stxvx facility check
+03* 6475155d5192 Fiona Ebner:
+   block/reqlist: allow adding overlapping requests
+04* 3e964275d65b Alexander Bulekov:
+   fuzz: disable leak-detection for oss-fuzz builds
+05* e6d8e5e6e366 Paolo Bonzini:
+   tracetool: avoid invalid escape in Python string
+06* a9ee641bd46f Philippe Mathieu-Daudé:
+   linux-user/flatload: Take mmap_lock in load_flt_binary()
+07* 2884596f5f38 Richard Henderson:
+   linux-user: Fix parse_elf_properties GNU0_MAGIC check
+08* 9472083e642b Stefano Garzarella:
+   scsi: fetch unit attention when creating the request
+09* 3db74afec3ca Alexandra Diupina:
+   hw/intc/arm_gicv3_cpuif: Add cast to match the documentation
+10* f27206ceedbe Marc-André Lureau:
+   hw/audio/hda: free timer on exit
+11* 5504a8126115 Peter Xu:
+   KVM: Dynamic sized kvm memslots array
+12* d9280ea31747 Stefan Berger:
+   tests: Wait for migration completion on destination QEMU to avoid failures
+13* 04bbc3ee52b3 Kevin Wolf:
+   raw-format: Fix error message for invalid offset/size
+14* a7cfd751fb26 Richard Henderson:
+   tcg: Reset data_gen_ptr correctly
+15* 987b63f24afe Peter Maydell:
+   target/i386: Avoid unreachable variable declaration in mmu_translate()
+16* b56617bbcb47 Alexander Graf:
+   target/i386: Walk NPT in guest real mode
+17* 8704132805cf Ilya Leoshkevich:
+   linux-user/ppc: Fix sigmask endianness issue in sigreturn
+18* 97f116f9c6fd Alex Bennée:
+   gitlab: make check-[dco|patch] a little more verbose
+19* e29bc931e169 Stefan Weil:
+   Fix calculation of minimum in colo_compare_tcp
+20* 75fe36b4e8a9 Bernhard Beschow:
+   net/tap-win32: Fix gcc 14 format truncation errors
+21* 1505b651fdbd Peter Maydell:
+   target/arm: Don't assert in regime_is_user() for E10 mmuidx values
+22* 5a60026cad4e Evgenii Prokopiev:
+   target/riscv/csr.c: Fix an access to VXSAT
+23* 929e4277c128 TANG Tiancheng:
+   target/riscv: Correct SXL return value for RV32 in RV64 QEMU
+24* a84be2baa9ec Sergey Makarov:
+   hw/intc: Don't clear pending bits on IRQ lowering
+25* f8c1f36a2e3d Rob Bradford:
+   target/riscv: Set vtype.vill on CPU reset
+26* 0678e9f29c23 Anup Patel:
+   hw/intc/riscv_aplic: Fix in_clrip[x] read emulation
+27* 2ae6cca1d338 Yong-Xuan Wang:
+   hw/intc/riscv_aplic: Check and update pending when write sourcecfg
+28* c128d39edeff Anton Blanchard:
+   target/riscv: Fix vcompress with rvv_ta_all_1s
+29* c9b8a13a8841 Ilya Leoshkevich:
+   target/ppc: Set ctx->opcode for decode_insn32()
+30* e6b2fa1b81ac Peter Maydell:
+   target/arm: Fix SVE SDOT/UDOT/USDOT (4-way, indexed)
+31* 9529aa6bb4d1 Klaus Jensen:
+   hw/nvme: fix handling of over-committed queues
+32* 042b4ebfd229 Christian Schoenebeck:
+   9pfs: fix crash on 'Treaddir' request
+33 8fa11a4df344 Alexander Graf:
+   target/i386: Fix legacy page table walk
+34 8491026a08b4 Helge Deller:
+   linux-user: Fix setreuid and setregid to use direct syscalls
+35 f27550804688 Richard Henderson:
+   target/arm: Drop user-only special case in sve_stN_r
+36 8377e3fb854d Peter Maydell:
+   tcg: Allow top bit of SIMD_DATA_BITS to be set in simd_desc()
+37 c3d7c18b0d61 Thomas Huth:
+   hw/misc/mos6522: Fix bad class definition of the MOS6522 device
+38 626b39006d2f Paolo Bonzini:
+   hw/audio/hda: fix memory leak on audio setup
+39 b2cc69997924 Guenter Roeck:
+   usb-hub: Fix handling port power control messages
 
-    cover-letter: Add VIOMMU infrastructure support (Nicolin)
-
-  *
-
-    cover-letter: intel_iommu: Enable stage-1 translation for
-    passthrough device (Zhenzhong)
-
-  *
-
-    cover-letter: intel_iommu: Enable stage-1 translation for emulated
-    device (Zhenzhong)
-
-The last one is covered by *[PATCH v5 00/20] intel_iommu: Enable stage-1
-translation for emulated device
-<https://lore.kernel.org/all/20241111083457.2090664-1-zhenzhong.duan@intel.com/#r>
-*
-
-*I see there is a reference to *"Enable stage-1 translation for
-passthrough device" series but has it been posted for review? Adding
-Zhenzhong in copy.
-
-**
-
-*Are there any posts upstream for the rest, besides Shameer's respin?
-*
-
-*
->
-> I expect the IOMMU_HWPT_ALLOC (backend APIs) will go with Intel's
-> series once their current "emulated devices" one gets merged. And
-> I think I can prepare IOMMU_VIOMMU_ALLOC patches for backend APIs
-> aligning with HWPT's.
-Can you point us to the actual series including this IOMMU_HWPT_ALLOC
-support? This would clarify which part you are going to work on next.
-
->
-> That being said, one thing I am not sure is how we should bridge
-> between these backend APIs and a virtual IOMMUs (vSMMU/intel). I
-> think it'd be better for you and Red Hat to provide some insight,
-> if calling the backend APIs directly from a viommu module isn't a
-> preferable way.
-can you clarify what you call backend API in that context?
->
-> We also need your comments on vSMMU module patches that are still
-> roughly a draft requiring a rework at some small details I think.
-> So, if your (and Don's) bandwidth allows, perhaps you could take
-> over the vSMMU patches? Otherwise, we can also share the task for
-> reworking.
-So we have started the multi smmu instantiation review and provided
-feedbacks.
-Which part can we work on then?
-
-Thanks
-
-Eric
->
-> Thanks!
-> Nicolin
->
-
+(commit(s) marked with * were in previous series and are not resent)
 
