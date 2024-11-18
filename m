@@ -2,85 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD8EE9D1A02
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Nov 2024 22:02:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC3D19D1A26
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Nov 2024 22:10:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tD8sE-0008Og-3M; Mon, 18 Nov 2024 16:01:30 -0500
+	id 1tD8zj-0001vO-TZ; Mon, 18 Nov 2024 16:09:21 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tD8s8-0008O0-4X
- for qemu-devel@nongnu.org; Mon, 18 Nov 2024 16:01:24 -0500
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tD8s5-0004YG-W0
- for qemu-devel@nongnu.org; Mon, 18 Nov 2024 16:01:23 -0500
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-43193678216so1488375e9.0
- for <qemu-devel@nongnu.org>; Mon, 18 Nov 2024 13:01:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1731963679; x=1732568479; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=Wg+MEQtWiOOkqZ/ig3DhuzJIeaFSbDL7WmQiMbcryuE=;
- b=fgfL5XJli6VvszeP59hIKw271dkJvh/e5Dph7AFEifelk2exj7LJINAdjLof2ix6+M
- 4golgy/41slKHfSAAqd5Ps0Y52Zcm2eDRxb8d/Yehj+mJlBST6JrouIF0AZxKd4LmMK7
- TNgZjyA76TW/ykwS1D+i0WEE1miTjzMR8a3ZsIv1VpJjLW1o7LHBIsQgi4SM9T2YdX/c
- WwPBDgQaZHg0aT+W6vQ8ROQ61g9Bgx6KuMDJipaXJpVDV27qTYs5Sqc7vWNK4tPzdkwB
- MhsB5L/RK3YD0E2jW8qxCGsUcDoNfB1c/m6V6/t6s+5F1QTvOZWe0mmrMP6Jnp7xc1SS
- TiFw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731963679; x=1732568479;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Wg+MEQtWiOOkqZ/ig3DhuzJIeaFSbDL7WmQiMbcryuE=;
- b=nPH+VD+h+CYgjC8WXZ6dZEdt5hpGLsH6J7Ji2YljwkATwpFiz/msKH2/yOnJaMhmqZ
- JNWV3uc2FTtEmLZ/0Yb7SbqH7UeghxunSHh9iEMBmgtzrsvGbu6fmpM6GiK7vHwzPKDY
- zeD87yITUzfHlHzUMZ8+ZPL9kDKAtt0mh0vVzP19Ga0OGrHgGxJOcyYqMiyoTxo/U/q4
- ljP2JhIVS1mGZoG2Iqx4QDKiADfm5FAZoj+L/t/8ava4yD97yAcf2DL4HFkAhPK3PaHN
- eRypQdQ988uXLpvwIreyFZuvtuaLLxORFP6cB1hmMu5kT1H1mLS2826ZGtUYGAvFE7ZY
- +0/Q==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXxZYG586H7A9Xbk1qlcI2m1AiqaX6fS5MeWlm7zq++aDugRfKgl1Vyq6qNZ2NQ5bAgsz7M7ov2WrxE@nongnu.org
-X-Gm-Message-State: AOJu0YwSlfUQrX3W8DQmpzkr1vU8fhZpDJ5pdNXRdrt++f/WTggyWz6U
- TlWXym1NlT2lgE4RManpimt3D0m1eiTbxHVzel6Fnlm+vt8KnjSg0r22+/kzNOo5jL8kt1Rq5Dl
- n
-X-Google-Smtp-Source: AGHT+IG8pCCrIPDqUR6rAmp9nsGfqgKy0NGO1hDQNZ2YgIUKjoZMk9J+8GJ7SO6Xq3qrKwaBSZIzJQ==
-X-Received: by 2002:a05:6000:1543:b0:382:228b:4c34 with SMTP id
- ffacd0b85a97d-382258f0863mr11606802f8f.2.1731963679607; 
- Mon, 18 Nov 2024 13:01:19 -0800 (PST)
-Received: from [192.168.69.146] ([176.187.198.1])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3822ed2bc9esm10070251f8f.6.2024.11.18.13.01.18
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 18 Nov 2024 13:01:18 -0800 (PST)
-Message-ID: <a31c41d5-4301-43a3-a8f9-e7d5d262b025@linaro.org>
-Date: Mon, 18 Nov 2024 22:01:16 +0100
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1tD8zB-0001p9-Dj; Mon, 18 Nov 2024 16:08:41 -0500
+Received: from isrv.corpit.ru ([86.62.121.231])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1tD8z8-0005LE-TF; Mon, 18 Nov 2024 16:08:41 -0500
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id 3CD6BA5606;
+ Tue, 19 Nov 2024 00:08:31 +0300 (MSK)
+Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with SMTP id C6C4C17361F;
+ Tue, 19 Nov 2024 00:08:34 +0300 (MSK)
+Received: (nullmailer pid 2366091 invoked by uid 1000);
+ Mon, 18 Nov 2024 21:08:34 -0000
+From: Michael Tokarev <mjt@tls.msk.ru>
+To: qemu-devel@nongnu.org
+Cc: qemu-stable@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-9.0.4 v2 00/71] Patch Round-up for stable 9.0.4,
+ freeze on 2024-11-18
+Date: Tue, 19 Nov 2024 00:08:14 +0300
+Message-Id: <qemu-stable-9.0.4-20241118223714@cover.tls.msk.ru>
+X-Mailer: git-send-email 2.39.5
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/3] hw/intc/loongarch_extioi: Fix undefined behaviour
- with bit array APIs
-To: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Song Gao <gaosong@loongson.cn>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>
-References: <20241108135514.4006953-1-peter.maydell@linaro.org>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20241108135514.4006953-1-peter.maydell@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -68
+X-Spam_score: -6.9
+X-Spam_bar: ------
+X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,14 +58,170 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/11/24 14:55, Peter Maydell wrote:
+The following patches are queued for QEMU stable v9.0.4:
 
-> Peter Maydell (3):
->    bitops.h: Define bit operations on 'uint32_t' arrays
->    hw/intc/arm_gicv3: Use bitops.h uint32_t bit array functions
->    hw/intc/loongarch_extioi: Use set_bit32() and clear_bit32() for s->isr
+  https://gitlab.com/qemu-project/qemu/-/commits/staging-9.0
 
-Series:
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Patch freeze is 2024-11-18 (today), and the release is planned for 2024-11-20:
 
+  https://wiki.qemu.org/Planning/9.0
+
+Please respond here or CC qemu-stable@nongnu.org on any additional patches
+you think should (or shouldn't) be included in the release.
+
+The changes which are staging for inclusion, with the original commit hash
+from master branch, are given below the bottom line.
+
+This is supposed to be the last release in 9.0.x series.  Please switch to
+a more recent 9.1.x series for a supported qemu.
+
+Thanks!
+
+/mjt
+
+--------------------------------------
+01* d8d5ca40048b Fea.Wang:
+   softmmu/physmem.c: Keep transaction attribute in address_space_map()
+02* 8676007eff04 Peter Maydell:
+   target/arm: Correct ID_AA64ISAR1_EL1 value for neoverse-v1
+03* 9d8d5a5b9078 TANG Tiancheng:
+   tcg: Fix iteration step in 32-bit gvec operation
+04* 8bded2e73e80 Fabiano Rosas:
+   target/ppc: Fix lxvx/stxvx facility check
+05* 2e4fdf566062 Mark Cave-Ayland:
+   hw/mips/jazz: fix typo in in-built NIC alias
+06* 6475155d5192 Fiona Ebner:
+   block/reqlist: allow adding overlapping requests
+07* 67d762e716a7 Ard Biesheuvel:
+   target/arm: Avoid target_ulong for physical address lookups
+08* 3e964275d65b Alexander Bulekov:
+   fuzz: disable leak-detection for oss-fuzz builds
+09* c60473d29254 Alex Bennée:
+   testing: bump mips64el cross to bookworm and fix package list
+10* 0e60fc80938d Marc-André Lureau:
+   vnc: fix crash when no console attached
+11* a9ee641bd46f Philippe Mathieu-Daudé:
+   linux-user/flatload: Take mmap_lock in load_flt_binary()
+12* 2884596f5f38 Richard Henderson:
+   linux-user: Fix parse_elf_properties GNU0_MAGIC check
+13* 4cabcb89b101 Richard Henderson:
+   tcg/ppc: Use TCG_REG_TMP2 for scratch tcg_out_qemu_st
+14* 3213da7b9539 Richard Henderson:
+   tcg/ppc: Use TCG_REG_TMP2 for scratch index in prepare_host_addr
+15* 352cc9f300d8 Richard Henderson:
+   target/m68k: Always return a temporary from gen_lea_mode
+16* 3db74afec3ca Alexandra Diupina:
+   hw/intc/arm_gicv3_cpuif: Add cast to match the documentation
+17* f27206ceedbe Marc-André Lureau:
+   hw/audio/hda: free timer on exit
+18* 244d52ff736f Marc-André Lureau:
+   ui/dbus: fix leak on message filtering
+19* 330ef31deb2e Marc-André Lureau:
+   ui/win32: fix potential use-after-free with dbus shared memory
+20* cf5988978129 Marc-André Lureau:
+   ui/dbus: fix filtering all update messages
+21* 615586cb3568 Paolo Bonzini:
+   tcg/s390x: fix constraint for 32-bit TSTEQ/TSTNE
+22* 5504a8126115 Peter Xu:
+   KVM: Dynamic sized kvm memslots array
+23* d9280ea31747 Stefan Berger:
+   tests: Wait for migration completion on destination QEMU to avoid failures
+24* 68ad89b75ad2 Thomas Huth:
+   Revert "hw/sh4/r2d: Realize IDE controller before accessing it"
+25* d60bd080e783 Peter Maydell:
+   tests/qemu-iotests/211.out: Update to expect MapEntry 'compressed' field
+26* 04bbc3ee52b3 Kevin Wolf:
+   raw-format: Fix error message for invalid offset/size
+27* a7cfd751fb26 Richard Henderson:
+   tcg: Reset data_gen_ptr correctly
+28* b56617bbcb47 Alexander Graf:
+   target/i386: Walk NPT in guest real mode
+29* 115ade42d501 Richard Henderson:
+   target/i386: Use probe_access_full_mmu in ptw_translate
+30* bbd5630a75e7 Ilya Leoshkevich:
+   linux-user: Emulate /proc/self/maps under mmap_lock
+31* 8704132805cf Ilya Leoshkevich:
+   linux-user/ppc: Fix sigmask endianness issue in sigreturn
+32* 310df7a9fe40 Yao Zi:
+   linux-user/riscv: Fix definition of RISCV_HWPROBE_EXT_ZVFHMIN
+33* 3b5948f808e3 Avihai Horon:
+   vfio/migration: Report only stop-copy size in vfio_state_pending_exact()
+34* 97f116f9c6fd Alex Bennée:
+   gitlab: make check-[dco|patch] a little more verbose
+35* 24be5341fbee Pierrick Bouvier:
+   dockerfiles: fix default targets for debian-loongarch-cross
+36* e29bc931e169 Stefan Weil:
+   Fix calculation of minimum in colo_compare_tcp
+37* 1f37280b37db Daniel P. Berrangé:
+   net: fix build when libbpf is disabled, but libxdp is enabled
+38* 75fe36b4e8a9 Bernhard Beschow:
+   net/tap-win32: Fix gcc 14 format truncation errors
+39* 1505b651fdbd Peter Maydell:
+   target/arm: Don't assert in regime_is_user() for E10 mmuidx values
+40* 5a60026cad4e Evgenii Prokopiev:
+   target/riscv/csr.c: Fix an access to VXSAT
+41* 929e4277c128 TANG Tiancheng:
+   target/riscv: Correct SXL return value for RV32 in RV64 QEMU
+42* a84be2baa9ec Sergey Makarov:
+   hw/intc: Don't clear pending bits on IRQ lowering
+43* f8c1f36a2e3d Rob Bradford:
+   target/riscv: Set vtype.vill on CPU reset
+44* 2ae6cca1d338 Yong-Xuan Wang:
+   hw/intc/riscv_aplic: Check and update pending when write sourcecfg
+45* d201a127e164 Daniel Henrique Barboza:
+   target/riscv/kvm: set 'aia_mode' to default in error path
+46* fd16cfb2995e Daniel Henrique Barboza:
+   target/riscv/kvm: clarify how 'riscv-aia' default works
+47* c128d39edeff Anton Blanchard:
+   target/riscv: Fix vcompress with rvv_ta_all_1s
+48* c9b8a13a8841 Ilya Leoshkevich:
+   target/ppc: Set ctx->opcode for decode_insn32()
+49* 0324d236d291 Nicholas Piggin:
+   target/ppc: Fix mtDPDES targeting SMT siblings
+50* 07f2770503e2 Nicholas Piggin:
+   ppc/xive: Fix ESB length overflow on 32-bit hosts
+51* 16c687d84574 Jonathan Cameron:
+   hw/acpi: Fix ordering of BDF in Generic Initiator PCI Device Handle.
+52* 056c5c90c171 Peter Maydell:
+   Revert "target/arm: Fix usage of MMU indexes when EL3 is AArch32"
+53* efbe180ad2ed Peter Maydell:
+   target/arm: Add new MMU indexes for AArch32 Secure PL1&0
+54* e6b2fa1b81ac Peter Maydell:
+   target/arm: Fix SVE SDOT/UDOT/USDOT (4-way, indexed)
+55* 37dfcba1a049 Hanna Czenczek:
+   migration: Ensure vmstate_save() sets errp
+56* 9529aa6bb4d1 Klaus Jensen:
+   hw/nvme: fix handling of over-committed queues
+57* 042b4ebfd229 Christian Schoenebeck:
+   9pfs: fix crash on 'Treaddir' request
+58 8fa11a4df344 Alexander Graf:
+   target/i386: Fix legacy page table walk
+59 bd0e501e1a48 Peter Maydell:
+   hw/i386/pc: Don't try to init PCI NICs if there is no PCI bus
+60 8491026a08b4 Helge Deller:
+   linux-user: Fix setreuid and setregid to use direct syscalls
+61 f27550804688 Richard Henderson:
+   target/arm: Drop user-only special case in sve_stN_r
+62 2a339fee4506 Richard Henderson:
+   accel/tcg: Fix user-only probe_access_internal plugin check
+63 fb7f3572b111 Ilya Leoshkevich:
+   linux-user: Tolerate CONFIG_LSM_MMAP_MIN_ADDR
+64 f7150b215139 Richard Henderson:
+   linux-user/arm: Reduce vdso alignment to 4k
+65 95c9e2209cc0 Richard Henderson:
+   linux-user/arm: Select vdso for be8 and be32 modes
+66 8377e3fb854d Peter Maydell:
+   tcg: Allow top bit of SIMD_DATA_BITS to be set in simd_desc()
+67 7ba055b49b74 Pierrick Bouvier:
+   target/i386: fix hang when using slow path for ptw_setl
+68 44e794896759 Alex Bennée:
+   contrib/plugins: add compat for g_memdup2
+69 c3d7c18b0d61 Thomas Huth:
+   hw/misc/mos6522: Fix bad class definition of the MOS6522 device
+70 626b39006d2f Paolo Bonzini:
+   hw/audio/hda: fix memory leak on audio setup
+71 b2cc69997924 Guenter Roeck:
+   usb-hub: Fix handling port power control messages
+
+(commit(s) marked with * were in previous series and are not resent)
 
