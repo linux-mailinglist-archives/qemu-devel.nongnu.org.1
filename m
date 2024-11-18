@@ -2,75 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A934E9D10E1
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Nov 2024 13:48:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A9FF59D10DD
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Nov 2024 13:47:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tD1A0-00037i-Uo; Mon, 18 Nov 2024 07:47:20 -0500
+	id 1tD1A9-0003JX-31; Mon, 18 Nov 2024 07:47:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tD19x-00036l-Mg
- for qemu-devel@nongnu.org; Mon, 18 Nov 2024 07:47:17 -0500
-Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tD1A3-0003CF-1X
+ for qemu-devel@nongnu.org; Mon, 18 Nov 2024 07:47:23 -0500
+Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tD19w-0005Oi-3c
- for qemu-devel@nongnu.org; Mon, 18 Nov 2024 07:47:17 -0500
-Received: by mail-wr1-x42f.google.com with SMTP id
- ffacd0b85a97d-3823cf963f1so992643f8f.1
- for <qemu-devel@nongnu.org>; Mon, 18 Nov 2024 04:47:15 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tD1A1-0005P0-Jn
+ for qemu-devel@nongnu.org; Mon, 18 Nov 2024 07:47:22 -0500
+Received: by mail-wr1-x433.google.com with SMTP id
+ ffacd0b85a97d-382423f4082so929280f8f.3
+ for <qemu-devel@nongnu.org>; Mon, 18 Nov 2024 04:47:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1731934034; x=1732538834; darn=nongnu.org;
+ d=linaro.org; s=google; t=1731934040; x=1732538840; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ub7X6sJHrjB0SzaYTR/xmHntoa5aUSaWnEy/yeF5Dbw=;
- b=qH3ksDh8AOeUFeTRRfg6RyCDwV92sxwPTl5zouS+2a8tGfTq94nVl2O064Dky83hCH
- HJNyf3LrghGxhO8jRU+MhNLtrWFN2swPYCxrU6TWUrRxVGy9TrivOIvwcVWDr0jVONYq
- bT5abUKR8M5TfAdLFa9WMmsieCYPS85QhYgJjdLvQA3jh8cVDlriRm8SPYlREx1lepO2
- IFRb79IA4HR0Rww7Ah70BYWWbQ3u+hMHyfHla9ju3eyfzh/qQIT8nM/QTSrJqdr8z8eo
- +StbxY1awK9GJZrq2YarU1wAhYE9aHp+4HoDbX3XXhqhwlv5hUSjn1Ab190TkUkgY413
- ODdA==
+ bh=57xyOJgb7MrtuQp8S+1k7r8lU95GPrcuInZY97Vgr3w=;
+ b=puz44dusnzUY4XWwEPc+Kz9e9ANwZ96rSmdjDJn5pSjG+JGPgscD7ICkeSGALgrlaK
+ H7Ydl/0M+QgUJTDXK/QplIbJ+pwC6TROJk5z6QBphJSlJbBTpVuwNzJSb2ZA6oB4LeCB
+ Z55xk6AHnAtFZyMbXywH+nBq9CEVfAc3jNMbWKPh2naUKWwH8Ids11IyXtLuz4SiiEsj
+ p5qtb2cTeUGXkM5zxXmlcRcPlRPyTJEbnNxHL2sIWY/xph8fTZeyEuWYyQWMCll4kJOp
+ XCSeM3Bn5qdfte6na/XwqTJH+uQj+Yu6FTL88kN32/Ndn9+N5FgtEDXN23pgnaNymLcd
+ t5og==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731934034; x=1732538834;
+ d=1e100.net; s=20230601; t=1731934040; x=1732538840;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ub7X6sJHrjB0SzaYTR/xmHntoa5aUSaWnEy/yeF5Dbw=;
- b=OY0CxyvM6Z/mSHZhGkDd5fiq0kptX6j9FPKXgjzOeoHPU1GfU8+DzmfjN8BxKBwzbD
- liu9Et/Akcq9fsyTytGjdBWNXcd5PcgkYjky1OQ18f50PIdcj1/cAg5A/6B4oVl9Nm9p
- ogMhngqlJBwGJezKI2Fm2W3/3JcqOQc1G1bJZ+i0nBF69zA6xKZKbZVToBACiYab+ytt
- TsDUM5oSmX0YV/L3baEq7M6ELcVFYmvIwfDEI1LUWEc1pTQcSUZC0uA0jdNbnIMnI/Ha
- 08EG7oTr62jOVpAb8tK6Nc/2AthK3CGz+Nllfos1vNjY2AQSLMQRvwJzvUcMqm1Zoy9l
- Ks0A==
-X-Gm-Message-State: AOJu0Yx7nOTPy147JhIEmkPr5RbQ0Mf4z9F3++HUchf3m/6L7oC3SXD9
- tWB+3D31fZxc4CKgx9RwTo+PKwUgFNjAkdBMdxnaFB0nRCnFiJ27Lz+mSnRYeiR2w20Amw+2XQY
- d
-X-Google-Smtp-Source: AGHT+IEZUGNePzS+TPyOvqiyJ5vGiJdhhtigcxedUAhIjNsLqs02G43atR8nzMgcPOKKnOkPt1/NZw==
-X-Received: by 2002:a5d:5c0e:0:b0:382:4a4e:25bb with SMTP id
- ffacd0b85a97d-3824a4e2883mr1474474f8f.46.1731934034135; 
- Mon, 18 Nov 2024 04:47:14 -0800 (PST)
+ bh=57xyOJgb7MrtuQp8S+1k7r8lU95GPrcuInZY97Vgr3w=;
+ b=rtz2wzAcWdBSyoiPYMv8o3UJCej27l8Po+V8xZ84Bab30QGV9KhrErkun16HuVxudI
+ ZZyGoE1Brd8TR7wChXOFKG9TW6gxoHfNPucwPGv93z4V1qE2HhiyyoehphxmXygXq9LC
+ 6Yx7LpfrBvxEhr8qCHIxS6o5c2SlwvbyHsDKuPAdrUx6yp6Hq+cLKd8AJWPNKs8klwbS
+ v9zb6Lb2t5Q1blcMmKB665UMgb7yD+VDspRq4XBk1kJUiNiNKYSUoj3xrUO6dI4HlYtk
+ HiN4Zh/yM5b14TVbj4C0bYiAeaJWiplemQpai4zOsRiWIcNy7ZWMbRJ4b76+c58g53uG
+ 23yA==
+X-Gm-Message-State: AOJu0Yz0aXIncL33aLAH1kbYFiOFdp/oYuULiJNLbA6Rr50Z1ZLqLUsm
+ ONmICPtCL+Fy7bo5ycMn0E/ouxc8gtHvg/ZMTMb6F3bDRATMIyzRsg3w/csRi8Rh0VpnRDxHjAN
+ V
+X-Google-Smtp-Source: AGHT+IF3DUWa/uhuUCxyLTGnGr3Zxfm5V3YNEHF1T9vlk1op3xVZ5SkkFXBwGVmUowjQNReEJCXDzA==
+X-Received: by 2002:a5d:47ab:0:b0:382:3789:191c with SMTP id
+ ffacd0b85a97d-38237891a14mr6122659f8f.7.1731934039822; 
+ Mon, 18 Nov 2024 04:47:19 -0800 (PST)
 Received: from localhost.localdomain ([176.187.198.1])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38244355924sm4098904f8f.46.2024.11.18.04.47.12
+ ffacd0b85a97d-3822e65cbdasm9119775f8f.7.2024.11.18.04.47.18
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 18 Nov 2024 04:47:13 -0800 (PST)
+ Mon, 18 Nov 2024 04:47:19 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+Cc: Zhang Chen <chen.zhang@intel.com>, Li Zhijian <lizhijian@fujitsu.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 05/15] hw/display: check frame buffer can hold blob
-Date: Mon, 18 Nov 2024 13:46:32 +0100
-Message-ID: <20241118124643.6958-6-philmd@linaro.org>
+Subject: [PULL 06/15] MAINTAINERS: Update my email address for COLO
+Date: Mon, 18 Nov 2024 13:46:33 +0100
+Message-ID: <20241118124643.6958-7-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241118124643.6958-1-philmd@linaro.org>
 References: <20241118124643.6958-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::433;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,51 +92,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Alex Bennée <alex.bennee@linaro.org>
+From: Zhang Chen <chen.zhang@intel.com>
 
-Coverity reports (CID 1564769, 1564770) that we potentially overflow
-by doing some 32x32 multiplies for something that ends up in a 64 bit
-value. Fix this by first using stride for all lines and casting input
-to uint64_t to ensure a 64 bit multiply is used.
-
-Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Cc: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-Reviewed-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-Tested-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-Message-ID: <20241111230040.68470-3-alex.bennee@linaro.org>
+Signed-off-by: Zhang Chen <chen.zhang@intel.com>
+Reviewed-by: Li Zhijian <lizhijian@fujitsu.com>
+Message-ID: <20241112084038.6352-1-chen.zhang@intel.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/hw/virtio/virtio-gpu.h | 2 +-
- hw/display/virtio-gpu.c        | 3 +--
- 2 files changed, 2 insertions(+), 3 deletions(-)
+ MAINTAINERS | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/hw/virtio/virtio-gpu.h b/include/hw/virtio/virtio-gpu.h
-index 924eb8737e..8c977beebd 100644
---- a/include/hw/virtio/virtio-gpu.h
-+++ b/include/hw/virtio/virtio-gpu.h
-@@ -340,7 +340,7 @@ void virtio_gpu_update_cursor_data(VirtIOGPU *g,
-  * blob_size: size of scanout blob data
-  *
-  * This will check we have enough space for the frame taking into
-- * account that stride for all but the last line.
-+ * account that stride.
-  *
-  * Returns true on success, otherwise logs guest error and returns false
-  */
-diff --git a/hw/display/virtio-gpu.c b/hw/display/virtio-gpu.c
-index e7ca8fd1cf..7d22d03bbf 100644
---- a/hw/display/virtio-gpu.c
-+++ b/hw/display/virtio-gpu.c
-@@ -742,8 +742,7 @@ bool virtio_gpu_scanout_blob_to_fb(struct virtio_gpu_framebuffer *fb,
-     fb->offset = ss->offsets[0] + ss->r.x * fb->bytes_pp + ss->r.y * fb->stride;
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 095420f8b0..3f10529d9c 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -3559,7 +3559,7 @@ F: include/migration/failover.h
+ F: docs/COLO-FT.txt
  
-     fbend = fb->offset;
--    fbend += fb->stride * (ss->r.height - 1);
--    fbend += fb->bytes_pp * ss->r.width;
-+    fbend += (uint64_t) fb->stride * ss->r.height;
- 
-     if (fbend > blob_size) {
-         qemu_log_mask(LOG_GUEST_ERROR,
+ COLO Proxy
+-M: Zhang Chen <chen.zhang@intel.com>
++M: Zhang Chen <zhangckid@gmail.com>
+ M: Li Zhijian <lizhijian@fujitsu.com>
+ S: Supported
+ F: docs/colo-proxy.txt
 -- 
 2.45.2
 
