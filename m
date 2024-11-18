@@ -2,79 +2,115 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BCEC9D0DDF
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Nov 2024 11:11:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DA739D0E30
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Nov 2024 11:17:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tCyiE-0004Ey-0M; Mon, 18 Nov 2024 05:10:30 -0500
+	id 1tCynR-0005MP-Fn; Mon, 18 Nov 2024 05:15:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tCyiC-0004Ef-Ak
- for qemu-devel@nongnu.org; Mon, 18 Nov 2024 05:10:28 -0500
-Received: from mail-lj1-x22f.google.com ([2a00:1450:4864:20::22f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tCyiA-0007w4-Ea
- for qemu-devel@nongnu.org; Mon, 18 Nov 2024 05:10:28 -0500
-Received: by mail-lj1-x22f.google.com with SMTP id
- 38308e7fff4ca-2fc968b3545so28037791fa.2
- for <qemu-devel@nongnu.org>; Mon, 18 Nov 2024 02:10:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1731924624; x=1732529424; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=MK7BOP7Ei1yKNKupjCO/INk13vv4sKScdgQxzbucQ/0=;
- b=RsCgZ2yic6ev0+v9Npa3VXtwoZjiP0jye2Y3UPvYXS7Iu06ENAgtUR3jJIA3X4S+bn
- 4yV2iKTpHEnYYNWDktGv7M2IfezUIN6QH3gP7meGHKyiaxHe8S1wN/CsZo1rlH5+y6n0
- p3e9+T0PHqvQUtTe2MFLiLoUolIi6n8OplaW3Py1VZpVh2VRwVESwbWgvjrqDxbwNXIW
- 1Pu4ACOHFGf7/biDFJ2qp5uTbZzSXfQvOJzy6Au5xJMGnK6Hes47A8iMepkdKY+XKeuC
- MEMqHmcIz6cLSzEtf5KFnrGdvl3fdk8xm8M446tl8MY477A1locen8WO+OeepHKQtFhj
- aouw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731924624; x=1732529424;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=MK7BOP7Ei1yKNKupjCO/INk13vv4sKScdgQxzbucQ/0=;
- b=O4XXXnflhe9/3mEkJaWWCG5SVGbKPnWA31g2wiHxdezIG0/lCsZdw+9G/ZsF0m6AVL
- Xjoq0oYtpWc0ZSDlQLl8N+E5jYCxO0h1C5xUWLsw4UVWfyLD4os7xUP3h/JBwYHpYst2
- 2KrWWC+/GjwRYpiyduggDsbFeKwKiEqutTL3Lh+hpZEBuBCjI/DehO8ptIG2cpTVpWQO
- Zhv6CsDtyHXdZmmOiqczDxfpmWEMC0Gny45vCFwVFBasBFFbeU/C0F5Zw8pEm47GrGdV
- fVKOeHBE+8k43Z/IxYCokydR1vkRsmHUKGRHFy2Xq7LQSpl4aI6Avccutjl9j/cl8iV3
- k1Xw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXRqhn6X0B0GLEln/GTAZ/Qnl+g4G4I+zQJ8I8VppacEZnduaPEsDf6Iga5rjPQRWqkAlr9MWwUhXdg@nongnu.org
-X-Gm-Message-State: AOJu0Yz/qL/yoV5vVoAMcQBLHZLKqzDD+g+Os8VCc51soA0XzmP8VOWV
- Y/qPU6LZKcZFUqr6LI31h90lKwIOmsDaoRB6JnS/0ZDpeNHGSvtQ/BY+3eItrAH2nTBkKSbYR6M
- YF7PIpmEwgE+P6KesG06pEXm1CYnvYm60Wmx2Tw==
-X-Google-Smtp-Source: AGHT+IHrVhgkskSpxFt65Pt7fj/aC02b8HVwGjotDTndXt5bEoHUZvhJOi4tIZpO0+xZ30GtgQVrW7G8Loi4zaCj6/I=
-X-Received: by 2002:a05:651c:98f:b0:2fb:5035:11da with SMTP id
- 38308e7fff4ca-2ff6072531fmr60666931fa.33.1731924623733; Mon, 18 Nov 2024
- 02:10:23 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
+ id 1tCyml-0005KK-Bj; Mon, 18 Nov 2024 05:15:11 -0500
+Received: from fout-b4-smtp.messagingengine.com ([202.12.124.147])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
+ id 1tCymi-0008Iz-VP; Mon, 18 Nov 2024 05:15:11 -0500
+Received: from phl-compute-06.internal (phl-compute-06.phl.internal
+ [10.202.2.46])
+ by mailfout.stl.internal (Postfix) with ESMTP id 0F00011400E9;
+ Mon, 18 Nov 2024 05:15:05 -0500 (EST)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+ by phl-compute-06.internal (MEProxy); Mon, 18 Nov 2024 05:15:05 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=irrelevant.dk;
+ h=cc:cc:content-transfer-encoding:content-type:content-type
+ :date:date:from:from:in-reply-to:message-id:mime-version
+ :reply-to:subject:subject:to:to; s=fm2; t=1731924904; x=
+ 1732011304; bh=QCcCScG8xrwxU1vMkhV8Jl2p0cgNLnyS7IHhI1EgjOA=; b=q
+ 9xAJmJNn3FZUSSQI2OOaQpNraPWGGZLQXvWn/VxYkAjNsKEzosqoanDe9QZeMXfL
+ GvQSHY6mgkSN6af2SwapGFXlvZBmzpTYyOg3GLHTyNwZtGTmFGj9oEcdjMK5CKfK
+ mBi1ZVDPVcyXyRoEmRQwVUJeSfB+e1xoEfkCsK72a0J8LcPMhSsONq0XJ2U1RQVq
+ caTXux5ikueV38MOJefOmULip2v8JbJDMLZjp4q5C8L923xGhrNselRyxgRqxhMn
+ G9/zjLMJidOEGJjop9tRtvaLklgu9Sd28jDK71Lf3YgHKw1YBGFdEA6h0wWNX1cQ
+ t0jh+dyCAGe9mYZtRhdxA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+ messagingengine.com; h=cc:cc:content-transfer-encoding
+ :content-type:content-type:date:date:feedback-id:feedback-id
+ :from:from:in-reply-to:message-id:mime-version:reply-to:subject
+ :subject:to:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+ fm3; t=1731924904; x=1732011304; bh=QCcCScG8xrwxU1vMkhV8Jl2p0cgN
+ LnyS7IHhI1EgjOA=; b=F7HO+x/KeqchJ2l51WQwfPqE6GRpxW8mT9ODA9U/sHpI
+ cxHqAsNNhDmulQAPvTzusS84PVfc2GdJIor5qtsJnmOro7/DSaAj5RVlpUpuGDR0
+ vo/SaYjkqqJIB+UO39wFB3/fr3DwfQbuHxYB+jyHYEgBIphEpcckP8dgZCsVcWqM
+ tFgy+W78bhLfvG3f4LJ0rNg+NLj4Rtsf865RaWRI+ohBOer15WIpNwCGbChOu45W
+ RJ56ZkeEvAJoSy44IDJXpCh8S6UO4VUOlAnnKI60lWf3IV8jIukoHztHLAmtvjX7
+ ZDD7sArwxLKAmYWL71dAV0PWa2NjxKWsAcTQeZLreA==
+X-ME-Sender: <xms:pxM7Z4BY6FmRx0RU4f0M2B0X740VNmo6dUGYyK-ccHU1hXR49ABwzA>
+ <xme:pxM7Z6jKZuXKXcN4VHAYOECK4YFkTXRVN2c6E_Mjv5ZHQEWz9FBCbuh_LAF-9PJzd
+ PfJWK7FECiD2DeOh_g>
+X-ME-Received: <xmr:pxM7Z7mRF4G1Yons1Lb9x1njya6KYDSJInv4tObz7PIvVUM76t9wwW5drcPID6rGIB3cPgSpUpSMVkNOL02_Uw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrfedtgdduvdcutefuodetggdotefrodftvf
+ curfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdpuffr
+ tefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnth
+ hsucdlqddutddtmdenucfjughrpefhufffkfggtgfgvfevofesthejredtredtjeenucfh
+ rhhomhepmfhlrghushculfgvnhhsvghnuceoihhtshesihhrrhgvlhgvvhgrnhhtrdgukh
+ eqnecuggftrfgrthhtvghrnhepvdffhfehfeefuefgheehudelleeijeeuudfftdduvedt
+ gfehhfdtfffgveekueefnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrg
+ hilhhfrhhomhepihhtshesihhrrhgvlhgvvhgrnhhtrdgukhdpnhgspghrtghpthhtohep
+ jedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepfhhoshhsseguvghfmhgrtghroh
+ drihhtpdhrtghpthhtohepihhtshesihhrrhgvlhgvvhgrnhhtrdgukhdprhgtphhtthho
+ pehqvghmuhdqshhtrggslhgvsehnohhnghhnuhdrohhrghdprhgtphhtthhopehqvghmuh
+ dqsghlohgtkhesnhhonhhgnhhurdhorhhgpdhrtghpthhtohepkhgsuhhstghhsehkvghr
+ nhgvlhdrohhrghdprhgtphhtthhopehqvghmuhdquggvvhgvlhesnhhonhhgnhhurdhorh
+ hgpdhrtghpthhtohepkhdrjhgvnhhsvghnsehsrghmshhunhhgrdgtohhm
+X-ME-Proxy: <xmx:pxM7Z-ytZC0Tigz7_KR93NdMXCAjeWZrxOtrpIGEimPhiood9VF55g>
+ <xmx:pxM7Z9TZ8wF957tBn6qrKFlgxbCehyUmC9nwEovH7q-Y12c7cN-kyA>
+ <xmx:pxM7Z5bT3hLYV6yMcG6MnffjFwvxs_9vRY4yE1wHo1Y-m3scwj6lAg>
+ <xmx:pxM7Z2Rs3s-EVnKg_38VTc1sHvTwHYCDKz5BfLMXz_76ngNBAirMTQ>
+ <xmx:qBM7Z-ROONM9oh0vQOur5ZcoTeYTHOnrnn1kPCVWUrYzWeKc0DPgPXuo>
+Feedback-ID: idc91472f:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 18 Nov 2024 05:15:02 -0500 (EST)
+From: Klaus Jensen <its@irrelevant.dk>
+Subject: [PATCH for-9.2 0/4] fixes for hw/nvme
+Date: Mon, 18 Nov 2024 11:14:16 +0100
+Message-Id: <20241118-nvme-fixes-v1-0-02d107dbdcc0@samsung.com>
 MIME-Version: 1.0
-References: <20241118021820.4928-1-joel@jms.id.au>
-In-Reply-To: <20241118021820.4928-1-joel@jms.id.au>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 18 Nov 2024 10:10:12 +0000
-Message-ID: <CAFEAcA9tPhbjnJ6XjMcZq6iWS4i1BdrTB+=391L5UgaVSMkCLQ@mail.gmail.com>
-Subject: Re: [PATCH] hw/aspeed: Correct minimum access size for all models
-To: Joel Stanley <joel@jms.id.au>
-Cc: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, 
- Andrew Jeffery <andrew@codeconstruct.com.au>,
- Jamin Lin <jamin_lin@aspeedtech.com>, 
- Steven Lee <steven_lee@aspeedtech.com>, Troy Lee <leetroy@gmail.com>,
- BMC-SW@aspeedtech.com, qemu-arm@nongnu.org, qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::22f;
- envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x22f.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAHgTO2cC/x2LMQqAMBAEvyJXe2JiCvUrYiG60StMJAERgn/3c
+ LphdgtlJEGmsSqUcEuWGFRMXdF6LGEHy6ZOtrXOKBzuE+zlQWbTdr2Hc3D9Qnq4Ev6g+4l8TDw
+ 0lub3/QDe1XSuZQAAAA==
+X-Change-ID: 20241111-nvme-fixes-1038fe44e48a
+To: Keith Busch <kbusch@kernel.org>, Klaus Jensen <its@irrelevant.dk>, 
+ Jesper Devantier <foss@defmacro.it>, qemu-block@nongnu.org, 
+ qemu-devel@nongnu.org
+Cc: Klaus Jensen <k.jensen@samsung.com>, qemu-stable@nongnu.org
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=647; i=k.jensen@samsung.com;
+ h=from:subject:message-id; bh=MD4MSANoF3QQq0OaQB4n5++JHTwlMKarWBGjw0fzgqM=;
+ b=LS0tLS1CRUdJTiBQR1AgTUVTU0FHRS0tLS0tCgpvd0o0bkFGdEFaTCtrQTBEQUFvQlRlR3ZNV
+ zFQRGVrQnl5WmlBR2M3RTZSZi92NEtmK2hUcGJlc2M0eEpSanBtCnVLNm8vKy9HelJtOTZWY1I0
+ RCt5dklrQk13UUFBUW9BSFJZaEJGSW9NNnAxNHR6bW9rZG13RTNocnpGdFR3M3AKQlFKbk94T2t
+ BQW9KRUUzaHJ6RnRUdzNwdEs4SC8zVktuTlFKOFJWUjZDSEtRU0RaZnl1SXJ2czRRSnppZ3V1bg
+ plSFBvZ3p3VlB1WXhiUENYUC96c1JTMUpWV1FncnZ0RHMvZndIVmdpanNDWUNRU0NUK3NVVS8rU
+ k1xc2g3M0FsCmZWMGt5WU1uMzNJZCt6cHZwTmxpL2dsUzl6Z2VzUDlXUnhaY3owdlhPM1VLUTM2
+ dWdyQVJMNXhKeHlTaDRVNXQKTUhqeU5CRVQvdVVEKzF0WU92Y2FjZUZ6VEtyay83Rk14YVRpUFB
+ neWpZVFlTOGFWKzlINzhoQW9lUVhzZ29CUwpaaFhIMDZuTFAzVS8xK2NPVVFQNkx6T3k0L3pYUD
+ N2a09xTVhDdmZHZDRFb0xKZGRPemlRekJmalQvb3N3S2hLCnVaY04wSlljVDFqdjNHSVZFZ3V6N
+ W5GcEI0a1NsZXgxTlFHM1oyREVKNlZjNFpwZDRmWVNWS3dTCj10N3VvCi0tLS0tRU5EIFBHUCBN
+ RVNTQUdFLS0tLS0K
+X-Developer-Key: i=k.jensen@samsung.com; a=openpgp;
+ fpr=DDCA4D9C9EF931CC3468427263D56FC5E55DA838
+Received-SPF: pass client-ip=202.12.124.147; envelope-from=its@irrelevant.dk;
+ helo=fout-b4-smtp.messagingengine.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -91,54 +127,24 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 18 Nov 2024 at 02:19, Joel Stanley <joel@jms.id.au> wrote:
->
-> Guest code was performing a byte load to the SCU MMIO region, leading to
-> the guest code crashing (it should be using proper accessors, but
-> that is not Qemu's bug). Hardware and the documentation[1] both agree that
-> byte loads are okay, so change all of the aspeed devices to accept a
-> minimum access size of 1.
->
-> [1] See the 'ARM Address Space Mapping' table in the ASPEED docs. This
-> is section 6.1 in the ast2400 and ast2700, and 7.1 in the ast2500 and
-> ast2600 datasheets.
->
-> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2636
-> Signed-off-by: Joel Stanley <joel@jms.id.au>
-> ---
->  hw/fsi/aspeed_apb2opb.c  | 2 +-
->  hw/gpio/aspeed_gpio.c    | 4 ++--
->  hw/intc/aspeed_vic.c     | 2 +-
->  hw/misc/aspeed_scu.c     | 4 ++--
->  hw/misc/aspeed_sdmc.c    | 2 +-
->  hw/misc/aspeed_xdma.c    | 2 +-
->  hw/net/ftgmac100.c       | 4 ++--
->  hw/sd/aspeed_sdhci.c     | 2 +-
->  hw/timer/aspeed_timer.c  | 2 +-
->  hw/watchdog/wdt_aspeed.c | 2 +-
->  10 files changed, 13 insertions(+), 13 deletions(-)
->
-> diff --git a/hw/fsi/aspeed_apb2opb.c b/hw/fsi/aspeed_apb2opb.c
-> index 0e2cc143f105..855dccf6094c 100644
-> --- a/hw/fsi/aspeed_apb2opb.c
-> +++ b/hw/fsi/aspeed_apb2opb.c
-> @@ -259,7 +259,7 @@ static const struct MemoryRegionOps aspeed_apb2opb_ops = {
->      .read = fsi_aspeed_apb2opb_read,
->      .write = fsi_aspeed_apb2opb_write,
->      .valid.max_access_size = 4,
-> -    .valid.min_access_size = 4,
-> +    .valid.min_access_size = 1,
->      .impl.max_access_size = 4,
->      .impl.min_access_size = 4,
->      .endianness = DEVICE_LITTLE_ENDIAN,
+A set of misc fixes related to SR-IOV compliance and MSI-X.
 
-Have you reviewed all the device read/write function
-implementations for these devices to check whether
-(a) changing the .valid value does the right thing, or
-(b) whether there are cases where we should instead
-be updating the implementation and setting the .impl
-min access size ?
+Signed-off-by: Klaus Jensen <k.jensen@samsung.com>
+---
+Klaus Jensen (4):
+      hw/nvme: fix msix_uninit with exclusive bar
+      hw/nvme: fix use/unuse of msix vectors
+      hw/nvme: SR-IOV VFs must hardwire pci interrupt pin register to zero
+      hw/nvme: take a reference on the subsystem on vf realization
 
-thanks
--- PMM
+ hw/nvme/ctrl.c | 27 +++++++++++++++++++++++----
+ 1 file changed, 23 insertions(+), 4 deletions(-)
+---
+base-commit: abb1565d3d863cf210f18f70c4a42b0f39b8ccdb
+change-id: 20241111-nvme-fixes-1038fe44e48a
+
+Best regards,
+-- 
+Klaus Jensen <k.jensen@samsung.com>
+
 
