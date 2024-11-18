@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0A749D0E31
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Nov 2024 11:17:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EE4D9D0E38
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Nov 2024 11:17:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tCynT-0005MQ-3O; Mon, 18 Nov 2024 05:15:55 -0500
+	id 1tCynb-0005Xp-7d; Mon, 18 Nov 2024 05:16:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
- id 1tCyml-0005KH-0c; Mon, 18 Nov 2024 05:15:11 -0500
-Received: from fout-b4-smtp.messagingengine.com ([202.12.124.147])
+ id 1tCymm-0005LQ-GE; Mon, 18 Nov 2024 05:15:12 -0500
+Received: from fhigh-b6-smtp.messagingengine.com ([202.12.124.157])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
- id 1tCymj-0008JJ-0E; Mon, 18 Nov 2024 05:15:10 -0500
-Received: from phl-compute-06.internal (phl-compute-06.phl.internal
- [10.202.2.46])
- by mailfout.stl.internal (Postfix) with ESMTP id D84AE114019B;
- Mon, 18 Nov 2024 05:15:06 -0500 (EST)
+ id 1tCymk-0008Jf-OC; Mon, 18 Nov 2024 05:15:12 -0500
+Received: from phl-compute-11.internal (phl-compute-11.phl.internal
+ [10.202.2.51])
+ by mailfhigh.stl.internal (Postfix) with ESMTP id F0DE32540169;
+ Mon, 18 Nov 2024 05:15:08 -0500 (EST)
 Received: from phl-mailfrontend-01 ([10.202.2.162])
- by phl-compute-06.internal (MEProxy); Mon, 18 Nov 2024 05:15:07 -0500
+ by phl-compute-11.internal (MEProxy); Mon, 18 Nov 2024 05:15:09 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=irrelevant.dk;
  h=cc:cc:content-transfer-encoding:content-type:content-type
  :date:date:from:from:in-reply-to:in-reply-to:message-id
  :mime-version:references:reply-to:subject:subject:to:to; s=fm2;
- t=1731924906; x=1732011306; bh=eoIJIsnvFSmFZxfkto+eSSz3zEqn6zFD
- 3WOe+enxcsk=; b=AbI5Eh5gsxlXDeeJxVLVe8MqoKTBLKSlM2F347mvpNLAtDMS
- g0aBQjUOYn2IdGXY6vj9bmun2xzoDnqqiMNPWfSG1twKdPa2Hz1PEG8M+twbQ8NB
- L9KgvhmWnsUThvEV8yE1dtbPoTthnSbCbCOh2AA65Ewi2Txwu0sdXlCXp9fVsUCd
- N87r8dF0Yx0bkNdOqfV6CvRHwLzWd373E+LeBiiTIWoc3aYqnbMZxghLWie+6NV2
- U/MZAQy9YrCvUy0C1/9GFChuu8S2yAjnOoNDug0pKOwC5yjja5wTWlCqkjisBVBN
- 5LixriF+Yxhc4tK51d/4fmESEzSY4n1Z+Qj4MA==
+ t=1731924908; x=1732011308; bh=wn0FDtj1v/m1iBQtnIW92oDW3NoKo76q
+ 4MrOju+Mbr0=; b=JzQ9NbbT8OW0x+wdQFqnyESdyyVXe6iR+fp7HVhbHxdtw8ar
+ 8/97tqEq+xqEHn2/Pn/9TmiWuvAo74fEu7MiFjEj004D/MiIhEfM6HHLFzhLTVyP
+ dX87Mf7HkHNcmoHRZ5Qq7Xsy6vrJ2GnA49/xnG2LLbgDWTkBOOpnwX9htEA4zPzq
+ P2z+lg6uS7vSzspYQtQUEtTPTSE/3J3rnu/TeskfWM36hKyKr3NMzOsYfn1VIUHw
+ jQrenlr5IOec1P3jVgyChrIoFthU26RKAFIAB7d00yuZL9p88H8bB3gt/CHuVmJW
+ nruOb/xSMvbsHXTGbMVzqojmIACoI8qINv6ljw==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
  messagingengine.com; h=cc:cc:content-transfer-encoding
  :content-type:content-type:date:date:feedback-id:feedback-id
  :from:from:in-reply-to:in-reply-to:message-id:mime-version
  :references:reply-to:subject:subject:to:to:x-me-proxy
- :x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1731924906; x=
- 1732011306; bh=eoIJIsnvFSmFZxfkto+eSSz3zEqn6zFD3WOe+enxcsk=; b=N
- vTVA9TvHGCI7Il99oiyx1jQC9Yzt4u6Kdp+PQp8dTbWwEmvDDmgR6Sqa+FlxbEfx
- yutUu2ZofJBEhbGrR031JLsGmjzWeaS2opAPdnfvr4kHtJPVYFrNR2SG/8ps4EV+
- r7AeVwCa9rHluWOelfSM5ooZ5ZoxWf0Alg5fIwY4mwvKhgVgiiq7XTD4rLObRNjl
- wXDXmpzPke2ugbHqQCT3Mq18wg7qrl/Z1tgGv96H3h/wtnMsmAPlRMu2Vl6naV7k
- YoX6aVoTseJ7Hem7Oymzmy+zgs27QgGwZTLaJr3S8YLZauCRKqDqUAzeGozY5HOH
- XTq3rtk0oqT5mNwBzsagA==
-X-ME-Sender: <xms:qhM7Z4iy5SJy01N4_TntCmNlzRFZBarokUdr2DxEsWIUBirX9fxFuQ>
- <xme:qhM7ZxBQiQfDKwiAe9ybggo6YRSd2Gi1SwfVqEp4OOeXsEbC8WPkBBgFjGnR9M2eT
- 8OOaDMV_3wVyM-4RFA>
-X-ME-Received: <xmr:qhM7ZwHPhTlLaemNA-jLPc1LqYmYboPdKNsHGt5c5Ik3kBiGPmeeroFRPfFUxUWp8qms1WryZ7AznWP0TmOuZQ>
+ :x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1731924908; x=
+ 1732011308; bh=wn0FDtj1v/m1iBQtnIW92oDW3NoKo76q4MrOju+Mbr0=; b=c
+ HsS0V70ytWvozQpu8jobdBhl2fvPs6OZgrmALwP4OZC9N39OapauRoiNi77ZyABk
+ 2rwRMWjTfX4s18hk6K2MiRMvlg8lVycRQFBH0xgbDY9ZvlHB3+YyzQ2v8fAMDvvd
+ V8LQ/DyS0gZK285NRU2m/qIdT7zhgAurJsws/rhaZo6l9FA3OnLJI01lOt6/BqDW
+ UEZwT3cwNOumCR9j7xs/LFRdsnfQekguvQdR+KrBABJ5ptlm3oH7tf2nM4BSIZI4
+ biC2LwrN5Hc8AyV3ZEZkU1tjJ/wXXb5sJ1pzjAPltrkA7dhTPm4QJDTJNB727Nyw
+ D9lptUfR8Nvp4fn+y+HPA==
+X-ME-Sender: <xms:rBM7ZxcWH90p-avHRgC0c54S4k_qGjcOii8naj3c9h8cRZDjXFkX1g>
+ <xme:rBM7Z_MtP6vxw3WNlRznvAZ7qhvXbgeZdPKOawIvDt_dJTzEwAN4zHswAgHqw6WPx
+ uWr4vSPuvKHaWVrZRw>
+X-ME-Received: <xmr:rBM7Z6g6k7rhContl5v0vsEUk3OIR_mph1WaqINYvg2uBz5zjvQCzGPzSPrwQpHC5MxtVyhpRp1ufiO2m73euA>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrfedtgdduvdcutefuodetggdotefrodftvf
  curfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdpuffr
  tefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnth
@@ -58,52 +58,52 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrfedtgdduvdcutefuodetggdote
  gukheqnecuggftrfgrthhtvghrnhepkeeivddtueehffefuddtleefkefhiedttdduveeg
  gfffieetveffhfehgfeghfffnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpe
  hmrghilhhfrhhomhepihhtshesihhrrhgvlhgvvhgrnhhtrdgukhdpnhgspghrtghpthht
- ohepjedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepfhhoshhsseguvghfmhgrtg
+ ohepiedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepfhhoshhsseguvghfmhgrtg
  hrohdrihhtpdhrtghpthhtohepihhtshesihhrrhgvlhgvvhgrnhhtrdgukhdprhgtphht
- thhopehqvghmuhdqshhtrggslhgvsehnohhnghhnuhdrohhrghdprhgtphhtthhopehqvg
- hmuhdqsghlohgtkhesnhhonhhgnhhurdhorhhgpdhrtghpthhtohepkhgsuhhstghhsehk
- vghrnhgvlhdrohhrghdprhgtphhtthhopehqvghmuhdquggvvhgvlhesnhhonhhgnhhurd
- horhhgpdhrtghpthhtohepkhdrjhgvnhhsvghnsehsrghmshhunhhgrdgtohhm
-X-ME-Proxy: <xmx:qhM7Z5R1w62M2tgJNQ7hOYJJ8EZy0GoyauBK6NyPa7mYTfUzvM8QwQ>
- <xmx:qhM7Z1zMj5DnGT-W5EKqNXiTEtMzB3KXEsgKpVrPlK2YZbXaJACdWQ>
- <xmx:qhM7Z35Hi2zoHq0FhSL5nD9psmhZaw8f81RB5eCoiDvyWf8a7qXQew>
- <xmx:qhM7Zyw2TvhH4Wiqgv03U-cJ2fpb7hwN7lopTzrKfPvFG-CbsaO4Yw>
- <xmx:qhM7Z0z-JjatHYWclbAjEUqcX9aJAMYkosOB7Pi-Y9wrAPC7TVHhPeM9>
+ thhopehqvghmuhdqsghlohgtkhesnhhonhhgnhhurdhorhhgpdhrtghpthhtohepkhgsuh
+ hstghhsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehqvghmuhdquggvvhgvlhesnhho
+ nhhgnhhurdhorhhgpdhrtghpthhtohepkhdrjhgvnhhsvghnsehsrghmshhunhhgrdgtoh
+ hm
+X-ME-Proxy: <xmx:rBM7Z69VJr-xdZvS0TBUtxAxX85BoPeUxzgyBWurbqWX4_KLQYkNqw>
+ <xmx:rBM7Z9t55c-Ye1r4vTbwV1FDvfTtGDIAzi0DZPplZnoBeUNwK9v1sg>
+ <xmx:rBM7Z5FA-nDBlLvdAThH4Iue7rr9xTzfDXxYWvwUOQWBwIwybxTD0w>
+ <xmx:rBM7Z0NV2aZSWtdTtp72VKXXzXoXm7G-yqQ49gkb6W3NpwjWsrkdTg>
+ <xmx:rBM7Zxgv6rB3mGiRA2nERHl2N4rlQCfm_i6qp4Ru592Zwl9iyhZvZ7yk>
 Feedback-ID: idc91472f:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 18 Nov 2024 05:15:05 -0500 (EST)
+ 18 Nov 2024 05:15:07 -0500 (EST)
 From: Klaus Jensen <its@irrelevant.dk>
-Date: Mon, 18 Nov 2024 11:14:17 +0100
-Subject: [PATCH for-9.2 1/4] hw/nvme: fix msix_uninit with exclusive bar
+Date: Mon, 18 Nov 2024 11:14:18 +0100
+Subject: [PATCH for-9.2 2/4] hw/nvme: fix use/unuse of msix vectors
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241118-nvme-fixes-v1-1-02d107dbdcc0@samsung.com>
+Message-Id: <20241118-nvme-fixes-v1-2-02d107dbdcc0@samsung.com>
 References: <20241118-nvme-fixes-v1-0-02d107dbdcc0@samsung.com>
 In-Reply-To: <20241118-nvme-fixes-v1-0-02d107dbdcc0@samsung.com>
 To: Keith Busch <kbusch@kernel.org>, Klaus Jensen <its@irrelevant.dk>, 
  Jesper Devantier <foss@defmacro.it>, qemu-block@nongnu.org, 
  qemu-devel@nongnu.org
-Cc: Klaus Jensen <k.jensen@samsung.com>, qemu-stable@nongnu.org
+Cc: Klaus Jensen <k.jensen@samsung.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1120; i=k.jensen@samsung.com; 
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1122; i=k.jensen@samsung.com; 
  h=from:subject:message-id;
- bh=luAZmVRl988Fk2UCy4nTP3G7adYdvITDIx52Hx/vg+M=; 
+ bh=On2tnR5FtbLyphu7V88G7B3jZ5QwBKDAjv+OiR4JC0E=; 
  b=LS0tLS1CRUdJTiBQR1AgTUVTU0FHRS0tLS0tCgpvd0o0bkFGdEFaTCtrQTBEQUFvQlRlR3ZNV
- zFQRGVrQnl5WmlBR2M3RTZUaHFKYzZRcnRWV1BDWnNlby9sQVVDCjFtdjllS3gxNTUwd3JkNFVG
- UlIrZzRrQk13UUFBUW9BSFJZaEJGSW9NNnAxNHR6bW9rZG13RTNocnpGdFR3M3AKQlFKbk94T2t
- BQW9KRUUzaHJ6RnRUdzNwTEtzSUFMSUs4QWZ0ME9pTGh4bzhRazI3RWxhWXVqK2JLdnpNaE14bw
- pNZnhIRjV6TFJjRXNNVTB0cHZTYUpaMnF5UktmQ2FzdGtETFB0OUtPb2MvNWdjK1lmZk9TSlhuN
- 0tFQW9qVC9jClY3Rlg0ZCtxZVR1Uk1saUQ1bGY1V1B3QWk5OW15M01pVzV6MzB5dGEzRjdWQWtN
- WkswYVBBNkU1S0dkTy9aNTcKcHVzV1FLazNOUG9CUzlPRGM3eGpkZjkvM2xwNVpscnRKNGxJSit
- KZTd5OGFDUmgwTlJyUWt4S2pUZGVmUDNnVAoxd0QyNldlVE9lZGhvbVVFQzlXT2NGN3JlQVNocW
- F2OWF3Z0pMVGIwdmJCODFoOVhZaVpsWHV1d3ZMcmVOWkFsCkxNMVlQVDZkZGpsSWp6U1Q0MTF0d
- FpKNy8vZlRGbDlXV3JNU2wwUzQ3TlZ6Z2hacFRLZW9wS1pVCj04cGgzCi0tLS0tRU5EIFBHUCBN
+ zFQRGVrQnl5WmlBR2M3RTZYZnhubUJhUnBIU0lmVEZIa3VnSGd6CmRFQzFQendibXBWdGc1OHBa
+ cjcxVzRrQk13UUFBUW9BSFJZaEJGSW9NNnAxNHR6bW9rZG13RTNocnpGdFR3M3AKQlFKbk94T2x
+ BQW9KRUUzaHJ6RnRUdzNwQi9jSUFKYWdoUEFyb3FCRllyc3Qwb0d2SVpWakowUWR4S2RxdVZtVw
+ pHZ1BJOXFpMmNHd1YwT2FqNXRRcitKUEJrMHJLM0pZQkhqNVVMR3NtVUlRUHdxMkVqd2w1b3VMR
+ XNJbi9FVDZwCkNhVGtsTHRtd1lDenVob3YzNDZuQTVtOE9lZU9EUnZtMlBqZGxIMlR4Smh4RWph
+ cU9meUlyTkx3NDBMdzB0YzgKTEpESTlJbFJLYmVQYXprY3NRdUl0N0VJeTBzWkgzdTYwUTN1czh
+ TaE0wcjR3OWNhdW5EQ1ZYb0VTc2pJdmVUTApLSUY0T1Jqdi9xTVE0OU8yVHdab1c0S0NTbVh1QT
+ lEbTZXNEtDb01EOEY1V1N2LzE0YlR3blo0bGN2K2RnTlYxClkxRnZ2SHRYdWs1NTJTNVNaSWx6S
+ TdQTkNDTGNrVzlOYmxUeFFRN21tTmVWVEpoQkhyT0FSS3daCj12SFp6Ci0tLS0tRU5EIFBHUCBN
  RVNTQUdFLS0tLS0K
 X-Developer-Key: i=k.jensen@samsung.com; a=openpgp;
  fpr=DDCA4D9C9EF931CC3468427263D56FC5E55DA838
-Received-SPF: pass client-ip=202.12.124.147; envelope-from=its@irrelevant.dk;
- helo=fout-b4-smtp.messagingengine.com
+Received-SPF: pass client-ip=202.12.124.157; envelope-from=its@irrelevant.dk;
+ helo=fhigh-b6-smtp.messagingengine.com
 X-Spam_score_int: -27
 X-Spam_score: -2.8
 X-Spam_bar: --
@@ -129,36 +129,39 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Klaus Jensen <k.jensen@samsung.com>
 
-Commit fa905f65c554 introduced a machine compatibility parameter to
-enable an exclusive bar for msix. It failed to account for this when
-cleaning up. Make sure that if an exclusive bar is enabled, we use the
-proper cleanup routine.
+Only call msix_{un,}use_vector() when interrupts are actually enabled
+for a completion queue.
 
-Cc: qemu-stable@nongnu.org
-Fixes: fa905f65c554 ("hw/nvme: add machine compatibility parameter to enable msix exclusive bar")
 Signed-off-by: Klaus Jensen <k.jensen@samsung.com>
 ---
- hw/nvme/ctrl.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ hw/nvme/ctrl.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
 diff --git a/hw/nvme/ctrl.c b/hw/nvme/ctrl.c
-index 69bce20f6692b48ae162ad948b1a3eef31d69ebd..13898d58278ed2155d45a9120fc07ea60bc64a32 100644
+index 13898d58278ed2155d45a9120fc07ea60bc64a32..a38f460a78599bc191c17a2a376e865a74744e58 100644
 --- a/hw/nvme/ctrl.c
 +++ b/hw/nvme/ctrl.c
-@@ -8904,7 +8904,12 @@ static void nvme_exit(PCIDevice *pci_dev)
-         pcie_sriov_pf_exit(pci_dev);
+@@ -5423,7 +5423,7 @@ static void nvme_free_cq(NvmeCQueue *cq, NvmeCtrl *n)
+         event_notifier_set_handler(&cq->notifier, NULL);
+         event_notifier_cleanup(&cq->notifier);
      }
+-    if (msix_enabled(pci)) {
++    if (msix_enabled(pci) && cq->irq_enabled) {
+         msix_vector_unuse(pci, cq->vector);
+     }
+     if (cq->cqid) {
+@@ -5464,9 +5464,10 @@ static void nvme_init_cq(NvmeCQueue *cq, NvmeCtrl *n, uint64_t dma_addr,
+ {
+     PCIDevice *pci = PCI_DEVICE(n);
  
--    msix_uninit(pci_dev, &n->bar0, &n->bar0);
-+    if (n->params.msix_exclusive_bar && !pci_is_vf(pci_dev)) {
-+        msix_uninit_exclusive_bar(pci_dev);
-+    } else {
-+        msix_uninit(pci_dev, &n->bar0, &n->bar0);
-+    }
+-    if (msix_enabled(pci)) {
++    if (msix_enabled(pci) && irq_enabled) {
+         msix_vector_use(pci, vector);
+     }
 +
-     memory_region_del_subregion(&n->bar0, &n->iomem);
- }
- 
+     cq->ctrl = n;
+     cq->cqid = cqid;
+     cq->size = size;
 
 -- 
 2.45.2
