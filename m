@@ -2,96 +2,103 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 944A49D1716
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Nov 2024 18:26:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B650F9D1739
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Nov 2024 18:36:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tD5Ug-00008v-Op; Mon, 18 Nov 2024 12:24:58 -0500
+	id 1tD5et-0007Me-Vn; Mon, 18 Nov 2024 12:35:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1tD5UE-0008Qe-Ek
- for qemu-devel@nongnu.org; Mon, 18 Nov 2024 12:24:31 -0500
-Received: from mail-pg1-x529.google.com ([2607:f8b0:4864:20::529])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1tD5U9-0002qr-D4
- for qemu-devel@nongnu.org; Mon, 18 Nov 2024 12:24:30 -0500
-Received: by mail-pg1-x529.google.com with SMTP id
- 41be03b00d2f7-7f43259d220so1485345a12.3
- for <qemu-devel@nongnu.org>; Mon, 18 Nov 2024 09:24:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1731950663; x=1732555463; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=O5xaWyMs57+hnnqWUIpSm0cVCeYUwv1WfgxLMkRlc7c=;
- b=kRxe7hahlMiL62pLkLGsVTJudLtvTndyHZoFp6xPyjXAhFLyM4DbaM4BxBZ56Z2SAk
- jsceYgLNjvk8KHltPvp0XpLjtZmv8GdPT+u7nBMZNGVUdZ6IV6iKECFXu76eidFowX6S
- hCBsSQLdu94B1HKpwiO9wtafD5mqxQlTJJpJJtCnwQQKH3K1wEsfh7DYtgffM3FpNwDN
- yxQkjKYcRsXoGxU7CMIFFEex5Hl1AkS4uDiQRjaatKuG7KDPHnCbBpSQOYZFtIXdr3Z7
- gOsoDJHMYcPrySNciQheE41mtpTkigiZcpaVqqMXGCbvmvWPJ23ZbQguH/NU1vRCOqPw
- S2FQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731950663; x=1732555463;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=O5xaWyMs57+hnnqWUIpSm0cVCeYUwv1WfgxLMkRlc7c=;
- b=JC4GFZDPoTgW9jI/NYP6f3kY8VlLBvVG00Mp5Ukjvw/9WDTNiWYGEyo+EjSv7ofsqb
- Oz2BF8TXvSsj0RyCaSDGrQ0j5xgVH6rXDHPsTHXBIV8NeBYq0yCBcxHnjuyv1JGppmx9
- gwBGHhnU0N/Z9vp+ATOGTuwC1GFGYNV7QhSBdua71B9sdKogMY03o1ihYTiL3L27JC58
- VgSBYfeItNt6T6Pcv7Eodtdz7CIM5+yczWgaFChuDce9BhSMc/xjKt+LVj6IhT0v6ac8
- Fuw66CtFBbt21JwhwyB1001YdVbkXn6NE8cKmHMQK8kAfYH0k6VMqMldLNxOFVHtfTZN
- ZSvg==
-X-Gm-Message-State: AOJu0Yx9Ci9mvHMQ39iX7G5T0nVRp2ldrmzUiehKnQnfR4UJ70WoGwzE
- bUZiEfiJXKI6fLK2p4VTg51bWOHWLormDVPZkTi1A8qsFyrcynkzqf5MDZtTGaBYQax6l3+Qni6
- 81Ly7ng==
-X-Google-Smtp-Source: AGHT+IFd+isfj+MijvIfhlYm0YwRz6KEGHY0eaL6yeO5vKqUx6emPrFwrqa4l0559t1iCFG6uOulPQ==
-X-Received: by 2002:a05:6a21:3985:b0:1dc:7907:6d67 with SMTP id
- adf61e73a8af0-1dc90bf49b3mr24723643637.40.1731950662036; 
- Mon, 18 Nov 2024 09:24:22 -0800 (PST)
-Received: from linaro.. (216-180-64-156.dyn.novuscom.net. [216.180.64.156])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-211d0f55d04sm59469765ad.264.2024.11.18.09.24.21
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 18 Nov 2024 09:24:21 -0800 (PST)
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Andrew Melnychenko <andrew@daynix.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Jason Wang <jasowang@redhat.com>, Thomas Huth <thuth@redhat.com>,
- alex.bennee@linaro.org,
- Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
- Fabiano Rosas <farosas@suse.de>, Kevin Wolf <kwolf@redhat.com>,
- Markus Armbruster <armbru@redhat.com>, Eric Blake <eblake@redhat.com>,
- qemu-arm@nongnu.org, Yuri Benditovich <yuri.benditovich@daynix.com>,
- manos.pitsidianakis@linaro.org, qemu-block@nongnu.org,
- Michael Roth <michael.roth@amd.com>,
- Konstantin Kostiuk <kkostiuk@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
- gustavo.romero@linaro.org, Peter Maydell <peter.maydell@linaro.org>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH 7/7] docs: add a how to section
-Date: Mon, 18 Nov 2024 09:23:57 -0800
-Message-Id: <20241118172357.475281-8-pierrick.bouvier@linaro.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20241118172357.475281-1-pierrick.bouvier@linaro.org>
-References: <20241118172357.475281-1-pierrick.bouvier@linaro.org>
+ (Exim 4.90_1) (envelope-from <jrossi@linux.ibm.com>)
+ id 1tD5er-0007LA-AW; Mon, 18 Nov 2024 12:35:29 -0500
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jrossi@linux.ibm.com>)
+ id 1tD5ep-0004c6-Ho; Mon, 18 Nov 2024 12:35:29 -0500
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4AIBmGGa014619;
+ Mon, 18 Nov 2024 17:35:22 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=pp1; bh=qEIsRb
+ oNK6hkkPZECeF23vXTxFBBFGzxZ2wXwclCTOA=; b=nix4VAYqZTjwIX6QcVoSm1
+ 6u7VCeXaxUCqvxrEbHoPvUfD0YdUXelJ+XGGWwJ7cXOd8JoymUyyhped7zucLFIc
+ PY1zZ71FakqgZq750PW7UBGlEKv3JAESrOZG6Le+9hY2JFL5qRrdjBbqTi/2WRy2
+ qsqZizlIK0/hKAtLdx4ahcAh5uRruXYE3/z80fXR4JMBSoeqtR8CW/D7U5SW/Moy
+ YKsJDGshJosJHoNXDDIYjGMfM4DX8SS9oZcvSBX85rhqte5IbtkFINbDz8AHiqed
+ +CN6ycR6ZY9IllQxQnK3BIBkJFWi/c0faUO48My27MFlDpLhjV16+e0wpE+sdAXw
+ ==
+Received: from ppma23.wdc07v.mail.ibm.com
+ (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42xyu1h7rp-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 18 Nov 2024 17:35:21 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4AIHA4DX000591;
+ Mon, 18 Nov 2024 17:35:20 GMT
+Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
+ by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 42y77kp77w-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 18 Nov 2024 17:35:20 +0000
+Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com
+ [10.241.53.104])
+ by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 4AIHZJLE46596370
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 18 Nov 2024 17:35:19 GMT
+Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 4EAF958056;
+ Mon, 18 Nov 2024 17:35:19 +0000 (GMT)
+Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B417158052;
+ Mon, 18 Nov 2024 17:35:18 +0000 (GMT)
+Received: from [9.61.180.239] (unknown [9.61.180.239])
+ by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTPS;
+ Mon, 18 Nov 2024 17:35:18 +0000 (GMT)
+Message-ID: <45177122-dbb5-4ce1-ad9a-b7a3a0f6bfa1@linux.ibm.com>
+Date: Mon, 18 Nov 2024 12:35:18 -0500
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] hw: Add "loadparm" property to scsi disk devices for
+ booting on s390x
+To: Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
+ Boris Fiuczynski <fiuczy@linux.ibm.com>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-s390x@nongnu.org, =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>,
+ Fam Zheng <fam@euphon.net>, Eric Farman <farman@linux.ibm.com>
+References: <20241115141202.1877294-1-thuth@redhat.com>
+ <ee20d61c-88a9-480f-be64-084f737ee976@linux.ibm.com>
+ <1d225ce4-a74e-4d55-85b7-6f7015cfb288@linux.ibm.com>
+ <152401ec-84c2-43f6-a349-cdf5589b9a12@linux.ibm.com>
+Content-Language: en-US
+From: Jared Rossi <jrossi@linux.ibm.com>
+In-Reply-To: <152401ec-84c2-43f6-a349-cdf5589b9a12@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::529;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pg1-x529.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: qcm8yF8dr0TNaQb4Gm_WxGStSmLmx5OK
+X-Proofpoint-ORIG-GUID: qcm8yF8dr0TNaQb4Gm_WxGStSmLmx5OK
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0
+ lowpriorityscore=0 priorityscore=1501 suspectscore=0 impostorscore=0
+ bulkscore=0 spamscore=0 mlxlogscore=963 adultscore=0 mlxscore=0
+ clxscore=1015 phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2409260000 definitions=main-2411180145
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=jrossi@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,188 +114,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
----
- docs/devel/build-system.rst |   2 +
- docs/how-to/index.rst       | 146 ++++++++++++++++++++++++++++++++++++
- docs/index.rst              |   1 +
- 3 files changed, 149 insertions(+)
- create mode 100644 docs/how-to/index.rst
 
-diff --git a/docs/devel/build-system.rst b/docs/devel/build-system.rst
-index d42045a2325..db444787e37 100644
---- a/docs/devel/build-system.rst
-+++ b/docs/devel/build-system.rst
-@@ -1,3 +1,5 @@
-+.. _build:
-+
- ==================================
- The QEMU build system architecture
- ==================================
-diff --git a/docs/how-to/index.rst b/docs/how-to/index.rst
-new file mode 100644
-index 00000000000..3a9d4d777df
---- /dev/null
-+++ b/docs/how-to/index.rst
-@@ -0,0 +1,146 @@
-+.. _how-to:
-+
-+------
-+How to
-+------
-+
-+This section of the manual will give you some commands to do various tasks with
-+QEMU. It does not intend to be complete, but to be simple.
-+
-+Build
-+-----
-+
-+First you need setup your `build environment <setup-build-env>`.
-+
-+Then, you can build QEMU using:
-+
-+::
-+
-+    git clone https://gitlab.com/qemu-project/qemu
-+    cd qemu
-+    ./configure
-+    ninja -C build
-+    # all binaries are in ./build
-+
-+By default, QEMU build is optimized. You may want to switch to debug builds
-+instead (non optimized, and with more runtime checks enabled):
-+
-+::
-+
-+    ./configure --enable-debug
-+
-+It's recommended to use sanitizers to catch issues when developing your change.
-+
-+::
-+
-+    ./configure --enable-asan --enable-ubsan
-+    # Of course, you can combine debug and sanitizers if needed
-+
-+You can find more information on `build page <build>`.
-+
-+Test
-+----
-+
-+QEMU has a lot of tests, mainly in 4 categories:
-+
-+::
-+
-+    # run tests related to TCG. They are based on Makefiles.
-+    make check-tcg
-+    # run system tests, running a full VM, with avocado framework
-+    make check-avocado
-+    # run functional tests, running a full VM, integrated with Meson
-+    make check-functional
-+    # run all other tests, integrated with Meson
-+    make check
-+
-+You can find more information on `testing page<testing>`.
-+
-+Use QEMU
-+--------
-+
-+To create a 20 gigabytes disk image usable with qemu-system:
-+
-+::
-+
-+    qemu-img create system.img 20g
-+
-+To run an x86_64 system emulated, with 4 cpus, 8G of memory and an install iso:
-+
-+::
-+
-+    qemu-system-x86_64 -smp 4 -m 8G system.img -cdrom install.iso
-+
-+To boot directly a Linux Kernel:
-+
-+::
-+
-+    qemu-system-x86_64 -kernel bzImage -hda system.img -append "root=/dev/hda"
-+
-+To boot an aarch64 system emulated, you need to specify a UEFI and associated
-+pflash. Once started, you can switch to Serial output by clicking on View ->
-+Serial0.
-+
-+::
-+
-+    # UEFI can be obtained from debian package qemu-efi-aarch64.
-+    # First, we need to copy a file to save UEFI variables:
-+    # cp /usr/share/AAVMF/AAVMF_VARS.fd .
-+    qemu-system-aarch64 \
-+        -m 8G \
-+        -smp 4 \
-+        -M virt \
-+        -cpu max \
-+        -device virtio-blk-pci,drive=root \
-+        -drive if=none,id=root,file=system.img \
-+        -drive if=pflash,readonly=on,file=/usr/share/AAVMF/AAVMF_CODE.fd \
-+        -drive if=pflash,file=AAVMF_VARS.fd \
-+        -cdrom install.iso
-+
-+To run git using QEMU user-mode:
-+
-+::
-+
-+    qemu-x86_64 /usr/bin/git --version
-+
-+Contribute
-+----------
-+
-+We recommend using `git-publish <https://github.com/stefanha/git-publish>`_ for
-+contributing. You need to configure `git send-email
-+<https://git-send-email.io/>`_ first.
-+
-+::
-+
-+    git checkout -b my_feature
-+    ... # edit, build, test
-+    # When ready to send the series...
-+
-+    # Add upstream QEMU repo as a remote.
-+    git remote add upstream https://gitlab.com/qemu-project/qemu
-+    # Fetch all new content.
-+    git fetch -a upstream
-+
-+    # Rebase your branch on top of upstream master, and include a signoff.
-+    git rebase -i upstream/master --signoff
-+    # Check your patches are correct.
-+    ./scripts/checkpatch.pl $(git merge-base upstream/master HEAD)..HEAD
-+
-+    # Send your series, you'll be given a chance to edit cover letter for it.
-+    git-publish
-+
-+    # After review, and other changes, you can send a v2 simply by using:
-+    git-publish
-+
-+If you need to apply locally an existing series, you can use `b4
-+<https://github.com/mricon/b4>`_ (installable via pip) to retrieve it:
-+
-+::
-+
-+    b4 shazam <series_msg_id>
-+    # message id is an identifier present in email sent.
-+    # when using patchwork, it is the last part of a series url (2024...):
-+    # https://patchew.org/QEMU/20241118021820.4928-1-joel@jms.id.au/
-+
-+More complete information is available on our `Submit a patch page
-+<submitting-a-patch>`.
-diff --git a/docs/index.rst b/docs/index.rst
-index 2cad84cd77c..e275a9223dd 100644
---- a/docs/index.rst
-+++ b/docs/index.rst
-@@ -20,5 +20,6 @@ Welcome to QEMU's documentation!
-    interop/index
-    specs/index
-    devel/index
-+   how-to/index
-    codebase/index
-    glossary/index
--- 
-2.39.5
+
+On 11/18/24 12:12 PM, Christian Borntraeger wrote:
+> Am 18.11.24 um 16:53 schrieb Jared Rossi:
+>> Loadparm set with boot index works properly and I confirmed the 
+>> getter/setter are working as well.
+>
+> So this is a Tested-by: then?
+
+Yes.
+
+Tested-by Jared Rossi <jrossi@linux.ibm.com>
+Reviewed-by Jared Rossi <jrossi@linux.ibm.com>
+
+>>
+>> On 11/18/24 10:29 AM, Jared Rossi wrote:
+>>> Looks OK to me.
+>>>
+>>> Reviewed-by Jared Rossi <jrossi@linux.ibm.com>
+>>>
+>>> On 11/15/24 9:12 AM, Thomas Huth wrote:
+>>>> While adding the new flexible boot order feature on s390x recently,
+>>>> we missed to add the "loadparm" property to the scsi-hd and scsi-cd
+>>>> devices. This property is required on s390x to pass the information
+>>>> to the boot loader about which kernel should be started or whether
+>>>> the boot menu should be shown. But even more serious: The missing
+>>>> property is now causing trouble with the corresponding libvirt patches
+>>>> that assume that the "loadparm" property is either settable for all
+>>>> bootable devices (when the "boot order" feature is implemented in
+>>>> QEMU), or none (meaning the behaviour of older QEMUs that only allowed
+>>>> one "loadparm" at the machine level). To fix this broken situation,
+>>>> let's implement the "loadparm" property in for the SCSI devices, too.
+>>>>
+>>>> Signed-off-by: Thomas Huth <thuth@redhat.com>
+>>>> ---
+>>>>   v2:
+>>>>   - Only add the property when running with the s390x target
+>>>>     (checked via the arch_type variable during runtime)
+>>>>   - Check bootindex property before setting the loadparm property
+>>>>   - Call the sanitize function before setting the property, so we
+>>>>     can now immediately reject bad properties for the scsi devices,
+>>>>     too (had to move the sanitize function to the common code in
+>>>>     qdev-properties-system.c for this)
+>>>>
+>>>>   include/hw/qdev-properties-system.h |  3 ++
+>>>>   hw/core/qdev-properties-system.c    | 26 +++++++++++++++++
+>>>>   hw/s390x/ipl.c                      | 19 ++++---------
+>>>>   hw/scsi/scsi-disk.c                 | 43 
+>>>> +++++++++++++++++++++++++++++
+>>>>   4 files changed, 78 insertions(+), 13 deletions(-)
+>>>>
+>>>> [snip...]
+>>
 
 
