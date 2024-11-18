@@ -2,36 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D199F9D190E
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Nov 2024 20:37:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CD43F9D1910
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Nov 2024 20:37:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tD7Xc-0006sB-W0; Mon, 18 Nov 2024 14:36:09 -0500
+	id 1tD7Xs-0007ER-KH; Mon, 18 Nov 2024 14:36:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tD7XQ-0006fg-2n; Mon, 18 Nov 2024 14:35:56 -0500
+ id 1tD7Xn-0007BZ-39; Mon, 18 Nov 2024 14:36:19 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tD7XN-0002ii-ED; Mon, 18 Nov 2024 14:35:54 -0500
+ id 1tD7Xl-0002jG-EQ; Mon, 18 Nov 2024 14:36:18 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id EA831A54E9;
- Mon, 18 Nov 2024 22:35:17 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 051A5A54EA;
+ Mon, 18 Nov 2024 22:35:18 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 69FA31735A6;
+ by tsrv.corpit.ru (Postfix) with SMTP id 781881735A7;
  Mon, 18 Nov 2024 22:35:21 +0300 (MSK)
-Received: (nullmailer pid 2312705 invoked by uid 1000);
+Received: (nullmailer pid 2312708 invoked by uid 1000);
  Mon, 18 Nov 2024 19:35:20 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- Michael Tokarev <mjt@tls.msk.ru>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [Stable-8.2.8 60/61] hw/audio/hda: fix memory leak on audio setup
-Date: Mon, 18 Nov 2024 22:35:15 +0300
-Message-Id: <20241118193520.2312620-12-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Guenter Roeck <linux@roeck-us.net>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.2.8 61/61] usb-hub: Fix handling port power control messages
+Date: Mon, 18 Nov 2024 22:35:16 +0300
+Message-Id: <20241118193520.2312620-13-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-8.2.8-20241118211929@cover.tls.msk.ru>
 References: <qemu-stable-8.2.8-20241118211929@cover.tls.msk.ru>
@@ -61,79 +61,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Paolo Bonzini <pbonzini@redhat.com>
+From: Guenter Roeck <linux@roeck-us.net>
 
-When SET_STREAM_FORMAT is called, the st->buft timer is overwritten, thus
-causing a memory leak.  This was originally fixed in commit 816139ae6a5
-("hw/audio/hda: fix memory leak on audio setup", 2024-11-14) but that
-caused the audio to break in SPICE.
+The ClearPortFeature control message fails for PORT_POWER because there
+is no break; at the end of the case statement, causing it to fall through
+to the failure handler. Add the missing break; to solve the problem.
 
-Fortunately, a simpler fix is possible.  The timer only needs to be
-reset, because the callback is always the same (st->output is set at
-realize time in hda_audio_init); call to timer_new_ns overkill.  Replace
-it with timer_del and only initialize the timer once; for simplicity,
-do it even if use_timer is false.
-
-An even simpler fix would be to free the old time in hda_audio_setup().
-However, it seems better to place the initialization of the timer close
-to that of st->ouput.
-
-Cc: qemu-stable@nongnu.org
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
-Message-ID: <20241114125318.1707590-3-pbonzini@redhat.com>
+Fixes: 1cc403eb21 ("usb-hub: emulate per port power switching")
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20241112170152.217664-11-linux@roeck-us.net>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-(cherry picked from commit 626b39006d2f9b1378a04cb88a2187bb852cb055)
+(cherry picked from commit b2cc69997924b651c0c6f4037782e25f2e438715)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/audio/hda-codec.c b/hw/audio/hda-codec.c
-index 19f401cabe..ac908e56c6 100644
---- a/hw/audio/hda-codec.c
-+++ b/hw/audio/hda-codec.c
-@@ -487,8 +487,7 @@ static void hda_audio_setup(HDAAudioStream *st)
-     if (st->output) {
-         if (use_timer) {
-             cb = hda_audio_output_cb;
--            st->buft = timer_new_ns(QEMU_CLOCK_VIRTUAL,
--                                    hda_audio_output_timer, st);
-+            timer_del(st->buft);
-         } else {
-             cb = hda_audio_compat_output_cb;
-         }
-@@ -497,8 +496,7 @@ static void hda_audio_setup(HDAAudioStream *st)
-     } else {
-         if (use_timer) {
-             cb = hda_audio_input_cb;
--            st->buft = timer_new_ns(QEMU_CLOCK_VIRTUAL,
--                                    hda_audio_input_timer, st);
-+            timer_del(st->buft);
-         } else {
-             cb = hda_audio_compat_input_cb;
-         }
-@@ -726,8 +724,12 @@ static void hda_audio_init(HDACodecDevice *hda,
-                 st->gain_right = QEMU_HDA_AMP_STEPS;
-                 st->compat_bpos = sizeof(st->compat_buf);
-                 st->output = true;
-+                st->buft = timer_new_ns(QEMU_CLOCK_VIRTUAL,
-+                                        hda_audio_output_timer, st);
-             } else {
-                 st->output = false;
-+                st->buft = timer_new_ns(QEMU_CLOCK_VIRTUAL,
-+                                        hda_audio_input_timer, st);
+diff --git a/hw/usb/dev-hub.c b/hw/usb/dev-hub.c
+index 5703e0e826..7b3cfa2c1b 100644
+--- a/hw/usb/dev-hub.c
++++ b/hw/usb/dev-hub.c
+@@ -479,6 +479,7 @@ static void usb_hub_handle_control(USBDevice *dev, USBPacket *p,
+                     usb_hub_port_clear(port, PORT_STAT_SUSPEND);
+                     port->wPortChange = 0;
+                 }
++                break;
+             default:
+                 goto fail;
              }
-             st->format = AC_FMT_TYPE_PCM | AC_FMT_BITS_16 |
-                 (1 << AC_FMT_CHAN_SHIFT);
-@@ -750,9 +752,7 @@ static void hda_audio_exit(HDACodecDevice *hda)
-         if (st->node == NULL) {
-             continue;
-         }
--        if (a->use_timer) {
--            timer_free(st->buft);
--        }
-+        timer_free(st->buft);
-         if (st->output) {
-             AUD_close_out(&a->card, st->voice.out);
-         } else {
 -- 
 2.39.5
 
