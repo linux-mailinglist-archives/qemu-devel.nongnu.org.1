@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9FF59D10DD
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Nov 2024 13:47:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FBFF9D10DF
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Nov 2024 13:47:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tD1A9-0003JX-31; Mon, 18 Nov 2024 07:47:29 -0500
+	id 1tD1AB-0003Pw-3e; Mon, 18 Nov 2024 07:47:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tD1A3-0003CF-1X
- for qemu-devel@nongnu.org; Mon, 18 Nov 2024 07:47:23 -0500
-Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tD1A9-0003Mt-EV
+ for qemu-devel@nongnu.org; Mon, 18 Nov 2024 07:47:29 -0500
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tD1A1-0005P0-Jn
- for qemu-devel@nongnu.org; Mon, 18 Nov 2024 07:47:22 -0500
-Received: by mail-wr1-x433.google.com with SMTP id
- ffacd0b85a97d-382423f4082so929280f8f.3
- for <qemu-devel@nongnu.org>; Mon, 18 Nov 2024 04:47:21 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tD1A7-0005PW-VK
+ for qemu-devel@nongnu.org; Mon, 18 Nov 2024 07:47:29 -0500
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-4314c4cb752so26875775e9.2
+ for <qemu-devel@nongnu.org>; Mon, 18 Nov 2024 04:47:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1731934040; x=1732538840; darn=nongnu.org;
+ d=linaro.org; s=google; t=1731934045; x=1732538845; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=57xyOJgb7MrtuQp8S+1k7r8lU95GPrcuInZY97Vgr3w=;
- b=puz44dusnzUY4XWwEPc+Kz9e9ANwZ96rSmdjDJn5pSjG+JGPgscD7ICkeSGALgrlaK
- H7Ydl/0M+QgUJTDXK/QplIbJ+pwC6TROJk5z6QBphJSlJbBTpVuwNzJSb2ZA6oB4LeCB
- Z55xk6AHnAtFZyMbXywH+nBq9CEVfAc3jNMbWKPh2naUKWwH8Ids11IyXtLuz4SiiEsj
- p5qtb2cTeUGXkM5zxXmlcRcPlRPyTJEbnNxHL2sIWY/xph8fTZeyEuWYyQWMCll4kJOp
- XCSeM3Bn5qdfte6na/XwqTJH+uQj+Yu6FTL88kN32/Ndn9+N5FgtEDXN23pgnaNymLcd
- t5og==
+ bh=/ttdwyIWnlE0XcHxa21WmzaMS4O1MZxffEe5jLcx9RE=;
+ b=XIOrZcikEyo//fXKLMdc/8TV6ZB289n+ijbbARZmvjBY8HLl9cWGgfqA8MqpUGge+d
+ 3E7Dnx44UIEtcYgKLLjDf5LkVq+mcfM/0hrJ6jMjZwD1womkQcTvYi9zCz3/X24ldNE6
+ W5mrMgMA+G2TRJpw9zX2pu5JGnZS4vBMXg6zgwulRSHQO6dec2PJPGd8kAJnHH/ygtT/
+ VG1bUgbfQk6f/J/CGYBCPdapHGbNr6W3dCF4/t5Oy2LHrHDZD/qhaLZMnW/czhi4uOOn
+ YdsQO6wWCdQSrbvRUf1hOznBSVpTPviLL5SP4/BIYxEdlyEDUbQpGeFcV8IMtJQ3mG3g
+ n6zg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731934040; x=1732538840;
+ d=1e100.net; s=20230601; t=1731934045; x=1732538845;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=57xyOJgb7MrtuQp8S+1k7r8lU95GPrcuInZY97Vgr3w=;
- b=rtz2wzAcWdBSyoiPYMv8o3UJCej27l8Po+V8xZ84Bab30QGV9KhrErkun16HuVxudI
- ZZyGoE1Brd8TR7wChXOFKG9TW6gxoHfNPucwPGv93z4V1qE2HhiyyoehphxmXygXq9LC
- 6Yx7LpfrBvxEhr8qCHIxS6o5c2SlwvbyHsDKuPAdrUx6yp6Hq+cLKd8AJWPNKs8klwbS
- v9zb6Lb2t5Q1blcMmKB665UMgb7yD+VDspRq4XBk1kJUiNiNKYSUoj3xrUO6dI4HlYtk
- HiN4Zh/yM5b14TVbj4C0bYiAeaJWiplemQpai4zOsRiWIcNy7ZWMbRJ4b76+c58g53uG
- 23yA==
-X-Gm-Message-State: AOJu0Yz0aXIncL33aLAH1kbYFiOFdp/oYuULiJNLbA6Rr50Z1ZLqLUsm
- ONmICPtCL+Fy7bo5ycMn0E/ouxc8gtHvg/ZMTMb6F3bDRATMIyzRsg3w/csRi8Rh0VpnRDxHjAN
- V
-X-Google-Smtp-Source: AGHT+IF3DUWa/uhuUCxyLTGnGr3Zxfm5V3YNEHF1T9vlk1op3xVZ5SkkFXBwGVmUowjQNReEJCXDzA==
-X-Received: by 2002:a5d:47ab:0:b0:382:3789:191c with SMTP id
- ffacd0b85a97d-38237891a14mr6122659f8f.7.1731934039822; 
- Mon, 18 Nov 2024 04:47:19 -0800 (PST)
+ bh=/ttdwyIWnlE0XcHxa21WmzaMS4O1MZxffEe5jLcx9RE=;
+ b=gXf15XR05s6fXwYmJr+d0m9URI93OIL8tPUz5jxWGU5Kv+ItdzqLujkF8ZztNMs99R
+ LES5KL53WCfF40NLjoA1CrUZX6Zu5Hytp5waggdl1DwlH8kK7Ga38V6E7MJLM6ILx/G7
+ GoUER7IbYJ5ye4fCAW5pKBA3CZrhmCF2sPGCEJF3L3mVigxuw3QAOUEyduQatBmiRlb8
+ 6diMy7cAmSAx765y04h9ox3b1KYAScmWQlUibpgNjThN5+wnuPV3MIWWTsQnLhDBhTw3
+ Y+e5p/Isdb4JfydyxA27Xv+L+LW909S5LZepss+uN1UZD3P2mGVAS8+vF53bifDCokJS
+ noxA==
+X-Gm-Message-State: AOJu0Yz8BkFLBUgJiG3d+TELKOKjJ1sPP/dLBn/9IVX+osBGTR8Znqsn
+ mMtcLYDW54qzE9bqSKBlJL5KsbrQaq26pu/Nv2V4n8tNh9v3OnK3K1yOShU3RItuJDp0btwIuU0
+ n
+X-Google-Smtp-Source: AGHT+IFhVzV7qI53Z++fgv2tXiSftzwzfLkHf8Iy3AmOVyNgXGf5NzN9vnaU5OeQMCi1RODmFKSX+g==
+X-Received: by 2002:a05:600c:1908:b0:431:52da:9d67 with SMTP id
+ 5b1f17b1804b1-432df7178f9mr114301385e9.3.1731934045442; 
+ Mon, 18 Nov 2024 04:47:25 -0800 (PST)
 Received: from localhost.localdomain ([176.187.198.1])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3822e65cbdasm9119775f8f.7.2024.11.18.04.47.18
+ 5b1f17b1804b1-432dab78783sm154194365e9.12.2024.11.18.04.47.24
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 18 Nov 2024 04:47:19 -0800 (PST)
+ Mon, 18 Nov 2024 04:47:24 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Zhang Chen <chen.zhang@intel.com>, Li Zhijian <lizhijian@fujitsu.com>,
+Cc: Guenter Roeck <linux@roeck-us.net>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 06/15] MAINTAINERS: Update my email address for COLO
-Date: Mon, 18 Nov 2024 13:46:33 +0100
-Message-ID: <20241118124643.6958-7-philmd@linaro.org>
+Subject: [PULL 07/15] usb-hub: Fix handling port power control messages
+Date: Mon, 18 Nov 2024 13:46:34 +0100
+Message-ID: <20241118124643.6958-8-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241118124643.6958-1-philmd@linaro.org>
 References: <20241118124643.6958-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::433;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x433.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,29 +92,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Zhang Chen <chen.zhang@intel.com>
+From: Guenter Roeck <linux@roeck-us.net>
 
-Signed-off-by: Zhang Chen <chen.zhang@intel.com>
-Reviewed-by: Li Zhijian <lizhijian@fujitsu.com>
-Message-ID: <20241112084038.6352-1-chen.zhang@intel.com>
+The ClearPortFeature control message fails for PORT_POWER because there
+is no break; at the end of the case statement, causing it to fall through
+to the failure handler. Add the missing break; to solve the problem.
+
+Fixes: 1cc403eb21 ("usb-hub: emulate per port power switching")
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20241112170152.217664-11-linux@roeck-us.net>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- MAINTAINERS | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/usb/dev-hub.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 095420f8b0..3f10529d9c 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -3559,7 +3559,7 @@ F: include/migration/failover.h
- F: docs/COLO-FT.txt
- 
- COLO Proxy
--M: Zhang Chen <chen.zhang@intel.com>
-+M: Zhang Chen <zhangckid@gmail.com>
- M: Li Zhijian <lizhijian@fujitsu.com>
- S: Supported
- F: docs/colo-proxy.txt
+diff --git a/hw/usb/dev-hub.c b/hw/usb/dev-hub.c
+index 06e9537d03..2c3640c705 100644
+--- a/hw/usb/dev-hub.c
++++ b/hw/usb/dev-hub.c
+@@ -479,6 +479,7 @@ static void usb_hub_handle_control(USBDevice *dev, USBPacket *p,
+                     usb_hub_port_clear(port, PORT_STAT_SUSPEND);
+                     port->wPortChange = 0;
+                 }
++                break;
+             default:
+                 goto fail;
+             }
 -- 
 2.45.2
 
