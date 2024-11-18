@@ -2,83 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B1FB9D1356
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Nov 2024 15:40:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB8809D13DB
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Nov 2024 16:02:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tD2vS-0007Nd-LT; Mon, 18 Nov 2024 09:40:26 -0500
+	id 1tD3FB-0003fE-L3; Mon, 18 Nov 2024 10:00:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tD2vP-0007NQ-UC
- for qemu-devel@nongnu.org; Mon, 18 Nov 2024 09:40:24 -0500
-Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tD2vO-0005x5-1B
- for qemu-devel@nongnu.org; Mon, 18 Nov 2024 09:40:23 -0500
-Received: by mail-wr1-x434.google.com with SMTP id
- ffacd0b85a97d-3823cae4be1so1251551f8f.3
- for <qemu-devel@nongnu.org>; Mon, 18 Nov 2024 06:40:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1731940820; x=1732545620; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=GNC6wZ5Nr5C7+3a+WXbJMNymIZufbd5J9IyOeYxpTFk=;
- b=rHJI3FfHPM4qyaJ8027zzlqY5+FjpiA6qTM6k0BQ3+i1Z2sKNjk6Kdzh+SnVmArJX4
- B1z1QvhRbWsQRiN56npgHG1mvKWcgwxGQ+rFYkdMQJANj4n3I+aHVP9TuzIu/F6tbHR+
- bjwpKOVIdtZjW7AcKaiQc9rLhXxLoqc8scEw3GlN8ghWUmGP55Dh3DLfhunaOwWD7hDl
- 837g988FBGLT4rIg8UkM6rS1Yz8+V/j+rh/E9Fms0ccFl6gWjzRqzfAEdn7i8FQ2Ms2b
- LfQ9LNCuIZxSeXT2OCtTkcBFKdSb5rZRklz1kKvPBPN4A0v9KXx2ZymWoOugINniXWNw
- 87mA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731940820; x=1732545620;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=GNC6wZ5Nr5C7+3a+WXbJMNymIZufbd5J9IyOeYxpTFk=;
- b=IZNfkSv+kLV+4iCELQpm29V1GxqBTWZ9RH6z6fodiaElnPEVyOcbQ5inwzzyzJEDpk
- vLOtAIlnCR8VAaf2OeZXyFjjMn30bn0aPElBpnAoOgjiwDxIAtZz9bjCQOdz0SSE2sSh
- cwy2iXHKUCnXZ4ZVJjNNt/4CpoL5rGw56WkjRpU7WEZ/ax+C22wo4PNqSeE0qFEB08OE
- NNq3tITcFcppaiFXNRJQaaCkbL/2Ltqp4ecYvj6mR7cIn3LVVLu7VkyYlgGzM5F+Bs0S
- 8OpnRTUCzSbLY7wca9G/T2zlNP0RJBAH59JvLLtZ/aA0EoaSPFeyvEtas+SOneOzAx9c
- 3E0A==
-X-Gm-Message-State: AOJu0YxnbUIFQGWwatq0gZP+CUqdEdG+0GHfZgeNv3tizopMAaz2HycN
- 8LjeS4q2BSiy1DicSlJPMjNPjn5KVm0aquByd1m9CmwTGBxas/YWpJFcdzO3xU432cr9e0Kwewr
- o
-X-Google-Smtp-Source: AGHT+IGfMEtXK9hHqUraRysMmq8R/OdaCwQnzzGKTQ+naqmQz7/q4DaRPDmsr7VJ2z73HXbzpjZPmA==
-X-Received: by 2002:a5d:5f81:0:b0:382:4378:462a with SMTP id
- ffacd0b85a97d-382437849famr3920182f8f.24.1731940820201; 
- Mon, 18 Nov 2024 06:40:20 -0800 (PST)
-Received: from [192.168.69.197] ([176.187.198.1])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38245e95925sm3782919f8f.111.2024.11.18.06.40.19
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 18 Nov 2024 06:40:19 -0800 (PST)
-Message-ID: <dfe2511b-6486-4ffe-aca2-3810ce758dd3@linaro.org>
-Date: Mon, 18 Nov 2024 15:40:17 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH-for-9.2] hw/avr/arduino: Check for CPU types in
- machine_run_board_init()
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org, Gavin Shan <gshan@redhat.com>,
- Michael Rolnik <mrolnik@gmail.com>, Iris Artin <iris@artins.org>
-References: <20241118130109.7838-1-philmd@linaro.org>
- <CAFEAcA9YQcseyQ3Csf3T99xRfbmvgetkTPZYO22_QE4SZpis-w@mail.gmail.com>
+ (Exim 4.90_1) (envelope-from <shameerali.kolothum.thodi@huawei.com>)
+ id 1tD3Ek-0003cL-E4; Mon, 18 Nov 2024 10:00:22 -0500
+Received: from frasgout.his.huawei.com ([185.176.79.56])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <shameerali.kolothum.thodi@huawei.com>)
+ id 1tD3Eh-0000Py-1b; Mon, 18 Nov 2024 10:00:22 -0500
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4XsW2f2FJ3z6K8yM;
+ Mon, 18 Nov 2024 22:58:02 +0800 (CST)
+Received: from frapeml500007.china.huawei.com (unknown [7.182.85.172])
+ by mail.maildlp.com (Postfix) with ESMTPS id DA784140AE5;
+ Mon, 18 Nov 2024 23:00:13 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (7.182.85.71) by
+ frapeml500007.china.huawei.com (7.182.85.172) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Mon, 18 Nov 2024 16:00:13 +0100
+Received: from frapeml500008.china.huawei.com ([7.182.85.71]) by
+ frapeml500008.china.huawei.com ([7.182.85.71]) with mapi id 15.01.2507.039;
+ Mon, 18 Nov 2024 16:00:13 +0100
+To: "eric.auger@redhat.com" <eric.auger@redhat.com>, "qemu-arm@nongnu.org"
+ <qemu-arm@nongnu.org>, "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+CC: "peter.maydell@linaro.org" <peter.maydell@linaro.org>, "jgg@nvidia.com"
+ <jgg@nvidia.com>, "nicolinc@nvidia.com" <nicolinc@nvidia.com>,
+ "ddutile@redhat.com" <ddutile@redhat.com>, Linuxarm <linuxarm@huawei.com>,
+ "Wangzhou (B)" <wangzhou1@hisilicon.com>, jiangkunkun
+ <jiangkunkun@huawei.com>, Jonathan Cameron <jonathan.cameron@huawei.com>,
+ "zhangfei.gao@linaro.org" <zhangfei.gao@linaro.org>
+Subject: RE: [RFC PATCH 4/5] hw/arm/virt-acpi-build: Build IORT with multiple
+ SMMU nodes
+Thread-Topic: [RFC PATCH 4/5] hw/arm/virt-acpi-build: Build IORT with multiple
+ SMMU nodes
+Thread-Index: AQHbMd3CYnIzOIz3QUan4PDL8HOdprK8zVGAgAAjLhCAABtdAIAAIywQ
+Date: Mon, 18 Nov 2024 15:00:13 +0000
+Message-ID: <0803ec1a010a46b9811543e1044c3176@huawei.com>
+References: <20241108125242.60136-1-shameerali.kolothum.thodi@huawei.com>
+ <20241108125242.60136-5-shameerali.kolothum.thodi@huawei.com>
+ <1dcea5ca-806f-4f51-8b13-faf5d62eb086@redhat.com>
+ <efb9fb7fb0f04d92b7776cdbc474585d@huawei.com>
+ <48bb0455-7c2e-4cc6-aa15-ebe4311d8430@redhat.com>
+In-Reply-To: <48bb0455-7c2e-4cc6-aa15-ebe4311d8430@redhat.com>
+Accept-Language: en-GB, en-US
 Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <CAFEAcA9YQcseyQ3Csf3T99xRfbmvgetkTPZYO22_QE4SZpis-w@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::434;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x434.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.203.177.241]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=shameerali.kolothum.thodi@huawei.com;
+ helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H2=-0.001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -92,23 +80,66 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>
+From:  Shameerali Kolothum Thodi via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 18/11/24 13:07, Peter Maydell wrote:
-> On Mon, 18 Nov 2024 at 13:02, Philippe Mathieu-Daudé <philmd@linaro.org> wrote:
->>
->> Leverage the common code introduced in commit c9cf636d48 ("machine:
->> Add a valid_cpu_types property") to check for the single valid CPU
->> type. This allows reporting an error for invalid CPUs:
->>
->>    $ qemu-system-avr -M 2009 -cpu avr51-avr-cpu
->>    qemu-system-avr: Invalid CPU model: avr51
->>    The only valid type is: avr5
-> 
-> This is a nice user-convenience feature, but why for 9.2?
-> We haven't bothered to error-check the user specified CPU
-> before, and we still don't on many (non-avr) board types.
-
-OK to postpone for 10.0 then.
+SGkgRXJpYywNCg0KPiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBFcmljIEF1
+Z2VyIDxlcmljLmF1Z2VyQHJlZGhhdC5jb20+DQo+IFNlbnQ6IE1vbmRheSwgTm92ZW1iZXIgMTgs
+IDIwMjQgMTo0NiBQTQ0KPiBUbzogU2hhbWVlcmFsaSBLb2xvdGh1bSBUaG9kaQ0KPiA8c2hhbWVl
+cmFsaS5rb2xvdGh1bS50aG9kaUBodWF3ZWkuY29tPjsgcWVtdS1hcm1Abm9uZ251Lm9yZzsNCj4g
+cWVtdS1kZXZlbEBub25nbnUub3JnDQo+IENjOiBwZXRlci5tYXlkZWxsQGxpbmFyby5vcmc7IGpn
+Z0BudmlkaWEuY29tOyBuaWNvbGluY0BudmlkaWEuY29tOw0KPiBkZHV0aWxlQHJlZGhhdC5jb207
+IExpbnV4YXJtIDxsaW51eGFybUBodWF3ZWkuY29tPjsgV2FuZ3pob3UgKEIpDQo+IDx3YW5nemhv
+dTFAaGlzaWxpY29uLmNvbT47IGppYW5na3Vua3VuIDxqaWFuZ2t1bmt1bkBodWF3ZWkuY29tPjsN
+Cj4gSm9uYXRoYW4gQ2FtZXJvbiA8am9uYXRoYW4uY2FtZXJvbkBodWF3ZWkuY29tPjsNCj4gemhh
+bmdmZWkuZ2FvQGxpbmFyby5vcmcNCj4gU3ViamVjdDogUmU6IFtSRkMgUEFUQ0ggNC81XSBody9h
+cm0vdmlydC1hY3BpLWJ1aWxkOiBCdWlsZCBJT1JUIHdpdGgNCj4gbXVsdGlwbGUgU01NVSBub2Rl
+cw0KPiANCg0KPiA+Pj4gICAgICAvKiBOdW1iZXIgb2YgSU9SVCBOb2RlcyAqLw0KPiA+Pj4gQEAg
+LTM0MiwxMCArMzU2LDkgQEAgYnVpbGRfaW9ydChHQXJyYXkgKnRhYmxlX2RhdGEsIEJJT1NMaW5r
+ZXINCj4gPj4gKmxpbmtlciwgVmlydE1hY2hpbmVTdGF0ZSAqdm1zKQ0KPiA+Pj4gICAgICAvKiBH
+SUMgSVRTIElkZW50aWZpZXIgQXJyYXkgKi8NCj4gPj4+ICAgICAgYnVpbGRfYXBwZW5kX2ludF9u
+b3ByZWZpeCh0YWJsZV9kYXRhLCAwIC8qIE1BRFQgdHJhbnNsYXRpb25faWQgKi8sDQo+ID4+IDQp
+Ow0KPiA+Pj4gLSAgICBpZiAodm1zLT5pb21tdSA9PSBWSVJUX0lPTU1VX1NNTVVWMykgew0KPiA+
+Pj4gLSAgICAgICAgaW50IGlycSA9ICB2bXMtPmlycW1hcFtWSVJUX1NNTVVdICsgQVJNX1NQSV9C
+QVNFOw0KPiA+Pj4gKyAgICBmb3IgKGkgPSAwOyBpIDwgbnVtX3NtbXVzOyBpKyspIHsNCj4gPj4+
+ICsgICAgICAgIHNtbXVfb2Zmc2V0W2ldID0gdGFibGVfZGF0YS0+bGVuIC0gdGFibGUudGFibGVf
+b2Zmc2V0Ow0KPiA+Pj4NCj4gPj4gSSB3b3VsZCBoYXZlIGV4cGVjdGVkIGNoYW5nZXMgaW4gdGhl
+IHNtbXUgaWRtYXAgaGFzIHdlbGwuIElmIGEgZ2l2ZW4NCj4gPj4gU01NVSBpbnN0YW5jZSBub3cg
+cHJvdGVjdHMgYSBnaXZlbiBidXMgaGllcmFyY2h5IHNob3VsZG4ndCBpdCBiZQ0KPiA+PiByZWZs
+ZWN0ZWQgaW4gYSBkaWZmZXJlbnRpYXRlZCBTTU1VIGlkbWFwIGZvciBlYWNoIG9mIHRoZW0gKFJJ
+RCBzdWJzZXQNCj4gb2YNCj4gPj4gU01NVS0+cGNpLWJ1cyBtYXBwaW5nIHRvIGEgc3BlY2lmaWMg
+SU9SVCBTTU1VIG5vZGUpPyBIb3cgaXMgaXQgZG9uZQ0KPiA+PiBjdXJyZW50bHk/DQo+ID4gSSB0
+aG91Z2h0IHRoYXQgc21tdV9pZG1hcHMgd2lsbCBiZSBoYW5kbGVkIGJ5IHRoaXMgPw0KPiA+DQo+
+ID4gb2JqZWN0X2NoaWxkX2ZvcmVhY2hfcmVjdXJzaXZlKG9iamVjdF9nZXRfcm9vdCgpLA0KPiA+
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGlvcnRfaG9zdF9icmlkZ2Vz
+LCBzbW11X2lkbWFwcyk7DQo+IHRvIG1lIHRoaXMgdHJhdmVyc2VzIHRoZSBxZW11IG9iamVjdCBo
+aWVyYXJjaHkgdG8gZmluZCBhbGwgaG9zdCBicmlkZ2VzDQo+IGFuZCBmb3IgZWFjaCBvZiB0aGVt
+IGJ1aWxkcyBhbiBpZG1hcCBhcnJheSAoc21tdV9pZG1hcHMgbWFwcGluZyB0aGlzDQo+IFJDDQo+
+IFJJRCByYW5nZSB0byB0aGlzIFNNTVUpLiBCdXQgdG8gbWUgdGhvc2UgaWRtYXBzIHdpbGwgYmUg
+YXNzaWduZWQgdG8NCj4gKmFsbCogU01NVSBpbnN0ZWFjZXMgbGVhZGluZyB0byBhIHdvbmcgSU9S
+VCBkZXNjcmlwdGlvbiBiZWNhdXNlIGFsbA0KPiBTTU1VcyB3aWxsIGJlIHByb3RlY3RpbmcgYWxs
+IGRldmljZXMuIFlvdSBzaGFsbCBvbmx5IHJldGFpbiBpZG1hcHMgd2hpY2gNCj4gY29ycmVzcG9u
+ZCB0byB0aGUgcGNpX2J1cyBhIGdpdmVuIHZTTU1VIGlzIGF0dGFjaGVkIHRvLiBUaGVuIGVhY2gg
+U01NVQ0KPiB3aWxsIHByb3RlY3QgYSBkaXN0aW5jdCBQQ0llIHN1YnRyZWUgd2hpY2ggZG9lcyBu
+b3Qgc2VlbSB0aGUgY2FzZSB0b2RheS4NCj4gQXQgbGVhc3QgdGhhdCdzIG15IGN1cnJlbnQgdW5k
+ZXJzdGFuZGluZy4NCg0KQWguLnJpZ2h0LiBJIHdpbGwgZml4IHRoYXQgaW4gbmV4dCB2ZXJzaW9u
+LiANCg0KSSB0aGluayB0aGUgYWJvdmUgd29uJ3QgYWZmZWN0IHRoZSBiYXNpYyBjYXNlIHdoZXJl
+IEkgaGF2ZSBvbmx5IG9uZQ0KcGNpZS1weGIvU01NVXYzLiBCdXQgZXZlbiBpbiB0aGF0IGNhc2Ug
+aG90IGFkZCBzZWVtcyBub3Qgd29ya2luZy4NCg0KSSB0cmllZCBoYWNraW5nIHRoZSBtaW4vbWF4
+IHJhbmdlcyBhcyBzdXNwZWN0ZWQgYnkgTmljb2xpbi4gQnV0IHN0aWxsIG5vdCBlbm91Z2ggdG8g
+DQpnZXQgaXQgd29ya2luZy4gIERvIHlvdSBoYXZlIGFueSBoaW50IG9uIHdoeSB0aGUgaG90IGFk
+ZChkZXNjcmliZWQgYmVsb3cpIGlzIG5vdA0Kd29ya2luZz8NCg0KVGhhbmtzLA0KU2hhbWVlcg0K
+DQo+IA0KPiBFcmljDQo+IA0KPiANCj4gPg0KPiA+IEJ1dCBpdCBpcyBwb3NzaWJsZSB0aGF0LCB0
+aGVyZSBpcyBhIGJ1ZyBpbiB0aGlzIElPUlQgZ2VuZXJhdGlvbiBoZXJlIGFzIEkgYW0NCj4gbm90
+DQo+ID4gYWJsZSB0byBob3QgYWRkICBkZXZpY2VzLiBJdCBsb29rcyBsaWtlIHRoZSBwY2llaHAg
+aW50ZXJydXB0IGlzIG5vdA0KPiBnZW5lcmF0ZWQvcmVjZWl2ZWQNCj4gPiBmb3Igc29tZSByZWFz
+b24uIE5pY29saW5bMF0gaXMgc3VzcGVjdGluZyB0aGUgbWluL21heCBidXMgcmFuZ2UgaW4NCj4g
+PiBpb3J0X2hvc3RfYnJpZGdlcygpIG1heSBub3QgbGVhdmUgZW5vdWdoIHJhbmdlcyBmb3IgaG90
+IGFkZCBsYXRlci4NCj4gPg0KPiA+IENvbGQgcGx1Z2dpbmcgZGV2aWNlcyB0byBkaWZmZXJlbnQg
+U01NVXYzL3BjaWUtcHhiIHNlZW1zIHRvIGJlIGFscmlnaHQuDQo+ID4NCj4gPiBJIHdpbGwgZGVi
+dWcgdGhhdCBzb29uLg0KPiA+DQo+ID4gVGhhbmtzLA0KPiA+IFNoYW1lZXINCj4gPiBbMF0gaHR0
+cHM6Ly9sb3JlLmtlcm5lbC5vcmcvcWVtdS1kZXZlbC9aelBkMUYlMkZVQTJNS01id2xAQXN1cmFk
+YS0NCj4gTnZpZGlhLw0KPiA+DQo+ID4NCj4gDQoNCg==
 
