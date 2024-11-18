@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 606869D10EA
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Nov 2024 13:49:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 568E69D10E4
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Nov 2024 13:48:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tD1BZ-00065g-UB; Mon, 18 Nov 2024 07:48:58 -0500
+	id 1tD1BS-0005Cd-Fb; Mon, 18 Nov 2024 07:48:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tD1Ac-0004Ei-J6
- for qemu-devel@nongnu.org; Mon, 18 Nov 2024 07:48:03 -0500
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tD1B2-0004XT-S3
+ for qemu-devel@nongnu.org; Mon, 18 Nov 2024 07:48:29 -0500
+Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tD1AZ-0005RM-Rg
- for qemu-devel@nongnu.org; Mon, 18 Nov 2024 07:47:57 -0500
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-43155abaf0bso18088605e9.0
- for <qemu-devel@nongnu.org>; Mon, 18 Nov 2024 04:47:55 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tD1Ah-0005Rf-70
+ for qemu-devel@nongnu.org; Mon, 18 Nov 2024 07:48:19 -0500
+Received: by mail-wr1-x433.google.com with SMTP id
+ ffacd0b85a97d-3823194a879so1563296f8f.0
+ for <qemu-devel@nongnu.org>; Mon, 18 Nov 2024 04:48:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1731934074; x=1732538874; darn=nongnu.org;
+ d=linaro.org; s=google; t=1731934080; x=1732538880; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=mZY2UZXl5ISTHGaCx/dhRxaaExiBOZqSteLaMzypVhw=;
- b=DIFQkBvb/zfEc8LqPrxIsMwrQ9ML3uAgym/lKlLqr9/X+2LUC+48CYera6qe3nUlxv
- CHlnzKnYEol93M3/qmh+83fBKD5pFSDLGWniYwxuGWZVpkZ69leQ2plIUbzlHn0F53kP
- HKoiFpZsqLVbZ1U0YUDvNYFJnZHQYnIFZhcWNWAxhoUifxvmttlCmOTTgdLdoGAatTvA
- eJSvwQ4newl2v/icdnr7KTy1cPxiSyasTUid8snan0Kct6sNA67Xs4FigK4SPDac6Z9D
- kc5X3hJkBUkyCzjfA7of/LIiG/xjw+Gj6ViotMFm1xdHRuBl5LSzt0Ao3LiC6NbaqzOl
- rRKw==
+ bh=e4ERK3ElD4P8I6nFF+NaMJMN4ukbGaWKpf0tkMteE1E=;
+ b=uCGhJvQJ8NsMdpwTKTXLIJAG+S9b3WJJfpPvg2ZTPvL6qOaOmRneJAcwnIoRax1X1d
+ 6glAE1TgSHhPRskIq4lpF3O+ZswWdRi0i1MvvA4erpfsVdxJhA+2DIAnPiCV4Qwp/RyC
+ TPziHyLhMG+lu5ZW0/951zYsYPFGxgMqL5D4NV5bAnZMZ96tC60qAXg/oCP0+Zl+VPPH
+ qbvlL8oZ2AxkMlQ594q0sqY72iNht16ruxwbURT1obhTfZPc646MO6RGyqw38VT07yME
+ cHOCvU2PHzUoVbB2rbcmrltjy8XMRG+xbuDogm6jfGJ959rNx8tyeFGpEUFM4A7uZWC2
+ MaRQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731934074; x=1732538874;
+ d=1e100.net; s=20230601; t=1731934080; x=1732538880;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=mZY2UZXl5ISTHGaCx/dhRxaaExiBOZqSteLaMzypVhw=;
- b=Kj6O1PVqJs9bmNgYrqYx97ewK/Ov3CS96I0aijQgdPddFEzGL2gK6+sUU03B+br29A
- o6kggVA01M4DpgY/DaROFyIm4rhVDevWX1ixFCXmz3LUlEXs4aBesH4ChrubDGqsJH6b
- jNmk5kcqMqOeOHBSQFHdVwJJfAP/UFyjJ3Xk/d5lrKXBaN9E0Nmy0NUTSQJkkpAkIqhv
- 21IaixSIfOgob7WPZuL7y5CJ04cJiMoMItjsW1q1ifbpJaidd1xkxXIIrpB6H2xflE1F
- o6ZJ8NhLs8cpLh10pu9GcJzr/hXubd1wkL8KJWBDOQyDwxQaWSufr+eVa/tgsQxDJlFu
- hD2Q==
-X-Gm-Message-State: AOJu0YwiQiOoNp6v1V2dxY3wXN/32WaMMbTkCyEH6tSM6bf64rFJ9zOo
- 5ZDlt1ZQERwCvLPMpMv2Ep19bzmWgbWHSFBnBM7hH95BU0QjBg9eViso1gqB5mGO8PVDtr3sqXL
- J
-X-Google-Smtp-Source: AGHT+IFWseHO7AxXi8DCnPAmK/DSPyYuGVEk+4RungkkyCu1GUZjKkq1wwr2n3Hq66WurevDi7G4Eg==
-X-Received: by 2002:a05:600c:3143:b0:431:9397:9ace with SMTP id
- 5b1f17b1804b1-432df7411b0mr120048115e9.10.1731934074124; 
- Mon, 18 Nov 2024 04:47:54 -0800 (PST)
+ bh=e4ERK3ElD4P8I6nFF+NaMJMN4ukbGaWKpf0tkMteE1E=;
+ b=wXqRTAMpjIU/oHei0hbsZ8tUf8GCMVcr5GER0TqGZ5yzwOrcsBQBu8fw8kKfn4yhfv
+ 4RQ9Tn3rFwNBEk+DyUPyJ9PnrCxPaos9I1LigjUEKDvIpPz0XOAfTl8u2RqBWbxM7rro
+ tNGSbpbKmk8jaeY7xzrroh/FzckzuhVz1E85QQ209LwC/pVtGL1JAslCEma4mtNBAJOk
+ A2qTWdMZmjTzRr48V8tvnjW7CTAYJjcWO4ZoTCfZyMXFgk8kqTFdjlcmadePTjV/2+lP
+ DcZH6p5p723oR4fcn66A3TQIvrQ0Qv3F1Mt1HIGqLioJR0O41EIJAv6czIn6CEQnepWx
+ QJDQ==
+X-Gm-Message-State: AOJu0YzVLbcKSww7cmuGGzbMzJ6FwfhTiVhI2/ycJd7jjgzAzmekD3K4
+ 34CAOTxfWtH4X6/60i9k717m9c1LPz7I/NfW4Ipl57KsxkYyyfXaz/EBkTF8OIdS3ZHtU47YTkk
+ c
+X-Google-Smtp-Source: AGHT+IGDo9Z850DXH8dv/QoH1s3wkaezvP+GTpZf2e8NqZYZktsOkQw0d2uqhbjTIgvkgPiZAq492Q==
+X-Received: by 2002:a05:6000:2a8:b0:382:372a:5718 with SMTP id
+ ffacd0b85a97d-382372a5a17mr5566122f8f.26.1731934079649; 
+ Mon, 18 Nov 2024 04:47:59 -0800 (PST)
 Received: from localhost.localdomain ([176.187.198.1])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-432da28cad9sm158081935e9.32.2024.11.18.04.47.52
+ ffacd0b85a97d-38244ff1ca3sm3810943f8f.26.2024.11.18.04.47.58
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 18 Nov 2024 04:47:53 -0800 (PST)
+ Mon, 18 Nov 2024 04:47:59 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>, qemu-stable@nongnu.org,
- Michael Tokarev <mjt@tls.msk.ru>,
+Cc: Peter Maydell <peter.maydell@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 12/15] hw/audio/hda: fix memory leak on audio setup
-Date: Mon, 18 Nov 2024 13:46:39 +0100
-Message-ID: <20241118124643.6958-13-philmd@linaro.org>
+Subject: [PULL 13/15] hw/net/virtio-net.c: Don't assume IP length field is
+ aligned
+Date: Mon, 18 Nov 2024 13:46:40 +0100
+Message-ID: <20241118124643.6958-14-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241118124643.6958-1-philmd@linaro.org>
 References: <20241118124643.6958-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::433;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,80 +93,106 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Paolo Bonzini <pbonzini@redhat.com>
+From: Peter Maydell <peter.maydell@linaro.org>
 
-When SET_STREAM_FORMAT is called, the st->buft timer is overwritten, thus
-causing a memory leak.  This was originally fixed in commit 816139ae6a5
-("hw/audio/hda: fix memory leak on audio setup", 2024-11-14) but that
-caused the audio to break in SPICE.
+In virtio-net.c we assume that the IP length field in the packet is
+aligned, and we copy its address into a uint16_t* in the
+VirtioNetRscUnit struct which we then dereference later.  This isn't
+a safe assumption; it will also result in compilation failures if we
+mark the ip_header struct as QEMU_PACKED because the compiler will
+not let you take the address of an unaligned struct field.
 
-Fortunately, a simpler fix is possible.  The timer only needs to be
-reset, because the callback is always the same (st->output is set at
-realize time in hda_audio_init); call to timer_new_ns overkill.  Replace
-it with timer_del and only initialize the timer once; for simplicity,
-do it even if use_timer is false.
+Make the ip_plen field in VirtioNetRscUnit a void*, and make all the
+places where we read or write through that pointer instead use some
+new accessor functions read_unit_ip_len() and write_unit_ip_len()
+which account for the pointer being potentially unaligned and also do
+the network-byte-order conversion we were previously using htons() to
+perform.
 
-An even simpler fix would be to free the old time in hda_audio_setup().
-However, it seems better to place the initialization of the timer close
-to that of st->ouput.
-
-Cc: qemu-stable@nongnu.org
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
-Message-ID: <20241114125318.1707590-3-pbonzini@redhat.com>
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20241114141619.806652-2-peter.maydell@linaro.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/audio/hda-codec.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ include/hw/virtio/virtio-net.h |  2 +-
+ hw/net/virtio-net.c            | 23 +++++++++++++++++++----
+ 2 files changed, 20 insertions(+), 5 deletions(-)
 
-diff --git a/hw/audio/hda-codec.c b/hw/audio/hda-codec.c
-index 74c0292284..c340a9481d 100644
---- a/hw/audio/hda-codec.c
-+++ b/hw/audio/hda-codec.c
-@@ -487,8 +487,7 @@ static void hda_audio_setup(HDAAudioStream *st)
-     if (st->output) {
-         if (use_timer) {
-             cb = hda_audio_output_cb;
--            st->buft = timer_new_ns(QEMU_CLOCK_VIRTUAL,
--                                    hda_audio_output_timer, st);
-+            timer_del(st->buft);
-         } else {
-             cb = hda_audio_compat_output_cb;
-         }
-@@ -497,8 +496,7 @@ static void hda_audio_setup(HDAAudioStream *st)
-     } else {
-         if (use_timer) {
-             cb = hda_audio_input_cb;
--            st->buft = timer_new_ns(QEMU_CLOCK_VIRTUAL,
--                                    hda_audio_input_timer, st);
-+            timer_del(st->buft);
-         } else {
-             cb = hda_audio_compat_input_cb;
-         }
-@@ -726,8 +724,12 @@ static void hda_audio_init(HDACodecDevice *hda,
-                 st->gain_right = QEMU_HDA_AMP_STEPS;
-                 st->compat_bpos = sizeof(st->compat_buf);
-                 st->output = true;
-+                st->buft = timer_new_ns(QEMU_CLOCK_VIRTUAL,
-+                                        hda_audio_output_timer, st);
-             } else {
-                 st->output = false;
-+                st->buft = timer_new_ns(QEMU_CLOCK_VIRTUAL,
-+                                        hda_audio_input_timer, st);
-             }
-             st->format = AC_FMT_TYPE_PCM | AC_FMT_BITS_16 |
-                 (1 << AC_FMT_CHAN_SHIFT);
-@@ -750,9 +752,7 @@ static void hda_audio_exit(HDACodecDevice *hda)
-         if (st->node == NULL) {
-             continue;
-         }
--        if (a->use_timer) {
--            timer_free(st->buft);
--        }
-+        timer_free(st->buft);
-         if (st->output) {
-             AUD_close_out(&a->card, st->voice.out);
-         } else {
+diff --git a/include/hw/virtio/virtio-net.h b/include/hw/virtio/virtio-net.h
+index 060c23c04d..b9ea9e824e 100644
+--- a/include/hw/virtio/virtio-net.h
++++ b/include/hw/virtio/virtio-net.h
+@@ -102,7 +102,7 @@ typedef struct VirtioNetRscStat {
+ /* Rsc unit general info used to checking if can coalescing */
+ typedef struct VirtioNetRscUnit {
+     void *ip;   /* ip header */
+-    uint16_t *ip_plen;      /* data len pointer in ip header field */
++    void *ip_plen; /* pointer to unaligned uint16_t data len in ip header */
+     struct tcp_header *tcp; /* tcp header */
+     uint16_t tcp_hdrlen;    /* tcp header len */
+     uint16_t payload;       /* pure payload without virtio/eth/ip/tcp */
+diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
+index f2104ed364..75b4a28fb3 100644
+--- a/hw/net/virtio-net.c
++++ b/hw/net/virtio-net.c
+@@ -2049,6 +2049,21 @@ static ssize_t virtio_net_do_receive(NetClientState *nc, const uint8_t *buf,
+     return virtio_net_receive_rcu(nc, buf, size, false);
+ }
+ 
++/*
++ * Accessors to read and write the IP packet data length field. This
++ * is a potentially unaligned network-byte-order 16 bit unsigned integer
++ * pointed to by unit->ip_len.
++ */
++static uint16_t read_unit_ip_len(VirtioNetRscUnit *unit)
++{
++    return lduw_be_p(unit->ip_plen);
++}
++
++static void write_unit_ip_len(VirtioNetRscUnit *unit, uint16_t l)
++{
++    stw_be_p(unit->ip_plen, l);
++}
++
+ static void virtio_net_rsc_extract_unit4(VirtioNetRscChain *chain,
+                                          const uint8_t *buf,
+                                          VirtioNetRscUnit *unit)
+@@ -2063,7 +2078,7 @@ static void virtio_net_rsc_extract_unit4(VirtioNetRscChain *chain,
+     unit->ip_plen = &ip->ip_len;
+     unit->tcp = (struct tcp_header *)(((uint8_t *)unit->ip) + ip_hdrlen);
+     unit->tcp_hdrlen = (htons(unit->tcp->th_offset_flags) & 0xF000) >> 10;
+-    unit->payload = htons(*unit->ip_plen) - ip_hdrlen - unit->tcp_hdrlen;
++    unit->payload = read_unit_ip_len(unit) - ip_hdrlen - unit->tcp_hdrlen;
+ }
+ 
+ static void virtio_net_rsc_extract_unit6(VirtioNetRscChain *chain,
+@@ -2082,7 +2097,7 @@ static void virtio_net_rsc_extract_unit6(VirtioNetRscChain *chain,
+ 
+     /* There is a difference between payload length in ipv4 and v6,
+        ip header is excluded in ipv6 */
+-    unit->payload = htons(*unit->ip_plen) - unit->tcp_hdrlen;
++    unit->payload = read_unit_ip_len(unit) - unit->tcp_hdrlen;
+ }
+ 
+ static size_t virtio_net_rsc_drain_seg(VirtioNetRscChain *chain,
+@@ -2231,7 +2246,7 @@ static int32_t virtio_net_rsc_coalesce_data(VirtioNetRscChain *chain,
+     VirtioNetRscUnit *o_unit;
+ 
+     o_unit = &seg->unit;
+-    o_ip_len = htons(*o_unit->ip_plen);
++    o_ip_len = read_unit_ip_len(o_unit);
+     nseq = htonl(n_unit->tcp->th_seq);
+     oseq = htonl(o_unit->tcp->th_seq);
+ 
+@@ -2267,7 +2282,7 @@ coalesce:
+         o_unit->payload += n_unit->payload; /* update new data len */
+ 
+         /* update field in ip header */
+-        *o_unit->ip_plen = htons(o_ip_len + n_unit->payload);
++        write_unit_ip_len(o_unit, o_ip_len + n_unit->payload);
+ 
+         /* Bring 'PUSH' big, the whql test guide says 'PUSH' can be coalesced
+            for windows guest, while this may change the behavior for linux
 -- 
 2.45.2
 
