@@ -2,88 +2,106 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2A159D1258
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Nov 2024 14:44:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA7C89D1265
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Nov 2024 14:46:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tD21y-0000Hl-81; Mon, 18 Nov 2024 08:43:06 -0500
+	id 1tD24q-0002Zb-9C; Mon, 18 Nov 2024 08:46:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tD21w-0000HE-3w
- for qemu-devel@nongnu.org; Mon, 18 Nov 2024 08:43:04 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1tD24l-0002YR-Ar
+ for qemu-devel@nongnu.org; Mon, 18 Nov 2024 08:46:00 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tD21u-0005RA-JW
- for qemu-devel@nongnu.org; Mon, 18 Nov 2024 08:43:03 -0500
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1tD24j-00065s-2M
+ for qemu-devel@nongnu.org; Mon, 18 Nov 2024 08:45:58 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1731937381;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ s=mimecast20190719; t=1731937555;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=LtrWG0BY5YXvtznR58NqvTwNft4cx/F8PPpsoNdE91E=;
- b=jGXJdwvSwL6eGpcv/GoUUn6IHDFxapecJdkkuw3H0/BDBJgfBlzKlvpc5UFHPsCPCRurEM
- 9WdksjbdbHqRl+XzyH/5TUgI9BTrxOGOQ/K6Z8kgUNwYbqPWaGguuIJK8wMOI2s01ldcZf
- Iuyr6/zWG63YWJIxq5ccFkQveWCWvDg=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=4aXRwMuXZA9xXLR2PBwNDTi0Od7kPErzY7NzN0KuU8c=;
+ b=CdaiS87yhbnITTF/7Mwg58rOXWzu3dSRUbHaJ6K0Xl0PrfBWw3ndGc47m2J4BJFpWQMmZ8
+ BkVvSOwQfcJQXMeQ8+wzREw/GgUuv9bGmwqQRbNtAwueRGGTcCj0S58Tr98BlXyzxHeGsc
+ sp64bFfIbFgL+PEsEVQmN2/P/NYALDA=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-554-Yc1jwTM8OxuMn2IoL3XmKg-1; Mon, 18 Nov 2024 08:43:00 -0500
-X-MC-Unique: Yc1jwTM8OxuMn2IoL3XmKg-1
-X-Mimecast-MFC-AGG-ID: Yc1jwTM8OxuMn2IoL3XmKg
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-382480686f2so531600f8f.1
- for <qemu-devel@nongnu.org>; Mon, 18 Nov 2024 05:43:00 -0800 (PST)
+ us-mta-97-dtac_isaM76n2VomqzLwKA-1; Mon, 18 Nov 2024 08:45:54 -0500
+X-MC-Unique: dtac_isaM76n2VomqzLwKA-1
+X-Mimecast-MFC-AGG-ID: dtac_isaM76n2VomqzLwKA
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-4316655b2f1so20566155e9.0
+ for <qemu-devel@nongnu.org>; Mon, 18 Nov 2024 05:45:53 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731937378; x=1732542178;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=LtrWG0BY5YXvtznR58NqvTwNft4cx/F8PPpsoNdE91E=;
- b=hN8KhaNlRFWfBJlBkeKhrpbnijzOIce+FICkVB8iaqOoIQpfbiDu/bNjdnc2GB9NV7
- yhw9IlqNqli6zXhyRPCzKmhxdC2Mj1rnVsgEXdBZ7SH+X6Bz/uc05mX9nqlz1YVf+HCe
- ewGrXjtQWFtI+xJjd1wQC6FxkEmorMYW3IKiWZ29OWhRq2ZRo52RPvY+icyxZKwBUjcB
- 5gaLKiAJ8bsl4OmIoZ/PnjJuwa+LEw0AGSb6fDpTBx6Ys752PAhAvfYiX+/mLbh/KC2k
- XJweDE9GVkUoBTfgjC2LKb1WsEKcnRRLedq73k+3m0v66HzC0krvDReIE1m3FjsoT86/
- wn/g==
-X-Gm-Message-State: AOJu0Yz9u4gynF2cBr2w+tGw4dltsFVILhddymclfUfl1k5Wu0ac/Hf4
- d92oC+hi6a1df94TpXhh3gkJfsZd6C8ryPiFrSj7H5yONfQrQ07/qHNPqLhuwnW9lDKQ6m50bZk
- XAUFmeoDnzlfDh+rkPIVvmy64XX3cNLm8n21G5EZtKpiG6+7+86DtZczPdvvZkcTsCgPiGTjFBB
- 2DUY19Pha+5VsJ7mA5fw3CUdwtu3Myx9O5yyIk
-X-Received: by 2002:a05:6000:2185:b0:382:2290:3257 with SMTP id
- ffacd0b85a97d-38225aafafbmr6872043f8f.49.1731937378672; 
- Mon, 18 Nov 2024 05:42:58 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGgolQJvEI/CIXalnG63a8lVZbj5LWTG9tnXB8cN2RvQFSPm6eTGjeyzBi3xs/359nsQS196A==
-X-Received: by 2002:a05:6000:2185:b0:382:2290:3257 with SMTP id
- ffacd0b85a97d-38225aafafbmr6872027f8f.49.1731937378194; 
- Mon, 18 Nov 2024 05:42:58 -0800 (PST)
-Received: from [192.168.10.3] ([151.49.84.243])
+ d=1e100.net; s=20230601; t=1731937553; x=1732542353;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:reply-to:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=4aXRwMuXZA9xXLR2PBwNDTi0Od7kPErzY7NzN0KuU8c=;
+ b=uwAOAk0iZUS93DdufeeLcO7+HMW5KszjLnTcHA1M8mtHd+K0dzSpwNHaFjksu/K7ST
+ ZsGmqWtOoQoyR9l9iIOJ2ijE5InoPvNAzMRsFYv+BlQ4UgomtbVj9U1T9i+E1dK3I0h2
+ UREWjdLvvkQKR6loByOEHLoR4+iCRWQEWcootdh1tUUthBrTsuBinxHbxnw5Ouu3X6Ao
+ Om0i7iXfSBJAyntSa5i5934ZT7zsNu4XHYFOIAaZwQJdlHTdPFg9YGp0BEL5QtSL8Dy9
+ dfa09TYGV65tFkNv3TWcVLG0R6URiNyYd8j5Ro2IySQUzNe2ZjubgPJXxdOuv7sa0W5g
+ Iy3g==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXIONqmpJpEJj4CSAthlJrMIM4e2V3IaNPUMLAEsdEUFdXGhA/fiCgHKTWM4pyMphm/VtYfKK/Yp5VH@nongnu.org
+X-Gm-Message-State: AOJu0YwOOBml7CxKkHrN23fZySRficBbjfkqbp5FAtUDXPFvN64rD3mz
+ O3Hu3rPlDrFeJcz9RUFXq9rzYopw5ge/pYomZDJKv0HIJ+tl55/XuJyZR5zGVdwUSQk/QZFhOjD
+ B71Uv4kxuKos0UEu5f/wQH/fGR4GDErKCEZ/BY4af8yLWSFg/3CV/
+X-Received: by 2002:a05:600c:5492:b0:431:5d89:646e with SMTP id
+ 5b1f17b1804b1-432df792df0mr91996335e9.32.1731937552982; 
+ Mon, 18 Nov 2024 05:45:52 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHSyR4PH6PDcQ5QSVAmQRRQvdKh8qidN9xp1DJ13iZ2La9UZItbGi6K8nL5Ftpie0twUE2yXA==
+X-Received: by 2002:a05:600c:5492:b0:431:5d89:646e with SMTP id
+ 5b1f17b1804b1-432df792df0mr91995995e9.32.1731937552676; 
+ Mon, 18 Nov 2024 05:45:52 -0800 (PST)
+Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874?
+ ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-382398aa925sm6809834f8f.50.2024.11.18.05.42.56
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 18 Nov 2024 05:42:56 -0800 (PST)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PULL 2/2] configure: Use -ef to compare paths
-Date: Mon, 18 Nov 2024 14:42:53 +0100
-Message-ID: <20241118134253.2071319-3-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241118134253.2071319-1-pbonzini@redhat.com>
-References: <20241118134253.2071319-1-pbonzini@redhat.com>
+ 5b1f17b1804b1-432da28b76fsm163395515e9.28.2024.11.18.05.45.51
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 18 Nov 2024 05:45:52 -0800 (PST)
+Message-ID: <48bb0455-7c2e-4cc6-aa15-ebe4311d8430@redhat.com>
+Date: Mon, 18 Nov 2024 14:45:50 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 4/5] hw/arm/virt-acpi-build: Build IORT with multiple
+ SMMU nodes
+Content-Language: en-US
+To: Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>,
+ "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+Cc: "peter.maydell@linaro.org" <peter.maydell@linaro.org>,
+ "jgg@nvidia.com" <jgg@nvidia.com>, "nicolinc@nvidia.com"
+ <nicolinc@nvidia.com>, "ddutile@redhat.com" <ddutile@redhat.com>,
+ Linuxarm <linuxarm@huawei.com>, "Wangzhou (B)" <wangzhou1@hisilicon.com>,
+ jiangkunkun <jiangkunkun@huawei.com>,
+ Jonathan Cameron <jonathan.cameron@huawei.com>,
+ "zhangfei.gao@linaro.org" <zhangfei.gao@linaro.org>
+References: <20241108125242.60136-1-shameerali.kolothum.thodi@huawei.com>
+ <20241108125242.60136-5-shameerali.kolothum.thodi@huawei.com>
+ <1dcea5ca-806f-4f51-8b13-faf5d62eb086@redhat.com>
+ <efb9fb7fb0f04d92b7776cdbc474585d@huawei.com>
+From: Eric Auger <eric.auger@redhat.com>
+In-Reply-To: <efb9fb7fb0f04d92b7776cdbc474585d@huawei.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124;
+ envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.142,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -98,37 +116,74 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
+Hi Shameer,
 
-configure checks if it is executed in the source directory by comparing
-the literal paths, but there may be multiple representations of a
-directory due to symbolic links. Use the -ef operator to tell if they
-point to the same directory.
+On 11/18/24 12:44, Shameerali Kolothum Thodi wrote:
+>
+>> -----Original Message-----
+>> From: Eric Auger <eric.auger@redhat.com>
+>> Sent: Monday, November 18, 2024 10:02 AM
+>> To: Shameerali Kolothum Thodi
+>> <shameerali.kolothum.thodi@huawei.com>; qemu-arm@nongnu.org;
+>> qemu-devel@nongnu.org
+>> Cc: peter.maydell@linaro.org; jgg@nvidia.com; nicolinc@nvidia.com;
+>> ddutile@redhat.com; Linuxarm <linuxarm@huawei.com>; Wangzhou (B)
+>> <wangzhou1@hisilicon.com>; jiangkunkun <jiangkunkun@huawei.com>;
+>> Jonathan Cameron <jonathan.cameron@huawei.com>;
+>> zhangfei.gao@linaro.org
+>> Subject: Re: [RFC PATCH 4/5] hw/arm/virt-acpi-build: Build IORT with
+>> multiple SMMU nodes
+>>
+>>>      /* Number of IORT Nodes */
+>>> @@ -342,10 +356,9 @@ build_iort(GArray *table_data, BIOSLinker
+>> *linker, VirtMachineState *vms)
+>>>      /* GIC ITS Identifier Array */
+>>>      build_append_int_noprefix(table_data, 0 /* MADT translation_id */,
+>> 4);
+>>> -    if (vms->iommu == VIRT_IOMMU_SMMUV3) {
+>>> -        int irq =  vms->irqmap[VIRT_SMMU] + ARM_SPI_BASE;
+>>> +    for (i = 0; i < num_smmus; i++) {
+>>> +        smmu_offset[i] = table_data->len - table.table_offset;
+>>>
+>> I would have expected changes in the smmu idmap has well. If a given
+>> SMMU instance now protects a given bus hierarchy shouldn't it be
+>> reflected in a differentiated SMMU idmap for each of them (RID subset of
+>> SMMU->pci-bus mapping to a specific IORT SMMU node)? How is it done
+>> currently?
+> I thought that smmu_idmaps will be handled by this ?
+>
+> object_child_foreach_recursive(object_get_root(),
+>                                        iort_host_bridges, smmu_idmaps);
+to me this traverses the qemu object hierarchy to find all host bridges
+and for each of them builds an idmap array (smmu_idmaps mapping this RC
+RID range to this SMMU). But to me those idmaps will be assigned to
+*all* SMMU insteaces leading to a wong IORT description because all
+SMMUs will be protecting all devices. You shall only retain idmaps which
+correspond to the pci_bus a given vSMMU is attached to. Then each SMMU
+will protect a distinct PCIe subtree which does not seem the case today.
+At least that's my current understanding.
 
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Link: https://lore.kernel.org/r/20241111-p-v1-1-001006c68b7e@daynix.com
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- configure | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Eric
 
-diff --git a/configure b/configure
-index 096b1fddb70..18336376bff 100755
---- a/configure
-+++ b/configure
-@@ -13,7 +13,7 @@ export CCACHE_RECACHE=yes
- # make source path absolute
- source_path=$(cd "$(dirname -- "$0")"; pwd)
- 
--if test "$PWD" = "$source_path"
-+if test "$PWD" -ef "$source_path"
- then
-     echo "Using './build' as the directory for build output"
- 
--- 
-2.47.0
+
+>
+> But it is possible that, there is a bug in this IORT generation here as I am not
+> able to hot add  devices. It looks like the pciehp interrupt is not generated/received
+> for some reason. Nicolin[0] is suspecting the min/max bus range in
+> iort_host_bridges() may not leave enough ranges for hot add later.
+>
+> Cold plugging devices to different SMMUv3/pcie-pxb seems to be alright.
+>
+> I will debug that soon.
+>
+> Thanks,
+> Shameer
+> [0] https://lore.kernel.org/qemu-devel/ZzPd1F%2FUA2MKMbwl@Asurada-Nvidia/
+>
+>
 
 
