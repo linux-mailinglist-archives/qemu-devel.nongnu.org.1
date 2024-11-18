@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD92B9D1747
+	by mail.lfdr.de (Postfix) with ESMTPS id CF8449D1748
 	for <lists+qemu-devel@lfdr.de>; Mon, 18 Nov 2024 18:38:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tD5gs-0000FK-8b; Mon, 18 Nov 2024 12:37:34 -0500
+	id 1tD5gu-0000T5-Hg; Mon, 18 Nov 2024 12:37:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tD5gV-0008Gh-Vi
- for qemu-devel@nongnu.org; Mon, 18 Nov 2024 12:37:14 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tD5gX-0008H1-Nu
+ for qemu-devel@nongnu.org; Mon, 18 Nov 2024 12:37:15 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tD5gT-0004n4-5f
- for qemu-devel@nongnu.org; Mon, 18 Nov 2024 12:37:10 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tD5gW-0004ot-At
+ for qemu-devel@nongnu.org; Mon, 18 Nov 2024 12:37:13 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1731951427;
+ s=mimecast20190719; t=1731951431;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=9kniq6o51rC52CTgEXZF2VX5mVrF5y8QD9cn/IfAcJw=;
- b=Ysq7iVnkjoF8xfZ95Rul9FMk0NgrKQqPi/13GDPlnrRvCmc9MLLl1GkPNOYk7NBzAp25Wv
- XaXhZ+zTACi9RBHRz2ucr97C0FtgsKociFJ2e13aGdr6uH66hnxxCw6GWN8+s0FV5TMQjV
- GR8VxSzTOOJR/Oh3nBBzgbyzMjIZ734=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ bh=TX7LOrpygOiAL+IAvnD6KS3fiwJAom3MdueypHbDqfU=;
+ b=ig3f0oDWQEUf5ChVqVUCGbvwszBO6y/2/ulMWxm6iz1tv1vxdT6DCg4/tZ+fCYsVL36DQE
+ A8ExJGBS0id1NLEf4Zy0z8Q3YODWHjUA+5Dg1Sswd3kRXKn9mENO/u/NJQK3BG0+3MqrrW
+ Dmn7MdUutGp3gpH5DMCFu9t7F+b4rsU=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-568-ruSFp_pMOMK8Dwwe-Zgr0Q-1; Mon,
- 18 Nov 2024 12:37:03 -0500
-X-MC-Unique: ruSFp_pMOMK8Dwwe-Zgr0Q-1
-X-Mimecast-MFC-AGG-ID: ruSFp_pMOMK8Dwwe-Zgr0Q
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-316-OjNk8Mg0PGSju6YsAOWmew-1; Mon,
+ 18 Nov 2024 12:37:05 -0500
+X-MC-Unique: OjNk8Mg0PGSju6YsAOWmew-1
+X-Mimecast-MFC-AGG-ID: OjNk8Mg0PGSju6YsAOWmew
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 1ACD71954ADF; Mon, 18 Nov 2024 17:37:01 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 763551936125; Mon, 18 Nov 2024 17:37:03 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.194.53])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 10EEC195DF81; Mon, 18 Nov 2024 17:36:58 +0000 (UTC)
+ id 97D7C195E481; Mon, 18 Nov 2024 17:37:01 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Jared Rossi <jrossi@linux.ibm.com>
-Subject: [PULL 08/12] pc-bios/s390x: Initialize cdrom type to false for each
- IPL device
-Date: Mon, 18 Nov 2024 18:36:30 +0100
-Message-ID: <20241118173634.473532-9-thuth@redhat.com>
+Subject: [PULL 09/12] pc-bios/s390x: Initialize machine loadparm before
+ probing IPL devices
+Date: Mon, 18 Nov 2024 18:36:31 +0100
+Message-ID: <20241118173634.473532-10-thuth@redhat.com>
 In-Reply-To: <20241118173634.473532-1-thuth@redhat.com>
 References: <20241118173634.473532-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -83,29 +83,41 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Jared Rossi <jrossi@linux.ibm.com>
 
-Clear information about cdrom type so that current IPL device isn't tainted
-by stale data from previous devices.
+Commit bb185de423 ("s390x: Add individual loadparm assignment to
+CCW device") allowed boot devices to be assigned a loadparm value independent
+of the machine value, however, when no boot devices are defined, the machine
+loadparm becomes ignored. Therefore, let's check the machine loadparm
+prior to probing the devices.
 
 Signed-off-by: Jared Rossi <jrossi@linux.ibm.com>
 Reviewed-by: Thomas Huth <thuth@redhat.com>
-Message-ID: <20241108194136.2833932-1-jrossi@linux.ibm.com>
+Message-ID: <20241114161952.3508554-1-jrossi@linux.ibm.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- pc-bios/s390-ccw/main.c | 1 +
- 1 file changed, 1 insertion(+)
+ pc-bios/s390-ccw/main.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/pc-bios/s390-ccw/main.c b/pc-bios/s390-ccw/main.c
-index a4d1c05aac..7509755e36 100644
+index 7509755e36..76bf743900 100644
 --- a/pc-bios/s390-ccw/main.c
 +++ b/pc-bios/s390-ccw/main.c
-@@ -242,6 +242,7 @@ static bool find_boot_device(void)
- static int virtio_setup(void)
+@@ -191,7 +191,7 @@ static void boot_setup(void)
  {
-     VDev *vdev = virtio_get_device();
-+    vdev->is_cdrom = false;
-     int ret;
+     char lpmsg[] = "LOADPARM=[________]\n";
  
-     switch (vdev->senseid.cu_model) {
+-    if (memcmp(iplb.loadparm, NO_LOADPARM, LOADPARM_LEN) != 0) {
++    if (have_iplb && memcmp(iplb.loadparm, NO_LOADPARM, LOADPARM_LEN) != 0) {
+         ebcdic_to_ascii((char *) iplb.loadparm, loadparm_str, LOADPARM_LEN);
+     } else {
+         sclp_get_loadparm_ascii(loadparm_str);
+@@ -316,6 +316,7 @@ void main(void)
+     css_setup();
+     have_iplb = store_iplb(&iplb);
+     if (!have_iplb) {
++        boot_setup();
+         probe_boot_device();
+     }
+ 
 -- 
 2.47.0
 
