@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D17E9D10E0
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Nov 2024 13:48:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B84BE9D10E2
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Nov 2024 13:48:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tD19g-0002xl-Ln; Mon, 18 Nov 2024 07:47:00 -0500
+	id 1tD19i-0002y5-KT; Mon, 18 Nov 2024 07:47:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tD19a-0002wr-Mq
- for qemu-devel@nongnu.org; Mon, 18 Nov 2024 07:46:55 -0500
-Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tD19g-0002xv-Q6
+ for qemu-devel@nongnu.org; Mon, 18 Nov 2024 07:47:00 -0500
+Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tD19Z-0005N2-7P
- for qemu-devel@nongnu.org; Mon, 18 Nov 2024 07:46:54 -0500
-Received: by mail-wr1-x435.google.com with SMTP id
- ffacd0b85a97d-38241435528so937771f8f.2
- for <qemu-devel@nongnu.org>; Mon, 18 Nov 2024 04:46:52 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tD19f-0005NO-1f
+ for qemu-devel@nongnu.org; Mon, 18 Nov 2024 07:47:00 -0500
+Received: by mail-wr1-x432.google.com with SMTP id
+ ffacd0b85a97d-3824709ee03so651954f8f.2
+ for <qemu-devel@nongnu.org>; Mon, 18 Nov 2024 04:46:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1731934011; x=1732538811; darn=nongnu.org;
+ d=linaro.org; s=google; t=1731934017; x=1732538817; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=T83eivt/vSoGlflCpjNelp/9rr9ILqKefhCT6i7Xuwg=;
- b=ZDe7FS/m7dVGLzDVi9InQBFshmcSamru3ErZviG0TX+0DWPpJxvu9MCHPq4+OcZm65
- mBsZKm9T/5I1j0/9f9HKC+blNbWX4QfJa0dD3cLuts6l70PTtV2rurEZ7I8uyKws/QCm
- qTp4Gt+yCV3GOia42C//U6eqE5tDdnb8UxqOcdxBCt2mOcKhOSjcXI2OFzx4NNEotrK8
- iwFdQ6U3u45MdB3LxnL7balTUy/gw5jgnE288uJHipy0iQpV+02pxxl517MNPblg+X8h
- yCtkQNEpxosrlk11CcC9f3Fdo2t5VmK5PVAlaGNzytfkW3KBzAReUZ1QZreyUBaonQ9w
- l4aA==
+ bh=SYaQEXuNR5+lHEU/8nCGWk7gVy7qrMgUNRPmBIpU6l0=;
+ b=OQO2a5SAdBdsaCE8oBcaWZ9Qz3Okoqm9VRw+ZB5IRJvvrRY+67j0fBWiNgoeLRGjcu
+ TKbIBs3bmM/ExMXXeF5v0hesqVCHOf+Yh6MHqiNlg7hK0gw5AppC8e9aai9sRGmocLoI
+ WP3/yHdaMFQnRUf1BIk438xJiF9NS+MwAX8de6qnFbOvZBfCI9BE6EBWsVxa+mNV3zGK
+ NvG6x8/FnYs+sGMGsg72NmjApuqhBSlR4lfFtvJl/R+sG3D213O07pPX0AS7gRpy66EY
+ dQnhaqgzJz38EGHlR5DG1X2ohtmu0HuQTZI2OjrswiyP/nPQvjCqtVZskkbjBVVc8vD8
+ n1lA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731934011; x=1732538811;
+ d=1e100.net; s=20230601; t=1731934017; x=1732538817;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=T83eivt/vSoGlflCpjNelp/9rr9ILqKefhCT6i7Xuwg=;
- b=lziW4dptPTUtOiZVFXJtD3Hw0XTWGzqWW5imPIvKWmJrLVEMZiLD1vHzevFu/E3Iu2
- IBs1OZClP+r6XvoAlAX7InxQcR9rB1yCATYcc3e1T/O2QziKkmDMsBQB0KSYOyxDkGMc
- aBiev/hjZoiDYJaHMfsNgLI4w7fcny3mwiVlIdHGPJ9s+b4yzAcFdRWmSHTmGVr21bYi
- F4JGAI5xnQvYX3WQhO8vjs2vwrcOv5J65wCRxWAWf/tlSRml9AqJVD47d/DaWI0U9ehJ
- 9UMpo+iUurckgwlk3xBsLV3p0YsixRPLH3bP7nRxJrXNdk6rLTLIZDOWkrQL5k6KzNUx
- hJHg==
-X-Gm-Message-State: AOJu0YyMrI2cO23Wix3XE6gAXKX5m3ekJVIW/Xf6bkwDGP8vMTbm5/e1
- f7P2q3ZI3GuQqQKefxGJ8JA+AkfSdXNrrF+l84P7IEb7eZF9qF9/0f7wtqIDGTCiNMgfllk8mbC
- m
-X-Google-Smtp-Source: AGHT+IEm84lNylibTJlCyQB8g1q4Y2jIYuREQNmC4L9EW4l3v/2lIyiLpTrL01g6xiV5R056sQxmRw==
-X-Received: by 2002:a05:6000:782:b0:381:f595:fd0a with SMTP id
- ffacd0b85a97d-38225907a2amr9456944f8f.16.1731934011413; 
- Mon, 18 Nov 2024 04:46:51 -0800 (PST)
+ bh=SYaQEXuNR5+lHEU/8nCGWk7gVy7qrMgUNRPmBIpU6l0=;
+ b=t9Ee243pmeVRddzxNaVHgOOxPI8MjgCNZN3X/PAFVyqW8DbfSUl2joBKL7Yb+4Q+zI
+ VAMWDm9f6hKYf+VpSoKqfF7tx6vPQAyq4FmOf/G6Eu88/Fq4KxpITZDyCf2/bjRORbkK
+ pv0HWRqdjd0eS5LjA+iDE+ZZ2EjDNjUm6vqEik/4z1dro9pZn1U6KVEvJWcCpGmtWD3d
+ 6yKQ42oWXl6r//OlgPHU7xAZe+bWAdbrPtBxIMy8ke/tORfgkN3KSQ60P5ueS2u4x38r
+ fcnba2hA6ULmpkSPNuwi5hGlnH3cwyp+eivfVjEl/cWpenilqmAw8u7gASa8rdUNTaHI
+ GyqA==
+X-Gm-Message-State: AOJu0Yw342X5CLgrhjo/Rm69Z1D1yvp/tF9kQdDqUzyl5Q1C8OKoFkfs
+ KgFGcsf8h6VmxcMZfyVnh6aSUFkHmhGvRxFWjJY1R7Fg0y/Ew7KMyEbF9M9ogGf4xTUOTw94rN/
+ V
+X-Google-Smtp-Source: AGHT+IGNdfeakP6/JxfeWYZ6+tFEh9hd1Ly4sN2R3qZr8tsW51LVZL6nKb6s+0mud0XEVGF1s3/YNQ==
+X-Received: by 2002:a05:6000:188f:b0:382:450c:25ee with SMTP id
+ ffacd0b85a97d-382450c2aa8mr3968418f8f.40.1731934017117; 
+ Mon, 18 Nov 2024 04:46:57 -0800 (PST)
 Received: from localhost.localdomain ([176.187.198.1])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-432da298760sm157802675e9.37.2024.11.18.04.46.50
+ ffacd0b85a97d-3823d253773sm5992907f8f.36.2024.11.18.04.46.56
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 18 Nov 2024 04:46:50 -0800 (PST)
+ Mon, 18 Nov 2024 04:46:56 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Gerd Hoffmann <kraxel@redhat.com>,
+Cc: Peter Maydell <peter.maydell@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 01/15] vl: fix qemu_validate_options() indention
-Date: Mon, 18 Nov 2024 13:46:28 +0100
-Message-ID: <20241118124643.6958-2-philmd@linaro.org>
+Subject: [PULL 02/15] hw/misc/nrf51_rng: Don't use BIT_MASK() when we mean
+ BIT()
+Date: Mon, 18 Nov 2024 13:46:29 +0100
+Message-ID: <20241118124643.6958-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241118124643.6958-1-philmd@linaro.org>
 References: <20241118124643.6958-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::435;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x435.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::432;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x432.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,44 +93,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Gerd Hoffmann <kraxel@redhat.com>
+From: Peter Maydell <peter.maydell@linaro.org>
 
-Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
+The BIT_MASK() macro from bitops.h provides the mask of a bit
+within a particular word of a multi-word bit array; it is intended
+to be used with its counterpart BIT_WORD() that gives the index
+of the word in the array.
+
+In nrf51_rng we are using it for cases where we have a bit number
+that we know is the index of a bit within a single word (in fact, it
+happens that all the bit numbers we pass to it are zero). This
+happens to give the right answer, but the macro that actually
+does the job we want here is BIT().
+
+Use BIT() instead of BIT_MASK().
+
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20240905141211.1253307-2-kraxel@redhat.com>
+Message-ID: <20241108135644.4007151-1-peter.maydell@linaro.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- system/vl.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ hw/misc/nrf51_rng.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/system/vl.c b/system/vl.c
-index d217b3d64d..3bb8f2db9a 100644
---- a/system/vl.c
-+++ b/system/vl.c
-@@ -2427,15 +2427,15 @@ static void qemu_validate_options(const QDict *machine_opts)
-     const char *kernel_cmdline = qdict_get_try_str(machine_opts, "append");
+diff --git a/hw/misc/nrf51_rng.c b/hw/misc/nrf51_rng.c
+index bf1eb0cf4a..2d67f3f766 100644
+--- a/hw/misc/nrf51_rng.c
++++ b/hw/misc/nrf51_rng.c
+@@ -107,25 +107,25 @@ static void rng_write(void *opaque, hwaddr offset,
+         break;
+     case NRF51_RNG_REG_SHORTS:
+         s->shortcut_stop_on_valrdy =
+-                (value & BIT_MASK(NRF51_RNG_REG_SHORTS_VALRDY_STOP)) ? 1 : 0;
++                (value & BIT(NRF51_RNG_REG_SHORTS_VALRDY_STOP)) ? 1 : 0;
+         break;
+     case NRF51_RNG_REG_INTEN:
+         s->interrupt_enabled =
+-                (value & BIT_MASK(NRF51_RNG_REG_INTEN_VALRDY)) ? 1 : 0;
++                (value & BIT(NRF51_RNG_REG_INTEN_VALRDY)) ? 1 : 0;
+         break;
+     case NRF51_RNG_REG_INTENSET:
+-        if (value & BIT_MASK(NRF51_RNG_REG_INTEN_VALRDY)) {
++        if (value & BIT(NRF51_RNG_REG_INTEN_VALRDY)) {
+             s->interrupt_enabled = 1;
+         }
+         break;
+     case NRF51_RNG_REG_INTENCLR:
+-        if (value & BIT_MASK(NRF51_RNG_REG_INTEN_VALRDY)) {
++        if (value & BIT(NRF51_RNG_REG_INTEN_VALRDY)) {
+             s->interrupt_enabled = 0;
+         }
+         break;
+     case NRF51_RNG_REG_CONFIG:
+         s->filter_enabled =
+-                      (value & BIT_MASK(NRF51_RNG_REG_CONFIG_DECEN)) ? 1 : 0;
++                      (value & BIT(NRF51_RNG_REG_CONFIG_DECEN)) ? 1 : 0;
+         break;
  
-     if (kernel_filename == NULL) {
--         if (kernel_cmdline != NULL) {
--              error_report("-append only allowed with -kernel option");
--              exit(1);
--          }
-+        if (kernel_cmdline != NULL) {
-+            error_report("-append only allowed with -kernel option");
-+            exit(1);
-+        }
- 
--          if (initrd_filename != NULL) {
--              error_report("-initrd only allowed with -kernel option");
--              exit(1);
--          }
-+        if (initrd_filename != NULL) {
-+            error_report("-initrd only allowed with -kernel option");
-+            exit(1);
-+        }
-     }
- 
-     if (loadvm && incoming) {
+     default:
 -- 
 2.45.2
 
