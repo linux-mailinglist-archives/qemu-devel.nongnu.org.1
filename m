@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 898F19D10EB
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Nov 2024 13:49:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 606869D10EA
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Nov 2024 13:49:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tD1BT-0005KU-9r; Mon, 18 Nov 2024 07:48:51 -0500
+	id 1tD1BZ-00065g-UB; Mon, 18 Nov 2024 07:48:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tD1AW-0004Aj-MM
- for qemu-devel@nongnu.org; Mon, 18 Nov 2024 07:48:02 -0500
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tD1Ac-0004Ei-J6
+ for qemu-devel@nongnu.org; Mon, 18 Nov 2024 07:48:03 -0500
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tD1AU-0005R3-Fr
- for qemu-devel@nongnu.org; Mon, 18 Nov 2024 07:47:52 -0500
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-382456c6597so631276f8f.2
- for <qemu-devel@nongnu.org>; Mon, 18 Nov 2024 04:47:49 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tD1AZ-0005RM-Rg
+ for qemu-devel@nongnu.org; Mon, 18 Nov 2024 07:47:57 -0500
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-43155abaf0bso18088605e9.0
+ for <qemu-devel@nongnu.org>; Mon, 18 Nov 2024 04:47:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1731934068; x=1732538868; darn=nongnu.org;
+ d=linaro.org; s=google; t=1731934074; x=1732538874; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=vaiZ7J4o0vhrl+WvkyGBPRzIVJzJiK8smMQqcbPQEFk=;
- b=pQ+/tJorJBOJQTGgvlAptHbcfivKLHWdsfa5HOcwJZ+jkrQAe2iZ/tR52yVT0X2yYH
- uSTKREnLtRFLLeQrzsDR68Nb5DQupuHreSdOaJVWsOMkRhAsKiKGxjNu97yUF2SAAfeu
- RHVcd9+CtI+jK/huCZ9vMgc2kUu5ZxAQeSybB22INUvi69XsAqTBvAVvnkq4tVpGC5Yu
- M/keS9WfW16GJg7f/DL4i8yXrq/OZivdx9RGHTIznftrcsY47GUZGmmKgOXP6S/iQwVd
- Jt6fLNd6Ge+x76W/qOUMu1JRKp4IQdoO49jDxMri1M73wsSpY1WRSXAQrT+RsnMRyGZH
- 2A4A==
+ bh=mZY2UZXl5ISTHGaCx/dhRxaaExiBOZqSteLaMzypVhw=;
+ b=DIFQkBvb/zfEc8LqPrxIsMwrQ9ML3uAgym/lKlLqr9/X+2LUC+48CYera6qe3nUlxv
+ CHlnzKnYEol93M3/qmh+83fBKD5pFSDLGWniYwxuGWZVpkZ69leQ2plIUbzlHn0F53kP
+ HKoiFpZsqLVbZ1U0YUDvNYFJnZHQYnIFZhcWNWAxhoUifxvmttlCmOTTgdLdoGAatTvA
+ eJSvwQ4newl2v/icdnr7KTy1cPxiSyasTUid8snan0Kct6sNA67Xs4FigK4SPDac6Z9D
+ kc5X3hJkBUkyCzjfA7of/LIiG/xjw+Gj6ViotMFm1xdHRuBl5LSzt0Ao3LiC6NbaqzOl
+ rRKw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731934068; x=1732538868;
+ d=1e100.net; s=20230601; t=1731934074; x=1732538874;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=vaiZ7J4o0vhrl+WvkyGBPRzIVJzJiK8smMQqcbPQEFk=;
- b=iFW/o6YBJfJTHd7okRYuW/7NMHWFCwYWsPwMD8TxpkZi+MK6jQeJgq7uLK98v1GZrY
- 44UarBUIS4UMI3C58JKuZJU6w5sfmbvcE44dT5Ei00ywL79ON/gBdRLOOeRPEvk5E7iD
- 5xVDoY0dys/Js9kP2Ff17zRafFGJ9ygtq+y3ji8rDI8dH9K+1bQWay9Le4hbUpYSIDIu
- gGS6UC8xWpzY4bUa/MvHwkAyPUMjFe8CF7k29vH6D76G1KBNhJ9NrSkHZ0auMivZlPvf
- JTA7BpGV3EWstd5OA6iSDwK3TGZw/YDUSqydXFCg+SXXqPpCR/gbvZt7bthSzUYX1C4/
- TI0A==
-X-Gm-Message-State: AOJu0YzimiY4m404pWEgIJa1Qnus2btSzg/nsGMXvC5GQVz6Ot2L7+Qc
- L44nG6AaNVPSGHaSmT+yCdfLlO6WVZ5apggK7leOyrbbFPtVuGHGZHtswQxdvo6vkDc9Y7DqZKV
- 6
-X-Google-Smtp-Source: AGHT+IHwuhTtJ9EdE+hX3AFGvPR/H9Fi2JWawS4tV29H2dLJ4uE2j9nNXvRWsBtvFBFFTPwE0DskCQ==
-X-Received: by 2002:a05:6000:1544:b0:37d:393a:97c5 with SMTP id
- ffacd0b85a97d-38225a059a1mr9511199f8f.28.1731934068350; 
- Mon, 18 Nov 2024 04:47:48 -0800 (PST)
+ bh=mZY2UZXl5ISTHGaCx/dhRxaaExiBOZqSteLaMzypVhw=;
+ b=Kj6O1PVqJs9bmNgYrqYx97ewK/Ov3CS96I0aijQgdPddFEzGL2gK6+sUU03B+br29A
+ o6kggVA01M4DpgY/DaROFyIm4rhVDevWX1ixFCXmz3LUlEXs4aBesH4ChrubDGqsJH6b
+ jNmk5kcqMqOeOHBSQFHdVwJJfAP/UFyjJ3Xk/d5lrKXBaN9E0Nmy0NUTSQJkkpAkIqhv
+ 21IaixSIfOgob7WPZuL7y5CJ04cJiMoMItjsW1q1ifbpJaidd1xkxXIIrpB6H2xflE1F
+ o6ZJ8NhLs8cpLh10pu9GcJzr/hXubd1wkL8KJWBDOQyDwxQaWSufr+eVa/tgsQxDJlFu
+ hD2Q==
+X-Gm-Message-State: AOJu0YwiQiOoNp6v1V2dxY3wXN/32WaMMbTkCyEH6tSM6bf64rFJ9zOo
+ 5ZDlt1ZQERwCvLPMpMv2Ep19bzmWgbWHSFBnBM7hH95BU0QjBg9eViso1gqB5mGO8PVDtr3sqXL
+ J
+X-Google-Smtp-Source: AGHT+IFWseHO7AxXi8DCnPAmK/DSPyYuGVEk+4RungkkyCu1GUZjKkq1wwr2n3Hq66WurevDi7G4Eg==
+X-Received: by 2002:a05:600c:3143:b0:431:9397:9ace with SMTP id
+ 5b1f17b1804b1-432df7411b0mr120048115e9.10.1731934074124; 
+ Mon, 18 Nov 2024 04:47:54 -0800 (PST)
 Received: from localhost.localdomain ([176.187.198.1])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38248b74ec6sm2579263f8f.38.2024.11.18.04.47.47
+ 5b1f17b1804b1-432da28cad9sm158081935e9.32.2024.11.18.04.47.52
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 18 Nov 2024 04:47:47 -0800 (PST)
+ Mon, 18 Nov 2024 04:47:53 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>, qemu-stable@nongnu.org,
  Michael Tokarev <mjt@tls.msk.ru>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 11/15] Revert "hw/audio/hda: fix memory leak on audio setup"
-Date: Mon, 18 Nov 2024 13:46:38 +0100
-Message-ID: <20241118124643.6958-12-philmd@linaro.org>
+Subject: [PULL 12/15] hw/audio/hda: fix memory leak on audio setup
+Date: Mon, 18 Nov 2024 13:46:39 +0100
+Message-ID: <20241118124643.6958-13-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241118124643.6958-1-philmd@linaro.org>
 References: <20241118124643.6958-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::431;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x431.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,82 +95,78 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Paolo Bonzini <pbonzini@redhat.com>
 
-This reverts commit 6d03242a7e47815ed56687ecd13f683d8da3f2fe,
-which causes SPICE audio to break.  While arguably this is a SPICE bug,
-it is possible to fix the leak in a less heavy-handed way.
+When SET_STREAM_FORMAT is called, the st->buft timer is overwritten, thus
+causing a memory leak.  This was originally fixed in commit 816139ae6a5
+("hw/audio/hda: fix memory leak on audio setup", 2024-11-14) but that
+caused the audio to break in SPICE.
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2639
+Fortunately, a simpler fix is possible.  The timer only needs to be
+reset, because the callback is always the same (st->output is set at
+realize time in hda_audio_init); call to timer_new_ns overkill.  Replace
+it with timer_del and only initialize the timer once; for simplicity,
+do it even if use_timer is false.
+
+An even simpler fix would be to free the old time in hda_audio_setup().
+However, it seems better to place the initialization of the timer close
+to that of st->ouput.
+
 Cc: qemu-stable@nongnu.org
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
-Message-ID: <20241114125318.1707590-2-pbonzini@redhat.com>
+Message-ID: <20241114125318.1707590-3-pbonzini@redhat.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/audio/hda-codec.c | 33 +++++++++++++--------------------
- 1 file changed, 13 insertions(+), 20 deletions(-)
+ hw/audio/hda-codec.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
 diff --git a/hw/audio/hda-codec.c b/hw/audio/hda-codec.c
-index bc661504cf..74c0292284 100644
+index 74c0292284..c340a9481d 100644
 --- a/hw/audio/hda-codec.c
 +++ b/hw/audio/hda-codec.c
-@@ -472,24 +472,6 @@ static void hda_audio_set_amp(HDAAudioStream *st)
-     }
- }
- 
--static void hda_close_stream(HDAAudioState *a, HDAAudioStream *st)
--{
--    if (st->node == NULL) {
--        return;
--    }
--    if (a->use_timer) {
--        timer_free(st->buft);
--        st->buft = NULL;
--    }
--    if (st->output) {
--        AUD_close_out(&a->card, st->voice.out);
--        st->voice.out = NULL;
--    } else {
--        AUD_close_in(&a->card, st->voice.in);
--        st->voice.in = NULL;
--    }
--}
--
- static void hda_audio_setup(HDAAudioStream *st)
- {
-     bool use_timer = st->state->use_timer;
-@@ -502,7 +484,6 @@ static void hda_audio_setup(HDAAudioStream *st)
-     trace_hda_audio_format(st->node->name, st->as.nchannels,
-                            fmt2name[st->as.fmt], st->as.freq);
- 
--    hda_close_stream(st->state, st);
+@@ -487,8 +487,7 @@ static void hda_audio_setup(HDAAudioStream *st)
      if (st->output) {
          if (use_timer) {
              cb = hda_audio_output_cb;
-@@ -760,11 +741,23 @@ static void hda_audio_init(HDACodecDevice *hda,
- static void hda_audio_exit(HDACodecDevice *hda)
- {
-     HDAAudioState *a = HDA_AUDIO(hda);
-+    HDAAudioStream *st;
-     int i;
- 
-     dprint(a, 1, "%s\n", __func__);
-     for (i = 0; i < ARRAY_SIZE(a->st); i++) {
--        hda_close_stream(a, a->st + i);
-+        st = a->st + i;
-+        if (st->node == NULL) {
-+            continue;
-+        }
-+        if (a->use_timer) {
-+            timer_free(st->buft);
-+        }
-+        if (st->output) {
-+            AUD_close_out(&a->card, st->voice.out);
-+        } else {
-+            AUD_close_in(&a->card, st->voice.in);
-+        }
-     }
-     AUD_remove_card(&a->card);
- }
+-            st->buft = timer_new_ns(QEMU_CLOCK_VIRTUAL,
+-                                    hda_audio_output_timer, st);
++            timer_del(st->buft);
+         } else {
+             cb = hda_audio_compat_output_cb;
+         }
+@@ -497,8 +496,7 @@ static void hda_audio_setup(HDAAudioStream *st)
+     } else {
+         if (use_timer) {
+             cb = hda_audio_input_cb;
+-            st->buft = timer_new_ns(QEMU_CLOCK_VIRTUAL,
+-                                    hda_audio_input_timer, st);
++            timer_del(st->buft);
+         } else {
+             cb = hda_audio_compat_input_cb;
+         }
+@@ -726,8 +724,12 @@ static void hda_audio_init(HDACodecDevice *hda,
+                 st->gain_right = QEMU_HDA_AMP_STEPS;
+                 st->compat_bpos = sizeof(st->compat_buf);
+                 st->output = true;
++                st->buft = timer_new_ns(QEMU_CLOCK_VIRTUAL,
++                                        hda_audio_output_timer, st);
+             } else {
+                 st->output = false;
++                st->buft = timer_new_ns(QEMU_CLOCK_VIRTUAL,
++                                        hda_audio_input_timer, st);
+             }
+             st->format = AC_FMT_TYPE_PCM | AC_FMT_BITS_16 |
+                 (1 << AC_FMT_CHAN_SHIFT);
+@@ -750,9 +752,7 @@ static void hda_audio_exit(HDACodecDevice *hda)
+         if (st->node == NULL) {
+             continue;
+         }
+-        if (a->use_timer) {
+-            timer_free(st->buft);
+-        }
++        timer_free(st->buft);
+         if (st->output) {
+             AUD_close_out(&a->card, st->voice.out);
+         } else {
 -- 
 2.45.2
 
