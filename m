@@ -2,55 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 551C59D173F
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Nov 2024 18:37:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 524939D174A
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Nov 2024 18:38:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tD5gj-0008Gr-AV; Mon, 18 Nov 2024 12:37:26 -0500
+	id 1tD5gr-0008Td-Ie; Mon, 18 Nov 2024 12:37:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tD5gF-0008Aq-N2
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tD5gJ-0008B5-9O
  for qemu-devel@nongnu.org; Mon, 18 Nov 2024 12:37:00 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tD5gD-0004lJ-VZ
- for qemu-devel@nongnu.org; Mon, 18 Nov 2024 12:36:55 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tD5gG-0004lp-Gd
+ for qemu-devel@nongnu.org; Mon, 18 Nov 2024 12:36:58 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1731951413;
+ s=mimecast20190719; t=1731951415;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=VJhFIt+Avk9efs65XYYhBIvWur/LnUUbkyjdszyi2Io=;
- b=bEffYB6EjRnDZvCTkOHv2kqSpkbeu0lWOsJzY3P41UNfyAJWbZNGtljJxTlMtLIv46/8bi
- M2xef+DtmzPWBDNVwP4CabaREwbLXQjFy/4/wFoNMi6Vbx1IAGLvSvVV0qqzK0nW2D1aQE
- XuQxqdOMZDb0wjwBfvX/rZIwzziasl0=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ bh=e8ZOrdpB+ECk3Jgi1cOPWcA2xDFMmyVZMqYQcUknafY=;
+ b=f1mrVVJuIVOXStUjpLmOzNtogYrIXbhYp4NJZUoO9oTV3DdwVxUWKs4m95X2GCCiD2g0Mt
+ mXfhRf2bwbSW8XVUg7ukPCTlg8gHkXZ6/Wk/XkwdJOoFPNgX5N4Cnvr90LHC8ov+wQiYCE
+ 4kkdkvPyV9UZ+uCaZpvEtSnzEn8rX2U=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-212-sFgwC8BXOD6ouafXXwan7w-1; Mon,
- 18 Nov 2024 12:36:50 -0500
-X-MC-Unique: sFgwC8BXOD6ouafXXwan7w-1
-X-Mimecast-MFC-AGG-ID: sFgwC8BXOD6ouafXXwan7w
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-402-Lu48QJ2cPkqQemdfajHgIg-1; Mon,
+ 18 Nov 2024 12:36:54 -0500
+X-MC-Unique: Lu48QJ2cPkqQemdfajHgIg-1
+X-Mimecast-MFC-AGG-ID: Lu48QJ2cPkqQemdfajHgIg
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id BA9B2195608B; Mon, 18 Nov 2024 17:36:48 +0000 (UTC)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 55DE219560AA; Mon, 18 Nov 2024 17:36:53 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.194.53])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 3E5E919560A3; Mon, 18 Nov 2024 17:36:46 +0000 (UTC)
+ id A81C219560A3; Mon, 18 Nov 2024 17:36:49 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Jared Rossi <jrossi@linux.ibm.com>
-Subject: [PULL 04/12] docs/system/s390x/bootdevices: Update loadparm
- documentation
-Date: Mon, 18 Nov 2024 18:36:26 +0100
-Message-ID: <20241118173634.473532-5-thuth@redhat.com>
+ Boris Fiuczynski <fiuczy@linux.ibm.com>,
+ Prasad Pandit <pjp@fedoraproject.org>
+Subject: [PULL 05/12] docs/system/bootindex: Make it clear that s390x can also
+ boot from virtio-net
+Date: Mon, 18 Nov 2024 18:36:27 +0100
+Message-ID: <20241118173634.473532-6-thuth@redhat.com>
 In-Reply-To: <20241118173634.473532-1-thuth@redhat.com>
 References: <20241118173634.473532-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -81,53 +82,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Jared Rossi <jrossi@linux.ibm.com>
+Let's make it clear that s390x can also boot from virtio-net, to avoid
+that people think that s390x can only boot from disk devices.
 
-Update documentation to include per-device loadparm support.
-
-Signed-off-by: Jared Rossi <jrossi@linux.ibm.com>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Message-ID: <20241115002742.3576842-1-jrossi@linux.ibm.com>
+Reported-by: Boris Fiuczynski <fiuczy@linux.ibm.com>
+Message-ID: <20241111105506.264640-1-thuth@redhat.com>
+Reviewed-by: Prasad Pandit <pjp@fedoraproject.org>
+Reviewed-by: Boris Fiuczynski <fiuczy@linux.ibm.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- docs/system/s390x/bootdevices.rst | 24 +++++++++++++++++++++++-
- 1 file changed, 23 insertions(+), 1 deletion(-)
+ docs/system/bootindex.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/docs/system/s390x/bootdevices.rst b/docs/system/s390x/bootdevices.rst
-index 1a1a764c1c..97b3914785 100644
---- a/docs/system/s390x/bootdevices.rst
-+++ b/docs/system/s390x/bootdevices.rst
-@@ -79,7 +79,29 @@ The second way to use this parameter is to use a number in the range from 0
- to 31. The numbers that can be used here correspond to the numbers that are
- shown when using the ``PROMPT`` option, and the s390-ccw bios will then try
- to automatically boot the kernel that is associated with the given number.
--Note that ``0`` can be used to boot the default entry.
-+Note that ``0`` can be used to boot the default entry. If the machine
-+``loadparm`` is not assigned a value, then the default entry is used.
-+
-+By default, the machine ``loadparm`` applies to all boot devices. If multiple
-+devices are assigned a ``bootindex`` and the ``loadparm`` is to be different
-+between them, an independent ``loadparm`` may be assigned on a per-device basis.
-+
-+An example guest using per-device ``loadparm``::
-+
-+  qemu-system-s390x -drive if=none,id=dr1,file=primary.qcow2 \
-+                   -device virtio-blk,drive=dr1,bootindex=1 \
-+                   -drive if=none,id=dr2,file=secondary.qcow2 \
-+                   -device virtio-blk,drive=dr2,bootindex=2,loadparm=3
-+
-+In this case, the primary boot device will attempt to IPL using the default
-+entry (because no ``loadparm`` is specified for this device or for the
-+machine). If that device fails to boot, the secondary device will attempt to
-+IPL using entry number 3.
-+
-+If a ``loadparm`` is specified on both the machine and a device, the per-device
-+value will superseded the machine value.  Per-device ``loadparm`` values are
-+only used for devices with an assigned ``bootindex``. The machine ``loadparm``
-+is used when attempting to boot without a ``bootindex``.
+diff --git a/docs/system/bootindex.rst b/docs/system/bootindex.rst
+index 988f7b3beb..5e1b33ee22 100644
+--- a/docs/system/bootindex.rst
++++ b/docs/system/bootindex.rst
+@@ -53,7 +53,7 @@ booting.  For instance, the x86 PC BIOS boot specification allows only one
+ disk to be bootable.  If boot from disk fails for some reason, the x86 BIOS
+ won't retry booting from other disk.  It can still try to boot from
+ floppy or net, though. In the case of s390x BIOS, the BIOS will try up to
+-8 total devices, any number of which may be disks.
++8 total devices, any number of which may be disks or virtio-net devices.
  
- 
- Booting from a network device
+ Sometimes, firmware cannot map the device path QEMU wants firmware to
+ boot from to a boot method.  It doesn't happen for devices the firmware
 -- 
 2.47.0
 
