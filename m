@@ -2,84 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40ED79D125D
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Nov 2024 14:44:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4246F9D1259
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Nov 2024 14:44:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tD220-0000I2-Fe; Mon, 18 Nov 2024 08:43:08 -0500
+	id 1tD21x-0000HP-Ec; Mon, 18 Nov 2024 08:43:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tD21x-0000Hc-9j
- for qemu-devel@nongnu.org; Mon, 18 Nov 2024 08:43:05 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1tD21u-0000H6-M3
+ for qemu-devel@nongnu.org; Mon, 18 Nov 2024 08:43:02 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tD21v-0005RM-IM
- for qemu-devel@nongnu.org; Mon, 18 Nov 2024 08:43:05 -0500
+ id 1tD21s-0005R3-H8
+ for qemu-devel@nongnu.org; Mon, 18 Nov 2024 08:43:02 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1731937382;
+ s=mimecast20190719; t=1731937379;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=J+O+V5fvVJqmnCMnnFyl71XPLYjvhBGc185goM7pokY=;
- b=hgAi1oKgnHxm4X7s3Svt1ADKe0DrWAe4uEtn5mNUxlYLN4T0Rmjo2NdvpnBc34AmwIGyUZ
- FjyAJUDvzWecv7vq0kktKmKpRufq0x1LnIomfJvYPCInJ4c3G5CoFRWtSF9lZNUNJIz2f6
- zlYSCmC0Os21SqD8i4lTVwUQ8Mqgkj8=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=JnPuj/Ao84HNRM35VmPWv8XIuBS/8IHZBk2XRpc9GSo=;
+ b=MHecODiOPs3aROGByMnMeYkSjvT9ovI3LkSBiY/+e5ig4huU9fkILTgmr5WuMMR7mJ+z/v
+ gZmCdfz6dtljisYz0gTXTU2kqGjoSej9EsjF1gkeCnJviabFgVlk8VQTWfezSx8vVRcABa
+ UnwEpAgT5E/TdUb90lvj92Bkzj7I8lk=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-278-zxVLc4ItOQ-Dkm7K9HIWvg-1; Mon, 18 Nov 2024 08:42:58 -0500
-X-MC-Unique: zxVLc4ItOQ-Dkm7K9HIWvg-1
-X-Mimecast-MFC-AGG-ID: zxVLc4ItOQ-Dkm7K9HIWvg
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-4316300bb15so30108265e9.2
- for <qemu-devel@nongnu.org>; Mon, 18 Nov 2024 05:42:58 -0800 (PST)
+ us-mta-201-TtJ7sbDFO1S1InPYCwgs0g-1; Mon, 18 Nov 2024 08:42:58 -0500
+X-MC-Unique: TtJ7sbDFO1S1InPYCwgs0g-1
+X-Mimecast-MFC-AGG-ID: TtJ7sbDFO1S1InPYCwgs0g
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-4315544642eso22767045e9.3
+ for <qemu-devel@nongnu.org>; Mon, 18 Nov 2024 05:42:57 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1731937376; x=1732542176;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=J+O+V5fvVJqmnCMnnFyl71XPLYjvhBGc185goM7pokY=;
- b=lsQL5sdpDkFj9RBY5riWRrTIyYMW9dZjMMxV6li9uhNPD4qxMeLAz+jOLR2x2dxCYf
- TZimCmnC6wBqqpbEv/hQIsOo5SSBSZn7P3bjuU9jsxSdJI8V4MmgodwD1CktO4WQ1WUU
- S+gUUzDVGsOjf8CZgBygw448YFqUJbXC5uicQwK6dS+WOlY5e2G9iA94eGzQB9+KQNsn
- GxjoSYdri3lq3ZkM+o6TNgQTGPOF/IH44g8O0uPsMD3Wk4a7gh6GWc/u5CMsAtUS/djs
- sA2FqhiNVyHC0kX93I3527oXS0FdfofYpvVsy8qlVfyvRTiKgd0wbELmv8/2z5bG1hFu
- W/yg==
-X-Gm-Message-State: AOJu0YzxchoWGq4XvyM+N4YtgMdpN/aZ1vAf+Ii8W1/J4uBcd7FODPTh
- /IQVDzr7gAUMTXRsgZU/DQVLmQT11hcAOPDbUSou2rD8ZVe7FTZ5Gey2AuyDoHhkomzxrCgu1IA
- spuoeKMe450Xfbxb+AtaV708Xg543rXgqYk5/ixdX/qRD/PyRrhtw9E/NPRmoUAeQyjjINRERmv
- GDw+YZv47dmGU8CeH8NPzi2C/DXttdXhGm/88k
-X-Received: by 2002:a05:600c:4f93:b0:42f:80f4:ab31 with SMTP id
- 5b1f17b1804b1-432df74cecbmr100824105e9.18.1731937376652; 
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=JnPuj/Ao84HNRM35VmPWv8XIuBS/8IHZBk2XRpc9GSo=;
+ b=gSA4+f8FOmZMhlZGB4oa2UAocJIv+vAHDuqEuxKznoMIc5TMVU78FBVdnNRAdeAgmI
+ nxOD9Ghg0dv+QTOSgU//eFj6vkiCcF71W6nFPfqYM1P+MmJhAMOSVXMwfYESy/yUDgqm
+ 3Ntxp126+YA4tE3qH0iEBQYnjuAb5x7Pl9KmAqYDi+71VrMkdywLf0AaVRKNxalgoiqI
+ 83OW072ChbquHmEkWeXUn/Wl6SsoL+Rz5PvRojqxIZXeGT2eaoCeJ5UxCcFfl8gWMvJF
+ tO3z7Sx/v2DeLaLjX8tyEQvBEBdtedihiFw6flWWfHjFrIQqWZPCtuR/EuXgbjuoVDwF
+ yuOA==
+X-Gm-Message-State: AOJu0Ywnswm7wADxhu9jLgPnOFiNcVTJWGrFKBqQKdiRcBHrNQ73pFzE
+ aQBbr8lXtYwbRWPOzgEBd59PIBoA1BmNAlcnne2+MNIuUqXhYMpXZzIgGSD2DSHfIPx2IIZjzYA
+ NBoL2urmmO3x8r0EG49QiKgqHTBaStqVq820UZl+llrMlaSmeRnmBQRw2BksjbVGZxGCAA+TaH2
+ dMlb3DKXm7q7zTv26wGa8S3giHo4QdJij2zhyF
+X-Received: by 2002:a05:600c:4e46:b0:431:5aea:969 with SMTP id
+ 5b1f17b1804b1-432df725235mr107106225e9.8.1731937376160; 
  Mon, 18 Nov 2024 05:42:56 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHthn+GDxnr93i3ypT6mwha4+PH5Tg0LkGcHpT4uEn0kHpqTDY8U640mMr/CqSwj+1Omyy9kg==
-X-Received: by 2002:a05:600c:4f93:b0:42f:80f4:ab31 with SMTP id
- 5b1f17b1804b1-432df74cecbmr100823235e9.18.1731937374596; 
- Mon, 18 Nov 2024 05:42:54 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEgvty+6S9nopq84kvh0YlOKWoUH6MVpIPOgiXZZluqPjTN4w9BGhy8jx91JkzfqbcUDC+yGA==
+X-Received: by 2002:a05:600c:4e46:b0:431:5aea:969 with SMTP id
+ 5b1f17b1804b1-432df725235mr107106065e9.8.1731937375861; 
+ Mon, 18 Nov 2024 05:42:55 -0800 (PST)
 Received: from [192.168.10.3] ([151.49.84.243])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-432dab72085sm160363965e9.3.2024.11.18.05.42.53
- for <qemu-devel@nongnu.org>
+ 5b1f17b1804b1-432dac0ae04sm154933265e9.33.2024.11.18.05.42.55
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 18 Nov 2024 05:42:54 -0800 (PST)
+ Mon, 18 Nov 2024 05:42:55 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 0/2] two tiny patches for the next QEMU 9.2 rc
-Date: Mon, 18 Nov 2024 14:42:51 +0100
-Message-ID: <20241118134253.2071319-1-pbonzini@redhat.com>
+Cc: Michael Tokarev <mjt@tls.msk.ru>
+Subject: [PULL 1/2] target/i386: hyperv: add stub for
+ hyperv_syndbg_query_options
+Date: Mon, 18 Nov 2024 14:42:52 +0100
+Message-ID: <20241118134253.2071319-2-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.47.0
+In-Reply-To: <20241118134253.2071319-1-pbonzini@redhat.com>
+References: <20241118134253.2071319-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.142,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -97,32 +102,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit f0cfd067867668870931c9411d96cd518564b7a8:
+Building without CONFIG_HYPERV is currently broken due to a missing
+symbol 'hyperv_syndbg_query_options'.  Add it to the stubs
+that exist for that very reasons.
 
-  Merge tag 'for-upstream' of https://gitlab.com/bonzini/qemu into staging (2024-11-09 12:34:01 +0000)
-
-are available in the Git repository at:
-
-  https://gitlab.com/bonzini/qemu.git tags/for-upstream
-
-for you to fetch changes up to ebcf886d88e0fcae322d063b28846d20b23b5321:
-
-  configure: Use -ef to compare paths (2024-11-18 13:44:54 +0100)
-
-----------------------------------------------------------------
-* target/i386: fix compilation without CONFIG_HYPERV
-* configure: improve check for execution in the source directory
-
-----------------------------------------------------------------
-Akihiko Odaki (1):
-      configure: Use -ef to compare paths
-
-Paolo Bonzini (1):
-      target/i386: hyperv: add stub for hyperv_syndbg_query_options
-
- configure                     | 2 +-
+Reported-by: Michael Tokarev <mjt@tls.msk.ru>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+---
  target/i386/kvm/hyperv-stub.c | 5 +++++
- 2 files changed, 6 insertions(+), 1 deletion(-)
+ 1 file changed, 5 insertions(+)
+
+diff --git a/target/i386/kvm/hyperv-stub.c b/target/i386/kvm/hyperv-stub.c
+index 3263dcf05d3..5836f53c23b 100644
+--- a/target/i386/kvm/hyperv-stub.c
++++ b/target/i386/kvm/hyperv-stub.c
+@@ -56,3 +56,8 @@ void hyperv_x86_synic_update(X86CPU *cpu)
+ void hyperv_x86_set_vmbus_recommended_features_enabled(void)
+ {
+ }
++
++uint64_t hyperv_syndbg_query_options(void)
++{
++    return 0;
++}
 -- 
 2.47.0
 
