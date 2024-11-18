@@ -2,70 +2,51 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5DED9D1915
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Nov 2024 20:37:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F39B89D1912
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Nov 2024 20:37:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tD7Yp-0008Lu-0Q; Mon, 18 Nov 2024 14:37:23 -0500
+	id 1tD7Xb-0006hW-1x; Mon, 18 Nov 2024 14:36:07 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1tD7YK-0007gH-LP
- for qemu-devel@nongnu.org; Mon, 18 Nov 2024 14:36:53 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1tD7XM-0006f9-3a; Mon, 18 Nov 2024 14:35:53 -0500
+Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1tD7YF-0002mp-Kd
- for qemu-devel@nongnu.org; Mon, 18 Nov 2024 14:36:51 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1731958601;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=l00QVC/M1EOdKC7fTi+PujFyXX+16ChunhNVDiN7q9k=;
- b=MLxtMX0olv/t5pozXYgaS9muRpv5gkWNHQzq9dWJxDuTsohWIxKofBDiGEtCfInIRBegfk
- CP2cr0Si+RGX3d4ZqzYw5dK8QWsWQgVFayKl/9Mgv0qhbjGP6aq3Qo3jrW2KvNtuBW8FpF
- /AzAbwmqGWcjCBOzaoapj0V6EhkfMPY=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-357-DBVeppEiOo6TCRb2ERfq6Q-1; Mon,
- 18 Nov 2024 14:36:37 -0500
-X-MC-Unique: DBVeppEiOo6TCRb2ERfq6Q-1
-X-Mimecast-MFC-AGG-ID: DBVeppEiOo6TCRb2ERfq6Q
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 763E0195609E; Mon, 18 Nov 2024 19:36:34 +0000 (UTC)
-Received: from green.redhat.com (unknown [10.2.16.76])
- by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 52DB1195607C; Mon, 18 Nov 2024 19:36:32 +0000 (UTC)
-From: Eric Blake <eblake@redhat.com>
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1tD7XD-0002iB-30; Mon, 18 Nov 2024 14:35:44 -0500
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id CCB1EA54E7;
+ Mon, 18 Nov 2024 22:35:17 +0300 (MSK)
+Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with SMTP id 4C6F41735A4;
+ Mon, 18 Nov 2024 22:35:21 +0300 (MSK)
+Received: (nullmailer pid 2312698 invoked by uid 1000);
+ Mon, 18 Nov 2024 19:35:20 -0000
+From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
- qemu-block@nongnu.org (open list:Network Block Dev...)
-Subject: [PULL 1/1] nbd-server: Silence server warnings on port probes
-Date: Mon, 18 Nov 2024 13:35:12 -0600
-Message-ID: <20241118193627.1826228-4-eblake@redhat.com>
-In-Reply-To: <20241118193627.1826228-3-eblake@redhat.com>
-References: <20241118193627.1826228-3-eblake@redhat.com>
+Cc: qemu-stable@nongnu.org,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.2.8 58/61] contrib/plugins: add compat for g_memdup2
+Date: Mon, 18 Nov 2024 22:35:13 +0300
+Message-Id: <20241118193520.2312620-10-mjt@tls.msk.ru>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <qemu-stable-8.2.8-20241118211929@cover.tls.msk.ru>
+References: <qemu-stable-8.2.8-20241118211929@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-type: text/plain
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=eblake@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.142,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -68
+X-Spam_score: -6.9
+X-Spam_bar: ------
+X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,95 +62,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-While testing the use of qemu-nbd in a Pod of a Kubernetes cluster, I
-got LOTS of log messages of the forms:
+From: Alex Bennée <alex.bennee@linaro.org>
 
-qemu-nbd: option negotiation failed: Failed to read flags: Unexpected end-of-file before all data were read
-qemu-nbd: option negotiation failed: Failed to read flags: Unable to read from socket: Connection reset by peer
+We were premature if bumping this because some of our builds are still
+on older glibs. Just copy the compat handler for now and we can remove
+it later.
 
-While it is nice to warn about clients that aren't following protocol
-(in case it helps diagnosing bugs in those clients), a mere port probe
-(where the client never write()s any bytes, and where we might even
-hit EPIPE in trying to send our greeting to the client) is NOT
-abnormal, but merely serves to pollute the log.  And Kubernetes
-_really_ likes to do port probes to determine whether a given Pod is
-up and running.
+Fixes: ee293103b0 (plugins: update lockstep to use g_memdup2)
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2161
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+Message-Id: <20240729144414.830369-14-alex.bennee@linaro.org>
+(cherry picked from commit 44e794896759236885f6d30d1f6b9b8b76355d52)
+Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2681 in 8.2.x
 
-Easy ways to demonstrate the above port probes:
-$ qemu-nbd -r -f raw path/to/file &
-$ nc localhost 10809 </dev/null
-$ bash -c 'exec </dev/tcp/localhost/10809'
-$ kill $!
-
-Silence the noise by not capturing errors until after our first
-successful read() from a client.
-
-Signed-off-by: Eric Blake <eblake@redhat.com>
-Message-ID: <20241115195638.1132007-2-eblake@redhat.com>
-Reviewed-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
----
- nbd/server.c | 26 +++++++++++++++++---------
- 1 file changed, 17 insertions(+), 9 deletions(-)
-
-diff --git a/nbd/server.c b/nbd/server.c
-index c30e687fc8b..f64e47270c0 100644
---- a/nbd/server.c
-+++ b/nbd/server.c
-@@ -1150,8 +1150,8 @@ nbd_negotiate_meta_queries(NBDClient *client, Error **errp)
-  * Return:
-  * -errno  on error, errp is set
-  * 0       on successful negotiation, errp is not set
-- * 1       if client sent NBD_OPT_ABORT, i.e. on valid disconnect,
-- *         errp is not set
-+ * 1       if client sent NBD_OPT_ABORT (i.e. on valid disconnect) or never
-+ *         wrote anything (i.e. port probe); errp is not set
-  */
- static coroutine_fn int
- nbd_negotiate_options(NBDClient *client, Error **errp)
-@@ -1175,8 +1175,13 @@ nbd_negotiate_options(NBDClient *client, Error **errp)
-         ...           Rest of request
-     */
-
--    if (nbd_read32(client->ioc, &flags, "flags", errp) < 0) {
--        return -EIO;
-+    /*
-+     * Intentionally ignore errors on this first read - we do not want
-+     * to be noisy about a mere port probe, but only for clients that
-+     * start talking the protocol and then quit abruptly.
-+     */
-+    if (nbd_read32(client->ioc, &flags, "flags", NULL) < 0) {
-+        return 1;
-     }
-     client->mode = NBD_MODE_EXPORT_NAME;
-     trace_nbd_negotiate_options_flags(flags);
-@@ -1383,8 +1388,8 @@ nbd_negotiate_options(NBDClient *client, Error **errp)
-  * Return:
-  * -errno  on error, errp is set
-  * 0       on successful negotiation, errp is not set
-- * 1       if client sent NBD_OPT_ABORT, i.e. on valid disconnect,
-- *         errp is not set
-+ * 1       if client sent NBD_OPT_ABORT (i.e. on valid disconnect) or never
-+ *         wrote anything (i.e. port probe); errp is not set
-  */
- static coroutine_fn int nbd_negotiate(NBDClient *client, Error **errp)
+diff --git a/contrib/plugins/lockstep.c b/contrib/plugins/lockstep.c
+index 237543b43a..0c6f060183 100644
+--- a/contrib/plugins/lockstep.c
++++ b/contrib/plugins/lockstep.c
+@@ -100,6 +100,31 @@ static void plugin_exit(qemu_plugin_id_t id, void *p)
+     plugin_cleanup(id);
+ }
+ 
++/*
++ * g_memdup has been deprecated in Glib since 2.68 and
++ * will complain about it if you try to use it. However until
++ * glib_req_ver for QEMU is bumped we make a copy of the glib-compat
++ * handler.
++ */
++static inline gpointer g_memdup2_qemu(gconstpointer mem, gsize byte_size)
++{
++#if GLIB_CHECK_VERSION(2, 68, 0)
++    return g_memdup2(mem, byte_size);
++#else
++    gpointer new_mem;
++
++    if (mem && byte_size != 0) {
++        new_mem = g_malloc(byte_size);
++        memcpy(new_mem, mem, byte_size);
++    } else {
++        new_mem = NULL;
++    }
++
++    return new_mem;
++#endif
++}
++#define g_memdup2(m, s) g_memdup2_qemu(m, s)
++
+ static void report_divergance(ExecState *us, ExecState *them)
  {
-@@ -1415,9 +1420,12 @@ static coroutine_fn int nbd_negotiate(NBDClient *client, Error **errp)
-     stq_be_p(buf + 8, NBD_OPTS_MAGIC);
-     stw_be_p(buf + 16, NBD_FLAG_FIXED_NEWSTYLE | NBD_FLAG_NO_ZEROES);
-
--    if (nbd_write(client->ioc, buf, 18, errp) < 0) {
--        error_prepend(errp, "write failed: ");
--        return -EINVAL;
-+    /*
-+     * Be silent about failure to write our greeting: there is nothing
-+     * wrong with a client testing if our port is alive.
-+     */
-+    if (nbd_write(client->ioc, buf, 18, NULL) < 0) {
-+        return 1;
-     }
-     ret = nbd_negotiate_options(client, errp);
-     if (ret != 0) {
+     DivergeState divrec = { log, 0 };
 -- 
-2.47.0
+2.39.5
 
 
