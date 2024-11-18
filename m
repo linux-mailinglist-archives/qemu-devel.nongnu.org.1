@@ -2,68 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 119349D1333
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Nov 2024 15:37:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 806FF9D1388
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Nov 2024 15:47:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tD2s9-0006K0-Kw; Mon, 18 Nov 2024 09:37:01 -0500
+	id 1tD30g-0000PJ-OB; Mon, 18 Nov 2024 09:45:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vkuznets@redhat.com>)
- id 1tD2s7-0006Jc-9t
- for qemu-devel@nongnu.org; Mon, 18 Nov 2024 09:36:59 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vkuznets@redhat.com>)
- id 1tD2s5-0005ZF-Un
- for qemu-devel@nongnu.org; Mon, 18 Nov 2024 09:36:59 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1731940617;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=iiZ6qBQqN25G4itkQvdFae9EYfnugmegO1Dc0rTRFTw=;
- b=I5hJ5DFEaT8rxF13yxUCj7VudCvz0yLkqSxCfgnmP9ze4GLEB8fbZPu0aZT1MfyWYyCAYq
- QHxsiOD2WHKeVyNn8Gn96lTY9uC/lnywekYXWI19vmtX1slxxj8ZA5sAWGoRGCsfQCRCc+
- v4109tOTgVqK8T9uyIbsg9PJSQL7GHk=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-196-bPZjI485O4Of6To5WU6lnw-1; Mon,
- 18 Nov 2024 09:36:54 -0500
-X-MC-Unique: bPZjI485O4Of6To5WU6lnw-1
-X-Mimecast-MFC-AGG-ID: bPZjI485O4Of6To5WU6lnw
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 75966193316F; Mon, 18 Nov 2024 14:36:52 +0000 (UTC)
-Received: from fedora.redhat.com (unknown [10.39.194.228])
- by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id CBBDA1956089; Mon, 18 Nov 2024 14:36:47 +0000 (UTC)
-From: Vitaly Kuznetsov <vkuznets@redhat.com>
-To: qemu-devel@nongnu.org, Kevin Wolf <kwolf@redhat.com>,
- Hanna Reitz <hreitz@redhat.com>, qemu-block@nongnu.org
-Subject: [PATCH v2] vpc: Read images exported from Azure correctly
-Date: Mon, 18 Nov 2024 15:36:46 +0100
-Message-ID: <20241118143646.33377-1-vkuznets@redhat.com>
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1tD30T-0000OW-P7
+ for qemu-devel@nongnu.org; Mon, 18 Nov 2024 09:45:40 -0500
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1tD30N-0006m1-Kg
+ for qemu-devel@nongnu.org; Mon, 18 Nov 2024 09:45:33 -0500
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-4315839a7c9so39259935e9.3
+ for <qemu-devel@nongnu.org>; Mon, 18 Nov 2024 06:45:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1731941129; x=1732545929; darn=nongnu.org;
+ h=mime-version:message-id:in-reply-to:references:user-agent:subject
+ :cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+ bh=zzNa8BCet9g0X/2JC9+/b/B7NG4WB9hplgL/Waii00w=;
+ b=qAUc6nPW6bm/CGmtm+879O35JKH/ozwwqGo/UH/F9J2VJ90SY+6MnjrLzaziiZb4+3
+ qgUAi9rs2t5Lcy7AioizHWSG1EZJneUcRuwHfInBNC6X4Y/wWhK5kIMBuxMlDVeVvVno
+ pOXGtWE/OWcPytZDHyF/QM8TS1Q9l0Yykh+NlfR8X1slFRAaJc/Gnc4l69M4szkbTBz+
+ BjOTqSNfp1/hOI0rX65uvNHSoomQmJ/pWiHO/ME+leZRqnZ+Gg2Ly3DDy1mZ98g1khIE
+ OuGrwAfam8sY7VBreOjRUxXimZXi64sM9Bu4zpgORIpQMVPQPIGhxW7rLpdDL/CASvK8
+ U9Lw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1731941129; x=1732545929;
+ h=mime-version:message-id:in-reply-to:references:user-agent:subject
+ :cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=zzNa8BCet9g0X/2JC9+/b/B7NG4WB9hplgL/Waii00w=;
+ b=G9uDBv3f/Hubt3A4sz45DcUIqBCrwI+zs9A1IfmE1OZTa1J++PKa0kcREC4VgdcORi
+ ZsunQht4XWFG403gOkaKpEBIPiq32kaCqSs79JMQw42+/Fo9IiDXcchlUMqVUVI93uKP
+ vZt6hL7QqHS5BLZW+Fu0mvMVrF5kdVppfo+0kHRCMeO7aosTd6tTIAKbFFGyABRBsa5S
+ K4QATeUrvfX41rk6LXWRbAGUphQTbnoYKWqbyzo0PmJn90XT+KghgI7H8S6H/nh1Y0UQ
+ D/niEc9O4leCKEAm70rbJP0yS43O9R4zPwfDs8mv2jgOgsbwr5sbdHTxxSlya6pSvVBf
+ BZGQ==
+X-Gm-Message-State: AOJu0YwBfYbB+hwC1uTOBcyE10xNpoXvJthfqtDGhugcns9szyaUXpCb
+ 1C45flrrV/ZbB7dAx/32WksTWD6/6oe2syt+NdCyEY1O5Jc2RgRhRJbFsQLsKTE=
+X-Google-Smtp-Source: AGHT+IGnzwQGIip59tD7WbJ1YQt4Xk4B6C7Hc/MeQBM6wNjkLbj9xshgfQpd1rT1o32h3b932pZrQw==
+X-Received: by 2002:a05:600c:4505:b0:431:1868:417f with SMTP id
+ 5b1f17b1804b1-432df74be9amr123890195e9.17.1731941129482; 
+ Mon, 18 Nov 2024 06:45:29 -0800 (PST)
+Received: from meli-email.org (adsl-123.37.6.2.tellas.gr. [37.6.2.123])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-382444fa548sm4400011f8f.86.2024.11.18.06.45.28
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 18 Nov 2024 06:45:29 -0800 (PST)
+Date: Mon, 18 Nov 2024 16:39:59 +0200
+From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+To: Alex Benn=?UTF-8?B?w6k=?= e <alex.bennee@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, qemu-rust@nongnu.org,
+ Gustavo Romero <gustavo.romero@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Philippe Mathieu-Daud=?UTF-8?B?w6kg?=<philmd@linaro.org>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: Re: [PATCH v3] rust/pl011: Fix DeviceID reads
+User-Agent: meli 0.8.7
+References: <20241117161039.3758840-1-manos.pitsidianakis@linaro.org>
+ <875xoku5vd.fsf@draig.linaro.org>
+In-Reply-To: <875xoku5vd.fsf@draig.linaro.org>
+Message-ID: <n5ibr.51opa2z9dha@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=vkuznets@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.142,
+Content-Type: text/plain; charset="utf-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wm1-x332.google.com
+X-Spam_score_int: -14
+X-Spam_score: -1.5
+X-Spam_bar: -
+X-Spam_report: (-1.5 / 5.0 requ) BAYES_00=-1.9, CTE_8BIT_MISMATCH=0.636,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -79,52 +96,254 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-It was found that 'qemu-nbd' is not able to work with some disk images
-exported from Azure. Looking at the 512b footer (which contains VPC
-metadata):
+On Mon, 18 Nov 2024 13:40, Alex Bennée <alex.bennee@linaro.org> wrote:
+>Manos Pitsidianakis <manos.pitsidianakis@linaro.org> writes:
+>
+>> DeviceId, which maps the peripheral and PCell registers of a PL011
+>> device, was not treating each register value as a 32 bit value.
+>>
+>> Change DeviceId enum to return register values via constified getter
+>> functions instead of leveraging the std::ops::Index<_> trait.
+>>
+>> While at it, print errors when guest attempts to write to other RO
+>> registers as well.
+>>
+>> Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+>> ---
+>>
+>> Notes:
+>>     Changes from v2:
+>>     
+>>     - Group invalid write case matches (Paolo)
+>>     - Reduce register getter line count to aid review (Peter Maydell)
+>>     
+><snip>
+>> diff --git a/rust/hw/char/pl011/src/device.rs b/rust/hw/char/pl011/src/device.rs
+>> index 2a85960b81..f1d959ca28 100644
+>> --- a/rust/hw/char/pl011/src/device.rs
+>> +++ b/rust/hw/char/pl011/src/device.rs
+>> @@ -5,7 +5,7 @@
+>>  use core::ptr::{addr_of, addr_of_mut, NonNull};
+>>  use std::{
+>>      ffi::CStr,
+>> -    os::raw::{c_int, c_uchar, c_uint, c_void},
+>> +    os::raw::{c_int, c_uint, c_void},
+>>  };
+>>  
+>>  use qemu_api::{
+>> @@ -32,6 +32,7 @@
+>>  /// QEMU sourced constant.
+>>  pub const PL011_FIFO_DEPTH: usize = 16_usize;
+>>  
+>> +/// State enum that represents the values of the peripheral and PCell registers of a PL011 device.
+>>  #[derive(Clone, Copy, Debug)]
+>>  enum DeviceId {
+>>      #[allow(dead_code)]
+>> @@ -39,20 +40,51 @@ enum DeviceId {
+>>      Luminary,
+>>  }
+>>  
+>> -impl std::ops::Index<hwaddr> for DeviceId {
+>> -    type Output = c_uchar;
+>> +macro_rules! pcell_reg_getter {
+>> +    ($($(#[$attrs:meta])* fn $getter_fn:ident -> $value:literal),*$(,)?) => {
+>> +        $($(#[$attrs])* const fn $getter_fn(self) -> u64 { $value })*
+>> +    };
+>> +}
+>>  
+>> -    fn index(&self, idx: hwaddr) -> &Self::Output {
+>> -        match self {
+>> -            Self::Arm => &Self::PL011_ID_ARM[idx as usize],
+>> -            Self::Luminary => &Self::PL011_ID_LUMINARY[idx as usize],
+>> -        }
+>> -    }
+>> +macro_rules! periph_reg_getter {
+>> +    ($($(#[$attrs:meta])* fn $getter_fn:ident -> { Arm => $arm:literal, Luminary => $lum:literal$(,)?}),*$(,)?) => {
+>> +        $(
+>> +            $(#[$attrs])*
+>> +            const fn $getter_fn(self) -> u64 {
+>> +                (match self {
+>> +                    Self::Arm => $arm,
+>> +                    Self::Luminary => $lum,
+>> +                }) as u64
+>> +            }
+>> +        )*
+>> +    };
+>>  }
+>>  
+>>  impl DeviceId {
+>> -    const PL011_ID_ARM: [c_uchar; 8] = [0x11, 0x10, 0x14, 0x00, 0x0d, 0xf0, 0x05, 0xb1];
+>> -    const PL011_ID_LUMINARY: [c_uchar; 8] = [0x11, 0x00, 0x18, 0x01, 0x0d, 0xf0, 0x05, 0xb1];
+>> +    /// Value of `UARTPeriphID0` register, which contains the `PartNumber0` value.
+>> +    const fn uart_periph_id0(self) -> u64 {
+>> +        0x11
+>> +    }
+>> +
+>> +    periph_reg_getter! {
+>> +        /// Value of `UARTPeriphID1` register, which contains the `Designer0` and `PartNumber1` values.
+>> +        fn uart_periph_id1 -> { Arm => 0x10, Luminary => 0x00 },
+>> +        /// Value of `UARTPeriphID2` register, which contains the `Revision` and `Designer1` values.
+>> +        fn uart_periph_id2 -> { Arm => 0x14, Luminary => 0x18 },
+>> +        /// Value of `UARTPeriphID3` register, which contains the `Configuration` value.
+>> +        fn uart_periph_id3 -> { Arm => 0x0, Luminary => 0x1 }
+>> +    }
+>> +
+>> +    pcell_reg_getter! {
+>> +        /// Value of `UARTPCellID0` register.
+>> +        fn uart_pcell_id0 -> 0x0d,
+>> +        /// Value of `UARTPCellID1` register.
+>> +        fn uart_pcell_id1 -> 0xf0,
+>> +        /// Value of `UARTPCellID2` register.
+>> +        fn uart_pcell_id2 -> 0x05,
+>> +        /// Value of `UARTPCellID3` register.
+>> +        fn uart_pcell_id3 -> 0xb1,
+>> +    }
+>
+>I share the concern that this is quite a verbose way of handling a
+>fairly simple set of read-only constants. Is the end result really
+>folded away to a simple const lookup?
 
-00000000  63 6f 6e 65 63 74 69 78  00 00 00 02 00 01 00 00  |conectix........|
-00000010  ff ff ff ff ff ff ff ff  2e c7 9b 96 77 61 00 00  |............wa..|
-00000020  00 07 00 00 57 69 32 6b  00 00 00 01 40 00 00 00  |....Wi2k....@...|
-00000030  00 00 00 01 40 00 00 00  28 a2 10 3f 00 00 00 02  |....@...(..?....|
-00000040  ff ff e7 47 8c 54 df 94  bd 35 71 4c 94 5f e5 44  |...G.T...5qL._.D|
-00000050  44 53 92 1a 00 00 00 00  00 00 00 00 00 00 00 00  |DS..............|
-00000060  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
+Yep, const fns are evaluated at compile time. Alternatively we just 
+could remove the DeviceID struct and inline everything in the read() 
+method.
 
-we can see that Azure uses a different 'Creator application' --
-'wa\0\0' (offset 0x1c, likely reads as 'Windows Azure') and QEMU uses this
-field to determine how it can get image size. Apparently, Azure uses 'new'
-method, just like Hyper-V.
+>
+>Perhaps this comes down to unfamiliarity with the way macros are working
+>here but in general macros should be eliding boilerplate to allow us to
+>concisely represent the relevant data and functionality. Here it adds an
+>additional indirection when reading the code just to see what is going
+>on.
 
-Signed-off-by: Vitaly Kuznetsov <vkuznets@redhat.com>
----
-Alternatively, we can probably make 'current_size' the default and only use
-CHS for 'vpc '/'qemu'.
----
- block/vpc.c | 2 ++
- 1 file changed, 2 insertions(+)
+Well in the previous patch versions the concern was that it was 
+"verbose". But even if the registers are available as memory mapped in 
+the device it's the wrong abstraction to use here; this is a higher 
+level language than C and using indices is a "when you have a hammer 
+everything looks like a nail" situation.
 
-diff --git a/block/vpc.c b/block/vpc.c
-index d95a204612b7..b67798697c15 100644
---- a/block/vpc.c
-+++ b/block/vpc.c
-@@ -321,6 +321,7 @@ static int vpc_open(BlockDriverState *bs, QDict *options, int flags,
-      *      'qemu'  :  CHS              QEMU (uses disk geometry)
-      *      'qem2'  :  current_size     QEMU (uses current_size)
-      *      'win '  :  current_size     Hyper-V
-+     *      'wa\0\0':  current_size     Azure
-      *      'd2v '  :  current_size     Disk2vhd
-      *      'tap\0' :  current_size     XenServer
-      *      'CTXS'  :  current_size     XenConverter
-@@ -330,6 +331,7 @@ static int vpc_open(BlockDriverState *bs, QDict *options, int flags,
-      *  that have CHS geometry of the maximum size.
-      */
-     use_chs = (!!strncmp(footer->creator_app, "win ", 4) &&
-+               !!memcmp(footer->creator_app, "wa\0", 4) &&
-                !!strncmp(footer->creator_app, "qem2", 4) &&
-                !!strncmp(footer->creator_app, "d2v ", 4) &&
-                !!strncmp(footer->creator_app, "CTXS", 4) &&
--- 
-2.47.0
+We have different programming paradigms in Rust, allowing as to have 
+documented code (via rustdoc), so either we take advantage of Rust or we 
+don't.
 
+>
+>>  }
+>>  
+>>  #[repr(C)]
+>> @@ -182,9 +214,14 @@ pub fn read(&mut self, offset: hwaddr, _size: c_uint) -> std::ops::ControlFlow<u
+>>          use RegisterOffset::*;
+>>  
+>>          std::ops::ControlFlow::Break(match RegisterOffset::try_from(offset) {
+>> -            Err(v) if (0x3f8..0x400).contains(&v) => {
+>> -                u64::from(self.device_id[(offset - 0xfe0) >> 2])
+>> -            }
+>> +            Ok(PeriphID0) => self.device_id.uart_periph_id0(),
+>> +            Ok(PeriphID1) => self.device_id.uart_periph_id1(),
+>> +            Ok(PeriphID2) => self.device_id.uart_periph_id2(),
+>> +            Ok(PeriphID3) => self.device_id.uart_periph_id3(),
+>> +            Ok(PCellID0) => self.device_id.uart_pcell_id0(),
+>> +            Ok(PCellID1) => self.device_id.uart_pcell_id1(),
+>> +            Ok(PCellID2) => self.device_id.uart_pcell_id2(),
+>> +            Ok(PCellID3) => self.device_id.uart_pcell_id3(),
+>>              Err(_) => {
+>>                  // qemu_log_mask(LOG_GUEST_ERROR, "pl011_read: Bad offset 0x%x\n", (int)offset);
+>>                  0
+>> @@ -236,9 +273,15 @@ pub fn write(&mut self, offset: hwaddr, value: u64) {
+>>          use RegisterOffset::*;
+>>          let value: u32 = value as u32;
+>>          match RegisterOffset::try_from(offset) {
+>> -            Err(_bad_offset) => {
+>> +            Err(_) => {
+>>                  eprintln!("write bad offset {offset} value {value}");
+>>              }
+>> +            Ok(
+>> +                dev_id @ (PeriphID0 | PeriphID1 | PeriphID2 | PeriphID3 | PCellID0 | PCellID1
+>> +                | PCellID2 | PCellID3 | FR | RIS | MIS),
+>> +            ) => {
+>
+>This is a nice improvement in conciseness over the separate legs removed bellow.
+>
+>> +                eprintln!("write bad offset {offset} at RO register {dev_id:?} value {value}");
+>> +            }
+>
+>Is a binding for qemu_log and friends on the todo list?
+
+I had sent patches on a previous patch series that only some patches of 
+them were picked up for merging, I plan to send a new revision soon
+
+>
+>>              Ok(DR) => {
+>>                  // ??? Check if transmitter is enabled.
+>>                  let ch: u8 = value as u8;
+>> @@ -257,9 +300,6 @@ pub fn write(&mut self, offset: hwaddr, value: u64) {
+>>              Ok(RSR) => {
+>>                  self.receive_status_error_clear = 0.into();
+>>              }
+>> -            Ok(FR) => {
+>> -                // flag writes are ignored
+>> -            }
+>>              Ok(ILPR) => {
+>>                  self.ilpr = value;
+>>              }
+>> @@ -308,8 +348,6 @@ pub fn write(&mut self, offset: hwaddr, value: u64) {
+>>                  self.int_enabled = value;
+>>                  self.update();
+>>              }
+>> -            Ok(RIS) => {}
+>> -            Ok(MIS) => {}
+>>              Ok(ICR) => {
+>>                  self.int_level &= !value;
+>>                  self.update();
+>> diff --git a/rust/hw/char/pl011/src/lib.rs b/rust/hw/char/pl011/src/lib.rs
+>> index cd0a49acb9..1f305aa13f 100644
+>> --- a/rust/hw/char/pl011/src/lib.rs
+>> +++ b/rust/hw/char/pl011/src/lib.rs
+>> @@ -111,6 +111,22 @@ pub enum RegisterOffset {
+>>      /// DMA control Register
+>>      #[doc(alias = "UARTDMACR")]
+>>      DMACR = 0x048,
+>> +    #[doc(alias = "UARTPeriphID0")]
+>> +    PeriphID0 = 0xFE0,
+>> +    #[doc(alias = "UARTPeriphID1")]
+>> +    PeriphID1 = 0xFE4,
+>> +    #[doc(alias = "UARTPeriphID2")]
+>> +    PeriphID2 = 0xFE8,
+>> +    #[doc(alias = "UARTPeriphID3")]
+>> +    PeriphID3 = 0xFEC,
+>> +    #[doc(alias = "UARTPCellID0")]
+>> +    PCellID0 = 0xFF0,
+>> +    #[doc(alias = "UARTPCellID1")]
+>> +    PCellID1 = 0xFF4,
+>> +    #[doc(alias = "UARTPCellID2")]
+>> +    PCellID2 = 0xFF8,
+>> +    #[doc(alias = "UARTPCellID3")]
+>> +    PCellID3 = 0xFFC,
+>
+>Why do we have specific doc aliases rather than just naming the
+>registers with the full name?
+
+Because prefix enum variants with the same prefix is an anti-pattern in 
+idiomatic Rust.
+
+>
+>>      ///// Reserved, offsets `0x04C` to `0x07C`.
+>>      //Reserved = 0x04C,
+>>  }
+>> @@ -137,7 +153,11 @@ const fn _assert_exhaustive(val: RegisterOffset) {
+>>                  }
+>>              }
+>>          }
+>> -        case! { DR, RSR, FR, FBRD, ILPR, IBRD, LCR_H, CR, FLS, IMSC, RIS, MIS, ICR, DMACR }
+>> +        case! {
+>> +            DR, RSR, FR, FBRD, ILPR, IBRD, LCR_H, CR, FLS, IMSC, RIS, MIS, ICR, DMACR,
+>> +            PeriphID0, PeriphID1, PeriphID2, PeriphID3,
+>> +            PCellID0, PCellID1, PCellID2, PCellID3,
+>> +        }
+>>      }
+>>  }
+>>  
+>>
+>> base-commit: 43f2def68476697deb0d119cbae51b20019c6c86
+>
+>-- 
+>Alex Bennée
+>Virtualisation Tech Lead @ Linaro
 
