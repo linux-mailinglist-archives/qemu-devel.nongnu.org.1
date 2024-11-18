@@ -2,74 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3302A9D10F3
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Nov 2024 13:50:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A4FF89D10F5
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Nov 2024 13:50:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tD1BV-0005dA-Tr; Mon, 18 Nov 2024 07:48:54 -0500
+	id 1tD1CN-0000UT-6Y; Mon, 18 Nov 2024 07:49:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tD1B2-0004XV-Se
- for qemu-devel@nongnu.org; Mon, 18 Nov 2024 07:48:30 -0500
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1tD1CA-0008TF-CO
+ for qemu-devel@nongnu.org; Mon, 18 Nov 2024 07:49:35 -0500
+Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tD1Aw-0005SC-Gw
- for qemu-devel@nongnu.org; Mon, 18 Nov 2024 07:48:21 -0500
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-43169902057so34282065e9.0
- for <qemu-devel@nongnu.org>; Mon, 18 Nov 2024 04:48:12 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1tD1C8-0005Vw-Dz
+ for qemu-devel@nongnu.org; Mon, 18 Nov 2024 07:49:33 -0500
+Received: by mail-ed1-x534.google.com with SMTP id
+ 4fb4d7f45d1cf-5cfaeed515bso2341345a12.1
+ for <qemu-devel@nongnu.org>; Mon, 18 Nov 2024 04:49:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1731934091; x=1732538891; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=vThzEj5/0y6fC/Z7sKZAT6Xu5p270O8pYo+gkBmXMu4=;
- b=CMgsvkmcUHQOQpyONJGDbpx7VB6ieLu1c1mlxekPa6hhqDtUXHczDW3QxRyIF5Qi9f
- jbQ4CA0G6BbYMLLI4J65+o8w5zjx6LWfRgS0fxdOqVoVYZ4zBTCJtpus5vCdmcrf4kel
- Y2vbDtDPFDRMK6QpPSl67WtEtuT8YFootBSePWreDTaUqCOO7/G+tVrnXfZozh8VsXZE
- tGo+kyQasU+OOeLKQPqty/F3J1KceF5NJizGrEy28IauWBsyH+NdQUh52P3/Ve+lD12N
- DQ4XOGgIWTzf13v0mWBU5mO5ih4xxA4YiB40H/rpj7+J4ShGU62VmemyGn1zEn9WwCRo
- 4hRA==
+ d=linaro.org; s=google; t=1731934170; x=1732538970; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=5tuYhTk5xkX+QAPB8w45QhCG/O6PqvROoWvuT7r7h18=;
+ b=K/+qv7TFbptJLUXMEFmCbcro1IfAaVOw81Y+oTqTUu1CsrXsPi7vTQbFgmbJBiD88L
+ JwdFsgAPpZ/I/2qQIRUhfAoyhNeCyOD+KXfPCoc0D1VqAXBE1OMHN8Uld/YJR2FHgw9a
+ 4UR5aQO3BeanC9EXsRuUy1+vVQ0eUsCrVbJfzHSYICqJayhrNkd8Sikm+LzwaNA0Sl4W
+ BXorodpoCosTMtCrkHwI6yjatEOcIRpZZJKM5E7+ZNVbbkTUVc4wFQutt1x5L8hqS2Gy
+ /7ZkYZslrQGyXAhl4ZuOSGnJIOPrFL9abaSNuCU0/+dUQqA0OEcI8jKhmUvwnQL5sVy4
+ Z5Mg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731934091; x=1732538891;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=vThzEj5/0y6fC/Z7sKZAT6Xu5p270O8pYo+gkBmXMu4=;
- b=f+QkbXda942P6/mD+3J97BmTt/8sh2rY3uYfXdeHJCrWOK4kA+tpFeZJ66tE5NWA24
- QaPBYEKElsf0K2VbAO1cZO/+hBP8ryBPKtXSxpfhFAGc8p+AmEgWGy3btQSGG1wk2iyp
- 3DPQ0ZvL4sg05571GSicB/tmrTWaRV9CJqvP0Lk9zm6poHmYs+IoacqQN9u4lR9cYmRu
- I0r6IVtFFXsZjIQGjSa55oP2FSZPFeqL0WQxgpIoS4jufues2r22SBdMf1G6CnW/VXEZ
- 1U9ERBvR/ioyaDmZ7na/RJF3JDWapmhc0B9jPwzdWjGnzwns6dR6E99BSEmKD6gtFMVN
- 59JA==
-X-Gm-Message-State: AOJu0Yw0w/KU+68ZznIUyBLCUU2tsMH1HjChh0AZensCIX5yVpfeRCI1
- Ke1YRqVlsaPrWbMsi5ct4DbMYmGPdPL1ASBo5+EQLSPaV9QfA0jff9nBum5aoqfm1AV3LjaRlLk
- y
-X-Google-Smtp-Source: AGHT+IH/Qpx9anm36693kePwO9l3q51HFtofTN2RTonKp8PeJDRuNCQXSnvTuS8pimYG6bn+95KU6Q==
-X-Received: by 2002:a05:6000:2c6:b0:382:1c58:5787 with SMTP id
- ffacd0b85a97d-38225a89fe4mr11523224f8f.46.1731934090708; 
- Mon, 18 Nov 2024 04:48:10 -0800 (PST)
-Received: from localhost.localdomain ([176.187.198.1])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-382371a5646sm7362071f8f.0.2024.11.18.04.48.09
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 18 Nov 2024 04:48:10 -0800 (PST)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Roque Arcudia Hernandez <roqueh@google.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 15/15] hw/watchdog/cmsdk_apb_watchdog: Fix broken link
-Date: Mon, 18 Nov 2024 13:46:42 +0100
-Message-ID: <20241118124643.6958-16-philmd@linaro.org>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20241118124643.6958-1-philmd@linaro.org>
-References: <20241118124643.6958-1-philmd@linaro.org>
+ d=1e100.net; s=20230601; t=1731934170; x=1732538970;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=5tuYhTk5xkX+QAPB8w45QhCG/O6PqvROoWvuT7r7h18=;
+ b=L5HLafT/Kkup75fsWMZyJ6q27Zrud7VOqUxBEaAsfQpSNCsVOj/qP+xPGOXRSbWLi6
+ fI7mvXNn4Mbu+dn5nI0tcSXsQ3go3VuNm8xQW4k+QQjB13NhbZ7JOUllP57KaxNNJfvg
+ K4ANrBmQ+wePjRwpEBctFyFnFEW/WggWPFa9to8KPVwHleob+8JiUj/LKvba3A1i7W/a
+ qKJy1k3WjPBld1BPi4hm1hEoccuIN1k/88yU60kUnSiBxmuWVyahiog3SPXl9kxTYVcH
+ sziMy3pKLQql/bI815BWNXxWwAhMAK3JKzcBEW/zMZZCHiF/tofl2uuIAyTBQ33PhN52
+ tq2g==
+X-Gm-Message-State: AOJu0Yx7XtY3/bJiUGhU5SekPmLsG+Vr197ESfQwItObrh2r49A2TeNx
+ fRpyDjN0AMDgRetdZ6eeF1ezQZhHm1slc/O4qeSwOVdegowdwwUtcGQqjgd3fCw5DAfCY9Jn6mN
+ Fl1i/VBowLdcPHR5zsGIqi2hbLfBDzGmzxMk2HQ==
+X-Google-Smtp-Source: AGHT+IEWTd8szsynmIYLrxnBZzSZXsWpg88XlIlNddT0FMdyVWXiIkZaLwAnvzO+paIS/GuDL87W3IwuY8ncs2UM7vo=
+X-Received: by 2002:a05:6402:5206:b0:5cf:6093:9377 with SMTP id
+ 4fb4d7f45d1cf-5cf8fd32361mr8960012a12.23.1731934170628; Mon, 18 Nov 2024
+ 04:49:30 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
+References: <CAFEAcA8hHMj0718haB_uZhE-LQF4W9PYrL-na0iznp4ueDsq7g@mail.gmail.com>
+ <15635bd3-97fa-4c11-9427-c615d1b57dd1@redhat.com>
+In-Reply-To: <15635bd3-97fa-4c11-9427-c615d1b57dd1@redhat.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Mon, 18 Nov 2024 12:49:19 +0000
+Message-ID: <CAFEAcA91Kb4foyXJ3hcbqKXkHKae12yO=HcFYSUCFKS0AEG+oQ@mail.gmail.com>
+Subject: Re: tests/functional is eating disk space
+To: Thomas Huth <thuth@redhat.com>
+Cc: QEMU Developers <qemu-devel@nongnu.org>,
+ "Daniel P. Berrange" <berrange@redhat.com>, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::534;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x534.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,36 +88,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Roque Arcudia Hernandez <roqueh@google.com>
+On Mon, 18 Nov 2024 at 12:10, Thomas Huth <thuth@redhat.com> wrote:
+>
+> On 18/11/2024 11.57, Peter Maydell wrote:
+> > I just ran out of disk space on my dev machine, because:
+> >
+> > $ du -h build/clang/tests/functional/
+> > [...]
+> > 11G     build/clang/tests/functional/
+>
+> That's indeed a lot. I only got 6.9G in my build tree for all targets ... I
+> guess there are some stale files lying around, so as a temporary mitigation,
+> just try to delete that folder (it should get recreated the next time you
+> run the tests).
+>
+> > The new functional tests seem to be eating disk space.
+> >
+> > Even the build tree I have that's just arm targets is 7.1GB.
+> >
+> > Could you have a look at what's happening here?
+>
+> I am aware of the problem and got it on my TODO list already... I think we
+> best should set the "workdir" to a temporary folder that we can remove once
+> the test has finished, that will automatically delete all binary assets that
+> the test created during its runtime.
 
-The patch changes the comments to point to the latest Design Kit
-Technical Reference Manual.
+Can we provide some kind of option for "keep the temporary
+data" too? That's sometimes handy when you want to manually
+run the QEMU command the test used as part of debugging
+a failing test.
 
-Signed-off-by: Roque Arcudia Hernandez <roqueh@google.com>
-Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20241115160328.1650269-2-roqueh@google.com>
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- hw/watchdog/cmsdk-apb-watchdog.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/hw/watchdog/cmsdk-apb-watchdog.c b/hw/watchdog/cmsdk-apb-watchdog.c
-index 7ad46f9410..e4d25a25f7 100644
---- a/hw/watchdog/cmsdk-apb-watchdog.c
-+++ b/hw/watchdog/cmsdk-apb-watchdog.c
-@@ -12,8 +12,8 @@
- /*
-  * This is a model of the "APB watchdog" which is part of the Cortex-M
-  * System Design Kit (CMSDK) and documented in the Cortex-M System
-- * Design Kit Technical Reference Manual (ARM DDI0479C):
-- * https://developer.arm.com/products/system-design/system-design-kits/cortex-m-system-design-kit
-+ * Design Kit Technical Reference Manual (ARM DDI0479):
-+ * https://developer.arm.com/documentation/ddi0479/
-  *
-  * We also support the variant of this device found in the TI
-  * Stellaris/Luminary boards and documented in:
--- 
-2.45.2
-
+thanks
+-- PMM
 
