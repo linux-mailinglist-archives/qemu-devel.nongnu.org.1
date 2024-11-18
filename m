@@ -2,69 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A8299D1744
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Nov 2024 18:38:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 148039D173D
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Nov 2024 18:37:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tD5hE-0001lk-2V; Mon, 18 Nov 2024 12:37:56 -0500
+	id 1tD5gU-0008CS-L4; Mon, 18 Nov 2024 12:37:13 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tD5hB-0001bO-MZ
- for qemu-devel@nongnu.org; Mon, 18 Nov 2024 12:37:53 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tD5gE-00086w-0w
+ for qemu-devel@nongnu.org; Mon, 18 Nov 2024 12:36:54 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tD5hA-00050U-6M
- for qemu-devel@nongnu.org; Mon, 18 Nov 2024 12:37:53 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tD5gA-0004kq-VC
+ for qemu-devel@nongnu.org; Mon, 18 Nov 2024 12:36:53 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1731951471;
+ s=mimecast20190719; t=1731951409;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=hkzDv6uUFa/SZx2BOtVeB2b/N2Qd/jtqZGg5bLu+YqA=;
- b=flfzM5MzCUrllU4J/3LGnynt7MDBRIZg4c/u0uPqTTiT9ZRd3/NuMIiuJof8rcsOkeynXY
- rY2q8u0XDa2K448ZgqCYV3EVteyd8xFmGmJPvhBRAMsVjZm8mSH4KXNxFsNPZS48UsUvxN
- jIR4L0SnmS+iR50WETr964o5+c/sHL0=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ bh=U8ZF0tTQdZBir3IuexxqkPFkW2BBc2tfjP1VYb1K6jU=;
+ b=JvIJO6TfnbIBWuyyLTGL8HWtgAgNe5UYtUOICEJkpgTLNDN0JjIHRG4o8mAJB/C4INFi0Y
+ KkzRTjoXAOn+aGX/oXhkzUAX7fVs3un/yxuEL+eltO3wQ4uZn3l/iNQeskCrV83i8/b/Wg
+ gJy1A4iDZdEWLkdFGDWLDulRygLrK0k=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-312-vUE5Lk_lMOe-a1hOjQTg8g-1; Mon,
- 18 Nov 2024 12:36:43 -0500
-X-MC-Unique: vUE5Lk_lMOe-a1hOjQTg8g-1
-X-Mimecast-MFC-AGG-ID: vUE5Lk_lMOe-a1hOjQTg8g
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-94-iAStWBGjNlCsKg_7jD0_LQ-1; Mon,
+ 18 Nov 2024 12:36:45 -0500
+X-MC-Unique: iAStWBGjNlCsKg_7jD0_LQ-1
+X-Mimecast-MFC-AGG-ID: iAStWBGjNlCsKg_7jD0_LQ
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 120D21955BCF; Mon, 18 Nov 2024 17:36:41 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 61ACC1955D4D; Mon, 18 Nov 2024 17:36:43 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.194.53])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 7507719560A3; Mon, 18 Nov 2024 17:36:38 +0000 (UTC)
+ id C9A69195DF81; Mon, 18 Nov 2024 17:36:41 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Roque Arcudia Hernandez <roqueh@google.com>,
- Erwin Jansen <jansene@google.com>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PULL 01/12] hw/usb: Use __attribute__((packed)) vs __packed
-Date: Mon, 18 Nov 2024 18:36:23 +0100
-Message-ID: <20241118173634.473532-2-thuth@redhat.com>
+ Ilya Leoshkevich <iii@linux.ibm.com>
+Subject: [PULL 02/12] target/s390x: Fix the floating-point multiply-and-add
+ NaN rules
+Date: Mon, 18 Nov 2024 18:36:24 +0100
+Message-ID: <20241118173634.473532-3-thuth@redhat.com>
 In-Reply-To: <20241118173634.473532-1-thuth@redhat.com>
 References: <20241118173634.473532-1-thuth@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.142,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -82,34 +81,129 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Roque Arcudia Hernandez <roqueh@google.com>
+From: Ilya Leoshkevich <iii@linux.ibm.com>
 
-__packed is non standard and is not present in clang-cl.
-__attribute__((packed)) has the same semantics.
+Order the helper arguments to match the Principles of Operation.
+Implement the "Results: MULTIPLY AND ADD" table in pickNaNMulAdd().
 
-Signed-off-by: Erwin Jansen <jansene@google.com>
-Signed-off-by: Roque Arcudia Hernandez <roqueh@google.com>
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Message-ID: <20241101211720.3354111-1-roqueh@google.com>
+Reported-by: Peter Maydell <peter.maydell@linaro.org>
+Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Message-ID: <20241023000147.34035-2-iii@linux.ibm.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- include/hw/usb/dwc2-regs.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ target/s390x/tcg/fpu_helper.c     |  8 ++++----
+ target/s390x/tcg/vec_fpu_helper.c | 12 ++++++------
+ fpu/softfloat-specialize.c.inc    | 19 +++++++++++++++++++
+ 3 files changed, 29 insertions(+), 10 deletions(-)
 
-diff --git a/include/hw/usb/dwc2-regs.h b/include/hw/usb/dwc2-regs.h
-index 523b112c5e..b8b4266543 100644
---- a/include/hw/usb/dwc2-regs.h
-+++ b/include/hw/usb/dwc2-regs.h
-@@ -838,7 +838,7 @@
- struct dwc2_dma_desc {
-         uint32_t status;
-         uint32_t buf;
--} __packed;
-+} QEMU_PACKED;
+diff --git a/target/s390x/tcg/fpu_helper.c b/target/s390x/tcg/fpu_helper.c
+index d8bd5748fa..5041c13962 100644
+--- a/target/s390x/tcg/fpu_helper.c
++++ b/target/s390x/tcg/fpu_helper.c
+@@ -780,7 +780,7 @@ uint32_t HELPER(kxb)(CPUS390XState *env, Int128 a, Int128 b)
+ uint64_t HELPER(maeb)(CPUS390XState *env, uint64_t f1,
+                       uint64_t f2, uint64_t f3)
+ {
+-    float32 ret = float32_muladd(f2, f3, f1, 0, &env->fpu_status);
++    float32 ret = float32_muladd(f3, f2, f1, 0, &env->fpu_status);
+     handle_exceptions(env, false, GETPC());
+     return ret;
+ }
+@@ -789,7 +789,7 @@ uint64_t HELPER(maeb)(CPUS390XState *env, uint64_t f1,
+ uint64_t HELPER(madb)(CPUS390XState *env, uint64_t f1,
+                       uint64_t f2, uint64_t f3)
+ {
+-    float64 ret = float64_muladd(f2, f3, f1, 0, &env->fpu_status);
++    float64 ret = float64_muladd(f3, f2, f1, 0, &env->fpu_status);
+     handle_exceptions(env, false, GETPC());
+     return ret;
+ }
+@@ -798,7 +798,7 @@ uint64_t HELPER(madb)(CPUS390XState *env, uint64_t f1,
+ uint64_t HELPER(mseb)(CPUS390XState *env, uint64_t f1,
+                       uint64_t f2, uint64_t f3)
+ {
+-    float32 ret = float32_muladd(f2, f3, f1, float_muladd_negate_c,
++    float32 ret = float32_muladd(f3, f2, f1, float_muladd_negate_c,
+                                  &env->fpu_status);
+     handle_exceptions(env, false, GETPC());
+     return ret;
+@@ -808,7 +808,7 @@ uint64_t HELPER(mseb)(CPUS390XState *env, uint64_t f1,
+ uint64_t HELPER(msdb)(CPUS390XState *env, uint64_t f1,
+                       uint64_t f2, uint64_t f3)
+ {
+-    float64 ret = float64_muladd(f2, f3, f1, float_muladd_negate_c,
++    float64 ret = float64_muladd(f3, f2, f1, float_muladd_negate_c,
+                                  &env->fpu_status);
+     handle_exceptions(env, false, GETPC());
+     return ret;
+diff --git a/target/s390x/tcg/vec_fpu_helper.c b/target/s390x/tcg/vec_fpu_helper.c
+index 75cf605b9f..1bbaa82fe8 100644
+--- a/target/s390x/tcg/vec_fpu_helper.c
++++ b/target/s390x/tcg/vec_fpu_helper.c
+@@ -621,8 +621,8 @@ static void vfma32(S390Vector *v1, const S390Vector *v2, const S390Vector *v3,
+     int i;
  
- /* Host Mode DMA descriptor status quadlet */
+     for (i = 0; i < 4; i++) {
+-        const float32 a = s390_vec_read_float32(v2, i);
+-        const float32 b = s390_vec_read_float32(v3, i);
++        const float32 a = s390_vec_read_float32(v3, i);
++        const float32 b = s390_vec_read_float32(v2, i);
+         const float32 c = s390_vec_read_float32(v4, i);
+         float32 ret = float32_muladd(a, b, c, flags, &env->fpu_status);
  
+@@ -645,8 +645,8 @@ static void vfma64(S390Vector *v1, const S390Vector *v2, const S390Vector *v3,
+     int i;
+ 
+     for (i = 0; i < 2; i++) {
+-        const float64 a = s390_vec_read_float64(v2, i);
+-        const float64 b = s390_vec_read_float64(v3, i);
++        const float64 a = s390_vec_read_float64(v3, i);
++        const float64 b = s390_vec_read_float64(v2, i);
+         const float64 c = s390_vec_read_float64(v4, i);
+         const float64 ret = float64_muladd(a, b, c, flags, &env->fpu_status);
+ 
+@@ -664,8 +664,8 @@ static void vfma128(S390Vector *v1, const S390Vector *v2, const S390Vector *v3,
+                     const S390Vector *v4, CPUS390XState *env, bool s, int flags,
+                     uintptr_t retaddr)
+ {
+-    const float128 a = s390_vec_read_float128(v2);
+-    const float128 b = s390_vec_read_float128(v3);
++    const float128 a = s390_vec_read_float128(v3);
++    const float128 b = s390_vec_read_float128(v2);
+     const float128 c = s390_vec_read_float128(v4);
+     uint8_t vxc, vec_exc = 0;
+     float128 ret;
+diff --git a/fpu/softfloat-specialize.c.inc b/fpu/softfloat-specialize.c.inc
+index b5a3208050..9bca03c4ae 100644
+--- a/fpu/softfloat-specialize.c.inc
++++ b/fpu/softfloat-specialize.c.inc
+@@ -597,6 +597,25 @@ static int pickNaNMulAdd(FloatClass a_cls, FloatClass b_cls, FloatClass c_cls,
+         float_raise(float_flag_invalid | float_flag_invalid_imz, status);
+     }
+     return 3; /* default NaN */
++#elif defined(TARGET_S390X)
++    if (infzero) {
++        float_raise(float_flag_invalid | float_flag_invalid_imz, status);
++        return 3;
++    }
++
++    if (is_snan(a_cls)) {
++        return 0;
++    } else if (is_snan(b_cls)) {
++        return 1;
++    } else if (is_snan(c_cls)) {
++        return 2;
++    } else if (is_qnan(a_cls)) {
++        return 0;
++    } else if (is_qnan(b_cls)) {
++        return 1;
++    } else {
++        return 2;
++    }
+ #elif defined(TARGET_SPARC)
+     /* For (inf,0,nan) return c. */
+     if (infzero) {
 -- 
 2.47.0
 
