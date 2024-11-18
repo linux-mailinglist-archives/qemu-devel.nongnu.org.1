@@ -2,50 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD35D9D1A2B
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Nov 2024 22:11:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 00FAC9D1AD5
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Nov 2024 22:55:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tD90N-0003Mi-Lm; Mon, 18 Nov 2024 16:09:55 -0500
+	id 1tD9hN-0008Db-Ir; Mon, 18 Nov 2024 16:54:21 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tD8zu-000234-Rn; Mon, 18 Nov 2024 16:09:28 -0500
-Received: from isrv.corpit.ru ([86.62.121.231])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tD8zt-0005S8-8n; Mon, 18 Nov 2024 16:09:26 -0500
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 088C0A5615;
- Tue, 19 Nov 2024 00:08:32 +0300 (MSK)
-Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 9611017362D;
- Tue, 19 Nov 2024 00:08:35 +0300 (MSK)
-Received: (nullmailer pid 2366137 invoked by uid 1000);
- Mon, 18 Nov 2024 21:08:34 -0000
-From: Michael Tokarev <mjt@tls.msk.ru>
-To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Guenter Roeck <linux@roeck-us.net>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.0.4 71/71] usb-hub: Fix handling port power control messages
-Date: Tue, 19 Nov 2024 00:08:28 +0300
-Message-Id: <20241118210834.2366046-14-mjt@tls.msk.ru>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <qemu-stable-9.0.4-20241118223714@cover.tls.msk.ru>
-References: <qemu-stable-9.0.4-20241118223714@cover.tls.msk.ru>
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1tD9hL-0008DD-EU
+ for qemu-devel@nongnu.org; Mon, 18 Nov 2024 16:54:19 -0500
+Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1tD9hJ-00034j-U3
+ for qemu-devel@nongnu.org; Mon, 18 Nov 2024 16:54:19 -0500
+Received: by mail-pl1-x629.google.com with SMTP id
+ d9443c01a7336-20cdbe608b3so46483725ad.1
+ for <qemu-devel@nongnu.org>; Mon, 18 Nov 2024 13:54:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1731966856; x=1732571656; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=z5lc7SQzqb8FbPMx3RtPvky1mKBa1oSXjS7QGFAeW0Q=;
+ b=OoczptckP38w0/xDjQfS3gR2pTzGAuE6e5pJBvS8AnU6WSRvpl+qy1ixR3Ylt7mzTq
+ zJa+95Z7DhotwN/FaR+za2lYXZ7ER8irTdthSEgEZzrMaj8yCoj9GTL0i9lVpirXb5sY
+ NfEnmk7dpXYQRGBbIz0yejLolbPt/K4G5o0L+HMo4A5P81k55UQm3vaIUSrbQbW+PPdE
+ 6F+4Ajo0jVXmqSBMoeNN+CUD3UoMMfH0emxDSb7edCpqhnhuSUPZHV+Scdms7oDV3Gwf
+ MCeYkUi2xQw+9cfDp9tgy9uEAijo/dGrTZlEtNFIjS+6pXUQ8+d1ZX7hP2zDmH2CeDq2
+ TNHQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1731966856; x=1732571656;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=z5lc7SQzqb8FbPMx3RtPvky1mKBa1oSXjS7QGFAeW0Q=;
+ b=tnfylRxAgl5ucaHnAwOL6D6s9c9xeDZb+oJOkSiFP6+4w5rq1qs0Ag7RBXdFRvcqjY
+ IQJGd9KrkM1nhaGp9rbaGpAPFQ+0RwiXb97pAC8KzywVUSkHXBIjnNm6aI58dgRCEzz9
+ M/e63L7wJyYb5rL6r8o9t5FtTvF70L3DCpMrgxzjDh+FSgLIMTVKTq1/tuurbK4nch2/
+ VATmcZ5rDjCyEuu3XFYygAutbgf3Q/RhowzDmKmNOeiIeTvVi7oks6FwqMegy9hWfjYq
+ 61SSaO8Ugmek4a1qeypYh0Hi4f33p9MnFVcSsmPMDHxcljBh1GKGE/U1ZTMScqvfx7pV
+ 9JSg==
+X-Gm-Message-State: AOJu0YyEhgCgfv5sKPbqsv2KjdzMRCraTELIg/47TlFEotbTnSUbq8HJ
+ EUWdFEGvrkdSrfYU/lQMB1h+vfT3Kn/13CS0wh74JrdNfvWDHqZA+RRwqB9eDxaP7E0jodB4ozL
+ e60+hYQ==
+X-Google-Smtp-Source: AGHT+IHBLHS0TaVACqKTLLNJ7v1gfdsdwRuSEgdVlRctxjHpENjaoOI5f2MoKicXmxAzTlsGI6IoNQ==
+X-Received: by 2002:a17:903:2304:b0:212:675:c061 with SMTP id
+ d9443c01a7336-2120675c326mr114994525ad.4.1731966855978; 
+ Mon, 18 Nov 2024 13:54:15 -0800 (PST)
+Received: from [192.168.1.67] (216-180-64-156.dyn.novuscom.net.
+ [216.180.64.156]) by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-211d0f346d7sm61012365ad.138.2024.11.18.13.54.15
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 18 Nov 2024 13:54:15 -0800 (PST)
+Message-ID: <012c4f94-e820-4bdf-a97a-c535e84c883b@linaro.org>
+Date: Mon, 18 Nov 2024 13:54:14 -0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -68
-X-Spam_score: -6.9
-X-Spam_bar: ------
-X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 0/3] plugins: generate list of symbols automatically
+To: qemu-devel@nongnu.org
+Cc: Mahmoud Mandour <ma.mandourr@gmail.com>,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Alexandre Iooss <erdnaxe@crans.org>, Cleber Rosa <crosa@redhat.com>,
+ John Snow <jsnow@redhat.com>
+References: <20241112212622.3590693-1-pierrick.bouvier@linaro.org>
+Content-Language: en-US
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+In-Reply-To: <20241112212622.3590693-1-pierrick.bouvier@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x629.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -61,33 +97,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Guenter Roeck <linux@roeck-us.net>
+On 11/12/24 13:26, Pierrick Bouvier wrote:
+> Now that meson build for plugins was merged, we can cleanup another part with
+> the symbols file.
+> It has to be kept in sync between the header (qemu-plugin.h) and the symbols
+> file. This has proved to be error prone and tedious.
+> 
+> We solve this by generating this list from header directly using a python
+> script. Dependencies are triggered correctly, and the file is regenerated if the
+> header is modified, as expected.
+> 
+> v4:
+> fix second patch to apply cleanly on master (was applied from a previous series
+> to enable windows clang build before).
+> 
+> Pierrick Bouvier (3):
+>    plugins: add missing export for qemu_plugin_num_vcpus
+>    plugins: detect qemu plugin API symbols from header
+>    plugins: eradicate qemu-plugins.symbols static file
+> 
+>   MAINTAINERS                    |  1 +
+>   include/qemu/qemu-plugin.h     |  1 +
+>   plugins/meson.build            | 12 +++++--
+>   plugins/qemu-plugins.symbols   | 59 ----------------------------------
+>   scripts/qemu-plugin-symbols.py | 45 ++++++++++++++++++++++++++
+>   5 files changed, 56 insertions(+), 62 deletions(-)
+>   delete mode 100644 plugins/qemu-plugins.symbols
+>   create mode 100755 scripts/qemu-plugin-symbols.py
+> 
 
-The ClearPortFeature control message fails for PORT_POWER because there
-is no break; at the end of the case statement, causing it to fall through
-to the failure handler. Add the missing break; to solve the problem.
-
-Fixes: 1cc403eb21 ("usb-hub: emulate per port power switching")
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20241112170152.217664-11-linux@roeck-us.net>
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-(cherry picked from commit b2cc69997924b651c0c6f4037782e25f2e438715)
-Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-
-diff --git a/hw/usb/dev-hub.c b/hw/usb/dev-hub.c
-index 06e9537d03..2c3640c705 100644
---- a/hw/usb/dev-hub.c
-+++ b/hw/usb/dev-hub.c
-@@ -479,6 +479,7 @@ static void usb_hub_handle_control(USBDevice *dev, USBPacket *p,
-                     usb_hub_port_clear(port, PORT_STAT_SUSPEND);
-                     port->wPortChange = 0;
-                 }
-+                break;
-             default:
-                 goto fail;
-             }
--- 
-2.39.5
-
+Gentle ping, to hopefully merge this in 9.2.
 
