@@ -2,48 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD43F9D1910
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Nov 2024 20:37:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A66369D1918
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Nov 2024 20:38:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tD7Xs-0007ER-KH; Mon, 18 Nov 2024 14:36:24 -0500
+	id 1tD7Zf-0004NF-0R; Mon, 18 Nov 2024 14:38:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tD7Xn-0007BZ-39; Mon, 18 Nov 2024 14:36:19 -0500
-Received: from isrv.corpit.ru ([86.62.121.231])
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1tD7ZK-0003w6-OA
+ for qemu-devel@nongnu.org; Mon, 18 Nov 2024 14:37:55 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tD7Xl-0002jG-EQ; Mon, 18 Nov 2024 14:36:18 -0500
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 051A5A54EA;
- Mon, 18 Nov 2024 22:35:18 +0300 (MSK)
-Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 781881735A7;
- Mon, 18 Nov 2024 22:35:21 +0300 (MSK)
-Received: (nullmailer pid 2312708 invoked by uid 1000);
- Mon, 18 Nov 2024 19:35:20 -0000
-From: Michael Tokarev <mjt@tls.msk.ru>
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1tD7ZJ-0002vb-4W
+ for qemu-devel@nongnu.org; Mon, 18 Nov 2024 14:37:54 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1731958672;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=p8wohcCVYBXR0ry+UydV2Dq1uQJ4yc3/KyuxZsXkGVk=;
+ b=bHafoJ5zVzII7KVUPls2WZ76qAhyW+Z3SsEzYQU/WvSwju03Cr0COFXFSCRHNi1/8OZW5P
+ cVjjsl3401v5vfNCL0/BBLLJBWQqbm8bJ7MLK4F9AUIYc9GQJpH1k20bjndNqIjvq8MPrb
+ r0t2knbH/YWEYihL28ioVe0+KXhMs/A=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-191-cEuebC-kNAeKIgjaI75S4w-1; Mon,
+ 18 Nov 2024 14:37:49 -0500
+X-MC-Unique: cEuebC-kNAeKIgjaI75S4w-1
+X-Mimecast-MFC-AGG-ID: cEuebC-kNAeKIgjaI75S4w
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id BF5791944A82; Mon, 18 Nov 2024 19:37:47 +0000 (UTC)
+Received: from redhat.com (unknown [10.2.16.76])
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id C215D1956056; Mon, 18 Nov 2024 19:37:45 +0000 (UTC)
+Date: Mon, 18 Nov 2024 13:37:42 -0600
+From: Eric Blake <eblake@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Guenter Roeck <linux@roeck-us.net>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.8 61/61] usb-hub: Fix handling port power control messages
-Date: Mon, 18 Nov 2024 22:35:16 +0300
-Message-Id: <20241118193520.2312620-13-mjt@tls.msk.ru>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <qemu-stable-8.2.8-20241118211929@cover.tls.msk.ru>
-References: <qemu-stable-8.2.8-20241118211929@cover.tls.msk.ru>
+Cc: qemu-block@nongnu.org, kwolf@redhat.com, 
+ Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Subject: Re: [PATCH] nbd-server: Silence server warnings on port probes
+Message-ID: <cs4sgl6yvau2mtvivm7loa5xe6zekdhsi7ozsobqo3dtrzvr74@bjwxs3j5wsix>
+References: <20241115195638.1132007-2-eblake@redhat.com>
+ <j7bbrsft54ay6dckd4x7q3nokwrukyy2uspnjafjnd2rj34zey@xrzfihu5qbux>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -68
-X-Spam_score: -6.9
-X-Spam_bar: ------
-X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <j7bbrsft54ay6dckd4x7q3nokwrukyy2uspnjafjnd2rj34zey@xrzfihu5qbux>
+User-Agent: NeoMutt/20241002
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=eblake@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.142,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -61,33 +82,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Guenter Roeck <linux@roeck-us.net>
+On Mon, Nov 18, 2024 at 11:08:51AM -0600, Eric Blake wrote:
+> On Fri, Nov 15, 2024 at 01:55:53PM -0600, Eric Blake wrote:
+> > While testing the use of qemu-nbd in a Pod of a Kubernetes cluster, I
+> > got LOTS of log messages of the forms:
+> > 
+> > qemu-nbd: option negotiation failed: Failed to read flags: Unexpected end-of-file before all data were read
+> > qemu-nbd: option negotiation failed: Failed to read flags: Unable to read from socket: Connection reset by peer
+> > 
 
-The ClearPortFeature control message fails for PORT_POWER because there
-is no break; at the end of the case statement, causing it to fall through
-to the failure handler. Add the missing break; to solve the problem.
+> In testing this as a potential candidate for -rc1, I'm seeing iotests
+> failures in `./check 094 119 -nbd` both pre- and post-patch.
+> Bisecting now to see if I can find where those tests started
+> regressing (looks like a timing change; a "return" line is swapping
+> place with a SHUTDOWN event line in the QMP output).
 
-Fixes: 1cc403eb21 ("usb-hub: emulate per port power switching")
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20241112170152.217664-11-linux@roeck-us.net>
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-(cherry picked from commit b2cc69997924b651c0c6f4037782e25f2e438715)
-Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+Huh - I'm seeing those same two tests fail on a vanilla v0.9.0
+checkout; therefore, this is probably a long-standing regression, and
+certainly not something introduced by this patch.
 
-diff --git a/hw/usb/dev-hub.c b/hw/usb/dev-hub.c
-index 5703e0e826..7b3cfa2c1b 100644
---- a/hw/usb/dev-hub.c
-+++ b/hw/usb/dev-hub.c
-@@ -479,6 +479,7 @@ static void usb_hub_handle_control(USBDevice *dev, USBPacket *p,
-                     usb_hub_port_clear(port, PORT_STAT_SUSPEND);
-                     port->wPortChange = 0;
-                 }
-+                break;
-             default:
-                 goto fail;
-             }
 -- 
-2.39.5
+Eric Blake, Principal Software Engineer
+Red Hat, Inc.
+Virtualization:  qemu.org | libguestfs.org
 
 
