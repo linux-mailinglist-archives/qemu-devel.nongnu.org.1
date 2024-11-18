@@ -2,40 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AE499D1A2A
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Nov 2024 22:11:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E3F459D1A25
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Nov 2024 22:10:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tD906-0002ZT-F4; Mon, 18 Nov 2024 16:09:38 -0500
+	id 1tD8zj-0001vc-TQ; Mon, 18 Nov 2024 16:09:21 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tD8zJ-0001sM-Oc; Mon, 18 Nov 2024 16:08:51 -0500
+ id 1tD8zK-0001si-TT; Mon, 18 Nov 2024 16:08:51 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tD8zI-0005N4-2h; Mon, 18 Nov 2024 16:08:49 -0500
+ id 1tD8zI-0005NL-JN; Mon, 18 Nov 2024 16:08:50 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 72353A560A;
+ by isrv.corpit.ru (Postfix) with ESMTP id 7FD9AA560B;
  Tue, 19 Nov 2024 00:08:31 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 0B8C8173623;
+ by tsrv.corpit.ru (Postfix) with SMTP id 19296173624;
  Tue, 19 Nov 2024 00:08:35 +0300 (MSK)
-Received: (nullmailer pid 2366106 invoked by uid 1000);
+Received: (nullmailer pid 2366109 invoked by uid 1000);
  Mon, 18 Nov 2024 21:08:34 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.0.4 61/71] target/arm: Drop user-only special case in
- sve_stN_r
-Date: Tue, 19 Nov 2024 00:08:18 +0300
-Message-Id: <20241118210834.2366046-4-mjt@tls.msk.ru>
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-9.0.4 62/71] accel/tcg: Fix user-only probe_access_internal
+ plugin check
+Date: Tue, 19 Nov 2024 00:08:19 +0300
+Message-Id: <20241118210834.2366046-5-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.0.4-20241118223714@cover.tls.msk.ru>
 References: <qemu-stable-9.0.4-20241118223714@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -62,38 +64,32 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Richard Henderson <richard.henderson@linaro.org>
 
-This path is reachable with plugins enabled, and provoked
-with run-plugin-catch-syscalls-with-libinline.so.
+The acc_flag check for write should have been against PAGE_WRITE_ORG,
+not PAGE_WRITE.  But it is better to combine two acc_flag checks
+to a single check against access_type.  This matches the system code
+in cputlb.c.
 
 Cc: qemu-stable@nongnu.org
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2647
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20241112141232.321354-1-richard.henderson@linaro.org>
-(cherry picked from commit f27550804688da43c6e0d87b2f9e143adbf76271)
+Message-Id: 20241111145002.144995-1-richard.henderson@linaro.org
+Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
+(cherry picked from commit 2a339fee450638b512c5122281cb5ab49331cfb8)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/arm/tcg/sve_helper.c b/target/arm/tcg/sve_helper.c
-index 6853f58c19..7ac19fdd65 100644
---- a/target/arm/tcg/sve_helper.c
-+++ b/target/arm/tcg/sve_helper.c
-@@ -6306,9 +6306,6 @@ void sve_stN_r(CPUARMState *env, uint64_t *vg, target_ulong addr,
- 
-     flags = info.page[0].flags | info.page[1].flags;
-     if (unlikely(flags != 0)) {
--#ifdef CONFIG_USER_ONLY
--        g_assert_not_reached();
--#else
-         /*
-          * At least one page includes MMIO.
-          * Any bus operation can fail with cpu_transaction_failed,
-@@ -6339,7 +6336,6 @@ void sve_stN_r(CPUARMState *env, uint64_t *vg, target_ulong addr,
-             } while (reg_off & 63);
-         } while (reg_off <= reg_last);
-         return;
--#endif
-     }
- 
-     mem_off = info.mem_off_first[0];
+diff --git a/accel/tcg/user-exec.c b/accel/tcg/user-exec.c
+index 3cac3a78c4..50a9d32bd3 100644
+--- a/accel/tcg/user-exec.c
++++ b/accel/tcg/user-exec.c
+@@ -796,7 +796,7 @@ static int probe_access_internal(CPUArchState *env, vaddr addr,
+     if (guest_addr_valid_untagged(addr)) {
+         int page_flags = page_get_flags(addr);
+         if (page_flags & acc_flag) {
+-            if ((acc_flag == PAGE_READ || acc_flag == PAGE_WRITE)
++            if (access_type != MMU_INST_FETCH
+                 && cpu_plugin_mem_cbs_enabled(env_cpu(env))) {
+                 return TLB_MMIO;
+             }
 -- 
 2.39.5
 
