@@ -2,83 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B91179D10EE
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Nov 2024 13:50:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 898F19D10EB
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Nov 2024 13:49:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tD1BM-0004Y5-3H; Mon, 18 Nov 2024 07:48:44 -0500
+	id 1tD1BT-0005KU-9r; Mon, 18 Nov 2024 07:48:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tD1AQ-00044y-Db
- for qemu-devel@nongnu.org; Mon, 18 Nov 2024 07:47:50 -0500
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tD1AW-0004Aj-MM
+ for qemu-devel@nongnu.org; Mon, 18 Nov 2024 07:48:02 -0500
+Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tD1AO-0005Qa-EZ
- for qemu-devel@nongnu.org; Mon, 18 Nov 2024 07:47:46 -0500
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-4316cce103dso29026285e9.3
- for <qemu-devel@nongnu.org>; Mon, 18 Nov 2024 04:47:43 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tD1AU-0005R3-Fr
+ for qemu-devel@nongnu.org; Mon, 18 Nov 2024 07:47:52 -0500
+Received: by mail-wr1-x431.google.com with SMTP id
+ ffacd0b85a97d-382456c6597so631276f8f.2
+ for <qemu-devel@nongnu.org>; Mon, 18 Nov 2024 04:47:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1731934062; x=1732538862; darn=nongnu.org;
+ d=linaro.org; s=google; t=1731934068; x=1732538868; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ivNPlPth2SDoxFGmnFqTJP3RbkCwlecXTja5E4n2oyQ=;
- b=LpJW46pfNKOoEuCQ/SIqWbD9LmiUwR4SSsLDLuSiHBIc2uzqC4PkR1Z6Aac+h/P39Y
- MQFS2zV11FjajsD7/67kohR8/eIz0fhsQNlOttKl79yaSRNM1lvp4XWJJDyVwKtOH8du
- NecVL4oRJbGikXFSysTFRADZFNiKHT4FE/BY4+tsRlo70DDr3UWCVamY98XPrjQ0rGwv
- V2A4hOF+WceYkTFk5tiohViCrDcn6HGJ6eq8IT2oOygYzK5MHg0EQq6WrZ9qUsRAFqrI
- 3xwy9wOLYIfXtivB9II3maOWxVbXEr3e0rRSfdEUiRINnBhKQy46WWaOIZXxn8vPZNUC
- HWvQ==
+ bh=vaiZ7J4o0vhrl+WvkyGBPRzIVJzJiK8smMQqcbPQEFk=;
+ b=pQ+/tJorJBOJQTGgvlAptHbcfivKLHWdsfa5HOcwJZ+jkrQAe2iZ/tR52yVT0X2yYH
+ uSTKREnLtRFLLeQrzsDR68Nb5DQupuHreSdOaJVWsOMkRhAsKiKGxjNu97yUF2SAAfeu
+ RHVcd9+CtI+jK/huCZ9vMgc2kUu5ZxAQeSybB22INUvi69XsAqTBvAVvnkq4tVpGC5Yu
+ M/keS9WfW16GJg7f/DL4i8yXrq/OZivdx9RGHTIznftrcsY47GUZGmmKgOXP6S/iQwVd
+ Jt6fLNd6Ge+x76W/qOUMu1JRKp4IQdoO49jDxMri1M73wsSpY1WRSXAQrT+RsnMRyGZH
+ 2A4A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731934062; x=1732538862;
+ d=1e100.net; s=20230601; t=1731934068; x=1732538868;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ivNPlPth2SDoxFGmnFqTJP3RbkCwlecXTja5E4n2oyQ=;
- b=B/RCGupStOUq/ZHfE/uXmBBbpqpz7nHgKHfa20g7jSxm2fmi+BWyfl614eprWyyRDa
- cUDOrAmwY6oqMuRKONOW3ENGxk5DMIt3TJkJtN3UT5SwhunXSRThk3uoEGZ3TUjywVh3
- rCA5ZJpGeJmFkelFeJ79bi8k6J4vfbu9zmg/Dz8luUpX+4kXt06LTY2B+BOHtvc8BNPv
- VKUhqj7DcMLBMk8v0TKRqXa9G7UfLoyIHxWqbY3HJMYhZ6iBIotuIhVg8PPbcNr8XxMK
- YLK0IuD+bSIHdZWFknivQVb/jxVxQgimfALyg/FKbyqGz/FxVlShCfT3617bLypv+gzS
- bLPQ==
-X-Gm-Message-State: AOJu0Yz8lR3OxbizO7DYBH2cUBlMwZ4ovksBSWpAc4ktaeZ0jWk6MvVk
- iwPnlgKvC5NdwDVm30p2wprJP9v/CXO/5HkvV6kYZmQEyZ2pex/1U8urV/GUM4RmARFqqJMzScP
- d
-X-Google-Smtp-Source: AGHT+IGgCnq+uEOOEMn/m1jC1NPofGZApuhcPNDc0yz9EyYAQWH953i7rQP5LQR7qaMwyl5cqKWqnQ==
-X-Received: by 2002:a05:600c:1e18:b0:42c:a387:6a6f with SMTP id
- 5b1f17b1804b1-432df78f3c1mr121231735e9.20.1731934062603; 
- Mon, 18 Nov 2024 04:47:42 -0800 (PST)
+ bh=vaiZ7J4o0vhrl+WvkyGBPRzIVJzJiK8smMQqcbPQEFk=;
+ b=iFW/o6YBJfJTHd7okRYuW/7NMHWFCwYWsPwMD8TxpkZi+MK6jQeJgq7uLK98v1GZrY
+ 44UarBUIS4UMI3C58JKuZJU6w5sfmbvcE44dT5Ei00ywL79ON/gBdRLOOeRPEvk5E7iD
+ 5xVDoY0dys/Js9kP2Ff17zRafFGJ9ygtq+y3ji8rDI8dH9K+1bQWay9Le4hbUpYSIDIu
+ gGS6UC8xWpzY4bUa/MvHwkAyPUMjFe8CF7k29vH6D76G1KBNhJ9NrSkHZ0auMivZlPvf
+ JTA7BpGV3EWstd5OA6iSDwK3TGZw/YDUSqydXFCg+SXXqPpCR/gbvZt7bthSzUYX1C4/
+ TI0A==
+X-Gm-Message-State: AOJu0YzimiY4m404pWEgIJa1Qnus2btSzg/nsGMXvC5GQVz6Ot2L7+Qc
+ L44nG6AaNVPSGHaSmT+yCdfLlO6WVZ5apggK7leOyrbbFPtVuGHGZHtswQxdvo6vkDc9Y7DqZKV
+ 6
+X-Google-Smtp-Source: AGHT+IHwuhTtJ9EdE+hX3AFGvPR/H9Fi2JWawS4tV29H2dLJ4uE2j9nNXvRWsBtvFBFFTPwE0DskCQ==
+X-Received: by 2002:a05:6000:1544:b0:37d:393a:97c5 with SMTP id
+ ffacd0b85a97d-38225a059a1mr9511199f8f.28.1731934068350; 
+ Mon, 18 Nov 2024 04:47:48 -0800 (PST)
 Received: from localhost.localdomain ([176.187.198.1])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-432da244cb6sm161593995e9.0.2024.11.18.04.47.41
+ ffacd0b85a97d-38248b74ec6sm2579263f8f.38.2024.11.18.04.47.47
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 18 Nov 2024 04:47:42 -0800 (PST)
+ Mon, 18 Nov 2024 04:47:47 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Subject: [PULL 10/15] hw/misc/mos6522: Fix bad class definition of the MOS6522
- device
-Date: Mon, 18 Nov 2024 13:46:37 +0100
-Message-ID: <20241118124643.6958-11-philmd@linaro.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, qemu-stable@nongnu.org,
+ Michael Tokarev <mjt@tls.msk.ru>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 11/15] Revert "hw/audio/hda: fix memory leak on audio setup"
+Date: Mon, 18 Nov 2024 13:46:38 +0100
+Message-ID: <20241118124643.6958-12-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241118124643.6958-1-philmd@linaro.org>
 References: <20241118124643.6958-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::431;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,42 +93,84 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Thomas Huth <thuth@redhat.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
 
-When compiling QEMU with --enable-cfi, the "q800" m68k machine
-currently crashes very early, when the q800_machine_init() function
-tries to wire the interrupts of the "via1" device.
-This happens because TYPE_MOS6522_Q800_VIA1 is supposed to be a
-proper SysBus device, but its parent (TYPE_MOS6522) has a mistake
-in its class definition where it is only derived from DeviceClass,
-and not from SysBusDeviceClass, so we end up in funny memory access
-issues here. Using the right class hierarchy for the MOS6522 device
-fixes the problem.
+This reverts commit 6d03242a7e47815ed56687ecd13f683d8da3f2fe,
+which causes SPICE audio to break.  While arguably this is a SPICE bug,
+it is possible to fix the leak in a less heavy-handed way.
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2675
-Signed-off-by: Thomas Huth <thuth@redhat.com>
-Fixes: 51f233ec92 ("misc: introduce new mos6522 VIA device")
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Message-ID: <20241114104653.963812-1-thuth@redhat.com>
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2639
+Cc: qemu-stable@nongnu.org
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
+Message-ID: <20241114125318.1707590-2-pbonzini@redhat.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/hw/misc/mos6522.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/audio/hda-codec.c | 33 +++++++++++++--------------------
+ 1 file changed, 13 insertions(+), 20 deletions(-)
 
-diff --git a/include/hw/misc/mos6522.h b/include/hw/misc/mos6522.h
-index fba45668ab..920871a598 100644
---- a/include/hw/misc/mos6522.h
-+++ b/include/hw/misc/mos6522.h
-@@ -154,7 +154,7 @@ struct MOS6522State {
- OBJECT_DECLARE_TYPE(MOS6522State, MOS6522DeviceClass, MOS6522)
+diff --git a/hw/audio/hda-codec.c b/hw/audio/hda-codec.c
+index bc661504cf..74c0292284 100644
+--- a/hw/audio/hda-codec.c
++++ b/hw/audio/hda-codec.c
+@@ -472,24 +472,6 @@ static void hda_audio_set_amp(HDAAudioStream *st)
+     }
+ }
  
- struct MOS6522DeviceClass {
--    DeviceClass parent_class;
-+    SysBusDeviceClass parent_class;
+-static void hda_close_stream(HDAAudioState *a, HDAAudioStream *st)
+-{
+-    if (st->node == NULL) {
+-        return;
+-    }
+-    if (a->use_timer) {
+-        timer_free(st->buft);
+-        st->buft = NULL;
+-    }
+-    if (st->output) {
+-        AUD_close_out(&a->card, st->voice.out);
+-        st->voice.out = NULL;
+-    } else {
+-        AUD_close_in(&a->card, st->voice.in);
+-        st->voice.in = NULL;
+-    }
+-}
+-
+ static void hda_audio_setup(HDAAudioStream *st)
+ {
+     bool use_timer = st->state->use_timer;
+@@ -502,7 +484,6 @@ static void hda_audio_setup(HDAAudioStream *st)
+     trace_hda_audio_format(st->node->name, st->as.nchannels,
+                            fmt2name[st->as.fmt], st->as.freq);
  
-     ResettablePhases parent_phases;
-     void (*portB_write)(MOS6522State *dev);
+-    hda_close_stream(st->state, st);
+     if (st->output) {
+         if (use_timer) {
+             cb = hda_audio_output_cb;
+@@ -760,11 +741,23 @@ static void hda_audio_init(HDACodecDevice *hda,
+ static void hda_audio_exit(HDACodecDevice *hda)
+ {
+     HDAAudioState *a = HDA_AUDIO(hda);
++    HDAAudioStream *st;
+     int i;
+ 
+     dprint(a, 1, "%s\n", __func__);
+     for (i = 0; i < ARRAY_SIZE(a->st); i++) {
+-        hda_close_stream(a, a->st + i);
++        st = a->st + i;
++        if (st->node == NULL) {
++            continue;
++        }
++        if (a->use_timer) {
++            timer_free(st->buft);
++        }
++        if (st->output) {
++            AUD_close_out(&a->card, st->voice.out);
++        } else {
++            AUD_close_in(&a->card, st->voice.in);
++        }
+     }
+     AUD_remove_card(&a->card);
+ }
 -- 
 2.45.2
 
