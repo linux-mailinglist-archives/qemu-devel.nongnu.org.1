@@ -2,78 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED8729D19C5
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Nov 2024 21:42:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E370F9D19F2
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Nov 2024 21:55:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tD8Yu-0001V0-53; Mon, 18 Nov 2024 15:41:32 -0500
+	id 1tD8ki-0005fb-OS; Mon, 18 Nov 2024 15:53:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tD8Yr-0001U7-WB
- for qemu-devel@nongnu.org; Mon, 18 Nov 2024 15:41:30 -0500
-Received: from mail-ej1-x62b.google.com ([2a00:1450:4864:20::62b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tD8kP-0005du-R1
+ for qemu-devel@nongnu.org; Mon, 18 Nov 2024 15:53:27 -0500
+Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tD8Yp-0002Nh-69
- for qemu-devel@nongnu.org; Mon, 18 Nov 2024 15:41:29 -0500
-Received: by mail-ej1-x62b.google.com with SMTP id
- a640c23a62f3a-a9ed7d8d4e0so392625466b.1
- for <qemu-devel@nongnu.org>; Mon, 18 Nov 2024 12:41:26 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tD8kO-0003ik-Bn
+ for qemu-devel@nongnu.org; Mon, 18 Nov 2024 15:53:25 -0500
+Received: by mail-ed1-x52b.google.com with SMTP id
+ 4fb4d7f45d1cf-5ceb03aadb1so4692701a12.0
+ for <qemu-devel@nongnu.org>; Mon, 18 Nov 2024 12:52:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1731962485; x=1732567285; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=QUG5srLGbOrkRmSwQBWBypd2vcAod2ucdDn5wmB1EIo=;
- b=KmJ/eriRwfiHvuYuMIb2s1HuIlU0gPpQJU4wTzabn42v5TH+COoC7LIZPmYEqdaHbZ
- kGFkAys5gvn9Fb0LI9a6RmiLo2NDlDlEeTCiXqmHQxGiDFVplRFnn38sc4hii+5AvE/e
- AjMb7726SAI9qNLY93pUXcKAjV0ICv1/EFcYCHwpImRkAD21imkqNRoIopauriwu1Q5Q
- 5gQxjDQdGyK7J5Wet+Mss2He7BZ5Qqjo2p8UWvQWJOWI+vH3dPZrM9GRgjIVAutNgZJ8
- VjBlJwbnMy9VFHEJ8BOFcO7lhuRNVT7sc1oOId/a3p+IZs/ZednJsLr/u+Oc1f6QLcyZ
- Xn2Q==
+ d=linaro.org; s=google; t=1731963177; x=1732567977; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=ibrJewJda6kzpIcXZBnn1V6BypHenJzxRUpQo2ZfYoU=;
+ b=oO8IyGGvHiyC/IZRA/duTJi1F0mdVRYRZkzUGjhvJrptyCTxYHGVKuMHjhlLF9/0tF
+ Prqn6aeI0AlADY+/GFt8to1crKiX4x+ILYvHM55zdXKB3wgPjTYKh9qNDX1NUV7wwcOf
+ 2w0tvngdeT5/XSke6NuCl8pyXAeG7gbqU6cq55N9T0eCyHPyEB49QHkxczGyXMueth17
+ Lh4h8CxaiHcppcrEokfvytak6hF9XMc1cmTnykYilg832TQWymN71dfto/ZRPOeNpv2A
+ kkwxe2x3ZS/ngWzOYqwLK1ivsK7zEu56+2Z5LDZlWJQ3KVTgL82a9m9A5Gh/3IE/8oo2
+ 8uuQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731962485; x=1732567285;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=QUG5srLGbOrkRmSwQBWBypd2vcAod2ucdDn5wmB1EIo=;
- b=iBkgqs6n3LNRjEVuGSJuxS4g0CUDz0ds+XgSg9zNQxEUIwWdeJ2GG+SgieA0fCcpR7
- MSqHbWF9MW55KIhA9RChGigP3280eAyXhmqN7uJQk+/nn8a/RhAxhqtRihaHnBB88JMX
- RZNDcAjgW1xN2tCgJJF7yjVQCHxt2YyhHD6dHmmrSNXDT7wUPlAILQjqoUejq35p9mBb
- HQDXiqiOeZC8l4BqD1PpA3bZqwglNprRi2PPzA7PcQgTlIbVpCJcuSjDoISNP31W7mAI
- RE8Jy5KHit4hCpiqaQVrwAk8v3YodhSRaoH51bYIVTUvuhMIcGCgdWkYM95wcOCGvI8+
- c70w==
-X-Gm-Message-State: AOJu0YyOUX/RpjUPgTMsvVmD6PqTipx/EoM2b52rkY206Cpg9d/puTWJ
- PlHQ/clDAqL09Zc7VT54zRRgyWVO/jCsWXAJ21IEkLB+pSDtaP4Z8xAepXhXveE=
-X-Google-Smtp-Source: AGHT+IEKhYYQG+6IYcN7WCUXjVfxvXcQTuG/swUYF/HaN2yXO3AMY9tCRX9IK//ahbi12jnqVO2/kQ==
-X-Received: by 2002:a17:906:fe08:b0:a9a:85b5:2aba with SMTP id
- a640c23a62f3a-aa48341f3bamr1329130266b.21.1731962485227; 
- Mon, 18 Nov 2024 12:41:25 -0800 (PST)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-aa20e048f12sm573462566b.173.2024.11.18.12.41.23
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 18 Nov 2024 12:41:24 -0800 (PST)
-Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 7B9E25F95C;
- Mon, 18 Nov 2024 20:41:23 +0000 (GMT)
-From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Dmitry Osipenko <dmitry.osipenko@collabora.com>,
- "Michael S. Tsirkin" <mst@redhat.com>
-Subject: [PULL 4/4] hw/display: check frame buffer can hold blob
-Date: Mon, 18 Nov 2024 20:41:23 +0000
-Message-Id: <20241118204123.3083310-5-alex.bennee@linaro.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20241118204123.3083310-1-alex.bennee@linaro.org>
-References: <20241118204123.3083310-1-alex.bennee@linaro.org>
+ d=1e100.net; s=20230601; t=1731963177; x=1732567977;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=ibrJewJda6kzpIcXZBnn1V6BypHenJzxRUpQo2ZfYoU=;
+ b=vq2o8WSG6urOla7uy4b+3oExkBE9FJ4oAURjB1KO0WLa0CovDxIcLQ4YPFlu//hvQq
+ Nz9gQqRxMuUqVeDkF9Pr3LRqhVR6YHEb2X9JLs5eKmG1tWBWxKoWO5rJe+MVE2ITM0x5
+ LYm66EPeppxTlxBPLPyN8E8cQw2JG+77cmDD5zxjqyR4PCL6kWRXiRXoGT1gN2LFDrHm
+ JC+2PB++8eLguyFryMSvQu/9Vz9v8URvWSSs1JfbCSm+YSRy0I5rexUiCKtAjP2Krb0p
+ pPIF5JcXvNh+n2e4C9A8qbKfvKu3S7SxUmHhfgYhmlW6LPXHiqnBhB0Mwc64MmStU8aR
+ wr7g==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUeJkgni+0+l4FA2BERY9pj7WWbkhYjmLrYdLN9VvwvRQxzwx8uSl/sNwqUmq6pmswRckKM+0D9aQLp@nongnu.org
+X-Gm-Message-State: AOJu0YwLvlnc0DTuHwN6LT5CqNNryg0lYzae77TOwFZIjPvnEcztzYsn
+ 5HcMfK8FyUGb6OR8SFuzTljpujiiDrKE8QMK/lxN6wD+6QMw5cVTPRCxmlVU+fpGAqO5jlJoHpn
+ A
+X-Google-Smtp-Source: AGHT+IFF2B3sJtOdYonmUzPQcSBTMXFAnbagLxOER8LBPzenCpjDPueQpkiKUFKmUXelhijZSUUYMg==
+X-Received: by 2002:a17:907:7f8a:b0:a9a:e91:68c5 with SMTP id
+ a640c23a62f3a-aa483454536mr1147034066b.33.1731963176796; 
+ Mon, 18 Nov 2024 12:52:56 -0800 (PST)
+Received: from [192.168.69.146] ([176.187.198.1])
+ by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-aa20e08af75sm578025366b.202.2024.11.18.12.52.55
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 18 Nov 2024 12:52:56 -0800 (PST)
+Message-ID: <0f60c592-3fe3-4275-a65d-ddaa3b735cd9@linaro.org>
+Date: Mon, 18 Nov 2024 21:52:54 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] target/loongarch: fix alignment error in tci.
+To: guoguangyao <guoguangyao18@mails.ucas.ac.cn>, qemu-devel@nongnu.org
+Cc: gaosong@loongson.cn
+References: <20241118133243.291769-1-guoguangyao18@mails.ucas.ac.cn>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20241118133243.291769-1-guoguangyao18@mails.ucas.ac.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62b;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x62b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x52b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,44 +94,16 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Coverity reports (CID 1564769, 1564770) that we potentially overflow
-by doing some 32x32 multiplies for something that ends up in a 64 bit
-value. Fix this by first using stride for all lines and casting input
-to uint64_t to ensure a 64 bit multiply is used.
+On 18/11/24 14:32, guoguangyao wrote:
+> Add alignment and check for fpr in
+> CPUArchState, fix alignment error in
+> tcg interpreter when executing LASX.
+> 
+> Signed-off-by: guoguangyao <guoguangyao18@mails.ucas.ac.cn>
+> ---
+>   target/loongarch/cpu.h | 3 ++-
+>   1 file changed, 2 insertions(+), 1 deletion(-)
 
-Reviewed-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-Tested-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20241111230040.68470-3-alex.bennee@linaro.org>
-
-diff --git a/include/hw/virtio/virtio-gpu.h b/include/hw/virtio/virtio-gpu.h
-index 924eb8737e..8c977beebd 100644
---- a/include/hw/virtio/virtio-gpu.h
-+++ b/include/hw/virtio/virtio-gpu.h
-@@ -340,7 +340,7 @@ void virtio_gpu_update_cursor_data(VirtIOGPU *g,
-  * blob_size: size of scanout blob data
-  *
-  * This will check we have enough space for the frame taking into
-- * account that stride for all but the last line.
-+ * account that stride.
-  *
-  * Returns true on success, otherwise logs guest error and returns false
-  */
-diff --git a/hw/display/virtio-gpu.c b/hw/display/virtio-gpu.c
-index e7ca8fd1cf..7d22d03bbf 100644
---- a/hw/display/virtio-gpu.c
-+++ b/hw/display/virtio-gpu.c
-@@ -742,8 +742,7 @@ bool virtio_gpu_scanout_blob_to_fb(struct virtio_gpu_framebuffer *fb,
-     fb->offset = ss->offsets[0] + ss->r.x * fb->bytes_pp + ss->r.y * fb->stride;
- 
-     fbend = fb->offset;
--    fbend += fb->stride * (ss->r.height - 1);
--    fbend += fb->bytes_pp * ss->r.width;
-+    fbend += (uint64_t) fb->stride * ss->r.height;
- 
-     if (fbend > blob_size) {
-         qemu_log_mask(LOG_GUEST_ERROR,
--- 
-2.39.5
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
