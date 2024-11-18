@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3BAE9D170D
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Nov 2024 18:26:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 71FF29D1714
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Nov 2024 18:26:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tD5UX-0008TY-H8; Mon, 18 Nov 2024 12:24:49 -0500
+	id 1tD5UZ-0008VE-Ha; Mon, 18 Nov 2024 12:24:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1tD5U5-0008NB-RQ
+ id 1tD5U6-0008NE-VF
  for qemu-devel@nongnu.org; Mon, 18 Nov 2024 12:24:24 -0500
-Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
+Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1tD5U2-0002oY-Gy
- for qemu-devel@nongnu.org; Mon, 18 Nov 2024 12:24:21 -0500
-Received: by mail-pl1-x62a.google.com with SMTP id
- d9443c01a7336-20c714cd9c8so18860345ad.0
- for <qemu-devel@nongnu.org>; Mon, 18 Nov 2024 09:24:17 -0800 (PST)
+ id 1tD5U4-0002ow-AQ
+ for qemu-devel@nongnu.org; Mon, 18 Nov 2024 12:24:22 -0500
+Received: by mail-pl1-x62c.google.com with SMTP id
+ d9443c01a7336-2124ccf03edso90225ad.2
+ for <qemu-devel@nongnu.org>; Mon, 18 Nov 2024 09:24:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1731950656; x=1732555456; darn=nongnu.org;
+ d=linaro.org; s=google; t=1731950657; x=1732555457; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=QaxpMkzADG4IGRoaMKuDLbk1XxCkXT1oglYVymp2yRk=;
- b=Mq6U8nG3SIweCq2IKbeoEcsYU5/DftrTO6hPPADcZRArwhKp03HY0BFe73OkppFsO5
- nq6X6QRjdio4/vBAlzMLeRhDzcCJd8NgA9DOqrN6weKMsiil+SbV7Xb8W3+mk828WtLH
- CFiHXqWnxY8bkn23+XQgmrQK1fr+lENkBYXYIgP7k/BM7+zwgmY528QpkH62S3jF/oIy
- wlbMBnPo6WmnmHmxYA6JPppNopwmdnrYt7tRG8ATF6INMz7I80AZr1EJKEJtF4ncttX+
- bZ+icm0gXYZLBHvmTE50ZIjnL7E3IKKIX/vS4vmxnkiaV4aEkmooBZ2MKLz87ckoYdVZ
- aJ/A==
+ bh=oJI8STVH8Bo0tJY7LAmXxwBqwEyTRfjQjwFSYQdXg1E=;
+ b=fw+0weitW8wMSegB//tppJ2hQYIZNdYcbPQ8cAgvNz8jSGq/gTT8Gy6pVomgHcUywO
+ K/DuemwfMScvAMRZD7EouIfBfaI/o1Pxkq0KYInAGWBImuHJe58EZW+AuTjMzqnffp/M
+ wYbku8pL+b3BwEy/rQBMJh0m6LL9aanPYlev+xBIP/wAW+DcE+bDojbB0gbOqFIRHP3e
+ 1UPQGijnkdfgOhph9KTL0lXBhDUwmIHJ7OHSBzhnwc9jNvs3c8fGPdwS9EU3c96r7Vth
+ Oh8rfD3pOlSBJnVAwyl9qNHN7TjkXIvCv+4pF7XQVpvrqVia5qrFi+uYMK/GpxpJ4xfd
+ GQiA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731950656; x=1732555456;
+ d=1e100.net; s=20230601; t=1731950657; x=1732555457;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=QaxpMkzADG4IGRoaMKuDLbk1XxCkXT1oglYVymp2yRk=;
- b=AkDdJ0ehjyLP7fh3HzPEfg6KHyZ8SBxZ3617zi2vrqXNo7W393Jn8NCEW8Id8gwopd
- j/IS7DpyLjY6WD4If7cxj56mwMza/v1Gh4cK/UGTP9TiqdGt05Nq3sCuFzyJFpUXLlPA
- obE0OYBOl1ee0c+yb7bf3b706x5U7KwPVZyKhLYDAEFdtFSG8q7Ft2SKBPVujoAbJNg2
- b4LGAtNoB2AqzTpWF+60eMWPFsmWX4XMhI/HV6wiR66fqdpXjRx8CZS7Qay7alTmiPA8
- deWtY3KO5Y5wiKKK6CTog10Pcl0YgA1urDzLjED3whd9q9CL1ctKAL+Afrj6ZSgvzDf1
- uUxQ==
-X-Gm-Message-State: AOJu0YyUFcuCdAPA8NH/289yt66LURL26GKS9iVV591dEAAj60+8ZdBk
- aLLoK+5g8+SkNgdvfq9cynVKkmUwwmk0B422JPn/y/M4vxUjNhKR5Lqffy28jHBJOPv7NUL5dTj
- Lmef6tw==
-X-Google-Smtp-Source: AGHT+IFnMWEzRgiYq/B3mYM/U/z+PUqF1APKbd5/ZA8bwDsu0j2FORNnIWlcrwKq/X5tQE+U6piRrg==
-X-Received: by 2002:a17:902:d508:b0:20c:5c13:732e with SMTP id
- d9443c01a7336-211d0ebf9ffmr195717105ad.38.1731950656051; 
- Mon, 18 Nov 2024 09:24:16 -0800 (PST)
+ bh=oJI8STVH8Bo0tJY7LAmXxwBqwEyTRfjQjwFSYQdXg1E=;
+ b=wZOCO5yqMJ6ZHGZNaEhCb7r+RGdiW8IBDZ/LyQl0blTAa4owB2GP1cyRatb+HzS4y1
+ fBJFw5kAVLUHDippD50cixIRa2jFA4YAlB1QwZIEAVa3EtDPzF3KsTFS0ZOg1ymhgGCP
+ 3AQcYwLbPt7jkOA7FgMmPtHmuQXYuSWNZNyRLilz8dbVbK5Id3RmvRhSPftrCbvrUzwz
+ I1TknuLt3XKDK1m/z+q6dcWYJf56PbNPc4iExkE7rX/ev8JmCX9TD7EMmDAu/QhnQwd2
+ K5R6g3vPR++fvo6lvpvmagNjMWHtCVGPf58gtZYXfgiDbpRN6XRTCW8JVx4r5LrfOCQt
+ zAeQ==
+X-Gm-Message-State: AOJu0YxPP1d5artBeYFHLb9jPvsvCU9HWWiE7p3lW4kehaGh2clGCf+P
+ 8Q8KVhiJNM6BciqqKkDmr5c+w2ijuADWHKJ/+VZtfp1EydsgKwTlSnNJGLeFN/0MykDTWZcXz10
+ UIktP6w==
+X-Google-Smtp-Source: AGHT+IGKRu9eW2HfGpfNTqNSZ6X9JKssRl87etJ63B8V8eQW5O/yNx303ObNGLP/peeM6ZoQWUEZEA==
+X-Received: by 2002:a17:903:188:b0:211:f6e4:d68f with SMTP id
+ d9443c01a7336-211f6e4d9f6mr102645405ad.6.1731950657231; 
+ Mon, 18 Nov 2024 09:24:17 -0800 (PST)
 Received: from linaro.. (216-180-64-156.dyn.novuscom.net. [216.180.64.156])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-211d0f55d04sm59469765ad.264.2024.11.18.09.24.15
+ d9443c01a7336-211d0f55d04sm59469765ad.264.2024.11.18.09.24.16
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 18 Nov 2024 09:24:15 -0800 (PST)
+ Mon, 18 Nov 2024 09:24:16 -0800 (PST)
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
@@ -75,16 +75,16 @@ Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
  gustavo.romero@linaro.org, Peter Maydell <peter.maydell@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH 2/7] docs/devel: add git-publish for patch submitting
-Date: Mon, 18 Nov 2024 09:23:52 -0800
-Message-Id: <20241118172357.475281-3-pierrick.bouvier@linaro.org>
+Subject: [PATCH 3/7] docs/devel: add b4 for patch retrieval
+Date: Mon, 18 Nov 2024 09:23:53 -0800
+Message-Id: <20241118172357.475281-4-pierrick.bouvier@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241118172357.475281-1-pierrick.bouvier@linaro.org>
 References: <20241118172357.475281-1-pierrick.bouvier@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x62a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x62c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -109,33 +109,29 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- docs/devel/submitting-a-patch.rst | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ docs/devel/submitting-a-patch.rst | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
 diff --git a/docs/devel/submitting-a-patch.rst b/docs/devel/submitting-a-patch.rst
-index 349c32ee3a9..953682f20cb 100644
+index 953682f20cb..d25c677d996 100644
 --- a/docs/devel/submitting-a-patch.rst
 +++ b/docs/devel/submitting-a-patch.rst
-@@ -237,6 +237,20 @@ attachments can be used as a last resort on a first-time submission.
+@@ -417,6 +417,16 @@ For more details on how QEMU's stable process works, refer to the
  
- .. _if_you_cannot_send_patch_emails:
+ .. _participating_in_code_review:
  
-+Use git-publish
-+~~~~~~~~~~~~~~~
++Retrieve an existing series
++---------------------------
 +
-+If you already configured git send-email, you can simply use `git-publish
-+<https://github.com/stefanha/git-publish>`__ to send series.
++If you want to apply an existing series on top of your tree, you can simply use
++`b4 <https://github.com/mricon/b4>`__.
 +
 +::
 +
-+    $ git checkout master -b my-feature
-+    $ # work on new commits, add your 'Signed-off-by' lines to each
-+    $ git publish
-+    $ ... more work, rebase on master, ...
-+    $ git publish # will send a v2
++    b4 shazam $msg-id
 +
- If you cannot send patch emails
- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ Participating in Code Review
+ ----------------------------
  
 -- 
 2.39.5
