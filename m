@@ -2,70 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34E779D12CB
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Nov 2024 15:18:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 48F229D12FC
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Nov 2024 15:32:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tD2Z7-0000o3-Oc; Mon, 18 Nov 2024 09:17:21 -0500
+	id 1tD2nL-000418-Dw; Mon, 18 Nov 2024 09:32:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tD2Z5-0000nX-8V
- for qemu-devel@nongnu.org; Mon, 18 Nov 2024 09:17:19 -0500
-Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
+ id 1tD2nI-00040U-UU
+ for qemu-devel@nongnu.org; Mon, 18 Nov 2024 09:32:00 -0500
+Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tD2Z3-0002vr-A9
- for qemu-devel@nongnu.org; Mon, 18 Nov 2024 09:17:18 -0500
-Received: by mail-ed1-x533.google.com with SMTP id
- 4fb4d7f45d1cf-5cec9609303so5373357a12.1
- for <qemu-devel@nongnu.org>; Mon, 18 Nov 2024 06:17:16 -0800 (PST)
+ id 1tD2nH-0004ul-9a
+ for qemu-devel@nongnu.org; Mon, 18 Nov 2024 09:32:00 -0500
+Received: by mail-ej1-x62f.google.com with SMTP id
+ a640c23a62f3a-a9ef275b980so533803166b.0
+ for <qemu-devel@nongnu.org>; Mon, 18 Nov 2024 06:31:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1731939435; x=1732544235; darn=nongnu.org;
+ d=linaro.org; s=google; t=1731940317; x=1732545117; darn=nongnu.org;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=aqzGsTgtyA6Ez50IcLDrQTa93sp/XXFy2Ws6Vm2I8M0=;
- b=VWQzJKTxwO0aivulis3+3GQlu2xxf+L6UisJQxtaQ0cAHgBmHHCtd/jGNmhk2ulaoe
- vaZGXOKHQVCu4FkCxxvtOlkktQTDvimfSAmYg/pzfAvIHuefvy/luOlg/1N/9dMyb3mw
- AZlWHM0jpWYCLZCDeDcBu3apP8snV7JJpuXKmnA/iGpbck9p9Js3YiArq/NG5c+a/JLY
- XGUNmUAqTP30Z4wt50mVfQIY7ydTSN3PxMPWkMHZjuKakv7sqWna4v9AMR0XJmVhmx5b
- nBXjXjZfFEnjzgDhw/nKQ5EMMg3pFPoiPVxdpXdIzGnfusW950Gj5YtUsQKAiUUnt2r/
- 8trg==
+ bh=MhAdaVPB17968gemREtUHRV2S7Vpyh9Kc7ffCpxcGyQ=;
+ b=cRpeqoIfd0/9oH0toF4cofY3RqMlm2BZq6vq3iLIg9HvPnk3mdTJVqELgVlRZW1Xwb
+ 4mgBPQ1+SgMLuzLb6KrOX9SZClX55U4yS4/cRzWb23hn6igrN+5WsWClHIGep9l30UYh
+ W6hQlR7XFEMm7y/q7CRR60qN0ez4PlrhRpN+rMy9DvjHoq1r5erd6aU0baR57zOBNq9j
+ xb3QTGUhioGRrPuQ/K3KeTTbEU4h2/57r4Lt67WUJLFf/DIZa69izdCOc1YpAgYWqWt2
+ vreL0QYBobBcgKhYF5k5DcCDsxzQvF/2Ce63OcFk2cJAoe9FOkr7zmA1wv7O1BWlb5Nv
+ llwQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1731939435; x=1732544235;
+ d=1e100.net; s=20230601; t=1731940317; x=1732545117;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=aqzGsTgtyA6Ez50IcLDrQTa93sp/XXFy2Ws6Vm2I8M0=;
- b=gIiJYtL+xmkZPKOgOgtA0M2JhlM1U6oGLGsgor8O5V4wuJNfAefRDGmJIT1wv6YP5w
- UojV5GuoHmfPcnC73AhDou4UgRewPKRtoW2+yvIrT5Wzx+zVIdWVEupoiGDkvzXZ/tQw
- 2dDFRZnYSUwBHYbXL9yAg2JKldBeyx1UZl7y1nEif5u6LZIQ9EDpdnOc3DddnB3ziZ3d
- U1oX4PNCu/xnDvuZ7vDIsBIaMooGz0DpqdxpGMdSOpMFaf+Yjy/ANJh/L04ma3WSEJCZ
- 6KHine82vHARnI3BemxwPKgmD/mXZQh9A5gl8UucEDbuFl2QpbtRnIvko9IIYqnkqRGb
- 51BQ==
+ bh=MhAdaVPB17968gemREtUHRV2S7Vpyh9Kc7ffCpxcGyQ=;
+ b=G5HHsBJo+V4Rg0Z3VfreCQ/KB4iCFCTK5VDkNAmuoz5W6tBQeongR2OaS/aMYuOVOQ
+ SMwFnC5SxnyIr6IveabkvSiSZm+sgnMw+zCjzchIOQY3Jktbz//P6DcswthED/jgOxRk
+ wA0+WpnBx+/04Iypxma/h5hG8yqhhnv1AC0P+8L6Vr4yRNVz6FIWU95mvyl0Qy3BrEug
+ S3qX42Fy8GemuTIC0ifM8NA/y8wMSzwzEyS20PplyIS1jl3FQGpyIadrd8jRLmSl5YHf
+ gTTH4CPmudfpYg8mJnPEerwjFBqILHGQrpKV2aaLml+dQGh9uYzA/pHWy7+3XDsx1rEY
+ k8DA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVXl+9tTHUxRBucv7A3O5EEGTJb2NsmKXJrIr+KmAeUGOpl3f04jds769hdBouSxjLlkSI3MDy63vEs@nongnu.org
-X-Gm-Message-State: AOJu0Yzz5j/mGhNnUbdpDoQM6Fli1c+HRWwyuZgx7WKVVb+gMqn+8hDc
- LKfMxsHpyWCvl1zw04FxX34Uo4ZO426mUYqDqy0TAhNeKliFAmZoDaRhLcuikR6qroboXOgQTDD
- DT8i6clTMApAb89D6uQfoXiZ+GDhmYwFaWSDgoA==
-X-Google-Smtp-Source: AGHT+IHtDZA6yKay8Vmnhq6DT0Mb/YgrxhPXAzdnGxmD33mMwF2nL1c0/mmOSCYKnIHh8vl8A+m6rNjVjaBUy+UjhVg=
-X-Received: by 2002:a05:6402:90e:b0:5cb:7295:49b with SMTP id
- 4fb4d7f45d1cf-5cf8fd26620mr9026304a12.34.1731939435280; Mon, 18 Nov 2024
- 06:17:15 -0800 (PST)
+ AJvYcCV2eVzzYYeAW24afe4UZgqceBEcku8080O1qtBasRgmAVpyftosqOablb4qonItGr1xv6BX/WpgfqWJ@nongnu.org
+X-Gm-Message-State: AOJu0YwZIi+nwqG2QZcMfOHersUWGTB7RcDyn2ho/yxRA0RgECukUgxT
+ adrHoM77PBU5Tojv5WL8Ar+qEQrz89+2SIPD8Etjok3jaxDnNeM8kCEzJBnN4kjTEJfTLueJvM3
+ G76epoUWbZzNrZZ9ER+V+kLZ90wiMLewT5MO5Sw==
+X-Google-Smtp-Source: AGHT+IHJMXigDsWQWVnTr6w4TtfnbaJCa3ZvwHOy2mlh0FRGysAwORdnomcIttYfcWdjJnnk7NQP5i7cE++b5N4sekw=
+X-Received: by 2002:a17:907:d19:b0:a99:f861:ebd with SMTP id
+ a640c23a62f3a-aa48340fc14mr1108960566b.14.1731940317282; Mon, 18 Nov 2024
+ 06:31:57 -0800 (PST)
 MIME-Version: 1.0
 References: <20241117134931.37249-1-paskripkin@gmail.com>
- <20241117135010.37410-1-paskripkin@gmail.com>
-In-Reply-To: <20241117135010.37410-1-paskripkin@gmail.com>
+ <20241117135022.37508-1-paskripkin@gmail.com>
+In-Reply-To: <20241117135022.37508-1-paskripkin@gmail.com>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 18 Nov 2024 14:17:04 +0000
-Message-ID: <CAFEAcA_N+Vs_oxLXtw3Sz85GYg=xeNeDMU9oCu7mHJCYyn1PAQ@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] arm/ptw: make get_S1prot accept decoded AP
+Date: Mon, 18 Nov 2024 14:31:46 +0000
+Message-ID: <CAFEAcA8ez9hQXJAPc+s8NpkFs_3_SAybe+HCizBm1mzsmJD-EA@mail.gmail.com>
+Subject: Re: [PATCH v2 2/2] arm/ptw: use get_S1prot in get_phys_addr_v6
 To: Pavel Skripkin <paskripkin@gmail.com>
 Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::533;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x533.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62f;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ej1-x62f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,91 +90,85 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On Sun, 17 Nov 2024 at 13:50, Pavel Skripkin <paskripkin@gmail.com> wrote:
 >
-> AP in armv7 short descriptor mode has 3 bits and also domain, which
-> makes it incompatible with other arm schemas.
+> To share missing SCTRL.{U}WXN and SCR.SIF in short format walker, use
+> get_S1prot instead of open-coded checks.
 >
-> To make it possible to share get_S1prot between armv8, armv7 long
-> format, armv7 short format and armv6 it's easier to make caller
-> decode AP.
-
-Yep, I agree that this is the best approach to sharing the
-function between short and long desc.
-
 > Signed-off-by: Pavel Skripkin <paskripkin@gmail.com>
 > ---
->  target/arm/ptw.c | 13 ++++++-------
->  1 file changed, 6 insertions(+), 7 deletions(-)
+>  target/arm/ptw.c | 41 ++++++++++++++++++-----------------------
+>  1 file changed, 18 insertions(+), 23 deletions(-)
 >
 > diff --git a/target/arm/ptw.c b/target/arm/ptw.c
-> index 9849949508..50eed0f811 100644
+> index 50eed0f811..0d003a9f7d 100644
 > --- a/target/arm/ptw.c
 > +++ b/target/arm/ptw.c
-> @@ -1357,25 +1357,24 @@ static int get_S2prot(CPUARMState *env, int s2ap, int xn, bool s1_is_el0)
->   * @env:     CPUARMState
->   * @mmu_idx: MMU index indicating required translation regime
->   * @is_aa64: TRUE if AArch64
-> - * @ap:      The 2-bit simple AP (AP[2:1])
-> + * @user_rw: Translated AP for user access
-> + * @prot_rw: Translated AP for privileged access
->   * @xn:      XN (execute-never) bit
->   * @pxn:     PXN (privileged execute-never) bit
->   * @in_pa:   The original input pa space
->   * @out_pa:  The output pa space, modified by NSTable, NS, and NSE
->   */
->  static int get_S1prot(CPUARMState *env, ARMMMUIdx mmu_idx, bool is_aa64,
-> -                      int ap, int xn, int pxn,
+> @@ -85,6 +85,10 @@ static bool get_phys_addr_gpc(CPUARMState *env, S1Translate *ptw,
+>                                GetPhysAddrResult *result,
+>                                ARMMMUFaultInfo *fi);
+>
+> +static int get_S1prot(CPUARMState *env, ARMMMUIdx mmu_idx, bool is_aa64,
 > +                      int user_rw, int prot_rw, int xn, int pxn,
->                        ARMSecuritySpace in_pa, ARMSecuritySpace out_pa)
->  {
->      ARMCPU *cpu = env_archcpu(env);
->      bool is_user = regime_is_user(env, mmu_idx);
-> -    int prot_rw, user_rw;
->      bool have_wxn;
->      int wxn = 0;
+> +                      ARMSecuritySpace in_pa, ARMSecuritySpace out_pa);
+> +
+>  /* This mapping is common between ID_AA64MMFR0.PARANGE and TCR_ELx.{I}PS. */
+>  static const uint8_t pamax_map[] = {
+>      [0] = 32,
+> @@ -1148,7 +1152,6 @@ static bool get_phys_addr_v6(CPUARMState *env, S1Translate *ptw,
+>      hwaddr phys_addr;
+>      uint32_t dacr;
+>      bool ns;
+> -    int user_prot;
 >
->      assert(!regime_is_stage2(mmu_idx));
->
-> -    user_rw = simple_ap_to_rw_prot_is_user(ap, true);
->      if (is_user) {
->          prot_rw = user_rw;
+>      /* Pagetable walk.  */
+>      /* Lookup l1 descriptor.  */
+> @@ -1243,13 +1246,13 @@ static bool get_phys_addr_v6(CPUARMState *env, S1Translate *ptw,
+>      if (domain_prot == 3) {
+>          result->f.prot = PAGE_READ | PAGE_WRITE | PAGE_EXEC;
 >      } else {
-> @@ -1393,8 +1392,6 @@ static int get_S1prot(CPUARMState *env, ARMMMUIdx mmu_idx, bool is_aa64,
->                     regime_is_pan(env, mmu_idx) &&
->                     (regime_sctlr(env, mmu_idx) & SCTLR_EPAN) && !xn) {
->              prot_rw = 0;
-> -        } else {
-> -            prot_rw = simple_ap_to_rw_prot_is_user(ap, false);
->          }
->      }
->
-> @@ -2044,6 +2041,8 @@ static bool get_phys_addr_lpae(CPUARMState *env, S1Translate *ptw,
->          int nse, ns = extract32(attrs, 5, 1);
->          uint8_t attrindx;
->          uint64_t mair;
-> +        int ap_usr = simple_ap_to_rw_prot_is_user(ap, true);
-> +        int ap_priv = simple_ap_to_rw_prot_is_user(ap, false);
+> -        if (pxn && !regime_is_user(env, mmu_idx)) {
+> -            xn = 1;
+> -        }
+> -        if (xn && access_type == MMU_INST_FETCH) {
+> -            fi->type = ARMFault_Permission;
+> -            goto do_fault;
+> -        }
+> +        int ap_usr;
+> +        int ap_priv;
+> +        ARMSecuritySpace out_space = ARMSS_NonSecure;
+> +
+> +        /* NS bit is ignored in NWd. */
+> +        if (result->f.attrs.space == ARMSS_Secure && !ns)
+> +            out_space = ARMSS_Secure;
 
-Doing the calls here is too early, because after this point
-there is a FEAT_NV case which may change the value of ap.
+Instead of doing this, I think we should align the code a bit
+more closely to how we do it in the lpae codepath. So before
+"if (domain_prot == 3)" put
 
-Also, could we give the variables the same name as the
-get_S1prot() argument names, for consistency? (The return
-values from simple_ap_to_rw_prot_is_user() are not ap bit
-fields, they're rw indications, so the S1prot argument names
-seem more appropriate here anyway.)
+     out_space = ptw->in_space;
+     if (ns) {
+        /*
+         * The NS bit will (as required by the architecture) have no effect if
+         * the CPU doesn't support TZ or this is a non-secure translation
+         * regime, because the output space will already be non-secure.
+         */
+         out_space = ARMSS_NonSecure;
+     }
 
->          switch (out_space) {
->          case ARMSS_Root:
-> @@ -2114,7 +2113,7 @@ static bool get_phys_addr_lpae(CPUARMState *env, S1Translate *ptw,
->           * Note that we modified ptw->in_space earlier for NSTable, but
->           * result->f.attrs retains a copy of the original security space.
->           */
-> -        result->f.prot = get_S1prot(env, mmu_idx, aarch64, ap, xn, pxn,
-> +        result->f.prot = get_S1prot(env, mmu_idx, aarch64, ap_usr, ap_priv, xn, pxn,
->                                      result->f.attrs.space, out_space);
->
->          /* Index into MAIR registers for cache attributes */
+and then delete the current "if (ns)" code block at the end of
+get_phys_addr_v6() and replace it with an unconditional
 
-thanks
+    result->f.attrs.space = out_space;
+    result->f.attrs.secure = arm_space_is_secure(out_space);
+
+That way we're determining the output space in exactly one
+place, and the code at the end that updates result->f.attrs
+is the same as the way we do it in the lpae function.
+
+(PS: note that QEMU coding style mandates braces on if()
+statements even if there is just one statement in the body.)
+
+Otherwise I think this looks good -- thanks for doing
+the refactoring.
+
 -- PMM
 
