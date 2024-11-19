@@ -2,37 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9A5A9D1FF7
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Nov 2024 07:07:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 625539D1FFD
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Nov 2024 07:08:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tDHMT-0002Hn-Rv; Tue, 19 Nov 2024 01:05:18 -0500
+	id 1tDHMV-0002Td-VA; Tue, 19 Nov 2024 01:05:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tDHMQ-0002Dk-9N; Tue, 19 Nov 2024 01:05:14 -0500
+ id 1tDHMR-0002Fm-C2; Tue, 19 Nov 2024 01:05:15 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tDHMO-0004vQ-37; Tue, 19 Nov 2024 01:05:14 -0500
+ id 1tDHMP-0004w3-NX; Tue, 19 Nov 2024 01:05:15 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 4D460A626D;
+ by isrv.corpit.ru (Postfix) with ESMTP id 5B915A626E;
  Tue, 19 Nov 2024 09:04:15 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 7534E1738E2;
+ by tsrv.corpit.ru (Postfix) with SMTP id 82F641738E3;
  Tue, 19 Nov 2024 09:04:19 +0300 (MSK)
-Received: (nullmailer pid 2368963 invoked by uid 1000);
+Received: (nullmailer pid 2368966 invoked by uid 1000);
  Tue, 19 Nov 2024 06:04:18 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
  Michael Tokarev <mjt@tls.msk.ru>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [Stable-9.1.2 70/72] Revert "hw/audio/hda: fix memory leak on audio
- setup"
-Date: Tue, 19 Nov 2024 09:04:11 +0300
-Message-Id: <20241119060418.2368866-13-mjt@tls.msk.ru>
+Subject: [Stable-9.1.2 71/72] hw/audio/hda: fix memory leak on audio setup
+Date: Tue, 19 Nov 2024 09:04:12 +0300
+Message-Id: <20241119060418.2368866-14-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.1.2-20241118224223@cover.tls.msk.ru>
 References: <qemu-stable-9.1.2-20241118224223@cover.tls.msk.ru>
@@ -64,81 +63,77 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Paolo Bonzini <pbonzini@redhat.com>
 
-This reverts commit 6d03242a7e47815ed56687ecd13f683d8da3f2fe,
-which causes SPICE audio to break.  While arguably this is a SPICE bug,
-it is possible to fix the leak in a less heavy-handed way.
+When SET_STREAM_FORMAT is called, the st->buft timer is overwritten, thus
+causing a memory leak.  This was originally fixed in commit 816139ae6a5
+("hw/audio/hda: fix memory leak on audio setup", 2024-11-14) but that
+caused the audio to break in SPICE.
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2639
+Fortunately, a simpler fix is possible.  The timer only needs to be
+reset, because the callback is always the same (st->output is set at
+realize time in hda_audio_init); call to timer_new_ns overkill.  Replace
+it with timer_del and only initialize the timer once; for simplicity,
+do it even if use_timer is false.
+
+An even simpler fix would be to free the old time in hda_audio_setup().
+However, it seems better to place the initialization of the timer close
+to that of st->ouput.
+
 Cc: qemu-stable@nongnu.org
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
-Message-ID: <20241114125318.1707590-2-pbonzini@redhat.com>
+Message-ID: <20241114125318.1707590-3-pbonzini@redhat.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-(cherry picked from commit e125d9835b89545b09c0367404dcf69f18ae6de1)
+(cherry picked from commit 626b39006d2f9b1378a04cb88a2187bb852cb055)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
 diff --git a/hw/audio/hda-codec.c b/hw/audio/hda-codec.c
-index 4373565371..ee3d0a7dec 100644
+index ee3d0a7dec..407d670d82 100644
 --- a/hw/audio/hda-codec.c
 +++ b/hw/audio/hda-codec.c
-@@ -472,24 +472,6 @@ static void hda_audio_set_amp(HDAAudioStream *st)
-     }
- }
- 
--static void hda_close_stream(HDAAudioState *a, HDAAudioStream *st)
--{
--    if (st->node == NULL) {
--        return;
--    }
--    if (a->use_timer) {
--        timer_free(st->buft);
--        st->buft = NULL;
--    }
--    if (st->output) {
--        AUD_close_out(&a->card, st->voice.out);
--        st->voice.out = NULL;
--    } else {
--        AUD_close_in(&a->card, st->voice.in);
--        st->voice.in = NULL;
--    }
--}
--
- static void hda_audio_setup(HDAAudioStream *st)
- {
-     bool use_timer = st->state->use_timer;
-@@ -502,7 +484,6 @@ static void hda_audio_setup(HDAAudioStream *st)
-     trace_hda_audio_format(st->node->name, st->as.nchannels,
-                            fmt2name[st->as.fmt], st->as.freq);
- 
--    hda_close_stream(st->state, st);
+@@ -487,8 +487,7 @@ static void hda_audio_setup(HDAAudioStream *st)
      if (st->output) {
          if (use_timer) {
              cb = hda_audio_output_cb;
-@@ -760,11 +741,23 @@ static void hda_audio_init(HDACodecDevice *hda,
- static void hda_audio_exit(HDACodecDevice *hda)
- {
-     HDAAudioState *a = HDA_AUDIO(hda);
-+    HDAAudioStream *st;
-     int i;
- 
-     dprint(a, 1, "%s\n", __func__);
-     for (i = 0; i < ARRAY_SIZE(a->st); i++) {
--        hda_close_stream(a, a->st + i);
-+        st = a->st + i;
-+        if (st->node == NULL) {
-+            continue;
-+        }
-+        if (a->use_timer) {
-+            timer_free(st->buft);
-+        }
-+        if (st->output) {
-+            AUD_close_out(&a->card, st->voice.out);
-+        } else {
-+            AUD_close_in(&a->card, st->voice.in);
-+        }
-     }
-     AUD_remove_card(&a->card);
- }
+-            st->buft = timer_new_ns(QEMU_CLOCK_VIRTUAL,
+-                                    hda_audio_output_timer, st);
++            timer_del(st->buft);
+         } else {
+             cb = hda_audio_compat_output_cb;
+         }
+@@ -497,8 +496,7 @@ static void hda_audio_setup(HDAAudioStream *st)
+     } else {
+         if (use_timer) {
+             cb = hda_audio_input_cb;
+-            st->buft = timer_new_ns(QEMU_CLOCK_VIRTUAL,
+-                                    hda_audio_input_timer, st);
++            timer_del(st->buft);
+         } else {
+             cb = hda_audio_compat_input_cb;
+         }
+@@ -726,8 +724,12 @@ static void hda_audio_init(HDACodecDevice *hda,
+                 st->gain_right = QEMU_HDA_AMP_STEPS;
+                 st->compat_bpos = sizeof(st->compat_buf);
+                 st->output = true;
++                st->buft = timer_new_ns(QEMU_CLOCK_VIRTUAL,
++                                        hda_audio_output_timer, st);
+             } else {
+                 st->output = false;
++                st->buft = timer_new_ns(QEMU_CLOCK_VIRTUAL,
++                                        hda_audio_input_timer, st);
+             }
+             st->format = AC_FMT_TYPE_PCM | AC_FMT_BITS_16 |
+                 (1 << AC_FMT_CHAN_SHIFT);
+@@ -750,9 +752,7 @@ static void hda_audio_exit(HDACodecDevice *hda)
+         if (st->node == NULL) {
+             continue;
+         }
+-        if (a->use_timer) {
+-            timer_free(st->buft);
+-        }
++        timer_free(st->buft);
+         if (st->output) {
+             AUD_close_out(&a->card, st->voice.out);
+         } else {
 -- 
 2.39.5
 
