@@ -2,73 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2DF29D280E
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Nov 2024 15:25:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DDF89D281B
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Nov 2024 15:26:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tDP8g-0005vP-FD; Tue, 19 Nov 2024 09:23:34 -0500
+	id 1tDP8h-0005vq-Ii; Tue, 19 Nov 2024 09:23:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tDP8c-0005ss-Dr
- for qemu-devel@nongnu.org; Tue, 19 Nov 2024 09:23:30 -0500
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ id 1tDP8d-0005tr-3w
+ for qemu-devel@nongnu.org; Tue, 19 Nov 2024 09:23:31 -0500
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tDP8a-0006DC-Gc
+ id 1tDP8b-0006DQ-2h
  for qemu-devel@nongnu.org; Tue, 19 Nov 2024 09:23:30 -0500
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-431548bd1b4so28516945e9.3
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-431ac30d379so8980845e9.1
  for <qemu-devel@nongnu.org>; Tue, 19 Nov 2024 06:23:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1732026207; x=1732631007; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=BhPiVkPcywCEaevmfBnlQ6/FILPwbJv9lkpBnJtBRkM=;
- b=ZkM6ivYJnDepwEJLak7hjRlLGM7ObDNwhFSnU4iTHpmyF+KYtpFMcAI582JqGqXlnj
- 4CXbPaLKdpOoY5FbAHMLlb1NIZgfbXDMrH6xmkqVRNj19UvpAfU2itHYGFgz8pv/dNF1
- WLVv0RJbLu0G/SAVbkO2G2GKKyt+cGkmk/2lJA65abKNKV6hHdB2Cnc91nBV7p5oCW2c
- sNjPwlA/1PXYc/DWNT9kjwuhY9x8mmmG2JJhqHQpCtORgDsJlaFcEilprsFkYV+9A6Us
- gRe0WrsfrF2FgnlSJgLu4cL54QywFvCIshGdplW44Eg8r+BUQjzYXfC1GA5uyTfPhcfQ
- MkXw==
+ :reply-to; bh=CmWCC2CxsP9hklr4mLV7JuMCZSWJOJa4bduw2FlH0m0=;
+ b=O+T6XMA+oZj35LH2NdxZFje1ZcIABOmMG6jYzCOTBAKQhkJri+8YuHqLK2Ivx++q2A
+ +VhMGSPhOaL6PGhnJc5BCk+5Fo/o5hltxMy3FnpGenM4YOJRyZ1NV6vwPztbaDEgErwJ
+ u+R2NE63KdhRBDC7GwLSB94D9qN0cSZM8iIKDNfQQFE1cb88hyXZiXPKXwqbbI7k+bvh
+ lLpoZF/n6k7iQqHeoSuhw6ZMmD/lx7B/CwlyL6G7gIBlCpmaIqQDsyC5iAxJJbZRZqtD
+ po6iqrJOQORdYB3b74F8nA2F4wHQprtexbuYFonAiZntpMQFVRY4DjEYBbeM3LMMF6Hf
+ ttjw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1732026207; x=1732631007;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=BhPiVkPcywCEaevmfBnlQ6/FILPwbJv9lkpBnJtBRkM=;
- b=KCzCKx4sAFBumxrcjLzVrGuS1nUfQ2remxAGvNiXVbKq+Unilx/CEZpic/wLKTS2A2
- bI1A4O1Eyfk3BVKRqwMcIe2POrejqzL+PcP8Z5zdCoxMv58MnWkLkK39FExS1cNquU0h
- 5FmGIpCBxijImZLPJjO5o2/Sl52WBp8p2NNfUW8JXqgFg7wpqetACCJah5iADgehkrK8
- j7vrkzgWz0RuLf60GUVHaEn6nOoSfV/8Hx7oYAs/lf+FRLTS5V01C9d4ObkZvIjY6vwn
- upc7bGNgKAH4xbkGnpsmr4ss1ZO5bFypkkXnjJxXEfLjvf12yBUqEOLoa/Z18UfFPbnf
- /qbQ==
-X-Gm-Message-State: AOJu0YxJrdgaua0WTvHQf6AXZDOyOIl+NSRSxjB1XpAeB2TEtaLSaSo6
- Dx8dR2vWMmLRVRXIWx50KP0B8bak4mXa0AOnyCTxwJX31hUUUwvR4n7MpvWKzvbXHWrfWYYw4vJ
- Q
-X-Google-Smtp-Source: AGHT+IHMCqTS8xOnUnC8urUDCN0dQVgtvcTj+i0FaFOPpLyDrJFmq68hpgS/YVyNSngsJ5I4Qa2TSg==
-X-Received: by 2002:a05:600c:a06:b0:431:44fe:fd9a with SMTP id
- 5b1f17b1804b1-432df74ebdcmr139355295e9.19.1732026206986; 
- Tue, 19 Nov 2024 06:23:26 -0800 (PST)
+ bh=CmWCC2CxsP9hklr4mLV7JuMCZSWJOJa4bduw2FlH0m0=;
+ b=Dr3GtYm37ixmD9Ss6f6DJNw+V6504vQBIb5mJctAyD0R9amhBCWHQ5o/BppKR71gWa
+ 16r1bGMaE4OE3olyP+YsmzDGuRy3viZi96iiJU25DzFB7Q4xpz9nyq5L0cneQcDIVsI7
+ GBxRNxaPy7MV7LEOFGsAmYfb9RozbbaKHuS7oc10xbEEJ/oIyzM95hZbDJ1Jfz4vf06/
+ LY0Hu7CsBjLEArhY31MKR5FeKZrjl8Rwc78vn18CwMfqMrLN9L4VQSZEpNFtEn9oLYEX
+ 1wbWqDu3HC9V51SbWolmQI+PFC3FZhe7j23gc1gQvx7FEx1Mz+YOByRYi6q94gPr4vbu
+ I8uA==
+X-Gm-Message-State: AOJu0Yzvca8t9xK7Ke5fGFF6arJRMTMhYw+K6gslehOzrNPTDXX6iqvn
+ 0WkdBifWeboCu20PNgYVmtHEuWYrSGm6tFfgYbNA/1c+TeSs4zXCfQnhjBkxra+qumJ/IXdsEVP
+ o
+X-Google-Smtp-Source: AGHT+IFVkSFBdagkbMkIdkJt7TivPxUZWPTHenKjQcZMDtQBfGRQj3VT4qu5zxKkgjzbnmWWADoz8g==
+X-Received: by 2002:a05:600c:444f:b0:42c:b905:2bf9 with SMTP id
+ 5b1f17b1804b1-432df74eb09mr159873445e9.16.1732026207556; 
+ Tue, 19 Nov 2024 06:23:27 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-432dac21a15sm193049985e9.38.2024.11.19.06.23.26
+ 5b1f17b1804b1-432dac21a15sm193049985e9.38.2024.11.19.06.23.27
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 19 Nov 2024 06:23:26 -0800 (PST)
+ Tue, 19 Nov 2024 06:23:27 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 08/15] arm/ptw: Make get_S1prot accept decoded AP
-Date: Tue, 19 Nov 2024 14:23:14 +0000
-Message-Id: <20241119142321.1853732-9-peter.maydell@linaro.org>
+Subject: [PULL 09/15] arm/ptw: Honour WXN/UWXN and SIF in short-format
+ descriptors
+Date: Tue, 19 Nov 2024 14:23:15 +0000
+Message-Id: <20241119142321.1853732-10-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241119142321.1853732-1-peter.maydell@linaro.org>
 References: <20241119142321.1853732-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x329.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,90 +94,124 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Pavel Skripkin <paskripkin@gmail.com>
 
-AP in armv7 short descriptor mode has 3 bits and also domain, which
-makes it incompatible with other arm schemas.
+Currently the handling of page protection in the short-format
+descriptor is open-coded. This means that we forgot to update
+it to handle some newer architectural features, including:
+ * handling of SCTLR.{UWXN,WXN}
+ * handling of SCR.SIF
 
-To make it possible to share get_S1prot between armv8, armv7 long
-format, armv7 short format and armv6 it's easier to make caller
-decode AP.
+Make the short-format descriptor code call the same get_S1prot()
+that we already use for the LPAE descriptor format. This makes
+the code simpler and means it now correctly honours the WXN/UWXN
+and SIF bits.
 
 Signed-off-by: Pavel Skripkin <paskripkin@gmail.com>
-Message-id: 20241118152526.45185-1-paskripkin@gmail.com
-[PMM: fixed checkpatch nit]
+Message-id: 20241118152537.45277-1-paskripkin@gmail.com
+[PMM: fixed a couple of checkpatch nits, tweaked commit message]
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/ptw.c | 17 +++++++++--------
- 1 file changed, 9 insertions(+), 8 deletions(-)
+ target/arm/ptw.c | 55 +++++++++++++++++++++---------------------------
+ 1 file changed, 24 insertions(+), 31 deletions(-)
 
 diff --git a/target/arm/ptw.c b/target/arm/ptw.c
-index 98499495085..b132910c401 100644
+index b132910c401..64bb6878a48 100644
 --- a/target/arm/ptw.c
 +++ b/target/arm/ptw.c
-@@ -1357,25 +1357,24 @@ static int get_S2prot(CPUARMState *env, int s2ap, int xn, bool s1_is_el0)
-  * @env:     CPUARMState
-  * @mmu_idx: MMU index indicating required translation regime
-  * @is_aa64: TRUE if AArch64
-- * @ap:      The 2-bit simple AP (AP[2:1])
-+ * @user_rw: Translated AP for user access
-+ * @prot_rw: Translated AP for privileged access
-  * @xn:      XN (execute-never) bit
-  * @pxn:     PXN (privileged execute-never) bit
-  * @in_pa:   The original input pa space
-  * @out_pa:  The output pa space, modified by NSTable, NS, and NSE
-  */
- static int get_S1prot(CPUARMState *env, ARMMMUIdx mmu_idx, bool is_aa64,
--                      int ap, int xn, int pxn,
+@@ -85,6 +85,10 @@ static bool get_phys_addr_gpc(CPUARMState *env, S1Translate *ptw,
+                               GetPhysAddrResult *result,
+                               ARMMMUFaultInfo *fi);
+ 
++static int get_S1prot(CPUARMState *env, ARMMMUIdx mmu_idx, bool is_aa64,
 +                      int user_rw, int prot_rw, int xn, int pxn,
-                       ARMSecuritySpace in_pa, ARMSecuritySpace out_pa)
- {
-     ARMCPU *cpu = env_archcpu(env);
-     bool is_user = regime_is_user(env, mmu_idx);
--    int prot_rw, user_rw;
-     bool have_wxn;
-     int wxn = 0;
++                      ARMSecuritySpace in_pa, ARMSecuritySpace out_pa);
++
+ /* This mapping is common between ID_AA64MMFR0.PARANGE and TCR_ELx.{I}PS. */
+ static const uint8_t pamax_map[] = {
+     [0] = 32,
+@@ -1148,7 +1152,7 @@ static bool get_phys_addr_v6(CPUARMState *env, S1Translate *ptw,
+     hwaddr phys_addr;
+     uint32_t dacr;
+     bool ns;
+-    int user_prot;
++    ARMSecuritySpace out_space;
  
-     assert(!regime_is_stage2(mmu_idx));
- 
--    user_rw = simple_ap_to_rw_prot_is_user(ap, true);
-     if (is_user) {
-         prot_rw = user_rw;
-     } else {
-@@ -1393,8 +1392,6 @@ static int get_S1prot(CPUARMState *env, ARMMMUIdx mmu_idx, bool is_aa64,
-                    regime_is_pan(env, mmu_idx) &&
-                    (regime_sctlr(env, mmu_idx) & SCTLR_EPAN) && !xn) {
-             prot_rw = 0;
--        } else {
--            prot_rw = simple_ap_to_rw_prot_is_user(ap, false);
+     /* Pagetable walk.  */
+     /* Lookup l1 descriptor.  */
+@@ -1240,16 +1244,19 @@ static bool get_phys_addr_v6(CPUARMState *env, S1Translate *ptw,
+             g_assert_not_reached();
          }
      }
- 
-@@ -2044,6 +2041,7 @@ static bool get_phys_addr_lpae(CPUARMState *env, S1Translate *ptw,
-         int nse, ns = extract32(attrs, 5, 1);
-         uint8_t attrindx;
-         uint64_t mair;
++    out_space = ptw->in_space;
++    if (ns) {
++        /*
++         * The NS bit will (as required by the architecture) have no effect if
++         * the CPU doesn't support TZ or this is a non-secure translation
++         * regime, because the output space will already be non-secure.
++         */
++        out_space = ARMSS_NonSecure;
++    }
+     if (domain_prot == 3) {
+         result->f.prot = PAGE_READ | PAGE_WRITE | PAGE_EXEC;
+     } else {
+-        if (pxn && !regime_is_user(env, mmu_idx)) {
+-            xn = 1;
+-        }
+-        if (xn && access_type == MMU_INST_FETCH) {
+-            fi->type = ARMFault_Permission;
+-            goto do_fault;
+-        }
 +        int user_rw, prot_rw;
  
-         switch (out_space) {
-         case ARMSS_Root:
-@@ -2110,12 +2108,15 @@ static bool get_phys_addr_lpae(CPUARMState *env, S1Translate *ptw,
-             xn = 0;
-             ap &= ~1;
+         if (arm_feature(env, ARM_FEATURE_V6K) &&
+                 (regime_sctlr(env, mmu_idx) & SCTLR_AFE)) {
+@@ -1259,37 +1266,23 @@ static bool get_phys_addr_v6(CPUARMState *env, S1Translate *ptw,
+                 fi->type = ARMFault_AccessFlag;
+                 goto do_fault;
+             }
+-            result->f.prot = simple_ap_to_rw_prot(env, mmu_idx, ap >> 1);
+-            user_prot = simple_ap_to_rw_prot_is_user(ap >> 1, 1);
++            prot_rw = simple_ap_to_rw_prot(env, mmu_idx, ap >> 1);
++            user_rw = simple_ap_to_rw_prot_is_user(ap >> 1, 1);
+         } else {
+-            result->f.prot = ap_to_rw_prot(env, mmu_idx, ap, domain_prot);
+-            user_prot = ap_to_rw_prot_is_user(env, mmu_idx, ap, domain_prot, 1);
+-        }
+-        if (result->f.prot && !xn) {
+-            result->f.prot |= PAGE_EXEC;
++            prot_rw = ap_to_rw_prot(env, mmu_idx, ap, domain_prot);
++            user_rw = ap_to_rw_prot_is_user(env, mmu_idx, ap, domain_prot, 1);
          }
 +
-+        user_rw = simple_ap_to_rw_prot_is_user(ap, true);
-+        prot_rw = simple_ap_to_rw_prot_is_user(ap, false);
-         /*
-          * Note that we modified ptw->in_space earlier for NSTable, but
-          * result->f.attrs retains a copy of the original security space.
-          */
--        result->f.prot = get_S1prot(env, mmu_idx, aarch64, ap, xn, pxn,
--                                    result->f.attrs.space, out_space);
-+        result->f.prot = get_S1prot(env, mmu_idx, aarch64, user_rw, prot_rw,
++        result->f.prot = get_S1prot(env, mmu_idx, false, user_rw, prot_rw,
 +                                    xn, pxn, result->f.attrs.space, out_space);
- 
-         /* Index into MAIR registers for cache attributes */
-         attrindx = extract32(attrs, 2, 3);
+         if (!(result->f.prot & (1 << access_type))) {
+             /* Access permission fault.  */
+             fi->type = ARMFault_Permission;
+             goto do_fault;
+         }
+-        if (regime_is_pan(env, mmu_idx) &&
+-            !regime_is_user(env, mmu_idx) &&
+-            user_prot &&
+-            access_type != MMU_INST_FETCH) {
+-            /* Privileged Access Never fault */
+-            fi->type = ARMFault_Permission;
+-            goto do_fault;
+-        }
+-    }
+-    if (ns) {
+-        /* The NS bit will (as required by the architecture) have no effect if
+-         * the CPU doesn't support TZ or this is a non-secure translation
+-         * regime, because the attribute will already be non-secure.
+-         */
+-        result->f.attrs.secure = false;
+-        result->f.attrs.space = ARMSS_NonSecure;
+     }
++    result->f.attrs.space = out_space;
++    result->f.attrs.secure = arm_space_is_secure(out_space);
+     result->f.phys_addr = phys_addr;
+     return false;
+ do_fault:
 -- 
 2.34.1
 
