@@ -2,82 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 957449D2E6A
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Nov 2024 19:55:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 750009D2EB4
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Nov 2024 20:19:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tDTMl-000872-FR; Tue, 19 Nov 2024 13:54:23 -0500
+	id 1tDTj0-0002h4-T5; Tue, 19 Nov 2024 14:17:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1tDTMj-00086Y-Dy
- for qemu-devel@nongnu.org; Tue, 19 Nov 2024 13:54:21 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1tDTMh-0008SR-CM
- for qemu-devel@nongnu.org; Tue, 19 Nov 2024 13:54:21 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1732042457;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=vgipdxjAZ7chzaI9zQ6kPFiLXEWcywxyyZvA9x0BLZc=;
- b=AZZpGertd6oMhrEh1OElhfpSpYNPeN6JL94c44f+bnVTQeE3kA5UwJK1FqGAg+f4QWNOt6
- Fw3Uc2QYbX6csdZGwKphOusMI/p9e26FE5Rq5FRdjbAMAmoqII32M/IGpsr6FJ8aGf5I5a
- pU80kKZOEzin2UzBVsxx1yOwII69IE8=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-643-cj4BUcckNcWcgrFoHLw15Q-1; Tue,
- 19 Nov 2024 13:54:14 -0500
-X-MC-Unique: cj4BUcckNcWcgrFoHLw15Q-1
-X-Mimecast-MFC-AGG-ID: cj4BUcckNcWcgrFoHLw15Q
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 117B61955F43; Tue, 19 Nov 2024 18:54:12 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.110])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id D4C5A19560A3; Tue, 19 Nov 2024 18:54:08 +0000 (UTC)
-Date: Tue, 19 Nov 2024 18:54:05 +0000
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, Thomas Huth <thuth@redhat.com>,
- Ani Sinha <anisinha@redhat.com>,
- Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>,
- =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>
-Subject: Re: [PATCH 13/15] tests/functional: rewrite console handling to be
- bytewise
-Message-ID: <ZzzezVVCYEJV4uVg@redhat.com>
-References: <20241119150519.1123365-1-berrange@redhat.com>
- <20241119150519.1123365-14-berrange@redhat.com>
- <beb4abeb-299a-4d4a-a253-3e65a41edcc9@redhat.com>
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1tDTiw-0002g5-R4
+ for qemu-devel@nongnu.org; Tue, 19 Nov 2024 14:17:19 -0500
+Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1tDTis-0007a1-Q3
+ for qemu-devel@nongnu.org; Tue, 19 Nov 2024 14:17:17 -0500
+Received: by mail-pf1-x42f.google.com with SMTP id
+ d2e1a72fcca58-72487ebd2f5so2857505b3a.1
+ for <qemu-devel@nongnu.org>; Tue, 19 Nov 2024 11:17:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1732043832; x=1732648632; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=cMPWnZPX4ZxNfmHx82bkv+aNMW82X7RFs3BZd4Z5FPg=;
+ b=ed4ZXHOP6TqKRePMm3SjlUZEQWMbuLY5ztQyOUHLqeMeCnDoOx5gT3KLwaqhlAX8EN
+ HaXzsuI237x6+iuz6Zgh5B4tyfAFYzbihfUofULHoLTHYd4CnCZ1WxC8cklkVC6qATeN
+ rD/NhQn6OehKNvdUpPzeUUb63seR00lFHaqTtrEHAG+A5akejjGhsejzwc4U8q6SXwqb
+ h2g5sfuP6PfgZfZ+xN6GagtnLSNOzkejB1PVwOmdq6TsfvP0Rt9xc+iGLU9J/A3sJRzM
+ jtS/DlnrQjcESlSLiMPWW4FKSUD/QTSQryBtdpZUpOvf+qmy4M0AaZ27lKQfChSaLjas
+ LdXQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1732043832; x=1732648632;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=cMPWnZPX4ZxNfmHx82bkv+aNMW82X7RFs3BZd4Z5FPg=;
+ b=kbP3KIH6HWaaONqQSxRtdjHetEQLfpH6zQo0ksPA7nvKP+jMXpKdoqoydT2QX4xZdW
+ K+tz3s/zHevd/1BBIOywuPtAcl1XEF6il5RMo7MgZGZe3k9wp3t9F2dnXX83UzqCqg9o
+ NiLwEel6dVuOVGyOAVjrJWbXMn9eFv84BvLypprPTJrsXfU7vpb80sHxmVHyE3wlArUh
+ hvM0Xu/qHXoKqC4hM/Ye8K0RlxSpbXkxlLwurWEK1PrLEOXP9vUaZmsUMyfxsOPZLpT3
+ 4fQJCFtHIHDqL0i4CnRk2I/8fvIdPV0Si4dM7GFA+WX6KZKrzURlHXrviTgAvuc/fZyG
+ IWzA==
+X-Gm-Message-State: AOJu0Yz02POwI+t81+HKayGwc/XpPrPnB5cV0Dd94dTq9ln/eLF+ODZ0
+ J0KG7j8TYWiPOPXS0xUBLJAD08qNCCi78eR7rD2ajoDKWl6pkwE3IvZ5zJN0+15FshIcxbUtOsP
+ p
+X-Google-Smtp-Source: AGHT+IFkI3qa4wX17ELu0QE+UcH8/pd//WS8PaCel8N0BJ+BmOnk5s516ak9sROsXq2yrYJVIBHOqg==
+X-Received: by 2002:a05:6a00:14c8:b0:710:6e83:cd5e with SMTP id
+ d2e1a72fcca58-724be7d17d6mr194996b3a.0.1732043831620; 
+ Tue, 19 Nov 2024 11:17:11 -0800 (PST)
+Received: from grind.dc1.ventanamicro.com ([187.101.65.72])
+ by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-724beeb82f2sm24271b3a.35.2024.11.19.11.17.09
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 19 Nov 2024 11:17:11 -0800 (PST)
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
+ liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Subject: [PATCH for-10.0 v2 0/8] riscv: AIA userspace irqchip_split support
+Date: Tue, 19 Nov 2024 16:16:58 -0300
+Message-ID: <20241119191706.718860-1-dbarboza@ventanamicro.com>
+X-Mailer: git-send-email 2.47.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <beb4abeb-299a-4d4a-a253-3e65a41edcc9@redhat.com>
-User-Agent: Mutt/2.2.12 (2023-09-09)
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pf1-x42f.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.14,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,165 +88,42 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Nov 19, 2024 at 06:11:10PM +0100, Paolo Bonzini wrote:
-> On 11/19/24 16:05, Daniel P. Berrangé wrote:
-> > The console interaction that waits for predicted strings uses
-> > readline(), and thus is only capable of waiting for strings
-> > that are followed by a newline.
-> > 
-> > This is inconvenient when needing to match on some things,
-> > particularly login prompts, or shell prompts, causing tests
-> > to use time.sleep(...) instead, which is unreliable.
-> > 
-> > Switch to reading the console 1 byte at a time, comparing
-> > against the success/failure messages until we see a match,
-> > regardless of whether a newline is encountered.
-> > 
-> > The success/failure comparisons are done with the python bytes
-> > type, rather than strings, to avoid the problem of needing to
-> > decode partially received multibyte utf8 characters.
-> > 
-> > Heavily inspired by a patch proposed by Cédric, but written
-> > again to work in bytes, rather than strings.
-> > 
-> > Co-developed-by: Cédric Le Goater <clg@redhat.com>
-> > Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
-> > ---
-> >   tests/functional/qemu_test/cmd.py | 63 +++++++++++++++++++++++--------
-> >   1 file changed, 48 insertions(+), 15 deletions(-)
-> > 
-> > diff --git a/tests/functional/qemu_test/cmd.py b/tests/functional/qemu_test/cmd.py
-> > index 76a48064cd..91267a087f 100644
-> > --- a/tests/functional/qemu_test/cmd.py
-> > +++ b/tests/functional/qemu_test/cmd.py
-> > @@ -78,15 +78,58 @@ def run_cmd(args):
-> >   def is_readable_executable_file(path):
-> >       return os.path.isfile(path) and os.access(path, os.R_OK | os.X_OK)
-> > +def _console_readline(test, vm, success, failure):
-> > +    msg = bytes([])
-> > +    done = False
-> > +    while True:
-> > +        c = vm.console_socket.recv(1)
-> > +        if c is None:
-> > +            done = True
-> > +            test.fail(
-> > +                f"EOF in console, expected '{success}'")
-> > +            break
-> > +        msg += c
-> > +
-> > +        if success is None or success in msg:
-> 
-> As an optimization, you could use msg.endswith(success) and
-> msg.endswith(failure), which would avoid the most blatant cases of O(n^2)
-> behavior.
-> 
-> More important, I think "if success is None" should not be here, because it
-> will exit after one char.  Instead...
-> 
-> > +            done = True
-> > +            break
-> > +        if failure and failure in msg:
-> > +            done = True
-> > +            vm.console_socket.close()
-> > +            test.fail(
-> > +                f"'{failure}' found in console, expected '{success}'")
-> > +
-> > +        if c == b'\n':
-> 
-> Here you can put
-> 
->                done = success is None
+Hi,
 
-Hmmm, this can only be a problem if "success" is None, and
-"failure" is not None, and although the old code would
-technically work in that case, I think it is actually an
-unknown/invalid usage scenario.
+This second version was rebased with 'master'. Alistair's acks were
+included.
 
-If BOTH "success" and "failure" are None, this method won't
-be called at all. It is valid for "failure" to be none, but
-I don't think it makes semantic sense for "success" to also
-be None, while have "failure" be non-None.
+No other changes were made. All patches acked/reviewed.
 
-So I'm inclined to say we declare 'success' to be mandatory
-and validate that in the caller. eg
-
- assert send_string is not None or success_message is not None
+Changes from v1:
+- rebased with master @ af4c4fd128
+- v1 link: https://lore.kernel.org/qemu-riscv/20241010190337.376987-1-dbarboza@ventanamicro.com/
 
 
-and then remove this "success is None" check from
-_console_readline.
+Daniel Henrique Barboza (8):
+  hw/intc/riscv_aplic: rename is_kvm_aia()
+  hw/riscv/virt.c: reduce virt_use_kvm_aia() usage
+  hw/riscv/virt.c: rename helper to virt_use_kvm_aia_aplic_imsic()
+  target/riscv/kvm: consider irqchip_split() in aia_create()
+  hw/riscv/virt.c, riscv_aplic.c: add 'emulated_aplic' helpers
+  hw/intc/riscv_aplic: add kvm_msicfgaddr for split mode aplic-imsic
+  target/riscv/kvm: remove irqchip_split() restriction
+  docs: update riscv/virt.rst with kernel-irqchip=split support
 
-> 
-> Paolo
-> 
-> > +            break
-> > +
-> > +    console_logger = logging.getLogger('console')
-> > +    try:
-> > +        console_logger.debug(msg.decode().strip())
-> > +    except:
-> > +        console_logger.debug(msg)
-> > +
-> > +    return done
-> > +
-> >   def _console_interaction(test, success_message, failure_message,
-> >                            send_string, keep_sending=False, vm=None):
-> >       assert not keep_sending or send_string
-> >       if vm is None:
-> >           vm = test.vm
-> > -    console = vm.console_file
-> > -    console_logger = logging.getLogger('console')
-> > +
-> >       test.log.debug(f"Console interaction success:'{success_message}' " +
-> >                      f"failure:'{failure_message}' send:'{send_string}'")
-> > +
-> > +    # We'll process console in bytes, to avoid having to
-> > +    # deal with unicode decode errors from receiving
-> > +    # partial utf8 byte sequences
-> > +    success_message_b = None
-> > +    if success_message is not None:
-> > +        success_message_b = success_message.encode()
-> > +
-> > +    failure_message_b = None
-> > +    if failure_message is not None:
-> > +        failure_message_b = failure_message.encode()
-> > +
-> >       while True:
-> >           if send_string:
-> >               vm.console_socket.sendall(send_string.encode())
-> > @@ -99,20 +142,10 @@ def _console_interaction(test, success_message, failure_message,
-> >                   break
-> >               continue
-> > -        try:
-> > -            msg = console.readline().decode().strip()
-> > -        except UnicodeDecodeError:
-> > -            msg = None
-> > -        if not msg:
-> > -            continue
-> > -        console_logger.debug(msg)
-> > -        if success_message is None or success_message in msg:
-> > +        if _console_readline(test, vm,
-> > +                             success_message_b,
-> > +                             failure_message_b):
-> >               break
-> > -        if failure_message and failure_message in msg:
-> > -            console.close()
-> > -            fail = 'Failure message found in console: "%s". Expected: "%s"' % \
-> > -                    (failure_message, success_message)
-> > -            test.fail(fail)
-> >   def interrupt_interactive_console_until_pattern(test, success_message,
-> >                                                   failure_message=None,
-> 
+ docs/specs/index.rst          |  1 +
+ docs/specs/riscv-aia.rst      | 83 +++++++++++++++++++++++++++++++++++
+ docs/system/riscv/virt.rst    |  7 +++
+ hw/intc/riscv_aplic.c         | 68 ++++++++++++++++++++++------
+ hw/riscv/virt.c               | 38 +++++++++++-----
+ include/hw/intc/riscv_aplic.h |  8 ++++
+ target/riscv/kvm/kvm-cpu.c    | 43 +++++++++---------
+ 7 files changed, 203 insertions(+), 45 deletions(-)
+ create mode 100644 docs/specs/riscv-aia.rst
 
-With regards,
-Daniel
 -- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+2.47.0
 
 
