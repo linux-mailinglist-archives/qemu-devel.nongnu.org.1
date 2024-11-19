@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EADB79D2926
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Nov 2024 16:08:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 57FB49D2923
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Nov 2024 16:08:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tDPnj-0005te-0U; Tue, 19 Nov 2024 10:05:59 -0500
+	id 1tDPnk-0005w1-AI; Tue, 19 Nov 2024 10:06:00 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1tDPnU-0005ob-7P
- for qemu-devel@nongnu.org; Tue, 19 Nov 2024 10:05:45 -0500
+ id 1tDPnW-0005q0-98
+ for qemu-devel@nongnu.org; Tue, 19 Nov 2024 10:05:46 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1tDPnS-0003gh-R0
- for qemu-devel@nongnu.org; Tue, 19 Nov 2024 10:05:43 -0500
+ id 1tDPnT-0003gr-Ks
+ for qemu-devel@nongnu.org; Tue, 19 Nov 2024 10:05:45 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1732028742;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=6HjkfIz7V3MLf9hlQGbdwpkUqrMkLTBQZOC3UbcGioc=;
- b=BzR35QSaHUHV3Enb+xBaS76ZdbCgvS1HVNQIFwSD6XC2y1rMIjUWvNsUEnv2Fu2WzjVfwa
- KEUjCZy+LnBJ1himjdoB2lSt8jrLLUi2sppmrcHxQYSI+jfztVZZxwGANHpvf3iR5H/eAR
- fDg+cbmW9aOFxhE6w4EbUFxQSjcDy7E=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ bh=czEcijtwICqLMRcliVOE5Hsoj3anBl2/8MHBzdaCxGo=;
+ b=ebfIpqaEYV+gjH2WcH5fSC8FfJr87taFLwAuiR2zfbBwuSbW82L5FWTtf0exgvmfhSaoG7
+ bSnDby7tWLH2vxNYwiVjtq6VDSI5GW/a06iTcbK5/a1GvF4F2V+IA1WfzSNmnf5t09mVRs
+ enMdNym/gCy7bSmpgBuTz9suDlFjyFs=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-250-ookZ2uu9MQqrrjOjfANXcQ-1; Tue,
- 19 Nov 2024 10:05:37 -0500
-X-MC-Unique: ookZ2uu9MQqrrjOjfANXcQ-1
-X-Mimecast-MFC-AGG-ID: ookZ2uu9MQqrrjOjfANXcQ
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-28-HrWIauT8Oz2r6bf7k7wJXw-1; Tue,
+ 19 Nov 2024 10:05:40 -0500
+X-MC-Unique: HrWIauT8Oz2r6bf7k7wJXw-1
+X-Mimecast-MFC-AGG-ID: HrWIauT8Oz2r6bf7k7wJXw
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id E3ABA1953961; Tue, 19 Nov 2024 15:05:35 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id A1BBF195608B; Tue, 19 Nov 2024 15:05:39 +0000 (UTC)
 Received: from toolbox.redhat.com (unknown [10.42.28.110])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 62B4719560A3; Tue, 19 Nov 2024 15:05:33 +0000 (UTC)
+ id 48E3A19560A3; Tue, 19 Nov 2024 15:05:36 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Thomas Huth <thuth@redhat.com>, Ani Sinha <anisinha@redhat.com>,
@@ -52,9 +52,9 @@ Cc: Thomas Huth <thuth@redhat.com>, Ani Sinha <anisinha@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Peter Maydell <peter.maydell@linaro.org>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH 04/15] tests/functional: remove todo wrt avocado.utils.wait_for
-Date: Tue, 19 Nov 2024 15:05:08 +0000
-Message-ID: <20241119150519.1123365-5-berrange@redhat.com>
+Subject: [PATCH 05/15] tests/functional: remove leftover :avocado: tags
+Date: Tue, 19 Nov 2024 15:05:09 +0000
+Message-ID: <20241119150519.1123365-6-berrange@redhat.com>
 In-Reply-To: <20241119150519.1123365-1-berrange@redhat.com>
 References: <20241119150519.1123365-1-berrange@redhat.com>
 MIME-Version: 1.0
@@ -86,28 +86,132 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We're not using avocado anymore, so while the TODO item is still
-relevant, suggesting use of avocado.utils is not.
+These tags are not honoured under the new functional test harness.
 
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- tests/functional/test_m68k_nextcube.py | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ tests/functional/test_arm_bpim2u.py   | 20 --------------------
+ tests/functional/test_arm_orangepi.py | 27 ---------------------------
+ 2 files changed, 47 deletions(-)
 
-diff --git a/tests/functional/test_m68k_nextcube.py b/tests/functional/test_m68k_nextcube.py
-index 89385a134a..0124622c40 100755
---- a/tests/functional/test_m68k_nextcube.py
-+++ b/tests/functional/test_m68k_nextcube.py
-@@ -37,8 +37,7 @@ def check_bootrom_framebuffer(self, screenshot_path):
-         self.vm.launch()
+diff --git a/tests/functional/test_arm_bpim2u.py b/tests/functional/test_arm_bpim2u.py
+index 2f9fa145e3..35ea58d46c 100755
+--- a/tests/functional/test_arm_bpim2u.py
++++ b/tests/functional/test_arm_bpim2u.py
+@@ -37,11 +37,6 @@ class BananaPiMachine(LinuxKernelTest):
+         '5b41b4e11423e562c6011640f9a7cd3bdd0a3d42b83430f7caa70a432e6cd82c')
  
-         self.log.info('VM launched, waiting for display')
--        # TODO: Use avocado.utils.wait.wait_for to catch the
--        #       'displaysurface_create 1120x832' trace-event.
-+        # TODO: wait for the 'displaysurface_create 1120x832' trace-event.
-         time.sleep(2)
+     def test_arm_bpim2u(self):
+-        """
+-        :avocado: tags=arch:arm
+-        :avocado: tags=machine:bpim2u
+-        :avocado: tags=accel:tcg
+-        """
+         self.set_machine('bpim2u')
+         deb_path = self.ASSET_DEB.fetch()
+         kernel_path = self.extract_from_deb(deb_path,
+@@ -64,11 +59,6 @@ def test_arm_bpim2u(self):
+         os.remove(dtb_path)
  
-         self.vm.cmd('human-monitor-command',
+     def test_arm_bpim2u_initrd(self):
+-        """
+-        :avocado: tags=arch:arm
+-        :avocado: tags=accel:tcg
+-        :avocado: tags=machine:bpim2u
+-        """
+         self.set_machine('bpim2u')
+         deb_path = self.ASSET_DEB.fetch()
+         kernel_path = self.extract_from_deb(deb_path,
+@@ -105,11 +95,6 @@ def test_arm_bpim2u_initrd(self):
+         os.remove(initrd_path)
+ 
+     def test_arm_bpim2u_gmac(self):
+-        """
+-        :avocado: tags=arch:arm
+-        :avocado: tags=machine:bpim2u
+-        :avocado: tags=device:sd
+-        """
+         self.set_machine('bpim2u')
+         self.require_netdev('user')
+ 
+@@ -160,11 +145,6 @@ def test_arm_bpim2u_gmac(self):
+ 
+     @skipUnless(os.getenv('QEMU_TEST_ALLOW_LARGE_STORAGE'), 'storage limited')
+     def test_arm_bpim2u_openwrt_22_03_3(self):
+-        """
+-        :avocado: tags=arch:arm
+-        :avocado: tags=machine:bpim2u
+-        :avocado: tags=device:sd
+-        """
+         self.set_machine('bpim2u')
+         # This test download a 8.9 MiB compressed image and expand it
+         # to 127 MiB.
+diff --git a/tests/functional/test_arm_orangepi.py b/tests/functional/test_arm_orangepi.py
+index d2ed5fcc82..6d57223a03 100755
+--- a/tests/functional/test_arm_orangepi.py
++++ b/tests/functional/test_arm_orangepi.py
+@@ -49,11 +49,6 @@ class BananaPiMachine(LinuxKernelTest):
+         '20d3e07dc057e15c12452620e90ecab2047f0f7940d9cba8182ebc795927177f')
+ 
+     def test_arm_orangepi(self):
+-        """
+-        :avocado: tags=arch:arm
+-        :avocado: tags=machine:orangepi-pc
+-        :avocado: tags=accel:tcg
+-        """
+         self.set_machine('orangepi-pc')
+         deb_path = self.ASSET_DEB.fetch()
+         kernel_path = self.extract_from_deb(deb_path,
+@@ -75,11 +70,6 @@ def test_arm_orangepi(self):
+         os.remove(dtb_path)
+ 
+     def test_arm_orangepi_initrd(self):
+-        """
+-        :avocado: tags=arch:arm
+-        :avocado: tags=accel:tcg
+-        :avocado: tags=machine:orangepi-pc
+-        """
+         self.set_machine('orangepi-pc')
+         deb_path = self.ASSET_DEB.fetch()
+         kernel_path = self.extract_from_deb(deb_path,
+@@ -115,12 +105,6 @@ def test_arm_orangepi_initrd(self):
+         os.remove(initrd_path)
+ 
+     def test_arm_orangepi_sd(self):
+-        """
+-        :avocado: tags=arch:arm
+-        :avocado: tags=accel:tcg
+-        :avocado: tags=machine:orangepi-pc
+-        :avocado: tags=device:sd
+-        """
+         self.set_machine('orangepi-pc')
+         self.require_netdev('user')
+         deb_path = self.ASSET_DEB.fetch()
+@@ -167,11 +151,6 @@ def test_arm_orangepi_sd(self):
+ 
+     @skipUnless(os.getenv('QEMU_TEST_ALLOW_LARGE_STORAGE'), 'storage limited')
+     def test_arm_orangepi_armbian(self):
+-        """
+-        :avocado: tags=arch:arm
+-        :avocado: tags=machine:orangepi-pc
+-        :avocado: tags=device:sd
+-        """
+         self.set_machine('orangepi-pc')
+         # This test download a 275 MiB compressed image and expand it
+         # to 1036 MiB, but the underlying filesystem is 1552 MiB...
+@@ -208,12 +187,6 @@ def test_arm_orangepi_armbian(self):
+ 
+     @skipUnless(os.getenv('QEMU_TEST_ALLOW_LARGE_STORAGE'), 'storage limited')
+     def test_arm_orangepi_uboot_netbsd9(self):
+-        """
+-        :avocado: tags=arch:arm
+-        :avocado: tags=machine:orangepi-pc
+-        :avocado: tags=device:sd
+-        :avocado: tags=os:netbsd
+-        """
+         self.set_machine('orangepi-pc')
+         # This test download a 304MB compressed image and expand it to 2GB
+         deb_path = self.ASSET_UBOOT.fetch()
 -- 
 2.46.0
 
