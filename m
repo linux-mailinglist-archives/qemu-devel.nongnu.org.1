@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88F7D9D291A
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Nov 2024 16:07:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 671FF9D291B
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Nov 2024 16:07:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tDPo4-00063X-Fa; Tue, 19 Nov 2024 10:06:21 -0500
+	id 1tDPnt-00063I-8e; Tue, 19 Nov 2024 10:06:09 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1tDPnk-0005y5-DR
- for qemu-devel@nongnu.org; Tue, 19 Nov 2024 10:06:00 -0500
+ id 1tDPnn-00061h-RN
+ for qemu-devel@nongnu.org; Tue, 19 Nov 2024 10:06:03 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1tDPnj-0003kz-00
- for qemu-devel@nongnu.org; Tue, 19 Nov 2024 10:06:00 -0500
+ id 1tDPnm-0003lQ-5D
+ for qemu-devel@nongnu.org; Tue, 19 Nov 2024 10:06:03 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1732028758;
+ s=mimecast20190719; t=1732028761;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=QhmGAjq7xA6aE9VhKSkdKosyPITClYRJAPhCSIpmkvc=;
- b=F3KYuLKiw0JyWm3INoHQ9WiLQfZwg2olD2n8vFGZWgNZfFIE8RfUZWuujdnOI3NAfl5pRz
- HSLlLUBZDiSQQ9gWeD5SaBPk890qor9bdVcdpZ0bp1LlHd+u/cNn84HQuMHNPTXrqC85pt
- KzHEZoOM8AnDWIfGg9pw92/npojkJVA=
+ bh=b3bnf/d7EYfagDOr5UpwDoE5L1tCx8rcLqyVOHlEUCE=;
+ b=KkWk4yIsUQLA/A+4xqE8izRh1IdIGDV1uJ0I2Uykfbkcg6onNUrPws8lNjlVsFYPFHozjp
+ 2Kk5EB/+one+fOKntNgfqprnIydBc/zopwyeUU6DoHkIBrEyqEPvro/Tiu3UXpPLWHHo7P
+ Lhpr6WB8Dwc/HzAtZqtV3FeUT8mAc2s=
 Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-205-J9Z5YT6qMxCRY6FOTRDlDw-1; Tue,
- 19 Nov 2024 10:05:55 -0500
-X-MC-Unique: J9Z5YT6qMxCRY6FOTRDlDw-1
-X-Mimecast-MFC-AGG-ID: J9Z5YT6qMxCRY6FOTRDlDw
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-359-C2X3rZU-Pn2Ox5gADyN5lg-1; Tue,
+ 19 Nov 2024 10:05:57 -0500
+X-MC-Unique: C2X3rZU-Pn2Ox5gADyN5lg-1
+X-Mimecast-MFC-AGG-ID: C2X3rZU-Pn2Ox5gADyN5lg
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id F26CF1955F28; Tue, 19 Nov 2024 15:05:53 +0000 (UTC)
+ id AAFDA1956048; Tue, 19 Nov 2024 15:05:56 +0000 (UTC)
 Received: from toolbox.redhat.com (unknown [10.42.28.110])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 986B8195DF81; Tue, 19 Nov 2024 15:05:51 +0000 (UTC)
+ id 6DB1919560A3; Tue, 19 Nov 2024 15:05:54 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Thomas Huth <thuth@redhat.com>, Ani Sinha <anisinha@redhat.com>,
@@ -52,10 +52,9 @@ Cc: Thomas Huth <thuth@redhat.com>, Ani Sinha <anisinha@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Peter Maydell <peter.maydell@linaro.org>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH 10/15] tests/functional: honour requested test VM name in
- QEMUMachine
-Date: Tue, 19 Nov 2024 15:05:14 +0000
-Message-ID: <20241119150519.1123365-11-berrange@redhat.com>
+Subject: [PATCH 11/15] tests/functional: enable debug logging for QEMUMachine
+Date: Tue, 19 Nov 2024 15:05:15 +0000
+Message-ID: <20241119150519.1123365-12-berrange@redhat.com>
 In-Reply-To: <20241119150519.1123365-1-berrange@redhat.com>
 References: <20241119150519.1123365-1-berrange@redhat.com>
 MIME-Version: 1.0
@@ -87,29 +86,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The functional test case class is going to the trouble of passing
-around a machine name, but then fails to give this QEMUMachine. As
-a result, QEMUMachine will create a completely random name. Since
-log file names match the machine name, this results in log files
-accumulating over time.
+Set the 'qemu.machine' logger to 'DEBUG' level, to ensure we see log
+messages related to the QEMUMachine class. Most importantly this
+ensures we capture the full QEMU command line args for instances we
+spawn.
 
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- tests/functional/qemu_test/testcase.py | 1 +
- 1 file changed, 1 insertion(+)
+ tests/functional/qemu_test/testcase.py | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
 diff --git a/tests/functional/qemu_test/testcase.py b/tests/functional/qemu_test/testcase.py
-index ca13af244b..f9c9de1166 100644
+index f9c9de1166..e2a329c3e5 100644
 --- a/tests/functional/qemu_test/testcase.py
 +++ b/tests/functional/qemu_test/testcase.py
-@@ -164,6 +164,7 @@ def require_device(self, devicename):
+@@ -57,9 +57,15 @@ def setUp(self, bin_prefix):
+         self._log_fh.setFormatter(fileFormatter)
+         self.log.addHandler(self._log_fh)
  
-     def _new_vm(self, name, *args):
-         vm = QEMUMachine(self.qemu_bin,
-+                         name=name,
-                          base_temp_dir=self.workdir,
-                          log_dir=self.logdir)
-         self.log.debug('QEMUMachine "%s" created', name)
++        # Capture QEMUMachine logging
++        self.machinelog = logging.getLogger('qemu.machine')
++        self.machinelog.setLevel(logging.DEBUG)
++        self.machinelog.addHandler(self._log_fh)
++
+     def tearDown(self):
+         if "QEMU_TEST_KEEP_SCRATCH" not in os.environ:
+             shutil.rmtree(self.workdir)
++        self.machinelog.removeHandler(self._log_fh)
+         self.log.removeHandler(self._log_fh)
+ 
+     def main():
 -- 
 2.46.0
 
