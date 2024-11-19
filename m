@@ -2,75 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D6159D2814
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Nov 2024 15:25:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 278B99D280F
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Nov 2024 15:25:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tDP8i-0005w1-7z; Tue, 19 Nov 2024 09:23:36 -0500
+	id 1tDP8j-0005wH-1C; Tue, 19 Nov 2024 09:23:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tDP8f-0005v2-7L
+ id 1tDP8f-0005vG-HT
  for qemu-devel@nongnu.org; Tue, 19 Nov 2024 09:23:33 -0500
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tDP8d-0006Ee-KM
- for qemu-devel@nongnu.org; Tue, 19 Nov 2024 09:23:32 -0500
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-43169902057so46444555e9.0
+ id 1tDP8e-0006Em-05
+ for qemu-devel@nongnu.org; Tue, 19 Nov 2024 09:23:33 -0500
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-431616c23b5so31836215e9.0
  for <qemu-devel@nongnu.org>; Tue, 19 Nov 2024 06:23:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1732026210; x=1732631010; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=/hJApf5pwD9vn4f3viMkJMqu2JClgiQpIabvUaH/M9s=;
- b=b2CT5SxlpJAFF1Rbm0vrWLs2d9KJomc3ubAB/UnTWkiqYmn+jLUgq7L5e8Ge/a1vFw
- ZEWo+W32Sc+rZpOTzfZiEXgogjM1tmWDu8a8iRZPyMWpIHJYfOKFgCGTZaDPAiOeP7uN
- X+oXM9xiJzEiJH5wVqbaWHFxABU/zvzYjP/G20RyLYp3KFYh0qKyC2HoIEhuQQQoKbLg
- BD617SLuaIYX1TgqDvAlSMONFmjDyVuTnZ8hhya0rxoBkybCqROEiROU5jWgVhBiDeHE
- TLL8hcYJ6oGldHxKKc/zibS2hGDghKnc4mLW94Q9jbZlTv5XziMDAblLYFJzNc1Wrdhr
- mcYQ==
+ :reply-to; bh=sgmkEh/mAYEEOBGITS2M+Q2muX4d/fOxHqnXuvoWYiU=;
+ b=JHIaIC79/9Id0urll+seoq/Ihz7NwgJDA7sY26LyCIMq+3iRSAAkHXM/XrncUo0wvt
+ hv0OpN66eVW5Qa1efJTj/tYEcfYveIs+W9yz2OIUASAqOro9o6r6tW/HgwoB84znOCZ8
+ QWWGHwvaL32FI3/ld3Y3h/XNmyBVea+PdyH34TPjvGsZKzzqJ2NJfDOLqd7xnhamqRZG
+ 8EF/MRiUsDrbn0pR+5yv3K4FnByiKP8rWbohR3IHWxj2HVhS1NR9qLfHi+TQNAvAkgHt
+ npA9TFujGkpXA4pvDJqIoNjhRazZHqU1KgR+W1VDVWDh9xrhAuWCiGUqEtA56Pve+4Rc
+ F4gg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1732026210; x=1732631010;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=/hJApf5pwD9vn4f3viMkJMqu2JClgiQpIabvUaH/M9s=;
- b=M+/bIxnrCAmDxzl+atxr2Y7xRfSU4hEgb9XHuku272MQ/oyZpSUYKeOB7nOPFPMC3G
- Oj7yq4PDBlwRD2e8vgjpM3m4VvLu1zorsBNc9XPOoevyNp9ZgWliCxm71Pk/Bmbwicew
- zE3eMtVspJXQ5JxigS2nbaCTys7md0jqDSI4NTFticEV5NOaKM6UxOtTnGJmmXrIZhD+
- lslzbDpcvyTgCzFUpqg2mV/g9wcpVrYZKSxJVp5c/KnghZuqlvhLZHs7o3nj1l2TLzyB
- I0e/xBOmANZGRnqURxGfBDAi24JRLrIbbh0RURqn9qwN+KGi63P5FTVCaXVs9busAoKB
- mVsw==
-X-Gm-Message-State: AOJu0Yw4BZvSd3qYudCoHXiEMfZQyZbyzPgx+iRW7adlsmyEbTxdsESb
- bwQXHZw2bH+oUckz19MnQY1VHfYRa82qsmNiPUrEhgVlEKKFV5xVuvOhuZB9ucu9RFCbtliOhnp
- Q
-X-Google-Smtp-Source: AGHT+IG8jLOtUpp7wQzHB3/2vxK6h3m9civR8cYuzPCoT26/EJzhesh/8FyNNeGOX98qrqTLw/04ig==
-X-Received: by 2002:a05:600c:3b20:b0:431:5a93:4e3c with SMTP id
- 5b1f17b1804b1-432df74cdb3mr160096285e9.16.1732026210085; 
+ bh=sgmkEh/mAYEEOBGITS2M+Q2muX4d/fOxHqnXuvoWYiU=;
+ b=gi+jKTgiPTxEUboin+r23O9C6fDeUd23VRLpuvm4SjXiBKrXHYuuSFqFrffUHuk9tO
+ Bh7aHSKWGS9a4UoN51eCE7gImJ6+JmGGRSwBEVWOO6nFJdFuHYQXzTo+ddwTpR4gny/b
+ hMw0dIwF70xp6J4fmAIaLP3lF+kndCSH5fs4Ybu0z3VqiMMEer3cFHzG7Z99jZVPI1f6
+ UEwprbB5DmGAs1PA23RI1l//A1vcozIemJCpfaDhH3Um+jWWR/aiDutPivW3fJsb1EXL
+ p95H1VFyOh0tK5rEnde4GIiiEqNrGEmEyCeN9co23MH6b+72w0R6zjF/SFQUla+xBZhr
+ a2TA==
+X-Gm-Message-State: AOJu0YyVOSIi9iNTKp2jIHqBs+qD1JfSX0IqM/3W9/N25qfL+z2Dh8FY
+ o34CchKpn4qY8q0hV6G3cvRDnhwFNAfiVgIFAQlaeL5E8EM9+5GA2/uDmWJ0kLEau2UaMS23atf
+ Y
+X-Google-Smtp-Source: AGHT+IEztSF0TjdpCC5Qc86mcR3iY3hDNya1kKspPC7PAC5Z239FScG6nOgDAyDPMmg2eGhYNygqQw==
+X-Received: by 2002:a05:600c:3d8d:b0:431:4fbd:f571 with SMTP id
+ 5b1f17b1804b1-432f57dfa69mr29987525e9.13.1732026210649; 
  Tue, 19 Nov 2024 06:23:30 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-432dac21a15sm193049985e9.38.2024.11.19.06.23.29
+ 5b1f17b1804b1-432dac21a15sm193049985e9.38.2024.11.19.06.23.30
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 19 Nov 2024 06:23:29 -0800 (PST)
+ Tue, 19 Nov 2024 06:23:30 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 13/15] system/dma-helpers.c: Move trace events to
- system/trace-events
-Date: Tue, 19 Nov 2024 14:23:19 +0000
-Message-Id: <20241119142321.1853732-14-peter.maydell@linaro.org>
+Subject: [PULL 14/15] target/arm/hvf: Add trace.h header
+Date: Tue, 19 Nov 2024 14:23:20 +0000
+Message-Id: <20241119142321.1853732-15-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241119142321.1853732-1-peter.maydell@linaro.org>
 References: <20241119142321.1853732-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,71 +92,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The dma-helpers.c file is in the system/ subdirectory, but it
-defines its trace events in the root trace-events file. Move
-them to the system/trace-events file where they more naturally
-belong.
+The documentation for trace events says that every subdirectory which
+has trace events should have a trace.h header, whose only content is
+an include of the trace/trace-<subdir>.h file.
 
-Fixes: 800d4deda0 ("softmmu: move more files to softmmu/")
+When we added the trace events in target/arm/hvf/ we forgot to create
+this file and instead hvf.c directly includes
+trace/trace-target_arm_hvf.h.
+
+Create the standard trace.h file to bring this into line with the
+convention.
+
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-id: 20241108162909.4080314-2-peter.maydell@linaro.org
+Message-id: 20241108162909.4080314-3-peter.maydell@linaro.org
 ---
- system/dma-helpers.c | 2 +-
- system/trace-events  | 7 +++++++
- trace-events         | 7 -------
- 3 files changed, 8 insertions(+), 8 deletions(-)
+ target/arm/hvf/trace.h | 1 +
+ target/arm/hvf/hvf.c   | 2 +-
+ 2 files changed, 2 insertions(+), 1 deletion(-)
+ create mode 100644 target/arm/hvf/trace.h
 
-diff --git a/system/dma-helpers.c b/system/dma-helpers.c
-index 74013308f52..cbcd89dfaaa 100644
---- a/system/dma-helpers.c
-+++ b/system/dma-helpers.c
-@@ -10,7 +10,7 @@
- #include "qemu/osdep.h"
- #include "sysemu/block-backend.h"
- #include "sysemu/dma.h"
--#include "trace/trace-root.h"
+diff --git a/target/arm/hvf/trace.h b/target/arm/hvf/trace.h
+new file mode 100644
+index 00000000000..04a19c1d752
+--- /dev/null
++++ b/target/arm/hvf/trace.h
+@@ -0,0 +1 @@
++#include "trace/trace-target_arm_hvf.h"
+diff --git a/target/arm/hvf/hvf.c b/target/arm/hvf/hvf.c
+index 6cea483d422..ca7ea92774a 100644
+--- a/target/arm/hvf/hvf.c
++++ b/target/arm/hvf/hvf.c
+@@ -31,7 +31,7 @@
+ #include "target/arm/internals.h"
+ #include "target/arm/multiprocessing.h"
+ #include "target/arm/gtimer.h"
+-#include "trace/trace-target_arm_hvf.h"
 +#include "trace.h"
- #include "qemu/thread.h"
- #include "qemu/main-loop.h"
- #include "sysemu/cpu-timers.h"
-diff --git a/system/trace-events b/system/trace-events
-index 2ed1d59b1fb..5bbc3fbffac 100644
---- a/system/trace-events
-+++ b/system/trace-events
-@@ -4,6 +4,13 @@
- # Since requests are raised via monitor, not many tracepoints are needed.
- balloon_event(void *opaque, unsigned long addr) "opaque %p addr %lu"
+ #include "migration/vmstate.h"
  
-+# dma-helpers.c
-+dma_blk_io(void *dbs, void *bs, int64_t offset, bool to_dev) "dbs=%p bs=%p offset=%" PRId64 " to_dev=%d"
-+dma_aio_cancel(void *dbs) "dbs=%p"
-+dma_complete(void *dbs, int ret, void *cb) "dbs=%p ret=%d cb=%p"
-+dma_blk_cb(void *dbs, int ret) "dbs=%p ret=%d"
-+dma_map_wait(void *dbs) "dbs=%p"
-+
- # ioport.c
- cpu_in(unsigned int addr, char size, unsigned int val) "addr 0x%x(%c) value %u"
- cpu_out(unsigned int addr, char size, unsigned int val) "addr 0x%x(%c) value %u"
-diff --git a/trace-events b/trace-events
-index 9cb96f64c4a..3ec8a6c7202 100644
---- a/trace-events
-+++ b/trace-events
-@@ -30,13 +30,6 @@ breakpoint_insert(int cpu_index, uint64_t pc, int flags) "cpu=%d pc=0x%" PRIx64
- breakpoint_remove(int cpu_index, uint64_t pc, int flags) "cpu=%d pc=0x%" PRIx64 " flags=0x%x"
- breakpoint_singlestep(int cpu_index, int enabled) "cpu=%d enable=%d"
- 
--# dma-helpers.c
--dma_blk_io(void *dbs, void *bs, int64_t offset, bool to_dev) "dbs=%p bs=%p offset=%" PRId64 " to_dev=%d"
--dma_aio_cancel(void *dbs) "dbs=%p"
--dma_complete(void *dbs, int ret, void *cb) "dbs=%p ret=%d cb=%p"
--dma_blk_cb(void *dbs, int ret) "dbs=%p ret=%d"
--dma_map_wait(void *dbs) "dbs=%p"
--
- # job.c
- job_state_transition(void *job,  int ret, const char *legal, const char *s0, const char *s1) "job %p (ret: %d) attempting %s transition (%s-->%s)"
- job_apply_verb(void *job, const char *state, const char *verb, const char *legal) "job %p in state %s; applying verb %s (%s)"
+ #include "gdbstub/enums.h"
 -- 
 2.34.1
 
