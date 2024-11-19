@@ -2,76 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B25E9D2931
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Nov 2024 16:09:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C9A89D2985
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Nov 2024 16:24:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tDPoA-0006HH-Gl; Tue, 19 Nov 2024 10:06:26 -0500
+	id 1tDQ3n-0001nE-Qh; Tue, 19 Nov 2024 10:22:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1tDPnz-00066a-GL
- for qemu-devel@nongnu.org; Tue, 19 Nov 2024 10:06:20 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1tDPnw-0003n5-PB
- for qemu-devel@nongnu.org; Tue, 19 Nov 2024 10:06:14 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1732028772;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=Eyu0cn5FzdzceEuW+fkqD+07mIuDQMfs25zDJjNsjtg=;
- b=A3C0mllupf4f/IY4IUiiBUINh87AGUezcO4/PZBOM5/xE5wsWU95dLEQM7SxtPiGPKqqoQ
- 7F43yOcsdsU3wmC0hCPBTkPWbTFPr1wzGCuXveD0baU9tXWBYU/bvdxuwPV1NMiSwbovav
- 0xKDpe1XXnX6x9EYGRuKIFXMKuZlBcU=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-516-McuGO2pfP7CL0FB3QUOxcg-1; Tue,
- 19 Nov 2024 10:06:10 -0500
-X-MC-Unique: McuGO2pfP7CL0FB3QUOxcg-1
-X-Mimecast-MFC-AGG-ID: McuGO2pfP7CL0FB3QUOxcg
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id AA9651955F3E; Tue, 19 Nov 2024 15:06:09 +0000 (UTC)
-Received: from toolbox.redhat.com (unknown [10.42.28.110])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 2C6D719560A3; Tue, 19 Nov 2024 15:06:06 +0000 (UTC)
-From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Thomas Huth <thuth@redhat.com>, Ani Sinha <anisinha@redhat.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH 15/15] tests/functional: add a QMP backdoor for debugging
- stalled tests
-Date: Tue, 19 Nov 2024 15:05:19 +0000
-Message-ID: <20241119150519.1123365-16-berrange@redhat.com>
-In-Reply-To: <20241119150519.1123365-1-berrange@redhat.com>
-References: <20241119150519.1123365-1-berrange@redhat.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tDQ3k-0001n3-VM
+ for qemu-devel@nongnu.org; Tue, 19 Nov 2024 10:22:33 -0500
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tDQ3j-0006Zv-C0
+ for qemu-devel@nongnu.org; Tue, 19 Nov 2024 10:22:32 -0500
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-4315c1c7392so31255335e9.1
+ for <qemu-devel@nongnu.org>; Tue, 19 Nov 2024 07:22:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1732029749; x=1732634549; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=6nlVt9VTKo3k9XhDxjO2RtOZjFzSTzxXt3u6F7QVO2c=;
+ b=vy0c8jamDYPHS4bgnT5WAWKd95jIonlTr5cb53ptQTFWH6VXT+G+SLT/lp0tJfx9H8
+ y4VuMk46HXESEsaiUEhVfD5UjVR15axOQokig82+LxRj2ps3ebi+0JcpYToR+56mIeF7
+ A3QKhOr8SOexembP/y+YUZBMEUi+ZtSpAnfGuOGBvHMWMwZk3id7oFZzBjBjXX8/m+Tr
+ F1Bsue3k/xzG2xT6n9bGS7qgKUwHhMl3cRcfaw2r+pqHI0lxZ6DOIZLgxipd70kOOLzF
+ zMJ7Mzs45zDl1xRFD2dGzDbg9CPYtYMye4+tpjIS5ViYhb0rhd8/Ppy75RsZEcR8JD6g
+ gZeg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1732029749; x=1732634549;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=6nlVt9VTKo3k9XhDxjO2RtOZjFzSTzxXt3u6F7QVO2c=;
+ b=rSciJ9dgxrXllbl2kdrQlUCjFqSJbH14AUI4QhfSQTvd0Low2bxG7/2n84L8O0eqq2
+ 926wi74dAUAz1ddOasvHX1ta8njursT44MpgjKP/YY6c7JG9VbPFF/v4pzE2hBQUEBzA
+ kOxHvBD0xrpyvzIRbekK467dX7gD/gqZlWLCknZQR0R91YxxFjZsYF55bAVO+kspfbzI
+ cp0lLxxqW3w0NQOcsxZw7os+XBUrom24qFBKIw8d9hnWHbNvUMxGkicBinRh2Kz+B2P9
+ dILIzmqgWPj24OIayMayIcaygCgj3puOixhbpLukOvDvfR7ZD2IFUlJFLhV5uFgWjjzA
+ JYzQ==
+X-Gm-Message-State: AOJu0YyYNyT1XsNZm3fXIM9liG1t6r4/tYEX6nHgt6m+lu+TcOo/LQp9
+ u0QorQpuduz8U0OMMaa6s5UBCXlZtE7zymP0UB7rZi6Td/Pel+8Ml/QN+1jNsuM=
+X-Google-Smtp-Source: AGHT+IH2nwetaj7OIhM+6XL9yxVyjFVajCO2HbqpCOykDvVtqRomzlHKYDTQQkVB4HyTzMc3dWK7rw==
+X-Received: by 2002:a05:600c:468d:b0:431:57e5:b251 with SMTP id
+ 5b1f17b1804b1-432df78f4bemr121579795e9.28.1732029749180; 
+ Tue, 19 Nov 2024 07:22:29 -0800 (PST)
+Received: from [192.168.69.197] (sto95-h01-176-184-18-155.dsl.sta.abo.bbox.fr.
+ [176.184.18.155]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-432dac0ae04sm194201295e9.33.2024.11.19.07.22.27
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 19 Nov 2024 07:22:28 -0800 (PST)
+Message-ID: <95858d43-0cae-489b-89a0-46dd21476313@linaro.org>
+Date: Tue, 19 Nov 2024 16:22:26 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH for 9.2 1/2] hw/core/machine-smp: Initialize caches_bitmap
+ before reading
+To: Zhao Liu <zhao1.liu@intel.com>, Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Yanan Wang <wangyanan55@huawei.com>, Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org
+References: <20241110150901.130647-1-zhao1.liu@intel.com>
+ <20241110150901.130647-2-zhao1.liu@intel.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20241110150901.130647-2-zhao1.liu@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.14,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,65 +95,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Support the QEMU_TEST_QMP_BACKDOOR=backdoor.sock env variable as a
-way to get a QMP backdoor for debugging a stalled QEMU test. Most
-typically this would be used if running the tests directly:
+On 10/11/24 16:09, Zhao Liu wrote:
+> The caches_bitmap is defined in machine_parse_smp_cache(), but it was
+> not initialized.
+> 
+> Initialize caches_bitmap by clearing all its bits to zero.
+> 
+> Resolves: Coverity CID 1565389
+> Fixes: 4e88e7e3403d ("qapi/qom: Define cache enumeration and properties for machine")
+> Reported-by: Peter Maydell <peter.maydell@linaro.org>
+> Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+> ---
+>   hw/core/machine-smp.c | 1 +
+>   1 file changed, 1 insertion(+)
+> 
+> diff --git a/hw/core/machine-smp.c b/hw/core/machine-smp.c
+> index 640b2114b429..b87637c78f6f 100644
+> --- a/hw/core/machine-smp.c
+> +++ b/hw/core/machine-smp.c
+> @@ -290,6 +290,7 @@ bool machine_parse_smp_cache(MachineState *ms,
+>       const SmpCachePropertiesList *node;
+>       DECLARE_BITMAP(caches_bitmap, CACHE_LEVEL_AND_TYPE__MAX);
 
- $ QEMU_TEST_QMP_BACKDOOR=backdoor.sock \
-   QEMU_TEST_QEMU_BINARY=./build/qemu-system-arm \
-   PYTHONPATH=./python \
-   ./tests/functional/test_arm_tuxrun.py
+Alternatively:
 
-And then, when the test stalls, in a second shell run:
+      DECLARE_BITMAP(caches_bitmap, CACHE_LEVEL_AND_TYPE__MAX) = { };
 
- $ ./scripts/qmp/qmp-shell backdoor.sock
+>   
+> +    bitmap_zero(caches_bitmap, CACHE_LEVEL_AND_TYPE__MAX);
+>       for (node = caches; node; node = node->next) {
+>           /* Prohibit users from repeating settings. */
+>           if (test_bit(node->value->cache, caches_bitmap)) {
 
-Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
----
- docs/devel/testing/functional.rst      | 10 ++++++++++
- tests/functional/qemu_test/testcase.py |  7 +++++++
- 2 files changed, 17 insertions(+)
-
-diff --git a/docs/devel/testing/functional.rst b/docs/devel/testing/functional.rst
-index 6b5d0c5b98..b8ad7b0bf7 100644
---- a/docs/devel/testing/functional.rst
-+++ b/docs/devel/testing/functional.rst
-@@ -176,6 +176,16 @@ primarily depend on the value of the ``qemu_bin`` class attribute.
- If it is not explicitly set by the test code, its default value will
- be the result the QEMU_TEST_QEMU_BINARY environment variable.
- 
-+Debugging hung QEMU
-+^^^^^^^^^^^^^^^^^^^
-+
-+When test cases go wrong it may be helpful to debug a stalled QEMU
-+process. While the QEMUMachine class owns the primary QMP monitor
-+socket, it is possible to request a second QMP monitor be created
-+by setting the ``QEMU_TEST_QMP_BACKDOOR`` env variable to refer
-+to a UNIX socket name. The ``qmp-shell`` command can then be
-+attached to the stalled QEMU to examine its live state.
-+
- Attribute reference
- -------------------
- 
-diff --git a/tests/functional/qemu_test/testcase.py b/tests/functional/qemu_test/testcase.py
-index e2a329c3e5..eb889a5bae 100644
---- a/tests/functional/qemu_test/testcase.py
-+++ b/tests/functional/qemu_test/testcase.py
-@@ -175,6 +175,13 @@ def _new_vm(self, name, *args):
-                          log_dir=self.logdir)
-         self.log.debug('QEMUMachine "%s" created', name)
-         self.log.debug('QEMUMachine "%s" temp_dir: %s', name, vm.temp_dir)
-+
-+        if "QEMU_TEST_QMP_BACKDOOR" in os.environ:
-+            path = os.environ["QEMU_TEST_QMP_BACKDOOR"]
-+            vm.add_args("-chardev",
-+                        f"socket,id=backdoor,path={path},server=on,wait=off",
-+                        "-mon", "chardev=backdoor,mode=control")
-+
-         if args:
-             vm.add_args(*args)
-         return vm
--- 
-2.46.0
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
