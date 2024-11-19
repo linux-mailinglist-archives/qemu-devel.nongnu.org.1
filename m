@@ -2,36 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C1619D1FF9
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Nov 2024 07:07:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B704C9D1FE9
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Nov 2024 07:05:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tDHLq-0000or-4D; Tue, 19 Nov 2024 01:04:38 -0500
+	id 1tDHLq-0000sD-Of; Tue, 19 Nov 2024 01:04:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tDHLj-0000hF-0q; Tue, 19 Nov 2024 01:04:31 -0500
+ id 1tDHLn-0000jq-3Z; Tue, 19 Nov 2024 01:04:35 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tDHLe-0004aK-Ef; Tue, 19 Nov 2024 01:04:30 -0500
+ id 1tDHLk-0004cR-Rq; Tue, 19 Nov 2024 01:04:34 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 960B3A6260;
+ by isrv.corpit.ru (Postfix) with ESMTP id A4FADA6261;
  Tue, 19 Nov 2024 09:04:14 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id BC41B1738D6;
+ by tsrv.corpit.ru (Postfix) with SMTP id CBBBB1738D7;
  Tue, 19 Nov 2024 09:04:18 +0300 (MSK)
-Received: (nullmailer pid 2368926 invoked by uid 1000);
+Received: (nullmailer pid 2368929 invoked by uid 1000);
  Tue, 19 Nov 2024 06:04:18 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Alexander Graf <graf@amazon.com>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+Cc: qemu-stable@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.1.2 58/72] target/i386: Fix legacy page table walk
-Date: Tue, 19 Nov 2024 09:03:59 +0300
-Message-Id: <20241119060418.2368866-1-mjt@tls.msk.ru>
+Subject: [Stable-9.1.2 59/72] hw/i386/pc: Don't try to init PCI NICs if there
+ is no PCI bus
+Date: Tue, 19 Nov 2024 09:04:00 +0300
+Message-Id: <20241119060418.2368866-2-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.1.2-20241118224223@cover.tls.msk.ru>
 References: <qemu-stable-9.1.2-20241118224223@cover.tls.msk.ru>
@@ -60,74 +60,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Alexander Graf <graf@amazon.com>
+From: Peter Maydell <peter.maydell@linaro.org>
 
-Commit b56617bbcb4 ("target/i386: Walk NPT in guest real mode") added
-logic to run the page table walker even in real mode if we are in NPT
-mode.  That function then determined whether real mode or paging is
-active based on whether the pg_mode variable was 0.
+The 'isapc' machine type has no PCI bus, but pc_nic_init() still
+calls pci_init_nic_devices() passing it a NULL bus pointer.  This
+causes the clang sanitizer to complain:
 
-Unfortunately pg_mode is 0 in two situations:
+$ ./build/clang/qemu-system-i386 -M isapc
+../../hw/pci/pci.c:1866:39: runtime error: member access within null pointer of type 'PCIBus' (aka 'struct PCIBus')
+SUMMARY: UndefinedBehaviorSanitizer: undefined-behavior ../../hw/pci/pci.c:1866:39 in
 
-  1) Paging is disabled (real mode)
-  2) Paging is in 2-level paging mode (32bit without PAE)
+This is because pci_init_nic_devices() does
+ &bus->qbus
+which is undefined behaviour on a NULL pointer even though we're not
+actually dereferencing the pointer. (We don't actually crash as
+a result, so if you aren't running a sanitizer build then there
+are no user-visible effects.)
 
-That means the walker now assumed that 2-level paging mode was real
-mode, breaking NetBSD as well as Windows XP.
-
-To fix that, this patch adds a new PG flag to pg_mode which indicates
-whether paging is active at all and uses that to determine whether we
-are in real mode or not.
+Make pc_nic_init() avoid trying to initialize PCI NICs on a non-PCI
+system.
 
 Cc: qemu-stable@nongnu.org
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2654
-Fixes: b56617bbcb4 ("target/i386: Walk NPT in guest real mode")
-Fixes: 01bfc2e2959 (commit b56617bbcb4 in stable-9.1.x series)
-Signed-off-by: Alexander Graf <graf@amazon.com>
-Reported-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Link: https://lore.kernel.org/r/20241106154329.67218-1-graf@amazon.com
+Fixes: 8d39f9ba14d64 ("hw/i386/pc: use qemu_get_nic_info() and pci_init_nic_devices()")
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Link: https://lore.kernel.org/r/20241105171813.3031969-1-peter.maydell@linaro.org
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-(cherry picked from commit 8fa11a4df344f58375eb26b3b65004345f21ef37)
+(cherry picked from commit bd0e501e1a4813fa36a4cf9842aaf430323a03c3)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-index 14edd57a37..fa027cc206 100644
---- a/target/i386/cpu.h
-+++ b/target/i386/cpu.h
-@@ -351,6 +351,7 @@ typedef enum X86Seg {
- #define PG_MODE_PKE      (1 << 17)
- #define PG_MODE_PKS      (1 << 18)
- #define PG_MODE_SMEP     (1 << 19)
-+#define PG_MODE_PG       (1 << 20)
- 
- #define MCG_CTL_P       (1ULL<<8)   /* MCG_CAP register available */
- #define MCG_SER_P       (1ULL<<24) /* MCA recovery/new status bits */
-diff --git a/target/i386/tcg/seg_helper.c b/target/i386/tcg/seg_helper.c
-index 02ae6a0d1f..71962113fb 100644
---- a/target/i386/tcg/seg_helper.c
-+++ b/target/i386/tcg/seg_helper.c
-@@ -94,7 +94,7 @@ static uint32_t popl(StackAccess *sa)
- 
- int get_pg_mode(CPUX86State *env)
- {
--    int pg_mode = 0;
-+    int pg_mode = PG_MODE_PG;
-     if (!(env->cr[0] & CR0_PG_MASK)) {
-         return 0;
+diff --git a/hw/i386/pc.c b/hw/i386/pc.c
+index 7779c88a91..a527c0df0a 100644
+--- a/hw/i386/pc.c
++++ b/hw/i386/pc.c
+@@ -1245,7 +1245,9 @@ void pc_nic_init(PCMachineClass *pcmc, ISABus *isa_bus, PCIBus *pci_bus)
      }
-diff --git a/target/i386/tcg/sysemu/excp_helper.c b/target/i386/tcg/sysemu/excp_helper.c
-index 8b046ee4be..da732c2ca8 100644
---- a/target/i386/tcg/sysemu/excp_helper.c
-+++ b/target/i386/tcg/sysemu/excp_helper.c
-@@ -298,7 +298,7 @@ static bool mmu_translate(CPUX86State *env, const TranslateParams *in,
-         /* combine pde and pte nx, user and rw protections */
-         ptep &= pte ^ PG_NX_MASK;
-         page_size = 4096;
--    } else if (pg_mode) {
-+    } else if (pg_mode & PG_MODE_PG) {
-         /*
-          * Page table level 2
-          */
+ 
+     /* Anything remaining should be a PCI NIC */
+-    pci_init_nic_devices(pci_bus, mc->default_nic);
++    if (pci_bus) {
++        pci_init_nic_devices(pci_bus, mc->default_nic);
++    }
+ 
+     rom_reset_order_override();
+ }
 -- 
 2.39.5
 
