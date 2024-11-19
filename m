@@ -2,82 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48D239D2807
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Nov 2024 15:24:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 708819D2865
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Nov 2024 15:43:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tDP8k-0005xo-MV; Tue, 19 Nov 2024 09:23:38 -0500
+	id 1tDPQC-0000dI-LI; Tue, 19 Nov 2024 09:41:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tDP8g-0005vb-Ks
- for qemu-devel@nongnu.org; Tue, 19 Nov 2024 09:23:34 -0500
-Received: from mail-lj1-x233.google.com ([2a00:1450:4864:20::233])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tDP8f-0006Ew-13
- for qemu-devel@nongnu.org; Tue, 19 Nov 2024 09:23:34 -0500
-Received: by mail-lj1-x233.google.com with SMTP id
- 38308e7fff4ca-2ff64e5d31bso10607191fa.0
- for <qemu-devel@nongnu.org>; Tue, 19 Nov 2024 06:23:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1732026211; x=1732631011; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=RzMX04CUUuh+Xk+AH/1AGddH04IQDU5JSslwP2URJ/o=;
- b=qeYmDOEc7ejATPqx8Z2uIolzsAaO8pwGap4GLwgqurxuxTbYpDyqWM2Es7+ZzSmYey
- TOQEeF/gwjVr7/WwJ0QSHjj6cHAevwFII52GzANWyUCefhaatu6DvW3Efjptcjnu95hT
- u8lbijgRIMvEegwNjSjaAUC3YL1gh11XQZbU7Lfhm3F6VAew5rAKH476B/08bM8GlJAV
- ju9nuf7JuBZqMMiFsGBBPVPrvPmPNXH1dwOA+6n6XkqqTl+v+CJfVjEz8iuZ3Z/D1lb2
- ul4upaRzBMOLdX+jAekMdrt/OAxGbm7moIGKuJJGFr0fulmzqHn2IMYLy33F8q5ohZZK
- d4jw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1732026211; x=1732631011;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=RzMX04CUUuh+Xk+AH/1AGddH04IQDU5JSslwP2URJ/o=;
- b=eJeI5XuyjfibFt4o006nFH6hGOEIZGhueuKu8k+9x7LQ6wg7i1+euS7gIT2DUSW3mc
- MjHsLBamml9qBjPtRjIJUjdsZ2PVAnferiOmuttbXEcbuPQzEdU03fZn/mNvc4CLQMr/
- p8QQb9wtdNmjlHaionA4MKWy8XTOjq827h9OoA9LQEa27/vvUD2I7vri8OQIDYAu+OS3
- 7F7V4JUHGA/5l6cWXiLn/vVYtdCh1wH0M8Rjl9bOtYhPIPtrbyJ2SGEprDGE7h9H5/dD
- M2XIZI89J53A0A5XtiypRM+VVSEcIAAnWa+fYTQemaLP/Pq3DVSOvgXB8Xn5OMoTODSm
- Vc/g==
-X-Gm-Message-State: AOJu0YwjSVNS3RdYOML8nU2yFBtNI2nzvtnipTBYimwMSMW+WEo1YtAf
- VCpiCln5f+SBXn/0Xfs9lf3YKYqVF/Ci2gtWctYLOWu6XX5aMeumXwRQgGE3fFqQ3FKNgA+gwqs
- U
-X-Google-Smtp-Source: AGHT+IEItgd53g80BFWTfVdXFqaz8GKCYkQ/4NvlXSD67hWelK1/ulc9orJGzn5e8pQ1NJBITuonFw==
-X-Received: by 2002:a05:6512:2316:b0:53b:20a1:1c4a with SMTP id
- 2adb3069b0e04-53dab3b99c6mr6962141e87.42.1732026211081; 
- Tue, 19 Nov 2024 06:23:31 -0800 (PST)
-Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-432dac21a15sm193049985e9.38.2024.11.19.06.23.30
- for <qemu-devel@nongnu.org>
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 19 Nov 2024 06:23:30 -0800 (PST)
-From: Peter Maydell <peter.maydell@linaro.org>
-To: qemu-devel@nongnu.org
-Subject: [PULL 15/15] trace: Don't include trace-root.h in control.c or
- control-target.c
-Date: Tue, 19 Nov 2024 14:23:21 +0000
-Message-Id: <20241119142321.1853732-16-peter.maydell@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241119142321.1853732-1-peter.maydell@linaro.org>
-References: <20241119142321.1853732-1-peter.maydell@linaro.org>
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1tDPQA-0000cz-NJ
+ for qemu-devel@nongnu.org; Tue, 19 Nov 2024 09:41:38 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1tDPQ8-0008Vl-Qp
+ for qemu-devel@nongnu.org; Tue, 19 Nov 2024 09:41:38 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1732027295;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=pc+DGeWLQorbNHYCd7hQSPgPKYFtB1a8xNf86uQdqcs=;
+ b=aci5XLMpzewMq8XwQStlKYhSvvLYQU36jB37v7jmykiN3ZB7SISoWUd3WqrX+LNKsQ9DAR
+ +lHgU4Q3c8VqeJL3KpXUwhmp3Y5XxurKb6+Z1Umbx1YUQE19blYzEcO2q48cxrE9NqZNNo
+ Smkhizb1e5fANQRKtEGsDaPvPJ93ohU=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-346-xn14I3SJPXyoOIZongxUTg-1; Tue,
+ 19 Nov 2024 09:41:27 -0500
+X-MC-Unique: xn14I3SJPXyoOIZongxUTg-1
+X-Mimecast-MFC-AGG-ID: xn14I3SJPXyoOIZongxUTg
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id C824E19776D3; Tue, 19 Nov 2024 14:41:24 +0000 (UTC)
+Received: from localhost (unknown [10.2.16.26])
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 7986430001A0; Tue, 19 Nov 2024 14:41:22 +0000 (UTC)
+Date: Tue, 19 Nov 2024 09:41:21 -0500
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: Kevin Wolf <kwolf@redhat.com>
+Cc: Peter Maydell <peter.maydell@linaro.org>, qemu-block@nongnu.org,
+ qemu-devel@nongnu.org
+Subject: Re: [PULL 0/8] Block layer patches
+Message-ID: <20241119144121.GB340853@fedora>
+References: <20241114165657.254256-1-kwolf@redhat.com>
+ <CAFEAcA-y2K74jbPwPwrCo=OfCn_eJpGskX5KVivAMxzQXLThrw@mail.gmail.com>
+ <Zzx1prDqo3vPsIvN@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::233;
- envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x233.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="2R1mfccESY7rA8Ph"
+Content-Disposition: inline
+In-Reply-To: <Zzx1prDqo3vPsIvN@redhat.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.14,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,46 +85,122 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The trace-root.h file has the definitions of trace events for
-the top-level trace-events file (i.e. for those events which are
-used in source files in the root of the source tree). There's
-no particular need for trace/control.c or trace/control-target.c
-to include this.
 
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-id: 20241108162909.4080314-4-peter.maydell@linaro.org
----
- trace/control-target.c | 1 -
- trace/control.c        | 1 -
- 2 files changed, 2 deletions(-)
+--2R1mfccESY7rA8Ph
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/trace/control-target.c b/trace/control-target.c
-index 97f21e476d2..d58e84f6dd8 100644
---- a/trace/control-target.c
-+++ b/trace/control-target.c
-@@ -10,7 +10,6 @@
- #include "qemu/osdep.h"
- #include "qemu/lockable.h"
- #include "cpu.h"
--#include "trace/trace-root.h"
- #include "trace/control.h"
- 
- 
-diff --git a/trace/control.c b/trace/control.c
-index ef107829ac0..1c8c50064af 100644
---- a/trace/control.c
-+++ b/trace/control.c
-@@ -27,7 +27,6 @@
- #include "qemu/error-report.h"
- #include "qemu/config-file.h"
- #include "monitor/monitor.h"
--#include "trace/trace-root.h"
- 
- int trace_events_enabled_count;
- 
--- 
-2.34.1
+On Tue, Nov 19, 2024 at 12:25:26PM +0100, Kevin Wolf wrote:
+> Am 15.11.2024 um 21:16 hat Peter Maydell geschrieben:
+> > On Thu, 14 Nov 2024 at 16:58, Kevin Wolf <kwolf@redhat.com> wrote:
+> > >
+> > > The following changes since commit f0a5a31c33a8109061c2493e475c8a2f4d=
+022432:
+> > >
+> > >   Update version for v9.2.0-rc0 release (2024-11-13 21:44:45 +0000)
+> > >
+> > > are available in the Git repository at:
+> > >
+> > >   https://repo.or.cz/qemu/kevin.git tags/for-upstream
+> > >
+> > > for you to fetch changes up to 378a645b2f6125b1bdbd1fae3e8f30452d5b59=
+34:
+> > >
+> > >   vl: use qmp_device_add() in qemu_create_cli_devices() (2024-11-14 1=
+7:55:51 +0100)
+> > >
+> > > ----------------------------------------------------------------
+> > > Block layer patches
+> > >
+> > > - Fix qmp_device_add() to not throw non-scalar options away (fixes
+> > >   iothread-vq-mapping being silently ignored in device_add)
+> > > - iotests: Fix mypy failure
+> > > - parallels: Avoid potential integer overflow
+> > > - Fix crash in migration_is_running()
+> > >
+> >=20
+> > Hi; this seems to cause an error for the avocado test
+> > tests/avocado/hotplug_blk.py:HotPlug.test
+> >=20
+> > https://gitlab.com/qemu-project/qemu/-/jobs/8387009365
+> > https://gitlab.com/qemu-project/qemu/-/jobs/8387009383
+> >=20
+> > (12/51) tests/avocado/hotplug_blk.py:HotPlug.test: STARTED
+> > (12/51) tests/avocado/hotplug_blk.py:HotPlug.test: ERROR: Could not
+> > perform graceful shutdown (17.16 s)
+> >=20
+> > If you dig through the build artefacts you can find the debug log:
+> > https://qemu-project.gitlab.io/-/qemu/-/jobs/8387009383/artifacts/build=
+/tests/results/latest/test-results/12-tests_avocado_hotplug_blk.py_HotPlug.=
+test/debug.log
+> >=20
+> > and it seems like the test sends a device_add command over
+> > QMP and the result is that QEMU dies with an assertion failure.
+> > The relevant device_add is
+> >=20
+> > [stdlog]   "execute": "device_add",
+> > [stdlog]   "arguments": {
+> > [stdlog]     "driver": "virtio-blk-pci",
+> > [stdlog]     "drive": "disk",
+> > [stdlog]     "id": "virtio-disk0",
+> > [stdlog]     "bus": "pci.1",
+> > [stdlog]     "addr": 1
+> > [stdlog]   },
+> > [stdlog]   "id": "__qmp#00002"
+> > [stdlog] }
+> >=20
+> > Avocado helpfully hides the assertion message under a rock
+> > in a different log file:
+> > https://qemu-project.gitlab.io/-/qemu/-/jobs/8387009383/artifacts/build=
+/tests/results/latest/test-results/12-tests_avocado_hotplug_blk.py_HotPlug.=
+test/7f00b63ed810.log
+> >=20
+> > qemu-system-x86_64: ../qapi/qobject-input-visitor.c:143:
+> > qobject_input_try_get_object: Assertion `removed' failed.
+> >=20
+> >=20
+> > I'm guessing this is Stefan's patches since they touch
+> > the device_add path.
+>=20
+> Yes, this is Stefan's patches exposing a preexisting bug on a new code
+> path. You can already trigger the same bug on the command line with git
+> master:
+>=20
+> $ ./qemu-system-x86_64 -blockdev null-co,node-name=3Ddisk -device '{ "dri=
+ver": "virtio-blk-pci", "drive": "disk", "id": "virtio-disk0", "addr": 1 }'
+> qemu-system-x86_64: ../qapi/qobject-input-visitor.c:143: QObject *qobject=
+_input_try_get_object(QObjectInputVisitor *, const char *, _Bool): Assertio=
+n `removed' failed.
+>=20
+> The problem is that set_pci_devfn() visits the same field twice, which
+> is not allowed. Apparently the QemuOpts visitor accepts it anyway, but
+> the QObject one doesn't. I'll write a patch to use the proper alternate
+> mechanism instead, that should fix it.
+
+Thank you, Kevin!
+
+Stefan
+
+>=20
+> Kevin
+>=20
+
+--2R1mfccESY7rA8Ph
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmc8o5EACgkQnKSrs4Gr
+c8gKXAf/TBh8eKVdpyyyRKCfQ1pKPLRJahgF67Vg4aBpy8GHoL2PIZNqh40LwktW
+vjiblhbcrTubmkTyKXcoyYDWFJ7b4thnfP3bkflFco0H8daOyrglZiEoa+R5hIMe
+es8bCJWLGraCtLTr4Pmd6FTfc69iQHP0NoT7JKxfvGw9P2IF3X4f0YMMZYc459AL
+1Nc66ClUUDuPKtA1WfVhtCoSI+8TXHsRNY1s+ayyM3ouOb0p+qakKAGl+oEFLG8c
+701L1Oy6//bQE+VGK3vdSJ/DmUCTTV55jwz59ufjMFwpw8n5odeMMV0Dq7M4EoWY
+qUf7MgqCe6IV4/A/E/0lHRaSIU03YQ==
+=mr6x
+-----END PGP SIGNATURE-----
+
+--2R1mfccESY7rA8Ph--
 
 
