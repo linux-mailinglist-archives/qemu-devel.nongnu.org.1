@@ -2,36 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B704C9D1FE9
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Nov 2024 07:05:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BD1C9D1FEB
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Nov 2024 07:05:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tDHLq-0000sD-Of; Tue, 19 Nov 2024 01:04:38 -0500
+	id 1tDHLw-000152-0Z; Tue, 19 Nov 2024 01:04:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tDHLn-0000jq-3Z; Tue, 19 Nov 2024 01:04:35 -0500
+ id 1tDHLp-0000uT-M1; Tue, 19 Nov 2024 01:04:37 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tDHLk-0004cR-Rq; Tue, 19 Nov 2024 01:04:34 -0500
+ id 1tDHLn-0004d6-6C; Tue, 19 Nov 2024 01:04:37 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id A4FADA6261;
+ by isrv.corpit.ru (Postfix) with ESMTP id B5230A6262;
  Tue, 19 Nov 2024 09:04:14 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id CBBBB1738D7;
+ by tsrv.corpit.ru (Postfix) with SMTP id DA94B1738D8;
  Tue, 19 Nov 2024 09:04:18 +0300 (MSK)
-Received: (nullmailer pid 2368929 invoked by uid 1000);
+Received: (nullmailer pid 2368932 invoked by uid 1000);
  Tue, 19 Nov 2024 06:04:18 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.1.2 59/72] hw/i386/pc: Don't try to init PCI NICs if there
- is no PCI bus
-Date: Tue, 19 Nov 2024 09:04:00 +0300
-Message-Id: <20241119060418.2368866-2-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Helge Deller <deller@kernel.org>,
+ Helge Deller <deller@gmx.de>, Richard Henderson <richard.henderson@linaro.org>,
+ Ilya Leoshkevich <iii@linux.ibm.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-9.1.2 60/72] linux-user: Fix setreuid and setregid to use
+ direct syscalls
+Date: Tue, 19 Nov 2024 09:04:01 +0300
+Message-Id: <20241119060418.2368866-3-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.1.2-20241118224223@cover.tls.msk.ru>
 References: <qemu-stable-9.1.2-20241118224223@cover.tls.msk.ru>
@@ -60,49 +61,82 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Peter Maydell <peter.maydell@linaro.org>
+From: Helge Deller <deller@kernel.org>
 
-The 'isapc' machine type has no PCI bus, but pc_nic_init() still
-calls pci_init_nic_devices() passing it a NULL bus pointer.  This
-causes the clang sanitizer to complain:
+The commit fd6f7798ac30 ("linux-user: Use direct syscalls for setuid(),
+etc") added direct syscall wrappers for setuid(), setgid(), etc since the
+system calls have different semantics than the libc functions.
 
-$ ./build/clang/qemu-system-i386 -M isapc
-../../hw/pci/pci.c:1866:39: runtime error: member access within null pointer of type 'PCIBus' (aka 'struct PCIBus')
-SUMMARY: UndefinedBehaviorSanitizer: undefined-behavior ../../hw/pci/pci.c:1866:39 in
+Add and use the corresponding wrappers for setreuid and setregid which
+were missed in that commit.
 
-This is because pci_init_nic_devices() does
- &bus->qbus
-which is undefined behaviour on a NULL pointer even though we're not
-actually dereferencing the pointer. (We don't actually crash as
-a result, so if you aren't running a sanitizer build then there
-are no user-visible effects.)
-
-Make pc_nic_init() avoid trying to initialize PCI NICs on a non-PCI
-system.
+This fixes the build of the debian package of the uid_wrapper library
+(https://cwrap.org/uid_wrapper.html) when running linux-user.
 
 Cc: qemu-stable@nongnu.org
-Fixes: 8d39f9ba14d64 ("hw/i386/pc: use qemu_get_nic_info() and pci_init_nic_devices()")
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Link: https://lore.kernel.org/r/20241105171813.3031969-1-peter.maydell@linaro.org
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-(cherry picked from commit bd0e501e1a4813fa36a4cf9842aaf430323a03c3)
+Signed-off-by: Helge Deller <deller@gmx.de>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Ilya Leoshkevich <iii@linux.ibm.com>
+Message-ID: <Zyo2jMKqq8hG8Pkz@p100>
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+(cherry picked from commit 8491026a08b417b2d4070f7c373dcb43134c5312)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/i386/pc.c b/hw/i386/pc.c
-index 7779c88a91..a527c0df0a 100644
---- a/hw/i386/pc.c
-+++ b/hw/i386/pc.c
-@@ -1245,7 +1245,9 @@ void pc_nic_init(PCMachineClass *pcmc, ISABus *isa_bus, PCIBus *pci_bus)
-     }
+diff --git a/linux-user/syscall.c b/linux-user/syscall.c
+index ad8e786aac..c393ca6716 100644
+--- a/linux-user/syscall.c
++++ b/linux-user/syscall.c
+@@ -7205,12 +7205,24 @@ static inline int tswapid(int id)
+ #else
+ #define __NR_sys_setgroups __NR_setgroups
+ #endif
++#ifdef __NR_sys_setreuid32
++#define __NR_sys_setreuid __NR_setreuid32
++#else
++#define __NR_sys_setreuid __NR_setreuid
++#endif
++#ifdef __NR_sys_setregid32
++#define __NR_sys_setregid __NR_setregid32
++#else
++#define __NR_sys_setregid __NR_setregid
++#endif
  
-     /* Anything remaining should be a PCI NIC */
--    pci_init_nic_devices(pci_bus, mc->default_nic);
-+    if (pci_bus) {
-+        pci_init_nic_devices(pci_bus, mc->default_nic);
-+    }
+ _syscall1(int, sys_setuid, uid_t, uid)
+ _syscall1(int, sys_setgid, gid_t, gid)
+ _syscall3(int, sys_setresuid, uid_t, ruid, uid_t, euid, uid_t, suid)
+ _syscall3(int, sys_setresgid, gid_t, rgid, gid_t, egid, gid_t, sgid)
+ _syscall2(int, sys_setgroups, int, size, gid_t *, grouplist)
++_syscall2(int, sys_setreuid, uid_t, ruid, uid_t, euid);
++_syscall2(int, sys_setregid, gid_t, rgid, gid_t, egid);
  
-     rom_reset_order_override();
- }
+ void syscall_init(void)
+ {
+@@ -11840,9 +11852,9 @@ static abi_long do_syscall1(CPUArchState *cpu_env, int num, abi_long arg1,
+         return get_errno(high2lowgid(getegid()));
+ #endif
+     case TARGET_NR_setreuid:
+-        return get_errno(setreuid(low2highuid(arg1), low2highuid(arg2)));
++        return get_errno(sys_setreuid(low2highuid(arg1), low2highuid(arg2)));
+     case TARGET_NR_setregid:
+-        return get_errno(setregid(low2highgid(arg1), low2highgid(arg2)));
++        return get_errno(sys_setregid(low2highgid(arg1), low2highgid(arg2)));
+     case TARGET_NR_getgroups:
+         { /* the same code as for TARGET_NR_getgroups32 */
+             int gidsetsize = arg1;
+@@ -12172,11 +12184,11 @@ static abi_long do_syscall1(CPUArchState *cpu_env, int num, abi_long arg1,
+ #endif
+ #ifdef TARGET_NR_setreuid32
+     case TARGET_NR_setreuid32:
+-        return get_errno(setreuid(arg1, arg2));
++        return get_errno(sys_setreuid(arg1, arg2));
+ #endif
+ #ifdef TARGET_NR_setregid32
+     case TARGET_NR_setregid32:
+-        return get_errno(setregid(arg1, arg2));
++        return get_errno(sys_setregid(arg1, arg2));
+ #endif
+ #ifdef TARGET_NR_getgroups32
+     case TARGET_NR_getgroups32:
 -- 
 2.39.5
 
