@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 987809D2806
+	by mail.lfdr.de (Postfix) with ESMTPS id 6ECEF9D2803
 	for <lists+qemu-devel@lfdr.de>; Tue, 19 Nov 2024 15:24:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tDP8e-0005uO-AY; Tue, 19 Nov 2024 09:23:32 -0500
+	id 1tDP8d-0005tx-MZ; Tue, 19 Nov 2024 09:23:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tDP8b-0005qp-LE
+ id 1tDP8b-0005qI-7t
  for qemu-devel@nongnu.org; Tue, 19 Nov 2024 09:23:29 -0500
-Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
+Received: from mail-lf1-x12b.google.com ([2a00:1450:4864:20::12b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tDP8Z-0006Cj-1c
- for qemu-devel@nongnu.org; Tue, 19 Nov 2024 09:23:29 -0500
-Received: by mail-wr1-x42d.google.com with SMTP id
- ffacd0b85a97d-3823194a879so2438011f8f.0
- for <qemu-devel@nongnu.org>; Tue, 19 Nov 2024 06:23:26 -0800 (PST)
+ id 1tDP8Z-0006Cv-Og
+ for qemu-devel@nongnu.org; Tue, 19 Nov 2024 09:23:28 -0500
+Received: by mail-lf1-x12b.google.com with SMTP id
+ 2adb3069b0e04-53da5a27771so3897616e87.2
+ for <qemu-devel@nongnu.org>; Tue, 19 Nov 2024 06:23:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1732026205; x=1732631005; darn=nongnu.org;
+ d=linaro.org; s=google; t=1732026206; x=1732631006; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=7Bp1jQcPnnxsGePAZailTgK43QTJpcLNz0TBWeIGdlE=;
- b=ygZf7+nQPjYEEk3aBHEmU3/UenbkK+oIOC34kzqsmt4Y3Y++z/PciC2Ig/jn1X4gZh
- NzdOI2x9aBkLzUTxDzKx8BCuoUJvEq9QscaSplbifVIccFPHH3acjNOhH1Suu2lyhvUf
- yNsr31vFvXnOk0S2iIBa/MWHphobL0IH/5yaMmlowVEq2iKgy3oIzlnGjzxA/1UnMm8r
- 5DlNi8FPX4pX5Hz/OPqAn/WFvwxto/Ub+VX46KZYkzjDCJ/WbEBPRNqXO2s5NNXEWM0t
- mw9L6dogwXKVQPf8FsaTRUdup2IBzAAVFQV0TTina/EprlPaqLzb8STadfpNe8NPgXie
- /mYg==
+ :reply-to; bh=AGiVDYi9O6WZWdbRqNxBFFuEiOPsRuegrKV304JLi/k=;
+ b=ODE8uFxcgYfNWH+Mc+y6tESMr2Pbmb4LHD2yEomBDPBrDGF1Jxar6nUhw0E4CRSzFc
+ H86tbAB9AgiR03c99M77avdk+ZGjx4VyrsLOZPLSKix0SRzaRxpA6VCgrLR51kqecFO9
+ +D9Q4NamntnX/7i8av6s27FNsKzY8Zzqzrp/g/1KS8jCxKPS8sXI1/6dX/XTtRod1Uz+
+ IuGO7IIsFpE00U1TbBQHYs2fa08s16kZWdPN89JKs3UcYLex/npbygxddXAXmcBj38w+
+ aib51TZP66WR0mCBV5RpedWfng2Hr8+IMPRsKESzEL2FU5Gc0bdIiHYZnvmp7kJUNMHF
+ 43VQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1732026205; x=1732631005;
+ d=1e100.net; s=20230601; t=1732026206; x=1732631006;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=7Bp1jQcPnnxsGePAZailTgK43QTJpcLNz0TBWeIGdlE=;
- b=Og1Lxsa8dyjcYR/PQ/FVG0ZgvWuaBOXokkGzQbq+AdRqIS7MpLDxSVci7cDb7zPrLx
- VH3GlzeCtSkoUillvNa9dTF7WU0SzsQCaIwQS+RJ2fGfcI7KtoZttB1r2ryfEUpXwZTD
- QJjXZ9ZkM0hSkIEKXvGRlIcog5rIdfaVn0RQyycaVzzmtf8cOJ3EtWrWnnRdXqaO7XLL
- BS0tQQ7UxYsWLN3xkvspPk7qk0Zl2V2bEVL2up+SaIiOHWIz+aRZDrMxJHw82hjF26Sj
- Hcx9Eus0Fpj88krk308H1oXMzzLI+kffwMoAGdN0JKBU96nL1QIe57gZM3szIX221dMa
- EaBw==
-X-Gm-Message-State: AOJu0Yx4RdTE9Y2teBdF/KlxPyXINmT5n3+l48bQEATHmw4Z4v/SZHvL
- lVe/+6or95tbIjTQI7GphslKLLb+vDR2xpIrQs4XxeypgswbBYDxNohZJbm8SDebLWfIqXKX8sI
- /
-X-Google-Smtp-Source: AGHT+IF/CekAug2HSZL/GWDrXrwm91lmXwQMHeJq2THkcTsE35L5dYqDepWOaPhBKRzJ6BKUkCIz4w==
-X-Received: by 2002:a05:6000:2a4:b0:382:22d6:1ce8 with SMTP id
- ffacd0b85a97d-3822590bb0emr12732442f8f.22.1732026205389; 
+ bh=AGiVDYi9O6WZWdbRqNxBFFuEiOPsRuegrKV304JLi/k=;
+ b=MxMveghrlVwd34GEFRy4Z/gKJ2r/CpVIr1Uno1WTNc+UgEN4LaZSz5Ng4VruICcZ6U
+ SqVGfo5w4/GQjRXRzBkqj4DhdjqqNL2/WUfqcGE74dM37td2xbKUa7fLdlnVR12A/s6p
+ oAszxShxg/wJLpWM8zBGaVbt5OWKoJViAtYRhO+lHYUbTCSDh0gDnpzd21BQyDwsPB9a
+ LhUmRaXFCm8eYf0aMrxEdsv98aendfcmcXLZZ21Y6g7Vx3UewSKQ2/VHGvoNJojrz6XW
+ rjRbQEDCoyPBD0eh4oRkr9L8gEhNTb7wLBNhSJEWrr1YGrDky2Wei4hgP7mH0X+OxFUp
+ uKeA==
+X-Gm-Message-State: AOJu0Yx7JYeXxpteH+N4TyWm6F4RQzrSnTwiFi18bOda+oww8Z8cnxSM
+ 5yDm1ynG6kO9qcvDYhamGaJi6fauxECC8kVi8+rvkBd9CUVvUQhqQC9CRwAETDm5BGVnrdobrQD
+ f
+X-Google-Smtp-Source: AGHT+IFQqsnPfp71jGwPWzAfIL7OWX0uYYPTw5ESl2PEQwl4RVwk3fb3FMJOs/ZKq7TL3fA9CL4UeQ==
+X-Received: by 2002:a05:6512:3a8a:b0:53d:a283:f290 with SMTP id
+ 2adb3069b0e04-53dab2a65d6mr7777331e87.31.1732026205883; 
  Tue, 19 Nov 2024 06:23:25 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
@@ -59,16 +59,17 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Tue, 19 Nov 2024 06:23:25 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 05/15] tests/qtest/cmsdk-apb-watchdog-test: Parameterize tests
-Date: Tue, 19 Nov 2024 14:23:11 +0000
-Message-Id: <20241119142321.1853732-6-peter.maydell@linaro.org>
+Subject: [PULL 06/15] tests/qtest/cmsdk-apb-watchdog-test: Don't abort on
+ assertion failure
+Date: Tue, 19 Nov 2024 14:23:12 +0000
+Message-Id: <20241119142321.1853732-7-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241119142321.1853732-1-peter.maydell@linaro.org>
 References: <20241119142321.1853732-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::12b;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x12b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,211 +94,42 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Roque Arcudia Hernandez <roqueh@google.com>
 
-Currently the CMSDK APB watchdog tests target an specialized version
-of the device (luminaris using the lm3s811evb machine) that prevents
-the development of tests for the more generic device documented in:
+Currently the watchdog test has a behavior in which the first test
+assertion that fails will make the test abort making it impossible to
+see the result of other tests:
 
-https://developer.arm.com/documentation/ddi0479/d/apb-components/apb-watchdog/programmers-model
+ # ERROR:../tests/qtest/cmsdk-apb-watchdog-test.c:87:test_watchdog:
+ assertion failed ...
+ Bail out!
+ Aborted
 
-This patch allows the execution of the watchdog tests in an MPS2
-machine (when applicable) which uses the generic version of the CMSDK
-APB watchdog.
+Changing the behavior in order to let the test finish other tests and
+report the ones that pass and fail:
 
-Finally the rules for compiling the test have to change because it is
-possible not to have CONFIG_STELLARIS (required for the lm3s811evb
-machine) while still having CONFIG_CMSDK_APB_WATCHDOG and the test
-will fail. Due to the addition of the MPS2 machine CONFIG_MPS2
-becomes also a dependency for the test compilation.
+ # ERROR:../tests/qtest/cmsdk-apb-watchdog-test.c:101:test_watchdog:
+ assertion failed ...
+ not ok 1 /arm/cmsdk-apb-watchdog/watchdog
 
 Signed-off-by: Roque Arcudia Hernandez <roqueh@google.com>
-Reviewed-by: Stephen Longfield <slongfield@google.com>
-Message-id: 20241115160328.1650269-4-roqueh@google.com
+Message-id: 20241115160328.1650269-5-roqueh@google.com
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- tests/qtest/cmsdk-apb-watchdog-test.c | 114 +++++++++++++++++++-------
- tests/qtest/meson.build               |   3 +-
- 2 files changed, 85 insertions(+), 32 deletions(-)
+ tests/qtest/cmsdk-apb-watchdog-test.c | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/tests/qtest/cmsdk-apb-watchdog-test.c b/tests/qtest/cmsdk-apb-watchdog-test.c
-index 00b5dbbc812..bdf6cfa2566 100644
+index bdf6cfa2566..fe535a553cc 100644
 --- a/tests/qtest/cmsdk-apb-watchdog-test.c
 +++ b/tests/qtest/cmsdk-apb-watchdog-test.c
-@@ -15,14 +15,12 @@
-  */
- 
- #include "qemu/osdep.h"
-+#include "exec/hwaddr.h"
- #include "qemu/bitops.h"
- #include "libqtest-single.h"
- 
--/*
-- * lm3s811evb watchdog; at board startup this runs at 200MHz / 16 == 12.5MHz,
-- * which is 80ns per tick.
-- */
- #define WDOG_BASE 0x40000000
-+#define WDOG_BASE_MPS2 0x40008000
- 
- #define WDOGLOAD 0
- #define WDOGVALUE 4
-@@ -37,39 +35,87 @@
- #define SYSDIV_SHIFT 23
- #define SYSDIV_LENGTH 4
- 
--static void test_watchdog(void)
--{
--    g_assert_cmpuint(readl(WDOG_BASE + WDOGRIS), ==, 0);
-+#define WDOGLOAD_DEFAULT 0xFFFFFFFF
-+#define WDOGVALUE_DEFAULT 0xFFFFFFFF
- 
--    writel(WDOG_BASE + WDOGCONTROL, 1);
--    writel(WDOG_BASE + WDOGLOAD, 1000);
-+typedef struct CMSDKAPBWatchdogTestArgs {
-+    int64_t tick;
-+    hwaddr wdog_base;
-+    const char *machine;
-+} CMSDKAPBWatchdogTestArgs;
-+
-+enum {
-+    MACHINE_LM3S811EVB,
-+    MACHINE_MPS2_AN385,
-+};
-+
-+/*
-+ * lm3s811evb watchdog; at board startup this runs at 200MHz / 16 == 12.5MHz,
-+ * which is 80ns per tick.
-+ *
-+ * IoTKit/ARMSSE dualtimer; driven at 25MHz in mps2-an385, so 40ns per tick
-+ */
-+static const CMSDKAPBWatchdogTestArgs machine_info[] = {
-+    [MACHINE_LM3S811EVB] = {
-+        .tick = 80,
-+        .wdog_base = WDOG_BASE,
-+        .machine = "lm3s811evb",
-+    },
-+    [MACHINE_MPS2_AN385] = {
-+        .tick = 40,
-+        .wdog_base = WDOG_BASE_MPS2,
-+        .machine = "mps2-an385",
-+    },
-+};
-+
-+static void test_watchdog(const void *ptr)
-+{
-+    const CMSDKAPBWatchdogTestArgs *args = ptr;
-+    hwaddr wdog_base = args->wdog_base;
-+    int64_t tick = args->tick;
-+    g_autofree gchar *cmdline = g_strdup_printf("-machine %s", args->machine);
-+    qtest_start(cmdline);
-+
-+    g_assert_cmpuint(readl(wdog_base + WDOGRIS), ==, 0);
-+
-+    writel(wdog_base + WDOGCONTROL, 1);
-+    writel(wdog_base + WDOGLOAD, 1000);
- 
-     /* Step to just past the 500th tick */
--    clock_step(500 * 80 + 1);
--    g_assert_cmpuint(readl(WDOG_BASE + WDOGRIS), ==, 0);
--    g_assert_cmpuint(readl(WDOG_BASE + WDOGVALUE), ==, 500);
-+    clock_step(500 * tick + 1);
-+    g_assert_cmpuint(readl(wdog_base + WDOGRIS), ==, 0);
-+    g_assert_cmpuint(readl(wdog_base + WDOGVALUE), ==, 500);
- 
-     /* Just past the 1000th tick: timer should have fired */
--    clock_step(500 * 80);
--    g_assert_cmpuint(readl(WDOG_BASE + WDOGRIS), ==, 1);
--    g_assert_cmpuint(readl(WDOG_BASE + WDOGVALUE), ==, 0);
-+    clock_step(500 * tick);
-+    g_assert_cmpuint(readl(wdog_base + WDOGRIS), ==, 1);
-+    g_assert_cmpuint(readl(wdog_base + WDOGVALUE), ==, 0);
- 
-     /* VALUE reloads at following tick */
--    clock_step(80);
--    g_assert_cmpuint(readl(WDOG_BASE + WDOGVALUE), ==, 1000);
-+    clock_step(tick);
-+    g_assert_cmpuint(readl(wdog_base + WDOGVALUE), ==, 1000);
- 
-     /* Writing any value to WDOGINTCLR clears the interrupt and reloads */
--    clock_step(500 * 80);
--    g_assert_cmpuint(readl(WDOG_BASE + WDOGVALUE), ==, 500);
--    g_assert_cmpuint(readl(WDOG_BASE + WDOGRIS), ==, 1);
--    writel(WDOG_BASE + WDOGINTCLR, 0);
--    g_assert_cmpuint(readl(WDOG_BASE + WDOGVALUE), ==, 1000);
--    g_assert_cmpuint(readl(WDOG_BASE + WDOGRIS), ==, 0);
-+    clock_step(500 * tick);
-+    g_assert_cmpuint(readl(wdog_base + WDOGVALUE), ==, 500);
-+    g_assert_cmpuint(readl(wdog_base + WDOGRIS), ==, 1);
-+    writel(wdog_base + WDOGINTCLR, 0);
-+    g_assert_cmpuint(readl(wdog_base + WDOGVALUE), ==, 1000);
-+    g_assert_cmpuint(readl(wdog_base + WDOGRIS), ==, 0);
-+
-+    qtest_end();
- }
- 
--static void test_clock_change(void)
-+/*
-+ * This test can only be executed in the stellaris board since it relies on a
-+ * component of the board to change the clocking parameters of the watchdog.
-+ */
-+static void test_clock_change(const void *ptr)
- {
-     uint32_t rcc;
-+    const CMSDKAPBWatchdogTestArgs *args = ptr;
-+    g_autofree gchar *cmdline = g_strdup_printf("-machine %s", args->machine);
-+    qtest_start(cmdline);
- 
-     /*
-      * Test that writing to the stellaris board's RCC register to
-@@ -109,6 +155,8 @@ static void test_clock_change(void)
-     writel(WDOG_BASE + WDOGINTCLR, 0);
-     g_assert_cmpuint(readl(WDOG_BASE + WDOGVALUE), ==, 1000);
-     g_assert_cmpuint(readl(WDOG_BASE + WDOGRIS), ==, 0);
-+
-+    qtest_end();
- }
- 
- int main(int argc, char **argv)
-@@ -117,15 +165,19 @@ int main(int argc, char **argv)
+@@ -164,6 +164,7 @@ int main(int argc, char **argv)
+     int r;
  
      g_test_init(&argc, &argv, NULL);
++    g_test_set_nonfatal_assertions();
  
--    qtest_start("-machine lm3s811evb");
--
--    qtest_add_func("/cmsdk-apb-watchdog/watchdog", test_watchdog);
--    qtest_add_func("/cmsdk-apb-watchdog/watchdog_clock_change",
--                   test_clock_change);
-+    if (qtest_has_machine(machine_info[MACHINE_LM3S811EVB].machine)) {
-+        qtest_add_data_func("/cmsdk-apb-watchdog/watchdog",
-+                            &machine_info[MACHINE_LM3S811EVB], test_watchdog);
-+        qtest_add_data_func("/cmsdk-apb-watchdog/watchdog_clock_change",
-+                            &machine_info[MACHINE_LM3S811EVB],
-+                            test_clock_change);
-+    }
-+    if (qtest_has_machine(machine_info[MACHINE_MPS2_AN385].machine)) {
-+        qtest_add_data_func("/cmsdk-apb-watchdog/watchdog_mps2",
-+                            &machine_info[MACHINE_MPS2_AN385], test_watchdog);
-+    }
- 
-     r = g_test_run();
- 
--    qtest_end();
--
-     return r;
- }
-diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
-index aa93e984187..f2f35367ae7 100644
---- a/tests/qtest/meson.build
-+++ b/tests/qtest/meson.build
-@@ -227,7 +227,8 @@ qtests_arm = \
-   (config_all_devices.has_key('CONFIG_MPS2') ? ['sse-timer-test'] : []) + \
-   (config_all_devices.has_key('CONFIG_CMSDK_APB_DUALTIMER') ? ['cmsdk-apb-dualtimer-test'] : []) + \
-   (config_all_devices.has_key('CONFIG_CMSDK_APB_TIMER') ? ['cmsdk-apb-timer-test'] : []) + \
--  (config_all_devices.has_key('CONFIG_CMSDK_APB_WATCHDOG') ? ['cmsdk-apb-watchdog-test'] : []) + \
-+  (config_all_devices.has_key('CONFIG_STELLARIS') or
-+   config_all_devices.has_key('CONFIG_MPS2') ? ['cmsdk-apb-watchdog-test'] : []) + \
-   (config_all_devices.has_key('CONFIG_PFLASH_CFI02') and
-    config_all_devices.has_key('CONFIG_MUSICPAL') ? ['pflash-cfi02-test'] : []) + \
-   (config_all_devices.has_key('CONFIG_ASPEED_SOC') ? qtests_aspeed : []) + \
+     if (qtest_has_machine(machine_info[MACHINE_LM3S811EVB].machine)) {
+         qtest_add_data_func("/cmsdk-apb-watchdog/watchdog",
 -- 
 2.34.1
 
