@@ -2,79 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 471D49D27E0
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Nov 2024 15:14:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 23ADC9D2813
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Nov 2024 15:25:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tDOyt-0003Q4-Ra; Tue, 19 Nov 2024 09:13:27 -0500
+	id 1tDP8g-0005vB-82; Tue, 19 Nov 2024 09:23:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tDOyq-0003Pe-Vn
- for qemu-devel@nongnu.org; Tue, 19 Nov 2024 09:13:24 -0500
-Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1tDP8b-0005qB-25
+ for qemu-devel@nongnu.org; Tue, 19 Nov 2024 09:23:29 -0500
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tDOyp-0003rU-Dz
- for qemu-devel@nongnu.org; Tue, 19 Nov 2024 09:13:24 -0500
-Received: by mail-ed1-x534.google.com with SMTP id
- 4fb4d7f45d1cf-5cfaa02c716so1177096a12.3
- for <qemu-devel@nongnu.org>; Tue, 19 Nov 2024 06:13:22 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1tDP8W-0006C1-Us
+ for qemu-devel@nongnu.org; Tue, 19 Nov 2024 09:23:28 -0500
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-43158625112so30502465e9.3
+ for <qemu-devel@nongnu.org>; Tue, 19 Nov 2024 06:23:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1732025601; x=1732630401; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Jx41v9BGhl28go6eSkoYYRKJ1NuKjbZRTpl+oEAlBlM=;
- b=mVrKoUgxIMvL5sk1mxs5SkUVq5SVJDvCTzHvzU5I54hRLE07dEIDTf2EUGAPVB+658
- G13fPVnov4hM9DP7IePUCJYJmW8fENBOsHHjtOhMezWN6hIzVE96Rwky/dIVHAuIVuKm
- mw/mCT4rCJRmxNRoTQmSB9VJoBKCd6Ud75dRugnJj49D0g2gq158qNkgV7la59JDVwkk
- M+MGkxls1dhUI3nuJw0nsPG1Y1dgRqGLNkXMAM3QX4aF1jpYFT6A1TDSKG3AA2md3jPM
- 61iVAWlrjSRHzTuAYgkZc89/gjZmgmG8DIO5krMPFBAgqbVUK8nDjJv/lFMVMfVpGoi6
- BNeQ==
+ d=linaro.org; s=google; t=1732026203; x=1732631003; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=UEyPoQaNM10M6PqHT1LgloK+mD2I/2Fouuz1b90vkTw=;
+ b=l8Jj1Yn4B2K1k7A4N+fJULEYivkYOP8E0SgwAMgBueUMRR1fn64FuEQChEWMi/MMm3
+ XBVVaxPA/twEBgW3oWidvw+bYPUXt+gp6T4hmuO61K2la1TqvQKLfVuwj8G3+jL1UDET
+ gf0pd6MDIpei//yaDNrfcfjoQN/f5jPoNsssFnl4qOqNspl4kLz9SZpWJkAEdC1Yb24Q
+ IL1sgHPJSRFzGNkfQvaDSzEeZKxm9+Fje0pySfXIAIc717FDew8K/z8dKWeZZjgVfa9V
+ 7laMV4B4BULMBiFWHYVEsCMSqEY6okhgOwntMlIVlfvUZ//9molcSaxObTu/gOIQEXWl
+ 3TmQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1732025601; x=1732630401;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=Jx41v9BGhl28go6eSkoYYRKJ1NuKjbZRTpl+oEAlBlM=;
- b=TEBZVwkB5UjCfUG1DInMOGaKphMk7PVBsUpwuKcxVx/PAgYWi5mfw33xIxLwGBNlm1
- ZJxbZk3nWERyioD9Qfv0Qoch5B+D8LZu2T/ocOVuHoDwmVWMU+9+CV0b44+pDI5pIRft
- xIRx8ECVPWYKbN7G8qdhBWiHVzMtoP/kbIb8UvVbw6csJdbZZRlPLp4ib5YeQ1Zz88S9
- SSvebwdFLAVMYZPYxfLr2ak7PeUG+JKRq2hGMcWe8TrZxUShXwpn3ouRAIh2GXuC2+8N
- 4wl9mgpwMe/rzG5kU/IZWA48IzPQCotZkgL/xqJMmGigCDVrcOJnmZ0nJX7k/K7Fz3rX
- JZBQ==
-X-Gm-Message-State: AOJu0YwIyJMh81/8riPyb7uNYxVlGSfvOIaL4tPHABjWhiJXnKj44mE5
- 8cEJEKvAk03OCh0rzLLtes35uJ47Vz7yJLIiKZaEjh759zmK+hqbLvDuDw/nErY=
-X-Google-Smtp-Source: AGHT+IFuWqqJ/gtrOjoGY57WRIWH6GlP3VXgJiN11BsQBU22TzM4HKp7YiD2giVO0ETA6L/lzLGTKQ==
-X-Received: by 2002:a05:6402:2693:b0:5cf:68f4:e2db with SMTP id
- 4fb4d7f45d1cf-5cf8fc17c47mr12004689a12.9.1732025600651; 
- Tue, 19 Nov 2024 06:13:20 -0800 (PST)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5cf79c0ac7fsm5781300a12.55.2024.11.19.06.13.19
+ d=1e100.net; s=20230601; t=1732026203; x=1732631003;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=UEyPoQaNM10M6PqHT1LgloK+mD2I/2Fouuz1b90vkTw=;
+ b=hc8AZKOPn+wg10N7b8UIdB9vLgaZUr+T7ToI9mV7aMRlAC962MKW+TXjOB22GO48sw
+ nngFkh4vTEsxNPYGtQ1GL0MmWnwHpKwr+UKEBnA22mbu5fdETRsXiJYHnQtV1LWOWtbu
+ ROgPSEQu2zna5iPTEXvFIcs7e6Qr316BeXDP4RGKyuYG6BboQZ082zvMfxuy3blujVpp
+ S6nYwMjGygs1vyfzdfjHgI/ii+coS4nvJ8yNEuhpf6Gqzc3lNYzTu3AHjg9LngDwLjeu
+ R4aYLPmO4QqBWie8ENbyB8IC7L2dwWkT6Ha8/1rmzz4X6CQ9EOQ86vi3+PrWbc7hj/WS
+ jaCQ==
+X-Gm-Message-State: AOJu0YyEVZU9lM7NhlNgcjSqAIFQQLZD6Rr6um6S2owOgtH5aSjwKE1T
+ 6JkGv7J+Y5r6TaDzTD4Cpxge6rVe22LLyT6l+lKDFTO7Hnn2/305mn07TYu16GSAZYukG956aV7
+ c
+X-Google-Smtp-Source: AGHT+IFTvHNZIo/lFcphYMhdZDY1cKlehr3MRg7Cp4dtgOOypVpI92ZHc5tQwPsISIIco8FcrkIUmQ==
+X-Received: by 2002:a05:600c:474e:b0:431:518a:683b with SMTP id
+ 5b1f17b1804b1-432df74f2c1mr133360125e9.18.1732026202852; 
+ Tue, 19 Nov 2024 06:23:22 -0800 (PST)
+Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-432dac21a15sm193049985e9.38.2024.11.19.06.23.22
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 19 Nov 2024 06:13:20 -0800 (PST)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 58E3E5F769;
- Tue, 19 Nov 2024 14:13:19 +0000 (GMT)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Cc: qemu-devel@nongnu.org,  Mahmoud Mandour <ma.mandourr@gmail.com>,
- Alexandre Iooss <erdnaxe@crans.org>,  Cleber Rosa <crosa@redhat.com>,
- John Snow <jsnow@redhat.com>
-Subject: Re: [PATCH v4 0/3] plugins: generate list of symbols automatically
-In-Reply-To: <20241112212622.3590693-1-pierrick.bouvier@linaro.org> (Pierrick
- Bouvier's message of "Tue, 12 Nov 2024 13:26:19 -0800")
-References: <20241112212622.3590693-1-pierrick.bouvier@linaro.org>
-User-Agent: mu4e 1.12.7; emacs 29.4
-Date: Tue, 19 Nov 2024 14:13:19 +0000
-Message-ID: <87wmgzpb0g.fsf@draig.linaro.org>
+ Tue, 19 Nov 2024 06:23:22 -0800 (PST)
+From: Peter Maydell <peter.maydell@linaro.org>
+To: qemu-devel@nongnu.org
+Subject: [PULL 00/15] target-arm queue
+Date: Tue, 19 Nov 2024 14:23:06 +0000
+Message-Id: <20241119142321.1853732-1-peter.maydell@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::534;
- envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x534.google.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,46 +89,80 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Pierrick Bouvier <pierrick.bouvier@linaro.org> writes:
+Some Arm bugfixes, and a few non-arm ones that I also picked up.
+Most of the diffstat is a test program.
 
-> Now that meson build for plugins was merged, we can cleanup another part =
-with
-> the symbols file.
-> It has to be kept in sync between the header (qemu-plugin.h) and the symb=
-ols
-> file. This has proved to be error prone and tedious.
->
-> We solve this by generating this list from header directly using a python
-> script. Dependencies are triggered correctly, and the file is regenerated=
- if the
-> header is modified, as expected.
->
-> v4:
-> fix second patch to apply cleanly on master (was applied from a previous =
-series
-> to enable windows clang build before).
+thanks
+-- PMM
 
-Queued to plugins/next, thanks.
+The following changes since commit af4c4fd128d3e73f7435a3723e9fcd2ec64c5f4c:
 
-I'm not sure if it meets the criteria for 9.2 post freeze although it
-seems pretty safe from looking at it.
+  Merge tag 'pull-nbd-2024-11-18' of https://repo.or.cz/qemu/ericb into staging (2024-11-18 20:24:05 +0000)
 
->
-> Pierrick Bouvier (3):
->   plugins: add missing export for qemu_plugin_num_vcpus
->   plugins: detect qemu plugin API symbols from header
->   plugins: eradicate qemu-plugins.symbols static file
->
->  MAINTAINERS                    |  1 +
->  include/qemu/qemu-plugin.h     |  1 +
->  plugins/meson.build            | 12 +++++--
->  plugins/qemu-plugins.symbols   | 59 ----------------------------------
->  scripts/qemu-plugin-symbols.py | 45 ++++++++++++++++++++++++++
->  5 files changed, 56 insertions(+), 62 deletions(-)
->  delete mode 100644 plugins/qemu-plugins.symbols
->  create mode 100755 scripts/qemu-plugin-symbols.py
+are available in the Git repository at:
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+  https://git.linaro.org/people/pmaydell/qemu-arm.git tags/pull-target-arm-20241119
+
+for you to fetch changes up to c5275c734233d6457f2340ca01d4577a971ea328:
+
+  trace: Don't include trace-root.h in control.c or control-target.c (2024-11-19 14:14:13 +0000)
+
+----------------------------------------------------------------
+target-arm queue:
+ * hw/timer/exynos4210_mct: fix possible int overflow
+ * hw/net/rocker/rocker_of_dpa.c: Remove superfluous error check
+ * hw/intc/openpic: Avoid taking address of out-of-bounds array index
+ * hw/watchdog/cmsdk_apb_watchdog: Fix INTEN issues
+ * arm/ptw: Honour WXN/UWXN and SIF in short-format descriptors
+ * hw/intc/loongarch_extioi: Use set_bit32() and clear_bit32() to avoid UB
+ * system/dma-helpers.c: Move trace events to system/trace-events
+ * target/arm/hvf: Add trace.h header
+ * trace: Don't include trace-root.h in control.c or control-target.c
+
+----------------------------------------------------------------
+Dmitry Frolov (1):
+      hw/timer/exynos4210_mct: fix possible int overflow
+
+Pavel Skripkin (2):
+      arm/ptw: Make get_S1prot accept decoded AP
+      arm/ptw: Honour WXN/UWXN and SIF in short-format descriptors
+
+Peter Maydell (7):
+      hw/intc/openpic: Avoid taking address of out-of-bounds array index
+      bitops.h: Define bit operations on 'uint32_t' arrays
+      hw/intc/arm_gicv3: Use bitops.h uint32_t bit array functions
+      hw/intc/loongarch_extioi: Use set_bit32() and clear_bit32() for s->isr
+      system/dma-helpers.c: Move trace events to system/trace-events
+      target/arm/hvf: Add trace.h header
+      trace: Don't include trace-root.h in control.c or control-target.c
+
+Rodrigo Dias Correa (1):
+      hw/net/rocker/rocker_of_dpa.c: Remove superfluous error check
+
+Roque Arcudia Hernandez (4):
+      hw/watchdog/cmsdk_apb_watchdog: Fix INTEN issues
+      tests/qtest/cmsdk-apb-watchdog-test: Parameterize tests
+      tests/qtest/cmsdk-apb-watchdog-test: Don't abort on assertion failure
+      tests/qtest/cmsdk-apb-watchdog-test: Test INTEN as counter enable
+
+ include/hw/intc/arm_gicv3_common.h    |  54 ++----
+ include/qemu/bitmap.h                 |   8 +
+ include/qemu/bitops.h                 | 172 ++++++++++++++++-
+ target/arm/hvf/trace.h                |   1 +
+ hw/intc/loongarch_extioi.c            |  11 +-
+ hw/intc/openpic.c                     |  15 +-
+ hw/net/rocker/rocker_of_dpa.c         |  13 +-
+ hw/timer/exynos4210_mct.c             |   2 +-
+ hw/watchdog/cmsdk-apb-watchdog.c      |  34 +++-
+ system/dma-helpers.c                  |   2 +-
+ target/arm/hvf/hvf.c                  |   2 +-
+ target/arm/ptw.c                      |  72 ++++---
+ tests/qtest/cmsdk-apb-watchdog-test.c | 344 ++++++++++++++++++++++++++++++----
+ trace/control-target.c                |   1 -
+ trace/control.c                       |   1 -
+ system/trace-events                   |   7 +
+ tests/qtest/meson.build               |   3 +-
+ trace-events                          |   7 -
+ 18 files changed, 584 insertions(+), 165 deletions(-)
+ create mode 100644 target/arm/hvf/trace.h
 
