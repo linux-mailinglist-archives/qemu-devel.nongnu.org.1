@@ -2,62 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 880CD9D3497
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Nov 2024 08:47:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F4D19D3493
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Nov 2024 08:47:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tDfQE-0002Oe-0y; Wed, 20 Nov 2024 02:46:46 -0500
+	id 1tDfQG-0002PS-DI; Wed, 20 Nov 2024 02:46:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <fea.wang@sifive.com>)
- id 1tDfQ8-0002OA-I5
- for qemu-devel@nongnu.org; Wed, 20 Nov 2024 02:46:40 -0500
-Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
+ id 1tDfQA-0002OU-Qm
+ for qemu-devel@nongnu.org; Wed, 20 Nov 2024 02:46:44 -0500
+Received: from mail-pg1-x534.google.com ([2607:f8b0:4864:20::534])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <fea.wang@sifive.com>)
- id 1tDfQ6-0006Ow-VH
- for qemu-devel@nongnu.org; Wed, 20 Nov 2024 02:46:40 -0500
-Received: by mail-pl1-x635.google.com with SMTP id
- d9443c01a7336-20e576dbc42so55611015ad.0
- for <qemu-devel@nongnu.org>; Tue, 19 Nov 2024 23:46:38 -0800 (PST)
+ id 1tDfQ9-0006PG-95
+ for qemu-devel@nongnu.org; Wed, 20 Nov 2024 02:46:42 -0500
+Received: by mail-pg1-x534.google.com with SMTP id
+ 41be03b00d2f7-7ee51d9ae30so3092144a12.1
+ for <qemu-devel@nongnu.org>; Tue, 19 Nov 2024 23:46:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sifive.com; s=google; t=1732088797; x=1732693597; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=lx8gSsMPcpKaXpF+fhiy9ywM3N36Ncsg9WggqHtgxks=;
- b=M1RoZ/C1rO9drf/gYVe9taJQ8urJ2Ov2EHxUhYfOLhbLmG3GAS5IA0HAY/ZMd5sXO7
- owd6Hu5clHRkqtvlWd5zEneqjrF319NWuRtbaPREOLBrre2LlRixvRYeCdACwOQ8eV1A
- 9TWZtdySiIJz+0n0ux1gitF8Hu6JmfQVByQI7w7zpvUqQnvSlsQBC5Ap3+VrJQ6u7yRV
- PcC7kdopFxFj2+LdfZ+xRJZX2qzw/RqT37hZJF4sagUpprRzlDrQRYw0HaG3FatdoTh3
- 4I5zc0rvDm1NlVKC7B0zUzw/lIAdtDLlw/V6Kx+5FNHebnIQyM603orS4UcBTwdaVo7c
- qB3A==
+ d=sifive.com; s=google; t=1732088800; x=1732693600; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=HRHaR9pcBAF9H3M4At6noJSbZrF61K68F3kyhCd72IY=;
+ b=O37um4Fyx3sMCD/6QODtos4skTx21fc18kxLuGToLxTl3M2KfMtrrEiUC92+xVINBG
+ izEJ1WDyfBJpt9B25K/PDc9nxQKtXl3sJsyXKYZXIRsbnGL4hS2ltDhYyZyjRwNUZ8Ma
+ l4Bxtt3Ujs2x63RPWbTQPt+uIkmKTupwr77ERgskUF6kjc/oTeLNIOCTdsSFkzPgkuYt
+ Z9ftq/kbJRCzKLKLhjiSZJUIVivIVDPLagM+alnlDMHDvvk7PS1rctD0VvKrWn/9ukV1
+ i5CABcVxSt4SxSjJ2v10mXY9dLmfhRihsBITBJPurrVrn3oT8SbE3Bv/LbL7LZ8BWxyG
+ j2Rw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1732088797; x=1732693597;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=lx8gSsMPcpKaXpF+fhiy9ywM3N36Ncsg9WggqHtgxks=;
- b=Sp0cKXZMGcYfM2/4wbdghHMDtNVb+67TBPP6FGIMpcawo7rumaNULW+XsCUDDp7URy
- VqiG8bH1Kii/7ZKKcN/hJpu2tiQBBHpegIkaiXWCDWVudsHPefgc5rr9UsxlNAfyDol1
- pM8bbELrZgntQ4A1qn6xhuWJFioJKexJQqHdfNcHzfFDrjKGRAb+y9H9HNFRVCHXeUXO
- nYSKozmrf80R2EFd8lZlUWI2tYWzEWbFjrKS3uOaNteEmrY50Y4j9uQ7CZLQ438BJTcF
- xx7Z+/YCP1xl0Kw3Iw7BBxK/ZbNfFqB+MfCJnmQZlQ5ZiuQneQZFHfD2z78dO5CItwfp
- ADeg==
-X-Gm-Message-State: AOJu0Yyu+NGr9JNj+7OJo255ceubO6+uVYjfcaOrSn7Mh2VBads3e6iJ
- pToLdxY3+6UEL1+jUXDyZrTRzboSdPtasQHCp/IKKZQDYq9FsxPMbUX1JnOR59NctkPCE8AKhkx
- kUIzN3OLzRVajAwGcJfsN8f6aBmyK4PMxbM3mzkBsru5Ec8Vo7kgupK5JbkW2gGHYzoPYpBbMYH
- k6C2JDUvTYsaUww8QygzydirnMPm4hH9g3fzc=
-X-Google-Smtp-Source: AGHT+IHSHlTb44sxmtteY2yu7zB4YRpSgArDtHjN5OWK0brMlghjgOmQ900lTESYzbKqLTQ+Uf7RQw==
-X-Received: by 2002:a17:902:e74a:b0:211:6b23:9aa8 with SMTP id
- d9443c01a7336-2126b0139c5mr23095335ad.36.1732088797123; 
- Tue, 19 Nov 2024 23:46:37 -0800 (PST)
+ d=1e100.net; s=20230601; t=1732088800; x=1732693600;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=HRHaR9pcBAF9H3M4At6noJSbZrF61K68F3kyhCd72IY=;
+ b=WtJZYAs1du9cr211gawf97G7nKwBHjo281RczKiW7yJIc0RBvLN7u/3XpNOKFcLM7z
+ LLrZWrYGQsW/4LXYIZpuke5CVPDlTXusA0AmWki6kE763z8e5BJDV7sACR08pMSw10dY
+ sMimnGZaaBG/lZdtYQFNGO1+KrnwRrkmLTD+o0Mclc9RvdWDqJz5IK1rNvXrRLwjKugv
+ eLQtP2CkalM8lrfn+4Z129U08Zi0V2vWTRJJyntxtUUjcaCarugDcafWQxLKVXt3hpfs
+ iYptTnzVBMaFkzhMPQlSrb7HW8G+EMQyjaBCSA6z8V3qQu7Ou1pbmNsaf4JaHC3w5if0
+ 1NEg==
+X-Gm-Message-State: AOJu0YyWzUbxQwWw2zbWjgPO0uY/B/hoPPdobeVK2iQdotrpkwxLyK7R
+ AhYbVpwVTnm6r8zv7x4qW0qmO/Tjldw2SlW+jMDMnk6PDdTl34fkObQpOV1qoIc/h0z7PHumvw0
+ augL+1ldD+7tTryu37jHk+p862WnQ9yOjyktJCEmrk4BXkbdBxuRXCvfHgm5PWa8wOiZN+5ZDve
+ Zam3Ay+4LFEBmWTbpgjjWAQ5uGAj1StFzSbAM=
+X-Google-Smtp-Source: AGHT+IHqhWv6J413TU13WsyC8gl1egXxQ/eIZHTFWmLXR4B4ToJ1WO1qNLAM8crBNbdRN1dvXXVaTQ==
+X-Received: by 2002:a05:6a20:9195:b0:1db:e1b0:b673 with SMTP id
+ adf61e73a8af0-1ddae2f047bmr2563194637.9.1732088799524; 
+ Tue, 19 Nov 2024 23:46:39 -0800 (PST)
 Received: from hsinchu36-syssw02.internal.sifive.com
  (59-124-168-89.hinet-ip.hinet.net. [59.124.168.89])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-211d0f51fe0sm86206255ad.233.2024.11.19.23.46.35
+ d9443c01a7336-211d0f51fe0sm86206255ad.233.2024.11.19.23.46.37
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 19 Nov 2024 23:46:36 -0800 (PST)
+ Tue, 19 Nov 2024 23:46:39 -0800 (PST)
 From: "Fea.Wang" <fea.wang@sifive.com>
 To: qemu-devel@nongnu.org,
 	qemu-riscv@nongnu.org
@@ -65,15 +66,19 @@ Cc: Palmer Dabbelt <palmer@dabbelt.com>,
  Alistair Francis <alistair.francis@wdc.com>, Bin Meng <bmeng.cn@gmail.com>,
  Weiwei Li <liwei1518@gmail.com>,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, "Fea.Wang" <fea.wang@sifive.com>
-Subject: [PATCH v4 0/6] Introduce svukte ISA extension
-Date: Wed, 20 Nov 2024 15:48:48 +0800
-Message-Id: <20241120074854.1767780-1-fea.wang@sifive.com>
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ "Fea.Wang" <fea.wang@sifive.com>, Frank Chang <frank.chang@sifive.com>,
+ Jim Shu <jim.shu@sifive.com>
+Subject: [PATCH v4 1/6] target/riscv: Add svukte extension capability variable
+Date: Wed, 20 Nov 2024 15:48:49 +0800
+Message-Id: <20241120074854.1767780-2-fea.wang@sifive.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20241120074854.1767780-1-fea.wang@sifive.com>
+References: <20241120074854.1767780-1-fea.wang@sifive.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
- envelope-from=fea.wang@sifive.com; helo=mail-pl1-x635.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::534;
+ envelope-from=fea.wang@sifive.com; helo=mail-pg1-x534.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,54 +101,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The Svukte ISA extension has been approved for fast-track development.
-https://lf-riscv.atlassian.net/browse/RVS-2977 
-And there are Linux patches for the Svukte that are under review.
-https://lore.kernel.org/kvm/20240920-dev-maxh-svukte-rebase-v1-0-7864a88a62bd@sifive.com/T/#mf70fcb22cd2987ad268c0efee9b8583197d3cb4f
+Refer to the draft of svukte extension from:
+https://github.com/riscv/riscv-isa-manual/pull/1564
 
 Svukte provides a means to make user-mode accesses to supervisor memory
 raise page faults in constant time, mitigating attacks that attempt to
 discover the supervisor software's address-space layout.
 
-Refer to the draft of svukte extension from:
-https://github.com/riscv/riscv-isa-manual/pull/1564
+Signed-off-by: Fea.Wang <fea.wang@sifive.com>
+Reviewed-by: Frank Chang <frank.chang@sifive.com>
+Reviewed-by: Jim Shu <jim.shu@sifive.com>
+Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+---
+ target/riscv/cpu_cfg.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-base-commit: 27652f9ca9d831c67dd447346c6ee953669255f0
-
-[v4]
-* Add a svukte extension check in RV32.
-* Refine the code.
-
-[v3]
-* Fix some typos
-* Refine code by separating a function into two dedicated functions.
-* Follow the riscv,isa order
-
-[v2]
-* Refactor the code
-
-[v1]
-* Add svukte extension
-
-
-Fea.Wang (6):
-  target/riscv: Add svukte extension capability variable
-  target/riscv: Support senvcfg[UKTE] bit when svukte extension is
-    enabled
-  target/riscv: Support hstatus[HUKTE] bit when svukte extension is
-    enabled
-  target/riscv: Check memory access to meet svukte rule
-  target/riscv: Expose svukte ISA extension
-  target/riscv: Check svukte is not enabled in RV32
-
- target/riscv/cpu.c         |  2 ++
- target/riscv/cpu_bits.h    |  2 ++
- target/riscv/cpu_cfg.h     |  1 +
- target/riscv/cpu_helper.c  | 55 ++++++++++++++++++++++++++++++++++++++
- target/riscv/csr.c         |  7 +++++
- target/riscv/tcg/tcg-cpu.c |  5 ++++
- 6 files changed, 72 insertions(+)
-
+diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
+index 59d6fc445d..d8771ca641 100644
+--- a/target/riscv/cpu_cfg.h
++++ b/target/riscv/cpu_cfg.h
+@@ -84,6 +84,7 @@ struct RISCVCPUConfig {
+     bool ext_svnapot;
+     bool ext_svpbmt;
+     bool ext_svvptc;
++    bool ext_svukte;
+     bool ext_zdinx;
+     bool ext_zaamo;
+     bool ext_zacas;
 -- 
 2.34.1
 
