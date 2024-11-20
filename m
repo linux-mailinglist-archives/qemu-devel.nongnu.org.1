@@ -2,77 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8510C9D39F2
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Nov 2024 12:52:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7119F9D3A52
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Nov 2024 13:11:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tDjG3-0001XB-Jp; Wed, 20 Nov 2024 06:52:31 -0500
+	id 1tDjWx-0005bt-4Z; Wed, 20 Nov 2024 07:09:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tDjG1-0001We-8Q
- for qemu-devel@nongnu.org; Wed, 20 Nov 2024 06:52:29 -0500
-Received: from mail-lf1-x136.google.com ([2a00:1450:4864:20::136])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1tDjWm-0005bS-Eo
+ for qemu-devel@nongnu.org; Wed, 20 Nov 2024 07:09:49 -0500
+Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tDjFz-0001X7-IB
- for qemu-devel@nongnu.org; Wed, 20 Nov 2024 06:52:29 -0500
-Received: by mail-lf1-x136.google.com with SMTP id
- 2adb3069b0e04-53d9ff8f1e4so5085703e87.2
- for <qemu-devel@nongnu.org>; Wed, 20 Nov 2024 03:52:26 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1tDjWk-0002XG-Ts
+ for qemu-devel@nongnu.org; Wed, 20 Nov 2024 07:09:48 -0500
+Received: by mail-ed1-x52d.google.com with SMTP id
+ 4fb4d7f45d1cf-5cfc035649bso5159689a12.2
+ for <qemu-devel@nongnu.org>; Wed, 20 Nov 2024 04:09:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1732103545; x=1732708345; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=9kUxIDAH6ueeKRXf1ghazDWtiLnsz7p4DgVTGyUXon4=;
- b=FMPUCciG6HnzTE5YdXm/ITW4iV17Q4omprq5vPQdf5ZfbMVWsxOeELMjnMAFaZTxu6
- ANmEYtOriU7FbCPAVutEglGZlWBXjqCHboaqWSAMkZbARyrfbg1kDWIr8xQYHdQ0pv2g
- uSScwApJ5JeAw54x48ngdhNg15Q0TNXeMK4SSx0/+dDfMIf4OFY0FUYwRk9nme1J4LQe
- s707NVZzT0HtmkNhFFrU0SpaW+0hwHxgt3YIYtSEGsjqelR9ChYY0Co6gokLtLr7nNW4
- 88h4Zo7QMPlqdboO/4tK+iWB3KWtPDkXrG9UBEfwXPH2vhy1WkDfa1U8ME4F9N+x4Xdz
- haMg==
+ d=linaro.org; s=google; t=1732104585; x=1732709385; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=iDLyM/unrlgwRkQA8uYUyiVpUVCJWQAK2aPnQQmJNi8=;
+ b=eoaxqhMYatoDAJLk5gvfhixMS2OSY+RdI75Ih95v6kzumcz1DWep7BDfgaPTEPQlXa
+ 6LjQ596SGA7jIv4c+cFoRy7e0GPuZlF8TNhErpd3wZ3X0PwJvr7onGF/O+6b4bPoaoVz
+ AyJM6sU09vh1geto9P/QY0cHLCfrSGAccPwHLC2DdNtiVtCGkmUfTg0VJHUXswvpUvSy
+ mqY7VXWAc6nSJB5V9m/ifUqPAJBZulyNGZsOJUcKkVXisIU9ZljSYHf6MFeu8iX+LCj8
+ 7c7PvdZSvkk7fuK43tqH93HlNXv0Bvsdz7VflxQi4pbbmq42l5l1soEBELpaoCl+H02F
+ gcxA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1732103545; x=1732708345;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=9kUxIDAH6ueeKRXf1ghazDWtiLnsz7p4DgVTGyUXon4=;
- b=wKmWO34NtI/16CyAJ25W+uNbAQ2Fh/SkQrkSizO5lZm15XhE40+CUabuyWIWt43ohP
- lT2+mAy5pevEvpQ1rZPyaueFqUyM8C3UEGx2zl+Bt/NUgaPVTdsQKlfVJy0Q9wdVAVec
- KClufpB99jMK38ngZuBXrOxoKSNiDCP7Z2ULNBzK3YMLXLBBogMKiU2QkuXLlMsyfICA
- 52kKiQ7xU2rwVQkOVj2BW27ywQoOdfdzpFxRsmW+KJBjrJSfRgMslZ7wVZRAZY0yFS5+
- TBSemNIiQIJg3Nz3mKveLrHkLQMXJeYUCV//e2vpg2TDndy5zHEpPDyGDai47ptb6APd
- N9og==
-X-Gm-Message-State: AOJu0YwWf6H4SCnIYnclQeKGrgpv3p9rZY5FKABijkD0xY4FnYGhD63t
- rY4mQeQeoeABLgMzc0YgBf4le2+88bJh2EACBgFhHYaeDhihFZFkWCoOANQaLXEogRqn30RmzcF
- X
-X-Google-Smtp-Source: AGHT+IHinmZ90H5ivqd4sjPsriL/WM0gYW7lqPVLMX9ux3ykIg2G/cG7JsiX7w9xg8MFwTPtkrqMSw==
-X-Received: by 2002:a05:6512:3b24:b0:53d:a2b1:b3db with SMTP id
- 2adb3069b0e04-53dc134365amr1122291e87.33.1732103544793; 
- Wed, 20 Nov 2024 03:52:24 -0800 (PST)
-Received: from [192.168.69.146] ([176.187.208.27])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-433b01e117bsm17330195e9.8.2024.11.20.03.52.23
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 20 Nov 2024 03:52:24 -0800 (PST)
-Message-ID: <e91c4d9c-53b5-412b-ad05-71a487a6452a@linaro.org>
-Date: Wed, 20 Nov 2024 12:52:22 +0100
+ d=1e100.net; s=20230601; t=1732104585; x=1732709385;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=iDLyM/unrlgwRkQA8uYUyiVpUVCJWQAK2aPnQQmJNi8=;
+ b=F8OHJI65+lio4sIUjIMomq/PfQo9YVViiGRmb0+tVzsRxVXuFX5qJCNjg6lqZ3z7d6
+ 9+fQUP/N5MFZcYk7YvOHzzNaFRurwhc4irpDlCrX/AXYCwBOnlz4FHw7BWRbtDWVu4W6
+ Fm199+23oNnEDXwsoIrvJ4EJwMdLq5Hb8S2PFERWwjWJ++SnlVwL5dmw9DIYk/uiH7we
+ 2oXkYe1FySyrOriVBPtdNjp4OgD3U4RfyOdKH3YGtGpJXU6hcv6mkRSh+U57h0etYOYv
+ rRa/Z53qjY40hmBtX2hlp8d5GOnr1qk9HB8JdETI229iZJsF3kaKUrKvjcWffInLsIBs
+ etuA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUTxgCfIk9ekkWfQQFBDw2n1ecLFBO/eQEE9632UuiWSajGgYzK4r7n4On0b5QsXRz0/HvIRUboX0Zr@nongnu.org
+X-Gm-Message-State: AOJu0YytU62PUL+TJQs432sRH5YTesYKFkWCRzeB/RzFN/0kmiJEzXZ9
+ Wv9YgjoxjqdYVi99WBE/P0gDfue98M2MDJeFq2RD/ENlCyscxD/B2H5opSbVVr+AtQBpiho34kL
+ Z8ufomWNg6iSAukUXKB8SOjCGghGapMMMSUM+mA==
+X-Google-Smtp-Source: AGHT+IGKfP+dMDJhGnVXc5kSc1sAOgBfEfmMOApdWBHu8TbFvNCwEgiAjdxsV092vEUeufLfVBHpbhMqupt2h97c3do=
+X-Received: by 2002:a05:6402:4307:b0:5cf:b8f6:92c4 with SMTP id
+ 4fb4d7f45d1cf-5cff49fe8admr1623804a12.0.1732104584630; Wed, 20 Nov 2024
+ 04:09:44 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] meson: Add missing SDL dependency to system/main.c
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?=
- <berrange@redhat.com>, Akihiko Odaki <akihiko.odaki@gmail.com>,
- Gerd Hoffmann <kraxel@redhat.com>
-References: <20241120114943.85080-1-philmd@linaro.org>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20241120114943.85080-1-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::136;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x136.google.com
+References: <20241119212456.873660-1-clg@redhat.com>
+In-Reply-To: <20241119212456.873660-1-clg@redhat.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Wed, 20 Nov 2024 12:09:33 +0000
+Message-ID: <CAFEAcA9vJ8+tVOngfZUS_OFJsxuaYF=BDnARdi4QbvkmvTW6_A@mail.gmail.com>
+Subject: Re: [PULL 0/1] aspeed queue
+To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::52d;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,71 +89,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 20/11/24 12:49, Philippe Mathieu-Daudé wrote:
-> When building QEMU configure with --disable-gtk --disable-cocoa
-> on macOS we get:
-> 
+On Tue, 19 Nov 2024 at 21:26, C=C3=A9dric Le Goater <clg@redhat.com> wrote:
+>
+> The following changes since commit e6459afb1ff4d86b361b14f4a2fc43f0d2b4d6=
+79:
+>
+>   Merge tag 'pull-target-arm-20241119' of https://git.linaro.org/people/p=
+maydell/qemu-arm into staging (2024-11-19 14:23:34 +0000)
+>
+> are available in the Git repository at:
+>
+>   https://github.com/legoater/qemu/ tags/pull-aspeed-20241119
+>
+> for you to fetch changes up to 9b0a36494a477541b543fa689c635cf4912fa641:
+>
+>   docs: aspeed: Reorganize the "Boot options" section (2024-11-19 19:12:1=
+2 +0100)
+>
+> ----------------------------------------------------------------
+> aspeed queue:
+>
+> * Restructured the "Boot options" section in the aspeed documentation
+>
+> ----------------------------------------------------------------
 
-Relevant ./configure output:
 
-   User interface
-     Cocoa support                   : NO
-     SDL support                     : YES 2.30.5
-     SDL image support               : NO
-     GTK support                     : NO
-     pixman                          : YES 0.42.2
-     VTE support                     : NO
-     PNG support                     : YES 1.6.43
-     VNC support                     : YES
-     VNC SASL support                : YES
-     VNC JPEG support                : YES 3.0.3
-     spice protocol support          : YES 0.14.4
-       spice server support          : NO
-     curses support                  : YES
-     brlapi support                  : NO
+Applied, thanks.
 
-   User defined options
-     cocoa                           : disabled
-     docs                            : disabled
-     gtk                             : disabled
+Please update the changelog at https://wiki.qemu.org/ChangeLog/9.2
+for any user-visible changes.
 
->    ../system/main.c:30:10: fatal error: 'SDL.h' file not found
->       30 | #include <SDL.h>
->          |          ^~~~~~~
->    1 error generated.
-> 
-> Fix by adding the SDL dependency to main.c it's CFLAGS contains
-> the SDL include directory.
-> 
-> Fixes: 64ed6f92ff ("meson: link emulators without Makefile.target")
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> ---
-> Looking at commit 88c39c8693 ("Simplify softmmu/main.c") I wonder
-> if this header is still required.
-> ---
->   meson.build | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/meson.build b/meson.build
-> index e0b880e4e1..846ffa3834 100644
-> --- a/meson.build
-> +++ b/meson.build
-> @@ -4235,14 +4235,14 @@ foreach target : target_dirs
->         'name': 'qemu-system-' + target_name,
->         'win_subsystem': 'console',
->         'sources': files('system/main.c'),
-> -      'dependencies': []
-> +      'dependencies': [sdl]
->       }]
->       if host_os == 'windows' and (sdl.found() or gtk.found())
->         execs += [{
->           'name': 'qemu-system-' + target_name + 'w',
->           'win_subsystem': 'windows',
->           'sources': files('system/main.c'),
-> -        'dependencies': []
-> +        'dependencies': [sdl]
->         }]
->       endif
->       if get_option('fuzzing')
-
+-- PMM
 
