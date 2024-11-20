@@ -2,67 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F07AB9D3426
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Nov 2024 08:29:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C1439D3423
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Nov 2024 08:29:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tDf7u-00022F-46; Wed, 20 Nov 2024 02:27:50 -0500
+	id 1tDf7e-0001xf-J2; Wed, 20 Nov 2024 02:27:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ivan.klokov@syntacore.com>)
- id 1tDf7p-00020N-4c; Wed, 20 Nov 2024 02:27:45 -0500
-Received: from mta-03.yadro.com ([89.207.88.253])
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1tDf7c-0001xF-Hv
+ for qemu-devel@nongnu.org; Wed, 20 Nov 2024 02:27:32 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ivan.klokov@syntacore.com>)
- id 1tDf7m-000815-Cg; Wed, 20 Nov 2024 02:27:44 -0500
-DKIM-Filter: OpenDKIM Filter v2.11.0 mta-03.yadro.com 27FCFE0004
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=syntacore.com;
- s=mta-04; t=1732087658;
- bh=wmeSqoVGvMzlf402PU8ZusnH/EFnjksm9+MU6IqoiHc=;
- h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:From;
- b=Qk/ZT3B4IgbzDFSUwWBBTlZzy1mgIvc9iFwVBN9yavgpF+TDepSjmf/0iDnE/qA3H
- ajeyY3Boh+FDx5w8dBr6psOlMngVB5YuGuif2VQMr4TRaXtttz+Iu+0EIrx1xPagYJ
- bUoDQ6vRshyKVTFozkD1jfsgbcgOF5NR32fFdQGCbyLgdhUzrymwJU0/+uJf+YPcN+
- 40sEJkVezS0G7Xbcp33Jo5vg4E9fdrP5dRpndv4cUF0YmwA9j3nhLz/kplShxfAj1I
- PaIuLV+NlNwslqZBwWFMFhPVJ3wH4wLRTHuo2pXnhPCSDgWXtP1YDBzr2VoDCmcHiv
- w41uwG9peDY8A==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=syntacore.com;
- s=mta-03; t=1732087658;
- bh=wmeSqoVGvMzlf402PU8ZusnH/EFnjksm9+MU6IqoiHc=;
- h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:From;
- b=ucn3qoFMcIXY7uqWUvEoBLlWcNdqgEBPSJcBN5i6JYKm5PFkAZdKbfTlAidXJp1X2
- 9+J+BFd9VtVxvqN7XPoomsfqmdESnW1i9caDUzS9CW1W4LLD2MrvMhYgRPrJjK1voh
- SCXPIewLfbgxjBjpgIgr6/bRVf1B2G5dW8L/ZAwda4zgLoNLn6Veqdf6F5Rs0C17Gn
- i/c2K2b7fcarbp1lwn9dg4jLv5iUXiHpas7NFc9cIjCBN+lW3uFVT/V6eppgsHz/OW
- 1bpNcu0OCiLdBHfK5EFf+Qo8QSxduet6yLnETralRIgFqoj1QSATJVZSnushIdG/RD
- GCii7DAn3PrSA==
-From: Ivan Klokov <ivan.klokov@syntacore.com>
-To: <qemu-devel@nongnu.org>
-CC: <qemu-riscv@nongnu.org>, <palmer@dabbelt.com>, <alistair.francis@wdc.com>, 
- <bmeng.cn@gmail.com>, <liwei1518@gmail.com>, <dbarboza@ventanamicro.com>, 
- <zhiwei_liu@linux.alibaba.com>, <farosas@suse.de>, <lvivier@redhat.com>,
- <pbonzini@redhat.com>, Ivan Klokov <ivan.klokov@syntacore.com>
-Subject: [RFC PATCH v7 2/2] tests/qtest: QTest example for RISC-V CSR register
-Date: Wed, 20 Nov 2024 10:27:12 +0300
-Message-ID: <20241120072712.65302-3-ivan.klokov@syntacore.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241120072712.65302-1-ivan.klokov@syntacore.com>
-References: <20241120072712.65302-1-ivan.klokov@syntacore.com>
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1tDf7b-000801-34
+ for qemu-devel@nongnu.org; Wed, 20 Nov 2024 02:27:32 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1732087649;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=3BTJbs566odTWWZcglLtcrZATiEXFnman86/RpjGHWI=;
+ b=c41GnolH1SHEsLWFJnhsiRVkNiqGMZQWKxj5Frpf0Ia1DuDyqaizLxVPdtrIvm/kreiexE
+ RDIMj2rUJkgP+a123tdYvTacbx+LteXnN/6SlKt4E2CnwlHw/1ODYnHmKvtPI8EgkGmw7V
+ 8V1yfY11e/L9JYKMl19ZbJcljw+yqYk=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-562-rn7_e5_QNj6iuCjDH0Qf7A-1; Wed, 20 Nov 2024 02:27:27 -0500
+X-MC-Unique: rn7_e5_QNj6iuCjDH0Qf7A-1
+X-Mimecast-MFC-AGG-ID: rn7_e5_QNj6iuCjDH0Qf7A
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-4315ad4938fso13808405e9.0
+ for <qemu-devel@nongnu.org>; Tue, 19 Nov 2024 23:27:26 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1732087645; x=1732692445;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=3BTJbs566odTWWZcglLtcrZATiEXFnman86/RpjGHWI=;
+ b=myQkojRxW/Ddzshdqax+4nI7EzCsMMKUQFN+zKguHXc/LkiIu55SyUDexckkbGZId3
+ 8OCq/SFOLifss4+z9MqPfqftZTxmN1YRDgtG5FuOLYYxqTu7O1Y2IzhnaTgs0MIJ9H44
+ 4vAjKtnjBNFF32t70wgsB0FTQRI3AIeV5Tn4m+dT71Fx46LbPqDBxQG3fnzvM5iekpio
+ nD3rEAW9FAFWFT/RbRGK5DULPIHMVDNPb5uBqc7NvCdGEb4vcC+aM3XUO8RQrjLGF1r/
+ ikUB7YDGT6apb/AaWDDu6oqzBX9G8eNRtmDIa4CTVvnHt3ZiJlQCvrCNEvgPXqOBVsnm
+ JREQ==
+X-Gm-Message-State: AOJu0Yy6w2gjg+zU4XFBTGLmoMLREjXkHCUs5nDfsIKGggRLfO0DAB2E
+ eBH7JoKM9eGfKS7zBYk+pj0L/4ugqw4rzKTkNXrdKfdmdc+bu0j+ssAOQdoEJF1KmAmLJRuyft/
+ sDl9VUlQYtbQchE1iZLaQfVDmvkKiQfb5VdN9jSVhP8hS7V4Kr1j463Oe+QV8bH2S9wpKM+8mwo
+ 9TxAonYvJtdTbEd2Dy8yDl4zhZ2FQ767lYr3Zk
+X-Received: by 2002:a05:600c:1912:b0:431:5522:e009 with SMTP id
+ 5b1f17b1804b1-433489b3d7dmr15200335e9.12.1732087645531; 
+ Tue, 19 Nov 2024 23:27:25 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHevBFMYeACYnwc6vLVdDeR42RAyzTD4ZFBEfGmThyZg+tFZW68dRTc/tzSXG3Jt4XFIhPJTQ==
+X-Received: by 2002:a05:600c:1912:b0:431:5522:e009 with SMTP id
+ 5b1f17b1804b1-433489b3d7dmr15200135e9.12.1732087645183; 
+ Tue, 19 Nov 2024 23:27:25 -0800 (PST)
+Received: from [192.168.10.3] ([151.49.84.243])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-433b4616636sm9071635e9.19.2024.11.19.23.27.23
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 19 Nov 2024 23:27:23 -0800 (PST)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: qemu-devel@nongnu.org
+Subject: [PULL 0/5] More changes for QEMU 9.2 rc
+Date: Wed, 20 Nov 2024 08:27:18 +0100
+Message-ID: <20241120072723.103477-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.47.0
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: T-EXCH-10.corp.yadro.com (172.17.11.60) To
- S-Exch-01.corp.yadro.com (10.78.5.241)
-Received-SPF: permerror client-ip=89.207.88.253;
- envelope-from=ivan.klokov@syntacore.com; helo=mta-03.yadro.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.14,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, T_SPF_PERMERROR=0.01 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -78,92 +98,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Added demo for reading CSR register from qtest environment.
+The following changes since commit e6459afb1ff4d86b361b14f4a2fc43f0d2b4d679:
 
-Signed-off-by: Ivan Klokov <ivan.klokov@syntacore.com>
-Reviewed-by: Fabiano Rosas <farosas@suse.de>
----
- tests/qtest/meson.build      |  2 +-
- tests/qtest/riscv-csr-test.c | 56 ++++++++++++++++++++++++++++++++++++
- 2 files changed, 57 insertions(+), 1 deletion(-)
- create mode 100644 tests/qtest/riscv-csr-test.c
+  Merge tag 'pull-target-arm-20241119' of https://git.linaro.org/people/pmaydell/qemu-arm into staging (2024-11-19 14:23:34 +0000)
 
-diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
-index f2f35367ae..3aad77b3a9 100644
---- a/tests/qtest/meson.build
-+++ b/tests/qtest/meson.build
-@@ -272,7 +272,7 @@ qtests_s390x = \
- qtests_riscv32 = \
-   (config_all_devices.has_key('CONFIG_SIFIVE_E_AON') ? ['sifive-e-aon-watchdog-test'] : [])
- 
--qtests_riscv64 = \
-+qtests_riscv64 = ['riscv-csr-test'] + \
-   (unpack_edk2_blobs ? ['bios-tables-test'] : [])
- 
- qos_test_ss = ss.source_set()
-diff --git a/tests/qtest/riscv-csr-test.c b/tests/qtest/riscv-csr-test.c
-new file mode 100644
-index 0000000000..ff5c29e6c6
---- /dev/null
-+++ b/tests/qtest/riscv-csr-test.c
-@@ -0,0 +1,56 @@
-+/*
-+ * QTest testcase for RISC-V CSRs
-+ *
-+ * Copyright (c) 2024 Syntacore.
-+ *
-+ * This program is free software; you can redistribute it and/or modify it
-+ * under the terms of the GNU General Public License as published by the
-+ * Free Software Foundation; either version 2 of the License, or
-+ * (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful, but WITHOUT
-+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
-+ * for more details.
-+ */
-+
-+#include "qemu/osdep.h"
-+#include "libqtest.h"
-+
-+#define CSR_MVENDORID       0xf11
-+#define CSR_MISELECT        0x350
-+
-+static void run_test_csr(void)
-+{
-+    uint64_t res;
-+    uint64_t val = 0;
-+
-+    QTestState *qts = qtest_init("-machine virt -cpu veyron-v1");
-+
-+    res = qtest_csr_call(qts, "get_csr", 0, CSR_MVENDORID, &val);
-+
-+    g_assert_cmpint(res, ==, 0);
-+    g_assert_cmpint(val, ==, 0x61f);
-+
-+    val = 0xff;
-+    res = qtest_csr_call(qts, "set_csr", 0, CSR_MISELECT, &val);
-+
-+    g_assert_cmpint(res, ==, 0);
-+
-+    val = 0;
-+    res = qtest_csr_call(qts, "get_csr", 0, CSR_MISELECT, &val);
-+
-+    g_assert_cmpint(res, ==, 0);
-+    g_assert_cmpint(val, ==, 0xff);
-+
-+    qtest_quit(qts);
-+}
-+
-+int main(int argc, char **argv)
-+{
-+    g_test_init(&argc, &argv, NULL);
-+
-+    qtest_add_func("/cpu/csr", run_test_csr);
-+
-+    return g_test_run();
-+}
+are available in the Git repository at:
+
+  https://gitlab.com/bonzini/qemu.git tags/for-upstream
+
+for you to fetch changes up to b73d7eff1eedb2399cd594bc872d5db13506d951:
+
+  scsi: fix allocation for s390x loadparm (2024-11-20 01:29:29 +0100)
+
+----------------------------------------------------------------
+* target/i386: fix warning on macOS
+* target/i386: fix coverity barfing on vmport and smp cache support
+* scsi: fix off by one
+
+----------------------------------------------------------------
+Kamil Szczęk (1):
+      hw/i386/pc: Remove vmport value assertion
+
+Paolo Bonzini (1):
+      scsi: fix allocation for s390x loadparm
+
+Pierrick Bouvier (1):
+      hvf: remove unused but set variable
+
+Zhao Liu (2):
+      hw/core/machine-smp: Initialize caches_bitmap before reading
+      hw/core/machine-smp: Fix error message parameter
+
+ hw/core/machine-smp.c      |  3 ++-
+ hw/i386/pc.c               |  1 -
+ hw/scsi/scsi-disk.c        |  2 +-
+ target/i386/hvf/x86_task.c | 10 +++++-----
+ 4 files changed, 8 insertions(+), 8 deletions(-)
 -- 
-2.34.1
+2.47.0
 
 
