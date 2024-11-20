@@ -2,86 +2,136 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95B9B9D3600
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Nov 2024 09:54:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EE9D69D3684
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Nov 2024 10:12:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tDgSr-00008P-0f; Wed, 20 Nov 2024 03:53:33 -0500
+	id 1tDgjp-0003ls-1k; Wed, 20 Nov 2024 04:11:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tDgSg-000070-9A
- for qemu-devel@nongnu.org; Wed, 20 Nov 2024 03:53:22 -0500
-Received: from mail-lf1-x134.google.com ([2a00:1450:4864:20::134])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tDgSd-00053H-BC
- for qemu-devel@nongnu.org; Wed, 20 Nov 2024 03:53:20 -0500
-Received: by mail-lf1-x134.google.com with SMTP id
- 2adb3069b0e04-53c779ef19cso6546185e87.3
- for <qemu-devel@nongnu.org>; Wed, 20 Nov 2024 00:53:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1732092797; x=1732697597; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=iN/AqNy/hKljQubEThCY6fG1Ip1/THaEqT2SsGhQViM=;
- b=g+D6trgUFFMXJ3XudxFedLF0n6je+FR/19zH/SZD3s4H0BKHuTGFOtujz9L7rLGpRF
- WxcczAbjiMckweif30xH9fecj7bpuoQbubcmCYUHhjfSJPuvSbQLuPVYmu9ilxP1tUNN
- 5TXENSJx+LNgCJWb4Lo+Ludd/5A1NY93mc/1FVOAuDyfGoT9FWPC5JdEKnpTt96PQCUo
- FFljDT55zMpkZpUNru6ZMS4+Wul5qR9C93l2m6UeAnMSPSxYETCH/Z6Z9A1uhr8AiGKK
- 9EQ8EtUltGBW+VxDQuyFgbtRklrYpKhVy5kl3vaWgL7qMBthY6vEJQYIjZS9hYeQgDr6
- bSTQ==
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1tDgjm-0003lM-LR
+ for qemu-devel@nongnu.org; Wed, 20 Nov 2024 04:11:02 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1tDgjk-0001xx-PB
+ for qemu-devel@nongnu.org; Wed, 20 Nov 2024 04:11:02 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1732093857;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=Hfkd3PwiEmGUCeNvhgI0d1aKQauRs4OhvkYx77lLgq4=;
+ b=YtBoPNdpmVXCBLL9RRTOdJvtwjWVkkZ3xARuc2+QzUEQEPfoh9NgIlORnylgkTD+yq2r+z
+ zafCklNOlXQPmJEXo58joIQGDRVRW7mnlcRjOrb6QzgsrLvVMusjzufwHFdGXB7oCcSkaY
+ OTFfV7+ig3NcAYn803JlAp3MoOXXvVA=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-668-Sv2SPiG5P7i9eyes4KZXjQ-1; Wed, 20 Nov 2024 04:10:55 -0500
+X-MC-Unique: Sv2SPiG5P7i9eyes4KZXjQ-1
+X-Mimecast-MFC-AGG-ID: Sv2SPiG5P7i9eyes4KZXjQ
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-43151e4ef43so34794345e9.3
+ for <qemu-devel@nongnu.org>; Wed, 20 Nov 2024 01:10:54 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1732092797; x=1732697597;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=iN/AqNy/hKljQubEThCY6fG1Ip1/THaEqT2SsGhQViM=;
- b=LZdc16u+xiarZNGpQCcq3mutZdCqvWyxlwB2Cuj/F/bIVot7SoEx0suIWn1WNhzT+X
- 2fDX954m5zoY6Nu5AXKkFG5V4KerpYQFPMY4DVHTp8hurVda4HHw2lWNI5fAbbUisxFf
- BZMowshanTebvu2ZBoGZtvmKG/6vNAolBNU0eYTzBsB2FTEuGBiuSpHyGYVUm2oOoz9S
- qILJW8t+WEBeZ5IcQT50NfK+kVYDxrSXfpjj4CdJ5CpPiYSD7omQ00EXE4YPKzybAJkb
- bNs0kbb3z9W5yeIFncaLFARdfPXz+Alteyewp12fWl6CO9QMpnBN5I37Q1HrJudY7U7j
- 2U1A==
-X-Gm-Message-State: AOJu0YxJrJFmNJApaFDS+a1OUprpr3w645sUBAAJ9fM6YI65ZpygyFyR
- txma4joiRQqF1u8jPezIhlGpSgZMc20NmtCRfyzuXeug+BxfSCjMm+5+GSPd3DwL6KHFSRfvmN4
- V7Mc=
-X-Google-Smtp-Source: AGHT+IEtSSCWWKMeSnUZaa6TANBJoF6/z6xYiQpE46mwhh3spO8Jt9gtUN/q94Xg7UuvqyBAmpaZaQ==
-X-Received: by 2002:a05:6512:b0b:b0:539:ea49:d163 with SMTP id
- 2adb3069b0e04-53dc132e21fmr605456e87.21.1732092796868; 
- Wed, 20 Nov 2024 00:53:16 -0800 (PST)
-Received: from localhost.localdomain ([176.187.208.27])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-433b0139b22sm11956555e9.0.2024.11.20.00.53.14
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 20 Nov 2024 00:53:16 -0800 (PST)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
+ d=1e100.net; s=20230601; t=1732093853; x=1732698653;
+ h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+ :from:references:cc:to:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=Hfkd3PwiEmGUCeNvhgI0d1aKQauRs4OhvkYx77lLgq4=;
+ b=S8F/CidT0AE+ZOMqyS36X1jbLTBzmylsR4OqBJI4nIsSwJjmyIduUHWn4K88P6NP25
+ VN5LVF0gY+giE4VgWv6Xc8BZRV85mrREBz5XN5bfJnU5lHL3P+jL/axZZv1VhVCI/PHW
+ LpCVj2CYETbmPnTSJf0E2IGUP7MJCCo6m7zqmPI5y4JabOr1xJejJbe2lDEAzvjmyAW5
+ 04JacqemkWte0QEM0kdSLRg+us32MMkMDi9Pvv0MeoiPbx3GxdWPSxu2XQNv8X9gefv0
+ hAWe5zu5pf2cU+o8+piJUhcTHXT4N+cXdGbMq947jwLmHDC+oG3hsm4XhxMhoMYCRiH6
+ ibEQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWj21iVXOqwSvuXZppPZaOc0Asxj+VP/XnnBclnVaKCeR+m9xEZwNZ0evjnVDwFpJ8Ki56F9faesE+Y@nongnu.org
+X-Gm-Message-State: AOJu0YzViLafSDL6U/Lk38f/Mxqhqi5Mj8jcfeTa6hsf+V4QNB5CYvIy
+ NQXtY6pmMbBR8Xi5tt1aFOfJPQ0QDkyszBaWYK4ut7lEh2z+7qkfFgrAc5ovfNVllQ4p6OCZ/yf
+ D/qU86QxjKo65wORPuLT/fgmSjlRyBbVBPiOH4ptwfYREU2gyyHs4z9ripjOI
+X-Received: by 2002:a05:600c:34c3:b0:42c:bae0:f05b with SMTP id
+ 5b1f17b1804b1-43348986248mr14846705e9.1.1732093853449; 
+ Wed, 20 Nov 2024 01:10:53 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGVQmYpQ1dMtS6gky7bV6KZ/eRPxH/nDVx4uYod69u6cV7AXIW/a0giHzrmULMFI9sh/vMtqg==
+X-Received: by 2002:a05:600c:34c3:b0:42c:bae0:f05b with SMTP id
+ 5b1f17b1804b1-43348986248mr14846545e9.1.1732093853150; 
+ Wed, 20 Nov 2024 01:10:53 -0800 (PST)
+Received: from [192.168.10.3] ([151.49.84.243])
+ by smtp.googlemail.com with ESMTPSA id
+ ffacd0b85a97d-3825493ee48sm1457277f8f.98.2024.11.20.01.10.51
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 20 Nov 2024 01:10:52 -0800 (PST)
+Message-ID: <64087716-e9f8-4016-859d-974173d21dbd@redhat.com>
+Date: Wed, 20 Nov 2024 10:10:51 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] hw/scsi/scsi-disk: Avoid buffer overrun parsing
+ 'loadparam'
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
 Cc: qemu-s390x@nongnu.org, David Hildenbrand <david@redhat.com>,
  Halil Pasic <pasic@linux.ibm.com>,
  Christian Borntraeger <borntraeger@linux.ibm.com>,
  Eric Farman <farman@linux.ibm.com>, Thomas Huth <thuth@redhat.com>,
- Jared Rossi <jrossi@linux.ibm.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 2/2] hw/scsi/scsi-disk: Avoid buffer overrun parsing
- 'loadparam'
-Date: Wed, 20 Nov 2024 09:53:00 +0100
-Message-ID: <20241120085300.49866-3-philmd@linaro.org>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20241120085300.49866-1-philmd@linaro.org>
+ Jared Rossi <jrossi@linux.ibm.com>
 References: <20241120085300.49866-1-philmd@linaro.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+ <20241120085300.49866-3-philmd@linaro.org>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=pbonzini@redhat.com; keydata=
+ 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
+In-Reply-To: <20241120085300.49866-3-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::134;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x134.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.14,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,59 +147,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Coverity reported a 1 byte overrun in scsi_property_set_loadparm
-(CID 15657462). Since loadparam[] length is known, simply directly
-allocate it in the device state.
+On 11/20/24 09:53, Philippe Mathieu-Daudé wrote:
+> @@ -112,7 +113,7 @@ struct SCSIDiskState {
+>       char *vendor;
+>       char *product;
+>       char *device_id;
+> -    char *loadparm;     /* only for s390x */
+> +    char loadparm[LOADPARM_LEN]; /* only for s390x */
 
-Fixes: 429442e52d ("hw: Add 'loadparm' property to scsi disk devices")
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- hw/scsi/scsi-disk.c | 12 +++---------
- 1 file changed, 3 insertions(+), 9 deletions(-)
+You would need a +1 here because of
 
-diff --git a/hw/scsi/scsi-disk.c b/hw/scsi/scsi-disk.c
-index 96a09fe170..f6d6b7c1ea 100644
---- a/hw/scsi/scsi-disk.c
-+++ b/hw/scsi/scsi-disk.c
-@@ -38,6 +38,7 @@
- #include "hw/block/block.h"
- #include "hw/qdev-properties.h"
- #include "hw/qdev-properties-system.h"
-+#include "hw/s390x/ipl/qipl.h"
- #include "sysemu/dma.h"
- #include "sysemu/sysemu.h"
- #include "qemu/cutils.h"
-@@ -112,7 +113,7 @@ struct SCSIDiskState {
-     char *vendor;
-     char *product;
-     char *device_id;
--    char *loadparm;     /* only for s390x */
-+    char loadparm[LOADPARM_LEN]; /* only for s390x */
-     bool tray_open;
-     bool tray_locked;
-     /*
-@@ -3145,19 +3146,12 @@ static char *scsi_property_get_loadparm(Object *obj, Error **errp)
- static void scsi_property_set_loadparm(Object *obj, const char *value,
-                                        Error **errp)
- {
--    char *lp_str;
--
-     if (object_property_get_int(obj, "bootindex", NULL) < 0) {
-         error_setg(errp, "'loadparm' is only valid for boot devices");
-         return;
-     }
- 
--    lp_str = g_malloc0(strlen(value));
--    if (!qdev_prop_sanitize_s390x_loadparm(lp_str, value, errp)) {
--        g_free(lp_str);
--        return;
--    }
--    SCSI_DISK_BASE(obj)->loadparm = lp_str;
-+    qdev_prop_sanitize_s390x_loadparm(SCSI_DISK_BASE(obj)->loadparm, value, errp);
- }
- 
- static void scsi_property_add_specifics(DeviceClass *dc)
--- 
-2.45.2
+static char *scsi_property_get_loadparm(Object *obj, Error **errp)
+{
+     return g_strdup(SCSI_DISK_BASE(obj)->loadparm);
+}
+
+expecting NUL-termination as well.
+
+> -    lp_str = g_malloc0(strlen(value));
+
+I have sent a pull request that simply adds the +1 here, also because...
+
+> -    if (!qdev_prop_sanitize_s390x_loadparm(lp_str, value, errp)) {
+> -        g_free(lp_str);
+> -        return;
+> -    }
+> -    SCSI_DISK_BASE(obj)->loadparm = lp_str;
+> +    qdev_prop_sanitize_s390x_loadparm(SCSI_DISK_BASE(obj)->loadparm, value, errp);
+
+... this would overwrite SCSI_DISK_BASE(obj)->loadparm in case of error. 
+  Note how the code is setting loadparm only after a successful 
+qdev_prop_sanitize_s390x_loadparm.  That's not a problem in practice, 
+because failing to set a property is usually fatal, but not good style 
+either.
+
+Thanks,
+
+Paolo
 
 
