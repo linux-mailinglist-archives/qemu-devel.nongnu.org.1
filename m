@@ -2,82 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0051A9D3FF3
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Nov 2024 17:23:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CBF479D3EF9
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Nov 2024 16:26:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tDnTH-0005IG-6z; Wed, 20 Nov 2024 11:22:27 -0500
+	id 1tDma2-0000Cb-83; Wed, 20 Nov 2024 10:25:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xndchn@gmail.com>) id 1tDmQx-00081d-Ue
- for qemu-devel@nongnu.org; Wed, 20 Nov 2024 10:16:01 -0500
-Received: from mail-pg1-x52a.google.com ([2607:f8b0:4864:20::52a])
+ (Exim 4.90_1) (envelope-from <jim.shu@sifive.com>)
+ id 1tDmZz-0000Bz-Ny
+ for qemu-devel@nongnu.org; Wed, 20 Nov 2024 10:25:20 -0500
+Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <xndchn@gmail.com>) id 1tDmQw-0007HG-Ei
- for qemu-devel@nongnu.org; Wed, 20 Nov 2024 10:15:59 -0500
-Received: by mail-pg1-x52a.google.com with SMTP id
- 41be03b00d2f7-7e6d04f74faso788672a12.1
- for <qemu-devel@nongnu.org>; Wed, 20 Nov 2024 07:15:57 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <jim.shu@sifive.com>)
+ id 1tDmZx-0001Cn-Rk
+ for qemu-devel@nongnu.org; Wed, 20 Nov 2024 10:25:19 -0500
+Received: by mail-ed1-x529.google.com with SMTP id
+ 4fb4d7f45d1cf-5cf6f804233so7730385a12.2
+ for <qemu-devel@nongnu.org>; Wed, 20 Nov 2024 07:25:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1732115756; x=1732720556; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ d=sifive.com; s=google; t=1732116315; x=1732721115; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=MzVlMmUDCPIXjIQbgRccJwhv6qCFgui1V2oLDukdq90=;
- b=a2sAsmLcPBAcP+/tWnpyiVTs4kMVxIwcVIvVrrFZ/uvMOyqgKf4NK9wWGk6w9eYORi
- Kb3/AtzhxLZ6MotWm1wvJKOUiWxdOvkgXOfrWkuDB2isV2saSP5B1erRpAaAWliJqi4h
- tAjYxOoDqaMU1zWySpCqTdg1B5J7pgo3xnvTtaZgizY8wHdxXnejoCeJ0QNvhXXm2v7Y
- wTJIQTl6Ge+51y0tu1/rCOTyy1yOIFhwFyu7L37UEUqScVien8YgbBcS5Y9q3DiJMdn1
- yjMWzed9j/vV3EniV2MabUkEKcC+pyTED+aZnn7P4i07fL5QlP/+jqJw9lfaAkskGIVe
- AuyA==
+ bh=qFmRIVRufQumXPKKytekzl5QVls5Ebz1hdgidH3BWwE=;
+ b=fvbn6XEeQyQDi2ptG4Sr76Ae7pcaCmYwniX7cv8445SP6E41qoN6txe0PtihGas/Xh
+ 7SR+KOQGSgKD/ZXF8Y4/2cUgtCFq5giFuzVf4kHHe9oSnUQGsYj9MxrWpNt+P18CnG6u
+ 5DQFEbp+xzHBt5iYPW4HNcg3x/RPQqnkZoJ8Y070BQaBJlTYdV3WgbYX7fVsLuhd4w/a
+ SodZm/K+HRWW6T1Neqb3XHAK/d8ZzPaK/zWY15sd/qobNhs5G2zPRfZY4npJNn8RZ501
+ iwW639vZfsyC4YMeI+/Xzd5avnsxdoNJfECwDry0VtzWsMUBFEyh2SOynTcBW3CJj00g
+ fzjA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1732115756; x=1732720556;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1732116315; x=1732721115;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=MzVlMmUDCPIXjIQbgRccJwhv6qCFgui1V2oLDukdq90=;
- b=XH8Fdslh3r9Lq5e9tsPnfxNG6SyUZs/zU2XuXZJC9YPQqgIRrXJcbY1O2oj1d3rLP9
- MHVMcoUSBadmheZFzgyuRu0lt26ZCsa4fVmIGoyt8uVRSvBLEv929cGSt//QMurJA1kR
- aPJ6Dm9f/xQ2t/6fEFV/MNdauXiW54zasHFDl74FEPo080Ny9J2mqNjDCPVte8SMhAtU
- PtOHm3IdVU1HJM2cDkLNJlKyAfOr1Hcv/3Y6tqbEcQykciExYI3hQ8OCQhyV1/NNOpJh
- 9hE4WI35zP1jLgwBup0Tq7rQcpeTIun39qGxduw/AGk2pnEHkRLe8z9tYA1XGCXNthzA
- 5Waw==
-X-Gm-Message-State: AOJu0YyxxiS3o7tZM8VCcOedslnwrM3Cxrc9rnGwAp0YWnSjj/aYA73q
- 7EKIHNsW9DMTgBWXl+J+ekQjWw4bMnDvkgUAtLPlzHP1+TNeIXYAGpLZgUAalWr9PQ==
-X-Google-Smtp-Source: AGHT+IETk/kFnwmKWsm9TC+Ih9P1k5qTuXgKYpQwg0MrqhQKNn1fQ6JYmV9+UNOJp5ysAANMRrHiQA==
-X-Received: by 2002:a17:90a:dfc4:b0:2ea:28bc:8b55 with SMTP id
- 98e67ed59e1d1-2eac83d7bdemr5138063a91.9.1732115755950; 
- Wed, 20 Nov 2024 07:15:55 -0800 (PST)
-Received: from localhost.localdomain ([114.254.47.99])
- by smtp.googlemail.com with ESMTPSA id
- d9443c01a7336-212583fccc5sm29352465ad.278.2024.11.20.07.15.52
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 20 Nov 2024 07:15:55 -0800 (PST)
-From: Xiong Nandi <xndchn@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: Xiong Nandi <xndchn@gmail.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH] system/physmem: Fix cpu_memory_rw_debug for armv7m MPU
-Date: Wed, 20 Nov 2024 23:15:15 +0800
-Message-Id: <20241120151515.56884-2-xndchn@gmail.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20241120151515.56884-1-xndchn@gmail.com>
-References: <20241120151515.56884-1-xndchn@gmail.com>
+ bh=qFmRIVRufQumXPKKytekzl5QVls5Ebz1hdgidH3BWwE=;
+ b=mek9CCo1vEDrXI3YvKXGmbkzgouFmOFIJLFur/jmbD8x3goTmW9diA4d7i1kwCujMk
+ gfsL0pLHee1XYAOJYcFqdoj8jagjvL94AGN0DiFFauQg3qXEMw598BnsvKWCHePA8AAA
+ cnvPEE7tshwqOHGMsrcVxNYk6DXLZs80waBi3jx6r8Ysc9+3iH57mkd2VyYiP4d4wZXJ
+ wYpjm0Pv6mEzQzxzKMOyCXK5ARTBih1PTy439BQnzaoyghRHcQ2wZ4Un0VeZ+Qd0DfoS
+ ul8k9c/YBqS+pT7X4fyRtfvKmh+boyeB5/Wa+18UBycAfFz9IFwtSUjTjZHrjVrGpv2V
+ vOug==
+X-Gm-Message-State: AOJu0Yw2HX47gqoSHSxJdT27MoMr7i+KImsBNDFHnCmUwPi9rC1tc/tp
+ K7BuFbL/SyV5P6VILEzw1kd3dYkiqrTCZpDlsZTSC/B+Iw3OKifk2eYC4hiZeJeLxsyy+lsCUmv
+ rYPsbQbtaQC6AcfocFmH5q4dsoWkPWDhKbXFILA==
+X-Google-Smtp-Source: AGHT+IFmwSiYGwqbSbiQOL5Pm0KwmQIxqKDgL8kQSuzNjLKRROi9L7NfVQUf8coeCH3agz8e/Ku5rCUyrsuO4HXnWg0=
+X-Received: by 2002:a05:6402:270e:b0:5cf:d3b0:c498 with SMTP id
+ 4fb4d7f45d1cf-5cff4d27252mr2124665a12.26.1732116315498; Wed, 20 Nov 2024
+ 07:25:15 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52a;
- envelope-from=xndchn@gmail.com; helo=mail-pg1-x52a.google.com
+References: <20241108070454.12699-1-jim.shu@sifive.com>
+ <20241108070454.12699-2-jim.shu@sifive.com>
+ <484d7570-7425-4bb1-adcd-c59c233c6893@ventanamicro.com>
+In-Reply-To: <484d7570-7425-4bb1-adcd-c59c233c6893@ventanamicro.com>
+From: Jim Shu <jim.shu@sifive.com>
+Date: Wed, 20 Nov 2024 23:25:00 +0800
+Message-ID: <CALw707pNV4AcrXTz3OnbZgm2f_sfP4ztV0dUG0b2i_VNEkHsPg@mail.gmail.com>
+Subject: Re: [PATCH v3 1/3] hw/riscv: Support to load DTB after 3GB memory on
+ 64-bit system.
+To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, 
+ Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>, 
+ Bin Meng <bmeng.cn@gmail.com>, Weiwei Li <liwei1518@gmail.com>, 
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::529;
+ envelope-from=jim.shu@sifive.com; helo=mail-ed1-x529.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Wed, 20 Nov 2024 11:22:25 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,34 +94,176 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The actual page size (region size for MPU) of armv7m may
-smaller than TARGET_PAGE_SIZE (2^5 vs 2^10). So we should
-use the actual virtual address to get the phys page address.
+On Tue, Nov 12, 2024 at 5:53=E2=80=AFAM Daniel Henrique Barboza
+<dbarboza@ventanamicro.com> wrote:
+>
+>
+>
+> On 11/8/24 4:04 AM, Jim Shu wrote:
+> > Larger initrd image will overlap the DTB at 3GB address. Since 64-bit
+> > system doesn't have 32-bit addressable issue, we just load DTB to the e=
+nd
+> > of dram in 64-bit system.
+> >
+> > Signed-off-by: Jim Shu <jim.shu@sifive.com>
+> > ---
+> >   hw/riscv/boot.c            | 8 ++++++--
+> >   hw/riscv/microchip_pfsoc.c | 4 ++--
+> >   hw/riscv/sifive_u.c        | 4 ++--
+> >   hw/riscv/spike.c           | 4 ++--
+> >   hw/riscv/virt.c            | 2 +-
+> >   include/hw/riscv/boot.h    | 2 +-
+> >   6 files changed, 14 insertions(+), 10 deletions(-)
+> >
+> > diff --git a/hw/riscv/boot.c b/hw/riscv/boot.c
+> > index 2e319168db..4e4e106a2b 100644
+> > --- a/hw/riscv/boot.c
+> > +++ b/hw/riscv/boot.c
+> > @@ -293,7 +293,7 @@ out:
+> >    * The FDT is fdt_packed() during the calculation.
+> >    */
+> >   uint64_t riscv_compute_fdt_addr(hwaddr dram_base, hwaddr dram_size,
+> > -                                MachineState *ms)
+> > +                                MachineState *ms, RISCVHartArrayState =
+*harts)
+> >   {
+> >       int ret =3D fdt_pack(ms->fdt);
+> >       hwaddr dram_end, temp;
+> > @@ -321,7 +321,11 @@ uint64_t riscv_compute_fdt_addr(hwaddr dram_base, =
+hwaddr dram_size,
+> >        * Thus, put it at an 2MB aligned address that less than fdt size=
+ from the
+> >        * end of dram or 3GB whichever is lesser.
+> >        */
+> > -    temp =3D (dram_base < 3072 * MiB) ? MIN(dram_end, 3072 * MiB) : dr=
+am_end;
+> > +    if (!riscv_is_32bit(harts)) {
+> > +        temp =3D dram_end;
+> > +    } else {
+> > +        temp =3D (dram_base < 3072 * MiB) ? MIN(dram_end, 3072 * MiB) =
+: dram_end;
+> > +    }
+>
+> We'll need to update the comment right before this code given that we're
+> changing the logic for 64 bit CPUs. Thanks,
 
-Signed-off-by: Xiong Nandi <xndchn@gmail.com>
----
- system/physmem.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+OK, I will add it to the comments in the next version, thanks!
 
-diff --git a/system/physmem.c b/system/physmem.c
-index dc1db3a384..a76b305130 100644
---- a/system/physmem.c
-+++ b/system/physmem.c
-@@ -3564,11 +3564,12 @@ int cpu_memory_rw_debug(CPUState *cpu, vaddr addr,
-         MemTxResult res;
- 
-         page = addr & TARGET_PAGE_MASK;
--        phys_addr = cpu_get_phys_page_attrs_debug(cpu, page, &attrs);
-+        phys_addr = cpu_get_phys_page_attrs_debug(cpu, addr, &attrs);
-         asidx = cpu_asidx_from_attrs(cpu, attrs);
-         /* if no physical page mapped, return an error */
-         if (phys_addr == -1)
-             return -1;
-+        phys_addr &= TARGET_PAGE_MASK;
-         l = (page + TARGET_PAGE_SIZE) - addr;
-         if (l > len)
-             l = len;
--- 
-2.25.1
 
+Jim Shu
+
+
+
+>
+>
+> Daniel
+>
+> >
+> >       return QEMU_ALIGN_DOWN(temp - fdtsize, 2 * MiB);
+> >   }
+> > diff --git a/hw/riscv/microchip_pfsoc.c b/hw/riscv/microchip_pfsoc.c
+> > index f9a3b43d2e..ba8b0a2c26 100644
+> > --- a/hw/riscv/microchip_pfsoc.c
+> > +++ b/hw/riscv/microchip_pfsoc.c
+> > @@ -519,7 +519,7 @@ static void microchip_icicle_kit_machine_init(Machi=
+neState *machine)
+> >       bool kernel_as_payload =3D false;
+> >       target_ulong firmware_end_addr, kernel_start_addr;
+> >       uint64_t kernel_entry;
+> > -    uint32_t fdt_load_addr;
+> > +    uint64_t fdt_load_addr;
+> >       DriveInfo *dinfo =3D drive_get(IF_SD, 0, 0);
+> >
+> >       /* Sanity check on RAM size */
+> > @@ -625,7 +625,7 @@ static void microchip_icicle_kit_machine_init(Machi=
+neState *machine)
+> >           /* Compute the fdt load address in dram */
+> >           fdt_load_addr =3D riscv_compute_fdt_addr(memmap[MICROCHIP_PFS=
+OC_DRAM_LO].base,
+> >                                                  memmap[MICROCHIP_PFSOC=
+_DRAM_LO].size,
+> > -                                               machine);
+> > +                                               machine, &s->soc.u_cpus=
+);
+> >           riscv_load_fdt(fdt_load_addr, machine->fdt);
+> >
+> >           /* Load the reset vector */
+> > diff --git a/hw/riscv/sifive_u.c b/hw/riscv/sifive_u.c
+> > index c5e74126b1..05467e833a 100644
+> > --- a/hw/riscv/sifive_u.c
+> > +++ b/hw/riscv/sifive_u.c
+> > @@ -519,7 +519,7 @@ static void sifive_u_machine_init(MachineState *mac=
+hine)
+> >       const char *firmware_name;
+> >       uint32_t start_addr_hi32 =3D 0x00000000;
+> >       int i;
+> > -    uint32_t fdt_load_addr;
+> > +    uint64_t fdt_load_addr;
+> >       uint64_t kernel_entry;
+> >       DriveInfo *dinfo;
+> >       BlockBackend *blk;
+> > @@ -606,7 +606,7 @@ static void sifive_u_machine_init(MachineState *mac=
+hine)
+> >
+> >       fdt_load_addr =3D riscv_compute_fdt_addr(memmap[SIFIVE_U_DEV_DRAM=
+].base,
+> >                                              memmap[SIFIVE_U_DEV_DRAM].=
+size,
+> > -                                           machine);
+> > +                                           machine, &s->soc.u_cpus);
+> >       riscv_load_fdt(fdt_load_addr, machine->fdt);
+> >
+> >       if (!riscv_is_32bit(&s->soc.u_cpus)) {
+> > diff --git a/hw/riscv/spike.c b/hw/riscv/spike.c
+> > index fceb91d946..acd7ab1ae1 100644
+> > --- a/hw/riscv/spike.c
+> > +++ b/hw/riscv/spike.c
+> > @@ -201,7 +201,7 @@ static void spike_board_init(MachineState *machine)
+> >       hwaddr firmware_load_addr =3D memmap[SPIKE_DRAM].base;
+> >       target_ulong kernel_start_addr;
+> >       char *firmware_name;
+> > -    uint32_t fdt_load_addr;
+> > +    uint64_t fdt_load_addr;
+> >       uint64_t kernel_entry;
+> >       char *soc_name;
+> >       int i, base_hartid, hart_count;
+> > @@ -317,7 +317,7 @@ static void spike_board_init(MachineState *machine)
+> >
+> >       fdt_load_addr =3D riscv_compute_fdt_addr(memmap[SPIKE_DRAM].base,
+> >                                              memmap[SPIKE_DRAM].size,
+> > -                                           machine);
+> > +                                           machine, &s->soc[0]);
+> >       riscv_load_fdt(fdt_load_addr, machine->fdt);
+> >
+> >       /* load the reset vector */
+> > diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
+> > index 45a8c4f819..761bce3304 100644
+> > --- a/hw/riscv/virt.c
+> > +++ b/hw/riscv/virt.c
+> > @@ -1424,7 +1424,7 @@ static void virt_machine_done(Notifier *notifier,=
+ void *data)
+> >
+> >       fdt_load_addr =3D riscv_compute_fdt_addr(memmap[VIRT_DRAM].base,
+> >                                              memmap[VIRT_DRAM].size,
+> > -                                           machine);
+> > +                                           machine, &s->soc[0]);
+> >       riscv_load_fdt(fdt_load_addr, machine->fdt);
+> >
+> >       /* load the reset vector */
+> > diff --git a/include/hw/riscv/boot.h b/include/hw/riscv/boot.h
+> > index f778b560de..34a80c5ff4 100644
+> > --- a/include/hw/riscv/boot.h
+> > +++ b/include/hw/riscv/boot.h
+> > @@ -49,7 +49,7 @@ target_ulong riscv_load_kernel(MachineState *machine,
+> >                                  bool load_initrd,
+> >                                  symbol_fn_t sym_cb);
+> >   uint64_t riscv_compute_fdt_addr(hwaddr dram_start, uint64_t dram_size=
+,
+> > -                                MachineState *ms);
+> > +                                MachineState *ms, RISCVHartArrayState =
+*harts);
+> >   void riscv_load_fdt(hwaddr fdt_addr, void *fdt);
+> >   void riscv_setup_rom_reset_vec(MachineState *machine, RISCVHartArrayS=
+tate *harts,
+> >                                  hwaddr saddr,
 
