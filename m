@@ -2,63 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3B189D3498
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Nov 2024 08:47:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A94939D34A5
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Nov 2024 08:48:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tDfQJ-0002RO-EA; Wed, 20 Nov 2024 02:46:51 -0500
+	id 1tDfQK-0002SH-HK; Wed, 20 Nov 2024 02:46:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <fea.wang@sifive.com>)
- id 1tDfQG-0002Q7-Nc
- for qemu-devel@nongnu.org; Wed, 20 Nov 2024 02:46:48 -0500
-Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
+ id 1tDfQI-0002QS-1Q
+ for qemu-devel@nongnu.org; Wed, 20 Nov 2024 02:46:50 -0500
+Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <fea.wang@sifive.com>)
- id 1tDfQF-0006Q0-7e
- for qemu-devel@nongnu.org; Wed, 20 Nov 2024 02:46:48 -0500
-Received: by mail-pl1-x62f.google.com with SMTP id
- d9443c01a7336-21210eaa803so34117545ad.2
- for <qemu-devel@nongnu.org>; Tue, 19 Nov 2024 23:46:43 -0800 (PST)
+ id 1tDfQF-0006QO-A5
+ for qemu-devel@nongnu.org; Wed, 20 Nov 2024 02:46:49 -0500
+Received: by mail-pl1-x631.google.com with SMTP id
+ d9443c01a7336-212776d6449so302185ad.1
+ for <qemu-devel@nongnu.org>; Tue, 19 Nov 2024 23:46:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sifive.com; s=google; t=1732088802; x=1732693602; darn=nongnu.org;
+ d=sifive.com; s=google; t=1732088805; x=1732693605; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=1n5F45dnj2huToG/m+cqtyxGgXbbcrTnolugdKwwrfo=;
- b=AO6V9i9RbnswE42OcdcqNbHxiVuTxCGZmTIq+6ojXptEnoR5i3jB7+Pt2zvT8u24pA
- DpqE1Q0xHpbo1AGxo1K+NuaJGLhdYAMZ+3sXTiLM05Svcqrpt8muWZUnKE/52uddjBdB
- iFw+2cWIKdtG9vLXjLOM2MS8zvwmaEZt0sPwOI+y+AgoEABaFjfZyYWQD0F43KgAkYXl
- MLBPS3A0SGKYA1nYJE28JTBzL1wBqldAzaRtHnMtMRSGbilfI631b1X3y5o3g95h1CtC
- 7gSE65g7+31dy8WVD87MKCcjf9jzbyXrp/uTjcOF1Pp6PiuUXxJeO5x8K8KWgkOgZ6vs
- DrWw==
+ bh=hvzvoO5brrLYHxKu/Ou4AE457DWwgARUuUV3MJMIxX4=;
+ b=CE7XhGPkyPWyxo7xUFeq83w4NzOoXKD/epWoOPEnYxZkUkKIQMmRRqAd1+kF1msq1D
+ 974jgXPd7QvUKvcOo7idWEpUiOXLIlp72P4n6LaWsUpEtoLoPTO+aEuZLnfRnK3/Yu7A
+ 4ZwrMUWXeZl9efvU+8dVbADR/enSNPTS+Lxcdii5vKnFMB+ZryfDAIh6iNV3H41woktR
+ y5YPsTAEwo+RGGsWKoVfiDBIi9rn2LrgU4OYWUwY9socBDW91FQ1k6O08kzn+bMnel6B
+ EAF4pBcicsFgmUYsFcDCASWG/tumt++RCUiu8lm06AeTBdoMp46ONriZKCQ8Bc5UpfGh
+ 8Mfg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1732088802; x=1732693602;
+ d=1e100.net; s=20230601; t=1732088805; x=1732693605;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=1n5F45dnj2huToG/m+cqtyxGgXbbcrTnolugdKwwrfo=;
- b=Wcq30tqvLbD9gBH0wLpRxufGWt+9l3duTI74XGpSGy6rDK8ANAsi/pjXw5HSb2B+oA
- OBYnABsWHcxd1q+Jr0so5UpKkXEoZx9XepdJ5OnrKLSc/nRwQHgHcSR/PnEwPEdQRbD6
- eznuAcsu2GdTIFR4ZfYjyNYfSjIfeCjSIeqRCo0aXcOcW6RCwA3ucw4pXKLK9pJdQ/4s
- IREpjeyBlLETOCkXx9colf3Egh0FKMSa+VKuf43rMxF+3/ZomSLo7WOp5V5s2SjCU2og
- RVIC+yYza2D0T9C3CiZqzlECKBqKXjvBv7Nq+uzvNdSQSFqyA9z8bTheH2jzz3NxBCli
- uppQ==
-X-Gm-Message-State: AOJu0YxXlhGvN/9+FK57M+tj8ebxiDNb5F6V09KNBbXTE5uHTj/VjYHB
- qKDrnoMl1jhdQa4jN0RIKuxIgjSNQhJ1xURPcGyNU0Nj7rgqNtnpM7gPbYNXKA6/xPKVkxSj0QL
- MPUPWe6f5psEXnt5egqstC39oJ5+1hRfxxCtJkSXMJPXOwdQM0qIBw36scVa2l8IeEXpprYk2u4
- 2JqHWJ0hblMRn2n9Fe7QdvBHmZMFpZ6Eic2Ek=
-X-Google-Smtp-Source: AGHT+IF2hBtdNi2m2sZNIY3d4txVg4S42FuD+JBouPgnunijA8ENaf1HWjN94gQ6qWq76kRqhBmrSQ==
-X-Received: by 2002:a17:902:e550:b0:20c:9ec9:9a77 with SMTP id
- d9443c01a7336-2126a4750abmr19304045ad.37.1732088802112; 
- Tue, 19 Nov 2024 23:46:42 -0800 (PST)
+ bh=hvzvoO5brrLYHxKu/Ou4AE457DWwgARUuUV3MJMIxX4=;
+ b=muffz1D8kt7sEEmxoOq3gKTtEDDPDFpg5LZa8ODg/r1jmqkni4A+xuH+GGx7K1HuzP
+ a83nb7rhD9vXEPFdSY0PzVJNIceC5il14jQGUtGdJuD6lKK3qQOY58fkwMqp+yRFScRp
+ jMftDWWoJkAKc4txF0pKRKJ0gSQyua/z0wW0v2scOTKOaUE+Ek7cKT7zOphhZiqx0aJZ
+ G5SvFivHeaQVISKkvSnkKW07bqNZ4YhZD63V7Qa2K6M2Lkce6kL+LKGo5t7DIkqAjTJQ
+ lefccTFNfYbznez/1Or+0ME8DZucuwB9FLwXIpx923NL/NogP4RdX+EAndwP6rjtAMSF
+ 5zJg==
+X-Gm-Message-State: AOJu0Yy5C19QJsQ0juxhE979DswoJvzs9PH94FjD1ENnhdn3BAksIn3y
+ kCbSjQ52kBNmgP+Wr2T2XREhkIn6PfVPWDUJYQNKHSKfRgtEtTMCzf7eZrdGfjy4eQruB5UMmPb
+ FzgZzYxsuId9pkr8wr4YX1wOP87pI/8zQrQlhGXTkUxoG7JmzmpPKyX2C2CyLGTSk9vC6qUhWHz
+ EM6qegirnmdLmgEUKx/tO5hLg9Lr4jXUcKilc=
+X-Google-Smtp-Source: AGHT+IF6nRdpWv1AfiP3UFwmy1yuIt1r9YmXhTV7T9KQcGgymz3ZFI4RY5hGtgFwo031oOrdXHOWUA==
+X-Received: by 2002:a17:902:f652:b0:212:530:a65d with SMTP id
+ d9443c01a7336-2126fd89c9bmr13159015ad.38.1732088804697; 
+ Tue, 19 Nov 2024 23:46:44 -0800 (PST)
 Received: from hsinchu36-syssw02.internal.sifive.com
  (59-124-168-89.hinet-ip.hinet.net. [59.124.168.89])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-211d0f51fe0sm86206255ad.233.2024.11.19.23.46.39
+ d9443c01a7336-211d0f51fe0sm86206255ad.233.2024.11.19.23.46.42
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 19 Nov 2024 23:46:41 -0800 (PST)
+ Tue, 19 Nov 2024 23:46:44 -0800 (PST)
 From: "Fea.Wang" <fea.wang@sifive.com>
 To: qemu-devel@nongnu.org,
 	qemu-riscv@nongnu.org
@@ -69,17 +69,17 @@ Cc: Palmer Dabbelt <palmer@dabbelt.com>,
  Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
  "Fea.Wang" <fea.wang@sifive.com>, Frank Chang <frank.chang@sifive.com>,
  Jim Shu <jim.shu@sifive.com>
-Subject: [PATCH v4 2/6] target/riscv: Support senvcfg[UKTE] bit when svukte
+Subject: [PATCH v4 3/6] target/riscv: Support hstatus[HUKTE] bit when svukte
  extension is enabled
-Date: Wed, 20 Nov 2024 15:48:50 +0800
-Message-Id: <20241120074854.1767780-3-fea.wang@sifive.com>
+Date: Wed, 20 Nov 2024 15:48:51 +0800
+Message-Id: <20241120074854.1767780-4-fea.wang@sifive.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241120074854.1767780-1-fea.wang@sifive.com>
 References: <20241120074854.1767780-1-fea.wang@sifive.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
- envelope-from=fea.wang@sifive.com; helo=mail-pl1-x62f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
+ envelope-from=fea.wang@sifive.com; helo=mail-pl1-x631.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,12 +102,11 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Svukte extension add UKTE bit, bit[8] in senvcfg CSR. The bit will be
-supported when the svukte extension is enabled.
+Svukte extension add HUKTE bit, bit[24] in hstatus CSR. The written
+value will be masked when the svukte extension is not enabled.
 
-When senvcfg[UKTE] bit is set, the memory access from U-mode should do
-the svukte check only except HLV/HLVX/HSV H-mode instructions which
-depend on hstatus[HUKTE].
+When hstatus[HUKTE] bit is set, HLV/HLVX/HSV work in the U-mode should
+do svukte check.
 
 Signed-off-by: Fea.Wang <fea.wang@sifive.com>
 Reviewed-by: Frank Chang <frank.chang@sifive.com>
@@ -116,36 +115,35 @@ Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
 ---
  target/riscv/cpu_bits.h | 1 +
- target/riscv/csr.c      | 4 ++++
- 2 files changed, 5 insertions(+)
+ target/riscv/csr.c      | 3 +++
+ 2 files changed, 4 insertions(+)
 
 diff --git a/target/riscv/cpu_bits.h b/target/riscv/cpu_bits.h
-index 385a2c67c2..4b9f899217 100644
+index 4b9f899217..fe4e34c64a 100644
 --- a/target/riscv/cpu_bits.h
 +++ b/target/riscv/cpu_bits.h
-@@ -785,6 +785,7 @@ typedef enum RISCVException {
- #define SENVCFG_CBIE                       MENVCFG_CBIE
- #define SENVCFG_CBCFE                      MENVCFG_CBCFE
- #define SENVCFG_CBZE                       MENVCFG_CBZE
-+#define SENVCFG_UKTE                       BIT(8)
+@@ -604,6 +604,7 @@ typedef enum {
+ #define HSTATUS_VTVM         0x00100000
+ #define HSTATUS_VTW          0x00200000
+ #define HSTATUS_VTSR         0x00400000
++#define HSTATUS_HUKTE        0x01000000
+ #define HSTATUS_VSXL         0x300000000
  
- #define HENVCFG_FIOM                       MENVCFG_FIOM
- #define HENVCFG_LPE                        MENVCFG_LPE
+ #define HSTATUS32_WPRI       0xFF8FF87E
 diff --git a/target/riscv/csr.c b/target/riscv/csr.c
-index 9846770820..1936a6f32a 100644
+index 1936a6f32a..b6fa8ae53f 100644
 --- a/target/riscv/csr.c
 +++ b/target/riscv/csr.c
-@@ -2453,6 +2453,10 @@ static RISCVException write_senvcfg(CPURISCVState *env, int csrno,
-         mask |= SENVCFG_SSE;
-     }
- 
-+    if (env_archcpu(env)->cfg.ext_svukte) {
-+        mask |= SENVCFG_UKTE;
+@@ -3540,6 +3540,9 @@ static RISCVException read_hstatus(CPURISCVState *env, int csrno,
+ static RISCVException write_hstatus(CPURISCVState *env, int csrno,
+                                     target_ulong val)
+ {
++    if (!env_archcpu(env)->cfg.ext_svukte) {
++        val = val & (~HSTATUS_HUKTE);
 +    }
-+
-     env->senvcfg = (env->senvcfg & ~mask) | (val & mask);
-     return RISCV_EXCP_NONE;
- }
+     env->hstatus = val;
+     if (riscv_cpu_mxl(env) != MXL_RV32 && get_field(val, HSTATUS_VSXL) != 2) {
+         qemu_log_mask(LOG_UNIMP,
 -- 
 2.34.1
 
