@@ -2,93 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00ED49D3496
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Nov 2024 08:47:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F5EF9D34D4
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Nov 2024 08:54:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tDfQO-0002UB-Nb; Wed, 20 Nov 2024 02:46:56 -0500
+	id 1tDfX3-0007RU-3Z; Wed, 20 Nov 2024 02:53:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <fea.wang@sifive.com>)
- id 1tDfQM-0002TZ-U3
- for qemu-devel@nongnu.org; Wed, 20 Nov 2024 02:46:54 -0500
-Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
+ (Exim 4.90_1) (envelope-from <r.peniaev@gmail.com>)
+ id 1tDfX0-0007Q9-QD
+ for qemu-devel@nongnu.org; Wed, 20 Nov 2024 02:53:47 -0500
+Received: from mail-ej1-x62d.google.com ([2a00:1450:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <fea.wang@sifive.com>)
- id 1tDfQL-0006Rz-Bl
- for qemu-devel@nongnu.org; Wed, 20 Nov 2024 02:46:54 -0500
-Received: by mail-pl1-x62f.google.com with SMTP id
- d9443c01a7336-20c7ee8fe6bso17380365ad.2
- for <qemu-devel@nongnu.org>; Tue, 19 Nov 2024 23:46:53 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <r.peniaev@gmail.com>)
+ id 1tDfWz-00009Y-BU
+ for qemu-devel@nongnu.org; Wed, 20 Nov 2024 02:53:46 -0500
+Received: by mail-ej1-x62d.google.com with SMTP id
+ a640c23a62f3a-a99eb8b607aso240179266b.2
+ for <qemu-devel@nongnu.org>; Tue, 19 Nov 2024 23:53:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sifive.com; s=google; t=1732088812; x=1732693612; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=qR1sFxsLrriO/BPDZ7OAiWQXKRll1xzEwd9fI6XIvNU=;
- b=YkD+sP1bLXwlm4WQYEcTfmw67LJt0C4yflyejjk11T7wZ7YmLdxCjoTriMpW6YZyOm
- LWeCKcaJqSbEJ89X3yoRZJKmElfJrUhSIlpWfn5rSZbTXIkqYCkh/3jZ47Mm07p86Qh0
- jYRD/39wcyaf1Is46fUEZ9BVbpH56EJeH5owLFMi4akRMchdNVOopYabCqY1nutncJ2l
- 9cMkW7BYJg69cXYu8xUningQRAXMruQ7k2kqrAURUCVSR8vvcwcnBJ/KJuSyWrqQpI3v
- ovo92WZ2VBcZaRn9rhiuUHNNXIehpJVbTV+xvmzJ9vqdQskvBXEG+YApbh5UZvWJBBSY
- EGYw==
+ d=gmail.com; s=20230601; t=1732089223; x=1732694023; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=ssPGh2Gcl3S8w4QvthlBvRR2oy4k+XVJ4QDrmqM9C5k=;
+ b=RMqMGA0WzvJ3bqxLUdbWKtDuaunqEPn13Yp/jNCo3ZrMuDXBkyJtMkJBCnSpstI1Jj
+ dt0SJN2gSwkfuz1G+RyMMZIqrdxvcmoXcNELM/0+rulAC3DsQmg2wbfPdAKABfPalAzd
+ lrocxZOEGXzAir5Et5nV3pFeiAyCZnJaCUk8Upa1DTfbkqLW9+7ZVRK1As++xHZm3obX
+ F3cjOfWpuLWvVc+aFtQCRc0Nw+mcg7li8LxxGQ34gCpNcxSov4+TBD5osKGo2dhpt9nj
+ zFmyhSYKpbv0aP8BMimjlidTIYjidQ3Bh/AsgJRdfYSWzjb1FZwI2gtOlzFme5n8G4rW
+ 0kyQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1732088812; x=1732693612;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=qR1sFxsLrriO/BPDZ7OAiWQXKRll1xzEwd9fI6XIvNU=;
- b=l3dvVjuaqjjVK6iZflPDRw/UfDdqBJ5JOYgLmdnXBpQYDtHXfCYQscfOj95InC3jbr
- BC27t99hray1HvcQltFOAMJoR3aEG9onOdi4oTJrO8ct6upnhY4qOji2N0i4usLF+1M1
- qDvU6gYkg8LsoIOs+kThi3bepC1NEutLxeMNkJ7ElyazsJE06Ear/e+HBugd1D5YKKvn
- DbSKhUI6/Xgp6PphjBULvwwrvdeypROWtAa0P1P/LtWM+7g8GI48GvD5QIM+0xLWDvF8
- dHaxHkwS7WRuElEt1skX0eSaDSRZ7Oqxvzx6zxQ7fEG7NLN/fCtzpc7CkYd49ZGb/jAW
- YS8w==
-X-Gm-Message-State: AOJu0YztTzut4m4AMOnK7r73/P1SJ6ymQ0XL1D/H6C8C05efizEPppoU
- BGtLzgz9xL58V/P3QsRTeGe3XnJ6Heli/eoqyvB452pPYdO/Z5yQPRsGyq8yPNTztdEe7LMeH+V
- LR4ot/fGDIEUbQpLfnL+bQsK1cAkGPwt17DnwxZEL9H+ne5g74PZV5B95JQ061YdKnQfa0Lzqqa
- BlsI1HIyOkAhV163dF2OBwjWeVay+2tIA1Xio=
-X-Gm-Gg: ASbGncs3GDxMZgom824TDKoy/v6dU6dgt8iyp3kepB96jg4Sr6+dK5pFbJnRuqdHHm1
- 3ivg7L5zYd220fygTqz33gXFm+61MDJdGoCHz79myy+v/qaM3EXKIt7ViCOav/LeMZj2klsFtxF
- zKP4nMiNw73F1piNzulX6BmzC9Q35/uEB+JWzqoyaR91Uxso32o2QIWOb/laiHlPcuR1i2uOtG6
- BpbujMKOGXgk9js1dNqqwxpka+ykacjPVZGpxyEMReb3Wy9E13JC75onGh+8Q4uIDqgrqATqUpN
- hzeCN7gvVobAXp0dkqFpUOfDn/BavLt8sNdgE2GwmA==
-X-Google-Smtp-Source: AGHT+IGcjC2zsB7038QVaycnOA00MoJQXwuwdXeTXVJA8GTE3hBHQdu5cZRc7+Qi8pQ4M4Est+tYKQ==
-X-Received: by 2002:a17:902:e74c:b0:212:1f:e66b with SMTP id
- d9443c01a7336-2126a474ee5mr16915655ad.51.1732088811665; 
- Tue, 19 Nov 2024 23:46:51 -0800 (PST)
-Received: from hsinchu36-syssw02.internal.sifive.com
- (59-124-168-89.hinet-ip.hinet.net. [59.124.168.89])
+ d=1e100.net; s=20230601; t=1732089223; x=1732694023;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=ssPGh2Gcl3S8w4QvthlBvRR2oy4k+XVJ4QDrmqM9C5k=;
+ b=Kp7MWfzRmySf020O2MDdLmFTgWEBy644iDhbAI6x8+ikWKPFDdNg//YOkECIxClTBW
+ 0H56meJmyTb2sIyDFKu5bPeyx/idA/L9u5FJy2SXW6ylBr2BUbScdLD/StmKj2V1LlQk
+ mcyPlKSac6ptCVMdDwuJ6q67Xm8tQc/hlIDu+Fy/m7MDHprjrsyzJsHqvrNf30UoQ//R
+ 0mj/TxahqS0uxomfZ+FigwjQLk67XFKuZmd+yCvtWPa0k4nT/ekPnjknbLGp/RTmOMWW
+ 48efllJBrV4XOOcmokuRSrRei/WLrh9kNcUK0nRfcomuspy1BSSGk280NwiCYK5bn38W
+ Wzug==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVqjKvUeBvQLwOGha9s1diiehDyY4+G8RKrXn1pOOmvUV+fhbOS+4Itt+/vPjaJ9Rx+OQq6sePt20I4@nongnu.org
+X-Gm-Message-State: AOJu0YxzIj2QLCTCF1Hgsy68RY25YdE+J0OY+TSNoOHYy/GsPAKRgWKZ
+ l/7HEBdshv5gAT7y/t7Iu3TtPlR4PAGchl7rgbEVK0mI/9uzn3BG
+X-Gm-Gg: ASbGncs11kROoIFFI9UeIF6A9O4VXri+vo0Pf2viDTt76Vkh9uvUviGM7vAwK3tRW8f
+ QRFs29cRh9CcKJkV3nskhcrKoq7K7TunnrL+jLh2Lwv8jPmhaQ1angyqJ5Gyoew6BJI3N0WduU1
+ otRhdc/vMtnI29h2Y0KoX4P1TAoGXIPP4BywI7y/1QTL38b2njEJr/glEJsOs13i5HN3cLzbnLu
+ j+dcLHFNDAfi4uxJE2kwNj/IjtNlbT/pL6THR+stAsNHTeU0iXgLHdgwg==
+X-Google-Smtp-Source: AGHT+IFseflXyPcOilZJ70kKgIb8JteeURnhaA47aafK1VOu29WgTSoQ+2+QCEvVsu9z9ZEYV2GP8Q==
+X-Received: by 2002:a17:907:3d9e:b0:aa4:a814:3f75 with SMTP id
+ a640c23a62f3a-aa4dd748c45mr157954366b.52.1732089223165; 
+ Tue, 19 Nov 2024 23:53:43 -0800 (PST)
+Received: from finn.fritz.box ([2a02:8109:8384:1400:37e7:543e:4254:db4f])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-211d0f51fe0sm86206255ad.233.2024.11.19.23.46.49
+ a640c23a62f3a-aa20df265bbsm738395666b.38.2024.11.19.23.53.42
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 19 Nov 2024 23:46:51 -0800 (PST)
-From: "Fea.Wang" <fea.wang@sifive.com>
-To: qemu-devel@nongnu.org,
-	qemu-riscv@nongnu.org
-Cc: Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>, Bin Meng <bmeng.cn@gmail.com>,
- Weiwei Li <liwei1518@gmail.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, "Fea.Wang" <fea.wang@sifive.com>
-Subject: [PATCH v4 6/6] target/riscv: Check svukte is not enabled in RV32
-Date: Wed, 20 Nov 2024 15:48:54 +0800
-Message-Id: <20241120074854.1767780-7-fea.wang@sifive.com>
+ Tue, 19 Nov 2024 23:53:42 -0800 (PST)
+From: Roman Penyaev <r.peniaev@gmail.com>
+To: 
+Cc: Roman Penyaev <r.peniaev@gmail.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?q?Cl=C3=A9ment=20Mathieu--Drif?= <clement.mathieu--drif@eviden.com>,
+ qemu-devel@nongnu.org
+Subject: [PATCH v2 0/2] chardev/char-mux: tweak mux bitset operations
+Date: Wed, 20 Nov 2024 08:53:19 +0100
+Message-Id: <20241120075321.27143-1-r.peniaev@gmail.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241120074854.1767780-1-fea.wang@sifive.com>
-References: <20241120074854.1767780-1-fea.wang@sifive.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
- envelope-from=fea.wang@sifive.com; helo=mail-pl1-x62f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62d;
+ envelope-from=r.peniaev@gmail.com; helo=mail-ej1-x62d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,30 +99,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Based on the spec, svukte depends on SV39, so it should not be enabled
-in RV32.
+Patchset tweaks bitset operations by changing a constant to unsigned
+long, introduces a static compile check and simplifies bitset operations.
 
-Signed-off-by: Fea.Wang <fea.wang@sifive.com>
----
- target/riscv/tcg/tcg-cpu.c | 5 +++++
- 1 file changed, 5 insertions(+)
+v1..v2:
 
-diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
-index c62c221696..4273f1f472 100644
---- a/target/riscv/tcg/tcg-cpu.c
-+++ b/target/riscv/tcg/tcg-cpu.c
-@@ -652,6 +652,11 @@ void riscv_cpu_validate_set_extensions(RISCVCPU *cpu, Error **errp)
-         return;
-     }
- 
-+    if (mcc->misa_mxl_max == MXL_RV32 && cpu->cfg.ext_svukte) {
-+        error_setg(errp, "svukte is not supported by to RV32");
-+        return;
-+    }
-+
-     /*
-      * Disable isa extensions based on priv spec after we
-      * validated and set everything we need.
+Rebase on latest master, incorporate review tags.
+
+Roman Penyaev (2):
+  chardev/char-mux: shift unsigned long to avoid 32-bit overflow
+  chardev/char-mux: make boolean bit check instead of find_next_bit()
+
+ chardev/char-mux.c | 15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
+
+
+Signed-off-by: Roman Penyaev <r.peniaev@gmail.com>
+Reviewed-by: "Marc-André Lureau" <marcandre.lureau@redhat.com>
+Cc: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Clément Mathieu--Drif <clement.mathieu--drif@eviden.com>
+Cc: qemu-devel@nongnu.org
+
+
 -- 
 2.34.1
 
