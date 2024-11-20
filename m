@@ -2,81 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE3049D3424
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Nov 2024 08:29:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 03B389D3427
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Nov 2024 08:29:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tDf7q-00020L-Gl; Wed, 20 Nov 2024 02:27:46 -0500
+	id 1tDf7r-000215-0X; Wed, 20 Nov 2024 02:27:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tDf7l-0001zH-RA
- for qemu-devel@nongnu.org; Wed, 20 Nov 2024 02:27:42 -0500
+ id 1tDf7n-0001zt-Ty
+ for qemu-devel@nongnu.org; Wed, 20 Nov 2024 02:27:43 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tDf7k-00081l-7a
- for qemu-devel@nongnu.org; Wed, 20 Nov 2024 02:27:41 -0500
+ id 1tDf7m-00086V-7v
+ for qemu-devel@nongnu.org; Wed, 20 Nov 2024 02:27:43 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1732087659;
+ s=mimecast20190719; t=1732087661;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=N2F9E4mEmEirmkyQv404Dyo179Nuu2p/DO/bYOMpAzw=;
- b=SRITF/itIjqJx2D8VrfzTdhQUJ7EslUYa+NQLB3xsMzoJlTo5dwNR9KQ46gagJ6tbk/0Ct
- u0jUk4z1LAipik98xEX1Lyaw3qmg+x0d5lhTVK8A9aIbROG/gEHGH20IP3QdjW3L0pi5EF
- mVubkRpI+C1018pvDkpDmBwZNqVO54E=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=2rLHa2lhaD4JkWUbp9sIMcNrBEmDkALIbWpGkF72WqY=;
+ b=Yrh/eaL+hqMOYLlRd6sH5d0OuNsQztgsVL3YYx1A+py1oB/5OYO5rMzSCoXcDvdw4pmL9C
+ PnTfdHyozVLOBWFbeTFVEWyE56w5rMQhXcAyfJLZwvdSG85p/kT+SE09vXBhNlHoAdFHxf
+ rZuez9ypkXKV+HfHvSOXdNUhzZHJS80=
+Received: from mail-lf1-f71.google.com (mail-lf1-f71.google.com
+ [209.85.167.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-274-j5vmsjoWOUe7OG-nwjAAYA-1; Wed, 20 Nov 2024 02:27:37 -0500
-X-MC-Unique: j5vmsjoWOUe7OG-nwjAAYA-1
-X-Mimecast-MFC-AGG-ID: j5vmsjoWOUe7OG-nwjAAYA
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-4315ad4938fso13809195e9.0
- for <qemu-devel@nongnu.org>; Tue, 19 Nov 2024 23:27:37 -0800 (PST)
+ us-mta-654-g2th1MNmO3ueSzxoG51GWg-1; Wed, 20 Nov 2024 02:27:40 -0500
+X-MC-Unique: g2th1MNmO3ueSzxoG51GWg-1
+X-Mimecast-MFC-AGG-ID: g2th1MNmO3ueSzxoG51GWg
+Received: by mail-lf1-f71.google.com with SMTP id
+ 2adb3069b0e04-539e294566dso3838879e87.3
+ for <qemu-devel@nongnu.org>; Tue, 19 Nov 2024 23:27:40 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1732087655; x=1732692455;
+ d=1e100.net; s=20230601; t=1732087658; x=1732692458;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=N2F9E4mEmEirmkyQv404Dyo179Nuu2p/DO/bYOMpAzw=;
- b=VCXj/d+EN6P6PnS0CSkFZnWmUf+5/ts/07jCr6zKUMmtGdgw2TPksVLzoftyA7YN4X
- lQnkA1sXiRxAwfbwCl/2iaKgSynH4wfORpHi+MNtjCKDVPcXvKyA6bMDi2cGpQr3aB8x
- wWOLgATek7aJvOBBns7U5K0PH3MRK7I7RYSSl9Gat0d3L3U2EjbWpK/OVcwYrjmJsOz9
- eKuYrCZ3woNe31eJ3RqQNcdmyJkt518CMZZsiErPV0lSFAHQmeLEPFdXQEwFfIu8Vp8X
- Z9YmaRCj3mgOOSA+OKaT9aGc5WcFbdZR2leEj5/ykeMOdqrgX2SxFfQkRoqYis3Xy4mN
- hnPw==
-X-Gm-Message-State: AOJu0YwXmbrVSfy1ps6EtNzI4IfwHCcVe3mwwlbXRwhtUJzTR6z/Orqx
- wZ4FtNBCVYbnNRdUezQmpU4mH2n+xq5VdIq2sota14f/sI1val+flUkuT8Qx/I6RB3jNtq44ntz
- eCg4OVbzd0DJi37m7Xkp3On2+tIUoZdygwYICOUU0gVp6sMHGvXkiDaQbTtGB4bSEOggsYuUBr3
- HOAOB3vtaGgGC9qOmp4xUAlQTxD7rczdWVcw9e
-X-Received: by 2002:a5d:64c6:0:b0:382:5206:8b5d with SMTP id
- ffacd0b85a97d-38254b21ac8mr976270f8f.42.1732087655183; 
- Tue, 19 Nov 2024 23:27:35 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGGtjKu0P42Vwo06TAVfnN7ZEI6Gu+a7HawNXdaZ81ykKy1gTB52/PeupQA/RjI90nuuPLGhg==
-X-Received: by 2002:a5d:64c6:0:b0:382:5206:8b5d with SMTP id
- ffacd0b85a97d-38254b21ac8mr976258f8f.42.1732087654777; 
- Tue, 19 Nov 2024 23:27:34 -0800 (PST)
+ bh=2rLHa2lhaD4JkWUbp9sIMcNrBEmDkALIbWpGkF72WqY=;
+ b=v3z/NaQCYpem0qTUYB2exOg4PpV6xvvUGgshfHN9FnNfu0WxR0U8803Z1vEaUNSE7q
+ mWHMJyUzzSW6LzSUF4Hg3qh377ElEoK8Fe47yhh4xA2/nVTQr1ztSYWlD8IBEOAYinb4
+ L64B9epdV3Zx1um+pj6AUSYzAH7KT+gRuwDaxIFeXUZjpbaUSVKUuL9FPLrJHEuoeBoU
+ Aez7BUNXcnwj5UOFKN5WOlRjhBQENa+GU4hTonzIZ44Ln/gl3/HivIQ00mQLkRcd+6ES
+ uwUyl2RaXNEf31lioCZ/8Bct4hwaNT3HlS6mQrjmQvNBnaxqoE9c7NYKxdFmO51aN/WJ
+ Oiuw==
+X-Gm-Message-State: AOJu0YzIvYJkDtxN9SFWwuRSTnl8Ba29LOH+a3ncBhB1eaftwhD8Yz5a
+ 2D134hiotaGY+RzmVWifElEWKkdOzvJYOww8rZbapYehQfxoaUGzEC9Ie6hUCShQ0JRDrwKdQBL
+ NrNVpT94ZiBDt2chxPfLkprdrhRAeHBvEWxtph+wFY6kkH7tNbZO5UhApAvO+BDPpt5PPlpRGGm
+ jdxjYHWGlKxFfKjQcBa5dLTWmKKdij//9Yyiav
+X-Received: by 2002:ac2:5b01:0:b0:539:f26f:d285 with SMTP id
+ 2adb3069b0e04-53dc1323503mr633172e87.3.1732087658047; 
+ Tue, 19 Nov 2024 23:27:38 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGhRVz9VYZsZd/AYl+/XTvilrzQiVez0TUuzzSwRNqUHj6o+oMnUPEX6uqNrjfjUJasZ4LH9w==
+X-Received: by 2002:ac2:5b01:0:b0:539:f26f:d285 with SMTP id
+ 2adb3069b0e04-53dc1323503mr633154e87.3.1732087657623; 
+ Tue, 19 Nov 2024 23:27:37 -0800 (PST)
 Received: from [192.168.10.3] ([151.49.84.243])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-433b45d4c68sm9007665e9.22.2024.11.19.23.27.32
+ 5b1f17b1804b1-433b45d4ce6sm9161925e9.25.2024.11.19.23.27.35
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 19 Nov 2024 23:27:33 -0800 (PST)
+ Tue, 19 Nov 2024 23:27:35 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Zhao Liu <zhao1.liu@intel.com>, Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 4/5] hw/core/machine-smp: Fix error message parameter
-Date: Wed, 20 Nov 2024 08:27:22 +0100
-Message-ID: <20241120072723.103477-5-pbonzini@redhat.com>
+Cc: jrossi@linux.ibm.com,
+	thuth@redhat.com
+Subject: [PULL 5/5] scsi: fix allocation for s390x loadparm
+Date: Wed, 20 Nov 2024 08:27:23 +0100
+Message-ID: <20241120072723.103477-6-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241120072723.103477-1-pbonzini@redhat.com>
 References: <20241120072723.103477-1-pbonzini@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -103,38 +102,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Zhao Liu <zhao1.liu@intel.com>
+Coverity reports a possible buffer overrun due to a non-NUL-terminated
+string in scsi_property_set_loadparm().  While things are not so easy,
+because qdev_prop_sanitize_s390x_loadparm is designed to operate on a
+buffer that is not NUL-terminated, in this case the string *does* have
+to be NUL-terminated because it is read by scsi_property_get_loadparm
+and s390_build_iplb.
 
-In the loop checking smp cache support, the error message should report
-the current cache level and type.
-
-Fix the parameter of error_setg() to ensure it reports the correct cache
-level and type.
-
-Resolves: Coverity CID 1565391
-Fixes: f35c0221fef8 ("hw/core: Check smp cache topology support for machine")
-Reported-by: Peter Maydell <peter.maydell@linaro.org>
-Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Link: https://lore.kernel.org/r/20241110150901.130647-3-zhao1.liu@intel.com
+Reviewed-by: jrossi@linux.ibm.com
+Cc: thuth@redhat.com
+Fixes: 429442e52d9 ("hw: Add "loadparm" property to scsi disk devices for booting on s390x", 2024-11-18)
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- hw/core/machine-smp.c | 2 +-
+ hw/scsi/scsi-disk.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/core/machine-smp.c b/hw/core/machine-smp.c
-index b87637c78f6..b954eb84902 100644
---- a/hw/core/machine-smp.c
-+++ b/hw/core/machine-smp.c
-@@ -317,7 +317,7 @@ bool machine_parse_smp_cache(MachineState *ms,
-             !mc->smp_props.cache_supported[props->cache]) {
-             error_setg(errp,
-                        "%s cache topology not supported by this machine",
--                       CacheLevelAndType_str(node->value->cache));
-+                       CacheLevelAndType_str(props->cache));
-             return false;
-         }
+diff --git a/hw/scsi/scsi-disk.c b/hw/scsi/scsi-disk.c
+index 8e553487d50..7f13b0588f2 100644
+--- a/hw/scsi/scsi-disk.c
++++ b/hw/scsi/scsi-disk.c
+@@ -3152,7 +3152,7 @@ static void scsi_property_set_loadparm(Object *obj, const char *value,
+         return;
+     }
  
+-    lp_str = g_malloc0(strlen(value));
++    lp_str = g_malloc0(strlen(value) + 1);
+     if (!qdev_prop_sanitize_s390x_loadparm(lp_str, value, errp)) {
+         g_free(lp_str);
+         return;
 -- 
 2.47.0
 
