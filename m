@@ -2,66 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D43FB9D43AF
+	by mail.lfdr.de (Postfix) with ESMTPS id DC2299D43B0
 	for <lists+qemu-devel@lfdr.de>; Wed, 20 Nov 2024 22:58:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tDshQ-0008CY-2H; Wed, 20 Nov 2024 16:57:24 -0500
+	id 1tDshT-0008HS-0P; Wed, 20 Nov 2024 16:57:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tDshM-0008CK-7I
- for qemu-devel@nongnu.org; Wed, 20 Nov 2024 16:57:20 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tDshP-0008Cl-0U
+ for qemu-devel@nongnu.org; Wed, 20 Nov 2024 16:57:23 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tDshD-0006L0-23
- for qemu-devel@nongnu.org; Wed, 20 Nov 2024 16:57:12 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tDshM-0006Mz-19
+ for qemu-devel@nongnu.org; Wed, 20 Nov 2024 16:57:22 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1732139829;
+ s=mimecast20190719; t=1732139832;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=eD7+FugkD5uxWKXsl4KP6FXPPjpqepru+nhpsPr60gw=;
- b=hj3w4p9hXQzsZcBx0lh0ndPQY3oGFHxhqJXAYuKDBZU3cuc0YqTiM/MX413Ux+yByJiCu6
- 9+eGckEEbdcXPhU534iDe/3wxfXImEGlUeSpM/ObogKkCsPOGfT0adg9F9An44e1lSrK1a
- jAHaCnI2CWVwJdcC7eNAh9hZzFEqJy4=
-Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
- [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=payjPLYurKI+5/EKzyakmMM06dc3GEHFTxopaOn1dX4=;
+ b=KCID8AoISrVxcJBLjeFUqmtEj/m31m5WWG73J58bLfZRgDEaildhG4cTBcVtFnaEBVw9FF
+ 5CcsazBRYgFXO5MYaNtBiYTHtrGT5fNGnl+iDn18Nvs7hqXLuMSrbEYlb+mEp0szFtF7Vf
+ fc4pk2UpESEvlHFZx30TgD80Sgn5xlk=
+Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
+ [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-507-PfW5_WV8NuON98Fmp3ZC2w-1; Wed, 20 Nov 2024 16:57:08 -0500
-X-MC-Unique: PfW5_WV8NuON98Fmp3ZC2w-1
-X-Mimecast-MFC-AGG-ID: PfW5_WV8NuON98Fmp3ZC2w
-Received: by mail-qt1-f197.google.com with SMTP id
- d75a77b69052e-460dd31b4c1so3148451cf.1
- for <qemu-devel@nongnu.org>; Wed, 20 Nov 2024 13:57:08 -0800 (PST)
+ us-mta-244-S0lWEthfPmOCvB4Ne_cZNQ-1; Wed, 20 Nov 2024 16:57:10 -0500
+X-MC-Unique: S0lWEthfPmOCvB4Ne_cZNQ-1
+X-Mimecast-MFC-AGG-ID: S0lWEthfPmOCvB4Ne_cZNQ
+Received: by mail-qt1-f200.google.com with SMTP id
+ d75a77b69052e-461011bd338so2674271cf.3
+ for <qemu-devel@nongnu.org>; Wed, 20 Nov 2024 13:57:10 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1732139827; x=1732744627;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=eD7+FugkD5uxWKXsl4KP6FXPPjpqepru+nhpsPr60gw=;
- b=ZDA78RBo69Jvnu/dwNdOBo6S+pOrlFtfMaIpCkf06YJ6/N3frSeK9Ne+5rpCHUnurQ
- qARdfig2d35Sy9F8kecDN9mWIKGFbuWRaZOEFcWOfCBLo2vvx61outvLvooJkkJCThi7
- b9zkPlkCBMDK8azLfOIbzPakZ8rKMZkr7ZFPNwmkNhbqVNfotWk9dXEai1AWJH202ePR
- nIdxJ0jJBWS8L41cgkKz2v2gHrzt5kRLd4OjH7sSTTDyZjyOesvmsAX1xhwiVhil3Oc4
- MHyhSkzhJvpKnxJiJS/E8eIQSmDBDOvsgTEv+W3xGkuHaVEwJM184TsqlPASsQR1EEq+
- wqpA==
-X-Gm-Message-State: AOJu0YyapzV+LZY2b3QP7FfDAISw509wiNXyJAs5aKc6kXSvjWKshAUz
- OWk6eKY9WqgeFEAgBNRQpsK538HYw93vfqpUwI6hThjEeX5Bcq1L1CBQQTR7yYnln+3AsGoehFV
- PtvgPqMPN9kNHgFgO/q6KnFvWxhst8zkzR6QMlqfMwLqZJw3JvrnMn9o+Dbe8lUJ883dxHRRI2B
- YvBBo2Rdzg4lCDP9Cnsow1/imn+1D7sQJkxg==
-X-Received: by 2002:a05:622a:1e85:b0:460:be37:7fc9 with SMTP id
- d75a77b69052e-464858aa89fmr66028721cf.56.1732139827156; 
- Wed, 20 Nov 2024 13:57:07 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGeu17J7WVKp1JOc/cT9DM+JoKQ2Ku0L6ttWOiat91K4TOkFCroJqMJFJRNE8Ud/vusRmCf7Q==
-X-Received: by 2002:a05:622a:1e85:b0:460:be37:7fc9 with SMTP id
- d75a77b69052e-464858aa89fmr66028371cf.56.1732139826810; 
- Wed, 20 Nov 2024 13:57:06 -0800 (PST)
+ d=1e100.net; s=20230601; t=1732139829; x=1732744629;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=payjPLYurKI+5/EKzyakmMM06dc3GEHFTxopaOn1dX4=;
+ b=T9+IIBEwjOs18DaPop0IIu9Qccm4K8C9/Sl/odk/8XQvr07YB38OSLazf3g5l31ccb
+ m31vI5r59jR8VwDRjHkJSym2C+u1i8K0SRN9z69Wxici1szqb813rGwVx4DDiiclvkRS
+ /buSOSmpc4ZYByl+DbS0FNZyGUR5jXpI1blT90HhmwUM+CD8KRpcaJ3lDw07wcgL0PDa
+ aUFc8uzYsuNUskU92Rx1zU3CDzyYIvIW02793ynbtPaMWw0uJjvzEijf7+8wMFPgzz7Y
+ 6yN/H+ODYr6xtXNN8lcWSDO9KIrxBGOxbPkC+cQ9jQalRmicG/mjVmADZJnO4fZLORXy
+ xT2w==
+X-Gm-Message-State: AOJu0YwSTl9CgZ0/Rj3/I9QOTVDTpMYz5kd9hf2nXsFbZ5GA5vk5y8Vb
+ kMqZhSQrzaxg+aBOjFAgRV5DX8OnzkgUOo/PvhV37dSx3Vl7OtBPhz041jTSNp7iHCd1SMCoEEO
+ iuI4RNhzXLb1kSJ0UhLw+yD7KEvVRv5hE3q7PAqQYtyZcm0+ggv68PP0igMsstEEtZ7k1dfW4MO
+ GonWVRWQgHXkVVtv3lKFAYWWxB8NHG44iP2w==
+X-Received: by 2002:a05:622a:19a9:b0:460:9318:e4bb with SMTP id
+ d75a77b69052e-464782a73f5mr50726211cf.9.1732139829412; 
+ Wed, 20 Nov 2024 13:57:09 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGqYI4EbGa+pBwIBfzwW5MC23IJ6t+sM9r88rOhppSXbuA/5zJfuC7qcJOrRWZH7UTWZJDZqg==
+X-Received: by 2002:a05:622a:19a9:b0:460:9318:e4bb with SMTP id
+ d75a77b69052e-464782a73f5mr50725931cf.9.1732139829066; 
+ Wed, 20 Nov 2024 13:57:09 -0800 (PST)
 Received: from x1n.redhat.com (pool-99-254-114-190.cpe.net.cable.rogers.com.
  [99.254.114.190]) by smtp.gmail.com with ESMTPSA id
- d75a77b69052e-464680d6826sm14632881cf.15.2024.11.20.13.57.04
+ d75a77b69052e-464680d6826sm14632881cf.15.2024.11.20.13.57.07
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 20 Nov 2024 13:57:06 -0800 (PST)
+ Wed, 20 Nov 2024 13:57:08 -0800 (PST)
 From: Peter Xu <peterx@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Eduardo Habkost <eduardo@habkost.net>,
@@ -72,21 +73,22 @@ Cc: Eduardo Habkost <eduardo@habkost.net>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>, Fabiano Rosas <farosas@suse.de>
-Subject: [PATCH 00/12] QOM: container_get() removal
-Date: Wed, 20 Nov 2024 16:56:51 -0500
-Message-ID: <20241120215703.3918445-1-peterx@redhat.com>
+Subject: [PATCH 01/12] qom: Add TYPE_CONTAINER macro
+Date: Wed, 20 Nov 2024 16:56:52 -0500
+Message-ID: <20241120215703.3918445-2-peterx@redhat.com>
 X-Mailer: git-send-email 2.45.0
+In-Reply-To: <20241120215703.3918445-1-peterx@redhat.com>
+References: <20241120215703.3918445-1-peterx@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.143,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -104,85 +106,86 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This series is not for 9.2, but for 10.0.  It is intended to replace this
-previous patchset:
+Provide a macro for the container type across QEMU source tree, rather than
+hard code it every time.
 
-  [PATCH 0/5] QOM: Enforce container_get() to operate on containers only
-  https://lore.kernel.org/r/20241118221330.3480246-1-peterx@redhat.com
+Signed-off-by: Peter Xu <peterx@redhat.com>
+---
+ include/qom/object.h | 1 +
+ hw/arm/stellaris.c   | 2 +-
+ qom/container.c      | 4 ++--
+ qom/object.c         | 4 ++--
+ 4 files changed, 6 insertions(+), 5 deletions(-)
 
-Since it's a different patchset, the versioning starts from v1.
-
-The series is about container_get() and its removal.  Meanwhile after the
-whole series applied, all the containers will be created explicitly.  No
-lookup code will implicitly create container anymore.
-
-In general, container_get() is a flaky interface in a few things.  Firstly,
-some of the users use it without getting a container object.  Secondly, it
-can implicitly create containers on the fly.
-
-As Dan (mostly) pointed out, we don't have a super complicated container
-layout.  It looks like this:
-
-  /objects
-  /chardevs
-  /backend         (conditional, ui/ only)
-  /dr-connector    (conditional, ppc/ only)
-  /machine
-    /peripheral
-    /peripheral-anon
-    /unattached
-
-This series create these containers explicitly.
-
-There's a side benefit of dropping container_get(), which is to avoid
-complicated string operations, as container_get() is never used in more
-than one depth.  It means switching to object_resolve_path_component()
-should make existing code even tiny little faster.
-
-To achieve this, some test needs to be fixed first.  For that, "tests: Fix
-test-qdev-global-props on anonymous qdev realize()".
-
-Comments welcomed, thanks.
-
-Peter Xu (12):
-  qom: Add TYPE_CONTAINER macro
-  qom: New container_create()
-  tests: Fix test-qdev-global-props on anonymous qdev realize()
-  tests: Explicitly create containers in test_qom_partial_path()
-  ui/console: Explicitly create "/backend" container
-  hw/ppc: Explicitly create the drc container
-  ppc/e500: Avoid abuse of container_get()
-  qdev: Make qdev_get_machine() not use container_get()
-  qdev: Add machine_get_container()
-  qom: Create system containers explicitly
-  qom: Add object_get_container()
-  qom: Drop container_get()
-
- include/hw/qdev-core.h              | 10 ++++++++
- include/qom/object.h                | 25 +++++++++++++-----
- backends/cryptodev.c                |  4 +--
- chardev/char.c                      |  2 +-
- hw/arm/stellaris.c                  |  2 +-
- hw/core/gpio.c                      |  3 +--
- hw/core/machine.c                   | 19 +++++++++++---
- hw/core/qdev.c                      | 28 +++++++++++++++++---
- hw/core/sysbus.c                    |  4 +--
- hw/i386/pc.c                        |  4 +--
- hw/pci-host/ppce500.c               |  4 +--
- hw/ppc/spapr_drc.c                  | 40 +++++++++++++++++++++--------
- qom/container.c                     | 31 ++++++++--------------
- qom/object.c                        | 30 +++++++++++++++++++---
- scsi/pr-manager.c                   |  4 +--
- system/ioport.c                     |  2 +-
- system/memory.c                     |  2 +-
- system/qdev-monitor.c               |  6 ++---
- system/vl.c                         |  3 +--
- tests/unit/check-qom-proplist.c     |  2 +-
- tests/unit/test-qdev-global-props.c | 21 +++++++++++++++
- ui/console.c                        |  4 +--
- ui/dbus-chardev.c                   |  2 +-
- 23 files changed, 180 insertions(+), 72 deletions(-)
-
+diff --git a/include/qom/object.h b/include/qom/object.h
+index 43c135984a..3ba370ce9b 100644
+--- a/include/qom/object.h
++++ b/include/qom/object.h
+@@ -26,6 +26,7 @@ typedef struct InterfaceClass InterfaceClass;
+ typedef struct InterfaceInfo InterfaceInfo;
+ 
+ #define TYPE_OBJECT "object"
++#define TYPE_CONTAINER "container"
+ 
+ typedef struct ObjectProperty ObjectProperty;
+ 
+diff --git a/hw/arm/stellaris.c b/hw/arm/stellaris.c
+index 376746251e..6d518b9cde 100644
+--- a/hw/arm/stellaris.c
++++ b/hw/arm/stellaris.c
+@@ -1053,7 +1053,7 @@ static void stellaris_init(MachineState *ms, stellaris_board_info *board)
+     flash_size = (((board->dc0 & 0xffff) + 1) << 1) * 1024;
+     sram_size = ((board->dc0 >> 18) + 1) * 1024;
+ 
+-    soc_container = object_new("container");
++    soc_container = object_new(TYPE_CONTAINER);
+     object_property_add_child(OBJECT(ms), "soc", soc_container);
+ 
+     /* Flash programming is done via the SCU, so pretend it is ROM.  */
+diff --git a/qom/container.c b/qom/container.c
+index 455e8410c6..cfec92a944 100644
+--- a/qom/container.c
++++ b/qom/container.c
+@@ -15,7 +15,7 @@
+ #include "qemu/module.h"
+ 
+ static const TypeInfo container_info = {
+-    .name          = "container",
++    .name          = TYPE_CONTAINER,
+     .parent        = TYPE_OBJECT,
+ };
+ 
+@@ -37,7 +37,7 @@ Object *container_get(Object *root, const char *path)
+     for (i = 1; parts[i] != NULL; i++, obj = child) {
+         child = object_resolve_path_component(obj, parts[i]);
+         if (!child) {
+-            child = object_new("container");
++            child = object_new(TYPE_CONTAINER);
+             object_property_add_child(obj, parts[i], child);
+             object_unref(child);
+         }
+diff --git a/qom/object.c b/qom/object.c
+index 9edc06d391..214d6eb4c1 100644
+--- a/qom/object.c
++++ b/qom/object.c
+@@ -1739,7 +1739,7 @@ Object *object_get_root(void)
+     static Object *root;
+ 
+     if (!root) {
+-        root = object_new("container");
++        root = object_new(TYPE_CONTAINER);
+     }
+ 
+     return root;
+@@ -1755,7 +1755,7 @@ Object *object_get_internal_root(void)
+     static Object *internal_root;
+ 
+     if (!internal_root) {
+-        internal_root = object_new("container");
++        internal_root = object_new(TYPE_CONTAINER);
+     }
+ 
+     return internal_root;
 -- 
 2.45.0
 
