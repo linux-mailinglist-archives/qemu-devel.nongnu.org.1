@@ -2,36 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06B8A9D4568
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Nov 2024 02:49:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C585D9D4574
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Nov 2024 02:50:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tDwJF-00052S-77; Wed, 20 Nov 2024 20:48:41 -0500
+	id 1tDwJA-0004vT-1j; Wed, 20 Nov 2024 20:48:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1tDwJC-0004z9-N8
- for qemu-devel@nongnu.org; Wed, 20 Nov 2024 20:48:38 -0500
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1tDwJ6-0004uZ-18
+ for qemu-devel@nongnu.org; Wed, 20 Nov 2024 20:48:33 -0500
 Received: from rev.ng ([94.130.142.21])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1tDwJA-0004mD-RK
- for qemu-devel@nongnu.org; Wed, 20 Nov 2024 20:48:38 -0500
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1tDwJ4-0004lT-Pp
+ for qemu-devel@nongnu.org; Wed, 20 Nov 2024 20:48:31 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
  s=dkim; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
  Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
  Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
  :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
  List-Post:List-Owner:List-Archive:List-Unsubscribe:List-Unsubscribe-Post:
- List-Help; bh=MKLR6c3mNCNege2rKF5LffLNelQnuoKTKn4NaM4VX+E=; b=KnWdSmEcPfqMBnd
- KKEfRhMlUV0H2DBKi67/EnqT6Pzv7cmSnFxYCLTnqCrLztIn8OdA/vMFqYHsWnN4pE5WSYWosyAsy
- A20K9WhPM3lpQgj0cl72aUKGxK1Fid3EcmYK0vCTsUSTBHWJ4GakLN3C5WCmoVZJk4v1M1Q4ALA/s
- RE=;
+ List-Help; bh=iuOj1a1gnKZAf92H8D0zYKZjKUE/7EIVKEMc77kWSCk=; b=a6hf772In8tH27c
+ Bk6u9m1sqobXM9d/HLRAN1vg5TBsGQOz4ebrw0VSbWKr8z4vEzDuZA38MJ7MV+5PKADwFEWN+SQxa
+ MVS52J0VRGKhko4Dep23o9QAG1Naj2vYYWBsLTStyKw1kEdyr9gwyx40oTUlj1WfkJFvheWPwNtDE
+ M4=;
 To: qemu-devel@nongnu.org
 Cc: ale@rev.ng, ltaylorsimpson@gmail.com, bcain@quicinc.com,
  richard.henderson@linaro.org, philmd@linaro.org, alex.bennee@linaro.org
-Subject: [RFC PATCH v1 38/43] target/hexagon: Use cpu_mapping to map env -> TCG
-Date: Thu, 21 Nov 2024 02:49:42 +0100
-Message-ID: <20241121014947.18666-39-anjo@rev.ng>
+Subject: [RFC PATCH v1 39/43] target/hexagon: Keep gen_slotval/check_noshuf
+ for helper-to-tcg
+Date: Thu, 21 Nov 2024 02:49:43 +0100
+Message-ID: <20241121014947.18666-40-anjo@rev.ng>
 In-Reply-To: <20241121014947.18666-1-anjo@rev.ng>
 References: <20241121014947.18666-1-anjo@rev.ng>
 MIME-Version: 1.0
@@ -62,177 +63,44 @@ From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Replaces previous calls to tcg_global_mem_new*() with a declarative
-global array of cpu_mapping structs.  This array can be used to
-initialize all TCG globals with one function call from the target, and
-may additionally be used from LLVM based tools to map between offsets
-into a struct and a mapped TCGv global.
+Makes sure gen_slotval() and check_noshuf() remains defined when
+helper-to-tcg and idef-parser are both used.  gen_slotval() is needed
+for creating a TCGv of the slot value fed to helpers (generated
+helper-to-tcg code), and check_noshuf() is needed for helper definitions
+used as input to helper-to-tcg.
 
 Signed-off-by: Anton Johansson <anjo@rev.ng>
 ---
- target/hexagon/translate.c | 116 +++++++++++++++++++++----------------
- 1 file changed, 65 insertions(+), 51 deletions(-)
+ target/hexagon/genptr.c    | 2 +-
+ target/hexagon/op_helper.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/target/hexagon/translate.c b/target/hexagon/translate.c
-index 4b1bee3c6d..f9a9de35fe 100644
---- a/target/hexagon/translate.c
-+++ b/target/hexagon/translate.c
-@@ -15,6 +15,7 @@
-  *  along with this program; if not, see <http://www.gnu.org/licenses/>.
-  */
- 
-+#include "qemu/typedefs.h"
- #define QEMU_GENERATE
- #include "qemu/osdep.h"
- #include "cpu.h"
-@@ -32,6 +33,7 @@
- #include "translate.h"
- #include "genptr.h"
- #include "printinsn.h"
-+#include "tcg/tcg-global-mappings.h"
- 
- #define HELPER_H "helper.h"
- #include "exec/helper-info.c.inc"
-@@ -1093,7 +1095,6 @@ void gen_intermediate_code(CPUState *cs, TranslationBlock *tb, int *max_insns,
+diff --git a/target/hexagon/genptr.c b/target/hexagon/genptr.c
+index dbae6c570a..ea3ccf649a 100644
+--- a/target/hexagon/genptr.c
++++ b/target/hexagon/genptr.c
+@@ -399,7 +399,7 @@ static inline void gen_store_conditional8(DisasContext *ctx,
+     tcg_gen_movi_tl(hex_llsc_addr, ~0);
  }
  
- #define NAME_LEN               64
--static char reg_written_names[TOTAL_PER_THREAD_REGS][NAME_LEN];
- static char store_addr_names[STORES_MAX][NAME_LEN];
- static char store_width_names[STORES_MAX][NAME_LEN];
- static char store_val32_names[STORES_MAX][NAME_LEN];
-@@ -1101,63 +1102,73 @@ static char store_val64_names[STORES_MAX][NAME_LEN];
- static char vstore_addr_names[VSTORES_MAX][NAME_LEN];
- static char vstore_size_names[VSTORES_MAX][NAME_LEN];
- static char vstore_pending_names[VSTORES_MAX][NAME_LEN];
-+#if HEX_DEBUG
-+static const char *reg_written_names_ptr[TOTAL_PER_THREAD_REGS];
-+#endif
-+static const char *store_addr_names_ptr[STORES_MAX];
-+static const char *store_width_names_ptr[STORES_MAX];
-+static const char *store_val32_names_ptr[STORES_MAX];
-+static const char *store_val64_names_ptr[STORES_MAX];
-+
-+cpu_tcg_mapping tcg_global_mappings[] = {
-+    /* General purpose and predicate registers */
-+    CPU_TCG_MAP_ARRAY(CPUArchState, hex_gpr,  gpr,  hexagon_regnames),
-+    CPU_TCG_MAP_ARRAY(CPUArchState, hex_pred, pred, hexagon_prednames),
-+
-+    /* Misc */
-+    CPU_TCG_MAP(CPUArchState, hex_new_value_usr,    new_value_usr,    "new_value_usr"),
-+    CPU_TCG_MAP(CPUArchState, hex_slot_cancelled,   slot_cancelled,   "slot_cancelled"),
-+    CPU_TCG_MAP(CPUArchState, hex_llsc_addr,        llsc_addr,        "llsc_addr"),
-+    CPU_TCG_MAP(CPUArchState, hex_llsc_val,         llsc_val,         "llsc_val"),
-+    CPU_TCG_MAP(CPUArchState, hex_llsc_val_i64,     llsc_val_i64,     "llsc_val_i64"),
- 
--void hexagon_translate_init(void)
--{
--    int i;
--
--    opcode_init();
--
--    for (i = 0; i < TOTAL_PER_THREAD_REGS; i++) {
--        hex_gpr[i] = tcg_global_mem_new(tcg_env,
--            offsetof(CPUHexagonState, gpr[i]),
--            hexagon_regnames[i]);
--
--        if (HEX_DEBUG) {
--            snprintf(reg_written_names[i], NAME_LEN, "reg_written_%s",
--                     hexagon_regnames[i]);
--            hex_reg_written[i] = tcg_global_mem_new(tcg_env,
--                offsetof(CPUHexagonState, reg_written[i]),
--                reg_written_names[i]);
--        }
--    }
--    hex_new_value_usr = tcg_global_mem_new(tcg_env,
--        offsetof(CPUHexagonState, new_value_usr), "new_value_usr");
-+    /*
-+     * New general purpose and predicate register values,
-+     * and reg_written used in debugging
-+     */
-+#if HEX_DEBUG
-+    CPU_TCG_MAP_ARRAY(hex_reg_written,    reg_written,    reg_written_names_ptr),
-+#endif
-+
-+    /* Logging stores */
-+    CPU_TCG_MAP_ARRAY_OF_STRUCTS(CPUArchState, hex_store_addr,  mem_log_stores, va,     store_addr_names_ptr),
-+    CPU_TCG_MAP_ARRAY_OF_STRUCTS(CPUArchState, hex_store_width, mem_log_stores, width,  store_width_names_ptr),
-+    CPU_TCG_MAP_ARRAY_OF_STRUCTS(CPUArchState, hex_store_val32, mem_log_stores, data32, store_val32_names_ptr),
-+    CPU_TCG_MAP_ARRAY_OF_STRUCTS(CPUArchState, hex_store_val64, mem_log_stores, data64, store_val64_names_ptr),
-+};
- 
--    for (i = 0; i < NUM_PREGS; i++) {
--        hex_pred[i] = tcg_global_mem_new(tcg_env,
--            offsetof(CPUHexagonState, pred[i]),
--            hexagon_prednames[i]);
--    }
--    hex_slot_cancelled = tcg_global_mem_new(tcg_env,
--        offsetof(CPUHexagonState, slot_cancelled), "slot_cancelled");
--    hex_llsc_addr = tcg_global_mem_new(tcg_env,
--        offsetof(CPUHexagonState, llsc_addr), "llsc_addr");
--    hex_llsc_val = tcg_global_mem_new(tcg_env,
--        offsetof(CPUHexagonState, llsc_val), "llsc_val");
--    hex_llsc_val_i64 = tcg_global_mem_new_i64(tcg_env,
--        offsetof(CPUHexagonState, llsc_val_i64), "llsc_val_i64");
--    for (i = 0; i < STORES_MAX; i++) {
--        snprintf(store_addr_names[i], NAME_LEN, "store_addr_%d", i);
--        hex_store_addr[i] = tcg_global_mem_new(tcg_env,
--            offsetof(CPUHexagonState, mem_log_stores[i].va),
--            store_addr_names[i]);
-+size_t tcg_global_mapping_count = ARRAY_SIZE(tcg_global_mappings);
- 
-+static void init_cpu_reg_names(void) {
-+    /*
-+     * Create register names and store them in `*_names`,
-+     * then copy to and array of pointers in `*_names_ptr`
-+     * which is easier to pass around.
-+     */
-+#if HEX_DEBUG
-+    for (int i = 0; i < TOTAL_PER_THREAD_REGS; ++i) {
-+        snprintf(reg_written_names[i], NAME_LEN, "reg_written_%s", hexagon_regnames[i]);
-+        reg_written_names_ptr[i] = reg_written_names[i];
-+    }
-+#endif
-+    for (int i = 0; i < STORES_MAX; ++i) {
-+        snprintf(store_addr_names[i],  NAME_LEN, "store_addr_%d",  i);
-         snprintf(store_width_names[i], NAME_LEN, "store_width_%d", i);
--        hex_store_width[i] = tcg_global_mem_new(tcg_env,
--            offsetof(CPUHexagonState, mem_log_stores[i].width),
--            store_width_names[i]);
--
-         snprintf(store_val32_names[i], NAME_LEN, "store_val32_%d", i);
--        hex_store_val32[i] = tcg_global_mem_new(tcg_env,
--            offsetof(CPUHexagonState, mem_log_stores[i].data32),
--            store_val32_names[i]);
--
-         snprintf(store_val64_names[i], NAME_LEN, "store_val64_%d", i);
--        hex_store_val64[i] = tcg_global_mem_new_i64(tcg_env,
--            offsetof(CPUHexagonState, mem_log_stores[i].data64),
--            store_val64_names[i]);
-+        store_addr_names_ptr[i]  = store_addr_names[i];
-+        store_width_names_ptr[i] = store_width_names[i];
-+        store_val32_names_ptr[i] = store_val32_names[i];
-+        store_val64_names_ptr[i] = store_val64_names[i];
+-#ifndef CONFIG_HEXAGON_IDEF_PARSER
++#if !defined(CONFIG_HEXAGON_IDEF_PARSER) || defined(CONFIG_HELPER_TO_TCG)
+ static TCGv gen_slotval(DisasContext *ctx)
+ {
+     int slotval = (ctx->pkt->pkt_has_store_s1 & 1) | (ctx->insn->slot << 1);
+diff --git a/target/hexagon/op_helper.c b/target/hexagon/op_helper.c
+index 90e7aaa097..0f9c6ab19f 100644
+--- a/target/hexagon/op_helper.c
++++ b/target/hexagon/op_helper.c
+@@ -567,7 +567,7 @@ void HELPER(probe_pkt_scalar_hvx_stores)(CPUHexagonState *env, int mask)
      }
-+}
-+
-+void hexagon_translate_init(void)
-+{
-+    int i;
-+
-+    opcode_init();
-+
-     for (i = 0; i < VSTORES_MAX; i++) {
-         snprintf(vstore_addr_names[i], NAME_LEN, "vstore_addr_%d", i);
-         hex_vstore_addr[i] = tcg_global_mem_new(tcg_env,
-@@ -1174,4 +1185,7 @@ void hexagon_translate_init(void)
-             offsetof(CPUHexagonState, vstore_pending[i]),
-             vstore_pending_names[i]);
-     }
-+
-+    init_cpu_reg_names();
-+    init_cpu_tcg_mappings(tcg_global_mappings, tcg_global_mapping_count);
  }
+ 
+-#ifndef CONFIG_HEXAGON_IDEF_PARSER
++#if !defined(CONFIG_HEXAGON_IDEF_PARSER) || defined(CONFIG_HELPER_TO_TCG)
+ /*
+  * mem_noshuf
+  * Section 5.5 of the Hexagon V67 Programmer's Reference Manual
 -- 
 2.45.2
 
