@@ -2,36 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA7869D456B
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Nov 2024 02:49:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 90FAA9D455F
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Nov 2024 02:48:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tDwHz-0001g4-RZ; Wed, 20 Nov 2024 20:47:23 -0500
+	id 1tDwI1-0001gn-MK; Wed, 20 Nov 2024 20:47:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1tDwHx-0001fL-Ck
- for qemu-devel@nongnu.org; Wed, 20 Nov 2024 20:47:21 -0500
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1tDwHz-0001g2-AT
+ for qemu-devel@nongnu.org; Wed, 20 Nov 2024 20:47:23 -0500
 Received: from rev.ng ([94.130.142.21])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1tDwHu-0004Zk-RR
- for qemu-devel@nongnu.org; Wed, 20 Nov 2024 20:47:21 -0500
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1tDwHv-0004Zt-HT
+ for qemu-devel@nongnu.org; Wed, 20 Nov 2024 20:47:23 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
  s=dkim; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
  Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
  Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
  :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
  List-Post:List-Owner:List-Archive:List-Unsubscribe:List-Unsubscribe-Post:
- List-Help; bh=AzEcD40MnOYRYmwxWBYqXftTCENUS2p4MXNkow+7IsY=; b=VxT7J7rymkkaSqq
- OBAjPFuLHUihykpcnDSvyDhOwPiP8lboRmcJz+18dZoLQyoQGhUnWRwFU/OuiyX6viSSVP5pM+3h4
- wVUVrfmAhdq1pTtODpq2YFGSJRnFawSVHV4tLAvhi2gEMSeOPvX1YsbesIkE9HZqW/1jB352Ae66r
- CU=;
+ List-Help; bh=GcVPUJyptch/NiR/8R+sSM2oGaLEowkzsVXIpJeEORM=; b=Pu1eS6mafjujCyI
+ wgR/meO9r7ViGmRYbXdDJtGFhHt50GFhGETszsi/5jR3pYhqCGYLTNFmKKXhDHsDTgFwL1DsSYsAw
+ GmC0zCSfI0VM9tiRJ9PygYw43krzvwtqPMzKgQ5yt5LrCVUZqzhRZBMXAxu+IEgTCjUrO3EL66++o
+ uw=;
 To: qemu-devel@nongnu.org
 Cc: ale@rev.ng, ltaylorsimpson@gmail.com, bcain@quicinc.com,
  richard.henderson@linaro.org, philmd@linaro.org, alex.bennee@linaro.org
-Subject: [RFC PATCH v1 25/43] helper-to-tcg: PrepareForTcgPass, transform GEPs
-Date: Thu, 21 Nov 2024 02:49:29 +0100
-Message-ID: <20241121014947.18666-26-anjo@rev.ng>
+Subject: [RFC PATCH v1 26/43] helper-to-tcg: PrepareForTcgPass, canonicalize IR
+Date: Thu, 21 Nov 2024 02:49:30 +0100
+Message-ID: <20241121014947.18666-27-anjo@rev.ng>
 In-Reply-To: <20241121014947.18666-1-anjo@rev.ng>
 References: <20241121014947.18666-1-anjo@rev.ng>
 MIME-Version: 1.0
@@ -62,72 +62,39 @@ From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-getelementpointer (GEP) instructions in LLVM IR represent general pointer
-arithmetic (struct field access, array indexing, ...).  From the
-perspective of TCG, three distinct cases are important and are
-transformed into pseudo instructions respectively:
-
-  * struct accesses whose offset into the struct map to a TCG global are
-    transformed into "call @AccessGlobalValue(offset)";
-
-  * struct accesses whose offset into the struct map to an array of TCG
-    globals are transformed into "call @AccessGlobalArray(offset, index)";
-
-  * otherwise converted to general pointer arithmetic in LLVM IR using
-    "call @PtrAdd(...)".
-
-These three cases are treated differently in the backend and all other
-GEPs are considered an error.
+Iterates over the IR with the goal of converting it to a form closer to
+TCG, taking care of IR disparencies between LLVM and TCG.  This also
+simplifies the backend by containing the bulk of custom IR
+transformations, meaning the backend can be as dumb as possible.
 
 Signed-off-by: Anton Johansson <anjo@rev.ng>
 ---
- subprojects/helper-to-tcg/meson.build         |   1 +
- .../PrepareForTcgPass/PrepareForTcgPass.cpp   |   4 +
- .../PrepareForTcgPass/TransformGEPs.cpp       | 286 ++++++++++++++++++
- .../passes/PrepareForTcgPass/TransformGEPs.h  |  37 +++
- 4 files changed, 328 insertions(+)
- create mode 100644 subprojects/helper-to-tcg/passes/PrepareForTcgPass/TransformGEPs.cpp
- create mode 100644 subprojects/helper-to-tcg/passes/PrepareForTcgPass/TransformGEPs.h
+ subprojects/helper-to-tcg/meson.build         |    1 +
+ .../PrepareForTcgPass/CanonicalizeIR.cpp      | 1000 +++++++++++++++++
+ .../passes/PrepareForTcgPass/CanonicalizeIR.h |   25 +
+ .../PrepareForTcgPass/PrepareForTcgPass.cpp   |    2 +
+ 4 files changed, 1028 insertions(+)
+ create mode 100644 subprojects/helper-to-tcg/passes/PrepareForTcgPass/CanonicalizeIR.cpp
+ create mode 100644 subprojects/helper-to-tcg/passes/PrepareForTcgPass/CanonicalizeIR.h
 
 diff --git a/subprojects/helper-to-tcg/meson.build b/subprojects/helper-to-tcg/meson.build
-index 6db1a019ce..6b18734bad 100644
+index 6b18734bad..50bb926f49 100644
 --- a/subprojects/helper-to-tcg/meson.build
 +++ b/subprojects/helper-to-tcg/meson.build
-@@ -47,6 +47,7 @@ sources = [
-     'passes/PrepareForOptPass/PrepareForOptPass.cpp',
+@@ -48,6 +48,7 @@ sources = [
      'passes/PseudoInst.cpp',
      'passes/PrepareForTcgPass/PrepareForTcgPass.cpp',
-+    'passes/PrepareForTcgPass/TransformGEPs.cpp',
+     'passes/PrepareForTcgPass/TransformGEPs.cpp',
++    'passes/PrepareForTcgPass/CanonicalizeIR.cpp',
  ]
  
  clang = bindir / 'clang'
-diff --git a/subprojects/helper-to-tcg/passes/PrepareForTcgPass/PrepareForTcgPass.cpp b/subprojects/helper-to-tcg/passes/PrepareForTcgPass/PrepareForTcgPass.cpp
-index a453aa8558..b1e2932750 100644
---- a/subprojects/helper-to-tcg/passes/PrepareForTcgPass/PrepareForTcgPass.cpp
-+++ b/subprojects/helper-to-tcg/passes/PrepareForTcgPass/PrepareForTcgPass.cpp
-@@ -17,6 +17,7 @@
- 
- #include <CmdLineOptions.h>
- #include <PrepareForTcgPass.h>
-+#include "TransformGEPs.h"
- #include <llvm/ADT/SCCIterator.h>
- #include <llvm/IR/Function.h>
- #include <llvm/IR/InstIterator.h>
-@@ -120,5 +121,8 @@ PreservedAnalyses PrepareForTcgPass::run(Module &M, ModuleAnalysisManager &MAM)
-         demotePhis(F);
-     }
-     collectTcgGlobals(M, ResultTcgGlobalMap);
-+    for (Function &F : M) {
-+        transformGEPs(M, F, ResultTcgGlobalMap);
-+    }
-     return PreservedAnalyses::none();
- }
-diff --git a/subprojects/helper-to-tcg/passes/PrepareForTcgPass/TransformGEPs.cpp b/subprojects/helper-to-tcg/passes/PrepareForTcgPass/TransformGEPs.cpp
+diff --git a/subprojects/helper-to-tcg/passes/PrepareForTcgPass/CanonicalizeIR.cpp b/subprojects/helper-to-tcg/passes/PrepareForTcgPass/CanonicalizeIR.cpp
 new file mode 100644
-index 0000000000..db395533d1
+index 0000000000..d53b7b8580
 --- /dev/null
-+++ b/subprojects/helper-to-tcg/passes/PrepareForTcgPass/TransformGEPs.cpp
-@@ -0,0 +1,286 @@
++++ b/subprojects/helper-to-tcg/passes/PrepareForTcgPass/CanonicalizeIR.cpp
+@@ -0,0 +1,1000 @@
 +//
 +//  Copyright(c) 2024 rev.ng Labs Srl. All Rights Reserved.
 +//
@@ -145,281 +112,995 @@ index 0000000000..db395533d1
 +//  along with this program; if not, see <http://www.gnu.org/licenses/>.
 +//
 +
-+#include "TransformGEPs.h"
-+#include <Error.h>
++#include "CanonicalizeIR.h"
 +#include <PseudoInst.h>
++#include <llvm-compat.h>
 +
++#include <llvm/ADT/SmallPtrSet.h>
 +#include <llvm/ADT/SmallSet.h>
 +#include <llvm/ADT/SmallVector.h>
-+#include <llvm/ADT/iterator_range.h>
++#include <llvm/Analysis/VectorUtils.h>
++#include <llvm/IR/Constants.h>
 +#include <llvm/IR/DerivedTypes.h>
 +#include <llvm/IR/Function.h>
 +#include <llvm/IR/IRBuilder.h>
 +#include <llvm/IR/InstIterator.h>
++#include <llvm/IR/InstrTypes.h>
++#include <llvm/IR/Instruction.h>
++#include <llvm/IR/Instructions.h>
++#include <llvm/IR/Intrinsics.h>
 +#include <llvm/IR/Module.h>
-+#include <llvm/IR/Operator.h>
-+#include <llvm/IR/Value.h>
++#include <llvm/IR/PatternMatch.h>
++#include <llvm/Support/Casting.h>
 +
 +using namespace llvm;
++using namespace PatternMatch;
 +
-+// collectIndices will, given a getelementptr (GEP) instruction, construct an
-+// array of GepIndex structs keeping track of the total offset into the struct
-+// along with some access information.  For instance,
++// Needed to track and remove instructions not handled by a subsequent dead code
++// elimination, this applies to calls to pseudo instructions in particular.
 +//
-+//   struct SubS {
-+//      uint8_t a;
-+//      uint8_t b;
-+//      uint8_t c;
-+//   };
-+//
-+//   struct S {
-+//      uint64_t i;
-+//      struct SubS sub[3];
-+//   };
-+//
-+//   void f(struct S *s, int idx) {
-+//      S->sub[idx].a = ...
-+//      S->sub[idx].b = ...
-+//      S->sub[idx].c = ...
-+//   }
-+//
-+// would correspond to the following GEPs
-+//
-+//   getelementptr %struct.S, %struct.S* %s, i64 0, i32 1, %idx, i32 0
-+//   getelementptr %struct.S, %struct.S* %s, i64 0, i32 1, %idx, i32 1
-+//   getelementptr %struct.S, %struct.S* %s, i64 0, i32 1, %idx, i32 2
-+//
-+// or the following GepIndex's
-+//
-+//   GepIndex{Size=0,false}, GepIndex{Size=8,false}, GepIndex{Size=4,true},
-+//   GepIndex{Size=0,false} GepIndex{Size=0,false}, GepIndex{Size=8,false},
-+//   GepIndex{Size=4,true}, GepIndex{Size=1,false} GepIndex{Size=0,false},
-+//   GepIndex{Size=8,false}, GepIndex{Size=4,true}, GepIndex{Size=2,false}
-+//
++// TODO: Can we instead make pseudo instructions side effect free via
++// attributes?
++using EraseInstVec = SmallVector<Instruction *, 16>;
++using UsageCountMap = DenseMap<Value *, uint16_t>;
 +
-+struct GepIndex {
-+    Value *V;
-+    uint64_t Size;
-+    bool IsArrayAccess = false;
-+};
-+
-+using GepIndices = SmallVector<GepIndex, 2>;
-+
-+static Expected<GepIndices> collectIndices(const DataLayout &DL,
-+                                           GEPOperator *Gep)
++// Helper function to remove an instruction only if all uses have been removed.
++// This way we can keep track instruction uses without having to modify the IR,
++// or without having to iterate over all uses everytime we wish to remove an
++// instruction.
++static void addToEraseVectorIfUnused(EraseInstVec &InstToErase,
++                                     UsageCountMap &UsageMap, Value *V)
 +{
-+    Type *PtrOpTy = Gep->getPointerOperandType();
-+    if (!PtrOpTy->isPointerTy()) {
-+        return mkError("GEPs on vectors are not handled!");
-+    }
-+    Type *InternalTy = Type::getIntNTy(Gep->getContext(), 64);
-+    auto *One = ConstantInt::get(InternalTy, 1u);
-+
-+    GepIndices Result;
-+
-+    // NOTE: LLVM <= 11 doesn't have Gep->indices()
-+    Type *CurrentTy = PtrOpTy;
-+    for (auto &Arg : make_range(Gep->idx_begin(), Gep->idx_end())) {
-+        switch (CurrentTy->getTypeID()) {
-+        case Type::PointerTyID: {
-+            CurrentTy = cast<PointerType>(CurrentTy)->getPointerElementType();
-+            uint64_t FixedSize = DL.getTypeAllocSize(CurrentTy).getFixedSize();
-+            Result.push_back(GepIndex{Arg.get(), FixedSize});
-+        } break;
-+        case Type::ArrayTyID: {
-+            CurrentTy = cast<ArrayType>(CurrentTy)->getElementType();
-+            uint64_t FixedSize = DL.getTypeAllocSize(CurrentTy).getFixedSize();
-+            Result.push_back(
-+                GepIndex{Arg.get(), FixedSize, /* IsArrayAccess= */ true});
-+        } break;
-+        case Type::StructTyID: {
-+            auto *StructTy = cast<StructType>(CurrentTy);
-+            auto *Constant = dyn_cast<ConstantInt>(Arg.get());
-+            if (Constant->getBitWidth() > DL.getPointerSizeInBits()) {
-+                return mkError(
-+                    "GEP to struct with unsupported index bit width!");
-+            }
-+            uint64_t ConstantValue = Constant->getZExtValue();
-+            uint64_t ElementOffset =
-+                DL.getStructLayout(StructTy)->getElementOffset(ConstantValue);
-+            CurrentTy = StructTy->getTypeAtIndex(ConstantValue);
-+            Result.push_back(GepIndex{One, ElementOffset});
-+        } break;
-+        default:
-+            return mkError("GEP unsupported index type: ");
-+        }
++    auto *I = dyn_cast<Instruction>(V);
++    if (!I) {
++        return;
 +    }
 +
-+    return Result;
-+}
-+
-+// Takes indices associated with a getelementpointer instruction and expands
-+// it into pointer math.
-+static void replaceGEPWithPointerMath(Module &M, Instruction *ParentInst,
-+                                      GEPOperator *Gep,
-+                                      const GepIndices &Indices)
-+{
-+    assert(Indices.size() > 0);
-+    IRBuilder<> Builder(ParentInst);
-+    Value *PtrOp = Gep->getPointerOperand();
-+
-+    // Sum indices to get the total offset from the base pointer
-+    Value *PrevV = nullptr;
-+    for (auto &Index : Indices) {
-+        Value *Mul = Builder.CreateMul(
-+            Index.V, ConstantInt::get(Index.V->getType(), Index.Size));
-+        if (PrevV) {
-+            uint32_t BitWidthLeft =
-+                cast<IntegerType>(PrevV->getType())->getIntegerBitWidth();
-+            uint32_t BitWidthRight =
-+                cast<IntegerType>(Mul->getType())->getIntegerBitWidth();
-+            if (BitWidthLeft < BitWidthRight) {
-+                PrevV = Builder.CreateZExt(PrevV, Mul->getType());
-+            } else if (BitWidthLeft > BitWidthRight) {
-+                Mul = Builder.CreateZExt(Mul, PrevV->getType());
-+            }
-+            PrevV = Builder.CreateAdd(PrevV, Mul);
-+        } else {
-+            PrevV = Mul;
-+        }
++    // Add V to map if not there
++    if (UsageMap.count(V) == 0) {
++        UsageMap[V] = V->getNumUses();
 +    }
 +
-+    FunctionCallee Fn = pseudoInstFunction(
-+        M, PtrAdd, Gep->getType(), {PtrOp->getType(), PrevV->getType()});
-+    CallInst *Call = Builder.CreateCall(Fn, {PtrOp, PrevV});
-+    Gep->replaceAllUsesWith(Call);
-+}
-+
-+// Takes indices associated with a getelementpointer instruction and expands
-+// it into pointer math.
-+static void replaceGEPWithGlobalAccess(Module &M, Instruction *ParentInst,
-+                                       GEPOperator *Gep, uint64_t BaseOffset,
-+                                       Value *ArrayIndex)
-+{
-+    IRBuilder<> Builder(ParentInst);
-+    Type *IndexTy = Type::getIntNTy(M.getContext(), 64);
-+    auto *ConstBaseOffset = ConstantInt::get(IndexTy, BaseOffset);
-+    if (ArrayIndex) {
-+        Type *ArrayAccessTy = ArrayIndex->getType();
-+        FunctionCallee Fn = pseudoInstFunction(
-+            M, AccessGlobalArray, Gep->getType(), {IndexTy, ArrayAccessTy});
-+        CallInst *Call = Builder.CreateCall(Fn, {ConstBaseOffset, ArrayIndex});
-+        Gep->replaceAllUsesWith(Call);
-+    } else {
-+        FunctionCallee Fn =
-+            pseudoInstFunction(M, AccessGlobalValue, Gep->getType(), {IndexTy});
-+        CallInst *Call = Builder.CreateCall(Fn, {ConstBaseOffset});
-+        Gep->replaceAllUsesWith(Call);
++    // Erase if count reaches zero
++    if (--UsageMap[V] == 0) {
++        InstToErase.push_back(I);
++        UsageMap.erase(V);
 +    }
 +}
 +
-+static bool transformGEP(Module &M, const TcgGlobalMap &TcgGlobals,
-+                         const GepIndices &Indices, Instruction *ParentInst,
-+                         GEPOperator *Gep)
++// Forward declarations of IR transformations used in canonicalizing the IR
++static void upcastAshr(Instruction *I);
++static void convertInsertShuffleToSplat(Module &M, Instruction *I);
++
++static void simplifyVecBinOpWithSplat(EraseInstVec &InstToErase,
++                                      UsageCountMap &UsageMap, Module &M,
++                                      BinaryOperator *BinOp);
++
++static void convertSelectICmp(Module &M, SelectInst *Select, ICmpInst *ICmp);
++
++static void convertQemuLoadStoreToPseudoInst(Module &M, CallInst *Call);
++static void convertExceptionCallsToPseudoInst(Module &M, CallInst *Call);
++static void convertVecStoreBitcastToPseudoInst(EraseInstVec &InstToErase,
++                                               Module &M, StoreInst *Store);
++static void convertICmpBrToPseudInst(LLVMContext &Context,
++                                     EraseInstVec &InstToErase, Module &M,
++                                     Instruction *I, BasicBlock *NextBb);
++
++void canonicalizeIR(Module &M)
 +{
-+    Value *PtrOp = Gep->getPointerOperand();
-+
-+    bool PtrOpIsEnv = false;
-+    {
-+        auto *PtrTy = cast<PointerType>(PtrOp->getType());
-+        auto *StructTy = dyn_cast<StructType>(PtrTy->getPointerElementType());
-+        // NOTE: We are identifying the CPU state via matching the typename to
-+        // CPUArchState. This is fragile to QEMU name changes, and does not
-+        // play nicely with non-env structs.
-+        PtrOpIsEnv = StructTy and StructTy->getName() == "struct.CPUArchState";
-+    }
-+
-+    uint64_t BaseOffset = 0;
-+    uint32_t NumArrayAccesses = 0;
-+    Value *LastArrayAccess = nullptr;
-+    for (const GepIndex &Index : Indices) {
-+        if (Index.IsArrayAccess) {
-+            LastArrayAccess = Index.V;
-+            ++NumArrayAccesses;
-+        } else {
-+            auto *Const = dyn_cast<ConstantInt>(Index.V);
-+            if (Const) {
-+                BaseOffset += Const->getZExtValue() * Index.Size;
-+            }
-+        }
-+    }
-+
-+    if (PtrOpIsEnv) {
-+        auto It = TcgGlobals.find(BaseOffset);
-+        if (It != TcgGlobals.end()) {
-+            if (LastArrayAccess && NumArrayAccesses > 1) {
-+                return false;
-+            }
-+            replaceGEPWithGlobalAccess(M, ParentInst, Gep, BaseOffset,
-+                                       LastArrayAccess);
-+            return !isa<ConstantExpr>(Gep);
-+        }
-+    }
-+
-+    replaceGEPWithPointerMath(M, ParentInst, Gep, Indices);
-+    return !isa<ConstantExpr>(Gep);
-+}
-+
-+static GEPOperator *getGEPOperator(Instruction *I)
-+{
-+    // If the instructions is directly a GEP, simply return it.
-+    auto *GEP = dyn_cast<GEPOperator>(I);
-+    if (GEP) {
-+        return GEP;
-+    }
-+
-+    // Hard-code handling of GEPs that appear as an inline operand to loads
-+    // and stores.
-+    if (isa<LoadInst>(I)) {
-+        auto *Load = cast<LoadInst>(I);
-+        auto *ConstExpr = dyn_cast<ConstantExpr>(Load->getPointerOperand());
-+        if (ConstExpr) {
-+            return dyn_cast<GEPOperator>(ConstExpr);
-+        }
-+    } else if (isa<StoreInst>(I)) {
-+        auto *Store = dyn_cast<StoreInst>(I);
-+        auto *ConstExpr = dyn_cast<ConstantExpr>(Store->getPointerOperand());
-+        if (ConstExpr) {
-+            return dyn_cast<GEPOperator>(ConstExpr);
-+        }
-+    }
-+
-+    return nullptr;
-+}
-+
-+void transformGEPs(Module &M, Function &F, const TcgGlobalMap &TcgGlobals)
-+{
-+    SmallSet<Instruction *, 8> InstToErase;
-+
-+    for (auto &I : instructions(F)) {
-+        GEPOperator *GEP = getGEPOperator(&I);
-+        if (!GEP) {
++    for (Function &F : M) {
++        if (F.isDeclaration()) {
 +            continue;
 +        }
 +
-+        Expected<GepIndices> Indices = collectIndices(M.getDataLayout(), GEP);
-+        if (!Indices) {
-+            dbgs() << "Failed collecting GEP indices for:\n\t" << I << "\n";
-+            dbgs() << "Reason: " << Indices.takeError();
++        EraseInstVec InstToErase;
++        UsageCountMap UsageMap;
++        LLVMContext &Context = F.getContext();
++
++        // Perform a first pass over all instructions in the function and apply
++        // IR transformations sequentially.  NOTE: order matters here.
++        for (Instruction &I : instructions(F)) {
++            if (I.isArithmeticShift()) {
++                upcastAshr(&I);
++            }
++
++            convertInsertShuffleToSplat(M, &I);
++
++            // Depends on convertInsertShuffleToSplat for @VecSplat instructions
++            if (auto *BinOp = dyn_cast<BinaryOperator>(&I)) {
++                simplifyVecBinOpWithSplat(InstToErase, UsageMap, M, BinOp);
++            }
++
++            // Independent of above
++            if (auto *ICmp = dyn_cast<ICmpInst>(&I)) {
++                for (auto *U : ICmp->users()) {
++                    auto *Select = dyn_cast<SelectInst>(U);
++                    if (Select and Select->getCondition() == ICmp) {
++                        convertSelectICmp(M, Select, ICmp);
++                    }
++                }
++            }
++
++            // Independent of above, can run at any point
++            if (auto *Call = dyn_cast<CallInst>(&I)) {
++                convertQemuLoadStoreToPseudoInst(M, Call);
++                convertExceptionCallsToPseudoInst(M, Call);
++            }
++
++            // Depends on other vector conversions performed above, needs to
++            // run last
++            if (auto *Store = dyn_cast<StoreInst>(&I)) {
++                convertVecStoreBitcastToPseudoInst(InstToErase, M, Store);
++            }
++        }
++
++        // Perform a second pass over the instructions. Can be combined with the
++        // above by using a worklist and making sure we have access to the
++        // BasicBlock.
++        //
++        // Depends on icmp,select -> @movcond
++        ReversePostOrderTraversal<Function *> RPOT(&F);
++        for (auto BbIt = RPOT.begin(); BbIt != RPOT.end(); ++BbIt) {
++            BasicBlock &BB = **BbIt;
++
++            auto NextIt = BbIt;
++            BasicBlock *NextBb = &**(++NextIt);
++
++            for (Instruction &I : BB) {
++                convertICmpBrToPseudInst(Context, InstToErase, M, &I, NextBb);
++            }
++        }
++
++        // Finally clean up instructions we need to remove manually
++        for (Instruction *I : InstToErase) {
++            I->eraseFromParent();
++        }
++    }
++}
++
++static Value *upcastInt(IRBuilder<> &Builder, IntegerType *FinalIntTy, Value *V)
++{
++    if (auto *ConstInt = dyn_cast<ConstantInt>(V)) {
++        return ConstantInt::get(FinalIntTy, ConstInt->getZExtValue());
++    } else {
++        return Builder.CreateSExt(V, FinalIntTy);
++    }
++}
++
++// Convert
++//
++//   %2 = ashr i[8|16] %1, %0
++//
++// to
++//
++//   %2 = zext i[8|16] %1 to i32
++//   %3 = zext i[8|16] %2 to i32
++//   %2 = ashr i32 %2, %3
++//
++static void upcastAshr(Instruction *I)
++{
++    // Only care about scalar shifts < on less than 32-bit integers
++    auto *IntTy = dyn_cast<IntegerType>(I->getType());
++    if (!IntTy or IntTy->getBitWidth() >= 32) {
++        return;
++    }
++
++    IRBuilder<> Builder(I);
++
++    Value *Op1 = I->getOperand(0);
++    Value *Op2 = I->getOperand(1);
++    auto *UpcastIntTy = Builder.getInt32Ty();
++    Op1 = upcastInt(Builder, UpcastIntTy, Op1);
++    Op2 = upcastInt(Builder, UpcastIntTy, Op2);
++
++    auto *AShr = Builder.CreateAShr(Op1, Op2);
++    auto *Trunc = Builder.CreateTrunc(AShr, I->getType());
++    I->replaceAllUsesWith(Trunc);
++}
++
++// Convert vector intrinsics
++//
++//   %0 = insertelement ...
++//   %1 = shuffle ...
++//
++// to
++//
++//   %0 = call @VecSplat.*
++//
++static void convertInsertShuffleToSplat(Module &M, Instruction *I)
++{
++    Value *SplatV;
++    if (match(I, compat_m_Shuffle(compat_m_InsertElt(m_Value(), m_Value(SplatV),
++                                                     m_ZeroInt()),
++                                  m_Value(), compat_m_ZeroMask()))) {
++
++        auto *VecTy = cast<VectorType>(I->getType());
++
++        IRBuilder<> Builder(I);
++        FunctionCallee Fn =
++            pseudoInstFunction(M, VecSplat, VecTy, {SplatV->getType()});
++        CallInst *Call = Builder.CreateCall(Fn, {SplatV});
++        I->replaceAllUsesWith(Call);
++    }
++}
++
++// Convert
++//
++//   %1 = @VecSplat(%0)
++//   %2 = <NxM> ... op <NxM> %1
++//
++// to
++//
++//   %2 = call @Vec[op]Scalar(..., %0)
++//
++// which more closely matches TCG gvec operations.
++static void simplifyVecBinOpWithSplat(EraseInstVec &InstToErase,
++                                      UsageCountMap &UsageMap, Module &M,
++                                      BinaryOperator *BinOp)
++{
++    Value *Lhs = BinOp->getOperand(0);
++    Value *Rhs = BinOp->getOperand(1);
++    if (!Lhs->getType()->isVectorTy() or !Rhs->getType()->isVectorTy()) {
++        return;
++    }
++
++    // Get splat value from constant or @VecSplat call
++    Value *SplatValue = nullptr;
++    if (auto *Const = dyn_cast<Constant>(Rhs)) {
++        SplatValue = Const->getSplatValue();
++    } else if (auto *Call = dyn_cast<CallInst>(Rhs)) {
++        if (getPseudoInstFromCall(Call) == VecSplat) {
++            SplatValue = Call->getOperand(0);
++        }
++    }
++
++    if (SplatValue == nullptr) {
++        return;
++    }
++
++    auto *VecTy = cast<VectorType>(Lhs->getType());
++    auto *ConstInt = dyn_cast<ConstantInt>(SplatValue);
++    bool ConstIsNegOne = ConstInt and ConstInt->getSExtValue() == -1;
++    bool IsNot = BinOp->getOpcode() == Instruction::Xor and ConstIsNegOne;
++    if (IsNot) {
++        FunctionCallee Fn = pseudoInstFunction(M, VecNot, VecTy, {VecTy});
++        IRBuilder<> Builder(BinOp);
++        CallInst *Call = Builder.CreateCall(Fn, {Lhs});
++        BinOp->replaceAllUsesWith(Call);
++    } else {
++        PseudoInst Inst;
++        switch (BinOp->getOpcode()) {
++        case Instruction::Add:
++            Inst = VecAddScalar;
++            break;
++        case Instruction::Sub:
++            Inst = VecSubScalar;
++            break;
++        case Instruction::Mul:
++            Inst = VecMulScalar;
++            break;
++        case Instruction::Xor:
++            Inst = VecXorScalar;
++            break;
++        case Instruction::Or:
++            Inst = VecOrScalar;
++            break;
++        case Instruction::And:
++            Inst = VecAndScalar;
++            break;
++        case Instruction::Shl:
++            Inst = VecShlScalar;
++            break;
++        case Instruction::LShr:
++            Inst = VecLShrScalar;
++            break;
++        case Instruction::AShr:
++            Inst = VecAShrScalar;
++            break;
++        default:
 +            abort();
 +        }
 +
-+        bool ShouldErase = transformGEP(M, TcgGlobals, Indices.get(), &I, GEP);
-+        if (ShouldErase) {
-+            InstToErase.insert(&I);
++        IRBuilder<> Builder(BinOp);
++        // Scalar gvec shift operations uses 32-bit scalars, whereas arithmetic
++        // operations uses 64-bit scalars.
++        uint32_t SplatSize = SplatValue->getType()->getIntegerBitWidth();
++        if (BinOp->isShift()) {
++            if (SplatSize > 32) {
++                SplatValue =
++                    Builder.CreateTrunc(SplatValue, Builder.getInt32Ty());
++            }
++        } else {
++            if (SplatSize < 64) {
++                SplatValue =
++                    Builder.CreateZExt(SplatValue, Builder.getInt64Ty());
++            }
++        }
++        FunctionCallee Fn =
++            pseudoInstFunction(M, Inst, VecTy, {VecTy, SplatValue->getType()});
++        CallInst *Call = Builder.CreateCall(Fn, {Lhs, SplatValue});
++        BinOp->replaceAllUsesWith(Call);
++    }
++
++    InstToErase.push_back(BinOp);
++    addToEraseVectorIfUnused(InstToErase, UsageMap, Rhs);
++}
++
++// Convert
++//
++//   %2 = icmp [sgt|ugt|slt|ult] %0, %1
++//   %5 = select %2, %3, %4
++//
++// to
++//
++//   %5 = [s|u][max|min] %0, %1
++//
++// if possible.  Results in cleaner IR, particularly useful for vector
++// instructions.
++static bool convertSelectICmpToMinMax(Module &M, SelectInst *Select,
++                                      ICmpInst *ICmp, ICmpInst::Predicate &Pred,
++                                      Value *ICmpOp0, Value *ICmpOp1,
++                                      Value *SelectOp0, Value *SelectOp1)
++{
++#if LLVM_VERSION_MAJOR > 11
++    if (ICmpOp0 != SelectOp0 or ICmpOp1 != SelectOp1) {
++        return false;
++    }
++
++    Intrinsic::ID Intrin;
++    switch (Pred) {
++    case ICmpInst::ICMP_SGT:
++        Intrin = Intrinsic::smax;
++        break;
++    case ICmpInst::ICMP_UGT:
++        Intrin = Intrinsic::umax;
++        break;
++    case ICmpInst::ICMP_SLT:
++        Intrin = Intrinsic::smin;
++        break;
++    case ICmpInst::ICMP_ULT:
++        Intrin = Intrinsic::umin;
++        break;
++    default:
++        return false;
++    }
++
++    auto Ty = Select->getType();
++    auto MaxMinF = Intrinsic::getDeclaration(&M, Intrin, {Ty});
++
++    IRBuilder<> Builder(Select);
++    auto Call = Builder.CreateCall(MaxMinF, {ICmpOp0, ICmpOp1});
++    Select->replaceAllUsesWith(Call);
++
++    return true;
++#else
++    return false;
++#endif
++}
++
++// In LLVM, icmp on vectors returns a vector on i1s whereas TCGs gvec_cmp
++// returns a vector of the element type of its operands.  This can result in
++// some subtle bugs.  Convert
++//
++//   icmp -> call @VecCompare
++//   select -> call @VecWideCondBitsel
++//
++static bool convertSelectICmpToVecBitsel(Module &M, SelectInst *Select,
++                                         ICmpInst *ICmp,
++                                         ICmpInst::Predicate &Pred,
++                                         Value *ICmpOp0, Value *ICmpOp1,
++                                         Value *SelectOp0, Value *SelectOp1)
++{
++    auto *ICmpVecTy = dyn_cast<VectorType>(ICmpOp0->getType());
++    auto *SelectVecTy = dyn_cast<VectorType>(Select->getType());
++    if (!ICmpVecTy or !SelectVecTy) {
++        return false;
++    }
++
++    Instruction *Cmp = ICmp;
++    {
++        IRBuilder<> Builder(Cmp);
++        FunctionCallee Fn =
++            pseudoInstFunction(M, VecCompare, ICmpVecTy,
++                               {Builder.getInt32Ty(), ICmpVecTy, ICmpVecTy});
++        ICmpInst::Predicate Pred = ICmp->getPredicate();
++        CallInst *Call = Builder.CreateCall(
++            Fn,
++            {ConstantInt::get(Builder.getInt32Ty(), Pred), ICmpOp0, ICmpOp1});
++        Cmp = Call;
++    }
++
++    unsigned SrcWidth = ICmpVecTy->getElementType()->getIntegerBitWidth();
++    unsigned DstWidth = SelectVecTy->getElementType()->getIntegerBitWidth();
++
++    if (SrcWidth < DstWidth) {
++        IRBuilder<> Builder(Select);
++        Value *ZExt = Builder.CreateSExt(Cmp, SelectVecTy);
++        FunctionCallee Fn =
++            pseudoInstFunction(M, VecWideCondBitsel, SelectVecTy,
++                               {SelectVecTy, SelectVecTy, SelectVecTy});
++        CallInst *Call = Builder.CreateCall(Fn, {ZExt, SelectOp0, SelectOp1});
++        Select->replaceAllUsesWith(Call);
++    } else if (SrcWidth > DstWidth) {
++        IRBuilder<> Builder(Select);
++        Value *ZExt = Builder.CreateTrunc(Cmp, SelectVecTy);
++        FunctionCallee Fn =
++            pseudoInstFunction(M, VecWideCondBitsel, SelectVecTy,
++                               {SelectVecTy, SelectVecTy, SelectVecTy});
++        CallInst *Call = Builder.CreateCall(Fn, {ZExt, SelectOp0, SelectOp1});
++        Select->replaceAllUsesWith(Call);
++    } else {
++        IRBuilder<> Builder(Select);
++        FunctionCallee Fn =
++            pseudoInstFunction(M, VecWideCondBitsel, SelectVecTy,
++                               {SelectVecTy, SelectVecTy, SelectVecTy});
++        CallInst *Call = Builder.CreateCall(Fn, {Cmp, SelectOp0, SelectOp1});
++        Select->replaceAllUsesWith(Call);
++    }
++
++    return true;
++}
++
++// Convert
++//
++//   %2 = icmp [sgt|ugt|slt|ult] %0, %1
++//   %5 = select %2, %3, %4
++//
++// to
++//
++//   5 = call @Movcond.[cond].*(%1, %0, %3, %4)
++//
++// to more closely match TCG semantics.
++static bool convertSelectICmpToMovcond(Module &M, SelectInst *Select,
++                                       ICmpInst *ICmp,
++                                       ICmpInst::Predicate &Pred,
++                                       Value *ICmpOp0, Value *ICmpOp1,
++                                       Value *SelectOp0, Value *SelectOp1)
++{
++    // We only handle integers, we have no movcond equivalent in gvec
++    auto *IntTy = dyn_cast<IntegerType>(Select->getType());
++    if (!IntTy) {
++        return false;
++    }
++
++    // If the type of the comparison does not match the return type of the
++    // select statement, we cannot do anything so skip
++    if (ICmpOp0->getType() != IntTy) {
++        return false;
++    }
++
++    IRBuilder<> Builder(Select);
++    if (cast<IntegerType>(ICmpOp0->getType())->getBitWidth() <
++        IntTy->getBitWidth()) {
++        if (ICmp->isSigned(Pred)) {
++            ICmpOp0 = Builder.CreateSExt(ICmpOp0, IntTy);
++            ICmpOp1 = Builder.CreateSExt(ICmpOp1, IntTy);
++        } else {
++            ICmpOp0 = Builder.CreateZExt(ICmpOp0, IntTy);
++            ICmpOp1 = Builder.CreateZExt(ICmpOp1, IntTy);
 +        }
 +    }
 +
-+    for (auto *I : InstToErase) {
-+        I->eraseFromParent();
++    // Create @Movcond.[slt|...].* function
++    FunctionCallee Fn = pseudoInstFunction(M, Movcond, IntTy,
++                                           {IntTy, IntTy, IntTy, IntTy, IntTy});
++    CallInst *Call =
++        Builder.CreateCall(Fn, {ConstantInt::get(IntTy, Pred), ICmpOp0, ICmpOp1,
++                                SelectOp0, SelectOp1});
++    Select->replaceAllUsesWith(Call);
++
++    return true;
++}
++
++// Specialize
++//
++//   %2 = icmp [sgt|ugt|slt|ult] %0, %1
++//   %5 = select %2, %3, %4
++//
++// to either maximum/minimum, vector operations matching TCG, or a conditional
++// move that also matches TCG in sematics.
++static void convertSelectICmp(Module &M, SelectInst *Select, ICmpInst *ICmp)
++{
++    // Given
++    //   %2 = icmp [sgt|ugt|slt|ult] %0, %1
++    //   %5 = select %2, %3, %4
++    assert(Select->getCondition() == ICmp);
++    Value *ICmpOp0 = ICmp->getOperand(0);
++    Value *ICmpOp1 = ICmp->getOperand(1);
++    Value *SelectOp0 = Select->getTrueValue();
++    Value *SelectOp1 = Select->getFalseValue();
++    ICmpInst::Predicate Pred = ICmp->getPredicate();
++
++    // First try to convert to min/max
++    //   %5 = [s|u][max|min] %0, %1
++    if (convertSelectICmpToMinMax(M, Select, ICmp, Pred, ICmpOp0, ICmpOp1,
++                                  SelectOp0, SelectOp1)) {
++        return;
++    }
++
++    // Secondly try convert icmp -> @VecCompare, select -> @VecWideCondBitsel
++    if (convertSelectICmpToVecBitsel(M, Select, ICmp, Pred, ICmpOp0, ICmpOp1,
++                                     SelectOp0, SelectOp1)) {
++        return;
++    }
++
++    // If min/max and vector conversion failed we fallback to a movcond
++    //   %5 = call @Movcond.[cond].*(%1, %0, %3, %4)
++    convertSelectICmpToMovcond(M, Select, ICmp, Pred, ICmpOp0, ICmpOp1,
++                               SelectOp0, SelectOp1);
++}
++
++// Convert QEMU guest loads/stores represented by calls such as
++//
++//   call cpu_ldub*(),
++//   call cpu_stb*(),
++//
++// and friends, to pseudo instructions
++//
++//   %5 = call @GuestLoad.*(%addr, %sign, %size, %endian);
++//   %5 = call @GuestStore.*(%addr, %value, %size, %endian);
++//
++// Makes the backend agnostic to what instructions or calls are used to
++// represent loads and stores.
++static void convertQemuLoadStoreToPseudoInst(Module &M, CallInst *Call)
++{
++    Function *F = Call->getCalledFunction();
++    StringRef Name = F->getName();
++    if (Name.consume_front("cpu_")) {
++        bool IsLoad = Name.consume_front("ld");
++        bool IsStore = !IsLoad and Name.consume_front("st");
++        if (IsLoad or IsStore) {
++            bool Signed = !Name.consume_front("u");
++            uint8_t Size = 0;
++            switch (Name[0]) {
++            case 'b':
++                Size = 1;
++                break;
++            case 'w':
++                Size = 2;
++                break;
++            case 'l':
++                Size = 4;
++                break;
++            case 'q':
++                Size = 8;
++                break;
++            default:
++                abort();
++            }
++
++            uint8_t Endianness = 0; // unknown
++            if (Size > 1) {
++                Name = Name.drop_front(2);
++                switch (Name[0]) {
++                case 'l':
++                    Endianness = 1;
++                    break;
++                case 'b':
++                    Endianness = 2;
++                    break;
++                default:
++                    abort();
++                }
++            }
++
++            IRBuilder<> Builder(Call);
++            Value *AddrOp = Call->getArgOperand(1);
++            IntegerType *AddrTy = cast<IntegerType>(AddrOp->getType());
++            IntegerType *FlagTy = Builder.getInt8Ty();
++            Value *SizeOp = ConstantInt::get(FlagTy, Size);
++            Value *EndianOp = ConstantInt::get(FlagTy, Endianness);
++            CallInst *NewCall;
++            if (IsLoad) {
++                Value *SignOp = ConstantInt::get(FlagTy, Signed);
++                IntegerType *RetTy = cast<IntegerType>(Call->getType());
++                FunctionCallee Fn = pseudoInstFunction(
++                    M, GuestLoad, RetTy, {AddrTy, FlagTy, FlagTy, FlagTy});
++                NewCall =
++                    Builder.CreateCall(Fn, {AddrOp, SignOp, SizeOp, EndianOp});
++            } else {
++                Value *ValueOp = Call->getArgOperand(2);
++                IntegerType *ValueTy = cast<IntegerType>(ValueOp->getType());
++                FunctionCallee Fn =
++                    pseudoInstFunction(M, GuestStore, Builder.getVoidTy(),
++                                       {AddrTy, ValueTy, FlagTy, FlagTy});
++                NewCall =
++                    Builder.CreateCall(Fn, {AddrOp, ValueOp, SizeOp, EndianOp});
++            }
++            Call->replaceAllUsesWith(NewCall);
++        }
 +    }
 +}
-diff --git a/subprojects/helper-to-tcg/passes/PrepareForTcgPass/TransformGEPs.h b/subprojects/helper-to-tcg/passes/PrepareForTcgPass/TransformGEPs.h
++
++// Convert QEMU exception calls
++//
++//   call raise_exception_ra(...),
++//   ...
++//
++// to a pseudo instruction
++//
++//   %5 = call @Exception.*(...);
++//
++// Makes the backend agnostic to what instructions or calls are used to
++// represent exceptions, and the list of sources can be expanded here.
++static void convertExceptionCallsToPseudoInst(Module &M, CallInst *Call)
++{
++    Function *F = Call->getCalledFunction();
++    StringRef Name = F->getName();
++    // NOTE: expand as needed
++    if (Name == "raise_exception_ra") {
++        IRBuilder<> Builder(Call);
++        Value *Op0 = Call->getArgOperand(0);
++        Value *Op1 = Call->getArgOperand(1);
++        FunctionCallee Fn =
++            pseudoInstFunction(M, Exception, Builder.getVoidTy(),
++                               {Op0->getType(), Op1->getType()});
++        CallInst *NewCall = Builder.CreateCall(Fn, {Op0, Op1});
++        Call->replaceAllUsesWith(NewCall);
++    }
++}
++
++//
++// Following functions help with converting between different types of
++// instructions to pseudo instructions, particularly ones that write
++// to a pointer, aka the Vec*Store pseudo instructions
++//
++
++static PseudoInst instructionToStorePseudoInst(unsigned Opcode)
++{
++    switch (Opcode) {
++    case Instruction::Trunc:
++        return VecTruncStore;
++    case Instruction::ZExt:
++        return VecZExtStore;
++    case Instruction::SExt:
++        return VecSExtStore;
++    case Instruction::Select:
++        return VecSelectStore;
++    case Instruction::Add:
++        return VecAddStore;
++    case Instruction::Sub:
++        return VecSubStore;
++    case Instruction::Mul:
++        return VecMulStore;
++    case Instruction::Xor:
++        return VecXorStore;
++    case Instruction::Or:
++        return VecOrStore;
++    case Instruction::And:
++        return VecAndStore;
++    case Instruction::Shl:
++        return VecShlStore;
++    case Instruction::LShr:
++        return VecLShrStore;
++    case Instruction::AShr:
++        return VecAShrStore;
++    default:
++        abort();
++    }
++}
++
++static PseudoInst pseudoInstToStorePseudoInst(PseudoInst Inst)
++{
++    switch (Inst) {
++    case VecNot:
++        return VecNotStore;
++    case VecAddScalar:
++        return VecAddScalarStore;
++    case VecSubScalar:
++        return VecSubScalarStore;
++    case VecMulScalar:
++        return VecMulScalarStore;
++    case VecXorScalar:
++        return VecXorScalarStore;
++    case VecOrScalar:
++        return VecOrScalarStore;
++    case VecAndScalar:
++        return VecAndScalarStore;
++    case VecShlScalar:
++        return VecShlScalarStore;
++    case VecLShrScalar:
++        return VecLShrScalarStore;
++    case VecAShrScalar:
++        return VecAShrScalarStore;
++    case VecWideCondBitsel:
++        return VecWideCondBitselStore;
++    default:
++        abort();
++    }
++}
++
++static PseudoInst intrinsicToStorePseudoInst(unsigned IntrinsicID)
++{
++    switch (IntrinsicID) {
++    case Intrinsic::sadd_sat:
++        return VecSignedSatAddStore;
++    case Intrinsic::ssub_sat:
++        return VecSignedSatSubStore;
++    case Intrinsic::fshr:
++        return VecFunnelShrStore;
++#if LLVM_VERSION_MAJOR > 11
++    case Intrinsic::abs:
++        return VecAbsStore;
++    case Intrinsic::smax:
++        return VecSignedMaxStore;
++    case Intrinsic::umax:
++        return VecUnsignedMaxStore;
++    case Intrinsic::smin:
++        return VecSignedMinStore;
++    case Intrinsic::umin:
++        return VecUnsignedMinStore;
++#endif
++    case Intrinsic::ctlz:
++        return VecCtlzStore;
++    case Intrinsic::cttz:
++        return VecCttzStore;
++    case Intrinsic::ctpop:
++        return VecCtpopStore;
++    default:
++        abort();
++    }
++}
++
++// For binary/unary ops on vectors where the result is stored to a
++// pointer
++//
++//   %3 = <NxM> %1 [op] <NxM> %2
++//   %4 = bitcast i8* %0 to <NxM>*
++//   store <NxM> %3, <NxM>* %4
++//
++// to
++//
++//   call @Vec[Op]Store.*(%0, %1, %2)
++//
++// This deals with the duality of pointers and vectors, and
++// simplifies the backend.  We previously kept a map on the
++// side to propagate "vector"-ness from %3 to %4 via the store,
++// no longer!
++static void convertVecStoreBitcastToPseudoInst(EraseInstVec &InstToErase,
++                                               Module &M, StoreInst *Store)
++{
++    Value *ValueOp = Store->getValueOperand();
++    Type *ValueTy = ValueOp->getType();
++    if (!ValueTy->isVectorTy()) {
++        return;
++    }
++    auto *Bitcast = cast<BitCastInst>(Store->getPointerOperand());
++    Type *PtrTy = Bitcast->getType();
++    // Ensure store and binary op. are in the same basic
++    // block since the op. is moved to the store.
++    bool InSameBB =
++        cast<Instruction>(ValueOp)->getParent() == Store->getParent();
++    if (!InSameBB) {
++        return;
++    }
++
++    SmallVector<Type *, 3> Types;
++    SmallVector<Value *, 3> Args;
++    Value *PtrOp = Store->getPointerOperand();
++    if (auto *BinOp = dyn_cast<BinaryOperator>(ValueOp)) {
++        Instruction *Inst = cast<Instruction>(ValueOp);
++        PseudoInst NewInst = instructionToStorePseudoInst(BinOp->getOpcode());
++        IRBuilder<> Builder(Store);
++        const unsigned ArgCount = pseudoInstArgCount(NewInst);
++        // Add one to account for extra store pointer
++        // argument of Vec*Store pseudo instructions.
++        assert(ArgCount > 0 and ArgCount - 1 <= Inst->getNumOperands());
++        Types.push_back(PtrTy);
++        Args.push_back(PtrOp);
++        for (unsigned I = 0; I < ArgCount - 1; ++I) {
++            Value *Op = Inst->getOperand(I);
++            Types.push_back(Op->getType());
++            Args.push_back(Op);
++        }
++        FunctionCallee Fn =
++            pseudoInstFunction(M, NewInst, Builder.getVoidTy(), Types);
++        Builder.CreateCall(Fn, Args);
++    } else if (auto *Call = dyn_cast<CallInst>(ValueOp)) {
++        Function *F = Call->getCalledFunction();
++        PseudoInst OldInst = getPseudoInstFromCall(Call);
++        if (OldInst != InvalidPseudoInst) {
++            // Map scalar vector pseudo instructions to
++            // store variants
++            PseudoInst NewInst = pseudoInstToStorePseudoInst(OldInst);
++            IRBuilder<> Builder(Store);
++            Types.push_back(PtrTy);
++            Args.push_back(PtrOp);
++            for (Value *Op : Call->args()) {
++                Types.push_back(Op->getType());
++                Args.push_back(Op);
++            }
++            FunctionCallee Fn =
++                pseudoInstFunction(M, NewInst, Builder.getVoidTy(), Types);
++            Builder.CreateCall(Fn, Args);
++        } else if (F->isIntrinsic()) {
++            Instruction *Inst = cast<Instruction>(ValueOp);
++            PseudoInst NewInst =
++                intrinsicToStorePseudoInst(F->getIntrinsicID());
++            const unsigned ArgCount = pseudoInstArgCount(NewInst);
++            // Add one to account for extra store pointer
++            // argument of Vec*Store pseudo instructions.
++            assert(ArgCount > 0 and ArgCount - 1 <= Inst->getNumOperands());
++            IRBuilder<> Builder(Store);
++            SmallVector<Type *, 8> ArgTys;
++            SmallVector<Value *, 8> Args;
++            ArgTys.push_back(PtrTy);
++            Args.push_back(PtrOp);
++            for (unsigned I = 0; I < ArgCount - 1; ++I) {
++                Value *Op = Inst->getOperand(I);
++                ArgTys.push_back(Op->getType());
++                Args.push_back(Op);
++            }
++            FunctionCallee Fn =
++                pseudoInstFunction(M, NewInst, Builder.getVoidTy(), ArgTys);
++            Builder.CreateCall(Fn, Args);
++        } else {
++            dbgs() << "Uhandled vector + bitcast + store op. " << *ValueOp
++                   << "\n";
++            abort();
++        }
++    } else {
++        Instruction *Inst = cast<Instruction>(ValueOp);
++        PseudoInst NewInst = instructionToStorePseudoInst(Inst->getOpcode());
++        const unsigned ArgCount = pseudoInstArgCount(NewInst);
++        // Add one to account for extra store pointer
++        // argument of Vec*Store pseudo instructions.
++        assert(ArgCount > 0 and ArgCount - 1 <= Inst->getNumOperands());
++        IRBuilder<> Builder(Store);
++        SmallVector<Type *, 8> ArgTys;
++        SmallVector<Value *, 8> Args;
++        ArgTys.push_back(PtrTy);
++        Args.push_back(PtrOp);
++        for (unsigned I = 0; I < ArgCount - 1; ++I) {
++            Value *Op = Inst->getOperand(I);
++            ArgTys.push_back(Op->getType());
++            Args.push_back(Op);
++        }
++        FunctionCallee Fn =
++            pseudoInstFunction(M, NewInst, Builder.getVoidTy(), ArgTys);
++        Builder.CreateCall(Fn, Args);
++    }
++
++    // Remove store instruction, this ensures DCE
++    // can cleanup the rest, we also remove ValueOp
++    // here since it's a call and won't get cleaned
++    // by DCE.
++    InstToErase.push_back(cast<Instruction>(ValueOp));
++    InstToErase.push_back(Store);
++}
++
++//
++// Convert
++//
++//   %cond = icmp [cond] i32 %0, i32 %1
++//   br i1 %cond, label %true, label %false
++//
++// to
++//
++//   call void @brcond.[cond].i32(i32 %0, i32 %1, label %true.exit,
++//   label %false) br i1 %cond, label %true, label %false !dead-branch
++//
++// note the old branch still remains as @brcond.* is not an actual
++// branch instruction. Removing the old branch would result in broken
++// IR.
++//
++// Additionally if the %false basic block immediatly succeeds the
++// current one, we can ignore the false branch and fallthrough, this is
++// indicated via !fallthrough metadata on the call.
++//
++// TODO: Consider using a ConstantInt i1 arguments instead. Metadata is
++// fragile and does not survive optimization. We do not run any more
++// optimization passes, but this could be a source of future headache.
++static void convertICmpBrToPseudInst(LLVMContext &Context,
++                                     EraseInstVec &InstToErase, Module &M,
++                                     Instruction *I, BasicBlock *NextBb)
++{
++    auto *ICmp = dyn_cast<ICmpInst>(I);
++    if (!ICmp) {
++        return;
++    }
++
++    // Since we want to remove the icmp instruction we ensure that
++    // all uses are branch instructions that can be converted into
++    // @brcond.* calls.
++    for (User *U : ICmp->users()) {
++        if (!isa<BranchInst>(U)) {
++            return;
++        }
++    }
++
++    Value *Op0 = ICmp->getOperand(0);
++    Value *Op1 = ICmp->getOperand(1);
++    auto *CmpIntTy = dyn_cast<IntegerType>(Op0->getType());
++    if (!CmpIntTy) {
++        return;
++    }
++    for (User *U : ICmp->users()) {
++        auto *Br = cast<BranchInst>(U);
++
++        BasicBlock *True = Br->getSuccessor(0);
++        BasicBlock *False = Br->getSuccessor(1);
++
++        bool TrueUnreachable =
++            True->getTerminator()->getOpcode() == Instruction::Unreachable and
++            False->getTerminator()->getOpcode() != Instruction::Unreachable;
++
++        // If the next basic block is either of our true/false
++        // branches, we can fallthrough instead of branching.
++        bool Fallthrough = (NextBb == True or NextBb == False);
++
++        // If the succeeding basic block is the true branch we
++        // invert the condition so we can !fallthrough instead.
++        ICmpInst::Predicate Predicate;
++        if (NextBb == True or (TrueUnreachable and NextBb == False)) {
++            std::swap(True, False);
++            Predicate = ICmp->getInversePredicate();
++        } else {
++            Predicate = ICmp->getPredicate();
++        }
++
++        IRBuilder<> Builder(Br);
++        FunctionCallee Fn = pseudoInstFunction(
++            M, Brcond, Builder.getVoidTy(),
++            {CmpIntTy, CmpIntTy, CmpIntTy, True->getType(), False->getType()});
++        CallInst *Call = Builder.CreateCall(
++            Fn, {ConstantInt::get(CmpIntTy, Predicate), Op0, Op1, True, False});
++
++        if (Fallthrough) {
++            MDTuple *N = MDNode::get(Context, MDString::get(Context, ""));
++            Call->setMetadata("fallthrough", N);
++        }
++
++        //
++        // We need to keep the BB of the true branch alive
++        // so that we can iterate over the CFG as usual
++        // using LLVM. Or custom "opcode" @brcond is not an
++        // actual branch, so LLVM does not understand that
++        // we can branch to the true branch.
++        //
++        // For this reason we emit an extra dead branch
++        // to the true branch, and tag it as dead using
++        // metadata. The backend can later check that if
++        // this metadata is present and ignore the branch.
++        //
++        // Another idea:
++        //    What we could do instead is to
++        //    linearize the CFG before this point, i.e.
++        //    establish the order we want to emit all BBs
++        //    in, in say an array. We can then iterate
++        //    over this array instead, note this can only
++        //    happen in the later stages of the pipeline
++        //    where we don't rely on LLVM for any extra work.
++        //
++        //    Keeping our own linear array would also allow
++        //    us to optimize brconds for fallthroughs, e.g.
++        //    check if any of the basic blocks we branch to
++        //    is the next basic block, and if so we can adjust
++        //    the condition accordingly.
++        //    (We do this currently, but this assumes the
++        //    iteration order here is the same as in the
++        //    backend.)
++        //
++        // Note also: LLVM expectects the BB to end in a single
++        // branch.
++        //
++        BranchInst *DeadBranch =
++            Builder.CreateCondBr(ConstantInt::getFalse(Context), True, False);
++        {
++            MDTuple *N = MDNode::get(Context, MDString::get(Context, ""));
++            DeadBranch->setMetadata("dead-branch", N);
++        }
++
++        InstToErase.push_back(Br);
++    }
++    InstToErase.push_back(ICmp);
++}
+diff --git a/subprojects/helper-to-tcg/passes/PrepareForTcgPass/CanonicalizeIR.h b/subprojects/helper-to-tcg/passes/PrepareForTcgPass/CanonicalizeIR.h
 new file mode 100644
-index 0000000000..11ac9c7e9b
+index 0000000000..441200606d
 --- /dev/null
-+++ b/subprojects/helper-to-tcg/passes/PrepareForTcgPass/TransformGEPs.h
-@@ -0,0 +1,37 @@
++++ b/subprojects/helper-to-tcg/passes/PrepareForTcgPass/CanonicalizeIR.h
+@@ -0,0 +1,25 @@
 +//
 +//  Copyright(c) 2024 rev.ng Labs Srl. All Rights Reserved.
 +//
@@ -439,24 +1120,31 @@ index 0000000000..11ac9c7e9b
 +
 +#pragma once
 +
-+#include "TcgGlobalMap.h"
-+#include <llvm/IR/Function.h>
-+#include <llvm/IR/Module.h>
++namespace llvm
++{
++class Module;
++}
 +
-+//
-+// Transform of module that converts getelementptr (GEP) operators to
-+// pseudo instructions:
-+//   - call @AccessGlobalArray(OffsetInEnv, Index)
-+//     if OffsetInEnv is mapped to a global TCGv array.
-+//
-+//   - call @AccessGlobalValue(OffsetInEnv)
-+//     if OffsetInEnv is mapped to a global TCGv value.
-+//
-+//   - pointer math, if above fails.
-+//
-+
-+void transformGEPs(llvm::Module &M, llvm::Function &F,
-+                   const TcgGlobalMap &TcgGlobals);
++void canonicalizeIR(llvm::Module &M);
+diff --git a/subprojects/helper-to-tcg/passes/PrepareForTcgPass/PrepareForTcgPass.cpp b/subprojects/helper-to-tcg/passes/PrepareForTcgPass/PrepareForTcgPass.cpp
+index b1e2932750..7fdbc2a0c9 100644
+--- a/subprojects/helper-to-tcg/passes/PrepareForTcgPass/PrepareForTcgPass.cpp
++++ b/subprojects/helper-to-tcg/passes/PrepareForTcgPass/PrepareForTcgPass.cpp
+@@ -15,6 +15,7 @@
+ //  along with this program; if not, see <http://www.gnu.org/licenses/>.
+ //
+ 
++#include "CanonicalizeIR.h"
+ #include <CmdLineOptions.h>
+ #include <PrepareForTcgPass.h>
+ #include "TransformGEPs.h"
+@@ -124,5 +125,6 @@ PreservedAnalyses PrepareForTcgPass::run(Module &M, ModuleAnalysisManager &MAM)
+     for (Function &F : M) {
+         transformGEPs(M, F, ResultTcgGlobalMap);
+     }
++    canonicalizeIR(M);
+     return PreservedAnalyses::none();
+ }
 -- 
 2.45.2
 
