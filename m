@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F47F9D4FF8
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Nov 2024 16:44:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B53E9D5007
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Nov 2024 16:46:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tE9LS-0000dh-7F; Thu, 21 Nov 2024 10:43:52 -0500
+	id 1tE9Le-0000qb-O4; Thu, 21 Nov 2024 10:44:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1tE9L6-0000TV-EA
- for qemu-devel@nongnu.org; Thu, 21 Nov 2024 10:43:32 -0500
+ id 1tE9L8-0000Tg-8l
+ for qemu-devel@nongnu.org; Thu, 21 Nov 2024 10:43:33 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1tE9Ky-0000lM-GH
- for qemu-devel@nongnu.org; Thu, 21 Nov 2024 10:43:27 -0500
+ id 1tE9L2-0000lm-Rp
+ for qemu-devel@nongnu.org; Thu, 21 Nov 2024 10:43:28 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1732203790;
+ s=mimecast20190719; t=1732203794;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=1FsH3qFtGsm9QX04vq8KLHX874OpFGJsQao19NSbZGE=;
- b=OPK5ZusC3lQkucgZzPNTNuDIvtPyR2MqnzK1ynDYtx+3x5P8pcTZnRGfJ74f1N8T0YkOhh
- Reh01KuXwfgrxYQYHl/JigD8yyHPwRItIi3G2jBZd0LmUTp1c/jhuJsyNWz5IquLW/RT6V
- UEisuiRlBC5A4LQLvZ1tvdiS+O4cW30=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ bh=9yZ5S8cQcszBn1MnoteKcv76OOdM8fiGdKcnqIzzBlQ=;
+ b=FWclCDyjJaxLK4x46VbIAEz6/LGbUdqN1jCmIx+z7Yqzaw6zdzVW87xwIqxrE8m36bTtsV
+ Z0K++3Cav2qcQYWAL6/HJvqQMt2e63UX1DRBMQiSl9ivsT5nEwr9jU997WznXbQmb5j9OA
+ FONqsJLTlQEP5ZAr4zdf6FOkCCTKWII=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-248-ftgM3IWIPneJhA0T9xjKTQ-1; Thu,
- 21 Nov 2024 10:43:04 -0500
-X-MC-Unique: ftgM3IWIPneJhA0T9xjKTQ-1
-X-Mimecast-MFC-AGG-ID: ftgM3IWIPneJhA0T9xjKTQ
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-534-mpfy6-J5NCG-o9yNSRDnhQ-1; Thu,
+ 21 Nov 2024 10:43:09 -0500
+X-MC-Unique: mpfy6-J5NCG-o9yNSRDnhQ-1
+X-Mimecast-MFC-AGG-ID: mpfy6-J5NCG-o9yNSRDnhQ
 Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id BE97319540F2; Thu, 21 Nov 2024 15:43:03 +0000 (UTC)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id E22D819560B4; Thu, 21 Nov 2024 15:43:07 +0000 (UTC)
 Received: from toolbox.redhat.com (unknown [10.42.28.5])
  by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id A856B1956086; Thu, 21 Nov 2024 15:42:57 +0000 (UTC)
+ id 6E3221956086; Thu, 21 Nov 2024 15:43:04 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Thomas Huth <thuth@redhat.com>, Ani Sinha <anisinha@redhat.com>,
@@ -52,10 +52,10 @@ Cc: Thomas Huth <thuth@redhat.com>, Ani Sinha <anisinha@redhat.com>,
  Peter Maydell <peter.maydell@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH v2 06/18] tests/functional: remove obsolete reference to
- avocado bug
-Date: Thu, 21 Nov 2024 15:42:06 +0000
-Message-ID: <20241121154218.1423005-7-berrange@redhat.com>
+Subject: [PATCH v2 07/18] tests/functional: remove comments talking about
+ avocado
+Date: Thu, 21 Nov 2024 15:42:07 +0000
+Message-ID: <20241121154218.1423005-8-berrange@redhat.com>
 In-Reply-To: <20241121154218.1423005-1-berrange@redhat.com>
 References: <20241121154218.1423005-1-berrange@redhat.com>
 MIME-Version: 1.0
@@ -87,27 +87,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Historical bugs in avocado related to zstd support are not relevant to
-the code now that it uses QEMU's native test harness.
+The first comment is still relevant but should talk about our own test
+harness instead. The second comment adds no value over reading the code
+and can be removed.
 
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- tests/functional/qemu_test/tuxruntest.py | 1 -
- 1 file changed, 1 deletion(-)
+ tests/functional/test_acpi_bits.py | 13 ++++++-------
+ 1 file changed, 6 insertions(+), 7 deletions(-)
 
-diff --git a/tests/functional/qemu_test/tuxruntest.py b/tests/functional/qemu_test/tuxruntest.py
-index f05aa96ad7..ed2b238c92 100644
---- a/tests/functional/qemu_test/tuxruntest.py
-+++ b/tests/functional/qemu_test/tuxruntest.py
-@@ -39,7 +39,6 @@ def setUp(self):
-         super().setUp()
+diff --git a/tests/functional/test_acpi_bits.py b/tests/functional/test_acpi_bits.py
+index ee40647d5b..4c192d95cc 100755
+--- a/tests/functional/test_acpi_bits.py
++++ b/tests/functional/test_acpi_bits.py
+@@ -196,11 +196,12 @@ def copy_test_scripts(self):
+         for filename in os.listdir(bits_test_dir):
+             if os.path.isfile(os.path.join(bits_test_dir, filename)) and \
+                filename.endswith('.py2'):
+-                # all test scripts are named with extension .py2 so that
+-                # avocado does not try to load them. These scripts are
+-                # written for python 2.7 not python 3 and hence if avocado
+-                # loaded them, it would complain about python 3 specific
+-                # syntaxes.
++                # All test scripts are named with extension .py2 so that
++                # they are not run by accident.
++                #
++                # These scripts are intended to run inside the test VM
++                # and are written for python 2.7 not python 3, hence
++                # would cause syntax errors if loaded ouside the VM.
+                 newfilename = os.path.splitext(filename)[0] + '.py'
+                 shutil.copy2(os.path.join(bits_test_dir, filename),
+                              os.path.join(target_test_dir, newfilename))
+@@ -399,8 +400,6 @@ def test_acpi_smbios_bits(self):
  
-         # We need zstd for all the tuxrun tests
--        # See https://github.com/avocado-framework/avocado/issues/5609
-         (has_zstd, msg) = has_cmd('zstd')
-         if has_zstd is False:
-             self.skipTest(msg)
+         # biosbits has been configured to run all the specified test suites
+         # in batch mode and then automatically initiate a vm shutdown.
+-        # Set timeout to BITS_TIMEOUT for SHUTDOWN event from bits VM at par
+-        # with the avocado test timeout.
+         self._vm.event_wait('SHUTDOWN', timeout=BITS_TIMEOUT)
+         self._vm.wait(timeout=None)
+         self.logger.debug("Checking console output ...")
 -- 
 2.46.0
 
