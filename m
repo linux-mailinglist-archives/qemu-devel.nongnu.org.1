@@ -2,54 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E58419D4C1B
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Nov 2024 12:39:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 902679D4B45
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Nov 2024 12:09:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tE5VK-0005iE-BS; Thu, 21 Nov 2024 06:37:46 -0500
+	id 1tE52b-0000Aw-8Z; Thu, 21 Nov 2024 06:08:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1)
- (envelope-from <16d4c54023a20d3f30765896402fc23197dcc432@kylie.crudebyte.com>)
- id 1tE5VH-0005hk-G7
- for qemu-devel@nongnu.org; Thu, 21 Nov 2024 06:37:43 -0500
-Received: from kylie.crudebyte.com ([5.189.157.229])
+ (Exim 4.90_1) (envelope-from <groug@kaod.org>) id 1tE52Y-0000AQ-2r
+ for qemu-devel@nongnu.org; Thu, 21 Nov 2024 06:08:02 -0500
+Received: from 4.mo552.mail-out.ovh.net ([178.33.43.201])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1)
- (envelope-from <16d4c54023a20d3f30765896402fc23197dcc432@kylie.crudebyte.com>)
- id 1tE5VG-0000zF-3h
- for qemu-devel@nongnu.org; Thu, 21 Nov 2024 06:37:43 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=crudebyte.com; s=kylie; h=Message-Id:Cc:To:Subject:Date:From:Content-Type:
- Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Content-ID:
- Content-Description; bh=AWzAHO6gyqFD/yFS6Ch1fb7eIx2m9gItRsv/Z0riUF0=; b=EA/57
- 3TM5zyzsXw9V0B/Fx1eK6iY1+gk56otd4z6NKL6EnTvO5EmZxaceAEbtNo6922X5gMcVKPr//sMb4
- w4VnoZz8/oje+kbWvc46ChVWjEQWgQmkjCJSYDUhVeEiYygYp/Oqy65YJaEwwvkIFe0QYz8Tf0xhc
- GHKTIXsas8DYKA1+MDwnsK6wgozIlMP2FR5XpVmcqLzASUzPBb2tc/l1N8yZhibgskk14H5esQfks
- JOr9syEFwjI/zXdGVi9gQeDoetc3mYHhbyT10IgZMvaYUbVpoS1MRtDrvks83rj1u+kyNHBUymzBN
- ltpEVonDUNEfge1u0sTOxL+DNYy8Lh78YFjZ+i0fKwnnwEFlHd/u9igTZtqjQnAkkuF3lerWLhLs6
- 6ppmhCa50lKHfYE1iJnXJnP7Pfsv6vYfu3/p4YlC1k1i6CipcnIiwTjUaXhd2DtYCyP9rBInINGxN
- lha50wX2DE/KQ6BkRfsWyHL/USGrdNQ08K4ONmcOK9cPaaU8w6WQdUR1FWwGMXGrlJhimB6m7HVft
- eJQZUK2DDE45VkNcwHQQyuiGaR0xU6kKyH/j2jYVq9RhCbOesiaIKA0HgEwU6BspsGxL06GLTUhEX
- YMCVIylHs6iSn890BZVBdN1p9sSaPYtlCtzcXuYZtXQCgS7SWbY5uG7DCIVsd0=;
-From: Christian Schoenebeck <qemu_oss@crudebyte.com>
-Date: Thu, 21 Nov 2024 11:52:48 +0100
-Subject: [PATCH] 9pfs: cleanup V9fsFidState
-To: qemu-devel@nongnu.org
-Cc: Greg Kurz <groug@kaod.org>,
-    Linus Heckemann <git@sphalerite.org>
-Message-Id: <E1tE4v2-0051EH-Ni@kylie.crudebyte.com>
-Received-SPF: pass client-ip=5.189.157.229;
- envelope-from=16d4c54023a20d3f30765896402fc23197dcc432@kylie.crudebyte.com;
- helo=kylie.crudebyte.com
+ (Exim 4.90_1) (envelope-from <groug@kaod.org>) id 1tE52W-0002G9-0i
+ for qemu-devel@nongnu.org; Thu, 21 Nov 2024 06:08:01 -0500
+Received: from mxplan5.mail.ovh.net (unknown [10.109.176.7])
+ by mo552.mail-out.ovh.net (Postfix) with ESMTPS id 4XvFnW0Q73z1PNM;
+ Thu, 21 Nov 2024 11:07:43 +0000 (UTC)
+Received: from kaod.org (37.59.142.100) by DAG6EX1.mxp5.local (172.16.2.51)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Thu, 21 Nov
+ 2024 12:07:42 +0100
+Authentication-Results: garm.ovh; auth=pass
+ (GARM-100R0030e79cc76-9273-494e-8d8c-ea7885503c3c,
+ FF192833FC087472966912589AD63751DC8D0292) smtp.auth=groug@kaod.org
+X-OVh-ClientIp: 88.179.9.154
+Date: Thu, 21 Nov 2024 12:07:39 +0100
+From: Greg Kurz <groug@kaod.org>
+To: Christian Schoenebeck <qemu_oss@crudebyte.com>
+CC: <qemu-devel@nongnu.org>, Linus Heckemann <git@sphalerite.org>
+Subject: Re: [PATCH] 9pfs: cleanup V9fsFidState
+Message-ID: <20241121120739.5f2a8c1d@bahia>
+In-Reply-To: <E1tE4v2-0051EH-Ni@kylie.crudebyte.com>
+References: <E1tE4v2-0051EH-Ni@kylie.crudebyte.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
+MIME-Version: 1.0
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [37.59.142.100]
+X-ClientProxiedBy: DAG3EX1.mxp5.local (172.16.2.21) To DAG6EX1.mxp5.local
+ (172.16.2.51)
+X-Ovh-Tracer-GUID: 0b539284-9ed7-41b6-94da-0da0420be5fb
+X-Ovh-Tracer-Id: 1476617730153290205
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: 0
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeefuddrfeeigddvfecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecunecujfgurhepfffhvfevuffkjghfofggtgfgihesthejredtredtvdenucfhrhhomhepifhrvghgucfmuhhriicuoehgrhhouhhgsehkrghougdrohhrgheqnecuggftrfgrthhtvghrnhepgeekjedtveegkeeileffvdetvddvgedtudduiefghffhgfdvhfegjeetkeehfeeknecukfhppeduvdejrddtrddtrddupdefjedrheelrddugedvrddutddtpdekkedrudejledrledrudehgeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeduvdejrddtrddtrddupdhmrghilhhfrhhomhepghhrohhugheskhgrohgurdhorhhgpdhnsggprhgtphhtthhopeefpdhrtghpthhtohepqhgvmhhupghoshhssegtrhhuuggvsgihthgvrdgtohhmpdhrtghpthhtohepqhgvmhhuqdguvghvvghlsehnohhnghhnuhdrohhrghdprhgtphhtthhopehgihhtsehsphhhrghlvghrihhtvgdrohhrghdpoffvtefjohhsthepmhhoheehvdgmpdhmohguvgepshhmthhpohhuth
+DKIM-Signature: a=rsa-sha256; bh=Bd+gBqoNJ0k9U4pyQqcz4XB4liIozqJKIWhrIWEwU6M=; 
+ c=relaxed/relaxed; d=kaod.org; h=From; s=ovhmo393970-selector1;
+ t=1732187263; v=1;
+ b=dj3yKfxRwZnmA8Xk1fcanoJPTazf9A3YKWvYva/kgE00jF23m8u+1oQfvlt2gft0RWPkrvEW
+ cZt5+QkCIpvdEr5Jb1RbFHesaDrwkTEamkb+7JiLqfG8UDntowq+3+G49kiLOixF49fqlHY0Uef
+ zMpMihGJUs7zb51hwI91ia/n6YLP5vdbyJ20ARQuoWHuo6IY6Mn2ONtfImS4QLV9m25MwSY+4Lj
+ kXdLDY3ViZgvtqVZaOJOd9mDUGlHz7mKOEbPEN/iyfXARugSAq6e/3TTpihlEoSU4iNlJu77sYV
+ Q8zLdjS+rJTNPbAzpMXhvfcQvdrWnTPU1KwA5xIech8KQ==
+Received-SPF: pass client-ip=178.33.43.201; envelope-from=groug@kaod.org;
+ helo=4.mo552.mail-out.ovh.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -65,28 +80,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Drop V9fsFidState's 'next' member, which is no longer used since:
+On Thu, 21 Nov 2024 11:52:48 +0100
+Christian Schoenebeck <qemu_oss@crudebyte.com> wrote:
 
-  f5265c8f917e ('9pfs: use GHashTable for fid table')
+> Drop V9fsFidState's 'next' member, which is no longer used since:
+> 
+>   f5265c8f917e ('9pfs: use GHashTable for fid table')
+> 
 
-Signed-off-by: Christian Schoenebeck <qemu_oss@crudebyte.com>
----
- hw/9pfs/9p.h | 1 -
- 1 file changed, 1 deletion(-)
+Good catch !
 
-diff --git a/hw/9pfs/9p.h b/hw/9pfs/9p.h
-index a6f59abccb..5e041e1f60 100644
---- a/hw/9pfs/9p.h
-+++ b/hw/9pfs/9p.h
-@@ -280,7 +280,6 @@ struct V9fsFidState {
-     uid_t uid;
-     int ref;
-     bool clunked;
--    QSIMPLEQ_ENTRY(V9fsFidState) next;
-     QSLIST_ENTRY(V9fsFidState) reclaim_next;
- };
- 
+Fixes: f5265c8f917e ('9pfs: use GHashTable for fid table')
+Reviewed-by: Greg Kurz <groug@kaod.org>
+
+> Signed-off-by: Christian Schoenebeck <qemu_oss@crudebyte.com>
+> ---
+>  hw/9pfs/9p.h | 1 -
+>  1 file changed, 1 deletion(-)
+> 
+> diff --git a/hw/9pfs/9p.h b/hw/9pfs/9p.h
+> index a6f59abccb..5e041e1f60 100644
+> --- a/hw/9pfs/9p.h
+> +++ b/hw/9pfs/9p.h
+> @@ -280,7 +280,6 @@ struct V9fsFidState {
+>      uid_t uid;
+>      int ref;
+>      bool clunked;
+> -    QSIMPLEQ_ENTRY(V9fsFidState) next;
+>      QSLIST_ENTRY(V9fsFidState) reclaim_next;
+>  };
+>  
+
+
+
 -- 
-2.39.5
-
+Greg
 
