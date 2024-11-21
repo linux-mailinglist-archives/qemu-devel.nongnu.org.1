@@ -2,101 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55BEE9D4F65
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Nov 2024 16:06:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F24059D4A17
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Nov 2024 10:36:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tE8kN-0007KQ-QA; Thu, 21 Nov 2024 10:05:31 -0500
+	id 1tE3bJ-000415-MZ; Thu, 21 Nov 2024 04:35:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@imap.linux.ibm.com>)
- id 1tE3gl-0005tW-2e; Thu, 21 Nov 2024 04:41:27 -0500
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@imap.linux.ibm.com>)
- id 1tE3gj-0003JZ-HP; Thu, 21 Nov 2024 04:41:26 -0500
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4AL7AiBO024982;
- Thu, 21 Nov 2024 09:26:23 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=pp1; bh=Df8/cj
- xBV+GVZgoqlwKka5Wu7JX9PZRuNdyAuKVPpxI=; b=DQ9YkZzzbcqvfLTUp6KGCj
- v6sojsCqTs5QYP6PTsnR5CpB0bykUXtMcrNUWWlQdPQkLtvzl7GsGfotc+Y5Y9U7
- bjpqAyw7j8RiV/D96ahqaiwWkc3n9m6dnnHH3DdCzJa97P4eZoo1vzSgE44oWwpA
- TU8RNFtlbMRgkkyKXz3208IBsQXCW2udjxCGWpqLuYs0l77nMvn0OlPaIWtRbiGA
- V19KqUVRFFaSUIhkAP+s6t7MqaAh2mg2I/5ufDRK+b2VuSJeuzKQGz1YO7R7+Dg8
- HcoDPuyLhI8eyr09Wf33qslSOLzpq89Oy10guM5YMTz12VDwrwrUKSQ15WkfMb6Q
- ==
-Received: from ppma11.dal12v.mail.ibm.com
- (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42xk2wb14g-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 21 Nov 2024 09:26:22 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
- by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4AL7chT3011747;
- Thu, 21 Nov 2024 09:26:21 GMT
-Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
- by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 42y8e1gay4-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 21 Nov 2024 09:26:21 +0000
-Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com
- [10.241.53.100])
- by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 4AL9QKpH28836394
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 21 Nov 2024 09:26:21 GMT
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id AD54F58057;
- Thu, 21 Nov 2024 09:26:20 +0000 (GMT)
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 57A6258058;
- Thu, 21 Nov 2024 09:26:20 +0000 (GMT)
-Received: from ltc.linux.ibm.com (unknown [9.5.196.140])
- by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Thu, 21 Nov 2024 09:26:20 +0000 (GMT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tE3bG-00040H-Di
+ for qemu-devel@nongnu.org; Thu, 21 Nov 2024 04:35:46 -0500
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tE3bE-0001hl-Qs
+ for qemu-devel@nongnu.org; Thu, 21 Nov 2024 04:35:46 -0500
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-43161e7bb25so5451345e9.2
+ for <qemu-devel@nongnu.org>; Thu, 21 Nov 2024 01:35:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1732181743; x=1732786543; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=LE0e61149vp67X42KPB5FHWjES7wbRhgUMCa1aZ9hCg=;
+ b=KIxc6agR/MaorS5+WTEMj9GEBYGTRExt7EZHw1Sge8KCbgt0NFV3oeq5urpMDXUkVx
+ o8fwSNHTQ3JNRDs3ORTkF509b8n+ToYkfq2moXTyhRWRzORRVCZ6G3pfrk/3ERVDcHgA
+ N3b0rCEnFOmsODhj83atp6NVjCHeh69RXxWyvhv6n0inJKkZ09TfE+QDBJdg1l8Ocm+X
+ 1H5WbrvKMuMZKhCvpzs9TWJmVNEi+Taze3UtP4qjmDiPEQOXqE0/LA6PNjixpGH2PVrN
+ 3bFRXMDyTBP6kZ6EtP3ERQXnbbxVB0K/s+gRKVfVhflQ0L//1+DzJWC0B4fIQcbpt0S7
+ +1cA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1732181743; x=1732786543;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=LE0e61149vp67X42KPB5FHWjES7wbRhgUMCa1aZ9hCg=;
+ b=g9gGEUZv8i0I22r7TpSzCCsM/NO8DawKEExY/naTPxFzbi/8QVhEnZpjKK/3rr//EP
+ NkiIhSHalaG3E2QJKuUMRaebdz6Q3dTjqBFDyjVf9TQSGpq5Vn10j+35MOJ1tFWT4SaK
+ 2fZQKHbfoDSFWsvZkjuaNZwz18RUwrcC0Qlwq/fS2ZfmIghkJ0VrCfXw54Uc4ZKTSH9F
+ v8HzlhdheFJJnuU2SzHh7+AOX0VgzZiuc4rku7unj8FjD1cKtr5IVGHP63BJMi4X4sHT
+ o0frdGPItDEt0JuSMeZucUnevOOA5H9QxjXMTUvHyo3WVHCm/fmsSuOg/mtGzNCRa3jn
+ zJxA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCX/FPMHfUI8NPzAdHheEy4k+hdB9xbv2MqjOsBc0HTXfj573GW0+Ox6SHPFtPeSS680bqkwpf512Fz+@nongnu.org
+X-Gm-Message-State: AOJu0YwhS3J++hvSQ2QZynxUFN3JoO6rfy7tCwNmtvygabdSpaEp5QES
+ FF+hcf67zCO8F+aHjuhLEpdo4od84fpx6hMDKm/y1yrxDGK+Sr726EejNjDDhys=
+X-Google-Smtp-Source: AGHT+IHz8MtXcweZXqQ3KPqLQdRaOK3BIZY/nEkvsr9x9M+tbLEfL8mptjavFfT6XMAQXMOpIWEDHQ==
+X-Received: by 2002:a05:600c:444f:b0:431:58cd:b260 with SMTP id
+ 5b1f17b1804b1-4334f01815emr48440285e9.25.1732181742930; 
+ Thu, 21 Nov 2024 01:35:42 -0800 (PST)
+Received: from [192.168.69.146] ([176.187.204.90])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-433b46172e1sm47481145e9.24.2024.11.21.01.35.40
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 21 Nov 2024 01:35:42 -0800 (PST)
+Message-ID: <66301003-f2cd-4a0a-8951-cbfdcb1c398b@linaro.org>
+Date: Thu, 21 Nov 2024 10:35:39 +0100
 MIME-Version: 1.0
-Date: Thu, 21 Nov 2024 10:26:20 +0100
-From: iii <iii@imap.linux.ibm.com>
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Cc: Ilya Leoshkevich <iii@linux.ibm.com>, Laurent Vivier <laurent@vivier.eu>,
- Thomas Huth <thuth@redhat.com>, Richard Henderson
- <richard.henderson@linaro.org>,
- qemu-devel@nongnu.org, qemu-s390x@nongnu.org, qemu-stable@nongnu.org
-Subject: Re: [PATCH v2] linux-user: Fix strace output for s390x mmap()
-In-Reply-To: <faeded70-af8e-4c3f-af1a-0bd1e11f5394@linaro.org>
-References: <20241120212717.246186-1-iii@linux.ibm.com>
- <faeded70-af8e-4c3f-af1a-0bd1e11f5394@linaro.org>
-Message-ID: <66b61760a0cbc8001611a99678b4719e@imap.linux.ibm.com>
-X-Sender: iii@imap.linux.ibm.com
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: IMbtcbFi47xhUW-aPbItMKvimYtw1FAc
-X-Proofpoint-GUID: IMbtcbFi47xhUW-aPbItMKvimYtw1FAc
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0
- priorityscore=1501 phishscore=0 clxscore=1034 suspectscore=0 spamscore=0
- impostorscore=0 bulkscore=0 mlxscore=0 adultscore=0 lowpriorityscore=0
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2409260000 definitions=main-2411210070
-Received-SPF: none client-ip=148.163.156.1;
- envelope-from=iii@imap.linux.ibm.com; helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_ADSP_NXDOMAIN=0.9,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, NO_DNS_FOR_FROM=0.001,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H2=-0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=no autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 06/12] hw/ppc: Explicitly create the drc container
+To: Peter Xu <peterx@redhat.com>, qemu-devel@nongnu.org
+Cc: Eduardo Habkost <eduardo@habkost.net>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Markus Armbruster <armbru@redhat.com>,
+ =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ Juraj Marcin <jmarcin@redhat.com>, =?UTF-8?Q?C=C3=A9dric_Le_Goater?=
+ <clg@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Fabiano Rosas <farosas@suse.de>, Nicholas Piggin <npiggin@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>, qemu-ppc@nongnu.org
+References: <20241120215703.3918445-1-peterx@redhat.com>
+ <20241120215703.3918445-7-peterx@redhat.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20241120215703.3918445-7-peterx@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Thu, 21 Nov 2024 10:05:28 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -111,58 +102,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2024-11-21 10:00, Philippe Mathieu-Daudé wrote:
-> On 20/11/24 22:26, Ilya Leoshkevich wrote:
->> print_mmap() assumes that mmap() receives arguments via memory if
->> mmap2() is present. s390x (as opposed to s390) does not fit this
->> pattern: it does not have mmap2(), but mmap() still receives arguments
->> via memory.
->> 
->> Fix by sharing the detection logic between syscall.c and strace.c.
->> 
->> Cc: qemu-stable@nongnu.org
->> Fixes: d971040c2d16 ("linux-user: Fix strace output for old_mmap")
->> Suggested-by: Richard Henderson <richard.henderson@linaro.org>
->> Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
->> ---
->> 
->> v1: 
->> https://lore.kernel.org/qemu-devel/20241119211138.148806-1-iii@linux.ibm.com/
->> v1 -> v2: Share the detection logic between syscall.c and strace.c
->>            (Richard).
->> 
->>   linux-user/strace.c       | 2 +-
->>   linux-user/syscall.c      | 5 +----
->>   linux-user/syscall_defs.h | 7 +++++++
->>   3 files changed, 9 insertions(+), 5 deletions(-)
->> 
->> diff --git a/linux-user/strace.c b/linux-user/strace.c
->> index b70eadc19ef..9c55f39b095 100644
->> --- a/linux-user/strace.c
->> +++ b/linux-user/strace.c
->> @@ -3971,7 +3971,7 @@ print_mmap(CPUArchState *cpu_env, const struct 
->> syscallname *name,
->>   {
->>       return print_mmap_both(cpu_env, name, arg0, arg1, arg2, arg3,
->>                              arg4, arg5,
->> -#if defined(TARGET_NR_mmap2)
->> +#ifdef TARGET_ARCH_WANT_SYS_OLD_MMAP
+Hi Peter,
+
+On 20/11/24 22:56, Peter Xu wrote:
+> QEMU will start to not rely on implicit creations of containers soon.  Make
+> PPC drc devices follow by explicitly create the container whenever a drc
+> device is realized, dropping container_get() calls.
 > 
-> We still want to print for mmap2, so:
+> No functional change intended.
 > 
->   #if defined(TARGET_NR_mmap2) || 
-> defined(TARGET_ARCH_WANT_SYS_OLD_MMAP)
-> 
->>                               true
->>   #else
->>                               false
+> Cc: Nicholas Piggin <npiggin@gmail.com>
+> Cc: Daniel Henrique Barboza <danielhb413@gmail.com>
+> Cc: Harsh Prateek Bora <harshpb@linux.ibm.com>
+> Cc: qemu-ppc@nongnu.org
+> Signed-off-by: Peter Xu <peterx@redhat.com>
+> ---
+>   hw/ppc/spapr_drc.c | 40 ++++++++++++++++++++++++++++++----------
+>   1 file changed, 30 insertions(+), 10 deletions(-)
 
-mmap2() has its own flow from what I can see:
 
-print_mmap2()
-   print_mmap_both(..., is_old_mmap=false)
+> +static GOnce drc_container_created = G_ONCE_INIT;
+> +
+> +static gpointer drc_container_create(gpointer unused G_GNUC_UNUSED)
+> +{
+> +    container_create(object_get_root(), DRC_CONTAINER_PATH);
+> +    return NULL;
+> +}
+> +
+> +static Object *drc_container_get(void)
+> +{
+> +    return object_resolve_path_component(
+> +        object_get_root(), DRC_CONTAINER_PATH);
+> +}
+> +
+> +/* TODO: create the container in an ppc init function */
+> +static void drc_container_create_once(void)
+> +{
+> +    g_once(&drc_container_created, drc_container_create, NULL);
+> +}
+> +
+>   static void drc_realize(DeviceState *d, Error **errp)
+>   {
+>       SpaprDrc *drc = SPAPR_DR_CONNECTOR(d);
+> @@ -521,6 +541,9 @@ static void drc_realize(DeviceState *d, Error **errp)
+>       Object *root_container;
+>       const char *child_name;
+>   
+> +    /* Whenever a DRC device is realized, create the container */
+> +    drc_container_create_once();
 
-It should not call print_mmap(), which I'm changing here.
+Can't we just create it once in spapr_dr_connector_class_init(),
+removing the G_ONCE_INIT need?
 
-[...]
+>       trace_spapr_drc_realize(spapr_drc_index(drc));
+>       /* NOTE: we do this as part of realize/unrealize due to the fact
+>        * that the guest will communicate with the DRC via RTAS calls
+> @@ -529,7 +552,7 @@ static void drc_realize(DeviceState *d, Error **errp)
+>        * inaccessible by the guest, since lookups rely on this path
+>        * existing in the composition tree
+>        */
+> -    root_container = container_get(object_get_root(), DRC_CONTAINER_PATH);
+> +    root_container = drc_container_get();
+>       child_name = object_get_canonical_path_component(OBJECT(drc));
+>       trace_spapr_drc_realize_child(spapr_drc_index(drc), child_name);
+>       object_property_add_alias(root_container, link_name,
+
 
