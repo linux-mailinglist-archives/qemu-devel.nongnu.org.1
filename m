@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DDA09D4FFD
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Nov 2024 16:44:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BA0C79D5013
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Nov 2024 16:49:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tE9Lo-0001ZJ-1i; Thu, 21 Nov 2024 10:44:12 -0500
+	id 1tE9Lu-00028B-43; Thu, 21 Nov 2024 10:44:18 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1tE9Le-00017r-PP
- for qemu-devel@nongnu.org; Thu, 21 Nov 2024 10:44:02 -0500
+ id 1tE9Lg-0001FR-8F
+ for qemu-devel@nongnu.org; Thu, 21 Nov 2024 10:44:04 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1tE9Lc-00012G-DN
- for qemu-devel@nongnu.org; Thu, 21 Nov 2024 10:44:01 -0500
+ id 1tE9Le-00012c-HS
+ for qemu-devel@nongnu.org; Thu, 21 Nov 2024 10:44:03 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1732203838;
+ s=mimecast20190719; t=1732203840;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=nRElw9e8XaCDiIFlzzdm2Hwr6QKYVXjGgkb7QpLJMaY=;
- b=TsYNTbjZ1vT16k0LHX8VmIJh1R2O5oY0SCrrr7CZAlfoY6RGMtExkbC+0coBDW8PKOkQrl
- tXzFc0mpveLnzqAp3CSp4riDtlqnCO79fvCs+XhqUFGZwLBDMpDBe47IGs5QGMDbptPEB5
- SDELj315tiQhchCb2Kes1vZObekqzwA=
+ bh=ShPcAkYpFIhe0//CqodvG2ShpbJoQ+YDIDMHBDSOIG0=;
+ b=VhvPX5RnrQoTKrw0B+htCx48gqof/CAdeN5kIUWZ3w4XtFB7O+toEGbJS5X22X78tpHcZ4
+ MVpZl06QMjdQ4CEOyf9wfobE9TFB9Foi1Ecnj7+RC7qZiVpwRgr6zFDvAJ276pI6VvZOFY
+ /UWHo0BcNzV9kigD7AvO5xzr0wNDq1g=
 Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-256-RkkrQL8PPOC9hCqkd7VFWA-1; Thu,
- 21 Nov 2024 10:43:55 -0500
-X-MC-Unique: RkkrQL8PPOC9hCqkd7VFWA-1
-X-Mimecast-MFC-AGG-ID: RkkrQL8PPOC9hCqkd7VFWA
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-6-dGVVZri8M3GeIJjEf8DOWQ-1; Thu,
+ 21 Nov 2024 10:43:58 -0500
+X-MC-Unique: dGVVZri8M3GeIJjEf8DOWQ-1
+X-Mimecast-MFC-AGG-ID: dGVVZri8M3GeIJjEf8DOWQ
 Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id B098C1955F3D; Thu, 21 Nov 2024 15:43:54 +0000 (UTC)
+ id 6B7E21954226; Thu, 21 Nov 2024 15:43:57 +0000 (UTC)
 Received: from toolbox.redhat.com (unknown [10.42.28.5])
  by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 9D84D1956086; Thu, 21 Nov 2024 15:43:48 +0000 (UTC)
+ id 364071956086; Thu, 21 Nov 2024 15:43:55 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Thomas Huth <thuth@redhat.com>, Ani Sinha <anisinha@redhat.com>,
@@ -52,10 +52,10 @@ Cc: Thomas Huth <thuth@redhat.com>, Ani Sinha <anisinha@redhat.com>,
  Peter Maydell <peter.maydell@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH v2 13/18] tests/functional: don't try to wait for the empty
- string
-Date: Thu, 21 Nov 2024 15:42:13 +0000
-Message-ID: <20241121154218.1423005-14-berrange@redhat.com>
+Subject: [PATCH v2 14/18] tests/functional: require non-NULL success_message
+ for console wait
+Date: Thu, 21 Nov 2024 15:42:14 +0000
+Message-ID: <20241121154218.1423005-15-berrange@redhat.com>
 In-Reply-To: <20241121154218.1423005-1-berrange@redhat.com>
 References: <20241121154218.1423005-1-berrange@redhat.com>
 MIME-Version: 1.0
@@ -87,31 +87,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Telling exec_command_wand_wait_for_pattern to wait for the empty
-string does not make any conceptual sense, as a check for empty
-string will always succeed. It makes even less sense when followed
-by a call to wait_for_console_pattern() with a real match.
+When waiting for expected output, the 'success_message' is a mandatory
+parameter, with 'failure_message' defaulting to None.
+
+The code has logic which indicates it was trying to cope with
+'success_message' being None and 'failure_message' being non-None but
+it does not appear able to actually do anything useful. The check for
+'success_message is None' will break out of the loop before any check
+for 'failure_message' has been performed.
+
+IOW, for practcal purposes 'success_message' must be non-None unless
+'send_string' is set. Assert this expectation and simplify the loop
+logic.
 
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- tests/functional/test_virtio_gpu.py | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ tests/functional/qemu_test/cmd.py | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/tests/functional/test_virtio_gpu.py b/tests/functional/test_virtio_gpu.py
-index 441cbdcf2d..d5027487ac 100755
---- a/tests/functional/test_virtio_gpu.py
-+++ b/tests/functional/test_virtio_gpu.py
-@@ -80,9 +80,8 @@ def test_virtio_vga_virgl(self):
+diff --git a/tests/functional/qemu_test/cmd.py b/tests/functional/qemu_test/cmd.py
+index 98722a9cf6..f6c4e4dda1 100644
+--- a/tests/functional/qemu_test/cmd.py
++++ b/tests/functional/qemu_test/cmd.py
+@@ -81,6 +81,8 @@ def is_readable_executable_file(path):
+ def _console_interaction(test, success_message, failure_message,
+                          send_string, keep_sending=False, vm=None):
+     assert not keep_sending or send_string
++    assert success_message or send_string
++
+     if vm is None:
+         vm = test.vm
+     console = vm.console_file
+@@ -95,7 +97,7 @@ def _console_interaction(test, success_message, failure_message,
+                 send_string = None # send only once
  
-         self.wait_for_console_pattern("as init process")
-         exec_command_and_wait_for_pattern(
--            self, "/usr/sbin/modprobe virtio_gpu", ""
-+            self, "/usr/sbin/modprobe virtio_gpu", "features: +virgl +edid"
-         )
--        self.wait_for_console_pattern("features: +virgl +edid")
+         # Only consume console output if waiting for something
+-        if success_message is None and failure_message is None:
++        if success_message is None:
+             if send_string is None:
+                 break
+             continue
+@@ -107,7 +109,7 @@ def _console_interaction(test, success_message, failure_message,
+         if not msg:
+             continue
+         console_logger.debug(msg)
+-        if success_message is None or success_message in msg:
++        if success_message in msg:
+             break
+         if failure_message and failure_message in msg:
+             console.close()
+@@ -138,6 +140,7 @@ def interrupt_interactive_console_until_pattern(test, success_message,
+     :param interrupt_string: a string to send to the console before trying
+                              to read a new line
+     """
++    assert success_message
+     _console_interaction(test, success_message, failure_message,
+                          interrupt_string, True)
  
-     def test_vhost_user_vga_virgl(self):
-         # FIXME: should check presence of vhost-user-gpu, virgl, memfd etc
+@@ -152,6 +155,7 @@ def wait_for_console_pattern(test, success_message, failure_message=None,
+     :param success_message: if this message appears, test succeeds
+     :param failure_message: if this message appears, test fails
+     """
++    assert success_message
+     _console_interaction(test, success_message, failure_message, None, vm=vm)
+ 
+ def exec_command(test, command):
+@@ -180,6 +184,7 @@ def exec_command_and_wait_for_pattern(test, command,
+     :param success_message: if this message appears, test succeeds
+     :param failure_message: if this message appears, test fails
+     """
++    assert success_message
+     _console_interaction(test, success_message, failure_message, command + '\r')
+ 
+ def get_qemu_img(test):
 -- 
 2.46.0
 
