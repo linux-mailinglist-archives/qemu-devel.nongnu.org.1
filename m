@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A18F9D5369
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Nov 2024 20:24:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 799559D5362
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Nov 2024 20:23:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tECkt-0006Lp-Cb; Thu, 21 Nov 2024 14:22:19 -0500
+	id 1tECkv-0006N3-Ad; Thu, 21 Nov 2024 14:22:21 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tECko-0006KN-W7
- for qemu-devel@nongnu.org; Thu, 21 Nov 2024 14:22:16 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tECks-0006L7-5n
+ for qemu-devel@nongnu.org; Thu, 21 Nov 2024 14:22:18 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tECkn-0002WC-HU
- for qemu-devel@nongnu.org; Thu, 21 Nov 2024 14:22:14 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tECkp-0002WT-1o
+ for qemu-devel@nongnu.org; Thu, 21 Nov 2024 14:22:17 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1732216932;
+ s=mimecast20190719; t=1732216934;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Rw/GClsfR9o9I7KixsNs9zzzzwG0HdX9+W2Tp8XS1Ew=;
- b=AHkY66WxeELjD0Y5zc/OVZdtwtMhnfAX6FzdoMy0I4yHNxs3n3oPAp0vx8Slc7EsKYIwq+
- 0DmWvXzfjapVTQNlBcHUweuTtCI1q34ASAy5nmXASwfsPZkwKjvuICxdt/TiJQu6SaBYPv
- svQFky4zUGnnoJBarPwzWn2wDwVixbI=
-Received: from mail-io1-f72.google.com (mail-io1-f72.google.com
- [209.85.166.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=RXA6V54Db51w/r+lVndlovYUw8qq+lukW3/9OKGx92Y=;
+ b=Xxj7ZgDQEuIHOL7hZcJAMSNBMT1lzUW4kMrU+3raBIcUStypqRL3HDPtezUqF8GZtDpxob
+ RIL3XodkRcXoQVwKmRtoXsf+b/CLchJ6cMjp2RFRSo/kx3A8NUA43uRF53FPpjpvAaVeWy
+ 4Dgd4V1vkeVb/GcBuLnyu4pmLnU8pQE=
+Received: from mail-io1-f69.google.com (mail-io1-f69.google.com
+ [209.85.166.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-464-8FuYqdvlOBqG4CVSz19RSA-1; Thu, 21 Nov 2024 14:22:11 -0500
-X-MC-Unique: 8FuYqdvlOBqG4CVSz19RSA-1
-X-Mimecast-MFC-AGG-ID: 8FuYqdvlOBqG4CVSz19RSA
-Received: by mail-io1-f72.google.com with SMTP id
- ca18e2360f4ac-83ac354a75fso136802839f.0
- for <qemu-devel@nongnu.org>; Thu, 21 Nov 2024 11:22:11 -0800 (PST)
+ us-mta-336-8YSHDf6WPzOtlfuOmanNzg-1; Thu, 21 Nov 2024 14:22:12 -0500
+X-MC-Unique: 8YSHDf6WPzOtlfuOmanNzg-1
+X-Mimecast-MFC-AGG-ID: 8YSHDf6WPzOtlfuOmanNzg
+Received: by mail-io1-f69.google.com with SMTP id
+ ca18e2360f4ac-83aba93c01bso138019839f.2
+ for <qemu-devel@nongnu.org>; Thu, 21 Nov 2024 11:22:12 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1732216930; x=1732821730;
+ d=1e100.net; s=20230601; t=1732216931; x=1732821731;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Rw/GClsfR9o9I7KixsNs9zzzzwG0HdX9+W2Tp8XS1Ew=;
- b=SIbWmsGOwAoeBUjVYGfPOO8CuhbN6CcEdjR8urzrCMcKX/gecsF608ot9dJGGGHTOH
- X/cyVMsL5bO8G7PaOsCsl1uac5Xk46guLIhBzD7pOOEvkeQr4fproKbPe1Xo9fnqMCzf
- ReuptgSOgP0wJ8bn4djtDnAcrUNmguQ3q544QC3nrmsvD+eqgH4mTbdffUtfGETmrQTV
- dJI5yr27le2+J4w64qYXpbpLa49hdTlAgPccyZVV9NWwrdtZ6l2JOMaVkbegLHdgRFb5
- SwKXjNreo3CkmxrYBupowYdbDsz5cSg7IMC0J8uoLalS3KQpVAjunNdZoCoRqc8dEbqG
- Wrkg==
-X-Gm-Message-State: AOJu0Yx4h+JFwmal+m1QN0pdIgPyfkjhnk0Wc4U6tBJM7FW53f2fINyX
- WGxiLSVQjYKk/Shw7pM7vYmMaSbCRskedbqX3Em7Fl0kYcDHkf2ydUuIofj/5iF1Y6fJtLGPGx6
- LP08sSH8ASnsO8T3LDmQnOihg4coeJhrZvFB7sE/OlLTTEWNrHIU0eJ8SpXYQNuiFDAyYVS93lA
- ztGTk+INM+MeMfbAThut5h+46dDemOTi0l3g==
-X-Gm-Gg: ASbGncspCb2JaXFFvNSATVXKji4DCXh2hNWyWI/FEV8Rk/bS02Wp7zsl0TWYctmpP+T
- 01snQzTLyhyYWULSloXPrxpCFb+zVXmL+Qslv4j/W42m593h9QZVGscb/GE0eSSRdGNxOawqFip
- PrYEYiimiEgarMY1jrvBQavtAS4289xRV0TGsoHGUif0EDZvm5wMn1jq0XYNoecdgrJd7F777sq
- LNtXjusjUI9981p7qv83DHdMKxt6oJekcyVOgFeT97FuvhVhr4afAzDDGkd7uerIDBpoPiGLWN4
- N4hMkMx4BN+87O0ThaZP/L/0VQ==
-X-Received: by 2002:a05:6602:6406:b0:83b:2c8e:c4 with SMTP id
- ca18e2360f4ac-83ecdccd02amr9561639f.9.1732216929865; 
- Thu, 21 Nov 2024 11:22:09 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IF/7FmvnXr6M6psjVVPSnYMPInMPRY2OdxuTteVJo/OryGFXGMO/kGrmpXhr5dMti43tMx0Wg==
-X-Received: by 2002:a05:6602:6406:b0:83b:2c8e:c4 with SMTP id
- ca18e2360f4ac-83ecdccd02amr9558539f.9.1732216929525; 
- Thu, 21 Nov 2024 11:22:09 -0800 (PST)
+ bh=RXA6V54Db51w/r+lVndlovYUw8qq+lukW3/9OKGx92Y=;
+ b=Yz/tDRi42JDtNu5E+TYkaUbheyIw7B+ABDGdJqoAj7RcbRmv0RPX8qHuCEx6J0yEZp
+ 81C2BzVQnJKeAaTg5xjwKA4V27IgBvBicaig808VVzx21y8+YqzwUuAeI4YUb+YTjLmR
+ BVTSqGW3e/w4LQZVIwP0Ew65FP7zR9aALHLOJwUTcrVmr1uGre+JvX536uMNbPTMlhTO
+ NiaW3rD1BKPp1U5BC0ISGkV+LkxV3I4rdSOJpmFh+Y27nZZOpYamTmf8re4ticZe1M+6
+ xL52jWZdpk4wDlPqJ+Htz2pQ8DKlfGywK8Xau8Y6A9rs0Gdai3p2XGUXOUETfZ6bQzd+
+ uFlA==
+X-Gm-Message-State: AOJu0Yyv+0UV/MpmtNAz7GBGQT6GW2rvZ5aHvpeosA/EsOrIn/xBGPau
+ L/KAnkNM6YuKhhg379xYsWLxqP6MYgmY9L4mpZxZrQDPuAn/njxdjC/KArga2LdLg3wkeiX5yrF
+ g2FjgouCE4n+Jwh+76l1Hi23RlgrDpQ9HpV6fEgYi0TobUd1nmA+mZKufV5G2RE55z21qxJ9tGk
+ q3NthjZtOozf6J0KhstbIYbmv2fWsv2XeqxA==
+X-Gm-Gg: ASbGncuiFrvoU4t62fxsNRY2miAqZfxkKt2mSpiFUgX11FJSh0GQmG/bmcHhGGW7DgH
+ bfN7KOoZ0JTWvlPE6OK6UrBK/YsTEWCxT3OfCBV5ZUzaclq1gxfB5bYnjaQt7oqEEzowCXO6Iv/
+ SsKAUYsEtXx0VYTvNLMeoZyiSre0zmfoiWjZETHRaZVi0k1sx5g0A7gNRqppqM/MIyenqXFPYVZ
+ TGKg79r1i3DpC3fGebUinmHnBdaSPBHY9Xitlwx3WacqOdSstrl1SxoI/QSaMCzrURsCeXCNExz
+ 1/mge71bp9s/ENGkvwJVQePetg==
+X-Received: by 2002:a05:6602:1345:b0:83a:db84:41a8 with SMTP id
+ ca18e2360f4ac-83ecdcf3ca6mr9246539f.10.1732216931476; 
+ Thu, 21 Nov 2024 11:22:11 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHGLuW7O6ZSc8vUMk82eQ+C2nbxh6XjT2Ifaiu9QDIvfAtvCwxQgglH/X3KVTBphwZZw7AuYQ==
+X-Received: by 2002:a05:6602:1345:b0:83a:db84:41a8 with SMTP id
+ ca18e2360f4ac-83ecdcf3ca6mr9243339f.10.1732216931104; 
+ Thu, 21 Nov 2024 11:22:11 -0800 (PST)
 Received: from x1n.redhat.com (pool-99-254-114-190.cpe.net.cable.rogers.com.
  [99.254.114.190]) by smtp.gmail.com with ESMTPSA id
- 8926c6da1cb9f-4e1cfe345f0sm102939173.45.2024.11.21.11.22.07
+ 8926c6da1cb9f-4e1cfe345f0sm102939173.45.2024.11.21.11.22.09
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 21 Nov 2024 11:22:08 -0800 (PST)
+ Thu, 21 Nov 2024 11:22:10 -0800 (PST)
 From: Peter Xu <peterx@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
@@ -78,10 +78,10 @@ Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Fabiano Rosas <farosas@suse.de>, Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
  Eduardo Habkost <eduardo@habkost.net>
-Subject: [PATCH v2 03/13] tests: Fix test-qdev-global-props on anonymous qdev
- realize()
-Date: Thu, 21 Nov 2024 14:21:52 -0500
-Message-ID: <20241121192202.4155849-4-peterx@redhat.com>
+Subject: [PATCH v2 04/13] tests: Explicitly create containers in
+ test_qom_partial_path()
+Date: Thu, 21 Nov 2024 14:21:53 -0500
+Message-ID: <20241121192202.4155849-5-peterx@redhat.com>
 X-Mailer: git-send-email 2.45.0
 In-Reply-To: <20241121192202.4155849-1-peterx@redhat.com>
 References: <20241121192202.4155849-1-peterx@redhat.com>
@@ -113,68 +113,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-test-qdev-global-props creates a few subprocesses and test things based on
-qdev realize().  One thing was overlooked since the start, that anonymous
-creations of qdev (then realize() the device) requires the machine object's
-presence, as all these devices need to be attached to QOM tree, by default
-to path "/machine/unattached".
-
-The test didn't crash simply because container_get() has an implicit
-semantic to silently create any missing container, hence what happened here
-is container_get() (when running these tests) will try to create containers
-at QOM path "/machine" on the fly.  That's probably unexpected by the test,
-but worked like charm before.
-
-We're going to fix device_set_realized() soon, but before that make the
-test case prepared, by creating the machine object on its own.
+Drop one use of container_get(), instead switch to the explicit function to
+create a container.
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- tests/unit/test-qdev-global-props.c | 22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
+ tests/unit/check-qom-proplist.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tests/unit/test-qdev-global-props.c b/tests/unit/test-qdev-global-props.c
-index c8862cac5f..85756d39ce 100644
---- a/tests/unit/test-qdev-global-props.c
-+++ b/tests/unit/test-qdev-global-props.c
-@@ -72,6 +72,26 @@ static const TypeInfo subclass_type = {
-     .parent = TYPE_STATIC_PROPS,
- };
- 
-+/*
-+ * Initialize a fake machine, being prepared for future tests.
-+ *
-+ * All the tests later (even if to be run in subprocesses.. which will
-+ * inherit the global states of the parent process) will try to create qdev
-+ * and realize the device.
-+ *
-+ * Realization of such anonymous qdev (with no parent object) requires both
-+ * the machine object and its "unattached" container to be at least present.
-+ */
-+static void test_init_machine(void)
-+{
-+    /* This is a fake machine - it doesn't need to be a machine object */
-+    Object *machine = object_property_add_new_container(
-+        object_get_root(), "machine");
-+
-+    /* This container must exist for anonymous qdevs to realize() */
-+    object_property_add_new_container(machine, "unattached");
-+}
-+
- /* Test simple static property setting to default value */
- static void test_static_prop_subprocess(void)
+diff --git a/tests/unit/check-qom-proplist.c b/tests/unit/check-qom-proplist.c
+index 79d4a8b89d..b48e890577 100644
+--- a/tests/unit/check-qom-proplist.c
++++ b/tests/unit/check-qom-proplist.c
+@@ -610,7 +610,7 @@ static void test_dummy_delchild(void)
+ static void test_qom_partial_path(void)
  {
-@@ -295,6 +315,8 @@ int main(int argc, char **argv)
-     type_register_static(&nohotplug_type);
-     type_register_static(&nondevice_type);
- 
-+    test_init_machine();
-+
-     g_test_add_func("/qdev/properties/static/default/subprocess",
-                     test_static_prop_subprocess);
-     g_test_add_func("/qdev/properties/static/default",
+     Object *root  = object_get_objects_root();
+-    Object *cont1 = container_get(root, "/cont1");
++    Object *cont1 = object_property_add_new_container(root, "cont1");
+     Object *obj1  = object_new(TYPE_DUMMY);
+     Object *obj2a = object_new(TYPE_DUMMY);
+     Object *obj2b = object_new(TYPE_DUMMY);
 -- 
 2.45.0
 
