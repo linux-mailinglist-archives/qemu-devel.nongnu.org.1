@@ -2,37 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0E789D455E
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Nov 2024 02:48:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F3E89D456A
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Nov 2024 02:49:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tDwHg-0001WE-WA; Wed, 20 Nov 2024 20:47:05 -0500
+	id 1tDwHj-0001Xt-C4; Wed, 20 Nov 2024 20:47:07 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1tDwHf-0001Ve-1n
- for qemu-devel@nongnu.org; Wed, 20 Nov 2024 20:47:03 -0500
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1tDwHg-0001WD-EJ
+ for qemu-devel@nongnu.org; Wed, 20 Nov 2024 20:47:04 -0500
 Received: from rev.ng ([94.130.142.21])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1tDwHd-0004WN-4d
- for qemu-devel@nongnu.org; Wed, 20 Nov 2024 20:47:02 -0500
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1tDwHd-0004WP-DS
+ for qemu-devel@nongnu.org; Wed, 20 Nov 2024 20:47:04 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
  s=dkim; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
  Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
  Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
  :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
  List-Post:List-Owner:List-Archive:List-Unsubscribe:List-Unsubscribe-Post:
- List-Help; bh=II26gCWf23z5pgLLS6uEpV6LzQJG3dH6fmuJ7BDdgmg=; b=BzuvtGtp0TClplo
- mfMKPTAL6TLmv1o53RXWJIt2c5QuHc0LC6PZnXC+QlyaVAh8BVzoCupiKo33iSZFIA1Cb08wFfFfW
- T65MsQM6JZcPDNnXUP+XyC0N8aTCI1wpwwZde+5wFfyebiGdDUOc2ZzWRqK5fmjZfc0YeI0A3bX3A
- Gk=;
+ List-Help; bh=MkoZS5Eq2jzUTLA5ZLNru01SQe4ERiiU1sa7s9RAVVk=; b=B9e2n/WGT0vK5Ay
+ QsuyY8C0qOM4af/q78rMJfsu9999M6PD1KQUcIX7+jphjNtW/zySV3MuYnwgZGC84ZO1jtTxclLEI
+ xQ/stN/6hIu2glfeBF/jLv8jTTLMu4Q11llmjAbt0tDfg61x3mJ2XWOvrdcvNvmzaq3mVdDZZ+aV+
+ JE=;
 To: qemu-devel@nongnu.org
 Cc: ale@rev.ng, ltaylorsimpson@gmail.com, bcain@quicinc.com,
  richard.henderson@linaro.org, philmd@linaro.org, alex.bennee@linaro.org
-Subject: [RFC PATCH v1 02/43] accel/tcg: Add bitreverse and funnel-shift
- runtime helper functions
-Date: Thu, 21 Nov 2024 02:49:06 +0100
-Message-ID: <20241121014947.18666-3-anjo@rev.ng>
+Subject: [RFC PATCH v1 03/43] accel/tcg: Add gvec size changing operations
+Date: Thu, 21 Nov 2024 02:49:07 +0100
+Message-ID: <20241121014947.18666-4-anjo@rev.ng>
 In-Reply-To: <20241121014947.18666-1-anjo@rev.ng>
 References: <20241121014947.18666-1-anjo@rev.ng>
 MIME-Version: 1.0
@@ -63,106 +62,219 @@ From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Adds necessary helper functions for mapping LLVM IR onto TCG.
-Specifically, helpers corresponding to the bitreverse and funnel-shift
-intrinsics in LLVM.
+Adds new functions to the gvec API for truncating, sign- or zero
+extending vector elements.  Currently implemented as helper functions,
+these may be mapped onto host vector instructions in the future.
 
-Note: these may be converted to more efficient implementations in the
-future, but for the time being it allows helper-to-tcg to support a
-wider subset of LLVM IR.
+For the time being, allows translation of more complicated vector
+instructions by helper-to-tcg.
 
 Signed-off-by: Anton Johansson <anjo@rev.ng>
 ---
- accel/tcg/tcg-runtime.c | 29 +++++++++++++++++++++++++++++
- accel/tcg/tcg-runtime.h |  5 +++++
- 2 files changed, 34 insertions(+)
+ accel/tcg/tcg-runtime-gvec.c     | 41 +++++++++++++++++
+ accel/tcg/tcg-runtime.h          | 22 +++++++++
+ include/tcg/tcg-op-gvec-common.h | 18 ++++++++
+ tcg/tcg-op-gvec.c                | 78 ++++++++++++++++++++++++++++++++
+ 4 files changed, 159 insertions(+)
 
-diff --git a/accel/tcg/tcg-runtime.c b/accel/tcg/tcg-runtime.c
-index 9fa539ad3d..6372fa3f6f 100644
---- a/accel/tcg/tcg-runtime.c
-+++ b/accel/tcg/tcg-runtime.c
-@@ -23,6 +23,8 @@
-  */
- #include "qemu/osdep.h"
- #include "qemu/host-utils.h"
-+#include "qemu/int128.h"
-+#include "qemu/bitops.h"
- #include "cpu.h"
- #include "exec/helper-proto-common.h"
- #include "exec/cpu_ldst.h"
-@@ -57,6 +59,21 @@ uint32_t HELPER(remu_i32)(uint32_t arg1, uint32_t arg2)
-     return arg1 % arg2;
+diff --git a/accel/tcg/tcg-runtime-gvec.c b/accel/tcg/tcg-runtime-gvec.c
+index afca89baa1..685c991e6a 100644
+--- a/accel/tcg/tcg-runtime-gvec.c
++++ b/accel/tcg/tcg-runtime-gvec.c
+@@ -1569,3 +1569,44 @@ void HELPER(gvec_bitsel)(void *d, void *a, void *b, void *c, uint32_t desc)
+     }
+     clear_high(d, oprsz, desc);
  }
- 
-+uint32_t HELPER(bitreverse8_i32)(uint32_t x)
-+{
-+  return revbit8((uint8_t) x);
++
++#define DO_SZ_OP1(NAME, DSTTY, SRCTY)                                      \
++void HELPER(NAME)(void *d, void *a, uint32_t desc)                         \
++{                                                                          \
++    intptr_t oprsz = simd_oprsz(desc);                                     \
++    intptr_t elsz = oprsz/sizeof(DSTTY);                                   \
++    intptr_t i;                                                            \
++                                                                           \
++    for (i = 0; i < elsz; ++i) {                                           \
++        SRCTY aa = *((SRCTY *) a + i);                                     \
++        *((DSTTY *) d + i) = aa;                                           \
++    }                                                                      \
++    clear_high(d, oprsz, desc);                                            \
 +}
 +
-+uint32_t HELPER(bitreverse16_i32)(uint32_t x)
-+{
-+  return revbit16((uint16_t) x);
-+}
++#define DO_SZ_OP2(NAME, INTTY, DSTSZ, SRCSZ) \
++    DO_SZ_OP1(NAME##SRCSZ##_##DSTSZ, INTTY##DSTSZ##_t, INTTY##SRCSZ##_t)
 +
-+uint32_t HELPER(bitreverse32_i32)(uint32_t x)
-+{
-+  return revbit32(x);
-+}
++DO_SZ_OP2(gvec_trunc, uint, 32, 64)
++DO_SZ_OP2(gvec_trunc, uint, 16, 64)
++DO_SZ_OP2(gvec_trunc, uint, 8,  64)
++DO_SZ_OP2(gvec_trunc, uint, 16, 32)
++DO_SZ_OP2(gvec_trunc, uint, 8,  32)
++DO_SZ_OP2(gvec_trunc, uint, 8,  16)
 +
- /* 64-bit helpers */
- 
- uint64_t HELPER(shl_i64)(uint64_t arg1, uint64_t arg2)
-@@ -74,6 +91,13 @@ int64_t HELPER(sar_i64)(int64_t arg1, int64_t arg2)
-     return arg1 >> arg2;
- }
- 
-+uint64_t HELPER(fshl_i64)(uint64_t a, uint64_t b, uint64_t c)
-+{
-+    Int128 d = int128_make128(b, a);
-+    Int128 shift = int128_lshift(d, c);
-+    return int128_gethi(shift);
-+}
++DO_SZ_OP2(gvec_zext, uint, 64, 32)
++DO_SZ_OP2(gvec_zext, uint, 64, 16)
++DO_SZ_OP2(gvec_zext, uint, 64, 8)
++DO_SZ_OP2(gvec_zext, uint, 32, 16)
++DO_SZ_OP2(gvec_zext, uint, 32, 8)
++DO_SZ_OP2(gvec_zext, uint, 16, 8)
 +
- int64_t HELPER(div_i64)(int64_t arg1, int64_t arg2)
- {
-     return arg1 / arg2;
-@@ -94,6 +118,11 @@ uint64_t HELPER(remu_i64)(uint64_t arg1, uint64_t arg2)
-     return arg1 % arg2;
- }
- 
-+uint64_t HELPER(bitreverse64_i64)(uint64_t x)
-+{
-+    return revbit64(x);
-+}
++DO_SZ_OP2(gvec_sext, int, 64, 32)
++DO_SZ_OP2(gvec_sext, int, 64, 16)
++DO_SZ_OP2(gvec_sext, int, 64, 8)
++DO_SZ_OP2(gvec_sext, int, 32, 16)
++DO_SZ_OP2(gvec_sext, int, 32, 8)
++DO_SZ_OP2(gvec_sext, int, 16, 8)
 +
- uint64_t HELPER(muluh_i64)(uint64_t arg1, uint64_t arg2)
- {
-     uint64_t l, h;
++#undef DO_SZ_OP1
++#undef DO_SZ_OP2
 diff --git a/accel/tcg/tcg-runtime.h b/accel/tcg/tcg-runtime.h
-index c23b5e66c4..0a4d31eb48 100644
+index 0a4d31eb48..5045655bf8 100644
 --- a/accel/tcg/tcg-runtime.h
 +++ b/accel/tcg/tcg-runtime.h
-@@ -2,15 +2,20 @@ DEF_HELPER_FLAGS_2(div_i32, TCG_CALL_NO_RWG_SE, s32, s32, s32)
+@@ -1,3 +1,4 @@
++#include "tcg/tcg.h"
+ DEF_HELPER_FLAGS_2(div_i32, TCG_CALL_NO_RWG_SE, s32, s32, s32)
  DEF_HELPER_FLAGS_2(rem_i32, TCG_CALL_NO_RWG_SE, s32, s32, s32)
  DEF_HELPER_FLAGS_2(divu_i32, TCG_CALL_NO_RWG_SE, i32, i32, i32)
- DEF_HELPER_FLAGS_2(remu_i32, TCG_CALL_NO_RWG_SE, i32, i32, i32)
-+DEF_HELPER_FLAGS_1(bitreverse8_i32,  TCG_CALL_NO_RWG_SE, i32, i32)
-+DEF_HELPER_FLAGS_1(bitreverse16_i32, TCG_CALL_NO_RWG_SE, i32, i32)
-+DEF_HELPER_FLAGS_1(bitreverse32_i32, TCG_CALL_NO_RWG_SE, i32, i32)
+@@ -328,3 +329,24 @@ DEF_HELPER_FLAGS_4(gvec_leus32, TCG_CALL_NO_RWG, void, ptr, ptr, i64, i32)
+ DEF_HELPER_FLAGS_4(gvec_leus64, TCG_CALL_NO_RWG, void, ptr, ptr, i64, i32)
  
- DEF_HELPER_FLAGS_2(div_i64, TCG_CALL_NO_RWG_SE, s64, s64, s64)
- DEF_HELPER_FLAGS_2(rem_i64, TCG_CALL_NO_RWG_SE, s64, s64, s64)
- DEF_HELPER_FLAGS_2(divu_i64, TCG_CALL_NO_RWG_SE, i64, i64, i64)
- DEF_HELPER_FLAGS_2(remu_i64, TCG_CALL_NO_RWG_SE, i64, i64, i64)
-+DEF_HELPER_FLAGS_1(bitreverse64_i64, TCG_CALL_NO_RWG_SE, i64, i64)
+ DEF_HELPER_FLAGS_5(gvec_bitsel, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, ptr, i32)
++
++DEF_HELPER_FLAGS_3(gvec_trunc64_32, TCG_CALL_NO_RWG, void, ptr, ptr, i32)
++DEF_HELPER_FLAGS_3(gvec_trunc64_16, TCG_CALL_NO_RWG, void, ptr, ptr, i32)
++DEF_HELPER_FLAGS_3(gvec_trunc64_8,  TCG_CALL_NO_RWG, void, ptr, ptr, i32)
++DEF_HELPER_FLAGS_3(gvec_trunc32_16, TCG_CALL_NO_RWG, void, ptr, ptr, i32)
++DEF_HELPER_FLAGS_3(gvec_trunc32_8,  TCG_CALL_NO_RWG, void, ptr, ptr, i32)
++DEF_HELPER_FLAGS_3(gvec_trunc16_8,  TCG_CALL_NO_RWG, void, ptr, ptr, i32)
++
++DEF_HELPER_FLAGS_3(gvec_zext32_64, TCG_CALL_NO_RWG, void, ptr, ptr, i32)
++DEF_HELPER_FLAGS_3(gvec_zext16_64, TCG_CALL_NO_RWG, void, ptr, ptr, i32)
++DEF_HELPER_FLAGS_3(gvec_zext8_64,  TCG_CALL_NO_RWG, void, ptr, ptr, i32)
++DEF_HELPER_FLAGS_3(gvec_zext16_32, TCG_CALL_NO_RWG, void, ptr, ptr, i32)
++DEF_HELPER_FLAGS_3(gvec_zext8_32,  TCG_CALL_NO_RWG, void, ptr, ptr, i32)
++DEF_HELPER_FLAGS_3(gvec_zext8_16,  TCG_CALL_NO_RWG, void, ptr, ptr, i32)
++
++DEF_HELPER_FLAGS_3(gvec_sext32_64, TCG_CALL_NO_RWG, void, ptr, ptr, i32)
++DEF_HELPER_FLAGS_3(gvec_sext16_64, TCG_CALL_NO_RWG, void, ptr, ptr, i32)
++DEF_HELPER_FLAGS_3(gvec_sext8_64,  TCG_CALL_NO_RWG, void, ptr, ptr, i32)
++DEF_HELPER_FLAGS_3(gvec_sext16_32, TCG_CALL_NO_RWG, void, ptr, ptr, i32)
++DEF_HELPER_FLAGS_3(gvec_sext8_32,  TCG_CALL_NO_RWG, void, ptr, ptr, i32)
++DEF_HELPER_FLAGS_3(gvec_sext8_16,  TCG_CALL_NO_RWG, void, ptr, ptr, i32)
+diff --git a/include/tcg/tcg-op-gvec-common.h b/include/tcg/tcg-op-gvec-common.h
+index 65553f5f97..39b0c2f64e 100644
+--- a/include/tcg/tcg-op-gvec-common.h
++++ b/include/tcg/tcg-op-gvec-common.h
+@@ -390,6 +390,24 @@ void tcg_gen_gvec_bitsel(unsigned vece, uint32_t dofs, uint32_t aofs,
+                          uint32_t bofs, uint32_t cofs,
+                          uint32_t oprsz, uint32_t maxsz);
  
- DEF_HELPER_FLAGS_2(shl_i64, TCG_CALL_NO_RWG_SE, i64, i64, i64)
- DEF_HELPER_FLAGS_2(shr_i64, TCG_CALL_NO_RWG_SE, i64, i64, i64)
- DEF_HELPER_FLAGS_2(sar_i64, TCG_CALL_NO_RWG_SE, s64, s64, s64)
-+DEF_HELPER_FLAGS_3(fshl_i64, TCG_CALL_NO_RWG_SE, i64, i64, i64, i64)
++/*
++ * Perform vector element truncation/extension operations
++ */
++
++void tcg_gen_gvec_trunc(unsigned vecde, unsigned vecse,
++                        uint32_t dofs, uint32_t aofs,
++                        uint32_t doprsz, uint32_t aoprsz,
++                        uint32_t maxsz);
++
++void tcg_gen_gvec_zext(unsigned vecde, unsigned vecse,
++                       uint32_t dofs, uint32_t aofs,
++                       uint32_t doprsz, uint32_t aoprsz,
++                       uint32_t maxsz);
++
++void tcg_gen_gvec_sext(unsigned vecde, unsigned vecse,
++                       uint32_t dofs, uint32_t aofs,
++                       uint32_t doprsz, uint32_t aoprsz,
++                       uint32_t maxsz);
+ /*
+  * 64-bit vector operations.  Use these when the register has been allocated
+  * with tcg_global_mem_new_i64, and so we cannot also address it via pointer.
+diff --git a/tcg/tcg-op-gvec.c b/tcg/tcg-op-gvec.c
+index 97e4df221a..80649dc0d2 100644
+--- a/tcg/tcg-op-gvec.c
++++ b/tcg/tcg-op-gvec.c
+@@ -4008,3 +4008,81 @@ void tcg_gen_gvec_bitsel(unsigned vece, uint32_t dofs, uint32_t aofs,
  
- DEF_HELPER_FLAGS_2(mulsh_i64, TCG_CALL_NO_RWG_SE, s64, s64, s64)
- DEF_HELPER_FLAGS_2(muluh_i64, TCG_CALL_NO_RWG_SE, i64, i64, i64)
+     tcg_gen_gvec_4(dofs, aofs, bofs, cofs, oprsz, maxsz, &g);
+ }
++
++void tcg_gen_gvec_trunc(unsigned vecde, unsigned vecse,
++                        uint32_t dofs, uint32_t aofs,
++                        uint32_t doprsz, uint32_t aoprsz,
++                        uint32_t maxsz)
++{
++    gen_helper_gvec_2 * const fns[4][4] = {
++        [MO_64] = {
++            [MO_32] = gen_helper_gvec_trunc64_32,
++            [MO_16] = gen_helper_gvec_trunc64_16,
++            [MO_8]  = gen_helper_gvec_trunc64_8,
++        },
++        [MO_32] = {
++            [MO_16] = gen_helper_gvec_trunc32_16,
++            [MO_8]  = gen_helper_gvec_trunc32_8,
++        },
++        [MO_16] = {
++            [MO_8]  = gen_helper_gvec_trunc16_8,
++        },
++    };
++
++    gen_helper_gvec_2 *fn = fns[vecse][vecde];
++    tcg_debug_assert(fn != 0 && vecse > vecde);
++
++    tcg_gen_gvec_2_ool(dofs, aofs, doprsz, maxsz, 0, fn);
++}
++
++void tcg_gen_gvec_zext(unsigned vecde, unsigned vecse,
++                       uint32_t dofs, uint32_t aofs,
++                       uint32_t doprsz, uint32_t aoprsz,
++                       uint32_t maxsz)
++{
++    gen_helper_gvec_2 * const fns[4][4] = {
++        [MO_8] = {
++            [MO_16] = gen_helper_gvec_zext8_16,
++            [MO_32] = gen_helper_gvec_zext8_32,
++            [MO_64] = gen_helper_gvec_zext8_64,
++        },
++        [MO_16] = {
++            [MO_32] = gen_helper_gvec_zext16_32,
++            [MO_64] = gen_helper_gvec_zext16_64,
++        },
++        [MO_32] = {
++            [MO_64] = gen_helper_gvec_zext32_64,
++        },
++    };
++
++    gen_helper_gvec_2 *fn = fns[vecse][vecde];
++    tcg_debug_assert(fn != 0 && vecse < vecde);
++
++    tcg_gen_gvec_2_ool(dofs, aofs, doprsz, maxsz, 0, fn);
++}
++
++void tcg_gen_gvec_sext(unsigned vecde, unsigned vecse,
++                       uint32_t dofs, uint32_t aofs,
++                       uint32_t doprsz, uint32_t aoprsz,
++                       uint32_t maxsz)
++{
++    gen_helper_gvec_2 * const fns[4][4] = {
++        [MO_8] = {
++            [MO_16] = gen_helper_gvec_sext8_16,
++            [MO_32] = gen_helper_gvec_sext8_32,
++            [MO_64] = gen_helper_gvec_sext8_64,
++        },
++        [MO_16] = {
++            [MO_32] = gen_helper_gvec_sext16_32,
++            [MO_64] = gen_helper_gvec_sext16_64,
++        },
++        [MO_32] = {
++            [MO_64] = gen_helper_gvec_sext32_64,
++        },
++    };
++
++    gen_helper_gvec_2 *fn = fns[vecse][vecde];
++    tcg_debug_assert(fn != 0 && vecse < vecde);
++
++    tcg_gen_gvec_2_ool(dofs, aofs, doprsz, maxsz, 0, fn);
++}
 -- 
 2.45.2
 
