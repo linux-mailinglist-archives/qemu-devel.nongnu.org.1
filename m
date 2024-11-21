@@ -2,19 +2,19 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4441B9D4582
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Nov 2024 02:52:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E0E789D455E
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Nov 2024 02:48:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tDwHh-0001Wa-LQ; Wed, 20 Nov 2024 20:47:05 -0500
+	id 1tDwHg-0001WE-WA; Wed, 20 Nov 2024 20:47:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1tDwHf-0001Vf-AC
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1tDwHf-0001Ve-1n
  for qemu-devel@nongnu.org; Wed, 20 Nov 2024 20:47:03 -0500
 Received: from rev.ng ([94.130.142.21])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1tDwHd-0004WG-FT
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1tDwHd-0004WN-4d
  for qemu-devel@nongnu.org; Wed, 20 Nov 2024 20:47:02 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
  s=dkim; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
@@ -22,16 +22,17 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
  Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
  :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
  List-Post:List-Owner:List-Archive:List-Unsubscribe:List-Unsubscribe-Post:
- List-Help; bh=92nCTdq11lbmBeZ/kw31uZpfZQz1CwbJLefAdeyXWco=; b=gIde7BioDXeDDff
- 7ENqxxKNMKavjEuuh1qdClGTzOBL3iDN4USMtm7mwj47KEEDhQ6FpLezAJhjMZr+JoviVSta9e7vv
- BKszrb81A0vpM2As20cqJsNeLtefTMP3iyDJu9WE/foNCh3Ycx+cRwzUGi4Ibz94HLfhZ++/Ldypw
- 2E=;
+ List-Help; bh=II26gCWf23z5pgLLS6uEpV6LzQJG3dH6fmuJ7BDdgmg=; b=BzuvtGtp0TClplo
+ mfMKPTAL6TLmv1o53RXWJIt2c5QuHc0LC6PZnXC+QlyaVAh8BVzoCupiKo33iSZFIA1Cb08wFfFfW
+ T65MsQM6JZcPDNnXUP+XyC0N8aTCI1wpwwZde+5wFfyebiGdDUOc2ZzWRqK5fmjZfc0YeI0A3bX3A
+ Gk=;
 To: qemu-devel@nongnu.org
 Cc: ale@rev.ng, ltaylorsimpson@gmail.com, bcain@quicinc.com,
  richard.henderson@linaro.org, philmd@linaro.org, alex.bennee@linaro.org
-Subject: [RFC PATCH v1 01/43] Add option to enable/disable helper-to-tcg
-Date: Thu, 21 Nov 2024 02:49:05 +0100
-Message-ID: <20241121014947.18666-2-anjo@rev.ng>
+Subject: [RFC PATCH v1 02/43] accel/tcg: Add bitreverse and funnel-shift
+ runtime helper functions
+Date: Thu, 21 Nov 2024 02:49:06 +0100
+Message-ID: <20241121014947.18666-3-anjo@rev.ng>
 In-Reply-To: <20241121014947.18666-1-anjo@rev.ng>
 References: <20241121014947.18666-1-anjo@rev.ng>
 MIME-Version: 1.0
@@ -62,92 +63,106 @@ From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Adds a meson option for enabling/disabling helper-to-tcg along with a
-CONFIG_* definition.
+Adds necessary helper functions for mapping LLVM IR onto TCG.
+Specifically, helpers corresponding to the bitreverse and funnel-shift
+intrinsics in LLVM.
 
-CONFIG_* will in future commits be used to conditionally include the
-helper-to-tcg subproject, and to remove unneeded code/memory when
-helper-to-tcg is not in use.
-
-Current meson option is limited to Hexagon, as helper-to-tcg will be
-included as a subproject from target/hexagon.  This will change in the
-future if multiple frontends adopt helper-to-tcg.
+Note: these may be converted to more efficient implementations in the
+future, but for the time being it allows helper-to-tcg to support a
+wider subset of LLVM IR.
 
 Signed-off-by: Anton Johansson <anjo@rev.ng>
 ---
- meson.build                   | 7 +++++++
- meson_options.txt             | 2 ++
- scripts/meson-buildoptions.sh | 5 +++++
- 3 files changed, 14 insertions(+)
+ accel/tcg/tcg-runtime.c | 29 +++++++++++++++++++++++++++++
+ accel/tcg/tcg-runtime.h |  5 +++++
+ 2 files changed, 34 insertions(+)
 
-diff --git a/meson.build b/meson.build
-index e0b880e4e1..657ebe43f6 100644
---- a/meson.build
-+++ b/meson.build
-@@ -230,6 +230,7 @@ have_ga = get_option('guest_agent') \
-            error_message: 'unsupported OS for QEMU guest agent') \
-   .allowed()
- have_block = have_system or have_tools
-+helper_to_tcg_enabled = get_option('hexagon_helper_to_tcg')
+diff --git a/accel/tcg/tcg-runtime.c b/accel/tcg/tcg-runtime.c
+index 9fa539ad3d..6372fa3f6f 100644
+--- a/accel/tcg/tcg-runtime.c
++++ b/accel/tcg/tcg-runtime.c
+@@ -23,6 +23,8 @@
+  */
+ #include "qemu/osdep.h"
+ #include "qemu/host-utils.h"
++#include "qemu/int128.h"
++#include "qemu/bitops.h"
+ #include "cpu.h"
+ #include "exec/helper-proto-common.h"
+ #include "exec/cpu_ldst.h"
+@@ -57,6 +59,21 @@ uint32_t HELPER(remu_i32)(uint32_t arg1, uint32_t arg2)
+     return arg1 % arg2;
+ }
  
- enable_modules = get_option('modules') \
-   .require(host_os != 'windows',
-@@ -3245,6 +3246,11 @@ foreach target : target_dirs
-       'CONFIG_QEMU_RTSIG_MAP': get_option('rtsig_map'),
-     }
-   endif
-+  if helper_to_tcg_enabled
-+    config_target += {
-+      'CONFIG_HELPER_TO_TCG': 'y',
-+    }
-+  endif
- 
-   target_kconfig = []
-   foreach sym: accelerators
-@@ -4122,6 +4128,7 @@ foreach target : target_dirs
-   if host_os == 'linux'
-     target_inc += include_directories('linux-headers', is_system: true)
-   endif
++uint32_t HELPER(bitreverse8_i32)(uint32_t x)
++{
++  return revbit8((uint8_t) x);
++}
 +
-   if target.endswith('-softmmu')
-     target_type='system'
-     t = target_system_arch[target_base_arch].apply(config_target, strict: false)
-diff --git a/meson_options.txt b/meson_options.txt
-index 5eeaf3eee5..0730378305 100644
---- a/meson_options.txt
-+++ b/meson_options.txt
-@@ -374,6 +374,8 @@ option('qemu_ga_version', type: 'string', value: '',
++uint32_t HELPER(bitreverse16_i32)(uint32_t x)
++{
++  return revbit16((uint16_t) x);
++}
++
++uint32_t HELPER(bitreverse32_i32)(uint32_t x)
++{
++  return revbit32(x);
++}
++
+ /* 64-bit helpers */
  
- option('hexagon_idef_parser', type : 'boolean', value : true,
-        description: 'use idef-parser to automatically generate TCG code for the Hexagon frontend')
-+option('hexagon_helper_to_tcg', type : 'boolean', value : true,
-+       description: 'use the helper-to-tcg translator to automatically generate TCG code for the Hexagon frontend')
+ uint64_t HELPER(shl_i64)(uint64_t arg1, uint64_t arg2)
+@@ -74,6 +91,13 @@ int64_t HELPER(sar_i64)(int64_t arg1, int64_t arg2)
+     return arg1 >> arg2;
+ }
  
- option('x86_version', type : 'combo', choices : ['0', '1', '2', '3', '4'], value: '1',
-        description: 'tweak required x86_64 architecture version beyond compiler default')
-diff --git a/scripts/meson-buildoptions.sh b/scripts/meson-buildoptions.sh
-index a8066aab03..19c891a39b 100644
---- a/scripts/meson-buildoptions.sh
-+++ b/scripts/meson-buildoptions.sh
-@@ -13,6 +13,9 @@ meson_options_help() {
-   printf "%s\n" '  --datadir=VALUE          Data file directory [share]'
-   printf "%s\n" '  --disable-coroutine-pool coroutine freelist (better performance)'
-   printf "%s\n" '  --disable-debug-info     Enable debug symbols and other information'
-+  printf "%s\n" '  --disable-hexagon-helper-to-tcg'
-+  printf "%s\n" '                           use the helper-to-tcg translator to automatically'
-+  printf "%s\n" '                           generate TCG code for the Hexagon frontend'
-   printf "%s\n" '  --disable-hexagon-idef-parser'
-   printf "%s\n" '                           use idef-parser to automatically generate TCG'
-   printf "%s\n" '                           code for the Hexagon frontend'
-@@ -341,6 +344,8 @@ _meson_option_parse() {
-     --disable-guest-agent) printf "%s" -Dguest_agent=disabled ;;
-     --enable-guest-agent-msi) printf "%s" -Dguest_agent_msi=enabled ;;
-     --disable-guest-agent-msi) printf "%s" -Dguest_agent_msi=disabled ;;
-+    --enable-hexagon-helper-to-tcg) printf "%s" -Dhexagon_helper_to_tcg=true ;;
-+    --disable-hexagon-helper-to-tcg) printf "%s" -Dhexagon_helper_to_tcg=false ;;
-     --enable-hexagon-idef-parser) printf "%s" -Dhexagon_idef_parser=true ;;
-     --disable-hexagon-idef-parser) printf "%s" -Dhexagon_idef_parser=false ;;
-     --enable-hv-balloon) printf "%s" -Dhv_balloon=enabled ;;
++uint64_t HELPER(fshl_i64)(uint64_t a, uint64_t b, uint64_t c)
++{
++    Int128 d = int128_make128(b, a);
++    Int128 shift = int128_lshift(d, c);
++    return int128_gethi(shift);
++}
++
+ int64_t HELPER(div_i64)(int64_t arg1, int64_t arg2)
+ {
+     return arg1 / arg2;
+@@ -94,6 +118,11 @@ uint64_t HELPER(remu_i64)(uint64_t arg1, uint64_t arg2)
+     return arg1 % arg2;
+ }
+ 
++uint64_t HELPER(bitreverse64_i64)(uint64_t x)
++{
++    return revbit64(x);
++}
++
+ uint64_t HELPER(muluh_i64)(uint64_t arg1, uint64_t arg2)
+ {
+     uint64_t l, h;
+diff --git a/accel/tcg/tcg-runtime.h b/accel/tcg/tcg-runtime.h
+index c23b5e66c4..0a4d31eb48 100644
+--- a/accel/tcg/tcg-runtime.h
++++ b/accel/tcg/tcg-runtime.h
+@@ -2,15 +2,20 @@ DEF_HELPER_FLAGS_2(div_i32, TCG_CALL_NO_RWG_SE, s32, s32, s32)
+ DEF_HELPER_FLAGS_2(rem_i32, TCG_CALL_NO_RWG_SE, s32, s32, s32)
+ DEF_HELPER_FLAGS_2(divu_i32, TCG_CALL_NO_RWG_SE, i32, i32, i32)
+ DEF_HELPER_FLAGS_2(remu_i32, TCG_CALL_NO_RWG_SE, i32, i32, i32)
++DEF_HELPER_FLAGS_1(bitreverse8_i32,  TCG_CALL_NO_RWG_SE, i32, i32)
++DEF_HELPER_FLAGS_1(bitreverse16_i32, TCG_CALL_NO_RWG_SE, i32, i32)
++DEF_HELPER_FLAGS_1(bitreverse32_i32, TCG_CALL_NO_RWG_SE, i32, i32)
+ 
+ DEF_HELPER_FLAGS_2(div_i64, TCG_CALL_NO_RWG_SE, s64, s64, s64)
+ DEF_HELPER_FLAGS_2(rem_i64, TCG_CALL_NO_RWG_SE, s64, s64, s64)
+ DEF_HELPER_FLAGS_2(divu_i64, TCG_CALL_NO_RWG_SE, i64, i64, i64)
+ DEF_HELPER_FLAGS_2(remu_i64, TCG_CALL_NO_RWG_SE, i64, i64, i64)
++DEF_HELPER_FLAGS_1(bitreverse64_i64, TCG_CALL_NO_RWG_SE, i64, i64)
+ 
+ DEF_HELPER_FLAGS_2(shl_i64, TCG_CALL_NO_RWG_SE, i64, i64, i64)
+ DEF_HELPER_FLAGS_2(shr_i64, TCG_CALL_NO_RWG_SE, i64, i64, i64)
+ DEF_HELPER_FLAGS_2(sar_i64, TCG_CALL_NO_RWG_SE, s64, s64, s64)
++DEF_HELPER_FLAGS_3(fshl_i64, TCG_CALL_NO_RWG_SE, i64, i64, i64, i64)
+ 
+ DEF_HELPER_FLAGS_2(mulsh_i64, TCG_CALL_NO_RWG_SE, s64, s64, s64)
+ DEF_HELPER_FLAGS_2(muluh_i64, TCG_CALL_NO_RWG_SE, i64, i64, i64)
 -- 
 2.45.2
 
