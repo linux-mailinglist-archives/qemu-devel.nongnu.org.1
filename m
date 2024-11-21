@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 996379D457F
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Nov 2024 02:51:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 833BC9D4563
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Nov 2024 02:48:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tDwHt-0001cx-Vz; Wed, 20 Nov 2024 20:47:18 -0500
+	id 1tDwHw-0001e5-1v; Wed, 20 Nov 2024 20:47:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1tDwHr-0001bW-Nb
- for qemu-devel@nongnu.org; Wed, 20 Nov 2024 20:47:15 -0500
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1tDwHs-0001c9-8q
+ for qemu-devel@nongnu.org; Wed, 20 Nov 2024 20:47:16 -0500
 Received: from rev.ng ([94.130.142.21])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1tDwHq-0004Xz-4e
- for qemu-devel@nongnu.org; Wed, 20 Nov 2024 20:47:15 -0500
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1tDwHq-0004YO-Vg
+ for qemu-devel@nongnu.org; Wed, 20 Nov 2024 20:47:16 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
  s=dkim; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
  Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
  Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
  :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
  List-Post:List-Owner:List-Archive:List-Unsubscribe:List-Unsubscribe-Post:
- List-Help; bh=NewhKMIelYRuDNznnvD5yTlXbeDt4XshQYjlz/pQPQs=; b=hKczrorhim53phv
- kA62HkSwy+a2H7Y7YBBwMRmuAn2jCl4sxhMrrTtMHVT3OCqMJoYbvv44OY9xkEtjafP1P94/5i7Eq
- Wx6dKEw8kGEVwheFDZm38N1KiZhyNpR3CkSIo5NYDZ/WPApzDdNcwPqIBMmAkxlIxoj7g7tRi+JSV
- IM=;
+ List-Help; bh=50Y7YhhV3UHHQ/N3ezFgY4yjynTIuC8usuDdVwJv/S8=; b=aKHl3k4bJ+dPc9c
+ rHzADXC2HUzUNT4am92KCWNcEKuEwE8IVMCOx2QZQZJCwRU0nWqbuMY3y0BC7xxBjFl2sZuRSFREj
+ 14EhXW8AH9L7MDfUKSTPgBI1t9Eh+8HB7yTS9+ZoNtmE5vle6syyamsI4yy4y6Qki8D0EFggyW+3T
+ Iw=;
 To: qemu-devel@nongnu.org
 Cc: ale@rev.ng, ltaylorsimpson@gmail.com, bcain@quicinc.com,
  richard.henderson@linaro.org, philmd@linaro.org, alex.bennee@linaro.org
-Subject: [RFC PATCH v1 17/43] helper-to-tcg: PrepareForOptPass,
- undef llvm.returnaddress
-Date: Thu, 21 Nov 2024 02:49:21 +0100
-Message-ID: <20241121014947.18666-18-anjo@rev.ng>
+Subject: [RFC PATCH v1 18/43] helper-to-tcg: PrepareForOptPass,
+ Remove noinline attribute
+Date: Thu, 21 Nov 2024 02:49:22 +0100
+Message-ID: <20241121014947.18666-19-anjo@rev.ng>
 In-Reply-To: <20241121014947.18666-1-anjo@rev.ng>
 References: <20241121014947.18666-1-anjo@rev.ng>
 MIME-Version: 1.0
@@ -63,83 +63,36 @@ From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Convert llvm.returnaddress arguments to cpu_[ld|st]*() to undef, causing
-the LLVM optmizer to discard the intrinsics.  Needed as
-llvm.returnadress is not representable in TCG, and usually results from
-usage of GETPC() in helper functions.
+When producing LLVM IR using clang -O0, a noinline attribute is added.
+Remove this attribute to not inhibit future optimization.
 
 Signed-off-by: Anton Johansson <anjo@rev.ng>
 ---
- .../PrepareForOptPass/PrepareForOptPass.cpp   | 48 +++++++++++++++++++
- 1 file changed, 48 insertions(+)
+ .../passes/PrepareForOptPass/PrepareForOptPass.cpp         | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
 diff --git a/subprojects/helper-to-tcg/passes/PrepareForOptPass/PrepareForOptPass.cpp b/subprojects/helper-to-tcg/passes/PrepareForOptPass/PrepareForOptPass.cpp
-index 22509008c8..b357debb5d 100644
+index b357debb5d..cfd1c23c24 100644
 --- a/subprojects/helper-to-tcg/passes/PrepareForOptPass/PrepareForOptPass.cpp
 +++ b/subprojects/helper-to-tcg/passes/PrepareForOptPass/PrepareForOptPass.cpp
-@@ -23,6 +23,7 @@
- #include <llvm/IR/Function.h>
- #include <llvm/IR/Instruction.h>
+@@ -25,6 +25,7 @@
  #include <llvm/IR/Instructions.h>
-+#include <llvm/IR/Intrinsics.h>
+ #include <llvm/IR/Intrinsics.h>
  #include <llvm/IR/Module.h>
++#include <llvm/Transforms/Utils/Local.h>
  
  #include <queue>
-@@ -197,9 +198,56 @@ static void cullUnusedFunctions(Module &M, AnnotationMapTy &Annotations,
-     }
- }
- 
-+struct RetAddrReplaceInfo {
-+    User *Parent;
-+    unsigned OpIndex;
-+    Type *Ty;
-+};
-+
-+static void replaceRetaddrWithUndef(Module &M)
-+{
-+    // Replace uses of llvm.returnaddress arguments to cpu_ld* w. undef,
-+    // and let optimizations remove it.  Needed as llvm.returnaddress is
-+    // not reprensentable in TCG.
-+    SmallVector<RetAddrReplaceInfo, 24> UsesToReplace;
-+    Function *Retaddr = Intrinsic::getDeclaration(&M, Intrinsic::returnaddress);
-+    // Loop over all calls to llvm.returnaddress
-+    for (auto *CallUser : Retaddr->users()) {
-+        auto *Call = dyn_cast<CallInst>(CallUser);
-+        if (!Call) {
-+            continue;
-+        }
-+        for (auto *PtrToIntUser : Call->users()) {
-+            auto *Cast = dyn_cast<PtrToIntInst>(PtrToIntUser);
-+            if (!Cast) {
-+                continue;
-+            }
-+            for (Use &U : Cast->uses()) {
-+                auto *Call = dyn_cast<CallInst>(U.getUser());
-+                Function *F = Call->getCalledFunction();
-+                StringRef Name = F->getName();
-+                if (Name.startswith("cpu_ld") or Name.startswith("cpu_st")) {
-+                    UsesToReplace.push_back({
-+                        .Parent = U.getUser(),
-+                        .OpIndex = U.getOperandNo(),
-+                        .Ty = U->getType(),
-+                    });
-+                }
-+            }
-+        }
-+    }
-+
-+    // Defer replacement to not invalidate iterators
-+    for (RetAddrReplaceInfo &RI : UsesToReplace) {
-+        auto *Undef = UndefValue::get(RI.Ty);
-+        RI.Parent->setOperand(RI.OpIndex, Undef);
-+    }
-+}
-+
- PreservedAnalyses PrepareForOptPass::run(Module &M, ModuleAnalysisManager &MAM)
- {
+ #include <set>
+@@ -249,5 +250,11 @@ PreservedAnalyses PrepareForOptPass::run(Module &M, ModuleAnalysisManager &MAM)
      collectAnnotations(M, ResultAnnotations);
      cullUnusedFunctions(M, ResultAnnotations, TranslateAllHelpers);
-+    replaceRetaddrWithUndef(M);
+     replaceRetaddrWithUndef(M);
++    // Remove noinline function attributes automatically added by -O0
++    for (Function &F : M) {
++        if (F.hasFnAttribute(Attribute::AttrKind::NoInline)) {
++            F.removeFnAttr(Attribute::AttrKind::NoInline);
++        }
++    }
      return PreservedAnalyses::none();
  }
 -- 
