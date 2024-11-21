@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B3A39D515C
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Nov 2024 18:11:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB8BF9D5162
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Nov 2024 18:12:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tEAe9-0000xr-Gr; Thu, 21 Nov 2024 12:07:14 -0500
+	id 1tEAfM-0002xM-US; Thu, 21 Nov 2024 12:08:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tEAdd-00008p-Dq
- for qemu-devel@nongnu.org; Thu, 21 Nov 2024 12:06:42 -0500
-Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
+ id 1tEAdo-0000d4-Ku
+ for qemu-devel@nongnu.org; Thu, 21 Nov 2024 12:06:54 -0500
+Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tEAdR-0001Za-C4
- for qemu-devel@nongnu.org; Thu, 21 Nov 2024 12:06:41 -0500
-Received: by mail-wr1-x435.google.com with SMTP id
- ffacd0b85a97d-3823e45339bso920977f8f.0
- for <qemu-devel@nongnu.org>; Thu, 21 Nov 2024 09:06:26 -0800 (PST)
+ id 1tEAdT-0001cr-17
+ for qemu-devel@nongnu.org; Thu, 21 Nov 2024 12:06:50 -0500
+Received: by mail-wr1-x433.google.com with SMTP id
+ ffacd0b85a97d-3822ba3cdbcso802811f8f.0
+ for <qemu-devel@nongnu.org>; Thu, 21 Nov 2024 09:06:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1732208785; x=1732813585; darn=nongnu.org;
+ d=linaro.org; s=google; t=1732208789; x=1732813589; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=oG7FK+9uNuDoISaiQgpe1bkbw5opJoX9LITP7xFmjV8=;
- b=omUO+98bhsUQ6O693QPKgykZ7gd+NCYL7EqJpJMgxUzuZwRh++6gPfSP2Ic6aY7Z+1
- DmMIMogGhoJBMamLL7k8rY55tTV07lm2oIR9AXO6BsZgfEXdfi4tCayDrAKu81wxAezj
- ePyZAhNZuCsW6SPPYS+i80e7XgICsRsS7O9nVqgv+LwY2hKOI2dSf2ilD9fW7dBfQ/3/
- UknqhdT2IyBsEhMZjB+mLSYGXPbgFsW3u8p7M+6zlHNYU650lJa6mdLlCQ1nJS4c2Bc4
- xauIIWB0MJIcWOMWWgOiPW+mKH8JosIz2z8cfr5SBtc5hqP3h0UQFNBucjJ1XcY/nMkL
- gcAw==
+ bh=IhQHGIGbKjjF/rJemisQit4H2DXSe2wbtt+hqfzYfDw=;
+ b=Qdgpodn9kLXkyvSVSR/uWjC73OF1ERq0en5jiZ66Ruu/J47MZXqSAI7s1rzs6q8x0B
+ EDveN0O/Metgl5gsujD+vcPQNupWdexa/wZLMObkeLmlLdYcIh90uBsf26SYP5FcTyW2
+ s4TjQeXXxux4zUMiXC/5dAj5324ZzGwy98J4i1Eg6GHLkqn4xQMlcJ5kJA/zRxJkB6aD
+ QvNIQYWYQkRV8uL1ywf5S83WSOf5wxrNwfs3bqcf2/N1NTbCZtSwjc3C1QA5CwafnWoV
+ k0IPpMwkWwig4ylC1K+ZqvkzVDNoQ7tzDl/a8ZnXf4g5pZ1PrGriyfFbIuQdZIXvTxZC
+ nDyw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1732208785; x=1732813585;
+ d=1e100.net; s=20230601; t=1732208789; x=1732813589;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=oG7FK+9uNuDoISaiQgpe1bkbw5opJoX9LITP7xFmjV8=;
- b=sr2RhDXHKmqVg8qo2KMRdgB3JgWoUge6HI35MXyXluSDncVpAMxP8/7x8MoZeL2T5x
- gSWPmlUnGc0vmZEOGH4z24Ot2ly8nOneMuoamUDNm2A4dgKwQuL1ItckoRN9u4vI6+N2
- uLYO2IVtOBCbi4LLvM8cmMKeXc39GyccHYbLQwH2uJLimozcypo5J1hGgIeoVAgRsKoy
- /6SvIdHjSHiUAdgccJ75WroA/gl6uS7jMhWY48tdNXt2GssavcbQlww7ap1gsWNEmNe0
- hVibvAqQ058C++lyAtN4s+RkStBjVDLrmf0F2psJvH96N+VR3qRiLCeSNeLX1kxZPrhO
- Wi1Q==
-X-Gm-Message-State: AOJu0Yw8Z/LNTc+eL3kWw3Y/adVJ3AJuL2T7FSi6kFdRCrgOs2gjmS4Y
- uXPHa/KYD8KyRE2U4X6LiyhszK9QFO+H7TScAfsBcXIx+Nq8RZFKg28+7RzUJOk=
-X-Gm-Gg: ASbGncsI24V48eMEMvw7dtSN8LGkK4d/uEilzF9qw6cvn2O92y4H138phiZIvCO6jh/
- LRgooZThsyaiTyiusEyd/Ai/wX30FATKQ78pUcp6aV504RY9zU3/5d4om+HXjLVnzrMZ47pYbBi
- AnSYWKwd9YmZmYa2L3ZrPaOFCLHu3iqWduG+5ezPS3ptB48zed4nxZWgClhWnw62yY7Phb2r9CN
- wP7qzNV6GiWa+66OlOKmw/wJ7OiEd//r4Inv9HhG+KqBsVa
-X-Google-Smtp-Source: AGHT+IGDsAAl9uigjaVRWI+1Zn6Zw3S8Q8OEGuQKZgkmbh9UhP2SsLdRnxoDU18PHIpr3dZ3XXYRZw==
-X-Received: by 2002:a05:6000:184d:b0:37d:50e1:b3d3 with SMTP id
- ffacd0b85a97d-38254ae51efmr5366540f8f.20.1732208784643; 
- Thu, 21 Nov 2024 09:06:24 -0800 (PST)
+ bh=IhQHGIGbKjjF/rJemisQit4H2DXSe2wbtt+hqfzYfDw=;
+ b=eRdviZ7esUvWrlefs/Y/tjJnWNiKLFLypm4Ug19zLZ7F4/NRRX9AKWY1C0WOoqFi6H
+ iGuft1OLlRNKQ2yF1TrERCdJtuGZi6o2Nj4HNh5/KWWXhZ8782C+EiThmnW1ZPsdcudf
+ 7DFsocvVcLS846ad1D6BRV908NKZXIyiutjBnOQFR7VA6FWExLcG3n6rKERy+rqjrxXE
+ VzyLXsuE+viC3SGQfukd6g30C/p1C8BXydC494ckKcLYSxEyTqIfs+sxsQrAcbH9kbKw
+ vu7zwrytZ6+OWo6TadZxNLCycrkQbC67iqIGeh8SoDSJtymlgbdPHFoIdCpTpe8E+uPM
+ 7j7g==
+X-Gm-Message-State: AOJu0Yx+MDrvvPIjIx9eP6NmKYiR2iRLXcdF+jfsoHHpH5H+DYR3FIQh
+ rwwWm7OHiN+acfK83yo4CPPa9AWxYpz2VF/GgQcIW+wiVF5zTbBK1HyY0fIVt3Q=
+X-Gm-Gg: ASbGncsaiinaaqRiuwegfz446LgzDTAm1dvqHMWatP/JgITYievouNdEOe/rQtk1AL8
+ pPMd/SadJ0U6CIZwJl6cRfIqs6IUJE67Vlv0s5dcJ2dyaMX9r5tfiJW2Pne1V+3pOrzyjSDqC6a
+ Nl0mU/9bFiksk7g0UyxzBWqsCTg0ZGBhw/b6IOUpLUxl7zaAwnttqMxjXGLX/uZJ74d8RsWs6ka
+ /g6gB3lPID6HGMvJUeZt/VT+kHLcxy1F/A7cPktIFKegc8V
+X-Google-Smtp-Source: AGHT+IGLfqxgZiVE9q6iNn9Fl+u6u0AZ9DAF7171Tmsux7lr2A19Y6hHxW5aXpBM5P0/8YSgwzp6kw==
+X-Received: by 2002:a05:6000:2709:b0:37d:5282:1339 with SMTP id
+ ffacd0b85a97d-38254af52cbmr3969400f8f.22.1732208788884; 
+ Thu, 21 Nov 2024 09:06:28 -0800 (PST)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3825fafeceesm53626f8f.37.2024.11.21.09.06.23
+ ffacd0b85a97d-3825fbedeb3sm32587f8f.95.2024.11.21.09.06.25
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 21 Nov 2024 09:06:23 -0800 (PST)
+ Thu, 21 Nov 2024 09:06:27 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 2CCA560423;
+ by draig.lan (Postfix) with ESMTP id 3FBB860431;
  Thu, 21 Nov 2024 16:58:08 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -90,19 +90,19 @@ Cc: Peter Maydell <peter.maydell@linaro.org>,
  Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
  Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
  Aurelien Jarno <aurelien@aurel32.net>, Ani Sinha <anisinha@redhat.com>,
- Alistair Francis <alistair.francis@wdc.com>
-Subject: [PATCH 19/39] tests/functional: Convert the Avocado aarch64 tuxrun
- tests
-Date: Thu, 21 Nov 2024 16:57:46 +0000
-Message-Id: <20241121165806.476008-20-alex.bennee@linaro.org>
+ Alistair Francis <alistair.francis@wdc.com>,
+ Anders Roxell <anders.roxell@linaro.org>
+Subject: [PATCH 20/39] tests/functional: update the arm tuxrun tests
+Date: Thu, 21 Nov 2024 16:57:47 +0000
+Message-Id: <20241121165806.476008-21-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241121165806.476008-1-alex.bennee@linaro.org>
 References: <20241121165806.476008-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=true
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::435;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x435.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::433;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -125,351 +125,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Thomas Huth <thuth@redhat.com>
+Now there are new upto date images available we should update to them.
 
-Move the tests to a new file so that they can be run via
-qemu-system-aarch64 in the functional framework.
-
-Since these were the last tests in tests/avocado/tuxrun_baselines.py,
-we can now remove that file, too.
-
-Signed-off-by: Thomas Huth <thuth@redhat.com>
+Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+Cc: Anders Roxell <anders.roxell@linaro.org>
 ---
- MAINTAINERS                             |   3 +-
- tests/avocado/tuxrun_baselines.py       | 224 ------------------------
- tests/functional/meson.build            |   2 +
- tests/functional/test_aarch64_tuxrun.py |  50 ++++++
- 4 files changed, 54 insertions(+), 225 deletions(-)
- delete mode 100644 tests/avocado/tuxrun_baselines.py
- create mode 100755 tests/functional/test_aarch64_tuxrun.py
+ tests/functional/test_arm_tuxrun.py | 28 ++++++++++++++--------------
+ 1 file changed, 14 insertions(+), 14 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index acc7405aed..eb7149bf1a 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -994,6 +994,7 @@ F: hw/arm/virt*
- F: include/hw/arm/virt.h
- F: docs/system/arm/virt.rst
- F: tests/functional/test_aarch64_virt.py
-+F: tests/functional/test_aarch64_tuxrun.py
- F: tests/functional/test_arm_tuxrun.py
+diff --git a/tests/functional/test_arm_tuxrun.py b/tests/functional/test_arm_tuxrun.py
+index 944f0756e1..4ac85f48ac 100755
+--- a/tests/functional/test_arm_tuxrun.py
++++ b/tests/functional/test_arm_tuxrun.py
+@@ -17,14 +17,14 @@
+ class TuxRunArmTest(TuxRunBaselineTest):
  
- Xilinx Zynq
-@@ -4129,7 +4130,7 @@ F: scripts/ci/
- F: tests/docker/
- F: tests/vm/
- F: tests/lcitool/
--F: tests/avocado/tuxrun_baselines.py
-+F: tests/functional/test_*_tuxrun.py
- F: scripts/archive-source.sh
- F: docs/devel/testing.rst
- W: https://gitlab.com/qemu-project/qemu/pipelines
-diff --git a/tests/avocado/tuxrun_baselines.py b/tests/avocado/tuxrun_baselines.py
-deleted file mode 100644
-index 38064840da..0000000000
---- a/tests/avocado/tuxrun_baselines.py
-+++ /dev/null
-@@ -1,224 +0,0 @@
--# Functional test that boots known good tuxboot images the same way
--# that tuxrun (www.tuxrun.org) does. This tool is used by things like
--# the LKFT project to run regression tests on kernels.
--#
--# Copyright (c) 2023 Linaro Ltd.
--#
--# Author:
--#  Alex Bennée <alex.bennee@linaro.org>
--#
--# SPDX-License-Identifier: GPL-2.0-or-later
--
--import os
--import time
--import tempfile
--
--from avocado import skip, skipUnless
--from avocado_qemu import QemuSystemTest
--from avocado_qemu import exec_command, exec_command_and_wait_for_pattern
--from avocado_qemu import wait_for_console_pattern
--from avocado.utils import process
--from avocado.utils.path import find_command
--
--class TuxRunBaselineTest(QemuSystemTest):
--    """
--    :avocado: tags=accel:tcg
--    """
--
--    KERNEL_COMMON_COMMAND_LINE = 'printk.time=0'
--    # Tests are ~10-40s, allow for --debug/--enable-gcov overhead
--    timeout = 100
--
--    def get_tag(self, tagname, default=None):
--        """
--        Get the metadata tag or return the default.
--        """
--        utag = self._get_unique_tag_val(tagname)
--        print(f"{tagname}/{default} -> {utag}")
--        if utag:
--            return utag
--
--        return default
--
--    def setUp(self):
--        super().setUp()
--
--        # We need zstd for all the tuxrun tests
--        # See https://github.com/avocado-framework/avocado/issues/5609
--        zstd = find_command('zstd', False)
--        if zstd is False:
--            self.cancel('Could not find "zstd", which is required to '
--                        'decompress rootfs')
--        self.zstd = zstd
--
--        # Process the TuxRun specific tags, most machines work with
--        # reasonable defaults but we sometimes need to tweak the
--        # config. To avoid open coding everything we store all these
--        # details in the metadata for each test.
--
--        # The tuxboot tag matches the root directory
--        self.tuxboot = self.get_tag('tuxboot')
--
--        # Most Linux's use ttyS0 for their serial port
--        self.console = self.get_tag('console', "ttyS0")
--
--        # Does the machine shutdown QEMU nicely on "halt"
--        self.shutdown = self.get_tag('shutdown')
--
--        # The name of the kernel Image file
--        self.image = self.get_tag('image', "Image")
--
--        self.root = self.get_tag('root', "vda")
--
--        # Occasionally we need extra devices to hook things up
--        self.extradev = self.get_tag('extradev')
--
--        self.qemu_img = super().get_qemu_img()
--
--    def wait_for_console_pattern(self, success_message, vm=None):
--        wait_for_console_pattern(self, success_message,
--                                 failure_message='Kernel panic - not syncing',
--                                 vm=vm)
--
--    def fetch_tuxrun_assets(self, csums=None, dt=None):
--        """
--        Fetch the TuxBoot assets. They are stored in a standard way so we
--        use the per-test tags to fetch details.
--        """
--        base_url = f"https://storage.tuxboot.com/20230331/{self.tuxboot}/"
--
--        # empty hash if we weren't passed one
--        csums = {} if csums is None else csums
--        ksum = csums.get(self.image, None)
--        isum = csums.get("rootfs.ext4.zst", None)
--
--        kernel_image =  self.fetch_asset(base_url + self.image,
--                                         asset_hash = ksum,
--                                         algorithm = "sha256")
--        disk_image_zst = self.fetch_asset(base_url + "rootfs.ext4.zst",
--                                         asset_hash = isum,
--                                         algorithm = "sha256")
--
--        cmd = f"{self.zstd} -d {disk_image_zst} -o {self.workdir}/rootfs.ext4"
--        process.run(cmd)
--
--        if dt:
--            dsum = csums.get(dt, None)
--            dtb = self.fetch_asset(base_url + dt,
--                                   asset_hash = dsum,
--                                   algorithm = "sha256")
--        else:
--            dtb = None
--
--        return (kernel_image, self.workdir + "/rootfs.ext4", dtb)
--
--    def prepare_run(self, kernel, disk, drive, dtb=None, console_index=0):
--        """
--        Setup to run and add the common parameters to the system
--        """
--        self.vm.set_console(console_index=console_index)
--
--        # all block devices are raw ext4's
--        blockdev = "driver=raw,file.driver=file," \
--            + f"file.filename={disk},node-name=hd0"
--
--        kcmd_line = self.KERNEL_COMMON_COMMAND_LINE
--        kcmd_line += f" root=/dev/{self.root}"
--        kcmd_line += f" console={self.console}"
--
--        self.vm.add_args('-kernel', kernel,
--                         '-append', kcmd_line,
--                         '-blockdev', blockdev)
--
--        # Sometimes we need extra devices attached
--        if self.extradev:
--            self.vm.add_args('-device', self.extradev)
--
--        self.vm.add_args('-device',
--                         f"{drive},drive=hd0")
--
--        # Some machines need an explicit DTB
--        if dtb:
--            self.vm.add_args('-dtb', dtb)
--
--    def run_tuxtest_tests(self, haltmsg):
--        """
--        Wait for the system to boot up, wait for the login prompt and
--        then do a few things on the console. Trigger a shutdown and
--        wait to exit cleanly.
--        """
--        self.wait_for_console_pattern("Welcome to TuxTest")
--        time.sleep(0.2)
--        exec_command(self, 'root')
--        time.sleep(0.2)
--        exec_command(self, 'cat /proc/interrupts')
--        time.sleep(0.1)
--        exec_command(self, 'cat /proc/self/maps')
--        time.sleep(0.1)
--        exec_command(self, 'uname -a')
--        time.sleep(0.1)
--        exec_command_and_wait_for_pattern(self, 'halt', haltmsg)
--
--        # Wait for VM to shut down gracefully if it can
--        if self.shutdown == "nowait":
--            self.vm.shutdown()
--        else:
--            self.vm.wait()
--
--    def common_tuxrun(self,
--                      csums=None,
--                      dt=None,
--                      drive="virtio-blk-device",
--                      haltmsg="reboot: System halted",
--                      console_index=0):
--        """
--        Common path for LKFT tests. Unless we need to do something
--        special with the command line we can process most things using
--        the tag metadata.
--        """
--        (kernel, disk, dtb) = self.fetch_tuxrun_assets(csums, dt)
--
--        self.prepare_run(kernel, disk, drive, dtb, console_index)
--        self.vm.launch()
--        self.run_tuxtest_tests(haltmsg)
--
--
--    #
--    # The tests themselves. The configuration is derived from how
--    # tuxrun invokes qemu (with minor tweaks like using -blockdev
--    # consistently). The tuxrun equivalent is something like:
--    #
--    # tuxrun --device qemu-{ARCH} \
--    #        --kernel https://storage.tuxboot.com/{TUXBOOT}/{IMAGE}
--    #
--
--    def test_arm64(self):
--        """
--        :avocado: tags=arch:aarch64
--        :avocado: tags=cpu:cortex-a57
--        :avocado: tags=machine:virt
--        :avocado: tags=tuxboot:arm64
--        :avocado: tags=console:ttyAMA0
--        :avocado: tags=shutdown:nowait
--        """
--        sums = {"Image" :
--                "ce95a7101a5fecebe0fe630deee6bd97b32ba41bc8754090e9ad8961ea8674c7",
--                "rootfs.ext4.zst" :
--                "bbd5ed4b9c7d3f4ca19ba71a323a843c6b585e880115df3b7765769dbd9dd061"}
--        self.common_tuxrun(csums=sums)
--
--    def test_arm64be(self):
--        """
--        :avocado: tags=arch:aarch64
--        :avocado: tags=cpu:cortex-a57
--        :avocado: tags=endian:big
--        :avocado: tags=machine:virt
--        :avocado: tags=tuxboot:arm64be
--        :avocado: tags=console:ttyAMA0
--        :avocado: tags=shutdown:nowait
--        """
--        sums = { "Image" :
--                 "e0df4425eb2cd9ea9a283e808037f805641c65d8fcecc8f6407d8f4f339561b4",
--                 "rootfs.ext4.zst" :
--                 "e6ffd8813c8a335bc15728f2835f90539c84be7f8f5f691a8b01451b47fb4bd7"}
--        self.common_tuxrun(csums=sums)
-diff --git a/tests/functional/meson.build b/tests/functional/meson.build
-index 758145d1e5..923f9e7078 100644
---- a/tests/functional/meson.build
-+++ b/tests/functional/meson.build
-@@ -14,6 +14,7 @@ test_timeouts = {
-   'aarch64_raspi4' : 480,
-   'aarch64_sbsaref_alpine' : 720,
-   'aarch64_sbsaref_freebsd' : 720,
-+  'aarch64_tuxrun' : 240,
-   'aarch64_virt' : 720,
-   'acpi_bits' : 420,
-   'arm_aspeed' : 600,
-@@ -52,6 +53,7 @@ tests_aarch64_system_thorough = [
-   'aarch64_sbsaref',
-   'aarch64_sbsaref_alpine',
-   'aarch64_sbsaref_freebsd',
-+  'aarch64_tuxrun',
-   'aarch64_virt',
-   'multiprocess',
- ]
-diff --git a/tests/functional/test_aarch64_tuxrun.py b/tests/functional/test_aarch64_tuxrun.py
-new file mode 100755
-index 0000000000..da56aee4ed
---- /dev/null
-+++ b/tests/functional/test_aarch64_tuxrun.py
-@@ -0,0 +1,50 @@
-+#!/usr/bin/env python3
-+#
-+# Functional test that boots known good tuxboot images the same way
-+# that tuxrun (www.tuxrun.org) does. This tool is used by things like
-+# the LKFT project to run regression tests on kernels.
-+#
-+# Copyright (c) 2023 Linaro Ltd.
-+#
-+# Author:
-+#  Alex Bennée <alex.bennee@linaro.org>
-+#
-+# SPDX-License-Identifier: GPL-2.0-or-later
-+
-+from qemu_test import Asset
-+from qemu_test.tuxruntest import TuxRunBaselineTest
-+
-+class TuxRunAarch64Test(TuxRunBaselineTest):
-+
-+    ASSET_ARM64_KERNEL = Asset(
-+        'https://storage.tuxboot.com/20230331/arm64/Image',
-+        'ce95a7101a5fecebe0fe630deee6bd97b32ba41bc8754090e9ad8961ea8674c7')
-+    ASSET_ARM64_ROOTFS = Asset(
-+        'https://storage.tuxboot.com/20230331/arm64/rootfs.ext4.zst',
-+        'bbd5ed4b9c7d3f4ca19ba71a323a843c6b585e880115df3b7765769dbd9dd061')
-+
-+    def test_arm64(self):
-+        self.set_machine('virt')
-+        self.cpu='cortex-a57'
-+        self.console='ttyAMA0'
-+        self.wait_for_shutdown=False
-+        self.common_tuxrun(kernel_asset=self.ASSET_ARM64_KERNEL,
-+                           rootfs_asset=self.ASSET_ARM64_ROOTFS)
-+
-+    ASSET_ARM64BE_KERNEL = Asset(
-+        'https://storage.tuxboot.com/20230331/arm64be/Image',
-+        'e0df4425eb2cd9ea9a283e808037f805641c65d8fcecc8f6407d8f4f339561b4')
-+    ASSET_ARM64BE_ROOTFS = Asset(
-+        'https://storage.tuxboot.com/20230331/arm64be/rootfs.ext4.zst',
-+        'e6ffd8813c8a335bc15728f2835f90539c84be7f8f5f691a8b01451b47fb4bd7')
-+
-+    def test_arm64be(self):
-+        self.set_machine('virt')
-+        self.cpu='cortex-a57'
-+        self.console='ttyAMA0'
-+        self.wait_for_shutdown=False
-+        self.common_tuxrun(kernel_asset=self.ASSET_ARM64BE_KERNEL,
-+                           rootfs_asset=self.ASSET_ARM64BE_ROOTFS)
-+
-+if __name__ == '__main__':
-+    TuxRunBaselineTest.main()
+     ASSET_ARMV5_KERNEL = Asset(
+-        'https://storage.tuxboot.com/20230331/armv5/zImage',
+-        'c95af2f27647c12265d75e9df44c22ff5228c59855f54aaa70f41ec2842e3a4d')
++        'https://storage.tuxboot.com/buildroot/20241119/armv5/zImage',
++        '3931a3908dbcf0ec0fe292d035ffc4dfed95f797dedd4a59ccfcf7a46e6f92d4')
+     ASSET_ARMV5_ROOTFS = Asset(
+-        'https://storage.tuxboot.com/20230331/armv5/rootfs.ext4.zst',
+-        '17177afa74e7294da0642861f08c88ca3c836764299a54bf6d1ce276cb9712a5')
++        'https://storage.tuxboot.com/buildroot/20241119/armv5/rootfs.ext4.zst',
++        '60ff78b68c7021df378e4fc2d66d3b016484d1acc7e07fb8920c1d8e30f4571f')
+     ASSET_ARMV5_DTB = Asset(
+-        'https://storage.tuxboot.com/20230331/armv5/versatile-pb.dtb',
+-        '0bc0c0b0858cefd3c32b385c0d66d97142ded29472a496f4f490e42fc7615b25')
++        'https://storage.tuxboot.com/buildroot/20241119/armv5/versatile-pb.dtb',
++        '50988e69ef3f3b08bfb9146e8fe414129990029e8dfbed444953b7e14809530a')
+ 
+     def test_armv5(self):
+         self.set_machine('versatilepb')
+@@ -37,11 +37,11 @@ def test_armv5(self):
+                            drive="virtio-blk-pci")
+ 
+     ASSET_ARMV7_KERNEL = Asset(
+-        'https://storage.tuxboot.com/20230331/armv7/zImage',
+-        '4c7a22e9f15875bec06bd2a29d822496571eb297d4f22694099ffcdb19077572')
++        'https://storage.tuxboot.com/buildroot/20241119/armv7/zImage',
++        '1377bc3d90de5ce57ab17cd67429fe8b15c2e9964248c775c682b67e6299b991')
+     ASSET_ARMV7_ROOTFS = Asset(
+-        'https://storage.tuxboot.com/20230331/armv7/rootfs.ext4.zst',
+-        'ab1fbbeaddda1ffdd45c9405a28cd5370c20f23a7cbc809cc90dc9f243a8eb5a')
++        'https://storage.tuxboot.com/buildroot/20241119/armv7/rootfs.ext4.zst',
++        'ed2cbc69bd6b3fbd5cafb5ee961393c7cfbe726446f14301c67d6b1f28bfdb51')
+ 
+     def test_armv7(self):
+         self.set_machine('virt')
+@@ -52,11 +52,11 @@ def test_armv7(self):
+                            rootfs_asset=self.ASSET_ARMV7_ROOTFS)
+ 
+     ASSET_ARMV7BE_KERNEL = Asset(
+-        'https://storage.tuxboot.com/20230331/armv7be/zImage',
+-        '7facc62082b57af12015b08f7fdbaf2f123ba07a478367853ae12b219afc9f2f')
++        'https://storage.tuxboot.com/buildroot/20241119/armv7be/zImage',
++        'a244e6da99f1bbd254827ec7681bd4aac9eb1aa05aaebc6b15e5d289ebb683f3')
+     ASSET_ARMV7BE_ROOTFS = Asset(
+-        'https://storage.tuxboot.com/20230331/armv7be/rootfs.ext4.zst',
+-        '42ed46dd2d59986206c5b1f6cf35eab58fe3fd20c96b41aaa16b32f3f90a9835')
++        'https://storage.tuxboot.com/buildroot/20241119/armv7be/rootfs.ext4.zst',
++        'd4f9c57860a512163f30ecc69b2174d1a1bdeb853a43dc49a09cfcfe84e428ea')
+ 
+     def test_armv7be(self):
+         self.set_machine('virt')
 -- 
 2.39.5
 
