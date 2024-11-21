@@ -2,49 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC24E9D4567
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Nov 2024 02:48:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 049D59D4748
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Nov 2024 06:30:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tDwIz-0004Hj-MW; Wed, 20 Nov 2024 20:48:25 -0500
+	id 1tDzkh-0002rn-5O; Thu, 21 Nov 2024 00:29:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1tDwIx-00042K-8j
- for qemu-devel@nongnu.org; Wed, 20 Nov 2024 20:48:23 -0500
-Received: from rev.ng ([94.130.142.21])
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1tDzkN-0002rY-9q; Thu, 21 Nov 2024 00:28:55 -0500
+Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1tDwIu-0004hy-0I
- for qemu-devel@nongnu.org; Wed, 20 Nov 2024 20:48:22 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
- s=dkim; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
- Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
- Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
- :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
- List-Post:List-Owner:List-Archive:List-Unsubscribe:List-Unsubscribe-Post:
- List-Help; bh=ktv0i4T9quoFh1XqbHeead8oN9HJCwFMqj8THqsqa04=; b=PVqGTMib49hP9Z2
- OZtlZ8SOe1PAbISs/5MJTmf9evN7cIWHaSJSJ/lZL1fmtwAMY11472wgiKZCJ/fCbuZPbTjdwKFZy
- W8g2fniFXqHRl7I3DMg66/NnVz6W8QmTDcReD+STcii0uXoXvh6rXLRu8CCCQ2SFY+NLdDyBo5DYM
- ns=;
-To: qemu-devel@nongnu.org
-Cc: ale@rev.ng, ltaylorsimpson@gmail.com, bcain@quicinc.com,
- richard.henderson@linaro.org, philmd@linaro.org, alex.bennee@linaro.org
-Subject: [RFC PATCH v1 43/43] target/hexagon: Use helper-to-tcg
-Date: Thu, 21 Nov 2024 02:49:47 +0100
-Message-ID: <20241121014947.18666-44-anjo@rev.ng>
-In-Reply-To: <20241121014947.18666-1-anjo@rev.ng>
-References: <20241121014947.18666-1-anjo@rev.ng>
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1tDzkL-000432-2y; Thu, 21 Nov 2024 00:28:55 -0500
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id B0732A8B53;
+ Thu, 21 Nov 2024 08:28:31 +0300 (MSK)
+Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with ESMTP id ECBEE1765C0;
+ Thu, 21 Nov 2024 08:28:38 +0300 (MSK)
+Message-ID: <d99763fa-4b04-47a2-974e-b0e13466a9d1@tls.msk.ru>
+Date: Thu, 21 Nov 2024 08:28:28 +0300
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=94.130.142.21; envelope-from=anjo@rev.ng;
- helo=rev.ng
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US, ru-RU
+To: qemu-devel@nongnu.org, qemu-stable@nongnu.org
+From: Michael Tokarev <mjt@tls.msk.ru>
+Autocrypt: addr=mjt@tls.msk.ru; keydata=
+ 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
+Subject: [ANNOUNCE] QEMU 7.2.15 Stable released
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------yUh1m0syp3kF9b4i6WnsC5Wh"
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -68
+X-Spam_score: -6.9
+X-Spam_bar: ------
+X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -57,222 +96,129 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Anton Johansson <anjo@rev.ng>
-From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Modifies meson.build to use helper-to-tcg for automatic translation of
-helper functions.  Any helper functions with the "helper-to-tcg"
-attribute will be automatically translated to TCG.
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------yUh1m0syp3kF9b4i6WnsC5Wh
+Content-Type: multipart/mixed; boundary="------------RWkwRu00t3LNTM0riHonBQUU";
+ protected-headers="v1"
+From: Michael Tokarev <mjt@tls.msk.ru>
+To: qemu-devel@nongnu.org, qemu-stable@nongnu.org
+Message-ID: <d99763fa-4b04-47a2-974e-b0e13466a9d1@tls.msk.ru>
+Subject: [ANNOUNCE] QEMU 7.2.15 Stable released
 
-Order of code generation is changed, and helper functions are always
-generated first, for all instructions.  Helper functions are needed as
-input helper-to-tcg.  Next, input to idef-parser is generated for all
-instructions that were not successfully translated by helper-to-tcg.
+--------------RWkwRu00t3LNTM0riHonBQUU
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: base64
 
-As such, a majority of instructions will be translated by helper-to-tcg,
-and the remaining instructions fed through idef-parser can be reduced
-moving forward.
+SGkgZXZlcnlvbmUsDQoNClRoZSBRRU1VIHY3LjIuMTUgc3RhYmxlIHJlbGVhc2UgaXMgbm93
+IGF2YWlsYWJsZS4NCg0KWW91IGNhbiBncmFiIHRoZSB0YXJiYWxsIGZyb20gb3VyIGRvd25s
+b2FkIHBhZ2UgaGVyZToNCg0KICAgaHR0cHM6Ly93d3cucWVtdS5vcmcvZG93bmxvYWQvI3Nv
+dXJjZQ0KDQogICBodHRwczovL2Rvd25sb2FkLnFlbXUub3JnL3FlbXUtNy4yLjE1LnRhci54
+eg0KICAgaHR0cHM6Ly9kb3dubG9hZC5xZW11Lm9yZy9xZW11LTcuMi4xNS50YXIueHouc2ln
+IChzaWduYXR1cmUpDQoNCnY3LjIuMTUgaXMgbm93IHRhZ2dlZCBpbiB0aGUgb2ZmaWNpYWwg
+cWVtdS5naXQgcmVwb3NpdG9yeSwgYW5kIHRoZQ0Kc3RhYmxlLTcuMiBicmFuY2ggaGFzIGJl
+ZW4gdXBkYXRlZCBhY2NvcmRpbmdseToNCg0KICAgaHR0cHM6Ly9naXRsYWIuY29tL3FlbXUt
+cHJvamVjdC9xZW11Ly0vY29tbWl0cy9zdGFibGUtNy4yDQoNClRoZXJlIGFyZSAzOSBjaGFu
+Z2VzIHNpbmNlIHRoZSBwcmV2aW91cyB2Ny4yLjE0IHJlbGVhc2UuDQoNClRoYW5rIHlvdSBl
+dmVyeW9uZSB3aG8gaGFzIGJlZW4gaW52b2x2ZWQgYW5kIGhlbHBlZCB3aXRoIHRoZSBzdGFi
+bGUgc2VyaWVzIQ0KDQovbWp0DQoNCkNoYW5nZWxvZyAoc3RhYmxlLTcuMi1oYXNoIG1hc3Rl
+ci1oYXNoIEF1dGhvciBOYW1lOiBDb21tbWl0LVN1YmplY3QpOg0KDQo4YWM3NTcyNmZjIE1p
+Y2hhZWwgVG9rYXJldjoNCiAgVXBkYXRlIHZlcnNpb24gZm9yIDcuMi4xNSByZWxlYXNlDQo3
+ZmZjMzdiNTQxIGIyY2M2OTk5NzkgR3VlbnRlciBSb2VjazoNCiAgdXNiLWh1YjogRml4IGhh
+bmRsaW5nIHBvcnQgcG93ZXIgY29udHJvbCBtZXNzYWdlcw0KZTBhZjQwZjE0MCA2MjZiMzkw
+MDZkIFBhb2xvIEJvbnppbmk6DQogIGh3L2F1ZGlvL2hkYTogZml4IG1lbW9yeSBsZWFrIG9u
+IGF1ZGlvIHNldHVwDQoyZjUyMjU4ZWQ3IGMzZDdjMThiMGQgVGhvbWFzIEh1dGg6DQogIGh3
+L21pc2MvbW9zNjUyMjogRml4IGJhZCBjbGFzcyBkZWZpbml0aW9uIG9mIHRoZSBNT1M2NTIy
+IGRldmljZQ0KNTI1NThkNDlkNiA4Mzc3ZTNmYjg1IFBldGVyIE1heWRlbGw6DQogIHRjZzog
+QWxsb3cgdG9wIGJpdCBvZiBTSU1EX0RBVEFfQklUUyB0byBiZSBzZXQgaW4gc2ltZF9kZXNj
+KCkNCmI2NjFlZWE5N2YgZjI3NTUwODA0NiBSaWNoYXJkIEhlbmRlcnNvbjoNCiAgdGFyZ2V0
+L2FybTogRHJvcCB1c2VyLW9ubHkgc3BlY2lhbCBjYXNlIGluIHN2ZV9zdE5fcg0KZDUyNzQ2
+YjEwMSA4NDkxMDI2YTA4IEhlbGdlIERlbGxlcjoNCiAgbGludXgtdXNlcjogRml4IHNldHJl
+dWlkIGFuZCBzZXRyZWdpZCB0byB1c2UgZGlyZWN0IHN5c2NhbGxzDQphZmM4N2YxMmI1IDhm
+YTExYTRkZjMgQWxleGFuZGVyIEdyYWY6DQogIHRhcmdldC9pMzg2OiBGaXggbGVnYWN5IHBh
+Z2UgdGFibGUgd2Fsaw0KZTlhYmMyM2VmNCAwNDJiNGViZmQyIENocmlzdGlhbiBTY2hvZW5l
+YmVjazoNCiAgOXBmczogZml4IGNyYXNoIG9uICdUcmVhZGRpcicgcmVxdWVzdA0KODM3NWRh
+ZGJhNyA5NTI5YWE2YmI0IEtsYXVzIEplbnNlbjoNCiAgaHcvbnZtZTogZml4IGhhbmRsaW5n
+IG9mIG92ZXItY29tbWl0dGVkIHF1ZXVlcw0KNjc2ODMwNDhiZSBlNmIyZmExYjgxIFBldGVy
+IE1heWRlbGw6DQogIHRhcmdldC9hcm06IEZpeCBTVkUgU0RPVC9VRE9UL1VTRE9UICg0LXdh
+eSwgaW5kZXhlZCkNCjVjMWMxMzhlZTcgYzliOGExM2E4OCBJbHlhIExlb3Noa2V2aWNoOg0K
+ICB0YXJnZXQvcHBjOiBTZXQgY3R4LT5vcGNvZGUgZm9yIGRlY29kZV9pbnNuMzIoKQ0KODQ0
+ZmZiMzU3YSBjMTI4ZDM5ZWRlIEFudG9uIEJsYW5jaGFyZDoNCiAgdGFyZ2V0L3Jpc2N2OiBG
+aXggdmNvbXByZXNzIHdpdGggcnZ2X3RhX2FsbF8xcw0KMzlkODU4ZmEyMyAyYWU2Y2NhMWQz
+IFlvbmctWHVhbiBXYW5nOg0KICBody9pbnRjL3Jpc2N2X2FwbGljOiBDaGVjayBhbmQgdXBk
+YXRlIHBlbmRpbmcgd2hlbiB3cml0ZSBzb3VyY2VjZmcNCjZlNDZjYWE5MWYgMDY3OGU5ZjI5
+YyBBbnVwIFBhdGVsOg0KICBody9pbnRjL3Jpc2N2X2FwbGljOiBGaXggaW5fY2xyaXBbeF0g
+cmVhZCBlbXVsYXRpb24NCmRjODliMmIzMDAgZjhjMWYzNmEyZSBSb2IgQnJhZGZvcmQ6DQog
+IHRhcmdldC9yaXNjdjogU2V0IHZ0eXBlLnZpbGwgb24gQ1BVIHJlc2V0DQo1ZGJiYmFmOTcx
+IGE4NGJlMmJhYTkgU2VyZ2V5IE1ha2Fyb3Y6DQogIGh3L2ludGM6IERvbid0IGNsZWFyIHBl
+bmRpbmcgYml0cyBvbiBJUlEgbG93ZXJpbmcNCjc2ZTAwMzA2MzYgOTI5ZTQyNzdjMSBUQU5H
+IFRpYW5jaGVuZzoNCiAgdGFyZ2V0L3Jpc2N2OiBDb3JyZWN0IFNYTCByZXR1cm4gdmFsdWUg
+Zm9yIFJWMzIgaW4gUlY2NCBRRU1VDQo1NjgxOTBlZjYwIDVhNjAwMjZjYWQgRXZnZW5paSBQ
+cm9rb3BpZXY6DQogIHRhcmdldC9yaXNjdi9jc3IuYzogRml4IGFuIGFjY2VzcyB0byBWWFNB
+VA0KMDA0ZjA1ODNmMSAxNTA1YjY1MWZkIFBldGVyIE1heWRlbGw6DQogIHRhcmdldC9hcm06
+IERvbid0IGFzc2VydCBpbiByZWdpbWVfaXNfdXNlcigpIGZvciBFMTAgbW11aWR4IHZhbHVl
+cw0KZmNjZGMxNjQxNCA3NWZlMzZiNGU4IEJlcm5oYXJkIEJlc2Nob3c6DQogIG5ldC90YXAt
+d2luMzI6IEZpeCBnY2MgMTQgZm9ybWF0IHRydW5jYXRpb24gZXJyb3JzDQo1MGNhN2YxZmI0
+IGUyOWJjOTMxZTEgU3RlZmFuIFdlaWw6DQogIEZpeCBjYWxjdWxhdGlvbiBvZiBtaW5pbXVt
+IGluIGNvbG9fY29tcGFyZV90Y3ANCjI4YWNmNDMzOWQgOTdmMTE2ZjljNiBBbGV4IEJlbm7D
+qWU6DQogIGdpdGxhYjogbWFrZSBjaGVjay1bZGNvfHBhdGNoXSBhIGxpdHRsZSBtb3JlIHZl
+cmJvc2UNCjFkNmRlZTNlOGEgODcwNDEzMjgwNSBJbHlhIExlb3Noa2V2aWNoOg0KICBsaW51
+eC11c2VyL3BwYzogRml4IHNpZ21hc2sgZW5kaWFubmVzcyBpc3N1ZSBpbiBzaWdyZXR1cm4N
+CmMzNjNlYmFhMTkgYjU2NjE3YmJjYiBBbGV4YW5kZXIgR3JhZjoNCiAgdGFyZ2V0L2kzODY6
+IFdhbGsgTlBUIGluIGd1ZXN0IHJlYWwgbW9kZQ0KNmQzNmNmODlkMyA5ODdiNjNmMjRhIFBl
+dGVyIE1heWRlbGw6DQogIHRhcmdldC9pMzg2OiBBdm9pZCB1bnJlYWNoYWJsZSB2YXJpYWJs
+ZSBkZWNsYXJhdGlvbiBpbiBtbXVfdHJhbnNsYXRlKCkNCjE2YWMyMjczZDEgYTdjZmQ3NTFm
+YiBSaWNoYXJkIEhlbmRlcnNvbjoNCiAgdGNnOiBSZXNldCBkYXRhX2dlbl9wdHIgY29ycmVj
+dGx5DQoxMjg0NjA2ZmFmIDA0YmJjM2VlNTIgS2V2aW4gV29sZjoNCiAgcmF3LWZvcm1hdDog
+Rml4IGVycm9yIG1lc3NhZ2UgZm9yIGludmFsaWQgb2Zmc2V0L3NpemUNCmI2ZWNmMTA1MTcg
+ZDkyODBlYTMxNyBTdGVmYW4gQmVyZ2VyOg0KICB0ZXN0czogV2FpdCBmb3IgbWlncmF0aW9u
+IGNvbXBsZXRpb24gb24gZGVzdGluYXRpb24gUUVNVSB0byBhdm9pZCBmYWlsdXJlcw0KYWU0
+ZTQ2Y2QyMCA1NTA0YTgxMjYxIFBldGVyIFh1Og0KICBLVk06IER5bmFtaWMgc2l6ZWQga3Zt
+IG1lbXNsb3RzIGFycmF5DQplZmI0OGZmZGZhIGYyNzIwNmNlZWQgTWFyYy1BbmRyw6kgTHVy
+ZWF1Og0KICBody9hdWRpby9oZGE6IGZyZWUgdGltZXIgb24gZXhpdA0KY2I1MjM5ZTYwNyAz
+ZGI3NGFmZWMzIEFsZXhhbmRyYSBEaXVwaW5hOg0KICBody9pbnRjL2FybV9naWN2M19jcHVp
+ZjogQWRkIGNhc3QgdG8gbWF0Y2ggdGhlIGRvY3VtZW50YXRpb24NCmYxMTEyYzY3NzYgOTQ3
+MjA4M2U2NCBTdGVmYW5vIEdhcnphcmVsbGE6DQogIHNjc2k6IGZldGNoIHVuaXQgYXR0ZW50
+aW9uIHdoZW4gY3JlYXRpbmcgdGhlIHJlcXVlc3QNCjcwOWU2YWI1YWIgMjg4NDU5NmY1ZiBS
+aWNoYXJkIEhlbmRlcnNvbjoNCiAgbGludXgtdXNlcjogRml4IHBhcnNlX2VsZl9wcm9wZXJ0
+aWVzIEdOVTBfTUFHSUMgY2hlY2sNCjQ5ZDQyZWQzYmQgYTllZTY0MWJkNCBQaGlsaXBwZSBN
+YXRoaWV1LURhdWTDqToNCiAgbGludXgtdXNlci9mbGF0bG9hZDogVGFrZSBtbWFwX2xvY2sg
+aW4gbG9hZF9mbHRfYmluYXJ5KCkNCjNkMDhmZmUwYmEgZTZkOGU1ZTZlMyBQYW9sbyBCb256
+aW5pOg0KICB0cmFjZXRvb2w6IGF2b2lkIGludmFsaWQgZXNjYXBlIGluIFB5dGhvbiBzdHJp
+bmcNCmIyNzA3OGMyYTkgM2U5NjQyNzVkNiBBbGV4YW5kZXIgQnVsZWtvdjoNCiAgZnV6ejog
+ZGlzYWJsZSBsZWFrLWRldGVjdGlvbiBmb3Igb3NzLWZ1enogYnVpbGRzDQo0ZjYxNzE0MGE0
+IDY0NzUxNTVkNTEgRmlvbmEgRWJuZXI6DQogIGJsb2NrL3JlcWxpc3Q6IGFsbG93IGFkZGlu
+ZyBvdmVybGFwcGluZyByZXF1ZXN0cw0KNWY5ZmI0OTY0OCA4YmRlZDJlNzNlIEZhYmlhbm8g
+Um9zYXM6DQogIHRhcmdldC9wcGM6IEZpeCBseHZ4L3N0eHZ4IGZhY2lsaXR5IGNoZWNrDQpi
+NjJkYzZkOTRmIGQ4ZDVjYTQwMDQgRmVhLldhbmc6DQogIHNvZnRtbXUvcGh5c21lbS5jOiBL
+ZWVwIHRyYW5zYWN0aW9uIGF0dHJpYnV0ZSBpbiBhZGRyZXNzX3NwYWNlX21hcCgpDQoNCg==
 
-Signed-off-by: Anton Johansson <anjo@rev.ng>
----
- target/hexagon/meson.build | 151 +++++++++++++++++++++++++++----------
- 1 file changed, 111 insertions(+), 40 deletions(-)
 
-diff --git a/target/hexagon/meson.build b/target/hexagon/meson.build
-index bb4ebaae81..563d60e976 100644
---- a/target/hexagon/meson.build
-+++ b/target/hexagon/meson.build
-@@ -262,22 +262,127 @@ hexagon_ss.add(files(
-     'mmvec/system_ext_mmvec.c',
- ))
- 
-+helper_dep = [semantics_generated]
-+helper_in = [semantics_generated, gen_tcg_h, gen_tcg_hvx_h]
-+
-+#
-+# Step 5
-+# We use Python scripts to generate the following files
-+#     helper_protos_generated.h.inc
-+#     helper_funcs_generated.c.inc
-+#     analyze_funcs_generated.c.inc
-+#
-+helper_protos_generated = custom_target(
-+    'helper_protos_generated.h.inc',
-+    output: 'helper_protos_generated.h.inc',
-+    depends: helper_dep,
-+    depend_files: [hex_common_py, gen_tcg_h, gen_tcg_hvx_h],
-+    command: [python, files('gen_helper_protos.py'), helper_in, '@OUTPUT@'],
-+)
-+hexagon_ss.add(helper_protos_generated)
-+
-+helper_funcs_generated = custom_target(
-+    'helper_funcs_generated.c.inc',
-+    output: 'helper_funcs_generated.c.inc',
-+    depends: helper_dep,
-+    depend_files: [hex_common_py, gen_tcg_h, gen_tcg_hvx_h],
-+    command: [python, files('gen_helper_funcs.py'), helper_in, '@OUTPUT@'],
-+)
-+hexagon_ss.add(helper_funcs_generated)
-+
-+analyze_funcs_generated = custom_target(
-+    'analyze_funcs_generated.c.inc',
-+    output: 'analyze_funcs_generated.c.inc',
-+    depends: helper_dep,
-+    depend_files: [hex_common_py, gen_tcg_h, gen_tcg_hvx_h],
-+    command: [python, files('gen_analyze_funcs.py'), helper_in, '@OUTPUT@'],
-+)
-+hexagon_ss.add(analyze_funcs_generated)
-+
-+#
-+# Step 6
-+# If enabled, run helper-to-tcg to attempt to translate any remaining
-+# helper functions, producing:
-+#     helper-to-tcg-emitted.c
-+#     helper-to-tcg-emitted.h
-+#     helper-to-tcg-enabled
-+#     helper-to-tcg-log
- #
--# Step 4.5
-+
-+if helper_to_tcg_enabled
-+    helper_to_tcg = subproject('helper-to-tcg', required: true)
-+    helper_to_tcg_get_llvm_ir_cmd = helper_to_tcg.get_variable('get_llvm_ir_cmd')
-+    helper_to_tcg_pipeline = helper_to_tcg.get_variable('pipeline')
-+endif
-+
-+idef_command_extra = []
-+idef_dep_extra = []
-+if helper_to_tcg_enabled
-+    helper_to_tcg_input_files = [
-+        meson.current_source_dir() / 'op_helper.c',
-+        meson.current_source_dir() / 'translate.c',
-+        meson.current_source_dir() / 'reg_fields.c',
-+        meson.current_source_dir() / 'arch.c',
-+    ]
-+
-+    ll = custom_target('to-ll',
-+        input: helper_to_tcg_input_files,
-+        output:'helper-to-tcg-input.ll',
-+        depends: [helper_funcs_generated, helper_protos_generated],
-+        command: helper_to_tcg_get_llvm_ir_cmd + ['-o', '@OUTPUT@', '@INPUT@', '--target-path', 'target/hexagon']
-+    )
-+
-+    helper_to_tcg_target = custom_target('helper-to-tcg-hexagon',
-+        output: ['helper-to-tcg-emitted.c',
-+                 'helper-to-tcg-emitted.h',
-+                 'helper-to-tcg-enabled',
-+                 'helper-to-tcg-log'],
-+        input: [ll],
-+        depends: [helper_to_tcg_pipeline, analyze_funcs_generated, helper_funcs_generated, helper_protos_generated],
-+        command: [helper_to_tcg_pipeline,
-+                  '--temp-vector-block=tmp_vmem',
-+                  '--mmu-index-function=get_tb_mmu_index',
-+                  '--tcg-global-mappings=tcg_global_mappings',
-+                  '--output-source=@OUTPUT0@',
-+                  '--output-header=@OUTPUT1@',
-+                  '--output-enabled=@OUTPUT2@',
-+                  '--output-log=@OUTPUT3@',
-+                  '@INPUT@']
-+    )
-+
-+    hexagon_ss.add(helper_to_tcg_target)
-+
-+    # List of instructions for which TCG generation was successful
-+    generated_tcg_list = helper_to_tcg_target[2].full_path()
-+
-+    # Setup dependencies for idef-parser
-+    idef_dep_extra += helper_to_tcg_target
-+    idef_command_extra += ['--helper-to-tcg', generated_tcg_list]
-+
-+    # Setup input and dependencies for the final step, this depends on whether
-+    helper_dep += [helper_to_tcg_target]
-+    helper_in += ['--helper-to-tcg', generated_tcg_list]
-+endif
-+
-+
-+
-+#
-+# Step 6
- # We use flex/bison based idef-parser to generate TCG code for a lot
- # of instructions. idef-parser outputs
- #     idef-generated-emitter.c
- #     idef-generated-emitter.h.inc
- #     idef-generated-enabled-instructions
- #
-+
- idef_parser_enabled = get_option('hexagon_idef_parser')
- if idef_parser_enabled and 'hexagon-linux-user' in target_dirs
-     idef_parser_input_generated = custom_target(
-         'idef_parser_input.h.inc',
-         output: 'idef_parser_input.h.inc',
--        depends: [semantics_generated],
-+        depends: [semantics_generated, ] + idef_dep_extra,
-         depend_files: [hex_common_py],
--        command: [python, files('gen_idef_parser_funcs.py'), semantics_generated, '@OUTPUT@'],
-+        command: [python, files('gen_idef_parser_funcs.py'), semantics_generated, '@OUTPUT@'] + idef_command_extra
-     )
- 
-     preprocessed_idef_parser_input_generated = custom_target(
-@@ -345,39 +450,14 @@ if idef_parser_enabled and 'hexagon-linux-user' in target_dirs
- 
-     # Setup input and dependencies for the next step, this depends on whether or
-     # not idef-parser is enabled
--    helper_dep = [semantics_generated, idef_generated_tcg_c, idef_generated_tcg]
--    helper_in = [semantics_generated, gen_tcg_h, gen_tcg_hvx_h, '--idef-parser', idef_generated_list]
--else
--    # Setup input and dependencies for the next step, this depends on whether or
--    # not idef-parser is enabled
--    helper_dep = [semantics_generated]
--    helper_in = [semantics_generated, gen_tcg_h, gen_tcg_hvx_h]
-+    helper_dep += [idef_generated_tcg_c, idef_generated_tcg]
-+    helper_in += ['--idef-parser', idef_generated_list]
- endif
- 
- #
--# Step 5
-+# Step 7
- # We use Python scripts to generate the following files
--#     helper_protos_generated.h.inc
--#     helper_funcs_generated.c.inc
- #     tcg_funcs_generated.c.inc
--#
--helper_protos_generated = custom_target(
--    'helper_protos_generated.h.inc',
--    output: 'helper_protos_generated.h.inc',
--    depends: helper_dep,
--    depend_files: [hex_common_py, gen_tcg_h, gen_tcg_hvx_h],
--    command: [python, files('gen_helper_protos.py'), helper_in, '@OUTPUT@'],
--)
--hexagon_ss.add(helper_protos_generated)
--
--helper_funcs_generated = custom_target(
--    'helper_funcs_generated.c.inc',
--    output: 'helper_funcs_generated.c.inc',
--    depends: helper_dep,
--    depend_files: [hex_common_py, gen_tcg_h, gen_tcg_hvx_h],
--    command: [python, files('gen_helper_funcs.py'), helper_in, '@OUTPUT@'],
--)
--hexagon_ss.add(helper_funcs_generated)
- 
- tcg_funcs_generated = custom_target(
-     'tcg_funcs_generated.c.inc',
-@@ -388,13 +468,4 @@ tcg_funcs_generated = custom_target(
- )
- hexagon_ss.add(tcg_funcs_generated)
- 
--analyze_funcs_generated = custom_target(
--    'analyze_funcs_generated.c.inc',
--    output: 'analyze_funcs_generated.c.inc',
--    depends: helper_dep,
--    depend_files: [hex_common_py, gen_tcg_h, gen_tcg_hvx_h],
--    command: [python, files('gen_analyze_funcs.py'), helper_in, '@OUTPUT@'],
--)
--hexagon_ss.add(analyze_funcs_generated)
--
- target_arch += {'hexagon': hexagon_ss}
--- 
-2.45.2
+--------------RWkwRu00t3LNTM0riHonBQUU--
 
+--------------yUh1m0syp3kF9b4i6WnsC5Wh
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCgAdFiEEZKoqtTHVaQM2a/75gqpKJDselHgFAmc+xPwACgkQgqpKJDse
+lHiGNg/+Km5nuXtJhx6nS4sbSWN3YQzKIGOrpneqJFfaIYX6vMBsdFSk+md2Xbe5
+Xx7V6VQLXtFdtLcybN9N2KlFecEvoq7AjcGsmmRHoxG6BzWqWSPE2Wq/N5qeS1TK
+jWo7dAQ3rFTtQnN7hZkq5OfUJY6dA+Y7eehtUjQ0TfXItVLMr9QZou/CxpXPq26G
+qMIWInLsyvWYWk2lVVgRpN9xwlr4Bz0zcd1E6FaUTHEgI5zzo+ozhXHsrlzP0+0c
+eFxrg7cDZf+A9pMlZtKxLn8Uc5eO/h0bFVL+NNylJYGIPcQEDy/Ca4VSiEOvCrfI
+3xHILZ4sr7m/SMUEUbWrOXBOf22DSr0dvlBgrYmWbYIMe4KaaIleHFQ5HKyN3MdZ
+PGd3RTQXhDerE0VzXaf8UJyYTSc/o3EjNcV/m+LfHs4Z2AVZzfceR1VBz/oDU6cz
+UM85vFvvsaU+I5KotamYQmzfE8/KIVx6mzdi7wL68+XjeQ9WM5XH3Zm1h0O06N3H
+alKES5Hm/Z4nq4T+kFCIvmJJH6XMmsQ21XoV3gxsb3pnyEcNeBjLJ/VYPcl6pcNu
+bbWaJt2SXu69bFKGNE1ieJzHoEcLwqq9cXkBHCI0U1ki0uBeU0gDm1L1PrXquVf/
+kkRGaMNILgacKxIOdiU7ZAelSpSUpA7A8LGuc/rSEb6wFmRDsjY=
+=g2zy
+-----END PGP SIGNATURE-----
+
+--------------yUh1m0syp3kF9b4i6WnsC5Wh--
 
