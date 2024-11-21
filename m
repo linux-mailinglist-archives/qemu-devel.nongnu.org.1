@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95AED9D513A
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Nov 2024 18:04:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0845F9D5126
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Nov 2024 18:01:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tEAWJ-0005Kx-HE; Thu, 21 Nov 2024 11:59:07 -0500
+	id 1tEAWS-0005gv-J6; Thu, 21 Nov 2024 11:59:16 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tEAVf-0004ev-AQ
- for qemu-devel@nongnu.org; Thu, 21 Nov 2024 11:58:28 -0500
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+ id 1tEAVo-0004nO-P1
+ for qemu-devel@nongnu.org; Thu, 21 Nov 2024 11:58:38 -0500
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tEAVS-00080z-Qc
- for qemu-devel@nongnu.org; Thu, 21 Nov 2024 11:58:27 -0500
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-432d9bb168cso13391685e9.1
- for <qemu-devel@nongnu.org>; Thu, 21 Nov 2024 08:58:14 -0800 (PST)
+ id 1tEAVW-00084N-AD
+ for qemu-devel@nongnu.org; Thu, 21 Nov 2024 11:58:36 -0500
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-431616c23b5so6661075e9.0
+ for <qemu-devel@nongnu.org>; Thu, 21 Nov 2024 08:58:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1732208293; x=1732813093; darn=nongnu.org;
+ d=linaro.org; s=google; t=1732208296; x=1732813096; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=YGcTlsR7h0uL9l7JMzB9rSwqOcrfMiHg81PqrjL5LmY=;
- b=xX42+2L8GenXbFOnmeMFRQ6m20v6+DmGPoVE3IClm0GsABI2rvgBi28mUIAeAgfI6K
- pMgBbSL3suh8MaCLO3aD9VayEInpGIFfglWXLwpg5nUiafamuVsll6/gz0UgfEJbV+ka
- Os5rkom0lnkfVyyvHAvdFhqrwpLX/VDhElBrJ40fiyr5agxQFBinfx5ZIpe1UHlwZmzl
- JSLhT3kJ7DFNCxB5/tHEmvhyoX2Jcm7wGCeIXItRL9Fj1IfZ21XLEZtWtRC5WSRlwa6k
- 8OSPAtDscwcaZsdMphCQhqNmIyhJAgsstfQqPPw+rDEYWBYBD/y4Nv4psGCtxRyIIjmw
- 8Fdw==
+ bh=e2HZ23XNFOLk981JEHm7evbs/KcDQehVIWxXpboMiiM=;
+ b=ZrMbeQ3ZJE61lgT5ynpIQkaQfqe1xdVyuEnHHbFuJj9nPfIBt+0toE4IoWWE0nfiVV
+ M8IPHu9iKWjej8FWPzFtAEaBoz6+tvp5It3nrgd4sxTE9deqv/c5EJ6BkmBRvNsuKckp
+ OP1jN+UDk9YrCyaFaFIPiqMJMA5pzz1LSauiE42G4UI3p6U0QkrdSL0oZDCEhHkPwpx4
+ ML8NO+VBTqOGxkwItP8TuWkr8kGOrfCWAXIy5FRT4tP/eK9Cfq70FEPxQcP8hMsD6B6q
+ Pk/WVT9TDtRvtJbh0pB+7tuseOI4hSfpoF1H4Fay58Fp4gL6TGMGJbvvUkIRkXPNDRZJ
+ b3mg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1732208293; x=1732813093;
+ d=1e100.net; s=20230601; t=1732208296; x=1732813096;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=YGcTlsR7h0uL9l7JMzB9rSwqOcrfMiHg81PqrjL5LmY=;
- b=Nde2srTLYmI885csj6IUJGxEPvkNXLqMYFNcZe6Etu391JNCr619hqHlDNN9UGY85g
- uN/rR7mOPeYKMzEGtJQW8j7Tkr36bOM/8bgMUHe2WjKy6OX6PrmlhSYKA0wKs8CseDqQ
- hFIp749iSp/aYlhdXsPgqxn4XDQuDS6K0406P0gU/NE4TzoSmsPkrKGGMHtUBnYeTBNT
- txoXDRhklnyoWRgLfff2bfM16flzKgF4BaxXjJqKdcxfFASbedrOQR6EmCiEXr2pof6n
- UqWWXSkytGLf3oGnOCmH+Wnk4Nagft3O32vdIdrSck11J24dpucGzXW0XU0flE6pbhyO
- lasA==
-X-Gm-Message-State: AOJu0YyQqKQO1ywTL4SfZEr8V77+9zLqJf0pLb4KjqsDAj9G9g25hCjO
- JWPTpNjkkjraK8NmJKzqcySXl/2Mz7jK8WLVyyMMndBF1cITVZYvFkHnLBObnnM=
-X-Gm-Gg: ASbGncv2I403x2PduqTcj577j3X45o5DSQdoC2YbPDHlUYBPXQfT3xaGxxYOfzXZFSG
- F9HLOpegM38b8r7xisHU3jTDMULBjyWDdfLbfy+V22szpabIm7su6sU7hBYApY1GR8QeOh8au3t
- HsB6wBUns32SKsIDCqpiZdHPyL64mqNnVHKycYZmf5Se8v81w6iKSkONGoO29cO3Wf9vY1jrCHr
- 5QMFYn/QDTXrNOpmNKn+0zjfjq0D5+ndT9Y/BufejCVAuZK
-X-Google-Smtp-Source: AGHT+IGivVSM4iXmyGe9ts9qo7V/VNyalRyaK/3K4hnRsaWTip+g0uC3+13I9Lc1O5RmotPl3tN/mw==
-X-Received: by 2002:a05:6000:184f:b0:382:3210:a965 with SMTP id
- ffacd0b85a97d-38259d4f8dcmr3665940f8f.24.1732208292676; 
- Thu, 21 Nov 2024 08:58:12 -0800 (PST)
+ bh=e2HZ23XNFOLk981JEHm7evbs/KcDQehVIWxXpboMiiM=;
+ b=sgPFMKWkZbhZLzWFfF7Z87qwIwXFoado5PfiCZwYsrGpi4Nt2h4p93dQOoQQEXKssl
+ GQKNePTWXZMSkRke6153PU+3bJ82Ar3quD9IRJcDsv3lCOqYldX3X7x9S0Aoi1AauMfu
+ Xch39pNrRDEuMuh0xOLigcZE7hKG2QaXdckS72ITloBttGmrl8xBiHZonNAAQpI6srYE
+ 0O/UH30gwGMhSwvJjpwK3aXGJaZ+x2DckfNlTpjFhwX19YruLubRsVcbEIMIPr7k1XTs
+ auvg6psYO2cZOX+jTMeUFtHvFwveG5h+MCn+vvCuALZJAPGU+3e/Xg2jp+kDWDpS9rRW
+ 1l+A==
+X-Gm-Message-State: AOJu0YwJYuPu5SPOYyWx/8ghQuo9Z6Vp4WymWW5ta/5T6jKx4qYh8jkx
+ iw96rx1NEnTzPx/XjtkXAftepQ1uUOBEhhdkx2GAwdX1ZvmNt7myl8ZR8IpknUo=
+X-Gm-Gg: ASbGncu9JB4SW7c0uhvwJWq99nw3nGdC6nMw0AjyHje4NlwBXIZJyF6hyAo2FDYzrul
+ iZ0eBefVoJzaTzHR9cHCpUswSQE63vKkaiESfcgKji+iaHSmp53nPSyKvidR7F4hVYWS9tLsr35
+ cYvkRj02V0MSsWmDT7ol+cxbcnf3KlXOajAKw88l3pQJmmJgVQnFwajXt6uWd2RpJMZ/aoP00yN
+ 0RK1ep5oDpEqXWzrF4YDq9OMXOA5VHUpD91e7YEy3ih1EeK
+X-Google-Smtp-Source: AGHT+IGDHBlSamv94hqq39SE1SaufjquwOaoSGOK1WLNw6iTeG+uZEgDu2CvhBFW9NHQ5b4/zJX4fw==
+X-Received: by 2002:a05:600c:a4b:b0:42c:b166:913 with SMTP id
+ 5b1f17b1804b1-433c5cb049dmr36104345e9.11.1732208296361; 
+ Thu, 21 Nov 2024 08:58:16 -0800 (PST)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3825fbedebfsm14660f8f.100.2024.11.21.08.58.10
+ ffacd0b85a97d-3825fbc44f7sm18708f8f.82.2024.11.21.08.58.10
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 21 Nov 2024 08:58:10 -0800 (PST)
+ Thu, 21 Nov 2024 08:58:14 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 6426B5FCD7;
+ by draig.lan (Postfix) with ESMTP id 7AA3D60357;
  Thu, 21 Nov 2024 16:58:07 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -91,18 +91,17 @@ Cc: Peter Maydell <peter.maydell@linaro.org>,
  Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
  Aurelien Jarno <aurelien@aurel32.net>, Ani Sinha <anisinha@redhat.com>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PATCH 10/39] tests/functional: honour requested test VM name in
- QEMUMachine
-Date: Thu, 21 Nov 2024 16:57:37 +0000
-Message-Id: <20241121165806.476008-11-alex.bennee@linaro.org>
+Subject: [PATCH 11/39] tests/functional: enable debug logging for QEMUMachine
+Date: Thu, 21 Nov 2024 16:57:38 +0000
+Message-Id: <20241121165806.476008-12-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241121165806.476008-1-alex.bennee@linaro.org>
 References: <20241121165806.476008-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x331.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -127,32 +126,38 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Daniel P. Berrangé <berrange@redhat.com>
 
-The functional test case class is going to the trouble of passing
-around a machine name, but then fails to give this QEMUMachine. As
-a result, QEMUMachine will create a completely random name. Since
-log file names match the machine name, this results in log files
-accumulating over time.
+Set the 'qemu.machine' logger to 'DEBUG' level, to ensure we see log
+messages related to the QEMUMachine class. Most importantly this
+ensures we capture the full QEMU command line args for instances we
+spawn.
 
-Reviewed-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
-Message-Id: <20241121154218.1423005-11-berrange@redhat.com>
+Message-Id: <20241121154218.1423005-12-berrange@redhat.com>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- tests/functional/qemu_test/testcase.py | 1 +
- 1 file changed, 1 insertion(+)
+ tests/functional/qemu_test/testcase.py | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
 diff --git a/tests/functional/qemu_test/testcase.py b/tests/functional/qemu_test/testcase.py
-index ca13af244b..f9c9de1166 100644
+index f9c9de1166..e2a329c3e5 100644
 --- a/tests/functional/qemu_test/testcase.py
 +++ b/tests/functional/qemu_test/testcase.py
-@@ -164,6 +164,7 @@ def require_device(self, devicename):
+@@ -57,9 +57,15 @@ def setUp(self, bin_prefix):
+         self._log_fh.setFormatter(fileFormatter)
+         self.log.addHandler(self._log_fh)
  
-     def _new_vm(self, name, *args):
-         vm = QEMUMachine(self.qemu_bin,
-+                         name=name,
-                          base_temp_dir=self.workdir,
-                          log_dir=self.logdir)
-         self.log.debug('QEMUMachine "%s" created', name)
++        # Capture QEMUMachine logging
++        self.machinelog = logging.getLogger('qemu.machine')
++        self.machinelog.setLevel(logging.DEBUG)
++        self.machinelog.addHandler(self._log_fh)
++
+     def tearDown(self):
+         if "QEMU_TEST_KEEP_SCRATCH" not in os.environ:
+             shutil.rmtree(self.workdir)
++        self.machinelog.removeHandler(self._log_fh)
+         self.log.removeHandler(self._log_fh)
+ 
+     def main():
 -- 
 2.39.5
 
