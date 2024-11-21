@@ -2,64 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28EB69D5142
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Nov 2024 18:06:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F62B9D512F
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Nov 2024 18:01:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tEAVe-0004b9-8W; Thu, 21 Nov 2024 11:58:26 -0500
+	id 1tEAVi-0004g5-Fj; Thu, 21 Nov 2024 11:58:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tEAVW-0004VO-Dj
- for qemu-devel@nongnu.org; Thu, 21 Nov 2024 11:58:18 -0500
-Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
+ id 1tEAVY-0004Wk-S7
+ for qemu-devel@nongnu.org; Thu, 21 Nov 2024 11:58:22 -0500
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tEAVP-0007yP-7Q
- for qemu-devel@nongnu.org; Thu, 21 Nov 2024 11:58:17 -0500
-Received: by mail-wr1-x42a.google.com with SMTP id
- ffacd0b85a97d-3822ba3cdbcso796837f8f.0
- for <qemu-devel@nongnu.org>; Thu, 21 Nov 2024 08:58:10 -0800 (PST)
+ id 1tEAVQ-0007zE-7s
+ for qemu-devel@nongnu.org; Thu, 21 Nov 2024 11:58:20 -0500
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-431481433bdso9628835e9.3
+ for <qemu-devel@nongnu.org>; Thu, 21 Nov 2024 08:58:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1732208289; x=1732813089; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=HUYtX66WaY59NeY7kbEaZ0Xc1QSSRucylXdo8YZvDLY=;
- b=Xh6q0w8fVgBm4qzfTTk7SNgD+jAGQGeZWpy6HMdh9Zk3Ng6kWlYE2NXschkBUqXcOx
- HOaz7uY7mf6ORsKVWgFvR/nRCi11bTJb6SapF3Wh51FmyocYrIZx2oswmOftkzMcqVOi
- 6zSLgzjYnLGemtdTaMZPPZRrLOWimLl8yivxeXmPHI5e/7F7XRtcVAI9ely+Um7ofFzN
- EXFJCjrE4TkPhXB5cM/MjmfYEnHiQcV8ot5c/tdfeK7l3Lo8efArjpZ3c7Yh75gUkC7K
- PH3Kn5LarIf4GYBfsT4wF0uTnJzlOMfnoUtuTue0/TzmDeRBL4TPBciaaiaBLUmbwFlu
- 7Ljw==
+ d=linaro.org; s=google; t=1732208290; x=1732813090; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=VMCy7EhA7nNoXN4BB2O8qdNc46ZWyWADLDGmK+DUhKU=;
+ b=mh/pMQscgda3GBpKKZrTP77SMcDtIQAa4M2gSFFXRGf3U6HW2sE9lhCkuT8Fh58kjx
+ HOCUNd+xI3MPs6RWXgUkYFv+Fw5GUOivptbIndw8f2rbzt1s3H4WrwzYWYRXgqKIO0Ez
+ nMQF2xAKTwyVLbqJMHCQH+YEwZTjOznHidTJt9JjVy4ykZjHi+gcr010Nj10/NtNDx57
+ aSKVyrNK8vTYBFxz4Q74Ytf0ZDljDPKUIp1qBQ5DKUyodS7DtAuTvFjLgHR88GFoU06P
+ Mv8NlCiLqOxq/epobvrRW3REUh2cG9JUp1hmN72Z22Dgznw29ggdiDilGmXj5j/xWcQU
+ 5bOA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1732208289; x=1732813089;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=HUYtX66WaY59NeY7kbEaZ0Xc1QSSRucylXdo8YZvDLY=;
- b=jqYFAloEhVPHkHuR7IOdKTn61kHa7RDWMidcawO6WURwTjAulA1Putnp0hwDEw6oOT
- P9b5MMQs9lcLEBYkD2syF6ZgzqBygqhb0gyocqfWA5LitN2n2Mx+4nyxeVLlAGBazWJu
- mSXZwsn0bKj/A8l38X2OaVxHCwRc1f7eeUedlhz2t1v5tCk/btzyX+ZJQLn1bhsnkrcg
- eCkrpaTa+ALiuhKb25xemqfLRz5FS5/zVFHUCa2glZK3AOGmOT4EvTg14zJE9cbGIBzC
- KZoclIdLfpXh84DMdu6gKM9ekpvtBNgivkQ1u7T3/O3UwZ9p+J8TC/c6MrF5U876wljp
- 618g==
-X-Gm-Message-State: AOJu0YxxWVej1CMNxNHdkTaBzn9bSp8RmFQeAoTHTsvaLoUA87EJfGIR
- 77ZkxeitWLR3Xpu8bRu4XNiq1mVgPTXrX9ifqfWXnCJtJaAuguMJptQW9Vb83TM=
-X-Gm-Gg: ASbGncuKhgEGQ26kDRVSDrIjISgebyXl28oy+LX7FywrJDLeHEYVCPIXRzLilHv01e9
- tDRvksHOFs/EvsB+xETXg1R01MM+9ZF258cV4RJI0vxDnaPcAQnE73xJ1IL8X06mgQ9uJPBoS+/
- cEpPrTviFKkTom+btKIgP23mwPtRjrI45RvVX4dL8N5GVhBG8mizE0NaUFD3J6oppJ6sjvrB91+
- O+HD8AQNL6CurNk2f8/n6F76pVUX9jcBXfCvPn5PhCJE0vj
-X-Google-Smtp-Source: AGHT+IHq31Tg8H8moluNyRE1qpUkZSzwEeXAnzdl16bG4NOEYoYYgnhi8cyM88cHzgpvw6Q6h9Inyw==
-X-Received: by 2002:a05:6000:1f8c:b0:382:383e:84e9 with SMTP id
- ffacd0b85a97d-38254b160e3mr6030543f8f.43.1732208289570; 
- Thu, 21 Nov 2024 08:58:09 -0800 (PST)
+ d=1e100.net; s=20230601; t=1732208290; x=1732813090;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=VMCy7EhA7nNoXN4BB2O8qdNc46ZWyWADLDGmK+DUhKU=;
+ b=kjm5vHLLY60B3rGzJnVbpSQzGa2nqNFGB3iKuZsSGu9ntBtvZS3Ih+458imCvOjnd4
+ 6QOaOlWCZYvsvtady0Q/6t2qcfsMjxut+2BlpGUZGtyhjsFh8O5aYujq3bWI7cxV0NUV
+ lAITCKjBlRnzgHWyUCo3nWj4QKmbJfZiHYYoLAuCOhEBVcdYGrHCGjlP19/RjM/cAaWE
+ 0uxZ4oMdQbJqhk9s3SwqasKvBxNT0KrVs+5vBLJ/o2Pl+prasqqQgykqzroI4OOj2jW2
+ c9mA4zS1TwOeFTTlaSoVjMtok/mYZsj+V5aXIrz3aJIzMUWQwg4QY50rjIfl9ZdYW4Wv
+ CnKg==
+X-Gm-Message-State: AOJu0YxVohZ8dk3N9WG6/xqtAqPWEtoRUcOcau5EcLN0kI1Czn6xx/+f
+ 5uLDD2WaZpcoODmIXNO747avaljHr97/4UHuxaCuiSlzwL/fY87DIERs9qXrBus=
+X-Gm-Gg: ASbGnct8edKgpYkKUAXqKiP36in7Qk++Qp69mIM7V8kNaxumVzczYP6crAe4YeQa8uV
+ Fh5C8pFoBylS2yuuGyKIL3XZSya4p/RF7+lIqvx/kmcDUZz5tdc/fsI+HVDu68fXcba/r/ulfXE
+ MkVdtDPjyXM20jwSmhSOJlgXxxA/x6K+6P7adtjPpt8Loc8N1Kv61hwicl5AMUY/dbyM+EMvJEJ
+ xS7MgMh9g0ylBYK79dKwkI+I2llIZVa3JpwNTAb0unti/R4
+X-Google-Smtp-Source: AGHT+IH+MC7eCDHoQMDKArNYsaKTywvUGhZHwwjRj/MFMddUvEvD+S7p1jx61D8QzHK0h/caHtIs5w==
+X-Received: by 2002:a5d:6da9:0:b0:382:30a5:c377 with SMTP id
+ ffacd0b85a97d-38254b01509mr5296140f8f.32.1732208290382; 
+ Thu, 21 Nov 2024 08:58:10 -0800 (PST)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-433b45bd4d1sm63014115e9.12.2024.11.21.08.58.07
+ 5b1f17b1804b1-43366cbcd17sm45828635e9.1.2024.11.21.08.58.07
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Thu, 21 Nov 2024 08:58:08 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 711BC5F77B;
+ by draig.lan (Postfix) with ESMTP id 863075F92B;
  Thu, 21 Nov 2024 16:58:06 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -90,15 +91,17 @@ Cc: Peter Maydell <peter.maydell@linaro.org>,
  Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
  Aurelien Jarno <aurelien@aurel32.net>, Ani Sinha <anisinha@redhat.com>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PATCH 00/39] maintainer updates for -rc2 pre-PR
-Date: Thu, 21 Nov 2024 16:57:27 +0000
-Message-Id: <20241121165806.476008-1-alex.bennee@linaro.org>
+Subject: [PATCH 01/39] tests/functional: fix mips64el test to honour workdir
+Date: Thu, 21 Nov 2024 16:57:28 +0000
+Message-Id: <20241121165806.476008-2-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20241121165806.476008-1-alex.bennee@linaro.org>
+References: <20241121165806.476008-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -121,132 +124,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is a mostly testing focused set of patches but a few bug fixes as
-well. I plan to send the PR in on Monday. I can drop any patches that
-are objected to but I think its pretty safe.
+From: Daniel P. Berrangé <berrange@redhat.com>
 
-Contains:
+The missing directory separator resulted in the kernel file being
+created 1 level higher than expected.
 
-  - Daniel's clean-up of functional tests
-  - Another avocado->function conversion from Thomas
-  - Update the tuxrun baseline images
-  - Minor fix to the rust pl011 device
-  - Documentation clarification on identity
+Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+Message-Id: <20241121154218.1423005-2-berrange@redhat.com>
+Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+---
+ tests/functional/test_mips64el_malta.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-The following could do with some review:
-
-  tests/functional: update the x86_64 tuxrun tests
-  tests/functional: update the sparc64 tuxrun tests
-  tests/functional: update the s390x tuxrun tests
-  tests/functional: update the riscv64 tuxrun tests
-  tests/functional: update the riscv32 tuxrun tests
-  tests/functional: update the ppc64 tuxrun tests
-  tests/functional: update the ppc32 tuxrun tests
-  tests/functional: update the mips64el tuxrun tests
-  tests/functional: update the mips64 tuxrun tests
-  tests/functional: update the mips32el tuxrun tests
-  tests/functional: update the mips32 tuxrun tests
-  tests/functional: add a m68k tuxrun tests
-  tests/functional: update the i386 tuxrun tests
-  tests/functional: update the aarch64 tuxrun tests
-  tests/functional: update the arm tuxrun tests
-  tests/functional: Convert the Avocado aarch64 tuxrun tests
-
-Thanks,
-
-Alex.
-
-Alex Bennée (15):
-  tests/functional: update the arm tuxrun tests
-  tests/functional: update the aarch64 tuxrun tests
-  tests/functional: update the i386 tuxrun tests
-  tests/functional: add a m68k tuxrun tests
-  tests/functional: update the mips32 tuxrun tests
-  tests/functional: update the mips32el tuxrun tests
-  tests/functional: update the mips64 tuxrun tests
-  tests/functional: update the mips64el tuxrun tests
-  tests/functional: update the ppc32 tuxrun tests
-  tests/functional: update the ppc64 tuxrun tests
-  tests/functional: update the riscv32 tuxrun tests
-  tests/functional: update the riscv64 tuxrun tests
-  tests/functional: update the s390x tuxrun tests
-  tests/functional: update the sparc64 tuxrun tests
-  tests/functional: update the x86_64 tuxrun tests
-
-Daniel P. Berrangé (19):
-  tests/functional: fix mips64el test to honour workdir
-  tests/functional: automatically clean up scratch files after tests
-  tests/functional: remove "AVOCADO" from env variable name
-  tests/functional: remove todo wrt avocado.utils.wait_for
-  tests/functional: remove leftover :avocado: tags
-  tests/functional: remove obsolete reference to avocado bug
-  tests/functional: remove comments talking about avocado
-  tests/functional: honour self.workdir in ACPI bits tests
-  tests/functional: put QEMUMachine logs in testcase log directory
-  tests/functional: honour requested test VM name in QEMUMachine
-  tests/functional: enable debug logging for QEMUMachine
-  tests/functional: logs details of console interaction operations
-  tests/functional: don't try to wait for the empty string
-  tests/functional: require non-NULL success_message for console wait
-  tests/functional: rewrite console handling to be bytewise
-  tests/functional: remove time.sleep usage from tuxrun tests
-  tests/functional: add a QMP backdoor for debugging stalled tests
-  tests/functional: avoid accessing log_filename on earlier failures
-  docs: explicitly permit a "commonly known identity" with SoB
-
-Junjie Mao (1):
-  rust/pl011: Fix range checks for device ID accesses
-
-Pierrick Bouvier (3):
-  plugins: add missing export for qemu_plugin_num_vcpus
-  plugins: detect qemu plugin API symbols from header
-  plugins: eradicate qemu-plugins.symbols static file
-
-Thomas Huth (1):
-  tests/functional: Convert the Avocado aarch64 tuxrun tests
-
- MAINTAINERS                              |   4 +-
- docs/devel/submitting-a-patch.rst        |   7 +-
- docs/devel/testing/functional.rst        |  16 ++
- include/qemu/qemu-plugin.h               |   1 +
- .gitlab-ci.d/check-dco.py                |   5 +-
- plugins/meson.build                      |  12 +-
- plugins/qemu-plugins.symbols             |  59 ------
- rust/hw/char/pl011/src/device.rs         |   2 +-
- scripts/qemu-plugin-symbols.py           |  45 +++++
- tests/avocado/tuxrun_baselines.py        | 224 -----------------------
- tests/functional/meson.build             |   3 +
- tests/functional/qemu_test/cmd.py        |  89 +++++++--
- tests/functional/qemu_test/testcase.py   |  43 +++--
- tests/functional/qemu_test/tuxruntest.py |  17 +-
- tests/functional/test_aarch64_tuxrun.py  |  50 +++++
- tests/functional/test_acpi_bits.py       |  57 ++----
- tests/functional/test_arm_bpim2u.py      |  20 --
- tests/functional/test_arm_orangepi.py    |  27 ---
- tests/functional/test_arm_tuxrun.py      |  28 +--
- tests/functional/test_i386_tuxrun.py     |   8 +-
- tests/functional/test_m68k_nextcube.py   |   3 +-
- tests/functional/test_m68k_tuxrun.py     |  34 ++++
- tests/functional/test_mips64_tuxrun.py   |   8 +-
- tests/functional/test_mips64el_malta.py  |   4 +-
- tests/functional/test_mips64el_tuxrun.py |   8 +-
- tests/functional/test_mips_tuxrun.py     |   8 +-
- tests/functional/test_mipsel_tuxrun.py   |   8 +-
- tests/functional/test_ppc64_tuxrun.py    |  16 +-
- tests/functional/test_ppc_tuxrun.py      |   8 +-
- tests/functional/test_riscv32_tuxrun.py  |   8 +-
- tests/functional/test_riscv64_tuxrun.py  |  16 +-
- tests/functional/test_s390x_tuxrun.py    |   8 +-
- tests/functional/test_sparc64_tuxrun.py  |   8 +-
- tests/functional/test_virtio_gpu.py      |   3 +-
- tests/functional/test_x86_64_tuxrun.py   |   8 +-
- 35 files changed, 376 insertions(+), 489 deletions(-)
- delete mode 100644 plugins/qemu-plugins.symbols
- create mode 100755 scripts/qemu-plugin-symbols.py
- delete mode 100644 tests/avocado/tuxrun_baselines.py
- create mode 100755 tests/functional/test_aarch64_tuxrun.py
- create mode 100644 tests/functional/test_m68k_tuxrun.py
-
+diff --git a/tests/functional/test_mips64el_malta.py b/tests/functional/test_mips64el_malta.py
+index 6c6355b131..24ebcdb9c1 100755
+--- a/tests/functional/test_mips64el_malta.py
++++ b/tests/functional/test_mips64el_malta.py
+@@ -129,7 +129,7 @@ def do_test_i6400_framebuffer_logo(self, cpu_cores_count):
+         screendump_path = os.path.join(self.workdir, 'screendump.pbm')
+ 
+         kernel_path_gz = self.ASSET_KERNEL_4_7_0.fetch()
+-        kernel_path = self.workdir + "vmlinux"
++        kernel_path = self.workdir + "/vmlinux"
+         gzip_uncompress(kernel_path_gz, kernel_path)
+ 
+         tuxlogo_path = self.ASSET_TUXLOGO.fetch()
 -- 
 2.39.5
 
