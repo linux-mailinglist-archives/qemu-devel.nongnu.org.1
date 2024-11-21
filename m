@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 891529D536C
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Nov 2024 20:25:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CEE0A9D5383
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Nov 2024 20:41:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tECnf-00043z-8X; Thu, 21 Nov 2024 14:25:11 -0500
+	id 1tED1k-0008CS-Cr; Thu, 21 Nov 2024 14:39:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tECnQ-0003Qb-PM
- for qemu-devel@nongnu.org; Thu, 21 Nov 2024 14:24:57 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tED1e-00089o-1S
+ for qemu-devel@nongnu.org; Thu, 21 Nov 2024 14:39:38 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tECnN-0003NL-FH
- for qemu-devel@nongnu.org; Thu, 21 Nov 2024 14:24:56 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tED1a-0005t0-N1
+ for qemu-devel@nongnu.org; Thu, 21 Nov 2024 14:39:37 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1732217092;
+ s=mimecast20190719; t=1732217973;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=oHhzRY1DDx5AtEjcDs/FlVKKpG2XZi+o+W+4cGdMJKU=;
- b=GUMEJ95293t+Gz2YVuKYBZaFLjAJF+EicnEblEjrL0bjwC+XdNeMN2U//YB4+25VDWsDGt
- ucWXdnIVcSG1IiVyRluxUqdrxOskvCXzdT9czwr31Ge0BBw0rkMYgoviXbf1oBrIS4zQLu
- 1wJgGW+tFg2F3kDLguU6EQmTM84WmfY=
-Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
- [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=9uHUiDHEiA5T/ae8kSv/XoFq1++D1f8/nY3jVDMCG2s=;
+ b=Z3Jl5v4fp8I0Xsztt7SMLQLmMlpMgM7T2f5yhKRWT2v2MvhqMwjAT60c6Xh5M6uqXYq1zC
+ LvL+TJmSBlUzgXnTlueewy84D6lzUULpKxO/OYuCJk5HOdQzZ9kMx7iSczK4gWigLSC2S+
+ LWqmPgzsey1xhXxMALBM5rtoGAIxank=
+Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
+ [209.85.167.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-369-m3Gvnu7kOMCtWRyzrNFQHQ-1; Thu, 21 Nov 2024 14:24:51 -0500
-X-MC-Unique: m3Gvnu7kOMCtWRyzrNFQHQ-1
-X-Mimecast-MFC-AGG-ID: m3Gvnu7kOMCtWRyzrNFQHQ
-Received: by mail-ed1-f69.google.com with SMTP id
- 4fb4d7f45d1cf-5cfca544b47so1046641a12.0
- for <qemu-devel@nongnu.org>; Thu, 21 Nov 2024 11:24:51 -0800 (PST)
+ us-mta-646-qm9459PWOeSUmuCFXRML3w-1; Thu, 21 Nov 2024 14:39:31 -0500
+X-MC-Unique: qm9459PWOeSUmuCFXRML3w-1
+X-Mimecast-MFC-AGG-ID: qm9459PWOeSUmuCFXRML3w
+Received: by mail-lf1-f72.google.com with SMTP id
+ 2adb3069b0e04-539f49f2443so1114833e87.2
+ for <qemu-devel@nongnu.org>; Thu, 21 Nov 2024 11:39:31 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1732217090; x=1732821890;
+ d=1e100.net; s=20230601; t=1732217970; x=1732822770;
  h=content-transfer-encoding:in-reply-to:autocrypt:content-language
  :from:references:cc:to:subject:user-agent:mime-version:date
  :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=oHhzRY1DDx5AtEjcDs/FlVKKpG2XZi+o+W+4cGdMJKU=;
- b=plVZw5ennfkg3AcGKpLvC5s75EjjKZYLNE200oyZZLm4oDiFiONQgoyKmfmn3I9NmK
- SvcCr1xKpDNPI4wDiswI4ovHV9ZOa5mDPUxID3Hsc41CtACWhuzgDmgyTuiCsEAMmP10
- 7LREEOiqDbcVPLqNd5p5JXwgs5Y6LfF4dFNanErso5dR/AOOkBmoDMf1Gus5AcN8IRwK
- RTW1iJdRfhFE4UN8W8lQ3lPYLKrh8ABmshsZMK7MtvZxM9FpZ4anOTIouN3DeihPqvnd
- um4VpxK0KdI8XI9H5UxZOQWCEj81Rg8k5wBF3IkLxIvO7/hkhQopuPydtfF2jiutY7BI
- RAbw==
+ bh=9uHUiDHEiA5T/ae8kSv/XoFq1++D1f8/nY3jVDMCG2s=;
+ b=NdPXLhF4QC0YFaxIZPhyDRQu9Fx4vVDur7MKHfAMrlJCT3A4aA7NYALEChCD+Pgtwe
+ oGdW2DtCj5fYo4Jlw8/HUVaxWeGuxKQMzjx97LREyewlyjyfR2RHN7DrJ5wQzhpNGaEI
+ oDAmgIJ18Wnzw0tUNJiqNL3AeCaOE483e1AqSCb+Se1l6POTjpKP2Yex3Mx0GZ0fLw7S
+ MOjVXARU+KFrQP7IuDO64Id/G2Q2+jpvZp9ENEGLPsqf5mXiGjKTpwSseEYwZxG73530
+ ii84Nyhrc6BKlIjEot0WPrRoU+Jvg4Xzm35IReoTlQReeEMU2JfJxfCHrWQ7zr3CM/fG
+ /UHA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWUnKIf74rov2D4jzwraiLRWLHjHA8Mmm5iUSPihgLNpzqsCxB6sluhzsRdYcrCRFmBvqK/bhjPXh7h@nongnu.org
-X-Gm-Message-State: AOJu0YyS9DtG+Gh07QLoJiF39zaRhVDAeW8En9jRqgS3B1bSLTAbjqwy
- p4eJhJK+ZVTe41OJ64rSMFC9PH89hVgSQkB516NF0gNvA0FQhFtY+uzbuhEPK5Uw955IjxyIVkM
- /HmlYZvNkk1oCFBJwfxpMcQMvH4dgqLP6qo0iu82fJPvjFoFchf2A
-X-Gm-Gg: ASbGncsExi3Xxx8GCJkr2kd6VyjgEF6YcN+uklz6GnHDThg9AqeSTtu9Br3E3vzWory
- MWF/cOrzrOkDpQFucQnHEW5bZ+l+M9kPHun0TTbtQghcsmb7s7/Jr3UyVxOwj4neewVn7D80+S0
- /xWkdeIxCYNA1RPwmwA3Semg0stNTXG/xUd/yVJB1afa52+h7Zm9HkS8+X1Wt9sCcYbR//3rtSu
- +3950Y7BIzI0/h+G4C8PWTnGaeW4F7wb84EKqt/fA6HaHUOuY56SPpdo/93x+xkg3qk0+mEcHsX
- CUE=
-X-Received: by 2002:a05:6402:5ca:b0:5ce:bb32:ccac with SMTP id
- 4fb4d7f45d1cf-5cff4cb5887mr5496180a12.26.1732217090103; 
- Thu, 21 Nov 2024 11:24:50 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IESte4FUUfXXG7nMs7+ESJc+k/ADg8VAPZqc4NMHb94P0GLerMCGtDZ14/y2TBClpJqDe6J0Q==
-X-Received: by 2002:a05:6402:5ca:b0:5ce:bb32:ccac with SMTP id
- 4fb4d7f45d1cf-5cff4cb5887mr5496156a12.26.1732217089768; 
- Thu, 21 Nov 2024 11:24:49 -0800 (PST)
+ AJvYcCUk0O69Gx4Xw+RDtm0FBDpu4HYLOivCx5zIlYvtPZjQoKohP0wgESCOT/lDADK5pUMpL9unt1vLngsu@nongnu.org
+X-Gm-Message-State: AOJu0YxD/r8ty6kDqDI18OFwLc/OjojEVq5A8oghfi5pzfug4YWXqkYS
+ aLxfg2ocXbPL7pFF4pk2gUbc56zyVUvKonx+B5gQoAlREd5/Tx4nAO2FQ8+5wydVDng/4b4IeCU
+ QuwXDYZU0AYR9nlSnpJvtGN5yBqpXUlbRNfGEFR10F0ffY2UCCkQ/
+X-Gm-Gg: ASbGncvRbmtmwCzX/qNP4GbwRXnIv0ggCevFYd9GPkmwmBMxwAy4Nxl2L93F2ggIq0R
+ uD5WrKtYlmnon8EjWpQ8QEzIVv+oOLn1Jx6+sM8eqMAUE4ZDa6bIIUhUEgsYcJUZHC835FhFwzq
+ tM6DVvA3wPawARwCvOCIrtA6c9FyAXFt6Mv3fSsKUKfx3p0P81m08TgvMAzSJUPFaOsEsGxkIZq
+ IiGa9yDUOOYJPut5QRoytEz6XWug+OrE8ZPxt9p3AnfB6LT8Km1hU0WvObWksROOmkCKbh5afBn
+ 7kw=
+X-Received: by 2002:a05:6512:12c2:b0:530:ab68:25c5 with SMTP id
+ 2adb3069b0e04-53dd35a335bmr17068e87.2.1732217970239; 
+ Thu, 21 Nov 2024 11:39:30 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGm3XlrjPuheONM82Ol+g7JS/gjE+kO7ObWfamAcDJgtUVPtWaMRpWgr8uSRCawKA/b1FxR0g==
+X-Received: by 2002:a05:6512:12c2:b0:530:ab68:25c5 with SMTP id
+ 2adb3069b0e04-53dd35a335bmr17009e87.2.1732217969786; 
+ Thu, 21 Nov 2024 11:39:29 -0800 (PST)
 Received: from [192.168.0.7] (ip-109-42-51-70.web.vodafone.de. [109.42.51.70])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5d01d401f64sm96925a12.70.2024.11.21.11.24.45
+ a640c23a62f3a-aa50b5b764asm6810266b.175.2024.11.21.11.39.26
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 21 Nov 2024 11:24:48 -0800 (PST)
-Message-ID: <bfb12b04-ca4b-4135-ba09-250daffb9ea9@redhat.com>
-Date: Thu, 21 Nov 2024 20:24:44 +0100
+ Thu, 21 Nov 2024 11:39:29 -0800 (PST)
+Message-ID: <b4c87321-8b15-4201-9e59-49ad3b948451@redhat.com>
+Date: Thu, 21 Nov 2024 20:39:26 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 14/39] tests/functional: require non-NULL success_message
- for console wait
+Subject: Re: [PATCH 16/39] tests/functional: remove time.sleep usage from
+ tuxrun tests
 To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
  qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
@@ -104,7 +104,7 @@ Cc: Peter Maydell <peter.maydell@linaro.org>,
  Aurelien Jarno <aurelien@aurel32.net>, Ani Sinha <anisinha@redhat.com>,
  Alistair Francis <alistair.francis@wdc.com>
 References: <20241121165806.476008-1-alex.bennee@linaro.org>
- <20241121165806.476008-15-alex.bennee@linaro.org>
+ <20241121165806.476008-17-alex.bennee@linaro.org>
 From: Thomas Huth <thuth@redhat.com>
 Content-Language: en-US
 Autocrypt: addr=thuth@redhat.com; keydata=
@@ -149,17 +149,17 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <20241121165806.476008-15-alex.bennee@linaro.org>
+In-Reply-To: <20241121165806.476008-17-alex.bennee@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.14,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
@@ -180,77 +180,31 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 On 21/11/2024 17.57, Alex Bennée wrote:
 > From: Daniel P. Berrangé <berrange@redhat.com>
 > 
-> When waiting for expected output, the 'success_message' is a mandatory
-> parameter, with 'failure_message' defaulting to None.
+> The tuxrun tests send a series of strings to the guest to login
+> and then run commands. Since we have been unable to match on
+> console output that isn't followed by a newline, the test used
+> many time.sleep() statements to pretend to synchronize with
+> the guest.
 > 
-> The code has logic which indicates it was trying to cope with
-> 'success_message' being None and 'failure_message' being non-None but
-> it does not appear able to actually do anything useful. The check for
-> 'success_message is None' will break out of the loop before any check
-> for 'failure_message' has been performed.
+> This has proved to be unreliable for the aarch64be instance of
+> the tuxrun tests, with the test often hanging. The hang is a
+> very subtle timing problem, and it is suspected that some
+> (otherwise apparently harmless) I/O error messages could be
+> resulting in full FIFO buffers, stalling interaction with
+> the guest.
 > 
-> IOW, for practcal purposes 'success_message' must be non-None unless
-> 'send_string' is set. Assert this expectation and simplify the loop
-> logic.
+> With the newly rewritten console interaction able to match
+> strings that don't have a following newline, the tux run
+> tests can now match directly on the login prompt, and/or
+> shell PS1 prompt.
 > 
+> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2689
 > Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
-> Message-Id: <20241121154218.1423005-15-berrange@redhat.com>
+> Message-Id: <20241121154218.1423005-17-berrange@redhat.com>
 > Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 > ---
->   tests/functional/qemu_test/cmd.py | 9 +++++++--
->   1 file changed, 7 insertions(+), 2 deletions(-)
-> 
-> diff --git a/tests/functional/qemu_test/cmd.py b/tests/functional/qemu_test/cmd.py
-> index 98722a9cf6..f6c4e4dda1 100644
-> --- a/tests/functional/qemu_test/cmd.py
-> +++ b/tests/functional/qemu_test/cmd.py
-> @@ -81,6 +81,8 @@ def is_readable_executable_file(path):
->   def _console_interaction(test, success_message, failure_message,
->                            send_string, keep_sending=False, vm=None):
->       assert not keep_sending or send_string
-> +    assert success_message or send_string
-> +
->       if vm is None:
->           vm = test.vm
->       console = vm.console_file
-> @@ -95,7 +97,7 @@ def _console_interaction(test, success_message, failure_message,
->                   send_string = None # send only once
->   
->           # Only consume console output if waiting for something
-> -        if success_message is None and failure_message is None:
-> +        if success_message is None:
->               if send_string is None:
->                   break
->               continue
-> @@ -107,7 +109,7 @@ def _console_interaction(test, success_message, failure_message,
->           if not msg:
->               continue
->           console_logger.debug(msg)
-> -        if success_message is None or success_message in msg:
-> +        if success_message in msg:
->               break
->           if failure_message and failure_message in msg:
->               console.close()
-> @@ -138,6 +140,7 @@ def interrupt_interactive_console_until_pattern(test, success_message,
->       :param interrupt_string: a string to send to the console before trying
->                                to read a new line
->       """
-> +    assert success_message
->       _console_interaction(test, success_message, failure_message,
->                            interrupt_string, True)
->   
-> @@ -152,6 +155,7 @@ def wait_for_console_pattern(test, success_message, failure_message=None,
->       :param success_message: if this message appears, test succeeds
->       :param failure_message: if this message appears, test fails
->       """
-> +    assert success_message
->       _console_interaction(test, success_message, failure_message, None, vm=vm)
-
-This assert is theoretically not needed since we call _console_interaction 
-with send_string=None, so if success_message is None, the new assert in 
-_console_interaction would trigger instead.
-
-But it also does not hurt to have it here, so fine for me if we keep it.
+>   tests/functional/qemu_test/tuxruntest.py | 16 ++++++----------
+>   1 file changed, 6 insertions(+), 10 deletions(-)
 
 Reviewed-by: Thomas Huth <thuth@redhat.com>
 
