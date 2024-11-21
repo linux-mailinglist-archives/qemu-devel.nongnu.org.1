@@ -2,36 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3D8D9D457E
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Nov 2024 02:51:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B56EE9D458A
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Nov 2024 02:52:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tDwHq-0001aa-Fd; Wed, 20 Nov 2024 20:47:14 -0500
+	id 1tDwHr-0001az-7I; Wed, 20 Nov 2024 20:47:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1tDwHo-0001Zq-Nk
- for qemu-devel@nongnu.org; Wed, 20 Nov 2024 20:47:12 -0500
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1tDwHp-0001aR-NA
+ for qemu-devel@nongnu.org; Wed, 20 Nov 2024 20:47:13 -0500
 Received: from rev.ng ([94.130.142.21])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1tDwHm-0004XD-FS
- for qemu-devel@nongnu.org; Wed, 20 Nov 2024 20:47:12 -0500
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1tDwHn-0004XK-1d
+ for qemu-devel@nongnu.org; Wed, 20 Nov 2024 20:47:13 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
  s=dkim; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
  Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
  Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
  :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
  List-Post:List-Owner:List-Archive:List-Unsubscribe:List-Unsubscribe-Post:
- List-Help; bh=Hg/o1H2sN/+u03XPSgfnuR4t0tZbOD4bmwcvMFlXc2g=; b=O2pEpEP7TloW/Vc
- KHuOaMbiBsqhllQhBjX3xe1E8KRu9ZxDWvsLNsEz1lDtwkOriuE18s6Gp/tQXTz93nI576OcsA/5E
- yAaD8nVHBGwq+Q6FYNYFBF/2EHEboTBfPLLNpMrqWytrbXnwqSMYFrbS+Glt4eXVVVAGU9eI2aqgx
- og=;
+ List-Help; bh=NXow3yI/n6VGiB50Xsb9COmLd+0cj1NMmA6+H2pmjgc=; b=WKYcobFPlzejlh4
+ I+kietp95+5ETSoDAeKdBuDIiOrQLmbbbGtOZefz0nnYjiVT0mKgpTUSk0NRUAn1jsOqOUlROjM3w
+ 8eaGIJ7sAPauDE4BakwCTHap6xqSC1aQmcPS8ZSP/dZcZYmesO0tzlI9q1ulUjW60jQHHGKCAOydj
+ k0=;
 To: qemu-devel@nongnu.org
 Cc: ale@rev.ng, ltaylorsimpson@gmail.com, bcain@quicinc.com,
  richard.henderson@linaro.org, philmd@linaro.org, alex.bennee@linaro.org
-Subject: [RFC PATCH v1 11/43] helper-to-tcg: Introduce llvm-compat
-Date: Thu, 21 Nov 2024 02:49:15 +0100
-Message-ID: <20241121014947.18666-12-anjo@rev.ng>
+Subject: [RFC PATCH v1 12/43] helper-to-tcg: Introduce custom LLVM pipeline
+Date: Thu, 21 Nov 2024 02:49:16 +0100
+Message-ID: <20241121014947.18666-13-anjo@rev.ng>
 In-Reply-To: <20241121014947.18666-1-anjo@rev.ng>
 References: <20241121014947.18666-1-anjo@rev.ng>
 MIME-Version: 1.0
@@ -62,206 +62,29 @@ From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Adds a translation unit with the sole purpose of handling inter-LLVM
-code changes.  Instead of littering the code with #ifdefs, most of them
-will be limited to llvm-compat.[cpp|h] and a saner compat::*() function
-is exposed in its place.
+Adds a custom pipeline, similar to LLVM opt, with the goal of taking an
+input LLVM IR module to an equivalent output .c file implementing
+functions in TCG.
+
+Initial LLVM boilerplate is added until the creation of a
+ModulePassManager.  A custom target derived from x64 is added, to ensure
+consistent behaviour across different hosts.
 
 Signed-off-by: Anton Johansson <anjo@rev.ng>
 ---
+ .../helper-to-tcg/include/CmdLineOptions.h    |  23 +++
  subprojects/helper-to-tcg/meson.build         |   1 +
- .../helper-to-tcg/passes/llvm-compat.cpp      | 162 ++++++++++++++++++
- .../helper-to-tcg/passes/llvm-compat.h        | 143 ++++++++++++++++
- 3 files changed, 306 insertions(+)
- create mode 100644 subprojects/helper-to-tcg/passes/llvm-compat.cpp
- create mode 100644 subprojects/helper-to-tcg/passes/llvm-compat.h
+ .../helper-to-tcg/pipeline/Pipeline.cpp       | 159 ++++++++++++++++++
+ 3 files changed, 183 insertions(+)
+ create mode 100644 subprojects/helper-to-tcg/include/CmdLineOptions.h
+ create mode 100644 subprojects/helper-to-tcg/pipeline/Pipeline.cpp
 
-diff --git a/subprojects/helper-to-tcg/meson.build b/subprojects/helper-to-tcg/meson.build
-index af593ccdfe..7bb93ce005 100644
---- a/subprojects/helper-to-tcg/meson.build
-+++ b/subprojects/helper-to-tcg/meson.build
-@@ -41,6 +41,7 @@ if version_major < 10 or version_major > 14
- endif
- 
- sources = [
-+    'passes/llvm-compat.cpp',
- ]
- 
- clang = bindir / 'clang'
-diff --git a/subprojects/helper-to-tcg/passes/llvm-compat.cpp b/subprojects/helper-to-tcg/passes/llvm-compat.cpp
+diff --git a/subprojects/helper-to-tcg/include/CmdLineOptions.h b/subprojects/helper-to-tcg/include/CmdLineOptions.h
 new file mode 100644
-index 0000000000..c5d9d28078
+index 0000000000..5774ab07b1
 --- /dev/null
-+++ b/subprojects/helper-to-tcg/passes/llvm-compat.cpp
-@@ -0,0 +1,162 @@
-+//
-+//  Copyright(c) 2024 rev.ng Labs Srl. All Rights Reserved.
-+//
-+//  This program is free software; you can redistribute it and/or modify
-+//  it under the terms of the GNU General Public License as published by
-+//  the Free Software Foundation; either version 2 of the License, or
-+//  (at your option) any later version.
-+//
-+//  This program is distributed in the hope that it will be useful,
-+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+//  GNU General Public License for more details.
-+//
-+//  You should have received a copy of the GNU General Public License
-+//  along with this program; if not, see <http://www.gnu.org/licenses/>.
-+//
-+
-+#include "llvm-compat.h"
-+
-+#if LLVM_VERSION_MAJOR > 10
-+#include <llvm/CodeGen/CommandFlags.h>
-+#else
-+#include <llvm/CodeGen/CommandFlags.inc>
-+#endif
-+
-+#include <string>
-+
-+// Static variables required by LLVM
-+//
-+// Defining RegisterCodeGenFlags with static duration registers extra
-+// codegen commandline flags for specifying the target arch.
-+#if LLVM_VERSION_MAJOR > 10
-+static llvm::codegen::RegisterCodeGenFlags CGF;
-+#endif
-+static llvm::ExitOnError ExitOnErr;
-+
-+namespace compat
-+{
-+
-+using namespace llvm;
-+
-+#if LLVM_VERSION_MAJOR > 10
-+llvm::TargetMachine *getTargetMachine(llvm::Triple &TheTriple)
-+{
-+    const TargetOptions Options{};
-+    std::string Error;
-+    const Target *TheTarget = llvm::TargetRegistry::lookupTarget(
-+        llvm::codegen::getMArch(), TheTriple, Error);
-+    // Some modules don't specify a triple, and this is okay.
-+    if (!TheTarget) {
-+        return nullptr;
-+    }
-+
-+    return TheTarget->createTargetMachine(
-+        TheTriple.getTriple(), llvm::codegen::getCPUStr(),
-+        llvm::codegen::getFeaturesStr(), Options,
-+        llvm::codegen::getExplicitRelocModel(),
-+        llvm::codegen::getExplicitCodeModel(), llvm::CodeGenOpt::Aggressive);
-+}
-+#else
-+llvm::TargetMachine *getTargetMachine(llvm::Triple &TheTriple)
-+{
-+    const TargetOptions Options{};
-+    std::string Error;
-+    const Target *TheTarget =
-+        llvm::TargetRegistry::lookupTarget(MArch, TheTriple, Error);
-+    // Some modules don't specify a triple, and this is okay.
-+    if (!TheTarget) {
-+        return nullptr;
-+    }
-+
-+    return TheTarget->createTargetMachine(
-+        TheTriple.getTriple(), getCPUStr(), getFeaturesStr(), Options,
-+        getRelocModel(), getCodeModel(), llvm::CodeGenOpt::Aggressive);
-+}
-+#endif
-+
-+//
-+// LLVM 11 and below does not define the UnifyFunctionExitNodes pass
-+// for the new pass manager.  Copy over the definition from LLVM and use it
-+// for 11 and below.
-+//
-+#if LLVM_VERSION_MAJOR <= 11
-+static bool unifyReturnBlocks(Function &F)
-+{
-+    std::vector<BasicBlock *> ReturningBlocks;
-+
-+    for (BasicBlock &I : F)
-+        if (isa<ReturnInst>(I.getTerminator()))
-+            ReturningBlocks.push_back(&I);
-+
-+    if (ReturningBlocks.size() <= 1)
-+        return false;
-+
-+    // Insert a new basic block into the function, add PHI nodes (if the
-+    // function returns values), and convert all of the return instructions into
-+    // unconditional branches.
-+    BasicBlock *NewRetBlock =
-+        BasicBlock::Create(F.getContext(), "UnifiedReturnBlock", &F);
-+
-+    PHINode *PN = nullptr;
-+    if (F.getReturnType()->isVoidTy()) {
-+        ReturnInst::Create(F.getContext(), nullptr, NewRetBlock);
-+    } else {
-+        // If the function doesn't return void... add a PHI node to the block...
-+        PN = PHINode::Create(F.getReturnType(), ReturningBlocks.size(),
-+                             "UnifiedRetVal");
-+        NewRetBlock->getInstList().push_back(PN);
-+        ReturnInst::Create(F.getContext(), PN, NewRetBlock);
-+    }
-+
-+    // Loop over all of the blocks, replacing the return instruction with an
-+    // unconditional branch.
-+    for (BasicBlock *BB : ReturningBlocks) {
-+        // Add an incoming element to the PHI node for every return instruction
-+        // that is merging into this new block...
-+        if (PN)
-+            PN->addIncoming(BB->getTerminator()->getOperand(0), BB);
-+
-+        BB->getInstList().pop_back(); // Remove the return insn
-+        BranchInst::Create(NewRetBlock, BB);
-+    }
-+
-+    return true;
-+}
-+
-+static bool unifyUnreachableBlocks(Function &F)
-+{
-+    std::vector<BasicBlock *> UnreachableBlocks;
-+
-+    for (BasicBlock &I : F)
-+        if (isa<UnreachableInst>(I.getTerminator()))
-+            UnreachableBlocks.push_back(&I);
-+
-+    if (UnreachableBlocks.size() <= 1)
-+        return false;
-+
-+    BasicBlock *UnreachableBlock =
-+        BasicBlock::Create(F.getContext(), "UnifiedUnreachableBlock", &F);
-+    new UnreachableInst(F.getContext(), UnreachableBlock);
-+
-+    for (BasicBlock *BB : UnreachableBlocks) {
-+        BB->getInstList().pop_back(); // Remove the unreachable inst.
-+        BranchInst::Create(UnreachableBlock, BB);
-+    }
-+
-+    return true;
-+}
-+
-+llvm::PreservedAnalyses
-+UnifyFunctionExitNodesPass::run(llvm::Function &F,
-+                                llvm::FunctionAnalysisManager &AM)
-+{
-+    bool Changed = false;
-+    Changed |= unifyUnreachableBlocks(F);
-+    Changed |= unifyReturnBlocks(F);
-+    return Changed ? PreservedAnalyses() : llvm::PreservedAnalyses::all();
-+}
-+
-+#endif
-+
-+} // namespace compat
-diff --git a/subprojects/helper-to-tcg/passes/llvm-compat.h b/subprojects/helper-to-tcg/passes/llvm-compat.h
-new file mode 100644
-index 0000000000..e983ad660e
---- /dev/null
-+++ b/subprojects/helper-to-tcg/passes/llvm-compat.h
-@@ -0,0 +1,143 @@
++++ b/subprojects/helper-to-tcg/include/CmdLineOptions.h
+@@ -0,0 +1,23 @@
 +//
 +//  Copyright(c) 2024 rev.ng Labs Srl. All Rights Reserved.
 +//
@@ -281,130 +104,187 @@ index 0000000000..e983ad660e
 +
 +#pragma once
 +
++#include <llvm/Support/CommandLine.h>
++
++// Options for pipeline
++extern llvm::cl::list<std::string> InputFiles;
+diff --git a/subprojects/helper-to-tcg/meson.build b/subprojects/helper-to-tcg/meson.build
+index 7bb93ce005..63c6ed17fb 100644
+--- a/subprojects/helper-to-tcg/meson.build
++++ b/subprojects/helper-to-tcg/meson.build
+@@ -41,6 +41,7 @@ if version_major < 10 or version_major > 14
+ endif
+ 
+ sources = [
++    'pipeline/Pipeline.cpp',
+     'passes/llvm-compat.cpp',
+ ]
+ 
+diff --git a/subprojects/helper-to-tcg/pipeline/Pipeline.cpp b/subprojects/helper-to-tcg/pipeline/Pipeline.cpp
+new file mode 100644
+index 0000000000..9c0e777893
+--- /dev/null
++++ b/subprojects/helper-to-tcg/pipeline/Pipeline.cpp
+@@ -0,0 +1,159 @@
 +//
-+// The purpose of this file is to both collect and hide most api-specific
-+// changes of LLVM [10,14]. Hopefully making it easier to keep track of the
-+// changes necessary to support our targeted versions.
++//  Copyright(c) 2024 rev.ng Labs Srl. All Rights Reserved.
 +//
-+// Note some #ifdefs still remain throughout the codebase for larger codeblocks
-+// that are specific enough such that pulling them here would be more cumbersome
-+// than it's worth.
++//  This program is free software; you can redistribute it and/or modify
++//  it under the terms of the GNU General Public License as published by
++//  the Free Software Foundation; either version 2 of the License, or
++//  (at your option) any later version.
++//
++//  This program is distributed in the hope that it will be useful,
++//  but WITHOUT ANY WARRANTY; without even the implied warranty of
++//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++//  GNU General Public License for more details.
++//
++//  You should have received a copy of the GNU General Public License
++//  along with this program; if not, see <http://www.gnu.org/licenses/>.
 +//
 +
++#include <llvm/ADT/Triple.h>
++#include <llvm/Analysis/AliasAnalysis.h>
++#include <llvm/Analysis/CGSCCPassManager.h>
++#include <llvm/Analysis/LoopAnalysisManager.h>
++#include <llvm/Analysis/TargetTransformInfo.h>
++#include <llvm/CodeGen/BasicTTIImpl.h>
++#include <llvm/IR/LLVMContext.h>
 +#include <llvm/IR/Module.h>
 +#include <llvm/IR/PassManager.h>
-+
-+#if LLVM_VERSION_MAJOR > 11
-+#include <llvm/Transforms/Utils/UnifyFunctionExitNodes.h>
-+#endif
-+
-+#if LLVM_VERSION_MAJOR >= 14
-+#include <llvm/MC/TargetRegistry.h>
-+#else
-+#include <llvm/Support/TargetRegistry.h>
-+#endif
-+
-+#include <llvm/IR/DerivedTypes.h>
-+#include <llvm/IR/PatternMatch.h>
-+#include <llvm/Passes/OptimizationLevel.h>
++#include <llvm/IRReader/IRReader.h>
++#include <llvm/InitializePasses.h>
++#include <llvm/Linker/Linker.h>
++#include <llvm/PassRegistry.h>
 +#include <llvm/Passes/PassBuilder.h>
-+#include <llvm/Support/FileSystem.h>
++#include <llvm/Support/CommandLine.h>
++#include <llvm/Support/InitLLVM.h>
++#include <llvm/Support/SourceMgr.h>
++#include <llvm/Support/TargetSelect.h>
++#include <llvm/Target/TargetMachine.h>
 +
-+#include <stdint.h>
++#include "llvm-compat.h"
 +
-+namespace compat
++using namespace llvm;
++
++cl::OptionCategory Cat("helper-to-tcg Options");
++
++// Options for pipeline
++cl::opt<std::string> InputFile(cl::Positional, cl::desc("[input LLVM module]"),
++                               cl::cat(Cat));
++
++// Define a TargetTransformInfo (TTI) subclass, this allows for overriding
++// common per-llvm-target information expected by other LLVM passes, such
++// as the width of the largest scalar/vector registers.  Needed for consistent
++// behaviour across different hosts.
++class TcgTTI : public BasicTTIImplBase<TcgTTI>
 +{
++    friend class BasicTTIImplBase<TcgTTI>;
 +
-+#if LLVM_VERSION_MAJOR == 14 || LLVM_VERSION_MAJOR == 13
-+constexpr auto OpenFlags = llvm::sys::fs::OF_TextWithCRLF;
-+#else
-+constexpr auto OpenFlags = llvm::sys::fs::OF_Text;
-+#endif
++    // We need to provide ST, TLI, getST(), getTLI()
++    const TargetSubtargetInfo *ST;
++    const TargetLoweringBase *TLI;
 +
-+#if LLVM_VERSION_MAJOR == 14
-+using OptimizationLevel = llvm::OptimizationLevel;
-+#else
-+using OptimizationLevel = llvm::PassBuilder::OptimizationLevel;
-+#endif
++    const TargetSubtargetInfo *getST() const { return ST; }
++    const TargetLoweringBase *getTLI() const { return TLI; }
 +
-+#if LLVM_VERSION_MAJOR > 11
-+constexpr auto LTOPhase = llvm::ThinOrFullLTOPhase::None;
-+#else
-+constexpr auto LTOPhase = llvm::PassBuilder::ThinLTOPhase::None;
-+#endif
-+
-+inline llvm::PassBuilder createPassBuilder(llvm::TargetMachine *TM,
-+                                           llvm::PipelineTuningOptions &PTO)
-+{
-+#if LLVM_VERSION_MAJOR == 14 || LLVM_VERSION_MAJOR == 13
-+    return llvm::PassBuilder(TM, PTO, llvm::None);
-+#elif LLVM_VERSION_MAJOR == 12
-+    return llvm::PassBuilder(TM, nullptr, PTO);
-+#else
-+    return llvm::PassBuilder(TM, PTO);
-+#endif
-+}
-+
-+// Wrapper to convert Function- to Module analysis manager
-+template <typename T>
-+inline const typename T::Result *
-+getModuleAnalysisManagerProxyResult(llvm::FunctionAnalysisManager &FAM,
-+                                    llvm::Function &F)
-+{
-+#if LLVM_VERSION_MAJOR > 10
-+    auto &MAMProxy = FAM.getResult<llvm::ModuleAnalysisManagerFunctionProxy>(F);
-+    return MAMProxy.getCachedResult<T>(*F.getParent());
-+#else
-+    auto &MAMProxy =
-+        FAM.getResult<llvm::ModuleAnalysisManagerFunctionProxy>(F).getManager();
-+    return MAMProxy.getCachedResult<T>(*F.getParent());
-+#endif
-+}
-+
-+llvm::TargetMachine *getTargetMachine(llvm::Triple &TheTriple);
-+
-+//
-+// LLVM 11 and below does not define the UnifyFunctionExitNodes pass
-+// for the new pass manager.  Copy over the definition and use it for
-+// 11 and below.
-+//
-+#if LLVM_VERSION_MAJOR > 11
-+using llvm::UnifyFunctionExitNodesPass;
-+#else
-+class UnifyFunctionExitNodesPass
-+    : public llvm::PassInfoMixin<UnifyFunctionExitNodesPass>
-+{
 +  public:
-+    llvm::PreservedAnalyses run(llvm::Function &F,
-+                                llvm::FunctionAnalysisManager &AM);
++    // Initialize ST and TLI from the target machine, e.g. if we're
++    // targeting x86 we'll get the Subtarget and TargetLowering to
++    // match that architechture.
++    TcgTTI(TargetMachine *TM, Function const &F)
++        : BasicTTIImplBase(TM, F.getParent()->getDataLayout()),
++          ST(TM->getSubtargetImpl(F)), TLI(ST->getTargetLowering())
++    {
++    }
++
++#if LLVM_VERSION_MAJOR >= 13
++    TypeSize getRegisterBitWidth(TargetTransformInfo::RegisterKind K) const
++    {
++        switch (K) {
++        case TargetTransformInfo::RGK_Scalar:
++            // We pretend we always support 64-bit registers
++            return TypeSize::getFixed(64);
++        case TargetTransformInfo::RGK_FixedWidthVector:
++            // We pretend we always support 2048-bit vector registers
++            return TypeSize::getFixed(2048);
++        case TargetTransformInfo::RGK_ScalableVector:
++            return TypeSize::getScalable(0);
++        default:
++            abort();
++        }
++    }
++#else
++    unsigned getRegisterBitWidth(bool Vector) const
++    {
++        if (Vector) {
++            return 2048;
++        } else {
++            return 64;
++        }
++    }
++#endif
 +};
-+#endif
 +
-+inline uint32_t getVectorElementCount(llvm::VectorType *VecTy)
++int main(int argc, char **argv)
 +{
-+    auto ElementCount = VecTy->getElementCount();
-+#if LLVM_VERSION_MAJOR > 11
-+    return ElementCount.getFixedValue();
-+#else
-+    return ElementCount.Min;
-+#endif
++    InitLLVM X(argc, argv);
++    cl::HideUnrelatedOptions(Cat);
++
++    InitializeAllTargets();
++    InitializeAllTargetMCs();
++    PassRegistry &Registry = *PassRegistry::getPassRegistry();
++    initializeCore(Registry);
++    initializeScalarOpts(Registry);
++    initializeVectorization(Registry);
++    initializeAnalysis(Registry);
++    initializeTransformUtils(Registry);
++    initializeInstCombine(Registry);
++    initializeTarget(Registry);
++
++    cl::ParseCommandLineOptions(argc, argv);
++
++    LLVMContext Context;
++
++    SMDiagnostic Err;
++    std::unique_ptr<Module> M = parseIRFile(InputFile, Err, Context);
++
++    // Create a new TargetMachine to represent a TCG target,
++    // we use x86_64 as a base and derive from that using a
++    // TargetTransformInfo to provide allowed scalar and vector
++    // register sizes.
++    Triple ModuleTriple("x86_64-pc-unknown");
++    assert(ModuleTriple.getArch());
++    TargetMachine *TM = compat::getTargetMachine(ModuleTriple);
++
++    PipelineTuningOptions PTO;
++    PassBuilder PB = compat::createPassBuilder(TM, PTO);
++    LoopAnalysisManager LAM;
++    FunctionAnalysisManager FAM;
++    CGSCCAnalysisManager CGAM;
++    ModuleAnalysisManager MAM;
++
++    // Register our TargetIrAnalysis pass using our own TTI
++    FAM.registerPass([&] {
++        return TargetIRAnalysis(
++            [&](const Function &F) { return TcgTTI(TM, F); });
++    });
++    FAM.registerPass([&] { return LoopAnalysis(); });
++    LAM.registerPass([&] { return LoopAccessAnalysis(); });
++    // We need to specifically add the aliasing pipeline for LLVM <= 13
++    FAM.registerPass([&] { return PB.buildDefaultAAPipeline(); });
++
++    // Register other default LLVM Analyses
++    PB.registerFunctionAnalyses(FAM);
++    PB.registerModuleAnalyses(MAM);
++    PB.registerLoopAnalyses(LAM);
++    PB.registerCGSCCAnalyses(CGAM);
++    PB.crossRegisterProxies(LAM, FAM, CGAM, MAM);
++
++    ModulePassManager MPM;
++
++    return 0;
 +}
-+
-+//
-+// PatternMatch
-+//
-+
-+#if LLVM_VERSION_MAJOR > 10
-+#define compat_m_InsertElt llvm::PatternMatch::m_InsertElt
-+#define compat_m_Shuffle llvm::PatternMatch::m_Shuffle
-+#define compat_m_ZeroMask llvm::PatternMatch::m_ZeroMask
-+#else
-+#define compat_m_InsertElt llvm::PatternMatch::m_InsertElement
-+#define compat_m_Shuffle llvm::PatternMatch::m_ShuffleVector
-+#define compat_m_ZeroMask llvm::PatternMatch::m_Zero
-+#endif
-+
-+} // namespace compat
 -- 
 2.45.2
 
