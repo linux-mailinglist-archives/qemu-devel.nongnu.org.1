@@ -2,19 +2,19 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E5A69D4580
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Nov 2024 02:51:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FC3E9D4583
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Nov 2024 02:52:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tDwHr-0001bA-P2; Wed, 20 Nov 2024 20:47:15 -0500
+	id 1tDwHt-0001cf-GJ; Wed, 20 Nov 2024 20:47:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1tDwHq-0001aq-El
- for qemu-devel@nongnu.org; Wed, 20 Nov 2024 20:47:14 -0500
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1tDwHr-0001b0-2o
+ for qemu-devel@nongnu.org; Wed, 20 Nov 2024 20:47:15 -0500
 Received: from rev.ng ([94.130.142.21])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1tDwHo-0004XZ-D4
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1tDwHo-0004Xd-Um
  for qemu-devel@nongnu.org; Wed, 20 Nov 2024 20:47:14 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
  s=dkim; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
@@ -22,16 +22,16 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
  Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
  :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
  List-Post:List-Owner:List-Archive:List-Unsubscribe:List-Unsubscribe-Post:
- List-Help; bh=79pr1drhMqVTakNZzCI6+VG2OY2chgT2RrjIC+e91vQ=; b=gvB4mbFQ9zlG5lO
- u1L/TOkOFKnZcHgVDSsTzZ7wwzSy3rpDes9tkzZz8t0WGAXx7GSwWyS3cCaWNUFo1YnSBC/dLSNUR
- oeNIDO4ubvM7KYes46csSSvCJzGBDK1oNSTBl4T3pPGH+OugC3pm7wIIaKtx62pwGk8IJW3ucrFXR
- xA=;
+ List-Help; bh=lmWGLOze3SuRS/fAHZcf3ZMhqPnKfajIC31FbL7DQy4=; b=NtKZojsW4OM2ES9
+ t+zx3ibbMJSZEnIAu6650ysyhwmS0QWy0JKdaK4i2rn3DNUvG5ocwzMFlMkJMyaVtcuGu0MmDJA9l
+ VItuhIQ5DVPVNXjcsYjW7kSQuLTXnEzHm7rkWzQTi7u2FXbWfHQoTVEgl+JmVvEDuY6ZILsSuv/+Q
+ 3s=;
 To: qemu-devel@nongnu.org
 Cc: ale@rev.ng, ltaylorsimpson@gmail.com, bcain@quicinc.com,
  richard.henderson@linaro.org, philmd@linaro.org, alex.bennee@linaro.org
-Subject: [RFC PATCH v1 14/43] helper-to-tcg: Introduce PrepareForOptPass
-Date: Thu, 21 Nov 2024 02:49:18 +0100
-Message-ID: <20241121014947.18666-15-anjo@rev.ng>
+Subject: [RFC PATCH v1 15/43] helper-to-tcg: PrepareForOptPass, map annotations
+Date: Thu, 21 Nov 2024 02:49:19 +0100
+Message-ID: <20241121014947.18666-16-anjo@rev.ng>
 In-Reply-To: <20241121014947.18666-1-anjo@rev.ng>
 References: <20241121014947.18666-1-anjo@rev.ng>
 MIME-Version: 1.0
@@ -62,40 +62,26 @@ From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Adds a new LLVM pass that runs early in the pipeline with the goal
-of preparing the input module for optimization by doing some early
-culling of functions and information gathering.
-
-This commits sets up a new LLVM pass over the IR module and runs it from
-the pipeline.
+In the LLVM IR module function annotations are stored in one big global
+array of strings.  Traverse this array and parse the data into a format
+more useful for future passes.  A map between Functions * and a list of
+annotations is exposed.
 
 Signed-off-by: Anton Johansson <anjo@rev.ng>
 ---
- .../helper-to-tcg/include/CmdLineOptions.h    |  2 ++
- .../helper-to-tcg/include/PrepareForOptPass.h | 34 +++++++++++++++++++
- subprojects/helper-to-tcg/meson.build         |  2 ++
- .../PrepareForOptPass/PrepareForOptPass.cpp   | 25 ++++++++++++++
- .../helper-to-tcg/pipeline/Pipeline.cpp       | 27 +++++++++++++++
- 5 files changed, 90 insertions(+)
- create mode 100644 subprojects/helper-to-tcg/include/PrepareForOptPass.h
- create mode 100644 subprojects/helper-to-tcg/passes/PrepareForOptPass/PrepareForOptPass.cpp
+ .../include/FunctionAnnotation.h              | 54 ++++++++++++
+ .../helper-to-tcg/include/PrepareForOptPass.h |  7 +-
+ .../PrepareForOptPass/PrepareForOptPass.cpp   | 87 +++++++++++++++++++
+ .../helper-to-tcg/pipeline/Pipeline.cpp       |  3 +-
+ 4 files changed, 149 insertions(+), 2 deletions(-)
+ create mode 100644 subprojects/helper-to-tcg/include/FunctionAnnotation.h
 
-diff --git a/subprojects/helper-to-tcg/include/CmdLineOptions.h b/subprojects/helper-to-tcg/include/CmdLineOptions.h
-index 5774ab07b1..ed60c45f9a 100644
---- a/subprojects/helper-to-tcg/include/CmdLineOptions.h
-+++ b/subprojects/helper-to-tcg/include/CmdLineOptions.h
-@@ -21,3 +21,5 @@
- 
- // Options for pipeline
- extern llvm::cl::list<std::string> InputFiles;
-+// Options for PrepareForOptPass
-+extern llvm::cl::opt<bool> TranslateAllHelpers;
-diff --git a/subprojects/helper-to-tcg/include/PrepareForOptPass.h b/subprojects/helper-to-tcg/include/PrepareForOptPass.h
+diff --git a/subprojects/helper-to-tcg/include/FunctionAnnotation.h b/subprojects/helper-to-tcg/include/FunctionAnnotation.h
 new file mode 100644
-index 0000000000..d74618613f
+index 0000000000..b562f7c892
 --- /dev/null
-+++ b/subprojects/helper-to-tcg/include/PrepareForOptPass.h
-@@ -0,0 +1,34 @@
++++ b/subprojects/helper-to-tcg/include/FunctionAnnotation.h
+@@ -0,0 +1,54 @@
 +//
 +//  Copyright(c) 2024 rev.ng Labs Srl. All Rights Reserved.
 +//
@@ -115,110 +101,183 @@ index 0000000000..d74618613f
 +
 +#pragma once
 +
-+#include <llvm/IR/PassManager.h>
++#include <llvm/ADT/DenseMap.h>
++#include <llvm/ADT/SmallVector.h>
++#include <stdint.h>
 +
-+//
-+// PrepareForOptPass
-+//
-+// Pass that performs either early information collection or basic culling of
-+// the input module. simplify the module, or to allow for further optimization.
-+//
-+
-+class PrepareForOptPass : public llvm::PassInfoMixin<PrepareForOptPass> {
-+public:
-+    PrepareForOptPass() {}
-+    llvm::PreservedAnalyses run(llvm::Module &M,
-+                                llvm::ModuleAnalysisManager &MAM);
-+};
-diff --git a/subprojects/helper-to-tcg/meson.build b/subprojects/helper-to-tcg/meson.build
-index 63c6ed17fb..fd3fd6f0ae 100644
---- a/subprojects/helper-to-tcg/meson.build
-+++ b/subprojects/helper-to-tcg/meson.build
-@@ -43,6 +43,8 @@ endif
- sources = [
-     'pipeline/Pipeline.cpp',
-     'passes/llvm-compat.cpp',
-+    'pipeline/Pipeline.cpp',
-+    'passes/PrepareForOptPass/PrepareForOptPass.cpp',
- ]
- 
- clang = bindir / 'clang'
-diff --git a/subprojects/helper-to-tcg/passes/PrepareForOptPass/PrepareForOptPass.cpp b/subprojects/helper-to-tcg/passes/PrepareForOptPass/PrepareForOptPass.cpp
-new file mode 100644
-index 0000000000..0a018494fe
---- /dev/null
-+++ b/subprojects/helper-to-tcg/passes/PrepareForOptPass/PrepareForOptPass.cpp
-@@ -0,0 +1,25 @@
-+//
-+//  Copyright(c) 2024 rev.ng Labs Srl. All Rights Reserved.
-+//
-+//  This program is free software; you can redistribute it and/or modify
-+//  it under the terms of the GNU General Public License as published by
-+//  the Free Software Foundation; either version 2 of the License, or
-+//  (at your option) any later version.
-+//
-+//  This program is distributed in the hope that it will be useful,
-+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+//  GNU General Public License for more details.
-+//
-+//  You should have received a copy of the GNU General Public License
-+//  along with this program; if not, see <http://www.gnu.org/licenses/>.
-+//
-+
-+#include <PrepareForOptPass.h>
-+
-+using namespace llvm;
-+
-+PreservedAnalyses PrepareForOptPass::run(Module &M, ModuleAnalysisManager &MAM)
++namespace llvm
 +{
-+    return PreservedAnalyses::none();
++class Function;
 +}
-diff --git a/subprojects/helper-to-tcg/pipeline/Pipeline.cpp b/subprojects/helper-to-tcg/pipeline/Pipeline.cpp
-index 9c0e777893..fad335f4a9 100644
---- a/subprojects/helper-to-tcg/pipeline/Pipeline.cpp
-+++ b/subprojects/helper-to-tcg/pipeline/Pipeline.cpp
-@@ -34,7 +34,9 @@
- #include <llvm/Support/SourceMgr.h>
- #include <llvm/Support/TargetSelect.h>
- #include <llvm/Target/TargetMachine.h>
-+#include <llvm/Transforms/Scalar/SROA.h>
++
++// Different kind of function annotations which control the behaviour
++// of helper-to-tcg.
++enum class AnnotationKind : uint8_t {
++    // Function should be translated
++    HelperToTcg,
++    // Declares a list of arguments as immediates
++    Immediate,
++    // Declares a list of arguments as vectors, represented by offsets into
++    // the CPU state
++    PtrToOffset,
++};
++
++// Annotation data which may be attached to a function
++struct Annotation {
++    // Indices of function arguments the annotation applies to, only
++    // used for AnnotationKind::[Immediate|PtrToOffset].
++    llvm::SmallVector<uint8_t, 4> ArgIndices;
++    AnnotationKind Kind;
++};
++
++// Map from Function * to a list of struct Annotation.  std::map is used here
++// which allocates for each mapped pair due to the value being large
++// (at least 48*3 bits).  If ArgIndices were to be stored out-of-band this could
++// be reduced, and DenseMap would be more appropriate.
++using AnnotationVectorTy = llvm::SmallVector<Annotation, 3>;
++using AnnotationMapTy = llvm::DenseMap<llvm::Function *, AnnotationVectorTy>;
+diff --git a/subprojects/helper-to-tcg/include/PrepareForOptPass.h b/subprojects/helper-to-tcg/include/PrepareForOptPass.h
+index d74618613f..5f9c059b97 100644
+--- a/subprojects/helper-to-tcg/include/PrepareForOptPass.h
++++ b/subprojects/helper-to-tcg/include/PrepareForOptPass.h
+@@ -17,6 +17,7 @@
  
-+#include <PrepareForOptPass.h>
- #include "llvm-compat.h"
+ #pragma once
+ 
++#include "FunctionAnnotation.h"
+ #include <llvm/IR/PassManager.h>
+ 
+ //
+@@ -27,8 +28,12 @@
+ //
+ 
+ class PrepareForOptPass : public llvm::PassInfoMixin<PrepareForOptPass> {
++    AnnotationMapTy &ResultAnnotations;
+ public:
+-    PrepareForOptPass() {}
++    PrepareForOptPass(AnnotationMapTy &ResultAnnotations)
++        : ResultAnnotations(ResultAnnotations)
++    {
++    }
+     llvm::PreservedAnalyses run(llvm::Module &M,
+                                 llvm::ModuleAnalysisManager &MAM);
+ };
+diff --git a/subprojects/helper-to-tcg/passes/PrepareForOptPass/PrepareForOptPass.cpp b/subprojects/helper-to-tcg/passes/PrepareForOptPass/PrepareForOptPass.cpp
+index 0a018494fe..9f1d4df102 100644
+--- a/subprojects/helper-to-tcg/passes/PrepareForOptPass/PrepareForOptPass.cpp
++++ b/subprojects/helper-to-tcg/passes/PrepareForOptPass/PrepareForOptPass.cpp
+@@ -16,10 +16,97 @@
+ //
+ 
+ #include <PrepareForOptPass.h>
++#include <Error.h>
++
++#include <llvm/IR/Constants.h>
++#include <llvm/IR/Function.h>
++#include <llvm/IR/Instruction.h>
++#include <llvm/IR/Module.h>
  
  using namespace llvm;
-@@ -155,5 +157,30 @@ int main(int argc, char **argv)
  
-     ModulePassManager MPM;
- 
-+    //
-+    // Start by Filtering out functions we don't want to translate,
-+    // following by a pass that removes `noinline`s that are inserted
-+    // by clang on -O0. We finally run a UnifyExitNodesPass to make sure
-+    // the helpers we parse only has a single exit.
-+    //
++static Expected<Annotation> parseAnnotationStr(StringRef Str,
++                                               uint32_t num_function_args)
++{
++    Annotation Ann;
 +
-+    {
-+        FunctionPassManager FPM;
-+#if LLVM_VERSION_MAJOR < 14
-+        FPM.addPass(SROA());
-+#else
-+        FPM.addPass(SROAPass());
-+#endif
-+        MPM.addPass(createModuleToFunctionPassAdaptor(std::move(FPM)));
++    Str = Str.trim();
++
++    if (Str.consume_front("helper-to-tcg")) {
++        Ann.Kind = AnnotationKind::HelperToTcg;
++        // Early return, no additional info to parse from annotation string
++        return Ann;
++    } else if (Str.consume_front("immediate")) {
++        Ann.Kind = AnnotationKind::Immediate;
++    } else if (Str.consume_front("ptr-to-offset")) {
++        Ann.Kind = AnnotationKind::PtrToOffset;
++    } else {
++        return mkError("Unknown annotation");
 +    }
 +
-+    MPM.addPass(PrepareForOptPass());
++    // Parse comma separated list of argument indices
 +
-+    {
-+        FunctionPassManager FPM;
-+        FPM.addPass(compat::UnifyFunctionExitNodesPass());
-+        MPM.addPass(createModuleToFunctionPassAdaptor(std::move(FPM)));
++    if (!Str.consume_front(":")) {
++        return mkError("Expected \":\"");
 +    }
 +
-     return 0;
++    Str = Str.ltrim(' ');
++    do {
++        Str = Str.ltrim(' ');
++        uint32_t i = 0;
++        Str.consumeInteger(10, i);
++        if (i >= num_function_args) {
++            return mkError("Annotation has out of bounds argument index");
++        }
++        Ann.ArgIndices.push_back(i);
++    } while (Str.consume_front(","));
++
++    return Ann;
++}
++
++static void collectAnnotations(Module &M, AnnotationMapTy &ResultAnnotations)
++{
++    // cast over dyn_cast is being used here to
++    // assert that the structure of
++    //
++    //     llvm.global.annotation
++    //
++    // is what we expect.
++
++    GlobalVariable *GA = M.getGlobalVariable("llvm.global.annotations");
++    if (!GA) {
++        return;
++    }
++
++    // Get the metadata which is stored in the first op
++    auto *CA = cast<ConstantArray>(GA->getOperand(0));
++    // Loop over metadata
++    for (Value *CAOp : CA->operands()) {
++        auto *Struct = cast<ConstantStruct>(CAOp);
++        assert(Struct->getNumOperands() >= 2);
++        Constant *UseOfF = Struct->getOperand(0);
++        if (isa<UndefValue>(UseOfF)) {
++            continue;
++        }
++        auto *F = cast<Function>(UseOfF->getOperand(0));
++        auto *AnnVar =
++            cast<GlobalVariable>(Struct->getOperand(1)->getOperand(0));
++        auto *AnnData = cast<ConstantDataArray>(AnnVar->getOperand(0));
++
++        StringRef AnnStr = AnnData->getAsString();
++        AnnStr = AnnStr.substr(0, AnnStr.size() - 1);
++        Expected<Annotation> Ann = parseAnnotationStr(AnnStr, F->arg_size());
++        if (!Ann) {
++            dbgs() << "Failed to parse annotation: \"" << Ann.takeError()
++                   << "\" for function " << F->getName() << "\n";
++            continue;
++        }
++        ResultAnnotations[F].push_back(*Ann);
++    }
++}
++
+ PreservedAnalyses PrepareForOptPass::run(Module &M, ModuleAnalysisManager &MAM)
+ {
++    collectAnnotations(M, ResultAnnotations);
+     return PreservedAnalyses::none();
  }
+diff --git a/subprojects/helper-to-tcg/pipeline/Pipeline.cpp b/subprojects/helper-to-tcg/pipeline/Pipeline.cpp
+index fad335f4a9..3b9493bc73 100644
+--- a/subprojects/helper-to-tcg/pipeline/Pipeline.cpp
++++ b/subprojects/helper-to-tcg/pipeline/Pipeline.cpp
+@@ -174,7 +174,8 @@ int main(int argc, char **argv)
+         MPM.addPass(createModuleToFunctionPassAdaptor(std::move(FPM)));
+     }
+ 
+-    MPM.addPass(PrepareForOptPass());
++    AnnotationMapTy Annotations;
++    MPM.addPass(PrepareForOptPass(Annotations));
+ 
+     {
+         FunctionPassManager FPM;
 -- 
 2.45.2
 
