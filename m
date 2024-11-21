@@ -2,19 +2,19 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 123939D455D
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Nov 2024 02:48:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A7929D4562
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Nov 2024 02:48:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tDwHv-0001dz-U3; Wed, 20 Nov 2024 20:47:19 -0500
+	id 1tDwHw-0001e4-4I; Wed, 20 Nov 2024 20:47:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1tDwHu-0001dT-Nw
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1tDwHu-0001dC-Gu
  for qemu-devel@nongnu.org; Wed, 20 Nov 2024 20:47:18 -0500
 Received: from rev.ng ([94.130.142.21])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1tDwHs-0004Yv-5U
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1tDwHs-0004Z9-Gg
  for qemu-devel@nongnu.org; Wed, 20 Nov 2024 20:47:18 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
  s=dkim; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
@@ -22,16 +22,16 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
  Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
  :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
  List-Post:List-Owner:List-Archive:List-Unsubscribe:List-Unsubscribe-Post:
- List-Help; bh=C3wX1QdcsW7MQWsSRDypo/NZdV81zatwSZ7ea+i2V6E=; b=wVGW+6OM+KJB33R
- Z/AyImJ4n28xyU75TZh5c+d7I3k1U1cJus9nWVQbJnlskEzLxbRnsX35iJoopMCBuvt++8juVvBFM
- XzP86+ze8FC0jU1AAUQ3ER3cedUMp8meVJHj7TjN4ZgQRKUwg4MgbKLl9K1mB7EGqFbMVV8c6hbYM
- hk=;
+ List-Help; bh=3xa4cSQWq1UFcy/VC4ccaIM0E/2QjTKLoAtI/4PVoBM=; b=M35JFciezjmnJAh
+ Wji961ULdWWiTcGHd+BVNZ1XDhAoov5IUfXyk0Gnimg4vZ4+zIztxFXs97WkpOI3dt8E+QvWvLHj5
+ +vSlMxvNCGOD6IxvmnEzeayDvSm7YKXf8Qf5ibwJjr1K3892vLzmetG9vHA4DSxViVXC43Vra4eus
+ 9A=;
 To: qemu-devel@nongnu.org
 Cc: ale@rev.ng, ltaylorsimpson@gmail.com, bcain@quicinc.com,
  richard.henderson@linaro.org, philmd@linaro.org, alex.bennee@linaro.org
-Subject: [RFC PATCH v1 20/43] helper-to-tcg: Introduce pseudo instructions
-Date: Thu, 21 Nov 2024 02:49:24 +0100
-Message-ID: <20241121014947.18666-21-anjo@rev.ng>
+Subject: [RFC PATCH v1 21/43] helper-to-tcg: Introduce PrepareForTcgPass
+Date: Thu, 21 Nov 2024 02:49:25 +0100
+Message-ID: <20241121014947.18666-22-anjo@rev.ng>
 In-Reply-To: <20241121014947.18666-1-anjo@rev.ng>
 References: <20241121014947.18666-1-anjo@rev.ng>
 MIME-Version: 1.0
@@ -62,194 +62,42 @@ From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-"pseudo" instructions makes it easy to add custom instructions to
-LLVM IR in the form of calls to undefined functions.  These will be used
-in future commits to express functionality present in TCG that is missing
-from LLVM IR (certain vector ops.), or to simplify the backend by
-collecting similar instruction mappings into a single opcode
-(idendity mapping).
+Adds a new pass over the LLVM module which runs post-optimization with
+the end-goal of:
+  * culling functions which aren't worth translating;
+  * canonicalizing the IR to something closer to TCG, and;
+  * extracting information which may be useful in the backend pass.
 
-Mapping from a call instructions in LLVM IR to an enum representing the
-pseudo instruction is also handled, this avoids string comparisons in
-the backend, and is easy to switch over.
+This commits sets up a new LLVM pass over the IR module and runs it from
+the pipeline.
 
 Signed-off-by: Anton Johansson <anjo@rev.ng>
 ---
- subprojects/helper-to-tcg/meson.build         |   1 +
- .../helper-to-tcg/passes/PseudoInst.cpp       | 142 ++++++++++++++++++
- subprojects/helper-to-tcg/passes/PseudoInst.h |  63 ++++++++
- .../helper-to-tcg/passes/PseudoInst.inc       |  76 ++++++++++
- 4 files changed, 282 insertions(+)
- create mode 100644 subprojects/helper-to-tcg/passes/PseudoInst.cpp
- create mode 100644 subprojects/helper-to-tcg/passes/PseudoInst.h
- create mode 100644 subprojects/helper-to-tcg/passes/PseudoInst.inc
+ .../helper-to-tcg/include/CmdLineOptions.h    |  2 ++
+ .../helper-to-tcg/include/PrepareForTcgPass.h | 27 +++++++++++++++++++
+ subprojects/helper-to-tcg/meson.build         |  1 +
+ .../PrepareForTcgPass/PrepareForTcgPass.cpp   | 25 +++++++++++++++++
+ .../helper-to-tcg/pipeline/Pipeline.cpp       | 26 +++++++++++++++++-
+ 5 files changed, 80 insertions(+), 1 deletion(-)
+ create mode 100644 subprojects/helper-to-tcg/include/PrepareForTcgPass.h
+ create mode 100644 subprojects/helper-to-tcg/passes/PrepareForTcgPass/PrepareForTcgPass.cpp
 
-diff --git a/subprojects/helper-to-tcg/meson.build b/subprojects/helper-to-tcg/meson.build
-index fd3fd6f0ae..6aba71d5ca 100644
---- a/subprojects/helper-to-tcg/meson.build
-+++ b/subprojects/helper-to-tcg/meson.build
-@@ -45,6 +45,7 @@ sources = [
-     'passes/llvm-compat.cpp',
-     'pipeline/Pipeline.cpp',
-     'passes/PrepareForOptPass/PrepareForOptPass.cpp',
-+    'passes/PseudoInst.cpp',
- ]
- 
- clang = bindir / 'clang'
-diff --git a/subprojects/helper-to-tcg/passes/PseudoInst.cpp b/subprojects/helper-to-tcg/passes/PseudoInst.cpp
+diff --git a/subprojects/helper-to-tcg/include/CmdLineOptions.h b/subprojects/helper-to-tcg/include/CmdLineOptions.h
+index ed60c45f9a..9553e26407 100644
+--- a/subprojects/helper-to-tcg/include/CmdLineOptions.h
++++ b/subprojects/helper-to-tcg/include/CmdLineOptions.h
+@@ -23,3 +23,5 @@
+ extern llvm::cl::list<std::string> InputFiles;
+ // Options for PrepareForOptPass
+ extern llvm::cl::opt<bool> TranslateAllHelpers;
++// Options for PrepareForTcgPass
++extern llvm::cl::opt<std::string> TcgGlobalMappingsName;
+diff --git a/subprojects/helper-to-tcg/include/PrepareForTcgPass.h b/subprojects/helper-to-tcg/include/PrepareForTcgPass.h
 new file mode 100644
-index 0000000000..d7efa11499
+index 0000000000..a41edb4c2e
 --- /dev/null
-+++ b/subprojects/helper-to-tcg/passes/PseudoInst.cpp
-@@ -0,0 +1,142 @@
-+//
-+//  Copyright(c) 2024 rev.ng Labs Srl. All Rights Reserved.
-+//
-+//  This program is free software; you can redistribute it and/or modify
-+//  it under the terms of the GNU General Public License as published by
-+//  the Free Software Foundation; either version 2 of the License, or
-+//  (at your option) any later version.
-+//
-+//  This program is distributed in the hope that it will be useful,
-+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+//  GNU General Public License for more details.
-+//
-+//  You should have received a copy of the GNU General Public License
-+//  along with this program; if not, see <http://www.gnu.org/licenses/>.
-+//
-+
-+#include "PseudoInst.h"
-+#include "llvm-compat.h"
-+
-+#include <llvm/ADT/DenseMap.h>
-+#include <llvm/ADT/Twine.h>
-+#include <llvm/IR/Function.h>
-+#include <llvm/IR/Instructions.h>
-+#include <llvm/Support/Casting.h>
-+
-+using namespace llvm;
-+
-+#define PSEUDO_INST_DEF(name, ret, args) #name
-+static const char *PseudoInstName[] = {
-+#include "PseudoInst.inc"
-+};
-+#undef PSEUDO_INST_DEF
-+
-+#define PSEUDO_INST_ARGVEC(...)                                                \
-+    (sizeof((PseudoInstArg[]){__VA_ARGS__}) / sizeof(PseudoInstArg))
-+
-+#define PSEUDO_INST_DEF(name, ret, args) args
-+static uint8_t PseudoInstArgCount[] = {
-+#include "PseudoInst.inc"
-+};
-+#undef PSEUDO_INST_DEF
-+
-+// In order to map from a Function * to a PseudoInst, we keep a map
-+// of all Functions created, this simplifies mapping of callee's to
-+// a PseudoInst that can be switched over.
-+static DenseMap<Function *, PseudoInst> MapFuncToInst;
-+
-+// Converts llvm `Type`s to a string representation
-+// that can be embedded in function names for basic overloading.
-+//
-+// Ex.
-+//
-+//      *i32 -> "pi32"
-+//      [8 x i8] -> "a8xi8"
-+//      <128 x i8> -> "v128xi8"
-+//
-+// LLVM has an implementation of a similar function used by intrinsics,
-+// called getMangledTypeStr, but it's not exposed.
-+inline std::string getMangledTypeStr(Type *Ty)
-+{
-+    std::string TypeStr = "";
-+    llvm::raw_string_ostream TypeStream(TypeStr);
-+    switch (Ty->getTypeID()) {
-+    case Type::ArrayTyID: {
-+        auto *ArrayTy = cast<ArrayType>(Ty);
-+        std::string ElementStr = getMangledTypeStr(ArrayTy->getElementType());
-+        TypeStream << "a" << ArrayTy->getNumElements() << "x" << ElementStr;
-+    } break;
-+#if LLVM_VERSION_MAJOR >= 11
-+    case Type::FixedVectorTyID: {
-+#else
-+    case Type::VectorTyID: {
-+#endif
-+        auto *VecTy = cast<VectorType>(Ty);
-+        uint32_t ElementCount = compat::getVectorElementCount(VecTy);
-+        std::string ElementStr = getMangledTypeStr(VecTy->getElementType());
-+        TypeStream << "v" << ElementCount << "x" << ElementStr;
-+    } break;
-+    case Type::StructTyID: {
-+        auto *StructTy = cast<StructType>(Ty);
-+        TypeStream << StructTy->getName();
-+    } break;
-+    case Type::IntegerTyID: {
-+        auto *IntTy = cast<IntegerType>(Ty);
-+        TypeStream << "i" << IntTy->getBitWidth();
-+    } break;
-+    case Type::PointerTyID: {
-+        auto *PtrTy = cast<PointerType>(Ty);
-+        std::string ElementStr =
-+            getMangledTypeStr(PtrTy->getPointerElementType());
-+        TypeStream << "p" << ElementStr;
-+    } break;
-+    default:
-+        abort();
-+    }
-+
-+    return TypeStream.str();
-+}
-+
-+const char *pseudoInstName(PseudoInst Inst) { return PseudoInstName[Inst]; }
-+
-+uint8_t pseudoInstArgCount(PseudoInst Inst) { return PseudoInstArgCount[Inst]; }
-+
-+llvm::FunctionCallee pseudoInstFunction(llvm::Module &M, PseudoInst Inst,
-+                                        llvm::Type *RetType,
-+                                        llvm::ArrayRef<llvm::Type *> ArgTypes)
-+{
-+    auto *FT = llvm::FunctionType::get(RetType, ArgTypes, false);
-+
-+    std::string FnName{PseudoInstName[Inst]};
-+    if (!RetType->isVoidTy()) {
-+        FnName += ".";
-+        FnName += getMangledTypeStr(RetType);
-+    }
-+    for (llvm::Type *Ty : ArgTypes) {
-+        if (Ty->isLabelTy()) {
-+            continue;
-+        }
-+        FnName += ".";
-+        FnName += getMangledTypeStr(Ty);
-+    }
-+
-+    llvm::FunctionCallee Fn = M.getOrInsertFunction(FnName, FT);
-+    auto *F = cast<Function>(Fn.getCallee());
-+    MapFuncToInst.insert({F, Inst});
-+
-+    return Fn;
-+}
-+
-+// Takes value as convenience
-+PseudoInst getPseudoInstFromCall(const CallInst *Call)
-+{
-+    Function *F = Call->getCalledFunction();
-+
-+    auto It = MapFuncToInst.find(F);
-+    if (It == MapFuncToInst.end()) {
-+        return InvalidPseudoInst;
-+    }
-+
-+    return It->second;
-+}
-diff --git a/subprojects/helper-to-tcg/passes/PseudoInst.h b/subprojects/helper-to-tcg/passes/PseudoInst.h
-new file mode 100644
-index 0000000000..6bf841d85c
---- /dev/null
-+++ b/subprojects/helper-to-tcg/passes/PseudoInst.h
-@@ -0,0 +1,63 @@
++++ b/subprojects/helper-to-tcg/include/PrepareForTcgPass.h
+@@ -0,0 +1,27 @@
 +//
 +//  Copyright(c) 2024 rev.ng Labs Srl. All Rights Reserved.
 +//
@@ -269,132 +117,117 @@ index 0000000000..6bf841d85c
 +
 +#pragma once
 +
-+#include <stdint.h>
++#include <llvm/IR/PassManager.h>
 +
-+#include "llvm/ADT/ArrayRef.h"
-+#include "llvm/ADT/Optional.h"
-+#include "llvm/IR/Module.h"
-+#include "llvm/IR/Value.h"
-+
-+// Pseudo instructions refers to extra LLVM instructions implemented as
-+// calls to undefined functions.  They are useful for amending LLVM IR to
-+// simplify mapping to TCG in the backend, e.g.
-+//
-+//   %2 = call i32 @IdentityMap.i32.i16(i16 %1)
-+//
-+// is a pseudo opcode used to communicate that %1 and %2 should be mapped
-+// to the same value in TCG.
-+
-+enum PseudoInstArg {
-+    ArgInt,
-+    ArgVec,
-+    ArgPtr,
-+    ArgLabel,
-+    ArgVoid,
++class PrepareForTcgPass : public llvm::PassInfoMixin<PrepareForTcgPass> {
++public:
++    PrepareForTcgPass() {}
++    llvm::PreservedAnalyses run(llvm::Module &M,
++                                llvm::ModuleAnalysisManager &MAM);
 +};
-+
-+#define PSEUDO_INST_DEF(name, ret, args) name
-+enum PseudoInst : uint8_t {
-+#include "PseudoInst.inc"
-+};
-+#undef PSEUDO_INST_DEF
-+
-+// Retrieve string representation and argument counts for a given
-+// pseudo instruction.
-+const char *pseudoInstName(PseudoInst Inst);
-+uint8_t pseudoInstArgCount(PseudoInst Inst);
-+
-+// Maps PseudoInst + return/argument types to a FunctionCallee that can be
-+// called.
-+llvm::FunctionCallee pseudoInstFunction(llvm::Module &M, PseudoInst Inst,
-+                                        llvm::Type *RetType,
-+                                        llvm::ArrayRef<llvm::Type *> ArgTypes);
-+
-+// Reverse mapping of above, takes a call instruction and attempts to map the
-+// callee to a PseudoInst.
-+PseudoInst getPseudoInstFromCall(const llvm::CallInst *Call);
-diff --git a/subprojects/helper-to-tcg/passes/PseudoInst.inc b/subprojects/helper-to-tcg/passes/PseudoInst.inc
+diff --git a/subprojects/helper-to-tcg/meson.build b/subprojects/helper-to-tcg/meson.build
+index 6aba71d5ca..6db1a019ce 100644
+--- a/subprojects/helper-to-tcg/meson.build
++++ b/subprojects/helper-to-tcg/meson.build
+@@ -46,6 +46,7 @@ sources = [
+     'pipeline/Pipeline.cpp',
+     'passes/PrepareForOptPass/PrepareForOptPass.cpp',
+     'passes/PseudoInst.cpp',
++    'passes/PrepareForTcgPass/PrepareForTcgPass.cpp',
+ ]
+ 
+ clang = bindir / 'clang'
+diff --git a/subprojects/helper-to-tcg/passes/PrepareForTcgPass/PrepareForTcgPass.cpp b/subprojects/helper-to-tcg/passes/PrepareForTcgPass/PrepareForTcgPass.cpp
 new file mode 100644
-index 0000000000..9856afbe74
+index 0000000000..f0ef1abd17
 --- /dev/null
-+++ b/subprojects/helper-to-tcg/passes/PseudoInst.inc
-@@ -0,0 +1,76 @@
-+PSEUDO_INST_DEF(InvalidPseudoInst,  ArgVoid, PSEUDO_INST_ARGVEC(ArgVoid)),
-+// Identity mapping
-+PSEUDO_INST_DEF(IdentityMap,        ArgInt, PSEUDO_INST_ARGVEC(ArgInt)),
-+// Pointer arithmetic
-+PSEUDO_INST_DEF(PtrAdd,             ArgPtr, PSEUDO_INST_ARGVEC(ArgPtr, ArgInt)),
-+// Global accesses
-+PSEUDO_INST_DEF(AccessGlobalArray,  ArgInt, PSEUDO_INST_ARGVEC(ArgInt)),
-+PSEUDO_INST_DEF(AccessGlobalValue,  ArgInt, PSEUDO_INST_ARGVEC(ArgInt)),
-+// Conditional branch
-+PSEUDO_INST_DEF(Brcond,             ArgVoid, PSEUDO_INST_ARGVEC(ArgInt, ArgInt, ArgInt, ArgLabel, ArgLabel)),
-+// Conditional move
-+PSEUDO_INST_DEF(Movcond,            ArgInt, PSEUDO_INST_ARGVEC(ArgInt, ArgInt, ArgInt, ArgInt, ArgInt)),
-+// Vector creation ops
-+PSEUDO_INST_DEF(VecSplat,           ArgVec, PSEUDO_INST_ARGVEC(ArgInt)),
-+// Vector unary ops
-+PSEUDO_INST_DEF(VecNot,             ArgVec, PSEUDO_INST_ARGVEC(ArgVec)),
-+// Vector scalar binary ops
-+PSEUDO_INST_DEF(VecAddScalar,       ArgVec, PSEUDO_INST_ARGVEC(ArgVec, ArgInt)),
-+PSEUDO_INST_DEF(VecSubScalar,       ArgVec, PSEUDO_INST_ARGVEC(ArgVec, ArgInt)),
-+PSEUDO_INST_DEF(VecMulScalar,       ArgVec, PSEUDO_INST_ARGVEC(ArgVec, ArgInt)),
-+PSEUDO_INST_DEF(VecXorScalar,       ArgVec, PSEUDO_INST_ARGVEC(ArgVec, ArgInt)),
-+PSEUDO_INST_DEF(VecOrScalar,        ArgVec, PSEUDO_INST_ARGVEC(ArgVec, ArgInt)),
-+PSEUDO_INST_DEF(VecAndScalar,       ArgVec, PSEUDO_INST_ARGVEC(ArgVec, ArgInt)),
-+PSEUDO_INST_DEF(VecShlScalar,       ArgVec, PSEUDO_INST_ARGVEC(ArgVec, ArgInt)),
-+PSEUDO_INST_DEF(VecLShrScalar,      ArgVec, PSEUDO_INST_ARGVEC(ArgVec, ArgInt)),
-+PSEUDO_INST_DEF(VecAShrScalar,      ArgVec, PSEUDO_INST_ARGVEC(ArgVec, ArgInt)),
-+// Vector unary ops that stores to pointer
-+PSEUDO_INST_DEF(VecNotStore,        ArgVoid, PSEUDO_INST_ARGVEC(ArgPtr, ArgVec)),
-+// Vector binary ops that stores to pointer
-+PSEUDO_INST_DEF(VecAddStore,        ArgVoid, PSEUDO_INST_ARGVEC(ArgPtr, ArgVec, ArgVec)),
-+PSEUDO_INST_DEF(VecSubStore,        ArgVoid, PSEUDO_INST_ARGVEC(ArgPtr, ArgVec, ArgVec)),
-+PSEUDO_INST_DEF(VecMulStore,        ArgVoid, PSEUDO_INST_ARGVEC(ArgPtr, ArgVec, ArgVec)),
-+PSEUDO_INST_DEF(VecXorStore,        ArgVoid, PSEUDO_INST_ARGVEC(ArgPtr, ArgVec, ArgVec)),
-+PSEUDO_INST_DEF(VecOrStore,         ArgVoid, PSEUDO_INST_ARGVEC(ArgPtr, ArgVec, ArgVec)),
-+PSEUDO_INST_DEF(VecAndStore,        ArgVoid, PSEUDO_INST_ARGVEC(ArgPtr, ArgVec, ArgVec)),
-+PSEUDO_INST_DEF(VecShlStore,        ArgVoid, PSEUDO_INST_ARGVEC(ArgPtr, ArgVec, ArgVec)),
-+PSEUDO_INST_DEF(VecLShrStore,       ArgVoid, PSEUDO_INST_ARGVEC(ArgPtr, ArgVec, ArgVec)),
-+PSEUDO_INST_DEF(VecAShrStore,       ArgVoid, PSEUDO_INST_ARGVEC(ArgPtr, ArgVec, ArgVec)),
-+PSEUDO_INST_DEF(VecAddScalarStore,  ArgVoid, PSEUDO_INST_ARGVEC(ArgPtr, ArgVec, ArgInt)),
-+PSEUDO_INST_DEF(VecSubScalarStore,  ArgVoid, PSEUDO_INST_ARGVEC(ArgPtr, ArgVec, ArgInt)),
-+PSEUDO_INST_DEF(VecMulScalarStore,  ArgVoid, PSEUDO_INST_ARGVEC(ArgPtr, ArgVec, ArgInt)),
-+PSEUDO_INST_DEF(VecXorScalarStore,  ArgVoid, PSEUDO_INST_ARGVEC(ArgPtr, ArgVec, ArgInt)),
-+PSEUDO_INST_DEF(VecOrScalarStore,   ArgVoid, PSEUDO_INST_ARGVEC(ArgPtr, ArgVec, ArgInt)),
-+PSEUDO_INST_DEF(VecAndScalarStore,  ArgVoid, PSEUDO_INST_ARGVEC(ArgPtr, ArgVec, ArgInt)),
-+PSEUDO_INST_DEF(VecShlScalarStore,  ArgVoid, PSEUDO_INST_ARGVEC(ArgPtr, ArgVec, ArgInt)),
-+PSEUDO_INST_DEF(VecLShrScalarStore, ArgVoid, PSEUDO_INST_ARGVEC(ArgPtr, ArgVec, ArgInt)),
-+PSEUDO_INST_DEF(VecAShrScalarStore, ArgVoid, PSEUDO_INST_ARGVEC(ArgPtr, ArgVec, ArgInt)),
-+// Host memory operations
-+//                                                      vaddr,  value   sign    size    endian
-+PSEUDO_INST_DEF(GuestLoad,  ArgInt,  PSEUDO_INST_ARGVEC(ArgInt,         ArgInt, ArgInt, ArgInt)),
-+PSEUDO_INST_DEF(GuestStore, ArgVoid, PSEUDO_INST_ARGVEC(ArgInt, ArgInt,         ArgInt, ArgInt)),
-+// ...
-+PSEUDO_INST_DEF(VecTruncStore,        ArgVoid, PSEUDO_INST_ARGVEC(ArgPtr, ArgVec)),
-+PSEUDO_INST_DEF(VecZExtStore,         ArgVoid, PSEUDO_INST_ARGVEC(ArgPtr, ArgVec)),
-+PSEUDO_INST_DEF(VecSExtStore,         ArgVoid, PSEUDO_INST_ARGVEC(ArgPtr, ArgVec)),
-+PSEUDO_INST_DEF(VecSignedSatAddStore, ArgVoid, PSEUDO_INST_ARGVEC(ArgPtr, ArgVec, ArgVec)),
-+PSEUDO_INST_DEF(VecSignedSatSubStore, ArgVoid, PSEUDO_INST_ARGVEC(ArgPtr, ArgVec, ArgVec)),
-+PSEUDO_INST_DEF(VecSelectStore,       ArgVoid, PSEUDO_INST_ARGVEC(ArgPtr, ArgVec, ArgVec, ArgVec)),
-+PSEUDO_INST_DEF(VecFunnelShrStore,    ArgVoid, PSEUDO_INST_ARGVEC(ArgPtr, ArgVec, ArgVec, ArgVec)),
-+PSEUDO_INST_DEF(VecAbsStore,          ArgVoid, PSEUDO_INST_ARGVEC(ArgPtr, ArgVec)),
-+PSEUDO_INST_DEF(VecSignedMaxStore,    ArgVoid, PSEUDO_INST_ARGVEC(ArgPtr, ArgVec, ArgVec)),
-+PSEUDO_INST_DEF(VecUnsignedMaxStore,  ArgVoid, PSEUDO_INST_ARGVEC(ArgPtr, ArgVec, ArgVec)),
-+PSEUDO_INST_DEF(VecSignedMinStore,    ArgVoid, PSEUDO_INST_ARGVEC(ArgPtr, ArgVec, ArgVec)),
-+PSEUDO_INST_DEF(VecUnsignedMinStore,  ArgVoid, PSEUDO_INST_ARGVEC(ArgPtr, ArgVec, ArgVec)),
-+PSEUDO_INST_DEF(VecCtlzStore,         ArgVoid, PSEUDO_INST_ARGVEC(ArgPtr, ArgVec)),
-+PSEUDO_INST_DEF(VecCttzStore,         ArgVoid, PSEUDO_INST_ARGVEC(ArgPtr, ArgVec)),
-+PSEUDO_INST_DEF(VecCtpopStore,        ArgVoid, PSEUDO_INST_ARGVEC(ArgPtr, ArgVec)),
-+PSEUDO_INST_DEF(VecWideCondBitsel,    ArgVec, PSEUDO_INST_ARGVEC(ArgVec, ArgVec, ArgVec)),
-+PSEUDO_INST_DEF(VecWideCondBitselStore,    ArgVoid, PSEUDO_INST_ARGVEC(ArgPtr, ArgVec, ArgVec, ArgVec)),
-+PSEUDO_INST_DEF(VecCompare,           ArgVec, PSEUDO_INST_ARGVEC(ArgInt, ArgVec, ArgVec)),
-+PSEUDO_INST_DEF(VecSelect,            ArgVec, PSEUDO_INST_ARGVEC(ArgInt, ArgVec, ArgVec)),
++++ b/subprojects/helper-to-tcg/passes/PrepareForTcgPass/PrepareForTcgPass.cpp
+@@ -0,0 +1,25 @@
++//
++//  Copyright(c) 2024 rev.ng Labs Srl. All Rights Reserved.
++//
++//  This program is free software; you can redistribute it and/or modify
++//  it under the terms of the GNU General Public License as published by
++//  the Free Software Foundation; either version 2 of the License, or
++//  (at your option) any later version.
++//
++//  This program is distributed in the hope that it will be useful,
++//  but WITHOUT ANY WARRANTY; without even the implied warranty of
++//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++//  GNU General Public License for more details.
++//
++//  You should have received a copy of the GNU General Public License
++//  along with this program; if not, see <http://www.gnu.org/licenses/>.
++//
 +
-+PSEUDO_INST_DEF(SignExtract,          ArgInt, PSEUDO_INST_ARGVEC(ArgInt, ArgInt, ArgInt)),
-+PSEUDO_INST_DEF(Extract,              ArgInt, PSEUDO_INST_ARGVEC(ArgInt, ArgInt, ArgInt)),
++#include <PrepareForTcgPass.h>
 +
-+PSEUDO_INST_DEF(Exception,            ArgVoid, PSEUDO_INST_ARGVEC(ArgPtr, ArgInt)),
++using namespace llvm;
++
++PreservedAnalyses PrepareForTcgPass::run(Module &M, ModuleAnalysisManager &MAM)
++{
++    return PreservedAnalyses::none();
++}
+diff --git a/subprojects/helper-to-tcg/pipeline/Pipeline.cpp b/subprojects/helper-to-tcg/pipeline/Pipeline.cpp
+index a26b7a7350..7d03389439 100644
+--- a/subprojects/helper-to-tcg/pipeline/Pipeline.cpp
++++ b/subprojects/helper-to-tcg/pipeline/Pipeline.cpp
+@@ -24,6 +24,7 @@
+ #include <llvm/IR/LLVMContext.h>
+ #include <llvm/IR/Module.h>
+ #include <llvm/IR/PassManager.h>
++#include <llvm/IR/Verifier.h>
+ #include <llvm/IRReader/IRReader.h>
+ #include <llvm/InitializePasses.h>
+ #include <llvm/Linker/Linker.h>
+@@ -34,10 +35,12 @@
+ #include <llvm/Support/SourceMgr.h>
+ #include <llvm/Support/TargetSelect.h>
+ #include <llvm/Target/TargetMachine.h>
++#include <llvm/Transforms/Scalar/DCE.h>
+ #include <llvm/Transforms/Scalar/SROA.h>
+ 
+ #include <PrepareForOptPass.h>
+-#include "llvm-compat.h"
++#include <PrepareForTcgPass.h>
++#include <llvm-compat.h>
+ 
+ using namespace llvm;
+ 
+@@ -52,6 +55,13 @@ cl::opt<bool> TranslateAllHelpers(
+     "translate-all-helpers", cl::init(false),
+     cl::desc("Translate all functions starting with helper_*"), cl::cat(Cat));
+ 
++// Options for PrepareForTcgPass
++cl::opt<std::string> TcgGlobalMappingsName(
++    "tcg-global-mappings",
++    cl::desc("<Name of global cpu_mappings[] used for mapping accesses"
++             "into a struct to TCG globals>"),
++    cl::Required, cl::cat(Cat));
++
+ // Define a TargetTransformInfo (TTI) subclass, this allows for overriding
+ // common per-llvm-target information expected by other LLVM passes, such
+ // as the width of the largest scalar/vector registers.  Needed for consistent
+@@ -200,5 +210,19 @@ int main(int argc, char **argv)
+     MPM.addPass(
+         PB.buildModuleOptimizationPipeline(compat::OptimizationLevel::Os));
+ 
++    //
++    // Next, we run our final transformations, including removing phis and our
++    // own instruction combining that prioritizes instructions that map more
++    // easily to TCG.
++    //
++
++    MPM.addPass(PrepareForTcgPass());
++    MPM.addPass(VerifierPass());
++    {
++        FunctionPassManager FPM;
++        FPM.addPass(DCEPass());
++        MPM.addPass(createModuleToFunctionPassAdaptor(std::move(FPM)));
++    }
++
+     return 0;
+ }
 -- 
 2.45.2
 
