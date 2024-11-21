@@ -2,36 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D73A9D4575
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Nov 2024 02:50:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CBA249D458B
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Nov 2024 02:52:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tDwJQ-0005EW-9m; Wed, 20 Nov 2024 20:48:52 -0500
+	id 1tDwK2-0007Wp-46; Wed, 20 Nov 2024 20:49:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1tDwJH-000583-Rq
- for qemu-devel@nongnu.org; Wed, 20 Nov 2024 20:48:43 -0500
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1tDwK0-0007G3-1z
+ for qemu-devel@nongnu.org; Wed, 20 Nov 2024 20:49:28 -0500
 Received: from rev.ng ([94.130.142.21])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1tDwJG-0004mp-GV
- for qemu-devel@nongnu.org; Wed, 20 Nov 2024 20:48:43 -0500
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1tDwJy-0004sv-I8
+ for qemu-devel@nongnu.org; Wed, 20 Nov 2024 20:49:27 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
  s=dkim; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
  Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
  Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
  :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
  List-Post:List-Owner:List-Archive:List-Unsubscribe:List-Unsubscribe-Post:
- List-Help; bh=XQcHvwKeA4tB1CDjW/j9CD6mQBUj91ZRHILJBcsMegA=; b=OPxBex1NZfeN/EC
- wRovIjE4FSRL9AjG+jVw4fn4xV184i4Cfu7lNXifikh0zauwP29m0NKkh3qUVCldYUKwr91du7Noq
- NDSP7vHnOEGBYQpewS/rnHSj+Rp4oqNJoa7zQgchfKp3z6yetuN3K86J37x8hSNr9OCwuM4UXgy12
- fM=;
+ List-Help; bh=v6yNgUtqmAbkKUCCRshTh81ZOJJ3PLSMzGXN2kDgk8Q=; b=xS8Fw53VsdnzzE6
+ YRiEaY0hJrpW902X1vcnNeE6nQ9lUswJNRvHrwUzEme39lYv4HTz7WgVY2KimuNl3sSQijDIcqr2U
+ FlvJyLuajDjmsqmXGWUX5MBp/HBmxAP6DVRMslk2RBTp6zFA42URNpIG8F+BZD7TQr+okFwzgYi4X
+ ik=;
 To: qemu-devel@nongnu.org
 Cc: ale@rev.ng, ltaylorsimpson@gmail.com, bcain@quicinc.com,
  richard.henderson@linaro.org, philmd@linaro.org, alex.bennee@linaro.org
-Subject: [RFC PATCH v1 36/43] target/hexagon: Add temporary vector storage
-Date: Thu, 21 Nov 2024 02:49:40 +0100
-Message-ID: <20241121014947.18666-37-anjo@rev.ng>
+Subject: [RFC PATCH v1 37/43] target/hexagon: Make HVX vector args. restrict *
+Date: Thu, 21 Nov 2024 02:49:41 +0100
+Message-ID: <20241121014947.18666-38-anjo@rev.ng>
 In-Reply-To: <20241121014947.18666-1-anjo@rev.ng>
 References: <20241121014947.18666-1-anjo@rev.ng>
 MIME-Version: 1.0
@@ -62,32 +62,64 @@ From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Temporary vectors in helper-to-tcg generated code are allocated from an
-array of bytes in CPUArchState, specified with --temp-vector-block.
-
-This commits adds such a block of memory to CPUArchState, if
-CONFIG_HELPER_TO_TCG is set.
+If pointer arguments to HVX helper functions are not marked restrict *,
+then LLVM will assume that input vectors may alias and emit runtime
+checks.
 
 Signed-off-by: Anton Johansson <anjo@rev.ng>
 ---
- target/hexagon/cpu.h | 4 ++++
- 1 file changed, 4 insertions(+)
+ target/hexagon/mmvec/macros.h | 36 +++++++++++++++++------------------
+ 1 file changed, 18 insertions(+), 18 deletions(-)
 
-diff --git a/target/hexagon/cpu.h b/target/hexagon/cpu.h
-index 7be4b5769e..fa6ac83e01 100644
---- a/target/hexagon/cpu.h
-+++ b/target/hexagon/cpu.h
-@@ -97,6 +97,10 @@ typedef struct CPUArchState {
-     MMVector future_VRegs[VECTOR_TEMPS_MAX] QEMU_ALIGNED(16);
-     MMVector tmp_VRegs[VECTOR_TEMPS_MAX] QEMU_ALIGNED(16);
+diff --git a/target/hexagon/mmvec/macros.h b/target/hexagon/mmvec/macros.h
+index 1ceb9453ee..dfaefc6b26 100644
+--- a/target/hexagon/mmvec/macros.h
++++ b/target/hexagon/mmvec/macros.h
+@@ -23,26 +23,26 @@
+ #include "mmvec/system_ext_mmvec.h"
  
-+#ifdef CONFIG_HELPER_TO_TCG
-+    uint8_t tmp_vmem[4096] QEMU_ALIGNED(16);
-+#endif
-+
-     MMQReg QRegs[NUM_QREGS] QEMU_ALIGNED(16);
-     MMQReg future_QRegs[NUM_QREGS] QEMU_ALIGNED(16);
+ #ifndef QEMU_GENERATE
+-#define VdV      (*(MMVector *)(VdV_void))
+-#define VsV      (*(MMVector *)(VsV_void))
+-#define VuV      (*(MMVector *)(VuV_void))
+-#define VvV      (*(MMVector *)(VvV_void))
+-#define VwV      (*(MMVector *)(VwV_void))
+-#define VxV      (*(MMVector *)(VxV_void))
+-#define VyV      (*(MMVector *)(VyV_void))
++#define VdV      (*(MMVector * restrict)(VdV_void))
++#define VsV      (*(MMVector * restrict)(VsV_void))
++#define VuV      (*(MMVector * restrict)(VuV_void))
++#define VvV      (*(MMVector * restrict)(VvV_void))
++#define VwV      (*(MMVector * restrict)(VwV_void))
++#define VxV      (*(MMVector * restrict)(VxV_void))
++#define VyV      (*(MMVector * restrict)(VyV_void))
  
+-#define VddV     (*(MMVectorPair *)(VddV_void))
+-#define VuuV     (*(MMVectorPair *)(VuuV_void))
+-#define VvvV     (*(MMVectorPair *)(VvvV_void))
+-#define VxxV     (*(MMVectorPair *)(VxxV_void))
++#define VddV     (*(MMVectorPair * restrict)(VddV_void))
++#define VuuV     (*(MMVectorPair * restrict)(VuuV_void))
++#define VvvV     (*(MMVectorPair * restrict)(VvvV_void))
++#define VxxV     (*(MMVectorPair * restrict)(VxxV_void))
+ 
+-#define QeV      (*(MMQReg *)(QeV_void))
+-#define QdV      (*(MMQReg *)(QdV_void))
+-#define QsV      (*(MMQReg *)(QsV_void))
+-#define QtV      (*(MMQReg *)(QtV_void))
+-#define QuV      (*(MMQReg *)(QuV_void))
+-#define QvV      (*(MMQReg *)(QvV_void))
+-#define QxV      (*(MMQReg *)(QxV_void))
++#define QeV      (*(MMQReg * restrict)(QeV_void))
++#define QdV      (*(MMQReg * restrict)(QdV_void))
++#define QsV      (*(MMQReg * restrict)(QsV_void))
++#define QtV      (*(MMQReg * restrict)(QtV_void))
++#define QuV      (*(MMQReg * restrict)(QuV_void))
++#define QvV      (*(MMQReg * restrict)(QvV_void))
++#define QxV      (*(MMQReg * restrict)(QxV_void))
+ #endif
+ 
+ #define LOG_VTCM_BYTE(VA, MASK, VAL, IDX) \
 -- 
 2.45.2
 
