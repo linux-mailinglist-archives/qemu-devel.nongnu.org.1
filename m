@@ -2,36 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E4649D4587
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Nov 2024 02:52:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E9FF99D4585
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Nov 2024 02:52:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tDwHn-0001ZS-V3; Wed, 20 Nov 2024 20:47:11 -0500
+	id 1tDwHq-0001aJ-00; Wed, 20 Nov 2024 20:47:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1tDwHj-0001YO-Cf
- for qemu-devel@nongnu.org; Wed, 20 Nov 2024 20:47:07 -0500
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1tDwHn-0001ZT-IU
+ for qemu-devel@nongnu.org; Wed, 20 Nov 2024 20:47:11 -0500
 Received: from rev.ng ([94.130.142.21])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1tDwHh-0004X4-Hz
- for qemu-devel@nongnu.org; Wed, 20 Nov 2024 20:47:07 -0500
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1tDwHl-0004X7-Tm
+ for qemu-devel@nongnu.org; Wed, 20 Nov 2024 20:47:11 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
  s=dkim; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
  Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
  Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
  :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
  List-Post:List-Owner:List-Archive:List-Unsubscribe:List-Unsubscribe-Post:
- List-Help; bh=IhruTh9AaaXdYdQ72lpoc2vrYxq8f49r2KLX3qmIYJQ=; b=WnWdMnp+F6RqqVt
- gTSr4vNQ4PKS693vPGgInq9YdBo1GtoEqAKup4qGC0LugIyszVAhe0vGjzdRe/OAwPZEP16uZxpze
- mL8h3BAXpFgRcSAvW7MJpJ8EWasOb5VgSupYD/ZQKkHx0grHMHQgq0FDqLl8mKzCZWf5rvUB1RqqY
- yI=;
+ List-Help; bh=5YVDpLsCIhM0Je0KSsPGzZGsGqGUsmMzfsGlF+C2ZE0=; b=rK/9p6PrysTn5bv
+ g0i1MoWEYfzdeZDxhNyWJcWd+h0KUjtKXBJb9hNA2X38Sb4jF2FpufHNRdYkvcEnDt5IhGK0qKWmG
+ 7VmyaRCZlY+nkLPTWefj/0E4stKWCUrE8hpXBZN+yQJYvlYNSnOrysrzCdcV9FbE1YdigBNRPI67f
+ 1o=;
 To: qemu-devel@nongnu.org
 Cc: ale@rev.ng, ltaylorsimpson@gmail.com, bcain@quicinc.com,
  richard.henderson@linaro.org, philmd@linaro.org, alex.bennee@linaro.org
-Subject: [RFC PATCH v1 09/43] helper-to-tcg: Introduce get-llvm-ir.py
-Date: Thu, 21 Nov 2024 02:49:13 +0100
-Message-ID: <20241121014947.18666-10-anjo@rev.ng>
+Subject: [RFC PATCH v1 10/43] helper-to-tcg: Add meson.build
+Date: Thu, 21 Nov 2024 02:49:14 +0100
+Message-ID: <20241121014947.18666-11-anjo@rev.ng>
 In-Reply-To: <20241121014947.18666-1-anjo@rev.ng>
 References: <20241121014947.18666-1-anjo@rev.ng>
 MIME-Version: 1.0
@@ -62,25 +62,33 @@ From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Introduces a new python helper script to convert a set of QEMU .c files to
-LLVM IR .ll using clang.  Compile flags are found by looking at
-compile_commands.json, and llvm-link is used to link together all LLVM
-modules into a single module.
+Sets up a barebones meson.build that handles:
+
+  1. Exposing command for converting .c files to LLVM IR by looking at
+     compile_commads.json;
+
+  2. Finding LLVM and verifying the LLVM version manually by running
+     llvm-config, needed for dealing with multiple LLVM versions in a
+     sane way;
+
+  3. Building of helper-to-tcg.
+
+A meson option is added to specify the path to llvm-config.
 
 Signed-off-by: Anton Johansson <anjo@rev.ng>
 ---
- subprojects/helper-to-tcg/get-llvm-ir.py | 143 +++++++++++++++++++++++
- 1 file changed, 143 insertions(+)
- create mode 100755 subprojects/helper-to-tcg/get-llvm-ir.py
+ subprojects/helper-to-tcg/meson.build       | 70 +++++++++++++++++++++
+ subprojects/helper-to-tcg/meson_options.txt |  2 +
+ 2 files changed, 72 insertions(+)
+ create mode 100644 subprojects/helper-to-tcg/meson.build
+ create mode 100644 subprojects/helper-to-tcg/meson_options.txt
 
-diff --git a/subprojects/helper-to-tcg/get-llvm-ir.py b/subprojects/helper-to-tcg/get-llvm-ir.py
-new file mode 100755
-index 0000000000..9ee5d0e136
+diff --git a/subprojects/helper-to-tcg/meson.build b/subprojects/helper-to-tcg/meson.build
+new file mode 100644
+index 0000000000..af593ccdfe
 --- /dev/null
-+++ b/subprojects/helper-to-tcg/get-llvm-ir.py
-@@ -0,0 +1,143 @@
-+#!/usr/bin/env python3
-+
++++ b/subprojects/helper-to-tcg/meson.build
+@@ -0,0 +1,70 @@
 +##
 +##  Copyright(c) 2024 rev.ng Labs Srl. All Rights Reserved.
 +##
@@ -98,130 +106,67 @@ index 0000000000..9ee5d0e136
 +##  along with this program; if not, see <http://www.gnu.org/licenses/>.
 +##
 +
-+import argparse
-+import json
-+import os
-+import shlex
-+import sys
-+import subprocess
++project('helper-to-tcg', ['cpp'],
++        meson_version: '>=0.63.0',
++        version: '0.7',
++        default_options: ['cpp_std=none', 'optimization=2'])
 +
++python = import('python').find_installation()
 +
-+def log(msg):
-+    print(msg, file=sys.stderr)
++# Find LLVM using llvm-config manually.  Needed as meson struggles when multiple
++# versions of LLVM are installed on the same system (always returns the most
++# recent).
++llvm_config = get_option('llvm_config_path')
++cpp_args = [run_command(llvm_config, '--cxxflags').stdout().strip().split()]
++bindir = run_command(llvm_config, '--bindir').stdout().strip()
++ldflags = run_command(llvm_config, '--ldflags').stdout().strip().split()
++libs = run_command(llvm_config, '--libs').stdout().strip().split()
++syslibs = run_command(llvm_config, '--system-libs').stdout().strip().split()
++incdir = run_command(llvm_config, '--includedir').stdout().strip().split()
++version = run_command(llvm_config, '--version').stdout().strip()
++version_major = version.split('.')[0].to_int()
 +
++# Check LLVM version manually
++if version_major < 10 or version_major > 14
++    error('LLVM version', version, 'not supported.')
++endif
 +
-+def run_command(command):
-+    proc = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-+    out = proc.communicate()
-+    if proc.wait() != 0:
-+        log(f"Command: {' '.join(command)} exited with {proc.returncode}\n")
-+        log(f"output:\n{out}\n")
++sources = [
++]
 +
++clang = bindir / 'clang'
++llvm_link = bindir / 'llvm-link'
 +
-+def find_compile_commands(compile_commands_path, clang_path, input_path, target):
-+    with open(compile_commands_path, "r") as f:
-+        compile_commands = json.load(f)
-+        for compile_command in compile_commands:
-+            path = compile_command["file"]
-+            if os.path.basename(path) != os.path.basename(input_path):
-+                continue
++get_llvm_ir_cmd = [python, meson.current_source_dir() / 'get-llvm-ir.py',
++                   '--compile-commands', 'compile_commands.json',
++                   '--clang', clang,
++                   '--llvm-link', llvm_link]
 +
-+            os.chdir(compile_command["directory"])
-+            command = compile_command["command"]
++# NOTE: Add -Wno-template-id-cdtor for GCC versions >= 14.  This warning is
++# related to a change in the C++ standard in C++20, that also applies to C++14
++# for some reason. See defect report DR2237 and commit
++#   https://gcc.gnu.org/git/gitweb.cgi?p=gcc.git;h=4b38d56dbac6742b038551a36ec80200313123a1
++# (temporary)
++compiler_info = meson.get_compiler('cpp')
++compiler = compiler_info.get_id()
++compiler_version = compiler_info.version().split('-').get(0)
++compiler_version_major = compiler_version.split('.').get(0)
++if compiler == 'gcc' and compiler_version_major.to_int() >= 14
++    cpp_args += ['-Wno-template-id-cdtor', '-Wno-missing-template-keyword']
++endif
 +
-+            # If building multiple targets there's a chance
-+            # input files share the same path and name.
-+            # This could cause us to find the wrong compile
-+            # command, we use the target path to distinguish
-+            # between these.
-+            if not target in command:
-+                continue
-+
-+            argv = shlex.split(command)
-+            argv[0] = clang_path
-+
-+            return argv
-+
-+    raise ValueError(f"Unable to find compile command for {input_path}")
-+
-+
-+def generate_llvm_ir(
-+    compile_commands_path, clang_path, output_path, input_path, target
-+):
-+    command = find_compile_commands(
-+        compile_commands_path, clang_path, input_path, target
-+    )
-+
-+    flags_to_remove = {
-+        "-ftrivial-auto-var-init=zero",
-+        "-fzero-call-used-regs=used-gpr",
-+        "-Wimplicit-fallthrough=2",
-+        "-Wold-style-declaration",
-+        "-Wno-psabi",
-+        "-Wshadow=local",
-+    }
-+
-+    # Remove
-+    #   - output of makefile rules (-MQ,-MF target);
-+    #   - output of object files (-o target);
-+    #   - excessive zero-initialization of block-scope variables
-+    #     (-ftrivial-auto-var-init=zero);
-+    #   - and any optimization flags (-O).
-+    for i, arg in reversed(list(enumerate(command))):
-+        if arg in {"-MQ", "-o", "-MF"}:
-+            del command[i : i + 2]
-+        elif arg.startswith("-O") or arg in flags_to_remove:
-+            del command[i]
-+
-+    # Define a HELPER_TO_TCG macro for translation units wanting to
-+    # conditionally include or exclude code during translation to TCG.
-+    # Disable optimization (-O0) and make sure clang doesn't emit optnone
-+    # attributes (-disable-O0-optnone) which inhibit further optimization.
-+    # Optimization will be performed at a later stage in the helper-to-tcg
-+    # pipeline.
-+    command += [
-+        "-S",
-+        "-emit-llvm",
-+        "-DHELPER_TO_TCG",
-+        "-O0",
-+        "-Xclang",
-+        "-disable-O0-optnone",
-+    ]
-+    if output_path:
-+        command += ["-o", output_path]
-+
-+    run_command(command)
-+
-+
-+def main():
-+    parser = argparse.ArgumentParser(
-+        description="Produce the LLVM IR of a given .c file."
-+    )
-+    parser.add_argument(
-+        "--compile-commands", required=True, help="Path to compile_commands.json"
-+    )
-+    parser.add_argument("--clang", default="clang", help="Path to clang.")
-+    parser.add_argument("--llvm-link", default="llvm-link", help="Path to llvm-link.")
-+    parser.add_argument("-o", "--output", required=True, help="Output .ll file path")
-+    parser.add_argument(
-+        "--target-path", help="Path to QEMU target dir. (e.q. target/i386)"
-+    )
-+    parser.add_argument("inputs", nargs="+", help=".c file inputs")
-+    args = parser.parse_args()
-+
-+    outputs = []
-+    for input in args.inputs:
-+        output = os.path.basename(input) + ".ll"
-+        generate_llvm_ir(
-+            args.compile_commands, args.clang, output, input, args.target_path
-+        )
-+        outputs.append(output)
-+
-+    run_command([args.llvm_link] + outputs + ["-S", "-o", args.output])
-+
-+
-+if __name__ == "__main__":
-+    sys.exit(main())
++pipeline = executable('helper-to-tcg', sources,
++                      include_directories: ['passes', './', 'include'] + [incdir],
++                      link_args: [ldflags] + [libs] + [syslibs],
++                      cpp_args: cpp_args)
+diff --git a/subprojects/helper-to-tcg/meson_options.txt b/subprojects/helper-to-tcg/meson_options.txt
+new file mode 100644
+index 0000000000..8a4b28a585
+--- /dev/null
++++ b/subprojects/helper-to-tcg/meson_options.txt
+@@ -0,0 +1,2 @@
++option('llvm_config_path', type : 'string', value : 'llvm-config',
++       description: 'override default llvm-config used for finding LLVM')
 -- 
 2.45.2
 
