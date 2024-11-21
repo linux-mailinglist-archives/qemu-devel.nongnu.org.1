@@ -2,93 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F3709D44C4
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Nov 2024 01:04:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A00C79D4566
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Nov 2024 02:48:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tDueo-00079R-I5; Wed, 20 Nov 2024 19:02:50 -0500
+	id 1tDwHj-0001Xs-7F; Wed, 20 Nov 2024 20:47:07 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1tDuem-000799-AU
- for qemu-devel@nongnu.org; Wed, 20 Nov 2024 19:02:48 -0500
-Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1tDuek-00054L-E9
- for qemu-devel@nongnu.org; Wed, 20 Nov 2024 19:02:48 -0500
-Received: by mail-pl1-x634.google.com with SMTP id
- d9443c01a7336-20cb7139d9dso2555315ad.1
- for <qemu-devel@nongnu.org>; Wed, 20 Nov 2024 16:02:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1732147364; x=1732752164; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=Llwyjr3i+PAPO6dJR2Vc1wg3xjbFk6zBmPAWLj6DxAo=;
- b=Iy01PZW7DhCU0h/LZnDnqx3qNuEoQfahad9PGf/LlAYZqp05PAr/vAU1Qsl2kXYnOV
- xpUOKhKcplZnYpef9IcgkZynnaTRFUWjLStr8fP3hR//EFfgJAd3UVbU4sh4wRK8sJeH
- ZfZYs+fpEsxeqFj2N71QHJEmABtka3+SSAnhno17Z9B/nEkqCDdzinGbNdueBjAqXZUH
- 3qjuFvyYZIe8XKTwLXmu35hrPl2gEw5s8hO0GdbeSf9GTwRPb3ntAiA3QsE5lGoPcwev
- VOSyC4byfzMgR/TnRW5gc2CX4ChiWjmufg+O7XI/3gftIcPImEtYwfMrcX2BjRuu5VUH
- rECg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1732147364; x=1732752164;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Llwyjr3i+PAPO6dJR2Vc1wg3xjbFk6zBmPAWLj6DxAo=;
- b=glpnncegrSmyz542Jsq0/rgvgEBtdeiX2Ai3DcruYxYIef7dS+u1NvFpPTrtir+DgI
- YORhdlGpWVt0xWkWnPG3ZqWYNa2Y3VD2ta59toH58ROGF47H+IR8wvKgGSapGGhadklJ
- U3Qw25IXssmLc+vK9UA1YPkH6VkZpFm6VXT3GfW7RVkFcN1QirGm/R2MNTdYQuJkWHQm
- saXMnvXAbefAU0+aPM9JiMxMIuQ0TTPWb8TvFnfCYig1UlCaXvSMPFmd4wR4BzElPM1x
- sp7V7vsOUTX492zuCyYFltjwUE8/mqWoaRnuh1nxDhkFjNnFWqyP++kUXB2sx9lLIk/Y
- aDWA==
-X-Gm-Message-State: AOJu0YxS3goxZoVzyirLkLlrG1OdfobJDIUs5MOMVDu21o+/79waBRfV
- Ndea7zVx2ZFVRTiwhox36iWBZKwGg/l1/aV/kP3mxpL6usyChOiJHr+WWZ84JMhN9VL1Nmp6gcE
- wmso=
-X-Gm-Gg: ASbGnctCJ+ULhVE4p5CRj4pw68vIwpc3/h5FWgNCPoxzR5J9qSliU2q8XS6l0u1qbgC
- 8hPzAp0R+F42aKU+22TtujH+tI4DtDqS0Ed2I8CSfH7fHk74cgc724NVOKpOPr0a9jVhZHXIKnD
- W/KebuYM6WGe/93YGzKRB7vn7hiLCDG71bNzE5C6/PPMhigyy/ql31s1gQ3pSDqH+YjgRq8WhPY
- CSAp2Oe/uXPii12M+JVKJB2iciEMI2TfdY0Fta36l+nv53PXP/n4e25ldD7ePAhx+35Eui3GJav
- QPFRZZdQOEf0SgmHH/oL0A==
-X-Google-Smtp-Source: AGHT+IFitI38wTP7oWyjOs9G/fSKBFHf1TRGwpvZxBVLjq3unN1sdGwfd08lbUMZrUd0Hd2tCys7YQ==
-X-Received: by 2002:a17:902:e84b:b0:212:4d24:5364 with SMTP id
- d9443c01a7336-2126a3737b3mr52095365ad.9.1732147364012; 
- Wed, 20 Nov 2024 16:02:44 -0800 (PST)
-Received: from [192.168.1.67] (216-180-64-156.dyn.novuscom.net.
- [216.180.64.156]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-2128788ababsm1340005ad.4.2024.11.20.16.02.43
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 20 Nov 2024 16:02:43 -0800 (PST)
-Message-ID: <a10c7bf6-38c6-4e69-9b36-0d8422e44908@linaro.org>
-Date: Wed, 20 Nov 2024 16:02:42 -0800
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1tDwHh-0001Wb-7z
+ for qemu-devel@nongnu.org; Wed, 20 Nov 2024 20:47:05 -0500
+Received: from rev.ng ([94.130.142.21])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1tDwHd-0004WB-Ig
+ for qemu-devel@nongnu.org; Wed, 20 Nov 2024 20:47:05 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
+ s=dkim; h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:Cc:
+ To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
+ Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+ In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+ List-Post:List-Owner:List-Archive:List-Unsubscribe:List-Unsubscribe-Post:
+ List-Help; bh=ykf5grKsmyxgbZ5tTfN/O7YybWDBo6LXCa3e2xs639g=; b=FZ8Hkca4x6ZTlwz
+ EUFDklRYtIWXA6UPtidPRGHmlG43iDSTGVvYvQX3YI1yoVAjWEcSUOVycs27BEb4YCZcizd3ckkky
+ FtL59DuwPGWZdpHHOWoRU2U6yMEyG/NHOw9WPg8TX41qUdFqndPY+oEw9TSB08guT1tkOMd1QXfrW
+ H0=;
+To: qemu-devel@nongnu.org
+Cc: ale@rev.ng, ltaylorsimpson@gmail.com, bcain@quicinc.com,
+ richard.henderson@linaro.org, philmd@linaro.org, alex.bennee@linaro.org
+Subject: [RFC PATCH v1 00/43] Introduce helper-to-tcg
+Date: Thu, 21 Nov 2024 02:49:04 +0100
+Message-ID: <20241121014947.18666-1-anjo@rev.ng>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Status of some Arm features
-Content-Language: en-US
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>
-References: <51442716-467b-46c2-b2f7-8ffdeeca320e@linaro.org>
- <CAFEAcA_eL+F572fZpFW2+Tz6xx5Mx5ux-axe3HR_fEf43_GLRA@mail.gmail.com>
- <33af12d7-9269-4c21-96d4-aa76becd0f09@linaro.org>
- <CAFEAcA9YGBxGTOXT0F3eCAVD+pqEa-kLY94GtFKHU31reSb=rQ@mail.gmail.com>
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <CAFEAcA9YGBxGTOXT0F3eCAVD+pqEa-kLY94GtFKHU31reSb=rQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x634.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=94.130.142.21; envelope-from=anjo@rev.ng;
+ helo=rev.ng
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,102 +55,300 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Anton Johansson <anjo@rev.ng>
+From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/19/24 09:14, Peter Maydell wrote:
-> On Tue, 19 Nov 2024 at 16:52, Pierrick Bouvier
-> <pierrick.bouvier@linaro.org> wrote:
->>
->> On 11/19/24 02:09, Peter Maydell wrote:
->>> On Mon, 18 Nov 2024 at 23:33, Pierrick Bouvier
->>> <pierrick.bouvier@linaro.org> wrote:
->>>> I'm currently reviewing the QEMU Arm documentation, and I have a
->>>> question about the status of following features:
->>>>
->>>> 8.0:
->>>> - FEAT_DoubleLock, Double Lock
->>>
->>> This is actually an "anti-feature" :-)  It is optional from v8.0
->>> and it must not be implemented from v9.0. We implement the handling
->>> of it based on the DOUBLELOCK fields in ID_AA64DFR0 and DBGDEVID
->>> (so it does the right thing on older named CPU types) and don't
->>> advertise it in "max".
->>>
->>
->> Despite this singularity on versions implementation, should we list that
->> in our documentation?
-> 
-> Yeah, I think we reasonably could.
-> 
+Hi all, this patchset introduces helper-to-tcg, a LLVM based build-time
+C to TCG translator, as a QEMU subproject.  The purpose of this tool is
+to simplify implementation of instructions in TCG by automatically
+translating helper functions for a given target to TCG.  It may also be
+used as a standalone tool for getting a base TCG implementation for
+complicated instructions.
 
-I'll add it in my upcoming series then.
+See KVM forum 2023 presentation: https://www.youtube.com/watch?v=Gwz0kp7IZPE
 
->>>> 8.2:
->>>> - FEAT_ASMv8p2, Armv8.2 changes to the A64 ISA (bfc and rev64 instructions)
->>>
->>> This isn't a feature for CPU implementations; it's a feature for
->>> assemblers and disassemblers, which have to recognize BFC and
->>> REV64 mnemonics as being ways to write special-case flavours
->>> of the BFM and REV instructions.
->>>
->>
->> Reading the feature description [1] or the A-profile manual:
->> FEAT_ASMv8p2 introduces the BFC instruction to the A64 instruction set
->> as an alias of BFM. It also requires that the BFC instruction and the
->> A64 pseudo-instruction REV64 are implemented by assemblers.
->>
->> I understand it's both introducing the BFC instructions *and also*
->> ensure that BFC and REV64 are implemented by assemblers.
->> Is my interpretation wrong?
-> 
-> For an implementation, there is no BFC instruction. If you look
-> at the Arm ARM entry for BFC, it says "This instruction is an alias
-> of the BFM instruction", which means it exists only for
-> assemblers and disassemblers and assembly authors.
-> (And if you look at the BFM instruction, there is no subset of the
-> encoding that is gated on any feature; so there is no extra
-> behaviour of BFM that got added here.)
-> 
+helper-to-tcg is also applied to the Hexagon frontend, managing to
+translate 1270 instructions, 160 of which are HVX instructions.  For the
+time being, idef-parser remains translating 289 instructions consisting
+mostly of complicated load instructions.  This count will be reduced
+over time until idef-parser can be deprecated.
 
-Thanks, I have been confused by the presence of BFCI and BFM 
-instructions, making me think we implemented something specific.
-It's more clear now.
+As an example, consider the following helper function implementation of
+a Hexagon instruction for performing a 2-element scalar product, using
+signed saturated arithmetic
 
-> These "alias" instructions are there to make the assembly be
-> a bit easier to read. The only unusual thing about this alias
-> is that it wasn't in the architecture right from the start,
-> which I think is why it got a FEAT_ name: to flag up that
-> if you're writing asm or if you're an assembler author then
-> you need to do something here. But if you're creating an
-> implementation of a CPU, then there's nothing to do, because
-> you already implemented the handling of BFM as part of ARMv8.0.
-> 
-> For an example of an alias that was present from v8.0, look
-> at "MOV (to/from SP)". This is an "ADD (immediate)" instruction
-> under the hood, but you can write it in assembly source as
-> "MOV SP, Xn", and the assembler will put in the same bit pattern
-> as if you'd written "ADD SP, Xn, #0". In QEMU (or in a hardware
-> implementation) we don't need to do anything for "MOV SP, Xn",
-> because our implementation of "ADD (imm)" will catch it.
->
+  void HELPER(V6_vdmpyhvsat)(CPUHexagonState *env,
+                             void * restrict VdV_void,
+                             void * restrict VuV_void,
+                             void * restrict VvV_void)
+  {
+      fVFOREACH(32, i) {
+          size8s_t accum = fMPY16SS(fGETHALF(0,VuV.w[i]),fGETHALF(0, VvV.w[i]));
+          accum += fMPY16SS(fGETHALF(1,VuV.w[i]),fGETHALF(1, VvV.w[i]));
+          VdV.w[i] = fVSATW(accum);
+      }
+  }
 
-Got it, thanks.
+which at the end of the helper-to-tcg pipeline will have been converted
+to the following LLVM IR
 
->>>> 8.4:
->>>> - FEAT_CNTSC, Generic Counter Scaling (hw/timer/sse-counter.c)
->>>
->>> This is optional, and we don't implement it yet. (There's an
->>> open ticket for it in Linaro JIRA at
->>> https://linaro.atlassian.net/browse/QEMU-309 )
->>>
->>
->> Ok. For my personal knowledge, does the implementation in
->> hw/timer/sse-counter.c is related to it?
-> 
-> I elaborated a bit on that in my other email -- they're
-> doing a similar thing, but sse-counter.c is M-profile.
-> 
-> -- PMM
+  define void @helper_V6_vdmpyhvsat(%struct.CPUArchState* %0,
+                                    i8* %1, i8* %2, i8* %3) {
+      %4 = bitcast i8* %2 to <32 x i32>*
+      %wide.load = load <32 x i32>, <32 x i32>* %4
+      %5 = call <32 x i32> @VecShlScalar(<32 x i32> %wide.load, i32 16)
+      %6 = call <32 x i32> @VecAShrScalar(<32 x i32> %5, i32 16)
+      %7 = bitcast i8* %3 to <32 x i32>*
+      %wide.load23 = load <32 x i32>, <32 x i32>* %7
+      %8 = call <32 x i32> @VecShlScalar(<32 x i32> %wide.load23, i32 16)
+      %9 = call <32 x i32> @VecAShrScalar(<32 x i32> %8, i32 16)
+      %10 = mul nsw <32 x i32> %9, %6
+      %11 = call <32 x i32> @VecAShrScalar(<32 x i32> %wide.load, i32 16)
+      %12 = call <32 x i32> @VecAShrScalar(<32 x i32> %wide.load23, i32 16)
+      %13 = mul nsw <32 x i32> %12, %11
+      %14 = bitcast i8* %1 to <32 x i32>*
+      ret void
+  }
+
+which, in TCG, gets emitted as
+
+  void emit_V6_vdmpyhvsat(TCGv_env env, intptr_t vec3,
+                          intptr_t vec7, intptr_t vec6) {
+      VectorMem mem = {0};
+      intptr_t vec0 = temp_new_gvec(&mem, 128);
+      tcg_gen_gvec_shli(MO_32, vec0, vec7, 16, 128, 128);
+      intptr_t vec5 = temp_new_gvec(&mem, 128);
+      tcg_gen_gvec_sari(MO_32, vec5, vec0, 16, 128, 128);
+      intptr_t vec1 = temp_new_gvec(&mem, 128);
+      tcg_gen_gvec_shli(MO_32, vec1, vec6, 16, 128, 128);
+      tcg_gen_gvec_sari(MO_32, vec1, vec1, 16, 128, 128);
+      tcg_gen_gvec_mul(MO_32, vec1, vec1, vec5, 128, 128);
+      intptr_t vec2 = temp_new_gvec(&mem, 128);
+      tcg_gen_gvec_sari(MO_32, vec2, vec7, 16, 128, 128);
+      tcg_gen_gvec_sari(MO_32, vec0, vec6, 16, 128, 128);
+      tcg_gen_gvec_mul(MO_32, vec2, vec0, vec2, 128, 128);
+      tcg_gen_gvec_ssadd(MO_32, vec3, vec1, vec2, 128, 128);
+  }
+
+consisting of a few vectorized shifts, multiplications, and a signed
+saturated add.
+
+For a more in-depth usage guide see `subprojects/helper-to-tcg/README.md`.
+
+Limitations:
+  * Currently LLVM versions 10-14 are supported, with support for 15+
+    being in the works.
+
+  * Exceeding TB size, for complicated vector instructions with a large
+    amount of gvec instrucions, the TB size of 128 longs can sometimes
+    be exceeded. Particularly on Hexagon with instruction packets.
+
+  * Does not handle functions with multiple return values. On Hexagon,
+    a large set of instructions still translated by idef-parser fall
+    into this category.
+
+Patchset overview:
+  1. helper-to-tcg (patches 9-31) - Introduces the actual translator as
+     a QEMU subproject.
+
+  2. Fills gaps in TCG instructions (patches 2,3,4) - Since the tool is
+     LLVM based it allows for translation of vector instructions to gvec
+     instructions in Tinycode. This requires the introduction of a few
+     new tcg_gen_gvec_*() functions for dealing with sign- and
+     zero-extension, along with a function for initializing a vector to
+     a constant, and functions for bitreversal and funnel shift.
+
+  3. Automatic calling of generated code (patch 5) - To simplify
+     integration into existing frontends gen_helper_*() calls for
+     non-vector instructions can automatically be hooked to call emitted
+     code for translated helper functions.  This works by allowing
+     targets to define a "helper_dispatcher" function that gets called
+     from tcg_gen_callN(), and can override helper function calls.
+     helper-to-tcg can emit such a dispatcher which calls generated
+     code.
+
+  4. Mapping of cpu state (patch 6) - helper-to-tcg needs information
+     about the offsets of fields in the cpu state that correspond to TCG
+     globals, so these can be emitted in the output code.  For this
+     purpose, a target may define an array of `struct cpu_tcg_mapping`
+     to map fields in the cpu state to TCG globals in a declarative way.
+     This global array can be parsed by helper-to-tcg, and replaces
+     manually calling tcg_global_mem_new*() in frontend.
+
+  5. Increases max size of generated TB code (patch 7) - Due to the
+     power of the LLVM auto-vectorizer, helper-to-tcg can emit quite
+     complicated vectorized gvec code.  Particularly for Hexagon where a
+     single instruction packet can consist of multiple vector
+     instructions.  A single instruction packet can in rare cases exceed
+     the TB buffer size of 128 longs.
+
+  6. Applies helper-to-tcg to Hexagon (patches 34-43) - helper-to-tcg is
+     used on the Hexagon frontend to translate a majority of helper
+     functions in place of idef-parser.  For the time being idef-parser
+     will remain in use to translate instructions with multiple return
+     values that are not representable as helper functions and therefore
+     translatable with helper-to-tcg.
+
+Anton Johansson (43):
+  Add option to enable/disable helper-to-tcg
+  accel/tcg: Add bitreverse and funnel-shift runtime helper functions
+  accel/tcg: Add gvec size changing operations
+  tcg: Add gvec functions for creating consant vectors
+  tcg: Add helper function dispatcher and hook tcg_gen_callN
+  tcg: Introduce tcg-global-mappings
+  tcg: Increase maximum TB size and maximum temporaries
+  include/helper-to-tcg: Introduce annotate.h
+  helper-to-tcg: Introduce get-llvm-ir.py
+  helper-to-tcg: Add meson.build
+  helper-to-tcg: Introduce llvm-compat
+  helper-to-tcg: Introduce custom LLVM pipeline
+  helper-to-tcg: Introduce Error.h
+  helper-to-tcg: Introduce PrepareForOptPass
+  helper-to-tcg: PrepareForOptPass, map annotations
+  helper-to-tcg: PrepareForOptPass, Cull unused functions
+  helper-to-tcg: PrepareForOptPass, undef llvm.returnaddress
+  helper-to-tcg: PrepareForOptPass, Remove noinline attribute
+  helper-to-tcg: Pipeline, run optimization pass
+  helper-to-tcg: Introduce pseudo instructions
+  helper-to-tcg: Introduce PrepareForTcgPass
+  helper-to-tcg: PrepareForTcgPass, remove functions w. cycles
+  helper-to-tcg: PrepareForTcgPass, demote phi nodes
+  helper-to-tcg: PrepareForTcgPass, map TCG globals
+  helper-to-tcg: PrepareForTcgPass, transform GEPs
+  helper-to-tcg: PrepareForTcgPass, canonicalize IR
+  helper-to-tcg: PrepareForTcgPass, identity map trivial expressions
+  helper-to-tcg: Introduce TcgType.h
+  helper-to-tcg: Introduce TCG register allocation
+  helper-to-tcg: TcgGenPass, introduce TcgEmit.[cpp|h]
+  helper-to-tcg: Introduce TcgGenPass
+  helper-to-tcg: Add README
+  helper-to-tcg: Add end-to-end tests
+  target/hexagon: Add get_tb_mmu_index()
+  target/hexagon: Use argparse in all python scripts
+  target/hexagon: Add temporary vector storage
+  target/hexagon: Make HVX vector args. restrict *
+  target/hexagon: Use cpu_mapping to map env -> TCG
+  target/hexagon: Keep gen_slotval/check_noshuf for helper-to-tcg
+  target/hexagon: Emit annotations for helpers
+  target/hexagon: Manually call generated HVX instructions
+  target/hexagon: Only translate w. idef-parser if helper-to-tcg failed
+  target/hexagon: Use helper-to-tcg
+
+ accel/tcg/tcg-runtime-gvec.c                  |   41 +
+ accel/tcg/tcg-runtime.c                       |   29 +
+ accel/tcg/tcg-runtime.h                       |   27 +
+ accel/tcg/translate-all.c                     |    4 +
+ include/helper-to-tcg/annotate.h              |   28 +
+ include/tcg/tcg-global-mappings.h             |  111 +
+ include/tcg/tcg-op-gvec-common.h              |   20 +
+ include/tcg/tcg.h                             |    8 +-
+ meson.build                                   |    7 +
+ meson_options.txt                             |    2 +
+ scripts/meson-buildoptions.sh                 |    5 +
+ subprojects/helper-to-tcg/README.md           |  265 +++
+ subprojects/helper-to-tcg/get-llvm-ir.py      |  143 ++
+ .../helper-to-tcg/include/CmdLineOptions.h    |   38 +
+ subprojects/helper-to-tcg/include/Error.h     |   40 +
+ .../include/FunctionAnnotation.h              |   54 +
+ .../helper-to-tcg/include/PrepareForOptPass.h |   42 +
+ .../helper-to-tcg/include/PrepareForTcgPass.h |   32 +
+ .../helper-to-tcg/include/TcgGlobalMap.h      |   31 +
+ subprojects/helper-to-tcg/meson.build         |   84 +
+ subprojects/helper-to-tcg/meson_options.txt   |    2 +
+ .../PrepareForOptPass/PrepareForOptPass.cpp   |  260 +++
+ .../PrepareForTcgPass/CanonicalizeIR.cpp      | 1000 +++++++++
+ .../passes/PrepareForTcgPass/CanonicalizeIR.h |   25 +
+ .../passes/PrepareForTcgPass/IdentityMap.cpp  |   80 +
+ .../passes/PrepareForTcgPass/IdentityMap.h    |   39 +
+ .../PrepareForTcgPass/PrepareForTcgPass.cpp   |  134 ++
+ .../PrepareForTcgPass/TransformGEPs.cpp       |  286 +++
+ .../passes/PrepareForTcgPass/TransformGEPs.h  |   37 +
+ .../helper-to-tcg/passes/PseudoInst.cpp       |  142 ++
+ subprojects/helper-to-tcg/passes/PseudoInst.h |   63 +
+ .../helper-to-tcg/passes/PseudoInst.inc       |   76 +
+ .../helper-to-tcg/passes/backend/TcgEmit.cpp  | 1074 ++++++++++
+ .../helper-to-tcg/passes/backend/TcgEmit.h    |  290 +++
+ .../passes/backend/TcgGenPass.cpp             | 1812 +++++++++++++++++
+ .../helper-to-tcg/passes/backend/TcgGenPass.h |   57 +
+ .../passes/backend/TcgTempAllocationPass.cpp  |  594 ++++++
+ .../passes/backend/TcgTempAllocationPass.h    |   79 +
+ .../helper-to-tcg/passes/backend/TcgType.h    |  133 ++
+ .../helper-to-tcg/passes/llvm-compat.cpp      |  162 ++
+ .../helper-to-tcg/passes/llvm-compat.h        |  143 ++
+ .../helper-to-tcg/pipeline/Pipeline.cpp       |  297 +++
+ subprojects/helper-to-tcg/tests/cpustate.c    |   45 +
+ subprojects/helper-to-tcg/tests/ldst.c        |   17 +
+ subprojects/helper-to-tcg/tests/meson.build   |   24 +
+ subprojects/helper-to-tcg/tests/scalar.c      |   15 +
+ .../helper-to-tcg/tests/tcg-global-mappings.h |  115 ++
+ subprojects/helper-to-tcg/tests/vector.c      |   26 +
+ target/hexagon/cpu.h                          |   16 +
+ target/hexagon/gen_analyze_funcs.py           |    6 +-
+ target/hexagon/gen_decodetree.py              |   19 +-
+ target/hexagon/gen_helper_funcs.py            |   24 +-
+ target/hexagon/gen_helper_protos.py           |    9 +-
+ target/hexagon/gen_idef_parser_funcs.py       |   17 +-
+ target/hexagon/gen_op_attribs.py              |   11 +-
+ target/hexagon/gen_opcodes_def.py             |   11 +-
+ target/hexagon/gen_printinsn.py               |   11 +-
+ target/hexagon/gen_tcg_func_table.py          |   11 +-
+ target/hexagon/gen_tcg_funcs.py               |   24 +-
+ target/hexagon/gen_trans_funcs.py             |   17 +-
+ target/hexagon/genptr.c                       |    2 +-
+ target/hexagon/hex_common.py                  |  138 +-
+ target/hexagon/meson.build                    |  151 +-
+ target/hexagon/mmvec/macros.h                 |   36 +-
+ target/hexagon/op_helper.c                    |    3 +-
+ target/hexagon/translate.c                    |  116 +-
+ tcg/meson.build                               |    1 +
+ tcg/tcg-global-mappings.c                     |   61 +
+ tcg/tcg-op-gvec.c                             |  108 +
+ tcg/tcg.c                                     |    5 +
+ 70 files changed, 8662 insertions(+), 173 deletions(-)
+ create mode 100644 include/helper-to-tcg/annotate.h
+ create mode 100644 include/tcg/tcg-global-mappings.h
+ create mode 100644 subprojects/helper-to-tcg/README.md
+ create mode 100755 subprojects/helper-to-tcg/get-llvm-ir.py
+ create mode 100644 subprojects/helper-to-tcg/include/CmdLineOptions.h
+ create mode 100644 subprojects/helper-to-tcg/include/Error.h
+ create mode 100644 subprojects/helper-to-tcg/include/FunctionAnnotation.h
+ create mode 100644 subprojects/helper-to-tcg/include/PrepareForOptPass.h
+ create mode 100644 subprojects/helper-to-tcg/include/PrepareForTcgPass.h
+ create mode 100644 subprojects/helper-to-tcg/include/TcgGlobalMap.h
+ create mode 100644 subprojects/helper-to-tcg/meson.build
+ create mode 100644 subprojects/helper-to-tcg/meson_options.txt
+ create mode 100644 subprojects/helper-to-tcg/passes/PrepareForOptPass/PrepareForOptPass.cpp
+ create mode 100644 subprojects/helper-to-tcg/passes/PrepareForTcgPass/CanonicalizeIR.cpp
+ create mode 100644 subprojects/helper-to-tcg/passes/PrepareForTcgPass/CanonicalizeIR.h
+ create mode 100644 subprojects/helper-to-tcg/passes/PrepareForTcgPass/IdentityMap.cpp
+ create mode 100644 subprojects/helper-to-tcg/passes/PrepareForTcgPass/IdentityMap.h
+ create mode 100644 subprojects/helper-to-tcg/passes/PrepareForTcgPass/PrepareForTcgPass.cpp
+ create mode 100644 subprojects/helper-to-tcg/passes/PrepareForTcgPass/TransformGEPs.cpp
+ create mode 100644 subprojects/helper-to-tcg/passes/PrepareForTcgPass/TransformGEPs.h
+ create mode 100644 subprojects/helper-to-tcg/passes/PseudoInst.cpp
+ create mode 100644 subprojects/helper-to-tcg/passes/PseudoInst.h
+ create mode 100644 subprojects/helper-to-tcg/passes/PseudoInst.inc
+ create mode 100644 subprojects/helper-to-tcg/passes/backend/TcgEmit.cpp
+ create mode 100644 subprojects/helper-to-tcg/passes/backend/TcgEmit.h
+ create mode 100644 subprojects/helper-to-tcg/passes/backend/TcgGenPass.cpp
+ create mode 100644 subprojects/helper-to-tcg/passes/backend/TcgGenPass.h
+ create mode 100644 subprojects/helper-to-tcg/passes/backend/TcgTempAllocationPass.cpp
+ create mode 100644 subprojects/helper-to-tcg/passes/backend/TcgTempAllocationPass.h
+ create mode 100644 subprojects/helper-to-tcg/passes/backend/TcgType.h
+ create mode 100644 subprojects/helper-to-tcg/passes/llvm-compat.cpp
+ create mode 100644 subprojects/helper-to-tcg/passes/llvm-compat.h
+ create mode 100644 subprojects/helper-to-tcg/pipeline/Pipeline.cpp
+ create mode 100644 subprojects/helper-to-tcg/tests/cpustate.c
+ create mode 100644 subprojects/helper-to-tcg/tests/ldst.c
+ create mode 100644 subprojects/helper-to-tcg/tests/meson.build
+ create mode 100644 subprojects/helper-to-tcg/tests/scalar.c
+ create mode 100644 subprojects/helper-to-tcg/tests/tcg-global-mappings.h
+ create mode 100644 subprojects/helper-to-tcg/tests/vector.c
+ create mode 100644 tcg/tcg-global-mappings.c
+
+-- 
+2.45.2
 
 
