@@ -2,93 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAFB49D513B
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Nov 2024 18:04:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E0B69D5175
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Nov 2024 18:15:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tEAYv-0000ba-0X; Thu, 21 Nov 2024 12:01:49 -0500
+	id 1tEAle-0008J0-Ek; Thu, 21 Nov 2024 12:14:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1tEAYK-0008Hi-HD
- for qemu-devel@nongnu.org; Thu, 21 Nov 2024 12:01:18 -0500
-Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tEAlb-0008CO-Ui
+ for qemu-devel@nongnu.org; Thu, 21 Nov 2024 12:14:55 -0500
+Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1tEAYI-0000NK-Mi
- for qemu-devel@nongnu.org; Thu, 21 Nov 2024 12:01:12 -0500
-Received: by mail-pf1-x434.google.com with SMTP id
- d2e1a72fcca58-724d8422dbaso463085b3a.0
- for <qemu-devel@nongnu.org>; Thu, 21 Nov 2024 09:01:09 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tEAlW-0003eT-Mc
+ for qemu-devel@nongnu.org; Thu, 21 Nov 2024 12:14:55 -0500
+Received: by mail-wr1-x42b.google.com with SMTP id
+ ffacd0b85a97d-382442b7d9aso997772f8f.1
+ for <qemu-devel@nongnu.org>; Thu, 21 Nov 2024 09:14:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1732208468; x=1732813268; darn=nongnu.org;
+ d=linaro.org; s=google; t=1732209289; x=1732814089; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=a/SRHG0Qm+evxtGHer1XfiTBuuTPjZsZSaIQJSlpRu0=;
- b=dMsJyQp49Ir/aAkz/LxYhGe4R2oCsHRGUQFjLrkHD0cbmz3cMkUnVgYNz50PlIIVP3
- I8sEGq7TP+m4DMRZaF3fQyFnUehdbYAjnXMfUoPKdfYhGpS3CIqLVW0KmE+vkgtBKokA
- 6ot3s969SS0vnKOEmZiFv1bDXukBGHd0e92XFfGHCXaWJ2v8d2cU25SWtnlVtQxnyYj4
- hPY1XQwrqrYDuOCIyOtfDwZK+KKXtEfkASCMRAK8x6c47w1kthp7aIApVw+SQUFX42Ru
- lDrkNMQ12IxcFcSk/K8VCjBV3cmOjsMCxehkLvRKU2y4l9Y83FFdNy++b9CH1m+GoeNB
- B8dg==
+ bh=1jRM3SbL2Xoxq1lgpfB4HaF+zi4Ki5mT+NgJ7XmAcb8=;
+ b=iPuKk0poh+j7GnFFz5VxpJKjpbuwtjnhDKPcvpl38yqFmO+KTYgiQ2ybinb17Kin49
+ t9tW4VbeK4NVGyX5w9ITVe593/i+EG3d9unt8IHsItvsmy8c27c6kDrZSf8vyETuPoOC
+ Is8Bu5GXXkDvqsU1DV5NCkjPZZU0b8RAp31wg7hg1KMSRp3vtOgPu6uIEel8oEwv/vQP
+ p7AazgW3HXw3AkavPh1RXOvO222Q/iBBnohLVxqNXjxuFJs8+kTVQs25ny2sbEF6tz8a
+ UUt4rgwImp0PrzcXFjw8kV0Uxqw5UdnYyct5N9/nib1ekt1S4Zuti3c6tDZNcygqGUia
+ Lbpg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1732208468; x=1732813268;
+ d=1e100.net; s=20230601; t=1732209289; x=1732814089;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=a/SRHG0Qm+evxtGHer1XfiTBuuTPjZsZSaIQJSlpRu0=;
- b=kiW4lTruTKm8+g3HJBhD6rytwUhxr54s9jCbbZUTIxHk/ovWHKlJwQEH4Om+1/6RxY
- +2dNMS+dj7iipZ3LAw3mRRb3UdBxvUEyWqQphEX0VbhO3jjNUOCLZetUJF5mkq9AL2ug
- MT1gfwP+TlxzD5in7dbWwLfzthqDK6pw+1aBhCzgxnEPLt/mrn4zOk+qq5v0jwVocwJq
- tV6RHC1FHw2e559Pg5tWkkNzH8sBO2g8QpbmjLMFiN47qgTn/b/iLypOe5OTlPQhMf6t
- CoGgSA+uHpdIhIW9RCXgGJz54S63tEfWjQF+TKZBNOjkEque7SNl7qGCcIegdCIDbn63
- 6vlg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXL/g2hQPgpInY59QYKuRlH1FjDQITLC/AnSCJOW/chZdcC2EufspCm4hYOeb+ygv4JAQWAFpvAx+4B@nongnu.org
-X-Gm-Message-State: AOJu0YwCsgXaZFLyxUPEuYjqELzVEZObwYryt+mvaOuKsM5sPNR24WaH
- 5myL+xKrl96szwEsXW3DSp/YWhWfaWvPGlYfJHwvMYi8Q9U9M4w20ERTnOAzDientaQjitWXhBe
- c
-X-Gm-Gg: ASbGncuwyVgUKgmurD/chtEygIVpUAFFjY5+3NTIG1MHgBLghCiAaycWDpAfUms5ndI
- jywR6sUDgS/nV4/5VZOPhgCw2hqE+1xhl4nj/QE1CvUyPaYd/l8thsm+XK+1OzkKUFu6QtPJav/
- SK1NYdvBaJfIQu6mDnDZLUQb7cFvWwBqkgXkbhI0M54/PRSsdVRAqfA5UaqsjIGLsI98r0ZQXYb
- EatpspejtBZStmNzDr9v8AJF30+KTcsss5KH/677yk89BqX0MuE1Ppwz3Cwxm0=
-X-Google-Smtp-Source: AGHT+IHkEmSesM0qr6Vyj7HhE+kyj/wkScd4nnFvainIppA27H5wKVlKlJkX8ng3E5q0rEgg3cBCrQ==
-X-Received: by 2002:a05:6a00:882:b0:71e:ed6:1cab with SMTP id
- d2e1a72fcca58-724bed9d162mr8417537b3a.26.1732208468096; 
- Thu, 21 Nov 2024 09:01:08 -0800 (PST)
-Received: from [192.168.68.110] ([187.101.65.72])
+ bh=1jRM3SbL2Xoxq1lgpfB4HaF+zi4Ki5mT+NgJ7XmAcb8=;
+ b=Lt2HvA5DbD9uHDR5Lsrfyt4yZwBg++0BGB7IM6RZjk4kokILnTna4l5injOPCizvcm
+ TbnCOT9dgNy/Mq+A7e95yhENsXx6Xk7kHBm8cyqBXfTv1iACpi2xIehIjsIRwTQpasMW
+ b5E42NiBLA13f1ui3/ScNW5QHis2eP8qR8P6XI58ZLMXziWj/EXax4j2efPXOZ82HOTm
+ JUAqofEi5p8/LvjqizsOs58CldG0HYb1+gmx7zDrWqEJ+KYPqeZzDjOIH/+cLDay0wnT
+ xTu9igkGzgEKf3wn+UcMchlbqgQXlMZI8EpFCJ/AOw5wxOH0bzWNMfHx2OG+cyb0zeJK
+ cxJg==
+X-Gm-Message-State: AOJu0YzOjJzLqO+feqIJ/o89YrM8lWJSq8R6Qh2mcrVh1jKYIAWk2OWK
+ 6yC7Pbc3XRiY9AWQjMdCmvos8VY9copTyEdrt+IgaMd1PU9a+WIlbXiEkT3a8wM=
+X-Gm-Gg: ASbGncsi26o01kc60JYS/VlR8+OWQMe4a9IY/kSdj4WIsPcERtAm9y6JxhsKZPIdw5c
+ dszkbKZ04oe2vFwPua1xDEGmdseBxXJzKE7/xM40nCbfsL7KJIJAKuPYX6pM21Na5oJtUrKbTx4
+ 1SeFHEgO/6GB8vokpS1s5ud+/lL+kgKjn4gVqGmh//VIRfsnCyt9MwDaDNd35CUqYWd0Q6agQSC
+ rGsXBu49YRfVKHpT0EcQ305ZP4i1IsjMujPagRCnZ0cJTb+Fij4bMlGK1VfQuXK
+X-Google-Smtp-Source: AGHT+IEc/r7dJx8PwhuQUDtSYCOFEJ3DJUcEFDvPnIeulnpDu3V95N2AeBLgj3cMHVOwe9lZex0WLw==
+X-Received: by 2002:a5d:47af:0:b0:382:44e0:c5e9 with SMTP id
+ ffacd0b85a97d-38254af9c4fmr5797178f8f.25.1732209288794; 
+ Thu, 21 Nov 2024 09:14:48 -0800 (PST)
+Received: from [192.168.69.197] ([176.187.204.90])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-724dda236afsm63760b3a.107.2024.11.21.09.01.04
+ ffacd0b85a97d-3825fafe338sm71258f8f.33.2024.11.21.09.14.46
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 21 Nov 2024 09:01:07 -0800 (PST)
-Message-ID: <a96cc560-b43e-43df-a352-17805c614747@ventanamicro.com>
-Date: Thu, 21 Nov 2024 14:01:03 -0300
+ Thu, 21 Nov 2024 09:14:47 -0800 (PST)
+Message-ID: <2c5fb523-d146-4629-8fad-125011b518d6@linaro.org>
+Date: Thu, 21 Nov 2024 18:14:45 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v7 2/2] tests/qtest: QTest example for RISC-V CSR
- register
-To: Ivan Klokov <ivan.klokov@syntacore.com>, qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, palmer@dabbelt.com, alistair.francis@wdc.com,
- bmeng.cn@gmail.com, liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com,
- farosas@suse.de, lvivier@redhat.com, pbonzini@redhat.com
-References: <20241120072712.65302-1-ivan.klokov@syntacore.com>
- <20241120072712.65302-3-ivan.klokov@syntacore.com>
+Subject: Re: [PATCH 06/12] hw/ppc: Explicitly create the drc container
+To: Peter Xu <peterx@redhat.com>
+Cc: qemu-devel@nongnu.org, Eduardo Habkost <eduardo@habkost.net>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Markus Armbruster <armbru@redhat.com>,
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ Juraj Marcin <jmarcin@redhat.com>, =?UTF-8?Q?C=C3=A9dric_Le_Goater?=
+ <clg@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Fabiano Rosas <farosas@suse.de>, Nicholas Piggin <npiggin@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>, qemu-ppc@nongnu.org
+References: <20241120215703.3918445-1-peterx@redhat.com>
+ <20241120215703.3918445-7-peterx@redhat.com>
+ <66301003-f2cd-4a0a-8951-cbfdcb1c398b@linaro.org> <Zz9hnEj3xQnOoM0c@x1n>
 Content-Language: en-US
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <20241120072712.65302-3-ivan.klokov@syntacore.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <Zz9hnEj3xQnOoM0c@x1n>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pf1-x434.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,96 +105,95 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-
-On 11/20/24 4:27 AM, Ivan Klokov wrote:
-> Added demo for reading CSR register from qtest environment.
+On 21/11/24 17:36, Peter Xu wrote:
+> On Thu, Nov 21, 2024 at 10:35:39AM +0100, Philippe Mathieu-Daudé wrote:
+>> Hi Peter,
+>>
+>> On 20/11/24 22:56, Peter Xu wrote:
+>>> QEMU will start to not rely on implicit creations of containers soon.  Make
+>>> PPC drc devices follow by explicitly create the container whenever a drc
+>>> device is realized, dropping container_get() calls.
+>>>
+>>> No functional change intended.
+>>>
+>>> Cc: Nicholas Piggin <npiggin@gmail.com>
+>>> Cc: Daniel Henrique Barboza <danielhb413@gmail.com>
+>>> Cc: Harsh Prateek Bora <harshpb@linux.ibm.com>
+>>> Cc: qemu-ppc@nongnu.org
+>>> Signed-off-by: Peter Xu <peterx@redhat.com>
+>>> ---
+>>>    hw/ppc/spapr_drc.c | 40 ++++++++++++++++++++++++++++++----------
+>>>    1 file changed, 30 insertions(+), 10 deletions(-)
+>>
+>>
+>>> +static GOnce drc_container_created = G_ONCE_INIT;
+>>> +
+>>> +static gpointer drc_container_create(gpointer unused G_GNUC_UNUSED)
+>>> +{
+>>> +    container_create(object_get_root(), DRC_CONTAINER_PATH);
+>>> +    return NULL;
+>>> +}
+>>> +
+>>> +static Object *drc_container_get(void)
+>>> +{
+>>> +    return object_resolve_path_component(
+>>> +        object_get_root(), DRC_CONTAINER_PATH);
+>>> +}
+>>> +
+>>> +/* TODO: create the container in an ppc init function */
+>>> +static void drc_container_create_once(void)
+>>> +{
+>>> +    g_once(&drc_container_created, drc_container_create, NULL);
+>>> +}
+>>> +
+>>>    static void drc_realize(DeviceState *d, Error **errp)
+>>>    {
+>>>        SpaprDrc *drc = SPAPR_DR_CONNECTOR(d);
+>>> @@ -521,6 +541,9 @@ static void drc_realize(DeviceState *d, Error **errp)
+>>>        Object *root_container;
+>>>        const char *child_name;
+>>> +    /* Whenever a DRC device is realized, create the container */
+>>> +    drc_container_create_once();
+>>
+>> Can't we just create it once in spapr_dr_connector_class_init(),
+>> removing the G_ONCE_INIT need?
 > 
-> Signed-off-by: Ivan Klokov <ivan.klokov@syntacore.com>
-> Reviewed-by: Fabiano Rosas <farosas@suse.de>
-> ---
-
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-
->   tests/qtest/meson.build      |  2 +-
->   tests/qtest/riscv-csr-test.c | 56 ++++++++++++++++++++++++++++++++++++
->   2 files changed, 57 insertions(+), 1 deletion(-)
->   create mode 100644 tests/qtest/riscv-csr-test.c
+> IIUC it's a matter of whether there's case where we have this file compiled
+> in, but never create any DRC device.  When that happens, the patch can
+> change the QEMU qom-tree slightly, in that there'll be an empty drc
+> container while we used to not have it.
 > 
-> diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
-> index f2f35367ae..3aad77b3a9 100644
-> --- a/tests/qtest/meson.build
-> +++ b/tests/qtest/meson.build
-> @@ -272,7 +272,7 @@ qtests_s390x = \
->   qtests_riscv32 = \
->     (config_all_devices.has_key('CONFIG_SIFIVE_E_AON') ? ['sifive-e-aon-watchdog-test'] : [])
->   
-> -qtests_riscv64 = \
-> +qtests_riscv64 = ['riscv-csr-test'] + \
->     (unpack_edk2_blobs ? ['bios-tables-test'] : [])
->   
->   qos_test_ss = ss.source_set()
-> diff --git a/tests/qtest/riscv-csr-test.c b/tests/qtest/riscv-csr-test.c
-> new file mode 100644
-> index 0000000000..ff5c29e6c6
-> --- /dev/null
-> +++ b/tests/qtest/riscv-csr-test.c
-> @@ -0,0 +1,56 @@
-> +/*
-> + * QTest testcase for RISC-V CSRs
-> + *
-> + * Copyright (c) 2024 Syntacore.
-> + *
-> + * This program is free software; you can redistribute it and/or modify it
-> + * under the terms of the GNU General Public License as published by the
-> + * Free Software Foundation; either version 2 of the License, or
-> + * (at your option) any later version.
-> + *
-> + * This program is distributed in the hope that it will be useful, but WITHOUT
-> + * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-> + * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
-> + * for more details.
-> + */
-> +
-> +#include "qemu/osdep.h"
-> +#include "libqtest.h"
-> +
-> +#define CSR_MVENDORID       0xf11
-> +#define CSR_MISELECT        0x350
-> +
-> +static void run_test_csr(void)
-> +{
-> +    uint64_t res;
-> +    uint64_t val = 0;
-> +
-> +    QTestState *qts = qtest_init("-machine virt -cpu veyron-v1");
-> +
-> +    res = qtest_csr_call(qts, "get_csr", 0, CSR_MVENDORID, &val);
-> +
-> +    g_assert_cmpint(res, ==, 0);
-> +    g_assert_cmpint(val, ==, 0x61f);
-> +
-> +    val = 0xff;
-> +    res = qtest_csr_call(qts, "set_csr", 0, CSR_MISELECT, &val);
-> +
-> +    g_assert_cmpint(res, ==, 0);
-> +
-> +    val = 0;
-> +    res = qtest_csr_call(qts, "get_csr", 0, CSR_MISELECT, &val);
-> +
-> +    g_assert_cmpint(res, ==, 0);
-> +    g_assert_cmpint(val, ==, 0xff);
-> +
-> +    qtest_quit(qts);
-> +}
-> +
-> +int main(int argc, char **argv)
-> +{
-> +    g_test_init(&argc, &argv, NULL);
-> +
-> +    qtest_add_func("/cpu/csr", run_test_csr);
-> +
-> +    return g_test_run();
-> +}
+> I'm trying to be on the safe side in case something would detect the
+> container's existance to know whether drc devices are present.  lazy create
+> it in realize() is the safest way to behave 100% identical like before,
+
+Class singleton must be taken care in class_init, not once in the
+first instance realize(). I'd rather fix this bad QOM pattern.
+
+> considering my ppc knowledge is merely zero (even if I have drc tests
+> covered in ppc64's qtest..).
+> 
+> However I also doubt whether it matters much.  It'll be great if I can get
+> an ACK from anyone familiar with this device (Phil, are you?), then I can
+> move it over.
+
+I'm not, but having to care about G_ONCE_INIT seems cumbersome.
+
+> 
+>>
+>>>        trace_spapr_drc_realize(spapr_drc_index(drc));
+>>>        /* NOTE: we do this as part of realize/unrealize due to the fact
+>>>         * that the guest will communicate with the DRC via RTAS calls
+>>> @@ -529,7 +552,7 @@ static void drc_realize(DeviceState *d, Error **errp)
+>>>         * inaccessible by the guest, since lookups rely on this path
+>>>         * existing in the composition tree
+>>>         */
+>>> -    root_container = container_get(object_get_root(), DRC_CONTAINER_PATH);
+>>> +    root_container = drc_container_get();
+>>>        child_name = object_get_canonical_path_component(OBJECT(drc));
+>>>        trace_spapr_drc_realize_child(spapr_drc_index(drc), child_name);
+>>>        object_property_add_alias(root_container, link_name,
+>>
+> 
 
 
