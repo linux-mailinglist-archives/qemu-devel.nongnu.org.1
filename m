@@ -2,37 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1770D9D4576
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Nov 2024 02:50:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 89F4F9D4584
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Nov 2024 02:52:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tDwI1-0001gi-4f; Wed, 20 Nov 2024 20:47:25 -0500
+	id 1tDwI3-0001hW-7D; Wed, 20 Nov 2024 20:47:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1tDwHy-0001fj-9O
- for qemu-devel@nongnu.org; Wed, 20 Nov 2024 20:47:22 -0500
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1tDwI1-0001hN-TM
+ for qemu-devel@nongnu.org; Wed, 20 Nov 2024 20:47:25 -0500
 Received: from rev.ng ([94.130.142.21])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1tDwHw-0004Zz-BC
- for qemu-devel@nongnu.org; Wed, 20 Nov 2024 20:47:22 -0500
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1tDwHx-0004a4-0V
+ for qemu-devel@nongnu.org; Wed, 20 Nov 2024 20:47:25 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
  s=dkim; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
  Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
  Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
  :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
  List-Post:List-Owner:List-Archive:List-Unsubscribe:List-Unsubscribe-Post:
- List-Help; bh=MxJZlENkdmUchmgfGBkk9kv4bmuX6oYA3cdwhm+q3rc=; b=hq2y0jcrCKtVUJ6
- jmSO+GqWFQJR8gyvoJMP6GPMgxeJTNZDSLuRxR7IS4Uz+6VVuiN6dc5uJ3RjsA8BL1LQvKyleaOtR
- WocUTOxAPXSFW9MaBiobApnG1GxuZHXaQheOOyLaoWVchROCGQbOmzJsJPbDrj3H2lrn7s41G/il3
- YQ=;
+ List-Help; bh=7ZVMsM/ZVxwvDxZo9mEMb4JOOHxBreG1gQEY2DhLD5k=; b=mi4LEcTf4Dsrcx6
+ ggzJOR2I1xRbZtZOs2+355YFKE5JF4CoFu5q0yWnrkIzDSSxV8PZGJIoWShfXu+koccD91N+/1bEy
+ +LTGiRrG5Gl/J2R4OF+MfqvZRFJ5EAmRs9Ef3FpDjGK/oAVHSy/mkViSKKlpMy8f3S2Xp7xWem0/T
+ Fk=;
 To: qemu-devel@nongnu.org
 Cc: ale@rev.ng, ltaylorsimpson@gmail.com, bcain@quicinc.com,
  richard.henderson@linaro.org, philmd@linaro.org, alex.bennee@linaro.org
-Subject: [RFC PATCH v1 27/43] helper-to-tcg: PrepareForTcgPass,
- identity map trivial expressions
-Date: Thu, 21 Nov 2024 02:49:31 +0100
-Message-ID: <20241121014947.18666-28-anjo@rev.ng>
+Subject: [RFC PATCH v1 28/43] helper-to-tcg: Introduce TcgType.h
+Date: Thu, 21 Nov 2024 02:49:32 +0100
+Message-ID: <20241121014947.18666-29-anjo@rev.ng>
 In-Reply-To: <20241121014947.18666-1-anjo@rev.ng>
 References: <20241121014947.18666-1-anjo@rev.ng>
 MIME-Version: 1.0
@@ -63,127 +62,34 @@ From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Transformation of the IR, identity mapping trivial expressions which
-would amount to nothing more than a move when emitted as TCG, but is
-required in LLVM IR to not break the IR.
+Adds a struct representing everything a LLVM value might map to in TCG,
+this includes:
 
-Trivial expressions are mapped to a @IdentityMap pseudo instruction
-allowing them to be dealt with in a uniform manner down the line.
+  * TCGv (IrValue);
+  * TCGv_ptr (IrPtr);
+  * TCGv_env (IrEnv);
+  * TCGLabel (IrLabel);
+  * tcg_constant_*() (IrConst);
+  * 123123ull (IrImmediate);
+  * intptr_t gvec_vector (IrPtrToOffset).
+
+NOTE: Patch is subject to change due to rework of the TcgV type system.
+There is quite significant overlap in handling IrConst/IrImmediate and
+any other type with the ConstantExpression bool set. Space required for
+each TcgV can also be reduced by moving to a union.
 
 Signed-off-by: Anton Johansson <anjo@rev.ng>
 ---
- subprojects/helper-to-tcg/meson.build         |  1 +
- .../passes/PrepareForTcgPass/IdentityMap.cpp  | 80 +++++++++++++++++++
- .../passes/PrepareForTcgPass/IdentityMap.h    | 39 +++++++++
- .../PrepareForTcgPass/PrepareForTcgPass.cpp   |  4 +
- 4 files changed, 124 insertions(+)
- create mode 100644 subprojects/helper-to-tcg/passes/PrepareForTcgPass/IdentityMap.cpp
- create mode 100644 subprojects/helper-to-tcg/passes/PrepareForTcgPass/IdentityMap.h
+ .../helper-to-tcg/passes/backend/TcgType.h    | 133 ++++++++++++++++++
+ 1 file changed, 133 insertions(+)
+ create mode 100644 subprojects/helper-to-tcg/passes/backend/TcgType.h
 
-diff --git a/subprojects/helper-to-tcg/meson.build b/subprojects/helper-to-tcg/meson.build
-index 50bb926f49..09caa74c63 100644
---- a/subprojects/helper-to-tcg/meson.build
-+++ b/subprojects/helper-to-tcg/meson.build
-@@ -49,6 +49,7 @@ sources = [
-     'passes/PrepareForTcgPass/PrepareForTcgPass.cpp',
-     'passes/PrepareForTcgPass/TransformGEPs.cpp',
-     'passes/PrepareForTcgPass/CanonicalizeIR.cpp',
-+    'passes/PrepareForTcgPass/IdentityMap.cpp',
- ]
- 
- clang = bindir / 'clang'
-diff --git a/subprojects/helper-to-tcg/passes/PrepareForTcgPass/IdentityMap.cpp b/subprojects/helper-to-tcg/passes/PrepareForTcgPass/IdentityMap.cpp
+diff --git a/subprojects/helper-to-tcg/passes/backend/TcgType.h b/subprojects/helper-to-tcg/passes/backend/TcgType.h
 new file mode 100644
-index 0000000000..b173aeba9c
+index 0000000000..36ebdbe5cb
 --- /dev/null
-+++ b/subprojects/helper-to-tcg/passes/PrepareForTcgPass/IdentityMap.cpp
-@@ -0,0 +1,80 @@
-+//
-+//  Copyright(c) 2024 rev.ng Labs Srl. All Rights Reserved.
-+//
-+//  This program is free software; you can redistribute it and/or modify
-+//  it under the terms of the GNU General Public License as published by
-+//  the Free Software Foundation; either version 2 of the License, or
-+//  (at your option) any later version.
-+//
-+//  This program is distributed in the hope that it will be useful,
-+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+//  GNU General Public License for more details.
-+//
-+//  You should have received a copy of the GNU General Public License
-+//  along with this program; if not, see <http://www.gnu.org/licenses/>.
-+//
-+
-+#include "IdentityMap.h"
-+#include <PseudoInst.h>
-+#include "backend/TcgType.h"
-+#include <llvm/ADT/SmallVector.h>
-+#include <llvm/IR/IRBuilder.h>
-+#include <llvm/IR/InstIterator.h>
-+#include <llvm/IR/Instruction.h>
-+#include <llvm/IR/Value.h>
-+
-+using namespace llvm;
-+
-+void identityMap(Module &M, Function &F)
-+{
-+    SmallVector<Instruction *, 8> InstToErase;
-+
-+    for (auto &I : instructions(F)) {
-+        auto *ZExt = dyn_cast<ZExtInst>(&I);
-+        if (ZExt) {
-+            auto *IntTy0 =
-+                dyn_cast<IntegerType>(ZExt->getOperand(0)->getType());
-+            auto *IntTy1 = dyn_cast<IntegerType>(ZExt->getType());
-+            if (IntTy0 and IntTy1) {
-+                uint32_t LlvmSize0 = IntTy0->getBitWidth();
-+                uint32_t LlvmSize1 = IntTy1->getBitWidth();
-+
-+                if (LlvmSize0 == 1) {
-+                    auto *ICmp = dyn_cast<ICmpInst>(ZExt->getOperand(0));
-+                    if (ICmp) {
-+                        auto *ICmpOp = ICmp->getOperand(0);
-+                        LlvmSize0 =
-+                            cast<IntegerType>(ICmpOp->getType())->getBitWidth();
-+                    }
-+                }
-+
-+                uint32_t TcgSize0 = llvmToTcgSize(LlvmSize0);
-+                uint32_t TcgSize1 = llvmToTcgSize(LlvmSize1);
-+
-+                if (TcgSize0 == TcgSize1) {
-+                    FunctionCallee Fn =
-+                        pseudoInstFunction(M, IdentityMap, IntTy1, {IntTy0});
-+                    IRBuilder<> Builder(&I);
-+                    CallInst *Call =
-+                        Builder.CreateCall(Fn, {ZExt->getOperand(0)});
-+                    ZExt->replaceAllUsesWith(Call);
-+                    InstToErase.push_back(&I);
-+                }
-+            }
-+        } else if (isa<FreezeInst>(&I)) {
-+            auto *IntTy0 = dyn_cast<IntegerType>(I.getOperand(0)->getType());
-+            auto *IntTy1 = dyn_cast<IntegerType>(I.getType());
-+            FunctionCallee Fn =
-+                pseudoInstFunction(M, IdentityMap, IntTy1, {IntTy0});
-+            IRBuilder<> Builder(&I);
-+            CallInst *Call = Builder.CreateCall(Fn, {I.getOperand(0)});
-+            I.replaceAllUsesWith(Call);
-+            InstToErase.push_back(&I);
-+        }
-+    }
-+
-+    for (auto *I : InstToErase) {
-+        I->eraseFromParent();
-+    }
-+}
-diff --git a/subprojects/helper-to-tcg/passes/PrepareForTcgPass/IdentityMap.h b/subprojects/helper-to-tcg/passes/PrepareForTcgPass/IdentityMap.h
-new file mode 100644
-index 0000000000..b0c938c25d
---- /dev/null
-+++ b/subprojects/helper-to-tcg/passes/PrepareForTcgPass/IdentityMap.h
-@@ -0,0 +1,39 @@
++++ b/subprojects/helper-to-tcg/passes/backend/TcgType.h
+@@ -0,0 +1,133 @@
 +//
 +//  Copyright(c) 2024 rev.ng Labs Srl. All Rights Reserved.
 +//
@@ -203,47 +109,120 @@ index 0000000000..b0c938c25d
 +
 +#pragma once
 +
-+#include <llvm/IR/Function.h>
-+#include <llvm/IR/Module.h>
++#include <llvm/ADT/Optional.h>
++#include <llvm/ADT/StringRef.h>
 +
-+//
-+// Transformation of the IR, taking what would become trivial unary operations
-+// and maps them to a single @IdentityMap pseudo instruction.
-+//
-+// To motivate further, in order to produce nice IR on the other end, generally
-+// the operands of these trivial expressions needs to be forwarded and treated
-+// as the destination value (identity mapped).  However, directly removing these
-+// instructions will result in broken LLVM IR (consider zext i8, i32 where both
-+// the source and destination would map to TCGv_i32).
-+//
-+// Moreover, handling these identity mapped values in an adhoc way quickly
-+// becomes cumbersome and spreads throughout the codebase.  Therefore,
-+// introducing @IdentityMap allows code further down the pipeline to ignore the
-+// source of the identity map.
-+//
++#include <assert.h>
++#include <stdint.h>
++#include <string>
 +
-+void identityMap(llvm::Module &M, llvm::Function &F);
-diff --git a/subprojects/helper-to-tcg/passes/PrepareForTcgPass/PrepareForTcgPass.cpp b/subprojects/helper-to-tcg/passes/PrepareForTcgPass/PrepareForTcgPass.cpp
-index 7fdbc2a0c9..3e4713d837 100644
---- a/subprojects/helper-to-tcg/passes/PrepareForTcgPass/PrepareForTcgPass.cpp
-+++ b/subprojects/helper-to-tcg/passes/PrepareForTcgPass/PrepareForTcgPass.cpp
-@@ -17,6 +17,7 @@
- 
- #include "CanonicalizeIR.h"
- #include <CmdLineOptions.h>
-+#include "IdentityMap.h"
- #include <PrepareForTcgPass.h>
- #include "TransformGEPs.h"
- #include <llvm/ADT/SCCIterator.h>
-@@ -126,5 +127,8 @@ PreservedAnalyses PrepareForTcgPass::run(Module &M, ModuleAnalysisManager &MAM)
-         transformGEPs(M, F, ResultTcgGlobalMap);
-     }
-     canonicalizeIR(M);
-+    for (Function &F : M) {
-+        identityMap(M, F);
++enum TcgVKind : uint8_t {
++    IrValue,
++    IrConst,
++    IrEnv,
++    IrImmediate,
++    IrPtr,
++    IrPtrToOffset,
++    IrLabel,
++};
++
++// Counter incremented for every TcgV created, also used in the creation of
++// unique names (e.g. varr_10 for an array).
++extern uint32_t VarIndex;
++
++struct TcgV {
++    uint16_t Id;
++    std::string Name;
++
++    uint32_t TcgSize;
++    uint8_t LlvmSize;
++    uint8_t VectorElementCount;
++
++    TcgVKind Kind;
++
++    bool ConstantExpression = false;
++
++    static TcgV makeVector(uint32_t VectorWidthBits, uint32_t ElementWidthBits,
++                           uint32_t ElementCount)
++    {
++        return TcgV("", VectorWidthBits, ElementWidthBits, ElementCount,
++                    IrPtrToOffset);
 +    }
-     return PreservedAnalyses::none();
- }
++
++    static TcgV makeImmediate(llvm::StringRef Name, uint32_t TcgWidth,
++                              uint32_t LlvmWidth)
++    {
++        return TcgV(Name.str(), TcgWidth, LlvmWidth, 1, IrImmediate);
++    }
++
++    static TcgV makeTemp(uint32_t TcgWidth, uint32_t LlvmWidth, TcgVKind Kind)
++    {
++        return TcgV("", TcgWidth, LlvmWidth, 1, Kind);
++    }
++
++    static TcgV makeConstantExpression(llvm::StringRef Expression,
++                                       uint32_t TcgWidth, uint32_t LlvmWidth,
++                                       TcgVKind Kind)
++    {
++        TcgV Tcg(Expression.str(), TcgWidth, LlvmWidth, 1, Kind);
++        Tcg.ConstantExpression = true;
++        return Tcg;
++    }
++
++    static TcgV makeLabel() { return TcgV("", 32, 32, 1, IrLabel); }
++
++    TcgV(std::string Name, uint32_t TcgSize, uint32_t LlvmSize,
++         uint32_t VectorElementCount, TcgVKind Kind)
++        : Id(VarIndex++), Name(Name), TcgSize(TcgSize), LlvmSize(LlvmSize),
++          VectorElementCount(VectorElementCount), Kind(Kind)
++    {
++        assert(verifySize());
++    }
++
++    // We make the following assumptions about TcgSize and LLvmSize:
++    //   - TcgSize either 32- or 64-bit;
++    //   - LlvmSize either 1-,8-,16-,32-,64-,or 128-bit.
++    // We also assume that there are only these valid combinations of
++    // (TcgSize, LlvmSize):
++    //   - (64, 64) uint64_t
++    //   - (64, 1)  bool
++    //   - (32, 32) uint32_t
++    //   - (32, 16) uint16_t
++    //   - (32, 8)  uint8_t
++    //   - (32, 1)  bool
++    // So we try to fit the variables in the smallest possible TcgSize,
++    // with the exception of booleans which need to able to be 64-bit
++    // when dealing with conditions.
++    bool verifySize()
++    {
++        return (LlvmSize == 1 || LlvmSize == 8 || LlvmSize == 16 ||
++                LlvmSize == 32 || LlvmSize == 64) &&
++               (LlvmSize <= TcgSize);
++    }
++
++    bool operator==(const TcgV &Other) const { return Other.Id == Id; }
++    bool operator!=(const TcgV &Other) const { return !operator==(Other); }
++};
++
++inline uint64_t llvmToTcgSize(uint64_t LlvmSize)
++{
++    return (LlvmSize <= 32) ? 32 : 64;
++}
++
++inline uint32_t vectorSizeInBytes(const TcgV &Vec)
++{
++    assert(Vec.Kind == IrPtrToOffset);
++    return Vec.LlvmSize * Vec.VectorElementCount / 8;
++}
++
++struct TcgBinOp {
++    std::string Code;
++};
++
++struct TcgVecBinOp {
++    std::string Code;
++    llvm::Optional<uint32_t> RequiredOp2Size;
++};
 -- 
 2.45.2
 
