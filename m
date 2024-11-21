@@ -2,61 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52B9C9D4FFE
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Nov 2024 16:44:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6913D9D500B
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Nov 2024 16:48:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tE9Lq-0001mS-RX; Thu, 21 Nov 2024 10:44:15 -0500
+	id 1tE9Lu-0002A5-Ic; Thu, 21 Nov 2024 10:44:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1tE9Lm-0001f1-Gb
- for qemu-devel@nongnu.org; Thu, 21 Nov 2024 10:44:10 -0500
+ id 1tE9Lq-0001z2-4T
+ for qemu-devel@nongnu.org; Thu, 21 Nov 2024 10:44:14 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1tE9Lk-00014F-QC
- for qemu-devel@nongnu.org; Thu, 21 Nov 2024 10:44:10 -0500
+ id 1tE9Lo-00014p-7d
+ for qemu-devel@nongnu.org; Thu, 21 Nov 2024 10:44:13 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1732203848;
+ s=mimecast20190719; t=1732203851;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=/9q1CNlKLymBgniZFYob84WFjVbexMweRa9IPrPskeE=;
- b=PGymHdRGbFBuNlHnlWSHlzyMtaFCHWXcwKe8xhTefkvqlVA42KqihSg1phnw5JNo1K6i9Q
- OlcuN9/RnFUi50b0t1k1LHp580nYHUr/TJqKP7efWyPH6PVyTY30EsT+m9rELWTgJ6pEmR
- 2Errp7QGLqfmVqESYhS14ktOi9/AkHI=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ bh=yyFkxmEDProtwTBUvdEdXCOHx7kjYPBJU+JzezPkC9M=;
+ b=Q20Ffo9bhzIjSUU/TI04gGq/g22LF50bnTlNFPrCNq4EkfpIk7Hqn8vg6L6FGEru2cCMTV
+ vQzWJTvaxh8u1GLHQSf5GYHPEtnga/SpkjKuB1pR7D82ivgO30UciAt/DeFq5nqF/uRr9A
+ ElwYf8RaihqdUt3NhRnckx1GhP9tja4=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-663-T5rf3vgaPIiNYp2diMcpWw-1; Thu,
- 21 Nov 2024 10:44:04 -0500
-X-MC-Unique: T5rf3vgaPIiNYp2diMcpWw-1
-X-Mimecast-MFC-AGG-ID: T5rf3vgaPIiNYp2diMcpWw
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-29-Jkmg4TtxPEOiAuzL-TH5tQ-1; Thu,
+ 21 Nov 2024 10:44:08 -0500
+X-MC-Unique: Jkmg4TtxPEOiAuzL-TH5tQ-1
+X-Mimecast-MFC-AGG-ID: Jkmg4TtxPEOiAuzL-TH5tQ
 Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id BBED3197731D; Thu, 21 Nov 2024 15:44:03 +0000 (UTC)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 354211956064; Thu, 21 Nov 2024 15:44:07 +0000 (UTC)
 Received: from toolbox.redhat.com (unknown [10.42.28.5])
  by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id F32AB1956086; Thu, 21 Nov 2024 15:43:57 +0000 (UTC)
+ id 48ABD1956086; Thu, 21 Nov 2024 15:44:04 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Thomas Huth <thuth@redhat.com>, Ani Sinha <anisinha@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Peter Maydell <peter.maydell@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PATCH v2 15/18] tests/functional: rewrite console handling to be
- bytewise
-Date: Thu, 21 Nov 2024 15:42:15 +0000
-Message-ID: <20241121154218.1423005-16-berrange@redhat.com>
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+Subject: [PATCH v2 16/18] tests/functional: remove time.sleep usage from
+ tuxrun tests
+Date: Thu, 21 Nov 2024 15:42:16 +0000
+Message-ID: <20241121154218.1423005-17-berrange@redhat.com>
 In-Reply-To: <20241121154218.1423005-1-berrange@redhat.com>
 References: <20241121154218.1423005-1-berrange@redhat.com>
 MIME-Version: 1.0
@@ -88,139 +87,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The console interaction that waits for predicted strings uses
-readline(), and thus is only capable of waiting for strings
-that are followed by a newline.
+The tuxrun tests send a series of strings to the guest to login
+and then run commands. Since we have been unable to match on
+console output that isn't followed by a newline, the test used
+many time.sleep() statements to pretend to synchronize with
+the guest.
 
-This is inconvenient when needing to match on some things,
-particularly login prompts, or shell prompts, causing tests
-to use time.sleep(...) instead, which is unreliable.
+This has proved to be unreliable for the aarch64be instance of
+the tuxrun tests, with the test often hanging. The hang is a
+very subtle timing problem, and it is suspected that some
+(otherwise apparently harmless) I/O error messages could be
+resulting in full FIFO buffers, stalling interaction with
+the guest.
 
-Switch to reading the console 1 byte at a time, comparing
-against the success/failure messages until we see a match,
-regardless of whether a newline is encountered.
+With the newly rewritten console interaction able to match
+strings that don't have a following newline, the tux run
+tests can now match directly on the login prompt, and/or
+shell PS1 prompt.
 
-The success/failure comparisons are done with the python bytes
-type, rather than strings, to avoid the problem of needing to
-decode partially received multibyte utf8 characters.
-
-Heavily inspired by a patch proposed by Cédric, but written
-again to work in bytes, rather than strings.
-
-Co-developed-by: Cédric Le Goater <clg@redhat.com>
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2689
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- tests/functional/qemu_test/cmd.py | 79 +++++++++++++++++++++++++------
- 1 file changed, 64 insertions(+), 15 deletions(-)
+ tests/functional/qemu_test/tuxruntest.py | 16 ++++++----------
+ 1 file changed, 6 insertions(+), 10 deletions(-)
 
-diff --git a/tests/functional/qemu_test/cmd.py b/tests/functional/qemu_test/cmd.py
-index f6c4e4dda1..11c8334a7c 100644
---- a/tests/functional/qemu_test/cmd.py
-+++ b/tests/functional/qemu_test/cmd.py
-@@ -78,6 +78,54 @@ def run_cmd(args):
- def is_readable_executable_file(path):
-     return os.path.isfile(path) and os.access(path, os.R_OK | os.X_OK)
+diff --git a/tests/functional/qemu_test/tuxruntest.py b/tests/functional/qemu_test/tuxruntest.py
+index ed2b238c92..ab3b27da43 100644
+--- a/tests/functional/qemu_test/tuxruntest.py
++++ b/tests/functional/qemu_test/tuxruntest.py
+@@ -124,16 +124,12 @@ def run_tuxtest_tests(self, haltmsg):
+         then do a few things on the console. Trigger a shutdown and
+         wait to exit cleanly.
+         """
+-        self.wait_for_console_pattern("Welcome to TuxTest")
+-        time.sleep(0.2)
+-        exec_command(self, 'root')
+-        time.sleep(0.2)
+-        exec_command(self, 'cat /proc/interrupts')
+-        time.sleep(0.1)
+-        exec_command(self, 'cat /proc/self/maps')
+-        time.sleep(0.1)
+-        exec_command(self, 'uname -a')
+-        time.sleep(0.1)
++        ps1='root@tuxtest:~#'
++        self.wait_for_console_pattern('tuxtest login:')
++        exec_command_and_wait_for_pattern(self, 'root', ps1)
++        exec_command_and_wait_for_pattern(self, 'cat /proc/interrupts', ps1)
++        exec_command_and_wait_for_pattern(self, 'cat /proc/self/maps', ps1)
++        exec_command_and_wait_for_pattern(self, 'uname -a', ps1)
+         exec_command_and_wait_for_pattern(self, 'halt', haltmsg)
  
-+# @test: functional test to fail if @failure is seen
-+# @vm: the VM whose console to process
-+# @success: a non-None string to look for
-+# @failure: a string to look for that triggers test failure, or None
-+#
-+# Read up to 1 line of text from @vm, looking for @success
-+# and optionally @failure.
-+#
-+# If @success or @failure are seen, immediately return True,
-+# even if end of line is not yet seen. ie remainder of the
-+# line is left unread.
-+#
-+# If end of line is seen, with neither @success or @failure
-+# return False
-+#
-+# If @failure is seen, then mark @test as failed
-+def _console_read_line_until_match(test, vm, success, failure):
-+    msg = bytes([])
-+    done = False
-+    while True:
-+        c = vm.console_socket.recv(1)
-+        if c is None:
-+            done = True
-+            test.fail(
-+                f"EOF in console, expected '{success}'")
-+            break
-+        msg += c
-+
-+        if success in msg:
-+            done = True
-+            break
-+        if failure and failure in msg:
-+            done = True
-+            vm.console_socket.close()
-+            test.fail(
-+                f"'{failure}' found in console, expected '{success}'")
-+
-+        if c == b'\n':
-+            break
-+
-+    console_logger = logging.getLogger('console')
-+    try:
-+        console_logger.debug(msg.decode().strip())
-+    except:
-+        console_logger.debug(msg)
-+
-+    return done
-+
- def _console_interaction(test, success_message, failure_message,
-                          send_string, keep_sending=False, vm=None):
-     assert not keep_sending or send_string
-@@ -85,11 +133,22 @@ def _console_interaction(test, success_message, failure_message,
- 
-     if vm is None:
-         vm = test.vm
--    console = vm.console_file
--    console_logger = logging.getLogger('console')
-+
-     test.log.debug(
-         f"Console interaction: success_msg='{success_message}' " +
-         f"failure_msg='{failure_message}' send_string='{send_string}'")
-+
-+    # We'll process console in bytes, to avoid having to
-+    # deal with unicode decode errors from receiving
-+    # partial utf8 byte sequences
-+    success_message_b = None
-+    if success_message is not None:
-+        success_message_b = success_message.encode()
-+
-+    failure_message_b = None
-+    if failure_message is not None:
-+        failure_message_b = failure_message.encode()
-+
-     while True:
-         if send_string:
-             vm.console_socket.sendall(send_string.encode())
-@@ -102,20 +161,10 @@ def _console_interaction(test, success_message, failure_message,
-                 break
-             continue
- 
--        try:
--            msg = console.readline().decode().strip()
--        except UnicodeDecodeError:
--            msg = None
--        if not msg:
--            continue
--        console_logger.debug(msg)
--        if success_message in msg:
-+        if _console_read_line_until_match(test, vm,
-+                                          success_message_b,
-+                                          failure_message_b):
-             break
--        if failure_message and failure_message in msg:
--            console.close()
--            fail = 'Failure message found in console: "%s". Expected: "%s"' % \
--                    (failure_message, success_message)
--            test.fail(fail)
- 
- def interrupt_interactive_console_until_pattern(test, success_message,
-                                                 failure_message=None,
+         # Wait for VM to shut down gracefully if it can
 -- 
 2.46.0
 
