@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6913D9D500B
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Nov 2024 16:48:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C115D9D5006
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Nov 2024 16:46:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tE9Lu-0002A5-Ic; Thu, 21 Nov 2024 10:44:19 -0500
+	id 1tE9M1-0002fd-TY; Thu, 21 Nov 2024 10:44:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1tE9Lq-0001z2-4T
- for qemu-devel@nongnu.org; Thu, 21 Nov 2024 10:44:14 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1tE9Lx-0002bP-5V
+ for qemu-devel@nongnu.org; Thu, 21 Nov 2024 10:44:21 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1tE9Lo-00014p-7d
- for qemu-devel@nongnu.org; Thu, 21 Nov 2024 10:44:13 -0500
+ id 1tE9Lv-00015c-K7
+ for qemu-devel@nongnu.org; Thu, 21 Nov 2024 10:44:20 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1732203851;
+ s=mimecast20190719; t=1732203858;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=yyFkxmEDProtwTBUvdEdXCOHx7kjYPBJU+JzezPkC9M=;
- b=Q20Ffo9bhzIjSUU/TI04gGq/g22LF50bnTlNFPrCNq4EkfpIk7Hqn8vg6L6FGEru2cCMTV
- vQzWJTvaxh8u1GLHQSf5GYHPEtnga/SpkjKuB1pR7D82ivgO30UciAt/DeFq5nqF/uRr9A
- ElwYf8RaihqdUt3NhRnckx1GhP9tja4=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ bh=0txKiQWpxyguRebXD1DZVJACnLLYk3HWNLZCDAk2wrg=;
+ b=XQY6tPxmR8ZFU+UIssbHFCdscqDtdX6lf3jfXVgcmNuPvzgiYTOaSRdByFwIX0Qjhl9fDO
+ RQXAkahULljFMQhTv8ZfiMPRksB9inR5dKVGGWtE+2gG0Ohw/CySAGg+NbnrW/MRaeNavx
+ qwVWh+l4cL/zQIPfGMEJASIKXNGsO0o=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-29-Jkmg4TtxPEOiAuzL-TH5tQ-1; Thu,
- 21 Nov 2024 10:44:08 -0500
-X-MC-Unique: Jkmg4TtxPEOiAuzL-TH5tQ-1
-X-Mimecast-MFC-AGG-ID: Jkmg4TtxPEOiAuzL-TH5tQ
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-584-PTtEFarwO6e5dqT1A9266Q-1; Thu,
+ 21 Nov 2024 10:44:15 -0500
+X-MC-Unique: PTtEFarwO6e5dqT1A9266Q-1
+X-Mimecast-MFC-AGG-ID: PTtEFarwO6e5dqT1A9266Q
 Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 354211956064; Thu, 21 Nov 2024 15:44:07 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 20B7C1956095; Thu, 21 Nov 2024 15:44:14 +0000 (UTC)
 Received: from toolbox.redhat.com (unknown [10.42.28.5])
  by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 48ABD1956086; Thu, 21 Nov 2024 15:44:04 +0000 (UTC)
+ id C68191956086; Thu, 21 Nov 2024 15:44:07 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Thomas Huth <thuth@redhat.com>, Ani Sinha <anisinha@redhat.com>,
@@ -52,24 +52,24 @@ Cc: Thomas Huth <thuth@redhat.com>, Ani Sinha <anisinha@redhat.com>,
  Peter Maydell <peter.maydell@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH v2 16/18] tests/functional: remove time.sleep usage from
- tuxrun tests
-Date: Thu, 21 Nov 2024 15:42:16 +0000
-Message-ID: <20241121154218.1423005-17-berrange@redhat.com>
+Subject: [PATCH v2 17/18] tests/functional: add a QMP backdoor for debugging
+ stalled tests
+Date: Thu, 21 Nov 2024 15:42:17 +0000
+Message-ID: <20241121154218.1423005-18-berrange@redhat.com>
 In-Reply-To: <20241121154218.1423005-1-berrange@redhat.com>
 References: <20241121154218.1423005-1-berrange@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.14,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -87,57 +87,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The tuxrun tests send a series of strings to the guest to login
-and then run commands. Since we have been unable to match on
-console output that isn't followed by a newline, the test used
-many time.sleep() statements to pretend to synchronize with
-the guest.
+Support the QEMU_TEST_QMP_BACKDOOR=backdoor.sock env variable as a
+way to get a QMP backdoor for debugging a stalled QEMU test. Most
+typically this would be used if running the tests directly:
 
-This has proved to be unreliable for the aarch64be instance of
-the tuxrun tests, with the test often hanging. The hang is a
-very subtle timing problem, and it is suspected that some
-(otherwise apparently harmless) I/O error messages could be
-resulting in full FIFO buffers, stalling interaction with
-the guest.
+ $ QEMU_TEST_QMP_BACKDOOR=backdoor.sock \
+   QEMU_TEST_QEMU_BINARY=./build/qemu-system-arm \
+   PYTHONPATH=./python \
+   ./tests/functional/test_arm_tuxrun.py
 
-With the newly rewritten console interaction able to match
-strings that don't have a following newline, the tux run
-tests can now match directly on the login prompt, and/or
-shell PS1 prompt.
+And then, when the test stalls, in a second shell run:
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2689
+ $ ./scripts/qmp/qmp-shell backdoor.sock
+
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- tests/functional/qemu_test/tuxruntest.py | 16 ++++++----------
- 1 file changed, 6 insertions(+), 10 deletions(-)
+ docs/devel/testing/functional.rst      | 10 ++++++++++
+ tests/functional/qemu_test/testcase.py |  7 +++++++
+ 2 files changed, 17 insertions(+)
 
-diff --git a/tests/functional/qemu_test/tuxruntest.py b/tests/functional/qemu_test/tuxruntest.py
-index ed2b238c92..ab3b27da43 100644
---- a/tests/functional/qemu_test/tuxruntest.py
-+++ b/tests/functional/qemu_test/tuxruntest.py
-@@ -124,16 +124,12 @@ def run_tuxtest_tests(self, haltmsg):
-         then do a few things on the console. Trigger a shutdown and
-         wait to exit cleanly.
-         """
--        self.wait_for_console_pattern("Welcome to TuxTest")
--        time.sleep(0.2)
--        exec_command(self, 'root')
--        time.sleep(0.2)
--        exec_command(self, 'cat /proc/interrupts')
--        time.sleep(0.1)
--        exec_command(self, 'cat /proc/self/maps')
--        time.sleep(0.1)
--        exec_command(self, 'uname -a')
--        time.sleep(0.1)
-+        ps1='root@tuxtest:~#'
-+        self.wait_for_console_pattern('tuxtest login:')
-+        exec_command_and_wait_for_pattern(self, 'root', ps1)
-+        exec_command_and_wait_for_pattern(self, 'cat /proc/interrupts', ps1)
-+        exec_command_and_wait_for_pattern(self, 'cat /proc/self/maps', ps1)
-+        exec_command_and_wait_for_pattern(self, 'uname -a', ps1)
-         exec_command_and_wait_for_pattern(self, 'halt', haltmsg)
+diff --git a/docs/devel/testing/functional.rst b/docs/devel/testing/functional.rst
+index 6b5d0c5b98..b8ad7b0bf7 100644
+--- a/docs/devel/testing/functional.rst
++++ b/docs/devel/testing/functional.rst
+@@ -176,6 +176,16 @@ primarily depend on the value of the ``qemu_bin`` class attribute.
+ If it is not explicitly set by the test code, its default value will
+ be the result the QEMU_TEST_QEMU_BINARY environment variable.
  
-         # Wait for VM to shut down gracefully if it can
++Debugging hung QEMU
++^^^^^^^^^^^^^^^^^^^
++
++When test cases go wrong it may be helpful to debug a stalled QEMU
++process. While the QEMUMachine class owns the primary QMP monitor
++socket, it is possible to request a second QMP monitor be created
++by setting the ``QEMU_TEST_QMP_BACKDOOR`` env variable to refer
++to a UNIX socket name. The ``qmp-shell`` command can then be
++attached to the stalled QEMU to examine its live state.
++
+ Attribute reference
+ -------------------
+ 
+diff --git a/tests/functional/qemu_test/testcase.py b/tests/functional/qemu_test/testcase.py
+index e2a329c3e5..fceafb32b0 100644
+--- a/tests/functional/qemu_test/testcase.py
++++ b/tests/functional/qemu_test/testcase.py
+@@ -175,6 +175,13 @@ def _new_vm(self, name, *args):
+                          log_dir=self.logdir)
+         self.log.debug('QEMUMachine "%s" created', name)
+         self.log.debug('QEMUMachine "%s" temp_dir: %s', name, vm.temp_dir)
++
++        sockpath = os.environ.get("QEMU_TEST_QMP_BACKDOOR", None)
++        if sockpath is not None:
++            vm.add_args("-chardev",
++                        f"socket,id=backdoor,path={sockpath},server=on,wait=off",
++                        "-mon", "chardev=backdoor,mode=control")
++
+         if args:
+             vm.add_args(*args)
+         return vm
 -- 
 2.46.0
 
