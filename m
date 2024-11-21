@@ -2,167 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B4B99D5331
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Nov 2024 20:04:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E0BC9D5330
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Nov 2024 20:04:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tECSt-00061W-CF; Thu, 21 Nov 2024 14:03:43 -0500
+	id 1tECT2-0006Z8-TG; Thu, 21 Nov 2024 14:03:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tECSk-0005x4-4H
- for qemu-devel@nongnu.org; Thu, 21 Nov 2024 14:03:34 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tECSh-0007CX-9q
- for qemu-devel@nongnu.org; Thu, 21 Nov 2024 14:03:33 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1732215810;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=IWsjYsBnacBCJXffRg4TOMqxnT5yfzq3EAuSbjWJybI=;
- b=S2CMvj0s8X81lgKQ6/C2SvCSeUgA8jIEeNToqh0fEbRk1f049g788QY02L1LxGZ1P8yuwa
- AKU//oUip7/L6mPlZRmVOmXTVYqylMCGRjqoLUw+KAEABwwpUi0eRyssSTCD71EjVfoXg5
- LRutkAIsQ9wp32Mqy0HN25bmPIt6mCM=
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
- [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-543-_RVp9abUOz68Da3gdLkhJw-1; Thu, 21 Nov 2024 14:03:29 -0500
-X-MC-Unique: _RVp9abUOz68Da3gdLkhJw-1
-X-Mimecast-MFC-AGG-ID: _RVp9abUOz68Da3gdLkhJw
-Received: by mail-qk1-f200.google.com with SMTP id
- af79cd13be357-7b161d4c422so160419385a.0
- for <qemu-devel@nongnu.org>; Thu, 21 Nov 2024 11:03:29 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tECSz-0006QV-3z
+ for qemu-devel@nongnu.org; Thu, 21 Nov 2024 14:03:49 -0500
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tECSx-0007FA-Bg
+ for qemu-devel@nongnu.org; Thu, 21 Nov 2024 14:03:48 -0500
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-4315eeb2601so14694645e9.2
+ for <qemu-devel@nongnu.org>; Thu, 21 Nov 2024 11:03:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1732215825; x=1732820625; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=x/EYQSKnaB0nQ2rrN8ALxbk8YBn9f7FB0WvyC01f9/4=;
+ b=d+nJynM2+F6O/JyXzZuR+yKMUnCGcndCjgTpAeIbD4AxlAlLTbOM4yoy3Gc77n7n/4
+ NnkkuMWg844++YGlGftb4sI0gbe+/GSe5AXMqUMxlePS4OwSDARQRnylIPpBR6XRhn0V
+ 3w7byeBkHTEwpBBHIIIU/IdFIqS7hHF6zxOE3bk1dYqxcZadUpDVfTvPAaaaG8KZD6kz
+ eOgxn89MwkzHSZAIAWVrmIB5J0Wa5Zo6Z+lABiU4/f8v7u9IGZg6UpQ3sV72CWhb16VH
+ 99AOowtfd8FjZ5k3SBIfyg1GjjkaOG3ngBK+VF+sWMHiAi6UX6k76oj5Qdiy13Wv0J6r
+ Hw1A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1732215809; x=1732820609;
- h=content-transfer-encoding:in-reply-to:autocrypt:from
- :content-language:references:cc:to:subject:user-agent:mime-version
- :date:message-id:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=IWsjYsBnacBCJXffRg4TOMqxnT5yfzq3EAuSbjWJybI=;
- b=as5aEXuQlzMa6B4WPyGM/cxheXQe3M+X6aXSZroQ227hJIKHTG0tpd1MMnzNq5tNGI
- /zQU6UbLy+IQWyv44GjrZxhDq9LxHqUNxgj2isTm9uk8KyU4CmhwhLSNtJAgm+T0FeWZ
- RRXypS3JE4SJNKZ1UP1nj5lT4JCEPs9QjtJ3y/1DRffvYtxg2B30pTuVgT7GoXhQ7uxh
- 9DDnaXv44UvZdPjvcfGcn7W8A5AwMNEow5xhJoLUUbF+EFdtoMpKtsbXly8P1NC478/T
- cYZ9DMw+5Z1YvviJqQeF3G0IU0WXR82vGhBVe+34QTgLy6+kxPG1vNwwxWYxH0OoCHsK
- wEaQ==
+ d=1e100.net; s=20230601; t=1732215825; x=1732820625;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=x/EYQSKnaB0nQ2rrN8ALxbk8YBn9f7FB0WvyC01f9/4=;
+ b=PkzQz4YgSc6lygjyGn7FD8YwvBrbryZa5kWnvXF3bfhE0IdRt1M3rrrkiv3lswmfJL
+ w4HIgJTTY9pbYZTc1Jg/+w3SKK91kEFBJ62N4nHbEGYPzFsLnf25XwQ8ikiXEpZJb8Wg
+ DRU5jY2YEYBJQTJaI+id3MxK0NFFepXx4KvYjIt20oF9eN4w2mbLAkvWAyFf4SeWNyrA
+ IB70lp7LUslA0AK8xlWLQONql/6rAgzKZeFQ6aqR/mEuZm5Hr+bCAoegXTkA4kwEauQ4
+ JZNaDXZw3wWL7dDJw/uQOxPxbeyBWcwauLS6SafEAsX+zbzemKGRugygjt0bKXVtCzMG
+ 87wA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXNVoQvYIUxzcyErUWpSiToDbgsKiZWEsga/LkqKmgKiPd4nkB72CtheZlVgiK+m7YBiEg01U4k4MK5@nongnu.org
-X-Gm-Message-State: AOJu0YwIXHqZGcn5/j3Wdr5tV5EfFK3DI8aPtpK/HLI+omDusEIBhS+Z
- 2HHpxQQWYkTZzVn2QGM63anSTpX5O6txSLlJ4Xz8R/mKMSJ0V6/GcfbpGDP71Juo1gHhy7CcEqz
- u0DEJ/rZWJpEIZXRYUJlc4p0sfm93/bERntljS0QAcKZx6sfGMhUH
-X-Gm-Gg: ASbGncvB1mC2sGeWzBJLo/DuWcrYKCfgZ+KdaJhFc1v8yJwM8kwzN8mA4WBcX2iEVWP
- ZiebYLDneCovi0P/lDaKXOqNgNCcy1FmxwSYNcfbTq93Txyq/CdTfj6tu/4GF1S94n/4z0R0bBB
- kxMSzUO8yN6Q7uY11Y/C8m5LbYv4FiN5JX9F0m4cAYmVwjUy5JmLrfIVc2YdlM6KpEgFH1HZP8l
- RkcURv1EVjeoGVSsJCDakIsjbUQwuM9PzHfw9ej3KT+o61wy5Dm4pSl7Qzi/AEC9LSiJeW2uF5O
- SskkNatxYan3
-X-Received: by 2002:a05:620a:1925:b0:7b1:ae59:47c4 with SMTP id
- af79cd13be357-7b5144df608mr17490685a.2.1732215808822; 
- Thu, 21 Nov 2024 11:03:28 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFHtb9v2vjJD63fr4taaXeKiAOviSDKVTL8jg6v/Xw5SLj8/2qfvAfWXgmR+w0x3gyqzbFAmg==
-X-Received: by 2002:a05:620a:1925:b0:7b1:ae59:47c4 with SMTP id
- af79cd13be357-7b5144df608mr17484785a.2.1732215808471; 
- Thu, 21 Nov 2024 11:03:28 -0800 (PST)
-Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
- ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
+ AJvYcCXPQ2OGrGBX/LMZtxsv1ytdHvs8HVOA24dyfaQijJb26sFtdr88oRefLqsPKQbVLLtCqVtENxLNNtwu@nongnu.org
+X-Gm-Message-State: AOJu0Yxe+BqyZcQIV3Z/+926lIaauE72JiOi5BHhJLKU4aKBk2R9tkSH
+ Ys8/Xl5ndGn4Q3u1RDeBI+Sd5dexLMA/jjg9yJv0d60KhCPRicGwCe3I+eOOXUc=
+X-Gm-Gg: ASbGnct2OpE3ZkQbF+AsIRn2F80hm7vcipPmi712Yx1aQTrJ6mH9mOBJkd8djGlK92I
+ skpdiIN0UqKTbthcbxLLcfE8HZ4JJz4PbeAJBbaCVXJlibAFO5TN7iblOmdjXPxLGN7HFzADrG6
+ GuU7tDq1t7shddvh9aWCgbHG0DL79l++L5mpGtjNhsGUobBhsFvEMhf77CARKKFgPuVKCqc3NqG
+ wn9YjWk2Ab7YiRZN3Eu1OjBR/9+mypCW4WCWVhCpoX58E+gYg8kLubgK3XY3kI9
+X-Google-Smtp-Source: AGHT+IEFrXRRkDLpfgUugiemfHn67Y5bXKiXl4g70tYMd+uHUSRZ3sEcOzFX/aKUsYQiURuYr9gwNg==
+X-Received: by 2002:a05:600c:5013:b0:431:54f3:11ab with SMTP id
+ 5b1f17b1804b1-4334f01e2a7mr75075665e9.33.1732215825444; 
+ Thu, 21 Nov 2024 11:03:45 -0800 (PST)
+Received: from [192.168.69.197] ([176.187.204.90])
  by smtp.gmail.com with ESMTPSA id
- af79cd13be357-7b51415286esm8565485a.101.2024.11.21.11.03.23
+ 5b1f17b1804b1-433b45d4c68sm64092525e9.22.2024.11.21.11.03.43
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 21 Nov 2024 11:03:27 -0800 (PST)
-Message-ID: <2b8f6079-f2ca-471f-8580-43352437625d@redhat.com>
-Date: Thu, 21 Nov 2024 20:03:20 +0100
+ Thu, 21 Nov 2024 11:03:44 -0800 (PST)
+Message-ID: <7a3dae57-59ba-45b3-b9e1-392430efe8d2@linaro.org>
+Date: Thu, 21 Nov 2024 20:03:42 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 00/39] maintainer updates for -rc2 pre-PR
-To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>, Halil Pasic <pasic@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>, qemu-ppc@nongnu.org,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Alexandre Iooss <erdnaxe@crans.org>, qemu-riscv@nongnu.org,
- Thomas Huth <huth@tuxfamily.org>, Bernhard Beschow <shentey@gmail.com>,
- Thomas Huth <thuth@redhat.com>, Eric Farman <farman@linux.ibm.com>,
- Bin Meng <bmeng.cn@gmail.com>, qemu-s390x@nongnu.org,
- Niek Linnenbank <nieklinnenbank@gmail.com>, qemu-arm@nongnu.org,
- John Snow <jsnow@redhat.com>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Cleber Rosa <crosa@redhat.com>, qemu-rust@nongnu.org,
- Nicholas Piggin <npiggin@gmail.com>, =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?=
- <berrange@redhat.com>, Palmer Dabbelt <palmer@dabbelt.com>,
- Markus Armbruster <armbru@redhat.com>, Weiwei Li <liwei1518@gmail.com>,
- Mahmoud Mandour <ma.mandourr@gmail.com>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Aurelien Jarno <aurelien@aurel32.net>, Ani Sinha <anisinha@redhat.com>,
- Alistair Francis <alistair.francis@wdc.com>
-References: <20241121165806.476008-1-alex.bennee@linaro.org>
-Content-Language: en-US, fr
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-Autocrypt: addr=clg@redhat.com; keydata=
- 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
- uVKe8BVz4atMOoktmt0GWTOC8P4=
-In-Reply-To: <20241121165806.476008-1-alex.bennee@linaro.org>
+Subject: Re: [PATCH 10/12] qom: Create system containers explicitly
+To: Peter Xu <peterx@redhat.com>
+Cc: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ qemu-devel@nongnu.org, Eduardo Habkost <eduardo@habkost.net>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Markus Armbruster <armbru@redhat.com>, Juraj Marcin <jmarcin@redhat.com>,
+ =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Fabiano Rosas <farosas@suse.de>
+References: <20241120215703.3918445-1-peterx@redhat.com>
+ <20241120215703.3918445-11-peterx@redhat.com> <Zz8LwhXsa6ail5qo@redhat.com>
+ <64d02784-adde-459a-a019-10cdca93734f@linaro.org> <Zz9rDA_xlgweZzeP@x1n>
+ <c68b260a-b4ee-48ec-9f5c-3c72a58f424b@linaro.org> <Zz91_IoN0e5E0v2k@x1n>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <Zz91_IoN0e5E0v2k@x1n>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.14,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -178,48 +105,153 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hello Alex,
-
-On 11/21/24 17:57, Alex Bennée wrote:
-> This is a mostly testing focused set of patches but a few bug fixes as
-> well. I plan to send the PR in on Monday. I can drop any patches that
-> are objected to but I think its pretty safe.
+On 21/11/24 19:03, Peter Xu wrote:
+> On Thu, Nov 21, 2024 at 06:29:06PM +0100, Philippe Mathieu-Daudé wrote:
+>> On 21/11/24 18:17, Peter Xu wrote:
+>>> On Thu, Nov 21, 2024 at 02:01:45PM +0100, Philippe Mathieu-Daudé wrote:
+>>>> On 21/11/24 11:30, Daniel P. Berrangé wrote:
+>>>>> On Wed, Nov 20, 2024 at 04:57:01PM -0500, Peter Xu wrote:
+>>>>>> Always explicitly create QEMU system containers upfront.
+>>>>>>
+>>>>>> Root containers will be created when trying to fetch the root object the
+>>>>>> 1st time.  Machine sub-containers will be created only until machine is
+>>>>>> being initialized.
+>>>>>>
+>>>>>> Signed-off-by: Peter Xu <peterx@redhat.com>
+>>>>>> ---
+>>>>>>     hw/core/machine.c | 19 ++++++++++++++++---
+>>>>>>     qom/object.c      | 16 +++++++++++++++-
+>>>>>>     2 files changed, 31 insertions(+), 4 deletions(-)
+>>>>>
+>>>>>
+>>>>>> diff --git a/qom/object.c b/qom/object.c
+>>>>>> index 214d6eb4c1..810e6f2bd9 100644
+>>>>>> --- a/qom/object.c
+>>>>>> +++ b/qom/object.c
+>>>>>> @@ -1734,12 +1734,26 @@ const char *object_property_get_type(Object *obj, const char *name, Error **errp
+>>>>>>         return prop->type;
+>>>>>>     }
+>>>>>> +static Object *object_root_initialize(void)
+>>>>>> +{
+>>>>>> +    Object *root = object_new(TYPE_CONTAINER);
+>>>>>> +
+>>>>>> +    /*
+>>>>>> +     * Create all QEMU system containers.  "machine" and its sub-containers
+>>>>>> +     * are only created when machine initializes (qemu_create_machine()).
+>>>>>> +     */
+>>>>>> +    container_create(root, "chardevs");
+>>>>>> +    container_create(root, "objects");
+>>>>>
+>>>>> This is where I would expect 'backend' to have been created
+>>>>> rather than ui/console.c, though you could potentially make
+>>>>> a case to create it from the machine function, snice console
+>>>>> stuff can't be used outside of the machine context, while
+>>>>> chardevs/objects can be used in qemu-img/qemu-nbd, etc
+>>>
+>>> Would it hurt if we do it altogether here even if it won't be used in
+>>> qemu-img/qemu-nbd?
+>>>
+>>> IMHO we should either make it simple (assuming empty containers won't hurt
+>>> there..), or we should just leave "backend" to ui/ code, so we don't assume
+>>> which binary is using the ui code: whoever uses it will create the container.
+>>>
+>>>>
+>>>> What about creating "backend" container in qemu_create_machine()?
+>>>
+>>> I remember I started with that but it didn't work.  IIRC that's because
+>>> machine_initfn() (or somewhere around the init code) requires the
+>>> containers to present, hence it's too late even if we create the containers
+>>> right after this line:
+>>>
+>>>       current_machine = MACHINE(object_new_with_class(OBJECT_CLASS(machine_class)));
+>>
+>> So qemu_create_machine_containers() really belongs to qemu_create_machine()
+>> =)
 > 
-> Contains:
+> Frankly, I don't immediately get this line..
+
+"machine_initfn requires the containers to be present" -> machine_initfn
+isn't the place to create them, it has to be before or after. Since it
+can't be before, the "after" place is qemu_create_machine_containers().
+Sorry for not being very clear :/
+
 > 
->    - Daniel's clean-up of functional tests
->    - Another avocado->function conversion from Thomas
->    - Update the tuxrun baseline images
->    - Minor fix to the rust pl011 device
->    - Documentation clarification on identity
+> But when I was trying again just to check my memory, I can't see anything
+> crash anymore, moving things over.
 > 
-> The following could do with some review:
+> So while I'll test some more, I can switch to that if I cannot reproduce
+> any issue with it.  That's:
 > 
->    tests/functional: update the x86_64 tuxrun tests
->    tests/functional: update the sparc64 tuxrun tests
->    tests/functional: update the s390x tuxrun tests
->    tests/functional: update the riscv64 tuxrun tests
->    tests/functional: update the riscv32 tuxrun tests
->    tests/functional: update the ppc64 tuxrun tests
->    tests/functional: update the ppc32 tuxrun tests
->    tests/functional: update the mips64el tuxrun tests
->    tests/functional: update the mips64 tuxrun tests
->    tests/functional: update the mips32el tuxrun tests
->    tests/functional: update the mips32 tuxrun tests
->    tests/functional: add a m68k tuxrun tests
->    tests/functional: update the i386 tuxrun tests
->    tests/functional: update the aarch64 tuxrun tests
->    tests/functional: update the arm tuxrun tests
->    tests/functional: Convert the Avocado aarch64 tuxrun tests 
+> ===8<===
+> 
+> diff --git a/hw/core/machine.c b/hw/core/machine.c
+> index ed613ec4cb..a72c001c3d 100644
+> --- a/hw/core/machine.c
+> +++ b/hw/core/machine.c
+> @@ -1193,27 +1193,11 @@ static void machine_class_base_init(ObjectClass *oc, void *data)
+>       }
+>   }
+>   
+> -static const char *const machine_containers[] = {
+> -    "unattached",
+> -    "peripheral",
+> -    "peripheral-anon"
+> -};
+> -
+> -static void qemu_create_machine_containers(Object *machine)
+> -{
+> -    int i;
+> -
+> -    for (i = 0; i < ARRAY_SIZE(machine_containers); i++) {
+> -        object_property_add_new_container(machine, machine_containers[i]);
+> -    }
+> -}
+> -
+>   static void machine_initfn(Object *obj)
+>   {
+>       MachineState *ms = MACHINE(obj);
+>       MachineClass *mc = MACHINE_GET_CLASS(obj);
+>   
+> -    qemu_create_machine_containers(obj);
+>       ms->dump_guest_core = true;
+>       ms->mem_merge = (QEMU_MADV_MERGEABLE != QEMU_MADV_INVALID);
+>       ms->enable_graphics = true;
+> diff --git a/system/vl.c b/system/vl.c
+> index 822f7ff656..cdc0b6e10c 100644
+> --- a/system/vl.c
+> +++ b/system/vl.c
+> @@ -2112,6 +2112,21 @@ static void parse_memory_options(void)
+>       loc_pop(&loc);
+>   }
+>   
+> +static const char *const machine_containers[] = {
+> +    "unattached",
+> +    "peripheral",
+> +    "peripheral-anon"
+> +};
+> +
+> +static void qemu_create_machine_containers(Object *machine)
+> +{
+> +    int i;
+> +
+> +    for (i = 0; i < ARRAY_SIZE(machine_containers); i++) {
+> +        object_property_add_new_container(machine, machine_containers[i]);
+> +    }
+> +}
+> +
+>   static void qemu_create_machine(QDict *qdict)
+>   {
+>       MachineClass *machine_class = select_machine(qdict, &error_fatal);
+> @@ -2120,6 +2135,7 @@ static void qemu_create_machine(QDict *qdict)
+>       current_machine = MACHINE(object_new_with_class(OBJECT_CLASS(machine_class)));
+>       object_property_add_child(object_get_root(), "machine",
+>                                 OBJECT(current_machine));
+> +    qemu_create_machine_containers(OBJECT(current_machine));
+>       object_property_add_child(machine_get_container("unattached"),
+>                                 "sysbus", OBJECT(sysbus_get_default()));
+>   
+> 
 
-Do you think we could include patches 2-4 from this series ?
-
-https://lore.kernel.org/all/20241112130246.970281-1-clg@redhat.com/
-
-Only patch 3 lacks a R-b.
-
-Thanks,
-
-C.
+Yes, this is exactly what I was thinking of / expecting :)
 
 
