@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9585C9D4FF6
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Nov 2024 16:43:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F47F9D4FF8
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Nov 2024 16:44:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tE9Kk-0008TJ-LT; Thu, 21 Nov 2024 10:43:06 -0500
+	id 1tE9LS-0000dh-7F; Thu, 21 Nov 2024 10:43:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1tE9Kh-0008Sp-PR
- for qemu-devel@nongnu.org; Thu, 21 Nov 2024 10:43:03 -0500
+ id 1tE9L6-0000TV-EA
+ for qemu-devel@nongnu.org; Thu, 21 Nov 2024 10:43:32 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1tE9Kg-0000jz-90
- for qemu-devel@nongnu.org; Thu, 21 Nov 2024 10:43:03 -0500
+ id 1tE9Ky-0000lM-GH
+ for qemu-devel@nongnu.org; Thu, 21 Nov 2024 10:43:27 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1732203781;
+ s=mimecast20190719; t=1732203790;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Yj5+vx0K0OlA1WTlyKTZ9b/IpvJBZdLUFFn25VVcPtE=;
- b=RwMzZ9BqTtjquco7IRv3rIuX1Ur243cemNPOPpj9FUPHddvgC2dqbdjV8ApAg12MtRLQBZ
- TJiVjFoyMepImeHKPIVlNqGDg0h87a0M29f/ZfkHBjvGUV5D6bQcKfO0Lp0cR2wdQtg7nA
- yD0NEHYmVXiubXQixgojkYMi3AUinXU=
+ bh=1FsH3qFtGsm9QX04vq8KLHX874OpFGJsQao19NSbZGE=;
+ b=OPK5ZusC3lQkucgZzPNTNuDIvtPyR2MqnzK1ynDYtx+3x5P8pcTZnRGfJ74f1N8T0YkOhh
+ Reh01KuXwfgrxYQYHl/JigD8yyHPwRItIi3G2jBZd0LmUTp1c/jhuJsyNWz5IquLW/RT6V
+ UEisuiRlBC5A4LQLvZ1tvdiS+O4cW30=
 Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-312-4EqBEcFjN0imH1vHQ11iwQ-1; Thu,
- 21 Nov 2024 10:42:58 -0500
-X-MC-Unique: 4EqBEcFjN0imH1vHQ11iwQ-1
-X-Mimecast-MFC-AGG-ID: 4EqBEcFjN0imH1vHQ11iwQ
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-248-ftgM3IWIPneJhA0T9xjKTQ-1; Thu,
+ 21 Nov 2024 10:43:04 -0500
+X-MC-Unique: ftgM3IWIPneJhA0T9xjKTQ-1
+X-Mimecast-MFC-AGG-ID: ftgM3IWIPneJhA0T9xjKTQ
 Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id E00991954128; Thu, 21 Nov 2024 15:42:56 +0000 (UTC)
+ id BE97319540F2; Thu, 21 Nov 2024 15:43:03 +0000 (UTC)
 Received: from toolbox.redhat.com (unknown [10.42.28.5])
  by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 16E4E1956086; Thu, 21 Nov 2024 15:42:53 +0000 (UTC)
+ id A856B1956086; Thu, 21 Nov 2024 15:42:57 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Thomas Huth <thuth@redhat.com>, Ani Sinha <anisinha@redhat.com>,
@@ -52,9 +52,10 @@ Cc: Thomas Huth <thuth@redhat.com>, Ani Sinha <anisinha@redhat.com>,
  Peter Maydell <peter.maydell@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH v2 05/18] tests/functional: remove leftover :avocado: tags
-Date: Thu, 21 Nov 2024 15:42:05 +0000
-Message-ID: <20241121154218.1423005-6-berrange@redhat.com>
+Subject: [PATCH v2 06/18] tests/functional: remove obsolete reference to
+ avocado bug
+Date: Thu, 21 Nov 2024 15:42:06 +0000
+Message-ID: <20241121154218.1423005-7-berrange@redhat.com>
 In-Reply-To: <20241121154218.1423005-1-berrange@redhat.com>
 References: <20241121154218.1423005-1-berrange@redhat.com>
 MIME-Version: 1.0
@@ -86,133 +87,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-These tags are not honoured under the new functional test harness.
+Historical bugs in avocado related to zstd support are not relevant to
+the code now that it uses QEMU's native test harness.
 
 Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- tests/functional/test_arm_bpim2u.py   | 20 --------------------
- tests/functional/test_arm_orangepi.py | 27 ---------------------------
- 2 files changed, 47 deletions(-)
+ tests/functional/qemu_test/tuxruntest.py | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/tests/functional/test_arm_bpim2u.py b/tests/functional/test_arm_bpim2u.py
-index 2f9fa145e3..35ea58d46c 100755
---- a/tests/functional/test_arm_bpim2u.py
-+++ b/tests/functional/test_arm_bpim2u.py
-@@ -37,11 +37,6 @@ class BananaPiMachine(LinuxKernelTest):
-         '5b41b4e11423e562c6011640f9a7cd3bdd0a3d42b83430f7caa70a432e6cd82c')
+diff --git a/tests/functional/qemu_test/tuxruntest.py b/tests/functional/qemu_test/tuxruntest.py
+index f05aa96ad7..ed2b238c92 100644
+--- a/tests/functional/qemu_test/tuxruntest.py
++++ b/tests/functional/qemu_test/tuxruntest.py
+@@ -39,7 +39,6 @@ def setUp(self):
+         super().setUp()
  
-     def test_arm_bpim2u(self):
--        """
--        :avocado: tags=arch:arm
--        :avocado: tags=machine:bpim2u
--        :avocado: tags=accel:tcg
--        """
-         self.set_machine('bpim2u')
-         deb_path = self.ASSET_DEB.fetch()
-         kernel_path = self.extract_from_deb(deb_path,
-@@ -64,11 +59,6 @@ def test_arm_bpim2u(self):
-         os.remove(dtb_path)
- 
-     def test_arm_bpim2u_initrd(self):
--        """
--        :avocado: tags=arch:arm
--        :avocado: tags=accel:tcg
--        :avocado: tags=machine:bpim2u
--        """
-         self.set_machine('bpim2u')
-         deb_path = self.ASSET_DEB.fetch()
-         kernel_path = self.extract_from_deb(deb_path,
-@@ -105,11 +95,6 @@ def test_arm_bpim2u_initrd(self):
-         os.remove(initrd_path)
- 
-     def test_arm_bpim2u_gmac(self):
--        """
--        :avocado: tags=arch:arm
--        :avocado: tags=machine:bpim2u
--        :avocado: tags=device:sd
--        """
-         self.set_machine('bpim2u')
-         self.require_netdev('user')
- 
-@@ -160,11 +145,6 @@ def test_arm_bpim2u_gmac(self):
- 
-     @skipUnless(os.getenv('QEMU_TEST_ALLOW_LARGE_STORAGE'), 'storage limited')
-     def test_arm_bpim2u_openwrt_22_03_3(self):
--        """
--        :avocado: tags=arch:arm
--        :avocado: tags=machine:bpim2u
--        :avocado: tags=device:sd
--        """
-         self.set_machine('bpim2u')
-         # This test download a 8.9 MiB compressed image and expand it
-         # to 127 MiB.
-diff --git a/tests/functional/test_arm_orangepi.py b/tests/functional/test_arm_orangepi.py
-index d2ed5fcc82..6d57223a03 100755
---- a/tests/functional/test_arm_orangepi.py
-+++ b/tests/functional/test_arm_orangepi.py
-@@ -49,11 +49,6 @@ class BananaPiMachine(LinuxKernelTest):
-         '20d3e07dc057e15c12452620e90ecab2047f0f7940d9cba8182ebc795927177f')
- 
-     def test_arm_orangepi(self):
--        """
--        :avocado: tags=arch:arm
--        :avocado: tags=machine:orangepi-pc
--        :avocado: tags=accel:tcg
--        """
-         self.set_machine('orangepi-pc')
-         deb_path = self.ASSET_DEB.fetch()
-         kernel_path = self.extract_from_deb(deb_path,
-@@ -75,11 +70,6 @@ def test_arm_orangepi(self):
-         os.remove(dtb_path)
- 
-     def test_arm_orangepi_initrd(self):
--        """
--        :avocado: tags=arch:arm
--        :avocado: tags=accel:tcg
--        :avocado: tags=machine:orangepi-pc
--        """
-         self.set_machine('orangepi-pc')
-         deb_path = self.ASSET_DEB.fetch()
-         kernel_path = self.extract_from_deb(deb_path,
-@@ -115,12 +105,6 @@ def test_arm_orangepi_initrd(self):
-         os.remove(initrd_path)
- 
-     def test_arm_orangepi_sd(self):
--        """
--        :avocado: tags=arch:arm
--        :avocado: tags=accel:tcg
--        :avocado: tags=machine:orangepi-pc
--        :avocado: tags=device:sd
--        """
-         self.set_machine('orangepi-pc')
-         self.require_netdev('user')
-         deb_path = self.ASSET_DEB.fetch()
-@@ -167,11 +151,6 @@ def test_arm_orangepi_sd(self):
- 
-     @skipUnless(os.getenv('QEMU_TEST_ALLOW_LARGE_STORAGE'), 'storage limited')
-     def test_arm_orangepi_armbian(self):
--        """
--        :avocado: tags=arch:arm
--        :avocado: tags=machine:orangepi-pc
--        :avocado: tags=device:sd
--        """
-         self.set_machine('orangepi-pc')
-         # This test download a 275 MiB compressed image and expand it
-         # to 1036 MiB, but the underlying filesystem is 1552 MiB...
-@@ -208,12 +187,6 @@ def test_arm_orangepi_armbian(self):
- 
-     @skipUnless(os.getenv('QEMU_TEST_ALLOW_LARGE_STORAGE'), 'storage limited')
-     def test_arm_orangepi_uboot_netbsd9(self):
--        """
--        :avocado: tags=arch:arm
--        :avocado: tags=machine:orangepi-pc
--        :avocado: tags=device:sd
--        :avocado: tags=os:netbsd
--        """
-         self.set_machine('orangepi-pc')
-         # This test download a 304MB compressed image and expand it to 2GB
-         deb_path = self.ASSET_UBOOT.fetch()
+         # We need zstd for all the tuxrun tests
+-        # See https://github.com/avocado-framework/avocado/issues/5609
+         (has_zstd, msg) = has_cmd('zstd')
+         if has_zstd is False:
+             self.skipTest(msg)
 -- 
 2.46.0
 
