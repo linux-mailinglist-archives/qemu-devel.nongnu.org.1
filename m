@@ -2,19 +2,19 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B56EE9D458A
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Nov 2024 02:52:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B9EBD9D457B
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Nov 2024 02:51:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tDwHr-0001az-7I; Wed, 20 Nov 2024 20:47:15 -0500
+	id 1tDwHq-0001ap-Ok; Wed, 20 Nov 2024 20:47:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1tDwHp-0001aR-NA
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1tDwHp-0001aI-Ah
  for qemu-devel@nongnu.org; Wed, 20 Nov 2024 20:47:13 -0500
 Received: from rev.ng ([94.130.142.21])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1tDwHn-0004XK-1d
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1tDwHn-0004XW-Qk
  for qemu-devel@nongnu.org; Wed, 20 Nov 2024 20:47:13 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
  s=dkim; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
@@ -22,16 +22,16 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
  Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
  :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
  List-Post:List-Owner:List-Archive:List-Unsubscribe:List-Unsubscribe-Post:
- List-Help; bh=NXow3yI/n6VGiB50Xsb9COmLd+0cj1NMmA6+H2pmjgc=; b=WKYcobFPlzejlh4
- I+kietp95+5ETSoDAeKdBuDIiOrQLmbbbGtOZefz0nnYjiVT0mKgpTUSk0NRUAn1jsOqOUlROjM3w
- 8eaGIJ7sAPauDE4BakwCTHap6xqSC1aQmcPS8ZSP/dZcZYmesO0tzlI9q1ulUjW60jQHHGKCAOydj
- k0=;
+ List-Help; bh=i2OqdZuO+kr2Tl9S5r8bbQR09WB2cR2wCDZ7uUecgdY=; b=hh1zIFXVopAyKTW
+ aMAA1frZj1gI6RIYpQyLTpFJ7MOKhnhkWKEgITYHn/304thqjHTUCxtnoCT3z7NWy4g2gchxFUVB9
+ opc8FxVPQdrtaUOfisyq82C2i6HcEI/izvzJq/ZmS/6PZ9u+4y76lK7niV2b5r3PEWyT6bnXg7UAq
+ hA=;
 To: qemu-devel@nongnu.org
 Cc: ale@rev.ng, ltaylorsimpson@gmail.com, bcain@quicinc.com,
  richard.henderson@linaro.org, philmd@linaro.org, alex.bennee@linaro.org
-Subject: [RFC PATCH v1 12/43] helper-to-tcg: Introduce custom LLVM pipeline
-Date: Thu, 21 Nov 2024 02:49:16 +0100
-Message-ID: <20241121014947.18666-13-anjo@rev.ng>
+Subject: [RFC PATCH v1 13/43] helper-to-tcg: Introduce Error.h
+Date: Thu, 21 Nov 2024 02:49:17 +0100
+Message-ID: <20241121014947.18666-14-anjo@rev.ng>
 In-Reply-To: <20241121014947.18666-1-anjo@rev.ng>
 References: <20241121014947.18666-1-anjo@rev.ng>
 MIME-Version: 1.0
@@ -62,29 +62,20 @@ From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Adds a custom pipeline, similar to LLVM opt, with the goal of taking an
-input LLVM IR module to an equivalent output .c file implementing
-functions in TCG.
-
-Initial LLVM boilerplate is added until the creation of a
-ModulePassManager.  A custom target derived from x64 is added, to ensure
-consistent behaviour across different hosts.
+Simple function for creating Expected<> with nice error messages.
 
 Signed-off-by: Anton Johansson <anjo@rev.ng>
 ---
- .../helper-to-tcg/include/CmdLineOptions.h    |  23 +++
- subprojects/helper-to-tcg/meson.build         |   1 +
- .../helper-to-tcg/pipeline/Pipeline.cpp       | 159 ++++++++++++++++++
- 3 files changed, 183 insertions(+)
- create mode 100644 subprojects/helper-to-tcg/include/CmdLineOptions.h
- create mode 100644 subprojects/helper-to-tcg/pipeline/Pipeline.cpp
+ subprojects/helper-to-tcg/include/Error.h | 40 +++++++++++++++++++++++
+ 1 file changed, 40 insertions(+)
+ create mode 100644 subprojects/helper-to-tcg/include/Error.h
 
-diff --git a/subprojects/helper-to-tcg/include/CmdLineOptions.h b/subprojects/helper-to-tcg/include/CmdLineOptions.h
+diff --git a/subprojects/helper-to-tcg/include/Error.h b/subprojects/helper-to-tcg/include/Error.h
 new file mode 100644
-index 0000000000..5774ab07b1
+index 0000000000..10205e29a6
 --- /dev/null
-+++ b/subprojects/helper-to-tcg/include/CmdLineOptions.h
-@@ -0,0 +1,23 @@
++++ b/subprojects/helper-to-tcg/include/Error.h
+@@ -0,0 +1,40 @@
 +//
 +//  Copyright(c) 2024 rev.ng Labs Srl. All Rights Reserved.
 +//
@@ -104,186 +95,26 @@ index 0000000000..5774ab07b1
 +
 +#pragma once
 +
-+#include <llvm/Support/CommandLine.h>
++#include <llvm/Support/Error.h>
++#include <llvm/IR/Value.h>
++#include <llvm/IR/ModuleSlotTracker.h>
 +
-+// Options for pipeline
-+extern llvm::cl::list<std::string> InputFiles;
-diff --git a/subprojects/helper-to-tcg/meson.build b/subprojects/helper-to-tcg/meson.build
-index 7bb93ce005..63c6ed17fb 100644
---- a/subprojects/helper-to-tcg/meson.build
-+++ b/subprojects/helper-to-tcg/meson.build
-@@ -41,6 +41,7 @@ if version_major < 10 or version_major > 14
- endif
- 
- sources = [
-+    'pipeline/Pipeline.cpp',
-     'passes/llvm-compat.cpp',
- ]
- 
-diff --git a/subprojects/helper-to-tcg/pipeline/Pipeline.cpp b/subprojects/helper-to-tcg/pipeline/Pipeline.cpp
-new file mode 100644
-index 0000000000..9c0e777893
---- /dev/null
-+++ b/subprojects/helper-to-tcg/pipeline/Pipeline.cpp
-@@ -0,0 +1,159 @@
-+//
-+//  Copyright(c) 2024 rev.ng Labs Srl. All Rights Reserved.
-+//
-+//  This program is free software; you can redistribute it and/or modify
-+//  it under the terms of the GNU General Public License as published by
-+//  the Free Software Foundation; either version 2 of the License, or
-+//  (at your option) any later version.
-+//
-+//  This program is distributed in the hope that it will be useful,
-+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+//  GNU General Public License for more details.
-+//
-+//  You should have received a copy of the GNU General Public License
-+//  along with this program; if not, see <http://www.gnu.org/licenses/>.
-+//
-+
-+#include <llvm/ADT/Triple.h>
-+#include <llvm/Analysis/AliasAnalysis.h>
-+#include <llvm/Analysis/CGSCCPassManager.h>
-+#include <llvm/Analysis/LoopAnalysisManager.h>
-+#include <llvm/Analysis/TargetTransformInfo.h>
-+#include <llvm/CodeGen/BasicTTIImpl.h>
-+#include <llvm/IR/LLVMContext.h>
-+#include <llvm/IR/Module.h>
-+#include <llvm/IR/PassManager.h>
-+#include <llvm/IRReader/IRReader.h>
-+#include <llvm/InitializePasses.h>
-+#include <llvm/Linker/Linker.h>
-+#include <llvm/PassRegistry.h>
-+#include <llvm/Passes/PassBuilder.h>
-+#include <llvm/Support/CommandLine.h>
-+#include <llvm/Support/InitLLVM.h>
-+#include <llvm/Support/SourceMgr.h>
-+#include <llvm/Support/TargetSelect.h>
-+#include <llvm/Target/TargetMachine.h>
-+
-+#include "llvm-compat.h"
-+
-+using namespace llvm;
-+
-+cl::OptionCategory Cat("helper-to-tcg Options");
-+
-+// Options for pipeline
-+cl::opt<std::string> InputFile(cl::Positional, cl::desc("[input LLVM module]"),
-+                               cl::cat(Cat));
-+
-+// Define a TargetTransformInfo (TTI) subclass, this allows for overriding
-+// common per-llvm-target information expected by other LLVM passes, such
-+// as the width of the largest scalar/vector registers.  Needed for consistent
-+// behaviour across different hosts.
-+class TcgTTI : public BasicTTIImplBase<TcgTTI>
++inline llvm::Error mkError(const llvm::StringRef Msg)
 +{
-+    friend class BasicTTIImplBase<TcgTTI>;
++    return llvm::createStringError(llvm::inconvertibleErrorCode(), Msg);
++}
 +
-+    // We need to provide ST, TLI, getST(), getTLI()
-+    const TargetSubtargetInfo *ST;
-+    const TargetLoweringBase *TLI;
-+
-+    const TargetSubtargetInfo *getST() const { return ST; }
-+    const TargetLoweringBase *getTLI() const { return TLI; }
-+
-+  public:
-+    // Initialize ST and TLI from the target machine, e.g. if we're
-+    // targeting x86 we'll get the Subtarget and TargetLowering to
-+    // match that architechture.
-+    TcgTTI(TargetMachine *TM, Function const &F)
-+        : BasicTTIImplBase(TM, F.getParent()->getDataLayout()),
-+          ST(TM->getSubtargetImpl(F)), TLI(ST->getTargetLowering())
-+    {
-+    }
-+
-+#if LLVM_VERSION_MAJOR >= 13
-+    TypeSize getRegisterBitWidth(TargetTransformInfo::RegisterKind K) const
-+    {
-+        switch (K) {
-+        case TargetTransformInfo::RGK_Scalar:
-+            // We pretend we always support 64-bit registers
-+            return TypeSize::getFixed(64);
-+        case TargetTransformInfo::RGK_FixedWidthVector:
-+            // We pretend we always support 2048-bit vector registers
-+            return TypeSize::getFixed(2048);
-+        case TargetTransformInfo::RGK_ScalableVector:
-+            return TypeSize::getScalable(0);
-+        default:
-+            abort();
-+        }
-+    }
-+#else
-+    unsigned getRegisterBitWidth(bool Vector) const
-+    {
-+        if (Vector) {
-+            return 2048;
-+        } else {
-+            return 64;
-+        }
-+    }
-+#endif
-+};
-+
-+int main(int argc, char **argv)
++// TODO: Usage of mkError and dbgs() for serializing Values is __really__ slow,
++// and should only occur for error reporting.  Wrap these in a class with a
++// ModuleSlotTracker.
++inline llvm::Error mkError(const llvm::StringRef Msg, const llvm::Value *V)
 +{
-+    InitLLVM X(argc, argv);
-+    cl::HideUnrelatedOptions(Cat);
-+
-+    InitializeAllTargets();
-+    InitializeAllTargetMCs();
-+    PassRegistry &Registry = *PassRegistry::getPassRegistry();
-+    initializeCore(Registry);
-+    initializeScalarOpts(Registry);
-+    initializeVectorization(Registry);
-+    initializeAnalysis(Registry);
-+    initializeTransformUtils(Registry);
-+    initializeInstCombine(Registry);
-+    initializeTarget(Registry);
-+
-+    cl::ParseCommandLineOptions(argc, argv);
-+
-+    LLVMContext Context;
-+
-+    SMDiagnostic Err;
-+    std::unique_ptr<Module> M = parseIRFile(InputFile, Err, Context);
-+
-+    // Create a new TargetMachine to represent a TCG target,
-+    // we use x86_64 as a base and derive from that using a
-+    // TargetTransformInfo to provide allowed scalar and vector
-+    // register sizes.
-+    Triple ModuleTriple("x86_64-pc-unknown");
-+    assert(ModuleTriple.getArch());
-+    TargetMachine *TM = compat::getTargetMachine(ModuleTriple);
-+
-+    PipelineTuningOptions PTO;
-+    PassBuilder PB = compat::createPassBuilder(TM, PTO);
-+    LoopAnalysisManager LAM;
-+    FunctionAnalysisManager FAM;
-+    CGSCCAnalysisManager CGAM;
-+    ModuleAnalysisManager MAM;
-+
-+    // Register our TargetIrAnalysis pass using our own TTI
-+    FAM.registerPass([&] {
-+        return TargetIRAnalysis(
-+            [&](const Function &F) { return TcgTTI(TM, F); });
-+    });
-+    FAM.registerPass([&] { return LoopAnalysis(); });
-+    LAM.registerPass([&] { return LoopAccessAnalysis(); });
-+    // We need to specifically add the aliasing pipeline for LLVM <= 13
-+    FAM.registerPass([&] { return PB.buildDefaultAAPipeline(); });
-+
-+    // Register other default LLVM Analyses
-+    PB.registerFunctionAnalyses(FAM);
-+    PB.registerModuleAnalyses(MAM);
-+    PB.registerLoopAnalyses(LAM);
-+    PB.registerCGSCCAnalyses(CGAM);
-+    PB.crossRegisterProxies(LAM, FAM, CGAM, MAM);
-+
-+    ModulePassManager MPM;
-+
-+    return 0;
++    std::string Str;
++    llvm::raw_string_ostream Stream(Str);
++    Stream << Msg;
++    Stream << *V;
++    Stream.flush();
++    return llvm::createStringError(llvm::inconvertibleErrorCode(), Str);
 +}
 -- 
 2.45.2
