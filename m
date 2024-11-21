@@ -2,19 +2,19 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C0C89D456C
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Nov 2024 02:49:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C0E009D4560
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Nov 2024 02:48:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tDwHk-0001YT-3p; Wed, 20 Nov 2024 20:47:08 -0500
+	id 1tDwHm-0001ZQ-4c; Wed, 20 Nov 2024 20:47:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1tDwHh-0001Wj-DX
- for qemu-devel@nongnu.org; Wed, 20 Nov 2024 20:47:05 -0500
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1tDwHi-0001XT-7a
+ for qemu-devel@nongnu.org; Wed, 20 Nov 2024 20:47:06 -0500
 Received: from rev.ng ([94.130.142.21])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1tDwHg-0004Wt-4z
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1tDwHg-0004Wv-NE
  for qemu-devel@nongnu.org; Wed, 20 Nov 2024 20:47:05 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
  s=dkim; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
@@ -22,17 +22,16 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
  Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
  :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
  List-Post:List-Owner:List-Archive:List-Unsubscribe:List-Unsubscribe-Post:
- List-Help; bh=23UMfXZbF/6Igxr41KQ6yE+eWu+hARLGdgl4G57ZkEA=; b=dn5Vc9z7EagOZg7
- jpSg5S7ifsdtyL/qDAmIbcgFfaqSJeGw9st6ai6BWao83NaolRFO7p9aZMbWm7nEQx2/KHNc5RwnZ
- OE92j+cX7+i9Xsn4mXBVioeZNwuxZLct7SVw7hoDQDwaUGn3NoqSPF+crDHorbvY65IxYFDp/V+bg
- rY=;
+ List-Help; bh=gzkPiBJ/YsivON7QkdxAWJG2Cn2Aehqf0eG3z2ULstk=; b=K7mJ3OoNP33LQz3
+ wC9DZ+2ldcUjU/kBe3x0YpUzJ1CyZjKM86jjKgkfPZifnpbDeBLWz0UKrw6jiHXLOUcjqSgPhqbDz
+ PcEqZsPKH8Ij5yr3YED4VD7PYeCi/aQcQtQMDFcf6iyNntMfX7ZAXuRV1uPLF2xuoDz095DmVtcPl
+ BE=;
 To: qemu-devel@nongnu.org
 Cc: ale@rev.ng, ltaylorsimpson@gmail.com, bcain@quicinc.com,
  richard.henderson@linaro.org, philmd@linaro.org, alex.bennee@linaro.org
-Subject: [RFC PATCH v1 07/43] tcg: Increase maximum TB size and maximum
- temporaries
-Date: Thu, 21 Nov 2024 02:49:11 +0100
-Message-ID: <20241121014947.18666-8-anjo@rev.ng>
+Subject: [RFC PATCH v1 08/43] include/helper-to-tcg: Introduce annotate.h
+Date: Thu, 21 Nov 2024 02:49:12 +0100
+Message-ID: <20241121014947.18666-9-anjo@rev.ng>
 In-Reply-To: <20241121014947.18666-1-anjo@rev.ng>
 References: <20241121014947.18666-1-anjo@rev.ng>
 MIME-Version: 1.0
@@ -63,39 +62,51 @@ From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Doubles amount of space allocated for translation blocks.  This is
-needed, particularly for Hexagon, where a single instruction packet may
-consist of up to four vector instructions.  If each vector instruction
-then gets expanded into gvec operations that utilize a small host vector
-size the TB blows up quite quickly.
+Wrap __attribute__((annotate(str))) in a macro for convenient
+function annotations.  Will be used in future commits to tag functions
+for translation by helper-to-tcg, and to specify which helper function
+arguments correspond to immediate or vector values.
 
 Signed-off-by: Anton Johansson <anjo@rev.ng>
 ---
- include/tcg/tcg.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/helper-to-tcg/annotate.h | 28 ++++++++++++++++++++++++++++
+ 1 file changed, 28 insertions(+)
+ create mode 100644 include/helper-to-tcg/annotate.h
 
-diff --git a/include/tcg/tcg.h b/include/tcg/tcg.h
-index d3e820568f..bd8cb9ff50 100644
---- a/include/tcg/tcg.h
-+++ b/include/tcg/tcg.h
-@@ -39,7 +39,7 @@
- /* XXX: make safe guess about sizes */
- #define MAX_OP_PER_INSTR 266
- 
--#define CPU_TEMP_BUF_NLONGS 128
-+#define CPU_TEMP_BUF_NLONGS 256
- #define TCG_STATIC_FRAME_SIZE  (CPU_TEMP_BUF_NLONGS * sizeof(long))
- 
- #if TCG_TARGET_REG_BITS == 32
-@@ -231,7 +231,7 @@ typedef struct TCGPool {
- 
- #define TCG_POOL_CHUNK_SIZE 32768
- 
--#define TCG_MAX_TEMPS 512
-+#define TCG_MAX_TEMPS 1024
- #define TCG_MAX_INSNS 512
- 
- /* when the size of the arguments of a called function is smaller than
+diff --git a/include/helper-to-tcg/annotate.h b/include/helper-to-tcg/annotate.h
+new file mode 100644
+index 0000000000..80ecf23217
+--- /dev/null
++++ b/include/helper-to-tcg/annotate.h
+@@ -0,0 +1,28 @@
++/*
++ *  Copyright(c) 2024 rev.ng Labs Srl. All Rights Reserved.
++ *
++ *  This program is free software; you can redistribute it and/or modify
++ *  it under the terms of the GNU General Public License as published by
++ *  the Free Software Foundation; either version 2 of the License, or
++ *  (at your option) any later version.
++ *
++ *  This program is distributed in the hope that it will be useful,
++ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
++ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ *  GNU General Public License for more details.
++ *
++ *  You should have received a copy of the GNU General Public License
++ *  along with this program; if not, see <http://www.gnu.org/licenses/>.
++ */
++
++#ifndef ANNOTATE_H
++#define ANNOTATE_H
++
++/* HELPER_TO_TCG can be defined when generating LLVM IR. */
++#ifdef HELPER_TO_TCG
++#define LLVM_ANNOTATE(str) __attribute__((annotate (str)))
++#else
++#define LLVM_ANNOTATE(str) /* str */
++#endif
++
++#endif /* ANNOTATE_H */
 -- 
 2.45.2
 
