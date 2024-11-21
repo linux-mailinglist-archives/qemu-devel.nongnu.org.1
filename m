@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 431DE9D5135
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Nov 2024 18:03:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 680879D5144
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Nov 2024 18:07:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tEAWK-0005Ld-8p; Thu, 21 Nov 2024 11:59:08 -0500
+	id 1tEAWI-0005HZ-Ld; Thu, 21 Nov 2024 11:59:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tEAVi-0004j3-Nl
- for qemu-devel@nongnu.org; Thu, 21 Nov 2024 11:58:31 -0500
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ id 1tEAVe-0004dN-K9
+ for qemu-devel@nongnu.org; Thu, 21 Nov 2024 11:58:26 -0500
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tEAVT-000827-Kh
- for qemu-devel@nongnu.org; Thu, 21 Nov 2024 11:58:30 -0500
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-4316cce103dso13217555e9.3
- for <qemu-devel@nongnu.org>; Thu, 21 Nov 2024 08:58:14 -0800 (PST)
+ id 1tEAVR-00080W-V0
+ for qemu-devel@nongnu.org; Thu, 21 Nov 2024 11:58:24 -0500
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-431695fa98bso8976275e9.3
+ for <qemu-devel@nongnu.org>; Thu, 21 Nov 2024 08:58:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1732208294; x=1732813094; darn=nongnu.org;
+ d=linaro.org; s=google; t=1732208292; x=1732813092; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=HBO8uUfv3fFiWiD+w6s2aaOdqrCx/cKUKIQ69stTmio=;
- b=DwaFEwJl8uXmUrxBuuoIpwShiSd8kLbeCY1SVFRk7Bux1bcVUntwOMcEXK+7cwKj9D
- 9x5UN6q96+gBlx43RJFi8XftlTx577QVFC6FGPYGyRral+zlf6vz7wje/AEMBPLMa/Vb
- FMv4G1sGxz/ErofVDB5yC0IkW0rOUGyCj7mqo4tpOAkb3A/8x4Eem9v0GPpJ2Q+bGUjh
- zipKoytRdqIrc2gG5XGaz6huLq3+/HRq0FUpwE0zbcngsTM1Fxi+5dAeWseudRUZAYMt
- y/38NFrxoTX/AddzfcpZv2u9nRy8sQVWrRNMfEfboLqviG2zJL3Hlik33NvkBU5JDo+g
- BMnw==
+ bh=Dp3O7OQ3MnV8QkUA7aQUHJMfCFG23foe3+ZfbczUD2I=;
+ b=qjPbzcrJqARFYgAJ6NjiJ/gasr8RR2l6p+Q+qWsKaMdFb3NRwi7BFEc5ybPYULBqTM
+ suoE8rVlrj9BbPg90XZmrn0X/z8A7xML/A8ywmLxxLYdF85IuSayhbWRR0NLRNl6pbJy
+ 99eRQnsfqJtmBUPCm68OOvcbGY1vqSnN3GpPaNJ0I7EEFTR38RgN6zg04GAWlMNuPaqv
+ mR7jMMzPRYAxxPcP3iXlGXLVFPTTHphtaaMk6fGVvjt4T74EOWd2TLU2EISvobhYlc7M
+ kYQ32h56KywLhO0TIvEJC81ybpDi08SwWwF2TO+ZOLHmKLg9pioh9V8Xau+SLv+6T3xL
+ /asg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1732208294; x=1732813094;
+ d=1e100.net; s=20230601; t=1732208292; x=1732813092;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=HBO8uUfv3fFiWiD+w6s2aaOdqrCx/cKUKIQ69stTmio=;
- b=UfFkdKUBMFdm/ikUFm1RF9cPUEMoKC3EhCQ1QX1lAbYr5KOhSl1F7YI/Rirnj7Qjmy
- 8EwmA1zc/KuPWj2dVQDYPv+tbVmbOBs0IAgK8+wKK32zBO74q/+QETRtNPLb4c657abm
- DaMNtkO4OnuRArKgdzjxZzFVb4uSXhSuQ99uPYaow+dzG9JoOU4U9w8jUrKsjrffH+NT
- GHyQV9TlI93C+DdQwOlGoBRAnxmUSp/Hz6B7zzoTa3crXlF+TnQhf1g6ab+OTlsfPwio
- 019eCP1JJZJqHgtWHfL5Czgcj3gcjxc2wuZwF2GB1HrVPh2jUnjeC7gU52gLsKng9FAf
- bg/g==
-X-Gm-Message-State: AOJu0Yw/j5f01uwru5K4jR00y9HtNMRVDofkVc6izYJQ8jR476Udw0ec
- g1ZTHOwLWLA35/VcJNt0UTsNRMlDqHMd9d9qn5ewCRBwGTAJSmdbv58kbP159Is=
-X-Gm-Gg: ASbGncs3qtaLutcYfXPDsbX5p6UTZimaE+xmCIAT5Bb3Kie0s+a5WGylZmJyuaAZyFk
- 2b84kXrh+E/TK+yPWmzdQbk6rSi9BV5XShPhlXyXESjkc88AGuD7MfUhVjg8cYdqKUCNR+mTCfZ
- DohAohGakvu5hDqNac9hiGhZ+FWkzLP5VedB4pfYNsvDdhBQDhAqAfI3s7nY9OnnzmLCaMxKguS
- xp72ASp8CpnCkOO87jkYBJe8LlTqQVZseXvGxVhykVh+A5G
-X-Google-Smtp-Source: AGHT+IFluGvXNWin4wGsdyZrYLQC3KI6QlEadKc1ikm2HChlvy4kmoKlcIMmhgumhDHp74vpHncVWg==
-X-Received: by 2002:a05:600c:4690:b0:431:5ba1:a520 with SMTP id
- 5b1f17b1804b1-4334898172emr85435285e9.3.1732208293966; 
- Thu, 21 Nov 2024 08:58:13 -0800 (PST)
+ bh=Dp3O7OQ3MnV8QkUA7aQUHJMfCFG23foe3+ZfbczUD2I=;
+ b=wa3umxDt19pOl2h5MEkp2WLklSUCoGYEZJ3eStmCze/tB398KpF5zh7ADsTkRYbo68
+ 5Mu59XUePy9p7ukEtqbtfTOI/JvddimOnxvDv+YA50XRm2IpAeZJlUklel5AFjsvfXLJ
+ wn6YISXVc/dp8Bt8/xXEHkMRUbVldVYt6rOwi4g6MOCqPHIJ6SnOgzjwXNCZq/KQIpCn
+ Tfh6zYrFUEQq9xp1hDj+2tbpfxFlzbfTSUI0CrwdItQUwUpKaKow2bwcZObuyHmSP6W9
+ PlZUTI7Bh1Dq7ifWNla5jeK12NTdpwsgP94WspGmFVZmav8to7vwp6xuwLhNQQ0AfpFt
+ /ESg==
+X-Gm-Message-State: AOJu0YwA+sV6fS5vOCxqCPUmV/gTmNkmDc8FxqBdLK+uPLd8N3Ul0plY
+ HvH3gEum/88rS65rD9fP+mus5eCe+9tE4tLr5pHEXYfkCTR5q1mz/e0PXTPupGg=
+X-Gm-Gg: ASbGncunJXx5csO0mVEIVyVMKIYnPkfq0A0Q6jcbMx+/AhtkfFqtuLoSVq/JUKP7d8z
+ 3r91r7mkCip+2umXBeQnuabQ0Fmy6tfeK/r52kzhArtZzBx974fA/gzDKaWDR7qkfnJAwltaGiW
+ 0zls8r6D99JTCOBwUwjaCat7ZaOC8kVTVlMzoyY7JqlyWoQRFQ8xH4Tpo2pWWd1YrXEB4QsahNL
+ YGIbOe3E1Mc4C8cE1116ghF6nHB38QxNBn3z+TVXWGM9l9p
+X-Google-Smtp-Source: AGHT+IGuvjZ8B9pJ41YHj38dXxQihGEDFw8gT3+C8/s8S7wFGUizL5bTtIJgpGfbzxxGthdi6YweUA==
+X-Received: by 2002:a05:600c:3507:b0:42c:de2f:da27 with SMTP id
+ 5b1f17b1804b1-433489869ccmr71250345e9.2.1732208292149; 
+ Thu, 21 Nov 2024 08:58:12 -0800 (PST)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3825fbed99dsm7650f8f.94.2024.11.21.08.58.09
+ 5b1f17b1804b1-433b4616fc2sm61385585e9.22.2024.11.21.08.58.09
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Thu, 21 Nov 2024 08:58:10 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 04FE25FBE1;
+ by draig.lan (Postfix) with ESMTP id 1C1525FC6C;
  Thu, 21 Nov 2024 16:58:07 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -91,18 +91,17 @@ Cc: Peter Maydell <peter.maydell@linaro.org>,
  Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
  Aurelien Jarno <aurelien@aurel32.net>, Ani Sinha <anisinha@redhat.com>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PATCH 06/39] tests/functional: remove obsolete reference to avocado
- bug
-Date: Thu, 21 Nov 2024 16:57:33 +0000
-Message-Id: <20241121165806.476008-7-alex.bennee@linaro.org>
+Subject: [PATCH 07/39] tests/functional: remove comments talking about avocado
+Date: Thu, 21 Nov 2024 16:57:34 +0000
+Message-Id: <20241121165806.476008-8-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241121165806.476008-1-alex.bennee@linaro.org>
 References: <20241121165806.476008-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x332.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x336.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -127,29 +126,48 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Daniel P. Berrangé <berrange@redhat.com>
 
-Historical bugs in avocado related to zstd support are not relevant to
-the code now that it uses QEMU's native test harness.
+The first comment is still relevant but should talk about our own test
+harness instead. The second comment adds no value over reading the code
+and can be removed.
 
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
-Message-Id: <20241121154218.1423005-7-berrange@redhat.com>
+Message-Id: <20241121154218.1423005-8-berrange@redhat.com>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- tests/functional/qemu_test/tuxruntest.py | 1 -
- 1 file changed, 1 deletion(-)
+ tests/functional/test_acpi_bits.py | 13 ++++++-------
+ 1 file changed, 6 insertions(+), 7 deletions(-)
 
-diff --git a/tests/functional/qemu_test/tuxruntest.py b/tests/functional/qemu_test/tuxruntest.py
-index f05aa96ad7..ed2b238c92 100644
---- a/tests/functional/qemu_test/tuxruntest.py
-+++ b/tests/functional/qemu_test/tuxruntest.py
-@@ -39,7 +39,6 @@ def setUp(self):
-         super().setUp()
+diff --git a/tests/functional/test_acpi_bits.py b/tests/functional/test_acpi_bits.py
+index ee40647d5b..4c192d95cc 100755
+--- a/tests/functional/test_acpi_bits.py
++++ b/tests/functional/test_acpi_bits.py
+@@ -196,11 +196,12 @@ def copy_test_scripts(self):
+         for filename in os.listdir(bits_test_dir):
+             if os.path.isfile(os.path.join(bits_test_dir, filename)) and \
+                filename.endswith('.py2'):
+-                # all test scripts are named with extension .py2 so that
+-                # avocado does not try to load them. These scripts are
+-                # written for python 2.7 not python 3 and hence if avocado
+-                # loaded them, it would complain about python 3 specific
+-                # syntaxes.
++                # All test scripts are named with extension .py2 so that
++                # they are not run by accident.
++                #
++                # These scripts are intended to run inside the test VM
++                # and are written for python 2.7 not python 3, hence
++                # would cause syntax errors if loaded ouside the VM.
+                 newfilename = os.path.splitext(filename)[0] + '.py'
+                 shutil.copy2(os.path.join(bits_test_dir, filename),
+                              os.path.join(target_test_dir, newfilename))
+@@ -399,8 +400,6 @@ def test_acpi_smbios_bits(self):
  
-         # We need zstd for all the tuxrun tests
--        # See https://github.com/avocado-framework/avocado/issues/5609
-         (has_zstd, msg) = has_cmd('zstd')
-         if has_zstd is False:
-             self.skipTest(msg)
+         # biosbits has been configured to run all the specified test suites
+         # in batch mode and then automatically initiate a vm shutdown.
+-        # Set timeout to BITS_TIMEOUT for SHUTDOWN event from bits VM at par
+-        # with the avocado test timeout.
+         self._vm.event_wait('SHUTDOWN', timeout=BITS_TIMEOUT)
+         self._vm.wait(timeout=None)
+         self.logger.debug("Checking console output ...")
 -- 
 2.39.5
 
