@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D45F9D5123
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Nov 2024 18:00:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 34EE29D5157
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Nov 2024 18:10:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tEAWT-0005kv-S6; Thu, 21 Nov 2024 11:59:18 -0500
+	id 1tEAeh-0001k2-DF; Thu, 21 Nov 2024 12:07:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tEAVq-0004nr-T1
- for qemu-devel@nongnu.org; Thu, 21 Nov 2024 11:58:39 -0500
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ id 1tEAdl-0000Ty-JR
+ for qemu-devel@nongnu.org; Thu, 21 Nov 2024 12:06:50 -0500
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tEAVW-00084w-TW
- for qemu-devel@nongnu.org; Thu, 21 Nov 2024 11:58:38 -0500
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-4315df7b43fso10079385e9.0
- for <qemu-devel@nongnu.org>; Thu, 21 Nov 2024 08:58:18 -0800 (PST)
+ id 1tEAdT-0001cb-0d
+ for qemu-devel@nongnu.org; Thu, 21 Nov 2024 12:06:49 -0500
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-43161c0068bso9764035e9.1
+ for <qemu-devel@nongnu.org>; Thu, 21 Nov 2024 09:06:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1732208297; x=1732813097; darn=nongnu.org;
+ d=linaro.org; s=google; t=1732208789; x=1732813589; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=KjYXio7sBTQrYDC2ySSBbQ9mNKNL4IwihX3wcslKJhg=;
- b=cutSNmQxpdR0O3gRXmcF7OuN0CB961t2alKds9f1HPP+qFT1EJVYdAz5CiETZvYNCL
- Lf1IdtcHw8/Y9BGmWd7e3bO6lsNvHdWjIa8oSAi/+ccJ7EpaGtLglDySdpUswazpCeYK
- 7HNNuRrqQ7RD18Q1L7P5XU48L3bBcWr/TXmdGz2k7jmgu24I1Mz9ZfyqJrp0Zjy5LUq/
- fpNObBzEgbf0yyARJ0DGxGV8i/5+KYTORvhJjBkqmFkdddslokgftS92cKPsX2VsfAEM
- hoFLF4dn6ssz5B37uEKuV7Lka2GTv5QbKMZmDJmJB8RgH4iqiLOztiOCSmDpnNIZXxFQ
- 9p8w==
+ bh=VAGsBPtTmpGlZjFjwkSGWhc1on1nGzftLOgY8SHHshk=;
+ b=diIj3p6bBvvxD4wu5dFjlXyphXZ7EY4EAx5vg8FwOifWkmfwPh7vVIfIvNy7CdmbdG
+ BJOApOhrWdMvOsVMX7VKHrGToMCkfDG10LIhCzHC51ofUxnh61zK81SgAvJ7DbVg7qlD
+ kusIzlScLOVnYpN9bpH+wAwnT9OsHLKigaGzns2m1wnIqE6QQEI3xx1uco5Fc6RCsf0K
+ 3d8HvnNiBYztI3Qv+Y4DeMYArlGDHidcdwrjTjw9MCkVRMxNhDpB7AuD4MvW3mgSs2Kc
+ NRM/b/0FNftMBIPVI/XCvYfoKVjz4sQr/tjv9oRLevgT6XdP4j6OkJ5xJ8Ux8vohNkbN
+ 8Hag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1732208297; x=1732813097;
+ d=1e100.net; s=20230601; t=1732208789; x=1732813589;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=KjYXio7sBTQrYDC2ySSBbQ9mNKNL4IwihX3wcslKJhg=;
- b=t2QbK4s1AhkG77xmsdoTFMS+ovRJwOWsTCURQ+uKmlEVVTBVTcD06EdNiXAf7EVvdU
- wbJmz0YMEuX1I7OOjRaRsgujB2iIXEkl15wZEO/TrVkmiweV1LqEZ3QSSF7g3t/Bk0UW
- wqLMWuT5FXgGSjuamJscmkOn5bANMnKX1kWkN4aUtFUsxYXdapeMN/ZCpMUqIjACy0si
- Nz8lA1t4GoWQ4rs9hEHzGATDRH1VH7H2JY2U2cW/qV/27dNN7QM2hk+A3l+UfKX0kNG4
- rXdVZmjRCD2/Uh+AKlN4nUgNZh0nuCwkOCkA5xXN9H55T7qxIs5dP2hdnHUlN3PmhwFJ
- FNWQ==
-X-Gm-Message-State: AOJu0YxtHbHJqtyNV8LAa6XyBCMuvFJd7ktAxScrbNt3qFZV9rDcgOf7
- UV552uFtEgwp/ZXnzBgZt4QZsdBNLi1yNfsYyxNWo/9QhkQ5sByHyAVhI4Ugxg0=
-X-Gm-Gg: ASbGncvq3rI/tQQcPpZi9cGm9rosqnSD6/mLVrd5PxVipQtmZjZV2NxLCh12DsegMHy
- 9ksSpR+fGqOtx6dzMQYu9FCrao+uymjakzmoPcV15ZfqgCeVPDcWpAdl7Qqniz4oBR3m0vunVWT
- 63Lab4uT9LVuss7M6AlMQxqRZtGyXVmQ5lDKO76AmkHzCrCIJ2+Md2E9PkV4RJGrsM8PO1wFp8I
- U2X32847gNkIpxog5pqBOgW83I+iACcowfpW6wmXqR1MqRs
-X-Google-Smtp-Source: AGHT+IECwAUrVUtXDvyKMSJj1VIjspS24Jq7y5t339a/LZ0kw8tOiIKEKmOAyTEv8JiMDllbD2JF/A==
-X-Received: by 2002:a05:600c:1e23:b0:431:157a:986e with SMTP id
- 5b1f17b1804b1-4334f016fccmr59644595e9.20.1732208296970; 
- Thu, 21 Nov 2024 08:58:16 -0800 (PST)
+ bh=VAGsBPtTmpGlZjFjwkSGWhc1on1nGzftLOgY8SHHshk=;
+ b=YIzo/mACzNO1i4DhsnS+XSgjjfvrC+3qB1sWJUgPru6zFoM+TfMa14bI20qCOzd77X
+ AxrkslIyJpE3f5bLoQVmd9PElxw4L3SzV96g6N3k8DD7AnfzwokY1YvH/AQ0Gblwiy69
+ VZ1VluBcOiE1K666bXUoiEHsM/MaOoEj5ZMAPRjB7U+1lhi0DI/Y/z/LBXrwKVn8QF1O
+ nxUFdeB2V+w7p8qYpuXdSNCkOehq+9Lilbi4NZkbOMpPNt5Il9INTD7xQFM3M9VHxPi0
+ iP5v0SmEyGQwerpYCw3IZweIPmqs4IBGECYWEZogbExm6J8rGFxVNQM0clOJL0KSwdUT
+ c80w==
+X-Gm-Message-State: AOJu0YxfHm4+G6HmanW1UtH5CAU+cXYHs1vQXESDga2O8xfotHevdV5E
+ dsDILTPexjtVNy7qGMuqATbBKlhU+yM8H4JirPNlsgb//CmZTKu6TCWJE2gt4mA=
+X-Gm-Gg: ASbGnctG8TiOdtSR/2865fSaqtBErdGr5mDYed3WN3jAR9vjDXnbsIkrAPowxbMu1CY
+ c76tyV8Yay24UqMB48oLIykxJBSZAwTvOreSVE+eXS/RPLItvw9CPqmTDOkUAftMZv250ZWH07k
+ 10cOB6jQWpdfRMY5Ks/rmQOQPaMOEc+umsWiLLDMFLncvE6F5mXijKigquBkxsw0Ukvd8Pxg+AV
+ eu2rXslMiMnOuqyP8QI9ClCiQ547uU9RaIX1iimlNpKosa/
+X-Google-Smtp-Source: AGHT+IEVnLw2xUtf0J9uvurODmXKtzkjOY30qGhQ5prc0K46NKf1TqRr8l+lGSKt4CWPqimkHrCH9Q==
+X-Received: by 2002:a05:600c:314b:b0:431:51c0:c90f with SMTP id
+ 5b1f17b1804b1-4334f0202damr60948965e9.21.1732208787559; 
+ Thu, 21 Nov 2024 09:06:27 -0800 (PST)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3825fb2679dsm31790f8f.45.2024.11.21.08.58.12
+ 5b1f17b1804b1-433b4616636sm61146695e9.19.2024.11.21.09.06.25
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 21 Nov 2024 08:58:14 -0800 (PST)
+ Thu, 21 Nov 2024 09:06:25 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id DF4D1603EA;
+ by draig.lan (Postfix) with ESMTP id F412A603F4;
  Thu, 21 Nov 2024 16:58:07 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -91,18 +91,18 @@ Cc: Peter Maydell <peter.maydell@linaro.org>,
  Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
  Aurelien Jarno <aurelien@aurel32.net>, Ani Sinha <anisinha@redhat.com>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PATCH 16/39] tests/functional: remove time.sleep usage from tuxrun
- tests
-Date: Thu, 21 Nov 2024 16:57:43 +0000
-Message-Id: <20241121165806.476008-17-alex.bennee@linaro.org>
+Subject: [PATCH 17/39] tests/functional: add a QMP backdoor for debugging
+ stalled tests
+Date: Thu, 21 Nov 2024 16:57:44 +0000
+Message-Id: <20241121165806.476008-18-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241121165806.476008-1-alex.bennee@linaro.org>
 References: <20241121165806.476008-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x336.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -127,59 +127,66 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Daniel P. Berrangé <berrange@redhat.com>
 
-The tuxrun tests send a series of strings to the guest to login
-and then run commands. Since we have been unable to match on
-console output that isn't followed by a newline, the test used
-many time.sleep() statements to pretend to synchronize with
-the guest.
+Support the QEMU_TEST_QMP_BACKDOOR=backdoor.sock env variable as a
+way to get a QMP backdoor for debugging a stalled QEMU test. Most
+typically this would be used if running the tests directly:
 
-This has proved to be unreliable for the aarch64be instance of
-the tuxrun tests, with the test often hanging. The hang is a
-very subtle timing problem, and it is suspected that some
-(otherwise apparently harmless) I/O error messages could be
-resulting in full FIFO buffers, stalling interaction with
-the guest.
+ $ QEMU_TEST_QMP_BACKDOOR=backdoor.sock \
+   QEMU_TEST_QEMU_BINARY=./build/qemu-system-arm \
+   PYTHONPATH=./python \
+   ./tests/functional/test_arm_tuxrun.py
 
-With the newly rewritten console interaction able to match
-strings that don't have a following newline, the tux run
-tests can now match directly on the login prompt, and/or
-shell PS1 prompt.
+And then, when the test stalls, in a second shell run:
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2689
+ $ ./scripts/qmp/qmp-shell backdoor.sock
+
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
-Message-Id: <20241121154218.1423005-17-berrange@redhat.com>
+Message-Id: <20241121154218.1423005-18-berrange@redhat.com>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- tests/functional/qemu_test/tuxruntest.py | 16 ++++++----------
- 1 file changed, 6 insertions(+), 10 deletions(-)
+ docs/devel/testing/functional.rst      | 10 ++++++++++
+ tests/functional/qemu_test/testcase.py |  7 +++++++
+ 2 files changed, 17 insertions(+)
 
-diff --git a/tests/functional/qemu_test/tuxruntest.py b/tests/functional/qemu_test/tuxruntest.py
-index ed2b238c92..ab3b27da43 100644
---- a/tests/functional/qemu_test/tuxruntest.py
-+++ b/tests/functional/qemu_test/tuxruntest.py
-@@ -124,16 +124,12 @@ def run_tuxtest_tests(self, haltmsg):
-         then do a few things on the console. Trigger a shutdown and
-         wait to exit cleanly.
-         """
--        self.wait_for_console_pattern("Welcome to TuxTest")
--        time.sleep(0.2)
--        exec_command(self, 'root')
--        time.sleep(0.2)
--        exec_command(self, 'cat /proc/interrupts')
--        time.sleep(0.1)
--        exec_command(self, 'cat /proc/self/maps')
--        time.sleep(0.1)
--        exec_command(self, 'uname -a')
--        time.sleep(0.1)
-+        ps1='root@tuxtest:~#'
-+        self.wait_for_console_pattern('tuxtest login:')
-+        exec_command_and_wait_for_pattern(self, 'root', ps1)
-+        exec_command_and_wait_for_pattern(self, 'cat /proc/interrupts', ps1)
-+        exec_command_and_wait_for_pattern(self, 'cat /proc/self/maps', ps1)
-+        exec_command_and_wait_for_pattern(self, 'uname -a', ps1)
-         exec_command_and_wait_for_pattern(self, 'halt', haltmsg)
+diff --git a/docs/devel/testing/functional.rst b/docs/devel/testing/functional.rst
+index 6b5d0c5b98..b8ad7b0bf7 100644
+--- a/docs/devel/testing/functional.rst
++++ b/docs/devel/testing/functional.rst
+@@ -176,6 +176,16 @@ primarily depend on the value of the ``qemu_bin`` class attribute.
+ If it is not explicitly set by the test code, its default value will
+ be the result the QEMU_TEST_QEMU_BINARY environment variable.
  
-         # Wait for VM to shut down gracefully if it can
++Debugging hung QEMU
++^^^^^^^^^^^^^^^^^^^
++
++When test cases go wrong it may be helpful to debug a stalled QEMU
++process. While the QEMUMachine class owns the primary QMP monitor
++socket, it is possible to request a second QMP monitor be created
++by setting the ``QEMU_TEST_QMP_BACKDOOR`` env variable to refer
++to a UNIX socket name. The ``qmp-shell`` command can then be
++attached to the stalled QEMU to examine its live state.
++
+ Attribute reference
+ -------------------
+ 
+diff --git a/tests/functional/qemu_test/testcase.py b/tests/functional/qemu_test/testcase.py
+index e2a329c3e5..fceafb32b0 100644
+--- a/tests/functional/qemu_test/testcase.py
++++ b/tests/functional/qemu_test/testcase.py
+@@ -175,6 +175,13 @@ def _new_vm(self, name, *args):
+                          log_dir=self.logdir)
+         self.log.debug('QEMUMachine "%s" created', name)
+         self.log.debug('QEMUMachine "%s" temp_dir: %s', name, vm.temp_dir)
++
++        sockpath = os.environ.get("QEMU_TEST_QMP_BACKDOOR", None)
++        if sockpath is not None:
++            vm.add_args("-chardev",
++                        f"socket,id=backdoor,path={sockpath},server=on,wait=off",
++                        "-mon", "chardev=backdoor,mode=control")
++
+         if args:
+             vm.add_args(*args)
+         return vm
 -- 
 2.39.5
 
