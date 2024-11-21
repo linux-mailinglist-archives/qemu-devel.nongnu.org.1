@@ -2,91 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 017FCA43CA2
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Feb 2025 12:02:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EB98A43F7A
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Feb 2025 13:33:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tmshM-0007d1-Ls; Tue, 25 Feb 2025 06:02:00 -0500
+	id 1tmu6j-0008NM-SX; Tue, 25 Feb 2025 07:32:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1tmshK-0007cC-8d
- for qemu-devel@nongnu.org; Tue, 25 Feb 2025 06:01:58 -0500
-Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1tmshH-0006VX-KK
- for qemu-devel@nongnu.org; Tue, 25 Feb 2025 06:01:58 -0500
-Received: by mail-pl1-x632.google.com with SMTP id
- d9443c01a7336-220d132f16dso83051395ad.0
- for <qemu-devel@nongnu.org>; Tue, 25 Feb 2025 03:01:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1740481314; x=1741086114; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=kWj4Gw4QLDavintsI+IMkllMQCDHkJAnVmtOi9brmUg=;
- b=arTqfI05qfcJ8HC3DZ0h9eki16tz/+cfhcy1E0OA6SCFLTX4Srpp/dIjPnHxM+9VQz
- leOI1V8/eVoNlK/7UkoUm+1OcbkniakSOLxbver2OR0+o9pJOk/5JYJGNfPP9Yag7CKQ
- /ht/MgRWJrMNPHbWnhqM8rk2Cg+oHqNIdZZHNviGV5wceYt2r8rB3XqKQTtyRqLTHlWl
- bdlr6itESviH/Nf02oDKkZV6+MhHhN+ul4R7MBZwrxsRwUezse3a/9ZIDLWWGwq1y63z
- axSRxgQPqxW108jQDrT83JU4LfdLYlwXCWvpLG4b/99mlogYKScCO9SXtddqzFZW128D
- s3rA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1740481314; x=1741086114;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=kWj4Gw4QLDavintsI+IMkllMQCDHkJAnVmtOi9brmUg=;
- b=E2hPnsUFR2lFcTKqXjIkfP7uRSb4DQW3LU0T64TzurQeFHstXtN6XT5AmpuyRTsL5+
- ZyZ0tKSh59Pa37x/4ICJ4m5rnBWAoVIp+lDN1f5hsXDHBQoPXUKGmHlOINEIHk+oDzlB
- ZO8z0uRG+FKHFGrHNOQUpQYAVNU6RfG+5nlMm0ovH054WQsH6x/5IuKZiAkNEZp0GkYy
- Gusk1+CzdrLkju9/eYOrLG2CTSPiKK39DDXQsD/cvnFsJI8iv/J2P/7mZ71G6Cj/+9ZK
- Ms+37t7gaDNng+KOBwT+oI+7/ygWfdegZ9tIrAPEb/t7688pJZVy3n6Y36B543rJVL0b
- YF3w==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXdA/VgOhK7+i/2PF5xVJ+ZxiRaf6EI1AdZWnUMC7DXCWUfIbVZevTT4ZEFdjMwGr/og+uHvkmxtoev@nongnu.org
-X-Gm-Message-State: AOJu0YxePOEPr7bezvPaCqVWBSbnRltgN9Z8FIRmRAPytxrT5QjKrQJF
- ONjiCWMX0t23zQRMcNbiLhI2AlX354afLsaQmhwhAyJ8tGEBeCT1z1hijGLVwK0=
-X-Gm-Gg: ASbGnctz2wFhbZmg8Mc8Hi3cSFOPtvJr5Bzti6B8B2leZl6uZOy68i7NYZHvPO9UnS7
- IBFISyXy+3wgH7kYPMQBUd8fJdxM1O24Hw0mULL8fIUQAGLNOwbr+9AjE6xWT+nXXNeOfRHqehb
- 63wDC8HnJgOigHxJ2kAQmhJI10hI/83PiKKwDDHGMo0Xtg6SyI+K+TtPoUm5C/IxyZjF1dUpNN0
- v54zcr2sggeGmIsnM6AQaZnhXjHgx+S7QnNtc2yOtigZyT6Ds+T/v+yOVgE1Fd9sYU3Mw33Y45h
- ROTtf+Da8QEHmNjTID+RJ7l61DifObNm217eohP6tw==
-X-Google-Smtp-Source: AGHT+IHupW8diNpBgOrKQblxrnFFrKVAtuvGJSQvZ51dRGGLxWxsVmBJR2cva3uLBlaAmQPh+6j/gQ==
-X-Received: by 2002:a17:902:dac5:b0:220:e991:480a with SMTP id
- d9443c01a7336-2219ff50eafmr237292495ad.15.1740481314071; 
- Tue, 25 Feb 2025 03:01:54 -0800 (PST)
-Received: from [192.168.68.110] ([177.170.227.219])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-2230a01fbeasm11367675ad.86.2025.02.25.03.01.51
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 25 Feb 2025 03:01:53 -0800 (PST)
-Message-ID: <09717c7b-e67d-477c-8939-bc32040a2b7c@ventanamicro.com>
-Date: Tue, 25 Feb 2025 08:01:49 -0300
+ (Exim 4.90_1) (envelope-from <yuanmh12@chinatelecom.cn>)
+ id 1tmu6a-0008MF-Gp
+ for qemu-devel@nongnu.org; Tue, 25 Feb 2025 07:32:12 -0500
+Received: from smtpnm6-05.21cn.com ([182.42.157.213] helo=chinatelecom.cn)
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <yuanmh12@chinatelecom.cn>) id 1tmu6W-00029y-It
+ for qemu-devel@nongnu.org; Tue, 25 Feb 2025 07:32:08 -0500
+HMM_SOURCE_IP: 192.168.139.44:0.2083019727
+HMM_ATTACHE_NUM: 0000
+HMM_SOURCE_TYPE: SMTP
+Received: from clientip-36.111.64.84 (unknown [192.168.139.44])
+ by chinatelecom.cn (HERMES) with SMTP id 759689C1E41;
+ Tue, 25 Feb 2025 20:24:27 +0800 (CST)
+X-189-SAVE-TO-SEND: +yuanmh12@chinatelecom.cn
+Received: from  ([36.111.64.84])
+ by gateway-ssl-dep-84dfd8c7d7-g6c8d with ESMTP id
+ 97978b9255744c09b859c0159951367a for qemu-devel@nongnu.org; 
+ Tue, 25 Feb 2025 20:24:30 CST
+X-Transaction-ID: 97978b9255744c09b859c0159951367a
+X-Real-From: yuanmh12@chinatelecom.cn
+X-Receive-IP: 36.111.64.84
+X-MEDUSA-Status: 0
+From: yuanminghao <yuanmh12@chinatelecom.cn>
+To: qemu-devel@nongnu.org
+Cc: "Michael S . Tsirkin" <mst@redhat.com>,
+ Stefano Garzarella <sgarzare@redhat.com>
+Subject: [PATCH 1/1] vhost: do not reset used_memslots when destroying vhost
+ dev
+Date: Thu, 21 Nov 2024 14:07:55 +0800
+Message-Id: <20241121060755.164310-1-yuanmh12@chinatelecom.cn>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] target/riscv/kvm: Add some exts support
-To: zhouquan@iscas.ac.cn, qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
- liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
- ajones@ventanamicro.com
-References: <303616ccad2b5309768157b50d93b3e89fecc9cb.1740371468.git.zhouquan@iscas.ac.cn>
-Content-Language: en-US
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <303616ccad2b5309768157b50d93b3e89fecc9cb.1740371468.git.zhouquan@iscas.ac.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x632.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=182.42.157.213;
+ envelope-from=yuanmh12@chinatelecom.cn; helo=chinatelecom.cn
+X-Spam_score_int: 15
+X-Spam_score: 1.5
+X-Spam_bar: +
+X-Spam_report: (1.5 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_96_XX=3.405,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,40 +66,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+The global used_memslots or used_shared_memslots is updated to 0 unexpectly
+when a vhost device destroyed. This can occur during scenarios such as live
+detaching a vhost device or restarting a vhost-user net backend (e.g., OVS-DPDK):
+ #0  vhost_commit(listener) at hw/virtio/vhost.c:439
+ #1  listener_del_address_space(as, listener) at memory.c:2777
+ #2  memory_listener_unregister(listener) at memory.c:2823
+ #3  vhost_dev_cleanup(hdev) at hw/virtio/vhost.c:1406
+ #4  vhost_net_cleanup(net) at hw/net/vhost_net.c:402
+ #5  vhost_user_start(be, ncs, queues) at net/vhost-user.c:113
+ #6  net_vhost_user_event(opaque, event) at net/vhost-user.c:281
+ #7  tcp_chr_new_client(chr, sioc) at chardev/char-socket.c:924
+ #8  tcp_chr_accept(listener, cioc, opaque) at chardev/char-socket.c:961
 
+So we skip the update of used_memslots and used_shared_memslots when destroying
+vhost devices, and it should work event if all vhost devices are removed.
 
-On 2/24/25 1:39 AM, zhouquan@iscas.ac.cn wrote:
-> From: Quan Zhou <zhouquan@iscas.ac.cn>
-> 
-> When the Sscofpmf/Svade/Svadu/Smnpm/Ssnpm exts is available
-> expose it to the guest so that guest can use it.
-> 
-> Signed-off-by: Quan Zhou <zhouquan@iscas.ac.cn>
-> ---
+Signed-off-by: yuanminghao <yuanmh12@chinatelecom.cn>
+---
+ hw/virtio/vhost.c         | 14 +++++++++-----
+ include/hw/virtio/vhost.h |  1 +
+ 2 files changed, 10 insertions(+), 5 deletions(-)
 
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-
->   target/riscv/kvm/kvm-cpu.c | 5 +++++
->   1 file changed, 5 insertions(+)
-> 
-> diff --git a/target/riscv/kvm/kvm-cpu.c b/target/riscv/kvm/kvm-cpu.c
-> index 23ce779359..06a9f30841 100644
-> --- a/target/riscv/kvm/kvm-cpu.c
-> +++ b/target/riscv/kvm/kvm-cpu.c
-> @@ -319,9 +319,14 @@ static KVMCPUConfig kvm_multi_ext_cfgs[] = {
->       KVM_EXT_CFG("zvksed", ext_zvksed, KVM_RISCV_ISA_EXT_ZVKSED),
->       KVM_EXT_CFG("zvksh", ext_zvksh, KVM_RISCV_ISA_EXT_ZVKSH),
->       KVM_EXT_CFG("zvkt", ext_zvkt, KVM_RISCV_ISA_EXT_ZVKT),
-> +    KVM_EXT_CFG("smnpm", ext_smnpm, KVM_RISCV_ISA_EXT_SMNPM),
->       KVM_EXT_CFG("smstateen", ext_smstateen, KVM_RISCV_ISA_EXT_SMSTATEEN),
->       KVM_EXT_CFG("ssaia", ext_ssaia, KVM_RISCV_ISA_EXT_SSAIA),
-> +    KVM_EXT_CFG("sscofpmf", ext_sscofpmf, KVM_RISCV_ISA_EXT_SSCOFPMF),
-> +    KVM_EXT_CFG("ssnpm", ext_ssnpm, KVM_RISCV_ISA_EXT_SSNPM),
->       KVM_EXT_CFG("sstc", ext_sstc, KVM_RISCV_ISA_EXT_SSTC),
-> +    KVM_EXT_CFG("svade", ext_svade, KVM_RISCV_ISA_EXT_SVADE),
-> +    KVM_EXT_CFG("svadu", ext_svadu, KVM_RISCV_ISA_EXT_SVADU),
->       KVM_EXT_CFG("svinval", ext_svinval, KVM_RISCV_ISA_EXT_SVINVAL),
->       KVM_EXT_CFG("svnapot", ext_svnapot, KVM_RISCV_ISA_EXT_SVNAPOT),
->       KVM_EXT_CFG("svpbmt", ext_svpbmt, KVM_RISCV_ISA_EXT_SVPBMT),
+diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
+index 6aa72fd434..2258a12066 100644
+--- a/hw/virtio/vhost.c
++++ b/hw/virtio/vhost.c
+@@ -666,11 +666,13 @@ static void vhost_commit(MemoryListener *listener)
+     dev->mem = g_realloc(dev->mem, regions_size);
+     dev->mem->nregions = dev->n_mem_sections;
+ 
+-    if (dev->vhost_ops->vhost_backend_no_private_memslots &&
+-        dev->vhost_ops->vhost_backend_no_private_memslots(dev)) {
+-        used_shared_memslots = dev->mem->nregions;
+-    } else {
+-        used_memslots = dev->mem->nregions;
++    if (!dev->listener_removing) {
++        if (dev->vhost_ops->vhost_backend_no_private_memslots &&
++            dev->vhost_ops->vhost_backend_no_private_memslots(dev)) {
++            used_shared_memslots = dev->mem->nregions;
++        } else {
++            used_memslots = dev->mem->nregions;
++        }
+     }
+ 
+     for (i = 0; i < dev->n_mem_sections; i++) {
+@@ -1668,7 +1670,9 @@ void vhost_dev_cleanup(struct vhost_dev *hdev)
+     }
+     if (hdev->mem) {
+         /* those are only safe after successful init */
++        hdev->listener_removing = true;
+         memory_listener_unregister(&hdev->memory_listener);
++        hdev->listener_removing = false;
+         QLIST_REMOVE(hdev, entry);
+     }
+     migrate_del_blocker(&hdev->migration_blocker);
+diff --git a/include/hw/virtio/vhost.h b/include/hw/virtio/vhost.h
+index a9469d50bc..037f85b642 100644
+--- a/include/hw/virtio/vhost.h
++++ b/include/hw/virtio/vhost.h
+@@ -133,6 +133,7 @@ struct vhost_dev {
+     QLIST_HEAD(, vhost_iommu) iommu_list;
+     IOMMUNotifier n;
+     const VhostDevConfigOps *config_ops;
++    bool listener_removing;
+ };
+ 
+ extern const VhostOps kernel_ops;
+-- 
+2.27.0
 
 
