@@ -2,19 +2,19 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB3869D4586
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Nov 2024 02:52:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 996379D457F
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Nov 2024 02:51:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tDwHt-0001cX-8T; Wed, 20 Nov 2024 20:47:17 -0500
+	id 1tDwHt-0001cx-Vz; Wed, 20 Nov 2024 20:47:18 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1tDwHr-0001b4-8i
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1tDwHr-0001bW-Nb
  for qemu-devel@nongnu.org; Wed, 20 Nov 2024 20:47:15 -0500
 Received: from rev.ng ([94.130.142.21])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1tDwHp-0004Xj-Ie
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1tDwHq-0004Xz-4e
  for qemu-devel@nongnu.org; Wed, 20 Nov 2024 20:47:15 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
  s=dkim; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
@@ -22,17 +22,17 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
  Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
  :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
  List-Post:List-Owner:List-Archive:List-Unsubscribe:List-Unsubscribe-Post:
- List-Help; bh=OIlScO3BuH63uZxdmqbUwS+sjbYNsWyshmkeVqgGtWQ=; b=mrO8wMR8oaQDdcZ
- JelEhQefGPshBw7N41+t9ly5Fx6J1+DhujzxT0HxjnTXZoVDY/DOO8wZK3lle/79GWxu43zp0qmFA
- 1y/hKzVMBJ/GmKZ78F4PWjgQUBsCQtTBKcCbPCZOL6IO6NaIg6F0K+GdZrUZ5UISl2tMeIuU6L458
- xc=;
+ List-Help; bh=NewhKMIelYRuDNznnvD5yTlXbeDt4XshQYjlz/pQPQs=; b=hKczrorhim53phv
+ kA62HkSwy+a2H7Y7YBBwMRmuAn2jCl4sxhMrrTtMHVT3OCqMJoYbvv44OY9xkEtjafP1P94/5i7Eq
+ Wx6dKEw8kGEVwheFDZm38N1KiZhyNpR3CkSIo5NYDZ/WPApzDdNcwPqIBMmAkxlIxoj7g7tRi+JSV
+ IM=;
 To: qemu-devel@nongnu.org
 Cc: ale@rev.ng, ltaylorsimpson@gmail.com, bcain@quicinc.com,
  richard.henderson@linaro.org, philmd@linaro.org, alex.bennee@linaro.org
-Subject: [RFC PATCH v1 16/43] helper-to-tcg: PrepareForOptPass,
- Cull unused functions
-Date: Thu, 21 Nov 2024 02:49:20 +0100
-Message-ID: <20241121014947.18666-17-anjo@rev.ng>
+Subject: [RFC PATCH v1 17/43] helper-to-tcg: PrepareForOptPass,
+ undef llvm.returnaddress
+Date: Thu, 21 Nov 2024 02:49:21 +0100
+Message-ID: <20241121014947.18666-18-anjo@rev.ng>
 In-Reply-To: <20241121014947.18666-1-anjo@rev.ng>
 References: <20241121014947.18666-1-anjo@rev.ng>
 MIME-Version: 1.0
@@ -63,181 +63,85 @@ From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Make an early pass over all functions in the input module and filter out
-functions with:
-  1. Invalid return type;
-  2. No helper-to-tcg annotation.
+Convert llvm.returnaddress arguments to cpu_[ld|st]*() to undef, causing
+the LLVM optmizer to discard the intrinsics.  Needed as
+llvm.returnadress is not representable in TCG, and usually results from
+usage of GETPC() in helper functions.
 
 Signed-off-by: Anton Johansson <anjo@rev.ng>
 ---
- .../helper-to-tcg/include/PrepareForOptPass.h |  7 +-
- .../PrepareForOptPass/PrepareForOptPass.cpp   | 93 +++++++++++++++++++
- .../helper-to-tcg/pipeline/Pipeline.cpp       |  7 +-
- 3 files changed, 104 insertions(+), 3 deletions(-)
+ .../PrepareForOptPass/PrepareForOptPass.cpp   | 48 +++++++++++++++++++
+ 1 file changed, 48 insertions(+)
 
-diff --git a/subprojects/helper-to-tcg/include/PrepareForOptPass.h b/subprojects/helper-to-tcg/include/PrepareForOptPass.h
-index 5f9c059b97..8615625f09 100644
---- a/subprojects/helper-to-tcg/include/PrepareForOptPass.h
-+++ b/subprojects/helper-to-tcg/include/PrepareForOptPass.h
-@@ -29,9 +29,12 @@
- 
- class PrepareForOptPass : public llvm::PassInfoMixin<PrepareForOptPass> {
-     AnnotationMapTy &ResultAnnotations;
-+    bool TranslateAllHelpers;
- public:
--    PrepareForOptPass(AnnotationMapTy &ResultAnnotations)
--        : ResultAnnotations(ResultAnnotations)
-+    PrepareForOptPass(AnnotationMapTy &ResultAnnotations,
-+                      bool TranslateAllHelpers)
-+        : ResultAnnotations(ResultAnnotations),
-+          TranslateAllHelpers(TranslateAllHelpers)
-     {
-     }
-     llvm::PreservedAnalyses run(llvm::Module &M,
 diff --git a/subprojects/helper-to-tcg/passes/PrepareForOptPass/PrepareForOptPass.cpp b/subprojects/helper-to-tcg/passes/PrepareForOptPass/PrepareForOptPass.cpp
-index 9f1d4df102..22509008c8 100644
+index 22509008c8..b357debb5d 100644
 --- a/subprojects/helper-to-tcg/passes/PrepareForOptPass/PrepareForOptPass.cpp
 +++ b/subprojects/helper-to-tcg/passes/PrepareForOptPass/PrepareForOptPass.cpp
-@@ -17,12 +17,17 @@
- 
- #include <PrepareForOptPass.h>
- #include <Error.h>
-+#include <FunctionAnnotation.h>
- 
- #include <llvm/IR/Constants.h>
+@@ -23,6 +23,7 @@
  #include <llvm/IR/Function.h>
  #include <llvm/IR/Instruction.h>
-+#include <llvm/IR/Instructions.h>
+ #include <llvm/IR/Instructions.h>
++#include <llvm/IR/Intrinsics.h>
  #include <llvm/IR/Module.h>
  
-+#include <queue>
-+#include <set>
-+
- using namespace llvm;
- 
- static Expected<Annotation> parseAnnotationStr(StringRef Str,
-@@ -105,8 +110,96 @@ static void collectAnnotations(Module &M, AnnotationMapTy &ResultAnnotations)
+ #include <queue>
+@@ -197,9 +198,56 @@ static void cullUnusedFunctions(Module &M, AnnotationMapTy &Annotations,
      }
  }
  
-+inline bool hasValidReturnTy(const Module &M, const Function *F)
++struct RetAddrReplaceInfo {
++    User *Parent;
++    unsigned OpIndex;
++    Type *Ty;
++};
++
++static void replaceRetaddrWithUndef(Module &M)
 +{
-+    Type *RetTy = F->getReturnType();
-+    return RetTy == Type::getVoidTy(F->getContext()) ||
-+           RetTy == Type::getInt8Ty(M.getContext()) ||
-+           RetTy == Type::getInt16Ty(M.getContext()) ||
-+           RetTy == Type::getInt32Ty(M.getContext()) ||
-+           RetTy == Type::getInt64Ty(M.getContext());
-+}
-+
-+// Functions that should be removed:
-+//   - No helper-to-tcg annotation (if TranslateAllHelpers == false);
-+//   - Invalid (non-integer/void) return type
-+static bool shouldRemoveFunction(const Module &M, const Function &F,
-+                                 const AnnotationMapTy &AnnotationMap,
-+                                 bool TranslateAllHelpers)
-+{
-+    if (F.isDeclaration()) {
-+        return false;
-+    }
-+
-+    if (!hasValidReturnTy(M, &F)) {
-+        return true;
-+    }
-+
-+    auto hasCorrectAnnotation = [](const Annotation &Ann) {
-+        return Ann.Kind == AnnotationKind::HelperToTcg;
-+    };
-+
-+    std::queue<const Function *> Worklist;
-+    std::set<const Function *> Visited;
-+    Worklist.push(&F);
-+    while (!Worklist.empty()) {
-+        const Function *F = Worklist.front();
-+        Worklist.pop();
-+        if (F->isDeclaration() or Visited.find(F) != Visited.end()) {
++    // Replace uses of llvm.returnaddress arguments to cpu_ld* w. undef,
++    // and let optimizations remove it.  Needed as llvm.returnaddress is
++    // not reprensentable in TCG.
++    SmallVector<RetAddrReplaceInfo, 24> UsesToReplace;
++    Function *Retaddr = Intrinsic::getDeclaration(&M, Intrinsic::returnaddress);
++    // Loop over all calls to llvm.returnaddress
++    for (auto *CallUser : Retaddr->users()) {
++        auto *Call = dyn_cast<CallInst>(CallUser);
++        if (!Call) {
 +            continue;
 +        }
-+        Visited.insert(F);
-+
-+        // Check for llvm-to-tcg annotation
-+        if (TranslateAllHelpers and F->getName().startswith("helper_")) {
-+            return false;
-+        } else {
-+            auto It = AnnotationMap.find(F);
-+            if (It != AnnotationMap.end()) {
-+                const auto &AnnotationVec = It->second;
-+                auto Res = find_if(AnnotationVec, hasCorrectAnnotation);
-+                if (Res != AnnotationVec.end()) {
-+                    return false;
++        for (auto *PtrToIntUser : Call->users()) {
++            auto *Cast = dyn_cast<PtrToIntInst>(PtrToIntUser);
++            if (!Cast) {
++                continue;
++            }
++            for (Use &U : Cast->uses()) {
++                auto *Call = dyn_cast<CallInst>(U.getUser());
++                Function *F = Call->getCalledFunction();
++                StringRef Name = F->getName();
++                if (Name.startswith("cpu_ld") or Name.startswith("cpu_st")) {
++                    UsesToReplace.push_back({
++                        .Parent = U.getUser(),
++                        .OpIndex = U.getOperandNo(),
++                        .Ty = U->getType(),
++                    });
 +                }
 +            }
 +        }
-+
-+        // Push functions that call F to the worklist, this way we retain
-+        // functions that are being called by functions with the llvm-to-tcg
-+        // annotation.
-+        for (const User *U : F->users()) {
-+            auto Call = dyn_cast<CallInst>(U);
-+            if (!Call) {
-+                continue;
-+            }
-+            const Function *ParentF = Call->getParent()->getParent();
-+            Worklist.push(ParentF);
-+        }
 +    }
 +
-+    return true;
-+}
-+
-+static void cullUnusedFunctions(Module &M, AnnotationMapTy &Annotations,
-+                                bool TranslateAllHelpers)
-+{
-+    SmallVector<Function *, 16> FunctionsToRemove;
-+    for (auto &F : M) {
-+        if (shouldRemoveFunction(M, F, Annotations, TranslateAllHelpers)) {
-+            FunctionsToRemove.push_back(&F);
-+        }
-+    }
-+
-+    for (Function *F : FunctionsToRemove) {
-+        Annotations.erase(F);
-+        F->setComdat(nullptr);
-+        F->deleteBody();
++    // Defer replacement to not invalidate iterators
++    for (RetAddrReplaceInfo &RI : UsesToReplace) {
++        auto *Undef = UndefValue::get(RI.Ty);
++        RI.Parent->setOperand(RI.OpIndex, Undef);
 +    }
 +}
 +
  PreservedAnalyses PrepareForOptPass::run(Module &M, ModuleAnalysisManager &MAM)
  {
      collectAnnotations(M, ResultAnnotations);
-+    cullUnusedFunctions(M, ResultAnnotations, TranslateAllHelpers);
+     cullUnusedFunctions(M, ResultAnnotations, TranslateAllHelpers);
++    replaceRetaddrWithUndef(M);
      return PreservedAnalyses::none();
  }
-diff --git a/subprojects/helper-to-tcg/pipeline/Pipeline.cpp b/subprojects/helper-to-tcg/pipeline/Pipeline.cpp
-index 3b9493bc73..dde3641ab3 100644
---- a/subprojects/helper-to-tcg/pipeline/Pipeline.cpp
-+++ b/subprojects/helper-to-tcg/pipeline/Pipeline.cpp
-@@ -47,6 +47,11 @@ cl::OptionCategory Cat("helper-to-tcg Options");
- cl::opt<std::string> InputFile(cl::Positional, cl::desc("[input LLVM module]"),
-                                cl::cat(Cat));
- 
-+// Options for PrepareForOptPass
-+cl::opt<bool> TranslateAllHelpers(
-+    "translate-all-helpers", cl::init(false),
-+    cl::desc("Translate all functions starting with helper_*"), cl::cat(Cat));
-+
- // Define a TargetTransformInfo (TTI) subclass, this allows for overriding
- // common per-llvm-target information expected by other LLVM passes, such
- // as the width of the largest scalar/vector registers.  Needed for consistent
-@@ -175,7 +180,7 @@ int main(int argc, char **argv)
-     }
- 
-     AnnotationMapTy Annotations;
--    MPM.addPass(PrepareForOptPass(Annotations));
-+    MPM.addPass(PrepareForOptPass(Annotations, TranslateAllHelpers));
- 
-     {
-         FunctionPassManager FPM;
 -- 
 2.45.2
 
