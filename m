@@ -2,85 +2,111 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D09C79D4A81
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Nov 2024 11:10:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 494709D4F69
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Nov 2024 16:07:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tE48Q-0000sZ-7n; Thu, 21 Nov 2024 05:10:02 -0500
+	id 1tE8kO-0007KY-C4; Thu, 21 Nov 2024 10:05:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1tE48O-0000sQ-3d
- for qemu-devel@nongnu.org; Thu, 21 Nov 2024 05:10:00 -0500
-Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1tE48I-0007hn-RY
- for qemu-devel@nongnu.org; Thu, 21 Nov 2024 05:09:59 -0500
-Received: by mail-pl1-x633.google.com with SMTP id
- d9443c01a7336-21262a191a5so6367045ad.0
- for <qemu-devel@nongnu.org>; Thu, 21 Nov 2024 02:09:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1732183793; x=1732788593;
- darn=nongnu.org; 
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=QKNde7XZveIduMh11CzqsJSyr1BhS5S7hWDk6mZeBIQ=;
- b=cyGwlM/pEQOuXcC+t25gflr9pJwSjlw9Gu3r3As593oktuguRVp3LMuXiUYimdP99K
- CdVACeoZyP8RQQ+BlOWgWL/0CiCZFxFMCdRSz32kr18AiUYSiPKTQtUEg2FeniCBlwts
- jJjehDyJypK31kQPV77RPzw1eQaMltTC1fq6m5ZIu+DI4IlTdO3XlannPecZq9WqA2Wp
- bzSv4cDfqjs47Bkib0l5aiDwnY0hPwcc3B/beo4A6Z5tjhcBSm/rUwf3+cKKWtTnb5KV
- mQbMe+lV5tOye/N2MMvqgs+TkyUkj3JgsBVBkaaUfOtTuqZINjecIuei4VRou6KmudAy
- vCeQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1732183793; x=1732788593;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=QKNde7XZveIduMh11CzqsJSyr1BhS5S7hWDk6mZeBIQ=;
- b=OBAo3wnPMdvtk4Zlw2VI5Vi2SnAuS5xfXjoUyWIYVetQ/LsoH7wU10Dqt5NaWa5yao
- IRAPtqIssl5/MfafG5vpvXTHpgNVVReMVAAmoiQq7ktsesFAtJ7s1kOqgsXpA2N6qa8N
- Y6pD8FTc5ynKqir2G95nrpxJkFLaeIpelW9TJoDSpw0i/vlmE9Adr3hof+f1aNPg44mS
- aljy7EasTVr8IxzTEmpZpWASmI8+8wtT+hfioUJV+Uj9mh6FX/DG6ga4Wcuuvor0BjnT
- jr/0RBySaGDAG2JPL3mNIYqSKOCIKrI81LdAjG1P8NMOgPjPHLjHxFA3n0wIvjiZfHIf
- 7h9Q==
-X-Gm-Message-State: AOJu0YwDCrj4nNr17RWDeCiigP1MnZnPxgqEPoxaM237W6QSI+KHzl6w
- T3JvRkNhrVSx063KZgi+2H+RjhCd4Ws6Z1uz5fQ9ebxPi6S3/lXx9AKCCh9qqR8=
-X-Google-Smtp-Source: AGHT+IEXgOyonBPU5aeNCjGxDL7y7ppMTstFmrwWqXq/VQqmd9A51BFKYxUv0fBWNfoB9m/bLwMJaA==
-X-Received: by 2002:a17:902:ea0c:b0:212:66cc:8100 with SMTP id
- d9443c01a7336-2126b8a3817mr84736545ad.0.1732183793093; 
- Thu, 21 Nov 2024 02:09:53 -0800 (PST)
-Received: from [157.82.207.107] ([157.82.207.107])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-21287ee14e4sm10140765ad.147.2024.11.21.02.09.51
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 21 Nov 2024 02:09:52 -0800 (PST)
-Message-ID: <3525b64d-9262-4eb4-9891-d30ace0db69f@daynix.com>
-Date: Thu, 21 Nov 2024 19:09:50 +0900
+ (Exim 4.90_1) (envelope-from <iii@imap.linux.ibm.com>)
+ id 1tE5MD-000561-Qj; Thu, 21 Nov 2024 06:28:21 -0500
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <iii@imap.linux.ibm.com>)
+ id 1tE5MA-0005dg-6o; Thu, 21 Nov 2024 06:28:21 -0500
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4AL7vG5u006352;
+ Thu, 21 Nov 2024 10:12:19 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=pp1; bh=KWSgKe
+ 07JV0XDIOFk7iX/wAVgsWTTtv4Ndf3x427RuM=; b=SPtaTm9moAgR7d9G4gHfsk
+ qhKFcjKRQznQFRMjWognOoooZ7LihwCSqZAkiv/QW4XZZYHQ0O0ZzILkJ3jeJ5IY
+ dABoyNf/AKG6OZe7FtXV9DcB19I51DIYXvcKItyphwzOfnQfPm2IigLM5ZfN72vA
+ mgQ17WP59I61V6A3UvLW/2KxkW63Mwyo0nP/gK7Vk+WEV/dlaYTMaDKImJ7a3Npp
+ fUuL9nYOSCgK09OhINaYSkvHllLYsXnRJxGWmMb/+RBVXo/k5kXe0HSiPVDvMS0R
+ Iz/sKALPdPGNvUBD1IVV2zHCEx47qQOdy8k6PvHHlYO7gYVskdenbF2ugOIh1/kQ
+ ==
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42xk219t9d-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 21 Nov 2024 10:12:18 +0000 (GMT)
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+ by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 4ALA4HJD021389;
+ Thu, 21 Nov 2024 10:12:18 GMT
+Received: from ppma13.dal12v.mail.ibm.com
+ (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42xk219t9a-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 21 Nov 2024 10:12:18 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4AL72Trd011847;
+ Thu, 21 Nov 2024 10:12:17 GMT
+Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
+ by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 42y7xjrdqv-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 21 Nov 2024 10:12:17 +0000
+Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com
+ [10.241.53.100])
+ by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 4ALACGfv25232066
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 21 Nov 2024 10:12:16 GMT
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 6AFDA58057;
+ Thu, 21 Nov 2024 10:12:16 +0000 (GMT)
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 1148D5805D;
+ Thu, 21 Nov 2024 10:12:16 +0000 (GMT)
+Received: from ltc.linux.ibm.com (unknown [9.5.196.140])
+ by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
+ Thu, 21 Nov 2024 10:12:15 +0000 (GMT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/6] virtio-net fixes
-To: Michael Tokarev <mjt@tls.msk.ru>, Jason Wang <jasowang@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>
-Cc: qemu-devel@nongnu.org, devel@daynix.com, qemu-stable@nongnu.org
-References: <20241111-queue-v2-0-2f7883a1004f@daynix.com>
- <56718639-49b4-4660-94f2-3bf6f66e293e@tls.msk.ru>
-Content-Language: en-US
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <56718639-49b4-4660-94f2-3bf6f66e293e@tls.msk.ru>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Date: Thu, 21 Nov 2024 11:12:15 +0100
+From: iii <iii@imap.linux.ibm.com>
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: Helge Deller <deller@gmx.de>, Ilya Leoshkevich <iii@linux.ibm.com>,
+ Laurent Vivier <laurent@vivier.eu>, Thomas Huth <thuth@redhat.com>, Richard
+ Henderson <richard.henderson@linaro.org>,
+ qemu-devel@nongnu.org, qemu-s390x@nongnu.org, qemu-stable@nongnu.org,
+ John Reiser <jreiser@bitwagon.com>
+Subject: Re: [PATCH v2] linux-user: Fix strace output for s390x mmap()
+In-Reply-To: <47e35ab6-65f7-451e-b557-8528e2542222@linaro.org>
+References: <20241120212717.246186-1-iii@linux.ibm.com>
+ <faeded70-af8e-4c3f-af1a-0bd1e11f5394@linaro.org>
+ <66b61760a0cbc8001611a99678b4719e@imap.linux.ibm.com>
+ <47e35ab6-65f7-451e-b557-8528e2542222@linaro.org>
+Message-ID: <79a33b561bc6d5daf590380ddecea8d4@imap.linux.ibm.com>
+X-Sender: iii@imap.linux.ibm.com
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x633.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: DTgxX8QlGFpYwondxyx6dMwIDOmRSJQF
+X-Proofpoint-GUID: NH17Sw1yDXMvQHToGeWh9ev-FBPySJu-
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 phishscore=0
+ mlxlogscore=999 lowpriorityscore=0 priorityscore=1501 suspectscore=0
+ malwarescore=0 clxscore=1034 mlxscore=0 spamscore=0 adultscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2409260000 definitions=main-2411210078
+Received-SPF: none client-ip=148.163.158.5;
+ envelope-from=iii@imap.linux.ibm.com; helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
 X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_ADSP_NXDOMAIN=0.9,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, NO_DNS_FOR_FROM=0.001,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H2=-0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Thu, 21 Nov 2024 10:05:28 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -95,26 +121,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2024/11/21 19:05, Michael Tokarev wrote:
-> 11.11.2024 09:40, Akihiko Odaki wrote:
->> Most of this series are fixes for software RSS and hash reporting, which
->> should have no production user.
->>
->> However there is one exception; patch "virtio-net: Fix size check in
->> dhclient workaround" fixes an out-of-bound access that can be triggered
->> for anyone who don't use vhost. It has Cc: qemu-stable@nongnu.org and
->> can be applied independently.
+On 2024-11-21 11:07, Philippe Mathieu-Daudé wrote:
+> On 21/11/24 10:26, iii wrote:
+>> On 2024-11-21 10:00, Philippe Mathieu-Daudé wrote:
+>>> On 20/11/24 22:26, Ilya Leoshkevich wrote:
+>>>> print_mmap() assumes that mmap() receives arguments via memory if
+>>>> mmap2() is present. s390x (as opposed to s390) does not fit this
+>>>> pattern: it does not have mmap2(), but mmap() still receives 
+>>>> arguments
+>>>> via memory.
+>>>> 
+>>>> Fix by sharing the detection logic between syscall.c and strace.c.
+>>>> 
+>>>> Cc: qemu-stable@nongnu.org
+>>>> Fixes: d971040c2d16 ("linux-user: Fix strace output for old_mmap")
+>>>> Suggested-by: Richard Henderson <richard.henderson@linaro.org>
+>>>> Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
+>>>> ---
+>>>> 
+>>>> v1: 
+>>>> https://lore.kernel.org/qemu-devel/20241119211138.148806-1-iii@linux.ibm.com/
+>>>> v1 -> v2: Share the detection logic between syscall.c and strace.c
+>>>>            (Richard).
+>>>> 
+>>>>   linux-user/strace.c       | 2 +-
+>>>>   linux-user/syscall.c      | 5 +----
+>>>>   linux-user/syscall_defs.h | 7 +++++++
+>>>>   3 files changed, 9 insertions(+), 5 deletions(-)
+>>>> 
+>>>> diff --git a/linux-user/strace.c b/linux-user/strace.c
+>>>> index b70eadc19ef..9c55f39b095 100644
+>>>> --- a/linux-user/strace.c
+>>>> +++ b/linux-user/strace.c
+>>>> @@ -3971,7 +3971,7 @@ print_mmap(CPUArchState *cpu_env, const struct 
+>>>> syscallname *name,
+>>>>   {
+>>>>       return print_mmap_both(cpu_env, name, arg0, arg1, arg2, arg3,
+>>>>                              arg4, arg5,
+>>>> -#if defined(TARGET_NR_mmap2)
+>>>> +#ifdef TARGET_ARCH_WANT_SYS_OLD_MMAP
+>>> 
+>>> We still want to print for mmap2, so:
+>>> 
+>>>   #if defined(TARGET_NR_mmap2) || 
+>>> defined(TARGET_ARCH_WANT_SYS_OLD_MMAP)
+>>> 
+>>>>                               true
+>>>>   #else
+>>>>                               false
+>> 
+>> mmap2() has its own flow from what I can see:
+>> 
+>> print_mmap2()
+>>    print_mmap_both(..., is_old_mmap=false)
+>> 
+>> It should not call print_mmap(), which I'm changing here.
+>> 
+>> [...]
 > 
-> Hi!  Do you plan to submit this and "virtio-net: Add queues before 
-> loading them"
-> for 9.2, which is at rc1 now already?
+> If so, better to clean that in a previous patch.
 
-I want "[PATCH v2 2/6] virtio-net: Fix size check in dhclient 
-workaround" and "virtio-net: Add queues before loading them" for 9.2.
+Sorry, I'm confused. What previous patch are you referring to?
 
-They have Cc: qemu-stable@nongnu.org and will need backporting if it 
-misses 9.2.0.
+> Cc'ing Helge since I'm a bit confused by commit d971040c2d intent
+> ("linux-user: Fix strace output for old_mmap").
 
-Regards,
-Akihiko Odaki
+My understanding of the Helge's idea is that "defined(TARGET_NR_mmap2)" 
+is
+true if, and only if, mmap() takes arguments via memory.
 
