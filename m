@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 590E69D5136
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Nov 2024 18:03:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC8739D5119
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Nov 2024 17:59:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tEAVV-0004TA-SR; Thu, 21 Nov 2024 11:58:17 -0500
+	id 1tEAVj-0004gZ-Cg; Thu, 21 Nov 2024 11:58:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tEAVR-0004RI-Ve
- for qemu-devel@nongnu.org; Thu, 21 Nov 2024 11:58:14 -0500
-Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
+ id 1tEAVa-0004XK-C2
+ for qemu-devel@nongnu.org; Thu, 21 Nov 2024 11:58:22 -0500
+Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tEAVO-0007xy-SO
- for qemu-devel@nongnu.org; Thu, 21 Nov 2024 11:58:13 -0500
-Received: by mail-wr1-x42d.google.com with SMTP id
- ffacd0b85a97d-3823194a879so753209f8f.0
- for <qemu-devel@nongnu.org>; Thu, 21 Nov 2024 08:58:10 -0800 (PST)
+ id 1tEAVQ-0007zQ-HH
+ for qemu-devel@nongnu.org; Thu, 21 Nov 2024 11:58:21 -0500
+Received: by mail-wr1-x42a.google.com with SMTP id
+ ffacd0b85a97d-382423e1f7aso722830f8f.2
+ for <qemu-devel@nongnu.org>; Thu, 21 Nov 2024 08:58:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1732208289; x=1732813089; darn=nongnu.org;
+ d=linaro.org; s=google; t=1732208291; x=1732813091; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=9C+LM+SP4iK6e01k9p7dSlvLPJtgfpCtu4sPK/ZhGgc=;
- b=eMEqRRwtBQOBPz0zt8rcOID41O1JV7wbjLQ9R1iO/rDX13pXs12IO+n3Smafz4LVqB
- q6y3xntBuCOwlN31EnkIkz1XkShTQC3iT6yTsDC9kCV9i4d6mkwqVhCwlcUg2iP68wnw
- BxQrQ5xw0YPD1XuRWzxs+qVhANJ7FSR86KSQLyiOeShUXbfiMsExpTGg9HPz7Hlrd6ZG
- /U0yIxLgexjCPagVDZR8gqz7pu29YH6HWm11/+13r04dZZE2YZUmaJbrnmu/Rf63LSSO
- 79olmcw/JPw8YvYYofNEZxmZ/3KFKM8JbU6qOVhBUmXtcNuSJBP/j474Q2ptUgqV1cZK
- eyaQ==
+ bh=lPIFW+MIDvbZvhF0n5YdU4sfYa070860/v3aIWKALYk=;
+ b=SLKr4RkFcLb2obpzzxC7+3N7f1KG4Y5OwUynXwd4cCsHXAqhEUc6AirO3tHicsTn7J
+ FNmNc3OOHxyFer8PNL3kNPTNlYG4D+SnSq9UDjn3Q9Oxx0v+JE9FzDGEPlhvdmbRhcRu
+ V3Zm7+4vFnZ+TxJdU/Z6HjahlOVAZYMjiKTt7NQsxkIHyLGb6rrIgAtjaWhqFqSxg/m8
+ rq/5G8GjfzADoRZ+RLiSCMxIg9Z+mFqbVWslVSPrkzSd9o/x1D5RZQvTkNJkm6XzkoEz
+ ZQNLoeIJI1rd9oS107yRTM48CJhbSIgbNzbpOcbSfDlQaqCZ/9bEqJHrKR6Sgb/Q3GQT
+ c/rg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1732208289; x=1732813089;
+ d=1e100.net; s=20230601; t=1732208291; x=1732813091;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=9C+LM+SP4iK6e01k9p7dSlvLPJtgfpCtu4sPK/ZhGgc=;
- b=ab3RyRCtCHpikdlPQnUqwxOcxXbMXV3yGYRo5YgbABkCvZ8BtCmdI2DCIhc9uRftuy
- 0ud76+8GNfhi4bF6x6jEOLUUwab+WUaLGplhgK1I971IHXb2vXCG+hfXYnnYLzFzo4zc
- 2VuIhegDq4/Al+7EERb/1t50A74u8d71gQSM2R/AglZY/F7RTwz7NTFqDcqTmRgrRI2e
- b35oLW8FTZgNwONYMjVJ5SWRghgTIaLZFDUhVANYXUQA+Nw6rmFNMTFnEFFCQ57OugoO
- 3DuLpHAlUMJyCffwpvplLoaTXE6/wFbJOlwhEeyr4lv6RWRvcQvfj0x7Pc7yvru9ra4j
- bnrA==
-X-Gm-Message-State: AOJu0YzUSvvocoUYyOq1eFgh+P0hHuba6vsbB2ai2UBQtMDugR5ZHkrJ
- GFLCX6QkKPN6LHXExYKE5YSp3LifGu3CJnRk3jpOxFeUgaQlmet7CsujiHfMyN0=
-X-Gm-Gg: ASbGncteEdH35icwmjIplUOr9qYPln0mj4fYmoaOYWHiWUy4TT5mjXvbYaHivBYOAw0
- xsJMGEK6GTJfx66vWAXWh5Rxn0HSEIRh4i5OARvvWqWxCaVQbBHrtGv9kUobVYiiN53DjZzoC7K
- sBjnUNhMkGrLgv2tMJFm6ccf97L+YgttDuEOyGzUeblG9yGIzc/taySTeVsHInAvrIYxuRU/JBr
- rC+hleffZyXgHmxLqEaw+CsUM51HloVBPpfoT0CDzgpr5JL
-X-Google-Smtp-Source: AGHT+IEEIlpGRr+7Hhole4+5IKveNY07NLQwR3GFbZFQU1ZK2icw5G7FkyxKEP7Y+VvuxrAKQNViAw==
-X-Received: by 2002:a5d:5f8f:0:b0:382:4fa4:e52f with SMTP id
- ffacd0b85a97d-38254ae55b2mr5975518f8f.13.1732208288870; 
- Thu, 21 Nov 2024 08:58:08 -0800 (PST)
+ bh=lPIFW+MIDvbZvhF0n5YdU4sfYa070860/v3aIWKALYk=;
+ b=HrdjHFNgJ04mJk1uffsQKs9EUoqiuzJVHvhMLLOiKzf0wWYRE8PbqRk49RdPS388tx
+ KMNqHGPrnlQ/0iKjVdYwRr3Nw0agqXXLc5Is46CR4Kq0nTOSAqHaeaV7vmiOhTi9yyi2
+ ri0V+I6V3XKNMrDDyhnhG4qb0pwzelQpghXMCJttJPZFGIsszdkM43Jm3l6g96kyYe4w
+ tvzKBf65c1bD9bRDGP/s4y3KnxFkIcjOY1+ua4DJTq824bWqr8fMKClRXAlF4ig65/gj
+ YOOO4gVK1zo/3UT3nzzFP2JUr5+aYxOpawwF8LSsgh9BKJocPeY2LthBY9OKHDV5MLjw
+ POQQ==
+X-Gm-Message-State: AOJu0YxAgky+BuRDgBdokArxp9Us5KZgbEjRxTaObMcvlxTGBrL76tj5
+ dPvp+lrD3kXdCN+mKM6Zj5LnNkCPgeoNPYLFjumK+agJcylUUMjtgLPHUv0bbZs=
+X-Gm-Gg: ASbGncuf3/6pvC1k3D8+1ZoonTwPdPEb0bYUuf09gow4TcK4rdnMPADMlXcSil2jlwq
+ bz3ZNBQ0axLGcszmU+/pDucUzJ9lD4jlg9yYrOZ+m3at60W/qf5KxJoxuRbfhtqnOvEKGzuHDdO
+ VwRlEo+YFbDO3R+IFP5SipMYuwVGgYaDmQVl5f6VzebxOADRJVg0Y9I3W0FXYsD4M2BkaxmBKi6
+ 7O9p0khINLRtfspYMG/BO0Tghf2sKbqsGt+LWF0VoYY9D5m
+X-Google-Smtp-Source: AGHT+IERjNcVY63Esz+m5ARC9qYMkrCrcDvhBkmECN98q+XaP8RU1AK9ROyMkEw7IhAPD3KpHAn5ZQ==
+X-Received: by 2002:a05:6000:154e:b0:382:542d:39ab with SMTP id
+ ffacd0b85a97d-38254adf714mr6452872f8f.3.1732208290915; 
+ Thu, 21 Nov 2024 08:58:10 -0800 (PST)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3825fb27386sm32027f8f.51.2024.11.21.08.58.07
+ ffacd0b85a97d-3825fbc38afsm17867f8f.67.2024.11.21.08.58.08
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Thu, 21 Nov 2024 08:58:08 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id B0C2E5F95A;
+ by draig.lan (Postfix) with ESMTP id C8B1F5FA88;
  Thu, 21 Nov 2024 16:58:06 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -91,18 +91,17 @@ Cc: Peter Maydell <peter.maydell@linaro.org>,
  Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
  Aurelien Jarno <aurelien@aurel32.net>, Ani Sinha <anisinha@redhat.com>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PATCH 03/39] tests/functional: remove "AVOCADO" from env variable
- name
-Date: Thu, 21 Nov 2024 16:57:30 +0000
-Message-Id: <20241121165806.476008-4-alex.bennee@linaro.org>
+Subject: [PATCH 04/39] tests/functional: remove todo wrt avocado.utils.wait_for
+Date: Thu, 21 Nov 2024 16:57:31 +0000
+Message-Id: <20241121165806.476008-5-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241121165806.476008-1-alex.bennee@linaro.org>
 References: <20241121165806.476008-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -127,31 +126,31 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Daniel P. Berrangé <berrange@redhat.com>
 
-This env variable is a debugging flag to save screendumps in the
-mips64el malta tests.
+We're not using avocado anymore, so while the TODO item is still
+relevant, suggesting use of avocado.utils is not.
 
 Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
-Message-Id: <20241121154218.1423005-4-berrange@redhat.com>
+Message-Id: <20241121154218.1423005-5-berrange@redhat.com>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- tests/functional/test_mips64el_malta.py | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tests/functional/test_m68k_nextcube.py | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/tests/functional/test_mips64el_malta.py b/tests/functional/test_mips64el_malta.py
-index 24ebcdb9c1..6d1195d362 100755
---- a/tests/functional/test_mips64el_malta.py
-+++ b/tests/functional/test_mips64el_malta.py
-@@ -159,7 +159,7 @@ def do_test_i6400_framebuffer_logo(self, cpu_cores_count):
-         loc = np.where(result >= match_threshold)
-         tuxlogo_count = 0
-         h, w = tuxlogo_bgr.shape[:2]
--        debug_png = os.getenv('AVOCADO_CV2_SCREENDUMP_PNG_PATH')
-+        debug_png = os.getenv('QEMU_TEST_CV2_SCREENDUMP_PNG_PATH')
-         for tuxlogo_count, pt in enumerate(zip(*loc[::-1]), start=1):
-             logger.debug('found Tux at position (x, y) = %s', pt)
-             cv2.rectangle(screendump_bgr, pt,
+diff --git a/tests/functional/test_m68k_nextcube.py b/tests/functional/test_m68k_nextcube.py
+index 89385a134a..0124622c40 100755
+--- a/tests/functional/test_m68k_nextcube.py
++++ b/tests/functional/test_m68k_nextcube.py
+@@ -37,8 +37,7 @@ def check_bootrom_framebuffer(self, screenshot_path):
+         self.vm.launch()
+ 
+         self.log.info('VM launched, waiting for display')
+-        # TODO: Use avocado.utils.wait.wait_for to catch the
+-        #       'displaysurface_create 1120x832' trace-event.
++        # TODO: wait for the 'displaysurface_create 1120x832' trace-event.
+         time.sleep(2)
+ 
+         self.vm.cmd('human-monitor-command',
 -- 
 2.39.5
 
