@@ -2,69 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82BBD9D5F8B
-	for <lists+qemu-devel@lfdr.de>; Fri, 22 Nov 2024 14:09:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 432E09D5F98
+	for <lists+qemu-devel@lfdr.de>; Fri, 22 Nov 2024 14:15:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tETOZ-0001iY-VQ; Fri, 22 Nov 2024 08:08:23 -0500
+	id 1tETUW-0004YV-6q; Fri, 22 Nov 2024 08:14:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tETOV-0001d9-W9
- for qemu-devel@nongnu.org; Fri, 22 Nov 2024 08:08:20 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mchehab+huawei@kernel.org>)
+ id 1tETUT-0004Wu-J8; Fri, 22 Nov 2024 08:14:29 -0500
+Received: from dfw.source.kernel.org ([2604:1380:4641:c500::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tETOR-0005RQ-Km
- for qemu-devel@nongnu.org; Fri, 22 Nov 2024 08:08:18 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1732280894;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=KMbkOBfXpVZ3mB0PN2E9ff15VE0qy5k7LepvJsOdWSM=;
- b=c8xwAgIBOyO+W/Nvbq5QbL2SkLA8Q5UCowDOOsLjlLMe3Ms2cLVFWPPl6aLCnRhfAdrqu4
- jFe1Z202XzBaXT5KsTtzKFd01U7JzB5UXFWhvsKjnuDidAeLK0sydAORKsGna7wludeGne
- Loy2ybXwcvAmwFi+N+pXsRVPvZ5ayHU=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-657-PkO1ECYhNEq-f4iM8aGgYA-1; Fri,
- 22 Nov 2024 08:08:11 -0500
-X-MC-Unique: PkO1ECYhNEq-f4iM8aGgYA-1
-X-Mimecast-MFC-AGG-ID: PkO1ECYhNEq-f4iM8aGgYA
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 2B1E919560B5; Fri, 22 Nov 2024 13:08:10 +0000 (UTC)
-Received: from corto.redhat.com (unknown [10.39.193.92])
- by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id C7DA81956086; Fri, 22 Nov 2024 13:08:06 +0000 (UTC)
-From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Yoshinori Sato <ysato@users.sourceforge.jp>,
- Magnus Damm <magnus.damm@gmail.com>, Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PATCH] tests/functional: Remove sleep workarounds from sh4 test
-Date: Fri, 22 Nov 2024 14:08:04 +0100
-Message-ID: <20241122130804.2013662-1-clg@redhat.com>
+ (Exim 4.90_1) (envelope-from <mchehab+huawei@kernel.org>)
+ id 1tETUR-0006L3-Qu; Fri, 22 Nov 2024 08:14:29 -0500
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+ by dfw.source.kernel.org (Postfix) with ESMTP id F06D95C5A3D;
+ Fri, 22 Nov 2024 13:13:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E87CC4CEDA;
+ Fri, 22 Nov 2024 13:14:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1732281264;
+ bh=W9eH/NjQmQ/fmoOrydtYHGpAJG00A8vG13tZgPQj1LU=;
+ h=From:To:Cc:Subject:Date:From;
+ b=tc13vhJsp4xUDbgNcsQCLUvvUlh+gvbuVd3zmZ+6oghwyoeCGjRZ4TQ7FXJABqTMU
+ n4J0VhdEshh2krzx43z9xMrhdXkhjAdcVSFlnxxnQiwE3qSURwUy6uo4MxboPEEunR
+ gQyYsNhUYJEkTWPQ4PO2ngr6KM2fUk9zsmFLV/v7U5qcJvQhTIORTUl/HOcQmaUQ+H
+ fM0pmb0Bo6YAwR00ixKz5DbwZtqvHs/w2IVV3FsRYc4LyQ9ZoLBkls0HmDiK65EUDX
+ 8SBghAxjw0UTF6j6Mq9ZGmYcQDnfNRtCQveGFqnWR/YEBQg3mc2zBdyq5qExu/xnDL
+ ul5D/bQk3btDw==
+Received: from mchehab by mail.kernel.org with local (Exim 4.98)
+ (envelope-from <mchehab+huawei@kernel.org>)
+ id 1tETUL-00000006v9e-4BRt; Fri, 22 Nov 2024 14:14:22 +0100
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+To: 
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Shiju Jose <shiju.jose@huawei.com>,
+ Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Ani Sinha <anisinha@redhat.com>, Dongjiu Geng <gengdongjiu1@gmail.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Shannon Zhao <shannon.zhaosl@gmail.com>,
+ Yanan Wang <wangyanan55@huawei.com>, Zhao Liu <zhao1.liu@intel.com>,
+ qemu-arm@nongnu.org, qemu-devel@nongnu.org
+Subject: [PATCH v2 0/5] Change ghes driver to use HEST-based offsets
+Date: Fri, 22 Nov 2024 14:14:10 +0100
+Message-ID: <cover.1732281080.git.mchehab+huawei@kernel.org>
+X-Mailer: git-send-email 2.47.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.143,
+Received-SPF: pass client-ip=2604:1380:4641:c500::1;
+ envelope-from=mchehab+huawei@kernel.org; helo=dfw.source.kernel.org
+X-Spam_score_int: -44
+X-Spam_score: -4.5
+X-Spam_bar: ----
+X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.143,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,42 +75,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-These were introduced in the avocado tests to workaround read issues
-when interacting with console. They are no longer necessary and we can
-use the expected login string instead.
+This  series was part of the previous PR to add generic error injection
+support on GHES. It depends on a cleanup patch series sent earlier
+today:
 
-Signed-off-by: Cédric Le Goater <clg@redhat.com>
+	https://lore.kernel.org/qemu-devel/cover.1732266152.git.mchehab+huawei@kernel.org/T/#t
+
+It contains the changes of the math used to calculate offsets at HEST table 
+and hardware_error firmware file. It prepares for the addition of GHES
+error injection.
+
+The first patch was previously at the cleanup series. It prepares
+the logic to support multiple sources.
+
+The second patch adds a new firmware file to store HEST address.
+
+The third patch use the new firmware to calculate offsets using
+HEST table.
+
+Patches 4 and 5 add migration support. They assume that this
+series will be merged for qemu 9.2 (maybe it is too late for that,
+as QEMU is now on soft freeze). 
+
+I tested migration using both virt-9.1 and virt-9.2 machines
+on qemu 9.2.
+
+I also tested migration with:
+
+	qemu-9.1 -M virt-9.1 -cpu cortex-a57 => qemu-9.2 -M virt-9.1 -cpu cortex-a57
+	qemu-9.2 -M virt-9.1 -cpu cortex-a57 => qemu-9.1 -M virt-9.1 -cpu cortex-a57
+
 ---
- tests/functional/test_sh4_tuxrun.py | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
 
-diff --git a/tests/functional/test_sh4_tuxrun.py b/tests/functional/test_sh4_tuxrun.py
-index 352cb360ef74..dcb49f28b9aa 100755
---- a/tests/functional/test_sh4_tuxrun.py
-+++ b/tests/functional/test_sh4_tuxrun.py
-@@ -15,7 +15,7 @@
- import time
- 
- from unittest import skipUnless
--from qemu_test import Asset, exec_command_and_wait_for_pattern, exec_command
-+from qemu_test import Asset, exec_command_and_wait_for_pattern
- from qemu_test.tuxruntest import TuxRunBaselineTest
- 
- class TuxRunSh4Test(TuxRunBaselineTest):
-@@ -46,10 +46,8 @@ def test_sh4(self):
-                          console_index=1)
-         self.vm.launch()
- 
--        self.wait_for_console_pattern("Welcome to TuxTest")
--        time.sleep(0.1)
--        exec_command(self, 'root')
--        time.sleep(0.1)
-+        self.wait_for_console_pattern("tuxtest login:")
-+        exec_command_and_wait_for_pattern(self, 'root', 'root@tuxtest:~#')
-         exec_command_and_wait_for_pattern(self, 'halt',
-                                           "reboot: System halted")
- 
+v2:
+  - some whitespace and comment changes
+  - patch 3/6 (acpi/ghes: rename the function which gets hw error offsets)
+    was merged on the cleanup series.
+
+Mauro Carvalho Chehab (5):
+  acpi/ghes: Prepare to support multiple sources on ghes
+  acpi/ghes: add a firmware file with HEST address
+  acpi/ghes: Use HEST table offsets when preparing GHES records
+  acpi/generic_event_device: Update GHES migration to cover hest addr
+  acpi/generic_event_device: add logic to detect if HEST addr is
+    available
+
+ hw/acpi/generic_event_device.c |  30 +++++++
+ hw/acpi/ghes.c                 | 156 +++++++++++++++++++++++++++++----
+ hw/arm/virt-acpi-build.c       |  33 ++++++-
+ hw/core/machine.c              |   2 +
+ include/hw/acpi/ghes.h         |  23 +++--
+ 5 files changed, 216 insertions(+), 28 deletions(-)
+
 -- 
 2.47.0
+
 
 
