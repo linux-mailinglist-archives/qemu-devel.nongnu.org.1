@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C54589D5B54
-	for <lists+qemu-devel@lfdr.de>; Fri, 22 Nov 2024 09:55:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F2249D5B58
+	for <lists+qemu-devel@lfdr.de>; Fri, 22 Nov 2024 09:55:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tEPRI-0000RP-Q0; Fri, 22 Nov 2024 03:54:56 -0500
+	id 1tEPRM-0000TS-Rh; Fri, 22 Nov 2024 03:55:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <EwanHai-oc@zhaoxin.com>)
- id 1tEPR8-0000QP-SJ
- for qemu-devel@nongnu.org; Fri, 22 Nov 2024 03:54:48 -0500
+ id 1tEPRF-0000RO-2E
+ for qemu-devel@nongnu.org; Fri, 22 Nov 2024 03:54:54 -0500
 Received: from mx1.zhaoxin.com ([210.0.225.12])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <EwanHai-oc@zhaoxin.com>)
- id 1tEPR5-0005S1-RO
- for qemu-devel@nongnu.org; Fri, 22 Nov 2024 03:54:46 -0500
-X-ASG-Debug-ID: 1732265677-086e2312d803820001-jgbH7p
-Received: from ZXSHMBX3.zhaoxin.com (ZXSHMBX3.zhaoxin.com [10.28.252.165]) by
- mx1.zhaoxin.com with ESMTP id vlitriyH49Lpa8ez (version=TLSv1.2
+ id 1tEPRC-0005Tp-Q1
+ for qemu-devel@nongnu.org; Fri, 22 Nov 2024 03:54:52 -0500
+X-ASG-Debug-ID: 1732265687-086e2312d503820001-jgbH7p
+Received: from ZXSHMBX1.zhaoxin.com (ZXSHMBX1.zhaoxin.com [10.28.252.163]) by
+ mx1.zhaoxin.com with ESMTP id 9SrApcvCPveCHJs9 (version=TLSv1.2
  cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NO);
- Fri, 22 Nov 2024 16:54:37 +0800 (CST)
+ Fri, 22 Nov 2024 16:54:47 +0800 (CST)
 X-Barracuda-Envelope-From: EwanHai-oc@zhaoxin.com
-X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.165
-Received: from ZXSHMBX1.zhaoxin.com (10.28.252.163) by ZXSHMBX3.zhaoxin.com
- (10.28.252.165) with Microsoft SMTP Server (version=TLS1_2,
+X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.163
+Received: from ZXSHMBX1.zhaoxin.com (10.28.252.163) by ZXSHMBX1.zhaoxin.com
+ (10.28.252.163) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Fri, 22 Nov
- 2024 16:54:37 +0800
+ 2024 16:54:46 +0800
 Received: from ZXSHMBX1.zhaoxin.com ([fe80::3066:e339:e3d6:5264]) by
  ZXSHMBX1.zhaoxin.com ([fe80::3066:e339:e3d6:5264%7]) with mapi id
- 15.01.2507.039; Fri, 22 Nov 2024 16:54:37 +0800
-X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.165
+ 15.01.2507.039; Fri, 22 Nov 2024 16:54:46 +0800
+X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.163
 Received: from ewan-server.zhaoxin.com (10.28.66.62) by zxbjmbx1.zhaoxin.com
  (10.29.252.163) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Fri, 22 Nov
@@ -42,12 +42,12 @@ To: <pbonzini@redhat.com>, <zhao1.liu@intel.com>
 CC: <qemu-devel@nongnu.org>, <ewanhai@zhaoxin.com>, <cobechen@zhaoxin.com>,
  <rockcui@zhaoxin.com>, <louisqi@zhaoxin.com>, <liamni@zhaoxin.com>,
  <frankzhu@zhaoxin.com>
-Subject: [PATCH RESEND v4 2/4] target/i386: Add CPUID leaf 0xC000_0001 EDX
- definitions
-Date: Fri, 22 Nov 2024 01:21:33 -0500
-X-ASG-Orig-Subj: [PATCH RESEND v4 2/4] target/i386: Add CPUID leaf 0xC000_0001
- EDX definitions
-Message-ID: <20241122062135.479200-3-ewanhai-oc@zhaoxin.com>
+Subject: [PATCH RESEND v4 3/4] target/i386: Introduce Zhaoxin Yongfeng CPU
+ model
+Date: Fri, 22 Nov 2024 01:21:34 -0500
+X-ASG-Orig-Subj: [PATCH RESEND v4 3/4] target/i386: Introduce Zhaoxin Yongfeng
+ CPU model
+Message-ID: <20241122062135.479200-4-ewanhai-oc@zhaoxin.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241122062135.479200-1-ewanhai-oc@zhaoxin.com>
 References: <20241122062135.479200-1-ewanhai-oc@zhaoxin.com>
@@ -57,23 +57,24 @@ Content-Type: text/plain
 X-Originating-IP: [10.28.66.62]
 X-ClientProxiedBy: zxbjmbx1.zhaoxin.com (10.29.252.163) To
  zxbjmbx1.zhaoxin.com (10.29.252.163)
-X-Moderation-Data: 11/22/2024 4:54:36 PM
-X-Barracuda-Connect: ZXSHMBX3.zhaoxin.com[10.28.252.165]
-X-Barracuda-Start-Time: 1732265677
+X-Moderation-Data: 11/22/2024 4:54:45 PM
+X-Barracuda-Connect: ZXSHMBX1.zhaoxin.com[10.28.252.163]
+X-Barracuda-Start-Time: 1732265687
 X-Barracuda-Encrypted: ECDHE-RSA-AES128-GCM-SHA256
 X-Barracuda-URL: https://10.28.252.35:4443/cgi-mod/mark.cgi
 X-Virus-Scanned: by bsmtpd at zhaoxin.com
-X-Barracuda-Scan-Msg-Size: 1642
+X-Barracuda-Scan-Msg-Size: 7693
 X-Barracuda-BRTS-Status: 1
 X-Barracuda-Bayes: INNOCENT GLOBAL 0.0000 1.0000 -2.0210
-X-Barracuda-Spam-Score: -2.02
+X-Barracuda-Spam-Score: -2.01
 X-Barracuda-Spam-Status: No,
- SCORE=-2.02 using global scores of TAG_LEVEL=1000.0
- QUARANTINE_LEVEL=1000.0 KILL_LEVEL=9.0 tests=
+ SCORE=-2.01 using global scores of TAG_LEVEL=1000.0
+ QUARANTINE_LEVEL=1000.0 KILL_LEVEL=9.0 tests=UPPERCASE_75_100
 X-Barracuda-Spam-Report: Code version 3.2, rules version 3.2.3.133532
  Rule breakdown below
  pts rule name              description
  ---- ---------------------- --------------------------------------------------
+ 0.01 UPPERCASE_75_100       message body is 75-100% uppercase
 Received-SPF: pass client-ip=210.0.225.12; envelope-from=EwanHai-oc@zhaoxin.com;
  helo=mx1.zhaoxin.com
 X-Spam_score_int: -18
@@ -81,7 +82,8 @@ X-Spam_score: -1.9
 X-Spam_bar: -
 X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ UPPERCASE_75_100=0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,48 +99,172 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add new CPUID feature flags for various Zhaoxin PadLock extensions.
-These definitions will be used for Zhaoxin CPU models.
+Introduce support for the Zhaoxin Yongfeng CPU model.
+The Zhaoxin Yongfeng CPU is Zhaoxin's latest server CPU.
+
+This new cpu model ensure that QEMU can correctly emulate the Zhaoxin
+Yongfeng CPU, providing accurate functionality and performance characterist=
+ics.
 
 Signed-off-by: EwanHai <ewanhai-oc@zhaoxin.com>
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- target/i386/cpu.h | 21 +++++++++++++++++++++
- 1 file changed, 21 insertions(+)
+ target/i386/cpu.c | 124 ++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 124 insertions(+)
 
-diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-index a99ae943f6..a508efe103 100644
---- a/target/i386/cpu.h
-+++ b/target/i386/cpu.h
-@@ -1069,6 +1069,27 @@ uint64_t x86_cpu_get_supported_feature_word(X86CPU *=
-cpu, FeatureWord w);
- /* CPUID[0x80000007].EDX flags: */
- #define CPUID_APM_INVTSC       (1U << 8)
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index 3725dbbc4b..ae8e9ccfc7 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -5341,6 +5341,130 @@ static const X86CPUDefinition builtin_x86_defs[] =
+=3D {
+         .model_id =3D "AMD EPYC-Genoa Processor",
+         .cache_info =3D &epyc_genoa_cache_info,
+     },
++    {
++        .name =3D "YongFeng",
++        .level =3D 0x1F,
++        .vendor =3D CPUID_VENDOR_ZHAOXIN1,
++        .family =3D 7,
++        .model =3D 11,
++        .stepping =3D 3,
++        /* missing: CPUID_HT, CPUID_TM, CPUID_PBE */
++        .features[FEAT_1_EDX] =3D
++            CPUID_SS | CPUID_SSE2 | CPUID_SSE | CPUID_FXSR | CPUID_MMX |
++            CPUID_ACPI | CPUID_CLFLUSH | CPUID_PSE36 | CPUID_PAT | CPUID_C=
+MOV |
++            CPUID_MCA | CPUID_PGE | CPUID_MTRR | CPUID_SEP | CPUID_APIC |
++            CPUID_CX8 | CPUID_MCE | CPUID_PAE | CPUID_MSR | CPUID_TSC |
++            CPUID_PSE | CPUID_DE | CPUID_VME | CPUID_FP87,
++        /*
++         * missing: CPUID_EXT_OSXSAVE, CPUID_EXT_XTPR, CPUID_EXT_TM2,
++         * CPUID_EXT_EST, CPUID_EXT_SMX, CPUID_EXT_VMX
++         */
++        .features[FEAT_1_ECX] =3D
++            CPUID_EXT_RDRAND | CPUID_EXT_F16C | CPUID_EXT_AVX |
++            CPUID_EXT_XSAVE | CPUID_EXT_AES | CPUID_EXT_TSC_DEADLINE_TIMER=
+ |
++            CPUID_EXT_POPCNT | CPUID_EXT_MOVBE | CPUID_EXT_X2APIC |
++            CPUID_EXT_SSE42 | CPUID_EXT_SSE41 | CPUID_EXT_PCID |
++            CPUID_EXT_CX16 | CPUID_EXT_FMA | CPUID_EXT_SSSE3 |
++            CPUID_EXT_MONITOR | CPUID_EXT_PCLMULQDQ | CPUID_EXT_SSE3,
++        .features[FEAT_7_0_EBX] =3D
++            CPUID_7_0_EBX_SHA_NI | CPUID_7_0_EBX_SMAP | CPUID_7_0_EBX_ADX =
+|
++            CPUID_7_0_EBX_RDSEED | CPUID_7_0_EBX_INVPCID | CPUID_7_0_EBX_B=
+MI2 |
++            CPUID_7_0_EBX_SMEP | CPUID_7_0_EBX_AVX2 | CPUID_7_0_EBX_BMI1 |
++            CPUID_7_0_EBX_FSGSBASE,
++        /* missing: CPUID_7_0_ECX_OSPKE */
++        .features[FEAT_7_0_ECX] =3D
++            CPUID_7_0_ECX_RDPID | CPUID_7_0_ECX_PKU | CPUID_7_0_ECX_UMIP,
++        .features[FEAT_7_0_EDX] =3D
++            CPUID_7_0_EDX_ARCH_CAPABILITIES | CPUID_7_0_EDX_SPEC_CTRL,
++        .features[FEAT_8000_0001_EDX] =3D
++            CPUID_EXT2_LM | CPUID_EXT2_RDTSCP | CPUID_EXT2_PDPE1GB |
++            CPUID_EXT2_NX | CPUID_EXT2_SYSCALL,
++        .features[FEAT_8000_0001_ECX] =3D
++            CPUID_EXT3_3DNOWPREFETCH | CPUID_EXT3_ABM | CPUID_EXT3_LAHF_LM=
+,
++        .features[FEAT_8000_0007_EDX] =3D CPUID_APM_INVTSC,
++        /*
++         * TODO: When the Linux kernel introduces other existing definitio=
+ns
++         * for this leaf, remember to update the definitions here.
++         */
++        .features[FEAT_C000_0001_EDX] =3D
++            CPUID_C000_0001_EDX_PMM_EN | CPUID_C000_0001_EDX_PMM |
++            CPUID_C000_0001_EDX_PHE_EN | CPUID_C000_0001_EDX_PHE |
++            CPUID_C000_0001_EDX_ACE2 |
++            CPUID_C000_0001_EDX_XCRYPT_EN | CPUID_C000_0001_EDX_XCRYPT |
++            CPUID_C000_0001_EDX_XSTORE_EN | CPUID_C000_0001_EDX_XSTORE,
++        .features[FEAT_XSAVE] =3D
++            CPUID_XSAVE_XSAVEOPT,
++        .features[FEAT_ARCH_CAPABILITIES] =3D
++            MSR_ARCH_CAP_RDCL_NO | MSR_ARCH_CAP_SKIP_L1DFL_VMENTRY |
++            MSR_ARCH_CAP_MDS_NO | MSR_ARCH_CAP_PSCHANGE_MC_NO |
++            MSR_ARCH_CAP_SSB_NO,
++        .features[FEAT_VMX_PROCBASED_CTLS] =3D
++            VMX_CPU_BASED_VIRTUAL_INTR_PENDING | VMX_CPU_BASED_HLT_EXITING=
+ |
++            VMX_CPU_BASED_USE_TSC_OFFSETING | VMX_CPU_BASED_INVLPG_EXITING=
+ |
++            VMX_CPU_BASED_MWAIT_EXITING | VMX_CPU_BASED_RDPMC_EXITING |
++            VMX_CPU_BASED_RDTSC_EXITING | VMX_CPU_BASED_CR3_LOAD_EXITING |
++            VMX_CPU_BASED_CR3_STORE_EXITING | VMX_CPU_BASED_CR8_LOAD_EXITI=
+NG |
++            VMX_CPU_BASED_CR8_STORE_EXITING | VMX_CPU_BASED_TPR_SHADOW |
++            VMX_CPU_BASED_VIRTUAL_NMI_PENDING | VMX_CPU_BASED_MOV_DR_EXITI=
+NG |
++            VMX_CPU_BASED_UNCOND_IO_EXITING | VMX_CPU_BASED_USE_IO_BITMAPS=
+ |
++            VMX_CPU_BASED_MONITOR_TRAP_FLAG | VMX_CPU_BASED_USE_MSR_BITMAP=
+S |
++            VMX_CPU_BASED_MONITOR_EXITING | VMX_CPU_BASED_PAUSE_EXITING |
++            VMX_CPU_BASED_ACTIVATE_SECONDARY_CONTROLS,
++        /*
++         * missing: VMX_SECONDARY_EXEC_PAUSE_LOOP_EXITING,
++         * VMX_SECONDARY_EXEC_TSC_SCALING
++         */
++        .features[FEAT_VMX_SECONDARY_CTLS] =3D
++            VMX_SECONDARY_EXEC_VIRTUALIZE_APIC_ACCESSES |
++            VMX_SECONDARY_EXEC_ENABLE_EPT | VMX_SECONDARY_EXEC_DESC |
++            VMX_SECONDARY_EXEC_RDTSCP | VMX_SECONDARY_EXEC_ENABLE_VPID |
++            VMX_SECONDARY_EXEC_VIRTUALIZE_X2APIC_MODE |
++            VMX_SECONDARY_EXEC_WBINVD_EXITING |
++            VMX_SECONDARY_EXEC_UNRESTRICTED_GUEST |
++            VMX_SECONDARY_EXEC_APIC_REGISTER_VIRT |
++            VMX_SECONDARY_EXEC_VIRTUAL_INTR_DELIVERY |
++            VMX_SECONDARY_EXEC_RDRAND_EXITING |
++            VMX_SECONDARY_EXEC_ENABLE_INVPCID |
++            VMX_SECONDARY_EXEC_ENABLE_VMFUNC |
++            VMX_SECONDARY_EXEC_SHADOW_VMCS |
++            VMX_SECONDARY_EXEC_ENABLE_PML,
++        .features[FEAT_VMX_PINBASED_CTLS] =3D
++            VMX_PIN_BASED_EXT_INTR_MASK | VMX_PIN_BASED_NMI_EXITING |
++            VMX_PIN_BASED_VIRTUAL_NMIS | VMX_PIN_BASED_VMX_PREEMPTION_TIME=
+R |
++            VMX_PIN_BASED_POSTED_INTR,
++        .features[FEAT_VMX_EXIT_CTLS] =3D
++            VMX_VM_EXIT_SAVE_DEBUG_CONTROLS | VMX_VM_EXIT_HOST_ADDR_SPACE_=
+SIZE |
++            VMX_VM_EXIT_LOAD_IA32_PERF_GLOBAL_CTRL |
++            VMX_VM_EXIT_ACK_INTR_ON_EXIT | VMX_VM_EXIT_SAVE_IA32_PAT |
++            VMX_VM_EXIT_LOAD_IA32_PAT | VMX_VM_EXIT_SAVE_IA32_EFER |
++            VMX_VM_EXIT_LOAD_IA32_EFER | VMX_VM_EXIT_SAVE_VMX_PREEMPTION_T=
+IMER,
++        /* missing: VMX_VM_ENTRY_SMM, VMX_VM_ENTRY_DEACT_DUAL_MONITOR */
++        .features[FEAT_VMX_ENTRY_CTLS] =3D
++            VMX_VM_ENTRY_LOAD_DEBUG_CONTROLS | VMX_VM_ENTRY_IA32E_MODE |
++            VMX_VM_ENTRY_LOAD_IA32_PERF_GLOBAL_CTRL |
++            VMX_VM_ENTRY_LOAD_IA32_PAT | VMX_VM_ENTRY_LOAD_IA32_EFER,
++        /*
++         * missing: MSR_VMX_MISC_ACTIVITY_SHUTDOWN,
++         * MSR_VMX_MISC_ACTIVITY_WAIT_SIPI
++         */
++        .features[FEAT_VMX_MISC] =3D
++            MSR_VMX_MISC_STORE_LMA | MSR_VMX_MISC_ACTIVITY_HLT |
++            MSR_VMX_MISC_VMWRITE_VMEXIT,
++        /* missing: MSR_VMX_EPT_UC */
++        .features[FEAT_VMX_EPT_VPID_CAPS] =3D
++            MSR_VMX_EPT_EXECONLY | MSR_VMX_EPT_PAGE_WALK_LENGTH_4 |
++            MSR_VMX_EPT_WB | MSR_VMX_EPT_2MB | MSR_VMX_EPT_1GB |
++            MSR_VMX_EPT_INVEPT | MSR_VMX_EPT_AD_BITS |
++            MSR_VMX_EPT_INVEPT_SINGLE_CONTEXT | MSR_VMX_EPT_INVEPT_ALL_CON=
+TEXT |
++            MSR_VMX_EPT_INVVPID_SINGLE_CONTEXT | MSR_VMX_EPT_INVVPID |
++            MSR_VMX_EPT_INVVPID_ALL_CONTEXT | MSR_VMX_EPT_INVVPID_SINGLE_A=
+DDR |
++            MSR_VMX_EPT_INVVPID_SINGLE_CONTEXT_NOGLOBALS,
++        .features[FEAT_VMX_BASIC] =3D
++            MSR_VMX_BASIC_INS_OUTS | MSR_VMX_BASIC_TRUE_CTLS,
++        .features[FEAT_VMX_VMFUNC] =3D MSR_VMX_VMFUNC_EPT_SWITCHING,
++        .xlevel =3D 0x80000008,
++        .model_id =3D "Zhaoxin YongFeng Processor",
++    },
+ };
 =20
-+/* "rng" RNG present (xstore) */
-+#define CPUID_C000_0001_EDX_XSTORE             (1U << 2)
-+/* "rng_en" RNG enabled */
-+#define CPUID_C000_0001_EDX_XSTORE_EN          (1U << 3)
-+/* "ace" on-CPU crypto (xcrypt) */
-+#define CPUID_C000_0001_EDX_XCRYPT             (1U << 6)
-+/* "ace_en" on-CPU crypto enabled */
-+#define CPUID_C000_0001_EDX_XCRYPT_EN          (1U << 7)
-+/* Advanced Cryptography Engine v2 */
-+#define CPUID_C000_0001_EDX_ACE2               (1U << 8)
-+/* ACE v2 enabled */
-+#define CPUID_C000_0001_EDX_ACE2_EN            (1U << 9)
-+/* PadLock Hash Engine */
-+#define CPUID_C000_0001_EDX_PHE                (1U << 10)
-+/* PHE enabled */
-+#define CPUID_C000_0001_EDX_PHE_EN             (1U << 11)
-+/* PadLock Montgomery Multiplier */
-+#define CPUID_C000_0001_EDX_PMM                (1U << 12)
-+/* PMM enabled */
-+#define CPUID_C000_0001_EDX_PMM_EN             (1U << 13)
-+
- #define CPUID_VENDOR_SZ      12
-=20
- #define CPUID_VENDOR_INTEL_1 0x756e6547 /* "Genu" */
+ /*
 --=20
 2.34.1
 
