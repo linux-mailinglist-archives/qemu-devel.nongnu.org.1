@@ -2,90 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC4FF9D57EF
-	for <lists+qemu-devel@lfdr.de>; Fri, 22 Nov 2024 03:02:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ADE479D5866
+	for <lists+qemu-devel@lfdr.de>; Fri, 22 Nov 2024 03:42:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tEIyp-000825-Hr; Thu, 21 Nov 2024 21:01:07 -0500
+	id 1tEJbY-0006XZ-DD; Thu, 21 Nov 2024 21:41:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1tEIyd-00081e-Kt
- for qemu-devel@nongnu.org; Thu, 21 Nov 2024 21:00:55 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1tEJb9-0006Wt-Ki
+ for qemu-devel@nongnu.org; Thu, 21 Nov 2024 21:40:46 -0500
+Received: from mgamail.intel.com ([192.198.163.10])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1tEIyb-00051j-TN
- for qemu-devel@nongnu.org; Thu, 21 Nov 2024 21:00:55 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1732240850;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=Jk86ALuywbr7Pa31NOuvlfxUTyNtpXhnqPd3eSh0lUY=;
- b=g38Eguf/FmP9vo8VpnSbqFdUd5HfjAufQc4JGOEwVg5OPre9sfcWA/o59Asox0Gv2/yhqd
- 0O0rysKFvZSnUGwJJihTklr88p91Lz+LRri5yYR9jhyBGr1YJDNJPJ41q4aFOisrKelTrx
- +UWECvsAjOXci6HWiMH/GfZDH7ZUjpA=
-Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com
- [209.85.216.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-607-iOERblzhPcGfmr2jhsvW8A-1; Thu, 21 Nov 2024 21:00:48 -0500
-X-MC-Unique: iOERblzhPcGfmr2jhsvW8A-1
-X-Mimecast-MFC-AGG-ID: iOERblzhPcGfmr2jhsvW8A
-Received: by mail-pj1-f71.google.com with SMTP id
- 98e67ed59e1d1-2ea21082c99so1696845a91.3
- for <qemu-devel@nongnu.org>; Thu, 21 Nov 2024 18:00:48 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1732240848; x=1732845648;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=Jk86ALuywbr7Pa31NOuvlfxUTyNtpXhnqPd3eSh0lUY=;
- b=jOiGsIuJeZ1VttqYvRiAW/q/zhrP/z7NYM+ikgibXB56Y39i+uqSY0o0QGUQwwnaj/
- lHl1yuyySYv+MDa+HvJ9y+VIUsCkt6hRibN8x3WRGeM113AtLDLjfJel0QizUy+Ubtbo
- 2Fy7IxglapImeDodp1zJhokIDQSMGHEYNloPQ8sAbUwuFYRXKPDQEN1DIZ6xcbGRlzv7
- xgGjVobhrlxxsAioyq30euu+FXH5ae1RYIkOaVgv6oPfg8oRGU/s8xHb9Z2/DoCcA0Po
- AoNNlr/XWcun3P34p1oLwJd+lFgfl8YKdPqrhuBNLBp6K52DxeHLaLIz8CGBXSVx36GA
- d6nA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCU8mNbZd8vlOgQsOpG201bh/6Q1iYr1pc2ZtvuaJMETs4kwLlGLzKWW48GLS8owz6QysIYWJiSnHn/v@nongnu.org
-X-Gm-Message-State: AOJu0Yw5wRJquKjMDgRYTV1yCwHT3qcyE6hiKyWC1wWNJvhhGupkY87Q
- 5EK/xl78AS9FnlbJM6ubpQUNgoq0FU9B31bpigEPPKJViGnlQsTiObgRnXu2jRv6OzOC4Dx+kUo
- r8YI0iAuVLW0Gn8lwyVGzchQy+86IuVXuJvDjyZNvItDhV/pKCjYbK67AZrASGuVK9CKCWTlPd8
- 2GKK08iJzwk6sBbjOkUre1ePpg2/o=
-X-Gm-Gg: ASbGncs04M6reeqxEE9ryk4UOgTb+oZEAiZFnCsNw6s3KsXk2a+tCoiF1eoaU75V5UG
- dMbquz6997Js83823dn3lwAtuFpDBpA==
-X-Received: by 2002:a17:90b:388b:b0:2ea:8c3b:6d07 with SMTP id
- 98e67ed59e1d1-2eb0e860129mr1028193a91.28.1732240847916; 
- Thu, 21 Nov 2024 18:00:47 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGN7tL27RgzHcDL6+FhQygTEk63WPzkfZHNYUkbyr8N6hODBlJqTeM8sSQgWxmv4es9jK+cUids3/3lRko+O+k=
-X-Received: by 2002:a17:90b:388b:b0:2ea:8c3b:6d07 with SMTP id
- 98e67ed59e1d1-2eb0e860129mr1028163a91.28.1732240847468; Thu, 21 Nov 2024
- 18:00:47 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1tEJb4-0002nE-NS
+ for qemu-devel@nongnu.org; Thu, 21 Nov 2024 21:40:43 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1732243239; x=1763779239;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=aJHLSM9OD2qtKnNfR3xlGElizbHqIvSOjb3+ZTo++js=;
+ b=KhWdbbtKC7o1VuZk/41+G4fD9Na6T4MvRqSoS9z4MaxDXppZcK2Sbgk/
+ 9WFPPNUDgV3b2FirPQ4LpJdCQLXJVSH/wSIS4R2ls9Jpzj+8ChR2gfCqi
+ zW/sN5rdO0ZHu4QbyWOE7KcW8A1xuEeDMsm69gpn0ztEPEGLrbiQB1Moi
+ pMG/FSEnfrCarMHYyke2Rshvr6iBRReOAFSF7EOiysmAPbsdGYqRSqybU
+ bJIuvX1KyVBzlBu9stzXIyHRMAHiqX1SQXAd+z8jltiF+EmAdmejOphXA
+ TN0kDmpQ5sGDvePkKWE6WLRXBeWDBoQk+UlNL4SyxZOETi7lFupBIlBsp Q==;
+X-CSE-ConnectionGUID: pOQJedOBSOG7Pb7tVUAvzA==
+X-CSE-MsgGUID: 5uWGw+lcTratO8hxnEqLXw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11263"; a="43780562"
+X-IronPort-AV: E=Sophos;i="6.12,174,1728975600"; d="scan'208";a="43780562"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+ by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Nov 2024 18:40:34 -0800
+X-CSE-ConnectionGUID: WSQXXcSDSh+UjycY+ILa8Q==
+X-CSE-MsgGUID: EwGexZaDT7mMFai4j6D4NA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="95486860"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.247.1])
+ ([10.124.247.1])
+ by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Nov 2024 18:40:30 -0800
+Message-ID: <db7f2f59-6cfe-4e90-ae63-1faeb870726b@intel.com>
+Date: Fri, 22 Nov 2024 10:40:26 +0800
 MIME-Version: 1.0
-References: <20241111-queue-v2-0-2f7883a1004f@daynix.com>
- <56718639-49b4-4660-94f2-3bf6f66e293e@tls.msk.ru>
- <3525b64d-9262-4eb4-9891-d30ace0db69f@daynix.com>
-In-Reply-To: <3525b64d-9262-4eb4-9891-d30ace0db69f@daynix.com>
-From: Jason Wang <jasowang@redhat.com>
-Date: Fri, 22 Nov 2024 10:00:35 +0800
-Message-ID: <CACGkMEtCSKQ62jLfKKhc9Ejz8F2cMC-v-U7-8_QnZbZO-CsZiA@mail.gmail.com>
-Subject: Re: [PATCH v2 0/6] virtio-net fixes
-To: Akihiko Odaki <akihiko.odaki@daynix.com>
-Cc: Michael Tokarev <mjt@tls.msk.ru>, "Michael S. Tsirkin" <mst@redhat.com>,
- qemu-devel@nongnu.org, devel@daynix.com, qemu-stable@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=jasowang@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.14,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 0/4] Initialize nr_cores and nr_threads early and
+ related clearup
+To: Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand <david@redhat.com>
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ Michael Rolnik <mrolnik@gmail.com>, Brian Cain <bcain@quicinc.com>,
+ Song Gao <gaosong@loongson.cn>, Laurent Vivier <laurent@vivier.eu>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ Aurelien Jarno <aurelien@aurel32.net>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>, Bin Meng <bmeng.cn@gmail.com>,
+ Thomas Huth <thuth@redhat.com>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Artyom Tarasenko <atar4qemu@gmail.com>,
+ Bastian Koppelmann <kbastian@mail.uni-paderborn.de>,
+ Max Filippov <jcmvbkbc@gmail.com>, qemu-devel@nongnu.org
+References: <20241108070609.3653085-1-xiaoyao.li@intel.com>
+ <5f8db586-cdda-4d00-be02-f9880a20e1a3@redhat.com>
+ <1e210331-e458-4709-9506-b83abf89ebed@intel.com>
+ <af349a3a-8a15-4263-9a93-180320daaca7@redhat.com>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <af349a3a-8a15-4263-9a93-180320daaca7@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=192.198.163.10; envelope-from=xiaoyao.li@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -38
+X-Spam_score: -3.9
+X-Spam_bar: ---
+X-Spam_report: (-3.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.14,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
+ HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=0.669, RCVD_IN_DNSWL_MED=-2.3,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -103,50 +97,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Nov 21, 2024 at 6:09=E2=80=AFPM Akihiko Odaki <akihiko.odaki@daynix=
-.com> wrote:
->
-> On 2024/11/21 19:05, Michael Tokarev wrote:
-> > 11.11.2024 09:40, Akihiko Odaki wrote:
-> >> Most of this series are fixes for software RSS and hash reporting, whi=
-ch
-> >> should have no production user.
-> >>
-> >> However there is one exception; patch "virtio-net: Fix size check in
-> >> dhclient workaround" fixes an out-of-bound access that can be triggere=
-d
-> >> for anyone who don't use vhost. It has Cc: qemu-stable@nongnu.org and
-> >> can be applied independently.
-> >
-> > Hi!  Do you plan to submit this and "virtio-net: Add queues before
-> > loading them"
-> > for 9.2, which is at rc1 now already?
->
-> I want "[PATCH v2 2/6] virtio-net: Fix size check in dhclient
-> workaround" and "virtio-net: Add queues before loading them" for 9.2.
->
-> They have Cc: qemu-stable@nongnu.org and will need backporting if it
-> misses 9.2.0.
->
-> Regards,
-> Akihiko Odaki
->
+On 11/22/2024 2:52 AM, Paolo Bonzini wrote:
+> On 11/21/24 17:24, Xiaoyao Li wrote:
+>>> Could it go into cpu_common_initfn()?
+>>
+>> It can, I think.
+>>
+>> I'll move them into cpu_common_initfn() in v2 to avoid touching all 
+>> the ARCHes.
+> 
+> It does look better than the alternative of duplicating code.
+> 
+> On the other hand qemu_init_vcpu is already duplicated and I'm not sure 
+> I like relying on qdev_get_machine() inside the instance_init function...
 
-Want to apply this series but patch 4 doesn't applied cleanly, please
-rebase and send a new version:
+I had the same concern.
 
-Applying: net: checksum: Convert data to void *
-Applying: virtio-net: Fix size check in dhclient workaround
-Applying: virtio-net: Do not check for the queue before RSS
-Applying: virtio-net: Fix hash reporting when the queue changes
-error: patch failed: hw/net/virtio-net.c:2044
-error: hw/net/virtio-net.c: patch does not apply
-Patch failed at 0004 virtio-net: Fix hash reporting when the queue changes
-hint: Use 'git am --show-current-patch=3Ddiff' to see the failed patch
-When you have resolved this problem, run "git am --continue".
-If you prefer to skip this patch, run "git am --skip" instead.
-To restore the original branch and stop patching, run "git am --abort".
+But it seems all the ARCHes should create MACHINE before VCPUs. So it 
+seems OK to qdev_get_machine() inside the instance_init function. But 
+I'm not sure if there is any case to create VCPU standalone.
 
-Thanks
+I think we can check if qdev_get_machine() gets a valid result. If not, 
+fall back to assign nr_cores and nr_threads to 1.
+
+Anyway, please let me know your preference, this series or a v2 to 
+implement it inside cpu_common_initfn().
+
+> Paolo
+> 
 
 
