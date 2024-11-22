@@ -2,73 +2,163 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D6629D5DAB
-	for <lists+qemu-devel@lfdr.de>; Fri, 22 Nov 2024 12:02:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DD7FA9D5DBB
+	for <lists+qemu-devel@lfdr.de>; Fri, 22 Nov 2024 12:04:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tERP1-0007sV-Kb; Fri, 22 Nov 2024 06:00:43 -0500
+	id 1tERRs-0004Y4-E2; Fri, 22 Nov 2024 06:03:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1tEROb-0007HT-TS
- for qemu-devel@nongnu.org; Fri, 22 Nov 2024 06:00:19 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tERPB-0008Eg-GH
+ for qemu-devel@nongnu.org; Fri, 22 Nov 2024 06:00:53 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1tEROX-0007X9-Ks
- for qemu-devel@nongnu.org; Fri, 22 Nov 2024 06:00:17 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tERP9-0008Ax-Qw
+ for qemu-devel@nongnu.org; Fri, 22 Nov 2024 06:00:53 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1732273211;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=m7wBIAI/hfILSHfxjye/n9kcQ0KQk3PRuU0lVanfd0Y=;
- b=TlK4QVV7Cvsb35nUot1PFQkOO/3rncN195I+3ND7mfFpzZTqMUk/jQdHcrzva8VgqLr0/s
- u0Y+ZiVSG3z7QuzN73caKHvaypmr6/8Xfm10N+oRwdT3n6ts2SChMlzcN5xdjVI9b9RLCp
- FH9AKVsmG6TYzLa8VTgLbYn3PoBhAd8=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-321-lYzsNKWEM8WcpHbRudl4nQ-1; Fri,
- 22 Nov 2024 06:00:08 -0500
-X-MC-Unique: lYzsNKWEM8WcpHbRudl4nQ-1
-X-Mimecast-MFC-AGG-ID: lYzsNKWEM8WcpHbRudl4nQ
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id C11B71955F42; Fri, 22 Nov 2024 11:00:07 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.114])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id E26441955F40; Fri, 22 Nov 2024 11:00:03 +0000 (UTC)
-Date: Fri, 22 Nov 2024 11:00:00 +0000
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Kevin Wolf <kwolf@redhat.com>
-Cc: Peter Maydell <peter.maydell@linaro.org>, qemu-block@nongnu.org,
- qemu-devel@nongnu.org, armbru@redhat.com, stefanha@redhat.com,
- pkrempa@redhat.com
-Subject: Re: [PULL v3 0/8] Block layer patches
-Message-ID: <Z0BkMMOEDKBuFz-X@redhat.com>
-References: <20241120105106.50669-1-kwolf@redhat.com>
- <CAFEAcA9M_-4=UdOTwV251qOxuELAxXtJW8QaZWTs4bUq7dJwxw@mail.gmail.com>
- <Z0BaQ0ahUn4ORhPS@redhat.com>
+ s=mimecast20190719; t=1732273251;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=OMew4vPdK6sqjeDpUnlk4kde4xOGSQ7JsTumV/9mmUM=;
+ b=PU9pxZPAPHcti94rFlLpy9bfljXoELDz5ji4nZBjnuB9OmB4jGJoZYzCXXLPwWdShChphc
+ GITdMajyfSeTSDN0X4LpTPh3XGLkPveotvDUmUKkvLme6GXOgDpK49qzKnGJwLrD9Hbf+2
+ yc/q2boDiCrtM3M2BTO8EHuINM+0gpk=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-558-YG17xeqDMJeAL7D0vNmqcg-1; Fri, 22 Nov 2024 06:00:49 -0500
+X-MC-Unique: YG17xeqDMJeAL7D0vNmqcg-1
+X-Mimecast-MFC-AGG-ID: YG17xeqDMJeAL7D0vNmqcg
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-4314f1e0f2bso14901395e9.1
+ for <qemu-devel@nongnu.org>; Fri, 22 Nov 2024 03:00:49 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1732273248; x=1732878048;
+ h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+ :from:references:cc:to:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=OMew4vPdK6sqjeDpUnlk4kde4xOGSQ7JsTumV/9mmUM=;
+ b=ZXgZv0FBUIqNaIJ2euGFNbkoPCuWuO+l4RGBvAWgKm/y0rl/DmPA09+xCV/APvuO/7
+ WOyU2ViidyIdGrox07RHB1mpbPsrbympMezDlE/zIrsEA66OT5nDXnjda+teWju5vtlN
+ MjasDDTyk71Z9Q8eJRDWGmROOzR8QasFryzSD22ytydv+E+WrWJveb0QH1xOJBSloUMj
+ nLK5SGV15K8h48+4INIDP2IgQsWpHVNjYR9qCLyx/KO3QFbTivK9vtD/jKHva0D5lY+c
+ 0tqTwFLAUn/hi5zmeYRINRIPVhGaWgM/Arqk326u18bNqeKJYQToBaB+jtNzLnoWTzfc
+ 0uCg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCV22MJCHgOA7l+2vcKTRjPQNcy1XO2lO9jx1IMMFEA1yAtKwnmVPYGhrIZMQFNRcYmLMmCzIokfGma1@nongnu.org
+X-Gm-Message-State: AOJu0Yz0nQ78+0vmksV/ihTY0BxQ1848gjxUjmkz2W7gBYvhUiakEGKp
+ BcEFdz/cSWdoBR5l2QDQLc3Z3Rkq8f2yHmu/a6kVZAwoOQlPYxPd0XGjr6zy5LiUs5huJGfBSJH
+ mONUvj0W9xe7BlMXOUzfGMar3SQKIGRBq2yQv730jk39vLhiZh3xm
+X-Gm-Gg: ASbGncuV4epddbIzV9nvqc6b8QCH9lnYaVR+0OUR6zwQLwUo+XMLYOnZNa2Bd6k2xYq
+ gw8nusxQ/4m/wDJoHXSXLsJX6znb4cMAgq8iwLeE1fJlaHQpZCPxY9+/nWeLZ7vXsN7HuL0k/Yb
+ TdLl5Bj/MAuupjYs1BdiJwMzQj2Xp7Qd3e7mXqqYN7mSssptfF5rj6wTH1Ne9CNDK8d/gycRJyW
+ Nw64HvXJKyc1poolhR76+eJ2yow4fuczrrUTcFcs6XP04iPD7hKQtZK/tKytBaj09XAtWRzieI=
+X-Received: by 2002:a05:600c:314d:b0:42f:8fcd:486c with SMTP id
+ 5b1f17b1804b1-433ce4f2319mr16364315e9.33.1732273248662; 
+ Fri, 22 Nov 2024 03:00:48 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGxo3sv8oyW2z/DHONXuG1IvYDc2rudkekQrZliHHmtS4bDdnmfi0O2CSws9euJEFNyM8lRww==
+X-Received: by 2002:a05:600c:314d:b0:42f:8fcd:486c with SMTP id
+ 5b1f17b1804b1-433ce4f2319mr16363825e9.33.1732273248285; 
+ Fri, 22 Nov 2024 03:00:48 -0800 (PST)
+Received: from [10.33.192.206] (nat-pool-str-t.redhat.com. [149.14.88.106])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-433cde16c9fsm23618135e9.21.2024.11.22.03.00.46
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 22 Nov 2024 03:00:47 -0800 (PST)
+Message-ID: <e8f62175-1603-4b68-a532-103c91c35aad@redhat.com>
+Date: Fri, 22 Nov 2024 12:00:34 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <Z0BaQ0ahUn4ORhPS@redhat.com>
-User-Agent: Mutt/2.2.12 (2023-09-09)
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 32/39] tests/functional: update the s390x tuxrun tests
+To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>, Halil Pasic <pasic@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>, qemu-ppc@nongnu.org,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Alexandre Iooss <erdnaxe@crans.org>, qemu-riscv@nongnu.org,
+ Thomas Huth <huth@tuxfamily.org>, Bernhard Beschow <shentey@gmail.com>,
+ Eric Farman <farman@linux.ibm.com>, Bin Meng <bmeng.cn@gmail.com>,
+ qemu-s390x@nongnu.org, Niek Linnenbank <nieklinnenbank@gmail.com>,
+ qemu-arm@nongnu.org, John Snow <jsnow@redhat.com>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Cleber Rosa <crosa@redhat.com>, qemu-rust@nongnu.org,
+ Nicholas Piggin <npiggin@gmail.com>, =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?=
+ <berrange@redhat.com>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Markus Armbruster <armbru@redhat.com>, Weiwei Li <liwei1518@gmail.com>,
+ Mahmoud Mandour <ma.mandourr@gmail.com>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Aurelien Jarno <aurelien@aurel32.net>, Ani Sinha <anisinha@redhat.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Anders Roxell <anders.roxell@linaro.org>
+References: <20241121165806.476008-1-alex.bennee@linaro.org>
+ <20241121165806.476008-33-alex.bennee@linaro.org>
+From: Thomas Huth <thuth@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <20241121165806.476008-33-alex.bennee@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.14,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
@@ -83,190 +173,19 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Nov 22, 2024 at 11:17:39AM +0100, Kevin Wolf wrote:
-> Am 20.11.2024 um 14:19 hat Peter Maydell geschrieben:
-> > On Wed, 20 Nov 2024 at 10:52, Kevin Wolf <kwolf@redhat.com> wrote:
-> > >
-> > > The following changes since commit e6459afb1ff4d86b361b14f4a2fc43f0d2b4d679:
-> > >
-> > >   Merge tag 'pull-target-arm-20241119' of https://git.linaro.org/people/pmaydell/qemu-arm into staging (2024-11-19 14:23:34 +0000)
-> > >
-> > > are available in the Git repository at:
-> > >
-> > >   https://repo.or.cz/qemu/kevin.git tags/for-upstream
-> > >
-> > > for you to fetch changes up to 83987bf722b6b692bc745b47901be76a1c97140b:
-> > >
-> > >   vl: use qmp_device_add() in qemu_create_cli_devices() (2024-11-20 11:47:49 +0100)
-> > >
-> > > ----------------------------------------------------------------
-> > > Block layer patches
-> > >
-> > > - Fix qmp_device_add() to not throw non-scalar options away (fixes
-> > >   iothread-vq-mapping being silently ignored in device_add)
-> > > - Fix qdev property crash with integer PCI addresses and JSON -device
-> > > - iotests: Fix mypy failure
-> > > - parallels: Avoid potential integer overflow
-> > > - Fix crash in migration_is_running()
-> > 
-> > Hi; the hotplug_blk.py:HotPlug.test avocado seems to be failing:
-> > 
-> > https://gitlab.com/qemu-project/qemu/-/jobs/8423313170
-> > https://gitlab.com/qemu-project/qemu/-/jobs/8423313162
-> > 
-> > [stdlog] 2024-11-20 12:49:35,669 avocado.test test L0740 ERROR| FAIL
-> > 1-tests/avocado/hotplug_blk.py:HotPlug.test -> AssertionError: 1 != 0
-> > : Guest command failed: test -e /sys/block/vda
-> > 
-> > https://qemu-project.gitlab.io/-/qemu/-/jobs/8423313162/artifacts/build/tests/results/latest/test-results/09-tests_avocado_hotplug_blk.py_HotPlug.test/debug.log
-> > 
-> > Looks like the test called device_add, it succeeded, but
-> > it didn't see the /sys/block/vda node appear in the guest.
-> > 
-> > (The test logic of "try the command, if it fails sleep for 1
-> > second then try a second time and if that fails call it a
-> > test error" doesn't seem super robust in the face of slow
-> > CI runners, but OTOH it failed the same way on both jobs,
-> > so I don't think that is the culprit here.)
+On 21/11/2024 17.57, Alex Bennée wrote:
+> Now there are new upto date images available we should update to them.
 > 
-> This looks like a bug in the test case that was previously cancelled out
-> by a QEMU bug. :-/
-> 
-> {
->   "execute": "device_add",
->   "arguments": {
->     "driver": "virtio-blk-pci",
->     "drive": "disk",
->     "id": "virtio-disk0",
->     "bus": "pci.1",
->     "addr": 1
->   },
->   "id": "__qmp#00002"
-> }
-> 
-> What it actually meant is "addr": "1". It's an unfortunate interface,
-> but string "1" and integer 1 mean different things for PCI address
-> properties... Going through QemuOpts turned everything into strings, so
-> that masked the bug in the test case.
+> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+> Cc: Anders Roxell <anders.roxell@linaro.org>
+> ---
+>   tests/functional/test_s390x_tuxrun.py | 8 ++++----
+>   1 file changed, 4 insertions(+), 4 deletions(-)
 
-I never realized that "1" and "1" mean different things in PCI
-addresses !
-
-IIUC, "1" decodes as slot 1, function 0, while integer 1  decodes as
-slot 0, function 1 .  ie raw integer value is "slot << 3 | function"
-IIUC from the code ?
-
-This is both majorly surprising, and rather obscure - did we document
-the integer value encoding semantics anywhere ?
-
-AFAICT, they first arrived back in
-
-  commit 768a9ebe188bd0a6172a9a4e64777d21fff7f014
-  Author: Paolo Bonzini <pbonzini@redhat.com>
-  Date:   Thu Feb 9 09:53:32 2012 +0100
-
-    qdev: accept both strings and integers for PCI addresses
-    
-    Visitors allow a limited form of polymorphism.  Exploit it to support
-    setting the non-legacy PCI address property both as a DD.F string
-    and as an 8-bit integer.
-
-    The 8-bit integer form is just too clumsy, it is unlikely that we will
-    ever drop it.
-
-
-I'm guessing that last sentence is a mistake - refering to the new
-integer syntax as clumsy & unable to be dropped doesn't make sense.
-I assume it was referring to the historical string syntax as the
-clumsy part.
-
-
-> Should I just fix the test case and move on, or are we concerned about
-> other users having a similar bug and want to move the change to 10.0,
-> keeping device_add with iothread-vq-mapping broken in 9.2?
-
-I think neither syntax really makes sense from a pure QAPI design
-POV, as both are inventing a special way to encode 2 distinct
-fields within one field which is a QAPI anti-pattern. The "right"
-QAPI answer is to express them as 2 distinct fields at the QAPI
-level.
-
-Having two distinct ways to express the same concept is redundant.
-Perhaps passable if one syntax was actually following QAPI best
-practice, even better if one syntax were deprecated.
-
-
-Is it worth thinking about going through the tedium of deprecating
-both of them and replacing the syntax with a preferred QAPI design
-pattern ?
-
-If we don't want to replace the existing string format which is
-widely used, then is the integer format compelling enough to keep
-as an option, given it will easily surprise people who don't read
-the non-existant docs about it ? ie deprecate integer syntax and
-leave ony the string syntax ?
-
-FWIW, the options for a QAPI design following best practice
-design would be
-
-1. "slot" and "function" properties at top level
-
- {
-   "execute": "device_add",
-   "arguments": {
-     "driver": "virtio-blk-pci",
-     "drive": "disk",
-     "id": "virtio-disk0",
-     "bus": "pci.1",
-     "slot": 1,
-     "function": 0,
-   },
-   "id": "__qmp#00002"
- }
-
-
-2. two element array
-
- {
-   "execute": "device_add",
-   "arguments": {
-     "driver": "virtio-blk-pci",
-     "drive": "disk",
-     "id": "virtio-disk0",
-     "bus": "pci.1",
-     "addr": [1, 0]
-   },
-   "id": "__qmp#00002"
- }
-
-
-3. As 1 but with nested struct
-
- {
-   "execute": "device_add",
-   "arguments": {
-     "driver": "virtio-blk-pci",
-     "drive": "disk",
-     "id": "virtio-disk0",
-     "bus": "pci.1",
-     "addr": {
-       "slot": 1,
-       "function": 0
-     }
-   },
-   "id": "__qmp#00002"
- }
-
-
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Tested-by: Thomas Huth <thuth@redhat.com>
 
 
