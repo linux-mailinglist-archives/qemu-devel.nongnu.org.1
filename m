@@ -2,88 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10ADA9D6266
-	for <lists+qemu-devel@lfdr.de>; Fri, 22 Nov 2024 17:36:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 57D3B9D62CA
+	for <lists+qemu-devel@lfdr.de>; Fri, 22 Nov 2024 18:12:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tEWcw-0001Qr-0j; Fri, 22 Nov 2024 11:35:26 -0500
+	id 1tEXBu-0001bP-F7; Fri, 22 Nov 2024 12:11:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shorne@gmail.com>) id 1tEWcu-0001Qj-W5
- for qemu-devel@nongnu.org; Fri, 22 Nov 2024 11:35:25 -0500
-Received: from mail-wr1-x442.google.com ([2a00:1450:4864:20::442])
+ (Exim 4.90_1) (envelope-from <patrick.eads@gmail.com>)
+ id 1tEXBs-0001aW-0p; Fri, 22 Nov 2024 12:11:32 -0500
+Received: from mail-qt1-x82b.google.com ([2607:f8b0:4864:20::82b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shorne@gmail.com>) id 1tEWct-0005oI-4d
- for qemu-devel@nongnu.org; Fri, 22 Nov 2024 11:35:24 -0500
-Received: by mail-wr1-x442.google.com with SMTP id
- ffacd0b85a97d-3825a721ae5so1244182f8f.1
- for <qemu-devel@nongnu.org>; Fri, 22 Nov 2024 08:35:22 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <patrick.eads@gmail.com>)
+ id 1tEXBp-0005ge-Hq; Fri, 22 Nov 2024 12:11:31 -0500
+Received: by mail-qt1-x82b.google.com with SMTP id
+ d75a77b69052e-46096aadaf0so13775791cf.2; 
+ Fri, 22 Nov 2024 09:11:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1732293321; x=1732898121; darn=nongnu.org;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=dol8uvqp9j6AoZwv3OIjidk1Mz4UVwABRHAlp+oY/D0=;
- b=X66EfNxSd59P/6G0sqze7LX8BcoMcKpUy5i4MMmxQ1J0EJHrXCNYExRqfKN7N0qnhh
- 9aqriHTTu2kbgl5MskwCaN5m917A7A+XnpA4LOED/UwGhICdftNdzNOeavl/X7uMKl9X
- 7ZesZjKunRYpuqJ+zGcqPV+Bry+4aqTgU1/q6/ybMf3oT5IxenXtVKMBPl+Dro75C5mt
- 8HSzZxvsfPbUkv4UjMr5wbGjolv6grIkUNncYeSBZNwRNynR7CxKgHYuRCEUcDZRTzMH
- 2XtJZMRgFFXQFNEi+vUV7qMkPhiZ832eIVRbnyGKmJqGvV4inwATW3NFpoDIg/tYbQEV
- DLew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1732293321; x=1732898121;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ d=gmail.com; s=20230601; t=1732295486; x=1732900286; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=dol8uvqp9j6AoZwv3OIjidk1Mz4UVwABRHAlp+oY/D0=;
- b=RCwR3fvRM6lR+DuuWWgSgtUzR5EUJOfsrTyt7KPJBJ4PY0FjrUfzAV8JkyxhZ+H/He
- 3naKitE2kCFFL6N1jZF3737BV95XDDVwn/MN/D0BTfGhqEz4tX/mZkxAnPu86hiuJM59
- lFVBd01dPF4aFbu+boEqenJzRN/7dbDNGKERRreY1LptveR4MSf+x0nfxSIcG51GcjnZ
- U4hFnciYLJjVy+FhGXkGgeQhb1OsLPBEDdCmTShKEt6Yge2RO4nazLx3Ke/bFLKmFynd
- G6pwlMwb+QDBjUgIUBPizOF7bRWnvqUzNXCHAxgIVHEcbEVBIkz5TAEfX4CvpIGIWKbH
- yqEA==
+ bh=ClOm6z1mywJC9F9eSi7Piry3fhwxwfqw4breY7fRkWI=;
+ b=ONLHyn01xYIbzsKYLYDn3OFbIaVcy5bmSNw2m6mhGQytrSSmfM1T8TVrs7bvGtvQ3m
+ Yxl5XGfrgYLkNsXGhYr5xcoiUOWS9BPkeVtyMz9+SqNjLtkiNmZ0eKrm5rrpEMoxbMuJ
+ VjUUc8IOeJ17jh+yw/w7UBzWLS3X0NzwM0qnJ6MEMXczDEQW50rjIEVTyHCQuXighoDo
+ AIJjDHaGPknwuUgqwPT75YTy+D3uBDe2LRPrUtipPBPxF7TOmrJkG54FrqqKhZmUIoDp
+ bQVnu92WmeJ61qw9cx7L+YWaqPxW8LjQF4TCtihtzB0RZYruqn8xO+PkkTn4vmzKfaNV
+ s3xg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1732295486; x=1732900286;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=ClOm6z1mywJC9F9eSi7Piry3fhwxwfqw4breY7fRkWI=;
+ b=S8XrqncRuIHxe9y29m0t/woWaT5ml65ebgq+2yFf+ypfZr8jC8TpmH4kx/rkod7/AA
+ seGc08NKJoI6Cv4PQYU/fFTzvTJXdrdlnbdx7G47SJhqkhahxKkzYMLqDeGSAXALO9AK
+ yQ7P37db8vw2G9/m8zOMP0mDzkA9e2ZkRQY13G8EfotdZTTABz74VETOPj8KuRResnL7
+ 0if3SwwcyWWhOqpSv+7ysSGDzcVjTfAe0z701Dw0maTBIXi0NBtwVM2hQa0dmu4EJ4MV
+ DN11VmsabKsLKq+mxb11zYP7nrcrP0ZjNOFIf0FziOxbcNeWWjN10+Avw2BXQBpZ/AND
+ N0eQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXXpZO2KcHN668bu7YtrDsEech9u1ytO82tU9y3qaqHM5o27rRSmxkyn461ABaEdnofHfqYdNFqrtt6@nongnu.org
-X-Gm-Message-State: AOJu0Yz6jVa/6hw8y5DANQ6eeFzhVa2lN2bUSq7TLZe4RtiHetp2rsF5
- YNvTwc1Wo8LJq01sQW8r3y6AzCb6b5kGNCzODSxa5+FRIzXciO2TPYJ2MI+K
-X-Gm-Gg: ASbGncsaFrGX33kHsUdnWrbl+SlF3eeZfrH5qxIse62xrYyLh6TyrbtzoN7Bu0KmfGS
- hWbM/u0CTovW/33AYNFCUZI7ubEtCgQiLvwvw+cc4DSikpDqF/TboPR66VjnxXwBUJpxiE7MqTG
- 2G0OXecXZG+wGgb8hRmzS+Tr5CBWDgMmLDEYMmx6AfSQ7qT6DU6ci/iXDLvsLEPfuK+4Py0GNzk
- 0A0+MEFmgtsziwmx6sl6M9woLelrCatyYQ8P3u4Ji5qx/GwOkml0enO/apJT68IRg8NVW/JH6oC
- J4tdoDfyOROF1A==
-X-Google-Smtp-Source: AGHT+IG5FVroKsAHosJGeQL/hQVSeRsFz/bTucJL1fbBsdhUHIDeIwovhpyhi+j2HwS7wJpexFGY0Q==
-X-Received: by 2002:a5d:6d03:0:b0:382:22d6:988c with SMTP id
- ffacd0b85a97d-3826011336cmr3457579f8f.5.1732293320685; 
- Fri, 22 Nov 2024 08:35:20 -0800 (PST)
-Received: from localhost (cpc1-brnt4-2-0-cust862.4-2.cable.virginm.net.
- [86.9.131.95]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3825fb537d4sm2816189f8f.61.2024.11.22.08.35.19
+ AJvYcCX8TU2E6ZVXIE49MNsm5u5S0YvPJDVXUXJbrfe9sgzwWs31X+H8eTYUfLAXWdo5xVEgml3Y4fC0L+0=@nongnu.org,
+ AJvYcCXSFuKSxecLz17QtUXbGXqCCMEVQe4PEXdLS3iBYnzBmw80ha/7tcHbIdcgPhNSkAKlKq7PO7tbzfWW@nongnu.org
+X-Gm-Message-State: AOJu0YyAZNqgXwpai2aqO+mCRG5JAlr6DH9wr/jUDbIWIJgVfELYhNJU
+ I7acZ19r+IQADPKAsOD0BwhEhi2YLrKqcnf7ZIST3N0BR1fUEVhi
+X-Gm-Gg: ASbGnctOfbsse6LtjKulRMe19AGRl6h7TVyyCyzqddNs74OJGaVUQ/EO6BsVVH56suv
+ vJQukmKpQG8bm8p7hArqvmpDSKMzFEGE+CUjkjm9v8nE1iHQb9x/39bRSwm1gD9GtnNzUepUndU
+ +MV7YzBM0yl29mLRP9ONmKFUIdmcRhegOsnvf3yq+aV72fIOeAqd2Z8G9jZuJB9S2jqL0xsl1R3
+ i7yNVvp+19ckdP4UFpnMle/Mdlhsrp7lqBi/j6KgphEObrsDFLdYqzOOdud/OfPL+BER8CU1KGk
+ POjPu8Syn1OS1iX81m7AWqm8Wf/o1h61dc5FLMkN
+X-Google-Smtp-Source: AGHT+IFAFTzpCUU3/M1yQsX4+Cs2D9UneKzDqt1LCvbNq++2FqYdoxjOMHUbqwuJpK3iNX9IB761dA==
+X-Received: by 2002:ac8:7dc8:0:b0:460:a795:fccf with SMTP id
+ d75a77b69052e-4653d580bb7mr50348691cf.19.1732295485256; 
+ Fri, 22 Nov 2024 09:11:25 -0800 (PST)
+Received: from tungsten-chungus.. (c-174-169-154-147.hsd1.nh.comcast.net.
+ [174.169.154.147]) by smtp.gmail.com with ESMTPSA id
+ d75a77b69052e-4653c3d7189sm13730381cf.14.2024.11.22.09.11.24
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 22 Nov 2024 08:35:19 -0800 (PST)
-Date: Fri, 22 Nov 2024 16:35:19 +0000
-From: Stafford Horne <shorne@gmail.com>
-To: Rob Landley <rob@landley.net>
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- "Jason A. Donenfeld" <Jason@zx2c4.com>,
- QEMU Developers <qemu-devel@nongnu.org>
-Subject: Re: QEMU commit 0a923be2f642 broke my or1k image.
-Message-ID: <Z0Cyx3i3z7Zl7XPm@antec>
-References: <afac091f-08cb-0f6d-4c01-bfa4421e7a47@landley.net>
- <Zufcf4iAqosZ7VBf@antec>
- <9b2761aa-8ee0-4399-b237-31e70e3ed165@landley.net>
+ Fri, 22 Nov 2024 09:11:25 -0800 (PST)
+From: Patrick Eads <patrick.eads@gmail.com>
+X-Google-Original-From: Patrick Eads <peads@users.noreply.github.com>
+To: 
+Cc: Patrick Eads <patrick.eads@gmail.com>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ qemu-ppc@nongnu.org (open list:Old World (g3beige)),
+ qemu-devel@nongnu.org (open list:All patches CC here)
+Subject: [PATCH v2 1/2] Added support for WACOM 2.x/ArtZ/Digitizer II
+ compatibility. It does require the driver (easily available via many of the
+ classic macos archives),
+ but it allows a simple way to have an absolute pointing device on
+ ADB-compatible VMs.
+Date: Fri, 22 Nov 2024 17:10:51 +0000
+Message-ID: <20241122171101.2370389-2-peads@users.noreply.github.com>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20241122171101.2370389-1-peads@users.noreply.github.com>
+References: <20241122171101.2370389-1-peads@users.noreply.github.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <9b2761aa-8ee0-4399-b237-31e70e3ed165@landley.net>
-Received-SPF: pass client-ip=2a00:1450:4864:20::442;
- envelope-from=shorne@gmail.com; helo=mail-wr1-x442.google.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::82b;
+ envelope-from=patrick.eads@gmail.com; helo=mail-qt1-x82b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- URIBL_SBL_A=0.1 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,71 +105,415 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Nov 21, 2024 at 04:32:25PM -0600, Rob Landley wrote:
-> On 9/16/24 02:21, Stafford Horne wrote:
-> > On Wed, Sep 11, 2024 at 12:42:58AM -0500, Rob Landley wrote:
-> > > Grab this tarball, extract it, and ./run-qemu.sh. It's a simple
-> > > linux+initramfs image that boots to a shell prompt.
-> > > 
-> > >    https://landley.net/bin/mkroot/latest/or1k.tgz
-> > > 
-> > > QEMU 7.0.0 ran that linux-or1k image, but newer qemu does not. I besected the
-> > > issue to qemu commit 0a923be2f642, and it's still broken in current tip of tree.
-> > 
-> > Patch is:
-> > 
-> >   0a923be2f6 ("hw/openrisc: page-align FDT address")
-> > 
-> > > Rebuilding the image with current linux-git doesn't seem to make a difference?
-> > > Either way I get serial output with old qemu and don't with current qemu.
-> > 
-> > The bisect looks strange as it's only moving a page boundary, it could be
-> > correct but it seems harmeless.  There is another commit close by that was
-> > causing issues with serial output for the barebox guys and this is a patch I am
-> > working on to fix it.
-> > 
-> > https://lore.kernel.org/qemu-devel/20240908062756.70514-1-shorne@gmail.com/
-> > 
-> > I will try to get time today to look at your tarball and run it, but if not have
-> > a look at this patch.
-> 
-> I just regression tested linux-6.12 against qemu-9.2.0-rc1 and I'm still
-> getting no output from or1k, with the current image or the old or1k release
-> image that worked under old qemu versions.
-> 
-> I tried applying your serial patch to current qemu, and it made no
-> difference: still no output booting the image.
+From: Patrick Eads <patrick.eads@gmail.com>
 
-OK, I am trying to get that patch pushed upstream.  I will be sure we fix your
-issues before we do that.
+init
 
-> Alas I can no longer test that reverting the commit I identified (git show
-> $HASH | patch -p1 -r) makes it work again in current qemu (although it did
-> at one point, that's a standard sanity check at the end of bisect for me),
-> and I can't fix it up by hand either because hw/openrisc/openrisc_sim.c no
-> longer contains the string "load_sim", looks like it got collated with
-> common code for other architectures.
-> 
-> I'm happy to tweak the kernel config if qemu changed in a way that broke
-> compatibility with old images (I assume _you_ have a kernel that boots), but
-> I was hoping "this week's kernel release" would have any necessary patches
-> to work with QEMU's changed ABI.
+Promising polling initiated and data moving cursor now
 
-The patch I have put in 6.12 only helps with earlycon.  Regular output has
-always been working for me.  I will work on testing your image again to see what
-is special about it.
+Reverted delete of dev handler for wacom tablet
 
-Note, I did find some issues with the kernel nor properly handling stdout-path.
-It seems that if there are multiple uarts the first one will always be used as
-the default uart.  Only the console= command line argument can be used to
-override that.
+got the y-axis!
 
-So as long as the kernel selects the first uart as the stdout path (it should
-have always been the case)  AND qemu picks the first uart as the uart connected
-to the console (it should be with my latest patch) we should get serial output.
+getting closer
 
-Another thing that may get me delayed is that I need to rebuild my or1k-elf-gdb
-as it's python version is no longer compatible with the kernel's python.
+more progress. it appears to not quite be WACOM II/IV, but x-axis is controlled by the first 2-3 bytes
 
--Stafford
+really? 12-bits is the key? oh well, x-axis get
+
+it's like a weird mesh of adb extended and wacom's protocols. fine, y-axis get
+
+x AND y
+
+twiddling with the settings in the driver control panel works wonders!
+
+zeroing in on the resolution / dpi scale calculation
+
+addded commentary to describe source material and reverse engineering decisions
+
+commentary editing
+
+renamed to adb-wacom, s.t. that it is clear it requires the wacom driver
+
+Signed-off-by: Patrick Eads <patrick.eads@gmail.com>
+---
+ hw/input/adb-mouse.c   |   1 +
+ hw/input/adb-wacom.c   | 311 +++++++++++++++++++++++++++++++++++++++++
+ hw/input/meson.build   |   2 +-
+ hw/input/trace-events  |   6 +
+ include/hw/input/adb.h |   1 +
+ 5 files changed, 320 insertions(+), 1 deletion(-)
+ create mode 100644 hw/input/adb-wacom.c
+
+diff --git a/hw/input/adb-mouse.c b/hw/input/adb-mouse.c
+index 77b280d242..3404b83b84 100644
+--- a/hw/input/adb-mouse.c
++++ b/hw/input/adb-mouse.c
+@@ -202,6 +202,7 @@ static int adb_mouse_request(ADBDevice *d, uint8_t *obuf,
+                  * 0x03: Mouse systems A3 trackball
+                  * 0x04: Extended Apple Mouse Protocol
+                  * 0x2f: Microspeed mouse
++                 * 0x3A: Wacom tablet
+                  * 0x42: Macally
+                  * 0x5f: Microspeed mouse
+                  * 0x66: Microspeed mouse
+diff --git a/hw/input/adb-wacom.c b/hw/input/adb-wacom.c
+new file mode 100644
+index 0000000000..1e8fb83cf4
+--- /dev/null
++++ b/hw/input/adb-wacom.c
+@@ -0,0 +1,311 @@
++/*
++ * QEMU ADB wacom support
++ *
++ * This file is part of the QEMU distribution
++ * (https://gitlab.com/qemu-project/qemu).
++ * Copyright (c) 2024 Patrick Eads.
++ *
++ * This program is free software: you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation, version 3.
++ *
++ * This program is distributed in the hope that it will be useful, but
++ * WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
++ * General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program. If not, see <http://www.gnu.org/licenses/>.
++ */
++
++#include "qemu/osdep.h"
++#include "ui/console.h"
++#include "hw/input/adb.h"
++#include "migration/vmstate.h"
++#include "qemu/module.h"
++#include "adb-internal.h"
++#include "trace.h"
++#include "qom/object.h"
++
++OBJECT_DECLARE_TYPE(WacomState, ADBWacomClass, ADB_WACOM)
++
++struct WacomState {
++    /*< public >*/
++    ADBDevice parent_obj;
++    /*< private >*/
++
++    QemuInputHandlerState *hs;
++    int buttons_state, last_buttons_state;
++    uint16_t dx, dy, dz;
++};
++
++struct ADBWacomClass {
++    /*< public >*/
++    ADBDeviceClass parent_class;
++    /*< private >*/
++
++    DeviceRealize parent_realize;
++};
++
++#define ADB_WACOM_BUTTON_LEFT   0x01
++#define ADB_WACOM_BUTTON_RIGHT  0x02
++
++static void adb_wacom_handle_event(DeviceState *dev, QemuConsole *src,
++                                    InputEvent *evt) {
++    WacomState *s = (WacomState *) dev;
++    InputMoveEvent *move;
++    InputBtnEvent *btn;
++    static const int bmap[INPUT_BUTTON__MAX] = {
++            [INPUT_BUTTON_LEFT]   = ADB_WACOM_BUTTON_LEFT,
++            [INPUT_BUTTON_RIGHT]  = ADB_WACOM_BUTTON_RIGHT,
++    };
++
++    switch (evt->type) {
++        case INPUT_EVENT_KIND_ABS:
++
++            move = evt->u.abs.data;
++            switch (move->axis) {
++                case INPUT_AXIS_X:
++                    // Digitizer II / Artz lpi 2540 => dpi 5080
++                    s->dx = (uint16_t) (move->value * qemu_console_get_width(src, 640) / 2450);
++//                    s->dx = (uint16_t) (move->value * qemu_console_get_width(src, 640) / 5080);
++                    break;
++                case INPUT_AXIS_Y:
++                    // 6x8 inch interactive surface => 4:3 aspect ratio
++                    s->dy = (uint16_t) (move->value * qemu_console_get_height(src, 480) / 1905);
++//                    s->dy = (uint16_t) (move->value * qemu_console_get_height(src, 480) / 3810);
++                    break;
++                default:
++                    break;
++            }
++            break;
++
++        case INPUT_EVENT_KIND_BTN:
++            btn = evt->u.btn.data;
++            if (bmap[btn->button]) {
++                if (btn->down) {
++                    s->buttons_state |= bmap[btn->button];
++                } else {
++                    s->buttons_state &= ~bmap[btn->button];
++                }
++            }
++            break;
++
++        default:
++            /* keep gcc happy */
++            break;
++    }
++}
++
++static const QemuInputHandler adb_wacom_handler = {
++        .name  = "QEMU ADB Wacom",
++        .mask  = INPUT_EVENT_MASK_BTN | INPUT_EVENT_MASK_ABS,
++        .event = adb_wacom_handle_event,
++        /*
++         * We do not need the .sync handler because unlike e.g. PS/2 where async
++         * wacom events are sent over the serial port, an ADB wacom is constantly
++         * polled by the host via the adb_wacom_poll() callback.
++         */
++};
++
++static int adb_wacom_poll(ADBDevice *d, uint8_t *obuf) {
++    WacomState *s = ADB_WACOM(d);
++
++    if (s->last_buttons_state == s->buttons_state && !(s->dx || s->dy)) {
++        return 0;
++    }
++    // Not quite any of the WACOM II-S/IV/IVe, BitPad One/Two, or MM 1201/961
++    // protocols described in "WACOM Software Interface Reference Manual UD- KT-
++    // SD-Series Graphics Wacoms" (herein: "the manual", Ch. 4).
++    // It's closest to WACOM II, but possibly because the sync bit is unnecessary
++    // with ADB unlike with a standard serial bus, the packet can be condensed
++    // into five bytes instead of requiring seven.
++    s->last_buttons_state = s->buttons_state;
++    obuf[0] = 0xC0 | ((s->dx >> 8) & 0x3F);
++    obuf[1] = s->dx & 0xFF;
++    obuf[2] = ((s->dy >> 8) & 0xFF);
++    obuf[3] = s->dy & 0xFF;
++    obuf[4] = s->buttons_state;
++    s->dx = s->dy = 0;
++    return 5;
++}
++
++static int adb_wacom_request(ADBDevice *d, uint8_t *obuf, const uint8_t *buf,
++                              int len) {
++
++    WacomState *s = ADB_WACOM(d);
++    int cmd, reg, olen;
++
++    if ((buf[0] & 0x0f) == ADB_FLUSH) {
++        /* flush wacom fifo */
++        s->buttons_state = s->last_buttons_state;
++        s->dx = 0;
++        s->dy = 0;
++        s->dz = 0;
++        trace_adb_device_wacom_flush();
++        return 0;
++    }
++
++    cmd = buf[0] & 0xc;
++    reg = buf[0] & 0x3;
++    olen = 0;
++    switch (cmd) {
++        case ADB_WRITEREG:
++            switch (reg) {
++                default:
++//                case 1: // receives 0xFE0449 on initialization. seems to be settings packet
++                        // described (the manual, p. 47)?
++//                case 2: // receives 0x204A when modifying certain settings in control panel
++                        // doesn't seem to vary based on settings values chosen.
++                    break;
++                case 3:
++                    /*
++                     * MacOS 9 has a bug in its ADB driver whereby after configuring
++                     * the ADB bus devices it sends another write of invalid length
++                     * to reg 3. Make sure we ignore it to prevent an address clash
++                     * with the previous device.
++                     */
++                    if (len != 3) {
++                        return 0;
++                    }
++
++                    switch (buf[2]) {
++                        case ADB_CMD_SELF_TEST:
++                            break;
++                        case ADB_CMD_CHANGE_ID:
++                        case ADB_CMD_CHANGE_ID_AND_ACT:
++                        case ADB_CMD_CHANGE_ID_AND_ENABLE:
++                            d->devaddr = buf[1] & 0xf;
++                            break;
++                        default:
++                            d->devaddr = buf[1] & 0xf;
++                            /*
++                             * 0x3A: Wacom tablet
++                             */
++                            if (0x3A == buf[2]) {
++                                d->handler = buf[2];
++                            }
++
++                            trace_adb_device_wacom_request_change_addr_and_handler(
++                                    d->devaddr, d->handler);
++                            break;
++                    }
++            }
++            if (reg != 3) trace_adb_device_wacom_writereg(reg, *(uint64_t *) buf);
++            break;
++        case ADB_READREG:
++            switch (reg) {
++                case 0:
++                    olen = adb_wacom_poll(d, obuf);
++                    break;
++                case 1:
++                    // "WAC 0608 4" -- EISA ID, product ID, buttons - ASCII
++                    // it doesn't like the first three being anything else;
++                    // the next four don't seem to affect operation
++                    // nor does the last (the manual, p. 40).
++                    obuf[0] = 0x57;
++                    obuf[1] = 0x41;
++                    obuf[2] = 0x43;
++                    obuf[3] = 0x30;
++                    obuf[4] = 0x36;
++                    obuf[5] = 0x30;
++                    obuf[6] = 0x38;
++                    obuf[7] = 4;
++                    olen = 8;
++                    break;
++                case 3:
++                    obuf[0] = d->devaddr;
++                    obuf[1] = d->handler;
++                    olen = 2;
++                    break;
++                default:
++                    break;
++            }
++            if (reg) {
++                trace_adb_device_wacom_readreg(reg, *(uint64_t *) obuf);
++            }
++            break;
++        default:
++            break;
++    }
++    return olen;
++}
++
++static bool adb_wacom_has_data(ADBDevice *d) {
++    WacomState *s = ADB_WACOM(d);
++
++    return !(s->last_buttons_state == s->buttons_state &&
++             s->dx == 0 && s->dy == 0);
++}
++
++static void adb_wacom_reset(DeviceState *dev) {
++    ADBDevice *d = ADB_DEVICE(dev);
++    WacomState *s = ADB_WACOM(dev);
++
++    d->handler = 0x3A;
++    d->devaddr = ADB_DEVID_TABLET;
++    s->last_buttons_state = s->buttons_state = 0;
++    s->dx = s->dy = s->dz = 0;
++}
++
++static const VMStateDescription vmstate_adb_wacom = {
++        .name = "adb_wacom",
++        .version_id = 2,
++        .minimum_version_id = 2,
++        .fields = (const VMStateField[]) {
++                VMSTATE_STRUCT(parent_obj, WacomState, 0, vmstate_adb_device,
++                               ADBDevice),
++                VMSTATE_INT32(buttons_state, WacomState),
++                VMSTATE_INT32(last_buttons_state, WacomState),
++                VMSTATE_UINT16(dx, WacomState),
++                VMSTATE_UINT16(dy, WacomState),
++                VMSTATE_UINT16(dz, WacomState),
++                VMSTATE_END_OF_LIST()
++        }
++};
++
++static void adb_wacom_realizefn(DeviceState *dev, Error **errp) {
++    WacomState *s = ADB_WACOM(dev);
++    ADBWacomClass *amc = ADB_WACOM_GET_CLASS(dev);
++
++    amc->parent_realize(dev, errp);
++
++    s->hs = qemu_input_handler_register(dev, &adb_wacom_handler);
++}
++
++static void adb_wacom_initfn(Object *obj) {
++    ADBDevice *d = ADB_DEVICE(obj);
++
++    d->devaddr = ADB_DEVID_TABLET;
++}
++
++static void adb_wacom_class_init(ObjectClass *oc, void *data) {
++    DeviceClass *dc = DEVICE_CLASS(oc);
++    ADBDeviceClass *adc = ADB_DEVICE_CLASS(oc);
++    ADBWacomClass *amc = ADB_WACOM_CLASS(oc);
++
++    device_class_set_parent_realize(
++            dc, adb_wacom_realizefn,
++            &amc->parent_realize);
++    set_bit(DEVICE_CATEGORY_INPUT, dc->categories);
++
++    adc->devreq = adb_wacom_request;
++    adc->devhasdata = adb_wacom_has_data;
++    device_class_set_legacy_reset(dc, adb_wacom_reset);
++    dc->vmsd = &vmstate_adb_wacom;
++}
++
++static const TypeInfo adb_wacom_type_info = {
++        .name = TYPE_ADB_WACOM,
++        .parent = TYPE_ADB_DEVICE,
++        .instance_size = sizeof(WacomState),
++        .instance_init = adb_wacom_initfn,
++        .class_init = adb_wacom_class_init,
++        .class_size = sizeof(ADBWacomClass),
++};
++
++static void adb_wacom_register_types(void) {
++    type_register_static(&adb_wacom_type_info);
++}
++
++type_init(adb_wacom_register_types)
+diff --git a/hw/input/meson.build b/hw/input/meson.build
+index 90a214962c..65800cdfc1 100644
+--- a/hw/input/meson.build
++++ b/hw/input/meson.build
+@@ -1,5 +1,5 @@
+ system_ss.add(files('hid.c'))
+-system_ss.add(when: 'CONFIG_ADB', if_true: files('adb.c', 'adb-mouse.c', 'adb-kbd.c'))
++system_ss.add(when: 'CONFIG_ADB', if_true: files('adb.c', 'adb-mouse.c', 'adb-kbd.c', 'adb-wacom.c',))
+ system_ss.add(when: 'CONFIG_PCKBD', if_true: files('pckbd.c'))
+ system_ss.add(when: 'CONFIG_PL050', if_true: files('pl050.c'))
+ system_ss.add(when: 'CONFIG_PS2', if_true: files('ps2.c'))
+diff --git a/hw/input/trace-events b/hw/input/trace-events
+index 1484625565..90e9f61dc2 100644
+--- a/hw/input/trace-events
++++ b/hw/input/trace-events
+@@ -14,6 +14,12 @@ adb_device_mouse_readreg(int reg, uint8_t val0, uint8_t val1) "reg %d obuf[0] 0x
+ adb_device_mouse_request_change_addr(int devaddr) "change addr to 0x%x"
+ adb_device_mouse_request_change_addr_and_handler(int devaddr, int handler) "change addr and handler to 0x%x, 0x%x"
+ 
++# adb-wacom.c
++adb_device_wacom_flush(void) "flush"
++adb_device_wacom_writereg(int reg, uint64_t buf) "\t<- reg %d buf 0x%04lX"
++adb_device_wacom_readreg(int reg, uint64_t obut) "\t-> reg %d obuf 0x%04lX"
++adb_device_wacom_request_change_addr_and_handler(int devaddr, int handler) "change addr and handler to 0x%x, 0x%x"
++
+ # adb.c
+ adb_bus_request(uint8_t addr, const char *cmd, int size) "device 0x%x %s cmdsize=%d"
+ adb_bus_request_done(uint8_t addr, const char *cmd, int size) "device 0x%x %s replysize=%d"
+diff --git a/include/hw/input/adb.h b/include/hw/input/adb.h
+index 20fced15f7..aa4c3e4e99 100644
+--- a/include/hw/input/adb.h
++++ b/include/hw/input/adb.h
+@@ -104,5 +104,6 @@ void adb_register_autopoll_callback(ADBBusState *s, void (*cb)(void *opaque),
+ 
+ #define TYPE_ADB_KEYBOARD "adb-keyboard"
+ #define TYPE_ADB_MOUSE "adb-mouse"
++#define TYPE_ADB_WACOM "adb-wacom"
+ 
+ #endif /* ADB_H */
+-- 
+2.45.2
+
 
