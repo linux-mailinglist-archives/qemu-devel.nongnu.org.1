@@ -2,63 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 044879D5DF2
-	for <lists+qemu-devel@lfdr.de>; Fri, 22 Nov 2024 12:21:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 65AF29D5DEF
+	for <lists+qemu-devel@lfdr.de>; Fri, 22 Nov 2024 12:20:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tERhm-0007hN-BI; Fri, 22 Nov 2024 06:20:06 -0500
+	id 1tERhq-0007hi-Mj; Fri, 22 Nov 2024 06:20:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tERhg-0007eJ-Vm
- for qemu-devel@nongnu.org; Fri, 22 Nov 2024 06:20:02 -0500
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tERhk-0007gu-Vz
+ for qemu-devel@nongnu.org; Fri, 22 Nov 2024 06:20:05 -0500
+Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tERhZ-00069p-DF
- for qemu-devel@nongnu.org; Fri, 22 Nov 2024 06:20:00 -0500
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-431ac30d379so17756965e9.1
- for <qemu-devel@nongnu.org>; Fri, 22 Nov 2024 03:19:51 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tERhf-0006AO-3X
+ for qemu-devel@nongnu.org; Fri, 22 Nov 2024 06:20:04 -0500
+Received: by mail-wr1-x436.google.com with SMTP id
+ ffacd0b85a97d-382296631f1so1417537f8f.3
+ for <qemu-devel@nongnu.org>; Fri, 22 Nov 2024 03:19:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1732274390; x=1732879190; darn=nongnu.org;
+ d=linaro.org; s=google; t=1732274396; x=1732879196; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=2hRSTyr9LseUA345HjOb58N9q4glOwPpxbZ3ixu2HJM=;
- b=oikOljE90Xisob9a6/Lh3s85Tkc1LtG+zrjU5dpp1zy0iBxvUvE5X2U3MYRmFoH21A
- aetkbbCssPXAXvcLuStR+LkC9SPS4bsQ31/1AMcZ6bEeSOTevI+AEdNjMhOUMgEUQlXu
- Y39rMy78xAYo7Mah4Xph8fgEylyWMTXlN/GelNJqBYaHk6YK4A+ySk12fSI4hqoAkwK5
- WgEI7XBH3xZAlMGwOWuBKe6L+ioy2wUMnOHeWW3+BsMNI95twX57zN09LfcZXVMjddfB
- PUhzu0LDQUX/gw3p8vu9SWuL5Cfrc6/IsddAHZsCnlGB9W3gPMsruJgP/Ks2HeyTsQ6V
- 4F9w==
+ bh=uPCQyQvoAOEbN8ixHzSuXBuJXKTD3sl0YDtIawxMPFk=;
+ b=hBU+z1wUybSy+lxkI6xKrP23Kp4DM4IWbnRF+heJuUXkHdwqV4nsoeuZKI2bMQ/oFp
+ J8DM2nSTyzQZjo6SuFrtM2RCVdeHwRHEwAzlB7KUirRmy/+g6ZTxXo0yXr9+X639EuXN
+ Ry0vbTDxYXIcAnMPbPvfoZfgcvmAyCBS4mc4MgMrpm6TkWt7/ZfuZZ2ZEqugMx+VZtdq
+ Fvn41TjGMAnt1REUctKgz/QpGw6KQAJ2tjaO23yVVfte30XvqwDSNB46eAReIWQsaFkF
+ RKQZcX6gc5+fIlKAZxS29Cxmke2Rcn44jm9cK71cc/avnJ56I17WA0gitnI5XcDP/b5X
+ oeew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1732274390; x=1732879190;
+ d=1e100.net; s=20230601; t=1732274396; x=1732879196;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=2hRSTyr9LseUA345HjOb58N9q4glOwPpxbZ3ixu2HJM=;
- b=TXP8EtLcgLC844F8GVnVGW65Tas33juOd6BIXDpDP0CFQ80x53jwexWiHcx0fRUWLd
- KLYCATe+AZwlDen0dnxvq3o2kjCKeMbdWCJ2vwcHN/ViOemHtAszhe2wS5Sny1DDuaPu
- caOxxxOZian3KdOEbDzY+PINyEe4/wXR1tESc3/k/pc6a1ejCg2hjt3VAYzC0Wdf6bdA
- jEgbrRx31ssQeE0VmbwhaiQefhFrvc48A6uQ0lXcP99RtPqeVGPuu5hcB6FaKH5So0Qm
- Gi0BRr5w9hCI9cUuOs/FHYDpa1OzY5fe2GA5n+K/Owu52kgKDi735z/q4rvvULotFG6d
- kV+w==
-X-Gm-Message-State: AOJu0YyCh35kDRKQ/w8wXYZwqTwYUrbzhwRec2bavzguyurZ2xuHo07b
- tV7BxoMOPJAJWSvK1yh2cGB0iRpzkiMe7liDJhtb2FmdZN2VgVKyFZkXWAeui/YRlp0550FJOum
- f
-X-Gm-Gg: ASbGncv2tA8A9CdZnk06d+AHgBkcuVN+n2KzzKhZcfR7hQSx4zWYIa+3+r6QHq09PNp
- MD2787NRSOC+t08mbhTSkOrDlQTIuffkwq2pmnoSpWegKiM0afE1MKlM5izw2yeZnBYdQf3JoND
- iXDNU/79tZQJSGjI9ZjSzkxGG4i+SD1ak9uiFibJvre/MbmwaipYuC+V0qmWSb6wdW6r7MRzqyF
- ye9s3Qqe2jzqNrfddoaqFaHx19NhvxKJ4DjRBgBif15h0NLYrWkyHa0wWW8T0NSNWC9R1IjUpOp
-X-Google-Smtp-Source: AGHT+IGlE04LYbgRfQK9sKvaRbhv+saNgdI9rlh2DZYBJXOWfjTBw3UWvTHYcARESYcaWuRcKIAPxQ==
-X-Received: by 2002:a05:600c:4f90:b0:431:4fa0:2e0b with SMTP id
- 5b1f17b1804b1-433ce4af2eemr16585165e9.28.1732274389724; 
- Fri, 22 Nov 2024 03:19:49 -0800 (PST)
+ bh=uPCQyQvoAOEbN8ixHzSuXBuJXKTD3sl0YDtIawxMPFk=;
+ b=suITvjNvg6meLZ6gUYBJCYPVCsSumApYK7mInAQbPn6mevtmv8Nl6BuI4R9KanG1KZ
+ yNoMYqBbwDEeNf+oDwT4spkhkMxY0bX0kEVFOZM9clAhsbQW5NHaMyjuo+b6zPIIrdh8
+ HHTYGV4AtA2mka1RbTJ1BnpMYYmPUDJon87cqfc66pMwy0aNZ+U+GX6e6aTdiyL+/7Z8
+ yTXvHmsW4EVANWl8W0xEdCzUBpPzJg2S50h94GUSr2BHTHlRNEaq/463tBfW5f7AVXZ6
+ h1GJ0EyXWJRvCZ64QXuFt1z6F0tQeyrolA1pQ4aWS+mqtdDmbQfSoJRKmRdEGYbd+ZDb
+ IdWg==
+X-Gm-Message-State: AOJu0YxmHbelgy15EPsso7UMQy9GwUOUqr875SbFSgQkQln2C4OzbYWH
+ /lPNOfKL+L7pjOYxxX6K7vqG6P+tRI8PVsFi2MgrO0sFkH2amn0RGO9dXWOXYTP6Q55QuWagtxR
+ F
+X-Gm-Gg: ASbGncvOo9nukafS5JfH6Q2xGBU4ln47oQJpDsUnEV89uRwRmg50v0YdBrFEuORdDnF
+ iQIz4TDMx3xz+NxB/yOdmrWutK2lDguAB1ybbjxnJXRerSCbkqzhSToSKlKWLuXKFj7ZzocvDMf
+ H/MKdaRwOCsFaey5D+wFuHgHLgNQZJGQDVuQ9jZwFBEifL0EAqSEZqgVbvlzitXy0y9CzJWspBA
+ SCXBGvsuye1wy/ty2yLC2LrkLsLUx0H7RVE4hpsAq1NfRXwjJhGOzE7iiXbEtx+BR8t09ZqGHg+
+X-Google-Smtp-Source: AGHT+IHbPGyismBbvz7VODNzBBvwkWmUJxaspOVpUAKEFBhmQ3qjFrzumVjV8xn78o704Jf1qEEYjw==
+X-Received: by 2002:a5d:5987:0:b0:382:4d54:2cd9 with SMTP id
+ ffacd0b85a97d-38260b5a0bdmr1957022f8f.20.1732274395769; 
+ Fri, 22 Nov 2024 03:19:55 -0800 (PST)
 Received: from localhost.localdomain ([176.187.211.33])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43366cbcd17sm65040505e9.1.2024.11.22.03.19.47
+ ffacd0b85a97d-3825faf9e87sm2108376f8f.29.2024.11.22.03.19.53
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 22 Nov 2024 03:19:49 -0800 (PST)
+ Fri, 22 Nov 2024 03:19:55 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
@@ -76,25 +76,25 @@ Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Daniel Henrique Barboza <danielhb413@gmail.com>,
  Nicholas Piggin <npiggin@gmail.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: [PATCH 1/3] hw/scsi/spapr_vscsi: Call
- scsi_bus_legacy_handle_cmdline() in REALIZE
-Date: Fri, 22 Nov 2024 12:19:37 +0100
-Message-ID: <20241122111939.11936-2-philmd@linaro.org>
+Subject: [PATCH 2/3] hw/scsi/lsi53c895a: Call scsi_bus_legacy_handle_cmdline()
+ once
+Date: Fri, 22 Nov 2024 12:19:38 +0100
+Message-ID: <20241122111939.11936-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241122111939.11936-1-philmd@linaro.org>
 References: <20241122111939.11936-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::436;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -110,38 +110,110 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Call scsi_bus_legacy_handle_cmdline() in the DeviceRealize
+Call scsi_bus_legacy_handle_cmdline() once in the DeviceRealize
 handler, just after scsi_bus_init().
+No need for lsi53c8xx_handle_legacy_cmdline(), remove it.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/scsi/spapr_vscsi.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/hw/pci/pci.h | 2 --
+ hw/arm/realview.c    | 3 +--
+ hw/arm/versatilepb.c | 3 +--
+ hw/hppa/machine.c    | 3 +--
+ hw/ppc/prep.c        | 1 -
+ hw/scsi/lsi53c895a.c | 8 +-------
+ 6 files changed, 4 insertions(+), 16 deletions(-)
 
-diff --git a/hw/scsi/spapr_vscsi.c b/hw/scsi/spapr_vscsi.c
-index c75a6c8807..8e76bfd7ce 100644
---- a/hw/scsi/spapr_vscsi.c
-+++ b/hw/scsi/spapr_vscsi.c
-@@ -1218,6 +1218,7 @@ static void spapr_vscsi_realize(SpaprVioDevice *dev, Error **errp)
-     dev->crq.SendFunc = vscsi_do_crq;
+diff --git a/include/hw/pci/pci.h b/include/hw/pci/pci.h
+index c0717e3121..7a69f0368c 100644
+--- a/include/hw/pci/pci.h
++++ b/include/hw/pci/pci.h
+@@ -655,8 +655,6 @@ PCIDevice *pci_create_simple_multifunction(PCIBus *bus, int devfn,
+                                            const char *name);
+ PCIDevice *pci_create_simple(PCIBus *bus, int devfn, const char *name);
  
-     scsi_bus_init(&s->bus, sizeof(s->bus), DEVICE(dev), &vscsi_scsi_info);
+-void lsi53c8xx_handle_legacy_cmdline(DeviceState *lsi_dev);
+-
+ qemu_irq pci_allocate_irq(PCIDevice *pci_dev);
+ void pci_set_irq(PCIDevice *pci_dev, int level);
+ 
+diff --git a/hw/arm/realview.c b/hw/arm/realview.c
+index b186f965c6..1042c1a1a3 100644
+--- a/hw/arm/realview.c
++++ b/hw/arm/realview.c
+@@ -294,8 +294,7 @@ static void realview_init(MachineState *machine,
+         }
+         n = drive_get_max_bus(IF_SCSI);
+         while (n >= 0) {
+-            dev = DEVICE(pci_create_simple(pci_bus, -1, "lsi53c895a"));
+-            lsi53c8xx_handle_legacy_cmdline(dev);
++            pci_create_simple(pci_bus, -1, "lsi53c895a");
+             n--;
+         }
+     }
+diff --git a/hw/arm/versatilepb.c b/hw/arm/versatilepb.c
+index d48235453e..716ed951bc 100644
+--- a/hw/arm/versatilepb.c
++++ b/hw/arm/versatilepb.c
+@@ -271,8 +271,7 @@ static void versatile_init(MachineState *machine, int board_id)
+     }
+     n = drive_get_max_bus(IF_SCSI);
+     while (n >= 0) {
+-        dev = DEVICE(pci_create_simple(pci_bus, -1, "lsi53c895a"));
+-        lsi53c8xx_handle_legacy_cmdline(dev);
++        pci_create_simple(pci_bus, -1, "lsi53c895a");
+         n--;
+     }
+ 
+diff --git a/hw/hppa/machine.c b/hw/hppa/machine.c
+index a31dc32a9f..69b822bfc8 100644
+--- a/hw/hppa/machine.c
++++ b/hw/hppa/machine.c
+@@ -349,8 +349,7 @@ static void machine_HP_common_init_tail(MachineState *machine, PCIBus *pci_bus,
+ 
+     /* SCSI disk setup. */
+     if (drive_get_max_bus(IF_SCSI) >= 0) {
+-        dev = DEVICE(pci_create_simple(pci_bus, -1, "lsi53c895a"));
+-        lsi53c8xx_handle_legacy_cmdline(dev);
++        pci_create_simple(pci_bus, -1, "lsi53c895a");
+     }
+ 
+     /* Graphics setup. */
+diff --git a/hw/ppc/prep.c b/hw/ppc/prep.c
+index fb58c312ac..0e5ff2a75c 100644
+--- a/hw/ppc/prep.c
++++ b/hw/ppc/prep.c
+@@ -328,7 +328,6 @@ static void ibm_40p_init(MachineState *machine)
+ 
+         dev = DEVICE(pci_create_simple(pci_bus, PCI_DEVFN(1, 0),
+                                        "lsi53c810"));
+-        lsi53c8xx_handle_legacy_cmdline(dev);
+         qdev_connect_gpio_out(dev, 0, qdev_get_gpio_in(i82378_dev, 13));
+ 
+         /* XXX: s3-trio at PCI_DEVFN(2, 0) */
+diff --git a/hw/scsi/lsi53c895a.c b/hw/scsi/lsi53c895a.c
+index 1f728416e2..d632789434 100644
+--- a/hw/scsi/lsi53c895a.c
++++ b/hw/scsi/lsi53c895a.c
+@@ -2365,6 +2365,7 @@ static void lsi_scsi_realize(PCIDevice *dev, Error **errp)
+     QTAILQ_INIT(&s->queue);
+ 
+     scsi_bus_init(&s->bus, sizeof(s->bus), d, &lsi_scsi_info);
 +    scsi_bus_legacy_handle_cmdline(&s->bus);
- 
-     /* ibmvscsi SCSI bus does not allow hotplug. */
-     qbus_set_hotplug_handler(BUS(&s->bus), NULL);
-@@ -1227,10 +1228,9 @@ void spapr_vscsi_create(SpaprVioBus *bus)
- {
-     DeviceState *dev;
- 
--    dev = qdev_new("spapr-vscsi");
-+    dev = qdev_new(TYPE_VIO_SPAPR_VSCSI_DEVICE);
- 
-     qdev_realize_and_unref(dev, &bus->bus, &error_fatal);
--    scsi_bus_legacy_handle_cmdline(&VIO_SPAPR_VSCSI_DEVICE(dev)->bus);
  }
  
- static int spapr_vscsi_devnode(SpaprVioDevice *dev, void *fdt, int node_off)
+ static void lsi_scsi_exit(PCIDevice *dev)
+@@ -2422,10 +2423,3 @@ static void lsi53c895a_register_types(void)
+ }
+ 
+ type_init(lsi53c895a_register_types)
+-
+-void lsi53c8xx_handle_legacy_cmdline(DeviceState *lsi_dev)
+-{
+-    LSIState *s = LSI53C895A(lsi_dev);
+-
+-    scsi_bus_legacy_handle_cmdline(&s->bus);
+-}
 -- 
 2.45.2
 
