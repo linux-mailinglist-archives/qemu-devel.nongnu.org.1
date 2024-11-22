@@ -2,77 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B45949D5A0D
-	for <lists+qemu-devel@lfdr.de>; Fri, 22 Nov 2024 08:35:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7458F9D5A43
+	for <lists+qemu-devel@lfdr.de>; Fri, 22 Nov 2024 08:49:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tEOAn-0006vT-4N; Fri, 22 Nov 2024 02:33:49 -0500
+	id 1tEOOc-00056s-Om; Fri, 22 Nov 2024 02:48:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tEOAg-0006u3-PQ
- for qemu-devel@nongnu.org; Fri, 22 Nov 2024 02:33:42 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1tEOOb-00056i-0Y
+ for qemu-devel@nongnu.org; Fri, 22 Nov 2024 02:48:05 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tEOAf-0000eH-Af
- for qemu-devel@nongnu.org; Fri, 22 Nov 2024 02:33:42 -0500
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1tEOOZ-0003Oa-G7
+ for qemu-devel@nongnu.org; Fri, 22 Nov 2024 02:48:04 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1732260820;
+ s=mimecast20190719; t=1732261682;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=GUXwaA4BCSEJyimsRFpqsk3xgO5A8rkDg+er7VoCEV8=;
- b=V6Xmm/8EQczAAfEdqCKRP1PXJpjhyqsx79DhEzts8LF5xiVw7W93QKlGqVgqL1zRhjhjQk
- BP2QuydnLI/CCbjMsYZtcD33qHp/Csnby2E9IN0i9BmPUK+UXdwnEaB9oKthWl029kOTeJ
- VxLwUQWOxp9eXCzixWT0jKvfMXBwi0Y=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-22-llHJAn0-OEuGk5REe8-8ng-1; Fri,
- 22 Nov 2024 02:33:36 -0500
-X-MC-Unique: llHJAn0-OEuGk5REe8-8ng-1
-X-Mimecast-MFC-AGG-ID: llHJAn0-OEuGk5REe8-8ng
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 3CC6219560AF; Fri, 22 Nov 2024 07:33:34 +0000 (UTC)
-Received: from corto.redhat.com (unknown [10.39.194.14])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 26A5019560A3; Fri, 22 Nov 2024 07:33:30 +0000 (UTC)
-From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-To: qemu-devel@nongnu.org,
-	qemu-arm@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- Steven Lee <steven_lee@aspeedtech.com>, Troy Lee <leetroy@gmail.com>,
- Jamin Lin <jamin_lin@aspeedtech.com>,
- Andrew Jeffery <andrew@codeconstruct.com.au>,
- Joel Stanley <joel@jms.id.au>, Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PATCH v3 3/3] tests/functional: Remove sleep workarounds from Aspeed
- tests
-Date: Fri, 22 Nov 2024 08:33:09 +0100
-Message-ID: <20241122073309.1897944-4-clg@redhat.com>
-In-Reply-To: <20241122073309.1897944-1-clg@redhat.com>
-References: <20241122073309.1897944-1-clg@redhat.com>
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=6bOTsY7bya2Tl46qnI16BZyl6bMSIUCIWNqzd/uE6UU=;
+ b=NZ7M00ZjHwoogMTTLcx0AwmudF1F2G7UO4fHdNlWq8DJ/GVF3+/7s0T0+7QKrvcaEslP2P
+ WbFUJy89U8j5ZocTVZejIee5gZyZmqMHbg4bhbgCOLfeDzmgJndkCn9qqlzX/eNSO+vL6h
+ u7SQ/lO3ONKaP3AHr0YOHU9A9P+J76M=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-575-Uh1GvY24PhGWYAXMU4vZXg-1; Fri, 22 Nov 2024 02:48:00 -0500
+X-MC-Unique: Uh1GvY24PhGWYAXMU4vZXg-1
+X-Mimecast-MFC-AGG-ID: Uh1GvY24PhGWYAXMU4vZXg
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-382450d158fso994300f8f.1
+ for <qemu-devel@nongnu.org>; Thu, 21 Nov 2024 23:47:59 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1732261678; x=1732866478;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=6bOTsY7bya2Tl46qnI16BZyl6bMSIUCIWNqzd/uE6UU=;
+ b=SbUoYbujF0m8XLGqPCeuWHBvC4VT03kBxjxOEfBXn2OrSzae2lqbUJ5BEqIu7euN2w
+ 5WbCg3H45/+gpRS0tFDacjS46cIwpcHc/gb+tyCWnBKk16J/3smustFWknmzpjr1D5VE
+ YQ/EyUK63uXRnYT6/CUFjXL0NsqPd5HnHE4kUEBgB8OmXWjqs47nC34tkiEPQtH7L4YR
+ nOT0nMD76TxMdk1IXMwRT3s1/LfzYIphDpH2h8uedopVgMvbmupDiqeB96Vvb49h5o3T
+ aqtWTcokqxzqRRG/hviiuPeCgq78Cieb02Zj+K2AUpX357rRHP4tXYnRk0fx9UuVf0Zt
+ vl8g==
+X-Gm-Message-State: AOJu0YwbvjlCJxvOcXn8iUtoYHED/I5JMLHbt+Q/9RpCaxyIC848FYzb
+ K5O3u4Ub88p8/g+uG5Wa8HiCpD8+ViAlKNd5pj8sLTHu9wDdcKeyarLaH84O8rn41/I+G5V+nHd
+ EBXEDmsOuO1po+/KYPHLfa5bgLiiGGZaU21mcZ7lyxU970EfZko3Bi0qtYy/aVGJuw4LLH26TeZ
+ ATQgA3R0ACQhxLLnScOLrRX4CnCy3KkKPDRjFw
+X-Gm-Gg: ASbGnctwabaduSR7nAU6+HhMU28fSlka6ZxRIw1MsBc65NfFPPbo0hzYNsDTvfGJZ8Y
+ 1OyPVqwkt5qrAD2XR/xRviphvcl/UaZWVjuzl03XlFtye4W8di5kPs/U9nY3bDK7mlrBbHLnrWr
+ XvIuBwqFsFGJvXHE5+7FpKlqTPLOr61xCP0yQNXSQw+xunMAJEZ0eCwjV//n92Os425MlPUmfQr
+ NCFZ2ZPS4ZcfOwkihutphfvSsuY636HgvoDq1illffxRzvmzahL5g==
+X-Received: by 2002:a05:6000:18ac:b0:37c:d1bc:2666 with SMTP id
+ ffacd0b85a97d-38260b502dcmr1459582f8f.4.1732261678201; 
+ Thu, 21 Nov 2024 23:47:58 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEIWEOmbM7/QP9wjrlRul43Jb8S3MU9ctVgLtPfFhq2y/5gq7NyIVUq6/Vrep2S9DcE7a+62Q==
+X-Received: by 2002:a05:6000:18ac:b0:37c:d1bc:2666 with SMTP id
+ ffacd0b85a97d-38260b502dcmr1459568f8f.4.1732261677784; 
+ Thu, 21 Nov 2024 23:47:57 -0800 (PST)
+Received: from [192.168.10.3] ([151.49.204.250])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-3825fbc4173sm1708062f8f.72.2024.11.21.23.47.57
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 21 Nov 2024 23:47:57 -0800 (PST)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: junjie.mao@hotmail.com,
+	zhao1.liu@intel.com,
+	qemu-rust@nongnu.org
+Subject: [PATCH 0/2] rust: safe wrappers for interrupt sources
+Date: Fri, 22 Nov 2024 08:47:54 +0100
+Message-ID: <20241122074756.282142-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.47.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.14,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,72 +104,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-These were introduced in the avocado tests to workaround read issues
-when interacting with console. They are no longer necessary and we can
-use the expected "login:" string or the command prompt now. Drop the
-last use of exec_command.
+Interrupt sources, qemu_irq in C code, are pointers to IRQState objects.
+They are QOM link properties and can be written to outside the control
+of the device (i.e. from a shared reference); therefore their Rust
+representation must be an interior-mutable field.
 
-Signed-off-by: Cédric Le Goater <clg@redhat.com>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
----
- tests/functional/test_arm_aspeed.py | 16 +++++++---------
- 1 file changed, 7 insertions(+), 9 deletions(-)
+This make interrupt sources similar to a Cell<*mut IRQState>.  However,
+a Cell can only live within one thread, while here the semantics are
+"accessible by multiple threads but only under the Big QEMU Lock".
 
-diff --git a/tests/functional/test_arm_aspeed.py b/tests/functional/test_arm_aspeed.py
-index 7644ecbae750..758737f6c24d 100755
---- a/tests/functional/test_arm_aspeed.py
-+++ b/tests/functional/test_arm_aspeed.py
-@@ -14,7 +14,6 @@
- from qemu_test import LinuxKernelTest, Asset
- from qemu_test import exec_command_and_wait_for_pattern
- from qemu_test import interrupt_interactive_console_until_pattern
--from qemu_test import exec_command
- from qemu_test import has_cmd
- from qemu_test.utils import archive_extract
- from zipfile import ZipFile
-@@ -136,10 +135,8 @@ def do_test_arm_aspeed_buildroot_start(self, image, cpu_id, pattern='Aspeed EVB'
-         self.wait_for_console_pattern('lease of 10.0.2.15')
-         # the line before login:
-         self.wait_for_console_pattern(pattern)
--        time.sleep(0.1)
--        exec_command(self, 'root')
--        time.sleep(0.1)
--        exec_command(self, "passw0rd")
-+        exec_command_and_wait_for_pattern(self, 'root', 'Password:')
-+        exec_command_and_wait_for_pattern(self, 'passw0rd', '#')
- 
-     def do_test_arm_aspeed_buildroot_poweroff(self):
-         exec_command_and_wait_for_pattern(self, 'poweroff',
-@@ -158,7 +155,7 @@ def test_arm_ast2500_evb_buildroot(self):
-         self.vm.add_args('-device',
-                          'tmp105,bus=aspeed.i2c.bus.3,address=0x4d,id=tmp-test');
-         self.do_test_arm_aspeed_buildroot_start(image_path, '0x0',
--                                                'Aspeed AST2500 EVB')
-+                                                'ast2500-evb login:')
- 
-         exec_command_and_wait_for_pattern(self,
-              'echo lm75 0x4d > /sys/class/i2c-dev/i2c-3/device/new_device',
-@@ -188,7 +185,8 @@ def test_arm_ast2600_evb_buildroot(self):
-                          'ds1338,bus=aspeed.i2c.bus.3,address=0x32');
-         self.vm.add_args('-device',
-                          'i2c-echo,bus=aspeed.i2c.bus.3,address=0x42');
--        self.do_test_arm_aspeed_buildroot_start(image_path, '0xf00', 'Aspeed AST2600 EVB')
-+        self.do_test_arm_aspeed_buildroot_start(image_path, '0xf00',
-+                                                'ast2600-evb login:')
- 
-         exec_command_and_wait_for_pattern(self,
-              'echo lm75 0x4d > /sys/class/i2c-dev/i2c-3/device/new_device',
-@@ -209,8 +207,8 @@ def test_arm_ast2600_evb_buildroot(self):
-         exec_command_and_wait_for_pattern(self,
-              'echo slave-24c02 0x1064 > /sys/bus/i2c/devices/i2c-3/new_device',
-              'i2c i2c-3: new_device: Instantiated device slave-24c02 at 0x64');
--        exec_command(self, 'i2cset -y 3 0x42 0x64 0x00 0xaa i');
--        time.sleep(0.1)
-+        exec_command_and_wait_for_pattern(self,
-+             'i2cset -y 3 0x42 0x64 0x00 0xaa i', '#');
-         exec_command_and_wait_for_pattern(self,
-              'hexdump /sys/bus/i2c/devices/3-1064/slave-eeprom',
-              '0000000 ffaa ffff ffff ffff ffff ffff ffff ffff');
+Therefore, this series adds to QEMU a specialized cell type that checks
+locking rules with respect to the "Big QEMU Lock".  In particular,
+qemu_api::cell::BqlCell only allows get()/set() under BQL protection and
+therefore is Send/Sync.  It comes with documentation and doctests.
+I am not fully satisfied with the solution I used for mocking the BQL;
+I have a prototype that runs doctests from "meson test" but that may
+take some more time to cook.
+
+Likewise, qemu_api::cell::RefCell would be a RefCell that is Send/Sync,
+because it checks that borrow()/borrow_mut() is only done under BQL;
+but this is not added here because there is no use case (yet).
+
+The interrupt sources prat was previously posted as RFC at
+https://lore.kernel.org/qemu-devel/20241104085159.76841-1-pbonzini@redhat.com/,
+while the BqlCell is new.  The code is a bit long but most of it is
+lifted from the standard library and almost half is documentation.
+
+Please review!
+
+Paolo Bonzini (2):
+  rust: add BQL-enforcing Cell variant
+  rust: add bindings for interrupt sources
+
+ rust/hw/char/pl011/src/device.rs |  22 +--
+ rust/qemu-api/meson.build        |   3 +
+ rust/qemu-api/src/cell.rs        | 294 +++++++++++++++++++++++++++++++
+ rust/qemu-api/src/irq.rs         |  66 +++++++
+ rust/qemu-api/src/lib.rs         |   3 +
+ rust/qemu-api/src/sysbus.rs      |  26 +++
+ 6 files changed, 404 insertions(+), 10 deletions(-)
+ create mode 100644 rust/qemu-api/src/cell.rs
+ create mode 100644 rust/qemu-api/src/irq.rs
+ create mode 100644 rust/qemu-api/src/sysbus.rs
+
 -- 
 2.47.0
 
