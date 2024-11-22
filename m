@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C1ED9D6601
-	for <lists+qemu-devel@lfdr.de>; Fri, 22 Nov 2024 23:53:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 137D09D6607
+	for <lists+qemu-devel@lfdr.de>; Fri, 22 Nov 2024 23:54:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tEcVW-0005hi-Em; Fri, 22 Nov 2024 17:52:10 -0500
+	id 1tEcVY-0005il-5n; Fri, 22 Nov 2024 17:52:12 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1tEcVT-0005gb-Uj
- for qemu-devel@nongnu.org; Fri, 22 Nov 2024 17:52:07 -0500
-Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
+ id 1tEcVU-0005h3-SP
+ for qemu-devel@nongnu.org; Fri, 22 Nov 2024 17:52:08 -0500
+Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1tEcVR-0003hz-VL
- for qemu-devel@nongnu.org; Fri, 22 Nov 2024 17:52:07 -0500
-Received: by mail-pl1-x631.google.com with SMTP id
- d9443c01a7336-21200c749bfso26923815ad.1
- for <qemu-devel@nongnu.org>; Fri, 22 Nov 2024 14:52:05 -0800 (PST)
+ id 1tEcVT-0003iC-5u
+ for qemu-devel@nongnu.org; Fri, 22 Nov 2024 17:52:08 -0500
+Received: by mail-pf1-x433.google.com with SMTP id
+ d2e1a72fcca58-724e1742d0dso1057326b3a.0
+ for <qemu-devel@nongnu.org>; Fri, 22 Nov 2024 14:52:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1732315924; x=1732920724; darn=nongnu.org;
+ d=linaro.org; s=google; t=1732315925; x=1732920725; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=9YFLbZLOczXBElPPKg8w5+mMH+iVSKvrslYIT3YcYvo=;
- b=cPucjloBliScDX1e4vl83Ua5H2nszX+qHZzHx8Qvl7ACYfs5uSbBnzD0kSQecwSa5c
- jaDSJYg4NTj/lQYZTNJOIVn3GnPw0sfabPGVFRBuXQh4bqlmCdadohBHAZ2uZsJGKkIi
- rzvxHMcoiMwRT6ZvsSwVilpjnUZSHGe8vKJJ7X6gbkV7LWdyJUVedPCow93OI35PH109
- 7xRz0PHYZcC5FmN34B9P1pHxa8QDOJKYJb3zpzwxA8PhIfgVirxY86ObeXZCpJ6zavQr
- 8DoRaT4NUoyObVzdWmw4pkKFW0o0fDyVutiacg621j0TyVGJlcxn6N1MnaIGzuMSwSvC
- X3XQ==
+ bh=oMGyDQYSWfYuxqAd92U6ssjLzVraBx5dxtJzlIPJIio=;
+ b=Bl3jgDePCF9+CBf3N3WLUt6JmoD72qY+lDgpDhAWy41sZ0GCTIRG9gDdRHixTuwhIt
+ 0bpCED4SBjCF3n64FgXEDnei/UvSwJjewAlre4JDmzJBWao/sWEpv4mnHaiohsr7XOHM
+ M/UAetOoYqz5XTEKedMDU2MplQhxlYbFflluBKDDC5A1rukotU4QUG0Mw0cjo6X3sqYF
+ F2PuzjscKmbpCYMn18lfvjvAt60MbT9+qyPWDgCqeiL9hcQWllQDVdl3HX9ZFfH0eAhJ
+ nvAV5V52aHYOl4cbmlqC+SiadXP2Z/YGAquo8c1cSYDIFnNlHpUhwJVSVk/GjMU61JNC
+ Czug==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1732315924; x=1732920724;
+ d=1e100.net; s=20230601; t=1732315925; x=1732920725;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=9YFLbZLOczXBElPPKg8w5+mMH+iVSKvrslYIT3YcYvo=;
- b=vYK395O9UxF7T5nHK8TWCyQxKMKNzPDDGcevbhDdJIGY5jvKWetq0CTgHMYsPFh1bI
- 5sdakqCBiiH8dUL/Y+ltFFaHq+C9mQ/8d+JRtbEOf76iwJKfsOCHbw6KiByT6pSnBFzC
- yB5SDYeoDBL1DqMKbbLckARE+CXQiXx4EcUT0ApvcEYEfXvSuepx5j3yh614/BAEzdk8
- tO0tcgc2X0lnJ8fInhO9km+yb/WCl5b9V9dCwnivYgXyueQ/RVQ0cAwR7siVye1pi5vI
- lS5btuCZhAWIABsdaezUzZ1Tw1hq/4L/zsSDrhxMTl/xWMUBaD/o904TtUpyzO1gmSYR
- 9MZg==
-X-Gm-Message-State: AOJu0Yz14smwMFaOs7CRZEor/ZfKW/W+OG81m9tzJccYul3alFkwrU5x
- XlE/HJE9moRhZDlnmaTirckRvanBaRkp7j1TAxNrdYWIrrpUI/vtumkTbJYQOE+5/owGQtK/jIZ
- Q
-X-Gm-Gg: ASbGncsXxQ37+BY9tluhlmFnYZtZ5VQyhCN1WCxvc5FwNxnNGGRCWnr/SzdX8X/7/3G
- Kn/FubXak5k750YbGlwZaJq9k0ggUQaCn7NgJQNEXEMOxrmoanHxNv7+tyFj82ELKcCJFws3FrB
- FSzPXkfFvD0RKsiiNhm0oNihUWYfKFub3v/HgfMv1Um1OsE6DAe4cOOuPyhg2/nKNbmTkgRM7ek
- 38Lpt4hrrRnH0E3SSe01aQuQXe1ntFnw5vQFZg6e8DKjRXR4y9ScpwwvJc7MM32eqSfarM369Em
- YjLEPqn1ktL2sQ==
-X-Google-Smtp-Source: AGHT+IHUaAPqGY0pVQ2KVgG0CwtD+igzfbJyv2dYuIam3jB2EpwZQnkhSl0ziQwdQPVdfVJaXddVVA==
-X-Received: by 2002:a17:902:cec4:b0:20c:ab33:f8b8 with SMTP id
- d9443c01a7336-2129f226036mr65032875ad.15.1732315924506; 
- Fri, 22 Nov 2024 14:52:04 -0800 (PST)
+ bh=oMGyDQYSWfYuxqAd92U6ssjLzVraBx5dxtJzlIPJIio=;
+ b=HMPmEhV/rnDjRcOdNBV+nflsvJIsKMe8mUexFG81ttuTUZV6PIXeRpjpt7PAjNa6XV
+ R5W88CTR9cjXyNDfjyCbcHlqlTaXInGVcYPyim1PekJS9vubDJ1TR03RdGKN7nzqpQg9
+ RnB0qu3CuJnXyWOlg1/ruplTe+ORwAw8IuobOnY45ektSeWZahNey+/8quyAI8oIV2LI
+ Hg4UunToEarG6ZgR7C4Pbd163DYKqjGnbwltlvf2WwyKyWr9yRgi+mbrzKLE1u85ZZHt
+ vqq4nD5djrtn52Xhi+yUmk2ybiatTKv8Y+YVi7VLwkPoyBspp5E6qZGixhPsFVK2JYvj
+ mxMw==
+X-Gm-Message-State: AOJu0YzUw2DSHbhssE2vsxQzOhxBns5HE1lYZjNRocdhxIKC11OkdB2k
+ EY+O4OoBPTi7ZGfpH9/t2IDd2RvQYnA3oxFuplRJ1V2GHRo2b4Qj4sEurwJxU6P9BcsbypJrU4k
+ F
+X-Gm-Gg: ASbGncsccivtaQlBhlK8wiNKznrDUC7Qbb5zT4prar43isomuekTA4FPFjq8vX3Jmnc
+ aZO0m6kksyCZvSxc7p0F7CRzQcuEsfShzeB1pnmfz9qIm5AY3dEECP851HZG9oDTb+abAJpPjGc
+ e7jI5/yxQCkC/EpG1ga782SiNGhpNJTXoaKgh3FLDBmEKViJCtU/o745GlC5oPtlRbdW5JXfX80
+ ay33USdd9WSjzioD12P0jChC0Al8J50qtqOFhJqBliNtxT2Ku8BHkoTsc2lEVe6PQ7XHDde6zrp
+ ck407WXgGjbUog==
+X-Google-Smtp-Source: AGHT+IEOIBycBt6uzo9Fy9yo3WTNsXiIANTAUyn3WhjV/kbsUn071KG5dDeA84VVJw9kwvIhomjB6Q==
+X-Received: by 2002:a17:902:ce82:b0:20b:6d82:acb with SMTP id
+ d9443c01a7336-2129f244317mr61947525ad.23.1732315925594; 
+ Fri, 22 Nov 2024 14:52:05 -0800 (PST)
 Received: from linaro.. (216-180-64-156.dyn.novuscom.net. [216.180.64.156])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-2129dc1539fsm21450335ad.192.2024.11.22.14.52.02
+ d9443c01a7336-2129dc1539fsm21450335ad.192.2024.11.22.14.52.04
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 22 Nov 2024 14:52:02 -0800 (PST)
+ Fri, 22 Nov 2024 14:52:05 -0800 (PST)
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>, alex.bennee@linaro.org,
@@ -75,23 +75,23 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>, alex.bennee@linaro.org,
  Peter Maydell <peter.maydell@linaro.org>, Joel Stanley <joel@jms.id.au>,
  Alistair Francis <alistair@alistair23.me>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH 01/12] docs/system/arm/emulation: mention armv9
-Date: Fri, 22 Nov 2024 14:50:38 -0800
-Message-Id: <20241122225049.1617774-2-pierrick.bouvier@linaro.org>
+Subject: [PATCH 02/12] docs/system/arm/emulation: fix typo in feature name
+Date: Fri, 22 Nov 2024 14:50:39 -0800
+Message-Id: <20241122225049.1617774-3-pierrick.bouvier@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241122225049.1617774-1-pierrick.bouvier@linaro.org>
 References: <20241122225049.1617774-1-pierrick.bouvier@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x631.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -109,33 +109,22 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- docs/system/arm/emulation.rst | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ docs/system/arm/emulation.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/docs/system/arm/emulation.rst b/docs/system/arm/emulation.rst
-index a2a388f0919..2956c22a1b7 100644
+index 2956c22a1b7..af613b9c8b8 100644
 --- a/docs/system/arm/emulation.rst
 +++ b/docs/system/arm/emulation.rst
-@@ -3,8 +3,8 @@
- A-profile CPU architecture support
- ==================================
- 
--QEMU's TCG emulation includes support for the Armv5, Armv6, Armv7 and
--Armv8 versions of the A-profile architecture. It also has support for
-+QEMU's TCG emulation includes support for the Armv5, Armv6, Armv7,
-+Armv8 and Armv9 versions of the A-profile architecture. It also has support for
- the following architecture extensions:
- 
- - FEAT_AA32BF16 (AArch32 BFloat16 instructions)
-@@ -153,7 +153,7 @@ the following architecture extensions:
- - FEAT_XNX (Translation table stage 2 Unprivileged Execute-never)
- 
- For information on the specifics of these extensions, please refer
--to the `Armv8-A Arm Architecture Reference Manual
-+to the `Arm Architecture Reference Manual for A-profile architecture
- <https://developer.arm.com/documentation/ddi0487/latest>`_.
- 
- When a specific named CPU is being emulated, only those features which
+@@ -88,7 +88,7 @@ the following architecture extensions:
+ - FEAT_LSE2 (Large System Extensions v2)
+ - FEAT_LVA (Large Virtual Address space)
+ - FEAT_MixedEnd (Mixed-endian support)
+-- FEAT_MixdEndEL0 (Mixed-endian support at EL0)
++- FEAT_MixedEndEL0 (Mixed-endian support at EL0)
+ - FEAT_MOPS (Standardization of memory operations)
+ - FEAT_MTE (Memory Tagging Extension)
+ - FEAT_MTE2 (Memory Tagging Extension)
 -- 
 2.39.5
 
