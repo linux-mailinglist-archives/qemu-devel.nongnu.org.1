@@ -2,54 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A09ED9D7664
-	for <lists+qemu-devel@lfdr.de>; Sun, 24 Nov 2024 18:10:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EE2099D72F7
+	for <lists+qemu-devel@lfdr.de>; Sun, 24 Nov 2024 15:25:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tFG5Z-0003mG-HL; Sun, 24 Nov 2024 12:08:01 -0500
+	id 1tFDWk-000188-NA; Sun, 24 Nov 2024 09:23:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1)
- (envelope-from <daad7af58b403aaa2487c566032beca36664b30e@kylie.crudebyte.com>)
- id 1tFG5V-0003lU-1R; Sun, 24 Nov 2024 12:07:57 -0500
-Received: from kylie.crudebyte.com ([5.189.157.229])
+ (Exim 4.90_1) (envelope-from <retpolanne@posteo.net>)
+ id 1tFDWf-00017s-SD
+ for qemu-devel@nongnu.org; Sun, 24 Nov 2024 09:23:49 -0500
+Received: from mout02.posteo.de ([185.67.36.66])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1)
- (envelope-from <daad7af58b403aaa2487c566032beca36664b30e@kylie.crudebyte.com>)
- id 1tFG5T-0005Hk-PF; Sun, 24 Nov 2024 12:07:56 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=crudebyte.com; s=kylie; h=Cc:To:Subject:Date:From:References:In-Reply-To:
- Message-Id:Content-Type:Content-Transfer-Encoding:MIME-Version:Content-ID:
- Content-Description; bh=AS+IrlCVZDaIn5QIF9PwB79XyCeyEMVXYEcy54dkzfo=; b=TPy5s
- Itr8he/AZW2lFK/6ejlxJrWl6plsk1ApZuNn1x8yRZjuQbcZtml8On1nVoD8NFotze2EuGmBf5muX
- bVLtv7Wxut2azHtLWRWXHTeCWA6RyvPxV0pR6V+pakW4oIHxvflRoKR0jvwRiCOSRdFVQMxBPolP6
- ObkbspujDvAMZgMJB8s7sUvDUs8Gg6HTAA282Ob5TyWcMcJ4wDAbI4GEgCOXq0aoXAx+/f8Y9oi/K
- fmbrbftIoflswanEJRMjr0rNMDmGvdmra7dDVNfq3hGSXX04CrGrinsYMd1d4kRTMWtCDJaYH3KJf
- Exv1CHl+12DV+Ab6DKmPICqnQyQrP6raE5etW1u/X61I9RdgJLQHlhaAG9DE4wu1pLif3cn2OCs/V
- i26m0e9cg6vo92K4UlY7YB4By+XcmFtL/8WuBbN5LqBJikNO3BlY7wWK0451tdr0oM9qQEIdOEuos
- V+SPVtR5ol8rgk3jRCPsTEaHu2ASigbRo4y3kl/ZE9AaTAKriSgjh2rvkDRwY5qLpGpN8KeHmM2M0
- fYyAYMfrrmFc+YxCs06sAGRmkbSDW7UpYiVgC6TxqRINTC2/GjaU5cWEIhsevsZLgpqDPQCVr84Xt
- SMMA08eBiUHcXgMYs03PmQlQCZXeQ8fHTNskitF3KjJ++T36FA6HAHpFVQUbKg=;
-Message-Id: <daad7af58b403aaa2487c566032beca36664b30e.1732465720.git.qemu_oss@crudebyte.com>
-In-Reply-To: <cover.1732465720.git.qemu_oss@crudebyte.com>
-References: <cover.1732465720.git.qemu_oss@crudebyte.com>
-From: Christian Schoenebeck <qemu_oss@crudebyte.com>
-Date: Sun, 24 Nov 2024 14:34:31 +0100
-Subject: [PATCH 2/6] tests/9p: fix Rreaddir response name
+ (Exim 4.90_1) (envelope-from <retpolanne@posteo.net>)
+ id 1tFDWQ-0002bO-Ns
+ for qemu-devel@nongnu.org; Sun, 24 Nov 2024 09:23:37 -0500
+Received: from submission (posteo.de [185.67.36.169]) 
+ by mout02.posteo.de (Postfix) with ESMTPS id 4D3C9240101
+ for <qemu-devel@nongnu.org>; Sun, 24 Nov 2024 15:23:28 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.net; s=2017;
+ t=1732458208; bh=2MJGTHtwie0rwB93olR2WoDlfQqyQr9af8HZtlELRSU=;
+ h=Message-Id:To:Subject:From:Date:MIME-version:Content-type:
+ Content-Transfer-Encoding:From;
+ b=fPBbj6xCnYnEFvy3vO6WbeET/cQMYaxZZUywaWh/j7PThUJTS93INe/xGUeyZffZk
+ YevAMLex2Ipcbyu6Tju7eV8AuuBsh7gKByQafdfJy1/EYW8V0cKH3aANnabud7VpZ6
+ cdGObhZdmCcq6uMXBzT+GBTZCJ4J4dxEcu3D7qp9teYB5feKKnBZGRLa7QANCJnu3P
+ L9fuOqGF3ShPG7+j7VANfRpQLQO1jDFv6Euzma8xoXDaO0GXJO3IJXZF0SytSAy9nL
+ sv0WagX6ySDwP4PsxwdQlbczJjMuFSVHrsCiGHz2GBXW92Yi69L4jTUinm18c5zgNE
+ kTIKFXy1cqqAA==
+Received: from customer (localhost [127.0.0.1])
+ by submission (posteo.de) with ESMTPSA id 4Xx9zz0DxCz6tn4
+ for <qemu-devel@nongnu.org>; Sun, 24 Nov 2024 15:23:26 +0100 (CET)
+Message-Id: <m2wmgsiudo.fsf@posteo.net>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org,
-    Greg Kurz <groug@kaod.org>
-Received-SPF: pass client-ip=5.189.157.229;
- envelope-from=daad7af58b403aaa2487c566032beca36664b30e@kylie.crudebyte.com;
- helo=kylie.crudebyte.com
-X-Spam_score_int: -4
-X-Spam_score: -0.5
-X-Spam_bar: /
-X-Spam_report: (-0.5 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_03_06=1.592,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+Subject: Onboarding QEMU Firmware Configuration to other machines
+From: Anne Macedo <retpolanne@posteo.net>
+Date: Sun, 24 Nov 2024 14:22:29 +0000
+MIME-version: 1.0
+Content-type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=185.67.36.66; envelope-from=retpolanne@posteo.net;
+ helo=mout02.posteo.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H3=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=no autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -65,28 +67,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-All 9p response types are prefixed with an "R", therefore fix
-"READDIR" -> "RREADDIR" in function rmessage_name().
 
-Signed-off-by: Christian Schoenebeck <qemu_oss@crudebyte.com>
----
- tests/qtest/libqos/virtio-9p-client.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Hello!
 
-diff --git a/tests/qtest/libqos/virtio-9p-client.c b/tests/qtest/libqos/virtio-9p-client.c
-index b8adc8d4b9..c61632fcd3 100644
---- a/tests/qtest/libqos/virtio-9p-client.c
-+++ b/tests/qtest/libqos/virtio-9p-client.c
-@@ -238,7 +238,7 @@ static const char *rmessage_name(uint8_t id)
-         id == P9_RLINK ? "RLINK" :
-         id == P9_RUNLINKAT ? "RUNLINKAT" :
-         id == P9_RFLUSH ? "RFLUSH" :
--        id == P9_RREADDIR ? "READDIR" :
-+        id == P9_RREADDIR ? "RREADDIR" :
-         "<unknown>";
- }
- 
--- 
-2.39.5
+How should one port fw_cfg to other QEMU machines?
 
+Context:
+
+- I found a possible bug on the Debian builds for Raspberry Pi 4 that is
+  only triggered when I try to launch it on QEMU;
+
+- I wrote an issue on systemd (I thought it had something to do with
+  logind) and they requested me to only fill bugs if they show up on the
+  upstream.
+
+- I tried baking systemd with mkosi – however, to test with mkosi and
+  qemu, it uses fw_cfg [1] which seems specific to the virt machine on
+  ARM.
+
+- Opened an issue [2] and started working on that [3]
+
+However, I still don't understand exactly how fw_cfg works. My current
+understanding is that it is a device that, when connected some memory
+mapping will happen on the guest so that it can access this memmap.
+
+TL;DR which steps should I take to onboard fw_cfg to machines such as
+raspi4b?
+
+Thanks!
+Anne
+
+
+[1] https://github.com/systemd/mkosi/blob/6c33859a1b445e0bff19d9e7f28158140893a3e4/mkosi/config.py#L456
+
+[2] https://gitlab.com/qemu-project/qemu/-/issues/2695
+
+[3] https://gitlab.com/retpolanne/qemu/-/commit/86fca16555385c3685b7a1489a9cfaa255e148cf
 
