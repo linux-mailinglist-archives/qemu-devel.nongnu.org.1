@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C27F59D765D
-	for <lists+qemu-devel@lfdr.de>; Sun, 24 Nov 2024 18:09:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 54AF49D765F
+	for <lists+qemu-devel@lfdr.de>; Sun, 24 Nov 2024 18:09:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tFG5K-0003if-UK; Sun, 24 Nov 2024 12:07:46 -0500
+	id 1tFG5U-0003kd-I0; Sun, 24 Nov 2024 12:07:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
- (envelope-from <e183da80d390cfd7d55bdbce92f0ff6e3e5cdced@kylie.crudebyte.com>)
- id 1tFG5J-0003iS-3Q; Sun, 24 Nov 2024 12:07:45 -0500
+ (envelope-from <fb364d12045217a4c6ccd0dd6368103ddb80698b@kylie.crudebyte.com>)
+ id 1tFG5P-0003k3-0I; Sun, 24 Nov 2024 12:07:51 -0500
 Received: from kylie.crudebyte.com ([5.189.157.229])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
- (envelope-from <e183da80d390cfd7d55bdbce92f0ff6e3e5cdced@kylie.crudebyte.com>)
- id 1tFG5H-0005Gg-Bk; Sun, 24 Nov 2024 12:07:44 -0500
+ (envelope-from <fb364d12045217a4c6ccd0dd6368103ddb80698b@kylie.crudebyte.com>)
+ id 1tFG5N-0005HK-NJ; Sun, 24 Nov 2024 12:07:50 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=crudebyte.com; s=kylie; h=Cc:To:Subject:Date:From:References:In-Reply-To:
  Message-Id:Content-Type:Content-Transfer-Encoding:MIME-Version:Content-ID:
- Content-Description; bh=NTS/m9q0lUtbEO9KOENkH2r7ycV71tXpqWTqX6H4Evg=; b=tTsC1
- YP7nGEshAs4GVfYC8xbsUEuK/Q0X5/FQmpCXT6Z7qYTegul4moU4xJ1LWUxJA4HZerbT2nVn6XjHR
- KhH4oN/lQ62ScthNK0YwSjNIIiqz8Q19RwD68Z2AgcJo8BbUAr6TqW+mp+gAeUG3LHOGHYcGFdbe3
- SIFIsaOvlSGHYItVslQRO9s/0v7w3+bddtDUGFayhl5ZL8q5kQ0XVlEJ45lMUQlxLBkrEaOMy3FK3
- E5dhT/qP18v73DX510Jwomnu0U9PUg8qVxf1P83n6arJRnh/6gHBPKHWfdxzS+IfgvFpUPHFjbOlP
- cAWO7gbMiMk1SfFI6jkRKSyCibCCsXuPoQPRgjFgwmDWdcSviQ1bQhnWFuYdUpCAc9nppDOuUmka+
- /eTcMW+V/S7Zu2hadMBohi1yek3Tn7KL9n2gS6V7WBaF4nKFHqhIVPsq5Ed7FdTdV7cXH9z5O9iEe
- SBmxFY3VR4n2v++58p5YtrlKkQlxRuggD1YEVv/pcJdEQvy5P8rZAVOGO4cEHDnxxZZ+f6cquFZ2Z
- k33qDKkSVw1/Hzi94RaLRx0AbcRy0jy9VDMXi28J9rVXU+eGDc165xH2O9o2/lVUmu1PZapucCGMF
- f1z0ufuXeWuazXWeiSGHSDcj7eSfIAUJ+IcK1GMJEr9qn4Qr6Ctuutx1zpXiU4=;
-Message-Id: <e183da80d390cfd7d55bdbce92f0ff6e3e5cdced.1732465720.git.qemu_oss@crudebyte.com>
+ Content-Description; bh=bglsoUlhCRKaokV268JNEiCI901dRlYpBAqwZbBilN0=; b=cLr+C
+ deHGt8YAEOCN+xPUP9rvyPapIQL3OmgOkTcvBVChfV48Is7JKjxnXuUVEewnBokb9ZDCtx/UbkhRi
+ mrAborIfqadnM09cRE+LdniuP1bXhKkJMVmPC4vDsoSBPPwhVsagcoeo5w/Hg9tLqvbQiXfsFNgt6
+ 9kNKyaU1/cCPMmn+dde10GAxaWpcnUALQ2F9gicNIWNrT1F01lC2gLRhE+++IWAoDHXMPsFEL15w1
+ JYYYRhJVrNJqSE2HC1vMnZA8OkOu1GKx/ldJzEtNZT5iwVGzAOC1QRtMGXiFlHogYQ0eAOi0wGCZU
+ TMTae9FW/Iglf52ockEfifix1KlLx0jH1v8bRVgSTV87DxS8AZY8sUqdj4kwH65pKXa0XXRpjFf3f
+ gG7Ui93ICZ6ZYIJ7R5TIkTNcBsJmMdNvqf4qt7PqElVzH9g+kk3OKHrIvZXZ81fXofJHABwZgNtPC
+ wg39P+teRA0v3Y9rLy1poxjR4bx2mbd5ou9+N2BYmbWnbLBtbls/qAJeqhrWBLsiAhDIOF+0mzIzB
+ LBKFDjUDPF3Ilpqm97huz13mL2myVqei7B7UUNj0xrsf98pIaOpRruyL0+ixiaTg+bNPiRl8EHeAd
+ WGzecWU5iPsigdAi/jvkcUv+trw76EvGfbwAA1tVN9rN736GwyFFWKjB6lKANs=;
+Message-Id: <fb364d12045217a4c6ccd0dd6368103ddb80698b.1732465720.git.qemu_oss@crudebyte.com>
 In-Reply-To: <cover.1732465720.git.qemu_oss@crudebyte.com>
 References: <cover.1732465720.git.qemu_oss@crudebyte.com>
 From: Christian Schoenebeck <qemu_oss@crudebyte.com>
-Date: Sun, 24 Nov 2024 15:49:55 +0100
-Subject: [PATCH 3/6] tests/9p: add missing Rgetattr response name
+Date: Sun, 24 Nov 2024 16:06:40 +0100
+Subject: [PATCH 4/6] 9pfs: remove obsolete comment in v9fs_getattr()
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org,
     Greg Kurz <groug@kaod.org>
 Received-SPF: pass client-ip=5.189.157.229;
- envelope-from=e183da80d390cfd7d55bdbce92f0ff6e3e5cdced@kylie.crudebyte.com;
+ envelope-from=fb364d12045217a4c6ccd0dd6368103ddb80698b@kylie.crudebyte.com;
  helo=kylie.crudebyte.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -65,27 +65,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-'Tgetattr' 9p request and its 'Rgetattr' response types are already used
-by test client, however this response type is yet missing in function
-rmessage_name(), so add it.
+The comment claims that we'd only support basic Tgetattr fields. This is
+no longer true, so remove this comment.
 
 Signed-off-by: Christian Schoenebeck <qemu_oss@crudebyte.com>
 ---
- tests/qtest/libqos/virtio-9p-client.c | 1 +
- 1 file changed, 1 insertion(+)
+ hw/9pfs/9p.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/tests/qtest/libqos/virtio-9p-client.c b/tests/qtest/libqos/virtio-9p-client.c
-index c61632fcd3..98b77db51d 100644
---- a/tests/qtest/libqos/virtio-9p-client.c
-+++ b/tests/qtest/libqos/virtio-9p-client.c
-@@ -235,6 +235,7 @@ static const char *rmessage_name(uint8_t id)
-         id == P9_RMKDIR ? "RMKDIR" :
-         id == P9_RLCREATE ? "RLCREATE" :
-         id == P9_RSYMLINK ? "RSYMLINK" :
-+        id == P9_RGETATTR ? "RGETATTR" :
-         id == P9_RLINK ? "RLINK" :
-         id == P9_RUNLINKAT ? "RUNLINKAT" :
-         id == P9_RFLUSH ? "RFLUSH" :
+diff --git a/hw/9pfs/9p.c b/hw/9pfs/9p.c
+index 9a291d1b51..851e36b9a1 100644
+--- a/hw/9pfs/9p.c
++++ b/hw/9pfs/9p.c
+@@ -1596,10 +1596,6 @@ static void coroutine_fn v9fs_getattr(void *opaque)
+         retval = -ENOENT;
+         goto out_nofid;
+     }
+-    /*
+-     * Currently we only support BASIC fields in stat, so there is no
+-     * need to look at request_mask.
+-     */
+     retval = v9fs_co_lstat(pdu, &fidp->path, &stbuf);
+     if (retval < 0) {
+         goto out;
 -- 
 2.39.5
 
