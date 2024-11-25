@@ -2,95 +2,109 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F1229D8823
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Nov 2024 15:34:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 62D629D8866
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Nov 2024 15:47:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tFaAV-0005ld-AW; Mon, 25 Nov 2024 09:34:27 -0500
+	id 1tFaMO-0007VI-6w; Mon, 25 Nov 2024 09:46:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tFaAR-0005kt-Ps
- for qemu-devel@nongnu.org; Mon, 25 Nov 2024 09:34:24 -0500
-Received: from mail-lj1-x235.google.com ([2a00:1450:4864:20::235])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>)
+ id 1tFaM8-0007TT-WC; Mon, 25 Nov 2024 09:46:29 -0500
+Received: from smtp-out1.suse.de ([195.135.223.130])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tFaAP-0002XP-9s
- for qemu-devel@nongnu.org; Mon, 25 Nov 2024 09:34:23 -0500
-Received: by mail-lj1-x235.google.com with SMTP id
- 38308e7fff4ca-2f75c56f16aso51451701fa.0
- for <qemu-devel@nongnu.org>; Mon, 25 Nov 2024 06:34:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1732545258; x=1733150058; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=L13NRCkyqi0c2bLphchlHQO/5yzR5oeo9xAOVXdqqPk=;
- b=o2YWXFBOjm/IBxrBDpLz27I/HSV5n07zPvr/3do3IHoZcGUXHIX/0tHbqfniJ0Byf2
- 6MGeWdY2DWjeFU14wUbgjIm9w7YZFuSxKT0/+VOegn2GE9JLuCuiJ5as1Ly/Nl6fDDRX
- z0n1b21GesHIEkiOpgKI2dTrwPzaoAiZpgHu4AXkfsO1jMd6eRzkdmId4J7ZZu2HslHn
- POUhbxlZz862oL8sRnMizUb3/xWMN9qpUcsKuto1KJXd0PJU8KM1fNnHE4KPwzj14ICd
- R8wF/eVKrO09w+ozLWnRnHuqVsHvPhhYyQmSzyRv0l4z8P7dnQqZhea6GoI4+XfK3bb7
- M5Tg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1732545258; x=1733150058;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=L13NRCkyqi0c2bLphchlHQO/5yzR5oeo9xAOVXdqqPk=;
- b=Ve1gl/Rt08nouOw/JmMgDlX9npcMmu5myX7DjQFx+MfZf6OG0RL9BCpqobbvgwsLfk
- GwNS+XWxAE9YH4F0v6oQzrCxAW1O9Bt2dW7L1xlZZLfDGfazYXXfn54xXYxibRCu1kLH
- j/P6xCSFB2JrEoJIuVxx78HrwKRXa4RJvldyk4N799bZZvHxGWHsa51FLoDB6v5WQjSe
- Ea5t0hktfFRst5eMZL8R+m9ZXbe0gDe1QbtIaOCsh4YbeW5BrVuDo2HIYWSHLXX6ytMm
- RJpj2T7DlLgeL24MAMQfCefULk3aWZg4Nq6VlUTu5e5G5oPvGb0yKOPfc3ALkBhX0YBp
- GuBQ==
-X-Gm-Message-State: AOJu0YyVKMgTd8aPFTFvzFQi6WsNX/kLcPAQsOFnslWBhYwg6g9d4xSA
- H8gOXGzHQxJd3YWRGIn+fU4xlXQ/Pwto5RyCGAby+1jk4TGlwTN36B79ZH9kTthsCxYcgR24BPo
- l0BHejRKJGy1IpT2TzWHRv4wBJp5jDHdxX2f+/g==
-X-Gm-Gg: ASbGncs7BLCE46tpb2ohm3f/4Hyi3PSX68yXfnBO4pVqvU2t+8JvyIq3HHLtzfr/MJm
- ljeKeJV8EYnwVUsop3ItTy5M/kKMXwbG9
-X-Google-Smtp-Source: AGHT+IHRMdsrcynQ/wjLs4B6s4qayygZf+l418D7YqV74ot4oS3qMfFBiiYjxSyU1TgsMR9ye/mDPsqvzWFC1zTD4MM=
-X-Received: by 2002:a2e:a551:0:b0:2f6:6074:db71 with SMTP id
- 38308e7fff4ca-2ffa712ce91mr63772451fa.17.1732545258234; Mon, 25 Nov 2024
- 06:34:18 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>)
+ id 1tFaM7-00049f-4w; Mon, 25 Nov 2024 09:46:28 -0500
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
+ [IPv6:2a07:de40:b281:104:10:150:64:97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 27C2A21120;
+ Mon, 25 Nov 2024 14:46:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1732545978; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=0nfqTv5yZCwaMCCt+pl/hg4x9hoLbaUHGBav8PnHqvg=;
+ b=F6TFNx/0qJBHYrRE7cRgN0aVsovHnGXuQsjEi5E9YQvlP4r0pT8I3VZFXPbds9CTArA3Dh
+ d7yAjBpP8vUB3p0g40tDMU78c3S4+ZsYqrWQns43X8V1J8CeE3Xu0Fa9xsCd8uZmTLbCBU
+ VelMRqi2eZV8P97ecKy8CaNyHG/tDUk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1732545978;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=0nfqTv5yZCwaMCCt+pl/hg4x9hoLbaUHGBav8PnHqvg=;
+ b=HZAzH8FSP33VMgoC+4V4Xe2hjwhhfvQKZ81joAR9XCLjyNIAdEbVnyZrpgLYaSdlAaQMy9
+ 9NHNiGFienXaVvBA==
+Authentication-Results: smtp-out1.suse.de;
+ dkim=pass header.d=suse.de header.s=susede2_rsa header.b="F6TFNx/0";
+ dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=HZAzH8FS
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1732545978; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=0nfqTv5yZCwaMCCt+pl/hg4x9hoLbaUHGBav8PnHqvg=;
+ b=F6TFNx/0qJBHYrRE7cRgN0aVsovHnGXuQsjEi5E9YQvlP4r0pT8I3VZFXPbds9CTArA3Dh
+ d7yAjBpP8vUB3p0g40tDMU78c3S4+ZsYqrWQns43X8V1J8CeE3Xu0Fa9xsCd8uZmTLbCBU
+ VelMRqi2eZV8P97ecKy8CaNyHG/tDUk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1732545978;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=0nfqTv5yZCwaMCCt+pl/hg4x9hoLbaUHGBav8PnHqvg=;
+ b=HZAzH8FSP33VMgoC+4V4Xe2hjwhhfvQKZ81joAR9XCLjyNIAdEbVnyZrpgLYaSdlAaQMy9
+ 9NHNiGFienXaVvBA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 1331F137D4;
+ Mon, 25 Nov 2024 14:46:15 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id APmfMreNRGdRTgAAD6G6ig
+ (envelope-from <farosas@suse.de>); Mon, 25 Nov 2024 14:46:15 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: qemu-devel@nongnu.org
+Cc: qemu-block@nongnu.org, Peter Xu <peterx@redhat.com>,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ andrey.drobyshev@virtuozzo.com, den@virtuozzo.com,
+ Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Subject: [PATCH 0/5] migration: Fix the BDRV_O_INACTIVE assertion
+Date: Mon, 25 Nov 2024 11:46:07 -0300
+Message-Id: <20241125144612.16194-1-farosas@suse.de>
+X-Mailer: git-send-email 2.35.3
 MIME-Version: 1.0
-References: <20241125140535.4526-1-philmd@linaro.org>
- <20241125140535.4526-4-philmd@linaro.org>
-In-Reply-To: <20241125140535.4526-4-philmd@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 25 Nov 2024 14:34:07 +0000
-Message-ID: <CAFEAcA9hW6yBt9w3+2RDBovP1pNreBcvW4N7-6Kq_Gohvtv4eg@mail.gmail.com>
-Subject: Re: [PATCH-for-10.0 3/8] hw/pci-host/gpex: Allow machines to set
- PCI_BUS_IO_ADDR0_ALLOWED flag
-To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, Daniel Henrique Barboza <danielhb413@gmail.com>, 
- Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
- Bin Meng <bmeng.cn@gmail.com>, 
- Alistair Francis <alistair.francis@wdc.com>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>, 
- Zhao Liu <zhao1.liu@intel.com>,
- =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, 
- Palmer Dabbelt <palmer@dabbelt.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, qemu-arm@nongnu.org, 
- "Michael S. Tsirkin" <mst@redhat.com>, Nicholas Piggin <npiggin@gmail.com>, 
- Leif Lindholm <quic_llindhol@quicinc.com>, qemu-riscv@nongnu.org, 
- Weiwei Li <liwei1518@gmail.com>, Radoslaw Biernacki <rad@semihalf.com>,
- Thomas Huth <thuth@redhat.com>, 
- Yanan Wang <wangyanan55@huawei.com>, Eduardo Habkost <eduardo@habkost.net>,
- qemu-ppc@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::235;
- envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x235.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 27C2A21120
+X-Spamd-Result: default: False [-3.01 / 50.00]; BAYES_HAM(-3.00)[100.00%];
+ NEURAL_HAM_LONG(-1.00)[-1.000]; MID_CONTAINS_FROM(1.00)[];
+ R_MISSING_CHARSET(0.50)[];
+ R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
+ MX_GOOD(-0.01)[]; RCVD_VIA_SMTP_AUTH(0.00)[];
+ RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from]; 
+ RCVD_COUNT_TWO(0.00)[2]; ARC_NA(0.00)[]; MIME_TRACE(0.00)[0:+];
+ FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
+ RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+ FUZZY_BLOCKED(0.00)[rspamd.com]; RCPT_COUNT_SEVEN(0.00)[7];
+ TO_MATCH_ENVRCPT_ALL(0.00)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:mid,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns];
+ RCVD_TLS_ALL(0.00)[]; FROM_EQ_ENVFROM(0.00)[];
+ SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ DKIM_TRACE(0.00)[suse.de:+]
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Action: no action
+X-Spam-Score: -3.01
+Received-SPF: pass client-ip=195.135.223.130; envelope-from=farosas@suse.de;
+ helo=smtp-out1.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -107,22 +121,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 25 Nov 2024 at 14:06, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.or=
-g> wrote:
->
-> Expose the "allow-io-addr0-accesses" property so machines
-> using a GPEX host bridge can set this flag on the bus.
->
-> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
-> ---
->  include/hw/pci-host/gpex.h | 1 +
->  hw/pci-host/gpex.c         | 6 ++++++
->  2 files changed, 7 insertions(+)
+At this point everyone is probably familiar with the assertion:
 
-Given the way the gpex controller handles its MMIO regions,
-I rather suspect that none of its users really need to set
-"no address 0 accesses", though of course this is a behaviour
-change for some machines so would need testing.
+  bdrv_inactivate_recurse: Assertion `!(bs->open_flags &
+  BDRV_O_INACTIVE)' failed.
 
--- PMM
+The issue is that at the end of migration, the block layer is
+deactivated to release the locks on the disks so that in a shared
+storage scenario the migration destination can take over. Trying to
+deactivate twice leads to the above assertion.
+
+The reason deactivation is happening twice is due to the migration
+capability "late-block-activate", which delays activation until the
+destination VM receives a qmp_cont command. The reasoning for that cap
+is:
+
+    Activating the block devices causes the locks to be taken on
+    the backing file.  If we're running with -S and the destination libvirt
+    hasn't started the destination with 'cont', it's expecting the locks are
+    still untaken.
+
+    Don't activate the block devices if we're not going to autostart the VM;
+    'cont' already will do that anyway.   This change is tied to the new
+    migration capability 'late-block-activate' that defaults to off, keeping
+    the old behaviour by default.
+
+    bz: https://bugzilla.redhat.com/show_bug.cgi?id=1560854
+
+However, the expected qmp_cont command never happens, because the user
+may never decide to continue the VM and instead attempt another
+migration while the VM is paused.
+
+Fix this by assuming that the qmp_migrate command having been issued
+is enough indication that it is now ok to take the locks again
+(similarly to qmp_cont) and call bdrv_activate_all() at that
+moment. This is the least invasive fix that won't require us to add
+new qmp commands and go change libvirt, etc.
+
+I'm also copying the block list (for obvious reasons, but also)
+because Vladimir pointed out that asserts of this kind might not only
+happen during migration. I know of at least
+bdrv_co_write_req_prepare() which will assert if reached when a guest
+is paused after a migration that used late-block-activate.
+
+Patches 1-3 are just shuffling code;
+
+Patch 4 is the fix;
+
+Patch 5 is the test. To reproduce the issue revert patch 4 and run:
+
+QTEST_QEMU_BINARY=./qemu-system-x86_64 ./tests/qtest/migration-test -p \
+/x86_64/migration/precopy/ping-pong/late-block-activate
+
+References:
+https://gitlab.com/qemu-project/qemu/-/issues/686
+https://gitlab.com/qemu-project/qemu/-/issues/2395
+https://lore.kernel.org/r/20240924125611.664315-1-andrey.drobyshev@virtuozzo.com
+
+CI run: https://gitlab.com/farosas/qemu/-/pipelines/1556902330
+
+Fabiano Rosas (5):
+  tests/qtest/migration: Move more code under only_target
+  tests/qtest/migration: Don't use hardcoded strings for -serial
+  tests/qtest/migration: Support cleaning up only one side of migration
+  migration: Activate block devices if VM is paused when migrating
+  tests/qtest/migration: Test successive migrations
+
+ migration/migration.c           |  19 +++
+ tests/qtest/migration-helpers.c |   8 +
+ tests/qtest/migration-helpers.h |   2 +
+ tests/qtest/migration-test.c    | 252 +++++++++++++++++++++++++-------
+ 4 files changed, 226 insertions(+), 55 deletions(-)
+
+
+base-commit: 134b443512825bed401b6e141447b8cdc22d2efe
+-- 
+2.35.3
+
 
