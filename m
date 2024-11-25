@@ -2,64 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AF7A9D8D1C
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Nov 2024 21:01:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B1539D8D3B
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Nov 2024 21:06:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tFfFO-0005Gv-81; Mon, 25 Nov 2024 14:59:50 -0500
+	id 1tFfFP-0005Ip-Gx; Mon, 25 Nov 2024 14:59:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jean-philippe@linaro.org>)
- id 1tFfFG-00058n-Cd
- for qemu-devel@nongnu.org; Mon, 25 Nov 2024 14:59:42 -0500
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ id 1tFfFH-0005AZ-Hk
+ for qemu-devel@nongnu.org; Mon, 25 Nov 2024 14:59:43 -0500
+Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <jean-philippe@linaro.org>)
- id 1tFfF9-0004qU-Ls
- for qemu-devel@nongnu.org; Mon, 25 Nov 2024 14:59:42 -0500
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-434a45f05feso4467105e9.3
+ id 1tFfFA-0004qe-6j
+ for qemu-devel@nongnu.org; Mon, 25 Nov 2024 14:59:43 -0500
+Received: by mail-wr1-x42d.google.com with SMTP id
+ ffacd0b85a97d-3822ba3cdbcso3014201f8f.0
  for <qemu-devel@nongnu.org>; Mon, 25 Nov 2024 11:59:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1732564774; x=1733169574; darn=nongnu.org;
+ d=linaro.org; s=google; t=1732564775; x=1733169575; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=88wZi6u0Mqk3kSDzeuh2IkFT8p2T9s3ILqB4KFRDi3Y=;
- b=hETvNF74qAZq/GbILjT55FJGJ0u4OClIyOZ3QKQbIUCrzuybXDINENsjBkHHcNzFh7
- /Np1ukBqhEpKZhvqmXBpuCQsbcdnTsc1xk6pEZ9Y8i7fwtQpWUOtdoNe092pxG4GLLCJ
- yWz2/OK4A/5VMwbfobFPbzrP6SIriI7CUWHkW+xjq9dAPJCZHb6sAOCKtxHSQzEaS6ht
- KWa/+OAeWNKiZ/Da3vXsTu0jTmszCKculo9rcYOgBisIMcw7ZpSr6QDBgEW4ci6gdJC9
- 7rem+LqsftFOa1MDbMzOXRmx3mXma80p43IzID0j18g4WOqgRohIusKJj9VEgcXccN3F
- BoWg==
+ bh=a59XHnG8h+nIeFzh80GUuHguY0Zka09dW1/TbkEKxDk=;
+ b=pprp2SViVYifoJn3Kcq5KOfLqCasJhpKzWWwaH7WDQpsWMIOpIwKPI7fc9JlRBFHa2
+ rcwCjfFPICqZ9gbPMx6kg2tMVoCEA9dx+/KR8gel8h35UIuDJqppeRKLUu5FSOZwjrnv
+ e9iloj+43He6qmjh5qpGvhY4cZ1HYwvVzwIOVT4tO/GG5NlEW1Alet8Lar/PNGqZ7sCN
+ UOhXVQeUUWljQxhqIipMjy/UU7BkY7Eqm7+ULkPrH+27kQdNnUG8autZtH7DGiXQV+09
+ 0k6ydZbvnaFWVJNvX4LXrTW+tAnGbmBKmr8hA4n7zqzRoL9Fa7ny8fcNuwNuiBbBTILw
+ FrSg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1732564774; x=1733169574;
+ d=1e100.net; s=20230601; t=1732564775; x=1733169575;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=88wZi6u0Mqk3kSDzeuh2IkFT8p2T9s3ILqB4KFRDi3Y=;
- b=RKk8ybdaTNVzUqsjdzHOA/Om59Xl4mFlfoIdWyiX9hXAB5xt+e0JBexXdmd7rFaUza
- GESAiFMyhV3tP6N8Kgzegt0ss0zRTpAxtyjnzAT2xPilfRBhNo1Xik50yo//PfEmLes4
- 7prCULn0AcbTBvBU3vqg7gdtsFTShMcQ8EWdnY1ApNk7ITkUf1w33pLfdNIpFnFCe9eE
- ursSRsxIAqDmJ3w2EG6RaGf92rvN9GrsKCWQe6eRjBAAk8c7dB+rFhm2pxZDq1o305XN
- W/s6qXxThFRkumpCC6xHGPsqxhK+TVKweKbC16OuRjs/ucyFRv+dBJYBjOu+CV/DBCV7
- HX4Q==
+ bh=a59XHnG8h+nIeFzh80GUuHguY0Zka09dW1/TbkEKxDk=;
+ b=wZ+MWl+1IWOLhtDGxk64vn1ouCNxZmMB47DFyTSzjffduatRUJN98z8ie9GyIFj4x0
+ 0t+lwb74ajdl5GU545vRM9/tLh/iVylB9Sc++qT7rjxsOq6k0bEQeWkTYmul31GKT0vw
+ c3gZ1RZND/JnqPpHaPmAFTN7crSP7EZC3LB/JwkwQFaiz/xgwi+WM5yaowMUfTVZ6Fbr
+ eeWlfSctjQW8J5eWt3IFu/G0b9s7vd4gWiBlOpWlQWw8BGFHF+Zps7ivXYa5TjoKEhcn
+ cAs5gBPKwCZLRZWLCdBS8CySndFhby+XUDxE2acvY5TAnR4jmD2ZjDT8qGNb5l5xjdgv
+ DYCw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVLS1I9bOf4urtrS2wakUhzAyxB9X7M1ciQsB9oAyuBMBrNdBDylr7KFJd1W9RcAKRTiu4iyDHCK4bQ@nongnu.org
-X-Gm-Message-State: AOJu0YwrI5yzfT5CRhYw2sPXEi1ooraE5hhFw1MzWgvbqzzJ93UGKfWL
- elWGSKq9/A0K2BDQFJB0hhJwwNJ8G+7ZfTg46nm+Ty1XXV/A0N0cHbLk2lSlnHM=
-X-Gm-Gg: ASbGncu6HGS/WEfDnSeHNBDOohwyGtmEBc1sKrBxZwJO+x+FSHmwHvPVS6lDEihO0yP
- SK/RM3WFKesOvzyRheMUYmYaeZM8s8Y+u8ZbS8mW+bMZsk8fCFCx7Gc1/P55QOeoyx2KZqpvkxS
- TYxFtSuJMUAYihsQuzfIYFxD1q5aRESuDC0UVkmcKg2xnjPLLwSR1ceTst/MuqhXXrwUR+m7FW/
- QyPkghle+9AadeydEV9IloSAgWydkSwtnwY6hckHiK+fOW6mSY3qQTMfAJdSIuygBAZ
-X-Google-Smtp-Source: AGHT+IFTlfcnMQ8Q4NF57sJVKIYTBVoT9UNzBHBtzEnmlddW54qtujZLRGCe/OHa5mHxjA4P3prFAA==
-X-Received: by 2002:a05:6000:1866:b0:382:4921:21b5 with SMTP id
- ffacd0b85a97d-38260bc6a49mr15718516f8f.43.1732564774327; 
+ AJvYcCXV4ViuKeAAbEgRYXVrCxc0/5KjUItyit2G3uoGjSWARNUvWQmONZiX77JFC7eMSRCaCrbUSzGEmLtl@nongnu.org
+X-Gm-Message-State: AOJu0YxoWk2I+8ZuVb11BPGOMBVpLvoHdfegAm5nJs4kB4HY4SFchbU0
+ hMtq08HHghAopW8VgMZuQKOioQ3zkzA7JQ79BaAbCbrK01+fLrhUYt7vubKoJR8=
+X-Gm-Gg: ASbGnctunQArlFsDe1kJdmvHr0cfz1txsVJZKWHH1MdvSDrArCu9fUa/MQP8czsAamS
+ nPIxKBSJd1Ta8ZzARMs6IFI5roRwDJob6wG+aUaCLLTBGhkS98Lky3Z2rA+rMmzVmExPV6XM92b
+ Z+cTPRKBD7hfJHQa6OxzJQIc/M084kcDDck6W9iuKUeHneB3A2XPk8IO89HFCkth4Tux5JFdCwA
+ ugbvWKJnXQFFss9FM7pXDYY9HIQ99+JETce+hm10TVQShs8GXBnTVgD4fcuE/vob4IY
+X-Google-Smtp-Source: AGHT+IHw3piCsY1SYgCrnqKdV96wffE5D/aAxPSvz1IACBcKd/oVvMDVzCGHC+uO8C/BpUQCIXl+JQ==
+X-Received: by 2002:a05:6000:184d:b0:382:4b5c:419d with SMTP id
+ ffacd0b85a97d-38260b878e1mr11702601f8f.28.1732564774795; 
  Mon, 25 Nov 2024 11:59:34 -0800 (PST)
 Received: from localhost.localdomain ([2.221.137.100])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3825fd0fbdcsm11237971f8f.109.2024.11.25.11.59.33
+ ffacd0b85a97d-3825fd0fbdcsm11237971f8f.109.2024.11.25.11.59.34
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Mon, 25 Nov 2024 11:59:34 -0800 (PST)
 From: Jean-Philippe Brucker <jean-philippe@linaro.org>
@@ -67,24 +67,23 @@ To: peter.maydell@linaro.org
 Cc: richard.henderson@linaro.org, philmd@linaro.org, qemu-arm@nongnu.org,
  qemu-devel@nongnu.org, alex.bennee@linaro.org,
  Jean-Philippe Brucker <jean-philippe@linaro.org>
-Subject: [PATCH v3 17/26] hw/arm/virt: Reserve one bit of guest-physical
- address for RME
-Date: Mon, 25 Nov 2024 19:56:16 +0000
-Message-ID: <20241125195626.856992-19-jean-philippe@linaro.org>
+Subject: [PATCH v3 18/26] hw/arm/boot: Mark all guest memory as RIPAS_RAM.
+Date: Mon, 25 Nov 2024 19:56:17 +0000
+Message-ID: <20241125195626.856992-20-jean-philippe@linaro.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241125195626.856992-2-jean-philippe@linaro.org>
 References: <20241125195626.856992-2-jean-philippe@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=jean-philippe@linaro.org; helo=mail-wm1-x329.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
+ envelope-from=jean-philippe@linaro.org; helo=mail-wr1-x42d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,46 +99,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When RME is enabled, the upper GPA bit is used to distinguish protected
-from unprotected addresses. Reserve it when setting up the guest memory
-map.
+All Realm IPA states are by default RIPAS_EMPTY, and accessing them in
+that state causes injection of synchronous exception. Either the loader
+or the guest needs to set IPA state to RIPAS_RAM before accessing it.
+Since a Linux guest needs all memory ready at boot [1], initialize it
+here.
+
+[1] https://docs.kernel.org/arch/arm64/booting.html
+    https://lore.kernel.org/all/20241004144307.66199-12-steven.price@arm.com/
 
 Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
 ---
- hw/arm/virt.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+v2->v3: New: the Linux guest does not initialize RIPAS itself anymore,
+and expects the loader to do it.
+---
+ hw/arm/boot.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-index 9836dfbdfb..eb94997914 100644
---- a/hw/arm/virt.c
-+++ b/hw/arm/virt.c
-@@ -3035,14 +3035,24 @@ static int virt_kvm_type(MachineState *ms, const char *type_str)
-     VirtMachineState *vms = VIRT_MACHINE(ms);
-     int rme_vm_type = kvm_arm_rme_vm_type(ms);
-     int max_vm_pa_size, requested_pa_size;
-+    int rme_reserve_bit = 0;
-     bool fixed_ipa;
+diff --git a/hw/arm/boot.c b/hw/arm/boot.c
+index 5301d8d318..a2414b1f98 100644
+--- a/hw/arm/boot.c
++++ b/hw/arm/boot.c
+@@ -26,6 +26,7 @@
+ #include "qemu/config-file.h"
+ #include "qemu/option.h"
+ #include "qemu/units.h"
++#include "kvm_arm.h"
  
--    max_vm_pa_size = kvm_arm_get_max_vm_ipa_size(ms, &fixed_ipa);
-+    if (rme_vm_type) {
-+        /*
-+         * With RME, the upper GPA bit differentiates Realm from NS memory.
-+         * Reserve the upper bit to ensure that highmem devices will fit.
-+         */
-+        rme_reserve_bit = 1;
-+    }
+ /* Kernel boot protocol is specified in the kernel docs
+  * Documentation/arm/Booting and Documentation/arm64/booting.txt
+@@ -1238,6 +1239,9 @@ void arm_load_kernel(ARMCPU *cpu, MachineState *ms, struct arm_boot_info *info)
+     info->dtb_filename = ms->dtb;
+     info->dtb_limit = 0;
+ 
++    /* Mark all Realm memory as RAM */
++    kvm_arm_rme_init_guest_ram(info->loader_start, info->ram_size);
 +
-+    max_vm_pa_size = kvm_arm_get_max_vm_ipa_size(ms, &fixed_ipa) -
-+                     rme_reserve_bit;
- 
-     /* we freeze the memory map to compute the highest gpa */
-     virt_set_memmap(vms, max_vm_pa_size);
- 
--    requested_pa_size = 64 - clz64(vms->highest_gpa);
-+    requested_pa_size = 64 - clz64(vms->highest_gpa) + rme_reserve_bit;
- 
-     /*
-      * KVM requires the IPA size to be at least 32 bits.
+     /* Load the kernel.  */
+     if (!info->kernel_filename || info->firmware_loaded) {
+         arm_setup_firmware_boot(cpu, info);
 -- 
 2.47.0
 
