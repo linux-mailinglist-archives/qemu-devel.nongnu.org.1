@@ -2,81 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 451159D863C
+	by mail.lfdr.de (Postfix) with ESMTPS id 321669D863B
 	for <lists+qemu-devel@lfdr.de>; Mon, 25 Nov 2024 14:22:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tFZ1V-0002Sq-0T; Mon, 25 Nov 2024 08:21:05 -0500
+	id 1tFZ1Y-0002Th-Dy; Mon, 25 Nov 2024 08:21:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1tFZ1S-0002Rb-TF; Mon, 25 Nov 2024 08:21:02 -0500
-Received: from mail-ot1-x32b.google.com ([2607:f8b0:4864:20::32b])
+ id 1tFZ1W-0002T9-59; Mon, 25 Nov 2024 08:21:06 -0500
+Received: from mail-pg1-x52a.google.com ([2607:f8b0:4864:20::52a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1tFZ1R-0005oC-DP; Mon, 25 Nov 2024 08:21:02 -0500
-Received: by mail-ot1-x32b.google.com with SMTP id
- 46e09a7af769-71d41932d32so597620a34.0; 
- Mon, 25 Nov 2024 05:21:00 -0800 (PST)
+ id 1tFZ1U-0005oq-NE; Mon, 25 Nov 2024 08:21:05 -0500
+Received: by mail-pg1-x52a.google.com with SMTP id
+ 41be03b00d2f7-7f450f7f11dso3127484a12.2; 
+ Mon, 25 Nov 2024 05:21:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1732540859; x=1733145659; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1732540863; x=1733145663; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=6juxhfs2hjCGJ1x2Pzt+pizv6wKE5nSZ+639faHAX3c=;
- b=LaD3nmubdLVkxbHgwlgPvsymamvous3hJZ4pqxeyqSyneyI58aLJO5WOBfIp3Hl9au
- MKON5bc2vYbtsvkuGB7EoTDqWvVnlaMzdM1E/NnvboXEoqWsMrpCgXy7qeWBN0RT96NA
- I1sKY6gSGKZqVeQXSKYkQkigwyr0B3Zmv9V7tskfF6No5duI8s9KdVaJIqjXirbYuIWd
- 5rbV9WoY3ePAX+C2OE7mNj2P5ZHqwzYOraHaSpwYcrIba9G4/ur9i4mkjOkXm+oipFcc
- uoSI6XsWhOzuIFw5r1HMlHQUMfastq2HhGC10iQSgkNhDi2Pu1PWy1XwY4N9HAvpCydj
- D5XA==
+ bh=7IdWvHR5b7t4vflEj+LY1CHfeckBBRyVCsURA5jMuHo=;
+ b=A1trK9e4zdDfVgc2Sz6bSlDeOyMz08iLaZQ63B07h6KSnsgTCiwuBRB6P9fVSx5Eym
+ C2iz5hs+o1Oi5ntIaOYfdzD1b5fAT0OsF3tS1kGdWKSjXuZw6CF/kjf9GIRo12yG7wds
+ M+CjamAf3pP/kdHrfeOIU8ZGyxDVmj3m8R1DaTHHeew+c+8Xp6sxMN+i/Zc34H2aPeAQ
+ UTJCHHhPShH/NYAuXFhHzysj5Pb1pM0VAehHA77kFokzW1Nu8B6t6h32dG0EOiU343pK
+ VwSEQ8hsxk29LlZmrve8qot94bg0eCPD3YHg4au59spSlqA4ULMa23I+ANb7ke4XjMHe
+ KWcQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1732540859; x=1733145659;
+ d=1e100.net; s=20230601; t=1732540863; x=1733145663;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=6juxhfs2hjCGJ1x2Pzt+pizv6wKE5nSZ+639faHAX3c=;
- b=scBbUyeaX0aBwd1lrpEql7QNghQfW7c3RYapvr3gh1DM17/ZOEsy3RJLQt7uJCSzPg
- LseSk8/+g1FXLoJstMpqXtS8aLqVIHDG41cYgk1PZnO4jr4SAVmQiy1/bWxAxYJkYu5s
- fTqGV2mEvn1k2FY7JQDC1/5hC9FzIB6PIab/HPMk//1LwOpLvKAHbca6wGveaPrCTOuc
- tlvT8F1bSvJekZNhYpKoKSBdGfEc49wRPWjS1QzCnsFcAfE5oqbex8Cyy28xZkHKus9T
- e+l8GpVIidq5QItcqKiyKLMb2Q7WwS1bokc8ixRpPo3nwHJq3tCUi9wr7YeQHDKcx6Cn
- atMw==
+ bh=7IdWvHR5b7t4vflEj+LY1CHfeckBBRyVCsURA5jMuHo=;
+ b=aC0rwTZBZGkH8qCdmmsHrVuuXgcNNWQ1zE58WuzyU83CmhW7EWrT9jf4W6YnGGibTz
+ H1yDi3XOlRHe92iHncwDfByWxfZITGlhinqPv1LRBdDmzlUIeBA44hmewGI7mONDDZyZ
+ oVUEnebAD1N5khpdka/056Yjk+MKTgLv6tEkzTqAOYGuxwYkoZYwRux1TBKpoE7/FJa0
+ AJ148EpjQefvGKU4KG/inTk+F5mLQKw7KsFa4YoZsQPsiBEAAGxFfisUmx2Ks1X4VsCv
+ be4hnN1c0yvKxJh2VU/fONiWisih3+R+cSJaudtO3TARDEbvIn+5NtPjI8OTGSYqVx2s
+ JEWA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWBLr3x9u6xHighqyTOEP5uBe5EJEcf5PCMZ4OkCLv+KwHwSsEfc5neQ0yof4ILSkLSUiz67NloIzJz@nongnu.org
-X-Gm-Message-State: AOJu0YzjNEePrMWjJXVj6o+hunXQsvTxSHvqrrWsMUpeqflC9EPjpFgY
- RSNgI/L28mmCXCurjhGHl3ct+a3RqvBo7595rLlTtyBOq4s2sUhl/DVM3Q==
-X-Gm-Gg: ASbGncsnS6ysHek3KwFrWskKaAds/Ck1e8y93v7jXCtwZsBqqMiP3NDIwbVK8aDuD03
- Lu9Gr8rsWdc5Jryp4mLQEd8S5uAsH1E+xRNH30PRcMSuUDGkxfIRmh50xs3Hl0LLSpLujaNslni
- ZDxNm27vYaT0PrnOJBPAuoj3iJtamvbn5ih3V4V2Ty7QCs+UPRDZ9uXS/bQLAIKb13M30YIpQqJ
- IT4VcEgquvpWTIhEJgeZdNHjUGiJ7zsQulXphqWZjkvhOglDmDuGGsxnkbjSTF4y1x1gDiM79xP
- BoLkww==
-X-Google-Smtp-Source: AGHT+IFPgY5P6A2xYcOrc4zqUuKqdl4EpTXv5lj2bM4FRV8zaOWb7GQaHmrAmg7hoGk77HKCu/QdTQ==
-X-Received: by 2002:a05:6830:6386:b0:718:2302:7560 with SMTP id
- 46e09a7af769-71c04b8ad95mr12446146a34.7.1732540859404; 
- Mon, 25 Nov 2024 05:20:59 -0800 (PST)
+ AJvYcCXL48OFgKCpSpG1RAHEUGEf6KERt5LjGi2GHiITg2JDuLgoKVjuiPM20Jkppm2sUEoYyWaRwZF2M2YL@nongnu.org
+X-Gm-Message-State: AOJu0YwGByCUN+luYlMcGFBTdsEtZiJuTfft45wDYujvNFj+sKsyJUQX
+ 8WloyfgOJPb4t7HiAmBKWVAQZ/VbPNuA9pHVPWCrH+Q8m+RKX/SgEdfA3Q==
+X-Gm-Gg: ASbGnct1DL3XsT1VUwAlmDmbLRZbtfzT1Be6S+yXW4iGVn3MM/k81AcZ/M7BrmzXdE2
+ oXZeh4qj3lr7WA65FMYucTXGi5nG8SJfnU4DcS9otQWdrljL+IxsXEiiGNe204aRw2zdR3ig83o
+ JSFMLCE3xpaRJA2svbA1C7Gtk7thddUjPT5lyfHTIz/qJozCWHJ0qRPe9IKWHqwqR+QB5Jd33Vj
+ nA0GPzPGdj247J/9Zd/Nz7S09vl0bYJRx0tzjb3ONs480MhvUWefraVSc31EA/BzqwdDCawXkVl
+ QExyaA==
+X-Google-Smtp-Source: AGHT+IHxUCaw/ZQPWI4iqqBUFwF1LBolZtaXndO+gpWUDCccz9wunrEjVlRULjLXlF6LnPGC34nUBQ==
+X-Received: by 2002:a05:6a20:6a10:b0:1db:e508:cf68 with SMTP id
+ adf61e73a8af0-1e09e46dd36mr21694414637.24.1732540862696; 
+ Mon, 25 Nov 2024 05:21:02 -0800 (PST)
 Received: from wheely.local0.net (124-171-72-210.tpgi.com.au. [124.171.72.210])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-7fbcc1e44d5sm5616721a12.32.2024.11.25.05.20.56
+ 41be03b00d2f7-7fbcc1e44d5sm5616721a12.32.2024.11.25.05.20.59
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 25 Nov 2024 05:20:59 -0800 (PST)
+ Mon, 25 Nov 2024 05:21:02 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-ppc@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org,
  Chalapathi V <chalapathi.v@linux.ibm.com>,
  Harsh Prateek Bora <harshpb@linux.ibm.com>,
  Glenn Miles <milesg@linux.ibm.com>
-Subject: [PATCH 3/4] target/ppc: Fix THREAD_SIBLING_FOREACH for mult-socket
-Date: Mon, 25 Nov 2024 23:20:40 +1000
-Message-ID: <20241125132042.325734-4-npiggin@gmail.com>
+Subject: [PATCH 4/4] ppc/pnv: Add xscom- prefix to pervasive-control region
+ name
+Date: Mon, 25 Nov 2024 23:20:41 +1000
+Message-ID: <20241125132042.325734-5-npiggin@gmail.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241125132042.325734-1-npiggin@gmail.com>
 References: <20241125132042.325734-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::32b;
- envelope-from=npiggin@gmail.com; helo=mail-ot1-x32b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52a;
+ envelope-from=npiggin@gmail.com; helo=mail-pg1-x52a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,73 +100,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Glenn Miles <milesg@linux.ibm.com>
+By convention, xscom regions get a xscom- prefix.
 
-The THREAD_SIBLING_FOREACH macro wasn't excluding threads from
-other chips. Add chip_index field to the thread state and add
-a check for the new field in the macro.
-
-Fixes: b769d4c8f4c6 ("target/ppc: Add initial flags and helpers for SMT support")
-Signed-off-by: Glenn Miles <milesg@linux.ibm.com>
-[npiggin: set chip_index for spapr too]
-Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
+Fixes: 1adf24708bf7 ("hw/ppc: Add pnv nest pervasive common chiplet model")
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- target/ppc/cpu.h        | 7 +++++--
- hw/ppc/pnv_core.c       | 2 ++
- hw/ppc/spapr_cpu_core.c | 1 +
- 3 files changed, 8 insertions(+), 2 deletions(-)
+ hw/ppc/pnv_nest_pervasive.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/target/ppc/cpu.h b/target/ppc/cpu.h
-index 0b4f1013b8..2ffac2ed03 100644
---- a/target/ppc/cpu.h
-+++ b/target/ppc/cpu.h
-@@ -1253,6 +1253,7 @@ struct CPUArchState {
-     /* For SMT processors */
-     bool has_smt_siblings;
-     int core_index;
-+    int chip_index;
+diff --git a/hw/ppc/pnv_nest_pervasive.c b/hw/ppc/pnv_nest_pervasive.c
+index 77476753a4..780fa69dde 100644
+--- a/hw/ppc/pnv_nest_pervasive.c
++++ b/hw/ppc/pnv_nest_pervasive.c
+@@ -177,7 +177,7 @@ static void pnv_nest_pervasive_realize(DeviceState *dev, Error **errp)
+     pnv_xscom_region_init(&nest_pervasive->xscom_ctrl_regs_mr,
+                           OBJECT(nest_pervasive),
+                           &pnv_nest_pervasive_control_xscom_ops,
+-                          nest_pervasive, "pervasive-control",
++                          nest_pervasive, "xscom-pervasive-control",
+                           PNV10_XSCOM_CHIPLET_CTRL_REGS_SIZE);
+ }
  
- #if !defined(CONFIG_USER_ONLY)
-     /* MMU context, only relevant for full system emulation */
-@@ -1412,8 +1413,10 @@ struct CPUArchState {
- 
- #define THREAD_SIBLING_FOREACH(cs, cs_sibling)                  \
-     CPU_FOREACH(cs_sibling)                                     \
--        if (POWERPC_CPU(cs)->env.core_index ==                  \
--            POWERPC_CPU(cs_sibling)->env.core_index)
-+        if ((POWERPC_CPU(cs)->env.chip_index ==                 \
-+             POWERPC_CPU(cs_sibling)->env.chip_index) &&        \
-+            (POWERPC_CPU(cs)->env.core_index ==                 \
-+             POWERPC_CPU(cs_sibling)->env.core_index))
- 
- #define SET_FIT_PERIOD(a_, b_, c_, d_)          \
- do {                                            \
-diff --git a/hw/ppc/pnv_core.c b/hw/ppc/pnv_core.c
-index cbfac49862..e6b02294b1 100644
---- a/hw/ppc/pnv_core.c
-+++ b/hw/ppc/pnv_core.c
-@@ -322,6 +322,8 @@ static void pnv_core_cpu_realize(PnvCore *pc, PowerPCCPU *cpu, Error **errp,
-     pir_spr->default_value = pir;
-     tir_spr->default_value = tir;
- 
-+    env->chip_index = pc->chip->chip_id;
-+
-     if (pc->big_core) {
-         /* 2 "small cores" get the same core index for SMT operations */
-         env->core_index = core_hwid >> 1;
-diff --git a/hw/ppc/spapr_cpu_core.c b/hw/ppc/spapr_cpu_core.c
-index ada439e831..135f86a622 100644
---- a/hw/ppc/spapr_cpu_core.c
-+++ b/hw/ppc/spapr_cpu_core.c
-@@ -313,6 +313,7 @@ static PowerPCCPU *spapr_create_vcpu(SpaprCpuCore *sc, int i, Error **errp)
-         return NULL;
-     }
- 
-+    env->chip_index = sc->node_id;
-     env->core_index = cc->core_id;
- 
-     cpu->node_id = sc->node_id;
 -- 
 2.45.2
 
