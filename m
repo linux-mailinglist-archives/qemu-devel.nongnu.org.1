@@ -2,84 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A8A59D891E
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Nov 2024 16:22:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 346FC9D8920
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Nov 2024 16:22:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tFatm-0003vn-5O; Mon, 25 Nov 2024 10:21:14 -0500
+	id 1tFato-0003ws-1v; Mon, 25 Nov 2024 10:21:16 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tFatj-0003uL-CY
- for qemu-devel@nongnu.org; Mon, 25 Nov 2024 10:21:11 -0500
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ id 1tFatk-0003uy-S7
+ for qemu-devel@nongnu.org; Mon, 25 Nov 2024 10:21:12 -0500
+Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tFath-0001jo-Hu
- for qemu-devel@nongnu.org; Mon, 25 Nov 2024 10:21:11 -0500
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-43162cf1eaaso57922335e9.0
- for <qemu-devel@nongnu.org>; Mon, 25 Nov 2024 07:21:08 -0800 (PST)
+ id 1tFath-0001js-Hl
+ for qemu-devel@nongnu.org; Mon, 25 Nov 2024 10:21:12 -0500
+Received: by mail-wr1-x42c.google.com with SMTP id
+ ffacd0b85a97d-382433611d0so3891427f8f.3
+ for <qemu-devel@nongnu.org>; Mon, 25 Nov 2024 07:21:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1732548067; x=1733152867; darn=nongnu.org;
+ d=linaro.org; s=google; t=1732548068; x=1733152868; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=RvK4bKDeVOpZ19QqnWXbDR0Dq2nUudgpqwsRQwj1P8o=;
- b=i326yPNlZkAnnHQDFCJJo2ix6J+FDhs0AMhphHZaZ/L7sfEuVWKOXWKUtZKLIXPbw/
- 6LMzKRVxvoIKXgCDyna0cVZG9o7/1BBKFRW7JDAhDpAKC7gFHPJG2Rf6B34Cz4OrFmfw
- A3GoJuT9CSJY5n67JBp6k5RYvNjXBnxw0sk0jQNqlIGszEyKm+RyAadPir7PSSVSjBf5
- 878fnXM2R97hVprmj0LmcWWxphhsr+i58hyWEGbXwI7VUgL8XzqCLFQqrcdhsnJ9kdE+
- 5hZwY+iFi/oL/7CrCi5dPMPOLo8ocTE3c5cbh/fWxrWm3HiUXU2truDviemJAu4iyxQL
- yBfQ==
+ bh=W2LvUWK0oXyNULzh/PoP5B4uyQP6aDypt8ae/Sui1l0=;
+ b=AGqP9kDrBkKHlDLOERGUgRimaUr3FCS7HAQImFWXHgtafd9ICndOdwPkiJF9Rk9sUg
+ hLoi/fRncU1PG0fDhaZqabq3L5Kxgqa0zgRzdPBm7qkydciuk1HSGg8znX/iDMoGa8qH
+ XtuhOY7I5LHxyZZOPYiGPzOMQYIeEujfOwKGtqzTdY1PGQnrIIHUURY820PQxYUBJ48A
+ tqVnQL+WEiVuw28zBQzfCvw/4q6Dgn/vVme97BlMwZCEnVrqrjGP3tmCa11Gs0C552Mw
+ YjrH8JkIGw1l9T9ihJRkM7ivdszVB2hOXa2ZSQdjXjxuO/baoirDe99dD+hiahQtmSHt
+ 4bhg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1732548067; x=1733152867;
+ d=1e100.net; s=20230601; t=1732548068; x=1733152868;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=RvK4bKDeVOpZ19QqnWXbDR0Dq2nUudgpqwsRQwj1P8o=;
- b=lsiaIrcH7ITwDDE86wN8e0xe3D7NtYXa7TFQvJ0mc8qycc62owX/dyg44EeCfTBQam
- soJlvbVhvT/9TOs2iFWa8hPdTaavL1lLKn4h4KdyneQ+El8f3BHYROn1t2wyVQLmszQu
- 9ztiZPY4hh2Ie7o2eDhUlZGg16eCbHFg/PgkYZkQ8Wx1jFsIhXvWF0uKwV6QxZBRQmFH
- lllz5g5Z66zyXR0L2xBI6CgH6GO/wYwtRzeBS6EpiPMqqoVSA0AKmAhzBhX7UI2Vq8zY
- YMyteVCfZUG3Sb1jrUyRGEHK2d0+9fdxA2hlu3mSHam/5gMM8jGO1IUrZFokVUB2Dtfn
- F6pw==
-X-Gm-Message-State: AOJu0YzDi0CSud16ORGICsxc6FC0O/10CZUHmkeQeYxVb5H2oOGnZO2t
- 20r7yr1t9uBba+bPWlZmveIX/8/wyIC4Aak/ZSCjA2/lTdkY5xsTZjEZrGtNsCs=
-X-Gm-Gg: ASbGncsHGFOzFfR56xYHD4sf6jotk6+JWLzsn2DmHtq1Y6NQEVlsyoPw4KWW5w6/oEG
- uzn9/pMs1IX5QYt83FWz5IJIlgn4l4gUtsPcfPvh+42GW6YEu02Bm4MW3+qP4M13211Ffswlevl
- /QVklYKGrMctBZi9N39mBGASA5dzkZmEwSMNQqGedZe1k2W2bVGHsgSv4WMtOTBCKIHlxZdGazG
- kZu8ei7V0986OsmLSt502c5tqj0lTeW/fqPRpfIohG9gqp7
-X-Google-Smtp-Source: AGHT+IHhtr/o/AxUlCIDcMq3Epmjf0JFVpX4ctuvVRGb2YCQb0gqHm+DHZx5+8ejNe1XDz7duOpOkg==
-X-Received: by 2002:a05:600c:3b12:b0:431:604d:b22 with SMTP id
- 5b1f17b1804b1-433ce426874mr154669405e9.16.1732548067192; 
+ bh=W2LvUWK0oXyNULzh/PoP5B4uyQP6aDypt8ae/Sui1l0=;
+ b=qM+3TtdHJuN1UwxXLWAr/MKnQv0XEJJMkQlyEwsis6gDsXzzgdSJjTx4HxTcHIuxYq
+ rPzFWf7BqXqCjpTl2558uE0Ovv9uSlhXfN112KLQgesTGSMu7XAp78s2HQ3/k4CP6FYR
+ fdlH+UINkYV9tHVS07TkdA1HrovfVa9/8ZWdHhUqL1B6m8uqZVMsDUv7mTgy2JaQqaoG
+ oglneFLbuLwQlgUOsbsmfJP3NWGAhLlVjPhvM440i5xQBq+4N8cGcvxkl3whJKlZpnGw
+ w0zz0fxGQuMcoYmUD/o0+jdbB4grXcwn6UTB+RsYdpgH2RIQECclqPpVGv5gK4hxnQ8h
+ FbuQ==
+X-Gm-Message-State: AOJu0YwbfaQ9StmgoI7EKhYamYs74aOzWJqTPdUQddWJ4vjtOCRQ41YZ
+ WWwnfSC0xaZIxEUBEF2rM/uUB8rzGATwfFuartFzejmTI3oZ36YTbhLwfcoSYOg=
+X-Gm-Gg: ASbGncshmGmA22fc3PRdiYhqNv32Wc4wLlXL8EYB2YX6XZ+om2qzZpratLBbaXKFrig
+ K2pqUpDJ2pfF6mVI0CSmRDRSJaEfFyv/aJ+GIKwpKDa+AO3FsQnxpmSL+tON02UUIde1r9XbfXW
+ ZeMRBxa7r7Tv6xJn5b4VR+H4rs6C5iZVELqtY7DA28LcreilFV3xD2zTwQSnGsWP7teFe5WiSSE
+ CTudsB3mt9/AYBieIV7hQ48flJV84ThMc2i4F8u/4bL/Ge5
+X-Google-Smtp-Source: AGHT+IH0j5Dau9BvakrrsFuRV0m2i/pKx8mBp1Xedx6g9OPPxpfNeWmDY2QsLnclKs63as0MYEupVw==
+X-Received: by 2002:a05:6000:184d:b0:382:465f:336d with SMTP id
+ ffacd0b85a97d-38260b3cabbmr15409059f8f.1.1732548067824; 
  Mon, 25 Nov 2024 07:21:07 -0800 (PST)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-434a14ace5asm21584425e9.9.2024.11.25.07.21.06
+ ffacd0b85a97d-3825fafe147sm10577475f8f.30.2024.11.25.07.21.06
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Mon, 25 Nov 2024 07:21:06 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id DFE6F5F8B7;
- Mon, 25 Nov 2024 15:21:05 +0000 (GMT)
+ by draig.lan (Postfix) with ESMTP id 0303B5F8FE;
+ Mon, 25 Nov 2024 15:21:06 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Aurelien Jarno <aurelien@aurel32.net>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>
-Subject: [PULL 01/28] tests/functional: fix mips64el test to honour workdir
-Date: Mon, 25 Nov 2024 15:20:38 +0000
-Message-Id: <20241125152105.2100395-2-alex.bennee@linaro.org>
+ Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 02/28] tests/functional: automatically clean up scratch files
+ after tests
+Date: Mon, 25 Nov 2024 15:20:39 +0000
+Message-Id: <20241125152105.2100395-3-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241125152105.2100395-1-alex.bennee@linaro.org>
 References: <20241125152105.2100395-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -104,29 +104,86 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Daniel P. Berrangé <berrange@redhat.com>
 
-The missing directory separator resulted in the kernel file being
-created 1 level higher than expected.
+The build/tests/functional subdirectories are consuming huge amounts
+of disk space.
+
+Split the location for scratch files into a 'scratch' sub-directory,
+separate from log files, and delete it upon completion of each test.
+The new env variable QEMU_TEST_KEEP_SCRATCH can be set to preserve
+this scratch dir for debugging access if required.
 
 Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
-Message-Id: <20241121154218.1423005-2-berrange@redhat.com>
+Message-Id: <20241121154218.1423005-3-berrange@redhat.com>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20241121165806.476008-2-alex.bennee@linaro.org>
+Message-Id: <20241121165806.476008-3-alex.bennee@linaro.org>
 
-diff --git a/tests/functional/test_mips64el_malta.py b/tests/functional/test_mips64el_malta.py
-index 6c6355b131..24ebcdb9c1 100755
---- a/tests/functional/test_mips64el_malta.py
-+++ b/tests/functional/test_mips64el_malta.py
-@@ -129,7 +129,7 @@ def do_test_i6400_framebuffer_logo(self, cpu_cores_count):
-         screendump_path = os.path.join(self.workdir, 'screendump.pbm')
+diff --git a/docs/devel/testing/functional.rst b/docs/devel/testing/functional.rst
+index bf6f1bb81e..6b5d0c5b98 100644
+--- a/docs/devel/testing/functional.rst
++++ b/docs/devel/testing/functional.rst
+@@ -65,6 +65,12 @@ to the QEMU binary that should be used for the test, for example::
+   $ export QEMU_TEST_QEMU_BINARY=$PWD/qemu-system-x86_64
+   $ python3 ../tests/functional/test_file.py
  
-         kernel_path_gz = self.ASSET_KERNEL_4_7_0.fetch()
--        kernel_path = self.workdir + "vmlinux"
-+        kernel_path = self.workdir + "/vmlinux"
-         gzip_uncompress(kernel_path_gz, kernel_path)
++The test framework will automatically purge any scratch files created during
++the tests. If needing to debug a failed test, it is possible to keep these
++files around on disk by setting ```QEMU_TEST_KEEP_SCRATCH=1``` as an env
++variable.  Any preserved files will be deleted the next time the test is run
++without this variable set.
++
+ Overview
+ --------
  
-         tuxlogo_path = self.ASSET_TUXLOGO.fetch()
+diff --git a/tests/functional/qemu_test/testcase.py b/tests/functional/qemu_test/testcase.py
+index 411978b5ef..b9418e2ac0 100644
+--- a/tests/functional/qemu_test/testcase.py
++++ b/tests/functional/qemu_test/testcase.py
+@@ -13,8 +13,9 @@
+ 
+ import logging
+ import os
+-import subprocess
+ import pycotap
++import shutil
++import subprocess
+ import sys
+ import unittest
+ import uuid
+@@ -40,11 +41,12 @@ def setUp(self, bin_prefix):
+         self.assertIsNotNone(self.qemu_bin, 'QEMU_TEST_QEMU_BINARY must be set')
+         self.arch = self.qemu_bin.split('-')[-1]
+ 
+-        self.workdir = os.path.join(BUILD_DIR, 'tests/functional', self.arch,
+-                                    self.id())
++        self.outputdir = os.path.join(BUILD_DIR, 'tests', 'functional',
++                                      self.arch, self.id())
++        self.workdir = os.path.join(self.outputdir, 'scratch')
+         os.makedirs(self.workdir, exist_ok=True)
+ 
+-        self.logdir = self.workdir
++        self.logdir = self.outputdir
+         self.log_filename = os.path.join(self.logdir, 'base.log')
+         self.log = logging.getLogger('qemu-test')
+         self.log.setLevel(logging.DEBUG)
+@@ -56,6 +58,8 @@ def setUp(self, bin_prefix):
+         self.log.addHandler(self._log_fh)
+ 
+     def tearDown(self):
++        if "QEMU_TEST_KEEP_SCRATCH" not in os.environ:
++            shutil.rmtree(self.workdir)
+         self.log.removeHandler(self._log_fh)
+ 
+     def main():
+@@ -108,7 +112,7 @@ def setUp(self):
+ 
+         console_log = logging.getLogger('console')
+         console_log.setLevel(logging.DEBUG)
+-        self.console_log_name = os.path.join(self.workdir, 'console.log')
++        self.console_log_name = os.path.join(self.logdir, 'console.log')
+         self._console_log_fh = logging.FileHandler(self.console_log_name,
+                                                    mode='w')
+         self._console_log_fh.setLevel(logging.DEBUG)
 -- 
 2.39.5
 
