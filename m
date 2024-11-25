@@ -2,86 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BE1E9D8BA2
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Nov 2024 18:50:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 054A89D8BA7
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Nov 2024 18:52:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tFdCe-0007wT-8D; Mon, 25 Nov 2024 12:48:52 -0500
+	id 1tFdFu-00018y-CS; Mon, 25 Nov 2024 12:52:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tFdCb-0007w1-Re
- for qemu-devel@nongnu.org; Mon, 25 Nov 2024 12:48:50 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tFdFs-00018Y-0s
+ for qemu-devel@nongnu.org; Mon, 25 Nov 2024 12:52:12 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tFdCa-0001GW-BG
- for qemu-devel@nongnu.org; Mon, 25 Nov 2024 12:48:49 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tFdFq-0001r5-N3
+ for qemu-devel@nongnu.org; Mon, 25 Nov 2024 12:52:11 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1732556926;
+ s=mimecast20190719; t=1732557129;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=1nOGoPVZzN353iDJZzkuNXnEmcEvYTkZNAZ4tk6pm+o=;
- b=X6IppYA9MyrMbJ4wQ8MmGFFtq84XeHMduumXtT/rW6eo2wlXnanZB9XiEbhaS0CbhBgl+I
- THc08ycbxJwEDtaC+h3QsixbopWdNdtwEcJiNNKlyoidnRz9Qnjj1t3NYrXak8SJnxQQI8
- 0oLMdJRYI7KlU35vkPH1S+wzLJByHn4=
-Received: from mail-io1-f69.google.com (mail-io1-f69.google.com
- [209.85.166.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=KmNEPRh4wLTifSod9v0DBNqw9UCaVKsM9QvtMj0kPXQ=;
+ b=UujsEJqqwL2YoJiWZF/eMsmBBq4HRHy38Ho4zrwfFC6Tcq6RRMaSoiW3ZUpv04FYXkMyma
+ UxJSXxAKRxC2uur6zCl0KP3JOG87+ZgqzP+q+nbhUS6ZKI0rG+PJ6DlgGzx/ejaDGDigt2
+ 2HsJts16sZJXM42lUuE2tikpehEQ0Ms=
+Received: from mail-io1-f71.google.com (mail-io1-f71.google.com
+ [209.85.166.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-66-e-9-hJnkNeW8bznqs-XRHQ-1; Mon, 25 Nov 2024 12:48:45 -0500
-X-MC-Unique: e-9-hJnkNeW8bznqs-XRHQ-1
-X-Mimecast-MFC-AGG-ID: e-9-hJnkNeW8bznqs-XRHQ
-Received: by mail-io1-f69.google.com with SMTP id
- ca18e2360f4ac-8418f68672eso132493239f.3
- for <qemu-devel@nongnu.org>; Mon, 25 Nov 2024 09:48:45 -0800 (PST)
+ us-mta-482-omiuDpylObS5gEKq4PqJ8Q-1; Mon, 25 Nov 2024 12:51:01 -0500
+X-MC-Unique: omiuDpylObS5gEKq4PqJ8Q-1
+X-Mimecast-MFC-AGG-ID: omiuDpylObS5gEKq4PqJ8Q
+Received: by mail-io1-f71.google.com with SMTP id
+ ca18e2360f4ac-83e5dd390bfso485901639f.1
+ for <qemu-devel@nongnu.org>; Mon, 25 Nov 2024 09:51:01 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1732556925; x=1733161725;
+ d=1e100.net; s=20230601; t=1732557061; x=1733161861;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=1nOGoPVZzN353iDJZzkuNXnEmcEvYTkZNAZ4tk6pm+o=;
- b=crxC3uWWwA3+HZqrJLKcc9Q793857Zu+N5iMtf5ejiDRD1lp0Sx48fwPz1o5plRtWB
- M/CSn7fXWMGgcr2ZmWXPXvdkVj/ebvAZU/sZHbPIIbyLT2pPVj0C1ZlMTTgDCjviqyPD
- TZ6KTPRE5pVnqFbhfmtu812vA6NprOvItrn6/HTB5zotYyq4GBvTd4cSdQFj8104NS+i
- JTiqXTj2XCsq5bjEUOdZNUjb5ijWDiza5HqV5nas+ky8IF2JFvcY1SgQpnLfc0+JSkEb
- JCGI+xXwZyMIxOJQ4cmLCfCZKt1Ph8sXAB+5ZoSjxXEHjFd6WLXSB6NcA3lh8+XofYZL
- 7Nyw==
-X-Gm-Message-State: AOJu0YzVSny+LpBGp042v75pQpZ65QLZ5TCtWx0LpH8nF1/vFYQRL9BD
- wvJbyVqrargH1auRFP31sBI55nZJ/CXijAr+jaStptMAeKLG4HOgyGoVBeCDlqo0oaib/5kFLTs
- St354pneg8gOGCu9JSx7ZZqoHwS2aPNPG/hgZ2QgjwM+CKIy9PWLk
-X-Gm-Gg: ASbGncuC6JWszqAxr+77iskq4VTeu/+/StF/uyrZUbi9qWzq2ME6tbhlQKlFzvvOWNv
- bO46RNitU/rTpQAUKJzBdZbEjYOE4maca64/aZ9+ZTqIQbFTuow0aOcC8cndqvd/UVNfBa/3BFv
- VrJd28CD5FhcyEpBWWByrKMx+H9PHu/CpDDXBa5taJcM+WrJ74L7a2+5I932g3baevkJgBgDw3A
- iI8+IF8qhtdYXEqUKM2yF4SDE1BaFYoay9jiAFGmLpAsUcVMuZuS7lw0jQ1DWSXroHpKA+ygbU0
- pR3/d0E2v6M=
-X-Received: by 2002:a05:6602:2b85:b0:83a:b43b:da89 with SMTP id
- ca18e2360f4ac-83ecdd0bd18mr1458070539f.10.1732556924951; 
- Mon, 25 Nov 2024 09:48:44 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGuRdcVG1/TkkxCFIOW6qYjgMU2oWEvgCNDXiGnSHFI8bTGqd5A7S9onRaGDoYNTeDvCI4yfg==
-X-Received: by 2002:a05:6602:2b85:b0:83a:b43b:da89 with SMTP id
- ca18e2360f4ac-83ecdd0bd18mr1458068839f.10.1732556924662; 
- Mon, 25 Nov 2024 09:48:44 -0800 (PST)
+ bh=KmNEPRh4wLTifSod9v0DBNqw9UCaVKsM9QvtMj0kPXQ=;
+ b=l2ie4Rz4V9qj9fwhcMk6YyfH+7Zd5+MUOpvJi+V/h25iw9CZAeIXbfs/Ji31FeNCR8
+ 7lcW0ASXlYOCxo00APK+pJg3zMgUaHrX3+p3s5aIkExf5NbHEgKquwexfByhn2SYaEQ/
+ UiNe9a6QioVLV0AmhsE7NWBRtGC07H+7LC3wTtbAAiq/8s6dnBAhYhaC8VZ9wWoSMv5Q
+ 2HImSfq84Jxe1QuVntZ5ZyoA0dHY+KF8Sc3+rdTcJAwIOz6Zf+UfsDKkrQKBpRHVo0as
+ DINw5Q7wRyM2eJ9/kaNMVUd7FfDmSz0e5yEIin/mo77VwanQRN30T4BDuqGObZs/fpGu
+ U2kg==
+X-Gm-Message-State: AOJu0Yz5D2xl4amg4mooekSKt6nkkMk/I0aBPsVXNxXpV7ACjDeJBzQQ
+ 3+OIIVqOMu8/jAKK3ohVJWlwQVZK1cNGoduWqZ6QsJAZCyPxcALcM7cOLRCD5QhJ8aeEF2EGGQN
+ hKF3heJdWrZ/LUKc2NeNG82r+gB24xGNfyDlQlAbr3MK8XpJFlprT
+X-Gm-Gg: ASbGncsAUIrl4Gf6g2GV3tSeX3OkVRjbHpUc/5K8XcsjHCNN/yNdFeTaJbDsK38YnIe
+ FM6CSO2CTv7g8cDDA1qPKvZ6IfLCvRxVkNM0eLy1AEgiclAzdLGWW76HO04PpQ0+hZ8Z43oh/oM
+ 2BmDpSMhjdEm9njzqq9/pOJ5/4IWKss0+kfAgDNU3PhD3UUgYE8A7HfUygizqD2M9ucBi0eBDoZ
+ FzZ6RA3T9wDBVDCKHaUbw14sqNDwVHN6vylqlHl0CxC+YMYfBw8sTaSJaTI4Quad3QgrvQFlLmL
+ /FVN5KXS+A4=
+X-Received: by 2002:a6b:c410:0:b0:835:394a:d784 with SMTP id
+ ca18e2360f4ac-843d7f159b2mr34288239f.7.1732557060933; 
+ Mon, 25 Nov 2024 09:51:00 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHshK6gK8VAvwnA8GfB2hLTmMm2Xn8BlImZ+JiQtx4CappiHSdYUMobfDxTX7QVGD1cqHNpOw==
+X-Received: by 2002:a6b:c410:0:b0:835:394a:d784 with SMTP id
+ ca18e2360f4ac-843d7f159b2mr34286239f.7.1732557060688; 
+ Mon, 25 Nov 2024 09:51:00 -0800 (PST)
 Received: from x1n (pool-99-254-114-190.cpe.net.cable.rogers.com.
  [99.254.114.190]) by smtp.gmail.com with ESMTPSA id
- ca18e2360f4ac-841a54abb68sm35753639f.25.2024.11.25.09.48.43
+ 8926c6da1cb9f-4e1fb5931d0sm890301173.124.2024.11.25.09.50.59
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 25 Nov 2024 09:48:44 -0800 (PST)
-Date: Mon, 25 Nov 2024 12:48:41 -0500
+ Mon, 25 Nov 2024 09:51:00 -0800 (PST)
+Date: Mon, 25 Nov 2024 12:50:58 -0500
 From: Peter Xu <peterx@redhat.com>
 To: Fabiano Rosas <farosas@suse.de>
 Cc: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
  Daniel P =?utf-8?B?LiBCZXJyYW5nw6k=?= <berrange@redhat.com>,
  Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [PATCH v2 12/22] tests/qtest/migration: Split TLS tests from
- migration-test.c
-Message-ID: <Z0S4eVeFIAgGHiyY@x1n>
+Subject: Re: [PATCH v2 13/22] tests/qtest/migration: Split compression tests
+ from migration-test.c
+Message-ID: <Z0S5ArJgdsVjU0Zc@x1n>
 References: <20241113194630.3385-1-farosas@suse.de>
- <20241113194630.3385-13-farosas@suse.de>
+ <20241113194630.3385-14-farosas@suse.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20241113194630.3385-13-farosas@suse.de>
+In-Reply-To: <20241113194630.3385-14-farosas@suse.de>
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -107,44 +107,13 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Nov 13, 2024 at 04:46:20PM -0300, Fabiano Rosas wrote:
-> The migration-test.c file has become unwieldy large. It's quite
-> confusing to navigate with all the test definitions mixed with hook
-> definitions. The TLS tests make this worse with ifdef'ery.
-> 
-> Since we're planning on having a smaller set of tests to run as smoke
-> testing on all architectures, I'm taking the time to split some tests
-> into their own file.
-> 
-> Move the TLS tests into a file of their own.
+On Wed, Nov 13, 2024 at 04:46:21PM -0300, Fabiano Rosas wrote:
+> Continuing the split of groups of tests from migration-test.c, split
+> the compression tests into their own file.
 > 
 > Signed-off-by: Fabiano Rosas <farosas@suse.de>
-> ---
->  tests/qtest/meson.build                |   8 +-
->  tests/qtest/migration-test.c           | 788 +-----------------------
->  tests/qtest/migration/test-framework.h |   6 +
->  tests/qtest/migration/tls-tests.c      | 791 +++++++++++++++++++++++++
->  4 files changed, 804 insertions(+), 789 deletions(-)
->  create mode 100644 tests/qtest/migration/tls-tests.c
-> 
-> diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
-> index bdb9512510..9ad9f0dc65 100644
-> --- a/tests/qtest/meson.build
-> +++ b/tests/qtest/meson.build
-> @@ -337,11 +337,13 @@ migration_files = [files(
->    'migration/migration-util.c',
->  )]
->  
-> +migration_tls_files = []
->  if gnutls.found()
-> -  migration_files += [files('../unit/crypto-tls-psk-helpers.c'), gnutls]
-> +  migration_tls_files = [files('migration/tls-tests.c'),
-> +                         files('../unit/crypto-tls-psk-helpers.c'), gnutls]
 
-Nit: not a meson expert, but I think we could simply use files(A, B)
-instead of files(A), files(B)..
-
-Acked-by: Peter Xu <peterx@redhat.com>
+Reviewed-by: Peter Xu <peterx@redhat.com>
 
 -- 
 Peter Xu
