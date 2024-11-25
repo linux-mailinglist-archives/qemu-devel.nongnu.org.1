@@ -2,94 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C1779D7C62
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Nov 2024 09:07:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 274F59D7CCC
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Nov 2024 09:20:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tFU6U-0004uY-67; Mon, 25 Nov 2024 03:05:54 -0500
+	id 1tFUJD-0002zD-9r; Mon, 25 Nov 2024 03:19:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tFU6L-0004sf-U6
- for qemu-devel@nongnu.org; Mon, 25 Nov 2024 03:05:47 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <SRS0=2wM6=SU=kaod.org=clg@ozlabs.org>)
+ id 1tFUIy-0002xg-Lt; Mon, 25 Nov 2024 03:18:49 -0500
+Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tFU6F-0007Lj-D7
- for qemu-devel@nongnu.org; Mon, 25 Nov 2024 03:05:42 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1732521934;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=Z1jI5qwsUNqYvHHAVfyTEysqObilmnJhAcwQxA2HPEU=;
- b=XUjL0rWFnNektdlPHWYwRsOuEK4cKvwhtDDahb0SR0WY6j+ElA/aQJB/nCNQeiXlGNwoAX
- kDkl6CtQRZD2D9P1fU+Ysnwz8QZhdnET+PzOBiUou7hXyktvK1xzwEmCo1zM3l1fXbdD2c
- IH7Zqcs3i2PIwrJtp5/Gpsy3oqItOuI=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-303-YCDJR5fONqySVcSeX_iXCA-1; Mon, 25 Nov 2024 03:05:33 -0500
-X-MC-Unique: YCDJR5fONqySVcSeX_iXCA-1
-X-Mimecast-MFC-AGG-ID: YCDJR5fONqySVcSeX_iXCA
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-43499388faaso9785695e9.3
- for <qemu-devel@nongnu.org>; Mon, 25 Nov 2024 00:05:33 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1732521931; x=1733126731;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=Z1jI5qwsUNqYvHHAVfyTEysqObilmnJhAcwQxA2HPEU=;
- b=t5XvWTnfOCUt+xy1pUmkB56nLFbprJIQvs5xQcYTF8LXSlffzXyeUuTLV+f4gpMP37
- pL1SPIfJmJbVNGWzxZDC13Cl6aecOc1pB0HmwwLAQIbsXWGTmVFzr/fjxi83cfL6uDCa
- b8yUZQsHe7OKM15Pymgdr9XTYsOTpR7MIaDhFgeobq2Tk9Xi7oTdGlWyTkpNzaJ/QnyY
- ZOTioel/XrVZFWV8OPLQ/Z7y/nRxYX3LN4pZOCkDRSAbJEc/4zlNxm10DqHDxGWANObn
- LOy9Pfld0spoHjhsKs2/4DcNX3dWvm0+AFbi6Ac4Kgz4h6JIZBo8zWCAXTjI9V3KdZun
- WA5w==
-X-Gm-Message-State: AOJu0YzS35jU/rJWps0NsGVJ+qA/RrVMXuTp8iqvP8wo1TBW6qOZqHVG
- oTPpDlupPKRojl2tlv3pQUqagtgZpjJDhs7izTwWwXO87IItBFJJQrJYWQSUdQtIzyPnR2sorwR
- beCz5HXsno8P4zGnohJNwocVKwxomO6pJGG73wAQY+kQ/qAq+pAdiwPLA229ZaSpsoFa/ZjS474
- ARhzvbL/mpIxPiFcl7irreIIsM6dRzwZ+lVJoI
-X-Gm-Gg: ASbGncuvhGsuquAjuHfuVZMfyBssyrPvOG/6V9hNn6MVUvek0mLoqt0fpzq/U5Mr++M
- 7BGZuTv+3VJhP4oAawYLxfw+aT13qk1dMeeHt8VMBpkpahikosKB/e6DLvlPN7fZZZkHLemn4Of
- UFIYQZlQpfXwBbVyUyFeXHzreEmOVRCUV+lhTq1Xl3PpMxJAMKYoXvHok2K8930UkldH9SH9WAv
- wtMNiNt1ANcnUCl9vE/nfbuWcqXCJ61PwvqcaeN+UHO+0q/B83mGDI=
-X-Received: by 2002:a05:600c:3b08:b0:426:5e91:3920 with SMTP id
- 5b1f17b1804b1-433ce4e9d8emr96978415e9.29.1732521931135; 
- Mon, 25 Nov 2024 00:05:31 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHUCAmD2lWimxDZqMtrhgQNdPh6ETlm00iNBGKIMmjBARDD9AzUJXk0guOTS38HePIIzum8+w==
-X-Received: by 2002:a05:600c:3b08:b0:426:5e91:3920 with SMTP id
- 5b1f17b1804b1-433ce4e9d8emr96978165e9.29.1732521930697; 
- Mon, 25 Nov 2024 00:05:30 -0800 (PST)
-Received: from [192.168.10.47] ([151.49.236.146])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4349cc29406sm53524305e9.0.2024.11.25.00.05.30
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 25 Nov 2024 00:05:30 -0800 (PST)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-rust@nongnu.org
-Subject: [PATCH 8/8] rust: qom: move bridge for TypeInfo functions out of pl011
-Date: Mon, 25 Nov 2024 09:05:07 +0100
-Message-ID: <20241125080507.115450-9-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241125080507.115450-1-pbonzini@redhat.com>
-References: <20241125080507.115450-1-pbonzini@redhat.com>
+ (Exim 4.90_1) (envelope-from <SRS0=2wM6=SU=kaod.org=clg@ozlabs.org>)
+ id 1tFUIv-0000Rq-UG; Mon, 25 Nov 2024 03:18:48 -0500
+Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4XxdrQ49XNz4xcm;
+ Mon, 25 Nov 2024 19:18:30 +1100 (AEDT)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (Client did not present a certificate)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4XxdrM0781z4wc3;
+ Mon, 25 Nov 2024 19:18:26 +1100 (AEDT)
+Message-ID: <85b3fc32-130a-4a63-8e01-83c7336616ea@kaod.org>
+Date: Mon, 25 Nov 2024 09:18:26 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -29
-X-Spam_score: -3.0
-X-Spam_bar: ---
-X-Spam_report: (-3.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.93,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] hw/aspeed: Correct minimum access size for all models
+To: Joel Stanley <joel@jms.id.au>,
+ Andrew Jeffery <andrew@codeconstruct.com.au>,
+ Jamin Lin <jamin_lin@aspeedtech.com>, Steven Lee
+ <steven_lee@aspeedtech.com>, Troy Lee <leetroy@gmail.com>,
+ Peter Maydell <peter.maydell@linaro.org>
+Cc: BMC-SW@aspeedtech.com, qemu-arm@nongnu.org, qemu-devel@nongnu.org
+References: <20241118021820.4928-1-joel@jms.id.au>
+Content-Language: en-US, fr
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+Autocrypt: addr=clg@kaod.org; keydata=
+ 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
+In-Reply-To: <20241118021820.4928-1-joel@jms.id.au>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
+ envelope-from=SRS0=2wM6=SU=kaod.org=clg@ozlabs.org; helo=mail.ozlabs.org
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.001, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,179 +107,206 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Allow the ObjectImpl trait to expose Rust functions that avoid raw
-pointers (though INSTANCE_INIT for example is still unsafe).
-ObjectImpl::TYPE_INFO adds thunks around the functions in
-ObjectImpl.
+Hello Joel,
 
-While at it, document `TypeInfo`.
+On 11/18/24 03:18, Joel Stanley wrote:
+> Guest code was performing a byte load to the SCU MMIO region, leading to
+> the guest code crashing (it should be using proper accessors, but
+> that is not Qemu's bug). Hardware and the documentation[1] both agree that
+> byte loads are okay, so change all of the aspeed devices to accept a
+> minimum access size of 1.
 
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- rust/hw/char/pl011/src/device.rs | 40 +++++++---------------
- rust/qemu-api/src/definitions.rs | 57 +++++++++++++++++++++++++++++---
- 2 files changed, 65 insertions(+), 32 deletions(-)
+I think this is true for read ops but not for writes. You could model
+the write limitation with a .accept() handler. See esp_mem_accepts()
+or npcm7xx_mft_check_mem_op ().
 
-diff --git a/rust/hw/char/pl011/src/device.rs b/rust/hw/char/pl011/src/device.rs
-index aeccce5186c..08f7faf00d3 100644
---- a/rust/hw/char/pl011/src/device.rs
-+++ b/rust/hw/char/pl011/src/device.rs
-@@ -110,7 +110,7 @@ impl ObjectImpl for PL011State {
-     type Class = PL011Class;
-     const TYPE_NAME: &'static CStr = crate::TYPE_PL011;
-     const PARENT_TYPE_NAME: Option<&'static CStr> = Some(TYPE_SYS_BUS_DEVICE);
--    const INSTANCE_INIT: Option<unsafe extern "C" fn(obj: *mut Object)> = Some(pl011_init);
-+    const INSTANCE_INIT: Option<unsafe fn(&mut Self)> = Some(Self::init);
- }
- 
- #[repr(C)]
-@@ -615,19 +615,6 @@ pub fn post_load(&mut self, _version_id: u32) -> Result<(), ()> {
-     }
- }
- 
--/// # Safety
--///
--/// We expect the FFI user of this function to pass a valid pointer, that has
--/// the same size as [`PL011State`]. We also expect the device is
--/// readable/writeable from one thread at any time.
--pub unsafe extern "C" fn pl011_init(obj: *mut Object) {
--    unsafe {
--        debug_assert!(!obj.is_null());
--        let mut state = NonNull::new_unchecked(obj.cast::<PL011State>());
--        state.as_mut().init();
--    }
--}
--
- #[repr(C)]
- #[derive(Debug, qemu_api_macros::Object)]
- /// PL011 Luminary device model.
-@@ -640,19 +627,16 @@ pub struct PL011LuminaryClass {
-     _inner: [u8; 0],
- }
- 
--/// Initializes a pre-allocated, unitialized instance of `PL011Luminary`.
--///
--/// # Safety
--///
--/// We expect the FFI user of this function to pass a valid pointer, that has
--/// the same size as [`PL011Luminary`]. We also expect the device is
--/// readable/writeable from one thread at any time.
--pub unsafe extern "C" fn pl011_luminary_init(obj: *mut Object) {
--    unsafe {
--        debug_assert!(!obj.is_null());
--        let mut state = NonNull::new_unchecked(obj.cast::<PL011Luminary>());
--        let state = state.as_mut();
--        state.parent_obj.device_id = DeviceId::Luminary;
-+impl PL011Luminary {
-+    /// Initializes a pre-allocated, unitialized instance of `PL011Luminary`.
-+    ///
-+    /// # Safety
-+    ///
-+    /// We expect the FFI user of this function to pass a valid pointer, that
-+    /// has the same size as [`PL011Luminary`]. We also expect the device is
-+    /// readable/writeable from one thread at any time.
-+    unsafe fn init(&mut self) {
-+        self.parent_obj.device_id = DeviceId::Luminary;
-     }
- }
- 
-@@ -660,7 +644,7 @@ impl ObjectImpl for PL011Luminary {
-     type Class = PL011LuminaryClass;
-     const TYPE_NAME: &'static CStr = crate::TYPE_PL011_LUMINARY;
-     const PARENT_TYPE_NAME: Option<&'static CStr> = Some(crate::TYPE_PL011);
--    const INSTANCE_INIT: Option<unsafe extern "C" fn(obj: *mut Object)> = Some(pl011_luminary_init);
-+    const INSTANCE_INIT: Option<unsafe fn(&mut Self)> = Some(Self::init);
- }
- 
- impl DeviceImpl for PL011Luminary {}
-diff --git a/rust/qemu-api/src/definitions.rs b/rust/qemu-api/src/definitions.rs
-index d64a581a5cc..b20c53f6ce6 100644
---- a/rust/qemu-api/src/definitions.rs
-+++ b/rust/qemu-api/src/definitions.rs
-@@ -8,6 +8,20 @@
- 
- use crate::bindings::{Object, ObjectClass, TypeInfo};
- 
-+unsafe extern "C" fn rust_instance_init<T: ObjectImpl>(obj: *mut Object) {
-+    // SAFETY: obj is an instance of T, since drop_object<T>
-+    // is called from QOM core as the instance_finalize function
-+    // for class T
-+    unsafe { T::INSTANCE_INIT.unwrap()(&mut *obj.cast::<T>()) }
-+}
-+
-+unsafe extern "C" fn rust_instance_post_init<T: ObjectImpl>(obj: *mut Object) {
-+    // SAFETY: obj is an instance of T, since drop_object<T>
-+    // is called from QOM core as the instance_finalize function
-+    // for class T
-+    T::INSTANCE_POST_INIT.unwrap()(unsafe { &mut *obj.cast::<T>() })
-+}
-+
- unsafe extern "C" fn drop_object<T: ObjectImpl>(obj: *mut Object) {
-     // SAFETY: obj is an instance of T, since drop_object<T>
-     // is called from QOM core as the instance_finalize function
-@@ -16,13 +30,42 @@
- }
- 
- /// Trait a type must implement to be registered with QEMU.
-+///
-+/// # Safety
-+///
-+/// - the struct must be `#[repr(C)]`
-+///
-+/// - `Class` and `TYPE` must match the data in the `TypeInfo` (this is
-+///   automatic if the class is defined via `ObjectImpl`).
-+///
-+/// - the first field of the struct must be of the instance struct corresponding
-+///   to the superclass declared as `PARENT_TYPE_NAME`
- pub trait ObjectImpl: ClassInitImpl + Sized {
-+    /// The QOM class object corresponding to this struct.  Not used yet.
-     type Class;
-+
-+    /// The name of the type, which can be passed to `object_new()` to
-+    /// generate an instance of this type.
-     const TYPE_NAME: &'static CStr;
-+
-+    /// The parent of the type.  This should match the first field of
-+    /// the struct that implements `ObjectImpl`:
-     const PARENT_TYPE_NAME: Option<&'static CStr>;
-+
-+    /// Whether the object can be instantiated
-     const ABSTRACT: bool = false;
--    const INSTANCE_INIT: Option<unsafe extern "C" fn(obj: *mut Object)> = None;
--    const INSTANCE_POST_INIT: Option<unsafe extern "C" fn(obj: *mut Object)> = None;
-+
-+    /// Function that is called to initialize an object.  The parent class will
-+    /// have already been initialized so the type is only responsible for
-+    /// initializing its own members.
-+    ///
-+    /// FIXME: The argument is not really a valid reference. `&mut
-+    /// MaybeUninit<Self>` would be a better description.
-+    const INSTANCE_INIT: Option<unsafe fn(&mut Self)> = None;
-+
-+    /// Function that is called to finish initialization of an object, once
-+    /// `INSTANCE_INIT` functions have been called.
-+    const INSTANCE_POST_INIT: Option<fn(&mut Self)> = None;
- 
-     const TYPE_INFO: TypeInfo = TypeInfo {
-         name: Self::TYPE_NAME.as_ptr(),
-@@ -33,8 +76,14 @@ pub trait ObjectImpl: ClassInitImpl + Sized {
-         },
-         instance_size: core::mem::size_of::<Self>(),
-         instance_align: core::mem::align_of::<Self>(),
--        instance_init: Self::INSTANCE_INIT,
--        instance_post_init: Self::INSTANCE_POST_INIT,
-+        instance_init: match Self::INSTANCE_INIT {
-+            None => None,
-+            Some(_) => Some(rust_instance_init::<Self>),
-+        },
-+        instance_post_init: match Self::INSTANCE_POST_INIT {
-+            None => None,
-+            Some(_) => Some(rust_instance_post_init::<Self>),
-+        },
-         instance_finalize: Some(drop_object::<Self>),
-         abstract_: Self::ABSTRACT,
-         class_size: core::mem::size_of::<Self::Class>(),
--- 
-2.47.0
+Also, could we start by modifying first SCU since that is the IP
+reported in 2636 ?
+
+
+Thanks,
+
+C.
+
+
+
+
+> 
+> [1] See the 'ARM Address Space Mapping' table in the ASPEED docs. This
+> is section 6.1 in the ast2400 and ast2700, and 7.1 in the ast2500 and
+> ast2600 datasheets.
+> 
+> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2636
+> Signed-off-by: Joel Stanley <joel@jms.id.au>
+> ---
+>   hw/fsi/aspeed_apb2opb.c  | 2 +-
+>   hw/gpio/aspeed_gpio.c    | 4 ++--
+>   hw/intc/aspeed_vic.c     | 2 +-
+>   hw/misc/aspeed_scu.c     | 4 ++--
+>   hw/misc/aspeed_sdmc.c    | 2 +-
+>   hw/misc/aspeed_xdma.c    | 2 +-
+>   hw/net/ftgmac100.c       | 4 ++--
+>   hw/sd/aspeed_sdhci.c     | 2 +-
+>   hw/timer/aspeed_timer.c  | 2 +-
+>   hw/watchdog/wdt_aspeed.c | 2 +-
+>   10 files changed, 13 insertions(+), 13 deletions(-)
+> 
+> diff --git a/hw/fsi/aspeed_apb2opb.c b/hw/fsi/aspeed_apb2opb.c
+> index 0e2cc143f105..855dccf6094c 100644
+> --- a/hw/fsi/aspeed_apb2opb.c
+> +++ b/hw/fsi/aspeed_apb2opb.c
+> @@ -259,7 +259,7 @@ static const struct MemoryRegionOps aspeed_apb2opb_ops = {
+>       .read = fsi_aspeed_apb2opb_read,
+>       .write = fsi_aspeed_apb2opb_write,
+>       .valid.max_access_size = 4,
+> -    .valid.min_access_size = 4,
+> +    .valid.min_access_size = 1,
+>       .impl.max_access_size = 4,
+>       .impl.min_access_size = 4,
+>       .endianness = DEVICE_LITTLE_ENDIAN,
+> diff --git a/hw/gpio/aspeed_gpio.c b/hw/gpio/aspeed_gpio.c
+> index a5b3f454e800..c8bb7e590696 100644
+> --- a/hw/gpio/aspeed_gpio.c
+> +++ b/hw/gpio/aspeed_gpio.c
+> @@ -1372,7 +1372,7 @@ static const MemoryRegionOps aspeed_gpio_ops = {
+>       .read       = aspeed_gpio_read,
+>       .write      = aspeed_gpio_write,
+>       .endianness = DEVICE_LITTLE_ENDIAN,
+> -    .valid.min_access_size = 4,
+> +    .valid.min_access_size = 1,
+>       .valid.max_access_size = 4,
+>   };
+>   
+> @@ -1380,7 +1380,7 @@ static const MemoryRegionOps aspeed_gpio_2700_ops = {
+>       .read       = aspeed_gpio_2700_read,
+>       .write      = aspeed_gpio_2700_write,
+>       .endianness = DEVICE_LITTLE_ENDIAN,
+> -    .valid.min_access_size = 4,
+> +    .valid.min_access_size = 1,
+>       .valid.max_access_size = 4,
+>   };
+>   
+> diff --git a/hw/intc/aspeed_vic.c b/hw/intc/aspeed_vic.c
+> index 55fe51a6675f..8ee662064469 100644
+> --- a/hw/intc/aspeed_vic.c
+> +++ b/hw/intc/aspeed_vic.c
+> @@ -286,7 +286,7 @@ static const MemoryRegionOps aspeed_vic_ops = {
+>       .read = aspeed_vic_read,
+>       .write = aspeed_vic_write,
+>       .endianness = DEVICE_LITTLE_ENDIAN,
+> -    .valid.min_access_size = 4,
+> +    .valid.min_access_size = 1,
+>       .valid.max_access_size = 4,
+>       .valid.unaligned = false,
+>   };
+> diff --git a/hw/misc/aspeed_scu.c b/hw/misc/aspeed_scu.c
+> index 2c919349cfc0..b7a62da45907 100644
+> --- a/hw/misc/aspeed_scu.c
+> +++ b/hw/misc/aspeed_scu.c
+> @@ -436,7 +436,7 @@ static const MemoryRegionOps aspeed_ast2500_scu_ops = {
+>       .read = aspeed_scu_read,
+>       .write = aspeed_ast2500_scu_write,
+>       .endianness = DEVICE_LITTLE_ENDIAN,
+> -    .valid.min_access_size = 4,
+> +    .valid.min_access_size = 1,
+>       .valid.max_access_size = 4,
+>       .valid.unaligned = false,
+>   };
+> @@ -777,7 +777,7 @@ static const MemoryRegionOps aspeed_ast2600_scu_ops = {
+>       .read = aspeed_ast2600_scu_read,
+>       .write = aspeed_ast2600_scu_write,
+>       .endianness = DEVICE_LITTLE_ENDIAN,
+> -    .valid.min_access_size = 4,
+> +    .valid.min_access_size = 1,
+>       .valid.max_access_size = 4,
+>       .valid.unaligned = false,
+>   };
+> diff --git a/hw/misc/aspeed_sdmc.c b/hw/misc/aspeed_sdmc.c
+> index 4bc9faf691d6..ba700b008e5e 100644
+> --- a/hw/misc/aspeed_sdmc.c
+> +++ b/hw/misc/aspeed_sdmc.c
+> @@ -195,7 +195,7 @@ static const MemoryRegionOps aspeed_sdmc_ops = {
+>       .read = aspeed_sdmc_read,
+>       .write = aspeed_sdmc_write,
+>       .endianness = DEVICE_LITTLE_ENDIAN,
+> -    .valid.min_access_size = 4,
+> +    .valid.min_access_size = 1,
+>       .valid.max_access_size = 4,
+>   };
+>   
+> diff --git a/hw/misc/aspeed_xdma.c b/hw/misc/aspeed_xdma.c
+> index 1dd32f72f453..f222c632c099 100644
+> --- a/hw/misc/aspeed_xdma.c
+> +++ b/hw/misc/aspeed_xdma.c
+> @@ -114,7 +114,7 @@ static const MemoryRegionOps aspeed_xdma_ops = {
+>       .read = aspeed_xdma_read,
+>       .write = aspeed_xdma_write,
+>       .endianness = DEVICE_NATIVE_ENDIAN,
+> -    .valid.min_access_size = 4,
+> +    .valid.min_access_size = 1,
+>       .valid.max_access_size = 4,
+>   };
+>   
+> diff --git a/hw/net/ftgmac100.c b/hw/net/ftgmac100.c
+> index 478356ee3e10..c8f6e1138ed0 100644
+> --- a/hw/net/ftgmac100.c
+> +++ b/hw/net/ftgmac100.c
+> @@ -1150,7 +1150,7 @@ static ssize_t ftgmac100_receive(NetClientState *nc, const uint8_t *buf,
+>   static const MemoryRegionOps ftgmac100_ops = {
+>       .read = ftgmac100_read,
+>       .write = ftgmac100_write,
+> -    .valid.min_access_size = 4,
+> +    .valid.min_access_size = 1,
+>       .valid.max_access_size = 4,
+>       .endianness = DEVICE_LITTLE_ENDIAN,
+>   };
+> @@ -1158,7 +1158,7 @@ static const MemoryRegionOps ftgmac100_ops = {
+>   static const MemoryRegionOps ftgmac100_high_ops = {
+>       .read = ftgmac100_high_read,
+>       .write = ftgmac100_high_write,
+> -    .valid.min_access_size = 4,
+> +    .valid.min_access_size = 1,
+>       .valid.max_access_size = 4,
+>       .endianness = DEVICE_LITTLE_ENDIAN,
+>   };
+> diff --git a/hw/sd/aspeed_sdhci.c b/hw/sd/aspeed_sdhci.c
+> index 98d5460905df..85e3f05e438f 100644
+> --- a/hw/sd/aspeed_sdhci.c
+> +++ b/hw/sd/aspeed_sdhci.c
+> @@ -123,7 +123,7 @@ static const MemoryRegionOps aspeed_sdhci_ops = {
+>       .read = aspeed_sdhci_read,
+>       .write = aspeed_sdhci_write,
+>       .endianness = DEVICE_NATIVE_ENDIAN,
+> -    .valid.min_access_size = 4,
+> +    .valid.min_access_size = 1,
+>       .valid.max_access_size = 4,
+>   };
+>   
+> diff --git a/hw/timer/aspeed_timer.c b/hw/timer/aspeed_timer.c
+> index 149f7cc5a6aa..a116488aa2dd 100644
+> --- a/hw/timer/aspeed_timer.c
+> +++ b/hw/timer/aspeed_timer.c
+> @@ -460,7 +460,7 @@ static const MemoryRegionOps aspeed_timer_ops = {
+>       .read = aspeed_timer_read,
+>       .write = aspeed_timer_write,
+>       .endianness = DEVICE_LITTLE_ENDIAN,
+> -    .valid.min_access_size = 4,
+> +    .valid.min_access_size = 1,
+>       .valid.max_access_size = 4,
+>       .valid.unaligned = false,
+>   };
+> diff --git a/hw/watchdog/wdt_aspeed.c b/hw/watchdog/wdt_aspeed.c
+> index 39c3f362a833..d9fd6fc9079f 100644
+> --- a/hw/watchdog/wdt_aspeed.c
+> +++ b/hw/watchdog/wdt_aspeed.c
+> @@ -229,7 +229,7 @@ static const MemoryRegionOps aspeed_wdt_ops = {
+>       .read = aspeed_wdt_read,
+>       .write = aspeed_wdt_write,
+>       .endianness = DEVICE_LITTLE_ENDIAN,
+> -    .valid.min_access_size = 4,
+> +    .valid.min_access_size = 1,
+>       .valid.max_access_size = 4,
+>       .valid.unaligned = false,
+>   };
 
 
