@@ -2,63 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92BBF9D8759
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Nov 2024 15:07:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 997D39D875B
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Nov 2024 15:08:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tFZjY-0002Ec-3r; Mon, 25 Nov 2024 09:06:36 -0500
+	id 1tFZkI-0002vq-RY; Mon, 25 Nov 2024 09:07:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tFZjU-00027K-QR
- for qemu-devel@nongnu.org; Mon, 25 Nov 2024 09:06:32 -0500
-Received: from mail-lf1-x12b.google.com ([2a00:1450:4864:20::12b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tFZjp-0002Xq-OL
+ for qemu-devel@nongnu.org; Mon, 25 Nov 2024 09:06:53 -0500
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tFZjR-0006ZO-UC
- for qemu-devel@nongnu.org; Mon, 25 Nov 2024 09:06:32 -0500
-Received: by mail-lf1-x12b.google.com with SMTP id
- 2adb3069b0e04-53d9ff92ee9so5025846e87.1
- for <qemu-devel@nongnu.org>; Mon, 25 Nov 2024 06:06:27 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tFZjn-0006dW-2m
+ for qemu-devel@nongnu.org; Mon, 25 Nov 2024 09:06:53 -0500
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-434a1833367so3479915e9.1
+ for <qemu-devel@nongnu.org>; Mon, 25 Nov 2024 06:06:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1732543586; x=1733148386; darn=nongnu.org;
+ d=linaro.org; s=google; t=1732543609; x=1733148409; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=cc3WE7woH120Qpt/FsE+B5ZgZ3+8Guj7ZUtw6nH9Jhk=;
- b=A3hutD5V+CngEP3bawOcxYK/dWVwJqblTv+wuMLIPzoNkw+AzaInidV/x+IYN2EP4Q
- e/3dVTGYYXjRp4XpURmdUVNXJDy58JVTZASvQenttXlcPEl+kokCfJ5TyehHAg9IzA47
- asnJFNxu+sM0OVNEEeXZPlrvC11pD5zoHYUk8GUmBIawyBeuh6wfYyznLEBpSJcr9HW7
- a6KOPZ4QHjcTyWoKjlWIrTD1/TWf/8K4bvTpY71oBIxPbG1g78Y29zLIAbic4tQ5DK3Q
- bq3H/noLXoFPpixVDt4aNDGgOg2jy+p7RhIASZiIbz/vA8lwBAdrkf2mBFL/It908url
- W38Q==
+ bh=nwOFcDol4u8ZIeIm4VbuTBCsXEbth7QSSqvQY7JvfPk=;
+ b=r8cgP8liI7HuD70/D/hzuwcvXQPS7oGNmwLaDP91pLh0Bn80692c7KOjKppwpTMGs1
+ ebJ2xVOJfr3mBavOHbh/CvRZvIOVJ8oPj1a1nPLuQBKvujf/8FYim22XGfN2p4w9rioW
+ 9kiks7lxf8ZYosa2UjwB21r9JeDuPNzEvBJxUzlz3pvHUg3nNSszWx+fMiZIlG2gnVEo
+ 9qGqJP0EIFPE+dSMhVhVEH2K3P3lcbCyTPXXYFAEdl2zynSNqJMGBasH9Fh1ULWwPv26
+ SZ/Glw000ixHmGOsyPQgWwTcJQn6wpdvWj8LDy+HXZRBSuE3fW/24TrBSJAx727fRDxs
+ 8Oww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1732543586; x=1733148386;
+ d=1e100.net; s=20230601; t=1732543609; x=1733148409;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=cc3WE7woH120Qpt/FsE+B5ZgZ3+8Guj7ZUtw6nH9Jhk=;
- b=popmgo1A/8Cgl0/FOzvy7cQMcyK2qYhO15iRtnhlQv/vj+FkaQQVbYi1wbbKQzwMNl
- UnR9mX4aPPRL0cw3RMAmu9NdiDGJV8y36zIPzecaClS7eLQh34schMHx+XWwsL9Cq4jE
- oN4upzqYG6zyCN39cbFUoUNvjHq4m/NX6R3i02WZcJOax5sWHLO0seZX9YqNCWLfMgpD
- eKeIwRUQZ8h3a4k9/tsF1mNJND9H1MpaNPCcasMOynKr05JYgXwKrP7yGp2h3WSpzjqt
- mBTZIXQpotxBZt06Jt0WyADD+M3VpQt79UXAJwuFP/I2fqunX9PtUDIYVdxkHQx13m6H
- NHDA==
-X-Gm-Message-State: AOJu0Yz/0tGJP0IHAb51Vg+cQJw66a7Q9fqBdO7m7LxIx8xmjyiQ9doU
- EHpK0XXgX2DKp1v/yoIydKLKOATthKjzuQarJD5MHFBbsbCYV43pTPNBBULxXjPjUZP9JP5Xz/0
- i
-X-Gm-Gg: ASbGncsHV2MSlqPw4ELuDQ0F1zYT6FDT9MtT8yuab591Q/9L0O6UPfGq2gGXhiK1IFE
- OTbCJZ0B+zVLFc4nLKCQNhWBLyvLHo2t+hDkWHvZlC8I9FXFerbVbT2IOChHGv3Y6lm+2qS5VgE
- X8SVUjIeVnPhhWCJity+Leuyxtl/Q7cyXlMb7S/8ZywFoo8HC/OThehWNN2qgJv1APF/tRSSGMi
- 8VwZXpy1RGdgqwdvQ9BpQLHtp6b+RBalarlh1E13p3ejpFhgtt35/JaiIZ66NP0hGTUXKPh
-X-Google-Smtp-Source: AGHT+IF3Eb0kEpZLk8hYJftdJr2UNCk4U2dyWjYpUD/jYEo2tx3BdPGvwkdZgW4HDNn0yn6uHmA/QA==
-X-Received: by 2002:a05:6512:10ce:b0:53d:df50:5a1b with SMTP id
- 2adb3069b0e04-53ddf505b00mr2688365e87.7.1732543585672; 
- Mon, 25 Nov 2024 06:06:25 -0800 (PST)
+ bh=nwOFcDol4u8ZIeIm4VbuTBCsXEbth7QSSqvQY7JvfPk=;
+ b=XPQdcyGHGUlNhJEoqondvTZ/CvswrVesWpnAtHSpa8z5/64E/cc8Z5nMv4VRCWlsmh
+ wUbiyz6tsfvkd7FViH6sz3Fpf4SVByzgV6yBLbqOHvoT06vmus4mdzuRuer0iRocujgz
+ kp9Tsp+UrdROUFxdd2SK2ryujQLSZlS+9Uer3NvJusHTGurZSaQN9sWUCssFm6Z+CXoc
+ EyvFKANFGDfnY1ddlU6jOJT2+PDE2QpVE6Izj23o/y8IuJjXhM1Y0M8SBeU3L58pI4Lh
+ WtgPpefPB0TaGi6CGVQJmZY1hnYIqi5uy5ZQkBgCv6gzw7n+NEjZG03TuBDn1d16m8xP
+ 8pSQ==
+X-Gm-Message-State: AOJu0YwxdWRd4klN81ZKGuQOkXHquetxpJIrW01CXBeFsW9Yew6w9evd
+ Zr5i0KxHOZdqmk7wyRvjyPaxkE1G6zWyb7RVN+JXtp5ghmCkdmZbEWb8b5BjxEDaNUKEgmkwZav
+ s
+X-Gm-Gg: ASbGncvI14r6OE10xeTJ3tW0ej1UL5pDGn4y2bwFc+K1pbTCjTtZjP4RevkO+gWWZk3
+ gIt51hj2xGJO307eeK9NGSVoNziNXUHUk0vTcdSp5ZXowDSlLmFMMlJBrrWczngqxRCKyySmFUC
+ Lmon7zohSXJspoCioTtNpurLtfsobu9JQSAv1L8Yx/M/tu1wYk5WrSCri4XO6vpx1Mf+Q6LrRa8
+ TPkifLY1MdOzVwtOMwcpBwBoZLvgKBShOEP7FmtO8jlmWNFqr2oTonzpEbtMsPX3uQWTV0v
+X-Google-Smtp-Source: AGHT+IHueUgZ5dfvvnsaTax+Tcm7lAWU8gj6AQiJ4jiKzYjtvhxK2RCPGGpq5pRAQvBX+KADlSNm7g==
+X-Received: by 2002:a05:600c:3b27:b0:431:9340:77e0 with SMTP id
+ 5b1f17b1804b1-433cdb0b3b6mr102923075e9.9.1732543599641; 
+ Mon, 25 Nov 2024 06:06:39 -0800 (PST)
 Received: from localhost.localdomain ([176.176.170.239])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-433cde8fcdfsm128353385e9.32.2024.11.25.06.06.23
+ 5b1f17b1804b1-433b45d40basm199474065e9.21.2024.11.25.06.06.30
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 25 Nov 2024 06:06:25 -0800 (PST)
+ Mon, 25 Nov 2024 06:06:31 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Daniel Henrique Barboza <danielhb413@gmail.com>,
@@ -77,18 +77,18 @@ Cc: Daniel Henrique Barboza <danielhb413@gmail.com>,
  Weiwei Li <liwei1518@gmail.com>, Radoslaw Biernacki <rad@semihalf.com>,
  Thomas Huth <thuth@redhat.com>, Yanan Wang <wangyanan55@huawei.com>,
  Eduardo Habkost <eduardo@habkost.net>, qemu-ppc@nongnu.org
-Subject: [PATCH-for-10.0 2/8] hw/ppc/spapr_pci: Set PCI_BUS_IO_ADDR0_ALLOWED
- flag in host bridge
-Date: Mon, 25 Nov 2024 15:05:29 +0100
-Message-ID: <20241125140535.4526-3-philmd@linaro.org>
+Subject: [PATCH-for-10.0 3/8] hw/pci-host/gpex: Allow machines to set
+ PCI_BUS_IO_ADDR0_ALLOWED flag
+Date: Mon, 25 Nov 2024 15:05:30 +0100
+Message-ID: <20241125140535.4526-4-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241125140535.4526-1-philmd@linaro.org>
 References: <20241125140535.4526-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12b;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x12b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -111,39 +111,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-See commit e402463073 ("pci: allow 0 address for PCI IO/MEM
-regions"), all sPAPR machines set this flag.
+Expose the "allow-io-addr0-accesses" property so machines
+using a GPEX host bridge can set this flag on the bus.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/ppc/spapr.c     | 1 -
- hw/ppc/spapr_pci.c | 1 +
- 2 files changed, 1 insertion(+), 1 deletion(-)
+ include/hw/pci-host/gpex.h | 1 +
+ hw/pci-host/gpex.c         | 6 ++++++
+ 2 files changed, 7 insertions(+)
 
-diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
-index 5c02037c56..8af56bd68a 100644
---- a/hw/ppc/spapr.c
-+++ b/hw/ppc/spapr.c
-@@ -4600,7 +4600,6 @@ static void spapr_machine_class_init(ObjectClass *oc, void *data)
-     mc->default_display = "std";
-     mc->kvm_type = spapr_kvm_type;
-     machine_class_allow_dynamic_sysbus_dev(mc, TYPE_SPAPR_PCI_HOST_BRIDGE);
--    mc->pci_allow_0_address = true;
-     assert(!mc->get_hotplug_handler);
-     mc->get_hotplug_handler = spapr_get_hotplug_handler;
-     hc->pre_plug = spapr_machine_device_pre_plug;
-diff --git a/hw/ppc/spapr_pci.c b/hw/ppc/spapr_pci.c
-index 7e24084673..16f3a18d2e 100644
---- a/hw/ppc/spapr_pci.c
-+++ b/hw/ppc/spapr_pci.c
-@@ -1888,6 +1888,7 @@ static void spapr_phb_realize(DeviceState *dev, Error **errp)
-                                 PCI_DEVFN(0, 0), PCI_NUM_PINS,
-                                 TYPE_PCI_BUS);
+diff --git a/include/hw/pci-host/gpex.h b/include/hw/pci-host/gpex.h
+index dce883573b..8c990bff5f 100644
+--- a/include/hw/pci-host/gpex.h
++++ b/include/hw/pci-host/gpex.h
+@@ -64,6 +64,7 @@ struct GPEXHost {
+     int irq_num[GPEX_NUM_IRQS];
  
-+    bus->flags |= PCI_BUS_IO_ADDR0_ALLOWED;
-     /*
-      * Despite resembling a vanilla PCI bus in most ways, the PAPR
-      * para-virtualized PCI bus *does* permit PCI-E extended config
+     bool allow_unmapped_accesses;
++    bool allow_io_addr0_accesses;
+ 
+     struct GPEXConfig gpex_cfg;
+ };
+diff --git a/hw/pci-host/gpex.c b/hw/pci-host/gpex.c
+index e9cf455bf5..635467016f 100644
+--- a/hw/pci-host/gpex.c
++++ b/hw/pci-host/gpex.c
+@@ -32,6 +32,7 @@
+ #include "qemu/osdep.h"
+ #include "qapi/error.h"
+ #include "hw/irq.h"
++#include "hw/pci/pci_bus.h"
+ #include "hw/pci-host/gpex.h"
+ #include "hw/qdev-properties.h"
+ #include "migration/vmstate.h"
+@@ -136,6 +137,9 @@ static void gpex_host_realize(DeviceState *dev, Error **errp)
+     pci->bus = pci_register_root_bus(dev, "pcie.0", gpex_set_irq,
+                                      pci_swizzle_map_irq_fn, s, &s->io_mmio,
+                                      &s->io_ioport, 0, 4, TYPE_PCIE_BUS);
++    if (s->allow_io_addr0_accesses) {
++        pci->bus->flags |= PCI_BUS_IO_ADDR0_ALLOWED;
++    }
+ 
+     pci_bus_set_route_irq_fn(pci->bus, gpex_route_intx_pin_to_irq);
+     qdev_realize(DEVICE(&s->gpex_root), BUS(pci->bus), &error_fatal);
+@@ -154,6 +158,8 @@ static Property gpex_host_properties[] = {
+      */
+     DEFINE_PROP_BOOL("allow-unmapped-accesses", GPEXHost,
+                      allow_unmapped_accesses, true),
++    DEFINE_PROP_BOOL("allow-io-addr0-accesses", GPEXHost,
++                     allow_io_addr0_accesses, false),
+     DEFINE_PROP_UINT64(PCI_HOST_ECAM_BASE, GPEXHost, gpex_cfg.ecam.base, 0),
+     DEFINE_PROP_SIZE(PCI_HOST_ECAM_SIZE, GPEXHost, gpex_cfg.ecam.size, 0),
+     DEFINE_PROP_UINT64(PCI_HOST_PIO_BASE, GPEXHost, gpex_cfg.pio.base, 0),
 -- 
 2.45.2
 
