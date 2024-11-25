@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB29B9D8D1E
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Nov 2024 21:01:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A5D29D8D32
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Nov 2024 21:04:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tFfFD-00055x-Go; Mon, 25 Nov 2024 14:59:39 -0500
+	id 1tFfFM-0005FZ-QL; Mon, 25 Nov 2024 14:59:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jean-philippe@linaro.org>)
- id 1tFfFA-000530-1T
- for qemu-devel@nongnu.org; Mon, 25 Nov 2024 14:59:36 -0500
-Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
+ id 1tFfFB-00054b-PC
+ for qemu-devel@nongnu.org; Mon, 25 Nov 2024 14:59:37 -0500
+Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <jean-philippe@linaro.org>)
- id 1tFfF4-0004m3-2H
- for qemu-devel@nongnu.org; Mon, 25 Nov 2024 14:59:35 -0500
-Received: by mail-wr1-x430.google.com with SMTP id
- ffacd0b85a97d-382411ea5eeso2754575f8f.0
- for <qemu-devel@nongnu.org>; Mon, 25 Nov 2024 11:59:29 -0800 (PST)
+ id 1tFfF4-0004mQ-Lr
+ for qemu-devel@nongnu.org; Mon, 25 Nov 2024 14:59:37 -0500
+Received: by mail-wr1-x432.google.com with SMTP id
+ ffacd0b85a97d-382325b0508so3216491f8f.3
+ for <qemu-devel@nongnu.org>; Mon, 25 Nov 2024 11:59:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1732564768; x=1733169568; darn=nongnu.org;
+ d=linaro.org; s=google; t=1732564769; x=1733169569; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=l6ECEauevFEDuaDl5024iGUaHxmj6lx8VtL68hjVAuI=;
- b=iuLxBJMGVBoxPF1UJDbA2Vv1OBWYbTtYScfkXCV61/kiTyEQAXG+SZfOPyBxJ0dHhP
- SPG5Mft6seqGOH4r3oPqIM00JwRAvMI29cbNnu1YpXzeMfssxWxo3wl5N8npQEMJtE9N
- Lm7KoK8eJn9xjEZ1krDjp89YU4EzGE9Zax4jSXZrNH6IBWgVgrN/OLfops3AxTLXqWmP
- PThUevk7U+onNLC0GKMePt92PK+BNNr4yuiwDyUPT951UHuAPfPP08wLBOzIUHRmjtcn
- xnTqeI+W6Ovn5ZgpDryC9n2BsR/rsbdNpnh86NPTuv6ZrO6i91xEEpBTT7MU2QyoyBBQ
- Jg8g==
+ bh=JcJPrbjMCLmh0eNMSHwL1G2MB7wFRr0T2Y0cUgmEayE=;
+ b=eMo1bxiMPDGqZSG/Uw39HPRSZ7h8wREm/Jgxf1+iA6btKsaE/DknIuKkuE/wM8DZDf
+ vZfuwpm8UrgemmaDDl3C05i/gV5yO62hjK/vYVLzcuXP3vV1PDkcJHz7+yK5CAHd3VCl
+ eXh7NAtrYx28y7+FlGvINpn+FZcQd6vzfCeTviWzG3Q2Ox1Ttr4I91CPqviKkutVZaE1
+ omod1SMRGE85FzDdO6dyavzEZcrD24b9TPTHfzM+QvoLy4YnssiWgHg7SgmRv5r3SMIO
+ nwex9ZlLeK1/alCQ7ZvA89JrI3Y3esd+6OqPdtAHNzg8Dm+DtYmC2nD/RQu0F20TxViE
+ fu5g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1732564768; x=1733169568;
+ d=1e100.net; s=20230601; t=1732564769; x=1733169569;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=l6ECEauevFEDuaDl5024iGUaHxmj6lx8VtL68hjVAuI=;
- b=B2n/b3yVWaHhR/PWi2JEM/vKxSLuo6qnbg09zAo5GeeiGboKG4PY0Xrt07yQGPX8QE
- CP63gKl267E7659ovEa3HBdMNB2Ql2r+VfvJpRZbUQw5un6ELBQ4KFDUuUqs/6McaJzX
- 7sWJgDkElDfdwlUQ851lGXjRtSm/0dGzCT1Cqk8O0NMyZP+EjktoPa+s+2sjPhRtOs7f
- gL+GeqwWOSFswrq+k0ajcOAtWhmgu/Eoyo0ZaW3OcxrGayENv36KmNF8Hsua01m4k4NY
- PAUOvNQxOZ1I4wMagre6Heu3cV1CWrZHsebXbMMSr+ZOwNcXpppHXecAebUE+1yP1cfW
- HSwQ==
+ bh=JcJPrbjMCLmh0eNMSHwL1G2MB7wFRr0T2Y0cUgmEayE=;
+ b=e+B14OJ/izMgxvZNgwRaSk2c9iETbkkadrJ/0R/B1tYGD//sFDjgp7sxpAtUk78a4X
+ 4y/Ia7fXCnsHTdXo20xIsCnM2VMsNj7rLETs1+Mt727CjocZ+IkWZVbk/xUd/9ShH1SI
+ LuEL6vwmBXD5SIqPFPXkcB8xjOBvHjN/lb89nHigDLlkHXKO/6y2BELSbjkETLJIcFJ5
+ sC+m8t2Onb3uRId2Kx7m//YvWS037lYS8bMorGSKAelzVDOjFExqkJ4OZb4thDQHDBNe
+ qZkR7jvA4gtdEZNLtS6O7NJ0xOJM9cLF9pZ6+UiuTTtZr38ixlFbbTwGtBNTkEchRtz4
+ 134Q==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVrt/2VTRYLDn1Hv0BEWv118BH9QrbYV+ErTitKWxh9pS0/F4K/s+pLmElz1xz0HO5WGgB5YLbIo1Ih@nongnu.org
-X-Gm-Message-State: AOJu0YwjY1+1Cc4owolfyTJy5CINn5oJowimNEha5j1bUT0q36M/Nbq+
- x4FmvYEdyHBR0jxuA/G8sg23E5JKtJ5vSe3eUn5hCLcsMp4vri61SKsWPFJ7nkE=
-X-Gm-Gg: ASbGnctV3tjwo2G5gD1WKMs4OWVEKEHfSHWNbN12/8/78ha9qwxuKYvEk9Lpg/Olauk
- ox+ZthZrDYlJEr63vKuTpNwlfTrOrCqlbU0/o0Q5ex0GLyzO45XqF/LuzDGsP32S4fj0p2IrvHg
- ag9WC7B19R3xTO5OAywbP5WRQFOK9grsnRadobgyEDaIV6doBi1T5C/mwwqUvniYyi9AHpGZCXi
- /h9oD268lhOsPyJ0S1HYzIOEcF2Q/lL60GeA8thiTlJvvlBB07HWONJt5mhZO9ugPbE
-X-Google-Smtp-Source: AGHT+IGbZl3AY2mB9oOWxAvM4IlArET44A1YQ5dGHlD5vZZFWUk/pyqrC23UoIgvZPpYjMWvWh/3Pg==
-X-Received: by 2002:a5d:6d84:0:b0:37d:3780:31d2 with SMTP id
- ffacd0b85a97d-385bfaf0c1bmr602579f8f.15.1732564768631; 
- Mon, 25 Nov 2024 11:59:28 -0800 (PST)
+ AJvYcCX8Yg6/6EfUhP+I/h4fW1k7q5P9Dl/nPHEA91yRS+U5sLNMjPet/8nDz/HpjdHtVqabms4sSmoiMy2t@nongnu.org
+X-Gm-Message-State: AOJu0Yw1mpGR/kW+i6KC/YZEm7qR5RvRZcFZMhZTsbEmey6jYSc6N/0J
+ rrQoIcu7U0NA5JecnqfxFtzcHSUNanmy125cOpEim1KLlBZYcfjcoKNSX2Zupnw=
+X-Gm-Gg: ASbGncuTpAGQUCGBocMJ69SGzTZfhUZJ8ek9L22vBkGUD5mHAWRQ+R3cw8DRZSOlWX8
+ VlBkSl7QAaAeut+tjWNVOkppbbVQr5onB+lYdrL978lwVcVI1nno3o8pOGdHRZ4pBAbS1nqLA0q
+ 3/VHT961+8U9m5i+D7gDqqHnFZKBACg3b9OC04x7aAG/aXleiv8C6C/yv0JgFI250ualqvw4UID
+ iGI8EmehKTvdPzdcWZIrvAxHijN27sGEsIbTx5b9hJxLYKSiSA7+IwBASqOLuAOyMmi
+X-Google-Smtp-Source: AGHT+IEg6YuxoILvMPLYuVly61vnvw6FfSnv0Ejz5HnIAwlyt73nF1r2uz5gua2PinPmEU6MzS2shQ==
+X-Received: by 2002:a05:6000:1fab:b0:382:4aa0:e728 with SMTP id
+ ffacd0b85a97d-38260b46dd6mr12738762f8f.1.1732564769159; 
+ Mon, 25 Nov 2024 11:59:29 -0800 (PST)
 Received: from localhost.localdomain ([2.221.137.100])
  by smtp.gmail.com with ESMTPSA id
  ffacd0b85a97d-3825fd0fbdcsm11237971f8f.109.2024.11.25.11.59.28
@@ -67,24 +67,23 @@ To: peter.maydell@linaro.org
 Cc: richard.henderson@linaro.org, philmd@linaro.org, qemu-arm@nongnu.org,
  qemu-devel@nongnu.org, alex.bennee@linaro.org,
  Jean-Philippe Brucker <jean-philippe@linaro.org>
-Subject: [PATCH v3 07/26] target/arm/kvm: Create scratch VM as Realm if
- necessary
-Date: Mon, 25 Nov 2024 19:56:06 +0000
-Message-ID: <20241125195626.856992-9-jean-philippe@linaro.org>
+Subject: [PATCH v3 08/26] hw/core/loader: Add ROM loader notifier
+Date: Mon, 25 Nov 2024 19:56:07 +0000
+Message-ID: <20241125195626.856992-10-jean-philippe@linaro.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241125195626.856992-2-jean-philippe@linaro.org>
 References: <20241125195626.856992-2-jean-philippe@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::430;
- envelope-from=jean-philippe@linaro.org; helo=mail-wr1-x430.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::432;
+ envelope-from=jean-philippe@linaro.org; helo=mail-wr1-x432.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,42 +99,92 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Some ID registers have a different value for a Realm VM, for example
-ID_AA64DFR0_EL1 contains the number of breakpoints/watchpoints
-implemented by RMM instead of the hardware.
+Add a function to register a notifier, that is invoked after a ROM gets
+loaded into guest memory.
 
-Even though RMM is in charge of setting up most Realm registers, KVM
-still provides GET_ONE_REG interface on a Realm VM to probe the VM's
-capabilities.
+It will be used by Arm confidential guest support, in order to register
+all blobs loaded into memory with KVM, so that their content is moved
+into Realm state and measured into the initial VM state.
 
 Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
 ---
- target/arm/kvm.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ include/hw/loader.h | 15 +++++++++++++++
+ hw/core/loader.c    | 15 +++++++++++++++
+ 2 files changed, 30 insertions(+)
 
-diff --git a/target/arm/kvm.c b/target/arm/kvm.c
-index a0de2efc41..870f51bf02 100644
---- a/target/arm/kvm.c
-+++ b/target/arm/kvm.c
-@@ -106,6 +106,7 @@ bool kvm_arm_create_scratch_host_vcpu(const uint32_t *cpus_to_try,
- {
-     int ret = 0, kvmfd = -1, vmfd = -1, cpufd = -1;
-     int max_vm_pa_size;
-+    int vm_type;
+diff --git a/include/hw/loader.h b/include/hw/loader.h
+index 7f6d06b956..0cd9905f97 100644
+--- a/include/hw/loader.h
++++ b/include/hw/loader.h
+@@ -353,6 +353,21 @@ void *rom_ptr_for_as(AddressSpace *as, hwaddr addr, size_t size);
+ ssize_t rom_add_vga(const char *file);
+ ssize_t rom_add_option(const char *file, int32_t bootindex);
  
-     kvmfd = qemu_open_old("/dev/kvm", O_RDWR);
-     if (kvmfd < 0) {
-@@ -115,8 +116,9 @@ bool kvm_arm_create_scratch_host_vcpu(const uint32_t *cpus_to_try,
-     if (max_vm_pa_size < 0) {
-         max_vm_pa_size = 0;
++typedef struct RomLoaderNotify {
++    /* Parameters passed to rom_add_blob() */
++    hwaddr addr;
++    size_t len;
++    size_t max_len;
++} RomLoaderNotify;
++
++/**
++ * rom_add_load_notifier - Add a notifier for loaded images
++ *
++ * Add a notifier that will be invoked with a RomLoaderNotify structure for each
++ * blob loaded into guest memory, after the blob is loaded.
++ */
++void rom_add_load_notifier(Notifier *notifier);
++
+ /* This is the usual maximum in uboot, so if a uImage overflows this, it would
+  * overflow on real hardware too. */
+ #define UBOOT_MAX_GUNZIP_BYTES (64 << 20)
+diff --git a/hw/core/loader.c b/hw/core/loader.c
+index 31593a1171..759a62cf58 100644
+--- a/hw/core/loader.c
++++ b/hw/core/loader.c
+@@ -67,6 +67,8 @@
+ #include <zlib.h>
+ 
+ static int roms_loaded;
++static NotifierList rom_loader_notifier =
++    NOTIFIER_LIST_INITIALIZER(rom_loader_notifier);
+ 
+ /* return the size or -1 if error */
+ int64_t get_image_size(const char *filename)
+@@ -1179,6 +1181,11 @@ MemoryRegion *rom_add_blob(const char *name, const void *blob, size_t len,
+     return mr;
+ }
+ 
++void rom_add_load_notifier(Notifier *notifier)
++{
++    notifier_list_add(&rom_loader_notifier, notifier);
++}
++
+ /* This function is specific for elf program because we don't need to allocate
+  * all the rom. We just allocate the first part and the rest is just zeros. This
+  * is why romsize and datasize are different. Also, this function takes its own
+@@ -1220,6 +1227,7 @@ ssize_t rom_add_option(const char *file, int32_t bootindex)
+ static void rom_reset(void *unused)
+ {
+     Rom *rom;
++    RomLoaderNotify notify;
+ 
+     QTAILQ_FOREACH(rom, &roms, next) {
+         if (rom->fw_file) {
+@@ -1268,6 +1276,13 @@ static void rom_reset(void *unused)
+         cpu_flush_icache_range(rom->addr, rom->datasize);
+ 
+         trace_loader_write_rom(rom->name, rom->addr, rom->datasize, rom->isrom);
++
++        notify = (RomLoaderNotify) {
++            .addr = rom->addr,
++            .len = rom->datasize,
++            .max_len = rom->romsize,
++        };
++        notifier_list_notify(&rom_loader_notifier, &notify);
      }
-+    vm_type = kvm_arm_rme_vm_type(MACHINE(qdev_get_machine()));
-     do {
--        vmfd = ioctl(kvmfd, KVM_CREATE_VM, max_vm_pa_size);
-+        vmfd = ioctl(kvmfd, KVM_CREATE_VM, max_vm_pa_size | vm_type);
-     } while (vmfd == -1 && errno == EINTR);
-     if (vmfd < 0) {
-         goto err;
+ }
+ 
 -- 
 2.47.0
 
