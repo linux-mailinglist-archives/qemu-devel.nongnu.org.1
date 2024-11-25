@@ -2,89 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FC8B9D8944
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Nov 2024 16:26:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E79109D892D
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Nov 2024 16:23:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tFays-0006zt-A3; Mon, 25 Nov 2024 10:26:30 -0500
+	id 1tFatw-00043B-N8; Mon, 25 Nov 2024 10:21:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tFaym-0006ws-Ef
- for qemu-devel@nongnu.org; Mon, 25 Nov 2024 10:26:24 -0500
-Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
+ id 1tFatt-00041d-Oz
+ for qemu-devel@nongnu.org; Mon, 25 Nov 2024 10:21:21 -0500
+Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tFayg-0002YE-GM
- for qemu-devel@nongnu.org; Mon, 25 Nov 2024 10:26:20 -0500
-Received: by mail-wr1-x429.google.com with SMTP id
- ffacd0b85a97d-382442b7d9aso3508281f8f.1
- for <qemu-devel@nongnu.org>; Mon, 25 Nov 2024 07:26:18 -0800 (PST)
+ id 1tFatq-0001nT-W1
+ for qemu-devel@nongnu.org; Mon, 25 Nov 2024 10:21:21 -0500
+Received: by mail-wr1-x435.google.com with SMTP id
+ ffacd0b85a97d-3825c05cc90so2936901f8f.1
+ for <qemu-devel@nongnu.org>; Mon, 25 Nov 2024 07:21:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1732548377; x=1733153177; darn=nongnu.org;
+ d=linaro.org; s=google; t=1732548077; x=1733152877; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=a2fXEZ40BYTZpxwqr81qDeJmktd3tot0XA64fsee8Sk=;
- b=m5RC1SLZacH0sCo5RcGZL4t/RqbD+GUJoub5tl3tOJ5US9Vg7AAPTTr6hApB8eQvVr
- WQIblMjl9R0hvUPIYBPSKPBu4uwGRNO7aa5OWSlOgHCW4nXDS1TsOGUmomB8p0KayHy9
- 06ZxBIxNszJcyIRcdRuFhhGcooQ4LHt+Kwh2Fe48fljww06F0ezRC+eNdm7VpOKNM9gR
- oyMgPiLxdgKBQ+JN9qRhnQbVtR3qYQNsmTiQJolLjIiQshQDSH5fOvgZemE1yx3h2+Aw
- ROhyDwvnYG62f7vL0DtkeNpb8HN87p7JXIslSEKy+7lJ4XfJrRLaGdmM5+SHRg6ztfAQ
- ZrbQ==
+ bh=+pOvKcIYLYjxSCH4Q48xgGtD5Zj0tOeOWXKJv+fQtdI=;
+ b=F9lEJZh/OpF2jRsjN0n0mCsA8+qnriL4x0RZ8AmfN2B3aypt1KsIGepksWss6iJtn9
+ kc16f7/X9sjlThXfZCpiGdzJTjG84/eXniiEul3pSwe1kGFqCxXazrAukah6RvLB3YVg
+ pxdVUr8B1/WWorqROvWtivQgC9P6DJkNXfgOAyocbuDvCr1414/vVscEqW02uZ6nfxq4
+ 4UfZGL8ISJDdc11UoX/L9vZqu3cVFRtAQl1qTyJgWdS8SuqjyyghUgp8XAcSCojssBMl
+ cuAUY0XJLokwZROqJzhDKsOgn1lT3V0LA16SqUbIiQAx1QzbwPcxLfxZbkbaluaoSrbE
+ kIkQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1732548377; x=1733153177;
+ d=1e100.net; s=20230601; t=1732548077; x=1733152877;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=a2fXEZ40BYTZpxwqr81qDeJmktd3tot0XA64fsee8Sk=;
- b=qRL1eD8gvakYDIWl+B0TV58Fjlv1ceGj90Zj9860eJepzMxSr3rjl1Q0bCdRsuzD1Y
- rZpj+tNkthWe9xDtVcIw2L/kcuIe+bfjjqksuaagzifEYIldkE1v62KKxB6p7654wIZb
- aVYoEStZlxBq+UNNy6Gb1DZQ1uuaRlZpzC9+KPjPwKlcNJkmRmIUxv+7C3c+1MspiK9Y
- 9GIDX2b46UmRofuOMWr8+oAbPgydwaSr9n8jG5/sYk2UfEHy0naAHM/3HVwaLjPaVtD5
- KWvMUCSk2IcP3NISpqyib7rLoDews69Huz2DDJBQCQ/nFsm+hP08FbxJ9uV4orkKxu2L
- Q4kQ==
-X-Gm-Message-State: AOJu0YylRdZS+nRi7ZSGCU+uvNxT2diK6RFMvcT8F17lBTl0E6o4ogRm
- Sd+pAHi4PF3lI2IIXVQ43W8kQvvYL70bPHP275qKibZpVGWDWXCj6FdytP4OT0g=
-X-Gm-Gg: ASbGncua8xsiTkF8/i5mTFEyBOGd9EShIJVZ6ueoZku3AcKc0uMAQO3gjbYCn1xerov
- q+Xswi7QOjZ9AqM9tSo+EgkbQMuPobdhXYZcCsPAwSBXSi2oJNNTpmsBxZqgnoGDE2Ng4lodqET
- OnvlL5IfNuIJgEBBlCRjaZGy+fg0wap0ePUfKaHxZRKVat6Lkme/vtC9iw5zM/YXzfvEI2wUxeo
- P2sMP8W7vL9BMV9NldLwXlPRkT2cu7UZbsty9/g/S2N089B
-X-Google-Smtp-Source: AGHT+IHLFKXVbfrWbEJ2k0TaxAtiGiJ5Zz01ioXL6R/DB3CMfOz6JI1ww3hZgY61mfYdL9p51Fs6aQ==
-X-Received: by 2002:a05:6000:401f:b0:382:2cbd:9a4b with SMTP id
- ffacd0b85a97d-38260b6df0amr10466459f8f.24.1732548376874; 
- Mon, 25 Nov 2024 07:26:16 -0800 (PST)
+ bh=+pOvKcIYLYjxSCH4Q48xgGtD5Zj0tOeOWXKJv+fQtdI=;
+ b=nZGHDBehMKsr+TjDHb2zAOb7R7RXxnEHr3ePJBQZMcnBS/ua9cnsXjB1TeiKeb70bC
+ bLZ33JSuQR0nGtnfQbgLJuiYJbeRuyrEJmFYAyPwFAVNOuF+8unGTvzA47DFYeVQZj1F
+ 6hpa3SDDPK12Tz41pzcrrMoBg/ex4R0ru30gDydFx0O94B9DyJYpCm8V30XcgobuLoOu
+ gcsFxRPMNa6LBraZIepQo+SXSX9mtaOoXBfnPTAk7FeVlmSRf4Z9XZKGOS+zRMgVTSgC
+ Iq+d6g3Yfm4AYs53h6Am5AR3OKBv8D6jw72mMx/D0I5SDAPWHuA1UGSyrKH+w3GZh4Wg
+ Nz5Q==
+X-Gm-Message-State: AOJu0YyFtKcNAtcoCzijUsLRth2q1pAmdyAFwR2ruF1oy7W2MoobL+ep
+ f07E4I7QDKP/VCX9SpIwMKerx9awnfsrXREs3L5rw2zdo5xd8SZxCzDCct48iXs=
+X-Gm-Gg: ASbGncumVOM5+hu3cWBHBQCFFXq3LnCsJOg4OaOXuQsY+4sW79f52HfkTo46Hr6cZOK
+ JUPYvydhdvCv4u+9OOUw7Knt1vyz6OA04pZKHNNSLdbOcn7UsCW60F7ebX34ir0Bcx6xIUC5ypA
+ wxqrBqYmzxTb2fgeueF5uXSYGgDpwJwCWwXs1K8JjnROrwD9nWwEEqaXj1GIWE6v+AC0ASBImov
+ lyfv6NcnbirxDIf+9hEsgjkZGULhZM+8IMkMcEXalC4Wc2h
+X-Google-Smtp-Source: AGHT+IH3vfZTAk1rY21ftHnQBkgC8g2Bv/YWU9EtMMaX9lpdRgPnTKLlgZ0SVLEK4LvETa16l131xw==
+X-Received: by 2002:a05:6000:1543:b0:37c:d12c:17e5 with SMTP id
+ ffacd0b85a97d-38260b6bb95mr10721419f8f.23.1732548077505; 
+ Mon, 25 Nov 2024 07:21:17 -0800 (PST)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3825fd04ef5sm10611647f8f.111.2024.11.25.07.26.14
+ ffacd0b85a97d-3825fbedfb2sm10633531f8f.105.2024.11.25.07.21.12
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 25 Nov 2024 07:26:14 -0800 (PST)
+ Mon, 25 Nov 2024 07:21:15 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 14E675F8FE;
+ by draig.lan (Postfix) with ESMTP id 2DD7363937;
  Mon, 25 Nov 2024 15:21:08 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Stefan Hajnoczi <stefanha@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
+Cc: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
  Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Steven Lee <steven_lee@aspeedtech.com>, Troy Lee <leetroy@gmail.com>,
+ Jamin Lin <jamin_lin@aspeedtech.com>,
+ Andrew Jeffery <andrew@codeconstruct.com.au>,
+ Joel Stanley <joel@jms.id.au>, Cleber Rosa <crosa@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Markus Armbruster <armbru@redhat.com>
-Subject: [PULL 25/28] docs: explicitly permit a "commonly known identity" with
- SoB
-Date: Mon, 25 Nov 2024 15:21:02 +0000
-Message-Id: <20241125152105.2100395-26-alex.bennee@linaro.org>
+ qemu-arm@nongnu.org (open list:ASPEED BMCs)
+Subject: [PULL 26/28] tests/functional: Convert Aspeed aarch64 SDK tests
+Date: Mon, 25 Nov 2024 15:21:03 +0000
+Message-Id: <20241125152105.2100395-27-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241125152105.2100395-1-alex.bennee@linaro.org>
 References: <20241125152105.2100395-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::429;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x429.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::435;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x435.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -107,104 +109,233 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Daniel P. Berrangé <berrange@redhat.com>
+From: Cédric Le Goater <clg@redhat.com>
 
-The docs for submitting a patch describe using your "Real Name" with
-the Signed-off-by line. Although somewhat ambiguous, this has often
-been interpreted to mean someone's legal name.
+Drop the SSH connection which was introduced in the avocado tests to
+workaround read issues when interacting with console.
 
-In recent times, there's been a general push back[1] against the notion
-that use of Signed-off-by in a project automatically requires / implies
-the use of legal ("real") names and greater awareness of the downsides.
-
-Full discussion of the problems of such policies is beyond the scope of
-this commit message, but at a high level they are liable to marginalize,
-disadvantage, and potentially result in harm, to contributors.
-
-TL;DR: there are compelling reasons for a person to choose distinct
-identities in different contexts & a decision to override that choice
-should not be taken lightly.
-
-A number of key projects have responded to the issues raised by making
-it clear that a contributor is free to determine the identity used in
-SoB lines:
-
- * Linux has clarified[2] that they merely expect use of the
-   contributor's "known identity", removing the previous explicit
-   rejection of pseudonyms.
-
- * CNCF has clarified[3] that the real name is simply the identity
-   the contributor chooses to use in the context of the community
-   and does not have to be a legal name, nor birth name, nor appear
-   on any government ID.
-
-Since we have no intention of ever routinely checking any form of ID
-documents for contributors[4], realistically we have no way of knowing
-anything about the name they are using, except through chance, or
-through the contributor volunteering the information. IOW, we almost
-certainly already have people using pseudonyms for contributions.
-
-This proposes to accept that reality and eliminate unnecessary friction,
-by following Linux & the CNCF in merely asking that a contributors'
-commonly known identity, of their choosing, be used with the SoB line.
-
-[1] Raised in many contexts at many times, but a decent overall summary
-    can be read at https://drewdevault.com/2023/10/31/On-real-names.html
-[2] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=d4563201f33a022fc0353033d9dfeb1606a88330
-[3] https://github.com/cncf/foundation/blob/659fd32c86dc/dco-guidelines.md
-[4] Excluding the rare GPG key signing parties for regular maintainers
-
-Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
-Acked-by: Stefan Hajnoczi <stefanha@redhat.com>
-Acked-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
-Acked-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20241021190939.1482466-1-berrange@redhat.com>
+Signed-off-by: Cédric Le Goater <clg@redhat.com>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Message-Id: <20241122090322.1934697-2-clg@redhat.com>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20241121165806.476008-40-alex.bennee@linaro.org>
 
-diff --git a/docs/devel/submitting-a-patch.rst b/docs/devel/submitting-a-patch.rst
-index 83e9092b8c..10b062eec2 100644
---- a/docs/devel/submitting-a-patch.rst
-+++ b/docs/devel/submitting-a-patch.rst
-@@ -18,7 +18,7 @@ one-shot fix, the bare minimum we ask is that:
+diff --git a/tests/avocado/machine_aspeed.py b/tests/avocado/machine_aspeed.py
+index 241ef180af..2240c82abf 100644
+--- a/tests/avocado/machine_aspeed.py
++++ b/tests/avocado/machine_aspeed.py
+@@ -59,17 +59,6 @@ def do_test_arm_aspeed_sdk_start(self, image):
+             self, 'boot', '## Loading kernel from FIT Image')
+         self.wait_for_console_pattern('Starting kernel ...')
  
-    * - Check
-      - Reason
--   * - Patches contain Signed-off-by: Real Name <author@email>
-+   * - Patches contain Signed-off-by: Your Name <author@email>
-      - States you are legally able to contribute the code. See :ref:`patch_emails_must_include_a_signed_off_by_line`
-    * - Sent as patch emails to ``qemu-devel@nongnu.org``
-      - The project uses an email list based workflow. See :ref:`submitting_your_patches`
-@@ -335,6 +335,11 @@ include a "From:" line in the body of the email (different from your
- envelope From:) that will give credit to the correct author; but again,
- that author's Signed-off-by: line is mandatory, with the same spelling.
+-    def do_test_aarch64_aspeed_sdk_start(self, image):
+-        self.vm.set_console()
+-        self.vm.add_args('-drive', 'file=' + image + ',if=mtd,format=raw',
+-                         '-net', 'nic', '-net', 'user,hostfwd=:127.0.0.1:0-:22')
+-
+-        self.vm.launch()
+-
+-        self.wait_for_console_pattern('U-Boot 2023.10')
+-        self.wait_for_console_pattern('## Loading kernel from FIT Image')
+-        self.wait_for_console_pattern('Starting kernel ...')
+-
+     @skipUnless(os.getenv('QEMU_TEST_FLAKY_TESTS'), 'Test is unstable on GitLab')
+     def test_arm_ast2500_evb_sdk(self):
+         """
+@@ -133,70 +122,3 @@ def test_arm_ast2600_evb_sdk(self):
+         year = time.strftime("%Y")
+         self.ssh_command_output_contains('/sbin/hwclock -f /dev/rtc1', year);
  
-+The name used with "Signed-off-by" does not need to be your legal name,
-+nor birth name, nor appear on any government ID. It is the identity you
-+choose to be known by in the community, but should not be anonymous,
-+nor misrepresent whom you are.
+-    def test_aarch64_ast2700_evb_sdk_v09_02(self):
+-        """
+-        :avocado: tags=arch:aarch64
+-        :avocado: tags=machine:ast2700-evb
+-        """
+-
+-        image_url = ('https://github.com/AspeedTech-BMC/openbmc/releases/'
+-                     'download/v09.02/ast2700-default-obmc.tar.gz')
+-        image_hash = 'ac969c2602f4e6bdb69562ff466b89ae3fe1d86e1f6797bb7969d787f82116a7'
+-        image_path = self.fetch_asset(image_url, asset_hash=image_hash,
+-                                      algorithm='sha256')
+-        archive.extract(image_path, self.workdir)
+-
+-        num_cpu = 4
+-        image_dir = self.workdir + '/ast2700-default/'
+-        uboot_size = os.path.getsize(image_dir + 'u-boot-nodtb.bin')
+-        uboot_dtb_load_addr = hex(0x400000000 + uboot_size)
+-
+-        load_images_list = [
+-            {
+-                'addr': '0x400000000',
+-                'file': image_dir + 'u-boot-nodtb.bin'
+-            },
+-            {
+-                'addr': str(uboot_dtb_load_addr),
+-                'file': image_dir + 'u-boot.dtb'
+-            },
+-            {
+-                'addr': '0x430000000',
+-                'file': image_dir + 'bl31.bin'
+-            },
+-            {
+-                'addr': '0x430080000',
+-                'file': image_dir + 'optee/tee-raw.bin'
+-            }
+-        ]
+-
+-        for load_image in load_images_list:
+-            addr = load_image['addr']
+-            file = load_image['file']
+-            self.vm.add_args('-device',
+-                             f'loader,force-raw=on,addr={addr},file={file}')
+-
+-        for i in range(num_cpu):
+-            self.vm.add_args('-device',
+-                             f'loader,addr=0x430000000,cpu-num={i}')
+-
+-        self.vm.add_args('-smp', str(num_cpu))
+-        self.vm.add_args('-device',
+-                         'tmp105,bus=aspeed.i2c.bus.1,address=0x4d,id=tmp-test')
+-        self.do_test_aarch64_aspeed_sdk_start(image_dir + 'image-bmc')
+-        self.wait_for_console_pattern('nodistro.0 ast2700-default ttyS12')
+-
+-        self.ssh_connect('root', '0penBmc', False)
+-        self.ssh_command('dmesg -c > /dev/null')
+-
+-        self.ssh_command_output_contains(
+-            'echo lm75 0x4d > /sys/class/i2c-dev/i2c-1/device/new_device '
+-            '&& dmesg -c',
+-            'i2c i2c-1: new_device: Instantiated device lm75 at 0x4d');
+-
+-        self.ssh_command_output_contains(
+-            'cat /sys/class/hwmon/hwmon20/temp1_input', '0')
+-        self.vm.cmd('qom-set', path='/machine/peripheral/tmp-test',
+-                    property='temperature', value=18000)
+-        self.ssh_command_output_contains(
+-            'cat /sys/class/hwmon/hwmon20/temp1_input', '18000')
+diff --git a/tests/functional/meson.build b/tests/functional/meson.build
+index 923f9e7078..d6d2c0196c 100644
+--- a/tests/functional/meson.build
++++ b/tests/functional/meson.build
+@@ -11,6 +11,7 @@ endif
+ 
+ # Timeouts for individual tests that can be slow e.g. with debugging enabled
+ test_timeouts = {
++  'aarch64_aspeed' : 600,
+   'aarch64_raspi4' : 480,
+   'aarch64_sbsaref_alpine' : 720,
+   'aarch64_sbsaref_freebsd' : 720,
+@@ -48,6 +49,7 @@ tests_generic_bsduser = [
+ ]
+ 
+ tests_aarch64_system_thorough = [
++  'aarch64_aspeed',
+   'aarch64_raspi3',
+   'aarch64_raspi4',
+   'aarch64_sbsaref',
+diff --git a/tests/functional/test_aarch64_aspeed.py b/tests/functional/test_aarch64_aspeed.py
+new file mode 100644
+index 0000000000..59916efd71
+--- /dev/null
++++ b/tests/functional/test_aarch64_aspeed.py
+@@ -0,0 +1,98 @@
++#!/usr/bin/env python3
++#
++# Functional test that boots the ASPEED SoCs with firmware
++#
++# Copyright (C) 2022 ASPEED Technology Inc
++#
++# SPDX-License-Identifier: GPL-2.0-or-later
 +
- There are various tooling options for automatically adding these tags
- include using ``git commit -s`` or ``git format-patch -s``. For more
- information see `SubmittingPatches 1.12
-diff --git a/.gitlab-ci.d/check-dco.py b/.gitlab-ci.d/check-dco.py
-index d221b16bd5..70dec7d6ee 100755
---- a/.gitlab-ci.d/check-dco.py
-+++ b/.gitlab-ci.d/check-dco.py
-@@ -78,7 +78,10 @@
- 
- To indicate acceptance of the DCO every commit must have a tag
- 
--  Signed-off-by: REAL NAME <EMAIL>
-+  Signed-off-by: YOUR NAME <EMAIL>
++import sys
++import os
 +
-+where "YOUR NAME" is your commonly known identity in the context
-+of the community.
- 
- This can be achieved by passing the "-s" flag to the "git commit" command.
- 
++from qemu_test import QemuSystemTest, Asset
++from qemu_test import wait_for_console_pattern
++from qemu_test import exec_command_and_wait_for_pattern
++from qemu_test.utils import archive_extract
++
++class AST2x00MachineSDK(QemuSystemTest):
++
++    def do_test_aarch64_aspeed_sdk_start(self, image):
++        self.require_netdev('user')
++        self.vm.set_console()
++        self.vm.add_args('-drive', 'file=' + image + ',if=mtd,format=raw',
++                         '-net', 'nic', '-net', 'user', '-snapshot')
++
++        self.vm.launch()
++
++        wait_for_console_pattern(self, 'U-Boot 2023.10')
++        wait_for_console_pattern(self, '## Loading kernel from FIT Image')
++        wait_for_console_pattern(self, 'Starting kernel ...')
++
++    ASSET_SDK_V902_AST2700 = Asset(
++            'https://github.com/AspeedTech-BMC/openbmc/releases/download/v09.02/ast2700-default-obmc.tar.gz',
++            'ac969c2602f4e6bdb69562ff466b89ae3fe1d86e1f6797bb7969d787f82116a7')
++
++    def test_aarch64_ast2700_evb_sdk_v09_02(self):
++        self.set_machine('ast2700-evb')
++
++        image_path = self.ASSET_SDK_V902_AST2700.fetch()
++        archive_extract(image_path, self.workdir)
++
++        num_cpu = 4
++        image_dir = self.workdir + '/ast2700-default/'
++        uboot_size = os.path.getsize(image_dir + 'u-boot-nodtb.bin')
++        uboot_dtb_load_addr = hex(0x400000000 + uboot_size)
++
++        load_images_list = [
++            {
++                'addr': '0x400000000',
++                'file': image_dir + 'u-boot-nodtb.bin'
++            },
++            {
++                'addr': str(uboot_dtb_load_addr),
++                'file': image_dir + 'u-boot.dtb'
++            },
++            {
++                'addr': '0x430000000',
++                'file': image_dir + 'bl31.bin'
++            },
++            {
++                'addr': '0x430080000',
++                'file': image_dir + 'optee/tee-raw.bin'
++            }
++        ]
++
++        for load_image in load_images_list:
++            addr = load_image['addr']
++            file = load_image['file']
++            self.vm.add_args('-device',
++                             f'loader,force-raw=on,addr={addr},file={file}')
++
++        for i in range(num_cpu):
++            self.vm.add_args('-device',
++                             f'loader,addr=0x430000000,cpu-num={i}')
++
++        self.vm.add_args('-smp', str(num_cpu))
++        self.vm.add_args('-device',
++                         'tmp105,bus=aspeed.i2c.bus.1,address=0x4d,id=tmp-test')
++        self.do_test_aarch64_aspeed_sdk_start(image_dir + 'image-bmc')
++
++        wait_for_console_pattern(self, 'ast2700-default login:')
++
++        exec_command_and_wait_for_pattern(self, 'root', 'Password:')
++        exec_command_and_wait_for_pattern(self,
++            '0penBmc', 'root@ast2700-default:~#')
++
++        exec_command_and_wait_for_pattern(self,
++            'echo lm75 0x4d > /sys/class/i2c-dev/i2c-1/device/new_device ',
++            'i2c i2c-1: new_device: Instantiated device lm75 at 0x4d');
++        exec_command_and_wait_for_pattern(self,
++            'cat /sys/class/hwmon/hwmon20/temp1_input', '0')
++        self.vm.cmd('qom-set', path='/machine/peripheral/tmp-test',
++                    property='temperature', value=18000)
++        exec_command_and_wait_for_pattern(self,
++            'cat /sys/class/hwmon/hwmon20/temp1_input', '18000')
++
++
++if __name__ == '__main__':
++    QemuSystemTest.main()
 -- 
 2.39.5
 
