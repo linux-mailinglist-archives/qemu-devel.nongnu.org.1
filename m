@@ -2,87 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AE379D875A
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Nov 2024 15:07:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 397A59D8772
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Nov 2024 15:11:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tFZkP-0003VL-AO; Mon, 25 Nov 2024 09:07:29 -0500
+	id 1tFZoR-0001rz-5d; Mon, 25 Nov 2024 09:11:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tFZkJ-00037u-AL
- for qemu-devel@nongnu.org; Mon, 25 Nov 2024 09:07:23 -0500
-Received: from mail-lj1-x233.google.com ([2a00:1450:4864:20::233])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tFZkH-0006nz-MP
- for qemu-devel@nongnu.org; Mon, 25 Nov 2024 09:07:23 -0500
-Received: by mail-lj1-x233.google.com with SMTP id
- 38308e7fff4ca-2ffc1009a06so14694901fa.2
- for <qemu-devel@nongnu.org>; Mon, 25 Nov 2024 06:07:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1732543640; x=1733148440; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=L0447YFcBRMDlI9ba9HXBwkyCRxekR5l41XUqVGmghw=;
- b=vlR5i1T5phyZKjz+wg1SjKYOZe9HfOX9lyxXrbsKY2s0jlikIi6iYlUV0YEHULtkLR
- 1l0AHB9izkyvSEUwPcUQSggomu0it7dYtbeDJdsoKDGtwQxUQGrVlH+wLJsuOG1IzW+u
- mbXwvb3ljMb4/MMRitFnzvXxgAD3UiaogGaA/zAOjttzCL5x9mv0Sm3K1yynMPTdG6cc
- gUkl4DHdcwTgRlKBIrQAXmEz/cwaHQEngajHt6GFCZ1SqGhsZNtsoCpwS+CEzCxVWF/7
- iV5k04BzcxDnDyxLaNbN5qSaj3Ul6jU5T1yJLE+FX0UNNaBQqQKISjla2l8TjHsSfZsg
- lQ3w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1732543640; x=1733148440;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=L0447YFcBRMDlI9ba9HXBwkyCRxekR5l41XUqVGmghw=;
- b=M1A1gNptNDIUMYyeOORYE1UsNIXm4Zl06GSNKhJeQ4Xo/GBV4fqJ1GGVB3ggKSgg+i
- UDGzi00kZ4E8SxSBvk/q5y30hCo+kPmR9TnidgupGNiErMINg1xM6sDJ8d8x6hl8xhGM
- TpvKkJyhDy8K1IDR25iSaVvSZC8EbtnwDpWjONJhikO20GM41gw14cE/uyjYszitq/48
- A5OkYI5weYDT7Df9apA9EsEjN5bfMZ5TP9KWo8eR5ZyCVO9L9zdheNU/g0uWyXYLHny0
- pas+vJF2+yWG59aJw3rYbrI2dGwfNhLZ6x/orRKiTusnM/L5Jz17yiGEduWa9bsIC1AG
- NmDg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUMV8WDgBcTekFoZKJg3SXbJnDleny9593cT5y8DuX3FUb9S9kYU0rMtOcn+yY5mvXnYPBfL5pfx9ar@nongnu.org
-X-Gm-Message-State: AOJu0YzFVGwJHkINGQGkJPj5x/j2P+aUhAVPnpQhpO7Fky2GlkeTKm75
- XM6InW8NPjsWAHzFeyIzd4rjAM4QeHu7kzuFC8fRpMjI8CCPFyVvB9qia+ukPy4=
-X-Gm-Gg: ASbGncsatfUc+QkZgC55dK0suSqs2JFym61hHPPt+q18qh1KUCJ5h+w22IUeLi6bvl0
- S1Lk1WPFLI+EMBwGZM4m9WRU++zqFT6DxC9jDFSbH7SgU6EEyBRmX9aQd3dsiruN4PtojFk3IO6
- oRRnXUIt5wQuvLEXrNPPWpYDmWNb+ScaACJIXS2nfH45/kB0mukyvAPtZw9/XT2JpmmVfdqvi5H
- Izd4W8fVAdfhOUEZCVzJJanJAb2hYFo3d1LXPfe4gAFeasOv5MYLbF+fb3r0Zg/hw==
-X-Google-Smtp-Source: AGHT+IFmlEXEEgK6XrULabuQbbr71LFbxg3DNrJfOch2N0c+PrBaFnM4zdcyIq9gWO9OdWAe9pl+mA==
-X-Received: by 2002:a2e:a5c9:0:b0:2fa:fcf0:7c2a with SMTP id
- 38308e7fff4ca-2ffa712e526mr85449331fa.24.1732543639749; 
- Mon, 25 Nov 2024 06:07:19 -0800 (PST)
-Received: from [192.168.69.146] ([176.176.170.239])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4349c89a113sm65186785e9.21.2024.11.25.06.07.18
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 25 Nov 2024 06:07:19 -0800 (PST)
-Message-ID: <39533af1-57c0-4e6b-90f0-049cca884c1f@linaro.org>
-Date: Mon, 25 Nov 2024 15:07:17 +0100
+ (Exim 4.90_1) (envelope-from <qemu_oss@crudebyte.com>)
+ id 1tFZoN-0001rZ-1b; Mon, 25 Nov 2024 09:11:35 -0500
+Received: from kylie.crudebyte.com ([5.189.157.229])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <qemu_oss@crudebyte.com>)
+ id 1tFZoL-0007QW-5n; Mon, 25 Nov 2024 09:11:34 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=crudebyte.com; s=kylie; h=Content-Type:Content-Transfer-Encoding:
+ MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+ Content-ID:Content-Description;
+ bh=BFKb8Rq8xQMWorM1jMPQkSFjh8eBrzRcxywfh/I+zCE=; b=W4OPQW+yKrB/3D4zBduBZfU7ey
+ muKx7jbo+Ot4EUpnCJzvlu1/3PhIC4pFUi8C0/Xo/OWhP7ACJk+ZKPM45rPtcOF75s+GROXxF10vQ
+ ZHOt/lgLK0qwJw1I5Ago1R34E2+YBVDw+Ko3h50WkUNPN1Wv5DgxriiSglZnc+vATvEICLbCA58jY
+ /p1RHPSknVn3xVk0A8eJbDtNcwN0YXGNCa9Ocx15Bko6iDM8oPv2OqDCD4mftvjz41iNDLsslFnX5
+ yDjYsDpz/AG4qez7aMpZoIJK4k1RVYwr0pYJQoUWJoilfXlL4tApnVh4yrk0VeStJdpsedsFBjpeF
+ 8YmtAghL7x+6EzEogNjrVXh5C6+TkI2HrsZLHRz+HQYC9ZrLtPdQRfJJdCg5Y+FF1TzPbMAoKOiuh
+ lwf5uQvtxZ8aUBLvq5AigwGoZWq8j5Lw4mRLYpy/U7byIvb6nfmiOY0IQ6pi90I/ARNbhfiemNj61
+ uMvcEHJtXtaPhVfGDHaJdWxRK+wK46O3Mx+B73k4pjCvRhpV2wG21KlbiDPGmpHfl+wwq7GX9zouE
+ PDcSG0NyWV/IfblBNCzWgwYE7Wu0UYP4scUMgoSbeWuNn83eQKD77vFDldR0bIKtCSWo87NKdolF9
+ Scxm4PTU6IuqdhP/zdKSQnGaaF0jcgvG/ru4zVL5U=;
+From: Christian Schoenebeck <qemu_oss@crudebyte.com>
+To: qemu-devel@nongnu.org, qemu-stable@nongnu.org
+Cc: Greg Kurz <groug@kaod.org>
+Subject: Re: [PATCH 0/6] 9pfs: fix fstat() after unlink() (with a Linux guest)
+Date: Mon, 25 Nov 2024 15:11:26 +0100
+Message-ID: <1808065.5Gi7jleHS2@silver>
+In-Reply-To: <20241125123505.06ab0568@bahia>
+References: <cover.1732465720.git.qemu_oss@crudebyte.com>
+ <192504804.CgdclvVjum@silver> <20241125123505.06ab0568@bahia>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] .gitlab-ci.d/cirrus: Remove the wrong CPU and RAM
- settings from the macOS job
-To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org
-Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-References: <20241125124342.187594-1-thuth@redhat.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20241125124342.187594-1-thuth@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::233;
- envelope-from=philmd@linaro.org; helo=mail-lj1-x233.google.com
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
+Received-SPF: pass client-ip=5.189.157.229;
+ envelope-from=qemu_oss@crudebyte.com; helo=kylie.crudebyte.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,18 +66,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 25/11/24 13:43, Thomas Huth wrote:
-> The macOS runner ignores them and always uses 4 CPUs and 12 GiB of
-> RAM, so remove our setting to avoid wrong expecatations.
-
-"expectations"
-
+On Monday, November 25, 2024 12:35:05 PM CET Greg Kurz wrote:
+> On Mon, 25 Nov 2024 11:23:39 +0100
+> Christian Schoenebeck <qemu_oss@crudebyte.com> wrote:
 > 
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
-> ---
->   .gitlab-ci.d/cirrus.yml | 2 --
->   1 file changed, 2 deletions(-)
+> > On Monday, November 25, 2024 9:45:54 AM CET Greg Kurz wrote:
+> > > On Sun, 24 Nov 2024 17:28:40 +0100
+> > > Christian Schoenebeck <qemu_oss@crudebyte.com> wrote:
+[...]
+> > > > Probably there are still other 9p request types that should be fixed for this
+> > > > use-after-unlink idiom, but this series fixes the mentioned bug report as
+> > > > described by reporter, so fair enough to round this up here for now.
+> > > > 
+> > > 
+> > > When I last worked on that issue I had spotted some other places to fix.
+> > > 
+> > > Maybe you can find some ideas for future work at :
+> > > 
+> > > https://github.com/gkurz/qemu/tree/9p-attr-fixes
+> > 
+> > Was there a reason why you left those patches on the attic?
+> > 
+> 
+> Lack of cycles
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Yeah, that's clear, I more meant in sense of known issues, as I haven't
+spotted something obvious (above nit level) that would have spoken against
+pushing those patches.
+
+But OK, I also understand the lack of reviewers at that time, etc.
+
+/Christian
+
+> > What I am seeing is that it was not fixing Tgetattr (i.e. fstat() on guest),
+> > so it wouldn't have fixed the original reporter's scenario, but they would
+> > have brought things forward. So just wondering ...
+> > 
+> 
+> Yeah the fix for Tgetattr was in some other series I had sent at the time but
+> I did not get much feeback then...
+
+
 
 
