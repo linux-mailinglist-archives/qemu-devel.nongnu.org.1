@@ -2,84 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B46139D8935
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Nov 2024 16:24:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 32E849D8922
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Nov 2024 16:22:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tFats-0003za-8s; Mon, 25 Nov 2024 10:21:20 -0500
+	id 1tFau2-00045N-0X; Mon, 25 Nov 2024 10:21:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tFatp-0003y2-Ao
- for qemu-devel@nongnu.org; Mon, 25 Nov 2024 10:21:17 -0500
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ id 1tFatv-000430-Qq
+ for qemu-devel@nongnu.org; Mon, 25 Nov 2024 10:21:23 -0500
+Received: from mail-lf1-x12b.google.com ([2a00:1450:4864:20::12b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tFatn-0001mE-PS
- for qemu-devel@nongnu.org; Mon, 25 Nov 2024 10:21:17 -0500
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-43155abaf0bso42349395e9.0
- for <qemu-devel@nongnu.org>; Mon, 25 Nov 2024 07:21:15 -0800 (PST)
+ id 1tFatq-0001nM-T4
+ for qemu-devel@nongnu.org; Mon, 25 Nov 2024 10:21:23 -0500
+Received: by mail-lf1-x12b.google.com with SMTP id
+ 2adb3069b0e04-539eb97f26aso5064039e87.2
+ for <qemu-devel@nongnu.org>; Mon, 25 Nov 2024 07:21:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1732548074; x=1733152874; darn=nongnu.org;
+ d=linaro.org; s=google; t=1732548077; x=1733152877; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=u553UREy8BrfaQ1eQJGRMRlQygWldbMBkNQMqilnB1A=;
- b=QGyxGRbKvP9kS3faklCLMlSS9RBfhaLteMl6xOXYLgtwT7R5yhmKZ+hPL5mCNRRjP4
- JFgAVbCdSGsG8gu9c3jwRpaqjIsw2WhqKBkxS2G2UVQR69S5qb+OC0fCMTPKc/v4F5ea
- mDZFSvVvqnHGqXCI/6PicTLzBT+5SJICpZzuqJURYRaboYAC+qij/AFh3O3LdHppUN8l
- ZNHuG6URS0I5nro7DPvyhrlAS1HNfGan04sxnQX7ktg7KZiB0ItA6XUCjpxWDR3tWF3f
- A7jNs3ttxhTpgkgwMVThjfcdW09yzayRdWs+d4tXpqb5xTj64ERHq+GXL+G809dVohjb
- YskQ==
+ bh=f/9NmZeUsPKrEXQM/VYYoqE8OEZ3mgV8GxzNtjGupA8=;
+ b=eMFpTKkghoEv/F514X7XKCb0t//39jUVOe1J8Rd+qyOHRDE+YSVnR2GsKNFjSKUQVh
+ qn5sdRNY2nsgYrCTbtkT5IwqO1Bjx8JXeHvqi0pHYPee2E/cQY1eblfm9Uwa6zkM94C2
+ PKExTK/HT+IYQL+I5ahDtbJYTpp00OWwU41WTcoXm5rMajyWkA+QRZjBnIy4vkXlPZl4
+ GoFPpDC2uEGG//85UjCaPsXQLN2JwdySofeFlBZZYEoEdGaPjjLrN1+237C/UIovXmoB
+ 0+vn5HMxGUC+LoLnzFq5oR1ylJyCv9LNeRBeSCNFmiBLZKh+kL/IDEe/U+F2ysZCN9D+
+ Nwuw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1732548074; x=1733152874;
+ d=1e100.net; s=20230601; t=1732548077; x=1733152877;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=u553UREy8BrfaQ1eQJGRMRlQygWldbMBkNQMqilnB1A=;
- b=wD3Q+otCe5m5iTUNJrguxVk8IPIvwvAzpUd6ZGchEGtovraqZxDeT4yoZfaodM/UG/
- mzFKCdh+ZP5bRGowp5NFfP7VElOwk+DBsMvYHJ8VTtq10qBIF1KRp6ggSn0Lo1rlRbM5
- QQeC6gCqK8yoSc0E3w16x+TxRZT2xGlRz7Kb20QTrW6dystZXVdJFlt6mz+IS4r8zptB
- V1j57DP4+zfkqmZd+aiJyQYgXPtz9Y4zSO1ulz9VGXyywC4590YyqR9sr/JSav8hmmTl
- 3YX4f2u4F5/jy8ox2ye7fS0h74gXjOktMwgPhu7tEOxmJEXVfr/icQevE2j3VoIPU2O0
- ZqGg==
-X-Gm-Message-State: AOJu0YzmgzSJ7LrxU/BaiOOGx6OpN4M+pMIrY1MDIlWZ5SWFKpr6RxHU
- LoMe9HKuRjhHISi9eV4bCFBrHN3P6w3BjnG9si9LjvQfRBzi0u+F/oh6HJKG2Ik=
-X-Gm-Gg: ASbGncukGhqdqGQEpErEMm/YnrcF3r01+5udaF3lbUVRuSMoBU9i/Ae0nSxYmzS95Qh
- TwNDwe1X1TT9vCTF6fmDwDtiNmiJRiwP3YOutGforh478mQYhaSBeG4GB6p0Qmj9BDdaU+S55AT
- be/8h1kOs5Isk29Nie31BqBQSAi6kXlSyHV6V1D9TpIpQT0XxCqqfjE0zI/J2HtwXUTdaQRBViC
- JlKQAT/s8DTidpZWPJmfchawbIarcuulLwgU91DVnlF4Gxb
-X-Google-Smtp-Source: AGHT+IHqER4S1kj95mLNDBKF6qTdGBXKaSnt35oeHHi3bBEhzR/I2JsZekcbVlZlUHz9GZr12gG27w==
-X-Received: by 2002:a05:600c:4e91:b0:431:6083:cd38 with SMTP id
- 5b1f17b1804b1-433ce417b2amr108505855e9.6.1732548074155; 
- Mon, 25 Nov 2024 07:21:14 -0800 (PST)
+ bh=f/9NmZeUsPKrEXQM/VYYoqE8OEZ3mgV8GxzNtjGupA8=;
+ b=wOvAw07bPh5GHAR5cWLVylaJp5jUScjSSafjYoUezdHJ2z2jeQ7TKa/87xm0xSEHmn
+ uddpHBpwjd+tmAbv2hq/AMj1hNeYcqCOWZp81Okf/KusP0rsaKFOLv9Wa+G6f4poDEGA
+ lLNTHAoc9qAQ8bH/xYaEUTsp4dSP/Bq+ytnS2cnVNpR4INMg7FMO1bp1cOcX3oR+B26B
+ 7RdA+tCbWsX6/hCZRhCUELYjXgHWQQlfTkKQ6UlLylYhg7hsGXdYxtjLuu915Qr42Opm
+ GlLyOBvl4RlBpKDXSRWUgAldv+nrjFLbs3YwwcbRQUT9bFGMkVNYDpfy8K66b21UcyDD
+ acig==
+X-Gm-Message-State: AOJu0YxJsM+UOzWWdmDEwVIogGTNif/DNuNHixFUZ4J8m15i9o2FvB1/
+ L8IjL7OKbKn6Hcv+yyJ5DsifQVngtTPEEzSPo8gv0fjfUpHWZB3HuBT5/Hbm6pM=
+X-Gm-Gg: ASbGncvlzkGA2kZ6D0iT7NuGrbmRnMheg5RkW1jXkRibF6be+rbN8jDKmSwyGckc//t
+ 5UI36vB6BJtz1ZpRDTGFKj/BVUpJFLXJCBgByM4y9RTcoe8TeAXXgEnmpKwEgK1TzXlDsZmO/Xg
+ tjLE3qbxgp/RiQF+D4bsYi0FjyfRp+86WXo6ttM5vBMnjDrWbcG4aKDayhcceaTZZoak3UALGAb
+ OQOgCHJnDB+QVIKnrhMMQIOOWcTjNIbKAnqTboSgi7q9SuZ
+X-Google-Smtp-Source: AGHT+IFGIPnDG14AlwKZkeVefHwuHxMCWxaAf1S8VdvJWt7eQ0/ZIjrVfSIKGexiNJ7cWPeWSxkG3g==
+X-Received: by 2002:a05:6512:1303:b0:53d:ab0d:b9f9 with SMTP id
+ 2adb3069b0e04-53dd36aa6a1mr5702270e87.23.1732548075950; 
+ Mon, 25 Nov 2024 07:21:15 -0800 (PST)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3825fb30590sm10692523f8f.57.2024.11.25.07.21.09
+ 5b1f17b1804b1-4349b70aa23sm72514665e9.14.2024.11.25.07.21.09
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 25 Nov 2024 07:21:10 -0800 (PST)
+ Mon, 25 Nov 2024 07:21:13 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id E10DE60B68;
- Mon, 25 Nov 2024 15:21:06 +0000 (GMT)
+ by draig.lan (Postfix) with ESMTP id 00AD260B7D;
+ Mon, 25 Nov 2024 15:21:07 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 12/28] tests/functional: logs details of console interaction
- operations
-Date: Mon, 25 Nov 2024 15:20:49 +0000
-Message-Id: <20241125152105.2100395-13-alex.bennee@linaro.org>
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+Subject: [PULL 13/28] tests/functional: don't try to wait for the empty string
+Date: Mon, 25 Nov 2024 15:20:50 +0000
+Message-Id: <20241125152105.2100395-14-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241125152105.2100395-1-alex.bennee@linaro.org>
 References: <20241125152105.2100395-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x330.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::12b;
+ envelope-from=alex.bennee@linaro.org; helo=mail-lf1-x12b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -104,31 +102,32 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Daniel P. Berrangé <berrange@redhat.com>
 
-When functional tests go wrong, it will often be related to the console
-interaction wait state. By logging the messages that we're looking for,
-and data we're about to be sending, it'll be easier to diagnose where
-tests are getting stuck.
+Telling exec_command_wand_wait_for_pattern to wait for the empty
+string does not make any conceptual sense, as a check for empty
+string will always succeed. It makes even less sense when followed
+by a call to wait_for_console_pattern() with a real match.
 
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
-Message-Id: <20241121154218.1423005-13-berrange@redhat.com>
+Message-Id: <20241121154218.1423005-14-berrange@redhat.com>
 Reviewed-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20241121165806.476008-13-alex.bennee@linaro.org>
+Message-Id: <20241121165806.476008-14-alex.bennee@linaro.org>
 
-diff --git a/tests/functional/qemu_test/cmd.py b/tests/functional/qemu_test/cmd.py
-index cbabb1ceed..98722a9cf6 100644
---- a/tests/functional/qemu_test/cmd.py
-+++ b/tests/functional/qemu_test/cmd.py
-@@ -85,6 +85,9 @@ def _console_interaction(test, success_message, failure_message,
-         vm = test.vm
-     console = vm.console_file
-     console_logger = logging.getLogger('console')
-+    test.log.debug(
-+        f"Console interaction: success_msg='{success_message}' " +
-+        f"failure_msg='{failure_message}' send_string='{send_string}'")
-     while True:
-         if send_string:
-             vm.console_socket.sendall(send_string.encode())
+diff --git a/tests/functional/test_virtio_gpu.py b/tests/functional/test_virtio_gpu.py
+index 441cbdcf2d..d5027487ac 100755
+--- a/tests/functional/test_virtio_gpu.py
++++ b/tests/functional/test_virtio_gpu.py
+@@ -80,9 +80,8 @@ def test_virtio_vga_virgl(self):
+ 
+         self.wait_for_console_pattern("as init process")
+         exec_command_and_wait_for_pattern(
+-            self, "/usr/sbin/modprobe virtio_gpu", ""
++            self, "/usr/sbin/modprobe virtio_gpu", "features: +virgl +edid"
+         )
+-        self.wait_for_console_pattern("features: +virgl +edid")
+ 
+     def test_vhost_user_vga_virgl(self):
+         # FIXME: should check presence of vhost-user-gpu, virgl, memfd etc
 -- 
 2.39.5
 
