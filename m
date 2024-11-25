@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D776E9D863F
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Nov 2024 14:22:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C1329D863D
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Nov 2024 14:22:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tFZ1O-0002Ov-Nt; Mon, 25 Nov 2024 08:20:58 -0500
+	id 1tFZ1R-0002QS-Uv; Mon, 25 Nov 2024 08:21:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1tFZ1M-0002OU-PD; Mon, 25 Nov 2024 08:20:56 -0500
-Received: from mail-pg1-x532.google.com ([2607:f8b0:4864:20::532])
+ id 1tFZ1P-0002Q8-Pk; Mon, 25 Nov 2024 08:20:59 -0500
+Received: from mail-pg1-x52f.google.com ([2607:f8b0:4864:20::52f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1tFZ1L-0005mc-2M; Mon, 25 Nov 2024 08:20:56 -0500
-Received: by mail-pg1-x532.google.com with SMTP id
- 41be03b00d2f7-7f450f7f11dso3127345a12.2; 
- Mon, 25 Nov 2024 05:20:54 -0800 (PST)
+ id 1tFZ1O-0005nW-1d; Mon, 25 Nov 2024 08:20:59 -0500
+Received: by mail-pg1-x52f.google.com with SMTP id
+ 41be03b00d2f7-7f8095a200eso4129771a12.1; 
+ Mon, 25 Nov 2024 05:20:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1732540853; x=1733145653; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1732540856; x=1733145656; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=sqaNHjbs+zjnDOYMt7ANdJoaQkZJVs438F2kZ6VrU3M=;
- b=fYd5Y32KfzO36uxE+H9xXGTrBlTsNRyvS01aB/eGES+KNiGzqQwixbAqchVLvqbtsM
- 01MLgQv/Jii/BbRaU3XQeOSMU0i8Nyvtdg+geaEMWmvQq173HqUKXzf0yH4SV9RcnM3i
- k1Zne0pNj1afp6t6Lgeo7li8qM51GaLRAqHAwEE5Q5hfsTUhR2os1UQQxjEilAinhjsO
- BsbONoLQxf7clY1iJYXjMVQ6Ezy83vmtd6b6jmqX83XlkDm/RMLbMcHitH1rNV0ANrTC
- FuLjKmRruWSAPWIOIpLeB610aOh6719NrF9JUnl/oxsUhUzMM2frTs+MlQmw2Mf+PxwN
- TSNw==
+ bh=++RLXladraE5Zh5mt6raxHmvjK/0jrojgoKwbS9gvZ4=;
+ b=IJAOAPwCnA3d0meYZZwEu5J0yZ3ELem1Ael1MuUiJVYWZhBPjSNjiGUwVBalMdl6Pw
+ 6MQ1N97CnsqwYmFf7GaCl+sW36zdvayfbDoUnjG4XAxvrmMnBzPtqK9/rc5IgUqKydTv
+ SVEmdy2aNTnLmJJHwcbEReGef5BckLx2TAQIVJhVoXaQRRjXKIKOnC3xpIkznqt/Ecij
+ FAzUCJyUGHQOYY+ZQw9Q9+PNSwvjncYuN3DiR/3R47IyTn4PTgKl5UKQVBhe91lGgK0t
+ Sbb1k8uaTSO36INWslZnYRNhqRJXCWLKpQqBrjAlCxuoa22j7QJfyGjATLbZG38QGuyk
+ 0TLQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1732540853; x=1733145653;
+ d=1e100.net; s=20230601; t=1732540856; x=1733145656;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=sqaNHjbs+zjnDOYMt7ANdJoaQkZJVs438F2kZ6VrU3M=;
- b=FfJWnqdcQgqKy1ZiuR6gtHkyLNZp9n+KSe7T88xECJbQITMeXnI7OnTMZO178GHdEi
- 2kkjK4DSk63D/jgaV5kDxFMhcDjufpi3ltxuBq0OD86OECABE83MtiKlbRDQu+BACbgm
- aOyl+GbIc8Du/bpPsoO6ph/3lASH4/P/kfKf0iQE/Em4DxhqIbARQlzKlCMitElOU5eq
- Q3aJHfCaxKSQkkmI+Z9+ppMBK4PAAs6Bx6xclzK/kmtHHhHypcbd4ucyNxOcSLmzjSyz
- 5hoxIeBmPyqXj35TTaIuqY8iRfVlM3xr8sZ1lINLYF1i3/dMzCccakTzYVGBCj3fpNDa
- laTw==
+ bh=++RLXladraE5Zh5mt6raxHmvjK/0jrojgoKwbS9gvZ4=;
+ b=VEF6lGxtpmhMnunL0Wxb7ZaK1EXq7WSmTcj41+eafJU1t49t3zcQBBGc8prcHzbUyW
+ PhTaEtTF6DVM5VbscNvenzqIdINgVuoZEpo2sUpdRENNyAxYOx/sQzhlEGXjXQrMJXeF
+ bwVK0nliqE5sdH6Cm7FJcQTgPgVpcfZMHMmtqGyWMBGZ0LSJc0Lyh6R2GjBshN68cJQh
+ rseDeF8/kzrJ98Ibh1wiNCwWHeBk0YXZwwT+KMM3w07/rOTVfI1I/Av3O066VFOUGT+4
+ /gWrhdCwrUWZnik9IFjuikelmu6Po+RxquYlO8Vb4cgWgHMdp6f/qTG2zAFYrJEIoFf7
+ 1RSA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXDCCEGhRdYGiMKRnnG626rw5v9VPgqnXUB0jDMhUv8wpSNGAQa2IWzVn3/lcFyKIfqCyL0YZljoRA6@nongnu.org
-X-Gm-Message-State: AOJu0YxOpoqbt6cbTUEJb+hQCVXj4eYcBFLZBzcaQuklqV8sI4i6ejuK
- un/aj8xZYlhhkhcdPL7DtU6lDR6KVGyqw0NNTWPApVmUvuQJJwIX7C/+0w==
-X-Gm-Gg: ASbGncvYnswW9FrStgkOXeRc28X6efo11QwUgXB6SO8SFU/nhiVAW745pbrKhxYz9Hs
- 8T5vSSbqQRPajj9bNifmXZjW4+il458VAzlm7WMlhAuZISL309dbZOZP0jV74GPOzY7WXu5IgV/
- sInd6koV0kg2Gf8Odus999zwuzRBkMhxoeEeoEvTY0chStB6TJ4YZy4jq1iIZMxeeUMAE3U5q5A
- 5C0fQcdAwSnt8n7WyH9CmSP4v9uR5S8GFUHzzKmc5GtkERMDO636ZevGjYQHIexxv9Nc28q5Qh4
- MICsjw==
-X-Google-Smtp-Source: AGHT+IF0McQZgADLLRMWhG0XKnaFEtO23s/RHEpP29nmkbGXLoZutu92EFDWzyw1zIsL3ZsLAHAiiQ==
-X-Received: by 2002:a05:6a21:3395:b0:1e0:d104:4dbd with SMTP id
- adf61e73a8af0-1e0d1044ea9mr2101319637.46.1732540852809; 
- Mon, 25 Nov 2024 05:20:52 -0800 (PST)
+ AJvYcCUrhJpCmi5QD7DCVNmWCXLGEcNkAxllrVaT934knUftm4Y/Uq3GjK3n+xRNEyu3uiUbp+bC7OAvnaGo@nongnu.org
+X-Gm-Message-State: AOJu0YzkET2QPbTnHSuNcnRfO9PESjEZqBBWdwTJNAWZvNa1+99SyZFe
+ eDrUtD8JFelmxGuXMfAh17hm9okzOX2ktyvnRFaWQkTDEWmIQECEQU9qPw==
+X-Gm-Gg: ASbGncuAPy2lY3SGvGGdckTlJCdJP7mU/06OH57GHb0lxb81jg5/Jh1AlWGY4HIkL/r
+ qAx2PIgnjzW0DWn/0VkRxLJYsH/NZXIq9UuyAY2b4kICh1NBEx98Ei0woSn62wz8eVoCBEFFmzP
+ f3YO0b0zpdi1v7sDjjkzgcD/KkUCf1fVGzsKH93rjvZkfckv9uQ/LtEn8ZyHA+iUFelBtXkQeQx
+ 0be8W2abErvEYehYMrgJkIFGsQQhrBVbJESy1bdfC2BaGAvFCyOJ1CRDYUMtEsTg4f1bb78kEDa
+ gfSBnQ==
+X-Google-Smtp-Source: AGHT+IHbmHHnsis/G9SX0dDK2NXQDosw+Y8i7yqof1Fu9Pu59wCiL1yYiU6AY+qj6tFVQlOmkKeotg==
+X-Received: by 2002:a05:6a20:2454:b0:1cc:e71d:ea10 with SMTP id
+ adf61e73a8af0-1dfa31305a6mr24934156637.14.1732540856070; 
+ Mon, 25 Nov 2024 05:20:56 -0800 (PST)
 Received: from wheely.local0.net (124-171-72-210.tpgi.com.au. [124.171.72.210])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-7fbcc1e44d5sm5616721a12.32.2024.11.25.05.20.49
+ 41be03b00d2f7-7fbcc1e44d5sm5616721a12.32.2024.11.25.05.20.53
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 25 Nov 2024 05:20:52 -0800 (PST)
+ Mon, 25 Nov 2024 05:20:55 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-ppc@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org,
  Chalapathi V <chalapathi.v@linux.ibm.com>,
  Harsh Prateek Bora <harshpb@linux.ibm.com>,
  Glenn Miles <milesg@linux.ibm.com>
-Subject: [PATCH 1/4] target/ppc: Fix non-maskable interrupt while halted
-Date: Mon, 25 Nov 2024 23:20:38 +1000
-Message-ID: <20241125132042.325734-2-npiggin@gmail.com>
+Subject: [PATCH 2/4] ppc/pnv: Fix direct controls quiesce
+Date: Mon, 25 Nov 2024 23:20:39 +1000
+Message-ID: <20241125132042.325734-3-npiggin@gmail.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241125132042.325734-1-npiggin@gmail.com>
 References: <20241125132042.325734-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::532;
- envelope-from=npiggin@gmail.com; helo=mail-pg1-x532.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52f;
+ envelope-from=npiggin@gmail.com; helo=mail-pg1-x52f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,53 +99,86 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The ppc (pnv and spapr) NMI injection code does not go through the
-asynchronous interrupt path and set a bit in env->pending_interrupts
-and raise an interrupt request that the cpu_exec() loop can see.
-Instead it injects the exception directly into registers.
+powernv CPUs have a set of control registers that can stop, start, and
+do other things to control a thread's execution.
 
-This can lead to cpu_exec() missing that the thread has work to do,
-if a NMI is injected while it was idle.
+Using this interface to stop a thread puts it into a particular state
+that can be queried, and is distinguishable from other things that
+might stop the CPU (e.g., going idle, or being debugged via gdb, or
+stopped by the monitor).
 
-Fix this by clearing halted when injecting the interrupt. Probably
-NMI injection should be reworked to use the interrupt request interface,
-but this seems to work as a minimal fix.
+Add a new flag that can speficially distinguish this state where it
+is stopped with control registers. This solves some hangs when
+rebooting powernv machines when skiboot is modified to allow QEMU
+to use the CPU control facility (that uses controls to bring all
+secondaries to a known state).
 
-Fixes: 3431648272d3 ("spapr: Add support for new NMI interface")
+Fixes: c8891955086 ("ppc/pnv: Implement POWER10 PC xscom registers for direct controls")
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
- target/ppc/excp_helper.c | 7 +++++++
- 1 file changed, 7 insertions(+)
 
-diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
-index 70daa5076a..9f811af0a4 100644
---- a/target/ppc/excp_helper.c
-+++ b/target/ppc/excp_helper.c
-@@ -2495,10 +2495,16 @@ static void ppc_deliver_interrupt(CPUPPCState *env, int interrupt)
-     }
- }
+There might still be a bigger issue with how we handle CPU stop
+requests. Multiple different sources may want to stop a CPU, there
+may be situations where one of them resumes a CPU before all agree?
+A stop_request mask or refcount might be a nice way to consolidate
+all these.
+---
+ target/ppc/cpu.h  | 1 +
+ hw/ppc/pnv_core.c | 9 +++++++--
+ 2 files changed, 8 insertions(+), 2 deletions(-)
+
+diff --git a/target/ppc/cpu.h b/target/ppc/cpu.h
+index 945af07a64..0b4f1013b8 100644
+--- a/target/ppc/cpu.h
++++ b/target/ppc/cpu.h
+@@ -1355,6 +1355,7 @@ struct CPUArchState {
+      * special way (such as routing some resume causes to 0x100, i.e. sreset).
+      */
+     bool resume_as_sreset;
++    bool quiesced;
+ #endif
  
-+/*
-+ * system reset is not delivered via normal irq method, so have to set
-+ * halted = 0 to resume CPU running if it was halted. Possibly we should
-+ * move it over to using PPC_INTERRUPT_RESET rather than async_run_on_cpu.
-+ */
- void ppc_cpu_do_system_reset(CPUState *cs)
- {
-     PowerPCCPU *cpu = POWERPC_CPU(cs);
+     /* These resources are used only in TCG */
+diff --git a/hw/ppc/pnv_core.c b/hw/ppc/pnv_core.c
+index a30693990b..cbfac49862 100644
+--- a/hw/ppc/pnv_core.c
++++ b/hw/ppc/pnv_core.c
+@@ -217,8 +217,8 @@ static uint64_t pnv_core_power10_xscom_read(void *opaque, hwaddr addr,
+     case PNV10_XSCOM_EC_CORE_RAS_STATUS:
+         for (i = 0; i < nr_threads; i++) {
+             PowerPCCPU *cpu = pc->threads[i];
+-            CPUState *cs = CPU(cpu);
+-            if (cs->stopped) {
++            CPUPPCState *env = &cpu->env;
++            if (env->quiesced) {
+                 val |= PPC_BIT(0 + 8 * i) | PPC_BIT(1 + 8 * i);
+             }
+         }
+@@ -244,20 +244,25 @@ static void pnv_core_power10_xscom_write(void *opaque, hwaddr addr,
+         for (i = 0; i < nr_threads; i++) {
+             PowerPCCPU *cpu = pc->threads[i];
+             CPUState *cs = CPU(cpu);
++            CPUPPCState *env = &cpu->env;
  
-+    cs->halted = 0;
-     powerpc_excp(cpu, POWERPC_EXCP_RESET);
- }
- 
-@@ -2520,6 +2526,7 @@ void ppc_cpu_do_fwnmi_machine_check(CPUState *cs, target_ulong vector)
- 
-     /* Anything for nested required here? MSR[HV] bit? */
- 
-+    cs->halted = 0;
-     powerpc_set_excp_state(cpu, vector, msr);
- }
- 
+             if (val & PPC_BIT(7 + 8 * i)) { /* stop */
+                 val &= ~PPC_BIT(7 + 8 * i);
+                 cpu_pause(cs);
++                env->quiesced = true;
+             }
+             if (val & PPC_BIT(6 + 8 * i)) { /* start */
+                 val &= ~PPC_BIT(6 + 8 * i);
++                env->quiesced = false;
+                 cpu_resume(cs);
+             }
+             if (val & PPC_BIT(4 + 8 * i)) { /* sreset */
+                 val &= ~PPC_BIT(4 + 8 * i);
++                env->quiesced = false;
+                 pnv_cpu_do_nmi_resume(cs);
+             }
+             if (val & PPC_BIT(3 + 8 * i)) { /* clear maint */
++                env->quiesced = false;
+                 /*
+                  * Hardware has very particular cases for where clear maint
+                  * must be used and where start must be used to resume a
 -- 
 2.45.2
 
