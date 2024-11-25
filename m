@@ -2,63 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD1209D8763
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Nov 2024 15:09:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E82169D8762
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Nov 2024 15:09:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tFZkK-00037A-T6; Mon, 25 Nov 2024 09:07:24 -0500
+	id 1tFZkL-0003Cr-GA; Mon, 25 Nov 2024 09:07:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tFZjy-0002dG-Q6
- for qemu-devel@nongnu.org; Mon, 25 Nov 2024 09:07:05 -0500
-Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tFZk5-0002j9-6u
+ for qemu-devel@nongnu.org; Mon, 25 Nov 2024 09:07:10 -0500
+Received: from mail-lf1-x134.google.com ([2a00:1450:4864:20::134])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tFZjv-0006h9-Ky
- for qemu-devel@nongnu.org; Mon, 25 Nov 2024 09:07:02 -0500
-Received: by mail-wr1-x429.google.com with SMTP id
- ffacd0b85a97d-382296631f1so3563631f8f.3
- for <qemu-devel@nongnu.org>; Mon, 25 Nov 2024 06:06:59 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tFZk2-0006ik-Mn
+ for qemu-devel@nongnu.org; Mon, 25 Nov 2024 09:07:08 -0500
+Received: by mail-lf1-x134.google.com with SMTP id
+ 2adb3069b0e04-53dd0cb9ce3so4089502e87.3
+ for <qemu-devel@nongnu.org>; Mon, 25 Nov 2024 06:07:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1732543618; x=1733148418; darn=nongnu.org;
+ d=linaro.org; s=google; t=1732543624; x=1733148424; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=IiajgqU0R6qJd99dKLrlrhZ7TYSpLeZ4tGBPN+dLT/4=;
- b=Hymtg7DN3CtEUJQ2HXWjZEJLEiEFN2iDj5hmiX2HxdddJdBGjpLg6OQDzddh2+MhxW
- JGsc3WK/fZYrLHkVS7j6zMJbzUwsubaLuBI04qkmXm9fkcPXX/RxPfFJQFwTSzvDuFGK
- cKsKF/h+krsFTC62fCLwn6sG7wEcsKhi+jt8jTsOWwEYxP8GkIl8TqlFaxx+Cf0VFNze
- L6I2h1yYe8USCRUsF+CE35oMrlvW6wHAJAv209AWu7PuikaNdCDOmMTSu0nW2Fb7qa1P
- z0Nq1X4DrdWNcooNjlaSouPT34kk4FBUShyppw6ymCxR3a1a36EE2+w9IOh29OeHcoGE
- einA==
+ bh=KEkIR2vBaISG4rMjnIPuSSQYyM7zelGC+1W4S9oVQCo=;
+ b=rrKyp7u7YICai8X3vlghwFPBOkED+jmkXZAbNNLDG3uavXYgfoko0ILw0r2RCu28c3
+ L/bXqoB4HphOJB00tQqolx/jNuosXUrnCLf9Qcdi++0SEaXx3w34WXGGvaZEAb6Jd0/I
+ VdblJew4XS5P95wg4NOq8SxrvRQIhuqnavxlPln5y8BGICW4SRX9DhACqAMxugvd4KMQ
+ pirRxCiU8HvXhIcw5Hwjqsaj38YlWPado7HVRw7LGLK2WmOd3eloXUcRi2fw0nbuIUHt
+ EuDkbZXZznenVF6kNzu89dB2ObKBiZMvFIwwLqbegjdZWpxp8Tt7ayRqPRoOCiZcFVgJ
+ Hj0w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1732543618; x=1733148418;
+ d=1e100.net; s=20230601; t=1732543624; x=1733148424;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=IiajgqU0R6qJd99dKLrlrhZ7TYSpLeZ4tGBPN+dLT/4=;
- b=QgeuavT7hjTe+MeKW4zBMkT6UvtllopoqV9AVGaQhoaxz7uZV4T2+4HdLKVN88XbTZ
- BaG6eraPRY73KddmzaTpwuEafssTDXXGHYUCyBKm9jF/1tqieTbFpi0WQoRMLN1V5zyC
- /4X2c28k0yQZncSuf8NF5y7RmsEFDFxsIu9GFKYdcQOWY8PfyV0DmBRgNm4DR5kpQEaa
- go+eLGqBmgzTbb2MztjOLTrsNHm2h06NSoRhb374kXJGqoa8k9manaQRz8a/4xKjv1cn
- dq1L7xu5zSYRoYcjKrxrM7u2NZ8lLtD47U4pqwO1xtc/HgCR+H1NkEm79xN1CzZih2/I
- 88Jg==
-X-Gm-Message-State: AOJu0YwzwiAL5vF8wvEup13LklABTdOOPLW2In4nyzkkHxB8OL3For/I
- ygLtc61iPEnCM+48Cw5Ioo+E0mcNTubUy014Pfu6oZKUf4FQR8AWUaBsCG4oC/jb9Ao2K7zvEln
- /
-X-Gm-Gg: ASbGncvlZn807h8VJvmasV4NATMeaeN12aA0oPFqlf8mC8ztyDzfDFfkKwdGspK4gUH
- KTE2ueJ4YHIkLYUmgDlWavadAlLb7qe+POzBSCDZ9bO4wChWcvPJJDuFZMIqd/LOR+aKaUwD+ey
- tKhGEtoRsZhY/I3/vExKKoX8aA2bAMEvT93Ff3TYz9yCeg8r8qxNF0t1GjTMy0hfLkVdoiUDpRa
- LaqmTb0FGYwWpZ9fomWD7OgZ+AROYVgnMPX3bCLASRwQsmqYkE4SxFpCeceYH6lmWPUEaXo
-X-Google-Smtp-Source: AGHT+IEbMTslBWjVJ/ZQJGNZcc20lIvjNZnOwDeTLhcqdp2adAIriNC1WFJGSKWJvSJwEpRqnmddYA==
-X-Received: by 2002:a05:6000:1541:b0:382:4145:d3a9 with SMTP id
- ffacd0b85a97d-38260b69577mr8877857f8f.25.1732543615913; 
- Mon, 25 Nov 2024 06:06:55 -0800 (PST)
+ bh=KEkIR2vBaISG4rMjnIPuSSQYyM7zelGC+1W4S9oVQCo=;
+ b=McChcKkw+5T5zbGiMQ+Yxrh0ySynDQQjiq/yy1Goep3324zkjn0vYeJwlwbAQmm/Jh
+ 6COqsm9dLOG7Fp0WPGSxB/1iu7Y670SnLr+keJKjl4yICHHP0cdkJp65iYV62auOU06K
+ MBYIZ2+NWi7lbAKQ40FhXEuM8i1PyjY25BdVitH5IPbPnOHhxb8V5J4XjjUVYdyFUaCZ
+ aY4aL+Tf1YVYt17HcLNb94vDFb/Qr2WE/qKgWUkKDTKGPaNCKlFsDZgm5WaJMgIGTN7l
+ qJUiCyKyr/v2gZXXyn4Bj/oGjSd1gEn+zbT8t3BinSqZn8RDyb14HqiTUnSCeXwha+g/
+ dfsA==
+X-Gm-Message-State: AOJu0YzszOq4WF0C9Zagf16WWSLDn4tulbqHirJoBpb4H+3qXv22F/oc
+ Qqn21VEgn9Tj7xaUI01lS5ySMcgfmA6ih/bNDvqQT+T4CxtlKz1n7//pqoO5/T2qXWO4BdRs4fY
+ c
+X-Gm-Gg: ASbGncssyzBn9UDeEkLKepyMlMqrJbt9X2nKkKt7XvKehVwqowjdD/ymHCW0dPMeL9T
+ wum1AVE6mhh7CC6vF4ShR7gEaBlXVFkPv2OvmLXRbFXClXx3IdhQfQhB5//1oSXHyHitZaIxzCk
+ ztAiE9fuBE+T7UtebSQjTrV8NieTvV+MRrWtxDJxFtzpwGNg3vYkMDOQvJ4mqFKV/PspGSEZuEv
+ SKNCqrj60TZwqDkND+8QQ5EeO+uYAVfH0kdBRl4N+mbNAyVT8SVExahCklSGEWTx4pXBRSM
+X-Google-Smtp-Source: AGHT+IFL9b08/2sB7lpIlsx+WOKML5g57kEkneZkhfRmHVvCJsZQUyqUW8XUhBzB/6deDUzkrl500Q==
+X-Received: by 2002:a05:6512:3b0a:b0:53d:de48:7409 with SMTP id
+ 2adb3069b0e04-53dde48744cmr2788380e87.0.1732543624453; 
+ Mon, 25 Nov 2024 06:07:04 -0800 (PST)
 Received: from localhost.localdomain ([176.176.170.239])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3825fad62fasm10436999f8f.15.2024.11.25.06.06.53
+ 5b1f17b1804b1-4348e272094sm84910365e9.7.2024.11.25.06.07.02
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 25 Nov 2024 06:06:55 -0800 (PST)
+ Mon, 25 Nov 2024 06:07:03 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Daniel Henrique Barboza <danielhb413@gmail.com>,
@@ -77,18 +77,18 @@ Cc: Daniel Henrique Barboza <danielhb413@gmail.com>,
  Weiwei Li <liwei1518@gmail.com>, Radoslaw Biernacki <rad@semihalf.com>,
  Thomas Huth <thuth@redhat.com>, Yanan Wang <wangyanan55@huawei.com>,
  Eduardo Habkost <eduardo@habkost.net>, qemu-ppc@nongnu.org
-Subject: [PATCH-for-10.0 4/8] hw/arm/virt: Set PCI_BUS_IO_ADDR0_ALLOWED flag
- on GPEX host bridge
-Date: Mon, 25 Nov 2024 15:05:31 +0100
-Message-ID: <20241125140535.4526-5-philmd@linaro.org>
+Subject: [PATCH-for-10.0 5/8] hw/arm/sbsa-ref: Set PCI_BUS_IO_ADDR0_ALLOWED
+ flag on GPEX host bridge
+Date: Mon, 25 Nov 2024 15:05:32 +0100
+Message-ID: <20241125140535.4526-6-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241125140535.4526-1-philmd@linaro.org>
 References: <20241125140535.4526-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::429;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x429.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::134;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x134.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -111,35 +111,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-See commit 74de8c3568 ("hw/arm/virt: Allow zero address for PCI
-IO space"), all ARM Virt machines set this flag.
+All SBSA-Ref machines set this flag in MachineClass.
+Directly set it to the GPEX bridge.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/arm/virt.c | 3 ++-
+ hw/arm/sbsa-ref.c | 3 ++-
  1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-index 1a381e9a2b..773df5f04b 100644
---- a/hw/arm/virt.c
-+++ b/hw/arm/virt.c
-@@ -1510,6 +1510,8 @@ static void create_pcie(VirtMachineState *vms)
-     MachineClass *mc = MACHINE_GET_CLASS(ms);
+diff --git a/hw/arm/sbsa-ref.c b/hw/arm/sbsa-ref.c
+index e3195d5449..988a0a236e 100644
+--- a/hw/arm/sbsa-ref.c
++++ b/hw/arm/sbsa-ref.c
+@@ -647,6 +647,8 @@ static void create_pcie(SBSAMachineState *sms)
+     int i;
  
      dev = qdev_new(TYPE_GPEX_HOST);
 +    object_property_set_bool(OBJECT(dev), "allow-io-addr0-accesses",
 +                             true, &error_fatal);
      sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
  
-     ecam_id = VIRT_ECAM_ID(vms->highmem_ecam);
-@@ -3124,7 +3126,6 @@ static void virt_machine_class_init(ObjectClass *oc, void *data)
- #endif
-     mc->block_default_type = IF_VIRTIO;
-     mc->no_cdrom = 1;
+     /* Map ECAM space */
+@@ -896,7 +898,6 @@ static void sbsa_ref_class_init(ObjectClass *oc, void *data)
+     mc->default_cpu_type = ARM_CPU_TYPE_NAME("neoverse-n2");
+     mc->valid_cpu_types = valid_cpu_types;
+     mc->max_cpus = 512;
 -    mc->pci_allow_0_address = true;
-     /* We know we will never create a pre-ARMv7 CPU which needs 1K pages */
      mc->minimum_page_bits = 12;
-     mc->possible_cpu_arch_ids = virt_possible_cpu_arch_ids;
+     mc->block_default_type = IF_IDE;
+     mc->no_cdrom = 1;
 -- 
 2.45.2
 
