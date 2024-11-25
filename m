@@ -2,87 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 321669D863B
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Nov 2024 14:22:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 952499D865A
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Nov 2024 14:25:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tFZ1Y-0002Th-Dy; Mon, 25 Nov 2024 08:21:08 -0500
+	id 1tFZ5u-0005ys-1J; Mon, 25 Nov 2024 08:25:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1tFZ1W-0002T9-59; Mon, 25 Nov 2024 08:21:06 -0500
-Received: from mail-pg1-x52a.google.com ([2607:f8b0:4864:20::52a])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1tFZ5q-0005yA-Vd
+ for qemu-devel@nongnu.org; Mon, 25 Nov 2024 08:25:35 -0500
+Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1tFZ1U-0005oq-NE; Mon, 25 Nov 2024 08:21:05 -0500
-Received: by mail-pg1-x52a.google.com with SMTP id
- 41be03b00d2f7-7f450f7f11dso3127484a12.2; 
- Mon, 25 Nov 2024 05:21:04 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1tFZ5o-0006eQ-51
+ for qemu-devel@nongnu.org; Mon, 25 Nov 2024 08:25:34 -0500
+Received: by mail-ed1-x531.google.com with SMTP id
+ 4fb4d7f45d1cf-5cf6f367f97so5717639a12.0
+ for <qemu-devel@nongnu.org>; Mon, 25 Nov 2024 05:25:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1732540863; x=1733145663; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=7IdWvHR5b7t4vflEj+LY1CHfeckBBRyVCsURA5jMuHo=;
- b=A1trK9e4zdDfVgc2Sz6bSlDeOyMz08iLaZQ63B07h6KSnsgTCiwuBRB6P9fVSx5Eym
- C2iz5hs+o1Oi5ntIaOYfdzD1b5fAT0OsF3tS1kGdWKSjXuZw6CF/kjf9GIRo12yG7wds
- M+CjamAf3pP/kdHrfeOIU8ZGyxDVmj3m8R1DaTHHeew+c+8Xp6sxMN+i/Zc34H2aPeAQ
- UTJCHHhPShH/NYAuXFhHzysj5Pb1pM0VAehHA77kFokzW1Nu8B6t6h32dG0EOiU343pK
- VwSEQ8hsxk29LlZmrve8qot94bg0eCPD3YHg4au59spSlqA4ULMa23I+ANb7ke4XjMHe
- KWcQ==
+ d=linaro.org; s=google; t=1732541130; x=1733145930; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=ADdGhoysVegLCwQoW48kN0DpEGNfwFq46x7SMBDb2Ws=;
+ b=VyZ+t1FF9vEVSpkMLMZ+UrQShtfTYL6ASsiOfHJHkTM5mhVmtXVyRlk7ytIi3qk7S5
+ W654t+tBT3avnciDLtj4fmtPFdU55Fc5na+la74L0yPXJNCIGlHyjdFEKGxEcZyUuH3E
+ FQWqZ+XD/xDU262zkUGogRCtUQMvfsAoR/CneNcOEBxY12zdETnYCHQR8DuMHvq7muSs
+ mAfLhCQ/GHvnidcrwVxXsTHdh1GG+on02FSbhGzcwoYBnUHoi+YZDWhvNQT6DQmVfpkC
+ WhQi0skABQvD7UKpsFpeFOZm8+6FL+BOoXch+8aHC01IJ8Hgl3Znqxb4qeAHv2Dhr/52
+ v+Zw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1732540863; x=1733145663;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=7IdWvHR5b7t4vflEj+LY1CHfeckBBRyVCsURA5jMuHo=;
- b=aC0rwTZBZGkH8qCdmmsHrVuuXgcNNWQ1zE58WuzyU83CmhW7EWrT9jf4W6YnGGibTz
- H1yDi3XOlRHe92iHncwDfByWxfZITGlhinqPv1LRBdDmzlUIeBA44hmewGI7mONDDZyZ
- oVUEnebAD1N5khpdka/056Yjk+MKTgLv6tEkzTqAOYGuxwYkoZYwRux1TBKpoE7/FJa0
- AJ148EpjQefvGKU4KG/inTk+F5mLQKw7KsFa4YoZsQPsiBEAAGxFfisUmx2Ks1X4VsCv
- be4hnN1c0yvKxJh2VU/fONiWisih3+R+cSJaudtO3TARDEbvIn+5NtPjI8OTGSYqVx2s
- JEWA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXL48OFgKCpSpG1RAHEUGEf6KERt5LjGi2GHiITg2JDuLgoKVjuiPM20Jkppm2sUEoYyWaRwZF2M2YL@nongnu.org
-X-Gm-Message-State: AOJu0YwGByCUN+luYlMcGFBTdsEtZiJuTfft45wDYujvNFj+sKsyJUQX
- 8WloyfgOJPb4t7HiAmBKWVAQZ/VbPNuA9pHVPWCrH+Q8m+RKX/SgEdfA3Q==
-X-Gm-Gg: ASbGnct1DL3XsT1VUwAlmDmbLRZbtfzT1Be6S+yXW4iGVn3MM/k81AcZ/M7BrmzXdE2
- oXZeh4qj3lr7WA65FMYucTXGi5nG8SJfnU4DcS9otQWdrljL+IxsXEiiGNe204aRw2zdR3ig83o
- JSFMLCE3xpaRJA2svbA1C7Gtk7thddUjPT5lyfHTIz/qJozCWHJ0qRPe9IKWHqwqR+QB5Jd33Vj
- nA0GPzPGdj247J/9Zd/Nz7S09vl0bYJRx0tzjb3ONs480MhvUWefraVSc31EA/BzqwdDCawXkVl
- QExyaA==
-X-Google-Smtp-Source: AGHT+IHxUCaw/ZQPWI4iqqBUFwF1LBolZtaXndO+gpWUDCccz9wunrEjVlRULjLXlF6LnPGC34nUBQ==
-X-Received: by 2002:a05:6a20:6a10:b0:1db:e508:cf68 with SMTP id
- adf61e73a8af0-1e09e46dd36mr21694414637.24.1732540862696; 
- Mon, 25 Nov 2024 05:21:02 -0800 (PST)
-Received: from wheely.local0.net (124-171-72-210.tpgi.com.au. [124.171.72.210])
- by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-7fbcc1e44d5sm5616721a12.32.2024.11.25.05.20.59
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 25 Nov 2024 05:21:02 -0800 (PST)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: qemu-ppc@nongnu.org
-Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org,
- Chalapathi V <chalapathi.v@linux.ibm.com>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- Glenn Miles <milesg@linux.ibm.com>
-Subject: [PATCH 4/4] ppc/pnv: Add xscom- prefix to pervasive-control region
- name
-Date: Mon, 25 Nov 2024 23:20:41 +1000
-Message-ID: <20241125132042.325734-5-npiggin@gmail.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20241125132042.325734-1-npiggin@gmail.com>
-References: <20241125132042.325734-1-npiggin@gmail.com>
+ d=1e100.net; s=20230601; t=1732541130; x=1733145930;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=ADdGhoysVegLCwQoW48kN0DpEGNfwFq46x7SMBDb2Ws=;
+ b=hQ/f3wgDxd9anA7L6Z2JY+ho5V6m8k9lA8emQRutmkjv3n8Bq/M9fE4YCeV9KPcTdI
+ vj/7lYJuabTubiDcHqroOUQ3WGb7z0ZJ+IP/oyzuLVnnKDvREDUbpbkhmo5Tva71TKTK
+ Wtt9kF79AImDdp7gPgwafCYNE6Db5deeGSawHnQuGJYGeHz1ol5gT6c4B5n4OsbcLRtQ
+ KmbHAr5biyt0r08awAb1JAH+MaNZZSs1ilJojDz2qsxY+q/fSkYahKHraNFPQQMCSdbZ
+ VPjUJ+f0Rg4VFat9JgnlUNm0bx+EBVgMpcaYeqM9c0iJnRLBCdKKVOXDEnxJ8dE2t1rc
+ /gLg==
+X-Gm-Message-State: AOJu0YzW/yeyyHkoUgr52PlBj5yBM93kEcKTUnBgzSftTSwVOavEXvY2
+ NXYubkafEZ9Qw4rrsJPBDBjrAmtaUjBGO9OHCQQi3LzokJY40klLWJZxHtu5EufiAIAFCKeqqjm
+ K3lkeQKdH7uG8Ym3B/Qx+XumgEp8ehZchqs5cQQ==
+X-Gm-Gg: ASbGncvZfg3qY+CvUGYKy3u3VvMJ96AH7UTFYnANUwTGWSoPOPgXyKnU388hbo3AN7f
+ e5KPjRcbU73yQBAbGdnlUaUT1JCWzvHVl
+X-Google-Smtp-Source: AGHT+IFLvzaP3UnRJg3fNZrQPXZEZHX40aQ0zmvUoNI2hGxRP+q0oKGVhODM7s6N/bzkQBm6nQAHvk6F/JPrRkqoO0c=
+X-Received: by 2002:a05:6402:370e:b0:5cf:c97c:8218 with SMTP id
+ 4fb4d7f45d1cf-5d02069b662mr11039766a12.22.1732541129813; Mon, 25 Nov 2024
+ 05:25:29 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52a;
- envelope-from=npiggin@gmail.com; helo=mail-pg1-x52a.google.com
+References: <20241125125448.185504-1-marcin.juszkiewicz@linaro.org>
+In-Reply-To: <20241125125448.185504-1-marcin.juszkiewicz@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Mon, 25 Nov 2024 13:25:19 +0000
+Message-ID: <CAFEAcA-V3PGF7vst8QFjh+bWVx5EGDt_B9ZCe1OryNV8e39N4w@mail.gmail.com>
+Subject: Re: [PATCH 1/1] tests/avocado: update sbsa-ref firmware
+To: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+Cc: qemu-devel@nongnu.org, Radoslaw Biernacki <rad@semihalf.com>, 
+ Leif Lindholm <quic_llindhol@quicinc.com>, qemu-arm@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::531;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x531.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -100,28 +88,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-By convention, xscom regions get a xscom- prefix.
+On Mon, 25 Nov 2024 at 12:54, Marcin Juszkiewicz
+<marcin.juszkiewicz@linaro.org> wrote:
+>
+> Firmware is built using Debian 'bookworm' cross toolchain (gcc 12.2.0).
+>
+> Used versions:
+>
+> - Trusted Firmware v2.12.0
+> - Tianocore EDK2 stable202411
+> - Tianocore EDK2 Platforms code commit 4b3530d
+>
+> Signed-off-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
 
-Fixes: 1adf24708bf7 ("hw/ppc: Add pnv nest pervasive common chiplet model")
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
- hw/ppc/pnv_nest_pervasive.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Hi; what's the benefit to taking this update? Would it be better
+postponed until the 9.2 release is complete?
 
-diff --git a/hw/ppc/pnv_nest_pervasive.c b/hw/ppc/pnv_nest_pervasive.c
-index 77476753a4..780fa69dde 100644
---- a/hw/ppc/pnv_nest_pervasive.c
-+++ b/hw/ppc/pnv_nest_pervasive.c
-@@ -177,7 +177,7 @@ static void pnv_nest_pervasive_realize(DeviceState *dev, Error **errp)
-     pnv_xscom_region_init(&nest_pervasive->xscom_ctrl_regs_mr,
-                           OBJECT(nest_pervasive),
-                           &pnv_nest_pervasive_control_xscom_ops,
--                          nest_pervasive, "pervasive-control",
-+                          nest_pervasive, "xscom-pervasive-control",
-                           PNV10_XSCOM_CHIPLET_CTRL_REGS_SIZE);
- }
- 
--- 
-2.45.2
-
+thanks
+-- PMM
 
