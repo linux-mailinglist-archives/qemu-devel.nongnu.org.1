@@ -2,89 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76A829D8D3A
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Nov 2024 21:06:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 18A559D8D3C
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Nov 2024 21:06:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tFfFH-00058a-CQ; Mon, 25 Nov 2024 14:59:43 -0500
+	id 1tFfFH-00059g-Hd; Mon, 25 Nov 2024 14:59:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jean-philippe@linaro.org>)
- id 1tFfFD-00056J-9E
- for qemu-devel@nongnu.org; Mon, 25 Nov 2024 14:59:39 -0500
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ id 1tFfFC-00054e-2M
+ for qemu-devel@nongnu.org; Mon, 25 Nov 2024 14:59:38 -0500
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <jean-philippe@linaro.org>)
- id 1tFfF5-0004mk-QY
- for qemu-devel@nongnu.org; Mon, 25 Nov 2024 14:59:38 -0500
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-4315e9e9642so44610845e9.0
+ id 1tFfF5-0004mi-Qh
+ for qemu-devel@nongnu.org; Mon, 25 Nov 2024 14:59:37 -0500
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-4349e4e252dso14143405e9.0
  for <qemu-devel@nongnu.org>; Mon, 25 Nov 2024 11:59:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1732564770; x=1733169570; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Oo1EgfoyArPx0QyjZUVlmbBpOKVgCXNN/Sfqm4FiXXo=;
- b=mieKa2DMzTeXllctCe6oPxhkEn80nnS3hJD8WSMTy29YMtHD8JJ9dwAZdmymZssaM+
- qkD5e/r24gdy4F/pZEeQToorGM1tXXKeQBtoPIOuFkAk6vo3Oigz2V5OyPqMJI/zhS7C
- 1ytrUYN9R6rzTcpG8oYBCr51/siNIfwAE9rp4jz+bkv7wbVnz2wuGApOeI5NCFYDdHp8
- XNFdBybGT++Xld6qiwuqXpvADCsNRzWoDK+c2tKqBUlBToSSM65oAvQiOKpe90wbGG3Q
- UuIblbqYoYrAO1K+k/b7SusKUpP+HmOFRxjIM9NaRuiCWklGP+1g2IU+FBZAeX+59ibd
- bKBA==
+ bh=0m2/9HP5vLC3hqAB+yCWUJo/ObLxgmWN4DQPmhXmpqg=;
+ b=IO8bh0b1Lg3AXHFPiZ6/vhc8JpJxzwzcq69+YD7LgchLqCEIieqhRLehBuMaVcQsB4
+ nsaRitJjBLgw8oVq+B9W5AnGcBXzSJ2p1fKuI75sQ1+kAGOKhBpajXGgU4oEjjGqgkZG
+ MfahVcLK3z79rfSKfIWk8TCkfDPyOaad9q8pUG+OnyMl+bGAe3TnuzsO7loVvOt7ztT9
+ +4bveJ3pUDML1KiUS9PZfHA4qLjjxfJZIac9WtSel2VDo7DWxBzrj/U9yaPBMqLvanQE
+ vgca284IxUu44O788y8jwEYd9MfXG5nhG0Z+mHBvyYw3xpmm34dSx6ne+m/A/R/2rhmL
+ pzFQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1732564770; x=1733169570;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Oo1EgfoyArPx0QyjZUVlmbBpOKVgCXNN/Sfqm4FiXXo=;
- b=MVT2DtS3qhxYrWpMcGzFRjJyUX8DxLkdDj+++XubxC0yzWN5/yIuSQ/w9GiWz/Ngb9
- 1B7y/L1h9lSyUcyflVK1eBG5DKaUlL0HyuiAPnW31lKsY9ICCWBSSl3QHA+YHi0QCI6R
- QtqCLWFZf+eSeG6ao+frTLVxWaTrwJOtQIK6qdKk3i7cPgfJrPgZOBo+dfJj000x9qEa
- uAnHFp8SJnC7q/98JvqNkchehvB37w6ONeoTaadpoXGpJJI2l/FMiWwAJR8REgWBWfDZ
- KGSgm2DMn21bQgVkcIIvryaBXr+xyAZXFpWEeG/y4kiT934gaC5b7mE2cpsVpBMb1YmO
- lOsw==
+ bh=0m2/9HP5vLC3hqAB+yCWUJo/ObLxgmWN4DQPmhXmpqg=;
+ b=I8BxnwzycCPrdj4X0sNVmFSHr6dWxsM5WgZTikzfVmx4uzXmxsMHUcoKdoQC86yQB+
+ HBNdnoXjxaRA8aNy0dWLBacCSv51BKwSg4lZuwJv27KmNbcmE9j3++/R0Ct6fhho67UE
+ mClAMlPI6RU7snAobsdZRnInE/+VIe3dfsRRPwqtnsJCT1Abg1wyuJQHfRxF9hsC10Gt
+ zmXZcDJuuF8+GLtds3pjzVIydxf+/X/wvHNbrNmM0mavd8kC9KxOEe7lQ+sUipVeLlcf
+ fESTwx9Ap6IJtwYV5suta09xdk1ghwpBL8xvHEDzlFKozdmQFCI9ZyNeN2/ZaqykgokO
+ R/5g==
 X-Forwarded-Encrypted: i=1;
- AJvYcCX3SWlpb1eHC+sKQF+2Ef3ZDJ7FDELZLdHYWWhIsjP2sNo4kbxlmsqUmvnxvyauHsy7qDbxERLoVhge@nongnu.org
-X-Gm-Message-State: AOJu0YzrnqiA1iZj2/ZFaJ56tmgxnIRjfu6GhpNLarnhCWVXiUW6uk2a
- P6PSL/QW/45fk9KQpbUf7/v3q5u1lOhgtv5xE9x90SHfAqtFkPq70ahxPCxH1S8THNuFUhH84ly
- I
-X-Gm-Gg: ASbGncswGzWPRTBE3cgHo6u+sa8N4OUDRZptP6186r6b5V3lT8oc1zZsdCqaG7AWz6p
- NlMdyIdglcsffVdLpMAX4PFq0D/Cz0+W/iOcy9mQkSiJDJ0orog2XwEXeObY5peq41VyNYaOYS3
- S/wChpakyfl50FwyxnKOjDhwlSXo1giLv2E3EC8Bsu6XdSNHlO5sv+OvgLWbtKfA9UQNCXoFzQm
- +ipag/llkab38nDAkNxQ1ELYwldaudL1VhMMqHg2pP5PDzZ0oGOlOV/ekcwDts3Mh66
-X-Google-Smtp-Source: AGHT+IGEuG55nfDajrGEaz7M/kGNc1ktpiuJCiuV/narivEo/mrkiiTEuTAGFHtr+tUvMIFwJ0tt4A==
-X-Received: by 2002:a05:600c:1f85:b0:431:5ce4:bcf0 with SMTP id
- 5b1f17b1804b1-433ce428100mr134775805e9.15.1732564769711; 
- Mon, 25 Nov 2024 11:59:29 -0800 (PST)
+ AJvYcCXWbYW9r7dep4+4yKlhJhI4sPVOI4CIl23aNNJGxOirQcol2qL3ETZIIFVGbTBc/0OG7GNUJDKRWyyF@nongnu.org
+X-Gm-Message-State: AOJu0YzWTIemlvN/zW6M9Kqlv4Ja6T4tAeHk/m7TRsTfGJuT8nYOC8Fa
+ ol7ioXWt3O+ICBP5gaavtLd0WyN/E2ACuSrFp7QK7kcQwxpjafkQtJfkONf1cLw=
+X-Gm-Gg: ASbGnctEikYbZSMMVeSycRtKD2/Z0mgsHGzHDNOF9BFOtpQlT9TiND1kWuF5fAoVOEU
+ 0rtzBZhfHtzFiPVTQOIBPPS9eGSWq3PuwTSI6i6dT60pSoiPaxLQz6CoMmZfYg9R9ZZk0QKKFLS
+ sinO8heOTXdIYlWHETr4hivJOMI+ODRgZUHKAi4Q4/Li8nO+osSvr9AEMvXNEbxVen+lq5D72T7
+ vyCCWnHe6GMXXygWjEEfy41txLZOw1D8Ji4kFjaYYFxFpgt5aaZtgUAE0cINzqe4cNL
+X-Google-Smtp-Source: AGHT+IHIgHFWvVyyJCi5WA7qSU1TvSslIX+EBQ+ux7JHA9WcmEKKX7xGvPmRb34R9SzN6GO/cTMdzA==
+X-Received: by 2002:a05:6000:2d08:b0:382:50d9:bc7c with SMTP id
+ ffacd0b85a97d-38260be6bfamr7331722f8f.58.1732564770312; 
+ Mon, 25 Nov 2024 11:59:30 -0800 (PST)
 Received: from localhost.localdomain ([2.221.137.100])
  by smtp.gmail.com with ESMTPSA id
  ffacd0b85a97d-3825fd0fbdcsm11237971f8f.109.2024.11.25.11.59.29
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 25 Nov 2024 11:59:29 -0800 (PST)
+ Mon, 25 Nov 2024 11:59:30 -0800 (PST)
 From: Jean-Philippe Brucker <jean-philippe@linaro.org>
 To: peter.maydell@linaro.org
 Cc: richard.henderson@linaro.org, philmd@linaro.org, qemu-arm@nongnu.org,
  qemu-devel@nongnu.org, alex.bennee@linaro.org,
- Jean-Philippe Brucker <jean-philippe@linaro.org>
-Subject: [PATCH v3 09/26] target/arm/kvm-rme: Initialize Realm memory
-Date: Mon, 25 Nov 2024 19:56:08 +0000
-Message-ID: <20241125195626.856992-11-jean-philippe@linaro.org>
+ Jean-Philippe Brucker <jean-philippe@linaro.org>,
+ Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>
+Subject: [PATCH v3 10/26] target/arm/kvm-rme: Add Realm Personalization Value
+ parameter
+Date: Mon, 25 Nov 2024 19:56:09 +0000
+Message-ID: <20241125195626.856992-12-jean-philippe@linaro.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241125195626.856992-2-jean-philippe@linaro.org>
 References: <20241125195626.856992-2-jean-philippe@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=jean-philippe@linaro.org; helo=mail-wm1-x332.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=jean-philippe@linaro.org; helo=mail-wm1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,233 +104,215 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Initialize the IPA state of RAM. Collect the images copied into guest
-RAM into a sorted list, and issue POPULATE_REALM KVM ioctls once we've
-created the Realm Descriptor. The images are part of the Realm Initial
-Measurement.
+The Realm Personalization Value (RPV) is provided by the user to
+distinguish Realms that have the same initial measurement.
 
+The user provides up to 64 hexadecimal bytes. They are stored into the
+RPV in the same order, zero-padded on the right.
+
+Cc: Eric Blake <eblake@redhat.com>
+Cc: Markus Armbruster <armbru@redhat.com>
+Cc: Daniel P. Berrangé <berrange@redhat.com>
+Cc: Eduardo Habkost <eduardo@habkost.net>
+Acked-by: Markus Armbruster <armbru@redhat.com>
 Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
 ---
-v2->v3: RIPAS is now initialized separately
+v2->v3: Fix documentation
 ---
- target/arm/kvm_arm.h |  14 +++++
- target/arm/kvm-rme.c | 128 +++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 142 insertions(+)
+ qapi/qom.json        |  15 ++++++
+ target/arm/kvm-rme.c | 111 +++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 126 insertions(+)
 
-diff --git a/target/arm/kvm_arm.h b/target/arm/kvm_arm.h
-index 8b52a881b0..67db09a424 100644
---- a/target/arm/kvm_arm.h
-+++ b/target/arm/kvm_arm.h
-@@ -255,6 +255,16 @@ int kvm_arm_rme_vm_type(MachineState *ms);
-  */
- int kvm_arm_rme_vcpu_init(CPUState *cs);
+diff --git a/qapi/qom.json b/qapi/qom.json
+index a8beeabf1f..f982850bca 100644
+--- a/qapi/qom.json
++++ b/qapi/qom.json
+@@ -1068,6 +1068,19 @@
+   'data': { '*cpu-affinity': ['uint16'],
+             '*node-affinity': ['uint16'] } }
  
-+/*
-+ * kvm_arm_rme_init_guest_ram
-+ * @base: base address of RAM
-+ * @size: size of RAM
-+ *
-+ * If the user requested a Realm, set the base and size of guest RAM, in order
-+ * to initialize the Realm IPA space.
-+ */
-+void kvm_arm_rme_init_guest_ram(hwaddr base, size_t size);
-+
- #else
++##
++# @RmeGuestProperties:
++#
++# Properties for rme-guest objects.
++#
++# @personalization-value: Realm personalization value, as a 64-byte
++#     hex string. This optional parameter allows to uniquely identify
++#     the VM instance during attestation. (default: 0)
++#
++# Since: 9.3
++##
++{ 'struct': 'RmeGuestProperties',
++  'data': { '*personalization-value': 'str' } }
  
- /*
-@@ -281,6 +291,10 @@ static inline bool kvm_arm_mte_supported(void)
-     return false;
- }
- 
-+static inline void kvm_arm_rme_init_guest_ram(hwaddr base, size_t size)
-+{
-+}
-+
- /*
-  * These functions should never actually be called without KVM support.
-  */
+ ##
+ # @ObjectType:
+@@ -1121,6 +1134,7 @@
+     { 'name': 'pr-manager-helper',
+       'if': 'CONFIG_LINUX' },
+     'qtest',
++    'rme-guest',
+     'rng-builtin',
+     'rng-egd',
+     { 'name': 'rng-random',
+@@ -1195,6 +1209,7 @@
+       'pr-manager-helper':          { 'type': 'PrManagerHelperProperties',
+                                       'if': 'CONFIG_LINUX' },
+       'qtest':                      'QtestProperties',
++      'rme-guest':                  'RmeGuestProperties',
+       'rng-builtin':                'RngProperties',
+       'rng-egd':                    'RngEgdProperties',
+       'rng-random':                 { 'type': 'RngRandomProperties',
 diff --git a/target/arm/kvm-rme.c b/target/arm/kvm-rme.c
-index e3cc37538a..83a29421df 100644
+index 83a29421df..0be55867ee 100644
 --- a/target/arm/kvm-rme.c
 +++ b/target/arm/kvm-rme.c
-@@ -9,6 +9,7 @@
- #include "exec/confidential-guest-support.h"
- #include "hw/boards.h"
- #include "hw/core/cpu.h"
-+#include "hw/loader.h"
- #include "kvm_arm.h"
- #include "migration/blocker.h"
- #include "qapi/error.h"
-@@ -20,16 +21,85 @@
- #define TYPE_RME_GUEST "rme-guest"
- OBJECT_DECLARE_SIMPLE_TYPE(RmeGuest, RME_GUEST)
+@@ -23,11 +23,15 @@ OBJECT_DECLARE_SIMPLE_TYPE(RmeGuest, RME_GUEST)
  
-+#define RME_PAGE_SIZE qemu_real_host_page_size()
+ #define RME_PAGE_SIZE qemu_real_host_page_size()
+ 
++#define RME_MAX_CFG         1
 +
  struct RmeGuest {
      ConfidentialGuestSupport parent_obj;
-+    Notifier rom_load_notifier;
-+    GSList *ram_regions;
+     Notifier rom_load_notifier;
+     GSList *ram_regions;
+ 
++    uint8_t *personalization_value;
 +
-+    hwaddr ram_base;
-+    size_t ram_size;
+     hwaddr ram_base;
+     size_t ram_size;
  };
+@@ -43,6 +47,48 @@ typedef struct {
  
- OBJECT_DEFINE_SIMPLE_TYPE_WITH_INTERFACES(RmeGuest, rme_guest, RME_GUEST,
-                                           CONFIDENTIAL_GUEST_SUPPORT,
-                                           { TYPE_USER_CREATABLE }, { })
- 
-+typedef struct {
-+    hwaddr base;
-+    hwaddr size;
-+} RmeRamRegion;
-+
  static RmeGuest *rme_guest;
  
-+static int rme_init_ram(hwaddr base, size_t size, Error **errp)
++static int rme_configure_one(RmeGuest *guest, uint32_t cfg, Error **errp)
 +{
 +    int ret;
-+    uint64_t start = QEMU_ALIGN_DOWN(base, RME_PAGE_SIZE);
-+    uint64_t end = QEMU_ALIGN_UP(base + size, RME_PAGE_SIZE);
-+    struct kvm_cap_arm_rme_init_ipa_args init_args = {
-+        .init_ipa_base = start,
-+        .init_ipa_size = end - start,
++    const char *cfg_str;
++    struct kvm_cap_arm_rme_config_item args = {
++        .cfg = cfg,
 +    };
 +
-+    ret = kvm_vm_enable_cap(kvm_state, KVM_CAP_ARM_RME, 0,
-+                            KVM_CAP_ARM_RME_INIT_IPA_REALM,
-+                            (intptr_t)&init_args);
-+    if (ret) {
-+        error_setg_errno(errp, -ret,
-+                         "failed to init RAM [0x%"HWADDR_PRIx", 0x%"HWADDR_PRIx")",
-+                         start, end);
++    switch (cfg) {
++    case KVM_CAP_ARM_RME_CFG_RPV:
++        if (!guest->personalization_value) {
++            return 0;
++        }
++        memcpy(args.rpv, guest->personalization_value, KVM_CAP_ARM_RME_RPV_SIZE);
++        cfg_str = "personalization value";
++        break;
++    default:
++        g_assert_not_reached();
 +    }
 +
-+    return ret;
-+}
-+
-+static int rme_populate_range(hwaddr base, size_t size, bool measure,
-+                              Error **errp)
-+{
-+    int ret;
-+    uint64_t start = QEMU_ALIGN_DOWN(base, RME_PAGE_SIZE);
-+    uint64_t end = QEMU_ALIGN_UP(base + size, RME_PAGE_SIZE);
-+    struct kvm_cap_arm_rme_populate_realm_args populate_args = {
-+        .populate_ipa_base = start,
-+        .populate_ipa_size = end - start,
-+        .flags = measure ? KVM_ARM_RME_POPULATE_FLAGS_MEASURE : 0,
-+    };
-+
 +    ret = kvm_vm_enable_cap(kvm_state, KVM_CAP_ARM_RME, 0,
-+                            KVM_CAP_ARM_RME_POPULATE_REALM,
-+                            (intptr_t)&populate_args);
++                            KVM_CAP_ARM_RME_CONFIG_REALM, (intptr_t)&args);
 +    if (ret) {
-+        error_setg_errno(errp, -ret,
-+                   "failed to populate realm [0x%"HWADDR_PRIx", 0x%"HWADDR_PRIx")",
-+                   start, end);
++        error_setg_errno(errp, -ret, "failed to configure %s", cfg_str);
 +    }
 +    return ret;
 +}
 +
-+static void rme_populate_ram_region(gpointer data, gpointer err)
++static int rme_configure(Error **errp)
 +{
-+    Error **errp = err;
-+    const RmeRamRegion *region = data;
++    int ret;
++    int cfg;
 +
-+    if (*errp) {
-+        return;
++    for (cfg = 0; cfg < RME_MAX_CFG; cfg++) {
++        ret = rme_configure_one(rme_guest, cfg, errp);
++        if (ret) {
++            return ret;
++        }
 +    }
-+
-+    rme_populate_range(region->base, region->size, /* measure */ true, errp);
++    return 0;
 +}
 +
- static int rme_init_cpus(Error **errp)
+ static int rme_init_ram(hwaddr base, size_t size, Error **errp)
  {
      int ret;
-@@ -60,6 +130,16 @@ static int rme_create_realm(Error **errp)
-         return -1;
-     }
- 
-+    if (rme_init_ram(rme_guest->ram_base, rme_guest->ram_size, errp)) {
-+        return -1;
-+    }
-+
-+    g_slist_foreach(rme_guest->ram_regions, rme_populate_ram_region, errp);
-+    g_slist_free_full(g_steal_pointer(&rme_guest->ram_regions), g_free);
-+    if (*errp) {
-+        return -1;
-+    }
-+
-     if (rme_init_cpus(errp)) {
-         return -1;
-     }
-@@ -105,6 +185,43 @@ static void rme_guest_finalize(Object *obj)
+@@ -123,6 +169,10 @@ static int rme_create_realm(Error **errp)
  {
+     int ret;
+ 
++    if (rme_configure(errp)) {
++        return -1;
++    }
++
+     ret = kvm_vm_enable_cap(kvm_state, KVM_CAP_ARM_RME, 0,
+                             KVM_CAP_ARM_RME_CREATE_RD);
+     if (ret) {
+@@ -168,8 +218,69 @@ static void rme_vm_state_change(void *opaque, bool running, RunState state)
+     }
  }
  
-+static gint rme_compare_ram_regions(gconstpointer a, gconstpointer b)
++static char *rme_get_rpv(Object *obj, Error **errp)
 +{
-+        const RmeRamRegion *ra = a;
-+        const RmeRamRegion *rb = b;
++    RmeGuest *guest = RME_GUEST(obj);
++    GString *s;
++    int i;
 +
-+        g_assert(ra->base != rb->base);
-+        return ra->base < rb->base ? -1 : 1;
++    if (!guest->personalization_value) {
++        return NULL;
++    }
++
++    s = g_string_sized_new(KVM_CAP_ARM_RME_RPV_SIZE * 2 + 1);
++
++    for (i = 0; i < KVM_CAP_ARM_RME_RPV_SIZE; i++) {
++        g_string_append_printf(s, "%02x", guest->personalization_value[i]);
++    }
++
++    return g_string_free(s, /* free_segment */ false);
 +}
 +
-+static void rme_rom_load_notify(Notifier *notifier, void *data)
++static void rme_set_rpv(Object *obj, const char *value, Error **errp)
 +{
-+    RmeRamRegion *region;
-+    RomLoaderNotify *rom = data;
++    RmeGuest *guest = RME_GUEST(obj);
++    size_t len = strlen(value);
++    uint8_t *out;
++    int i = 1;
++    int ret;
 +
-+    if (rom->addr == -1) {
-+        /*
-+         * These blobs (ACPI tables) are not loaded into guest RAM at reset.
-+         * Instead the firmware will load them via fw_cfg and measure them
-+         * itself.
-+         */
++    g_free(guest->personalization_value);
++    guest->personalization_value = out = g_malloc0(KVM_CAP_ARM_RME_RPV_SIZE);
++
++    /* Two chars per byte */
++    if (len > KVM_CAP_ARM_RME_RPV_SIZE * 2) {
++        error_setg(errp, "Realm Personalization Value is too large");
 +        return;
 +    }
 +
-+    region = g_new0(RmeRamRegion, 1);
-+    region->base = rom->addr;
-+    region->size = rom->len;
++    /* First byte may have a single char */
++    if (len % 2) {
++        ret = sscanf(value, "%1hhx", out++);
++    } else {
++        ret = sscanf(value, "%2hhx", out++);
++        i++;
++    }
++    if (ret != 1) {
++        error_setg(errp, "Invalid Realm Personalization Value");
++        return;
++    }
 +
-+    /*
-+     * The Realm Initial Measurement (RIM) depends on the order in which we
-+     * initialize and populate the RAM regions. To help a verifier
-+     * independently calculate the RIM, sort regions by GPA.
-+     */
-+    rme_guest->ram_regions = g_slist_insert_sorted(rme_guest->ram_regions,
-+                                                   region,
-+                                                   rme_compare_ram_regions);
-+}
-+
- int kvm_arm_rme_init(MachineState *ms)
- {
-     static Error *rme_mig_blocker;
-@@ -132,11 +249,22 @@ int kvm_arm_rme_init(MachineState *ms)
-      */
-     qemu_add_vm_change_state_handler(rme_vm_state_change, NULL);
- 
-+    rme_guest->rom_load_notifier.notify = rme_rom_load_notify;
-+    rom_add_load_notifier(&rme_guest->rom_load_notifier);
-+
-     cgs->require_guest_memfd = true;
-     cgs->ready = true;
-     return 0;
- }
- 
-+void kvm_arm_rme_init_guest_ram(hwaddr base, size_t size)
-+{
-+    if (rme_guest) {
-+        rme_guest->ram_base = base;
-+        rme_guest->ram_size = size;
++    for (; i < len; i += 2) {
++        ret = sscanf(value + i, "%2hhx", out++);
++        if (ret != 1) {
++            error_setg(errp, "Invalid Realm Personalization Value");
++            return;
++        }
 +    }
 +}
 +
- int kvm_arm_rme_vcpu_init(CPUState *cs)
+ static void rme_guest_class_init(ObjectClass *oc, void *data)
  {
-     ARMCPU *cpu = ARM_CPU(cs);
++    object_class_property_add_str(oc, "personalization-value", rme_get_rpv,
++                                  rme_set_rpv);
++    object_class_property_set_description(oc, "personalization-value",
++            "Realm personalization value (512-bit hexadecimal number)");
+ }
+ 
+ static void rme_guest_init(Object *obj)
 -- 
 2.47.0
 
