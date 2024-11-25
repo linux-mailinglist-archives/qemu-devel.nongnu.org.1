@@ -2,81 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 988DC9D894E
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Nov 2024 16:27:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A40B39D8928
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Nov 2024 16:22:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tFaz3-00073u-LY; Mon, 25 Nov 2024 10:26:41 -0500
+	id 1tFatv-000422-4C; Mon, 25 Nov 2024 10:21:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tFayp-000703-8Y
- for qemu-devel@nongnu.org; Mon, 25 Nov 2024 10:26:27 -0500
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ id 1tFats-00040r-Fy
+ for qemu-devel@nongnu.org; Mon, 25 Nov 2024 10:21:20 -0500
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tFaym-0002Yt-6K
- for qemu-devel@nongnu.org; Mon, 25 Nov 2024 10:26:27 -0500
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-434a1fe2b43so4514255e9.2
- for <qemu-devel@nongnu.org>; Mon, 25 Nov 2024 07:26:21 -0800 (PST)
+ id 1tFatq-0001nA-Bh
+ for qemu-devel@nongnu.org; Mon, 25 Nov 2024 10:21:20 -0500
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-43497839b80so14602035e9.2
+ for <qemu-devel@nongnu.org>; Mon, 25 Nov 2024 07:21:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1732548379; x=1733153179; darn=nongnu.org;
+ d=linaro.org; s=google; t=1732548077; x=1733152877; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=lwRDTRQGY0zbI0152zlPGQl3hD2A8MDzl25gnWUNB94=;
- b=UMzoZpOcnNotx2/O5Ov+Ss0nX9qOMVTQh3RKDUe8spydFKYsG4B0K6Uox4jNsFicSi
- k6MQ6eSG2HZRUiSl56zSm15FxhUDN3fHwBdO4GrFO0V8DtpvF93e0d2roboiRP380krM
- t3bIxnKyvk6JgdNJLGl4zV5z8RNzUsFs8L27dgVKF1vPlN0xX8mzM1y0vIrqZnLNtPlQ
- 2uIx/82LbMTPDPRqzNOuPeVwsfRg946pf6V6HxMWKBYLv/m9HGoT/nOIWoDSW5lzDzAz
- qzjnTv06jVSKLTfq3f7aofZW05CBncWHhGTNVcXkeOa9DQTWD1LIXUYXu2/Zp+41iPRG
- jsEQ==
+ bh=DMELCxkOeEAQmSk+N63B9qvpt489uBLoYc1oFZtPpjQ=;
+ b=pChjgK741wVwzfY7TnC/KMBlYHW7x6MktMDt4o39LYBILUSFMT1n8u6Bni1/FkIeR1
+ SbYDGmcT/qDxeLjG7RaHn5lQcH9l+GfxS0QieZhXgLCPNNkTWFBSfnRxJl6Pc9v6dsaJ
+ A4ovCt9RhrsLdKYNMBMXaihw74FqWZaDE/tlED9XrCmer1WOBjHKlL1RjpSdyNipam9u
+ tPJ79eg+/eCvideDudz0NOUf9GyhD6udUkBNdXg62Ibm1smvjihJgjVyJoMbi6+SxbGM
+ aFSjcDKBFdg6rDMuXKLaqbYan3tK8nzreEfZY7c/QkY9Hd4kvlVYrj9dBlsLh5gREY1W
+ ufrA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1732548379; x=1733153179;
+ d=1e100.net; s=20230601; t=1732548077; x=1733152877;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=lwRDTRQGY0zbI0152zlPGQl3hD2A8MDzl25gnWUNB94=;
- b=mWdtCOcLsLyEjFBRfLEi9sy26YAGwmsdQsRhICNL2u+gptjA/Jf2V2o8EgnJ0aJvT+
- 9h/kkQa4djAVQf1fM8XdFVIDME87ctSqRoIUxrWif1+1Zn5oEmrdPfNX5qhCLG9PG/F7
- n6dLWwsc24QmvyvfnL6uSBCrJLbGn6PuWxVFghgcHchWdRmdtuXVC/tsXJHhzSBPQNEC
- GXltdWdF5K0CaTqMAUMHWkrb7uPpY26E83+TePb5ImKUmcrHogm4HA4evtm0pNHLZPr6
- QS3uGFKkzl3vpqkpshK/9vrSCmdqQ8ua94gKwUfHSN5Gsph1VaPHAeAnDhSNtD12MwEA
- v5MA==
-X-Gm-Message-State: AOJu0YwFZRdOtq6SBRNzQbG8Uy1JCfH+aW9LBzWKWxm6CUTg9bXs4ELA
- E+ersRYtND4+BALFlHLnjYaRXQs2nw9ARisoUDFqLzKLhN5LNcAkL95kieccd2U=
-X-Gm-Gg: ASbGncunEpQdgTAHCnmacgq/e4VeAlVkxoh9i5lHLt6caAiS16Rcg6cTZi7eqlru58p
- 6iR57kYqtINJmSdjkt3qQjhwy0sVFjSizwyazxIMRP4QFN+AJKwtcHmxcAjZESUu0ZLMvdwSdkb
- lMRQt4z7bSApnp/e+WN7N8IdpHmSnYi3Ha/+S/9mpDpafVbRjweIUO7iObBcjJWD8X4SOwXOMBA
- mKwvjyBjXFDAjM1UHcwFwQjaNkiWRMmrSzH83rC1YkwqtDL
-X-Google-Smtp-Source: AGHT+IEcdPf3GD8xS8mve7R6P5d3eZCdHEwpFk0puZ8HKU9BDupOwlH6/NcsHguKeVI5lSAtI3snuw==
-X-Received: by 2002:a05:600c:348b:b0:42c:c003:edd1 with SMTP id
- 5b1f17b1804b1-433ce41ce4emr136359265e9.10.1732548379357; 
- Mon, 25 Nov 2024 07:26:19 -0800 (PST)
+ bh=DMELCxkOeEAQmSk+N63B9qvpt489uBLoYc1oFZtPpjQ=;
+ b=iGai/kxpwhMu+zsIBVgWFrN/92r1fhJbjM3xHeooU39oKPIxKbs0FNKLEeLVa8Ui7Z
+ dFscRSlaaA1oSBeSosXlugM2VL9Tolw354+pOknI3MxYnAsiW0QNAivqbM5hXxxCL58W
+ YPxFM9RWvu7Dh7urqLqMlXQXToUdH2fk+XKAnOubJijlk0CMfiD71C0DwNgXiVVUNV9O
+ C/PqXsKSdHHtFWXUeHTdQInZ5eIS5qHtJR9HST5xExq+4B3QfoSqSmYRBlNFbqcm43+I
+ 6TSNV9NJyfOcyFDkAjejkNuVMaAoS7uGzpEoGcRXZfoPMGjuFsIycceLVxhzGNDGF7vh
+ USsg==
+X-Gm-Message-State: AOJu0YzCDjx7KcjZRETdu+70HkTpeRjqG69CsaoZTlYqi6DJLY0e1wZb
+ kUT5gcWVHfgXUAHyHz58AdeDkHqJd9GcZRg7uxUMKYw8fWP6lN/1nLKmXWAFG/U=
+X-Gm-Gg: ASbGncukp/eIG4EJzvAtoTIPJl27bDNFwiHzcTlgclm7g8qFpmy7UGjZDSYOxwxC3yQ
+ 71GnhZkhQKKLLD8TOTuPavyGd7FaWi8iuimCN1mPHKYmbwKN7xAyRz4zLoPqS+JsyomSBBb69OD
+ 4tIMoy5oS5GfULslctRlmjyId50mxbOtWnCMLKs1olfpwKx7l9NaxtzcGcwpO0Aa2LolhKETIW3
+ gkkIRLIo7E+wOjyJ4rj/tPWtATZ2ODDQ9jZPN42w1MCpBRW
+X-Google-Smtp-Source: AGHT+IHpnTS6RQp+PRADd2JYlCHgAbWaolF6kyisKI/7HjbmaUXXA9ritrcshd9FtN1wv954DPWxlw==
+X-Received: by 2002:a05:600c:3aca:b0:431:680e:95ff with SMTP id
+ 5b1f17b1804b1-433ce425617mr118928725e9.9.1732548076810; 
+ Mon, 25 Nov 2024 07:21:16 -0800 (PST)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43498a31432sm75044365e9.28.2024.11.25.07.26.15
+ 5b1f17b1804b1-4349fba472asm38343535e9.17.2024.11.25.07.21.12
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 25 Nov 2024 07:26:16 -0800 (PST)
+ Mon, 25 Nov 2024 07:21:15 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id DEB4C62A14;
+ by draig.lan (Postfix) with ESMTP id F362D63331;
  Mon, 25 Nov 2024 15:21:07 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PULL 23/28] plugins: eradicate qemu-plugins.symbols static file
-Date: Mon, 25 Nov 2024 15:21:00 +0000
-Message-Id: <20241125152105.2100395-24-alex.bennee@linaro.org>
+Cc: Junjie Mao <junjie.mao@hotmail.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ qemu-rust@nongnu.org (open list:Rust-related patc...)
+Subject: [PULL 24/28] rust/pl011: Fix range checks for device ID accesses
+Date: Mon, 25 Nov 2024 15:21:01 +0000
+Message-Id: <20241125152105.2100395-25-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241125152105.2100395-1-alex.bennee@linaro.org>
 References: <20241125152105.2100395-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x335.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,78 +102,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+From: Junjie Mao <junjie.mao@hotmail.com>
 
-Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Message-Id: <20241112212622.3590693-4-pierrick.bouvier@linaro.org>
+The peripheral and PrimeCell identification registers of pl011 are located at
+offset 0xFE0 - 0xFFC. To check if a read falls to such registers, the C
+implementation checks if the offset-shifted-by-2 (not the offset itself) is in
+the range 0x3F8 - 0x3FF.
+
+Use the same check in the Rust implementation.
+
+This fixes the timeout of the following avocado tests:
+
+  * tests/avocado/boot_linux_console.py:BootLinuxConsole.test_arm_virt
+  * tests/avocado/replay_kernel.py:ReplayKernelNormal.test_arm_virt
+  * tests/avocado/replay_kernel.py:ReplayKernelNormal.test_arm_vexpressa9
+
+Reported-by: Peter Maydell <peter.maydell@linaro.org>
+Signed-off-by: Junjie Mao <junjie.mao@hotmail.com>
+Tested-by: Alex Bennée <alex.bennee@linaro.org>
+Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
+Message-Id: <SY0P300MB102644C4AC34A3AAD75DC4D5955C2@SY0P300MB1026.AUSP300.PROD.OUTLOOK.COM>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20241121165806.476008-38-alex.bennee@linaro.org>
+Message-Id: <20241121165806.476008-39-alex.bennee@linaro.org>
 
-diff --git a/plugins/qemu-plugins.symbols b/plugins/qemu-plugins.symbols
-deleted file mode 100644
-index 032661f9ea..0000000000
---- a/plugins/qemu-plugins.symbols
-+++ /dev/null
-@@ -1,59 +0,0 @@
--{
--  qemu_plugin_bool_parse;
--  qemu_plugin_end_code;
--  qemu_plugin_entry_code;
--  qemu_plugin_get_hwaddr;
--  qemu_plugin_get_registers;
--  qemu_plugin_hwaddr_device_name;
--  qemu_plugin_hwaddr_is_io;
--  qemu_plugin_hwaddr_phys_addr;
--  qemu_plugin_insn_data;
--  qemu_plugin_insn_disas;
--  qemu_plugin_insn_haddr;
--  qemu_plugin_insn_size;
--  qemu_plugin_insn_symbol;
--  qemu_plugin_insn_vaddr;
--  qemu_plugin_mem_get_value;
--  qemu_plugin_mem_is_big_endian;
--  qemu_plugin_mem_is_sign_extended;
--  qemu_plugin_mem_is_store;
--  qemu_plugin_mem_size_shift;
--  qemu_plugin_num_vcpus;
--  qemu_plugin_outs;
--  qemu_plugin_path_to_binary;
--  qemu_plugin_read_memory_vaddr;
--  qemu_plugin_read_register;
--  qemu_plugin_register_atexit_cb;
--  qemu_plugin_register_flush_cb;
--  qemu_plugin_register_vcpu_exit_cb;
--  qemu_plugin_register_vcpu_idle_cb;
--  qemu_plugin_register_vcpu_init_cb;
--  qemu_plugin_register_vcpu_insn_exec_cb;
--  qemu_plugin_register_vcpu_insn_exec_cond_cb;
--  qemu_plugin_register_vcpu_insn_exec_inline_per_vcpu;
--  qemu_plugin_register_vcpu_mem_cb;
--  qemu_plugin_register_vcpu_mem_inline_per_vcpu;
--  qemu_plugin_register_vcpu_resume_cb;
--  qemu_plugin_register_vcpu_syscall_cb;
--  qemu_plugin_register_vcpu_syscall_ret_cb;
--  qemu_plugin_register_vcpu_tb_exec_cb;
--  qemu_plugin_register_vcpu_tb_exec_cond_cb;
--  qemu_plugin_register_vcpu_tb_exec_inline_per_vcpu;
--  qemu_plugin_register_vcpu_tb_trans_cb;
--  qemu_plugin_request_time_control;
--  qemu_plugin_reset;
--  qemu_plugin_scoreboard_free;
--  qemu_plugin_scoreboard_find;
--  qemu_plugin_scoreboard_new;
--  qemu_plugin_start_code;
--  qemu_plugin_tb_get_insn;
--  qemu_plugin_tb_n_insns;
--  qemu_plugin_tb_vaddr;
--  qemu_plugin_u64_add;
--  qemu_plugin_u64_get;
--  qemu_plugin_u64_set;
--  qemu_plugin_u64_sum;
--  qemu_plugin_uninstall;
--  qemu_plugin_update_ns;
--  qemu_plugin_vcpu_for_each;
--};
+diff --git a/rust/hw/char/pl011/src/device.rs b/rust/hw/char/pl011/src/device.rs
+index 2a85960b81..476cacc844 100644
+--- a/rust/hw/char/pl011/src/device.rs
++++ b/rust/hw/char/pl011/src/device.rs
+@@ -182,7 +182,7 @@ pub fn read(&mut self, offset: hwaddr, _size: c_uint) -> std::ops::ControlFlow<u
+         use RegisterOffset::*;
+ 
+         std::ops::ControlFlow::Break(match RegisterOffset::try_from(offset) {
+-            Err(v) if (0x3f8..0x400).contains(&v) => {
++            Err(v) if (0x3f8..0x400).contains(&(v >> 2)) => {
+                 u64::from(self.device_id[(offset - 0xfe0) >> 2])
+             }
+             Err(_) => {
 -- 
 2.39.5
 
