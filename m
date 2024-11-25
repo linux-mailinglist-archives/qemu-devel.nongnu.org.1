@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF2C89D8D1A
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Nov 2024 21:00:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E1F49D8D17
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Nov 2024 21:00:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tFfFN-0005GN-TF; Mon, 25 Nov 2024 14:59:50 -0500
+	id 1tFfFO-0005I3-TW; Mon, 25 Nov 2024 14:59:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jean-philippe@linaro.org>)
- id 1tFfFI-0005Bf-Q0
- for qemu-devel@nongnu.org; Mon, 25 Nov 2024 14:59:44 -0500
-Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
+ id 1tFfFK-0005Em-Hc
+ for qemu-devel@nongnu.org; Mon, 25 Nov 2024 14:59:46 -0500
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <jean-philippe@linaro.org>)
- id 1tFfFC-0004rZ-1D
- for qemu-devel@nongnu.org; Mon, 25 Nov 2024 14:59:44 -0500
-Received: by mail-wr1-x42c.google.com with SMTP id
- ffacd0b85a97d-38231e9d518so3171520f8f.0
- for <qemu-devel@nongnu.org>; Mon, 25 Nov 2024 11:59:37 -0800 (PST)
+ id 1tFfFC-0004ru-TJ
+ for qemu-devel@nongnu.org; Mon, 25 Nov 2024 14:59:45 -0500
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-43167ff0f91so44393155e9.1
+ for <qemu-devel@nongnu.org>; Mon, 25 Nov 2024 11:59:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1732564776; x=1733169576; darn=nongnu.org;
+ d=linaro.org; s=google; t=1732564777; x=1733169577; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=EExZMgepRcWmxIXjjA6QAMdeM+PVS7qSljKvbhpCK2g=;
- b=RmTDz9imuVe5UtgC8SIeKmKaxnKorqRey1D5rliAOoh8zRYuChE7VkDhnwr2PCBBD+
- P0UlaCEYFPv8JdcgGGM6EDqaMTCIH9vbTyC/LZwDGYSQ4CYoJKPAR/ZfvPhMTtrmPHiK
- kbGy1uyu5iP5YGIG//5wjv1/yiKVKuHBBMr3/4RKue0jj0d3mVGGeY0FGyxsIexK9TzW
- Ru/cd/fj37JSMAS3T4Z7FljGGvz8Draxgc7Ae8O+qIqOEBfEm2eSVjgV0S5DZ/HDjywE
- 1U4GI2PPjtBhjrDwu3oa44yFo5WB9Gtamvhqs+1ufeyGEDvhHLcSNJDe7IOs5ubnuacD
- PPGA==
+ bh=0X0EuUhZkl3V6dkF5yC+rBGIPkT3Qq6H9A8p4Nm7TQw=;
+ b=hpz6CoXWrfu/u5D/zuUdjHh/AvL8kP27mzNPXiXdNnoalsfkyzsBrzGSqBII1X7CIa
+ rp17wBbh7KHPR2xV2TNhp7/ta9AogEokpZjqOH5OiRBnC6mqK7P1w5EmEeyu3vF1ZrJv
+ Rqrf6NRdA2YmWzedbX6P3Om39hocVrlgGKlgnj02Oslb/sJxeb4iISvhq91Df+axqSuz
+ x7PpQbz3GsEDERvckGsNDWJTfsz7ZfcyULuDI3fqQhdQX2xadmLZYUfcK4Rvl0vfR+Kw
+ hroJBsgXpx/9M8TR8JBj6TvaZA301YtxUj6ZNOiMyzyprwnIqoQbnlpJTGVdGHK5/Pym
+ IAOw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1732564776; x=1733169576;
+ d=1e100.net; s=20230601; t=1732564777; x=1733169577;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=EExZMgepRcWmxIXjjA6QAMdeM+PVS7qSljKvbhpCK2g=;
- b=jEbUFbORlkqs90B21GQyBQuB5FfBQyyDwSxIAoz8RJITrCe51h5ekjNQDYGnwApwW2
- mBmycCioa1oKAZ4hkzvOp59OQmA712HudgCmVU6IT6S06STeKBf6URyI+SbOZQpk/P84
- dRGtmSEl7GB0I3tYtjfaiiiDU0gYppNL+DEQK4LVFoCg+yOzpG4XUT0hRpPDCCLx3nKk
- SLL8++P/Pu/lafPaOvJQ9j6kgEzh6R2JX6rZ1Y8nZq3mDKVU1xjMkH82MzT/MB4WqMkV
- ohelvZYkqcox1yF5okAItwW9M54cA1X9BVAiWHsUkjnd2RBxNuVEjDoahXuFUYWx88Wh
- UzOQ==
+ bh=0X0EuUhZkl3V6dkF5yC+rBGIPkT3Qq6H9A8p4Nm7TQw=;
+ b=EXaDtip1lRuSytzP6s3rJFwTUIJWz0+6R+aHT4Nogsi3ZpkKhS4/nhXNQzZ5lFxNlU
+ uBCOjC9SjnZw/G1oCpnKPNTnl7MD+BVm4CGAUseuEvSzfLZxCYJVSAo24PDky/dNDAse
+ wRN9UvEDABqlrTlNzL6xMIoM7yyA9S1QOUTCN+wmrwN/hlGRsOgpnDieILTusktlCIrj
+ OXe2xP1AJ2ElQeSB6Z9LHybfYLVQ44SyIWeK1bZPrDQv2+3ZMhGVVyL/UHFhkWGKJR6R
+ pIyJcwoPUyuqcw2Qz0GyqQO/jtPN6kVuL18HkZuL6NBypstdyQ6Jm+cz3udhiqpFC+ei
+ +RjA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXJuIETjkotUaJgFrdqPAjRXC8UBPpcGDOMOKBbUhoJiT64OiVjjt5AwGnXK49Rsp0AmGI9Gg9wJIKx@nongnu.org
-X-Gm-Message-State: AOJu0YxcZBDnjWQRWbBHAfEkgvQEgNPBz6UOwwZkXzbkSanyjQfXbROY
- zigWe8j8vjS6edhulK8UKvpuDsGHs8Ll6t2DJgArJUChCY88qN+vJrCfkomDcXk=
-X-Gm-Gg: ASbGncvBwPBQ4Rf6Vtd6d1k59SWKW4gyUi0XnmdqnCj/WxU+iBFQTuM+FzUsptTKkjY
- igO+I91tp7LH7vXbSyxPyViUCW+7Lm41HFdf8s6LCB7Cy5/x1Y4OYL1+rKNy57Aw7BG2hDabEYo
- 5OLERDRFMZOmo/g2NbxGwmhXkEx9jCKaSprpPLsxvYVJxk2++BkTsg3TG+3UTrDdm4Oa30YrqpO
- 3/btftVDWeiQ/Hf0x5v9q2MCzXjufM0TpQNSqRVslIQmIE4x7GwGWnwA2S/4CdbLoN5
-X-Google-Smtp-Source: AGHT+IEpRKX4vqQ5F4ReAVoyjQEr4k+dgtHCLaUTopY3J7lBIhLeQk4UiEwxtDtCCt9+elRt/DkjZA==
-X-Received: by 2002:a5d:6dad:0:b0:381:b68f:d14b with SMTP id
- ffacd0b85a97d-38260bc860dmr13424465f8f.45.1732564776596; 
- Mon, 25 Nov 2024 11:59:36 -0800 (PST)
+ AJvYcCWcXAetnsNvuVxjjgshZV+2EFUzg7fV8dZHws/xbWCsRAp5idw0uLtS16M2GcFR2P1xSnqf6lI8+i8g@nongnu.org
+X-Gm-Message-State: AOJu0Yxvyt7xB8HIWk2d9S2yRilHHUNQr29GaxDusMf9JWF58zzhukAp
+ QvoEayi+zuNjdPU23oDPQdzPyyinnTcYbV5hBbmBXcBXAT1WmrOLSj3D0QYJyY8=
+X-Gm-Gg: ASbGncvXdYCk8R0r1qSjZcTRZeLcWCaghjpWHm1Lo/mOQpeKoVU6xi1sX6xYOIQ4rnz
+ Fh8b+MQ+rOLnSv0qi/+/bW7qqwP0QiptD5gzDGCOjc9FcuKRItBPF0U9pGFhjGwFGg6Uk98d+8I
+ Mp3yd1+jdZDnIMmPKcnZ7y4C+eo0kgxZUUFy4Hpdi3sDWDe2MyVtbOjUjXsK9/4Pdxe1aXjbkHJ
+ aESqR0HMjTfC3znSE0jRbLBlrVmtxyAmln0LcovKAWcbPa/u4qV95du9hhdoS3NjtKn
+X-Google-Smtp-Source: AGHT+IFSmpP21tnbsCvXgk64PcQ1IqbTren1CzqreRLS7x4zvWdbhUeeP02hsbF6jzpxXIfyBKQGpQ==
+X-Received: by 2002:a5d:6d0b:0:b0:385:bd85:5a32 with SMTP id
+ ffacd0b85a97d-385bd855a91mr2115120f8f.15.1732564777217; 
+ Mon, 25 Nov 2024 11:59:37 -0800 (PST)
 Received: from localhost.localdomain ([2.221.137.100])
  by smtp.gmail.com with ESMTPSA id
  ffacd0b85a97d-3825fd0fbdcsm11237971f8f.109.2024.11.25.11.59.36
@@ -67,23 +67,24 @@ To: peter.maydell@linaro.org
 Cc: richard.henderson@linaro.org, philmd@linaro.org, qemu-arm@nongnu.org,
  qemu-devel@nongnu.org, alex.bennee@linaro.org,
  Jean-Philippe Brucker <jean-philippe@linaro.org>
-Subject: [RFC PATCH v3 21/26] hw/arm/boot: Load DTB as is for confidential VMs
-Date: Mon, 25 Nov 2024 19:56:20 +0000
-Message-ID: <20241125195626.856992-23-jean-philippe@linaro.org>
+Subject: [RFC PATCH v3 22/26] hw/arm/boot: Skip bootloader for confidential
+ guests
+Date: Mon, 25 Nov 2024 19:56:21 +0000
+Message-ID: <20241125195626.856992-24-jean-philippe@linaro.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241125195626.856992-2-jean-philippe@linaro.org>
 References: <20241125195626.856992-2-jean-philippe@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
- envelope-from=jean-philippe@linaro.org; helo=mail-wr1-x42c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=jean-philippe@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,38 +100,114 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-For confidential VMs it may be necessary to measure the DTB, to ensure a
-malicious host does not insert harmful information in there. In case an
-external tool can generated and measured the DTB, load it as is without
-patching it.
+An independent verifier needs to reconstruct the content of guest memory
+in order to attest that it is running trusted code. To avoid having to
+reconstruct the bootloader generated by QEMU, skip this step and jump
+directly to the kernel, with the DTB address in x0 as specified by the
+Linux boot protocol [1].
+
+[1] https://docs.kernel.org/arch/arm64/booting.html
 
 Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
 ---
 v2->v3: new
 ---
- hw/arm/boot.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ include/hw/arm/boot.h |  6 ++++++
+ hw/arm/boot.c         | 23 +++++++++++++++++------
+ hw/arm/virt.c         |  1 +
+ 3 files changed, 24 insertions(+), 6 deletions(-)
 
+diff --git a/include/hw/arm/boot.h b/include/hw/arm/boot.h
+index d91cfc6942..5fcbaa2625 100644
+--- a/include/hw/arm/boot.h
++++ b/include/hw/arm/boot.h
+@@ -137,6 +137,12 @@ struct arm_boot_info {
+ 
+     arm_endianness endianness;
+ 
++    /*
++     * Instead of starting in a small bootloader that jumps to the kernel,
++     * immediately start in the kernel.
++     */
++    bool skip_bootloader;
++
+     /*
+      * Confidential guest boot loads everything into RAM so it can be measured.
+      */
 diff --git a/hw/arm/boot.c b/hw/arm/boot.c
-index 4cf7dd5b4d..20b3071339 100644
+index 20b3071339..e461137595 100644
 --- a/hw/arm/boot.c
 +++ b/hw/arm/boot.c
-@@ -523,7 +523,14 @@ int arm_load_dtb(hwaddr addr, const struct arm_boot_info *binfo,
-     char **node_path;
-     Error *err = NULL;
+@@ -762,7 +762,13 @@ static void do_cpu_reset(void *opaque)
+             if (cs == first_cpu) {
+                 AddressSpace *as = arm_boot_address_space(cpu, info);
  
--    if (binfo->dtb_filename) {
-+    if (binfo->dtb_filename && binfo->confidential) {
-+        /*
-+         * If the user is providing a DTB for a confidential VM, it is already
-+         * tailored to this configuration and measured. Load it as is, without
-+         * any modification.
-+         */
-+        return rom_add_file_fixed_as(binfo->dtb_filename, addr, -1, as);
-+    } else if (binfo->dtb_filename) {
-         char *filename;
-         filename = qemu_find_file(QEMU_FILE_TYPE_BIOS, binfo->dtb_filename);
-         if (!filename) {
+-                cpu_set_pc(cs, info->loader_start);
++                if (info->skip_bootloader)  {
++                    assert(is_a64(env));
++                    env->xregs[0] = info->dtb_start;
++                    cpu_set_pc(cs, info->entry);
++                } else {
++                    cpu_set_pc(cs, info->loader_start);
++                }
+ 
+                 if (!have_dtb(info)) {
+                     if (old_param) {
+@@ -860,7 +866,8 @@ static ssize_t arm_load_elf(struct arm_boot_info *info, uint64_t *pentry,
+ }
+ 
+ static uint64_t load_aarch64_image(const char *filename, hwaddr mem_base,
+-                                   hwaddr *entry, AddressSpace *as)
++                                   hwaddr *entry, AddressSpace *as,
++                                   bool skip_bootloader)
+ {
+     hwaddr kernel_load_offset = KERNEL64_LOAD_ADDR;
+     uint64_t kernel_size = 0;
+@@ -912,7 +919,8 @@ static uint64_t load_aarch64_image(const char *filename, hwaddr mem_base,
+              * bootloader, we can just load it starting at 2MB+offset rather
+              * than 0MB + offset.
+              */
+-            if (kernel_load_offset < BOOTLOADER_MAX_SIZE) {
++            if (kernel_load_offset < BOOTLOADER_MAX_SIZE &&
++                !skip_bootloader) {
+                 kernel_load_offset += 2 * MiB;
+             }
+         }
+@@ -996,7 +1004,8 @@ static void arm_setup_direct_kernel_boot(ARMCPU *cpu,
+     }
+     if (arm_feature(&cpu->env, ARM_FEATURE_AARCH64) && kernel_size < 0) {
+         kernel_size = load_aarch64_image(info->kernel_filename,
+-                                         info->loader_start, &entry, as);
++                                         info->loader_start, &entry, as,
++                                         info->skip_bootloader);
+         is_linux = 1;
+         if (kernel_size >= 0) {
+             image_low_addr = entry;
+@@ -1136,8 +1145,10 @@ static void arm_setup_direct_kernel_boot(ARMCPU *cpu,
+         fixupcontext[FIXUP_ENTRYPOINT_LO] = entry;
+         fixupcontext[FIXUP_ENTRYPOINT_HI] = entry >> 32;
+ 
+-        arm_write_bootloader("bootloader", as, info->loader_start,
+-                             primary_loader, fixupcontext);
++        if (!info->skip_bootloader) {
++            arm_write_bootloader("bootloader", as, info->loader_start,
++                                 primary_loader, fixupcontext);
++        }
+ 
+         if (info->write_board_setup) {
+             info->write_board_setup(cpu, info);
+diff --git a/hw/arm/virt.c b/hw/arm/virt.c
+index 0750c83fae..5247f53882 100644
+--- a/hw/arm/virt.c
++++ b/hw/arm/virt.c
+@@ -2509,6 +2509,7 @@ static void machvirt_init(MachineState *machine)
+     vms->bootinfo.firmware_max_size = vms->memmap[VIRT_FLASH].size;
+     vms->bootinfo.psci_conduit = vms->psci_conduit;
+     vms->bootinfo.confidential = virt_machine_is_confidential(vms);
++    vms->bootinfo.skip_bootloader = vms->bootinfo.confidential;
+     arm_load_kernel(ARM_CPU(first_cpu), machine, &vms->bootinfo);
+ 
+     vms->machine_done.notify = virt_machine_done;
 -- 
 2.47.0
 
