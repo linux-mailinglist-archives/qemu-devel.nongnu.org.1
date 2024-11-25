@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C069C9D8D2C
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Nov 2024 21:04:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D2E0B9D8D33
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Nov 2024 21:04:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tFfFI-0005B3-Va; Mon, 25 Nov 2024 14:59:45 -0500
+	id 1tFfFM-0005FX-P9; Mon, 25 Nov 2024 14:59:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jean-philippe@linaro.org>)
- id 1tFfFF-00058N-6q
+ id 1tFfFF-00058c-Sr
  for qemu-devel@nongnu.org; Mon, 25 Nov 2024 14:59:41 -0500
-Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
+Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <jean-philippe@linaro.org>)
- id 1tFfF8-0004pX-4Q
- for qemu-devel@nongnu.org; Mon, 25 Nov 2024 14:59:40 -0500
-Received: by mail-wr1-x436.google.com with SMTP id
- ffacd0b85a97d-37ed3bd6114so2872679f8f.2
- for <qemu-devel@nongnu.org>; Mon, 25 Nov 2024 11:59:33 -0800 (PST)
+ id 1tFfF8-0004px-NE
+ for qemu-devel@nongnu.org; Mon, 25 Nov 2024 14:59:41 -0500
+Received: by mail-wr1-x42f.google.com with SMTP id
+ ffacd0b85a97d-382442b7d9aso3702352f8f.1
+ for <qemu-devel@nongnu.org>; Mon, 25 Nov 2024 11:59:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1732564772; x=1733169572; darn=nongnu.org;
+ d=linaro.org; s=google; t=1732564773; x=1733169573; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=NexLDu9BoTuLD1ACg75BFq2LpMIPfdBrbSTr833QRX8=;
- b=cFWcANs9YwBOXZ58AiNJerJjajQ5GWidvxPMsiXsyTlNbN4mnmUz8jUz0eRpBcFm8/
- scJNirajSjjNxQiHGZUnATxPx8hLW+jCJKy4QRoKW/t9J1qhgyYT86wbuy7zxmR+R7ML
- I907u615g9gVakgdGACPcYlD3XHTCJ7SwKsptw7SOUlwKRkLdmLlM/Q7jQfWNNlEbFXb
- rQZx2eIFZurKiRpE7+XsBI7EVtaohsEJBQiaewbfIV4AqTqU8aNt35NP+NwuPEss7dGC
- 2h0AcFU0JjITAE5dXqiaKbIRmOgDf9iP64VPOLE/lL0rYahk2dAhUYt0hD/rCo+jEmpn
- LT/g==
+ bh=AM9CmiES+peuGOYCBRYh0Z2NclowtBsfFXloH3BjlTc=;
+ b=dRHjC29qNV+eJt2DmKU5jbWE15eyykMPIar8TDdP2GfBR7jO/6YP8lVAPC7+MneffB
+ Xpbc9eIT+onE8l0IRMiyGcB5TleQt6CdOF2uWbMK43oSB6BI7flTT9vvm8wnXxKhjew8
+ MNEIN2f0/eiSmbEem6wt8tiwH3stoQcRMSmEM8+bV1Inh6GDe6hUfvZhjARqoMI62MxD
+ YuWkMEbbwQJ9GoDheI1ErjxcFyrnH4b/qQKJXA/bNRf0O99K6WxzbJGOpTNY9rO8gvZQ
+ C2HPsFr+nNeyWMBFiN9qEDJbqgOLyEFPXeRXFb7w50xqVk/Xe5ZaTcTrbsPCBVG5rb4O
+ 5H/g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1732564772; x=1733169572;
+ d=1e100.net; s=20230601; t=1732564773; x=1733169573;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=NexLDu9BoTuLD1ACg75BFq2LpMIPfdBrbSTr833QRX8=;
- b=AZZjmfdB/63SmxRciqXE66AhhjXnjrdyiDOAhDQ8wz1mkb0nuMiwe+AfBfAF4KqOo8
- B+774YndYCkq2Sac06poxV9nh4YtXSyBrwiuzkE5kHL7AMkYniZUnUvRgK4/Ne1+kFPn
- S6QtMpOLk9JLTgYb2l7Hh1d4dZ0VUbP2yQ3r8u38VxQnHB/Xm23NKHKx9Koz3jcgnmmV
- CBQV6Zr+W+RKEOIUAFpiOmwJigvHztCjzdhr4pnGn1Wabg5Lj7qgJz2kj7sXneBfQlCW
- OBTUC+WjZvkweN8C6joc2dpffxOGod8vLs5rjGFx+22c+fi4BAZS3ECG1qikj+tCus7A
- cZXA==
+ bh=AM9CmiES+peuGOYCBRYh0Z2NclowtBsfFXloH3BjlTc=;
+ b=cUIHsMDFMn1zza5gvgM78lWkMmk9m2mHLYeIx9HzM8W3/OC3GnnpWbqu2kBbJLPT/8
+ MN0/E1NOYURwvaK2Brxn/ij8VKBcCMhrOU17dGVt9EHaMhhCG1OHs174UeafEsuwHedA
+ BgqEuz9KFJHDGyVJhCJ4uPRPQekpOlojF8cblBaZ+YVGWMuCCtjGJxOvLk9uHIjp1Go9
+ vy5Ta+PFRZ3vF2VboH6G95g9Zy1c4L8pSlikoulcwXrp5WfAzgxIS2KsMuBRC45X6Lxo
+ t6dI+oCpzvPYv/ui68J+DITmz4cnCcAbTYdDhP4dQr3UL10kGAxLEIiY4c9ugBLkKvrF
+ r23w==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXPSy2xEByVW7hxSu9qqU2LcnYi5kq5euINcBY7EuNbPsnPkES+iZarwUfKu7kzNOkzofQ/Eofi8Jpl@nongnu.org
-X-Gm-Message-State: AOJu0Yz5XtJE3Kkegd5AnyFjYaK2vqwDmdsu3LcdbTjEnghRi78Bo10Z
- QBgnTZL2/wDHG5nCFDP+WxZTQDPrC/bvs40J6PCnsLvJoI0L/U0ZBsjFuzjuVzA=
-X-Gm-Gg: ASbGncthXKt8c8hv8EdBgFMOS1np3O7EAcXOHF1XhG+AepfTEyOpcnL+CT5s55rNwgf
- 5dHKatDSJ9U2ygVyfE4e1CKWMn+Lj8qp2pMdIxdE27zGRiY0uxLi1ep+6mNtwkspCX51YlrDwff
- 42tCDcb+iOWZaIP1d1H7YwnYQihgaRex7USZvjo8qSVdYqLOyI957SXzPT0OZH0qLcBykLYcG4r
- l/zvFXyN120sH18s8vGYA+l+Oh5XF143uDTwr47U7UAE5Ml2N7yKYO/7bhTQ3a2368m
-X-Google-Smtp-Source: AGHT+IFCPZLjADcW8fIg/RWkYEbvN1XaUQSM0f35LENvp2ikPkmmonU9r3fcgb+nDIAWPkH3+0dnyQ==
-X-Received: by 2002:a05:6000:4813:b0:382:134d:65e0 with SMTP id
- ffacd0b85a97d-38260be5f63mr13089017f8f.56.1732564772667; 
- Mon, 25 Nov 2024 11:59:32 -0800 (PST)
+ AJvYcCUwtiZdRX6ycpg5zEFFhBRwQKmDc8uCg382W5ZIsiiOpd+uP0XSTYMtuzbzyaHqWDSAfut/A5kMtRSJ@nongnu.org
+X-Gm-Message-State: AOJu0YzBTpPkLr+cUnJWeZZPGHS4/SDTVUDdu4ZQU2SU7Tzv5Cl6dVVn
+ U75p+UX/H+Vf7sNuaAfh0+UFBlOAoG+vdmH8WSrsv2twOJdSrdglBgnqbLw5XSI=
+X-Gm-Gg: ASbGncu0cDosYGSNC/l6uFGgizCUN2PDacUrzosggNOW3UksvcooEnFNklARxatfyFC
+ jDZOcnoPxroz9e0k9B7YG7aTrwCTISox+7xn5aJ68YedY/hNIQZ70fQfnPv0wNzJUul/iYrUkwB
+ 7kmIemubhGqiFlSGKH94pKyc+Fj16vXRAwNaa1xZgYTW3vISBt8ROwwOgBXOUh28nG9XMfSvLwa
+ K9/tEz6gu+offhPWyVBI+Eqc7U3Psam3OqQf9S7po2qH1iZvo0lt81rt20qx+NiAQXO
+X-Google-Smtp-Source: AGHT+IG8nC95KgxPOV4gNNszZYNmR7epAcoJPgXz8ijIjcuMTQZVqQBxAAlIVhMM0m+tNLQY0PCvEQ==
+X-Received: by 2002:a05:6000:2ae:b0:382:4378:4652 with SMTP id
+ ffacd0b85a97d-38260bcb8b4mr11780186f8f.45.1732564773213; 
+ Mon, 25 Nov 2024 11:59:33 -0800 (PST)
 Received: from localhost.localdomain ([2.221.137.100])
  by smtp.gmail.com with ESMTPSA id
  ffacd0b85a97d-3825fd0fbdcsm11237971f8f.109.2024.11.25.11.59.32
@@ -67,17 +67,16 @@ To: peter.maydell@linaro.org
 Cc: richard.henderson@linaro.org, philmd@linaro.org, qemu-arm@nongnu.org,
  qemu-devel@nongnu.org, alex.bennee@linaro.org,
  Jean-Philippe Brucker <jean-philippe@linaro.org>
-Subject: [PATCH v3 14/26] target/arm/cpu: Inform about reading confidential
- CPU registers
-Date: Mon, 25 Nov 2024 19:56:13 +0000
-Message-ID: <20241125195626.856992-16-jean-philippe@linaro.org>
+Subject: [PATCH v3 15/26] hw/arm/virt: Add support for Arm RME
+Date: Mon, 25 Nov 2024 19:56:14 +0000
+Message-ID: <20241125195626.856992-17-jean-philippe@linaro.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241125195626.856992-2-jean-philippe@linaro.org>
 References: <20241125195626.856992-2-jean-philippe@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::436;
- envelope-from=jean-philippe@linaro.org; helo=mail-wr1-x436.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
+ envelope-from=jean-philippe@linaro.org; helo=mail-wr1-x42f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,31 +99,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The host cannot access registers of a Realm. Instead of showing all
-registers as zero in "info registers", display a message about this
-restriction.
+When confidential-guest-support is enabled for the virt machine, add the
+RME flag to the VM type.
+
+The HVC conduit for PSCI is not supported for Realms.
 
 Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
 ---
- target/arm/cpu.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ hw/arm/virt.c | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
-diff --git a/target/arm/cpu.c b/target/arm/cpu.c
-index 6938161b95..7f6569e87e 100644
---- a/target/arm/cpu.c
-+++ b/target/arm/cpu.c
-@@ -1232,6 +1232,11 @@ static void aarch64_cpu_dump_state(CPUState *cs, FILE *f, int flags)
-     const char *ns_status;
-     bool sve;
+diff --git a/hw/arm/virt.c b/hw/arm/virt.c
+index 1a381e9a2b..2d36640733 100644
+--- a/hw/arm/virt.c
++++ b/hw/arm/virt.c
+@@ -229,6 +229,11 @@ static const int a15irqmap[] = {
+     [VIRT_PLATFORM_BUS] = 112, /* ...to 112 + PLATFORM_BUS_NUM_IRQS -1 */
+ };
  
-+    if (cpu->kvm_rme) {
-+        qemu_fprintf(f, "the CPU registers are confidential to the realm\n");
-+        return;
++static bool virt_machine_is_confidential(VirtMachineState *vms)
++{
++    return MACHINE(vms)->cgs;
++}
++
+ static void create_randomness(MachineState *ms, const char *node)
+ {
+     struct {
+@@ -2165,10 +2170,11 @@ static void machvirt_init(MachineState *machine)
+      * if the guest has EL2 then we will use SMC as the conduit,
+      * and otherwise we will use HVC (for backwards compatibility and
+      * because if we're using KVM then we must use HVC).
++     * Realm guests must also use SMC.
+      */
+     if (vms->secure && firmware_loaded) {
+         vms->psci_conduit = QEMU_PSCI_CONDUIT_DISABLED;
+-    } else if (vms->virt) {
++    } else if (vms->virt || virt_machine_is_confidential(vms)) {
+         vms->psci_conduit = QEMU_PSCI_CONDUIT_SMC;
+     } else {
+         vms->psci_conduit = QEMU_PSCI_CONDUIT_HVC;
+@@ -3013,6 +3019,7 @@ static HotplugHandler *virt_machine_get_hotplug_handler(MachineState *machine,
+ static int virt_kvm_type(MachineState *ms, const char *type_str)
+ {
+     VirtMachineState *vms = VIRT_MACHINE(ms);
++    int rme_vm_type = kvm_arm_rme_vm_type(ms);
+     int max_vm_pa_size, requested_pa_size;
+     bool fixed_ipa;
+ 
+@@ -3042,7 +3049,11 @@ static int virt_kvm_type(MachineState *ms, const char *type_str)
+      * the implicit legacy 40b IPA setting, in which case the kvm_type
+      * must be 0.
+      */
+-    return fixed_ipa ? 0 : requested_pa_size;
++    if (fixed_ipa) {
++        return 0;
 +    }
 +
-     qemu_fprintf(f, " PC=%016" PRIx64 " ", env->pc);
-     for (i = 0; i < 32; i++) {
-         if (i == 31) {
++    return requested_pa_size | rme_vm_type;
+ }
+ 
+ static int virt_hvf_get_physical_address_range(MachineState *ms)
 -- 
 2.47.0
 
