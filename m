@@ -2,87 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 017249D8D39
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Nov 2024 21:06:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C1199D8D23
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Nov 2024 21:01:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tFfFH-00058i-9K; Mon, 25 Nov 2024 14:59:43 -0500
+	id 1tFfFJ-0005B9-9A; Mon, 25 Nov 2024 14:59:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jean-philippe@linaro.org>)
- id 1tFfFD-00056L-CK
- for qemu-devel@nongnu.org; Mon, 25 Nov 2024 14:59:39 -0500
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ id 1tFfFE-00057Y-5M
+ for qemu-devel@nongnu.org; Mon, 25 Nov 2024 14:59:40 -0500
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <jean-philippe@linaro.org>)
- id 1tFfF6-0004nV-Di
+ id 1tFfF7-0004of-Ie
  for qemu-devel@nongnu.org; Mon, 25 Nov 2024 14:59:39 -0500
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-434a2033562so6798755e9.1
- for <qemu-devel@nongnu.org>; Mon, 25 Nov 2024 11:59:32 -0800 (PST)
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-4349e4e252dso14143545e9.0
+ for <qemu-devel@nongnu.org>; Mon, 25 Nov 2024 11:59:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1732564771; x=1733169571; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=DFJSI53cHJ1N3Z+oLQAsbnNAF3KjE8o1K+yxUpabOQA=;
- b=EJy89L2tzAcoZnpAoYqpUW1MJEREfmJaTYG7P6j+GshhBsDZ9tnIPEqa1glCO0SzOc
- QtyEw/vcch53UsKDT4UBuB6zzEsji4ULKS2yjRUYa80aNcV7BScHvi57qd8v+198UTBQ
- Q9M67xAkUXehAcxIIZ2ZXuEolZTurw0kW4HMGsY0AO2EcbZbe9+qaYhrCFbsP9SMzu32
- VdkBn/Nu7FmDV35eiotqNCZZUhLAIttrSJrXMyaIkdKvc3UirQN+L25LDdUhvdhqo42V
- hwOm0yC7FHHKc4eUUFnJGZcuihbPhLyubmfmAarZLmfYbIhnuLsipxgTI3s6YFuBhfFT
- 3BgA==
+ bh=RVDgLJZAGkfB+8H1cL/Q3uYqegohVBa+MtPvms4CCZc=;
+ b=UCtL3JwmdrieI5FheeyJF5KI/caoRzLSBP7aYd+d8UjoRQNTpTTDhU0n47A+JLTdTy
+ VYKnwfpebHgLSL9hC2RgWtHhhdZ8qoa8h2Nv5QUKcWJ2f4e9inKBBi/GG086xHgfUIpB
+ SMX4XIpKt58TIZWwCQ4lfYk02YQjD6HipChpg7w2ZdfNjlakDzm/C3bQcFLrGtUFFl1/
+ JsEEeBDKnIzKZqwIi0Z73UHCVlycWnN8ilgKYZs70kkLklrmJP8vfG67Gt+5KvGWmPrW
+ 4DCiv2dVabZ0jahXOyQk4wlBmboht2f5eFGmUJGEwXknxFSnkTgNGUcoAq11f+QJzTJa
+ zjvA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1732564771; x=1733169571;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=DFJSI53cHJ1N3Z+oLQAsbnNAF3KjE8o1K+yxUpabOQA=;
- b=RKrC+TqUllAw4n//KCkqNxMB1I0LxPOat6BOJ572phfoXSKtXdnBaDzFE4r/TYmAAE
- Ht9J7VILa4kuVpSNZYgTBdFP4da6fgmGMplTTkynfRZDCNHk2TByW+aOoBuvF/9vWKpv
- 1TRxJ5qd/wFCBN+5H/NxMbyWc11E9H/knJh2dYZzBuoD0VlsYdChpv77FwVTNl0SH3Bz
- BvOFFIpYQtBlAjeD4SM6HFLg/VAh54AdRyELX2NXVE/6XzGsBuIFwPL1jTkmew3ImWaD
- zUnnqMu0B2fOt/QFIeCc8zmH92aeXAEyj/N5SrHLngtSZJQLAlby6zyjU39sIt2aT043
- XKhw==
+ bh=RVDgLJZAGkfB+8H1cL/Q3uYqegohVBa+MtPvms4CCZc=;
+ b=v77+6oiL+1YeIJ3W5ZJdov9Sv9nYTTjxxtNlKG24zaAO2uczLVPHldn35niPwiQLtg
+ CMhfv2vzzpq7F0/1yTW5jWyLyFreEnQ4/7AIZMs7b01JmQA3l3IyYIOxl+Ta+jNWrpqx
+ yfioL1690XCqQTs7fdssoME7yDz+uLLfPVkHgNmObHQ1fjRTu2ooJCPG0OA3aMhSgd+s
+ wtEeHAbqVHdQOt4ievFcWsZExCa+8EOdWR27nEGtZ40lQE4BnwVlAg0QxZLo0Z+xUGRC
+ ZhD2OhpkbmZsvs076Mou2o67KoXLyndP16oP573S+4fD9Uw3vzCNEmcvf0hkKZ3oJVJW
+ KBig==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWixMgVltqW1rJ7Qg0QvUC4IXDlCdJNTMVvhOHhF4cshKc//dCCBrB/5Qd2bw7BEE/ZGx9tW8BpjSkB@nongnu.org
-X-Gm-Message-State: AOJu0YzQK9Hd/AMQZyxgTXO+pQnUP4mQdPtU44CsQmDhJxSpQz0REVuI
- cW2jJBPHtFR63ZS8nUMPXqLIsKRyB4izNkCeQiffC46kvBmEzuGhDuCvo829B/VNZ/5Jf+Py+yx
- H
-X-Gm-Gg: ASbGncuN0zQXFOq01aYzzohXeso3swhKgKyN6EOoplSiW9efAkEaRFrJyNR/XhJSi3V
- RHqCGpVPsGdCb+I5psu/6coq6aIs3YdWpVMfjJXzStI5bZk4aHxKXK5urDDspzcwOTmtU5dyWX/
- X7IcvXJoNvCWWQOj9xbInAWh0mVVrDVeVrLcMu6SLI1dHgL5EV0siRQKpIUPAkpu6umCAo7TsM0
- 3TYY/tIj17POStMNqY5ZbefgBBDBpbpaKq8CoR5RymjACLMoQxWREdbpTR78wlGbl88
-X-Google-Smtp-Source: AGHT+IFReC0jAoBg3T5lkRnllyjlOiG9tzJlifErfsEXB7qfxFxhKbbca1oQPz7uQOdlOYwByoQPlw==
-X-Received: by 2002:a05:600c:1990:b0:434:a555:d0d with SMTP id
- 5b1f17b1804b1-434a5551bbamr2381835e9.29.1732564770965; 
- Mon, 25 Nov 2024 11:59:30 -0800 (PST)
+ AJvYcCWyWBnlDrFXxRR8ShpueWjaE0Kh0oe5R+e90Jr+NCh6KUktDWCAvA6C5/rW122vAf1wZcbkxLAxJuDF@nongnu.org
+X-Gm-Message-State: AOJu0YxK9J1zVJh3JjNV0IkC0c22OSvYifQshUZZ0ccUgT38gymSDUoP
+ iETi4JyYVRKkYOnI/MU9N0BnI5aUpotxNz85lLhJ7v+9Hy7W83cDxYyWNbs2OyE=
+X-Gm-Gg: ASbGncuNoNTSOp1b502C1AN2ksPJ69pCq6G4UdfTgKYyaKoFjjrJYJhImjbthFmGWSU
+ am4NwJyAw32pM3z40x92TSw9Rqt46auZ1aJrd4kimYewT+yaobRVrPQecDJGNn/qQKj9hvMoBW6
+ 0cniEd6IJk1Kgmwk6rz+90Kx8oM7OKjZb6njaOlkdtsa0ImWqkRoiJVh0xAqgbpSgqU11iJn6R+
+ ESn6haCeY//ul5/rPmoES5zLRZ2RDDIAgW2MsxEmjpdPOrxXNo/VmWLdafPFN2YXami
+X-Google-Smtp-Source: AGHT+IEaC1ttBSm2FtMlk4y0oHvFOQX7SKISqb0ItjMzkK9PFyhTNsAw3VpBr4qH7Z44KcuwSkVF0w==
+X-Received: by 2002:a05:600c:510b:b0:431:1d97:2b0a with SMTP id
+ 5b1f17b1804b1-433ce42875cmr136065045e9.15.1732564771511; 
+ Mon, 25 Nov 2024 11:59:31 -0800 (PST)
 Received: from localhost.localdomain ([2.221.137.100])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3825fd0fbdcsm11237971f8f.109.2024.11.25.11.59.30
+ ffacd0b85a97d-3825fd0fbdcsm11237971f8f.109.2024.11.25.11.59.31
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 25 Nov 2024 11:59:30 -0800 (PST)
+ Mon, 25 Nov 2024 11:59:31 -0800 (PST)
 From: Jean-Philippe Brucker <jean-philippe@linaro.org>
 To: peter.maydell@linaro.org
 Cc: richard.henderson@linaro.org, philmd@linaro.org, qemu-arm@nongnu.org,
  qemu-devel@nongnu.org, alex.bennee@linaro.org,
- Jean-Philippe Brucker <jean-philippe@linaro.org>,
- Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>
-Subject: [PATCH v3 11/26] target/arm/kvm-rme: Add measurement algorithm
- property
-Date: Mon, 25 Nov 2024 19:56:10 +0000
-Message-ID: <20241125195626.856992-13-jean-philippe@linaro.org>
+ Jean-Philippe Brucker <jean-philippe@linaro.org>
+Subject: [PATCH v3 12/26] target/arm/cpu: Set number of breakpoints and
+ watchpoints in KVM
+Date: Mon, 25 Nov 2024 19:56:11 +0000
+Message-ID: <20241125195626.856992-14-jean-philippe@linaro.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241125195626.856992-2-jean-philippe@linaro.org>
 References: <20241125195626.856992-2-jean-philippe@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=jean-philippe@linaro.org; helo=mail-wm1-x334.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=jean-philippe@linaro.org; helo=mail-wm1-x32e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -105,153 +100,238 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This option selects which measurement algorithm to use for attestation.
-Supported values are SHA256 and SHA512. Default to SHA512 arbitrarily.
+Add "num-breakpoints" and "num-watchpoints" CPU parameters to configure
+the debug features that KVM presents to the guest. The KVM vCPU
+configuration is modified by calling SET_ONE_REG on the ID register.
 
-SHA512 is generally faster on 64-bit architectures. On a few arm64 CPUs
-I tested SHA256 is much faster, but that's most likely because they only
-support acceleration via FEAT_SHA256 (Armv8.0) and not FEAT_SHA512
-(Armv8.2). Future CPUs supporting RME are likely to also support
-FEAT_SHA512.
+This is needed for Realm VMs, whose parameters include breakpoints and
+watchpoints, and influence the Realm Initial Measurement.
 
-Cc: Eric Blake <eblake@redhat.com>
-Cc: Markus Armbruster <armbru@redhat.com>
-Cc: Daniel P. Berrangé <berrange@redhat.com>
-Cc: Eduardo Habkost <eduardo@habkost.net>
-Acked-by: Markus Armbruster <armbru@redhat.com>
 Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
 ---
-v2->v3: Rename measurement-algorithm
----
- qapi/qom.json        | 20 +++++++++++++++++++-
- target/arm/kvm-rme.c | 39 ++++++++++++++++++++++++++++++++++++++-
- 2 files changed, 57 insertions(+), 2 deletions(-)
+ target/arm/cpu.h          |  4 ++
+ target/arm/kvm_arm.h      |  2 +
+ target/arm/arm-qmp-cmds.c |  1 +
+ target/arm/cpu64.c        | 77 +++++++++++++++++++++++++++++++++++++++
+ target/arm/kvm.c          | 56 +++++++++++++++++++++++++++-
+ 5 files changed, 139 insertions(+), 1 deletion(-)
 
-diff --git a/qapi/qom.json b/qapi/qom.json
-index f982850bca..901ba67634 100644
---- a/qapi/qom.json
-+++ b/qapi/qom.json
-@@ -1068,6 +1068,20 @@
-   'data': { '*cpu-affinity': ['uint16'],
-             '*node-affinity': ['uint16'] } }
+diff --git a/target/arm/cpu.h b/target/arm/cpu.h
+index f617591921..5cef43a8d2 100644
+--- a/target/arm/cpu.h
++++ b/target/arm/cpu.h
+@@ -1109,6 +1109,10 @@ struct ArchCPU {
  
-+##
-+# @RmeGuestMeasurementAlgorithm:
-+#
-+# @sha256: Use the SHA256 algorithm
-+#
-+# @sha512: Use the SHA512 algorithm
-+#
-+# Algorithm to use for realm measurements
-+#
-+# Since: 9.3
-+##
-+{ 'enum': 'RmeGuestMeasurementAlgorithm',
-+  'data': ['sha256', 'sha512'] }
+     /* Generic timer counter frequency, in Hz */
+     uint64_t gt_cntfrq_hz;
 +
- ##
- # @RmeGuestProperties:
- #
-@@ -1077,10 +1091,14 @@
- #     hex string. This optional parameter allows to uniquely identify
- #     the VM instance during attestation. (default: 0)
- #
-+# @measurement-algorithm: Realm measurement algorithm
-+#     (default: sha512)
-+#
- # Since: 9.3
- ##
- { 'struct': 'RmeGuestProperties',
--  'data': { '*personalization-value': 'str' } }
-+  'data': { '*personalization-value': 'str',
-+            '*measurement-algorithm': 'RmeGuestMeasurementAlgorithm' } }
++    /* Allows to override the default configuration */
++    uint8_t num_bps;
++    uint8_t num_wps;
+ };
  
- ##
- # @ObjectType:
-diff --git a/target/arm/kvm-rme.c b/target/arm/kvm-rme.c
-index 0be55867ee..bf0bcf9a38 100644
---- a/target/arm/kvm-rme.c
-+++ b/target/arm/kvm-rme.c
-@@ -23,7 +23,7 @@ OBJECT_DECLARE_SIMPLE_TYPE(RmeGuest, RME_GUEST)
+ typedef struct ARMCPUInfo {
+diff --git a/target/arm/kvm_arm.h b/target/arm/kvm_arm.h
+index 67db09a424..28ebec8580 100644
+--- a/target/arm/kvm_arm.h
++++ b/target/arm/kvm_arm.h
+@@ -16,6 +16,8 @@
+ #define KVM_ARM_VGIC_V2   (1 << 0)
+ #define KVM_ARM_VGIC_V3   (1 << 1)
  
- #define RME_PAGE_SIZE qemu_real_host_page_size()
++#define KVM_REG_ARM_ID_AA64DFR0_EL1     ARM64_SYS_REG(3, 0, 0, 5, 0)
++
+ /**
+  * kvm_arm_register_device:
+  * @mr: memory region for this device
+diff --git a/target/arm/arm-qmp-cmds.c b/target/arm/arm-qmp-cmds.c
+index 3cc8cc738b..0f574bb1dd 100644
+--- a/target/arm/arm-qmp-cmds.c
++++ b/target/arm/arm-qmp-cmds.c
+@@ -95,6 +95,7 @@ static const char *cpu_model_advertised_features[] = {
+     "sve1408", "sve1536", "sve1664", "sve1792", "sve1920", "sve2048",
+     "kvm-no-adjvtime", "kvm-steal-time",
+     "pauth", "pauth-impdef", "pauth-qarma3",
++    "num-breakpoints", "num-watchpoints",
+     NULL
+ };
  
--#define RME_MAX_CFG         1
-+#define RME_MAX_CFG         2
- 
- struct RmeGuest {
-     ConfidentialGuestSupport parent_obj;
-@@ -31,6 +31,7 @@ struct RmeGuest {
-     GSList *ram_regions;
- 
-     uint8_t *personalization_value;
-+    RmeGuestMeasurementAlgorithm measurement_algo;
- 
-     hwaddr ram_base;
-     size_t ram_size;
-@@ -63,6 +64,19 @@ static int rme_configure_one(RmeGuest *guest, uint32_t cfg, Error **errp)
-         memcpy(args.rpv, guest->personalization_value, KVM_CAP_ARM_RME_RPV_SIZE);
-         cfg_str = "personalization value";
-         break;
-+    case KVM_CAP_ARM_RME_CFG_HASH_ALGO:
-+        switch (guest->measurement_algo) {
-+        case RME_GUEST_MEASUREMENT_ALGORITHM_SHA256:
-+            args.hash_algo = KVM_CAP_ARM_RME_MEASUREMENT_ALGO_SHA256;
-+            break;
-+        case RME_GUEST_MEASUREMENT_ALGORITHM_SHA512:
-+            args.hash_algo = KVM_CAP_ARM_RME_MEASUREMENT_ALGO_SHA512;
-+            break;
-+        default:
-+            g_assert_not_reached();
-+        }
-+        cfg_str = "hash algorithm";
-+        break;
-     default:
-         g_assert_not_reached();
-     }
-@@ -275,12 +289,34 @@ static void rme_set_rpv(Object *obj, const char *value, Error **errp)
+diff --git a/target/arm/cpu64.c b/target/arm/cpu64.c
+index 458d1cee01..1d4f4c134d 100644
+--- a/target/arm/cpu64.c
++++ b/target/arm/cpu64.c
+@@ -576,6 +576,82 @@ void aarch64_add_pauth_properties(Object *obj)
      }
  }
  
-+static int rme_get_measurement_algo(Object *obj, Error **errp)
++#if defined(CONFIG_KVM)
++static void arm_cpu_get_num_wps(Object *obj, Visitor *v, const char *name,
++                                void *opaque, Error **errp)
 +{
-+    RmeGuest *guest = RME_GUEST(obj);
++    uint8_t val;
++    ARMCPU *cpu = ARM_CPU(obj);
 +
-+    return guest->measurement_algo;
++    val = cpu->num_wps;
++    if (val == 0) {
++        val = FIELD_EX64(cpu->isar.id_aa64dfr0, ID_AA64DFR0, WRPS) + 1;
++    }
++
++    visit_type_uint8(v, name, &val, errp);
 +}
 +
-+static void rme_set_measurement_algo(Object *obj, int algo, Error **errp)
++static void arm_cpu_set_num_wps(Object *obj, Visitor *v, const char *name,
++                                void *opaque, Error **errp)
 +{
-+    RmeGuest *guest = RME_GUEST(obj);
++    uint8_t val;
++    ARMCPU *cpu = ARM_CPU(obj);
++    uint8_t max_wps = FIELD_EX64(cpu->isar.id_aa64dfr0, ID_AA64DFR0, WRPS) + 1;
 +
-+    guest->measurement_algo = algo;
++    if (!visit_type_uint8(v, name, &val, errp)) {
++        return;
++    }
++
++    if (val < 2 || val > max_wps) {
++        error_setg(errp, "invalid number of watchpoints");
++        return;
++    }
++
++    cpu->num_wps = val;
 +}
 +
- static void rme_guest_class_init(ObjectClass *oc, void *data)
++static void arm_cpu_get_num_bps(Object *obj, Visitor *v, const char *name,
++                                void *opaque, Error **errp)
++{
++    uint8_t val;
++    ARMCPU *cpu = ARM_CPU(obj);
++
++    val = cpu->num_bps;
++    if (val == 0) {
++        val = FIELD_EX64(cpu->isar.id_aa64dfr0, ID_AA64DFR0, BRPS) + 1;
++    }
++
++    visit_type_uint8(v, name, &val, errp);
++}
++
++static void arm_cpu_set_num_bps(Object *obj, Visitor *v, const char *name,
++                                void *opaque, Error **errp)
++{
++    uint8_t val;
++    ARMCPU *cpu = ARM_CPU(obj);
++    uint8_t max_bps = FIELD_EX64(cpu->isar.id_aa64dfr0, ID_AA64DFR0, BRPS) + 1;
++
++    if (!visit_type_uint8(v, name, &val, errp)) {
++        return;
++    }
++
++    if (val < 2 || val > max_bps) {
++        error_setg(errp, "invalid number of breakpoints");
++        return;
++    }
++
++    cpu->num_bps = val;
++}
++
++static void aarch64_add_kvm_writable_properties(Object *obj)
++{
++    object_property_add(obj, "num-breakpoints", "uint8", arm_cpu_get_num_bps,
++                        arm_cpu_set_num_bps, NULL, NULL);
++    object_property_add(obj, "num-watchpoints", "uint8", arm_cpu_get_num_wps,
++                        arm_cpu_set_num_wps, NULL, NULL);
++}
++#endif /* CONFIG_KVM */
++
+ void arm_cpu_lpa2_finalize(ARMCPU *cpu, Error **errp)
  {
-     object_class_property_add_str(oc, "personalization-value", rme_get_rpv,
-                                   rme_set_rpv);
-     object_class_property_set_description(oc, "personalization-value",
-             "Realm personalization value (512-bit hexadecimal number)");
-+
-+    object_class_property_add_enum(oc, "measurement-algorithm",
-+                                   "RmeGuestMeasurementAlgorithm",
-+                                   &RmeGuestMeasurementAlgorithm_lookup,
-+                                   rme_get_measurement_algo,
-+                                   rme_set_measurement_algo);
-+    object_class_property_set_description(oc, "measurement-algorithm",
-+            "Realm measurement algorithm ('sha256', 'sha512')");
- }
- 
- static void rme_guest_init(Object *obj)
-@@ -290,6 +326,7 @@ static void rme_guest_init(Object *obj)
-         exit(1);
+     uint64_t t;
+@@ -726,6 +802,7 @@ static void aarch64_host_initfn(Object *obj)
+     if (arm_feature(&cpu->env, ARM_FEATURE_AARCH64)) {
+         aarch64_add_sve_properties(obj);
+         aarch64_add_pauth_properties(obj);
++        aarch64_add_kvm_writable_properties(obj);
      }
-     rme_guest = RME_GUEST(obj);
-+    rme_guest->measurement_algo = RME_GUEST_MEASUREMENT_ALGORITHM_SHA512;
+ #elif defined(CONFIG_HVF)
+     ARMCPU *cpu = ARM_CPU(obj);
+diff --git a/target/arm/kvm.c b/target/arm/kvm.c
+index 870f51bf02..f6d45476b4 100644
+--- a/target/arm/kvm.c
++++ b/target/arm/kvm.c
+@@ -336,7 +336,7 @@ static bool kvm_arm_get_host_cpu_features(ARMHostCPUFeatures *ahcf)
+         err |= read_sys_reg64(fdarray[2], &ahcf->isar.id_aa64smfr0,
+                               ARM64_SYS_REG(3, 0, 0, 4, 5));
+         err |= read_sys_reg64(fdarray[2], &ahcf->isar.id_aa64dfr0,
+-                              ARM64_SYS_REG(3, 0, 0, 5, 0));
++                              KVM_REG_ARM_ID_AA64DFR0_EL1);
+         err |= read_sys_reg64(fdarray[2], &ahcf->isar.id_aa64dfr1,
+                               ARM64_SYS_REG(3, 0, 0, 5, 1));
+         err |= read_sys_reg64(fdarray[2], &ahcf->isar.id_aa64isar0,
+@@ -887,6 +887,54 @@ out:
+     return ret;
  }
  
- static void rme_guest_finalize(Object *obj)
++static void kvm_arm_configure_aa64dfr0(ARMCPU *cpu)
++{
++    int ret;
++    uint64_t val, newval;
++    CPUState *cs = CPU(cpu);
++
++    if (!cpu->num_bps && !cpu->num_wps) {
++        return;
++    }
++
++    newval = cpu->isar.id_aa64dfr0;
++    if (cpu->num_bps) {
++        uint64_t ctx_cmps = FIELD_EX64(newval, ID_AA64DFR0, CTX_CMPS);
++
++        /* CTX_CMPs is never greater than BRPs */
++        ctx_cmps = MIN(ctx_cmps, cpu->num_bps - 1);
++        newval = FIELD_DP64(newval, ID_AA64DFR0, BRPS, cpu->num_bps - 1);
++        newval = FIELD_DP64(newval, ID_AA64DFR0, CTX_CMPS, ctx_cmps);
++    }
++    if (cpu->num_wps) {
++        newval = FIELD_DP64(newval, ID_AA64DFR0, WRPS, cpu->num_wps - 1);
++    }
++    ret = kvm_set_one_reg(cs, KVM_REG_ARM_ID_AA64DFR0_EL1, &newval);
++    if (ret) {
++        error_report("Failed to set KVM_REG_ARM_ID_AA64DFR0_EL1");
++        return;
++    }
++
++    /*
++     * Check if the write succeeded. KVM does offer the writable mask for this
++     * register, but this way we also check if the value we wrote was sane.
++     */
++    ret = kvm_get_one_reg(cs, KVM_REG_ARM_ID_AA64DFR0_EL1, &val);
++    if (ret) {
++        error_report("Failed to get KVM_REG_ARM_ID_AA64DFR0_EL1");
++        return;
++    }
++
++    if (val != newval) {
++        error_report("Failed to update KVM_REG_ARM_ID_AA64DFR0_EL1");
++    }
++}
++
++static void kvm_arm_configure_vcpu_regs(ARMCPU *cpu)
++{
++    kvm_arm_configure_aa64dfr0(cpu);
++}
++
+ /**
+  * kvm_arm_cpreg_level:
+  * @regidx: KVM register index
+@@ -1006,6 +1054,12 @@ void kvm_arm_reset_vcpu(ARMCPU *cpu)
+         fprintf(stderr, "kvm_arm_vcpu_init failed: %s\n", strerror(-ret));
+         abort();
+     }
++
++    /*
++     * Before loading the KVM values into CPUState, update the KVM configuration
++     */
++    kvm_arm_configure_vcpu_regs(cpu);
++
+     if (!write_kvmstate_to_list(cpu)) {
+         fprintf(stderr, "write_kvmstate_to_list failed\n");
+         abort();
 -- 
 2.47.0
 
