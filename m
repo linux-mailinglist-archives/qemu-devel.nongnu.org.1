@@ -2,56 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEE749D96E0
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Nov 2024 12:59:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6ACBE9D96DC
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Nov 2024 12:59:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tFuD7-0004Sd-3J; Tue, 26 Nov 2024 06:58:29 -0500
+	id 1tFuD9-0004VY-Mz; Tue, 26 Nov 2024 06:58:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ppandit@redhat.com>)
- id 1tFuCv-0004RM-E0
- for qemu-devel@nongnu.org; Tue, 26 Nov 2024 06:58:18 -0500
+ id 1tFuD2-0004T6-3I
+ for qemu-devel@nongnu.org; Tue, 26 Nov 2024 06:58:25 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ppandit@redhat.com>)
- id 1tFuCt-00033o-LA
- for qemu-devel@nongnu.org; Tue, 26 Nov 2024 06:58:17 -0500
+ id 1tFuD0-00035G-8I
+ for qemu-devel@nongnu.org; Tue, 26 Nov 2024 06:58:23 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1732622294;
+ s=mimecast20190719; t=1732622301;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=pfc7JF7qG3aZf0kHhQuU4xgdY9xXgpXt7NXpqF3Jagg=;
- b=JSFyOf7wfvHp6mdB2/lu8A+QFq49feeYN05nBujg2i5uGBaLFlKPS0/GvHnQrGeQ8UbOG4
- q1c3Kdy3TKlfS/rbmEKJGl0CqYxmbCylMwTwZYVbjQUIcK79vglEbhJTiXwJi83HXpGysO
- zWY8jQqRrxqX/LZeGPLZYjYjf4h6+tQ=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ bh=+x3ENjUhRiva2abHkGcGR3LzYAAPFZO+unc9uE8PLSU=;
+ b=Q65nxQGrZ32NM/E5iZRWpzLeZRF/q9eh1j+Cmpn5rGoOQTi9BrQnNbRB9zblHb0CPxXLcE
+ P6iR6pyKguHhf1kzQr9sHKJ8mKxrwF3V7SiZeDiXRtwXLxG2dqo8XhLhekLLWisCRhMp0T
+ 5Y01R/T7HHOSyFZrZSaHzi9UmqLMsNQ=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-246-xT9gkc-_MhiJ3Ev1wnmRmw-1; Tue,
- 26 Nov 2024 06:58:12 -0500
-X-MC-Unique: xT9gkc-_MhiJ3Ev1wnmRmw-1
-X-Mimecast-MFC-AGG-ID: xT9gkc-_MhiJ3Ev1wnmRmw
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-594-mvG99paGOaWb8jgaU07K_w-1; Tue,
+ 26 Nov 2024 06:58:17 -0500
+X-MC-Unique: mvG99paGOaWb8jgaU07K_w-1
+X-Mimecast-MFC-AGG-ID: mvG99paGOaWb8jgaU07K_w
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 07A9A1955BD2; Tue, 26 Nov 2024 11:58:11 +0000 (UTC)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id B337119560AF; Tue, 26 Nov 2024 11:58:15 +0000 (UTC)
 Received: from kaapi.redhat.com (unknown [10.74.16.158])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id B0FCF19560A3; Tue, 26 Nov 2024 11:58:07 +0000 (UTC)
+ id 340EB19560A3; Tue, 26 Nov 2024 11:58:11 +0000 (UTC)
 From: Prasad Pandit <ppandit@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: peterx@redhat.com, farosas@suse.de, berrange@redhat.com,
  Prasad Pandit <pjp@fedoraproject.org>
-Subject: [PATCH v1 3/4] migration: refactor ram_save_target_page functions
-Date: Tue, 26 Nov 2024 17:27:47 +0530
-Message-ID: <20241126115748.118683-4-ppandit@redhat.com>
+Subject: [PATCH v1 4/4] migration: enable multifd and postcopy together
+Date: Tue, 26 Nov 2024 17:27:48 +0530
+Message-ID: <20241126115748.118683-5-ppandit@redhat.com>
 In-Reply-To: <20241126115748.118683-1-ppandit@redhat.com>
 References: <20241126115748.118683-1-ppandit@redhat.com>
 MIME-Version: 1.0
@@ -84,196 +84,209 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Prasad Pandit <pjp@fedoraproject.org>
 
-Refactor ram_save_target_page legacy and multifd
-functions into one. Other than simplifying it,
-it frees 'migration_ops' object from usage, so it
-is expunged.
+Enable Multifd and Postcopy migration together.
+The migration_ioc_process_incoming() routine
+checks magic value sent on each channel and
+helps to properly setup multifd and postcopy
+channels.
 
-When both Multifd and Postcopy modes are enabled,
-to avoid errors, the Multifd threads are active until
-migration reaches the Postcopy mode. This is done by
-checking the state returned by migration_in_postcopy().
+Idea is to take advantage of the multifd threads
+to accelerate transfer of large guest RAM to the
+destination and switch to postcopy mode sooner.
+
+The Precopy and Multifd threads work during the
+initial guest RAM transfer. When migration moves
+to the Postcopy phase, the multifd threads are
+restrained and Postcopy threads on the destination
+request/pull data from the source side.
 
 Signed-off-by: Prasad Pandit <pjp@fedoraproject.org>
 ---
- migration/multifd-nocomp.c |  3 +-
- migration/ram.c            | 74 ++++++++++++--------------------------
- 2 files changed, 24 insertions(+), 53 deletions(-)
+ migration/migration.c | 95 +++++++++++++++++++++++++++----------------
+ 1 file changed, 60 insertions(+), 35 deletions(-)
 
-v1: Further refactor ram_save_target_page() function to conflate
-    save_zero_page() calls.
-
-    Add migration_in_postcopy() call to check migration state
-    instead of combining it with migrate_multifd().
+v1: Avoid using 4-bytes magic value for the Postcopy channel.
+    Flush and synchronise Multifd thread before postcopy_start().
 
 v0: https://lore.kernel.org/qemu-devel/20241029150908.1136894-1-ppandit@redhat.com/T/#u
 
-diff --git a/migration/multifd-nocomp.c b/migration/multifd-nocomp.c
-index 55191152f9..e92821e8f6 100644
---- a/migration/multifd-nocomp.c
-+++ b/migration/multifd-nocomp.c
-@@ -14,6 +14,7 @@
- #include "exec/ramblock.h"
- #include "exec/target_page.h"
- #include "file.h"
-+#include "migration.h"
- #include "multifd.h"
- #include "options.h"
- #include "qapi/error.h"
-@@ -345,7 +346,7 @@ retry:
+diff --git a/migration/migration.c b/migration/migration.c
+index 8c5bd0a75c..eee7078106 100644
+--- a/migration/migration.c
++++ b/migration/migration.c
+@@ -92,6 +92,9 @@ enum mig_rp_message_type {
+     MIG_RP_MSG_MAX
+ };
  
- int multifd_ram_flush_and_sync(void)
- {
--    if (!migrate_multifd()) {
-+    if (!migrate_multifd() || migration_in_postcopy()) {
-         return 0;
-     }
- 
-diff --git a/migration/ram.c b/migration/ram.c
-index 05ff9eb328..9d1ec6209c 100644
---- a/migration/ram.c
-+++ b/migration/ram.c
-@@ -467,13 +467,6 @@ void ram_transferred_add(uint64_t bytes)
-     }
- }
- 
--struct MigrationOps {
--    int (*ram_save_target_page)(RAMState *rs, PageSearchStatus *pss);
--};
--typedef struct MigrationOps MigrationOps;
--
--MigrationOps *migration_ops;
--
- static int ram_save_host_page_urgent(PageSearchStatus *pss);
- 
- /* NOTE: page is the PFN not real ram_addr_t. */
-@@ -1323,9 +1316,9 @@ static int find_dirty_block(RAMState *rs, PageSearchStatus *pss)
-         pss->page = 0;
-         pss->block = QLIST_NEXT_RCU(pss->block, next);
-         if (!pss->block) {
--            if (migrate_multifd() &&
--                (!migrate_multifd_flush_after_each_section() ||
--                 migrate_mapped_ram())) {
-+            if (migrate_multifd() && !migration_in_postcopy()
-+                && (!migrate_multifd_flush_after_each_section()
-+                    || migrate_mapped_ram())) {
-                 QEMUFile *f = rs->pss[RAM_CHANNEL_PRECOPY].pss_channel;
-                 int ret = multifd_ram_flush_and_sync();
-                 if (ret < 0) {
-@@ -1986,55 +1979,39 @@ int ram_save_queue_pages(const char *rbname, ram_addr_t start, ram_addr_t len,
- }
- 
- /**
-- * ram_save_target_page_legacy: save one target page
-+ * ram_save_target_page: save one target page to the precopy thread
-+ * OR to multifd workers.
-  *
-- * Returns the number of pages written
-+ * Multifd mode: returns 1 if the page was queued, -1 otherwise.
-+ * Non-multifd mode: returns the number of pages written.
-  *
-  * @rs: current RAM state
-  * @pss: data about the page we want to send
++/* Migration channel types */
++enum { CH_DEFAULT, CH_MULTIFD, CH_POSTCOPY };
++
+ /* When we add fault tolerance, we could have several
+    migrations at once.  For now we don't need to add
+    dynamic creation of migration */
+@@ -921,26 +924,32 @@ void migration_fd_process_incoming(QEMUFile *f)
+ /*
+  * Returns true when we want to start a new incoming migration process,
+  * false otherwise.
++ *
++ * All the required channels must be in place before a new incoming
++ * migration process starts.
++ *  - Multifd enabled:
++ *    The main channel and the multifd channels are required.
++ *  - Multifd/Postcopy disabled:
++ *    The main channel is required.
++ *  - Postcopy enabled:
++ *    We don't want to start a new incoming migration when
++ *    the postcopy channel is created. Because it is created
++ *    towards the end of the precopy migration.
   */
--static int ram_save_target_page_legacy(RAMState *rs, PageSearchStatus *pss)
-+static int ram_save_target_page(RAMState *rs, PageSearchStatus *pss)
+-static bool migration_should_start_incoming(bool main_channel)
++static bool migration_should_start_incoming(uint8_t channel)
  {
-     ram_addr_t offset = ((ram_addr_t)pss->page) << TARGET_PAGE_BITS;
-     int res;
+-    /* Multifd doesn't start unless all channels are established */
+-    if (migrate_multifd()) {
+-        return migration_has_all_channels();
+-    }
++    bool ret = false;
++
++    if (channel != CH_POSTCOPY) {
++        MigrationIncomingState *mis = migration_incoming_get_current();
++        ret = mis->from_src_file ? true : false;
  
-+    if (!migrate_multifd()
-+        || migrate_zero_page_detection() == ZERO_PAGE_DETECTION_LEGACY) {
-+        if (save_zero_page(rs, pss, offset)) {
-+            return 1;
+-    /* Preempt channel only starts when the main channel is created */
+-    if (migrate_postcopy_preempt()) {
+-        return main_channel;
++        if (ret && migrate_multifd()) {
++            ret = multifd_recv_all_channels_created();
 +        }
-+    }
-+
-+    if (migrate_multifd() && !migration_in_postcopy()) {
-+        RAMBlock *block = pss->block;
-+        return ram_save_multifd_page(block, offset);
-+    }
-+
-     if (control_save_page(pss, offset, &res)) {
-         return res;
      }
  
--    if (save_zero_page(rs, pss, offset)) {
--        return 1;
--    }
--
-     return ram_save_page(rs, pss);
- }
- 
--/**
-- * ram_save_target_page_multifd: send one target page to multifd workers
-- *
-- * Returns 1 if the page was queued, -1 otherwise.
-- *
-- * @rs: current RAM state
-- * @pss: data about the page we want to send
-- */
--static int ram_save_target_page_multifd(RAMState *rs, PageSearchStatus *pss)
--{
--    RAMBlock *block = pss->block;
--    ram_addr_t offset = ((ram_addr_t)pss->page) << TARGET_PAGE_BITS;
--
 -    /*
--     * While using multifd live migration, we still need to handle zero
--     * page checking on the migration main thread.
+-     * For all the rest types of migration, we should only reach here when
+-     * it's the main channel that's being created, and we should always
+-     * proceed with this channel.
 -     */
--    if (migrate_zero_page_detection() == ZERO_PAGE_DETECTION_LEGACY) {
--        if (save_zero_page(rs, pss, offset)) {
--            return 1;
--        }
--    }
--
--    return ram_save_multifd_page(block, offset);
--}
--
- /* Should be called before sending a host page */
- static void pss_host_page_prepare(PageSearchStatus *pss)
- {
-@@ -2121,7 +2098,7 @@ static int ram_save_host_page_urgent(PageSearchStatus *pss)
- 
-         if (page_dirty) {
-             /* Be strict to return code; it must be 1, or what else? */
--            if (migration_ops->ram_save_target_page(rs, pss) != 1) {
-+            if (ram_save_target_page(rs, pss) != 1) {
-                 error_report_once("%s: ram_save_target_page failed", __func__);
-                 ret = -1;
-                 goto out;
-@@ -2190,7 +2167,7 @@ static int ram_save_host_page(RAMState *rs, PageSearchStatus *pss)
-             if (preempt_active) {
-                 qemu_mutex_unlock(&rs->bitmap_mutex);
-             }
--            tmppages = migration_ops->ram_save_target_page(rs, pss);
-+            tmppages = ram_save_target_page(rs, pss);
-             if (tmppages >= 0) {
-                 pages += tmppages;
-                 /*
-@@ -2388,8 +2365,6 @@ static void ram_save_cleanup(void *opaque)
-     xbzrle_cleanup();
-     multifd_ram_save_cleanup();
-     ram_state_cleanup(rsp);
--    g_free(migration_ops);
--    migration_ops = NULL;
+-    assert(main_channel);
+-    return true;
++    return ret;
  }
  
- static void ram_state_reset(RAMState *rs)
-@@ -3055,13 +3030,8 @@ static int ram_save_setup(QEMUFile *f, void *opaque, Error **errp)
-         return ret;
+ void migration_ioc_process_incoming(QIOChannel *ioc, Error **errp)
+@@ -948,13 +957,12 @@ void migration_ioc_process_incoming(QIOChannel *ioc, Error **errp)
+     MigrationIncomingState *mis = migration_incoming_get_current();
+     Error *local_err = NULL;
+     QEMUFile *f;
+-    bool default_channel = true;
+     uint32_t channel_magic = 0;
++    uint8_t channel = CH_DEFAULT;
+     int ret = 0;
+ 
+-    if (migrate_multifd() && !migrate_mapped_ram() &&
+-        !migrate_postcopy_ram() &&
+-        qio_channel_has_feature(ioc, QIO_CHANNEL_FEATURE_READ_MSG_PEEK)) {
++    if (!migration_should_start_incoming(channel)
++        && qio_channel_has_feature(ioc, QIO_CHANNEL_FEATURE_READ_MSG_PEEK)) {
+         /*
+          * With multiple channels, it is possible that we receive channels
+          * out of order on destination side, causing incorrect mapping of
+@@ -972,35 +980,46 @@ void migration_ioc_process_incoming(QIOChannel *ioc, Error **errp)
+             return;
+         }
+ 
+-        default_channel = (channel_magic == cpu_to_be32(QEMU_VM_FILE_MAGIC));
++        if (channel_magic == cpu_to_be32(QEMU_VM_FILE_MAGIC)) {
++            channel = CH_DEFAULT;
++        } else if (channel_magic == cpu_to_be32(MULTIFD_MAGIC)) {
++            channel = CH_MULTIFD;
++        } else {
++            error_report("%s: could not identify channel, unknown magic: %u",
++                            __func__, channel_magic);
++            return;
++        }
++
+     } else {
+-        default_channel = !mis->from_src_file;
++        channel = CH_POSTCOPY;
      }
  
--    migration_ops = g_malloc0(sizeof(MigrationOps));
--
-     if (migrate_multifd()) {
-         multifd_ram_save_setup();
--        migration_ops->ram_save_target_page = ram_save_target_page_multifd;
+     if (multifd_recv_setup(errp) != 0) {
+         return;
+     }
+ 
+-    if (default_channel) {
++    if (channel == CH_DEFAULT) {
+         f = qemu_file_new_input(ioc);
+         migration_incoming_setup(f);
 -    } else {
--        migration_ops->ram_save_target_page = ram_save_target_page_legacy;
++    } else if (channel == CH_MULTIFD) {
+         /* Multiple connections */
+-        assert(migration_needs_multiple_sockets());
+         if (migrate_multifd()) {
+             multifd_recv_new_channel(ioc, &local_err);
+-        } else {
++        }
++        if (local_err) {
++            error_propagate(errp, local_err);
++            return;
++        }
++    } else if (channel == CH_POSTCOPY) {
++        if (migrate_postcopy()) {
+             assert(migrate_postcopy_preempt());
++            assert(!mis->postcopy_qemufile_dst);
+             f = qemu_file_new_input(ioc);
+             postcopy_preempt_new_channel(mis, f);
+         }
+-        if (local_err) {
+-            error_propagate(errp, local_err);
+-            return;
+-        }
      }
  
-     bql_unlock();
+-    if (migration_should_start_incoming(default_channel)) {
++    if (migration_should_start_incoming(channel)) {
+         /* If it's a recovery, we're done */
+         if (postcopy_try_recover()) {
+             return;
+@@ -1017,21 +1036,22 @@ void migration_ioc_process_incoming(QIOChannel *ioc, Error **errp)
+  */
+ bool migration_has_all_channels(void)
+ {
++    bool ret = false;
+     MigrationIncomingState *mis = migration_incoming_get_current();
+ 
+     if (!mis->from_src_file) {
+-        return false;
++        return ret;
+     }
+ 
+     if (migrate_multifd()) {
+-        return multifd_recv_all_channels_created();
++        ret = multifd_recv_all_channels_created();
+     }
+ 
+-    if (migrate_postcopy_preempt()) {
+-        return mis->postcopy_qemufile_dst != NULL;
++    if (ret && migrate_postcopy_preempt()) {
++        ret = mis->postcopy_qemufile_dst != NULL;
+     }
+ 
+-    return true;
++    return ret;
+ }
+ 
+ int migrate_send_rp_switchover_ack(MigrationIncomingState *mis)
+@@ -3239,6 +3259,11 @@ static MigIterateState migration_iteration_run(MigrationState *s)
+     /* Still a significant amount to transfer */
+     if (!in_postcopy && must_precopy <= s->threshold_size && can_switchover &&
+         qatomic_read(&s->start_postcopy)) {
++
++        if (migrate_multifd()) {
++            multifd_send_sync_main();
++        }
++
+         if (postcopy_start(s, &local_err)) {
+             migrate_set_error(s, local_err);
+             error_report_err(local_err);
 -- 
 2.47.0
 
