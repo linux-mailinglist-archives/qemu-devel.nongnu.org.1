@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1534C9D9C03
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DACA9D9C05
 	for <lists+qemu-devel@lfdr.de>; Tue, 26 Nov 2024 18:03:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tFyxV-0007Wt-0D; Tue, 26 Nov 2024 12:02:41 -0500
+	id 1tFyxS-0007OJ-AM; Tue, 26 Nov 2024 12:02:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tFyxQ-0007Ke-8Q
- for qemu-devel@nongnu.org; Tue, 26 Nov 2024 12:02:36 -0500
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ id 1tFyxP-0007Ij-Ch
+ for qemu-devel@nongnu.org; Tue, 26 Nov 2024 12:02:35 -0500
+Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tFyxO-00020x-5A
+ id 1tFyxN-00020n-LA
  for qemu-devel@nongnu.org; Tue, 26 Nov 2024 12:02:35 -0500
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-434a2f3bae4so14753855e9.3
+Received: by mail-wr1-x436.google.com with SMTP id
+ ffacd0b85a97d-38242abf421so3900202f8f.2
  for <qemu-devel@nongnu.org>; Tue, 26 Nov 2024 09:02:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1732640552; x=1733245352; darn=nongnu.org;
+ d=linaro.org; s=google; t=1732640551; x=1733245351; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=xFzPeRmZcYFg+diNYuLvRmiok0TT9be1yhuo0Ta4GIs=;
- b=AdJZlPn1S2puc9d+A7FFYqwcoLq7FIOv1RYbzxvAansRjYmKBcCMo1l2iBcDmOkgWz
- ZFre778uIrB6a855K1oadAMHnD+3l0Bm71RIybcl96NEndKOR1jkNCs4NtcdUCtegTIZ
- cnFQT58rnLyZZMpofqvVixEUht8oMMP9v0YWIiV1tuR0rXi1msf18oDU26bAvC36yQzN
- U5gyL3Lzziz4IJnLoXfsSHl8VaAO9YgRJcx4+sb2cHIQkoMC4sXzskO80ryZAIzj68tz
- 87qDhOLspkzY42jj3wHI40ocJj5h4mXQ8akm1hWI+fThvqnee3Zf8awu5bZPa/Q/RfDb
- mhTg==
+ :reply-to; bh=L2iIthzQ3Mqn0qPR+9i7K6uncY9n1uibxmIy4im4uGk=;
+ b=eymfbaZxA2Lxx/40e2IviQuh/5HR1CupDENwLxulJoT/NhcmGQxeQ1idA5iG1AYw8l
+ xrBw3zdJ6bdJCvnadezIIFTGakLDRKY+K6Fe2Zx86S4Zkv+OAm5u6LtiYLn6ICSlQnFr
+ G7xS5HkwTN6U1mOHeEzEubpMQmm3xwlwWDLMSq6Ycsk4wLN6tqD2i1Szo9oz8r0/6JWT
+ Y0g3z33acfgdM1dqfdvkBnpasfBKZAt4HFt5pUerxW0dQ317ec3DhF1EkcFobNpUUv0m
+ ou82ydMMSjcrMwrVd92ngy5MpQYsouvJYgD8MDVM72Hx3+DOfn0AKsKmpPgeymgQvvl/
+ TR3g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1732640552; x=1733245352;
+ d=1e100.net; s=20230601; t=1732640551; x=1733245351;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=xFzPeRmZcYFg+diNYuLvRmiok0TT9be1yhuo0Ta4GIs=;
- b=hv+XkRoEVuf4zKvLNtmmkJFpY6GnhIrNYC4eP4QVXFdQ78gH/tFopiV+kfkLQdVZ8n
- SOfHvHlEsyBYGSYr7w/Lt7RzoSkz8gTZEL2eArRMmU6gqBRINjYq2mawW2j1WR6zgaAU
- 6/wgqdZHCdIXUcCunpfegNgVVZoUE8kl8sfUv6bQYtDQ18B1XAGFa/Z4xaOSo/5RFcP5
- 0Im5ew3cvTlxS67eizC5f8X2i0ZqZI4wiJyGOxKaJW8TcJRMiPxIfBl4wXtDMCZU1AJ+
- eXNqkX0+zaqIIQa+vFKSexRRHPlN+URC1Mt++2dhCVtQX3hC+ybir/dPRuUUHHrNL2yD
- q3Vg==
-X-Gm-Message-State: AOJu0Yxw9g2Qz1xo0okZxYS0xXg13kHnquy221jTyf8Yzu7ZM5EVP5Q2
- LN3zBrOET32R1VOghxb95bDMT9EGLKhR8KWi6LfObQhmgikSnWxa48pSRhPanWtkCNdB6QTiRrY
- O
-X-Gm-Gg: ASbGncsoRO2sKTyZXzap+//Pg/ORV0YFc/YwHayUp28nmElqjcHJ4zmI4VNkVe1xz5T
- pHY/4ZOvfSGEGGrX7VbisL702AFj0L/gqZVlnJyWPS/CqxAPyeyLIaP9mBBkPeUEwbq9YO3j07i
- M0WyqCQ22atlSvSbg4L1K6w63w2T1ku2j3/IhUCciGBelzv80ImRYzS9M1GrB3gDCK0Q2JDBu5X
- TtvyxLkYeQc8e+uz48cfjUcpCYXWnmgh+Kg+gXsiHyBoByuZIEBQ7Cl
-X-Google-Smtp-Source: AGHT+IGpXcPkfZEjd2lJKlIMrYKVkxQ8wKf9jZNn+iHoh/1yvZ/kEymA5zjWYgouh2yDcqJYBKkJYw==
-X-Received: by 2002:a05:600c:154f:b0:434:a706:c0fd with SMTP id
- 5b1f17b1804b1-434a9db8386mr319075e9.2.1732640550637; 
- Tue, 26 Nov 2024 09:02:30 -0800 (PST)
+ bh=L2iIthzQ3Mqn0qPR+9i7K6uncY9n1uibxmIy4im4uGk=;
+ b=gCFbqYWPfwD6FNUN8vJG7x49woKoDR0JgRcmOpER9sw+DQGeDiyNyEr37OVXD8hzCU
+ VVgZC0xvnPw8xHI42lQQ8ynI5OrqZsyesod/nxYYImdYXmlXi5r5bTYKJgXQSngirMvr
+ W8nAXv8C3q/NVo+7KtEKAHT15535Cg+K64eXOztj9Y1Pgvu9myKyXPNjPilQtZmJyp6k
+ vRh333kc1f68KIuYbAA+TgZVOzhIiGQ2Rc6/rL3AnvTsVs2j6UDbyA4+plE8f9kXbT3B
+ 6JIzuC7VvGXTOZ1jfhsP5lA2aGqBHFrzmYf0du7brhK/1t4bRuX9kfYZ5kSjgLyw+AjG
+ iKDg==
+X-Gm-Message-State: AOJu0YzB5+XAsmwBhwjM3qwuMdvr8r+Z+19bCfgpJ4ZXTKWHwadK7c0R
+ ChNXrsfFFEpOCS71JWxQIyg90k1/A4WsyhB+IYs+aygQ+242/Tk2rZG+Iqy0SmR/OIn7mQ++W8T
+ 7
+X-Gm-Gg: ASbGncsNAh/j8cnokMKN353TmRGR4bouGt+vowafRN3L+ATFqZHziH953/g7uBt7Sv8
+ c38fa0NlVcd+GtR3+6sSw5GoGo38WIHHtN9qsJFEbtwQm3tzviAmvQS8qCnz9WPdiV6y+vg4nWb
+ tc9Yb7e6Uf1tYGWsJfNn3aIG9fJ/WiOSpvRUj1EPlvF7VlfZBbq9dOtlrUxFc2/VUfnr1sS3QHm
+ oWe7TDIeoAHCP0xP/1MYQTMJ3eaf9ysGo1ouNEpT3NA84Y9QM6/QxtA
+X-Google-Smtp-Source: AGHT+IGNkxLq+Rc9juj3VQc8mjA7i1ZhvZ4GgfOGjFh+KFkRk3JhCeso9+JCt5JTPk8SM/d+0UuXeQ==
+X-Received: by 2002:a05:6000:184e:b0:382:2242:7a8 with SMTP id
+ ffacd0b85a97d-38260bcb00cmr14390861f8f.40.1732640551123; 
+ Tue, 26 Nov 2024 09:02:31 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  5b1f17b1804b1-434a36c7a9fsm43017865e9.44.2024.11.26.09.02.30
@@ -63,16 +63,16 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Tue, 26 Nov 2024 09:02:30 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 3/9] docs/system/arm/emulation: fix typo in feature name
-Date: Tue, 26 Nov 2024 17:02:18 +0000
-Message-Id: <20241126170224.2926917-4-peter.maydell@linaro.org>
+Subject: [PULL 4/9] docs/system/arm/emulation: add FEAT_SSBS2
+Date: Tue, 26 Nov 2024 17:02:19 +0000
+Message-Id: <20241126170224.2926917-5-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241126170224.2926917-1-peter.maydell@linaro.org>
 References: <20241126170224.2926917-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x330.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::436;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x436.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,27 +97,31 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
+We implemented this at the same times as FEAT_SSBS, but forgot
+to list it in the documentation.
+
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20241122225049.1617774-3-pierrick.bouvier@linaro.org
+Message-id: 20241122225049.1617774-4-pierrick.bouvier@linaro.org
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+[PMM: improve commit message]
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- docs/system/arm/emulation.rst | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ docs/system/arm/emulation.rst | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/docs/system/arm/emulation.rst b/docs/system/arm/emulation.rst
-index 2956c22a1b7..af613b9c8b8 100644
+index af613b9c8b8..50d0250b1eb 100644
 --- a/docs/system/arm/emulation.rst
 +++ b/docs/system/arm/emulation.rst
-@@ -88,7 +88,7 @@ the following architecture extensions:
- - FEAT_LSE2 (Large System Extensions v2)
- - FEAT_LVA (Large Virtual Address space)
- - FEAT_MixedEnd (Mixed-endian support)
--- FEAT_MixdEndEL0 (Mixed-endian support at EL0)
-+- FEAT_MixedEndEL0 (Mixed-endian support at EL0)
- - FEAT_MOPS (Standardization of memory operations)
- - FEAT_MTE (Memory Tagging Extension)
- - FEAT_MTE2 (Memory Tagging Extension)
+@@ -137,6 +137,7 @@ the following architecture extensions:
+ - FEAT_SVE2 (Scalable Vector Extension version 2)
+ - FEAT_SPECRES (Speculation restriction instructions)
+ - FEAT_SSBS (Speculative Store Bypass Safe)
++- FEAT_SSBS2 (MRS and MSR instructions for SSBS version 2)
+ - FEAT_TGran16K (Support for 16KB memory translation granule size at stage 1)
+ - FEAT_TGran4K (Support for 4KB memory translation granule size at stage 1)
+ - FEAT_TGran64K (Support for 64KB memory translation granule size at stage 1)
 -- 
 2.34.1
 
