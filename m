@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBB5D9D9819
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Nov 2024 14:17:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B8629D981F
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Nov 2024 14:18:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tFvRH-0008Nv-HR; Tue, 26 Nov 2024 08:17:17 -0500
+	id 1tFvS1-0000hY-Lu; Tue, 26 Nov 2024 08:17:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tFvQX-0008Fy-UA
- for qemu-devel@nongnu.org; Tue, 26 Nov 2024 08:16:27 -0500
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tFvQe-0008NL-G3
+ for qemu-devel@nongnu.org; Tue, 26 Nov 2024 08:16:34 -0500
+Received: from mail-lj1-x236.google.com ([2a00:1450:4864:20::236])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tFvQU-0003cu-FX
- for qemu-devel@nongnu.org; Tue, 26 Nov 2024 08:16:25 -0500
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-434a7ee3d60so2665815e9.1
- for <qemu-devel@nongnu.org>; Tue, 26 Nov 2024 05:16:21 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tFvQa-0003eI-PZ
+ for qemu-devel@nongnu.org; Tue, 26 Nov 2024 08:16:31 -0500
+Received: by mail-lj1-x236.google.com with SMTP id
+ 38308e7fff4ca-2ffc76368c6so31287071fa.0
+ for <qemu-devel@nongnu.org>; Tue, 26 Nov 2024 05:16:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1732626980; x=1733231780; darn=nongnu.org;
+ d=linaro.org; s=google; t=1732626986; x=1733231786; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ucDdwRNw1pepY0YQzDNULFb44Q37tueFbobxeDpAy74=;
- b=XyAEQbOi3frxZahQrI3Kdh4If3Zv/oBWWrLaWe6jM4gY5ofVsu2WA2ls5AQzW20uDW
- j65TXehiZTx+8IAUzo7GSynlrewh2viFAi3ltKGcg92YllcUXO3aSmKc8OtdH9/bbWRP
- LhScoLasQHvCBZP23Q02de4qvV2oI8XFufycPadnOOq9ZJ3CpZ/vya3kt4pKK2jT2cMx
- nzsgbAoC1BOGqa9qpTPvDfSP2aDkh3YNraXuUz6dJq40Dr+mLLWa42CClSmfL6m7s4rB
- pkjvhjVOrkM7cDDxTSFouZjA38GJ0192YmRXHQyjx2aW8tg1mivaAXK3+oTmvU3Uv4ME
- wTrg==
+ bh=YaQXErJo7YtbBSN/89WKLiUD33Zff+wbQUKG0qIgN9E=;
+ b=mk1p34YgWJXEDz3h6ZLbPO8GWm9n66rluLf47yDM7etFVmY8wEk9rfWk7nKHNBpWCz
+ 98q9ghb21aJhAT1pVasaVTHNJaxJeeKRvhdoaaKBok8xKE3iLddYGIB6up0eNauyC7fl
+ 22KkdcD/9LdTKXh+UhuILy8cLZ8MQLCp0hCXrYdDw88tl6y2zG2r8+dCT9CvqRZJnLaL
+ rdyeFegV5e2SkZW41RD0Oc6dS0hXwBrVkh6NmiTaES4tRsvNEovJ93pYEixgdkux6lv2
+ aR9SA4iiNVHZGY5ggnYGQg5L0emVQ1q0t4dxyu+7xKqm9Mx/cg8nfKd5+On8oQyVWZUu
+ ZPLA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1732626980; x=1733231780;
+ d=1e100.net; s=20230601; t=1732626986; x=1733231786;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ucDdwRNw1pepY0YQzDNULFb44Q37tueFbobxeDpAy74=;
- b=E2ZLnlKX5t3b76+0770SfjodTIq1W/kd9joQbzlnbAMb50AUx01Dm9C9SFSfu5aX7o
- PI8Qp/gtu9mR/gC59GsVKVHH8kyEJSGf5ca8zdLvP7ZPRpK5JsTFx5QjnnElK2sQc1Il
- 3vSZmHalrzkfI+Qzknk+/kSciZfovscjz0AsH8bJb/aSu2d8Cg3EuWJBr09H0ycDor0b
- EZOiThF/NBU+y7KqV17lNKl10ANWF76orcior5U4lQVCtvC07oEuCoZT2vAt4Qp0Pk8W
- f5dEMFhqSxJUgFs8KQKu4LU1+hhX1NCfxaGl9Cy9zDOYLdnSjnsZyuwSd/skCNyyybzF
- /7TA==
-X-Gm-Message-State: AOJu0YxAJJY6ExTY6z25azdE7CyZKrXQL4FKimfkIf4oos+eMl81YUs6
- ybQUCHg5J49bEhzTaJsp8mKorgzlJuWTDID7EJD7Tg7ZdWoVS/03sEEZKwkuiOKmx5w5VflwDT8
- m
-X-Gm-Gg: ASbGncufnvrAaUc4bscTdULUDL7gpSAI4TaB98WqyLAzTQCkDDO4pQS8pM5n4dGsckB
- qBQ9/ZUmNl+t2Gqgr3AKzkPBDTJ6OoaHi+KTZut1VomdqQsoxBbFtdb1bGZ9tH5bsR3RcBvW9Th
- RAa4mzaLKSSz39nzKihGm+TjKTy70sW5xu0gAoPmGyAwTFRgQz5GKed0UMxYJPavG2LDGTjK5E5
- 7woBziEEdG6vTsml7nPyprZAGylz4CG1PfEqjNMuN/J5xGJiTBMN9XmL7OERMxXi56kiMqO
-X-Google-Smtp-Source: AGHT+IGd2SiVoYraXmqYRw+SyDf2x4155Y3w9Gyw5ld1/HXwscoDmYQkeVOXZlrrzf8x4x6y/Xpyyw==
-X-Received: by 2002:a05:6000:796:b0:382:46d2:52b6 with SMTP id
- ffacd0b85a97d-385bf9a3f47mr2735341f8f.0.1732626979772; 
- Tue, 26 Nov 2024 05:16:19 -0800 (PST)
+ bh=YaQXErJo7YtbBSN/89WKLiUD33Zff+wbQUKG0qIgN9E=;
+ b=brS89nzsFFoxr7TpvXpvkb4QWuCy2n0WIKGXm+DRlfMU7d0qJq3DqQfUdkDnjd2muu
+ Ok+IQ4WnzZFtFT14B8plvMntSpagwT0EGFO83M76QFZHMyLm3j/W8vegzA39uqL9r+Nc
+ JMpBYOU2g4N9F/J0YpeklAwvO/nDyQx4AzevMTnLwq2B8Z5uMKT2RmPBgdKj0a3zXiZo
+ z5rQs9pZ+BTG7dl3ZnXy61HCh4iu2QbCmuGRy4up8L0fPf5FHkBFBbNOLw3D2RJHfZGw
+ rFHOKCrAjobBFjfmmIqyRDa4uvFZQhFCWZ5P55+DWP7XNl9lr5QNcvyEOdpHLty1RPWL
+ PjDA==
+X-Gm-Message-State: AOJu0YxtG1cHasd2Z87OPrL/rg361COm6wcga8YOBjvCRkEaZhrUaAk8
+ ycjssvhG0cvXX6HIuGrXRygqnLfQoWAVpC7CLOSzJW2MZxqCwuzOyrlMZMqPErIm4r1yZke/kGh
+ g
+X-Gm-Gg: ASbGnctspb34XKmZfx4VCALBiCnpCquiaGcTeIyEtmKvH00XmFMzjkH8x/AfTcgXquY
+ tHDMrTKN3A5f4jHWkEAAJ5MioRX4KPX0YR4QCmGEo9/lhBW1RsMC3vOyxoyXWz7p5PmPPL9/L9y
+ ngrF8GAAdyWh9088U42k+CHKPkJ/ief+9ZVuljoFAZdRivGorIcl7hk7Vs908aKA6nbNwj+1EPI
+ fjqm5voSBdz+R1uuzsL5DJ3hjKuDWqNFL4Y/BGGG+qBCHeBpUWDbP4rlx0CiHqhcmRc6qZN
+X-Google-Smtp-Source: AGHT+IHej8zKhkRlzaS1zlpPBgy1NIZBa9RprgWCL1WMpMAtTqNerJn6e7PbGHmBhmX2OUtA4DYubQ==
+X-Received: by 2002:a05:651c:1546:b0:2fa:c0b5:ac8c with SMTP id
+ 38308e7fff4ca-2ffa7124ff6mr116324351fa.21.1732626985606; 
+ Tue, 26 Nov 2024 05:16:25 -0800 (PST)
 Received: from localhost.localdomain ([176.176.143.205])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3825fafedbcsm13472427f8f.41.2024.11.26.05.16.18
+ 5b1f17b1804b1-434921ceea7sm113970555e9.25.2024.11.26.05.16.24
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 26 Nov 2024 05:16:19 -0800 (PST)
+ Tue, 26 Nov 2024 05:16:24 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Aurelien Jarno <aurelien@aurel32.net>,
  Aleksandar Rikalo <arikalo@gmail.com>, Anton Johansson <anjo@rev.ng>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Huacai Chen <chenhuacai@kernel.org>, Jiaxun Yang <jiaxun.yang@flygoat.com>
-Subject: [PATCH 05/13] target/mips: Rename gen_base_offset_addr() ->
- gen_base_offset_addr_tl()
-Date: Tue, 26 Nov 2024 14:15:37 +0100
-Message-ID: <20241126131546.66145-6-philmd@linaro.org>
+Subject: [PATCH 06/13] target/mips: Rename gen_op_addr_add?() ->
+ gen_op_addr_add?_tl()
+Date: Tue, 26 Nov 2024 14:15:38 +0100
+Message-ID: <20241126131546.66145-7-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241126131546.66145-1-philmd@linaro.org>
 References: <20241126131546.66145-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::236;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x236.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,416 +99,321 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-MIPS gen_base_offset_addr() takes a target-specific TCGv argument.
-Rename it as gen_base_offset_addr_tl() to clarify, like other TCG
-core helpers.
+MIPS gen_op_addr_add() and gen_op_addr_addi() take a target-specific
+TCGv argument. Rename them respectively as gen_op_addr_add_tl() and
+gen_op_addr_addi_tl() like other TCG core helpers.
 
-Mechanical change doing:
-
-  $ sed -i -e 's/gen_base_offset_addr/gen_base_offset_addr_tl/' \
-     $(git grep -l gen_base_offset_addr)
+Mechanical change done using sed tool.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/mips/tcg/translate.h               |  2 +-
- target/mips/tcg/msa_translate.c           |  2 +-
- target/mips/tcg/translate.c               | 54 +++++++++++------------
- target/mips/tcg/tx79_translate.c          |  4 +-
- target/mips/tcg/micromips_translate.c.inc |  4 +-
- target/mips/tcg/mips16e_translate.c.inc   |  8 ++--
- target/mips/tcg/nanomips_translate.c.inc  | 12 ++---
- 7 files changed, 43 insertions(+), 43 deletions(-)
+ target/mips/tcg/translate.h               |  4 ++--
+ target/mips/tcg/translate.c               | 28 +++++++++++------------
+ target/mips/tcg/micromips_translate.c.inc |  8 +++----
+ target/mips/tcg/mips16e_translate.c.inc   | 10 ++++----
+ target/mips/tcg/nanomips_translate.c.inc  | 14 ++++++------
+ 5 files changed, 32 insertions(+), 32 deletions(-)
 
 diff --git a/target/mips/tcg/translate.h b/target/mips/tcg/translate.h
-index 90b8ac0e5b1..94dd30216f5 100644
+index 94dd30216f5..9517e18eef9 100644
 --- a/target/mips/tcg/translate.h
 +++ b/target/mips/tcg/translate.h
-@@ -152,7 +152,7 @@ void check_cp1_64bitmode(DisasContext *ctx);
- void check_cp1_registers(DisasContext *ctx, int regs);
- void check_cop1x(DisasContext *ctx);
+@@ -175,8 +175,8 @@ void gen_addiupc(DisasContext *ctx, int rx, int imm,
+ /*
+  * Address Computation and Large Constant Instructions
+  */
+-void gen_op_addr_add(DisasContext *ctx, TCGv ret, TCGv arg0, TCGv arg1);
+-void gen_op_addr_addi(DisasContext *ctx, TCGv ret, TCGv base, target_long ofs);
++void gen_op_addr_add_tl(DisasContext *ctx, TCGv ret, TCGv arg0, TCGv arg1);
++void gen_op_addr_addi_tl(DisasContext *ctx, TCGv ret, TCGv base, target_long ofs);
+ bool gen_lsa(DisasContext *ctx, int rd, int rt, int rs, int sa);
+ bool gen_dlsa(DisasContext *ctx, int rd, int rt, int rs, int sa);
  
--void gen_base_offset_addr(DisasContext *ctx, TCGv addr, int base, int offset);
-+void gen_base_offset_addr_tl(DisasContext *ctx, TCGv addr, int base, int offset);
- void gen_move_low32_tl(TCGv ret, TCGv_i64 arg);
- void gen_move_high32_tl(TCGv ret, TCGv_i64 arg);
- void gen_load_gpr_tl(TCGv t, int reg);
-diff --git a/target/mips/tcg/msa_translate.c b/target/mips/tcg/msa_translate.c
-index 25939da4b3e..b515ee52f53 100644
---- a/target/mips/tcg/msa_translate.c
-+++ b/target/mips/tcg/msa_translate.c
-@@ -769,7 +769,7 @@ static bool trans_msa_ldst(DisasContext *ctx, arg_msa_i *a,
- 
-     taddr = tcg_temp_new();
- 
--    gen_base_offset_addr(ctx, taddr, a->ws, a->sa << a->df);
-+    gen_base_offset_addr_tl(ctx, taddr, a->ws, a->sa << a->df);
-     gen_msa_ldst(tcg_env, tcg_constant_i32(a->wd), taddr);
- 
-     return true;
 diff --git a/target/mips/tcg/translate.c b/target/mips/tcg/translate.c
-index 31907c75a62..667b20bccb8 100644
+index 667b20bccb8..ad688b9b23d 100644
 --- a/target/mips/tcg/translate.c
 +++ b/target/mips/tcg/translate.c
-@@ -1944,7 +1944,7 @@ OP_LD_ATOMIC(lld, mo_endian(ctx) | MO_UQ);
- #endif
- #undef OP_LD_ATOMIC
- 
--void gen_base_offset_addr(DisasContext *ctx, TCGv addr, int base, int offset)
-+void gen_base_offset_addr_tl(DisasContext *ctx, TCGv addr, int base, int offset)
- {
-     if (base == 0) {
-         tcg_gen_movi_tl(addr, offset);
-@@ -2042,7 +2042,7 @@ static void gen_ld(DisasContext *ctx, uint32_t opc,
-     }
- 
-     t0 = tcg_temp_new();
--    gen_base_offset_addr(ctx, t0, base, offset);
-+    gen_base_offset_addr_tl(ctx, t0, base, offset);
- 
-     switch (opc) {
- #if defined(TARGET_MIPS64)
-@@ -2163,7 +2163,7 @@ static void gen_st(DisasContext *ctx, uint32_t opc, int rt,
-     TCGv t1 = tcg_temp_new();
-     int mem_idx = ctx->mem_idx;
- 
--    gen_base_offset_addr(ctx, t0, base, offset);
-+    gen_base_offset_addr_tl(ctx, t0, base, offset);
-     gen_load_gpr_tl(t1, rt);
-     switch (opc) {
- #if defined(TARGET_MIPS64)
-@@ -2225,7 +2225,7 @@ static void gen_st_cond(DisasContext *ctx, int rt, int base, int offset,
-     t0 = tcg_temp_new();
-     addr = tcg_temp_new();
-     /* compare the address against that of the preceding LL */
--    gen_base_offset_addr(ctx, addr, base, offset);
-+    gen_base_offset_addr_tl(ctx, addr, base, offset);
-     tcg_gen_brcond_tl(TCG_COND_EQ, addr, cpu_lladdr, l1);
-     gen_store_gpr_tl(tcg_constant_tl(0), rt);
-     tcg_gen_br(done);
-@@ -2303,7 +2303,7 @@ static void gen_cop1_ldst(DisasContext *ctx, uint32_t op, int rt,
-             check_insn(ctx, ISA_MIPS2);
-             /* Fallthrough */
-         default:
--            gen_base_offset_addr(ctx, t0, rs, imm);
-+            gen_base_offset_addr_tl(ctx, t0, rs, imm);
-             gen_flt_ldst(ctx, op, rt, t0);
-         }
-     } else {
-@@ -3942,10 +3942,10 @@ static void gen_loongson_lswc2(DisasContext *ctx, int rt,
- #if defined(TARGET_MIPS64)
-     case OPC_GSLQ:
-         t1 = tcg_temp_new();
--        gen_base_offset_addr(ctx, t0, rs, lsq_offset);
-+        gen_base_offset_addr_tl(ctx, t0, rs, lsq_offset);
-         tcg_gen_qemu_ld_tl(t1, t0, ctx->mem_idx, mo_endian(ctx) | MO_UQ |
-                            ctx->default_tcg_memop_mask);
--        gen_base_offset_addr(ctx, t0, rs, lsq_offset + 8);
-+        gen_base_offset_addr_tl(ctx, t0, rs, lsq_offset + 8);
-         tcg_gen_qemu_ld_tl(t0, t0, ctx->mem_idx, mo_endian(ctx) | MO_UQ |
-                            ctx->default_tcg_memop_mask);
-         gen_store_gpr_tl(t1, rt);
-@@ -3954,10 +3954,10 @@ static void gen_loongson_lswc2(DisasContext *ctx, int rt,
-     case OPC_GSLQC1:
-         check_cp1_enabled(ctx);
-         t1 = tcg_temp_new();
--        gen_base_offset_addr(ctx, t0, rs, lsq_offset);
-+        gen_base_offset_addr_tl(ctx, t0, rs, lsq_offset);
-         tcg_gen_qemu_ld_tl(t1, t0, ctx->mem_idx, mo_endian(ctx) | MO_UQ |
-                            ctx->default_tcg_memop_mask);
--        gen_base_offset_addr(ctx, t0, rs, lsq_offset + 8);
-+        gen_base_offset_addr_tl(ctx, t0, rs, lsq_offset + 8);
-         tcg_gen_qemu_ld_tl(t0, t0, ctx->mem_idx, mo_endian(ctx) | MO_UQ |
-                            ctx->default_tcg_memop_mask);
-         gen_store_fpr64(ctx, t1, rt);
-@@ -3965,11 +3965,11 @@ static void gen_loongson_lswc2(DisasContext *ctx, int rt,
-         break;
-     case OPC_GSSQ:
-         t1 = tcg_temp_new();
--        gen_base_offset_addr(ctx, t0, rs, lsq_offset);
-+        gen_base_offset_addr_tl(ctx, t0, rs, lsq_offset);
-         gen_load_gpr_tl(t1, rt);
-         tcg_gen_qemu_st_tl(t1, t0, ctx->mem_idx, mo_endian(ctx) | MO_UQ |
-                            ctx->default_tcg_memop_mask);
--        gen_base_offset_addr(ctx, t0, rs, lsq_offset + 8);
-+        gen_base_offset_addr_tl(ctx, t0, rs, lsq_offset + 8);
-         gen_load_gpr_tl(t1, lsq_rt1);
-         tcg_gen_qemu_st_tl(t1, t0, ctx->mem_idx, mo_endian(ctx) | MO_UQ |
-                            ctx->default_tcg_memop_mask);
-@@ -3977,11 +3977,11 @@ static void gen_loongson_lswc2(DisasContext *ctx, int rt,
-     case OPC_GSSQC1:
-         check_cp1_enabled(ctx);
-         t1 = tcg_temp_new();
--        gen_base_offset_addr(ctx, t0, rs, lsq_offset);
-+        gen_base_offset_addr_tl(ctx, t0, rs, lsq_offset);
-         gen_load_fpr64(ctx, t1, rt);
-         tcg_gen_qemu_st_tl(t1, t0, ctx->mem_idx, mo_endian(ctx) | MO_UQ |
-                            ctx->default_tcg_memop_mask);
--        gen_base_offset_addr(ctx, t0, rs, lsq_offset + 8);
-+        gen_base_offset_addr_tl(ctx, t0, rs, lsq_offset + 8);
-         gen_load_fpr64(ctx, t1, lsq_rt1);
-         tcg_gen_qemu_st_tl(t1, t0, ctx->mem_idx, mo_endian(ctx) | MO_UQ |
-                            ctx->default_tcg_memop_mask);
-@@ -3991,7 +3991,7 @@ static void gen_loongson_lswc2(DisasContext *ctx, int rt,
-         switch (MASK_LOONGSON_GSSHFLS(ctx->opcode)) {
-         case OPC_GSLWLC1:
-             check_cp1_enabled(ctx);
--            gen_base_offset_addr(ctx, t0, rs, shf_offset);
-+            gen_base_offset_addr_tl(ctx, t0, rs, shf_offset);
-             fp0 = tcg_temp_new_i32();
-             gen_load_fpr32(ctx, fp0, rt);
-             t1 = tcg_temp_new();
-@@ -4002,7 +4002,7 @@ static void gen_loongson_lswc2(DisasContext *ctx, int rt,
-             break;
-         case OPC_GSLWRC1:
-             check_cp1_enabled(ctx);
--            gen_base_offset_addr(ctx, t0, rs, shf_offset);
-+            gen_base_offset_addr_tl(ctx, t0, rs, shf_offset);
-             fp0 = tcg_temp_new_i32();
-             gen_load_fpr32(ctx, fp0, rt);
-             t1 = tcg_temp_new();
-@@ -4014,7 +4014,7 @@ static void gen_loongson_lswc2(DisasContext *ctx, int rt,
- #if defined(TARGET_MIPS64)
-         case OPC_GSLDLC1:
-             check_cp1_enabled(ctx);
--            gen_base_offset_addr(ctx, t0, rs, shf_offset);
-+            gen_base_offset_addr_tl(ctx, t0, rs, shf_offset);
-             t1 = tcg_temp_new();
-             gen_load_fpr64(ctx, t1, rt);
-             gen_lxl(ctx, t1, t0, ctx->mem_idx, mo_endian(ctx) | MO_UQ);
-@@ -4022,7 +4022,7 @@ static void gen_loongson_lswc2(DisasContext *ctx, int rt,
-             break;
-         case OPC_GSLDRC1:
-             check_cp1_enabled(ctx);
--            gen_base_offset_addr(ctx, t0, rs, shf_offset);
-+            gen_base_offset_addr_tl(ctx, t0, rs, shf_offset);
-             t1 = tcg_temp_new();
-             gen_load_fpr64(ctx, t1, rt);
-             gen_lxr(ctx, t1, t0, ctx->mem_idx, mo_endian(ctx) | MO_UQ);
-@@ -4040,7 +4040,7 @@ static void gen_loongson_lswc2(DisasContext *ctx, int rt,
-         case OPC_GSSWLC1:
-             check_cp1_enabled(ctx);
-             t1 = tcg_temp_new();
--            gen_base_offset_addr(ctx, t0, rs, shf_offset);
-+            gen_base_offset_addr_tl(ctx, t0, rs, shf_offset);
-             fp0 = tcg_temp_new_i32();
-             gen_load_fpr32(ctx, fp0, rt);
-             tcg_gen_ext_i32_tl(t1, fp0);
-@@ -4049,7 +4049,7 @@ static void gen_loongson_lswc2(DisasContext *ctx, int rt,
-         case OPC_GSSWRC1:
-             check_cp1_enabled(ctx);
-             t1 = tcg_temp_new();
--            gen_base_offset_addr(ctx, t0, rs, shf_offset);
-+            gen_base_offset_addr_tl(ctx, t0, rs, shf_offset);
-             fp0 = tcg_temp_new_i32();
-             gen_load_fpr32(ctx, fp0, rt);
-             tcg_gen_ext_i32_tl(t1, fp0);
-@@ -4059,14 +4059,14 @@ static void gen_loongson_lswc2(DisasContext *ctx, int rt,
-         case OPC_GSSDLC1:
-             check_cp1_enabled(ctx);
-             t1 = tcg_temp_new();
--            gen_base_offset_addr(ctx, t0, rs, shf_offset);
-+            gen_base_offset_addr_tl(ctx, t0, rs, shf_offset);
-             gen_load_fpr64(ctx, t1, rt);
-             gen_helper_0e2i(sdl, t1, t0, ctx->mem_idx);
-             break;
-         case OPC_GSSDRC1:
-             check_cp1_enabled(ctx);
-             t1 = tcg_temp_new();
--            gen_base_offset_addr(ctx, t0, rs, shf_offset);
-+            gen_base_offset_addr_tl(ctx, t0, rs, shf_offset);
-             gen_load_fpr64(ctx, t1, rt);
-             gen_helper_0e2i(sdr, t1, t0, ctx->mem_idx);
-             break;
-@@ -4134,7 +4134,7 @@ static void gen_loongson_lsdc2(DisasContext *ctx, int rt,
- 
-     t0 = tcg_temp_new();
- 
--    gen_base_offset_addr(ctx, t0, rs, offset);
-+    gen_base_offset_addr_tl(ctx, t0, rs, offset);
-     gen_op_addr_add(ctx, t0, cpu_gpr[rd], t0);
- 
-     switch (opc) {
-@@ -4148,7 +4148,7 @@ static void gen_loongson_lsdc2(DisasContext *ctx, int rt,
-         gen_store_gpr_tl(t0, rt);
-         break;
-     case OPC_GSLWX:
--        gen_base_offset_addr(ctx, t0, rs, offset);
-+        gen_base_offset_addr_tl(ctx, t0, rs, offset);
-         if (rd) {
-             gen_op_addr_add(ctx, t0, cpu_gpr[rd], t0);
-         }
-@@ -4158,7 +4158,7 @@ static void gen_loongson_lsdc2(DisasContext *ctx, int rt,
-         break;
- #if defined(TARGET_MIPS64)
-     case OPC_GSLDX:
--        gen_base_offset_addr(ctx, t0, rs, offset);
-+        gen_base_offset_addr_tl(ctx, t0, rs, offset);
-         if (rd) {
-             gen_op_addr_add(ctx, t0, cpu_gpr[rd], t0);
-         }
-@@ -4168,7 +4168,7 @@ static void gen_loongson_lsdc2(DisasContext *ctx, int rt,
-         break;
- #endif
-     case OPC_GSLWXC1:
--        gen_base_offset_addr(ctx, t0, rs, offset);
-+        gen_base_offset_addr_tl(ctx, t0, rs, offset);
-         if (rd) {
-             gen_op_addr_add(ctx, t0, cpu_gpr[rd], t0);
-         }
-@@ -4179,7 +4179,7 @@ static void gen_loongson_lsdc2(DisasContext *ctx, int rt,
-         break;
- #if defined(TARGET_MIPS64)
-     case OPC_GSLDXC1:
--        gen_base_offset_addr(ctx, t0, rs, offset);
-+        gen_base_offset_addr_tl(ctx, t0, rs, offset);
-         if (rd) {
-             gen_op_addr_add(ctx, t0, cpu_gpr[rd], t0);
-         }
-@@ -11229,7 +11229,7 @@ static void gen_cache_operation(DisasContext *ctx, uint32_t op, int base,
- {
-     TCGv_i32 t0 = tcg_constant_i32(op);
-     TCGv t1 = tcg_temp_new();
--    gen_base_offset_addr(ctx, t1, base, offset);
-+    gen_base_offset_addr_tl(ctx, t1, base, offset);
-     gen_helper_cache(tcg_env, t1, t0);
+@@ -1415,7 +1415,7 @@ int get_fp_bit(int cc)
  }
  
-diff --git a/target/mips/tcg/tx79_translate.c b/target/mips/tcg/tx79_translate.c
-index 90d63e5dfc4..2694f41a318 100644
---- a/target/mips/tcg/tx79_translate.c
-+++ b/target/mips/tcg/tx79_translate.c
-@@ -332,7 +332,7 @@ static bool trans_LQ(DisasContext *ctx, arg_i *a)
-     t0 = tcg_temp_new_i64();
-     addr = tcg_temp_new();
+ /* Addresses computation */
+-void gen_op_addr_add(DisasContext *ctx, TCGv ret, TCGv arg0, TCGv arg1)
++void gen_op_addr_add_tl(DisasContext *ctx, TCGv ret, TCGv arg0, TCGv arg1)
+ {
+     tcg_gen_add_tl(ret, arg0, arg1);
  
--    gen_base_offset_addr(ctx, addr, a->base, a->offset);
-+    gen_base_offset_addr_tl(ctx, addr, a->base, a->offset);
-     /*
-      * Clear least-significant four bits of the effective
-      * address, effectively creating an aligned address.
-@@ -355,7 +355,7 @@ static bool trans_SQ(DisasContext *ctx, arg_i *a)
-     TCGv_i64 t0 = tcg_temp_new_i64();
-     TCGv addr = tcg_temp_new();
+@@ -1426,7 +1426,7 @@ void gen_op_addr_add(DisasContext *ctx, TCGv ret, TCGv arg0, TCGv arg1)
+ #endif
+ }
  
--    gen_base_offset_addr(ctx, addr, a->base, a->offset);
-+    gen_base_offset_addr_tl(ctx, addr, a->base, a->offset);
-     /*
-      * Clear least-significant four bits of the effective
-      * address, effectively creating an aligned address.
-diff --git a/target/mips/tcg/micromips_translate.c.inc b/target/mips/tcg/micromips_translate.c.inc
-index cb3dbd264a0..69289bc13bb 100644
---- a/target/mips/tcg/micromips_translate.c.inc
-+++ b/target/mips/tcg/micromips_translate.c.inc
-@@ -702,7 +702,7 @@ static void gen_ldst_multiple(DisasContext *ctx, uint32_t opc, int reglist,
+-void gen_op_addr_addi(DisasContext *ctx, TCGv ret, TCGv base, target_long ofs)
++void gen_op_addr_addi_tl(DisasContext *ctx, TCGv ret, TCGv base, target_long ofs)
+ {
+     tcg_gen_addi_tl(ret, base, ofs);
  
+@@ -1952,7 +1952,7 @@ void gen_base_offset_addr_tl(DisasContext *ctx, TCGv addr, int base, int offset)
+         gen_load_gpr_tl(addr, base);
+     } else {
+         tcg_gen_movi_tl(addr, offset);
+-        gen_op_addr_add(ctx, addr, cpu_gpr[base], addr);
++        gen_op_addr_add_tl(ctx, addr, cpu_gpr[base], addr);
+     }
+ }
+ 
+@@ -2075,14 +2075,14 @@ static void gen_ld(DisasContext *ctx, uint32_t opc,
+         break;
+     case OPC_LDPC:
+         t1 = tcg_constant_tl(pc_relative_pc(ctx));
+-        gen_op_addr_add(ctx, t0, t0, t1);
++        gen_op_addr_add_tl(ctx, t0, t0, t1);
+         tcg_gen_qemu_ld_tl(t0, t0, mem_idx, mo_endian(ctx) | MO_UQ);
+         gen_store_gpr_tl(t0, rt);
+         break;
+ #endif
+     case OPC_LWPC:
+         t1 = tcg_constant_tl(pc_relative_pc(ctx));
+-        gen_op_addr_add(ctx, t0, t0, t1);
++        gen_op_addr_add_tl(ctx, t0, t0, t1);
+         tcg_gen_qemu_ld_tl(t0, t0, mem_idx, mo_endian(ctx) | MO_SL);
+         gen_store_gpr_tl(t0, rt);
+         break;
+@@ -4135,7 +4135,7 @@ static void gen_loongson_lsdc2(DisasContext *ctx, int rt,
      t0 = tcg_temp_new();
  
--    gen_base_offset_addr(ctx, t0, base, offset);
-+    gen_base_offset_addr_tl(ctx, t0, base, offset);
- 
-     t1 = tcg_constant_tl(reglist);
-     t2 = tcg_constant_i32(ctx->mem_idx);
-@@ -969,7 +969,7 @@ static void gen_ldst_pair(DisasContext *ctx, uint32_t opc, int rd,
-     t0 = tcg_temp_new();
-     t1 = tcg_temp_new();
- 
--    gen_base_offset_addr(ctx, t0, base, offset);
-+    gen_base_offset_addr_tl(ctx, t0, base, offset);
+     gen_base_offset_addr_tl(ctx, t0, rs, offset);
+-    gen_op_addr_add(ctx, t0, cpu_gpr[rd], t0);
++    gen_op_addr_add_tl(ctx, t0, cpu_gpr[rd], t0);
  
      switch (opc) {
-     case LWP:
+     case OPC_GSLBX:
+@@ -4150,7 +4150,7 @@ static void gen_loongson_lsdc2(DisasContext *ctx, int rt,
+     case OPC_GSLWX:
+         gen_base_offset_addr_tl(ctx, t0, rs, offset);
+         if (rd) {
+-            gen_op_addr_add(ctx, t0, cpu_gpr[rd], t0);
++            gen_op_addr_add_tl(ctx, t0, cpu_gpr[rd], t0);
+         }
+         tcg_gen_qemu_ld_tl(t0, t0, ctx->mem_idx, mo_endian(ctx) | MO_SL |
+                            ctx->default_tcg_memop_mask);
+@@ -4160,7 +4160,7 @@ static void gen_loongson_lsdc2(DisasContext *ctx, int rt,
+     case OPC_GSLDX:
+         gen_base_offset_addr_tl(ctx, t0, rs, offset);
+         if (rd) {
+-            gen_op_addr_add(ctx, t0, cpu_gpr[rd], t0);
++            gen_op_addr_add_tl(ctx, t0, cpu_gpr[rd], t0);
+         }
+         tcg_gen_qemu_ld_tl(t0, t0, ctx->mem_idx, mo_endian(ctx) | MO_UQ |
+                            ctx->default_tcg_memop_mask);
+@@ -4170,7 +4170,7 @@ static void gen_loongson_lsdc2(DisasContext *ctx, int rt,
+     case OPC_GSLWXC1:
+         gen_base_offset_addr_tl(ctx, t0, rs, offset);
+         if (rd) {
+-            gen_op_addr_add(ctx, t0, cpu_gpr[rd], t0);
++            gen_op_addr_add_tl(ctx, t0, cpu_gpr[rd], t0);
+         }
+         fp0 = tcg_temp_new_i32();
+         tcg_gen_qemu_ld_i32(fp0, t0, ctx->mem_idx, mo_endian(ctx) | MO_SL |
+@@ -4181,7 +4181,7 @@ static void gen_loongson_lsdc2(DisasContext *ctx, int rt,
+     case OPC_GSLDXC1:
+         gen_base_offset_addr_tl(ctx, t0, rs, offset);
+         if (rd) {
+-            gen_op_addr_add(ctx, t0, cpu_gpr[rd], t0);
++            gen_op_addr_add_tl(ctx, t0, cpu_gpr[rd], t0);
+         }
+         tcg_gen_qemu_ld_tl(t0, t0, ctx->mem_idx, mo_endian(ctx) | MO_UQ |
+                            ctx->default_tcg_memop_mask);
+@@ -10550,7 +10550,7 @@ static void gen_flt3_ldst(DisasContext *ctx, uint32_t opc,
+     } else if (index == 0) {
+         gen_load_gpr_tl(t0, base);
+     } else {
+-        gen_op_addr_add(ctx, t0, cpu_gpr[base], cpu_gpr[index]);
++        gen_op_addr_add_tl(ctx, t0, cpu_gpr[base], cpu_gpr[index]);
+     }
+     /*
+      * Don't do NOP if destination is zero: we must perform the actual
+@@ -11050,7 +11050,7 @@ static void gen_compute_compact_branch(DisasContext *ctx, uint32_t opc,
+             TCGv tbase = tcg_temp_new();
+ 
+             gen_load_gpr_tl(tbase, rt);
+-            gen_op_addr_addi(ctx, btarget, tbase, offset);
++            gen_op_addr_addi_tl(ctx, btarget, tbase, offset);
+         }
+         break;
+     default:
+@@ -11253,7 +11253,7 @@ void gen_ldxs(DisasContext *ctx, int base, int index, int rd)
+     if (index != 0) {
+         gen_load_gpr_tl(t1, index);
+         tcg_gen_shli_tl(t1, t1, 2);
+-        gen_op_addr_add(ctx, t0, t1, t0);
++        gen_op_addr_add_tl(ctx, t0, t1, t0);
+     }
+ 
+     tcg_gen_qemu_ld_tl(t1, t0, ctx->mem_idx, mo_endian(ctx) | MO_SL);
+@@ -11338,7 +11338,7 @@ static void gen_mips_lx(DisasContext *ctx, uint32_t opc,
+     } else if (offset == 0) {
+         gen_load_gpr_tl(t0, base);
+     } else {
+-        gen_op_addr_add(ctx, t0, cpu_gpr[base], cpu_gpr[offset]);
++        gen_op_addr_add_tl(ctx, t0, cpu_gpr[base], cpu_gpr[offset]);
+     }
+ 
+     switch (opc) {
+diff --git a/target/mips/tcg/micromips_translate.c.inc b/target/mips/tcg/micromips_translate.c.inc
+index 69289bc13bb..fb7e6c8ddd9 100644
+--- a/target/mips/tcg/micromips_translate.c.inc
++++ b/target/mips/tcg/micromips_translate.c.inc
+@@ -980,7 +980,7 @@ static void gen_ldst_pair(DisasContext *ctx, uint32_t opc, int rd,
+         tcg_gen_qemu_ld_tl(t1, t0, ctx->mem_idx, mo_endian(ctx) | MO_SL |
+                            ctx->default_tcg_memop_mask);
+         gen_store_gpr_tl(t1, rd);
+-        gen_op_addr_addi(ctx, t0, t0, 4);
++        gen_op_addr_addi_tl(ctx, t0, t0, 4);
+         tcg_gen_qemu_ld_tl(t1, t0, ctx->mem_idx, mo_endian(ctx) | MO_SL |
+                            ctx->default_tcg_memop_mask);
+         gen_store_gpr_tl(t1, rd + 1);
+@@ -989,7 +989,7 @@ static void gen_ldst_pair(DisasContext *ctx, uint32_t opc, int rd,
+         gen_load_gpr_tl(t1, rd);
+         tcg_gen_qemu_st_tl(t1, t0, ctx->mem_idx, mo_endian(ctx) | MO_UL |
+                            ctx->default_tcg_memop_mask);
+-        gen_op_addr_addi(ctx, t0, t0, 4);
++        gen_op_addr_addi_tl(ctx, t0, t0, 4);
+         gen_load_gpr_tl(t1, rd + 1);
+         tcg_gen_qemu_st_tl(t1, t0, ctx->mem_idx, mo_endian(ctx) | MO_UL |
+                            ctx->default_tcg_memop_mask);
+@@ -1003,7 +1003,7 @@ static void gen_ldst_pair(DisasContext *ctx, uint32_t opc, int rd,
+         tcg_gen_qemu_ld_tl(t1, t0, ctx->mem_idx, mo_endian(ctx) | MO_UQ |
+                            ctx->default_tcg_memop_mask);
+         gen_store_gpr_tl(t1, rd);
+-        gen_op_addr_addi(ctx, t0, t0, 8);
++        gen_op_addr_addi_tl(ctx, t0, t0, 8);
+         tcg_gen_qemu_ld_tl(t1, t0, ctx->mem_idx, mo_endian(ctx) | MO_UQ |
+                            ctx->default_tcg_memop_mask);
+         gen_store_gpr_tl(t1, rd + 1);
+@@ -1012,7 +1012,7 @@ static void gen_ldst_pair(DisasContext *ctx, uint32_t opc, int rd,
+         gen_load_gpr_tl(t1, rd);
+         tcg_gen_qemu_st_tl(t1, t0, ctx->mem_idx, mo_endian(ctx) | MO_UQ |
+                            ctx->default_tcg_memop_mask);
+-        gen_op_addr_addi(ctx, t0, t0, 8);
++        gen_op_addr_addi_tl(ctx, t0, t0, 8);
+         gen_load_gpr_tl(t1, rd + 1);
+         tcg_gen_qemu_st_tl(t1, t0, ctx->mem_idx, mo_endian(ctx) | MO_UQ |
+                            ctx->default_tcg_memop_mask);
 diff --git a/target/mips/tcg/mips16e_translate.c.inc b/target/mips/tcg/mips16e_translate.c.inc
-index ceb41be0c26..754a5f7be4c 100644
+index 754a5f7be4c..7af83e77280 100644
 --- a/target/mips/tcg/mips16e_translate.c.inc
 +++ b/target/mips/tcg/mips16e_translate.c.inc
-@@ -179,25 +179,25 @@ static void gen_mips16_save(DisasContext *ctx,
+@@ -131,7 +131,7 @@ static void decr_and_store(DisasContext *ctx, unsigned regidx, TCGv t0)
+ {
+     TCGv t1 = tcg_temp_new();
  
-     switch (args) {
-     case 4:
--        gen_base_offset_addr(ctx, t0, 29, 12);
-+        gen_base_offset_addr_tl(ctx, t0, 29, 12);
-         gen_load_gpr_tl(t1, 7);
-         tcg_gen_qemu_st_tl(t1, t0, ctx->mem_idx, mo_endian(ctx) | MO_UL |
-                            ctx->default_tcg_memop_mask);
-         /* Fall through */
-     case 3:
--        gen_base_offset_addr(ctx, t0, 29, 8);
-+        gen_base_offset_addr_tl(ctx, t0, 29, 8);
-         gen_load_gpr_tl(t1, 6);
-         tcg_gen_qemu_st_tl(t1, t0, ctx->mem_idx, mo_endian(ctx) | MO_UL |
-                            ctx->default_tcg_memop_mask);
-         /* Fall through */
-     case 2:
--        gen_base_offset_addr(ctx, t0, 29, 4);
-+        gen_base_offset_addr_tl(ctx, t0, 29, 4);
-         gen_load_gpr_tl(t1, 5);
-         tcg_gen_qemu_st_tl(t1, t0, ctx->mem_idx, mo_endian(ctx) | MO_UL |
-                            ctx->default_tcg_memop_mask);
-         /* Fall through */
-     case 1:
--        gen_base_offset_addr(ctx, t0, 29, 0);
-+        gen_base_offset_addr_tl(ctx, t0, 29, 0);
-         gen_load_gpr_tl(t1, 4);
-         tcg_gen_qemu_st_tl(t1, t0, ctx->mem_idx, mo_endian(ctx) | MO_UL |
-                            ctx->default_tcg_memop_mask);
+-    gen_op_addr_addi(ctx, t0, t0, -4);
++    gen_op_addr_addi_tl(ctx, t0, t0, -4);
+     gen_load_gpr_tl(t1, regidx);
+     tcg_gen_qemu_st_tl(t1, t0, ctx->mem_idx, mo_endian(ctx) | MO_UL |
+                        ctx->default_tcg_memop_mask);
+@@ -283,7 +283,7 @@ static void gen_mips16_save(DisasContext *ctx,
+         }
+     }
+ 
+-    gen_op_addr_addi(ctx, cpu_gpr[29], cpu_gpr[29], -framesize);
++    gen_op_addr_addi_tl(ctx, cpu_gpr[29], cpu_gpr[29], -framesize);
+ }
+ 
+ static void decr_and_load(DisasContext *ctx, unsigned regidx, TCGv t0)
+@@ -292,7 +292,7 @@ static void decr_and_load(DisasContext *ctx, unsigned regidx, TCGv t0)
+     TCGv t2 = tcg_temp_new();
+ 
+     tcg_gen_movi_tl(t2, -4);
+-    gen_op_addr_add(ctx, t0, t0, t2);
++    gen_op_addr_add_tl(ctx, t0, t0, t2);
+     tcg_gen_qemu_ld_tl(t1, t0, ctx->mem_idx, MO_TE | MO_SL |
+                        ctx->default_tcg_memop_mask);
+     gen_store_gpr_tl(t1, regidx);
+@@ -306,7 +306,7 @@ static void gen_mips16_restore(DisasContext *ctx,
+     int astatic;
+     TCGv t0 = tcg_temp_new();
+ 
+-    gen_op_addr_addi(ctx, t0, cpu_gpr[29], -framesize);
++    gen_op_addr_addi_tl(ctx, t0, cpu_gpr[29], -framesize);
+ 
+     if (do_ra) {
+         decr_and_load(ctx, 31, t0);
+@@ -386,7 +386,7 @@ static void gen_mips16_restore(DisasContext *ctx,
+         }
+     }
+ 
+-    gen_op_addr_addi(ctx, cpu_gpr[29], cpu_gpr[29], -framesize);
++    gen_op_addr_addi_tl(ctx, cpu_gpr[29], cpu_gpr[29], -framesize);
+ }
+ 
+ #if defined(TARGET_MIPS64)
 diff --git a/target/mips/tcg/nanomips_translate.c.inc b/target/mips/tcg/nanomips_translate.c.inc
-index b78381bcf54..950a4c23e70 100644
+index 950a4c23e70..2ad936c66d4 100644
 --- a/target/mips/tcg/nanomips_translate.c.inc
 +++ b/target/mips/tcg/nanomips_translate.c.inc
-@@ -997,7 +997,7 @@ static void gen_llwp(DisasContext *ctx, uint32_t base, int16_t offset,
-     TCGv tmp1 = tcg_temp_new();
-     TCGv tmp2 = tcg_temp_new();
+@@ -1058,7 +1058,7 @@ static void gen_scwp(DisasContext *ctx, uint32_t base, int16_t offset,
  
--    gen_base_offset_addr(ctx, taddr, base, offset);
-+    gen_base_offset_addr_tl(ctx, taddr, base, offset);
-     tcg_gen_qemu_ld_i64(tval, taddr, ctx->mem_idx,
-                         mo_endian(ctx) | MO_UQ | MO_ALIGN);
-     if (disas_is_bigendian(ctx)) {
-@@ -1024,7 +1024,7 @@ static void gen_scwp(DisasContext *ctx, uint32_t base, int16_t offset,
-     TCGLabel *lab_fail = gen_new_label();
-     TCGLabel *lab_done = gen_new_label();
+ static void gen_adjust_sp(DisasContext *ctx, int u)
+ {
+-    gen_op_addr_addi(ctx, cpu_gpr[29], cpu_gpr[29], u);
++    gen_op_addr_addi_tl(ctx, cpu_gpr[29], cpu_gpr[29], u);
+ }
  
--    gen_base_offset_addr(ctx, taddr, base, offset);
-+    gen_base_offset_addr_tl(ctx, taddr, base, offset);
+ static void gen_save(DisasContext *ctx, uint8_t rt, uint8_t count,
+@@ -2398,7 +2398,7 @@ static void gen_compute_nanomips_pbalrsc_branch(DisasContext *ctx, int rs,
  
-     tcg_gen_ld_tl(lladdr, tcg_env, offsetof(CPUMIPSState, lladdr));
-     tcg_gen_brcond_tl(TCG_COND_NE, taddr, lladdr, lab_fail);
-@@ -1072,7 +1072,7 @@ static void gen_save(DisasContext *ctx, uint8_t rt, uint8_t count,
-         bool use_gp = gp && (counter == count - 1);
-         int this_rt = use_gp ? 28 : (rt & 0x10) | ((rt + counter) & 0x1f);
-         int this_offset = -((counter + 1) << 2);
--        gen_base_offset_addr(ctx, va, 29, this_offset);
-+        gen_base_offset_addr_tl(ctx, va, 29, this_offset);
-         gen_load_gpr_tl(t0, this_rt);
-         tcg_gen_qemu_st_tl(t0, va, ctx->mem_idx,
-                           mo_endian(ctx) | MO_UL | ctx->default_tcg_memop_mask);
-@@ -1094,7 +1094,7 @@ static void gen_restore(DisasContext *ctx, uint8_t rt, uint8_t count,
-         bool use_gp = gp && (counter == count - 1);
-         int this_rt = use_gp ? 28 : (rt & 0x10) | ((rt + counter) & 0x1f);
-         int this_offset = u - ((counter + 1) << 2);
--        gen_base_offset_addr(ctx, va, 29, this_offset);
-+        gen_base_offset_addr_tl(ctx, va, 29, this_offset);
-         tcg_gen_qemu_ld_tl(t0, va, ctx->mem_idx,
-                           mo_endian(ctx) | MO_SL | ctx->default_tcg_memop_mask);
-         tcg_gen_ext32s_tl(t0, t0);
-@@ -4100,7 +4100,7 @@ static int decode_nanomips_32_48_opc(CPUMIPSState *env, DisasContext *ctx)
-                         TCGv t0 = tcg_temp_new();
-                         TCGv t1 = tcg_temp_new();
+     /* calculate btarget */
+     tcg_gen_shli_tl(t0, t0, 1);
+-    gen_op_addr_add(ctx, btarget, tcg_constant_tl(ctx->base.pc_next + 4), t0);
++    gen_op_addr_add_tl(ctx, btarget, tcg_constant_tl(ctx->base.pc_next + 4), t0);
  
--                        gen_base_offset_addr(ctx, t0, rs, s);
-+                        gen_base_offset_addr_tl(ctx, t0, rs, s);
+     /* branch completion */
+     clear_branch_hflags(ctx);
+@@ -2453,7 +2453,7 @@ static void gen_compute_compact_branch_nm(DisasContext *ctx, uint32_t opc,
+             TCGv tbase = tcg_temp_new();
  
-                         switch (extract32(ctx->opcode, 11, 4)) {
-                         case NM_UALH:
-@@ -4286,7 +4286,7 @@ static int decode_nanomips_32_48_opc(CPUMIPSState *env, DisasContext *ctx)
-                         int this_rt = ((rt + counter) & 0x1f) | (rt & 0x10);
-                         int this_offset = offset + (counter << 2);
+             gen_load_gpr_tl(tbase, rt);
+-            gen_op_addr_addi(ctx, btarget, tbase, offset);
++            gen_op_addr_addi_tl(ctx, btarget, tbase, offset);
+         }
+         break;
+     default:
+@@ -2617,7 +2617,7 @@ static void gen_p_lsx(DisasContext *ctx, int rd, int rs, int rt)
+             return;
+         }
+     }
+-    gen_op_addr_add(ctx, t0, t0, t1);
++    gen_op_addr_add_tl(ctx, t0, t0, t1);
  
--                        gen_base_offset_addr(ctx, va, rs, this_offset);
-+                        gen_base_offset_addr_tl(ctx, va, rs, this_offset);
- 
-                         switch (extract32(ctx->opcode, 11, 1)) {
-                         case NM_LWM:
+     switch (extract32(ctx->opcode, 7, 4)) {
+     case NM_LBX:
+@@ -3654,7 +3654,7 @@ static int decode_nanomips_32_48_opc(CPUMIPSState *env, DisasContext *ctx)
+         case NM_ADDIUGP_W:
+             if (rt != 0) {
+                 offset = extract32(ctx->opcode, 0, 21);
+-                gen_op_addr_addi(ctx, cpu_gpr[rt], cpu_gpr[28], offset);
++                gen_op_addr_addi_tl(ctx, cpu_gpr[rt], cpu_gpr[28], offset);
+             }
+             break;
+         case NM_LWGP:
+@@ -3689,7 +3689,7 @@ static int decode_nanomips_32_48_opc(CPUMIPSState *env, DisasContext *ctx)
+             case NM_ADDIUGP48:
+                 check_nms(ctx);
+                 if (rt != 0) {
+-                    gen_op_addr_addi(ctx, cpu_gpr[rt], cpu_gpr[28], addr_off);
++                    gen_op_addr_addi_tl(ctx, cpu_gpr[rt], cpu_gpr[28], addr_off);
+                 }
+                 break;
+             case NM_ADDIUPC48:
+@@ -3921,7 +3921,7 @@ static int decode_nanomips_32_48_opc(CPUMIPSState *env, DisasContext *ctx)
+                 break;
+             case NM_ADDIUGP_B:
+                 if (rt != 0) {
+-                    gen_op_addr_addi(ctx, cpu_gpr[rt], cpu_gpr[28], u);
++                    gen_op_addr_addi_tl(ctx, cpu_gpr[rt], cpu_gpr[28], u);
+                 }
+                 break;
+             case NM_P_GP_LH:
 -- 
 2.45.2
 
