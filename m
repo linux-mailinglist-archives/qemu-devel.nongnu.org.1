@@ -2,77 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E0FA9D9C02
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Nov 2024 18:03:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 87F829D9C09
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Nov 2024 18:03:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tFyxg-0007jl-1b; Tue, 26 Nov 2024 12:02:52 -0500
+	id 1tFyxi-0007le-Ez; Tue, 26 Nov 2024 12:02:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tFyxd-0007iD-96
+ id 1tFyxd-0007id-VC
  for qemu-devel@nongnu.org; Tue, 26 Nov 2024 12:02:49 -0500
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tFyxb-00025h-Ju
- for qemu-devel@nongnu.org; Tue, 26 Nov 2024 12:02:48 -0500
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-434a7ee3d60so4435225e9.1
+ id 1tFyxc-00025j-3v
+ for qemu-devel@nongnu.org; Tue, 26 Nov 2024 12:02:49 -0500
+Received: by mail-wr1-x42e.google.com with SMTP id
+ ffacd0b85a97d-382610c7116so3155432f8f.0
  for <qemu-devel@nongnu.org>; Tue, 26 Nov 2024 09:02:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1732640566; x=1733245366; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=KhNpoYBpBgMtrTtvaiAKYKeBjehZXk/NeYq/vlyz2aU=;
- b=DFlE3bZ41KcVzWlFuqF/kujhTptk1RD9O6RLDxqrcbB5Wxr/fTYAxWE57zhvclZukv
- OdphXmCW3ltq+Xqr4LT6tKgKMWctD99/n/bR9pfYdg6SxaI7JDyxnR+hC6ysVS9iSEJA
- mYo0MIj2XLkmUtJsCwYeJAE406ba6O5/4/OB9pUwJzr2RSxk5m4U9/5UN5tBbRPoHZYN
- 0/32KsFYr4PqH2D4HALS6EyoeO0D3M7OAzWscUkBlgrt+0+nGSL5E2Q/eNJ/V4pJ6HG0
- iC3/hqpLMxIzXES+ozLzT46IP+KHHt/9wgTmwBczHonFuBoOGaRqNeN/zs6ng/YkG331
- GMrw==
+ :reply-to; bh=Bia3Nu7mTs0/BpblAmMLwXurER5c+Mz/qR+4adC7kjU=;
+ b=IU2mHCcQ5dlkAAZTitleBHD92plO4NoMit/+3XiQa+a/UcHk59Ihc5b+Gd3C6+F/da
+ OlmR7J00bKt4reOIS+pysp1HcdPQ+3105noJgxD8PO8wl6tef3yCpuS7SXyg+UZRvHO9
+ Yqa8fVIZffM7YLN40tIDca6VSnyrsj0iPauoAIl3LUAC6OLKAUPeiKb4hxZnp757kQAp
+ qoj4SMOWaMBdv0G4o5IiglqWw5F49q+s1pZZsqrFwSuvPqxanVlR22QOvgt+tgsttEyY
+ KVeqJ3oNSDziXDdMX/DF9dkwQkqQV2Z9zifLbdMHynKNtW3fw4GXXUzzaPV4fMn9s3u4
+ hHiA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1732640566; x=1733245366;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=KhNpoYBpBgMtrTtvaiAKYKeBjehZXk/NeYq/vlyz2aU=;
- b=dkNu+amkqm4tK/2P4vGiiAIs79oryWLOCWEHzy0qDF6ZeNT7/sYGE05N3t+mmzh+Fc
- J6EC4i9OauNKSsRxxo4/+czsyvvUDAfh+fP62j5ywRxOP25bgd/AE2L4TBV2p+RJ6TH3
- koPV1eWAxzV4y3roleEPdQHkYLcLXZ2wZS0IIz+MNahGJ/je3eZOL6x49NH5C2q0I1uj
- 5vpxqFZVvX/G40FyEXMBuzOQBmG7a4qsrpHhtb6EJhNTiA/m/iBmJdgUfST3mcxii5KC
- d/ywkwEXHnFVkeDfUXrUqTwdn6ZkktTXZIefmwJtjt1dA+jtIc904tdxB//nl5azEuSv
- auKQ==
-X-Gm-Message-State: AOJu0Yy0rFT77he2l+TSRs+GIhu95rlhdmnKUs0r8burEW5HInpJwyv0
- Aln3fLa7gsLjLvm7ooc9TkJRhsL2ObUmRYRuW6ZlurH40o873Q/RC2LqQ2foOdNcd803uHX+MS7
- i
-X-Gm-Gg: ASbGncs2DEpUtg2AliRx469dh6Y2TSn4VRiY0VSwo50Vbu97lMSycqBMYAdv2vYluWQ
- TCIYUOsISenHLuM4rMc2luPkkwoArvtpA05kgLFVGQVtsA0FWJOjpbpDhHWMqRGrrjGKg+CPNw/
- 9j9Y4pWA4fZAjQYYXl4le3bIgTzNRsmZfuIQlvc9a5KVTfA1LEDrvd8BvpfKWRAEcK0gJZdtJm4
- 6lD2Qg74VPzOP/gdAbIn0uQpEtgAzdmBgTmjMiS5oMLqTBxGHengtyf
-X-Google-Smtp-Source: AGHT+IGPWZd1rG/6U/gx0VOAQJPnTPI2YZzhOm66JGyu5vyM0qwyvxx6PsVQ07GPfnzaxMxxLv+BJQ==
-X-Received: by 2002:a05:600c:3b03:b0:42c:b603:422 with SMTP id
- 5b1f17b1804b1-434a4e7ac3emr35145915e9.8.1732640552538; 
- Tue, 26 Nov 2024 09:02:32 -0800 (PST)
+ bh=Bia3Nu7mTs0/BpblAmMLwXurER5c+Mz/qR+4adC7kjU=;
+ b=KwooMzjCPFmSLxxTr5ZsEWc8HqaHZn/tYHFuHcb8blTIg4Wg+lIv0ytuR8+PugDULn
+ c4Y5jb5JPbGe95dXeFMfsgQOgXE193jmkVasu3wiLisPjWyJV+gsJLb6Sa3Ig+Vc5NEq
+ h0QhGmGMH2lfeK7I6546iwOuIS6KNT+js37QkebmKb8bGhhNghU1sPznO/RD9cosl75o
+ NCEk6f1ifoqtq3MGRZaLAQ2QRtX2o1BcnCYmCkDnV0C1CpgTutslsNGGnDW/z7uAQDxB
+ N8xjcLQ5EdZNLYnqr5b25Ygurq6MRaGboNiF09i0CTVTAb5mpVhdEjSjxE2HJr1y15N8
+ 8dPA==
+X-Gm-Message-State: AOJu0Yxk+0AQrhLQu0YYPe7mrvARuvwH8iJuCs+G1zmdtZd+a8pgqVIw
+ BTyIhYHI6Ar4VMNyXMVIxRB2fmw/6GLW5aU1fgdSdnav9Px6fdmXPecamOHqbb25Em6KWUE5+qU
+ w
+X-Gm-Gg: ASbGncu4cvDLf82o8NaOj8yJIsb0N0rqqUG/4xhVMeePjy0NscWmdd9YSmN59XF0KHF
+ g/CEfmRDu8SNlWFBuW1FI9tl4SYg39sNCJblmdl33sesidAbHG25vTg5EU8K6OvZ67eDc/Cz6Ex
+ 7iUo1WEQB5mfGTo/w0+mucf4Li8PHlx0rW1HgGjIKoiC4wDO+wCnZN/UuM5ots5Mqth3OaI6l4F
+ JfyR5oCdmWeSF7dnlQ5diC5pZ3lar6sJ3LrIFN0jsee1tkE6XX7WGyZ
+X-Google-Smtp-Source: AGHT+IFBJTnwIjGEQcv3Q1Y1pKLdamk4Zr+ulniyLFiRryAYAoC0jnDo03NEXNrLVP+SYYLecxmkog==
+X-Received: by 2002:a05:6000:a18:b0:382:49f9:74bb with SMTP id
+ ffacd0b85a97d-38260b8c87cmr16058185f8f.35.1732640566420; 
+ Tue, 26 Nov 2024 09:02:46 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-434a36c7a9fsm43017865e9.44.2024.11.26.09.02.32
+ 5b1f17b1804b1-434a36c7a9fsm43017865e9.44.2024.11.26.09.02.46
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 26 Nov 2024 09:02:32 -0800 (PST)
+ Tue, 26 Nov 2024 09:02:46 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 7/9] docs/system/arm/: add FEAT_DoubleLock
-Date: Tue, 26 Nov 2024 17:02:22 +0000
-Message-Id: <20241126170224.2926917-8-peter.maydell@linaro.org>
+Subject: [PULL 8/9] docs/system/arm/fby35: update link to product page
+Date: Tue, 26 Nov 2024 17:02:23 +0000
+Message-Id: <20241126170224.2926917-9-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241126170224.2926917-1-peter.maydell@linaro.org>
 References: <20241126170224.2926917-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x330.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,33 +98,29 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
-We already implement FEAT_DoubleLock (see commit f94a6df5dd6a7) when
-the ID registers call for it.  This feature is actually one that must
-*not* be implemented in v9.0, but since our documentation lists
-everything we can emulate, we should include FEAT_DoubleLock in the
-list.
-
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Message-id: 20241122225049.1617774-7-pierrick.bouvier@linaro.org
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-[PMM: expand commit message]
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-id: 20241122225049.1617774-8-pierrick.bouvier@linaro.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- docs/system/arm/emulation.rst | 1 +
- 1 file changed, 1 insertion(+)
+ docs/system/arm/fby35.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/docs/system/arm/emulation.rst b/docs/system/arm/emulation.rst
-index 47f5123a31d..38534dcdd32 100644
---- a/docs/system/arm/emulation.rst
-+++ b/docs/system/arm/emulation.rst
-@@ -37,6 +37,7 @@ the following architecture extensions:
- - FEAT_CSV3 (Cache speculation variant 3)
- - FEAT_DGH (Data gathering hint)
- - FEAT_DIT (Data Independent Timing instructions)
-+- FEAT_DoubleLock (Double Lock)
- - FEAT_DPB (DC CVAP instruction)
- - FEAT_DPB2 (DC CVADP instruction)
- - FEAT_Debugv8p1 (Debug with VHE)
+diff --git a/docs/system/arm/fby35.rst b/docs/system/arm/fby35.rst
+index 742b887d44c..bf6da6baa2a 100644
+--- a/docs/system/arm/fby35.rst
++++ b/docs/system/arm/fby35.rst
+@@ -12,7 +12,7 @@ include various compute accelerators (video, inferencing, etc). At the moment,
+ only the first server slot's BIC is included.
+ 
+ Yosemite v3.5 is itself a sled which fits into a 40U chassis, and 3 sleds
+-can be fit into a chassis. See `here <https://www.opencompute.org/products/423/wiwynn-yosemite-v3-server>`__
++can be fit into a chassis. See `here <https://www.opencompute.org/products-chiplets/237/wiwynn-yosemite-v3-server>`__
+ for an example.
+ 
+ In this generation, the BMC is an AST2600 and each BIC is an AST1030. The BMC
 -- 
 2.34.1
 
