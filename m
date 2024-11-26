@@ -2,63 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C22C9D962E
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Nov 2024 12:24:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 531949D963C
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Nov 2024 12:26:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tFted-0003ok-JK; Tue, 26 Nov 2024 06:22:53 -0500
+	id 1tFtfP-00041A-UA; Tue, 26 Nov 2024 06:23:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tFteS-0003mu-L0
- for qemu-devel@nongnu.org; Tue, 26 Nov 2024 06:22:43 -0500
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tFted-0003uH-QH
+ for qemu-devel@nongnu.org; Tue, 26 Nov 2024 06:22:53 -0500
+Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tFteM-0002dm-Tg
- for qemu-devel@nongnu.org; Tue, 26 Nov 2024 06:22:37 -0500
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-434a8b94fb5so1170305e9.0
- for <qemu-devel@nongnu.org>; Tue, 26 Nov 2024 03:22:34 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tFteZ-0002gg-VJ
+ for qemu-devel@nongnu.org; Tue, 26 Nov 2024 06:22:50 -0500
+Received: by mail-wr1-x42b.google.com with SMTP id
+ ffacd0b85a97d-3824038142aso3555201f8f.2
+ for <qemu-devel@nongnu.org>; Tue, 26 Nov 2024 03:22:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1732620152; x=1733224952; darn=nongnu.org;
+ d=linaro.org; s=google; t=1732620166; x=1733224966; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ym7MlPUFYz2GU5YCplhDtE7b6ovE3xgVe6aZRCcPdv4=;
- b=O269jXpeoMK9d1++iTv+YTvOFcSfjM9awFg3fi93MDx5LY5PIBYYL2fxJTNi/PeMWK
- x2kewtuNbVV/z1r6AvUz2mE8nnoIq27syZTxNoddQktPcmloj1pmUQjuFdR78DlCsOyN
- qjD3N0wCN4BXh/mWKHZYo19e3OsqHUC35LlXpXIteTjvVTBo06DaQHd1M2V3k3GJMbZo
- JsEeAtCeKrVL1ZmCAsz8mgrJqS+aHGbAgIzsytwNqskzatFWdf9oX6KUy5eSLVAYza0y
- S1xyhxT51OyYJTmSyUpSn/9iUDwkN5CYQT8mWDUn+4Rgf/edkkQqEIzdgoH4nq77KKN7
- FFqA==
+ bh=V/FHFrkLjfSL+r0KQnjlYWTgmdb9j50qofDa5n4Bijs=;
+ b=P4SX3nJ8Vp6RJZ+ihkQdj6vdIKHHI1dbmNsq42BoCGN9fw9FCVwFCPhZqMvctY7AIq
+ 6jQiCN7JUjJAPJoShU9MBou4+IFRiGMgUnl/Ke7MZ7ZRqnzKjyZk0jdDshtjg8Xt9UCH
+ cCpmhpg8MEtYKMPWGAoRHbwS84HO7gE8gGN2/uURE/Bfmwrmh/mgcmFZ7nY2kbvSSx/F
+ y9QO2aXxDbmL2aKtfl+tH65IqlblSR/tt3o8v/xtnEzZSWBa5s+M85Uhtlrk0ITCpqNF
+ e9YifWPO+xtwtikySDHSgzXmlsaf4LtLJihCbir4hM3xVwDnEKb6rOA5Wy1jtx+PMtEm
+ C+bQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1732620152; x=1733224952;
+ d=1e100.net; s=20230601; t=1732620166; x=1733224966;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ym7MlPUFYz2GU5YCplhDtE7b6ovE3xgVe6aZRCcPdv4=;
- b=rKGiiqfEM2WqwRnq5WjlBvtohAPAWM8dUgR2lEtG3WITwOSow7w0Bj6yDYSKA+lbI+
- xP4EjUDEFnY1eZZY2tNrYMCsCKl0u87MQQBoKfSEI1E8JOQAzwJxBQKE4ZeDYG1w+1Cl
- j0r+pF+q/zn4PpY2tfnUSqznDjqHPk2n38GD+lNuKl7efSYzgUP//z/ZeMmXpXHlOKvj
- c0rejp9FM1zt/3ib8BCd9gYXJaDXfLDXknwiKpTDYSWymX9LqsbFR72bsdG/igUDeTxf
- GBYfOo3qWryr1BWSQa8Y/msn4DmpQeYTQu/Sh8uG6CAWCq5vjWkWx2H1zZwngwU2b4a+
- 8J/w==
-X-Gm-Message-State: AOJu0YzwLYZoh5n3X2KrlX5g8DVd7TkE58j9l9fAZLQmS7qiZ7lDUfvV
- njpQzeq3djOwFV2nokLUfqPwx0SlhFbKsiYuphTSLajoChy8Bon/ivE5Z6KJh6W5Lbn2A/r/PRf
- s
-X-Gm-Gg: ASbGncvi2ZczQ4XJIWT6jjGCEmoaezyEXiUeOQvedoON+6SjPvwsooTdcLW1X97/R8h
- zZ/Bl4LVQOMEW+GSrjiRHLfOLFaZl4M/tR0NKbd9F4eT14nldejEwyJIIts/W1tZx6cnKk9c5RO
- 3oqLqha1OTTv4K6ATRPrl6LgntkYmvt1vDQR4SyVNRv+h0x4A/dw71MsgS06kWCVDe1daNp7CUR
- xrYvBjM0wetYvjZhw0v6pb2YecuHAXhJLj8jAwZqtLcyUjA6o690L5CBeRWiqgfc/mgyNAt
-X-Google-Smtp-Source: AGHT+IFBBmx/zRqWz+0+3nZ5bzn94HIXIH1xaptS/bJKBgN/Ji0e/N+lfNjKX8nxRbW8D6cFnG6cKw==
-X-Received: by 2002:a7b:c85a:0:b0:431:15f1:421d with SMTP id
- 5b1f17b1804b1-434a4eb786dmr23408865e9.16.1732620152605; 
- Tue, 26 Nov 2024 03:22:32 -0800 (PST)
+ bh=V/FHFrkLjfSL+r0KQnjlYWTgmdb9j50qofDa5n4Bijs=;
+ b=fNL2qH7DmNr3o05LO+8ACrThQUX2HgBQTlHdLKhuKy3FxeqejUxS1IznDPteO0wgpe
+ Gi4G4SNK3flTIJMptqIM780Ozv1ocDaspjzZCac7fi21dq3kj1CvcOMYrJvDvPycAGPj
+ vJupvaQyfrRai3MpGUycDsV3wlEKiqvvrJb85MePqg2NVn7zJE7VxVeX0HRDhmBZC7S5
+ BjnMHDXYpD12njHGUDIQN6EjFHdU5snzRy4Dz7eJr4Qk9gHQZ1fV+YpslLTJXgWxaEhk
+ iuOTgoW/3mWgg1UAxtAKWXnM7a8PHKwq2wXnHaxUYhYv8T8KhJRIObaQ3K/qzTXAEhwL
+ 7Uqg==
+X-Gm-Message-State: AOJu0Yz9N1tHGUcpOeGeA05b0OO3j9tXquX6PBgvfA6GdACwqNOlnTSg
+ U/tsvMBzxJH+C8clTD9eRErD0l1Mm4yZQpRBMId6dniquA5VD5XAAMRYqwVEcZIE8wBqNg9urwj
+ R
+X-Gm-Gg: ASbGncv4TvM0eVIYYbtfcvqMEpBccAPqdXQI/77xw+NrjEQOj9gGYGc8z7ppB32elas
+ 0C/OVTNDO/S0jQEXhZSn1QAw0U6WAwtl5+94Lr3hnjvKodJC60O6ALema2GLeYms8eexvvuEpvc
+ q1J6GFZ/AOyBBKUmyTPR+z3V26uyng748wu7Xscj6cSuvazq22TMK+BjS8iNa6yPV6zlNWhvouq
+ QAZTD6oCt2S7TlDTcXCh0930xd6NUofjUNVLmg/wF04vwJ+JMWUQYEWLfXiZmmkq9a5elbV
+X-Google-Smtp-Source: AGHT+IFQD3d6AiS/0pziBy+6unSAZm4P726MrSNX2osV0nsY0tXODVnNZJr/byHSaMZMlw5SB6lpbw==
+X-Received: by 2002:a5d:6d01:0:b0:382:4c36:e072 with SMTP id
+ ffacd0b85a97d-38260b969b2mr13375617f8f.30.1732620165804; 
+ Tue, 26 Nov 2024 03:22:45 -0800 (PST)
 Received: from localhost.localdomain ([176.176.143.205])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3825fb3134bsm12970699f8f.58.2024.11.26.03.22.31
+ ffacd0b85a97d-3825fb264cdsm13228780f8f.49.2024.11.26.03.22.42
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 26 Nov 2024 03:22:32 -0800 (PST)
+ Tue, 26 Nov 2024 03:22:45 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, qemu-s390x@nongnu.org, Thomas Huth <thuth@redhat.com>,
@@ -67,18 +67,18 @@ Cc: qemu-ppc@nongnu.org, qemu-s390x@nongnu.org, Thomas Huth <thuth@redhat.com>,
  Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
  Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH-for-10.0 v2 03/13] hw/pci: Factor
- machine_refuses_bar_at_addr_0() helper out
-Date: Tue, 26 Nov 2024 12:22:02 +0100
-Message-ID: <20241126112212.64524-4-philmd@linaro.org>
+Subject: [PATCH-for-10.0 v2 04/13] hw/pci: Introduce
+ PCIBusFlag::PCI_BUS_BAR_AT_ADDR0_REFUSED
+Date: Tue, 26 Nov 2024 12:22:03 +0100
+Message-ID: <20241126112212.64524-5-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241126112212.64524-1-philmd@linaro.org>
 References: <20241126112212.64524-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,63 +101,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since we are going to re-use access to the
-MachineClass::pci_allow_0_address field, factor the
-current code as a new machine_refuses_bar_at_addr_0()
-helper. In pci_bar_address() invert 'allow_0_address'
-logic as 'bar_at_addr_0_refused'.
+Some machines need PCI buses to allow access at BAR0.
+Introduce the PCI_BUS_BAR_AT_ADDR0_REFUSED flag and the
+pci_bus_refuse_bar_at_addr_0() helper. Set the flag in
+pci_root_bus_internal_init() where all root buses are
+created.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/pci/pci.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ include/hw/pci/pci_bus.h | 6 ++++++
+ hw/pci/pci.c             | 5 ++++-
+ 2 files changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/hw/pci/pci.c b/hw/pci/pci.c
-index 1416ae202c3..e05f8a828bb 100644
---- a/hw/pci/pci.c
-+++ b/hw/pci/pci.c
-@@ -520,6 +520,13 @@ bool pci_bus_bypass_iommu(PCIBus *bus)
-     return host_bridge->bypass_iommu;
+diff --git a/include/hw/pci/pci_bus.h b/include/hw/pci/pci_bus.h
+index 6ecfe2e06d5..6d7bf682e8f 100644
+--- a/include/hw/pci/pci_bus.h
++++ b/include/hw/pci/pci_bus.h
+@@ -26,6 +26,7 @@ enum PCIBusFlag {
+     PCI_BUS_EXTENDED_CONFIG_SPACE                           = 0x0002,
+     /* This is a CXL Type BUS */
+     PCI_BUS_CXL                                             = 0x0004,
++    PCI_BUS_BAR_AT_ADDR0_REFUSED                            = 0x0008,
+ };
+ 
+ #define PCI_NO_PASID UINT32_MAX
+@@ -72,4 +73,9 @@ static inline bool pci_bus_allows_extended_config_space(PCIBus *bus)
+     return !!(bus->flags & PCI_BUS_EXTENDED_CONFIG_SPACE);
  }
  
-+static bool machine_refuses_bar_at_addr_0(void)
++static inline bool pci_bus_refuse_bar_at_addr_0(PCIBus *bus)
 +{
-+    MachineClass *mc = MACHINE_GET_CLASS(qdev_get_machine());
-+
-+    return !mc->pci_allow_0_address;
++    return !!(bus->flags & PCI_BUS_BAR_AT_ADDR0_REFUSED);
 +}
 +
- static void pci_root_bus_internal_init(PCIBus *bus, DeviceState *parent,
-                                        MemoryRegion *mem, MemoryRegion *io,
-                                        uint8_t devfn_min)
-@@ -1472,8 +1479,7 @@ pcibus_t pci_bar_address(PCIDevice *d,
+ #endif /* QEMU_PCI_BUS_H */
+diff --git a/hw/pci/pci.c b/hw/pci/pci.c
+index e05f8a828bb..27b66583e54 100644
+--- a/hw/pci/pci.c
++++ b/hw/pci/pci.c
+@@ -537,6 +537,9 @@ static void pci_root_bus_internal_init(PCIBus *bus, DeviceState *parent,
+     bus->address_space_mem = mem;
+     bus->address_space_io = io;
+     bus->flags |= PCI_BUS_IS_ROOT;
++    if (machine_refuses_bar_at_addr_0()) {
++        bus->flags |= PCI_BUS_BAR_AT_ADDR0_REFUSED;
++    }
+ 
+     /* host bridge */
+     QLIST_INIT(&bus->child);
+@@ -1479,7 +1482,7 @@ pcibus_t pci_bar_address(PCIDevice *d,
  {
      pcibus_t new_addr, last_addr;
      uint16_t cmd = pci_get_word(d->config + PCI_COMMAND);
--    MachineClass *mc = MACHINE_GET_CLASS(qdev_get_machine());
--    bool allow_0_address = mc->pci_allow_0_address;
-+    bool bar_at_addr_0_refused = machine_refuses_bar_at_addr_0();
+-    bool bar_at_addr_0_refused = machine_refuses_bar_at_addr_0();
++    bool bar_at_addr_0_refused = pci_bus_refuse_bar_at_addr_0(pci_get_bus(d));
  
      if (type & PCI_BASE_ADDRESS_SPACE_IO) {
          if (!(cmd & PCI_COMMAND_IO)) {
-@@ -1485,7 +1491,7 @@ pcibus_t pci_bar_address(PCIDevice *d,
-          * TODO: make priorities correct and remove this work around.
-          */
-         if (last_addr <= new_addr || last_addr >= UINT32_MAX ||
--            (!allow_0_address && new_addr == 0)) {
-+            (bar_at_addr_0_refused && new_addr == 0)) {
-             return PCI_BAR_UNMAPPED;
-         }
-         return new_addr;
-@@ -1506,7 +1512,7 @@ pcibus_t pci_bar_address(PCIDevice *d,
-        mappings, we handle specific values as invalid
-        mappings. */
-     if (last_addr <= new_addr || last_addr == PCI_BAR_UNMAPPED ||
--        (!allow_0_address && new_addr == 0)) {
-+        (bar_at_addr_0_refused && new_addr == 0)) {
-         return PCI_BAR_UNMAPPED;
-     }
- 
 -- 
 2.45.2
 
