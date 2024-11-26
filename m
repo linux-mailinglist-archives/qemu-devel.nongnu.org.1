@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 244F29D9C38
+	by mail.lfdr.de (Postfix) with ESMTPS id 81B279D9C3A
 	for <lists+qemu-devel@lfdr.de>; Tue, 26 Nov 2024 18:14:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tFz7u-0007BL-NT; Tue, 26 Nov 2024 12:13:26 -0500
+	id 1tFz7w-0007CO-BC; Tue, 26 Nov 2024 12:13:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1tFz7c-00077R-Rg; Tue, 26 Nov 2024 12:13:09 -0500
-Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
+ id 1tFz7g-00078V-6U; Tue, 26 Nov 2024 12:13:13 -0500
+Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1tFz7b-0004H9-2V; Tue, 26 Nov 2024 12:13:08 -0500
-Received: by mail-pl1-x62a.google.com with SMTP id
- d9443c01a7336-211fb27cc6bso58341695ad.0; 
- Tue, 26 Nov 2024 09:13:06 -0800 (PST)
+ id 1tFz7e-0004Hb-Cb; Tue, 26 Nov 2024 12:13:11 -0500
+Received: by mail-pl1-x62f.google.com with SMTP id
+ d9443c01a7336-21288ce11d7so46378785ad.2; 
+ Tue, 26 Nov 2024 09:13:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1732641185; x=1733245985; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1732641188; x=1733245988; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=SLDexDsLbCBWjIqcEZsS2lHV4veIfgCX+HAnF6wNxlU=;
- b=JVrQgo7APatRZWjS7pWvDmIRjRWcaMjf8XGDHT2So1XjWNJY4FVvvaN0Wc3Z5Fa27Z
- mNppSwqSsNtziK/cbcA+SQGtiXCnGQmMjSNW/X1kesaNUWPUGWTgoIVvaz2zsU9Aswyg
- NR90woOHqlf8/Mltt92IdR3veq63p2cqHjIxgMlmZXvQ6440ii6RwPMKdT9zcTm/Y0x/
- KqwPejY4gQy+cl+iy19KnVvDXuml+x8/kPS73ks9HsVhKrp6Kjrm/mEGZI1qBHy/opik
- lcINa2Cfy/ruh90KRzMcbGU9CxEYJuIiDgFQ2ejVV/tKULus2DXzPouCp1qKgHlS0KE9
- 4CWw==
+ bh=oW4RTaGV9Rp5u17+KtSXZQxBCwRUZA2L4Rf2kv6/KHg=;
+ b=R1YXoF6iWrV0RAepwioawUSrIvYqY1TYgZe+XzhRps1swIXoMZZK/p4eNGn5IcQGal
+ 5yWSawY0/0RB2EBtHKA/qJQgQApMJagFUovLhh6DRStLviSl/H8ShSoNEgz+os3xb0Rv
+ b37wXUQI0qq5StSbBmFnfp4qZhXM7LzRsnEilYF4V+a9yvlj4NiTi9saRJEw9lJu7hdX
+ PwE1QAKIjVUZUvSlKrC54eOUtxJYJ/9GjYXQe273+UFI7j7IyNoHqgs1AtwWJeKLdOc9
+ 7uBs47LP7de+Xky2w5E0ffyvWYOuFeFPGyAX6TA4LWPHbxpa1esV1Vhyd74niTOjLOug
+ CmXg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1732641185; x=1733245985;
+ d=1e100.net; s=20230601; t=1732641188; x=1733245988;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=SLDexDsLbCBWjIqcEZsS2lHV4veIfgCX+HAnF6wNxlU=;
- b=sb1+UuL0O+KDRa2pYTk5yDqes68afNc/emTPuv6HMPhYrryn92KE6qbTOEsrYV5m1C
- ZI+s6p9zL2HhJJqGUpwkuC3LcTnJgUBBrc1IkdE2iUkiXPnajF++U6eLrfFZ4U/rUBG+
- IlN9aau4J+Bm+PAzwbhRTMs7s+sG87xelUmhC/W+rXRGtAHvkYPsKp3e/ISxMYYYE48F
- Pv4ly8ryzC7JCy9un35G2vgi4OaFjKMPJIukEhdDPv4ZrTvtVnPO2R84uBb6OZTrxNkX
- TDBjcDIZql+mwAngC3Ab1xmMrI6ksdV9pkl5Glx0Iuiu0dv4+URehH+DUQ2NJuK/5BeN
- CPXA==
+ bh=oW4RTaGV9Rp5u17+KtSXZQxBCwRUZA2L4Rf2kv6/KHg=;
+ b=H9nIsy5k6k2lUL3H2xXa9hbzFG0igYl/v38PQ963CrJ2fO5XVfhNO6kh3UhMd1Zjl9
+ OSLYJenrsCak9dWXMEMh+TtXSBe+L4N9/FdJyGXBMU0Bjh6Uheobghkl2MRARkURmurs
+ 6ygEjJOBUUZ/36g1exRfBZs1xrQ2mBgHaBGhufsg2hyTLSAs2KDQCwz9ZDvxkJs5ABmV
+ J81Hos6YRPGc14yvoFTDTYNvIoVrwksL1nDlE6j0fDmdhmKupGXDOqcoe3UrcvTJb5Ge
+ u5LfC3uqMlY/vKzawMv3bgpE7n5BgVmmqjIMFJ1ebH/lW8EloFxAYPvMTN6MwF9WhGQh
+ UdPw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUzGZd4HU6mcJyg9Ue9MQbSbDiZpxsorocLZZs5awEEviDdAIpjqmYsiFzBIuIEfQozwOg8+ymonQ==@nongnu.org
-X-Gm-Message-State: AOJu0YxQKklEdSEQAzz//H/wvWkVmKpIzxvUajeQSIhRN5CO4YRz4WzE
- GE08pGZ/MehRcKrnHZSPH3OZ5/NO5lG0WHJFvYCT66TyVQgDg4yTGBdOHw==
-X-Gm-Gg: ASbGncuG/ayQ0bm9q1qFDk/bCAgC8BO1APbBY91omJVvsYe3IEBERKW1Op/MuQmv7/t
- hpRF1b+A3YL6X1kvAjAxbJJOSWc3as/2E3JlQrE++SjKYbD4jz/H9zAITv/g5/1/wrTb0C8YOku
- rNkfjzQl1ePbQHfZBRh298+T+3JCe6TeFghW3rg/I3I/FzMh2kif1UZHmPKF+TuoMLxO4d9/fDe
- ZyCLqrVjlhdwCTYqpC+wPihCO0y5u/oJmiS44M+ZWi/81nl3G0Ou9GuDze3htq/XCU8u0cXPgEa
- znq5wQ==
-X-Google-Smtp-Source: AGHT+IFOXZ2hO9RC6e9hN+qJrRVVAr4ropC6Drq9Gyb3ooh9eaEyudiIT17h1GxShRnJ+B3CLjrgZg==
-X-Received: by 2002:a17:902:da8c:b0:211:18bf:e91d with SMTP id
- d9443c01a7336-2129f5f3176mr237270675ad.27.1732641185095; 
- Tue, 26 Nov 2024 09:13:05 -0800 (PST)
+ AJvYcCUAa9RFC+c8qDGLgB7Pgw5vx8jsSJ8DCg/an63ruqXGHonAzG1qtZrrZaSl8r4jPbABQNUYSlBO4A==@nongnu.org
+X-Gm-Message-State: AOJu0YzzbYrVFrrVHSUb2meD8MpwOWOJJocMls48ChbvGVa7QKhq5ytv
+ 6II19cX+Hj12Vb8VDP45ufY8JE1evHU47POHCFcn7G9kBepuD0tKOAki0w==
+X-Gm-Gg: ASbGncueuBPYgt0tPlBwWIFYQKrTyrzYoJylEtAQLlnySqWMngapzvkiEZfUSL+6GNL
+ BfraOil/kpBlcgeKRJZcIfBsb1vw1iOb7PdftiBW8B5F5tRt5CsWssTYvMuCnhOGw+leNd0FE/j
+ fTiUAaSndKusD3iBePIz6SV2FQX2HhGIr7nAe5hAydd2uqIBZTXaWuAOF94g6pmXQCgIEJdp5B0
+ B1Ulyjh3A0RtBAlxWPySwx5ha9N2ONXF2C1Epa3gQtaS7NIFylQPsRMhoj9DwtZZXn7QRHhvrdU
+ cFGB5w==
+X-Google-Smtp-Source: AGHT+IFAC37WP3a3JcvI0LxPH+c2GDToSY1JtMkpFeEDEnteAxKhHGUL6BRNk854q/SO/a/tY6wsSg==
+X-Received: by 2002:a17:902:ecd1:b0:212:67a5:ab24 with SMTP id
+ d9443c01a7336-2129f28a626mr225521065ad.41.1732641188450; 
+ Tue, 26 Nov 2024 09:13:08 -0800 (PST)
 Received: from wheely.local0.net (124-171-72-210.tpgi.com.au. [124.171.72.210])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-2129dc21c28sm87321175ad.246.2024.11.26.09.13.02
+ d9443c01a7336-2129dc21c28sm87321175ad.246.2024.11.26.09.13.05
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 26 Nov 2024 09:13:04 -0800 (PST)
+ Tue, 26 Nov 2024 09:13:08 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
- Glenn Miles <milesg@linux.ibm.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 4/6] ppc/pnv: Add xscom- prefix to pervasive-control region name
-Date: Wed, 27 Nov 2024 03:12:33 +1000
-Message-ID: <20241126171235.362916-5-npiggin@gmail.com>
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Anushree Mathur <anushree.mathur@linux.vnet.ibm.com>
+Subject: [PULL 5/6] ppc/spapr: fix drc index mismatch for partially enabled
+ vcpus
+Date: Wed, 27 Nov 2024 03:12:34 +1000
+Message-ID: <20241126171235.362916-6-npiggin@gmail.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241126171235.362916-1-npiggin@gmail.com>
 References: <20241126171235.362916-1-npiggin@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x62a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x62f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,29 +99,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-By convention, xscom regions get a xscom- prefix.
+From: Harsh Prateek Bora <harshpb@linux.ibm.com>
 
-Fixes: 1adf24708bf7 ("hw/ppc: Add pnv nest pervasive common chiplet model")
-Reviewed-by: Glenn Miles <milesg@linux.ibm.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+In case when vcpus are explicitly enabled/disabled in a non-consecutive
+order within a libvirt xml, it results in a drc index mismatch during
+vcpu hotplug later because the existing logic uses vcpu id to derive the
+corresponding drc index which is not correct. Use env->core_index to
+derive a vcpu's drc index as appropriate to fix this issue.
+
+For ex, for the given libvirt xml config:
+  <vcpus>
+    <vcpu id='0' enabled='yes' hotpluggable='no'/>
+    <vcpu id='1' enabled='yes' hotpluggable='yes'/>
+    <vcpu id='2' enabled='no' hotpluggable='yes'/>
+    <vcpu id='3' enabled='yes' hotpluggable='yes'/>
+    <vcpu id='4' enabled='no' hotpluggable='yes'/>
+    <vcpu id='5' enabled='yes' hotpluggable='yes'/>
+    <vcpu id='6' enabled='no' hotpluggable='yes'/>
+    <vcpu id='7' enabled='no' hotpluggable='yes'/>
+  </vcpus>
+
+We see below error on guest console with "virsh setvcpus <domain> 5" :
+
+pseries-hotplug-cpu: CPU with drc index 10000002 already exists
+
+This patch fixes the issue by using correct drc index for explicitly
+enabled vcpus during init.
+
+Reported-by: Anushree Mathur <anushree.mathur@linux.vnet.ibm.com>
+Tested-by: Anushree Mathur <anushree.mathur@linux.vnet.ibm.com>
+Signed-off-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
+Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- hw/ppc/pnv_nest_pervasive.c | 2 +-
+ hw/ppc/spapr.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/ppc/pnv_nest_pervasive.c b/hw/ppc/pnv_nest_pervasive.c
-index 77476753a4..780fa69dde 100644
---- a/hw/ppc/pnv_nest_pervasive.c
-+++ b/hw/ppc/pnv_nest_pervasive.c
-@@ -177,7 +177,7 @@ static void pnv_nest_pervasive_realize(DeviceState *dev, Error **errp)
-     pnv_xscom_region_init(&nest_pervasive->xscom_ctrl_regs_mr,
-                           OBJECT(nest_pervasive),
-                           &pnv_nest_pervasive_control_xscom_ops,
--                          nest_pervasive, "pervasive-control",
-+                          nest_pervasive, "xscom-pervasive-control",
-                           PNV10_XSCOM_CHIPLET_CTRL_REGS_SIZE);
- }
+diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
+index 5c02037c56..0d4efaa0c0 100644
+--- a/hw/ppc/spapr.c
++++ b/hw/ppc/spapr.c
+@@ -701,7 +701,7 @@ static void spapr_dt_cpu(CPUState *cs, void *fdt, int offset,
+     uint32_t radix_AP_encodings[PPC_PAGE_SIZES_MAX_SZ];
+     int i;
  
+-    drc = spapr_drc_by_id(TYPE_SPAPR_DRC_CPU, index);
++    drc = spapr_drc_by_id(TYPE_SPAPR_DRC_CPU, env->core_index);
+     if (drc) {
+         drc_index = spapr_drc_index(drc);
+         _FDT((fdt_setprop_cell(fdt, offset, "ibm,my-drc-index", drc_index)));
 -- 
 2.45.2
 
