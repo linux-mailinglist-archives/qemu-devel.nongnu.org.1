@@ -2,63 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 515F89D9634
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Nov 2024 12:25:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 029D59D963D
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Nov 2024 12:27:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tFtgd-0007TB-UD; Tue, 26 Nov 2024 06:24:56 -0500
+	id 1tFtgb-0007Ap-HD; Tue, 26 Nov 2024 06:24:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tFtfQ-0004A8-Eb
- for qemu-devel@nongnu.org; Tue, 26 Nov 2024 06:23:45 -0500
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tFtfZ-0004PJ-1B
+ for qemu-devel@nongnu.org; Tue, 26 Nov 2024 06:23:53 -0500
+Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tFtfO-0002uv-Ez
- for qemu-devel@nongnu.org; Tue, 26 Nov 2024 06:23:40 -0500
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-434a10588f3so14202005e9.1
- for <qemu-devel@nongnu.org>; Tue, 26 Nov 2024 03:23:37 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tFtfV-0002wt-Vb
+ for qemu-devel@nongnu.org; Tue, 26 Nov 2024 06:23:48 -0500
+Received: by mail-wr1-x42a.google.com with SMTP id
+ ffacd0b85a97d-38231e9d518so3580296f8f.0
+ for <qemu-devel@nongnu.org>; Tue, 26 Nov 2024 03:23:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1732620216; x=1733225016; darn=nongnu.org;
+ d=linaro.org; s=google; t=1732620224; x=1733225024; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=KmjwRfDIQiUm8za7VsqVbrrytj9VplHKG4K4/ENa984=;
- b=BOhYvLSdzjt1xhenph6peYqQAZCaFEfgTDDtWJwzRS8p/m5xjIPCKAYrBQvIoc/h9C
- FPSJ4P/JaPdXdSLwTjzygzPr7h8oKKHAvq9ZPH2zbJEmTu9zSyKrAHfZIl8/wWciHG93
- dAo3KTAjE0AdvObLhPSF9XB7FVd0ohOHaA8chV5pyLOTrM5IY4ybwW8LgO2XXuhHc9L/
- YQy72N5VEAfHQlfLsfyIwo1yZId+5twyFUg15U6GXaCqX85BvzCC1yeK98yu3sNPY06R
- 59HvK2OtTQOKUqoJSBREoo8nkupH1faqv3rH9vgPcusDID4pMzjQ0Al3YZA6NFp4N8wj
- FBUw==
+ bh=XbkFF2paUrkpAUmAqN3hhRRzk+I4qHRGaYiXnMozHls=;
+ b=a12MTDIbHYNk/5NKUibpm6rJS/qv7ZIcaCul2JsIsHp8H6rniRJKhtQSoExIbk6Vb8
+ oANoPtmBHYinCFRgX3+KTTosrbWK/ubV7pYTgswhBL0hpPU21uFoJUFzclzoML7fCFfa
+ BvXyjo06bS0rJFkWqq34KuqpiJXjCTiuERYonAEQBSLJWvzn3+krkmEWR4+GvyS7upgo
+ G1lrVmCqozSgY3fgZerC3Kdex1qWwXqyTtnZkz5DkDLUO/oY31Nl54HYvLwOoy3c6YXI
+ dmoXFfNU4SYC38Aof1qlAu/cEM82hH5pnt+hzyFhem8YR9i10jSBfmfT5LGYnl2da/VO
+ slmA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1732620216; x=1733225016;
+ d=1e100.net; s=20230601; t=1732620224; x=1733225024;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=KmjwRfDIQiUm8za7VsqVbrrytj9VplHKG4K4/ENa984=;
- b=GjCIBM3PyazSORUSsQgqkcwAMpjLJsmhbkHlcXpQm5SeaniYPwFEgRsv1u5RM3aX8q
- 1wL1yCbAu3706FO6d779XaDNUzI+OeNj8cOoO/wUyyggOBZd9lEfSK0+316C24Aq12oK
- EHRSnSRsc2c14ZuStw2opOe00ziHvj4fAIn2ouPc6IVgBu1yMWjJalZYe37tYTggKQQN
- cYhcDZcg5lkgzCIR4OE8BN7uacGaNGiHkDuH3o0UJMAN/mTV+2yBNHfrfSz5oC5sO8qA
- IEgwZLD9/4Dq0vJjomxnNTlg9u6UazGsi2VRs5lmxurC2Jox9h4PQUA1WPxePo9tPZrW
- Uegg==
-X-Gm-Message-State: AOJu0YxwQt42aQTsN3jXGgiXBj7eNqhRT65Oe250Sn/6KNkjzT5YssuH
- wAUeyyjN3VfppWcO90vnUrrV6kaUJERW73VfetoI6P2Wb0rLbj2I2s6qvkW0f5hXIwhu39AlY7v
- j
-X-Gm-Gg: ASbGncvxWsVS8dWr0ma89xLibDODyC7PnECO4obhMbfOR517e0H6o32O3FTYJpH9t/k
- j6AoefyWtXXmKq1uZfyKWrcNZNztYqKCS5eRC8b3TOnfAvtEt03AwUiR98cwpOas9MBw2fh+lT3
- ZQihkA0tUAdIAQZMReIQ3X3Z7h5QaAoNEOGFjUOSI1oVFPUfP1jSHD8xAGYGl008eoi40Ma888j
- tS0iK8FmlF/kJLEnlaL61alGLB3fMMR9XLiCw2fhFyxJZi1V9/cuwCTpONvrg2ThF3ndth1
-X-Google-Smtp-Source: AGHT+IGNwk5YaoQ3MtMRaeTJJiZlPzdpzODnHSlG5QE/xiL6kyITv2jIVbls5681MCpH5aDCJT12rw==
-X-Received: by 2002:a05:600c:3589:b0:434:a4b3:5ebe with SMTP id
- 5b1f17b1804b1-434a4b35f4amr28161585e9.24.1732620216243; 
- Tue, 26 Nov 2024 03:23:36 -0800 (PST)
+ bh=XbkFF2paUrkpAUmAqN3hhRRzk+I4qHRGaYiXnMozHls=;
+ b=jjeOGMinMaGSV6J4tjPoTxmhM+VoBbctVSe6UCN5kHgOpo1OVJnRtwEnW2KcMgR+0X
+ 3PzpobQhC3e7XipU1NgEl7pYjjSXJHcec8A177CR9B22qvXGjTwHEkdHzK6SNJtE59bP
+ tUqjcTSx8+WGrHG15+zRFheJjGfovL7f5KEPFJZzb31Mo5WcA0qQJOFUPK9G7mspHw7e
+ 7ViN4lZWOo3NDNvscmXOyZFUFLMjC9EaxhqjzkR4W4S9OhMlupN7j75QaqC6BGZ8aqvv
+ GkH7vc/2+nlOtNzvLg7dJVaRIdSbRjgJ9BHy7ln2hYuvoo8LkcFeUTB0aGrIeXhLHjhk
+ ZEqg==
+X-Gm-Message-State: AOJu0YwziXEC7u95viM5BJiDrXijNrrlxzvYxUBdWgiQvAFXU5tn0xwP
+ lYL0rgN7zO8LzeQsKQtoxo5e0Ik/krz0Tnwi9f6kfLs3pba2sb6yfOg6EAEJWvG4jlnwlJBla1y
+ 8
+X-Gm-Gg: ASbGnctD38+zdH5PZ8zt/pK8G/v9VZQc82rKOQ+amo2R9nsKGuNkixuz0PWz81fdiAs
+ rMLbjxcSAMTyRH6Dpq+yfWM9HJwO9uJqpW+nIUmIvetuH0WS7u1mOqRSeM3hNjBfK/CZQPGof1X
+ 3ZYVhq9HjfLWAgVIBvID+yWgv+rUXYNvPxybmhJxGKn1509/P8WqDJgQLAupY75gF1+8/9g9GEF
+ deNHu2qYM1+GKAupy+26kW9fgP+fheBlXH22TKuZ8QjtQ6oT411GsLVsVToSOlMyhXziG0t
+X-Google-Smtp-Source: AGHT+IGVJGQGmqR2LIP3EyCzcTfjg1DnII8zvKaRsbXqZxvrY+rrJa/LEXrhLDekfN1yenvhqiAMhw==
+X-Received: by 2002:adf:e18c:0:b0:382:2d59:b166 with SMTP id
+ ffacd0b85a97d-38260b83dfbmr13189768f8f.31.1732620224148; 
+ Tue, 26 Nov 2024 03:23:44 -0800 (PST)
 Received: from localhost.localdomain ([176.176.143.205])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-433b01e1188sm231855865e9.1.2024.11.26.03.23.34
+ ffacd0b85a97d-3825fad6441sm13364242f8f.4.2024.11.26.03.23.41
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 26 Nov 2024 03:23:35 -0800 (PST)
+ Tue, 26 Nov 2024 03:23:43 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, qemu-s390x@nongnu.org, Thomas Huth <thuth@redhat.com>,
@@ -67,18 +67,18 @@ Cc: qemu-ppc@nongnu.org, qemu-s390x@nongnu.org, Thomas Huth <thuth@redhat.com>,
  Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
  Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH-for-10.0 v2 09/13] hw/ppc/spapr: Create host bridge setting
- bar_at_addr_0_refused=false
-Date: Tue, 26 Nov 2024 12:22:08 +0100
-Message-ID: <20241126112212.64524-10-philmd@linaro.org>
+Subject: [PATCH-for-10.0 v2 10/13] hw/pci-host/gpex: Expose
+ 'refuse-bar-at-addr-0' property
+Date: Tue, 26 Nov 2024 12:22:09 +0100
+Message-ID: <20241126112212.64524-11-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241126112212.64524-1-philmd@linaro.org>
 References: <20241126112212.64524-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,42 +101,177 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since all sPAPR machines set MachineClass::pci_allow_0_address
-(see commit e402463073 "pci: allow 0 address for PCI IO/MEM
-regions"), directly create the host bridge passing
-bar_at_addr_0_refused=false to pci_register_root_bus().
+Expose the "refuse-bar-at-addr-0" property so machines
+using a GPEX host bridge can set this flag on the bus.
+While the default property is set to 'false', all caller
+set it to 'true' so there is no logical change so far.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/ppc/spapr.c     | 1 -
- hw/ppc/spapr_pci.c | 2 +-
- 2 files changed, 1 insertion(+), 2 deletions(-)
+ include/hw/pci-host/gpex.h | 1 +
+ hw/arm/sbsa-ref.c          | 2 ++
+ hw/arm/virt.c              | 2 ++
+ hw/i386/microvm.c          | 2 ++
+ hw/loongarch/virt.c        | 2 ++
+ hw/mips/loongson3_virt.c   | 2 ++
+ hw/openrisc/virt.c         | 2 ++
+ hw/pci-host/gpex.c         | 4 +++-
+ hw/riscv/virt.c            | 2 ++
+ hw/xen/xen-pvh-common.c    | 2 ++
+ hw/xtensa/virt.c           | 2 ++
+ 11 files changed, 22 insertions(+), 1 deletion(-)
 
-diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
-index 5c02037c564..8af56bd68a2 100644
---- a/hw/ppc/spapr.c
-+++ b/hw/ppc/spapr.c
-@@ -4600,7 +4600,6 @@ static void spapr_machine_class_init(ObjectClass *oc, void *data)
-     mc->default_display = "std";
-     mc->kvm_type = spapr_kvm_type;
-     machine_class_allow_dynamic_sysbus_dev(mc, TYPE_SPAPR_PCI_HOST_BRIDGE);
--    mc->pci_allow_0_address = true;
-     assert(!mc->get_hotplug_handler);
-     mc->get_hotplug_handler = spapr_get_hotplug_handler;
-     hc->pre_plug = spapr_machine_device_pre_plug;
-diff --git a/hw/ppc/spapr_pci.c b/hw/ppc/spapr_pci.c
-index e6e8018c1cd..1d12c0b4112 100644
---- a/hw/ppc/spapr_pci.c
-+++ b/hw/ppc/spapr_pci.c
-@@ -1886,7 +1886,7 @@ static void spapr_phb_realize(DeviceState *dev, Error **errp)
-                                 pci_spapr_set_irq, pci_swizzle_map_irq_fn, sphb,
-                                 &sphb->memspace, &sphb->iospace,
-                                 PCI_DEVFN(0, 0), PCI_NUM_PINS,
--                                TYPE_PCI_BUS, true);
-+                                TYPE_PCI_BUS, false);
+diff --git a/include/hw/pci-host/gpex.h b/include/hw/pci-host/gpex.h
+index dce883573ba..44c6463afb3 100644
+--- a/include/hw/pci-host/gpex.h
++++ b/include/hw/pci-host/gpex.h
+@@ -64,6 +64,7 @@ struct GPEXHost {
+     int irq_num[GPEX_NUM_IRQS];
  
-     /*
-      * Despite resembling a vanilla PCI bus in most ways, the PAPR
+     bool allow_unmapped_accesses;
++    bool refuse_bar_at_addr_0;
+ 
+     struct GPEXConfig gpex_cfg;
+ };
+diff --git a/hw/arm/sbsa-ref.c b/hw/arm/sbsa-ref.c
+index e3195d54497..f6cf43cf0c9 100644
+--- a/hw/arm/sbsa-ref.c
++++ b/hw/arm/sbsa-ref.c
+@@ -647,6 +647,8 @@ static void create_pcie(SBSAMachineState *sms)
+     int i;
+ 
+     dev = qdev_new(TYPE_GPEX_HOST);
++    object_property_set_bool(OBJECT(dev), "refuse-bar-at-addr-0",
++                             true, &error_fatal);
+     sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
+ 
+     /* Map ECAM space */
+diff --git a/hw/arm/virt.c b/hw/arm/virt.c
+index 1a381e9a2bd..06affc3638b 100644
+--- a/hw/arm/virt.c
++++ b/hw/arm/virt.c
+@@ -1510,6 +1510,8 @@ static void create_pcie(VirtMachineState *vms)
+     MachineClass *mc = MACHINE_GET_CLASS(ms);
+ 
+     dev = qdev_new(TYPE_GPEX_HOST);
++    object_property_set_bool(OBJECT(dev), "refuse-bar-at-addr-0",
++                             true, &error_fatal);
+     sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
+ 
+     ecam_id = VIRT_ECAM_ID(vms->highmem_ecam);
+diff --git a/hw/i386/microvm.c b/hw/i386/microvm.c
+index 86637afa0f3..2231fd8f9cf 100644
+--- a/hw/i386/microvm.c
++++ b/hw/i386/microvm.c
+@@ -108,6 +108,8 @@ static void create_gpex(MicrovmMachineState *mms)
+     int i;
+ 
+     dev = qdev_new(TYPE_GPEX_HOST);
++    object_property_set_bool(OBJECT(dev), "refuse-bar-at-addr-0",
++                             true, &error_fatal);
+     sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
+ 
+     /* Map only the first size_ecam bytes of ECAM space */
+diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
+index 9a635d1d3d3..b5a26d3c23d 100644
+--- a/hw/loongarch/virt.c
++++ b/hw/loongarch/virt.c
+@@ -712,6 +712,8 @@ static void virt_devices_init(DeviceState *pch_pic,
+     int i;
+ 
+     gpex_dev = qdev_new(TYPE_GPEX_HOST);
++    object_property_set_bool(OBJECT(gpex_dev), "refuse-bar-at-addr-0",
++                             true, &error_fatal);
+     d = SYS_BUS_DEVICE(gpex_dev);
+     sysbus_realize_and_unref(d, &error_fatal);
+     pci_bus = PCI_HOST_BRIDGE(gpex_dev)->bus;
+diff --git a/hw/mips/loongson3_virt.c b/hw/mips/loongson3_virt.c
+index f3b6326cc59..21af0b5bc86 100644
+--- a/hw/mips/loongson3_virt.c
++++ b/hw/mips/loongson3_virt.c
+@@ -430,6 +430,8 @@ static inline void loongson3_virt_devices_init(MachineState *machine,
+     LoongsonMachineState *s = LOONGSON_MACHINE(machine);
+ 
+     dev = qdev_new(TYPE_GPEX_HOST);
++    object_property_set_bool(OBJECT(dev), "refuse-bar-at-addr-0",
++                             true, &error_fatal);
+     sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
+     pci_bus = PCI_HOST_BRIDGE(dev)->bus;
+ 
+diff --git a/hw/openrisc/virt.c b/hw/openrisc/virt.c
+index 47d2c9bd3c7..cde9379a992 100644
+--- a/hw/openrisc/virt.c
++++ b/hw/openrisc/virt.c
+@@ -380,6 +380,8 @@ static void openrisc_virt_pcie_init(OR1KVirtState *state,
+     int i;
+ 
+     dev = qdev_new(TYPE_GPEX_HOST);
++    object_property_set_bool(OBJECT(dev), "refuse-bar-at-addr-0",
++                             true, &error_fatal);
+     sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
+ 
+     /* Map ECAM space. */
+diff --git a/hw/pci-host/gpex.c b/hw/pci-host/gpex.c
+index 299f4d4f840..b888f4e831d 100644
+--- a/hw/pci-host/gpex.c
++++ b/hw/pci-host/gpex.c
+@@ -136,7 +136,7 @@ static void gpex_host_realize(DeviceState *dev, Error **errp)
+     pci->bus = pci_register_root_bus(dev, "pcie.0", gpex_set_irq,
+                                      pci_swizzle_map_irq_fn, s, &s->io_mmio,
+                                      &s->io_ioport, 0, 4, TYPE_PCIE_BUS,
+-                                     true);
++                                     s->refuse_bar_at_addr_0);
+ 
+     pci_bus_set_route_irq_fn(pci->bus, gpex_route_intx_pin_to_irq);
+     qdev_realize(DEVICE(&s->gpex_root), BUS(pci->bus), &error_fatal);
+@@ -155,6 +155,8 @@ static Property gpex_host_properties[] = {
+      */
+     DEFINE_PROP_BOOL("allow-unmapped-accesses", GPEXHost,
+                      allow_unmapped_accesses, true),
++    DEFINE_PROP_BOOL("refuse-bar-at-addr-0", GPEXHost,
++                     refuse_bar_at_addr_0, false),
+     DEFINE_PROP_UINT64(PCI_HOST_ECAM_BASE, GPEXHost, gpex_cfg.ecam.base, 0),
+     DEFINE_PROP_SIZE(PCI_HOST_ECAM_SIZE, GPEXHost, gpex_cfg.ecam.size, 0),
+     DEFINE_PROP_UINT64(PCI_HOST_PIO_BASE, GPEXHost, gpex_cfg.pio.base, 0),
+diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
+index 45a8c4f8190..8999fc348cb 100644
+--- a/hw/riscv/virt.c
++++ b/hw/riscv/virt.c
+@@ -1158,6 +1158,8 @@ static inline DeviceState *gpex_pcie_init(MemoryRegion *sys_mem,
+                             pio_base, NULL);
+     object_property_set_int(OBJECT(GPEX_HOST(dev)), PCI_HOST_PIO_SIZE,
+                             pio_size, NULL);
++    object_property_set_bool(OBJECT(dev), "refuse-bar-at-addr-0",
++                             true, &error_fatal);
+ 
+     sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
+ 
+diff --git a/hw/xen/xen-pvh-common.c b/hw/xen/xen-pvh-common.c
+index 218ac851cf7..3131a2dd280 100644
+--- a/hw/xen/xen-pvh-common.c
++++ b/hw/xen/xen-pvh-common.c
+@@ -139,6 +139,8 @@ static inline void xenpvh_gpex_init(XenPVHMachineState *s,
+ 
+     object_initialize_child(OBJECT(s), "gpex", &s->pci.gpex,
+                             TYPE_GPEX_HOST);
++    object_property_set_bool(OBJECT(s), "refuse-bar-at-addr-0",
++                             true, &error_fatal);
+     dev = DEVICE(&s->pci.gpex);
+     sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
+ 
+diff --git a/hw/xtensa/virt.c b/hw/xtensa/virt.c
+index 5310a888613..dcb39a67868 100644
+--- a/hw/xtensa/virt.c
++++ b/hw/xtensa/virt.c
+@@ -62,6 +62,8 @@ static void create_pcie(MachineState *ms, CPUXtensaState *env, int irq_base,
+     int i;
+ 
+     dev = qdev_new(TYPE_GPEX_HOST);
++    object_property_set_bool(OBJECT(dev), "refuse-bar-at-addr-0",
++                             true, &error_fatal);
+     sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
+ 
+     /* Map only the first size_ecam bytes of ECAM space. */
 -- 
 2.45.2
 
