@@ -2,82 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50F5C9D98FF
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Nov 2024 15:01:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C8C69D9906
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Nov 2024 15:02:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tFw7o-0003ER-DZ; Tue, 26 Nov 2024 09:01:08 -0500
+	id 1tFw7q-0003Rc-NL; Tue, 26 Nov 2024 09:01:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tFw7e-0002wm-Pq
- for qemu-devel@nongnu.org; Tue, 26 Nov 2024 09:00:59 -0500
-Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tFw7i-00038u-Je
+ for qemu-devel@nongnu.org; Tue, 26 Nov 2024 09:01:02 -0500
+Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tFw7b-0005FH-EF
- for qemu-devel@nongnu.org; Tue, 26 Nov 2024 09:00:57 -0500
-Received: by mail-wr1-x436.google.com with SMTP id
- ffacd0b85a97d-382610c7116so3004433f8f.0
- for <qemu-devel@nongnu.org>; Tue, 26 Nov 2024 06:00:54 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tFw7f-0005Gp-Vl
+ for qemu-devel@nongnu.org; Tue, 26 Nov 2024 09:01:02 -0500
+Received: by mail-wr1-x42c.google.com with SMTP id
+ ffacd0b85a97d-38246333e12so5606248f8f.1
+ for <qemu-devel@nongnu.org>; Tue, 26 Nov 2024 06:00:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1732629653; x=1733234453; darn=nongnu.org;
+ d=linaro.org; s=google; t=1732629658; x=1733234458; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=e6jveqDxIgi93N+jXqdSQZa/NGDVOMeV1ydXtJqSLpU=;
- b=MDWAlgmoJZhkCYg/Gv1MXoF7yBGhh+DMiqUeqsZTkyObedh5rElDx4SFrhvm/QknWV
- vDQ5OJVHcZ/WbvPf0/nYZbyUr2VuHhXELKoMexYOKh01AemPj5XjCBbj4DpaHNeagSKn
- Pd1+FLM17Hh45KaQAlSvJzf5ZpT9qzEPVTWZZ/r1Ykp9Qj3rC6py4rwUXkEwaJjC20Ni
- WhK0V9dbe9yNYnTP3CGFkre+I4V4LLnT5PY03T0dMICPgHPk1ypGj3qVMW88sy5DoycK
- odgrTo5Tr6T4rbhMF0w0W9bJIG/7YlE95unQfs1TUXNTj8bEwMmMzdTmLA0eUqAkW2E9
- DDKA==
+ bh=5m5TqC/cPItfIOCXyMZ2ph3/Vk5sDUqZ5fGYzbXuOek=;
+ b=ltDAh/S/qcE/ixGO3Tp0Zto9mnB/jVp0Os6HiaWy8J/prTVgfyG7dOeuTiCugDLgAh
+ ZKqT6ymvqQvf/n1JSf+8wP9kCwduaVJJqwFRJ9YYSHJC+yWdbI4BJQfmA2xTCemZU5y8
+ j5MeXYLt4uwkGHMbKy857UUXEuDxOku/Zd8NcaetdBtYz0Z9S/Gfe0Nywxruq3KDeG01
+ xjfVFxkzHx+Aa+I3U2Z7qVzaOBqsziieq7hQ35IeQ8Q0n7pIY2iEqmyB/U/G9QDSQnmm
+ tSwS3dsP5we/D57bm2OsEEp84wGtzgpp6B5RERS0RCaAX9KeH6YSj3qD8Pu0S8RWJQKu
+ 4Hjw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1732629653; x=1733234453;
+ d=1e100.net; s=20230601; t=1732629658; x=1733234458;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=e6jveqDxIgi93N+jXqdSQZa/NGDVOMeV1ydXtJqSLpU=;
- b=n/AB6LQxia8bbpRa2Y5ROFhymleTbduPSL4xDaCyylsPWK31vu/O+e/TigQ/EeOmKS
- 73OevNl6V3kh8hvf8JXRyLgkuaj/zRXX8biBougVZ7aHDojTxU2E6ICvSHgVJHI1OsAq
- 3fw3l5DcMZFtFxVbho1lrYYQ0Xs0QiOX5rOBLRGhD2BBGiodQCQLXX31+7E6BO1+Nj9H
- y0N8crJ2vYkfguBXoNRKoTUvB8RjkI/fOpd36y3VdKLA3hq2vzzGWfejNcrSnGWv05GA
- YBp6Qu5Tj8uvqv5nxj5EUNvgfiifELzgVtiRebzsZzL2tEP2DSi6w7jkPv9SyxuSj/Hm
- 7/iw==
-X-Gm-Message-State: AOJu0YzouGHxzWE8vdOiV7pFqZwE/MKIJWkmviAalyJJjHtJZ2GCoQI4
- sKmaBiESykSKnZ4iFBi6p6j1h/qKKgpJal0+phKqtKkjUU/vg790ahLLwAqFg+ZepnxVCcZZw6Y
- 0
-X-Gm-Gg: ASbGncuNuhF5JqsAttiznUO+3feiUujeF3UkxcbCtbQTxDhibh1d2y1E4hq61MA1Wk0
- eyW1JQ1UrQM2TxjrZlO+tFQ5/UC7LkWdc+hbh5r8BOUQQpABIpfASgLxUtiB7l9p+DOOIVQf6ab
- dehyL3CEAQR8SVNeNA0hli7HjbgSW5HxEze6DJDDqXTTOSE4iMEoiHeerKqalWcVY2+2B1ZcPxr
- fKWfjEC71DRYPQWrb8iTkyegCnVKiGudr80ZLKmXRIw2/WmjWmgsOksBtsS4b8tFCvwgebv
-X-Google-Smtp-Source: AGHT+IE5UW4DKVIAJJCiER1hTYjtOanYuptPrD72i1uF3fBBLwchRd2Dy/JX93NZeWo+EpkFJ5Qk3w==
-X-Received: by 2002:a05:6000:1449:b0:37c:d569:97b with SMTP id
- ffacd0b85a97d-38260b60008mr14060733f8f.19.1732629650662; 
- Tue, 26 Nov 2024 06:00:50 -0800 (PST)
+ bh=5m5TqC/cPItfIOCXyMZ2ph3/Vk5sDUqZ5fGYzbXuOek=;
+ b=ZTCoPD0UZiWMtTouGwRnYljGdYG83QusedU0dsXVldMOu6N9wruKg4jbTGxc2sudIu
+ I/LLymtctjj7S7PS9Q2KD7BZwQjmCdT+6Ed39QIR6yrdhmyy5P+Kb6w/gUEWZ+tw3aCr
+ dXnm396CQ7RmEcRiCcZHNmV/5zmEVDa7nYRZleMpQaK541YHm/c8dnWsUZFmWjpcFKiU
+ /DHcCJA8HQknLMiEvEmGEwq1yTKwg/gKm529AEqhQ9J/vI4ddlP3viIukKXEsv7eOwlr
+ m5S9/z1uQYksEtsF/KTv7Ql3zTDfyANMUiwxFOsZ3uwXfWUbMmiILVxtDHj52lilQwvD
+ PQww==
+X-Gm-Message-State: AOJu0YxyPLzZ5P8yNYL4YzzTGWFJrFE8uns9W19i0bFAFxqJ5RPhgUbV
+ 9ycF2EqLMu64Bv1WBZoS9UavB1zjZDJHL5Fs9Mv0gWpg7XX5MLGya4piYnljGEQ5vUhSNUG0hRA
+ S
+X-Gm-Gg: ASbGncuxmUTB2fC6UccFsu0w5dcfJchD3iqGxkHOakWns5q+ldTEpgR9Wxv5wOZ9dX5
+ oL15MnznYJPLg8Q8B9sJSWFoeacojb9FzKmLdxX0hxQrjUUd8cK7bpAbyt24t1pHbP6XYuQd/sP
+ FGV2tUsY5XGPTAlX8JYRGoZF+Jst5TsToriQQt3AiA1CQObiukIJacFRZ1F9g2EMbYiHU2lBu22
+ pT45a+I58RNQWcHs4RwEfGj+KZNe4fH4xlTgeo12IP170PgEMV2AK0FmdSuK08mz1J2XcfD
+X-Google-Smtp-Source: AGHT+IFwHUwdzfZSMqYqBQ6sV2wcMmRVicnWNeF8M/S+UPW6E96sLgD5rmzwGIrqS9GkyLyQ20ZV/g==
+X-Received: by 2002:a05:6000:790:b0:385:bc53:b2af with SMTP id
+ ffacd0b85a97d-385bc53b2camr6857946f8f.42.1732629657668; 
+ Tue, 26 Nov 2024 06:00:57 -0800 (PST)
 Received: from localhost.localdomain ([176.176.143.205])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3825fafeceesm13407142f8f.37.2024.11.26.06.00.47
+ ffacd0b85a97d-3825fad6270sm13318459f8f.14.2024.11.26.06.00.55
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 26 Nov 2024 06:00:48 -0800 (PST)
+ Tue, 26 Nov 2024 06:00:56 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Aurelien Jarno <aurelien@aurel32.net>,
  Aleksandar Rikalo <arikalo@gmail.com>,
  Richard Henderson <richard.henderson@linaro.org>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>
-Subject: [PATCH v3 07/16] target/mips: Introduce decode tree bindings for
- MIPS16e ASE
-Date: Tue, 26 Nov 2024 14:59:53 +0100
-Message-ID: <20241126140003.74871-8-philmd@linaro.org>
+ Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <f4bug@amsat.org>
+Subject: [PATCH v3 08/16] target/mips: Introduce decode tree bindings for
+ microMIPS ISA
+Date: Tue, 26 Nov 2024 14:59:54 +0100
+Message-ID: <20241126140003.74871-9-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241126140003.74871-1-philmd@linaro.org>
 References: <20241126140003.74871-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::436;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,73 +101,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Introduce the MIPS16e decodetree configs for the 16-bit
+From: Philippe Mathieu-Daudé <f4bug@amsat.org>
+
+Introduce the microMIPS decodetree configs for the 16-bit
 and 32-bit instructions.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/mips/tcg/translate.h             |  2 ++
- target/mips/tcg/mips16e_16.decode       |  9 +++++++++
- target/mips/tcg/mips16e_32.decode       |  9 +++++++++
- target/mips/tcg/mips16e_translate.c     | 14 ++++++++++++++
- target/mips/tcg/mips16e_translate.c.inc |  8 ++++++++
- target/mips/tcg/meson.build             |  3 +++
- 6 files changed, 45 insertions(+)
- create mode 100644 target/mips/tcg/mips16e_16.decode
- create mode 100644 target/mips/tcg/mips16e_32.decode
- create mode 100644 target/mips/tcg/mips16e_translate.c
+ target/mips/tcg/translate.h               |  2 ++
+ target/mips/tcg/micromips16.decode        | 11 +++++++++++
+ target/mips/tcg/micromips32.decode        | 11 +++++++++++
+ target/mips/tcg/micromips_translate.c     | 14 ++++++++++++++
+ target/mips/tcg/micromips_translate.c.inc |  9 +++++++++
+ target/mips/tcg/meson.build               |  3 +++
+ 6 files changed, 50 insertions(+)
+ create mode 100644 target/mips/tcg/micromips16.decode
+ create mode 100644 target/mips/tcg/micromips32.decode
+ create mode 100644 target/mips/tcg/micromips_translate.c
 
 diff --git a/target/mips/tcg/translate.h b/target/mips/tcg/translate.h
-index a65ab4a747c..d1aa811cfa1 100644
+index d1aa811cfa1..2a079cb28d9 100644
 --- a/target/mips/tcg/translate.h
 +++ b/target/mips/tcg/translate.h
-@@ -223,6 +223,8 @@ bool decode_64bit_enabled(DisasContext *ctx);
+@@ -222,6 +222,8 @@ bool decode_ase_mxu(DisasContext *ctx, uint32_t insn);
+ bool decode_64bit_enabled(DisasContext *ctx);
  
  /* decodetree generated */
++bool decode_isa_micromips16(DisasContext *ctx, uint16_t insn);
++bool decode_isa_micromips32(DisasContext *ctx, uint32_t insn);
  bool decode_isa_rel6(DisasContext *ctx, uint32_t insn);
-+bool decode_ase_mips16e_16(DisasContext *ctx, uint16_t insn);
-+bool decode_ase_mips16e_32(DisasContext *ctx, uint32_t insn);
- bool decode_ase_msa(DisasContext *ctx, uint32_t insn);
- bool decode_ext_txx9(DisasContext *ctx, uint32_t insn);
- bool decode_ext_loongson(DisasContext *ctx, uint32_t insn);
-diff --git a/target/mips/tcg/mips16e_16.decode b/target/mips/tcg/mips16e_16.decode
+ bool decode_ase_mips16e_16(DisasContext *ctx, uint16_t insn);
+ bool decode_ase_mips16e_32(DisasContext *ctx, uint32_t insn);
+diff --git a/target/mips/tcg/micromips16.decode b/target/mips/tcg/micromips16.decode
 new file mode 100644
-index 00000000000..82586493f68
+index 00000000000..d341da16b04
 --- /dev/null
-+++ b/target/mips/tcg/mips16e_16.decode
-@@ -0,0 +1,9 @@
-+# MIPS16e 16-bit instruction set extensions
++++ b/target/mips/tcg/micromips16.decode
+@@ -0,0 +1,11 @@
++# microMIPS32 16-bit instruction set extensions
 +#
 +# Copyright (C) 2021  Philippe Mathieu-Daudé
 +#
 +# SPDX-License-Identifier: LGPL-2.1-or-later
 +#
-+# Reference: MIPS Architecture for Programmers, Volume IV-a
-+#            The MIPS16e Application Specific Extension
-+#            (Document Number: MD00076)
-diff --git a/target/mips/tcg/mips16e_32.decode b/target/mips/tcg/mips16e_32.decode
++# Reference: MIPS Architecture for Programmers, Volume II-B
++#            microMIPS32 Instruction Set
++#            (Document Number: MD00582)
++#            microMIPS64 Instruction Set
++#            (Document Number: MD00594)
+diff --git a/target/mips/tcg/micromips32.decode b/target/mips/tcg/micromips32.decode
 new file mode 100644
-index 00000000000..fc429049e18
+index 00000000000..333ab0969ca
 --- /dev/null
-+++ b/target/mips/tcg/mips16e_32.decode
-@@ -0,0 +1,9 @@
-+# MIPS16e 32-bit instruction set extensions
++++ b/target/mips/tcg/micromips32.decode
+@@ -0,0 +1,11 @@
++# microMIPS32 32-bit instruction set extensions
 +#
 +# Copyright (C) 2021  Philippe Mathieu-Daudé
 +#
 +# SPDX-License-Identifier: LGPL-2.1-or-later
 +#
-+# Reference: MIPS Architecture for Programmers, Volume IV-a
-+#            The MIPS16e Application Specific Extension
-+#            (Document Number: MD00076)
-diff --git a/target/mips/tcg/mips16e_translate.c b/target/mips/tcg/mips16e_translate.c
++# Reference: MIPS Architecture for Programmers, Volume II-B
++#            microMIPS32 Instruction Set
++#            (Document Number: MD00582)
++#            microMIPS64 Instruction Set
++#            (Document Number: MD00594)
+diff --git a/target/mips/tcg/micromips_translate.c b/target/mips/tcg/micromips_translate.c
 new file mode 100644
-index 00000000000..6de9928b37e
+index 00000000000..49e90e7eca2
 --- /dev/null
-+++ b/target/mips/tcg/mips16e_translate.c
++++ b/target/mips/tcg/micromips_translate.c
 @@ -0,0 +1,14 @@
 +/*
-+ * MIPS emulation for QEMU - MIPS16e translation routines
++ * MIPS emulation for QEMU - microMIPS translation routines
 + *
 + * Copyright (c) 2021 Philippe Mathieu-Daudé <f4bug@amsat.org>
 + *
@@ -177,46 +184,49 @@ index 00000000000..6de9928b37e
 +#include "translate.h"
 +
 +/* Include the auto-generated decoders.  */
-+#include "decode-mips16e_16.c.inc"
-+#include "decode-mips16e_32.c.inc"
-diff --git a/target/mips/tcg/mips16e_translate.c.inc b/target/mips/tcg/mips16e_translate.c.inc
-index defef3ce559..a57ae4e95b1 100644
---- a/target/mips/tcg/mips16e_translate.c.inc
-+++ b/target/mips/tcg/mips16e_translate.c.inc
-@@ -657,6 +657,14 @@ static int decode_ase_mips16e(CPUMIPSState *env, DisasContext *ctx)
-     int n_bytes;
++#include "decode-micromips16.c.inc"
++#include "decode-micromips32.c.inc"
+diff --git a/target/mips/tcg/micromips_translate.c.inc b/target/mips/tcg/micromips_translate.c.inc
+index 26006f84df7..7a884222eed 100644
+--- a/target/mips/tcg/micromips_translate.c.inc
++++ b/target/mips/tcg/micromips_translate.c.inc
+@@ -3018,6 +3018,15 @@ static int decode_isa_micromips(CPUMIPSState *env, DisasContext *ctx)
+         }
+     }
  
-     ctx->opcode = translator_lduw(env, &ctx->base, ctx->base.pc_next);
-+
-+    if (decode_ase_mips16e_16(ctx, ctx->opcode)) {
++    if (decode_isa_micromips16(ctx, opcode)) {
 +        return 2;
 +    }
-+    if (decode_ase_mips16e_32(ctx, ctx->opcode)) {
++    opcode <<= 16;
++    opcode |= translator_lduw(env, &ctx->base, ctx->base.pc_next + 2);
++    if (decode_isa_micromips32(ctx, opcode)) {
 +        return 4;
 +    }
 +
-     op = (ctx->opcode >> 11) & 0x1f;
-     sa = (ctx->opcode >> 2) & 0x7;
-     sa = sa == 0 ? 8 : sa;
+     switch (op) {
+     case POOL16A:
+         {
 diff --git a/target/mips/tcg/meson.build b/target/mips/tcg/meson.build
-index 7b18e6c4c8b..bcb64368be8 100644
+index bcb64368be8..ca70769912c 100644
 --- a/target/mips/tcg/meson.build
 +++ b/target/mips/tcg/meson.build
-@@ -1,4 +1,6 @@
+@@ -1,6 +1,8 @@
  gen = [
-+  decodetree.process('mips16e_16.decode', extra_args: ['--decode=decode_ase_mips16e_16', '--insnwidth=16']),
-+  decodetree.process('mips16e_32.decode', extra_args: ['--decode=decode_ase_mips16e_32']),
+   decodetree.process('mips16e_16.decode', extra_args: ['--decode=decode_ase_mips16e_16', '--insnwidth=16']),
+   decodetree.process('mips16e_32.decode', extra_args: ['--decode=decode_ase_mips16e_32']),
++  decodetree.process('micromips16.decode', extra_args: ['--decode=decode_isa_micromips16', '--insnwidth=16']),
++  decodetree.process('micromips32.decode', extra_args: ['--decode=decode_isa_micromips32']),
    decodetree.process('rel6.decode', extra_args: ['--decode=decode_isa_rel6']),
    decodetree.process('msa.decode', extra_args: '--decode=decode_ase_msa'),
    decodetree.process('tx79.decode', extra_args: '--static-decode=decode_tx79'),
-@@ -16,6 +18,7 @@ mips_ss.add(files(
+@@ -18,6 +20,7 @@ mips_ss.add(files(
    'fpu_helper.c',
    'ldst_helper.c',
    'lmmi_helper.c',
-+  'mips16e_translate.c',
++  'micromips_translate.c',
+   'mips16e_translate.c',
    'msa_helper.c',
    'msa_translate.c',
-   'op_helper.c',
 -- 
 2.45.2
 
