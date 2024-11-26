@@ -2,84 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE4FB9D9C08
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Nov 2024 18:03:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ABDE49D9BFF
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Nov 2024 18:03:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tFyxQ-0007IB-Ln; Tue, 26 Nov 2024 12:02:36 -0500
+	id 1tFyxN-0007Bq-1X; Tue, 26 Nov 2024 12:02:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tFyxN-0007GK-DV
- for qemu-devel@nongnu.org; Tue, 26 Nov 2024 12:02:33 -0500
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tFyxL-00020U-Tw
- for qemu-devel@nongnu.org; Tue, 26 Nov 2024 12:02:33 -0500
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-434a10588f3so17073155e9.1
- for <qemu-devel@nongnu.org>; Tue, 26 Nov 2024 09:02:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1732640549; x=1733245349; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=ZuYGPOKErQ71Qclb0HLqWioAIBy53u4/hFcO1bYVA+o=;
- b=uDcPfJgPOR4Z2te8RcovSj5TmaIZnA7WmvGoEl5KQsMaW9tpL1rHsXi1LHVQUwzFh+
- 2f1wrBgRGq93VwRhC1pjj4kEPAoBK/1tWc8S8ykTF0D2YoDFqvylr+9KayGcekhy5HPP
- n08qrqyvW+mXABZ3WHNlWOFRzKBFos5OEhbRJXoOA0sIZ/gzrLc43oD5o3pqVE+fakH6
- xCSYU0wm1dX0UkPAV+AlHZeSCqSI8dbymrJrzQ5QoaobBGYM4vUySLNv3ROR+Iy3YRjm
- 0W3JUOO4KUV1zbco0M0zWpqRMCZJ4N6yWkcTcML4cLGPRf2/MyyU9Qp5zI+Me30AhDwF
- w6zg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1732640549; x=1733245349;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=ZuYGPOKErQ71Qclb0HLqWioAIBy53u4/hFcO1bYVA+o=;
- b=TC/kO63ucKjgm0buZc5VWbhb1nvPPmHZov+nMr1CGkUJK1+PZuCbVHoFwIyxTt6FEL
- zzciNc2cO5vWPzoCpwKIiRiTW7PPkOqKTjhR4Mo3m/OHK2uqI/GlMBdJvgDde148wCvR
- ZzGOVHp9mPn4qs8IHZkeCdZEe53mBWV6nC2wElEWPt3yrVdBBCJgOltrGgXbpxvRyonr
- qnQ5gai2AEDvVO9VcxyOZ/IUVXmAOg6UlQkHuXWrzmYabRmnrxAiKAvhud6ovFIoNY6/
- gjUeu4O8yjw9wYrO6hnBpS45VF+G2RTdfBcrBiwW7UnchN5oJGftqRAkdUeMiEyNSXA8
- 6jSQ==
-X-Gm-Message-State: AOJu0YzNvF/poYb/L++tSF+PRTViiGHhUt2MgfwYJvHM3z7P1r3HIKJM
- v1hYnLdJCjik3Ambbp82Ga2/DgrfgeXu0i/hhEzYqwRZNELPiMjzmBz7stoM28CY3svANO6TNts
- w
-X-Gm-Gg: ASbGnct2IKuxWwsZnRO2k9guhwE1MUxdemztrHq83MAiTlwSdbcftSNk8oFKgTg4XQV
- 2dnScn0EbcbWTtGn1fv4ykSJ2/6D9RH3tGMqLXoqp8sESuIqnlOXLaJlKV/0M7YyZfajy0rPT3d
- 9IgsVnEqRtrdVtQrHpyIdsqzfX74G8/zKgH+LcqMRwnmZ++IQ4FtlzRAgsdEAHtIShzObzHMiMk
- gmAc5AAgn2diD/sf8+gOeb+XoWbMtJ1RbwjP5qXs9/+vmsG6GHCHMTa
-X-Google-Smtp-Source: AGHT+IGvASr3ekA2gPhMil5SbFA4o4rfjWum5nD+K6mBdtufd03hnCfrBLBTb1R8kc9r3rjUbFbvQg==
-X-Received: by 2002:a05:600c:154d:b0:42c:b16e:7a22 with SMTP id
- 5b1f17b1804b1-434a9dc3dcfmr308805e9.12.1732640549413; 
- Tue, 26 Nov 2024 09:02:29 -0800 (PST)
-Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-434a36c7a9fsm43017865e9.44.2024.11.26.09.02.28
- for <qemu-devel@nongnu.org>
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 26 Nov 2024 09:02:28 -0800 (PST)
-From: Peter Maydell <peter.maydell@linaro.org>
-To: qemu-devel@nongnu.org
-Subject: [PULL 1/9] target/arm/tcg/cpu32.c: swap ATCM and BTCM register names
-Date: Tue, 26 Nov 2024 17:02:16 +0000
-Message-Id: <20241126170224.2926917-2-peter.maydell@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241126170224.2926917-1-peter.maydell@linaro.org>
-References: <20241126170224.2926917-1-peter.maydell@linaro.org>
+ (Exim 4.90_1) (envelope-from <groug@kaod.org>) id 1tFyxD-00075k-Oi
+ for qemu-devel@nongnu.org; Tue, 26 Nov 2024 12:02:25 -0500
+Received: from 10.mo552.mail-out.ovh.net ([87.98.187.244])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <groug@kaod.org>) id 1tFyxB-0001xq-Kg
+ for qemu-devel@nongnu.org; Tue, 26 Nov 2024 12:02:23 -0500
+Received: from mxplan5.mail.ovh.net (unknown [10.108.17.25])
+ by mo552.mail-out.ovh.net (Postfix) with ESMTPS id 4XyTQK5zlRz1XVN;
+ Tue, 26 Nov 2024 17:02:17 +0000 (UTC)
+Received: from kaod.org (37.59.142.113) by DAG6EX1.mxp5.local (172.16.2.51)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Tue, 26 Nov
+ 2024 18:02:17 +0100
+Authentication-Results: garm.ovh; auth=pass
+ (GARM-113S0079c07db02-204e-46ce-ae7c-77ddec5ee49e,
+ FCC27489C1BA5BDC89FB1F76958C936B1C45CC5D) smtp.auth=groug@kaod.org
+X-OVh-ClientIp: 88.179.9.154
+Date: Tue, 26 Nov 2024 18:02:16 +0100
+From: Greg Kurz <groug@kaod.org>
+To: Christian Schoenebeck <qemu_oss@crudebyte.com>
+CC: <qemu-devel@nongnu.org>, <qemu-stable@nongnu.org>
+Subject: Re: [PATCH 6/6] tests/9p: also check 'Tgetattr' in
+ 'use-after-unlink' test
+Message-ID: <20241126180216.0638d10e@bahia>
+In-Reply-To: <7017658155c517b9665b75333a97c79aa2d4f3df.1732465720.git.qemu_oss@crudebyte.com>
+References: <cover.1732465720.git.qemu_oss@crudebyte.com>
+ <7017658155c517b9665b75333a97c79aa2d4f3df.1732465720.git.qemu_oss@crudebyte.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32f.google.com
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [37.59.142.113]
+X-ClientProxiedBy: DAG6EX1.mxp5.local (172.16.2.51) To DAG6EX1.mxp5.local
+ (172.16.2.51)
+X-Ovh-Tracer-GUID: 787cb7a0-f735-425c-91f6-a3d2ec21ac26
+X-Ovh-Tracer-Id: 18381723358036007389
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: 0
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeefuddrgeejgdelvdcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecunecujfgurhepfffhvfevuffkjghfofggtgfgihesthejredtredtvdenucfhrhhomhepifhrvghgucfmuhhriicuoehgrhhouhhgsehkrghougdrohhrgheqnecuggftrfgrthhtvghrnhepgeekjedtveegkeeileffvdetvddvgedtudduiefghffhgfdvhfegjeetkeehfeeknecukfhppeduvdejrddtrddtrddupdefjedrheelrddugedvrdduudefpdekkedrudejledrledrudehgeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeduvdejrddtrddtrddupdhmrghilhhfrhhomhepghhrohhugheskhgrohgurdhorhhgpdhnsggprhgtphhtthhopeefpdhrtghpthhtohepqhgvmhhupghoshhssegtrhhuuggvsgihthgvrdgtohhmpdhrtghpthhtohepqhgvmhhuqdguvghvvghlsehnohhnghhnuhdrohhrghdprhgtphhtthhopehqvghmuhdqshhtrggslhgvsehnohhnghhnuhdrohhrghdpoffvtefjohhsthepmhhoheehvdgmpdhmohguvgepshhmthhpohhuth
+DKIM-Signature: a=rsa-sha256; bh=WyctVfbWJzr83NlvSlm6t2iwr/06Iy8jkXoLnLqLsa4=; 
+ c=relaxed/relaxed; d=kaod.org; h=From; s=ovhmo393970-selector1;
+ t=1732640538; v=1;
+ b=KVuyfBRIzz97SVhWeiXH6A0iLMQP38Ss29mlggTStFSyI8M8YARbHk7qH1mUor4+7bVDIjSl
+ HvvxNOi04Y/5IwKnr5XIOi7MYCMs74QYmmDgveqRjqM+TcDlF1ZyRsg6Zp+rmctzqflcqg4JHW6
+ 89Q1FZiUh05ZxYFs2Eht/YoGa8fsa43rJyBgb6/FitaPz5SLrjfdErduY1Tq90hCi7tSwVllgKA
+ ScSyqLxPQQ6s5yC6Gop1/4qiBh6mLPALxs/roORynm0y+1imI8P72nkqF2ZY03ivboia65D8MFd
+ aoyXMSYs7JN292zyj0/10kq2IzPNGsvTgWyNZPmiUVyQg==
+Received-SPF: pass client-ip=87.98.187.244; envelope-from=groug@kaod.org;
+ helo=10.mo552.mail-out.ovh.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,38 +82,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Michael Tokarev <mjt@tls.msk.ru>
+On Sun, 24 Nov 2024 17:05:32 +0100
+Christian Schoenebeck <qemu_oss@crudebyte.com> wrote:
 
-According to Cortex-R5 r1p2 manual, register with opcode2=0 is
-BTCM and with opcode2=1 is ATCM, - exactly the opposite from how
-qemu labels them.  Just swap the labels to avoid confusion, -
-both registers are implemented as always-zero.
+> This verifies expected behaviour of previous bug fix patch.
+> 
+> Signed-off-by: Christian Schoenebeck <qemu_oss@crudebyte.com>
+> ---
 
-Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20241121171602.3273252-1-mjt@tls.msk.ru
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
----
- target/arm/tcg/cpu32.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Reviewed-by: Greg Kurz <groug@kaod.org>
 
-diff --git a/target/arm/tcg/cpu32.c b/target/arm/tcg/cpu32.c
-index 20c2737f17b..2a77701f8dc 100644
---- a/target/arm/tcg/cpu32.c
-+++ b/target/arm/tcg/cpu32.c
-@@ -574,9 +574,9 @@ static void cortex_a15_initfn(Object *obj)
- 
- static const ARMCPRegInfo cortexr5_cp_reginfo[] = {
-     /* Dummy the TCM region regs for the moment */
--    { .name = "ATCM", .cp = 15, .opc1 = 0, .crn = 9, .crm = 1, .opc2 = 0,
-+    { .name = "BTCM", .cp = 15, .opc1 = 0, .crn = 9, .crm = 1, .opc2 = 0,
-       .access = PL1_RW, .type = ARM_CP_CONST },
--    { .name = "BTCM", .cp = 15, .opc1 = 0, .crn = 9, .crm = 1, .opc2 = 1,
-+    { .name = "ATCM", .cp = 15, .opc1 = 0, .crn = 9, .crm = 1, .opc2 = 1,
-       .access = PL1_RW, .type = ARM_CP_CONST },
-     { .name = "DCACHE_INVAL", .cp = 15, .opc1 = 0, .crn = 15, .crm = 5,
-       .opc2 = 0, .access = PL1_W, .type = ARM_CP_NOP },
+>  tests/qtest/virtio-9p-test.c | 5 +++++
+>  1 file changed, 5 insertions(+)
+> 
+> diff --git a/tests/qtest/virtio-9p-test.c b/tests/qtest/virtio-9p-test.c
+> index f6d7400a87..ab3a12c816 100644
+> --- a/tests/qtest/virtio-9p-test.c
+> +++ b/tests/qtest/virtio-9p-test.c
+> @@ -702,6 +702,7 @@ static void fs_use_after_unlink(void *obj, void *data,
+>      g_autofree char *real_file = virtio_9p_test_path("09/doa_file");
+>      g_autofree char *buf = g_malloc0(write_count);
+>      struct stat st_file;
+> +    struct v9fs_attr attr;
+>      uint32_t fid_file;
+>      uint32_t count;
+>  
+> @@ -725,6 +726,10 @@ static void fs_use_after_unlink(void *obj, void *data,
+>      tunlinkat({ .client = v9p, .atPath = "09", .name = "doa_file" });
+>  
+>      /* file is removed, but we still have it open, so this should succeed */
+> +    tgetattr({
+> +        .client = v9p, .fid = fid_file, .request_mask = P9_GETATTR_BASIC,
+> +        .rgetattr.attr = &attr
+> +    });
+>      count = twrite({
+>          .client = v9p, .fid = fid_file, .offset = 0, .count = write_count,
+>          .data = buf
+
+
+
 -- 
-2.34.1
-
+Greg
 
