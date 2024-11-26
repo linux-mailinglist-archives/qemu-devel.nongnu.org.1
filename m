@@ -2,95 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 524C59D960C
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Nov 2024 12:14:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DE269D962A
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Nov 2024 12:23:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tFtWh-0002G4-5I; Tue, 26 Nov 2024 06:14:39 -0500
+	id 1tFteA-0003gH-S6; Tue, 26 Nov 2024 06:22:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1tFtWf-0002Fe-Pd
- for qemu-devel@nongnu.org; Tue, 26 Nov 2024 06:14:37 -0500
-Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tFte9-0003fb-MQ
+ for qemu-devel@nongnu.org; Tue, 26 Nov 2024 06:22:21 -0500
+Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1tFtWd-0000h0-6w
- for qemu-devel@nongnu.org; Tue, 26 Nov 2024 06:14:37 -0500
-Received: by mail-pl1-x635.google.com with SMTP id
- d9443c01a7336-21260209c68so48019905ad.0
- for <qemu-devel@nongnu.org>; Tue, 26 Nov 2024 03:14:34 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tFte6-0002Vh-Ba
+ for qemu-devel@nongnu.org; Tue, 26 Nov 2024 06:22:21 -0500
+Received: by mail-wr1-x42a.google.com with SMTP id
+ ffacd0b85a97d-382433611d0so4575779f8f.3
+ for <qemu-devel@nongnu.org>; Tue, 26 Nov 2024 03:22:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1732619673; x=1733224473; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id:from
- :to:cc:subject:date:message-id:reply-to;
- bh=8n9zNQNjW5lXFKwRJkPzIpvd1d97fLYtXwXsRX0/USI=;
- b=OlQ2qV+XXwY+dsi4+8gM7FnkqNGZC166sUBQLimClFfstCFjIS/fSXEKNd20YYiaIm
- 4ydzuw9bCgh0gxMnnZ7+QruZvaSQZ2BLWMjNce3631OvZRnwRtnAgt7TMt9rvwtoO1Yl
- RiTtWfzMW+8Wh7r+UlbydHthf8NQZDt9ia3MgotisSqzQWCR86diy9IpsMfahQWcuHFI
- /A/d15Nr5mvBk5Qk/bRd6CTvkqQqIMyQbIFwElK9udtYRjodT2Qv+GWQ8cJypxffR8vZ
- 43kpS9Y3jJgzniHIVEDgXJceeVyybah0eVAap2RUD7njl5284UoxfsGysCSmfT4p4NVu
- 9hZA==
+ d=linaro.org; s=google; t=1732620135; x=1733224935; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=KF5+Q+1rOwwX8eIZyyP/Swk9x61oFbeTaj2aNqOzoek=;
+ b=uqspTHG7nWNYGC04V7d9iVNSCuRszDF0T0PhCE1EP+v8tqK70adGQPBqRqrsUSt2ue
+ 58nMqaRi8CsezZLP2+N82HflK4ah5bGK/hVF0Q3eOy1BO+bq8rLjK2HELm9mQXBqCQtZ
+ +Eyls/Md6HqHay4nxB1hV37t+N9PwFXD8T0x1eMyNphvFNIXm+jwbxs6lM3DpkVs8lrr
+ /gHvRJm+XqD9dWmgNaZg8414n/G3KFyzMkuuJKdfVeAmmqoSCwpZckJz8KgFmpyapblT
+ UEteKKL9q10R1bZxLVmc0wKGRrQoEyvrYD2Bn+ztqkshyJWQevxmSmHefaftZuPKhDQz
+ 0oSw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1732619673; x=1733224473;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=8n9zNQNjW5lXFKwRJkPzIpvd1d97fLYtXwXsRX0/USI=;
- b=TaUuNq8Z3T3SNqcFPTrzyQod6PDvogyXI8/W4ojQSTNEUE+Iq6e4D97pvU+16/uh7T
- n0CjwSv2HSoUtsNTfrtO+ns6Zp+FcRreszxoVssQvEgAGLRXbOe8sHCwkhiZuggXSmoG
- w8ko6Ha9BjaiGHWPa5e++RBVCt+PAt41an1m6U2edEdR7KK1OXi4KDVFJwj2EXtAGXrS
- UL1oBK6vtzYPgOrge2diJuNPPbN5Feh5I7pI42DVeQVe1TtWG1T0TNCvRvMpyB1SZO48
- HCQ8xZqvpHF0j1XYZ98rvnb9J3n6CmBlj4haOV4jMSuaHAiafJ5L/KQ4r0LFy6UHehzF
- FUVQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUvqPzHHahHNjhsFaLLUEVzyu7c7ZzaFweFxmWfucnNfpRI6APDkdsJWSBQvLY0QG4ETJcmtHMbIVkR@nongnu.org
-X-Gm-Message-State: AOJu0Yx/SxMzr1XKEzhQufbxhPMaZYUavR/gJeSy4/zM5hcA1DcgBv0d
- EURukxTyjsvY+A716pWJJoOW08mr5fsAZxkJk4IzLH+vIySTGjqDh1/hkqQ+FfQ=
-X-Gm-Gg: ASbGnctiQ7rA5japdyIOigOamn3TDJHyS7cfJeNkkvxbKr5j+oXqNokU8a0HCfv1qX9
- SByPRcauaDZzkeD4WMKLSfimeDRjWcm9BeGZRC1hxKWi/4yZsnF0e4cp+3JIzeA5FX74kCl05ch
- bGsi4gDDgTCuEukgu5MWUcZmCpVLBQwV2C3UgdNWcChMrXp/EUpHGnpMSQGbpqWI2x3byWHFsci
- QQhI+MPnQFEZebBEjxnW+jD+YEPF+A5iaBLENrkjjtxhZwDJAO+JdWS/6uGs+A=
-X-Google-Smtp-Source: AGHT+IEH00QDMO19fg53t76XqycXdbugWF0vZzx2cso3uHjIOr3l6AbJ7SnTq8MwQSlSHlaEicFTMA==
-X-Received: by 2002:a17:902:fc8e:b0:20d:120f:6afa with SMTP id
- d9443c01a7336-214e706376dmr43761115ad.26.1732619673618; 
- Tue, 26 Nov 2024 03:14:33 -0800 (PST)
-Received: from [192.168.68.110] ([187.101.65.72])
+ d=1e100.net; s=20230601; t=1732620135; x=1733224935;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=KF5+Q+1rOwwX8eIZyyP/Swk9x61oFbeTaj2aNqOzoek=;
+ b=FuSu+JSWvnMMsOKwb3Fi3VTJYTX0WtFvNjVnANIs30zX3ySEtmyYWof1rENbgS4BQt
+ 2mhaWAv15uL30QN62yKPtjKLPY7WmxbMkGJ5QCM1+LwLqNT2+ce4i8MndFeUkMd2TZVh
+ XJ0e2l09m83cw0AlwYXmbdTv8L2h19WQ/t8YPRHxJNrfjf7+0vR+sw6zaGQfaplSTcXJ
+ L+7aonoPQItE/U29yww0apsi7oEz9hKPRyrgPGprEbqFEN7DsjZOg3Px4Aq1Iul14oqp
+ M6YO/FmK8H647/lebKYeucqrRPW+faTu/O5353fEkC2oA/k151VJhRuKDs42ySVfcR2c
+ kXcw==
+X-Gm-Message-State: AOJu0YwG0K4k9f/jW7PPOVq1910MOFtOmaLi+B7PHzyKmMuWeVGg6GLe
+ zyinoJP3WKCw18zFMMpQhR77OKCvTaZ15nSNYpSiFm6lHpOnVKR7fKIXa+OjqZiTpQwrRESKaGw
+ Q
+X-Gm-Gg: ASbGncvuiZ8dbsMQnb8dwCJUkykpcxNsJOdS9oxrNDafwndrfPcyA1S1gfNTWNs+EVp
+ Goc1fW1cHeVW2vDY3T0Zpcm8ydfFg4VawZ50Yla310APw+9vSVHoiBWQ0fv9UuuG2RjGnhgVU6q
+ OMipMFTyg6GlDyAkZYPMnD9D7Yqd2nh4+m6qx8i/RuNO5epUfeKSfwBHtjTtWokvPHOnSo25bSB
+ kvtV5kvVGAjxx6rQLPvgIvFNVOCVW7eBvjmy5DrYCmQpMh6m1oIb0nPfh9O/J3cUrc/YXRi
+X-Google-Smtp-Source: AGHT+IGB1S3nePENSA533CkYLMuP58/EiNkFaULMaHf4Q6BH3rt6mUvqb14gZTBwOv+wLOm8/JJ+aA==
+X-Received: by 2002:a5d:5f53:0:b0:382:46ea:1113 with SMTP id
+ ffacd0b85a97d-38260b3cc31mr15783506f8f.4.1732620135272; 
+ Tue, 26 Nov 2024 03:22:15 -0800 (PST)
+Received: from localhost.localdomain ([176.176.143.205])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-724eb968e65sm6936128b3a.54.2024.11.26.03.14.27
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 26 Nov 2024 03:14:32 -0800 (PST)
-Message-ID: <f0fe7192-b3a1-4969-b633-6e5221b76038@ventanamicro.com>
-Date: Tue, 26 Nov 2024 08:14:26 -0300
+ ffacd0b85a97d-3825fbc34bdsm13398468f8f.78.2024.11.26.03.22.13
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Tue, 26 Nov 2024 03:22:14 -0800 (PST)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: qemu-ppc@nongnu.org, qemu-s390x@nongnu.org, Thomas Huth <thuth@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, qemu-riscv@nongnu.org,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH-for-10.0 v2 00/13] hw/boards: Remove legacy
+ MachineClass::pci_allow_0_address flag
+Date: Tue, 26 Nov 2024 12:21:59 +0100
+Message-ID: <20241126112212.64524-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.45.2
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC v2 0/2] Add RISC-V Server Platform Reference Board
-To: Fei Wu <fei2.wu@intel.com>, pbonzini@redhat.com, palmer@dabbelt.com,
- alistair.francis@wdc.com, bin.meng@windriver.com, liwei1518@gmail.com,
- zhiwei_liu@linux.alibaba.com, qemu-devel@nongnu.org, qemu-riscv@nongnu.org,
- andrei.warkentin@intel.com, shaolin.xie@alibaba-inc.com, ved@rivosinc.com,
- sunilvl@ventanamicro.com, haibo1.xu@intel.com, evan.chai@intel.com,
- yin.wang@intel.com, tech-server-platform@lists.riscv.org,
- tech-server-soc@lists.riscv.org, atishp@rivosinc.com,
- ajones@ventanamicro.com, conor@kernel.org,
- heinrich.schuchardt@canonical.com, marcin.juszkiewicz@linaro.org
-References: <20240312135222.3187945-1-fei2.wu@intel.com>
-Content-Language: en-US
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <20240312135222.3187945-1-fei2.wu@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x635.google.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,70 +98,96 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Fei,
+Since v1:
+- Looked at previous analysis from Peter [1]
+- Invert logic so "allow address 0 accesses" is default
 
+---
 
-How is this work going? Are you planning to send the v3?
+This series aims to remove a legacy field from
+MachineClass. Why? Because it doesn't scale on
+heterogeneous machine where different host bridges
+are created.
 
+Rather than a global exposed to all machines,
+use a pci-bus specific flag on each machine
+requiring it, propagated by the host bridge
+device.
 
-Thanks,
+No logical change intended, only machines previously
+using pci_allow_0_address do not set refuse-bar-at-addr-0.
 
-Daniel
+Presumably various machines neither need to set this
+'refuse-bar-at-addr-0' flag, but updating that is
+deferred to each machine maintainer since I don't have
+the knowledge and sufficient test suite IMHO.
 
-On 3/12/24 10:52 AM, Fei Wu wrote:
-> The RISC-V Server Platform specification[1] defines a standardized set
-> of hardware and software capabilities, that portable system software,
-> such as OS and hypervisors can rely on being present in a RISC-V server
-> platform. This patchset provides a RISC-V Server Platform (RVSP)
-> reference implementation on qemu which is in compliance with the spec
-> as faithful as possible.
-> 
-> The reference board can be running with tag edk2-stable202308 in
-> upstream edk2 repo[2].
-> 
-> The qemu command line used:
-> 
-> $QEMU -nographic -m 4G -smp 2 \
->      -machine rvsp-ref,pflash0=pflash0,pflash1=pflash1 \
->      -blockdev node-name=pflash0,driver=file,read-only=on,filename=RISCV_VIRT_CODE.fd \
->      -blockdev node-name=pflash1,driver=file,filename=RISCV_VIRT_VARS.fd \
->      -bios fw_dynamic.bin \
->      -drive file=$BRS_IMG,if=ide,format=raw
-> 
-> Since there is no ACPI table generated in this new machine type, a
-> corresponding EDK-II platform (WIP) is needed to provide related ACPI
-> tables.
-> 
-> For testing purposes only, we used a workaround to generate the ACPI
-> tables in Qemu with a dedicated downstream patch.
-> 
-> [1] https://github.com/riscv-non-isa/riscv-server-platform
-> [2] https://github.com/tianocore/edk2.git
-> 
-> 
-> v2:
-> - move cpu definition the 1st patch
-> - replace sifive_test with power reset syscon
-> - add versioning scheme to fdt
-> - integrate recent changes in virt.c
->    - use g_autofree
->    - create_fdt/finalize_fdt
->    - riscv_isa_write_fdt
-> - some cleanups
-> 
-> 
-> Fei Wu (2):
->    target/riscv: Add server platform reference cpu
->    hw/riscv: Add server platform reference machine
-> 
->   configs/devices/riscv64-softmmu/default.mak |    1 +
->   hw/riscv/Kconfig                            |   12 +
->   hw/riscv/meson.build                        |    1 +
->   hw/riscv/server_platform_ref.c              | 1276 +++++++++++++++++++
->   target/riscv/cpu-qom.h                      |    1 +
->   target/riscv/cpu.c                          |   61 +
->   6 files changed, 1352 insertions(+)
->   create mode 100644 hw/riscv/server_platform_ref.c
-> 
+[1] https://lore.kernel.org/qemu-devel/20241125140535.4526-1-philmd@linaro.org/
+[2] https://lore.kernel.org/qemu-devel/1444683308-30543-1-git-send-email-agordeev@redhat.com/T/#u
+
+Philippe Mathieu-Daudé (13):
+  hw/pci: Do not declare PCIBus::flags mask as enum
+  hw/pci-bridge: Initialize bridge with parent bus flags
+  hw/pci: Factor machine_refuses_bar_at_addr_0() helper out
+  hw/pci: Introduce PCIBusFlag::PCI_BUS_BAR_AT_ADDR0_REFUSED
+  hw/pci: Propagate bar_at_addr_0_refused to
+    pci_root_bus_internal_init()
+  hw/pci: Propagate bar_at_addr_0_refused to pci_root_bus_init()
+  hw/pci: Propagate bar_at_addr_0_refused to pci_root_bus_new()
+  hw/pci: Propagate bar_at_addr_0_refused to pci_register_root_bus()
+  hw/ppc/spapr: Create host bridge setting bar_at_addr_0_refused=false
+  hw/pci-host/gpex: Expose 'refuse-bar-at-addr-0' property
+  hw/arm/virt: Create GPEX host bridge without refuse-bar-at-addr-0
+  hw/riscv/virt: Create GPEX host bridge without refuse-bar-at-addr-0
+  hw/pci/pci: Remove legacy MachineClass::pci_allow_0_address flag
+
+ include/hw/boards.h                 |  1 -
+ include/hw/pci-host/gpex.h          |  1 +
+ include/hw/pci/pci.h                |  8 +++++---
+ include/hw/pci/pci_bus.h            | 10 ++++++++--
+ hw/alpha/typhoon.c                  |  2 +-
+ hw/arm/sbsa-ref.c                   |  1 -
+ hw/arm/virt.c                       |  1 -
+ hw/i386/microvm.c                   |  2 ++
+ hw/loongarch/virt.c                 |  2 ++
+ hw/mips/loongson3_virt.c            |  2 ++
+ hw/openrisc/virt.c                  |  2 ++
+ hw/pci-bridge/pci_expander_bridge.c | 17 +++++++++++-----
+ hw/pci-host/articia.c               |  3 ++-
+ hw/pci-host/astro.c                 |  3 ++-
+ hw/pci-host/bonito.c                |  2 +-
+ hw/pci-host/designware.c            |  2 +-
+ hw/pci-host/dino.c                  |  2 +-
+ hw/pci-host/gpex.c                  |  5 ++++-
+ hw/pci-host/grackle.c               |  2 +-
+ hw/pci-host/gt64120.c               |  2 +-
+ hw/pci-host/i440fx.c                |  2 +-
+ hw/pci-host/mv64361.c               |  2 +-
+ hw/pci-host/pnv_phb3.c              |  2 +-
+ hw/pci-host/pnv_phb4.c              |  2 +-
+ hw/pci-host/ppc440_pcix.c           |  2 +-
+ hw/pci-host/ppc4xx_pci.c            |  2 +-
+ hw/pci-host/ppce500.c               |  3 ++-
+ hw/pci-host/q35.c                   |  2 +-
+ hw/pci-host/raven.c                 |  2 +-
+ hw/pci-host/remote.c                |  2 +-
+ hw/pci-host/sabre.c                 |  2 +-
+ hw/pci-host/sh_pci.c                |  2 +-
+ hw/pci-host/uninorth.c              |  8 ++++----
+ hw/pci-host/versatile.c             |  2 +-
+ hw/pci-host/xilinx-pcie.c           |  2 +-
+ hw/pci/pci.c                        | 31 ++++++++++++++++++-----------
+ hw/pci/pci_bridge.c                 |  1 +
+ hw/ppc/ppc440_uc.c                  |  2 +-
+ hw/ppc/spapr.c                      |  1 -
+ hw/ppc/spapr_pci.c                  |  2 +-
+ hw/riscv/virt.c                     |  1 -
+ hw/s390x/s390-pci-bus.c             |  2 +-
+ hw/xen/xen-pvh-common.c             |  2 ++
+ hw/xtensa/virt.c                    |  2 ++
+ 44 files changed, 94 insertions(+), 57 deletions(-)
+
+-- 
+2.45.2
 
 
