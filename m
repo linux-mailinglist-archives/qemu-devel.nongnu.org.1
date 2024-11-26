@@ -2,84 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BC489D9EBF
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Nov 2024 22:18:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 246179D9EC1
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Nov 2024 22:18:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tG2wO-0001Ti-BI; Tue, 26 Nov 2024 16:17:48 -0500
+	id 1tG2wg-0001VF-0T; Tue, 26 Nov 2024 16:18:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tG2wJ-0001TO-Ht
- for qemu-devel@nongnu.org; Tue, 26 Nov 2024 16:17:44 -0500
-Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1tG2wd-0001Um-Uf
+ for qemu-devel@nongnu.org; Tue, 26 Nov 2024 16:18:03 -0500
+Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tG2wH-0001W9-Ke
- for qemu-devel@nongnu.org; Tue, 26 Nov 2024 16:17:43 -0500
-Received: by mail-ed1-x529.google.com with SMTP id
- 4fb4d7f45d1cf-5cfa90e04c2so6710156a12.1
- for <qemu-devel@nongnu.org>; Tue, 26 Nov 2024 13:17:39 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1tG2wb-0001aU-Vx
+ for qemu-devel@nongnu.org; Tue, 26 Nov 2024 16:18:03 -0500
+Received: by mail-pf1-x432.google.com with SMTP id
+ d2e1a72fcca58-7252b5d7b1dso143290b3a.0
+ for <qemu-devel@nongnu.org>; Tue, 26 Nov 2024 13:18:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1732655857; x=1733260657; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=rUxJ7gUtdImLe+r67+S/T9efEdLM4vkUnzT/eiTY9og=;
- b=El0cOtOEFi03D+g+3S6Ps2FZxebYM8caMnIYsD8wOgQXjHvKIjFqOk3XAa9Py8YAQq
- fNAd4BqyRV7I3hup3BfmtVouoYlgGzPI5Ue8l4oVrAnknzZiToPHyAYM5lqgWFADfRF3
- iAC4ROGYdurenkXmsqv4diFSTQzE3qXSojsPxaNQ4Y68h11j3f7oqP3vipWDg3iYvrSf
- AypLRAoTduwp4uhaaJ5Gz5Yvt6wuXiuyXkIDn/kokemn1VuvaRuWOGuuf3EDHAXyMUMB
- q0OGLsp7saNMvBTcaWgim6NBer1/JoDOOZuu42Wn5z9G2FuLY1y6geIn4xD/X8qbM2ob
- iDrw==
+ d=linaro.org; s=google; t=1732655880; x=1733260680; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=+MKlsc9XcOWYZdd66SFqnK/oWgGYy892pfPxX1s7X5Q=;
+ b=BvMyNR86fYtpolW1ILqOgB4PmZAPEFPvfAFUldx/AO5eczJPsZmN6u/yY6SlCKGIdE
+ eZDqTSlXGOkqkOQrwObypjyj6GJhEvBkNEqRyHdvOYRdb6e8PGN/BfrDALfDww0LhFGo
+ oFAYd5fld9vOPrAL/tVA9kHkSVqi5ZbN8PLdw04VS2jt3ofxYYjohzViKDcJ0dM7JKnW
+ iXQeExmbt1XESXNyQQYbn6c2ayKUwZAD9od3dYQcOO2HSIN2tNdEMB1XRlz4W8ZaAEx1
+ M3pfe3MUzwiC1Uk2XOBiuasvFiho5iymvhG9/na+at4ytdoq3VJCDoY46owH4yj35hR7
+ GoTQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1732655857; x=1733260657;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=rUxJ7gUtdImLe+r67+S/T9efEdLM4vkUnzT/eiTY9og=;
- b=CviF9XyMWUkeh/wE+hNNGj/DaJl68jrFcce6mlZXUHhLmqrUQqV6JN/OZITZo3ww2s
- ie+JZD7P3yuG+2cUaLj2Kl5BqFhW5fJJxD/FxnMbLtTxC8xp6EJVAzGXqEYWTYiU765J
- KkVtGswalz3tTfdWrQKzxL1rXFDMgSLgYqxvJQf6ws04/2FSXFUcGzPabHGo3KtVTUvp
- zed3lVvK02fwCTJgpzBtYOPstMm6PMCViXYDj5erGohl+iK4a+NkVzFZ3oHigWO4pRVk
- FI1bus/mNM9aFXxVvATH16JKWvrey1X56nJuaQgm854lNxSWgPbRgvQluUHSUF4Hqpmk
- c7tg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVoG5hvfpNSJsBVrCFtvypvRZwffLcmBv+UY7xUqd7/1SbRn+CuWdG7pFdoma/EpsaLGSoQ+7wAsrky@nongnu.org
-X-Gm-Message-State: AOJu0YyKKcOy9Fmox309M4NYVdj2w9Ocb76ohemAnb/cY3zaBR3yNSsV
- TcgIZTMwrmQLgiP1ZMvWOuSICmxsRCy4XX2TJXM42OFIPLXk0FdVBOuavB6Rh/xGGXIpN/wo7lC
- dugJk7of6rYwZIWirkr3wAUOYG3cscQaC8nI1Eg==
-X-Gm-Gg: ASbGnctAMdYGbNgOU6P7orF1d6fF2/7l1i0sZOVLeumIn7BA/IbpY/mFuX0AvDtLdbH
- HUY7gF8f7RmN02BzaCKqmhYviH+qnfGKf
-X-Google-Smtp-Source: AGHT+IGhuiRHgyaocyMsig71QG/iFX8yOKfg3+iy/u2Wjb84Xp5fGnyD5uaCTZFB8RtH69OGXPC5iujVlYsf/STFK2g=
-X-Received: by 2002:a05:6402:27d2:b0:5cf:db7d:76e2 with SMTP id
- 4fb4d7f45d1cf-5d080b8ae1dmr635858a12.2.1732655856729; Tue, 26 Nov 2024
- 13:17:36 -0800 (PST)
+ d=1e100.net; s=20230601; t=1732655880; x=1733260680;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=+MKlsc9XcOWYZdd66SFqnK/oWgGYy892pfPxX1s7X5Q=;
+ b=hCv0g1ceeD290ZawAWfLOGX1nOZC2cb722qAxKQRPMqXmnOEwANJasdTYcz68GAR36
+ Ncw9IkshevVoAIHllvTnL8JIuhfjB3BNFdiz4xUu6zsUuZkbEUW1s6ZnY17ewNwroM+q
+ CQrpsmuqBBwMaAMfRGQ5I33STo8KwbiLx2tq+22i36cofHO7OqZlBRLCJU+Bq4+92g0Z
+ nETsfHpQl3sxyso5QXyo2skppO4BHJoo1+YRJVDqP6lg2EZmkFlyL/93RCjmfvxsDxwg
+ Vul2l6tdFIcxRU0jxcMcvPFlydyTQ/Ecglg/qKlel4t7GfRqGbHthlMoFvDCQIMlLeWl
+ Uyeg==
+X-Gm-Message-State: AOJu0YyHNWF6Q0/syT6YdbEXbIklTbwLOFf/6AmX0CaRI/+LxgS58xde
+ 71j6omQVzPU5OkAMj1orlq6ZItlTJg0hsRxBShSk0vFWazenyrOwQ90NL6dw5efbWzeS6laBw6k
+ 59i4=
+X-Gm-Gg: ASbGnctoKP7KCCs1ykQsWQTW4Jdlm3pVNYe44di1TEvfIL+UzvA4uBlTOZQuyyApICa
+ w2pCyPt4eSspFQ5ffITsW+4TTU/lOM13dUzzly28IKIDyCrOyXx4UgOvkIaQdylbzliFP2tFnT8
+ YZXgDy0S9R6ZNxLzTuq0l5PFEZ0nJ1rtqxHYF1k4fUEbS6a7lbOMFMFXOoCUZn97Rq6ryfo78yg
+ YIVQS+wZl0Qrn1mdyxAIXap7A/plIvvu9NJ2mrPBnJkwVz4LXrb/svvmdqP6nocYbei/K0q/2Ll
+ GeUsP40MTzRrgQ==
+X-Google-Smtp-Source: AGHT+IH4vtP1QlrNQXqjfcxSyRL3EPGrSsrefbUzDpjcf9tbpBB/CGh/99KelKUqJ/1E/6pPMnZ1kg==
+X-Received: by 2002:aa7:8a13:0:b0:724:e3e4:a9c7 with SMTP id
+ d2e1a72fcca58-7251ccbb9e9mr5909898b3a.2.1732655880155; 
+ Tue, 26 Nov 2024 13:18:00 -0800 (PST)
+Received: from linaro.. (216-180-64-156.dyn.novuscom.net. [216.180.64.156])
+ by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-724fd95ed01sm5811766b3a.8.2024.11.26.13.17.59
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 26 Nov 2024 13:17:59 -0800 (PST)
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Stefano Garzarella <sgarzare@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Markus Armbruster <armbru@redhat.com>,
+ Mahmoud Mandour <ma.mandourr@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Alexandre Iooss <erdnaxe@crans.org>
+Subject: [PATCH v2 0/3] Enable clang build on Windows
+Date: Tue, 26 Nov 2024 13:17:33 -0800
+Message-Id: <20241126211736.122285-1-pierrick.bouvier@linaro.org>
+X-Mailer: git-send-email 2.39.5
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-References: <20240904103923.451847-1-thuth@redhat.com>
- <20240904103923.451847-16-thuth@redhat.com>
- <66bf4784-f1e4-479f-83db-2d4f91c10e48@linaro.org>
- <Z0YF9i2pwBkznkCD@redhat.com>
- <CAFEAcA-ematCTyj0SN2=e3mGHvp0VWjN1GV-Tu5Rkf-V721L1w@mail.gmail.com>
- <8ff5ef91-1a4b-498e-a948-37444d699f94@redhat.com>
- <Z0YLvQWVHL_uDA1U@redhat.com>
-In-Reply-To: <Z0YLvQWVHL_uDA1U@redhat.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 26 Nov 2024 21:17:24 +0000
-Message-ID: <CAFEAcA_J+YP9U63H25v0sRHwj4oUmZnDDHf-wvhNbJ=JPgSHsw@mail.gmail.com>
-Subject: Re: [PULL 15/42] tests/functional: enable pre-emptive caching of
- assets
-To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
-Cc: Thomas Huth <thuth@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>, 
- Stefan Hajnoczi <stefanha@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, 
- Camilla Conte <cconte@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::529;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x529.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::432;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x432.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,90 +105,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 26 Nov 2024 at 17:56, Daniel P. Berrang=C3=A9 <berrange@redhat.com>=
- wrote:
->
-> On Tue, Nov 26, 2024 at 06:52:57PM +0100, Thomas Huth wrote:
-> > On 26/11/2024 18.46, Peter Maydell wrote:
-> > > On Tue, 26 Nov 2024 at 17:31, Daniel P. Berrang=C3=A9 <berrange@redha=
-t.com> wrote:
-> > > >
-> > > > On Tue, Nov 26, 2024 at 05:44:29PM +0100, Philippe Mathieu-Daud=C3=
-=A9 wrote:
-> > > > > Hi,
-> > > > >
-> > > > > On 4/9/24 12:38, Thomas Huth wrote:
-> > > > > fetch() can fail [*] (see previous patch, various Exceptions retu=
-rned).
-> > > > >
-> > > > > What should we do in this case? If we ignore a missing artifact,
-> > > > > the tests will eventually fail. Better bail out early and save
-> > > > > credit minutes?
-> > > >
-> > > > We already do what you describe - 'fetch' will raise an exception
-> > > > which causes the precache task to fail, and the CI job gets marked
-> > > > as failed. We don't attempt to run tests if assets are missing.
-> > > >
-> > > >
-> > > > > > @@ -58,6 +59,12 @@ def tearDown(self):
-> > > > > >        def main():
-> > > > > >            path =3D os.path.basename(sys.argv[0])[:-3]
-> > > > > > +
-> > > > > > +        cache =3D os.environ.get("QEMU_TEST_PRECACHE", None)
-> > > > > > +        if cache is not None:
-> > > > > > +            Asset.precache_suites(path, cache)
-> > > > > > +            return
-> > > > > > +
-> > > > > >            tr =3D pycotap.TAPTestRunner(message_log =3D pycotap=
-.LogMode.LogToError,
-> > > > > >                                       test_output_log =3D pycot=
-ap.LogMode.LogToError)
-> > > > > >            unittest.main(module =3D None, testRunner =3D tr, ar=
-gv=3D["__dummy__", path])
-> > > > >
-> > > > > [*] Peter reported the following CI failure:
-> > > > >
-> > > > >    https://gitlab.com/qemu-project/qemu/-/jobs/8474928266
-> > > > >
-> > > > > 2024-11-26 14:58:53,170 - qemu-test - ERROR - Unable to download =
-https://apt.armbian.com/pool/main/l/linux-6.6.16/linux-image-current-sunxi_=
-24.2.1_armhf__6.6.16-Seb3e-D6b4a-P2359-Ce96bHfe66-HK01ba-V014b-B067e-R448a.=
-deb:
-> > > >
-> > > > This looks to be working as intended. We failed to cache
-> > > > the asset, and so we stopped the job, without trying to
-> > > > run the tests.
-> > >
-> > > The job ended up in state "failed", with a red X mark in
-> > > the gitlab UI. If we intend that not being able to fetch
-> > > the assets doesn't count as a test failure, that didn't
-> > > work here. If we do intend that fetch failures should be
-> > > CI failures, we need to make our process of fetching and
-> > > caching the images more robust, because otherwise the result
-> > > is flaky CI jobs.
-> >
-> > I think we want to continue to maek failing downloads as test failures,
-> > otherwise we'll never notice when an asset is not available from the
-> > internet anymore (since SKIPs just get ignored).
-> >
-> > What we really need is a working cache for the private CI runners to ea=
-se
-> > the pain when the host just has a networking hiccup.
->
-> Right, if the cache was working, once the cache is primed, then the only
-> time we would see a fail is if the commit introduces a /new/ URL that is
-> genuinely invalid.
->
-> We absolutely need the caching for runners to be fixed as a high priority
-> task. It also breaks our ability to use ccache, which means our pipelines
-> are needlessly slower than they should be.
+For now, it was only possible to build plugins using GCC on Windows. However,
+windows-aarch64 only supports Clang.
+This biggest roadblock was to get rid of gcc_struct attribute, which is not
+supported by Clang. After investigation, we proved it was safe to drop it.
 
-The other awkward part of the current setup, incidentally, is that if
-we fail to download one image file, we immediately stop the whole
-CI job, so we don't get any information about whether the other
-tests the job would have run would have passed or not. In situations
-like the current one where I'm basically ignoring this job as temporarily
-broken, that means we get less coverage than we might have had.
+Built and tested on Windows (all msys env)/Linux/MacOS for x86_64 and aarch64
+hosts.
 
--- PMM
+v1 contained warning fixes and various bits that have been upstreamed already.
+The only bits left in this series are the gcc_struct removal, and fixing the
+plugins build with clang.
+
+This series is for 10.0, as we decided to not include the gcc_struct removal is
+9.2 release.
+
+v1: https://patchew.org/QEMU/20241031040426.772604-1-pierrick.bouvier@linaro.org/
+
+v2:
+- drop attribute gcc_struct instead of using -mno-ms-bitfields option
+- add a section about bitfields in documentation
+
+Pierrick Bouvier (3):
+  win32: remove usage of attribute gcc_struct
+  docs/devel/style: add a section about bitfield, and disallow them for
+    packed structures
+  plugins: enable linking with clang/lld
+
+ docs/devel/style.rst                      | 10 ++++++++++
+ meson.build                               |  6 +++---
+ include/qemu/compiler.h                   |  7 +------
+ scripts/cocci-macro-file.h                |  6 +-----
+ subprojects/libvhost-user/libvhost-user.h |  6 +-----
+ contrib/plugins/meson.build               |  2 +-
+ plugins/meson.build                       | 24 +++++++++++++++++++----
+ tests/tcg/plugins/meson.build             |  3 +--
+ 8 files changed, 38 insertions(+), 26 deletions(-)
+
+-- 
+2.39.5
+
 
