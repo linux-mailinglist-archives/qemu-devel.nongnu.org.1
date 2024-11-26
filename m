@@ -2,85 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55ABE9D98E5
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Nov 2024 14:52:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7790F9D9319
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Nov 2024 09:12:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tFvzY-0007zf-Lg; Tue, 26 Nov 2024 08:52:36 -0500
+	id 1tFqfA-0005QY-6b; Tue, 26 Nov 2024 03:11:12 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <weichenforschung@gmail.com>)
- id 1tFqXY-0004hO-6D
- for qemu-devel@nongnu.org; Tue, 26 Nov 2024 03:03:20 -0500
-Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <weichenforschung@gmail.com>)
- id 1tFqXV-0003UL-1j
- for qemu-devel@nongnu.org; Tue, 26 Nov 2024 03:03:18 -0500
-Received: by mail-pl1-x62e.google.com with SMTP id
- d9443c01a7336-21145812538so42457745ad.0
- for <qemu-devel@nongnu.org>; Tue, 26 Nov 2024 00:03:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1732608194; x=1733212994; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=c3rZxnvTwyQvkWJKdeGmyoAhgKD9L896K2Toi49f/K4=;
- b=SgdbtKGEFgrxMqGoy1OkhpmPcYEK+2edxRRudmT0IJ0ZLfYMY5DvIb7prvh+NmVsKn
- XjTuar6xIFJtGE3nn3iOr/2UPLpreI6tsENQB2u9fMX7sFNGCqzUo8FHHF5iOAle1CjV
- yADqwqHKnt5oLEa51GqxreIbkB8hXuugSdlKyegCRdvjVyVgMmX8d/Bd5a8NFyBrswct
- 67olwV6CXI0GYin+XTcAafircegq2CRGBAGZfdCsXGLPtdtDl+5mROBzphSqEM4S0WLX
- vCTr+i1ZaYWeb5DqopQ299fllw369ijUyrGTTqX7JXOkSmmUnTz8ZZDcXEOO69BBIaOh
- XfMg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1732608194; x=1733212994;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=c3rZxnvTwyQvkWJKdeGmyoAhgKD9L896K2Toi49f/K4=;
- b=xThE53aVDjEmWOqXHD0k3pu6HUO6gMb3cj/xQS2kbl/6nXinqZ3l3i6VbarBLCozpd
- eXzZ0qgiuETHFQg4oVaWOX18WxOaVnvd59ubplG0EJIugosVXoO41n0ZrzQlWZ1zfhMH
- HSUY1fLxNfOrv3y5+T1CPcynIi7FHRyGp4rlVHpRAnrhQsaeAsLK4hd1xPgJnMkmMlt9
- 5f096oBRFxU95okVtTS1RDA3EdY8vypb7z1mFGMO0oLNw0rLZ2/8XuYrcl52UGjb2AvA
- KZW7vBn4jYbCW5pnaC35a29qXnQCdYx599xIOiaEEAkPiGtseXpmi8o1qr84f7IE4nyt
- v7oQ==
-X-Gm-Message-State: AOJu0Yyct+gCh2MhaWRLg64Y8NMR9C20v+WeepsntIXSIPZt1BDDXrk+
- GHawE2ZxfuvYV9ZScoe79/dgKKLYkXoFZbtN1hfjye505KoO47jKvnhuUjbejTCHsg==
-X-Gm-Gg: ASbGncs3Au7lJWSKFkmQiwaXN+crhAtixDKZs6eY//PrWuxE9DjpyjlrtT+7YgF0PlA
- b0E751xhX1wMXauB+Xvyw816H/WETZlSAW8F5/kY1jd6QqDOBWVB8ebKk4+CkLDYW2sE8eurYUF
- gCM4Z3ugD5rpgawIaqK4bo+b4mTlBLLfalkQQdUaeCQty0o5McZ/u7XvV0V+YIQ1uTD35ghjkFS
- iiMCfu5vn3uLJJOoQEr9K99anr1EpnLEoDDankx8F/WJt45jBb2fJcK7ZicK+bZzw8IPEci
-X-Google-Smtp-Source: AGHT+IE4o41DHKYVYw/Cxcw/im1rEx92qvpa+aYDzZs1yFIlsVxCLR9CySVwq1+DA21U8ZIpcdiXiA==
-X-Received: by 2002:a17:902:d4c6:b0:211:6b37:8b4d with SMTP id
- d9443c01a7336-2129fd5c7b4mr203328705ad.45.1732608194494; 
- Tue, 26 Nov 2024 00:03:14 -0800 (PST)
-Received: from localhost.localdomain ([212.107.29.200])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-2129db8db4asm78718375ad.10.2024.11.26.00.03.12
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 26 Nov 2024 00:03:14 -0800 (PST)
-From: Wei Chen <weichenforschung@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: mst@redhat.com, david@redhat.com, yuval.yarom@rub.de, genkin@gatech.edu,
- Wei Chen <weichenforschung@gmail.com>, Zhi Zhang <zzhangphd@gmail.com>
-Subject: [PATCH] hw/virtio/virtio-mem: Prohibit unplugging when size <=
- requested_size
-Date: Tue, 26 Nov 2024 16:02:13 +0800
-Message-ID: <20241126080213.248-1-weichenforschung@gmail.com>
-X-Mailer: git-send-email 2.47.1
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tFqf7-0005Py-CV
+ for qemu-devel@nongnu.org; Tue, 26 Nov 2024 03:11:09 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tFqf5-00051K-MM
+ for qemu-devel@nongnu.org; Tue, 26 Nov 2024 03:11:09 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1732608664;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=Yz5I06woEZ95+fKBHa4Usy4llxwDNjfLGHqZW6is5Pc=;
+ b=Xz+CGZ7zPAGZZEWYeJA4KG3Ry5+VzEZW7z8vGAgUGHnGDFCqf9z20NTkx2klXViCMtLlSw
+ xNBYpAi4XTBCiI7ig7E7kRBTp4o9BKdUecwB64Gcg4izeWiAHhh64g8FSYPySCuIU+iQfe
+ Q88T644Yq4xI7lCEf29SHv9cbpCprn4=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-499-7zTelhvwOvSqtVRMt9wvUw-1; Tue,
+ 26 Nov 2024 03:11:01 -0500
+X-MC-Unique: 7zTelhvwOvSqtVRMt9wvUw-1
+X-Mimecast-MFC-AGG-ID: 7zTelhvwOvSqtVRMt9wvUw
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id EE19219560AE; Tue, 26 Nov 2024 08:10:59 +0000 (UTC)
+Received: from thuth-p1g4.redhat.com (unknown [10.39.192.137])
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id EEECF1956052; Tue, 26 Nov 2024 08:10:56 +0000 (UTC)
+From: Thomas Huth <thuth@redhat.com>
+To: qemu-devel@nongnu.org,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>
+Subject: [PATCH] meson.build: Refuse XCode versions < v15.0
+Date: Tue, 26 Nov 2024 09:10:54 +0100
+Message-ID: <20241126081054.244365-1-thuth@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
- envelope-from=weichenforschung@gmail.com; helo=mail-pl1-x62e.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -29
+X-Spam_score: -3.0
+X-Spam_bar: ---
+X-Spam_report: (-3.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.93,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Tue, 26 Nov 2024 08:52:34 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -95,32 +80,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-A malicious guest can exploit virtio-mem to release memory back to the
-hypervisor and attempt Rowhammer attacks. The only case reasonable for
-unplugging is when the size > requested_size.
+According to our support policy, we only support the two latest
+major versions of macOS, and we already removed compatibility code
+for older versions. However, it's still possible that people install
+an older version of XCode on a recent version of macOS - which won't
+be able to compile QEMU anymore, see for example the ticket here:
 
-Signed-off-by: Wei Chen <weichenforschung@gmail.com>
-Signed-off-by: Zhi Zhang <zzhangphd@gmail.com>
+ https://gitlab.com/qemu-project/qemu/-/issues/2694
+
+Thus let's set the expectations right and refuse older versions of
+XCode that do not match the two latest versions of macOS anymore.
+
+Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- hw/virtio/virtio-mem.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ meson.build | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/hw/virtio/virtio-mem.c b/hw/virtio/virtio-mem.c
-index 80ada89551..4ef67082a2 100644
---- a/hw/virtio/virtio-mem.c
-+++ b/hw/virtio/virtio-mem.c
-@@ -671,6 +671,10 @@ static int virtio_mem_state_change_request(VirtIOMEM *vmem, uint64_t gpa,
-         return VIRTIO_MEM_RESP_NACK;
-     }
+diff --git a/meson.build b/meson.build
+index e0b880e4e1..a290dbfa33 100644
+--- a/meson.build
++++ b/meson.build
+@@ -315,8 +315,8 @@ foreach lang : all_languages
+     # ok
+   elif compiler.get_id() == 'clang' and compiler.compiles('''
+       #ifdef __apple_build_version__
+-      # if __clang_major__ < 12 || (__clang_major__ == 12 && __clang_minor__ < 0)
+-      #  error You need at least XCode Clang v12.0 to compile QEMU
++      # if __clang_major__ < 15 || (__clang_major__ == 15 && __clang_minor__ < 0)
++      #  error You need at least XCode Clang v15.0 to compile QEMU
+       # endif
+       #else
+       # if __clang_major__ < 10 || (__clang_major__ == 10 && __clang_minor__ < 0)
+@@ -325,7 +325,7 @@ foreach lang : all_languages
+       #endif''')
+     # ok
+   else
+-    error('You either need GCC v7.4 or Clang v10.0 (or XCode Clang v12.0) to compile QEMU')
++    error('You either need GCC v7.4 or Clang v10.0 (or XCode Clang v15.0) to compile QEMU')
+   endif
+ endforeach
  
-+    if (!plug && vmem->size <= vmem->requested_size) {
-+        return VIRTIO_MEM_RESP_NACK;
-+    }
-+
-     /* test if really all blocks are in the opposite state */
-     if ((plug && !virtio_mem_is_range_unplugged(vmem, gpa, size)) ||
-         (!plug && !virtio_mem_is_range_plugged(vmem, gpa, size))) {
 -- 
-2.47.1
+2.47.0
 
 
