@@ -2,77 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8AB49D9C07
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Nov 2024 18:03:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1534C9D9C03
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Nov 2024 18:03:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tFyxT-0007QS-6q; Tue, 26 Nov 2024 12:02:39 -0500
+	id 1tFyxV-0007Wt-0D; Tue, 26 Nov 2024 12:02:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tFyxQ-0007N1-Ix
+ id 1tFyxQ-0007Ke-8Q
  for qemu-devel@nongnu.org; Tue, 26 Nov 2024 12:02:36 -0500
-Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tFyxO-00020o-Kj
- for qemu-devel@nongnu.org; Tue, 26 Nov 2024 12:02:36 -0500
-Received: by mail-wr1-x42d.google.com with SMTP id
- ffacd0b85a97d-382456c6597so4109029f8f.2
- for <qemu-devel@nongnu.org>; Tue, 26 Nov 2024 09:02:34 -0800 (PST)
+ id 1tFyxO-00020x-5A
+ for qemu-devel@nongnu.org; Tue, 26 Nov 2024 12:02:35 -0500
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-434a2f3bae4so14753855e9.3
+ for <qemu-devel@nongnu.org>; Tue, 26 Nov 2024 09:02:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1732640552; x=1733245352; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=7IwpV5E0XRDCMVWuelKluQa8UT2nyGMUY4zNcoWVPWc=;
- b=gKWSEkSLt0JiI39bdCYY9LIzCz87q9zqh61Zb5OLVGYELMJFFLxHQ+D75SYBglB0qx
- tFdiZ88LfmAM7e55hoUDFCvqXD720yj9KQEguyNVFYjAH0q/KdfYENh7rg9CbA5cySCm
- OYnsDubkwF1STYZnF4zrc2owfST2gGudnzlT1dpNUNZHU5t+LJPqdcARmZppqrP97tQu
- JjHi6F1Ybfi9KI5eWenslJdElUl2VMFD1FjkbrlOeQUxjI4VVJhHrsUpDJcQi7GefUho
- RrIqSPzXsW3upHikUoIdGeFNq5z2XMASoqL/qH3HifljZN6RVN7BUFWC0+YPiKATfpgj
- hwxg==
+ :reply-to; bh=xFzPeRmZcYFg+diNYuLvRmiok0TT9be1yhuo0Ta4GIs=;
+ b=AdJZlPn1S2puc9d+A7FFYqwcoLq7FIOv1RYbzxvAansRjYmKBcCMo1l2iBcDmOkgWz
+ ZFre778uIrB6a855K1oadAMHnD+3l0Bm71RIybcl96NEndKOR1jkNCs4NtcdUCtegTIZ
+ cnFQT58rnLyZZMpofqvVixEUht8oMMP9v0YWIiV1tuR0rXi1msf18oDU26bAvC36yQzN
+ U5gyL3Lzziz4IJnLoXfsSHl8VaAO9YgRJcx4+sb2cHIQkoMC4sXzskO80ryZAIzj68tz
+ 87qDhOLspkzY42jj3wHI40ocJj5h4mXQ8akm1hWI+fThvqnee3Zf8awu5bZPa/Q/RfDb
+ mhTg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1732640552; x=1733245352;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=7IwpV5E0XRDCMVWuelKluQa8UT2nyGMUY4zNcoWVPWc=;
- b=tDnXY+T0Lh8V2lDOTFRYK0uC14QsEVObOGPL+d3aBaz3VvKVZxFQTn7P71BQvzvGL1
- FFgRfsUqEZQX/2S9BaLVelaz3jkU22TvcZ0pKp+m+GeLwHoKTt1JdF2fqt2lEqD1NxnP
- D8w35dOurKubTa/3av2uH8S1JwR2QVNaWp7a58UWjIO/3BoGr6wvIkHoXSdtVRXJrCBQ
- +HORSOtPup6kcjNBgX+2O2qeNIsx41KUwBUo2yS4XgFw+4AeuzsBwaIsvVEJ6yT8OMtG
- qK0grlSmmJsyd8vxq3tdDQrPt52GS3pVd7+IeW/b60UlMbOsczNzOBDRI3V6RQWrZzAu
- GZgA==
-X-Gm-Message-State: AOJu0YzIJWv9DU8ciAPvN3r3DuogGEkHJovK3w30REsKwQCDY7ofteJm
- jBqPN7qxhq2z+XghUoAQoNdgS+8obgZfaTsVrtGjpUo9csPQ3wKPZO2Xr72FnEwqN15aARbesf0
- 0
-X-Gm-Gg: ASbGncv8t7jBbW9YioQBgr3AaJvJIKPCfEBeWKpsBuaxO+EhmSkGz1uY5xpLOGwyrvn
- iVNFjTYD0H96VrSnnq5kvSAL9d/VCKwmOIb+2OvMauTW98MzWVJ0EaK08MHOe39XOyL+geZIeyf
- Nob03CIOrOr3I+uDgS5Ig1rT4lMEKaWhZa16wRMGnWCeFJT7PDfaFkZi3CjvKUvIi+qbptrhAWH
- vU2n+aOErwFCOZI11rrkEoZBArv5lfK2WqUVf4cOPX1TIv8rH91jF9t
-X-Google-Smtp-Source: AGHT+IF7V0FPJ3IPk2TwVevJvGbZMIjqbYaVlyrCbz1zVs1X0NHnu6fd/Hx5EW128zrXhhNtBBFTNQ==
-X-Received: by 2002:a05:6000:402b:b0:382:5141:f631 with SMTP id
- ffacd0b85a97d-38260b8631fmr12818651f8f.29.1732640550112; 
+ bh=xFzPeRmZcYFg+diNYuLvRmiok0TT9be1yhuo0Ta4GIs=;
+ b=hv+XkRoEVuf4zKvLNtmmkJFpY6GnhIrNYC4eP4QVXFdQ78gH/tFopiV+kfkLQdVZ8n
+ SOfHvHlEsyBYGSYr7w/Lt7RzoSkz8gTZEL2eArRMmU6gqBRINjYq2mawW2j1WR6zgaAU
+ 6/wgqdZHCdIXUcCunpfegNgVVZoUE8kl8sfUv6bQYtDQ18B1XAGFa/Z4xaOSo/5RFcP5
+ 0Im5ew3cvTlxS67eizC5f8X2i0ZqZI4wiJyGOxKaJW8TcJRMiPxIfBl4wXtDMCZU1AJ+
+ eXNqkX0+zaqIIQa+vFKSexRRHPlN+URC1Mt++2dhCVtQX3hC+ybir/dPRuUUHHrNL2yD
+ q3Vg==
+X-Gm-Message-State: AOJu0Yxw9g2Qz1xo0okZxYS0xXg13kHnquy221jTyf8Yzu7ZM5EVP5Q2
+ LN3zBrOET32R1VOghxb95bDMT9EGLKhR8KWi6LfObQhmgikSnWxa48pSRhPanWtkCNdB6QTiRrY
+ O
+X-Gm-Gg: ASbGncsoRO2sKTyZXzap+//Pg/ORV0YFc/YwHayUp28nmElqjcHJ4zmI4VNkVe1xz5T
+ pHY/4ZOvfSGEGGrX7VbisL702AFj0L/gqZVlnJyWPS/CqxAPyeyLIaP9mBBkPeUEwbq9YO3j07i
+ M0WyqCQ22atlSvSbg4L1K6w63w2T1ku2j3/IhUCciGBelzv80ImRYzS9M1GrB3gDCK0Q2JDBu5X
+ TtvyxLkYeQc8e+uz48cfjUcpCYXWnmgh+Kg+gXsiHyBoByuZIEBQ7Cl
+X-Google-Smtp-Source: AGHT+IGpXcPkfZEjd2lJKlIMrYKVkxQ8wKf9jZNn+iHoh/1yvZ/kEymA5zjWYgouh2yDcqJYBKkJYw==
+X-Received: by 2002:a05:600c:154f:b0:434:a706:c0fd with SMTP id
+ 5b1f17b1804b1-434a9db8386mr319075e9.2.1732640550637; 
  Tue, 26 Nov 2024 09:02:30 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-434a36c7a9fsm43017865e9.44.2024.11.26.09.02.29
+ 5b1f17b1804b1-434a36c7a9fsm43017865e9.44.2024.11.26.09.02.30
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 26 Nov 2024 09:02:29 -0800 (PST)
+ Tue, 26 Nov 2024 09:02:30 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 2/9] docs/system/arm/emulation: mention armv9
-Date: Tue, 26 Nov 2024 17:02:17 +0000
-Message-Id: <20241126170224.2926917-3-peter.maydell@linaro.org>
+Subject: [PULL 3/9] docs/system/arm/emulation: fix typo in feature name
+Date: Tue, 26 Nov 2024 17:02:18 +0000
+Message-Id: <20241126170224.2926917-4-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241126170224.2926917-1-peter.maydell@linaro.org>
 References: <20241126170224.2926917-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,36 +99,25 @@ From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20241122225049.1617774-2-pierrick.bouvier@linaro.org
+Message-id: 20241122225049.1617774-3-pierrick.bouvier@linaro.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- docs/system/arm/emulation.rst | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ docs/system/arm/emulation.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/docs/system/arm/emulation.rst b/docs/system/arm/emulation.rst
-index a2a388f0919..2956c22a1b7 100644
+index 2956c22a1b7..af613b9c8b8 100644
 --- a/docs/system/arm/emulation.rst
 +++ b/docs/system/arm/emulation.rst
-@@ -3,8 +3,8 @@
- A-profile CPU architecture support
- ==================================
- 
--QEMU's TCG emulation includes support for the Armv5, Armv6, Armv7 and
--Armv8 versions of the A-profile architecture. It also has support for
-+QEMU's TCG emulation includes support for the Armv5, Armv6, Armv7,
-+Armv8 and Armv9 versions of the A-profile architecture. It also has support for
- the following architecture extensions:
- 
- - FEAT_AA32BF16 (AArch32 BFloat16 instructions)
-@@ -153,7 +153,7 @@ the following architecture extensions:
- - FEAT_XNX (Translation table stage 2 Unprivileged Execute-never)
- 
- For information on the specifics of these extensions, please refer
--to the `Armv8-A Arm Architecture Reference Manual
-+to the `Arm Architecture Reference Manual for A-profile architecture
- <https://developer.arm.com/documentation/ddi0487/latest>`_.
- 
- When a specific named CPU is being emulated, only those features which
+@@ -88,7 +88,7 @@ the following architecture extensions:
+ - FEAT_LSE2 (Large System Extensions v2)
+ - FEAT_LVA (Large Virtual Address space)
+ - FEAT_MixedEnd (Mixed-endian support)
+-- FEAT_MixdEndEL0 (Mixed-endian support at EL0)
++- FEAT_MixedEndEL0 (Mixed-endian support at EL0)
+ - FEAT_MOPS (Standardization of memory operations)
+ - FEAT_MTE (Memory Tagging Extension)
+ - FEAT_MTE2 (Memory Tagging Extension)
 -- 
 2.34.1
 
