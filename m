@@ -2,63 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 943849D962F
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Nov 2024 12:24:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 14B5C9D9632
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Nov 2024 12:24:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tFtfh-00046v-LG; Tue, 26 Nov 2024 06:23:59 -0500
+	id 1tFtgR-0005oF-KP; Tue, 26 Nov 2024 06:24:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tFten-0003wR-Ny
- for qemu-devel@nongnu.org; Tue, 26 Nov 2024 06:23:06 -0500
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tFtet-0003wy-PI
+ for qemu-devel@nongnu.org; Tue, 26 Nov 2024 06:23:10 -0500
+Received: from mail-lf1-x131.google.com ([2a00:1450:4864:20::131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tFtek-0002ka-Dm
- for qemu-devel@nongnu.org; Tue, 26 Nov 2024 06:23:01 -0500
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-4349cc45219so22497515e9.3
- for <qemu-devel@nongnu.org>; Tue, 26 Nov 2024 03:22:54 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tFtep-0002mF-8F
+ for qemu-devel@nongnu.org; Tue, 26 Nov 2024 06:23:06 -0500
+Received: by mail-lf1-x131.google.com with SMTP id
+ 2adb3069b0e04-53ddb99e9dcso3054169e87.3
+ for <qemu-devel@nongnu.org>; Tue, 26 Nov 2024 03:23:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1732620173; x=1733224973; darn=nongnu.org;
+ d=linaro.org; s=google; t=1732620179; x=1733224979; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=531OAHe2E6s/gjTEfxFCkh/CSUMa49twfx2TRTu9rug=;
- b=fu1eq2LPLYZFT1JFRqcrq/dgHJLG4aatbxi8h011QprBw2hhsCeLOZuP4mY49Yj2vo
- G5dN0v9kl10AbhDFyveVoQaWbtJ6HDuP6d5FhR5lZAVvEQS9IdjWN8wty6q9vfBAn0HY
- 5WV/y6/Ez293S4CuXmjrGcKPRxn2wFmoPkkqtZmVCo7wuNup6EbaWK1FsaQ9wzf2J+WJ
- hm7/zlIcB3IMCWpNuF5DTTahZ0R2NVdnZU/e0t0IZGDFuXYiTImu3W9y7Cj3sySbVOIo
- XQ5qP5+mvy+djvuLimbVju0cY9CSiwzbqoQq85ljoICpo5tlzAa6M4WafrrytTuqfe6i
- c4cw==
+ bh=CLOtH90q6HrNlk2tttqrB7+LmSS1Ew20sdzHgtSgHVA=;
+ b=M9RaepEJcW14Cci3sSEcQuJTTSAuP074Jx9guCrLdZtSqXILgilhsZIEt5EsuWXTED
+ jJ7NAEkY2GxO9p5uJJUOPHKy6CJfwaODRW0i3/jwe5qc3xMt0i7TdsbsUgMFAA9n5PTS
+ RHVP6yL9vetgwN9U2vYmh0HId+BcFXO5xyyzNGE8CRDLj6jyvlvrDOxl/ACsK9RgRPQj
+ Bh6ZO7NwCzxUnve8RbWcf7228hhihsEL0g1Rq5Ufoy9mgUppf2nqpisGDYyWxJOV9r0q
+ Q4IWdP20sHXqULqSjJHibCVB8hHJa82YumXG78VomJy3MUpHE1i2Z5UP5KI5MB/BzVjN
+ /jHw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1732620173; x=1733224973;
+ d=1e100.net; s=20230601; t=1732620179; x=1733224979;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=531OAHe2E6s/gjTEfxFCkh/CSUMa49twfx2TRTu9rug=;
- b=Z4HAqTi0Ugd016pjq49vk2Ac5kDoVI7hvokqAiyRS2lj+xQbd5+NokG1FGYhZxYF/9
- OvVoih4NbS1w06NWuewUfimOr5MPItyKFapO/OBegeuqI5hc9sfVxQQBEjPH49jBYcbM
- 4ct1CnpwwZ7DTm7kM9dHFmTu8sMJmi0LIWkvaggAKr+GkIpbMIjvCcni3ZlV1Z8atcPU
- 8LxvwuJcHw9zwkSSFBfVOQK1PeAF19wo38mBYAC9WJaj2FexupShQB04gumwAGhKB1iT
- Xh4Q8R6WKPkvTTuz8XJ/GGz82yywrrQND4WXS+m/qRh8XIc3tVDiWxy3Do4wNZG8M4x5
- isew==
-X-Gm-Message-State: AOJu0YxjAuBeXg+CRTHTiwKiq5H+QQn432yBgOXl6kfnQRMk0oNYbBWs
- WYKNcmXGsoQBO51E6egNJbVpE5MGMTE+JWH2frHAO/cyodaP2OvhnJkAzWD3NgwrQNT5Wo9uBUl
- g
-X-Gm-Gg: ASbGncsTF2c0do+eVhsGbKDO6LCfjbUufsTLmfiDGyIgCszALqW4hPdSAzU7N0ZCEod
- 4vq+VlzCF65zK+LmyQHYo+2tvy2v2wA46gcTDS2BusG6IiaN+MpyuEO4xhaKtbFZ0V5qqDH6f/B
- XaIERx9M1/Nmv0mroGrhr+17y0HNTUK4ps0vs7o2+MFqLNNSPyYlmw5stlkLh+XFkyKKZJe87Ep
- dQX1koD0Cxafo+UBVgJVII49aWKummrer681kJ+ofSu6pPA3rG0+sqYIGTNKKTqZ9Xs331/
-X-Google-Smtp-Source: AGHT+IGlSefU/AUIv0V6tDlbe3TEFlshHBlt/NlBgyTesEOFvwph3W7BFNJsTCxNbGO+wmRFjIAk5Q==
-X-Received: by 2002:a05:600c:154d:b0:434:a815:2b57 with SMTP id
- 5b1f17b1804b1-434a8152d9dmr7809555e9.20.1732620173600; 
- Tue, 26 Nov 2024 03:22:53 -0800 (PST)
+ bh=CLOtH90q6HrNlk2tttqrB7+LmSS1Ew20sdzHgtSgHVA=;
+ b=xSgYmF/8XX5nSLI6pQF0rQyyT+ePDygOb8GzOkRBI/GY1Oj6192z7YeyrImRbQOXf2
+ Oy7CnA0bCsECDncSBaeiANMHL/XWRUVEGODwhhHxKCPBb8mWOn64qcyuc47E+KlEZ7r6
+ EYFcjHI4i4ZyIWEMrYfrWGBXphpo9/l4g4FOUr60lRYPhnl71Jg/lhvfsAoeQwvYFUSw
+ qYh6czGtIwY2qJRV9EcLhAPlUqXaPG1JRX07/XK29aYy/VH/32uhGyPuBmSc9T/M+N+Y
+ hmU5biXdJ0pcxyoyO+giSxAFTXYZsJOTIDAJWS4Dy9ZvD4+iWupqBHZ8dXCSvefx9ulg
+ yztg==
+X-Gm-Message-State: AOJu0Yz0eLANEfLkPVDhXvuK5b5ugM2CZ+cTTqhHE3866HzNRHheApGG
+ DQORBki+f5qqWnT1aHZKoU3jSQUFlV6UAaJ4GA09eTQsS7tpGIlc4zP/75ZNwV204is7HJXZcbX
+ j
+X-Gm-Gg: ASbGncvhRONn9sQNx35buf7FU30EwXzvvfK8IiMxLzAWJaPri/jyYGBW1kdG0vRydF1
+ /an4Vt3UXP43wrEU7gI4v7NSvYABZyMN/UsbksqF4t2wmqZAi9WQ0mxHykvgKnstXpn9Q6X4J+O
+ IsIi+6dZkbLjjEJIM8ZeL/ugyw8yynTbedK2Muq08dYjJUi3EwIMZ6pdRtwKXLo45A7iqQNlfIx
+ 49q+6kPT+sA7XdBvOszQzP8u5+mzN3lKKEWwNU6cMwNhpRIwuQKQDiv1ZXmtVBPsACuyR41
+X-Google-Smtp-Source: AGHT+IGsj5VzaHU8SAaWvn5jQSkwZvf//JK1pbBPc7Ax707C0OpTerSeHt4R927s6MsqNJ3PMJA0fw==
+X-Received: by 2002:a05:6512:2388:b0:53d:e8f5:f9d4 with SMTP id
+ 2adb3069b0e04-53de8f5fa18mr1392986e87.36.1732620179597; 
+ Tue, 26 Nov 2024 03:22:59 -0800 (PST)
 Received: from localhost.localdomain ([176.176.143.205])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-434a4faf750sm25527775e9.10.2024.11.26.03.22.51
+ 5b1f17b1804b1-4349e117bf5sm81335245e9.18.2024.11.26.03.22.58
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 26 Nov 2024 03:22:53 -0800 (PST)
+ Tue, 26 Nov 2024 03:22:59 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, qemu-s390x@nongnu.org, Thomas Huth <thuth@redhat.com>,
@@ -67,18 +67,18 @@ Cc: qemu-ppc@nongnu.org, qemu-s390x@nongnu.org, Thomas Huth <thuth@redhat.com>,
  Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
  Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH-for-10.0 v2 05/13] hw/pci: Propagate bar_at_addr_0_refused to
- pci_root_bus_internal_init()
-Date: Tue, 26 Nov 2024 12:22:04 +0100
-Message-ID: <20241126112212.64524-6-philmd@linaro.org>
+Subject: [PATCH-for-10.0 v2 06/13] hw/pci: Propagate bar_at_addr_0_refused to
+ pci_root_bus_init()
+Date: Tue, 26 Nov 2024 12:22:05 +0100
+Message-ID: <20241126112212.64524-7-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241126112212.64524-1-philmd@linaro.org>
 References: <20241126112212.64524-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::131;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x131.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,57 +101,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Have pci_root_bus_internal_init() callers set the
+Have pci_root_bus_init() callers set the
 'bar_at_addr_0_refused' argument. No logical change.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/pci/pci.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ include/hw/pci/pci.h    | 3 ++-
+ hw/pci-host/raven.c     | 2 +-
+ hw/pci-host/versatile.c | 2 +-
+ hw/pci/pci.c            | 5 +++--
+ 4 files changed, 7 insertions(+), 5 deletions(-)
 
+diff --git a/include/hw/pci/pci.h b/include/hw/pci/pci.h
+index 135695c5511..b499846083f 100644
+--- a/include/hw/pci/pci.h
++++ b/include/hw/pci/pci.h
+@@ -284,7 +284,8 @@ bool pci_bus_is_express(const PCIBus *bus);
+ void pci_root_bus_init(PCIBus *bus, size_t bus_size, DeviceState *parent,
+                        const char *name,
+                        MemoryRegion *mem, MemoryRegion *io,
+-                       uint8_t devfn_min, const char *typename);
++                       uint8_t devfn_min, const char *typename,
++                       bool bar_at_addr_0_refused);
+ PCIBus *pci_root_bus_new(DeviceState *parent, const char *name,
+                          MemoryRegion *mem, MemoryRegion *io,
+                          uint8_t devfn_min, const char *typename);
+diff --git a/hw/pci-host/raven.c b/hw/pci-host/raven.c
+index a7dfddd69ea..d5087af5ec6 100644
+--- a/hw/pci-host/raven.c
++++ b/hw/pci-host/raven.c
+@@ -313,7 +313,7 @@ static void raven_pcihost_initfn(Object *obj)
+                                         &s->pci_io_non_contiguous, 1);
+     memory_region_add_subregion(address_space_mem, 0xc0000000, &s->pci_memory);
+     pci_root_bus_init(&s->pci_bus, sizeof(s->pci_bus), DEVICE(obj), NULL,
+-                      &s->pci_memory, &s->pci_io, 0, TYPE_PCI_BUS);
++                      &s->pci_memory, &s->pci_io, 0, TYPE_PCI_BUS, true);
+ 
+     /* Bus master address space */
+     memory_region_init(&s->bm, obj, "bm-raven", 4 * GiB);
+diff --git a/hw/pci-host/versatile.c b/hw/pci-host/versatile.c
+index d257acee172..f82262f8d1e 100644
+--- a/hw/pci-host/versatile.c
++++ b/hw/pci-host/versatile.c
+@@ -407,7 +407,7 @@ static void pci_vpb_realize(DeviceState *dev, Error **errp)
+ 
+     pci_root_bus_init(&s->pci_bus, sizeof(s->pci_bus), dev, "pci",
+                       &s->pci_mem_space, &s->pci_io_space,
+-                      PCI_DEVFN(11, 0), TYPE_PCI_BUS);
++                      PCI_DEVFN(11, 0), TYPE_PCI_BUS, true);
+     h->bus = &s->pci_bus;
+ 
+     object_initialize(&s->pci_dev, sizeof(s->pci_dev), TYPE_VERSATILE_PCI_HOST);
 diff --git a/hw/pci/pci.c b/hw/pci/pci.c
-index 27b66583e54..8eacb8f82fc 100644
+index 8eacb8f82fc..f7158fb9573 100644
 --- a/hw/pci/pci.c
 +++ b/hw/pci/pci.c
-@@ -529,7 +529,8 @@ static bool machine_refuses_bar_at_addr_0(void)
- 
- static void pci_root_bus_internal_init(PCIBus *bus, DeviceState *parent,
-                                        MemoryRegion *mem, MemoryRegion *io,
--                                       uint8_t devfn_min)
-+                                       uint8_t devfn_min,
-+                                       bool bar_at_addr_0_refused)
- {
-     assert(PCI_FUNC(devfn_min) == 0);
-     bus->devfn_min = devfn_min;
-@@ -537,7 +538,7 @@ static void pci_root_bus_internal_init(PCIBus *bus, DeviceState *parent,
-     bus->address_space_mem = mem;
-     bus->address_space_io = io;
-     bus->flags |= PCI_BUS_IS_ROOT;
--    if (machine_refuses_bar_at_addr_0()) {
-+    if (bar_at_addr_0_refused && machine_refuses_bar_at_addr_0()) {
-         bus->flags |= PCI_BUS_BAR_AT_ADDR0_REFUSED;
-     }
- 
-@@ -563,7 +564,8 @@ void pci_root_bus_init(PCIBus *bus, size_t bus_size, DeviceState *parent,
-                        uint8_t devfn_min, const char *typename)
+@@ -561,11 +561,12 @@ bool pci_bus_is_express(const PCIBus *bus)
+ void pci_root_bus_init(PCIBus *bus, size_t bus_size, DeviceState *parent,
+                        const char *name,
+                        MemoryRegion *mem, MemoryRegion *io,
+-                       uint8_t devfn_min, const char *typename)
++                       uint8_t devfn_min, const char *typename,
++                       bool bar_at_addr_0_refused)
  {
      qbus_init(bus, bus_size, typename, parent, name);
--    pci_root_bus_internal_init(bus, parent, mem, io, devfn_min);
-+    pci_root_bus_internal_init(bus, parent, mem, io, devfn_min,
-+                               true);
+     pci_root_bus_internal_init(bus, parent, mem, io, devfn_min,
+-                               true);
++                               bar_at_addr_0_refused);
  }
  
  PCIBus *pci_root_bus_new(DeviceState *parent, const char *name,
-@@ -573,7 +575,8 @@ PCIBus *pci_root_bus_new(DeviceState *parent, const char *name,
-     PCIBus *bus;
- 
-     bus = PCI_BUS(qbus_new(typename, parent, name));
--    pci_root_bus_internal_init(bus, parent, mem, io, devfn_min);
-+    pci_root_bus_internal_init(bus, parent, mem, io, devfn_min,
-+                               true);
-     return bus;
- }
- 
 -- 
 2.45.2
 
