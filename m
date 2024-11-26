@@ -2,83 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACC949D9C00
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Nov 2024 18:03:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 916B09D9C3B
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Nov 2024 18:14:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tFyxj-0007mI-CD; Tue, 26 Nov 2024 12:02:55 -0500
+	id 1tFz7b-00075u-Id; Tue, 26 Nov 2024 12:13:09 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tFyxg-0007kb-4f
- for qemu-devel@nongnu.org; Tue, 26 Nov 2024 12:02:52 -0500
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1tFz7S-00075R-FB; Tue, 26 Nov 2024 12:12:58 -0500
+Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tFyxe-00026J-Fs
- for qemu-devel@nongnu.org; Tue, 26 Nov 2024 12:02:51 -0500
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-43155abaf0bso54060535e9.0
- for <qemu-devel@nongnu.org>; Tue, 26 Nov 2024 09:02:50 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1tFz7Q-0004G9-Rc; Tue, 26 Nov 2024 12:12:58 -0500
+Received: by mail-pl1-x62c.google.com with SMTP id
+ d9443c01a7336-212a3067b11so50042945ad.3; 
+ Tue, 26 Nov 2024 09:12:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1732640569; x=1733245369; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=3W6K66990zHqezmpYgbBot+Izh9ypQHacNdBXiFdB4o=;
- b=gnP5jgIxO2RSHNd7l7/eZtHMyYFF8CEAxCzFSrSh3oFea5wJnKNZ2mye/1rHk8FCWJ
- Fnid4rr9MK/z1/wbYATzzzIoJQpzOzZvCe2ZLyhJir49ibNBH+yNldMOPPcLjl9GlhUb
- jAu+12+yGi26gfCa9xlsO/IU8vOByXEWBV+ljFCz+I/5pYhVRgTUvZ67skSjE1OXnYxQ
- kFYe4aGval+u2DRwsTmhpqH250qjn/YDI3aHl2j6vuF0peFkwk15TRZAGvmOmuv+apVX
- P4wTP/+f2KP+McjWLF10a5/SM6bQv3Ar7IhBYNqb5sul9Y+dOtI9mf0QZot0sNsfEYFW
- Kijg==
+ d=gmail.com; s=20230601; t=1732641174; x=1733245974; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=nraLEcdRhzv800XFWmlyyEZTSQqqQaK9BuAuRo4hIeA=;
+ b=cjVxBgR+qWAjP/SmZ7R0ClRGVpLNIINzShKerMl4Wcc9kWUQEhIcdAdLiQFquwxCpx
+ KkUXzMmoVmO4nTSaZzukb1WHEumwcoBGU9OrldkgPPEHnDvd6InqtsYmUN+DiO0XD8FU
+ vF71bS1F2v2LM3W1Y7akrj4Ex0DszCFPMBPf32ddHzif0TWEAQ32zZOXjunpsvhQqQ1J
+ hI6wfWkJfIiZqxBQPoiJswyqgSN/k7ZdRaqq6WArrAo8CP88uyZIvkaZoTGRLyXa7Z2n
+ ja+ccIX2EVERbDTtUFwF6YZUB1WuQLC8WmRzCq+bLzoYMzzwiO9pCt5FqBWI3ITYpPl6
+ hH4Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1732640569; x=1733245369;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=3W6K66990zHqezmpYgbBot+Izh9ypQHacNdBXiFdB4o=;
- b=s9gHC9QcFQiSZqwzYpNv8fB1nfPYK/MEQ1IgvQKa4Sal8pjRDL4PIMGcoA30SA9piA
- wvmeAUCPdojYRlf2jTg1F745CaEMJYyYXXewNcAI1BTTdxEsdyVawzOwVjZwhzqcxzUI
- mDqHr6BcjGHoiOXfuEc9MR5Q2vAkktZyAL8jlgd8x2c9H/zHkgzE/LR0BLNWHyF8LTEE
- dpEycYndr+4F00RGZGujLyZGw+10u6KchiXBCoT1QKNgZTcOcCbkcZdedp45YDEs61U/
- 5ldeFvae1fUi0Ot9vzA3yrSZr/ibopqKEIwjU5dfeh55bxhpfLb8jAAfoSl/csgxCaQ9
- Q2EQ==
-X-Gm-Message-State: AOJu0YyVwEcnBCbL5kLDi/s0I0iuYb9QApZiJuNqnLiGC+1YMHUTPVD7
- +wwNKseIGXxshxHOOhgxtZQjZRvei3lIlHCID9H9MF2dL1XDKjhrD03/LX3E6dkedqkn1IUF5s7
- w
-X-Gm-Gg: ASbGncvLuUT4sqhQndSQcXyEvMTXYfVmGuxa8JSgQ2xYReAOXgCrCGV0ibabUCDsg9x
- LIQPgA1t6FaUiODPxM6AYKzUIgUfpZ4SpmB2SfwCBSPRJtCw+e7kxMSz5eWChhS1v9U3Scj0UQw
- SxqctiIw6hYfN9SxpomJ2X4Xr/zDa+ZXQnbN0aQRvMzQumFWgt/FbR36jJtNruQWZTbPzIKWaRP
- a+mGnEDHOlpt52NbDW3oZML8QnNBJl67esdtd42X0M6NEGOwGjYlwV6
-X-Google-Smtp-Source: AGHT+IGUDemz5XVmN+fyqFQlFY7k6S5TLIJq+LQJLzuS5Q0r03iELFdPmCO8x5D7ChfswpAsqSs/gw==
-X-Received: by 2002:a05:600c:190d:b0:42b:af5a:109 with SMTP id
- 5b1f17b1804b1-434a9de8bf7mr11115e9.24.1732640566892; 
- Tue, 26 Nov 2024 09:02:46 -0800 (PST)
-Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
+ d=1e100.net; s=20230601; t=1732641174; x=1733245974;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=nraLEcdRhzv800XFWmlyyEZTSQqqQaK9BuAuRo4hIeA=;
+ b=Hcaj4oLywXOQ2LMxOuFgukBBVqrHY0z/qWywOFf8CpS2D+8A0P7kuWSSa0vsTGdk6c
+ WVG3WeHq7X3tnOucGSuC9rXg9ODN6efkgXW1aii3hTIlapuJ+MfghsNUlum+0AYCnJv4
+ aboa6GXDf9pL4X84CoWxpOud6ZW4dVUdBVIhs4qdNrKqyGi+9U7Q+j9L8sCpltn4SiAM
+ puoz30P60us5JkdxqV7hZuNspTn/6uz8SpzPP02xUDQcNGh/7I6KMXHJnfgUsywVZZzE
+ OPBWxoef3el+OgI7cRTnnB+V8+3S6Pojp2k0FYqVYjUXoUF+ns49KUePxQLN0kZKJRyF
+ tGAQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCX15pmTB7hCPdJhAXgkJ02qz3OquSVjvcR+q3Zk9v6pneYBDFiJwiFiaZnS4uKJlxzBwVKdjefmzQ==@nongnu.org
+X-Gm-Message-State: AOJu0YwFH3nUBliWhjq4vO87m6jr4w0eAZ92pKKrUMF6YmOfXtzKWT5i
+ vIbh/wtu3N+D9dk58LozuoyUtdEB4KRzO9BooYCGBeC4EvLjhd8HOXjFXg==
+X-Gm-Gg: ASbGncvGU6Ubn+ULL4hSItsswTMH0bJa2C5o9fkxVOCdPhWGqr3dOQa4d3A7ejglARO
+ 2yzAouE/C6QcTEPyVCj3uEEaMQAD87Zd8q+dqeOMfQvTIaAgPzKUO4H33IyiPXr1i6T1rUNfH/E
+ yQHoCpkkymZ9PqiU7oqYpKeIFi6Nr3+L0HyadRywj9EyKbwoU3TUXNMenJJtGAv9I6aksxm1wPF
+ 8GVb/WuxJNy9pJBE0w9H161OJ9rScm4O2KMAQqh79f/bktvrzkpVsyZlsQrQRiF1aLlW78ZddqJ
+ 5Ci77g==
+X-Google-Smtp-Source: AGHT+IF0ZLkF7XZHpr7ozucYl0lIbO4yRbkYy/JNdWxfI2lLpvi4qHnNfzBHAI15gAvcJak43yrbQw==
+X-Received: by 2002:a17:902:c948:b0:212:5636:7923 with SMTP id
+ d9443c01a7336-2129f6b25c2mr205584625ad.21.1732641173824; 
+ Tue, 26 Nov 2024 09:12:53 -0800 (PST)
+Received: from wheely.local0.net (124-171-72-210.tpgi.com.au. [124.171.72.210])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-434a36c7a9fsm43017865e9.44.2024.11.26.09.02.46
- for <qemu-devel@nongnu.org>
+ d9443c01a7336-2129dc21c28sm87321175ad.246.2024.11.26.09.12.51
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 26 Nov 2024 09:02:46 -0800 (PST)
-From: Peter Maydell <peter.maydell@linaro.org>
+ Tue, 26 Nov 2024 09:12:53 -0800 (PST)
+From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 9/9] docs/system/arm/aspeed: add missing model
- supermicrox11spi-bmc
-Date: Tue, 26 Nov 2024 17:02:24 +0000
-Message-Id: <20241126170224.2926917-10-peter.maydell@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241126170224.2926917-1-peter.maydell@linaro.org>
-References: <20241126170224.2926917-1-peter.maydell@linaro.org>
+Cc: Nicholas Piggin <npiggin@gmail.com>,
+	qemu-ppc@nongnu.org
+Subject: [PULL 0/6] ppc-for-9.2-2 queue
+Date: Wed, 27 Nov 2024 03:12:29 +1000
+Message-ID: <20241126171235.362916-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.45.2
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x331.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x62c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -96,39 +95,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+The following changes since commit ba54a7e6b86884e43bed2d2f5a79c719059652a8:
 
-Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Reviewed-by: Andrew Jeffery <andrew@codeconstruct.com.au>
-Message-id: 20241122225049.1617774-13-pierrick.bouvier@linaro.org
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
----
- docs/system/arm/aspeed.rst | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+  Merge tag 'net-pull-request' of https://github.com/jasowang/qemu into staging (2024-11-26 14:06:40 +0000)
 
-diff --git a/docs/system/arm/aspeed.rst b/docs/system/arm/aspeed.rst
-index 2e9ba12f7ae..d17fe7a4fc8 100644
---- a/docs/system/arm/aspeed.rst
-+++ b/docs/system/arm/aspeed.rst
-@@ -1,5 +1,5 @@
--Aspeed family boards (``ast2500-evb``, ``ast2600-evb``, ``ast2700-evb``, ``bletchley-bmc``, ``fuji-bmc``, ``fby35-bmc``, ``fp5280g2-bmc``, ``g220a-bmc``, ``palmetto-bmc``, ``qcom-dc-scm-v1-bmc``, ``qcom-firework-bmc``, ``quanta-q71l-bmc``, ``rainier-bmc``, ``romulus-bmc``, ``sonorapass-bmc``, ``supermicrox11-bmc``, ``tiogapass-bmc``, ``tacoma-bmc``, ``witherspoon-bmc``, ``yosemitev2-bmc``)
--========================================================================================================================================================================================================================================================================================================================================================================================================
-+Aspeed family boards (``ast2500-evb``, ``ast2600-evb``, ``ast2700-evb``, ``bletchley-bmc``, ``fuji-bmc``, ``fby35-bmc``, ``fp5280g2-bmc``, ``g220a-bmc``, ``palmetto-bmc``, ``qcom-dc-scm-v1-bmc``, ``qcom-firework-bmc``, ``quanta-q71l-bmc``, ``rainier-bmc``, ``romulus-bmc``, ``sonorapass-bmc``, ``supermicrox11-bmc``, ``supermicrox11spi-bmc``, ``tiogapass-bmc``, ``tacoma-bmc``, ``witherspoon-bmc``, ``yosemitev2-bmc``)
-+==================================================================================================================================================================================================================================================================================================================================================================================================================================
- 
- The QEMU Aspeed machines model BMCs of various OpenPOWER systems and
- Aspeed evaluation boards. They are based on different releases of the
-@@ -15,7 +15,8 @@ AST2400 SoC based machines :
- 
- - ``palmetto-bmc``         OpenPOWER Palmetto POWER8 BMC
- - ``quanta-q71l-bmc``      OpenBMC Quanta BMC
--- ``supermicrox11-bmc``    Supermicro X11 BMC
-+- ``supermicrox11-bmc``    Supermicro X11 BMC (ARM926EJ-S)
-+- ``supermicrox11spi-bmc``    Supermicro X11 SPI BMC (ARM1176)
- 
- AST2500 SoC based machines :
- 
--- 
-2.34.1
+are available in the Git repository at:
 
+  https://gitlab.com/npiggin/qemu.git tags/pull-ppc-for-9.2-2-20241127
+
+for you to fetch changes up to 0805136a44d39adc2467f23ac3c65e680e45d0a2:
+
+  hw/ppc/pegasos2: Fix IRQ routing from pci.0 (2024-11-27 02:49:36 +1000)
+
+----------------------------------------------------------------
+* Assorted small ppc fixes
+
+----------------------------------------------------------------
+BALATON Zoltan (1):
+      hw/ppc/pegasos2: Fix IRQ routing from pci.0
+
+Glenn Miles (1):
+      target/ppc: Fix THREAD_SIBLING_FOREACH for multi-socket
+
+Harsh Prateek Bora (1):
+      ppc/spapr: fix drc index mismatch for partially enabled vcpus
+
+Nicholas Piggin (3):
+      target/ppc: Fix non-maskable interrupt while halted
+      ppc/pnv: Fix direct controls quiesce
+      ppc/pnv: Add xscom- prefix to pervasive-control region name
+
+ hw/pci-host/mv64361.c       |  1 +
+ hw/ppc/pegasos2.c           | 30 +++++++++++++++++++++++++++++-
+ hw/ppc/pnv_core.c           | 11 +++++++++--
+ hw/ppc/pnv_nest_pervasive.c |  2 +-
+ hw/ppc/spapr.c              |  2 +-
+ hw/ppc/spapr_cpu_core.c     |  1 +
+ target/ppc/cpu.h            |  8 ++++++--
+ target/ppc/excp_helper.c    |  7 +++++++
+ 8 files changed, 55 insertions(+), 7 deletions(-)
 
