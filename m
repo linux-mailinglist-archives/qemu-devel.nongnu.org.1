@@ -2,80 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 470609D982F
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Nov 2024 14:19:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 548879D984B
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Nov 2024 14:20:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tFvSS-00022Z-1X; Tue, 26 Nov 2024 08:18:24 -0500
+	id 1tFvU5-0006jP-75; Tue, 26 Nov 2024 08:20:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tFvRK-0000NW-4k
- for qemu-devel@nongnu.org; Tue, 26 Nov 2024 08:17:19 -0500
-Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tFvTy-0006Lo-Gu
+ for qemu-devel@nongnu.org; Tue, 26 Nov 2024 08:19:58 -0500
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tFvRF-0003m6-0e
- for qemu-devel@nongnu.org; Tue, 26 Nov 2024 08:17:12 -0500
-Received: by mail-wr1-x434.google.com with SMTP id
- ffacd0b85a97d-38241435528so3669551f8f.2
- for <qemu-devel@nongnu.org>; Tue, 26 Nov 2024 05:17:07 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tFvTw-0004Gj-6v
+ for qemu-devel@nongnu.org; Tue, 26 Nov 2024 08:19:57 -0500
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-43169902057so49185415e9.0
+ for <qemu-devel@nongnu.org>; Tue, 26 Nov 2024 05:19:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1732627026; x=1733231826; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=k4o3elrIgsKejK7gl+opoqyQLP4kR/40fNsCOdLbzlE=;
- b=sV+UCBp/FjgLkUg0GXrdNRAC+wP9EKEGSCUoCMVHevAYs0aigwFh7r+/E39rsj3a0G
- LB7qAU81zz/EpaDvSPV11j6EnIvlfTpaTtlEw2gSM5KUPMLQ4EUM4UryBslNIKCJ6enm
- J37YzrUQO9JrTYiO2nIGa8GJLyVDmcVqR8rjt9isvTAJ2nCCv2aPGRuGGm9lZj9Mx+Dn
- aP9sINfomS1c+CkXYpGgDJYoZXFRIQly9pFQNACohUfhgVmPiZjEl4o/rlZbUuQJsyRd
- lRwto1c+gJMu1/5RUzWoJmqQvHANJpJbk4D77AVqxBN6cRjVHlEfdpqwwn8sPEw7YeHa
- 9uBA==
+ d=linaro.org; s=google; t=1732627194; x=1733231994; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=9egLsmzqltW386IYYnCDQ/+h54aQH51LwCV5pFOr2e4=;
+ b=h+c6ExABF58m9MtgZPyGKGQ6gkQ5b72S8QjVuZQ+/4KtCLWQir8ymhSUl30B6gQ2qp
+ tdi8GEG11yReGnFQUk0Rb+FirPKIUSdKvFPceaDUxQbkv5IaoKvLLLW3PlnDDnej6isH
+ 8ocZFqg85KQRa61AJkL7AnXmvx++UiCXjWCE3EHZmQ3JiuPW4xU4uRCTMDh9RO/DQ1SG
+ JWmYOAmkjQuScl4LVJ6+o0FhwJdbylFlKbvIfcpvuPoN0SyI2G9T4hM8Qr4qYDFydZKy
+ bY1xI7HdhMgYdhx9ScDCWK8MNw/EZvjiQcAaaNcNkyh9S1Pypz9T+9jrLdvQeDgy2ybE
+ LKhQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1732627026; x=1733231826;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=k4o3elrIgsKejK7gl+opoqyQLP4kR/40fNsCOdLbzlE=;
- b=OXv3rSFFjFGz2wx3hkl0ZuqlcKirD2xFyrbBaQq4/GfU6p6MSPBp9pVSOTWvR0qOTg
- OlNIh9BHoDUSrtDBVWykGftMYFjsjy35MN66vq8OnBlhcvZq+O8Ct9kWWDLIlGxJUZy3
- OsZlsonMWYd5FIXKyzR1oixMuhTUVSxJ+k4mf9X+CtSOAhPbbAwXWFlbMpEJW8TEDayQ
- kPFvLmpIRmfxlh0ifFa/jF2AMhJhuhB543MvwumYabsc3AXLKSPsjtvZVItHdkyop/8t
- w2hYXE+pZquq2sB+0wFu01PrrzDeoqe67m3AQS5pxup4ei/ROFqM1CgZ5yNKA3cwfIql
- hRkw==
-X-Gm-Message-State: AOJu0YwfDPbBV/ZgxjQOxAVdcy3HvhTFnUGCPe6dgGLBvPKZkfGvWPmz
- MqhK+lrbCt43WD2Q2EtEhsG88tSALR5eJAjjsLHw3FJ9LU89dfoZTxbcNRzD2Cr4GNnPMkQ5CeB
- n
-X-Gm-Gg: ASbGncsuBBOo0McWuKoZTRktkTkyIXSm+TVLkcHxU3h8SMVPzoLiCgLsyxrOfxghmQx
- tEzo1W8e6OveNxP4SK4LhngX8LoNPEScnJdPqXhtBs5+mM8PjsahBeIP2AjZd5/8U4HNdVoAc5e
- ASnpdE10x/1qV7m+h7aOjcyxjwhKB94mP/97ks3lgak/DQ6rupDxhcIbgjj0oE/DU1cRrbT9ay2
- taXFFogjuqSNH1qdj6McKCfOywcP7t3JTNxcrfnm3H0Ku8iBQIMO5tNslTJaEGJssvDUCQ6
-X-Google-Smtp-Source: AGHT+IEe8oj6j0fKdcpbgYOMYcy2iTno57TC3a9RlFuamtG12GPCOrfnyoKSKlEfXFe4UGhel4ZqOw==
-X-Received: by 2002:a05:6000:1543:b0:382:4b9a:f500 with SMTP id
- ffacd0b85a97d-38260b5bb7amr14369799f8f.18.1732627025888; 
- Tue, 26 Nov 2024 05:17:05 -0800 (PST)
-Received: from localhost.localdomain ([176.176.143.205])
+ d=1e100.net; s=20230601; t=1732627194; x=1733231994;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=9egLsmzqltW386IYYnCDQ/+h54aQH51LwCV5pFOr2e4=;
+ b=TIeUitryvfkigEU3cfNSOsOC5LRVAgKvRgl+/Fd5YH2apKD9/07WXDzkdI7f4NL3G2
+ m29vyd2B9ILk7PLfValvFSVM8ZeAEXLi0PBNUSOqPvfwHWDU9q5p0dYERNj3F08mPchO
+ 4xAnw+HM5A+leQq8RtxlnWHaeH1Yaae5CjHms7PfgdtBlRiZYa15hOaxVEX/Yq1t1KEQ
+ KEmeISrNp5eRg2HmI9Xi3+Y0q4bfYnFNkyVeysNjolBtjz/QWDun58qCs572Hrvf7g2D
+ ksXNtYFzwoeSdPgz2atO3CMElqyAV4vUTZPZiN/fLfy+DvIeliGV637qPs10QkwNJQ3s
+ 3WVg==
+X-Gm-Message-State: AOJu0Yzxzyz629wACpsOpctzjnLju9+bYvvSYd4vWF7OXUmYa5rm1qHA
+ KH2phGkl1Ydq1Pm5SYd6TK/D1096zytKo9Ot4OjPAN/MbQFlj/6etM/1ehlZhOi4JN75pH2ho9N
+ y
+X-Gm-Gg: ASbGncuDPBe7nIZ1bZbaEQ9MZC+B/G7P1H30i8yv+xUABjzTLsEeZSVKCu5BesZ44IE
+ WEjI3DuBwvRZNe8SmJXELBo05btZe62W9TnBsYUjzCBLIeSoyWEWA1HUOZyWW99OIsSP6boM6TI
+ eLfNZ4iJ7EovVfbxpErLCDpJrLaP5JqWeaN1hr4jzR2xBOi0L0UND1es9u5eek4Pca5+m9j7Rk0
+ rOf2drydWqI7a3O0Qvu3SOD+P++2G1NDobxei11pNmnBt6CXFgnVyFVTUWcHBO8vA==
+X-Google-Smtp-Source: AGHT+IH79wvV2PmM+5ONRip7HWv9KMGczkPswS2KyaVz4bJmm+6BUenAlgrgMHduVw+ueXiSwS29gQ==
+X-Received: by 2002:a05:600c:354e:b0:434:a315:196 with SMTP id
+ 5b1f17b1804b1-434a3150334mr40798445e9.19.1732627194134; 
+ Tue, 26 Nov 2024 05:19:54 -0800 (PST)
+Received: from [192.168.69.146] ([176.176.143.205])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3825fad6436sm13307851f8f.13.2024.11.26.05.17.04
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 26 Nov 2024 05:17:05 -0800 (PST)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Aurelien Jarno <aurelien@aurel32.net>,
- Aleksandar Rikalo <arikalo@gmail.com>, Anton Johansson <anjo@rev.ng>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Huacai Chen <chenhuacai@kernel.org>, Jiaxun Yang <jiaxun.yang@flygoat.com>
-Subject: [PATCH 13/13] target/mips: Make DSPControl register 32-bit wide
-Date: Tue, 26 Nov 2024 14:15:45 +0100
-Message-ID: <20241126131546.66145-14-philmd@linaro.org>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20241126131546.66145-1-philmd@linaro.org>
-References: <20241126131546.66145-1-philmd@linaro.org>
+ 5b1f17b1804b1-434a4b0af1csm32563845e9.40.2024.11.26.05.19.52
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 26 Nov 2024 05:19:53 -0800 (PST)
+Message-ID: <95da2038-4d3c-4d05-8d96-494d3fb49a2b@linaro.org>
+Date: Tue, 26 Nov 2024 14:19:51 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/6] target/mips: Introduce decode tree bindings for
+ microMIPS ISA
+To: qemu-devel@nongnu.org
+Cc: Aleksandar Rikalo <arikalo@gmail.com>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>, Aurelien Jarno
+ <aurelien@aurel32.net>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
+ <f4bug@amsat.org>
+References: <20241112172022.88348-1-philmd@linaro.org>
+ <20241112172022.88348-2-philmd@linaro.org>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20241112172022.88348-2-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::434;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x434.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,319 +101,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Per 'MIPS® DSP Module for MIPS64™ Architecture, Revision 3.02',
- * 3.10 Additional Register State for the DSP Module
- ~Figure 3.5 MIPS® DSP Module Control Register (DSPControl) Format~
+On 12/11/24 18:20, Philippe Mathieu-Daudé wrote:
+> From: Philippe Mathieu-Daudé <f4bug@amsat.org>
+> 
+> Introduce the microMIPS decodetree configs for the 16-bit
+> and 32-bit instructions.
+> 
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
+>   target/mips/tcg/translate.h               |  2 ++
+>   target/mips/tcg/micromips16.decode        |  9 +++++++++
+>   target/mips/tcg/micromips32.decode        |  9 +++++++++
+>   target/mips/tcg/micromips_translate.c     | 14 ++++++++++++++
+>   target/mips/tcg/micromips_translate.c.inc |  6 ++++++
+>   target/mips/tcg/meson.build               |  3 +++
+>   6 files changed, 43 insertions(+)
+>   create mode 100644 target/mips/tcg/micromips16.decode
+>   create mode 100644 target/mips/tcg/micromips32.decode
+>   create mode 100644 target/mips/tcg/micromips_translate.c
 
-the DSPControl register is 32-bit wide.
 
-Convert it from 'target_ulong' to 'uint32_t'.
+> diff --git a/target/mips/tcg/micromips_translate.c.inc b/target/mips/tcg/micromips_translate.c.inc
+> index c479bec108..f504e15fa7 100644
+> --- a/target/mips/tcg/micromips_translate.c.inc
+> +++ b/target/mips/tcg/micromips_translate.c.inc
+> @@ -3000,6 +3000,9 @@ static int decode_isa_micromips(CPUMIPSState *env, DisasContext *ctx)
+>                   gen_reserved_instruction(ctx);
+>                   return 2;
+>               }
+> +            if (decode_isa_micromips32(ctx, ctx->opcode)) {
 
-Update TCG calls to truncate/extend from i32 to target_ulong.
+This call is incorrect, the caller previously called
+translator_lduw() so ctx->opcode is incomplete.
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- target/mips/cpu.h                        |  2 +-
- target/mips/tcg/sysemu_helper.h.inc      |  4 +--
- target/mips/sysemu/machine.c             |  5 ++-
- target/mips/tcg/dsp_helper.c             | 10 +++---
- target/mips/tcg/sysemu/cp0_helper.c      |  4 +--
- target/mips/tcg/translate.c              | 40 +++++++++++++++++-------
- target/mips/tcg/nanomips_translate.c.inc | 16 +++++++---
- 7 files changed, 54 insertions(+), 27 deletions(-)
-
-diff --git a/target/mips/cpu.h b/target/mips/cpu.h
-index f80b05885b1..bc636510132 100644
---- a/target/mips/cpu.h
-+++ b/target/mips/cpu.h
-@@ -472,7 +472,7 @@ struct TCState {
-     target_ulong HI[MIPS_DSP_ACC];
-     target_ulong LO[MIPS_DSP_ACC];
-     target_ulong ACX[MIPS_DSP_ACC];
--    target_ulong DSPControl;
-+    uint32_t DSPControl;
-     int32_t CP0_TCStatus;
- #define CP0TCSt_TCU3    31
- #define CP0TCSt_TCU2    30
-diff --git a/target/mips/tcg/sysemu_helper.h.inc b/target/mips/tcg/sysemu_helper.h.inc
-index 1861d538de1..36ce21f863b 100644
---- a/target/mips/tcg/sysemu_helper.h.inc
-+++ b/target/mips/tcg/sysemu_helper.h.inc
-@@ -144,12 +144,12 @@ DEF_HELPER_2(mftgpr, tl, env, i32)
- DEF_HELPER_2(mftlo, tl, env, i32)
- DEF_HELPER_2(mfthi, tl, env, i32)
- DEF_HELPER_2(mftacx, tl, env, i32)
--DEF_HELPER_1(mftdsp, tl, env)
-+DEF_HELPER_1(mftdsp, i32, env)
- DEF_HELPER_3(mttgpr, void, env, tl, i32)
- DEF_HELPER_3(mttlo, void, env, tl, i32)
- DEF_HELPER_3(mtthi, void, env, tl, i32)
- DEF_HELPER_3(mttacx, void, env, tl, i32)
--DEF_HELPER_2(mttdsp, void, env, tl)
-+DEF_HELPER_2(mttdsp, void, env, i32)
- DEF_HELPER_0(dmt, tl)
- DEF_HELPER_0(emt, tl)
- DEF_HELPER_1(dvpe, tl, env)
-diff --git a/target/mips/sysemu/machine.c b/target/mips/sysemu/machine.c
-index 823a49e2ca1..c1fb72864f6 100644
---- a/target/mips/sysemu/machine.c
-+++ b/target/mips/sysemu/machine.c
-@@ -88,7 +88,10 @@ static const VMStateField vmstate_tc_fields[] = {
-     VMSTATE_UINTTL_ARRAY(HI, TCState, MIPS_DSP_ACC),
-     VMSTATE_UINTTL_ARRAY(LO, TCState, MIPS_DSP_ACC),
-     VMSTATE_UINTTL_ARRAY(ACX, TCState, MIPS_DSP_ACC),
--    VMSTATE_UINTTL(DSPControl, TCState),
-+    VMSTATE_UINT32(DSPControl, TCState),
-+#if defined(TARGET_MIPS64)
-+    VMSTATE_UNUSED(4),
-+#endif /* TARGET_MIPS64 */
-     VMSTATE_INT32(CP0_TCStatus, TCState),
-     VMSTATE_INT32(CP0_TCBind, TCState),
-     VMSTATE_UINTTL(CP0_TCHalt, TCState),
-diff --git a/target/mips/tcg/dsp_helper.c b/target/mips/tcg/dsp_helper.c
-index 7a4362c8ef4..e58d6b9ef84 100644
---- a/target/mips/tcg/dsp_helper.c
-+++ b/target/mips/tcg/dsp_helper.c
-@@ -54,7 +54,7 @@ typedef union {
- static inline void set_DSPControl_overflow_flag(uint32_t flag, int position,
-                                                 CPUMIPSState *env)
- {
--    env->active_tc.DSPControl |= (target_ulong)flag << position;
-+    env->active_tc.DSPControl |= flag << position;
- }
- 
- static inline void set_DSPControl_carryflag(bool flag, CPUMIPSState *env)
-@@ -76,7 +76,7 @@ static inline void set_DSPControl_24(uint32_t flag, int len, CPUMIPSState *env)
-   filter = ~filter;
- 
-   env->active_tc.DSPControl &= filter;
--  env->active_tc.DSPControl |= (target_ulong)flag << 24;
-+  env->active_tc.DSPControl |= flag << 24;
- }
- 
- static inline void set_DSPControl_pos(uint32_t pos, CPUMIPSState *env)
-@@ -113,7 +113,7 @@ static inline uint32_t get_DSPControl_pos(CPUMIPSState *env)
- static inline void set_DSPControl_efi(uint32_t flag, CPUMIPSState *env)
- {
-     env->active_tc.DSPControl &= 0xFFFFBFFF;
--    env->active_tc.DSPControl |= (target_ulong)flag << 14;
-+    env->active_tc.DSPControl |= flag << 14;
- }
- 
- #define DO_MIPS_SAT_ABS(size)                                          \
-@@ -2923,7 +2923,7 @@ target_ulong helper_##name(CPUMIPSState *env, target_ulong rs,  \
-     uint32_t pos, size, msb, lsb;                               \
-     uint32_t const sizefilter = 0x3F;                           \
-     target_ulong temp;                                          \
--    target_ulong dspc;                                          \
-+    uint32_t dspc;                                              \
-                                                                 \
-     dspc = env->active_tc.DSPControl;                           \
-                                                                 \
-@@ -3063,7 +3063,7 @@ target_ulong helper_##name(target_ulong rs, target_ulong rt,   \
- {                                                              \
-     uint32_t rs_t, rt_t;                                       \
-     uint32_t cc;                                               \
--    target_ulong dsp;                                          \
-+    uint32_t dsp;                                              \
-     int i;                                                     \
-     target_ulong result = 0;                                   \
-                                                                \
-diff --git a/target/mips/tcg/sysemu/cp0_helper.c b/target/mips/tcg/sysemu/cp0_helper.c
-index 79a5c833cee..61b7644f3a4 100644
---- a/target/mips/tcg/sysemu/cp0_helper.c
-+++ b/target/mips/tcg/sysemu/cp0_helper.c
-@@ -1483,7 +1483,7 @@ target_ulong helper_mftacx(CPUMIPSState *env, uint32_t sel)
-     }
- }
- 
--target_ulong helper_mftdsp(CPUMIPSState *env)
-+uint32_t helper_mftdsp(CPUMIPSState *env)
- {
-     int other_tc = env->CP0_VPEControl & (0xff << CP0VPECo_TargTC);
-     CPUMIPSState *other = mips_cpu_map_tc(env, &other_tc);
-@@ -1543,7 +1543,7 @@ void helper_mttacx(CPUMIPSState *env, target_ulong arg1, uint32_t sel)
-     }
- }
- 
--void helper_mttdsp(CPUMIPSState *env, target_ulong arg1)
-+void helper_mttdsp(CPUMIPSState *env, uint32_t arg1)
- {
-     int other_tc = env->CP0_VPEControl & (0xff << CP0VPECo_TargTC);
-     CPUMIPSState *other = mips_cpu_map_tc(env, &other_tc);
-diff --git a/target/mips/tcg/translate.c b/target/mips/tcg/translate.c
-index d6be37d56d3..6f2eacbba97 100644
---- a/target/mips/tcg/translate.c
-+++ b/target/mips/tcg/translate.c
-@@ -1172,7 +1172,8 @@ TCGv cpu_gpr[32], cpu_PC;
-  */
- TCGv_i64 cpu_gpr_hi[32];
- TCGv cpu_HI[MIPS_DSP_ACC], cpu_LO[MIPS_DSP_ACC];
--static TCGv cpu_dspctrl, btarget;
-+static TCGv_i32 cpu_dspctrl;
-+static TCGv btarget;
- TCGv bcond;
- static TCGv cpu_lladdr, cpu_llval;
- static TCGv_i32 hflags;
-@@ -4438,9 +4439,11 @@ static void gen_compute_branch(DisasContext *ctx, uint32_t opc,
-     case OPC_BPOSGE32:
- #if defined(TARGET_MIPS64)
-     case OPC_BPOSGE64:
--        tcg_gen_andi_tl(t0, cpu_dspctrl, 0x7F);
-+        tcg_gen_extu_i32_tl(t1, cpu_dspctrl);
-+        tcg_gen_andi_tl(t0, t1, 0x7F);
- #else
--        tcg_gen_andi_tl(t0, cpu_dspctrl, 0x3F);
-+        tcg_gen_extu_i32_tl(t1, cpu_dspctrl);
-+        tcg_gen_andi_tl(t0, t1, 0x3F);
- #endif
-         bcond_compute = 1;
-         btgt = ctx->base.pc_next + insn_bytes + offset;
-@@ -8225,6 +8228,7 @@ static void gen_mftr(CPUMIPSState *env, DisasContext *ctx, int rt, int rd,
-             gen_mfc0(ctx, t0, rt, sel);
-         }
-     } else {
-+        TCGv_i32 t32;
-         switch (sel) {
-         /* GPR registers. */
-         case 0:
-@@ -8270,7 +8274,9 @@ static void gen_mftr(CPUMIPSState *env, DisasContext *ctx, int rt, int rd,
-                 gen_helper_1e0i(mftacx, t0, 3);
-                 break;
-             case 16:
--                gen_helper_mftdsp(t0, tcg_env);
-+                t32 = tcg_temp_new_i32();
-+                gen_helper_mftdsp(t32, tcg_env);
-+                tcg_gen_extu_i32_tl(t0, t32);
-                 break;
-             default:
-                 goto die;
-@@ -8425,6 +8431,7 @@ static void gen_mttr(CPUMIPSState *env, DisasContext *ctx, int rd, int rt,
-             gen_mtc0(ctx, t0, rd, sel);
-         }
-     } else {
-+        TCGv_i32 t32;
-         switch (sel) {
-         /* GPR registers. */
-         case 0:
-@@ -8470,7 +8477,9 @@ static void gen_mttr(CPUMIPSState *env, DisasContext *ctx, int rd, int rt,
-                 gen_helper_0e1i(mttacx, t0, 3);
-                 break;
-             case 16:
--                gen_helper_mttdsp(tcg_env, t0);
-+                t32 = tcg_temp_new_i32();
-+                gen_load_gpr_i32(t32, rt);
-+                gen_helper_mttdsp(tcg_env, t32);
-                 break;
-             default:
-                 goto die;
-@@ -12516,6 +12525,7 @@ static void gen_mipsdsp_add_cmp_pick(DisasContext *ctx,
-     TCGv t1;
-     TCGv v1_t;
-     TCGv v2_t;
-+    TCGv_i32 t32;
- 
-     if ((ret == 0) && (check_ret == 1)) {
-         /* Treat as NOP. */
-@@ -12560,25 +12570,31 @@ static void gen_mipsdsp_add_cmp_pick(DisasContext *ctx,
-             check_dsp_r2(ctx);
-             gen_helper_cmpgu_eq_qb(t1, v1_t, v2_t);
-             tcg_gen_mov_tl(cpu_gpr[ret], t1);
--            tcg_gen_andi_tl(cpu_dspctrl, cpu_dspctrl, 0xF0FFFFFF);
-+            tcg_gen_andi_i32(cpu_dspctrl, cpu_dspctrl, 0xF0FFFFFF);
-             tcg_gen_shli_tl(t1, t1, 24);
--            tcg_gen_or_tl(cpu_dspctrl, cpu_dspctrl, t1);
-+            t32 = tcg_temp_new_i32();
-+            tcg_gen_trunc_tl_i32(t32, t1);
-+            tcg_gen_or_i32(cpu_dspctrl, cpu_dspctrl, t32);
-             break;
-         case OPC_CMPGDU_LT_QB:
-             check_dsp_r2(ctx);
-             gen_helper_cmpgu_lt_qb(t1, v1_t, v2_t);
-             tcg_gen_mov_tl(cpu_gpr[ret], t1);
--            tcg_gen_andi_tl(cpu_dspctrl, cpu_dspctrl, 0xF0FFFFFF);
-+            tcg_gen_andi_i32(cpu_dspctrl, cpu_dspctrl, 0xF0FFFFFF);
-             tcg_gen_shli_tl(t1, t1, 24);
--            tcg_gen_or_tl(cpu_dspctrl, cpu_dspctrl, t1);
-+            t32 = tcg_temp_new_i32();
-+            tcg_gen_trunc_tl_i32(t32, t1);
-+            tcg_gen_or_i32(cpu_dspctrl, cpu_dspctrl, t32);
-             break;
-         case OPC_CMPGDU_LE_QB:
-             check_dsp_r2(ctx);
-             gen_helper_cmpgu_le_qb(t1, v1_t, v2_t);
-             tcg_gen_mov_tl(cpu_gpr[ret], t1);
--            tcg_gen_andi_tl(cpu_dspctrl, cpu_dspctrl, 0xF0FFFFFF);
-+            tcg_gen_andi_i32(cpu_dspctrl, cpu_dspctrl, 0xF0FFFFFF);
-             tcg_gen_shli_tl(t1, t1, 24);
--            tcg_gen_or_tl(cpu_dspctrl, cpu_dspctrl, t1);
-+            t32 = tcg_temp_new_i32();
-+            tcg_gen_trunc_tl_i32(t32, t1);
-+            tcg_gen_or_i32(cpu_dspctrl, cpu_dspctrl, t32);
-             break;
-         case OPC_CMP_EQ_PH:
-             check_dsp(ctx);
-@@ -15303,7 +15319,7 @@ void mips_tcg_init(void)
-                                        offsetof(CPUMIPSState, active_tc.LO[i]),
-                                        regnames_LO[i]);
-     }
--    cpu_dspctrl = tcg_global_mem_new(tcg_env,
-+    cpu_dspctrl = tcg_global_mem_new_i32(tcg_env,
-                                      offsetof(CPUMIPSState,
-                                               active_tc.DSPControl),
-                                      "DSPControl");
-diff --git a/target/mips/tcg/nanomips_translate.c.inc b/target/mips/tcg/nanomips_translate.c.inc
-index 2ad936c66d4..1d6b70083b0 100644
---- a/target/mips/tcg/nanomips_translate.c.inc
-+++ b/target/mips/tcg/nanomips_translate.c.inc
-@@ -1136,7 +1136,8 @@ static void gen_compute_branch_nm(DisasContext *ctx, uint32_t opc,
-         btgt = ctx->base.pc_next + insn_bytes + offset;
-         break;
-     case OPC_BPOSGE32:
--        tcg_gen_andi_tl(t0, cpu_dspctrl, 0x3F);
-+        tcg_gen_extu_i32_tl(t1, cpu_dspctrl);
-+        tcg_gen_andi_tl(t0, t1, 0x3F);
-         bcond_compute = 1;
-         btgt = ctx->base.pc_next + insn_bytes + offset;
-         break;
-@@ -3009,6 +3010,7 @@ static void gen_pool32a5_nanomips_insn(DisasContext *ctx, int opc,
-     TCGv t0 = tcg_temp_new();
-     TCGv v1_t = tcg_temp_new();
-     TCGv v2_t = tcg_temp_new();
-+    TCGv_i32 v1_t32;
- 
-     gen_load_gpr_tl(v1_t, rs);
-     gen_load_gpr_tl(v2_t, rt);
-@@ -3056,19 +3058,25 @@ static void gen_pool32a5_nanomips_insn(DisasContext *ctx, int opc,
-     case NM_CMPGDU_EQ_QB:
-         check_dsp_r2(ctx);
-         gen_helper_cmpgu_eq_qb(v1_t, v1_t, v2_t);
--        tcg_gen_deposit_tl(cpu_dspctrl, cpu_dspctrl, v1_t, 24, 4);
-+        v1_t32 = tcg_temp_new_i32();
-+        tcg_gen_trunc_tl_i32(v1_t32, v1_t);
-+        tcg_gen_deposit_i32(cpu_dspctrl, cpu_dspctrl, v1_t32, 24, 4);
-         gen_store_gpr_tl(v1_t, ret);
-         break;
-     case NM_CMPGDU_LT_QB:
-         check_dsp_r2(ctx);
-         gen_helper_cmpgu_lt_qb(v1_t, v1_t, v2_t);
--        tcg_gen_deposit_tl(cpu_dspctrl, cpu_dspctrl, v1_t, 24, 4);
-+        v1_t32 = tcg_temp_new_i32();
-+        tcg_gen_trunc_tl_i32(v1_t32, v1_t);
-+        tcg_gen_deposit_i32(cpu_dspctrl, cpu_dspctrl, v1_t32, 24, 4);
-         gen_store_gpr_tl(v1_t, ret);
-         break;
-     case NM_CMPGDU_LE_QB:
-         check_dsp_r2(ctx);
-         gen_helper_cmpgu_le_qb(v1_t, v1_t, v2_t);
--        tcg_gen_deposit_tl(cpu_dspctrl, cpu_dspctrl, v1_t, 24, 4);
-+        v1_t32 = tcg_temp_new_i32();
-+        tcg_gen_trunc_tl_i32(v1_t32, v1_t);
-+        tcg_gen_deposit_i32(cpu_dspctrl, cpu_dspctrl, v1_t32, 24, 4);
-         gen_store_gpr_tl(v1_t, ret);
-         break;
-     case NM_PACKRL_PH:
--- 
-2.45.2
+> +                return 4;
+> +            }
+>               break;
+>           case 1:
+>           /* POOL16A, POOL16B, POOL16C, LWGP16, POOL16F */
+> @@ -3011,6 +3014,9 @@ static int decode_isa_micromips(CPUMIPSState *env, DisasContext *ctx)
+>                   gen_reserved_instruction(ctx);
+>                   return 2;
+>               }
+> +            if (decode_isa_micromips16(ctx, ctx->opcode)) {
+> +                return 2;
+> +            }
+>               break;
+>           }
+>       }
 
 
