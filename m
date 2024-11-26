@@ -2,77 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 537659D9C04
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E0FA9D9C02
 	for <lists+qemu-devel@lfdr.de>; Tue, 26 Nov 2024 18:03:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tFyxV-0007XO-B0; Tue, 26 Nov 2024 12:02:41 -0500
+	id 1tFyxg-0007jl-1b; Tue, 26 Nov 2024 12:02:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tFyxR-0007Or-PH
- for qemu-devel@nongnu.org; Tue, 26 Nov 2024 12:02:37 -0500
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ id 1tFyxd-0007iD-96
+ for qemu-devel@nongnu.org; Tue, 26 Nov 2024 12:02:49 -0500
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tFyxQ-00021S-4J
- for qemu-devel@nongnu.org; Tue, 26 Nov 2024 12:02:37 -0500
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-434a90fed23so3700665e9.1
- for <qemu-devel@nongnu.org>; Tue, 26 Nov 2024 09:02:35 -0800 (PST)
+ id 1tFyxb-00025h-Ju
+ for qemu-devel@nongnu.org; Tue, 26 Nov 2024 12:02:48 -0500
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-434a7ee3d60so4435225e9.1
+ for <qemu-devel@nongnu.org>; Tue, 26 Nov 2024 09:02:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1732640554; x=1733245354; darn=nongnu.org;
+ d=linaro.org; s=google; t=1732640566; x=1733245366; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=0cbrcWqiZcZEEu28Dctl5YQCYg/B0KzZI5DzhtcRSiQ=;
- b=JPDIOoAG97shjTCz7ajK2SC7RYg9afZw8CpcNfJE3OLD9nuWz5Ji6YfMh12yn7Ct3C
- wtLiX2mqbz3XckqaOiQT+GTYMOqe3hjw6btcMixbSwbbIBO5GApw3AhE+KCSvxiRwFgw
- dzQOQYRF5aCRDTlpP3tQqF1yF2tcEi6rEYOTatgiixuCaX7w9S6HiEMM79x6o4b6lPwh
- Kv++tpxDCmWhbQPa8VYdmuZbamIrzFniu6hwFyHq+SqP4vIyzM9n4ruRzgM7uicvMccS
- +nPVW+gvfi0wGEnM/R6U3wt6HdstBSJpGOamYL02sA9dTd6d12esq2ff/WEt0bue9+6C
- ISYA==
+ :reply-to; bh=KhNpoYBpBgMtrTtvaiAKYKeBjehZXk/NeYq/vlyz2aU=;
+ b=DFlE3bZ41KcVzWlFuqF/kujhTptk1RD9O6RLDxqrcbB5Wxr/fTYAxWE57zhvclZukv
+ OdphXmCW3ltq+Xqr4LT6tKgKMWctD99/n/bR9pfYdg6SxaI7JDyxnR+hC6ysVS9iSEJA
+ mYo0MIj2XLkmUtJsCwYeJAE406ba6O5/4/OB9pUwJzr2RSxk5m4U9/5UN5tBbRPoHZYN
+ 0/32KsFYr4PqH2D4HALS6EyoeO0D3M7OAzWscUkBlgrt+0+nGSL5E2Q/eNJ/V4pJ6HG0
+ iC3/hqpLMxIzXES+ozLzT46IP+KHHt/9wgTmwBczHonFuBoOGaRqNeN/zs6ng/YkG331
+ GMrw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1732640554; x=1733245354;
+ d=1e100.net; s=20230601; t=1732640566; x=1733245366;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=0cbrcWqiZcZEEu28Dctl5YQCYg/B0KzZI5DzhtcRSiQ=;
- b=Y2IfchK/V5ULUkFkKbM3IYXDJRprQL+PDGwSADzouM96XfLJvUz/IkTJYjedL/equD
- KX8cHQzRIRbv+AJEp6IP8t8D1SIWUUWHxp1twgsfx8Mrs5llKhMAR8MLgwQn4G4zST2y
- pEUa45GqhYIRBfJuQDERkcXXsOqa+QdYQ62dBZ+vGLEBRgXXM5zyPuDY2pgrmzTHjXey
- CIHrWmjH1FGZGhzqRgQkeKHP/4LN1WKy5ZrR2n4FkYOlef3b1bMZBA/Y7ncuqt/tV3rA
- h7/aoXP86qlHFBVZeY5RLHB7LPIppK3owHLOcqZzRvZ++T86qi1btn3rHL/Gdvsu/0RX
- OSeg==
-X-Gm-Message-State: AOJu0YyxNAezbIfbFmAodRuItiAWAUrWrVc0uZyjqz7Lt1oTehtglVfB
- OVHJmlRbu8dAEExCTaFwG01/TkVZ1WMfZaS9KHWkZs9dHTb7+lAllXpqsVp6IO8v7tipWUw3djP
- o
-X-Gm-Gg: ASbGnctSl7GRmkWT3s/uMQYVxfm05ain1EWTWh7FhzDvzcVQZ2Ll+K3/4LUZaECs57Q
- O2h49pUle7/khYwCofVub6wiObS7rZP6oV+Zs9FgDOWI+w/bt++Y5rh7EmSn6Z0eu9C7xcGBson
- 8dY7CFqL01/DoMD/jGaT8dUvqzNSTAJROUx8bCczfjBIWDRUN/0byVUcZNyryZshXvZ22xJflWs
- YkBTWEnRxZ26odo/B6LeO4d3ur1jiohMhYQcuox1t+H7MvYtua2D9Gt
-X-Google-Smtp-Source: AGHT+IHFOJKkNgcrgbekbouSgClvfxrimqJGEgpSt6Xb1OVUGRunXJoAwWkaYsreNXR6/2vsqry7oA==
-X-Received: by 2002:a05:6000:1562:b0:382:51c4:e2db with SMTP id
- ffacd0b85a97d-38260b45de8mr13346432f8f.12.1732640552008; 
+ bh=KhNpoYBpBgMtrTtvaiAKYKeBjehZXk/NeYq/vlyz2aU=;
+ b=dkNu+amkqm4tK/2P4vGiiAIs79oryWLOCWEHzy0qDF6ZeNT7/sYGE05N3t+mmzh+Fc
+ J6EC4i9OauNKSsRxxo4/+czsyvvUDAfh+fP62j5ywRxOP25bgd/AE2L4TBV2p+RJ6TH3
+ koPV1eWAxzV4y3roleEPdQHkYLcLXZ2wZS0IIz+MNahGJ/je3eZOL6x49NH5C2q0I1uj
+ 5vpxqFZVvX/G40FyEXMBuzOQBmG7a4qsrpHhtb6EJhNTiA/m/iBmJdgUfST3mcxii5KC
+ d/ywkwEXHnFVkeDfUXrUqTwdn6ZkktTXZIefmwJtjt1dA+jtIc904tdxB//nl5azEuSv
+ auKQ==
+X-Gm-Message-State: AOJu0Yy0rFT77he2l+TSRs+GIhu95rlhdmnKUs0r8burEW5HInpJwyv0
+ Aln3fLa7gsLjLvm7ooc9TkJRhsL2ObUmRYRuW6ZlurH40o873Q/RC2LqQ2foOdNcd803uHX+MS7
+ i
+X-Gm-Gg: ASbGncs2DEpUtg2AliRx469dh6Y2TSn4VRiY0VSwo50Vbu97lMSycqBMYAdv2vYluWQ
+ TCIYUOsISenHLuM4rMc2luPkkwoArvtpA05kgLFVGQVtsA0FWJOjpbpDhHWMqRGrrjGKg+CPNw/
+ 9j9Y4pWA4fZAjQYYXl4le3bIgTzNRsmZfuIQlvc9a5KVTfA1LEDrvd8BvpfKWRAEcK0gJZdtJm4
+ 6lD2Qg74VPzOP/gdAbIn0uQpEtgAzdmBgTmjMiS5oMLqTBxGHengtyf
+X-Google-Smtp-Source: AGHT+IGPWZd1rG/6U/gx0VOAQJPnTPI2YZzhOm66JGyu5vyM0qwyvxx6PsVQ07GPfnzaxMxxLv+BJQ==
+X-Received: by 2002:a05:600c:3b03:b0:42c:b603:422 with SMTP id
+ 5b1f17b1804b1-434a4e7ac3emr35145915e9.8.1732640552538; 
  Tue, 26 Nov 2024 09:02:32 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-434a36c7a9fsm43017865e9.44.2024.11.26.09.02.31
+ 5b1f17b1804b1-434a36c7a9fsm43017865e9.44.2024.11.26.09.02.32
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 26 Nov 2024 09:02:31 -0800 (PST)
+ Tue, 26 Nov 2024 09:02:32 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 6/9] docs/system/arm/: add FEAT_MTE_ASYNC
-Date: Tue, 26 Nov 2024 17:02:21 +0000
-Message-Id: <20241126170224.2926917-7-peter.maydell@linaro.org>
+Subject: [PULL 7/9] docs/system/arm/: add FEAT_DoubleLock
+Date: Tue, 26 Nov 2024 17:02:22 +0000
+Message-Id: <20241126170224.2926917-8-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241126170224.2926917-1-peter.maydell@linaro.org>
 References: <20241126170224.2926917-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,12 +97,15 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
-We already implement FEAT_MTE_ASYNC; we just forgot to list it
-in the documentation.
+We already implement FEAT_DoubleLock (see commit f94a6df5dd6a7) when
+the ID registers call for it.  This feature is actually one that must
+*not* be implemented in v9.0, but since our documentation lists
+everything we can emulate, we should include FEAT_DoubleLock in the
+list.
 
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20241122225049.1617774-6-pierrick.bouvier@linaro.org
+Message-id: 20241122225049.1617774-7-pierrick.bouvier@linaro.org
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 [PMM: expand commit message]
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
@@ -110,17 +113,17 @@ Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
  1 file changed, 1 insertion(+)
 
 diff --git a/docs/system/arm/emulation.rst b/docs/system/arm/emulation.rst
-index 50d0250b1eb..47f5123a31d 100644
+index 47f5123a31d..38534dcdd32 100644
 --- a/docs/system/arm/emulation.rst
 +++ b/docs/system/arm/emulation.rst
-@@ -94,6 +94,7 @@ the following architecture extensions:
- - FEAT_MTE2 (Memory Tagging Extension)
- - FEAT_MTE3 (MTE Asymmetric Fault Handling)
- - FEAT_MTE_ASYM_FAULT (Memory tagging asymmetric faults)
-+- FEAT_MTE_ASYNC (Asynchronous reporting of Tag Check Fault)
- - FEAT_NMI (Non-maskable Interrupt)
- - FEAT_NV (Nested Virtualization)
- - FEAT_NV2 (Enhanced nested virtualization support)
+@@ -37,6 +37,7 @@ the following architecture extensions:
+ - FEAT_CSV3 (Cache speculation variant 3)
+ - FEAT_DGH (Data gathering hint)
+ - FEAT_DIT (Data Independent Timing instructions)
++- FEAT_DoubleLock (Double Lock)
+ - FEAT_DPB (DC CVAP instruction)
+ - FEAT_DPB2 (DC CVADP instruction)
+ - FEAT_Debugv8p1 (Debug with VHE)
 -- 
 2.34.1
 
