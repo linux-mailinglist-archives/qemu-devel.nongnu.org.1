@@ -2,62 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DE269D962A
+	by mail.lfdr.de (Postfix) with ESMTPS id 66EB69D9629
 	for <lists+qemu-devel@lfdr.de>; Tue, 26 Nov 2024 12:23:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tFteA-0003gH-S6; Tue, 26 Nov 2024 06:22:22 -0500
+	id 1tFteF-0003iE-Gt; Tue, 26 Nov 2024 06:22:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tFte9-0003fb-MQ
- for qemu-devel@nongnu.org; Tue, 26 Nov 2024 06:22:21 -0500
-Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tFteD-0003hN-FQ
+ for qemu-devel@nongnu.org; Tue, 26 Nov 2024 06:22:25 -0500
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tFte6-0002Vh-Ba
- for qemu-devel@nongnu.org; Tue, 26 Nov 2024 06:22:21 -0500
-Received: by mail-wr1-x42a.google.com with SMTP id
- ffacd0b85a97d-382433611d0so4575779f8f.3
- for <qemu-devel@nongnu.org>; Tue, 26 Nov 2024 03:22:16 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tFteB-0002Xa-4I
+ for qemu-devel@nongnu.org; Tue, 26 Nov 2024 06:22:25 -0500
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-434a766b475so3618105e9.1
+ for <qemu-devel@nongnu.org>; Tue, 26 Nov 2024 03:22:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1732620135; x=1733224935; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=KF5+Q+1rOwwX8eIZyyP/Swk9x61oFbeTaj2aNqOzoek=;
- b=uqspTHG7nWNYGC04V7d9iVNSCuRszDF0T0PhCE1EP+v8tqK70adGQPBqRqrsUSt2ue
- 58nMqaRi8CsezZLP2+N82HflK4ah5bGK/hVF0Q3eOy1BO+bq8rLjK2HELm9mQXBqCQtZ
- +Eyls/Md6HqHay4nxB1hV37t+N9PwFXD8T0x1eMyNphvFNIXm+jwbxs6lM3DpkVs8lrr
- /gHvRJm+XqD9dWmgNaZg8414n/G3KFyzMkuuJKdfVeAmmqoSCwpZckJz8KgFmpyapblT
- UEteKKL9q10R1bZxLVmc0wKGRrQoEyvrYD2Bn+ztqkshyJWQevxmSmHefaftZuPKhDQz
- 0oSw==
+ d=linaro.org; s=google; t=1732620141; x=1733224941; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=+qPY7Uz0dqRmk2gQ1cO3DBCcFXLLvxMC18yQC1ilSgA=;
+ b=G31NQHlvGZkGawebft97sYhAhilqUvGvkbd1zMeMwhwlN14M5eRWiTdyyCvvbnxC4R
+ RP34PkS1VK4rlcCJ/lPYuUJR1oGU2dbuBxD8DbTBC/kIlCS8YWBugmj496sPikjghPQZ
+ w8jdIfgZIUwIT9xpBaE+LWrmstHQDEk573vvWcVNlOqpgEd+oKx31Ge3/EUqrg1BZ4R1
+ oQmGr1FdTou24m7GXGJtJ2gnhCVZIOQ8MyvVsLEZW6eSXAsfHn5FY6LXLW0iTGF3hnoU
+ WKGAmMMyFBQ61vrXbrC+fAX43htEOU62rrRhwji0xmbnQ83nZb9KIhRF+XXZhBwMMnqp
+ KJSw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1732620135; x=1733224935;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=KF5+Q+1rOwwX8eIZyyP/Swk9x61oFbeTaj2aNqOzoek=;
- b=FuSu+JSWvnMMsOKwb3Fi3VTJYTX0WtFvNjVnANIs30zX3ySEtmyYWof1rENbgS4BQt
- 2mhaWAv15uL30QN62yKPtjKLPY7WmxbMkGJ5QCM1+LwLqNT2+ce4i8MndFeUkMd2TZVh
- XJ0e2l09m83cw0AlwYXmbdTv8L2h19WQ/t8YPRHxJNrfjf7+0vR+sw6zaGQfaplSTcXJ
- L+7aonoPQItE/U29yww0apsi7oEz9hKPRyrgPGprEbqFEN7DsjZOg3Px4Aq1Iul14oqp
- M6YO/FmK8H647/lebKYeucqrRPW+faTu/O5353fEkC2oA/k151VJhRuKDs42ySVfcR2c
- kXcw==
-X-Gm-Message-State: AOJu0YwG0K4k9f/jW7PPOVq1910MOFtOmaLi+B7PHzyKmMuWeVGg6GLe
- zyinoJP3WKCw18zFMMpQhR77OKCvTaZ15nSNYpSiFm6lHpOnVKR7fKIXa+OjqZiTpQwrRESKaGw
- Q
-X-Gm-Gg: ASbGncvuiZ8dbsMQnb8dwCJUkykpcxNsJOdS9oxrNDafwndrfPcyA1S1gfNTWNs+EVp
- Goc1fW1cHeVW2vDY3T0Zpcm8ydfFg4VawZ50Yla310APw+9vSVHoiBWQ0fv9UuuG2RjGnhgVU6q
- OMipMFTyg6GlDyAkZYPMnD9D7Yqd2nh4+m6qx8i/RuNO5epUfeKSfwBHtjTtWokvPHOnSo25bSB
- kvtV5kvVGAjxx6rQLPvgIvFNVOCVW7eBvjmy5DrYCmQpMh6m1oIb0nPfh9O/J3cUrc/YXRi
-X-Google-Smtp-Source: AGHT+IGB1S3nePENSA533CkYLMuP58/EiNkFaULMaHf4Q6BH3rt6mUvqb14gZTBwOv+wLOm8/JJ+aA==
-X-Received: by 2002:a5d:5f53:0:b0:382:46ea:1113 with SMTP id
- ffacd0b85a97d-38260b3cc31mr15783506f8f.4.1732620135272; 
- Tue, 26 Nov 2024 03:22:15 -0800 (PST)
+ d=1e100.net; s=20230601; t=1732620141; x=1733224941;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=+qPY7Uz0dqRmk2gQ1cO3DBCcFXLLvxMC18yQC1ilSgA=;
+ b=iszGEgqbX2TzRmlr7cPUQLRrupx5UWgqj/tlUtb+SPzhImqpV9sVs8ENb5HOYfU4uv
+ mbW+xEb/RQl67dPsLjRIRXPf5YUS3oLm8EEip3EbCnmv07AO0mpYK3E55sUfGsnPZkpp
+ MnvgX4S0weMp3vHkbee/8HGTeAu7dMR2oj8B15qpsqYcG86K205BJsCwsFg6dSh3KOyC
+ D8YU0S0H5bsYogHTMkcNZo0VzDbvrCGcADIWi6Aok9PvfzQF1d6VFdKnHgwAHP5zOUJh
+ SZfm9990l1Fcfcx0+ZPdHn8TYUwKY7v3ozSHtbyJncAcBcxY2lIaB6OlpXA6Fo107W9K
+ OiUA==
+X-Gm-Message-State: AOJu0YwnEDTWFAS8lH9EWv52mLvuaFGNpAj7QnkUXcZAjctjHD5yr/cR
+ pFHnH0F4jE90xid6Ek4r8+ro2qsHA6n4ZsDlYt1/l7COsU5/WNPLDPHC3gIG7rABTEOXiHeIOmJ
+ r
+X-Gm-Gg: ASbGnctCZvtAFudLkNbDFIWBme3ADC479JrVdLOxNygWLR3n4gsAXVL5r5O9iIN+H6o
+ +dETAp5dQvZn/PSQs1qHOVkVJqHBoV8s7cVt6X0eogGvUiqulfyh/FL5I00P3xigy9yf0g09v+P
+ pbMahqxOssyiafA0hCm2diay/2PQ31awWLahMFjZhgP3EZcU0eP+0k+YyqDlSyQNh5rWKrzoq47
+ TO9La7CNM+4hxGSfysVWQxUAoWz9St7YQWlapHuzRD/tSuvQHozBeYbTKTxuNVWIJhb6jan
+X-Google-Smtp-Source: AGHT+IEANCMTxsUE27Mx8fMzBEsH7EvxcIuDdUdjx5zx0IltCtoW4ouBVBLwarjkXR0wzLH5bYDn2w==
+X-Received: by 2002:a05:600c:a12:b0:434:a19a:5965 with SMTP id
+ 5b1f17b1804b1-434a19a5bf9mr43582535e9.6.1732620141039; 
+ Tue, 26 Nov 2024 03:22:21 -0800 (PST)
 Received: from localhost.localdomain ([176.176.143.205])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3825fbc34bdsm13398468f8f.78.2024.11.26.03.22.13
+ 5b1f17b1804b1-434a50613c5sm25019945e9.0.2024.11.26.03.22.19
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 26 Nov 2024 03:22:14 -0800 (PST)
+ Tue, 26 Nov 2024 03:22:20 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, qemu-s390x@nongnu.org, Thomas Huth <thuth@redhat.com>,
@@ -66,16 +67,18 @@ Cc: qemu-ppc@nongnu.org, qemu-s390x@nongnu.org, Thomas Huth <thuth@redhat.com>,
  Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
  Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH-for-10.0 v2 00/13] hw/boards: Remove legacy
- MachineClass::pci_allow_0_address flag
-Date: Tue, 26 Nov 2024 12:21:59 +0100
-Message-ID: <20241126112212.64524-1-philmd@linaro.org>
+Subject: [PATCH-for-10.0 v2 01/13] hw/pci: Do not declare PCIBus::flags mask
+ as enum
+Date: Tue, 26 Nov 2024 12:22:00 +0100
+Message-ID: <20241126112212.64524-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20241126112212.64524-1-philmd@linaro.org>
+References: <20241126112212.64524-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,95 +101,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since v1:
-- Looked at previous analysis from Peter [1]
-- Invert logic so "allow address 0 accesses" is default
+We use PCIBus::flags to mask various flags. It is not
+an enum, and doing so confuses static analyzers. Rename
+the enum as singular. Use a generic unsigned type for
+the mask.
 
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
+ include/hw/pci/pci_bus.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-This series aims to remove a legacy field from
-MachineClass. Why? Because it doesn't scale on
-heterogeneous machine where different host bridges
-are created.
-
-Rather than a global exposed to all machines,
-use a pci-bus specific flag on each machine
-requiring it, propagated by the host bridge
-device.
-
-No logical change intended, only machines previously
-using pci_allow_0_address do not set refuse-bar-at-addr-0.
-
-Presumably various machines neither need to set this
-'refuse-bar-at-addr-0' flag, but updating that is
-deferred to each machine maintainer since I don't have
-the knowledge and sufficient test suite IMHO.
-
-[1] https://lore.kernel.org/qemu-devel/20241125140535.4526-1-philmd@linaro.org/
-[2] https://lore.kernel.org/qemu-devel/1444683308-30543-1-git-send-email-agordeev@redhat.com/T/#u
-
-Philippe Mathieu-Daudé (13):
-  hw/pci: Do not declare PCIBus::flags mask as enum
-  hw/pci-bridge: Initialize bridge with parent bus flags
-  hw/pci: Factor machine_refuses_bar_at_addr_0() helper out
-  hw/pci: Introduce PCIBusFlag::PCI_BUS_BAR_AT_ADDR0_REFUSED
-  hw/pci: Propagate bar_at_addr_0_refused to
-    pci_root_bus_internal_init()
-  hw/pci: Propagate bar_at_addr_0_refused to pci_root_bus_init()
-  hw/pci: Propagate bar_at_addr_0_refused to pci_root_bus_new()
-  hw/pci: Propagate bar_at_addr_0_refused to pci_register_root_bus()
-  hw/ppc/spapr: Create host bridge setting bar_at_addr_0_refused=false
-  hw/pci-host/gpex: Expose 'refuse-bar-at-addr-0' property
-  hw/arm/virt: Create GPEX host bridge without refuse-bar-at-addr-0
-  hw/riscv/virt: Create GPEX host bridge without refuse-bar-at-addr-0
-  hw/pci/pci: Remove legacy MachineClass::pci_allow_0_address flag
-
- include/hw/boards.h                 |  1 -
- include/hw/pci-host/gpex.h          |  1 +
- include/hw/pci/pci.h                |  8 +++++---
- include/hw/pci/pci_bus.h            | 10 ++++++++--
- hw/alpha/typhoon.c                  |  2 +-
- hw/arm/sbsa-ref.c                   |  1 -
- hw/arm/virt.c                       |  1 -
- hw/i386/microvm.c                   |  2 ++
- hw/loongarch/virt.c                 |  2 ++
- hw/mips/loongson3_virt.c            |  2 ++
- hw/openrisc/virt.c                  |  2 ++
- hw/pci-bridge/pci_expander_bridge.c | 17 +++++++++++-----
- hw/pci-host/articia.c               |  3 ++-
- hw/pci-host/astro.c                 |  3 ++-
- hw/pci-host/bonito.c                |  2 +-
- hw/pci-host/designware.c            |  2 +-
- hw/pci-host/dino.c                  |  2 +-
- hw/pci-host/gpex.c                  |  5 ++++-
- hw/pci-host/grackle.c               |  2 +-
- hw/pci-host/gt64120.c               |  2 +-
- hw/pci-host/i440fx.c                |  2 +-
- hw/pci-host/mv64361.c               |  2 +-
- hw/pci-host/pnv_phb3.c              |  2 +-
- hw/pci-host/pnv_phb4.c              |  2 +-
- hw/pci-host/ppc440_pcix.c           |  2 +-
- hw/pci-host/ppc4xx_pci.c            |  2 +-
- hw/pci-host/ppce500.c               |  3 ++-
- hw/pci-host/q35.c                   |  2 +-
- hw/pci-host/raven.c                 |  2 +-
- hw/pci-host/remote.c                |  2 +-
- hw/pci-host/sabre.c                 |  2 +-
- hw/pci-host/sh_pci.c                |  2 +-
- hw/pci-host/uninorth.c              |  8 ++++----
- hw/pci-host/versatile.c             |  2 +-
- hw/pci-host/xilinx-pcie.c           |  2 +-
- hw/pci/pci.c                        | 31 ++++++++++++++++++-----------
- hw/pci/pci_bridge.c                 |  1 +
- hw/ppc/ppc440_uc.c                  |  2 +-
- hw/ppc/spapr.c                      |  1 -
- hw/ppc/spapr_pci.c                  |  2 +-
- hw/riscv/virt.c                     |  1 -
- hw/s390x/s390-pci-bus.c             |  2 +-
- hw/xen/xen-pvh-common.c             |  2 ++
- hw/xtensa/virt.c                    |  2 ++
- 44 files changed, 94 insertions(+), 57 deletions(-)
-
+diff --git a/include/hw/pci/pci_bus.h b/include/hw/pci/pci_bus.h
+index 22613125462..6ecfe2e06d5 100644
+--- a/include/hw/pci/pci_bus.h
++++ b/include/hw/pci/pci_bus.h
+@@ -19,7 +19,7 @@ struct PCIBusClass {
+     uint16_t (*numa_node)(PCIBus *bus);
+ };
+ 
+-enum PCIBusFlags {
++enum PCIBusFlag {
+     /* This bus is the root of a PCI domain */
+     PCI_BUS_IS_ROOT                                         = 0x0001,
+     /* PCIe extended configuration space is accessible on this bus */
+@@ -32,7 +32,7 @@ enum PCIBusFlags {
+ 
+ struct PCIBus {
+     BusState qbus;
+-    enum PCIBusFlags flags;
++    unsigned flags;
+     const PCIIOMMUOps *iommu_ops;
+     void *iommu_opaque;
+     uint8_t devfn_min;
 -- 
 2.45.2
 
