@@ -2,64 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3102C9D98FE
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Nov 2024 15:01:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C17CD9D990B
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Nov 2024 15:02:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tFw7Z-0002kW-Np; Tue, 26 Nov 2024 09:00:54 -0500
+	id 1tFw7j-00037b-GN; Tue, 26 Nov 2024 09:01:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tFw7M-0002hv-Ui
- for qemu-devel@nongnu.org; Tue, 26 Nov 2024 09:00:42 -0500
-Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tFw7T-0002mI-52
+ for qemu-devel@nongnu.org; Tue, 26 Nov 2024 09:00:49 -0500
+Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tFw7L-0005A0-3O
- for qemu-devel@nongnu.org; Tue, 26 Nov 2024 09:00:40 -0500
-Received: by mail-wr1-x430.google.com with SMTP id
- ffacd0b85a97d-38248b810ffso4296064f8f.0
- for <qemu-devel@nongnu.org>; Tue, 26 Nov 2024 06:00:38 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tFw7R-0005BV-5U
+ for qemu-devel@nongnu.org; Tue, 26 Nov 2024 09:00:46 -0500
+Received: by mail-wr1-x435.google.com with SMTP id
+ ffacd0b85a97d-382456c6597so3971856f8f.2
+ for <qemu-devel@nongnu.org>; Tue, 26 Nov 2024 06:00:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1732629637; x=1733234437; darn=nongnu.org;
+ d=linaro.org; s=google; t=1732629643; x=1733234443; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=kF7mSY0O5qPkOg956lvsP5sIb9mfyEZh01tqlgPBlGA=;
- b=joXi0HUUj9ymuxWCtB/d2OIr7sr3AoXcNtCaqLpaDs0N8mtRBA06ksKfhQcOHaa9A5
- 4gpCjZwrlvSA5pSv+lLmUEt+cF8OoELbnhhXWHX5rM7mDwqlvDFb6s7Rp2QaZY+tsji9
- WdFGotHFrBdXrZhK0ZCxRQMsM2aci8RO5bKrD1i7w7CzCst0rLForC0nmvLsFfdNTQQR
- Ho8sMdWB9aXvJaDGQ+hvSM+UdKDkJDlzeMPcul8xkSQSvA0/lpVHtVRDey6vphigbmKs
- JILLS/o5GWPkakNwgvF5So5skQuv3ZoI13Hksa9leoYJ9oFbyYVzvcma56jxx8gvYqye
- vmdw==
+ bh=cEVLJev568HOMNbO3XAojoNPEMi8j/7b1TkH5RlPnXI=;
+ b=xBaU9O9T1pjvMBCmbPDIl6k3A+4buPKUl541txwOo2TV0zjlXz/cXGB0Y6a1BsrzDV
+ fXjcm/wVs18SJiEQKmIWs5yw83splQEl5a+7V71S4mFMdR8TdM/nSpOl5jqNVb6Dkmeu
+ w++1oQO2Ml2aHfdHtNb129NOQMBSIev24dS6T0SseAgbq8qQU0o0bwvkwFZfeIFrxQeo
+ p/kkhXVRBI/e26/k02P1SzmlqjUrZCsJ2+uFsFIJ2uO+Y0La8yqxvY4TEWMyKAu8VvpB
+ bHVjeaxYIx0A91wcPR7yICMClqGs3zWLDh3s+DAwdE5HqkYaAXpEwILJAPF6f+RndlDR
+ WFLg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1732629637; x=1733234437;
+ d=1e100.net; s=20230601; t=1732629643; x=1733234443;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=kF7mSY0O5qPkOg956lvsP5sIb9mfyEZh01tqlgPBlGA=;
- b=wuXVz2Az4CzdzdV5p/cMHW0Y+q50sRcYOSbQqjHrSzpgkdsQsEgKNAWf9UGV6T80uu
- KltqS+702ocMRQ6utDaroy6U6GzzIV7TDnpgRr7vn85TnrneiAoM80Ht11tqZvjvRUk0
- MxLxnizPVJmxgjACR2GRbe/AXpNecsUGoM16BoFKMZWhkLhwBCou2ccX65bRSpY9y2Ra
- TBp6hBjX39pzhYTwCRkGX6ckg2iPADHrnht8WTJ+t8Xr6qDbM+dR5LIlVfSamdy/qU3Z
- bjPsu1wKokXarJPiESkPijjxO4rxE0PyLAZbIfI8Av/xj6wp2zQB4p5XwB7bEP5ZQLY3
- OS8w==
-X-Gm-Message-State: AOJu0YxOxc5NuEk3bcG9Qw1ctti2YlE1nlEKZwo4ee0GiUDlKb1qfSDi
- lAbHlyPT04XfRXwV4nrJE3p40KBmSspGnX2ZE0F0ix3nLelayzMmqz18nhS8AOspuwHG9EAl7aH
- U
-X-Gm-Gg: ASbGnctTDDEaoMSfhOa4YQim2tpC+rsW6K5Ji0h1jHGjC0aWeDzGuKCOgsOvTBqoRpi
- qPky0WrRGTObBqhaAcGxThaV3W9xkKP/aX4ngD1sm9sy7vrmrQtZEUK0fhoS93wduWBJiNdQbZB
- bG9igNvacT83YfA8PDXvb2Jnm2jjX3FVHXE8Aw3KZ94KP8+rv7qDTCINI+HLCjKWODoYsBar4/1
- SFstJGjFhoIRu6W79lSPM/9fCWn3He7d4UsPrZXMv+X3XviAdUoirnASBlE8m0Ogqy1vo8HPNa7
- OA==
-X-Google-Smtp-Source: AGHT+IFm/IDoGEGKvaso/ogCqBYs5W0ZwhEdK9UiVokaHapcYooc8g8vHBNaNk5zkVgwloIipGA3pw==
-X-Received: by 2002:a5d:6d08:0:b0:382:4a66:f517 with SMTP id
- ffacd0b85a97d-38260b452e2mr13627856f8f.4.1732629637050; 
- Tue, 26 Nov 2024 06:00:37 -0800 (PST)
+ bh=cEVLJev568HOMNbO3XAojoNPEMi8j/7b1TkH5RlPnXI=;
+ b=FZs+t8oQoOn1xxtGRXpj693yeI5dwjK4QcYV3+ZYpWT0WowEMgXPFqYxP/WYJ8nep6
+ 1WgVsp7lARuCaIf2ihuwMSPPdDrL+yc31enG1/mpIfhkWqo+e5qJCdQPIaaPcRJ4trDV
+ oLvz3t6c0UrpXIP3/WrgsuQaH/A4EOpmzmLgp/W0xrRMkMwLi2TfedfT+TXOvpyzuSTl
+ pCujUGFiKTE50zJBUXNRd8RCHrGVGRe8yFkKEX58M8WiNGicT81/BpIz01K2Ybbq8a/K
+ wmn6iaqGo1c4uYpjvsJtzhhtYK7i6tsbkjSFCfodBvJNLSFdHeDlofdYa98jLAnwQHZg
+ 4udw==
+X-Gm-Message-State: AOJu0YwRkxQf1NVp5NTWji+MC4NSnPlUSHct7/yAKN3G4LkcJx+2EoKk
+ robWpWJaFFCN5hp23jdN958RdQIZR8h7ICvNexIzy3+YErJ1WDl34wHIpFsXKKJhm5OSw32BMRu
+ D
+X-Gm-Gg: ASbGncvjP5lZBqQ3yUK3cjJDP1XH5t6QOzJta2aX0kh3qPTpPwDJmO/4c/LOGBBK03X
+ a7/DkAWUfnifE2I100j7dB01Nwe6u5DW7s0V7g/eLFWJI53kKG2ZhM+pSCicAPnSapCQpKZQC2W
+ 7mUFyDc7aRrhj38zbBNgbr4xmpwFKFKZ+2mWIkGlScXxMPa4+O2Rsoro3XDqFeLhzQlieZodhPz
+ mwxzV90ojMgx/VetidabtvfjyPSZRO2La6BkB0WwqjeMkn684jddhZFXVypyCeE9TFA6UvQeCT7
+ og==
+X-Google-Smtp-Source: AGHT+IF8kFTTl5rAY6Enfwr2U4H6BNvLR5rSMmDb36mA4IbkheUHfbNNYqSg0upLKcd+EMvMoeOCog==
+X-Received: by 2002:a05:6000:2ce:b0:37d:446a:4142 with SMTP id
+ ffacd0b85a97d-38260b867a5mr13129310f8f.32.1732629643128; 
+ Tue, 26 Nov 2024 06:00:43 -0800 (PST)
 Received: from localhost.localdomain ([176.176.143.205])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-434a6459f0dsm24286725e9.23.2024.11.26.06.00.35
+ ffacd0b85a97d-3825fafe98asm13274224f8f.39.2024.11.26.06.00.41
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 26 Nov 2024 06:00:36 -0800 (PST)
+ Tue, 26 Nov 2024 06:00:42 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
@@ -67,18 +67,18 @@ Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Aleksandar Rikalo <arikalo@gmail.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Jiaxun Yang <jiaxun.yang@flygoat.com>
-Subject: [PATCH v3 05/16] target/mips: Have gen_[d]lsa() callers add 1 to
- shift amount argument
-Date: Tue, 26 Nov 2024 14:59:51 +0100
-Message-ID: <20241126140003.74871-6-philmd@linaro.org>
+Subject: [PATCH v3 06/16] target/mips: Decode LSA shift amount using
+ decodetree function
+Date: Tue, 26 Nov 2024 14:59:52 +0100
+Message-ID: <20241126140003.74871-7-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241126140003.74871-1-philmd@linaro.org>
 References: <20241126140003.74871-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::430;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x430.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::435;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x435.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,33 +101,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Having the callee add 1 to shift amount is misleading (see the
-NM_LSA case in decode_nanomips_32_48_opc() where we have to
-manually substract 1). Rather have the callers pass a modified
-$sa.
-
-Suggested-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20241112172022.88348-4-philmd@linaro.org>
+Message-Id: <20241112172022.88348-5-philmd@linaro.org>
 ---
- target/mips/tcg/msa_translate.c           | 4 ++--
- target/mips/tcg/rel6_translate.c          | 4 ++--
- target/mips/tcg/translate_addr_const.c    | 4 ++--
- target/mips/tcg/micromips_translate.c.inc | 2 +-
- target/mips/tcg/nanomips_translate.c.inc  | 7 +------
- 5 files changed, 8 insertions(+), 13 deletions(-)
+ target/mips/tcg/msa.decode       | 3 ++-
+ target/mips/tcg/rel6.decode      | 4 +++-
+ target/mips/tcg/msa_translate.c  | 4 ++--
+ target/mips/tcg/rel6_translate.c | 9 +++++++--
+ 4 files changed, 14 insertions(+), 6 deletions(-)
 
+diff --git a/target/mips/tcg/msa.decode b/target/mips/tcg/msa.decode
+index 4410e2a02e1..798e8c401ab 100644
+--- a/target/mips/tcg/msa.decode
++++ b/target/mips/tcg/msa.decode
+@@ -21,6 +21,7 @@
+ &msa_elm_df         df  wd ws       n
+ &msa_elm                wd ws
+ 
++%lsa_sa             6:2  !function=plus_1
+ %elm_df             16:6 !function=elm_df
+ %elm_n              16:6 !function=elm_n
+ %bit_df             16:7 !function=bit_df
+@@ -29,7 +30,7 @@
+ %3r_df_h            21:1 !function=plus_1
+ %3r_df_w            21:1 !function=plus_2
+ 
+-@lsa                ...... rs:5 rt:5 rd:5 ... sa:2 ......   &r
++@lsa                ...... rs:5 rt:5 rd:5 ... .. ......     &r sa=%lsa_sa
+ @ldst               ...... sa:s10 ws:5 wd:5 .... df:2       &msa_i
+ @bz_v               ...... ... ..    wt:5 sa:s16            &msa_bz df=3
+ @bz                 ...... ...  df:2 wt:5 sa:s16            &msa_bz
+diff --git a/target/mips/tcg/rel6.decode b/target/mips/tcg/rel6.decode
+index d6989cf56e8..a9031171b54 100644
+--- a/target/mips/tcg/rel6.decode
++++ b/target/mips/tcg/rel6.decode
+@@ -16,7 +16,9 @@
+ 
+ &r                  rs rt rd sa
+ 
+-@lsa                ...... rs:5 rt:5 rd:5 ... sa:2 ......   &r
++%lsa_sa             6:2  !function=plus_1
++
++@lsa                ...... rs:5 rt:5 rd:5 ... .. ......     &r sa=%lsa_sa
+ 
+ LSA                 000000 ..... ..... ..... 000 .. 000101  @lsa
+ DLSA                000000 ..... ..... ..... 000 .. 010101  @lsa
 diff --git a/target/mips/tcg/msa_translate.c b/target/mips/tcg/msa_translate.c
-index 75cf80a20ed..82b149922fa 100644
+index 82b149922fa..75cf80a20ed 100644
 --- a/target/mips/tcg/msa_translate.c
 +++ b/target/mips/tcg/msa_translate.c
 @@ -780,7 +780,7 @@ TRANS_DF_iv(ST, trans_msa_ldst, gen_helper_msa_st);
  
  static bool trans_LSA(DisasContext *ctx, arg_r *a)
  {
--    return gen_lsa(ctx, a->rd, a->rt, a->rs, a->sa);
-+    return gen_lsa(ctx, a->rd, a->rt, a->rs, a->sa + 1);
+-    return gen_lsa(ctx, a->rd, a->rt, a->rs, a->sa + 1);
++    return gen_lsa(ctx, a->rd, a->rt, a->rs, a->sa);
  }
  
  static bool trans_DLSA(DisasContext *ctx, arg_r *a)
@@ -135,82 +164,41 @@ index 75cf80a20ed..82b149922fa 100644
      if (TARGET_LONG_BITS != 64) {
          return false;
      }
--    return gen_dlsa(ctx, a->rd, a->rt, a->rs, a->sa);
-+    return gen_dlsa(ctx, a->rd, a->rt, a->rs, a->sa + 1);
+-    return gen_dlsa(ctx, a->rd, a->rt, a->rs, a->sa + 1);
++    return gen_dlsa(ctx, a->rd, a->rt, a->rs, a->sa);
  }
 diff --git a/target/mips/tcg/rel6_translate.c b/target/mips/tcg/rel6_translate.c
-index 59f237ba3ba..363bc864912 100644
+index 363bc864912..2522ecae2ba 100644
 --- a/target/mips/tcg/rel6_translate.c
 +++ b/target/mips/tcg/rel6_translate.c
-@@ -23,7 +23,7 @@ bool trans_REMOVED(DisasContext *ctx, arg_REMOVED *a)
+@@ -11,6 +11,11 @@
+ #include "qemu/osdep.h"
+ #include "translate.h"
+ 
++static inline int plus_1(DisasContext *ctx, int x)
++{
++    return x + 1;
++}
++
+ /* Include the auto-generated decoders.  */
+ #include "decode-rel6.c.inc"
+ 
+@@ -23,7 +28,7 @@ bool trans_REMOVED(DisasContext *ctx, arg_REMOVED *a)
  
  static bool trans_LSA(DisasContext *ctx, arg_r *a)
  {
--    return gen_lsa(ctx, a->rd, a->rt, a->rs, a->sa);
-+    return gen_lsa(ctx, a->rd, a->rt, a->rs, a->sa + 1);
+-    return gen_lsa(ctx, a->rd, a->rt, a->rs, a->sa + 1);
++    return gen_lsa(ctx, a->rd, a->rt, a->rs, a->sa);
  }
  
  static bool trans_DLSA(DisasContext *ctx, arg_r *a)
-@@ -31,5 +31,5 @@ static bool trans_DLSA(DisasContext *ctx, arg_r *a)
+@@ -31,5 +36,5 @@ static bool trans_DLSA(DisasContext *ctx, arg_r *a)
      if (TARGET_LONG_BITS != 64) {
          return false;
      }
--    return gen_dlsa(ctx, a->rd, a->rt, a->rs, a->sa);
-+    return gen_dlsa(ctx, a->rd, a->rt, a->rs, a->sa + 1);
+-    return gen_dlsa(ctx, a->rd, a->rt, a->rs, a->sa + 1);
++    return gen_dlsa(ctx, a->rd, a->rt, a->rs, a->sa);
  }
-diff --git a/target/mips/tcg/translate_addr_const.c b/target/mips/tcg/translate_addr_const.c
-index 6f4b39f715b..1d140e918da 100644
---- a/target/mips/tcg/translate_addr_const.c
-+++ b/target/mips/tcg/translate_addr_const.c
-@@ -26,7 +26,7 @@ bool gen_lsa(DisasContext *ctx, int rd, int rt, int rs, int sa)
-     t1 = tcg_temp_new();
-     gen_load_gpr(t0, rs);
-     gen_load_gpr(t1, rt);
--    tcg_gen_shli_tl(t0, t0, sa + 1);
-+    tcg_gen_shli_tl(t0, t0, sa);
-     tcg_gen_add_tl(cpu_gpr[rd], t0, t1);
-     tcg_gen_ext32s_tl(cpu_gpr[rd], cpu_gpr[rd]);
-     return true;
-@@ -47,7 +47,7 @@ bool gen_dlsa(DisasContext *ctx, int rd, int rt, int rs, int sa)
-     t1 = tcg_temp_new();
-     gen_load_gpr(t0, rs);
-     gen_load_gpr(t1, rt);
--    tcg_gen_shli_tl(t0, t0, sa + 1);
-+    tcg_gen_shli_tl(t0, t0, sa);
-     tcg_gen_add_tl(cpu_gpr[rd], t0, t1);
-     return true;
- }
-diff --git a/target/mips/tcg/micromips_translate.c.inc b/target/mips/tcg/micromips_translate.c.inc
-index 98a00125520..26006f84df7 100644
---- a/target/mips/tcg/micromips_translate.c.inc
-+++ b/target/mips/tcg/micromips_translate.c.inc
-@@ -1795,7 +1795,7 @@ static void decode_micromips32_opc(CPUMIPSState *env, DisasContext *ctx)
-             return;
-         case LSA:
-             check_insn(ctx, ISA_MIPS_R6);
--            gen_lsa(ctx, rd, rt, rs, extract32(ctx->opcode, 9, 2));
-+            gen_lsa(ctx, rd, rt, rs, extract32(ctx->opcode, 9, 2) + 1);
-             break;
-         case ALIGN:
-             check_insn(ctx, ISA_MIPS_R6);
-diff --git a/target/mips/tcg/nanomips_translate.c.inc b/target/mips/tcg/nanomips_translate.c.inc
-index 6ee0c4fca3b..e0a920bdb3a 100644
---- a/target/mips/tcg/nanomips_translate.c.inc
-+++ b/target/mips/tcg/nanomips_translate.c.inc
-@@ -3626,12 +3626,7 @@ static int decode_nanomips_32_48_opc(CPUMIPSState *env, DisasContext *ctx)
-                 gen_p_lsx(ctx, rd, rs, rt);
-                 break;
-             case NM_LSA:
--                /*
--                 * In nanoMIPS, the shift field directly encodes the shift
--                 * amount, meaning that the supported shift values are in
--                 * the range 0 to 3 (instead of 1 to 4 in MIPSR6).
--                 */
--                gen_lsa(ctx, rd, rt, rs, extract32(ctx->opcode, 9, 2) - 1);
-+                gen_lsa(ctx, rd, rt, rs, extract32(ctx->opcode, 9, 2));
-                 break;
-             case NM_EXTW:
-                 gen_ext(ctx, 32, rd, rs, rt, extract32(ctx->opcode, 6, 5));
 -- 
 2.45.2
 
