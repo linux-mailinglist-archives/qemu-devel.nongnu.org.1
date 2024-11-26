@@ -2,70 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC8EE9D9BF9
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Nov 2024 18:00:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B1CB19D9C01
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Nov 2024 18:03:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tFytt-0004Y6-6v; Tue, 26 Nov 2024 11:58:57 -0500
+	id 1tFyxS-0007Nt-24; Tue, 26 Nov 2024 12:02:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <groug@kaod.org>) id 1tFytq-0004Xe-UJ
- for qemu-devel@nongnu.org; Tue, 26 Nov 2024 11:58:54 -0500
-Received: from 3.mo548.mail-out.ovh.net ([188.165.32.156])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <groug@kaod.org>) id 1tFyto-00019g-H8
- for qemu-devel@nongnu.org; Tue, 26 Nov 2024 11:58:54 -0500
-Received: from mxplan5.mail.ovh.net (unknown [10.108.2.213])
- by mo548.mail-out.ovh.net (Postfix) with ESMTPS id 4XyTL9608zzyHS;
- Tue, 26 Nov 2024 16:58:41 +0000 (UTC)
-Received: from kaod.org (37.59.142.111) by DAG6EX1.mxp5.local (172.16.2.51)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Tue, 26 Nov
- 2024 17:58:41 +0100
-Authentication-Results: garm.ovh; auth=pass
- (GARM-111S005aa6c7434-9339-4993-976b-5ca9bf9ba585,
- FCC27489C1BA5BDC89FB1F76958C936B1C45CC5D) smtp.auth=groug@kaod.org
-X-OVh-ClientIp: 88.179.9.154
-Date: Tue, 26 Nov 2024 17:58:35 +0100
-From: Greg Kurz <groug@kaod.org>
-To: Christian Schoenebeck <qemu_oss@crudebyte.com>
-CC: <qemu-devel@nongnu.org>, <qemu-stable@nongnu.org>
-Subject: Re: [PATCH 5/6] 9pfs: fix 'Tgetattr' after unlink
-Message-ID: <20241126175835.5442c7d5@bahia>
-In-Reply-To: <5608682.ghPI0kNXTk@silver>
-References: <cover.1732465720.git.qemu_oss@crudebyte.com>
- <4c41ad47f449a5cc8bfa9285743e029080d5f324.1732465720.git.qemu_oss@crudebyte.com>
- <5608682.ghPI0kNXTk@silver>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1tFyxO-0007HT-Sw
+ for qemu-devel@nongnu.org; Tue, 26 Nov 2024 12:02:34 -0500
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1tFyxL-00020F-Tu
+ for qemu-devel@nongnu.org; Tue, 26 Nov 2024 12:02:34 -0500
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-434a1639637so17361425e9.1
+ for <qemu-devel@nongnu.org>; Tue, 26 Nov 2024 09:02:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1732640549; x=1733245349; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=U619nSfSYW4XQ1QmRquoyj8F6Iwl0o/6CLdfCIYuPP0=;
+ b=scizYW2tx7mMWMeGqdkv14hBRtI3EjM7JvuOWXpW8Z6Boim+UqPCpzY58ueAp8fQAb
+ BWWW+7MBuDRLA3AJMIostGBuvuDNMEQz2OQMlD9DehbW/iYo+WjfdpQnt2fZrjNLakAF
+ zFEDtz7jeYIcjgorqXd9C/am3XtTNPFDXvhaeIe2lcoocvEvpovBCKi7Ii6rzuQu6h1W
+ RwLnRKbXqkAaFsKaW/68XUw7QA2z1ZjzZdEdMx4G2TQ0Q/U06HydSSMhUqZfeb5gTfaz
+ F9FNY7jY6KWK02c4axOkBw7jLthdoAnIA1TRu71NfuhKHoVEQvQ00/6sk5REvLnVJYld
+ okzg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1732640549; x=1733245349;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=U619nSfSYW4XQ1QmRquoyj8F6Iwl0o/6CLdfCIYuPP0=;
+ b=Dv1+x8F5U8X4pwTsTfyAOpicQowKk15D8jZBKU/6R9f/ukHgfM6AU6hFul8uEFJVaM
+ VEIgYCbTnh3bvYmdjQAVWdbApgRBuf6ij2or3IU+DvoFdHDnbse6N2Wsb6BQjrj/+9g/
+ U7W3FD6CKaENFSy6Tin1ZE0OupWSjfgbUlOhxJAsGd3VmwCfGp0zQyawpX6cEscYP4UP
+ 7ttTMUHfic/5100Sghw/vG7zBGeORCX+0g/ZTZdIRpb3zhy2svZbpfuqWce2eHnfxYWB
+ B8EKvA2fXFb3rhYsO9qBdaN8cFaFmdmtI5V1EBbnSfdy6d2s3oD45Foc439CeRhQL4VS
+ wz9w==
+X-Gm-Message-State: AOJu0YxjYcBiVWv1n6tvBgZvZADmdmOMdmv48wqQwGVJLp+cX+6Mj/IG
+ LMiitMYXj2N8InLVvTKIpuM4kjRdxqozxmqOozLa/RrfA1CkRkDyYER1wBF2Y6WDY7IZpIpnEAR
+ d
+X-Gm-Gg: ASbGnct1lgzZegLHIA3r0vvozbGHrFc+SRo8dGfbtqsqrm4ra3Lux4EUdSSU1020S2v
+ Dgk7IRDex6KCPvwVw9jrDVUPFpXxqUrzH/5OpFti6v4gSfTh0MPJsndokqdgFsAaYtk2ROG6gAl
+ FEwWLt9HtM9guqsD1kImTwq+sNP+GgEvRRPTyPVcv4kW6SBiPObnQFsa+8plrNFAS7lKYON6v4L
+ JKV+94um6PnFrrSIleHzFJOkyI2S0Coc57nFefaQmtsWvLt369b3seU
+X-Google-Smtp-Source: AGHT+IHZrmHPGl52jV6+aJkhux9WJIjok7wQZi0ZJ+4WEGoDHKNzfuwKwZNQrEB9WgqXOeU3dYB1ww==
+X-Received: by 2002:a05:600c:4fc9:b0:434:a6af:79f6 with SMTP id
+ 5b1f17b1804b1-434a9dc7074mr240055e9.15.1732640546345; 
+ Tue, 26 Nov 2024 09:02:26 -0800 (PST)
+Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-434a36c7a9fsm43017865e9.44.2024.11.26.09.02.25
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 26 Nov 2024 09:02:26 -0800 (PST)
+From: Peter Maydell <peter.maydell@linaro.org>
+To: qemu-devel@nongnu.org
+Subject: [PULL 0/9] target-arm queue
+Date: Tue, 26 Nov 2024 17:02:15 +0000
+Message-Id: <20241126170224.2926917-1-peter.maydell@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [37.59.142.111]
-X-ClientProxiedBy: DAG3EX1.mxp5.local (172.16.2.21) To DAG6EX1.mxp5.local
- (172.16.2.51)
-X-Ovh-Tracer-GUID: 38c6f9a7-b0a9-4b45-85dc-281a89149f72
-X-Ovh-Tracer-Id: 18320924762250189277
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: 0
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeefuddrgeejgdeludcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecunecujfgurhepfffhvfevuffkjghfofggtgfgihesthejredtredtvdenucfhrhhomhepifhrvghgucfmuhhriicuoehgrhhouhhgsehkrghougdrohhrgheqnecuggftrfgrthhtvghrnhepgfeuieefieevffdvhfehgfdtfeeuudffhefftdfgleeuvdetteejgeeijedtgeegnecuffhomhgrihhnpehgihhtlhgrsgdrtghomhdpughirhdrshhtrhgvrghmpdhgihhthhhusgdrtghomhenucfkphepuddvjedrtddrtddruddpfeejrdehledrudegvddrudduuddpkeekrddujeelrdelrdduheegnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepuddvjedrtddrtddruddpmhgrihhlfhhrohhmpehgrhhouhhgsehkrghougdrohhrghdpnhgspghrtghpthhtohepfedprhgtphhtthhopehqvghmuhgpohhsshestghruhguvggshihtvgdrtghomhdprhgtphhtthhopehqvghmuhdquggvvhgvlhesnhhonhhgnhhurdhorhhgpdhrtghpthhtohepqhgvmhhuqdhsthgrsghlvgesnhhonhhgnhhurdhorhhgpdfovfetjfhoshhtpehmohehgeekmgdpmhhouggvpehsmhhtphhouhht
-DKIM-Signature: a=rsa-sha256; bh=RysGIvybac7IXE4jSHy/InNOVHCghvd8Cqk3joRnxtg=; 
- c=relaxed/relaxed; d=kaod.org; h=From; s=ovhmo393970-selector1;
- t=1732640322; v=1;
- b=dNQj/jDiGXxWNi468jwiFzBkAY16SmwH7eHH1LctBDrgFsNFbDDE6m8ypoeeR7I4afiUaDVX
- BiHlWR54XLIUoO1RduOAdGbJcBASw4EXEynJDxEO20L69CqaaUJI70WMN5yEVxMew51SIwDqULT
- ToJYGQiZFrwPC2Se/e2Rdjoh1MbjuJlpiBcU0ybzQUMVEJaLqJ6ovrbNrRFXcKS0yfcmHhD8+Rr
- U/zpvqEeFZS3nhHgadPEd0wv08JVqsjifMefElfblKfv2L3k2JbqN/N7JqijJSz54IYL6kRSe25
- c5oZh+K22ZN+lYLkasAPit7+ekYVbketWKpbbOQ2N1xJQ==
-Received-SPF: pass client-ip=188.165.32.156; envelope-from=groug@kaod.org;
- helo=3.mo548.mail-out.ovh.net
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -82,89 +93,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 26 Nov 2024 17:03:45 +0100
-Christian Schoenebeck <qemu_oss@crudebyte.com> wrote:
+This one's almost all docs fixes.
 
-> On Sunday, November 24, 2024 4:50:03 PM CET Christian Schoenebeck wrote:
-> > With a valid file ID (FID) of an open file, it should be possible to send
-> > a 'Tgettattr' 9p request and successfully receive a 'Rgetattr' response,
-> > even if the file has been removed in the meantime. Currently this would
-> > fail with ENOENT.
-> > 
-> > I.e. this fixes the following misbehaviour with a 9p Linux client:
-> > 
-> >   open("/home/tst/filename", O_RDWR|O_CREAT|O_EXCL, 0600) = 3
-> >   unlink("/home/tst/filename") = 0
-> >   fstat(3, 0x23aa1a8) = -1 ENOENT (No such file or directory)
-> > 
-> > Expected results:
-> > 
-> >   open("/home/tst/filename", O_RDWR|O_CREAT|O_EXCL, 0600) = 3
-> >   unlink("/home/tst/filename") = 0
-> >   fstat(3, {st_mode=S_IFREG|0600, st_size=0, ...}) = 0
-> > 
-> > This is because 9p server is always using a path name based stat() call
-> > which fails as soon as the file got removed. So to fix this, use fstat()
-> > whenever we have an open file descriptor already.
-> > 
-> > Resolves: https://gitlab.com/qemu-project/qemu/-/issues/103
-> > Signed-off-by: Christian Schoenebeck <qemu_oss@crudebyte.com>
-> > ---
-> >  hw/9pfs/9p.c | 8 +++++++-
-> >  1 file changed, 7 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/hw/9pfs/9p.c b/hw/9pfs/9p.c
-> > index 851e36b9a1..578517739a 100644
-> > --- a/hw/9pfs/9p.c
-> > +++ b/hw/9pfs/9p.c
-> > @@ -1596,7 +1596,13 @@ static void coroutine_fn v9fs_getattr(void *opaque)
-> >          retval = -ENOENT;
-> >          goto out_nofid;
-> >      }
-> > -    retval = v9fs_co_lstat(pdu, &fidp->path, &stbuf);
-> > +    if ((fidp->fid_type == P9_FID_FILE && fidp->fs.fd != -1) ||
-> > +        (fidp->fid_type == P9_FID_DIR && fidp->fs.dir.stream))
-> > +    {
-> > +        retval = v9fs_co_fstat(pdu, fidp, &stbuf);
-> > +    } else {
-> > +        retval = v9fs_co_lstat(pdu, &fidp->path, &stbuf);
-> > +    }
-> 
-> As for performance fstat() vs. lstat(): with glibc >= 2.39 and/or Linux
-> kernel >= 6.6, fstat() is Theta(1) whereas lstat() is O(log n). So fstat() is
-> faster than lstat() and hence prioritizing fstat() over lstat() does make
-> sense here IMO.
-> 
-> That's because on Linux kernel side fstat() is implemented by a simple
-> constant time linear array access via file descriptor number, whereas lstat()
-> needs to lookup the path and hence walk a tree.
-> 
-> There is a caveat though: Both on glibc and Linux kernel side there was a
-> performance bug each, which were both fixed in September 2023 by glibc 2.39
-> and Linux kernel 6.6 respectively:
-> 
-> kernel fix: https://github.com/torvalds/linux/commit/9013c51
-> 
-> glibc fix: https://github.com/bminor/glibc/commit/551101e
-> 
-> So on glibc side, due to a misconception, they inappropriately translated
-> fstat(fd, buf) -> fstatat(fd, "", buf, AT_EMPTY_PATH) for a long time, instead
-> of just calling fstat() directly as ought to be and done now.
-> 
-> And on kernel side, the negative performance impact of case AT_EMPTY_PATH +
-> empty string wasn't considered in fstatat() implementation. This case is now
-> short-circuited right at the beginning of the function.
-> 
-> /Christian
-> 
-> 
+thanks
+-- PMM
 
-Great explanation Christian !
+The following changes since commit ba54a7e6b86884e43bed2d2f5a79c719059652a8:
 
-Reviewed-by: Greg Kurz <groug@kaod.org>
+  Merge tag 'net-pull-request' of https://github.com/jasowang/qemu into staging (2024-11-26 14:06:40 +0000)
 
-Cheers,
+are available in the Git repository at:
 
--- 
-Greg
+  https://git.linaro.org/people/pmaydell/qemu-arm.git tags/pull-target-arm-20241126
+
+for you to fetch changes up to d8790ead55a2ef1e65332ebec63ae3c5db598942:
+
+  docs/system/arm/aspeed: add missing model supermicrox11spi-bmc (2024-11-26 16:22:38 +0000)
+
+----------------------------------------------------------------
+target-arm queue:
+ * target/arm/tcg/cpu32.c: swap ATCM and BTCM register names
+ * docs/system/arm: Fix broken links and missing feature names
+
+----------------------------------------------------------------
+Michael Tokarev (1):
+      target/arm/tcg/cpu32.c: swap ATCM and BTCM register names
+
+Pierrick Bouvier (8):
+      docs/system/arm/emulation: mention armv9
+      docs/system/arm/emulation: fix typo in feature name
+      docs/system/arm/emulation: add FEAT_SSBS2
+      target/arm/tcg/: fix typo in FEAT name
+      docs/system/arm/: add FEAT_MTE_ASYNC
+      docs/system/arm/: add FEAT_DoubleLock
+      docs/system/arm/fby35: update link to product page
+      docs/system/arm/aspeed: add missing model supermicrox11spi-bmc
+
+ docs/system/arm/aspeed.rst    |  7 ++++---
+ docs/system/arm/emulation.rst | 11 +++++++----
+ docs/system/arm/fby35.rst     |  2 +-
+ target/arm/tcg/cpu32.c        |  6 +++---
+ 4 files changed, 15 insertions(+), 11 deletions(-)
 
