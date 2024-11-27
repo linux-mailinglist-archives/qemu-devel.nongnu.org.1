@@ -2,53 +2,102 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 890599DA4A8
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Nov 2024 10:18:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 254F89DA4B3
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Nov 2024 10:21:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tGEA3-0002y1-Ii; Wed, 27 Nov 2024 04:16:39 -0500
+	id 1tGEES-0002Jh-VF; Wed, 27 Nov 2024 04:21:12 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1tGEA0-0002pY-9t; Wed, 27 Nov 2024 04:16:36 -0500
-Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
+ (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
+ id 1tGEEQ-0002JR-Sq
+ for qemu-devel@nongnu.org; Wed, 27 Nov 2024 04:21:11 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1tGE9y-0004aA-KK; Wed, 27 Nov 2024 04:16:36 -0500
-Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
- (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.12; Wed, 27 Nov
- 2024 17:15:47 +0800
-Received: from localhost.localdomain (192.168.10.10) by TWMBX01.aspeed.com
- (192.168.0.62) with Microsoft SMTP Server id 15.2.1258.12 via Frontend
- Transport; Wed, 27 Nov 2024 17:15:47 +0800
-To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
- <peter.maydell@linaro.org>, Steven Lee <steven_lee@aspeedtech.com>, Troy Lee
- <leetroy@gmail.com>, Andrew Jeffery <andrew@codeconstruct.com.au>, "Joel
- Stanley" <joel@jms.id.au>, Fabiano Rosas <farosas@suse.de>, Laurent Vivier
- <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, "open list:ASPEED
- BMCs" <qemu-arm@nongnu.org>, "open list:All patches CC here"
- <qemu-devel@nongnu.org>
-CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>,
- <yunlin.tang@aspeedtech.com>
-Subject: [PATCH v3 10/10] test/qtest/ast2700-smc-test: Support to test AST2700
-Date: Wed, 27 Nov 2024 17:15:43 +0800
-Message-ID: <20241127091543.1243114-11-jamin_lin@aspeedtech.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20241127091543.1243114-1-jamin_lin@aspeedtech.com>
-References: <20241127091543.1243114-1-jamin_lin@aspeedtech.com>
+ (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
+ id 1tGEEO-0006fL-6g
+ for qemu-devel@nongnu.org; Wed, 27 Nov 2024 04:21:10 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1732699265;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=8ZmZfccMST1TnML1AnloB2D+alPcPvmhy2zMJiBr0J4=;
+ b=HP8Zc97W9uGXMFk3JPxH60AWEDPRRS3mu3P7Llyz+XV+i9ctmf7x+DhbwusGst7wFYgySU
+ uzIofEoYCplukfew9fSCGMvB8lW6TjEP/RLX46puqqMsWt7Pu0yDMw+UE3mWdsfH/QA4uv
+ LOlkq4CxyCsODAZUjkaprRGl2gwryd4=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-149-cF9AtpmeP6aN-ZYQzjdJrg-1; Wed, 27 Nov 2024 04:21:04 -0500
+X-MC-Unique: cF9AtpmeP6aN-ZYQzjdJrg-1
+X-Mimecast-MFC-AGG-ID: cF9AtpmeP6aN-ZYQzjdJrg
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-38240d9ed31so3914172f8f.3
+ for <qemu-devel@nongnu.org>; Wed, 27 Nov 2024 01:21:03 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1732699263; x=1733304063;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=8ZmZfccMST1TnML1AnloB2D+alPcPvmhy2zMJiBr0J4=;
+ b=g3fN9774up1nZb8flLqfx2tfwyDnDUGJL2hkSica2sHyWlPscYEOZX56DX02HC7Ir9
+ au39wW+2HP8sD1wjC9/EhHLSZzZRYP8Y1IfI4zzGnoWOEMXVRs4s2QdhOU2bpUYSV4Qi
+ r4QoG/z0Jv/g1KoD8w4WQ8Pm8XFQ9SfmcKj+jGC4JgdJT+ULo/XW+RzmI4edJixawjem
+ Q+suwGYH2FZHSTGGauhdJ7SfiGIetrFG6Wb8zulvBOFBXmdts5RL7HMki7yGPU/qztLI
+ quxaavs2r4y4W4R598dZDGJVsBCdQOyRcGjtI2bOmvX9cE6zRTz2MD/D4ptzlAFoVeCw
+ lBOw==
+X-Gm-Message-State: AOJu0Ywq8CzAOIKKmmyNzu4w+1o79k/LHDJRWRqOkEYVR4L+sLWpwRUK
+ JHWSm6IMlmBLrdWgvN9DEQXfwOxe4pdZ+B/Uv3rSJ2h5QkJ0lf7ifwvBvtwVfU8aSmbocXiIn6f
+ GYlw437s+Xn1jNYfPSS8pKVjwwiFDhZ5q85q/GyBCpzQ5rjKepPfm
+X-Gm-Gg: ASbGncvoe63/UJJwDWms+wS86ZIFSoob8+OM7o/R82FEQsZgerhqggKtT6KN63QdySC
+ o43Zz6kXaGJUp36Zyoz+1vz8GIDPgK9t+sxAQEn+br43l7gTxgq/QXd+9x8ywhATZu1GWC0RFIB
+ Isdd5L/ksSqYB1dfRLa/PES7HH5x+ZOLxIU3+tSpt1xW3cx30mKh4XZC9P6HMSmoG35I/ZhYB9s
+ q/zomuSEF/NAdDx/O9b8LLftZSNTqrUu8yOpebC68i3B9FZxXMw007XOmcODVWlaf/0UJ4ZZjzW
+ GU5FsfZBZyBN5/XYVpQX03rIiw==
+X-Received: by 2002:a05:6000:381:b0:382:1504:f064 with SMTP id
+ ffacd0b85a97d-385c6edd7cbmr1325172f8f.42.1732699262874; 
+ Wed, 27 Nov 2024 01:21:02 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFtKh0A8bSkc73MlbeDQs+ir97IsTopcTjfBy5Xq45f5kU2yfOaatv1f5AGl53vWDObFPb50Q==
+X-Received: by 2002:a05:6000:381:b0:382:1504:f064 with SMTP id
+ ffacd0b85a97d-385c6edd7cbmr1325143f8f.42.1732699262284; 
+ Wed, 27 Nov 2024 01:21:02 -0800 (PST)
+Received: from sgarzare-redhat (host-79-46-200-129.retail.telecomitalia.it.
+ [79.46.200.129]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-3825fad5fa2sm16184751f8f.1.2024.11.27.01.21.01
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 27 Nov 2024 01:21:01 -0800 (PST)
+Date: Wed, 27 Nov 2024 10:20:57 +0100
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Cc: qemu-devel@nongnu.org, 
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ "Michael S. Tsirkin" <mst@redhat.com>, 
+ Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>,
+ =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>, 
+ Thomas Huth <thuth@redhat.com>,
+ Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>, 
+ Markus Armbruster <armbru@redhat.com>, Mahmoud Mandour <ma.mandourr@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Alexandre Iooss <erdnaxe@crans.org>
+Subject: Re: [PATCH v2 1/3] win32: remove usage of attribute gcc_struct
+Message-ID: <v63qepc7jqqncwcknnu2v2ksnjxrrfe7dpugorc7ppro2soxxp@vra5v6glq2eb>
+References: <20241126211736.122285-1-pierrick.bouvier@linaro.org>
+ <20241126211736.122285-2-pierrick.bouvier@linaro.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-Received-SPF: pass client-ip=211.20.114.72;
- envelope-from=jamin_lin@aspeedtech.com; helo=TWMBX01.aspeed.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20241126211736.122285-2-pierrick.bouvier@linaro.org>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=sgarzare@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -29
+X-Spam_score: -3.0
+X-Spam_bar: ---
+X-Spam_report: (-3.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.931,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_FAIL=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -61,124 +110,110 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jamin Lin <jamin_lin@aspeedtech.com>
-From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add test_ast2700_evb function and reused testcases which are from
-aspeed_smc-test.c for AST2700 testing. The base address, flash base address
-and ce index of fmc_cs0 are 0x14000000, 0x100000000 and 0, respectively.
-The default flash model of fmc_cs0 is "w25q01jvq" whose size is 128MB,
-so set jedec_id 0xef4021.
+On Tue, Nov 26, 2024 at 01:17:34PM -0800, Pierrick Bouvier wrote:
+>This attribute is not recognized by clang.
+>
+>An investigation has been performed to ensure this attribute has no
+>effect on layout of structures we use in QEMU [1], so it's safe to
+>remove now.
+>
+>In the future, we'll forbid introducing new bitfields in packed struct.
 
-Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
----
- tests/qtest/ast2700-smc-test.c | 71 ++++++++++++++++++++++++++++++++++
- tests/qtest/meson.build        |  4 +-
- 2 files changed, 74 insertions(+), 1 deletion(-)
- create mode 100644 tests/qtest/ast2700-smc-test.c
+Why?
+I suggest reporting in this commit description what you wrote in the
+following patch in the documentation (or a summary), because at first
+glance I could not understand the correlation between removing
+gcc_struct and bitfields in packed struct.
 
-diff --git a/tests/qtest/ast2700-smc-test.c b/tests/qtest/ast2700-smc-test.c
-new file mode 100644
-index 0000000000..d1c4856307
---- /dev/null
-+++ b/tests/qtest/ast2700-smc-test.c
-@@ -0,0 +1,71 @@
-+/*
-+ * QTest testcase for the M25P80 Flash using the ASPEED SPI Controller since
-+ * AST2700.
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ * Copyright (C) 2024 ASPEED Technology Inc.
-+ */
-+
-+#include "qemu/osdep.h"
-+#include "qemu/bswap.h"
-+#include "libqtest-single.h"
-+#include "qemu/bitops.h"
-+#include "aspeed-smc-utils.h"
-+
-+static void test_ast2700_evb(AspeedSMCTestData *data)
-+{
-+    int ret;
-+    int fd;
-+
-+    fd = g_file_open_tmp("qtest.m25p80.w25q01jvq.XXXXXX",
-+                         &data->tmp_path, NULL);
-+    g_assert(fd >= 0);
-+    ret = ftruncate(fd, 128 * 1024 * 1024);
-+    g_assert(ret == 0);
-+    close(fd);
-+
-+    data->s = qtest_initf("-machine ast2700-evb "
-+                          "-drive file=%s,format=raw,if=mtd",
-+                          data->tmp_path);
-+
-+    /* fmc cs0 with w25q01jvq flash */
-+    data->flash_base = 0x100000000;
-+    data->spi_base = 0x14000000;
-+    data->jedec_id = 0xef4021;
-+    data->cs = 0;
-+    data->node = "/machine/soc/fmc/ssi.0/child[0]";
-+    /* beyond 64MB */
-+    data->page_addr = 0x40000 * FLASH_PAGE_SIZE;
-+
-+    qtest_add_data_func("/ast2700/smc/read_jedec",
-+                        data, aspeed_smc_test_read_jedec);
-+    qtest_add_data_func("/ast2700/smc/erase_sector",
-+                        data, aspeed_smc_test_erase_sector);
-+    qtest_add_data_func("/ast2700/smc/erase_all",
-+                        data, aspeed_smc_test_erase_all);
-+    qtest_add_data_func("/ast2700/smc/write_page",
-+                        data, aspeed_smc_test_write_page);
-+    qtest_add_data_func("/ast2700/smc/read_page_mem",
-+                        data, aspeed_smc_test_read_page_mem);
-+    qtest_add_data_func("/ast2700/smc/write_page_mem",
-+                        data, aspeed_smc_test_write_page_mem);
-+    qtest_add_data_func("/ast2700/smc/read_status_reg",
-+                        data, aspeed_smc_test_read_status_reg);
-+    qtest_add_data_func("/ast2700/smc/write_page_qpi",
-+                        data, aspeed_smc_test_write_page_qpi);
-+}
-+
-+int main(int argc, char **argv)
-+{
-+    AspeedSMCTestData ast2700_evb_data;
-+    int ret;
-+
-+    g_test_init(&argc, &argv, NULL);
-+
-+    test_ast2700_evb(&ast2700_evb_data);
-+    ret = g_test_run();
-+
-+    qtest_quit(ast2700_evb_data.s);
-+    unlink(ast2700_evb_data.tmp_path);
-+    return ret;
-+}
-diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
-index ea68ec1441..21e9320a95 100644
---- a/tests/qtest/meson.build
-+++ b/tests/qtest/meson.build
-@@ -214,7 +214,8 @@ qtests_aspeed = \
-    'aspeed_smc-test',
-    'aspeed_gpio-test']
- qtests_aspeed64 = \
--  ['ast2700-gpio-test']
-+  ['ast2700-gpio-test',
-+   'ast2700-smc-test']
- 
- qtests_stm32l4x5 = \
-   ['stm32l4x5_exti-test',
-@@ -361,6 +362,7 @@ qtests = {
-   'vmgenid-test': files('boot-sector.c', 'acpi-utils.c'),
-   'netdev-socket': files('netdev-socket.c', '../unit/socket-helpers.c'),
-   'aspeed_smc-test': files('aspeed-smc-utils.c', 'aspeed_smc-test.c'),
-+  'ast2700-smc-test': files('aspeed-smc-utils.c', 'ast2700-smc-test.c'),
- }
- 
- if vnc.found()
--- 
-2.34.1
+>
+>[1] https://lore.kernel.org/qemu-devel/66c346de-7e20-4831-b3eb-1cda83240af9@linaro.org/
+>
+>Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+>---
+> meson.build                               | 5 -----
+> include/qemu/compiler.h                   | 7 +------
+> scripts/cocci-macro-file.h                | 6 +-----
+> subprojects/libvhost-user/libvhost-user.h | 6 +-----
+> 4 files changed, 3 insertions(+), 21 deletions(-)
+
+The patch LGTM.
+
+Acked-by: Stefano Garzarella <sgarzare@redhat.com>
+
+>
+>diff --git a/meson.build b/meson.build
+>index e0b880e4e13..fa6d24e1233 100644
+>--- a/meson.build
+>+++ b/meson.build
+>@@ -354,11 +354,6 @@ elif host_os == 'sunos'
+>   qemu_common_flags += '-D__EXTENSIONS__'
+> elif host_os == 'haiku'
+>   qemu_common_flags += ['-DB_USE_POSITIVE_POSIX_ERRORS', '-D_BSD_SOURCE', '-fPIC']
+>-elif host_os == 'windows'
+>-  if not compiler.compiles('struct x { int y; } __attribute__((gcc_struct));',
+>-                           args: '-Werror')
+>-    error('Your compiler does not support __attribute__((gcc_struct)) - please use GCC instead of Clang')
+>-  endif
+> endif
+>
+> # Choose instruction set (currently x86-only)
+>diff --git a/include/qemu/compiler.h b/include/qemu/compiler.h
+>index c06954ccb41..d904408e5ed 100644
+>--- a/include/qemu/compiler.h
+>+++ b/include/qemu/compiler.h
+>@@ -22,12 +22,7 @@
+> #define QEMU_EXTERN_C extern
+> #endif
+>
+>-#if defined(_WIN32) && (defined(__x86_64__) || defined(__i386__))
+>-# define QEMU_PACKED __attribute__((gcc_struct, packed))
+>-#else
+>-# define QEMU_PACKED __attribute__((packed))
+>-#endif
+>-
+>+#define QEMU_PACKED __attribute__((packed))
+> #define QEMU_ALIGNED(X) __attribute__((aligned(X)))
+>
+> #ifndef glue
+>diff --git a/scripts/cocci-macro-file.h b/scripts/cocci-macro-file.h
+>index d247a5086e9..c64831d5408 100644
+>--- a/scripts/cocci-macro-file.h
+>+++ b/scripts/cocci-macro-file.h
+>@@ -23,11 +23,7 @@
+> #define G_GNUC_WARN_UNUSED_RESULT __attribute__((warn_unused_result))
+> #define G_GNUC_NULL_TERMINATED __attribute__((sentinel))
+>
+>-#if defined(_WIN32) && (defined(__x86_64__) || defined(__i386__))
+>-# define QEMU_PACKED __attribute__((gcc_struct, packed))
+>-#else
+>-# define QEMU_PACKED __attribute__((packed))
+>-#endif
+>+#define QEMU_PACKED __attribute__((packed))
+>
+> #define cat(x,y) x ## y
+> #define cat2(x,y) cat(x,y)
+>diff --git a/subprojects/libvhost-user/libvhost-user.h b/subprojects/libvhost-user/libvhost-user.h
+>index deb40e77b3f..2ffc58c11b1 100644
+>--- a/subprojects/libvhost-user/libvhost-user.h
+>+++ b/subprojects/libvhost-user/libvhost-user.h
+>@@ -186,11 +186,7 @@ typedef struct VhostUserShared {
+>     unsigned char uuid[UUID_LEN];
+> } VhostUserShared;
+>
+>-#if defined(_WIN32) && (defined(__x86_64__) || defined(__i386__))
+>-# define VU_PACKED __attribute__((gcc_struct, packed))
+>-#else
+>-# define VU_PACKED __attribute__((packed))
+>-#endif
+>+#define VU_PACKED __attribute__((packed))
+>
+> typedef struct VhostUserMsg {
+>     int request;
+>-- 
+>2.39.5
+>
 
 
