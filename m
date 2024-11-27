@@ -2,32 +2,32 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C52B9DA305
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Nov 2024 08:25:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E50A19DA341
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Nov 2024 08:42:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tGCPN-00009Y-13; Wed, 27 Nov 2024 02:24:21 -0500
+	id 1tGCfg-0002f1-04; Wed, 27 Nov 2024 02:41:12 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <frolov@swemel.ru>) id 1tGCPK-000099-PW
- for qemu-devel@nongnu.org; Wed, 27 Nov 2024 02:24:18 -0500
+ (Exim 4.90_1) (envelope-from <frolov@swemel.ru>) id 1tGCfa-0002ee-NU
+ for qemu-devel@nongnu.org; Wed, 27 Nov 2024 02:41:07 -0500
 Received: from mx.swemel.ru ([95.143.211.150])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <frolov@swemel.ru>) id 1tGCPI-0005Jc-Ec
- for qemu-devel@nongnu.org; Wed, 27 Nov 2024 02:24:18 -0500
-Message-ID: <28bf511c-a496-4617-9dca-242a603c05cb@swemel.ru>
+ (Exim 4.90_1) (envelope-from <frolov@swemel.ru>) id 1tGCfW-0001yk-DG
+ for qemu-devel@nongnu.org; Wed, 27 Nov 2024 02:41:06 -0500
+Message-ID: <04edda40-32d2-43e0-8ade-a4b2a3e06eab@swemel.ru>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=swemel.ru; s=mail;
- t=1732692252;
+ t=1732693256;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=uHRck+qpTuV+oBqUeF9ipnds1X2GViAHnt9IYLyLHQg=;
- b=jUWeLnPPFd9M+UuxbiPbAFAzP1SqaVGIrlsc7ozu2u0UrD8v64fq6WHOJgxMu817QM6dGy
- JZMgSpUncsvVinQcgF3DKspFE4TV1rHG5OBX2QfUOqyuzXvdWoaFvePViaRT2xBafYs29R
- sAkUXvgP0ASUS5jS9CGjeeW6uJE0/2M=
-Date: Wed, 27 Nov 2024 10:24:12 +0300
+ bh=A7cRTFNEHy+uKdH8+AWNBo+R70NdpdNPuW8z/01NfxU=;
+ b=wcqJLaQtK6e+Ldm8MD/aA2UW3/e60xAmRFawx9ik8HjdIkm/uvaFDBQTEAiBG1azuE33dU
+ VI1nZnqHq/Ia6/Om1opjlRCiWQsIShZoTOqHYHrsa7StFukvVbJ+2geB+FU39oo+qZMDYX
+ TAHi+V+2v+L/ird0Gw0aDE4MNlJAQb8=
+Date: Wed, 27 Nov 2024 10:40:56 +0300
 MIME-Version: 1.0
 Subject: Re: [PATCH] tests/qtest: add TIMEOUT_MULTIPLIER
 Content-Language: en-US
@@ -64,7 +64,7 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hello, Daniel.
+Hello, Daniel
 
 On 26.11.2024 21:32, Daniel P. Berrangé wrote:
 > On Wed, Nov 13, 2024 at 12:43:40PM +0300, Dmitry Frolov wrote:
@@ -98,8 +98,7 @@ On 26.11.2024 21:32, Daniel P. Berrangé wrote:
 > missing something this change has no purpose. This assignment is
 > merely defining the defalt value, which can already be overridden
 > at runtime without this 'ifndef'
-Without this 'ifndef', TIMEOUT_MULTIPLIER will be overwritten to 1.
-With this 'ifndef',  the value, provided by the user will be used.
+>
 > eg
 >
 > $ make check-unit TIMEOUT_MULTIPLIER=7
@@ -110,11 +109,15 @@ With this 'ifndef',  the value, provided by the user will be used.
 > berrange 1931657  3.9  0.1 330904 99344 pts/1    S+   18:29   0:00                  \_ /var/home/berrange/src/virt/qemu/build/pyvenv/bin/python3 /var/home/berrange/src/virt/qemu/build/pyvenv/bin/meson test --no-rebuild -t 7 --num-processes 1 --print-errorlogs --suite unit
 >
 > shows TIMEOUT_MULTIPLIER being honoured
->
+Yeah... You are right!
+It is possible to set TIMEOUT_MULTIPLIER only to run tests.
+It is not necessary to set it for the whole build.
+
+Sorry, and thanks a lot!
 >
 >
 > With regards,
 > Daniel
-With best regards,
+regards,
 Dmitry
 
