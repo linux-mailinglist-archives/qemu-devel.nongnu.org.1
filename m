@@ -2,114 +2,105 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B45D9DAD22
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Nov 2024 19:32:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D2E4C9DAD17
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Nov 2024 19:30:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tGMmt-0006X3-MF; Wed, 27 Nov 2024 13:29:19 -0500
+	id 1tGMmr-0006Wb-Ig; Wed, 27 Nov 2024 13:29:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tGMmo-0006VP-Ml
- for qemu-devel@nongnu.org; Wed, 27 Nov 2024 13:29:15 -0500
-Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tGMmq-0006Vu-Bz
+ for qemu-devel@nongnu.org; Wed, 27 Nov 2024 13:29:16 -0500
+Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tGMml-0001rn-EF
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tGMmm-0001sD-BO
  for qemu-devel@nongnu.org; Wed, 27 Nov 2024 13:29:14 -0500
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
- [IPv6:2a07:de40:b281:104:10:150:64:97])
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 43F051F79D;
- Wed, 27 Nov 2024 18:29:09 +0000 (UTC)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id EF7212118A;
+ Wed, 27 Nov 2024 18:29:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1732732149; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1732732151; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=lGG9PpwfPorxhXo8tB09mrL+/kZdY1ppsDVfIGeffRY=;
- b=ZFPnuc0jnedrJJaSn93/77nCdUM4cj/HvM6Q+HOUmHqYTiT2rVWTeIeP0J6CoFwH1Z3R/b
- lHJwsme1+OGD9yWnVVH//CKk987cEhe0t81wTTz+omgEmSlx2eirVqY6pC5ya97Dm9Dgho
- KY4wXp38eoieVWK7PjD6aPDgjcXxF6I=
+ bh=8FBrlF63Y8gBQdwIaSzA2v5IOb4xYijCQHsgBcHqmd0=;
+ b=QmKzgZg0DZ/fL6rH4kmd/rz3tgj4ScrX+yUCl103iEFeL9C7IgMg2R4kht1vnsUkUU1ui9
+ Pu5rgbuXQ7IwLcQYNddLYlMUwv83hGkv9X2c8SoSPVf3OH697+uSR01Xu6jKUMNPpZqgV9
+ S+pPb+YdWrHbt8f+BvFN29NYGV5dch8=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1732732149;
+ s=susede2_ed25519; t=1732732151;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=lGG9PpwfPorxhXo8tB09mrL+/kZdY1ppsDVfIGeffRY=;
- b=fyhu6srv9iz/sQydS6STpkebsp6lUHQYc/WHXQcriL03pTOgugqWRIb6X1oCCsWSzxQ8TK
- vBec7TDUJXKJ8XCA==
-Authentication-Results: smtp-out2.suse.de;
- dkim=pass header.d=suse.de header.s=susede2_rsa header.b=ZFPnuc0j;
- dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=fyhu6srv
+ bh=8FBrlF63Y8gBQdwIaSzA2v5IOb4xYijCQHsgBcHqmd0=;
+ b=tQ3LuC4tB8RS/adWLdzuPlwt8IBVXlRsQSjfLtTbbJfBn60E5Mv2rQ2XKZaYCpTXzSZjW6
+ jFer3La8AjM6WpDw==
+Authentication-Results: smtp-out1.suse.de;
+	none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1732732149; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1732732150; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=lGG9PpwfPorxhXo8tB09mrL+/kZdY1ppsDVfIGeffRY=;
- b=ZFPnuc0jnedrJJaSn93/77nCdUM4cj/HvM6Q+HOUmHqYTiT2rVWTeIeP0J6CoFwH1Z3R/b
- lHJwsme1+OGD9yWnVVH//CKk987cEhe0t81wTTz+omgEmSlx2eirVqY6pC5ya97Dm9Dgho
- KY4wXp38eoieVWK7PjD6aPDgjcXxF6I=
+ bh=8FBrlF63Y8gBQdwIaSzA2v5IOb4xYijCQHsgBcHqmd0=;
+ b=lf1ZtStoGsutx2HzxtBy5NWxxYEhmasUVnORdbusnwXPkMDw5klbAKtZSBs4e0JzaCajOo
+ Y4KYAVRp4p1C/rdOEr0QGLeR1OohR8R+V2wHx9umrZn+KyI54goaCy8pNf7WI23zrmkMjU
+ KTgb7qihm9NRKM8B4/NmiX9Nw41t84M=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1732732149;
+ s=susede2_ed25519; t=1732732150;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=lGG9PpwfPorxhXo8tB09mrL+/kZdY1ppsDVfIGeffRY=;
- b=fyhu6srv9iz/sQydS6STpkebsp6lUHQYc/WHXQcriL03pTOgugqWRIb6X1oCCsWSzxQ8TK
- vBec7TDUJXKJ8XCA==
+ bh=8FBrlF63Y8gBQdwIaSzA2v5IOb4xYijCQHsgBcHqmd0=;
+ b=ez0eS04mLDNhn7fsSkASri2VHIWRR8zV0pFcruF3i69ksP/N4NHXXV8/mcY4xzBUAls9C/
+ XXhkiyvphdgwW0Cw==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0D8B013941;
- Wed, 27 Nov 2024 18:29:07 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id BE6A013941;
+ Wed, 27 Nov 2024 18:29:09 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id iHsWMfNkR2faYQAAD6G6ig
- (envelope-from <farosas@suse.de>); Wed, 27 Nov 2024 18:29:07 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id aOjFIPVkR2faYQAAD6G6ig
+ (envelope-from <farosas@suse.de>); Wed, 27 Nov 2024 18:29:09 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH v3 02/17] tests/qtest/migration: Stop calling everything "test"
-Date: Wed, 27 Nov 2024 15:28:46 -0300
-Message-Id: <20241127182901.529-3-farosas@suse.de>
+Subject: [PATCH v3 03/17] tests/migration: Disambiguate guestperf vs. a-b
+Date: Wed, 27 Nov 2024 15:28:47 -0300
+Message-Id: <20241127182901.529-4-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20241127182901.529-1-farosas@suse.de>
 References: <20241127182901.529-1-farosas@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 43F051F79D
-X-Spam-Score: -3.01
-X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-3.01 / 50.00]; BAYES_HAM(-3.00)[100.00%];
+X-Spamd-Result: default: False [-2.79 / 50.00]; BAYES_HAM(-3.00)[100.00%];
  MID_CONTAINS_FROM(1.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
- R_MISSING_CHARSET(0.50)[];
- R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- NEURAL_HAM_SHORT(-0.20)[-0.997]; MIME_GOOD(-0.10)[text/plain];
- MX_GOOD(-0.01)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:mid,suse.de:email];
- ASN(0.00)[asn:25478, ipnet:::/0, country:RU]; ARC_NA(0.00)[];
- FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[]; MIME_TRACE(0.00)[0:+];
- TO_MATCH_ENVRCPT_ALL(0.00)[]; RCVD_VIA_SMTP_AUTH(0.00)[];
- FROM_EQ_ENVFROM(0.00)[];
+ R_MISSING_CHARSET(0.50)[]; NEURAL_HAM_SHORT(-0.19)[-0.952];
+ MIME_GOOD(-0.10)[text/plain]; MIME_TRACE(0.00)[0:+];
+ TO_DN_SOME(0.00)[]; RCVD_VIA_SMTP_AUTH(0.00)[]; ARC_NA(0.00)[];
  DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- FUZZY_BLOCKED(0.00)[rspamd.com]; RCVD_COUNT_TWO(0.00)[2];
- RCVD_TLS_ALL(0.00)[]; RCPT_COUNT_THREE(0.00)[3];
- DKIM_TRACE(0.00)[suse.de:+]
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
- envelope-from=farosas@suse.de; helo=smtp-out2.suse.de
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+ FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
+ FROM_HAS_DN(0.00)[]; RCPT_COUNT_THREE(0.00)[3];
+ RCVD_COUNT_TWO(0.00)[2]; TO_MATCH_ENVRCPT_ALL(0.00)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,suse.de:mid];
+ RCVD_TLS_ALL(0.00)[]
+X-Spam-Score: -2.79
+Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
+ envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -126,334 +117,271 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Test frameworks usually prefix "test_" to the entry point of the test
-code. Having every function prefixed with test_ makes it hard to
-understand the code and to grep for the actual tests.
+The current build structure for migration tests is confusing. There is
+the tests/migration directory, which contains two different guest code
+implementations, one for the qtests (a-b-{bootblock|kernel}.S) and
+another for the guestperf script (stress.c). One uses a Makefile,
+while the other uses meson.
 
-Remove the "test" prefix from everything that is not a test.
+The next patches will add a new qtests/migration/ directory to hold
+qtest code which will make the situation even more confusing.
 
-In order to still keep some namespacing, stick to the "migrate_"
-prefix, which is the most used currently.
+Move the guest code used by qtests into a new qtests/migration/
+directory and rename the old one to tests/migration-stress.
 
 Reviewed-by: Peter Xu <peterx@redhat.com>
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
-note: I would prefer the prefix "mig_" to avoid using "migrate_" which
-is a verb, but several functions such as migrate_qmp() would have to
-be given an entirely new name to keep expressiveness and I want to
-keep this a mechanical change.
----
- tests/qtest/migration-test.c | 72 ++++++++++++++++++------------------
- 1 file changed, 36 insertions(+), 36 deletions(-)
+ MAINTAINERS                                            |  5 +++--
+ tests/meson.build                                      |  2 +-
+ .../{migration => migration-stress}/guestperf-batch.py |  0
+ .../{migration => migration-stress}/guestperf-plot.py  |  0
+ tests/{migration => migration-stress}/guestperf.py     |  0
+ .../guestperf/__init__.py                              |  0
+ .../guestperf/comparison.py                            |  0
+ .../guestperf/engine.py                                |  0
+ .../guestperf/hardware.py                              |  0
+ .../{migration => migration-stress}/guestperf/plot.py  |  0
+ .../guestperf/progress.py                              |  0
+ .../guestperf/report.py                                |  0
+ .../guestperf/scenario.py                              |  0
+ .../{migration => migration-stress}/guestperf/shell.py |  0
+ .../guestperf/timings.py                               |  0
+ tests/{migration => migration-stress}/initrd-stress.sh |  0
+ tests/{migration => migration-stress}/meson.build      |  0
+ tests/{migration => migration-stress}/stress.c         |  0
+ tests/qtest/migration-test.c                           | 10 +++++-----
+ tests/{ => qtest}/migration/Makefile                   |  0
+ tests/{ => qtest}/migration/aarch64/Makefile           |  0
+ tests/{ => qtest}/migration/aarch64/a-b-kernel.S       |  0
+ tests/{ => qtest}/migration/aarch64/a-b-kernel.h       |  0
+ tests/{ => qtest}/migration/i386/Makefile              |  0
+ tests/{ => qtest}/migration/i386/a-b-bootblock.S       |  0
+ tests/{ => qtest}/migration/i386/a-b-bootblock.h       |  0
+ tests/{ => qtest}/migration/migration-test.h           |  0
+ tests/{ => qtest}/migration/ppc64/Makefile             |  0
+ tests/{ => qtest}/migration/ppc64/a-b-kernel.S         |  0
+ tests/{ => qtest}/migration/ppc64/a-b-kernel.h         |  0
+ tests/{ => qtest}/migration/s390x/Makefile             |  0
+ tests/{ => qtest}/migration/s390x/a-b-bios.c           |  0
+ tests/{ => qtest}/migration/s390x/a-b-bios.h           |  0
+ 33 files changed, 9 insertions(+), 8 deletions(-)
+ rename tests/{migration => migration-stress}/guestperf-batch.py (100%)
+ rename tests/{migration => migration-stress}/guestperf-plot.py (100%)
+ rename tests/{migration => migration-stress}/guestperf.py (100%)
+ rename tests/{migration => migration-stress}/guestperf/__init__.py (100%)
+ rename tests/{migration => migration-stress}/guestperf/comparison.py (100%)
+ rename tests/{migration => migration-stress}/guestperf/engine.py (100%)
+ rename tests/{migration => migration-stress}/guestperf/hardware.py (100%)
+ rename tests/{migration => migration-stress}/guestperf/plot.py (100%)
+ rename tests/{migration => migration-stress}/guestperf/progress.py (100%)
+ rename tests/{migration => migration-stress}/guestperf/report.py (100%)
+ rename tests/{migration => migration-stress}/guestperf/scenario.py (100%)
+ rename tests/{migration => migration-stress}/guestperf/shell.py (100%)
+ rename tests/{migration => migration-stress}/guestperf/timings.py (100%)
+ rename tests/{migration => migration-stress}/initrd-stress.sh (100%)
+ rename tests/{migration => migration-stress}/meson.build (100%)
+ rename tests/{migration => migration-stress}/stress.c (100%)
+ rename tests/{ => qtest}/migration/Makefile (100%)
+ rename tests/{ => qtest}/migration/aarch64/Makefile (100%)
+ rename tests/{ => qtest}/migration/aarch64/a-b-kernel.S (100%)
+ rename tests/{ => qtest}/migration/aarch64/a-b-kernel.h (100%)
+ rename tests/{ => qtest}/migration/i386/Makefile (100%)
+ rename tests/{ => qtest}/migration/i386/a-b-bootblock.S (100%)
+ rename tests/{ => qtest}/migration/i386/a-b-bootblock.h (100%)
+ rename tests/{ => qtest}/migration/migration-test.h (100%)
+ rename tests/{ => qtest}/migration/ppc64/Makefile (100%)
+ rename tests/{ => qtest}/migration/ppc64/a-b-kernel.S (100%)
+ rename tests/{ => qtest}/migration/ppc64/a-b-kernel.h (100%)
+ rename tests/{ => qtest}/migration/s390x/Makefile (100%)
+ rename tests/{ => qtest}/migration/s390x/a-b-bios.c (100%)
+ rename tests/{ => qtest}/migration/s390x/a-b-bios.h (100%)
 
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 2b1c4abed6..eb41ad5c51 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -118,7 +118,7 @@ F: pc-bios/s390-ccw.img
+ F: target/s390x/
+ F: docs/system/target-s390x.rst
+ F: docs/system/s390x/
+-F: tests/migration/s390x/
++F: tests/qtest/migration/s390x/
+ K: ^Subject:.*(?i)s390x?
+ L: qemu-s390x@nongnu.org
+ 
+@@ -3421,10 +3421,11 @@ F: include/qemu/userfaultfd.h
+ F: migration/
+ F: scripts/vmstate-static-checker.py
+ F: tests/vmstate-static-checker-data/
++F: tests/qtest/migration/
+ F: tests/qtest/migration-*
+ F: docs/devel/migration/
+ F: qapi/migration.json
+-F: tests/migration/
++F: tests/migration-stress/
+ F: util/userfaultfd.c
+ X: migration/rdma*
+ 
+diff --git a/tests/meson.build b/tests/meson.build
+index 907a4c1c98..f96c1be574 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -84,5 +84,5 @@ endif
+ subdir('unit')
+ subdir('qapi-schema')
+ subdir('qtest')
+-subdir('migration')
++subdir('migration-stress')
+ subdir('functional')
+diff --git a/tests/migration/guestperf-batch.py b/tests/migration-stress/guestperf-batch.py
+similarity index 100%
+rename from tests/migration/guestperf-batch.py
+rename to tests/migration-stress/guestperf-batch.py
+diff --git a/tests/migration/guestperf-plot.py b/tests/migration-stress/guestperf-plot.py
+similarity index 100%
+rename from tests/migration/guestperf-plot.py
+rename to tests/migration-stress/guestperf-plot.py
+diff --git a/tests/migration/guestperf.py b/tests/migration-stress/guestperf.py
+similarity index 100%
+rename from tests/migration/guestperf.py
+rename to tests/migration-stress/guestperf.py
+diff --git a/tests/migration/guestperf/__init__.py b/tests/migration-stress/guestperf/__init__.py
+similarity index 100%
+rename from tests/migration/guestperf/__init__.py
+rename to tests/migration-stress/guestperf/__init__.py
+diff --git a/tests/migration/guestperf/comparison.py b/tests/migration-stress/guestperf/comparison.py
+similarity index 100%
+rename from tests/migration/guestperf/comparison.py
+rename to tests/migration-stress/guestperf/comparison.py
+diff --git a/tests/migration/guestperf/engine.py b/tests/migration-stress/guestperf/engine.py
+similarity index 100%
+rename from tests/migration/guestperf/engine.py
+rename to tests/migration-stress/guestperf/engine.py
+diff --git a/tests/migration/guestperf/hardware.py b/tests/migration-stress/guestperf/hardware.py
+similarity index 100%
+rename from tests/migration/guestperf/hardware.py
+rename to tests/migration-stress/guestperf/hardware.py
+diff --git a/tests/migration/guestperf/plot.py b/tests/migration-stress/guestperf/plot.py
+similarity index 100%
+rename from tests/migration/guestperf/plot.py
+rename to tests/migration-stress/guestperf/plot.py
+diff --git a/tests/migration/guestperf/progress.py b/tests/migration-stress/guestperf/progress.py
+similarity index 100%
+rename from tests/migration/guestperf/progress.py
+rename to tests/migration-stress/guestperf/progress.py
+diff --git a/tests/migration/guestperf/report.py b/tests/migration-stress/guestperf/report.py
+similarity index 100%
+rename from tests/migration/guestperf/report.py
+rename to tests/migration-stress/guestperf/report.py
+diff --git a/tests/migration/guestperf/scenario.py b/tests/migration-stress/guestperf/scenario.py
+similarity index 100%
+rename from tests/migration/guestperf/scenario.py
+rename to tests/migration-stress/guestperf/scenario.py
+diff --git a/tests/migration/guestperf/shell.py b/tests/migration-stress/guestperf/shell.py
+similarity index 100%
+rename from tests/migration/guestperf/shell.py
+rename to tests/migration-stress/guestperf/shell.py
+diff --git a/tests/migration/guestperf/timings.py b/tests/migration-stress/guestperf/timings.py
+similarity index 100%
+rename from tests/migration/guestperf/timings.py
+rename to tests/migration-stress/guestperf/timings.py
+diff --git a/tests/migration/initrd-stress.sh b/tests/migration-stress/initrd-stress.sh
+similarity index 100%
+rename from tests/migration/initrd-stress.sh
+rename to tests/migration-stress/initrd-stress.sh
+diff --git a/tests/migration/meson.build b/tests/migration-stress/meson.build
+similarity index 100%
+rename from tests/migration/meson.build
+rename to tests/migration-stress/meson.build
+diff --git a/tests/migration/stress.c b/tests/migration-stress/stress.c
+similarity index 100%
+rename from tests/migration/stress.c
+rename to tests/migration-stress/stress.c
 diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
-index f0f3145c59..30bc965b28 100644
+index 30bc965b28..82b9170e3c 100644
 --- a/tests/qtest/migration-test.c
 +++ b/tests/qtest/migration-test.c
-@@ -710,8 +710,8 @@ typedef struct {
-     PostcopyRecoveryFailStage postcopy_recovery_fail_stage;
- } MigrateCommon;
+@@ -24,7 +24,7 @@
+ #include "ppc-util.h"
  
--static int test_migrate_start(QTestState **from, QTestState **to,
--                              const char *uri, MigrateStart *args)
-+static int migrate_start(QTestState **from, QTestState **to,
-+                         const char *uri, MigrateStart *args)
- {
-     g_autofree gchar *arch_source = NULL;
-     g_autofree gchar *arch_target = NULL;
-@@ -876,7 +876,7 @@ static int test_migrate_start(QTestState **from, QTestState **to,
-     return 0;
- }
- 
--static void test_migrate_end(QTestState *from, QTestState *to, bool test_dest)
-+static void migrate_end(QTestState *from, QTestState *to, bool test_dest)
- {
-     unsigned char dest_byte_a, dest_byte_b, dest_byte_c, dest_byte_d;
- 
-@@ -1255,7 +1255,7 @@ static int migrate_postcopy_prepare(QTestState **from_ptr,
- {
-     QTestState *from, *to;
- 
--    if (test_migrate_start(&from, &to, "defer", &args->start)) {
-+    if (migrate_start(&from, &to, "defer", &args->start)) {
-         return -1;
-     }
- 
-@@ -1319,7 +1319,7 @@ static void migrate_postcopy_complete(QTestState *from, QTestState *to,
-         args->postcopy_data = NULL;
-     }
- 
--    test_migrate_end(from, to, true);
-+    migrate_end(from, to, true);
- }
- 
- static void test_postcopy_common(MigrateCommon *args)
-@@ -1635,12 +1635,12 @@ static void test_baddest(void)
-     };
-     QTestState *from, *to;
- 
--    if (test_migrate_start(&from, &to, "tcp:127.0.0.1:0", &args)) {
-+    if (migrate_start(&from, &to, "tcp:127.0.0.1:0", &args)) {
-         return;
-     }
-     migrate_qmp(from, to, "tcp:127.0.0.1:0", NULL, "{}");
-     wait_for_migration_fail(from, false);
--    test_migrate_end(from, to, false);
-+    migrate_end(from, to, false);
- }
- 
- #ifndef _WIN32
-@@ -1661,7 +1661,7 @@ static void test_analyze_script(void)
-     }
- 
-     /* dummy url */
--    if (test_migrate_start(&from, &to, "tcp:127.0.0.1:0", &args)) {
-+    if (migrate_start(&from, &to, "tcp:127.0.0.1:0", &args)) {
-         return;
-     }
- 
-@@ -1693,7 +1693,7 @@ static void test_analyze_script(void)
-         g_test_message("Failed to analyze the migration stream");
-         g_test_fail();
-     }
--    test_migrate_end(from, to, false);
-+    migrate_end(from, to, false);
-     cleanup("migfile");
- }
- #endif
-@@ -1703,7 +1703,7 @@ static void test_precopy_common(MigrateCommon *args)
-     QTestState *from, *to;
-     void *data_hook = NULL;
- 
--    if (test_migrate_start(&from, &to, args->listen_uri, &args->start)) {
-+    if (migrate_start(&from, &to, args->listen_uri, &args->start)) {
-         return;
-     }
- 
-@@ -1798,7 +1798,7 @@ finish:
-         args->end_hook(from, to, data_hook);
-     }
- 
--    test_migrate_end(from, to, args->result == MIG_TEST_SUCCEED);
-+    migrate_end(from, to, args->result == MIG_TEST_SUCCEED);
- }
- 
- static void file_dirty_offset_region(void)
-@@ -1839,7 +1839,7 @@ static void test_file_common(MigrateCommon *args, bool stop_src)
-     void *data_hook = NULL;
-     bool check_offset = false;
- 
--    if (test_migrate_start(&from, &to, args->listen_uri, &args->start)) {
-+    if (migrate_start(&from, &to, args->listen_uri, &args->start)) {
-         return;
-     }
- 
-@@ -1903,7 +1903,7 @@ finish:
-         args->end_hook(from, to, data_hook);
-     }
- 
--    test_migrate_end(from, to, args->result == MIG_TEST_SUCCEED);
-+    migrate_end(from, to, args->result == MIG_TEST_SUCCEED);
- }
- 
- static void test_precopy_unix_plain(void)
-@@ -2024,7 +2024,7 @@ static void test_ignore_shared(void)
-     g_autofree char *uri = g_strdup_printf("unix:%s/migsocket", tmpfs);
-     QTestState *from, *to;
- 
--    if (test_migrate_start(&from, &to, uri, false, true, NULL, NULL)) {
-+    if (migrate_start(&from, &to, uri, false, true, NULL, NULL)) {
-         return;
-     }
- 
-@@ -2051,7 +2051,7 @@ static void test_ignore_shared(void)
-     /* Check whether shared RAM has been really skipped */
-     g_assert_cmpint(read_ram_property_int(from, "transferred"), <, 1024 * 1024);
- 
--    test_migrate_end(from, to, true);
-+    migrate_end(from, to, true);
- }
- #endif
- 
-@@ -2600,7 +2600,7 @@ static void migrate_hook_end_fd(QTestState *from,
-     qobject_unref(rsp);
- }
- 
--static void test_migrate_precopy_fd_socket(void)
-+static void test_precopy_fd_socket(void)
- {
-     MigrateCommon args = {
-         .listen_uri = "defer",
-@@ -2639,7 +2639,7 @@ static void *migrate_hook_start_precopy_fd_file(QTestState *from, QTestState *to
-     return NULL;
- }
- 
--static void test_migrate_precopy_fd_file(void)
-+static void test_precopy_fd_file(void)
- {
-     MigrateCommon args = {
-         .listen_uri = "defer",
-@@ -2656,7 +2656,7 @@ static void do_test_validate_uuid(MigrateStart *args, bool should_fail)
-     g_autofree char *uri = g_strdup_printf("unix:%s/migsocket", tmpfs);
-     QTestState *from, *to;
- 
--    if (test_migrate_start(&from, &to, uri, args)) {
-+    if (migrate_start(&from, &to, uri, args)) {
-         return;
-     }
- 
-@@ -2680,7 +2680,7 @@ static void do_test_validate_uuid(MigrateStart *args, bool should_fail)
-         wait_for_migration_complete(from);
-     }
- 
--    test_migrate_end(from, to, false);
-+    migrate_end(from, to, false);
- }
- 
- static void test_validate_uuid(void)
-@@ -2728,7 +2728,7 @@ static void do_test_validate_uri_channel(MigrateCommon *args)
- {
-     QTestState *from, *to;
- 
--    if (test_migrate_start(&from, &to, args->listen_uri, &args->start)) {
-+    if (migrate_start(&from, &to, args->listen_uri, &args->start)) {
-         return;
-     }
- 
-@@ -2740,7 +2740,7 @@ static void do_test_validate_uri_channel(MigrateCommon *args)
-      * starts.
-      */
-     migrate_qmp_fail(from, args->connect_uri, args->connect_channels, "{}");
--    test_migrate_end(from, to, false);
-+    migrate_end(from, to, false);
- }
- 
- static void test_validate_uri_channels_both_set(void)
-@@ -2788,7 +2788,7 @@ static void test_validate_uri_channels_none_set(void)
-  * To make things even worse, we need to run the initial stage at
-  * 3MB/s so we enter autoconverge even when host is (over)loaded.
+ #include "migration-helpers.h"
+-#include "tests/migration/migration-test.h"
++#include "migration/migration-test.h"
+ #ifdef CONFIG_GNUTLS
+ # include "tests/unit/crypto-tls-psk-helpers.h"
+ # ifdef CONFIG_TASN1
+@@ -138,10 +138,10 @@ static char *bootpath;
+ /* The boot file modifies memory area in [start_address, end_address)
+  * repeatedly. It outputs a 'B' at a fixed rate while it's still running.
   */
--static void test_migrate_auto_converge(void)
-+static void test_auto_converge(void)
+-#include "tests/migration/i386/a-b-bootblock.h"
+-#include "tests/migration/aarch64/a-b-kernel.h"
+-#include "tests/migration/ppc64/a-b-kernel.h"
+-#include "tests/migration/s390x/a-b-bios.h"
++#include "migration/i386/a-b-bootblock.h"
++#include "migration/aarch64/a-b-kernel.h"
++#include "migration/ppc64/a-b-kernel.h"
++#include "migration/s390x/a-b-bios.h"
+ 
+ static void bootfile_delete(void)
  {
-     g_autofree char *uri = g_strdup_printf("unix:%s/migsocket", tmpfs);
-     MigrateStart args = {};
-@@ -2804,7 +2804,7 @@ static void test_migrate_auto_converge(void)
-     uint64_t prev_dirty_sync_cnt, dirty_sync_cnt;
-     int max_try_count, hit = 0;
- 
--    if (test_migrate_start(&from, &to, uri, &args)) {
-+    if (migrate_start(&from, &to, uri, &args)) {
-         return;
-     }
- 
-@@ -2888,7 +2888,7 @@ static void test_migrate_auto_converge(void)
-     wait_for_serial("dest_serial");
-     wait_for_migration_complete(from);
- 
--    test_migrate_end(from, to, true);
-+    migrate_end(from, to, true);
- }
- 
- static void *
-@@ -3279,7 +3279,7 @@ static void test_multifd_tcp_cancel(void)
-     };
-     QTestState *from, *to, *to2;
- 
--    if (test_migrate_start(&from, &to, "defer", &args)) {
-+    if (migrate_start(&from, &to, "defer", &args)) {
-         return;
-     }
- 
-@@ -3311,7 +3311,7 @@ static void test_multifd_tcp_cancel(void)
- 
-     /*
-      * Ensure the source QEMU finishes its cancellation process before we
--     * proceed with the setup of the next migration. The test_migrate_start()
-+     * proceed with the setup of the next migration. The migrate_start()
-      * function and others might want to interact with the source in a way that
-      * is not possible while the migration is not canceled properly. For
-      * example, setting migration capabilities when the migration is still
-@@ -3323,7 +3323,7 @@ static void test_multifd_tcp_cancel(void)
-         .only_target = true,
-     };
- 
--    if (test_migrate_start(&from, &to2, "defer", &args)) {
-+    if (migrate_start(&from, &to2, "defer", &args)) {
-         return;
-     }
- 
-@@ -3347,7 +3347,7 @@ static void test_multifd_tcp_cancel(void)
- 
-     wait_for_serial("dest_serial");
-     wait_for_migration_complete(from);
--    test_migrate_end(from, to2, true);
-+    migrate_end(from, to2, true);
- }
- 
- static void calc_dirty_rate(QTestState *who, uint64_t calc_time)
-@@ -3633,7 +3633,7 @@ static void migrate_dirty_limit_wait_showup(QTestState *from,
-  * And see if dirty limit migration works correctly.
-  * This test case involves many passes, so it runs in slow mode only.
-  */
--static void test_migrate_dirty_limit(void)
-+static void test_dirty_limit(void)
- {
-     g_autofree char *uri = g_strdup_printf("unix:%s/migsocket", tmpfs);
-     QTestState *from, *to;
-@@ -3664,7 +3664,7 @@ static void test_migrate_dirty_limit(void)
-     };
- 
-     /* Start src, dst vm */
--    if (test_migrate_start(&from, &to, args.listen_uri, &args.start)) {
-+    if (migrate_start(&from, &to, args.listen_uri, &args.start)) {
-         return;
-     }
- 
-@@ -3710,7 +3710,7 @@ static void test_migrate_dirty_limit(void)
-     };
- 
-     /* Restart dst vm, src vm already show up so we needn't wait anymore */
--    if (test_migrate_start(&from, &to, args.listen_uri, &args.start)) {
-+    if (migrate_start(&from, &to, args.listen_uri, &args.start)) {
-         return;
-     }
- 
-@@ -3754,7 +3754,7 @@ static void test_migrate_dirty_limit(void)
-     wait_for_serial("dest_serial");
-     wait_for_migration_complete(from);
- 
--    test_migrate_end(from, to, true);
-+    migrate_end(from, to, true);
- }
- 
- static bool kvm_dirty_ring_supported(void)
-@@ -3957,9 +3957,9 @@ int main(int argc, char **argv)
-     /* migration_test_add("/migration/ignore_shared", test_ignore_shared); */
- #ifndef _WIN32
-     migration_test_add("/migration/precopy/fd/tcp",
--                       test_migrate_precopy_fd_socket);
-+                       test_precopy_fd_socket);
-     migration_test_add("/migration/precopy/fd/file",
--                       test_migrate_precopy_fd_file);
-+                       test_precopy_fd_file);
- #endif
-     migration_test_add("/migration/validate_uuid", test_validate_uuid);
-     migration_test_add("/migration/validate_uuid_error",
-@@ -3977,11 +3977,11 @@ int main(int argc, char **argv)
-      */
-     if (g_test_slow()) {
-         migration_test_add("/migration/auto_converge",
--                           test_migrate_auto_converge);
-+                           test_auto_converge);
-         if (g_str_equal(arch, "x86_64") &&
-             has_kvm && kvm_dirty_ring_supported()) {
-             migration_test_add("/migration/dirty_limit",
--                               test_migrate_dirty_limit);
-+                               test_dirty_limit);
-         }
-     }
-     migration_test_add("/migration/multifd/tcp/uri/plain/none",
+diff --git a/tests/migration/Makefile b/tests/qtest/migration/Makefile
+similarity index 100%
+rename from tests/migration/Makefile
+rename to tests/qtest/migration/Makefile
+diff --git a/tests/migration/aarch64/Makefile b/tests/qtest/migration/aarch64/Makefile
+similarity index 100%
+rename from tests/migration/aarch64/Makefile
+rename to tests/qtest/migration/aarch64/Makefile
+diff --git a/tests/migration/aarch64/a-b-kernel.S b/tests/qtest/migration/aarch64/a-b-kernel.S
+similarity index 100%
+rename from tests/migration/aarch64/a-b-kernel.S
+rename to tests/qtest/migration/aarch64/a-b-kernel.S
+diff --git a/tests/migration/aarch64/a-b-kernel.h b/tests/qtest/migration/aarch64/a-b-kernel.h
+similarity index 100%
+rename from tests/migration/aarch64/a-b-kernel.h
+rename to tests/qtest/migration/aarch64/a-b-kernel.h
+diff --git a/tests/migration/i386/Makefile b/tests/qtest/migration/i386/Makefile
+similarity index 100%
+rename from tests/migration/i386/Makefile
+rename to tests/qtest/migration/i386/Makefile
+diff --git a/tests/migration/i386/a-b-bootblock.S b/tests/qtest/migration/i386/a-b-bootblock.S
+similarity index 100%
+rename from tests/migration/i386/a-b-bootblock.S
+rename to tests/qtest/migration/i386/a-b-bootblock.S
+diff --git a/tests/migration/i386/a-b-bootblock.h b/tests/qtest/migration/i386/a-b-bootblock.h
+similarity index 100%
+rename from tests/migration/i386/a-b-bootblock.h
+rename to tests/qtest/migration/i386/a-b-bootblock.h
+diff --git a/tests/migration/migration-test.h b/tests/qtest/migration/migration-test.h
+similarity index 100%
+rename from tests/migration/migration-test.h
+rename to tests/qtest/migration/migration-test.h
+diff --git a/tests/migration/ppc64/Makefile b/tests/qtest/migration/ppc64/Makefile
+similarity index 100%
+rename from tests/migration/ppc64/Makefile
+rename to tests/qtest/migration/ppc64/Makefile
+diff --git a/tests/migration/ppc64/a-b-kernel.S b/tests/qtest/migration/ppc64/a-b-kernel.S
+similarity index 100%
+rename from tests/migration/ppc64/a-b-kernel.S
+rename to tests/qtest/migration/ppc64/a-b-kernel.S
+diff --git a/tests/migration/ppc64/a-b-kernel.h b/tests/qtest/migration/ppc64/a-b-kernel.h
+similarity index 100%
+rename from tests/migration/ppc64/a-b-kernel.h
+rename to tests/qtest/migration/ppc64/a-b-kernel.h
+diff --git a/tests/migration/s390x/Makefile b/tests/qtest/migration/s390x/Makefile
+similarity index 100%
+rename from tests/migration/s390x/Makefile
+rename to tests/qtest/migration/s390x/Makefile
+diff --git a/tests/migration/s390x/a-b-bios.c b/tests/qtest/migration/s390x/a-b-bios.c
+similarity index 100%
+rename from tests/migration/s390x/a-b-bios.c
+rename to tests/qtest/migration/s390x/a-b-bios.c
+diff --git a/tests/migration/s390x/a-b-bios.h b/tests/qtest/migration/s390x/a-b-bios.h
+similarity index 100%
+rename from tests/migration/s390x/a-b-bios.h
+rename to tests/qtest/migration/s390x/a-b-bios.h
 -- 
 2.35.3
 
