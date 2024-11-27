@@ -2,71 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CDE99DA976
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Nov 2024 14:58:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BFB79DA975
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Nov 2024 14:58:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tGIY9-0003fR-0n; Wed, 27 Nov 2024 08:57:49 -0500
+	id 1tGIY9-0003fw-J6; Wed, 27 Nov 2024 08:57:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tGIY3-0003em-DX
- for qemu-devel@nongnu.org; Wed, 27 Nov 2024 08:57:43 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tGIY5-0003fE-IE
+ for qemu-devel@nongnu.org; Wed, 27 Nov 2024 08:57:45 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tGIY1-0007iI-N6
- for qemu-devel@nongnu.org; Wed, 27 Nov 2024 08:57:43 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tGIY4-0007iV-3o
+ for qemu-devel@nongnu.org; Wed, 27 Nov 2024 08:57:45 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1732715861;
+ s=mimecast20190719; t=1732715863;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=P3wEkJJcev47yGejLPspLgvfrlRtXLqP/wDtBuhCwFs=;
- b=SgZgwPorDo6dOKUaG6FgfuQU9b97b5a+jC3IWyJzyO7WWzdRACIZCRDicRHI7cNGryeObu
- y9T7XPhcqLl1QnbU7kp6TLnp9kQu+z2hZM8dZgOVCH7rYTQagy0HjtVPXrkbTsmWgoybA1
- HtU+v3wha3TN+DGW63HGKkYrCOhT4U0=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=wJrhS8Qk1ShMNFRxlemP9veo4SdCGzL5pa49imArvN0=;
+ b=WVJ+u7rbltc+0OLz3iKlnblrk1vYbDj90j0yGXN7XEU+NW35b62NUVu2CagcTRzN3GVzsF
+ suMmhbef0IeaoX63qFHbaJFRhLtJkU1gOshPfdQPlLHTzHTRD7/hH1F51lU1RsNKtwdsZs
+ t27V5V53JvD03wg7F/W71XuX7PHMH4s=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-639-aJiqfwVIOvKZfVwO0TSo_w-1; Wed, 27 Nov 2024 08:57:39 -0500
-X-MC-Unique: aJiqfwVIOvKZfVwO0TSo_w-1
-X-Mimecast-MFC-AGG-ID: aJiqfwVIOvKZfVwO0TSo_w
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-382450d158fso3295797f8f.1
- for <qemu-devel@nongnu.org>; Wed, 27 Nov 2024 05:57:39 -0800 (PST)
+ us-mta-689-vZWrfruuPDC5hnc2ekfLjA-1; Wed, 27 Nov 2024 08:57:42 -0500
+X-MC-Unique: vZWrfruuPDC5hnc2ekfLjA-1
+X-Mimecast-MFC-AGG-ID: vZWrfruuPDC5hnc2ekfLjA
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-434a4ad4798so17092855e9.0
+ for <qemu-devel@nongnu.org>; Wed, 27 Nov 2024 05:57:42 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1732715858; x=1733320658;
+ d=1e100.net; s=20230601; t=1732715861; x=1733320661;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=P3wEkJJcev47yGejLPspLgvfrlRtXLqP/wDtBuhCwFs=;
- b=UWC1fbFJdx6YJVW5cNtWvz6WH0TVLq2YLa977NDPD56iuqlU9/0gisTquY0AYncK9V
- lcIxnwRNrGYBu2VPAl+M/QDvmWWCKBNfAgdDQN7mGI+7SY+yqW6qZgVbuum8oAiSNF1f
- jK14j2FI9bWAKkE3tYzwsT4n0HLq9KEnBIrLIawvopr0bp3MkHygy/bGeE6h1f9j20O9
- BpGQimVdbPD6BFIniaTFgSrvsIVr3hq5c6iXNPBvdPX2Gteuqj0SKp9WStHZb5XhyeOX
- c3uDHB1M2yiny0A0j4nvPzCu6xzuDOMYuSwHLa7FRPlAIXp0CgS/EFfAx0yh4RZ9GGr/
- K+zg==
-X-Gm-Message-State: AOJu0Yx3KrbZRSyoLP7aaR5L8nOUVkGJBTfz7+T3LkUOBNokY6i3qRA8
- i4LVIUNXMDjR7VaNix7VFJMYSS/wJqBosLm7HvfOq2bBkSxM+iSpNQSOV33k8Cjj38+Tt+qTIac
- Qf6hDimnnt2Jow/AOAqUseceuCtqLPK7Fm0E/UfmN9cEqX5LdM8Qk/GnPXpk8ewnP2DytlBR+bP
- BsVWZm2bwjy0dsT7fl33RLRCykgoPmPGEM
-X-Gm-Gg: ASbGncv9OsYvuFkuJv1/5uLhHuNq6kEpX/ON8ziA3KVPh7ekX+jgO7uK0WQVyNVr/l1
- kA+SU73hqfqO0VW2LNGCs+ZwiT552R9GOgu5cKNiMpMG76qFXeT07aeFJa0830bosMMYxKnGV7d
- XpckJAPzG+MmrthJ/QggHA4g1f4LJZ0DIPhjrT/22raxUbkS6xregnZ2hXl2HlfGjvr7KvvpNyG
- 5slaKGE9XJXEOy9az3mX4FrhnssCGHTjBULONSmKKUn
-X-Received: by 2002:a05:6000:2ae:b0:382:49f3:4f8d with SMTP id
- ffacd0b85a97d-385c6eb698cmr2800773f8f.15.1732715858131; 
- Wed, 27 Nov 2024 05:57:38 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IF8tAWAPAhc356fDV5VV3PpkJqaXk52M8jmEOqJ6EaO1ogjfR/59gUpnWqKc/JcER2BuPSoAg==
-X-Received: by 2002:a05:6000:2ae:b0:382:49f3:4f8d with SMTP id
- ffacd0b85a97d-385c6eb698cmr2800737f8f.15.1732715857676; 
- Wed, 27 Nov 2024 05:57:37 -0800 (PST)
+ bh=wJrhS8Qk1ShMNFRxlemP9veo4SdCGzL5pa49imArvN0=;
+ b=sCzsXQXxy1y2FGglvTdDg+MyLK7zUmpELpDft/1ARRJTnt3D1cY+/IJO+zoP+S5Oio
+ KDT4fICids+locIZytm8CQ36pktN8cIyxwhBM+qvThevKthrVjWYVvfbatEi8RRdrzAL
+ ea6LeCgf+2oVbPpYxT0odhzE4w7sB9cTeEW0Mi7z1MUbhI6E+aX97qyK75GeF0qlpn/Q
+ HiTVekYkUsi5s3z+jKKqZfQvTVAhts8skmr4N30+lFtLZkRf0cl/EViWmBMuCYW8SJpc
+ 9HDUQwYJFySfPAjA2lNp8QGNRGmsa0TdkQTu18ia5PFWkh0z6gpAUzLOWSHWxk7D7XPy
+ x0MQ==
+X-Gm-Message-State: AOJu0YwTCye3+gCSfa9hnPrC8Q4TmDm0dRZLUMYeLuRSmH37Rzl5Io0u
+ UBP+zPixpHn70OriAOGB7/pj2IJHAQSFEJ3c0UgVye4jrFL+LWOSJ76kg7o+UO6RZVJmKi7uoXz
+ HWu11H8BOKbSyHfeIhILpOEQrfIDOxcI/soxEppciZKZqHR2Y67KX2sCzdXjJ0lTdPCzRvqpu5g
+ J/yNryIVBXIKAnHQCm6j4P9eGavnyeNGer
+X-Gm-Gg: ASbGncvVEZEcxTpZgF0gEWPeIh8ydirInbJTNWH7loArvTZWBwld94BsY44xkNOr10v
+ FHx/wVGTa3m61w8JtCfsKPC+jzkV0nbu2hf6EDytO1n9JaZN+eHCX1NrVqwK+MyB0Lv1exdRXzi
+ 7sQ2vw5zIoW1jfui4YlextwFWdpfdLBGAgfaqbNHqQA/aWcg5zc1qZh95RLuJzD6s9kVc5XoV5P
+ pEXzE47Bi/3HPAOGs+glDXhZv044EPbhIR3ngjWyup3
+X-Received: by 2002:a05:600c:56d7:b0:434:a468:4a57 with SMTP id
+ 5b1f17b1804b1-434a9de8d3amr24432445e9.26.1732715860897; 
+ Wed, 27 Nov 2024 05:57:40 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IELN1x1hmuo8yUsYGRVwB9aTk0Dg6sfAIxKvvrxbnP0P6rjOTRz9ZyWqqhd/yqJjLk/8dIptg==
+X-Received: by 2002:a05:600c:56d7:b0:434:a468:4a57 with SMTP id
+ 5b1f17b1804b1-434a9de8d3amr24432225e9.26.1732715860541; 
+ Wed, 27 Nov 2024 05:57:40 -0800 (PST)
 Received: from redhat.com ([2a02:14f:1ec:7d4b:8b11:bed7:9e00:8df7])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3825fbeddf4sm16221472f8f.93.2024.11.27.05.57.35
+ 5b1f17b1804b1-434aa7804fbsm22358165e9.21.2024.11.27.05.57.38
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 27 Nov 2024 05:57:37 -0800 (PST)
-Date: Wed, 27 Nov 2024 08:57:34 -0500
+ Wed, 27 Nov 2024 05:57:39 -0800 (PST)
+Date: Wed, 27 Nov 2024 08:57:37 -0500
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
@@ -75,9 +75,9 @@ Cc: Peter Maydell <peter.maydell@linaro.org>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Yanan Wang <wangyanan55@huawei.com>, Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL 03/13] Revert "hw/acpi: Update ACPI `_STA` method with QOM
- vCPU ACPI Hotplug states"
-Message-ID: <cb36e2573a02da2a4d95bae71e4d2f1a746d8ee2.1732715823.git.mst@redhat.com>
+Subject: [PULL 04/13] Revert "hw/acpi: Make CPUs ACPI `presence` conditional
+ during vCPU hot-unplug"
+Message-ID: <f2ba6ab6212b656179c4f4ce68ee74a500c409b0.1732715823.git.mst@redhat.com>
 References: <cover.1732715823.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -112,123 +112,76 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Igor Mammedov <imammedo@redhat.com>
 
-This reverts commit bf1ecc8dad6061914730a2a2d57af6b37c3a4f8d
-which broke cpu hotplug in x86 after migration to older QEMU
+This reverts commit 2d6cfbaf174b91dfa9a50065f7494634afb39c23.
 
-Fixes: bf1ecc8dad606 (w/acpi: Update ACPI `_STA` method with QOM vCPU ACPI Hotplug states)
+The patch is supposed to be part of ARM CPU hotplug series and has not value
+on its own without it. The series however is still in RFC stage and outside
+of scope 9.2 release.
+
+On top of that it introduces not needed callback that pokes directly into
+CPU state without any need for that. Instead properties and AML generator
+option should be used to configure static platform depended vCPU presence
+state.
+
+Drop the patch so that corrected version could be posted along with
+ARM CPU hotplug series and properly reviewed in relevant context.
+That also helps us to keep history cleaner with new patch being
+against original code vs a string of fixups on top of current mess.
+
 Signed-off-by: Igor Mammedov <imammedo@redhat.com>
-Message-Id: <20241112170258.2996640-3-imammedo@redhat.com>
+Message-Id: <20241112170258.2996640-4-imammedo@redhat.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
  include/hw/core/cpu.h |  1 -
- hw/acpi/cpu.c         | 38 ++++----------------------------------
- 2 files changed, 4 insertions(+), 35 deletions(-)
+ hw/acpi/cpu.c         | 15 +--------------
+ 2 files changed, 1 insertion(+), 15 deletions(-)
 
 diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
-index db8a6fbc6e..e7de77dc6d 100644
+index e7de77dc6d..c3ca0babcb 100644
 --- a/include/hw/core/cpu.h
 +++ b/include/hw/core/cpu.h
-@@ -159,7 +159,6 @@ struct CPUClass {
+@@ -158,7 +158,6 @@ struct CPUClass {
+     void (*dump_state)(CPUState *cpu, FILE *, int flags);
      void (*query_cpu_fast)(CPUState *cpu, CpuInfoFast *value);
      int64_t (*get_arch_id)(CPUState *cpu);
-     bool (*cpu_persistent_status)(CPUState *cpu);
--    bool (*cpu_enabled_status)(CPUState *cpu);
+-    bool (*cpu_persistent_status)(CPUState *cpu);
      void (*set_pc)(CPUState *cpu, vaddr value);
      vaddr (*get_pc)(CPUState *cpu);
      int (*gdb_read_register)(CPUState *cpu, GByteArray *buf, int reg);
 diff --git a/hw/acpi/cpu.c b/hw/acpi/cpu.c
-index 23443f09a5..9b03b4292e 100644
+index 9b03b4292e..5cb60ca8bc 100644
 --- a/hw/acpi/cpu.c
 +++ b/hw/acpi/cpu.c
-@@ -50,18 +50,6 @@ void acpi_cpu_ospm_status(CPUHotplugState *cpu_st, ACPIOSTInfoList ***list)
-     }
+@@ -233,17 +233,6 @@ void cpu_hotplug_hw_init(MemoryRegion *as, Object *owner,
+     memory_region_add_subregion(as, base_addr, &state->ctrl_reg);
  }
  
--static bool check_cpu_enabled_status(DeviceState *dev)
+-static bool should_remain_acpi_present(DeviceState *dev)
 -{
--    CPUClass *k = dev ? CPU_GET_CLASS(dev) : NULL;
--    CPUState *cpu = CPU(dev);
--
--    if (cpu && (!k->cpu_enabled_status || k->cpu_enabled_status(cpu))) {
--        return true;
--    }
--
--    return false;
+-    CPUClass *k = CPU_GET_CLASS(dev);
+-    /*
+-     * A system may contain CPUs that are always present on one die, NUMA node,
+-     * or socket, yet may be non-present on another simultaneously. Check from
+-     * architecture specific code.
+-     */
+-    return k->cpu_persistent_status && k->cpu_persistent_status(CPU(dev));
 -}
 -
- static uint64_t cpu_hotplug_rd(void *opaque, hwaddr addr, unsigned size)
+ static AcpiCpuStatus *get_cpu_status(CPUHotplugState *cpu_st, DeviceState *dev)
  {
-     uint64_t val = 0;
-@@ -75,11 +63,10 @@ static uint64_t cpu_hotplug_rd(void *opaque, hwaddr addr, unsigned size)
-     cdev = &cpu_st->devs[cpu_st->selector];
-     switch (addr) {
-     case ACPI_CPU_FLAGS_OFFSET_RW: /* pack and return is_* fields */
--        val |= check_cpu_enabled_status(DEVICE(cdev->cpu)) ? 1 : 0;
-+        val |= cdev->cpu ? 1 : 0;
-         val |= cdev->is_inserting ? 2 : 0;
-         val |= cdev->is_removing  ? 4 : 0;
-         val |= cdev->fw_remove  ? 16 : 0;
--        val |= cdev->cpu ? 32 : 0;
-         trace_cpuhp_acpi_read_flags(cpu_st->selector, val);
-         break;
-     case ACPI_CPU_CMD_DATA_OFFSET_RW:
-@@ -362,7 +349,6 @@ const VMStateDescription vmstate_cpu_hotplug = {
- #define CPU_REMOVE_EVENT  "CRMV"
- #define CPU_EJECT_EVENT   "CEJ0"
- #define CPU_FW_EJECT_EVENT "CEJF"
--#define CPU_PRESENT       "CPRS"
+     CPUClass *k = CPU_GET_CLASS(dev);
+@@ -300,9 +289,7 @@ void acpi_cpu_unplug_cb(CPUHotplugState *cpu_st,
+         return;
+     }
  
- void build_cpus_aml(Aml *table, MachineState *machine, CPUHotplugFeatures opts,
-                     build_madt_cpu_fn build_madt_cpu, hwaddr base_addr,
-@@ -423,9 +409,7 @@ void build_cpus_aml(Aml *table, MachineState *machine, CPUHotplugFeatures opts,
-         aml_append(field, aml_named_field(CPU_EJECT_EVENT, 1));
-         /* tell firmware to do device eject, write only */
-         aml_append(field, aml_named_field(CPU_FW_EJECT_EVENT, 1));
--        /* 1 if present, read only */
--        aml_append(field, aml_named_field(CPU_PRESENT, 1));
--        aml_append(field, aml_reserved_field(2));
-+        aml_append(field, aml_reserved_field(3));
-         aml_append(field, aml_named_field(CPU_COMMAND, 8));
-         aml_append(cpu_ctrl_dev, field);
+-    if (!should_remain_acpi_present(dev)) {
+-        cdev->cpu = NULL;
+-    }
++    cdev->cpu = NULL;
+ }
  
-@@ -455,7 +439,6 @@ void build_cpus_aml(Aml *table, MachineState *machine, CPUHotplugFeatures opts,
-         Aml *ctrl_lock = aml_name("%s.%s", cphp_res_path, CPU_LOCK);
-         Aml *cpu_selector = aml_name("%s.%s", cphp_res_path, CPU_SELECTOR);
-         Aml *is_enabled = aml_name("%s.%s", cphp_res_path, CPU_ENABLED);
--        Aml *is_present = aml_name("%s.%s", cphp_res_path, CPU_PRESENT);
-         Aml *cpu_cmd = aml_name("%s.%s", cphp_res_path, CPU_COMMAND);
-         Aml *cpu_data = aml_name("%s.%s", cphp_res_path, CPU_DATA);
-         Aml *ins_evt = aml_name("%s.%s", cphp_res_path, CPU_INSERT_EVENT);
-@@ -484,26 +467,13 @@ void build_cpus_aml(Aml *table, MachineState *machine, CPUHotplugFeatures opts,
-         {
-             Aml *idx = aml_arg(0);
-             Aml *sta = aml_local(0);
--            Aml *ifctx2;
--            Aml *else_ctx;
- 
-             aml_append(method, aml_acquire(ctrl_lock, 0xFFFF));
-             aml_append(method, aml_store(idx, cpu_selector));
-             aml_append(method, aml_store(zero, sta));
--            ifctx = aml_if(aml_equal(is_present, one));
-+            ifctx = aml_if(aml_equal(is_enabled, one));
-             {
--                ifctx2 = aml_if(aml_equal(is_enabled, one));
--                {
--                    /* cpu is present and enabled */
--                    aml_append(ifctx2, aml_store(aml_int(0xF), sta));
--                }
--                aml_append(ifctx, ifctx2);
--                else_ctx = aml_else();
--                {
--                    /* cpu is present but disabled */
--                    aml_append(else_ctx, aml_store(aml_int(0xD), sta));
--                }
--                aml_append(ifctx, else_ctx);
-+                aml_append(ifctx, aml_store(aml_int(0xF), sta));
-             }
-             aml_append(method, ifctx);
-             aml_append(method, aml_release(ctrl_lock));
+ static const VMStateDescription vmstate_cpuhp_sts = {
 -- 
 MST
 
