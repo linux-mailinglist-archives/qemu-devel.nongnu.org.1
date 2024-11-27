@@ -2,79 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DCDA9DA979
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Nov 2024 14:59:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 408C99DA97E
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Nov 2024 15:00:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tGIY5-0003eq-4B; Wed, 27 Nov 2024 08:57:45 -0500
+	id 1tGIY6-0003fF-Rf; Wed, 27 Nov 2024 08:57:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tGIXx-0003dt-SW
- for qemu-devel@nongnu.org; Wed, 27 Nov 2024 08:57:39 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tGIY0-0003eO-5v
+ for qemu-devel@nongnu.org; Wed, 27 Nov 2024 08:57:41 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tGIXw-0007hA-9W
- for qemu-devel@nongnu.org; Wed, 27 Nov 2024 08:57:37 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tGIXy-0007hY-K9
+ for qemu-devel@nongnu.org; Wed, 27 Nov 2024 08:57:39 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1732715854;
+ s=mimecast20190719; t=1732715857;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=toqdy82Y55iUyJz9RE8D3pVN23M/G0bs/onY8PVnesI=;
- b=I3FmuQA1gKseA51Lv3AMA8FLrpnRTDvAFIj07BM8noP/luC320BOgjSS1E31/vRqZLTYzB
- Gc5A410SEg7NAiyFmnxyEc0eQqE2tfHXNBjegTWtRevGNjrk5GRchT87zd9YBsj2JkdLDs
- DOq2gCLdLtyvViZF2lehmOcqTyG4Tjs=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=EHliCKGIV0A4mTHvD8Vp0gNJsTqr7mAyIUNPjljDA4U=;
+ b=LLHahnzd7fH18scFRPH//YvQhfn/9Ayf93ng4EMgQeQjqk/zNL3T0r1cBy25WTlUi3rq6a
+ BBASQGZLGgEkGRqb2Ieda/3b5T6n97HUF+rx8qxcnsXNAgqdGz40bHhdQTrGjnlgJsZg2D
+ 0MJ2tjazbpJ9PfO3V3FIIDxqJ3yVk/c=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-131-K4sLnw8HMiKCj0OYeTF8hA-1; Wed, 27 Nov 2024 08:57:33 -0500
-X-MC-Unique: K4sLnw8HMiKCj0OYeTF8hA-1
-X-Mimecast-MFC-AGG-ID: K4sLnw8HMiKCj0OYeTF8hA
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-4349d895ef8so35419465e9.0
- for <qemu-devel@nongnu.org>; Wed, 27 Nov 2024 05:57:33 -0800 (PST)
+ us-mta-595-UpfmxzluPEu5ipnY1TgijQ-1; Wed, 27 Nov 2024 08:57:36 -0500
+X-MC-Unique: UpfmxzluPEu5ipnY1TgijQ-1
+X-Mimecast-MFC-AGG-ID: UpfmxzluPEu5ipnY1TgijQ
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-38240d9ed31so4052271f8f.3
+ for <qemu-devel@nongnu.org>; Wed, 27 Nov 2024 05:57:36 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1732715852; x=1733320652;
+ d=1e100.net; s=20230601; t=1732715855; x=1733320655;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=toqdy82Y55iUyJz9RE8D3pVN23M/G0bs/onY8PVnesI=;
- b=poydHEOQw06pbEUqeSnYM6tubQeXEgiiSvzL5Ue73jkeceTM9sTtNY5GtcRJgrcgQw
- 6JOz1jnGIsFSzH99auTu1oNZ3AdfWLGvMe75Z/CBzVUm6wtszdVm5T/0k9tQPFKg4eP+
- t0InmeXMQhpQzOebT0ZuarYwT+P1le141t7W4YLlzzLFJ8AS1HpxFtTkBy8mas5nJEFn
- cJ9cR6i0roUIkJH8Ilaa1SrzJoxodJ1hvEDBeliLYRRCz359GIF7k+dNbeOpCFMUCSGt
- VP2jKylsZg6sZUxCQK1xywN/yLAOYQdLrEeL2mHosvsph8KQ4W/1HA8TEA7fPUIsTRyc
- l5hQ==
-X-Gm-Message-State: AOJu0Yw5EPJwEMjqkWItgeoMjK489Mq1zayUxHl0q3nLA4u3soR+WTxP
- xKkNNNIuj88wMkK5GlzCV5k4kWQ4L3kh9lYlUJiIAwoCGB6cc6pWQhk/doJyVAmJuBntLwMj/SJ
- HpC/ZcOzcjAaraCfBEX8ugoTrata6voIi0d9bM3qyAww6qFiZHJDaiLEafhkH/7HXAdSMrA55mt
- Vg73SWMmTKyo5Ho8Pbqtrw0f31AXysuEy8
-X-Gm-Gg: ASbGncsRDZ17WHK+xMGeRChO642L7SCdmiJBCPeU10SlGJazmHSC6EJJoQxOwhrWfu8
- nzWqmig6Z7OPqJC9kkn6U8GwWZiLnfbteVA2VSMXAmhevWilv25GYcs+OKFZs80yTvCdl/AnE7C
- JH5Sljr3yeRYiwB1vqRmUSvXynUR49BKqmcBl7yBrLlqv3sGHLQDxyBnokWW9M/8+Wvw0dY0haZ
- A1Vvzpgmf64OkAqD0HdV0eZoyWL18R0sKaVrUfbOu68
-X-Received: by 2002:a05:600c:4f12:b0:431:542d:2599 with SMTP id
- 5b1f17b1804b1-434a9de8601mr27605775e9.22.1732715852326; 
- Wed, 27 Nov 2024 05:57:32 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGNgjYU7nfRqAFwfmEvL9HfqW5GMuNiUVj84Jwzcu+4+Adu/CsUKRoQkpUS7aX3NNJJd3TN2A==
-X-Received: by 2002:a05:600c:4f12:b0:431:542d:2599 with SMTP id
- 5b1f17b1804b1-434a9de8601mr27605465e9.22.1732715851858; 
- Wed, 27 Nov 2024 05:57:31 -0800 (PST)
+ bh=EHliCKGIV0A4mTHvD8Vp0gNJsTqr7mAyIUNPjljDA4U=;
+ b=tItsSTCHJSfZaFNJ4hDClaUK1TIwNrrJpNlBntH59zAcKJLcsFthrNAs4iTn1gMQz9
+ n5y5ZmJVf4RPFsMXCXwsI2SAUzGtXf+CZ7kGVOYcXuZhwvVksad0o1b0cQRuFphWRHlR
+ p3+hPvG31DktRUL53wn9mSUZJLS+npjA6KcM++HYK7vjyA9AE4Uaqu77dx9l/aHqXchI
+ vLlis9ry92bkn+4XoitrG7Yx1iYYz1PdliGXnGCfsDjjf27bBQqqX7snCX1l5QuMGWiV
+ QioCxVHoTKNX5f9a/WM5+0ggtoeK/8Usji3N4TL0nRAg3yC+3HoZJErRRj4ALtEH6H5V
+ TOew==
+X-Gm-Message-State: AOJu0Yy0yVFpl1aeLvKgnxY2QBZQAFq+zcVwCm/Sa8ZvhIR2JgmuXPhE
+ lc0X4VuuNiNQTkS/VOsESDwy7XiJFHfbLt5O5P0AsejqDytSKRU5dMRs5IK9ma/fAzOy3t7C2zm
+ 56GdcmxVqd+oAoH0KynpAoe2xu/uyiBNmORiYfisIqQTETf6ZQSkH3TxDB6Hq1n8hlDr3duzVYF
+ Mg28tqcEudhrV9vOeVFm8IH3V9mplPRtYR
+X-Gm-Gg: ASbGncuuz65U6BPqYaL9mRADCgbW7D3nBq/xW9TVczHtSZDux2RD8S+/Snuzq8wL4YK
+ B/o8EyQgd1fx0t7f9Q2SSsp2J1jQTnCpAwxpOlr6Ldu8egjj9fbItj7qh6oIhHO1qp4lPXSxBlN
+ FcKY2iqSrKOLW35VRwewV7T0aiKAOdL2lpZmZHGc76tshuf36rmgMrQzBGJSGLMpGuUx4TNKfxR
+ nuXpoN72EBiUPso7/DYJYNFlLl8eEbedduEVnMpaHo5
+X-Received: by 2002:a5d:5f52:0:b0:382:4e57:48e7 with SMTP id
+ ffacd0b85a97d-385c6eb58eemr2268052f8f.10.1732715854978; 
+ Wed, 27 Nov 2024 05:57:34 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEqwMJrrUGS/D6SdJy43XgOsUdKIbwq69vAoCNe8GS+KbbEELU0Zba47aNtqI2v7RsrQrodrg==
+X-Received: by 2002:a5d:5f52:0:b0:382:4e57:48e7 with SMTP id
+ ffacd0b85a97d-385c6eb58eemr2268031f8f.10.1732715854565; 
+ Wed, 27 Nov 2024 05:57:34 -0800 (PST)
 Received: from redhat.com ([2a02:14f:1ec:7d4b:8b11:bed7:9e00:8df7])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-434aa7fa3d4sm21961015e9.44.2024.11.27.05.57.30
+ ffacd0b85a97d-3825fafe207sm16447042f8f.36.2024.11.27.05.57.33
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 27 Nov 2024 05:57:31 -0800 (PST)
-Date: Wed, 27 Nov 2024 08:57:29 -0500
+ Wed, 27 Nov 2024 05:57:33 -0800 (PST)
+Date: Wed, 27 Nov 2024 08:57:32 -0500
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>, zuoboqun <zuoboqun@baidu.com>,
- Gao Shiyuan <gaoshiyuan@baidu.com>,
- Stefano Garzarella <sgarzare@redhat.com>, Jason Wang <jasowang@redhat.com>
-Subject: [PULL 01/13] vhost_net: fix assertion triggered by batch of host
- notifiers processing
-Message-ID: <16f6804c460109e8b126cc710a0072f9f83bd230.1732715823.git.mst@redhat.com>
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ Salil Mehta <salil.mehta@huawei.com>, Igor Mammedov <imammedo@redhat.com>,
+ Ani Sinha <anisinha@redhat.com>
+Subject: [PULL 02/13] qtest: allow ACPI DSDT Table changes
+Message-ID: <ef5e7aeaa6e7a258798c1eff2f5c726504116609.1732715823.git.mst@redhat.com>
 References: <cover.1732715823.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -107,101 +106,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: zuoboqun <zuoboqun@baidu.com>
+From: Salil Mehta <salil.mehta@huawei.com>
 
-When the backend of vhost_net restarts during the vm is running, vhost_net
-is stopped and started. The virtio_device_grab_ioeventfd() fucntion in
-vhost_net_enable_notifiers() will result in a call to
-virtio_bus_set_host_notifier()(assign=false).
+list changed files in tests/qtest/bios-tables-test-allowed-diff.h
 
-And now virtio_device_grab_ioeventfd() is batched in a single transaction
-with virtio_bus_set_host_notifier()(assign=true).
-
-This triggers the following assertion:
-
-kvm_mem_ioeventfd_del: error deleting ioeventfd: Bad file descriptor
-
-This patch moves virtio_device_grab_ioeventfd() out of the batch to fix
-this problem.
-
-To be noted that the for loop to release ioeventfd should start from i+1,
-not i, because the i-th ioeventfd has already been released in
-vhost_dev_disable_notifiers_nvqs().
-
-Fixes: 6166799f6 ("vhost_net: configure all host notifiers in a single MR transaction")
-Signed-off-by: Zuo Boqun <zuoboqun@baidu.com>
-Reported-by: Gao Shiyuan <gaoshiyuan@baidu.com>
-
-Message-Id: <20241115080312.3184-1-zuoboqun@baidu.com>
-Acked-by: Stefano Garzarella <sgarzare@redhat.com>
+Message-ID: <20241106100047.18901c9d@imammedo.users.ipa.redhat.com>
+Signed-off-by: Salil Mehta <salil.mehta@huawei.com>
+Signed-off-by: Igor Mammedov <imammedo@redhat.com>
+Message-Id: <20241112170258.2996640-2-imammedo@redhat.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/net/vhost_net.c | 35 ++++++++++++++++++++++++-----------
- 1 file changed, 24 insertions(+), 11 deletions(-)
+ tests/qtest/bios-tables-test-allowed-diff.h | 41 +++++++++++++++++++++
+ 1 file changed, 41 insertions(+)
 
-diff --git a/hw/net/vhost_net.c b/hw/net/vhost_net.c
-index 997aab0557..891f235a0a 100644
---- a/hw/net/vhost_net.c
-+++ b/hw/net/vhost_net.c
-@@ -229,9 +229,24 @@ static int vhost_net_enable_notifiers(VirtIODevice *dev,
-     int nvhosts = data_queue_pairs + cvq;
-     struct vhost_net *net;
-     struct vhost_dev *hdev;
--    int r, i, j;
-+    int r, i, j, k;
-     NetClientState *peer;
- 
-+    /*
-+     * We will pass the notifiers to the kernel, make sure that QEMU
-+     * doesn't interfere.
-+     */
-+    for (i = 0; i < nvhosts; i++) {
-+        r = virtio_device_grab_ioeventfd(dev);
-+        if (r < 0) {
-+            error_report("vhost %d binding does not support host notifiers", i);
-+            for (k = 0; k < i; k++) {
-+                virtio_device_release_ioeventfd(dev);
-+            }
-+            return r;
-+        }
-+    }
-+
-     /*
-      * Batch all the host notifiers in a single transaction to avoid
-      * quadratic time complexity in address_space_update_ioeventfds().
-@@ -247,16 +262,6 @@ static int vhost_net_enable_notifiers(VirtIODevice *dev,
- 
-         net = get_vhost_net(peer);
-         hdev = &net->dev;
--        /*
--         * We will pass the notifiers to the kernel, make sure that QEMU
--         * doesn't interfere.
--         */
--        r = virtio_device_grab_ioeventfd(dev);
--        if (r < 0) {
--            error_report("binding does not support host notifiers");
--            memory_region_transaction_commit();
--            goto fail_nvhosts;
--        }
- 
-         for (j = 0; j < hdev->nvqs; j++) {
-             r = virtio_bus_set_host_notifier(VIRTIO_BUS(qbus),
-@@ -277,6 +282,14 @@ static int vhost_net_enable_notifiers(VirtIODevice *dev,
-     return 0;
- fail_nvhosts:
-     vhost_net_disable_notifiers_nvhosts(dev, ncs, data_queue_pairs, i);
-+    /*
-+     * This for loop starts from i+1, not i, because the i-th ioeventfd
-+     * has already been released in vhost_dev_disable_notifiers_nvqs().
-+     */
-+    for (k = i + 1; k < nvhosts; k++) {
-+        virtio_device_release_ioeventfd(dev);
-+    }
-+
-     return r;
- }
- 
+diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
+index dfb8523c8b..512d40665d 100644
+--- a/tests/qtest/bios-tables-test-allowed-diff.h
++++ b/tests/qtest/bios-tables-test-allowed-diff.h
+@@ -1 +1,42 @@
+ /* List of comma-separated changed AML files to ignore */
++"tests/data/acpi/x86/pc/DSDT",
++"tests/data/acpi/x86/pc/DSDT.acpierst",
++"tests/data/acpi/x86/pc/DSDT.acpihmat",
++"tests/data/acpi/x86/pc/DSDT.bridge",
++"tests/data/acpi/x86/pc/DSDT.cphp",
++"tests/data/acpi/x86/pc/DSDT.dimmpxm",
++"tests/data/acpi/x86/pc/DSDT.hpbridge",
++"tests/data/acpi/x86/pc/DSDT.hpbrroot",
++"tests/data/acpi/x86/pc/DSDT.ipmikcs",
++"tests/data/acpi/x86/pc/DSDT.memhp",
++"tests/data/acpi/x86/pc/DSDT.nohpet",
++"tests/data/acpi/x86/pc/DSDT.numamem",
++"tests/data/acpi/x86/pc/DSDT.roothp",
++"tests/data/acpi/x86/q35/DSDT",
++"tests/data/acpi/x86/q35/DSDT.acpierst",
++"tests/data/acpi/x86/q35/DSDT.acpihmat",
++"tests/data/acpi/x86/q35/DSDT.acpihmat-noinitiator",
++"tests/data/acpi/x86/q35/DSDT.applesmc",
++"tests/data/acpi/x86/q35/DSDT.bridge",
++"tests/data/acpi/x86/q35/DSDT.core-count",
++"tests/data/acpi/x86/q35/DSDT.core-count2",
++"tests/data/acpi/x86/q35/DSDT.cphp",
++"tests/data/acpi/x86/q35/DSDT.cxl",
++"tests/data/acpi/x86/q35/DSDT.dimmpxm",
++"tests/data/acpi/x86/q35/DSDT.ipmibt",
++"tests/data/acpi/x86/q35/DSDT.ipmismbus",
++"tests/data/acpi/x86/q35/DSDT.ivrs",
++"tests/data/acpi/x86/q35/DSDT.memhp",
++"tests/data/acpi/x86/q35/DSDT.mmio64",
++"tests/data/acpi/x86/q35/DSDT.multi-bridge",
++"tests/data/acpi/x86/q35/DSDT.noacpihp",
++"tests/data/acpi/x86/q35/DSDT.nohpet",
++"tests/data/acpi/x86/q35/DSDT.numamem",
++"tests/data/acpi/x86/q35/DSDT.pvpanic-isa",
++"tests/data/acpi/x86/q35/DSDT.thread-count",
++"tests/data/acpi/x86/q35/DSDT.thread-count2",
++"tests/data/acpi/x86/q35/DSDT.tis.tpm12",
++"tests/data/acpi/x86/q35/DSDT.tis.tpm2",
++"tests/data/acpi/x86/q35/DSDT.type4-count",
++"tests/data/acpi/x86/q35/DSDT.viot",
++"tests/data/acpi/x86/q35/DSDT.xapic",
 -- 
 MST
 
