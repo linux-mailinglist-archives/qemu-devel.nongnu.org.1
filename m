@@ -2,90 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F29E09DA071
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Nov 2024 02:48:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 438299DA1CC
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Nov 2024 06:45:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tG78v-0000XZ-86; Tue, 26 Nov 2024 20:47:01 -0500
+	id 1tGAqu-0004ln-O2; Wed, 27 Nov 2024 00:44:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1tG78p-0000XJ-OC
- for qemu-devel@nongnu.org; Tue, 26 Nov 2024 20:46:55 -0500
-Received: from mail-oi1-x22d.google.com ([2607:f8b0:4864:20::22d])
+ (Exim 4.90_1) (envelope-from <zzhangphd@gmail.com>)
+ id 1tG7Mb-0002xH-E1
+ for qemu-devel@nongnu.org; Tue, 26 Nov 2024 21:01:09 -0500
+Received: from mail-yb1-xb2b.google.com ([2607:f8b0:4864:20::b2b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1tG78o-0002JQ-6K
- for qemu-devel@nongnu.org; Tue, 26 Nov 2024 20:46:55 -0500
-Received: by mail-oi1-x22d.google.com with SMTP id
- 5614622812f47-3ea462a98b9so1574717b6e.0
- for <qemu-devel@nongnu.org>; Tue, 26 Nov 2024 17:46:53 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <zzhangphd@gmail.com>)
+ id 1tG7MY-0007WQ-AX
+ for qemu-devel@nongnu.org; Tue, 26 Nov 2024 21:01:09 -0500
+Received: by mail-yb1-xb2b.google.com with SMTP id
+ 3f1490d57ef6-e388d8850d3so6108232276.3
+ for <qemu-devel@nongnu.org>; Tue, 26 Nov 2024 18:01:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1732672013; x=1733276813; darn=nongnu.org;
- h=in-reply-to:references:to:from:subject:cc:message-id:date
- :content-transfer-encoding:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=D57m2+QkCVoQzRvwOibMwJG0cPr9AaXpEPeMwXGPzwo=;
- b=B8l0Uu6MrSFGGBWxvf2HZHte0OjmqwKb8tUG0dKp5YkCpvqeUOzavRHbv+IjkhA4Rw
- +AFbj5q/Y0n3tnliP8362PU4VUZ3Lx0E/fRtllrB+tnFbT5kCORq7DcNWshq63AXbTmu
- Y9PnvwOsrQUAWh7qMFgxnb3CYW9tKSXuUCcbIYqWYtkT1uX2iQr1B+EFAIypbTWLlbVH
- fISHWwY1Yk9k6mtfpN3DJwhnZ4JeQUa2yzMo3+zOWpzh3aHp/kboB7C0zTGKAHWNja8V
- AXc5Of1mP4kX9Xn1XZzVuHWfdAYlZER9vsndjmOdgzinynZMQAUwxjdBycLu5SBye7Ow
- BWzA==
+ d=gmail.com; s=20230601; t=1732672864; x=1733277664; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=/OzBLSo0MUco3fGE9PH+FLy8BRllJZbdcHycBNjbBjs=;
+ b=aWOqaZoktq+HocgJZ9MhNCnlLE2gdLW6boJMcxnCqRFf7IhLKYeEVOrJyHT116j2r7
+ EpQi9RFj+IEX/TOZLA7ZFh0jgEKCmLc5tJkKBwNY0wQkrRv5+WH1+e5p5eufFWIVbiw6
+ GH1+mnYlEDf5PUOsoLf3yeW5v/3WYGCPZwr2/hGXT+xB3jMedPHPlJhTBEEq6j/OeUnz
+ kE28srlXNW4LSZ5GrfJQg9OXWwcje8OHPifS9RZUTGvjInMGE8rI29gA7tkdKCZGYo8W
+ HlcXVV5/ZruXoSNapPQDXgFix/kep+pwzRQCs7rrN9OJLduKwgTSSKRxKdLg+fsgThS/
+ AVcw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1732672013; x=1733276813;
- h=in-reply-to:references:to:from:subject:cc:message-id:date
- :content-transfer-encoding:mime-version:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=D57m2+QkCVoQzRvwOibMwJG0cPr9AaXpEPeMwXGPzwo=;
- b=RzUVAHjCPKeoQAqYcqbE5HWQv6xzw/3C8EUbxyRlZR/UWs/ZfcHTFh6ub9LTs0FIE/
- LzINZjxSZMAJG+IV8zyb3FkqwPS2/AlhCuNY52ijv2j8Ltwh3ydd9EFvQuVTc2CxVRjF
- orxmqoFCUKByumsKQqf0KWxddWRlV9vf/dFtAKZR8OD4kg8a8qHIp3u84nqc4YOWtMRL
- 5BYsPWbOpBLWULKSVzaDx7fKBM7y55xOPy5jXFZddcJkzItlKEz4N1Kf6F9ygNCYB1Xo
- d7XcOsmem+NWg3NJB0j3gM82CjhjqqluMcbeVZBIABTWoPgp3z1INuVps8rane2OmmXL
- xlBA==
+ d=1e100.net; s=20230601; t=1732672864; x=1733277664;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=/OzBLSo0MUco3fGE9PH+FLy8BRllJZbdcHycBNjbBjs=;
+ b=Ds9mV9WbwuG0wvYC5f5PdbYGCK5CzO6DONouhpV0czWLxIwzj2/2zPzMckiCWijrXb
+ XDvr5Mf8cvnQ00CO5lAmk8sd+XPaEw95g99EZPG311x7Qw6Z2TKk98RY6tiLGopZhLvN
+ y/2xIN3sc5v4q/PwcZPuHo/haEbIQA72B1Z06CAyVvOtWlOngW9ORDGHBT/jrW0sp1tu
+ 1bgcnzMaGCGOwSVadg4Xg7r1hR7d1oNsc4/zMs7WFWq9Qnx6vq2uuNPXVvaPV49tmx4k
+ M/4aev1hbUx2W/NPQ/2Ual1o8HH9nYivprbYkxbzF+rzvgOhjBModNVvux63+PWFW1TO
+ HdmA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCU2KAE7Rqzfmm5TadOdkJdQmUmbyKHoppCNfKDWQX1LenzoBcxXo/qW+TLGchnkWlCAiuWVsmrPKT4p@nongnu.org
-X-Gm-Message-State: AOJu0Yxdrjsbs2uuUPD1vrXIiX/i3ZbA2M9rZyHirTJTg7RW+eHZPRl/
- DVhDfI+Sc1H4lXVTsSo+dlOlD51q5naJx2MMvkLvhE5zkvGGVHLf
-X-Gm-Gg: ASbGncuyn4K6n1f0AOYtJhm0klkXkvrk2cdH/jGGK0H6ZdU04frYNKCxWAQ4dUKmw84
- 1hsD6lg6gYtAq9qLkyUSipcYPta7eTDvSsqL0vlpOeP6IMJtyyuv+d7bh9thTYLWMsd/ogV1gaz
- XcP0ILCj4+jqtbm/0OU8DyxF53zflOtllpGpXqFnX3hWjANtHCDZ23dmzJJuDryOOBxXSojsUQI
- Q9xLRP5Vs+6PokDOshHGGXpceZhorbv9iHsdCrhqsDIJKIpOwcj0HRQlADBVZgUjvzyuUU=
-X-Google-Smtp-Source: AGHT+IFv5Wp/I/2uN0uqJy/DirfNOPR9zJOP1McvUcxCrMtiHzo7pNX6kB+9PP3gK0XI477hr8l+Zg==
-X-Received: by 2002:a05:6808:1997:b0:3e7:f084:e4a8 with SMTP id
- 5614622812f47-3ea6dd47aecmr1583529b6e.30.1732672012690; 
- Tue, 26 Nov 2024 17:46:52 -0800 (PST)
-Received: from localhost (124-171-72-210.tpgi.com.au. [124.171.72.210])
- by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-7fbcbfc068csm8139851a12.13.2024.11.26.17.46.49
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 26 Nov 2024 17:46:52 -0800 (PST)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 27 Nov 2024 11:46:47 +1000
-Message-Id: <D5WKYRETXBK6.8K8YP8FQLCF7@gmail.com>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>, "Marcel Apfelbaum"
- <marcel.apfelbaum@gmail.com>, "Laurent Vivier" <lvivier@redhat.com>, "Paolo
- Bonzini" <pbonzini@redhat.com>, "Gerd Hoffmann" <kraxel@redhat.com>
-Subject: Re: [RFC PATCH 4/5] qtest/xhci: Add controller and device setup and
- ring tests
-From: "Nicholas Piggin" <npiggin@gmail.com>
-To: "Fabiano Rosas" <farosas@suse.de>, <qemu-devel@nongnu.org>
-X-Mailer: aerc 0.18.2
-References: <20241108154229.263097-1-npiggin@gmail.com>
- <20241108154229.263097-5-npiggin@gmail.com> <87msi5j0y8.fsf@suse.de>
-In-Reply-To: <87msi5j0y8.fsf@suse.de>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::22d;
- envelope-from=npiggin@gmail.com; helo=mail-oi1-x22d.google.com
+ AJvYcCVQ3ys2Q/YxYhXfrpmtT+p2Qz4EFmisNZsccYhi3xWYHdy8Phul0V0AjWNYNF3G8eU3C+6ck+D1zyn+@nongnu.org
+X-Gm-Message-State: AOJu0YxSGKti8QEmL9Z+n6h0a8eoJPfifPYwqIbMGJ8xyPSujyGv/vuJ
+ G1akP3Ym/XtGbbjA19UMa7o9vmRsM3EKnq2wF6EVxs3i/GxnQlFoi+IdgCrUlyMusrkxdHvtI8a
+ sTh09yuxvmgvdLSQmx2Q/No0jZko=
+X-Gm-Gg: ASbGncsUxWlFF13W2hKqk2mW7+nMoAlySbAfxfTSVy3eZVvXNsaOqA/Xhj+4gs5CxGM
+ +OYWo9JfP/bgMydCQ7Z2oUhr5y8OvD1m4
+X-Google-Smtp-Source: AGHT+IFLuZ8SEqPD5TAyCWwxG4wuFF50ExupWvdz4itzWz3fiYX7E16Pir1L0yRAis68PSbQvp9THncme/PWEHSvu1Y=
+X-Received: by 2002:a05:6902:2487:b0:e38:a34f:ff7b with SMTP id
+ 3f1490d57ef6-e395b8eb4d2mr1336695276.30.1732672864370; Tue, 26 Nov 2024
+ 18:01:04 -0800 (PST)
+MIME-Version: 1.0
+References: <20241126080213.248-1-weichenforschung@gmail.com>
+ <2ac194a7-9790-4aa7-bb41-65f8bb21f616@redhat.com>
+ <f02565f6-c584-44d0-944f-26c062cc2be9@gmail.com>
+ <553cf07a-a603-402d-8e86-b4ada42a2dcd@redhat.com>
+ <93616a1e-3614-49ca-9515-697f1c9205b6@gmail.com>
+ <9eafe8fa-de09-40e3-9687-573255ce37de@redhat.com>
+In-Reply-To: <9eafe8fa-de09-40e3-9687-573255ce37de@redhat.com>
+From: zhi zhang <zzhangphd@gmail.com>
+Date: Wed, 27 Nov 2024 10:00:53 +0800
+Message-ID: <CAD-9bcdm+gupZQ91Q-JMjuPikVmfVhCdJuwq=ptfaipL7Peevg@mail.gmail.com>
+Subject: Re: [PATCH] hw/virtio/virtio-mem: Prohibit unplugging when size <=
+ requested_size
+To: David Hildenbrand <david@redhat.com>
+Cc: Wei Chen <weichenforschung@gmail.com>, qemu-devel@nongnu.org,
+ mst@redhat.com, yuval.yarom@rub.de, genkin@gatech.edu
+Content-Type: multipart/alternative; boundary="00000000000097ced30627db563b"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::b2b;
+ envelope-from=zzhangphd@gmail.com; helo=mail-yb1-xb2b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Wed, 27 Nov 2024 00:44:38 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -100,56 +97,109 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue Nov 12, 2024 at 12:32 AM AEST, Fabiano Rosas wrote:
-> Nicholas Piggin <npiggin@gmail.com> writes:
->
-> > Add tests which init the host controller registers to the point
-> > where command and event rings, irqs are operational. Enumerate
-> > ports and set up an attached device context that enables device
-> > transfer ring to be set up and tested.
+--00000000000097ced30627db563b
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+On Tue, Nov 26, 2024 at 11:52=E2=80=AFPM David Hildenbrand <david@redhat.co=
+m> wrote:
+
+> On 26.11.24 16:31, Wei Chen wrote:
+> >   > How can you be sure (IOW trigger) that the system will store
+> >   > "important data" like EPTs?
 > >
-> > This test does a bunch of things at once and is yet well
-> > librified, but it allows testing basic mechanisms and gives a
-> > starting point for further work.
+> > We cannot, but we have designed the attack (see below) to improve the
+> > possibility.
+> >
+> >   > So is one magic bit really that for your experiments, one needs a
+> >   > viommu?
+> >
+> > Admittedly the way we accomplish a VM escape is a bit arcane.
 >
-> Please give it a pass through checkpatch when you get the chance.
-
-Hey Fabiano,
-
-Thanks. Unfortunately there's a bunch of register macros added here
-that are copied from xhci model source, which does upset checkpatch.
-It did catch a few issues though, I will fix.
-
+> That's what I imagined :)
 >
 > >
-> > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> > ---
-> >  tests/qtest/usb-hcd-xhci-test.h | 232 +++++++++++++++
-> >  tests/qtest/usb-hcd-xhci-test.c | 506 +++++++++++++++++++++++++++++++-
-> >  2 files changed, 732 insertions(+), 6 deletions(-)
-> >  create mode 100644 tests/qtest/usb-hcd-xhci-test.h
-> >
+> > We require device passthrough because it pins the VM's memory down and
+> > converts them to MIGRATE_UNMOVABLE.
 >
-> <snip>
+> Interesting, that's news to me. Can you share where GUP in the kernel
+> would do that?
 >
-> > +static void pci_xhci_stress_rings(void)
-> > +{
-> > +    XHCIQState *s;
-> > +    uint32_t value;
-> > +    uint64_t input_context;
-> > +    XHCIEvRingSeg ev_seg;
-> > +    XHCITRB trb;
-> > +    uint32_t hcsparams1;
-> > +    uint32_t slotid;
-> > +    void *mem;
-> > +    int i;
-> > +
-> > +    mem =3D g_malloc(0x1000);
->
-> This is leaking.
 
-Good catch, thank you.
+In /drivers/vfio/vfio_iommu_type1.c, there is a function called
+vfio_iommu_type1_pin_pages where VM's memory is pinned down.
 
-Thanks,
-Nick
+
+>
+> > Hotplugged memory will also be
+> > converted to MIGRATE_UNMOVABLE.
+>
+> But that's in the VM? Because we don't hotplug memory in the hypervisor.
+>
+
+Yes, the virtio-mem driver in the VM is modified to actively release memory
+vulnerable to Rowhammer.
+
+For more details, would you be interested in reading our paper? It was
+recently submitted to ASPLOS for publication and we are happy to share it
+with you.
+
+Regards,
+Zhi Zhang
+
+--00000000000097ced30627db563b
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
+<div dir=3D"ltr" class=3D"gmail_attr">On Tue, Nov 26, 2024 at 11:52=E2=80=
+=AFPM David Hildenbrand &lt;<a href=3D"mailto:david@redhat.com">david@redha=
+t.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"ma=
+rgin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:=
+1ex">On 26.11.24 16:31, Wei Chen wrote:<br>
+&gt;=C2=A0 =C2=A0&gt; How can you be sure (IOW trigger) that the system wil=
+l store<br>
+&gt;=C2=A0 =C2=A0&gt; &quot;important data&quot; like EPTs?<br>
+&gt; <br>
+&gt; We cannot, but we have designed the attack (see below) to improve the<=
+br>
+&gt; possibility.<br>
+&gt; <br>
+&gt;=C2=A0 =C2=A0&gt; So is one magic bit really that for your experiments,=
+ one needs a<br>
+&gt;=C2=A0 =C2=A0&gt; viommu?<br>
+&gt; <br>
+&gt; Admittedly the way we accomplish a VM escape is a bit arcane.<br>
+<br>
+That&#39;s what I imagined :)<br>
+<br>
+&gt; <br>
+&gt; We require device passthrough because it pins the VM&#39;s memory down=
+ and<br>
+&gt; converts them to MIGRATE_UNMOVABLE. <br>
+<br>
+Interesting, that&#39;s news to me. Can you share where GUP in the kernel <=
+br>
+would do that?<br></blockquote><div><br></div><div>In /drivers/vfio/vfio_io=
+mmu_type1.c, there is a function called vfio_iommu_type1_pin_pages where VM=
+&#39;s memory is pinned down.</div><div>=C2=A0</div><blockquote class=3D"gm=
+ail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,=
+204,204);padding-left:1ex">
+<br>
+&gt; Hotplugged memory will also be<br>
+&gt; converted to MIGRATE_UNMOVABLE. <br>
+<br>
+But that&#39;s in the VM? Because we don&#39;t hotplug memory in the hyperv=
+isor.<br></blockquote><div><br></div><div>Yes, the virtio-mem driver in the=
+ VM is modified to actively release memory vulnerable to Rowhammer.</div><d=
+iv>=C2=A0</div><div>
+
+For more details, would you be interested in reading our paper? It was rece=
+ntly submitted to ASPLOS for publication and we are happy to share it with =
+you.
+
+</div><div><br></div><div>Regards,</div><div>Zhi Zhang</div><div><br></div>=
+</div></div>
+
+--00000000000097ced30627db563b--
 
