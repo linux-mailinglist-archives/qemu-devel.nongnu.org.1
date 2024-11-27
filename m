@@ -2,99 +2,150 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0400F9DA24C
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Nov 2024 07:27:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C4D3F9DA250
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Nov 2024 07:29:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tGBVE-0003V5-MF; Wed, 27 Nov 2024 01:26:20 -0500
+	id 1tGBYV-0004zT-N6; Wed, 27 Nov 2024 01:29:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1tGBV8-0003Sm-1k
- for qemu-devel@nongnu.org; Wed, 27 Nov 2024 01:26:14 -0500
-Received: from mail-oi1-x236.google.com ([2607:f8b0:4864:20::236])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1tGBV5-0002ah-B0
- for qemu-devel@nongnu.org; Wed, 27 Nov 2024 01:26:13 -0500
-Received: by mail-oi1-x236.google.com with SMTP id
- 5614622812f47-3ea4f9825f6so1393321b6e.2
- for <qemu-devel@nongnu.org>; Tue, 26 Nov 2024 22:26:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1732688769; x=1733293569;
- darn=nongnu.org; 
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=/cS4h1fIAwbA8LEtB5wlviHudN0b7lmDgjqOKKV5yCk=;
- b=SXe+3RJK31Dv0IfniWJLHA45zZzK8KQzBy2C2Qq0AGgDbFDB1L4j61D9aQfXWrmwGj
- eRosukUXGstblAU7SDetT3fd70WduM3S2CXxmIe05RI5yAki54P6RLaeURFILVLQqGCy
- PirfA+DOY+0+JCOlG4arHNrmyM0TYqFigYQHr2oFIe2EdNXsFBy3hNepFDTHcJOagKeF
- Oj3uwWjTyZUF2+UCSvG2iIvVrBX6NJeIQHHxGx9eXGwdKZeevxaYqvCmEOUTSFz5x0Gv
- ysQC0e/VtNQa+mOLWl3HL1t/U93Ks1bM+7EqYcKQ9Lz0brvJVxzuUCqDBq+V6PgEOIK1
- h+fA==
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tGBYR-0004zC-NK
+ for qemu-devel@nongnu.org; Wed, 27 Nov 2024 01:29:39 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tGBYQ-0003mq-62
+ for qemu-devel@nongnu.org; Wed, 27 Nov 2024 01:29:39 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1732688976;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=VOhPJEMxNUU191p4W6N24jE9gGwh7lQr5jXgzxCg6yE=;
+ b=g6N4eR7DkKjw6Ru1r02wIwi04Q2RRoZgIRjWItIdAw2Uu7OKffF5ojMk9XuYI1QeXyAlNH
+ uqUvSdRORnViVw8HQSgEuzPWgUXmYlB3oG+L54W39luqXshadxHHO6DcOYu76nYni0Hr3E
+ ZPuke9k0z6isHLzscrHcbYRmtC5bS3g=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-630-wfznukOMO7uCCoFD9ehEYQ-1; Wed, 27 Nov 2024 01:29:34 -0500
+X-MC-Unique: wfznukOMO7uCCoFD9ehEYQ-1
+X-Mimecast-MFC-AGG-ID: wfznukOMO7uCCoFD9ehEYQ
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-434a6483514so13185685e9.0
+ for <qemu-devel@nongnu.org>; Tue, 26 Nov 2024 22:29:34 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1732688769; x=1733293569;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=/cS4h1fIAwbA8LEtB5wlviHudN0b7lmDgjqOKKV5yCk=;
- b=RMKru0xBix+0kPshp++vn9mVSVYnalmo6XAFIgowp5YxlaTIksQIpWY4GXoc3paEys
- OOqVbQebSQjsgiNj7aG97tmOH+UMjJyzRqjsleRa7/MSDmgrb1D8DSLRnSGFerJeHf8w
- RJnD3ANrHhOSlBXbCYf5KVR2Fk6P45Tl3A9ktGT6PvMDnm/c4wDGMJonmM6ZXaFGXbZZ
- FRj4Y86qWhwifgirI2sQNOhKOp4qxHzjb21ZHelnkXZAKMthVEVTcffS1VyWUWQHNE61
- Uyey6ZAFUyz8nDjUAGN50KnNwmCg1985fjQeMOJGla9rZUSFVZownkzqtpc8N+cAdDA8
- zLCw==
+ d=1e100.net; s=20230601; t=1732688973; x=1733293773;
+ h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+ :from:references:cc:to:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=VOhPJEMxNUU191p4W6N24jE9gGwh7lQr5jXgzxCg6yE=;
+ b=T2WA2mBK2Rm7LlaGxw4hboalCGJ9AEkLEWAP8ikRUYyidZec6eTtKuH/NefXzYmaDT
+ uBIIOCLLnO+bEqDtPIqaQuBbqwdlL0c55a3kejCV3uIlpcGw6jHEhr09KOcErMq1F+KK
+ ZH/UuhDR2qFXS0LeifS0f7M02X/kT2VqotryIdG4ocqHH6i+VMYZP5HQPcCxo91NwE/T
+ lkEl5PhBp9deLSSAsZxej6G/P6nxgfWbtX3xA3xVCw6+eFfLX9AU+IhPsRlhnGvXufbx
+ M0eE+Gap+VtBML8xuuajMiZ4Q/1VJAkY765+VEJl3rxOy3TK4kFSN/oX/x7KVJUJZDo4
+ Cb1g==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWe9muwbS7HO2IgZHjXONHSC5qPpqYiHpuU5Es+Krf+3s9XGp8Zgu8dq3HE75RJt6aD/bD/VKMPL0K1@nongnu.org
-X-Gm-Message-State: AOJu0YzroI56+ug1GViXt3L2rz30t2A05lyreO6+00h2PS+zwZLgyous
- BsV8kiImPW7FermzDDIycHk5e70R4+RcxFWOA7Bchg31uq8K6v5H0A5gxIw86x4=
-X-Gm-Gg: ASbGnctPkXU/MBARcfkK27FG9b7UKcvvLV3L4KhmeP6t+NDhfOMDq2xoBT8+OeFStl1
- iiivBNVgimXurpL0DK41sEZObEwrEmbhLkR9vfov25stKUp627bECa1gnVL+JKQub3lcoUpbOqI
- vXzS9H4YBXqLAc5RH8mp4TrMhmkpETbTp2q1IcDm5b6qJWYM8drw23xxVNn53j5VWlqsnTw8z1x
- 8YdORyowGI0cTocKzdoRxJfCj/MB4UeIpJI9bAa4kgC45WTMYVScVbl4bwKgRE=
-X-Google-Smtp-Source: AGHT+IGsXLTd/7qFiRn8LX3UCFwKrnjsLKtXQtXsgT5kcGKTRO7fuKOZVGd148cUI4eXLLrdnqYRxw==
-X-Received: by 2002:a05:6808:22a2:b0:3e7:c7c1:e6cf with SMTP id
- 5614622812f47-3ea6dda7194mr1805518b6e.43.1732688769611; 
- Tue, 26 Nov 2024 22:26:09 -0800 (PST)
-Received: from [157.82.207.167] ([157.82.207.167])
- by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-7fbcbfc0857sm9813500a12.10.2024.11.26.22.26.03
+ AJvYcCVL/K2Y6ISdmzjG11AffIycESq8lBkxrkPW+tz+ZIcCUaY3Y0s5ZUyAZuVwUzqkBMl9Fn9JPesTW6o7@nongnu.org
+X-Gm-Message-State: AOJu0YzRjzZ8jjIlJ0xL5ILWnMJW5TVsmso/Pc65BcJSol+YBUZsKR7n
+ bk4mJM3Ur5HBXjop0FQhEjrK9BUs8aa8mqOgQHKJuIbyCoRAGFWo9HQ6TMAjQhqh3OB/OJziqL7
+ bBaL7002k0c0Ym+jPSHkstyWVXxtKTb2FsKkgk5ZY8NfNsQz3dxLh
+X-Gm-Gg: ASbGnctbqUzq/R7LttvjJi2bvlGcxpkiardqC6XFgD1k8hlO0PRiVo8Vk+gOTAtBlSY
+ nyztKzdBcFn+5Kp8eAQNO2j3tvLnmi0CDVvZEngYvW0tmgPE/Zt0RzmhKR6SYqVaoKdp07P/SMz
+ i8YZD8ezof3Np/+fMBxh+T65ty8mmZ+DMoI7avuvkcP+tLZlsIBcWIWea/1+wQMDlz13boXVvsh
+ KbtmPHdw0SgunG1mseLAcD+x/rkdmhrBuv2W8smWzcOmgtMMCUnOnTTxDGf1OjkGNxfIBXERUcg
+ PgSKhw==
+X-Received: by 2002:a05:600c:4fc1:b0:434:a29d:6c71 with SMTP id
+ 5b1f17b1804b1-434a9df0385mr14462195e9.27.1732688973673; 
+ Tue, 26 Nov 2024 22:29:33 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGdUaO1H3aLaU+MO/kKFEGmxgvBvVt6kja/XySG3f9RxuwzYKtTbnedx+o4Kw5185tKJOUKKg==
+X-Received: by 2002:a05:600c:4fc1:b0:434:a29d:6c71 with SMTP id
+ 5b1f17b1804b1-434a9df0385mr14462065e9.27.1732688973326; 
+ Tue, 26 Nov 2024 22:29:33 -0800 (PST)
+Received: from [192.168.0.7] (ip-109-42-48-143.web.vodafone.de.
+ [109.42.48.143]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-434aa7d1a90sm10376095e9.32.2024.11.26.22.29.31
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 26 Nov 2024 22:26:09 -0800 (PST)
-Message-ID: <3692551b-4203-4050-b976-04746f6db3e5@daynix.com>
-Date: Wed, 27 Nov 2024 15:26:02 +0900
+ Tue, 26 Nov 2024 22:29:32 -0800 (PST)
+Message-ID: <ce5825ff-53f5-4cf9-aa6d-e0d28639e664@redhat.com>
+Date: Wed, 27 Nov 2024 07:29:30 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v10 12/15] hw/vmapple/cfg: Introduce vmapple cfg region
-To: Phil Dennis-Jordan <phil@philjordan.eu>, qemu-devel@nongnu.org
-Cc: agraf@csgraf.de, peter.maydell@linaro.org, pbonzini@redhat.com,
- rad@semihalf.com, quic_llindhol@quicinc.com, stefanha@redhat.com,
- mst@redhat.com, slp@redhat.com, richard.henderson@linaro.org,
- eduardo@habkost.net, marcel.apfelbaum@gmail.com, gaosong@loongson.cn,
- jiaxun.yang@flygoat.com, chenhuacai@kernel.org, kwolf@redhat.com,
- hreitz@redhat.com, philmd@linaro.org, shorne@gmail.com, palmer@dabbelt.com,
- alistair.francis@wdc.com, bmeng.cn@gmail.com, liwei1518@gmail.com,
- dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com, jcmvbkbc@gmail.com,
- marcandre.lureau@redhat.com, berrange@redhat.com, qemu-arm@nongnu.org,
- qemu-block@nongnu.org, qemu-riscv@nongnu.org, balaton@eik.bme.hu,
- Alexander Graf <graf@amazon.com>
-References: <20241113142343.40832-1-phil@philjordan.eu>
- <20241113142343.40832-13-phil@philjordan.eu>
+Subject: Re: [PULL 15/42] tests/functional: enable pre-emptive caching of
+ assets
+To: Richard Henderson <richard.henderson@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Cc: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org, Stefan Hajnoczi <stefanha@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Camilla Conte <cconte@redhat.com>
+References: <20240904103923.451847-1-thuth@redhat.com>
+ <20240904103923.451847-16-thuth@redhat.com>
+ <66bf4784-f1e4-479f-83db-2d4f91c10e48@linaro.org>
+ <Z0YF9i2pwBkznkCD@redhat.com>
+ <CAFEAcA-ematCTyj0SN2=e3mGHvp0VWjN1GV-Tu5Rkf-V721L1w@mail.gmail.com>
+ <8ff5ef91-1a4b-498e-a948-37444d699f94@redhat.com>
+ <7c62e46b-26c8-48e7-b8ec-b7478146a8d1@linaro.org>
+From: Thomas Huth <thuth@redhat.com>
 Content-Language: en-US
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <20241113142343.40832-13-phil@philjordan.eu>
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <7c62e46b-26c8-48e7-b8ec-b7478146a8d1@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::236;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-oi1-x236.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -110,19 +161,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2024/11/13 23:23, Phil Dennis-Jordan wrote:
-> From: Alexander Graf <graf@amazon.com>
+On 26/11/2024 23.54, Richard Henderson wrote:
+> On 11/26/24 11:52, Thomas Huth wrote:
+>> I think we want to continue to maek failing downloads as test failures, 
+>> otherwise we'll never notice when an asset is not available from the 
+>> internet anymore (since SKIPs just get ignored).
 > 
-> Instead of device tree or other more standardized means, VMApple passes
-> platform configuration to the first stage boot loader in a binary encoded
-> format that resides at a dedicated RAM region in physical address space.
-> 
-> This patch models this configuration space as a qdev device which we can
-> then map at the fixed location in the address space. That way, we can
-> influence and annotate all configuration fields easily.
-> 
-> Signed-off-by: Alexander Graf <graf@amazon.com>
-> Signed-off-by: Phil Dennis-Jordan <phil@philjordan.eu>
+> I disagree.  Download failures are not rare.
 
-Reviewed-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+That's not what I said / meant. Sure, servers can have hiccups and downloads 
+can fail, but that's what we have the cache for. So having a working cache 
+is essential.
+
+OTOH, if you simply mark tests as SKIP if the download fail, we'll likely 
+miss if an asset vanishes completely, since some people already have it in 
+their cache and the remaining people will likely just ignore skipped tests.
+
+  Thomas
+
 
