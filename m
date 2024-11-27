@@ -2,98 +2,109 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0356D9DAD12
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Nov 2024 19:30:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C32369DAD16
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Nov 2024 19:30:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tGMnB-0006c5-QO; Wed, 27 Nov 2024 13:29:37 -0500
+	id 1tGMnE-0006d2-Uo; Wed, 27 Nov 2024 13:29:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tGMnA-0006bp-4N
- for qemu-devel@nongnu.org; Wed, 27 Nov 2024 13:29:36 -0500
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tGMnD-0006ct-AE
+ for qemu-devel@nongnu.org; Wed, 27 Nov 2024 13:29:39 -0500
 Received: from smtp-out2.suse.de ([195.135.223.131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tGMn7-00021E-VN
- for qemu-devel@nongnu.org; Wed, 27 Nov 2024 13:29:35 -0500
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tGMnA-00022E-Iq
+ for qemu-devel@nongnu.org; Wed, 27 Nov 2024 13:29:39 -0500
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
+ [IPv6:2a07:de40:b281:104:10:150:64:97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id B99651F38D;
- Wed, 27 Nov 2024 18:29:32 +0000 (UTC)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id E9FD41F799;
+ Wed, 27 Nov 2024 18:29:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1732732172; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1732732175; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=VVaJjlp9nySgSAZ8W4dYmquNmukCXvdeTf5KHADWYbU=;
- b=lHWXyIM/U3jkQetHHYCXqXzOYzKBlqzR0jyhPDg49nWJG6bHDu96zndyFSl6BkxmXXgHAw
- UD+pPf5acE/e5oweplWaoKRTujAlRp7Vf8CmP2WzYjnqa+5xNgN3JjtIHK2eUywMI9oK+r
- M9yKOzUJa/fM2Sr9TzmnJqY/OV3icHs=
+ bh=BW3kiZBc9JBmzb/4JDRgqDfxL9t4ZGPlD+qCKNSQ1fU=;
+ b=srIGHvf+39tUkrQL4HNryIRk6VkUF3AhM3PEUGcSBwziAhy5sjr7A8LzPTKg23AUEVH3K+
+ yjrGOqA8RuC4UnZfRXFB96gw/s8ECDPMMu/WVcRsslH51phCv772qwN4jMAD/92fCuX5fb
+ frWTOkcBhoxE0IUT3mNiPWNZge2qUwU=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1732732172;
+ s=susede2_ed25519; t=1732732175;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=VVaJjlp9nySgSAZ8W4dYmquNmukCXvdeTf5KHADWYbU=;
- b=5hrNQHdmlYd+FNO1dzFbBcj7sflLyZfxYvei/viAXaJPSzZ+JOY074Zfl2T5H7BvTqYiUh
- jDTx91mwuKT6J1Aw==
+ bh=BW3kiZBc9JBmzb/4JDRgqDfxL9t4ZGPlD+qCKNSQ1fU=;
+ b=sqcEPVfHsmu+ld4x6c9dToeLzX5JFBIccbtMvk4c2++PYMVdnTrSeQd/epiUYCNyrWNl17
+ hUlMDb4ksPMQnKDg==
 Authentication-Results: smtp-out2.suse.de;
-	none
+ dkim=pass header.d=suse.de header.s=susede2_rsa header.b=hPi+q8tY;
+ dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=i0fMFebg
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1732732172; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1732732174; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=VVaJjlp9nySgSAZ8W4dYmquNmukCXvdeTf5KHADWYbU=;
- b=lHWXyIM/U3jkQetHHYCXqXzOYzKBlqzR0jyhPDg49nWJG6bHDu96zndyFSl6BkxmXXgHAw
- UD+pPf5acE/e5oweplWaoKRTujAlRp7Vf8CmP2WzYjnqa+5xNgN3JjtIHK2eUywMI9oK+r
- M9yKOzUJa/fM2Sr9TzmnJqY/OV3icHs=
+ bh=BW3kiZBc9JBmzb/4JDRgqDfxL9t4ZGPlD+qCKNSQ1fU=;
+ b=hPi+q8tY6tklr+FzJP6kj9vVaRXagFB/INElyKEwJh1mBzTHA6B5wWH3/kJInCi+ALrW2u
+ hRmxbkguf4S9rZmDutaAsdpnCysl3KFv1ex8CpRx5NYdrUrpSUXWgqzcN3VPKQV84sx6Fk
+ i29eOz/P9K0NZhAP5qM8T88k7wvWF0c=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1732732172;
+ s=susede2_ed25519; t=1732732174;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=VVaJjlp9nySgSAZ8W4dYmquNmukCXvdeTf5KHADWYbU=;
- b=5hrNQHdmlYd+FNO1dzFbBcj7sflLyZfxYvei/viAXaJPSzZ+JOY074Zfl2T5H7BvTqYiUh
- jDTx91mwuKT6J1Aw==
+ bh=BW3kiZBc9JBmzb/4JDRgqDfxL9t4ZGPlD+qCKNSQ1fU=;
+ b=i0fMFebgtNtsdI2PEz9ksiD9Kp1nfCZaSCE8UICwAMVFgFr/kLDS86A693UaJ9YGHxoxAa
+ SLm9AKmthW9wWVBw==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 1395513941;
- Wed, 27 Nov 2024 18:29:30 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 3F85713941;
+ Wed, 27 Nov 2024 18:29:33 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id EDq2MQplR2faYQAAD6G6ig
- (envelope-from <farosas@suse.de>); Wed, 27 Nov 2024 18:29:30 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id kPbHAQ1lR2faYQAAD6G6ig
+ (envelope-from <farosas@suse.de>); Wed, 27 Nov 2024 18:29:33 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH v3 13/17] tests/qtest/migration: Split postcopy tests
-Date: Wed, 27 Nov 2024 15:28:57 -0300
-Message-Id: <20241127182901.529-14-farosas@suse.de>
+Subject: [PATCH v3 14/17] tests/qtest/migration: Split file tests
+Date: Wed, 27 Nov 2024 15:28:58 -0300
+Message-Id: <20241127182901.529-15-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20241127182901.529-1-farosas@suse.de>
 References: <20241127182901.529-1-farosas@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.79 / 50.00]; BAYES_HAM(-3.00)[100.00%];
+X-Rspamd-Queue-Id: E9FD41F799
+X-Spam-Score: -3.01
+X-Rspamd-Action: no action
+X-Spamd-Result: default: False [-3.01 / 50.00]; BAYES_HAM(-3.00)[100.00%];
  MID_CONTAINS_FROM(1.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
- R_MISSING_CHARSET(0.50)[]; NEURAL_HAM_SHORT(-0.19)[-0.948];
- MIME_GOOD(-0.10)[text/plain]; MIME_TRACE(0.00)[0:+];
- TO_DN_SOME(0.00)[]; RCVD_VIA_SMTP_AUTH(0.00)[]; ARC_NA(0.00)[];
+ R_MISSING_CHARSET(0.50)[];
+ R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ NEURAL_HAM_SHORT(-0.20)[-0.997]; MIME_GOOD(-0.10)[text/plain];
+ MX_GOOD(-0.01)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:mid,suse.de:email];
+ FROM_HAS_DN(0.00)[];
+ ASN(0.00)[asn:25478, ipnet:::/0, country:RU]; ARC_NA(0.00)[];
+ MIME_TRACE(0.00)[0:+];
+ R_RATELIMIT(0.00)[to_ip_from(RLi3368pnyb3ujpcs6u1hud8b3)];
+ TO_DN_SOME(0.00)[]; TO_MATCH_ENVRCPT_ALL(0.00)[];
+ RCVD_VIA_SMTP_AUTH(0.00)[]; FROM_EQ_ENVFROM(0.00)[];
  DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
- FROM_HAS_DN(0.00)[]; RCPT_COUNT_FIVE(0.00)[5];
- RCVD_COUNT_TWO(0.00)[2]; TO_MATCH_ENVRCPT_ALL(0.00)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,suse.de:mid];
- RCVD_TLS_ALL(0.00)[]
-X-Spam-Score: -2.79
+ FUZZY_BLOCKED(0.00)[rspamd.com]; RCVD_COUNT_TWO(0.00)[2];
+ RCVD_TLS_ALL(0.00)[]; RCPT_COUNT_FIVE(0.00)[5];
+ DKIM_TRACE(0.00)[suse.de:+]
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
 Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
  helo=smtp-out2.suse.de
 X-Spam_score_int: -43
@@ -119,154 +130,398 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Split the next group of tests from migration-test.c, the postcopy
-tests. This is another well-defined group of tests and postcopy is a
-unique enough feature that it deserves it's own file.
+Split the file tests from migration-test.c. These are being moved to
+their own file due to being special enough compared with the regular
+stream migration. There is also the entire mapped-ram feature which
+depends on file migration.
 
 Reviewed-by: Peter Xu <peterx@redhat.com>
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- tests/qtest/meson.build                |   1 +
- tests/qtest/migration-test.c           |  78 +-----------------
- tests/qtest/migration/framework.h      |   1 +
- tests/qtest/migration/postcopy-tests.c | 106 +++++++++++++++++++++++++
- 4 files changed, 109 insertions(+), 77 deletions(-)
- create mode 100644 tests/qtest/migration/postcopy-tests.c
+ tests/qtest/meson.build            |   1 +
+ tests/qtest/migration-test.c       | 311 +-------------------------
+ tests/qtest/migration/file-tests.c | 338 +++++++++++++++++++++++++++++
+ tests/qtest/migration/framework.h  |   1 +
+ 4 files changed, 341 insertions(+), 310 deletions(-)
+ create mode 100644 tests/qtest/migration/file-tests.c
 
 diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
-index 3131f92406..cf29101974 100644
+index cf29101974..1cdd8c343b 100644
 --- a/tests/qtest/meson.build
 +++ b/tests/qtest/meson.build
 @@ -337,6 +337,7 @@ migration_files = [files(
    'migration/migration-qmp.c',
    'migration/migration-util.c',
    'migration/compression-tests.c',
-+  'migration/postcopy-tests.c',
++  'migration/file-tests.c',
+   'migration/postcopy-tests.c',
  )]
  
- migration_tls_files = []
 diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
-index 3528676678..fa759022d1 100644
+index fa759022d1..a2ce1c6b19 100644
 --- a/tests/qtest/migration-test.c
 +++ b/tests/qtest/migration-test.c
-@@ -43,65 +43,6 @@
+@@ -215,93 +215,6 @@ static void test_ignore_shared(void)
+ }
+ #endif
  
- static char *tmpfs;
- 
--static void test_postcopy(void)
+-static void test_precopy_file(void)
 -{
--    MigrateCommon args = { };
--
--    test_postcopy_common(&args);
--}
--
--static void test_postcopy_suspend(void)
--{
+-    g_autofree char *uri = g_strdup_printf("file:%s/%s", tmpfs,
+-                                           FILE_TEST_FILENAME);
 -    MigrateCommon args = {
--        .start.suspend_me = true,
+-        .connect_uri = uri,
+-        .listen_uri = "defer",
 -    };
 -
--    test_postcopy_common(&args);
+-    test_file_common(&args, true);
 -}
 -
--static void test_postcopy_preempt(void)
+-#ifndef _WIN32
+-static void fdset_add_fds(QTestState *qts, const char *file, int flags,
+-                          int num_fds, bool direct_io)
 -{
+-    for (int i = 0; i < num_fds; i++) {
+-        int fd;
+-
+-#ifdef O_DIRECT
+-        /* only secondary channels can use direct-io */
+-        if (direct_io && i != 0) {
+-            flags |= O_DIRECT;
+-        }
+-#endif
+-
+-        fd = open(file, flags, 0660);
+-        assert(fd != -1);
+-
+-        qtest_qmp_fds_assert_success(qts, &fd, 1, "{'execute': 'add-fd', "
+-                                     "'arguments': {'fdset-id': 1}}");
+-        close(fd);
+-    }
+-}
+-
+-static void *migrate_hook_start_file_offset_fdset(QTestState *from,
+-                                                  QTestState *to)
+-{
+-    g_autofree char *file = g_strdup_printf("%s/%s", tmpfs, FILE_TEST_FILENAME);
+-
+-    fdset_add_fds(from, file, O_WRONLY, 1, false);
+-    fdset_add_fds(to, file, O_RDONLY, 1, false);
+-
+-    return NULL;
+-}
+-
+-static void test_precopy_file_offset_fdset(void)
+-{
+-    g_autofree char *uri = g_strdup_printf("file:/dev/fdset/1,offset=%d",
+-                                           FILE_TEST_OFFSET);
 -    MigrateCommon args = {
--        .postcopy_preempt = true,
+-        .connect_uri = uri,
+-        .listen_uri = "defer",
+-        .start_hook = migrate_hook_start_file_offset_fdset,
 -    };
 -
--    test_postcopy_common(&args);
+-    test_file_common(&args, false);
 -}
+-#endif
 -
--static void test_postcopy_recovery(void)
+-static void test_precopy_file_offset(void)
 -{
--    MigrateCommon args = { };
--
--    test_postcopy_recovery_common(&args);
--}
--
--static void test_postcopy_recovery_fail_handshake(void)
--{
+-    g_autofree char *uri = g_strdup_printf("file:%s/%s,offset=%d", tmpfs,
+-                                           FILE_TEST_FILENAME,
+-                                           FILE_TEST_OFFSET);
 -    MigrateCommon args = {
--        .postcopy_recovery_fail_stage = POSTCOPY_FAIL_RECOVERY,
+-        .connect_uri = uri,
+-        .listen_uri = "defer",
 -    };
 -
--    test_postcopy_recovery_common(&args);
+-    test_file_common(&args, false);
 -}
 -
--static void test_postcopy_recovery_fail_reconnect(void)
+-static void test_precopy_file_offset_bad(void)
 -{
+-    /* using a value not supported by qemu_strtosz() */
+-    g_autofree char *uri = g_strdup_printf("file:%s/%s,offset=0x20M",
+-                                           tmpfs, FILE_TEST_FILENAME);
 -    MigrateCommon args = {
--        .postcopy_recovery_fail_stage = POSTCOPY_FAIL_CHANNEL_ESTABLISH,
+-        .connect_uri = uri,
+-        .listen_uri = "defer",
+-        .result = MIG_TEST_QMP_ERROR,
 -    };
 -
--    test_postcopy_recovery_common(&args);
+-    test_file_common(&args, false);
 -}
 -
--static void test_postcopy_preempt_recovery(void)
--{
--    MigrateCommon args = {
--        .postcopy_preempt = true,
--    };
--
--    test_postcopy_recovery_common(&args);
--}
--
- static void test_baddest(void)
+ static void *migrate_hook_start_mode_reboot(QTestState *from, QTestState *to)
  {
-     MigrateStart args = {
-@@ -1558,6 +1499,7 @@ int main(int argc, char **argv)
+     migrate_set_parameter_str(from, "mode", "cpr-reboot");
+@@ -313,14 +226,6 @@ static void *migrate_hook_start_mode_reboot(QTestState *from, QTestState *to)
+     return NULL;
+ }
  
+-static void *migrate_hook_start_mapped_ram(QTestState *from, QTestState *to)
+-{
+-    migrate_set_capability(from, "mapped-ram", true);
+-    migrate_set_capability(to, "mapped-ram", true);
+-
+-    return NULL;
+-}
+-
+ static void test_mode_reboot(void)
+ {
+     g_autofree char *uri = g_strdup_printf("file:%s/%s", tmpfs,
+@@ -335,190 +240,6 @@ static void test_mode_reboot(void)
+     test_file_common(&args, true);
+ }
+ 
+-static void test_precopy_file_mapped_ram_live(void)
+-{
+-    g_autofree char *uri = g_strdup_printf("file:%s/%s", tmpfs,
+-                                           FILE_TEST_FILENAME);
+-    MigrateCommon args = {
+-        .connect_uri = uri,
+-        .listen_uri = "defer",
+-        .start_hook = migrate_hook_start_mapped_ram,
+-    };
+-
+-    test_file_common(&args, false);
+-}
+-
+-static void test_precopy_file_mapped_ram(void)
+-{
+-    g_autofree char *uri = g_strdup_printf("file:%s/%s", tmpfs,
+-                                           FILE_TEST_FILENAME);
+-    MigrateCommon args = {
+-        .connect_uri = uri,
+-        .listen_uri = "defer",
+-        .start_hook = migrate_hook_start_mapped_ram,
+-    };
+-
+-    test_file_common(&args, true);
+-}
+-
+-static void *migrate_hook_start_multifd_mapped_ram(QTestState *from,
+-                                                   QTestState *to)
+-{
+-    migrate_hook_start_mapped_ram(from, to);
+-
+-    migrate_set_parameter_int(from, "multifd-channels", 4);
+-    migrate_set_parameter_int(to, "multifd-channels", 4);
+-
+-    migrate_set_capability(from, "multifd", true);
+-    migrate_set_capability(to, "multifd", true);
+-
+-    return NULL;
+-}
+-
+-static void test_multifd_file_mapped_ram_live(void)
+-{
+-    g_autofree char *uri = g_strdup_printf("file:%s/%s", tmpfs,
+-                                           FILE_TEST_FILENAME);
+-    MigrateCommon args = {
+-        .connect_uri = uri,
+-        .listen_uri = "defer",
+-        .start_hook = migrate_hook_start_multifd_mapped_ram,
+-    };
+-
+-    test_file_common(&args, false);
+-}
+-
+-static void test_multifd_file_mapped_ram(void)
+-{
+-    g_autofree char *uri = g_strdup_printf("file:%s/%s", tmpfs,
+-                                           FILE_TEST_FILENAME);
+-    MigrateCommon args = {
+-        .connect_uri = uri,
+-        .listen_uri = "defer",
+-        .start_hook = migrate_hook_start_multifd_mapped_ram,
+-    };
+-
+-    test_file_common(&args, true);
+-}
+-
+-static void *migrate_hook_start_multifd_mapped_ram_dio(QTestState *from,
+-                                                       QTestState *to)
+-{
+-    migrate_hook_start_multifd_mapped_ram(from, to);
+-
+-    migrate_set_parameter_bool(from, "direct-io", true);
+-    migrate_set_parameter_bool(to, "direct-io", true);
+-
+-    return NULL;
+-}
+-
+-static void test_multifd_file_mapped_ram_dio(void)
+-{
+-    g_autofree char *uri = g_strdup_printf("file:%s/%s", tmpfs,
+-                                           FILE_TEST_FILENAME);
+-    MigrateCommon args = {
+-        .connect_uri = uri,
+-        .listen_uri = "defer",
+-        .start_hook = migrate_hook_start_multifd_mapped_ram_dio,
+-    };
+-
+-    if (!probe_o_direct_support(tmpfs)) {
+-        g_test_skip("Filesystem does not support O_DIRECT");
+-        return;
+-    }
+-
+-    test_file_common(&args, true);
+-}
+-
+-#ifndef _WIN32
+-static void migrate_hook_end_multifd_mapped_ram_fdset(QTestState *from,
+-                                                      QTestState *to,
+-                                                      void *opaque)
+-{
+-    QDict *resp;
+-    QList *fdsets;
+-
+-    /*
+-     * Remove the fdsets after migration, otherwise a second migration
+-     * would fail due fdset reuse.
+-     */
+-    qtest_qmp_assert_success(from, "{'execute': 'remove-fd', "
+-                             "'arguments': { 'fdset-id': 1}}");
+-
+-    /*
+-     * Make sure no fdsets are left after migration, otherwise a
+-     * second migration would fail due fdset reuse.
+-     */
+-    resp = qtest_qmp(from, "{'execute': 'query-fdsets', "
+-                     "'arguments': {}}");
+-    g_assert(qdict_haskey(resp, "return"));
+-    fdsets = qdict_get_qlist(resp, "return");
+-    g_assert(fdsets && qlist_empty(fdsets));
+-    qobject_unref(resp);
+-}
+-
+-static void *migrate_hook_start_multifd_mapped_ram_fdset_dio(QTestState *from,
+-                                                             QTestState *to)
+-{
+-    g_autofree char *file = g_strdup_printf("%s/%s", tmpfs, FILE_TEST_FILENAME);
+-
+-    fdset_add_fds(from, file, O_WRONLY, 2, true);
+-    fdset_add_fds(to, file, O_RDONLY, 2, true);
+-
+-    migrate_hook_start_multifd_mapped_ram(from, to);
+-    migrate_set_parameter_bool(from, "direct-io", true);
+-    migrate_set_parameter_bool(to, "direct-io", true);
+-
+-    return NULL;
+-}
+-
+-static void *migrate_hook_start_multifd_mapped_ram_fdset(QTestState *from,
+-                                                         QTestState *to)
+-{
+-    g_autofree char *file = g_strdup_printf("%s/%s", tmpfs, FILE_TEST_FILENAME);
+-
+-    fdset_add_fds(from, file, O_WRONLY, 2, false);
+-    fdset_add_fds(to, file, O_RDONLY, 2, false);
+-
+-    migrate_hook_start_multifd_mapped_ram(from, to);
+-
+-    return NULL;
+-}
+-
+-static void test_multifd_file_mapped_ram_fdset(void)
+-{
+-    g_autofree char *uri = g_strdup_printf("file:/dev/fdset/1,offset=%d",
+-                                           FILE_TEST_OFFSET);
+-    MigrateCommon args = {
+-        .connect_uri = uri,
+-        .listen_uri = "defer",
+-        .start_hook = migrate_hook_start_multifd_mapped_ram_fdset,
+-        .end_hook = migrate_hook_end_multifd_mapped_ram_fdset,
+-    };
+-
+-    test_file_common(&args, true);
+-}
+-
+-static void test_multifd_file_mapped_ram_fdset_dio(void)
+-{
+-    g_autofree char *uri = g_strdup_printf("file:/dev/fdset/1,offset=%d",
+-                                           FILE_TEST_OFFSET);
+-    MigrateCommon args = {
+-        .connect_uri = uri,
+-        .listen_uri = "defer",
+-        .start_hook = migrate_hook_start_multifd_mapped_ram_fdset_dio,
+-        .end_hook = migrate_hook_end_multifd_mapped_ram_fdset,
+-    };
+-
+-    if (!probe_o_direct_support(tmpfs)) {
+-        g_test_skip("Filesystem does not support O_DIRECT");
+-        return;
+-    }
+-
+-    test_file_common(&args, true);
+-}
+-#endif /* !_WIN32 */
+-
+ static void test_precopy_tcp_plain(void)
+ {
+     MigrateCommon args = {
+@@ -1500,6 +1221,7 @@ int main(int argc, char **argv)
      migration_test_add_tls(env);
      migration_test_add_compression(env);
-+    migration_test_add_postcopy(env);
+     migration_test_add_postcopy(env);
++    migration_test_add_file(env);
  
      migration_test_add("/migration/bad_dest", test_baddest);
  #ifndef _WIN32
-@@ -1571,24 +1513,6 @@ int main(int argc, char **argv)
-                            test_precopy_unix_suspend_notlive);
-     }
+@@ -1515,17 +1237,6 @@ int main(int argc, char **argv)
  
--    if (env->has_uffd) {
--        migration_test_add("/migration/postcopy/plain", test_postcopy);
--        migration_test_add("/migration/postcopy/recovery/plain",
--                           test_postcopy_recovery);
--        migration_test_add("/migration/postcopy/preempt/plain",
--                           test_postcopy_preempt);
--        migration_test_add("/migration/postcopy/preempt/recovery/plain",
--                           test_postcopy_preempt_recovery);
--        migration_test_add("/migration/postcopy/recovery/double-failures/handshake",
--                           test_postcopy_recovery_fail_handshake);
--        migration_test_add("/migration/postcopy/recovery/double-failures/reconnect",
--                           test_postcopy_recovery_fail_reconnect);
--        if (env->is_x86) {
--            migration_test_add("/migration/postcopy/suspend",
--                               test_postcopy_suspend);
--        }
--    }
--
      migration_test_add("/migration/precopy/unix/plain",
                         test_precopy_unix_plain);
-     migration_test_add("/migration/precopy/file",
-diff --git a/tests/qtest/migration/framework.h b/tests/qtest/migration/framework.h
-index bc978d4c1c..1ac3aea4b2 100644
---- a/tests/qtest/migration/framework.h
-+++ b/tests/qtest/migration/framework.h
-@@ -221,5 +221,6 @@ void migration_test_add_tls(MigrationTestEnv *env);
- static inline void migration_test_add_tls(MigrationTestEnv *env) {};
- #endif
- void migration_test_add_compression(MigrationTestEnv *env);
-+void migration_test_add_postcopy(MigrationTestEnv *env);
+-    migration_test_add("/migration/precopy/file",
+-                       test_precopy_file);
+-    migration_test_add("/migration/precopy/file/offset",
+-                       test_precopy_file_offset);
+-#ifndef _WIN32
+-    migration_test_add("/migration/precopy/file/offset/fdset",
+-                       test_precopy_file_offset_fdset);
+-#endif
+-    migration_test_add("/migration/precopy/file/offset/bad",
+-                       test_precopy_file_offset_bad);
+-
+     /*
+      * Our CI system has problems with shared memory.
+      * Don't run this test until we find a workaround.
+@@ -1534,26 +1245,6 @@ int main(int argc, char **argv)
+         migration_test_add("/migration/mode/reboot", test_mode_reboot);
+     }
  
- #endif /* TEST_FRAMEWORK_H */
-diff --git a/tests/qtest/migration/postcopy-tests.c b/tests/qtest/migration/postcopy-tests.c
+-    migration_test_add("/migration/precopy/file/mapped-ram",
+-                       test_precopy_file_mapped_ram);
+-    migration_test_add("/migration/precopy/file/mapped-ram/live",
+-                       test_precopy_file_mapped_ram_live);
+-
+-    migration_test_add("/migration/multifd/file/mapped-ram",
+-                       test_multifd_file_mapped_ram);
+-    migration_test_add("/migration/multifd/file/mapped-ram/live",
+-                       test_multifd_file_mapped_ram_live);
+-
+-    migration_test_add("/migration/multifd/file/mapped-ram/dio",
+-                       test_multifd_file_mapped_ram_dio);
+-
+-#ifndef _WIN32
+-    migration_test_add("/migration/multifd/file/mapped-ram/fdset",
+-                       test_multifd_file_mapped_ram_fdset);
+-    migration_test_add("/migration/multifd/file/mapped-ram/fdset/dio",
+-                       test_multifd_file_mapped_ram_fdset_dio);
+-#endif
+-
+     migration_test_add("/migration/precopy/tcp/plain", test_precopy_tcp_plain);
+ 
+     migration_test_add("/migration/precopy/tcp/plain/switchover-ack",
+diff --git a/tests/qtest/migration/file-tests.c b/tests/qtest/migration/file-tests.c
 new file mode 100644
-index 0000000000..daf7449f2c
+index 0000000000..84225c8c33
 --- /dev/null
-+++ b/tests/qtest/migration/postcopy-tests.c
-@@ -0,0 +1,106 @@
++++ b/tests/qtest/migration/file-tests.c
+@@ -0,0 +1,338 @@
 +/*
-+ * QTest testcases for postcopy migration
++ * QTest testcases for migration to file
 + *
 + * Copyright (c) 2016-2018 Red Hat, Inc. and/or its affiliates
 + *   based on the vhost-user-test.c that is:
@@ -280,97 +535,340 @@ index 0000000000..daf7449f2c
 +#include "qemu/osdep.h"
 +#include "libqtest.h"
 +#include "migration/framework.h"
++#include "migration/migration-qmp.h"
 +#include "migration/migration-util.h"
 +#include "qapi/qmp/qlist.h"
-+#include "qemu/module.h"
-+#include "qemu/option.h"
-+#include "qemu/range.h"
-+#include "qemu/sockets.h"
 +
-+static void test_postcopy(void)
++
++static char *tmpfs;
++
++static void test_precopy_file(void)
 +{
-+    MigrateCommon args = { };
-+
-+    test_postcopy_common(&args);
-+}
-+
-+static void test_postcopy_suspend(void)
-+{
++    g_autofree char *uri = g_strdup_printf("file:%s/%s", tmpfs,
++                                           FILE_TEST_FILENAME);
 +    MigrateCommon args = {
-+        .start.suspend_me = true,
++        .connect_uri = uri,
++        .listen_uri = "defer",
 +    };
 +
-+    test_postcopy_common(&args);
++    test_file_common(&args, true);
 +}
 +
-+static void test_postcopy_preempt(void)
++#ifndef _WIN32
++static void fdset_add_fds(QTestState *qts, const char *file, int flags,
++                          int num_fds, bool direct_io)
 +{
-+    MigrateCommon args = {
-+        .postcopy_preempt = true,
-+    };
++    for (int i = 0; i < num_fds; i++) {
++        int fd;
 +
-+    test_postcopy_common(&args);
-+}
-+
-+static void test_postcopy_recovery(void)
-+{
-+    MigrateCommon args = { };
-+
-+    test_postcopy_recovery_common(&args);
-+}
-+
-+static void test_postcopy_recovery_fail_handshake(void)
-+{
-+    MigrateCommon args = {
-+        .postcopy_recovery_fail_stage = POSTCOPY_FAIL_RECOVERY,
-+    };
-+
-+    test_postcopy_recovery_common(&args);
-+}
-+
-+static void test_postcopy_recovery_fail_reconnect(void)
-+{
-+    MigrateCommon args = {
-+        .postcopy_recovery_fail_stage = POSTCOPY_FAIL_CHANNEL_ESTABLISH,
-+    };
-+
-+    test_postcopy_recovery_common(&args);
-+}
-+
-+static void test_postcopy_preempt_recovery(void)
-+{
-+    MigrateCommon args = {
-+        .postcopy_preempt = true,
-+    };
-+
-+    test_postcopy_recovery_common(&args);
-+}
-+
-+void migration_test_add_postcopy(MigrationTestEnv *env)
-+{
-+    if (env->has_uffd) {
-+        migration_test_add("/migration/postcopy/plain", test_postcopy);
-+        migration_test_add("/migration/postcopy/recovery/plain",
-+                           test_postcopy_recovery);
-+        migration_test_add("/migration/postcopy/preempt/plain",
-+                           test_postcopy_preempt);
-+        migration_test_add("/migration/postcopy/preempt/recovery/plain",
-+                           test_postcopy_preempt_recovery);
-+
-+        migration_test_add(
-+            "/migration/postcopy/recovery/double-failures/handshake",
-+            test_postcopy_recovery_fail_handshake);
-+
-+        migration_test_add(
-+            "/migration/postcopy/recovery/double-failures/reconnect",
-+            test_postcopy_recovery_fail_reconnect);
-+
-+        if (env->is_x86) {
-+            migration_test_add("/migration/postcopy/suspend",
-+                               test_postcopy_suspend);
++#ifdef O_DIRECT
++        /* only secondary channels can use direct-io */
++        if (direct_io && i != 0) {
++            flags |= O_DIRECT;
 +        }
++#endif
++
++        fd = open(file, flags, 0660);
++        assert(fd != -1);
++
++        qtest_qmp_fds_assert_success(qts, &fd, 1, "{'execute': 'add-fd', "
++                                     "'arguments': {'fdset-id': 1}}");
++        close(fd);
 +    }
 +}
++
++static void *migrate_hook_start_file_offset_fdset(QTestState *from,
++                                                  QTestState *to)
++{
++    g_autofree char *file = g_strdup_printf("%s/%s", tmpfs, FILE_TEST_FILENAME);
++
++    fdset_add_fds(from, file, O_WRONLY, 1, false);
++    fdset_add_fds(to, file, O_RDONLY, 1, false);
++
++    return NULL;
++}
++
++static void test_precopy_file_offset_fdset(void)
++{
++    g_autofree char *uri = g_strdup_printf("file:/dev/fdset/1,offset=%d",
++                                           FILE_TEST_OFFSET);
++    MigrateCommon args = {
++        .connect_uri = uri,
++        .listen_uri = "defer",
++        .start_hook = migrate_hook_start_file_offset_fdset,
++    };
++
++    test_file_common(&args, false);
++}
++#endif
++
++static void test_precopy_file_offset(void)
++{
++    g_autofree char *uri = g_strdup_printf("file:%s/%s,offset=%d", tmpfs,
++                                           FILE_TEST_FILENAME,
++                                           FILE_TEST_OFFSET);
++    MigrateCommon args = {
++        .connect_uri = uri,
++        .listen_uri = "defer",
++    };
++
++    test_file_common(&args, false);
++}
++
++static void test_precopy_file_offset_bad(void)
++{
++    /* using a value not supported by qemu_strtosz() */
++    g_autofree char *uri = g_strdup_printf("file:%s/%s,offset=0x20M",
++                                           tmpfs, FILE_TEST_FILENAME);
++    MigrateCommon args = {
++        .connect_uri = uri,
++        .listen_uri = "defer",
++        .result = MIG_TEST_QMP_ERROR,
++    };
++
++    test_file_common(&args, false);
++}
++
++static void *migrate_hook_start_mapped_ram(QTestState *from,
++                                           QTestState *to)
++{
++    migrate_set_capability(from, "mapped-ram", true);
++    migrate_set_capability(to, "mapped-ram", true);
++
++    return NULL;
++}
++
++static void test_precopy_file_mapped_ram_live(void)
++{
++    g_autofree char *uri = g_strdup_printf("file:%s/%s", tmpfs,
++                                           FILE_TEST_FILENAME);
++    MigrateCommon args = {
++        .connect_uri = uri,
++        .listen_uri = "defer",
++        .start_hook = migrate_hook_start_mapped_ram,
++    };
++
++    test_file_common(&args, false);
++}
++
++static void test_precopy_file_mapped_ram(void)
++{
++    g_autofree char *uri = g_strdup_printf("file:%s/%s", tmpfs,
++                                           FILE_TEST_FILENAME);
++    MigrateCommon args = {
++        .connect_uri = uri,
++        .listen_uri = "defer",
++        .start_hook = migrate_hook_start_mapped_ram,
++    };
++
++    test_file_common(&args, true);
++}
++
++static void *migrate_hook_start_multifd_mapped_ram(QTestState *from,
++                                                   QTestState *to)
++{
++    migrate_hook_start_mapped_ram(from, to);
++
++    migrate_set_parameter_int(from, "multifd-channels", 4);
++    migrate_set_parameter_int(to, "multifd-channels", 4);
++
++    migrate_set_capability(from, "multifd", true);
++    migrate_set_capability(to, "multifd", true);
++
++    return NULL;
++}
++
++static void test_multifd_file_mapped_ram_live(void)
++{
++    g_autofree char *uri = g_strdup_printf("file:%s/%s", tmpfs,
++                                           FILE_TEST_FILENAME);
++    MigrateCommon args = {
++        .connect_uri = uri,
++        .listen_uri = "defer",
++        .start_hook = migrate_hook_start_multifd_mapped_ram,
++    };
++
++    test_file_common(&args, false);
++}
++
++static void test_multifd_file_mapped_ram(void)
++{
++    g_autofree char *uri = g_strdup_printf("file:%s/%s", tmpfs,
++                                           FILE_TEST_FILENAME);
++    MigrateCommon args = {
++        .connect_uri = uri,
++        .listen_uri = "defer",
++        .start_hook = migrate_hook_start_multifd_mapped_ram,
++    };
++
++    test_file_common(&args, true);
++}
++
++static void *migrate_hook_start_multifd_mapped_ram_dio(QTestState *from,
++                                                       QTestState *to)
++{
++    migrate_hook_start_multifd_mapped_ram(from, to);
++
++    migrate_set_parameter_bool(from, "direct-io", true);
++    migrate_set_parameter_bool(to, "direct-io", true);
++
++    return NULL;
++}
++
++static void test_multifd_file_mapped_ram_dio(void)
++{
++    g_autofree char *uri = g_strdup_printf("file:%s/%s", tmpfs,
++                                           FILE_TEST_FILENAME);
++    MigrateCommon args = {
++        .connect_uri = uri,
++        .listen_uri = "defer",
++        .start_hook = migrate_hook_start_multifd_mapped_ram_dio,
++    };
++
++    if (!probe_o_direct_support(tmpfs)) {
++        g_test_skip("Filesystem does not support O_DIRECT");
++        return;
++    }
++
++    test_file_common(&args, true);
++}
++
++#ifndef _WIN32
++static void migrate_hook_end_multifd_mapped_ram_fdset(QTestState *from,
++                                                      QTestState *to,
++                                                      void *opaque)
++{
++    QDict *resp;
++    QList *fdsets;
++
++    /*
++     * Remove the fdsets after migration, otherwise a second migration
++     * would fail due fdset reuse.
++     */
++    qtest_qmp_assert_success(from, "{'execute': 'remove-fd', "
++                             "'arguments': { 'fdset-id': 1}}");
++
++    /*
++     * Make sure no fdsets are left after migration, otherwise a
++     * second migration would fail due fdset reuse.
++     */
++    resp = qtest_qmp(from, "{'execute': 'query-fdsets', "
++                     "'arguments': {}}");
++    g_assert(qdict_haskey(resp, "return"));
++    fdsets = qdict_get_qlist(resp, "return");
++    g_assert(fdsets && qlist_empty(fdsets));
++    qobject_unref(resp);
++}
++
++static void *migrate_hook_start_multifd_mapped_ram_fdset_dio(QTestState *from,
++                                                             QTestState *to)
++{
++    g_autofree char *file = g_strdup_printf("%s/%s", tmpfs, FILE_TEST_FILENAME);
++
++    fdset_add_fds(from, file, O_WRONLY, 2, true);
++    fdset_add_fds(to, file, O_RDONLY, 2, true);
++
++    migrate_hook_start_multifd_mapped_ram(from, to);
++    migrate_set_parameter_bool(from, "direct-io", true);
++    migrate_set_parameter_bool(to, "direct-io", true);
++
++    return NULL;
++}
++
++static void *migrate_hook_start_multifd_mapped_ram_fdset(QTestState *from,
++                                                         QTestState *to)
++{
++    g_autofree char *file = g_strdup_printf("%s/%s", tmpfs, FILE_TEST_FILENAME);
++
++    fdset_add_fds(from, file, O_WRONLY, 2, false);
++    fdset_add_fds(to, file, O_RDONLY, 2, false);
++
++    migrate_hook_start_multifd_mapped_ram(from, to);
++
++    return NULL;
++}
++
++static void test_multifd_file_mapped_ram_fdset(void)
++{
++    g_autofree char *uri = g_strdup_printf("file:/dev/fdset/1,offset=%d",
++                                           FILE_TEST_OFFSET);
++    MigrateCommon args = {
++        .connect_uri = uri,
++        .listen_uri = "defer",
++        .start_hook = migrate_hook_start_multifd_mapped_ram_fdset,
++        .end_hook = migrate_hook_end_multifd_mapped_ram_fdset,
++    };
++
++    test_file_common(&args, true);
++}
++
++static void test_multifd_file_mapped_ram_fdset_dio(void)
++{
++    g_autofree char *uri = g_strdup_printf("file:/dev/fdset/1,offset=%d",
++                                           FILE_TEST_OFFSET);
++    MigrateCommon args = {
++        .connect_uri = uri,
++        .listen_uri = "defer",
++        .start_hook = migrate_hook_start_multifd_mapped_ram_fdset_dio,
++        .end_hook = migrate_hook_end_multifd_mapped_ram_fdset,
++    };
++
++    if (!probe_o_direct_support(tmpfs)) {
++        g_test_skip("Filesystem does not support O_DIRECT");
++        return;
++    }
++
++    test_file_common(&args, true);
++}
++#endif /* !_WIN32 */
++
++void migration_test_add_file(MigrationTestEnv *env)
++{
++    tmpfs = env->tmpfs;
++
++    migration_test_add("/migration/precopy/file",
++                       test_precopy_file);
++
++    migration_test_add("/migration/precopy/file/offset",
++                       test_precopy_file_offset);
++#ifndef _WIN32
++    migration_test_add("/migration/precopy/file/offset/fdset",
++                       test_precopy_file_offset_fdset);
++#endif
++    migration_test_add("/migration/precopy/file/offset/bad",
++                       test_precopy_file_offset_bad);
++
++    migration_test_add("/migration/precopy/file/mapped-ram",
++                       test_precopy_file_mapped_ram);
++    migration_test_add("/migration/precopy/file/mapped-ram/live",
++                       test_precopy_file_mapped_ram_live);
++
++    migration_test_add("/migration/multifd/file/mapped-ram",
++                       test_multifd_file_mapped_ram);
++    migration_test_add("/migration/multifd/file/mapped-ram/live",
++                       test_multifd_file_mapped_ram_live);
++
++    migration_test_add("/migration/multifd/file/mapped-ram/dio",
++                       test_multifd_file_mapped_ram_dio);
++
++#ifndef _WIN32
++    migration_test_add("/migration/multifd/file/mapped-ram/fdset",
++                       test_multifd_file_mapped_ram_fdset);
++    migration_test_add("/migration/multifd/file/mapped-ram/fdset/dio",
++                       test_multifd_file_mapped_ram_fdset_dio);
++#endif
++}
+diff --git a/tests/qtest/migration/framework.h b/tests/qtest/migration/framework.h
+index 1ac3aea4b2..6be434c6bf 100644
+--- a/tests/qtest/migration/framework.h
++++ b/tests/qtest/migration/framework.h
+@@ -222,5 +222,6 @@ static inline void migration_test_add_tls(MigrationTestEnv *env) {};
+ #endif
+ void migration_test_add_compression(MigrationTestEnv *env);
+ void migration_test_add_postcopy(MigrationTestEnv *env);
++void migration_test_add_file(MigrationTestEnv *env);
+ 
+ #endif /* TEST_FRAMEWORK_H */
 -- 
 2.35.3
 
