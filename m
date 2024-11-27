@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2BB79DAD18
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Nov 2024 19:30:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 83A659DAD19
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Nov 2024 19:31:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tGMn6-0006ao-P1; Wed, 27 Nov 2024 13:29:32 -0500
+	id 1tGMn5-0006a0-3q; Wed, 27 Nov 2024 13:29:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tGMmw-0006Yk-Q8
- for qemu-devel@nongnu.org; Wed, 27 Nov 2024 13:29:23 -0500
-Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tGMn0-0006Z7-0c
+ for qemu-devel@nongnu.org; Wed, 27 Nov 2024 13:29:27 -0500
+Received: from smtp-out1.suse.de ([195.135.223.130])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tGMmv-0001v8-5R
- for qemu-devel@nongnu.org; Wed, 27 Nov 2024 13:29:22 -0500
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tGMmx-0001vb-AS
+ for qemu-devel@nongnu.org; Wed, 27 Nov 2024 13:29:24 -0500
 Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id D1D411F799;
- Wed, 27 Nov 2024 18:29:19 +0000 (UTC)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 25B5D21187;
+ Wed, 27 Nov 2024 18:29:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1732732159; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1732732162; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=D4OO3uD8FIj11TWenRwYJYdJY8OPPt78yZ8gOpsoZiw=;
- b=GA3/DrQXTqicO7ktj7GYGe/LHAoAJZsNuMGbEFJu19gihm7du9nCvlZ4mU1AVk7YtsjQw2
- OVwlowppndnZOZ1shyf/UskP5wBa68liXtQOihfM/SCwqph4PtWcdbJk6erVk6+dWc55Vx
- Ks3MGan9TYSQ+FVwjEU80lNRYR7HfEo=
+ bh=quO3/H7CjTQ2qCjHsWFhzpb47Y9iUGcaxbfKGH7gc0k=;
+ b=p8VNAuyadXMxp6ZcF/gT3rXG+CkpsYPA2u+fKPkEYrVI4+fuqzqmdaa9GjzuL7J8IIzC/f
+ Boe7v3tjvvJXu3p/UKQaENnZz7/oSZz1VUK1xhnB6cGcQUnMZv4z7g81dxrmWOrm2NRQry
+ NS3XJ0s+x8lwhuAJl9I1fH91nHkThNQ=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1732732159;
+ s=susede2_ed25519; t=1732732162;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=D4OO3uD8FIj11TWenRwYJYdJY8OPPt78yZ8gOpsoZiw=;
- b=X3qT/5Vw02njBmlxlnHmfFqF7nHf0BuBDrW7A5QHEINeMJBJUto2ckK6OUgbiYb+QWNBz/
- GFlUZraVvtgZhmCQ==
-Authentication-Results: smtp-out2.suse.de;
+ bh=quO3/H7CjTQ2qCjHsWFhzpb47Y9iUGcaxbfKGH7gc0k=;
+ b=cP4Bw8j244NigfHRfm1sCUh/n6qCzFZqgWnbY45wpGhPCySkd51fLVCJJjEq3kCk8AYFHT
+ 3oLoJAvswbUaPLBw==
+Authentication-Results: smtp-out1.suse.de;
 	none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1732732159; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1732732162; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=D4OO3uD8FIj11TWenRwYJYdJY8OPPt78yZ8gOpsoZiw=;
- b=GA3/DrQXTqicO7ktj7GYGe/LHAoAJZsNuMGbEFJu19gihm7du9nCvlZ4mU1AVk7YtsjQw2
- OVwlowppndnZOZ1shyf/UskP5wBa68liXtQOihfM/SCwqph4PtWcdbJk6erVk6+dWc55Vx
- Ks3MGan9TYSQ+FVwjEU80lNRYR7HfEo=
+ bh=quO3/H7CjTQ2qCjHsWFhzpb47Y9iUGcaxbfKGH7gc0k=;
+ b=p8VNAuyadXMxp6ZcF/gT3rXG+CkpsYPA2u+fKPkEYrVI4+fuqzqmdaa9GjzuL7J8IIzC/f
+ Boe7v3tjvvJXu3p/UKQaENnZz7/oSZz1VUK1xhnB6cGcQUnMZv4z7g81dxrmWOrm2NRQry
+ NS3XJ0s+x8lwhuAJl9I1fH91nHkThNQ=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1732732159;
+ s=susede2_ed25519; t=1732732162;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=D4OO3uD8FIj11TWenRwYJYdJY8OPPt78yZ8gOpsoZiw=;
- b=X3qT/5Vw02njBmlxlnHmfFqF7nHf0BuBDrW7A5QHEINeMJBJUto2ckK6OUgbiYb+QWNBz/
- GFlUZraVvtgZhmCQ==
+ bh=quO3/H7CjTQ2qCjHsWFhzpb47Y9iUGcaxbfKGH7gc0k=;
+ b=cP4Bw8j244NigfHRfm1sCUh/n6qCzFZqgWnbY45wpGhPCySkd51fLVCJJjEq3kCk8AYFHT
+ 3oLoJAvswbUaPLBw==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 2B39013941;
- Wed, 27 Nov 2024 18:29:17 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 585C813941;
+ Wed, 27 Nov 2024 18:29:20 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id kAs2OP1kR2faYQAAD6G6ig
- (envelope-from <farosas@suse.de>); Wed, 27 Nov 2024 18:29:17 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id cIjSBwBlR2faYQAAD6G6ig
+ (envelope-from <farosas@suse.de>); Wed, 27 Nov 2024 18:29:20 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH v3 07/17] tests/qtest/migration: Move ufd_version_check to
- utils
-Date: Wed, 27 Nov 2024 15:28:51 -0300
-Message-Id: <20241127182901.529-8-farosas@suse.de>
+Subject: [PATCH v3 08/17] tests/qtest/migration: Move kvm_dirty_ring_supported
+ to utils
+Date: Wed, 27 Nov 2024 15:28:52 -0300
+Message-Id: <20241127182901.529-9-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20241127182901.529-1-farosas@suse.de>
 References: <20241127182901.529-1-farosas@suse.de>
@@ -95,14 +95,15 @@ X-Spamd-Result: default: False [-2.79 / 50.00]; BAYES_HAM(-3.00)[100.00%];
  RCVD_COUNT_TWO(0.00)[2]; TO_MATCH_ENVRCPT_ALL(0.00)[];
  DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,suse.de:email];
  RCVD_TLS_ALL(0.00)[]
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
- envelope-from=farosas@suse.de; helo=smtp-out2.suse.de
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Received-SPF: pass client-ip=195.135.223.130; envelope-from=farosas@suse.de;
+ helo=smtp-out1.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -119,167 +120,118 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Move ufd_version_check() to migration-util.c file. This is a helper
-function that is used during tests definition so it should be
-available outside of migration-test.c
-
-Since the function is moving to another file, change it to stop
-accessing the global uffd_feature_thread_id and take it as argument
-instead.
+Move kvm_dirty_ring_supported() to migration-util.c. Similarly to
+ufd_version_check(), this function is used during test definition so
+put it in the utils file.
 
 Reviewed-by: Peter Xu <peterx@redhat.com>
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- tests/qtest/migration-test.c           | 47 ++-----------------------
- tests/qtest/migration/migration-util.c | 48 ++++++++++++++++++++++++++
- tests/qtest/migration/migration-util.h |  2 ++
- 3 files changed, 52 insertions(+), 45 deletions(-)
+ tests/qtest/migration-test.c           | 29 --------------------------
+ tests/qtest/migration/migration-util.c | 29 ++++++++++++++++++++++++++
+ tests/qtest/migration/migration-util.h |  1 +
+ 3 files changed, 30 insertions(+), 29 deletions(-)
 
 diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
-index e295bd3081..f1c1ca309a 100644
+index f1c1ca309a..ab7cbb8251 100644
 --- a/tests/qtest/migration-test.c
 +++ b/tests/qtest/migration-test.c
-@@ -35,6 +35,7 @@
- /* For dirty ring test; so far only x86_64 is supported */
- #if defined(__linux__) && defined(HOST_X86_64)
- #include "linux/kvm.h"
-+#include <sys/ioctl.h>
- #endif
+@@ -32,12 +32,6 @@
+ # endif /* CONFIG_TASN1 */
+ #endif /* CONFIG_GNUTLS */
  
- unsigned start_address;
-@@ -88,50 +89,6 @@ typedef enum PostcopyRecoveryFailStage {
- #include <sys/vfs.h>
- #endif
- 
--#if defined(__linux__) && defined(__NR_userfaultfd) && defined(CONFIG_EVENTFD)
--#include <sys/eventfd.h>
+-/* For dirty ring test; so far only x86_64 is supported */
+-#if defined(__linux__) && defined(HOST_X86_64)
+-#include "linux/kvm.h"
 -#include <sys/ioctl.h>
--#include "qemu/userfaultfd.h"
+-#endif
 -
--static bool ufd_version_check(void)
+ unsigned start_address;
+ unsigned end_address;
+ static bool uffd_feature_thread_id;
+@@ -3435,29 +3429,6 @@ static void test_dirty_limit(void)
+     migrate_end(from, to, true);
+ }
+ 
+-static bool kvm_dirty_ring_supported(void)
 -{
--    struct uffdio_api api_struct;
--    uint64_t ioctl_mask;
+-#if defined(__linux__) && defined(HOST_X86_64)
+-    int ret, kvm_fd = open("/dev/kvm", O_RDONLY);
 -
--    int ufd = uffd_open(O_CLOEXEC);
--
--    if (ufd == -1) {
--        g_test_message("Skipping test: userfaultfd not available");
+-    if (kvm_fd < 0) {
 -        return false;
 -    }
 -
--    api_struct.api = UFFD_API;
--    api_struct.features = 0;
--    if (ioctl(ufd, UFFDIO_API, &api_struct)) {
--        g_test_message("Skipping test: UFFDIO_API failed");
--        return false;
--    }
--    uffd_feature_thread_id = api_struct.features & UFFD_FEATURE_THREAD_ID;
+-    ret = ioctl(kvm_fd, KVM_CHECK_EXTENSION, KVM_CAP_DIRTY_LOG_RING);
+-    close(kvm_fd);
 -
--    ioctl_mask = (1ULL << _UFFDIO_REGISTER |
--                  1ULL << _UFFDIO_UNREGISTER);
--    if ((api_struct.ioctls & ioctl_mask) != ioctl_mask) {
--        g_test_message("Skipping test: Missing userfault feature");
+-    /* We test with 4096 slots */
+-    if (ret < 4096) {
 -        return false;
 -    }
 -
 -    return true;
--}
--
 -#else
--static bool ufd_version_check(void)
--{
--    g_test_message("Skipping test: Userfault not available (builtdtime)");
 -    return false;
+-#endif
 -}
 -
--#endif
--
- static char *tmpfs;
- static char *bootpath;
- 
-@@ -3532,7 +3489,7 @@ int main(int argc, char **argv)
-         return 0;
-     }
- 
--    has_uffd = ufd_version_check();
-+    has_uffd = ufd_version_check(&uffd_feature_thread_id);
-     arch = qtest_get_arch();
-     is_x86 = !strcmp(arch, "i386") || !strcmp(arch, "x86_64");
- 
+ int main(int argc, char **argv)
+ {
+     bool has_kvm, has_tcg;
 diff --git a/tests/qtest/migration/migration-util.c b/tests/qtest/migration/migration-util.c
-index 8a974ded22..2ff8870fd5 100644
+index 2ff8870fd5..525bf1eed4 100644
 --- a/tests/qtest/migration/migration-util.c
 +++ b/tests/qtest/migration/migration-util.c
-@@ -22,6 +22,13 @@
- #include "migration/bootfile.h"
- #include "migration/migration-util.h"
+@@ -28,6 +28,12 @@
+ #include "qemu/userfaultfd.h"
+ #endif
  
-+/* for uffd_version_check() */
-+#if defined(__linux__) && defined(__NR_userfaultfd) && defined(CONFIG_EVENTFD)
-+#include <sys/eventfd.h>
-+#include "qemu/userfaultfd.h"
++/* For dirty ring test; so far only x86_64 is supported */
++#if defined(__linux__) && defined(HOST_X86_64)
++#include "linux/kvm.h"
++#include <sys/ioctl.h>
 +#endif
 +
-+
+ 
  static char *SocketAddress_to_str(SocketAddress *addr)
  {
-     switch (addr->type) {
-@@ -283,3 +290,44 @@ bool probe_o_direct_support(const char *tmpfs)
-     return true;
- }
- #endif
-+
-+#if defined(__linux__) && defined(__NR_userfaultfd) && defined(CONFIG_EVENTFD)
-+bool ufd_version_check(bool *uffd_feature_thread_id)
-+{
-+    struct uffdio_api api_struct;
-+    uint64_t ioctl_mask;
-+
-+    int ufd = uffd_open(O_CLOEXEC);
-+
-+    if (ufd == -1) {
-+        g_test_message("Skipping test: userfaultfd not available");
-+        return false;
-+    }
-+
-+    api_struct.api = UFFD_API;
-+    api_struct.features = 0;
-+    if (ioctl(ufd, UFFDIO_API, &api_struct)) {
-+        g_test_message("Skipping test: UFFDIO_API failed");
-+        return false;
-+    }
-+
-+    if (uffd_feature_thread_id) {
-+        *uffd_feature_thread_id = api_struct.features & UFFD_FEATURE_THREAD_ID;
-+    }
-+
-+    ioctl_mask = (1ULL << _UFFDIO_REGISTER |
-+                  1ULL << _UFFDIO_UNREGISTER);
-+    if ((api_struct.ioctls & ioctl_mask) != ioctl_mask) {
-+        g_test_message("Skipping test: Missing userfault feature");
-+        return false;
-+    }
-+
-+    return true;
-+}
-+#else
-+bool ufd_version_check(bool *uffd_feature_thread_id)
-+{
-+    g_test_message("Skipping test: Userfault not available (builtdtime)");
-+    return false;
-+}
-+#endif
-diff --git a/tests/qtest/migration/migration-util.h b/tests/qtest/migration/migration-util.h
-index 0fa3676235..2ab22e3fd5 100644
---- a/tests/qtest/migration/migration-util.h
-+++ b/tests/qtest/migration/migration-util.h
-@@ -47,6 +47,8 @@ static inline bool probe_o_direct_support(const char *tmpfs)
+@@ -331,3 +337,26 @@ bool ufd_version_check(bool *uffd_feature_thread_id)
      return false;
  }
  #endif
 +
-+bool ufd_version_check(bool *uffd_feature_thread_id);
++bool kvm_dirty_ring_supported(void)
++{
++#if defined(__linux__) && defined(HOST_X86_64)
++    int ret, kvm_fd = open("/dev/kvm", O_RDONLY);
++
++    if (kvm_fd < 0) {
++        return false;
++    }
++
++    ret = ioctl(kvm_fd, KVM_CHECK_EXTENSION, KVM_CAP_DIRTY_LOG_RING);
++    close(kvm_fd);
++
++    /* We test with 4096 slots */
++    if (ret < 4096) {
++        return false;
++    }
++
++    return true;
++#else
++    return false;
++#endif
++}
+diff --git a/tests/qtest/migration/migration-util.h b/tests/qtest/migration/migration-util.h
+index 2ab22e3fd5..f5f2e4650e 100644
+--- a/tests/qtest/migration/migration-util.h
++++ b/tests/qtest/migration/migration-util.h
+@@ -49,6 +49,7 @@ static inline bool probe_o_direct_support(const char *tmpfs)
+ #endif
+ 
+ bool ufd_version_check(bool *uffd_feature_thread_id);
++bool kvm_dirty_ring_supported(void);
  void migration_test_add(const char *path, void (*fn)(void));
  char *migrate_get_connect_uri(QTestState *who);
  void migrate_set_ports(QTestState *to, QList *channel_list);
