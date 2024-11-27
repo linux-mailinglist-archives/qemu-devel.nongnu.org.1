@@ -2,85 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0196B9DA978
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Nov 2024 14:59:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A1BC09DA97B
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Nov 2024 14:59:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tGIYG-0003hU-5F; Wed, 27 Nov 2024 08:57:56 -0500
+	id 1tGIZX-0006w1-A1; Wed, 27 Nov 2024 08:59:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tGIYE-0003h4-IX
- for qemu-devel@nongnu.org; Wed, 27 Nov 2024 08:57:54 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tGIZT-0006vO-Ct
+ for qemu-devel@nongnu.org; Wed, 27 Nov 2024 08:59:11 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tGIYC-0007jM-Iw
- for qemu-devel@nongnu.org; Wed, 27 Nov 2024 08:57:54 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tGIZP-00084u-WB
+ for qemu-devel@nongnu.org; Wed, 27 Nov 2024 08:59:10 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1732715872;
+ s=mimecast20190719; t=1732715947;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=GMcl0MSS++Dl9hhYbEW3wwttoqPTslrQ++mjFH0r/Vg=;
- b=Ja0P3bpC1c61WflXKQAmNmke2zZ4a1OAD65pHjcC01ai0gH8DYIUnAPfwto8sYtDWeJm5K
- n/neGASjX9GAFz4HHSOwcCcoGPmH/vvTFucbqrhlQ1bWRmQn30KzHt7msRL8VCV33M0q0M
- LIqDOnjrxp4CkOrXi1QCkvBCdmVuX34=
+ bh=7mZYQc/0Beq9quMGIXTqw5aSICjDsmWEiV1q8R4CPFA=;
+ b=FIxAq9OgEItPDA9C+znYRYVXNPGPY8VRnal19lMoGlaBXERzHbnIaOMVWmC0ZvsJ7uEfsx
+ RDhxDle9gRnolDjoquayA8YduWAuRPXkLmV0jYGvTUE6rp5F20c7ZruIxIWwGJmaTrNkXR
+ 3F1bOy8NhOGDOsXGspU0PqoAqjryL/s=
 Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
  [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-279-pRluDRE9NnO35IuYxP2itA-1; Wed, 27 Nov 2024 08:57:51 -0500
-X-MC-Unique: pRluDRE9NnO35IuYxP2itA-1
-X-Mimecast-MFC-AGG-ID: pRluDRE9NnO35IuYxP2itA
+ us-mta-241-piJIlEVBMraM6AiKnoUdlw-1; Wed, 27 Nov 2024 08:57:54 -0500
+X-MC-Unique: piJIlEVBMraM6AiKnoUdlw-1
+X-Mimecast-MFC-AGG-ID: piJIlEVBMraM6AiKnoUdlw
 Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-38242a78f3eso3542006f8f.0
- for <qemu-devel@nongnu.org>; Wed, 27 Nov 2024 05:57:50 -0800 (PST)
+ ffacd0b85a97d-3824395a677so3621017f8f.0
+ for <qemu-devel@nongnu.org>; Wed, 27 Nov 2024 05:57:53 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1732715869; x=1733320669;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=GMcl0MSS++Dl9hhYbEW3wwttoqPTslrQ++mjFH0r/Vg=;
- b=Yr1sYPinP9GLrI1nvZ3FIeOkb70H9/RY2USS2TSxdyX1Gku6/ZR1aWLzdFXyy9xvuP
- MasicR+VhcpqEL/6x8GSRdOtskpfvWpm/iIG0iPHs0nuxfeqV94A6VLBeTNZyQ0q7MNR
- tGmysOqknEUMwrZAUmmv6ahDsU/1VFsCpHtvWnSCANfM+bWK7GgzuTAzHCqMuIWjnX4n
- gkq1JEnGclycLEYvkWx7/pASzk/OZapqxqZvUcO+tow6SWxj9l3rb+ylW97EMxeVS5Z1
- WhQNydp6gbSxthjp+KfLbw+UkhumWXPV299gXNwM4K5ulA/xYsYYdSthBHU3vdnI4S55
- MyNQ==
-X-Gm-Message-State: AOJu0Ywwc3w280+1Pi4sx4FzUiuuy9/GOXNXQlSL5Fi9EpIkbKNTcaAF
- AEGtTKeahZUDfh79v4t42yXFgRiD2WV+TeGO7m5T/CrTaOBj+7xpYs1LMuao756K6CFjEnmN64j
- jfDRAMb/SEZ1tKPaaNnIB8GLCqBfrG8U8hoR+AhMMvaAEtOJxXJHHx09qRRL68jI9g1A1xiFe9Q
- pNToYvuiFqlOB0TF2m4ob+CdZXnXQpfsBP
-X-Gm-Gg: ASbGncswr9av94z0G1LugrPmOp9Rhu2uzweDuXrnHsERY+xs3YRz2AQIWGSUo95quzD
- 1IJxyc+Y5cA3+hMkWgywHfULrz4QKhqWc1ij15PORICliL8RW8ytV8iWATHzdGIZUiRsM0yJgHe
- ht88rvraMI2F9Q/WoUe8RJey41O5QWvr1vIFfR7OyZbLgn/8dkqLukMCRjDAJsPSbZire4eROSO
- PG+FqpBEsczxVoK7Sw6/WJPX08VuSXxycdqJBllIHD5
-X-Received: by 2002:a05:6000:1844:b0:37d:5352:c83f with SMTP id
- ffacd0b85a97d-385c6ebbab6mr2837470f8f.17.1732715869334; 
- Wed, 27 Nov 2024 05:57:49 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IF8zVZTYASQLLdwmEL8OSpzrpitTSPR32eerp6fYb0e3OyPz92snGztFChROzwkCqFK2gGwOw==
-X-Received: by 2002:a05:6000:1844:b0:37d:5352:c83f with SMTP id
- ffacd0b85a97d-385c6ebbab6mr2837441f8f.17.1732715869002; 
- Wed, 27 Nov 2024 05:57:49 -0800 (PST)
+ d=1e100.net; s=20230601; t=1732715872; x=1733320672;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=7mZYQc/0Beq9quMGIXTqw5aSICjDsmWEiV1q8R4CPFA=;
+ b=IrHOn5Z0R81K0U1jM2HXSINzqtAxIvnSkMOo8dXXZn5oUJMncXk39LskJxyNelrv8U
+ PEVMhUCj+EelDpLLHCEzdxY5nY+CJqjPhDv2BmYcQmCC5WuUjWBI1c4meYRgu8v5E3uI
+ 0z9wde/TRlV3wXJvEvMW6Wv6DArekR3Bc/MpYTaBy/cg0qTy9hBaWjwMvH9a/6rqEj/V
+ P6LZ1vA6iYgnTNZB1Zid7Y8K+gg0D8/6aOKqVhrzD5l2vZbvJYHjz3K4lNB3xohztG0U
+ 30m2UkjYANtvx+iDqLWQUCeVfZlTe3N/KgVenb1pGR0A5Bkryg2XlKq1rztocTAb7mas
+ ec5w==
+X-Gm-Message-State: AOJu0Yz4o78nfMF8umUi4Gr666lu18c5AIH851K3SR9JP/ZX5ZTdYkBh
+ lG5qQj5K6FrYEA2G20S52kMSZFCO0SVxZbhJdUUije9NcTygLJpYCyKjPlEw+l/UZuTVCkRqi96
+ sJ3bqpOwIax6GVxGRpnSLMEtZ9Pi68iIkJfgQoud6nYclavqGG+LcHioeGiHRj29l0sRaxVNoBP
+ Mmmibl0bvSj68k9wJqMq2W/s52Tgw4fkWg
+X-Gm-Gg: ASbGncuBC7mrvGFxEoSjvYAb9CPNTRWSLCs4Eqa0ZNEuIiHG01KPAgnvoGgf2ZaiDkt
+ ZVh0JVghUng4wOHozdLuDl7NY9AsIBf9FkfNwkBtlEYl/TEBEwuMNbO/1VzdD7wWFHgQiO6o71/
+ dRTdojv26e/I5iEY8Z0yDqBkbc1QHmPHQya5flliNJ3k7OLoQzMxOGRpx8SaGpugVi4pn/ZB7kq
+ jzUGNtUYd+CciO0hpGcSBlW9igXpksyXRl3/5F1tXog
+X-Received: by 2002:a05:6000:1545:b0:382:4804:27e4 with SMTP id
+ ffacd0b85a97d-385c6ec0fa6mr2321483f8f.35.1732715872183; 
+ Wed, 27 Nov 2024 05:57:52 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHi3DXzRF9BpFMwyjTFSlr1FNlAAUH95J4n+5FAsT/XzxwAzNKKlX+y6JVEu6N85cEIwgNYsA==
+X-Received: by 2002:a05:6000:1545:b0:382:4804:27e4 with SMTP id
+ ffacd0b85a97d-385c6ec0fa6mr2321453f8f.35.1732715871787; 
+ Wed, 27 Nov 2024 05:57:51 -0800 (PST)
 Received: from redhat.com ([2a02:14f:1ec:7d4b:8b11:bed7:9e00:8df7])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3825fbc3a3asm16319437f8f.66.2024.11.27.05.57.47
+ ffacd0b85a97d-3825fad627bsm16397555f8f.12.2024.11.27.05.57.50
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 27 Nov 2024 05:57:48 -0800 (PST)
-Date: Wed, 27 Nov 2024 08:57:46 -0500
+ Wed, 27 Nov 2024 05:57:51 -0800 (PST)
+Date: Wed, 27 Nov 2024 08:57:49 -0500
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>, Eric Blake <eblake@redhat.com>,
- Markus Armbruster <armbru@redhat.com>
-Subject: [PULL 07/13] qapi: fix device-sync-config since-version
-Message-ID: <e069c115e00d9eeb1ad6bf224775585c3d30177d.1732715823.git.mst@redhat.com>
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Daniel P =?utf-8?B?LiBCZXJyYW5nw6k=?= <berrange@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>
+Subject: [PULL 08/13] hw/acpi: Fix size of HID in
+ build_append_srat_acpi_device_handle()
+Message-ID: <13a4a6ba2bfd3cf9bd34a015929d93868d792de8.1732715823.git.mst@redhat.com>
 References: <cover.1732715823.git.mst@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 In-Reply-To: <cover.1732715823.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
@@ -109,32 +110,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Actually it comes in 9.2, not 9.1.
+The size should always be 8 so hard code that. By coincidience the
+incorrect use of sizeof(char *) is 8 on 64 bit hosts, but was caught
+by CI testing with i686 as the host.
 
-Fixes: 3f98408e2e ("qapi: introduce device-sync-config")
-Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Message-Id: <20241108071957.727286-1-vsementsov@yandex-team.ru>
+Reported-by: Michael S. Tsirkin <mst@redhat.com>
+Closes: https://lore.kernel.org/qemu-devel/20241104110025-mutt-send-email-mst@kernel.org/
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Message-Id: <20241107123446.902801-2-Jonathan.Cameron@huawei.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- qapi/qdev.json | 2 +-
+ hw/acpi/aml-build.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/qapi/qdev.json b/qapi/qdev.json
-index 2a581129c9..25cbcf977b 100644
---- a/qapi/qdev.json
-+++ b/qapi/qdev.json
-@@ -182,7 +182,7 @@
- #
- # @unstable: The command is experimental.
- #
--# Since: 9.1
-+# Since: 9.2
- ##
- { 'command': 'device-sync-config',
-   'features': [ 'unstable' ],
+diff --git a/hw/acpi/aml-build.c b/hw/acpi/aml-build.c
+index 6a76626177..72282b173e 100644
+--- a/hw/acpi/aml-build.c
++++ b/hw/acpi/aml-build.c
+@@ -1960,7 +1960,7 @@ static void build_append_srat_acpi_device_handle(GArray *table_data,
+ {
+     assert(strlen(hid) == 8);
+     /* Device Handle - ACPI */
+-    for (int i = 0; i < sizeof(hid); i++) {
++    for (int i = 0; i < 8; i++) {
+         build_append_int_noprefix(table_data, hid[i], 1);
+     }
+     build_append_int_noprefix(table_data, uid, 4);
 -- 
 MST
 
