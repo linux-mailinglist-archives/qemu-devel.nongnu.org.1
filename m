@@ -2,54 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB4A99DA5E4
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Nov 2024 11:35:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 363289DA5EE
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Nov 2024 11:36:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tGFNh-0004m2-A4; Wed, 27 Nov 2024 05:34:49 -0500
+	id 1tGFOw-0006Ac-0I; Wed, 27 Nov 2024 05:36:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tGFNd-0004l6-18
- for qemu-devel@nongnu.org; Wed, 27 Nov 2024 05:34:45 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tGFOu-0006A6-9q
+ for qemu-devel@nongnu.org; Wed, 27 Nov 2024 05:36:04 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tGFNb-0000eG-BU
- for qemu-devel@nongnu.org; Wed, 27 Nov 2024 05:34:44 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tGFOs-0001D2-Ij
+ for qemu-devel@nongnu.org; Wed, 27 Nov 2024 05:36:04 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1732703680;
+ s=mimecast20190719; t=1732703761;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=koZKhyCEuyoMvVAFsER3fONz2RkByjgHSe12Y+kmwEU=;
- b=aFMJ3NQV/xpJ9+h/yuOXA0hig+LmDb5MMBw6TxjT1NsJ/nmbm7aPQzlavI3svEIt9AmzlD
- 9SPwWS5dVTh6JJye4GmNDszqSw7+8qfcD/XZoTji0e8Rg9CELGDYvyA1o3mnOnxIvddM91
- E4Y8JYjfsFrK5J90y5QPM/Zin7rX3uY=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ bh=7zNdxrb4f+HDgq2AGchAcDvoIDaLfr/gxCTxBiYFIZ0=;
+ b=hfrGXUmJD94ceSOkeu/bqQXqJ4Z+Ou/O21gd6ACXvsN0HCn67GfCjJ90SNu8H6amPa5O9Q
+ R8T2R+Y0UaoiXnAj4/kpumX2HtGv8m38xj5sXOzlYZseMJ5SX0jHcXfXLf4Oo0wh4MWRaX
+ qjZN23lenPMUZTGr2NjDfu8JeTS19QY=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-665-i81gTThANj6hBONkg9uhQQ-1; Wed,
- 27 Nov 2024 05:34:33 -0500
-X-MC-Unique: i81gTThANj6hBONkg9uhQQ-1
-X-Mimecast-MFC-AGG-ID: i81gTThANj6hBONkg9uhQQ
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-342-6hZ6qhd7NWK0duDhaNR4kg-1; Wed,
+ 27 Nov 2024 05:34:35 -0500
+X-MC-Unique: 6hZ6qhd7NWK0duDhaNR4kg-1
+X-Mimecast-MFC-AGG-ID: 6hZ6qhd7NWK0duDhaNR4kg
 Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 3D15A1956077; Wed, 27 Nov 2024 10:34:32 +0000 (UTC)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 5BDC219541AE; Wed, 27 Nov 2024 10:34:34 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.192.82])
  by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 0C6B81956054; Wed, 27 Nov 2024 10:34:29 +0000 (UTC)
+ id 966B01955F3C; Wed, 27 Nov 2024 10:34:32 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Akihiko Odaki <akihiko.odaki@daynix.com>, Alexander Graf <agraf@csgraf.de>
-Subject: [PULL 2/7] docs: Document that hvf on Arm is supported
-Date: Wed, 27 Nov 2024 11:34:20 +0100
-Message-ID: <20241127103425.378289-3-thuth@redhat.com>
+ Xianglai Li <lixianglai@loongson.cn>
+Subject: [PULL 3/7] tests/functional: Fix the running test case causes
+ loongarch64 to hang
+Date: Wed, 27 Nov 2024 11:34:21 +0100
+Message-ID: <20241127103425.378289-4-thuth@redhat.com>
 In-Reply-To: <20241127103425.378289-1-thuth@redhat.com>
 References: <20241127103425.378289-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -80,32 +81,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
+From: Xianglai Li <lixianglai@loongson.cn>
 
-hvf on Arm is supported since commit a1477da3ddeb ("hvf: Add Apple
-Silicon support").
+There is a bug in the process of resolving the serial port base address
+in the fdt of the loongarch VM UEFI. When both serial port information
+and rng-seed information are chosen in the fdt, there is a probability
+that the serial port base address cannot be resolved correctly.
+This problem can be fixed by updating UEFI.
 
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Reviewed-by: Alexander Graf <agraf@csgraf.de>
-Message-ID: <20241127-build-v1-1-65b8162733f0@daynix.com>
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2686
+Signed-off-by: Xianglai Li <lixianglai@loongson.cn>
+Message-ID: <20241127013438.2206426-1-lixianglai@loongson.cn>
+Tested-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- docs/about/build-platforms.rst | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tests/functional/test_loongarch64_virt.py | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/docs/about/build-platforms.rst b/docs/about/build-platforms.rst
-index 6102f00aec..d8b0445157 100644
---- a/docs/about/build-platforms.rst
-+++ b/docs/about/build-platforms.rst
-@@ -40,7 +40,7 @@ Those hosts are officially supported, with various accelerators:
-    * - CPU Architecture
-      - Accelerators
-    * - Arm
--     - kvm (64 bit only), tcg, xen
-+     - hvf (64 bit only), kvm (64 bit only), tcg, xen
-    * - MIPS (64 bit little endian only)
-      - kvm, tcg
-    * - PPC
+diff --git a/tests/functional/test_loongarch64_virt.py b/tests/functional/test_loongarch64_virt.py
+index 2b8baa2c2a..b7d9abf933 100755
+--- a/tests/functional/test_loongarch64_virt.py
++++ b/tests/functional/test_loongarch64_virt.py
+@@ -18,16 +18,16 @@ class LoongArchMachine(QemuSystemTest):
+ 
+     ASSET_KERNEL = Asset(
+         ('https://github.com/yangxiaojuan-loongson/qemu-binary/'
+-         'releases/download/2024-05-30/vmlinuz.efi'),
++         'releases/download/2024-11-26/vmlinuz.efi'),
+         '08b88a45f48a5fd92260bae895be4e5175be2397481a6f7821b9f39b2965b79e')
+     ASSET_INITRD = Asset(
+         ('https://github.com/yangxiaojuan-loongson/qemu-binary/'
+-         'releases/download/2024-05-30/ramdisk'),
++         'releases/download/2024-11-26/ramdisk'),
+         '03d6fb6f8ee64ecac961120a0bdacf741f17b3bee2141f17fa01908c8baf176a')
+     ASSET_BIOS = Asset(
+         ('https://github.com/yangxiaojuan-loongson/qemu-binary/'
+-         'releases/download/2024-05-30/QEMU_EFI.fd'),
+-        '937c1e7815e2340150c194a9f8f0474259038a3d7b8845ed62cc08163c46bea1')
++         'releases/download/2024-11-26/QEMU_EFI.fd'),
++        'f55fbf5d92e885844631ae9bfa8887f659bbb4f6ef2beea9e9ff8bc0603b6697')
+ 
+     def wait_for_console_pattern(self, success_message, vm=None):
+         wait_for_console_pattern(self, success_message,
 -- 
 2.47.0
 
