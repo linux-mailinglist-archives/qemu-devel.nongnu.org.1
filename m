@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2ADCC9DAA77
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Nov 2024 16:09:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A16D9DAA69
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Nov 2024 16:07:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tGJdo-0003CQ-L2; Wed, 27 Nov 2024 10:07:45 -0500
+	id 1tGJcP-00011Z-BD; Wed, 27 Nov 2024 10:06:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <phil@philjordan.eu>)
- id 1tGJcQ-0001It-7D
- for qemu-devel@nongnu.org; Wed, 27 Nov 2024 10:06:18 -0500
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ id 1tGJc6-0000ac-9i
+ for qemu-devel@nongnu.org; Wed, 27 Nov 2024 10:06:04 -0500
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <phil@philjordan.eu>)
- id 1tGJcM-0008Mb-Ms
- for qemu-devel@nongnu.org; Wed, 27 Nov 2024 10:06:17 -0500
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-434a45f05feso26073465e9.3
- for <qemu-devel@nongnu.org>; Wed, 27 Nov 2024 07:06:14 -0800 (PST)
+ id 1tGJbx-0008C4-2j
+ for qemu-devel@nongnu.org; Wed, 27 Nov 2024 10:05:52 -0500
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-434aa222d96so9321055e9.0
+ for <qemu-devel@nongnu.org>; Wed, 27 Nov 2024 07:05:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=philjordan-eu.20230601.gappssmtp.com; s=20230601; t=1732719973; x=1733324773;
+ d=philjordan-eu.20230601.gappssmtp.com; s=20230601; t=1732719944; x=1733324744;
  darn=nongnu.org; 
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
  bh=9fBIkfb/JNGOeADe4W7k8MHHsSm50BaP9rSq2He7Rec=;
- b=XnNBOdhN2rPjugjAgisEBh9B6AB1iVOdfrShg4Xb1c+IAxUR/xk12dUBleU1euAui/
- Hdvhw7lhsXG7tYYsVknn5EO3Sjk9m7cdvP8auDPZuNk86hmRbgxp5sjhs1DrtisppLHY
- YBeDFIXFPveGJS08oFYHvtO0f+EsyvW/I+t2S6hStLwhusaJGTGCFCnQly0aVZt9jrES
- mVuULEc0r5FR6g/ZowJeiWaHhfvfpCo1k8OVhONFMBt8zLKMU100/fAvYKpqs4sz/RoB
- LSgcPzZ8tcABZgHuXq2ovbWM6Vprhh5KTCPBOY7bg1ZP0omoQpoNa04NDYKzwSJfF37m
- 03HQ==
+ b=HnCRRSDJUcB6SkdpZKRuGPPSFQpjW13LeNLK/LdGZ65ps0Ta0ROsET/T8WILYLqfE1
+ vovxYz23XCjnX3pt1lvbV55bt/kiTaIf6uGd+Ba7z8qWOfvMXMEK4e0qD8zRmQAc0l2P
+ o61DEOQme/y3pc92bPFXUtMQP8Jww1vKYOgr8fBWgKgSYf443MdHwryy+5jDgDa/iX6L
+ bNTTo+zWgaAnXx5UXV6ZIXLi8yriUrH0AnxFGafno3sbcBU3iIoIvUrulm2R06lsMLFe
+ 2EOh5lrnKa1zlzTWdzjqYEy2BjmpeJO1LTqFS80PrBbx9nZlRz2r3KVZ5uFqT+bwdxNF
+ Q3UA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1732719973; x=1733324773;
+ d=1e100.net; s=20230601; t=1732719944; x=1733324744;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
  bh=9fBIkfb/JNGOeADe4W7k8MHHsSm50BaP9rSq2He7Rec=;
- b=RmNho4lgmFrVBXv1S14NlZtnFLwOTqhe2fESvxy9ue3aU8GsF93CN8pAxLtbAHKHvy
- 0fpeW6vcd02hUaA4aef/CoKlUf3Z6ZUqiX8fZqya1xWSmY/tH2l1iySplpK99cVgx6RD
- tGts1CcAeq4/Ar9v1SH2QbhGcHzML05yXCypUK5ACcQ6OgZ2HXYnbskV77q2oE0VQ44M
- aPPbqOnB5I866kNALDMyAVY4iXogOpHVux5LqbiwUazuZM+vEui/nNvb6NiApJQpc6Ah
- TX0E1M4gDPxCq9rTruaiJGhldytRt2s8a1VKhebby7QGv/a/i0q5TJAvmHNhRh9yz/gQ
- ff+g==
-X-Gm-Message-State: AOJu0YwMpoiUtLcuoBRJ7GZ7ojXgDLgDy8TCW+I1q8uTmQa2aJ5UY1Ix
- hYaeqzV1faFnxSPpahnojyG7jUb5dhkdUZXCz1I+BLTNhDMrDHINrDyiz5JKvIMbYS53EsIr27Y
- MGw==
-X-Gm-Gg: ASbGncuV7DwmNXwynTgjJa0pP1LQFUf3d/jfxq2+b8IdNPUrThjGzDLH9fPYSv8BRWu
- cWiqCYXxugfIIOhKiJxX+yBl5DQ9K2KKOyla8QT31HbqOSG+G0/4dX+KUudGN1t4m1nbxr46B7f
- oxD9rNdq2jAmSE0aCUkW4H6/fJ0Y0spqriDENM0UIwZYCpL0nTu2YNaASw6yeX/6sqSGvJZGJJK
- cO7RaJ/YDMOJxg2e11tY+Flr5bqOs7W7KfVtUw6kN0DF7ryVd2XST3rOqCL0oSjM5IQzEbKd8c6
- O31LTtIyrDpl1xrFg8uQNcyZIg==
-X-Google-Smtp-Source: AGHT+IE8NyDcLjRih8DKRvaU19pHiQROv58ZP2L2Qp6a3H/BBzV4lqHx3ULb8spvhA9ezvPX86fkFg==
-X-Received: by 2002:a05:600c:c86:b0:42c:ba83:3f00 with SMTP id
- 5b1f17b1804b1-434a9dbb6a7mr30133015e9.1.1732719965079; 
- Wed, 27 Nov 2024 07:06:05 -0800 (PST)
+ b=Tb7qXnK1SECk58CjEVw6B8dDtlBktmT9yiOQm2bJ1y/ltnf+s5JtEnCPSg/pPIsiAv
+ +h1rRRCLLtaNTGd2Mlp5uWbYHrLzuPjskKWjW2Hh4AzNBzXvXyBF3ETcBcPOCJbbBymP
+ omyp6TnzRFNkMLSTugsmM0cbulLKc1pp2NkJl/VBuu4CEUueY9UDRVtZmLuK4kla+dZ4
+ 9P+u2tF0BAO8/JF74LULqYMJIc7WRbHE+IWfQtlO7S/QyyfITywpSim2uy7bLzukNDKo
+ R9DkLZrQI/6gKEpPVLYqwufQewsTJ2YO20rnOfyulGCEA3AqvjUA0A2zZd6r9CyDWn9O
+ uJvA==
+X-Gm-Message-State: AOJu0YzBID15HW8ZzSLGqhF1K1B8BIF95c3oVU2YC57bf17GJTK5YU9U
+ jF+Y0/ivXcYQY+vzduLb8ZHWeA4XxKd5ZoxunWsjNHCjQeYSrve1nycI59ByrSbn+8gzWeV6XtQ
+ 0zA==
+X-Gm-Gg: ASbGncvi+NMelzeNgMwfAYRjJ6jGMTxwN8WzC0XGPvBqSZijQZ8wNKMG5mIC+1FnaMc
+ JT9uXXrpptl5L5dtOWlFAWGPFYxjn/yHEa/thdp2+qdjrXcbd7omS11kIbef7d9Ua+1+HnJuCi9
+ MSAWHo8Gq9XWEtuWMgZ7V18KnFx67r2aXueag9eb48SnBJmuXQligfNg/FTA4t7gcjO6H26ueyQ
+ ruJLwXwQt19PvS2BASAZPEYg94EUWifVFC31O6UukyJK4Xhq4xFALgIpjgF+OTnoNg4MXmcNQoG
+ +SxeJSWcFbLPjCpMDYFwbi3ORw==
+X-Google-Smtp-Source: AGHT+IHL1YXb3qv0V1AZGhETohpwYJ38+mtFo85gCf67jjO8Mielg1opYR8i8den3Ob4wXhyvDeMjg==
+X-Received: by 2002:a05:600c:5254:b0:434:a30b:5445 with SMTP id
+ 5b1f17b1804b1-434a9dcf2b6mr31738065e9.19.1732719935016; 
+ Wed, 27 Nov 2024 07:05:35 -0800 (PST)
 Received: from localhost.localdomain (h082218084190.host.wavenet.at.
  [82.218.84.190]) by smtp.gmail.com with ESMTPSA id
  5b1f17b1804b1-434aa7e256esm23339155e9.32.2024.11.27.07.05.02
@@ -86,8 +86,8 @@ References: <20241127150249.50767-1-phil@philjordan.eu>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: neutral client-ip=2a00:1450:4864:20::336;
- envelope-from=phil@philjordan.eu; helo=mail-wm1-x336.google.com
+Received-SPF: neutral client-ip=2a00:1450:4864:20::334;
+ envelope-from=phil@philjordan.eu; helo=mail-wm1-x334.google.com
 X-Spam_score_int: -10
 X-Spam_score: -1.1
 X-Spam_bar: -
