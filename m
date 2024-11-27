@@ -2,78 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 408C99DA97E
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Nov 2024 15:00:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CDE99DA976
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Nov 2024 14:58:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tGIY6-0003fF-Rf; Wed, 27 Nov 2024 08:57:47 -0500
+	id 1tGIY9-0003fR-0n; Wed, 27 Nov 2024 08:57:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tGIY0-0003eO-5v
- for qemu-devel@nongnu.org; Wed, 27 Nov 2024 08:57:41 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tGIY3-0003em-DX
+ for qemu-devel@nongnu.org; Wed, 27 Nov 2024 08:57:43 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tGIXy-0007hY-K9
- for qemu-devel@nongnu.org; Wed, 27 Nov 2024 08:57:39 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tGIY1-0007iI-N6
+ for qemu-devel@nongnu.org; Wed, 27 Nov 2024 08:57:43 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1732715857;
+ s=mimecast20190719; t=1732715861;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=EHliCKGIV0A4mTHvD8Vp0gNJsTqr7mAyIUNPjljDA4U=;
- b=LLHahnzd7fH18scFRPH//YvQhfn/9Ayf93ng4EMgQeQjqk/zNL3T0r1cBy25WTlUi3rq6a
- BBASQGZLGgEkGRqb2Ieda/3b5T6n97HUF+rx8qxcnsXNAgqdGz40bHhdQTrGjnlgJsZg2D
- 0MJ2tjazbpJ9PfO3V3FIIDxqJ3yVk/c=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=P3wEkJJcev47yGejLPspLgvfrlRtXLqP/wDtBuhCwFs=;
+ b=SgZgwPorDo6dOKUaG6FgfuQU9b97b5a+jC3IWyJzyO7WWzdRACIZCRDicRHI7cNGryeObu
+ y9T7XPhcqLl1QnbU7kp6TLnp9kQu+z2hZM8dZgOVCH7rYTQagy0HjtVPXrkbTsmWgoybA1
+ HtU+v3wha3TN+DGW63HGKkYrCOhT4U0=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-595-UpfmxzluPEu5ipnY1TgijQ-1; Wed, 27 Nov 2024 08:57:36 -0500
-X-MC-Unique: UpfmxzluPEu5ipnY1TgijQ-1
-X-Mimecast-MFC-AGG-ID: UpfmxzluPEu5ipnY1TgijQ
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-38240d9ed31so4052271f8f.3
- for <qemu-devel@nongnu.org>; Wed, 27 Nov 2024 05:57:36 -0800 (PST)
+ us-mta-639-aJiqfwVIOvKZfVwO0TSo_w-1; Wed, 27 Nov 2024 08:57:39 -0500
+X-MC-Unique: aJiqfwVIOvKZfVwO0TSo_w-1
+X-Mimecast-MFC-AGG-ID: aJiqfwVIOvKZfVwO0TSo_w
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-382450d158fso3295797f8f.1
+ for <qemu-devel@nongnu.org>; Wed, 27 Nov 2024 05:57:39 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1732715855; x=1733320655;
+ d=1e100.net; s=20230601; t=1732715858; x=1733320658;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=EHliCKGIV0A4mTHvD8Vp0gNJsTqr7mAyIUNPjljDA4U=;
- b=tItsSTCHJSfZaFNJ4hDClaUK1TIwNrrJpNlBntH59zAcKJLcsFthrNAs4iTn1gMQz9
- n5y5ZmJVf4RPFsMXCXwsI2SAUzGtXf+CZ7kGVOYcXuZhwvVksad0o1b0cQRuFphWRHlR
- p3+hPvG31DktRUL53wn9mSUZJLS+npjA6KcM++HYK7vjyA9AE4Uaqu77dx9l/aHqXchI
- vLlis9ry92bkn+4XoitrG7Yx1iYYz1PdliGXnGCfsDjjf27bBQqqX7snCX1l5QuMGWiV
- QioCxVHoTKNX5f9a/WM5+0ggtoeK/8Usji3N4TL0nRAg3yC+3HoZJErRRj4ALtEH6H5V
- TOew==
-X-Gm-Message-State: AOJu0Yy0yVFpl1aeLvKgnxY2QBZQAFq+zcVwCm/Sa8ZvhIR2JgmuXPhE
- lc0X4VuuNiNQTkS/VOsESDwy7XiJFHfbLt5O5P0AsejqDytSKRU5dMRs5IK9ma/fAzOy3t7C2zm
- 56GdcmxVqd+oAoH0KynpAoe2xu/uyiBNmORiYfisIqQTETf6ZQSkH3TxDB6Hq1n8hlDr3duzVYF
- Mg28tqcEudhrV9vOeVFm8IH3V9mplPRtYR
-X-Gm-Gg: ASbGncuuz65U6BPqYaL9mRADCgbW7D3nBq/xW9TVczHtSZDux2RD8S+/Snuzq8wL4YK
- B/o8EyQgd1fx0t7f9Q2SSsp2J1jQTnCpAwxpOlr6Ldu8egjj9fbItj7qh6oIhHO1qp4lPXSxBlN
- FcKY2iqSrKOLW35VRwewV7T0aiKAOdL2lpZmZHGc76tshuf36rmgMrQzBGJSGLMpGuUx4TNKfxR
- nuXpoN72EBiUPso7/DYJYNFlLl8eEbedduEVnMpaHo5
-X-Received: by 2002:a5d:5f52:0:b0:382:4e57:48e7 with SMTP id
- ffacd0b85a97d-385c6eb58eemr2268052f8f.10.1732715854978; 
- Wed, 27 Nov 2024 05:57:34 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEqwMJrrUGS/D6SdJy43XgOsUdKIbwq69vAoCNe8GS+KbbEELU0Zba47aNtqI2v7RsrQrodrg==
-X-Received: by 2002:a5d:5f52:0:b0:382:4e57:48e7 with SMTP id
- ffacd0b85a97d-385c6eb58eemr2268031f8f.10.1732715854565; 
- Wed, 27 Nov 2024 05:57:34 -0800 (PST)
+ bh=P3wEkJJcev47yGejLPspLgvfrlRtXLqP/wDtBuhCwFs=;
+ b=UWC1fbFJdx6YJVW5cNtWvz6WH0TVLq2YLa977NDPD56iuqlU9/0gisTquY0AYncK9V
+ lcIxnwRNrGYBu2VPAl+M/QDvmWWCKBNfAgdDQN7mGI+7SY+yqW6qZgVbuum8oAiSNF1f
+ jK14j2FI9bWAKkE3tYzwsT4n0HLq9KEnBIrLIawvopr0bp3MkHygy/bGeE6h1f9j20O9
+ BpGQimVdbPD6BFIniaTFgSrvsIVr3hq5c6iXNPBvdPX2Gteuqj0SKp9WStHZb5XhyeOX
+ c3uDHB1M2yiny0A0j4nvPzCu6xzuDOMYuSwHLa7FRPlAIXp0CgS/EFfAx0yh4RZ9GGr/
+ K+zg==
+X-Gm-Message-State: AOJu0Yx3KrbZRSyoLP7aaR5L8nOUVkGJBTfz7+T3LkUOBNokY6i3qRA8
+ i4LVIUNXMDjR7VaNix7VFJMYSS/wJqBosLm7HvfOq2bBkSxM+iSpNQSOV33k8Cjj38+Tt+qTIac
+ Qf6hDimnnt2Jow/AOAqUseceuCtqLPK7Fm0E/UfmN9cEqX5LdM8Qk/GnPXpk8ewnP2DytlBR+bP
+ BsVWZm2bwjy0dsT7fl33RLRCykgoPmPGEM
+X-Gm-Gg: ASbGncv9OsYvuFkuJv1/5uLhHuNq6kEpX/ON8ziA3KVPh7ekX+jgO7uK0WQVyNVr/l1
+ kA+SU73hqfqO0VW2LNGCs+ZwiT552R9GOgu5cKNiMpMG76qFXeT07aeFJa0830bosMMYxKnGV7d
+ XpckJAPzG+MmrthJ/QggHA4g1f4LJZ0DIPhjrT/22raxUbkS6xregnZ2hXl2HlfGjvr7KvvpNyG
+ 5slaKGE9XJXEOy9az3mX4FrhnssCGHTjBULONSmKKUn
+X-Received: by 2002:a05:6000:2ae:b0:382:49f3:4f8d with SMTP id
+ ffacd0b85a97d-385c6eb698cmr2800773f8f.15.1732715858131; 
+ Wed, 27 Nov 2024 05:57:38 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IF8tAWAPAhc356fDV5VV3PpkJqaXk52M8jmEOqJ6EaO1ogjfR/59gUpnWqKc/JcER2BuPSoAg==
+X-Received: by 2002:a05:6000:2ae:b0:382:49f3:4f8d with SMTP id
+ ffacd0b85a97d-385c6eb698cmr2800737f8f.15.1732715857676; 
+ Wed, 27 Nov 2024 05:57:37 -0800 (PST)
 Received: from redhat.com ([2a02:14f:1ec:7d4b:8b11:bed7:9e00:8df7])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3825fafe207sm16447042f8f.36.2024.11.27.05.57.33
+ ffacd0b85a97d-3825fbeddf4sm16221472f8f.93.2024.11.27.05.57.35
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 27 Nov 2024 05:57:33 -0800 (PST)
-Date: Wed, 27 Nov 2024 08:57:32 -0500
+ Wed, 27 Nov 2024 05:57:37 -0800 (PST)
+Date: Wed, 27 Nov 2024 08:57:34 -0500
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Salil Mehta <salil.mehta@huawei.com>, Igor Mammedov <imammedo@redhat.com>,
- Ani Sinha <anisinha@redhat.com>
-Subject: [PULL 02/13] qtest: allow ACPI DSDT Table changes
-Message-ID: <ef5e7aeaa6e7a258798c1eff2f5c726504116609.1732715823.git.mst@redhat.com>
+ Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>, Zhao Liu <zhao1.liu@intel.com>
+Subject: [PULL 03/13] Revert "hw/acpi: Update ACPI `_STA` method with QOM
+ vCPU ACPI Hotplug states"
+Message-ID: <cb36e2573a02da2a4d95bae71e4d2f1a746d8ee2.1732715823.git.mst@redhat.com>
 References: <cover.1732715823.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -106,67 +110,125 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Salil Mehta <salil.mehta@huawei.com>
+From: Igor Mammedov <imammedo@redhat.com>
 
-list changed files in tests/qtest/bios-tables-test-allowed-diff.h
+This reverts commit bf1ecc8dad6061914730a2a2d57af6b37c3a4f8d
+which broke cpu hotplug in x86 after migration to older QEMU
 
-Message-ID: <20241106100047.18901c9d@imammedo.users.ipa.redhat.com>
-Signed-off-by: Salil Mehta <salil.mehta@huawei.com>
+Fixes: bf1ecc8dad606 (w/acpi: Update ACPI `_STA` method with QOM vCPU ACPI Hotplug states)
 Signed-off-by: Igor Mammedov <imammedo@redhat.com>
-Message-Id: <20241112170258.2996640-2-imammedo@redhat.com>
+Message-Id: <20241112170258.2996640-3-imammedo@redhat.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- tests/qtest/bios-tables-test-allowed-diff.h | 41 +++++++++++++++++++++
- 1 file changed, 41 insertions(+)
+ include/hw/core/cpu.h |  1 -
+ hw/acpi/cpu.c         | 38 ++++----------------------------------
+ 2 files changed, 4 insertions(+), 35 deletions(-)
 
-diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
-index dfb8523c8b..512d40665d 100644
---- a/tests/qtest/bios-tables-test-allowed-diff.h
-+++ b/tests/qtest/bios-tables-test-allowed-diff.h
-@@ -1 +1,42 @@
- /* List of comma-separated changed AML files to ignore */
-+"tests/data/acpi/x86/pc/DSDT",
-+"tests/data/acpi/x86/pc/DSDT.acpierst",
-+"tests/data/acpi/x86/pc/DSDT.acpihmat",
-+"tests/data/acpi/x86/pc/DSDT.bridge",
-+"tests/data/acpi/x86/pc/DSDT.cphp",
-+"tests/data/acpi/x86/pc/DSDT.dimmpxm",
-+"tests/data/acpi/x86/pc/DSDT.hpbridge",
-+"tests/data/acpi/x86/pc/DSDT.hpbrroot",
-+"tests/data/acpi/x86/pc/DSDT.ipmikcs",
-+"tests/data/acpi/x86/pc/DSDT.memhp",
-+"tests/data/acpi/x86/pc/DSDT.nohpet",
-+"tests/data/acpi/x86/pc/DSDT.numamem",
-+"tests/data/acpi/x86/pc/DSDT.roothp",
-+"tests/data/acpi/x86/q35/DSDT",
-+"tests/data/acpi/x86/q35/DSDT.acpierst",
-+"tests/data/acpi/x86/q35/DSDT.acpihmat",
-+"tests/data/acpi/x86/q35/DSDT.acpihmat-noinitiator",
-+"tests/data/acpi/x86/q35/DSDT.applesmc",
-+"tests/data/acpi/x86/q35/DSDT.bridge",
-+"tests/data/acpi/x86/q35/DSDT.core-count",
-+"tests/data/acpi/x86/q35/DSDT.core-count2",
-+"tests/data/acpi/x86/q35/DSDT.cphp",
-+"tests/data/acpi/x86/q35/DSDT.cxl",
-+"tests/data/acpi/x86/q35/DSDT.dimmpxm",
-+"tests/data/acpi/x86/q35/DSDT.ipmibt",
-+"tests/data/acpi/x86/q35/DSDT.ipmismbus",
-+"tests/data/acpi/x86/q35/DSDT.ivrs",
-+"tests/data/acpi/x86/q35/DSDT.memhp",
-+"tests/data/acpi/x86/q35/DSDT.mmio64",
-+"tests/data/acpi/x86/q35/DSDT.multi-bridge",
-+"tests/data/acpi/x86/q35/DSDT.noacpihp",
-+"tests/data/acpi/x86/q35/DSDT.nohpet",
-+"tests/data/acpi/x86/q35/DSDT.numamem",
-+"tests/data/acpi/x86/q35/DSDT.pvpanic-isa",
-+"tests/data/acpi/x86/q35/DSDT.thread-count",
-+"tests/data/acpi/x86/q35/DSDT.thread-count2",
-+"tests/data/acpi/x86/q35/DSDT.tis.tpm12",
-+"tests/data/acpi/x86/q35/DSDT.tis.tpm2",
-+"tests/data/acpi/x86/q35/DSDT.type4-count",
-+"tests/data/acpi/x86/q35/DSDT.viot",
-+"tests/data/acpi/x86/q35/DSDT.xapic",
+diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
+index db8a6fbc6e..e7de77dc6d 100644
+--- a/include/hw/core/cpu.h
++++ b/include/hw/core/cpu.h
+@@ -159,7 +159,6 @@ struct CPUClass {
+     void (*query_cpu_fast)(CPUState *cpu, CpuInfoFast *value);
+     int64_t (*get_arch_id)(CPUState *cpu);
+     bool (*cpu_persistent_status)(CPUState *cpu);
+-    bool (*cpu_enabled_status)(CPUState *cpu);
+     void (*set_pc)(CPUState *cpu, vaddr value);
+     vaddr (*get_pc)(CPUState *cpu);
+     int (*gdb_read_register)(CPUState *cpu, GByteArray *buf, int reg);
+diff --git a/hw/acpi/cpu.c b/hw/acpi/cpu.c
+index 23443f09a5..9b03b4292e 100644
+--- a/hw/acpi/cpu.c
++++ b/hw/acpi/cpu.c
+@@ -50,18 +50,6 @@ void acpi_cpu_ospm_status(CPUHotplugState *cpu_st, ACPIOSTInfoList ***list)
+     }
+ }
+ 
+-static bool check_cpu_enabled_status(DeviceState *dev)
+-{
+-    CPUClass *k = dev ? CPU_GET_CLASS(dev) : NULL;
+-    CPUState *cpu = CPU(dev);
+-
+-    if (cpu && (!k->cpu_enabled_status || k->cpu_enabled_status(cpu))) {
+-        return true;
+-    }
+-
+-    return false;
+-}
+-
+ static uint64_t cpu_hotplug_rd(void *opaque, hwaddr addr, unsigned size)
+ {
+     uint64_t val = 0;
+@@ -75,11 +63,10 @@ static uint64_t cpu_hotplug_rd(void *opaque, hwaddr addr, unsigned size)
+     cdev = &cpu_st->devs[cpu_st->selector];
+     switch (addr) {
+     case ACPI_CPU_FLAGS_OFFSET_RW: /* pack and return is_* fields */
+-        val |= check_cpu_enabled_status(DEVICE(cdev->cpu)) ? 1 : 0;
++        val |= cdev->cpu ? 1 : 0;
+         val |= cdev->is_inserting ? 2 : 0;
+         val |= cdev->is_removing  ? 4 : 0;
+         val |= cdev->fw_remove  ? 16 : 0;
+-        val |= cdev->cpu ? 32 : 0;
+         trace_cpuhp_acpi_read_flags(cpu_st->selector, val);
+         break;
+     case ACPI_CPU_CMD_DATA_OFFSET_RW:
+@@ -362,7 +349,6 @@ const VMStateDescription vmstate_cpu_hotplug = {
+ #define CPU_REMOVE_EVENT  "CRMV"
+ #define CPU_EJECT_EVENT   "CEJ0"
+ #define CPU_FW_EJECT_EVENT "CEJF"
+-#define CPU_PRESENT       "CPRS"
+ 
+ void build_cpus_aml(Aml *table, MachineState *machine, CPUHotplugFeatures opts,
+                     build_madt_cpu_fn build_madt_cpu, hwaddr base_addr,
+@@ -423,9 +409,7 @@ void build_cpus_aml(Aml *table, MachineState *machine, CPUHotplugFeatures opts,
+         aml_append(field, aml_named_field(CPU_EJECT_EVENT, 1));
+         /* tell firmware to do device eject, write only */
+         aml_append(field, aml_named_field(CPU_FW_EJECT_EVENT, 1));
+-        /* 1 if present, read only */
+-        aml_append(field, aml_named_field(CPU_PRESENT, 1));
+-        aml_append(field, aml_reserved_field(2));
++        aml_append(field, aml_reserved_field(3));
+         aml_append(field, aml_named_field(CPU_COMMAND, 8));
+         aml_append(cpu_ctrl_dev, field);
+ 
+@@ -455,7 +439,6 @@ void build_cpus_aml(Aml *table, MachineState *machine, CPUHotplugFeatures opts,
+         Aml *ctrl_lock = aml_name("%s.%s", cphp_res_path, CPU_LOCK);
+         Aml *cpu_selector = aml_name("%s.%s", cphp_res_path, CPU_SELECTOR);
+         Aml *is_enabled = aml_name("%s.%s", cphp_res_path, CPU_ENABLED);
+-        Aml *is_present = aml_name("%s.%s", cphp_res_path, CPU_PRESENT);
+         Aml *cpu_cmd = aml_name("%s.%s", cphp_res_path, CPU_COMMAND);
+         Aml *cpu_data = aml_name("%s.%s", cphp_res_path, CPU_DATA);
+         Aml *ins_evt = aml_name("%s.%s", cphp_res_path, CPU_INSERT_EVENT);
+@@ -484,26 +467,13 @@ void build_cpus_aml(Aml *table, MachineState *machine, CPUHotplugFeatures opts,
+         {
+             Aml *idx = aml_arg(0);
+             Aml *sta = aml_local(0);
+-            Aml *ifctx2;
+-            Aml *else_ctx;
+ 
+             aml_append(method, aml_acquire(ctrl_lock, 0xFFFF));
+             aml_append(method, aml_store(idx, cpu_selector));
+             aml_append(method, aml_store(zero, sta));
+-            ifctx = aml_if(aml_equal(is_present, one));
++            ifctx = aml_if(aml_equal(is_enabled, one));
+             {
+-                ifctx2 = aml_if(aml_equal(is_enabled, one));
+-                {
+-                    /* cpu is present and enabled */
+-                    aml_append(ifctx2, aml_store(aml_int(0xF), sta));
+-                }
+-                aml_append(ifctx, ifctx2);
+-                else_ctx = aml_else();
+-                {
+-                    /* cpu is present but disabled */
+-                    aml_append(else_ctx, aml_store(aml_int(0xD), sta));
+-                }
+-                aml_append(ifctx, else_ctx);
++                aml_append(ifctx, aml_store(aml_int(0xF), sta));
+             }
+             aml_append(method, ifctx);
+             aml_append(method, aml_release(ctrl_lock));
 -- 
 MST
 
