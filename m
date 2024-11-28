@@ -2,82 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F0EB9DBC58
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Nov 2024 20:05:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D01C9DBC56
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Nov 2024 20:05:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tGjoF-0007U7-EK; Thu, 28 Nov 2024 14:04:15 -0500
+	id 1tGjoS-0007V8-O5; Thu, 28 Nov 2024 14:04:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tGjo4-0007RG-1S
- for qemu-devel@nongnu.org; Thu, 28 Nov 2024 14:04:05 -0500
+ id 1tGjo8-0007T0-7R
+ for qemu-devel@nongnu.org; Thu, 28 Nov 2024 14:04:08 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tGjo1-00013R-AZ
- for qemu-devel@nongnu.org; Thu, 28 Nov 2024 14:04:03 -0500
+ id 1tGjo3-00014j-P5
+ for qemu-devel@nongnu.org; Thu, 28 Nov 2024 14:04:06 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1732820639;
+ s=mimecast20190719; t=1732820642;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=46P5fCc+o6hH7ZVFiMBoQudmq3399lviu/5ndRrwzBo=;
- b=KXJaSC9r5vGCZjjNtmE+CKWzph8fAR3AFwF8jRoHcdUPr4G/LEdpdo+Zcu/uYsqa6I4JSN
- bv/HhmCqBeTyNIDwYUrg/wo7ttc/QQG4T3s8+ZTrE6ql3i1o7PS6QTOiGPvaDPEe53bI2M
- C5+UcbZF4nzPyrDPCi3g1us8mwESD9w=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=DiAuo9+wcwyjELbBvX9cPcyNm6cXW718y3hyCUiqNXA=;
+ b=NTWuHkdsF+udxQlxI2C4/kkHvfFCFfpUNKY6ssEIYPdvyi5WxX9J3u8+mv4gKFA58cHkG8
+ pB+7PzpBkku9G5WzuLXlmILo9/oP9qPLft4KiOonrm2v/A0ZIaUuLiw/Wx1e7h+jlyjhT8
+ fHuAjMfkWxbzDrPRYG2Rnu8LmQ9eKqo=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-658-p0_k8p6INoG8bGKn2L_aOQ-1; Thu, 28 Nov 2024 14:03:58 -0500
-X-MC-Unique: p0_k8p6INoG8bGKn2L_aOQ-1
-X-Mimecast-MFC-AGG-ID: p0_k8p6INoG8bGKn2L_aOQ
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-434a876d15cso11565235e9.0
- for <qemu-devel@nongnu.org>; Thu, 28 Nov 2024 11:03:58 -0800 (PST)
+ us-mta-274-Kz18RYt5Pu6luq37s5tIaw-1; Thu, 28 Nov 2024 14:04:00 -0500
+X-MC-Unique: Kz18RYt5Pu6luq37s5tIaw-1
+X-Mimecast-MFC-AGG-ID: Kz18RYt5Pu6luq37s5tIaw
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-385dc37cb3eso87949f8f.0
+ for <qemu-devel@nongnu.org>; Thu, 28 Nov 2024 11:04:00 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1732820636; x=1733425436;
+ d=1e100.net; s=20230601; t=1732820638; x=1733425438;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=46P5fCc+o6hH7ZVFiMBoQudmq3399lviu/5ndRrwzBo=;
- b=pT+TqSxd1A1YyJ5l11KWPfrsL6v3mrsT3sM/KSlOqPolbL7dzJ8e4JnBKWFslwDd9D
- didJw8SyluXGn42RDn9LfQwjC0C74dgw8eWBQWHnFM0o4eUfpLSa9lnFoUJAlCHb54z7
- hWVxjJldTjQ3g38RDWQ81Nd/pSzznVYPsS2NyZ5Ymz9OXH71aBERZRiWciHCUcUW5sSp
- GuTrC86aknCCmYV4/PNpODor5XoOi7DiM8VoP9wDQvrlHZlwR0EV0p5pfdRiJbfEFdb6
- Nnx3EScUsspnnWPlHQ/1EvT7Pj5xyouWm5mLZW7p1Yd1O7aK9a99k7YHFIljNy9JYXN4
- 2yGg==
-X-Gm-Message-State: AOJu0YwSZD7lG4pI9iapP6z0L/LbPVlqzrUGP0JNahMPPpHcLkqHfWLP
- 29IS9cnEJPy/RiIgMfijKbsrM841NtuS2GcEtrH/Fb51b6V1dEO7el1hF6B1w5IaMwUHnVeDNB7
- iyKXnlwTmh7nzSlMwRMqmGluLY3A29mgkw0pOJAlwXsbBY8EEx1ToCP9Cco98I6cV47mhJEsJkL
- gIrSjs/ik6umrFzafLOm9zt6fqCKtUmLOJgwO1
-X-Gm-Gg: ASbGncvvFMs0ivAwT8Ij4MTxYmgUJqFvlpCdjyqSvzSxy2XoGXND2jKyrBzpjfaT3eV
- H/itNaEs/O447cJgmXh98iUaBIRA+7pHarKMPiXtfZTyQcizOACFVfu5gYtXTzo4KNjIVB+UxH/
- YqYdMqvQ8nfh9nl8SEMbTz7W1GjnF1zhntAXf86H1gNk3Omeg4ZWhHro+NufKAFayhpuYa9C6zn
- KanZlFo54mXBhSyVU89x/HyR3MqvRdILwzWXqCHhQ8mRJpVBSsRGqk=
-X-Received: by 2002:a05:600c:1c0a:b0:434:9fca:d6c3 with SMTP id
- 5b1f17b1804b1-434afb9efa7mr36440855e9.9.1732820636431; 
- Thu, 28 Nov 2024 11:03:56 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFcIQhAjRqi1hRvhTolooHgF97VGizS/qP5LafGKxgrVGBnHyDwMQRN59plKOBPByk8tMX3oQ==
-X-Received: by 2002:a05:600c:1c0a:b0:434:9fca:d6c3 with SMTP id
- 5b1f17b1804b1-434afb9efa7mr36440205e9.9.1732820635502; 
- Thu, 28 Nov 2024 11:03:55 -0800 (PST)
+ bh=DiAuo9+wcwyjELbBvX9cPcyNm6cXW718y3hyCUiqNXA=;
+ b=CwKh4xtH2vSDx9Zy0+gJrqtaECBiTd0diO/RdF+0xdGNFTQwzVBQukkRaVnxfAHcUF
+ NiLixCSewK7kw76gE7DLOl5gfT8TNJkueTnZw+njqlY0yCkYzuPVMi3alg+wHJS5Vlff
+ d3r7dV8iwQipFu8xgx/BA+D0ubha11fl2K8AH8W2FfHYOtnaoDG4BVjo7FMUSVPQXIme
+ qdEk2zWk+zOCs3+fCLTjIGd5hKj4GZJCCSo8Ikq5DEXFQ32vKZNhEewiOSoEAJpmgsVe
+ uVFgVFsOfbjM7htIu94v34U7ajV2cNekEHq3OwTcQzckd3J2tmtzLmGRZy6CFFudNGjO
+ WpPQ==
+X-Gm-Message-State: AOJu0Yxuwvc/T1wuSoTrcKI8dzh5wuXMFM2Nt5nPZZHSp3wNxbaR/lPj
+ coJw095aIWx/QWLyLVm5HSM5OtimodjOf4PBEU3zA+V08uqmeKpv07wvmkzgQX92wtoQYPJnxbG
+ Me/6VpKIr1v4j0c0Huf6q4MvFtWKhPTdvvGBKIaOgRrwpT+HJmufAzsktI/a2XjtMfqTwucEdb5
+ sdu09a84UZFeGtj29C9YHBBvs/22ItzPNdlge6
+X-Gm-Gg: ASbGncvuQKz3Nef0mYKXkPVFH30DAmwi8q0E+T0DjhFwx0igeD+LcYRi1On78aalqb/
+ zGrzrijdmtE2p4kV1F4CYaa6bFmMMM+/ZUMV/z+fHvFLDwrWdGryoeqlcsptCPhhM/nzkQ1wwBG
+ 0z5NydC5FqafaH6VYX0vCNnAYHgA4+dEwONegOehKeJ8U5muL6i5/dX605/tR1zj2SR6Ff4BqdO
+ 1iYblQT7nxiOA7MQURFsDN4nu3Yir61I8PuudhDN1uwuUwqQnCgPBc=
+X-Received: by 2002:a5d:64ac:0:b0:382:4421:811a with SMTP id
+ ffacd0b85a97d-385c6ef3978mr6899122f8f.49.1732820638630; 
+ Thu, 28 Nov 2024 11:03:58 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFe4vlitL7OyaXrAhfVGYjuVUBrA3iM7RWhR3APnmitCGqK52qW8/BVP3bMq8qqJWA5j7KZBg==
+X-Received: by 2002:a5d:64ac:0:b0:382:4421:811a with SMTP id
+ ffacd0b85a97d-385c6ef3978mr6899086f8f.49.1732820638233; 
+ Thu, 28 Nov 2024 11:03:58 -0800 (PST)
 Received: from [192.168.10.47] ([151.49.236.146])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-434b0dc6831sm30003565e9.20.2024.11.28.11.03.54
+ ffacd0b85a97d-385ccd3690dsm2316944f8f.35.2024.11.28.11.03.56
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 28 Nov 2024 11:03:54 -0800 (PST)
+ Thu, 28 Nov 2024 11:03:57 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Alexander Graf <agraf@csgraf.de>,
- Akihiro Suda <akihiro.suda.cz@hco.ntt.co.jp>,
+Cc: Guenter Roeck <linux@roeck-us.net>, Fabiano Rosas <farosas@suse.de>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Phil Dennis-Jordan <phil@philjordan.eu>
-Subject: [PULL 2/3] hvf: complete 1G page support
-Date: Thu, 28 Nov 2024 20:03:48 +0100
-Message-ID: <20241128190349.541014-3-pbonzini@redhat.com>
+ Fiona Ebner <f.ebner@proxmox.com>, qemu-stable@nongnu.org
+Subject: [PULL 3/3] scsi: megasas: Internal cdbs have 16-byte length
+Date: Thu, 28 Nov 2024 20:03:49 +0100
+Message-ID: <20241128190349.541014-4-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241128190349.541014-1-pbonzini@redhat.com>
 References: <20241128190349.541014-1-pbonzini@redhat.com>
@@ -93,7 +92,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -109,114 +108,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Alexander Graf <agraf@csgraf.de>
+From: Guenter Roeck <linux@roeck-us.net>
 
-Hvf on x86 only supported 2MiB large pages, but never bothered to strip
-out the 1GiB page size capability from -cpu host. With QEMU 8.0.0 this
-became a problem because OVMF started to use 1GiB pages by default.
+Host drivers do not necessarily set cdb_len in megasas io commands.
+With commits 6d1511cea0 ("scsi: Reject commands if the CDB length
+exceeds buf_len") and fe9d8927e2 ("scsi: Add buf_len parameter to
+scsi_req_new()"), this results in failures to boot Linux from affected
+SCSI drives because cdb_len is set to 0 by the host driver.
+Set the cdb length to its actual size to solve the problem.
 
-Let's just unconditionally add 1GiB page walk support to the walker.
-
-With this fix applied, I can successfully run OVMF again.
-
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1603
-Signed-off-by: Alexander Graf <agraf@csgraf.de>
-Reported-by: Akihiro Suda <akihiro.suda.cz@hco.ntt.co.jp>
-Reported-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Phil Dennis-Jordan <phil@philjordan.eu>
-Link: https://lore.kernel.org/r/20230420225258.58009-1-agraf@csgraf.de
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Reviewed-by: Fabiano Rosas <farosas@suse.de>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Tested-by: Fiona Ebner <f.ebner@proxmox.com>
+Link: https://lore.kernel.org/r/20230228171129.4094709-1-linux@roeck-us.net
+Cc: qemu-stable@nongnu.org
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/hvf/x86_mmu.c | 30 ++++++++++++++++++++----------
- 1 file changed, 20 insertions(+), 10 deletions(-)
+ hw/scsi/megasas.c | 14 ++------------
+ 1 file changed, 2 insertions(+), 12 deletions(-)
 
-diff --git a/target/i386/hvf/x86_mmu.c b/target/i386/hvf/x86_mmu.c
-index 649074a7d24..579d0c3a4cc 100644
---- a/target/i386/hvf/x86_mmu.c
-+++ b/target/i386/hvf/x86_mmu.c
-@@ -38,6 +38,7 @@
- #define LEGACY_PTE_PAGE_MASK        (0xffffffffllu << 12)
- #define PAE_PTE_PAGE_MASK           ((-1llu << 12) & ((1llu << 52) - 1))
- #define PAE_PTE_LARGE_PAGE_MASK     ((-1llu << (21)) & ((1llu << 52) - 1))
-+#define PAE_PTE_SUPER_PAGE_MASK     ((-1llu << (30)) & ((1llu << 52) - 1))
+diff --git a/hw/scsi/megasas.c b/hw/scsi/megasas.c
+index 221b06d6aaf..b33229d71a4 100644
+--- a/hw/scsi/megasas.c
++++ b/hw/scsi/megasas.c
+@@ -1781,7 +1781,7 @@ static int megasas_handle_io(MegasasState *s, MegasasCmd *cmd, int frame_cmd)
+     uint8_t cdb[16];
+     int len;
+     struct SCSIDevice *sdev = NULL;
+-    int target_id, lun_id, cdb_len;
++    int target_id, lun_id;
  
- struct gpt_translation {
-     target_ulong  gva;
-@@ -96,7 +97,7 @@ static bool get_pt_entry(CPUState *cpu, struct gpt_translation *pt,
+     lba_count = le32_to_cpu(cmd->frame->io.header.data_len);
+     lba_start_lo = le32_to_cpu(cmd->frame->io.lba_lo);
+@@ -1790,7 +1790,6 @@ static int megasas_handle_io(MegasasState *s, MegasasCmd *cmd, int frame_cmd)
  
- /* test page table entry */
- static bool test_pt_entry(CPUState *cpu, struct gpt_translation *pt,
--                          int level, bool *is_large, bool pae)
-+                          int level, int *largeness, bool pae)
- {
-     uint64_t pte = pt->pte[level];
+     target_id = cmd->frame->header.target_id;
+     lun_id = cmd->frame->header.lun_id;
+-    cdb_len = cmd->frame->header.cdb_len;
  
-@@ -118,9 +119,9 @@ static bool test_pt_entry(CPUState *cpu, struct gpt_translation *pt,
-         goto exit;
+     if (target_id < MFI_MAX_LD && lun_id == 0) {
+         sdev = scsi_device_find(&s->bus, 0, target_id, lun_id);
+@@ -1805,15 +1804,6 @@ static int megasas_handle_io(MegasasState *s, MegasasCmd *cmd, int frame_cmd)
+         return MFI_STAT_DEVICE_NOT_FOUND;
      }
  
--    if (1 == level && pte_large_page(pte)) {
-+    if (level && pte_large_page(pte)) {
-         pt->err_code |= MMU_PAGE_PT;
--        *is_large = true;
-+        *largeness = level;
-     }
-     if (!level) {
-         pt->err_code |= MMU_PAGE_PT;
-@@ -152,9 +153,18 @@ static inline uint64_t pse_pte_to_page(uint64_t pte)
-     return ((pte & 0x1fe000) << 19) | (pte & 0xffc00000);
- }
+-    if (cdb_len > 16) {
+-        trace_megasas_scsi_invalid_cdb_len(
+-            mfi_frame_desc(frame_cmd), 1, target_id, lun_id, cdb_len);
+-        megasas_write_sense(cmd, SENSE_CODE(INVALID_OPCODE));
+-        cmd->frame->header.scsi_status = CHECK_CONDITION;
+-        s->event_count++;
+-        return MFI_STAT_SCSI_DONE_WITH_ERROR;
+-    }
+-
+     cmd->iov_size = lba_count * sdev->blocksize;
+     if (megasas_map_sgl(s, cmd, &cmd->frame->io.sgl)) {
+         megasas_write_sense(cmd, SENSE_CODE(TARGET_FAILURE));
+@@ -1824,7 +1814,7 @@ static int megasas_handle_io(MegasasState *s, MegasasCmd *cmd, int frame_cmd)
  
--static inline uint64_t large_page_gpa(struct gpt_translation *pt, bool pae)
-+static inline uint64_t large_page_gpa(struct gpt_translation *pt, bool pae,
-+                                      int largeness)
- {
--    VM_PANIC_ON(!pte_large_page(pt->pte[1]))
-+    VM_PANIC_ON(!pte_large_page(pt->pte[largeness]))
-+
-+    /* 1Gib large page  */
-+    if (pae && largeness == 2) {
-+        return (pt->pte[2] & PAE_PTE_SUPER_PAGE_MASK) | (pt->gva & 0x3fffffff);
-+    }
-+
-+    VM_PANIC_ON(largeness != 1)
-+
-     /* 2Mb large page  */
-     if (pae) {
-         return (pt->pte[1] & PAE_PTE_LARGE_PAGE_MASK) | (pt->gva & 0x1fffff);
-@@ -170,7 +180,7 @@ static bool walk_gpt(CPUState *cpu, target_ulong addr, int err_code,
-                      struct gpt_translation *pt, bool pae)
- {
-     int top_level, level;
--    bool is_large = false;
-+    int largeness = 0;
-     target_ulong cr3 = rvmcs(cpu->accel->fd, VMCS_GUEST_CR3);
-     uint64_t page_mask = pae ? PAE_PTE_PAGE_MASK : LEGACY_PTE_PAGE_MASK;
-     
-@@ -186,19 +196,19 @@ static bool walk_gpt(CPUState *cpu, target_ulong addr, int err_code,
-     for (level = top_level; level > 0; level--) {
-         get_pt_entry(cpu, pt, level, pae);
- 
--        if (!test_pt_entry(cpu, pt, level - 1, &is_large, pae)) {
-+        if (!test_pt_entry(cpu, pt, level - 1, &largeness, pae)) {
-             return false;
-         }
- 
--        if (is_large) {
-+        if (largeness) {
-             break;
-         }
-     }
- 
--    if (!is_large) {
-+    if (!largeness) {
-         pt->gpa = (pt->pte[0] & page_mask) | (pt->gva & 0xfff);
-     } else {
--        pt->gpa = large_page_gpa(pt, pae);
-+        pt->gpa = large_page_gpa(pt, pae, largeness);
-     }
- 
-     return true;
+     megasas_encode_lba(cdb, lba_start, lba_count, is_write);
+     cmd->req = scsi_req_new(sdev, cmd->index,
+-                            lun_id, cdb, cdb_len, cmd);
++                            lun_id, cdb, sizeof(cdb), cmd);
+     if (!cmd->req) {
+         trace_megasas_scsi_req_alloc_failed(
+             mfi_frame_desc(frame_cmd), target_id, lun_id);
 -- 
 2.47.0
 
