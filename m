@@ -2,88 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11E139DBCD1
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Nov 2024 21:16:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DFEE9DBCD6
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Nov 2024 21:19:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tGkvh-0001NK-4U; Thu, 28 Nov 2024 15:16:01 -0500
+	id 1tGkyW-0004an-3C; Thu, 28 Nov 2024 15:18:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1tGkvB-0001Ij-Ip
- for qemu-devel@nongnu.org; Thu, 28 Nov 2024 15:15:29 -0500
-Received: from mail-pj1-x102c.google.com ([2607:f8b0:4864:20::102c])
+ id 1tGkyN-0004Zj-59
+ for qemu-devel@nongnu.org; Thu, 28 Nov 2024 15:18:50 -0500
+Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1tGkv7-0001mf-KJ
- for qemu-devel@nongnu.org; Thu, 28 Nov 2024 15:15:29 -0500
-Received: by mail-pj1-x102c.google.com with SMTP id
- 98e67ed59e1d1-2ea45dac86eso927555a91.3
- for <qemu-devel@nongnu.org>; Thu, 28 Nov 2024 12:15:25 -0800 (PST)
+ id 1tGkyJ-0003As-U7
+ for qemu-devel@nongnu.org; Thu, 28 Nov 2024 15:18:45 -0500
+Received: by mail-pf1-x42a.google.com with SMTP id
+ d2e1a72fcca58-7252f48acf2so832711b3a.2
+ for <qemu-devel@nongnu.org>; Thu, 28 Nov 2024 12:18:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1732824924; x=1733429724; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=D/WE4DdwfNtGJC4bBQHDV6Up1JyJz8d62bKAZjE6uOc=;
- b=AQdOrZSwBgh7kGOZQvr/cSxqvFk/QeVW+U0DcTekW4TJsg5xU24tQJNezPBLRfJsCX
- 1umzAkPDaQ0PMbF/7To6kYQqO9rr2KZkBIQkSz8MoaWfhXIE7YKnk5h5qJzLJRVajxQy
- jMM/Obe7R6keL7aKYUqDW9sGTpl9BtQCgTxXBIDwfBBh0dBVJtYZOjZaEMc0iCCMqHnI
- mcxYQzVWCbBYUH7+Ao9Ddfq7TrGJJH3XchcPjjRtwxh4fAWX+r0mfHmFJvhrCyeGPfgw
- +iLK3rfpl3YuroSuJf/jXjob8pzBJWDg2/0voMhlAD7mPK05ISTDckUBRG0SYBG0Y0/q
- VevA==
+ d=linaro.org; s=google; t=1732825122; x=1733429922; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=P7VRDmje80mrxSrRS6Ou3eyEO9NianrFT4SNXjj6PF4=;
+ b=blDCaAxv20VpWsFiptmOFLhb1lprLQU8j9b6ZsKMV08+rH2I0cqH5QZzuUWnhxN5qs
+ MOg8zSi0esORUeeOyWfhNeb+CreAuosIrvEnM97M1QZ+z/34OCfuDnDSH5Oiq3W9u6pY
+ Q99mm8g6opXN2iP+q6N398ISdV+LBqZbFtbvxgdS1BhoYdXP6YeTqC8GmQwibLvzd87s
+ ijkpcx0Y9ZBzXZp9n5Lc68d91ybQX+S+fbksvqb+JfMwR5U0e+a1HEiZ8q4PUjJxx6O9
+ OFamq6R37UUCTqs1C9XSPqKkH2p/XP1rmMxwr+3CgdcHAfWysnAaeYayOGAMD7McgrTE
+ 9Cpg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1732824924; x=1733429724;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=D/WE4DdwfNtGJC4bBQHDV6Up1JyJz8d62bKAZjE6uOc=;
- b=gEfil7Ol0gOZTaGQLIVAaCJxeiGLj6msjaSOi3jabZISecGlpf4Qzlf1VO8OO53N7Q
- +paQXdo5OuGNmFdoG3EP52tZDX5r2Gz8IKK7lE0BueAsTojXIaLt1/6JU7a2pXkNM6JR
- ZeX4NrC7ttDvnoqyQXscoZ3EkD6RGPCG67FCE5IPvNZunahUcAwosHJ5NCH3DF5TyWwy
- v8Qi8AeedINXy9EfK+V1tEWIYPvPKiOBNtYOvehF4yI9Sbq81detoCFv43WdOyFrxRQF
- eDF0ca2zpC4VZ85h91DttbJbfiuWa1ugbXI0fNOikAI6Qi6cN6M7fCztRXeI9QkOQk05
- eBfQ==
-X-Gm-Message-State: AOJu0Yx41L58ScMaApfq866HN7rSkRK5NMbKfq1JsceJLiQuSJ0owFZh
- pKDOPYTUs+q13AFBs+PZBNsRrfjOWZdoibOfLtVEZKfR2NXNufHDpkIyth5CmF/F9BNLoRs5fxa
- I2sQ=
-X-Gm-Gg: ASbGncsoOzzaBajEvf7Zq8ZB187//gykDCCK9RK9YH9nFIhkDnlBT1gdP/ZSrNs7HCJ
- dooQg56ZLBPssv3p6HJKQZf9ET+q6yLCjolg4WmDj1plTzK46P1CWXtcFS17hyfRCwPg9rgRtqt
- ZPrGO+qDl7ehjqui+7sRE5LqGrfgfKMQzyPTvp9TUp9svCEdcIuZrqGjm4fsPMXt7KuTPV5kv1w
- 1b1M6HXIMDCBtchbgK5SGbOKBLTs/5N1YyVeiYjXXTsnsScvIugcxpiLnmDPXjipXjdQEBzHiaS
- k8HGlTs6kVgzGQ==
-X-Google-Smtp-Source: AGHT+IEc4/QEHN4luw0cd9jmF7OPCym+gMlxgj0UeiM+RCbpeUilJvm+VPinObdpQACqZ7psos2NHQ==
-X-Received: by 2002:a17:90b:3e86:b0:2ea:9309:757e with SMTP id
- 98e67ed59e1d1-2ee08e9fa32mr10969501a91.9.1732824924110; 
- Thu, 28 Nov 2024 12:15:24 -0800 (PST)
-Received: from linaro.. (216-180-64-156.dyn.novuscom.net. [216.180.64.156])
- by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2ee0fb10049sm3912861a91.43.2024.11.28.12.15.23
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 28 Nov 2024 12:15:23 -0800 (PST)
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Mahmoud Mandour <ma.mandourr@gmail.com>,
- Alexandre Iooss <erdnaxe@crans.org>, Markus Armbruster <armbru@redhat.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Stefano Garzarella <sgarzare@redhat.com>
-Subject: [PATCH v3 3/3] plugins: enable linking with clang/lld
-Date: Thu, 28 Nov 2024 12:15:10 -0800
-Message-Id: <20241128201510.869974-4-pierrick.bouvier@linaro.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20241128201510.869974-1-pierrick.bouvier@linaro.org>
-References: <20241128201510.869974-1-pierrick.bouvier@linaro.org>
+ d=1e100.net; s=20230601; t=1732825122; x=1733429922;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=P7VRDmje80mrxSrRS6Ou3eyEO9NianrFT4SNXjj6PF4=;
+ b=CebL+D0KJcgwelcxCgeWgw68CAJHB/3tEZotsi8/reI1QJWNtRuvYi2cjTRsEC4y8m
+ U3G2LPCQgkxyEJ9niDPqoJMPv1uR3nGarrLM9Rh+LMN9c/g5OPDL28xcAHvQ3sxcvCHE
+ EH7uDu7T57gYl6iMZN6YQVTphWSKa+LLsD3YzA0p48E8oPexIMAiiZGOq1aENVBRxrbc
+ o9q6TwBWVLORzcZS+7jlr68l5GiBfloZElIhCzYL6D2fxnuj/x3jkxGYL+z++mkFX5AO
+ Ejn/aiDlNBHjYEXZnNUV+cR3Tt3HBNlt21EZGzVLB4o3mB/g8dhMi4iAxfGEC+Wq7LQp
+ NNoA==
+X-Gm-Message-State: AOJu0YwGuupAn+VUmRmGDqCo/BWO9KEnbA81sn+AU/9AthHSF37K7hZX
+ Bg0BU+liUjbw2q/8SHciFk91TK0fT8NUFIj8CD81l3/Irnv0pCuofgiyAntvI+HpG5i31fUizji
+ QOq4=
+X-Gm-Gg: ASbGnctnREUsafExYbhTi/8imR+SNd33Wnd4tXItYMoeBrSyWrr6++LuzgZorEHLye3
+ W9x2vqvK1CuKR2H4waZlbekph6cI/v7SnylL992XKJSfwwMnX0otLUVdlHqg0qTgEbDDEBLKzgh
+ oHbkLW3yAhComGIUxn50f0QKFzlxlmQlQJ7N7zea7Pd2vOWop3ERUU/JrJl4Iy73zA1rks6qktd
+ rnaSmJ9jNyjlviKD5Zgz8/pzIy94DtE7BIycYLubbjq45ZDocZZrr4f+1dBmchWacOt+T6NDcAG
+ JPb2sZaVlS6Qvno4DZ0VrA==
+X-Google-Smtp-Source: AGHT+IGgUK727SUUvFIPaTxpdg5ubx2YmiEMFbxErVyFnHBHggw5MO2sKpU8WltenZeqalvHNoN8Qw==
+X-Received: by 2002:a05:6a00:4f88:b0:724:e582:19fd with SMTP id
+ d2e1a72fcca58-7252ffdd0bemr12617691b3a.3.1732825122094; 
+ Thu, 28 Nov 2024 12:18:42 -0800 (PST)
+Received: from [192.168.1.67] (216-180-64-156.dyn.novuscom.net.
+ [216.180.64.156]) by smtp.gmail.com with ESMTPSA id
+ 41be03b00d2f7-7fc9c2e1b2fsm1765066a12.20.2024.11.28.12.18.41
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 28 Nov 2024 12:18:41 -0800 (PST)
+Message-ID: <7be5475a-749c-432f-b8f9-dd47bf3efa0e@linaro.org>
+Date: Thu, 28 Nov 2024 12:18:40 -0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102c;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pj1-x102c.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 08/12] docs/system/arm/orangepi: update links
+To: qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>, alex.bennee@linaro.org,
+ Steven Lee <steven_lee@aspeedtech.com>,
+ Andrew Jeffery <andrew@codeconstruct.com.au>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ Niek Linnenbank <nieklinnenbank@gmail.com>, qemu-arm@nongnu.org,
+ =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>,
+ Troy Lee <leetroy@gmail.com>, Jamin Lin <jamin_lin@aspeedtech.com>,
+ Peter Maydell <peter.maydell@linaro.org>, Joel Stanley <joel@jms.id.au>,
+ Alistair Francis <alistair@alistair23.me>
+References: <20241122225049.1617774-1-pierrick.bouvier@linaro.org>
+ <20241122225049.1617774-9-pierrick.bouvier@linaro.org>
+Content-Language: en-US
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+In-Reply-To: <20241122225049.1617774-9-pierrick.bouvier@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x42a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -106,117 +109,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Windows uses a special mechanism to enable plugins to work (DLL delay
-loading). Option for lld is different than ld.
+On 11/22/24 14:50, Pierrick Bouvier wrote:
+> Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+> ---
+>   docs/system/arm/orangepi.rst | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/docs/system/arm/orangepi.rst b/docs/system/arm/orangepi.rst
+> index 9afa54213b0..db87e81fec4 100644
+> --- a/docs/system/arm/orangepi.rst
+> +++ b/docs/system/arm/orangepi.rst
+> @@ -119,7 +119,7 @@ Orange Pi PC images
+>   Note that the mainline kernel does not have a root filesystem. You may provide it
+>   with an official Orange Pi PC image from the official website:
+>   
+> -  http://www.orangepi.org/downloadresources/
+> +  http://www.orangepi.org/html/serviceAndSupport/index.html
+>   
+>   Another possibility is to run an Armbian image for Orange Pi PC which
+>   can be downloaded from:
+> @@ -213,7 +213,7 @@ including the Orange Pi PC. NetBSD 9.0 is known to work best for the Orange Pi P
+>   board and provides a fully working system with serial console, networking and storage.
+>   For the Orange Pi PC machine, get the 'evbarm-earmv7hf' based image from:
+>   
+> -  https://cdn.netbsd.org/pub/NetBSD/NetBSD-9.0/evbarm-earmv7hf/binary/gzimg/armv7.img.gz
+> +  https://archive.netbsd.org/pub/NetBSD-archive/NetBSD-9.0/evbarm-earmv7hf/binary/gzimg/armv7.img.gz
+>   
+>   The image requires manually installing U-Boot in the image. Build U-Boot with
+>   the orangepi_pc_defconfig configuration as described in the previous section.
 
-MSYS2 clang based environment use lld by default, so restricting to this
-config on Windows is safe, and will avoid false bug reports.
-
-Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
----
- meson.build                   |  5 +++++
- contrib/plugins/meson.build   |  2 +-
- plugins/meson.build           | 24 ++++++++++++++++++++----
- tests/tcg/plugins/meson.build |  3 +--
- 4 files changed, 27 insertions(+), 7 deletions(-)
-
-diff --git a/meson.build b/meson.build
-index 97cefb7cdd7..f286fb4f4a0 100644
---- a/meson.build
-+++ b/meson.build
-@@ -354,6 +354,11 @@ elif host_os == 'sunos'
-   qemu_common_flags += '-D__EXTENSIONS__'
- elif host_os == 'haiku'
-   qemu_common_flags += ['-DB_USE_POSITIVE_POSIX_ERRORS', '-D_BSD_SOURCE', '-fPIC']
-+elif host_os == 'windows'
-+  # plugins use delaylib, and clang needs to be used with lld to make it work.
-+  if compiler.get_id() == 'clang' and compiler.get_linker_id() != 'ld.lld'
-+    error('On windows, you need to use lld with clang - use msys2 clang64/clangarm64 env')
-+  endif
- endif
- 
- # Choose instruction set (currently x86-only)
-diff --git a/contrib/plugins/meson.build b/contrib/plugins/meson.build
-index 63a32c2b4f0..484b9a808c8 100644
---- a/contrib/plugins/meson.build
-+++ b/contrib/plugins/meson.build
-@@ -12,7 +12,7 @@ if get_option('plugins')
-       t += shared_module(i, files(i + '.c') + 'win32_linker.c',
-                         include_directories: '../../include/qemu',
-                         link_depends: [win32_qemu_plugin_api_lib],
--                        link_args: ['-Lplugins', '-lqemu_plugin_api'],
-+                        link_args: win32_qemu_plugin_api_link_flags,
-                         dependencies: glib)
-     else
-       t += shared_module(i, files(i + '.c'),
-diff --git a/plugins/meson.build b/plugins/meson.build
-index 98542e926f8..d60be2a4d6d 100644
---- a/plugins/meson.build
-+++ b/plugins/meson.build
-@@ -17,14 +17,15 @@ if not enable_modules
-       capture: true,
-       command: ['sed', '-ne', 's/^[[:space:]]*\\(qemu_.*\\);/_\\1/p', '@INPUT@'])
-     emulator_link_args += ['-Wl,-exported_symbols_list,plugins/qemu-plugins-ld64.symbols']
-+  elif host_os == 'windows' and meson.get_compiler('c').get_id() == 'clang'
-+    # LLVM/lld does not support exporting specific symbols. However, it works
-+    # out of the box with dllexport/dllimport attribute we set in the code.
-   else
-     emulator_link_args += ['-Xlinker', '--dynamic-list=' + qemu_plugin_symbols.full_path()]
-   endif
- endif
- 
- if host_os == 'windows'
--  dlltool = find_program('dlltool', required: true)
--
-   # Generate a .lib file for plugins to link against.
-   # First, create a .def file listing all the symbols a plugin should expect to have
-   # available in qemu
-@@ -33,12 +34,27 @@ if host_os == 'windows'
-     output: 'qemu_plugin_api.def',
-     capture: true,
-     command: ['sed', '-e', '0,/^/s//EXPORTS/; s/[{};]//g', '@INPUT@'])
-+
-   # then use dlltool to assemble a delaylib.
-+  # The delaylib will have an "imaginary" name (qemu.exe), that is used by the
-+  # linker file we add with plugins (win32_linker.c) to identify that we want
-+  # to find missing symbols in current program.
-+  win32_qemu_plugin_api_link_flags = ['-Lplugins', '-lqemu_plugin_api']
-+  if meson.get_compiler('c').get_id() == 'clang'
-+    # With LLVM/lld, delaylib is specified at link time (-delayload)
-+    dlltool = find_program('llvm-dlltool', required: true)
-+    dlltool_cmd = [dlltool, '-d', '@INPUT@', '-l', '@OUTPUT@', '-D', 'qemu.exe']
-+    win32_qemu_plugin_api_link_flags += ['-Wl,-delayload=qemu.exe']
-+  else
-+    # With gcc/ld, delay lib is built with a specific delay parameter.
-+    dlltool = find_program('dlltool', required: true)
-+    dlltool_cmd = [dlltool, '--input-def', '@INPUT@',
-+                   '--output-delaylib', '@OUTPUT@', '--dllname', 'qemu.exe']
-+  endif
-   win32_qemu_plugin_api_lib = configure_file(
-     input: win32_plugin_def,
-     output: 'libqemu_plugin_api.a',
--    command: [dlltool, '--input-def', '@INPUT@',
--              '--output-delaylib', '@OUTPUT@', '--dllname', 'qemu.exe']
-+    command: dlltool_cmd
-   )
- endif
- specific_ss.add(files(
-diff --git a/tests/tcg/plugins/meson.build b/tests/tcg/plugins/meson.build
-index f847849b1b7..87a17d67bd4 100644
---- a/tests/tcg/plugins/meson.build
-+++ b/tests/tcg/plugins/meson.build
-@@ -5,9 +5,8 @@ if get_option('plugins')
-       t += shared_module(i, files(i + '.c') + '../../../contrib/plugins/win32_linker.c',
-                         include_directories: '../../../include/qemu',
-                         link_depends: [win32_qemu_plugin_api_lib],
--                        link_args: ['-Lplugins', '-lqemu_plugin_api'],
-+                        link_args: win32_qemu_plugin_api_link_flags,
-                         dependencies: glib)
--
-     else
-       t += shared_module(i, files(i + '.c'),
-                         include_directories: '../../../include/qemu',
--- 
-2.39.5
-
+www.orangepi.org website is available again, and after checking, they 
+don't support https. So this change is correct, and we should stick to http.
 
