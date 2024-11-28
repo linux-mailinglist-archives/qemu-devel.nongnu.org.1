@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8168B9DB962
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Nov 2024 15:14:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 666419DB966
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Nov 2024 15:15:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tGfHK-0005RF-Vh; Thu, 28 Nov 2024 09:13:59 -0500
+	id 1tGfHP-0005jm-Ae; Thu, 28 Nov 2024 09:14:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <cleger@rivosinc.com>)
- id 1tGfH6-0005QL-6S
- for qemu-devel@nongnu.org; Thu, 28 Nov 2024 09:13:45 -0500
-Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
+ id 1tGfHD-0005Ul-KV
+ for qemu-devel@nongnu.org; Thu, 28 Nov 2024 09:13:53 -0500
+Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <cleger@rivosinc.com>)
- id 1tGfH2-00061e-Rq
- for qemu-devel@nongnu.org; Thu, 28 Nov 2024 09:13:42 -0500
-Received: by mail-pl1-x62e.google.com with SMTP id
- d9443c01a7336-2120f9ec28eso7096965ad.1
- for <qemu-devel@nongnu.org>; Thu, 28 Nov 2024 06:13:40 -0800 (PST)
+ id 1tGfHA-00063k-0v
+ for qemu-devel@nongnu.org; Thu, 28 Nov 2024 09:13:50 -0500
+Received: by mail-pf1-x429.google.com with SMTP id
+ d2e1a72fcca58-7252b7326f4so820875b3a.2
+ for <qemu-devel@nongnu.org>; Thu, 28 Nov 2024 06:13:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1732803219; x=1733408019;
+ d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1732803226; x=1733408026;
  darn=nongnu.org; 
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=0jQmZHVZGJH8bUITrZGLb9vyQJRHYXGRdZuUVz+4EJM=;
- b=RYxsWi19IojJJsvfNYjKxwVqJMHYhv58DgNg0JUbTUnlk/rG6307ZfULTK33YzhYWo
- PgXBK9Q9YZpByTdy2FK19fRzB/Il/6IC85Gqf1Evc27KVHq4nVAjNpDo9V94jAHizwvm
- xDPAw9Jmk7F0suze6F5j05X7hHLNvZYGHI/isXUHj50Yodz1TLdAFAkXD7d3+oyX3zcm
- 5Y8ygjqBoEFxHkj9JILSuo4ew4NwexQPaMerX6PhmWv5ZdkxlvI1HkDREjlQJs9tZm4W
- d34Dgnh+pBI9qzOXQ8lxuS4AMayC3ujAhwJNwtbFp3CBHtksr7X0EVLOreGDdgMUkFX3
- eTZw==
+ bh=xOP7Hqao7kiNDStvwCeVXCCvUD1H/qgyxYLIdZ3OWV8=;
+ b=2yPQ4CmvBM3nUIDIpNyBktjXHZZt0zJR6KItmBsGPlEwzdKXlAp8r0DEc7tBAQGTmD
+ hsmE9TLUHgKK6QomY+I/TxwjyLHKEhiaXiuO2tNChd+TQxAj9KNJxD8FDRhYzSiZBfFg
+ GnQgs4Fvrh7M3E2m0LjvoScjFtx6TYGO5LHXWKZQU4c3Ev4UebcsPlItz+Cn08ZFyFS+
+ Dp56VOSZQAIawHhx36jeK1VKiFQM4ALCaCaxoI+YgUJmgybn8i3hZZ4o8/ix4O35v9t3
+ Oj009XU4XSlI6c7FamRQ4puflXa++6jZNMoiwfH25HsHiC8dfUrXA3rs3q5bTPCZ1T5o
+ sGlQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1732803219; x=1733408019;
+ d=1e100.net; s=20230601; t=1732803226; x=1733408026;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=0jQmZHVZGJH8bUITrZGLb9vyQJRHYXGRdZuUVz+4EJM=;
- b=XBza5SIoVOZebXvAKlMbhDqguAeGSXxH6IbW5+nhVsqGwxvGvqzEprFCWQf68yZAhd
- HnAoVj3wDR9w0gU4sGaNe4gAW+TS8fxGQyFjc08sYit047htLQ/U10efKD68NIvqIQhO
- aANsyVfNEQovgiwMTfO/ZEQbsGz1QqfVQXkBLIoeAMSLvn+TBKl6rrbfb1KanwB3Mflx
- jYD1WjDbyz8ngbKTyRFYG2143Tzhl5ww7DkssQ6G+mqY8zdIRp0F63ZriTMVbLMH84lq
- 8URzjz4zAx7QMhYrdq7IlBGK7GsOTCiwig+mhM3LVN/iTkxs7ICN4rdbCOMny3uenOTc
- M6/A==
+ bh=xOP7Hqao7kiNDStvwCeVXCCvUD1H/qgyxYLIdZ3OWV8=;
+ b=OVlASOTOdt27Y4ygZiz/4kymFh++QBvs+REl6KROBWmFM/LwViSJ2D2nd9X9Ts+tWw
+ Uu9fjXUQOoUL+T7CpzMazB0zhYFxq0CNOYqjbFmHs59N7Ksj+4HdsjTtPTAJm5nMA3AJ
+ esqMvYxOGW1P43BNHy/UODNguU7wmHF9MeUEQuSPWcxoDrdV+3ndkTZG9o5wrcCcCND3
+ 2vzMkKHldhs1p44eEXqx4kwwvhziEV7AlyEXvZ/IWeUCEi5n/1s5FKGkP1vdItpQWNDS
+ P7tsRbF1AfcwJGzzmHZ63R4w9kC6AR5xV0sl40DrOu0876Q4eOT+LzuubIsyZ9/XKjef
+ +Z/Q==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUuzAxrX7qznZABXUOSisCFQBLuK77sQdXABS5By9V8wKZbZ89AGSWo01s1ka50OZMbJu3X1GQtjg98@nongnu.org
-X-Gm-Message-State: AOJu0YxZKPHF2+5WZxrRWmCTPOGxrc/WoofC4U33g7qW+trGOMQ2VTbE
- jE6zMeflc4iR2L19kWymj4n1/dVIFr+RA3OiqfecZGJ0vTaOgU6fNLB5mvUH9yE=
-X-Gm-Gg: ASbGncvDVpIjujkIUA1p6+lkGEgYiU2RT+RRefnK30f549GHcP8cZ3OIIBiK2KNqK8O
- AcVqcWuKHgEs1Cf80GyuMtTtcyNoyN82T+GyULPYgd0bcM8vX/ra4aE7y7iZr3EOiLEL8fwUsOV
- YFdbvhFGDrDj1DuSqwlfbWWYbK5a7/FT9PztT6LCSL5dC8gTW7n5JuZdJxAvlsCx8aJSB9yMttK
- kQJ8lVEJCxzN0oAZLErcwbAUtJsAtCafr8RRo6MwDs9WQnMAfg=
-X-Google-Smtp-Source: AGHT+IEkX3KMCtHfmsbAFe2ylla4UOAbvh+ROmASYv+JpYewu+jeSYrOoe+VyrZLAWeFYzAIYNXNOg==
-X-Received: by 2002:a17:902:e809:b0:20c:7196:a1e9 with SMTP id
- d9443c01a7336-2151d32eafbmr52108815ad.13.1732803219140; 
- Thu, 28 Nov 2024 06:13:39 -0800 (PST)
+ AJvYcCWN+o906wLPUmhk1BPiOaA1A4ekDtI6ZkDRirvz7mJ6gDaekxstRc00s8756mfOok39UIEEOc+fFp7b@nongnu.org
+X-Gm-Message-State: AOJu0YzO10IuF5c4NtorZk+7Mckoi2FCJf93gFW/K+tGX3q/l2fIxzZB
+ 8tPyWjD2s+26jK6s6nAgP+Bp0uaZ9UZ86koELQ+5UxdJ8EV+55XgUfLkVg5OmlU=
+X-Gm-Gg: ASbGncsEPbOR4NonJuoZOCV55g5OuATwTdc1/Vvh+wbs7mWg2AP0ZuYoiVl0M/n/FkE
+ DFBEMuqv6XghZS7OXFjKrCIGoi6oXDVdya+LpRvqp1Msl+lkREb3t07saWWrT6t08qBh8rSYyGN
+ JkpiiB3WeOuSGUrWpdwKcEE1ogSioEkBeQc0uXFz+s6JkCXMooa5aeK/R3Sa0DwVWGX6MGe/4a0
+ 9gYrAMoYF2BA5oZGvzkmyiZLgxmeDj/SzBps97CDp1Gy7y7Row=
+X-Google-Smtp-Source: AGHT+IGpSoh0+KuaUmbtzf7psTJL2sEZHjOMJGTPxqPhdzCChYmOavow3xeHBSZMOHxavsOGbeO9Tg==
+X-Received: by 2002:a17:902:f64c:b0:20b:7210:5859 with SMTP id
+ d9443c01a7336-21501d587d8mr96068425ad.38.1732803226644; 
+ Thu, 28 Nov 2024 06:13:46 -0800 (PST)
 Received: from carbon-x1.. ([2a01:e0a:e17:9700:16d2:7456:6634:9626])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-215218f452csm13829005ad.48.2024.11.28.06.13.32
+ d9443c01a7336-215218f452csm13829005ad.48.2024.11.28.06.13.39
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 28 Nov 2024 06:13:38 -0800 (PST)
+ Thu, 28 Nov 2024 06:13:45 -0800 (PST)
 From: =?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <cleger@rivosinc.com>
 To: qemu-riscv@nongnu.org, Palmer Dabbelt <palmer@dabbelt.com>,
  Alistair Francis <alistair.francis@wdc.com>,
@@ -73,17 +73,18 @@ Cc: =?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <cleger@rivosinc.com>,
  Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
  Ved Shanbhogue <ved@rivosinc.com>, Atish Patra <atishp@rivosinc.com>,
  qemu-devel@nongnu.org, Frank Chang <frank.chang@sifive.com>
-Subject: [PATCH v6 6/9] target/riscv: Add Smdbltrp CSRs handling
-Date: Thu, 28 Nov 2024 15:12:26 +0100
-Message-ID: <20241128141230.284320-7-cleger@rivosinc.com>
+Subject: [PATCH v6 7/9] target/riscv: Implement Smdbltrp sret,
+ mret and mnret behavior
+Date: Thu, 28 Nov 2024 15:12:27 +0100
+Message-ID: <20241128141230.284320-8-cleger@rivosinc.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241128141230.284320-1-cleger@rivosinc.com>
 References: <20241128141230.284320-1-cleger@rivosinc.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
- envelope-from=cleger@rivosinc.com; helo=mail-pl1-x62e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
+ envelope-from=cleger@rivosinc.com; helo=mail-pf1-x429.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -105,87 +106,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add `ext_smdbltrp`in RISCVCPUConfig and implement MSTATUS.MDT behavior.
-Also set MDT to 1 at reset according to the specification.
+When the Ssdbltrp extension is enabled, SSTATUS.MDT field is cleared
+when executing sret if executed in M-mode. When executing mret/mnret,
+SSTATUS.MDT is cleared.
 
 Signed-off-by: Clément Léger <cleger@rivosinc.com>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/cpu.c      |  3 +++
- target/riscv/cpu_bits.h |  1 +
- target/riscv/cpu_cfg.h  |  1 +
- target/riscv/csr.c      | 13 +++++++++++++
- 4 files changed, 18 insertions(+)
+ target/riscv/op_helper.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index f30630e947..be7c0475bf 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -1027,6 +1027,9 @@ static void riscv_cpu_reset_hold(Object *obj, ResetType type)
-             env->mstatus_hs = set_field(env->mstatus_hs,
-                                         MSTATUS64_UXL, env->misa_mxl);
+diff --git a/target/riscv/op_helper.c b/target/riscv/op_helper.c
+index eeacb2d1a1..9de4df207c 100644
+--- a/target/riscv/op_helper.c
++++ b/target/riscv/op_helper.c
+@@ -299,6 +299,9 @@ target_ulong helper_sret(CPURISCVState *env)
          }
-+        if (riscv_cpu_cfg(env)->ext_smdbltrp) {
-+            env->mstatus = set_field(env->mstatus, MSTATUS_MDT, 1);
-+        }
+         mstatus = set_field(mstatus, MSTATUS_SDT, 0);
      }
-     env->mcause = 0;
-     env->miclaim = MIP_SGEIP;
-diff --git a/target/riscv/cpu_bits.h b/target/riscv/cpu_bits.h
-index ed33610b83..ab9d0b19d8 100644
---- a/target/riscv/cpu_bits.h
-+++ b/target/riscv/cpu_bits.h
-@@ -566,6 +566,7 @@
- #define MSTATUS_MPELP       0x020000000000 /* zicfilp */
- #define MSTATUS_GVA         0x4000000000ULL
- #define MSTATUS_MPV         0x8000000000ULL
-+#define MSTATUS_MDT         0x40000000000ULL /* Smdbltrp extension */
- 
- #define MSTATUS64_UXL       0x0000000300000000ULL
- #define MSTATUS64_SXL       0x0000000C00000000ULL
-diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
-index 1194dfd3bc..6699e134ee 100644
---- a/target/riscv/cpu_cfg.h
-+++ b/target/riscv/cpu_cfg.h
-@@ -80,6 +80,7 @@ struct RISCVCPUConfig {
-     bool ext_sstc;
-     bool ext_smcntrpmf;
-     bool ext_ssdbltrp;
-+    bool ext_smdbltrp;
-     bool ext_svadu;
-     bool ext_svinval;
-     bool ext_svnapot;
-diff --git a/target/riscv/csr.c b/target/riscv/csr.c
-index 611f44e044..055b19d517 100644
---- a/target/riscv/csr.c
-+++ b/target/riscv/csr.c
-@@ -1649,6 +1649,13 @@ static RISCVException write_mstatus(CPURISCVState *env, int csrno,
-         }
++    if (riscv_cpu_cfg(env)->ext_smdbltrp && env->priv >= PRV_M) {
++        mstatus = set_field(mstatus, MSTATUS_MDT, 0);
++    }
+     if (env->priv_ver >= PRIV_VERSION_1_12_0) {
+         mstatus = set_field(mstatus, MSTATUS_MPRV, 0);
+     }
+@@ -384,6 +387,9 @@ target_ulong helper_mret(CPURISCVState *env)
+     if (riscv_cpu_cfg(env)->ext_ssdbltrp) {
+         mstatus = ssdbltrp_mxret(env, mstatus, prev_priv, prev_virt);
+     }
++    if (riscv_cpu_cfg(env)->ext_smdbltrp) {
++        mstatus = set_field(mstatus, MSTATUS_MDT, 0);
++    }
+     if ((env->priv_ver >= PRIV_VERSION_1_12_0) && (prev_priv != PRV_M)) {
+         mstatus = set_field(mstatus, MSTATUS_MPRV, 0);
+     }
+@@ -429,6 +435,12 @@ target_ulong helper_mnret(CPURISCVState *env)
+         env->mstatus = ssdbltrp_mxret(env, env->mstatus, prev_priv, prev_virt);
      }
  
 +    if (riscv_cpu_cfg(env)->ext_smdbltrp) {
-+        mask |= MSTATUS_MDT;
-+        if ((val & MSTATUS_MDT) != 0) {
-+            val &= ~MSTATUS_MIE;
++        if (prev_priv < PRV_M) {
++            env->mstatus = set_field(env->mstatus, MSTATUS_MDT, 0);
 +        }
 +    }
 +
-     if (xl != MXL_RV32 || env->debugger) {
-         if (riscv_has_ext(env, RVH)) {
-             mask |= MSTATUS_MPV | MSTATUS_GVA;
-@@ -1692,6 +1699,12 @@ static RISCVException write_mstatush(CPURISCVState *env, int csrno,
-     uint64_t valh = (uint64_t)val << 32;
-     uint64_t mask = riscv_has_ext(env, RVH) ? MSTATUS_MPV | MSTATUS_GVA : 0;
- 
-+    if (riscv_cpu_cfg(env)->ext_smdbltrp) {
-+        mask |= MSTATUS_MDT;
-+        if ((valh & MSTATUS_MDT) != 0) {
-+            mask |= MSTATUS_MIE;
-+        }
-+    }
-     env->mstatus = (env->mstatus & ~mask) | (valh & mask);
- 
-     return RISCV_EXCP_NONE;
+     if (riscv_has_ext(env, RVH) && prev_virt) {
+         riscv_cpu_swap_hypervisor_regs(env);
+     }
 -- 
 2.45.2
 
