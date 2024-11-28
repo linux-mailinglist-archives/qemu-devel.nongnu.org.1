@@ -2,48 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 209429DBCA3
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Nov 2024 20:39:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 882F79DBC9D
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Nov 2024 20:39:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tGkL0-0005vy-Ka; Thu, 28 Nov 2024 14:38:06 -0500
+	id 1tGkLA-00061t-4l; Thu, 28 Nov 2024 14:38:16 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
- (envelope-from <eaab44ccc59b83d8dff60fca3361a9b98ec7fee6@kylie.crudebyte.com>)
- id 1tGkKu-0005pF-Vh; Thu, 28 Nov 2024 14:38:01 -0500
+ (envelope-from <f2db23ede5b3015330c2314f796dd694f35c7508@kylie.crudebyte.com>)
+ id 1tGkL7-00061J-Ga; Thu, 28 Nov 2024 14:38:13 -0500
 Received: from kylie.crudebyte.com ([5.189.157.229])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
- (envelope-from <eaab44ccc59b83d8dff60fca3361a9b98ec7fee6@kylie.crudebyte.com>)
- id 1tGkKt-0001e6-6v; Thu, 28 Nov 2024 14:38:00 -0500
+ (envelope-from <f2db23ede5b3015330c2314f796dd694f35c7508@kylie.crudebyte.com>)
+ id 1tGkL6-0001jj-2R; Thu, 28 Nov 2024 14:38:13 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=crudebyte.com; s=kylie; h=Cc:To:Subject:Date:From:References:In-Reply-To:
  Message-Id:Content-Type:Content-Transfer-Encoding:MIME-Version:Content-ID:
- Content-Description; bh=4cxulYeO4NhY3t6U7QERTjOlXT5wKxyH+m3yclIV2gg=; b=UpGd5
- 9j2M+YyfJKOOJz4NDFXchilnA61SvNOkJ+np2oYtTv/pwemf4yuosqcnk/A078pC2k7ky6wGX/UD/
- jUgpUealMDkdLIOz3GWiniuAyEYGTiXwDNH/uIvaocqqZjzg3qmjLMofgMYoJFBQwSAWyzenlpaqg
- 1kg0np98lJ4xsgKJadnKI/LL2d8xTnu1zP1+k4O+gTAjubKuqDHG6ZqaS22dZc8kHO9DYlICANtEP
- JZiwVHKtax3bXOLerHhL/4MJtE7PLR7G64aGPUif5trx6d0/Y8eyAtihl83E+CPf0LaHhS115l4Ix
- b4U8Qg991lAfv2P8AQ6cme86Y1RNBsZN/mXL0/TKfFRrXuZONB9oJYk4EP5hDRdGBOwcD7CQffilC
- 8/6prVLPcnWioeqfu6CkSweXbmqm7gDUjKF3Mim/bFC0HNJdI3BWmiQpjzJcjTsArqr+X6oa06/jF
- 0Df8R7ckzs4b0FI51rXJ47NkRPoZ2VyZUz0oTZroQrUNKALUKNUdghaMhyDudqq+TO25uWDu07tUF
- RYYvX778DO/4OImiqECzjMVlsRPXqeYk2IP00M9lD7wqQO6U97URztj+NsErlJS1/3CqtfUQGSXD2
- 9yYF4ChIII/C2krmc2Zc+RSZvYHCb6IMaBYLO+g4kFf+RR6U7VulocpBohnoRA=;
-Message-Id: <eaab44ccc59b83d8dff60fca3361a9b98ec7fee6.1732820037.git.qemu_oss@crudebyte.com>
+ Content-Description; bh=WpNnfdMSmJ9VqxtVLFQyTz3SmuQbK7pH3Ndcci69wQ8=; b=Puspp
+ OSMc4T3ovGoUq6/SNFfkbDTtXdwbzJGMvW6NVI2guEmwpcYQuArs+hfvsk//vCJR3NcRvpOKSTI6V
+ PPuPtDEg8EjO5TPZx/5QYjSYIG6PX2Txqda5wZK9qzOtXV/C1YHJqZBTzMSpC+Mx+0g+Nkz5oXjBk
+ MivrIS0poeVr3ydStFZjqhcwxH0dSy1EUmW1o+mfYtrikgzZytx0M8JnDE+gwbutSP4ojiEJD9e8c
+ lWIvbV2yKWy0FepHd/spujSuvLDqrS7aihdsGZ+Yw49ZkJmi4itaVAC+usF5xP881Pnydu7PGUwbe
+ LBwnxW2c2lZN3gSXVkwr0UMYPzVtyB/Y2lqqjBaYGju29SefG/FYzXquU6AEAb3OP1InB+DqLV0KP
+ hIWOcjNF2ec7bHLVvrq+ovkbuBquq55c2jHzAlEz8klzywXLMgV08ZHdGI/k0HEG8Pdbnm92dPZ7n
+ zP4O+asNR1nlVpMcqaJdvHdnQb/VyHAv8t+2pqruTndmElHpQ7o/b+ObL0QwQT6vjy/CQpSwP1Fgq
+ AsS3tnvOUJfUWVYxB1UgeBxO+MIcU3gRvkhhsDjbYIDgjYC/9CDN5dCAIKxTL07blhq3BBQIXEofv
+ BQuI5dDqBvPtFo2AdRQL1nMn6qWmxeg3cbqJHAY48meNMRwvb8KmuuxxGos2LQ=;
+Message-Id: <f2db23ede5b3015330c2314f796dd694f35c7508.1732820037.git.qemu_oss@crudebyte.com>
 In-Reply-To: <cover.1732820037.git.qemu_oss@crudebyte.com>
 References: <cover.1732820037.git.qemu_oss@crudebyte.com>
 From: Christian Schoenebeck <qemu_oss@crudebyte.com>
 Date: Thu, 28 Nov 2024 19:53:58 +0100
-Subject: [PULL for-9.2 7/7] tests/9p: also check 'Tgetattr' in
- 'use-after-unlink' test
+Subject: [PULL for-9.2 1/7] 9pfs: cleanup V9fsFidState
 To: qemu-devel@nongnu.org,
     Peter Maydell <peter.maydell@linaro.org>
 Cc: qemu-stable@nongnu.org,
     Greg Kurz <groug@kaod.org>
 Received-SPF: pass client-ip=5.189.157.229;
- envelope-from=eaab44ccc59b83d8dff60fca3361a9b98ec7fee6@kylie.crudebyte.com;
+ envelope-from=f2db23ede5b3015330c2314f796dd694f35c7508@kylie.crudebyte.com;
  helo=kylie.crudebyte.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -67,38 +66,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This verifies expected behaviour of previous bug fix patch.
+Drop V9fsFidState's 'next' member, which is no longer used since:
 
+  f5265c8f917e ('9pfs: use GHashTable for fid table')
+
+Fixes: f5265c8f917e ('9pfs: use GHashTable for fid table')
 Signed-off-by: Christian Schoenebeck <qemu_oss@crudebyte.com>
 Reviewed-by: Greg Kurz <groug@kaod.org>
-Message-Id: <7017658155c517b9665b75333a97c79aa2d4f3df.1732465720.git.qemu_oss@crudebyte.com>
+Message-Id: <E1tE4v2-0051EH-Ni@kylie.crudebyte.com>
 ---
- tests/qtest/virtio-9p-test.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ hw/9pfs/9p.h | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/tests/qtest/virtio-9p-test.c b/tests/qtest/virtio-9p-test.c
-index f6d7400a87..ab3a12c816 100644
---- a/tests/qtest/virtio-9p-test.c
-+++ b/tests/qtest/virtio-9p-test.c
-@@ -702,6 +702,7 @@ static void fs_use_after_unlink(void *obj, void *data,
-     g_autofree char *real_file = virtio_9p_test_path("09/doa_file");
-     g_autofree char *buf = g_malloc0(write_count);
-     struct stat st_file;
-+    struct v9fs_attr attr;
-     uint32_t fid_file;
-     uint32_t count;
+diff --git a/hw/9pfs/9p.h b/hw/9pfs/9p.h
+index a6f59abccb..5e041e1f60 100644
+--- a/hw/9pfs/9p.h
++++ b/hw/9pfs/9p.h
+@@ -280,7 +280,6 @@ struct V9fsFidState {
+     uid_t uid;
+     int ref;
+     bool clunked;
+-    QSIMPLEQ_ENTRY(V9fsFidState) next;
+     QSLIST_ENTRY(V9fsFidState) reclaim_next;
+ };
  
-@@ -725,6 +726,10 @@ static void fs_use_after_unlink(void *obj, void *data,
-     tunlinkat({ .client = v9p, .atPath = "09", .name = "doa_file" });
- 
-     /* file is removed, but we still have it open, so this should succeed */
-+    tgetattr({
-+        .client = v9p, .fid = fid_file, .request_mask = P9_GETATTR_BASIC,
-+        .rgetattr.attr = &attr
-+    });
-     count = twrite({
-         .client = v9p, .fid = fid_file, .offset = 0, .count = write_count,
-         .data = buf
 -- 
 2.30.2
 
