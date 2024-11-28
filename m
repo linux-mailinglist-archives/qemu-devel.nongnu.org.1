@@ -2,57 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB11A9DB632
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Nov 2024 12:05:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A77F9DB63D
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Nov 2024 12:07:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tGcIq-0000ex-9y; Thu, 28 Nov 2024 06:03:20 -0500
+	id 1tGcMh-0003X6-Jk; Thu, 28 Nov 2024 06:07:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <tugy@chinatelecom.cn>)
- id 1tGcIg-0000do-5u; Thu, 28 Nov 2024 06:03:10 -0500
-Received: from smtpnm6-12.21cn.com ([182.42.119.59] helo=chinatelecom.cn)
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <tugy@chinatelecom.cn>)
- id 1tGcId-0003Az-Bx; Thu, 28 Nov 2024 06:03:09 -0500
-HMM_SOURCE_IP: 192.168.137.232:0.1841577584
-HMM_ATTACHE_NUM: 0000
-HMM_SOURCE_TYPE: SMTP
-Received: from clientip-139.200.108.9 (unknown [192.168.137.232])
- by chinatelecom.cn (HERMES) with SMTP id 32438110001B2;
- Thu, 28 Nov 2024 18:53:33 +0800 (CST)
-X-189-SAVE-TO-SEND: +tugy@chinatelecom.cn
-Received: from  ([139.200.108.9])
- by gateway-ssl-dep-6977f57994-b9pvf with ESMTP id
- 6551d32c43094d3f94e4e04567072c54 for eblake@redhat.com; 
- Thu, 28 Nov 2024 18:53:36 CST
-X-Transaction-ID: 6551d32c43094d3f94e4e04567072c54
-X-Real-From: tugy@chinatelecom.cn
-X-Receive-IP: 139.200.108.9
-X-MEDUSA-Status: 0
-From: tugy@chinatelecom.cn
-To: eblake@redhat.com, armbru@redhat.com, kwolf@redhat.com, hreitz@redhat.com,
- qemu-block@nongnu.org
-Cc: qemu-devel@nongnu.org,
-	tugy@chinatelecom.cn
-Subject: [PATCH 2/2] qapi/crypto: support enable encryption/decryption in
- parallel
-Date: Thu, 28 Nov 2024 18:51:22 +0800
-Message-Id: <608e6ae38d080acdcd1f28d0700b9e0b919ee2db.1732789721.git.tugy@chinatelecom.cn>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <cover.1732789721.git.tugy@chinatelecom.cn>
-References: <cover.1732789721.git.tugy@chinatelecom.cn>
-In-Reply-To: <cover.1732789721.git.tugy@chinatelecom.cn>
-References: <cover.1732789721.git.tugy@chinatelecom.cn>
-Received-SPF: pass client-ip=182.42.119.59; envelope-from=tugy@chinatelecom.cn;
- helo=chinatelecom.cn
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1tGcMT-0003W4-29
+ for qemu-devel@nongnu.org; Thu, 28 Nov 2024 06:07:05 -0500
+Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1tGcMM-0005oq-Hb
+ for qemu-devel@nongnu.org; Thu, 28 Nov 2024 06:07:02 -0500
+Received: by mail-ed1-x530.google.com with SMTP id
+ 4fb4d7f45d1cf-5d01db666ceso837130a12.0
+ for <qemu-devel@nongnu.org>; Thu, 28 Nov 2024 03:06:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1732792015; x=1733396815; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=8kNjCRSoXw2jqQFwpOaavwKDFP4GzOqvpfROk6xC3N4=;
+ b=TP2zoSAm/jipZkA17Sor8QdKYZpGcbDLqblorBi92fc43FG9nR3ltzIqvzCMCk/8Gr
+ l8hSydpfPjhd4KQ39JoudsujcVuvT26MfVzEzN+UOhvQ2iqDJsY6BQ1hJ2IgjK9FWvXx
+ te64vH+JjeYYfZdzHH0WZ/XIa2jPWprbkXuLXYG2vxlSzgYOD+kdjTTjw/EuL9vtOH+T
+ v/vmOhujieYqBoJsDEaNLB6FXAw0PuxSM1iID4hNBwjFiwFd73Gp3m1gx7k/cD+PGNfg
+ A6LIR68GDJgixLuF2qMPRO9d53bghtoLX59c25OfJk0L1EXAl6PC1kqTJFJTyPF9PduN
+ V9Hg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1732792015; x=1733396815;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=8kNjCRSoXw2jqQFwpOaavwKDFP4GzOqvpfROk6xC3N4=;
+ b=ngrTPKKp3OGkFIwYl7ob4cWa4GK6vSvqNB8ZcxyZkkQeW1Y87X1xjV6oftJEUmrMzj
+ fY1pKeYkZ9Lc9d64GLQedZ0/5HbmfCiqKHIphgblYjwhEgn4IFz+kSLD5CmIv0hfxUCs
+ 0QCtY+211ki75egATavyX2V0++YwnwZ+pKAYoKU6OuSOf5mBOUJbmIqjxH+jDtkUibTC
+ 4A/6W1GgZgOmrBeAHpmneveK1Xp0OdUleuBmEzCv3nNTyKYg1w9no9Ov1Zjwb594hGfT
+ uUmbvb2OmSuEhMSRu2PPAwG2ZMETnrAm2vd47WX+BuhBJviwhpej8+r5eQhRRyDYC18y
+ doxA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVA2aw+4yvtZ5OnsIZnw4kbt4AqHvUUSGXbL7M7LHkXQI0hfIBUx9dh8KdsBpE2OranPCFVBRsCplDP@nongnu.org
+X-Gm-Message-State: AOJu0YwupBVazyFHHg2xFsNmnrM/CO3uueHZL/ed3zjqKGZsN5Mmx9ic
+ AZ/ZNtDDOagHGHbX8yAL19A9gBvOXJ9Flhf3+HaDRubxvlphnsqTYN6Rc5z4eUlLvvDd/8vJbxW
+ w7kgBX2qdh0wPTG3nLBAgsPpqO5maD5HVbsc5uw==
+X-Gm-Gg: ASbGncvaqCJUvbTMIaxKhBVStIWraZYVrcgHfyhPlTq+q4SE4sTz6D3iM5paEtJXExM
+ 2tKjjdSZ8jlxm2dHmflFv2zUSAlUo7j11
+X-Google-Smtp-Source: AGHT+IEo13wQbIF3z3AAwBM2bi/j5Ye6dnd/ySq80ABX3xotUry3K7QB9GrlqhSFrpDxSgQBLeR2FNRmvCdEuUj+xrE=
+X-Received: by 2002:a05:6402:40c6:b0:5cf:f82:ecef with SMTP id
+ 4fb4d7f45d1cf-5d080b8c951mr6241892a12.2.1732792015459; Thu, 28 Nov 2024
+ 03:06:55 -0800 (PST)
+MIME-Version: 1.0
+References: <20241114094839.4128404-1-jamin_lin@aspeedtech.com>
+ <2e956389-289a-4806-8985-ab846d808736@kaod.org>
+ <b520adf4-12f1-4261-a48f-bb74589bb31d@linaro.org>
+ <a7c967ce-6bc0-47e0-aa25-cc89dab29cfb@kaod.org>
+In-Reply-To: <a7c967ce-6bc0-47e0-aa25-cc89dab29cfb@kaod.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 28 Nov 2024 11:06:44 +0000
+Message-ID: <CAFEAcA9e5PFNoNh4u7paY5k5RnMgJ-3c++eGJd4u8CjjvDCvYw@mail.gmail.com>
+Subject: Re: [PATCH v3 0/3] Introduce a new Write Protected pin inverted
+ property
+To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+Cc: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Jamin Lin <jamin_lin@aspeedtech.com>, Steven Lee <steven_lee@aspeedtech.com>, 
+ Troy Lee <leetroy@gmail.com>, Andrew Jeffery <andrew@codeconstruct.com.au>, 
+ Joel Stanley <joel@jms.id.au>, Bin Meng <bmeng.cn@gmail.com>, 
+ "open list:ASPEED BMCs" <qemu-arm@nongnu.org>, 
+ "open list:All patches CC here" <qemu-devel@nongnu.org>, 
+ "open list:SD (Secure Card)" <qemu-block@nongnu.org>, troy_lee@aspeedtech.com,
+ yunlin.tang@aspeedtech.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::530;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x530.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -68,115 +102,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Guoyi Tu <tugy@chinatelecom.cn>
+On Wed, 27 Nov 2024 at 11:26, C=C3=A9dric Le Goater <clg@kaod.org> wrote:
+>
+>
+> > Having to modify sdhci.c internals is dubious, since inversion
+> > occurs out of this block. If this is the soc/board layer, isn't
+> > better to model at this level? Smth like:
+> >
+> > -- >8 --
+> > diff --git a/hw/arm/aspeed_ast2600.c b/hw/arm/aspeed_ast2600.c
+> > index be3eb70cdd7..aad9be66b75 100644
+> > --- a/hw/arm/aspeed_ast2600.c
+> > +++ b/hw/arm/aspeed_ast2600.c
+> > @@ -559,8 +559,9 @@ static void aspeed_soc_ast2600_realize(DeviceState =
+*dev, Error **errp)
+> >       }
+> >       aspeed_mmio_map(s, SYS_BUS_DEVICE(&s->sdhci), 0,
+> >                       sc->memmap[ASPEED_DEV_SDHCI]);
+> > +    irq =3D aspeed_soc_get_irq(s, ASPEED_DEV_SDHCI);
+> >       sysbus_connect_irq(SYS_BUS_DEVICE(&s->sdhci), 0,
+> > -                       aspeed_soc_get_irq(s, ASPEED_DEV_SDHCI));
+> > +                       sc->sdhci_wp_inverted ? qemu_irq_invert(irq) : =
+irq);
+> >
+> >       /* eMMC */
+> >       if (!sysbus_realize(SYS_BUS_DEVICE(&s->emmc), errp)) {
+> > ---
+>
+> Nice ! I didn't know about qemu_irq_invert().
 
-add encrypt-in-parallel option to enable encryption/decryption
-in parallel
+I am not a fan of qemu_irq_invert(). It's one of those ancient
+pre-QOM APIs that we ideally would get rid of at some point.
+Two problems with it:
 
-Signed-off-by: Guoyi Tu <tugy@chinatelecom.cn>
----
- block/crypto.c       | 8 ++++++++
- block/crypto.h       | 9 +++++++++
- qapi/block-core.json | 6 +++++-
- qapi/crypto.json     | 6 +++++-
- 4 files changed, 27 insertions(+), 2 deletions(-)
+(1) It allocates and returns a qemu_irq directly,
+so in the patch above you're effectively leaking that
+allocation. (Not a big deal since the SoC object is going to
+be around for the life of the QEMU process, but probably
+the clang leak-sanitizer will complain.)
 
-diff --git a/block/crypto.c b/block/crypto.c
-index c085f331ce..b02400fb26 100644
---- a/block/crypto.c
-+++ b/block/crypto.c
-@@ -212,6 +212,7 @@ static QemuOptsList block_crypto_runtime_opts_luks = {
-     .head = QTAILQ_HEAD_INITIALIZER(block_crypto_runtime_opts_luks.head),
-     .desc = {
-         BLOCK_CRYPTO_OPT_DEF_LUKS_KEY_SECRET(""),
-+        BLOCK_CRYPTO_OPT_DEF_LUKS_ENCRYPT_IN_PARALLEL(""),
-         { /* end of list */ }
-     },
- };
-@@ -347,6 +348,13 @@ static int block_crypto_open_generic(QCryptoBlockFormat format,
-     }
- 
-     cryptoopts = qemu_opts_to_qdict(opts, NULL);
-+
-+    if (!g_strcmp0(qdict_get_try_str(cryptoopts,
-+                   BLOCK_CRYPTO_OPT_LUKS_ENCRYPT_IN_PARALLEL), "on") ||
-+        qdict_get_try_bool(cryptoopts,
-+                           BLOCK_CRYPTO_OPT_LUKS_ENCRYPT_IN_PARALLEL, false)) {
-+        crypto->encrypt_in_parallel = true;
-+    }
-     qdict_put_str(cryptoopts, "format", QCryptoBlockFormat_str(format));
- 
-     open_opts = block_crypto_open_opts_init(cryptoopts, errp);
-diff --git a/block/crypto.h b/block/crypto.h
-index dc3d2d5ed9..6729420941 100644
---- a/block/crypto.h
-+++ b/block/crypto.h
-@@ -46,6 +46,7 @@
- #define BLOCK_CRYPTO_OPT_LUKS_STATE "state"
- #define BLOCK_CRYPTO_OPT_LUKS_OLD_SECRET "old-secret"
- #define BLOCK_CRYPTO_OPT_LUKS_NEW_SECRET "new-secret"
-+#define BLOCK_CRYPTO_OPT_LUKS_ENCRYPT_IN_PARALLEL "encrypt-in-parallel"
- 
- 
- #define BLOCK_CRYPTO_OPT_DEF_LUKS_KEY_SECRET(prefix)                    \
-@@ -130,6 +131,14 @@
-                 "Empty string to erase",                        \
-     }
- 
-+#define BLOCK_CRYPTO_OPT_DEF_LUKS_ENCRYPT_IN_PARALLEL(prefix)     \
-+    {                                                             \
-+        .name = prefix BLOCK_CRYPTO_OPT_LUKS_ENCRYPT_IN_PARALLEL, \
-+        .type = QEMU_OPT_BOOL,                                    \
-+        .help = "perform encryption and decryption through "      \
-+                "thread pool",                                    \
-+    }
-+
- QCryptoBlockCreateOptions *
- block_crypto_create_opts_init(QDict *opts, Error **errp);
- 
-diff --git a/qapi/block-core.json b/qapi/block-core.json
-index fd3bcc1c17..1e47b6ea80 100644
---- a/qapi/block-core.json
-+++ b/qapi/block-core.json
-@@ -3365,12 +3365,16 @@
- #
- # @header: block device holding a detached LUKS header.  (since 9.0)
- #
-+# @encrypt-in-parallel: perform encryption and decryption through
-+#   thread pool
-+#
- # Since: 2.9
- ##
- { 'struct': 'BlockdevOptionsLUKS',
-   'base': 'BlockdevOptionsGenericFormat',
-   'data': { '*key-secret': 'str',
--            '*header': 'BlockdevRef'} }
-+            '*header': 'BlockdevRef',
-+            '*encrypt-in-parallel': 'bool'} }
- 
- ##
- # @BlockdevOptionsGenericCOWFormat:
-diff --git a/qapi/crypto.json b/qapi/crypto.json
-index c9d967d782..91963c693f 100644
---- a/qapi/crypto.json
-+++ b/qapi/crypto.json
-@@ -192,10 +192,14 @@
- #     decryption key.  Mandatory except when probing image for
- #     metadata only.
- #
-+# @encrypt-in-parallel: perform encryption and decryption through
-+#   thread pool
-+#
- # Since: 2.6
- ##
- { 'struct': 'QCryptoBlockOptionsLUKS',
--  'data': { '*key-secret': 'str' }}
-+  'data': { '*key-secret': 'str',
-+            '*encrypt-in-parallel': 'bool' }}
- 
- ##
- # @QCryptoBlockCreateOptionsLUKS:
--- 
-2.17.1
+(2) It calls qemu_irq_raise() directly, immediately. This is
+kind of bogus in a realize function, where you're not supposed
+to be raising IRQ lines yet; it also doesn't do anything about
+reset, so if the device on the other end *did* care about seeing
+that 0->1 transition then it will be broken on system-reset
+because the transition won't happen. (Handling "device is supposed
+to have an asserted-as-1 line coming out of reset" is not
+something that we do very well in QEMU generally. In theory
+3-phase reset is supposed to help with this by letting you do
+the assert-the-line in the reset-exit phase, but in practice we
+typically just don't model the line-assertion at all and
+trust that the reset state of the device on the far end is
+what it ought to be anyway...)
 
+I would not recommend using qemu_irq_invert() in new code.
+
+I guess in an ideal world we'd implement a QOM object
+that encapsulated the the "not gate" logic, similar to
+TYPE_OR_IRQ. (Though for TYPE_OR_IRQ we made the mistake
+of making it inherit from TYPE_DEVICE, not TYPE_SYSBUS_DEVICE,
+so it doesn't get reset properly on system reset and so
+the "what happens to the output on reset" is still not
+really correct.)
+
+thanks
+-- PMM
 
