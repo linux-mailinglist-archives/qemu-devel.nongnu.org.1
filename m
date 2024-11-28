@@ -2,83 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EDB19DBC08
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Nov 2024 18:58:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AA6D9DBC0D
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Nov 2024 19:01:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tGimW-0005PK-TY; Thu, 28 Nov 2024 12:58:24 -0500
+	id 1tGipC-0007Gs-4A; Thu, 28 Nov 2024 13:01:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tGimU-0005N3-1W
- for qemu-devel@nongnu.org; Thu, 28 Nov 2024 12:58:22 -0500
-Received: from mail-qt1-x835.google.com ([2607:f8b0:4864:20::835])
+ id 1tGipA-0007GX-Rh
+ for qemu-devel@nongnu.org; Thu, 28 Nov 2024 13:01:08 -0500
+Received: from mail-ot1-x32f.google.com ([2607:f8b0:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tGimS-0007IL-1l
- for qemu-devel@nongnu.org; Thu, 28 Nov 2024 12:58:21 -0500
-Received: by mail-qt1-x835.google.com with SMTP id
- d75a77b69052e-46684744070so7964891cf.1
- for <qemu-devel@nongnu.org>; Thu, 28 Nov 2024 09:58:19 -0800 (PST)
+ id 1tGip8-0000Al-Cg
+ for qemu-devel@nongnu.org; Thu, 28 Nov 2024 13:01:08 -0500
+Received: by mail-ot1-x32f.google.com with SMTP id
+ 46e09a7af769-71d5984e56fso438590a34.3
+ for <qemu-devel@nongnu.org>; Thu, 28 Nov 2024 10:01:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1732816699; x=1733421499; darn=nongnu.org;
+ d=linaro.org; s=google; t=1732816865; x=1733421665; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:to:subject:user-agent:mime-version:date:message-id:from
  :to:cc:subject:date:message-id:reply-to;
- bh=ElvaGOTYdqh8TD7RLPQDLXuGC4v9ulR9RbFYsDxRwEU=;
- b=uFiwtLOPpjmYAbJ3gRnzhR/kCCC1eHGOGuvuIUiuHc61fj4XbTApFLjkLpY+y382Je
- XnDqYsYQrNZ0THZDiuXXe3oNcNa8jrUar+DEvVoG/RO21aLSOU5LaVDXc2R8FjJcUNl8
- ocvmDUI+CNIzUg4zY7kbEUyDofspS28sYzdN2yZyTMdMaVdbhIxrMg4T6ORwk3XuUah4
- iPeMM0HsPrNdjHX7sdP56NQCYQfSvdWVfmhHff8/kp6YJH8ruLvIc0lJCAx49Qbqsj7H
- LYp21XN1TxxZw0T9yMhbaAeEuMx2r3Sel49IQc/Ps7vUY8LK8NV8nGsaQEXH02G8bHc3
- JqCw==
+ bh=KmkZA6KgNVQz3pwIYP98e5o7gc7bTLHdjWUErsnrUN4=;
+ b=rtXYZF5Ftr5lSzqkaumyS7YRuhMTGov5q6bvsy08I8exC40Z+EFxp5I+XMd+LqlNvA
+ k2roorABeINgsXoXxQ+zk9MiNiMuWQOidnx3uVaiy/cMiSIKBnCEzhrkt+HE84pc08Nz
+ pNgCOyLza/tpvvFgqEG37Kd13jGUPNFdGIBTm06prQC9+vibyEH/GRcCjsG7aQF8KuxT
+ I+cp0uSK8QXNTI99q7MMfvGs4VXAwHQtSGnhdN7MF9FdHRwPQt58x4iny0mIEZ1XDaTf
+ 4kvqEeB/4yzYTi0d5NxjerMxg2Kecw4INPJCeBCxP98tSPuC9HEU/ovs11iX5CWm2kfs
+ XGpQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1732816699; x=1733421499;
+ d=1e100.net; s=20230601; t=1732816865; x=1733421665;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ElvaGOTYdqh8TD7RLPQDLXuGC4v9ulR9RbFYsDxRwEU=;
- b=Q/9/xCzBsykiGE1onABXvM2Pae5lnU+vWfea//wK43E6JYSf2Ms37pd7zrUNW+TrDk
- AxhRIgxNzAVWmGhTz/2zycTTmajJJ6DoD7bnooFsUXfzuJeglNi4+bFjIIqlHEowIhFh
- eqvNEewHmLvNG0oKp0UPfS1y+d+PUuWBdZl6lj61wHT7oNj64p7DJo31RIo4irUWTkLZ
- OPzYQpZdrRB9WhI2CCOBqv6fLGl88I0+k56cREF8GROCO6uFhR0KbsffCgcE0t1grj0k
- f0VxoD2JKPNt/62Zw1K0Z6lpGS7EiWx3fbwI6jXKLgjMa6jLDACnwoxoH4UyQsE0XcT6
- U4dg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWuLdp2dBrrKm5GBbGyjRavXutJKfyT6+KUFcFa3wmSIQH0cxvtdGxQMYHgwAq9hcUduFM9kT7a5QMw@nongnu.org
-X-Gm-Message-State: AOJu0YyeqxURHyK7q2j5u5b1MMJ7cG/SyNCt+WSeKUYt55qEE9J/RCfR
- 1wDzxDaL8dB0z3/0yVFV9wKFxHf1eso8m4waHBKZWF31EpdlHWxMkrCeMkZCoY/lxHRYxb6obGN
- 6s84=
-X-Gm-Gg: ASbGncswIcHqNguK4/o9uscRkLUQX3D8tZINvdDz8WJKho6UrjGswrnOvUQ05t/PZRn
- xZHzeM/OpQL1S642+/Z2IDeIjFEFNVEXLE9871hlcijDyd/OYbyNEHsshi7qw3q9m8D9bTCxptY
- 8cDrW7bwpkVKmv40mgBqc401KfvEEyrubUOjSHwkvZgokAwn6qFtEA+DplgZRxQmWHO8dHmg5oE
- rxJKsATxrB+KgMHoar8y6ELTJoDr5lQcbChFxIS0aPYVCxc62d0WBIaNk4Pb1NkJ5c=
-X-Google-Smtp-Source: AGHT+IGAOZJCVNAOjt6/L/Fw7Ycg0FZFKNWc8jqwnN99K5ZPf+4xEcdbwRi5HhyO+aZi5v2RECFgAQ==
-X-Received: by 2002:a05:622a:1ccf:b0:466:aa32:78fa with SMTP id
- d75a77b69052e-466b36751d6mr120476111cf.46.1732816699102; 
- Thu, 28 Nov 2024 09:58:19 -0800 (PST)
+ bh=KmkZA6KgNVQz3pwIYP98e5o7gc7bTLHdjWUErsnrUN4=;
+ b=HIYLUGKw/jB6FGTuQoVwEZX9oYQ2xtL3/aGPXoZ7JmdZDyIA9/N5c4X5vBvNnKHD5v
+ Vjfhi2wQM2cqUWD/pyI21I790CjKuECCqIUnb0QiMQVp1OA+KFViASMU3zG8QiM0VClw
+ fZqH9FXPmwjejI0q4g26aerEAEhtA+HEKoSWLr+3Al3AXLvCVoUIy+h/v7/vwQ8fFO0i
+ r3hAoAwHLOACOiSshTumnQdzHA40X0sY2ubDmHz3Qr/6lrltOZhJXH+CueB67+osH+7j
+ zVBmGYAljCQfysmaGfzvzgPoK+A+YGmeN8Iz2f52ICv/p4MZgGjZIlhYJzWzKngUM6xf
+ vcwg==
+X-Gm-Message-State: AOJu0YzdFBx6ETwVt/NQ4+cnNRHGp/I3fFUXGTcPlLU7DJT7A9Irf06L
+ lw6cM4Mpu2TMz405ucym5LnaOmwqk4YT20cLbV+GECYWtmfJU0Cx/VstwPoMXAX44i6S+YSt8w1
+ 2nE0=
+X-Gm-Gg: ASbGncuMkkUVe4LATsfKxNPWLcBKrRutyt+euQOHT7r5Aq/1XINNZ8EPz56fPqksuqh
+ //U/hEhH+LB2wu9DvVFszSc7ZOyIO+svXMQS8zH4xbLNLcdcc4xkmj/yh0AgagUp6/Yuz32xi8b
+ yeF4rfDJYzyvqrgE4kPrFWZ13IWDRoyqMitHa+uvNbsiONtZfmT3GmiZsSTE310HbeyFbJnblqf
+ 3YrrnS7HloBgvIdzQ1v+x8Qt03MGNc1fW9dfxJIM0LMc7tkdZqkg8o51VYx0R8a2pE=
+X-Google-Smtp-Source: AGHT+IEcPD5he/ezfMotK8DRS9i49IQNgVFe+R4c6qBXsWsnqQ8tvt+diSEGfDtm3te53Us9iiT+ew==
+X-Received: by 2002:a05:6830:6a9a:b0:70f:3720:16bb with SMTP id
+ 46e09a7af769-71d65cf342dmr4662117a34.19.1732816864720; 
+ Thu, 28 Nov 2024 10:01:04 -0800 (PST)
 Received: from [172.20.3.167] ([187.217.227.247])
  by smtp.gmail.com with ESMTPSA id
- d75a77b69052e-466c42536aesm8684451cf.83.2024.11.28.09.58.18
+ 46e09a7af769-71d725d900dsm402044a34.57.2024.11.28.10.01.03
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 28 Nov 2024 09:58:18 -0800 (PST)
-Message-ID: <66962da8-b8a8-4565-a3b5-23973422cbfb@linaro.org>
-Date: Thu, 28 Nov 2024 11:58:15 -0600
+ Thu, 28 Nov 2024 10:01:03 -0800 (PST)
+Message-ID: <eac37ef8-4df8-481c-badf-2fbcea447404@linaro.org>
+Date: Thu, 28 Nov 2024 12:01:01 -0600
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH for-10.0 25/25] fpu: Remove use_first_nan field from
- float_status
-To: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
-References: <20241128104310.3452934-1-peter.maydell@linaro.org>
- <20241128104310.3452934-26-peter.maydell@linaro.org>
+Subject: Re: [PATCH v2] riscv/gdb: add virt mode debug interface
+To: qemu-devel@nongnu.org
+References: <tencent_B52B1EB0A504D6F690B6E6F3FD3AC9BCDC09@qq.com>
+ <8734jbh21e.fsf@draig.linaro.org>
 Content-Language: en-US
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20241128104310.3452934-26-peter.maydell@linaro.org>
+In-Reply-To: <8734jbh21e.fsf@draig.linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::835;
- envelope-from=richard.henderson@linaro.org; helo=mail-qt1-x835.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::32f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x32f.google.com
 X-Spam_score_int: 12
 X-Spam_score: 1.2
 X-Spam_bar: +
@@ -101,23 +99,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/28/24 04:43, Peter Maydell wrote:
-> The use_first_nan field in float_status was an xtensa-specific way to
-> select at runtime from two different NaN propagation rules.  Now that
-> xtensa is using the target-agnostic NaN propagation rule selection
-> that we've just added, we can remove use_first_nan, because there is
-> no longer any code that reads it.
+On 11/28/24 08:21, Alex Bennée wrote:
+> Yanfeng Liu <yfliu2008@qq.com> writes:
 > 
-> Signed-off-by: Peter Maydell<peter.maydell@linaro.org>
-> ---
->   include/fpu/softfloat-helpers.h | 5 -----
->   include/fpu/softfloat-types.h   | 1 -
->   target/xtensa/fpu_helper.c      | 1 -
->   3 files changed, 7 deletions(-)
+>> This adds `virt` virtual register on debug interface so that users
+>> can access current virtualization mode for debugging purposes.
+>>
+>> Signed-off-by: Yanfeng Liu <yfliu2008@qq.com>
+>> ---
+>>   gdb-xml/riscv-32bit-virtual.xml |  1 +
+>>   gdb-xml/riscv-64bit-virtual.xml |  1 +
+>>   target/riscv/gdbstub.c          | 18 ++++++++++++------
+>>   3 files changed, 14 insertions(+), 6 deletions(-)
+>>
+>> diff --git a/gdb-xml/riscv-32bit-virtual.xml b/gdb-xml/riscv-32bit-virtual.xml
+>> index 905f1c555d..d44b6ca2dc 100644
+>> --- a/gdb-xml/riscv-32bit-virtual.xml
+>> +++ b/gdb-xml/riscv-32bit-virtual.xml
+>> @@ -8,4 +8,5 @@
+>>   <!DOCTYPE feature SYSTEM "gdb-target.dtd">
+>>   <feature name="org.gnu.gdb.riscv.virtual">
+>>     <reg name="priv" bitsize="32"/>
+>> +  <reg name="virt" bitsize="32"/>
+>>   </feature>
+>> diff --git a/gdb-xml/riscv-64bit-virtual.xml b/gdb-xml/riscv-64bit-virtual.xml
+>> index 62d86c237b..7c9b63d5b6 100644
+>> --- a/gdb-xml/riscv-64bit-virtual.xml
+>> +++ b/gdb-xml/riscv-64bit-virtual.xml
+>> @@ -8,4 +8,5 @@
+>>   <!DOCTYPE feature SYSTEM "gdb-target.dtd">
+>>   <feature name="org.gnu.gdb.riscv.virtual">
+>>     <reg name="priv" bitsize="64"/>
+>> +  <reg name="virt" bitsize="64"/>
+>>   </feature>
+> 
+> I assume these are mirrored in gdb not a QEMU only extension?
 
-Yay!
+No, we're making this up fresh.  This needs to go into a new feature, at minimum.
+But buy-in from upstream gdb is always better.
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
 r~
 
