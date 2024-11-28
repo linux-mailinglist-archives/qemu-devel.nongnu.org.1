@@ -2,84 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35EB59DB846
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Nov 2024 14:08:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D82649DB84D
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Nov 2024 14:09:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tGeFb-0001cu-OB; Thu, 28 Nov 2024 08:08:07 -0500
+	id 1tGeGw-0002ii-FP; Thu, 28 Nov 2024 08:09:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tGeFY-0001cd-7e
- for qemu-devel@nongnu.org; Thu, 28 Nov 2024 08:08:04 -0500
-Received: from mail-oo1-xc35.google.com ([2607:f8b0:4864:20::c35])
+ id 1tGeGv-0002iY-8a
+ for qemu-devel@nongnu.org; Thu, 28 Nov 2024 08:09:29 -0500
+Received: from mail-oi1-x22e.google.com ([2607:f8b0:4864:20::22e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tGeFW-0006nj-6k
- for qemu-devel@nongnu.org; Thu, 28 Nov 2024 08:08:03 -0500
-Received: by mail-oo1-xc35.google.com with SMTP id
- 006d021491bc7-5f1e560d973so430627eaf.0
- for <qemu-devel@nongnu.org>; Thu, 28 Nov 2024 05:08:01 -0800 (PST)
+ id 1tGeGt-0007xH-Ab
+ for qemu-devel@nongnu.org; Thu, 28 Nov 2024 08:09:28 -0500
+Received: by mail-oi1-x22e.google.com with SMTP id
+ 5614622812f47-3ea48624a2aso407696b6e.2
+ for <qemu-devel@nongnu.org>; Thu, 28 Nov 2024 05:09:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1732799280; x=1733404080; darn=nongnu.org;
+ d=linaro.org; s=google; t=1732799365; x=1733404165; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:to:subject:user-agent:mime-version:date:message-id:from
  :to:cc:subject:date:message-id:reply-to;
- bh=SjZo32ga+iaM5ZFyJOsM6N1jqR5pVG9O8XSaJsR/NHE=;
- b=S9PSMvQZeA+zD5pEIppFBPDf5tm1+Mi6wifhwXutWTMcMSHPLPRbZHUwT2cOO9YaDe
- 49WLxDw6nyw9U1FA1IUqSa7+s1Yk6QAtqbcNg6A87sH5IijaHE4rx0l4GoHfXhg1EWlc
- tTEQ40qzUx/LMooYx+qrTV4nFfp/t8IbdMCDAD73uN6PlmDhUzcJNGu6MKf3N/RQK6/q
- 1aWDk+ATNtXfPg5i0g++DmBf8gR+m6EYoir+0UVQM3pUjUM6iXyWwHbabDEBbDibIr3R
- h/OdwzJscD9aiM+/GlNx6gRaEZSiLFCWuu2wmQjd2+vJ1MVLGk5IRMd2h/cx67/bYZoe
- 7R4A==
+ bh=CoAYwGdQfTMB67AD/o304evZvUiG9cVjmQS7+iXnYcs=;
+ b=NrJUWtdEYlkg2PrkM28yKRWTp4BuTsCakguemh1b4v6NamxdnuTonBTb5tI2W8mH7Z
+ NHCb/0kMkGsNhLeLyplghKTsxQDkLVilRo9jH0udjSaHZzTbU59BsDP/4AqCOS2/rqLV
+ kp3l67PecFTJytGhzDByjMwe9WAwxQfK9lc+e14qHJmY2ppTofpjx5kZhNeMKH/cCHpf
+ 0qDpUXtWEErzG7KOFvUYW+m/KJ2vR4324bjkG/9lNRFmRZriQg866iAcIersvIYPWkfC
+ DsmO1fWJsc+AJ2f0smvEZJd7QiWJBmbzCxS/lY9caneIJaGDXRaCRfXaKES8gahpz5Mk
+ /6fA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1732799280; x=1733404080;
+ d=1e100.net; s=20230601; t=1732799365; x=1733404165;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=SjZo32ga+iaM5ZFyJOsM6N1jqR5pVG9O8XSaJsR/NHE=;
- b=WdXlnu5eEJ/gCub2BAOu0xBjnW/uvIf6IgwOOwl2oxopS8Ylx0XmDsLuR+Q97jIW/H
- dsh741DX67naEd4s9sspezl6pSKVRZjbSlEuGfy+IibsRSsLJ9tRU+u9+MpeTwca5bua
- 3aliATXzbZFUmcGP+aF+FsxyCgYT8pCHjjoLrkfHLW3o4V5EcrYSi3mPDL7GqTRWRQXr
- afYQaUKYKueCPfb/wGZTceY/64KWCjH1q4bQ4vp+khc/8XLZDXncfeM1gUTvKBKquHEm
- ksW7RI+2HtJDLhfluYbRvFlPuumMiYjPS/9jIKsebqGFbRXI85DXyi1xqXT4rIJTk8/1
- xPZA==
+ bh=CoAYwGdQfTMB67AD/o304evZvUiG9cVjmQS7+iXnYcs=;
+ b=iAsfNwuR1OgvgpoBhJubgKAl1n5owEwsLSrSbVCnLJO69IoTDSggAwF4rli8j3F9rU
+ QpKXWjVbPSouOOQJ6p79zqtNjfq9snt/ZCxkmWlRf0USdllctKlZmf1CyrHDa9o+9ftz
+ sLyStQntYzsdd64p7Z0xPmHGkdFxB2ccMtVuStuvddqsYnOesSb2/WZn/8puYDp/vqNX
+ 0zeNgg3rDfZiepxsf+rXphzEySQN43aFcNGAg9FsTB0jZ9fPdy+Sui87nNyyYPL19NKV
+ 4QA/NV10WCqd+xw5P+4lk0ZLOjCwjGAkFevL4R1O74NyXzo2vElcX2Dl353rRBrqxwFZ
+ dlHA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWgCqk0SA9yYgMH8Bn5hI2yE1yJIvI7l5M6rT1/lQwSug6/iZrp/HlRZDtxrA7tGyOj+izejJ/1PDOe@nongnu.org
-X-Gm-Message-State: AOJu0Yzmf+Z7TazAxX2gr28KkxV/G6DOdp891S4VnPn87xkOeejrF5Ih
- ALqJ96K2bA6eo16JSloklEwtFQG8Xd2Qo0GkVTZpEb0gwuY+8sLXlM8FOFw1a4x51VJAelVFEsH
- CZe0=
-X-Gm-Gg: ASbGncuxj4+WpkCqLSFH0ugVSH4/U6ym2VK68EOH4gkgGj/yRsojaQ0xNjWwOqiiOt9
- q5BtZbm1g+rW8h3PYpTHFoluxsd8S8ZaVQHc0DvdC6cj/ESR7/5oVn3m559IQJMCc55qg7d+/04
- SuwAbKlEuRVnudHLdrfUFVemGZ8JxNfrBWIhbCNXdCPy1ksLzlU6ohPps8FdmWjwil7vePsnu5m
- k/hrOMWcZ6RQs4gf+5qMcS5JyZeNTXKSrB7ZhOtqRJAo55W0a4pC65cAUk1LKXjzS1x7MpK0Jwl
- E8/KE3sYwxnAADtpmatxbIdgjgsD
-X-Google-Smtp-Source: AGHT+IFpLYaUVrTkK9fc2RmOvCW4gO4ktdzjnxVExQS/JM52+/X+pY6nEl3LGrkL6D0KH44UE6MKKA==
-X-Received: by 2002:a05:6820:50e:b0:5f1:dc89:fa85 with SMTP id
- 006d021491bc7-5f2179fa1eemr1667881eaf.3.1732799280508; 
- Thu, 28 Nov 2024 05:08:00 -0800 (PST)
+ AJvYcCW/oZvJ9rDEZDPXtnGUK/wwx6WBoVCoKRCen902N+3MhLQcIf+fglyTtFdwsjebkQU7axx1/KG2ej7D@nongnu.org
+X-Gm-Message-State: AOJu0Yx8t5LC1CQFgp1quj78GrzOq+A0mNO4Wkq00y1YMQuHiFPr3y/Y
+ 8Albg+9SsFROINR+n4ml8n5Ae2sVfKCj4d/8ESwlO++kVsLnu6G9LzBY4dc3Re0=
+X-Gm-Gg: ASbGnctHCH3aNhrOA1+ZrMFkuaMrHe5q0I/nSFTHDzwj0fYaRTb6vV7FvprP/NtVtgF
+ B3XjmKrdPjH/RxkwuyOO5VF986MsC6I7ccdJhjE5HZ8hXwz/IIaFqlXrlZTaKCODI5CtSuUdVVw
+ KwgONZlV8w7tdlfPGa70cvaL4aR9Nk7qG7Ic4Af0PUighDCjRXqzkKYv7SE1xAoJ883btdsSC28
+ +IOE4A63ET2G4e2mTR5U4kBvkltCJ6JCllTkuBaJJeLwBdHsK9ucfRgWHk7q0PDfktjLxPH/gWt
+ ncDsQPcCHiwFHE892oAlisMIGxtX
+X-Google-Smtp-Source: AGHT+IGFCH43szl157jMwZppst4rMoA7YnQvd4N4lZq61shnnVBC7AuoVQjiRUVvtJFIOlrNwRYF1Q==
+X-Received: by 2002:a05:6808:148b:b0:3e7:b3d9:4109 with SMTP id
+ 5614622812f47-3ea6dc22e7cmr7139276b6e.22.1732799364827; 
+ Thu, 28 Nov 2024 05:09:24 -0800 (PST)
 Received: from [192.168.4.112] (fixed-187-189-51-143.totalplay.net.
  [187.189.51.143]) by smtp.gmail.com with ESMTPSA id
- 46e09a7af769-71d7255f7bfsm288268a34.38.2024.11.28.05.07.59
+ 5614622812f47-3ea8621131bsm245873b6e.36.2024.11.28.05.09.23
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 28 Nov 2024 05:07:59 -0800 (PST)
-Message-ID: <9ab8dd47-d9ff-4a1c-83de-71f4c04c8967@linaro.org>
-Date: Thu, 28 Nov 2024 07:07:57 -0600
+ Thu, 28 Nov 2024 05:09:24 -0800 (PST)
+Message-ID: <edcfabc6-0c42-42fb-9980-303909f73e53@linaro.org>
+Date: Thu, 28 Nov 2024 07:09:21 -0600
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH for-10.0 01/25] fpu: handle raising Invalid for infzero in
- pick_nan_muladd
+Subject: Re: [PATCH for-10.0 02/25] fpu: Check for default_nan_mode before
+ calling pickNaNMulAdd
 To: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
 References: <20241128104310.3452934-1-peter.maydell@linaro.org>
- <20241128104310.3452934-2-peter.maydell@linaro.org>
+ <20241128104310.3452934-3-peter.maydell@linaro.org>
 Content-Language: en-US
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20241128104310.3452934-2-peter.maydell@linaro.org>
+In-Reply-To: <20241128104310.3452934-3-peter.maydell@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c35;
- envelope-from=richard.henderson@linaro.org; helo=mail-oo1-xc35.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::22e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x22e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,43 +102,23 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 11/28/24 04:42, Peter Maydell wrote:
-> For IEEE fused multiply-add, the (0 * inf) + NaN case should raise
-> Invalid for the multiplication of 0 by infinity.  Currently we handle
-> this in the per-architecture ifdef ladder in pickNaNMulAdd().
-> However, since this isn't really architecture specific we can hoist
-> it up to the generic code.
+> If the target sets default_nan_mode then we're always going to return
+> the default NaN, and pickNaNMulAdd() no longer has any side effects.
+> For consistency with pickNaN(), check for default_nan_mode before
+> calling pickNaNMulAdd().
 > 
-> For the cases where the infzero test in pickNaNMulAdd was
-> returning 2, we can delete the check entirely and allow the
-> code to fall into the normal pick-a-NaN handling, because this
-> will return 2 anyway (input 'c' being the only NaN in this case).
-> For the cases where infzero was returning 3 to indicate "return
-> the default NaN", we must retain that "return 3".
+> When we convert pickNaNMulAdd() to allow runtime selection of the NaN
+> propagation rule, this means we won't have to make the targets which
+> use default_nan_mode also set a propagation rule.
 > 
-> For Arm, this looks like it might be a behaviour change because we
-> used to set float_flag_invalid | float_flag_invalid_imz only if C is
-> a quiet NaN.  However, it is not, because Arm target code never looks
-> at float_flag_invalid_imz, and for the (0 * inf) + SNaN case we
-> already raised float_flag_invalid via the "abc_mask &
-> float_cmask_snan" check in pick_nan_muladd.
-> 
-> For any target architecture using the "default implementation" at the
-> bottom of the ifdef, this is a behaviour change but will be fixing a
-> bug (where we failed to raise the Invalid exception for (0 * inf +
-> QNaN).  The architectures using the default case are:
->   * hppa
->   * sh4
->   * tricore
-> 
-> The Tricore and SH4 CPU architecture manuals are clear that this
-> should have raised Invalid; HPPA is a bit vaguer but still seems
-> clear enough.
+> Since RiscV always uses default_nan_mode, this allows us to remove
+> its ifdef case from pickNaNMulAdd().
 > 
 > Signed-off-by: Peter Maydell<peter.maydell@linaro.org>
 > ---
->   fpu/softfloat-parts.c.inc      | 13 +++++++------
->   fpu/softfloat-specialize.c.inc | 29 +----------------------------
->   2 files changed, 8 insertions(+), 34 deletions(-)
+>   fpu/softfloat-parts.c.inc      | 8 ++++++--
+>   fpu/softfloat-specialize.c.inc | 9 +++++++--
+>   2 files changed, 13 insertions(+), 4 deletions(-)
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
