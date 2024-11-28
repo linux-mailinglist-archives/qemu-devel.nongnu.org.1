@@ -2,84 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF1E69DB8AC
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Nov 2024 14:29:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A212F9DB8B4
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Nov 2024 14:30:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tGeaL-0001xl-Ge; Thu, 28 Nov 2024 08:29:33 -0500
+	id 1tGeb1-0002pc-PF; Thu, 28 Nov 2024 08:30:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tGeZv-0001uH-R8
- for qemu-devel@nongnu.org; Thu, 28 Nov 2024 08:29:10 -0500
-Received: from mail-oi1-x229.google.com ([2607:f8b0:4864:20::229])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1tGeax-0002oq-Og
+ for qemu-devel@nongnu.org; Thu, 28 Nov 2024 08:30:11 -0500
+Received: from mail-lj1-x22d.google.com ([2a00:1450:4864:20::22d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tGeZq-00043s-3q
- for qemu-devel@nongnu.org; Thu, 28 Nov 2024 08:29:03 -0500
-Received: by mail-oi1-x229.google.com with SMTP id
- 5614622812f47-3ea405aa7b3so443370b6e.3
- for <qemu-devel@nongnu.org>; Thu, 28 Nov 2024 05:29:01 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1tGeav-00051X-LG
+ for qemu-devel@nongnu.org; Thu, 28 Nov 2024 08:30:11 -0500
+Received: by mail-lj1-x22d.google.com with SMTP id
+ 38308e7fff4ca-2ff550d37a6so9558831fa.0
+ for <qemu-devel@nongnu.org>; Thu, 28 Nov 2024 05:30:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1732800540; x=1733405340; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id:from
- :to:cc:subject:date:message-id:reply-to;
- bh=WH9X2IaqWEVeslxnPTdjMz6ZZ3KemVz2USNlmowLyTQ=;
- b=jesTqxf/rJdVKLwXIVWRChu2cd597HeYRVDUaMCQa1lypmko73jO2p7Q1BBweeQEe+
- pDK8BgFaaCstFyb+5kj6wc2kgxPvoB54QThe+6fx+1+XzmYxt3xAVY8RgMmRxX0O22xD
- r96FMQ1TvsoL8YcCj24/jEAgqFkJ3l1NS2MVjtYdtlg2CKIGt2xtyVTfTq8e/mb3jctl
- iOkMqfdj8e9tuF664lK9wpYBmpp5kW940hagZtbzUV0FRwo535jUFoz6PqtOir5V3d9e
- TgTjbpVAW2sYflwoiKLKF8Jj/pV+8XILHP93TM+aWA/grFm+Xy4bBGg4PQufl/6tsG2a
- 3T7A==
+ d=linaro.org; s=google; t=1732800608; x=1733405408; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=HdxVcGZn2g90vtNJBwAGz4nBOwK1aqnh7yPSz2Erf7g=;
+ b=zV5IaynCpltkhOifp9j/QXLNO4LJ4NimHLj30mGMcaHdcD7/X24qQuzuJw6xVXPE+1
+ 2tR07S9q+wKLjw07BB2ACzr1wHhefxZ6S8+DjEe4CnTNRJsJicQIEg18E2LDNNPxxYUE
+ dV3L6hhtBOIAYQJF9WV4eRu4ScbW1o9PhIB2UEgUBlhwidPMP/mSjylvk3vp6WH/rYmU
+ h7QkyxsXM/bS93/WcjP4gkxzxYIM47kZioHgIE8LF0VxT9lWXDr8Gicd0myU8bSecOuF
+ D6CO5bzopdhudTUhP4jLqWOGfwudseLyI0tMJ8jtsw72Hd6ujcCXOKGH+6z40xGWVpl6
+ Qytw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1732800540; x=1733405340;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=WH9X2IaqWEVeslxnPTdjMz6ZZ3KemVz2USNlmowLyTQ=;
- b=Z948sZy0pLiHteDKFjQAPcpq5/RdviczlxQGvmmrXGcUe7zotXiGnd+1RlONR0H0mg
- nwe07YDBXtb1gyGYdvZ+BtvR5aq4Xn/3bUEEcmo9ru8DQTQVEyKRhsTa5/F20eT0wELS
- 3pSd7vL19xu4tbWtAdAtdxihO6C4oB3PMlSEegzWdGsdQ2cDj7mhNhltlR0lF8YH36UB
- mziZBpYcOOUpkVQZSR0ZQatxUx9+Bq87wpG2sg2dFJIIHajPaMASCoO938hjsOX4LUn3
- TE+Iy99Epe2i1WWlJrppLO4tMo2aks6WXPOh3AEz+6q9D1ZbsNeFlA6d43yn/sx834+F
- O3ag==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWlaEsorGfYKhcthiYh2Mo7WdypTEQBZz7Yy28wvU2JnlYvcN7t/3J6Lces2FE1M107Ms5OqJGA0pSh@nongnu.org
-X-Gm-Message-State: AOJu0Ywz05JjWKXRFY3Mjafwyt1uyhEDRVv7HOltIXUXmm+iYvz5y9Vk
- NykgBTQ1tPFQFo1SvzmUH7aOk9OEPS8pXDe5nxUT36VCxpMlkdcwJINxXLSSJ7laMtu0vP+Q8Ec
- 0mq8=
-X-Gm-Gg: ASbGnct884x39E1GDkhYJUwSh11A/4+/m7J155BUcECf4xZRi1qDKPyn1BpaW+XCLQk
- n+CJqfhR5BZMGxCOTnRZOZCllOzqud2j4Bx9ASD+X1p76hg4+OlKzpOXqhMfJleowM3PGRIENWX
- O8QJcu1FTfRyvwQCIK1g0C/7MV9M9aUHER/C9CV1bOermH/aYXpdlcC8A1sW3D4q5QArURXaqc0
- nStZUTog6Z4If+KfUMpVpimyni+/hpKPre/SG7vfeF7gyAeYy1dtoZDSgKyS+Cp4kJGtl34ZUmU
- GeFrvXD4R6875O57O2NIcTHJ6Jmg
-X-Google-Smtp-Source: AGHT+IGr3KH48K9RPY2MyiYtnpeTRyUt0jnk9b2iCumUqx5lp28GFcYxDR4V0gAG8Oy07HGcp0p1JA==
-X-Received: by 2002:a05:6808:181d:b0:3ea:43b8:29de with SMTP id
- 5614622812f47-3ea6dbc34e2mr5687562b6e.11.1732800540671; 
- Thu, 28 Nov 2024 05:29:00 -0800 (PST)
-Received: from [192.168.4.112] (fixed-187-189-51-143.totalplay.net.
- [187.189.51.143]) by smtp.gmail.com with ESMTPSA id
- 5614622812f47-3ea86036a2dsm259198b6e.9.2024.11.28.05.28.59
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 28 Nov 2024 05:29:00 -0800 (PST)
-Message-ID: <cdc217bd-2844-4edc-b65f-aba9b56e6a34@linaro.org>
-Date: Thu, 28 Nov 2024 07:28:58 -0600
+ d=1e100.net; s=20230601; t=1732800608; x=1733405408;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=HdxVcGZn2g90vtNJBwAGz4nBOwK1aqnh7yPSz2Erf7g=;
+ b=iVX9iu6PwnlSna9ZqzLmBIeuFLOVLiC10k7tSl/Qc4qmiiZKJLeqav6088lPVe9zkA
+ Fsm2XrgDjuWR/idm7aD87FXU+J7LIuoUakrDGPNWpSkypF33uHHxe79LBZYefqjiBt1u
+ s58MQ1Ft+B5Ovbqk3DU5XXb/iNwsFf0NMFMOMEbO4OXb2G7yvwSST1at3XWjS25M3EHC
+ a5T0xWQDuW9cyIe9DAgsVPPaIIXSelIWiSUBTKisdHrFygoIwGQaL3JbGnGBOP5kenT1
+ zEali+O/FGINmjvYtNr+wjlqGpjBS1Q9VDBP4k2dR0W6UoZCmG95Ol6Q2TS+vihRABVq
+ x3/w==
+X-Gm-Message-State: AOJu0Ywh4rTDT+wvGcPzh113869vDP0ZiwFSTswB82P1pst7V1foW8qF
+ wd8RUS2VjKQ5Qfvb4LwY7AEat36pgD2TS1KgsPYmC0+C0MRJQ1FjfPpzINk3hM2RRSQyAYDX5tu
+ HrC6YWJMZPzr2tG/Jl85U9T5hMbt6yCfeGjP0VfXvGw5w1U7y
+X-Gm-Gg: ASbGncuij1mWiCtCmFiGrHL9f5mbZl7mWqDGhDuCGsypbyweaxaEuk1jrXcxJiVAp0Y
+ uKVwMkI1I5539A0+FZU1KJIUANFzmw3o+
+X-Google-Smtp-Source: AGHT+IG4cRr1zZfKcD8PfjiCBXMu6wsSrIfn7dc/n6cSuQo1w2hm2/RHMRkeQueixv7ufpDrk5RTeNAhIQwYmevk4O0=
+X-Received: by 2002:a2e:9a0b:0:b0:2fb:2ebf:3251 with SMTP id
+ 38308e7fff4ca-2ffd60dc5aemr42977221fa.23.1732800607741; Thu, 28 Nov 2024
+ 05:30:07 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH for-10.0 07/25] target/ppc: Set FloatInfZeroNaNRule
- explicitly
-To: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
-References: <20241128104310.3452934-1-peter.maydell@linaro.org>
- <20241128104310.3452934-8-peter.maydell@linaro.org>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20241128104310.3452934-8-peter.maydell@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::229;
- envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x229.google.com
+References: <20210502144419.1659844-1-richard.henderson@linaro.org>
+ <20210502144419.1659844-16-richard.henderson@linaro.org>
+In-Reply-To: <20210502144419.1659844-16-richard.henderson@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 28 Nov 2024 13:29:56 +0000
+Message-ID: <CAFEAcA_zePe98nx31F_KmeG=S2Kj7__chb51LK_GTcWkY5u4JA@mail.gmail.com>
+Subject: Re: [PULL v2 15/31] Hexagon (target/hexagon) use softfloat default
+ NaN and tininess
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::22d;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x22d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,17 +89,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/28/24 04:42, Peter Maydell wrote:
-> Set the FloatInfZeroNaNRule explicitly for the PPC target,
-> so we can remove the ifdef from pickNaNMulAdd().
-> 
-> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-> ---
->   target/ppc/cpu_init.c          | 7 +++++++
->   fpu/softfloat-specialize.c.inc | 7 +------
->   2 files changed, 8 insertions(+), 6 deletions(-)
+On Sun, 2 May 2021 at 15:44, Richard Henderson
+<richard.henderson@linaro.org> wrote:
+>
+> From: Taylor Simpson <tsimpson@quicinc.com>
+>
+> Suggested-by: Richard Henderson <richard.henderson@linaro.org>
+> Signed-off-by: Taylor Simpson <tsimpson@quicinc.com>
+> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+> Message-Id: <1617930474-31979-11-git-send-email-tsimpson@quicinc.com>
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+> diff --git a/fpu/softfloat-specialize.c.inc b/fpu/softfloat-specialize.c.inc
+> index c2f87addb2..9ea318f3e2 100644
+> --- a/fpu/softfloat-specialize.c.inc
+> +++ b/fpu/softfloat-specialize.c.inc
+> @@ -145,6 +145,9 @@ static FloatParts parts_default_nan(float_status *status)
+>  #elif defined(TARGET_HPPA)
+>      /* snan_bit_is_one, set msb-1.  */
+>      frac = 1ULL << (DECOMPOSED_BINARY_POINT - 2);
+> +#elif defined(TARGET_HEXAGON)
+> +    sign = 1;
+> +    frac = ~0ULL;
+>  #else
+>      /* This case is true for Alpha, ARM, MIPS, OpenRISC, PPC, RISC-V,
+>       * S390, SH4, TriCore, and Xtensa.  I cannot find documentation
 
-r~
+This change has the effect that Hexagon is unique in that its
+default_nan value doesn't correspond with its setting for
+snan_bit_is_one(): the default NaN is supposed to be
+a QNaN but this value is what snan_bit_is_one() thinks is an SNaN.
+
+Is that intentional? Should we adjust snan_bit_is_one() too ?
+
+(I noticed this because I need to make the default-nan value
+be runtime-selectable, and was wondering if I could avoid
+having to make targets specify snan_bit_is_one separately
+from specifying their default-NaN value. But this handling
+of Hexagon would prevent that.)
+
+thanks
+-- PMM
 
