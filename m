@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88C8A9DBC9E
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Nov 2024 20:39:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B41D9DBCA0
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Nov 2024 20:39:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tGkLJ-00063Z-JP; Thu, 28 Nov 2024 14:38:25 -0500
+	id 1tGkL1-0005yQ-64; Thu, 28 Nov 2024 14:38:07 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
- (envelope-from <3bc4db44430f53387d17145bb52b330a830a03fe@kylie.crudebyte.com>)
- id 1tGkLB-00062q-FI; Thu, 28 Nov 2024 14:38:17 -0500
+ (envelope-from <462db8fb1d405391b83a0d3099fdb9bfb85c2d92@kylie.crudebyte.com>)
+ id 1tGkKy-0005qT-1R; Thu, 28 Nov 2024 14:38:04 -0500
 Received: from kylie.crudebyte.com ([5.189.157.229])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
- (envelope-from <3bc4db44430f53387d17145bb52b330a830a03fe@kylie.crudebyte.com>)
- id 1tGkL9-0001kw-7m; Thu, 28 Nov 2024 14:38:17 -0500
+ (envelope-from <462db8fb1d405391b83a0d3099fdb9bfb85c2d92@kylie.crudebyte.com>)
+ id 1tGkKw-0001ft-Il; Thu, 28 Nov 2024 14:38:03 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=crudebyte.com; s=kylie; h=Cc:To:Subject:Date:From:References:In-Reply-To:
  Message-Id:Content-Type:Content-Transfer-Encoding:MIME-Version:Content-ID:
- Content-Description; bh=yu2+fuCqlPpIhciUDx6LHQqmVm2hltzj+n6lloV1XYU=; b=fSzIY
- /KyiHI7rv04BqOMYeK0BGdgiAKwOpOmGz9yPEHMDVkGoU4NByf7u30NNmsAO1BC5X5UshHQElfOKy
- 33NPeubBG5MBhNC76u3Gh/lvvTIVdl8J2VMerVSeZT0Slunld5Elo0YDpogYv34g6svsdebZ1xGGM
- xFhSBZXOOChQMZAn1QVHJZJKsMX9Z/dlGNpyJa/XyoJ1d/63hbNmHBPtuUI7ogUAvS8b0Teli2mNr
- 4J9/oB5f5ZxrV6YVTsdpAZ2gmnQ3qK+rf1P49b1WEiW64QUkQL49AYjgqBod1OHCpZYIcXgHWdU5Z
- rV26EbRK1SdK1UWg/OpYraDZPRUJdG5nzYxa3HpjUoLO9nc75OTtdTBMzaBQLWsrRNDoPqW/b618C
- IVD1Xt+3syDQShf1dkqkp/0vgOH+/+Mv5owV0Ufj+Wez0jfLIkT8ef8jXZGFyq/YwtzNx+fra+ZIc
- KFDEalZbFAJ+roskpt3abjsRnIh9SVVrBuOWLvSXfgACg8WHjteZt6GYwIkBUgY7FD1vA3XdV6CB9
- ZZAXUlryxwvT3NH7kpIhf/tgfJl0CajGPT86blmV3cAfmoqGXVhr7+5Md70q1l4gc3m3hDxuSOxwk
- QhK6Auy2RP5F8Sr5BTakJJLDj4oTLBTP/0hr3oUZeeplPySW3kbRaTeDUNDfsM=;
-Message-Id: <3bc4db44430f53387d17145bb52b330a830a03fe.1732820037.git.qemu_oss@crudebyte.com>
+ Content-Description; bh=pI02vUEzLaL6hvgao20/kKv0iB3ubx0RrXQPy8qFfY4=; b=VCkWL
+ qsn/H3aD2SJJeGxqDzkuzCq6n/CZRPvFPAQ+FEG5z6gIrEw2yJwG9mpVxRRNOOeFUmqOzx1A8vNtZ
+ D5VoUvt8emUDFh2AZW3CcUukImk9ukl9Lypth2TyN1qzo/zaRx355yiaI317ht6wTE2xI93qNqy9m
+ iN148WX6QnUbgEtMyaTjitbuC02UFju+nUgghOSvnYZj81mo4fFKbUJspxi8umI0L+mc/mQjdGaG9
+ unXaU4VavSDo1e/p0fXBrHHMJ/o3uHifU0yiV7RHOqfzTM+4FGWN5vuqMAbXJKBlCEzVCdlNT5H5n
+ InsODab0xp6i0IoL9bSzACYG3XFL6d40KBaN0AV9ouGnNza2EC9CDwXVBmlgVQ5IrHwy8WJBJ/GfX
+ xOXrNt5aVuXyXVreUChgi5v2gwS7j4hAklqEofLc9KfafaIUbJvT9g+yqt9wg0IKmi6C5Hc5VqdGe
+ CfLVPoN0sGPTml6+l3JTuiwn2QRXCI+lWlV2UrxUjXWg4Sk8YsThqTVAj5oV9f6lZPrNfgfDcOHb2
+ 1XixKVXI+Ba2jaWB2RhD5jSx14txVnILyEhCqZG1mgVgYipRanCFtCNN0jWhSvbGYlaPA4Cb1ECtW
+ wiDUChkCtgjkoJk/g25HrPRHVErRVMXjxTd1V2n/uSx5SQGn5l6sz+yOGQuJfY=;
+Message-Id: <462db8fb1d405391b83a0d3099fdb9bfb85c2d92.1732820037.git.qemu_oss@crudebyte.com>
 In-Reply-To: <cover.1732820037.git.qemu_oss@crudebyte.com>
 References: <cover.1732820037.git.qemu_oss@crudebyte.com>
 From: Christian Schoenebeck <qemu_oss@crudebyte.com>
 Date: Thu, 28 Nov 2024 19:53:58 +0100
-Subject: [PULL for-9.2 5/7] 9pfs: remove obsolete comment in v9fs_getattr()
+Subject: [PULL for-9.2 2/7] tests/9p: add 'use-after-unlink' test
 To: qemu-devel@nongnu.org,
     Peter Maydell <peter.maydell@linaro.org>
 Cc: qemu-stable@nongnu.org,
     Greg Kurz <groug@kaod.org>
 Received-SPF: pass client-ip=5.189.157.229;
- envelope-from=3bc4db44430f53387d17145bb52b330a830a03fe@kylie.crudebyte.com;
+ envelope-from=462db8fb1d405391b83a0d3099fdb9bfb85c2d92@kylie.crudebyte.com;
  helo=kylie.crudebyte.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -66,32 +66,80 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The comment claims that we'd only support basic Tgetattr fields. This is
-no longer true, so remove this comment.
+After removing a file from the file system, we should still be able to
+work with the file if we already had it open before removal.
 
-Fixes: e06a765efbe3 ("hw/9pfs: Add st_gen support in getattr reply")
+As a first step we verify that it is possible to write to an unlinked
+file, as this is what already works. This test is extended later on
+after having fixed other use cases after unlink that are not working
+yet.
+
 Signed-off-by: Christian Schoenebeck <qemu_oss@crudebyte.com>
 Reviewed-by: Greg Kurz <groug@kaod.org>
-Message-Id: <fb364d12045217a4c6ccd0dd6368103ddb80698b.1732465720.git.qemu_oss@crudebyte.com>
+Message-Id: <3d6449d4df25bcdd3e807eff169f46f1385e5257.1732465720.git.qemu_oss@crudebyte.com>
 ---
- hw/9pfs/9p.c | 4 ----
- 1 file changed, 4 deletions(-)
+ tests/qtest/virtio-9p-test.c | 41 ++++++++++++++++++++++++++++++++++++
+ 1 file changed, 41 insertions(+)
 
-diff --git a/hw/9pfs/9p.c b/hw/9pfs/9p.c
-index 9a291d1b51..851e36b9a1 100644
---- a/hw/9pfs/9p.c
-+++ b/hw/9pfs/9p.c
-@@ -1596,10 +1596,6 @@ static void coroutine_fn v9fs_getattr(void *opaque)
-         retval = -ENOENT;
-         goto out_nofid;
-     }
--    /*
--     * Currently we only support BASIC fields in stat, so there is no
--     * need to look at request_mask.
--     */
-     retval = v9fs_co_lstat(pdu, &fidp->path, &stbuf);
-     if (retval < 0) {
-         goto out;
+diff --git a/tests/qtest/virtio-9p-test.c b/tests/qtest/virtio-9p-test.c
+index 3c8cd235cf..f6d7400a87 100644
+--- a/tests/qtest/virtio-9p-test.c
++++ b/tests/qtest/virtio-9p-test.c
+@@ -693,6 +693,45 @@ static void fs_unlinkat_hardlink(void *obj, void *data,
+     g_assert(stat(real_file, &st_real) == 0);
+ }
+ 
++static void fs_use_after_unlink(void *obj, void *data,
++                                QGuestAllocator *t_alloc)
++{
++    QVirtio9P *v9p = obj;
++    v9fs_set_allocator(t_alloc);
++    static const uint32_t write_count = P9_MAX_SIZE / 2;
++    g_autofree char *real_file = virtio_9p_test_path("09/doa_file");
++    g_autofree char *buf = g_malloc0(write_count);
++    struct stat st_file;
++    uint32_t fid_file;
++    uint32_t count;
++
++    tattach({ .client = v9p });
++
++    /* create a file "09/doa_file" and make sure it exists and is regular */
++    tmkdir({ .client = v9p, .atPath = "/", .name = "09" });
++    tlcreate({ .client = v9p, .atPath = "09", .name = "doa_file" });
++    g_assert(stat(real_file, &st_file) == 0);
++    g_assert((st_file.st_mode & S_IFMT) == S_IFREG);
++
++    /* request a FID for that regular file that we can work with next */
++    fid_file = twalk({
++        .client = v9p, .fid = 0, .path = "09/doa_file"
++    }).newfid;
++    g_assert(fid_file != 0);
++
++    /* now first open the file in write mode before ... */
++    tlopen({ .client = v9p, .fid = fid_file, .flags = O_WRONLY });
++    /* ... removing the file from file system */
++    tunlinkat({ .client = v9p, .atPath = "09", .name = "doa_file" });
++
++    /* file is removed, but we still have it open, so this should succeed */
++    count = twrite({
++        .client = v9p, .fid = fid_file, .offset = 0, .count = write_count,
++        .data = buf
++    }).count;
++    g_assert_cmpint(count, ==, write_count);
++}
++
+ static void cleanup_9p_local_driver(void *data)
+ {
+     /* remove previously created test dir when test is completed */
+@@ -758,6 +797,8 @@ static void register_virtio_9p_test(void)
+     qos_add_test("local/hardlink_file", "virtio-9p", fs_hardlink_file, &opts);
+     qos_add_test("local/unlinkat_hardlink", "virtio-9p", fs_unlinkat_hardlink,
+                  &opts);
++    qos_add_test("local/use_after_unlink", "virtio-9p", fs_use_after_unlink,
++                 &opts);
+ }
+ 
+ libqos_init(register_virtio_9p_test);
 -- 
 2.30.2
 
