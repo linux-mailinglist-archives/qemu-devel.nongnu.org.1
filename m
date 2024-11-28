@@ -2,80 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C9259DBC57
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B3639DBC59
 	for <lists+qemu-devel@lfdr.de>; Thu, 28 Nov 2024 20:05:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tGjoB-0007SN-TT; Thu, 28 Nov 2024 14:04:11 -0500
+	id 1tGjoC-0007Th-UW; Thu, 28 Nov 2024 14:04:13 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tGjo2-0007Qk-4c
- for qemu-devel@nongnu.org; Thu, 28 Nov 2024 14:04:02 -0500
+ id 1tGjo5-0007SA-WD
+ for qemu-devel@nongnu.org; Thu, 28 Nov 2024 14:04:07 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tGjny-00012P-Be
- for qemu-devel@nongnu.org; Thu, 28 Nov 2024 14:04:01 -0500
+ id 1tGjo1-00012h-MZ
+ for qemu-devel@nongnu.org; Thu, 28 Nov 2024 14:04:04 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1732820635;
+ s=mimecast20190719; t=1732820637;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=eriCoUsPgPe+ZFlX9sbQ3IOaHyhMkLhKCQuZMuT1aeI=;
- b=bJ+cAvUKwUA7hbUwwYsUgAygJ16g291jCo+ijBPlioOyOkVE723ouT6iiFfo9Ub80tAQ1l
- 3nb6hSOo6HlIvXEhLeMxSVKTk2MOeBKcnL4eHlYflzcq1BDRTKjOG9ef4Q43zpjWCqExb3
- yGqdIPwDX2309dOaKk58KBDUcIRCKP0=
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=uSPAmZ5HAFl4FKfZ+Gw97zq4slJCEYHZjBM9sewyH6k=;
+ b=AuP/gobf/n8piYC5SykDNlHHlaqPd+7s6iyw/sE5Z9X8O0jmo7tLLEpjWCAF8XhGUz3xn7
+ 2sEh0Igap6i2KY/luVgcW1c5utSf959LX7hklmGKhtAocxC0FYZioVykS3ASlRRV2FP4b0
+ 6cM0AfwcCt1e09LfwTkCwb2btQY8vH0=
 Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
  [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-634-RgFJkmtEOlu9IqE18DDuOA-1; Thu, 28 Nov 2024 14:03:53 -0500
-X-MC-Unique: RgFJkmtEOlu9IqE18DDuOA-1
-X-Mimecast-MFC-AGG-ID: RgFJkmtEOlu9IqE18DDuOA
+ us-mta-608-vCIspoTxOYq1JCP9qeOWFA-1; Thu, 28 Nov 2024 14:03:55 -0500
+X-MC-Unique: vCIspoTxOYq1JCP9qeOWFA-1
+X-Mimecast-MFC-AGG-ID: vCIspoTxOYq1JCP9qeOWFA
 Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-434a29a93cdso8011355e9.1
- for <qemu-devel@nongnu.org>; Thu, 28 Nov 2024 11:03:53 -0800 (PST)
+ 5b1f17b1804b1-434941aa9c2so6445205e9.3
+ for <qemu-devel@nongnu.org>; Thu, 28 Nov 2024 11:03:55 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1732820632; x=1733425432;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=eriCoUsPgPe+ZFlX9sbQ3IOaHyhMkLhKCQuZMuT1aeI=;
- b=jtmCO/3ncPRu7smGIFul1a5YcTRuRJc9Rk6R7+i9AjzDYtUI6Etshh9y1W6LT80BWm
- OyioOv6zAdJpCGnBjCMNVli44Wnq7MebjcN+uALtq5Woqi/RCMbTLKvGfLXaYvewscm6
- bk4uBFplvdYksBxAGMMTiB6iL205RQawzhhPjDV/ZPo3TEQcxM/WXBwYEgCtLMOFfhrn
- F9ooV+IoBQKSTi2CnW6LfOxkiYwPecIBbYCN67ArPVzF98rGIxck5ch0TMjGz2eN6v48
- N9q4HU1OJ3nEpXJf/4MyWpAhBsM1joEA2TlrPtLA5Ygs1Kxujvz5tJxUlbVvlmypij/w
- Ltyw==
-X-Gm-Message-State: AOJu0YxvT5aYBEkvSY/IDJVQ+vJ2W8LKX/RPR+Ei699py78pQ9SrENRn
- tHmBP9gq/6LbJyQc/RQ1rVLL5zjKP4GhRaqFCXvqk/FlFbwWrcLtWYMsw+Z78fpeTic/RW6O2VF
- ay7erqvlE41qxbWwhCw009rqUWSuW4nckLxp6WCxUgv+5gDz0brz8w2SBpLVidUMEkOda4rBOxr
- ZpH5m/GfheIWkToav1jZJRLeOaxESPieiAGIhq
-X-Gm-Gg: ASbGnctgf1uLxFZ0IXC3bbk+3fW8U9fou9N7VQKkTk2HFg5WO1fBLptfNtaJ4PgMhk4
- 4VERkTdZouEu7aBO7oeRGSjM/DxG3jgWQbqM75LzBRgnxuZ4wjOYkKfNC3orBFOL/sEfDnh7rLH
- 6jq4qfaKD1gfysgka+GuoMaVn09uPfH1RE1Zm+y6Z/B2iW2P8+a7jjOXPq1rgSONnpMhzFqCt43
- tdyHDjy/CApGxJj6CgAGJr004AbDWP2CtcNbq+8+6XXnJA0QRbsV1c=
-X-Received: by 2002:a05:600c:1e06:b0:42c:b187:bde9 with SMTP id
- 5b1f17b1804b1-434a9e0bc3fmr82747925e9.30.1732820632154; 
- Thu, 28 Nov 2024 11:03:52 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEcMbhntS39q8xFwn3IeO7G+4wcuQfv2dFRQhkYPY81ygmni7G1fx+fCMaad26dnN3uVkR5IQ==
-X-Received: by 2002:a05:600c:1e06:b0:42c:b187:bde9 with SMTP id
- 5b1f17b1804b1-434a9e0bc3fmr82747575e9.30.1732820631559; 
- Thu, 28 Nov 2024 11:03:51 -0800 (PST)
+ d=1e100.net; s=20230601; t=1732820634; x=1733425434;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=uSPAmZ5HAFl4FKfZ+Gw97zq4slJCEYHZjBM9sewyH6k=;
+ b=j5YFTqM9i8urA4evxFSh2dG1gq4OdZOTxB5t7msoFG9kdoXKHT46xQJEavvqrDUsWe
+ HeoeX1IuOxA+d9akqVuDNPM7gQ19KwfRBk0vUKSdXm+WubPrxcUjckLhs5LYfjUAXL9E
+ B3RWKfss0bEw697auctR6t2pEbgO+rUtBwHi2WWJ6Aay0Ydarmds+c3L/7y0zL8RpE+h
+ 4/cmJt8jx/veBo3iSbpFs1YgwoJfzGzmAdSjVFXgPwLPsYo44WeZQCzJM6KDzPfh7V3I
+ KQ965kjTkEgI0t0AZhXFUK+lABUea/ILU6nsS56nUgjl34LTCZ6WxDIa0pLky/jPfnLS
+ iiBw==
+X-Gm-Message-State: AOJu0YxP1n7pHOVRHXHEWX9Qbj8tdYOsR82vHDeunCA5N+Jfj+0EIGaj
+ /Rlu5JzgGBLMwouRL7gOtLfvjwCs17g+sHksEAr3jTRv945RWqvHkxcLRT7rHuTy4EK26zc94xJ
+ 4x60sOHxA1me0ZxLRQAxaOH7WyioKpCLT0jOUlAqtr458y0LZ9KSmF1wb2uncG0gqpa4R4iS6en
+ CykkPr98CqAyQUfITmZPXUJY1s9aQ9wfQgJ803
+X-Gm-Gg: ASbGnctKKb3TezNO+CnCeGUSru3b34FRjXNXjVRGbwKxInKijsyS43qavFO85rRSmk8
+ A4VWA5NqeQ374eRhUjr9Tb/bn0PW6ekSShQRqffJcCA4KgimIZFqdvLi0q+vC6bthOijeyQYjpf
+ vQa2lWzlufU7I9vELIX2PV/aNQCzPzMMtdAFg+UHlbuetyKkdGcVy1LqvvuKVG5nzQ3YPHIKzK9
+ ZOXfaU2PaSMu3SYIKHeucGSmgSsTbuL3O5m/atY1AphBjsuNr/AKMY=
+X-Received: by 2002:a05:600c:1f06:b0:431:2b66:44f7 with SMTP id
+ 5b1f17b1804b1-434a9df7a8dmr86319155e9.31.1732820633817; 
+ Thu, 28 Nov 2024 11:03:53 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFeu6LYj818VoSRBb5RO3+CNSbYGZS6F2+wkLZzdjDKiXwJyusKdOwn5rIV5gbAG2R/jAe5Ow==
+X-Received: by 2002:a05:600c:1f06:b0:431:2b66:44f7 with SMTP id
+ 5b1f17b1804b1-434a9df7a8dmr86318825e9.31.1732820633437; 
+ Thu, 28 Nov 2024 11:03:53 -0800 (PST)
 Received: from [192.168.10.47] ([151.49.236.146])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-434aa763aaesm61448755e9.14.2024.11.28.11.03.50
- for <qemu-devel@nongnu.org>
+ 5b1f17b1804b1-434aa7e5285sm61508135e9.40.2024.11.28.11.03.52
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 28 Nov 2024 11:03:50 -0800 (PST)
+ Thu, 28 Nov 2024 11:03:52 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 0/3] Bugfixes for QEMU 9.2 rc3
-Date: Thu, 28 Nov 2024 20:03:46 +0100
-Message-ID: <20241128190349.541014-1-pbonzini@redhat.com>
+Cc: Sairaj Kodilkar <sarunkod@amd.com>,
+ Santosh Shukla <santosh.shukla@amd.com>,
+ Phil Dennis-Jordan <phil@philjordan.eu>
+Subject: [PULL 1/3] amd_iommu: Fix kvm_enable_x2apic link error with clang in
+ non-KVM builds
+Date: Thu, 28 Nov 2024 20:03:47 +0100
+Message-ID: <20241128190349.541014-2-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.47.0
+In-Reply-To: <20241128190349.541014-1-pbonzini@redhat.com>
+References: <20241128190349.541014-1-pbonzini@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -102,37 +108,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 24602b77f5658ae8377958c15fdef2f44affc743:
+From: Sairaj Kodilkar <sarunkod@amd.com>
 
-  Merge tag 'for_upstream' of https://git.kernel.org/pub/scm/virt/kvm/mst/qemu into staging (2024-11-28 10:50:20 +0000)
+Commit b12cb3819 (amd_iommu: Check APIC ID > 255 for XTSup) throws
+linking error for the `kvm_enable_x2apic` when kvm is disabled
+and Clang is used for compilation.
 
-are available in the Git repository at:
+This issue comes up because Clang does not remove the function callsite
+(kvm_enable_x2apic in this case) during optimization when if condition
+have variable. Intel IOMMU driver solves this issue by creating separate
+if condition for checking variables, which causes call site being
+optimized away by virtue of `kvm_irqchip_is_split()` being defined as 0.
+Implement same solution for the AMD driver.
 
-  https://gitlab.com/bonzini/qemu.git tags/for-upstream
+Fixes: b12cb3819baf (amd_iommu: Check APIC ID > 255 for XTSup)
+Signed-off-by: Sairaj Kodilkar <sarunkod@amd.com>
+Signed-off-by: Santosh Shukla <santosh.shukla@amd.com>
+Tested-by: Phil Dennis-Jordan <phil@philjordan.eu>
+Link: https://lore.kernel.org/r/20241114114509.15350-1-sarunkod@amd.com
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+---
+ hw/i386/amd_iommu.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-for you to fetch changes up to 3abb67323aeecf06a27191076ab50424ec21f334:
-
-  scsi: megasas: Internal cdbs have 16-byte length (2024-11-28 18:02:22 +0100)
-
-----------------------------------------------------------------
-* amd_iommu: fix clang failure on non-KVM targets
-* target/i386/hvf: fix advertised 1G page support
-* megasas: fix CDB length
-
-----------------------------------------------------------------
-Alexander Graf (1):
-      hvf: complete 1G page support
-
-Guenter Roeck (1):
-      scsi: megasas: Internal cdbs have 16-byte length
-
-Sairaj Kodilkar (1):
-      amd_iommu: Fix kvm_enable_x2apic link error with clang in non-KVM builds
-
- hw/i386/amd_iommu.c       |  8 +++++---
- hw/scsi/megasas.c         | 14 ++------------
- target/i386/hvf/x86_mmu.c | 30 ++++++++++++++++++++----------
- 3 files changed, 27 insertions(+), 25 deletions(-)
+diff --git a/hw/i386/amd_iommu.c b/hw/i386/amd_iommu.c
+index 13af7211e11..af0f4da1f69 100644
+--- a/hw/i386/amd_iommu.c
++++ b/hw/i386/amd_iommu.c
+@@ -1657,9 +1657,11 @@ static void amdvi_sysbus_realize(DeviceState *dev, Error **errp)
+         error_report("AMD IOMMU with x2APIC confguration requires xtsup=on");
+         exit(EXIT_FAILURE);
+     }
+-    if (s->xtsup && kvm_irqchip_is_split() && !kvm_enable_x2apic()) {
+-        error_report("AMD IOMMU xtsup=on requires support on the KVM side");
+-        exit(EXIT_FAILURE);
++    if (s->xtsup) {
++        if (kvm_irqchip_is_split() && !kvm_enable_x2apic()) {
++            error_report("AMD IOMMU xtsup=on requires support on the KVM side");
++            exit(EXIT_FAILURE);
++        }
+     }
+ 
+     pci_setup_iommu(bus, &amdvi_iommu_ops, s);
 -- 
 2.47.0
 
