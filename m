@@ -2,64 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78F079DB5ED
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Nov 2024 11:46:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B1FE19DB5EB
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Nov 2024 11:46:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tGbzU-0001uu-No; Thu, 28 Nov 2024 05:43:20 -0500
+	id 1tGbzV-0001wM-CH; Thu, 28 Nov 2024 05:43:21 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tGbzS-0001tC-6d
+ id 1tGbzS-0001tv-Lc
  for qemu-devel@nongnu.org; Thu, 28 Nov 2024 05:43:18 -0500
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tGbzO-0000PF-JP
- for qemu-devel@nongnu.org; Thu, 28 Nov 2024 05:43:17 -0500
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-434a1833367so4046305e9.1
+ id 1tGbzP-0000PN-81
+ for qemu-devel@nongnu.org; Thu, 28 Nov 2024 05:43:18 -0500
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-434a0fd9778so6060545e9.0
  for <qemu-devel@nongnu.org>; Thu, 28 Nov 2024 02:43:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1732790593; x=1733395393; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=oYk4E/ewRoQTnBgSxniNQvwpaGZ6rvHTwiB73W6YXQM=;
- b=V5TYq7gjwis/2NKNQmArYXGRYm3wUwxZQTPbRTrP8TtUWr7WA3mS2nA1SSwpWKyELd
- 4bF2zO2ypU9u1iLMWiOV7l9v3hK0LiPGoxK13pOfHBIhbrDryqFHTYX31c3s4kSdA0tM
- 2/a+TdbssDDXi5J63cacnzO2oMijlrKXrf7p62KP6lCj0AtVAmBTredo3TkfWim5vfAH
- n/UVwhTRACw/6o2oSTLmVI6jMS3qsUx2tGtroFSORL7qxtJ1czIjN/jAY8f/Xf2cD03I
- 6SUIF6iLqD6qMvT2VeN/aGsEGG6H5+xa9dANYzvh6OSG73Bi3quwOOSylXtNE3A5KU+F
- tvjQ==
+ d=linaro.org; s=google; t=1732790594; x=1733395394; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=mSyVUvmTPOthYAn2vH+po+80+oHdzpSNwVHWEQhdvFo=;
+ b=RrsJNYeFgayL7gMpFYGBAdO3CL6ikjysMM+5O5s0FaR25PoRqKjKiPKoj+hLHcoP0L
+ iujXrq0sl6iMgrOxhPTwtjz13/PS4kBoZFMusU2EnBWdxdIuvj4riHJHG8vP9O/jNoBs
+ sSwflTrktexgCrEDrBDrGaDxKJ4DA34kBp41EW6t0Fgk2ES8ONpf1ZDjDouRyA42KV0f
+ ZxWy7omlpsLAhvlwRIlaiwohzB4w928o1f1hUZ3lIkdOOPxZ980ct6Dx7oGLLkyAEo+b
+ qw6IR5KIjd0z/NHRhI8SqM4vmzMuunxny7dDElnU4zVw+hCgrC7M/iDwk3IkPVvoFrMB
+ MgxA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1732790593; x=1733395393;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=oYk4E/ewRoQTnBgSxniNQvwpaGZ6rvHTwiB73W6YXQM=;
- b=oFsii/8dXNu4q/7JQ3gcUdJbG2RqDPiGVEYeho5TZbhk7UWMyewN+Z+YzUyaWb7Rvl
- Z19zIdThwmaxeamhgM/EDE4G6Ce9t0CI3CB2CqqF4MwHrSstbCdFbQf8NfLBQqqSYcJd
- 2etHFb6UKcIVYpB45xhQuGrAbMjQuaAOIZ36vai+9gvkHP+F2Ujw/kfE2qUMreeUfupD
- 1PEX5CIeWT5miPFdc9WYqb9hRCReVAQOMTtwSUjWYOHvQtlPMWAsWjkT2IYTNgUO1GWX
- yvUGLg1VaB+VsqGzjKbMABNoD4qIZEYG4ZrSDCYrlR56IEWl5Amif7bVckPr6LfYE5eR
- 4ybw==
-X-Gm-Message-State: AOJu0YwmTLq3KV01ilNGVwdGfXccirFU7TjhjkY0AXTZpzJ4AeqkIyeZ
- tO92pCEC8lOWNHvgXW5TUJDR2Kh8dxbW/4/Bi6L4QzZKFmh1wefKHtZpnSlJn+8v/5zHFzYN0RL
- l
-X-Gm-Gg: ASbGncuA7CITB/Cnnb4eR9wErzZ9xXRt/OwjMbrk4qZpiqylc3GoLYUFAO/IxaRtbmc
- 7OOB5o5eY0nhPFc2zCjy3TgoFMAWPx30dmV8/ijgVuE24n4q3I+WbHxNhbnYBkiQdmyBJXitKiD
- NxGyPfAl1t+6eyENYI0iBT7KGJkYSGrB4Xp8sDCGKaBeVflp+ttnXbis0S1Q7qslyngrfFL8odS
- C02WNJWA61AC4W+B9HkVdyKnmjveAPtGbbjFcbzAEF4lqpLWnUsAy0=
-X-Google-Smtp-Source: AGHT+IFkuO7dI1m1sjtGwwDC6v8OH5tPS+P3BTWrlwOrTAYP6u2lYPXY+a46HLuX0BG285SHONUlDQ==
-X-Received: by 2002:a05:600c:5123:b0:434:9dcb:2f84 with SMTP id
- 5b1f17b1804b1-434afb8decdmr22239075e9.2.1732790592652; 
- Thu, 28 Nov 2024 02:43:12 -0800 (PST)
+ d=1e100.net; s=20230601; t=1732790594; x=1733395394;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=mSyVUvmTPOthYAn2vH+po+80+oHdzpSNwVHWEQhdvFo=;
+ b=bRAB+p4l4oqCuemWO+TkNrnEytAFTnLjO62YhX9nA5TIJKSXAP/A9HmX7/Tx7Fk3Tw
+ +c4yP/pBV4ZhItYMSx1QmHdgwhw4sedKOB/UeiQ3JUVtHd4Yom94sBwBfta/DK8SeUm/
+ NvbbUw07HRxp8Pcu+k/8MXp3sT0UD1dXWkaQWreZkKujEeF5J+sOWqttxn8VUBjo8Mn+
+ 31TLY0q2mZYYnF4zs2OqjTWlHNowYoc+UC+e3vqtN+tX+sdaWL3uSJg3oLSoB9Vt0R7D
+ +2M+l8CcdrsCJDlOiAcXvHxswSZddJHbSG7575H8V0IqlAJY66sqbVvW+QqSbW2+y9iA
+ mCRw==
+X-Gm-Message-State: AOJu0YyKCs9fpwu2agVDk6pie/whqi4sRYaraMfzqGOXTfL1+OsTK2er
+ LZTsEsXKsm+1Z96LK5/myJoPNQQZmVy6TmUUgOyKjBj6u3hs9ZKY+W04D01HBPiOCxDL9H8t6UQ
+ r
+X-Gm-Gg: ASbGncuVYPUtk9HQssnV6TC1aQUx0THUBmyyhJLN6AKqZDzKez9zuwzPvmsKmHEANRj
+ LsMADRhKtlfMnt7mHmpjclZaE4hvRYcdztsPFln93xAVSDwS5IPJZvnGXH1EzJc0YO7ReFRAXT8
+ qbgfarUTTZk5V2q3exb5HocUh2hlOEiJ4Vn/6KCZzaqoZLk9LphLHKbwLeWiaFFxivtO/00xFW5
+ +PUw74DJwRJBaGsjO24DvUjqvtUUvmCs+SickvGt4th9fRqWCrrgNo=
+X-Google-Smtp-Source: AGHT+IEnmQFdf94EyW0+87R6ugb6E5SiCnBQ2ZMZdtsS835ZaEq231LF7X5KL39Q+yvycbFJZ4gYiA==
+X-Received: by 2002:a05:600c:3596:b0:434:a386:6cf with SMTP id
+ 5b1f17b1804b1-434a9dbbc00mr59891585e9.2.1732790593612; 
+ Thu, 28 Nov 2024 02:43:13 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-385ccd68958sm1292959f8f.67.2024.11.28.02.43.11
+ ffacd0b85a97d-385ccd68958sm1292959f8f.67.2024.11.28.02.43.12
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 28 Nov 2024 02:43:12 -0800 (PST)
+ Thu, 28 Nov 2024 02:43:13 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, qemu-ppc@nongnu.org, qemu-s390x@nongnu.org,
@@ -75,15 +76,17 @@ Cc: qemu-arm@nongnu.org, qemu-ppc@nongnu.org, qemu-s390x@nongnu.org,
  Thomas Huth <thuth@redhat.com>,
  Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
  Artyom Tarasenko <atar4qemu@gmail.com>, Max Filippov <jcmvbkbc@gmail.com>
-Subject: [PATCH for-10.0 00/25] fpu: Make pickNaNMulAdd behaviour runtime
- selected
-Date: Thu, 28 Nov 2024 10:42:45 +0000
-Message-Id: <20241128104310.3452934-1-peter.maydell@linaro.org>
+Subject: [PATCH for-10.0 01/25] fpu: handle raising Invalid for infzero in
+ pick_nan_muladd
+Date: Thu, 28 Nov 2024 10:42:46 +0000
+Message-Id: <20241128104310.3452934-2-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20241128104310.3452934-1-peter.maydell@linaro.org>
+References: <20241128104310.3452934-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x335.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -106,99 +109,167 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patchset does the same thing we already did for pickNaN() to
-pickNaNMulAdd() -- it replaces the compile-time ifdef ladder that
-selected target-specific NaN propagation behaviour with checking some
-runtime selectable settings in the float_status.  The motivation is:
- * this will let us have multiple targets in one QEMU binary
- * the Arm FEAT_AFP architectural feature includes letting
-   the guest select a NaN propagation rule at runtime
-                 
-The current ifdef ladder merges two different kinds of
-implementation-specific behaviour:
- * handling of the (inf * zero) + NaN special case
- * selection of a NaN to propagate when more than one input is a NaN
+For IEEE fused multiply-add, the (0 * inf) + NaN case should raise
+Invalid for the multiplication of 0 by infinity.  Currently we handle
+this in the per-architecture ifdef ladder in pickNaNMulAdd().
+However, since this isn't really architecture specific we can hoist
+it up to the generic code.
 
-The refactoring splits these out into two different settings, because
-what a target chose for one of them isn't correlated with its
-choice on the other one.
+For the cases where the infzero test in pickNaNMulAdd was
+returning 2, we can delete the check entirely and allow the
+code to fall into the normal pick-a-NaN handling, because this
+will return 2 anyway (input 'c' being the only NaN in this case).
+For the cases where infzero was returning 3 to indicate "return
+the default NaN", we must retain that "return 3".
 
-Mostly this series is not intended to have any guest visible behaviour
-changes. There is one exception: the "default implementation" at the
-bottom of the old ifdef ladder did not raise Invalid for the (0 * inf)
-+ NaN case. This is definitely not correct, and basically any targets
-using that part of the ifdef ladder had a bug because they didn't
-implement their actual correct behaviour. The architectures using the
-default case are i386, hppa, sh4 and tricore, and they will now raise
-the Invalid exception in this case. (I checked the architecture manuals
-for those architectures and they all say it should raise Invalid.)
-Fixing this bug in the first patch means we don't need to have runtime
-selection of a behaviour that's not actually what these targets do.
-(It also means we can reorder the code to avoid calling pickNaNMulAdd()
-for any target which sets default_nan_mode, as we do for pickNaN().)
+For Arm, this looks like it might be a behaviour change because we
+used to set float_flag_invalid | float_flag_invalid_imz only if C is
+a quiet NaN.  However, it is not, because Arm target code never looks
+at float_flag_invalid_imz, and for the (0 * inf) + SNaN case we
+already raised float_flag_invalid via the "abc_mask &
+float_cmask_snan" check in pick_nan_muladd.
 
-The rest of the patchset is structured like the pickNaN() refactoring
--- introduce the runtime selection field in the float_status word, but
-leave the ifdef ladder in place as fallback, then convert each target
-one at at time.  We do the info-zero-nan setting first, then the NaN
-propagation order setting.
+For any target architecture using the "default implementation" at the
+bottom of the ifdef, this is a behaviour change but will be fixing a
+bug (where we failed to raise the Invalid exception for (0 * inf +
+QNaN).  The architectures using the default case are:
+ * hppa
+ * sh4
+ * tricore
 
-Finally, once we're done we can remove the use_first_nan field, which
-was an Xtensa-specific way to select the NaN propagation rules at
-runtime.
+The Tricore and SH4 CPU architecture manuals are clear that this
+should have raised Invalid; HPPA is a bit vaguer but still seems
+clear enough.
 
-Tested with 'make check-functional' and 'make check-avocado'
-and 'make check-tcg'.
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+---
+ fpu/softfloat-parts.c.inc      | 13 +++++++------
+ fpu/softfloat-specialize.c.inc | 29 +----------------------------
+ 2 files changed, 8 insertions(+), 34 deletions(-)
 
-thanks
--- PMM
-
-Peter Maydell (25):
-  fpu: handle raising Invalid for infzero in pick_nan_muladd
-  fpu: Check for default_nan_mode before calling pickNaNMulAdd
-  softfloat: Allow runtime choice of inf * 0 + NaN result
-  tests/fp: Explicitly set inf-zero-nan rule
-  target/arm: Set FloatInfZeroNaNRule explicitly
-  target/s390: Set FloatInfZeroNaNRule explicitly
-  target/ppc: Set FloatInfZeroNaNRule explicitly
-  target/mips: Set FloatInfZeroNaNRule explicitly
-  target/sparc: Set FloatInfZeroNaNRule explicitly
-  target/xtensa: Set FloatInfZeroNaNRule explicitly
-  target/x86: Set FloatInfZeroNaNRule explicitly
-  target/loongarch: Set FloatInfZeroNaNRule explicitly
-  target/hppa: Set FloatInfZeroNaNRule explicitly
-  softfloat: Allow runtime choice of NaN propagation for muladd
-  tests/fp: Explicitly set 3-NaN propagation rule
-  target/arm: Set Float3NaNPropRule explicitly
-  target/loongarch: Set Float3NaNPropRule explicitly
-  target/ppc: Set Float3NaNPropRule explicitly
-  target/s390x: Set Float3NaNPropRule explicitly
-  target/sparc: Set Float3NaNPropRule explicitly
-  target/mips: Set Float3NaNPropRule explicitly
-  target/xtensa: Set Float3NaNPropRule explicitly
-  target/i386: Set Float3NaNPropRule explicitly
-  target/hppa: Set Float3NaNPropRule explicitly
-  fpu: Remove use_first_nan field from float_status
-
- include/fpu/softfloat-helpers.h   |  27 +++-
- include/fpu/softfloat-types.h     |  61 ++++++++-
- target/mips/fpu_helper.h          |  13 ++
- target/arm/cpu.c                  |   8 ++
- target/hppa/fpu_helper.c          |  10 ++
- target/i386/tcg/fpu_helper.c      |   9 ++
- target/loongarch/tcg/fpu_helper.c |   6 +
- target/mips/msa.c                 |   7 +
- target/ppc/cpu_init.c             |  15 +++
- target/s390x/cpu.c                |   3 +
- target/sparc/cpu.c                |   4 +
- target/xtensa/cpu.c               |   2 +
- target/xtensa/fpu_helper.c        |   3 +-
- tests/fp/fp-bench.c               |   6 +
- tests/fp/fp-test.c                |   6 +
- fpu/softfloat-parts.c.inc         |  19 ++-
- fpu/softfloat-specialize.c.inc    | 206 ++++++++----------------------
- 17 files changed, 236 insertions(+), 169 deletions(-)
-
+diff --git a/fpu/softfloat-parts.c.inc b/fpu/softfloat-parts.c.inc
+index cc6e06b9761..d63cd957a19 100644
+--- a/fpu/softfloat-parts.c.inc
++++ b/fpu/softfloat-parts.c.inc
+@@ -66,19 +66,20 @@ static FloatPartsN *partsN(pick_nan_muladd)(FloatPartsN *a, FloatPartsN *b,
+                                             int ab_mask, int abc_mask)
+ {
+     int which;
++    bool infzero = (ab_mask == float_cmask_infzero);
+ 
+     if (unlikely(abc_mask & float_cmask_snan)) {
+         float_raise(float_flag_invalid | float_flag_invalid_snan, s);
+     }
+ 
+-    which = pickNaNMulAdd(a->cls, b->cls, c->cls,
+-                          ab_mask == float_cmask_infzero, s);
++    if (infzero) {
++        /* This is (0 * inf) + NaN or (inf * 0) + NaN */
++        float_raise(float_flag_invalid | float_flag_invalid_imz, s);
++    }
++
++    which = pickNaNMulAdd(a->cls, b->cls, c->cls, infzero, s);
+ 
+     if (s->default_nan_mode || which == 3) {
+-        /*
+-         * Note that this check is after pickNaNMulAdd so that function
+-         * has an opportunity to set the Invalid flag for infzero.
+-         */
+         parts_default_nan(a, s);
+         return a;
+     }
+diff --git a/fpu/softfloat-specialize.c.inc b/fpu/softfloat-specialize.c.inc
+index 9bca03c4aed..c557c41b2af 100644
+--- a/fpu/softfloat-specialize.c.inc
++++ b/fpu/softfloat-specialize.c.inc
+@@ -480,7 +480,6 @@ static int pickNaNMulAdd(FloatClass a_cls, FloatClass b_cls, FloatClass c_cls,
+      * the default NaN
+      */
+     if (infzero && is_qnan(c_cls)) {
+-        float_raise(float_flag_invalid | float_flag_invalid_imz, status);
+         return 3;
+     }
+ 
+@@ -507,7 +506,6 @@ static int pickNaNMulAdd(FloatClass a_cls, FloatClass b_cls, FloatClass c_cls,
+          * case sets InvalidOp and returns the default NaN
+          */
+         if (infzero) {
+-            float_raise(float_flag_invalid | float_flag_invalid_imz, status);
+             return 3;
+         }
+         /* Prefer sNaN over qNaN, in the a, b, c order. */
+@@ -529,10 +527,6 @@ static int pickNaNMulAdd(FloatClass a_cls, FloatClass b_cls, FloatClass c_cls,
+          * For MIPS systems that conform to IEEE754-2008, the (inf,zero,nan)
+          * case sets InvalidOp and returns the input value 'c'
+          */
+-        if (infzero) {
+-            float_raise(float_flag_invalid | float_flag_invalid_imz, status);
+-            return 2;
+-        }
+         /* Prefer sNaN over qNaN, in the c, a, b order. */
+         if (is_snan(c_cls)) {
+             return 2;
+@@ -553,10 +547,7 @@ static int pickNaNMulAdd(FloatClass a_cls, FloatClass b_cls, FloatClass c_cls,
+      * For LoongArch systems that conform to IEEE754-2008, the (inf,zero,nan)
+      * case sets InvalidOp and returns the input value 'c'
+      */
+-    if (infzero) {
+-        float_raise(float_flag_invalid | float_flag_invalid_imz, status);
+-        return 2;
+-    }
++
+     /* Prefer sNaN over qNaN, in the c, a, b order. */
+     if (is_snan(c_cls)) {
+         return 2;
+@@ -576,10 +567,6 @@ static int pickNaNMulAdd(FloatClass a_cls, FloatClass b_cls, FloatClass c_cls,
+      * to return an input NaN if we have one (ie c) rather than generating
+      * a default NaN
+      */
+-    if (infzero) {
+-        float_raise(float_flag_invalid | float_flag_invalid_imz, status);
+-        return 2;
+-    }
+ 
+     /* If fRA is a NaN return it; otherwise if fRB is a NaN return it;
+      * otherwise return fRC. Note that muladd on PPC is (fRA * fRC) + frB
+@@ -592,14 +579,9 @@ static int pickNaNMulAdd(FloatClass a_cls, FloatClass b_cls, FloatClass c_cls,
+         return 1;
+     }
+ #elif defined(TARGET_RISCV)
+-    /* For RISC-V, InvalidOp is set when multiplicands are Inf and zero */
+-    if (infzero) {
+-        float_raise(float_flag_invalid | float_flag_invalid_imz, status);
+-    }
+     return 3; /* default NaN */
+ #elif defined(TARGET_S390X)
+     if (infzero) {
+-        float_raise(float_flag_invalid | float_flag_invalid_imz, status);
+         return 3;
+     }
+ 
+@@ -617,11 +599,6 @@ static int pickNaNMulAdd(FloatClass a_cls, FloatClass b_cls, FloatClass c_cls,
+         return 2;
+     }
+ #elif defined(TARGET_SPARC)
+-    /* For (inf,0,nan) return c. */
+-    if (infzero) {
+-        float_raise(float_flag_invalid | float_flag_invalid_imz, status);
+-        return 2;
+-    }
+     /* Prefer SNaN over QNaN, order C, B, A. */
+     if (is_snan(c_cls)) {
+         return 2;
+@@ -641,10 +618,6 @@ static int pickNaNMulAdd(FloatClass a_cls, FloatClass b_cls, FloatClass c_cls,
+      * For Xtensa, the (inf,zero,nan) case sets InvalidOp and returns
+      * an input NaN if we have one (ie c).
+      */
+-    if (infzero) {
+-        float_raise(float_flag_invalid | float_flag_invalid_imz, status);
+-        return 2;
+-    }
+     if (status->use_first_nan) {
+         if (is_nan(a_cls)) {
+             return 0;
 -- 
 2.34.1
 
