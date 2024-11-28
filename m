@@ -2,78 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 967569DB60C
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Nov 2024 11:52:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A852A9DB631
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Nov 2024 12:05:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tGc8a-0004z5-Ao; Thu, 28 Nov 2024 05:52:46 -0500
+	id 1tGcJC-0000fU-W7; Thu, 28 Nov 2024 06:03:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tGc6G-0005tH-Cq
- for qemu-devel@nongnu.org; Thu, 28 Nov 2024 05:50:23 -0500
-Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tGc6B-0004YN-Pc
- for qemu-devel@nongnu.org; Thu, 28 Nov 2024 05:50:18 -0500
-Received: by mail-ed1-x533.google.com with SMTP id
- 4fb4d7f45d1cf-5ced377447bso1131163a12.1
- for <qemu-devel@nongnu.org>; Thu, 28 Nov 2024 02:50:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1732791010; x=1733395810; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=ZjBpOOdVZJL0iO2KTOgUARxPlu5YcxRage8kv9dpbo0=;
- b=eKEizpXAvjwrX/Sqr8Dx2VeDS5wASZMZZL3i93j/MKPkSyxqp5MyvvUiSYNZ6Mxzob
- zUD71LtFif/6PsPSFfUCyX7hzGB97EJ7t8ZK7zy6O1tbjQz/N9RLsQsguMh8/yUdepGb
- i6XWpPr0yIg8bOZrII3699jduXB/FGFKG7++CxRI+FDOMg+oI3pdbKmtE/ZMSaE1t28o
- nPwkM8QkuzTNARZ7Pjn60IwxPt9T+JXlWd/Y0a7YKsXpkzaDFEzNehhlHckAuKtLr/a/
- P0/6qMX05kht1vv91a+24wIJhsw3VwaadePSNgLpihiXCtmdzw8vH8ZpisiUoeM7rsxB
- B5gg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1732791010; x=1733395810;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=ZjBpOOdVZJL0iO2KTOgUARxPlu5YcxRage8kv9dpbo0=;
- b=psAm4w4wTRYcuJR/x3x2XLnWYbo2vUwqFdCTc5Qaj+klprssvZpPC/TJjlc5ADTEnp
- 8nXB/kH4TOxI6nlMUC1ooU1AXvCLRAAcKIIwUeF9nKAln2Z1auxwnC3G8tuClcpk7jdl
- OAIkFU8TKJQYnOFD6oCfP03xFmUYcbL/geIui5I8YDC14ghDTe3Nkhod8gxOEbqWpMUw
- b5XfC/tadLmmYN4OtquqURto8T4v5W0lD54rqFj+HA6HGH0LrkBpwriYYzZYT21xLcO9
- +3LDfTwoSNNTTA84GmO7tmIyMVqcH/njRmO8Z66NdD2EzClN0j9HqhghH/G2xVAyfcpD
- AZiA==
-X-Gm-Message-State: AOJu0YwD3B9VrOm6N8gTDhRsMYVjnulX1WoOabLsLaaRFZrICjm6r5Lw
- /+KdlX9ewFo49nRJfe6aaJS4Y9vgobDq2yFVW5UTjg/y/PHKyUdQgym5Akpm07xVfj5tUX4dQA9
- iTDxgCanzqD/fOGDU5ee6KlVMNGNSPZsbcOX24Wq8RQGjIbzp
-X-Gm-Gg: ASbGncsizogtTxWR5eXc9jH6gmPLsZQcfsRWm5xbhllPdpHUNIgDLG6xaJkCZ3jIVIt
- ivCIeqYq/+jrJc6/iAUFwKDJTJQhAfLS9
-X-Google-Smtp-Source: AGHT+IEpyCbwfiIyh/G40RI8wWh+DgsRJI1Y/+3SY1Ku7urTeqwGSUefGfDcb/DqNTum0xv3SstshLR6rBKjtL1AyKo=
-X-Received: by 2002:a05:6402:278e:b0:5cf:c18b:b0c0 with SMTP id
- 4fb4d7f45d1cf-5d080bd9f5amr7442559a12.19.1732791009929; Thu, 28 Nov 2024
- 02:50:09 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <tugy@chinatelecom.cn>)
+ id 1tGcIg-0000ds-Mx; Thu, 28 Nov 2024 06:03:12 -0500
+Received: from smtpnm6-12.21cn.com ([182.42.119.59] helo=chinatelecom.cn)
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <tugy@chinatelecom.cn>)
+ id 1tGcId-0003At-NW; Thu, 28 Nov 2024 06:03:10 -0500
+HMM_SOURCE_IP: 192.168.137.232:0.1841577584
+HMM_ATTACHE_NUM: 0000
+HMM_SOURCE_TYPE: SMTP
+Received: from clientip-139.200.108.9 (unknown [192.168.137.232])
+ by chinatelecom.cn (HERMES) with SMTP id 0C3DF110001B0;
+ Thu, 28 Nov 2024 18:53:26 +0800 (CST)
+X-189-SAVE-TO-SEND: +tugy@chinatelecom.cn
+Received: from  ([139.200.108.9])
+ by gateway-ssl-dep-6977f57994-b9pvf with ESMTP id
+ d068225b5b954a54a82bb5b1a8eb6052 for eblake@redhat.com; 
+ Thu, 28 Nov 2024 18:53:30 CST
+X-Transaction-ID: d068225b5b954a54a82bb5b1a8eb6052
+X-Real-From: tugy@chinatelecom.cn
+X-Receive-IP: 139.200.108.9
+X-MEDUSA-Status: 0
+From: tugy@chinatelecom.cn
+To: eblake@redhat.com, armbru@redhat.com, kwolf@redhat.com, hreitz@redhat.com,
+ qemu-block@nongnu.org
+Cc: qemu-devel@nongnu.org,
+	tugy@chinatelecom.cn
+Subject: [PATCH 0/2] support block encryption/decryption in parallel
+Date: Thu, 28 Nov 2024 18:51:20 +0800
+Message-Id: <cover.1732789721.git.tugy@chinatelecom.cn>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-References: <20241127103425.378289-1-thuth@redhat.com>
-In-Reply-To: <20241127103425.378289-1-thuth@redhat.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 28 Nov 2024 10:49:59 +0000
-Message-ID: <CAFEAcA9=P+aYEuKZEDZQPLNKzXNkj_TBYRYhPBGPtSjQwz=Kkg@mail.gmail.com>
-Subject: Re: [PULL 0/7] Misc fixes for QEMU 9.2-rc3
-To: Thomas Huth <thuth@redhat.com>
-Cc: qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::533;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x533.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=182.42.119.59; envelope-from=tugy@chinatelecom.cn;
+ helo=chinatelecom.cn
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,55 +66,92 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 27 Nov 2024 at 10:34, Thomas Huth <thuth@redhat.com> wrote:
->
-> The following changes since commit 7872e5fdf38ac0d8d0083aabb98d67da1f530e=
-f4:
->
->   Update version for v9.2.0-rc2 release (2024-11-26 22:26:38 +0000)
->
-> are available in the Git repository at:
->
->   https://gitlab.com/thuth/qemu.git tags/pull-request-2024-11-27
->
-> for you to fetch changes up to ef45f46f382a5e2c41c39c71fd3364cff4f41bf5:
->
->   hw/pci: Remove unused pci_irq_pulse() method (2024-11-27 09:34:08 +0100=
-)
->
-> ----------------------------------------------------------------
-> * Two small doc updates
-> * Fix the flaky loongarch64 and sh4 functional tests
-> * Refuse to compile with old XCode versions that don't work anymore
-> * Remove an unused function from PCI code
->
-> ----------------------------------------------------------------
-> Akihiko Odaki (1):
->       docs: Document that hvf on Arm is supported
->
-> C=C3=A9dric Le Goater (1):
->       tests/functional: Remove sleep workarounds from sh4 test
->
-> Philippe Mathieu-Daud=C3=A9 (1):
->       hw/pci: Remove unused pci_irq_pulse() method
->
-> Thomas Huth (3):
->       docs/devel/testing/functional: Clarify that we have to use the buil=
-d folder
->       meson.build: Refuse XCode versions < v15.0
->       .gitlab-ci.d/cirrus: Remove the wrong CPU and RAM settings from the=
- macOS job
->
-> Xianglai Li (1):
->       tests/functional: Fix the running test case causes loongarch64 to h=
-ang
+From: Guoyi Tu <tugy@chinatelecom.cn>
+
+Currently, disk I/O encryption and decryption operations are performed sequentially
+in the main thread or IOthread. When the number of I/O requests increases,
+this becomes a performance bottleneck.
+
+To address this issue, this patch use thread pool to perform I/O encryption
+and decryption in parallel, improving overall efficiency.
+
+Test results show that enabling the thread pool for encryption and decryption
+significantly improve the performance of virtual machine storage devices.
 
 
+Test Case1: Disk read/write performance using fio in a virtual machine
 
-Applied, thanks.
+Virtual Machine： 8c16g, with a disk backing by a LUKS storage device and
+                  Ceph as storage backend.
+Test Method:
+fio -direct=1 -iodepth=32 -rw=xx -ioengine=libaio -bs=4k -size=10G -numjobs=x \
+-runtime=1000 -group_reporting -filename=/dev/vdb -name=xxx
 
-Please update the changelog at https://wiki.qemu.org/ChangeLog/9.2
-for any user-visible changes.
+Runing the VM on the Intel Xeon 5218 server, The test results are as follows:
 
--- PMM
+|                        |  Serial encryption  | Thread pool encryption|
+|                        |  and decryption     | and decryption      |
+|        fio             |-----------|---------|-----------|---------|
+|                        | BW(MiB/s) | IOPS(K) | BW(MiB/s) | IOPS(K) |
+|------------------------|-----------|---------|-----------|---------|
+| rw=read numjobs=2      | 499       | 128     | 605       | 155     |
+| rw=read numjobs=4      | 529       | 136     | 632       | 162     |
+| rw=write numjobs=2     | 493       | 126     | 617       | 158     |
+| rw=write numjobs=4     | 534       | 137     | 743       | 190     |
+
+
+Runing the VM on the HiSilicon Kunpeng-920 server, The test results are as follows:
+
+|                        |  Serial encryption  | Thread pool encryption|
+|                        |  and decryption     | and decryption      |
+|        fio             |-----------|---------|-----------|---------|
+|                        | BW(MiB/s) | IOPS(K) | BW(MiB/s) | IOPS(K) |
+|------------------------|-----------|---------|-----------|---------|
+| rw=read numjobs=2      | 73.2      | 18.8    | 128       | 39.2    |
+| rw=read numjobs=4      | 77.9      | 19.9    | 246       | 62.9    |
+| rw=write numjobs=2     | 78        | 19      | 140       | 35.8    |
+| rw=write numjobs=4     | 78        | 20.2    | 270       | 69.1    |
+
+
+Test Case 2：
+In addition, performance comparisons were also conducted on the HiSilicon Kunpeng-920
+server, testing the conversion of a qcow2 image to a LUKS image using qemu-img convert.
+The results show that using thread pool to encryption and decryption all significantly
+improve the performance.
+
+Test Method: Create a 40GB qcow2 image and fill it with data, then convert it to a LUKS
+             image using qemu-img
+
+* Serial encryption and decryption：
+time qemu-img convert -p -m 16 -W --image-opts file.filename=/home/tgy/data.qcow2 \
+--object secret,id=sec,data=password -n \
+--target-image-opts driver=luks,key-secret=sec,file.filename=/home/tgy/data.luks
+
+    real    7m53.681s
+    user    7m52.595s
+    sys     0m11.248s
+
+
+* Thread pool encryption and decryption：
+time qemu-img convert -p -m 16 -W --image-opts file.filename=/home/tgy/data.qcow2 \
+--object secret,id=sec,data=password -n --target-image-opts \
+driver=luks,key-secret=sec,encrypt-in-parallel=on,file.filename=/home/tgy/data.luks
+
+    real    1m43.101s
+    user    10m30.239s
+    sys     13m13.758s
+
+Guoyi Tu (2):
+  crpyto: support encryt and decrypt parallelly using thread pool
+  qapi/crypto: support enable encryption/decryption in parallel
+
+ block/crypto.c       | 111 ++++++++++++++++++++++++++++++++++++++++---
+ block/crypto.h       |   9 ++++
+ qapi/block-core.json |   6 ++-
+ qapi/crypto.json     |   6 ++-
+ 4 files changed, 124 insertions(+), 8 deletions(-)
+
+-- 
+2.17.1
+
 
