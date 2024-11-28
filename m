@@ -2,55 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8622C9DBC9C
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Nov 2024 20:39:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C9259DBC57
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Nov 2024 20:05:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tGkKz-0005pU-0o; Thu, 28 Nov 2024 14:38:05 -0500
+	id 1tGjoB-0007SN-TT; Thu, 28 Nov 2024 14:04:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1)
- (envelope-from <c81e7219e0736f80bfd3553676a19e2992cff41d@kylie.crudebyte.com>)
- id 1tGkKq-0005nh-Ii; Thu, 28 Nov 2024 14:37:57 -0500
-Received: from kylie.crudebyte.com ([5.189.157.229])
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1tGjo2-0007Qk-4c
+ for qemu-devel@nongnu.org; Thu, 28 Nov 2024 14:04:02 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1)
- (envelope-from <c81e7219e0736f80bfd3553676a19e2992cff41d@kylie.crudebyte.com>)
- id 1tGkKp-0001ai-0Y; Thu, 28 Nov 2024 14:37:56 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=crudebyte.com; s=kylie; h=Cc:To:Subject:Date:From:References:In-Reply-To:
- Message-Id:Content-Type:Content-Transfer-Encoding:MIME-Version:Content-ID:
- Content-Description; bh=sZ1E9BcYHFsRPyZxFsRdJMwSjmBFK1SLraoUCBW0/70=; b=ZhMPu
- j39Ti84RLdDnZat4MKffb/WE/Bq3mYl0pKgav84zVbbWbQ0YobugTZ2sURuvtA42LCbVjU8r2rzLr
- l/+GT2HOtj9vyiasj4xGmlkr70nlRW25AsHo8X9g3npfcV0HJZhdZpkzNWU8AVIb0cGWUxZW6Ujgb
- 524Ts9YGl9uhQD7ZX+2LcWHkkFhrdmcl4b5DtjjISff5w5gGMspS4T14cWPDl8ApKpI7DREOqGfsa
- 2e4szqcS4FgQthRDFU17yLw2iQSBT1M1SAlxBH5nZrGCYAUoptzlS4himyfWa5ut25IOEbT9sTV8e
- IixA1MbTsMyCviABXd/ySR9zJxUkp5Y0Ll7Q1pR9AJ9Gp4pi73xXiXP3b5GoMummvh3EZ9Dmc5KHb
- MUhprQG0/mVOUvRei0wB40ALcXCzCjys2inIy8THYc+bAqqBKxy1f9JxP2dXb68/dk5kawS07nidS
- as+Lbw2zTg490b7Poswf7IUxwUKslCa4XQABX9vTmrEIh8xxbnBEZ+FK4f9qSCJ4FRbVW+Epq/cFj
- D2Dc33uM6ZqSD55DsgVxtujzsIBhp5f5PeZok9JEUO0bKF8BZC2oosnkbtNdjHByeuJxqvhNGMgpv
- IIlZxj5IO2Kc40bVxfnzU48qI0IB2jfZQ6qssFDm7kEdjen5aBikNIO6MG4rro=;
-Message-Id: <c81e7219e0736f80bfd3553676a19e2992cff41d.1732820037.git.qemu_oss@crudebyte.com>
-In-Reply-To: <cover.1732820037.git.qemu_oss@crudebyte.com>
-References: <cover.1732820037.git.qemu_oss@crudebyte.com>
-From: Christian Schoenebeck <qemu_oss@crudebyte.com>
-Date: Thu, 28 Nov 2024 19:53:58 +0100
-Subject: [PULL for-9.2 6/7] 9pfs: fix 'Tgetattr' after unlink
-To: qemu-devel@nongnu.org,
-    Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-stable@nongnu.org,
-    Greg Kurz <groug@kaod.org>
-Received-SPF: pass client-ip=5.189.157.229;
- envelope-from=c81e7219e0736f80bfd3553676a19e2992cff41d@kylie.crudebyte.com;
- helo=kylie.crudebyte.com
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1tGjny-00012P-Be
+ for qemu-devel@nongnu.org; Thu, 28 Nov 2024 14:04:01 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1732820635;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=eriCoUsPgPe+ZFlX9sbQ3IOaHyhMkLhKCQuZMuT1aeI=;
+ b=bJ+cAvUKwUA7hbUwwYsUgAygJ16g291jCo+ijBPlioOyOkVE723ouT6iiFfo9Ub80tAQ1l
+ 3nb6hSOo6HlIvXEhLeMxSVKTk2MOeBKcnL4eHlYflzcq1BDRTKjOG9ef4Q43zpjWCqExb3
+ yGqdIPwDX2309dOaKk58KBDUcIRCKP0=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-634-RgFJkmtEOlu9IqE18DDuOA-1; Thu, 28 Nov 2024 14:03:53 -0500
+X-MC-Unique: RgFJkmtEOlu9IqE18DDuOA-1
+X-Mimecast-MFC-AGG-ID: RgFJkmtEOlu9IqE18DDuOA
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-434a29a93cdso8011355e9.1
+ for <qemu-devel@nongnu.org>; Thu, 28 Nov 2024 11:03:53 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1732820632; x=1733425432;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=eriCoUsPgPe+ZFlX9sbQ3IOaHyhMkLhKCQuZMuT1aeI=;
+ b=jtmCO/3ncPRu7smGIFul1a5YcTRuRJc9Rk6R7+i9AjzDYtUI6Etshh9y1W6LT80BWm
+ OyioOv6zAdJpCGnBjCMNVli44Wnq7MebjcN+uALtq5Woqi/RCMbTLKvGfLXaYvewscm6
+ bk4uBFplvdYksBxAGMMTiB6iL205RQawzhhPjDV/ZPo3TEQcxM/WXBwYEgCtLMOFfhrn
+ F9ooV+IoBQKSTi2CnW6LfOxkiYwPecIBbYCN67ArPVzF98rGIxck5ch0TMjGz2eN6v48
+ N9q4HU1OJ3nEpXJf/4MyWpAhBsM1joEA2TlrPtLA5Ygs1Kxujvz5tJxUlbVvlmypij/w
+ Ltyw==
+X-Gm-Message-State: AOJu0YxvT5aYBEkvSY/IDJVQ+vJ2W8LKX/RPR+Ei699py78pQ9SrENRn
+ tHmBP9gq/6LbJyQc/RQ1rVLL5zjKP4GhRaqFCXvqk/FlFbwWrcLtWYMsw+Z78fpeTic/RW6O2VF
+ ay7erqvlE41qxbWwhCw009rqUWSuW4nckLxp6WCxUgv+5gDz0brz8w2SBpLVidUMEkOda4rBOxr
+ ZpH5m/GfheIWkToav1jZJRLeOaxESPieiAGIhq
+X-Gm-Gg: ASbGnctgf1uLxFZ0IXC3bbk+3fW8U9fou9N7VQKkTk2HFg5WO1fBLptfNtaJ4PgMhk4
+ 4VERkTdZouEu7aBO7oeRGSjM/DxG3jgWQbqM75LzBRgnxuZ4wjOYkKfNC3orBFOL/sEfDnh7rLH
+ 6jq4qfaKD1gfysgka+GuoMaVn09uPfH1RE1Zm+y6Z/B2iW2P8+a7jjOXPq1rgSONnpMhzFqCt43
+ tdyHDjy/CApGxJj6CgAGJr004AbDWP2CtcNbq+8+6XXnJA0QRbsV1c=
+X-Received: by 2002:a05:600c:1e06:b0:42c:b187:bde9 with SMTP id
+ 5b1f17b1804b1-434a9e0bc3fmr82747925e9.30.1732820632154; 
+ Thu, 28 Nov 2024 11:03:52 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEcMbhntS39q8xFwn3IeO7G+4wcuQfv2dFRQhkYPY81ygmni7G1fx+fCMaad26dnN3uVkR5IQ==
+X-Received: by 2002:a05:600c:1e06:b0:42c:b187:bde9 with SMTP id
+ 5b1f17b1804b1-434a9e0bc3fmr82747575e9.30.1732820631559; 
+ Thu, 28 Nov 2024 11:03:51 -0800 (PST)
+Received: from [192.168.10.47] ([151.49.236.146])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-434aa763aaesm61448755e9.14.2024.11.28.11.03.50
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 28 Nov 2024 11:03:50 -0800 (PST)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: qemu-devel@nongnu.org
+Subject: [PULL 0/3] Bugfixes for QEMU 9.2 rc3
+Date: Thu, 28 Nov 2024 20:03:46 +0100
+Message-ID: <20241128190349.541014-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.47.0
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -66,56 +102,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-With a valid file ID (FID) of an open file, it should be possible to send
-a 'Tgettattr' 9p request and successfully receive a 'Rgetattr' response,
-even if the file has been removed in the meantime. Currently this would
-fail with ENOENT.
+The following changes since commit 24602b77f5658ae8377958c15fdef2f44affc743:
 
-I.e. this fixes the following misbehaviour with a 9p Linux client:
+  Merge tag 'for_upstream' of https://git.kernel.org/pub/scm/virt/kvm/mst/qemu into staging (2024-11-28 10:50:20 +0000)
 
-  open("/home/tst/filename", O_RDWR|O_CREAT|O_EXCL, 0600) = 3
-  unlink("/home/tst/filename") = 0
-  fstat(3, 0x23aa1a8) = -1 ENOENT (No such file or directory)
+are available in the Git repository at:
 
-Expected results:
+  https://gitlab.com/bonzini/qemu.git tags/for-upstream
 
-  open("/home/tst/filename", O_RDWR|O_CREAT|O_EXCL, 0600) = 3
-  unlink("/home/tst/filename") = 0
-  fstat(3, {st_mode=S_IFREG|0600, st_size=0, ...}) = 0
+for you to fetch changes up to 3abb67323aeecf06a27191076ab50424ec21f334:
 
-This is because 9p server is always using a path name based lstat() call
-which fails as soon as the file got removed. So to fix this, use fstat()
-whenever we have an open file descriptor already.
+  scsi: megasas: Internal cdbs have 16-byte length (2024-11-28 18:02:22 +0100)
 
-Fixes: 00ede4c2529b ("virtio-9p: getattr server implementation...")
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/103
-Signed-off-by: Christian Schoenebeck <qemu_oss@crudebyte.com>
-Reviewed-by: Greg Kurz <groug@kaod.org>
-Message-Id: <4c41ad47f449a5cc8bfa9285743e029080d5f324.1732465720.git.qemu_oss@crudebyte.com>
----
- hw/9pfs/9p.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+----------------------------------------------------------------
+* amd_iommu: fix clang failure on non-KVM targets
+* target/i386/hvf: fix advertised 1G page support
+* megasas: fix CDB length
 
-diff --git a/hw/9pfs/9p.c b/hw/9pfs/9p.c
-index 851e36b9a1..578517739a 100644
---- a/hw/9pfs/9p.c
-+++ b/hw/9pfs/9p.c
-@@ -1596,7 +1596,13 @@ static void coroutine_fn v9fs_getattr(void *opaque)
-         retval = -ENOENT;
-         goto out_nofid;
-     }
--    retval = v9fs_co_lstat(pdu, &fidp->path, &stbuf);
-+    if ((fidp->fid_type == P9_FID_FILE && fidp->fs.fd != -1) ||
-+        (fidp->fid_type == P9_FID_DIR && fidp->fs.dir.stream))
-+    {
-+        retval = v9fs_co_fstat(pdu, fidp, &stbuf);
-+    } else {
-+        retval = v9fs_co_lstat(pdu, &fidp->path, &stbuf);
-+    }
-     if (retval < 0) {
-         goto out;
-     }
+----------------------------------------------------------------
+Alexander Graf (1):
+      hvf: complete 1G page support
+
+Guenter Roeck (1):
+      scsi: megasas: Internal cdbs have 16-byte length
+
+Sairaj Kodilkar (1):
+      amd_iommu: Fix kvm_enable_x2apic link error with clang in non-KVM builds
+
+ hw/i386/amd_iommu.c       |  8 +++++---
+ hw/scsi/megasas.c         | 14 ++------------
+ target/i386/hvf/x86_mmu.c | 30 ++++++++++++++++++++----------
+ 3 files changed, 27 insertions(+), 25 deletions(-)
 -- 
-2.30.2
+2.47.0
 
 
