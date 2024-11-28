@@ -2,32 +2,32 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0B029DB633
+	by mail.lfdr.de (Postfix) with ESMTPS id AB11A9DB632
 	for <lists+qemu-devel@lfdr.de>; Thu, 28 Nov 2024 12:05:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tGcJ2-0000fQ-Nw; Thu, 28 Nov 2024 06:03:33 -0500
+	id 1tGcIq-0000ex-9y; Thu, 28 Nov 2024 06:03:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <tugy@chinatelecom.cn>)
- id 1tGcIh-0000dx-Mt; Thu, 28 Nov 2024 06:03:12 -0500
+ id 1tGcIg-0000do-5u; Thu, 28 Nov 2024 06:03:10 -0500
 Received: from smtpnm6-12.21cn.com ([182.42.119.59] helo=chinatelecom.cn)
  by eggs.gnu.org with esmtp (Exim 4.90_1)
  (envelope-from <tugy@chinatelecom.cn>)
- id 1tGcId-0003Al-DT; Thu, 28 Nov 2024 06:03:11 -0500
+ id 1tGcId-0003Az-Bx; Thu, 28 Nov 2024 06:03:09 -0500
 HMM_SOURCE_IP: 192.168.137.232:0.1841577584
 HMM_ATTACHE_NUM: 0000
 HMM_SOURCE_TYPE: SMTP
 Received: from clientip-139.200.108.9 (unknown [192.168.137.232])
- by chinatelecom.cn (HERMES) with SMTP id 8B651110001B3;
- Thu, 28 Nov 2024 18:53:30 +0800 (CST)
+ by chinatelecom.cn (HERMES) with SMTP id 32438110001B2;
+ Thu, 28 Nov 2024 18:53:33 +0800 (CST)
 X-189-SAVE-TO-SEND: +tugy@chinatelecom.cn
 Received: from  ([139.200.108.9])
  by gateway-ssl-dep-6977f57994-b9pvf with ESMTP id
- e2d79c8f05d146fd81dec2eac2d5e3ae for eblake@redhat.com; 
- Thu, 28 Nov 2024 18:53:33 CST
-X-Transaction-ID: e2d79c8f05d146fd81dec2eac2d5e3ae
+ 6551d32c43094d3f94e4e04567072c54 for eblake@redhat.com; 
+ Thu, 28 Nov 2024 18:53:36 CST
+X-Transaction-ID: 6551d32c43094d3f94e4e04567072c54
 X-Real-From: tugy@chinatelecom.cn
 X-Receive-IP: 139.200.108.9
 X-MEDUSA-Status: 0
@@ -36,10 +36,10 @@ To: eblake@redhat.com, armbru@redhat.com, kwolf@redhat.com, hreitz@redhat.com,
  qemu-block@nongnu.org
 Cc: qemu-devel@nongnu.org,
 	tugy@chinatelecom.cn
-Subject: [PATCH 1/2] crpyto: support encryt and decrypt parallelly using
- thread pool
-Date: Thu, 28 Nov 2024 18:51:21 +0800
-Message-Id: <7fea2c563ffafa2128fb5af07e98c8fa1aca9441.1732789721.git.tugy@chinatelecom.cn>
+Subject: [PATCH 2/2] qapi/crypto: support enable encryption/decryption in
+ parallel
+Date: Thu, 28 Nov 2024 18:51:22 +0800
+Message-Id: <608e6ae38d080acdcd1f28d0700b9e0b919ee2db.1732789721.git.tugy@chinatelecom.cn>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <cover.1732789721.git.tugy@chinatelecom.cn>
 References: <cover.1732789721.git.tugy@chinatelecom.cn>
@@ -70,160 +70,112 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Guoyi Tu <tugy@chinatelecom.cn>
 
-Currently, disk I/O encryption and decryption operations are performed sequentially
-in the main thread or IOthread. When the number of I/O requests increases,
-this becomes a performance bottleneck.
-
-To address this issue, this patch using the thread pool to perform I/O encryption
-and decryption in parallel to improving overall efficiency.
+add encrypt-in-parallel option to enable encryption/decryption
+in parallel
 
 Signed-off-by: Guoyi Tu <tugy@chinatelecom.cn>
 ---
- block/crypto.c | 103 ++++++++++++++++++++++++++++++++++++++++++++++---
- 1 file changed, 97 insertions(+), 6 deletions(-)
+ block/crypto.c       | 8 ++++++++
+ block/crypto.h       | 9 +++++++++
+ qapi/block-core.json | 6 +++++-
+ qapi/crypto.json     | 6 +++++-
+ 4 files changed, 27 insertions(+), 2 deletions(-)
 
 diff --git a/block/crypto.c b/block/crypto.c
-index 80b2dba17a..c085f331ce 100644
+index c085f331ce..b02400fb26 100644
 --- a/block/crypto.c
 +++ b/block/crypto.c
-@@ -22,6 +22,7 @@
- 
- #include "block/block_int.h"
- #include "block/qdict.h"
-+#include "block/thread-pool.h"
- #include "sysemu/block-backend.h"
- #include "crypto/block.h"
- #include "qapi/opts-visitor.h"
-@@ -40,6 +41,7 @@ struct BlockCrypto {
-     QCryptoBlock *block;
-     bool updating_keys;
-     BdrvChild *header;  /* Reference to the detached LUKS header */
-+    bool encrypt_in_parallel;
+@@ -212,6 +212,7 @@ static QemuOptsList block_crypto_runtime_opts_luks = {
+     .head = QTAILQ_HEAD_INITIALIZER(block_crypto_runtime_opts_luks.head),
+     .desc = {
+         BLOCK_CRYPTO_OPT_DEF_LUKS_KEY_SECRET(""),
++        BLOCK_CRYPTO_OPT_DEF_LUKS_ENCRYPT_IN_PARALLEL(""),
+         { /* end of list */ }
+     },
  };
+@@ -347,6 +348,13 @@ static int block_crypto_open_generic(QCryptoBlockFormat format,
+     }
+ 
+     cryptoopts = qemu_opts_to_qdict(opts, NULL);
++
++    if (!g_strcmp0(qdict_get_try_str(cryptoopts,
++                   BLOCK_CRYPTO_OPT_LUKS_ENCRYPT_IN_PARALLEL), "on") ||
++        qdict_get_try_bool(cryptoopts,
++                           BLOCK_CRYPTO_OPT_LUKS_ENCRYPT_IN_PARALLEL, false)) {
++        crypto->encrypt_in_parallel = true;
++    }
+     qdict_put_str(cryptoopts, "format", QCryptoBlockFormat_str(format));
+ 
+     open_opts = block_crypto_open_opts_init(cryptoopts, errp);
+diff --git a/block/crypto.h b/block/crypto.h
+index dc3d2d5ed9..6729420941 100644
+--- a/block/crypto.h
++++ b/block/crypto.h
+@@ -46,6 +46,7 @@
+ #define BLOCK_CRYPTO_OPT_LUKS_STATE "state"
+ #define BLOCK_CRYPTO_OPT_LUKS_OLD_SECRET "old-secret"
+ #define BLOCK_CRYPTO_OPT_LUKS_NEW_SECRET "new-secret"
++#define BLOCK_CRYPTO_OPT_LUKS_ENCRYPT_IN_PARALLEL "encrypt-in-parallel"
  
  
-@@ -460,6 +462,94 @@ static int block_crypto_reopen_prepare(BDRVReopenState *state,
-     return 0;
- }
+ #define BLOCK_CRYPTO_OPT_DEF_LUKS_KEY_SECRET(prefix)                    \
+@@ -130,6 +131,14 @@
+                 "Empty string to erase",                        \
+     }
  
-+
-+typedef struct CryptoAIOData {
-+    QCryptoBlock *block;
-+    uint64_t offset;
-+    uint8_t *buf;
-+    size_t len;
-+    bool encrypt;
-+    Error **errp;
-+} CryptoAIOData;
-+
-+
-+static int handle_aiocb_encdec(void *opaque)
-+{
-+    CryptoAIOData *aiocb = opaque;
-+
-+    if (aiocb->encrypt) {
-+        if (qcrypto_block_encrypt(aiocb->block, aiocb->offset,
-+                                  aiocb->buf, aiocb->len, aiocb->errp) < 0) {
-+            return -EIO;
-+        }
-+    } else {
-+        if (qcrypto_block_decrypt(aiocb->block, aiocb->offset,
-+                                  aiocb->buf, aiocb->len, aiocb->errp) < 0) {
-+            return -EIO;
-+        }
++#define BLOCK_CRYPTO_OPT_DEF_LUKS_ENCRYPT_IN_PARALLEL(prefix)     \
++    {                                                             \
++        .name = prefix BLOCK_CRYPTO_OPT_LUKS_ENCRYPT_IN_PARALLEL, \
++        .type = QEMU_OPT_BOOL,                                    \
++        .help = "perform encryption and decryption through "      \
++                "thread pool",                                    \
 +    }
 +
-+    return 0;
-+}
-+
-+
-+static int coroutine_fn block_crypto_submit_co(BlockDriverState *bs, uint64_t offset,
-+                                               uint8_t *buf, size_t len, bool encrypt,
-+                                               Error **errp)
-+{
-+    BlockCrypto *crypto = bs->opaque;
-+    CryptoAIOData acb;
-+
-+    acb = (CryptoAIOData) {
-+        .block = crypto->block,
-+        .offset = offset,
-+        .buf = buf,
-+        .len = len,
-+        .encrypt = encrypt,
-+        .errp = errp,
-+    };
-+    return thread_pool_submit_co(handle_aiocb_encdec, &acb);
-+}
-+
-+
-+static int coroutine_fn GRAPH_RDLOCK
-+block_crypto_encrypt(BlockDriverState *bs, uint64_t offset,
-+                     uint8_t *buf, size_t len, Error **errp)
-+{
-+    BlockCrypto *crypto = bs->opaque;
-+    int ret = 0;
-+
-+    if (crypto->encrypt_in_parallel) {
-+        ret = block_crypto_submit_co(bs, offset, buf, len, true, errp);
-+    } else {
-+        if (qcrypto_block_encrypt(crypto->block, offset, buf, len, errp) < 0) {
-+            ret = -EIO;
-+        }
-+    }
-+
-+    return ret;
-+}
-+
-+
-+static int coroutine_fn GRAPH_RDLOCK
-+block_crypto_decrypt(BlockDriverState *bs, uint64_t offset,
-+                     uint8_t *buf, size_t len, Error **errp)
-+{
-+    BlockCrypto *crypto = bs->opaque;
-+    int ret = 0;
-+
-+    if (crypto->encrypt_in_parallel) {
-+        ret = block_crypto_submit_co(bs, offset, buf, len, false, errp);
-+    } else {
-+        if (qcrypto_block_decrypt(crypto->block, offset, buf, len, errp) < 0) {
-+            ret = -EIO;
-+        }
-+    }
-+
-+    return ret;
-+}
-+
-+
- /*
-  * 1 MB bounce buffer gives good performance / memory tradeoff
-  * when using cache=none|directsync.
-@@ -508,9 +598,10 @@ block_crypto_co_preadv(BlockDriverState *bs, int64_t offset, int64_t bytes,
-             goto cleanup;
-         }
+ QCryptoBlockCreateOptions *
+ block_crypto_create_opts_init(QDict *opts, Error **errp);
  
--        if (qcrypto_block_decrypt(crypto->block, offset + bytes_done,
--                                  cipher_data, cur_bytes, NULL) < 0) {
--            ret = -EIO;
-+        ret = block_crypto_decrypt(bs, offset + bytes_done,
-+                                   cipher_data, cur_bytes, NULL);
-+
-+        if (ret < 0) {
-             goto cleanup;
-         }
+diff --git a/qapi/block-core.json b/qapi/block-core.json
+index fd3bcc1c17..1e47b6ea80 100644
+--- a/qapi/block-core.json
++++ b/qapi/block-core.json
+@@ -3365,12 +3365,16 @@
+ #
+ # @header: block device holding a detached LUKS header.  (since 9.0)
+ #
++# @encrypt-in-parallel: perform encryption and decryption through
++#   thread pool
++#
+ # Since: 2.9
+ ##
+ { 'struct': 'BlockdevOptionsLUKS',
+   'base': 'BlockdevOptionsGenericFormat',
+   'data': { '*key-secret': 'str',
+-            '*header': 'BlockdevRef'} }
++            '*header': 'BlockdevRef',
++            '*encrypt-in-parallel': 'bool'} }
  
-@@ -565,9 +656,9 @@ block_crypto_co_pwritev(BlockDriverState *bs, int64_t offset, int64_t bytes,
+ ##
+ # @BlockdevOptionsGenericCOWFormat:
+diff --git a/qapi/crypto.json b/qapi/crypto.json
+index c9d967d782..91963c693f 100644
+--- a/qapi/crypto.json
++++ b/qapi/crypto.json
+@@ -192,10 +192,14 @@
+ #     decryption key.  Mandatory except when probing image for
+ #     metadata only.
+ #
++# @encrypt-in-parallel: perform encryption and decryption through
++#   thread pool
++#
+ # Since: 2.6
+ ##
+ { 'struct': 'QCryptoBlockOptionsLUKS',
+-  'data': { '*key-secret': 'str' }}
++  'data': { '*key-secret': 'str',
++            '*encrypt-in-parallel': 'bool' }}
  
-         qemu_iovec_to_buf(qiov, bytes_done, cipher_data, cur_bytes);
- 
--        if (qcrypto_block_encrypt(crypto->block, offset + bytes_done,
--                                  cipher_data, cur_bytes, NULL) < 0) {
--            ret = -EIO;
-+        ret = block_crypto_encrypt(bs, offset + bytes_done,
-+                                   cipher_data, cur_bytes, NULL);
-+        if (ret < 0) {
-             goto cleanup;
-         }
- 
+ ##
+ # @QCryptoBlockCreateOptionsLUKS:
 -- 
 2.17.1
 
