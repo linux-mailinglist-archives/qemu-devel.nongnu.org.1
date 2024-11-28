@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 822BE9DBC3C
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Nov 2024 19:41:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 430D29DBC3A
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Nov 2024 19:41:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tGjQb-00074Z-Rb; Thu, 28 Nov 2024 13:39:49 -0500
+	id 1tGjQa-000743-3R; Thu, 28 Nov 2024 13:39:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <den@openvz.org>)
- id 1tGjQN-0006zV-MZ; Thu, 28 Nov 2024 13:39:35 -0500
+ id 1tGjQL-0006yM-QV; Thu, 28 Nov 2024 13:39:34 -0500
 Received: from relay.virtuozzo.com ([130.117.225.111])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <den@openvz.org>)
- id 1tGjQI-00060N-Jo; Thu, 28 Nov 2024 13:39:33 -0500
+ id 1tGjQI-00060O-Fq; Thu, 28 Nov 2024 13:39:33 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=virtuozzo.com; s=relay; h=MIME-Version:Message-ID:Date:Subject:From:
- Content-Type; bh=fk8PGJQHc/q4BIWFO0ftad01xvv3zgbb9jJTTEfmY/w=; b=Pw9ExQjRBGPv
- Kn1P/KK5HdgCpMk+Nwp3alqJL3iFBYXqfwv8B/qLQZR9GSBYI1aGLcas2aKtv5YGSXlmqnqt4xjv/
- RAnXcZsN9dD8/dSl/s/T/Qg5cFZOmwEZwDRS22fmdDQywssVhpD/q7PUX0XEXxismcg+zfhIbUUpb
- KJI8oSaUDnAWkq+PsUe01jDozvkK8OieKLD6SDVO6OHspyjLRqwIH5iIjVjcXBO5sYHrvp6jVuCVP
- EK03ij9UO4VJoLc4np80e5OMkLph7XDzOgNzDCMG5BXRF4aCNi3h/ErtDO2g9ECohWzSrFV4FuN+A
- kauMtxXGAKlzRSxOITf08w==;
+ Content-Type; bh=UhBwOVLNTmzdrnNMePKQwoRxWaPb6x4aFbZNwX4XSQo=; b=N2JXXUvkaI4W
+ W84aPRlNwFC/d6pV21NNAbAqeCrfxIa1PEOsJvX+uLntvYACV88MtkqHJ1YM4yuLra/uEafcrhoIQ
+ BdOv7nL0kNkMusHOKyqVfK0nIDI/55tPKablsm6iORaOAWF66OFbVDY1azx93e1WvcArPK0POma0r
+ pKuBTqIvW6NXZFd/Yf6QhySdAOHASEU1hVnz68/kGB0RGPMkAurYA7tExloLB0Ru07Vq4MfGSNu7s
+ tkYSJRHs75Wrf3YM7/+DtPoWbCzRNUcWpaQ896QnXonV+7iETCA7vshvMY4Syk9T6oHkyZBbSDVoz
+ do729TMeenZb/2biLS5zvQ==;
 Received: from ch-vpn.virtuozzo.com ([130.117.225.6] helo=iris.sw.ru)
  by relay.virtuozzo.com with esmtp (Exim 4.96)
- (envelope-from <den@openvz.org>) id 1tGjPp-00E2DN-0c;
- Thu, 28 Nov 2024 19:39:10 +0100
+ (envelope-from <den@openvz.org>) id 1tGjPp-00E2DN-1Z;
+ Thu, 28 Nov 2024 19:39:11 +0100
 To: qemu-block@nongnu.org,
 	qemu-devel@nongnu.org
-Cc: den@openvz.org, Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
- Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>,
+Cc: den@openvz.org, Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>,
+ Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
  Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>
-Subject: [PATCH 5/6] preallocate: simplify preallocate_drop_resize
-Date: Thu, 28 Nov 2024 19:25:52 +0100
-Message-ID: <20241128183911.837699-6-den@openvz.org>
+Subject: [PATCH 6/6] iotests: add preallocate filter checks
+Date: Thu, 28 Nov 2024 19:25:53 +0100
+Message-ID: <20241128183911.837699-7-den@openvz.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241128183911.837699-1-den@openvz.org>
 References: <20241128183911.837699-1-den@openvz.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
 Received-SPF: pass client-ip=130.117.225.111; envelope-from=den@openvz.org;
  helo=relay.virtuozzo.com
 X-Spam_score_int: -41
@@ -67,88 +67,370 @@ From:  "Denis V. Lunev" via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Once permission change process is normalized, there is no need to have
-permission update inside preallocate_drop_resize() and
-preallocate_truncate_to_real_size() could be merged into the caller.
+From: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
 
+This test summaries the cases faced inside Virtuozzo with the
+preallocation filter worth to be added to unit tests:
+
+  1. Launch a VM whose block graph has preallocate filter node and
+     migrate it locally into a file.
+  2. Same, but make sure preallocate filter is activated by performing a
+     write op to it beyond the current disk length (which is zero).
+  3. Add testcase which would perform write operation to VM disk to make
+     sure preallocation filter is active, and then run 'blockdev-snapshot'
+     command to turn another image (also with preallocation) into an
+     external snapshot and make it an active disk.
+
+Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
 Signed-off-by: Denis V. Lunev <den@openvz.org>
 CC: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 CC: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
 CC: Kevin Wolf <kwolf@redhat.com>
 CC: Hanna Reitz <hreitz@redhat.com>
 ---
- block/preallocate.c | 36 ++----------------------------------
- 1 file changed, 2 insertions(+), 34 deletions(-)
+ tests/qemu-iotests/tests/prealloc-checks     | 222 +++++++++++++++++++
+ tests/qemu-iotests/tests/prealloc-checks.out |  81 +++++++
+ 2 files changed, 303 insertions(+)
+ create mode 100644 tests/qemu-iotests/tests/prealloc-checks
+ create mode 100644 tests/qemu-iotests/tests/prealloc-checks.out
 
-diff --git a/block/preallocate.c b/block/preallocate.c
-index c448258c42..886b1311f2 100644
---- a/block/preallocate.c
-+++ b/block/preallocate.c
-@@ -77,8 +77,6 @@ typedef struct BDRVPreallocateState {
-      */
- } BDRVPreallocateState;
- 
--static int preallocate_drop_resize(BlockDriverState *bs, Error **errp);
--
- #define PREALLOCATE_OPT_PREALLOC_ALIGN "prealloc-align"
- #define PREALLOCATE_OPT_PREALLOC_SIZE "prealloc-size"
- static QemuOptsList runtime_opts = {
-@@ -169,7 +167,7 @@ static int preallocate_open(BlockDriverState *bs, QDict *options, int flags,
- }
- 
- static int GRAPH_RDLOCK
--preallocate_truncate_to_real_size(BlockDriverState *bs, Error **errp)
-+preallocate_drop_resize(BlockDriverState *bs, Error **errp)
- {
-     BDRVPreallocateState *s = bs->opaque;
-     int ret;
-@@ -198,7 +196,7 @@ static void preallocate_close(BlockDriverState *bs)
-     GLOBAL_STATE_CODE();
-     GRAPH_RDLOCK_GUARD_MAINLOOP();
- 
--    preallocate_truncate_to_real_size(bs, NULL);
-+    preallocate_drop_resize(bs, NULL);
- }
- 
- 
-@@ -488,36 +486,6 @@ preallocate_co_getlength(BlockDriverState *bs)
-     return bdrv_co_getlength(bs->file->bs);
- }
- 
--static int GRAPH_RDLOCK
--preallocate_drop_resize(BlockDriverState *bs, Error **errp)
--{
--    BDRVPreallocateState *s = bs->opaque;
--    int ret;
--
--    if (s->data_end < 0) {
--        return 0;
--    }
--
--    /*
--     * Before switching children to be read-only, truncate them to remove
--     * the preallocation and let them have the real size.
--     */
--    ret = preallocate_truncate_to_real_size(bs, errp);
--    if (ret < 0) {
--        return ret;
--    }
--
--    /*
--     * We'll drop our permissions and will allow other users to take write and
--     * resize permissions (see preallocate_child_perm). Anyone will be able to
--     * change the child, so mark all states invalid. We'll regain control if a
--     * parent requests write access again.
--     */
--    bdrv_child_refresh_perms(bs, bs->file, NULL);
--
--    return 0;
--}
--
- static void preallocate_child_perm(BlockDriverState *bs, BdrvChild *c,
-     BdrvChildRole role, BlockReopenQueue *reopen_queue,
-     uint64_t perm, uint64_t shared, uint64_t *nperm, uint64_t *nshared)
--- 
+diff --git a/tests/qemu-iotests/tests/prealloc-checks b/tests/qemu-iotests/=
+tests/prealloc-checks
+new file mode 100644
+index 0000000000..fc55353cb9
+--- /dev/null
++++ b/tests/qemu-iotests/tests/prealloc-checks
+@@ -0,0 +1,222 @@
++#!/usr/bin/env bash
++# group: rw
++#
++# Checks for preallocate filter.
++#
++# Copyright (c) 2024 Virtuozzo International GmbH. All rights reserved.
++#
++# This program is free software; you can redistribute it and/or modify
++# it under the terms of the GNU General Public License as published by
++# the Free Software Foundation; either version 2 of the License, or
++# (at your option) any later version.
++#
++# This program is distributed in the hope that it will be useful,
++# but WITHOUT ANY WARRANTY; without even the implied warranty of
++# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++# GNU General Public License for more details.
++#
++# You should have received a copy of the GNU General Public License
++# along with this program.  If not, see <http://www.gnu.org/licenses/>.
++#
++
++# creator
++owner=3Dandrey.drobyshev@virtuozzo.com
++
++seq=3D`basename $0`
++echo "QA output created by $seq"
++
++status=3D1 # failure is the default!
++
++_cleanup()
++{
++    _cleanup_qemu
++    rm -f $SOCK_DIR/nbd.sock
++    rm -f $TEST_IMG.snap
++    _cleanup_test_img
++}
++trap "_cleanup; exit \$status" 0 1 2 3 15
++
++# get standard environment, filters and checks
++. ../common.rc
++. ../common.filter
++. ../common.qemu
++
++_supported_fmt qcow2
++
++_recreate_test_img()
++{
++    local size=3D"1M"
++    local imgopts=3D"cluster_size=3D$size,extended_l2=3Don,lazy_refcounts=
+=3Don"
++    local image=3D"$TEST_IMG"
++
++    if test -n "$1" ; then
++        image=3D"$1"
++    fi
++
++    rm -f $image
++    TEST_IMG=3D$image _make_test_img -o "$imgopts" $size
++}
++
++blkopts=3D"node-name=3Ddisk,driver=3Dqcow2,file.driver=3Dpreallocate,"
++blkopts+=3D"file.node-name=3Dprealloc,file.file.driver=3Dfile,"
++blkopts+=3D"file.file.filename=3D$TEST_IMG,file.file.node-name=3Dstorage"
++
++#
++# 1. Launch a VM so that its block graph contains preallocate filter node,
++# and perform its local migration to a file.  That is similar to doing
++# "virsh save VM /path/to/vmsave".
++#
++
++echo
++echo =3D=3D=3D 1. Migration to a local file =3D=3D=3D
++echo
++
++echo "# Create image and start VM with preallocate filter:"
++echo
++_recreate_test_img
++qemu_comm_method=3D"monitor" _launch_qemu -blockdev "$blkopts"
++handle=3D$QEMU_HANDLE
++_send_qemu_cmd $handle "" "(qemu)"
++
++echo
++echo "# Migrate VM to a local file (/dev/null):"
++echo
++_send_qemu_cmd $handle "migrate \"exec: cat > '/dev/null'\"" "(qemu)"
++
++echo
++echo "# Exit VM:"
++echo
++_send_qemu_cmd $handle "quit" ""
++wait=3Dyes _cleanup_qemu
++
++#
++# 2. Same as 1st, but this time we make sure that preallocate filter is
++# actually active. To do that we perform a write op beyond current length
++# (which is 0 as the image's just created).  Then migrate VM to a local
++# file (/dev/null).
++#
++
++echo
++echo =3D=3D=3D 2. Migration to a local file after a write operation =3D=3D=
+=3D
++echo
++
++echo "# Create image and start VM with preallocate filter:"
++echo
++_recreate_test_img
++qemu_comm_method=3D"monitor" _launch_qemu -blockdev "$blkopts"
++handle=3D$QEMU_HANDLE
++_send_qemu_cmd $handle "" "(qemu)"
++
++echo
++echo "# Perform write op to the image to activate preallocate filter:"
++echo
++_send_qemu_cmd $handle 'qemu-io disk "write -P 0xff 0 1M"' "1 MiB"
++
++echo
++echo "# Migrate VM to a local file (/dev/null):"
++echo
++_send_qemu_cmd $handle "migrate \"exec: cat > '/dev/null'\"" "(qemu)"
++
++echo
++echo "# Exit VM:"
++echo
++_send_qemu_cmd $handle "quit" ""
++wait=3Dyes _cleanup_qemu
++
++#
++# 3. Add another overlay image (with preallocation filter as well), launch
++# VM, export its disk via nbd to perform a write operation and activate the
++# preallocation filter, and then run 'blockdev-snapshot' to turn the overl=
+ay
++# image into an external snapshot of the disk.
++#
++
++echo
++echo =3D=3D=3D 3. Taking external snapshot after a write operation =3D=3D=
+=3D
++echo
++
++snapblkopts=3D"node-name=3Dsnap,driver=3Dqcow2,file.driver=3Dpreallocate,"
++snapblkopts+=3D"file.node-name=3Dsnap-prealloc,file.file.driver=3Dfile,"
++snapblkopts+=3D"file.file.filename=3D$TEST_IMG.snap,"
++snapblkopts+=3D"file.file.node-name=3Dsnap-storage"
++
++echo "# Create disk and snapshot images and start VM with preallocate filt=
+er:"
++echo
++_recreate_test_img
++_recreate_test_img $TEST_IMG.snap
++
++qemu_comm_method=3D"qmp" qmp_pretty=3D \
++    _launch_qemu -blockdev "$snapblkopts" -blockdev "$blkopts"
++handle=3D$QEMU_HANDLE
++_send_qemu_cmd $handle "{ 'execute': 'qmp_capabilities' }" "return"
++
++silent=3Dyes
++
++echo
++echo "# Start nbd server:"
++echo
++_send_qemu_cmd $handle \
++    "{ 'execute': 'nbd-server-start',
++       'arguments': { 'addr': { 'type': 'unix',
++                                'data': { 'path': '$SOCK_DIR/nbd.sock' }}}=
+}"
++_send_qemu_cmd $handle "" "return"
++
++echo
++echo "# Export 'disk' node via nbd server:"
++echo
++_send_qemu_cmd $handle \
++    "{ 'execute': 'block-export-add',
++       'arguments': { 'type': 'nbd', 'node-name': 'disk', 'id': 'nbdexp',
++                      'name': 'nbdexp', 'writable': true }}"
++_send_qemu_cmd $handle "" "return"
++
++echo
++echo "# Perform write op to the nbd-exported disk:"
++echo
++silent=3D
++$QEMU_IO_PROG -f raw -c "write -P 0xff 0 1M" \
++    "nbd+unix:///nbdexp?socket=3D$SOCK_DIR/nbd.sock" 2>&1 \
++    | _filter_qemu_io | _filter_nbd
++
++echo
++echo "# Delete nbd export:"
++echo
++silent=3Dyes
++_send_qemu_cmd $handle \
++    "{ 'execute': 'block-export-del', 'arguments': { 'id': 'nbdexp' }}"
++_send_qemu_cmd $handle "" "return"
++
++echo
++echo "# Stop nbd server:"
++echo
++_send_qemu_cmd $handle \
++    "{ 'execute': 'nbd-server-stop' }"
++_send_qemu_cmd $handle "" "return"
++
++echo
++echo "# Turn 'snap' node into the external snapshot of 'disk' node:"
++echo
++silent=3D
++_send_qemu_cmd $handle \
++    "{ 'execute': 'blockdev-snapshot',
++       'arguments': { 'node': 'disk', 'overlay': 'snap' }}"
++_send_qemu_cmd $handle "" "return"
++
++echo
++echo "# Check block graph:"
++echo
++_send_qemu_cmd $handle \
++    "{ 'execute': 'x-debug-query-block-graph' }"
++_send_qemu_cmd $handle "" "return"
++
++echo
++echo "# Exit VM:"
++echo
++qmp_pretty=3D
++silent=3Dyes
++_send_qemu_cmd $handle "{ 'execute': 'quit' }" "qmp-quit"
++wait=3Dyes _cleanup_qemu
++
++# success, all done
++echo "*** done"
++rm -f $seq.full
++status=3D0
+diff --git a/tests/qemu-iotests/tests/prealloc-checks.out b/tests/qemu-iote=
+sts/tests/prealloc-checks.out
+new file mode 100644
+index 0000000000..10b5f8fa8e
+--- /dev/null
++++ b/tests/qemu-iotests/tests/prealloc-checks.out
+@@ -0,0 +1,81 @@
++QA output created by prealloc-checks
++
++=3D=3D=3D 1. Migration to a local file =3D=3D=3D
++
++# Create image and start VM with preallocate filter:
++
++Formatting 'TEST_DIR/t.IMGFMT', fmt=3DIMGFMT size=3D1048576
++QEMU X.Y.Z monitor - type 'help' for more information
++(qemu)
++
++# Migrate VM to a local file (/dev/null):
++
++(qemu) migrate "exec: cat > '/dev/null'"
++
++# Exit VM:
++
++(qemu) quit
++
++=3D=3D=3D 2. Migration to a local file after a write operation =3D=3D=3D
++
++# Create image and start VM with preallocate filter:
++
++Formatting 'TEST_DIR/t.IMGFMT', fmt=3DIMGFMT size=3D1048576
++QEMU X.Y.Z monitor - type 'help' for more information
++(qemu)
++
++# Perform write op to the image to activate preallocate filter:
++
++(qemu) qemu-io disk "write -P 0xff 0 1M"
++wrote 1048576/1048576 bytes at offset 0
++1 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
++
++# Migrate VM to a local file (/dev/null):
++
++(qemu) migrate "exec: cat > '/dev/null'"
++
++# Exit VM:
++
++(qemu) quit
++
++=3D=3D=3D 3. Taking external snapshot after a write operation =3D=3D=3D
++
++# Create disk and snapshot images and start VM with preallocate filter:
++
++Formatting 'TEST_DIR/t.IMGFMT', fmt=3DIMGFMT size=3D1048576
++Formatting 'TEST_DIR/t.IMGFMT.snap', fmt=3DIMGFMT size=3D1048576
++{ 'execute': 'qmp_capabilities' }
++{"return": {}}
++
++# Start nbd server:
++
++
++# Export 'disk' node via nbd server:
++
++
++# Perform write op to the nbd-exported disk:
++
++wrote 1048576/1048576 bytes at offset 0
++1 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
++
++# Delete nbd export:
++
++
++# Stop nbd server:
++
++
++# Turn 'snap' node into the external snapshot of 'disk' node:
++
++{ 'execute': 'blockdev-snapshot',
++       'arguments': { 'node': 'disk', 'overlay': 'snap' }}
++{"return": {}}
++
++# Check block graph:
++
++{ 'execute': 'x-debug-query-block-graph' }
++{"return": {"edges": [{"name": "file", "parent": 4, "shared-perm": ["write=
+-unchanged", "consistent-read"], "perm": ["consistent-read"], "child": 6}, =
+{"name": "file", "parent": 6, "shared-perm": ["write-unchanged", "consisten=
+t-read"], "perm": ["consistent-read"], "child": 5}, {"name": "file", "paren=
+t": 3, "shared-perm": ["write-unchanged", "consistent-read"], "perm": ["res=
+ize", "write", "consistent-read"], "child": 2}, {"name": "backing", "parent=
+": 3, "shared-perm": ["resize", "write-unchanged", "write", "consistent-rea=
+d"], "perm": [], "child": 4}, {"name": "file", "parent": 2, "shared-perm": =
+["write-unchanged", "consistent-read"], "perm": ["resize", "write", "consis=
+tent-read"], "child": 1}], "nodes": [{"name": "disk", "type": "block-driver=
+", "id": 4}, {"name": "prealloc", "type": "block-driver", "id": 6}, {"name"=
+: "storage", "type": "block-driver", "id": 5}, {"name": "snap", "type": "bl=
+ock-driver", "id": 3}, {"name": "snap-prealloc", "type": "block-driver", "i=
+d": 2}, {"name": "snap-storage", "type": "block-driver", "id": 1}]}}
++
++# Exit VM:
++
++{"return": {}}
++*** done
+--=20
 2.45.2
 
 
