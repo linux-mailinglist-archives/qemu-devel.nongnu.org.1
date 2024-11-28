@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 906259DB5F7
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Nov 2024 11:48:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A72C99DB5F6
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Nov 2024 11:48:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tGc31-0007Ft-SA; Thu, 28 Nov 2024 05:47:00 -0500
+	id 1tGc1F-00048t-6d; Thu, 28 Nov 2024 05:45:09 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tGc01-0002Eq-Qy
+ id 1tGc01-0002Ev-Ut
  for qemu-devel@nongnu.org; Thu, 28 Nov 2024 05:44:00 -0500
-Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
+Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tGbzu-0000hD-QQ
- for qemu-devel@nongnu.org; Thu, 28 Nov 2024 05:43:51 -0500
-Received: by mail-wr1-x42a.google.com with SMTP id
- ffacd0b85a97d-3822ba3cdbcso462952f8f.0
- for <qemu-devel@nongnu.org>; Thu, 28 Nov 2024 02:43:34 -0800 (PST)
+ id 1tGbzu-0000i1-Ma
+ for qemu-devel@nongnu.org; Thu, 28 Nov 2024 05:43:50 -0500
+Received: by mail-wr1-x432.google.com with SMTP id
+ ffacd0b85a97d-382423f4082so508488f8f.3
+ for <qemu-devel@nongnu.org>; Thu, 28 Nov 2024 02:43:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1732790613; x=1733395413; darn=nongnu.org;
+ d=linaro.org; s=google; t=1732790614; x=1733395414; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=M59b1YXia+t10MRDfuwOiG0kBN1H5nWvD2y8aDo+yb4=;
- b=LRsfQH2qLXzucM+4vtMquZLThHXOnKlyp1rVEbPjCVWumtNlHq5LiQE6V7fFVzOnKh
- MH6Cfsxeq/pkC0D+SIuZH9BzMfnxHFsrjOZRB95OPNG5KZshxUtnjQe7L/oLR0KbKOMG
- nnQOWdEVppz1rxM/M2sUQ4KOaSs2TbNBRuyALU5bK07zArXLx5/pydnnIzlJ4+p8Ganh
- qKt6aGkhH5mTB8ihaTs1g+fNRag/vfnPWJUbi6aeazmfBFBq7N4cAbXuJVMC5iqsn2rI
- 6oeOv8venAUiypzn5+MqJAWl4hInFO5nYvtMzDKZsFNhqaqb3GoIdg+jEmnc0TYYfBrp
- 5tKA==
+ bh=2TrVJRkkr5D+N0aBUkmYJt1MSRdpl5FRuyVmIZ66utw=;
+ b=aFqv7/QcygN3bY0RWqQhVGeEi48O/RVQkVp5yNM03o9nBoVaKyBOaxDk/0eymw7ZVU
+ eegs/6tDlwYnfHnImjtmpuJ1Si91JSUp8xfeUMowqqVaL1hy25X9hcb4Pe6ZTxFP684N
+ dJE//60qw95ncsMRiTuGRFzCZTMkfRjj83BH7whILqHbBXuqk9ZaziNoynv9o5gYy92g
+ 2izRLjjuwajKTO49mJjATDg/CPf4/lno+wLz7W5w+I6yJ5YSwZ63IVUcbopfZ2SgoM+C
+ PF8d44IoEBgrJKwzFYLq6O0YDa94Xy83To/4LnJa/a6RFxSpQgKpbFedyTgMnaTJ8jzG
+ 1URQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1732790613; x=1733395413;
+ d=1e100.net; s=20230601; t=1732790614; x=1733395414;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=M59b1YXia+t10MRDfuwOiG0kBN1H5nWvD2y8aDo+yb4=;
- b=c7EVi77uk2YpgIn9pzKihtAeJR4DIOf+wNSC2bUhvDFVJhYAn6+Vm5mXJa3+6JRa52
- D01PjkhruqVmzH5HFgi0PSTMbrpmEHaMgprdoIxVu6GkOTcoQAFR1bEQAwgrkkhsUYE1
- /e3j9nbSYJ1kQBwkMjrd3HCn4J601c2EgVXmvwsfmJCe2CgNVOwKbgM11mFExSfswFoc
- tiHd6n6NBrIx4bi2JP1lnxvYPOhP+d+5bYDT16QLHq5AzE99vj+F2mkPAxkeONqmagHZ
- 5zPueDBZTVmZt92Rz4rpdyl4UmEdwlOOG93jU/xQQJHUVBhX2x+xaEzlQV6TdPKqzuIE
- 781g==
-X-Gm-Message-State: AOJu0Yzb0y9yEqjZ6ftqzt1fttMy5vnyhlm1QFONvQMXRUVXGCq/qnWM
- wwxM5upTubmUesLZfLixp1DTMfnAIg6pazOAC+tObQI3xz3oE41w8irGzHRgpnUHGgRq0DGolcm
- 1
-X-Gm-Gg: ASbGncsiqwSOIUblmkpq4uVczKpKfA70HazIk+lNaMyud416sUHppph6XcZd4o5F7R4
- fFXHPOQo2HREx5x7VAwnl2sIblBcyTLNAxy4Y7XymBIaqzlXi1KE6DckQ1w/+DSzO0AzqYCDp0t
- 1YO0yQBuoA2Ej2YatTlWExO7xVRwRjaGpRXTy2xVashi4O0dBQwxdf8IU0pTzckT0g1yd/sLtWV
- iQQL4mnzVwJgER92p0duoRiU7Y2xazE5obwynwl0RADgQDlHw+rZD0=
-X-Google-Smtp-Source: AGHT+IFDBYQ0p8AMJvWcntf+/F6gf5Yuv4QaJlDohlcfyApXLCO7EQn6BfhYVR4vXEVLllhC1tMn/Q==
-X-Received: by 2002:a05:6000:2d84:b0:382:5206:8b84 with SMTP id
- ffacd0b85a97d-385c6ebd177mr4215378f8f.14.1732790613468; 
- Thu, 28 Nov 2024 02:43:33 -0800 (PST)
+ bh=2TrVJRkkr5D+N0aBUkmYJt1MSRdpl5FRuyVmIZ66utw=;
+ b=C2Tp6XTzznAwyl9nuhzU48h9EkSApbQkdZJSGJIJ05rgT1vYZph9EYUwRJgb4j6gpi
+ 4thfGE2RPG9lDpFublRO/S0q6Y8QBsLgnTnGHDOU+qUZRbkOjECd0CJ9wgAXj2bA8FfT
+ XnjQxK9M2QlOoDaxtvHOL8285UfJgBpM+qaByI9qpSJEz/Vqij0xq47LvV+4qjlta6yC
+ cG1X+b1C5+aiCBnYtP4uqI7IZD10y4f3BRWSeIlYO/8zC3isN8XKk4TGWCjy7GHQSAuj
+ icEfZLRN6Dh+CN2+pimQEWxpzIt0Fft+0fsvGCKG0aUSEeXD08vGMxLVfmBSxt9CeYiI
+ vFHw==
+X-Gm-Message-State: AOJu0YzCUMHWT9eIk4qIRn+GSy/kYiBLBfkC3mRtMPPJOgN3ffEvz6Ij
+ jWrGqKaRacrsgXzKH2czJx2ZETvSQ+rCyhTEin/X6fQPQqsuvbT1hK9Ypf7281W2mvm4moIV/v6
+ a
+X-Gm-Gg: ASbGncvNlvzjJrHNr5fizOywtD3MUhtIChz/Dk0aMV7CiSQmAMEpdR1bmAJ9hX4aFZN
+ Q8678UiBOtREEAFXwBDwnPlxnPOtkuwMph6zF2lNumuU5LRVB22G3g/GJgWCohyjAuj0BS7ntF9
+ ue0qSKPB5PaOTiXr/e22UH0MDw+tg+WKKOYN7dvhDhgggUd018QwBHLdnZ6x8QSknAIJZapCcU7
+ 3FKyMnf3fMUrMz4ksD5V03gE3geRRO819ou3Inywubgv4KO1AHU8sI=
+X-Google-Smtp-Source: AGHT+IEbfVCLYtPqt/qOPnH2qT981nHuA4VnsdG2pgMYEFf5EZYOEna96GoFM7XW2C+4P/qqEtZwEA==
+X-Received: by 2002:a5d:47cb:0:b0:382:22c6:7bcb with SMTP id
+ ffacd0b85a97d-385c6eb4c32mr6479070f8f.3.1732790614335; 
+ Thu, 28 Nov 2024 02:43:34 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-385ccd68958sm1292959f8f.67.2024.11.28.02.43.32
+ ffacd0b85a97d-385ccd68958sm1292959f8f.67.2024.11.28.02.43.33
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 28 Nov 2024 02:43:33 -0800 (PST)
+ Thu, 28 Nov 2024 02:43:34 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, qemu-ppc@nongnu.org, qemu-s390x@nongnu.org,
@@ -76,16 +76,16 @@ Cc: qemu-arm@nongnu.org, qemu-ppc@nongnu.org, qemu-s390x@nongnu.org,
  Thomas Huth <thuth@redhat.com>,
  Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
  Artyom Tarasenko <atar4qemu@gmail.com>, Max Filippov <jcmvbkbc@gmail.com>
-Subject: [PATCH for-10.0 20/25] target/sparc: Set Float3NaNPropRule explicitly
-Date: Thu, 28 Nov 2024 10:43:05 +0000
-Message-Id: <20241128104310.3452934-21-peter.maydell@linaro.org>
+Subject: [PATCH for-10.0 21/25] target/mips: Set Float3NaNPropRule explicitly
+Date: Thu, 28 Nov 2024 10:43:06 +0000
+Message-Id: <20241128104310.3452934-22-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241128104310.3452934-1-peter.maydell@linaro.org>
 References: <20241128104310.3452934-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::432;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x432.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -108,41 +108,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Set the Float3NaNPropRule explicitly for SPARC, and remove the
+Set the Float3NaNPropRule explicitly for Arm, and remove the
 ifdef from pickNaNMulAdd().
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/sparc/cpu.c             | 2 ++
- fpu/softfloat-specialize.c.inc | 2 --
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ target/mips/fpu_helper.h       | 4 ++++
+ target/mips/msa.c              | 3 +++
+ fpu/softfloat-specialize.c.inc | 8 +-------
+ 3 files changed, 8 insertions(+), 7 deletions(-)
 
-diff --git a/target/sparc/cpu.c b/target/sparc/cpu.c
-index 61f2d3fbf23..0f2997a85e6 100644
---- a/target/sparc/cpu.c
-+++ b/target/sparc/cpu.c
-@@ -814,6 +814,8 @@ static void sparc_cpu_realizefn(DeviceState *dev, Error **errp)
-      * the CPU state struct so it won't get zeroed on reset.
+diff --git a/target/mips/fpu_helper.h b/target/mips/fpu_helper.h
+index be66f2f813a..8ca0ca7ea39 100644
+--- a/target/mips/fpu_helper.h
++++ b/target/mips/fpu_helper.h
+@@ -29,6 +29,7 @@ static inline void restore_snan_bit_mode(CPUMIPSState *env)
+ {
+     bool nan2008 = env->active_fpu.fcr31 & (1 << FCR31_NAN2008);
+     FloatInfZeroNaNRule izn_rule;
++    Float3NaNPropRule nan3_rule;
+ 
+     /*
+      * With nan2008, SNaNs are silenced in the usual way.
+@@ -44,6 +45,9 @@ static inline void restore_snan_bit_mode(CPUMIPSState *env)
       */
-     set_float_2nan_prop_rule(float_2nan_prop_s_ba, &env->fp_status);
-+    /* For fused-multiply add, prefer SNaN over QNaN, then C->B->A */
-+    set_float_3nan_prop_rule(float_3nan_prop_s_cba, &env->fp_status);
-     /* For inf * 0 + NaN, return the input NaN */
-     set_float_infzeronan_rule(float_infzeronan_dnan_never, &env->fp_status);
+     izn_rule = nan2008 ? float_infzeronan_dnan_never : float_infzeronan_dnan_always;
+     set_float_infzeronan_rule(izn_rule, &env->active_fpu.fp_status);
++    nan3_rule = nan2008 ? float_3nan_prop_s_cab : float_3nan_prop_s_abc;
++    set_float_3nan_prop_rule(nan3_rule, &env->active_fpu.fp_status);
++
+ }
+ 
+ static inline void restore_fp_status(CPUMIPSState *env)
+diff --git a/target/mips/msa.c b/target/mips/msa.c
+index cc152db27f9..93a9a87d76d 100644
+--- a/target/mips/msa.c
++++ b/target/mips/msa.c
+@@ -66,6 +66,9 @@ void msa_reset(CPUMIPSState *env)
+     set_float_2nan_prop_rule(float_2nan_prop_s_ab,
+                              &env->active_tc.msa_fp_status);
+ 
++    set_float_3nan_prop_rule(float_3nan_prop_s_cab,
++                             &env->active_tc.msa_fp_status);
++
+     /* clear float_status exception flags */
+     set_float_exception_flags(0, &env->active_tc.msa_fp_status);
  
 diff --git a/fpu/softfloat-specialize.c.inc b/fpu/softfloat-specialize.c.inc
-index 31b23ddb9bb..565790b1834 100644
+index 565790b1834..2d029de7baa 100644
 --- a/fpu/softfloat-specialize.c.inc
 +++ b/fpu/softfloat-specialize.c.inc
-@@ -508,8 +508,6 @@ static int pickNaNMulAdd(FloatClass a_cls, FloatClass b_cls, FloatClass c_cls,
-         } else {
-             rule = float_3nan_prop_s_cab;
-         }
--#elif defined(TARGET_SPARC)
--        rule = float_3nan_prop_s_cba;
- #elif defined(TARGET_XTENSA)
+@@ -502,13 +502,7 @@ static int pickNaNMulAdd(FloatClass a_cls, FloatClass b_cls, FloatClass c_cls,
+     }
+ 
+     if (rule == float_3nan_prop_none) {
+-#if defined(TARGET_MIPS)
+-        if (snan_bit_is_one(status)) {
+-            rule = float_3nan_prop_s_abc;
+-        } else {
+-            rule = float_3nan_prop_s_cab;
+-        }
+-#elif defined(TARGET_XTENSA)
++#if defined(TARGET_XTENSA)
          if (status->use_first_nan) {
              rule = float_3nan_prop_abc;
+         } else {
 -- 
 2.34.1
 
