@@ -2,83 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B87389DB8B2
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Nov 2024 14:30:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AF7FB9DB8B3
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Nov 2024 14:30:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tGeax-0002jT-H8; Thu, 28 Nov 2024 08:30:11 -0500
+	id 1tGebE-0003HC-Og; Thu, 28 Nov 2024 08:30:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tGeap-0002dp-5V
- for qemu-devel@nongnu.org; Thu, 28 Nov 2024 08:30:03 -0500
-Received: from mail-oa1-x34.google.com ([2001:4860:4864:20::34])
+ id 1tGebA-000396-Pd
+ for qemu-devel@nongnu.org; Thu, 28 Nov 2024 08:30:24 -0500
+Received: from mail-oa1-x31.google.com ([2001:4860:4864:20::31])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tGean-0004nz-Kb
- for qemu-devel@nongnu.org; Thu, 28 Nov 2024 08:30:02 -0500
-Received: by mail-oa1-x34.google.com with SMTP id
- 586e51a60fabf-29692ad4b42so466683fac.3
- for <qemu-devel@nongnu.org>; Thu, 28 Nov 2024 05:30:01 -0800 (PST)
+ id 1tGeb9-00054n-Ap
+ for qemu-devel@nongnu.org; Thu, 28 Nov 2024 08:30:24 -0500
+Received: by mail-oa1-x31.google.com with SMTP id
+ 586e51a60fabf-297078d8eaeso864834fac.1
+ for <qemu-devel@nongnu.org>; Thu, 28 Nov 2024 05:30:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1732800600; x=1733405400; darn=nongnu.org;
+ d=linaro.org; s=google; t=1732800622; x=1733405422; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:to:subject:user-agent:mime-version:date:message-id:from
  :to:cc:subject:date:message-id:reply-to;
- bh=/bMoHKtp6xZV5ue9WuzY2PnbOAun0gIzj8xGddf3e10=;
- b=dP1NpxsSbUOGzUGB7JSy2pKDO++ij+0sEK+gHYNsLvq8XNPbm1VqoTfXNBKghq5h/O
- pNjkxxHeDlyHvpo5s4LwbaqKnXbv3tDO9OgCAceZ8VGJnozWLDjBBztewBOh/sbYeh5G
- McguiUkBgRlWSrNS15UnXa8zzydO0QRJw6OH5SbEcTW0xOJ92OJWR3sAIQJ37+5+19vl
- MZkF7RrdRRWFBokRunSKroGBUrhNBnoG0SOzUJrfZJqFML2bLzNWgRgXlQCF3ObKJAKH
- Zw6kYGmg/2rw3NNQLucpfIFD7hbMKWwXCWOBCqO+0jCN4vQ5zbGZMsu1Y2sUIQiY+WKK
- 6LDQ==
+ bh=TqtScC740xmd5u7iaeC83AA3tKDiDpqWYQrYgBVMH1o=;
+ b=X/175QvDX0gg6ghqq+cuYznAW1jqBUbZNyAgk5h96v79NKI8rKMdrRp1slQjQz2AGf
+ Y9h1tCUl/3AuBJ28h9w0aEyPdsRMyxfmjZIAni2Ca5TPFCMkHiUuYi5HbDoQrCMHThC+
+ PwwXwi4KN7S/Z7aJ5OX2l7jwz2Dg8cGE2kEhqT9xg4IHcn0wnQp/6Evo0j7CwAMzOFNc
+ GXqTqlaVxbPSWXNSNDGaYFAZg7Rrp1glyUVcv9YO4imKmjGOAlefvTeY8Yd4DLLy9FQz
+ 92BHWf/Q1sER+v9mwYTFxAOdIVDifXTi3keyAMPUxA/3C2vATHH2wkFL5aeQVikVrDN2
+ YDwg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1732800600; x=1733405400;
+ d=1e100.net; s=20230601; t=1732800622; x=1733405422;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=/bMoHKtp6xZV5ue9WuzY2PnbOAun0gIzj8xGddf3e10=;
- b=i2UjfnPR0Y20sBx8P4lWbcytug1S74TSyPHgc1uiXAVjIn+kVEdwpnMhm8ffdYCk3r
- xwinlIqP/INSdePFz/o6Zw9hrJ9Hvw6Ch/OUBimiN8EtjMtUt/E76Q3FXmFajD97Osba
- pfc9bUGoCEbMFC35v9qpz2Fz2ycn3+nrC74a8MXjOpW7l8Z9UeCiJTjsnLYAjyDgWgxd
- 3zm1lijvwul/Sd83L+7qSg1v5X7dWBvikDprOqFqPQL8lxcCqs9VTfwnOKG8ETBcCGY/
- /YBigZz3AfMsRYLHuETwyAKrt4eZgjMX+1nyvLq32/HfRQspwapEsOFgkg5nopqJTrTr
- VK9w==
+ bh=TqtScC740xmd5u7iaeC83AA3tKDiDpqWYQrYgBVMH1o=;
+ b=o57NKWSBm0KPNr0+PNzK/RTcISEj3Qlale8Mx4dVmnYP/vwj/vtsKtmnwqgUsKrMp9
+ 5F3/XlHmx3rEihiM6QW9PLswt7WlCXEljqECEv+CjABBvIT8/7pWdvIjvK2JRyg1+mch
+ EZpHsZoDYNjCTevs1/P8MtNXkz4R7o0JmFzSaAOb+3WuHbHuhxCeehkz32/pnzOfTO74
+ c81gUaT7X7bWJXUEBAvGvIX1uSPdt7rZ+1wztzjrUOcxA+11L+tl5DPIH3iJzVs+V46a
+ vwO6eC1VgG7EBjOcr14cZMDjOFO98ImntYXAANRsqhEISpHTmOmMrSgGB/kTmc8hepNz
+ pXEw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVDx6X/ouG96Gy2yBLbnzsYXoWrBOZGETZVGPCg8fJkk5MTG07TnQ+Nx6o17zekJIuN3GKK7tz5tebS@nongnu.org
-X-Gm-Message-State: AOJu0Yy47b/XfnN8WcoGWnya4U3rKu9Xcpxtg0wjue7w6OnYRLxHPus3
- YTNUF1+r9lcwNipSeg6rHZKXeTTrxRZbEutfIArWjVlUkmymLdrQcKIxZc8NITU=
-X-Gm-Gg: ASbGncvB6gGykkhzTmXRLQPcDbVFEjwSEVSq0H+ZuwhefyVr5R0Lv53nahoqwfxJLj5
- t3Oc1iBAmojBNnZmu5w2uxSv3UtbN9Kz69MF/PbPEOaCMQut/8ipP5x9nrNwHz2p2qQ72JiM9Sw
- fAM9B5xWknytExUZtxDJszE5AvB6TZy+QptnMzPsoCA/m+oEZIiyPrMMFnGUAZc3uMwpen0pU0m
- WndpLL7MvssBWRpatKy8whnohncE3DnouwfVHN21beg3IBJiw3GBkKViOVR/1aPR2lSlLlbfUrQ
- iTbyfv5F9b1jRKKr+0IYpPsGxCJo
-X-Google-Smtp-Source: AGHT+IHRifKaDVg26wKdT+qCQc3huApGjdb3OaWeY/Dm2qZpfMllSZuTqXPVhNKoUQ34wG4Gj6viQg==
-X-Received: by 2002:a05:6870:ed99:b0:296:df1d:917f with SMTP id
- 586e51a60fabf-29dc3aa169emr6501201fac.0.1732800600180; 
- Thu, 28 Nov 2024 05:30:00 -0800 (PST)
+ AJvYcCU5OsewNhUi2zfsED3svzM3kJ5RhHln4Y0LJ92Qz12xUEzhMRihp0eG4wc1xnZeNXHSC0kKmnaByQIU@nongnu.org
+X-Gm-Message-State: AOJu0Yxw61D2dzuWtb/0hJtV56hFipY0mlftka/KN6gy7MN+c0h1eRdo
+ mWY1+l6hLJwPIIWjj66xmPbCTox/iDh/rEZdJkfn6BsTgIcFrFlPPspvu32LyH5czfz6Gl271bf
+ alcM=
+X-Gm-Gg: ASbGnctb6DNswWU3XrT6v6h2AtMzhkt72FFGsET3er/9VmRDiGNh8clEe5gp92i4rDj
+ K/7y251yQ/AXxE1LBcLLYVHVizbhJWje6kPdpBLKYTx+PmaNdoYlCORECYP9IyjSqDmuTonyBf/
+ A9FeRY/LG6z//tPDs9s0T6g0KQNtgOHsMXvWSJC/cDjOfZ7ImaPlyCqxZdGBhEzFPTw3lD6eDN5
+ bbK8qErazfOLx21nLKQ57a3bN98gIZ9rUZtRo1fV0zkJBVEG6OeWb6VBR2r0l78bCR5Uc8e5x+d
+ CZ2rD56UebJ0+dQtnZCHRoUef/Wk
+X-Google-Smtp-Source: AGHT+IFFezvgwq65WNzdGeBNQjUHKiOOh1xaSs0ds/WBgMS/YD4L4mI/cRC4wvNWnS63xbyRjTa95A==
+X-Received: by 2002:a05:6870:828a:b0:287:6f4:1ac5 with SMTP id
+ 586e51a60fabf-29dc418fdfamr6786035fac.20.1732800621797; 
+ Thu, 28 Nov 2024 05:30:21 -0800 (PST)
 Received: from [192.168.4.112] (fixed-187-189-51-143.totalplay.net.
  [187.189.51.143]) by smtp.gmail.com with ESMTPSA id
- 586e51a60fabf-29de9bd87d9sm390158fac.50.2024.11.28.05.29.59
+ 46e09a7af769-71d7255e6e2sm291024a34.32.2024.11.28.05.30.20
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 28 Nov 2024 05:29:59 -0800 (PST)
-Message-ID: <b3d2cdea-b328-4971-a319-8bb72c3a910d@linaro.org>
-Date: Thu, 28 Nov 2024 07:29:57 -0600
+ Thu, 28 Nov 2024 05:30:21 -0800 (PST)
+Message-ID: <3448897b-c51a-43dc-8793-fc6c2a73304e@linaro.org>
+Date: Thu, 28 Nov 2024 07:30:19 -0600
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH for-10.0 08/25] target/mips: Set FloatInfZeroNaNRule
+Subject: Re: [PATCH for-10.0 09/25] target/sparc: Set FloatInfZeroNaNRule
  explicitly
 To: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
 References: <20241128104310.3452934-1-peter.maydell@linaro.org>
- <20241128104310.3452934-9-peter.maydell@linaro.org>
+ <20241128104310.3452934-10-peter.maydell@linaro.org>
 Content-Language: en-US
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20241128104310.3452934-9-peter.maydell@linaro.org>
+In-Reply-To: <20241128104310.3452934-10-peter.maydell@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2001:4860:4864:20::34;
- envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x34.google.com
+Received-SPF: pass client-ip=2001:4860:4864:20::31;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x31.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,17 +103,14 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 11/28/24 04:42, Peter Maydell wrote:
-> Set the FloatInfZeroNaNRule explicitly for the MIPS target,
+> Set the FloatInfZeroNaNRule explicitly for the SPARC target,
 > so we can remove the ifdef from pickNaNMulAdd().
 > 
 > Signed-off-by: Peter Maydell<peter.maydell@linaro.org>
 > ---
->   target/mips/fpu_helper.h       |  9 +++++++++
->   target/mips/msa.c              |  4 ++++
->   fpu/softfloat-specialize.c.inc | 16 +---------------
->   3 files changed, 14 insertions(+), 15 deletions(-)
-
-Lovely.
+>   target/sparc/cpu.c             | 2 ++
+>   fpu/softfloat-specialize.c.inc | 3 +--
+>   2 files changed, 3 insertions(+), 2 deletions(-)
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
