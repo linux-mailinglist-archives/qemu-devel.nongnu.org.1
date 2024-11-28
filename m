@@ -2,98 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5B049DB603
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Nov 2024 11:50:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 967569DB60C
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Nov 2024 11:52:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tGc34-0007kO-Gd; Thu, 28 Nov 2024 05:47:03 -0500
+	id 1tGc8a-0004z5-Ao; Thu, 28 Nov 2024 05:52:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tGc01-0002Ew-VI
- for qemu-devel@nongnu.org; Thu, 28 Nov 2024 05:43:58 -0500
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ id 1tGc6G-0005tH-Cq
+ for qemu-devel@nongnu.org; Thu, 28 Nov 2024 05:50:23 -0500
+Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tGbzu-0000lO-PR
- for qemu-devel@nongnu.org; Thu, 28 Nov 2024 05:43:50 -0500
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-434a0fd9778so6064475e9.0
- for <qemu-devel@nongnu.org>; Thu, 28 Nov 2024 02:43:38 -0800 (PST)
+ id 1tGc6B-0004YN-Pc
+ for qemu-devel@nongnu.org; Thu, 28 Nov 2024 05:50:18 -0500
+Received: by mail-ed1-x533.google.com with SMTP id
+ 4fb4d7f45d1cf-5ced377447bso1131163a12.1
+ for <qemu-devel@nongnu.org>; Thu, 28 Nov 2024 02:50:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1732790618; x=1733395418; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ d=linaro.org; s=google; t=1732791010; x=1733395810; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Zfa3WE0hEeXkZktlw3Eszp/UyNtqhw8PzXG1xyTaEO4=;
- b=oqntGWrbUm9WHtxzp+8LOwkGNa8RbeB98PixlPUozsUYFkWWzsK9LxLa43gA2gSVAQ
- sLG0RzcJS1wvMAvxP4eoXG5N3S+NAdCzspAXLfpKey4h9/y9/lUnzM7hPsO+RloAA3pt
- EI+UgHRJKpEYvUhnR+J3JzlCXSW4MM4Cm6KmO71jtmw1tCYnmUqi+raWIP13lyYITkoH
- sGoysmz7irkDEMmYx/J8/DPn0XEEEfpBQTQHgvzDHu8UIuQ3AUaEMYuCsHBXulaLvggP
- mNNYWQUuEI8MAiQ5e4Ok6mnAAnnWKV7Jo0cDuNw6sXIyNPU4GLBeOjtyArbuoGMQiD0M
- koRA==
+ bh=ZjBpOOdVZJL0iO2KTOgUARxPlu5YcxRage8kv9dpbo0=;
+ b=eKEizpXAvjwrX/Sqr8Dx2VeDS5wASZMZZL3i93j/MKPkSyxqp5MyvvUiSYNZ6Mxzob
+ zUD71LtFif/6PsPSFfUCyX7hzGB97EJ7t8ZK7zy6O1tbjQz/N9RLsQsguMh8/yUdepGb
+ i6XWpPr0yIg8bOZrII3699jduXB/FGFKG7++CxRI+FDOMg+oI3pdbKmtE/ZMSaE1t28o
+ nPwkM8QkuzTNARZ7Pjn60IwxPt9T+JXlWd/Y0a7YKsXpkzaDFEzNehhlHckAuKtLr/a/
+ P0/6qMX05kht1vv91a+24wIJhsw3VwaadePSNgLpihiXCtmdzw8vH8ZpisiUoeM7rsxB
+ B5gg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1732790618; x=1733395418;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1732791010; x=1733395810;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Zfa3WE0hEeXkZktlw3Eszp/UyNtqhw8PzXG1xyTaEO4=;
- b=hdK+LMmED2UKNAGdKolRn5LucaXZMALjBSswL1ViYE949l680aLVHcfcgD7Yqy4lT+
- L6LY5jwA33Kik1dPfm4k/Z0gpY0omd3K2ztoPSNs2WVtKgDPKDWrDT0MgbqvNY4RYtGO
- Nh27zIcENkG5EClaeOzbYk6EWileACW49/obwX7j88ZTSkluty9epjRxy13BVB5rUrga
- FGXKyFKZZ0Cwo6oTEtibMuDvTC019TAxw7xzZ5w4XX2ZAJk7WntoHccpexpqmC4XCY7X
- ZJblhHw/qhV+PfocX1thNOkLu0EwG3W/LLI4KU8GhM3zFsCW6mkmaebfsit0W1eIYqs1
- AnaA==
-X-Gm-Message-State: AOJu0Yw6eZVUB2vwiGsSV21NlxJhamzUfWjVHbMq+kTud8ixhdywXxEl
- onCwlR/teLunhvKlbCFjmxeRzAh9OD9NwECB8WxWmLefpLrCbn9Mogksxh8Uee4XiBSLq3r4QR2
- I
-X-Gm-Gg: ASbGncuyoJXHZPbQArl1EbQDCF7Wjcus3cwRP02BkyP7563OQ6TRdtpx5fzKtHH3b9A
- B2Lx0iNvTrVSDsX2iaEkUhMpF4Qmi+6ixajmmNRChxKNK2CVWtztMLVg/PHrZdLEiUC/J6KkEVz
- iCu0fobNbR8wTILN3h+f9gDJgHqPUeq13skkepKS82s9E/T8ygepWJG5m5uq8zQFvXSr9aQFhwT
- mKj7AFYIfERNjXaQQ+gPHxesnel8cJ863QanUo7eyE90jz6q2vkYzc=
-X-Google-Smtp-Source: AGHT+IEkBsbVJvsOrZdU/bWIWX4Mwf9E2dHz/HQ9DDr+QVOG3OEjoakFnX8ebUp0N0dtsxDmzVj6gw==
-X-Received: by 2002:a05:600c:1e2a:b0:434:a8ef:442f with SMTP id
- 5b1f17b1804b1-434a9e0b47amr51873015e9.32.1732790617727; 
- Thu, 28 Nov 2024 02:43:37 -0800 (PST)
-Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-385ccd68958sm1292959f8f.67.2024.11.28.02.43.37
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 28 Nov 2024 02:43:37 -0800 (PST)
-From: Peter Maydell <peter.maydell@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org, qemu-ppc@nongnu.org, qemu-s390x@nongnu.org,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
- Song Gao <gaosong@loongson.cn>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>,
- Aleksandar Rikalo <arikalo@gmail.com>, Nicholas Piggin <npiggin@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- David Hildenbrand <david@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
- Thomas Huth <thuth@redhat.com>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Artyom Tarasenko <atar4qemu@gmail.com>, Max Filippov <jcmvbkbc@gmail.com>
-Subject: [PATCH for-10.0 25/25] fpu: Remove use_first_nan field from
- float_status
-Date: Thu, 28 Nov 2024 10:43:10 +0000
-Message-Id: <20241128104310.3452934-26-peter.maydell@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241128104310.3452934-1-peter.maydell@linaro.org>
-References: <20241128104310.3452934-1-peter.maydell@linaro.org>
+ bh=ZjBpOOdVZJL0iO2KTOgUARxPlu5YcxRage8kv9dpbo0=;
+ b=psAm4w4wTRYcuJR/x3x2XLnWYbo2vUwqFdCTc5Qaj+klprssvZpPC/TJjlc5ADTEnp
+ 8nXB/kH4TOxI6nlMUC1ooU1AXvCLRAAcKIIwUeF9nKAln2Z1auxwnC3G8tuClcpk7jdl
+ OAIkFU8TKJQYnOFD6oCfP03xFmUYcbL/geIui5I8YDC14ghDTe3Nkhod8gxOEbqWpMUw
+ b5XfC/tadLmmYN4OtquqURto8T4v5W0lD54rqFj+HA6HGH0LrkBpwriYYzZYT21xLcO9
+ +3LDfTwoSNNTTA84GmO7tmIyMVqcH/njRmO8Z66NdD2EzClN0j9HqhghH/G2xVAyfcpD
+ AZiA==
+X-Gm-Message-State: AOJu0YwD3B9VrOm6N8gTDhRsMYVjnulX1WoOabLsLaaRFZrICjm6r5Lw
+ /+KdlX9ewFo49nRJfe6aaJS4Y9vgobDq2yFVW5UTjg/y/PHKyUdQgym5Akpm07xVfj5tUX4dQA9
+ iTDxgCanzqD/fOGDU5ee6KlVMNGNSPZsbcOX24Wq8RQGjIbzp
+X-Gm-Gg: ASbGncsizogtTxWR5eXc9jH6gmPLsZQcfsRWm5xbhllPdpHUNIgDLG6xaJkCZ3jIVIt
+ ivCIeqYq/+jrJc6/iAUFwKDJTJQhAfLS9
+X-Google-Smtp-Source: AGHT+IEpyCbwfiIyh/G40RI8wWh+DgsRJI1Y/+3SY1Ku7urTeqwGSUefGfDcb/DqNTum0xv3SstshLR6rBKjtL1AyKo=
+X-Received: by 2002:a05:6402:278e:b0:5cf:c18b:b0c0 with SMTP id
+ 4fb4d7f45d1cf-5d080bd9f5amr7442559a12.19.1732791009929; Thu, 28 Nov 2024
+ 02:50:09 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x331.google.com
+References: <20241127103425.378289-1-thuth@redhat.com>
+In-Reply-To: <20241127103425.378289-1-thuth@redhat.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 28 Nov 2024 10:49:59 +0000
+Message-ID: <CAFEAcA9=P+aYEuKZEDZQPLNKzXNkj_TBYRYhPBGPtSjQwz=Kkg@mail.gmail.com>
+Subject: Re: [PULL 0/7] Misc fixes for QEMU 9.2-rc3
+To: Thomas Huth <thuth@redhat.com>
+Cc: qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::533;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x533.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -109,60 +89,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The use_first_nan field in float_status was an xtensa-specific way to
-select at runtime from two different NaN propagation rules.  Now that
-xtensa is using the target-agnostic NaN propagation rule selection
-that we've just added, we can remove use_first_nan, because there is
-no longer any code that reads it.
+On Wed, 27 Nov 2024 at 10:34, Thomas Huth <thuth@redhat.com> wrote:
+>
+> The following changes since commit 7872e5fdf38ac0d8d0083aabb98d67da1f530e=
+f4:
+>
+>   Update version for v9.2.0-rc2 release (2024-11-26 22:26:38 +0000)
+>
+> are available in the Git repository at:
+>
+>   https://gitlab.com/thuth/qemu.git tags/pull-request-2024-11-27
+>
+> for you to fetch changes up to ef45f46f382a5e2c41c39c71fd3364cff4f41bf5:
+>
+>   hw/pci: Remove unused pci_irq_pulse() method (2024-11-27 09:34:08 +0100=
+)
+>
+> ----------------------------------------------------------------
+> * Two small doc updates
+> * Fix the flaky loongarch64 and sh4 functional tests
+> * Refuse to compile with old XCode versions that don't work anymore
+> * Remove an unused function from PCI code
+>
+> ----------------------------------------------------------------
+> Akihiko Odaki (1):
+>       docs: Document that hvf on Arm is supported
+>
+> C=C3=A9dric Le Goater (1):
+>       tests/functional: Remove sleep workarounds from sh4 test
+>
+> Philippe Mathieu-Daud=C3=A9 (1):
+>       hw/pci: Remove unused pci_irq_pulse() method
+>
+> Thomas Huth (3):
+>       docs/devel/testing/functional: Clarify that we have to use the buil=
+d folder
+>       meson.build: Refuse XCode versions < v15.0
+>       .gitlab-ci.d/cirrus: Remove the wrong CPU and RAM settings from the=
+ macOS job
+>
+> Xianglai Li (1):
+>       tests/functional: Fix the running test case causes loongarch64 to h=
+ang
 
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
----
- include/fpu/softfloat-helpers.h | 5 -----
- include/fpu/softfloat-types.h   | 1 -
- target/xtensa/fpu_helper.c      | 1 -
- 3 files changed, 7 deletions(-)
 
-diff --git a/include/fpu/softfloat-helpers.h b/include/fpu/softfloat-helpers.h
-index cf06b4e16bf..10a6763532c 100644
---- a/include/fpu/softfloat-helpers.h
-+++ b/include/fpu/softfloat-helpers.h
-@@ -113,11 +113,6 @@ static inline void set_snan_bit_is_one(bool val, float_status *status)
-     status->snan_bit_is_one = val;
- }
- 
--static inline void set_use_first_nan(bool val, float_status *status)
--{
--    status->use_first_nan = val;
--}
--
- static inline void set_no_signaling_nans(bool val, float_status *status)
- {
-     status->no_signaling_nans = val;
-diff --git a/include/fpu/softfloat-types.h b/include/fpu/softfloat-types.h
-index 79220f8c67f..e2db92c72fa 100644
---- a/include/fpu/softfloat-types.h
-+++ b/include/fpu/softfloat-types.h
-@@ -291,7 +291,6 @@ typedef struct float_status {
-      * softfloat-specialize.inc.c)
-      */
-     bool snan_bit_is_one;
--    bool use_first_nan;
-     bool no_signaling_nans;
-     /* should overflowed results subtract re_bias to its exponent? */
-     bool rebias_overflow;
-diff --git a/target/xtensa/fpu_helper.c b/target/xtensa/fpu_helper.c
-index 4b1b021d824..53fc7cfd2af 100644
---- a/target/xtensa/fpu_helper.c
-+++ b/target/xtensa/fpu_helper.c
-@@ -59,7 +59,6 @@ static const struct {
- 
- void xtensa_use_first_nan(CPUXtensaState *env, bool use_first)
- {
--    set_use_first_nan(use_first, &env->fp_status);
-     set_float_2nan_prop_rule(use_first ? float_2nan_prop_ab : float_2nan_prop_ba,
-                              &env->fp_status);
-     set_float_3nan_prop_rule(use_first ? float_3nan_prop_abc : float_3nan_prop_cba,
--- 
-2.34.1
 
+Applied, thanks.
+
+Please update the changelog at https://wiki.qemu.org/ChangeLog/9.2
+for any user-visible changes.
+
+-- PMM
 
