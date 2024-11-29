@@ -2,94 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 909709DEBEB
-	for <lists+qemu-devel@lfdr.de>; Fri, 29 Nov 2024 19:05:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B4A879DEC2E
+	for <lists+qemu-devel@lfdr.de>; Fri, 29 Nov 2024 19:50:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tH5LT-00042Q-GV; Fri, 29 Nov 2024 13:03:59 -0500
+	id 1tH63P-00044Z-Vs; Fri, 29 Nov 2024 13:49:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tH5LC-000426-8x
- for qemu-devel@nongnu.org; Fri, 29 Nov 2024 13:03:42 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <jvilaca@redhat.com>)
+ id 1tH63M-000447-Ex
+ for qemu-devel@nongnu.org; Fri, 29 Nov 2024 13:49:21 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tH5LA-0006OZ-LB
- for qemu-devel@nongnu.org; Fri, 29 Nov 2024 13:03:42 -0500
+ (Exim 4.90_1) (envelope-from <jvilaca@redhat.com>)
+ id 1tH63K-0006Er-JW
+ for qemu-devel@nongnu.org; Fri, 29 Nov 2024 13:49:20 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1732903420;
+ s=mimecast20190719; t=1732906155;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=QElT273DCPwXRmjrILbj0xzrSJsB2liod7ICaJaBk+8=;
- b=bcKgemqiUaD70az41/xsUNXsJ0vm5ePoaGvBs/1itZtxjcuFFolbCMJJ8JYBbqGxivW+9v
- i0FS0/GkTx/tAJKF6pwnVXc7UMfg0QZHocXaHC3pM/2CZS7IIJNmsubHJy/h+4gAfNJADL
- 3Oc+AdO01cb06KBEUzWGs0n1UGDgljU=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=2yZBIADuNRBVwjO9ucT9y/I86XtW5PuLAHlgFGjHx1w=;
+ b=gBQnAIUTub8a/oOLwOqELi/N1NHpviQJXIgMFkK2KT1KBk7ebTQx5j4B+AB9oiAhT79I2P
+ ok+YjZynB3FJmEnZ9eYK+yshiKI8ERuelhXGeEt+ACn3pPu2ehLAh+GuWqGo2UjHBQXs8o
+ HdpQOUhgcvmVx5VGJmt3xEPTLFU7SX8=
+Received: from mail-oi1-f198.google.com (mail-oi1-f198.google.com
+ [209.85.167.198]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-447-ScJAr475NBK924dJ04u8NA-1; Fri, 29 Nov 2024 13:03:36 -0500
-X-MC-Unique: ScJAr475NBK924dJ04u8NA-1
-X-Mimecast-MFC-AGG-ID: ScJAr475NBK924dJ04u8NA
-Received: by mail-ej1-f69.google.com with SMTP id
- a640c23a62f3a-aa527da110bso131471966b.0
- for <qemu-devel@nongnu.org>; Fri, 29 Nov 2024 10:03:35 -0800 (PST)
+ us-mta-118-aNKsvZnhOPm8mKcO0Ap-UA-1; Fri, 29 Nov 2024 13:49:14 -0500
+X-MC-Unique: aNKsvZnhOPm8mKcO0Ap-UA-1
+X-Mimecast-MFC-AGG-ID: aNKsvZnhOPm8mKcO0Ap-UA
+Received: by mail-oi1-f198.google.com with SMTP id
+ 5614622812f47-3ea3f5aff1eso1395182b6e.0
+ for <qemu-devel@nongnu.org>; Fri, 29 Nov 2024 10:49:13 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1732903414; x=1733508214;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=QElT273DCPwXRmjrILbj0xzrSJsB2liod7ICaJaBk+8=;
- b=iI1hHu+pP0k49txsuFIUsktzviJbjcVCDM/CMSwZraa2alGEQnBarwNrBj24TXJNkh
- yhE1HmR138BlIbI0EtJuPPrtDBaeg7TxWHF8kZ+8vIeQWmykVc8voeMYQNlBxV7hHODE
- DnSZd0a44Shy607JbdWn6oTcZunY8KdaeXicnlyqr4siml5vSZA7WGiE51IUD2LPXvVz
- GVHGL9emkHYLqHxlexye01Ds397qLhdHwwFmoPjyKv0+rE6UFe+ZEDeKdzm6UQB6lGV7
- l/DfRgcZP5vPmH31OND3/YSoaKaoMKQyKwvx8N8ZKFl68e1hAhyUVU0OJrbqFNYVWkbc
- 244Q==
-X-Gm-Message-State: AOJu0Yz700wzkD9sLDtbcHu8597rcpsXPhgM3HtC+DudSF9y32TtbhmD
- z85GHpJ791MFfTL95MY19AbaQGVYOFjZ4i68R6srVLul0mjX/hGVfh7ImRtW5CTA7heUBWmNI6u
- eb+bLfiAH5sTnt0f9xww/sv+WZZZEgSIWq7sPA6O8k1DjrwkMNPxvbF1wWxYqv+x12/6XbQYPRJ
- sZ20KSCn0uBPQlO/Kj/aVkDc9q5CDj+fdc7tXo
-X-Gm-Gg: ASbGncsJZYzQY2/whxI3PM2N2yeNt1bG/lHjnmcI2zqCrzl387lFJ5+dTUZiFXSB96I
- 3qDn7R4mrlCFY2CMlihfx8YxWDXFOEYsIsrH/pMdM5zgRi6dA34+IfL+ayDCuDNOqSohwW+w2Td
- Ya1/SjUP6PbOcBPGKFeeMrk1I6+lIHdHzyIuE65pCQ72DWZluqf7ypggJy/kjnjTFtSV1mJ7Rds
- ewxqBVZPr+mSX2ca/c6093zjfsDRR3w7jhpvCEuVM9pLeGq27DB
-X-Received: by 2002:a17:906:3ca2:b0:aa5:2bfb:2ebf with SMTP id
- a640c23a62f3a-aa580f2c485mr898888266b.22.1732903413519; 
- Fri, 29 Nov 2024 10:03:33 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEYoINRlNeoOxUWMtthfFak97YYyLol5Ov189AJr8YQFCv6Z4XuHwT63wbuqpnSAmJIuoIfWQ==
-X-Received: by 2002:a17:906:3ca2:b0:aa5:2bfb:2ebf with SMTP id
- a640c23a62f3a-aa580f2c485mr898881966b.22.1732903412887; 
- Fri, 29 Nov 2024 10:03:32 -0800 (PST)
-Received: from [192.168.1.84] ([93.56.170.251])
- by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-aa59990a848sm196381366b.150.2024.11.29.10.03.32
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 29 Nov 2024 10:03:32 -0800 (PST)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: philmd@linaro.org
-Subject: [PATCH 3/3] clock: inline most of qdev_init_clocklist
-Date: Fri, 29 Nov 2024 19:03:26 +0100
-Message-ID: <20241129180326.722436-4-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241129180326.722436-1-pbonzini@redhat.com>
-References: <20241129180326.722436-1-pbonzini@redhat.com>
+ d=1e100.net; s=20230601; t=1732906153; x=1733510953;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=2yZBIADuNRBVwjO9ucT9y/I86XtW5PuLAHlgFGjHx1w=;
+ b=KrLH12jA+fkXaStS7+IbJGcAjElS+16YHDlB1zez3mlbr4xzpMfWPB6NfaS4ApNscS
+ iWPod810Ylm4gNpO7yPWKy/H4uTvxMSRzQ3vB+Y6awDnWU0EhzvNhDsubPViwjQGRFEg
+ kfdTd0iBYHwmhTRgdrTgR3XBA2/2jqoCWmrbueMgB4BjMKsmm7keCn7p4VnbWc+tezhQ
+ a6ygML0T/31uGWLVFa7eoonJxGbpHBS5EuscOEEnD2I66LsUO1RWgFfA1ZPS9mlVxzXW
+ 33KmrLudURJ+qNmw0oWHFb45PDxYbKAh/I4+jz33dCJVVVK2bKcGXSJh9paGLyHjOC+O
+ dbKA==
+X-Gm-Message-State: AOJu0YyFfBs+d0KrCc4Dma/G2dSaqMVo0mB2Fb8JraneLaReR5hhZEO8
+ 1xAlgtOxw3fCJ7u5XKlHBV3DMYj0ChXYUdMEEOhqwtFOnX7Tob+lwHJeiEdiSPPmEgr2qfYJ+df
+ FVPjxhDt+FCucGeETWm+pCELeZVaDDSpFLbaBxewf5fIzAT8qKknxKHi1nZ5B4UTeUoYdAcaojU
+ 9AZoWT8EpI4qIR9Oc7XGxM7HJBIvc=
+X-Gm-Gg: ASbGncvMvQxDDHML9T19azAYw8T1V6EtvKiCYLWmRakaL0+OmotsUl1JO0yXas6gdtv
+ nYF7jR76575I1MHotparkUmHYrXptz7mC6ecLpxr92BqLI1jzlrrZtooIaTXDAKg=
+X-Received: by 2002:a05:6808:191c:b0:3ea:6244:71f7 with SMTP id
+ 5614622812f47-3ea6dd9caa5mr10251822b6e.38.1732906153134; 
+ Fri, 29 Nov 2024 10:49:13 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHYDaLSMtHit7wSyUxhPd48/Bw8UkKxUB8ArI1s84RREVqMHvHICd/zdSoscLVLEEK3Etec4ESjHbS1obxeZuc=
+X-Received: by 2002:a05:6808:191c:b0:3ea:6244:71f7 with SMTP id
+ 5614622812f47-3ea6dd9caa5mr10251812b6e.38.1732906152767; Fri, 29 Nov 2024
+ 10:49:12 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+References: <CAOw09wu31aROKJaYA7igHR_toegozssDXsTBNuUhusoRX+Yvng@mail.gmail.com>
+ <Z0na9lvoTM2V4iFY@redhat.com>
+In-Reply-To: <Z0na9lvoTM2V4iFY@redhat.com>
+From: =?UTF-8?B?Sm/Do28gVmlsYcOnYQ==?= <jvilaca@redhat.com>
+Date: Fri, 29 Nov 2024 18:49:02 +0000
+Message-ID: <CAOw09wsgvYs48-vBMVKSrPdUAWkYN9xWww=gL7wjbZbHNsRuDw@mail.gmail.com>
+Subject: Re: How to query the number of processes queueing for the CPU inside
+ the VM
+To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Cc: qemu-devel@nongnu.org
+Content-Type: multipart/alternative; boundary="000000000000aa52a4062811a7f2"
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=jvilaca@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -29
-X-Spam_score: -3.0
-X-Spam_bar: ---
-X-Spam_report: (-3.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.93,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,132 +99,151 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Move object creation out of qdev_init_clocklist.  The input/output
-cases are very simple, and the aliases are completely different.
+--000000000000aa52a4062811a7f2
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- hw/core/qdev-clock.c | 71 +++++++++++++++++---------------------------
- 1 file changed, 27 insertions(+), 44 deletions(-)
+That's exactly it. How can we proceed to get it into guest-get-cpustat?
 
-diff --git a/hw/core/qdev-clock.c b/hw/core/qdev-clock.c
-index 2f9d6cb7579..dacafa4e036 100644
---- a/hw/core/qdev-clock.c
-+++ b/hw/core/qdev-clock.c
-@@ -22,7 +22,7 @@
-  * Add a new clock in a device
-  */
- static NamedClockList *qdev_init_clocklist(DeviceState *dev, const char *name,
--                                           bool output, Clock *clk)
-+                                           bool alias, bool output, Clock *clk)
- {
-     NamedClockList *ncl;
- 
-@@ -38,31 +38,8 @@ static NamedClockList *qdev_init_clocklist(DeviceState *dev, const char *name,
-      */
-     ncl = g_new0(NamedClockList, 1);
-     ncl->name = g_strdup(name);
-+    ncl->alias = alias;
-     ncl->output = output;
--    ncl->alias = (clk != NULL);
--
--    /*
--     * Trying to create a clock whose name clashes with some other
--     * clock or property is a bug in the caller and we will abort().
--     */
--    if (clk == NULL) {
--        clk = CLOCK(object_new(TYPE_CLOCK));
--        object_property_add_child(OBJECT(dev), name, OBJECT(clk));
--    } else {
--        object_property_add_link(OBJECT(dev), name,
--                                 object_get_typename(OBJECT(clk)),
--                                 (Object **) &ncl->clock,
--                                 NULL, OBJ_PROP_LINK_STRONG);
--        /*
--         * Since the link property has the OBJ_PROP_LINK_STRONG flag, the clk
--         * object reference count gets decremented on property deletion.
--         * However object_property_add_link does not increment it since it
--         * doesn't know the linked object. Increment it here to ensure the
--         * aliased clock stays alive during this device life-time.
--         */
--        object_ref(OBJECT(clk));
--    }
--
-     ncl->clock = clk;
- 
-     QLIST_INSERT_HEAD(&dev->clocks, ncl, node);
-@@ -90,29 +67,25 @@ void qdev_finalize_clocklist(DeviceState *dev)
- 
- Clock *qdev_init_clock_out(DeviceState *dev, const char *name)
- {
--    NamedClockList *ncl;
-+    Clock *clk = CLOCK(object_new(TYPE_CLOCK));
-+    object_property_add_child(OBJECT(dev), name, OBJECT(clk));
- 
--    assert(name);
--
--    ncl = qdev_init_clocklist(dev, name, true, NULL);
--
--    return ncl->clock;
-+    qdev_init_clocklist(dev, name, false, true, clk);
-+    return clk;
- }
- 
- Clock *qdev_init_clock_in(DeviceState *dev, const char *name,
-                           ClockCallback *callback, void *opaque,
-                           unsigned int events)
- {
--    NamedClockList *ncl;
--
--    assert(name);
--
--    ncl = qdev_init_clocklist(dev, name, false, NULL);
-+    Clock *clk = CLOCK(object_new(TYPE_CLOCK));
-+    object_property_add_child(OBJECT(dev), name, OBJECT(clk));
- 
-+    qdev_init_clocklist(dev, name, false, false, clk);
-     if (callback) {
--        clock_set_callback(ncl->clock, callback, opaque, events);
-+        clock_set_callback(clk, callback, opaque, events);
-     }
--    return ncl->clock;
-+    return clk;
- }
- 
- void qdev_init_clocks(DeviceState *dev, const ClockPortInitArray clocks)
-@@ -183,15 +156,25 @@ Clock *qdev_get_clock_out(DeviceState *dev, const char *name)
- Clock *qdev_alias_clock(DeviceState *dev, const char *name,
-                         DeviceState *alias_dev, const char *alias_name)
- {
--    NamedClockList *ncl;
-+    NamedClockList *ncl = qdev_get_clocklist(dev, name);
-+    Clock *clk = ncl->clock;
- 
--    assert(name && alias_name);
-+    ncl = qdev_init_clocklist(alias_dev, alias_name, true, ncl->output, clk);
- 
--    ncl = qdev_get_clocklist(dev, name);
-+    object_property_add_link(OBJECT(alias_dev), alias_name,
-+                             TYPE_CLOCK,
-+                             (Object **) &ncl->clock,
-+                             NULL, OBJ_PROP_LINK_STRONG);
-+    /*
-+     * Since the link property has the OBJ_PROP_LINK_STRONG flag, the clk
-+     * object reference count gets decremented on property deletion.
-+     * However object_property_add_link does not increment it since it
-+     * doesn't know the linked object. Increment it here to ensure the
-+     * aliased clock stays alive during this device life-time.
-+     */
-+    object_ref(OBJECT(clk));
- 
--    qdev_init_clocklist(alias_dev, alias_name, ncl->output, ncl->clock);
--
--    return ncl->clock;
-+    return clk;
- }
- 
- void qdev_connect_clock_in(DeviceState *dev, const char *name, Clock *source)
--- 
-2.47.0
+On Fri, Nov 29, 2024 at 3:17=E2=80=AFPM Daniel P. Berrang=C3=A9 <berrange@r=
+edhat.com>
+wrote:
+
+> On Fri, Nov 29, 2024 at 02:38:52PM +0000, Jo=C3=A3o Vila=C3=A7a wrote:
+> > In KubeVirt, through libvirt, we need to know the number of processes
+> > queued for the CPU inside the VM.
+> >
+> > Can we get this information through the qemu-guest-agent?
+>
+> The only CPU stats related command in QGA is 'guest-get-cpustat's
+> returning:
+>
+> # @user: Time spent in user mode
+> #
+> # @nice: Time spent in user mode with low priority (nice)
+> #
+> # @system: Time spent in system mode
+> #
+> # @idle: Time spent in the idle task
+> #
+> # @iowait: Time waiting for I/O to complete (since Linux 2.5.41)
+> #
+> # @irq: Time servicing interrupts (since Linux 2.6.0-test4)
+> #
+> # @softirq: Time servicing softirqs (since Linux 2.6.0-test4)
+> #
+> # @steal: Stolen time by host (since Linux 2.6.11)
+> #
+> # @guest: ime spent running a virtual CPU for guest operating systems
+> #     under the  control of the Linux kernel (since Linux 2.6.24)
+> #
+> # @guestnice: Time spent running a niced guest (since Linux 2.6.33)
+>
+> none of which match your rquest
+>
+> Essentially what you're asking for seems to be the "load average" which
+> is a measure of waiting runnable tasks, over some period (1, 5, 15 minute=
+s
+> typically).
+>
+> I imagine guest-get-cpustat could be enhanced to include load info withou=
+t
+> too much work.
+>
+> With regards,
+> Daniel
+> --
+> |: https://berrange.com      -o-
+> https://www.flickr.com/photos/dberrange :|
+> |: https://libvirt.org         -o-
+> https://fstop138.berrange.com :|
+> |: https://entangle-photo.org    -o-
+> https://www.instagram.com/dberrange :|
+>
+>
+
+--=20
+kind regards,
+Jo=C3=A3o Vila=C3=A7a
+
+--000000000000aa52a4062811a7f2
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr">That&#39;s exactly it. How can we proceed to=C2=A0get=C2=
+=A0it into=C2=A0guest-get-cpustat?</div><br><div class=3D"gmail_quote"><div=
+ dir=3D"ltr" class=3D"gmail_attr">On Fri, Nov 29, 2024 at 3:17=E2=80=AFPM D=
+aniel P. Berrang=C3=A9 &lt;<a href=3D"mailto:berrange@redhat.com">berrange@=
+redhat.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=
+=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding=
+-left:1ex">On Fri, Nov 29, 2024 at 02:38:52PM +0000, Jo=C3=A3o Vila=C3=A7a =
+wrote:<br>
+&gt; In KubeVirt, through libvirt, we need to know the number of processes<=
+br>
+&gt; queued for the CPU inside the VM.<br>
+&gt; <br>
+&gt; Can we get this information through the qemu-guest-agent?<br>
+<br>
+The only CPU stats related command in QGA is &#39;guest-get-cpustat&#39;s<b=
+r>
+returning:<br>
+<br>
+# @user: Time spent in user mode<br>
+#<br>
+# @nice: Time spent in user mode with low priority (nice)<br>
+#<br>
+# @system: Time spent in system mode<br>
+#<br>
+# @idle: Time spent in the idle task<br>
+#<br>
+# @iowait: Time waiting for I/O to complete (since Linux 2.5.41)<br>
+#<br>
+# @irq: Time servicing interrupts (since Linux 2.6.0-test4)<br>
+#<br>
+# @softirq: Time servicing softirqs (since Linux 2.6.0-test4)<br>
+#<br>
+# @steal: Stolen time by host (since Linux 2.6.11)<br>
+#<br>
+# @guest: ime spent running a virtual CPU for guest operating systems<br>
+#=C2=A0 =C2=A0 =C2=A0under the=C2=A0 control of the Linux kernel (since Lin=
+ux 2.6.24)<br>
+#<br>
+# @guestnice: Time spent running a niced guest (since Linux 2.6.33)<br>
+<br>
+none of which match your rquest<br>
+<br>
+Essentially what you&#39;re asking for seems to be the &quot;load average&q=
+uot; which<br>
+is a measure of waiting runnable tasks, over some period (1, 5, 15 minutes<=
+br>
+typically).<br>
+<br>
+I imagine guest-get-cpustat could be enhanced to include load info without<=
+br>
+too much work.<br>
+<br>
+With regards,<br>
+Daniel<br>
+-- <br>
+|: <a href=3D"https://berrange.com" rel=3D"noreferrer" target=3D"_blank">ht=
+tps://berrange.com</a>=C2=A0 =C2=A0 =C2=A0 -o-=C2=A0 =C2=A0 <a href=3D"http=
+s://www.flickr.com/photos/dberrange" rel=3D"noreferrer" target=3D"_blank">h=
+ttps://www.flickr.com/photos/dberrange</a> :|<br>
+|: <a href=3D"https://libvirt.org" rel=3D"noreferrer" target=3D"_blank">htt=
+ps://libvirt.org</a>=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0-o-=C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 <a href=3D"https://fstop138.berrange.com" rel=3D"n=
+oreferrer" target=3D"_blank">https://fstop138.berrange.com</a> :|<br>
+|: <a href=3D"https://entangle-photo.org" rel=3D"noreferrer" target=3D"_bla=
+nk">https://entangle-photo.org</a>=C2=A0 =C2=A0 -o-=C2=A0 =C2=A0 <a href=3D=
+"https://www.instagram.com/dberrange" rel=3D"noreferrer" target=3D"_blank">=
+https://www.instagram.com/dberrange</a> :|<br>
+<br>
+</blockquote></div><div><br clear=3D"all"></div><div><br></div><span class=
+=3D"gmail_signature_prefix">-- </span><br><div dir=3D"ltr" class=3D"gmail_s=
+ignature"><div dir=3D"ltr"><font color=3D"#888888" face=3D"arial, sans-seri=
+f">kind regards,<br><div>Jo=C3=A3o Vila=C3=A7a</div><div><br></div></font><=
+/div></div>
+
+--000000000000aa52a4062811a7f2--
 
 
