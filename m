@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 675CA9DEBC2
-	for <lists+qemu-devel@lfdr.de>; Fri, 29 Nov 2024 18:35:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BADF9DEBB8
+	for <lists+qemu-devel@lfdr.de>; Fri, 29 Nov 2024 18:33:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tH4rH-0004Ro-7c; Fri, 29 Nov 2024 12:32:47 -0500
+	id 1tH4rC-00044h-0I; Fri, 29 Nov 2024 12:32:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1tH4qg-0003mX-Ta
+ id 1tH4qe-0003mV-E7
  for qemu-devel@nongnu.org; Fri, 29 Nov 2024 12:32:15 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1tH4qd-000149-Lr
- for qemu-devel@nongnu.org; Fri, 29 Nov 2024 12:32:09 -0500
+ id 1tH4qc-00013x-Gv
+ for qemu-devel@nongnu.org; Fri, 29 Nov 2024 12:32:07 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1732901527;
+ s=mimecast20190719; t=1732901525;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Li5Ma72cOfyCzTPgc4s4kUBfAEfpLqF381GGDwOHw+s=;
- b=MzS5EkoQ1sbFMfBp8xzGN0Snrg6hQ8kVo2Sl7unyU/JLeSgTjxJ1QLiGoHTP9t3kRbCnaM
- qD41s2/2Q/zde6Jl2lPyEHV/DZM4nv6Ae+mQKdK97s0BL3QrQHIeF69jL/fjaSM+S/hChO
- NGzd0miB+HYtogI6nB3FPgNKlyYbTRE=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ bh=TiL9pH5cIq3jBdyWCkXQVTmhwDXpS93CWDVMG70rST8=;
+ b=hlEQ835zvtWwUYv7c9ZKN/8QITLaDMBh6zgDR6Ff0MtxCaEFVsi6u5v3EBMo54oCMYCEL7
+ mfaG/hS4qFYu0E1UIi9pMcJQxCtuqGJbndiMGlsz+dBmRng6wEACvKwTXCNVV7yOb9UoFf
+ XvFmsgOZQ2RazP2gGP+wy+WAmcuDkuw=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-352-isbLp-fcNKWSxuCXsIumFw-1; Fri,
- 29 Nov 2024 12:32:02 -0500
-X-MC-Unique: isbLp-fcNKWSxuCXsIumFw-1
-X-Mimecast-MFC-AGG-ID: isbLp-fcNKWSxuCXsIumFw
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-652-vRCoqlfTNPaSdNjJ3NJaaQ-1; Fri,
+ 29 Nov 2024 12:32:04 -0500
+X-MC-Unique: vRCoqlfTNPaSdNjJ3NJaaQ-1
+X-Mimecast-MFC-AGG-ID: vRCoqlfTNPaSdNjJ3NJaaQ
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 2010D195608C; Fri, 29 Nov 2024 17:32:01 +0000 (UTC)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 7E4B71955D9E; Fri, 29 Nov 2024 17:32:03 +0000 (UTC)
 Received: from toolbox.redhat.com (unknown [10.42.28.37])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 32F231955F41; Fri, 29 Nov 2024 17:31:59 +0000 (UTC)
+ id 7DF7D1955F41; Fri, 29 Nov 2024 17:32:01 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH 14/22] tests/functional: remove redundant 'rmtree' call
-Date: Fri, 29 Nov 2024 17:31:12 +0000
-Message-ID: <20241129173120.761728-15-berrange@redhat.com>
+Subject: [PATCH 15/22] tests/functional: add common zip_extract helper
+Date: Fri, 29 Nov 2024 17:31:13 +0000
+Message-ID: <20241129173120.761728-16-berrange@redhat.com>
 In-Reply-To: <20241129173120.761728-1-berrange@redhat.com>
 References: <20241129173120.761728-1-berrange@redhat.com>
 MIME-Version: 1.0
@@ -85,36 +85,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Everything in the scratch directory is automatically purged. Calling
-'rmtree' again breaks the ability to optionally preserve the scratch
-directory contents.
+This mirrors the existing archive_extract and cpio_extract helpers
 
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- tests/functional/test_sh4eb_r2d.py | 3 ---
- 1 file changed, 3 deletions(-)
+ tests/functional/qemu_test/utils.py | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/tests/functional/test_sh4eb_r2d.py b/tests/functional/test_sh4eb_r2d.py
-index dd2500dc33..38ee55cf4c 100755
---- a/tests/functional/test_sh4eb_r2d.py
-+++ b/tests/functional/test_sh4eb_r2d.py
-@@ -4,8 +4,6 @@
- #
- # SPDX-License-Identifier: GPL-2.0-or-later
+diff --git a/tests/functional/qemu_test/utils.py b/tests/functional/qemu_test/utils.py
+index 1bf1c410d5..41bd1df666 100644
+--- a/tests/functional/qemu_test/utils.py
++++ b/tests/functional/qemu_test/utils.py
+@@ -46,6 +46,13 @@ def archive_extract(archive, dest_dir, member=None):
+         else:
+             tf.extractall(path=dest_dir)
  
--import shutil
--
- from qemu_test import (LinuxKernelTest, Asset,
-                        exec_command_and_wait_for_pattern)
- from qemu_test.utils import archive_extract
-@@ -25,7 +23,6 @@ def test_sh4eb_r2d(self):
-                            initrd=self.scratch_file('sh4eb', 'initramfs.cpio.gz'),
-                            console_index=1, wait_for='Type exit when done')
-         exec_command_and_wait_for_pattern(self, 'exit', 'Restarting system')
--        shutil.rmtree(self.scratch_file('sh4eb'))
- 
- if __name__ == '__main__':
-     LinuxKernelTest.main()
++def zip_extract(archive, dest_dir, member=None):
++    with zipfile.ZipFile(archive, 'r') as zf:
++        if member:
++            zf.extract(member=member, path=dest_dir)
++        else:
++            zf.extractall(path=dest_dir)
++
+ def gzip_uncompress(gz_path, output_path):
+     if os.path.exists(output_path):
+         return
 -- 
 2.46.0
 
