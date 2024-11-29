@@ -2,43 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDF699DE8B4
-	for <lists+qemu-devel@lfdr.de>; Fri, 29 Nov 2024 15:40:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D5259DE8B3
+	for <lists+qemu-devel@lfdr.de>; Fri, 29 Nov 2024 15:40:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tH29N-0003JT-MI; Fri, 29 Nov 2024 09:39:17 -0500
+	id 1tH29Q-0003Kk-GI; Fri, 29 Nov 2024 09:39:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1tH29M-0003Ib-4t
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1tH29M-0003Id-6y
  for qemu-devel@nongnu.org; Fri, 29 Nov 2024 09:39:16 -0500
 Received: from nyc.source.kernel.org ([2604:1380:45d1:ec00::3])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1tH29K-0005yJ-98
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1tH29K-0005yw-Ri
  for qemu-devel@nongnu.org; Fri, 29 Nov 2024 09:39:15 -0500
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by nyc.source.kernel.org (Postfix) with ESMTP id 90405A43E4A;
- Fri, 29 Nov 2024 14:37:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E064C4CED2;
- Fri, 29 Nov 2024 14:39:04 +0000 (UTC)
+ by nyc.source.kernel.org (Postfix) with ESMTP id D50B4A43F1D;
+ Fri, 29 Nov 2024 14:37:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CF6BC4CECF;
+ Fri, 29 Nov 2024 14:39:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1732891145;
- bh=v6f7yFrp+w1dSGSDB/8wjHwhrFGDFL1edLYfFUIV1GU=;
+ s=k20201202; t=1732891147;
+ bh=dFdJHS2fcUNzhLS8OVysMDJhrwIxQcz7Tz5F4UM1A7c=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=WawiFro3NVkGj6ow66v4Wd5mDcGiszeN4wsxcwoPYU8ZAk20zYdYm8KPn59WI8zfE
- cZ2wGBAjWpvSEO8EK6hGjRkE30DqH1ucco8FDIZZE9KeIfgodXFzgovYTWv64tDivq
- N/IXpDwAfLbH/MoexhLbmlx07pmXCp5M8hmt4kjWfmaaT9tBvALUCRtUL9n/HMR0fr
- kWrkEsfdDa4CuTZaKx5hJ3YyuhBcT/d4qFx/uE5zBKjERB640G656bGFREbVq4cRRg
- 37boZWvOcGHRNV9j1lS7QBbGypm8AuLwsDAVrNIkdrga0Odnz6BcLXcFboJn1+0hRH
- GLRPWxeMOfxGg==
+ b=pIoVefoRLtOjsGktSRMnw0TUTMYFRspdF8uKkw9scauf+1aFAliOs1iDNchCdq+sE
+ s9eVT9EznlVG9YsUZ7x2IgO1JmGsMFYuz9O0qOwPm/tKgACsKDzmBKO4dzGrIHYAz1
+ 0yVq7x1f62li9qoE35Pw4JcWRWZcA0HtnZIHBx1gIbGoaKvwrP+ILkgt9NvCEHYxFP
+ ApxcgEnBOM4enB/5BF/WE8mnfpRjQSfd1jzx7HEV2tiBVmLtd+ey8zt4Nsaj/hD1YB
+ Up6a7KZDA5zRGBEVPh1O8WIXpzVwB+8rS8kiel2mtSd+ZSQoA5bQmSL1pnJbksMFXT
+ /ua4JCX44kuug==
 From: deller@kernel.org
 To: Laurent Vivier <laurent@vivier.eu>,
 	qemu-devel@nongnu.org
 Cc: deller@gmx.de
-Subject: [PATCH 1/6] linux-user: netlink: Add missing IFA_PROTO to
- host_to_target_data_addr_rtattr()
-Date: Fri, 29 Nov 2024 15:38:56 +0100
-Message-ID: <20241129143901.11291-2-deller@kernel.org>
+Subject: [PATCH 2/6] linux-user: Use unique error messages for cmsg parsing
+Date: Fri, 29 Nov 2024 15:38:57 +0100
+Message-ID: <20241129143901.11291-3-deller@kernel.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241129143901.11291-1-deller@kernel.org>
 References: <20241129143901.11291-1-deller@kernel.org>
@@ -70,26 +69,36 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Helge Deller <deller@gmx.de>
 
-Fixes this warning:
- Unknown host IFA type: 11
+Avoid using the same error message for two different code paths
+as it complicates determining the one which actually triggered.
 
 Signed-off-by: Helge Deller <deller@gmx.de>
 ---
- linux-user/fd-trans.c | 1 +
- 1 file changed, 1 insertion(+)
+ linux-user/syscall.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/linux-user/fd-trans.c b/linux-user/fd-trans.c
-index c04a97c73a..6191e3115b 100644
---- a/linux-user/fd-trans.c
-+++ b/linux-user/fd-trans.c
-@@ -1143,6 +1143,7 @@ static abi_long host_to_target_data_addr_rtattr(struct rtattr *rtattr)
-         break;
-     /* string */
-     case IFA_LABEL:
-+    case IFA_PROTO:
-         break;
-     /* u32 */
-     case IFA_FLAGS:
+diff --git a/linux-user/syscall.c b/linux-user/syscall.c
+index 1ce4c79784..494323efba 100644
+--- a/linux-user/syscall.c
++++ b/linux-user/syscall.c
+@@ -1825,7 +1825,7 @@ static inline abi_long target_to_host_cmsg(struct msghdr *msgh,
+                 *dst = tswap32(*dst);
+             }
+         } else {
+-            qemu_log_mask(LOG_UNIMP, "Unsupported ancillary data: %d/%d\n",
++            qemu_log_mask(LOG_UNIMP, "Unsupported target ancillary data: %d/%d\n",
+                           cmsg->cmsg_level, cmsg->cmsg_type);
+             memcpy(data, target_data, len);
+         }
+@@ -2047,7 +2047,7 @@ static inline abi_long host_to_target_cmsg(struct target_msghdr *target_msgh,
+ 
+         default:
+         unimplemented:
+-            qemu_log_mask(LOG_UNIMP, "Unsupported ancillary data: %d/%d\n",
++            qemu_log_mask(LOG_UNIMP, "Unsupported host ancillary data: %d/%d\n",
+                           cmsg->cmsg_level, cmsg->cmsg_type);
+             memcpy(target_data, data, MIN(len, tgt_len));
+             if (tgt_len > len) {
 -- 
 2.47.0
 
