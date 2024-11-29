@@ -2,71 +2,122 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F9719DE650
-	for <lists+qemu-devel@lfdr.de>; Fri, 29 Nov 2024 13:24:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A50D19DE66F
+	for <lists+qemu-devel@lfdr.de>; Fri, 29 Nov 2024 13:28:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tH02A-0000rw-2Y; Fri, 29 Nov 2024 07:23:42 -0500
+	id 1tH06N-0003bc-VF; Fri, 29 Nov 2024 07:28:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ppandit@redhat.com>)
- id 1tH01v-0000rH-2b
- for qemu-devel@nongnu.org; Fri, 29 Nov 2024 07:23:28 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ppandit@redhat.com>)
- id 1tH01r-0006Fu-55
- for qemu-devel@nongnu.org; Fri, 29 Nov 2024 07:23:26 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1732883001;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tH06L-0003b8-H7
+ for qemu-devel@nongnu.org; Fri, 29 Nov 2024 07:28:01 -0500
+Received: from smtp-out2.suse.de ([195.135.223.131])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tH06J-0008E8-5C
+ for qemu-devel@nongnu.org; Fri, 29 Nov 2024 07:28:01 -0500
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
+ [IPv6:2a07:de40:b281:104:10:150:64:97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 0E09E1F38F;
+ Fri, 29 Nov 2024 12:27:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1732883274; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=r7+7ViOrPZfMNIol2Yp9dhVv4QfzbaJ+mNQckdUqww0=;
- b=GNbQ5EGG75njscdv2aly2idGI9nhRy2efyktJv3WH89owHFatUkMI5By8qxmQFwdSoklQ9
- +Na03ytrRjEJjR8KVRJ5Tz41Wy0EFPbQ53tZVaYyUYP9NdE7ufD/SvY90PZqEw2ELj58PX
- n/NRKRTfw1M4Xhgu5loVmwwmHihenFE=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-487-IJW__m4qOXWo5tNIlgz_KQ-1; Fri,
- 29 Nov 2024 07:23:20 -0500
-X-MC-Unique: IJW__m4qOXWo5tNIlgz_KQ-1
-X-Mimecast-MFC-AGG-ID: IJW__m4qOXWo5tNIlgz_KQ
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
+ bh=/G6Ue4MKmA9n9SMCII0nKZPRr+tlsxWupEt1VyDfNdQ=;
+ b=0MqJjbvaJZe9Qv430fJ7GPrbttMssA44WZApWubTyOry5Lv3/plwpxIYYDeiuEFQ7QWQdF
+ UpLpN/YJNZNoUx/Vh6qnjx3SN0KygLaYhkHLyMAlCj7S8/r0FdvEHUZC79LHp1MxPafRXF
+ hSWY3wzaqyrzF/0PPSwENo6XcMfTe+Y=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1732883274;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=/G6Ue4MKmA9n9SMCII0nKZPRr+tlsxWupEt1VyDfNdQ=;
+ b=KH+85nlv5CD1b8DTYRG80MwT0jCLEDvdQ44QY3JIjzh+2MT8yN7R5LV+g21bZKHIcQUHdB
+ 5ZaeUDxo+Ght8gBw==
+Authentication-Results: smtp-out2.suse.de;
+ dkim=pass header.d=suse.de header.s=susede2_rsa header.b=0MqJjbva;
+ dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=KH+85nlv
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1732883274; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=/G6Ue4MKmA9n9SMCII0nKZPRr+tlsxWupEt1VyDfNdQ=;
+ b=0MqJjbvaJZe9Qv430fJ7GPrbttMssA44WZApWubTyOry5Lv3/plwpxIYYDeiuEFQ7QWQdF
+ UpLpN/YJNZNoUx/Vh6qnjx3SN0KygLaYhkHLyMAlCj7S8/r0FdvEHUZC79LHp1MxPafRXF
+ hSWY3wzaqyrzF/0PPSwENo6XcMfTe+Y=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1732883274;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=/G6Ue4MKmA9n9SMCII0nKZPRr+tlsxWupEt1VyDfNdQ=;
+ b=KH+85nlv5CD1b8DTYRG80MwT0jCLEDvdQ44QY3JIjzh+2MT8yN7R5LV+g21bZKHIcQUHdB
+ 5ZaeUDxo+Ght8gBw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 59574195609F; Fri, 29 Nov 2024 12:23:19 +0000 (UTC)
-Received: from kaapi.redhat.com (unknown [10.67.24.141])
- by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 41BA11956095; Fri, 29 Nov 2024 12:23:15 +0000 (UTC)
-From: Prasad Pandit <ppandit@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: peterx@redhat.com, farosas@suse.de, berrange@redhat.com,
- Prasad Pandit <pjp@fedoraproject.org>
-Subject: [PATCH v2 3/3] migration: enable multifd and postcopy together
-Date: Fri, 29 Nov 2024 17:52:56 +0530
-Message-ID: <20241129122256.96778-4-ppandit@redhat.com>
-In-Reply-To: <20241129122256.96778-1-ppandit@redhat.com>
-References: <20241129122256.96778-1-ppandit@redhat.com>
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8AED1133F3;
+ Fri, 29 Nov 2024 12:27:53 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id PTLBE0mzSWe0CwAAD6G6ig
+ (envelope-from <farosas@suse.de>); Fri, 29 Nov 2024 12:27:53 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Yong Huang <yong.huang@smartx.com>
+Cc: qemu-devel@nongnu.org, Peter Xu <peterx@redhat.com>, =?utf-8?Q?Daniel?=
+ =?utf-8?Q?_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Subject: Re: [PATCH v3 0/5] Guestperf: miscellaneous refinement and enrichment
+In-Reply-To: <CAK9dgmZvj4W2EBxp1_TcdYs3q2aqaRZGZCAk=FRJk-PaB9y_fw@mail.gmail.com>
+References: <cover.1729562974.git.yong.huang@smartx.com>
+ <87sesmdfl4.fsf@suse.de>
+ <CAK9dgmZvj4W2EBxp1_TcdYs3q2aqaRZGZCAk=FRJk-PaB9y_fw@mail.gmail.com>
+Date: Fri, 29 Nov 2024 09:27:50 -0300
+Message-ID: <87v7w6jkc9.fsf@suse.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=ppandit@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -29
-X-Spam_score: -3.0
-X-Spam_bar: ---
-X-Spam_report: (-3.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.93,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 0E09E1F38F
+X-Spam-Score: -4.51
+X-Rspamd-Action: no action
+X-Spamd-Result: default: False [-4.51 / 50.00]; BAYES_HAM(-3.00)[100.00%];
+ NEURAL_HAM_LONG(-1.00)[-1.000];
+ R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
+ MX_GOOD(-0.01)[];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ FUZZY_BLOCKED(0.00)[rspamd.com];
+ RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from]; 
+ ARC_NA(0.00)[]; TO_MATCH_ENVRCPT_ALL(0.00)[];
+ TO_DN_SOME(0.00)[]; MIME_TRACE(0.00)[0:+]; FROM_HAS_DN(0.00)[];
+ DKIM_TRACE(0.00)[suse.de:+];
+ SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+ MID_RHS_MATCH_FROM(0.00)[]; RCVD_COUNT_TWO(0.00)[2];
+ FROM_EQ_ENVFROM(0.00)[]; RCVD_TLS_ALL(0.00)[];
+ RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+ ASN(0.00)[asn:25478, ipnet:::/0, country:RU];
+ RCVD_VIA_SMTP_AUTH(0.00)[]; RCPT_COUNT_THREE(0.00)[4];
+ MISSING_XM_UA(0.00)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:mid,suse.de:email]
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
+ helo=smtp-out2.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,268 +133,110 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Prasad Pandit <pjp@fedoraproject.org>
+Yong Huang <yong.huang@smartx.com> writes:
 
-Enable Multifd and Postcopy migration together.
-The migration_ioc_process_incoming() routine
-checks magic value sent on each channel and
-helps to properly setup multifd and postcopy
-channels.
+> On Wed, Oct 23, 2024 at 11:06=E2=80=AFPM Fabiano Rosas <farosas@suse.de> =
+wrote:
+>
+>> yong.huang@smartx.com writes:
+>>
+>> > From: Hyman Huang <yong.huang@smartx.com>
+>> >
+>> > v3:
+>> > 1. Remove the two redundant assignments in [PATCH v2 2/5] suggested by
+>> Daniel
+>> >
+>> > Please review, thanks
+>> > Yong
+>> >
+>> > v2:
+>> > 1. Update the MAINTAINERS section suggested by Fabiano Rosas
+>> > 2. Ensure the dependencies when build the initrd-stress.img suggested =
+by
+>> Daniel
+>> > 3. Fix some bugs
+>> >
+>> > v1:
+>> > The previous patchset:
+>> >
+>> https://lore.kernel.org/qemu-devel/cover.1722957352.git.yong.huang@smart=
+x.com/
+>> > does not made the necessary changes and tests for the upstream version.
+>> >
+>> > This patchset works for that:
+>> > 1. Move the guestperf to scripts directory suggested by Fabiano Rosas
+>> > 2. Make initrd-stress.img built by default suggested by Fabiano Rosas
+>> > 3. Make the necessary changes to adapt the latest multifd behavior
+>> > 4. A nitpick for multifd migration
+>> > 5. Support multifd compression option
+>> >
+>> > Hyman Huang (5):
+>> >   tests/migration: Move the guestperf tool to scripts directory
+>> >   tests/migration: Make initrd-stress.img built by default
+>> >   guestperf: Support deferred migration for multifd
+>> >   guestperf: Nitpick the inconsistent parameters
+>> >   guestperf: Introduce multifd compression option
+>> >
+>> >  MAINTAINERS                                   |  5 +++
+>> >  .../migration/guestperf-batch.py              |  0
+>> >  .../migration/guestperf-plot.py               |  0
+>> >  {tests =3D> scripts}/migration/guestperf.py     |  0
+>> >  .../migration/guestperf/__init__.py           |  0
+>> >  .../migration/guestperf/comparison.py         | 15 ++++++++-
+>> >  .../migration/guestperf/engine.py             | 33 ++++++++++++++++---
+>> >  .../migration/guestperf/hardware.py           |  0
+>> >  .../migration/guestperf/plot.py               |  0
+>> >  .../migration/guestperf/progress.py           |  0
+>> >  .../migration/guestperf/report.py             |  0
+>> >  .../migration/guestperf/scenario.py           |  7 ++--
+>> >  .../migration/guestperf/shell.py              |  3 ++
+>> >  .../migration/guestperf/timings.py            |  0
+>> >  tests/migration/meson.build                   | 30 +++++++++--------
+>> >  15 files changed, 73 insertions(+), 20 deletions(-)
+>> >  rename {tests =3D> scripts}/migration/guestperf-batch.py (100%)
+>> >  rename {tests =3D> scripts}/migration/guestperf-plot.py (100%)
+>> >  rename {tests =3D> scripts}/migration/guestperf.py (100%)
+>> >  rename {tests =3D> scripts}/migration/guestperf/__init__.py (100%)
+>> >  rename {tests =3D> scripts}/migration/guestperf/comparison.py (89%)
+>> >  rename {tests =3D> scripts}/migration/guestperf/engine.py (93%)
+>> >  rename {tests =3D> scripts}/migration/guestperf/hardware.py (100%)
+>> >  rename {tests =3D> scripts}/migration/guestperf/plot.py (100%)
+>> >  rename {tests =3D> scripts}/migration/guestperf/progress.py (100%)
+>> >  rename {tests =3D> scripts}/migration/guestperf/report.py (100%)
+>> >  rename {tests =3D> scripts}/migration/guestperf/scenario.py (93%)
+>> >  rename {tests =3D> scripts}/migration/guestperf/shell.py (98%)
+>> >  rename {tests =3D> scripts}/migration/guestperf/timings.py (100%)
+>>
+>> Reviewed-by: Fabiano Rosas <farosas@suse.de>
+>>
+>>
+>> Thinking out loud a little bit, it's still somewhat obscure from which
+>> directory this script should be called. None of these invocations work:
+>>
+>> $ ./scripts/migration/guestperf.py
+>>
+>> $ ./build/scripts/migration/guestperf.py
+>>
+>> $ cd scripts/migration
+>> $ ./guestperf.py
+>>
+>> $ cd build/scripts/migration
+>> $ ./guestperf.py
+>>
+>> Failed to open file =E2=80=9Ctests/migration/initrd-stress.img=E2=80=9D:=
+ open() failed:
+>> No such file or directory
+>>
+>> This is the only one that works:
+>> $ cd build
+>> $ ./scripts/migration/guestperf.py
+>>
+>> Maybe we could improve that somehow in the future.
+>>
+>>
+> This patchset could be queued now,
+> Or after refining the documents mentioned above later?
 
-The Precopy and Multifd threads work during the
-initial guest RAM transfer. When migration moves
-to the Postcopy phase, the multifd threads are
-restrained and Postcopy threads on the destination
-request/pull data from the source side.
-
-Signed-off-by: Prasad Pandit <pjp@fedoraproject.org>
----
- migration/migration.c      | 90 +++++++++++++++++++++++---------------
- migration/multifd-nocomp.c |  3 +-
- migration/options.c        |  5 ---
- migration/ram.c            |  8 ++--
- 4 files changed, 61 insertions(+), 45 deletions(-)
-
-v2: Merge earlier options.c patch into this one. Also make
-    !migration_in_postcopy() check in this patch, to separate
-    refactoring change from this one.
-
-v1: Avoid using 4-bytes magic value for the Postcopy channel.
-    Flush and synchronise Multifd thread before postcopy_start().
- - https://lore.kernel.org/qemu-devel/20241126115748.118683-1-ppandit@redhat.com/T/#u
-
-v0:
- - https://lore.kernel.org/qemu-devel/20241029150908.1136894-1-ppandit@redhat.com/T/#u
-
-diff --git a/migration/migration.c b/migration/migration.c
-index 8c5bd0a75c..fa0a6d3b7d 100644
---- a/migration/migration.c
-+++ b/migration/migration.c
-@@ -92,6 +92,9 @@ enum mig_rp_message_type {
-     MIG_RP_MSG_MAX
- };
- 
-+/* Migration channel types */
-+enum { CH_DEFAULT, CH_MULTIFD, CH_POSTCOPY };
-+
- /* When we add fault tolerance, we could have several
-    migrations at once.  For now we don't need to add
-    dynamic creation of migration */
-@@ -921,26 +924,32 @@ void migration_fd_process_incoming(QEMUFile *f)
- /*
-  * Returns true when we want to start a new incoming migration process,
-  * false otherwise.
-+ *
-+ * All the required channels must be in place before a new incoming
-+ * migration process starts.
-+ *  - Multifd enabled:
-+ *    The main channel and the multifd channels are required.
-+ *  - Multifd/Postcopy disabled:
-+ *    The main channel is required.
-+ *  - Postcopy enabled:
-+ *    We don't want to start a new incoming migration when
-+ *    the postcopy channel is created. Because it is created
-+ *    towards the end of the precopy migration.
-  */
--static bool migration_should_start_incoming(bool main_channel)
-+static bool migration_should_start_incoming(uint8_t channel)
- {
--    /* Multifd doesn't start unless all channels are established */
--    if (migrate_multifd()) {
--        return migration_has_all_channels();
--    }
-+    bool ret = false;
-+
-+    if (channel != CH_POSTCOPY) {
-+        MigrationIncomingState *mis = migration_incoming_get_current();
-+        ret = mis->from_src_file ? true : false;
- 
--    /* Preempt channel only starts when the main channel is created */
--    if (migrate_postcopy_preempt()) {
--        return main_channel;
-+        if (ret && migrate_multifd()) {
-+            ret = multifd_recv_all_channels_created();
-+        }
-     }
- 
--    /*
--     * For all the rest types of migration, we should only reach here when
--     * it's the main channel that's being created, and we should always
--     * proceed with this channel.
--     */
--    assert(main_channel);
--    return true;
-+    return ret;
- }
- 
- void migration_ioc_process_incoming(QIOChannel *ioc, Error **errp)
-@@ -948,13 +957,12 @@ void migration_ioc_process_incoming(QIOChannel *ioc, Error **errp)
-     MigrationIncomingState *mis = migration_incoming_get_current();
-     Error *local_err = NULL;
-     QEMUFile *f;
--    bool default_channel = true;
-     uint32_t channel_magic = 0;
-+    uint8_t channel = CH_DEFAULT;
-     int ret = 0;
- 
--    if (migrate_multifd() && !migrate_mapped_ram() &&
--        !migrate_postcopy_ram() &&
--        qio_channel_has_feature(ioc, QIO_CHANNEL_FEATURE_READ_MSG_PEEK)) {
-+    if (!migration_should_start_incoming(channel)
-+        && qio_channel_has_feature(ioc, QIO_CHANNEL_FEATURE_READ_MSG_PEEK)) {
-         /*
-          * With multiple channels, it is possible that we receive channels
-          * out of order on destination side, causing incorrect mapping of
-@@ -972,35 +980,46 @@ void migration_ioc_process_incoming(QIOChannel *ioc, Error **errp)
-             return;
-         }
- 
--        default_channel = (channel_magic == cpu_to_be32(QEMU_VM_FILE_MAGIC));
-+        if (channel_magic == cpu_to_be32(QEMU_VM_FILE_MAGIC)) {
-+            channel = CH_DEFAULT;
-+        } else if (channel_magic == cpu_to_be32(MULTIFD_MAGIC)) {
-+            channel = CH_MULTIFD;
-+        } else {
-+            error_report("%s: could not identify channel, unknown magic: %u",
-+                            __func__, channel_magic);
-+            return;
-+        }
-+
-     } else {
--        default_channel = !mis->from_src_file;
-+        channel = CH_POSTCOPY;
-     }
- 
-     if (multifd_recv_setup(errp) != 0) {
-         return;
-     }
- 
--    if (default_channel) {
-+    if (channel == CH_DEFAULT) {
-         f = qemu_file_new_input(ioc);
-         migration_incoming_setup(f);
--    } else {
-+    } else if (channel == CH_MULTIFD) {
-         /* Multiple connections */
--        assert(migration_needs_multiple_sockets());
-         if (migrate_multifd()) {
-             multifd_recv_new_channel(ioc, &local_err);
--        } else {
-+        }
-+        if (local_err) {
-+            error_propagate(errp, local_err);
-+            return;
-+        }
-+    } else if (channel == CH_POSTCOPY) {
-+        if (migrate_postcopy()) {
-             assert(migrate_postcopy_preempt());
-+            assert(!mis->postcopy_qemufile_dst);
-             f = qemu_file_new_input(ioc);
-             postcopy_preempt_new_channel(mis, f);
-         }
--        if (local_err) {
--            error_propagate(errp, local_err);
--            return;
--        }
-     }
- 
--    if (migration_should_start_incoming(default_channel)) {
-+    if (migration_should_start_incoming(channel)) {
-         /* If it's a recovery, we're done */
-         if (postcopy_try_recover()) {
-             return;
-@@ -1017,21 +1036,22 @@ void migration_ioc_process_incoming(QIOChannel *ioc, Error **errp)
-  */
- bool migration_has_all_channels(void)
- {
-+    bool ret = false;
-     MigrationIncomingState *mis = migration_incoming_get_current();
- 
-     if (!mis->from_src_file) {
--        return false;
-+        return ret;
-     }
- 
-     if (migrate_multifd()) {
--        return multifd_recv_all_channels_created();
-+        ret = multifd_recv_all_channels_created();
-     }
- 
--    if (migrate_postcopy_preempt()) {
--        return mis->postcopy_qemufile_dst != NULL;
-+    if (ret && migrate_postcopy_preempt()) {
-+        ret = mis->postcopy_qemufile_dst != NULL;
-     }
- 
--    return true;
-+    return ret;
- }
- 
- int migrate_send_rp_switchover_ack(MigrationIncomingState *mis)
-diff --git a/migration/multifd-nocomp.c b/migration/multifd-nocomp.c
-index 55191152f9..e92821e8f6 100644
---- a/migration/multifd-nocomp.c
-+++ b/migration/multifd-nocomp.c
-@@ -14,6 +14,7 @@
- #include "exec/ramblock.h"
- #include "exec/target_page.h"
- #include "file.h"
-+#include "migration.h"
- #include "multifd.h"
- #include "options.h"
- #include "qapi/error.h"
-@@ -345,7 +346,7 @@ retry:
- 
- int multifd_ram_flush_and_sync(void)
- {
--    if (!migrate_multifd()) {
-+    if (!migrate_multifd() || migration_in_postcopy()) {
-         return 0;
-     }
- 
-diff --git a/migration/options.c b/migration/options.c
-index ad8d6989a8..c498558a85 100644
---- a/migration/options.c
-+++ b/migration/options.c
-@@ -479,11 +479,6 @@ bool migrate_caps_check(bool *old_caps, bool *new_caps, Error **errp)
-             error_setg(errp, "Postcopy is not compatible with ignore-shared");
-             return false;
-         }
--
--        if (new_caps[MIGRATION_CAPABILITY_MULTIFD]) {
--            error_setg(errp, "Postcopy is not yet compatible with multifd");
--            return false;
--        }
-     }
- 
-     if (new_caps[MIGRATION_CAPABILITY_BACKGROUND_SNAPSHOT]) {
-diff --git a/migration/ram.c b/migration/ram.c
-index 5f97dda5f1..7444fa5280 100644
---- a/migration/ram.c
-+++ b/migration/ram.c
-@@ -1316,9 +1316,9 @@ static int find_dirty_block(RAMState *rs, PageSearchStatus *pss)
-         pss->page = 0;
-         pss->block = QLIST_NEXT_RCU(pss->block, next);
-         if (!pss->block) {
--            if (migrate_multifd() &&
--                (!migrate_multifd_flush_after_each_section() ||
--                 migrate_mapped_ram())) {
-+            if (migrate_multifd() && !migration_in_postcopy()
-+                && (!migrate_multifd_flush_after_each_section()
-+                    || migrate_mapped_ram())) {
-                 QEMUFile *f = rs->pss[RAM_CHANNEL_PRECOPY].pss_channel;
-                 int ret = multifd_ram_flush_and_sync();
-                 if (ret < 0) {
-@@ -1997,7 +1997,7 @@ static int ram_save_target_page(RAMState *rs, PageSearchStatus *pss)
-         }
-     }
- 
--    if (migrate_multifd()) {
-+    if (migrate_multifd() && !migration_in_postcopy()) {
-         RAMBlock *block = pss->block;
-         return ram_save_multifd_page(block, offset);
-     }
--- 
-2.47.1
-
+I think it's ok. Let me just rebase this on top of the other series that
+touches the tests/migration/ directory. I'll repost soon.
 
