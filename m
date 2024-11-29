@@ -2,42 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52F239DE8B6
-	for <lists+qemu-devel@lfdr.de>; Fri, 29 Nov 2024 15:40:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 015C59DE8B2
+	for <lists+qemu-devel@lfdr.de>; Fri, 29 Nov 2024 15:40:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tH29R-0003Km-Mx; Fri, 29 Nov 2024 09:39:21 -0500
+	id 1tH29S-0003Lb-Bz; Fri, 29 Nov 2024 09:39:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1tH29N-0003JK-1d
- for qemu-devel@nongnu.org; Fri, 29 Nov 2024 09:39:17 -0500
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1tH29P-0003Ka-EF
+ for qemu-devel@nongnu.org; Fri, 29 Nov 2024 09:39:19 -0500
 Received: from nyc.source.kernel.org ([147.75.193.91])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1tH29L-0005z6-Nx
- for qemu-devel@nongnu.org; Fri, 29 Nov 2024 09:39:16 -0500
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1tH29O-0005zX-25
+ for qemu-devel@nongnu.org; Fri, 29 Nov 2024 09:39:19 -0500
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by nyc.source.kernel.org (Postfix) with ESMTP id 26780A43F21;
- Fri, 29 Nov 2024 14:37:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A25FFC4CED2;
- Fri, 29 Nov 2024 14:39:07 +0000 (UTC)
+ by nyc.source.kernel.org (Postfix) with ESMTP id 743ECA43F22;
+ Fri, 29 Nov 2024 14:37:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7E4FC4CECF;
+ Fri, 29 Nov 2024 14:39:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1732891148;
- bh=Z3ILH7yeOybgi1/CJ1rwkFp19U43yvxFnde7k2lHHz8=;
+ s=k20201202; t=1732891149;
+ bh=7sDAkRnZ08OkWc2JgsOLVf4mCXc++peN2aQFHOAIuw4=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=YZHbfxSPXvPUMX4Z22/xErwwFsIIZPWdny72PArWUQPCvyRwxBVm6sgFS34GB46i3
- fgoQ310jTspZi2huDZoJ4/Y76KJ/DNcYuYRkhbXH573sCR2XgG8/2qZDkDbfFWTPEP
- XQmwZWLIbtZsNQ01nXs8cr/gE7npSaetBRi51NmJpGXt5/jN2MeUpeD4Wl3eFQ0vTY
- bEbaxT46Buir6vV8Z4KXJ/G+ExJUVc/IaiGsie+mK40ws1DKU2PROJ5SkHzMeGZEHN
- HciMztBdZlvbiT2kxt9dy9Puhm+vtqxLCmnXGrEhRDnVu8LMZiq3rRYqDBqVKUKpCc
- yBDFf4LGbaqNA==
+ b=Jidt8OSla1P65EUfuP36JDekth5omNY9/fCGgLtWiAnP4ohyWbq/WW5qzQk9VqcJs
+ 55+Pwa5/oHknTHSsf8BtId1MHVfObnaypdomcDTY3oMsFL62PsZcwSKCh/c3kQwNED
+ 6QHWC8dG68Qo4c4uhRFTAIhZE68W7Zg/3vGt4mg20JmMwAxse3/8/7cAlWYFrR02/b
+ j2PHpLDj5QAeLZ9sMqqORfS1JL/Zqe2WXmK9YssdCXFLpVFPTpjG46hdCZfhGCI+XU
+ QlElqKeWEo/9go6B/lGxTSA4DARWSC8c07s8idyIQKgicClgU5ryqNSUAj3TnotAUQ
+ KvnpzA63OqqqA==
 From: deller@kernel.org
 To: Laurent Vivier <laurent@vivier.eu>,
 	qemu-devel@nongnu.org
 Cc: deller@gmx.de
-Subject: [PATCH 3/6] linux-user: netlink: Add IP_PKTINFO cmsg parsing
-Date: Fri, 29 Nov 2024 15:38:58 +0100
-Message-ID: <20241129143901.11291-4-deller@kernel.org>
+Subject: [PATCH 4/6] linux-user: netlink: Add emulation of IP_MULTICAST_IF
+Date: Fri, 29 Nov 2024 15:38:59 +0100
+Message-ID: <20241129143901.11291-5-deller@kernel.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241129143901.11291-1-deller@kernel.org>
 References: <20241129143901.11291-1-deller@kernel.org>
@@ -70,37 +70,53 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Helge Deller <deller@gmx.de>
 
-Fixes those warnings:
- Unsupported host ancillary data: 0/8
+Share code with IP_ADD_MEMBERSHIP/IP_DROP_MEMBERSHIP.
 
 Signed-off-by: Helge Deller <deller@gmx.de>
 ---
- linux-user/syscall.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ linux-user/syscall.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
 diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-index 494323efba..bbe2560927 100644
+index bbe2560927..4360543e20 100644
 --- a/linux-user/syscall.c
 +++ b/linux-user/syscall.c
-@@ -1996,6 +1996,18 @@ static inline abi_long host_to_target_cmsg(struct target_msghdr *target_msgh,
-                     (void *) &errh->offender, sizeof(errh->offender));
-                 break;
+@@ -2130,16 +2130,23 @@ static abi_long do_setsockopt(int sockfd, int level, int optname,
              }
-+            case IP_PKTINFO:
-+            {
-+                struct in_pktinfo *pkti = data;
-+                struct in_pktinfo *target_pkti = target_data;
-+
-+                __put_user(pkti->ipi_ifindex, &target_pkti->ipi_ifindex);
-+                host_to_target_sockaddr((unsigned long) &target_pkti->ipi_spec_dst,
-+                    (void *) &pkti->ipi_spec_dst, sizeof(pkti->ipi_spec_dst));
-+                host_to_target_sockaddr((unsigned long) &target_pkti->ipi_addr,
-+                    (void *) &pkti->ipi_addr, sizeof(pkti->ipi_addr));
-+                break;
+             ret = get_errno(setsockopt(sockfd, level, optname, &val, sizeof(val)));
+             break;
++        case IP_MULTICAST_IF:
+         case IP_ADD_MEMBERSHIP:
+         case IP_DROP_MEMBERSHIP:
+         {
+             struct ip_mreqn ip_mreq;
+             struct target_ip_mreqn *target_smreqn;
++            int min_size;
+ 
+             QEMU_BUILD_BUG_ON(sizeof(struct ip_mreq) !=
+                               sizeof(struct target_ip_mreq));
+ 
+-            if (optlen < sizeof (struct target_ip_mreq) ||
++            if (optname == IP_MULTICAST_IF) {
++                min_size = sizeof(struct in_addr);
++            } else {
++                min_size = sizeof(struct target_ip_mreq);
 +            }
-             default:
-                 goto unimplemented;
++            if (optlen < min_size ||
+                 optlen > sizeof (struct target_ip_mreqn)) {
+                 return -TARGET_EINVAL;
              }
+@@ -2149,7 +2156,9 @@ static abi_long do_setsockopt(int sockfd, int level, int optname,
+                 return -TARGET_EFAULT;
+             }
+             ip_mreq.imr_multiaddr.s_addr = target_smreqn->imr_multiaddr.s_addr;
+-            ip_mreq.imr_address.s_addr = target_smreqn->imr_address.s_addr;
++            if (optlen >= sizeof(struct target_ip_mreq)) {
++                ip_mreq.imr_address.s_addr = target_smreqn->imr_address.s_addr;
++            }
+             if (optlen == sizeof(struct target_ip_mreqn)) {
+                 ip_mreq.imr_ifindex = tswapal(target_smreqn->imr_ifindex);
+                 optlen = sizeof(struct ip_mreqn);
 -- 
 2.47.0
 
