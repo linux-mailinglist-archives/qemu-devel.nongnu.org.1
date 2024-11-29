@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1621C9DE965
-	for <lists+qemu-devel@lfdr.de>; Fri, 29 Nov 2024 16:30:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B8289DE96B
+	for <lists+qemu-devel@lfdr.de>; Fri, 29 Nov 2024 16:31:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tH2sh-0000Oa-Vn; Fri, 29 Nov 2024 10:26:09 -0500
+	id 1tH2tR-0000tj-TY; Fri, 29 Nov 2024 10:26:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <phil@philjordan.eu>)
- id 1tH2sJ-0000AJ-QI
- for qemu-devel@nongnu.org; Fri, 29 Nov 2024 10:25:44 -0500
-Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
+ id 1tH2sL-0000Am-BY
+ for qemu-devel@nongnu.org; Fri, 29 Nov 2024 10:25:45 -0500
+Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <phil@philjordan.eu>)
- id 1tH2sF-0002Ca-HD
- for qemu-devel@nongnu.org; Fri, 29 Nov 2024 10:25:43 -0500
-Received: by mail-wr1-x42e.google.com with SMTP id
- ffacd0b85a97d-38248b810ffso1610590f8f.0
- for <qemu-devel@nongnu.org>; Fri, 29 Nov 2024 07:25:38 -0800 (PST)
+ id 1tH2sH-0002Hb-66
+ for qemu-devel@nongnu.org; Fri, 29 Nov 2024 10:25:44 -0500
+Received: by mail-wr1-x435.google.com with SMTP id
+ ffacd0b85a97d-385df8815fcso436365f8f.1
+ for <qemu-devel@nongnu.org>; Fri, 29 Nov 2024 07:25:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=philjordan-eu.20230601.gappssmtp.com; s=20230601; t=1732893937; x=1733498737;
+ d=philjordan-eu.20230601.gappssmtp.com; s=20230601; t=1732893939; x=1733498739;
  darn=nongnu.org; 
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Rt0qeDC4zcrf37zLdnoWaPsony+vT2q8boPvnj3L8qE=;
- b=3NzaCYiQxDUJFOwTa0xCsUG+3D22QEPKnk4uKuKSjTyJx7Shr8do4YojoSJHRZ7U0S
- ONID4w0joQWTwFQQFiYeL98VHm7w2jC0zOSRDkrjcPIEDCIQ2l9N65FP8ARf2sFS/mN5
- U+W4kz/Zf2HUc/RYWtl7g1sbCzWfMZF2ZljbxBorDfYZOzlrwGFSmYtOuaXGa1EGVhRP
- 6DLBd6du41qiLLtMJvDVqbAnLYZ35du+W246Al71C3RJeBg+Xpqm0+4lyaXI+LGg1fez
- I8OF9lEoMyf6Y4R13xeu926fPBcq2k1WLxPwoAgPig1aHb+d4yg9is4ca/2501e/R3Q9
- QgFQ==
+ bh=+KLl/U9SRrXWpu5Bd6j4KSXAwUgPPC0zC5446bBcsE8=;
+ b=gvYNFLVOPIdfavviCeY7tz/DuzIvsUr1z0YzUgGervwCKryjmnsaXYo++WfqEE4/1v
+ dLEn6iUg6QmFnRaOzSmk2qJMvNclszsu5gTSQdItL63A4laXN5nLB81Bzpa1wkYq/H/Y
+ UpkAQDPw16A6HLBLj+IxMn9pPU3gT2yAUTKBPMRvA2Ft7iCnjZokXP88/aikrF7zBsq0
+ 5o8Gf3O4IuJ3PGjCBejl0lKmb2z6D5Emo0BFM2LqqvoBO7gsnp3bo1mCAWK7ofAShm+p
+ w+qWcZYBuy4U56BS0okMJCUcjzQ++eCCCBqF5+acSbQehIyyA/cFtH4HE68Qniq8fgPj
+ lMng==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1732893937; x=1733498737;
+ d=1e100.net; s=20230601; t=1732893939; x=1733498739;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Rt0qeDC4zcrf37zLdnoWaPsony+vT2q8boPvnj3L8qE=;
- b=McDaxVlZuKeCb6Iq34DGWoXZz+FuOAb+Dss1G8JMME78s9PhD/mEKuszQUXqskVTZe
- OKIhxVfIkOw+IjirTo5HfdTvVIdtwVKRjCiK+m+w+igQdXFR8MVZTm68z6GzRm7UPXz/
- kswa973xXRu61F6hTdw9TAa6YZyZiJdpLxN8xXqOVQHFHUe/+TbB87A+ydHGtbJttgcL
- UkXdK/C6jc7dnfnbuWWKHbkWoZWfw1vWWereJRDYJJe8ugdY/uet4gcZtC9OZrwVPVRj
- ki+ke0ZzkWY77hJWO7hV1IdbqT8LAUawVU5qXcFeh/JfRmYJR+OomJsM+VdaJbsHTp1W
- QKcw==
-X-Gm-Message-State: AOJu0YzJTNKRkXooMwe6HyIZyJ1GpBwosXPVjywww7BzfGpbZzqtWV/U
- 2700eT4GkJwReUT8HNM+Yxu5tKAPIvgApk9CsOh7vY6p9pOO2+kxTCrW3Y3bMpTkJ/WyyfvGSB2
- Nrw==
-X-Gm-Gg: ASbGncs+aG6LBucgBKUNz/1yocxhHY+pmZRF6zB7QXKNIr4EN8ECqNNaLfwbv8ytMO4
- PJPs2id0CGQcQ6i/czWCIJrqf5tiS7YRGNA6uLQu/5lWK59HpI3jgflw+5I804sX6UNfgUGgx7x
- rNSEKld9WduhIRm7SQ+qnYMiCsNH+cKued/r1fa36WSblBhFgu0Ij+a3uk2bsRQoiWtaR71uGPC
- kutS9dVRKoSVhXIWbX4JIuQ/08FKoN6lZb6xVbsui0slTdg4hxai9VOJZq9zSfKo9tymk9WzjhN
- dkwCMHDhoIBOQ6bUEPfnEJxhTw==
-X-Google-Smtp-Source: AGHT+IFMnxq1/oCpbuXf+9hiSCoo5okMoCQlH7LcCIr/t9HD/dzG6n/lEW2h5xyF5f329//HCjJgfQ==
-X-Received: by 2002:a05:6000:4014:b0:385:ddd2:6ab7 with SMTP id
- ffacd0b85a97d-385ddd26b76mr2793302f8f.52.1732893937191; 
- Fri, 29 Nov 2024 07:25:37 -0800 (PST)
+ bh=+KLl/U9SRrXWpu5Bd6j4KSXAwUgPPC0zC5446bBcsE8=;
+ b=IROP5qx0tggDwZ7N63UTvdANsZ7Cp4b6h8w2ZjujOO/GA8E5WShIUH/ZHfZkkY3zvJ
+ 5kj3ojb8nmzIMFql80J7PMBFkxrM68rYUK9LUZV2PO1Q7RcqWus9xqct8+Zs9JRS6zCu
+ CfQJ9pD6yVq9AR/gKsbqsg5Wi40R1/g636JTwRsN2mQd1q6bF6djEg4PnBI0TLV8R6pg
+ ydeiC09NkiBJt444ygl01WcK1X4GSGrLZ6xwOdMIfP3/uVHIXMyjxc9cZ1n9Kx6sbNkz
+ PJZNy5ScxUE+dvcC2iJZbf02x6G8NzHTctdNvGKDamOv1rP6SlHJA3WMM/cya1H7p69U
+ urVg==
+X-Gm-Message-State: AOJu0YymF/8MX6y5kNTicv0YYYsUI3fGL+EsdqMEs7rip+LoVn7zhfCN
+ 2GBszZB/R8y4cPuYqmfQSP1dh+BkKysqLDsvpCiGcLLPmJjbPDpz/YIQ0rRt+38XmElUtHDOCHh
+ k8w==
+X-Gm-Gg: ASbGncvW65d3xov0PoZ3dYrzgJMhnjFD9udujjzwh5vYksqyk73OrSuV5fbSi4U6tgT
+ zqIvFsllkMbGUNCkJLGqphJVz07wPcuFVwWAXf1vlCgqdkYx5sC086BK0zcrokdPYknejyCfaHG
+ e3SE0lF10JGl2myU7e7P1h2RghaDTiSDV7cxZ8NUE2gbQ3j5OioD32DypTKpC/V7cyZvOFP26Yl
+ h/B3KnjA59tOvsmmvhqk2UmgRL3MbeOBxuTFPJAyZNAJ0ZrwV4quzVaQ2rlZxZ9fRwjkYsKo+P0
+ mSkiN4BPg2riXNkJ7NnUjNIyrA==
+X-Google-Smtp-Source: AGHT+IFUj82XXZpj4qCBlP+itJ9guYr2N4DAZkWrkDe/nuaQy6MGs+gcKWe/iOVpgAKTsy3XUR9oPA==
+X-Received: by 2002:a5d:5f88:0:b0:382:3c79:1f0a with SMTP id
+ ffacd0b85a97d-385c6edc5a1mr7579426f8f.58.1732893939471; 
+ Fri, 29 Nov 2024 07:25:39 -0800 (PST)
 Received: from localhost.localdomain (h082218084190.host.wavenet.at.
  [82.218.84.190]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-385ccd2db2dsm4685119f8f.14.2024.11.29.07.25.35
+ ffacd0b85a97d-385ccd2db2dsm4685119f8f.14.2024.11.29.07.25.37
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 29 Nov 2024 07:25:36 -0800 (PST)
+ Fri, 29 Nov 2024 07:25:38 -0800 (PST)
 From: Phil Dennis-Jordan <phil@philjordan.eu>
 To: qemu-devel@nongnu.org
 Cc: agraf@csgraf.de, phil@philjordan.eu, peter.maydell@linaro.org,
@@ -76,19 +76,18 @@ Cc: agraf@csgraf.de, phil@philjordan.eu, peter.maydell@linaro.org,
  dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com,
  jcmvbkbc@gmail.com, marcandre.lureau@redhat.com, berrange@redhat.com,
  akihiko.odaki@daynix.com, qemu-arm@nongnu.org, qemu-block@nongnu.org,
- qemu-riscv@nongnu.org, balaton@eik.bme.hu, Alexander Graf <graf@amazon.com>
-Subject: [PATCH v12 13/15] hw/vmapple/virtio-blk: Add support for apple
- virtio-blk
-Date: Fri, 29 Nov 2024 16:25:04 +0100
-Message-Id: <20241129152506.59390-14-phil@philjordan.eu>
+ qemu-riscv@nongnu.org, balaton@eik.bme.hu
+Subject: [PATCH v12 14/15] hw/block/virtio-blk: Replaces request free function
+ with g_free
+Date: Fri, 29 Nov 2024 16:25:05 +0100
+Message-Id: <20241129152506.59390-15-phil@philjordan.eu>
 X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 In-Reply-To: <20241129152506.59390-1-phil@philjordan.eu>
 References: <20241129152506.59390-1-phil@philjordan.eu>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: neutral client-ip=2a00:1450:4864:20::42e;
- envelope-from=phil@philjordan.eu; helo=mail-wr1-x42e.google.com
+Received-SPF: neutral client-ip=2a00:1450:4864:20::435;
+ envelope-from=phil@philjordan.eu; helo=mail-wr1-x435.google.com
 X-Spam_score_int: -10
 X-Spam_score: -1.1
 X-Spam_bar: -
@@ -110,428 +109,253 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Alexander Graf <graf@amazon.com>
+The virtio_blk_free_request() function has been a 1-liner forwarding
+to g_free() for a while now. We may as well call g_free on the request
+pointer directly.
 
-Apple has its own virtio-blk PCI device ID where it deviates from the
-official virtio-pci spec slightly: It puts a new "apple type"
-field at a static offset in config space and introduces a new barrier
-command.
-
-This patch first creates a mechanism for virtio-blk downstream classes to
-handle unknown commands. It then creates such a downstream class and a new
-vmapple-virtio-blk-pci class which support the additional apple type config
-identifier as well as the barrier command.
-
-The 'aux' or 'root' device type are selected using the 'variant' property.
-
-Signed-off-by: Alexander Graf <graf@amazon.com>
 Signed-off-by: Phil Dennis-Jordan <phil@philjordan.eu>
 Reviewed-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
- hw/block/virtio-blk.c               |  19 ++-
- hw/core/qdev-properties-system.c    |   8 ++
- hw/vmapple/Kconfig                  |   3 +
- hw/vmapple/meson.build              |   1 +
- hw/vmapple/virtio-blk.c             | 205 ++++++++++++++++++++++++++++
- include/hw/pci/pci_ids.h            |   1 +
- include/hw/qdev-properties-system.h |   5 +
- include/hw/virtio/virtio-blk.h      |  12 +-
- include/hw/vmapple/vmapple.h        |   2 +
- qapi/virtio.json                    |  14 ++
- 10 files changed, 265 insertions(+), 5 deletions(-)
- create mode 100644 hw/vmapple/virtio-blk.c
+
+v4:
+
+ * Use recommended object type declaration pattern.
+ * Correctly log unimplemented code paths.
+ * Most header code moved to .c, type name #defines moved to vmapple.h
+
+v5:
+
+ * Corrected handling of potentially unaligned writes to virtio config area.
+ * Simplified passing through device variant type to subobject.
+
+v9:
+
+ * Correctly specify class_size for VMAppleVirtIOBlkClass
+
+v10:
+
+ * Folded v9 patch 16/16 into this one, changing the device type design to
+   provide a single device type with a variant property instead of 2 different
+   subtypes for aux and root volumes.
+ * Tidied up error reporting for the variant property.
+
+ hw/block/virtio-blk.c          | 43 +++++++++++++++-------------------
+ hw/vmapple/virtio-blk.c        |  2 +-
+ include/hw/virtio/virtio-blk.h |  1 -
+ 3 files changed, 20 insertions(+), 26 deletions(-)
 
 diff --git a/hw/block/virtio-blk.c b/hw/block/virtio-blk.c
-index 9166d7974d4..9e8337bb639 100644
+index 9e8337bb639..40d2c9bc591 100644
 --- a/hw/block/virtio-blk.c
 +++ b/hw/block/virtio-blk.c
-@@ -50,12 +50,12 @@ static void virtio_blk_init_request(VirtIOBlock *s, VirtQueue *vq,
+@@ -50,11 +50,6 @@ static void virtio_blk_init_request(VirtIOBlock *s, VirtQueue *vq,
      req->mr_next = NULL;
  }
  
--static void virtio_blk_free_request(VirtIOBlockReq *req)
-+void virtio_blk_free_request(VirtIOBlockReq *req)
- {
-     g_free(req);
- }
- 
--static void virtio_blk_req_complete(VirtIOBlockReq *req, unsigned char status)
-+void virtio_blk_req_complete(VirtIOBlockReq *req, unsigned char status)
+-void virtio_blk_free_request(VirtIOBlockReq *req)
+-{
+-    g_free(req);
+-}
+-
+ void virtio_blk_req_complete(VirtIOBlockReq *req, unsigned char status)
  {
      VirtIOBlock *s = req->dev;
-     VirtIODevice *vdev = VIRTIO_DEVICE(s);
-@@ -966,8 +966,18 @@ static int virtio_blk_handle_request(VirtIOBlockReq *req, MultiReqBuffer *mrb)
+@@ -93,7 +88,7 @@ static int virtio_blk_handle_rw_error(VirtIOBlockReq *req, int error,
+         if (acct_failed) {
+             block_acct_failed(blk_get_stats(s->blk), &req->acct);
+         }
+-        virtio_blk_free_request(req);
++        g_free(req);
+     }
+ 
+     blk_error_action(s->blk, action, is_read, error);
+@@ -136,7 +131,7 @@ static void virtio_blk_rw_complete(void *opaque, int ret)
+ 
+         virtio_blk_req_complete(req, VIRTIO_BLK_S_OK);
+         block_acct_done(blk_get_stats(s->blk), &req->acct);
+-        virtio_blk_free_request(req);
++        g_free(req);
+     }
+ }
+ 
+@@ -151,7 +146,7 @@ static void virtio_blk_flush_complete(void *opaque, int ret)
+ 
+     virtio_blk_req_complete(req, VIRTIO_BLK_S_OK);
+     block_acct_done(blk_get_stats(s->blk), &req->acct);
+-    virtio_blk_free_request(req);
++    g_free(req);
+ }
+ 
+ static void virtio_blk_discard_write_zeroes_complete(void *opaque, int ret)
+@@ -169,7 +164,7 @@ static void virtio_blk_discard_write_zeroes_complete(void *opaque, int ret)
+     if (is_write_zeroes) {
+         block_acct_done(blk_get_stats(s->blk), &req->acct);
+     }
+-    virtio_blk_free_request(req);
++    g_free(req);
+ }
+ 
+ static VirtIOBlockReq *virtio_blk_get_request(VirtIOBlock *s, VirtQueue *vq)
+@@ -214,7 +209,7 @@ static void virtio_blk_handle_scsi(VirtIOBlockReq *req)
+ 
+ fail:
+     virtio_blk_req_complete(req, status);
+-    virtio_blk_free_request(req);
++    g_free(req);
+ }
+ 
+ static inline void submit_requests(VirtIOBlock *s, MultiReqBuffer *mrb,
+@@ -612,7 +607,7 @@ static void virtio_blk_zone_report_complete(void *opaque, int ret)
+ 
+ out:
+     virtio_blk_req_complete(req, err_status);
+-    virtio_blk_free_request(req);
++    g_free(req);
+     g_free(data->zone_report_data.zones);
+     g_free(data);
+ }
+@@ -661,7 +656,7 @@ static void virtio_blk_handle_zone_report(VirtIOBlockReq *req,
+     return;
+ out:
+     virtio_blk_req_complete(req, err_status);
+-    virtio_blk_free_request(req);
++    g_free(req);
+ }
+ 
+ static void virtio_blk_zone_mgmt_complete(void *opaque, int ret)
+@@ -677,7 +672,7 @@ static void virtio_blk_zone_mgmt_complete(void *opaque, int ret)
+     }
+ 
+     virtio_blk_req_complete(req, err_status);
+-    virtio_blk_free_request(req);
++    g_free(req);
+ }
+ 
+ static int virtio_blk_handle_zone_mgmt(VirtIOBlockReq *req, BlockZoneOp op)
+@@ -719,7 +714,7 @@ static int virtio_blk_handle_zone_mgmt(VirtIOBlockReq *req, BlockZoneOp op)
+     return 0;
+ out:
+     virtio_blk_req_complete(req, err_status);
+-    virtio_blk_free_request(req);
++    g_free(req);
+     return err_status;
+ }
+ 
+@@ -750,7 +745,7 @@ static void virtio_blk_zone_append_complete(void *opaque, int ret)
+ 
+ out:
+     virtio_blk_req_complete(req, err_status);
+-    virtio_blk_free_request(req);
++    g_free(req);
+     g_free(data);
+ }
+ 
+@@ -788,7 +783,7 @@ static int virtio_blk_handle_zone_append(VirtIOBlockReq *req,
+ 
+ out:
+     virtio_blk_req_complete(req, err_status);
+-    virtio_blk_free_request(req);
++    g_free(req);
+     return err_status;
+ }
+ 
+@@ -855,7 +850,7 @@ static int virtio_blk_handle_request(VirtIOBlockReq *req, MultiReqBuffer *mrb)
+             virtio_blk_req_complete(req, VIRTIO_BLK_S_IOERR);
+             block_acct_invalid(blk_get_stats(s->blk),
+                                is_write ? BLOCK_ACCT_WRITE : BLOCK_ACCT_READ);
+-            virtio_blk_free_request(req);
++            g_free(req);
+             return 0;
+         }
+ 
+@@ -911,7 +906,7 @@ static int virtio_blk_handle_request(VirtIOBlockReq *req, MultiReqBuffer *mrb)
+                               VIRTIO_BLK_ID_BYTES));
+         iov_from_buf(in_iov, in_num, 0, serial, size);
+         virtio_blk_req_complete(req, VIRTIO_BLK_S_OK);
+-        virtio_blk_free_request(req);
++        g_free(req);
          break;
      }
-     default:
--        virtio_blk_req_complete(req, VIRTIO_BLK_S_UNSUPP);
--        virtio_blk_free_request(req);
-+    {
-+        /*
-+         * Give subclasses a chance to handle unknown requests. This way the
-+         * class lookup is not in the hot path.
-+         */
-+        VirtIOBlkClass *vbk = VIRTIO_BLK_GET_CLASS(s);
-+        if (!vbk->handle_unknown_request ||
-+            !vbk->handle_unknown_request(req, mrb, type)) {
-+            virtio_blk_req_complete(req, VIRTIO_BLK_S_UNSUPP);
-+            virtio_blk_free_request(req);
-+        }
-+    }
+     case VIRTIO_BLK_T_ZONE_APPEND & ~VIRTIO_BLK_T_OUT:
+@@ -943,7 +938,7 @@ static int virtio_blk_handle_request(VirtIOBlockReq *req, MultiReqBuffer *mrb)
+         if (unlikely(!(type & VIRTIO_BLK_T_OUT) ||
+                      out_len > sizeof(dwz_hdr))) {
+             virtio_blk_req_complete(req, VIRTIO_BLK_S_UNSUPP);
+-            virtio_blk_free_request(req);
++            g_free(req);
+             return 0;
+         }
+ 
+@@ -960,7 +955,7 @@ static int virtio_blk_handle_request(VirtIOBlockReq *req, MultiReqBuffer *mrb)
+                                                             is_write_zeroes);
+         if (err_status != VIRTIO_BLK_S_OK) {
+             virtio_blk_req_complete(req, err_status);
+-            virtio_blk_free_request(req);
++            g_free(req);
+         }
+ 
+         break;
+@@ -975,7 +970,7 @@ static int virtio_blk_handle_request(VirtIOBlockReq *req, MultiReqBuffer *mrb)
+         if (!vbk->handle_unknown_request ||
+             !vbk->handle_unknown_request(req, mrb, type)) {
+             virtio_blk_req_complete(req, VIRTIO_BLK_S_UNSUPP);
+-            virtio_blk_free_request(req);
++            g_free(req);
+         }
      }
-     return 0;
- }
-@@ -2044,6 +2054,7 @@ static const TypeInfo virtio_blk_info = {
-     .instance_size = sizeof(VirtIOBlock),
-     .instance_init = virtio_blk_instance_init,
-     .class_init = virtio_blk_class_init,
-+    .class_size = sizeof(VirtIOBlkClass),
- };
+     }
+@@ -998,7 +993,7 @@ void virtio_blk_handle_vq(VirtIOBlock *s, VirtQueue *vq)
+         while ((req = virtio_blk_get_request(s, vq))) {
+             if (virtio_blk_handle_request(req, &mrb)) {
+                 virtqueue_detach_element(req->vq, &req->elem, 0);
+-                virtio_blk_free_request(req);
++                g_free(req);
+                 break;
+             }
+         }
+@@ -1048,7 +1043,7 @@ static void virtio_blk_dma_restart_bh(void *opaque)
+             while (req) {
+                 next = req->next;
+                 virtqueue_detach_element(req->vq, &req->elem, 0);
+-                virtio_blk_free_request(req);
++                g_free(req);
+                 req = next;
+             }
+             break;
+@@ -1131,7 +1126,7 @@ static void virtio_blk_reset(VirtIODevice *vdev)
+             /* No other threads can access req->vq here */
+             virtqueue_detach_element(req->vq, &req->elem, 0);
  
- static void virtio_register_types(void)
-diff --git a/hw/core/qdev-properties-system.c b/hw/core/qdev-properties-system.c
-index 22ea1ed3583..32abfc20b31 100644
---- a/hw/core/qdev-properties-system.c
-+++ b/hw/core/qdev-properties-system.c
-@@ -1283,3 +1283,11 @@ const PropertyInfo qdev_prop_iothread_vq_mapping_list = {
-     .set = set_iothread_vq_mapping_list,
-     .release = release_iothread_vq_mapping_list,
- };
-+
-+const PropertyInfo qdev_prop_vmapple_virtio_blk_variant = {
-+    .name  = "VMAppleVirtioBlkVariant",
-+    .enum_table  = &VMAppleVirtioBlkVariant_lookup,
-+    .get   = qdev_propinfo_get_enum,
-+    .set   = qdev_propinfo_set_enum,
-+    .set_default_value = qdev_propinfo_set_default_value_enum,
-+};
-diff --git a/hw/vmapple/Kconfig b/hw/vmapple/Kconfig
-index 8bbeb9a9237..bcd1be63e3c 100644
---- a/hw/vmapple/Kconfig
-+++ b/hw/vmapple/Kconfig
-@@ -7,3 +7,6 @@ config VMAPPLE_BDIF
- config VMAPPLE_CFG
-     bool
+-            virtio_blk_free_request(req);
++            g_free(req);
+         }
+     }
  
-+config VMAPPLE_VIRTIO_BLK
-+    bool
-+
-diff --git a/hw/vmapple/meson.build b/hw/vmapple/meson.build
-index 64b78693a31..bf17cf906c9 100644
---- a/hw/vmapple/meson.build
-+++ b/hw/vmapple/meson.build
-@@ -1,3 +1,4 @@
- system_ss.add(when: 'CONFIG_VMAPPLE_AES',  if_true: files('aes.c'))
- system_ss.add(when: 'CONFIG_VMAPPLE_BDIF', if_true: files('bdif.c'))
- system_ss.add(when: 'CONFIG_VMAPPLE_CFG',  if_true: files('cfg.c'))
-+system_ss.add(when: 'CONFIG_VMAPPLE_VIRTIO_BLK',  if_true: files('virtio-blk.c'))
 diff --git a/hw/vmapple/virtio-blk.c b/hw/vmapple/virtio-blk.c
-new file mode 100644
-index 00000000000..9aeb2931922
---- /dev/null
+index 9aeb2931922..52d857166bd 100644
+--- a/hw/vmapple/virtio-blk.c
 +++ b/hw/vmapple/virtio-blk.c
-@@ -0,0 +1,205 @@
-+/*
-+ * VMApple specific VirtIO Block implementation
-+ *
-+ * Copyright © 2023 Amazon.com, Inc. or its affiliates. All Rights Reserved.
-+ *
-+ * This work is licensed under the terms of the GNU GPL, version 2 or later.
-+ * See the COPYING file in the top-level directory.
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ *
-+ * VMApple uses almost standard VirtIO Block, but with a few key differences:
-+ *
-+ *  - Different PCI device/vendor ID
-+ *  - An additional "type" identifier to differentiate AUX and Root volumes
-+ *  - An additional BARRIER command
-+ */
-+
-+#include "qemu/osdep.h"
-+#include "hw/vmapple/vmapple.h"
-+#include "hw/virtio/virtio-blk.h"
-+#include "hw/virtio/virtio-pci.h"
-+#include "qemu/bswap.h"
-+#include "qemu/log.h"
-+#include "qemu/module.h"
-+#include "qapi/error.h"
-+
-+#define TYPE_VMAPPLE_VIRTIO_BLK  "vmapple-virtio-blk"
-+OBJECT_DECLARE_TYPE(VMAppleVirtIOBlk, VMAppleVirtIOBlkClass, VMAPPLE_VIRTIO_BLK)
-+
-+typedef struct VMAppleVirtIOBlkClass {
-+    VirtIOBlkClass parent;
-+
-+    void (*get_config)(VirtIODevice *vdev, uint8_t *config);
-+} VMAppleVirtIOBlkClass;
-+
-+typedef struct VMAppleVirtIOBlk {
-+    VirtIOBlock parent_obj;
-+
-+    uint32_t apple_type;
-+} VMAppleVirtIOBlk;
-+
-+/*
-+ * vmapple-virtio-blk-pci: This extends VirtioPCIProxy.
-+ */
-+OBJECT_DECLARE_SIMPLE_TYPE(VMAppleVirtIOBlkPCI, VMAPPLE_VIRTIO_BLK_PCI)
-+
-+#define VIRTIO_BLK_T_APPLE_BARRIER     0x10000
-+
-+static bool vmapple_virtio_blk_handle_unknown_request(VirtIOBlockReq *req,
-+                                                      MultiReqBuffer *mrb,
-+                                                      uint32_t type)
-+{
-+    switch (type) {
-+    case VIRTIO_BLK_T_APPLE_BARRIER:
-+        qemu_log_mask(LOG_UNIMP, "%s: Barrier requests are currently no-ops\n",
-+                      __func__);
-+        virtio_blk_req_complete(req, VIRTIO_BLK_S_OK);
-+        virtio_blk_free_request(req);
-+        return true;
-+    default:
-+        return false;
-+    }
-+}
-+
-+/*
-+ * VMApple virtio-blk uses the same config format as normal virtio, with one
-+ * exception: It adds an "apple type" specififer at the same location that
-+ * the spec reserves for max_secure_erase_sectors. Let's hook into the
-+ * get_config code path here, run it as usual and then patch in the apple type.
-+ */
-+static void vmapple_virtio_blk_get_config(VirtIODevice *vdev, uint8_t *config)
-+{
-+    VMAppleVirtIOBlk *dev = VMAPPLE_VIRTIO_BLK(vdev);
-+    VMAppleVirtIOBlkClass *vvbk = VMAPPLE_VIRTIO_BLK_GET_CLASS(dev);
-+    struct virtio_blk_config *blkcfg = (struct virtio_blk_config *)config;
-+
-+    vvbk->get_config(vdev, config);
-+
-+    g_assert(dev->parent_obj.config_size >= endof(struct virtio_blk_config, zoned));
-+
-+    /* Apple abuses the field for max_secure_erase_sectors as type id */
-+    stl_he_p(&blkcfg->max_secure_erase_sectors, dev->apple_type);
-+}
-+
-+static void vmapple_virtio_blk_class_init(ObjectClass *klass, void *data)
-+{
-+    VirtIOBlkClass *vbk = VIRTIO_BLK_CLASS(klass);
-+    VirtioDeviceClass *vdc = VIRTIO_DEVICE_CLASS(klass);
-+    VMAppleVirtIOBlkClass *vvbk = VMAPPLE_VIRTIO_BLK_CLASS(klass);
-+
-+    vbk->handle_unknown_request = vmapple_virtio_blk_handle_unknown_request;
-+    vvbk->get_config = vdc->get_config;
-+    vdc->get_config = vmapple_virtio_blk_get_config;
-+}
-+
-+static const TypeInfo vmapple_virtio_blk_info = {
-+    .name          = TYPE_VMAPPLE_VIRTIO_BLK,
-+    .parent        = TYPE_VIRTIO_BLK,
-+    .instance_size = sizeof(VMAppleVirtIOBlk),
-+    .class_size    = sizeof(VMAppleVirtIOBlkClass),
-+    .class_init    = vmapple_virtio_blk_class_init,
-+};
-+
-+/* PCI Devices */
-+
-+struct VMAppleVirtIOBlkPCI {
-+    VirtIOPCIProxy parent_obj;
-+    VMAppleVirtIOBlk vdev;
-+    VMAppleVirtioBlkVariant variant;
-+};
-+
-+
-+static Property vmapple_virtio_blk_pci_properties[] = {
-+    DEFINE_PROP_UINT32("class", VirtIOPCIProxy, class_code, 0),
-+    DEFINE_PROP_BIT("ioeventfd", VirtIOPCIProxy, flags,
-+                    VIRTIO_PCI_FLAG_USE_IOEVENTFD_BIT, true),
-+    DEFINE_PROP_UINT32("vectors", VirtIOPCIProxy, nvectors,
-+                       DEV_NVECTORS_UNSPECIFIED),
-+    DEFINE_PROP_VMAPPLE_VIRTIO_BLK_VARIANT("variant", VMAppleVirtIOBlkPCI, variant,
-+                                           VM_APPLE_VIRTIO_BLK_VARIANT_UNSPECIFIED),
-+    DEFINE_PROP_END_OF_LIST(),
-+};
-+
-+static void vmapple_virtio_blk_pci_realize(VirtIOPCIProxy *vpci_dev, Error **errp)
-+{
-+    ERRP_GUARD();
-+    VMAppleVirtIOBlkPCI *dev = VMAPPLE_VIRTIO_BLK_PCI(vpci_dev);
-+    DeviceState *vdev = DEVICE(&dev->vdev);
-+    VirtIOBlkConf *conf = &dev->vdev.parent_obj.conf;
-+
-+    if (dev->variant == VM_APPLE_VIRTIO_BLK_VARIANT_UNSPECIFIED) {
-+        error_setg(errp, "vmapple virtio block device variant unspecified");
-+        error_append_hint(errp,
-+                          "Variant property must be set to 'aux' or 'root'.\n"
-+                          "Use a regular virtio-blk-pci device instead when "
-+                          "neither is applicaple.\n");
-+        return;
-+    }
-+
-+    if (conf->num_queues == VIRTIO_BLK_AUTO_NUM_QUEUES) {
-+        conf->num_queues = virtio_pci_optimal_num_queues(0);
-+    }
-+
-+    if (vpci_dev->nvectors == DEV_NVECTORS_UNSPECIFIED) {
-+        vpci_dev->nvectors = conf->num_queues + 1;
-+    }
-+
-+    /*
-+     * We don't support zones, but we need the additional config space size.
-+     * Let's just expose the feature so the rest of the virtio-blk logic
-+     * allocates enough space for us. The guest will ignore zones anyway.
-+     */
-+    virtio_add_feature(&dev->vdev.parent_obj.host_features, VIRTIO_BLK_F_ZONED);
-+    /* Propagate the apple type down to the virtio-blk device */
-+    dev->vdev.apple_type = dev->variant;
-+    /* and spawn the virtio-blk device */
-+    qdev_realize(vdev, BUS(&vpci_dev->bus), errp);
-+
-+    /*
-+     * The virtio-pci machinery adjusts its vendor/device ID based on whether
-+     * we support modern or legacy virtio. Let's patch it back to the Apple
-+     * identifiers here.
-+     */
-+    pci_config_set_vendor_id(vpci_dev->pci_dev.config, PCI_VENDOR_ID_APPLE);
-+    pci_config_set_device_id(vpci_dev->pci_dev.config,
-+                             PCI_DEVICE_ID_APPLE_VIRTIO_BLK);
-+}
-+
-+static void vmapple_virtio_blk_pci_class_init(ObjectClass *klass, void *data)
-+{
-+    DeviceClass *dc = DEVICE_CLASS(klass);
-+    VirtioPCIClass *k = VIRTIO_PCI_CLASS(klass);
-+    PCIDeviceClass *pcidev_k = PCI_DEVICE_CLASS(klass);
-+
-+    set_bit(DEVICE_CATEGORY_STORAGE, dc->categories);
-+    device_class_set_props(dc, vmapple_virtio_blk_pci_properties);
-+    k->realize = vmapple_virtio_blk_pci_realize;
-+    pcidev_k->vendor_id = PCI_VENDOR_ID_APPLE;
-+    pcidev_k->device_id = PCI_DEVICE_ID_APPLE_VIRTIO_BLK;
-+    pcidev_k->revision = VIRTIO_PCI_ABI_VERSION;
-+    pcidev_k->class_id = PCI_CLASS_STORAGE_SCSI;
-+}
-+
-+static void vmapple_virtio_blk_pci_instance_init(Object *obj)
-+{
-+    VMAppleVirtIOBlkPCI *dev = VMAPPLE_VIRTIO_BLK_PCI(obj);
-+
-+    virtio_instance_init_common(obj, &dev->vdev, sizeof(dev->vdev),
-+                                TYPE_VMAPPLE_VIRTIO_BLK);
-+}
-+
-+static const VirtioPCIDeviceTypeInfo vmapple_virtio_blk_pci_info = {
-+    .generic_name  = TYPE_VMAPPLE_VIRTIO_BLK_PCI,
-+    .instance_size = sizeof(VMAppleVirtIOBlkPCI),
-+    .instance_init = vmapple_virtio_blk_pci_instance_init,
-+    .class_init    = vmapple_virtio_blk_pci_class_init,
-+};
-+
-+static void vmapple_virtio_blk_register_types(void)
-+{
-+    type_register_static(&vmapple_virtio_blk_info);
-+    virtio_pci_types_register(&vmapple_virtio_blk_pci_info);
-+}
-+
-+type_init(vmapple_virtio_blk_register_types)
-diff --git a/include/hw/pci/pci_ids.h b/include/hw/pci/pci_ids.h
-index f1a53fea8d6..33e2898be95 100644
---- a/include/hw/pci/pci_ids.h
-+++ b/include/hw/pci/pci_ids.h
-@@ -191,6 +191,7 @@
- #define PCI_DEVICE_ID_APPLE_UNI_N_AGP    0x0020
- #define PCI_DEVICE_ID_APPLE_U3_AGP       0x004b
- #define PCI_DEVICE_ID_APPLE_UNI_N_GMAC   0x0021
-+#define PCI_DEVICE_ID_APPLE_VIRTIO_BLK   0x1a00
- 
- #define PCI_VENDOR_ID_SUN                0x108e
- #define PCI_DEVICE_ID_SUN_EBUS           0x1000
-diff --git a/include/hw/qdev-properties-system.h b/include/hw/qdev-properties-system.h
-index 7ec37f6316c..3631e309690 100644
---- a/include/hw/qdev-properties-system.h
-+++ b/include/hw/qdev-properties-system.h
-@@ -30,6 +30,7 @@ extern const PropertyInfo qdev_prop_pcie_link_speed;
- extern const PropertyInfo qdev_prop_pcie_link_width;
- extern const PropertyInfo qdev_prop_cpus390entitlement;
- extern const PropertyInfo qdev_prop_iothread_vq_mapping_list;
-+extern const PropertyInfo qdev_prop_vmapple_virtio_blk_variant;
- 
- #define DEFINE_PROP_PCI_DEVFN(_n, _s, _f, _d)                   \
-     DEFINE_PROP_SIGNED(_n, _s, _f, _d, qdev_prop_pci_devfn, int32_t)
-@@ -97,4 +98,8 @@ extern const PropertyInfo qdev_prop_iothread_vq_mapping_list;
-     DEFINE_PROP(_name, _state, _field, qdev_prop_iothread_vq_mapping_list, \
-                 IOThreadVirtQueueMappingList *)
- 
-+#define DEFINE_PROP_VMAPPLE_VIRTIO_BLK_VARIANT(_n, _s, _f, _d) \
-+    DEFINE_PROP_SIGNED(_n, _s, _f, _d, qdev_prop_vmapple_virtio_blk_variant, \
-+                       VMAppleVirtioBlkVariant)
-+
- #endif
+@@ -55,7 +55,7 @@ static bool vmapple_virtio_blk_handle_unknown_request(VirtIOBlockReq *req,
+         qemu_log_mask(LOG_UNIMP, "%s: Barrier requests are currently no-ops\n",
+                       __func__);
+         virtio_blk_req_complete(req, VIRTIO_BLK_S_OK);
+-        virtio_blk_free_request(req);
++        g_free(req);
+         return true;
+     default:
+         return false;
 diff --git a/include/hw/virtio/virtio-blk.h b/include/hw/virtio/virtio-blk.h
-index 5c14110c4b1..28d5046ea6c 100644
+index 28d5046ea6c..dcb2c89aed5 100644
 --- a/include/hw/virtio/virtio-blk.h
 +++ b/include/hw/virtio/virtio-blk.h
-@@ -24,7 +24,7 @@
- #include "qapi/qapi-types-virtio.h"
+@@ -109,7 +109,6 @@ typedef struct VirtIOBlkClass {
+ } VirtIOBlkClass;
  
- #define TYPE_VIRTIO_BLK "virtio-blk-device"
--OBJECT_DECLARE_SIMPLE_TYPE(VirtIOBlock, VIRTIO_BLK)
-+OBJECT_DECLARE_TYPE(VirtIOBlock, VirtIOBlkClass, VIRTIO_BLK)
- 
- /* This is the last element of the write scatter-gather list */
- struct virtio_blk_inhdr
-@@ -100,6 +100,16 @@ typedef struct MultiReqBuffer {
-     bool is_write;
- } MultiReqBuffer;
- 
-+typedef struct VirtIOBlkClass {
-+    /*< private >*/
-+    VirtioDeviceClass parent;
-+    /*< public >*/
-+    bool (*handle_unknown_request)(VirtIOBlockReq *req, MultiReqBuffer *mrb,
-+                                   uint32_t type);
-+} VirtIOBlkClass;
-+
  void virtio_blk_handle_vq(VirtIOBlock *s, VirtQueue *vq);
-+void virtio_blk_free_request(VirtIOBlockReq *req);
-+void virtio_blk_req_complete(VirtIOBlockReq *req, unsigned char status);
+-void virtio_blk_free_request(VirtIOBlockReq *req);
+ void virtio_blk_req_complete(VirtIOBlockReq *req, unsigned char status);
  
  #endif
-diff --git a/include/hw/vmapple/vmapple.h b/include/hw/vmapple/vmapple.h
-index 3bba59f5ec7..9c1ad1bd8c3 100644
---- a/include/hw/vmapple/vmapple.h
-+++ b/include/hw/vmapple/vmapple.h
-@@ -18,4 +18,6 @@
- 
- #define TYPE_VMAPPLE_CFG "vmapple-cfg"
- 
-+#define TYPE_VMAPPLE_VIRTIO_BLK_PCI "vmapple-virtio-blk-pci"
-+
- #endif /* HW_VMAPPLE_VMAPPLE_H */
-diff --git a/qapi/virtio.json b/qapi/virtio.json
-index 2529c2d8b20..d351d2166ef 100644
---- a/qapi/virtio.json
-+++ b/qapi/virtio.json
-@@ -992,3 +992,17 @@
- ##
- { 'enum': 'GranuleMode',
-   'data': [ '4k', '8k', '16k', '64k', 'host' ] }
-+
-+##
-+# @VMAppleVirtioBlkVariant:
-+#
-+# @unspecified: The default, not a valid setting.
-+#
-+# @root: Block device holding the root volume
-+#
-+# @aux: Block device holding auxiliary data required for boot
-+#
-+# Since: 9.2
-+##
-+{ 'enum': 'VMAppleVirtioBlkVariant',
-+  'data': [ 'unspecified', 'root', 'aux' ] }
 -- 
 2.39.5 (Apple Git-154)
 
