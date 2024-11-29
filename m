@@ -2,89 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C140C9DE9D8
-	for <lists+qemu-devel@lfdr.de>; Fri, 29 Nov 2024 16:43:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE0BB9DE9DD
+	for <lists+qemu-devel@lfdr.de>; Fri, 29 Nov 2024 16:44:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tH38W-0005cC-Nh; Fri, 29 Nov 2024 10:42:28 -0500
+	id 1tH39O-0005qv-QS; Fri, 29 Nov 2024 10:43:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tH38T-0005bU-RA
- for qemu-devel@nongnu.org; Fri, 29 Nov 2024 10:42:25 -0500
-Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tH39G-0005ms-S3
+ for qemu-devel@nongnu.org; Fri, 29 Nov 2024 10:43:16 -0500
+Received: from mail-lj1-x234.google.com ([2a00:1450:4864:20::234])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tH38R-00010b-S1
- for qemu-devel@nongnu.org; Fri, 29 Nov 2024 10:42:25 -0500
-Received: by mail-ed1-x534.google.com with SMTP id
- 4fb4d7f45d1cf-5cfadf851e2so2894499a12.2
- for <qemu-devel@nongnu.org>; Fri, 29 Nov 2024 07:42:20 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tH39E-0001RV-Rb
+ for qemu-devel@nongnu.org; Fri, 29 Nov 2024 10:43:14 -0500
+Received: by mail-lj1-x234.google.com with SMTP id
+ 38308e7fff4ca-2ffa12ad18cso23163561fa.2
+ for <qemu-devel@nongnu.org>; Fri, 29 Nov 2024 07:43:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1732894940; x=1733499740; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=UhwMp6LZ6FzsyEphdvEGwu2rBtsdacgIuy/U+/WBjQg=;
- b=dlXj0A6SFfWGZpbofJkrATy8D6yXlCDLcNbzeKeedcQNsQv8SVSy5q4K2nfGme7bif
- 52jAseJsZlBPTkTaFXJSThWQmsOZAWQ3NN7j5kS/GmuGzMeEFebtzHkO+GsXLnbkB3wD
- 8Pjl5ArNxjO3A8RQT3YJMljXP7Yj3X2P97X3cuLb1fYEKf7gx1Fob6iFGdIsqSOfXeb6
- OEZKX7QX8pSbSWhmclNoTfgNermD2O3m0ClPb6mMNYSabUMT9lqUPxUn2BpQZ+6kUOYG
- 47Pu8GQDc9wFD1qXn1+8a8gr+iVcy/LF3X8MiQ+qxU6bMxXn7/AV0Z5jYHeDbQswvH/q
- NlyA==
+ d=linaro.org; s=google; t=1732894989; x=1733499789; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=1RLfsFXOEvBUdgrExJ9SmcrFI97co8aOxCFnt3D7XvM=;
+ b=efSD+l3JYwUlla7tCHxrhTEqpZSASgkG/S4t+nJbYMOp3yNqSeMFWghOWb39MkdZm4
+ +PM+vtEMhTmBKMo26WK8k3wM/EABNdywaE0TPbzC+JRRmjeS1tlKdMPToVN0isVZvK5M
+ vU7BzVkBi/3RmhL1qyut9ARFIVIryyHGwnaUGldnVnxcZAWUQyW36FP1ku8dzBdUiZWv
+ VyBGGetzYmmEOksZfKKqvyFOfZj/xz3/HDiUe/qLD3nCvJk/fG2rwgxNy/k72oycOoDu
+ qSqXTd/2P9ltpZRacGWZTJHrv+nFUxHMiElh6tS1X1rBnzV+fqgo08zIa9sG8fl1D6TD
+ NEFg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1732894940; x=1733499740;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20230601; t=1732894989; x=1733499789;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=UhwMp6LZ6FzsyEphdvEGwu2rBtsdacgIuy/U+/WBjQg=;
- b=Jqyp7gfZNPdxjORfgm4qwD80ybHHD94p4iYgD1MKGFxN9JW43gChM3RsIXNcsx6wTI
- NYjgzi8hJKZFsbNOT01KVNXpm651VyE9ie4bxo0WjlujKHNgT1Uly53R0ScdT0IRAOTL
- Zy+b3xLJo1HuWMmrBNcTuDIGr5U91cZn8YDlcNN8uMah+aiQjdh5on+AZi3wtA1xUpyu
- jM9c7vaVgEztWgK1f/jP+2JjNRVP3dUQMabyxJBj5HpZ/lWt8IisUEmypbqPWvY4CcZL
- W6Y5kurQ9JKyFMO6n0CRJMW2n1jGrGit30LzoqAiuxf+x2XraxzBTTLr4Qp8EZTvmXCa
- f/XA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVsHkcAz+a8osUtMXTVnHZuQSk2LGtR0V5A7cz/wbFBiZShCiKk8v1Z/xd/hJpqDKsObdGRyB+uLH+I@nongnu.org
-X-Gm-Message-State: AOJu0YxI0Qo6pkgfyQuu36KxAHOlWH5ZvtiUChHxyoarX1rq0zKxdY2n
- oeupmU/106RXpCuxXv0LQuamjrjRDxp5JfBJPmsUXUFh4QR8ZsGNH9B11uQX/bD2gB9rnH2CH52
- uFQLNx0Gvl0IEeHeW0zLyV+yxELKaFpI0AfKwhQ==
-X-Gm-Gg: ASbGnctTnP9gANsQfl+qrDthsBmDbYLnvqqQ6QNtbJURp6cGr0lARAiooA5gyltqrFf
- ka/sDAr7l/mSYb1t3njNsy87/u/pQbUSY
-X-Google-Smtp-Source: AGHT+IGLUvSKDH+4UWkxaWi8YnuLMe/vbJeTiNyrWy7eOGtt6PR+y7mTJNIziLOVYADYe6pHiOAUq59zWmrBSrZaB04=
-X-Received: by 2002:a05:6402:13ce:b0:5cf:ab23:1f07 with SMTP id
- 4fb4d7f45d1cf-5d080bdb609mr14641790a12.15.1732894939616; Fri, 29 Nov 2024
- 07:42:19 -0800 (PST)
+ bh=1RLfsFXOEvBUdgrExJ9SmcrFI97co8aOxCFnt3D7XvM=;
+ b=QKO6V+0BtROPuOU7a8sByC0uNVQBFbBWtWqHOIvFsHVdvKnEpxSlMaoPqEtFhJGywR
+ i71rQogbA2dPUSkoFDojh75LJ6H2qkY1oHK2TTjZIC9YTmAB+TxJQ4sbE1c7fGUxAbLd
+ W4v7RqDkLEqfHco4X+lAnIpzpj8vHVCStMtb9i6fJzkTSRNSJLXWqvXY6w/cpscce9R/
+ 8WZrKWzd7mUdch36Ktwd+pJCgdcy2khUqemZj1jLJIeMwMKKNJTeFZho2T14Kr/IIe5m
+ qXw1sKsqLvtvfjtAMMEPxRNGxqA6+xdKyFpMRsebO+CqDKyEWmUwYLq+srH0y2AKXh0h
+ NdhQ==
+X-Gm-Message-State: AOJu0YwQIIPl9Zi3ETV0bZZVxwJMSkooe3aGIPKJG5FDIr9Uc6WCWK6w
+ cpDdPSWXUWHpldrccpy6U0IMJORa/D0cxiiXeCXsw2i6oHXEx32+ypcUagjXN073pculOx3L7Kp
+ U
+X-Gm-Gg: ASbGnctFbN0Yk6sgKFWb+k+DPqKrPnejk57DItsnfOFQ4EzOkVjkT0ZF1AmHASlHJqn
+ 1+qbp/QnA6cvm07X3gIm8j1OalUXMqZABVZnmakVdXm4m1MhteWXepzEytWXqe2iOdkvgrIZYMz
+ nH6997OfekNK4yJ51LQM/KATOitkrtVVMd6trYjhwc2qt9SbpmhVTvIOPjIxd31lzH4ow1a026E
+ gEipyJvqO1F73+WRRZJc4E0pt9rcnpTD06H6YHd8HlSl9gxaRTG9LfHoo+l
+X-Google-Smtp-Source: AGHT+IEpOnYt/eZCZsYHs2V714mgxm87yD+hi4xPO2EQGnjhmB7HBhFToVs7i2g0c1aA6Zlzvk5skA==
+X-Received: by 2002:a2e:be0d:0:b0:2ff:8e14:30a4 with SMTP id
+ 38308e7fff4ca-2ffd6007861mr65847991fa.10.1732894988967; 
+ Fri, 29 Nov 2024 07:43:08 -0800 (PST)
+Received: from m1x-phil.lan ([176.176.147.124])
+ by smtp.gmail.com with ESMTPSA id
+ 4fb4d7f45d1cf-5d097dd6af2sm1926150a12.48.2024.11.29.07.43.06
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Fri, 29 Nov 2024 07:43:08 -0800 (PST)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Weiwei Li <liwei1518@gmail.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Bin Meng <bmeng.cn@gmail.com>, qemu-riscv@nongnu.org,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH-for-10.0 0/3] hw/char/riscv_htif: Remove tswap64() calls
+Date: Fri, 29 Nov 2024 16:43:01 +0100
+Message-ID: <20241129154304.34946-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.45.2
 MIME-Version: 1.0
-References: <20241025101959.601048-1-eric.auger@redhat.com>
- <20241025101959.601048-19-eric.auger@redhat.com> <ZxuX4i9NjVRizB72@redhat.com>
- <cb6c8f62-c5dc-416d-865f-fbdf96164dac@redhat.com>
- <Zxub7ol4p8P_sWF8@redhat.com>
- <CAFEAcA_wQu17y0PyQwxw0wuf2H5y2VE5aX16nLP2-u7QUP2ggA@mail.gmail.com>
- <Zx-9WxXkmkMuGIlQ@redhat.com>
- <CAFEAcA9w0mb5bcU8p+fScQony-=oqLmNurGWpnL_sBneQCzxUg@mail.gmail.com>
- <Zx_EGxj2aqc_2-kY@redhat.com>
- <63c232c2-a325-48d6-8ed4-753a7c6e3b4e@redhat.com>
- <87ikstn8sc.fsf@redhat.com> <87frnwmn2v.fsf@redhat.com>
- <b7f25d3b-6ba7-4924-9383-74c1169dfe86@redhat.com>
- <87ldx2krdp.fsf@redhat.com>
-In-Reply-To: <87ldx2krdp.fsf@redhat.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 29 Nov 2024 15:42:08 +0000
-Message-ID: <CAFEAcA-Pi4GRXyY3Lf-rCYk0CDZ5cT22orHT6JDxK14k9JMkng@mail.gmail.com>
-Subject: Re: [RFC 18/21] arm/cpu: Introduce a customizable kvm host cpu model
-To: Cornelia Huck <cohuck@redhat.com>
-Cc: eric.auger@redhat.com,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- eric.auger.pro@gmail.com, qemu-devel@nongnu.org, qemu-arm@nongnu.org, 
- kvmarm@lists.linux.dev, richard.henderson@linaro.org, alex.bennee@linaro.org, 
- maz@kernel.org, oliver.upton@linux.dev, sebott@redhat.com, 
- shameerali.kolothum.thodi@huawei.com, armbru@redhat.com, abologna@redhat.com, 
- jdenemar@redhat.com, shahuang@redhat.com, mark.rutland@arm.com, 
- philmd@linaro.org, pbonzini@redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::534;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x534.google.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::234;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x234.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -107,75 +99,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 29 Nov 2024 at 15:10, Cornelia Huck <cohuck@redhat.com> wrote:
-> The good news is that in many cases we only have differences in bits
-> that map to a feature (and are actually writable in current KVM.) The
-> bad news is that we have a number of exceptions.
->
-> Comparison #1:
->
-> ID_AA64DFR0
-> f010307009      #of breakpoints:7
-> f010305009      #of breakpoints:5
->
-> BRPs does not match to any feature (but has a different meaning when we
-> have FEAT_Debugv8p9 and 16+ breakpoints)
-> [this is a whole can of worms in general]
->
-> ID_AA64MMFR0
-> 2100022200101026        FEAT_ECV, FEAT_FGT, 4PB
-> 0000022200101125        mixed endian, 256TB
->
-> FEAT_ECV -> may be 1 or 2 in ECV, with different capabilities (I guess
-> we would need to allow something like FEAT_ECV=2 to expess this?)
+Trying to make sense of these tswap64 calls I
+figured this device could be simplified.
 
-This one was an unfortunate oversight; I expect that there
-will be a separate feature name for the =2 case in some future
-spec release. But as you note for FEAT_BBM below, not
-every different ID field value always has its own FEAT_ name.
-(FEAT_HAFDBS is another -- it allows ID_AA64MMFR1_EL1.HAFDBS to
-be 1 or 2.)
+Tested using 'make check-{qtest,functional}'
+on both big/little endian hosts, no failure but
+I'm not sure the code path is covered.
 
-> support for mixed endian -> indicated in BigEnd, no feature (how
-> relevant is this in practice?)
+Philippe Mathieu-Daudé (3):
+  MAINTAINERS: Cover RISC-V HTIF interface
+  hw/char/riscv_htif: Explicit little-endian implementation
+  hw/char/riscv_htif: Clarify MemoryRegionOps expect 32-bit accesses
 
-ID_AA64MMFR0_EL1.BigEnd == 1 is FEAT_MixedEnd. Relevant if your
-guest or its userspace wants to use big-endian, which is probably
-approximately nobody in a KVM context but is theoretically possible.
+ MAINTAINERS          |  2 ++
+ hw/char/riscv_htif.c | 15 ++++++++++-----
+ 2 files changed, 12 insertions(+), 5 deletions(-)
 
-> PARange (52 bits/4PB vs 48 bits/256TB) -> no feature, but some values
-> depend on other features -- we care about this when creating a cpu, but
-> migrating to another system with a mismatched range would be
-> problematic, unless configuration outside of the cpu model would take
-> care of it
->
-> Comparison #2:
->
-> ID_AA64PFR0
-> 1101011021111111        FEAT_AMUv1, GIC v3.0/4.0
-> 1101001020111111
->
-> GIC == 1 indicates GIC CPU sysreg interface for 3.0/4.0, but no feature
-> (I'm not quite sure how we handle this in QEMU)
+-- 
+2.45.2
 
-We basically defer GIC emulation almost entirely to the
-kernel (which will set the GIC bit in the ID registers
-according to whether userspace asked it for a GIC or not).
-
-> ID_AA64MMFR1
-> 1000000010312122        FEAT_ECBHB, !FEAT_ETS2, FEAT_PAN3, FEAT_HPDS2, FEAT_HAFDBS
-> 0000001010211120        !FEAT_ETS2, FEAT_PAN2, FEAT_HPDS
->
-> both ETS == 0 and ETS == 1 indicate that FEAT_ETS2 is not implememented
-> (ETS == 2 would indicate FEAT_ETS2) -- I guess we would want to
-> standardize on ETS == 0
-> FEAT_PAN3 implies FEAT_PAN2, and FEAT_HPDS2 implies FEAT_HPDS2, so
-> probably fine
-
-Yes, in general if the number in the field gets bigger
-this should be a backwards-compatible improvement in
-the feature.
-
-thanks
--- PMM
 
