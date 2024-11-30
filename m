@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E6F19DEF19
-	for <lists+qemu-devel@lfdr.de>; Sat, 30 Nov 2024 07:14:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DAA869DEF1B
+	for <lists+qemu-devel@lfdr.de>; Sat, 30 Nov 2024 07:14:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tHGjS-0003Fl-G8; Sat, 30 Nov 2024 01:13:30 -0500
+	id 1tHGkW-00048Z-7E; Sat, 30 Nov 2024 01:14:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1tHGjP-0003FA-Qr
- for qemu-devel@nongnu.org; Sat, 30 Nov 2024 01:13:27 -0500
-Received: from mail-pg1-x52a.google.com ([2607:f8b0:4864:20::52a])
+ id 1tHGkH-00042h-Kr
+ for qemu-devel@nongnu.org; Sat, 30 Nov 2024 01:14:24 -0500
+Received: from mail-pg1-x534.google.com ([2607:f8b0:4864:20::534])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1tHGjO-0001y7-80
- for qemu-devel@nongnu.org; Sat, 30 Nov 2024 01:13:27 -0500
-Received: by mail-pg1-x52a.google.com with SMTP id
- 41be03b00d2f7-7fc41dab8e3so1672060a12.3
- for <qemu-devel@nongnu.org>; Fri, 29 Nov 2024 22:13:25 -0800 (PST)
+ id 1tHGkC-00028o-SU
+ for qemu-devel@nongnu.org; Sat, 30 Nov 2024 01:14:18 -0500
+Received: by mail-pg1-x534.google.com with SMTP id
+ 41be03b00d2f7-7f8b37edeb7so1698436a12.0
+ for <qemu-devel@nongnu.org>; Fri, 29 Nov 2024 22:14:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1732947204; x=1733552004;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1732947254; x=1733552054;
  darn=nongnu.org; 
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=xStmvMus9MgEzCXx/nEWzr58YQNuNR1BqlwJ+N/QWGA=;
- b=XtSP5fhU6Frx8WHGl/3iifYKBgeTzDNEknCTxtLYdOB7xoERRefYqpftbKJSAlAGTU
- wgMLT4SxYQ/tzXD7WsU3f8+/0+jTHYfhMtBY3ZDnBFkVzfHXHlp9un+E9tbdYiv034qS
- ZC8PxnYhFe/YEW3S44G6a1fSSPzFuXdlo1fgN3FiXV3msXX/MWCI9ctI3HUXzn8VdHD5
- af/9HMmZNW6B9bG/aAo9Okp51WomIidf31pp5LCmsFVslnfuFSMCSdS5SpjIREBfZ2MQ
- 8sGQOTIck1PDAOhdN/qdBtqQSHZC+0GqiLqL8fM5IubAsmJpqxucGTEk+8YyeI9bT33D
- rlxQ==
+ bh=HlKfcc4cbagcfZTiyYPu766Il1CxRL+XljhzeDMsrTw=;
+ b=3KJqirg2K6AOhkVFP6pYQvgn1JtrzgqWoy3Q6K3VPPWEJqoTuBS6IPu0wpb+4ZOPAu
+ k6kpPxWJ+c5oD+IJCV021nUPxGENY0qDjuS8mMPRg6HTEAw4dus9N9vrqDZEpjjJaxES
+ 18C3MYqinwoN+puq65JmWKmovg75v05ighUPh9alO76CX2U3FJW7JR1ALwb9n1JUEfWD
+ /yg2L2FEnlyK+e24EsvkJsb2E2Nb/z1HGuuIIYFyhObLlcaNN7x9kiz3NQbUZqhLVowQ
+ nGbUXpKTaDZE9+dBhe9DdpLIARA3zVjF2/sN3KtRqKLIKBYMaTotJz+lcYlHUhhxq5eR
+ rmug==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1732947204; x=1733552004;
+ d=1e100.net; s=20230601; t=1732947254; x=1733552054;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=xStmvMus9MgEzCXx/nEWzr58YQNuNR1BqlwJ+N/QWGA=;
- b=eFBQNh+0ftn8rdRnr5NlXy3lsFbGpcEvFKV7EHF9DeLtRG3iQ2nC7KYF98wMsde61S
- j33MZ5jXpd18RClZPX6i6dTNl2GbwnUv4/Vd8zN2v71gwdINA0UtI1SZUrYzqS9A7xOF
- pj/WLWPNSRizin7LQH8lX1EbqF81PcedzEi8yLHz8TVG1/DiTloxc3FnORBY1vUksVld
- xDoTuqfO8jpWI0p6dXlDKmNWip2OOO8fK9UyrFd98EzPral9e70DMVTAedPSjSy0Fghc
- wJ+KTwWqP15c85c7Ueh9tpVYszY1smwygRyGQvkPIUDxHXHVFGIvq+hA5aCULjGuEag+
- u90g==
+ bh=HlKfcc4cbagcfZTiyYPu766Il1CxRL+XljhzeDMsrTw=;
+ b=MKEVJ9IZxG82CUslCCQZZF7PVr1wE8Aa3FRFLY2e4BtkpbYL6AfVe0aGTIhrcbW8SF
+ JY/h2j8uAQSeR+8r6CGoilbVqFrLgQkCPDWBaH/TpfCX0DUk76vKyxwF8uECxVveRsHw
+ 8ppJ/URUpxvZi6QUvxXlicTXCzyivOtKoXvu+YmjU7rmHapVcAdT3/EfW9IVlX5IpEa0
+ 2WjbpDEXnazGmR6vFEaU/WOmOdM5nSshfq2kkju7rkJrsDEGTMdotSZ+yvccLfzqUEdg
+ k3RzG4M3O9K8WsYvc/Yjfc77g/eRVib1oj3NFDwzxxIEF2GNzQr2K+Md3f2aqtsd8ytw
+ 7d2w==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWBbYCnZ9d1bDGHG/uWbbmLmpDGxYB29t8ci1130K8DdCFPyqANm/qajyYuKyYCczK9pKUp/CGm4Y0y@nongnu.org
-X-Gm-Message-State: AOJu0YxZXJOL0qDYgFn4kvhZPnASKiiRO9O07yVn6mhaKLsvjyb/pUkD
- ZXTKkeeSUV5Q1w+LmpED0+/std3JM2EqPT01ep5vqwXsvLw5oITj7/bUOidW4lM=
-X-Gm-Gg: ASbGncvjUfxqL4cOGRyZk6s3XSUq4w1ZkmQ3CZ8rbhcWxqKLUZ3ci+0C5ftn2mn3zyb
- puWSNSIxTx9IvMRb5r0Q0EZn//TNyn2t9lKeuGtdleqtMxVEdQQf1567GswawBkCFEZmgbvuk5V
- yrKh3zH0qlNIhTYsj2Hp43rWM2gF/W1oAuFBWe0Pt380p0DQrE2ne6t4FvJO5aGCUbfeOOp1/eo
- q/e69V/ivo7XU0fhLWmZHcyns8ZAFwqNTFcacfit1/i/aijprzVcWyvrJaGzgM=
-X-Google-Smtp-Source: AGHT+IFpf59s0NU8wlUNNR9e+oBxL0iyxDRPGCW/zwdhJpZ/1qFUVg5a8z0YHBA+/uCkM0ZZCKsNeg==
-X-Received: by 2002:a05:6a21:789b:b0:1db:f68a:d943 with SMTP id
- adf61e73a8af0-1e0e0ac3600mr19037693637.17.1732947204635; 
- Fri, 29 Nov 2024 22:13:24 -0800 (PST)
+ AJvYcCWXkxmHPxARq7LxAiU+e9afrXlipQzD0bAp1/qj9vYdiN4VX4UC8TEI5lFozZtu5oc1aOyO2h/wUDzK@nongnu.org
+X-Gm-Message-State: AOJu0YzV3oZZy6yW+W84+LS+3XMbirUuLvgtj9EQDB/8HS9BiC3N6LYa
+ buMacemJJ1oIRJ9jc/8w0CkVs92Ac/4hOjk3KCaJXZSH9APaCYjyrRypPiZZtBg=
+X-Gm-Gg: ASbGncs1wpJerD+vfgyWyoOOIiiYWEjdDztmlCma96yC7/9C/XnNtpt6uY3GLxhUcR5
+ LF6IkZFpBUrsuPCEHgaqSqv9bTs6xnK7bPjO0RhgOgYRqUkyFPjwrV1gPrvlu9XRUFebC8VXQgG
+ Nq82fsoau0Cas1jKEjCHln9EM1sz9UKLWP2aRPb5vv0h6UaDELNNIGD4iqmzWPouuJd1hG3JyV9
+ 8YTvRkHsblbHH59SBdOLl+64q1jkh2FXbLIKyuwdhub93e3q2RwSIxBOiIfmDI=
+X-Google-Smtp-Source: AGHT+IEYIhg+UrmWSJuwEixDlrdpu1iVPERUjad/M6gcv6ANFMa4g5jtp60Ra2P7rN0WGAZ1mTyEmQ==
+X-Received: by 2002:a05:6a21:e90:b0:1db:d738:f2ff with SMTP id
+ adf61e73a8af0-1e0e0ac69demr23710101637.2.1732947253903; 
+ Fri, 29 Nov 2024 22:14:13 -0800 (PST)
 Received: from [157.82.207.167] ([157.82.207.167])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7254176f4c4sm4620630b3a.60.2024.11.29.22.13.18
+ d2e1a72fcca58-72541761523sm4487121b3a.1.2024.11.29.22.14.07
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 29 Nov 2024 22:13:24 -0800 (PST)
-Message-ID: <8b8907e8-cc08-4dd5-991c-496637d39b61@daynix.com>
-Date: Sat, 30 Nov 2024 15:13:16 +0900
+ Fri, 29 Nov 2024 22:14:13 -0800 (PST)
+Message-ID: <21f34858-0298-40d1-af75-c2d97cdd159e@daynix.com>
+Date: Sat, 30 Nov 2024 15:14:06 +0900
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v12 02/15] hw/display/apple-gfx: Introduce
- ParavirtualizedGraphics.Framework support
+Subject: Re: [PATCH v12 04/15] hw/display/apple-gfx: Adds configurable mode
+ list
 To: Phil Dennis-Jordan <phil@philjordan.eu>, qemu-devel@nongnu.org
 Cc: agraf@csgraf.de, peter.maydell@linaro.org, pbonzini@redhat.com,
  rad@semihalf.com, quic_llindhol@quicinc.com, stefanha@redhat.com,
@@ -79,17 +79,16 @@ Cc: agraf@csgraf.de, peter.maydell@linaro.org, pbonzini@redhat.com,
  alistair.francis@wdc.com, bmeng.cn@gmail.com, liwei1518@gmail.com,
  dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com, jcmvbkbc@gmail.com,
  marcandre.lureau@redhat.com, berrange@redhat.com, qemu-arm@nongnu.org,
- qemu-block@nongnu.org, qemu-riscv@nongnu.org, balaton@eik.bme.hu,
- Alexander Graf <graf@amazon.com>
+ qemu-block@nongnu.org, qemu-riscv@nongnu.org, balaton@eik.bme.hu
 References: <20241129152506.59390-1-phil@philjordan.eu>
- <20241129152506.59390-3-phil@philjordan.eu>
+ <20241129152506.59390-5-phil@philjordan.eu>
 Content-Language: en-US
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <20241129152506.59390-3-phil@philjordan.eu>
+In-Reply-To: <20241129152506.59390-5-phil@philjordan.eu>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52a;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pg1-x52a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::534;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pg1-x534.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -112,40 +111,17 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 2024/11/30 0:24, Phil Dennis-Jordan wrote:
-> MacOS provides a framework (library) that allows any vmm to implement a
-> paravirtualized 3d graphics passthrough to the host metal stack called
-> ParavirtualizedGraphics.Framework (PVG). The library abstracts away
-> almost every aspect of the paravirtualized device model and only provides
-> and receives callbacks on MMIO access as well as to share memory address
-> space between the VM and PVG.
+> This change adds a property 'display_modes' on the graphics device
+> which permits specifying a list of display modes. (screen resolution
+> and refresh rate)
 > 
-> This patch implements a QEMU device that drives PVG for the VMApple
-> variant of it.
+> The property is an array of a custom type to make the syntax slightly
+> less awkward to use, for example:
 > 
-> Signed-off-by: Alexander Graf <graf@amazon.com>
-> Co-authored-by: Alexander Graf <graf@amazon.com>
-> 
-> Subsequent changes:
-> 
->   * Cherry-pick/rebase conflict fixes, API use updates.
->   * Moved from hw/vmapple/ (useful outside that machine type)
->   * Overhaul of threading model, many thread safety improvements.
->   * Asynchronous rendering.
->   * Memory and object lifetime fixes.
->   * Refactoring to split generic and (vmapple) MMIO variant specific
->     code.
-> 
-> Implementation wise, most of the complexity lies in the differing threading
-> models of ParavirtualizedGraphics.framework, which uses libdispatch and
-> internal locks, versus QEMU, which heavily uses the BQL, especially during
-> memory-mapped device I/O. Great care has therefore been taken to prevent
-> deadlocks by never calling into PVG methods while holding the BQL, and
-> similarly never acquiring the BQL in a callback from PVG. Different strategies
-> have been used (libdispatch, blocking and non-blocking BHs, RCU, etc.)
-> depending on the specific requirements at each framework entry and exit point.
+> -device '{"driver":"apple-gfx-pci", "display-modes":["1920x1080@60", "3840x2160@60"]}'
 > 
 > Signed-off-by: Phil Dennis-Jordan <phil@philjordan.eu>
+> Reviewed-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-Reviewed-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 Tested-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 
