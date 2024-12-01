@@ -2,86 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9156C9DF607
-	for <lists+qemu-devel@lfdr.de>; Sun,  1 Dec 2024 16:11:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C17E99DF62B
+	for <lists+qemu-devel@lfdr.de>; Sun,  1 Dec 2024 16:17:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tHlWz-0001Ro-0X; Sun, 01 Dec 2024 10:06:41 -0500
+	id 1tHlX0-0001TK-90; Sun, 01 Dec 2024 10:06:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tHlWt-0001Oa-E1
- for qemu-devel@nongnu.org; Sun, 01 Dec 2024 10:06:35 -0500
-Received: from mail-oo1-xc30.google.com ([2607:f8b0:4864:20::c30])
+ id 1tHlWu-0001Ow-LL
+ for qemu-devel@nongnu.org; Sun, 01 Dec 2024 10:06:36 -0500
+Received: from mail-ot1-x32c.google.com ([2607:f8b0:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tHlWr-0004Eu-QX
- for qemu-devel@nongnu.org; Sun, 01 Dec 2024 10:06:35 -0500
-Received: by mail-oo1-xc30.google.com with SMTP id
- 006d021491bc7-5f1dfb0b44dso998659eaf.2
- for <qemu-devel@nongnu.org>; Sun, 01 Dec 2024 07:06:33 -0800 (PST)
+ id 1tHlWs-0004Fk-Ui
+ for qemu-devel@nongnu.org; Sun, 01 Dec 2024 10:06:36 -0500
+Received: by mail-ot1-x32c.google.com with SMTP id
+ 46e09a7af769-71d502644e2so1418868a34.0
+ for <qemu-devel@nongnu.org>; Sun, 01 Dec 2024 07:06:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1733065592; x=1733670392; darn=nongnu.org;
+ d=linaro.org; s=google; t=1733065594; x=1733670394; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ANy8s04QP4LdBdFbRQmXIcaAM1HVWTxLlWDdO7P3Ibo=;
- b=zFR63GqVNdMd7j0A5kSU8wPchJAPojbX6ley9jlnh9wGf70uYUUcD9Td3y6RlT0SvD
- mWCgGkeNLlKu9I39BNuDZVk0JAld4ty3jvOlQjBvV2ZjxCyNJhfjc3DcPMXFxBGwe/Kp
- /0ixaotFh7WrsrSZr/7SEHM9mPY0R3AUygwF1zl08p4KZgtaexciIsZxvZ5+4aUgrC88
- jUFOJ5QpZ3h8zoKZ31/V63Z4xCov9vGXVwvQHwmJ3KQlTwlkIs2fKUbBhurnmHP+bTRB
- ZOYS0hil8x2ipskoZAflsd4YV93i3Hl1sHxarwI3v11LiumbtUzVnsirLxYrdvdgEv3o
- MPdA==
+ bh=idkRc83+8k6kQAE/UEu1d/YkVql+qpZ6btFzhSMVuCI=;
+ b=S9x1/0bd9mzsmKYqIM0c8vfsNC1u+S3+LlnhWgN6dEEEV4yTaY/09mRj+jXOzaniDm
+ Bx+7hfNa3sK69erVbRGHVDsSoDMx7R670TXw4s01TghzBdruook6qBdY0VfvMd6VfI/U
+ XXY+3mEsewQbScp3KLi3/ln8wrbkswEKXDkW2HPPLTp/DUEKb1YEdy9UXLXheZPresQd
+ 1E98i10lmI0VYcVL2KvnUdcmcLQXCIfGyVZw1h2SkMBIZtegtkTTJ+4hX0hn6kYUEd1H
+ Qozy6PAo4sFnjO7tYMXHa1r3ICjZYcXP2Vdj06g/X2j1kh7hBatOXSzVatM3a5x+AzdU
+ WaZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733065592; x=1733670392;
+ d=1e100.net; s=20230601; t=1733065594; x=1733670394;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ANy8s04QP4LdBdFbRQmXIcaAM1HVWTxLlWDdO7P3Ibo=;
- b=ruippHXhAiatxXR8YmxD+8mtUIZlNla0SO6qYHgH8RQQzIYkHaZ2/+oAMmzaGWNwuA
- /B7S1+hxwN4kH5v3M/gsZQR7boUztCncjJUM9jacA/mFASwuGhQIFpwp1KB4EUiT+4F1
- R5q2xgn3Ik6wjtNSm0zC9WKk0dBWCx4tggTs5/G4XPJzHh0l4biMzZXaBf+8Risizyr7
- nA5aRjdNqhBBxd262wrp3lvJv8Y+yb+SxstcubokbkJ0iTQN1VPV3H5JrNnjZVHmpbZ0
- fTB0i0WHii+1AA439rQGs2itY8jRpLSFdBXMCclQdNZUVY/PjnXVk11moE/nzWar75qt
- e9Zw==
-X-Gm-Message-State: AOJu0YzWszc47qCgLbpaw5NpQGLTE806B1PqvnoJeYRineSc//UUhcJt
- npYa80dIQdwFj/wKf8o2l1WHyiY6ga2IzEwhhA6gDKmbmqjB0sUa0Dmx4pLBSXTg9e4RCSiAgqi
- kWnI=
-X-Gm-Gg: ASbGncsUGx30O2cUTHSaixFUL3uOua/mG3Vbs6aWb4Fbo2JpM/Vzrb9u+wpoJblSnd2
- MbBCkGNWnNuRa13//ndg9JTOeObl8mgHEKkRZsk1ZXBWQAl2ASq71LpUjNAkdI0h+Idoxv7duyo
- LdrAvxKkEuqDO/3cTc9mXvtCCmNlXR6dlCt8BQLr03iPP51jw64cA79mzp1W6aX9axPwnv3Jkv5
- gLTa66+8WTNP6a2OrImMsLwMuLVQz0i4+RuDOOzeA0Bh7617Bb4ilCeJW+M10dsmwIrogULvs+H
- tIz9DVtFDIK1J7Tlq2JNFZl+t9cVQCU/6f4K
-X-Google-Smtp-Source: AGHT+IGAN5Vg+l7SBV5UKIFh2OC7Q8DbkJw+B6kiJXqy+v9x1l3MXDibu1Oz1zYontLPzzbXkahpxw==
-X-Received: by 2002:a05:6820:3094:b0:5f2:485:32f4 with SMTP id
- 006d021491bc7-5f20a227572mr13685197eaf.4.1733065592503; 
- Sun, 01 Dec 2024 07:06:32 -0800 (PST)
+ bh=idkRc83+8k6kQAE/UEu1d/YkVql+qpZ6btFzhSMVuCI=;
+ b=jDXBcs/IRpm8QftO/gN92GqP6LTDelhuI4Iy/QRENm72iW8HS9RiL0kMtdATlnSSvq
+ 39omt+XqLtluoFEb8TtCETLqHGWIiQuXdjY9Z4nxA+btAB8J34ZQ4nF+qBlclwEusS6J
+ UhylciB4L58xHjvplRDXhbR7Au2cUEbfFuUXMPuEmfUysRKlxSZo4VOEkkn3PTAxIObi
+ DNV1h8GU0559ctBNBW+/LZy3minrRdrxuSffN0XPjWs4uB4KaCWbVbP2wdHLpjwXq8gG
+ gI6SKuldZz7Wk1raB79sS6EZJUaa/khFscAKihHth7lTBL3n+J3GzAkVmqOeXaOgEr1r
+ KHcA==
+X-Gm-Message-State: AOJu0YyAH1owPxXvvkpu5OWQz9gBNpnY6dtBzjvAqL5yIxjbF5l6KNUm
+ q6TzyI8Gmtna/fCo4Wv6/wzuNc0U62Cm3oDmeUnRLA4cDO77RoHseuhAkp7tuGWWAj+HPnMyRSr
+ 1PhE=
+X-Gm-Gg: ASbGncsXWCmCRdImnj8hR2DRgr6ZWenE6PBZg39NLMjQFlm46PzzLt2cJGt7C9Qi8v/
+ wXXS9qNuuKJnA2lTsbcAgZjS94sjjlJ2Z/IHIN7Roa5Q1RD3DSdny/vWGjqaBfoFmPZ+DsMByoH
+ /ky23ECYlHcF45TxgPPE+Rf9Nqwohj7qeuYKd/fO+ycJTE12IoLeWtscH0dA+fj+DiJUUCeBn3e
+ UV7IDXwaB0G8fYk2ackcZork2tO6r3lQZv6pvx5fUup97EANsBwKQDWCe3bV1CsmBZDNwxxn1M7
+ k4RS56jGF7uBvNlsT+RhD89lJq56KHiSWXe8
+X-Google-Smtp-Source: AGHT+IE9eWFstbQlGWP89F3dvfiHBr6HoitI4xsQapd+TdgbcWX2q5dsEXitD6fyMXUpSZn9n/bHbg==
+X-Received: by 2002:a05:6830:4982:b0:71d:5a8a:1a29 with SMTP id
+ 46e09a7af769-71d65cb2cc0mr14825248a34.14.1733065593785; 
+ Sun, 01 Dec 2024 07:06:33 -0800 (PST)
 Received: from localhost.localdomain (fixed-187-189-51-143.totalplay.net.
  [187.189.51.143]) by smtp.gmail.com with ESMTPSA id
- 46e09a7af769-71d7254473asm1822220a34.27.2024.12.01.07.06.31
+ 46e09a7af769-71d7254473asm1822220a34.27.2024.12.01.07.06.32
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 01 Dec 2024 07:06:32 -0800 (PST)
+ Sun, 01 Dec 2024 07:06:33 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org
-Subject: [PATCH 20/67] target/arm: Introduce fp_access_check_scalar_hsd
-Date: Sun,  1 Dec 2024 09:05:19 -0600
-Message-ID: <20241201150607.12812-21-richard.henderson@linaro.org>
+Subject: [PATCH 21/67] target/arm: Introduce fp_access_check_vector_hsd
+Date: Sun,  1 Dec 2024 09:05:20 -0600
+Message-ID: <20241201150607.12812-22-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241201150607.12812-1-richard.henderson@linaro.org>
 References: <20241201150607.12812-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c30;
- envelope-from=richard.henderson@linaro.org; helo=mail-oo1-xc30.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::32c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,30 +97,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Provide a simple way to check for float64, float32,
-and float16 support, as well as the fpu enabled.
+Provide a simple way to check for float64, float32, and float16
+support vs vector width, as well as the fpu enabled.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/tcg/translate-a64.c | 62 ++++++++++++++++++----------------
- 1 file changed, 32 insertions(+), 30 deletions(-)
+ target/arm/tcg/translate-a64.c | 135 +++++++++++++--------------------
+ 1 file changed, 54 insertions(+), 81 deletions(-)
 
 diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
-index 9c6365f5ef..4e47b8a804 100644
+index 4e47b8a804..4611ae4ade 100644
 --- a/target/arm/tcg/translate-a64.c
 +++ b/target/arm/tcg/translate-a64.c
-@@ -1239,6 +1239,27 @@ static bool fp_access_check(DisasContext *s)
-     return true;
+@@ -1260,6 +1260,28 @@ static int fp_access_check_scalar_hsd(DisasContext *s, MemOp esz)
+     return fp_access_check(s);
  }
  
-+/*
-+ * Return <0 for non-supported element sizes, with MO_16 controlled by
-+ * FEAT_FP16; return 0 for fp disabled; otherwise return >0 for success.
-+ */
-+static int fp_access_check_scalar_hsd(DisasContext *s, MemOp esz)
++/* Likewise, but vector MO_64 must have two elements. */
++static int fp_access_check_vector_hsd(DisasContext *s, bool is_q, MemOp esz)
 +{
 +    switch (esz) {
 +    case MO_64:
++        if (!is_q) {
++            return -1;
++        }
++        break;
 +    case MO_32:
 +        break;
 +    case MO_16:
@@ -137,39 +138,19 @@ index 9c6365f5ef..4e47b8a804 100644
  /*
   * Check that SVE access is enabled.  If it is, return true.
   * If not, emit code to generate an appropriate exception and return false.
-@@ -6628,22 +6649,10 @@ static bool trans_FCSEL(DisasContext *s, arg_FCSEL *a)
+@@ -5420,27 +5442,14 @@ static bool do_fp3_vector(DisasContext *s, arg_qrrr_e *a, int data,
+                           gen_helper_gvec_3_ptr * const fns[3])
  {
-     TCGv_i64 t_true, t_false;
-     DisasCompare64 c;
-+    int check = fp_access_check_scalar_hsd(s, a->esz);
+     MemOp esz = a->esz;
++    int check = fp_access_check_vector_hsd(s, a->q, esz);
  
--    switch (a->esz) {
--    case MO_32:
+-    switch (esz) {
 -    case MO_64:
--        break;
--    case MO_16:
--        if (!dc_isar_feature(aa64_fp16, s)) {
+-        if (!a->q) {
 -            return false;
 -        }
 -        break;
--    default:
--        return false;
--    }
--
--    if (!fp_access_check(s)) {
--        return true;
-+    if (check <= 0) {
-+        return check == 0;
-     }
- 
-     /* Zero extend sreg & hreg inputs to 64 bits now.  */
-@@ -6894,22 +6903,15 @@ TRANS(FMINV_s, do_fp_reduction, a, gen_helper_vfp_mins)
- 
- static bool trans_FMOVI_s(DisasContext *s, arg_FMOVI_s *a)
- {
--    switch (a->esz) {
 -    case MO_32:
--    case MO_64:
 -        break;
 -    case MO_16:
 -        if (!dc_isar_feature(aa64_fp16, s)) {
@@ -180,17 +161,132 @@ index 9c6365f5ef..4e47b8a804 100644
 -        return false;
 -    }
 -    if (fp_access_check(s)) {
--        uint64_t imm = vfp_expand_imm(a->esz, a->imm);
--        write_fp_dreg(s, a->rd, tcg_constant_i64(imm));
-+    int check = fp_access_check_scalar_hsd(s, a->esz);
-+    uint64_t imm;
-+
+-        gen_gvec_op3_fpst(s, a->q, a->rd, a->rn, a->rm,
+-                          esz == MO_16, data, fns[esz - 1]);
 +    if (check <= 0) {
 +        return check == 0;
      }
 +
-+    imm = vfp_expand_imm(a->esz, a->imm);
-+    write_fp_dreg(s, a->rd, tcg_constant_i64(imm));
++    gen_gvec_op3_fpst(s, a->q, a->rd, a->rn, a->rm,
++                      esz == MO_16, data, fns[esz - 1]);
+     return true;
+ }
+ 
+@@ -5768,34 +5777,24 @@ TRANS_FEAT(FCADD_270, aa64_fcma, do_fp3_vector, a, 1, f_vector_fcadd)
+ 
+ static bool trans_FCMLA_v(DisasContext *s, arg_FCMLA_v *a)
+ {
+-    gen_helper_gvec_4_ptr *fn;
++    static gen_helper_gvec_4_ptr * const fn[] = {
++        [MO_16] = gen_helper_gvec_fcmlah,
++        [MO_32] = gen_helper_gvec_fcmlas,
++        [MO_64] = gen_helper_gvec_fcmlad,
++    };
++    int check;
+ 
+     if (!dc_isar_feature(aa64_fcma, s)) {
+         return false;
+     }
+-    switch (a->esz) {
+-    case MO_64:
+-        if (!a->q) {
+-            return false;
+-        }
+-        fn = gen_helper_gvec_fcmlad;
+-        break;
+-    case MO_32:
+-        fn = gen_helper_gvec_fcmlas;
+-        break;
+-    case MO_16:
+-        if (!dc_isar_feature(aa64_fp16, s)) {
+-            return false;
+-        }
+-        fn = gen_helper_gvec_fcmlah;
+-        break;
+-    default:
+-        return false;
+-    }
+-    if (fp_access_check(s)) {
+-        gen_gvec_op4_fpst(s, a->q, a->rd, a->rn, a->rm, a->rd,
+-                          a->esz == MO_16, a->rot, fn);
++
++    check = fp_access_check_vector_hsd(s, a->q, a->esz);
++    if (check <= 0) {
++        return check == 0;
+     }
++
++    gen_gvec_op4_fpst(s, a->q, a->rd, a->rn, a->rm, a->rd,
++                      a->esz == MO_16, a->rot, fn[a->esz]);
+     return true;
+ }
+ 
+@@ -6337,27 +6336,14 @@ static bool do_fp3_vector_idx(DisasContext *s, arg_qrrx_e *a,
+                               gen_helper_gvec_3_ptr * const fns[3])
+ {
+     MemOp esz = a->esz;
++    int check = fp_access_check_vector_hsd(s, a->q, esz);
+ 
+-    switch (esz) {
+-    case MO_64:
+-        if (!a->q) {
+-            return false;
+-        }
+-        break;
+-    case MO_32:
+-        break;
+-    case MO_16:
+-        if (!dc_isar_feature(aa64_fp16, s)) {
+-            return false;
+-        }
+-        break;
+-    default:
+-        g_assert_not_reached();
+-    }
+-    if (fp_access_check(s)) {
+-        gen_gvec_op3_fpst(s, a->q, a->rd, a->rn, a->rm,
+-                          esz == MO_16, a->idx, fns[esz - 1]);
++    if (check <= 0) {
++        return check == 0;
+     }
++
++    gen_gvec_op3_fpst(s, a->q, a->rd, a->rn, a->rm,
++                      esz == MO_16, a->idx, fns[esz - 1]);
+     return true;
+ }
+ 
+@@ -6383,28 +6369,15 @@ static bool do_fmla_vector_idx(DisasContext *s, arg_qrrx_e *a, bool neg)
+         gen_helper_gvec_fmla_idx_d,
+     };
+     MemOp esz = a->esz;
++    int check = fp_access_check_vector_hsd(s, a->q, esz);
+ 
+-    switch (esz) {
+-    case MO_64:
+-        if (!a->q) {
+-            return false;
+-        }
+-        break;
+-    case MO_32:
+-        break;
+-    case MO_16:
+-        if (!dc_isar_feature(aa64_fp16, s)) {
+-            return false;
+-        }
+-        break;
+-    default:
+-        g_assert_not_reached();
+-    }
+-    if (fp_access_check(s)) {
+-        gen_gvec_op4_fpst(s, a->q, a->rd, a->rn, a->rm, a->rd,
+-                          esz == MO_16, (a->idx << 1) | neg,
+-                          fns[esz - 1]);
++    if (check <= 0) {
++        return check == 0;
+     }
++
++    gen_gvec_op4_fpst(s, a->q, a->rd, a->rn, a->rm, a->rd,
++                      esz == MO_16, (a->idx << 1) | neg,
++                      fns[esz - 1]);
      return true;
  }
  
