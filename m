@@ -2,80 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6EF69DF66D
-	for <lists+qemu-devel@lfdr.de>; Sun,  1 Dec 2024 17:19:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 729E99DF66E
+	for <lists+qemu-devel@lfdr.de>; Sun,  1 Dec 2024 17:19:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tHmet-0006Fx-98; Sun, 01 Dec 2024 11:18:55 -0500
+	id 1tHmes-0006Fc-M1; Sun, 01 Dec 2024 11:18:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <tomitamoeko@gmail.com>)
- id 1tHmWF-0004gJ-Rn
+ id 1tHmWG-0004gK-3f
  for qemu-devel@nongnu.org; Sun, 01 Dec 2024 11:10:01 -0500
-Received: from mail-pf1-x441.google.com ([2607:f8b0:4864:20::441])
+Received: from mail-pf1-x443.google.com ([2607:f8b0:4864:20::443])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <tomitamoeko@gmail.com>)
- id 1tHmWD-0000MQ-MP
+ id 1tHmWE-0000NF-Of
  for qemu-devel@nongnu.org; Sun, 01 Dec 2024 11:09:59 -0500
-Received: by mail-pf1-x441.google.com with SMTP id
- d2e1a72fcca58-724d8422dbaso2825773b3a.0
- for <qemu-devel@nongnu.org>; Sun, 01 Dec 2024 08:09:56 -0800 (PST)
+Received: by mail-pf1-x443.google.com with SMTP id
+ d2e1a72fcca58-724d57a9f7cso2779275b3a.3
+ for <qemu-devel@nongnu.org>; Sun, 01 Dec 2024 08:09:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1733069394; x=1733674194; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1733069397; x=1733674197; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=RMyozJ6DBXdJ3uspS/5iXrrtagliYxbLSROJVV3WvzM=;
- b=Eg8eiNC9XVLO9J6B16aRMdiWWq7sLxXHNF6bPef7cGlPzyefVz6iKnFzv0d7uK2blH
- dFtwYEEYxBeVifmus3rqbbfZP5wZNlKd4Nb+8+NClCj4EgUApC2lYvyU3fIQXyu9zcFo
- gHg6MKJFKynABCqiSravreKubDqW8F9xP173/7hywliJK2YQSsmW4RL96OGKbbc903iN
- 2teavUcSbpPfgNZ9d9nywp3Y/XPs0Z1x2uWfjBtD/bVa5tEivjeDnlxEUE+jxRRCRQDM
- otJMErkz8qPl0SR258pa2aQwqDL7ce75BcjG/P//Z/K4jEDhjdxsIEBwur6MUfP3J+lc
- wsmA==
+ bh=Q2dZjlop092atRpGDfrU0RR8pyuyR4PiiokKniietfo=;
+ b=iFLdVaY7LhzRb4VwIIPKxBELX39xdOeaU4Vv5MNDrRoQCVtlqmHZZe0vxCgVQFnpIB
+ nE1+iZhNDEToLNhfz3wyjUFSj+L7oDti5O3rpfB0D6nsGHtn/vwRksrHY9G9jaKLk2f1
+ tg8OqDH854wDRXlDlofMJVQrpVu3Elz8bBRVATflieidnWrS5VkrDEFxKDpYxhJdbccb
+ klEInBdeQ9ng8b7jgyfAmh6beb8QYn0o55d0oLV7O4KKs+BPknkNDy52gxCRlG4SQ+Hz
+ ZM4eETsfPTlJ3dehbuOvnDlaJJciYaFvHSUhq3RQ6pl9A1FjYajwmTK3RIcn3o1a9MqH
+ 9UDw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733069394; x=1733674194;
+ d=1e100.net; s=20230601; t=1733069397; x=1733674197;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=RMyozJ6DBXdJ3uspS/5iXrrtagliYxbLSROJVV3WvzM=;
- b=TsO6Emh/sE+BmDzgFpObTn4iBFCMO4/zrzhzdr2WGlHunR80EqYid89tGRw/SEm3Ko
- TRn4gjulSSPYIb8V0xKWEcOuPNCNHgcBen6+uNOxsiBylAxGKYKhEsFmnrmpvmqnhpmf
- zqAdaC6nxHOPYpwa2T/SQ6sWPxhZm/aP17DhoaSg+9xB9zyCKrXFYEPMI4Gkmd8ptLIl
- ExBovVuo/zBRoDYD9QPFurrJD3sXVqO/1GYHL/VFoW51EnDX8jglvBz//Rcc4e7ipmuG
- +JNcd2xpx5W7wDLK0EvnAKlOm68N79zfeYnZzwqUeYFMUqVPWDFEKX93/DovoupZkTFe
- TO0Q==
-X-Gm-Message-State: AOJu0YyyzyMDEZ6xnENZ/rCG7qM5Dx0bFrfzqGzqQkUsDzJHtNkPVOpq
- 80Jl//w+kOP2TeBC/ApHL4YO7RzN2hC77r1/W7KlMnYTCpo6qxem48JteGk2x+oM
-X-Gm-Gg: ASbGncuBdsNExDLRy6nNk5pgiswLKd9k/ev+5KO1aTJimZo5Qi7ku4hkaNokskus30D
- IxLFIlNh75du+kJJmcZaqhHqYWwE6bOzyv+QTzB5R70H4VMfTGbkSFyGl10gzi4+ajCCv0ue0UD
- HBvv0DrwpXC+DuGVk4VJFupAk7HHQpFN8EKq+41pSlQRcU7Z6DV3F2nmCOeJzhbKch+H5oFooKO
- +BG1R+0BJxJxBRv0qGoNJqdWrcYOPx4gP6C3e+2EaUU26o98BXYxiXh8BI=
-X-Google-Smtp-Source: AGHT+IF/IvWq5CHeQmALXaR2tOpcd5B79LKQAfEDozssy8Jv5PG/NSGyx+h9vyp/u7rSURjokrlnhg==
-X-Received: by 2002:a05:6a00:c8b:b0:71e:cb:e7bf with SMTP id
- d2e1a72fcca58-7253013e6aamr26713943b3a.18.1733069394593; 
- Sun, 01 Dec 2024 08:09:54 -0800 (PST)
+ bh=Q2dZjlop092atRpGDfrU0RR8pyuyR4PiiokKniietfo=;
+ b=s3cclQVUgKybB7KSTesHxIWXnhM900ex7MbjKefQDbHeLjSueitmb4sVCIQ59fBbZ4
+ qNOY6GAODFTCnrZwGGs+5XhatWIM1R3nV4CazbTf7SI/YaH6IUiGzS2RvssT7BExLFk5
+ tsOs3fdox0WX4G0j15e1UNkNocAbeGhn5k2FYOx7klcB8MI2/kd7fEXTTC4bMujqk/ca
+ Pwqxzw5H7ZofMBo/jG4Vi5tdHPFnQHQfVpXYIpTYmz9jt9oLnPfQsdRDjlEB14e5iwvW
+ qKJvBL0/GjNrRRbbI+WsR2f/CT2rCKybpxbKwf3Rrd4+5V7aUXQ12idxk7lZS88kFAY3
+ W/aw==
+X-Gm-Message-State: AOJu0YyvVvNpXewep/JiGZKffIZmj9kU2ki1VJdB0KpBF+ej6ZdvJwQP
+ nANIDxjh0HvO2erHuSRyTV1g3QwxtZgLvnjUIIBUFXcDSufQoyH88YLFyEE9nVJf
+X-Gm-Gg: ASbGncuiGPYQwrSgKqQOkVytoSy1fs7GppthmB/Iaktc/6pF5/0gF6Sj8XveRHRTeih
+ PFLC7Jk79jqUmV6+2KzBrdlNOXHwjpAISZTaGhTFkvPtWRAnN/Jla1hBLeq5ZvOymOOxHxJqPWn
+ 6U9jTNk0PlOiDCt883c4NkaDzzymu1Ae2iX4801blvjLSEVhCQWd0O5aidrfYSYDKbEGWVL62ji
+ ZmK8I/H2wOPrvEzg0QH0TMtLdmb6NgF6V5vwIM5ygJlhTc1U5zKvYZ2n9k=
+X-Google-Smtp-Source: AGHT+IG452zMVKZIO3JhaB+2/7X5rlwOuiMkKQ6H+q1jxZno+K/QpqPdfr01iOeUNuq2z50XNZc0lQ==
+X-Received: by 2002:a05:6a00:4f93:b0:71e:4786:98ee with SMTP id
+ d2e1a72fcca58-7253015eecdmr27963431b3a.21.1733069397149; 
+ Sun, 01 Dec 2024 08:09:57 -0800 (PST)
 Received: from kotori-desktop.lan ([116.231.112.6])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7254176f47asm6785783b3a.43.2024.12.01.08.09.52
+ d2e1a72fcca58-7254176f47asm6785783b3a.43.2024.12.01.08.09.54
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 01 Dec 2024 08:09:54 -0800 (PST)
+ Sun, 01 Dec 2024 08:09:56 -0800 (PST)
 From: Tomita Moeko <tomitamoeko@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Corvin=20K=C3=B6hne?= <c.koehne@beckhoff.com>,
  Tomita Moeko <tomitamoeko@gmail.com>,
  Alex Williamson <alex.williamson@redhat.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PATCH 4/8] vfio/igd: align generation with i915 kernel driver
-Date: Mon,  2 Dec 2024 00:09:34 +0800
-Message-ID: <20241201160938.44355-5-tomitamoeko@gmail.com>
+Subject: [PATCH 5/8] vfio/igd: add Alder/Raptor/Rocket/Ice/Jasper Lake device
+ ids
+Date: Mon,  2 Dec 2024 00:09:35 +0800
+Message-ID: <20241201160938.44355-6-tomitamoeko@gmail.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241201160938.44355-1-tomitamoeko@gmail.com>
 References: <20241201160938.44355-1-tomitamoeko@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::441;
- envelope-from=tomitamoeko@gmail.com; helo=mail-pf1-x441.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::443;
+ envelope-from=tomitamoeko@gmail.com; helo=mail-pf1-x443.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,66 +100,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Define the igd device generations according to i915 kernel driver to
-avoid confusion, and adjust comment placement to clearly reflect the
-relationship between ids and devices.
+All gen 11 and 12 igd devices have 64 bit BDSM register at 0xC0 in its
+config space, add them to the list to support igd passthrough on Alder/
+Raptor/Rocket/Ice/Jasper Lake platforms.
+
+Tested legacy mode of igd passthrough works properly on both linux and
+windows guests with AlderLake-S GT1 (8086:4680).
 
 Signed-off-by: Tomita Moeko <tomitamoeko@gmail.com>
 ---
- hw/vfio/igd.c | 36 ++++++++++++++++--------------------
- 1 file changed, 16 insertions(+), 20 deletions(-)
+ hw/vfio/igd.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
 diff --git a/hw/vfio/igd.c b/hw/vfio/igd.c
-index 8f300498e4..71342863d6 100644
+index 71342863d6..a86faf2fa9 100644
 --- a/hw/vfio/igd.c
 +++ b/hw/vfio/igd.c
-@@ -59,33 +59,29 @@
-  */
- static int igd_gen(VFIOPCIDevice *vdev)
- {
--    if ((vdev->device_id & 0xfff) == 0xa84) {
--        return 8; /* Broxton */
-+    if ((vdev->device_id & 0xffe) == 0xa84) {
-+        return 9;   /* Broxton/Apollo Lake, Gemini Lake */
-     }
- 
-     switch (vdev->device_id & 0xff00) {
--    /* SandyBridge, IvyBridge, ValleyView, Haswell */
--    case 0x0100:
--    case 0x0400:
--    case 0x0a00:
--    case 0x0c00:
--    case 0x0d00:
--    case 0x0f00:
-+    case 0x0100:    /* SandyBridge, IvyBridge */
-         return 6;
--    /* BroadWell, CherryView, SkyLake, KabyLake */
--    case 0x1600:
--    case 0x1900:
--    case 0x2200:
--    case 0x5900:
-+    case 0x0400:    /* Haswell */
-+    case 0x0a00:    /* Haswell */
-+    case 0x0c00:    /* Haswell */
-+    case 0x0d00:    /* Haswell */
-+    case 0x0f00:    /* Valleyview/Bay Trail */
-+        return 7;
-+    case 0x1600:    /* Broadwell */
-+    case 0x2200:    /* Cherryview */
-         return 8;
--    /* CoffeeLake */
--    case 0x3e00:
-+    case 0x1900:    /* Skylake */
-+    case 0x5900:    /* Kaby Lake */
-+    case 0x3e00:    /* Coffee Lake */
+@@ -79,9 +79,14 @@ static int igd_gen(VFIOPCIDevice *vdev)
+     case 0x5900:    /* Kaby Lake */
+     case 0x3e00:    /* Coffee Lake */
          return 9;
--    /* ElkhartLake */
--    case 0x4500:
-+    case 0x4500:    /* Elkhart Lake */
++    case 0x8A00:    /* Ice Lake */
+     case 0x4500:    /* Elkhart Lake */
++    case 0x4E00:    /* Jasper Lake */
          return 11;
--    /* TigerLake */
--    case 0x9A00:
-+    case 0x9A00:    /* Tiger Lake */
+     case 0x9A00:    /* Tiger Lake */
++    case 0x4C00:    /* Rocket Lake */
++    case 0x4600:    /* Alder Lake */
++    case 0xA700:    /* Raptor Lake */
          return 12;
      }
  
