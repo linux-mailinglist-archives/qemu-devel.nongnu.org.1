@@ -2,86 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7787B9DF613
-	for <lists+qemu-devel@lfdr.de>; Sun,  1 Dec 2024 16:13:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B3C669DF666
+	for <lists+qemu-devel@lfdr.de>; Sun,  1 Dec 2024 17:05:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tHlcB-0005hO-G5; Sun, 01 Dec 2024 10:12:03 -0500
+	id 1tHmQH-00033q-5o; Sun, 01 Dec 2024 11:03:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tHlae-0000Zq-I1
- for qemu-devel@nongnu.org; Sun, 01 Dec 2024 10:10:28 -0500
-Received: from mail-oo1-xc30.google.com ([2607:f8b0:4864:20::c30])
+ (Exim 4.90_1) (envelope-from <phil@philjordan.eu>)
+ id 1tHmQD-00033G-Rj
+ for qemu-devel@nongnu.org; Sun, 01 Dec 2024 11:03:45 -0500
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tHlac-0005KS-CA
- for qemu-devel@nongnu.org; Sun, 01 Dec 2024 10:10:28 -0500
-Received: by mail-oo1-xc30.google.com with SMTP id
- 006d021491bc7-5f1e573e65dso868123eaf.0
- for <qemu-devel@nongnu.org>; Sun, 01 Dec 2024 07:10:25 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <phil@philjordan.eu>)
+ id 1tHmQ8-0005yQ-5k
+ for qemu-devel@nongnu.org; Sun, 01 Dec 2024 11:03:42 -0500
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-434a83c6b01so29345895e9.0
+ for <qemu-devel@nongnu.org>; Sun, 01 Dec 2024 08:03:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1733065825; x=1733670625; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=iAu5ADHYyflekp458M9CFRgqyCjo4WkfS6Rrrf0k32Q=;
- b=Z0N/u/4zB54mlib1FDCw61LcVAZ3RlacQONA/3hKMZW60y3ICLkOv9QlmbnklGfGsS
- MJmreqEbrUmtFxCiDZQ0JBAdpFOUoYQrstsYfqaZytU+Hw7DTFFMQOXysjqTU9Qb5CS2
- RTbFJBOSUFpl7K7eGWp2t8m4GQR90aHcjrW8yHnqTqR+VCJbg3nEJrDBbEpHMiOKZR1S
- Prx57B9gIkxUFjfiOR671YcN1aIANBZw3Dx500GW/fSbQEwZOmhoeg4yQR96xixsT/Ks
- GzovGsJweJB0eno36wAaSqUE5Eel/aQckm7+y0FOUwlHpoP7cfFQS57YcNAAwJrs+53M
- ZeDA==
+ d=philjordan-eu.20230601.gappssmtp.com; s=20230601; t=1733069010; x=1733673810;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=+wTHBUrXI8QFBkDCD6L4J77EtzYe3TetwP1qRxIJJLM=;
+ b=MPUunlX9GgY4NEo5tnRw5+wZUFdT+lOA8blABMajfJRXCIL56BXrqzofiUsGetG1DA
+ I0zDsNrfXSg1IlHB/kFLVSfeqSKOyDzH3P9+NuDzSyY+H7IITNr3P+nfBBpbTmjnZWg9
+ aNnUX+drYsD3a2umKN6/Bq9wE5I4TiMJZ3Q+PIXvfYaJ1SglIVB7FQsIpBTwQIxim+Pi
+ 59JziX+CRGifmwd8xxNVzSdAgsBiCrAQP1lBpC4V7uVdJT6+41jYbKwWV0ZTKdqZUc5P
+ k+WgFDuisUQDSp5h0RZeD5ug4OJN/hOXmnZiu+mHtI7bF7pUnRvj0L2if8Z2b6JKHwBP
+ N7GA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733065825; x=1733670625;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=iAu5ADHYyflekp458M9CFRgqyCjo4WkfS6Rrrf0k32Q=;
- b=VC5D1dTu9PeT+1rEiWW4ews668uMZNDRaoskqnB4t3CeoRCXE06yHL2lRBUabXRNEF
- Df88ODDMvb9S2qPd6Mfb2a73gNTzEaBZYumP7MGEuVE18WKc0k7aBAXDDKF06r6k/2Or
- 1P8NDL6lAU/auZyyp2t8kpc4DES1/AVFWGwKwKFnG3CQgjQGS0soeJTTclOUAeeiKDQ+
- 16yTURT/kJ5Wayx4rBUMKq5kgL8nCjYhUvd+QxaCCpWInXilKJ9R43a/1Z3GiaVXrpQ5
- Up3Ol/5TOWx/EC/8g67ZWOZIF23qPLMlPzZ2bH6xB/1o5Ie5c4p7OO746cg9HeOoeWnP
- gIAg==
-X-Gm-Message-State: AOJu0Yx8cWaF9V3iEFQo0C7dHQg1hXpYuJZ7keNkrXd9EeDL82C2h13M
- ZFRsbe/dDcuPzpC7ZuQAHGZAnHfXSNGru9K4CwAtF7+1dhiSkvNFEEMNFK9DYfy1fnu6KUqJwFH
- V64w=
-X-Gm-Gg: ASbGnctbuaYjVeUoIQXEv9ytwgiP2SAaO4hlIMMmknk3+2LEU1u9r3sDUjOeBLE/bC4
- wsD4WsipFP0gV6gdgkft0vCQ288lgaSZMO4kIaRYZBULWouvuEYRZFOGkecePl8uoZXgR/G5Wrg
- j+GzjowjTBLXg1IX8Q/72ycsULjXy3/ht24dd4YDs/B7/FgPXdBg9fmcxdCqRPrDE0r/CakYj43
- An8tdzAMqxoZEiZ4/aICu5L4qG77xQPNgNUgrW8agGeNEmkoThRhILgxdetBNwBFGwEiFKnqpKC
- WMojg2OEEFl/uNnMMON2/Sc+bmSB5hZwOhLt
-X-Google-Smtp-Source: AGHT+IHa6dSzgNa/oqPv9s1bh6fgBnMvCqEUlqQ7sAGKf4xOtivzV80MGJs+byWSNuw4bBYr82ySQg==
-X-Received: by 2002:a05:6830:442b:b0:710:ea11:3d35 with SMTP id
- 46e09a7af769-71d65ca98bcmr16344581a34.15.1733065825115; 
- Sun, 01 Dec 2024 07:10:25 -0800 (PST)
-Received: from localhost.localdomain (fixed-187-189-51-143.totalplay.net.
- [187.189.51.143]) by smtp.gmail.com with ESMTPSA id
- 006d021491bc7-5f21a4cd78fsm1807008eaf.32.2024.12.01.07.10.24
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 01 Dec 2024 07:10:24 -0800 (PST)
-From: Richard Henderson <richard.henderson@linaro.org>
+ d=1e100.net; s=20230601; t=1733069010; x=1733673810;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=+wTHBUrXI8QFBkDCD6L4J77EtzYe3TetwP1qRxIJJLM=;
+ b=bNp/sEsoFDGdwtqiL07NZN+UCUEBzHC9q8T4TRvj7BFYE83X44kSanXwbHFN3/FdIt
+ IpnZgyYUZJ2w/7L7DPjrgaWQJOimdxy71nGiw4VSGvQ8Dz9Ui4lUbQIsoVu4gB2GoNux
+ u+yI1BBqD7EciW+Fq66V3dT1M4bE65Cv4Ew8FWcDKNcQzDYbPEuFN7CFYnUJnCMh6zH9
+ 81a8vBIcfOuruqPdpivpkiGBWaB4pb9em3RbmcjLhZ1X5CAvx3M9lON1liNEdHEMuI9z
+ C1LABenT0thp86DPDf6TEDbLHvlNoydyUMUbXtFkbnCHoy0mgGmwIFc3L3lDFIjukgXS
+ lpKQ==
+X-Gm-Message-State: AOJu0YxAUkv70jnXs3QQq0lFv5DsVsX8FAQxHptx4nyM8u1MNbJ1GQpp
+ Q3dO6k7jvtRRNjBHOuN0eJxfFZvS7OLfuKrdET3pGspsoUhvRoCNvo4PBthzHRfdOWUeqwOzw+M
+ =
+X-Gm-Gg: ASbGncvPbuaP5q7gMVKeEmIEpQQBo4P+BBGN+I0zMgsqZv7xiv6POrLmwoUIWrNQxs8
+ HthsFml99i/nARDH5s5Szvf3F7gbZKf5Q/jz+WcZaTfcvHUUbDf/xWQ1xrVuGBEdx1UNcbmQHkv
+ Vt8rmu5cscbjZBtfvVbbAWPs5RksSEUo4EOG2WCLN/Qo3fMB5I8oO2b29XT6pBkHmU1naZtS5A2
+ 5DY3BehyFY6ENNILtnyX9rTsSE01cxsAIve4nQXghLm60g6MUOi8ZbbfLtzuYmJFa1xUmMGyAtq
+ QUV73F41Ss4cIEE++EvK3YmmeA==
+X-Google-Smtp-Source: AGHT+IFzLxd8tyKsemw29qa1bYxzgtvHcYWZflIZ9k1n2ySQrPwAnsX1qUByB5MSInITYkUyORdEpA==
+X-Received: by 2002:a05:600c:3b14:b0:434:a734:d268 with SMTP id
+ 5b1f17b1804b1-434a9dc02a3mr181069465e9.14.1733069009594; 
+ Sun, 01 Dec 2024 08:03:29 -0800 (PST)
+Received: from localhost.localdomain (h082218084190.host.wavenet.at.
+ [82.218.84.190]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-434b0d9bef8sm120393605e9.7.2024.12.01.08.03.28
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Sun, 01 Dec 2024 08:03:29 -0800 (PST)
+From: Phil Dennis-Jordan <phil@philjordan.eu>
 To: qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org
-Subject: [PATCH 67/67] target/arm: Convert FCVTL to decodetree
-Date: Sun,  1 Dec 2024 09:06:06 -0600
-Message-ID: <20241201150607.12812-68-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20241201150607.12812-1-richard.henderson@linaro.org>
-References: <20241201150607.12812-1-richard.henderson@linaro.org>
+Cc: richard.henderson@linaro.org, philmd@linaro.org, thuth@redhat.com,
+ zhao1.liu@intel.com, imammedo@redhat.com, akihiko.odaki@daynix.com,
+ Phil Dennis-Jordan <phil@philjordan.eu>
+Subject: [PATCH RFC-for-10.0] hw/usb/hcd-xhci-pci: Use event ring 0 if
+ interrupter mapping unsupported
+Date: Sun,  1 Dec 2024 17:03:16 +0100
+Message-Id: <20241201160316.96121-1-phil@philjordan.eu>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c30;
- envelope-from=richard.henderson@linaro.org; helo=mail-oo1-xc30.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: neutral client-ip=2a00:1450:4864:20::32c;
+ envelope-from=phil@philjordan.eu; helo=mail-wm1-x32c.google.com
+X-Spam_score_int: -10
+X-Spam_score: -1.1
+X-Spam_bar: -
+X-Spam_report: (-1.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NEUTRAL=0.779 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,295 +97,123 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Remove lookup_disas_fn, handle_2misc_widening,
-disas_simd_two_reg_misc, disas_data_proc_simd,
-disas_data_proc_simd_fp, disas_a64_legacy, as
-this is the final insn to be converted.
+This change addresses an edge case that trips up macOS guest drivers
+for PCI based XHCI controllers.
 
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+The XHCI specification, section 4.17.1 specifies that "If Interrupter
+Mapping is not supported, the Interrupter Target field shall be
+ignored by the xHC and all Events targeted at Interrupter 0."
+
+The PCI XHCI controller supports MSI(-X) and maxintrs is therefore
+reasonably set to 16. The specification does not address whether
+interrupter mapping should be considered "supported" if the guest
+driver does not enable MSI(-X) via the PCI configuration area, possibly
+because the PCI host bus does not support it.
+
+QEMU's XHCI device has so far not specially addressed this case, and
+no interrupt is generated for events delivered to event rings 1 and
+above. The macOS guest driver does not get along with this
+interpretation, so many events are not delivered to the guest OS when
+MSI(-X) is off.
+
+This patch changes the xhci_event() function such that event ring 0
+is always used when numintrs is 1 (as per spec section 4.17.1) or
+if neither MSI nor MSI-X are enabled. The latter is checked by adding
+a new, optional intr_mapping_supported function pointer field supplied
+by the concrete XHCI controller implementation. The PCI implementation's
+supplied function calls msix_enabled and msi_enabled accordingly.
+
+Signed-off-by: Phil Dennis-Jordan <phil@philjordan.eu>
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2705
 ---
- target/arm/tcg/translate-a64.c | 202 +++------------------------------
- target/arm/tcg/a64.decode      |   2 +
- 2 files changed, 18 insertions(+), 186 deletions(-)
+I've been chasing this problem for a while, and I've finally figured
+out the cause, and I think an acceptable solution. I've explained the
+problem and quoted the relevant sections of the XHCI spec in more
+detail in the linked GitLab issue:
 
-diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
-index 78ad72061d..8f93fc2737 100644
---- a/target/arm/tcg/translate-a64.c
-+++ b/target/arm/tcg/translate-a64.c
-@@ -1465,31 +1465,6 @@ static inline void gen_check_sp_alignment(DisasContext *s)
-      */
- }
- 
--/*
-- * This provides a simple table based table lookup decoder. It is
-- * intended to be used when the relevant bits for decode are too
-- * awkwardly placed and switch/if based logic would be confusing and
-- * deeply nested. Since it's a linear search through the table, tables
-- * should be kept small.
-- *
-- * It returns the first handler where insn & mask == pattern, or
-- * NULL if there is no match.
-- * The table is terminated by an empty mask (i.e. 0)
-- */
--static inline AArch64DecodeFn *lookup_disas_fn(const AArch64DecodeTable *table,
--                                               uint32_t insn)
--{
--    const AArch64DecodeTable *tptr = table;
--
--    while (tptr->mask) {
--        if ((insn & tptr->mask) == tptr->pattern) {
--            return tptr->disas_fn;
--        }
--        tptr++;
--    }
--    return NULL;
--}
--
- /*
-  * The instruction disassembly implemented here matches
-  * the instruction encoding classifications in chapter C4
-@@ -9520,8 +9495,7 @@ static gen_helper_gvec_2_ptr * const f_frsqrte[] = {
- };
- TRANS(FRSQRTE_v, do_gvec_op2_fpst, a->esz, a->q, a->rd, a->rn, 0, f_frsqrte)
- 
--static void handle_2misc_widening(DisasContext *s, int opcode, bool is_q,
--                                  int size, int rn, int rd)
-+static bool trans_FCVTL_v(DisasContext *s, arg_qrr_e *a)
- {
-     /* Handle 2-reg-misc ops which are widening (so each size element
-      * in the source becomes a 2*size element in the destination.
-@@ -9529,173 +9503,43 @@ static void handle_2misc_widening(DisasContext *s, int opcode, bool is_q,
-      */
-     int pass;
- 
--    if (size == 3) {
-+    if (!fp_access_check(s)) {
-+        return true;
-+    }
-+
-+    if (a->esz == MO_64) {
-         /* 32 -> 64 bit fp conversion */
-         TCGv_i64 tcg_res[2];
--        int srcelt = is_q ? 2 : 0;
-+        TCGv_i32 tcg_op = tcg_temp_new_i32();
-+        int srcelt = a->q ? 2 : 0;
- 
-         for (pass = 0; pass < 2; pass++) {
--            TCGv_i32 tcg_op = tcg_temp_new_i32();
-             tcg_res[pass] = tcg_temp_new_i64();
--
--            read_vec_element_i32(s, tcg_op, rn, srcelt + pass, MO_32);
-+            read_vec_element_i32(s, tcg_op, a->rn, srcelt + pass, MO_32);
-             gen_helper_vfp_fcvtds(tcg_res[pass], tcg_op, tcg_env);
-         }
-         for (pass = 0; pass < 2; pass++) {
--            write_vec_element(s, tcg_res[pass], rd, pass, MO_64);
-+            write_vec_element(s, tcg_res[pass], a->rd, pass, MO_64);
-         }
-     } else {
-         /* 16 -> 32 bit fp conversion */
--        int srcelt = is_q ? 4 : 0;
-+        int srcelt = a->q ? 4 : 0;
-         TCGv_i32 tcg_res[4];
-         TCGv_ptr fpst = fpstatus_ptr(FPST_FPCR);
-         TCGv_i32 ahp = get_ahp_flag();
- 
-         for (pass = 0; pass < 4; pass++) {
-             tcg_res[pass] = tcg_temp_new_i32();
--
--            read_vec_element_i32(s, tcg_res[pass], rn, srcelt + pass, MO_16);
-+            read_vec_element_i32(s, tcg_res[pass], a->rn, srcelt + pass, MO_16);
-             gen_helper_vfp_fcvt_f16_to_f32(tcg_res[pass], tcg_res[pass],
-                                            fpst, ahp);
-         }
-         for (pass = 0; pass < 4; pass++) {
--            write_vec_element_i32(s, tcg_res[pass], rd, pass, MO_32);
-+            write_vec_element_i32(s, tcg_res[pass], a->rd, pass, MO_32);
-         }
-     }
--}
--
--/* AdvSIMD two reg misc
-- *   31  30  29 28       24 23  22 21       17 16    12 11 10 9    5 4    0
-- * +---+---+---+-----------+------+-----------+--------+-----+------+------+
-- * | 0 | Q | U | 0 1 1 1 0 | size | 1 0 0 0 0 | opcode | 1 0 |  Rn  |  Rd  |
-- * +---+---+---+-----------+------+-----------+--------+-----+------+------+
-- */
--static void disas_simd_two_reg_misc(DisasContext *s, uint32_t insn)
--{
--    int size = extract32(insn, 22, 2);
--    int opcode = extract32(insn, 12, 5);
--    bool u = extract32(insn, 29, 1);
--    bool is_q = extract32(insn, 30, 1);
--    int rn = extract32(insn, 5, 5);
--    int rd = extract32(insn, 0, 5);
--
--    switch (opcode) {
--    case 0xc ... 0xf:
--    case 0x16 ... 0x1f:
--    {
--        /* Floating point: U, size[1] and opcode indicate operation;
--         * size[0] indicates single or double precision.
--         */
--        int is_double = extract32(size, 0, 1);
--        opcode |= (extract32(size, 1, 1) << 5) | (u << 6);
--        size = is_double ? 3 : 2;
--        switch (opcode) {
--        case 0x17: /* FCVTL, FCVTL2 */
--            if (!fp_access_check(s)) {
--                return;
--            }
--            handle_2misc_widening(s, opcode, is_q, size, rn, rd);
--            return;
--        default:
--        case 0x16: /* FCVTN, FCVTN2 */
--        case 0x36: /* BFCVTN, BFCVTN2 */
--        case 0x56: /* FCVTXN, FCVTXN2 */
--        case 0x2f: /* FABS */
--        case 0x6f: /* FNEG */
--        case 0x7f: /* FSQRT */
--        case 0x18: /* FRINTN */
--        case 0x19: /* FRINTM */
--        case 0x38: /* FRINTP */
--        case 0x39: /* FRINTZ */
--        case 0x59: /* FRINTX */
--        case 0x79: /* FRINTI */
--        case 0x58: /* FRINTA */
--        case 0x1e: /* FRINT32Z */
--        case 0x1f: /* FRINT64Z */
--        case 0x5e: /* FRINT32X */
--        case 0x5f: /* FRINT64X */
--        case 0x1d: /* SCVTF */
--        case 0x5d: /* UCVTF */
--        case 0x1a: /* FCVTNS */
--        case 0x1b: /* FCVTMS */
--        case 0x3a: /* FCVTPS */
--        case 0x3b: /* FCVTZS */
--        case 0x5a: /* FCVTNU */
--        case 0x5b: /* FCVTMU */
--        case 0x7a: /* FCVTPU */
--        case 0x7b: /* FCVTZU */
--        case 0x5c: /* FCVTAU */
--        case 0x1c: /* FCVTAS */
--        case 0x2c: /* FCMGT (zero) */
--        case 0x2d: /* FCMEQ (zero) */
--        case 0x2e: /* FCMLT (zero) */
--        case 0x6c: /* FCMGE (zero) */
--        case 0x6d: /* FCMLE (zero) */
--        case 0x3d: /* FRECPE */
--        case 0x7d: /* FRSQRTE */
--        case 0x3c: /* URECPE */
--        case 0x7c: /* URSQRTE */
--            unallocated_encoding(s);
--            return;
--        }
--        break;
--    }
--    default:
--    case 0x0: /* REV64 */
--    case 0x1: /* REV16, REV32 */
--    case 0x2: /* SADDLP, UADDLP */
--    case 0x3: /* SUQADD, USQADD */
--    case 0x4: /* CLS, CLZ */
--    case 0x5: /* CNT, NOT, RBIT */
--    case 0x6: /* SADALP, UADALP */
--    case 0x7: /* SQABS, SQNEG */
--    case 0x8: /* CMGT, CMGE */
--    case 0x9: /* CMEQ, CMLE */
--    case 0xa: /* CMLT */
--    case 0xb: /* ABS, NEG */
--    case 0x12: /* XTN, XTN2, SQXTUN, SQXTUN2 */
--    case 0x13: /* SHLL, SHLL2 */
--    case 0x14: /* SQXTN, SQXTN2, UQXTN, UQXTN2 */
--        unallocated_encoding(s);
--        return;
--    }
--    g_assert_not_reached();
--}
--
--/* C3.6 Data processing - SIMD, inc Crypto
-- *
-- * As the decode gets a little complex we are using a table based
-- * approach for this part of the decode.
-- */
--static const AArch64DecodeTable data_proc_simd[] = {
--    /* pattern  ,  mask     ,  fn                        */
--    { 0x0e200800, 0x9f3e0c00, disas_simd_two_reg_misc },
--    { 0x00000000, 0x00000000, NULL }
--};
--
--static void disas_data_proc_simd(DisasContext *s, uint32_t insn)
--{
--    /* Note that this is called with all non-FP cases from
--     * table C3-6 so it must UNDEF for entries not specifically
--     * allocated to instructions in that table.
--     */
--    AArch64DecodeFn *fn = lookup_disas_fn(&data_proc_simd[0], insn);
--    if (fn) {
--        fn(s, insn);
--    } else {
--        unallocated_encoding(s);
--    }
--}
--
--/* C3.6 Data processing - SIMD and floating point */
--static void disas_data_proc_simd_fp(DisasContext *s, uint32_t insn)
--{
--    if (extract32(insn, 28, 1) == 1 && extract32(insn, 30, 1) == 0) {
--        unallocated_encoding(s); /* in decodetree */
--    } else {
--        /* SIMD, including crypto */
--        disas_data_proc_simd(s, insn);
--    }
-+    clear_vec_high(s, true, a->rd);
-+    return true;
- }
- 
- static bool trans_OK(DisasContext *s, arg_OK *a)
-@@ -9761,20 +9605,6 @@ static bool btype_destination_ok(uint32_t insn, bool bt, int btype)
+https://gitlab.com/qemu-project/qemu/-/issues/2705
+
+The fix provided is I think the simplest one in terms of lines of code,
+but it's also a little ugly, as we're constantly checking msix_enabled
+and msi_enabled via a callback function. Granted, we're already doing
+that in xhci_pci_intr_raise and xhci_pci_intr_update, but this adds
+a bunch more calls.
+
+The main alternative I can see is to "push" the state of whether
+interrupter mapping is supported: provide a custom config_write
+implementation for the PCI device, and every time the configuration
+area is updated, evaluate whether or not this means that MSI or MSI-X
+are enabled and update a corresponding flag inside XHCIState. We could
+even use this opportunity to switch out different .intr_raise and
+.intr_update functions depending on which interrupt delivery mechanism
+is active in the PCI device.
+
+
+ hw/usb/hcd-xhci-pci.c | 9 +++++++++
+ hw/usb/hcd-xhci.c     | 5 +++++
+ hw/usb/hcd-xhci.h     | 5 +++++
+ 3 files changed, 19 insertions(+)
+
+diff --git a/hw/usb/hcd-xhci-pci.c b/hw/usb/hcd-xhci-pci.c
+index a039f5778a6..21802211cf7 100644
+--- a/hw/usb/hcd-xhci-pci.c
++++ b/hw/usb/hcd-xhci-pci.c
+@@ -81,6 +81,14 @@ static bool xhci_pci_intr_raise(XHCIState *xhci, int n, bool level)
      return false;
  }
  
--/* C3.1 A64 instruction index by encoding */
--static void disas_a64_legacy(DisasContext *s, uint32_t insn)
--{
--    switch (extract32(insn, 25, 4)) {
--    case 0x7:
--    case 0xf:      /* Data processing - SIMD and floating point */
--        disas_data_proc_simd_fp(s, insn);
--        break;
--    default:
--        unallocated_encoding(s);
--        break;
--    }
--}
--
- static void aarch64_tr_init_disas_context(DisasContextBase *dcbase,
-                                           CPUState *cpu)
- {
-@@ -9977,7 +9807,7 @@ static void aarch64_tr_translate_insn(DisasContextBase *dcbase, CPUState *cpu)
-     if (!disas_a64(s, insn) &&
-         !disas_sme(s, insn) &&
-         !disas_sve(s, insn)) {
--        disas_a64_legacy(s, insn);
-+        unallocated_encoding(s);
-     }
- 
-     /*
-diff --git a/target/arm/tcg/a64.decode b/target/arm/tcg/a64.decode
-index 5090b857e6..47ca635315 100644
---- a/target/arm/tcg/a64.decode
-+++ b/target/arm/tcg/a64.decode
-@@ -1866,6 +1866,8 @@ FRSQRTE_v       0.10 1110 1.1 00001 11011 0 ..... .....     @qrr_sd
- URECPE_v        0.00 1110 101 00001 11001 0 ..... .....     @qrr_s
- URSQRTE_v       0.10 1110 101 00001 11001 0 ..... .....     @qrr_s
- 
-+FCVTL_v         0.00 1110 0.1 00001 01111 0 ..... .....     @qrr_sd
++static bool xhci_pci_intr_mapping_supported(XHCIState *xhci)
++{
++    XHCIPciState *s = container_of(xhci, XHCIPciState, xhci);
++    PCIDevice *pci_dev = PCI_DEVICE(s);
 +
- &fcvt_q         rd rn esz q shift
- @fcvtq_h        . q:1 . ...... 001 .... ...... rn:5 rd:5    \
-                 &fcvt_q esz=1 shift=%fcvt_f_sh_h
++    return msix_enabled(pci_dev) || msi_enabled(pci_dev);
++}
++
+ static void xhci_pci_reset(DeviceState *dev)
+ {
+     XHCIPciState *s = XHCI_PCI(dev);
+@@ -118,6 +126,7 @@ static void usb_xhci_pci_realize(struct PCIDevice *dev, Error **errp)
+     object_property_set_link(OBJECT(&s->xhci), "host", OBJECT(s), NULL);
+     s->xhci.intr_update = xhci_pci_intr_update;
+     s->xhci.intr_raise = xhci_pci_intr_raise;
++    s->xhci.intr_mapping_supported = xhci_pci_intr_mapping_supported;
+     if (!qdev_realize(DEVICE(&s->xhci), NULL, errp)) {
+         return;
+     }
+diff --git a/hw/usb/hcd-xhci.c b/hw/usb/hcd-xhci.c
+index d85adaca0dc..a2a878e4594 100644
+--- a/hw/usb/hcd-xhci.c
++++ b/hw/usb/hcd-xhci.c
+@@ -644,6 +644,11 @@ static void xhci_event(XHCIState *xhci, XHCIEvent *event, int v)
+     dma_addr_t erdp;
+     unsigned int dp_idx;
+ 
++    if (xhci->numintrs == 1 ||
++        (xhci->intr_mapping_supported && !xhci->intr_mapping_supported(xhci))) {
++        v = 0; /* Per section 4.17.1 */
++    }
++
+     if (v >= xhci->numintrs) {
+         DPRINTF("intr nr out of range (%d >= %d)\n", v, xhci->numintrs);
+         return;
+diff --git a/hw/usb/hcd-xhci.h b/hw/usb/hcd-xhci.h
+index fe16d7ad055..6e901de6e6b 100644
+--- a/hw/usb/hcd-xhci.h
++++ b/hw/usb/hcd-xhci.h
+@@ -193,6 +193,11 @@ typedef struct XHCIState {
+     uint32_t max_pstreams_mask;
+     void (*intr_update)(XHCIState *s, int n, bool enable);
+     bool (*intr_raise)(XHCIState *s, int n, bool level);
++    /*
++     * Device supports Interrupter Mapping per section 4.17.1 of XHCI spec.
++     * If NULL, assume true if numintrs > 1.
++     */
++    bool (*intr_mapping_supported)(XHCIState *s);
+     DeviceState *hostOpaque;
+ 
+     /* Operational Registers */
 -- 
-2.43.0
+2.39.5 (Apple Git-154)
 
 
