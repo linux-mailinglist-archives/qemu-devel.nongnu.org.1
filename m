@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7680F9DF674
-	for <lists+qemu-devel@lfdr.de>; Sun,  1 Dec 2024 17:20:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D6EF69DF66D
+	for <lists+qemu-devel@lfdr.de>; Sun,  1 Dec 2024 17:19:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tHmep-0006E1-BY; Sun, 01 Dec 2024 11:18:51 -0500
+	id 1tHmet-0006Fx-98; Sun, 01 Dec 2024 11:18:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <tomitamoeko@gmail.com>)
- id 1tHmWB-0004eg-Mn
- for qemu-devel@nongnu.org; Sun, 01 Dec 2024 11:09:55 -0500
-Received: from mail-pl1-x641.google.com ([2607:f8b0:4864:20::641])
+ id 1tHmWF-0004gJ-Rn
+ for qemu-devel@nongnu.org; Sun, 01 Dec 2024 11:10:01 -0500
+Received: from mail-pf1-x441.google.com ([2607:f8b0:4864:20::441])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <tomitamoeko@gmail.com>)
- id 1tHmWA-0000Lz-Cx
- for qemu-devel@nongnu.org; Sun, 01 Dec 2024 11:09:55 -0500
-Received: by mail-pl1-x641.google.com with SMTP id
- d9443c01a7336-215909152c5so1417205ad.3
- for <qemu-devel@nongnu.org>; Sun, 01 Dec 2024 08:09:54 -0800 (PST)
+ id 1tHmWD-0000MQ-MP
+ for qemu-devel@nongnu.org; Sun, 01 Dec 2024 11:09:59 -0500
+Received: by mail-pf1-x441.google.com with SMTP id
+ d2e1a72fcca58-724d8422dbaso2825773b3a.0
+ for <qemu-devel@nongnu.org>; Sun, 01 Dec 2024 08:09:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1733069392; x=1733674192; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1733069394; x=1733674194; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=0zc2flP+weLaeacCQlZ9Rqxnlz3dYxcJBhurwoN/GxU=;
- b=HxW8mrqnFI3xI4AbJl6ylM5jIoJ4pg4RuBserX5N+n0CkHnTHCNnvNEKMBBPIDah2V
- FI533aqwD6Cy3zPY6iX4PWSK0ss66cr6VLGS5IMRHajU6wKp6DYlNZxyZPSyZFuHXNWu
- j5sqSCnKwd1fdSrbUg+sOJ38QwBuxS/qwB38UMQIXhYA0y+CkZ9vjG0M/KG20wdIJ4YQ
- ezwyPXgPmiWgM2ubr9ReAcxPtV5eHEnvDcQXG1SG+rbEh2LDjofiJUcprmRQgrP5anyx
- oVzkQDhlcAJ3GAUdgp/LglNwIdso65qNr+kQybYrr951tmRTQIg4EDodRhcmtcmTkXbU
- np5A==
+ bh=RMyozJ6DBXdJ3uspS/5iXrrtagliYxbLSROJVV3WvzM=;
+ b=Eg8eiNC9XVLO9J6B16aRMdiWWq7sLxXHNF6bPef7cGlPzyefVz6iKnFzv0d7uK2blH
+ dFtwYEEYxBeVifmus3rqbbfZP5wZNlKd4Nb+8+NClCj4EgUApC2lYvyU3fIQXyu9zcFo
+ gHg6MKJFKynABCqiSravreKubDqW8F9xP173/7hywliJK2YQSsmW4RL96OGKbbc903iN
+ 2teavUcSbpPfgNZ9d9nywp3Y/XPs0Z1x2uWfjBtD/bVa5tEivjeDnlxEUE+jxRRCRQDM
+ otJMErkz8qPl0SR258pa2aQwqDL7ce75BcjG/P//Z/K4jEDhjdxsIEBwur6MUfP3J+lc
+ wsmA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733069392; x=1733674192;
+ d=1e100.net; s=20230601; t=1733069394; x=1733674194;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=0zc2flP+weLaeacCQlZ9Rqxnlz3dYxcJBhurwoN/GxU=;
- b=cTLcrtmYawJbWRHXqkFK0gaMFAEXDW28JQ9HHGTP6W6h6zxl6F3RZTHRAOt3uOSXPE
- uBlu2hP+eekoRrphvcZh0wsuVj4NZDXe9rEdHLG0YSGb/qe0m3MdIEpxO9SvGUoD3lop
- L0OyGb/W7jK22FoswUNwZWK5PrUh4NsKaJ8POP8S75cDd+xBIfTXj2KyfQDoEkbrcNbe
- qzkCsHmFvXFl07Kg6I8b7bsBHU1UkRBlNtPBwO4rkvmGTuXfJ0LBRhOZ1Balo/suC1L+
- CN1gkxnQnN1iqb+8pa/n3nUQob/pPTafHr3Ofjs+fhi87YQXk3T+wxOoISJnL+BisDWa
- NM1Q==
-X-Gm-Message-State: AOJu0YzS2jiegVyslVLymIKXwMQW+bsuHPOwNBnt+PtKvUgJZaqxyTrB
- f6B9E/G2DHeCuYesVq23TcOnQo4D4y7NIHd4tCNHsAREFFjqjL/PCrAM4UH892wB
-X-Gm-Gg: ASbGncsgZIPzZofS8h1LEhSFyQEZ3Za1tzv4o2EjAITk1ZSn6JEUudYsUqug0fHldSs
- +fiOOYdDBkGihUnlMRcCJZHshMTCKjw5TQGyyy+g7sj4Ls8V9qJr2Z5245JA1thEzQqhid1RxYt
- il7Iw6liJTarGBJpqdGYquvml7Spi5vIRj+mIDZfpP0B+/hu4ifuBXO/lZIsOfgk5p0dGED0hXZ
- eOQdIt15sOUNeLkCdx12xlkB86fSNjouvITYQ/1P1i3KndnE3Wm4kj0HG8=
-X-Google-Smtp-Source: AGHT+IEBP9w7/tfQUbNMxZF9gAou0F5abZDZKGUjnGU1qtijxczZvRCHdZ2l+qtCY+fRyhtmCcbxZA==
-X-Received: by 2002:a17:902:cf05:b0:215:7f94:2b8 with SMTP id
- d9443c01a7336-2157f94089bmr44583085ad.24.1733069392301; 
- Sun, 01 Dec 2024 08:09:52 -0800 (PST)
+ bh=RMyozJ6DBXdJ3uspS/5iXrrtagliYxbLSROJVV3WvzM=;
+ b=TsO6Emh/sE+BmDzgFpObTn4iBFCMO4/zrzhzdr2WGlHunR80EqYid89tGRw/SEm3Ko
+ TRn4gjulSSPYIb8V0xKWEcOuPNCNHgcBen6+uNOxsiBylAxGKYKhEsFmnrmpvmqnhpmf
+ zqAdaC6nxHOPYpwa2T/SQ6sWPxhZm/aP17DhoaSg+9xB9zyCKrXFYEPMI4Gkmd8ptLIl
+ ExBovVuo/zBRoDYD9QPFurrJD3sXVqO/1GYHL/VFoW51EnDX8jglvBz//Rcc4e7ipmuG
+ +JNcd2xpx5W7wDLK0EvnAKlOm68N79zfeYnZzwqUeYFMUqVPWDFEKX93/DovoupZkTFe
+ TO0Q==
+X-Gm-Message-State: AOJu0YyyzyMDEZ6xnENZ/rCG7qM5Dx0bFrfzqGzqQkUsDzJHtNkPVOpq
+ 80Jl//w+kOP2TeBC/ApHL4YO7RzN2hC77r1/W7KlMnYTCpo6qxem48JteGk2x+oM
+X-Gm-Gg: ASbGncuBdsNExDLRy6nNk5pgiswLKd9k/ev+5KO1aTJimZo5Qi7ku4hkaNokskus30D
+ IxLFIlNh75du+kJJmcZaqhHqYWwE6bOzyv+QTzB5R70H4VMfTGbkSFyGl10gzi4+ajCCv0ue0UD
+ HBvv0DrwpXC+DuGVk4VJFupAk7HHQpFN8EKq+41pSlQRcU7Z6DV3F2nmCOeJzhbKch+H5oFooKO
+ +BG1R+0BJxJxBRv0qGoNJqdWrcYOPx4gP6C3e+2EaUU26o98BXYxiXh8BI=
+X-Google-Smtp-Source: AGHT+IF/IvWq5CHeQmALXaR2tOpcd5B79LKQAfEDozssy8Jv5PG/NSGyx+h9vyp/u7rSURjokrlnhg==
+X-Received: by 2002:a05:6a00:c8b:b0:71e:cb:e7bf with SMTP id
+ d2e1a72fcca58-7253013e6aamr26713943b3a.18.1733069394593; 
+ Sun, 01 Dec 2024 08:09:54 -0800 (PST)
 Received: from kotori-desktop.lan ([116.231.112.6])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7254176f47asm6785783b3a.43.2024.12.01.08.09.50
+ d2e1a72fcca58-7254176f47asm6785783b3a.43.2024.12.01.08.09.52
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 01 Dec 2024 08:09:52 -0800 (PST)
+ Sun, 01 Dec 2024 08:09:54 -0800 (PST)
 From: Tomita Moeko <tomitamoeko@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Corvin=20K=C3=B6hne?= <c.koehne@beckhoff.com>,
  Tomita Moeko <tomitamoeko@gmail.com>,
  Alex Williamson <alex.williamson@redhat.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PATCH 3/8] vfio/igd: remove unsupported device ids
-Date: Mon,  2 Dec 2024 00:09:33 +0800
-Message-ID: <20241201160938.44355-4-tomitamoeko@gmail.com>
+Subject: [PATCH 4/8] vfio/igd: align generation with i915 kernel driver
+Date: Mon,  2 Dec 2024 00:09:34 +0800
+Message-ID: <20241201160938.44355-5-tomitamoeko@gmail.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241201160938.44355-1-tomitamoeko@gmail.com>
 References: <20241201160938.44355-1-tomitamoeko@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::641;
- envelope-from=tomitamoeko@gmail.com; helo=mail-pl1-x641.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::441;
+ envelope-from=tomitamoeko@gmail.com; helo=mail-pf1-x441.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,36 +99,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since e433f208973f ("vfio/igd: return an invalid generation for unknown
-devices"), the default return of igd_gen() was changed to unsupported.
-There is no need to filter out those unsupported devices.
+Define the igd device generations according to i915 kernel driver to
+avoid confusion, and adjust comment placement to clearly reflect the
+relationship between ids and devices.
 
 Signed-off-by: Tomita Moeko <tomitamoeko@gmail.com>
 ---
- hw/vfio/igd.c | 10 ----------
- 1 file changed, 10 deletions(-)
+ hw/vfio/igd.c | 36 ++++++++++++++++--------------------
+ 1 file changed, 16 insertions(+), 20 deletions(-)
 
 diff --git a/hw/vfio/igd.c b/hw/vfio/igd.c
-index b449316ec0..8f300498e4 100644
+index 8f300498e4..71342863d6 100644
 --- a/hw/vfio/igd.c
 +++ b/hw/vfio/igd.c
-@@ -64,16 +64,6 @@ static int igd_gen(VFIOPCIDevice *vdev)
+@@ -59,33 +59,29 @@
+  */
+ static int igd_gen(VFIOPCIDevice *vdev)
+ {
+-    if ((vdev->device_id & 0xfff) == 0xa84) {
+-        return 8; /* Broxton */
++    if ((vdev->device_id & 0xffe) == 0xa84) {
++        return 9;   /* Broxton/Apollo Lake, Gemini Lake */
      }
  
      switch (vdev->device_id & 0xff00) {
--    /* Old, untested, unavailable, unknown */
--    case 0x0000:
--    case 0x2500:
--    case 0x2700:
--    case 0x2900:
--    case 0x2a00:
--    case 0x2e00:
--    case 0x3500:
--    case 0xa000:
--        return -1;
-     /* SandyBridge, IvyBridge, ValleyView, Haswell */
-     case 0x0100:
-     case 0x0400:
+-    /* SandyBridge, IvyBridge, ValleyView, Haswell */
+-    case 0x0100:
+-    case 0x0400:
+-    case 0x0a00:
+-    case 0x0c00:
+-    case 0x0d00:
+-    case 0x0f00:
++    case 0x0100:    /* SandyBridge, IvyBridge */
+         return 6;
+-    /* BroadWell, CherryView, SkyLake, KabyLake */
+-    case 0x1600:
+-    case 0x1900:
+-    case 0x2200:
+-    case 0x5900:
++    case 0x0400:    /* Haswell */
++    case 0x0a00:    /* Haswell */
++    case 0x0c00:    /* Haswell */
++    case 0x0d00:    /* Haswell */
++    case 0x0f00:    /* Valleyview/Bay Trail */
++        return 7;
++    case 0x1600:    /* Broadwell */
++    case 0x2200:    /* Cherryview */
+         return 8;
+-    /* CoffeeLake */
+-    case 0x3e00:
++    case 0x1900:    /* Skylake */
++    case 0x5900:    /* Kaby Lake */
++    case 0x3e00:    /* Coffee Lake */
+         return 9;
+-    /* ElkhartLake */
+-    case 0x4500:
++    case 0x4500:    /* Elkhart Lake */
+         return 11;
+-    /* TigerLake */
+-    case 0x9A00:
++    case 0x9A00:    /* Tiger Lake */
+         return 12;
+     }
+ 
 -- 
 2.45.2
 
