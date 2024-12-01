@@ -2,86 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AF769DF61A
-	for <lists+qemu-devel@lfdr.de>; Sun,  1 Dec 2024 16:14:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A9ED99DF5FC
+	for <lists+qemu-devel@lfdr.de>; Sun,  1 Dec 2024 16:08:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tHlWq-0001KO-FW; Sun, 01 Dec 2024 10:06:32 -0500
+	id 1tHlWr-0001LR-0s; Sun, 01 Dec 2024 10:06:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tHlWl-0001HE-3R
- for qemu-devel@nongnu.org; Sun, 01 Dec 2024 10:06:27 -0500
-Received: from mail-ot1-x335.google.com ([2607:f8b0:4864:20::335])
+ id 1tHlWm-0001IZ-66
+ for qemu-devel@nongnu.org; Sun, 01 Dec 2024 10:06:28 -0500
+Received: from mail-oo1-xc2e.google.com ([2607:f8b0:4864:20::c2e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tHlWj-00049m-FO
- for qemu-devel@nongnu.org; Sun, 01 Dec 2024 10:06:26 -0500
-Received: by mail-ot1-x335.google.com with SMTP id
- 46e09a7af769-71d41932d32so1332408a34.0
+ id 1tHlWk-0004A1-C9
+ for qemu-devel@nongnu.org; Sun, 01 Dec 2024 10:06:27 -0500
+Received: by mail-oo1-xc2e.google.com with SMTP id
+ 006d021491bc7-5f1e73033cbso1407049eaf.3
  for <qemu-devel@nongnu.org>; Sun, 01 Dec 2024 07:06:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1733065584; x=1733670384; darn=nongnu.org;
+ d=linaro.org; s=google; t=1733065585; x=1733670385; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Yc3dt5/qw9Eh/M5TloW257GXIRkXy8l/MSNfhyYjMpI=;
- b=WP+Jw34blFFB7tJHDYqG3FV5rY6DBdN3wAa2xnRf+unTJim6SnFtth0B1fiOny+SU1
- Fbx+FGFNlD1FLJQ5gQp9Pl6COrtlqBzBEGKqUIKMrWcDVlSyrjARm/rWFtlFnzhr1TUZ
- 4NMQnUvVvXnUx+9AKBP3xH+kWG6t9MBP5mbaokXKxH4Qa6XZ9kyurHgktDNUdwvQ2Yea
- 8ZLg56wy2rzuGjHDABSOgBnILDd2yNk5TY1BWyoi+zDBX4iNj04iTUMS41Qce04ZDVj7
- QyOJAWv/wdl1ofF7Xb+sMVUy/3cdi0kfj5UJAOnQfXH1k+kxFyPNCPQYJVaslvOo6xhZ
- DOtQ==
+ bh=iriLwcxyVyeVT5mHrCfRAp1fipOzhQ4YyKJFEHU+3zo=;
+ b=hMoUCre9tNhFuzX2alPjHjPLcHbZ3tcD8NZziNZhuG8nK6N+sE7qy1s2B+y+GfKGM8
+ cg/Tkgt6o3eI4YMbPBM6eagLTzBE/VLKKkuHRU66Miiv/FpKFFfOVjvdpuB+iXGyGe7/
+ tzHFPoCXSrZC5x6hAFS046yu2/XCdl4j7K0pb2bLU7eqMMqXB/uI/W7/uZIuu/avsZui
+ 8DLCdgUcdMDR2pJVmTXcKtf/dHQ2qJgED872bnZfVVUqOPa3ky0fLCCMYILznqeuk4lf
+ J2clj2a5Wb4aOeB/UKqDVII4jYDzsu6BdOV/Kvuju5qL/cwb2GA0PBttctaMwOlJfmOL
+ XbBQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733065584; x=1733670384;
+ d=1e100.net; s=20230601; t=1733065585; x=1733670385;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Yc3dt5/qw9Eh/M5TloW257GXIRkXy8l/MSNfhyYjMpI=;
- b=rdqqpVbGXAS4iY+5xsrOPoXnMvWkf6AFspefsEjF5NMdH5om+e2Sr1J05K+/Zs8Ukz
- 3lXNVvqBGz9XMzg3rjnjjCFceQilZvzhCbUxJJpcnzGpPMXOP1zaMDduDcx/NoGcbvvh
- x7KU/kZt4WgCQ+YyRFnKvc79Mbfi+/rquwNlEYV42N+1A+inBijjb4/puW1EJHkAZ+x8
- kOtYyx7dIQc/+yX4ImbnPymuN9m0SkTjrLePmiugZ3NHaocc+2f6dY9yefl3/d4iV63T
- DIc8qyXWCMSn+Yux1jwMO5Q5zSYU9VsJGTAXvRIM8bPxEXYz5MzGFQ8dGP8+nwUL6Iqo
- rQLg==
-X-Gm-Message-State: AOJu0YxGqsioauCg5LFEPmZ7bN5m0nQYCVsTx30e7cI9ibw4qHNpXUhM
- xPidZ7GSmt2W0kB/JoiOioCcXY4QBMo1zEJVmuBm2HyXpdXSvzPgKakvyGoyf3Za/Q4fQjb03+t
- 133c=
-X-Gm-Gg: ASbGncuYEiSE8Yu2VycGa3jnExjIeRGTyhT6hHNUw4A09rLki+BN+JHcmwOkFfm8nqr
- cQGlfldjbPufw4IDNeeb0fyKQ8SMLmW35SWJ8SgS7OLDg3NntuRFlix19AbO5wLIjus4V586Ucw
- O3tmWVTfFaTmbsEXvLnU2oHbxxUR890mFLmHhBscxkQmIrqWjP9Q65mA919Yh4AuSqV9TYdps4k
- 6NJ1zEeGUfmSLUqIlzaoZTRgp5slrks5ybk8x4MIzLB/adNV9VnhPX86nbxK35kDlEYsxH4a0qt
- s+Z5K97Ug7/GqQhIGozj/utbe+dyy5quq+AM
-X-Google-Smtp-Source: AGHT+IH41rsgXYidKZOSJmpecjNfBawTzXj/+fQ3Ygx++dbvxpvO1j5IPuDfjLjrzOVTMK6A0xXEAQ==
-X-Received: by 2002:a05:6830:6f0c:b0:718:f57:11ea with SMTP id
- 46e09a7af769-71d65c7aea2mr15382950a34.3.1733065584326; 
- Sun, 01 Dec 2024 07:06:24 -0800 (PST)
+ bh=iriLwcxyVyeVT5mHrCfRAp1fipOzhQ4YyKJFEHU+3zo=;
+ b=w1eXxfg2gck8ypaMI4PzqJI7WaZ2yjSZdrbHW21A1w/9GrCjJGnZJ2PqCgCfqxs5Ld
+ uT+ppouqRuFni46uACjJ/+D+QiotBTBYDIaFIV92wWMBofgyXwDtJ81ZTYIN63emT7Hh
+ o9d75eFLeVMRsRLvGVYlj7hGCyqP6SMKBRy2651uSpVe/zpVqJ9oHKjx1cOl86aiZxS2
+ D2AYdNW7uvQmoBSGkUuY8uVAqpJlAefZIhs6Ph3/mrmQ8AlEnItpMOBbTVwllaOscSNQ
+ 5PMLztjSiJ2jJqjuFsVtxm2ZirxqUWubofH0YjUFun7Q8iK6KRstli5BLvO7MKwsO1Pu
+ kVnA==
+X-Gm-Message-State: AOJu0YyAr0dmWw0ynuRwk6DNTpOELCm6hWv5+3RrbE/wYQTe+qMpGxoh
+ y6IgNAdq5S/Ou7kSTDEBcv7PRDfOkWWuN7de4CZyQlsKeJO923JnQc5jcuvawHvRgC8duM0qnke
+ VmYI=
+X-Gm-Gg: ASbGncvWrvNQ3OfMJHuFS4DXwO2ceei8UKoCFFXGGlgek9LyTOPFhJzhOUfZPa5LfMh
+ UbNxhvxnRG0ewl9BWdqXkEeDGjyEbuSTmzh6KsuRWZe1rcTgQetBFZeT7pGnVriiE/fMticzIC9
+ w+qdd/fQSTy0nxzqfSFF9ox/D4CbOinIsXAE+jSk1UlDrzrKR/QTZYE7fbESpSPbCxHFsBRze4M
+ cVaDi7VdHzR3zEyPpaWlFBieZyeXyxLboPAUYBqeXQZR0OKVdqyFk/Wo6AD9pmonTLcNUHdoB+P
+ uJ5lrKEc37WmG3TO/isd04hPE0hk/DM9+JBX
+X-Google-Smtp-Source: AGHT+IGvSJ2Km+HFqFpAav1RHkXuAVWylo8G7mfdzhruKMHNZdL+gDFnSm3LP5obSV9x45iridxtXQ==
+X-Received: by 2002:a05:6830:348c:b0:718:9f3e:6bcb with SMTP id
+ 46e09a7af769-71d65c9f888mr15854279a34.10.1733065585062; 
+ Sun, 01 Dec 2024 07:06:25 -0800 (PST)
 Received: from localhost.localdomain (fixed-187-189-51-143.totalplay.net.
  [187.189.51.143]) by smtp.gmail.com with ESMTPSA id
- 46e09a7af769-71d7254473asm1822220a34.27.2024.12.01.07.06.23
+ 46e09a7af769-71d7254473asm1822220a34.27.2024.12.01.07.06.24
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 01 Dec 2024 07:06:23 -0800 (PST)
+ Sun, 01 Dec 2024 07:06:24 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org
-Subject: [PATCH 12/67] target/arm: Convert disas_add_sub_ext_reg to decodetree
-Date: Sun,  1 Dec 2024 09:05:11 -0600
-Message-ID: <20241201150607.12812-13-richard.henderson@linaro.org>
+Subject: [PATCH 13/67] target/arm: Convert disas_add_sub_reg to decodetree
+Date: Sun,  1 Dec 2024 09:05:12 -0600
+Message-ID: <20241201150607.12812-14-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241201150607.12812-1-richard.henderson@linaro.org>
 References: <20241201150607.12812-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::335;
- envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x335.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c2e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oo1-xc2e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,87 +97,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This includes ADD, SUB, ADDS, SUBS (extended register).
+This includes ADD, SUB, ADDS, SUBS (shifted register).
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/tcg/translate-a64.c | 65 +++++++++++-----------------------
- target/arm/tcg/a64.decode      |  9 +++++
- 2 files changed, 29 insertions(+), 45 deletions(-)
+ target/arm/tcg/translate-a64.c | 64 ++++++++++------------------------
+ target/arm/tcg/a64.decode      | 11 +++++-
+ 2 files changed, 28 insertions(+), 47 deletions(-)
 
 diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
-index ecc8899dd8..8f777875fe 100644
+index 8f777875fe..d570bbb696 100644
 --- a/target/arm/tcg/translate-a64.c
 +++ b/target/arm/tcg/translate-a64.c
-@@ -7864,57 +7864,27 @@ TRANS(AND_r, do_logic_reg, a, tcg_gen_and_i64, tcg_gen_andc_i64, false)
- TRANS(ANDS_r, do_logic_reg, a, tcg_gen_and_i64, tcg_gen_andc_i64, true)
- TRANS(EOR_r, do_logic_reg, a, tcg_gen_xor_i64, tcg_gen_eqv_i64, false)
+@@ -7912,47 +7912,22 @@ TRANS(SUB_ext, do_addsub_ext, a, true, false)
+ TRANS(ADDS_ext, do_addsub_ext, a, false, true)
+ TRANS(SUBS_ext, do_addsub_ext, a, true, true)
  
 -/*
-- * Add/subtract (extended register)
+- * Add/subtract (shifted register)
 - *
-- *  31|30|29|28       24|23 22|21|20   16|15  13|12  10|9  5|4  0|
-- * +--+--+--+-----------+-----+--+-------+------+------+----+----+
-- * |sf|op| S| 0 1 0 1 1 | opt | 1|  Rm   |option| imm3 | Rn | Rd |
-- * +--+--+--+-----------+-----+--+-------+------+------+----+----+
+- *  31 30 29 28       24 23 22 21 20   16 15     10 9    5 4    0
+- * +--+--+--+-----------+-----+--+-------+---------+------+------+
+- * |sf|op| S| 0 1 0 1 1 |shift| 0|  Rm   |  imm6   |  Rn  |  Rd  |
+- * +--+--+--+-----------+-----+--+-------+---------+------+------+
 - *
-- *  sf: 0 -> 32bit, 1 -> 64bit
-- *  op: 0 -> add  , 1 -> sub
-- *   S: 1 -> set flags
-- * opt: 00
-- * option: extension type (see DecodeRegExtend)
-- * imm3: optional shift to Rm
-- *
-- * Rd = Rn + LSL(extend(Rm), amount)
+- *    sf: 0 -> 32bit, 1 -> 64bit
+- *    op: 0 -> add  , 1 -> sub
+- *     S: 1 -> set flags
+- * shift: 00 -> LSL, 01 -> LSR, 10 -> ASR, 11 -> RESERVED
+- *  imm6: Shift amount to apply to Rm before the add/sub
 - */
--static void disas_add_sub_ext_reg(DisasContext *s, uint32_t insn)
-+static bool do_addsub_ext(DisasContext *s, arg_addsub_ext *a,
+-static void disas_add_sub_reg(DisasContext *s, uint32_t insn)
++static bool do_addsub_reg(DisasContext *s, arg_addsub_shift *a,
 +                          bool sub_op, bool setflags)
  {
 -    int rd = extract32(insn, 0, 5);
 -    int rn = extract32(insn, 5, 5);
--    int imm3 = extract32(insn, 10, 3);
--    int option = extract32(insn, 13, 3);
+-    int imm6 = extract32(insn, 10, 6);
 -    int rm = extract32(insn, 16, 5);
--    int opt = extract32(insn, 22, 2);
+-    int shift_type = extract32(insn, 22, 2);
 -    bool setflags = extract32(insn, 29, 1);
 -    bool sub_op = extract32(insn, 30, 1);
 -    bool sf = extract32(insn, 31, 1);
-+    TCGv_i64 tcg_rm, tcg_rn, tcg_rd, tcg_result;
++    TCGv_i64 tcg_rd, tcg_rn, tcg_rm, tcg_result;
  
--    TCGv_i64 tcg_rm, tcg_rn; /* temps */
--    TCGv_i64 tcg_rd;
+-    TCGv_i64 tcg_rd = cpu_reg(s, rd);
+-    TCGv_i64 tcg_rn, tcg_rm;
 -    TCGv_i64 tcg_result;
 -
--    if (imm3 > 4 || opt != 0) {
+-    if ((shift_type == 3) || (!sf && (imm6 > 31))) {
 -        unallocated_encoding(s);
 -        return;
-+    if (a->sa > 4) {
++    if (a->st == 3 || (!a->sf && (a->sa & 32))) {
 +        return false;
      }
  
-     /* non-flag setting ops may use SP */
-     if (!setflags) {
--        tcg_rd = cpu_reg_sp(s, rd);
-+        tcg_rd = cpu_reg_sp(s, a->rd);
-     } else {
--        tcg_rd = cpu_reg(s, rd);
-+        tcg_rd = cpu_reg(s, a->rd);
-     }
--    tcg_rn = read_cpu_reg_sp(s, rn, sf);
-+    tcg_rn = read_cpu_reg_sp(s, a->rn, a->sf);
- 
+-    tcg_rn = read_cpu_reg(s, rn, sf);
 -    tcg_rm = read_cpu_reg(s, rm, sf);
--    ext_and_shift_reg(tcg_rm, tcg_rm, option, imm3);
++    tcg_rd = cpu_reg(s, a->rd);
++    tcg_rn = read_cpu_reg(s, a->rn, a->sf);
 +    tcg_rm = read_cpu_reg(s, a->rm, a->sf);
-+    ext_and_shift_reg(tcg_rm, tcg_rm, a->st, a->sa);
+ 
+-    shift_reg_imm(tcg_rm, tcg_rm, sf, shift_type, imm6);
++    shift_reg_imm(tcg_rm, tcg_rm, a->sf, a->st, a->sa);
  
      tcg_result = tcg_temp_new_i64();
 -
      if (!setflags) {
          if (sub_op) {
              tcg_gen_sub_i64(tcg_result, tcg_rn, tcg_rm);
-@@ -7923,19 +7893,25 @@ static void disas_add_sub_ext_reg(DisasContext *s, uint32_t insn)
+@@ -7961,19 +7936,25 @@ static void disas_add_sub_reg(DisasContext *s, uint32_t insn)
          }
      } else {
          if (sub_op) {
@@ -198,44 +187,59 @@ index ecc8899dd8..8f777875fe 100644
 +    return true;
  }
  
-+TRANS(ADD_ext, do_addsub_ext, a, false, false)
-+TRANS(SUB_ext, do_addsub_ext, a, true, false)
-+TRANS(ADDS_ext, do_addsub_ext, a, false, true)
-+TRANS(SUBS_ext, do_addsub_ext, a, true, true)
++TRANS(ADD_r, do_addsub_reg, a, false, false)
++TRANS(SUB_r, do_addsub_reg, a, true, false)
++TRANS(ADDS_r, do_addsub_reg, a, false, true)
++TRANS(SUBS_r, do_addsub_reg, a, true, true)
 +
- /*
-  * Add/subtract (shifted register)
+ /* Data-processing (3 source)
   *
-@@ -8374,8 +8350,7 @@ static void disas_data_proc_reg(DisasContext *s, uint32_t insn)
+  *    31 30  29 28       24 23 21  20  16  15  14  10 9    5 4    0
+@@ -8348,15 +8329,6 @@ static void disas_data_proc_reg(DisasContext *s, uint32_t insn)
+     int op3 = extract32(insn, 10, 6);
+ 
      if (!op1) {
-         if (op2 & 8) {
-             if (op2 & 1) {
--                /* Add/sub (extended register) */
--                disas_add_sub_ext_reg(s, insn);
-+                goto do_unallocated;
-             } else {
-                 /* Add/sub (shifted register) */
-                 disas_add_sub_reg(s, insn);
+-        if (op2 & 8) {
+-            if (op2 & 1) {
+-                goto do_unallocated;
+-            } else {
+-                /* Add/sub (shifted register) */
+-                disas_add_sub_reg(s, insn);
+-            }
+-            return;
+-        }
+         goto do_unallocated;
+     }
+ 
 diff --git a/target/arm/tcg/a64.decode b/target/arm/tcg/a64.decode
-index 53629119b2..b4ccad34fb 100644
+index b4ccad34fb..4d422a7191 100644
 --- a/target/arm/tcg/a64.decode
 +++ b/target/arm/tcg/a64.decode
-@@ -727,6 +727,15 @@ ANDS_r          . 11 01010 .. . ..... ...... ..... .....  @logic_shift
+@@ -718,7 +718,7 @@ XPACD           1 10 11010110 00001 010001 11111 rd:5
+ # Logical (shifted reg)
+ 
+ &logic_shift    rd rn rm sf sa st n
+-@logic_shift    sf:1 .. ..... st:2 n:1 rm:5 sa:6 rn:5 rd:5
++@logic_shift    sf:1 .. ..... st:2 n:1 rm:5 sa:6 rn:5 rd:5  &logic_shift
+ 
+ AND_r           . 00 01010 .. . ..... ...... ..... .....  @logic_shift
+ ORR_r           . 01 01010 .. . ..... ...... ..... .....  @logic_shift
+@@ -726,6 +726,15 @@ EOR_r           . 10 01010 .. . ..... ...... ..... .....  @logic_shift
+ ANDS_r          . 11 01010 .. . ..... ...... ..... .....  @logic_shift
  
  # Add/subtract (shifted reg)
++
++&addsub_shift    rd rn rm sf sa st
++@addsub_shift    sf:1 .. ..... st:2 . rm:5 sa:6 rn:5 rd:5  &addsub_shift
++
++ADD_r           . 00 01011 .. 0 ..... ...... ..... .....  @addsub_shift
++SUB_r           . 10 01011 .. 0 ..... ...... ..... .....  @addsub_shift
++ADDS_r          . 01 01011 .. 0 ..... ...... ..... .....  @addsub_shift
++SUBS_r          . 11 01011 .. 0 ..... ...... ..... .....  @addsub_shift
++
  # Add/subtract (extended reg)
-+
-+&addsub_ext     rd rn rm sf sa st
-+@addsub_ext     sf:1 .. ........ rm:5 st:3 sa:3 rn:5 rd:5  &addsub_ext
-+
-+ADD_ext         . 00 01011001 ..... ... ... ..... .....  @addsub_ext
-+SUB_ext         . 10 01011001 ..... ... ... ..... .....  @addsub_ext
-+ADDS_ext        . 01 01011001 ..... ... ... ..... .....  @addsub_ext
-+SUBS_ext        . 11 01011001 ..... ... ... ..... .....  @addsub_ext
-+
- # Add/subtract (carry)
- # Rotate right into flags
- # Evaluate into flags
+ 
+ &addsub_ext     rd rn rm sf sa st
 -- 
 2.43.0
 
