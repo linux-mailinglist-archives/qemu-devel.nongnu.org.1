@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 889119DF5F7
-	for <lists+qemu-devel@lfdr.de>; Sun,  1 Dec 2024 16:07:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D4FFD9DF611
+	for <lists+qemu-devel@lfdr.de>; Sun,  1 Dec 2024 16:12:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tHlWo-0001K9-GA; Sun, 01 Dec 2024 10:06:30 -0500
+	id 1tHlWn-0001JI-Nh; Sun, 01 Dec 2024 10:06:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tHlWj-0001FS-0x
- for qemu-devel@nongnu.org; Sun, 01 Dec 2024 10:06:25 -0500
-Received: from mail-ot1-x334.google.com ([2607:f8b0:4864:20::334])
+ id 1tHlWk-0001G3-3Q
+ for qemu-devel@nongnu.org; Sun, 01 Dec 2024 10:06:26 -0500
+Received: from mail-oi1-x22a.google.com ([2607:f8b0:4864:20::22a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tHlWh-00048g-4Q
- for qemu-devel@nongnu.org; Sun, 01 Dec 2024 10:06:24 -0500
-Received: by mail-ot1-x334.google.com with SMTP id
- 46e09a7af769-71d41932d32so1332399a34.0
- for <qemu-devel@nongnu.org>; Sun, 01 Dec 2024 07:06:22 -0800 (PST)
+ id 1tHlWi-00049X-9z
+ for qemu-devel@nongnu.org; Sun, 01 Dec 2024 10:06:25 -0500
+Received: by mail-oi1-x22a.google.com with SMTP id
+ 5614622812f47-3ea47651a10so1256481b6e.0
+ for <qemu-devel@nongnu.org>; Sun, 01 Dec 2024 07:06:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1733065581; x=1733670381; darn=nongnu.org;
+ d=linaro.org; s=google; t=1733065583; x=1733670383; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=AzZUTxewRXWA3oangdGKG33zRvvNhBpt0lFMk8HOMsc=;
- b=uBh9JCUIOxReeCz61SxXXZzpKKNTauEk6QZBaeaSw2IT41BQAHyP1zfDGu7uaazqeI
- 7k2Q4r9L9+ZQJUirdH3A0ECwmSBoIQuGrZPdwqEkfAEGlkPv/FI/udjGldG6D+wtnMSb
- 1Krf9Pvmx13nQz6MaPnKyc4GKs6M5YK7QvzN4jsg1n2EON9AYWyLtQsveG5nm/aNt8Bl
- NVONrKAFfVZw3i+01oL2Q2gmMIH0FQ1NQHcOOAgBbXTffJybHblL6nAbQKSsNRK5oOVs
- zIH+zDd+/IXA59tSrx7lqibxnOl9lyqA7uVM3GYgpEo23yoUp2DoBT0gnV0WHkbsTuRf
- Q0Sg==
+ bh=hn1DooFW9yjO/34NI8hQORVL1+S9bswoCGIJ1fI74z8=;
+ b=XnpaBplvrsUmbV5DD0NBe+DESSRtfsjupGYsENMhX6T6pVar1hge85+dJJTGtRgJUh
+ Ozs2Y7fBEto/1tNEm92f6N2hcNMJHEvYTzmSg4ht8lymQe1x8xaKYQJJ2X1SF1n1CqqL
+ mr/m+Rwsw8aLA/tEkzXHzb4WCB2hJ/fMy3Y77BUXuVb+4kx7MbF64PVtcWUi0nQ1RgLq
+ ckVugjeO9kDjga5b0yyRdsoeTiQmPr4MBYumqGx3p+5vMpTI1Ni3YPvXVWx/K0k/xKRX
+ 0Ks5++iJ/yBtaMGDvXpeyc3I6KR1yrIKRrwvpppzcRZi+5SsZgxy0zFcgT6mEyICx0lQ
+ dkOw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733065581; x=1733670381;
+ d=1e100.net; s=20230601; t=1733065583; x=1733670383;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=AzZUTxewRXWA3oangdGKG33zRvvNhBpt0lFMk8HOMsc=;
- b=h9dKan+Xdjs9Y/fc+H5Gj9HHeuXJLndQI3n8vsAFw21IWy8TAQD1WLfYf1NvAcpzNZ
- x8gJUtn7Z7xWM2dr94CLBvWrEXSaE/JecyggAFiwFN5aXWaypFDzkLclwzeZ24fvIOrg
- wu4uCHDspfPbZK5DrmEnLYnJsoImykADGiIdAEPiggpsOa4mUmiBQ3MKOEDguwJzubKS
- S3n6Zk0s2q/Y0efXFtA8s346IkQ1gaU693PRsOjXMKVCVbhO5TSZOkGdfe81Dyd7reps
- ohu1GKUhM9Z3UAryLLsMW4QDrugzUYMjrs7kxw+fDPh6tK5FFjp1wogV/Q2EQ3ywAXUJ
- yZfw==
-X-Gm-Message-State: AOJu0YxTYPgflPb5xOBratDZ+kFgQR5GwUmXRcdaAciH747rylnRhyGZ
- ROAxI7/Qa+cZOcQrClR90xbC62dOVWm63Hf9s59eJVS2sPU1KhKtW+E0XjxtH3mEyEX9TOYo3rs
- gmzI=
-X-Gm-Gg: ASbGnctY2vDlSY2unMqJnwSJD7/xNI1/L3Uv7WW2XKBiZeQJzazjmfIZxUvOXP8CYPY
- MfNBthVOjr3KNJwBrAFBvSz+r52mrv1RKyAplxR+YDz4+eCfL5gAc2i9TGDm/sYJnCrK7WfIKuL
- xdwLgWHB8CgaU814haRoqwLJ5G5SQVs1aU3Poery/kziMvnXascJIcSOvZ+gJzpzMlA+PvcGf0R
- ajc/8A4g8dmrBXPVgObL/uywxdboTyjDC6MExN3WMQDrgB+gmGqIDnJTgRQWyWI1+yXawLUUSo8
- xPwg7L0npg5OEYa8j8Mz/HOt1nA3m2vTAmVe
-X-Google-Smtp-Source: AGHT+IHX5IFcLRH9NdPaSRtS64nZ167WpfTKK09wk8cnbDnzOxnBY/jYBthc+2EyaM2pB8mEyUt2bw==
-X-Received: by 2002:a05:6830:490c:b0:71d:6314:40dd with SMTP id
- 46e09a7af769-71d65cb2662mr16405842a34.14.1733065581619; 
- Sun, 01 Dec 2024 07:06:21 -0800 (PST)
+ bh=hn1DooFW9yjO/34NI8hQORVL1+S9bswoCGIJ1fI74z8=;
+ b=hLwcCJGxqiBN9OvaH0BA58zdDvSv5X1Tc7aExm65NIw+GSGba3Q4mwQANhp5OtR0Qz
+ NZKdGL2+6ExSR5Qk3yio5sOT4vbDjKMa1pAAz85Rzvh4ZY3KIl8xKlzJVNDpW2bCCDPq
+ vCKPKTkxsieScgtZDGgYri6L7NhMAogrW9ntXJ9x2vijl0lGyR7jTcGvkK7fTM7ozde7
+ +TdIEz4fCURLfXm4dquYVPK31kkOz+3K+zfQ0keQqRrYZra+tyj6PPJhfhWlyw6tfVfg
+ 4hWMTqRToBToZNH4Vr7cx0lNaahJREjBlTvN/DCPEGDC9IXvHpdiSYhrBLv2tx9bx1k9
+ AhVA==
+X-Gm-Message-State: AOJu0YzKVNJ7bH+hOkW8/xkuCNQiVF+/tln3GiKjiZAeC7WKn0BQxAzN
+ RFXBA/XNrewJqcLDarMtbm2hOm/N7V2pVFBCjq4ZWzcVGrET28rC4AJbs0K/mBgmgRWdpgIipRD
+ AlOY=
+X-Gm-Gg: ASbGncs471a7jWquyea4neXzgFo+2zIsTwCPKkeosMOxtQs1kweUpzUpgL87HuJpSQW
+ pZ9228rPfnIK5rvjAEhdSKJI/CPQtUlZL/6UepQDxNw8n6tE7dRDjvyDDwqn0FZgGgW+5xuKj0x
+ dbnBYs1U+WhOSgPC9RQEMNyH/K8Eh7C4jWQHp83bVev05+1GLwVqxCjG87I1OSxcfAGwoCDz3+a
+ pVG7yWGe5wFzUFUUSBhBIpP1nsP5MJo/HWisldAsJwE1nbCJrFtB01p4YBGbnJZZgrGRefIjOPy
+ inxc2fLmiHFewnH25LHyV4mZv+r9YBwKfcnB
+X-Google-Smtp-Source: AGHT+IFrjKICNyuSHDufXXZqbkY5V3vtdEwCKO/+Hy0n26814yrBc2tC8T4ZXwR+10oeRUQPVr4DsA==
+X-Received: by 2002:a05:6808:1802:b0:3e6:147:6c5 with SMTP id
+ 5614622812f47-3ea6dbd471cmr14257552b6e.10.1733065583049; 
+ Sun, 01 Dec 2024 07:06:23 -0800 (PST)
 Received: from localhost.localdomain (fixed-187-189-51-143.totalplay.net.
  [187.189.51.143]) by smtp.gmail.com with ESMTPSA id
- 46e09a7af769-71d7254473asm1822220a34.27.2024.12.01.07.06.20
+ 46e09a7af769-71d7254473asm1822220a34.27.2024.12.01.07.06.21
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 01 Dec 2024 07:06:20 -0800 (PST)
+ Sun, 01 Dec 2024 07:06:22 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org
-Subject: [PATCH 10/67] target/arm: Convert XPAC[ID] to decodetree
-Date: Sun,  1 Dec 2024 09:05:09 -0600
-Message-ID: <20241201150607.12812-11-richard.henderson@linaro.org>
+Subject: [PATCH 11/67] target/arm: Convert disas_logic_reg to decodetree
+Date: Sun,  1 Dec 2024 09:05:10 -0600
+Message-ID: <20241201150607.12812-12-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241201150607.12812-1-richard.henderson@linaro.org>
 References: <20241201150607.12812-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::334;
- envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x334.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::22a;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x22a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,166 +97,189 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Remove disas_data_proc_1src, as these were the last insns
-decoded by that function.
+This includes AND, BIC, ORR, ORN, EOR, EON, ANDS, BICS (shifted reg).
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/tcg/translate-a64.c | 99 +++++-----------------------------
- target/arm/tcg/a64.decode      |  3 ++
- 2 files changed, 16 insertions(+), 86 deletions(-)
+ target/arm/tcg/translate-a64.c | 117 ++++++++++++---------------------
+ target/arm/tcg/a64.decode      |   9 +++
+ 2 files changed, 51 insertions(+), 75 deletions(-)
 
 diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
-index 852545dfcc..d92fe68299 100644
+index d92fe68299..ecc8899dd8 100644
 --- a/target/arm/tcg/translate-a64.c
 +++ b/target/arm/tcg/translate-a64.c
-@@ -7793,6 +7793,18 @@ TRANS_FEAT(AUTIB, aa64_pauth, gen_pacaut, a, gen_helper_autib)
- TRANS_FEAT(AUTDA, aa64_pauth, gen_pacaut, a, gen_helper_autda)
- TRANS_FEAT(AUTDB, aa64_pauth, gen_pacaut, a, gen_helper_autdb)
+@@ -7805,96 +7805,65 @@ static bool do_xpac(DisasContext *s, int rd, NeonGenOne64OpEnvFn *fn)
+ TRANS_FEAT(XPACI, aa64_pauth, do_xpac, a->rd, gen_helper_xpaci)
+ TRANS_FEAT(XPACD, aa64_pauth, do_xpac, a->rd, gen_helper_xpacd)
  
-+static bool do_xpac(DisasContext *s, int rd, NeonGenOne64OpEnvFn *fn)
-+{
-+    if (s->pauth_active) {
-+        TCGv_i64 tcg_rd = cpu_reg(s, rd);
-+        fn(tcg_rd, tcg_env, tcg_rd);
+-/* Logical (shifted register)
+- *   31  30 29 28       24 23   22 21  20  16 15    10 9    5 4    0
+- * +----+-----+-----------+-------+---+------+--------+------+------+
+- * | sf | opc | 0 1 0 1 0 | shift | N |  Rm  |  imm6  |  Rn  |  Rd  |
+- * +----+-----+-----------+-------+---+------+--------+------+------+
+- */
+-static void disas_logic_reg(DisasContext *s, uint32_t insn)
++static bool do_logic_reg(DisasContext *s, arg_logic_shift *a,
++                         ArithTwoOp *fn, ArithTwoOp *inv_fn, bool setflags)
+ {
+     TCGv_i64 tcg_rd, tcg_rn, tcg_rm;
+-    unsigned int sf, opc, shift_type, invert, rm, shift_amount, rn, rd;
+ 
+-    sf = extract32(insn, 31, 1);
+-    opc = extract32(insn, 29, 2);
+-    shift_type = extract32(insn, 22, 2);
+-    invert = extract32(insn, 21, 1);
+-    rm = extract32(insn, 16, 5);
+-    shift_amount = extract32(insn, 10, 6);
+-    rn = extract32(insn, 5, 5);
+-    rd = extract32(insn, 0, 5);
+-
+-    if (!sf && (shift_amount & (1 << 5))) {
+-        unallocated_encoding(s);
+-        return;
++    if (!a->sf && (a->sa & (1 << 5))) {
++        return false;
+     }
+ 
+-    tcg_rd = cpu_reg(s, rd);
++    tcg_rd = cpu_reg(s, a->rd);
++    tcg_rn = cpu_reg(s, a->rn);
+ 
+-    if (opc == 1 && shift_amount == 0 && shift_type == 0 && rn == 31) {
+-        /* Unshifted ORR and ORN with WZR/XZR is the standard encoding for
+-         * register-register MOV and MVN, so it is worth special casing.
+-         */
+-        tcg_rm = cpu_reg(s, rm);
+-        if (invert) {
++    tcg_rm = read_cpu_reg(s, a->rm, a->sf);
++    if (a->sa) {
++        shift_reg_imm(tcg_rm, tcg_rm, a->sf, a->st, a->sa);
++    }
++
++    (a->n ? inv_fn : fn)(tcg_rd, tcg_rn, tcg_rm);
++    if (!a->sf) {
++        tcg_gen_ext32u_i64(tcg_rd, tcg_rd);
++    }
++    if (setflags) {
++        gen_logic_CC(a->sf, tcg_rd);
 +    }
 +    return true;
 +}
 +
-+TRANS_FEAT(XPACI, aa64_pauth, do_xpac, a->rd, gen_helper_xpaci)
-+TRANS_FEAT(XPACD, aa64_pauth, do_xpac, a->rd, gen_helper_xpacd)
++static bool trans_ORR_r(DisasContext *s, arg_logic_shift *a)
++{
++    /*
++     * Unshifted ORR and ORN with WZR/XZR is the standard encoding for
++     * register-register MOV and MVN, so it is worth special casing.
++     */
++    if (a->sa == 0 && a->st == 0 && a->rn == 31) {
++        TCGv_i64 tcg_rd = cpu_reg(s, a->rd);
++        TCGv_i64 tcg_rm = cpu_reg(s, a->rm);
 +
- /* Logical (shifted register)
-  *   31  30 29 28       24 23   22 21  20  16 15    10 9    5 4    0
-  * +----+-----+-----------+-------+---+------+--------+------+------+
-@@ -8377,84 +8389,6 @@ static void disas_cond_select(DisasContext *s, uint32_t insn)
-     }
- }
- 
--/* Data-processing (1 source)
-- *   31  30  29  28             21 20     16 15    10 9    5 4    0
-- * +----+---+---+-----------------+---------+--------+------+------+
-- * | sf | 1 | S | 1 1 0 1 0 1 1 0 | opcode2 | opcode |  Rn  |  Rd  |
-- * +----+---+---+-----------------+---------+--------+------+------+
-- */
--static void disas_data_proc_1src(DisasContext *s, uint32_t insn)
--{
--    unsigned int sf, opcode, opcode2, rn, rd;
--    TCGv_i64 tcg_rd;
--
--    if (extract32(insn, 29, 1)) {
--        unallocated_encoding(s);
++        if (a->n) {
+             tcg_gen_not_i64(tcg_rd, tcg_rm);
+-            if (!sf) {
++            if (!a->sf) {
+                 tcg_gen_ext32u_i64(tcg_rd, tcg_rd);
+             }
+         } else {
+-            if (sf) {
++            if (a->sf) {
+                 tcg_gen_mov_i64(tcg_rd, tcg_rm);
+             } else {
+                 tcg_gen_ext32u_i64(tcg_rd, tcg_rm);
+             }
+         }
 -        return;
++        return true;
+     }
+ 
+-    tcg_rm = read_cpu_reg(s, rm, sf);
+-
+-    if (shift_amount) {
+-        shift_reg_imm(tcg_rm, tcg_rm, sf, shift_type, shift_amount);
 -    }
 -
--    sf = extract32(insn, 31, 1);
--    opcode = extract32(insn, 10, 6);
--    opcode2 = extract32(insn, 16, 5);
--    rn = extract32(insn, 5, 5);
--    rd = extract32(insn, 0, 5);
+-    tcg_rn = cpu_reg(s, rn);
 -
--#define MAP(SF, O2, O1) ((SF) | (O1 << 1) | (O2 << 7))
--
--    switch (MAP(sf, opcode2, opcode)) {
--    case MAP(1, 0x01, 0x10): /* XPACI */
--        if (!dc_isar_feature(aa64_pauth, s) || rn != 31) {
--            goto do_unallocated;
--        } else if (s->pauth_active) {
--            tcg_rd = cpu_reg(s, rd);
--            gen_helper_xpaci(tcg_rd, tcg_env, tcg_rd);
--        }
+-    switch (opc | (invert << 2)) {
+-    case 0: /* AND */
+-    case 3: /* ANDS */
+-        tcg_gen_and_i64(tcg_rd, tcg_rn, tcg_rm);
 -        break;
--    case MAP(1, 0x01, 0x11): /* XPACD */
--        if (!dc_isar_feature(aa64_pauth, s) || rn != 31) {
--            goto do_unallocated;
--        } else if (s->pauth_active) {
--            tcg_rd = cpu_reg(s, rd);
--            gen_helper_xpacd(tcg_rd, tcg_env, tcg_rd);
--        }
+-    case 1: /* ORR */
+-        tcg_gen_or_i64(tcg_rd, tcg_rn, tcg_rm);
+-        break;
+-    case 2: /* EOR */
+-        tcg_gen_xor_i64(tcg_rd, tcg_rn, tcg_rm);
+-        break;
+-    case 4: /* BIC */
+-    case 7: /* BICS */
+-        tcg_gen_andc_i64(tcg_rd, tcg_rn, tcg_rm);
+-        break;
+-    case 5: /* ORN */
+-        tcg_gen_orc_i64(tcg_rd, tcg_rn, tcg_rm);
+-        break;
+-    case 6: /* EON */
+-        tcg_gen_eqv_i64(tcg_rd, tcg_rn, tcg_rm);
 -        break;
 -    default:
--    do_unallocated:
--    case MAP(0, 0x00, 0x00): /* RBIT */
--    case MAP(1, 0x00, 0x00):
--    case MAP(0, 0x00, 0x01): /* REV16 */
--    case MAP(1, 0x00, 0x01):
--    case MAP(0, 0x00, 0x02): /* REV/REV32 */
--    case MAP(1, 0x00, 0x02):
--    case MAP(1, 0x00, 0x03): /* REV64 */
--    case MAP(0, 0x00, 0x04): /* CLZ */
--    case MAP(1, 0x00, 0x04):
--    case MAP(0, 0x00, 0x05): /* CLS */
--    case MAP(1, 0x00, 0x05):
--    case MAP(1, 0x01, 0x00): /* PACIA */
--    case MAP(1, 0x01, 0x01): /* PACIB */
--    case MAP(1, 0x01, 0x02): /* PACDA */
--    case MAP(1, 0x01, 0x03): /* PACDB */
--    case MAP(1, 0x01, 0x04): /* AUTIA */
--    case MAP(1, 0x01, 0x05): /* AUTIB */
--    case MAP(1, 0x01, 0x06): /* AUTDA */
--    case MAP(1, 0x01, 0x07): /* AUTDB */
--    case MAP(1, 0x01, 0x08): /* PACIZA */
--    case MAP(1, 0x01, 0x09): /* PACIZB */
--    case MAP(1, 0x01, 0x0a): /* PACDZA */
--    case MAP(1, 0x01, 0x0b): /* PACDZB */
--    case MAP(1, 0x01, 0x0c): /* AUTIZA */
--    case MAP(1, 0x01, 0x0d): /* AUTIZB */
--    case MAP(1, 0x01, 0x0e): /* AUTDZA */
--    case MAP(1, 0x01, 0x0f): /* AUTDZB */
--        unallocated_encoding(s);
+-        assert(FALSE);
 -        break;
 -    }
 -
--#undef MAP
--}
+-    if (!sf) {
+-        tcg_gen_ext32u_i64(tcg_rd, tcg_rd);
+-    }
 -
--
+-    if (opc == 3) {
+-        gen_logic_CC(sf, tcg_rd);
+-    }
++    return do_logic_reg(s, a, tcg_gen_or_i64, tcg_gen_orc_i64, false);
+ }
+ 
++TRANS(AND_r, do_logic_reg, a, tcg_gen_and_i64, tcg_gen_andc_i64, false)
++TRANS(ANDS_r, do_logic_reg, a, tcg_gen_and_i64, tcg_gen_andc_i64, true)
++TRANS(EOR_r, do_logic_reg, a, tcg_gen_xor_i64, tcg_gen_eqv_i64, false)
++
  /*
-  * Data processing - register
-  *  31  30 29  28      25    21  20  16      10         0
-@@ -8464,7 +8398,6 @@ static void disas_data_proc_1src(DisasContext *s, uint32_t insn)
-  */
- static void disas_data_proc_reg(DisasContext *s, uint32_t insn)
- {
--    int op0 = extract32(insn, 30, 1);
-     int op1 = extract32(insn, 28, 1);
-     int op2 = extract32(insn, 21, 4);
-     int op3 = extract32(insn, 10, 6);
-@@ -8517,19 +8450,13 @@ static void disas_data_proc_reg(DisasContext *s, uint32_t insn)
-         disas_cond_select(s, insn);
-         break;
- 
--    case 0x6: /* Data-processing */
--        if (op0) {    /* (1 source) */
--            disas_data_proc_1src(s, insn);
--        } else {      /* (2 source) */
--            goto do_unallocated;
--        }
--        break;
-     case 0x8 ... 0xf: /* (3 source) */
-         disas_data_proc_3src(s, insn);
-         break;
- 
-     default:
-     do_unallocated:
-+    case 0x6: /* Data-processing */
-         unallocated_encoding(s);
-         break;
+  * Add/subtract (extended register)
+  *
+@@ -8411,11 +8380,9 @@ static void disas_data_proc_reg(DisasContext *s, uint32_t insn)
+                 /* Add/sub (shifted register) */
+                 disas_add_sub_reg(s, insn);
+             }
+-        } else {
+-            /* Logical (shifted register) */
+-            disas_logic_reg(s, insn);
++            return;
+         }
+-        return;
++        goto do_unallocated;
      }
+ 
+     switch (op2) {
 diff --git a/target/arm/tcg/a64.decode b/target/arm/tcg/a64.decode
-index 9083ac4ac3..0e04ab6ce4 100644
+index 0e04ab6ce4..53629119b2 100644
 --- a/target/arm/tcg/a64.decode
 +++ b/target/arm/tcg/a64.decode
-@@ -712,6 +712,9 @@ AUTIB           1 10 11010110 00001 00.101 ..... .....  @pacaut
- AUTDA           1 10 11010110 00001 00.110 ..... .....  @pacaut
- AUTDB           1 10 11010110 00001 00.111 ..... .....  @pacaut
+@@ -716,6 +716,15 @@ XPACI           1 10 11010110 00001 010000 11111 rd:5
+ XPACD           1 10 11010110 00001 010001 11111 rd:5
  
-+XPACI           1 10 11010110 00001 010000 11111 rd:5
-+XPACD           1 10 11010110 00001 010001 11111 rd:5
-+
  # Logical (shifted reg)
++
++&logic_shift    rd rn rm sf sa st n
++@logic_shift    sf:1 .. ..... st:2 n:1 rm:5 sa:6 rn:5 rd:5
++
++AND_r           . 00 01010 .. . ..... ...... ..... .....  @logic_shift
++ORR_r           . 01 01010 .. . ..... ...... ..... .....  @logic_shift
++EOR_r           . 10 01010 .. . ..... ...... ..... .....  @logic_shift
++ANDS_r          . 11 01010 .. . ..... ...... ..... .....  @logic_shift
++
  # Add/subtract (shifted reg)
  # Add/subtract (extended reg)
+ # Add/subtract (carry)
 -- 
 2.43.0
 
