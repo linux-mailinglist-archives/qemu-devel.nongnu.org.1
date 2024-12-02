@@ -2,89 +2,100 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5D069E09FA
-	for <lists+qemu-devel@lfdr.de>; Mon,  2 Dec 2024 18:32:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E83049E0A0A
+	for <lists+qemu-devel@lfdr.de>; Mon,  2 Dec 2024 18:34:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tIAH3-0006yH-OU; Mon, 02 Dec 2024 12:31:53 -0500
+	id 1tIAJ3-00010u-I1; Mon, 02 Dec 2024 12:33:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tIAH1-0006y2-F6
- for qemu-devel@nongnu.org; Mon, 02 Dec 2024 12:31:51 -0500
-Received: from mail-oi1-x22d.google.com ([2607:f8b0:4864:20::22d])
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1tIAJ2-00010i-Af
+ for qemu-devel@nongnu.org; Mon, 02 Dec 2024 12:33:56 -0500
+Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tIAGz-0001fY-OZ
- for qemu-devel@nongnu.org; Mon, 02 Dec 2024 12:31:51 -0500
-Received: by mail-oi1-x22d.google.com with SMTP id
- 5614622812f47-3ea4f9825f6so1946254b6e.2
- for <qemu-devel@nongnu.org>; Mon, 02 Dec 2024 09:31:49 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1tIAJ0-0002Jc-ST
+ for qemu-devel@nongnu.org; Mon, 02 Dec 2024 12:33:56 -0500
+Received: by mail-pl1-x62e.google.com with SMTP id
+ d9443c01a7336-2155312884fso28305515ad.0
+ for <qemu-devel@nongnu.org>; Mon, 02 Dec 2024 09:33:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1733160708; x=1733765508; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id:from
- :to:cc:subject:date:message-id:reply-to;
- bh=oVRbtBMpT9Pl4abyCO289m/wQ1u1XGVEpn8gl1amAjg=;
- b=nHBw8duGe4HJg6Q6lSdOgM4EXkrm5VNJqwp+NTZFJ4kC6mLGg1yERwAWz1EpQAvUsB
- C/HNskMRafS/UA8nzqLBvQh6oPX/cudSga0I81QJhEDPrbIuRqGu2gZ1YJcnb9e+MG/i
- 2Bk541I7k0lb4MFwTcUQHm4yUJZ0Ge0s72jaSYFhI99l/vNoc76di12yZLcPmJH4GL7S
- Xptkk1YvD8KysVT3HJFgHA1PlkhH9LxjFkAT9LoimcXb86O5mvIjop9BHhXvx0upb321
- bGNe8FQmhecX0MwMtybc1I/QbY48+MQX3Vjc2hLMrafbEsuIry8qCt+mUgGRBMrE/Bgg
- zQDA==
+ d=linaro.org; s=google; t=1733160833; x=1733765633; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=Xtg3i1AVd58qb/9RHgv2gvLH1lXXGrGHzc3ZJoeIZf8=;
+ b=Z2PqTwDNvD+UwxXobrYVTAayKa4QtB9Spotb7snkcZWbVrtH1wcqwfACISFw+3/9t1
+ ifsKed0PqWaLukku6QD0Q+8j4k/ljmyiSVk0v3G62TwWduZnBaoYgc8OcZOa5iu2JbyI
+ lOX17/bURAcQxb5hKCqXMA3aBBNBjcmvZOBTQChNaFx+BmjWo7ruRfX6VPIvSHtzHVcu
+ ALkVXIsqcTRrkda1J1cNQxcymPh/zElzJE9s+jqT0CkiIBB5p/x9/BChdQB8SDoHIeFF
+ GSx2RXapfuFy9fgoQwq+aw9uSxzhr3Fj1QQ1786VAb8mKNvmWgnE1es6esR4xT2Ib4Kc
+ IiAg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733160708; x=1733765508;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20230601; t=1733160833; x=1733765633;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=oVRbtBMpT9Pl4abyCO289m/wQ1u1XGVEpn8gl1amAjg=;
- b=iH5YzUozNJj6Ut/ByZ3Teejn6XpRvr8LYWcbTt6gCC/YytqgzHFPf4OwqrTEXMydGF
- OHaqxYrYm2KEcr9ssCl6NdITyg6o7anovXTo9HCU102QFfe6vv1VD5v4wPc14b0wepzu
- pgncVVWj9OBC+BpmLJCvlXvRPn430M/z8pUc7xD18+/PQ89eqJsS5apGWbsRyt+IfAEp
- IeYSO2It8GtZFxjq4ARWxfigHq3NcrraOVz1/ugDcVtQSD7BhYey8OzN9gsNFYq9+JjH
- bbZf/bWllyY01rxIkz/miYVnL/yjcw7/3q4Q6qSHxXoSSp8jrcSc83HdqcSQNyRYM+BQ
- lY0g==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVpXPyHH4XPCeCUwB3KL/Us5kb4vkNhxMXuwy3Uaqpsls2ViCcpx1g/KXlnJ4K/nl4d3/J9XB2inyNC@nongnu.org
-X-Gm-Message-State: AOJu0YwLMNcFrnEsMM2asVRVD+4wt80ZFUzT3RIKTdlo5aiiG4V6krVF
- 6mNURxv81WpzuPrcfJg57ekRDmqI4VkXMS2ZCyC39qTByG+421sbRKn7UnK//W8=
-X-Gm-Gg: ASbGncsZrQgRX+oik90YF74TP8WrBeRRmMg35FAj4EJH/P7FIS9e6bnvjyd/s6FpBQ9
- zD73g6IMWUAtsum9Kqq6SAthCvdyZeA7HzkpUQnU3ejv+dFPc+f6wS8RtJjmr8e8vG/LMRuAhcl
- E1uuzbUXKWH1N+k5fqlVbDI3rHbAQ/qYIL3NdesMBb/8NmZyJWsSzTranNjlqSpj1COPo09z9Ua
- Tac4IrTdeKKG3cbt5mQQ5o5xSPdAHCTw+e+NbfmCv6QCeprHw95a445VFNf/Rf9UgwXmT0=
-X-Google-Smtp-Source: AGHT+IGX7KHQogLkxKX79PGljGXpdY+uQZKsRtqd6EO5GFjioHla9fxd+ByMUl6DN/21D11Dw/7FgQ==
-X-Received: by 2002:a05:6808:18a8:b0:3e7:61e6:8113 with SMTP id
- 5614622812f47-3ea6dc278b2mr19937289b6e.23.1733160708557; 
- Mon, 02 Dec 2024 09:31:48 -0800 (PST)
-Received: from [192.168.170.227] ([187.217.227.247])
- by smtp.gmail.com with ESMTPSA id
- 5614622812f47-3ea86346f18sm2381778b6e.49.2024.12.02.09.31.47
+ bh=Xtg3i1AVd58qb/9RHgv2gvLH1lXXGrGHzc3ZJoeIZf8=;
+ b=NLLUAq+vcAidaHLPaEqMGuOUuN8WslhyD6NevmXQIeow30jGNoS3lH5VyHblJdI0yR
+ F8dUiUb2XFIuys+sQ1fRNyxmk82bakgMpbZx26zX4Tnqas8aYvUe70b+d8+gYT+SaZRz
+ Sxopk7BmCJqNooEibV4+JSFBlTzk6U1vo7t+16+ahkUvIIz8D9qL8Iby1vIHt/oChzdl
+ noRLsB8GeinkY5tqLYKYrawW+GHVm/HXP5+gKrkycC5gI6+Vskhxru74tEa9fnEHzO/u
+ H1YiY51q8y2K4Kh8TsYbCQlTS2+FoZ6ULEiUMLRjLtyTi4mqFBcCCvxB3OCHQTsSu4Vr
+ BnUw==
+X-Gm-Message-State: AOJu0YwYNKGViNmbM0HcGUd6sFIM212Dw4eKBZMalOg8LsPQGSmxq9Ud
+ rKRZ1NxKUuInlwdQ1YQJkryYbKmfN62gSDwA3KQlEUdBUkayWUy8yzSnpi4GMyI=
+X-Gm-Gg: ASbGnctSzE9Vtrxs40flri5F41aOcVy41CsL+r/lWvOvZ9odVqWG7WD7+aIaENR/+BT
+ eimMmvplHLf/DeIEYbMGw39bkH0ZZAFQ3Gzd3OYUzfM1H0nsTFJHTZlb9YfNJCWXJaHn2mQ498d
+ b3i2XExvXUIX3CKT+zKba4prdin/GvOhWXb/r4ogD6eIeySZNW4fgXKQ9sogtnX0Dmf6d+n1oUl
+ aKayOthS1Y+U+QJap5A0SE01z0OcpbcVp8a6p8xnbqYW3H/aCuiOHCO8+E5mJbIz0QGjJNCf4Yx
+ IxT4XgQ163Vegl/LUHT6tQ==
+X-Google-Smtp-Source: AGHT+IFmNMZT/3DIWt22rznR4CoBP51jtbDXLLhy9SbzCGhIclEDiQEDmeCdu+vXwyiAiG5Vlqj0XQ==
+X-Received: by 2002:a17:902:e54f:b0:215:9a6a:63cb with SMTP id
+ d9443c01a7336-2159a6a6775mr55650265ad.28.1733160833376; 
+ Mon, 02 Dec 2024 09:33:53 -0800 (PST)
+Received: from [192.168.1.67] (216-180-64-156.dyn.novuscom.net.
+ [216.180.64.156]) by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-215219c5533sm79437925ad.256.2024.12.02.09.33.52
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 02 Dec 2024 09:31:48 -0800 (PST)
-Message-ID: <ecae2fb8-e421-4836-9d1a-d1a6a7bc56e6@linaro.org>
-Date: Mon, 2 Dec 2024 11:31:45 -0600
+ Mon, 02 Dec 2024 09:33:52 -0800 (PST)
+Message-ID: <6cd6b3fd-8362-4fa8-b6e5-e0e3aded3215@linaro.org>
+Date: Mon, 2 Dec 2024 09:33:52 -0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 for-10.0 44/54] target/openrisc: Set default NaN
- pattern explicitly
-To: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
-References: <20241202131347.498124-1-peter.maydell@linaro.org>
- <20241202131347.498124-45-peter.maydell@linaro.org>
+Subject: Re: [PATCH v2] tests/functional/aarch64: add tests for FEAT_RME
 Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20241202131347.498124-45-peter.maydell@linaro.org>
+To: Peter Maydell <peter.maydell@linaro.org>,
+ Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+Cc: qemu-devel@nongnu.org, =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>,
+ Troy Lee <leetroy@gmail.com>, Alistair Francis <alistair@alistair23.me>,
+ Andrew Jeffery <andrew@codeconstruct.com.au>, alex.bennee@linaro.org,
+ Jamin Lin <jamin_lin@aspeedtech.com>, qemu-arm@nongnu.org,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Steven Lee <steven_lee@aspeedtech.com>,
+ Niek Linnenbank <nieklinnenbank@gmail.com>, Joel Stanley <joel@jms.id.au>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
+References: <20241128213729.1021961-1-pierrick.bouvier@linaro.org>
+ <4b3180bd-8054-4431-a594-0445ce4837aa@linaro.org>
+ <5620efa2-98c6-4613-b866-67e91ac6acf8@linaro.org>
+ <21d8399a-91bf-4599-a73d-351f9f0c147c@linaro.org>
+ <CAFEAcA-4_tnm9iPCf_3E4HKKXJ9h6w9oMiYaN0Y4s9wmpji3Jg@mail.gmail.com>
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+In-Reply-To: <CAFEAcA-4_tnm9iPCf_3E4HKKXJ9h6w9oMiYaN0Y4s9wmpji3Jg@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::22d;
- envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x22d.google.com
-X-Spam_score_int: 12
-X-Spam_score: 1.2
-X-Spam_bar: +
-X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
- DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x62e.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,29 +111,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/2/24 07:13, Peter Maydell wrote:
-> Set the default NaN pattern explicitly for openrisc.
+On 12/2/24 03:04, Peter Maydell wrote:
+> On Mon, 2 Dec 2024 at 10:58, Marcin Juszkiewicz
+> <marcin.juszkiewicz@linaro.org> wrote:
+>>
+>> W dniu 1.12.2024 o 19:09, Pierrick Bouvier pisze:
+>>> Hi Marcin,
+>>>
+>>> On 12/1/24 05:34, Marcin Juszkiewicz wrote:
+>>
+>>>> So RME tests probably need longer timeouts or would not run at all.
+>>>>
+>>>
+>>> By any chance, are you running those tests in debug mode?
+>>
+>> zOMG, thanks! Turned out that I left "--enable-debug" in my local build
+>> and forgot to remove it.
+>>
+>> 90s vs 2974s is a difference ;D
 > 
-> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-> ---
->   target/openrisc/cpu.c | 2 ++
->   1 file changed, 2 insertions(+)
+> That is a particularly awful debug-to-non-debug performance
+> difference; it might be worth looking into what exactly
+> is causing it.
 > 
-> diff --git a/target/openrisc/cpu.c b/target/openrisc/cpu.c
-> index b96561d1f26..3ccf85e95f0 100644
-> --- a/target/openrisc/cpu.c
-> +++ b/target/openrisc/cpu.c
-> @@ -111,6 +111,8 @@ static void openrisc_cpu_reset_hold(Object *obj, ResetType type)
->        */
->       set_float_2nan_prop_rule(float_2nan_prop_x87, &cpu->env.fp_status);
->   
-> +    /* Default NaN: sign bit clear, frac msb set */
-> +    set_float_default_nan_pattern(0b01000000, &cpu->env.fp_status);
->   
->   #ifndef CONFIG_USER_ONLY
->       cpu->env.picmr = 0x00000000;
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Indeed.
 
-r~
+This test boots a nested VM (using kvm, not tcg), do you any idea why 
+such use case could be so slow with QEMU?
+
+> -- PMM
+
 
