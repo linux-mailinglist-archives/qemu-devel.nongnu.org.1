@@ -2,88 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B73B59DFCD4
+	by mail.lfdr.de (Postfix) with ESMTPS id EC2B19DFCD5
 	for <lists+qemu-devel@lfdr.de>; Mon,  2 Dec 2024 10:12:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tI2Sg-0006A4-Js; Mon, 02 Dec 2024 04:11:22 -0500
+	id 1tI2Sk-0006Ae-MV; Mon, 02 Dec 2024 04:11:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <saif.abrar@linux.vnet.ibm.com>)
- id 1tI2Sb-00069S-1K; Mon, 02 Dec 2024 04:11:17 -0500
+ id 1tI2Sc-00069s-Ou; Mon, 02 Dec 2024 04:11:18 -0500
 Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <saif.abrar@linux.vnet.ibm.com>)
- id 1tI2SY-0006ov-FK; Mon, 02 Dec 2024 04:11:15 -0500
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4B1KZvTY025439;
- Mon, 2 Dec 2024 09:11:08 GMT
+ id 1tI2Sb-0006p3-5n; Mon, 02 Dec 2024 04:11:18 -0500
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4B23bLY4014033;
+ Mon, 2 Dec 2024 09:11:10 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
  :content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=pp1; bh=AfPfLRpI0P69COptG
- 3hJTxdEPTesTiqhnE/FNN0y+iU=; b=LCJqhE/qDVZGxKgqhulfyv6nIrDl89uBS
- 0C60qzzkxddMsHhymF/+Difm6SnldrD92QyYXandbEW1UnS/W/iBkMRvqZNK5U6C
- sIfTJLdwMb6toDqzvVshsB7Rye/JI+UzThOgXtlG3brjxDsAQB53X9eeKt5yvmER
- tAJsPrCiW8ESvrH0fhMXCyV9lVC/KQbK8nTZgskL4/xag/22KD/zgbMybKxplwga
- opkUGhU7J96MTLPqgpZypdywbL+BeaKz1CDROS6xvORa7u425INVbINddGmzfOIF
- JND+QF9RMdTbrYBMdOvb4Pl7O6XUNjvGm6vdm8odR49j4wIz9mb6Q==
+ :mime-version:references:subject:to; s=pp1; bh=zhsp8mSWhFuapcoc/
+ 8Lyqxhgye/GcnVptf9lMJnYsnw=; b=PWQcGeJBXQ/wMkoU0RRpsnCfY6kA9UuA8
+ rjhDxuniDrep36lzxU8/gaWgZ+ObCSfI7Ld1T8Fpf2ZXjbRd9+gPYXVClWe6vNXt
+ SEnA4vQpJrBXx4o5RJiRLDSTytZ0sZkAXCTqt5lZktn+IoUsBCS82ENl/DtAbmVA
+ rqZIifLOI2oY69kjuNKTiIPFRyIYQyq4X6mWMrMDo9oNGj6t4VY8WmIQogHyyo3J
+ jJaqgrdx02b+lIRIS6szgmXy3WUWbPUPUAHzt6sW/vA9yjMZdlqCjnRke3cXazA1
+ mjAVdAlDMiDjUAJMzGSVfxLt5Uu3/uyYtWoNCRWplZa4u6/LeBjXw==
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 437tbx7jq1-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 437s4hqs9e-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 02 Dec 2024 09:11:07 +0000 (GMT)
-Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
- by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 4B293w7Q015256;
- Mon, 2 Dec 2024 09:11:07 GMT
-Received: from ppma13.dal12v.mail.ibm.com
- (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 437tbx7jpw-1
+ Mon, 02 Dec 2024 09:11:09 +0000 (GMT)
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+ by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 4B2918SQ031217;
+ Mon, 2 Dec 2024 09:11:09 GMT
+Received: from ppma12.dal12v.mail.ibm.com
+ (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 437s4hqs9c-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 02 Dec 2024 09:11:07 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
- by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4B27duCr008156;
- Mon, 2 Dec 2024 09:11:06 GMT
-Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
- by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 438f8j9yrw-1
+ Mon, 02 Dec 2024 09:11:09 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4B25TKYV020366;
+ Mon, 2 Dec 2024 09:11:08 GMT
+Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
+ by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 438d1s24rs-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 02 Dec 2024 09:11:06 +0000
+ Mon, 02 Dec 2024 09:11:08 +0000
 Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com
  [10.39.53.230])
- by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 4B29B6jV40829542
+ by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 4B29B7cg15401644
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 2 Dec 2024 09:11:06 GMT
+ Mon, 2 Dec 2024 09:11:07 GMT
 Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id F162F58062;
- Mon,  2 Dec 2024 09:11:05 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id BBC245805A;
+ Mon,  2 Dec 2024 09:11:07 +0000 (GMT)
 Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 5F08258054;
- Mon,  2 Dec 2024 09:11:05 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 2967A58068;
+ Mon,  2 Dec 2024 09:11:07 +0000 (GMT)
 Received: from gfwr515.rchland.ibm.com (unknown [9.10.239.103])
  by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Mon,  2 Dec 2024 09:11:05 +0000 (GMT)
+ Mon,  2 Dec 2024 09:11:07 +0000 (GMT)
 From: Saif Abrar <saif.abrar@linux.vnet.ibm.com>
 To: kbusch@kernel.org, its@irrelevant.dk, foss@defmacro.it
 Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org, npiggin@gmail.com,
  saif.abrar@linux.vnet.ibm.com
-Subject: [PATCH v3 1/2] hw/nvme: Add properties for PCI vendor/device IDs
-Date: Mon,  2 Dec 2024 03:10:48 -0600
-Message-Id: <20241202091049.2250-2-saif.abrar@linux.vnet.ibm.com>
+Subject: [PATCH v3 2/2] hw/nvme: Add property for user-specified IEEE-OUI ID
+Date: Mon,  2 Dec 2024 03:10:49 -0600
+Message-Id: <20241202091049.2250-3-saif.abrar@linux.vnet.ibm.com>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241202091049.2250-1-saif.abrar@linux.vnet.ibm.com>
 References: <20241202091049.2250-1-saif.abrar@linux.vnet.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: YIy_pr3vfeotnQmdwAd89NcOILfhjdcY
-X-Proofpoint-GUID: BlJBPvgbQdx2peSLQ0_-2XjThcSGKzXV
+X-Proofpoint-GUID: AtJd0yHU9lyZg1OtS88_GsrJdcHXKaVM
+X-Proofpoint-ORIG-GUID: UbqbPl7gfJ0-h1GZSGVJEptrGpFUKSTT
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
  definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 impostorscore=0
- mlxscore=0 suspectscore=0 mlxlogscore=999 priorityscore=1501 bulkscore=0
- phishscore=0 adultscore=0 malwarescore=0 spamscore=0 lowpriorityscore=0
+ clxscore=1011 suspectscore=0
+ adultscore=0 mlxscore=0 mlxlogscore=999 lowpriorityscore=0 bulkscore=0
+ impostorscore=0 phishscore=0 spamscore=0 malwarescore=0 priorityscore=1501
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2411120000
  definitions=main-2412020079
 Received-SPF: none client-ip=148.163.158.5;
@@ -111,89 +111,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add properties for user specified PCI vendor,
-device, subsystem vendor and subsystem IDs.
-
-e.g. PCI IDs to be specified as follows:
--device nvme,id_vendor=0xABCD,id_device=0xA0B0,id_subsys_vendor=0xEF00,id_subsys=0xEF01
+User-specified IEEE-OUI ID (Identify Controller bytes 75:73)
+is to be specified in LE format.
+(e.g. ieee_oui=0xABCDEF => Byte[73]=0xEF, Byte[74]=0xCD, Byte[75]=0xAB)
 
 Signed-off-by: Saif Abrar <saif.abrar@linux.vnet.ibm.com>
 ---
-v2 -> v3:
-- User-specified PCI properties are used only when use_intel_id is not set.
-- PCI properties can be set independently of each other.
-- Setting IEEE-OUI moved to a different commit.
+This is a new commit for setting IEEE-OUI ID.
 
- hw/nvme/ctrl.c | 28 +++++++++++++++++++++++++---
- hw/nvme/nvme.h |  5 +++++
- 2 files changed, 30 insertions(+), 3 deletions(-)
+ hw/nvme/ctrl.c | 24 ++++++++++++++++++++++++
+ hw/nvme/nvme.h |  2 ++
+ 2 files changed, 26 insertions(+)
 
 diff --git a/hw/nvme/ctrl.c b/hw/nvme/ctrl.c
-index 69bce20f66..e1aaab01bc 100644
+index e1aaab01bc..cf7b487a67 100644
 --- a/hw/nvme/ctrl.c
 +++ b/hw/nvme/ctrl.c
-@@ -8477,7 +8477,10 @@ out:
- static void nvme_init_sriov(NvmeCtrl *n, PCIDevice *pci_dev, uint16_t offset)
- {
-     uint16_t vf_dev_id = n->params.use_intel_id ?
--                         PCI_DEVICE_ID_INTEL_NVME : PCI_DEVICE_ID_REDHAT_NVME;
-+                         PCI_DEVICE_ID_INTEL_NVME :
-+                         (n->params.id_device ?
-+                          n->params.id_device : PCI_DEVICE_ID_REDHAT_NVME);
-+
-     NvmePriCtrlCap *cap = &n->pri_ctrl_cap;
-     uint64_t bar_size = nvme_mbar_size(le16_to_cpu(cap->vqfrsm),
-                                       le16_to_cpu(cap->vifrsm),
-@@ -8550,8 +8553,22 @@ static bool nvme_init_pci(NvmeCtrl *n, PCIDevice *pci_dev, Error **errp)
-         pci_config_set_vendor_id(pci_conf, PCI_VENDOR_ID_INTEL);
-         pci_config_set_device_id(pci_conf, PCI_DEVICE_ID_INTEL_NVME);
+@@ -8708,6 +8708,10 @@ static void nvme_init_ctrl(NvmeCtrl *n, PCIDevice *pci_dev)
+         id->ieee[0] = 0xb3;
+         id->ieee[1] = 0x02;
+         id->ieee[2] = 0x00;
++    } else if (n->params.ieee_oui) {
++        id->ieee[0] = extract32(n->params.ieee_oui, 0,  8);
++        id->ieee[1] = extract32(n->params.ieee_oui, 8,  8);
++        id->ieee[2] = extract32(n->params.ieee_oui, 16, 8);
      } else {
--        pci_config_set_vendor_id(pci_conf, PCI_VENDOR_ID_REDHAT);
--        pci_config_set_device_id(pci_conf, PCI_DEVICE_ID_REDHAT_NVME);
-+        uint16_t id_vendor = n->params.id_vendor ?
-+                             n->params.id_vendor : PCI_VENDOR_ID_REDHAT;
-+        pci_config_set_vendor_id(pci_conf, id_vendor);
-+
-+        uint16_t id_device = n->params.id_device ?
-+                             n->params.id_device : PCI_DEVICE_ID_REDHAT_NVME;
-+        pci_config_set_device_id(pci_conf, id_device);
-+
-+        if (n->params.id_subsys_vendor) {
-+            pci_set_word(pci_conf + PCI_SUBSYSTEM_VENDOR_ID,
-+                                                    n->params.id_subsys_vendor);
-+        }
-+
-+        if (n->params.id_subsys) {
-+            pci_set_word(pci_conf + PCI_SUBSYSTEM_ID, n->params.id_subsys);
-+        }
-     }
+         id->ieee[0] = 0x00;
+         id->ieee[1] = 0x54;
+@@ -8925,6 +8929,24 @@ static void nvme_exit(PCIDevice *pci_dev)
+     memory_region_del_subregion(&n->bar0, &n->iomem);
+ }
  
-     pci_config_set_class(pci_conf, PCI_CLASS_STORAGE_EXPRESS);
-@@ -8946,6 +8963,11 @@ static Property nvme_props[] = {
-     DEFINE_PROP_BOOL("atomic.dn", NvmeCtrl, params.atomic_dn, 0),
-     DEFINE_PROP_UINT16("atomic.awun", NvmeCtrl, params.atomic_awun, 0),
-     DEFINE_PROP_UINT16("atomic.awupf", NvmeCtrl, params.atomic_awupf, 0),
-+    DEFINE_PROP_UINT16("id_vendor", NvmeCtrl, params.id_vendor, 0),
-+    DEFINE_PROP_UINT16("id_device", NvmeCtrl, params.id_device, 0),
-+    DEFINE_PROP_UINT16("id_subsys_vendor", NvmeCtrl,
-+                                                    params.id_subsys_vendor, 0),
-+    DEFINE_PROP_UINT16("id_subsys", NvmeCtrl, params.id_subsys, 0),
++static void nvme_prop_ieee_set(Object *obj, Visitor *v, const char *name,
++        void *opaque, Error **errp)
++{
++    Property *prop = opaque;
++    uint32_t *val = object_field_prop_ptr(obj, prop);
++    if (!visit_type_uint32(v, name, val, errp)) {
++        return;
++    }
++}
++
++static const PropertyInfo nvme_prop_ieee = {
++    .name  = "uint32",
++    .description = "IEEE OUI: Identify Controller bytes 75:73\
++ in LE format. (e.g. ieee_oui=0xABCDEF => Byte[73]=0xEF, Byte[74]=0xCD,\
++ Byte[75]=0xAB)",
++    .set = nvme_prop_ieee_set,
++};
++
+ static Property nvme_props[] = {
+     DEFINE_BLOCK_PROPERTIES(NvmeCtrl, namespace.blkconf),
+     DEFINE_PROP_LINK("pmrdev", NvmeCtrl, pmr.dev, TYPE_MEMORY_BACKEND,
+@@ -8968,6 +8990,8 @@ static Property nvme_props[] = {
+     DEFINE_PROP_UINT16("id_subsys_vendor", NvmeCtrl,
+                                                     params.id_subsys_vendor, 0),
+     DEFINE_PROP_UINT16("id_subsys", NvmeCtrl, params.id_subsys, 0),
++    DEFINE_PROP("ieee_oui", NvmeCtrl, params.ieee_oui, nvme_prop_ieee,
++                                                                      uint32_t),
      DEFINE_PROP_END_OF_LIST(),
  };
  
 diff --git a/hw/nvme/nvme.h b/hw/nvme/nvme.h
-index 7242206910..79404b3129 100644
+index 79404b3129..f26bf7052c 100644
 --- a/hw/nvme/nvme.h
 +++ b/hw/nvme/nvme.h
-@@ -553,6 +553,11 @@ typedef struct NvmeParams {
-     uint16_t atomic_awun;
-     uint16_t atomic_awupf;
-     bool     atomic_dn;
+@@ -558,6 +558,8 @@ typedef struct NvmeParams {
+     uint16_t id_device;
+     uint16_t id_subsys_vendor;
+     uint16_t id_subsys;
 +
-+    uint16_t id_vendor;
-+    uint16_t id_device;
-+    uint16_t id_subsys_vendor;
-+    uint16_t id_subsys;
++    uint32_t ieee_oui;
  } NvmeParams;
  
  typedef struct NvmeCtrl {
