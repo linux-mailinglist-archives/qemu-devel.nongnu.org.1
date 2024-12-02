@@ -2,81 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFB789DFEFC
-	for <lists+qemu-devel@lfdr.de>; Mon,  2 Dec 2024 11:31:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FC949DFF6A
+	for <lists+qemu-devel@lfdr.de>; Mon,  2 Dec 2024 11:55:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tI3he-0005yM-Go; Mon, 02 Dec 2024 05:30:54 -0500
+	id 1tI43u-0000jD-0j; Mon, 02 Dec 2024 05:53:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tI3hZ-0005xr-Uo
- for qemu-devel@nongnu.org; Mon, 02 Dec 2024 05:30:49 -0500
-Received: from mail-lf1-x12c.google.com ([2a00:1450:4864:20::12c])
+ (Exim 4.90_1) (envelope-from <marcin.juszkiewicz@linaro.org>)
+ id 1tI43r-0000iv-Sg
+ for qemu-devel@nongnu.org; Mon, 02 Dec 2024 05:53:52 -0500
+Received: from mail-lj1-x236.google.com ([2a00:1450:4864:20::236])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tI3hY-000383-GI
- for qemu-devel@nongnu.org; Mon, 02 Dec 2024 05:30:49 -0500
-Received: by mail-lf1-x12c.google.com with SMTP id
- 2adb3069b0e04-53dd9e853ccso3953494e87.1
- for <qemu-devel@nongnu.org>; Mon, 02 Dec 2024 02:30:47 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <marcin.juszkiewicz@linaro.org>)
+ id 1tI43n-0001M2-TR
+ for qemu-devel@nongnu.org; Mon, 02 Dec 2024 05:53:50 -0500
+Received: by mail-lj1-x236.google.com with SMTP id
+ 38308e7fff4ca-2ffe4569fbeso34873751fa.1
+ for <qemu-devel@nongnu.org>; Mon, 02 Dec 2024 02:53:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1733135446; x=1733740246; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=/IRVUx1Y+cadwWp3ns/yVfkL2W2wSjxjO2lE/CD0rTI=;
- b=J+I5s9fYqUKUMXu1UbxkD2kCxhvGhHMcWKr5ymLIEwAgBj9GU5mBRYA3E6kJKtV+I/
- In9VTBvwyunNujLy5uYBs5OsEGckD93ZhpG/zDkQhUK8tFPDdFj1YTjHjBL5mqYpKyd8
- hVZ9bYa1q4j/tUJ3Cftulg3GL6gma5gqE0uQMmD1qfVauyQjORiKJ/+bBIooA1sTYMPO
- Rkq3i/akfFyvgcPmHt73F5o7muW4IKwiOpOcnco5vdoPoUrhUefVPTidNDBb1DJtUfYX
- bSp4b+qUEfjUw+ZXiiS+r+3k0Xsa1In2OgS/50ozXhN6kLhWVfVwRyvG84OwIJftKKOG
- 7KDQ==
+ d=linaro.org; s=google; t=1733136825; x=1733741625; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:organization:from
+ :content-language:references:cc:to:subject:user-agent:mime-version
+ :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+ bh=7i60CMqUFFvcLcI7Fj3fPaX15CPhB+4GrtpNLVeRe6I=;
+ b=zhuQ9B+Vzzg130F92SQygII7TspJoup1cO1u9N6PwA774BPVwuY3VG2zatNqcysxTa
+ 3qoayManyw5N7eKbdNI7O1zvHanuaj3g10PiD3UyWJz1eRdTbpwLQkqjXsPgGRCjym4Q
+ YMrINkVH92UVUb7tT5x8lsRQ0dExsNPdugS8lm1xe27UCs3AeTMK+6SQuiU0iKqGcKB+
+ q3UhuAgilbqY+OP+PX0zIzaxgPiwGb18+3fQoHyuQrxxTZ6lxU1bZMbbVyJTYLanCzZY
+ +7Srtz2akodNY9IsqQYqArLjHG2vZcmizqkQ7WICW0LpToGX6jb7cK31jfh5zIgCPlhl
+ gnCQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733135446; x=1733740246;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=/IRVUx1Y+cadwWp3ns/yVfkL2W2wSjxjO2lE/CD0rTI=;
- b=VgnxszePkdj6LKyegw95/EMteFjsEqUwmR8sFXhkEyKCHBiMledxOv3ECB1Thn1Leh
- P77iNNcjlzwvrrgtJhzHB4+sbXp3dsGB2dh/IOX1I+vbp4D+HmU0zmbjdNEIuipZ9CZ5
- jjqbyauCXBwwy30EhrDpfxKKLqNIiTkjWFNIspo9+Ua81jwIC2uDUvp4UYxBM0wg1hSS
- fkPr2l/qEnPJSpLMu591xzkc0616m4BZidEtGDePDXR6oyk9Wp2TuqODFghQrl5SzJpX
- 2BDKg/mqMOI+jaFA9+RGNvPOflkZHVwa0VVIfgt4rvxYJVJey6kyT/S4A/sWFXqZnlAq
- femA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUlaJYFWaQwpsIbwnO55UazPzOP0Z9TbgfCPaXvxIZLH67BA/R5sB9b/MoifgUJgKf2uf8zMpX+5ri3@nongnu.org
-X-Gm-Message-State: AOJu0YwjeyVZs4tx3zD4fLYJ51/BCJcOKJMG5iV8flSrG9QtXfzTuijZ
- oP5pE3pE73tdX/VSp0syF3S02P/0lk/XJ3SpqsolzQrJTTJ4RAxWmFaI8Eib2aM=
-X-Gm-Gg: ASbGnctL3hiZo0ZzyXl/8XUjyjDiQ0Mp7IEcOvwadF0CILC27tZi2nlPTEH8SuqGEdb
- 7w3BdRGvWvP+bOvm9XY1Wci2GrGmuQhh73+l4mSZGy3MJK9QHON31xmUkMqdbXr+OSjSlFrlPZ2
- 3DCwgalbu2dpuhWFwb+SBQTRcuC2/c6WFN1U6T5Z12Z7fnJAFeYBUcrK1xT6ii1b9ki4Z/rEK8o
- 8P9YenX9sqw+RXLPV3DFQIX/47pjPIMjw69l9NiPyitVWaXllqXR4vv0+RxYMBDJRUgZHmwNSMw
- cqME3V5llw==
-X-Google-Smtp-Source: AGHT+IGMuW0csg0MDrqc0pdxVS9uwqsm2KzDSSwOcEf8++DWYFCSx0Jx/aveKhkVJI5y0CYo8SxaiQ==
-X-Received: by 2002:a05:6512:b98:b0:53d:a2e2:5877 with SMTP id
- 2adb3069b0e04-53df00aa157mr12148806e87.5.1733135446256; 
- Mon, 02 Dec 2024 02:30:46 -0800 (PST)
-Received: from [192.168.77.213] (51.22.205.77.rev.sfr.net. [77.205.22.51])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-434b0dc9707sm149265505e9.25.2024.12.02.02.30.45
+ d=1e100.net; s=20230601; t=1733136825; x=1733741625;
+ h=content-transfer-encoding:in-reply-to:organization:from
+ :content-language:references:cc:to:subject:user-agent:mime-version
+ :date:message-id:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=7i60CMqUFFvcLcI7Fj3fPaX15CPhB+4GrtpNLVeRe6I=;
+ b=NxHAn7Ht6vpknfKpN3L8FAGDJtLnrKW0HTnIuW5Njk4uvUF6mefpZzbbyl6i4XSBK2
+ cn0xyrWrwFnw98sc5RSgnXqrsxaP7oNvU/GH2NqmOT4uMReS2iuSb1y/5ji3hMuzbGZU
+ 50AT9pil9BN5KzCBBLKjoLMezh/TlCLi+4jjwgsw+1UNQLLYNYdlVT6p3ATbK+GiRT2K
+ XLMYtmQL5sStrsziqwSwBNSKiJMbXnOtbA0sZ6OQwT6mKHr/moAFMNd4tRrouBV9sE2g
+ eWhUVX2WELegvS4jU+psw7E96NpRNbcMWverQXGl6rSI+1qH5izQYTyH0nTHW96YKSV8
+ fIQw==
+X-Gm-Message-State: AOJu0YwlM95Qh/n0LgFsS79n8tyWAyTphC1hCxKO2FmQI+3z4xotPMS6
+ uCkbC/pl5VrtCJJ9LKRYWqScOapJaOfn1bITYWgG8xJkO1+UcL+YHl68Wi431eM=
+X-Gm-Gg: ASbGncviD5ItWfWBV/CVC6Za9orzkB//XhL9x+nMXNl3LszNFXo9tEELmQeBXzVWdfB
+ EbAE70g1iD92TtyuqwNiDvEhtzNU/lkP5gCwew/zEUrIsQzQuX8fDX05Pct1jk5f/C9lzoqDY6L
+ cwIpLBEcxpJInVqEbPwxlfdn+mZNwU4yK6Qq5KGvZE37FIFpGGaPi4iYjDI7JIqUAh+vCwKhcYJ
+ Cay1L3sX5B8ZMwUNpFPNmKBMB9FXbdwBJ2uZ4yfk9pm9beDfO+O5dBYHqDox48LVfPtTzQo994w
+ 4/lVrrybFuheXwXa2PV8qawdIP7N
+X-Google-Smtp-Source: AGHT+IHtEnP3crzbdjOMjNuiwehpbaFCAzjfMSmcWKk/K55nj+jO1VsWCbHhKFwqJyAey5/RDY13HA==
+X-Received: by 2002:a05:651c:542:b0:2fa:c185:ac4e with SMTP id
+ 38308e7fff4ca-2ffde23e3dcmr50857441fa.13.1733136825167; 
+ Mon, 02 Dec 2024 02:53:45 -0800 (PST)
+Received: from [192.168.210.26] (83.11.10.28.ipv4.supernova.orange.pl.
+ [83.11.10.28]) by smtp.gmail.com with ESMTPSA id
+ 38308e7fff4ca-2ffdfbb8f38sm13814261fa.20.2024.12.02.02.53.43
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 02 Dec 2024 02:30:45 -0800 (PST)
-Message-ID: <7f53bd67-2302-46a6-9d98-2b52939165c4@linaro.org>
-Date: Mon, 2 Dec 2024 11:30:44 +0100
+ Mon, 02 Dec 2024 02:53:44 -0800 (PST)
+Message-ID: <cd635753-4e2c-42d6-bb7b-d558d90f59d7@linaro.org>
+Date: Mon, 2 Dec 2024 11:53:43 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 06/67] target/arm: Convert PACGA to decodetree
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org
-References: <20241201150607.12812-1-richard.henderson@linaro.org>
- <20241201150607.12812-7-richard.henderson@linaro.org>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20241201150607.12812-7-richard.henderson@linaro.org>
+Subject: Re: [PATCH 1/1] hw/arm/sbsa-ref: bump default memory size to 2GB
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org, Leif Lindholm <quic_llindhol@quicinc.com>,
+ qemu-arm@nongnu.org, Mathieu Poirier <mathieu.poirier@linaro.org>,
+ Radoslaw Biernacki <rad@semihalf.com>
+References: <20241126084928.252067-1-marcin.juszkiewicz@linaro.org>
+ <CAFEAcA_SkZ+ew8AAVpBHuw-9YW4S5wFbB0Vqx+dBzXf97JGDGw@mail.gmail.com>
+Content-Language: pl-PL, en-GB
+From: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+Organization: Linaro
+In-Reply-To: <CAFEAcA_SkZ+ew8AAVpBHuw-9YW4S5wFbB0Vqx+dBzXf97JGDGw@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12c;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x12c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::236;
+ envelope-from=marcin.juszkiewicz@linaro.org; helo=mail-lj1-x236.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,16 +103,17 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/12/24 16:05, Richard Henderson wrote:
-> Remove disas_data_proc_2src, as this was the last insn
-> decoded by that function.
+W dniu 26.11.2024 o 14:14, Peter Maydell pisze:
+> On Tue, 26 Nov 2024 at 08:49, Marcin Juszkiewicz
+> <marcin.juszkiewicz@linaro.org> wrote:
+>>
+>> We are working on adding RME support to SBSA Reference Platform.
+>> When RME is enabled then RMM (Realm Managment Monitor) takes 1072MB of
+>> memory for own use. Which ends with firmware panic on 1GB machine.
 > 
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->   target/arm/tcg/translate-a64.c | 65 ++++++----------------------------
->   target/arm/tcg/a64.decode      |  2 ++
->   2 files changed, 13 insertions(+), 54 deletions(-)
+> Reasonable change, but isn't it also a bug in the RMM that it
+> grabs 1GB of RAM regardless of how much RAM the machine
+> actually has?
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-
+I think that the goal is "get it working" first and then optimize.
 
