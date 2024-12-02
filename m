@@ -2,73 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 979D69E0488
-	for <lists+qemu-devel@lfdr.de>; Mon,  2 Dec 2024 15:14:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7937B9E0483
+	for <lists+qemu-devel@lfdr.de>; Mon,  2 Dec 2024 15:14:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tI7B8-000808-BV; Mon, 02 Dec 2024 09:13:34 -0500
+	id 1tI7B9-000877-B9; Mon, 02 Dec 2024 09:13:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <C.Koehne@beckhoff.com>)
- id 1tI2VC-00089O-Kj
- for qemu-devel@nongnu.org; Mon, 02 Dec 2024 04:13:58 -0500
+ id 1tI2dv-0000zu-O4
+ for qemu-devel@nongnu.org; Mon, 02 Dec 2024 04:22:59 -0500
 Received: from internet2.beckhoff.com ([194.25.186.210])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <C.Koehne@beckhoff.com>)
- id 1tI2VA-0007D1-9L
- for qemu-devel@nongnu.org; Mon, 02 Dec 2024 04:13:58 -0500
-Received: from 172.17.5.171 by INTERNET2.beckhoff.com (Tls12, Aes256, Sha384, 
- DiffieHellmanEllipticKey384); Mon, 02 Dec 2024 09:13:54 GMT
+ id 1tI2dt-0000mw-Ra
+ for qemu-devel@nongnu.org; Mon, 02 Dec 2024 04:22:59 -0500
+Received: from 172.17.5.170 by INTERNET2.beckhoff.com (Tls12, Aes256, Sha384, 
+ DiffieHellmanEllipticKey384); Mon, 02 Dec 2024 09:22:55 GMT
 DKIM-Signature: v=1; c=relaxed/relaxed; d=beckhoff.com; s=mail2022e; 
- t=1733130834; bh=oHSA1jLzyuVtTL1R44YuEg3nEckcmwu7wnuVB2TMfnM=; h=
+ t=1733131375; bh=9xgeFqB4vQWeXXr1WR+e8Jzaw55r1X9rvGl8BFbS698=; h=
  Subject:Subject:From:From:Date:Date:ReplyTo:ReplyTo:Cc:Cc:Message-Id:Message-Id;
  a=ed25519-sha256; b=
- /qvMhFcSuBcNHdyz1wH2OsF5x7CTy8g43IAjGKoNX63bshdDVdwx+V2+rT860Pk3vJadLjl3O2lX/XoybkjzBQ==
+ +IGgQYJbwglIi5PFJWbQpaHAodNcZKTAHXdYUDtVI+cjaZqnAED6+lx5LOD0GCMHVrpaQdok7AugqYi8WJHhAA==
 DKIM-Signature: v=1; c=relaxed/relaxed; d=beckhoff.com; s=mail2022r; 
- t=1733130834; bh=oHSA1jLzyuVtTL1R44YuEg3nEckcmwu7wnuVB2TMfnM=; h=
+ t=1733131375; bh=9xgeFqB4vQWeXXr1WR+e8Jzaw55r1X9rvGl8BFbS698=; h=
  Subject:Subject:From:From:Date:Date:ReplyTo:ReplyTo:Cc:Cc:Message-Id:Message-Id;
  a=rsa-sha256; b=
- EWHrUKeFDGdFh8pVplezc3dspf7MQ+yQGWo4MlzUqmwAuaMxE33vl+k5O4YE+cgr70JB5NDrVbNbhmv4wJis/4nc9lTOkuu5N4AIfUd1oZraTUhn35mKZXsrrBZ8neRIi9emzsgvgaAm6rMVP8N6M8oMkGjsfxNBw7Ut+K7m2qMV6sDtvp8d5g4vmrEtvi2Hef4krukQALXXF8HGeFA6h/l4GSfj5Frc9LMAawpH/OrOzCC0+aAMABqPzC5ew7unrNfcQQS6RV9Jb3VTZQ4sC+Ftt9nDCp/iKNO+2+50O/KmLi3Ibrv3UWCbsPCeqEHhh7B5qXF9pLsM2qQImlKllg==
-Received: from ex04.beckhoff.com (172.17.5.170) by ex06.beckhoff.com
- (172.17.5.171) with Microsoft SMTP Server (version=TLS1_2,
+ uhV9SeA3fQVbZJcETaaL6iTrN9LBq83+15WlHMEfIUb485ccpWu0vOyPNaApdD/eh3qf4lSP1xZlCpPLp4OXLOx4ZjFfGoiFKDzFo520dHdrN06I5aidc3ANNbsRtJ29vZvc8L4mVtw090BUPFmDSjbY/MeTMv9pkFJxjXezolZNlVig2o5rVl7BwTG+Nw4VdeFRHTUfY1Z0mFOgMb/E0c7fViuxw/pntfNse0PVAe7wNS2pb4h3TUpF8CN0zSfGm25fb9NaUDthf07MYY8rrHu+5cxxXiWCphP+IIGjC0cf6gdw6qn1/PgGc1qqYAMafIlIAZz90K7DDzf2vgboWw==
+Received: from ex04.beckhoff.com (172.17.5.170) by ex04.beckhoff.com
+ (172.17.5.170) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Mon, 2 Dec
- 2024 10:13:53 +0100
+ 2024 10:22:54 +0100
 Received: from ex04.beckhoff.com ([fe80::492d:bba8:c8de:8ce3]) by
  ex04.beckhoff.com ([fe80::492d:bba8:c8de:8ce3%6]) with mapi id
- 15.01.2507.039; Mon, 2 Dec 2024 10:13:53 +0100
+ 15.01.2507.039; Mon, 2 Dec 2024 10:22:54 +0100
 From: =?utf-8?B?Q29ydmluIEvDtmhuZQ==?= <C.Koehne@beckhoff.com>
-To: "tomitamoeko@gmail.com" <tomitamoeko@gmail.com>,
- "alex.williamson@redhat.com" <alex.williamson@redhat.com>
-CC: "clg@redhat.com" <clg@redhat.com>, "qemu-devel@nongnu.org"
+To: "tomitamoeko@gmail.com" <tomitamoeko@gmail.com>, "qemu-devel@nongnu.org"
  <qemu-devel@nongnu.org>
-Subject: Re: [PATCH 3/8] vfio/igd: remove unsupported device ids
-Thread-Topic: [PATCH 3/8] vfio/igd: remove unsupported device ids
-Thread-Index: AQHbRAt2zrG1EOad6kOEOcI4+R4AXLLSXdcAgAA+UoA=
-Date: Mon, 2 Dec 2024 09:13:53 +0000
-Message-ID: <a49b93e3bdff4dafa4e20f5cae1e5be00dae8a7a.camel@beckhoff.com>
+CC: "clg@redhat.com" <clg@redhat.com>, "alex.williamson@redhat.com"
+ <alex.williamson@redhat.com>
+Subject: Re: [PATCH 5/8] vfio/igd: add Alder/Raptor/Rocket/Ice/Jasper Lake
+ device ids
+Thread-Topic: [PATCH 5/8] vfio/igd: add Alder/Raptor/Rocket/Ice/Jasper Lake
+ device ids
+Thread-Index: AQHbRAt5lvqv2W4DqkyKSp+qBkmxg7LSnq0A
+Date: Mon, 2 Dec 2024 09:22:54 +0000
+Message-ID: <a9238d7f77df8e015b2280ed774e88f1ad9923d5.camel@beckhoff.com>
 References: <20241201160938.44355-1-tomitamoeko@gmail.com>
- <20241201160938.44355-4-tomitamoeko@gmail.com>
- <20241201223050.12ead1a4.alex.williamson@redhat.com>
-In-Reply-To: <20241201223050.12ead1a4.alex.williamson@redhat.com>
+ <20241201160938.44355-6-tomitamoeko@gmail.com>
+In-Reply-To: <20241201160938.44355-6-tomitamoeko@gmail.com>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: yes
 X-MS-TNEF-Correlator: 
-x-originating-ip: [87.122.28.117]
+x-originating-ip: [172.17.130.225]
 Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="=-LIkpgo6SYRUmWgeSKJI9"
+ protocol="application/pgp-signature"; boundary="=-oJkdduGf0IA7qOGa6rKn"
 MIME-Version: 1.0
 Received-SPF: pass client-ip=194.25.186.210;
  envelope-from=C.Koehne@beckhoff.com; helo=INTERNET2.beckhoff.com
-X-Spam_score_int: -10
-X-Spam_score: -1.1
-X-Spam_bar: -
-X-Spam_report: (-1.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_SBL_CSS=3.335,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=no autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-Mailman-Approved-At: Mon, 02 Dec 2024 09:13:31 -0500
 X-BeenThere: qemu-devel@nongnu.org
@@ -85,80 +86,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---=-LIkpgo6SYRUmWgeSKJI9
+--=-oJkdduGf0IA7qOGa6rKn
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sun, 2024-12-01 at 22:30 -0700, Alex Williamson wrote:
-> CAUTION: External Email!!
-> On Mon,=C2=A0 2 Dec 2024 00:09:33 +0800
-> Tomita Moeko <tomitamoeko@gmail.com> wrote:
+On Mon, 2024-12-02 at 00:09 +0800, Tomita Moeko wrote:
+> =EF=BB=BFCAUTION: External Email!!
+> All gen 11 and 12 igd devices have 64 bit BDSM register at 0xC0 in its
+> config space, add them to the list to support igd passthrough on
+> Alder/
+> Raptor/Rocket/Ice/Jasper Lake platforms.
 >=20
-> > Since e433f208973f ("vfio/igd: return an invalid generation for
-> > unknown
-> > devices"), the default return of igd_gen() was changed to
-> > unsupported.
-> > There is no need to filter out those unsupported devices.
-> >=20
-> > Signed-off-by: Tomita Moeko <tomitamoeko@gmail.com>
-> > ---
-> > =C2=A0hw/vfio/igd.c | 10 ----------
-> > =C2=A01 file changed, 10 deletions(-)
-> >=20
-> > diff --git a/hw/vfio/igd.c b/hw/vfio/igd.c
-> > index b449316ec0..8f300498e4 100644
-> > --- a/hw/vfio/igd.c
-> > +++ b/hw/vfio/igd.c
-> > @@ -64,16 +64,6 @@ static int igd_gen(VFIOPCIDevice *vdev)
-> > =C2=A0=C2=A0=C2=A0=C2=A0 }
-> > =C2=A0
-> > =C2=A0=C2=A0=C2=A0=C2=A0 switch (vdev->device_id & 0xff00) {
-> > -=C2=A0=C2=A0=C2=A0 /* Old, untested, unavailable, unknown */
-> > -=C2=A0=C2=A0=C2=A0 case 0x0000:
-> > -=C2=A0=C2=A0=C2=A0 case 0x2500:
-> > -=C2=A0=C2=A0=C2=A0 case 0x2700:
-> > -=C2=A0=C2=A0=C2=A0 case 0x2900:
-> > -=C2=A0=C2=A0=C2=A0 case 0x2a00:
-> > -=C2=A0=C2=A0=C2=A0 case 0x2e00:
-> > -=C2=A0=C2=A0=C2=A0 case 0x3500:
-> > -=C2=A0=C2=A0=C2=A0 case 0xa000:
-> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return -1;
-> > =C2=A0=C2=A0=C2=A0=C2=A0 /* SandyBridge, IvyBridge, ValleyView, Haswell=
- */
-> > =C2=A0=C2=A0=C2=A0=C2=A0 case 0x0100:
-> > =C2=A0=C2=A0=C2=A0=C2=A0 case 0x0400:
+> Tested legacy mode of igd passthrough works properly on both linux and
+> windows guests with AlderLake-S GT1 (8086:4680).
 >=20
-> Reviewed-by: Alex Williamson <alex.williamson@redhat.com>
+> Signed-off-by: Tomita Moeko <tomitamoeko@gmail.com>
+> ---
+> =C2=A0hw/vfio/igd.c | 5 +++++
+> =C2=A01 file changed, 5 insertions(+)
 >=20
->=20
+> diff --git a/hw/vfio/igd.c b/hw/vfio/igd.c
+> index 71342863d6..a86faf2fa9 100644
+> --- a/hw/vfio/igd.c
+> +++ b/hw/vfio/igd.c
+> @@ -79,9 +79,14 @@ static int igd_gen(VFIOPCIDevice *vdev)
+> =C2=A0=C2=A0=C2=A0=C2=A0 case 0x5900:=C2=A0=C2=A0=C2=A0 /* Kaby Lake */
+> =C2=A0=C2=A0=C2=A0=C2=A0 case 0x3e00:=C2=A0=C2=A0=C2=A0 /* Coffee Lake */
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return 9;
+> +=C2=A0=C2=A0=C2=A0 case 0x8A00:=C2=A0=C2=A0=C2=A0 /* Ice Lake */
+> =C2=A0=C2=A0=C2=A0=C2=A0 case 0x4500:=C2=A0=C2=A0=C2=A0 /* Elkhart Lake *=
+/
+> +=C2=A0=C2=A0=C2=A0 case 0x4E00:=C2=A0=C2=A0=C2=A0 /* Jasper Lake */
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return 11;
+> =C2=A0=C2=A0=C2=A0=C2=A0 case 0x9A00:=C2=A0=C2=A0=C2=A0 /* Tiger Lake */
+> +=C2=A0=C2=A0=C2=A0 case 0x4C00:=C2=A0=C2=A0=C2=A0 /* Rocket Lake */
+> +=C2=A0=C2=A0=C2=A0 case 0x4600:=C2=A0=C2=A0=C2=A0 /* Alder Lake */
+> +=C2=A0=C2=A0=C2=A0 case 0xA700:=C2=A0=C2=A0=C2=A0 /* Raptor Lake */
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return 12;
+> =C2=A0=C2=A0=C2=A0=C2=A0 }
+> =C2=A0
 
 Reviewed-by: Corvin K=C3=B6hne <c.koehne@beckhoff.com>
 disable-disclaimer-BADE
 
-
-
-
---=-LIkpgo6SYRUmWgeSKJI9
+--=-oJkdduGf0IA7qOGa6rKn
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: This is a digitally signed message part
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAABCAAdFiEEgvRSla3m2t/H2U9G2FTaVjFeAmoFAmdNelEACgkQ2FTaVjFe
-Amri8Q/7B5+YPcUg8Wk8qIfK54NipFRJZCfyTdNqkzsl0WdIWuZbS60jJZnqg/ZO
-Y0kLuj6FnMqe/s6x6LmYGTG/66EZT+LCkWSRZHJwR20z/B8j9fKlFDz3N981f4vs
-9+V0zydFZMa6fgp0vxOceDtMtCeOqrmahYY82w5X7XXSFeFP6J3eQb6RmLNXJFNx
-SscyW/OVuRjVpfABEYCE/CRaWir3TPDld/fnMAfULQAz+IjWR2IKmA/w1q3L9IhO
-I8LLcSODzdgOyvZB+RDnNizd5j6ghm5zUCzYbMSCy1Df6/RnGCdj5WS3fAjnreID
-UunAfsLXT9NQD0OAF21krXrutLqekPJ/8XhjPRRIJ94sHFaZDVGnCU9MGlid3EEH
-k0J3mPlUKybDaaKysZpxpjyJkhkWubngtP/kwkBtFatEuRb6vL+xtMtPYbRuWJrt
-W/3XUfnXk4RQZeKULHjorjxH+rtBplYq8veBBDFuDjdDD18/eKKzjqKN9IsheSdy
-giSe4gB0K2Ik/e3+0NDwNWuZRb2rSrkHTDhU6phOZ96hA6hgAOSHOf6Hs+rg6Zrg
-Obs+bGTIozkn7EvBJ3X+EHuXoklbY1t2OCadHg1wR9PPo/35EDFXTUkOu1s/kBRB
-dzFbS/5pZI0j3g3cd3RdWbJDqt2PZu2Do9Vrvz58fTIlewKgrwY=
-=g8xD
+iQIzBAABCAAdFiEEgvRSla3m2t/H2U9G2FTaVjFeAmoFAmdNfG4ACgkQ2FTaVjFe
+AmrA6Q/+Nr6xkevBNIsjYmEMVYKlPYLXqasQveXBNd5Gnbg8vOgi8kkvaERnn3fd
+bJZ4+h5XSBwzkcNC0RB3RKhWIJYgHAGmgJuG2seHnkqnPL18PM09JNaGt/s33+eJ
+DWcJDvor7CgtYOSDA+LNXM7dc1ga6P6PIjyeHMHG4ExZLF2RG9T1B1GIbmmGZeF1
+b4pRIpJg4ERKly5dbmotyvQjrcLfMdLw4hspwKSQgvVHq3IOgf1QtxqNB2z7SA0G
+cONb14ipc6LeYQHLfPBNlqFx5d/0J41lN71OaATXNN2AMYtsbtkfm2HvcpCm6EXE
+pDde6jGiaYi/DkM8Dq2eswjivizcZ1Q9z+TJVoROXb46xMywiykpXIR1gqKstLrD
+PfhuC+SWXnGalQFh/WrAsgZ1k7BWpfJ6h+atajd2yJfP1S3Z0HOmX+Xj0SC/W/7S
+nAVivZXhWPSts387K2CoTwyTEoAhrOvZaFFRO6bPYHNnir4wEle/rKfmpGxqnKTE
+DOZ1p54c6pyHZEKYC4yUK6PCQ7vugRB3KrM6AYfpRpLHyljN9+cTQA9wWcR1kzyB
+lJsofxeS9F6HKVNX4RkfhiGIslDWuCl+S4OTxvQkoMDIf4mlgfELYKCGk+mX+C4K
+iKmOCODdbA79PYct8ZhAMLjEqe6xPIAPwFSD69mwZ6z7RgJhfTg=
+=fjPC
 -----END PGP SIGNATURE-----
 
---=-LIkpgo6SYRUmWgeSKJI9--
+--=-oJkdduGf0IA7qOGa6rKn--
 
 
