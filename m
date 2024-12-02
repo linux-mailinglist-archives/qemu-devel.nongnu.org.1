@@ -2,24 +2,24 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1BBD9E0C1F
-	for <lists+qemu-devel@lfdr.de>; Mon,  2 Dec 2024 20:29:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CCAC9E0C16
+	for <lists+qemu-devel@lfdr.de>; Mon,  2 Dec 2024 20:28:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tIC52-0005jM-11; Mon, 02 Dec 2024 14:27:36 -0500
+	id 1tIC55-0005kt-TN; Mon, 02 Dec 2024 14:27:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1tIC4p-0005iP-Gv
- for qemu-devel@nongnu.org; Mon, 02 Dec 2024 14:27:24 -0500
-Received: from mailgate02.uberspace.is ([2a00:d0c0:200:0:1c7b:a6ff:fee0:8ea4])
+ (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1tIC4s-0005iv-Dd
+ for qemu-devel@nongnu.org; Mon, 02 Dec 2024 14:27:26 -0500
+Received: from mailgate02.uberspace.is ([185.26.156.114])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1tIC4n-0001vh-LR
- for qemu-devel@nongnu.org; Mon, 02 Dec 2024 14:27:23 -0500
+ (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1tIC4q-0001x9-8x
+ for qemu-devel@nongnu.org; Mon, 02 Dec 2024 14:27:26 -0500
 Received: from skiff.uberspace.de (skiff.uberspace.de [185.26.156.131])
- by mailgate02.uberspace.is (Postfix) with ESMTPS id 848321809F2
+ by mailgate02.uberspace.is (Postfix) with ESMTPS id BDCEC180BF1
  for <qemu-devel@nongnu.org>; Mon,  2 Dec 2024 20:27:13 +0100 (CET)
-Received: (qmail 7147 invoked by uid 990); 2 Dec 2024 19:27:13 -0000
+Received: (qmail 7167 invoked by uid 990); 2 Dec 2024 19:27:13 -0000
 Authentication-Results: skiff.uberspace.de;
 	auth=pass (plain)
 Received: from unknown (HELO unkown) (::1)
@@ -28,44 +28,41 @@ Received: from unknown (HELO unkown) (::1)
 From: Julian Ganz <neither@nut.email>
 To: qemu-devel@nongnu.org
 Cc: Julian Ganz <neither@nut.email>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Alexandre Iooss <erdnaxe@crans.org>,
- Mahmoud Mandour <ma.mandourr@gmail.com>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [RFC PATCH v3 04/11] contrib/plugins: add plugin showcasing new
- dicontinuity related API
-Date: Mon,  2 Dec 2024 20:26:45 +0100
-Message-ID: <fa02142d349ceb6c95e80301a7f5c57ae5df6329.1733063076.git.neither@nut.email>
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: [RFC PATCH v3 05/11] target/alpha: call plugin trap callbacks
+Date: Mon,  2 Dec 2024 20:26:46 +0100
+Message-ID: <ac63748891b7bd24b8ccec1d0cfb54986eaf8b3d.1733063076.git.neither@nut.email>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <cover.1733063076.git.neither@nut.email>
 References: <cover.1733063076.git.neither@nut.email>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Bar: ----
-X-Rspamd-Report: REPLY(-4) SUSPICIOUS_RECIPS(1.5) MID_CONTAINS_FROM(1)
- MIME_GOOD(-0.1) BAYES_HAM(-2.999999) R_MISSING_CHARSET(0.5)
-X-Rspamd-Score: -4.099999
+X-Rspamd-Bar: -----
+X-Rspamd-Report: REPLY(-4) BAYES_HAM(-2.999029) MID_CONTAINS_FROM(1)
+ MIME_GOOD(-0.1) R_MISSING_CHARSET(0.5)
+X-Rspamd-Score: -5.599029
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=nut.email; s=uberspace;
  h=from:to:cc:subject:date;
- bh=g9B6AqNiMy12KKOQEL7zgcI6TA//xAnrob0uJmdHo/Y=;
- b=eXchSWQUltJXuL/BJ/8EBNxJYKN4f4DxMv7RtVY06hGkxm/7AI1Nngn1WZRjpex4bKslfxVHNI
- pVJySXWxT1twdxJIigguWPS4O2cXfmvTffV8crBi7Uz7SixOAmC5FarTSbcNO/n4Li+mq3FCxtTt
- aZgXND99w7s7ZKCtKHAnoQ7p7XBZUAqqpEj1r9ZrWAMEcPlsCKmjpAF2FIbEYIsiQ7/xOtLmw987
- w5eFD6wamcNLvd6HUC8cHCYkQVBg1NDUuPUOeCiTsaXmvos7rdwx1uXxaaU5qGZ0D7xgQCMGyxUI
- r1A8nW6u2y8Flu3WJaQC5fs/haf2GocNuW1bdJHxSG7U1gNAUn+4T9+zsSPg8zkBwXLM/Bgt/lIU
- fZSJTIR4+7uCQphWVjDSNXIAVxL/hQUc3ThC8Pi00uhZbIfojwmFthQ04RChLAiGpzAd0UFF1c9N
- 8p7XHZbndq/5QW4BDvvpp8C3DBbJXo6mVQwHiYwyrklaQPgjsvsr076xfdc6POCxPcZCv87WkWiH
- 5NyeSjr55+vNJ3J6yMA5oJnnsPddO17a4YYh4drG0XrQ2B6JXjPoUTXIfK6z+NZvag0V0nvwWyI8
- 9y1Fcm/fFVinmmasVus5sjl9VL8Ej2ffsjuK3HTJy5dPxr4UiAjSjf5oKmayTLK/ToU0FEFuCJ1d
- 0=
-Received-SPF: pass client-ip=2a00:d0c0:200:0:1c7b:a6ff:fee0:8ea4;
- envelope-from=neither@nut.email; helo=mailgate02.uberspace.is
-X-Spam_score_int: -10
-X-Spam_score: -1.1
-X-Spam_bar: -
-X-Spam_report: (-1.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NEW_PRODUCTS=1,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=no autolearn_force=no
+ bh=tpIDjpcFqj+Wp3kuZs4WF3UD19WsYadFBbweXL6VAzk=;
+ b=S/nzySFcp1lYl3EoIp6r5nNpEiGidmumBxgHqHVyKEGQyzdZbEFxe24yZjNHzgTQlyyK5WW08d
+ KO8JM6mnZAp2DCyzuXlbi0Yv0lg/vmMtid4mcqCQwlybS+5RE3PKf1o2mTlS8zuynqg80JuxNf5F
+ qLL2KJzBCohtsJaoAsu1eQLyYurfu76d05LHDLcAQ1+p0laQJWR5q7ZxhdQCVrWkOYKb0zaf7vqd
+ d/lDGFqVmkNZxzKDgzjFBeTybetfuJy1z9C8WkHDivjv94sXXnVdTpMEbQBkdc7XUYG1mE1XJ7Ps
+ /VaZiH4yxuUZKJytHCkV+u8s/qVjpeLIZonrf30I0lrx2qvfF9iWuK4LgGAoNbj4fkSmleYhYSqk
+ /vfbdQrQEzndveMQHRP/gLCirM7kR704Yhp9VN5GfurPy7B02cioE5k9w9wdbU5GHdyVmNIop2r2
+ A1jctISQuKHL4Dt0Hy5TierOCCBu6iCWDBNoWHsXlkf5NU0fYvTfAOmde5qslb4UhYF3/5C/de/e
+ m4huXTe0EcV8JKmv7d4PHATzTEl4/oFnf/rsB+yBxX3zPr0WolPdhFW+1c23ZXa6cjxSc4nV2yTT
+ jI54DsRhU41JzkNGdiQix+8E2dCfy673SwwY/d646gH4VdsU2wfwLd2gYxVs/Saf2guR9e0gCBqb
+ w=
+Received-SPF: pass client-ip=185.26.156.114; envelope-from=neither@nut.email;
+ helo=mailgate02.uberspace.is
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,130 +78,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We recently introduced new plugin API for registration of discontinuity
-related callbacks. This change introduces a minimal plugin showcasing
-the new API. It simply counts the occurances of interrupts, exceptions
-and host calls per CPU and reports the counts when exitting.
----
- contrib/plugins/meson.build |  3 +-
- contrib/plugins/traps.c     | 96 +++++++++++++++++++++++++++++++++++++
- 2 files changed, 98 insertions(+), 1 deletion(-)
- create mode 100644 contrib/plugins/traps.c
+We recently introduced API for registering callbacks for trap related
+events as well as the corresponding hook functions. Due to differences
+between architectures, the latter need to be called from target specific
+code.
 
-diff --git a/contrib/plugins/meson.build b/contrib/plugins/meson.build
-index 63a32c2b4f..9a3015e1c1 100644
---- a/contrib/plugins/meson.build
-+++ b/contrib/plugins/meson.build
-@@ -1,5 +1,6 @@
- contrib_plugins = ['bbv', 'cache', 'cflow', 'drcov', 'execlog', 'hotblocks',
--                   'hotpages', 'howvec', 'hwprofile', 'ips', 'stoptrigger']
-+                   'hotpages', 'howvec', 'hwprofile', 'ips', 'stoptrigger',
-+                   'traps']
- if host_os != 'windows'
-   # lockstep uses socket.h
-   contrib_plugins += 'lockstep'
-diff --git a/contrib/plugins/traps.c b/contrib/plugins/traps.c
-new file mode 100644
-index 0000000000..ecd4beac5f
---- /dev/null
-+++ b/contrib/plugins/traps.c
-@@ -0,0 +1,96 @@
-+/*
-+ * Copyright (C) 2024, Julian Ganz <neither@nut.email>
-+ *
-+ * Traps - count traps
-+ *
-+ * License: GNU GPL, version 2 or later.
-+ *   See the COPYING file in the top-level directory.
-+ */
+This change places hooks for Alpha targets.
+---
+ target/alpha/helper.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
+
+diff --git a/target/alpha/helper.c b/target/alpha/helper.c
+index 2f1000c99f..acc92402af 100644
+--- a/target/alpha/helper.c
++++ b/target/alpha/helper.c
+@@ -25,6 +25,7 @@
+ #include "fpu/softfloat-types.h"
+ #include "exec/helper-proto.h"
+ #include "qemu/qemu-print.h"
++#include "qemu/plugin.h"
+ 
+ 
+ #define CONVERT_BIT(X, SRC, DST) \
+@@ -326,6 +327,7 @@ void alpha_cpu_do_interrupt(CPUState *cs)
+ {
+     CPUAlphaState *env = cpu_env(cs);
+     int i = cs->exception_index;
++    uint64_t last_pc = env->pc;
+ 
+     if (qemu_loglevel_mask(CPU_LOG_INT)) {
+         static int count;
+@@ -429,6 +431,16 @@ void alpha_cpu_do_interrupt(CPUState *cs)
+ 
+     /* Switch to PALmode.  */
+     env->flags |= ENV_FLAG_PAL_MODE;
 +
-+#include <stdio.h>
-+
-+#include <qemu-plugin.h>
-+
-+QEMU_PLUGIN_EXPORT int qemu_plugin_version = QEMU_PLUGIN_VERSION;
-+
-+typedef struct {
-+    uint64_t interrupts;
-+    uint64_t exceptions;
-+    uint64_t hostcalls;
-+    bool active;
-+} TrapCounters;
-+
-+static struct qemu_plugin_scoreboard *traps;
-+static size_t max_vcpus;
-+
-+static void vcpu_init(qemu_plugin_id_t id, unsigned int vcpu_index)
-+{
-+    TrapCounters* rec = qemu_plugin_scoreboard_find(traps, vcpu_index);
-+    rec->active = true;
-+}
-+
-+static void vcpu_discon(qemu_plugin_id_t id, unsigned int vcpu_index,
-+                        enum qemu_plugin_discon_type type, uint64_t from_pc,
-+                        uint64_t to_pc)
-+{
-+    TrapCounters* rec = qemu_plugin_scoreboard_find(traps, vcpu_index);
-+    switch (type) {
-+    case QEMU_PLUGIN_DISCON_INTERRUPT:
-+        rec->interrupts++;
++    switch (i) {
++    case EXCP_SMP_INTERRUPT:
++    case EXCP_CLK_INTERRUPT:
++    case EXCP_DEV_INTERRUPT:
++        qemu_plugin_vcpu_interrupt_cb(cs, last_pc, env->pc);
 +        break;
-+    case QEMU_PLUGIN_DISCON_EXCEPTION:
-+        rec->exceptions++;
-+        break;
-+    case QEMU_PLUGIN_DISCON_HOSTCALL:
-+        rec->hostcalls++;
-+        break;
++        qemu_plugin_vcpu_exception_cb(cs, last_pc, env->pc);
 +    default:
-+        /* unreachable */
-+        break;
 +    }
-+}
-+
-+static void plugin_exit(qemu_plugin_id_t id, void *p)
-+{
-+    g_autoptr(GString) report;
-+    report = g_string_new("VCPU, interrupts, exceptions, hostcalls\n");
-+    int vcpu;
-+
-+    for (vcpu = 0; vcpu < max_vcpus; vcpu++) {
-+        TrapCounters *rec = qemu_plugin_scoreboard_find(traps, vcpu);
-+        if (rec->active) {
-+            g_string_append_printf(report,
-+                                   "% 4d, % 10"PRId64", % 10"PRId64", % 10"
-+                                   PRId64"\n",
-+                                   vcpu,
-+                                   rec->interrupts, rec->exceptions,
-+                                   rec->hostcalls);
-+        }
-+    }
-+
-+    qemu_plugin_outs(report->str);
-+    qemu_plugin_scoreboard_free(traps);
-+}
-+
-+QEMU_PLUGIN_EXPORT
-+int qemu_plugin_install(qemu_plugin_id_t id, const qemu_info_t *info,
-+                        int argc, char **argv)
-+{
-+    if (!info->system_emulation) {
-+        fputs("trap plugin can only be used in system emulation mode.\n",
-+              stderr);
-+        return -1;
-+    }
-+
-+    max_vcpus = info->system.max_vcpus;
-+    traps = qemu_plugin_scoreboard_new(sizeof(TrapCounters));
-+    qemu_plugin_register_vcpu_init_cb(id, vcpu_init);
-+    qemu_plugin_vcpu_for_each(id, vcpu_init);
-+
-+    qemu_plugin_register_vcpu_discon_cb(id, QEMU_PLUGIN_DISCON_TRAPS,
-+                                        vcpu_discon);
-+
-+    qemu_plugin_register_atexit_cb(id, plugin_exit, NULL);
-+
-+    return 0;
-+}
+ }
+ 
+ bool alpha_cpu_exec_interrupt(CPUState *cs, int interrupt_request)
 -- 
 2.45.2
 
