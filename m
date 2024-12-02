@@ -2,76 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B6059E0491
-	for <lists+qemu-devel@lfdr.de>; Mon,  2 Dec 2024 15:15:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D6DC99E0301
+	for <lists+qemu-devel@lfdr.de>; Mon,  2 Dec 2024 14:15:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tI7BA-00088i-5N; Mon, 02 Dec 2024 09:13:36 -0500
+	id 1tI6G2-0001k2-0l; Mon, 02 Dec 2024 08:14:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <C.Koehne@beckhoff.com>)
- id 1tI333-0006Oh-IN
- for qemu-devel@nongnu.org; Mon, 02 Dec 2024 04:48:57 -0500
-Received: from netsrv01.beckhoff.com ([62.159.14.10])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <C.Koehne@beckhoff.com>)
- id 1tI330-0008Gd-VY
- for qemu-devel@nongnu.org; Mon, 02 Dec 2024 04:48:57 -0500
-Received: from 172.17.5.173 by netsrv01.beckhoff.com (Tls12, Aes256, Sha384,
- DiffieHellmanEllipticKey384); Mon, 02 Dec 2024 09:48:53 GMT
-DKIM-Signature: v=1; c=relaxed/relaxed; d=beckhoff.com; s=mail2022e; 
- t=1733132933; bh=nADn4HbV5/OVZnq+Xrz3JvS2JyWEU8hFlUlDnl8TWms=; h=
- Subject:Subject:From:From:Date:Date:ReplyTo:ReplyTo:Cc:Cc:Message-Id:Message-Id;
- a=ed25519-sha256; b=
- weJtcnsedMSD3WJGAEIVdrDfrf09vGu1RjPO2vYVbE4hUJIM4RUGlnbwQCCIcRtBs4DhmpGXDpg13jiFGSzYBA==
-DKIM-Signature: v=1; c=relaxed/relaxed; d=beckhoff.com; s=mail2022r; 
- t=1733132933; bh=nADn4HbV5/OVZnq+Xrz3JvS2JyWEU8hFlUlDnl8TWms=; h=
- Subject:Subject:From:From:Date:Date:ReplyTo:ReplyTo:Cc:Cc:Message-Id:Message-Id;
- a=rsa-sha256; b=
- AabQbA1Dlx8ytUm3OG1QW87xSdZEpOS+WA7kIJviBbtMeDuKxAYVFuhBJNajiQweJrXUTvmipy16W/SmyY0HA2MmCH/oBndCBZhCsH2fP0yB2g6K9PCptYrcIR0fTyTvY3bwQRM3RSK3AR4tbeq7u0LBcTJewQKfRvwgC7fvVRy7kX2z0AghCTclAp0YryORbY/w7C2gQ2KIvWKtyjDLe0S+QcaxUn/3khNlMJcnyoqm68dRRNw/s/eHj1WdujLbbm/cVcB0jCIkJ9X/B2Z1iGiZSTYz2l7SM4PApSI+TMZ6tAsG8N8qKPFAfjUdqiq3Xo2mGJ73MbmdTcYQsqkTPg==
-Received: from ex04.beckhoff.com (172.17.5.170) by ex08.beckhoff.com
- (172.17.5.173) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Mon, 2 Dec
- 2024 10:48:51 +0100
-Received: from ex04.beckhoff.com ([fe80::492d:bba8:c8de:8ce3]) by
- ex04.beckhoff.com ([fe80::492d:bba8:c8de:8ce3%6]) with mapi id
- 15.01.2507.039; Mon, 2 Dec 2024 10:48:51 +0100
-From: =?utf-8?B?Q29ydmluIEvDtmhuZQ==?= <C.Koehne@beckhoff.com>
-To: "tomitamoeko@gmail.com" <tomitamoeko@gmail.com>, "qemu-devel@nongnu.org"
- <qemu-devel@nongnu.org>
-CC: "clg@redhat.com" <clg@redhat.com>, "alex.williamson@redhat.com"
- <alex.williamson@redhat.com>
-Subject: Re: [PATCH 8/8] vfio/igd: add x-igd-gms option back to set DSM region
- size for guest
-Thread-Topic: [PATCH 8/8] vfio/igd: add x-igd-gms option back to set DSM
- region size for guest
-Thread-Index: AQHbRAt+xWEC9BDyn0i+aKAtXK5OubLSpe8A
-Date: Mon, 2 Dec 2024 09:48:51 +0000
-Message-ID: <352b53107d7d6666f7d307afebb81da744690e2f.camel@beckhoff.com>
-References: <20241201160938.44355-1-tomitamoeko@gmail.com>
- <20241201160938.44355-9-tomitamoeko@gmail.com>
-In-Reply-To: <20241201160938.44355-9-tomitamoeko@gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: yes
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.17.130.225]
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="=-3GoboWEBPOWTLZh2pRlZ"
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1tI6FP-0001jK-QK
+ for qemu-devel@nongnu.org; Mon, 02 Dec 2024 08:13:56 -0500
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1tI6FM-00035Z-AR
+ for qemu-devel@nongnu.org; Mon, 02 Dec 2024 08:13:55 -0500
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-434ab938e37so26669725e9.0
+ for <qemu-devel@nongnu.org>; Mon, 02 Dec 2024 05:13:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1733145230; x=1733750030; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=trg+V3VWcwq8s0j7XDrYNrEYigU3XoxkcN81p0HkxKU=;
+ b=erB9HsgNSGFIF+pjTbdSRZIzFrXVbkjSxmxnE8apvMjww8cKiOMsnUAxNicPRzvhBZ
+ TG4cjVwS+NcTEFp4GKbifvwk/zE/4vg47ZinFdaYVn1r63bL4w0y4ClMOXuhv4TdbPnT
+ 8M0EKximLjx7eNbOLM+y/rUFccMlfrYGHdO1LrqcuLLVdLNYG21YzEwQXjUCJRXrajv+
+ v85M0dUZ71GnsOMjkL5zZkrwZLMKTRagnqJD9mmhddgpNxAFfauTXsldMbmKQgSpl5Yv
+ OOXBbr1uBcIMoN7cPHjUh9tmja06c3St6i0uBToCDH/WL20/HHa/ZjcBe7Dz9DFP9GN9
+ 4AlA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1733145230; x=1733750030;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=trg+V3VWcwq8s0j7XDrYNrEYigU3XoxkcN81p0HkxKU=;
+ b=SyeeacS/wi6ueSP1ulMmj5ZIsC2R5foBzlbMzIheIOb4VSrJSwMETCCPoChEVNlG8Y
+ dDpsJIgsVT5iWUou/Qz1V8+HulxLf4i3/vLVN+guEdxAtQWGa3+Bdj0Ty2xCq01J+o6r
+ QKxMjYgL8pKdURbxI5ISrKLphsuUxuogYs2yOn0ihlXsR370jlgRU+jcN8SpOq2Ejnzi
+ +hj1ipk/HDgQTBxMW6uZlK5M9/D3gfhmIFXCIN7DN5GO95/ic8FMML665xi8x3wYV0Ss
+ jlm+7opqMyyUlEeEniuv5VTsr+kOhMNswJnL/anMlN5dTI+LGq2wUZm/bq+iSH0RwCs3
+ xGJg==
+X-Gm-Message-State: AOJu0Yz2aHbFVpXImGUIliKm4DldxNCYdNz2VORoy3+YrfbR2uZJSI32
+ sXEod5Q1WduzT1OdUmMaHGT0yz2C5ZyNpAcZGATvhp/5fnDABGeYgo1PIwNzcNHTr938WtJqyvu
+ d
+X-Gm-Gg: ASbGncs6TpIETMOtqBOgd5rsaItnrmM7qSP3nCUtLbeE9zWtgf4AzcCEgeafL888/wX
+ Zl1gdPcIU/DfTTK56EsfHUTzugv0Lv1rvGS7pAkWEuSavaRw9EOjFdA182tefcy+/3H3EmKTwes
+ 7FAc8vAWp0cHGOGAP9w7tKQGCtwkxRqzbVYd2ITwrOQJbIykzTUgMSUGeFfurlyHLyEZH8vDKaD
+ g7LatE0mJwqXwqAcjEQ4Ta+A965YjaeaiDDJFt4B7R6dsZ6tx8/uNs=
+X-Google-Smtp-Source: AGHT+IEqP7xdq0N/i2H5UWnaEncid9vIzc7y7AmXLhiBnG6Jptxn2sm6stGTHvfu42++SJ7xqME78Q==
+X-Received: by 2002:a05:600c:1d20:b0:434:9934:575 with SMTP id
+ 5b1f17b1804b1-434a9dd035cmr231441105e9.16.1733145229761; 
+ Mon, 02 Dec 2024 05:13:49 -0800 (PST)
+Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-385dea1e4ebsm10160157f8f.1.2024.12.02.05.13.48
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 02 Dec 2024 05:13:49 -0800 (PST)
+From: Peter Maydell <peter.maydell@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org, qemu-ppc@nongnu.org, qemu-s390x@nongnu.org,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
+ Song Gao <gaosong@loongson.cn>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ Aleksandar Rikalo <arikalo@gmail.com>, Nicholas Piggin <npiggin@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ David Hildenbrand <david@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
+ Thomas Huth <thuth@redhat.com>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Artyom Tarasenko <atar4qemu@gmail.com>, Max Filippov <jcmvbkbc@gmail.com>
+Subject: [PATCH v2 for-10.0 00/54] fpu: Remove pickNaNMulAdd,
+ default-NaN ifdefs
+Date: Mon,  2 Dec 2024 13:12:53 +0000
+Message-Id: <20241202131347.498124-1-peter.maydell@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Received-SPF: pass client-ip=62.159.14.10; envelope-from=C.Koehne@beckhoff.com;
- helo=netsrv01.beckhoff.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x331.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Mon, 02 Dec 2024 09:13:31 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,103 +106,158 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---=-3GoboWEBPOWTLZh2pRlZ
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+(Apologies for this patchset being both big and having a wide CC list;
+the good news is that this is the last lot of fpu ifdef cleanup that
+needs to touch all the targets.)
 
-On Mon, 2024-12-02 at 00:09 +0800, Tomita Moeko wrote:
-> =EF=BB=BFCAUTION: External Email!!
-> DSM region is likely to store framebuffer in Windows, a small DSM
-> region may cause display issues (e.g. half of the screen is black).
-> By default, QEMU uses host's original value, which is determined by
-> DVMT Pre-Allocated option in Intel FSP of host bios. Some vendors
-> do not expose this config item to users. In such cases, x-igd-gms
-> option can be used to manually set the data stolen memory size for
-> guest.
->=20
-> When DVMT Pre-Allocated option is available in host BIOS, user should
-> set DSM region size there instead of using x-igd-gms option.
->=20
-> Signed-off-by: Tomita Moeko <tomitamoeko@gmail.com>
-> ---
-> =C2=A0hw/vfio/igd.c | 17 +++++++++++++++++
-> =C2=A01 file changed, 17 insertions(+)
->=20
-> diff --git a/hw/vfio/igd.c b/hw/vfio/igd.c
-> index 3fd822241d..614223123b 100644
-> --- a/hw/vfio/igd.c
-> +++ b/hw/vfio/igd.c
-> @@ -712,6 +712,23 @@ void vfio_probe_igd_bar4_quirk(VFIOPCIDevice *vdev, =
-int nr)
-> =C2=A0
-> =C2=A0=C2=A0=C2=A0=C2=A0 QLIST_INSERT_HEAD(&vdev->bars[nr].quirks, quirk,=
- next);
-> =C2=A0
-> +=C2=A0=C2=A0=C2=A0 /*
-> +=C2=A0=C2=A0=C2=A0=C2=A0 * Allow user to override dsm size using x-igd-g=
-ms option, in multiples of
-> +=C2=A0=C2=A0=C2=A0=C2=A0 * 32MiB. This option should only be used when t=
-he desired size cannot be
-> +=C2=A0=C2=A0=C2=A0=C2=A0 * set from DVMT Pre-Allocated option in host BI=
-OS.
-> +=C2=A0=C2=A0=C2=A0=C2=A0 */
-> +=C2=A0=C2=A0=C2=A0 if (vdev->igd_gms) {
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (gen < 8 && vdev->igd_gms =
-<=3D 0x10) {
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 gmch =
-&=3D ~(IGD_GMCH_GEN6_GMS_MASK << IGD_GMCH_GEN6_GMS_SHIFT);
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 gmch =
-|=3D vdev->igd_gms << IGD_GMCH_GEN6_GMS_SHIFT;
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 } else if (vdev->igd_gms <=3D=
- 0x40) {
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 gmch =
-&=3D ~(IGD_GMCH_GEN8_GMS_MASK << IGD_GMCH_GEN8_GMS_SHIFT);
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 gmch =
-|=3D vdev->igd_gms << IGD_GMCH_GEN8_GMS_SHIFT;
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 } else {
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 error=
-_report("Unsupported IGD GMS value 0x%x", vdev->igd_gms);
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
-> +=C2=A0=C2=A0=C2=A0 }
-> +
-> =C2=A0=C2=A0=C2=A0=C2=A0 ggms_size =3D igd_gtt_memory_size(gen, gmch);
-> =C2=A0=C2=A0=C2=A0=C2=A0 gms_size =3D igd_stolen_memory_size(gen, gmch);
-> =C2=A0
+This patchset does the same thing we already did for pickNaN() to
+pickNaNMulAdd() -- it replaces the compile-time ifdef ladder that
+selected target-specific NaN propagation behaviour with checking some
+runtime selectable settings in the float_status.  The motivation is:
+ * this will let us have multiple targets in one QEMU binary
+ * the Arm FEAT_AFP architectural feature includes letting
+   the guest select a NaN propagation rule at runtime
+This is patches 1-26 (which were in the v1 of this series).
 
-As mentioned in my commit removing the x-igd-gms option, I've seen issues o=
-n Windows guest when
-setting a wrong gms value. I can try to recheck this.
+It then does a similar thing for making targets select the default
+NaN value at runtime rather than relying on a compile-time ifdef.
+This is patches 34-54, which are new in v2.
 
+In between those two, patches 27-33 do some minor cleanup:
+ * prefer to initialize scratch float_status structs from the target's
+   env->fp_status rather than as all-zeroes, so that when we add
+   new config fields to float_status we don't need to also remember
+   to update half a dozen scratch float_status structs too.
+   (Some still remain in target/riscv where plumbing in the env
+   pointer through the macro magic seemed more effort than it was worth.)
+ * remove an ifdef in floatx80_default_nan() by creating the NaN value
+   from parts64_default_nan() in the same way we already do for
+   the 128-bit NaN
 
---=20
-Kind regards,
-Corvin
-disable-disclaimer-BADE
+This is intended to be a no-behaviour-change refactor, except for:
+ * the arm linux-user nwfpe handling will change its floatx80
+   default NaN value
+ * hppa, i386, sh4, tricore now correctly raise Invalid for
+   (0 * inf) + NaN
 
+Changes v1->v2:
+ * update comments on x86 to include the spec references rather
+   than TODO notes to check the spec
+ * fixed clash of float_infzeronan_none and float_infzeronan_dnan_never
+   values
+ * patches 14 and 27-54 are new
+ * patch 15 is a rework of the old patch 14 to follow RTH's suggestion
+   to make it data driven rather than a big switch statement
 
+(The remaining ifdefs in fpu/ fall into two categories:
+ * ones done purely for performance to skip a runtime check,
+   which can be removed without any behaviour change, like the
+   one in snan_bit_is_one()
+ * various ones related to floatx80 behaviour, where currently we
+   use ifdefs to select essentially i386 vs m68k handling
+I'll probably come back and look at these when this series has
+gone upstream.)
 
+thanks
+-- PMM
 
---=-3GoboWEBPOWTLZh2pRlZ
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
+Peter Maydell (54):
+  fpu: handle raising Invalid for infzero in pick_nan_muladd
+  fpu: Check for default_nan_mode before calling pickNaNMulAdd
+  softfloat: Allow runtime choice of inf * 0 + NaN result
+  tests/fp: Explicitly set inf-zero-nan rule
+  target/arm: Set FloatInfZeroNaNRule explicitly
+  target/s390: Set FloatInfZeroNaNRule explicitly
+  target/ppc: Set FloatInfZeroNaNRule explicitly
+  target/mips: Set FloatInfZeroNaNRule explicitly
+  target/sparc: Set FloatInfZeroNaNRule explicitly
+  target/xtensa: Set FloatInfZeroNaNRule explicitly
+  target/x86: Set FloatInfZeroNaNRule explicitly
+  target/loongarch: Set FloatInfZeroNaNRule explicitly
+  target/hppa: Set FloatInfZeroNaNRule explicitly
+  softfloat: Pass have_snan to pickNaNMulAdd
+  softfloat: Allow runtime choice of NaN propagation for muladd
+  tests/fp: Explicitly set 3-NaN propagation rule
+  target/arm: Set Float3NaNPropRule explicitly
+  target/loongarch: Set Float3NaNPropRule explicitly
+  target/ppc: Set Float3NaNPropRule explicitly
+  target/s390x: Set Float3NaNPropRule explicitly
+  target/sparc: Set Float3NaNPropRule explicitly
+  target/mips: Set Float3NaNPropRule explicitly
+  target/xtensa: Set Float3NaNPropRule explicitly
+  target/i386: Set Float3NaNPropRule explicitly
+  target/hppa: Set Float3NaNPropRule explicitly
+  fpu: Remove use_first_nan field from float_status
+  target/m68k: Don't pass NULL float_status to floatx80_default_nan()
+  softfloat: Create floatx80 default NaN from parts64_default_nan
+  target/loongarch: Use normal float_status in fclass_s and fclass_d
+    helpers
+  target/m68k: In frem helper, initialize local float_status from
+    env->fp_status
+  target/m68k: Init local float_status from env fp_status in gdb get/set
+    reg
+  target/sparc: Initialize local scratch float_status from
+    env->fp_status
+  target/ppc: Use env->fp_status in helper_compute_fprf functions
+  fpu: Allow runtime choice of default NaN value
+  tests/fp: Set default NaN pattern explicitly
+  target/microblaze: Set default NaN pattern explicitly
+  target/i386: Set default NaN pattern explicitly
+  target/hppa: Set default NaN pattern explicitly
+  target/alpha: Set default NaN pattern explicitly
+  target/arm: Set default NaN pattern explicitly
+  target/loongarch: Set default NaN pattern explicitly
+  target/m68k: Set default NaN pattern explicitly
+  target/mips: Set default NaN pattern explicitly
+  target/openrisc: Set default NaN pattern explicitly
+  target/ppc: Set default NaN pattern explicitly
+  target/sh4: Set default NaN pattern explicitly
+  target/rx: Set default NaN pattern explicitly
+  target/s390x: Set default NaN pattern explicitly
+  target/sparc: Set default NaN pattern explicitly
+  target/xtensa: Set default NaN pattern explicitly
+  target/hexagon: Set default NaN pattern explicitly
+  target/riscv: Set default NaN pattern explicitly
+  target/tricore: Set default NaN pattern explicitly
+  fpu: Remove default handling for dnan_pattern
 
------BEGIN PGP SIGNATURE-----
+ include/fpu/softfloat-helpers.h   |  38 +++-
+ include/fpu/softfloat-types.h     |  89 +++++++++-
+ target/mips/fpu_helper.h          |  20 +++
+ target/sparc/helper.h             |   4 +-
+ linux-user/arm/nwfpe/fpa11.c      |   5 +
+ target/alpha/cpu.c                |   2 +
+ target/arm/cpu.c                  |  10 ++
+ target/hexagon/cpu.c              |   2 +
+ target/hppa/fpu_helper.c          |  12 ++
+ target/i386/tcg/fpu_helper.c      |  12 ++
+ target/loongarch/tcg/fpu_helper.c |  14 +-
+ target/m68k/cpu.c                 |  14 +-
+ target/m68k/fpu_helper.c          |   6 +-
+ target/m68k/helper.c              |   6 +-
+ target/microblaze/cpu.c           |   2 +
+ target/mips/msa.c                 |  10 ++
+ target/openrisc/cpu.c             |   2 +
+ target/ppc/cpu_init.c             |  19 ++
+ target/ppc/fpu_helper.c           |   3 +-
+ target/riscv/cpu.c                |   2 +
+ target/rx/cpu.c                   |   2 +
+ target/s390x/cpu.c                |   5 +
+ target/sh4/cpu.c                  |   2 +
+ target/sparc/cpu.c                |   6 +
+ target/sparc/fop_helper.c         |   8 +-
+ target/sparc/translate.c          |   4 +-
+ target/tricore/helper.c           |   2 +
+ target/xtensa/cpu.c               |   4 +
+ target/xtensa/fpu_helper.c        |   3 +-
+ tests/fp/fp-bench.c               |   7 +
+ tests/fp/fp-test-log2.c           |   1 +
+ tests/fp/fp-test.c                |   7 +
+ fpu/softfloat-parts.c.inc         |  22 ++-
+ fpu/softfloat-specialize.c.inc    | 278 ++++++------------------------
+ 34 files changed, 357 insertions(+), 266 deletions(-)
 
-iQIzBAABCAAdFiEEgvRSla3m2t/H2U9G2FTaVjFeAmoFAmdNgoQACgkQ2FTaVjFe
-AmqOsg/+ILCRNRZql87MS20XULcwAeWsKDv2ZY7IZ9hDbcuoOCc8FwMQP8H7Y3cR
-fRAr2M3L6KvIZVIgSt+aG8LysG2adojZaWg+JSlR5YrmGtbQKo6FP1ZIw4vWjyvx
-I6tLSdhPQg0cZ1wviCo9S9QEvFAgt2wvxJonOdhUPZgwFnQKgNuFIuML4H73mEEc
-6/qHvOcR/sKmGg6bvLYPgBs+STT1I6EezJsDcLfHRcUHC9Cfbm9beetAP99+Q/w3
-ZXRj52FuKFtEGzp8WUBwlAGuVTXJPHUtoX4b+0vGaHmor6OwjfIZEeamQWee8Hqy
-NDKKKj86y9YW5ZreQli8o42ejFIuFBRq4y6Q+ENesgOqaMOXceBoH7wQcbKmdhFI
-9vVfDAUBfKe/mhYxPNmSoDlY4iWspBfDZqD75IFCb/gDMhr+auTQj5e37wjAFDZu
-sMGD6KP2lhWbVNWzk/L9ie1icmTcZCUwF6+aJJcTGEA+iRCW3RwN604vfjXjba+i
-EmRrLak+O72IuZdQvM8bTlTEvXA1AJGK44/zHEgo6QdYP6ODtpT8455xSLbqtjuw
-Isoac7BV6IqKWb0/3Ds0Mt2W1jiYwcWc31IaGsJCbbGJ1NUd/jFCEFd6DYcgf3d2
-FkqrD83KZicApJ5OyB51Dv6V3cT7xaH+H10samgA3i8VP9UkdeM=
-=jFvm
------END PGP SIGNATURE-----
-
---=-3GoboWEBPOWTLZh2pRlZ--
+-- 
+2.34.1
 
 
