@@ -2,89 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3F9A9E0C2B
-	for <lists+qemu-devel@lfdr.de>; Mon,  2 Dec 2024 20:32:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A3E49E0C6C
+	for <lists+qemu-devel@lfdr.de>; Mon,  2 Dec 2024 20:43:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tIC92-0003Uk-Et; Mon, 02 Dec 2024 14:31:44 -0500
+	id 1tICJ4-00066L-AI; Mon, 02 Dec 2024 14:42:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tIC8z-0003TB-2D
- for qemu-devel@nongnu.org; Mon, 02 Dec 2024 14:31:41 -0500
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1tICIz-00065m-8K
+ for qemu-devel@nongnu.org; Mon, 02 Dec 2024 14:42:01 -0500
+Received: from mailgate02.uberspace.is ([185.26.156.114])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tIC8x-00031L-Ex
- for qemu-devel@nongnu.org; Mon, 02 Dec 2024 14:31:40 -0500
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-434a8640763so39725835e9.1
- for <qemu-devel@nongnu.org>; Mon, 02 Dec 2024 11:31:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1733167897; x=1733772697; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=dJKDN6jr8ySadvZWVKnSe65KLieSaHaKpkpZnZuooYA=;
- b=HgpX1y9p1pxyooKQQLmeE5barmtU3jKZ74qY1ClqweqYk/sEr3vnO++s0JkL0XeYWH
- Gum6mIodv+pbefS8JMLIaQE6IPOpSSD4pfeoBCyyf7j2XJFtpRP9qiGU1OTYUVSVDV4x
- xJbTAgOJBJk3XSQGRtyQ8c7WpRC6eLLbajI7lsKWK1gYBrmi6ecjT95WmYwyTVPGggkk
- puuL8LZv4FR9QMAg4C2GQYvagPwIFy5DoNpDAAmSAvHfFvezd9GpQ+euRcw0cL1s5mCh
- FCvggSkJERD/dzNLBH9XXzXX1pTYED6k/ZYIBpqYo0kSLI+vZZH5HFDPZ2hnOJ5xnY6z
- DVZg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733167897; x=1733772697;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=dJKDN6jr8ySadvZWVKnSe65KLieSaHaKpkpZnZuooYA=;
- b=SaiH1wMXmEJyOUWJEr/Z9bpcoGDqDqVM0qxe2yBq7ge51s+d37qgrNeX9xPGLG6zeI
- fQxHxzvbRuYDPRfkTO/l+cWvb05wvpaVa7QplBv+8bu65m83aApsZ60JuSGGZ863nb/5
- 45sV2FGlcuBa9KGl1Tg/PZ6il8YOXWZepQRM1fdNweLbtsRUaKEkvgyGgfEbYZcjQSWZ
- J2viND5CQQZlwaMJ46HE3aHXwWgf2H2aZq953hKLnLpkTOLnN9eXtzglxd29pTWe+6l8
- sw/ZKVCmfB3wE9OhZQfeFyozWIhbQbXbDvLqT0Lr3HJp5VRFCpupjpFYEWqFBvM5yfan
- IE0A==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVab9pbbo/EV1mNI8il+K8Rz2v3goXI9A3lhHZgDf8TWYW8NbC5pD3X2ITwkgzU5oOzJUXZme+KI5Xt@nongnu.org
-X-Gm-Message-State: AOJu0YzalFCLZakeI7JSlpT/53QSfKhLDgPWPGhgqlhgLTlkDO3qNu5n
- e6/r24NP91W4qk/O291oDNzmVcV7jrfJcCHaN1S8zq4MM63eum7/oSUiTWmPJiw=
-X-Gm-Gg: ASbGncu3KVNX9wwldAqyaJ+AcmW9Jfd2Ly3HuCJSJkgdPIc3A8zXsRD61cNPyi1b2E3
- 8fkUPz2vx4lGywEVmbG/95ol2BwKpYZIW/bC3Euw6uhpQHsIreEVX5Dsc112SeAS8i+Yceq2mDs
- Xxl1Zg5s6Xa4eboboF2DAVErNueDaADob2fI4wC5Nr8bBa/N2XIbsP6RM2vEdicFYw8PertwwQI
- nNt78NKAgbGyLTO2aBmeNj4Szhj0KNMPJ42nY7wkrrQrmo3g8XpMiZul6/VD9zgGQlVJUDcMdQa
- tiQcutz+3Xk9sTGVcI/i
-X-Google-Smtp-Source: AGHT+IG0MBE/7FtDMwupi9wQZflgLzNTQTzjH3Neb5SnbjpBUV3yh5sMYF+I8Nnyy1iyY+5HxxQB+g==
-X-Received: by 2002:a05:600c:5102:b0:432:d797:404a with SMTP id
- 5b1f17b1804b1-434a9de3947mr203187505e9.22.1733167897561; 
- Mon, 02 Dec 2024 11:31:37 -0800 (PST)
-Received: from [192.168.1.74] (88-187-86-199.subs.proxad.net. [88.187.86.199])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-434aa76b52bsm194768095e9.18.2024.12.02.11.31.36
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 02 Dec 2024 11:31:37 -0800 (PST)
-Message-ID: <faa05fd2-f343-4bf7-8403-5aeadd87fc79@linaro.org>
-Date: Mon, 2 Dec 2024 20:31:35 +0100
+ (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1tICIw-0005tE-EB
+ for qemu-devel@nongnu.org; Mon, 02 Dec 2024 14:42:01 -0500
+Received: from skiff.uberspace.de (skiff.uberspace.de [185.26.156.131])
+ by mailgate02.uberspace.is (Postfix) with ESMTPS id 9A0AC18043B
+ for <qemu-devel@nongnu.org>; Mon,  2 Dec 2024 20:41:54 +0100 (CET)
+Received: (qmail 24763 invoked by uid 990); 2 Dec 2024 19:41:54 -0000
+Authentication-Results: skiff.uberspace.de;
+	auth=pass (plain)
+Received: from unknown (HELO unkown) (::1)
+ by skiff.uberspace.de (Haraka/3.0.1) with ESMTPSA;
+ Mon, 02 Dec 2024 20:41:54 +0100
+From: Julian Ganz <neither@nut.email>
+To: qemu-devel@nongnu.org
+Cc: Julian Ganz <neither@nut.email>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Artyom Tarasenko <atar4qemu@gmail.com>
+Subject: [RFC PATCH v3 10/11] target/sparc: call plugin trap callbacks
+Date: Mon,  2 Dec 2024 20:41:36 +0100
+Message-ID: <51c6069c8a2d50d70d21a10c167066e5f0aa096a.1733063076.git.neither@nut.email>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <cover.1733063076.git.neither@nut.email>
+References: <cover.1733063076.git.neither@nut.email>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 03/67] target/arm: Convert LSLV, LSRV, ASRV, RORV to
- decodetree
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org
-References: <20241201150607.12812-1-richard.henderson@linaro.org>
- <20241201150607.12812-4-richard.henderson@linaro.org>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20241201150607.12812-4-richard.henderson@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
+X-Rspamd-Bar: -----
+X-Rspamd-Report: REPLY(-4) BAYES_HAM(-2.997331) MID_CONTAINS_FROM(1)
+ MIME_GOOD(-0.1) R_MISSING_CHARSET(0.5)
+X-Rspamd-Score: -5.597331
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=nut.email; s=uberspace;
+ h=from:to:cc:subject:date;
+ bh=eSQdBohJLxjuj+kUUKx0s/tIbRONVYZrlcGAeQZ/qZ8=;
+ b=pKJ+TnM6ikj6JciNMVJ3o577JdXH+5cErtvdAuTp+n+jYpazKFIdaAH4TPjJC6wASw2W4SacSs
+ kPEdgnfOOUBcJqd4gWL9PPmegnb283b8viLjIpwMU53jDxDwDZ7VzOkSmotG9Pi0VoZgud/mx6H3
+ R4rvriOdiTbzOOhDSXLByX4UyeQvfQauh4QkaHX3ihyXvcfyWVK2y5dCoRLNYcdX+Jk4uQZRBJ+X
+ m6uydibpB3heoAqh/74TAxLGIaGfCxC7Lh2Q0iJ/RWWXv9mc9F4HYJZVS+WTo8nhNuodcpky6f/5
+ kvbVDvNiYNvOt7CsTdJq4B28QFCm5LIE/7rZlsdKBaZ5/30/QynYtz7m7vOFja6uqnMAkz2Zb8zb
+ 56JniMgdwrnrBMLQsBYvyph3FACcT1OZ/HsRu6J94v3usoOo/qLQtPAT9w2us51hrSsCZFt3rpav
+ kTzcW+2nfT3IffUb8N2wvPRpAa8kipkv5GFBReW1X1tmv0Njzfy1HH4gASmnmUwM2Jp5kUOs6Bvo
+ xpKPStTM7ptxdNAyvgzilYF1bxpSM9aQxS0X3saFYOedY1RSSAfbcXUMah13alX4SMxxhfygDYA+
+ S9wdmwS2b8nAjmtZr/GszeUOC1Ej11ynII7jcysofKO9Uss0bhBLPNgoXWnWuLatPho15PYmqOrK
+ w=
+Received-SPF: pass client-ip=185.26.156.114; envelope-from=neither@nut.email;
+ helo=mailgate02.uberspace.is
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,13 +79,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/12/24 16:05, Richard Henderson wrote:
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->   target/arm/tcg/translate-a64.c | 46 ++++++++++++++++------------------
->   target/arm/tcg/a64.decode      |  4 +++
->   2 files changed, 25 insertions(+), 25 deletions(-)
+We recently introduced API for registering callbacks for trap related
+events as well as the corresponding hook functions. Due to differences
+between architectures, the latter need to be called from target specific
+code.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+This change places hooks for SPARC (32bit and 64bit) targets. We treat
+any interrupt other than EXTINT and IVEC as exceptions as they appear to
+be synchroneous events.
+---
+ target/sparc/int32_helper.c |  7 +++++++
+ target/sparc/int64_helper.c | 10 ++++++++++
+ 2 files changed, 17 insertions(+)
+
+diff --git a/target/sparc/int32_helper.c b/target/sparc/int32_helper.c
+index f2dd8bcb2e..86b21eecb6 100644
+--- a/target/sparc/int32_helper.c
++++ b/target/sparc/int32_helper.c
+@@ -24,6 +24,7 @@
+ #include "exec/cpu_ldst.h"
+ #include "exec/log.h"
+ #include "sysemu/runstate.h"
++#include "qemu/plugin.h"
+ 
+ static const char * const excp_names[0x80] = {
+     [TT_TFAULT] = "Instruction Access Fault",
+@@ -172,4 +173,10 @@ void sparc_cpu_do_interrupt(CPUState *cs)
+         env->qemu_irq_ack(env, intno);
+     }
+ #endif
++
++    if (intno == TT_EXTINT) {
++        qemu_plugin_vcpu_interrupt_cb(cs, env->regwptr[9], env->pc);
++    } else {
++        qemu_plugin_vcpu_exception_cb(cs, env->regwptr[9], env->pc);
++    }
+ }
+diff --git a/target/sparc/int64_helper.c b/target/sparc/int64_helper.c
+index bd14c7a0db..9f0e7206d3 100644
+--- a/target/sparc/int64_helper.c
++++ b/target/sparc/int64_helper.c
+@@ -23,6 +23,7 @@
+ #include "exec/helper-proto.h"
+ #include "exec/log.h"
+ #include "trace.h"
++#include "qemu/plugin.h"
+ 
+ #define DEBUG_PCALL
+ 
+@@ -253,6 +254,15 @@ void sparc_cpu_do_interrupt(CPUState *cs)
+     }
+     env->npc = env->pc + 4;
+     cs->exception_index = -1;
++
++    switch (intno) {
++    case TT_EXTINT:
++    case TT_IVEC:
++        qemu_plugin_vcpu_interrupt_cb(cs, tsptr->tpc, env->pc);
++        break;
++    default:
++        qemu_plugin_vcpu_exception_cb(cs, tsptr->tpc, env->pc);
++    }
+ }
+ 
+ trap_state *cpu_tsptr(CPUSPARCState* env)
+-- 
+2.45.2
 
 
