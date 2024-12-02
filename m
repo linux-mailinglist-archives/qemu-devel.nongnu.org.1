@@ -2,95 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0279C9E0B9B
-	for <lists+qemu-devel@lfdr.de>; Mon,  2 Dec 2024 20:05:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C7679E0C15
+	for <lists+qemu-devel@lfdr.de>; Mon,  2 Dec 2024 20:28:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tIBi4-0000cl-CB; Mon, 02 Dec 2024 14:03:52 -0500
+	id 1tIC59-0005m8-LF; Mon, 02 Dec 2024 14:27:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.williamson@redhat.com>)
- id 1tIBhv-0000cV-GV
- for qemu-devel@nongnu.org; Mon, 02 Dec 2024 14:03:43 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.williamson@redhat.com>)
- id 1tIBhr-00032d-H5
- for qemu-devel@nongnu.org; Mon, 02 Dec 2024 14:03:41 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1733166217;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=5pPmtglZXhgrqnzUVHWfIObXnnvilbIJDQs0jmB7Hwg=;
- b=GOSavLGmoEp1+KQYYHh+LAoA660OFXbQGL4lyPmyM3oBbwLJSbg++R6Hlr83WglN1fcLoK
- awoTtqMiPwHZOTX9jnizwb7EMmwYc67rSN33SFoVBSo/IfjecZrc3aflqc23Xdw+0rSPIN
- umArCJiNzW06Zr1MMjMPNWFUlNEA3gs=
-Received: from mail-io1-f69.google.com (mail-io1-f69.google.com
- [209.85.166.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-7-rLiswu6hOOCSxt3sCzI5tg-1; Mon, 02 Dec 2024 14:03:36 -0500
-X-MC-Unique: rLiswu6hOOCSxt3sCzI5tg-1
-X-Mimecast-MFC-AGG-ID: rLiswu6hOOCSxt3sCzI5tg
-Received: by mail-io1-f69.google.com with SMTP id
- ca18e2360f4ac-841953497e2so15782439f.1
- for <qemu-devel@nongnu.org>; Mon, 02 Dec 2024 11:03:36 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733166215; x=1733771015;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=5pPmtglZXhgrqnzUVHWfIObXnnvilbIJDQs0jmB7Hwg=;
- b=lZNvnbzeawFYfWG3m9gEUGeuroAgMVLsweQtfCObkLwRKFB1TFyxpwCj5j4sTamMNb
- HAwrruhwnT+2Z1wGkCLDjRo8hs9K8XAli7S3Xa0V3TKjuKKYTYtmyKbrLTQ0TGwdJgNb
- PG7RrPYNdT6Udw8opuVKATvcg9b5rCHjPfnsud0zgOGNwRJ1oxPaN5CZuSTnA9GH90wt
- K7mTxHl3O8PQVzErFo7TCbbCFOuwSeb1t9SEdeGG+Hvq1S1rlu1dlMUNJZKanhPskrqh
- L4LmOa+fAzt9BI6K7k7uRH9Z0bcnlLtUvyhsggewLIONuxrYgz9v+g5tcU95/ykoutGn
- 1Shw==
-X-Gm-Message-State: AOJu0Yy6zBuMikhw4CvxW3WPCzh12uzkG9+KttZ0T1q23BY77tm4sKIH
- MRvwqKXnHnH3xU29xhjbq/ACL8RUHnpneR2D/OZiaCeGm41arbSgH57psW0EZU9MnQMHNq1ErQe
- ZrVaJo6j6TABz7jfz3XlusYVHH69sLvc2AlAPAwp7oh4yD8nZGtpsYLkWUkwV
-X-Gm-Gg: ASbGncuGMTV2sICjDYtwGC5wsDFTxeDAn1hNs9X/PHd+2pG+1EHliuc4IefeSCblAL0
- h1iIVHvtD+NRjteFQULhAdjUpPGDLRMSAGwA4eO+MaSIG/Bg9o6c/cgZ5NhGAIFbaEDrjRTE4Tq
- FYnWkPE+wPxDJNvxYedQvSnqox71BYj58He9YZWh0W+i2sHEEXASOKPd05liQjU+p0lq8zgj/UJ
- 503NCMddFJ894C5KBa/I6sTT9JyIC/8wS/ObXLPOUyrL0rIKAfP/Q==
-X-Received: by 2002:a92:d28f:0:b0:3a7:c5b1:a522 with SMTP id
- e9e14a558f8ab-3a7c5b1a59cmr55898845ab.7.1733166215394; 
- Mon, 02 Dec 2024 11:03:35 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IG5TY3Abb9UaL4EXOJ2HL47SMKDCbUX1mF2je2xcIVHIP7w7aHq7NigUTNhlWj+aPdIlsZKSA==
-X-Received: by 2002:a92:d28f:0:b0:3a7:c5b1:a522 with SMTP id
- e9e14a558f8ab-3a7c5b1a59cmr55898775ab.7.1733166215034; 
- Mon, 02 Dec 2024 11:03:35 -0800 (PST)
-Received: from redhat.com ([38.15.36.11]) by smtp.gmail.com with ESMTPSA id
- e9e14a558f8ab-3a7ccbded69sm23056335ab.3.2024.12.02.11.03.34
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 02 Dec 2024 11:03:34 -0800 (PST)
-Date: Mon, 2 Dec 2024 12:03:32 -0700
-From: Alex Williamson <alex.williamson@redhat.com>
-To: Sebastian Ott <sebott@redhat.com>
-Cc: qemu-devel@nongnu.org, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- "Michael S . Tsirkin" <mst@redhat.com>
-Subject: Re: [PATCH] pci: ensure valid link status bits for downstream ports
-Message-ID: <20241202120332.5131e7ab.alex.williamson@redhat.com>
-In-Reply-To: <20241111123756.18393-1-sebott@redhat.com>
-References: <20241111123756.18393-1-sebott@redhat.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
+ (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1tIC4r-0005il-DP
+ for qemu-devel@nongnu.org; Mon, 02 Dec 2024 14:27:26 -0500
+Received: from mailgate02.uberspace.is ([2a00:d0c0:200:0:1c7b:a6ff:fee0:8ea4])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1tIC4n-0001u3-Kk
+ for qemu-devel@nongnu.org; Mon, 02 Dec 2024 14:27:24 -0500
+Received: from skiff.uberspace.de (skiff.uberspace.de [185.26.156.131])
+ by mailgate02.uberspace.is (Postfix) with ESMTPS id 575241804B4
+ for <qemu-devel@nongnu.org>; Mon,  2 Dec 2024 20:27:12 +0100 (CET)
+Received: (qmail 7087 invoked by uid 990); 2 Dec 2024 19:27:12 -0000
+Authentication-Results: skiff.uberspace.de;
+	auth=pass (plain)
+Received: from unknown (HELO unkown) (::1)
+ by skiff.uberspace.de (Haraka/3.0.1) with ESMTPSA;
+ Mon, 02 Dec 2024 20:27:12 +0100
+From: Julian Ganz <neither@nut.email>
+To: qemu-devel@nongnu.org
+Cc: Julian Ganz <neither@nut.email>
+Subject: [RFC PATCH v3 00/11] tcg-plugins: add hooks for discontinuities
+Date: Mon,  2 Dec 2024 20:26:41 +0100
+Message-ID: <cover.1733063076.git.neither@nut.email>
+X-Mailer: git-send-email 2.45.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124;
- envelope-from=alex.williamson@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -50
-X-Spam_score: -5.1
-X-Spam_bar: -----
-X-Spam_report: (-5.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.996,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Bar: -
+X-Rspamd-Report: MID_CONTAINS_FROM(1) BAYES_HAM(-3) MIME_GOOD(-0.1)
+ R_MISSING_CHARSET(0.5)
+X-Rspamd-Score: -1.6
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=nut.email; s=uberspace;
+ h=from:to:cc:subject:date;
+ bh=lhp/MzIhcQwQgKNSdC0sX2veCqSwD9bp274LH0tKfMo=;
+ b=C+hLkkvZSYegywm++I5e4yctqswLk6sFQPI6z+7ebske4ee+HnD0d5tgbVAjQElL4f8LLFGGwE
+ bL0Hn9yc9wYy++k8J4RGbD5YW2ZsWjhu+vAE90s2yd8UlMglpQJPdcl2QqlqCfB9LqS3kii29SPp
+ VYrPYb4KYXmp5IYlTuZeBtynLViye83kdVd6OVjIGsiOVmg+hg4nQBd2PJEio0M3AVRUQ0zf0wEQ
+ RO8Cl1FMElhPk9FpltLEU+vo8e6de+zx3g4EJiSYcsd0fdtoaZP16NwLud9kjigY2ED8m5ffnPQ4
+ B3VTxo/6oHvR1c3X50pMUdRDPr5IvhK+4zuUKFFL9hyV6ddWPOGvqrDGlVkTaCcaM0XOyZ9a/E6B
+ ULNQ8ZgH5VaD8vVgtygwZDOn87dbCbX6KKgrvkYFTddGTt+zyWK9keS2e/unZtRhLi3p0sB3HAF9
+ X05KYn48624+OXnUeIXbI4Xq1DXUCP0LAB2Wi8Z1yyU6sSpV/X44x8feenYG1WYkfrHJ0nBiVrc9
+ l/5Dsfw5qtRi+9IRcd5ySczAVhgCyuhF1jervJiCk571g2CTTtEqGkRFkqFjqAzT0owzRM90qwHF
+ CyJ5in4adhTFOtd3XhaBLsuT5YO6bgVkXfrQZIhxiuktV/jHMY3QE+cGiWBQfFGL5yiBw8lscafg
+ U=
+Received-SPF: pass client-ip=2a00:d0c0:200:0:1c7b:a6ff:fee0:8ea4;
+ envelope-from=neither@nut.email; helo=mailgate02.uberspace.is
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,73 +74,90 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 11 Nov 2024 13:37:56 +0100
-Sebastian Ott <sebott@redhat.com> wrote:
+Some analysis greatly benefits, or depends on, information about
+certain types of dicontinuities such as interrupts. For example, we may
+need to handle the execution of a new translation block differently if
+it is not the result of normal program flow but of an interrupt.
 
-> PCI hotplug for downstream endpoints on arm fails because Linux'
-> PCIe hotplug driver doesn't like the QEMU provided LNKSTA:
-> 
->   pcieport 0000:08:01.0: pciehp: Slot(2): Card present
->   pcieport 0000:08:01.0: pciehp: Slot(2): Link Up
->   pcieport 0000:08:01.0: pciehp: Slot(2): Cannot train link: status 0x2000
-> 
-> There's 2 cases where LNKSTA isn't setup properly:
-> * the downstream device has no express capability
-> * max link width of the bridge is 0
-> 
-> Fix these by making the LNKSTA modifications independent of each other.
-> 
-> Signed-off-by: Sebastian Ott <sebott@redhat.com>
-> ---
->  hw/pci/pcie.c | 28 ++++++++++++++--------------
->  1 file changed, 14 insertions(+), 14 deletions(-)
-> 
-> diff --git a/hw/pci/pcie.c b/hw/pci/pcie.c
-> index 0b455c8654..f714f4fb7c 100644
-> --- a/hw/pci/pcie.c
-> +++ b/hw/pci/pcie.c
-> @@ -1109,20 +1109,20 @@ void pcie_sync_bridge_lnk(PCIDevice *bridge_dev)
->          lnksta = target->config_read(target,
->                                       target->exp.exp_cap + PCI_EXP_LNKSTA,
->                                       sizeof(lnksta));
-> -
-> -        if ((lnksta & PCI_EXP_LNKSTA_NLW) > (lnkcap & PCI_EXP_LNKCAP_MLW)) {
-> -            lnksta &= ~PCI_EXP_LNKSTA_NLW;
-> -            lnksta |= lnkcap & PCI_EXP_LNKCAP_MLW;
-> -        } else if (!(lnksta & PCI_EXP_LNKSTA_NLW)) {
-> -            lnksta |= QEMU_PCI_EXP_LNKSTA_NLW(QEMU_PCI_EXP_LNK_X1);
-> -        }
-> -
-> -        if ((lnksta & PCI_EXP_LNKSTA_CLS) > (lnkcap & PCI_EXP_LNKCAP_SLS)) {
-> -            lnksta &= ~PCI_EXP_LNKSTA_CLS;
-> -            lnksta |= lnkcap & PCI_EXP_LNKCAP_SLS;
-> -        } else if (!(lnksta & PCI_EXP_LNKSTA_CLS)) {
-> -            lnksta |= QEMU_PCI_EXP_LNKSTA_CLS(QEMU_PCI_EXP_LNK_2_5GT);
-> -        }
-> +    }
-> +    if ((lnksta & PCI_EXP_LNKSTA_NLW) > (lnkcap & PCI_EXP_LNKCAP_MLW)) {
-> +        lnksta &= ~PCI_EXP_LNKSTA_NLW;
-> +        lnksta |= lnkcap & PCI_EXP_LNKCAP_MLW;
-> +    }
-> +    if (!(lnksta & PCI_EXP_LNKSTA_NLW)) {
-> +        lnksta |= QEMU_PCI_EXP_LNKSTA_NLW(QEMU_PCI_EXP_LNK_X1);
-> +    }
-> +    if ((lnksta & PCI_EXP_LNKSTA_CLS) > (lnkcap & PCI_EXP_LNKCAP_SLS)) {
-> +        lnksta &= ~PCI_EXP_LNKSTA_CLS;
-> +        lnksta |= lnkcap & PCI_EXP_LNKCAP_SLS;
-> +    }
-> +    if (!(lnksta & PCI_EXP_LNKSTA_CLS)) {
-> +        lnksta |= QEMU_PCI_EXP_LNKSTA_CLS(QEMU_PCI_EXP_LNK_2_5GT);
->      }
->  
->      pci_word_test_and_clear_mask(exp_cap + PCI_EXP_LNKSTA,
+Even with the existing interfaces, it is more or less possible to
+discern these situations, e.g. as done by the cflow plugin. However,
+this process poses a considerable overhead to the core analysis one may
+intend to perform.
 
-Only half of these seem valid to me.  How can we ever hit the
-conditions where the status fields exceed the capability fields in the
-case where we've set the status field from the capability field?  It
-seems like we'd only want to move the sanity checks added in
-88c869198aa63 outside of the branch.  Thanks,
+These changes introduce a generic and easy-to-use interface for plugin
+authors in the form of a callback for discontinuities. Patch 1 defines
+an enumeration of some trap-related discontinuities including somewhat
+narrow definitions of the discontinuity evetns and a callback type.
+Patch 2 defines the callback registration function. Patch 3 adds some
+hooks for triggering the callbacks. Patch 4 adds an example plugin
+showcasing the new API. Patches 5 through 6 call the hooks for a
+selection of architectures, mapping architecture specific events to the
+three categories defined in patch 1. Future non-RFC patchsets will call
+these hooks for all architectures (that have some concept of trap or
+interrupt). Finally, patch 11 supplies a test plugin asserting that the
+next PC provided to the plugin points to the next instruction executed.
 
-Alex
+Sidenote: I'm likely doing something wrong for one architecture or
+the other. These patches are untested for most of them.
+
+Since v2 (tcg-plugins: add hooks for interrupts, exceptions and traps):
+  - Switched from traps as core concept to more generic discontinuities
+  - Switched from semihosting to hostcall as term for emulated traps
+  - Added enumeration of events and dedicated callback type
+  - Make callback receive event type as well as origin and target PC
+    (as requested by Pierrick Bouvier)
+  - Combined registration functions for different traps into a single
+    one for all types of discontinuities (as requested by Pierrick
+    Bouvier)
+  - Migrated records in example plugin from fully pre-allocated to a
+    scoreboard (as suggested by Pierrick Bouvier)
+  - Handle PSCI calls as hostcall (as pointed out by Peter Maydell)
+  - Added hooks for ARM Cortex M arches (as pointed out by Peter
+    Maydell)
+  - Added hooks for Alpha targets
+  - Added hooks for MIPS targets
+  - Added a plugin for testing some of the interface behaviour
+
+Since v1:
+  - Split the one callback into multiple callbacks
+  - Added a target-agnostic definition of the relevant event(s)
+  - Call hooks from architecture-code rather than accel/tcg/cpu-exec.c
+  - Added a plugin showcasing API usage
+
+Julian Ganz (11):
+  plugins: add types for callbacks related to certain discontinuities
+  plugins: add API for registering discontinuity callbacks
+  plugins: add hooks for new discontinuity related callbacks
+  contrib/plugins: add plugin showcasing new dicontinuity related API
+  target/alpha: call plugin trap callbacks
+  target/arm: call plugin trap callbacks
+  target/avr: call plugin trap callbacks
+  target/mips: call plugin trap callbacks
+  target/riscv: call plugin trap callbacks
+  target/sparc: call plugin trap callbacks
+  tests: add plugin asserting correctness of discon event's to_pc
+
+ contrib/plugins/meson.build         |  3 +-
+ contrib/plugins/traps.c             | 96 +++++++++++++++++++++++++++++
+ include/qemu/plugin-event.h         |  3 +
+ include/qemu/plugin.h               | 13 ++++
+ include/qemu/qemu-plugin.h          | 58 +++++++++++++++++
+ plugins/core.c                      | 67 ++++++++++++++++++++
+ target/alpha/helper.c               | 12 ++++
+ target/arm/helper.c                 | 25 ++++++++
+ target/arm/tcg/m_helper.c           | 18 ++++++
+ target/avr/helper.c                 |  3 +
+ target/mips/tcg/sysemu/tlb_helper.c | 11 ++++
+ target/riscv/cpu_helper.c           |  9 +++
+ target/sparc/int32_helper.c         |  7 +++
+ target/sparc/int64_helper.c         | 10 +++
+ tests/tcg/plugins/discons.c         | 95 ++++++++++++++++++++++++++++
+ tests/tcg/plugins/meson.build       |  2 +-
+ 16 files changed, 430 insertions(+), 2 deletions(-)
+ create mode 100644 contrib/plugins/traps.c
+ create mode 100644 tests/tcg/plugins/discons.c
+
+-- 
+2.45.2
 
 
