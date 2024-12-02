@@ -2,89 +2,101 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 021F19E09EB
-	for <lists+qemu-devel@lfdr.de>; Mon,  2 Dec 2024 18:30:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 117519E0A03
+	for <lists+qemu-devel@lfdr.de>; Mon,  2 Dec 2024 18:33:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tIAFP-00062n-F5; Mon, 02 Dec 2024 12:30:11 -0500
+	id 1tIAGo-0006wk-4v; Mon, 02 Dec 2024 12:31:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tIAFK-00060c-8Z
- for qemu-devel@nongnu.org; Mon, 02 Dec 2024 12:30:07 -0500
-Received: from mail-oa1-x2a.google.com ([2001:4860:4864:20::2a])
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1tIAGi-0006tY-SW
+ for qemu-devel@nongnu.org; Mon, 02 Dec 2024 12:31:34 -0500
+Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tIAFI-0001EP-DP
- for qemu-devel@nongnu.org; Mon, 02 Dec 2024 12:30:06 -0500
-Received: by mail-oa1-x2a.google.com with SMTP id
- 586e51a60fabf-29e70c9dc72so516178fac.0
- for <qemu-devel@nongnu.org>; Mon, 02 Dec 2024 09:30:04 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1tIAGd-0001ad-ET
+ for qemu-devel@nongnu.org; Mon, 02 Dec 2024 12:31:32 -0500
+Received: by mail-pf1-x42d.google.com with SMTP id
+ d2e1a72fcca58-72577d3b026so736317b3a.3
+ for <qemu-devel@nongnu.org>; Mon, 02 Dec 2024 09:31:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1733160603; x=1733765403; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id:from
- :to:cc:subject:date:message-id:reply-to;
- bh=mujbQXLDp4KaL3CDmV1zPQ3iXN/ai15MwDT0HY01oVo=;
- b=a8C+BuX9HsvGMJYQhLu/G0zflePczDp9Jz1jlGyD9bGovGiFqMITGBt0ncofFFHwJj
- a7f6YN9fwWhH4hGE2akBIty+t2kAcGoQNB7GtTmtfugHbmAh5op+cqM9PgM/BrN682P6
- dLyHUKGd9n2tu5Adwq+w/B+Es8asOH4Lok6SEs5EubZUuasLMK/JeYT3tUro5f812/Et
- uQiXAf0KP654jEpwdAKSUApaDPzjrrJcnfCRoPTSZXcDr5Bb9tCEtuCsaTTrJunbdQNf
- CU0jFAmNeRzO3UFPXrkCjpwoSkFlQcEv4RExhM8V0MM7sIWvz6NX636Fz3Yh5PZgpXff
- CGvA==
+ d=linaro.org; s=google; t=1733160686; x=1733765486; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=e543963Iyk40iaooUTKu+Y2n2X5t7JEguZc6j9uAx+Q=;
+ b=CX9OPcetMU90CXA+CNs8PAoe/htTgEzNBAZcsBbZl/S4XVUhQmy/ZsLNffCii8diPp
+ tyQuO+c04rFyOwi+Xq72QE9ddjYL3SMqnKozw6D/0IuBjbURevY0lY355o4UsJeiB4bk
+ QFR0nguImXIUc0/4cf41gd+Kq3sg9xFnmtme/isOYdZqmCVyPNJTHnuSLJ8ASSr1Tu+D
+ 2sq8Fm5oHtRy0cJmuHj6cTudPwMJ6rKDq76TKgwmhd9QekzODmFSpGfsOqz42jrNUR4O
+ 8jTrnnRwcc3TH4a2FSnlLMQaWWZTf2BTZMghPcQgMPr8xfQc/U6q1tJMof2vxg8jeDl1
+ b0mQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733160603; x=1733765403;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20230601; t=1733160686; x=1733765486;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=mujbQXLDp4KaL3CDmV1zPQ3iXN/ai15MwDT0HY01oVo=;
- b=XQf4T6MWscdfA4MuTpRXrHciD4e0njB+5zGDnqT6Kj9pvbELBeagi8EVW5tQqbknuQ
- l3pZPiyhT1//BViaTLfnjkRGq7sRubo2S6lRDPSSurUB4JWuUzPFx2bm2KgqtVztRedA
- lDMASVvlEgXVl620LB30zVA3Cx2vqQ13n0icVTNDrKsctkVmyf+P3UDRvBNkV/YerC3T
- 5coehpPfUPxqy4APzBPc38H21vJI+NWPSqz/0IcPbLaHHEQVLx5NbhB30HkhkfUI7asU
- MX1smBOz5VpR3giEM+0F5j3KwbYaRK9qBSKho46vNuDmjWxwKEk+r9JdFW0XYelT/fop
- 1CMA==
+ bh=e543963Iyk40iaooUTKu+Y2n2X5t7JEguZc6j9uAx+Q=;
+ b=ALyvtCG1/WPIQQ+clxxIe3z3A4gVqo2BZ4+51nm+w49cAGpomYAf779ht6Vp3EO5eA
+ lAgmxx8c3mu1yiiHWtmQOY8bSZR/IwZKPhuvqzkhUdGa5VViK3w2bOsI9omg9p9NZKJ8
+ yj55kacbED+ZtUOyHRi5DgGbToia1MQrj5MDjaKDBaHK3ozL6C7lIT3Roj9OJzmzXu9o
+ v4VCB1X7fF9xukpdtaLj+hXp2YHjoD20y8q0XZ7dFtKD3vv5NgBX5yf68q334Uqqnh3T
+ 9QbDr3OFHGyaIrE3jxlXhkjb3Y4XnLJ+Lu5noOzeHuqC9jPw1mBUgMfQI4z77hkskojU
+ T5wA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWw69cDVVwW3//UAX3yNtOyIsPSVJFyFNJuViP0RxldQUst6BYJWa4hrNd9bTAPXM/gkHUc2tOV0aA5@nongnu.org
-X-Gm-Message-State: AOJu0YzlIgH1rv/Okq8jJZdz5K+IwXIw6DzBi4HWKZWD04JZPvWBIlzY
- yaLcvCOY1qY51RSQifW/w2+SPGZKRWjdIslrP1Z31NHIOpQc7n9hXo+nMNqisQA=
-X-Gm-Gg: ASbGnctwRlBUSFK1z9fBCABxMMm0CzL95moz4UCD+WlzbL7CK+1XIov7itFmLacZRa8
- 2a85s6VWDmr6GYZQ6w0LbZ2SMXkRC5Ar4oPKbexjX1BSGbURy7EJ+U2bBF1nv7Vp9RbWACbblQx
- /+fHyW8NrREkedUbvrl0Y2uRsgqvwxjs5ifhb0tBsAMFTdyGB0jEjqSRf6aem29NHD2gg9FZMSD
- /jvEn2FMe96GoYstMWY7Mz6/U4Rj+B2pwSoh05TTCedjragj16BZU5nRdSQ5iXMGw6SgKI=
-X-Google-Smtp-Source: AGHT+IFWxWwqW6oU5QAgj8vAv3pUuhT1jdcIvnRTZDO1xopoLM46l+k7ZWjEX/F0ILPh/0Bf0mlwsw==
-X-Received: by 2002:a05:6870:6128:b0:296:cf2e:485e with SMTP id
- 586e51a60fabf-29dc44c866fmr18220625fac.41.1733160602762; 
- Mon, 02 Dec 2024 09:30:02 -0800 (PST)
-Received: from [192.168.170.227] ([187.217.227.247])
- by smtp.gmail.com with ESMTPSA id
- 586e51a60fabf-29e421b2f83sm1663164fac.25.2024.12.02.09.30.02
+ AJvYcCXa9NU76ai2m3fTsQCWgF72ADXKm2DS8J/FcTUETAk2LOwtVDMpY73YE/HORw3sIMZt74AJivxoHvuF@nongnu.org
+X-Gm-Message-State: AOJu0YyRpHrHs4hUqGFx2cAt5XT+CTrIUTjzyPGgnMz0ArJCQTOVh/N5
+ dv5DSc9iuCbHQot98hl6AKPo1XmxpvCg8ZQMGP20TCuW1c0uZvV3m5c3gWh8ZnY=
+X-Gm-Gg: ASbGnctHHh3J3GbMKSGiCIszC04iRNbJUlw44yHUrfcYnm6wgjUa/qWRR0DnQAUv7rS
+ Yl+qSaiRXr0KGgNwOpcTZDZiggAHHxlc1NNda5IWZ3XgluVXL2ct7HBr5a6Nv6fk31SXEEO3qnt
+ t4ZM4SYSI20mgGUN2887daMSxBw+XbAcd6V2TcQGyLOdilsdqNoHWtZ+4Qp+D9dV57RXekc1Mjj
+ iDXMbtMXuQjp/pyP1Drp5fid3Amp2t0c2gJhIZ7NERxwN+PVHiULp6ssyfdrpVqHPuqnhfZPSOj
+ y5jIWhU8qaL7hOTbBEO0IA==
+X-Google-Smtp-Source: AGHT+IH5HS+3cVvUEDx40H4OBjMUtQn35Ws6+8Xss5JvJ4eXhh35qNriFf4JcL7hLS9OJLvhr9+D0Q==
+X-Received: by 2002:a17:902:f68c:b0:215:a3e3:c868 with SMTP id
+ d9443c01a7336-215a3e3cfbfmr40054965ad.30.1733160685693; 
+ Mon, 02 Dec 2024 09:31:25 -0800 (PST)
+Received: from [192.168.1.67] (216-180-64-156.dyn.novuscom.net.
+ [216.180.64.156]) by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-2154e1c34a4sm54262065ad.260.2024.12.02.09.31.24
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 02 Dec 2024 09:30:02 -0800 (PST)
-Message-ID: <daad98e2-424a-463a-bda7-f74869b89a3d@linaro.org>
-Date: Mon, 2 Dec 2024 11:30:00 -0600
+ Mon, 02 Dec 2024 09:31:25 -0800 (PST)
+Message-ID: <fd7ad48e-1e72-4735-8064-7039eedc00ae@linaro.org>
+Date: Mon, 2 Dec 2024 09:31:24 -0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 for-10.0 42/54] target/m68k: Set default NaN pattern
- explicitly
-To: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
-References: <20241202131347.498124-1-peter.maydell@linaro.org>
- <20241202131347.498124-43-peter.maydell@linaro.org>
+Subject: Re: [PATCH v2] tests/functional/aarch64: add tests for FEAT_RME
 Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20241202131347.498124-43-peter.maydell@linaro.org>
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
+ qemu-devel@nongnu.org, =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>,
+ Troy Lee <leetroy@gmail.com>, Alistair Francis <alistair@alistair23.me>,
+ Andrew Jeffery <andrew@codeconstruct.com.au>, alex.bennee@linaro.org,
+ Jamin Lin <jamin_lin@aspeedtech.com>, qemu-arm@nongnu.org,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Steven Lee <steven_lee@aspeedtech.com>,
+ Niek Linnenbank <nieklinnenbank@gmail.com>, Joel Stanley <joel@jms.id.au>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
+References: <20241128213729.1021961-1-pierrick.bouvier@linaro.org>
+ <4b3180bd-8054-4431-a594-0445ce4837aa@linaro.org>
+ <5620efa2-98c6-4613-b866-67e91ac6acf8@linaro.org>
+ <CAFEAcA-xa1AKf2GAv7go5wdu+Td=4jf7Nriin-Oe3S6qEV6X0g@mail.gmail.com>
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+In-Reply-To: <CAFEAcA-xa1AKf2GAv7go5wdu+Td=4jf7Nriin-Oe3S6qEV6X0g@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2001:4860:4864:20::2a;
- envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x2a.google.com
-X-Spam_score_int: 12
-X-Spam_score: 1.2
-X-Spam_bar: +
-X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
- DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x42d.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,45 +112,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/2/24 07:13, Peter Maydell wrote:
-> Set the default NaN pattern explicitly for m68k.
+On 12/2/24 02:57, Peter Maydell wrote:
+> On Sun, 1 Dec 2024 at 18:09, Pierrick Bouvier
+> <pierrick.bouvier@linaro.org> wrote:
+>>
+>> Hi Marcin,
+>>
+>> On 12/1/24 05:34, Marcin Juszkiewicz wrote:
+>>> W dniu 28.11.2024 o 22:37, Pierrick Bouvier pisze:
+>>>> This boot an OP-TEE environment, and launch a nested guest VM inside it
+>>>> using the Realms feature. We do it for virt and sbsa-ref platforms.
+>>>>
+>>>> Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+>>>
+>>>> diff --git a/tests/functional/meson.build b/tests/functional/meson.build
+>>>> index 5c048cfac6d..b975a1560df 100644
+>>>> --- a/tests/functional/meson.build
+>>>> +++ b/tests/functional/meson.build
+>>>> @@ -13,6 +13,8 @@ endif
+>>>>     test_timeouts = {
+>>>>       'aarch64_aspeed' : 600,
+>>>>       'aarch64_raspi4' : 480,
+>>>
+>>>> +  'aarch64_rme_virt' : 720,
+>>>
+>>> Took 2974.95s on M1 Pro macbook.
+>>>
+>>>> +  'aarch64_rme_sbsaref' : 720,
+>>>
+>>> This one needed 2288.29s.
+>>>
+>>>>       'aarch64_sbsaref_alpine' : 720,
+>>>
+>>> Have to check cause timed out.
+>>>
+>>>>       'aarch64_sbsaref_freebsd' : 720,
+>>>
+>>> 331.65s
+>>>
+>>> So RME tests probably need longer timeouts or would not run at all.
+>>>
+>>
+>> By any chance, are you running those tests in debug mode?
+>> It seems to me that CI is running functional tests with optimized
+>> builds, so I'm not sure we want to support debug "times" here.
 > 
-> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-> ---
->   target/m68k/cpu.c              | 2 ++
->   fpu/softfloat-specialize.c.inc | 2 +-
->   2 files changed, 3 insertions(+), 1 deletion(-)
-
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-
-r~
-
+> We do need to support debug times, because a common developer
+> use case is "doing a debug build, run 'make check-functional'
+> to check whether anything is broken. The debug times also
+> are useful because the CI runners can have highly variable
+> performance -- if a test is slow enough to hit the timeout
+> for a debug build locally, it's probably going to also hit
+> the timeout at least sometimes in CI.
 > 
-> diff --git a/target/m68k/cpu.c b/target/m68k/cpu.c
-> index 13b76e22488..9de8ce67078 100644
-> --- a/target/m68k/cpu.c
-> +++ b/target/m68k/cpu.c
-> @@ -105,6 +105,8 @@ static void m68k_cpu_reset_hold(Object *obj, ResetType type)
->        * preceding paragraph for nonsignaling NaNs.
->        */
->       set_float_2nan_prop_rule(float_2nan_prop_ab, &env->fp_status);
-> +    /* Default NaN: sign bit clear, all frac bits set */
-> +    set_float_default_nan_pattern(0b01111111, &env->fp_status);
->   
->       nan = floatx80_default_nan(&env->fp_status);
->       for (i = 0; i < 8; i++) {
-> diff --git a/fpu/softfloat-specialize.c.inc b/fpu/softfloat-specialize.c.inc
-> index b5ec1944d15..ecb7a52ae7c 100644
-> --- a/fpu/softfloat-specialize.c.inc
-> +++ b/fpu/softfloat-specialize.c.inc
-> @@ -136,7 +136,7 @@ static void parts64_default_nan(FloatParts64 *p, float_status *status)
->       uint8_t dnan_pattern = status->default_nan_pattern;
->   
->       if (dnan_pattern == 0) {
-> -#if defined(TARGET_SPARC) || defined(TARGET_M68K)
-> +#if defined(TARGET_SPARC)
->           /* Sign bit clear, all frac bits set */
->           dnan_pattern = 0b01111111;
->   #elif defined(TARGET_HEXAGON)
+
+I understand the scenario, but given how slow debug builds are, it would 
+probably be faster to advise developer to recompile in release mode.
+The overall time of compile + test is slower than waiting for debug.
+
+Beyond using a debugger, what is the advantage to compile with -O0?
+
+> thanks
+> -- PMM
 
 
