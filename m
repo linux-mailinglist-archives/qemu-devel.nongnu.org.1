@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D5EC9E033E
-	for <lists+qemu-devel@lfdr.de>; Mon,  2 Dec 2024 14:21:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E9FD9E0364
+	for <lists+qemu-devel@lfdr.de>; Mon,  2 Dec 2024 14:29:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tI6N0-0000G8-Q0; Mon, 02 Dec 2024 08:21:47 -0500
+	id 1tI6Pn-0003td-Sd; Mon, 02 Dec 2024 08:24:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tI6GR-0002Ga-He
- for qemu-devel@nongnu.org; Mon, 02 Dec 2024 08:15:02 -0500
-Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
+ id 1tI6GV-0002Hr-4U
+ for qemu-devel@nongnu.org; Mon, 02 Dec 2024 08:15:07 -0500
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tI6GL-0003RY-9f
- for qemu-devel@nongnu.org; Mon, 02 Dec 2024 08:14:58 -0500
-Received: by mail-wr1-x42f.google.com with SMTP id
- ffacd0b85a97d-385eed29d17so794206f8f.0
- for <qemu-devel@nongnu.org>; Mon, 02 Dec 2024 05:14:46 -0800 (PST)
+ id 1tI6GL-0003SN-DG
+ for qemu-devel@nongnu.org; Mon, 02 Dec 2024 08:15:01 -0500
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-434a45f05feso53403075e9.3
+ for <qemu-devel@nongnu.org>; Mon, 02 Dec 2024 05:14:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1733145285; x=1733750085; darn=nongnu.org;
+ d=linaro.org; s=google; t=1733145286; x=1733750086; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=6b67TuxIIuUbvFPYapA8HgByL1UEo/kP+YGdKuHFudM=;
- b=E9BQ0oLvz5/haQwK9hYar3Z1aHHkAyCDYZYse6aG5RITR1UaActeclATxPah2u3avw
- jjeEnWo5Vb8c2g+OoKlC9eq1d4I1WzZNETqWghnhHNJ0N+iGzyf5/DwT4Hyj3RN87s+8
- HMq2m3JCVPebO65eK5r1e45EL0kHN6j/1LCFvRrdEfVNV8fybujp1g/j/zgyDqwgNHYT
- 0b9b3sDhYE2Szq2NtZzany7pqd5lnaP1C+0g/X2/GF5Xvpq+W0Dg99dUsKp57UnkLHf0
- iaVRNLPUY/UUdOGNQ8KSZvUcehP0vugQ2NVCtOFcg4wezrUDWG1liryWZHNxE/ZnXDrk
- KcAg==
+ bh=te7O3NG5V4E3qWDfy7w3qXeqH4l7GoDjlHVXASIpOuQ=;
+ b=poWayr43yRPT4x/xZ3vjV421rAX1L3T7Xf+ivcTu5dyzbGSH3dbVRqJSwfFlNKa/V1
+ Zc/POjCe0UwaVseJVRkxeNRCAqkNyutD+CoEkVgbeXy6HUIgLF6biu4cvYKTHxQcvOE1
+ /KBWXHK3/RYWEGC9OrxgL9O7aLE+Nq/MaCKpdweDg/iqmVOtrN1XmeftVuBDDdR2AfmJ
+ +rM/sXyeGNAdMdSTCPQzVslpDdk3lzP3JxTLrxf3878Z7b+sffIEmTSsPJMGrRGWDCTg
+ +/EGO0fSglkl8xGTo9NA/s9AyivdSPSYZWDvmgZATuFVDzITuzAXjp/AU4M3Rt4UCzYj
+ brzg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733145285; x=1733750085;
+ d=1e100.net; s=20230601; t=1733145286; x=1733750086;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=6b67TuxIIuUbvFPYapA8HgByL1UEo/kP+YGdKuHFudM=;
- b=pzweqMWoAGeY/IEy6mJeTuCx9Jl1v96HkD0gzWAnOHZEUdk2tczQ8nWSJr8gjnJWKT
- sqmpgjaDsJNDKq3ilD4OhxLcpE4/edc1C2v/+RoDn2FvX7RTdCYxftkTi/tX2wK5twJ/
- cFW1s88Ns8FUKhcG9CWcBEhueT+/0YNGdWL8NKIaGiiibZTGxd1EfFVsUsVG2JjxruKK
- 7dGcRmbAzJmRfnONfD4jWJhfhgaEUB9/YVRIijtRdQoo0GXpU4T9aS1Y9SzJ0rEE2DfI
- 2OJVNBIwoEYKX2IBRrmOc2jeRcyRukGocFC78L2D63q8f+IhpbxPw+3HQCaroU23dpON
- Iaxw==
-X-Gm-Message-State: AOJu0YziMiIvKakVnbl7xLOs0BeOO46KxSBX86RBt4lexrK9BiO2rlui
- 3zgtugOS+H3NC3DJDCicdeAp2BTAQKIh0tgGRTqlco/QIqrernlLBJedkkePCvrjH0t5lMCPCtC
- G
-X-Gm-Gg: ASbGnct/YeQ/og2FcrpjuF2bfFJ0O7z3o9wK6LQbyWqzZukmdRwdSEoaF1aOmqp+5XU
- Mg9Rd9pG1HjvAnwnw6SaVFbuXXtb5yFki1C9GCObOzorFmQ3PUSenE3mYIRfnLvycisDYPCfuN3
- jERmLwwcrC/ezY1jF6dutWJZq4AQnr1+wXtwbfS/pskIBiK3rZ0shsJeEmVh4NaAz8t2TZMVa/V
- IqW5eXm3qthQzmEWGxNf2n9Uxr+z43MnZzgKdfiZHoUj7/u5mE8yjQ=
-X-Google-Smtp-Source: AGHT+IFPP/69/o/8stugJpVepC120rwI93xT8a4bCLYkdFLQeip4Au1UHJnxnRoTijQt5ciXEuHfUA==
-X-Received: by 2002:a05:6000:186f:b0:382:319f:3abd with SMTP id
- ffacd0b85a97d-385c6edd338mr21552950f8f.36.1733145285219; 
- Mon, 02 Dec 2024 05:14:45 -0800 (PST)
+ bh=te7O3NG5V4E3qWDfy7w3qXeqH4l7GoDjlHVXASIpOuQ=;
+ b=Um1dc0pOHkcIu2o2d/nBU27a6Vw0GC5yd8G88HCSqAV+tEjjFnOwKhbBfkUoleR99t
+ sZr+eqriFC2BPzwhFp7/Lea0tN/lAyA3Xny3c4REpIIjo96KCEcw6+ma+N7CnUAN9rDy
+ t46PDfMPq85pccQTLpoBGheCjSTd4V2O/G83InSNYCBMKvJfoOCJE9KnVFAFtynMELo/
+ DAhDB+VwxYFhbA7OqUmEtPyGZjK90tU1D4nxp0W+sOkJf/YLbefOLZ7lTnZHM0clOO4S
+ ycfcboepZpasym7VUrPxGGBh87YLVW9XBg7VA4bsbr3G6+QzEedCDA2NgEvoxPqbLdV8
+ s8iA==
+X-Gm-Message-State: AOJu0Yx7lVfIxuCFzIZFeG/ZAPORumptBBah/Mp+RZsdVPIGQfK09F1p
+ p5J6Fbd88aKCyP+CWD7eUJW+itTw7tYWKfMgMyVEShK5xib+79ZfJsS1AIiTIuedOti9zFrxD7x
+ v
+X-Gm-Gg: ASbGncsrg1uwFWvNmcXpfN7DtiVw880s7oC4OUnTXHn+XodsLh8q606wpOwvF5L4YTD
+ /e6q0XRI5G099WNfUqUFAIMWIMTedTxESt6lcp1Q6CkPSkkXtT2+j1uKx3bGjkdCW0F/6D+3EQF
+ EdIdcVBJO+RAjOdu0k8zSaVm9GUyCKIt7/dcz1XLJMXGBQ78v4DEZXmT7O9tYBsNp/UtJc0j7JD
+ GDqZ4Vh5/GoRtuoXe2jDNmwZXgaZwVchFCmQMFovEWzRd7mg0MgUwM=
+X-Google-Smtp-Source: AGHT+IEf4KTr6rXhAChzMFWXIj3WaT/CW+XO0OVRZDhylwrcuGoh4UWwf4XfaI2ZSMeNI4wXvw5KjA==
+X-Received: by 2002:a05:600c:5021:b0:434:9fac:b157 with SMTP id
+ 5b1f17b1804b1-434a9dc37aamr253794695e9.13.1733145286002; 
+ Mon, 02 Dec 2024 05:14:46 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-385dea1e4ebsm10160157f8f.1.2024.12.02.05.14.44
+ ffacd0b85a97d-385dea1e4ebsm10160157f8f.1.2024.12.02.05.14.45
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 02 Dec 2024 05:14:44 -0800 (PST)
+ Mon, 02 Dec 2024 05:14:45 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, qemu-ppc@nongnu.org, qemu-s390x@nongnu.org,
@@ -76,17 +76,17 @@ Cc: qemu-arm@nongnu.org, qemu-ppc@nongnu.org, qemu-s390x@nongnu.org,
  Thomas Huth <thuth@redhat.com>,
  Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
  Artyom Tarasenko <atar4qemu@gmail.com>, Max Filippov <jcmvbkbc@gmail.com>
-Subject: [PATCH v2 for-10.0 39/54] target/alpha: Set default NaN pattern
+Subject: [PATCH v2 for-10.0 40/54] target/arm: Set default NaN pattern
  explicitly
-Date: Mon,  2 Dec 2024 13:13:32 +0000
-Message-Id: <20241202131347.498124-40-peter.maydell@linaro.org>
+Date: Mon,  2 Dec 2024 13:13:33 +0000
+Message-Id: <20241202131347.498124-41-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241202131347.498124-1-peter.maydell@linaro.org>
 References: <20241202131347.498124-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x331.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -109,26 +109,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Set the default NaN pattern explicitly for the alpha target.
+Set the default NaN pattern explicitly for the arm target.
+This includes setting it for the old linux-user nwfpe emulation.
+For nwfpe, our default doesn't match the real kernel, but we
+avoid making a behaviour change in this commit.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/alpha/cpu.c | 2 ++
- 1 file changed, 2 insertions(+)
+ linux-user/arm/nwfpe/fpa11.c | 5 +++++
+ target/arm/cpu.c             | 2 ++
+ 2 files changed, 7 insertions(+)
 
-diff --git a/target/alpha/cpu.c b/target/alpha/cpu.c
-index 5d75c941f7a..70f67e6fd4e 100644
---- a/target/alpha/cpu.c
-+++ b/target/alpha/cpu.c
-@@ -199,6 +199,8 @@ static void alpha_cpu_initfn(Object *obj)
-      * operand in Fa. That is float_2nan_prop_ba.
-      */
-     set_float_2nan_prop_rule(float_2nan_prop_x87, &env->fp_status);
-+    /* Default NaN: sign bit clear, msb frac bit set */
-+    set_float_default_nan_pattern(0b01000000, &env->fp_status);
- #if defined(CONFIG_USER_ONLY)
-     env->flags = ENV_FLAG_PS_USER | ENV_FLAG_FEN;
-     cpu_alpha_store_fpcr(env, (uint64_t)(FPCR_INVD | FPCR_DZED | FPCR_OVFD
+diff --git a/linux-user/arm/nwfpe/fpa11.c b/linux-user/arm/nwfpe/fpa11.c
+index 8356beb52c6..0f1afbd91df 100644
+--- a/linux-user/arm/nwfpe/fpa11.c
++++ b/linux-user/arm/nwfpe/fpa11.c
+@@ -69,6 +69,11 @@ void resetFPA11(void)
+    * this late date.
+    */
+   set_float_2nan_prop_rule(float_2nan_prop_s_ab, &fpa11->fp_status);
++  /*
++   * Use the same default NaN value as Arm VFP. This doesn't match
++   * the Linux kernel's nwfpe emulation, which uses an all-1s value.
++   */
++  set_float_default_nan_pattern(0b01000000, &fpa11->fp_status);
+ }
+ 
+ void SetRoundingMode(const unsigned int opcode)
+diff --git a/target/arm/cpu.c b/target/arm/cpu.c
+index c81f6df3fca..4f7e18eb8e6 100644
+--- a/target/arm/cpu.c
++++ b/target/arm/cpu.c
+@@ -179,6 +179,7 @@ void arm_register_el_change_hook(ARMCPU *cpu, ARMELChangeHookFn *hook,
+  *    the pseudocode function the arguments are in the order c, a, b.
+  *  * 0 * Inf + NaN returns the default NaN if the input NaN is quiet,
+  *    and the input NaN if it is signalling
++ *  * Default NaN has sign bit clear, msb frac bit set
+  */
+ static void arm_set_default_fp_behaviours(float_status *s)
+ {
+@@ -186,6 +187,7 @@ static void arm_set_default_fp_behaviours(float_status *s)
+     set_float_2nan_prop_rule(float_2nan_prop_s_ab, s);
+     set_float_3nan_prop_rule(float_3nan_prop_s_cab, s);
+     set_float_infzeronan_rule(float_infzeronan_dnan_if_qnan, s);
++    set_float_default_nan_pattern(0b01000000, s);
+ }
+ 
+ static void cp_reg_reset(gpointer key, gpointer value, gpointer opaque)
 -- 
 2.34.1
 
