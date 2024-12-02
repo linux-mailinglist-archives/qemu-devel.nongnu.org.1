@@ -2,84 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A2559DFEB2
-	for <lists+qemu-devel@lfdr.de>; Mon,  2 Dec 2024 11:21:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CCE349DFEFB
+	for <lists+qemu-devel@lfdr.de>; Mon,  2 Dec 2024 11:31:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tI3Xd-0004fm-3l; Mon, 02 Dec 2024 05:20:33 -0500
+	id 1tI3hP-0005x4-WB; Mon, 02 Dec 2024 05:30:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tI3Xa-0004fX-D5
- for qemu-devel@nongnu.org; Mon, 02 Dec 2024 05:20:30 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tI3hO-0005wj-20
+ for qemu-devel@nongnu.org; Mon, 02 Dec 2024 05:30:38 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tI3XW-0000U7-RJ
- for qemu-devel@nongnu.org; Mon, 02 Dec 2024 05:20:29 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tI3hL-00035J-JX
+ for qemu-devel@nongnu.org; Mon, 02 Dec 2024 05:30:37 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1733134823;
+ s=mimecast20190719; t=1733135434;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=+oAdtKQRAgMl/Rs38FDp0ftBVOe0lH2rrSSjsAj0Sww=;
- b=VBzlhSpg6FMRYWw2IPv3GUOymnt9mQj7BbunUQL2LCLdC59nd+8vDRbb05KU6m1p/4QyYA
- RGckLyLGsv5tz5RShqpzlbNHfK/KaScqi5lYcNsNwXyjG/1jzbbb1JZoXepF8qBJA/RpM7
- PuM4ac7cAk2Qb2E+PuSf2j9w2c+rvrc=
+ bh=u2yRkP3tJBqHOXYD+ENmZFgoDi9CszY/RPmzmMdoBFg=;
+ b=fV6fwlSHR/6iuUXa1YEr3u7HfwKnIu9DRHy3Hsk/ftuA+iCHzXFZZVvYja17meezDEXAKO
+ f+k+PJFHBIKsUN1mTe3MOfSLLnZMi2QCTA9KpfbM5Ra7xYYrAVBqvbmvdd65lCgm4s2xpk
+ WQyDjFCzEZuNFMt+ZVk7rT+4IZ9OAvQ=
 Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
  [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-296-oN4jxMrPN-eiQi4BE_d-Kw-1; Mon, 02 Dec 2024 05:20:22 -0500
-X-MC-Unique: oN4jxMrPN-eiQi4BE_d-Kw-1
-X-Mimecast-MFC-AGG-ID: oN4jxMrPN-eiQi4BE_d-Kw
+ us-mta-53-LWn74vkIN_2ObBF89FTqJA-1; Mon, 02 Dec 2024 05:30:31 -0500
+X-MC-Unique: LWn74vkIN_2ObBF89FTqJA-1
+X-Mimecast-MFC-AGG-ID: LWn74vkIN_2ObBF89FTqJA
 Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-434a27c9044so22144365e9.0
- for <qemu-devel@nongnu.org>; Mon, 02 Dec 2024 02:20:21 -0800 (PST)
+ 5b1f17b1804b1-434a4ad4798so30233025e9.0
+ for <qemu-devel@nongnu.org>; Mon, 02 Dec 2024 02:30:30 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733134821; x=1733739621;
+ d=1e100.net; s=20230601; t=1733135430; x=1733740230;
  h=content-transfer-encoding:in-reply-to:autocrypt:content-language
  :from:references:cc:to:subject:user-agent:mime-version:date
  :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=+oAdtKQRAgMl/Rs38FDp0ftBVOe0lH2rrSSjsAj0Sww=;
- b=X5D+xdX3KRiFExk2KEPIJR4ZwFOjQcWlL4W7WHfgkhmU7F9prjVKHXH3qEpsBuhDW3
- 5bJ3NO7hnt0itlIrW82WRwfOR65bdkXnh/x5mdwAjM+BdV2jD1wl/qxG3VzZjv2SIvRU
- +dD0iu2I1qakSpraI64fOOaxxko1H3CJ33OFiAkyKyMUDAdibttsU+FLTTO9gtl07+JM
- 9XtMlXy73b+wkhqrsssBSTCaQETQNIN/e0duvyTtyloeUsfif2QcgjBXbVoAwAttxWrt
- XMbVwPrJcJkDLGUtPwywXiNHzROrzeljOasLZpM4bttZ7Zj33mBNwLknbS6DUmVgD70p
- QCfw==
+ bh=u2yRkP3tJBqHOXYD+ENmZFgoDi9CszY/RPmzmMdoBFg=;
+ b=XkzzcaPUxEgei8k2W4X6Y/aDkgm9/muiBukZ7L2/PzIENpzH2QAYWtV1d792LeQGr1
+ ItgE5SJRuNSJ4R7b6w/KH8kVLMoDj7zsdgbZgEg3u2yscKEXHxMvQ6PhHlAUOagS0pZU
+ j9NdrMEnzDTqOTy56iX5YfxAqoJMAX2jat5kC5aGoHJvXwWc4QVNk4+/O/PBVxzqbt71
+ 9/mHdsBTUXKFeR87Jbzo5P3kITfNGyqtDrYwXy/r9/+mx5oSeu0LiaQgkL//IcH9FhyL
+ FvlAyrM2b4DOZdqgjxXwDE0yDeFAI80JQiiN4YymjF+rK1jEI8M9XQv2yNFChutbcQKH
+ C07w==
 X-Forwarded-Encrypted: i=1;
- AJvYcCU6T0WmSllfO89j2eE2uGX6Jyr7pX9tNvrZ1wl+r5nXUYw/8D762QkeL2LUlD7MJlEn/KharE7QyXmh@nongnu.org
-X-Gm-Message-State: AOJu0YwvGoReM+02F/xrL5iIM9Jqo3uohM/mayb0xVhJEzROXYJW6/Qy
- IUNrfSA4qf6XnssRmJQu0dcm8ma3f64VMOYqL3CwkC+tFrxoNn4ZfXtVmxj+OtyAqf/asaZDgxu
- o/yJCufzoGHm/w6+m6RJ5A3m7pQJ56xCLbH2teNT+xbFzcF4TquTC
-X-Gm-Gg: ASbGncuod9jICcPEjI7DgHPP99gwZaiF6m6RxHFOcyHfML291zskVw0KX2l5iCpLC0P
- IjmknF9Gjs4Xo8hIZG7KS0JG6yD2pTBscVlwXdJ3pDHaufwb9Nyzxjs24umu+kCMckdgHGlJC94
- lhQFpwnDFtm/tO7bCd8SmaOf4TQNWMZwVEkhHHy1y6J2dyYBD4UkWucALIgOBtcYhfaU122RKFl
- Yo61K5wNkYb//BRqnljl6JHnvnbxBqvB+lZtMj+UfQD7v/6fb2shGVwpi+Z649Mh4HFI6D0MKk=
-X-Received: by 2002:a05:600c:4f12:b0:434:a0fd:f9d1 with SMTP id
- 5b1f17b1804b1-434a9de78c4mr183623895e9.20.1733134820854; 
- Mon, 02 Dec 2024 02:20:20 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGfGZEMBr8FQh4jVtf6ax/GQUeZATrQeLhhLlS+QxnobT9JjoTvBKZaCfdGl6hr+3I/oBiW/Q==
-X-Received: by 2002:a05:600c:4f12:b0:434:a0fd:f9d1 with SMTP id
- 5b1f17b1804b1-434a9de78c4mr183623615e9.20.1733134820469; 
- Mon, 02 Dec 2024 02:20:20 -0800 (PST)
+ AJvYcCWwNcfyDQ+GuHzSmEXaK4H/ppQUUYHXfi92AmjPLvdmRi2bLntBwUeKrgWzGPIeATmrD6krUhQ2MmGI@nongnu.org
+X-Gm-Message-State: AOJu0YwS2XY5NBeaRSUID7yYg/hBQ77JIxrNE35Nft2Xq5sd/pzfG3Tx
+ a5vm+t4P2BkHaVT5XgRHA9FCy5+97xC8xf6kDqxV1r+/3WIkMa7iSzOIaZhgopi3EqRbFLvFGtU
+ biIYqzfUAWqAEC8D2EIjXOCGGKwUkeWmHT/qd5VTztSngG+S81xIl
+X-Gm-Gg: ASbGncvds1hyScJ/TeJHhsQB+w87rHgmkikQYoNrI65jIxbuP0eoT2xmSFVu2O/DLV6
+ xY1RVvwlx3BweODjMu1HTJHot/OO0YCAKOkVHc2hxaqvHqzlxzgXwafKoaxh/0rDpLmwYSImCBE
+ aHgwsU15wFyzIR5GvRrt0KQ1Kwk5F7fuRYQP8Hts9la15gflq27ZYnW/QuJWVyE3mn9N+3eOT0c
+ qcnXZ7gQ+TCDwD6TtWn3NmHzVqgZ+A2ducN/2/rNx1H/xCp/RjCz4zkEIqyw7WtFwsQRM+V9LI=
+X-Received: by 2002:a05:600c:314a:b0:434:9e46:5bc with SMTP id
+ 5b1f17b1804b1-434a9dc3e92mr230200635e9.10.1733135430004; 
+ Mon, 02 Dec 2024 02:30:30 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHp8F6Ez5UOPSbCvszuljvKgR1cOvPqKRCxOEFgQkux5IAnQUxIfFu/PHq8ku2cX2pt4WefFA==
+X-Received: by 2002:a05:600c:314a:b0:434:9e46:5bc with SMTP id
+ 5b1f17b1804b1-434a9dc3e92mr230200315e9.10.1733135429591; 
+ Mon, 02 Dec 2024 02:30:29 -0800 (PST)
 Received: from [10.33.192.206] (nat-pool-str-t.redhat.com. [149.14.88.106])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-434aa77d01esm182283485e9.22.2024.12.02.02.20.19
+ 5b1f17b1804b1-434aa74edb1sm182025795e9.3.2024.12.02.02.30.28
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 02 Dec 2024 02:20:20 -0800 (PST)
-Message-ID: <f7e57416-5812-449b-8c9e-4d2bdc12adfd@redhat.com>
-Date: Mon, 2 Dec 2024 11:20:19 +0100
+ Mon, 02 Dec 2024 02:30:29 -0800 (PST)
+Message-ID: <9277a627-13d6-4d0f-9802-dec6b2606cbe@redhat.com>
+Date: Mon, 2 Dec 2024 11:30:28 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 17/22] tests/functional: generalize archive_extract
+Subject: Re: [PATCH 18/22] tests/functional: add 'archive_extract' to
+ QemuBaseTest
 To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
  qemu-devel@nongnu.org
 Cc: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
 References: <20241129173120.761728-1-berrange@redhat.com>
- <20241129173120.761728-18-berrange@redhat.com>
+ <20241129173120.761728-19-berrange@redhat.com>
 From: Thomas Huth <thuth@redhat.com>
 Content-Language: en-US
 Autocrypt: addr=thuth@redhat.com; keydata=
@@ -124,17 +125,17 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <20241129173120.761728-18-berrange@redhat.com>
+In-Reply-To: <20241129173120.761728-19-berrange@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -50
 X-Spam_score: -5.1
 X-Spam_bar: -----
 X-Spam_report: (-5.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.996,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -153,80 +154,75 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 29/11/2024 18.31, Daniel P. Berrangé wrote:
-> There are many types of archives that the tests deal with, and
-> 'archive_extract' suggests it can cope with any, rather than only
-> tar files. Rename the existing method to 'tar_extract' and add a
-> new method that can dynamically extract any zip, tar or cpio file
-> based on file extension.
+> This helper wrappers utils.archive_extract, forcing the use of the
+> scratch directory, to ensure any extracted files are cleaned at test
+> termination. If a specific member is requested, then the path to the
+> extracted file is also returned.
 > 
 > Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 > ---
->   tests/functional/qemu_test/utils.py | 31 +++++++++++++++++++++++++++--
->   1 file changed, 29 insertions(+), 2 deletions(-)
+>   tests/functional/qemu_test/testcase.py | 36 ++++++++++++++++++++++++++
+>   1 file changed, 36 insertions(+)
 > 
-> diff --git a/tests/functional/qemu_test/utils.py b/tests/functional/qemu_test/utils.py
-> index bafe7fb80e..8c1df8f8c2 100644
-> --- a/tests/functional/qemu_test/utils.py
-> +++ b/tests/functional/qemu_test/utils.py
-> @@ -14,6 +14,7 @@
->   import shutil
->   import subprocess
->   import tarfile
-> +import zipfile
->   
+> diff --git a/tests/functional/qemu_test/testcase.py b/tests/functional/qemu_test/testcase.py
+> index 2f32742387..31d06f0172 100644
+> --- a/tests/functional/qemu_test/testcase.py
+> +++ b/tests/functional/qemu_test/testcase.py
+> @@ -28,6 +28,8 @@
+>   from .asset import Asset
 >   from .cmd import run_cmd
+>   from .config import BUILD_DIR
+> +from .utils import (archive_extract as utils_archive_extract,
+> +                    guess_archive_format)
 >   
-> @@ -38,7 +39,33 @@ def image_pow2ceil_expand(path):
->               with open(path, 'ab+') as fd:
->                   fd.truncate(size_aligned)
 >   
-> -def archive_extract(archive, dest_dir, member=None):
-> +def archive_extract(archive, dest_dir, format=None, member=None):
+>   class QemuBaseTest(unittest.TestCase):
+> @@ -39,6 +41,40 @@ class QemuBaseTest(unittest.TestCase):
+>       log = None
+>       logdir = None
+>   
+> +    '''
+> +    @params archive: filename, Asset, or file-like object to extract
+> +    @params sub_dir: optional sub-directory to extract into
+> +    @params member: optional member file to limit extraction to
+> +
+> +    Extracts @archive into the scratch directory, or a
+> +    directory beneath named by @sub_dir. All files are
+> +    extracted unless @member specifies a limit.
+> +
+> +    If @member is non-None, returns the fully qualified
+> +    path to @member
+> +    '''
+> +    def archive_extract(self, archive, format=None, sub_dir=None, member=None):
+> +        if type(archive) == Asset:
+> +            if format is None:
+> +                format = guess_archive_format(archive.url)
+> +            archive = archive.fetch()
+> +        elif format is None:
+> +            format = guess_archive_format(archive)
+> +
+> +        if member is not None:
+> +            if os.path.isabs(member):
+> +                member = os.path.relpath(member, '/')
+> +
+> +        if sub_dir is None:
+> +            utils_archive_extract(archive, self.scratch_file(), format, member)
+> +        else:
+> +            utils_archive_extract(archive, self.scratch_file(sub_dir),
+> +                                  format, member)
+> +
+> +        if member is not None:
+> +            return self.scratch_file(member)
+> +        return None
 
-Why not doing "if not format: format = guess_archive_format(archive)" here?
-Otherwise this helper function is rather useless - if you have to know the 
-format, you could directly call the appropriate function anyway.
+Ah, ok, so the guessing is done here ...
+
+But somehow it feels wrong to have a "archive_extract" function in the 
+QemuBaseTest class that also does asset fetching under the hood.
+
+Could you maybe rather move this into the asset.py file and rename the 
+function to "fetch_and_extract()" to make it clearer what it does?
 
   Thomas
-
-
-> +    if format == "tar":
-> +        tar_extract(archive, dest_dir, member)
-> +    elif format == "zip":
-> +        zip_extract(archive, dest_dir, member)
-> +    elif format == "cpio":
-> +        if member is not None:
-> +            raise Exception("Unable to filter cpio extraction")
-> +        cpio_extract(archive, dest_dir)
-> +    elif format == "deb":
-> +        deb_extract(archive, dest_dir, "./" + member)
-> +    else:
-> +        raise Exception(f"Unknown archive format {format}")
-> +
-> +def guess_archive_format(path):
-> +    if ".tar." in path or path.endswith("tgz"):
-> +        return "tar"
-> +    elif path.endswith(".zip"):
-> +        return "zip"
-> +    elif path.endswith(".cpio"):
-> +        return "cpio"
-> +    elif path.endswith(".deb") or path.endswith(".udeb"):
-> +        return "deb"
-> +    else:
-> +        raise Exception(f"Unknown archive format for {path}")
-> +
-> +def tar_extract(archive, dest_dir, member=None):
->       with tarfile.open(archive) as tf:
->           if hasattr(tarfile, 'data_filter'):
->               tf.extraction_filter = getattr(tarfile, 'data_filter',
-> @@ -62,7 +89,7 @@ def deb_extract(archive, dest_dir, member=None):
->           (stdout, stderr, ret) = run_cmd(['ar', 't', archive])
->           file_path = stdout.split()[2]
->           run_cmd(['ar', 'x', archive, file_path])
-> -        archive_extract(file_path, dest_dir, member)
-> +        archive_extract(file_path, dest_dir, format="tar", member=member)
->       finally:
->           os.chdir(cwd)
->   
 
 
