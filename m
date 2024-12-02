@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 991B19E037E
-	for <lists+qemu-devel@lfdr.de>; Mon,  2 Dec 2024 14:32:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D2DA9E0368
+	for <lists+qemu-devel@lfdr.de>; Mon,  2 Dec 2024 14:29:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tI6W3-0004Ix-3J; Mon, 02 Dec 2024 08:31:07 -0500
+	id 1tI6UU-0000mc-VY; Mon, 02 Dec 2024 08:29:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tI6Gk-0002bl-Vr
+ id 1tI6Gl-0002cA-3v
  for qemu-devel@nongnu.org; Mon, 02 Dec 2024 08:15:23 -0500
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tI6GU-0003Mc-PP
- for qemu-devel@nongnu.org; Mon, 02 Dec 2024 08:15:12 -0500
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-434ab938e37so26679275e9.0
- for <qemu-devel@nongnu.org>; Mon, 02 Dec 2024 05:14:36 -0800 (PST)
+ id 1tI6GW-0003N9-Tq
+ for qemu-devel@nongnu.org; Mon, 02 Dec 2024 08:15:16 -0500
+Received: by mail-wr1-x433.google.com with SMTP id
+ ffacd0b85a97d-385e06af753so1546861f8f.2
+ for <qemu-devel@nongnu.org>; Mon, 02 Dec 2024 05:14:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1733145275; x=1733750075; darn=nongnu.org;
+ d=linaro.org; s=google; t=1733145277; x=1733750077; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=wdqAdxMo/Zjt+7gjYfOwzXdT/5QjRbRXYw8xftE2ZL0=;
- b=sgmIvl9uV5v2tKz5CA5wywE2NnKdE0T801pKtAK8ld+4ZLRW/ri+1PSzNcYGyGG7zW
- lQNSq3uyIbx5/ewdpQ7lGeSvXbKjXVuW5Iq+bTwC3eygMGd1HJweXe93BQW8rA7wpB7U
- aa+cdrDjawOrUOU40mBhdFAgxDsbwIYQYlpf48MEGewogoaqUkORk5p1ajAHmofUSeoK
- MeguhGtyW+quw1VOnN60+aXyCOMOqQirj8BIir6M/GsP0Q5ykfMItyrhz/BpFhA65of2
- Ct/8LI4bCK5mrnAcfATO9pQyStHPFsU70S4IlYQ1YkTUOBfytuizwtRU9QSLfwJVst5j
- vwBg==
+ bh=y0Xx5AyANaS6WVZhR0dQwQ3Dsfoy1K8k2mwf7TXf+0Q=;
+ b=pn7j5F7MxljhAZcshslSRKChxuW/28uW28iSKscwQRhLg+R2SyiZuoQmoxEWMx6pRR
+ uhIv1Qa7dKbK0EKq4lsnoofjRHHNxdOaKuBD3gqYn+7PZXFsAaFHrmgpbUhn5cH1TOdB
+ ZWtKTGRSBOMTHgz941HE3I+cqtN/JzYyFIaCph1REBVxSvj4Ae2lkc6XxyT2ei94IqCM
+ 52zbtyJs3nGUkrv/V6+hQMAEmx/iylGc0mbjVsOvUS4sUmDeIR1deMVf38zfPK3b9yQ9
+ 2u2vwwHAWfbotBwTmegttbyoPZmY59jfsrV+W2GIAUKbKOU+HS0nyI5WIJVKOcoQHeK3
+ 70wg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733145275; x=1733750075;
+ d=1e100.net; s=20230601; t=1733145277; x=1733750077;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=wdqAdxMo/Zjt+7gjYfOwzXdT/5QjRbRXYw8xftE2ZL0=;
- b=DWcUOQ7EaAJCJEWHnG9CIyWmTFsJ4CqVxxSYfwnBiUkfmbtK/jNJ5FDLpvoYrBXuX9
- 24bR59BA/4Y2JHJMBYZmO2q1X77V/FjoOWHsH657hRHUq5rOIy073DOotJbSItSnHnQq
- y9llahmZGpY/o3KmSThXEtdfz8pIYhV6Lq9aMbOS6GQmVDenDgPU9DpxXT4t2GI7D2XB
- ItmqLF5Ek6TY+enaze/r9KhaL45BnstFm7FFXd8ONHciINEaxIKbK8h731D6fOgmBD3r
- nHAUqLLEHE8h+JKp0LSgih8lloKZer2Pk7Cw4nZqMwlhyGdieK2EtBMTQEqunblXdvk7
- NS5A==
-X-Gm-Message-State: AOJu0YwgwK1dYUGFK8tX85OQZK8Kb0CXVxdnQ655jDfiipI2UfCfq7LD
- ROJbKzY8muzoKfG8fbwegY3u9zB6Eh8nUUbBBznLf2oIbIBxugsqcrnt+4N3eYFZEaycDwUbBsN
- Y
-X-Gm-Gg: ASbGncvOjCDWnLvUo32WzZGYt+NqWYoc81ahqyM40B1Y0cs4i2rqofc9hWAzYldIj+j
- t53yHOq1Y3XUr97rl/ZwzuhBLfDV49+ZuWz0y1/LOhki6DkDQ5FhwSUlPHCxXFoWaFXLKlimKDk
- lfO/bISo+gbwzfOJENo95Ki00RSAxcEU1AIPEtt9m7W8mvj89osEb28xYt/9xqSjymXvhHgeGtq
- q4E7OgHY0OjbLgOi93H2G70QFau8ISIBbrlyVvT2VsYna20dJ4uTVk=
-X-Google-Smtp-Source: AGHT+IHpLBkZrKDuWdn+SfRe1n4Bcn7GFrx0fDmm6XZ9hZ1GnazAJ/+blc2Smc6txIX9PHI2+r8AzQ==
-X-Received: by 2002:a05:6000:2806:b0:385:ec89:2f07 with SMTP id
- ffacd0b85a97d-385ec8930bamr3048801f8f.32.1733145275036; 
+ bh=y0Xx5AyANaS6WVZhR0dQwQ3Dsfoy1K8k2mwf7TXf+0Q=;
+ b=spUu6StNBS8dYsY1xLvA1uSPzzncYQ/PZiijocBv/s/TA1njmGMo610+sYFtCKoUhK
+ IV+omU0LVvA9ppI8tHwXeTNnA3SlSrVituUqa/8ilyhJplk23h6imgsE7xgHRMTzp7T8
+ H+6saVNWmNJUrGHWg1rCmDukWZVpM7uCyaPZsf0PYYrnG5WS2CUB8UJHLn1H1Ozyjafc
+ nq+afNPEiMF0h3wh1usbxe8uEUvWaP/9A16+wFWyZtVqEThGZalFxlgoDJUPQpmAgeW8
+ WvhL6n2bdP0S0zstun261SqAE8udqhXSP2jgxC/jkIHDwjvNRzSPxdkGBJEC0tblQg/6
+ WCpw==
+X-Gm-Message-State: AOJu0YxGdLBUfnEVGS4OyLBZ6zELne2f4sIDafatHq9bp/zP256ojgQz
+ k+2Db8Nk2JElGzToWwwZ6gTtbqTxnhHrM498sSlJSumwQn2+HrqajOdvaoDoefROkFfQiBu1Yms
+ O
+X-Gm-Gg: ASbGncvRjVbcyrXDHDVyRZTh8Woo22CtCvnasE3WmXxR7MRtcs1Dmo+4C6evcsZ0X9r
+ jjB8QjmKg/MhTBlmrkoYzoFbHOMm19r6cUmwvvc8FA3Bl1pjMd5WthVh8q0LWGO3GXloLyzVgos
+ MfCHtqpHmPcZF6vJv43Y63oYliMRJCy4tB2oCp5Wyiaq8dHCdbqOsEGxde3U9qaHeTkixGoIWik
+ 3AmBqTTyJ+M593IOp0t8xRzgPmkqP6qn1iyjMndNxofodc23xNQXA4=
+X-Google-Smtp-Source: AGHT+IF7/dDg8KXtRoJE3fE/ctSGSHBQI+1um0ZFXkjxt7vXDSSfH94Og34g1HVsiH7CtOchKtbbog==
+X-Received: by 2002:a5d:5f8d:0:b0:385:f2a2:50df with SMTP id
+ ffacd0b85a97d-385f2a253a2mr3340910f8f.27.1733145275906; 
  Mon, 02 Dec 2024 05:14:35 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-385dea1e4ebsm10160157f8f.1.2024.12.02.05.14.34
+ ffacd0b85a97d-385dea1e4ebsm10160157f8f.1.2024.12.02.05.14.35
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 02 Dec 2024 05:14:34 -0800 (PST)
+ Mon, 02 Dec 2024 05:14:35 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, qemu-ppc@nongnu.org, qemu-s390x@nongnu.org,
@@ -76,24 +76,24 @@ Cc: qemu-arm@nongnu.org, qemu-ppc@nongnu.org, qemu-s390x@nongnu.org,
  Thomas Huth <thuth@redhat.com>,
  Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
  Artyom Tarasenko <atar4qemu@gmail.com>, Max Filippov <jcmvbkbc@gmail.com>
-Subject: [PATCH v2 for-10.0 28/54] softfloat: Create floatx80 default NaN from
- parts64_default_nan
-Date: Mon,  2 Dec 2024 13:13:21 +0000
-Message-Id: <20241202131347.498124-29-peter.maydell@linaro.org>
+Subject: [PATCH v2 for-10.0 29/54] target/loongarch: Use normal float_status
+ in fclass_s and fclass_d helpers
+Date: Mon,  2 Dec 2024 13:13:22 +0000
+Message-Id: <20241202131347.498124-30-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241202131347.498124-1-peter.maydell@linaro.org>
 References: <20241202131347.498124-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x329.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::433;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -109,79 +109,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We create our 128-bit default NaN by calling parts64_default_nan()
-and then adjusting the result.  We can do the same trick for creating
-the floatx80 default NaN, which lets us drop a target ifdef.
+In target/loongarch's helper_fclass_s() and helper_fclass_d() we pass
+a zero-initialized float_status struct to float32_is_quiet_nan() and
+float64_is_quiet_nan(), with the cryptic comment "for
+snan_bit_is_one".
 
-floatx80 is used only by:
- i386
- m68k
- arm nwfpe old floating-point emulation emulation support
-    (which is essentially dead, especially the parts involving floatx80)
- PPC (only in the xsrqpxp instruction, which just rounds an input
-    value by converting to floatx80 and back, so will never generate
-    the default NaN)
+This pattern appears to have been copied from target/riscv, where it
+is used because the functions there do not have ready access to the
+CPU state struct. The comment presumably refers to the fact that the
+main reason the is_quiet_nan() functions want the float_state is
+because they want to know about the snan_bit_is_one config.
 
-The floatx80 default NaN as currently implemented is:
- m68k: sign = 0, exp = 1...1, int = 1, frac = 1....1
- i386: sign = 1, exp = 1...1, int = 1, frac = 10...0
-
-These are the same as the parts64_default_nan for these architectures.
-
-This is technically a possible behaviour change for arm linux-user
-nwfpe emulation emulation, because the default NaN will now have the
-sign bit clear.  But we were already generating a different floatx80
-default NaN from the real kernel emulation we are supposedly
-following, which appears to use an all-bits-1 value:
- https://elixir.bootlin.com/linux/v6.12/source/arch/arm/nwfpe/softfloat-specialize#L267
-
-This won't affect the only "real" use of the nwfpe emulation, which
-is ancient binaries that used it as part of the old floating point
-calling convention; that only uses loads and stores of 32 and 64 bit
-floats, not any of the floatx80 behaviour the original hardware had.
-We also get the nwfpe float64 default NaN value wrong:
- https://elixir.bootlin.com/linux/v6.12/source/arch/arm/nwfpe/softfloat-specialize#L166
-so if we ever cared about this obscure corner the right fix would be
-to correct that so nwfpe used its own default-NaN setting rather
-than the Arm VFP one.
+In the loongarch helpers, though, we have the CPU state struct
+to hand. Use the usual env->fp_status here. This avoids our needing
+to track that we need to update the initializer of the local
+float_status structs when the core softfloat code adds new
+options for targets to configure their behaviour.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- fpu/softfloat-specialize.c.inc | 20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+It would be nice to get the riscv fclass_s etc also not to use a
+stunt float_status, but plumbing the env through would require
+fiddling with the macro magic, and in practice for the is_quiet_nan
+functions it works out OK.
+---
+ target/loongarch/tcg/fpu_helper.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/fpu/softfloat-specialize.c.inc b/fpu/softfloat-specialize.c.inc
-index 5fbc953e71e..9f913ce20ab 100644
---- a/fpu/softfloat-specialize.c.inc
-+++ b/fpu/softfloat-specialize.c.inc
-@@ -227,17 +227,17 @@ static void parts128_silence_nan(FloatParts128 *p, float_status *status)
- floatx80 floatx80_default_nan(float_status *status)
- {
-     floatx80 r;
-+    /*
-+     * Extrapolate from the choices made by parts64_default_nan to fill
-+     * in the floatx80 format. We assume that floatx80's explicit
-+     * integer bit is always set (this is true for i386 and m68k,
-+     * which are the only real users of this format).
-+     */
-+    FloatParts64 p64;
-+    parts64_default_nan(&p64, status);
- 
--    /* None of the targets that have snan_bit_is_one use floatx80.  */
--    assert(!snan_bit_is_one(status));
--#if defined(TARGET_M68K)
--    r.low = UINT64_C(0xFFFFFFFFFFFFFFFF);
--    r.high = 0x7FFF;
--#else
--    /* X86 */
--    r.low = UINT64_C(0xC000000000000000);
--    r.high = 0xFFFF;
--#endif
-+    r.high = 0x7FFF | (p64.sign << 15);
-+    r.low = (1ULL << DECOMPOSED_BINARY_POINT) | p64.frac;
-     return r;
- }
- 
+diff --git a/target/loongarch/tcg/fpu_helper.c b/target/loongarch/tcg/fpu_helper.c
+index 37a48599366..aea5e0fe5e6 100644
+--- a/target/loongarch/tcg/fpu_helper.c
++++ b/target/loongarch/tcg/fpu_helper.c
+@@ -359,8 +359,7 @@ uint64_t helper_fclass_s(CPULoongArchState *env, uint64_t fj)
+     } else if (float32_is_zero_or_denormal(f)) {
+         return sign ? 1 << 4 : 1 << 8;
+     } else if (float32_is_any_nan(f)) {
+-        float_status s = { }; /* for snan_bit_is_one */
+-        return float32_is_quiet_nan(f, &s) ? 1 << 1 : 1 << 0;
++        return float32_is_quiet_nan(f, &env->fp_status) ? 1 << 1 : 1 << 0;
+     } else {
+         return sign ? 1 << 3 : 1 << 7;
+     }
+@@ -378,8 +377,7 @@ uint64_t helper_fclass_d(CPULoongArchState *env, uint64_t fj)
+     } else if (float64_is_zero_or_denormal(f)) {
+         return sign ? 1 << 4 : 1 << 8;
+     } else if (float64_is_any_nan(f)) {
+-        float_status s = { }; /* for snan_bit_is_one */
+-        return float64_is_quiet_nan(f, &s) ? 1 << 1 : 1 << 0;
++        return float64_is_quiet_nan(f, &env->fp_status) ? 1 << 1 : 1 << 0;
+     } else {
+         return sign ? 1 << 3 : 1 << 7;
+     }
 -- 
 2.34.1
 
