@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8EE89E03EC
-	for <lists+qemu-devel@lfdr.de>; Mon,  2 Dec 2024 14:46:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 18A609E0360
+	for <lists+qemu-devel@lfdr.de>; Mon,  2 Dec 2024 14:29:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tI6Wd-0006Ls-Ks; Mon, 02 Dec 2024 08:31:43 -0500
+	id 1tI6Te-0006pd-8q; Mon, 02 Dec 2024 08:28:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tI6Gu-0002jW-2r
- for qemu-devel@nongnu.org; Mon, 02 Dec 2024 08:15:30 -0500
-Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
+ id 1tI6Gc-0002Lg-0K
+ for qemu-devel@nongnu.org; Mon, 02 Dec 2024 08:15:16 -0500
+Received: from mail-lf1-x12e.google.com ([2a00:1450:4864:20::12e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tI6GY-0003Th-Gl
- for qemu-devel@nongnu.org; Mon, 02 Dec 2024 08:15:27 -0500
-Received: by mail-wr1-x430.google.com with SMTP id
- ffacd0b85a97d-385e87b25f0so948997f8f.0
- for <qemu-devel@nongnu.org>; Mon, 02 Dec 2024 05:14:48 -0800 (PST)
+ id 1tI6GR-0003Uf-LI
+ for qemu-devel@nongnu.org; Mon, 02 Dec 2024 08:15:09 -0500
+Received: by mail-lf1-x12e.google.com with SMTP id
+ 2adb3069b0e04-53df19bf6a9so4796428e87.1
+ for <qemu-devel@nongnu.org>; Mon, 02 Dec 2024 05:14:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1733145287; x=1733750087; darn=nongnu.org;
+ d=linaro.org; s=google; t=1733145289; x=1733750089; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=mc9TdQ5B4JVTfGpbGlyL+6fSC7bsW93adDUcKdH34tw=;
- b=UnO6jmJa5KVxEjgL7NCcul8zA1vvh40JnoJ/vOvACxuZMJiCLtg9bwBmcoD/NsKupw
- F660wV2ualRAQps7a9zvCle07DUecmqgXjiiBUgS6p0ShWMGPqCvstyQ05W6qElw0jNc
- OetmvtppnUc2h8+z8zC1FrreudVVIPTo0LsurLpNUPjnjbSc9qt+m4ei3zr7ducP1gq7
- 3JyplxcgcFAf7QxqlTOTyfEnooM28mbFEOQYwKCD2Zy0OHRjAGtIQZWsybIhJ0rXqDyd
- 3Z9yoccZ9C8UuMwGfMtOs0ugGFq3eQrW5gg/1gxoaTcnI1eGOcoWh9nY6rtnA6XFePc6
- eJaQ==
+ bh=7mmqERnKJTYNHU5Lv8qXJWCaRjH14PqNpgofF/931Yw=;
+ b=iuKSdGLo3VJrEuzjp61CqULeyjxSFNo3t9kt8jMcSzdpvnDwrHeHiXT4sV1VtfbnLA
+ B2YIq+reKf+ToL0DUypC5gTi9xge/FZCOK6/YNbX9IUXHlwM8R80PSmaG9uaBFh78JVD
+ pY9ly6cGlLuJDLYHloBQ5F2i0E+Wnmz7rjU5PeAxejUarF3ZGnS5IRZ8v/idrd6fxkCJ
+ nTjIDF/QLl32as+HLOeokbz8LoWG/ARmanQqp8XqHfsRN3kqEr3UEi7Irl9zVLzD6L80
+ OGDOq4JYSyV3DXBd6iwyk+ygAx2Wf1D7+OGir43V5Ka5z2ra7BClUDTg6mDVA9mjsqg0
+ lzRQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733145287; x=1733750087;
+ d=1e100.net; s=20230601; t=1733145289; x=1733750089;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=mc9TdQ5B4JVTfGpbGlyL+6fSC7bsW93adDUcKdH34tw=;
- b=qyUGqwvViAT9GLl7tS4lZGsfqzqT+YY3R//c+Kwai6y+SclUHjBLYAggt8tC7HsNlf
- 4HCX294wfVkBKnnOlQ6fGuq5LHuidJSrWzrPYHPsHiqYGPEDvQvv3CBW7TOzwciYeyvb
- FnEIZlYdZ7ES2o1RBVVr1drerSh1kaR0WrkXIZQWcc+JYvF4FqU+r9iDMX1pQlMa+z/0
- A+gbE872oeeZ4Pv860EllmOodIJCZ+GM/vIGuRRSa/TLAYd7ChZhkHZ3Ll0iR78qte0S
- MJQ/n5Bvy3lEHa6NwdOJ8GyASLuvigQh/SjnqE6n0fNCXijlcTyBVCO1V918HDsSs5VH
- ZRJQ==
-X-Gm-Message-State: AOJu0YzCMMLlRn4NY2S4qmOd85kgg1wOLwCSwcoEKeKTBKCNBqHRYiSI
- 7GnX+Vb2bhSNDEpZGrieCHA1L4o1uUD4/xWal6IVd33tQmNwAD2X4AKy15jtZa1+XJqePHU17Yx
- O
-X-Gm-Gg: ASbGncu8WehT4WdtSJ9tSsCblzJTtox6Bo9HXg6qiMNutWTRZQYy+w7/GitXmT0aK7L
- ipbMdrMbU/1SiRdQ8fPC7bZYP0Qs3oKexcrUXfK2UgGF+3F6BH/5xs1BQyfwDTCNWTusxGA5ZBY
- 1moxPpdb/aYaHMRzUUhP6O7RBCD0eucs7Mw49dFk1z7vqOIQr+Vf71r8lCXQEZWI/YQKAGzO0/l
- lW1Q5gFr30rjQOgtkaOZwqSQe1eipvi6IZgF8gPu7LQDZ0DZ+M+K0E=
-X-Google-Smtp-Source: AGHT+IE7TZ9HLEylyGxlNLd8UOKgZcyVAZG/YDCLYYUz45z1whmCbtIPbHtQM9QMqlWtZ+JyMGgcIQ==
-X-Received: by 2002:a5d:64c7:0:b0:385:f7e5:de88 with SMTP id
- ffacd0b85a97d-385f7e5dfe3mr1852046f8f.3.1733145286878; 
- Mon, 02 Dec 2024 05:14:46 -0800 (PST)
+ bh=7mmqERnKJTYNHU5Lv8qXJWCaRjH14PqNpgofF/931Yw=;
+ b=iifiVnf5FRjIxZ+rvXZCF/4GTPVd9+6eNlG4xpg5SIbR5RkJ7IwNgirkAITnQDaY9N
+ pomSMjwTqr+VXd6Vhoz85ZueUFYpmmOXAygNEKslzhiLQ/6PUKKlLHfAE/wpORYg172K
+ njy088IbA+14RIStl7g1H7qg0RFdYT9fjLWA72OJNA3qYnPDGMu2e+4SlWmguiBJRafr
+ +yluGzpNMzNRoftwtWd/bCnw5mEwPjHFu1FitIQYXIl71aqqt1WwPhCyMuWrfEMURJ1i
+ bvY6QzTBecNKuKIbkCyA9U8RWovTx4NBGxbrHHvhRvns50GxJv639cv41MuBExPlR7vM
+ hdeA==
+X-Gm-Message-State: AOJu0YwqPEAxghi8P1JClXuVlkjYGN/GNyVaMBi9P/LyjpsjTrpI5uMz
+ XP6oePNtaJtpGqcU9Jc4jVmHAK0kHVELIAND1BH5MVc+og64PFp4OumWjvT5U9M8m2c2Rt5AIsO
+ C
+X-Gm-Gg: ASbGncveM9nIvnI9cmbzLbsCTQtw/Yt9bLTLSY4r3uHpEet6PvczODASAoWxpDoxbp7
+ vVkQ1x5zj4FCnNMQDO6lNwRQKih9lJrx7mey0JPuu2P2wi7XCuGuS8SI/icEh6rBrakVkA/I7/l
+ +fqOmhuntNCfccn2F0asOhYO6W9nBUx/5fOHp8NvTMbf9auYxv1Kc0ez+NXJMiA78pZkHzMvG+I
+ bzIQ9LszE0NOfxBLPRdqwA9ld3Ufj7OSpkB5MKpm7N3JEQM/tiLn28=
+X-Google-Smtp-Source: AGHT+IHoNh9oBV49L/bH9Rnq+59oW7g+9/k/G/yiTTjNWH4zraotaaGroDgjZj+LGtjioc8WBOrUTw==
+X-Received: by 2002:a05:6512:400f:b0:53d:a93c:649e with SMTP id
+ 2adb3069b0e04-53df0109024mr13214815e87.35.1733145287794; 
+ Mon, 02 Dec 2024 05:14:47 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-385dea1e4ebsm10160157f8f.1.2024.12.02.05.14.46
+ ffacd0b85a97d-385dea1e4ebsm10160157f8f.1.2024.12.02.05.14.47
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 02 Dec 2024 05:14:46 -0800 (PST)
+ Mon, 02 Dec 2024 05:14:47 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, qemu-ppc@nongnu.org, qemu-s390x@nongnu.org,
@@ -76,17 +76,17 @@ Cc: qemu-arm@nongnu.org, qemu-ppc@nongnu.org, qemu-s390x@nongnu.org,
  Thomas Huth <thuth@redhat.com>,
  Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
  Artyom Tarasenko <atar4qemu@gmail.com>, Max Filippov <jcmvbkbc@gmail.com>
-Subject: [PATCH v2 for-10.0 41/54] target/loongarch: Set default NaN pattern
+Subject: [PATCH v2 for-10.0 42/54] target/m68k: Set default NaN pattern
  explicitly
-Date: Mon,  2 Dec 2024 13:13:34 +0000
-Message-Id: <20241202131347.498124-42-peter.maydell@linaro.org>
+Date: Mon,  2 Dec 2024 13:13:35 +0000
+Message-Id: <20241202131347.498124-43-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241202131347.498124-1-peter.maydell@linaro.org>
 References: <20241202131347.498124-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::430;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x430.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::12e;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x12e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -109,26 +109,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Set the default NaN pattern explicitly for loongarch.
+Set the default NaN pattern explicitly for m68k.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/loongarch/tcg/fpu_helper.c | 2 ++
- 1 file changed, 2 insertions(+)
+ target/m68k/cpu.c              | 2 ++
+ fpu/softfloat-specialize.c.inc | 2 +-
+ 2 files changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/target/loongarch/tcg/fpu_helper.c b/target/loongarch/tcg/fpu_helper.c
-index aea5e0fe5e6..a83acf64b08 100644
---- a/target/loongarch/tcg/fpu_helper.c
-+++ b/target/loongarch/tcg/fpu_helper.c
-@@ -38,6 +38,8 @@ void restore_fp_status(CPULoongArchState *env)
+diff --git a/target/m68k/cpu.c b/target/m68k/cpu.c
+index 13b76e22488..9de8ce67078 100644
+--- a/target/m68k/cpu.c
++++ b/target/m68k/cpu.c
+@@ -105,6 +105,8 @@ static void m68k_cpu_reset_hold(Object *obj, ResetType type)
+      * preceding paragraph for nonsignaling NaNs.
       */
-     set_float_infzeronan_rule(float_infzeronan_dnan_never, &env->fp_status);
-     set_float_3nan_prop_rule(float_3nan_prop_s_cab, &env->fp_status);
-+    /* Default NaN: sign bit clear, msb frac bit set */
-+    set_float_default_nan_pattern(0b01000000, &env->fp_status);
- }
+     set_float_2nan_prop_rule(float_2nan_prop_ab, &env->fp_status);
++    /* Default NaN: sign bit clear, all frac bits set */
++    set_float_default_nan_pattern(0b01111111, &env->fp_status);
  
- int ieee_ex_to_loongarch(int xcpt)
+     nan = floatx80_default_nan(&env->fp_status);
+     for (i = 0; i < 8; i++) {
+diff --git a/fpu/softfloat-specialize.c.inc b/fpu/softfloat-specialize.c.inc
+index b5ec1944d15..ecb7a52ae7c 100644
+--- a/fpu/softfloat-specialize.c.inc
++++ b/fpu/softfloat-specialize.c.inc
+@@ -136,7 +136,7 @@ static void parts64_default_nan(FloatParts64 *p, float_status *status)
+     uint8_t dnan_pattern = status->default_nan_pattern;
+ 
+     if (dnan_pattern == 0) {
+-#if defined(TARGET_SPARC) || defined(TARGET_M68K)
++#if defined(TARGET_SPARC)
+         /* Sign bit clear, all frac bits set */
+         dnan_pattern = 0b01111111;
+ #elif defined(TARGET_HEXAGON)
 -- 
 2.34.1
 
