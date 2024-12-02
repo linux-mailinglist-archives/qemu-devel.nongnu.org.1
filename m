@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4D979E0340
-	for <lists+qemu-devel@lfdr.de>; Mon,  2 Dec 2024 14:22:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 46FC39E0363
+	for <lists+qemu-devel@lfdr.de>; Mon,  2 Dec 2024 14:29:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tI6N5-0000sA-Nw; Mon, 02 Dec 2024 08:21:52 -0500
+	id 1tI6T5-0006eH-T8; Mon, 02 Dec 2024 08:28:07 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tI6GR-0002GW-Fe
- for qemu-devel@nongnu.org; Mon, 02 Dec 2024 08:15:02 -0500
+ id 1tI6GV-0002Ht-5K
+ for qemu-devel@nongnu.org; Mon, 02 Dec 2024 08:15:07 -0500
 Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tI6GL-0003Cq-9o
- for qemu-devel@nongnu.org; Mon, 02 Dec 2024 08:14:58 -0500
+ id 1tI6GL-0003DH-Dy
+ for qemu-devel@nongnu.org; Mon, 02 Dec 2024 08:15:01 -0500
 Received: by mail-wr1-x434.google.com with SMTP id
- ffacd0b85a97d-385d6e36de7so3706040f8f.0
- for <qemu-devel@nongnu.org>; Mon, 02 Dec 2024 05:14:11 -0800 (PST)
+ ffacd0b85a97d-385e27c75f4so1479620f8f.2
+ for <qemu-devel@nongnu.org>; Mon, 02 Dec 2024 05:14:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1733145250; x=1733750050; darn=nongnu.org;
+ d=linaro.org; s=google; t=1733145251; x=1733750051; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=iLWBUHvjOah3un3/57/rPBpB/Wh0uSx2UDmLN935xs0=;
- b=Z+s9kM6o4IBZk836N4o9ecJvAypQIOlWG/105jsJUpLKV1Rld8ejoM+QtqvDoeICts
- Y9H7IJi/6EZ+YAXOj52YJyO+2FInYs2FmAEbhvkgAyX/toedAbAWbiCC6O8gRk6ps4EU
- wYggH4FXSoVpTSHEF18RnWTvuO1E87o/e8X2VI3nTeEo4G31Q43//pWQrSDkb2jVqDWe
- qdLQsDmYe1rNiRbMtyQTVig6lrvDZNpDWgpoZ5e9vMTQPDXUF+gafPeGLb06/ENAA0FY
- //w9SypIbO0TtODNr0mK5qK4kUqKKPtgjhvwT/66qBjy7wlZ8T+TticMXAFvUj8Q0t60
- kSOg==
+ bh=hfWcIGFElRwNWX99Qr3KLu7RlocWXtaK9gnVDhRhWYA=;
+ b=rYQ36UQvq20BFoIwyg6hoYkYGV8DeYO09OMqwHm8ugzvZa+nEmEIBID3q/LizzDC/w
+ 4gd/zq2lCO0KOfhCDU0cc0F1GTHbL4kemj877E8buveriIBx6wfyFd+HJrBkIt26KWC9
+ O4LVUwDblY9DH446hR9UnHbKMmjrFXpX65whF9DimMD5kFErOUjDd/3REnTvrzuyg6i1
+ M4SJjUWn4IwP44HQ+pTeLtyIvwbKjxSqDD5BCYPipW8L5ldYobnhbQS0+ooEzPK16ZGP
+ eVfksAbkapwhlkIE/wq+pFaQqBWOvb3CMUUcDUES9VumGyuq/3sjCcV3WYU3cZc5ugVX
+ aoNA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733145250; x=1733750050;
+ d=1e100.net; s=20230601; t=1733145251; x=1733750051;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=iLWBUHvjOah3un3/57/rPBpB/Wh0uSx2UDmLN935xs0=;
- b=Szn1mckTmFb0mvkipwVrE0CJaqFROJ0NLTI/Q3YHz79cit3zjlB/k8UL4Z3Sf9rSap
- DYbZho2AFTYofxJ0BuYF7CzUQiL8DtuoXeNIp8oTGZ5xJ/6v3FH2E9SYuRGVnl/alzL6
- 9JU2R1E1D34H7C1rjkLxBwzsAW49/9Pd5hjUIt0S60cEEvSMXOHC8iw7ijOXWyionLC4
- p4mX/D3ulpBx/gm1eElgasI4ekq7mBxryyy/SXNRVVgz4XAWMBxR5eS3xLANprUGrzlw
- kuaWDW47d/3QR7+Yg9Xvj6OSssJTe4cvDbaCDKd2qdoKFlzYKd+AGw8RuFcCNIX5xuCC
- KZCQ==
-X-Gm-Message-State: AOJu0YxUBzCZAcM7c23kgI4WOurp4MDE8vMqiHe3EAPfTCrR9ixegbKV
- iGSs8TVTM0vHN/EdnauGtgDrcYV3Rf5JBghxBR4gJLZFnvz87qjGXfiETWDJmMEaOnQom6/wJSY
- B
-X-Gm-Gg: ASbGncuMBujYvhxbv/Qjr6m2++WgtwIYgCyBrDwEQQR+A3yViF3hpa45MYOBaU+RjI5
- cHUmXWQJa84KO9BESD7rLSgGQOTToam80bVl1BwzmyNmKkdEEhMW3PKKuxH9W7wheDUXMT9f+Wo
- YfTNob/2mGSE+uzLOaMb2m/G0GZW6SguAA4U78M74Tu4O+8D2/llFWYzF77+SrAjHeEsP3xJMZx
- kPW7lnQd4slY205M6ffvcU4GeDeN8QSFb+yXp1vyMM8LGh3UIPJcD4=
-X-Google-Smtp-Source: AGHT+IF0Hwpzg6dNKKvHLMYzIyDSn83uORY7RarpqFUSX/f91/tb9XChu0z+5QbApuX4pt02PA7YMw==
-X-Received: by 2002:a5d:6f12:0:b0:385:f996:1b8e with SMTP id
- ffacd0b85a97d-385f9961e8emr1313251f8f.16.1733145250043; 
- Mon, 02 Dec 2024 05:14:10 -0800 (PST)
+ bh=hfWcIGFElRwNWX99Qr3KLu7RlocWXtaK9gnVDhRhWYA=;
+ b=g3wOjQ0a+qPWv6aO35/02+8+TxCQz9nILylKw1PHVZA66/SpfIx42ipBWHM6wDXPMl
+ GLDdWQPWeCW6UJ7gJ6EPuTx145lNeSbbcctx7MuWKaPFlCVH4ezroOnINQ6NMpOPQ0Xy
+ NCBcsgQ5LqbCsnc6XOg78EZhun2menNq0BBBITPi6q/A/uLVO1BJceZZTYxJTx7jif0b
+ 1E5obqZNnH5csrVy68vwvYmnqZ4vGVsuKl6w4akbvLr5ZWO96vksSfegkfOfR6lZ4k1p
+ FgyTsd6rDvvGWeG9rZizNbUjnmkG5dEG+EtzkLYY6pLBgAIul/WBHUoV82Y1+Pzhv60y
+ YfAA==
+X-Gm-Message-State: AOJu0Yy2KvUJbIyNAK3X9Pj4F0rAkao1kDwjobDmuSK+BnI0KwyGLOES
+ f/lDOXVSIrQ/QRROx3oe1oQrN6P6PU257Jefu5ZXhjvtJhozdPJYEujveSPnE05UfP9dHScsUgV
+ 0
+X-Gm-Gg: ASbGncuek4A+gOBgaRBjeRjgUGZ0mjsjiWNKciHgHL1IpH4aG91R597JMX/uKMsOFek
+ gvPNDsCCvDLkY1Nsrxkl5mnMQEV5TTvyr49kYS3ZQ+uTUVjGkLPHcXUZKX+2B1dCgbBjdS5jot5
+ JVw3ShCx/X40AXxf53ZmISAfBpFKgKCkj4mMfRY3V5nRQInKXZ5NPZcqoVNzvWflMsJovgZjOnN
+ J7mNoVkRR4OJNZpWmTmn/WI1lTbLkpzFCDWzI5MlEIeBJDTm8cywYU=
+X-Google-Smtp-Source: AGHT+IFl5ZKDcFMgGIc5LeK51D4mmt2uCTorCPud1MxCTo9j54Y0ZSTaNWqE25haKOFhN7LIYZOF9w==
+X-Received: by 2002:a5d:6485:0:b0:385:e176:4420 with SMTP id
+ ffacd0b85a97d-385e1764637mr9309692f8f.10.1733145251088; 
+ Mon, 02 Dec 2024 05:14:11 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-385dea1e4ebsm10160157f8f.1.2024.12.02.05.14.09
+ ffacd0b85a97d-385dea1e4ebsm10160157f8f.1.2024.12.02.05.14.10
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 02 Dec 2024 05:14:09 -0800 (PST)
+ Mon, 02 Dec 2024 05:14:10 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, qemu-ppc@nongnu.org, qemu-s390x@nongnu.org,
@@ -76,10 +76,10 @@ Cc: qemu-arm@nongnu.org, qemu-ppc@nongnu.org, qemu-s390x@nongnu.org,
  Thomas Huth <thuth@redhat.com>,
  Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
  Artyom Tarasenko <atar4qemu@gmail.com>, Max Filippov <jcmvbkbc@gmail.com>
-Subject: [PATCH v2 for-10.0 11/54] target/x86: Set FloatInfZeroNaNRule
+Subject: [PATCH v2 for-10.0 12/54] target/loongarch: Set FloatInfZeroNaNRule
  explicitly
-Date: Mon,  2 Dec 2024 13:13:04 +0000
-Message-Id: <20241202131347.498124-12-peter.maydell@linaro.org>
+Date: Mon,  2 Dec 2024 13:13:05 +0000
+Message-Id: <20241202131347.498124-13-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241202131347.498124-1-peter.maydell@linaro.org>
 References: <20241202131347.498124-1-peter.maydell@linaro.org>
@@ -109,49 +109,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Set the FloatInfZeroNaNRule explicitly for the x86 target.
+Set the FloatInfZeroNaNRule explicitly for the loongarch target.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
-v1->v2: Update the comment to give the info from the x86
-spec rather than a TODO comment saying we need to check it...
----
- target/i386/tcg/fpu_helper.c   | 7 +++++++
- fpu/softfloat-specialize.c.inc | 2 +-
- 2 files changed, 8 insertions(+), 1 deletion(-)
+ target/loongarch/tcg/fpu_helper.c | 5 +++++
+ fpu/softfloat-specialize.c.inc    | 7 +------
+ 2 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/target/i386/tcg/fpu_helper.c b/target/i386/tcg/fpu_helper.c
-index 53b49bb2977..a98b4f67ff0 100644
---- a/target/i386/tcg/fpu_helper.c
-+++ b/target/i386/tcg/fpu_helper.c
-@@ -173,6 +173,13 @@ void cpu_init_fp_statuses(CPUX86State *env)
-      */
-     set_float_2nan_prop_rule(float_2nan_prop_x87, &env->mmx_status);
-     set_float_2nan_prop_rule(float_2nan_prop_x87, &env->sse_status);
+diff --git a/target/loongarch/tcg/fpu_helper.c b/target/loongarch/tcg/fpu_helper.c
+index 21bc3b04a96..6a2c4b5b1db 100644
+--- a/target/loongarch/tcg/fpu_helper.c
++++ b/target/loongarch/tcg/fpu_helper.c
+@@ -32,6 +32,11 @@ void restore_fp_status(CPULoongArchState *env)
+                             &env->fp_status);
+     set_flush_to_zero(0, &env->fp_status);
+     set_float_2nan_prop_rule(float_2nan_prop_s_ab, &env->fp_status);
 +    /*
-+     * Only SSE has multiply-add instructions. In the SDM Section 14.5.2
-+     * "Fused-Multiply-ADD (FMA) Numeric Behavior" the NaN handling is
-+     * specified -- for 0 * inf + NaN the input NaN is selected, and if
-+     * there are multiple input NaNs athey are selected in the order a, b, c.
++     * For LoongArch systems that conform to IEEE754-2008, the (inf,zero,nan)
++     * case sets InvalidOp and returns the input value 'c'
 +     */
-+    set_float_infzeronan_rule(float_infzeronan_dnan_never, &env->sse_status);
++    set_float_infzeronan_rule(float_infzeronan_dnan_never, &env->fp_status);
  }
  
- static inline uint8_t save_exception_flags(CPUX86State *env)
+ int ieee_ex_to_loongarch(int xcpt)
 diff --git a/fpu/softfloat-specialize.c.inc b/fpu/softfloat-specialize.c.inc
-index 3062d19402d..ad4f7096d09 100644
+index ad4f7096d09..05dec2fcb4c 100644
 --- a/fpu/softfloat-specialize.c.inc
 +++ b/fpu/softfloat-specialize.c.inc
-@@ -490,7 +490,7 @@ static int pickNaNMulAdd(FloatClass a_cls, FloatClass b_cls, FloatClass c_cls,
+@@ -489,12 +489,7 @@ static int pickNaNMulAdd(FloatClass a_cls, FloatClass b_cls, FloatClass c_cls,
+         /*
           * Temporarily fall back to ifdef ladder
           */
- #if defined(TARGET_HPPA) || \
--    defined(TARGET_I386) || defined(TARGET_LOONGARCH)
-+    defined(TARGET_LOONGARCH)
-         /*
-          * For LoongArch systems that conform to IEEE754-2008, the (inf,zero,nan)
-          * case sets InvalidOp and returns the input value 'c'
+-#if defined(TARGET_HPPA) || \
+-    defined(TARGET_LOONGARCH)
+-        /*
+-         * For LoongArch systems that conform to IEEE754-2008, the (inf,zero,nan)
+-         * case sets InvalidOp and returns the input value 'c'
+-         */
++#if defined(TARGET_HPPA)
+         rule = float_infzeronan_dnan_never;
+ #endif
+     }
 -- 
 2.34.1
 
