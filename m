@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A78669E03D9
-	for <lists+qemu-devel@lfdr.de>; Mon,  2 Dec 2024 14:43:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FBBD9E03B4
+	for <lists+qemu-devel@lfdr.de>; Mon,  2 Dec 2024 14:39:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tI6a4-0005nT-V1; Mon, 02 Dec 2024 08:35:17 -0500
+	id 1tI6Xw-0007iz-0e; Mon, 02 Dec 2024 08:33:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1tI6M5-000871-BJ
- for qemu-devel@nongnu.org; Mon, 02 Dec 2024 08:20:52 -0500
+ id 1tI6MA-0008CM-VD
+ for qemu-devel@nongnu.org; Mon, 02 Dec 2024 08:20:56 -0500
 Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1tI6M0-0005qK-Pz
- for qemu-devel@nongnu.org; Mon, 02 Dec 2024 08:20:46 -0500
-Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4B26WvkD024799;
- Mon, 2 Dec 2024 13:20:27 GMT
+ id 1tI6M3-0005qY-VC
+ for qemu-devel@nongnu.org; Mon, 02 Dec 2024 08:20:49 -0500
+Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4B2DJCO7023886;
+ Mon, 2 Dec 2024 13:20:28 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
  :date:from:in-reply-to:message-id:references:subject:to; s=
- corp-2023-11-20; bh=djKZ8Tk2Z3XOin/4L7hl0xtlsXfXjyoXfa58BNaPARc=; b=
- LqR3qLvsM4C6VCvSuRP3XuMHFju5L9nW32P1DuJGgJX09NT4lGMKQpb1eFpOcRPa
- KGKkCGut+tTJnh8yWh3r1qtoC251ztFLbc6VdThAOXihx7MDouKD+bnbnZI/kPwX
- bTok3vD9MO6SuW3G31UDDcYIsuxSoHo50Hu/3+2pZoOdprNiikYXuYj6RFwkZRxh
- 2tbdIKTS7eBUf3UNKVFLyiB80V08ZMYZIWzeXnCSVTuwA97vvR1zbc1IwmfuUxOU
- PZhnPpB2eeImsZ1coy9iK9K+B6ue3BODogLFfyfS1wNqh1LcnsToPHxrw9zAzqYm
- sJ1RqnyknItIb4UDY2sz8w==
+ corp-2023-11-20; bh=TWNSOPxczOSPwzHxzQ0Ytn0JQ6tNKAw9ubDxtoSqYm8=; b=
+ XEsicbX1eO48bnUrJrE1LZehYmQQESXCamQDAGSIrDy9Be7tskN2nAQOoxnoh+cX
+ 9nRTT25fwCJ4BaMCeO4dtI8BIHrgJRD1atSSxYFyI2RrVbINRs7CJ5yM2/B+QWfm
+ UgOj5I2saHJqy55aL/gbq4HJ3pwKgkScEGVSp0KguI/FFP2/A5M4cMS8waRflFJn
+ 8UQcCIo4G9rfIt0PC1+iXkARVUzs6/VIENa7dhwAG1TnQCJ8H4ZHm2zOveUzXEvC
+ A9ZmYE1677zlHTkgBJGpVUv+1++/pQzWv1bfQrBXm5iMvIh9Xk18JPhtui1SzNaT
+ +JFkKq8yNBY9uAOgYs/79w==
 Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com
  (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 437sg2347d-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 437trbk4c3-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 02 Dec 2024 13:20:27 +0000 (GMT)
+ Mon, 02 Dec 2024 13:20:28 +0000 (GMT)
 Received: from pps.filterd
  (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
  by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 4B2CVsYs032908; Mon, 2 Dec 2024 13:20:26 GMT
+ with ESMTP id 4B2D44PA032669; Mon, 2 Dec 2024 13:20:27 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
- 437s56jtuq-1
+ 437s56jtv5-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 02 Dec 2024 13:20:26 +0000
+ Mon, 02 Dec 2024 13:20:27 +0000
 Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com
  (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 4B2DKCF7032806;
- Mon, 2 Dec 2024 13:20:25 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 4B2DKCF9032806;
+ Mon, 2 Dec 2024 13:20:26 GMT
 Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
  by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with
- ESMTP id 437s56jthv-18; Mon, 02 Dec 2024 13:20:25 +0000
+ ESMTP id 437s56jthv-19; Mon, 02 Dec 2024 13:20:26 +0000
 From: Steve Sistare <steven.sistare@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
@@ -62,9 +62,9 @@ Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
  "Daniel P. Berrange" <berrange@redhat.com>,
  Markus Armbruster <armbru@redhat.com>,
  Steve Sistare <steven.sistare@oracle.com>
-Subject: [PATCH V4 17/19] tests/migration-test: defer connection
-Date: Mon,  2 Dec 2024 05:20:09 -0800
-Message-Id: <1733145611-62315-18-git-send-email-steven.sistare@oracle.com>
+Subject: [PATCH V4 18/19] migration-test: cpr-transfer
+Date: Mon,  2 Dec 2024 05:20:10 -0800
+Message-Id: <1733145611-62315-19-git-send-email-steven.sistare@oracle.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1733145611-62315-1-git-send-email-steven.sistare@oracle.com>
 References: <1733145611-62315-1-git-send-email-steven.sistare@oracle.com>
@@ -76,8 +76,8 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0
  spamscore=0 suspectscore=0 malwarescore=0 mlxscore=0 phishscore=0
  bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2411120000 definitions=main-2412020116
-X-Proofpoint-ORIG-GUID: ODQ1lFjqfusBKUxsvONEamQfp11NKfs4
-X-Proofpoint-GUID: ODQ1lFjqfusBKUxsvONEamQfp11NKfs4
+X-Proofpoint-GUID: h5VqSifPlv8pnPAx06l9C18Cklmn0JpG
+X-Proofpoint-ORIG-GUID: h5VqSifPlv8pnPAx06l9C18Cklmn0JpG
 Received-SPF: pass client-ip=205.220.177.32;
  envelope-from=steven.sistare@oracle.com; helo=mx0b-00069f02.pphosted.com
 X-Spam_score_int: -31
@@ -103,94 +103,128 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add an option to defer connection to the target monitor, needed by the
-cpr-transfer test.
+Add a migration test for cpr-transfer mode.  Defer the connection to the
+target monitor, else the test hangs because in cpr-transfer mode QEMU does
+not listen for monitor connections until we send the migrate command to
+source QEMU.
+
+To test -incoming defer, send a migrate incoming command to the target,
+after sending the migrate command to the source, as required by
+cpr-transfer mode.
 
 Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
-Reviewed-by: Fabiano Rosas <farosas@suse.de>
 ---
- tests/qtest/migration-test.c | 26 +++++++++++++++++++++++---
- 1 file changed, 23 insertions(+), 3 deletions(-)
+ tests/qtest/migration-test.c | 72 +++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 71 insertions(+), 1 deletion(-)
 
 diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
-index b7001b0..8bc665d 100644
+index 8bc665d..4eb641c 100644
 --- a/tests/qtest/migration-test.c
 +++ b/tests/qtest/migration-test.c
-@@ -614,6 +614,9 @@ typedef struct {
-      * size is plugged in.  If omitted, "-m %s" is used.
-      */
-     const char *memory_backend;
-+
-+    /* Do not connect to target monitor and qtest sockets in qtest_init */
-+    bool defer_target_connect;
- } MigrateStart;
+@@ -1729,6 +1729,7 @@ static void test_precopy_common(MigrateCommon *args)
+ {
+     QTestState *from, *to;
+     void *data_hook = NULL;
++    const char *connect_uri;
  
- /*
-@@ -733,6 +736,7 @@ static int test_migrate_start(QTestState **from, QTestState **to,
-     const char *machine_alias, *machine_opts = "";
-     g_autofree char *machine = NULL;
-     g_autofree char *memory_backend = NULL;
-+    const char *events;
- 
-     if (args->use_shmem) {
-         if (!g_file_test("/dev/shm", G_FILE_TEST_IS_DIR)) {
-@@ -850,22 +854,31 @@ static int test_migrate_start(QTestState **from, QTestState **to,
-                                      &src_state);
+     if (test_migrate_start(&from, &to, args->listen_uri, &args->start)) {
+         return;
+@@ -1766,11 +1767,16 @@ static void test_precopy_common(MigrateCommon *args)
+         goto finish;
      }
  
-+    /*
-+     * If the monitor connection is deferred, enable events on the command line
-+     * so none are missed.  This is for testing only, do not set migration
-+     * options like this in general.
-+     */
-+    events = args->defer_target_connect ? "-global migration.x-events=on" : "";
-+
-     cmd_target = g_strdup_printf("-accel kvm%s -accel tcg "
-                                  "-machine %s,%s "
-                                  "-name target,debug-threads=on "
-                                  "%s "
-                                  "-serial file:%s/dest_serial "
-                                  "-incoming %s "
--                                 "%s %s %s %s %s",
-+                                 "%s %s %s %s %s %s",
-                                  kvm_opts ? kvm_opts : "",
-                                  machine, machine_opts,
-                                  memory_backend, tmpfs, uri,
-+                                 events,
-                                  arch_opts ? arch_opts : "",
-                                  arch_target ? arch_target : "",
-                                  shmem_opts ? shmem_opts : "",
-                                  args->opts_target ? args->opts_target : "",
-                                  ignore_stderr);
--    *to = qtest_init_with_env(QEMU_ENV_DST, cmd_target, false);
-+    *to = qtest_init_with_env(QEMU_ENV_DST, cmd_target,
-+                              args->defer_target_connect);
-     qtest_qmp_set_event_callback(*to,
-                                  migrate_watch_for_events,
-                                  &dst_state);
-@@ -883,7 +896,9 @@ static int test_migrate_start(QTestState **from, QTestState **to,
-      * to mimic as closer as that.
-      */
-     migrate_set_capability(*from, "events", true);
--    migrate_set_capability(*to, "events", true);
-+    if (!args->defer_target_connect) {
-+        migrate_set_capability(*to, "events", true);
-+    }
+-    migrate_qmp(from, to, args->connect_uri, args->connect_channels, "{}");
++    /* If has channels, then connect_uri is only used for listen defer */
++    connect_uri = args->connect_channels ? NULL : args->connect_uri;
++    migrate_qmp(from, to, connect_uri, args->connect_channels, "{}");
  
-     return 0;
- }
-@@ -1753,6 +1768,11 @@ static void test_precopy_common(MigrateCommon *args)
+     if (args->start.defer_target_connect) {
+         qtest_connect_deferred(to);
+         qtest_qmp_handshake(to);
++        if (!strcmp(args->listen_uri, "defer")) {
++            migrate_incoming_qmp(to, args->connect_uri, "{}");
++        }
+     }
  
-     migrate_qmp(from, to, args->connect_uri, args->connect_channels, "{}");
- 
-+    if (args->start.defer_target_connect) {
-+        qtest_connect_deferred(to);
-+        qtest_qmp_handshake(to);
-+    }
-+
      if (args->result != MIG_TEST_SUCCEED) {
-         bool allow_active = args->result == MIG_TEST_FAIL;
-         wait_for_migration_fail(from, allow_active);
+@@ -2415,6 +2421,66 @@ static void test_multifd_file_mapped_ram_fdset_dio(void)
+ }
+ #endif /* !_WIN32 */
+ 
++static void *test_mode_transfer_start(QTestState *from, QTestState *to)
++{
++    migrate_set_parameter_str(from, "mode", "cpr-transfer");
++    return NULL;
++}
++
++/*
++ * cpr-transfer mode cannot use the target monitor prior to starting the
++ * migration, and cannot connect synchronously to the monitor, so defer
++ * the target connection.
++ */
++static void test_mode_transfer_common(bool incoming_defer)
++{
++    g_autofree char *cpr_path = g_strdup_printf("%s/cpr.sock", tmpfs);
++    g_autofree char *mig_path = g_strdup_printf("%s/migsocket", tmpfs);
++    g_autofree char *uri = g_strdup_printf("unix:%s", mig_path);
++
++    const char *opts = "-machine aux-ram-share=on -nodefaults";
++    g_autofree char *opts_target = g_strdup_printf(
++        "-incoming \\{\\\'channel-type\\\':\\\'cpr\\\',"
++        "\\\'addr\\\':\\{\\\'transport\\\':\\\'socket\\\',"
++        "\\\'type\\\':\\\'unix\\\',\\\'path\\\':\\\'%s\\\'\\}\\} %s",
++        cpr_path, opts);
++
++    g_autofree char *channels = g_strdup_printf(
++        "[ { 'channel-type': 'main',"
++        "    'addr': { 'transport': 'socket',"
++        "              'type': 'unix',"
++        "              'path': '%s' } },"
++        "  { 'channel-type': 'cpr',"
++        "    'addr': { 'transport': 'socket',"
++        "              'type': 'unix',"
++        "              'path': '%s' } } ]",
++        mig_path, cpr_path);
++
++    MigrateCommon args = {
++        .start.opts_source = opts,
++        .start.opts_target = opts_target,
++        .start.defer_target_connect = true,
++        .start.memory_backend = "-object memory-backend-memfd,id=pc.ram,size=%s"
++                                " -machine memory-backend=pc.ram",
++        .listen_uri = incoming_defer ? "defer" : uri,
++        .connect_uri = incoming_defer ? uri : NULL,
++        .connect_channels = channels,
++        .start_hook = test_mode_transfer_start,
++    };
++
++    test_precopy_common(&args);
++}
++
++static void test_mode_transfer(void)
++{
++    test_mode_transfer_common(NULL);
++}
++
++static void test_mode_transfer_defer(void)
++{
++    test_mode_transfer_common(true);
++}
++
+ static void test_precopy_tcp_plain(void)
+ {
+     MigrateCommon args = {
+@@ -3905,6 +3971,10 @@ int main(int argc, char **argv)
+         migration_test_add("/migration/mode/reboot", test_mode_reboot);
+     }
+ 
++    migration_test_add("/migration/mode/transfer", test_mode_transfer);
++    migration_test_add("/migration/mode/transfer/defer",
++                       test_mode_transfer_defer);
++
+     migration_test_add("/migration/precopy/file/mapped-ram",
+                        test_precopy_file_mapped_ram);
+     migration_test_add("/migration/precopy/file/mapped-ram/live",
 -- 
 1.8.3.1
 
