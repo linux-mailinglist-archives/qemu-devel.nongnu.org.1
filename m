@@ -2,127 +2,154 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86E069E109A
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Dec 2024 02:03:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 23E819E1132
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Dec 2024 03:18:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tIHIu-0001jQ-Ew; Mon, 02 Dec 2024 20:02:16 -0500
+	id 1tIIUN-00021C-9N; Mon, 02 Dec 2024 21:18:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <junjie.mao@hotmail.com>)
- id 1tIHIe-0001hm-VP; Mon, 02 Dec 2024 20:02:02 -0500
-Received: from mail-me3aus01olkn20801.outbound.protection.outlook.com
- ([2a01:111:f403:2818::801]
- helo=AUS01-ME3-obe.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <hongjian.fan@seagate.com>)
+ id 1tIFEe-0001Lr-I6
+ for qemu-devel@nongnu.org; Mon, 02 Dec 2024 17:49:44 -0500
+Received: from esa.hc4959-67.iphmx.com ([139.138.35.140])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <junjie.mao@hotmail.com>)
- id 1tIHIb-0003No-J8; Mon, 02 Dec 2024 20:01:59 -0500
+ (Exim 4.90_1) (envelope-from <hongjian.fan@seagate.com>)
+ id 1tIFEa-00013H-O7
+ for qemu-devel@nongnu.org; Mon, 02 Dec 2024 17:49:43 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+ d=seagate.com; i=@seagate.com; q=dns/txt; s=stxiport;
+ t=1733179780; x=1764715780;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=92ZViDS5K6CVrWTwExPbSW6thPxujHyMchapt0Se1Wo=;
+ b=mhXB/TsT34z9jh7HCelbBsLiF2BfU5+Hek5vprSLoc7O72iZMVfpkMpD
+ BKy7wTQiQQ0zJyonTwN9CKB8CWskV7sU9VDVZ73NqnThqBSYPC5fDD1LM
+ jWtbtK7gL8ivTqHOZf6I84vBWF9HY9GGncwdOgouMZELGAuXOUFDinA5L k=;
+X-CSE-ConnectionGUID: Gh4JIzezTVeFp65ZKLkIeg==
+X-CSE-MsgGUID: Y51sAQBmQWSmm4R2bxB8gg==
+Received: from mail-bn8nam12lp2175.outbound.protection.outlook.com (HELO
+ NAM12-BN8-obe.outbound.protection.outlook.com) ([104.47.55.175])
+ by ob1.hc4959-67.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 02 Dec 2024 14:49:35 -0800
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=kqIDNRRGcMcFjR655/dm27Aa67AWBhSQsjMOGWZKJ3ZuvSKIsLBVcL6Nyr5SYG93o89xhU2qIfsMaROMxuyjPxmHD1qPFGaKltA7zTL0Q0N8FF5Qu6lOqDnzl2nz1jFQmw11GJvHF21RQBNYbOnrC2gFGpOTdxulygq1OI4/xMMEhZjBSMIJUhByfu58gAqIAjuns3rWVSX5PwmqvIm0SIlPtpgHd6VeyTxuncx6eZJyApqC+J/9KeSFhxV7zgac/x/LnP1z+UpiecfRqd3xJ+e8+iJYr0qcsCBPWJSC2dP+j68bqLt0XDK5IJCuIw/Kp8BM4TAMMfkGxaKygZDSWQ==
+ b=jAYpdNVKqZMRpu1SY8PEJuNSTyQCIlNDgIkYEazW+VZITJKG+918wB/ibE5X/FywoUZneV6QhEa7pAKAOBgYuLUBWk3gK5pSSD1byLBrRR3YUjoB4nIb4K9x77GK+gwoIqlc9m1I2U+Wh7ebbilnFmSc3j2SlPsHzZytrWd/uR9wP7i+XkNqB4/sJo3OkYcJmrmLqFf7SjyaalqDdZzVguyub/v83oKHhZ8WKXP36JL6eShShIuBwvCtHo6Twz8aouQqLsJAQ18twJ2Om0nrHEv9g6eyUsq9ICmX+t0x9banNwQzsC2kLkSDgsYIamgR9AZHOmNX8F90gPB5ZQHKoA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=HQJkaxU9x0tapBtY9ZmlYA5Q1rKV56eCxYirX5E+lp8=;
- b=LysN2JpyyvbC0h7EQK53XRhXaaZWsn3QoQOzeMHeNxFDv2w7eHkoq5jnm8E4rgLX2W1McsS8Mkizjt0tX7gziAO/blrnxmgC3usxkum4gyRi1nNTFeaDW0uGo11S0vKT4W5aOroephjlK4PU+GG4J+1SABy4IuWUMRbRrDcOTsqTh5BkA1LrGT0I1eZAZj1+tg85QUQwjHpP8edJx6i+v+NPKRk8aPrqsdLxyaM6QnwSwIH/lAYvPtW32vpiQlx1llYuIltRXPbc7enjuFC3W8DaoSFQkVwiUEONqODGyxn1eC0QcSa3gz8VYbvINVSf74LURPksW+U7cVqSMIxLKg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hotmail.com;
+ bh=0msWWMp6lNH/OVHvjwB1kEkRiWg3E4iezqN3tCtkZCA=;
+ b=XU7TD1Rl/OeL5gm2w+I5UmDHhYxuhVhBoEgAsr3XCHkx6EMtHah9BLf4aY3eZHM+lc4+M6ws7tM8sZb/T9e/pKtZcNCOikNsqNCrRdnRvehWKI0nMIVqbKIMR3p7zKB2qULUcZFHCmNZNRG7+htNrde9Kkudth8/NL1xmTx5QadVT4LYMoHsCro1D3GqZJF4ZXii3fxjxLhtu3sFoPaie+yy4olubYSohWJfUCn194gsOZiyaexfaEwj5XXoX4khmZtf00iyJECUisswKwfsM2qO7/WTS+bwyguy3ApgEUcxehdx/lalbwGsKNyJIliQgR4ir1xRtKOYol1le+UCqw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=softfail (sender ip
+ is 134.204.222.53) smtp.rcpttodomain=nongnu.org smtp.mailfrom=seagate.com;
+ dmarc=fail (p=reject sp=reject pct=100) action=oreject
+ header.from=seagate.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=seagate.com;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=HQJkaxU9x0tapBtY9ZmlYA5Q1rKV56eCxYirX5E+lp8=;
- b=rN11ZB/bCwOiOdkMTVh2V9EqZq+3IIHgSSgnHTl/fVHGWv/ZrVpfX0OURgjy0bXPbu1fvnfIqx6QztiEQGWjq6mPCmRajr5hkPpEv1SUKkkRi8VTXsPCfxdtlwSBcVf9dRFJCT+KdXVBMOWEWb0CgW2SO6/fbYoSONZwFtcvAmM8osilGSnlcWw772NQpWQ+sLOQbCYOyVV07KtKjmKJWFnb0brmWiq/HyRkeaIjppLMxMiDzR99r8xfTZf36wBu1lr+EzG1cBegDiW0IpZ+V7HFrX09ZRdwgOCokxDOR8Vs6yw2b6PfyZjjbXHDfLFTnEBnmFz+aBJI0T+u+OfmGA==
-Received: from SY0P300MB1026.AUSP300.PROD.OUTLOOK.COM (2603:10c6:10:282::22)
- by SY8P300MB0210.AUSP300.PROD.OUTLOOK.COM (2603:10c6:10:267::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8207.17; Tue, 3 Dec
- 2024 01:01:47 +0000
-Received: from SY0P300MB1026.AUSP300.PROD.OUTLOOK.COM
- ([fe80::aea3:2365:f9e8:5bd]) by SY0P300MB1026.AUSP300.PROD.OUTLOOK.COM
- ([fe80::aea3:2365:f9e8:5bd%4]) with mapi id 15.20.8207.017; Tue, 3 Dec 2024
- 01:01:47 +0000
-References: <20241202110609.36775-1-pbonzini@redhat.com>
- <20241202110609.36775-2-pbonzini@redhat.com>
-User-agent: mu4e 1.6.10; emacs 27.1
-From: Junjie Mao <junjie.mao@hotmail.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org
-Subject: Re: [PATCH v2 1/2] rust: add BQL-enforcing Cell variant
-Date: Tue, 03 Dec 2024 09:01:15 +0800
-In-reply-to: <20241202110609.36775-2-pbonzini@redhat.com>
-Message-ID: <SY0P300MB102656EAEE4C02500675056395362@SY0P300MB1026.AUSP300.PROD.OUTLOOK.COM>
-Content-Type: text/plain
-X-ClientProxiedBy: KL1PR01CA0126.apcprd01.prod.exchangelabs.com
- (2603:1096:820:4::18) To SY0P300MB1026.AUSP300.PROD.OUTLOOK.COM
- (2603:10c6:10:282::22)
-X-Microsoft-Original-Message-ID: <87h67linpw.fsf@hotmail.com>
+ bh=0msWWMp6lNH/OVHvjwB1kEkRiWg3E4iezqN3tCtkZCA=;
+ b=YV6mQ5EMGBcMkTvhjIIfeHVrqLBnkMSv8ekAT5AmCQeneuFHT4hjtntPDpp8G8GcaOTKSA+gLSQhkS3wJNKtixSNvDacMfMKa6eIGYn8BAPQtvVsEmhRFtRODXGRuvmQC6TyA7aTDdqAfKNT7MuZeupMg+QRxyqDVuaW/iHNzlY=
+Received: from SN7P222CA0024.NAMP222.PROD.OUTLOOK.COM (2603:10b6:806:124::20)
+ by PH7PR20MB6085.namprd20.prod.outlook.com (2603:10b6:510:2be::9)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8230.8; Mon, 2 Dec
+ 2024 22:49:33 +0000
+Received: from SA2PEPF00003F64.namprd04.prod.outlook.com
+ (2603:10b6:806:124:cafe::f3) by SN7P222CA0024.outlook.office365.com
+ (2603:10b6:806:124::20) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8207.18 via Frontend Transport; Mon,
+ 2 Dec 2024 22:49:32 +0000
+X-MS-Exchange-Authentication-Results: spf=softfail (sender IP is
+ 134.204.222.53) smtp.mailfrom=seagate.com; dkim=none (message not signed)
+ header.d=none;dmarc=fail action=oreject header.from=seagate.com;
+Received: from lcopzesaa002.seagate.com (134.204.222.53) by
+ SA2PEPF00003F64.mail.protection.outlook.com (10.167.248.39) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8230.7 via Frontend Transport; Mon, 2 Dec 2024 22:49:31 +0000
+X-CSE-ConnectionGUID: AIYHhiHkQUCrsekUAjX+Ng==
+X-CSE-MsgGUID: 31dsjMnKTHmw+/tdrQsVHQ==
+Received: from lcopiesaa002.seagate.com ([10.230.120.53])
+ by lcopzesaa002.seagate.com with ESMTP; 02 Dec 2024 14:54:49 -0800
+X-CSE-ConnectionGUID: DuqMBeEcSL+JlbCmCRv0AQ==
+X-CSE-MsgGUID: klHG5o/WQrCvz1H1hIP7Hg==
+X-IronPort-AV: E=Sophos;i="6.12,203,1728975600"; d="scan'208";a="113320196"
+STX-Internal-Mailhost: TRUE
+Received: from mag-tester2.shk.minn.seagate.com ([10.52.21.5])
+ by lcopiesaa002.seagate.com with ESMTP; 02 Dec 2024 14:48:52 -0800
+From: Hongjian Fan <hongjian.fan@seagate.com>
+To: qemu-devel@nongnu.org,
+	linux-cxl@vger.kernel.org
+Cc: jonathan.cameron@huawei.com, fan.ni@samsung.com,
+ Hongjian Fan <hongjian.fan@seagate.com>
+Subject: [PATCH] hw/mem: support zero memory size CXL device
+Date: Mon,  2 Dec 2024 17:03:11 -0600
+Message-Id: <20241202230310.1531219-1-hongjian.fan@seagate.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
+Content-Transfer-Encoding: 8bit
+X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SY0P300MB1026:EE_|SY8P300MB0210:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8aa8c2c4-1ee7-4ec9-a627-08dd13360ff8
+X-MS-TrafficTypeDiagnostic: SA2PEPF00003F64:EE_|PH7PR20MB6085:EE_
+Content-Type: text/plain
+X-MS-Office365-Filtering-Correlation-Id: af00faff-3a3c-41c9-9604-08dd13239634
+STX-Hosted-IronPort-Oubound: True
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
- ARA:14566002|15080799006|7092599003|8060799006|19110799003|461199028|5072599009|3412199025|440099028;
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?U5Eb/Jj1qIdoip/QgaGlcqccYmJsWtq8tmFYOeNLGXTVuCNm2dRlcYX6GW9C?=
- =?us-ascii?Q?y5uKM0UMQjCXBZ2r0Pn1hbm+sdxps2K5tKiezIFkFfUfpNgXYkjmZJKKrn10?=
- =?us-ascii?Q?XOzSm1Ii7jjTAGvGVBZvNmNVBJWK/b0MoraJzxRuz4QNG+6Fa0nH4Y3xm1WP?=
- =?us-ascii?Q?dvQ4BozVzp2PzdXxkOzjkBj69vYCZkUCvuj1sPwpAr+wCW/sRTQxrYdrAVvl?=
- =?us-ascii?Q?m7zthwG3CvCI4YCyf2E4kVkYCFoTaPVzJgT6Xz/jA0qMf8hE10bLeUkdaHiQ?=
- =?us-ascii?Q?23PDXmHQsa8NQETbn6xvAReNvjflnxW0wgc76SxYUe+pX9oHHFteOTmLwa7P?=
- =?us-ascii?Q?7v2gPGB6wqVgpAnOOGm8JzfdpK73wp2XNqmt07HfScPY/dINNrrc8NPeGL3a?=
- =?us-ascii?Q?UMWOFHuJgTdaDMKrSPrr+lsXm7Guu83qn1tjZ2k/Ty5SvkgLp186futstopA?=
- =?us-ascii?Q?Uz0J8NnWEJfm0NwRi+yYyd8RdX3Xny//Yh7vs2NDSKXbKqeMMGOLbi+/ZcWa?=
- =?us-ascii?Q?aVYDkjQ68AKEllbVtDsRrPGy8zBfxTboIMjr8eddJQpPiAoysqQU4yb2o0V+?=
- =?us-ascii?Q?i0iHdUmmB1XEoLm+xu7kS28cLc0O85pe7TBiLLCgUUWtlYujDq+IfBMztkG5?=
- =?us-ascii?Q?LB8QRQmbRgDg5QU7ci4G9nfnTGxccvlP9rWvNf8Pa0KvGhcHfLvZYL6w8xAf?=
- =?us-ascii?Q?LAlpLHDojEObzNYR4MQEMMe/M8vS9meZtFh8mLT6RQiQuJxxoBqDGrVZi1w8?=
- =?us-ascii?Q?jnR4sirE0kbvfEVBzQqAhyfs4KlTOoAivYVE8dwbEV2WH7gM2PljBIkU2JHS?=
- =?us-ascii?Q?Fos85uwVfy8/iWvRzCH0Al+t0UVxYq9r7uALmtHp9cs+W1pWvOR0e0qrtIvZ?=
- =?us-ascii?Q?yKUHIaipCfZQy2AjbDG5tkPHzLxbSySTx2SVcp4N+pY78iToW8iwzlzPYQAl?=
- =?us-ascii?Q?qUaZgJiJBdKexLK0Fihkl7JYvXtjlxIcx8t5CRiPzrPZyPSNfFlK/DFSkPfH?=
- =?us-ascii?Q?+iWRTtV0dzPZWPKkAJUlhK40qB9+ZHG+FWTh2vLobwhI4Jg=3D?=
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?xd9VI6Uru0utlS3RXjYr0okz55LrERax87RSDJZFGyEvnZcaIfqKweiKdydD?=
- =?us-ascii?Q?fJhIlWSa+oLI6VqCylzexjg6eba9XVJ804vTA3ye4dvUa4AskxgD2Xau97wH?=
- =?us-ascii?Q?E/T2Tl2a3Ydt/g9ZpZ6jAmEno/RkNZgEJ/te+RsgzJ75ZPlvFVL9UBMoZy+w?=
- =?us-ascii?Q?WqnWSCDH1PZ1xPpIO2UWNMEoXpt6E3dYJMzzejHIGlKiHMG3hN6/wZY0DLt1?=
- =?us-ascii?Q?Idp00dt2wwaLBi/h7FPQkssD1vnMypNzd+V9liVvZ10LfDpHWi+lyx65KFaa?=
- =?us-ascii?Q?4xsN9KDWTxRwkULm1yAvM24fF4fpHFxPb0AFYdRbwsSOhvWBtFDK42DknyvG?=
- =?us-ascii?Q?TkD16Ml/Fo76554B0LSfBbAQzW0587ibUwszd3B0wVnA5jzYugNwsQxAy/HJ?=
- =?us-ascii?Q?qpnorg5Xn+pKSdARTUoEnKGqZYd+r6/SMDa1cqUJasROmZEpU2SCR5Q5lUuS?=
- =?us-ascii?Q?nnsAlhSb9f9ZaIAmyHwFLqVe+kquAdVo9YeKscBr6i7J5ZqMpIKeqQZDJx3p?=
- =?us-ascii?Q?kEuFbsYK4mnkAfNG6Bm4SYroI7cUvZosDQyZfinbDkrTKqbM0Z54Sjp+JN5g?=
- =?us-ascii?Q?/1e+FvhkyBpVFZGsp6ySl7ZKGxrnyhKf7z1ZfAqvvCjKnXHBZ+WW9yf3byMf?=
- =?us-ascii?Q?s/gMqmcGS8pGzYM/h/PBYukwg2DasD9btsCx+qjDXX2S/CoPqyjJAOpXmW7F?=
- =?us-ascii?Q?mdI/gTZv2l/Fig/3rGXn4yt807xlkepppDtxBj/O2RssUzqMn8925pY/J9Ze?=
- =?us-ascii?Q?AGhlZMu5km+5Z0qRrUbmy8DSI25P+2nd6PsDJ7S6/pJ2drWAuQLU19y0ieWA?=
- =?us-ascii?Q?P0+EWXu791Dftd7InqeRj1u7U9K975Q6GtP1O+vz+dY5w8Yw7cL+1YcmIVX+?=
- =?us-ascii?Q?NEoYQZ9L78eIcl/GblydPD0J9J2y10EConIsaCZgdq4F8FmV6Nhz3WQGO7DC?=
- =?us-ascii?Q?qfhSB9OF+thl4/cRP2CFZ+NG3bWxvp3Kr0eQxkxzsWc6qzhWpicxOcm7Q1dE?=
- =?us-ascii?Q?qGDBneAhFXW7jWC/5z2r1yn8phGBtGlebB3JsPQiN8/9s5MkJKrfrFHhLs2k?=
- =?us-ascii?Q?bLpbaivnjUwLop5o/dzAwostQxrXMG8HgmANsnTrdEL3kb3+MbBUH4C18qTI?=
- =?us-ascii?Q?++3gwakD/avdRVbBafZYCOx9I2w15LLjUIYRn2exNULgW8LNWra0FmxkKEf8?=
- =?us-ascii?Q?8GAdxisxyzqGDuNbDWXZsGTMtk21qUEYZCgZYHlgXlFitGWLP0BaXzjxCvk?=
- =?us-ascii?Q?=3D?=
-X-OriginatorOrg: sct-15-20-7719-20-msonline-outlook-448bf.templateTenant
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8aa8c2c4-1ee7-4ec9-a627-08dd13360ff8
-X-MS-Exchange-CrossTenant-AuthSource: SY0P300MB1026.AUSP300.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Dec 2024 01:01:47.8555 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SY8P300MB0210
-Received-SPF: pass client-ip=2a01:111:f403:2818::801;
- envelope-from=junjie.mao@hotmail.com;
- helo=AUS01-ME3-obe.outbound.protection.outlook.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ ARA:13230040|376014|82310400026|1800799024|36860700013; 
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?Cy/gNeRSWkT9O8TBa+w9pQkg7zi80ELqgHdC79Jh1/6/RIZ+5eL30dESNb3p?=
+ =?us-ascii?Q?kYJDI8YqTqxpGg9jO0QTBhDLMOMZvXuh/hntDAYed3dpYYOiZCBgeyuKKFTm?=
+ =?us-ascii?Q?nYR23pt9qmn6gXRHOPKNqEnhl6Tg4LeB627XOJXvKlCEDTvRqc8tQkQIuTPq?=
+ =?us-ascii?Q?qRg/CM/Gds093CBEAas+vzwv/aNgLapeSXSLVcjQptUPQHfjKgYBwvP0Dgdy?=
+ =?us-ascii?Q?oAJRyZOgAIrVcHwWRa+Ezv8oun5LZEW8IGE0Bz19xMdrNxUGou8wAvgk4SrU?=
+ =?us-ascii?Q?QGNxvIS82d3xHGB91PeqTkOXm+e7+YlZxeSqPNGY2WRSZ/SU3LDmicL9FeaG?=
+ =?us-ascii?Q?YqUKlvUeFGpKJXJZxQm9Ilp2NS+zlZLF8/xsJtStjVLw5rO7FZq2I7sVdF8v?=
+ =?us-ascii?Q?XEdrAntNr4h5GiPVBIHHIZQeDx7N4JjeUMXHCiXX00hMV3XW7pkAqIsbEa0a?=
+ =?us-ascii?Q?N/dPykdhFRt4DSiqDIgTOWFGLXwU+CGz+CXJqiYx5dDcMwVVXB+ZDuSuiXus?=
+ =?us-ascii?Q?ZspNPL4nM78ekBELnbnUlETB+NcUInan0QJnT2uwn3R/OuXp6EXWJ2eZcnfL?=
+ =?us-ascii?Q?q7Q28HI75dznEUjGZ/TLJComMDrUi6581dJyz0qMarLLeSOBij4DXkfY5COx?=
+ =?us-ascii?Q?ZBRzCJxh7N/5bLr7f6tsi9tGfwNe51hlINV0bJJ81Mpx2ANm17yHZ1rvhj6/?=
+ =?us-ascii?Q?uA1G+Qd7qsF/3j/PuWTCSwZhAemL9wnrVpJGjSM6tf1D+ZlYjBYKGMLc1SRt?=
+ =?us-ascii?Q?FO+CgcDAekKHYGDmjzbmkMjIhi27cB/dt7aVoAT7hcgSQ4i7CdyoEpbDC3Nb?=
+ =?us-ascii?Q?wN2S2m1F59EQM6pBPhdP7xlaJrOliUkkLHaSqD2XKEoI9PzlU1foakElpv/K?=
+ =?us-ascii?Q?FywobFw+5NJdbehj9WSvreWhVmDpdFPGhMEMLMWBxVfWal1LNz8jcDAsZNlw?=
+ =?us-ascii?Q?yEHLKWe6ABVbMeC9NXjUmFbZmBw4YExWvLIk/Jy+xv8fNHWhW7lbbFqL/gtf?=
+ =?us-ascii?Q?yqHLOl2OiXZyOpmNoOcg/I0CCdC6fxJlX6cPbjkVskQM2cREJMxae8/nDq5J?=
+ =?us-ascii?Q?osATCiOWCsrfj5ReEYcDQ6tqXLYIZO+Sj4QP2Hc3g5HfmGveNuN3BxQ1O4EQ?=
+ =?us-ascii?Q?pHiild4DrC6l2JsL1NLoujg3f7eDpkmHhAYBoAGxyKFCNzh67IyZqVWkhx5y?=
+ =?us-ascii?Q?65LzSrlLZJIQAVa884uur2c+Dm0sQdfqz2M9T34Th+nRXNdwIQfbCsTun0m2?=
+ =?us-ascii?Q?QhOveXVc+UHbYyf5vFNnONwsLslOZgtV+1OMGqkYlGTyuqXybdHMCivEkfbw?=
+ =?us-ascii?Q?FPULonwXtEefPnAj1pc2FrbIj1vQp83EPVz31xpSqiPPelxA57OKNGILAnUn?=
+ =?us-ascii?Q?U+sMUkHlxdf6suK4C9QnTg9f/8VlaXoTDkEXBgbdjLhS2CvFOUDZ2CtZr5Ca?=
+ =?us-ascii?Q?lpZTaLp/GHu/YfSCWZt6BSHuzJ8/djyX?=
+X-Forefront-Antispam-Report: CIP:134.204.222.53; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:CAL; SFV:NSPM; H:lcopzesaa002.seagate.com; PTR:InfoDomainNonexistent;
+ CAT:NONE; SFS:(13230040)(376014)(82310400026)(1800799024)(36860700013);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: 8y0jnoLWKGKW5vQMZf//ELIB0i7+d7BeShj8goYYaVVgRXZ1j2oO9VdUG/dDfiv5mRJh8O71rh/qCrv6+XJxoqYDJ5fyjUQRozpAzAlRPOFlA51JYCqjnRoC4Q7YD+ZzjFXLvQaPdRS9PpABo+qhOWnsGVuAzsBRZEr//JO7oKSwS9YWqMo1s7GKXRmU/PcCc7EQ+PpBJxQTFP+E7c5P968AQX6AoJYucVRDDN6yCBLTkXXi7LOGaZrFVN4wkOuXqmX0suiJ+FDKA0s4U1h4wQIqjRLKzb43xU5LyasgIXoHFyl3IjO/uvXDRTMpfPiqHki3JMNTIptGsZwAz0HlZaEyLWPSGcLaf4fLsTYerXc7jytw48zdT1b8Zm1Og6Z6QqEi2BCCP0gLLI7uevNix9VrANSS7UDmQIPeZNzyUsKDKvGMLqCCoNM8BpkJcGNO2wymbxD3LICvk5D+Npcdo8hMWpuCeb20BZVUmkuw6OQ5pmzsRjRNac/bce8uMAULwIdLGwxGeAD+ZNZL1Z11wctw2Gi4jqK9DgPCxraBn35/pBk9KR/HhjX/akkKP7KVfvtUjMwNYIWd3gFC71zSqrF4nup/QGfGEZPx8HL/WM2fCUP/4rm4IOPYhIAaRG7m
+X-OriginatorOrg: seagate.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Dec 2024 22:49:31.8477 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: af00faff-3a3c-41c9-9604-08dd13239634
+X-MS-Exchange-CrossTenant-Id: d466216a-c643-434a-9c2e-057448c17cbe
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=d466216a-c643-434a-9c2e-057448c17cbe; Ip=[134.204.222.53];
+ Helo=[lcopzesaa002.seagate.com]
+X-MS-Exchange-CrossTenant-AuthSource: SA2PEPF00003F64.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR20MB6085
+Received-SPF: pass client-ip=139.138.35.140;
+ envelope-from=hongjian.fan@seagate.com; helo=esa.hc4959-67.iphmx.com
+X-Spam_score_int: -73
+X-Spam_score: -7.4
+X-Spam_bar: -------
+X-Spam_report: (-7.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.996,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Mon, 02 Dec 2024 21:18:07 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -137,42 +164,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+According to CXL 3.1 specification, 8.1.3.8 DVSEC CXL Range Registers "A CXL.mem-capable device is permitted to report zero memory size."
+This patch will allow a CXL type3 device to be initialized with zero memory size, when there is no memory device property provided ( neither volatile, persistent, nor dynamic region).
 
-Paolo Bonzini <pbonzini@redhat.com> writes:
+Signed-off-by: Hongjian Fan <hongjian.fan@seagate.com>
+---
+ hw/mem/cxl_type3.c | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
-> QEMU objects usually have their pointer shared with the "outside
-> world" very early in their lifetime, for example when they create their
-> MemoryRegions.  Because at this point it is not valid anymore to
-> create a &mut reference to the device, individual parts of the
-> device struct must be made mutable in a controlled manner.
->
-> QEMU's Big Lock (BQL) effectively turns multi-threaded code into
-> single-threaded code while device code runs, as long as the BQL is not
-> released while the device is borrowed (because C code could sneak in and
-> mutate the device).  We can then introduce custom interior mutability primitives
-> that are semantically similar to the standard library's (single-threaded)
-> Cell and RefCell, but account for QEMU's threading model.  Accessing
-> the "BqlCell" or borrowing the "BqlRefCell" requires proving that the
-> BQL is held, and attempting to access without the BQL is a runtime panic,
-> similar to RefCell's already-borrowed panic.
->
-> With respect to naming I also considered omitting the "Bql" prefix or
-> moving it to the module, e.g.  qemu_api::bql::{Cell, RefCell}.  However,
-> this could easily lead to mistakes and confusion; for example rustc could
-> suggest the wrong import, leading to subtle bugs.
->
-> As a start introduce the an equivalent of Cell.  Almost all of the code
-> was taken from Rust's standard library, while removing unstable features
-> and probably-unnecessary functionality that constitute a large of the
-> original code.  A lot of what's left is documentation, as well as unit
-> tests in the form of doctests.  These are not yet integrated in "make
-> check" but can be run with "cargo test --doc".
->
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+diff --git a/hw/mem/cxl_type3.c b/hw/mem/cxl_type3.c
+index 5cf754b38f..35caa186ca 100644
+--- a/hw/mem/cxl_type3.c
++++ b/hw/mem/cxl_type3.c
+@@ -159,7 +159,12 @@ static int ct3_build_cdat_table(CDATSubHeader ***cdat_table, void *priv)
+     int len = 0;
+ 
+     if (!ct3d->hostpmem && !ct3d->hostvmem && !ct3d->dc.num_regions) {
+-        return 0;
++        // zero memory size device. Build one entry with size 0
++        table = g_malloc0(CT3_CDAT_NUM_ENTRIES * sizeof(*table));
++        ct3_build_cdat_entries_for_mr(&(table[0]), dsmad_handle++,
++                                0, false, false, 0);
++        *cdat_table = g_steal_pointer(&table);
++        return CT3_CDAT_NUM_ENTRIES;
+     }
+ 
+     if (ct3d->hostvmem) {
+@@ -712,8 +717,11 @@ static bool cxl_setup_memory(CXLType3Dev *ct3d, Error **errp)
+ 
+     if (!ct3d->hostmem && !ct3d->hostvmem && !ct3d->hostpmem
+         && !ct3d->dc.num_regions) {
+-        error_setg(errp, "at least one memdev property must be set");
+-        return false;
++        // no memdev property provided. Default to zero memory size device
++        ct3d->cxl_dstate.pmem_size = 0;
++        ct3d->cxl_dstate.vmem_size = 0;
++        ct3d->cxl_dstate.static_mem_size = 0;
++        return true;
+     } else if (ct3d->hostmem && ct3d->hostpmem) {
+         error_setg(errp, "[memdev] cannot be used with new "
+                          "[persistent-memdev] property");
+-- 
+2.25.1
 
-Reviewed-by: Junjie Mao <junjie.mao@hotmail.com>
-
---
-Best Regards
-Junjie Mao
 
