@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42FD09E03C1
-	for <lists+qemu-devel@lfdr.de>; Mon,  2 Dec 2024 14:41:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EC849E03AE
+	for <lists+qemu-devel@lfdr.de>; Mon,  2 Dec 2024 14:38:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tI6bc-0007YR-PD; Mon, 02 Dec 2024 08:36:53 -0500
+	id 1tI6Zs-00056D-Od; Mon, 02 Dec 2024 08:35:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1tI6Lj-0007yH-1q
+ id 1tI6Lj-0007yO-55
  for qemu-devel@nongnu.org; Mon, 02 Dec 2024 08:20:37 -0500
-Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
+Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1tI6Lc-0005he-ND
- for qemu-devel@nongnu.org; Mon, 02 Dec 2024 08:20:23 -0500
-Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4B26XMLB013787;
- Mon, 2 Dec 2024 13:20:18 GMT
+ id 1tI6Lf-0005k0-6Y
+ for qemu-devel@nongnu.org; Mon, 02 Dec 2024 08:20:26 -0500
+Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4B26WwQG005193;
+ Mon, 2 Dec 2024 13:20:19 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
  :date:from:in-reply-to:message-id:references:subject:to; s=
- corp-2023-11-20; bh=76RsVoAGMj38dWsNKVn+ivLB7EnCOcYrTG3VXeLBVB4=; b=
- DLU0A8jG4MEPweEjVAEWpSRkrgx7aSt888pb4+cuIEml+itdCNpRAcwqJ+qBM0qB
- iAe4Zf3hiyTMO+CoNuHU58IEQ+IQEsp1DFO/SWl7WQDkSJpS3xPhA2HhkZsI4+rl
- WywqYti7yPikUxOHTcdxMVpkG3joju4suNX4ess8C3OGggcAolyqMBrPjmMAUzUB
- QamsMWH0aeczeHcrZOnNx2fVTWYuoS0aCvuE0hCT95d4dZihTnchws5UC8xNvCAR
- V5sh7ofvjb6H8xSOia2m4oDthE3L2VTobhdEB6IXuX97byZRJMVK9kI5d56SWbz1
- AvQ5d6phpc8ODNezBf9afQ==
+ corp-2023-11-20; bh=TXd9jXCmZXqRMNmbI/fqeBAMqJD3CKnnnlbau9xifCM=; b=
+ fFHffPgTcYhrPE7duNa+qmImNPwsFeedQowGUoSYv5FLICxKe614ysdJxRGphdp/
+ 2r3jtKyTdtO14130YmzsRmn16CgnmSaEYNDM6Uwv6Q06/jQHTnMQrYUMT7tmbTW9
+ po1n9hgnaXEpV2MSFkw8QhMkLlWPK0VQ/sgv/+h+5BH8F7vHA0WcYwsI4zUpJpX0
+ bcGpJe3DaGFeaf+HUHEwvI6kR4HSOrm+mHlXEyF9zAjgdFHO1XNQlW35uqgyxK7c
+ mfYG0Ivxy4hNDkE2HscfwGF54vUyPu9DtqktyrEt+cY6clEW8qOJhB3wH52fl9+T
+ 2vUYqJ5f6AC3SJYI7gIlDg==
 Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com
  (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 437s4c3342-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 437tk8txgr-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 02 Dec 2024 13:20:18 +0000 (GMT)
+ Mon, 02 Dec 2024 13:20:19 +0000 (GMT)
 Received: from pps.filterd
  (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
  by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 4B2DIXe3032684; Mon, 2 Dec 2024 13:20:17 GMT
+ with ESMTP id 4B2CmKYO032740; Mon, 2 Dec 2024 13:20:18 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
- 437s56jtnq-1
+ 437s56jtpd-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 02 Dec 2024 13:20:17 +0000
+ Mon, 02 Dec 2024 13:20:18 +0000
 Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com
  (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 4B2DKCEj032806;
- Mon, 2 Dec 2024 13:20:17 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 4B2DKCEl032806;
+ Mon, 2 Dec 2024 13:20:18 GMT
 Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
  by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with
- ESMTP id 437s56jthv-7; Mon, 02 Dec 2024 13:20:17 +0000
+ ESMTP id 437s56jthv-8; Mon, 02 Dec 2024 13:20:17 +0000
 From: Steve Sistare <steven.sistare@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
@@ -62,9 +62,9 @@ Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
  "Daniel P. Berrange" <berrange@redhat.com>,
  Markus Armbruster <armbru@redhat.com>,
  Steve Sistare <steven.sistare@oracle.com>
-Subject: [PATCH V4 06/19] physmem: preserve ram blocks for cpr
-Date: Mon,  2 Dec 2024 05:19:58 -0800
-Message-Id: <1733145611-62315-7-git-send-email-steven.sistare@oracle.com>
+Subject: [PATCH V4 07/19] hostmem-memfd: preserve for cpr
+Date: Mon,  2 Dec 2024 05:19:59 -0800
+Message-Id: <1733145611-62315-8-git-send-email-steven.sistare@oracle.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1733145611-62315-1-git-send-email-steven.sistare@oracle.com>
 References: <1733145611-62315-1-git-send-email-steven.sistare@oracle.com>
@@ -76,10 +76,10 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0
  spamscore=0 suspectscore=0 malwarescore=0 mlxscore=0 phishscore=0
  bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2411120000 definitions=main-2412020116
-X-Proofpoint-ORIG-GUID: HF56IY68lu2-gGBrqXRGeOzuzecSzKEX
-X-Proofpoint-GUID: HF56IY68lu2-gGBrqXRGeOzuzecSzKEX
-Received-SPF: pass client-ip=205.220.177.32;
- envelope-from=steven.sistare@oracle.com; helo=mx0b-00069f02.pphosted.com
+X-Proofpoint-ORIG-GUID: 62KhHrDx2vfPcxHKQHwhPP2732f-48nA
+X-Proofpoint-GUID: 62KhHrDx2vfPcxHKQHwhPP2732f-48nA
+Received-SPF: pass client-ip=205.220.165.32;
+ envelope-from=steven.sistare@oracle.com; helo=mx0a-00069f02.pphosted.com
 X-Spam_score_int: -31
 X-Spam_score: -3.2
 X-Spam_bar: ---
@@ -103,108 +103,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Save the memfd for ramblocks in CPR state, along with a name that
-uniquely identifies it.  The block's idstr is not yet set, so it
-cannot be used for this purpose.  Find the saved memfd in new QEMU when
-creating a block.  If the block size is larger in new QEMU, extend the
-block using fallocate, and the extra space will be useable after a guest
-reset.
+Preserve memory-backend-memfd memory objects during cpr-transfer.
 
 Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
+Acked-by: Peter Xu <peterx@redhat.com>
 ---
- system/physmem.c | 36 ++++++++++++++++++++++++++++++++++--
- 1 file changed, 34 insertions(+), 2 deletions(-)
+ backends/hostmem-memfd.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/system/physmem.c b/system/physmem.c
-index 0bcb2cc..aa095a3 100644
---- a/system/physmem.c
-+++ b/system/physmem.c
-@@ -70,6 +70,7 @@
- 
- #include "qemu/pmem.h"
- 
+diff --git a/backends/hostmem-memfd.c b/backends/hostmem-memfd.c
+index 1bcae4b..497d63b 100644
+--- a/backends/hostmem-memfd.c
++++ b/backends/hostmem-memfd.c
+@@ -17,6 +17,7 @@
+ #include "qemu/module.h"
+ #include "qapi/error.h"
+ #include "qom/object.h"
 +#include "migration/cpr.h"
- #include "migration/vmstate.h"
  
- #include "qemu/range.h"
-@@ -1661,6 +1662,19 @@ void qemu_ram_unset_idstr(RAMBlock *block)
-     }
- }
+ OBJECT_DECLARE_SIMPLE_TYPE(HostMemoryBackendMemfd, MEMORY_BACKEND_MEMFD)
  
-+static char *cpr_name(RAMBlock *block)
-+{
-+    MemoryRegion *mr = block->mr;
-+    const char *mr_name = memory_region_name(mr);
-+    g_autofree char *id = mr->dev ? qdev_get_dev_path(mr->dev) : NULL;
-+
-+    if (id) {
-+        return g_strdup_printf("%s/%s", id, mr_name);
-+    } else {
-+        return g_strdup(mr_name);
-+    }
-+}
-+
- size_t qemu_ram_pagesize(RAMBlock *rb)
+@@ -33,15 +34,19 @@ static bool
+ memfd_backend_memory_alloc(HostMemoryBackend *backend, Error **errp)
  {
-     return rb->page_size;
-@@ -2080,8 +2094,18 @@ static bool qemu_ram_alloc_shared(RAMBlock *new_block, Error **errp)
- {
-     size_t max_length = new_block->max_length;
-     MemoryRegion *mr = new_block->mr;
--    const char *name = memory_region_name(mr);
--    int fd;
-+    g_autofree char *name = cpr_name(new_block);
+     HostMemoryBackendMemfd *m = MEMORY_BACKEND_MEMFD(backend);
+-    g_autofree char *name = NULL;
++    g_autofree char *name = host_memory_backend_get_name(backend);
 +    int fd = cpr_find_fd(name, 0);
-+
+     uint32_t ram_flags;
+-    int fd;
+ 
+     if (!backend->size) {
+         error_setg(errp, "can't create backend with size 0");
+         return false;
+     }
+ 
 +    if (fd >= 0) {
-+        if (lseek(fd, 0, SEEK_END) < max_length && ftruncate(fd, max_length)) {
-+            error_setg_errno(errp, errno,
-+                             "cannot grow ram block %s fd %d to %ld bytes",
-+                             name, fd, max_length);
-+            goto err;
-+        }
 +        goto have_fd;
 +    }
- 
-     if (qemu_memfd_available()) {
-         fd = qemu_memfd_create(name, max_length + mr->align, 0, 0, 0, errp);
-@@ -2111,7 +2135,9 @@ static bool qemu_ram_alloc_shared(RAMBlock *new_block, Error **errp)
-             return true;
-         }
++
+     fd = qemu_memfd_create(TYPE_MEMORY_BACKEND_MEMFD, backend->size,
+                            m->hugetlb, m->hugetlbsize, m->seal ?
+                            F_SEAL_GROW | F_SEAL_SHRINK | F_SEAL_SEAL : 0,
+@@ -49,9 +54,10 @@ memfd_backend_memory_alloc(HostMemoryBackend *backend, Error **errp)
+     if (fd == -1) {
+         return false;
      }
 +    cpr_save_fd(name, 0, fd);
  
 +have_fd:
-     new_block->mr->align = QEMU_VMALLOC_ALIGN;
-     new_block->host = file_ram_alloc(new_block, max_length, fd, false, 0, errp);
- 
-@@ -2122,6 +2148,8 @@ static bool qemu_ram_alloc_shared(RAMBlock *new_block, Error **errp)
-         return true;
-     }
- 
-+err:
-+    cpr_delete_fd(name, 0);
-     close(fd);
-     return false;
- }
-@@ -2234,6 +2262,8 @@ static void reclaim_ramblock(RAMBlock *block)
- 
- void qemu_ram_free(RAMBlock *block)
- {
-+    g_autofree char *name = NULL;
-+
-     if (!block) {
-         return;
-     }
-@@ -2244,6 +2274,8 @@ void qemu_ram_free(RAMBlock *block)
-     }
- 
-     qemu_mutex_lock_ramlist();
-+    name = cpr_name(block);
-+    cpr_delete_fd(name, 0);
-     QLIST_REMOVE_RCU(block, next);
-     ram_list.mru_block = NULL;
-     /* Write list before version */
+     backend->aligned = true;
+-    name = host_memory_backend_get_name(backend);
+     ram_flags = backend->share ? RAM_SHARED : RAM_PRIVATE;
+     ram_flags |= backend->reserve ? 0 : RAM_NORESERVE;
+     ram_flags |= backend->guest_memfd ? RAM_GUEST_MEMFD : 0;
 -- 
 1.8.3.1
 
