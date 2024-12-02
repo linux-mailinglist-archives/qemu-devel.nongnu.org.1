@@ -2,71 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66CC39E0C6B
-	for <lists+qemu-devel@lfdr.de>; Mon,  2 Dec 2024 20:43:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FEC39E0C8B
+	for <lists+qemu-devel@lfdr.de>; Mon,  2 Dec 2024 20:50:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tICJ6-00066t-D9; Mon, 02 Dec 2024 14:42:08 -0500
+	id 1tICPb-0007xr-EZ; Mon, 02 Dec 2024 14:48:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1tICIz-00065o-CA
- for qemu-devel@nongnu.org; Mon, 02 Dec 2024 14:42:01 -0500
-Received: from mailgate02.uberspace.is ([185.26.156.114])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tICPZ-0007xR-Gb
+ for qemu-devel@nongnu.org; Mon, 02 Dec 2024 14:48:49 -0500
+Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1tICIw-0005tG-Fk
- for qemu-devel@nongnu.org; Mon, 02 Dec 2024 14:42:01 -0500
-Received: from skiff.uberspace.de (skiff.uberspace.de [185.26.156.131])
- by mailgate02.uberspace.is (Postfix) with ESMTPS id EDA3A180C05
- for <qemu-devel@nongnu.org>; Mon,  2 Dec 2024 20:41:54 +0100 (CET)
-Received: (qmail 24777 invoked by uid 990); 2 Dec 2024 19:41:54 -0000
-Authentication-Results: skiff.uberspace.de;
-	auth=pass (plain)
-Received: from unknown (HELO unkown) (::1)
- by skiff.uberspace.de (Haraka/3.0.1) with ESMTPSA;
- Mon, 02 Dec 2024 20:41:54 +0100
-From: Julian Ganz <neither@nut.email>
-To: qemu-devel@nongnu.org
-Cc: Julian Ganz <neither@nut.email>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Alexandre Iooss <erdnaxe@crans.org>,
- Mahmoud Mandour <ma.mandourr@gmail.com>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [RFC PATCH v3 11/11] tests: add plugin asserting correctness of
- discon event's to_pc
-Date: Mon,  2 Dec 2024 20:41:37 +0100
-Message-ID: <36d316bf3e8b0aca778c5e8d1acde39a7f361946.1733063076.git.neither@nut.email>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <cover.1733063076.git.neither@nut.email>
-References: <cover.1733063076.git.neither@nut.email>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tICPX-0007qi-TR
+ for qemu-devel@nongnu.org; Mon, 02 Dec 2024 14:48:49 -0500
+Received: by mail-pl1-x62e.google.com with SMTP id
+ d9443c01a7336-211fb27cc6bso37285715ad.0
+ for <qemu-devel@nongnu.org>; Mon, 02 Dec 2024 11:48:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1733168926; x=1733773726; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=03oETA9PrrgCkZ8r42nuCuA2jAaAjqZqfK+QbzmOD+s=;
+ b=cgIt/McYZoJVQJj3+yJHK8zz4a7FS/Qz3awDT6Fo2Z4JOt2GZmHu78wBiD3BXBv+Au
+ Rt3+YmvYuMG+4vZFTAHbocuQsJp79AIBtL6W1OfHDkVSHvMYaeNonFTzDduY+9glIFkj
+ SMrJ9XT3rqDtjJIDKM1Aoyc4yR4n9YIjV40RYFT0+OxLFVXMav+6kcO5Myv0Vtndc3rx
+ 0vicMgki8d0yqOQkPvLr5EnOBxTnUh/nIvTaiHSFOV2F6AhKRiUCr10LRdEnPC/lTj57
+ oBTEwsjf+/ek6uufzdZh92bcF7y5JbYoZXDaJa746YVenttCxtL/P6r/r5BxSkbWoUKM
+ fzdQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1733168926; x=1733773726;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=03oETA9PrrgCkZ8r42nuCuA2jAaAjqZqfK+QbzmOD+s=;
+ b=ir7tENwSmNbyAC1+DOp0bdKMQBv8orMDTMyX8kHcdmo9nvKu7cVAAidvcdnlxrGcO1
+ gqGAKTuR2h7Fh2Ki1UCUkjAJV7BgJVLO2N0V3uWRNb57xtQQXKbAqbvApxOqQLFX6J07
+ u5vvk230fdQHVzmMUZDXLVsNQetAjddQtXKE0oNltmLodk0UMY0s384zsQkpy7qfaqkG
+ tq+to/nxjYAyLQjXdFNVu+AZl4aqaCcgN4JgPyTDVA7UGWrKYKUJRTwvKEmDzxX5ALHA
+ sUw6TaysTtgV6TtDlvL+y6QydLNzqbUb8hvTyY54o5Zbp0l0IkSzpvkJjgD2l0Sv4Al0
+ u/xA==
+X-Gm-Message-State: AOJu0Yz4bJHfXi/E/v+pLUujHEKjuqJpQcplX81jTPqoxcBzrg99u/MF
+ v564jiAn6IJvZe1eUsr8gPb9toPgm4yyd9Gf5yFVn0VKVZs/rvGyI12Ko9OyZTpIKKo5dPlE6xb
+ CkHs=
+X-Gm-Gg: ASbGncsuWLj8qFQ42SwHC03yKJQcVcQ+azchg8J7vKWjyhSk4Pu6bYtYeqv63n8vxJb
+ YqKAD2/MnzBYHshw4Qn9RJQd6MM6VJLjz/Qo4IHAEccgITj2MCwO6nJ04gSRslNqy6pR2zuKvG0
+ h6OL3N5wS5oDZbi/PQCOw5Qo6OxK67fCpjEuVSpKkfBKwB5exemAnAGblXdUxlZHTw41fa0pv/Q
+ e+8Nmf8ck/SmqrjlN1DC45LvzwEsckGxP5a14YF1ZWgxmmzAcnVAyHDQtazgTtEUI3RfiZZF4hg
+ l+LQzppi4gU2zJkGqnW4
+X-Google-Smtp-Source: AGHT+IFIE/5tsHLGaJK+BoI7gJXBIR1a6xfvxEdBDx8/jGa5G3uORChIYoxhlD/f85LOFkxvWjZY5A==
+X-Received: by 2002:a17:903:8c5:b0:215:9894:5670 with SMTP id
+ d9443c01a7336-21598945873mr78390035ad.16.1733168926106; 
+ Mon, 02 Dec 2024 11:48:46 -0800 (PST)
+Received: from [192.168.1.74] (88-187-86-199.subs.proxad.net. [88.187.86.199])
+ by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-2153a70bbd1sm67501975ad.231.2024.12.02.11.48.42
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 02 Dec 2024 11:48:45 -0800 (PST)
+Message-ID: <21c5e930-d7ee-4dd8-a238-862f4db87849@linaro.org>
+Date: Mon, 2 Dec 2024 20:48:38 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH-for-9.2? v2 1/2] hw/display/vga: Do not reset
+ 'big_endian_fb' in vga_common_reset()
+To: qemu-devel@nongnu.org
+Cc: Gerd Hoffmann <kraxel@redhat.com>,
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paolo Bonzini <pbonzini@redhat.com>
+References: <20241129101721.17836-1-philmd@linaro.org>
+ <20241129101721.17836-2-philmd@linaro.org>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20241129101721.17836-2-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Bar: ----
-X-Rspamd-Report: REPLY(-4) SUSPICIOUS_RECIPS(1.5) MID_CONTAINS_FROM(1)
- MIME_GOOD(-0.1) BAYES_HAM(-2.999999) R_MISSING_CHARSET(0.5)
-X-Rspamd-Score: -4.099999
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=nut.email; s=uberspace;
- h=from:to:cc:subject:date;
- bh=QtNoualSp5HK6fG+v1BpfCUxVztYUqkQxOY+K+yjyko=;
- b=CG74BC7/MzXp7v0ggJFuEg1UG+J9u58DLlQhXqDVmS9ZK82LLgejy6kWi7It27WoNtSpJ5cQE2
- eNuVUuN40Zo2Y/VdxSaHF59mgnm1AJwPrP/uB9fmdDX0R9MnLiThdeOLolnMXKouoHvhvnpOQDHZ
- o5Um+PrQMx97rmGAaEFYtMUPa7uGSmWKFppCC1Ea8ejXLv894KGn0fVpzBMKps2f3Oi2ihwKAsLy
- LhjtnaC+xHUnzqvE8CsU8iH3pyQoi7lYB16Glip9HCzxxA051ATF4iVG7VZBuHIwpaN2QHDD85S5
- lrtY3pErn77TymZVkAZSRna0Vzuk8BxXSbJi9rDRM0IQb7Zuw1RDp/qGHbfITPKLXQzUqVWkTEWP
- roxnBoELl9HOHqn9Q+l2QNWnVFGV9iS2nvFjDvqe4trlOYvCu0guqslC3xCeFyqwN45O9pIKtaLm
- BF2qGVEGL7yWO4EC1gs9WEi/eg1KW0T54wbhAmhJjSZN8kW6MTpRDj/kJwZGTXnZ6wnHr3lSEu/c
- LhA428EQwSIePTA/dQo2O5ezeZ9UWelCKY1anDjip1s7to8BCVaAF+6wpEAfoNjONPVcnjkRGNix
- SwyhNygbFbH5nEi7d+Rt5ju1pmB07bVQTsrpxD6eX52bxy4OqbEmIbLkYZPgApbwO0Fls53wXU3E
- c=
-Received-SPF: pass client-ip=185.26.156.114; envelope-from=neither@nut.email;
- helo=mailgate02.uberspace.is
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
+ envelope-from=philmd@linaro.org; helo=mail-pl1-x62e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,131 +103,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We recently introduced plugin API for the registration of callbacks for
-discontinuity events, specifically for interrupts, exceptions and host
-call events. The callback receives, among other information, the VCPU
-index and the PC after the event. This change introduces a test plugin
-asserting that particular behaviour.
----
- tests/tcg/plugins/discons.c   | 95 +++++++++++++++++++++++++++++++++++
- tests/tcg/plugins/meson.build |  2 +-
- 2 files changed, 96 insertions(+), 1 deletion(-)
- create mode 100644 tests/tcg/plugins/discons.c
+ping?
 
-diff --git a/tests/tcg/plugins/discons.c b/tests/tcg/plugins/discons.c
-new file mode 100644
-index 0000000000..54e52f563a
---- /dev/null
-+++ b/tests/tcg/plugins/discons.c
-@@ -0,0 +1,95 @@
-+/*
-+ * Copyright (C) 2024, Julian Ganz <neither@nut.email>
-+ *
-+ * License: GNU GPL, version 2 or later.
-+ *   See the COPYING file in the top-level directory.
-+ */
-+#include <stdio.h>
-+
-+#include <qemu-plugin.h>
-+
-+QEMU_PLUGIN_EXPORT int qemu_plugin_version = QEMU_PLUGIN_VERSION;
-+
-+struct cpu_state {
-+    uint64_t next_pc;
-+    bool has_next;
-+};
-+
-+static struct qemu_plugin_scoreboard *states;
-+
-+static bool abort_on_mismatch;
-+
-+static void vcpu_discon(qemu_plugin_id_t id, unsigned int vcpu_index,
-+                        enum qemu_plugin_discon_type type, uint64_t from_pc,
-+                        uint64_t to_pc)
-+{
-+    struct cpu_state *state = qemu_plugin_scoreboard_find(states, vcpu_index);
-+    state->next_pc = to_pc;
-+    state->has_next = true;
-+}
-+
-+static void insn_exec(unsigned int vcpu_index, void *userdata)
-+{
-+    struct cpu_state *state = qemu_plugin_scoreboard_find(states, vcpu_index);
-+    uint64_t pc = (uint64_t) userdata;
-+    GString* report;
-+
-+    if (state->has_next) {
-+        if (state->next_pc != pc) {
-+            report = g_string_new("Trap target PC mismatch\n");
-+            g_string_append_printf(report,
-+                                   "Expected:    %"PRIx64"\nEncountered: %"
-+                                   PRIx64"\n",
-+                                   state->next_pc, pc);
-+            qemu_plugin_outs(report->str);
-+            if (abort_on_mismatch) {
-+                g_abort();
-+            }
-+            g_string_free(report, true);
-+        }
-+        state->has_next = false;
-+    }
-+}
-+
-+static void vcpu_tb_trans(qemu_plugin_id_t id, struct qemu_plugin_tb *tb)
-+{
-+    size_t i;
-+    size_t n_insns = qemu_plugin_tb_n_insns(tb);
-+
-+    for (i = 0; i < n_insns; i++) {
-+        struct qemu_plugin_insn * insn = qemu_plugin_tb_get_insn(tb, i);
-+        uint64_t pc = qemu_plugin_insn_vaddr(insn);
-+        qemu_plugin_register_vcpu_insn_exec_cb(insn, insn_exec,
-+                                               QEMU_PLUGIN_CB_NO_REGS,
-+                                               (void*) pc);
-+    }
-+}
-+
-+QEMU_PLUGIN_EXPORT int qemu_plugin_install(qemu_plugin_id_t id,
-+                                           const qemu_info_t *info,
-+                                           int argc, char **argv)
-+{
-+    int i;
-+
-+    for (i = 0; i < argc; i++) {
-+        char *opt = argv[i];
-+        g_auto(GStrv) tokens = g_strsplit(opt, "=", 2);
-+        if (g_strcmp0(tokens[0], "abort") == 0) {
-+            if (!qemu_plugin_bool_parse(tokens[0], tokens[1], &abort_on_mismatch)) {
-+                fprintf(stderr, "boolean argument parsing failed: %s\n", opt);
-+                return -1;
-+            }
-+        } else {
-+            fprintf(stderr, "option parsing failed: %s\n", opt);
-+            return -1;
-+        }
-+    }
-+
-+    states = qemu_plugin_scoreboard_new(sizeof(struct cpu_state));
-+
-+    qemu_plugin_register_vcpu_discon_cb(id, QEMU_PLUGIN_DISCON_ALL,
-+                                        vcpu_discon);
-+    qemu_plugin_register_vcpu_tb_trans_cb(id, vcpu_tb_trans);
-+
-+    return 0;
-+}
-diff --git a/tests/tcg/plugins/meson.build b/tests/tcg/plugins/meson.build
-index f847849b1b..f057238da1 100644
---- a/tests/tcg/plugins/meson.build
-+++ b/tests/tcg/plugins/meson.build
-@@ -1,6 +1,6 @@
- t = []
- if get_option('plugins')
--  foreach i : ['bb', 'empty', 'inline', 'insn', 'mem', 'syscall']
-+  foreach i : ['bb', 'discons', 'empty', 'inline', 'insn', 'mem', 'syscall']
-     if host_os == 'windows'
-       t += shared_module(i, files(i + '.c') + '../../../contrib/plugins/win32_linker.c',
-                         include_directories: '../../../include/qemu',
--- 
-2.45.2
+On 29/11/24 11:17, Philippe Mathieu-Daudé wrote:
+> The 'pci-vga' device allow setting a 'big-endian-framebuffer'
+> property since commit 3c2784fc864 ("vga: Expose framebuffer
+> byteorder as a QOM property"). Similarly, the 'virtio-vga'
+> device since commit 8be61ce2ce3 ("virtio-vga: implement
+> big-endian-framebuffer property").
+> 
+> Both call vga_common_reset() in their reset handler, respectively
+> pci_secondary_vga_reset() and virtio_vga_base_reset_hold(), which
+> reset 'big_endian_fb', overwritting the property. This is not
+> correct: the hardware is expected to keep its configured
+> endianness during resets.
+> 
+> Move 'big_endian_fb' assignment from vga_common_reset() to
+> vga_common_init() which is called once when the common VGA state
+> is initialized.
+> 
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
+>   hw/display/vga.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/hw/display/vga.c b/hw/display/vga.c
+> index 892fedc8dce..b074b58c90d 100644
+> --- a/hw/display/vga.c
+> +++ b/hw/display/vga.c
+> @@ -1873,7 +1873,6 @@ void vga_common_reset(VGACommonState *s)
+>       s->cursor_start = 0;
+>       s->cursor_end = 0;
+>       s->cursor_offset = 0;
+> -    s->big_endian_fb = s->default_endian_fb;
+>       memset(s->invalidated_y_table, '\0', sizeof(s->invalidated_y_table));
+>       memset(s->last_palette, '\0', sizeof(s->last_palette));
+>       memset(s->last_ch_attr, '\0', sizeof(s->last_ch_attr));
+> @@ -2266,6 +2265,7 @@ bool vga_common_init(VGACommonState *s, Object *obj, Error **errp)
+>        * all target endian dependencies from this file.
+>        */
+>       s->default_endian_fb = target_words_bigendian();
+> +    s->big_endian_fb = s->default_endian_fb;
+>   
+>       vga_dirty_log_start(s);
+>   
 
 
