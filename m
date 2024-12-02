@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58B119E036F
-	for <lists+qemu-devel@lfdr.de>; Mon,  2 Dec 2024 14:30:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B417B9E038C
+	for <lists+qemu-devel@lfdr.de>; Mon,  2 Dec 2024 14:33:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tI6Ui-0002Ac-54; Mon, 02 Dec 2024 08:29:44 -0500
+	id 1tI6Xy-0007yG-Jl; Mon, 02 Dec 2024 08:33:07 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tI6Gq-0002ht-6X
- for qemu-devel@nongnu.org; Mon, 02 Dec 2024 08:15:30 -0500
+ id 1tI6Gz-0002xO-6V
+ for qemu-devel@nongnu.org; Mon, 02 Dec 2024 08:15:33 -0500
 Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tI6GY-0003NV-4z
- for qemu-devel@nongnu.org; Mon, 02 Dec 2024 08:15:23 -0500
+ id 1tI6GY-0003O8-Kx
+ for qemu-devel@nongnu.org; Mon, 02 Dec 2024 08:15:32 -0500
 Received: by mail-wr1-x429.google.com with SMTP id
- ffacd0b85a97d-385dfb168cbso1805752f8f.1
- for <qemu-devel@nongnu.org>; Mon, 02 Dec 2024 05:14:38 -0800 (PST)
+ ffacd0b85a97d-385de59c1a0so2908487f8f.2
+ for <qemu-devel@nongnu.org>; Mon, 02 Dec 2024 05:14:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1733145278; x=1733750078; darn=nongnu.org;
+ d=linaro.org; s=google; t=1733145279; x=1733750079; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=F9P3Zyg8EWDd8Ipp5Pjnvse0G07D293rwdAJ1WyzXl4=;
- b=K3Uar6D9jDn935gVUS/K3XuqOaAeoIE9Y08KA8se4kghYofFPzypz9slIGW/2US56A
- ZrpK7Bc06XUuVWPlIOm6cyU609T90o2vM1aofBHBDbYovnokHZ+5wR3fpTdxr3Oqb2oz
- XM0CEignuPdU/54AZuIA/OEfg8FsNYngNh7hmDmLalUJiCQWAqe4JHx9xNNQoAsTE9jp
- P6yfzk8gp9ZxQ0WKj9DYCWxZlFcjaiaz1a/rwxTx86jjA2y6d/EACPXuSlXZz5Gv5pf3
- /uZITmIizSGKkapFvFEsSpmuotbGjyO8O8302nWVqhJ24sRbmMdCSdHY66sCQNA1KjBj
- f6Vw==
+ bh=bcSQWPJxoEZ5kc/cEyAZreOowNhccL15M84TKXenqM8=;
+ b=ufE9gu07u4hBlYTwM6ro/Qm9bYhR3BuzYPoAnfhh99VkBl42BZapp5Xb/L2947EmWB
+ qiSPVHaTyy6uDmRJukQwkfQgObm6Ec1jIp6umBCCVxJ4AR0EOSGse/VU3kt0PZnHQVae
+ paZqs6Uq9Z2PNAZm5usC/EDucOIu2UU/pK1t08npRA543/oikTQ6N5EH7ZFPISJHbl6M
+ pdpMh0kH4yDLaIza4n/OwL3OFgkf3GuKYZ3sQ+fI+vQJuPEZtN3Csz4CFqdOO6hA/CoV
+ qsCbDUxssjBBX+SI3KNlVaINKomfPSxeZ15+qsPFLJkRrBSLEdMWXQd134OuX1C4+9eB
+ xYKw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733145278; x=1733750078;
+ d=1e100.net; s=20230601; t=1733145279; x=1733750079;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=F9P3Zyg8EWDd8Ipp5Pjnvse0G07D293rwdAJ1WyzXl4=;
- b=G3k4+LE4O84JIj18LHCVDQO13fZ2p04dpDryjkIYRTQaI5R5xAAOYLbbK5Ltd43u7O
- gbWXw3EO7bsjPFH790UA33DiO0xVXFoLcQUX+8A3AkmHgaFQTNGnC3cVd2OooYN1/CFv
- 8qmPzLGZLPOq/aepIGu+aO4yWu+SpXCPri48zrGQvcjgcS8P6jPheSAa0krY6Tk9sWNw
- QIfVBxYgEJ5zla1s6f08JS8+BDZK6KvarwxmQu/4R+UtjoGWFc42GO07W4j14drxT52V
- rtVex2hAKVz/HX+ftJFc2ouriMkZyLijOy3OdNbCbPLb7xAzetGAUyjKnOR18bEQfoCl
- +QJA==
-X-Gm-Message-State: AOJu0YzCZJ/1Ti1ROUapG8VqtjDEGdWabgiamZ3hg/n4RJuW19K6Spsx
- tAxrAESH9TrPGN3BGviSRhEr5hN7GVaLyAPEDz6nEHTHIFh8/eDa3QTAOKohbKhkJ62OhcnkpF7
- n
-X-Gm-Gg: ASbGncuhr+YknIozkoe1UKauNvieSeb+c287oTDCQTjmFGNylqE1EKNO839urbwRpK1
- zS+eT+1nkm1xb4Q5K/c9qI1FG82ZBWZFJNYBklD/HqIGYH0bnC104X/zrzR9XL96mkzNAO5hRG2
- j4WkKvIZkzdrrIBFf/ipxgk8e9Vyg20XqS2JhgwoGtc+n2+uz8dhFSrKjElQTH+ABa0Cglpl6/w
- 53oseBm5Xe4AeZ35E1x4xmq9zPq0ESRlUJe9QDI1q8aTVJDXY05GjA=
-X-Google-Smtp-Source: AGHT+IFL61A+tairJzPOItayh6olQ1F+IieedrTB8+3a6uLQVDTHerrpGpRDJzdWMxXPxCl7i8SUAA==
-X-Received: by 2002:a05:6000:2d04:b0:385:e30a:394b with SMTP id
- ffacd0b85a97d-385e30a3bdcmr6032714f8f.16.1733145277754; 
- Mon, 02 Dec 2024 05:14:37 -0800 (PST)
+ bh=bcSQWPJxoEZ5kc/cEyAZreOowNhccL15M84TKXenqM8=;
+ b=FzJz3aOfTPAlut1zhSI8LBg1CQADHOFnhg3/TmIA5I5lwuRCBunS+q/bqP+6oisU9N
+ YtbjEbhYPvoyg5Qmb2yXMAruadAzOzayQ8Z4ikmxiUNNSEHT1VvVA5+MNzUhhXocDZUJ
+ CLxlFiW3mFueBDTOVcgGOximNq8WBPEWKO0uccCDmHOjI3HoOcRWwaXsB0gDXOSE6tWu
+ OBTd4CQMPdF4H/nSDWITZo+NavWSDdn9HZSDJIqQP9McUdLn6QoM+8QKNbRtYbBrQQAs
+ LIfYmr4VxwYYYbw7FzcZuqKJKz5mDEZsMpgkCxUPimHR3BEo8LcE+rxuMuF7+kTbBesl
+ VbSA==
+X-Gm-Message-State: AOJu0Yy20NTX1/XoZK2NW7qrJCw/cxIrxlIKn/gAXaqI3934Qd54yZa2
+ Ok1XWgdTkxhdWqPcwmqFethMTt/LPzaJhKtvqIQzrt3U61D5BZzrdx+tEXsSHcOJsq2etUWlI7U
+ A
+X-Gm-Gg: ASbGncuAlmQ5hTeU4wgq4CFHUMc55ZZ7zb8Jl7WlNUjTVtYL4qrDEnS9WtmOIt8PsOQ
+ s35sco4CcqKVjB8ac90E6CpKyRG5y3xY6kapfiamFVlHG1KBtwm0dYf89qAqZi06CmFrPMqX5A8
+ yJfKHL8LQUwKYEQ4jJ0FamXqV+cYhYbHo/oqh0FiT/J9+z4PGL2UyU7hZYukyTOonVv2lktA/l4
+ L+X1JFT7JUO4htwbidAQHa4a/pLbIzT5pO7brrFybbGngTgfV3DFDY=
+X-Google-Smtp-Source: AGHT+IHr1vI+MOZbtPkNYb3mNUy7gWjvLx38mjS4L3RplG6H9NCgwOtAH784x77t7dH5oedV37mDOA==
+X-Received: by 2002:a5d:6d8e:0:b0:382:4b2a:4683 with SMTP id
+ ffacd0b85a97d-385c6eb84c3mr21557497f8f.2.1733145278737; 
+ Mon, 02 Dec 2024 05:14:38 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  ffacd0b85a97d-385dea1e4ebsm10160157f8f.1.2024.12.02.05.14.37
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 02 Dec 2024 05:14:37 -0800 (PST)
+ Mon, 02 Dec 2024 05:14:38 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, qemu-ppc@nongnu.org, qemu-s390x@nongnu.org,
@@ -76,10 +76,10 @@ Cc: qemu-arm@nongnu.org, qemu-ppc@nongnu.org, qemu-s390x@nongnu.org,
  Thomas Huth <thuth@redhat.com>,
  Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
  Artyom Tarasenko <atar4qemu@gmail.com>, Max Filippov <jcmvbkbc@gmail.com>
-Subject: [PATCH v2 for-10.0 31/54] target/m68k: Init local float_status from
- env fp_status in gdb get/set reg
-Date: Mon,  2 Dec 2024 13:13:24 +0000
-Message-Id: <20241202131347.498124-32-peter.maydell@linaro.org>
+Subject: [PATCH v2 for-10.0 32/54] target/sparc: Initialize local scratch
+ float_status from env->fp_status
+Date: Mon,  2 Dec 2024 13:13:25 +0000
+Message-Id: <20241202131347.498124-33-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241202131347.498124-1-peter.maydell@linaro.org>
 References: <20241202131347.498124-1-peter.maydell@linaro.org>
@@ -109,44 +109,91 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In cf_fpu_gdb_get_reg() and cf_fpu_gdb_set_reg() we do the conversion
-from float64 to floatx80 using a scratch float_status, because we
-don't want the conversion to affect the CPU's floating point exception
-status. Currently we use a zero-initialized float_status. This will
-get steadily more awkward as we add config knobs to float_status
-that the target must initialize. Avoid having to add any of that
-configuration here by instead initializing our local float_status
-from the env->fp_status.
+In the helper functions flcmps and flcmpd we use a scratch float_status
+so that we don't change the CPU state if the comparison raises any
+floating point exception flags. Instead of zero-initializing this
+scratch float_status, initialize it as a copy of env->fp_status. This
+avoids the need to explicitly initialize settings like the NaN
+propagation rule or others we might add to softfloat in future.
+
+To do this we need to pass the CPU env pointer in to the helper.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/m68k/helper.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ target/sparc/helper.h     | 4 ++--
+ target/sparc/fop_helper.c | 8 ++++----
+ target/sparc/translate.c  | 4 ++--
+ 3 files changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/target/m68k/helper.c b/target/m68k/helper.c
-index 9bfc6ae97c0..beefeb7069c 100644
---- a/target/m68k/helper.c
-+++ b/target/m68k/helper.c
-@@ -36,7 +36,8 @@ static int cf_fpu_gdb_get_reg(CPUState *cs, GByteArray *mem_buf, int n)
-     CPUM68KState *env = &cpu->env;
+diff --git a/target/sparc/helper.h b/target/sparc/helper.h
+index 134e519a377..1ae3f0c467d 100644
+--- a/target/sparc/helper.h
++++ b/target/sparc/helper.h
+@@ -51,8 +51,8 @@ DEF_HELPER_FLAGS_3(fcmpd, TCG_CALL_NO_WG, i32, env, f64, f64)
+ DEF_HELPER_FLAGS_3(fcmped, TCG_CALL_NO_WG, i32, env, f64, f64)
+ DEF_HELPER_FLAGS_3(fcmpq, TCG_CALL_NO_WG, i32, env, i128, i128)
+ DEF_HELPER_FLAGS_3(fcmpeq, TCG_CALL_NO_WG, i32, env, i128, i128)
+-DEF_HELPER_FLAGS_2(flcmps, TCG_CALL_NO_RWG_SE, i32, f32, f32)
+-DEF_HELPER_FLAGS_2(flcmpd, TCG_CALL_NO_RWG_SE, i32, f64, f64)
++DEF_HELPER_FLAGS_3(flcmps, TCG_CALL_NO_RWG_SE, i32, env, f32, f32)
++DEF_HELPER_FLAGS_3(flcmpd, TCG_CALL_NO_RWG_SE, i32, env, f64, f64)
+ DEF_HELPER_2(raise_exception, noreturn, env, int)
  
-     if (n < 8) {
--        float_status s = {};
-+        /* Use scratch float_status so any exceptions don't change CPU state */
-+        float_status s = env->fp_status;
-         return gdb_get_reg64(mem_buf, floatx80_to_float64(env->fregs[n].d, &s));
-     }
-     switch (n) {
-@@ -56,7 +57,8 @@ static int cf_fpu_gdb_set_reg(CPUState *cs, uint8_t *mem_buf, int n)
-     CPUM68KState *env = &cpu->env;
+ DEF_HELPER_FLAGS_3(faddd, TCG_CALL_NO_WG, f64, env, f64, f64)
+diff --git a/target/sparc/fop_helper.c b/target/sparc/fop_helper.c
+index 6f9ccc008a0..236d27b19c1 100644
+--- a/target/sparc/fop_helper.c
++++ b/target/sparc/fop_helper.c
+@@ -490,13 +490,13 @@ uint32_t helper_fcmpeq(CPUSPARCState *env, Int128 src1, Int128 src2)
+     return finish_fcmp(env, r, GETPC());
+ }
  
-     if (n < 8) {
--        float_status s = {};
-+        /* Use scratch float_status so any exceptions don't change CPU state */
-+        float_status s = env->fp_status;
-         env->fregs[n].d = float64_to_floatx80(ldq_be_p(mem_buf), &s);
-         return 8;
-     }
+-uint32_t helper_flcmps(float32 src1, float32 src2)
++uint32_t helper_flcmps(CPUSPARCState *env, float32 src1, float32 src2)
+ {
+     /*
+      * FLCMP never raises an exception nor modifies any FSR fields.
+      * Perform the comparison with a dummy fp environment.
+      */
+-    float_status discard = { };
++    float_status discard = env->fp_status;
+     FloatRelation r;
+ 
+     set_float_2nan_prop_rule(float_2nan_prop_s_ba, &discard);
+@@ -518,9 +518,9 @@ uint32_t helper_flcmps(float32 src1, float32 src2)
+     g_assert_not_reached();
+ }
+ 
+-uint32_t helper_flcmpd(float64 src1, float64 src2)
++uint32_t helper_flcmpd(CPUSPARCState *env, float64 src1, float64 src2)
+ {
+-    float_status discard = { };
++    float_status discard = env->fp_status;
+     FloatRelation r;
+ 
+     set_float_2nan_prop_rule(float_2nan_prop_s_ba, &discard);
+diff --git a/target/sparc/translate.c b/target/sparc/translate.c
+index cdd0a95c03d..322319a1288 100644
+--- a/target/sparc/translate.c
++++ b/target/sparc/translate.c
+@@ -5584,7 +5584,7 @@ static bool trans_FLCMPs(DisasContext *dc, arg_FLCMPs *a)
+ 
+     src1 = gen_load_fpr_F(dc, a->rs1);
+     src2 = gen_load_fpr_F(dc, a->rs2);
+-    gen_helper_flcmps(cpu_fcc[a->cc], src1, src2);
++    gen_helper_flcmps(cpu_fcc[a->cc], tcg_env, src1, src2);
+     return advance_pc(dc);
+ }
+ 
+@@ -5601,7 +5601,7 @@ static bool trans_FLCMPd(DisasContext *dc, arg_FLCMPd *a)
+ 
+     src1 = gen_load_fpr_D(dc, a->rs1);
+     src2 = gen_load_fpr_D(dc, a->rs2);
+-    gen_helper_flcmpd(cpu_fcc[a->cc], src1, src2);
++    gen_helper_flcmpd(cpu_fcc[a->cc], tcg_env, src1, src2);
+     return advance_pc(dc);
+ }
+ 
 -- 
 2.34.1
 
