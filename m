@@ -2,24 +2,24 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C7679E0C15
-	for <lists+qemu-devel@lfdr.de>; Mon,  2 Dec 2024 20:28:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 647E39E0C1E
+	for <lists+qemu-devel@lfdr.de>; Mon,  2 Dec 2024 20:29:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tIC59-0005m8-LF; Mon, 02 Dec 2024 14:27:43 -0500
+	id 1tIC55-0005ks-U8; Mon, 02 Dec 2024 14:27:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1tIC4r-0005il-DP
+ (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1tIC4r-0005ik-Ct
  for qemu-devel@nongnu.org; Mon, 02 Dec 2024 14:27:26 -0500
-Received: from mailgate02.uberspace.is ([2a00:d0c0:200:0:1c7b:a6ff:fee0:8ea4])
+Received: from mailgate02.uberspace.is ([185.26.156.114])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1tIC4n-0001u3-Kk
+ (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1tIC4o-0001uR-NJ
  for qemu-devel@nongnu.org; Mon, 02 Dec 2024 14:27:24 -0500
 Received: from skiff.uberspace.de (skiff.uberspace.de [185.26.156.131])
- by mailgate02.uberspace.is (Postfix) with ESMTPS id 575241804B4
+ by mailgate02.uberspace.is (Postfix) with ESMTPS id A03FB1809E9
  for <qemu-devel@nongnu.org>; Mon,  2 Dec 2024 20:27:12 +0100 (CET)
-Received: (qmail 7087 invoked by uid 990); 2 Dec 2024 19:27:12 -0000
+Received: (qmail 7102 invoked by uid 990); 2 Dec 2024 19:27:12 -0000
 Authentication-Results: skiff.uberspace.de;
 	auth=pass (plain)
 Received: from unknown (HELO unkown) (::1)
@@ -28,37 +28,41 @@ Received: from unknown (HELO unkown) (::1)
 From: Julian Ganz <neither@nut.email>
 To: qemu-devel@nongnu.org
 Cc: Julian Ganz <neither@nut.email>
-Subject: [RFC PATCH v3 00/11] tcg-plugins: add hooks for discontinuities
-Date: Mon,  2 Dec 2024 20:26:41 +0100
-Message-ID: <cover.1733063076.git.neither@nut.email>
+Subject: [RFC PATCH v3 01/11] plugins: add types for callbacks related to
+ certain discontinuities
+Date: Mon,  2 Dec 2024 20:26:42 +0100
+Message-ID: <5e624b7244f1b0b294b28cd513aab04b6b294b1d.1733063076.git.neither@nut.email>
 X-Mailer: git-send-email 2.45.2
+In-Reply-To: <cover.1733063076.git.neither@nut.email>
+References: <cover.1733063076.git.neither@nut.email>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Bar: -
-X-Rspamd-Report: MID_CONTAINS_FROM(1) BAYES_HAM(-3) MIME_GOOD(-0.1)
+X-Rspamd-Bar: -----
+X-Rspamd-Report: REPLY(-4) BAYES_HAM(-3) MID_CONTAINS_FROM(1) MIME_GOOD(-0.1)
  R_MISSING_CHARSET(0.5)
-X-Rspamd-Score: -1.6
+X-Rspamd-Score: -5.6
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=nut.email; s=uberspace;
  h=from:to:cc:subject:date;
- bh=lhp/MzIhcQwQgKNSdC0sX2veCqSwD9bp274LH0tKfMo=;
- b=C+hLkkvZSYegywm++I5e4yctqswLk6sFQPI6z+7ebske4ee+HnD0d5tgbVAjQElL4f8LLFGGwE
- bL0Hn9yc9wYy++k8J4RGbD5YW2ZsWjhu+vAE90s2yd8UlMglpQJPdcl2QqlqCfB9LqS3kii29SPp
- VYrPYb4KYXmp5IYlTuZeBtynLViye83kdVd6OVjIGsiOVmg+hg4nQBd2PJEio0M3AVRUQ0zf0wEQ
- RO8Cl1FMElhPk9FpltLEU+vo8e6de+zx3g4EJiSYcsd0fdtoaZP16NwLud9kjigY2ED8m5ffnPQ4
- B3VTxo/6oHvR1c3X50pMUdRDPr5IvhK+4zuUKFFL9hyV6ddWPOGvqrDGlVkTaCcaM0XOyZ9a/E6B
- ULNQ8ZgH5VaD8vVgtygwZDOn87dbCbX6KKgrvkYFTddGTt+zyWK9keS2e/unZtRhLi3p0sB3HAF9
- X05KYn48624+OXnUeIXbI4Xq1DXUCP0LAB2Wi8Z1yyU6sSpV/X44x8feenYG1WYkfrHJ0nBiVrc9
- l/5Dsfw5qtRi+9IRcd5ySczAVhgCyuhF1jervJiCk571g2CTTtEqGkRFkqFjqAzT0owzRM90qwHF
- CyJ5in4adhTFOtd3XhaBLsuT5YO6bgVkXfrQZIhxiuktV/jHMY3QE+cGiWBQfFGL5yiBw8lscafg
- U=
-Received-SPF: pass client-ip=2a00:d0c0:200:0:1c7b:a6ff:fee0:8ea4;
- envelope-from=neither@nut.email; helo=mailgate02.uberspace.is
+ bh=tAi2zcFE42Zy0HQebMGAgdPSPQ9ADTpaTuyuJAMYySI=;
+ b=Hab6ABI7rYxdTJpQGpJTwZEhSMOdwE+4ELHjiiyeU8BdmKMljhjspC8EdCLqyY4Usn8RsOGcRO
+ ZGPP9KUvOai42fcqapbtn/W9+9iWwFVi4O+drk+9DCjyQ6sWwC/Bvv21SIOQc8u2nUaorBJQmeO/
+ W45RYQAv7Z7VDLCfh4J+d2koLw7wUSUKkauXbvI3gUC2R57q7EKNhu+pby14pAcAVg0zA8wRchaZ
+ AzZnAA6eT+ehoWvQBE+Gq7MeWMNCPjkt+ic1TfKwf7uHx/9Hw7CuyF7QQC/NDUk7xnrIHaKZhVOe
+ CeqMRRzYVEee6dJUNLMxLpUmhpKbR58AyfmM0m+2X291MgPIEdyOAkUDRlIfe5QKxvi9OjpWbxYy
+ fq18j5lPAdeBoC9q90gvJJUKr0lFbEm6bkVKvE7ldBm0g0SL4dz7kDp/C0OTYxqcT/tpEGZfUdgn
+ iVpeTKQpPDZxwgOR0uodTG979R2yR54XSH+1kfClG6F2LoLUZ1lPluT18EXmqHWLvGJt/waATBsI
+ AgnAKcDOnJKepAXtWlldCy8sYkjWkg1AIZGbD6/ZqX86ugdy9x5AJwpcvkxsl7Xs0xPZaE0FR0is
+ Yc3D9HeePNgIFq7kNfUurm1whbXu6Vz3iLinvJKSr17UHI+RiHHosm5UFJqeTSEPERYIawoYLxO/
+ k=
+Received-SPF: pass client-ip=185.26.156.114; envelope-from=neither@nut.email;
+ helo=mailgate02.uberspace.is
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -74,89 +78,95 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Some analysis greatly benefits, or depends on, information about
-certain types of dicontinuities such as interrupts. For example, we may
-need to handle the execution of a new translation block differently if
-it is not the result of normal program flow but of an interrupt.
+The plugin API allows registration of callbacks for a variety of VCPU
+related events, such as VCPU reset, idle and resume. However, traps of
+any kind, i.e. interrupts or exceptions, were previously not covered.
+These kinds of events are arguably quite significant and usually go hand
+in hand with a PC discontinuity. On most platforms, the discontinuity
+also includes a transition from some "mode" to another. Thus, plugins
+for the analysis of (virtualized) embedded systems may benefit from or
+even require the possiblity to perform work on the occurance of an
+interrupt or exception.
 
-Even with the existing interfaces, it is more or less possible to
-discern these situations, e.g. as done by the cflow plugin. However,
-this process poses a considerable overhead to the core analysis one may
-intend to perform.
+This change introduces the concept of such a discontinuity event in the
+form of an enumeration. Currently only traps are covered. Specifically
+we (loosely) define interrupts, exceptions and host calls across all
+platforms. In addition, this change introduces a type to use for
+callback functions related to such events. Since possible modes and the
+enumeration of interupts and exceptions vary greatly between different
+architectures, the callback type only receives the VCPU id, the type of
+event as well as the old and new PC.
+---
+ include/qemu/plugin.h      |  1 +
+ include/qemu/qemu-plugin.h | 43 ++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 44 insertions(+)
 
-These changes introduce a generic and easy-to-use interface for plugin
-authors in the form of a callback for discontinuities. Patch 1 defines
-an enumeration of some trap-related discontinuities including somewhat
-narrow definitions of the discontinuity evetns and a callback type.
-Patch 2 defines the callback registration function. Patch 3 adds some
-hooks for triggering the callbacks. Patch 4 adds an example plugin
-showcasing the new API. Patches 5 through 6 call the hooks for a
-selection of architectures, mapping architecture specific events to the
-three categories defined in patch 1. Future non-RFC patchsets will call
-these hooks for all architectures (that have some concept of trap or
-interrupt). Finally, patch 11 supplies a test plugin asserting that the
-next PC provided to the plugin points to the next instruction executed.
-
-Sidenote: I'm likely doing something wrong for one architecture or
-the other. These patches are untested for most of them.
-
-Since v2 (tcg-plugins: add hooks for interrupts, exceptions and traps):
-  - Switched from traps as core concept to more generic discontinuities
-  - Switched from semihosting to hostcall as term for emulated traps
-  - Added enumeration of events and dedicated callback type
-  - Make callback receive event type as well as origin and target PC
-    (as requested by Pierrick Bouvier)
-  - Combined registration functions for different traps into a single
-    one for all types of discontinuities (as requested by Pierrick
-    Bouvier)
-  - Migrated records in example plugin from fully pre-allocated to a
-    scoreboard (as suggested by Pierrick Bouvier)
-  - Handle PSCI calls as hostcall (as pointed out by Peter Maydell)
-  - Added hooks for ARM Cortex M arches (as pointed out by Peter
-    Maydell)
-  - Added hooks for Alpha targets
-  - Added hooks for MIPS targets
-  - Added a plugin for testing some of the interface behaviour
-
-Since v1:
-  - Split the one callback into multiple callbacks
-  - Added a target-agnostic definition of the relevant event(s)
-  - Call hooks from architecture-code rather than accel/tcg/cpu-exec.c
-  - Added a plugin showcasing API usage
-
-Julian Ganz (11):
-  plugins: add types for callbacks related to certain discontinuities
-  plugins: add API for registering discontinuity callbacks
-  plugins: add hooks for new discontinuity related callbacks
-  contrib/plugins: add plugin showcasing new dicontinuity related API
-  target/alpha: call plugin trap callbacks
-  target/arm: call plugin trap callbacks
-  target/avr: call plugin trap callbacks
-  target/mips: call plugin trap callbacks
-  target/riscv: call plugin trap callbacks
-  target/sparc: call plugin trap callbacks
-  tests: add plugin asserting correctness of discon event's to_pc
-
- contrib/plugins/meson.build         |  3 +-
- contrib/plugins/traps.c             | 96 +++++++++++++++++++++++++++++
- include/qemu/plugin-event.h         |  3 +
- include/qemu/plugin.h               | 13 ++++
- include/qemu/qemu-plugin.h          | 58 +++++++++++++++++
- plugins/core.c                      | 67 ++++++++++++++++++++
- target/alpha/helper.c               | 12 ++++
- target/arm/helper.c                 | 25 ++++++++
- target/arm/tcg/m_helper.c           | 18 ++++++
- target/avr/helper.c                 |  3 +
- target/mips/tcg/sysemu/tlb_helper.c | 11 ++++
- target/riscv/cpu_helper.c           |  9 +++
- target/sparc/int32_helper.c         |  7 +++
- target/sparc/int64_helper.c         | 10 +++
- tests/tcg/plugins/discons.c         | 95 ++++++++++++++++++++++++++++
- tests/tcg/plugins/meson.build       |  2 +-
- 16 files changed, 430 insertions(+), 2 deletions(-)
- create mode 100644 contrib/plugins/traps.c
- create mode 100644 tests/tcg/plugins/discons.c
-
+diff --git a/include/qemu/plugin.h b/include/qemu/plugin.h
+index 9726a9ebf3..27a176b631 100644
+--- a/include/qemu/plugin.h
++++ b/include/qemu/plugin.h
+@@ -59,6 +59,7 @@ union qemu_plugin_cb_sig {
+     qemu_plugin_udata_cb_t           udata;
+     qemu_plugin_vcpu_simple_cb_t     vcpu_simple;
+     qemu_plugin_vcpu_udata_cb_t      vcpu_udata;
++    qemu_plugin_vcpu_discon_cb_t     vcpu_discon;
+     qemu_plugin_vcpu_tb_trans_cb_t   vcpu_tb_trans;
+     qemu_plugin_vcpu_mem_cb_t        vcpu_mem;
+     qemu_plugin_vcpu_syscall_cb_t    vcpu_syscall;
+diff --git a/include/qemu/qemu-plugin.h b/include/qemu/qemu-plugin.h
+index 0fba36ae02..9c67374b7e 100644
+--- a/include/qemu/qemu-plugin.h
++++ b/include/qemu/qemu-plugin.h
+@@ -154,6 +154,49 @@ typedef void (*qemu_plugin_vcpu_simple_cb_t)(qemu_plugin_id_t id,
+ typedef void (*qemu_plugin_vcpu_udata_cb_t)(unsigned int vcpu_index,
+                                             void *userdata);
+ 
++
++/**
++ * enum qemu_plugin_discon_type - type of a (potential) PC discontinuity
++ *
++ * @QEMU_PLUGIN_DISCON_INTERRUPT: an interrupt, defined across all architectures
++ *                                as an asynchronous event, usually originating
++ *                                from outside the CPU
++ * @QEMU_PLUGIN_DISCON_EXCEPTION: an exception, defined across all architectures
++ *                                as a synchronous event in response to a
++ *                                specific instruction being executed
++ * @QEMU_PLUGIN_DISCON_HOSTCALL: a host call, functionally a special kind of
++ *                               exception that is not handled by code run by
++ *                               the vCPU but machinery outside the vCPU
++ * @QEMU_PLUGIN_DISCON_ALL: all types of disconinuity events currently covered
++ */
++enum qemu_plugin_discon_type {
++    QEMU_PLUGIN_DISCON_INTERRUPT = 1,
++    QEMU_PLUGIN_DISCON_EXCEPTION = 2,
++    QEMU_PLUGIN_DISCON_HOSTCALL = 4,
++    QEMU_PLUGIN_DISCON_ALL = 7
++};
++
++/**
++ * typedef qemu_plugin_vcpu_discon_cb_t - vcpu discontinuity callback
++ * @vcpu_index: the current vcpu context
++ * @type: the type of discontinuity
++ * @from_pc: the source of the discontinuity, e.g. the PC before the
++ *           transition
++ * @to_pc: the PC pointing to the next instruction to be executed
++ *
++ * The excact semantics of @from_pc depends on @the type of discontinuity. For
++ * interrupts, @from_pc will point to the next instruction which would have
++ * been executed. For exceptions and host calls, @from_pc will point to the
++ * instruction that caused the exception or issued the host call. Note that
++ * in the case of exceptions, the instruction is not retired and thus not
++ * observable via general instruction exec callbacks. The same may be the case
++ * for some host calls such as hypervisor call "exceptions".
++ */
++typedef void (*qemu_plugin_vcpu_discon_cb_t)(qemu_plugin_id_t id,
++                                             unsigned int vcpu_index,
++                                             enum qemu_plugin_discon_type type,
++                                             uint64_t from_pc, uint64_t to_pc);
++
+ /**
+  * qemu_plugin_uninstall() - Uninstall a plugin
+  * @id: this plugin's opaque ID
 -- 
 2.45.2
 
