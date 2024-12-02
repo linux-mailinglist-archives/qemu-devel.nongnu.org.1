@@ -2,81 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECFC99E03CF
-	for <lists+qemu-devel@lfdr.de>; Mon,  2 Dec 2024 14:41:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 216419E03EE
+	for <lists+qemu-devel@lfdr.de>; Mon,  2 Dec 2024 14:47:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tI6cB-0000PS-Sx; Mon, 02 Dec 2024 08:37:28 -0500
+	id 1tI6lK-00065x-4U; Mon, 02 Dec 2024 08:46:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1tI6Ty-0007te-RT
- for qemu-devel@nongnu.org; Mon, 02 Dec 2024 08:28:59 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1tI6Tv-0000d4-FU
- for qemu-devel@nongnu.org; Mon, 02 Dec 2024 08:28:58 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1733146133;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=zojyDTFFNA31NzoYHYk4d7/O949Hqy/DPojAHqPHPD8=;
- b=O/E5RxATRtEGLT+SISMESyqUWMC+07WmohL4/AcDc5DyLG0+Ht8DmazmU+YkNOkjdx3z19
- 6J/j3qsIOtxetoWv65zkZUbN7DR6WZM6D5eAgZKV0QO9GjKfh95dIkb1Gz27671S2GqA9R
- RSiy/EIhfi7C7FsMCF9jbSgV5VGMFoc=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-160-GvSbtMb_PFGdhn2IckdhZg-1; Mon,
- 02 Dec 2024 08:28:50 -0500
-X-MC-Unique: GvSbtMb_PFGdhn2IckdhZg-1
-X-Mimecast-MFC-AGG-ID: GvSbtMb_PFGdhn2IckdhZg
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 8394C1944DDE; Mon,  2 Dec 2024 13:28:49 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.143])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id BCFA91955D45; Mon,  2 Dec 2024 13:28:47 +0000 (UTC)
-Date: Mon, 2 Dec 2024 13:28:44 +0000
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Thomas Huth <thuth@redhat.com>
-Cc: qemu-devel@nongnu.org,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: Re: [PATCH 18/22] tests/functional: add 'archive_extract' to
- QemuBaseTest
-Message-ID: <Z022DImyDM5PP2nn@redhat.com>
-References: <20241129173120.761728-1-berrange@redhat.com>
- <20241129173120.761728-19-berrange@redhat.com>
- <9277a627-13d6-4d0f-9802-dec6b2606cbe@redhat.com>
- <Z02kTzobRDeEYHQR@redhat.com>
- <808c81b0-c64a-4a32-9683-c96b51145da3@redhat.com>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1tI6lI-00065X-I5
+ for qemu-devel@nongnu.org; Mon, 02 Dec 2024 08:46:52 -0500
+Received: from mail-lj1-x231.google.com ([2a00:1450:4864:20::231])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1tI6lG-00070t-Ph
+ for qemu-devel@nongnu.org; Mon, 02 Dec 2024 08:46:52 -0500
+Received: by mail-lj1-x231.google.com with SMTP id
+ 38308e7fff4ca-2ffa8092e34so46000931fa.1
+ for <qemu-devel@nongnu.org>; Mon, 02 Dec 2024 05:46:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1733147208; x=1733752008; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=GVRIpEznl8oDcQBXG13TIiy7xFGZv25yp13RR2IH8Fk=;
+ b=loR9WnT/41qIFxWNkOOvBKWDsksmmxlrVIfaslyBmkcGAt/P4j4FO9YIaNndplEY+r
+ cMAs3FVKhri5zrPuTgvOPcLL1C8cPX2vltCqaFb+Udl+2ChCZ8eruA9INhBwjuI6O1s8
+ 3sNGv8IVM6Y3piCcmYTjuDUA8a9vW6/KUNwJVE/WmwaDkHT+BxoeIO5G+KXFocQD/P4C
+ iPVE+S0D/wVTERWN/1eVlz6/PzXDB7S5xoeeO7CybnxvWLW7CV8NyjzbaKu8Z9QXp/Mg
+ 54LgOXqO8Y2EvoLKX4HGsWNO6mcdwMX2rFG0aEv4+ta3rA+Zd2LQV1TfZZw9GIZuTcPl
+ K1RQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1733147208; x=1733752008;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=GVRIpEznl8oDcQBXG13TIiy7xFGZv25yp13RR2IH8Fk=;
+ b=Cze8l8KGyacs+0pk36Qz74DlpOnE9w+3HlhasjK7Dp25AyQbUu7YlN9h2fQFd2HXxB
+ b15sVbys9m1X3cpovSXSfvXpEh4UYkILNSH5u+GRXYi509DV8keYWxS/JTVZQVARC8Yz
+ F8aqw3sc0kT+jrqmyAj2LnfFOcl/hMRETCi1Aod/KOpWWKEA9uzkZPIuevYWHwYPEn4p
+ Taoi2sCVgFAW23S+UeZTCIiFwtr985v/F+KWjQJ5YSCIoWFTWou1gwnmhAje3MWpXzlZ
+ wnZA2z+4yX6hi8L/SlkmknEv+MdyPnzI4DqQONsAqweOcfLPkMFWtgwZxQmrC7LCjuVi
+ EXyA==
+X-Gm-Message-State: AOJu0YxiGV0KkSmktk5QW1BlaaiRl1GA/pdNNAqlXOpoiyDhu1mOAdAB
+ ZCEbJSIKeRQQmBGCV8ZLISuNVEtxFuyQ1VzxBJc3wQwwyJKEPzxjJRaSpBXWg9A1i1fT4XQPVpM
+ O0k+qQtiFvxK+kp6tILlYFA57OIWOuXSgylBFfFn2sswsO+pd
+X-Gm-Gg: ASbGnctsrsQ7+qHY41jsuumy4Jh/JGNM2/sPNFWnlws5Hipc+6vBXb94/CDeQarkx9x
+ yCRlucSt9vjd0xckUpVbhAYC0YtY054JO
+X-Google-Smtp-Source: AGHT+IGF6SyGJghqTcFtw6y6tsOXfnOtLkboLVge9m9V1cNnMBEgkVXOEKUlf/kuVb4uiJ8N91H0H/Y+MDb0Szf8aXg=
+X-Received: by 2002:a2e:bc22:0:b0:2fb:62ad:89fe with SMTP id
+ 38308e7fff4ca-2ffd604941emr108380741fa.16.1733147208471; Mon, 02 Dec 2024
+ 05:46:48 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <808c81b0-c64a-4a32-9683-c96b51145da3@redhat.com>
-User-Agent: Mutt/2.2.13 (2024-03-09)
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -50
-X-Spam_score: -5.1
-X-Spam_bar: -----
-X-Spam_report: (-5.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.996,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+References: <20241128103831.3452572-1-peter.maydell@linaro.org>
+ <c6ea5acc-e07f-4eb8-ad8a-b339f27c9102@linaro.org>
+In-Reply-To: <c6ea5acc-e07f-4eb8-ad8a-b339f27c9102@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Mon, 2 Dec 2024 13:46:37 +0000
+Message-ID: <CAFEAcA_GA+UKqj6izUXY_snEECJc6buNiKrgA9yXXAW8skqcBg@mail.gmail.com>
+Subject: Re: [PATCH for-9.2] target/riscv: Avoid bad shift in
+ riscv_cpu_do_interrupt()
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::231;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x231.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,113 +86,48 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Dec 02, 2024 at 01:52:46PM +0100, Thomas Huth wrote:
-> On 02/12/2024 13.13, Daniel P. Berrangé wrote:
-> > On Mon, Dec 02, 2024 at 11:30:28AM +0100, Thomas Huth wrote:
-> > > On 29/11/2024 18.31, Daniel P. Berrangé wrote:
-> > > > This helper wrappers utils.archive_extract, forcing the use of the
-> > > > scratch directory, to ensure any extracted files are cleaned at test
-> > > > termination. If a specific member is requested, then the path to the
-> > > > extracted file is also returned.
-> > > > 
-> > > > Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
-> > > > ---
-> > > >    tests/functional/qemu_test/testcase.py | 36 ++++++++++++++++++++++++++
-> > > >    1 file changed, 36 insertions(+)
-> > > > 
-> > > > diff --git a/tests/functional/qemu_test/testcase.py b/tests/functional/qemu_test/testcase.py
-> > > > index 2f32742387..31d06f0172 100644
-> > > > --- a/tests/functional/qemu_test/testcase.py
-> > > > +++ b/tests/functional/qemu_test/testcase.py
-> > > > @@ -28,6 +28,8 @@
-> > > >    from .asset import Asset
-> > > >    from .cmd import run_cmd
-> > > >    from .config import BUILD_DIR
-> > > > +from .utils import (archive_extract as utils_archive_extract,
-> > > > +                    guess_archive_format)
-> > > >    class QemuBaseTest(unittest.TestCase):
-> > > > @@ -39,6 +41,40 @@ class QemuBaseTest(unittest.TestCase):
-> > > >        log = None
-> > > >        logdir = None
-> > > > +    '''
-> > > > +    @params archive: filename, Asset, or file-like object to extract
-> > > > +    @params sub_dir: optional sub-directory to extract into
-> > > > +    @params member: optional member file to limit extraction to
-> > > > +
-> > > > +    Extracts @archive into the scratch directory, or a
-> > > > +    directory beneath named by @sub_dir. All files are
-> > > > +    extracted unless @member specifies a limit.
-> > > > +
-> > > > +    If @member is non-None, returns the fully qualified
-> > > > +    path to @member
-> > > > +    '''
-> > > > +    def archive_extract(self, archive, format=None, sub_dir=None, member=None):
-> > > > +        if type(archive) == Asset:
-> > > > +            if format is None:
-> > > > +                format = guess_archive_format(archive.url)
-> > > > +            archive = archive.fetch()
-> > > > +        elif format is None:
-> > > > +            format = guess_archive_format(archive)
-> > > > +
-> > > > +        if member is not None:
-> > > > +            if os.path.isabs(member):
-> > > > +                member = os.path.relpath(member, '/')
-> > > > +
-> > > > +        if sub_dir is None:
-> > > > +            utils_archive_extract(archive, self.scratch_file(), format, member)
-> > > > +        else:
-> > > > +            utils_archive_extract(archive, self.scratch_file(sub_dir),
-> > > > +                                  format, member)
-> > > > +
-> > > > +        if member is not None:
-> > > > +            return self.scratch_file(member)
-> > > > +        return None
-> > > 
-> > > Ah, ok, so the guessing is done here ...
-> > > 
-> > > But somehow it feels wrong to have a "archive_extract" function in the
-> > > QemuBaseTest class that also does asset fetching under the hood.
-> > > 
-> > > Could you maybe rather move this into the asset.py file and rename the
-> > > function to "fetch_and_extract()" to make it clearer what it does?
-> > 
-> > We can't move it into asset.py because not all callers are passing in an
-> > Asset object - there are some cases where we've just got a local file.
-> > eg when the asset we extracted contains other archives that need to be
-> > extracted.
-> 
-> Couldn't those spots rather use the function from utils.py directly for the
-> second extraction?
-> 
-> Anyway, I guess now it's likely better to keep it here since you want to
-> have access to self.scratch_file() in this function, too.
-> But maybe you could still at least rename it to fetch_and_extract() to make
-> it more obvious what it all about?
+On Thu, 28 Nov 2024 at 12:59, Richard Henderson
+<richard.henderson@linaro.org> wrote:
+>
+> On 11/28/24 04:38, Peter Maydell wrote:
+> > In riscv_cpu_do_interrupt() we use the 'cause' value we got out of
+> > cs->exception as a shift value.  However this value can be larger
+> > than 31, which means that "1 << cause" is undefined behaviour,
+> > because we do the shift on an 'int' type.
+> >
+> > This causes the undefined behaviour sanitizer to complain
+> > on one of the check-tcg tests:
+> >
+> > $ UBSAN_OPTIONS=print_stacktrace=1:abort_on_error=1:halt_on_error=1 ./build/clang/qemu-system-riscv64 -M virt -semihosting -display none -device loader,file=build/clang/tests/tcg/riscv64-softmmu/issue1060
+> > ../../target/riscv/cpu_helper.c:1805:38: runtime error: shift exponent 63 is too large for 32-bit type 'int'
+> >      #0 0x55f2dc026703 in riscv_cpu_do_interrupt /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/clang/../../target/riscv/cpu_helper.c:1805:38
+> >      #1 0x55f2dc3d170e in cpu_handle_exception /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/clang/../../accel/tcg/cpu-exec.c:752:9
+> >
+> > In this case cause is RISCV_EXCP_SEMIHOST, which is 0x3f.
+>
+> Semihosting is completely artificial and should never be injected.
+> The maximum "real" cause is
+>
+>      RISCV_EXCP_STORE_GUEST_AMO_ACCESS_FAULT = 0x17,
+>
+> We ought to hoist the handling of RISCV_EXCP_SEMIHOST higher in the function, before these
+> calculations.
 
-I wanted to de-emphasize the 'fetch' concept, to make use of assets look
-and work no different from local files.
+Perhaps so, but looking at
+https://github.com/riscv/riscv-aia/releases/download/1.0/riscv-interrupts-1.0.pdf
+it says that mvien, mie, etc are 64-bit registers and the
+cause value can be validly greater than 31. So we need to
+use the ULL suffix here. And if we're doing that, then it's
+harmless to also calculate these booleans even in the
+semihosting case, because we don't look at them then.
 
-In practice they are all local files, with no fetching taking place, as
-the test suite arranges for everything to be pre-fetched into the local
-cache. THe only time a "fetch" would ever happen during execution is if
-you had directly invoked a python file, with an empt ycache.
+So I think we definitely need this patch, and whether
+to refactor the code to move the bool initializers around
+is a separate question.
 
-IOW, from the POV of the executing test case, an Asset object is no more
-than a wrapper around a local filename.
-
-Hmm, in fact I wonder if we shouldn't implement the 'str' method to
-directly return the local filename, so we can pass Asset object instances
-to any method that expects a filename.
-
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
-
+thanks
+-- PMM
 
