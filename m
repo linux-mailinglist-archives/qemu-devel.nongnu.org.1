@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A92D79E03AD
-	for <lists+qemu-devel@lfdr.de>; Mon,  2 Dec 2024 14:37:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E5009E03E3
+	for <lists+qemu-devel@lfdr.de>; Mon,  2 Dec 2024 14:44:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tI6Zk-0004L1-2D; Mon, 02 Dec 2024 08:34:57 -0500
+	id 1tI6Zp-0004iO-7o; Mon, 02 Dec 2024 08:35:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1tI6Li-0007yB-UQ
+ id 1tI6Li-0007yC-Uf
  for qemu-devel@nongnu.org; Mon, 02 Dec 2024 08:20:37 -0500
 Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1tI6Lc-0005g6-DF
+ id 1tI6Lc-0005gI-DT
  for qemu-devel@nongnu.org; Mon, 02 Dec 2024 08:20:23 -0500
-Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4B2DAgQp023933;
+Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4B26XML9013787;
  Mon, 2 Dec 2024 13:20:15 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
  :date:from:in-reply-to:message-id:references:subject:to; s=
- corp-2023-11-20; bh=IiV/SS9De5zI5JVcAHpFXS2iXMkHLB4glwh8SI5UR9o=; b=
- Pft8Cc/J3kvPM5AlkRGQBxc7HAXBBhsm/lf+JfrprmclX58bU7eak/ZoDXO5jfLD
- Yy5sIkxriEReK79gU9LA7Y2AYxb1olYIfAK5WE0AM0JaOmgl6QwKuwKfnvmWlDSj
- Ie+PgOerKgvoXT1hdv+d90UcqVAqkHUCizzW7rTNBjOMLRs6h9lC5AZaXo58cavg
- 8ZoZsChLVJbOWNBOWowa8XSsjqww3KYxGxGgChernzLZBz2Rsl9+fgOrkQIQrZYK
- VNW4Wa8jhd6xlkQFGcxfjxEO7tKxzmoJCs4BXGk7ng3NO8U+06jWXM21Sfyw7fgT
- Aj3lGErt9D/Fn/UA/w21Tg==
+ corp-2023-11-20; bh=KAIQZpXnGy6pVdwuvfo7Shh7bliaiotYtNJFyvqtlhM=; b=
+ ouFiaGvmIbBMCYjUKCScmUKpvMuyzuCn6s2ICf8q95ZC6QQk/cyNPO15xrHPgMbg
+ IB7tgg+kYGyXqrHyIDYtm4w7IuC7AnJkvXwD/OclnzrvarIfOd7SrCt7jaYdJ/p0
+ HDwXS9lLFeYmDKDYsMNCADcrmHLqgwx0ODhRj5523qZ6Vqpk/XOqO506JdZnl6Pp
+ 9VT+3f75Ij34LVoiGX9mvoMP3JoOq8o0YcaBSynM8HK7uTjdvoSxC/R2ZO5w8xOg
+ DddRiOM7Z//fBwGO0YMheXNqCaVLMah7Qsqv0NL3FHFIClqnOuDeSjCTk+eZibUp
+ QbwS84yxN89kSEL6sT4Tiw==
 Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com
  (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 437trbk4ab-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 437s4c333t-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 02 Dec 2024 13:20:14 +0000 (GMT)
+ Mon, 02 Dec 2024 13:20:15 +0000 (GMT)
 Received: from pps.filterd
  (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
  by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 4B2C0hvX032882; Mon, 2 Dec 2024 13:20:13 GMT
+ with ESMTP id 4B2CEJ7T032829; Mon, 2 Dec 2024 13:20:14 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
- 437s56jtjv-1
+ 437s56jtke-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 02 Dec 2024 13:20:13 +0000
+ Mon, 02 Dec 2024 13:20:14 +0000
 Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com
  (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 4B2DKCEZ032806;
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 4B2DKCEb032806;
  Mon, 2 Dec 2024 13:20:13 GMT
 Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
  by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with
- ESMTP id 437s56jthv-2; Mon, 02 Dec 2024 13:20:13 +0000
+ ESMTP id 437s56jthv-3; Mon, 02 Dec 2024 13:20:13 +0000
 From: Steve Sistare <steven.sistare@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
@@ -62,10 +62,9 @@ Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
  "Daniel P. Berrange" <berrange@redhat.com>,
  Markus Armbruster <armbru@redhat.com>,
  Steve Sistare <steven.sistare@oracle.com>
-Subject: [PATCH V4 01/19] backends/hostmem-shm: factor out allocation of
- "anonymous shared memory with an fd"
-Date: Mon,  2 Dec 2024 05:19:53 -0800
-Message-Id: <1733145611-62315-2-git-send-email-steven.sistare@oracle.com>
+Subject: [PATCH V4 02/19] physmem: fd-based shared memory
+Date: Mon,  2 Dec 2024 05:19:54 -0800
+Message-Id: <1733145611-62315-3-git-send-email-steven.sistare@oracle.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1733145611-62315-1-git-send-email-steven.sistare@oracle.com>
 References: <1733145611-62315-1-git-send-email-steven.sistare@oracle.com>
@@ -77,8 +76,8 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0
  spamscore=0 suspectscore=0 malwarescore=0 mlxscore=0 phishscore=0
  bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2411120000 definitions=main-2412020116
-X-Proofpoint-GUID: 6wrt4RFUnpY-Ih81k-utkKCxJChNKThk
-X-Proofpoint-ORIG-GUID: 6wrt4RFUnpY-Ih81k-utkKCxJChNKThk
+X-Proofpoint-ORIG-GUID: _grpuIs03P-XbjUKAO7KEPnM8ztbpaEw
+X-Proofpoint-GUID: _grpuIs03P-XbjUKAO7KEPnM8ztbpaEw
 Received-SPF: pass client-ip=205.220.177.32;
  envelope-from=steven.sistare@oracle.com; helo=mx0b-00069f02.pphosted.com
 X-Spam_score_int: -31
@@ -104,212 +103,151 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Let's factor it out so we can reuse it.
+Create MAP_SHARED RAMBlocks by mmap'ing a file descriptor rather than using
+MAP_ANON, so the memory can be accessed in another process by passing and
+mmap'ing the fd.  This will allow CPR to support memory-backend-ram and
+memory-backend-shm objects, provided the user creates them with share=on.
 
-Signed-off-by: David Hildenbrand <david@redhat.com>
+Use memfd_create if available because it has no constraints.  If not, use
+POSIX shm_open.  However, this may fail if the shm mount size is too small,
+even if the system has free memory, so for backwards compatibility fall
+back to qemu_anon_ram_alloc/MAP_ANON on shm_open failure.
+
+For backwards compatibility on Windows, always use MAP_ANON.  share=on has
+no purpose there, but the syntax is accepted, and must continue to work.
+
+Exclude Xen.  Xen ignores RAM_SHARED and does its own allocation.
+
+Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
 ---
- backends/hostmem-shm.c | 45 ++++-----------------------------------
- include/qemu/osdep.h   |  2 ++
- meson.build            |  8 +++++--
- util/oslib-posix.c     | 58 ++++++++++++++++++++++++++++++++++++++++++++++++++
- util/oslib-win32.c     | 11 ++++++++++
- 5 files changed, 81 insertions(+), 43 deletions(-)
+ system/physmem.c    | 85 +++++++++++++++++++++++++++++++++++++++++++++++++----
+ system/trace-events |  1 +
+ 2 files changed, 81 insertions(+), 5 deletions(-)
 
-diff --git a/backends/hostmem-shm.c b/backends/hostmem-shm.c
-index 374edc3..837b9f1 100644
---- a/backends/hostmem-shm.c
-+++ b/backends/hostmem-shm.c
-@@ -25,11 +25,9 @@ struct HostMemoryBackendShm {
- static bool
- shm_backend_memory_alloc(HostMemoryBackend *backend, Error **errp)
- {
--    g_autoptr(GString) shm_name = g_string_new(NULL);
-     g_autofree char *backend_name = NULL;
-     uint32_t ram_flags;
--    int fd, oflag;
--    mode_t mode;
+diff --git a/system/physmem.c b/system/physmem.c
+index dc1db3a..b0c4b22 100644
+--- a/system/physmem.c
++++ b/system/physmem.c
+@@ -47,6 +47,7 @@
+ #include "qemu/qemu-print.h"
+ #include "qemu/log.h"
+ #include "qemu/memalign.h"
++#include "qemu/memfd.h"
+ #include "exec/memory.h"
+ #include "exec/ioport.h"
+ #include "sysemu/dma.h"
+@@ -2057,6 +2058,70 @@ RAMBlock *qemu_ram_alloc_from_file(ram_addr_t size, MemoryRegion *mr,
+ }
+ #endif
+ 
++static bool qemu_memfd_available(void)
++{
++    static int has_memfd = -1;
++
++    if (has_memfd < 0) {
++        has_memfd = qemu_memfd_check(0);
++    }
++    return has_memfd;
++}
++
++/*
++ * We want anonymous shared memory, similar to MAP_SHARED|MAP_ANON, but
++ * some users want the fd.  Allocate shm explicitly to get an fd.
++ */
++static bool qemu_ram_alloc_shared(RAMBlock *new_block, Error **errp)
++{
++    size_t max_length = new_block->max_length;
++    MemoryRegion *mr = new_block->mr;
++    const char *name = memory_region_name(mr);
 +    int fd;
- 
-     if (!backend->size) {
-         error_setg(errp, "can't create shm backend with size 0");
-@@ -41,48 +39,13 @@ shm_backend_memory_alloc(HostMemoryBackend *backend, Error **errp)
-         return false;
-     }
- 
--    /*
--     * Let's use `mode = 0` because we don't want other processes to open our
--     * memory unless we share the file descriptor with them.
--     */
--    mode = 0;
--    oflag = O_RDWR | O_CREAT | O_EXCL;
--    backend_name = host_memory_backend_get_name(backend);
--
--    /*
--     * Some operating systems allow creating anonymous POSIX shared memory
--     * objects (e.g. FreeBSD provides the SHM_ANON constant), but this is not
--     * defined by POSIX, so let's create a unique name.
--     *
--     * From Linux's shm_open(3) man-page:
--     *   For  portable  use,  a shared  memory  object should be identified
--     *   by a name of the form /somename;"
--     */
--    g_string_printf(shm_name, "/qemu-" FMT_pid "-shm-%s", getpid(),
--                    backend_name);
--
--    fd = shm_open(shm_name->str, oflag, mode);
-+    fd = qemu_shm_alloc(backend->size, errp);
-     if (fd < 0) {
--        error_setg_errno(errp, errno,
--                         "failed to create POSIX shared memory");
--        return false;
--    }
--
--    /*
--     * We have the file descriptor, so we no longer need to expose the
--     * POSIX shared memory object. However it will remain allocated as long as
--     * there are file descriptors pointing to it.
--     */
--    shm_unlink(shm_name->str);
--
--    if (ftruncate(fd, backend->size) == -1) {
--        error_setg_errno(errp, errno,
--                         "failed to resize POSIX shared memory to %" PRIu64,
--                         backend->size);
--        close(fd);
-         return false;
-     }
- 
-+    /* Let's do the same as memory-backend-ram,share=on would do. */
-+    backend_name = host_memory_backend_get_name(backend);
-     ram_flags = RAM_SHARED;
-     ram_flags |= backend->reserve ? 0 : RAM_NORESERVE;
- 
-diff --git a/include/qemu/osdep.h b/include/qemu/osdep.h
-index fdff07f..e2a0e15 100644
---- a/include/qemu/osdep.h
-+++ b/include/qemu/osdep.h
-@@ -509,6 +509,8 @@ int qemu_daemon(int nochdir, int noclose);
- void *qemu_anon_ram_alloc(size_t size, uint64_t *align, bool shared,
-                           bool noreserve);
- void qemu_anon_ram_free(void *ptr, size_t size);
-+int qemu_shm_alloc(size_t size, Error **errp);
-+bool qemu_shm_available(void);
- 
- #ifdef _WIN32
- #define HAVE_CHARDEV_SERIAL 1
-diff --git a/meson.build b/meson.build
-index b09bfb1..4f58783 100644
---- a/meson.build
-+++ b/meson.build
-@@ -3706,9 +3706,13 @@ libqemuutil = static_library('qemuutil',
-                              build_by_default: false,
-                              sources: util_ss.sources() + stub_ss.sources() + genh,
-                              dependencies: [util_ss.dependencies(), libm, threads, glib, socket, malloc])
-+qemuutil_deps = [event_loop_base]
-+if host_os != 'windows'
-+  qemuutil_deps += [rt]
-+endif
- qemuutil = declare_dependency(link_with: libqemuutil,
-                               sources: genh + version_res,
--                              dependencies: [event_loop_base])
-+                              dependencies: qemuutil_deps)
- 
- if have_system or have_user
-   decodetree = generator(find_program('scripts/decodetree.py'),
-@@ -4361,7 +4365,7 @@ if have_tools
-   subdir('contrib/elf2dmp')
- 
-   executable('qemu-edid', files('qemu-edid.c', 'hw/display/edid-generate.c'),
--             dependencies: qemuutil,
-+             dependencies: [qemuutil, rt],
-              install: true)
- 
-   if have_vhost_user
-diff --git a/util/oslib-posix.c b/util/oslib-posix.c
-index 11b35e4..f8c3724 100644
---- a/util/oslib-posix.c
-+++ b/util/oslib-posix.c
-@@ -931,3 +931,61 @@ void qemu_close_all_open_fd(const int *skip, unsigned int nskip)
-         qemu_close_all_open_fd_fallback(skip, nskip, open_max);
-     }
- }
 +
-+bool qemu_shm_available(void)
-+{
-+    return true;
-+}
++    if (qemu_memfd_available()) {
++        fd = qemu_memfd_create(name, max_length + mr->align, 0, 0, 0, errp);
++        if (fd < 0) {
++            return false;
++        }
++    } else if (!qemu_shm_available()) {
++        /*
++         * Backwards compatibility for Windows.  The user may specify a
++         * memory backend with shared=on, and Windows ignores shared.
++         * Fall back to qemu_anon_ram_alloc.
++         */
++        return true;
++    } else {
++        Error *local_err = NULL;
 +
-+int qemu_shm_alloc(size_t size, Error **errp)
-+{
-+    g_autoptr(GString) shm_name = g_string_new(NULL);
-+    int fd, oflag, cur_sequence;
-+    static int sequence;
-+    mode_t mode;
-+
-+    cur_sequence = qatomic_fetch_inc(&sequence);
-+
-+    /*
-+     * Let's use `mode = 0` because we don't want other processes to open our
-+     * memory unless we share the file descriptor with them.
-+     */
-+    mode = 0;
-+    oflag = O_RDWR | O_CREAT | O_EXCL;
-+
-+    /*
-+     * Some operating systems allow creating anonymous POSIX shared memory
-+     * objects (e.g. FreeBSD provides the SHM_ANON constant), but this is not
-+     * defined by POSIX, so let's create a unique name.
-+     *
-+     * From Linux's shm_open(3) man-page:
-+     *   For  portable  use,  a shared  memory  object should be identified
-+     *   by a name of the form /somename;"
-+     */
-+    g_string_printf(shm_name, "/qemu-" FMT_pid "-shm-%d", getpid(),
-+                    cur_sequence);
-+
-+    fd = shm_open(shm_name->str, oflag, mode);
-+    if (fd < 0) {
-+        error_setg_errno(errp, errno,
-+                         "failed to create POSIX shared memory");
-+        return -1;
++        fd = qemu_shm_alloc(max_length, &local_err);
++        if (fd < 0) {
++            /*
++             * Backwards compatibility in case the shm mount size is too small.
++             * Previous QEMU versions called qemu_anon_ram_alloc for anonymous
++             * shared memory, which could succeed.
++             */
++            error_prepend(&local_err,
++                          "Retrying using MAP_ANON|MAP_SHARED because: ");
++            warn_report_err(local_err);
++            return true;
++        }
 +    }
 +
-+    /*
-+     * We have the file descriptor, so we no longer need to expose the
-+     * POSIX shared memory object. However it will remain allocated as long as
-+     * there are file descriptors pointing to it.
-+     */
-+    shm_unlink(shm_name->str);
++    new_block->mr->align = QEMU_VMALLOC_ALIGN;
++    new_block->host = file_ram_alloc(new_block, max_length, fd, false, 0, errp);
 +
-+    if (ftruncate(fd, size) == -1) {
-+        error_setg_errno(errp, errno,
-+                         "failed to resize POSIX shared memory to %" PRIu64,
-+                         size);
-+        close(fd);
-+        return -1;
++    if (new_block->host) {
++        qemu_set_cloexec(fd);
++        new_block->fd = fd;
++        trace_qemu_ram_alloc_shared(name, max_length, fd, new_block->host);
++        return true;
 +    }
 +
-+    return fd;
-+}
-diff --git a/util/oslib-win32.c b/util/oslib-win32.c
-index b623830..aef5779 100644
---- a/util/oslib-win32.c
-+++ b/util/oslib-win32.c
-@@ -877,3 +877,14 @@ void qemu_win32_map_free(void *ptr, HANDLE h, Error **errp)
-     }
-     CloseHandle(h);
- }
-+
-+bool qemu_shm_available(void)
-+{
++    close(fd);
 +    return false;
 +}
 +
-+int qemu_shm_alloc(size_t size, Error **errp)
-+{
-+    error_setg("Shared memory is not supported.");
-+    return -1;
-+}
+ static
+ RAMBlock *qemu_ram_alloc_internal(ram_addr_t size, ram_addr_t max_size,
+                                   void (*resized)(const char*,
+@@ -2089,13 +2154,23 @@ RAMBlock *qemu_ram_alloc_internal(ram_addr_t size, ram_addr_t max_size,
+     new_block->page_size = qemu_real_host_page_size();
+     new_block->host = host;
+     new_block->flags = ram_flags;
++
++    if (!host && !xen_enabled()) {
++        if ((new_block->flags & RAM_SHARED) &&
++            !qemu_ram_alloc_shared(new_block, &local_err)) {
++            goto err;
++        }
++    }
++
+     ram_block_add(new_block, &local_err);
+-    if (local_err) {
+-        g_free(new_block);
+-        error_propagate(errp, local_err);
+-        return NULL;
++    if (!local_err) {
++        return new_block;
+     }
+-    return new_block;
++
++err:
++    g_free(new_block);
++    error_propagate(errp, local_err);
++    return NULL;
+ }
+ 
+ RAMBlock *qemu_ram_alloc_from_ptr(ram_addr_t size, void *host,
+diff --git a/system/trace-events b/system/trace-events
+index 5bbc3fb..831a60c 100644
+--- a/system/trace-events
++++ b/system/trace-events
+@@ -33,6 +33,7 @@ address_space_map(void *as, uint64_t addr, uint64_t len, bool is_write, uint32_t
+ find_ram_offset(uint64_t size, uint64_t offset) "size: 0x%" PRIx64 " @ 0x%" PRIx64
+ find_ram_offset_loop(uint64_t size, uint64_t candidate, uint64_t offset, uint64_t next, uint64_t mingap) "trying size: 0x%" PRIx64 " @ 0x%" PRIx64 ", offset: 0x%" PRIx64" next: 0x%" PRIx64 " mingap: 0x%" PRIx64
+ ram_block_discard_range(const char *rbname, void *hva, size_t length, bool need_madvise, bool need_fallocate, int ret) "%s@%p + 0x%zx: madvise: %d fallocate: %d ret: %d"
++qemu_ram_alloc_shared(const char *name, size_t max_length, int fd, void *host) "%s size %zu fd %d host %p"
+ 
+ # cpus.c
+ vm_stop_flush_all(int ret) "ret %d"
 -- 
 1.8.3.1
 
