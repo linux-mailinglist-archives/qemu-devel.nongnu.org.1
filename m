@@ -2,104 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F4459E20CA
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Dec 2024 16:03:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 066569E212D
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Dec 2024 16:08:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tIUPu-0007mh-Qw; Tue, 03 Dec 2024 10:02:22 -0500
+	id 1tIUUq-0003f9-Gr; Tue, 03 Dec 2024 10:07:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1tIUPl-0007k0-59
- for qemu-devel@nongnu.org; Tue, 03 Dec 2024 10:02:13 -0500
-Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1tIUPj-0003Yl-A8
- for qemu-devel@nongnu.org; Tue, 03 Dec 2024 10:02:12 -0500
-Received: by mail-pf1-x431.google.com with SMTP id
- d2e1a72fcca58-7251ace8bc0so4682189b3a.0
- for <qemu-devel@nongnu.org>; Tue, 03 Dec 2024 07:02:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1733238130; x=1733842930; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=gqLzY+IRT6La492ly8emVrBu9C8joyzHbon3Upe0vEo=;
- b=fqwzmzvjeHIwBCOHUbcl4Imukc/bFVH6qEc3QXwHhP9FajKx62yQMu+Yj7yVvYcgST
- DKq9YvAZl/sFYNzO9srnxxmCQSxOt2DAhCt/v0hqD/3/vd2O4bMDG8nEbCQMYFrPo8Jd
- zuSkRZBljigwYI+Ku7k+KHRfn1kTRghGWmVdnMlQ4524ZJIZPIHhFSuwouUpCjeEf1Ya
- DazEx6OMltb/11Fl+bARf4GABXJbHzmL4Olu93SkQKV8mNcfokPCJ5RaVxY98Stw4Pxc
- bYks3mza/LN1tVlEL6O+LyfbnSfTfM3v95FQSeJr2RT6qeSHyjzw5ckje2+BXCCH/i4Z
- 2j3w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733238130; x=1733842930;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=gqLzY+IRT6La492ly8emVrBu9C8joyzHbon3Upe0vEo=;
- b=F5uRap9AJENGT7eF9he7MUQt86PbNDwQ56joe4kO2fk8rTsd5uTT5C9Q/qjTOF4xBi
- FRwj/QGXj9MhenSmwxhy3QYZbSgrDlzXCbsvUuIrGRWds6m7IhZ2/DHM0yWxqS5HBOFx
- slOAo49zMiT/Fy0WN5wTybC1TQ0TMBODywCRudHS38IgEg2KA7VwDo0qurXnT78XOrpT
- +s0PlKsypq+lbOd+DVondQ9lG7HD81XzJcgEDZzjsNGjEKvsEFghApob/8XFGL4qZQAp
- xUq+QD5/x27F+Dp3TkZlC0fB/JFHS18d24OOEbd3LliIbIOfOBwXbkx/eeRMlesiOG9D
- ockw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCW8OcStm5YSYMJSoHyXJVTu5cbN9RmyOP9fSm05bZAfd8FTbYLevkAONPi7HLiXoeDXEtIDQ7HXmkU4@nongnu.org
-X-Gm-Message-State: AOJu0Yzi/t677F6IvYvm1txFDx6PcoszNUFxTUnmtT9kJifO7XxeyZIM
- ifbaEZPVwV3LdfVd9VDcD6/9LlluvFewEyrnjqLg4I2+0/WUt7GGJZnQU7MCfVg=
-X-Gm-Gg: ASbGncuUuJ2TCDVUkafYoeEmK78SPwh6BijpQIm2V3x7m0xxSuqfF32s7dTN8U+di98
- R2pf9TtwQtDR2INHJuiEAyQHurjE/79lHIun0JxhsMWeb6cyxV5zuqzP8XHNt6Kf5oDQp8oqB3u
- G6Eyb9HfgShODVhK2+SaRQWzHT28Ro/g6OZCrHGqLJJp8x6g1OXdR6lZps7ejGDbp1t372zsi2n
- FBew8YKE9JRz8AP1BZloiZwW1ml/VzYzNchnZvWCW7btoHl4sME5NoPiGiAoVc=
-X-Google-Smtp-Source: AGHT+IFWWU0xifEh7JdWX7yIRoUB0hrkclGAfnre4R7nIjlYOnzio2yHi8j0x90cYJ3CgcOIWA5hmg==
-X-Received: by 2002:a17:90b:4fc6:b0:2ee:b8ac:73b7 with SMTP id
- 98e67ed59e1d1-2ef0262bc0fmr4182124a91.16.1733238129347; 
- Tue, 03 Dec 2024 07:02:09 -0800 (PST)
-Received: from [192.168.0.102] ([179.93.129.106])
- by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2eeb2956718sm4700862a91.44.2024.12.03.07.02.04
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 03 Dec 2024 07:02:08 -0800 (PST)
-Message-ID: <b9e375ad-2b71-48a4-8e97-2cdced17ea79@linaro.org>
-Date: Tue, 3 Dec 2024 12:02:03 -0300
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1tIURt-0000rW-Fy; Tue, 03 Dec 2024 10:04:26 -0500
+Received: from mgamail.intel.com ([192.198.163.17])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1tIURr-0003kb-1u; Tue, 03 Dec 2024 10:04:25 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1733238263; x=1764774263;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=DE4+dOjQ45mKpx+SGSiTtcFl4U3w/A8oLOD6qVGAH5I=;
+ b=G5Wr0eDyKSZ1izJLveH55OW4VQMLFYIL5G1+p6kT2hLI9+U/AAfL6IoS
+ OPGj+Q98A3r1nF09DmulvtAn7tj5//IaXWHakY1KV3cOx3oWt3l+QcwmB
+ UVIr7Z2I3g3J2ApXavdTaKTvOtMyW8stP8NJjyxixyFJQrDStBfFjBtSc
+ cq/53dS5B+SAlrXRTF0Q8Au+Y4V68eDx2sh7aL4WI7cL5VojPjSfVxHgF
+ kdMWACu+QavrFH7TwCm8x+mjFPt/CAHcXJjwkmdu1iYo/wbKehR0B4Hul
+ zPjXS54LrcTOuO1H7+khrHDF6w/cQB/OTzLGkRi4eYlZMxE3rRymVyFH4 w==;
+X-CSE-ConnectionGUID: 9vaSujR6Soexa2iRxncuDw==
+X-CSE-MsgGUID: m8YAXukVQECUnwqucs8Aqw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11275"; a="33379121"
+X-IronPort-AV: E=Sophos;i="6.12,205,1728975600"; d="scan'208";a="33379121"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+ by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Dec 2024 07:04:17 -0800
+X-CSE-ConnectionGUID: Fi1G/R6ZTVOXe2JnSjkx2A==
+X-CSE-MsgGUID: dCFSEyLqRC6h5BFdARuGgg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,205,1728975600"; d="scan'208";a="93802196"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.247.1])
+ ([10.124.247.1])
+ by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Dec 2024 07:04:15 -0800
+Message-ID: <f59cd973-b38b-4ee6-8baf-70019c26122e@intel.com>
+Date: Tue, 3 Dec 2024 23:04:12 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] tests/functional/aarch64: add tests for FEAT_RME
-To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>, qemu-devel@nongnu.org,
- =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>,
- Troy Lee <leetroy@gmail.com>, Alistair Francis <alistair@alistair23.me>,
- Andrew Jeffery <andrew@codeconstruct.com.au>,
- Jamin Lin <jamin_lin@aspeedtech.com>, qemu-arm@nongnu.org,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Steven Lee <steven_lee@aspeedtech.com>,
- Niek Linnenbank <nieklinnenbank@gmail.com>, Joel Stanley <joel@jms.id.au>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
-References: <20241128213729.1021961-1-pierrick.bouvier@linaro.org>
- <4b3180bd-8054-4431-a594-0445ce4837aa@linaro.org>
- <5620efa2-98c6-4613-b866-67e91ac6acf8@linaro.org>
- <CAFEAcA-xa1AKf2GAv7go5wdu+Td=4jf7Nriin-Oe3S6qEV6X0g@mail.gmail.com>
- <fd7ad48e-1e72-4735-8064-7039eedc00ae@linaro.org>
- <87ser6c5be.fsf@draig.linaro.org>
+Subject: Re: [PATCH v6] i386/cpu: fixup number of addressable IDs for logical
+ processors in the physical package
+To: Zhao Liu <zhao1.liu@intel.com>
+Cc: Chuang Xu <xuchuangxclwt@bytedance.com>, pbonzini@redhat.com,
+ imammedo@redhat.com, xieyongji@bytedance.com, chaiwen.cc@bytedance.com,
+ qemu-stable@nongnu.org, Guixiong Wei <weiguixiong@bytedance.com>,
+ Yipeng Yin <yinyipeng@bytedance.com>, qemu-devel@nongnu.org
+References: <20241009035638.59330-1-xuchuangxclwt@bytedance.com>
+ <cc83fc31-7a77-4e32-a861-3c1dc8592a04@intel.com>
+ <2f6b952d-4c21-4db5-9a8a-84a0c10feca8@bytedance.com>
+ <a48fcd78-d1c4-4359-bc18-d04147a93f50@intel.com> <ZwyRsq4EIooifRvb@intel.com>
+ <bbcfcbbd-1666-4e97-ae18-f47202d89009@intel.com> <ZxDS4L8vSr3HfFIh@intel.com>
+ <b43557f7-49ff-43bb-8a8c-887b8220e1e8@intel.com> <Z060VQVV6ONK9Qd2@intel.com>
 Content-Language: en-US
-From: Gustavo Romero <gustavo.romero@linaro.org>
-In-Reply-To: <87ser6c5be.fsf@draig.linaro.org>
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <Z060VQVV6ONK9Qd2@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
- envelope-from=gustavo.romero@linaro.org; helo=mail-pf1-x431.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=192.198.163.17; envelope-from=xiaoyao.li@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -65
+X-Spam_score: -6.6
+X-Spam_bar: ------
+X-Spam_report: (-6.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.996,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=0.826, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -115,95 +90,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Alex,
-
-On 12/2/24 15:23, Alex Bennée wrote:
-> Pierrick Bouvier <pierrick.bouvier@linaro.org> writes:
+On 12/3/2024 3:33 PM, Zhao Liu wrote:
+>> However, back to the patch, I think we cannot change it as this patch
+>> directly. Instead, we need a compat_props for the changed behavior, because
+>> this isn't a bug fix and it introduces guest-visible differences.
 > 
->> On 12/2/24 02:57, Peter Maydell wrote:
->>> On Sun, 1 Dec 2024 at 18:09, Pierrick Bouvier
->>> <pierrick.bouvier@linaro.org> wrote:
->>>>
->>>> Hi Marcin,
->>>>
->>>> On 12/1/24 05:34, Marcin Juszkiewicz wrote:
->>>>> W dniu 28.11.2024 o 22:37, Pierrick Bouvier pisze:
->>>>>> This boot an OP-TEE environment, and launch a nested guest VM inside it
->>>>>> using the Realms feature. We do it for virt and sbsa-ref platforms.
->>>>>>
->>>>>> Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
->>>>>
->>>>>> diff --git a/tests/functional/meson.build b/tests/functional/meson.build
->>>>>> index 5c048cfac6d..b975a1560df 100644
->>>>>> --- a/tests/functional/meson.build
->>>>>> +++ b/tests/functional/meson.build
->>>>>> @@ -13,6 +13,8 @@ endif
->>>>>>      test_timeouts = {
->>>>>>        'aarch64_aspeed' : 600,
->>>>>>        'aarch64_raspi4' : 480,
->>>>>
->>>>>> +  'aarch64_rme_virt' : 720,
->>>>>
->>>>> Took 2974.95s on M1 Pro macbook.
->>>>>
->>>>>> +  'aarch64_rme_sbsaref' : 720,
->>>>>
->>>>> This one needed 2288.29s.
->>>>>
->>>>>>        'aarch64_sbsaref_alpine' : 720,
->>>>>
->>>>> Have to check cause timed out.
->>>>>
->>>>>>        'aarch64_sbsaref_freebsd' : 720,
->>>>>
->>>>> 331.65s
->>>>>
->>>>> So RME tests probably need longer timeouts or would not run at all.
->>>>>
->>>>
->>>> By any chance, are you running those tests in debug mode?
->>>> It seems to me that CI is running functional tests with optimized
->>>> builds, so I'm not sure we want to support debug "times" here.
->>> We do need to support debug times, because a common developer
->>> use case is "doing a debug build, run 'make check-functional'
->>> to check whether anything is broken. The debug times also
->>> are useful because the CI runners can have highly variable
->>> performance -- if a test is slow enough to hit the timeout
->>> for a debug build locally, it's probably going to also hit
->>> the timeout at least sometimes in CI.
->>>
+> This is a fix, not a new feature, so compat_props is not needed.
+
+Fix what? QEMU behaves as it for so many years and if the guest OS uses 
+the algorithm recommended by SDM, there is no issue.
+
+>> For ancient Intel CPUs, EBX[23:16] did represent the number of Logical
+>> processor per package. I believe this should be the reason why QEMU
+>> implemented it as is:
 >>
->> I understand the scenario, but given how slow debug builds are, it
->> would probably be faster to advise developer to recompile in release
->> mode.
->> The overall time of compile + test is slower than waiting for debug.
+>>    - on SDM version 013, EBX[23:16]: Number of logical processors per
+>> physical processor; two for the Pentium 4 processor supporting
+>> Hyper-Threading Technology.
 >>
->> Beyond using a debugger, what is the advantage to compile with -O0?
-> 
-> --enable-debug
-> 
->    - enables -00 with -g3 for symbols
->    - and enables additional checks to validate TCG
-
-hm, do we ever used -g3 for --enable-debug?
-
-https://gitlab.com/qemu-project/qemu/-/blob/master/configure?ref_type=heads#L749
-
-I'd love to use -g3 instead of only -g for having the macro symbols.
-
-In my builds I use --extra-cflags="-g3" to have it but would like to drop it.
-
-unless I'm missing some other change in the flags down the lane...
-
-
-Cheers,
-Gustavo
-
-> You can use --enable-debug-info for just debug info without the overhead.
-> 
+>>    - on SDM version 015, it changed to: Number of initial APIC IDs reserved
+>> for this physical package. Normally, this is the number of logical
+>> processors per physical package.
 >>
->>> thanks
->>> -- PMM
+>>    - on SDM version 016, it changed to: Maximum number of logical processors
+>> in this physical package.
+>>
+>>    - finally, starting from SDM version 026, it changed to what reads now:
+>> Maximum number of addressable IDs for logical processors in this physical
+>> package.
+> 
+> And this is an architecturally defined CPUID, so SDM ensures backward
+> compatibility.
+
+SDM ensure the backwards compatibility by recommending to round the 
+number up to the power-of 2 when using it to calculate the topology with 
+legacy method.
+
+> Regards,
+> Zhao
 > 
 
 
