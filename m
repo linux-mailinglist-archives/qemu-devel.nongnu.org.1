@@ -2,54 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2AF5B9E2CD9
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Dec 2024 21:13:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B42F89E2CFC
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Dec 2024 21:25:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tIZG2-0000wr-FK; Tue, 03 Dec 2024 15:12:30 -0500
+	id 1tIZQy-0004O1-GA; Tue, 03 Dec 2024 15:23:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1tIZFx-0000wU-JB
- for qemu-devel@nongnu.org; Tue, 03 Dec 2024 15:12:25 -0500
-Received: from rev.ng ([94.130.142.21])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1tIZFu-00042E-3P
- for qemu-devel@nongnu.org; Tue, 03 Dec 2024 15:12:25 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
- s=dkim; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:Subject
- :Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
- Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
- :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
- List-Post:List-Owner:List-Archive:List-Unsubscribe:List-Unsubscribe-Post:
- List-Help; bh=/J0JMvaTWmaVrQLGSJf5Fi9XlogJsqUxyO7OgljwyNQ=; b=nJ7hdeInilRycMN
- 4xQAbjJj/9zKd8HfUMdLXatD4EfU4xipO6seYRccBy3jPKlkhbAQGPSI+XSMzCNUxm3+64MquqX+K
- E+NMTpzXlbvzvPQ155+0CNsLr7GtfxglWcJxrYv70Cdwr4FJEEU7mBLLxmaIQe4zuREyi0PcbPl1g
- RY=;
-Date: Tue, 3 Dec 2024 21:15:23 +0100
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org, ale@rev.ng, ltaylorsimpson@gmail.com, 
- bcain@quicinc.com, philmd@linaro.org, alex.bennee@linaro.org
-Subject: Re: [RFC PATCH v1 03/43] accel/tcg: Add gvec size changing operations
-Message-ID: <kxrtubx3f4yyzhlzzpgvuqvvutcbu3fclo3pgigjgpaauhxkfm@uvvdaentlh43>
-References: <20241121014947.18666-1-anjo@rev.ng>
- <20241121014947.18666-4-anjo@rev.ng>
- <b2986b74-2c74-491b-90a1-9ec79367c2e8@linaro.org>
- <v5pkpmxto7vtshg7a5mifaozrzn6n5d7raknvydad3oxk67jeu@i4jydb4wylpb>
- <e4910c71-8220-404b-bb43-0b885914e183@linaro.org>
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
+ id 1tIZQw-0004Nc-KB; Tue, 03 Dec 2024 15:23:46 -0500
+Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
+ id 1tIZQu-0006BQ-OT; Tue, 03 Dec 2024 15:23:46 -0500
+Received: by mail-wr1-x430.google.com with SMTP id
+ ffacd0b85a97d-385de59c1a0so4459122f8f.2; 
+ Tue, 03 Dec 2024 12:23:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1733257423; x=1733862223; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=vWr3B4C8bAj6BivScsjyL8ezvL1IyxopWhrxQL4rFc0=;
+ b=AdoQt1+vqnwEFz5/CihrWVGOuWiShIz1pjtRjy31u8/F6T3ZzeJB8Ui9ZoNc8ziHxv
+ e1sdG1zflsI9qYco5vuiPFj1G+9dt9VqicTVfSGMLsCpLnQYXgvcFtCilEq/CounkXNs
+ aqO7F+dSLnulWccUEeATCHKGqIBRfGvjGOlNinCCBgisZKVK6M9RA8ZFtHwxygCf+016
+ d5LSkUGviCpM6zGZmkPyHyRNL1EQIPmf914fSPLUIhWlzYOwhKZ+4ToKRIKDCZ1hgXWC
+ BHVdLrvZgkWsFHPJ7IlYgxe94AZNnhOpL4Udze9rHOSMWAEahRlihLYXXQk6AQGIIxkv
+ 5OMQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1733257423; x=1733862223;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=vWr3B4C8bAj6BivScsjyL8ezvL1IyxopWhrxQL4rFc0=;
+ b=XHHQ9O/Ll4bMUad9pn1+qSm2rABgQ7WbUv68YbgKTGgZ01hdbMnkBe3EWpvUwhu2/b
+ 6fa27YaWBUChrDCA2V6o05cMM9ydSXQCYnpyFL8Wq6oHATNoEWcmM8eTKQaplgrx5Oza
+ 7etGEbFfZoPbOrkpQ8l3kyRjxL82aJ25vrZr3YGmZtDm7uxO1q56mkrgzNGTqcA9Mv1/
+ pa7Q3KJcMahqBoXLvxCNTXd5+2pd4afhAHQgfE7kadqm/kEJuqIyDY30KdURX20PR1/D
+ NbocbRqsTOrjwy6/aDoL1NAySiw7KpLFlo6VhbRs7OPPkfHvaRaV86Infc5O8dDcorth
+ dQOw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVQQJdoam/jh0FndJ3sARujxzwclZZMn7UtBXRmdJtUpaqLuyxGC4sV831ymkZXYYLSC0SVVGcLjg==@nongnu.org,
+ AJvYcCW+aIq9HPYl1h+CaDOVRUhXheRrF5dyv4mXNF+JeKLLOx2TvLh2hQ8RsKeGDK1E64eSRFTGHfiWRQygMw==@nongnu.org
+X-Gm-Message-State: AOJu0YxmpiwGSQXbGiAamtr2WlnqL5j2f9I0qEEyFAxhIpS0kMMFpYbN
+ a0lphAp6iGK7ufaaKev96CcUKoNQJ5Qf6DZfkv+xyBjztYvkne0ObN8wQA==
+X-Gm-Gg: ASbGncvm+bXDf0zGO2V7N0u29c/u6LmpRIq0JOumug6+cDUWSxY7xZJQIMT7QTnbJ0a
+ 0mK9krKcFFnC35OW9zC9kDY+U+y+jjjvFCQp5tq8lq/SF8t4Uq02KG3BgwEUMf0zHVxknCCptV7
+ 4OQ/ueajfRavUHPxDqtlZBSlhHBdJmSr4cJeRmIQGNineq2zXE7KZncJdFkhZhJP/aobJH60/uN
+ NevUEpurBql2VwpZiUnGZdkeSGRVsZxCblb/oFfsXAhE53ivXvlqB8+hYvUAa4yklT2BqmWncJv
+ HGLnxp/G6QH5hh097wntkT0=
+X-Google-Smtp-Source: AGHT+IE2VK1egadmLfqT9AZwTvVt10/zBqtRrvmSY1jD61vRGH9/CoH6AgdjMpaPVl7emCoPUXbLLw==
+X-Received: by 2002:a05:6000:2aa:b0:385:f349:fffb with SMTP id
+ ffacd0b85a97d-385fd42a35fmr3288219f8f.45.1733257422614; 
+ Tue, 03 Dec 2024 12:23:42 -0800 (PST)
+Received: from [127.0.0.1] (dynamic-002-242-014-218.2.242.pool.telefonica.de.
+ [2.242.14.218]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-385e17574ebsm12074198f8f.30.2024.12.03.12.23.42
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 03 Dec 2024 12:23:42 -0800 (PST)
+Date: Tue, 03 Dec 2024 20:23:42 +0000
+From: Bernhard Beschow <shentey@gmail.com>
+To: Jamin Lin <jamin_lin@aspeedtech.com>, Jamin Lin via <qemu-devel@nongnu.org>,
+ =?ISO-8859-1?Q?C=E9dric_Le_Goater?= <clg@kaod.org>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Steven Lee <steven_lee@aspeedtech.com>, Troy Lee <leetroy@gmail.com>,
+ Andrew Jeffery <andrew@codeconstruct.com.au>, Joel Stanley <joel@jms.id.au>,
+ "open list:ASPEED BMCs" <qemu-arm@nongnu.org>,
+ "open list:All patches CC here" <qemu-devel@nongnu.org>
+CC: jamin_lin@aspeedtech.com, troy_lee@aspeedtech.com,
+ yunlin.tang@aspeedtech.com
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v2_3/6=5D_hw=3Asdhci?=
+ =?US-ASCII?Q?=3A_Introduce_a_new_=22capareg=22_?=
+ =?US-ASCII?Q?class_member_to_set_the_different_Capability_Registers=2E?=
+In-Reply-To: <20241203021500.3986213-4-jamin_lin@aspeedtech.com>
+References: <20241203021500.3986213-1-jamin_lin@aspeedtech.com>
+ <20241203021500.3986213-4-jamin_lin@aspeedtech.com>
+Message-ID: <94E62126-BB97-465A-9021-2FB365E677A8@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <e4910c71-8220-404b-bb43-0b885914e183@linaro.org>
-Received-SPF: pass client-ip=94.130.142.21; envelope-from=anjo@rev.ng;
- helo=rev.ng
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::430;
+ envelope-from=shentey@gmail.com; helo=mail-wr1-x430.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -62,149 +105,223 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Anton Johansson <anjo@rev.ng>
-From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 03/12/24, Richard Henderson wrote:
-> On 12/3/24 12:08, Anton Johansson wrote:
-> > On 22/11/24, Richard Henderson wrote:
-> > > On 11/20/24 19:49, Anton Johansson wrote:
-> > > > Adds new functions to the gvec API for truncating, sign- or zero
-> > > > extending vector elements.  Currently implemented as helper functions,
-> > > > these may be mapped onto host vector instructions in the future.
-> > > > 
-> > > > For the time being, allows translation of more complicated vector
-> > > > instructions by helper-to-tcg.
-> > > > 
-> > > > Signed-off-by: Anton Johansson <anjo@rev.ng>
-> > > > ---
-> > > >    accel/tcg/tcg-runtime-gvec.c     | 41 +++++++++++++++++
-> > > >    accel/tcg/tcg-runtime.h          | 22 +++++++++
-> > > >    include/tcg/tcg-op-gvec-common.h | 18 ++++++++
-> > > >    tcg/tcg-op-gvec.c                | 78 ++++++++++++++++++++++++++++++++
-> > > >    4 files changed, 159 insertions(+)
-> > > > 
-> > > > diff --git a/accel/tcg/tcg-runtime-gvec.c b/accel/tcg/tcg-runtime-gvec.c
-> > > > index afca89baa1..685c991e6a 100644
-> > > > --- a/accel/tcg/tcg-runtime-gvec.c
-> > > > +++ b/accel/tcg/tcg-runtime-gvec.c
-> > > > @@ -1569,3 +1569,44 @@ void HELPER(gvec_bitsel)(void *d, void *a, void *b, void *c, uint32_t desc)
-> > > >        }
-> > > >        clear_high(d, oprsz, desc);
-> > > >    }
-> > > > +
-> > > > +#define DO_SZ_OP1(NAME, DSTTY, SRCTY)                                      \
-> > > > +void HELPER(NAME)(void *d, void *a, uint32_t desc)                         \
-> > > > +{                                                                          \
-> > > > +    intptr_t oprsz = simd_oprsz(desc);                                     \
-> > > > +    intptr_t elsz = oprsz/sizeof(DSTTY);                                   \
-> > > > +    intptr_t i;                                                            \
-> > > > +                                                                           \
-> > > > +    for (i = 0; i < elsz; ++i) {                                           \
-> > > > +        SRCTY aa = *((SRCTY *) a + i);                                     \
-> > > > +        *((DSTTY *) d + i) = aa;                                           \
-> > > > +    }                                                                      \
-> > > > +    clear_high(d, oprsz, desc);                                            \
-> > > 
-> > > This formulation is not valid.
-> > > 
-> > > (1) Generic forms must *always* operate strictly on columns.  This
-> > > formulation is either expanding a narrow vector to a wider vector or
-> > > compressing a wider vector to a narrow vector.
-> > > 
-> > > (2) This takes no care for byte ordering of the data between columns.  This
-> > > is where sticking strictly to columns helps, in that we can assume that data
-> > > is host-endian *within the column*, but we cannot assume anything about the
-> > > element indexing of ptr + i.
-> > 
-> > Concerning (1) and (2), is this a limitation imposed on generic vector
-> > ops. to simplify mapping to host vector instructions where
-> > padding/alignment of elements might differ?  From my understanding, the
-> > helper above should be fine since we can assume contiguous elements?
-> 
-> This is a limitation imposed on generic vector ops, because different
-> target/arch/ represent their vectors in different ways.
-> 
-> For instance, Arm and RISC-V chunk the vector in to host-endian uint64_t,
-> with the chunks indexed little-endian.  But PPC puts the entire 128-bit
-> vector in host-endian bit ordering, so the uint64_t chunks are host-endian.
-> 
-> On a big-endian host, ptr+1 may be addressing element i-1 or i-7 instead of i+1.
 
-Ah, I see the problem now thanks for the explanation:)
 
-> > I see, I don't think we can make this work for Hexagon vector ops., as
-> > an example consider V6_vadduwsat which performs an unsigned saturated
-> > add of 32-bit elements, currently we emit
-> > 
-> >      void emit_V6_vadduwsat(intptr_t vec2, intptr_t vec7, intptr_t vec6) {
-> >          VectorMem mem = {0};
-> >          intptr_t vec5 = temp_new_gvec(&mem, 256);
-> >          tcg_gen_gvec_zext(MO_64, MO_32, vec5, vec7, 256, 128, 256);
-> > 
-> >          intptr_t vec1 = temp_new_gvec(&mem, 256);
-> >          tcg_gen_gvec_zext(MO_64, MO_32, vec1, vec6, 256, 128, 256);
-> > 
-> >          tcg_gen_gvec_add(MO_64, vec1, vec1, vec5, 256, 256);
-> > 
-> >          intptr_t vec3 = temp_new_gvec(&mem, 256);
-> >          tcg_gen_gvec_dup_imm(MO_64, vec3, 256, 256, 4294967295ull);
-> > 
-> >          tcg_gen_gvec_umin(MO_64, vec1, vec1, vec3, 256, 256);
-> > 
-> >          tcg_gen_gvec_trunc(MO_32, MO_64, vec2, vec1, 128, 256, 128);
-> >      }
-> > 
-> > so we really do rely on the size-changing property of zext here, the
-> > input vectors are 128-byte and we expand them to 256-byte.  We could
-> > expand vector operations within the instruction to the largest vector
-> > size, but would need to zext and trunc to destination and source
-> > registers anyway.
-> Yes, well, this is the output of llvm though, yes?
+Am 3=2E Dezember 2024 02:14:57 UTC schrieb Jamin Lin via <qemu-devel@nongn=
+u=2Eorg>:
+>Currently, it set the hardcode value of capability registers to all ASPEE=
+D SOCs
+>However, the value of capability registers should be different for all AS=
+PEED
+>SOCs=2E For example: the bit 28 of the Capability Register 1 should be 1 =
+for
+>64-bits System Bus support for AST2700=2E
+>
+>Introduce a new "capareg" class member whose data type is uint_64 to set =
+the
+>different Capability Registers to all ASPEED SOCs=2E
+>
+>The value of Capability Register is "0x0000000001e80080" for AST2400 and
+>AST2500=2E The value of Capability Register is "0x0000000701f80080" for A=
+ST2600=2E
+>
+>Signed-off-by: Jamin Lin <jamin_lin@aspeedtech=2Ecom>
+>---
+> hw/arm/aspeed_ast2400=2Ec      |  3 +-
+> hw/arm/aspeed_ast2600=2Ec      |  7 ++--
+> hw/sd/aspeed_sdhci=2Ec         | 72 +++++++++++++++++++++++++++++++-----
+> include/hw/sd/aspeed_sdhci=2Eh | 12 +++++-
+> 4 files changed, 78 insertions(+), 16 deletions(-)
+>
+>diff --git a/hw/arm/aspeed_ast2400=2Ec b/hw/arm/aspeed_ast2400=2Ec
+>index ecc81ecc79=2E=2E3c1b419945 100644
+>--- a/hw/arm/aspeed_ast2400=2Ec
+>+++ b/hw/arm/aspeed_ast2400=2Ec
+>@@ -224,7 +224,8 @@ static void aspeed_ast2400_soc_init(Object *obj)
+>     snprintf(typename, sizeof(typename), "aspeed=2Egpio-%s", socname);
+>     object_initialize_child(obj, "gpio", &s->gpio, typename);
+>=20
+>-    object_initialize_child(obj, "sdc", &s->sdhci, TYPE_ASPEED_SDHCI);
+>+    snprintf(typename, sizeof(typename), "aspeed=2Esdhci-%s", socname);
+>+    object_initialize_child(obj, "sdc", &s->sdhci, typename);
+>=20
+>     object_property_set_int(OBJECT(&s->sdhci), "num-slots", 2, &error_ab=
+ort);
+>=20
+>diff --git a/hw/arm/aspeed_ast2600=2Ec b/hw/arm/aspeed_ast2600=2Ec
+>index c40d3d8443=2E=2Eb5703bd064 100644
+>--- a/hw/arm/aspeed_ast2600=2Ec
+>+++ b/hw/arm/aspeed_ast2600=2Ec
+>@@ -236,8 +236,8 @@ static void aspeed_soc_ast2600_init(Object *obj)
+>     snprintf(typename, sizeof(typename), "aspeed=2Egpio-%s-1_8v", socnam=
+e);
+>     object_initialize_child(obj, "gpio_1_8v", &s->gpio_1_8v, typename);
+>=20
+>-    object_initialize_child(obj, "sd-controller", &s->sdhci,
+>-                            TYPE_ASPEED_SDHCI);
+>+    snprintf(typename, sizeof(typename), "aspeed=2Esdhci-%s", socname);
+>+    object_initialize_child(obj, "sd-controller", &s->sdhci, typename);
+>=20
+>     object_property_set_int(OBJECT(&s->sdhci), "num-slots", 2, &error_ab=
+ort);
+>=20
+>@@ -247,8 +247,7 @@ static void aspeed_soc_ast2600_init(Object *obj)
+>                                 &s->sdhci=2Eslots[i], TYPE_SYSBUS_SDHCI)=
+;
+>     }
+>=20
+>-    object_initialize_child(obj, "emmc-controller", &s->emmc,
+>-                            TYPE_ASPEED_SDHCI);
+>+    object_initialize_child(obj, "emmc-controller", &s->emmc, typename);
+>=20
+>     object_property_set_int(OBJECT(&s->emmc), "num-slots", 1, &error_abo=
+rt);
+>=20
+>diff --git a/hw/sd/aspeed_sdhci=2Ec b/hw/sd/aspeed_sdhci=2Ec
+>index acd6538261=2E=2E93f5571021 100644
+>--- a/hw/sd/aspeed_sdhci=2Ec
+>+++ b/hw/sd/aspeed_sdhci=2Ec
+>@@ -148,6 +148,7 @@ static void aspeed_sdhci_realize(DeviceState *dev, Er=
+ror **errp)
+> {
+>     SysBusDevice *sbd =3D SYS_BUS_DEVICE(dev);
+>     AspeedSDHCIState *sdhci =3D ASPEED_SDHCI(dev);
+>+    AspeedSDHCIClass *asc =3D ASPEED_SDHCI_GET_CLASS(sdhci);
+>=20
+>     /* Create input irqs for the slots */
+>     qdev_init_gpio_in_named_with_opaque(DEVICE(sbd), aspeed_sdhci_set_ir=
+q,
+>@@ -167,7 +168,7 @@ static void aspeed_sdhci_realize(DeviceState *dev, Er=
+ror **errp)
+>         }
+>=20
+>         if (!object_property_set_uint(sdhci_slot, "capareg",
+>-                                      ASPEED_SDHCI_CAPABILITIES, errp)) =
+{
+>+                                      asc->capareg, errp)) {
+>             return;
+>         }
+>=20
+>@@ -218,13 +219,66 @@ static void aspeed_sdhci_class_init(ObjectClass *cl=
+assp, void *data)
+>     device_class_set_props(dc, aspeed_sdhci_properties);
+> }
+>=20
+>-static const TypeInfo aspeed_sdhci_types[] =3D {
+>-    {
+>-        =2Ename           =3D TYPE_ASPEED_SDHCI,
+>-        =2Eparent         =3D TYPE_SYS_BUS_DEVICE,
+>-        =2Einstance_size  =3D sizeof(AspeedSDHCIState),
+>-        =2Eclass_init     =3D aspeed_sdhci_class_init,
+>-    },
 
-Yes
+Why not just extend this array? It's made for registering multiple types, =
+exactly what this patch is introducing=2E
 
-> Did you forget to describe TCG's native saturating operations to the
-> compiler? tcg_gen_gvec_usadd performs exactly this operation.
-> 
-> And if you'd like to improve llvm, usadd(a, b) equals umin(a, ~b) + b.
-> Fewer operations without having to change vector sizes.
-> Similarly for unsigned saturating subtract: ussub(a, b) equals umax(a, b) - b.
+>+static const TypeInfo aspeed_sdhci_info =3D {
+>+    =2Ename           =3D TYPE_ASPEED_SDHCI,
+>+    =2Eparent         =3D TYPE_SYS_BUS_DEVICE,
+>+    =2Einstance_size  =3D sizeof(AspeedSDHCIState),
+>+    =2Eclass_init     =3D aspeed_sdhci_class_init,
+>+    =2Eclass_size =3D sizeof(AspeedSDHCIClass),
+>+    =2Eabstract =3D true,
+>+};
+>+
+>+static void aspeed_2400_sdhci_class_init(ObjectClass *klass, void *data)
+>+{
+>+    DeviceClass *dc =3D DEVICE_CLASS(klass);
+>+    AspeedSDHCIClass *asc =3D ASPEED_SDHCI_CLASS(klass);
+>+
+>+    dc->desc =3D "ASPEED 2400 SDHCI Controller";
+>+    asc->capareg =3D 0x0000000001e80080;
+>+}
+>+
+>+static const TypeInfo aspeed_2400_sdhci_info =3D {
+>+    =2Ename =3D TYPE_ASPEED_2400_SDHCI,
+>+    =2Eparent =3D TYPE_ASPEED_SDHCI,
+>+    =2Eclass_init =3D aspeed_2400_sdhci_class_init,
+>+};
+>+
+>+static void aspeed_2500_sdhci_class_init(ObjectClass *klass, void *data)
+>+{
+>+    DeviceClass *dc =3D DEVICE_CLASS(klass);
+>+    AspeedSDHCIClass *asc =3D ASPEED_SDHCI_CLASS(klass);
+>+
+>+    dc->desc =3D "ASPEED 2500 SDHCI Controller";
+>+    asc->capareg =3D 0x0000000001e80080;
+>+}
+>+
+>+static const TypeInfo aspeed_2500_sdhci_info =3D {
+>+    =2Ename =3D TYPE_ASPEED_2500_SDHCI,
+>+    =2Eparent =3D TYPE_ASPEED_SDHCI,
+>+    =2Eclass_init =3D aspeed_2500_sdhci_class_init,
+> };
+>=20
+>-DEFINE_TYPES(aspeed_sdhci_types)
+>+static void aspeed_2600_sdhci_class_init(ObjectClass *klass, void *data)
+>+{
+>+    DeviceClass *dc =3D DEVICE_CLASS(klass);
+>+    AspeedSDHCIClass *asc =3D ASPEED_SDHCI_CLASS(klass);
+>+
+>+    dc->desc =3D "ASPEED 2600 SDHCI Controller";
+>+    asc->capareg =3D 0x0000000701f80080;
+>+}
+>+
+>+static const TypeInfo aspeed_2600_sdhci_info =3D {
+>+    =2Ename =3D TYPE_ASPEED_2600_SDHCI,
+>+    =2Eparent =3D TYPE_ASPEED_SDHCI,
+>+    =2Eclass_init =3D aspeed_2600_sdhci_class_init,
+>+};
+>+
+>+static void aspeed_sdhci_register_types(void)
+>+{
+>+    type_register_static(&aspeed_sdhci_info);
+>+    type_register_static(&aspeed_2400_sdhci_info);
+>+    type_register_static(&aspeed_2500_sdhci_info);
+>+    type_register_static(&aspeed_2600_sdhci_info);
+>+}
+>+
+>+type_init(aspeed_sdhci_register_types);
+>diff --git a/include/hw/sd/aspeed_sdhci=2Eh b/include/hw/sd/aspeed_sdhci=
+=2Eh
+>index 057bc5f3d1=2E=2E8083797e25 100644
+>--- a/include/hw/sd/aspeed_sdhci=2Eh
+>+++ b/include/hw/sd/aspeed_sdhci=2Eh
+>@@ -13,9 +13,11 @@
+> #include "qom/object=2Eh"
+>=20
+> #define TYPE_ASPEED_SDHCI "aspeed=2Esdhci"
+>-OBJECT_DECLARE_SIMPLE_TYPE(AspeedSDHCIState, ASPEED_SDHCI)
+>+#define TYPE_ASPEED_2400_SDHCI TYPE_ASPEED_SDHCI "-ast2400"
+>+#define TYPE_ASPEED_2500_SDHCI TYPE_ASPEED_SDHCI "-ast2500"
+>+#define TYPE_ASPEED_2600_SDHCI TYPE_ASPEED_SDHCI "-ast2600"
+>+OBJECT_DECLARE_TYPE(AspeedSDHCIState, AspeedSDHCIClass, ASPEED_SDHCI)
+>=20
+>-#define ASPEED_SDHCI_CAPABILITIES 0x01E80080
+> #define ASPEED_SDHCI_NUM_SLOTS    2
+> #define ASPEED_SDHCI_NUM_REGS     (ASPEED_SDHCI_REG_SIZE / sizeof(uint32=
+_t))
+> #define ASPEED_SDHCI_REG_SIZE     0x100
+>@@ -32,4 +34,10 @@ struct AspeedSDHCIState {
+>     uint32_t regs[ASPEED_SDHCI_NUM_REGS];
+> };
+>=20
+>+struct AspeedSDHCIClass {
+>+    SysBusDeviceClass parent_class;
+>+
+>+    uint64_t capareg;
+>+};
 
-In this case LLVM wasn't able to optimize it to a llvm.uadd.sat
-intrinsic, in which case we would have emitted tcg_gen_gvec_usadd I
-believe.  We can manually optimize the above pattern to a llvm.uadd.sat
-to avoid extra size changes.
+The struct seems not AST-specific and could be turned into a base class fo=
+r all SDHCI device models, no? That way one could also add further device-s=
+pecific constants other than capareg=2E
 
-This might be fixed in future LLVM versions, but otherwise seems like a
-reasonable change to push upstream.
+Best regards,
+Bernhard
 
-The point is that we have a lot of Hexagon instructions where size
-changes are probably unavoidable, another example is V6_vshuffh which
-takes in a <16 x i16> vector and shuffles the upper <8xi16> into the upper
-16-bits of a <8 x i32> vector
-
-    void emit_V6_vshuffh(intptr_t vec3, intptr_t vec7) {
-        VectorMem mem = {0};
-        intptr_t vec2 = temp_new_gvec(&mem, 128);
-        tcg_gen_gvec_zext(MO_32, MO_16, vec2, vec7, 128, 64, 128);
-
-        intptr_t vec0 = temp_new_gvec(&mem, 128);
-        tcg_gen_gvec_zext(MO_32, MO_16, vec0, (vec7 + 64ull), 128, 64, 128);
-
-        intptr_t vec1 = temp_new_gvec(&mem, 128);
-        tcg_gen_gvec_shli(MO_32, vec1, vec0, 16, 128, 128);
-        tcg_gen_gvec_or(MO_32, vec3, vec1, vec2, 128, 128);
-    }
-
-Not to bloat the email too much with examples, you can see 3 more here
-
-  https://pad.rev.ng/11IvAKhiRy2cPwC7MX9nXA
-
-Maybe we rely on the target defining size-changing operations if they
-are needed?
-
-//Anton
+>+
+> #endif /* ASPEED_SDHCI_H */
 
