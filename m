@@ -2,89 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 795749E18F9
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Dec 2024 11:15:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DCD19E1906
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Dec 2024 11:18:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tIPvw-0003go-Uu; Tue, 03 Dec 2024 05:15:08 -0500
+	id 1tIPyJ-0004xS-B7; Tue, 03 Dec 2024 05:17:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tIPvt-0003fH-0l
- for qemu-devel@nongnu.org; Tue, 03 Dec 2024 05:15:05 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tIPyI-0004xI-3o
+ for qemu-devel@nongnu.org; Tue, 03 Dec 2024 05:17:34 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tIPvr-00008y-2k
- for qemu-devel@nongnu.org; Tue, 03 Dec 2024 05:15:04 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tIPyG-0000Xa-I9
+ for qemu-devel@nongnu.org; Tue, 03 Dec 2024 05:17:33 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1733220902;
+ s=mimecast20190719; t=1733221051;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=132oPmzfFYpbJvCDiaa2YBCQLErs5TXW0m/pytmDa0s=;
- b=AOkuYtTnrJRjPUNQk5GPSwB4DbQiJhpPrQ7WvMxK0P2l+RQuovsQjs2bkdcwid5REPre8v
- TALhzIMMyMlORrHPNfNE7Mtv3LtVZULGHRhxmhVijABYTJhejfWZBv2mC2UWyeXQy2I3Cq
- ZWa4GeSCx8pnpfUgue5/4cnYiScWSN8=
-Received: from mail-ua1-f72.google.com (mail-ua1-f72.google.com
- [209.85.222.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=kyImpjWVU91GFRyY5fLrG9WirxFc24S2U4xji0nzkjE=;
+ b=K4yyNKvh8me+82ZMH2teooWmdBny5LlykwiL6zM9xguvlBIP9pvBdc1ESnFHnVjf0ugVV9
+ 84GJLhlXg8Mm6ILgqB6drojZSzKKAyMjo7cuSBebVcdOxFgt+Ea04zHqiVwGdIeDbXO1Xx
+ GNMGlCMHUHjRM9hl/sMH53db3+L8ok4=
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
+ [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-670-W6Rs_VnKOgiQl-Vi-L3G1g-1; Tue, 03 Dec 2024 05:15:00 -0500
-X-MC-Unique: W6Rs_VnKOgiQl-Vi-L3G1g-1
-X-Mimecast-MFC-AGG-ID: W6Rs_VnKOgiQl-Vi-L3G1g
-Received: by mail-ua1-f72.google.com with SMTP id
- a1e0cc1a2514c-85b9d3180a6so1278755241.2
- for <qemu-devel@nongnu.org>; Tue, 03 Dec 2024 02:15:00 -0800 (PST)
+ us-mta-457-eZereUjMP8Ot4fd-GSpr1w-1; Tue, 03 Dec 2024 05:17:29 -0500
+X-MC-Unique: eZereUjMP8Ot4fd-GSpr1w-1
+X-Mimecast-MFC-AGG-ID: eZereUjMP8Ot4fd-GSpr1w
+Received: by mail-qk1-f198.google.com with SMTP id
+ af79cd13be357-7b68b264f71so632687485a.3
+ for <qemu-devel@nongnu.org>; Tue, 03 Dec 2024 02:17:29 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733220900; x=1733825700;
- h=content-transfer-encoding:in-reply-to:autocrypt:content-language
- :from:references:cc:to:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=132oPmzfFYpbJvCDiaa2YBCQLErs5TXW0m/pytmDa0s=;
- b=qWmEq34VfZVG4gV+L2Ez4iPl9v17wWu87e2GsQUgmWLtAowjRex24ldgYxbjt3mLO6
- Y441p//Tz8aahooJbnf4U/XgsU6mBR73HduTkUrBBlv0XgGvjlgBAoqIUXA74kTMh/pN
- Ey7v9cozeYU0FPRHHPdHtVeliMUap/4BcBEjLtZC9T0h+ncM+fR0kgergpcAw88/XOD+
- XKY3eCJVbCZdIYECbEWvq7fRMX352D2GEVl9x5lAh3zURx0AATkD9uOyD7P8KlkEhrZw
- xcXtgeXRV2iDu9yFb6SNO0MrRcNt5qMkGyu+B8i0TSPOFNZee6n8DbW39uBI+7Oq1ap1
- xwKA==
-X-Gm-Message-State: AOJu0YyCTft7KNoxfLUtbWTz0YnmituczxuHjgShWjW0911xgQ3WUIQD
- 9AvQoa4pViYPcmMyzz5CalXiXVGAeK0ypXMW6+vDYF1KWinHuhT7NpIG5X9xHkbkw75edqGce4s
- vHWPNbSXC0/8YzJhLNlJJzkJdP9VQppcG04tocsLVfeT2ikSemP+w
-X-Gm-Gg: ASbGncuqpmqWVkZJ/EWj/qg25j+GUwumSjQ5/tUj4ASz7/RKUjudocLm6h+q2Yj3JPe
- v6zMLKDIbK2IwCckhclx5oB6lF9MuZhTkfk8Xn93FCsR8L+6dafphvZjB186bbCIASvjGjLfC61
- 1/88jKZZvnbgc/gf5sGA9GXaDfJrkGXc1zSfk8L7DQQryr8zd1CqKkpDhogXIkdQPuK51+NJ3O0
- 1gVGzdKJJeJJmUj7Me7Kz3Qe0aic6hKSADJ+2k9c2j09CvKSy3MJQxvcWR5hC16vjvlFrRK0nmA
- QyoaSA==
-X-Received: by 2002:a05:6102:a47:b0:4af:2d25:c46f with SMTP id
- ada2fe7eead31-4af973ae009mr2236084137.21.1733220900071; 
- Tue, 03 Dec 2024 02:15:00 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHjtIMKz7DttErUo5vOfJG1GJlQdJlrNlIIc4m8x9L5XyV7W+diZhaVSxA+sMscOOHdJxg2GA==
-X-Received: by 2002:a05:6102:a47:b0:4af:2d25:c46f with SMTP id
- ada2fe7eead31-4af973ae009mr2236057137.21.1733220899698; 
- Tue, 03 Dec 2024 02:14:59 -0800 (PST)
+ d=1e100.net; s=20230601; t=1733221049; x=1733825849;
+ h=content-transfer-encoding:in-reply-to:autocrypt:from
+ :content-language:references:cc:to:subject:user-agent:mime-version
+ :date:message-id:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=kyImpjWVU91GFRyY5fLrG9WirxFc24S2U4xji0nzkjE=;
+ b=DFUg6y7uYawvXTvJslmTkZvfWP8x8m9AVgLwdP2/MlcXYvj58dpMApGt276y9k8tYY
+ /fhnGm0bRQ9WKg9SO/mizztNLH4/CthICXRHU7TGUVj3s/tnwicnupjha56LkpuaxE1f
+ Ini39w61DW71rl93U+ZEFhnAV2g0FIFhSDzwx/N8g8CfkhwPI+P9njiuwj3aPrV1I+u1
+ CvHBvkEggBm2UT2bJCJvOfF/upndci49IKeLLxVeq3yNPMbYJZoYyUxowtqPLw6CCUOQ
+ mJ/VATStQjRaheIrb3L4A287PF3x9TpMUSNp2GRsz5zUtBCoXGxxrjFuCiaLDcxijGub
+ LU0Q==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCX1O1UdiLqDZTc4a3agOlUZ8KjqxsmMjVG7N824bpuLJ+iXaMPp7UNCU8VT2tRBCnzmKVu2Ln4Dkx0A@nongnu.org
+X-Gm-Message-State: AOJu0YwI2LqpcKzS6IK/jHCGjotYwHfLk1UPUdWLmH+JXR2J0oiiwkYb
+ i3VMqPR7uD38jwb/bVXJgnqVTyoTu+A2j6FJ8V/kP6HWyVYE1hbHaLTIDUMzsZmdq5u09j9HIce
+ eGnjQahGx/mjzHmFkq6DJO7Q1dp828PmXm4ERmjCndBrou4JqVyuF
+X-Gm-Gg: ASbGncuRVNdpBbffhiA/1D5ATaVnNXUvsGx2jrPtCwTFs9/JxV4bLrHFAnQquxzxx0X
+ GWZ6Fe5fPVIOhuvXOWhhINYZYEpcsuF+k2iYsvQgzkTCd2wnmKaXHRlpj+4AOqNJurp4grZxKKY
+ sz6J6+LstcSTWnY2/tluoD/Bv2xhX3+WQJDgeol/aSC88UuGGpCj6XVAtbm5lwXr4LQMvL/wEcr
+ o/UlYVc8EV8iqNwvmZ5lvWceN9aZxtJp4XAzVN6CjLtEACff69l9ZFXKn6KcExj4P49kKhwg3mE
+ y7O8jA==
+X-Received: by 2002:a05:620a:4801:b0:7b1:41d9:7b30 with SMTP id
+ af79cd13be357-7b6a61d994emr361962485a.60.1733221047923; 
+ Tue, 03 Dec 2024 02:17:27 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGhcHn9vDp/TdsECpr9nQWKKmCOUGxf6ghLJVISiPLKrflB8zzu/7Ride9u6AyY3zJy3Iap4A==
+X-Received: by 2002:a05:620a:4801:b0:7b1:41d9:7b30 with SMTP id
+ af79cd13be357-7b6a61d994emr361947485a.60.1733221046179; 
+ Tue, 03 Dec 2024 02:17:26 -0800 (PST)
 Received: from [192.168.0.7] (ip-109-42-51-199.web.vodafone.de.
  [109.42.51.199]) by smtp.gmail.com with ESMTPSA id
- 6a1803df08f44-6d8a9d0ee80sm19695316d6.44.2024.12.03.02.14.57
+ af79cd13be357-7b684946ec6sm496174585a.59.2024.12.03.02.17.24
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 03 Dec 2024 02:14:59 -0800 (PST)
-Message-ID: <a7d66166-b2ce-4e9a-81ee-2121199832ab@redhat.com>
-Date: Tue, 3 Dec 2024 11:14:54 +0100
+ Tue, 03 Dec 2024 02:17:25 -0800 (PST)
+Message-ID: <9ba83ee7-979e-4287-9db2-0f7532eeb4c2@redhat.com>
+Date: Tue, 3 Dec 2024 11:17:22 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH-for-9.2? v2 1/2] tests/functional/test_version: Use QTest
- accelerator
+Subject: Re: [PATCH v3] system: Select HVF by default when no other
+ accelerator is available
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
-Cc: qemu-devel@nongnu.org, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Zhao Liu <zhao1.liu@intel.com>, Eduardo Habkost <eduardo@habkost.net>,
- Yanan Wang <wangyanan55@huawei.com>, Markus Armbruster <armbru@redhat.com>
-References: <20241203091036.59898-1-philmd@linaro.org>
- <20241203091036.59898-2-philmd@linaro.org> <Z07M4jpxZo9Ns0Rj@redhat.com>
- <884bb70b-bb7a-4676-ab74-fd19a2758955@linaro.org>
- <9124df54-a9a7-401b-8b0e-b81ac4dab365@linaro.org>
-From: Thomas Huth <thuth@redhat.com>
+ qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>
+References: <20241203094232.62232-1-philmd@linaro.org>
 Content-Language: en-US
+From: Thomas Huth <thuth@redhat.com>
 Autocrypt: addr=thuth@redhat.com; keydata=
  xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
  yYkTm9+7zBUc0sW5AuPGR/dp3pSLX/yFWsA/UB4nJsHqgDvDU7BImSeiTrnpMOTXb7Arw2a2
@@ -127,17 +125,17 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <9124df54-a9a7-401b-8b0e-b81ac4dab365@linaro.org>
+In-Reply-To: <20241203094232.62232-1-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -50
 X-Spam_score: -5.1
 X-Spam_bar: -----
 X-Spam_report: (-5.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.996,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -155,92 +153,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 03/12/2024 10.38, Philippe Mathieu-Daudé wrote:
-> On 3/12/24 10:26, Philippe Mathieu-Daudé wrote:
->> On 3/12/24 10:18, Daniel P. Berrangé wrote:
->>> On Tue, Dec 03, 2024 at 10:10:35AM +0100, Philippe Mathieu-Daudé wrote:
->>>> When testing with a HVF-only binary, we get:
->>>>
->>>>     3/12 qemu:func-quick+func-aarch64 / func-aarch64- 
->>>> version                                      ERROR            0.29s exit 
->>>> status 1
->>>>    stderr:
->>>>    Traceback (most recent call last):
->>>>      File "tests/functional/test_version.py", line 22, in 
->>>> test_qmp_human_info_version
->>>>        self.vm.launch()
->>>>      File "machine/machine.py", line 461, in launch
->>>>        raise VMLaunchFailure(
->>>>    qemu.machine.machine.VMLaunchFailure: ConnectError: Failed to 
->>>> establish session: EOFError
->>>>        Exit code: 1
->>>>        Command: build/qemu-system-aarch64 -display none -vga none - 
->>>> chardev socket,id=mon,fd=5 -mon chardev=mon,mode=control -machine none - 
->>>> nodefaults
->>>>        Output: qemu-system-aarch64: No accelerator selected and no 
->>>> default accelerator available
->>>>
->>>> Explicit the QTest accelerator to be able to run the HMP command.
->>>>
->>>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->>>> ---
->>>>   tests/functional/test_version.py | 1 +
->>>>   1 file changed, 1 insertion(+)
->>>>
->>>> diff --git a/tests/functional/test_version.py b/tests/functional/ 
->>>> test_version.py
->>>> index 3ab3b67f7e3..d3da796991f 100755
->>>> --- a/tests/functional/test_version.py
->>>> +++ b/tests/functional/test_version.py
->>>> @@ -18,6 +18,7 @@ class Version(QemuSystemTest):
->>>>       def test_qmp_human_info_version(self):
->>>>           self.set_machine('none')
->>>> +        self.vm.add_args('-accel', 'qtest')
->>>
->>> IMHO this is wrong. The functional tests are there to test the
->>> real functional behaviour under an actual accelerator not qtest.
->>
->> It works using '-accel hvf'. The issue is:
->>
->>    "No accelerator selected and no default accelerator available"
->>
->> So we should select HVF over QTest by default? I tend to not
->> enforce any default because we always get troubles with them,
->> what is today's default is unlikely tomorrow's one.
+On 03/12/2024 10.42, Philippe Mathieu-Daudé wrote:
+> When testing with a HVF-only binary, we get:
 > 
-> So by using:
+>     3/12 qemu:func-quick+func-aarch64 / func-aarch64-version                                      ERROR            0.29s   exit status 1
+>    stderr:
+>    Traceback (most recent call last):
+>      File "tests/functional/test_version.py", line 22, in test_qmp_human_info_version
+>        self.vm.launch()
+>      File "machine/machine.py", line 461, in launch
+>        raise VMLaunchFailure(
+>    qemu.machine.machine.VMLaunchFailure: ConnectError: Failed to establish session: EOFError
+>        Exit code: 1
+>        Command: build/qemu-system-aarch64 -display none -vga none -chardev socket,id=mon,fd=5 -mon chardev=mon,mode=control -machine none -nodefaults
+>        Output: qemu-system-aarch64: No accelerator selected and no default accelerator available
 > 
-> -- >8 --
+> Fix by checking for HVF in configure_accelerators() and using
+> it by default when no other accelerator is available.
+> 
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
+> v2 was https://lore.kernel.org/qemu-devel/20241203091036.59898-1-philmd@linaro.org/
+> ---
+>   system/vl.c | 3 +++
+>   1 file changed, 3 insertions(+)
+> 
 > diff --git a/system/vl.c b/system/vl.c
 > index 54998fdbc7e..2f855d83fbb 100644
 > --- a/system/vl.c
 > +++ b/system/vl.c
 > @@ -2362,6 +2362,7 @@ static void configure_accelerators(const char *progname)
->               /* Select the default accelerator */
->               bool have_tcg = accel_find("tcg");
->               bool have_kvm = accel_find("kvm");
-> +            bool have_hvf = accel_find("hvf");
-> 
->               if (have_tcg && have_kvm) {
->                   if (g_str_has_suffix(progname, "kvm")) {
+>               /* Select the default accelerator */
+>               bool have_tcg = accel_find("tcg");
+>               bool have_kvm = accel_find("kvm");
+> +            bool have_hvf = accel_find("hvf");
+>   
+>               if (have_tcg && have_kvm) {
+>                   if (g_str_has_suffix(progname, "kvm")) {
 > @@ -2374,6 +2375,8 @@ static void configure_accelerators(const char *progname)
->                   accelerators = "kvm";
->               } else if (have_tcg) {
->                   accelerators = "tcg";
-> +            } else if (have_hvf) {
-> +                accelerators = "hvf";
->               } else {
->                   error_report("No accelerator selected and"
->                                " no default accelerator available");
-> 
-> ---
-> 
-> All test suites pass on my HVF-only build directory. If this is
-> OK with you then this is also OK for me.
+>                   accelerators = "kvm";
+>               } else if (have_tcg) {
+>                   accelerators = "tcg";
+> +            } else if (have_hvf) {
+> +                accelerators = "hvf";
+>               } else {
+>                   error_report("No accelerator selected and"
+>                                " no default accelerator available");
 
-Yes, looks like we're doing the same for KVM already, so IMHO this should be 
-done for HVF, too.
-
-  Thomas
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 
 
