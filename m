@@ -2,52 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1D529E1A1D
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Dec 2024 11:59:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F9859E1A54
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Dec 2024 12:06:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tIQcJ-0000Px-EC; Tue, 03 Dec 2024 05:58:56 -0500
+	id 1tIQj3-0001gZ-Ea; Tue, 03 Dec 2024 06:05:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaoshiyuan@baidu.com>)
- id 1tIQcF-0000Pm-5a
- for qemu-devel@nongnu.org; Tue, 03 Dec 2024 05:58:51 -0500
-Received: from mx24.baidu.com ([111.206.215.185] helo=baidu.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaoshiyuan@baidu.com>)
- id 1tIQcC-0004vK-J3
- for qemu-devel@nongnu.org; Tue, 03 Dec 2024 05:58:50 -0500
-To: "eduardo@habkost.net" <eduardo@habkost.net>, "marcel.apfelbaum@gmail.com"
- <marcel.apfelbaum@gmail.com>, "mst@redhat.com" <mst@redhat.com>,
- "zhao1.liu@intel.com" <zhao1.liu@intel.com>, "alex.williamson@redhat.com"
- <alex.williamson@redhat.com>
-CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-Subject: [PATCH 1/1] pcie-root-port: Fast PCIe root ports for new machine
-Thread-Topic: [PATCH 1/1] pcie-root-port: Fast PCIe root ports for new machine
-Thread-Index: AQHbRXJEfC8FNue/40yeOjgxK7k8Og==
-Date: Tue, 3 Dec 2024 10:58:22 +0000
-Message-ID: <BB513C15-DFE1-40B0-91B6-914D70D3EFB2@baidu.com>
-Accept-Language: en-US, zh-CN
-Content-Language: zh-CN
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.22.193.14]
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <F01014E639865E4E9CA4CDCB1EBEAC31@internal.baidu.com>
-Content-Transfer-Encoding: base64
+ (Exim 4.90_1) (envelope-from <shorne@gmail.com>) id 1tIQj0-0001gP-OK
+ for qemu-devel@nongnu.org; Tue, 03 Dec 2024 06:05:50 -0500
+Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <shorne@gmail.com>) id 1tIQiz-0005yN-3Y
+ for qemu-devel@nongnu.org; Tue, 03 Dec 2024 06:05:50 -0500
+Received: by mail-wr1-x435.google.com with SMTP id
+ ffacd0b85a97d-385e075255fso2534883f8f.0
+ for <qemu-devel@nongnu.org>; Tue, 03 Dec 2024 03:05:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1733223946; x=1733828746; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=PUdiko2I8J6xrlSMSAA1aTL8jewTc3HgG5WTz9aLd/M=;
+ b=eCwr2+kL9NjrYs3RNO4Uzg7Q1KFm0fuJggryu47lGdPhX8ry7PjVE5zQ0+3sFN6h/R
+ q1CZuZojdh2ku4sZqkZkEIQ3g3RKhzFw3YFQbdC8Ts0nRyWIU21Qij+iiGCCCr9w/hZM
+ anIX5dENp4kDMIf3ZkMldWLDN2Ll3eraxOPGgppNyO17pYmNmZnwkNmCJSqDeDCjtbn4
+ nLWq4vh9RUfmzxU6iSpnMigIVtG9zemBLcZwBmHRH/9DuDnMTGLmS9GQlW4D+xnIJ29C
+ wXiBGRgF1EIpyoHX0XlTknla17PsgJGNu2rr9f36nOVLHyjSF0S14shSbkmIEDhA9/uj
+ BGmw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1733223946; x=1733828746;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=PUdiko2I8J6xrlSMSAA1aTL8jewTc3HgG5WTz9aLd/M=;
+ b=gFY3wLxAzn6HmRLf7lO6uCpGYcBp4qCy4cH2wbM+NjTWBsT1tckN45KoFXIsLtJ6W6
+ 3GF/gnzWbeNyijKFfJpfjVLvQVQQD7mtqTm1OpAGBHV2l7PZtmZbn+B0xuNWEUW9BBFj
+ fU/fvbeM9dKCrAXWc21PclgbJyhzAq82eosanRvcI+rRfI98KTJIDNYEsoiYIkFKA/nz
+ M8Yr4dNY+1X6+8XGdNF3NiTAQlwarSaElxXFsCGKvb1pNujshtXukCbdROMxPvCaLF4X
+ s8QiQMKD/n4QHTW/pJS8OTaTb5wFq/pZL3x8ZvOrnj5sD/2hPn1bObI/h3kzedzi41Dg
+ n/pA==
+X-Gm-Message-State: AOJu0Yw595hMF2TP9NqlrMsKUb9uDbAztTfFXwoGiIG5ZqX16yy/soAt
+ M4+SctGmPHTRShZCJM81EEJ5QFNGWDaxKT0MvrSe6edG/f+3HHihFUBcmQ==
+X-Gm-Gg: ASbGncvf0OsZdx9qfwzUFA8AHWd5YkkD/wjvDwfKhdc0dj+fNHn6dTg2LNhTx9TrlOe
+ EcKdunG1MSvyvdSowx6gvQ12AZtyZVQQnywOp02qXRAP/wmgjtTogjuRWWMt43T0W0dTFHLHf0S
+ ayTL4DUJrMcOB00G9oSE+JHzIZqrwddcXs9ObivUmonQ33dTLgrWZjJtU2ssAwDL+KbjDX9g88e
+ IIVzjYPo49lcIu0/P8FQS9UyjeR/Gu5HNpvYjOoQvPSfQUpnRwRA3BRLk0EFr6ifnUd+fK7mJ35
+ lUpqQ0lzI16zVA==
+X-Google-Smtp-Source: AGHT+IFbbLoeVTjNWJ73pcGXeIrHHC+0nDE38UizNhc0T1dKiN5azIh0Qc+Du6mMx98OfLfiVcHUYA==
+X-Received: by 2002:a5d:47c9:0:b0:385:e013:73f0 with SMTP id
+ ffacd0b85a97d-385fd42df50mr1865800f8f.59.1733223946186; 
+ Tue, 03 Dec 2024 03:05:46 -0800 (PST)
+Received: from localhost (cpc1-brnt4-2-0-cust862.4-2.cable.virginm.net.
+ [86.9.131.95]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-385dece67dasm12756259f8f.8.2024.12.03.03.05.44
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 03 Dec 2024 03:05:45 -0800 (PST)
+From: Stafford Horne <shorne@gmail.com>
+To: QEMU Development <qemu-devel@nongnu.org>
+Cc: Stafford Horne <shorne@gmail.com>
+Subject: [PATCH v3 0/2] OpenRISC fixes for 9.2.0
+Date: Tue,  3 Dec 2024 11:05:34 +0000
+Message-ID: <20241203110536.402131-1-shorne@gmail.com>
+X-Mailer: git-send-email 2.47.0
 MIME-Version: 1.0
-X-FEAS-Client-IP: 10.127.64.11
-X-FE-Last-Public-Client-IP: 100.100.100.60
-X-FE-Policy-ID: 52:10:53:SYSTEM
-Received-SPF: pass client-ip=111.206.215.185;
- envelope-from=gaoshiyuan@baidu.com; helo=baidu.com
-X-Spam_score_int: -25
-X-Spam_score: -2.6
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::435;
+ envelope-from=shorne@gmail.com; helo=mail-wr1-x435.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -60,57 +88,31 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  "Gao,Shiyuan" <gaoshiyuan@baidu.com>
-From:  "Gao,Shiyuan" via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-PiBTb21lIGhhcmR3YXJlIGRldmljZXMgbm93IHN1cHBvcnQgUENJZSA1LjAsIHNvIGNoYW5nZSB0
-aGUgZGVmYXVsdA0KPiBzcGVlZCBvZiB0aGUgUENJZSByb290IHBvcnQgb24gbmV3IG1hY2hpbmUg
-dHlwZXMuDQo+DQo+IEZvciBwYXNzdGhyb3VnaCBOdmlkaWEgSDIwLCB0aGlzIHdpbGwgYmUgYWJs
-ZSB0byBpbmNyZWFzZSB0aGUgaDJkL2QyaA0KPiBiYW5kd2lkdGggfjE3JS4NCj4NCj4gT3JpZ2lu
-Og0KPiBbQ1VEQSBCYW5kd2lkdGggVGVzdF0gLSBTdGFydGluZy4uLg0KPiBSdW5uaW5nIG9uLi4u
-DQo+DQo+IERldmljZSAwOiBOVklESUEgSDIwDQo+IFF1aWNrIE1vZGUNCj4NCj4gSG9zdCB0byBE
-ZXZpY2UgQmFuZHdpZHRoLCAxIERldmljZShzKQ0KPiBQSU5ORUQgTWVtb3J5IFRyYW5zZmVycw0K
-PiAgICBUcmFuc2ZlciBTaXplIChCeXRlcykgICAgQmFuZHdpZHRoKE1CL3MpDQo+ICAgIDMzNTU0
-NDMyICAgICAgICAgICAgNDU5MTUuNA0KPg0KPiBEZXZpY2UgdG8gSG9zdCBCYW5kd2lkdGgsIDEg
-RGV2aWNlKHMpDQo+IFBJTk5FRCBNZW1vcnkgVHJhbnNmZXJzDQo+ICAgIFRyYW5zZmVyIFNpemUg
-KEJ5dGVzKSAgICBCYW5kd2lkdGgoTUIvcykNCj4gICAgMzM1NTQ0MzIgICAgICAgICAgICA0NTk4
-MC4zDQo+DQo+IERldmljZSB0byBEZXZpY2UgQmFuZHdpZHRoLCAxIERldmljZShzKQ0KPiBQSU5O
-RUQgTWVtb3J5IFRyYW5zZmVycw0KPiAgICBUcmFuc2ZlciBTaXplIChCeXRlcykgICAgQmFuZHdp
-ZHRoKE1CL3MpDQo+ICAgIDMzNTU0NDMyICAgICAgICAgICAgMTg0Mjg4Ni44DQo+DQo+IFJlc3Vs
-dCA9IFBBU1MNCj4NCj4gV2l0aCB0aGlzIHBhdGNoOg0KPiBbQ1VEQSBCYW5kd2lkdGggVGVzdF0g
-LSBTdGFydGluZy4uLg0KPiBSdW5uaW5nIG9uLi4uDQo+DQo+IERldmljZSAwOiBOVklESUEgSDIw
-DQo+IFF1aWNrIE1vZGUNCj4NCj4gSG9zdCB0byBEZXZpY2UgQmFuZHdpZHRoLCAxIERldmljZShz
-KQ0KPiBQSU5ORUQgTWVtb3J5IFRyYW5zZmVycw0KPiAgICBUcmFuc2ZlciBTaXplIChCeXRlcykJ
-QmFuZHdpZHRoKE1CL3MpDQo+ICAgIDMzNTU0NDMyCQkJNTM2ODIuMA0KPg0KPiBEZXZpY2UgdG8g
-SG9zdCBCYW5kd2lkdGgsIDEgRGV2aWNlKHMpDQo+IFBJTk5FRCBNZW1vcnkgVHJhbnNmZXJzDQo+
-ICAgIFRyYW5zZmVyIFNpemUgKEJ5dGVzKQlCYW5kd2lkdGgoTUIvcykNCj4gICAgMzM1NTQ0MzIJ
-CQk1Mzc2Ni4wDQo+DQo+IERldmljZSB0byBEZXZpY2UgQmFuZHdpZHRoLCAxIERldmljZShzKQ0K
-PiBQSU5ORUQgTWVtb3J5IFRyYW5zZmVycw0KPiAgICBUcmFuc2ZlciBTaXplIChCeXRlcykJQmFu
-ZHdpZHRoKE1CL3MpDQo+ICAgIDMzNTU0NDMyCQkJMTg0MjU1NS4xDQo+DQo+IFJlc3VsdCA9IFBB
-U1MNCj4NCj4gU2lnbmVkLW9mZi1ieTogR2FvIFNoaXl1YW4gPGdhb3NoaXl1YW5AYmFpZHUuY29t
-Pg0KPiAtLS0NCj4gaHcvY29yZS9tYWNoaW5lLmMgICAgICAgICAgICAgICAgICB8IDEgKw0KPiBo
-dy9wY2ktYnJpZGdlL2dlbl9wY2llX3Jvb3RfcG9ydC5jIHwgMiArLQ0KPiAyIGZpbGVzIGNoYW5n
-ZWQsIDIgaW5zZXJ0aW9ucygrKSwgMSBkZWxldGlvbigtKQ0KPg0KPiBkaWZmIC0tZ2l0IGEvaHcv
-Y29yZS9tYWNoaW5lLmMgYi9ody9jb3JlL21hY2hpbmUuYw0KPiBpbmRleCBhMzVjNGE4ZmFlLi5h
-ZmVmNTU2MjZkIDEwMDY0NA0KPiAtLS0gYS9ody9jb3JlL21hY2hpbmUuYw0KPiArKysgYi9ody9j
-b3JlL21hY2hpbmUuYw0KPiBAQCAtMzgsNiArMzgsNyBAQA0KPg0KPiBHbG9iYWxQcm9wZXJ0eSBo
-d19jb21wYXRfOV8xW10gPSB7DQo+ICAgICAgeyBUWVBFX1BDSV9ERVZJQ0UsICJ4LXBjaWUtZXh0
-LXRhZyIsICJmYWxzZSIgfSwNCj4gKyAgICB7ICJwY2llLXJvb3QtcG9ydCIsICJ4LXNwZWVkIiwg
-IjE2IiB9LA0KPiB9Ow0KPiBjb25zdCBzaXplX3QgaHdfY29tcGF0XzlfMV9sZW4gPSBHX05fRUxF
-TUVOVFMoaHdfY29tcGF0XzlfMSk7DQo+DQo+IGRpZmYgLS1naXQgYS9ody9wY2ktYnJpZGdlL2dl
-bl9wY2llX3Jvb3RfcG9ydC5jIGIvaHcvcGNpLWJyaWRnZS9nZW5fcGNpZV9yb290X3BvcnQuYw0K
-PiBpbmRleCA3ODQ1MDdjODI2Li5jMjRjZTFmMmQxIDEwMDY0NA0KPiAtLS0gYS9ody9wY2ktYnJp
-ZGdlL2dlbl9wY2llX3Jvb3RfcG9ydC5jDQo+ICsrKyBiL2h3L3BjaS1icmlkZ2UvZ2VuX3BjaWVf
-cm9vdF9wb3J0LmMNCj4gQEAgLTE0Miw3ICsxNDIsNyBAQCBzdGF0aWMgUHJvcGVydHkgZ2VuX3Jw
-X3Byb3BzW10gPSB7DQo+ICAgICAgREVGSU5FX1BST1BfU0laRSgicHJlZjY0LXJlc2VydmUiLCBH
-ZW5QQ0lFUm9vdFBvcnQsDQo+ICAgICAgICAgICAgICAgICAgICAgICByZXNfcmVzZXJ2ZS5tZW1f
-cHJlZl82NCwgLTEpLA0KPiAgICAgIERFRklORV9QUk9QX1BDSUVfTElOS19TUEVFRCgieC1zcGVl
-ZCIsIFBDSUVTbG90LA0KPiAtICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzcGVlZCwg
-UENJRV9MSU5LX1NQRUVEXzE2KSwNCj4gKyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-c3BlZWQsIFBDSUVfTElOS19TUEVFRF8zMiksDQo+ICAgICAgREVGSU5FX1BST1BfUENJRV9MSU5L
-X1dJRFRIKCJ4LXdpZHRoIiwgUENJRVNsb3QsDQo+ICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgIHdpZHRoLCBQQ0lFX0xJTktfV0lEVEhfMzIpLA0KPiAgICAgIERFRklORV9QUk9QX0VO
-RF9PRl9MSVNUKCkNCj4gLS0NCj4gMi4zNC4xDQoNClBpbmcuDQoNCg==
+This series has 2 fixes for OpenRISC that came in over that past few months.
+
+Since v2:
+ - Update the commit message of the serial@90000000 patch to indicate the
+   changes from v2.
+Since v1:
+ - Use DIVIDE_ROUND_UP instead of open coding as pointed out by Richard
+ - Fix off-by-1 bug in TTCR patch pointed out by Richard
+ - Fix commit message and reverse registration order as pointed out by Peter.
+
+
+Ahmad Fatoum (1):
+  hw/openrisc/openrisc_sim: keep serial@90000000 as default
+
+Joel Holdsworth (1):
+  hw/openrisc: Fixed undercounting of TTCR in continuous mode
+
+ hw/openrisc/cputimer.c     | 26 +++++++++++++++-----------
+ hw/openrisc/openrisc_sim.c | 26 ++++++++++++++++++++------
+ 2 files changed, 35 insertions(+), 17 deletions(-)
+
+-- 
+2.47.0
+
 
