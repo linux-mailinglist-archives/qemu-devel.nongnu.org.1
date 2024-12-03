@@ -2,27 +2,27 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77C8B9E10F8
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C4DF9E10FA
 	for <lists+qemu-devel@lfdr.de>; Tue,  3 Dec 2024 02:53:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tII5x-0007OV-J0; Mon, 02 Dec 2024 20:52:57 -0500
+	id 1tII5z-0007Q2-My; Mon, 02 Dec 2024 20:52:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1tII5o-0007NI-8R; Mon, 02 Dec 2024 20:52:48 -0500
+ id 1tII5r-0007O5-V4; Mon, 02 Dec 2024 20:52:53 -0500
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1tII5m-0006Sd-Rr; Mon, 02 Dec 2024 20:52:48 -0500
+ id 1tII5p-0006Sd-1a; Mon, 02 Dec 2024 20:52:50 -0500
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.12; Tue, 3 Dec
- 2024 09:52:25 +0800
+ 2024 09:52:26 +0800
 Received: from localhost.localdomain (192.168.10.10) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server id 15.2.1258.12 via Frontend
- Transport; Tue, 3 Dec 2024 09:52:25 +0800
+ Transport; Tue, 3 Dec 2024 09:52:26 +0800
 To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  <peter.maydell@linaro.org>, Steven Lee <steven_lee@aspeedtech.com>, Troy Lee
  <leetroy@gmail.com>, Andrew Jeffery <andrew@codeconstruct.com.au>, "Joel
@@ -30,9 +30,9 @@ To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  "open list:All patches CC here" <qemu-devel@nongnu.org>
 CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>,
  <yunlin.tang@aspeedtech.com>
-Subject: [PATCH v1 4/5] aspeed/soc: Support SDHCI for AST2700
-Date: Tue, 3 Dec 2024 09:52:23 +0800
-Message-ID: <20241203015224.3985820-5-jamin_lin@aspeedtech.com>
+Subject: [PATCH v1 5/5] aspeed/soc: Support eMMC for AST2700
+Date: Tue, 3 Dec 2024 09:52:24 +0800
+Message-ID: <20241203015224.3985820-6-jamin_lin@aspeedtech.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20241203015224.3985820-1-jamin_lin@aspeedtech.com>
 References: <20241203015224.3985820-1-jamin_lin@aspeedtech.com>
@@ -64,70 +64,44 @@ From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add SDHCI model for AST2700 SDHCI support. The SDHCI controller only support 1
-slot and registers base address is start at 0x1408_0000 and its interrupt is
-connected to GICINT133_INTC at bit 1.
+Add SDHCI model for AST2700 eMMC support. The eMMC controller only support 1
+slot and registers base address is start at 0x1209_0000 and its interrupt is
+connected to GICINT 15.
 
 Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
 ---
- hw/arm/aspeed_ast27x0.c | 20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
+ hw/arm/aspeed_ast27x0.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
 diff --git a/hw/arm/aspeed_ast27x0.c b/hw/arm/aspeed_ast27x0.c
-index 63d1fcb086..baddd35ecf 100644
+index baddd35ecf..23571584b2 100644
 --- a/hw/arm/aspeed_ast27x0.c
 +++ b/hw/arm/aspeed_ast27x0.c
-@@ -65,6 +65,7 @@ static const hwaddr aspeed_soc_ast2700_memmap[] = {
-     [ASPEED_DEV_I2C]       =  0x14C0F000,
-     [ASPEED_DEV_GPIO]      =  0x14C0B000,
-     [ASPEED_DEV_RTC]       =  0x12C0F000,
-+    [ASPEED_DEV_SDHCI]     =  0x14080000,
- };
- 
- #define AST2700_MAX_IRQ 256
-@@ -113,6 +114,7 @@ static const int aspeed_soc_ast2700_irqmap[] = {
-     [ASPEED_DEV_KCS]       = 128,
-     [ASPEED_DEV_DP]        = 28,
-     [ASPEED_DEV_I3C]       = 131,
-+    [ASPEED_DEV_SDHCI]     = 133,
- };
- 
- /* GICINT 128 */
-@@ -158,6 +160,7 @@ static const int aspeed_soc_ast2700_gic132_intcmap[] = {
- 
- /* GICINT 133 */
- static const int aspeed_soc_ast2700_gic133_intcmap[] = {
-+    [ASPEED_DEV_SDHCI]     = 1,
-     [ASPEED_DEV_PECI]      = 4,
- };
- 
-@@ -380,6 +383,14 @@ static void aspeed_soc_ast2700_init(Object *obj)
-     object_initialize_child(obj, "gpio", &s->gpio, typename);
- 
-     object_initialize_child(obj, "rtc", &s->rtc, TYPE_ASPEED_RTC);
+@@ -391,6 +391,12 @@ static void aspeed_soc_ast2700_init(Object *obj)
+     /* Init sd card slot class here so that they're under the correct parent */
+     object_initialize_child(obj, "sd-controller.sdhci",
+                             &s->sdhci.slots[0], TYPE_SYSBUS_SDHCI);
 +
-+    snprintf(typename, sizeof(typename), "aspeed.sdhci-%s", socname);
-+    object_initialize_child(obj, "sd-controller", &s->sdhci, typename);
-+    object_property_set_int(OBJECT(&s->sdhci), "num-slots", 1, &error_abort);
++    object_initialize_child(obj, "emmc-controller", &s->emmc, typename);
++    object_property_set_int(OBJECT(&s->emmc), "num-slots", 1, &error_abort);
 +
-+    /* Init sd card slot class here so that they're under the correct parent */
-+    object_initialize_child(obj, "sd-controller.sdhci",
-+                            &s->sdhci.slots[0], TYPE_SYSBUS_SDHCI);
++    object_initialize_child(obj, "emmc-controller.sdhci", &s->emmc.slots[0],
++                            TYPE_SYSBUS_SDHCI);
  }
  
  /*
-@@ -681,6 +692,15 @@ static void aspeed_soc_ast2700_realize(DeviceState *dev, Error **errp)
-     sysbus_connect_irq(SYS_BUS_DEVICE(&s->rtc), 0,
-                        aspeed_soc_get_irq(s, ASPEED_DEV_RTC));
+@@ -701,6 +707,15 @@ static void aspeed_soc_ast2700_realize(DeviceState *dev, Error **errp)
+     sysbus_connect_irq(SYS_BUS_DEVICE(&s->sdhci), 0,
+                        aspeed_soc_get_irq(s, ASPEED_DEV_SDHCI));
  
-+    /* SDHCI */
-+    if (!sysbus_realize(SYS_BUS_DEVICE(&s->sdhci), errp)) {
++    /* eMMC */
++    if (!sysbus_realize(SYS_BUS_DEVICE(&s->emmc), errp)) {
 +        return;
 +    }
-+    aspeed_mmio_map(s, SYS_BUS_DEVICE(&s->sdhci), 0,
-+                    sc->memmap[ASPEED_DEV_SDHCI]);
-+    sysbus_connect_irq(SYS_BUS_DEVICE(&s->sdhci), 0,
-+                       aspeed_soc_get_irq(s, ASPEED_DEV_SDHCI));
++    aspeed_mmio_map(s, SYS_BUS_DEVICE(&s->emmc), 0,
++                    sc->memmap[ASPEED_DEV_EMMC]);
++    sysbus_connect_irq(SYS_BUS_DEVICE(&s->emmc), 0,
++                       aspeed_soc_get_irq(s, ASPEED_DEV_EMMC));
 +
      create_unimplemented_device("ast2700.dpmcu", 0x11000000, 0x40000);
      create_unimplemented_device("ast2700.iomem0", 0x12000000, 0x01000000);
