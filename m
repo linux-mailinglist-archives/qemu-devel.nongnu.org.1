@@ -2,94 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D978D9E1BF6
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Dec 2024 13:20:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA63C9E1BFF
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Dec 2024 13:21:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tIRsW-0002ie-Fv; Tue, 03 Dec 2024 07:19:44 -0500
+	id 1tIRtj-0003U7-VO; Tue, 03 Dec 2024 07:20:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sebott@redhat.com>) id 1tIRsU-0002iG-88
- for qemu-devel@nongnu.org; Tue, 03 Dec 2024 07:19:42 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <gaoshiyuan@baidu.com>)
+ id 1tIRth-0003Tu-JI
+ for qemu-devel@nongnu.org; Tue, 03 Dec 2024 07:20:57 -0500
+Received: from mx24.baidu.com ([111.206.215.185] helo=baidu.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sebott@redhat.com>) id 1tIRsR-0006qE-Sw
- for qemu-devel@nongnu.org; Tue, 03 Dec 2024 07:19:41 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1733228377;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=fYbMlh2KrQvHJ8alP8dwH3CcsP4voIyLKOxOhu3uBqY=;
- b=PoS+ZepvhtXei0QrZrfDhLLiKLtxIgOUmRT/JRVHQuNtbkPUfO6Niz60BcT/0/cyz9ItHr
- KfdQYbWApzuhjac6mncdmqpCzymgZdj+v3PXYf7Y6/UUKzSvWgSrCtBIDvS0cP5bgqDees
- RS9krbRh4JyMxNN4hZ26LX06z3YDe6Q=
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
- [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-250-woeL8iJYPu-RQOa7RD5lGg-1; Tue, 03 Dec 2024 07:19:36 -0500
-X-MC-Unique: woeL8iJYPu-RQOa7RD5lGg-1
-X-Mimecast-MFC-AGG-ID: woeL8iJYPu-RQOa7RD5lGg
-Received: by mail-qk1-f198.google.com with SMTP id
- af79cd13be357-7b67a8cd4d2so706601685a.1
- for <qemu-devel@nongnu.org>; Tue, 03 Dec 2024 04:19:36 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733228376; x=1733833176;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=fYbMlh2KrQvHJ8alP8dwH3CcsP4voIyLKOxOhu3uBqY=;
- b=OzySgG62RsE/bMuCIgivu5v7BUl8xPKmTmfTGCipHY2F8fGEBTEj0FnkZLIgwY7tMJ
- jK/DtAEmmn1onxmzWv5AhvF8O9iyRniEVBnl4FrBZoURsdZYnoazHVJacUrkeQ0uIUNf
- 7v/BLDRu2M7izueQmm2gUyjsCwzUpGaRjknTIXgM8f5Ddr6N1wT+86v3WF7Eiym7Q0Va
- lw4Xn6EtEbmoQDJ3zK8P+vQL01ycEnvhg1sr+zXUP+h21FAxleVsQGS06QA0//W7U5y0
- et7rnpWViH/rj2QbJuPkScOdSXViL5BTPf/yYrCYAzvZHRd8bo7NRbesm4csDwmVkZP+
- JH/g==
-X-Gm-Message-State: AOJu0YzThiTAZT291RIgNaOgwCR15VLsawz4HF8c8SptkIgpAFfilDnq
- 2lpR535KCAFfH7FuzSnwHlZn0OWJJVFnu4SMGWCBgvWGpkmTQ6ihljO6hgm/ReCQwIsiNdletBd
- RDTimVltILOunn3HYSr7H6QIPGTy7cxHk+kiyP8oDoLcIFFvYZacr
-X-Gm-Gg: ASbGncsqWOFmld+AYwSNJuXkC4jKEGIjiMSHwUmmG+qdpGimGvpOL+zHdoq72xCXJ3/
- 4gY3Htv6fI7vz8l8WQErA6h68im5j50gaQqO9e8n0+Hsr2zqWrsP8W+TCgzNq3Y4ZHKRrOeeYQU
- F2NWXaUBFh+uGvBOqaRgzIpMPjF1OxJRdd0unptg6rJc3MTV7wVDJba4Hzzht0BrEbdXffxIorS
- B5SjC5SZOK+wtKslvyCD9h2T+RHzP7VkSEgD+V6AHo7TInleS+uAC4jjUo8OmHVmYwbMbwy0839
- WaJJlGk4LWHK7kYEM3yZaRF3OtnsyfNFUcFw
-X-Received: by 2002:a05:620a:4108:b0:7b6:913f:3df3 with SMTP id
- af79cd13be357-7b6a61ca1d2mr235272585a.47.1733228376402; 
- Tue, 03 Dec 2024 04:19:36 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHhBmOiBqlA6CAHNu/sB+PO1xSri1XTEQ42ZFtQgifXbwpHV81jboli47uspTkz+IRBWzR7Fw==
-X-Received: by 2002:a05:620a:4108:b0:7b6:913f:3df3 with SMTP id
- af79cd13be357-7b6a61ca1d2mr235271285a.47.1733228376140; 
- Tue, 03 Dec 2024 04:19:36 -0800 (PST)
-Received: from rh.redhat.com
- (p200300f6af0bca008282df582fad0b68.dip0.t-ipconnect.de.
- [2003:f6:af0b:ca00:8282:df58:2fad:b68])
- by smtp.gmail.com with ESMTPSA id
- af79cd13be357-7b6849aac52sm504203285a.92.2024.12.03.04.19.34
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 03 Dec 2024 04:19:35 -0800 (PST)
-From: Sebastian Ott <sebott@redhat.com>
-To: Alex Williamson <alex.williamson@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- "Michael S . Tsirkin" <mst@redhat.com>
-Cc: qemu-devel@nongnu.org, Sebastian Ott <sebott@redhat.com>,
- Zhenyu Zhang <zhenyzha@redhat.com>
-Subject: [PATCH v2] pci: ensure valid link status bits for downstream ports
-Date: Tue,  3 Dec 2024 13:19:28 +0100
-Message-ID: <20241203121928.14861-1-sebott@redhat.com>
-X-Mailer: git-send-email 2.47.0
+ (Exim 4.90_1) (envelope-from <gaoshiyuan@baidu.com>)
+ id 1tIRtf-000780-5g
+ for qemu-devel@nongnu.org; Tue, 03 Dec 2024 07:20:57 -0500
+To: =?utf-8?B?RGFuaWVsIFAuIEJlcnJhbmfDqQ==?= <berrange@redhat.com>
+CC: "eduardo@habkost.net" <eduardo@habkost.net>, "marcel.apfelbaum@gmail.com"
+ <marcel.apfelbaum@gmail.com>, "mst@redhat.com" <mst@redhat.com>,
+ "zhao1.liu@intel.com" <zhao1.liu@intel.com>, "alex.williamson@redhat.com"
+ <alex.williamson@redhat.com>, "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+Subject: Re: [PATCH 1/1] pcie-root-port: Fast PCIe root ports for new machine
+Thread-Topic: [PATCH 1/1] pcie-root-port: Fast PCIe root ports for new machine
+Thread-Index: AQHbRX2/fC8FNue/40yeOjgxK7k8Og==
+Date: Tue, 3 Dec 2024 12:20:32 +0000
+Message-ID: <404E454C-329D-456E-9F64-38DD650B9AD5@baidu.com>
+Accept-Language: en-US, zh-CN
+Content-Language: zh-CN
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.22.193.14]
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <9382370DB31EC94DA0BFACE7A853B3CB@internal.baidu.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=sebott@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -50
-X-Spam_score: -5.1
-X-Spam_bar: -----
-X-Spam_report: (-5.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.996,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-FEAS-Client-IP: 172.31.51.45
+X-FE-Last-Public-Client-IP: 100.100.100.60
+X-FE-Policy-ID: 52:10:53:SYSTEM
+Received-SPF: pass client-ip=111.206.215.185;
+ envelope-from=gaoshiyuan@baidu.com; helo=baidu.com
+X-Spam_score_int: -25
+X-Spam_score: -2.6
+X-Spam_bar: --
+X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_LOW=-0.7,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,62 +60,17 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  "Gao,Shiyuan" <gaoshiyuan@baidu.com>
+From:  "Gao,Shiyuan" via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-PCI hotplug for downstream endpoints on arm fails because Linux'
-PCIe hotplug driver doesn't like the QEMU provided LNKSTA:
-
-  pcieport 0000:08:01.0: pciehp: Slot(2): Card present
-  pcieport 0000:08:01.0: pciehp: Slot(2): Link Up
-  pcieport 0000:08:01.0: pciehp: Slot(2): Cannot train link: status 0x2000
-
-There's 2 cases where LNKSTA isn't setup properly:
-* the downstream device has no express capability
-* max link width of the bridge is 0
-
-Move the sanity checks added via 88c869198aa63
-("pci: Sanity test minimum downstream LNKSTA") outside of the
-branch to make sure downstream ports always have a valid LNKSTA.
-
-Signed-off-by: Sebastian Ott <sebott@redhat.com>
-Tested-by: Zhenyu Zhang <zhenyzha@redhat.com>
----
- hw/pci/pcie.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
-
-diff --git a/hw/pci/pcie.c b/hw/pci/pcie.c
-index 0b455c8654..1b12db6fa2 100644
---- a/hw/pci/pcie.c
-+++ b/hw/pci/pcie.c
-@@ -1113,18 +1113,22 @@ void pcie_sync_bridge_lnk(PCIDevice *bridge_dev)
-         if ((lnksta & PCI_EXP_LNKSTA_NLW) > (lnkcap & PCI_EXP_LNKCAP_MLW)) {
-             lnksta &= ~PCI_EXP_LNKSTA_NLW;
-             lnksta |= lnkcap & PCI_EXP_LNKCAP_MLW;
--        } else if (!(lnksta & PCI_EXP_LNKSTA_NLW)) {
--            lnksta |= QEMU_PCI_EXP_LNKSTA_NLW(QEMU_PCI_EXP_LNK_X1);
-         }
- 
-         if ((lnksta & PCI_EXP_LNKSTA_CLS) > (lnkcap & PCI_EXP_LNKCAP_SLS)) {
-             lnksta &= ~PCI_EXP_LNKSTA_CLS;
-             lnksta |= lnkcap & PCI_EXP_LNKCAP_SLS;
--        } else if (!(lnksta & PCI_EXP_LNKSTA_CLS)) {
--            lnksta |= QEMU_PCI_EXP_LNKSTA_CLS(QEMU_PCI_EXP_LNK_2_5GT);
-         }
-     }
- 
-+    if (!(lnksta & PCI_EXP_LNKSTA_NLW)) {
-+        lnksta |= QEMU_PCI_EXP_LNKSTA_NLW(QEMU_PCI_EXP_LNK_X1);
-+    }
-+
-+    if (!(lnksta & PCI_EXP_LNKSTA_CLS)) {
-+        lnksta |= QEMU_PCI_EXP_LNKSTA_CLS(QEMU_PCI_EXP_LNK_2_5GT);
-+    }
-+
-     pci_word_test_and_clear_mask(exp_cap + PCI_EXP_LNKSTA,
-                                  PCI_EXP_LNKSTA_CLS | PCI_EXP_LNKSTA_NLW);
-     pci_word_test_and_set_mask(exp_cap + PCI_EXP_LNKSTA, lnksta &
--- 
-2.42.0
-
+Pg0KPiBUaGVyZSB3YXMgYSBxdWVzdGlvbiBmcm9tIEpvbmF0aGFuIENhbWVyb24gb24gdGhlIG9y
+aWdpbmFsIHBvc3Rpbmcgb2YgdGhpcw0KPiBwYXRjaCB0aGF0IGlzIGF3YWl0aW5nIHlvdXIgYW5z
+d2VyLi4uLg0KDQpTb3JyeSwgdGhlIHJlcGx5IGlzIGZvcmdvdHRlbiB0byBjYyBxZW11LWRldmVs
+LCBJIGhhdmUgcmVzZW5kIGl0Lg0KDQo+DQo+DQo+IFJlZ2FyZGxlc3MsIGF0IHRoaXMgdGltZSBp
+biB0aGUgcmVsZWFzZSBjeWNsZSBpdHMgdG9vIGxhdGUgZm9yIDkuMiwgc28gdGhpcw0KPiBwYXRj
+aCB3b3VsZCBsaWtlbHkgbmVlZCB0byBiZSBhZGFwdGVkIGZvciB0aGUgMTAuMCByZWxlYXNlIGFu
+ZCB0byB1c2UgdGhlDQo+IGh3X2NvbXBhdF85XzIgdGhhdCB3aWxsIHRoZW4gYmUgYWRkZWQuDQo+
+DQoNClRoYW5rcywgSSdsbCBhZGFwdCBmb3IgdGhlIDEwLjAgcmVsZWFzZS4NCg0K
 
