@@ -2,84 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B88A9E135C
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Dec 2024 07:32:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 730BF9E135A
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Dec 2024 07:32:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tIMRc-0000Bk-FP; Tue, 03 Dec 2024 01:31:36 -0500
+	id 1tIMRT-00007u-B8; Tue, 03 Dec 2024 01:31:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1tIMRa-0000B1-IV; Tue, 03 Dec 2024 01:31:34 -0500
-Received: from mail-vs1-xe33.google.com ([2607:f8b0:4864:20::e33])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1tIMRZ-0008EX-1z; Tue, 03 Dec 2024 01:31:34 -0500
-Received: by mail-vs1-xe33.google.com with SMTP id
- ada2fe7eead31-4aefdbf8134so1197414137.2; 
- Mon, 02 Dec 2024 22:31:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1733207491; x=1733812291; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=51e6sQVFtPJq/fpzqreSigR1j2ToG7DiQDj/JiDYmeE=;
- b=Uns72N7K78CRNpCQS6UXlG7lPkvK3ExCErVk/vUOWiggjj8qfeGmPdh27CpSSStJHg
- cn6XY6iHNUbLF+KMcI3loDqUkG9yx+EzQEHh5UGNft9q7h4eK+XaH4ziO2uIR6ZlMip/
- 5uM7BWwQ42f7bi95RJaugGkXiY+wslEYGIGtK3PvTfUA+d8DK7LXUV567L5Ehuo9ejRR
- RhxfHo2k+b2XinNHB3H0uw0IdhCCwxLu+8hs5ZAiOvKrbkwraf0hLjSQTYyse6nCniUG
- 5NG7usNn48nb5UCBMXqyeUmmIYCorXeZ1CWe9aLsyUGE6ENB7uBliksFaTjeDIacBnFv
- YvJw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733207491; x=1733812291;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=51e6sQVFtPJq/fpzqreSigR1j2ToG7DiQDj/JiDYmeE=;
- b=SgYkPS8PQrdmh9RyUn547ms2lJ/dX8P3IztcE9Ps6z8kcxw+STLa2ddJeqoftyYWbG
- 1nBu4doUvFxN008VgxLH/CMjBn08GtF3JAG+btJFzy1ReLGpeOZ6/ZdTO8cBa92Kz7hG
- yd8JCCfuQbcll8rOP2eXoz7V8dLLhyAhQjz4QPZ3X1L5RHvPqVGPIILKgEIx1AeLvuxJ
- sqtHIJsgviMhUTQ9vmkwtQCsWWls5thoCVT7h+g3J3+MFc8IgZm6Xe7dXP6MxzXMLtPm
- E4xepcBhcML1rKpLXN3racODhtwLvICQ1obVxHredWYbcX1dm7GCX6SFWTQyMl2FbfFt
- /w6Q==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWefAed4oketnSkktLkG1uEKMpjXdKP+WoUPN1HwGBl7ak+cgFRxoLwCeEwPUZIVq4dEi12SQ9Iv+rB@nongnu.org
-X-Gm-Message-State: AOJu0YzNEAzug2L3qrrX8t9lSqNIsvpv6QLn6wL1QZDRw7AO+oq641gu
- v9pQnlIdQa5pZa4+RbR+kjOy1wD0y1IeZoG3jUil72Px7qWziUqV5s7Eecsp+KoVJKkV+eIanuY
- RuC2rtujZBzf6bMCeN6Z9EzGkDUA=
-X-Gm-Gg: ASbGncvi1tHemRJcysB/E9Aj4DJcWpyRJS5LzMiJuky6nUxhcs+dI8FYiFW5fE7jWzR
- 8ZIb148vG9LTAHbceCjd7BkfwnMd/HWel
-X-Google-Smtp-Source: AGHT+IGtaq20FQ+nAGp+2AO8fkuENF7tv8k5U255kXq3on0N5HAQBvZu4Q151Hvz6z1UH6SlbOwvh0XLUudpqfHEEHU=
-X-Received: by 2002:a05:6102:a4a:b0:4a3:a014:38aa with SMTP id
- ada2fe7eead31-4af9723815fmr2407407137.11.1733207491294; Mon, 02 Dec 2024
- 22:31:31 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <its@irrelevant.dk>) id 1tIMRP-00007E-V5
+ for qemu-devel@nongnu.org; Tue, 03 Dec 2024 01:31:23 -0500
+Received: from fhigh-b1-smtp.messagingengine.com ([202.12.124.152])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <its@irrelevant.dk>) id 1tIMRN-0008CK-JH
+ for qemu-devel@nongnu.org; Tue, 03 Dec 2024 01:31:23 -0500
+Received: from phl-compute-06.internal (phl-compute-06.phl.internal
+ [10.202.2.46])
+ by mailfhigh.stl.internal (Postfix) with ESMTP id BF02025400C8;
+ Tue,  3 Dec 2024 01:31:18 -0500 (EST)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+ by phl-compute-06.internal (MEProxy); Tue, 03 Dec 2024 01:31:18 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=irrelevant.dk;
+ h=cc:cc:content-transfer-encoding:content-type:date:date:from
+ :from:in-reply-to:message-id:mime-version:reply-to:subject
+ :subject:to:to; s=fm3; t=1733207478; x=1733293878; bh=0VuvnZV8/K
+ httzv+ynGdwiLaf0vRTVc05qsW7jncOOE=; b=NrL/exz4vAhGObBaH6OcyJzgEE
+ aw9EoqyQK9jDRaEDJjo/c56r0tKPvu0INLpp56lI9+z14ixF4T6g8pyDnWY71ACk
+ 09JxVUqeqSJAjHUDvNbOH0iETublIGSYKYNXEcGsxUnbJMjQvkx6j4jcGzp4tUdA
+ F/PxYLcgowotxWS27mUvA2upGVtdSoMZkwL6aw5TugkKk9G42WEQqXiBqJLa14WU
+ 1Pm7m9J+hMJGJvGakO/9HZnf2d4p2hrqy+oTP1tJ6yrv/XgTzHp91pIbuRgnTHJy
+ ebdCcmRkx6VieQm06jocsxukVMld2dr6y5aDgZ8CPuynJ+dEF+tzltxEirZg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+ messagingengine.com; h=cc:cc:content-transfer-encoding
+ :content-type:date:date:feedback-id:feedback-id:from:from
+ :in-reply-to:message-id:mime-version:reply-to:subject:subject:to
+ :to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+ 1733207478; x=1733293878; bh=0VuvnZV8/Khttzv+ynGdwiLaf0vRTVc05qs
+ W7jncOOE=; b=wzxXAHzM3xhbYmFiXPfqL1SMwuHuWsQbRE26xCAJCaNT4KJKhNw
+ XYbA/l1rzLtQeRTg7aQGSrcaVTS4IlOoT0ScNUkWdaOUBWPlLDk6oHOj9N4Q86or
+ tDrje8wdW22Nok9nItgnN3SMoi2NaPh5UZ7HSqqJl2FNyUn3EjwLTJJ++ByBeyzq
+ oRdBTLxs+IFfB/Uu9oKgYGhA5Kf3lblWDpcHpPU0WKnugWFi87evFJaXzmDDqPWd
+ nvzTJk/b2mvTo/XQRjgr1Xpfomvk7YXnNx+s0r+K3b4ygVixDRWbQJA30PN66zSh
+ bEt/slMBUgkj9zHs4r7i27Ql6p03WBk1/lQ==
+X-ME-Sender: <xms:taVOZ6huXB3z3DCXaiVUWlO0lRHdVe43pyE_hAt5sr3L0_NS1fUdWg>
+ <xme:taVOZ7ApnIZYJIRVWHxTNRVZkVAFl1inopBRIhl9uRmfTiEfzq3hMXLiMvhDwih9y
+ DKtVNR140lnGBJUchs>
+X-ME-Received: <xmr:taVOZyE4kqP5JaHyxfJ9ZAJ-A-9sl-JalbOksmQVPAmXiHeRHyBMWu2DQnIARXOx7u5S3SOQZqBGU06bTxtI9Tw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddriedugddujecutefuodetggdotefrodftvf
+ curfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdpuffr
+ tefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnth
+ hsucdlqddutddtmdenucfjughrpefhvfevufffkffoggfgsedtkeertdertddtnecuhfhr
+ ohhmpefmlhgruhhsucflvghnshgvnhcuoehithhssehirhhrvghlvghvrghnthdrughkqe
+ enucggtffrrghtthgvrhhnpeejveehvefhhfdvgeevteejvefgveegueeuheffueevvdej
+ jeejudehieeuffekhfenucffohhmrghinhepghhithhlrggsrdgtohhmnecuvehluhhsth
+ gvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepihhtshesihhrrhgvlhgv
+ vhgrnhhtrdgukhdpnhgspghrtghpthhtohepfedpmhhouggvpehsmhhtphhouhhtpdhrtg
+ hpthhtohepqhgvmhhuqdguvghvvghlsehnohhnghhnuhdrohhrghdprhgtphhtthhopehp
+ vghtvghrrdhmrgihuggvlhhlsehlihhnrghrohdrohhrghdprhgtphhtthhopehkrdhjvg
+ hnshgvnhesshgrmhhsuhhnghdrtghomh
+X-ME-Proxy: <xmx:tqVOZzT4_qSQ65_-61xPZ1FAeCdKOaz3BDVIlkDCAq8FWB06hX5eHA>
+ <xmx:tqVOZ3wqwnd9BMNMqmuwoDFvQkqcHh2sPYs0yjk0a-qFTeXiy0pStg>
+ <xmx:tqVOZx4bDqPfss5JhXXgZaWrl1ly2l_goiFriq1__wZecpSHazHkdw>
+ <xmx:tqVOZ0wRpI8Pp5FPzWVmTJs0pgcHIyjr7DlOLUv9cBzP4fVw8lb9KQ>
+ <xmx:tqVOZ3-GpzrCYjN79bG7adsz1_fRW0N7DgIuUVX14q4w6kaCOIQxchAW>
+Feedback-ID: idc91472f:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 3 Dec 2024 01:31:17 -0500 (EST)
+From: Klaus Jensen <its@irrelevant.dk>
+To: qemu-devel@nongnu.org
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ Klaus Jensen <k.jensen@samsung.com>
+Subject: [PULL 0/4] nvme queue
+Date: Tue,  3 Dec 2024 07:31:07 +0100
+Message-ID: <20241203063112.9135-1-its@irrelevant.dk>
+X-Mailer: git-send-email 2.45.2
 MIME-Version: 1.0
-References: <20241128103831.3452572-1-peter.maydell@linaro.org>
-In-Reply-To: <20241128103831.3452572-1-peter.maydell@linaro.org>
-From: Alistair Francis <alistair23@gmail.com>
-Date: Tue, 3 Dec 2024 15:31:05 +0900
-Message-ID: <CAKmqyKOYjhdp1fNSnqGdhyFJF2Ywhi16q_h3+LaATFuFFqoHpg@mail.gmail.com>
-Subject: Re: [PATCH for-9.2] target/riscv: Avoid bad shift in
- riscv_cpu_do_interrupt()
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org, Palmer Dabbelt <palmer@dabbelt.com>, 
- Alistair Francis <alistair.francis@wdc.com>, Bin Meng <bmeng.cn@gmail.com>, 
- Weiwei Li <liwei1518@gmail.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>, 
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, qemu-riscv@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::e33;
- envelope-from=alistair23@gmail.com; helo=mail-vs1-xe33.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=202.12.124.152; envelope-from=its@irrelevant.dk;
+ helo=fhigh-b1-smtp.messagingengine.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
+X-Spam_bar: --
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H2=-0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,64 +103,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Nov 28, 2024 at 7:39=E2=80=AFPM Peter Maydell <peter.maydell@linaro=
-.org> wrote:
->
-> In riscv_cpu_do_interrupt() we use the 'cause' value we got out of
-> cs->exception as a shift value.  However this value can be larger
-> than 31, which means that "1 << cause" is undefined behaviour,
-> because we do the shift on an 'int' type.
->
-> This causes the undefined behaviour sanitizer to complain
-> on one of the check-tcg tests:
->
-> $ UBSAN_OPTIONS=3Dprint_stacktrace=3D1:abort_on_error=3D1:halt_on_error=
-=3D1 ./build/clang/qemu-system-riscv64 -M virt -semihosting -display none -=
-device loader,file=3Dbuild/clang/tests/tcg/riscv64-softmmu/issue1060
-> ../../target/riscv/cpu_helper.c:1805:38: runtime error: shift exponent 63=
- is too large for 32-bit type 'int'
->     #0 0x55f2dc026703 in riscv_cpu_do_interrupt /mnt/nvmedisk/linaro/qemu=
--from-laptop/qemu/build/clang/../../target/riscv/cpu_helper.c:1805:38
->     #1 0x55f2dc3d170e in cpu_handle_exception /mnt/nvmedisk/linaro/qemu-f=
-rom-laptop/qemu/build/clang/../../accel/tcg/cpu-exec.c:752:9
->
-> In this case cause is RISCV_EXCP_SEMIHOST, which is 0x3f.
->
-> Use 1ULL instead to ensure that the shift is in range.
->
-> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+From: Klaus Jensen <k.jensen@samsung.com>
 
-Thanks!
+Hi,
 
-Applied to riscv-to-apply.next
+The following changes since commit eb22a064455aeebc105cc89bf77f48aa18b52938:
 
-Alistair
+  Merge tag 'pull-request-2024-12-02' of https://gitlab.com/thuth/qemu into staging (2024-12-02 16:16:15 +0000)
 
-> ---
->  target/riscv/cpu_helper.c | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
->
-> diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
-> index 0a3ead69eab..45806f5ab0f 100644
-> --- a/target/riscv/cpu_helper.c
-> +++ b/target/riscv/cpu_helper.c
-> @@ -1802,10 +1802,10 @@ void riscv_cpu_do_interrupt(CPUState *cs)
->      bool async =3D !!(cs->exception_index & RISCV_EXCP_INT_FLAG);
->      target_ulong cause =3D cs->exception_index & RISCV_EXCP_INT_MASK;
->      uint64_t deleg =3D async ? env->mideleg : env->medeleg;
-> -    bool s_injected =3D env->mvip & (1 << cause) & env->mvien &&
-> -        !(env->mip & (1 << cause));
-> -    bool vs_injected =3D env->hvip & (1 << cause) & env->hvien &&
-> -        !(env->mip & (1 << cause));
-> +    bool s_injected =3D env->mvip & (1ULL << cause) & env->mvien &&
-> +        !(env->mip & (1ULL << cause));
-> +    bool vs_injected =3D env->hvip & (1ULL << cause) & env->hvien &&
-> +        !(env->mip & (1ULL << cause));
->      target_ulong tval =3D 0;
->      target_ulong tinst =3D 0;
->      target_ulong htval =3D 0;
-> --
-> 2.34.1
->
->
+are available in the Git repository at:
+
+  https://gitlab.com/birkelund/qemu.git tags/pull-nvme-20241203
+
+for you to fetch changes up to 6651f8f2e5051f6750c2534ab3151339b3c476a2:
+
+  hw/nvme: take a reference on the subsystem on vf realization (2024-12-03 07:28:27 +0100)
+
+----------------------------------------------------------------
+nvme queue
+
+----------------------------------------------------------------
+Klaus Jensen (4):
+      hw/nvme: fix msix_uninit with exclusive bar
+      hw/nvme: fix use/unuse of msix vectors
+      hw/nvme: SR-IOV VFs must hardwire pci interrupt pin register to zero
+      hw/nvme: take a reference on the subsystem on vf realization
+
+ hw/nvme/ctrl.c | 27 +++++++++++++++++++++++----
+ 1 file changed, 23 insertions(+), 4 deletions(-)
 
