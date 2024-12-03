@@ -2,87 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D4659E1B0A
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Dec 2024 12:33:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C1C09E1B02
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Dec 2024 12:32:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tIR8Q-00007p-LO; Tue, 03 Dec 2024 06:32:09 -0500
+	id 1tIR8c-0000BS-5i; Tue, 03 Dec 2024 06:32:18 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tIR8H-00006Y-K6
- for qemu-devel@nongnu.org; Tue, 03 Dec 2024 06:31:58 -0500
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tIR8M-00007u-Jq
+ for qemu-devel@nongnu.org; Tue, 03 Dec 2024 06:32:03 -0500
+Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tIR8F-0000Z5-KS
- for qemu-devel@nongnu.org; Tue, 03 Dec 2024 06:31:57 -0500
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-4349f160d62so46125695e9.2
- for <qemu-devel@nongnu.org>; Tue, 03 Dec 2024 03:31:55 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tIR8K-0000ZZ-Eu
+ for qemu-devel@nongnu.org; Tue, 03 Dec 2024 06:32:02 -0500
+Received: by mail-wr1-x436.google.com with SMTP id
+ ffacd0b85a97d-385d7f19f20so2402508f8f.1
+ for <qemu-devel@nongnu.org>; Tue, 03 Dec 2024 03:32:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1733225513; x=1733830313; darn=nongnu.org;
+ d=linaro.org; s=google; t=1733225519; x=1733830319; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=V+svFV1xcdJrlV8NyDIn4cv3Yc08EHLS4Zn1tNR/Xs0=;
- b=mrzAWRLF6D/PaefW0z78aATHb/wCSsckXrzwMxZ52XD1RKvAGvYUo3hBiU5sOtxfnd
- TTUU6NCJzX6GdotkOHYSRI0mIeMKYZDt2XpDzYE9N3iWRNxSVOLysGpohVri33EUU58+
- OX4q5bG8qk1VGHM/8vkoPVGswv7YUWfJwF7YJnO9x/2Ylkru/i8VA6QpsqWOGMAkXLan
- DLIVu+5jh+Jqijzez+kDr9NncTTnzwewk2CC+5OY5vs7nUKVXI74fgSANYeNN7sV1b/9
- 7iv/b73Heh2lwbMSEVCDPrZ5Z45E/az+s8rtfbj6HEW5Om22nzUlTIJ1BXPX/W63jRWC
- ghTA==
+ bh=oU20d9+ticWenlMt5qSEyuabqKxdhpNZ4aYUuZ3tAj0=;
+ b=jf3BFouz66Dhxe+w9UaceZCGMCoUREu3kg+rbWzuzUFEu+nzhaqTf2Xu0uCqn7P603
+ iJ1G/2SCmurQWoMSES03TOAn2IIbX5hIgQ+znkbig+Pdze2kXOAB/a35ddw4R67BRFth
+ TMZUaVHVLEzovbwAMBQgz9nbK2ZwmVXlKBtJeY1+wKlmypGlwN3moKYy9IcAn5Npuh1/
+ bDtQWwaaOf8rZj/289eulxU558jwKLJ5J6a80obDLFe6NXVTu67lN7GBnFC98W1v+nUl
+ S4FgLra0P6OQmZkb1Ct+HKIenDBWuJ07n/p8qUo9t6oyqNrITvsMWmQV4oec1Uuh3R4Z
+ Fzgw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733225513; x=1733830313;
+ d=1e100.net; s=20230601; t=1733225519; x=1733830319;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=V+svFV1xcdJrlV8NyDIn4cv3Yc08EHLS4Zn1tNR/Xs0=;
- b=unV8ie2B8OyXIGWBlfWUM+p6XwQ/xsSCNp24tXHuvbCXCRlqjmVtm14pmCMElT4+EA
- 5UJlMhiKB9leVuJ+Ia1BS6/bwcN4lyQXrN0h/C97YNOxWnK+ToaNR7dDYYtF7Tbuiqt4
- ZeviWjwqoGDZBKXrDoYgHBWdf0ZXq5qY5/AqeQQpw4lZLk+Dg7Ln8B+PNncxD44LU4gz
- /q0Ypcpsrr6CuABnNhdoh/0fgaasKj17oVVDIifFygTx07OjKkzrMCY/HiLCo4LetqoC
- mqCT8bd+sPCDX9gRcZZeVSFt5z0yjJo+xRnE+ivl8cohvi/GLmZ6pbhLX3Y3GMVWV8Hx
- zTCQ==
-X-Gm-Message-State: AOJu0Yx0SDTPhGXKWU8QN5a2p6dolKWihAMWsoKEaKRcX6CNbrTlSbV5
- zNPZN1v0fgwVGwiPgPMIa8k44vZAvY5rZxIcumI0Wa+Rx1mz4/nY7iEaX3SopyIVxLDO+6YOXfG
- hA1k=
-X-Gm-Gg: ASbGnctfWg9dU4UrDZJs0pcerBmUkOaTNkRAXfsiPigBYyj0omw/D9UOgUhl2hmes41
- bPDsgkX3YlJgeQgxAvkFVf3izxhe8aBdbKsG6IWz8m2/W1d1NDuNHQSD7AHSMGEtDdT76P8SLPK
- 5CeqSuW0cM/+peZb0eGJmMb3uTpIwyi+uT1oadcrZzERiVOfML6oNqmBedRCU3Pzjj7hcgDSzsZ
- eoCoglSoVr+XbeE0xRV7Ie1jMBDh4Es4QLhRNQP5x/KnY5kXuUq+NaLL9zxpUlY0/WsScGY
-X-Google-Smtp-Source: AGHT+IFGC3rv91P3cacUsLumBgAVWHgDONohZwYD6IePZL4x7nYFXOxPx0JbEAKDibmeZBkLs2DIlA==
-X-Received: by 2002:a05:600c:4f12:b0:434:a29d:6c71 with SMTP id
- 5b1f17b1804b1-434d0a1d4admr16898285e9.27.1733225513545; 
- Tue, 03 Dec 2024 03:31:53 -0800 (PST)
+ bh=oU20d9+ticWenlMt5qSEyuabqKxdhpNZ4aYUuZ3tAj0=;
+ b=p5v1VNqRLPbpqWRRJ8EovsCGh+m7ox7Vbs+mGzzyjdZtFMBCGibgdgPF5oFpwzQPV7
+ v6FQWxcEtYFSLsOEYB5Lbu4dnQjYnVcfVpO37vFVMDy4UTWfMS1tjfS/CnmQZ6KemQmX
+ hg0x6iFHruOuqESyWfcRwkQTOa4L7j9f8anB/iKhy96pwie+cw2c31Mt6gEK1uTbw+yb
+ Ac9mDBEp7//p/X/KGE936hHQ3MoKqG5lQ8kGL8+xczgTpQlfCLyxHwgduOgjjn98OU/H
+ TxA90bh+0MWGnX+9Ut237ODmrgY4xGy2nE7txbe6/kGBw3AqHvZbndJdRyzXBcJbF3ar
+ z5aQ==
+X-Gm-Message-State: AOJu0Yy+Y08r25r5gfsDDe7P5CUuhOlR4MZsafnviYw8MI5yNAVFKkJv
+ UNHxCmtrbZfAaRrj0+6m+cMafisX/xB/pT5+Wpmmj1tY9wd/jCmEf73wY/ScnPwj61P5sNuKsjL
+ lSz0=
+X-Gm-Gg: ASbGncvWKZB/yF01ISHu+V2abaQmEqEbYjfrv3ZOSS82hpN6zd0qZ457ehvYrZ+aJfN
+ Rn1nGePWVSAZ7tHal4y2e00icq4uTXLhI4iCe6PvJumeot/01zyOmKxv5NXpzWOJAj+0VlaozHU
+ DzPMgDxXI+qkMUiXIk/6wQkvMj3Ltezhy6lKW4/lAxrLTuzajORweuYvVx+x6NcsWcLoRFKWM2U
+ +b0Kqw/LI5XQLwn5aX/q96OP0HZAzBTUsuiKjKhBXn2LGCjIP7Mk7VQxuwGTwhxuy2KXCS5
+X-Google-Smtp-Source: AGHT+IEtZWmegdICLI9aWtlYbudzUo9oMZeYY9rnzYt4FNGp82Yy25Z3gmDGzD1WC42+1GQOp4FHDA==
+X-Received: by 2002:a05:6000:1866:b0:385:e429:e59e with SMTP id
+ ffacd0b85a97d-385fd424daamr1880609f8f.52.1733225518677; 
+ Tue, 03 Dec 2024 03:31:58 -0800 (PST)
 Received: from localhost.localdomain ([176.187.209.146])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-434d04e7380sm18163625e9.0.2024.12.03.03.31.52
+ ffacd0b85a97d-385e86f5dd2sm9167687f8f.18.2024.12.03.03.31.57
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 03 Dec 2024 03:31:53 -0800 (PST)
+ Tue, 03 Dec 2024 03:31:58 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>, qemu-stable@nongnu.org,
- Stafford Horne <shorne@gmail.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 02/13] hw/openrisc/openrisc_sim: keep serial@90000000 as default
-Date: Tue,  3 Dec 2024 12:31:29 +0100
-Message-ID: <20241203113140.63513-3-philmd@linaro.org>
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Phil Dennis-Jordan <phil@philjordan.eu>
+Subject: [PULL 03/13] ui/cocoa: Temporarily ignore annoying deprecated
+ declaration warnings
+Date: Tue,  3 Dec 2024 12:31:30 +0100
+Message-ID: <20241203113140.63513-4-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241203113140.63513-1-philmd@linaro.org>
 References: <20241203113140.63513-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::436;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,120 +97,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+These warnings are breaking some build configurations since 2 months
+now (https://gitlab.com/qemu-project/qemu/-/issues/2575):
 
-We used to only have a single UART on the platform and it was located at
-address 0x90000000. When the number of UARTs was increased to 4, the
-first UART remained at it's location, but instead of being the first one
-to be registered, it became the last.
+  ui/cocoa.m:662:14: error: 'CVDisplayLinkCreateWithCGDisplay' is deprecated: first deprecated in macOS 15.0 - use NSView.displayLink(target:selector:), NSWindow.displayLink(target:selector:), or NSScreen.displayLink(target:selector:)  [-Werror,-Wdeprecated-declarations]
+    662 |         if (!CVDisplayLinkCreateWithCGDisplay(display, &displayLink)) {
+        |              ^
+  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreVideo.framework/Headers/CVDisplayLink.h:89:20: note: 'CVDisplayLinkCreateWithCGDisplay' has been explicitly marked deprecated here
+     89 | CV_EXPORT CVReturn CVDisplayLinkCreateWithCGDisplay(
+        |                    ^
+  ui/cocoa.m:663:29: error: 'CVDisplayLinkGetNominalOutputVideoRefreshPeriod' is deprecated: first deprecated in macOS 15.0 - use NSView.displayLink(target:selector:), NSWindow.displayLink(target:selector:), or NSScreen.displayLink(target:selector:)  [-Werror,-Wdeprecated-declarations]
+    663 |             CVTime period = CVDisplayLinkGetNominalOutputVideoRefreshPeriod(displayLink);
+        |                             ^
+  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreVideo.framework/Headers/CVDisplayLink.h:182:18: note: 'CVDisplayLinkGetNominalOutputVideoRefreshPeriod' has been explicitly marked deprecated here
+    182 | CV_EXPORT CVTime CVDisplayLinkGetNominalOutputVideoRefreshPeriod( CVDisplayLinkRef CV_NONNULL displayLink );
+        |                  ^
+  ui/cocoa.m:664:13: error: 'CVDisplayLinkRelease' is deprecated: first deprecated in macOS 15.0 - use NSView.displayLink(target:selector:), NSWindow.displayLink(target:selector:), or NSScreen.displayLink(target:selector:)  [-Werror,-Wdeprecated-declarations]
+    664 |             CVDisplayLinkRelease(displayLink);
+        |             ^
+  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreVideo.framework/Headers/CVDisplayLink.h:249:16: note: 'CVDisplayLinkRelease' has been explicitly marked deprecated here
+    249 | CV_EXPORT void CVDisplayLinkRelease( CV_RELEASES_ARGUMENT CVDisplayLinkRef CV_NULLABLE displayLink );
+        |                ^
+  3 errors generated.
 
-This caused QEMU to pick 0x90000300 as the default UART, which broke
-software that hardcoded the address of 0x90000000 and expected it's
-output to be visible when the user configured only a single console.
+For the next release, ignore the warnings using #pragma directives.
+At least until we figure the correct new API usage.
 
-This caused regressions[1] in the barebox test suite when updating to a
-newer QEMU. As there seems to be no good reason to register the UARTs in
-inverse order, let's register them by ascending address, so existing
-software can remain oblivious to the additional UART ports.
-
-Changing the order of uart registration alone breaks Linux which
-was choosing the UART at 0x90000300 as the default for ttyS0.  To fix
-Linux we fix three things in the device tree:
-
- 1. Define stdout-path only one time for the first registered UART
-    instead of incorrectly defining for each UART.
- 2. Change the UART alias name from 'uart0' to 'serial0' as almost all
-    Linux tty drivers look for an alias starting with "serial".
- 3. Add the UART nodes so they appear in the final DTB in the
-    order starting with the lowest address and working upwards.
-
-In summary these changes mean that the QEMU default UART (serial_hd(0))
-is now setup where:
-
- * serial_hd(0) is the lowest-address UART
- * serial_hd(0) is listed first in the DTB
- * serial_hd(0) is the /chosen/stdout-path one
- * the /aliases/serial0 alias points at serial_hd(0)
-
-[1]: https://lore.barebox.org/barebox/707e7c50-aad1-4459-8796-0cc54bab32e2@pengutronix.de/T/#m5da26e8a799033301489a938b5d5667b81cef6ad
-
-[stafford: Change to serial0 alias and update change message, reverse
- uart registration order]
-
-Fixes: 777784bda468 ("hw/openrisc: support 4 serial ports in or1ksim")
-Cc: qemu-stable@nongnu.org
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Signed-off-by: Stafford Horne <shorne@gmail.com>
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Message-ID: <20241203110536.402131-2-shorne@gmail.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Phil Dennis-Jordan <phil@philjordan.eu>
+Tested-by: Phil Dennis-Jordan <phil@philjordan.eu>
+Message-Id: <20241121131954.98949-1-philmd@linaro.org>
 ---
- hw/openrisc/openrisc_sim.c | 26 ++++++++++++++++++++------
- 1 file changed, 20 insertions(+), 6 deletions(-)
+ ui/cocoa.m | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/hw/openrisc/openrisc_sim.c b/hw/openrisc/openrisc_sim.c
-index 9fb63515ef1..42f002985bf 100644
---- a/hw/openrisc/openrisc_sim.c
-+++ b/hw/openrisc/openrisc_sim.c
-@@ -250,7 +250,7 @@ static void openrisc_sim_serial_init(Or1ksimState *state, hwaddr base,
-     void *fdt = state->fdt;
-     char *nodename;
-     qemu_irq serial_irq;
--    char alias[sizeof("uart0")];
-+    char alias[sizeof("serial0")];
-     int i;
- 
-     if (num_cpus > 1) {
-@@ -265,7 +265,7 @@ static void openrisc_sim_serial_init(Or1ksimState *state, hwaddr base,
-         serial_irq = get_cpu_irq(cpus, 0, irq_pin);
-     }
-     serial_mm_init(get_system_memory(), base, 0, serial_irq, 115200,
--                   serial_hd(OR1KSIM_UART_COUNT - uart_idx - 1),
-+                   serial_hd(uart_idx),
-                    DEVICE_NATIVE_ENDIAN);
- 
-     /* Add device tree node for serial. */
-@@ -277,10 +277,13 @@ static void openrisc_sim_serial_init(Or1ksimState *state, hwaddr base,
-     qemu_fdt_setprop_cell(fdt, nodename, "clock-frequency", OR1KSIM_CLK_MHZ);
-     qemu_fdt_setprop(fdt, nodename, "big-endian", NULL, 0);
- 
--    /* The /chosen node is created during fdt creation. */
--    qemu_fdt_setprop_string(fdt, "/chosen", "stdout-path", nodename);
--    snprintf(alias, sizeof(alias), "uart%d", uart_idx);
-+    if (uart_idx == 0) {
-+        /* The /chosen node is created during fdt creation. */
-+        qemu_fdt_setprop_string(fdt, "/chosen", "stdout-path", nodename);
-+    }
-+    snprintf(alias, sizeof(alias), "serial%d", uart_idx);
-     qemu_fdt_setprop_string(fdt, "/aliases", alias, nodename);
-+
-     g_free(nodename);
+diff --git a/ui/cocoa.m b/ui/cocoa.m
+index 4c2dd335323..dd88115dc6f 100644
+--- a/ui/cocoa.m
++++ b/ui/cocoa.m
+@@ -639,6 +639,9 @@ - (void) updateBounds
+     [self setBoundsSize:NSMakeSize(screen.width, screen.height)];
  }
  
-@@ -326,11 +329,22 @@ static void openrisc_sim_init(MachineState *machine)
-                                 smp_cpus, cpus, OR1KSIM_OMPIC_IRQ);
-     }
++#pragma clang diagnostic push
++#pragma clang diagnostic ignored "-Wdeprecated-declarations"
++
+ - (void) updateUIInfoLocked
+ {
+     /* Must be called with the BQL, i.e. via updateUIInfo */
+@@ -685,6 +688,8 @@ - (void) updateUIInfoLocked
+     dpy_set_ui_info(dcl.con, &info, TRUE);
+ }
  
--    for (n = 0; n < OR1KSIM_UART_COUNT; ++n)
-+    /*
-+     * We create the UART nodes starting with the highest address and
-+     * working downwards, because in QEMU the DTB nodes end up in the
-+     * DTB in reverse order of creation. Correctly-written guest software
-+     * will not care about the node order (it will look at stdout-path
-+     * or the alias nodes), but for the benefit of guest software which
-+     * just looks for the first UART node in the DTB, make sure the
-+     * lowest-address UART (which is QEMU's first serial port) appears
-+     * first in the DTB.
-+     */
-+    for (n = OR1KSIM_UART_COUNT - 1; n >= 0; n--) {
-         openrisc_sim_serial_init(state, or1ksim_memmap[OR1KSIM_UART].base +
-                                         or1ksim_memmap[OR1KSIM_UART].size * n,
-                                  or1ksim_memmap[OR1KSIM_UART].size,
-                                  smp_cpus, cpus, OR1KSIM_UART_IRQ, n);
-+    }
- 
-     load_addr = openrisc_load_kernel(ram_size, kernel_filename,
-                                      &boot_info.bootstrap_pc);
++#pragma clang diagnostic pop
++
+ - (void) updateUIInfo
+ {
+     if (!allow_events) {
 -- 
 2.45.2
 
