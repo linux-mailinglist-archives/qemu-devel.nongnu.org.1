@@ -2,86 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6C8D9E2165
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Dec 2024 16:12:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 018C19E22E7
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Dec 2024 16:30:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tIUZP-0005ck-Mx; Tue, 03 Dec 2024 10:12:11 -0500
+	id 1tIUpZ-0001Mx-Nd; Tue, 03 Dec 2024 10:28:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tIUZL-0005au-I3
- for qemu-devel@nongnu.org; Tue, 03 Dec 2024 10:12:07 -0500
-Received: from mail-ot1-x32b.google.com ([2607:f8b0:4864:20::32b])
+ id 1tIUpX-0001Md-EL
+ for qemu-devel@nongnu.org; Tue, 03 Dec 2024 10:28:51 -0500
+Received: from mail-oa1-x2d.google.com ([2001:4860:4864:20::2d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tIUZK-0005xx-1X
- for qemu-devel@nongnu.org; Tue, 03 Dec 2024 10:12:07 -0500
-Received: by mail-ot1-x32b.google.com with SMTP id
- 46e09a7af769-71d59d86ba7so2835511a34.2
- for <qemu-devel@nongnu.org>; Tue, 03 Dec 2024 07:12:04 -0800 (PST)
+ id 1tIUpV-00085o-PU
+ for qemu-devel@nongnu.org; Tue, 03 Dec 2024 10:28:51 -0500
+Received: by mail-oa1-x2d.google.com with SMTP id
+ 586e51a60fabf-2689e7a941fso3081844fac.3
+ for <qemu-devel@nongnu.org>; Tue, 03 Dec 2024 07:28:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1733238723; x=1733843523; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:cc:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id:from
- :to:cc:subject:date:message-id:reply-to;
- bh=F81bm99futpUOdX4dtkdh32tMOL4GbNfIRbbiImbzPk=;
- b=EzGzJyiMVnwgkk4ppRfbzAiP+Uqrf93Bp2THhkwQ4lptY3JW89BUlQJ8ibhc293ZXT
- cFkPF+t/mMWvVa7prH6257GCkDyehXizjWsYdLAGlNfGiVA5H96yraeJknL/jQhbPbUe
- RPm56ZGF4nZ496F78Gl7m8myLASQ4PKDFFScvTxcXi/AI6xMliW1z+HY4OcBDXedb4eP
- 7uB9nFBZgogB9f73IwStW8jSaZtbyssocidtU4bkpwMpg17CEyehIVHVUh75IA55TXT3
- kc9RAxpoVrIi/d7IkAuIW6i5PvTqJereBKpe2pkwjPMKDwwwCheNk6cf8UIm5hDm8QmP
- yfzA==
+ d=linaro.org; s=google; t=1733239728; x=1733844528; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=ddVbX959t4yeE1SQjP6kfnD8JqKG7wqHgvg1qP3In/8=;
+ b=mF9A1GJjKhLaeWwfABF97k/3wNlJwDItEHed0COEPcPaCFucENRGRMtMvA511iSKSk
+ rZlY3xJb/CFgAcYdTRytqWarFy+lxXlK9C52FvWCYe6yDP2AlvsM867fnAsxuJW+48fi
+ lK0MNlnpVm+P1YpQl+BIQjwtzk+SBvTUHNMjD/oLLKQXLJJ7cyHWedaxLGeiO9rBSw2N
+ 5f/nPRxK+zEKWX4p9I7Oxw5gEPw+Px+rhUdYLiYv65DcZwLImQJZVV4dHAml87B2f3zB
+ zjx6qXsLKRI48Ki44QPsFw0b/f4/20jARiBlO3Kjohef8XVHuxcaJlXsjsN1Ox4UErvt
+ 3Wvg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733238723; x=1733843523;
- h=content-transfer-encoding:in-reply-to:cc:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20230601; t=1733239728; x=1733844528;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=F81bm99futpUOdX4dtkdh32tMOL4GbNfIRbbiImbzPk=;
- b=Sj0orfVXv0qN/p53kzrr6pYPm7eiP1jpl6247eNfr3a4QWLWMiDqdZt9vIc12d0nTL
- 679X7H5Ns3oMTT0hhSxuNc4c4sJ/nPuPntbLDzRDZ8hW/GDiKXDwA/sf4UscBUXbtQSX
- zPPCimBnQ7hmLb3opCTm6IgPHvTfbA5EcZlNC/NrrFhjnT7KUb4/LIUU99hdbRigMmUk
- BdCLveC4RBUNcAXXv+VPycFNCpGESHNPdQQkUMzASF5jYziaQRdc2fSgG0yk1ZRJxDb4
- nY8wDIy/xx1nRnSbLO7TXcaSq1ANjulUYJPUDUWGPAouPyw1IDHBiEpEPUBNVzFbFp+U
- y3Xg==
-X-Gm-Message-State: AOJu0YyXxod9OiT+yICVPV+mvh2RSKVu2s+bIXa+wiJKEt1hou74U3Q4
- HlA4JSOStxExb6m32ymgwQLOFbcgi/kec9FbFPZ9Eh04bEjik4EEJ1CgtgdBfzA=
-X-Gm-Gg: ASbGnct2b3pRWDEB55Ucl4frIhQ+WaWKFNdcrpmnIGJe5llvhlwQZwvXgecM0QAEHAa
- G3cJa1KAUlum2XM4khZbYmEOAJNv1ycXRlybN/BtUaqheJvF8gRDjK6djh3oNITU4vcf3ZyeF70
- Q+nWZkgXao9Hs6ep5ExGE0iTD2xh5ATGltokWOFHJKkgHcIuKi/N+3Rf50v7GV/gd55fWQf5cCk
- wIKwxDZiXQ4ZC9No3doToqhH2Ct+VW6XvURzpkYtW6lTow857ipNwiLAPP05DjwVCYiXFukXXPY
- tUz7jUJ557aexOg0cTWMsapEIIG7
-X-Google-Smtp-Source: AGHT+IHFzhKa8AFuakdPijMvJxOHDVXPS1hk10P5e9QIXWp3GTVMiduhfyMBYyqypNpH+DiEk/3Atw==
-X-Received: by 2002:a05:6830:6d8a:b0:718:180b:5b3c with SMTP id
- 46e09a7af769-71dad6da961mr4457708a34.28.1733238723362; 
- Tue, 03 Dec 2024 07:12:03 -0800 (PST)
+ bh=ddVbX959t4yeE1SQjP6kfnD8JqKG7wqHgvg1qP3In/8=;
+ b=dx/krlAyVEcRu/SoxFJljCmOLmWSeBm16Xwgp2WPGumIrIEXCNrStmVSoLdB7HpeTY
+ qOUzVriVITqbkAzWJcaQppL40BWvV043WfHy9SRukDYkyau3qWITgNpyTMuUFiyqBgPW
+ G/5TetGnN6c8f2/jLnXSr9Av+lOAXbKaeqxL5NTsd8xq4wxbHL4d9zdEumYC7DcRBAYK
+ 9HNCDO87n9vSRoKjM0UKDzFbrUqF/ifA/B8u3LFEwZtnWOBMY0jjufd8xW8ynnQMB9WP
+ o2jj04jGpMvw2DZJ8gfkJdlYiLHffCyT4usiWR12ZjhdzswvF4Da55FpivdojUsJfwE8
+ 0Grg==
+X-Gm-Message-State: AOJu0Yx4M8j+QvVUXOsDZKMIHjiEF3gzF46zMD8OepYo1FhdeC/BqFyV
+ BujdjuqrsewETgwKL/Ovk1aQxGCgp67clAWyvuIRK2u3qfNmJ2798OLvZ9BgtyY=
+X-Gm-Gg: ASbGncse4orvsiy2sSksWjtRTvdSEHouTMYAFDyKnkk/Lt6tRtcAlMkvzPihyc5SSpa
+ IWObFpghGlPDMzfZSCRNiHEav7ouOdoeJ/16mctzuJbiiB942yo0lnCKg34pK25aeyIAhYKInPI
+ 37VhE0lbhk5nw8BFjiEKFzcUqHkLjfTWLD2Fmn9ILIax9mUXfPRbaZAwIJ79rFfuBkQG/5OAvy4
+ yz788yLxfXRkr8fC28DHBvObXb8Kv80SaAdriFQyssaN2WF4lRF52FCsF5QytLwFcxqUQXnpUNX
+ DJkjvnoOKD+44D+x/S00A56qd+p/
+X-Google-Smtp-Source: AGHT+IHlKH9g/gb2k0nqK9pBkZEHdZjTBjLzHcp3UKimP4eYyzflG4IuEu1zwbk6GgDHnF2MSKqM6w==
+X-Received: by 2002:a05:6870:71c3:b0:29e:67e0:408b with SMTP id
+ 586e51a60fabf-29e8870d1efmr2536006fac.22.1733239728221; 
+ Tue, 03 Dec 2024 07:28:48 -0800 (PST)
 Received: from [192.168.4.112] (fixed-187-189-51-143.totalplay.net.
  [187.189.51.143]) by smtp.gmail.com with ESMTPSA id
- 46e09a7af769-71d725d7fc7sm2822653a34.44.2024.12.03.07.12.02
+ 586e51a60fabf-29e2d2c4fd5sm2822924fac.30.2024.12.03.07.28.46
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 03 Dec 2024 07:12:03 -0800 (PST)
-Message-ID: <4a0efa7f-03a1-4532-b1cf-db09d5181d26@linaro.org>
-Date: Tue, 3 Dec 2024 09:12:01 -0600
+ Tue, 03 Dec 2024 07:28:47 -0800 (PST)
+Message-ID: <b0a41fbf-0ec6-47cc-805d-e762d99ddf82@linaro.org>
+Date: Tue, 3 Dec 2024 09:28:45 -0600
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] tests/functional/aarch64: add tests for FEAT_RME
-To: Gustavo Romero <gustavo.romero@linaro.org>
-References: <20241128213729.1021961-1-pierrick.bouvier@linaro.org>
- <4b3180bd-8054-4431-a594-0445ce4837aa@linaro.org>
- <5620efa2-98c6-4613-b866-67e91ac6acf8@linaro.org>
- <21d8399a-91bf-4599-a73d-351f9f0c147c@linaro.org>
- <CAFEAcA-4_tnm9iPCf_3E4HKKXJ9h6w9oMiYaN0Y4s9wmpji3Jg@mail.gmail.com>
- <6cd6b3fd-8362-4fa8-b6e5-e0e3aded3215@linaro.org>
- <f043b94a-278f-4009-87b9-9b2ba4b80c42@linaro.org>
+Subject: Re: [PATCH 28/67] target/arm: Convert BFCVT to decodetree
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org
+References: <20241201150607.12812-1-richard.henderson@linaro.org>
+ <20241201150607.12812-29-richard.henderson@linaro.org>
+ <CAFEAcA9Aww0m_TPdbL53DPPnWqA=BU1TzjGLvQi-EokKyzkdfQ@mail.gmail.com>
 Content-Language: en-US
 From: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel <qemu-devel@nongnu.org>
-In-Reply-To: <f043b94a-278f-4009-87b9-9b2ba4b80c42@linaro.org>
+In-Reply-To: <CAFEAcA9Aww0m_TPdbL53DPPnWqA=BU1TzjGLvQi-EokKyzkdfQ@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::32b;
- envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x32b.google.com
+Received-SPF: pass client-ip=2001:4860:4864:20::2d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x2d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -104,24 +100,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/3/24 08:55, Gustavo Romero wrote:
-> It's not "really" using kvm acceleration right?
+On 12/3/24 08:05, Peter Maydell wrote:
+> On Sun, 1 Dec 2024 at 15:11, Richard Henderson
+> <richard.henderson@linaro.org> wrote:
+>>
+>> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+>> ---
+>>   target/arm/tcg/translate-a64.c | 24 ++++++------------------
+>>   target/arm/tcg/a64.decode      |  3 +++
+>>   2 files changed, 9 insertions(+), 18 deletions(-)
+>>
+>> @@ -8661,21 +8664,6 @@ static void disas_fp_1src(DisasContext *s, uint32_t insn)
+>>           break;
+>>
+>>       case 0x6:
+>> -        switch (type) {
+>> -        case 1: /* BFCVT */
 > 
-> It's using kvm but the kvm module in the host kernel is actually running
-> fully emulated in QEMU system mode (-accel tcg is being passed to it).
+> Here we decode BFCVT when the 'ftype' field (bits [23:22]) is 0b01...
 > 
-> So I understand it's "all TCG" in the end and no HW acceleration is ever used in the tests.
+>> -            if (!dc_isar_feature(aa64_bf16, s)) {
+>> -                goto do_unallocated;
+>> -            }
+>> -            if (!fp_access_check(s)) {
+>> -                return;
+>> -            }
+>> -            handle_fp_1src_single(s, opcode, rd, rn);
+>> -            break;
+>> -        default:
+>> -            goto do_unallocated;
+>> -        }
+>> -        break;
+>> -
+>>       default:
+>>       do_unallocated:
+>>           unallocated_encoding(s);
+>> diff --git a/target/arm/tcg/a64.decode b/target/arm/tcg/a64.decode
+>> index fbfdf96eb3..476989c1b4 100644
+>> --- a/target/arm/tcg/a64.decode
+>> +++ b/target/arm/tcg/a64.decode
+>> @@ -45,6 +45,7 @@
+>>   &qrrrr_e        q rd rn rm ra esz
+>>
+>>   @rr_h           ........ ... ..... ...... rn:5 rd:5     &rr_e esz=1
+>> +@rr_s           ........ ... ..... ...... rn:5 rd:5     &rr_e esz=2
+>>   @rr_d           ........ ... ..... ...... rn:5 rd:5     &rr_e esz=3
+>>   @rr_sd          ........ ... ..... ...... rn:5 rd:5     &rr_e esz=%esz_sd
+>>   @rr_hsd         ........ ... ..... ...... rn:5 rd:5     &rr_e esz=%esz_hsd
+>> @@ -1337,6 +1338,8 @@ FRINTA_s        00011110 .. 1 001100 10000 ..... .....      @rr_hsd
+>>   FRINTX_s        00011110 .. 1 001110 10000 ..... .....      @rr_hsd
+>>   FRINTI_s        00011110 .. 1 001111 10000 ..... .....      @rr_hsd
+>>
+>> +BFCVT_s         00011110 10 1 000110 10000 ..... .....      @rr_s
+> 
+> ...but this decode pattern has them as 0b10.
+> 
+> 
+> --- a/target/arm/tcg/a64.decode
+> +++ b/target/arm/tcg/a64.decode
+> @@ -1338,7 +1338,7 @@ FRINTA_s        00011110 .. 1 001100 10000 .....
+> .....      @rr_hsd
+>   FRINTX_s        00011110 .. 1 001110 10000 ..... .....      @rr_hsd
+>   FRINTI_s        00011110 .. 1 001111 10000 ..... .....      @rr_hsd
+> 
+> -BFCVT_s         00011110 10 1 000110 10000 ..... .....      @rr_s
+> +BFCVT_s         00011110 01 1 000110 10000 ..... .....      @rr_s
+> 
+>   # Floating-point Immediate
+> 
+> should fix this.
 
-Ehh.. yes and no.
-
-Yes, the system as a whole is running on a host under TCG.
-
-No, the nested guest is itself using KVM interfaces to the guest kernel.  In this case, 
-it's what we must to do in order to exercise the FEAT_RME code within TCG.
-
-But contrast this with another scenario in which the nested guest is *also* running under 
-TCG.  Double jit translation is, as you might imagine, a bit slow.  But it can be useful 
-for smoke testing code running in the outermost guest.
+Yep, thanks.  Fixed.
 
 
 r~
