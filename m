@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C1C09E1B02
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Dec 2024 12:32:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 923E39E1B13
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Dec 2024 12:34:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tIR8c-0000BS-5i; Tue, 03 Dec 2024 06:32:18 -0500
+	id 1tIR8f-0000PE-Bw; Tue, 03 Dec 2024 06:32:21 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tIR8M-00007u-Jq
- for qemu-devel@nongnu.org; Tue, 03 Dec 2024 06:32:03 -0500
-Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tIR8R-0000BZ-Fx
+ for qemu-devel@nongnu.org; Tue, 03 Dec 2024 06:32:11 -0500
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tIR8K-0000ZZ-Eu
- for qemu-devel@nongnu.org; Tue, 03 Dec 2024 06:32:02 -0500
-Received: by mail-wr1-x436.google.com with SMTP id
- ffacd0b85a97d-385d7f19f20so2402508f8f.1
- for <qemu-devel@nongnu.org>; Tue, 03 Dec 2024 03:32:00 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tIR8P-0000Zu-Kh
+ for qemu-devel@nongnu.org; Tue, 03 Dec 2024 06:32:07 -0500
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-4349fd77b33so44086345e9.2
+ for <qemu-devel@nongnu.org>; Tue, 03 Dec 2024 03:32:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1733225519; x=1733830319; darn=nongnu.org;
+ d=linaro.org; s=google; t=1733225524; x=1733830324; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=oU20d9+ticWenlMt5qSEyuabqKxdhpNZ4aYUuZ3tAj0=;
- b=jf3BFouz66Dhxe+w9UaceZCGMCoUREu3kg+rbWzuzUFEu+nzhaqTf2Xu0uCqn7P603
- iJ1G/2SCmurQWoMSES03TOAn2IIbX5hIgQ+znkbig+Pdze2kXOAB/a35ddw4R67BRFth
- TMZUaVHVLEzovbwAMBQgz9nbK2ZwmVXlKBtJeY1+wKlmypGlwN3moKYy9IcAn5Npuh1/
- bDtQWwaaOf8rZj/289eulxU558jwKLJ5J6a80obDLFe6NXVTu67lN7GBnFC98W1v+nUl
- S4FgLra0P6OQmZkb1Ct+HKIenDBWuJ07n/p8qUo9t6oyqNrITvsMWmQV4oec1Uuh3R4Z
- Fzgw==
+ bh=j6jtl4bH2aw1ntBc/Q9c6zL2bli8TxIIjMRIPbMQt+E=;
+ b=BW565gGQLSELBoMheP/JMpfHRO6JYKUxfRwoC2G6RZ2TqZcFI4OXd5kautigg4UZZK
+ 5nyqlkUn6NdEdgpOt8m7i2VLA4o8mK1WKU2y8xXcE0gYZR6yl+huiqWZ2uwDc1Ieok9C
+ VhZoI9HnP9/wcbG1ulFlx17n/3sgaxZWZnmPdDfwy82ZLi+Lrn1kUVqx+y6a1A2FqoZJ
+ mOvqX5Rc6WWnxrj5VN4IVf7XmndK8MgeidKFGw0mh+61CCaDU+iQMZNXnZspuAk3KY0i
+ ST2KZNfFSM2LQSYFv4qMHdW7+V4qCMi8IzkxxPzy8xDvUNu0u/yx4Ni0fImpHS+rZlDU
+ tdDg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733225519; x=1733830319;
+ d=1e100.net; s=20230601; t=1733225524; x=1733830324;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=oU20d9+ticWenlMt5qSEyuabqKxdhpNZ4aYUuZ3tAj0=;
- b=p5v1VNqRLPbpqWRRJ8EovsCGh+m7ox7Vbs+mGzzyjdZtFMBCGibgdgPF5oFpwzQPV7
- v6FQWxcEtYFSLsOEYB5Lbu4dnQjYnVcfVpO37vFVMDy4UTWfMS1tjfS/CnmQZ6KemQmX
- hg0x6iFHruOuqESyWfcRwkQTOa4L7j9f8anB/iKhy96pwie+cw2c31Mt6gEK1uTbw+yb
- Ac9mDBEp7//p/X/KGE936hHQ3MoKqG5lQ8kGL8+xczgTpQlfCLyxHwgduOgjjn98OU/H
- TxA90bh+0MWGnX+9Ut237ODmrgY4xGy2nE7txbe6/kGBw3AqHvZbndJdRyzXBcJbF3ar
- z5aQ==
-X-Gm-Message-State: AOJu0Yy+Y08r25r5gfsDDe7P5CUuhOlR4MZsafnviYw8MI5yNAVFKkJv
- UNHxCmtrbZfAaRrj0+6m+cMafisX/xB/pT5+Wpmmj1tY9wd/jCmEf73wY/ScnPwj61P5sNuKsjL
- lSz0=
-X-Gm-Gg: ASbGncvWKZB/yF01ISHu+V2abaQmEqEbYjfrv3ZOSS82hpN6zd0qZ457ehvYrZ+aJfN
- Rn1nGePWVSAZ7tHal4y2e00icq4uTXLhI4iCe6PvJumeot/01zyOmKxv5NXpzWOJAj+0VlaozHU
- DzPMgDxXI+qkMUiXIk/6wQkvMj3Ltezhy6lKW4/lAxrLTuzajORweuYvVx+x6NcsWcLoRFKWM2U
- +b0Kqw/LI5XQLwn5aX/q96OP0HZAzBTUsuiKjKhBXn2LGCjIP7Mk7VQxuwGTwhxuy2KXCS5
-X-Google-Smtp-Source: AGHT+IEtZWmegdICLI9aWtlYbudzUo9oMZeYY9rnzYt4FNGp82Yy25Z3gmDGzD1WC42+1GQOp4FHDA==
-X-Received: by 2002:a05:6000:1866:b0:385:e429:e59e with SMTP id
- ffacd0b85a97d-385fd424daamr1880609f8f.52.1733225518677; 
- Tue, 03 Dec 2024 03:31:58 -0800 (PST)
+ bh=j6jtl4bH2aw1ntBc/Q9c6zL2bli8TxIIjMRIPbMQt+E=;
+ b=MHD3G6iCNTNVqPqbFJjV5VkspTlgIkreokBqMCsg6lhckXHwQ4Wv2RCWKc8z11MBRZ
+ nnzsS6uUHe8rZ7m8K9ubX7p45wei/tXPk2XPX4qkKWQv74WiWf2NqEMHtC1Io8qMJIIi
+ jB7LuOWdeIcrPUovR8NQp76Kl84oIQ67dQn4nMaZlxpWh1zUFG+mN6yOVVzIpNIT3qXT
+ wrVBGhZ1mHcmtlN9Judfh9aGY7xSWXBpjcBWXBujbjVFQyjJvTDk2iLOxw9vP4TWZGBH
+ YjaSC7/QymAMqeD6gWyl4OiBrcj+UM4VSCOpPykWTQlSZNVVE/gDOr9mzf57wmLyhIwz
+ XpjA==
+X-Gm-Message-State: AOJu0YyuZXxKewd8qXE9dkBZf8v7OyLtcpVKZfpgWrhKJiZCOuNq0yro
+ EAd2C7kC+Vz11FWFIiBGZNhrGEd0leSva1XBJFwvYVkjn4mfIbu1p8nKOSMZScT9KgZHVAYpnvy
+ h2rI=
+X-Gm-Gg: ASbGncuwfs4tEtOoktoizQt52+S1To8LrLmNMexR3ricNbC2ls/hWVvDpElvcUc9d8t
+ eiOmI/oM5DQlCgRC78OvYJ2jtq1st9MXgXAwXa5wQljiI6V8jZXKlLsf/5+RIWgW9pmEkaiZiBJ
+ SB5XBegTBYt3rz0VqIh58Prf4KU6lDTARBlVg7SjW6aagsrPBo2Hhl6nB9gbISqNE5VZ01LnyiD
+ gB4OUsFa+AMEtSaQ8S3+tAoKIZnAKAeSPv40pAQKSNQXshUGcRwW/+4M1no5RhZne5maFD/
+X-Google-Smtp-Source: AGHT+IGXp+Y1EQ2//qthmZhv5T8E0FY1fVEZ3aqTLN2cfHck2Lrsk3F1/bYv+QlLZ7N0L+0/FYnEFQ==
+X-Received: by 2002:a05:600c:1553:b0:431:93dd:8e77 with SMTP id
+ 5b1f17b1804b1-434d0a16c18mr19991785e9.31.1733225523724; 
+ Tue, 03 Dec 2024 03:32:03 -0800 (PST)
 Received: from localhost.localdomain ([176.187.209.146])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-385e86f5dd2sm9167687f8f.18.2024.12.03.03.31.57
+ 5b1f17b1804b1-434b0f70ea8sm191267755e9.40.2024.12.03.03.32.02
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 03 Dec 2024 03:31:58 -0800 (PST)
+ Tue, 03 Dec 2024 03:32:03 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Phil Dennis-Jordan <phil@philjordan.eu>
-Subject: [PULL 03/13] ui/cocoa: Temporarily ignore annoying deprecated
- declaration warnings
-Date: Tue,  3 Dec 2024 12:31:30 +0100
-Message-ID: <20241203113140.63513-4-philmd@linaro.org>
+Cc: Bibo Mao <maobibo@loongson.cn>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 04/13] MAINTAINERS: add myself as the maintainer for LoongArch
+ VirtMachine
+Date: Tue,  3 Dec 2024 12:31:31 +0100
+Message-ID: <20241203113140.63513-5-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241203113140.63513-1-philmd@linaro.org>
 References: <20241203113140.63513-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::436;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,63 +97,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-These warnings are breaking some build configurations since 2 months
-now (https://gitlab.com/qemu-project/qemu/-/issues/2575):
+From: Bibo Mao <maobibo@loongson.cn>
 
-  ui/cocoa.m:662:14: error: 'CVDisplayLinkCreateWithCGDisplay' is deprecated: first deprecated in macOS 15.0 - use NSView.displayLink(target:selector:), NSWindow.displayLink(target:selector:), or NSScreen.displayLink(target:selector:)  [-Werror,-Wdeprecated-declarations]
-    662 |         if (!CVDisplayLinkCreateWithCGDisplay(display, &displayLink)) {
-        |              ^
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreVideo.framework/Headers/CVDisplayLink.h:89:20: note: 'CVDisplayLinkCreateWithCGDisplay' has been explicitly marked deprecated here
-     89 | CV_EXPORT CVReturn CVDisplayLinkCreateWithCGDisplay(
-        |                    ^
-  ui/cocoa.m:663:29: error: 'CVDisplayLinkGetNominalOutputVideoRefreshPeriod' is deprecated: first deprecated in macOS 15.0 - use NSView.displayLink(target:selector:), NSWindow.displayLink(target:selector:), or NSScreen.displayLink(target:selector:)  [-Werror,-Wdeprecated-declarations]
-    663 |             CVTime period = CVDisplayLinkGetNominalOutputVideoRefreshPeriod(displayLink);
-        |                             ^
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreVideo.framework/Headers/CVDisplayLink.h:182:18: note: 'CVDisplayLinkGetNominalOutputVideoRefreshPeriod' has been explicitly marked deprecated here
-    182 | CV_EXPORT CVTime CVDisplayLinkGetNominalOutputVideoRefreshPeriod( CVDisplayLinkRef CV_NONNULL displayLink );
-        |                  ^
-  ui/cocoa.m:664:13: error: 'CVDisplayLinkRelease' is deprecated: first deprecated in macOS 15.0 - use NSView.displayLink(target:selector:), NSWindow.displayLink(target:selector:), or NSScreen.displayLink(target:selector:)  [-Werror,-Wdeprecated-declarations]
-    664 |             CVDisplayLinkRelease(displayLink);
-        |             ^
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreVideo.framework/Headers/CVDisplayLink.h:249:16: note: 'CVDisplayLinkRelease' has been explicitly marked deprecated here
-    249 | CV_EXPORT void CVDisplayLinkRelease( CV_RELEASES_ARGUMENT CVDisplayLinkRef CV_NULLABLE displayLink );
-        |                ^
-  3 errors generated.
+Song Gao is will be sick leave for a long time, I apply for maintainer
+for LoongArch Virt Machine during this period, LoongArch TCG keeps unchanged
+since I am not familiar with it. The maintainer duty will transfer to him
+after he comes back to work.
 
-For the next release, ignore the warnings using #pragma directives.
-At least until we figure the correct new API usage.
-
+Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+Acked-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20241112073714.1953481-1-maobibo@loongson.cn>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Phil Dennis-Jordan <phil@philjordan.eu>
-Tested-by: Phil Dennis-Jordan <phil@philjordan.eu>
-Message-Id: <20241121131954.98949-1-philmd@linaro.org>
 ---
- ui/cocoa.m | 5 +++++
- 1 file changed, 5 insertions(+)
+ MAINTAINERS | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/ui/cocoa.m b/ui/cocoa.m
-index 4c2dd335323..dd88115dc6f 100644
---- a/ui/cocoa.m
-+++ b/ui/cocoa.m
-@@ -639,6 +639,9 @@ - (void) updateBounds
-     [self setBoundsSize:NSMakeSize(screen.width, screen.height)];
- }
- 
-+#pragma clang diagnostic push
-+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-+
- - (void) updateUIInfoLocked
- {
-     /* Must be called with the BQL, i.e. via updateUIInfo */
-@@ -685,6 +688,8 @@ - (void) updateUIInfoLocked
-     dpy_set_ui_info(dcl.con, &info, TRUE);
- }
- 
-+#pragma clang diagnostic pop
-+
- - (void) updateUIInfo
- {
-     if (!allow_events) {
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 2b1c4abed65..3d6194684f1 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -1199,6 +1199,7 @@ LoongArch Machines
+ ------------------
+ Virt
+ M: Song Gao <gaosong@loongson.cn>
++M: Bibo Mao <maobibo@loongson.cn>
+ R: Jiaxun Yang <jiaxun.yang@flygoat.com>
+ S: Maintained
+ F: docs/system/loongarch/virt.rst
 -- 
 2.45.2
 
