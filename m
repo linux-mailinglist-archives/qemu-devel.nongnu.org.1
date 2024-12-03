@@ -2,92 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BBA19E142F
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Dec 2024 08:31:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 447779E13D4
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Dec 2024 08:17:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tINLh-0003HE-Q0; Tue, 03 Dec 2024 02:29:33 -0500
+	id 1tIN8m-0006bC-5Y; Tue, 03 Dec 2024 02:16:12 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xuchuangxclwt@bytedance.com>)
- id 1tINLe-0003Gv-U7
- for qemu-devel@nongnu.org; Tue, 03 Dec 2024 02:29:30 -0500
-Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <xuchuangxclwt@bytedance.com>)
- id 1tINLc-00018o-Sg
- for qemu-devel@nongnu.org; Tue, 03 Dec 2024 02:29:30 -0500
-Received: by mail-pf1-x42a.google.com with SMTP id
- d2e1a72fcca58-724f0f6300aso5797369b3a.2
- for <qemu-devel@nongnu.org>; Mon, 02 Dec 2024 23:29:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bytedance.com; s=google; t=1733210963; x=1733815763; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
- :user-agent:mime-version:date:message-id:from:to:cc:subject:date
- :message-id:reply-to;
- bh=+Giach6L5tC8jPKtTQtHb9rZ/lQDlKVtlyEp/nTHH4Q=;
- b=RuGqDAR+stVdpGibX7pRh5kZARMaTM1/723uZ86IKMuhJP6J7+MLxbmW/gCPED/ZAv
- +iKcbR+cVh6OrJGZL92T3xyA6li6zY8o9lf1+TzXiCHzHMMU4RL5jSV5Kar4PXjjuJo8
- Vncg/5GbFFi8/RAqqTVIgRTrdQB6BIUGzs+lLm7XCi6GfxNkvwdBm/8sshs7yWrzoKDA
- VAfl6V2ZTJDAoO5Z/bMGNiL+uBg7CkG0+k0lBmI1GOfQXpMlIv2+kOcSrOFPJNC4fy3M
- GWA/EQXzaD0J+4IweS5h0uaN1eBBqofXTIFFzBWfVgVbzx6srQ2mAqXd73zWEJQfCiHz
- MlXw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733210963; x=1733815763;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
- :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=+Giach6L5tC8jPKtTQtHb9rZ/lQDlKVtlyEp/nTHH4Q=;
- b=Q9cYjX/NHFzlBKdC7OJk3w3Mn5AIJOjI+rqQFHMb4bRagO5X0wRjOhQ7tgt7ZLku+Y
- RhnAoIxhtSgYM7DqWLTG/SHKm5P1w0c9C+4mHhqXt7f9yb5dSlzhSTO0RNKsL60ZFlVY
- t4Hzo47xY/rft6ah2b9CPV+9lFp34ZzHEYBZaNxOkDadP1xNVhOUawGj1GhrpZtxTEC5
- y2Iu/ScQBQ32iS7wteAxU7skXHVgonolBEv2xjjQalrWrq7xCj6JX5zkkn4gfy9yedxD
- ihBnV4xAitqedK/WE5De7pm3OJbg0+B4FbhjN8z0ArILaJA3sNSqcYvb0iXT/XiyqXj4
- CGVQ==
-X-Gm-Message-State: AOJu0YzNGTGI1GIUHCCmXOM+TJGfYRj2yFsmOE1+46uHwpitb6EzTT3/
- lznc9Ecz+mNEHnEfxwWoL+c0AsKTPpBiWinUaP6JGAndb7/qy8LKLEa1x3LUxQQ=
-X-Gm-Gg: ASbGncvaF6WZwrP1EOH4jxRiL+NtD37SAQRsb7RsE+ioMKyQcf7HWA+/yQfFRNM+7Ab
- yLBhEoC4sFogGvGqapNdX04uN0ciYlAC2hjVWrX+ZS4MtN85+zlTIpPOTOzGnjn3zrHHuZXxHAO
- 5p/uKCPzCdjeJcpcUL6CRLKDDDPxt7J8+VcERcOtxa9wNpYhrHyFCDRQNZ9mZ93BAPdVqSc1UW6
- Z1ZykRkLPnjec70GUfawUgJXutSqpGQENkWwgLOfkGtx5XNtz32PcR8miXKvcYCbhRLKEz3Np1F
- Ow==
-X-Google-Smtp-Source: AGHT+IG2NEakHcyC0DaerlubcQxF60YwmpRsERz0bQAX8/6/9G+l6ZZBFFFBwYegH/RB+O3ZvwZfxw==
-X-Received: by 2002:a17:90b:2890:b0:2ee:c291:7674 with SMTP id
- 98e67ed59e1d1-2ef011fb986mr2179850a91.14.1733210962810; 
- Mon, 02 Dec 2024 23:29:22 -0800 (PST)
-Received: from [10.84.146.245] ([203.208.167.151])
- by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2ee9d371f1fsm4542583a91.20.2024.12.02.23.29.19
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 02 Dec 2024 23:29:22 -0800 (PST)
-Message-ID: <c07e7285-cb8c-4228-81bd-1703eb523d54@bytedance.com>
-Date: Tue, 3 Dec 2024 15:29:17 +0800
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1tIN8F-0006Qm-Vp; Tue, 03 Dec 2024 02:15:41 -0500
+Received: from mgamail.intel.com ([192.198.163.8])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1tIN8D-0006vk-BR; Tue, 03 Dec 2024 02:15:39 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1733210137; x=1764746137;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=ozA8pvxK7Z3OttOaLFyMztzPGG0614j9/FWPg+mmF3A=;
+ b=QjI0yuW1+fXUr3d9m7jdNemJS/Cwzb2MsiJ6Vz+zrG+EPcmSyKO9Z+0R
+ NTeNCB2InJv/1lrRn9Te2Onx1U+pTObwPY9egGtAu0oywb3X9hTSRZEXY
+ fJ91LFt7MG8tR7Py8lhe0IxTrrivqRfyJVc2HCzovD5Nn+3VYg+unYkX/
+ jr8FIismnx/hPcUdZhqR8Xc1cZQnW7d7FFbZjhzbtmkGiQzLMMvxegPE5
+ ex4V544fMKHMyS5TtJ+DISr5Om2GbGJk7l8995IsrTYyYAlIr+dMyNM32
+ JY3qdbk7jMfcb1GoVQW5aAwyqnt6FhXX0vgXHP9EWtNAQEJbBjuGOKD5n A==;
+X-CSE-ConnectionGUID: wFYkO5sRTPCM8NykvoodoQ==
+X-CSE-MsgGUID: 0vs+Uo6+SkacTesDAqFpaw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11274"; a="50933644"
+X-IronPort-AV: E=Sophos;i="6.12,204,1728975600"; d="scan'208";a="50933644"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 02 Dec 2024 23:15:32 -0800
+X-CSE-ConnectionGUID: XzjBPNCXSumMFBLvMifBLA==
+X-CSE-MsgGUID: yB6p+8A3QaClp8uC3P1KuA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,204,1728975600"; d="scan'208";a="93750981"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by orviesa007.jf.intel.com with ESMTP; 02 Dec 2024 23:15:30 -0800
+Date: Tue, 3 Dec 2024 15:33:41 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: Chuang Xu <xuchuangxclwt@bytedance.com>, pbonzini@redhat.com,
+ imammedo@redhat.com, xieyongji@bytedance.com,
+ chaiwen.cc@bytedance.com, qemu-stable@nongnu.org,
+ Guixiong Wei <weiguixiong@bytedance.com>,
+ Yipeng Yin <yinyipeng@bytedance.com>, qemu-devel@nongnu.org
 Subject: Re: [PATCH v6] i386/cpu: fixup number of addressable IDs for logical
  processors in the physical package
-To: Zhao Liu <zhao1.liu@intel.com>
-Cc: qemu-devel@nongnu.org, pbonzini@redhat.com, imammedo@redhat.com,
- xieyongji@bytedance.com, chaiwen.cc@bytedance.com, qemu-stable@nongnu.org,
- Guixiong Wei <weiguixiong@bytedance.com>,
- Yipeng Yin <yinyipeng@bytedance.com>
+Message-ID: <Z060VQVV6ONK9Qd2@intel.com>
 References: <20241009035638.59330-1-xuchuangxclwt@bytedance.com>
- <Z061AeZRyw4jwWjd@intel.com>
-From: Chuang Xu <xuchuangxclwt@bytedance.com>
-In-Reply-To: <Z061AeZRyw4jwWjd@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
- envelope-from=xuchuangxclwt@bytedance.com; helo=mail-pf1-x42a.google.com
-X-Spam_score_int: -7
-X-Spam_score: -0.8
-X-Spam_bar: /
-X-Spam_report: (-0.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FROM_LOCAL_NOVOWEL=0.5, HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=0.796,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+ <cc83fc31-7a77-4e32-a861-3c1dc8592a04@intel.com>
+ <2f6b952d-4c21-4db5-9a8a-84a0c10feca8@bytedance.com>
+ <a48fcd78-d1c4-4359-bc18-d04147a93f50@intel.com>
+ <ZwyRsq4EIooifRvb@intel.com>
+ <bbcfcbbd-1666-4e97-ae18-f47202d89009@intel.com>
+ <ZxDS4L8vSr3HfFIh@intel.com>
+ <b43557f7-49ff-43bb-8a8c-887b8220e1e8@intel.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <b43557f7-49ff-43bb-8a8c-887b8220e1e8@intel.com>
+Received-SPF: pass client-ip=192.198.163.8; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -73
+X-Spam_score: -7.4
+X-Spam_bar: -------
+X-Spam_report: (-7.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.996,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,59 +90,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Zhao，
+> However, back to the patch, I think we cannot change it as this patch
+> directly. Instead, we need a compat_props for the changed behavior, because
+> this isn't a bug fix and it introduces guest-visible differences.
 
-Thank you for your message. I appreciate your willingness to help push 
-this fix.
+This is a fix, not a new feature, so compat_props is not needed.
 
-On 12/3/24 下午3:36, Zhao Liu wrote:
-> Hi Chuang,
->
-> Could I pick this fix in my later series (with another overflow fix)?
-> I can help you push this fix forward :-).
->
-> Regards,
-> Zhao
->
-> On Wed, Oct 09, 2024 at 11:56:38AM +0800, Chuang Xu wrote:
->> Date: Wed,  9 Oct 2024 11:56:38 +0800
->> From: Chuang Xu <xuchuangxclwt@bytedance.com>
->> Subject: [PATCH v6] i386/cpu: fixup number of addressable IDs for logical
->>   processors in the physical package
->> X-Mailer: git-send-email 2.39.3 (Apple Git-146)
->>
->> When QEMU is started with:
->> -cpu host,migratable=on,host-cache-info=on,l3-cache=off
->> -smp 180,sockets=2,dies=1,cores=45,threads=2
->>
->> On Intel platform:
->> CPUID.01H.EBX[23:16] is defined as "max number of addressable IDs for
->> logical processors in the physical package".
->>
->> When executing "cpuid -1 -l 1 -r" in the guest, we obtain a value of 90 for
->> CPUID.01H.EBX[23:16], whereas the expected value is 128. Additionally,
->> executing "cpuid -1 -l 4 -r" in the guest yields a value of 63 for
->> CPUID.04H.EAX[31:26], which matches the expected result.
->>
->> As (1+CPUID.04H.EAX[31:26]) rounds up to the nearest power-of-2 integer,
->> we'd beter round up CPUID.01H.EBX[23:16] to the nearest power-of-2
->> integer too. Otherwise we may encounter unexpected results in guest.
->>
->> For example, when QEMU is started with CLI above and xtopology is disabled,
->> guest kernel 5.15.120 uses CPUID.01H.EBX[23:16]/(1+CPUID.04H.EAX[31:26]) to
->> calculate threads-per-core in detect_ht(). Then guest will get "90/(1+63)=1"
->> as the result, even though threads-per-core should actually be 2.
->>
->> And on AMD platform:
->> CPUID.01H.EBX[23:16] is defined as "Logical processor count". Current
->> result meets our expectation.
->>
->> So let us round up CPUID.01H.EBX[23:16] to the nearest power-of-2 integer
->> only for Intel platform to solve the unexpected result.
->>
->> Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
->> Acked-by: Igor Mammedov <imammedo@redhat.com>
->> Signed-off-by: Guixiong Wei <weiguixiong@bytedance.com>
->> Signed-off-by: Yipeng Yin <yinyipeng@bytedance.com>
->> Signed-off-by: Chuang Xu <xuchuangxclwt@bytedance.com>
+> For ancient Intel CPUs, EBX[23:16] did represent the number of Logical
+> processor per package. I believe this should be the reason why QEMU
+> implemented it as is:
+> 
+>   - on SDM version 013, EBX[23:16]: Number of logical processors per
+> physical processor; two for the Pentium 4 processor supporting
+> Hyper-Threading Technology.
+> 
+>   - on SDM version 015, it changed to: Number of initial APIC IDs reserved
+> for this physical package. Normally, this is the number of logical
+> processors per physical package.
+> 
+>   - on SDM version 016, it changed to: Maximum number of logical processors
+> in this physical package.
+> 
+>   - finally, starting from SDM version 026, it changed to what reads now:
+> Maximum number of addressable IDs for logical processors in this physical
+> package.
+
+And this is an architecturally defined CPUID, so SDM ensures backward
+compatibility.
+
+Regards,
+Zhao
+
 
