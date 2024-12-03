@@ -2,54 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D859A9E1900
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Dec 2024 11:16:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C23B9E1710
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Dec 2024 10:19:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tIPx8-0004Mr-3o; Tue, 03 Dec 2024 05:16:22 -0500
+	id 1tIP3O-0004in-IE; Tue, 03 Dec 2024 04:18:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1)
- (envelope-from <b40a9a7ede727ef287e466d484ea4eb2fe19364c@kylie.crudebyte.com>)
- id 1tIPx6-0004Mi-5u
- for qemu-devel@nongnu.org; Tue, 03 Dec 2024 05:16:20 -0500
-Received: from kylie.crudebyte.com ([5.189.157.229])
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1tIP3M-0004iW-AW
+ for qemu-devel@nongnu.org; Tue, 03 Dec 2024 04:18:44 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1)
- (envelope-from <b40a9a7ede727ef287e466d484ea4eb2fe19364c@kylie.crudebyte.com>)
- id 1tIPx4-0000UO-D7
- for qemu-devel@nongnu.org; Tue, 03 Dec 2024 05:16:19 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=crudebyte.com; s=kylie; h=Message-Id:Cc:To:Subject:Date:From:Content-Type:
- Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Content-ID:
- Content-Description; bh=TDWNjtgQUjWkhrzCurapjj0S6FU9WwlJGITjLDVpbbI=; b=e3n7a
- Nu5p7I8V5wMxtGFon2FsCNGy79lEm2n7fs4yEKN8Lb5nQyGMEBFI4L3u9rwbg/kvIBmV9SV2R2PiV
- QqyliUk8DV1vInI0lHrG7T6oOcmh7C89du+9ySHUKJLUZubaNN0/D9cBP9fcUNEVkFlHGeGesbp9T
- ayYtuocToADb569YmWhE8sgeIKuHIXqZTVJo7/Nt2fJ377VNoqDYrkyV0MSDbT3jYHBMpEHQvcaqD
- dLXUJtaSm1CgUkrrgaMVrRA/91KvKTp5v5ZLvPoUNaRk813z9mnGMJjDvAqY0HiUWvhr8Y/YHKII+
- oen09lWMln1Nr6M5LJ3soew8mFSdpydSisLI++rZ3lBbo6WGV7bzi2j8qYBzKbat50HqTU3s6EKm7
- 6YfLjT4+hSAj/195MPK+qaq6ahTNHwzbUvQ81Jo8Wflo+nrBDb4NUDtwaVoPthI8fQ1G/q2KDx77e
- gMojQxVYz1RyaQtUoKNeSn6uf2tSWtXAqfd4pKvokMAQrkIKKA0pf1YmobMtDQj35xr+JXcdiFTY0
- j3nigkErA1/wPvjCjJ1sDO8N12QCuaGNwpSJ1bX6vrnWBc4F/wCwZWzE7nlOgt0FiteZGtjHoHMB9
- szYCw0yPDhVJ07z2yiRTdkkF9dIlH1KTh9lrpu7gekz9/Nu4W14ooLi5zQYyhw=;
-From: Christian Schoenebeck <qemu_oss@crudebyte.com>
-Date: Tue, 3 Dec 2024 10:14:28 +0100
-Subject: [PATCH] 9pfs: improve v9fs_walk() tracing
-To: qemu-devel@nongnu.org
-Cc: Greg Kurz <groug@kaod.org>, Stefan Hajnoczi <stefanha@redhat.com>,
- Mads Ynddal <mads@ynddal.dk>
-Message-Id: <E1tIPPo-006ldP-Uk@kylie.crudebyte.com>
-Received-SPF: pass client-ip=5.189.157.229;
- envelope-from=b40a9a7ede727ef287e466d484ea4eb2fe19364c@kylie.crudebyte.com;
- helo=kylie.crudebyte.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1tIP3J-000280-BX
+ for qemu-devel@nongnu.org; Tue, 03 Dec 2024 04:18:43 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1733217519;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=3i4bTSe4R/89G2wOxNP6QDHdmwR5h8AAhSb0egWe4RI=;
+ b=IjqHqvdjDtuFQOsrWOe0t6Wn29mxT3FF1uTIDXuakOnh3dWxCxmks9uoHNVseiQJmSOhsn
+ WawVapxGYapW+VL9iNiJd72JDhKRiZwTy8jq6HiOhHEv4IhC0naP2LA+5Xt8xxAG9I+7AQ
+ 5UbRjN/mxULxvuWtrwwZ5HLpneOF5IA=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-588-gStdD38mNfONw3xldMMKrw-1; Tue,
+ 03 Dec 2024 04:18:35 -0500
+X-MC-Unique: gStdD38mNfONw3xldMMKrw-1
+X-Mimecast-MFC-AGG-ID: gStdD38mNfONw3xldMMKrw
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id BB20B1944B2A; Tue,  3 Dec 2024 09:18:33 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.37])
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 109D71956052; Tue,  3 Dec 2024 09:18:29 +0000 (UTC)
+Date: Tue, 3 Dec 2024 09:18:26 +0000
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Thomas Huth <thuth@redhat.com>, Zhao Liu <zhao1.liu@intel.com>,
+ Eduardo Habkost <eduardo@habkost.net>, Yanan Wang <wangyanan55@huawei.com>,
+ Markus Armbruster <armbru@redhat.com>
+Subject: Re: [PATCH-for-9.2? v2 1/2] tests/functional/test_version: Use QTest
+ accelerator
+Message-ID: <Z07M4jpxZo9Ns0Rj@redhat.com>
+References: <20241203091036.59898-1-philmd@linaro.org>
+ <20241203091036.59898-2-philmd@linaro.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20241203091036.59898-2-philmd@linaro.org>
+User-Agent: Mutt/2.2.13 (2024-03-09)
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -50
+X-Spam_score: -5.1
+X-Spam_bar: -----
+X-Spam_report: (-5.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.996,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -62,142 +87,62 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-'Twalk' is the most important request type in the 9p protocol to look out
-for when debugging 9p communication. That's because it is the only part
-of the 9p protocol which actually deals with human-readable path names,
-whereas all other 9p request types work on numeric file IDs (FIDs) only.
+On Tue, Dec 03, 2024 at 10:10:35AM +0100, Philippe Mathieu-Daudé wrote:
+> When testing with a HVF-only binary, we get:
+> 
+>    3/12 qemu:func-quick+func-aarch64 / func-aarch64-version                                      ERROR            0.29s   exit status 1
+>   stderr:
+>   Traceback (most recent call last):
+>     File "tests/functional/test_version.py", line 22, in test_qmp_human_info_version
+>       self.vm.launch()
+>     File "machine/machine.py", line 461, in launch
+>       raise VMLaunchFailure(
+>   qemu.machine.machine.VMLaunchFailure: ConnectError: Failed to establish session: EOFError
+>       Exit code: 1
+>       Command: build/qemu-system-aarch64 -display none -vga none -chardev socket,id=mon,fd=5 -mon chardev=mon,mode=control -machine none -nodefaults
+>       Output: qemu-system-aarch64: No accelerator selected and no default accelerator available
+> 
+> Explicit the QTest accelerator to be able to run the HMP command.
+> 
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
+>  tests/functional/test_version.py | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/tests/functional/test_version.py b/tests/functional/test_version.py
+> index 3ab3b67f7e3..d3da796991f 100755
+> --- a/tests/functional/test_version.py
+> +++ b/tests/functional/test_version.py
+> @@ -18,6 +18,7 @@ class Version(QemuSystemTest):
+>  
+>      def test_qmp_human_info_version(self):
+>          self.set_machine('none')
+> +        self.vm.add_args('-accel', 'qtest')
 
-Improve tracing of 'Twalk' requests, e.g. let's say client wanted to walk
-to "/home/bob/src", then improve trace output from:
+IMHO this is wrong. The functional tests are there to test the
+real functional behaviour under an actual accelerator not qtest.
 
-  v9fs_walk tag 0 id 110 fid 0 newfid 1 nwnames=3
+We have tests/qtests for testing scenarios where we want to only
+exercise with the qtest accelerator.
 
-to:
+If QEMU is built with /only/ HVF available and HVF can't be
+used at runtime, then we should be skipping all functional
+tests, not degrading them to be hardcoded to use qtest on
+all platforms.
 
-  v9fs_walk tag=0 id=110 fid=0 newfid=1 nwnames=3 wnames={home, bob, src}
+>          self.vm.add_args('-nodefaults')
+>          self.vm.launch()
+>          res = self.vm.cmd('human-monitor-command',
 
-To achieve this, add a new helper function trace_v9fs_walk_wnames() which
-converts the received V9fsString array of individual path elements into a
-comma-separated string presentation for being passed to the tracing system.
-As this conversion is somewhat expensive, this new helper function returns
-immediately if tracing of event 'v9fs_walk' is currently not enabled.
-
-Signed-off-by: Christian Schoenebeck <qemu_oss@crudebyte.com>
----
- CCing tracing maintainers in case they have better ideas how to do this.
-
- hw/9pfs/9p.c         | 42 +++++++++++++++++++++++++++++++++++++-----
- hw/9pfs/trace-events |  2 +-
- 2 files changed, 38 insertions(+), 6 deletions(-)
-
-diff --git a/hw/9pfs/9p.c b/hw/9pfs/9p.c
-index 578517739a..c08e7e492b 100644
---- a/hw/9pfs/9p.c
-+++ b/hw/9pfs/9p.c
-@@ -1774,6 +1774,30 @@ static bool same_stat_id(const struct stat *a, const struct stat *b)
-     return a->st_dev == b->st_dev && a->st_ino == b->st_ino;
- }
- 
-+/*
-+ * Returns a (newly allocated) comma-separated string presentation of the
-+ * passed array for logging (tracing) purpose for trace event "v9fs_walk" only.
-+ * If tracing for that event is disabled, it immediately returns NULL instead.
-+ *
-+ * It is caller's responsibility to free the returned string.
-+ */
-+static char *trace_v9fs_walk_wnames(V9fsString *wnames, size_t nwnames)
-+{
-+    g_autofree char **arr = NULL;
-+
-+    if (trace_event_get_state(TRACE_V9FS_WALK) &&
-+        qemu_loglevel_mask(LOG_TRACE))
-+    {
-+        arr = g_malloc0_n(nwnames + 1, sizeof(char *));
-+        for (size_t i = 0; i < nwnames; ++i) {
-+            arr[i] = wnames[i].data;
-+        }
-+        return g_strjoinv(", ", arr);
-+    }
-+
-+    return NULL;
-+}
-+
- static void coroutine_fn v9fs_walk(void *opaque)
- {
-     int name_idx, nwalked;
-@@ -1787,6 +1811,7 @@ static void coroutine_fn v9fs_walk(void *opaque)
-     size_t offset = 7;
-     int32_t fid, newfid;
-     P9ARRAY_REF(V9fsString) wnames = NULL;
-+    g_autofree char *trace_wnames = NULL;
-     V9fsFidState *fidp;
-     V9fsFidState *newfidp = NULL;
-     V9fsPDU *pdu = opaque;
-@@ -1800,11 +1825,9 @@ static void coroutine_fn v9fs_walk(void *opaque)
-     }
-     offset += err;
- 
--    trace_v9fs_walk(pdu->tag, pdu->id, fid, newfid, nwnames);
--
-     if (nwnames > P9_MAXWELEM) {
-         err = -EINVAL;
--        goto out_nofid;
-+        goto out_nofid_nownames;
-     }
-     if (nwnames) {
-         P9ARRAY_NEW(V9fsString, wnames, nwnames);
-@@ -1814,15 +1837,20 @@ static void coroutine_fn v9fs_walk(void *opaque)
-         for (i = 0; i < nwnames; i++) {
-             err = pdu_unmarshal(pdu, offset, "s", &wnames[i]);
-             if (err < 0) {
--                goto out_nofid;
-+                goto out_nofid_nownames;
-             }
-             if (name_is_illegal(wnames[i].data)) {
-                 err = -ENOENT;
--                goto out_nofid;
-+                goto out_nofid_nownames;
-             }
-             offset += err;
-         }
-+        trace_wnames = trace_v9fs_walk_wnames(wnames, nwnames);
-+        trace_v9fs_walk(pdu->tag, pdu->id, fid, newfid, nwnames, trace_wnames);
-+    } else {
-+        trace_v9fs_walk(pdu->tag, pdu->id, fid, newfid, nwnames, "");
-     }
-+
-     fidp = get_fid(pdu, fid);
-     if (fidp == NULL) {
-         err = -ENOENT;
-@@ -1957,7 +1985,11 @@ out:
-     }
-     v9fs_path_free(&dpath);
-     v9fs_path_free(&path);
-+    goto out_pdu_complete;
-+out_nofid_nownames:
-+    trace_v9fs_walk(pdu->tag, pdu->id, fid, newfid, nwnames, "<?>");
- out_nofid:
-+out_pdu_complete:
-     pdu_complete(pdu, err);
- }
- 
-diff --git a/hw/9pfs/trace-events b/hw/9pfs/trace-events
-index a12e55c165..ed9f4e7209 100644
---- a/hw/9pfs/trace-events
-+++ b/hw/9pfs/trace-events
-@@ -11,7 +11,7 @@ v9fs_stat(uint16_t tag, uint8_t id, int32_t fid) "tag %d id %d fid %d"
- v9fs_stat_return(uint16_t tag, uint8_t id, int32_t mode, int32_t atime, int32_t mtime, int64_t length) "tag %d id %d stat={mode %d atime %d mtime %d length %"PRId64"}"
- v9fs_getattr(uint16_t tag, uint8_t id, int32_t fid, uint64_t request_mask) "tag %d id %d fid %d request_mask %"PRIu64
- v9fs_getattr_return(uint16_t tag, uint8_t id, uint64_t result_mask, uint32_t mode, uint32_t uid, uint32_t gid) "tag %d id %d getattr={result_mask %"PRId64" mode %u uid %u gid %u}"
--v9fs_walk(uint16_t tag, uint8_t id, int32_t fid, int32_t newfid, uint16_t nwnames) "tag %d id %d fid %d newfid %d nwnames %d"
-+v9fs_walk(uint16_t tag, uint8_t id, int32_t fid, int32_t newfid, uint16_t nwnames, const char* wnames) "tag=%d id=%d fid=%d newfid=%d nwnames=%d wnames={%s}"
- v9fs_walk_return(uint16_t tag, uint8_t id, uint16_t nwnames, void* qids) "tag %d id %d nwnames %d qids %p"
- v9fs_open(uint16_t tag, uint8_t id, int32_t fid, int32_t mode) "tag %d id %d fid %d mode %d"
- v9fs_open_return(uint16_t tag, uint8_t id, uint8_t type, uint32_t version, uint64_t path, int iounit) "tag %u id %u qid={type %u version %u path %"PRIu64"} iounit %d"
+With regards,
+Daniel
 -- 
-2.39.5
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
