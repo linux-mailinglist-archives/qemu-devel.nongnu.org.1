@@ -2,87 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 122EE9E1DBA
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Dec 2024 14:37:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D44A49E1DC7
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Dec 2024 14:39:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tIT4p-00084O-Ip; Tue, 03 Dec 2024 08:36:31 -0500
+	id 1tIT7A-0004fC-8u; Tue, 03 Dec 2024 08:39:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <tomitamoeko@gmail.com>)
- id 1tIT4o-00084F-JD
- for qemu-devel@nongnu.org; Tue, 03 Dec 2024 08:36:30 -0500
-Received: from mail-pl1-x641.google.com ([2607:f8b0:4864:20::641])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <tomitamoeko@gmail.com>)
- id 1tIT4n-0001Hr-3A
- for qemu-devel@nongnu.org; Tue, 03 Dec 2024 08:36:30 -0500
-Received: by mail-pl1-x641.google.com with SMTP id
- d9443c01a7336-2155e9dcbe7so28738355ad.3
- for <qemu-devel@nongnu.org>; Tue, 03 Dec 2024 05:36:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1733232987; x=1733837787; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=zjHE9Z6WrftEnGOF6FxD/A7yotkBFL8L2UOLnZiXDUY=;
- b=VEc2cEix2Audq4OasIxx752ns1jAAJJTXqzoessUZuQ9lZ2lro5SCT9bjMeGj3Ljf/
- BJHoAG+2+2G1JnBDAdbTXruMnKRZm9CkOreTz1lhvS9YZAqJylFvmwgvrDLPjDcGTnzk
- WgReT3LIwZM3TCLu+/IC+pcIGVbiCdAetpQq+kTIW/S8rDfi7EwW2Y016q8pfnqjnyvk
- 8gVSvvXmtJVYoJNLS2iwjl2/SUxo8ZR5fvdy/tns0YbjWo768QICDsvQUctXYen5VhZK
- CUitMVoG+XGhKNPFmb4RTfjhGsw3oQ6X4NEvK7vBmJk+X26MgOCCrUZc0cQA3bho64US
- nKlg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733232987; x=1733837787;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=zjHE9Z6WrftEnGOF6FxD/A7yotkBFL8L2UOLnZiXDUY=;
- b=JQsNbT2Csn43kRfBKq3O5P4AB+iAR7DewaxFRDACk9Dc9h23X3xn21lYO/Z7DO5uPB
- 4h2kcyj8K1yaj2gMNw89anyjqroUs8P2yT1B4HIuqcZd3djlP12YNt9xBGLbr0mOhPqW
- jbx3YUNmNcBEaO0wKUywmDQHnBwh19U6gFWYoXxUJ4FueNNlpONckY75ZGK2eeEr8VVJ
- fV7tvtfiXz75lsM88xvM0NuvESLNhTsIW1zj+v6VbzYWqHPtrIhXmiEj56aEJuiBRyhQ
- GzYQI48mYgtY2b31NerLVC1ZFxh5Ujd/9aRQOjkZ5Sq9yBk3p/HASckDei6XgLDEHdlP
- dg6A==
-X-Gm-Message-State: AOJu0Yw4qGCxuKraJo6i4DT30L6rGrBjJe00v9o8V9Ji1MQan6C1I2hI
- fnXNSaqba2lChW7fZ6iNc52B9mp2wLLijFIBgxwhHA9rKGxIBokQvlLRR9h89Q==
-X-Gm-Gg: ASbGncvTijfR7pnGpxVPK96HgVO4rH5chF/T9tYNGzI+fhhOEJZTPf9FXLiCmV3Sg8m
- fFLDQa7v72ezIjrByMc1ntMTXbLykBZ6eCwzonD9bDm0rH9dD3a+Dm/NQIo4qKJogsBCfVKAeFF
- XUetmKWBqFxshShVZSe4GwoXGcw4Pa3s+yMk3ukujz/2io6xlHxhnVfMsLMrQWZPaei5eod2GL6
- BuN6wLGLMq40tzGF/nu5GzlR3pbgVqK30tZ78/M+EfZhGTKWCj5g5RO4AM=
-X-Google-Smtp-Source: AGHT+IHWUvlPD2yCX4OhbnW4Zl6SiTnJvNkMWvHlS06dmulqoOAlIEL/sIvG5L8mfGH+9kQ26rfTsQ==
-X-Received: by 2002:a17:902:ecca:b0:215:4665:f7e5 with SMTP id
- d9443c01a7336-215bd16f93dmr29216905ad.43.1733232987439; 
- Tue, 03 Dec 2024 05:36:27 -0800 (PST)
-Received: from kotori-desktop.lan ([116.231.112.6])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-215810cf18esm44183975ad.242.2024.12.03.05.36.25
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 03 Dec 2024 05:36:27 -0800 (PST)
-From: Tomita Moeko <tomitamoeko@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: Alex Williamson <alex.williamson@redhat.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
- =?UTF-8?q?Corvin=20K=C3=B6hne?= <c.koehne@beckhoff.com>,
- Tomita Moeko <tomitamoeko@gmail.com>
-Subject: [PATCH v2 9/9] vfio/igd: add x-igd-gms option back to set DSM region
- size for guest
-Date: Tue,  3 Dec 2024 21:35:48 +0800
-Message-ID: <20241203133548.38252-10-tomitamoeko@gmail.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20241203133548.38252-1-tomitamoeko@gmail.com>
-References: <20241203133548.38252-1-tomitamoeko@gmail.com>
+ (Exim 4.90_1) (envelope-from <mchehab+huawei@kernel.org>)
+ id 1tIT6y-0004NW-4K; Tue, 03 Dec 2024 08:38:44 -0500
+Received: from nyc.source.kernel.org ([147.75.193.91])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mchehab+huawei@kernel.org>)
+ id 1tIT6w-0001WS-G1; Tue, 03 Dec 2024 08:38:43 -0500
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+ by nyc.source.kernel.org (Postfix) with ESMTP id 9801CA4154E;
+ Tue,  3 Dec 2024 13:36:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C710C4CECF;
+ Tue,  3 Dec 2024 13:38:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1733233111;
+ bh=7rxcTbvnhbMVz8ygNphkbF86kDtn0YCOEk/Z5XEkOIQ=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+ b=uqc9GqaJAwLMEfMTl1Uxxddq28fOYmkab+8EZHajCB9nJkl6YKkV66Rn8EIv7hZVT
+ /8RMKl+agEt1aQ6br0aQDLMDzW3UB6JE7QL30/BEmsTJVySuu9EkHoRsQHoYWyYwhk
+ 7uJ4i5yV/ydkkycCttziqNqxlF1PdQ3hPAPZrAE/ZMw4qcizb7lHR+cCWHun4toi1l
+ zDmxacGiTGVe6QIvi+WYeAgY/EPFyFQ3NNT8ae3iMl4KPY69BpOsXOs2iywSthl657
+ jJ/vjf1/nsH+cac7j92JCCdpQU+jgO8SCeoXuA787bz8Xf0jbjt/V/csJ+W+hRLpyH
+ p/aGkoLSnWEkg==
+Date: Tue, 3 Dec 2024 14:38:26 +0100
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+To: Igor Mammedov <imammedo@redhat.com>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, Shiju Jose
+ <shiju.jose@huawei.com>, "Michael S. Tsirkin" <mst@redhat.com>, Ani Sinha
+ <anisinha@redhat.com>, Dongjiu Geng <gengdongjiu1@gmail.com>,
+ linux-kernel@vger.kernel.org, qemu-arm@nongnu.org, qemu-devel@nongnu.org
+Subject: Re: [PATCH v4 08/15] acpi/ghes: make the GHES record generation
+ more generic
+Message-ID: <20241203143826.4fd23e48@foz.lan>
+In-Reply-To: <20241203124232.7948b2fb@imammedo.users.ipa.redhat.com>
+References: <cover.1732266152.git.mchehab+huawei@kernel.org>
+ <b3845a8c78ef36c633d5e20af868de4ed16650a4.1732266152.git.mchehab+huawei@kernel.org>
+ <20241203124232.7948b2fb@imammedo.users.ipa.redhat.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::641;
- envelope-from=tomitamoeko@gmail.com; helo=mail-pl1-x641.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=147.75.193.91;
+ envelope-from=mchehab+huawei@kernel.org; helo=nyc.source.kernel.org
+X-Spam_score_int: -73
+X-Spam_score: -7.4
+X-Spam_bar: -------
+X-Spam_report: (-7.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.996,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -99,51 +74,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-DSM region is likely to store framebuffer in Windows, a small DSM
-region may cause display issues (e.g. half of the screen is black).
-By default, QEMU uses host's original value, which is determined by
-DVMT Pre-Allocated option in Intel FSP of host bios. Some vendors
-do not expose this config item to users. In such cases, x-igd-gms
-option can be used to manually set the data stolen memory size for
-guest.
+Em Tue, 3 Dec 2024 12:42:32 +0100
+Igor Mammedov <imammedo@redhat.com> escreveu:
 
-When DVMT Pre-Allocated option is available in host BIOS, user should
-set DSM region size there instead of using x-igd-gms option.
+> > +    /*
+> > +     * Clear the Read Ack Register, OSPM will write it to 1 when  
+>                                                  ^^^^^^^^^^^^^ typo?
+> > +     * it acknowledges this error.
+> > +     */
 
-Signed-off-by: Tomita Moeko <tomitamoeko@gmail.com>
----
- hw/vfio/igd.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+Yes. I'll add this hunk there:
 
-diff --git a/hw/vfio/igd.c b/hw/vfio/igd.c
-index e464cd6949..0814730f40 100644
---- a/hw/vfio/igd.c
-+++ b/hw/vfio/igd.c
-@@ -717,6 +717,23 @@ void vfio_probe_igd_bar4_quirk(VFIOPCIDevice *vdev, int nr)
+diff --git a/hw/acpi/ghes.c b/hw/acpi/ghes.c
+index 68fb30c2d5c1..4b5332f8c667 100644
+--- a/hw/acpi/ghes.c
++++ b/hw/acpi/ghes.c
+@@ -403,8 +403,8 @@ void ghes_record_cper_errors(const void *cper, size_t len,
  
-     QLIST_INSERT_HEAD(&vdev->bars[nr].quirks, quirk, next);
- 
-+    /*
-+     * Allow user to override dsm size using x-igd-gms option, in multiples of
-+     * 32MiB. This option should only be used when the desired size cannot be
-+     * set from DVMT Pre-Allocated option in host BIOS.
-+     */
-+    if (vdev->igd_gms) {
-+        if (gen < 8 && vdev->igd_gms <= 0x10) {
-+            gmch &= ~(IGD_GMCH_GEN6_GMS_MASK << IGD_GMCH_GEN6_GMS_SHIFT);
-+            gmch |= vdev->igd_gms << IGD_GMCH_GEN6_GMS_SHIFT;
-+        } else if (vdev->igd_gms <= 0x40) {
-+            gmch &= ~(IGD_GMCH_GEN8_GMS_MASK << IGD_GMCH_GEN8_GMS_SHIFT);
-+            gmch |= vdev->igd_gms << IGD_GMCH_GEN8_GMS_SHIFT;
-+        } else {
-+            error_report("Unsupported IGD GMS value 0x%x", vdev->igd_gms);
-+        }
-+    }
-+
-     ggms_size = igd_gtt_memory_size(gen, gmch);
-     gms_size = igd_stolen_memory_size(gen, gmch);
- 
--- 
-2.45.2
+     read_ack_register = cpu_to_le64(0);
+     /*
+-     * Clear the Read Ack Register, OSPM will write it to 1 when
+-     * it acknowledges this error.
++     * Clear the Read Ack Register, OSPM will write 1 to this register when
++     * it acknowledges the error.
+      */
+     cpu_physical_memory_write(read_ack_register_addr,
+         &read_ack_register, sizeof(uint64_t));
 
+
+Thanks,
+Mauro
 
