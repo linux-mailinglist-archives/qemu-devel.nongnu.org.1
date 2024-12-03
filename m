@@ -2,74 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D78329E1DCF
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Dec 2024 14:40:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EE08F9E1DF9
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Dec 2024 14:44:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tIT8l-0006L6-ES; Tue, 03 Dec 2024 08:40:35 -0500
+	id 1tITBr-0008D8-6G; Tue, 03 Dec 2024 08:43:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1tIT8a-0006KG-02
- for qemu-devel@nongnu.org; Tue, 03 Dec 2024 08:40:24 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1tIT8Y-00020C-Dv
- for qemu-devel@nongnu.org; Tue, 03 Dec 2024 08:40:23 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1733233221;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=w5ChKXtHIpjzQSjyahis7qpZuTfzIJGucF5eGbHoAV8=;
- b=CLfrcHPio6oP/ujWwkQ1nUEs2Jthyit8dRig+dUbaJUP/0naXAzN8NL9R6Zu33iNHAsJl1
- I1y2aL/beCuaTeDWDp165pTHXGe43G1tcXDOy6zRX1qZy5yqGxXqxuyCN4NMiSZmgO+5O+
- Is1LW8tA+qzko3jAjuh7FATvgOQxmqo=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-609-f4-ub7Z5MaCrRKr2Tv5buA-1; Tue,
- 03 Dec 2024 08:40:18 -0500
-X-MC-Unique: f4-ub7Z5MaCrRKr2Tv5buA-1
-X-Mimecast-MFC-AGG-ID: f4-ub7Z5MaCrRKr2Tv5buA
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 4083319560A3; Tue,  3 Dec 2024 13:40:17 +0000 (UTC)
-Received: from localhost (unknown [10.39.208.11])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 360BD1956052; Tue,  3 Dec 2024 13:40:15 +0000 (UTC)
-From: marcandre.lureau@redhat.com
-To: qemu-devel@nongnu.org
-Cc: peter.maydell@linaro.org, Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Nicholas Piggin <npiggin@gmail.com>
-Subject: [PULL 2/2] chardev: Remove __-prefixed names
-Date: Tue,  3 Dec 2024 17:40:01 +0400
-Message-ID: <20241203134001.750958-3-marcandre.lureau@redhat.com>
-In-Reply-To: <20241203134001.750958-1-marcandre.lureau@redhat.com>
-References: <20241203134001.750958-1-marcandre.lureau@redhat.com>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1tITBm-0008Cl-Mi
+ for qemu-devel@nongnu.org; Tue, 03 Dec 2024 08:43:42 -0500
+Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1tITBk-0002Ep-T3
+ for qemu-devel@nongnu.org; Tue, 03 Dec 2024 08:43:42 -0500
+Received: by mail-ed1-x536.google.com with SMTP id
+ 4fb4d7f45d1cf-5cecbddb574so6560736a12.1
+ for <qemu-devel@nongnu.org>; Tue, 03 Dec 2024 05:43:40 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1733233419; x=1733838219; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=g5WMSQkt52jkcd7ALnyI8L67NEhq/qeoF7cjP8SFnzY=;
+ b=xaaUhNdW6/fhPx0O7CG2mJ777bp0T3o09spVUniqtoEe194VB0VvAMUH/8rcHBxcQI
+ WjMy6lpwvoFfm4Cc0+cMk1y1z14OaaGkR4QDM/e1+mezfi9N+LlE4IEejdWQ698zS3+X
+ 9oRDN2efv72wJL2/KQOmv7tuxHX6ZVpNpFV9T4aM/8RtZqr1mHnRVYn+EZKvADEKEkFF
+ ovDw+p8Ter5HHoeXL2B0Zr9rCEuwpD4lvrF6cSCrahgdfm5RUI6d1/leurE9uMQY08wO
+ mLLBtX1TbihSzjUKCAo+CoYp0OWiDExtRpqeOn7qxwxXiiGzJv2yxlLDXPx5TcgThr5D
+ 5xxg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1733233419; x=1733838219;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=g5WMSQkt52jkcd7ALnyI8L67NEhq/qeoF7cjP8SFnzY=;
+ b=DH8ODNBqd0V4rDppSG5HtTA7T8hVPtAgU6b9z24Rt++9+36j+TmY2E5HopPcKBdlIJ
+ bY87FrVeO6iQ45ArqS+GIy58Wguz/meok+3jABW/WrDSt2C92MkIBgXDKwpAgpa2LKSk
+ MzwfyhsmVWP28xAXWuq8wsahuspBaitN767a2Z+UvzrwL4cW0Zfqb+nuaSX8QI+iyvZS
+ OSaJwI1y556lFrHbw5S2VFV3Gb4GC3FdHcep4/SXO/OrQS+e1ZkRLSjpUviT5vdnGleY
+ B2JgBkjdgGcD85aFy8tde5QPwt9T6xiMZS1mbVs/rkzO90eWxAVAdmtqd3wErSMjmywp
+ w93g==
+X-Gm-Message-State: AOJu0YwPthI4F5W7nGbH+Yl2XwPFt2Gw8vN5pEhmDlcAxg3x3cSblwrm
+ lE+lE4Yw5lSa+69Ahx/YRIGNh5HFwK6u0io29QhehZ1blnZMSxGikvpZC342goDzfeXsp5/zrUc
+ ufOlEqAeNhdX+LJ9tD1QkVJsBbALexdhIDUaUPg==
+X-Gm-Gg: ASbGnct/S6/Z20JhE2aUhyQX4iV/vNyCoW/lX7WMJTftRwgpRv4apzDuMDZOGp6+KUP
+ 8iP5N/uWAKlNzp10YTPkrOZAdUtKJ63u8
+X-Google-Smtp-Source: AGHT+IEH6+l8SpJB4WKzUVd7CyMPrKf7y0SoB7UfhwXSL3GG6KaXQv8y2ZrkCdgdXAx1xuguwe3cjizuiHeLcr7+iQo=
+X-Received: by 2002:a05:6402:42c9:b0:5d0:d30b:d53e with SMTP id
+ 4fb4d7f45d1cf-5d10cb5d891mr2121837a12.19.1733233419024; Tue, 03 Dec 2024
+ 05:43:39 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.129.124;
- envelope-from=marcandre.lureau@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -50
-X-Spam_score: -5.1
-X-Spam_bar: -----
-X-Spam_report: (-5.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.996,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+References: <20241202212957.570277-1-peterx@redhat.com>
+In-Reply-To: <20241202212957.570277-1-peterx@redhat.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 3 Dec 2024 13:43:28 +0000
+Message-ID: <CAFEAcA8a7D_5fBW0PzpFov2KN6KwvjCWwaqCSsZa4kZBtaYaqw@mail.gmail.com>
+Subject: Re: [PULL 0/1] Migration 20241202 patches
+To: Peter Xu <peterx@redhat.com>
+Cc: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::536;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x536.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,82 +87,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Nicholas Piggin <npiggin@gmail.com>
+On Mon, 2 Dec 2024 at 21:30, Peter Xu <peterx@redhat.com> wrote:
+>
+> The following changes since commit eb22a064455aeebc105cc89bf77f48aa18b52938:
+>
+>   Merge tag 'pull-request-2024-12-02' of https://gitlab.com/thuth/qemu into staging (2024-12-02 16:16:15 +0000)
+>
+> are available in the Git repository at:
+>
+>   https://gitlab.com/peterx/qemu.git tags/migration-20241202-pull-request
+>
+> for you to fetch changes up to 3b83e663611c628bb04ae84a4f7ee49bdb68138b:
+>
+>   migration: correct multifd receive thread name (2024-12-02 14:20:44 -0500)
+>
+> ----------------------------------------------------------------
+> Migration pull for 9.2-rc3
+>
+> - Prasad's one fix on thread name typo
+>
 
-Peter points out double underscore prefix names tend to be reserved
-for the system. Clean these up.
 
-Suggested-by: Peter Maydell <peter.maydell@linaro.org>
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Message-ID: <20240828043337.14587-3-npiggin@gmail.com>
----
- chardev/char.c | 20 +++++++++++---------
- 1 file changed, 11 insertions(+), 9 deletions(-)
+Applied, thanks.
 
-diff --git a/chardev/char.c b/chardev/char.c
-index 1c7f6c711a..d06698228a 100644
---- a/chardev/char.c
-+++ b/chardev/char.c
-@@ -633,8 +633,8 @@ static void qemu_chardev_set_replay(Chardev *chr, Error **errp)
-     }
- }
- 
--static Chardev *__qemu_chr_new_from_opts(QemuOpts *opts, GMainContext *context,
--                                         bool replay, Error **errp)
-+static Chardev *do_qemu_chr_new_from_opts(QemuOpts *opts, GMainContext *context,
-+                                          bool replay, Error **errp)
- {
-     const ChardevClass *cc;
-     Chardev *base = NULL, *chr = NULL;
-@@ -712,12 +712,12 @@ Chardev *qemu_chr_new_from_opts(QemuOpts *opts, GMainContext *context,
-                                 Error **errp)
- {
-     /* XXX: should this really not record/replay? */
--    return __qemu_chr_new_from_opts(opts, context, false, errp);
-+    return do_qemu_chr_new_from_opts(opts, context, false, errp);
- }
- 
--static Chardev *__qemu_chr_new(const char *label, const char *filename,
--                               bool permit_mux_mon, GMainContext *context,
--                               bool replay)
-+static Chardev *qemu_chr_new_from_name(const char *label, const char *filename,
-+                                       bool permit_mux_mon,
-+                                       GMainContext *context, bool replay)
- {
-     const char *p;
-     Chardev *chr;
-@@ -740,7 +740,7 @@ static Chardev *__qemu_chr_new(const char *label, const char *filename,
-     if (!opts)
-         return NULL;
- 
--    chr = __qemu_chr_new_from_opts(opts, context, replay, &err);
-+    chr = do_qemu_chr_new_from_opts(opts, context, replay, &err);
-     if (!chr) {
-         error_report_err(err);
-         goto out;
-@@ -765,7 +765,8 @@ out:
- Chardev *qemu_chr_new_noreplay(const char *label, const char *filename,
-                                bool permit_mux_mon, GMainContext *context)
- {
--    return __qemu_chr_new(label, filename, permit_mux_mon, context, false);
-+    return qemu_chr_new_from_name(label, filename, permit_mux_mon, context,
-+                                  false);
- }
- 
- static Chardev *qemu_chr_new_permit_mux_mon(const char *label,
-@@ -773,7 +774,8 @@ static Chardev *qemu_chr_new_permit_mux_mon(const char *label,
-                                           bool permit_mux_mon,
-                                           GMainContext *context)
- {
--    return __qemu_chr_new(label, filename, permit_mux_mon, context, true);
-+    return qemu_chr_new_from_name(label, filename, permit_mux_mon, context,
-+                                  true);
- }
- 
- Chardev *qemu_chr_new(const char *label, const char *filename,
--- 
-2.47.0
+Please update the changelog at https://wiki.qemu.org/ChangeLog/9.2
+for any user-visible changes.
 
+-- PMM
 
