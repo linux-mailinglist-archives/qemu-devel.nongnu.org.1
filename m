@@ -2,82 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B39869E21E1
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Dec 2024 16:18:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 372FA9E260E
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Dec 2024 17:08:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tIUel-0008E2-9U; Tue, 03 Dec 2024 10:17:43 -0500
+	id 1tIVQV-0007R8-3w; Tue, 03 Dec 2024 11:07:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tIUeb-0008DU-3R; Tue, 03 Dec 2024 10:17:38 -0500
-Received: from mgamail.intel.com ([192.198.163.12])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tIUeW-0006gn-EJ; Tue, 03 Dec 2024 10:17:32 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1733239048; x=1764775048;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=OyuUlNUCgMno9JjOurrYBOYFzufUAZ+RlmQeR5Bbibk=;
- b=IN+eVGdK3LRRDVG2azagSgnxUy5BATkU6wTiXnSNR9OOQSuIUlliCuCc
- W7hpqdi8lum0Ew/FEt/9ZKfQZumqIXrbanKpV232EsOu2PJd29GDJALDM
- C3OaUp/x7xJEGa8iZc78UhobsfIzU+6hAhvZuKDgCy9Jhfbhhmmb8EU3W
- CLyOco0bghy2QxcgpxlqqCrTxujRBN1z3ao9asNhMg+Z+DFnx+zYAnPYw
- qVeNqwAWkT3KYXUqeIYvG6F+CUN3k1wpVgLBdYRmU2mS6N3wBfxr0OueC
- xeQnKPO7WHUN4GvQI4CQ+0P/aK5C18OCjcx7UpySJx9mI+hgFuhuyi5sV g==;
-X-CSE-ConnectionGUID: 3sQVuOzASA6EHrbBzwrrFw==
-X-CSE-MsgGUID: hTK8giGuQuOCjKlnuHpaIg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11275"; a="37396350"
-X-IronPort-AV: E=Sophos;i="6.12,205,1728975600"; d="scan'208";a="37396350"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Dec 2024 07:17:25 -0800
-X-CSE-ConnectionGUID: W+tk+/GxTqqjwikhHRLDcw==
-X-CSE-MsgGUID: S+e9PtWKSOOSfVEnKkLn8g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,205,1728975600"; d="scan'208";a="93561735"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by orviesa006.jf.intel.com with ESMTP; 03 Dec 2024 07:17:23 -0800
-Date: Tue, 3 Dec 2024 23:35:34 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Chuang Xu <xuchuangxclwt@bytedance.com>, pbonzini@redhat.com,
- imammedo@redhat.com, xieyongji@bytedance.com,
- chaiwen.cc@bytedance.com, qemu-stable@nongnu.org,
- Guixiong Wei <weiguixiong@bytedance.com>,
- Yipeng Yin <yinyipeng@bytedance.com>, qemu-devel@nongnu.org
-Subject: Re: [PATCH v6] i386/cpu: fixup number of addressable IDs for logical
- processors in the physical package
-Message-ID: <Z08lRiqdjca2Tcn9@intel.com>
-References: <20241009035638.59330-1-xuchuangxclwt@bytedance.com>
- <cc83fc31-7a77-4e32-a861-3c1dc8592a04@intel.com>
- <2f6b952d-4c21-4db5-9a8a-84a0c10feca8@bytedance.com>
- <a48fcd78-d1c4-4359-bc18-d04147a93f50@intel.com>
- <ZwyRsq4EIooifRvb@intel.com>
- <bbcfcbbd-1666-4e97-ae18-f47202d89009@intel.com>
- <ZxDS4L8vSr3HfFIh@intel.com>
- <b43557f7-49ff-43bb-8a8c-887b8220e1e8@intel.com>
- <Z060VQVV6ONK9Qd2@intel.com>
- <f59cd973-b38b-4ee6-8baf-70019c26122e@intel.com>
+ (Exim 4.90_1) (envelope-from <guohongyu24@mails.ucas.ac.cn>)
+ id 1tIUyq-00061M-Kf
+ for qemu-devel@nongnu.org; Tue, 03 Dec 2024 10:38:28 -0500
+Received: from smtp86.cstnet.cn ([159.226.251.86] helo=cstnet.cn)
+ by eggs.gnu.org with esmtps (TLS1.2:DHE_RSA_AES_256_CBC_SHA1:256)
+ (Exim 4.90_1) (envelope-from <guohongyu24@mails.ucas.ac.cn>)
+ id 1tIUyo-0000nk-39
+ for qemu-devel@nongnu.org; Tue, 03 Dec 2024 10:38:28 -0500
+Received: from guohongyu24$mails.ucas.ac.cn ( [111.199.67.46] ) by
+ ajax-webmail-APP-16 (Coremail) ; Tue, 3 Dec 2024 23:38:11 +0800 (GMT+08:00)
+X-Originating-IP: [111.199.67.46]
+Date: Tue, 3 Dec 2024 23:38:11 +0800 (GMT+08:00)
+X-CM-HeaderCharset: UTF-8
+From: =?UTF-8?B?6YOt6bi/5a6H?= <guohongyu24@mails.ucas.ac.cn>
+To: qemu-devel@nongnu.org
+Cc: gaosong@loongson.cn
+Subject: 0001-target-loongarch-fix-vldi-inst.patch
+X-Priority: 3
+X-Mailer: Coremail Webmail Server Version 2024.1-cmXT5 build
+ 20240627(e6c6db66) Copyright (c) 2002-2024 www.mailtech.cn cnic.cn
+Content-Type: multipart/mixed; 
+ boundary="----=_Part_2215507_706442123.1733240291447"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <f59cd973-b38b-4ee6-8baf-70019c26122e@intel.com>
-Received-SPF: pass client-ip=192.198.163.12; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -73
-X-Spam_score: -7.4
-X-Spam_bar: -------
-X-Spam_report: (-7.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.996,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Message-ID: <3a7d9342.9e3d1.1938d2c0078.Coremail.guohongyu24@mails.ucas.ac.cn>
+X-Coremail-Locale: zh_CN
+X-CM-TRANSID: sQCowAD3_5fkJU9njhQHAA--.31227W
+X-CM-SenderInfo: xjxrx0pqj13j2u6ptx1ovo3u1dvotugofq/1tbiDAgAA2dOwHMcWg
+	ABsa
+X-Coremail-Antispam: 1Ur529EdanIXcx71UUUUU7IcSsGvfJ3iIAIbVAYjsxI4VWUJw
+ CS07vEb4IE77IF4wCS07vE1I0E4x80FVAKz4kxMIAIbVAFxVCaYxvI4VCIwcAKzIAtYxBI
+ daVFxhVjvjDU=
+Received-SPF: pass client-ip=159.226.251.86;
+ envelope-from=guohongyu24@mails.ucas.ac.cn; helo=cstnet.cn
+X-Spam_score_int: -4
+X-Spam_score: -0.5
+X-Spam_bar: /
+X-Spam_report: (-0.5 / 5.0 requ) BAYES_00=-1.9, PYZOR_CHECK=1.392,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ TVD_SPACE_RATIO=0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Tue, 03 Dec 2024 11:06:37 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,55 +66,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Dec 03, 2024 at 11:04:12PM +0800, Xiaoyao Li wrote:
-> Date: Tue, 3 Dec 2024 23:04:12 +0800
-> From: Xiaoyao Li <xiaoyao.li@intel.com>
-> Subject: Re: [PATCH v6] i386/cpu: fixup number of addressable IDs for
->  logical processors in the physical package
-> 
-> On 12/3/2024 3:33 PM, Zhao Liu wrote:
-> > > However, back to the patch, I think we cannot change it as this patch
-> > > directly. Instead, we need a compat_props for the changed behavior, because
-> > > this isn't a bug fix and it introduces guest-visible differences.
-> > 
-> > This is a fix, not a new feature, so compat_props is not needed.
-> 
-> Fix what? QEMU behaves as it for so many years and if the guest OS uses the
-> algorithm recommended by SDM, there is no issue.
+------=_Part_2215507_706442123.1733240291447
+Content-Type: multipart/alternative; 
+	boundary="----=_Part_2215509_907106438.1733240291447"
 
-I've spent a lot time to explain why current behavior doesn't match the
-SDM and real machine's implementation.
+------=_Part_2215509_907106438.1733240291447
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-> > > For ancient Intel CPUs, EBX[23:16] did represent the number of Logical
-> > > processor per package. I believe this should be the reason why QEMU
-> > > implemented it as is:
-> > > 
-> > >    - on SDM version 013, EBX[23:16]: Number of logical processors per
-> > > physical processor; two for the Pentium 4 processor supporting
-> > > Hyper-Threading Technology.
-> > > 
-> > >    - on SDM version 015, it changed to: Number of initial APIC IDs reserved
-> > > for this physical package. Normally, this is the number of logical
-> > > processors per physical package.
-> > > 
-> > >    - on SDM version 016, it changed to: Maximum number of logical processors
-> > > in this physical package.
-> > > 
-> > >    - finally, starting from SDM version 026, it changed to what reads now:
-> > > Maximum number of addressable IDs for logical processors in this physical
-> > > package.
-> > 
-> > And this is an architecturally defined CPUID, so SDM ensures backward
-> > compatibility.
-> 
-> SDM ensure the backwards compatibility by recommending to round the number
-> up to the power-of 2 when using it to calculate the topology with legacy
-> method.
 
-Please, *always* refer the latest SDM.
+------=_Part_2215509_907106438.1733240291447
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Regarding historical changes, older machines didn't have spare APIC ID
-slots, so the actual number is the same as the maximum number of
-addressable IDs.
+
+------=_Part_2215509_907106438.1733240291447--
+
+------=_Part_2215507_706442123.1733240291447
+Content-Type: application/octet-stream; 
+	name=0001-target-loongarch-fix-vldi-inst.patch
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment;
+ filename="0001-target-loongarch-fix-vldi-inst.patch"
+
+RnJvbSAyZTgyMGY0Y2UzYTU3OTBmZDFkMTk5NzQ1ZjM3MTczZjBlMzEwNjFmIE1vbiBTZXAgMTcg
+MDA6MDA6MDAgMjAwMQpGcm9tOiBnaHkgPDIyNDc4ODM3NTZAcXEuY29tPgpEYXRlOiBUdWUsIDMg
+RGVjIDIwMjQgMjM6MzA6MTMgKzA4MDAKU3ViamVjdDogW1BBVENIXSB0YXJnZXQvbG9vbmdhcmNo
+OiBmaXggdmxkaSBpbnN0CgpTaWduZWQtb2ZmLWJ5OiBHdW8gSG9uZ3l1IDxndW9ob25neXUyNEBt
+YWlscy51Y2FzLmFjLmNuPgotLS0KIHRhcmdldC9sb29uZ2FyY2gvdGNnL2luc25fdHJhbnMvdHJh
+bnNfdmVjLmMuaW5jIHwgMiArLQogMSBmaWxlIGNoYW5nZWQsIDEgaW5zZXJ0aW9uKCspLCAxIGRl
+bGV0aW9uKC0pCgpkaWZmIC0tZ2l0IGEvdGFyZ2V0L2xvb25nYXJjaC90Y2cvaW5zbl90cmFucy90
+cmFuc192ZWMuYy5pbmMgYi90YXJnZXQvbG9vbmdhcmNoL3RjZy9pbnNuX3RyYW5zL3RyYW5zX3Zl
+Yy5jLmluYwppbmRleCA5MmIxZDIyZTI4Li5kMzE3ZGZjYzFjIDEwMDY0NAotLS0gYS90YXJnZXQv
+bG9vbmdhcmNoL3RjZy9pbnNuX3RyYW5zL3RyYW5zX3ZlYy5jLmluYworKysgYi90YXJnZXQvbG9v
+bmdhcmNoL3RjZy9pbnNuX3RyYW5zL3RyYW5zX3ZlYy5jLmluYwpAQCAtMzQ4MCw3ICszNDgwLDcg
+QEAgc3RhdGljIHVpbnQ2NF90IHZsZGlfZ2V0X3ZhbHVlKERpc2FzQ29udGV4dCAqY3R4LCB1aW50
+MzJfdCBpbW0pCiAgICAgICAgIGJyZWFrOwogICAgIGNhc2UgMToKICAgICAgICAgLyogZGF0YTog
+ezJ7MTYnMCwgaW1tWzc6MF0sIDgnMH19ICovCi0gICAgICAgIGRhdGEgPSAodCA8PCAyNCkgfCAo
+dCA8PCA4KTsKKyAgICAgICAgZGF0YSA9ICh0IDw8IDQwKSB8ICh0IDw8IDgpOwogICAgICAgICBi
+cmVhazsKICAgICBjYXNlIDI6CiAgICAgICAgIC8qIGRhdGE6IHsyezgnMCwgaW1tWzc6MF0sIDE2
+JzB9fSAqLwotLSAKMi4zNC4xCgo=
+------=_Part_2215507_706442123.1733240291447--
 
 
