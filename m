@@ -2,63 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE0A29E174C
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Dec 2024 10:23:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A98A9E174D
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Dec 2024 10:23:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tIP6p-0005ae-4l; Tue, 03 Dec 2024 04:22:19 -0500
+	id 1tIP6y-0005fs-Tm; Tue, 03 Dec 2024 04:22:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tIP6n-0005a0-4m
- for qemu-devel@nongnu.org; Tue, 03 Dec 2024 04:22:17 -0500
-Received: from mail-ed1-x52c.google.com ([2a00:1450:4864:20::52c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tIP6s-0005eR-Pb
+ for qemu-devel@nongnu.org; Tue, 03 Dec 2024 04:22:22 -0500
+Received: from mail-lf1-x136.google.com ([2a00:1450:4864:20::136])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tIP6k-0002ff-Gy
- for qemu-devel@nongnu.org; Tue, 03 Dec 2024 04:22:16 -0500
-Received: by mail-ed1-x52c.google.com with SMTP id
- 4fb4d7f45d1cf-5d0c8ba475bso3826688a12.1
- for <qemu-devel@nongnu.org>; Tue, 03 Dec 2024 01:22:13 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tIP6r-0002gR-8i
+ for qemu-devel@nongnu.org; Tue, 03 Dec 2024 04:22:22 -0500
+Received: by mail-lf1-x136.google.com with SMTP id
+ 2adb3069b0e04-53de92be287so7765032e87.1
+ for <qemu-devel@nongnu.org>; Tue, 03 Dec 2024 01:22:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1733217732; x=1733822532; darn=nongnu.org;
+ d=linaro.org; s=google; t=1733217738; x=1733822538; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=C/6Bk/TIHmUcRxz6rQ6nK013EsFPgzobZnpt1ORjNTg=;
- b=cYaHDsbdPt5Aii7fBNAv+qewQZs6lj/bKjf9ZbvTCnjOvFFDIDWBMZ+iixq+eeXA9t
- MPt9jb9ewjWfcUrza/Dod4CWlPLl8geOPCn0vtOloqImT8LJHyJxLf41TYlU5RxPpuuH
- EWh3dW8dS0TqtWkIKw84b/ywc502ZOfImz4CB8DX9dQt3ZffGfkHUfLfHKWSGAk4UT2y
- 5SoG4lUdoqDdqsbXkBtQWAuljz01MpGfLC8LZ3KyX4nZFQC6qD9o8jYbXxO4zvMaFazZ
- qHBbsB2mxPefq6+RbxJYongeKnW52AmZFK9SNHpZ3diC5MHEAaMJn9Yuv3AApJwuOhS1
- NAZA==
+ bh=7Z0cleQPrNy9NjZu27Yx3P0Ha1Flw6gQBqfbwRAF2Ak=;
+ b=Pc4YCdmPZUhHTeD1/Km4Uw7qWk2LiwV/pRWaVuzftMIiyyV6jPshU9VzHM1sB27s+M
+ pvDDdsENBb9xrMuRdaJBp4kSsdKrpjozJC2rZTN+HV192ThE8aSxb+m9nkfOIh1Q50Ck
+ zA+PuMZJoeVNf96jk4fbBSXgBZhW0VOQbn03s1aKCr2Cs82BiuEV//6RkeYlCM+E8Kxb
+ ziqZrlCqejENofkhyUJqPhhXeSg2ElhLT2KoaBlrJK4MXgnCn5geBnGSSFWdjABV1U9h
+ umWNFheXy6xv3Elwacy35DhqTAKBJck+9t2VtEgrFCUbIN7sNbc5+o6EdK1ah7XfBPgd
+ HDow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733217732; x=1733822532;
+ d=1e100.net; s=20230601; t=1733217738; x=1733822538;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=C/6Bk/TIHmUcRxz6rQ6nK013EsFPgzobZnpt1ORjNTg=;
- b=G2jDAjXJadQ3nSuPqZU9+iy7gk7Jw3YTottlI3/SAbq4u5qg8OfVG8uUhNZQTXS18+
- Q+HO144djj5gHlG1DeJ+WAOiEt2XbjGbx+tp9nwSb92vT/BQKkPdEbXDN8SJPBheGwef
- EsoOtWoWX54URR0qlMCix8CRegyW6+Hd0sZUnYfaWxUKJDdSd1XVpGnCaAm8E7FQoal7
- 5wY3eIX/luyfNAI2VPxJGDDJ99/4BrybfemBSbftUsu/aeHQeRVCWUJWyy66PGv2r1JH
- EvSpyWpXf1ulMRfyUDl7IOXTG07TbMwJKH+c0XrWcjVUTqIUICsOs6EvvQ0v/06E7Nbd
- QAYQ==
-X-Gm-Message-State: AOJu0Yyl5zpvgrH/KKKnO9hHlcz7dodDkbEt+bJiMDxRf7FOyGLAwdCV
- NoXYJHGgA3PLK98gBEetHsIElHZGH442WUdZ5DF4YMUj5KDtjICIlu+0w7YQjSjySPqLRmfYI8n
- Mt/c=
-X-Gm-Gg: ASbGncvcNUR0C8UfbXdKR+hlL3tatWk4NjrPqfmZKKEj3xeDSsyROxxQSaSGxUKArdX
- +2je87Tw8L8pZaACwMc4P6RdhyvM6LKKnT4r0eF5P5UT1RwFl9yHvWMi27RpYHNR1temGS2AeXi
- yjPcqDB4qU5HZZWyzQJvuAhCiVRHMH2AUXjcLQtckEgyW4w9PvnkDBBXuaux5CKvzaqNklPzKt8
- rGl7g1ubYyTkf+w1nHqAzC+u3ZYDpBJ8mzz/0ezop1dIpXFoy7Dy3/baciWti63u6PwEtgJ
-X-Google-Smtp-Source: AGHT+IHoObOZjdwlMr3aboz/4y2YVDb50eN7RHCCjr/fwpXa6yi9c/pFOSALP0ifpRtK2osZHvNbbA==
-X-Received: by 2002:a17:906:30cb:b0:aa5:297a:ac65 with SMTP id
- a640c23a62f3a-aa5f7d4ec91mr122028566b.19.1733217732604; 
- Tue, 03 Dec 2024 01:22:12 -0800 (PST)
+ bh=7Z0cleQPrNy9NjZu27Yx3P0Ha1Flw6gQBqfbwRAF2Ak=;
+ b=riSl0sINd1TfHipVo+1PmFCZrQQJ0nUL1ei+yk0wTo+n5nFGbp9UekWokQKSTYtmzI
+ KJ+5dubeR3s5WEHl2jtLNQipGOPmQ8ZX3dfAeD7P8i3o0hpTph6bTkZEw2hshcu5aFCK
+ v27oSife/WleuIL08bUTw4exHz5vje8l3e8o0+JP85hcemjRMzT0Pdvi0eabui0USWW3
+ ER4MHiI99QiK/Gbj+YdPzvAbL7dybf5CJ9lOW+C+e36yUZ2VwrngatK3UWG/PJVrqSZB
+ ryBkmT/a43ybhIDDMfs41lMRfHru2gevfJ+3i78YvXQIy2EhXKO2401M2YehoATDEQWf
+ JcZg==
+X-Gm-Message-State: AOJu0YySavVTg2eUAxI9ErKI014n3hWDco233HCzqstmQaWGnpT4/iBn
+ W+erGawdfDYCWo3Np20lcJHQOjYEDLOcecqSOq/4wgWUfamJPs6oB4KtfCuz/1RBWHHNYnBH3zJ
+ 4Jyo=
+X-Gm-Gg: ASbGncuLyXND1jbESm3z9WLKL/97TLOqRb3XR6oVOci1lMGy6WYjEvwAL7yMhHmHULI
+ R7lRSnyAqPTyzOYbmrfThnpFeb3HeiFXfWYhWc54fXN3E8hn0DYqTspoH2tJdwibE6RhaRKS3yi
+ mUB24PWssnVnTWZ61srkc41Q11BsXH/DEpoM02btAwAsjwMSwpMtDogn4YpCutliORNj/7NwCJO
+ /UwYwOHBVWXBs5ZFaBwO11RtAD8ewO5WWyKLuzgX9Akm69NVWYtAfEsuy5TjkP4o7RxOuwR
+X-Google-Smtp-Source: AGHT+IFKXdzCHgoYrbBgxEetwk2wWIxXomwv6Wa0ZHXf5sB1MUtHIOwB2t+dSu80nFR8vz7SoiVkxQ==
+X-Received: by 2002:a05:6512:124f:b0:53d:ed0a:8113 with SMTP id
+ 2adb3069b0e04-53e129fef1amr1251543e87.14.1733217738255; 
+ Tue, 03 Dec 2024 01:22:18 -0800 (PST)
 Received: from localhost.localdomain ([176.187.209.146])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-aa599801591sm590543266b.91.2024.12.03.01.22.11
+ a640c23a62f3a-aa5997d5625sm600599666b.63.2024.12.03.01.22.16
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 03 Dec 2024 01:22:12 -0800 (PST)
+ Tue, 03 Dec 2024 01:22:17 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
@@ -67,17 +67,18 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
  Markus Armbruster <armbru@redhat.com>, qemu-arm@nongnu.org,
  Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 3/7] tests/qtest/fuzz: Remove legacy '-machine foo,accel=bar'
-Date: Tue,  3 Dec 2024 10:21:49 +0100
-Message-ID: <20241203092153.60590-4-philmd@linaro.org>
+Subject: [PATCH 4/7] scripts/device-crash-test: Remove legacy '-machine foo,
+ accel=bar'
+Date: Tue,  3 Dec 2024 10:21:50 +0100
+Message-ID: <20241203092153.60590-5-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241203092153.60590-1-philmd@linaro.org>
 References: <20241203092153.60590-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52c;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x52c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::136;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x136.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -104,92 +105,40 @@ Since commit 6f6e1698a68 ("vl: configure accelerators from -accel
 options") we prefer the '-accel bar' command line option.
 
 Replace '-machine foo,accel=bar' -> '-machine foo -accel bar' in
-fuzzer scripts and tests.
+the device-crash-test script.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- tests/qtest/fuzz/generic_fuzz.c                | 2 +-
- tests/qtest/fuzz/i440fx_fuzz.c                 | 2 +-
- tests/qtest/fuzz/qos_fuzz.c                    | 2 +-
- scripts/oss-fuzz/output_reproducer.py          | 2 --
- scripts/oss-fuzz/reorder_fuzzer_qtest_trace.py | 6 +++---
- 5 files changed, 6 insertions(+), 8 deletions(-)
+ scripts/device-crash-test | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/tests/qtest/fuzz/generic_fuzz.c b/tests/qtest/fuzz/generic_fuzz.c
-index d107a496da6..a8737a4c463 100644
---- a/tests/qtest/fuzz/generic_fuzz.c
-+++ b/tests/qtest/fuzz/generic_fuzz.c
-@@ -919,7 +919,7 @@ static GString *generic_fuzz_cmdline(FuzzTarget *t)
-         usage();
-     }
-     g_string_append_printf(cmd_line, " -display none \
--                                      -machine accel=qtest, \
-+                                      -accel qtest \
-                                       -m 512M %s ", getenv("QEMU_FUZZ_ARGS"));
-     return cmd_line;
- }
-diff --git a/tests/qtest/fuzz/i440fx_fuzz.c b/tests/qtest/fuzz/i440fx_fuzz.c
-index 155fe018f80..b5487996625 100644
---- a/tests/qtest/fuzz/i440fx_fuzz.c
-+++ b/tests/qtest/fuzz/i440fx_fuzz.c
-@@ -145,7 +145,7 @@ static void i440fx_fuzz_qos(QTestState *s,
-     pciconfig_fuzz_qos(s, bus, Data, Size);
- }
+diff --git a/scripts/device-crash-test b/scripts/device-crash-test
+index da8b56edd99..2b139e29ba0 100755
+--- a/scripts/device-crash-test
++++ b/scripts/device-crash-test
+@@ -295,7 +295,10 @@ class QemuBinaryInfo(object):
+         self._machine_info = {}
  
--static const char *i440fx_qtest_argv = TARGET_NAME " -machine accel=qtest"
-+static const char *i440fx_qtest_argv = TARGET_NAME " -accel qtest"
-                                        " -m 0 -display none";
- static GString *i440fx_argv(FuzzTarget *t)
- {
-diff --git a/tests/qtest/fuzz/qos_fuzz.c b/tests/qtest/fuzz/qos_fuzz.c
-index d3839bf9994..9267e63889d 100644
---- a/tests/qtest/fuzz/qos_fuzz.c
-+++ b/tests/qtest/fuzz/qos_fuzz.c
-@@ -84,7 +84,7 @@ static GString *qos_build_main_args(void)
-     }
-     /* Prepend the arguments that we need */
-     g_string_prepend(cmd_line,
--            TARGET_NAME " -display none -machine accel=qtest -m 64 ");
-+            TARGET_NAME " -display none -accel qtest -m 64 ");
-     return cmd_line;
- }
+         dbg("devtype: %r", devtype)
+-        args = ['-S', '-machine', 'none,accel=kvm:tcg']
++        args = ['-S',
++                '-machine', 'none',
++                '-accel', 'kvm:tcg',
++               ]
+         dbg("querying info for QEMU binary: %s", binary)
+         vm = QEMUMachine(binary=binary, args=args)
+         vm.launch()
+@@ -358,7 +361,9 @@ def checkOneCase(args, testcase):
  
-diff --git a/scripts/oss-fuzz/output_reproducer.py b/scripts/oss-fuzz/output_reproducer.py
-index e8ef76b3413..840da3b5a5b 100755
---- a/scripts/oss-fuzz/output_reproducer.py
-+++ b/scripts/oss-fuzz/output_reproducer.py
-@@ -64,8 +64,6 @@ def c_reproducer(name, args, trace):
+     dbg("will test: %r", testcase)
  
-     # libqtest will add its own qtest args, so get rid of them
-     args = args.replace("-accel qtest","")
--    args = args.replace(",accel=qtest","")
--    args = args.replace("-machine accel=qtest","")
-     args = args.replace("-qtest stdio","")
-     result.append("""QTestState *s = qtest_init("{}");""".format(args))
-     for l in trace.splitlines():
-diff --git a/scripts/oss-fuzz/reorder_fuzzer_qtest_trace.py b/scripts/oss-fuzz/reorder_fuzzer_qtest_trace.py
-index b154a25508f..f3813944d3b 100755
---- a/scripts/oss-fuzz/reorder_fuzzer_qtest_trace.py
-+++ b/scripts/oss-fuzz/reorder_fuzzer_qtest_trace.py
-@@ -5,15 +5,15 @@
- Use this to convert qtest log info from a generic fuzzer input into a qtest
- trace that you can feed into a standard qemu-system process. Example usage:
- 
--QEMU_FUZZ_ARGS="-machine q35,accel=qtest" QEMU_FUZZ_OBJECTS="*" \
-+QEMU_FUZZ_ARGS="-machine q35 -accel qtest" QEMU_FUZZ_OBJECTS="*" \
-         ./i386-softmmu/qemu-fuzz-i386 --fuzz-target=generic-pci-fuzz
- # .. Finds some crash
- QTEST_LOG=1 FUZZ_SERIALIZE_QTEST=1 \
--QEMU_FUZZ_ARGS="-machine q35,accel=qtest" QEMU_FUZZ_OBJECTS="*" \
-+QEMU_FUZZ_ARGS="-machine q35 -accel qtest" QEMU_FUZZ_OBJECTS="*" \
-         ./i386-softmmu/qemu-fuzz-i386 --fuzz-target=generic-pci-fuzz
-         /path/to/crash 2> qtest_log_output
- scripts/oss-fuzz/reorder_fuzzer_qtest_trace.py qtest_log_output > qtest_trace
--./i386-softmmu/qemu-fuzz-i386 -machine q35,accel=qtest \
-+./i386-softmmu/qemu-fuzz-i386 -machine q35 -accel qtest \
-         -qtest stdio < qtest_trace
- 
- ### Details ###
+-    args = ['-S', '-machine', '%s,accel=%s' % (machine, accel),
++    args = ['-S',
++            '-machine', machine,
++            '-accel', accel,
+             '-device', qemuOptsEscape(device)]
+     cmdline = ' '.join([binary] + args)
+     dbg("will launch QEMU: %s", cmdline)
 -- 
 2.45.2
 
