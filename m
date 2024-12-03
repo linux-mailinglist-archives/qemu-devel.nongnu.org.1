@@ -2,27 +2,27 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 760249E10F7
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A6A99E10F9
 	for <lists+qemu-devel@lfdr.de>; Tue,  3 Dec 2024 02:53:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tII5i-0007LJ-Jn; Mon, 02 Dec 2024 20:52:42 -0500
+	id 1tII5j-0007Ln-Ia; Mon, 02 Dec 2024 20:52:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1tII5f-0007Kj-76; Mon, 02 Dec 2024 20:52:39 -0500
+ id 1tII5h-0007L0-8K; Mon, 02 Dec 2024 20:52:41 -0500
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1tII5a-0006Sd-On; Mon, 02 Dec 2024 20:52:38 -0500
+ id 1tII5f-0006Sd-VA; Mon, 02 Dec 2024 20:52:40 -0500
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.12; Tue, 3 Dec
- 2024 09:52:24 +0800
+ 2024 09:52:25 +0800
 Received: from localhost.localdomain (192.168.10.10) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server id 15.2.1258.12 via Frontend
- Transport; Tue, 3 Dec 2024 09:52:24 +0800
+ Transport; Tue, 3 Dec 2024 09:52:25 +0800
 To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  <peter.maydell@linaro.org>, Steven Lee <steven_lee@aspeedtech.com>, Troy Lee
  <leetroy@gmail.com>, Andrew Jeffery <andrew@codeconstruct.com.au>, "Joel
@@ -30,10 +30,12 @@ To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  "open list:All patches CC here" <qemu-devel@nongnu.org>
 CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>,
  <yunlin.tang@aspeedtech.com>
-Subject: [PATCH v1 0/5] Support SDHCI and eMMC for ast2700
-Date: Tue, 3 Dec 2024 09:52:19 +0800
-Message-ID: <20241203015224.3985820-1-jamin_lin@aspeedtech.com>
+Subject: [PATCH v1 1/5] hw/arm/aspeed: Fix coding style
+Date: Tue, 3 Dec 2024 09:52:20 +0800
+Message-ID: <20241203015224.3985820-2-jamin_lin@aspeedtech.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20241203015224.3985820-1-jamin_lin@aspeedtech.com>
+References: <20241203015224.3985820-1-jamin_lin@aspeedtech.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
@@ -62,25 +64,27 @@ From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-change from v1:
-This patch series do not support boot from an eMMC.
-Only support eMMC and SD Slot 0 as storages.
+Fix coding style issues from checkpatch.pl.
 
-Jamin Lin (5):
-  hw/arm/aspeed: Fix coding style
-  hw:sdhci: Introduce a new "capareg" class member to set the different
-    Capability Registers.
-  hw/sd/aspeed_sdhci: Add AST2700 Support
-  aspeed/soc: Support SDHCI for AST2700
-  aspeed/soc: Support eMMC for AST2700
+Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
+---
+ hw/arm/aspeed_ast2600.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
- hw/arm/aspeed_ast2400.c      |  3 +-
- hw/arm/aspeed_ast2600.c      | 10 ++--
- hw/arm/aspeed_ast27x0.c      | 35 ++++++++++++++
- hw/sd/aspeed_sdhci.c         | 88 ++++++++++++++++++++++++++++++++----
- include/hw/sd/aspeed_sdhci.h | 13 +++++-
- 5 files changed, 132 insertions(+), 17 deletions(-)
-
+diff --git a/hw/arm/aspeed_ast2600.c b/hw/arm/aspeed_ast2600.c
+index be3eb70cdd..c40d3d8443 100644
+--- a/hw/arm/aspeed_ast2600.c
++++ b/hw/arm/aspeed_ast2600.c
+@@ -541,7 +541,8 @@ static void aspeed_soc_ast2600_realize(DeviceState *dev, Error **errp)
+     if (!sysbus_realize(SYS_BUS_DEVICE(&s->gpio), errp)) {
+         return;
+     }
+-    aspeed_mmio_map(s, SYS_BUS_DEVICE(&s->gpio), 0, sc->memmap[ASPEED_DEV_GPIO]);
++    aspeed_mmio_map(s, SYS_BUS_DEVICE(&s->gpio), 0,
++                    sc->memmap[ASPEED_DEV_GPIO]);
+     sysbus_connect_irq(SYS_BUS_DEVICE(&s->gpio), 0,
+                        aspeed_soc_get_irq(s, ASPEED_DEV_GPIO));
+ 
 -- 
 2.34.1
 
