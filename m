@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAD479E1DB2
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Dec 2024 14:37:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 19F2E9E1DC4
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Dec 2024 14:38:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tIT4i-00082K-0x; Tue, 03 Dec 2024 08:36:24 -0500
+	id 1tIT4f-00081v-PI; Tue, 03 Dec 2024 08:36:21 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <tomitamoeko@gmail.com>)
- id 1tIT4g-00082A-0q
- for qemu-devel@nongnu.org; Tue, 03 Dec 2024 08:36:22 -0500
-Received: from mail-pl1-x642.google.com ([2607:f8b0:4864:20::642])
+ id 1tIT4e-00081l-Al
+ for qemu-devel@nongnu.org; Tue, 03 Dec 2024 08:36:20 -0500
+Received: from mail-pf1-x442.google.com ([2607:f8b0:4864:20::442])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <tomitamoeko@gmail.com>)
- id 1tIT4a-0001GR-LE
- for qemu-devel@nongnu.org; Tue, 03 Dec 2024 08:36:21 -0500
-Received: by mail-pl1-x642.google.com with SMTP id
- d9443c01a7336-215b45a40d8so10810865ad.1
- for <qemu-devel@nongnu.org>; Tue, 03 Dec 2024 05:36:16 -0800 (PST)
+ id 1tIT4c-0001Gg-S9
+ for qemu-devel@nongnu.org; Tue, 03 Dec 2024 08:36:20 -0500
+Received: by mail-pf1-x442.google.com with SMTP id
+ d2e1a72fcca58-7251ace8bc0so4567471b3a.0
+ for <qemu-devel@nongnu.org>; Tue, 03 Dec 2024 05:36:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1733232975; x=1733837775; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1733232977; x=1733837777; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=jbedGQpZbiZzLccaIV/JwHJY9jlVFHdqI1I9GJ45Gm8=;
- b=Q+edaSTwIDqdoHUmXtAkF57PHUtZxPyGBm9gLyae9Ky2Y2wWF8lE8gT/6H74KvB5pf
- 2RhLZkfin1DJxzonCzPwqBxHPH7BzFYxf1TlRiNknvsNg+AHS8nvEsdEdPQbCf0EUiak
- doY5mSfar9AA5fsKdSOdCPm6xJ9c4+0ed9aP9IYoVikvtmJfN0BlLlciTO0yq+l32BiM
- GoM4LpYER7BsixuYHP/1MzmjLD3hYNaJRQePmudAslpDfobAp/Rm5XafuyvLHp4MptCX
- /9L/AvYZGVnbl4DFyLWrP2TIpdZetsLwW25z/JrH3Law+2cMyXP8jJk2P5s1PMuV2w5V
- XOcQ==
+ bh=ZjcHxmTcRcs6gnPDz+2J4eyjqpNf01UJzBW549ZcPYA=;
+ b=AqMeUzp5zEZLHNn7V9T9QjWq+lSCCzawjvgvRt4L7stq4J86onJPgM8sHS5jwdIqnp
+ 9pZZeBjEnAU+KZIm8Pi51/4motMlfGRJboTA9yyiHmtO7GfAv8IU5YfCPPKnkstIORrr
+ WzIbqJAjMNu9ORyfCkccou7dd1lVL1uasXx83u5x0u0Q+mpd7/MY+LpvmJ5818qDVO/P
+ 8q3poSR4Qm8JZd3iZe8opSh9dFq911JMqZtoG8WULGnsx60eMKPfCispo9VTk771J8Bb
+ kjr6j2v6c9KUqd8WSEvmJYpa3vMToSv/n4fe1yB4UsGyWCgpiQ7BP++RH7zGXUKz9JeJ
+ 1ong==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733232975; x=1733837775;
+ d=1e100.net; s=20230601; t=1733232977; x=1733837777;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=jbedGQpZbiZzLccaIV/JwHJY9jlVFHdqI1I9GJ45Gm8=;
- b=cPUuZ5D6LWDhFXlACV511hzB9CmxmV98QXlCHmD+l67p902Yl4KV6cdmW5LG2iL/uV
- UpPJtHTzJIfaWkNKiUz2alk7DbqOJF/nBWKtHbKJXMhDcpPdV61QNAzIeg9j/UHwbZdX
- XnH/mCVnWM642m5qlldCiq8g1RHKndCFCXPvuJggcl3CsRzfZgacAAmekByody7xIyRt
- XYnhBxhq/SPebhYizoRUxBxr3U01A5ckO+FVX1MbVQxIm1eCK1WTvL9zi3aYSaynoBIr
- 9s5h+1x88LO1yo31cjzd1P90h1lOBafkqctmaeONlwEZmw4gYjkZRc93kYcaIBckxJFC
- U7UA==
-X-Gm-Message-State: AOJu0Ywqgm031e8JVN37YdiVz5PheBdgN7fM5SncqzkfBNDqrqpTDKVn
- tt8Sg5irogNEunomOHhs5mn3GgVn00skKV2utZfkZLXP3skoqx9lCMzFxyUUaA==
-X-Gm-Gg: ASbGncvNcPQpzIhEmMML4KG9ivBWJ6mMMjzOBmaXemFmmX67hsrD+hP9VR+NPNTkmyp
- rp9qo3X5yJpt5ZcIyHqxDm0AjbWhl9Q/Z/7iXTei3nxqtOZuKq0UslPnj2fPAeotofhjDld0nF2
- 5o5yYBzlAhMUFiCiZo3wI53w1TZJIaX3fzwQlPAz3RVuH5M8s7b2yopQV0IN8AtvMNQgJqXjm6x
- MK0bN2ipjX1f2tWpg1K9mvH2MXMNy8MkhgFCPV4J9O7aFbq/Ctwlj5R1fQ=
-X-Google-Smtp-Source: AGHT+IGPCCuc+PArskTh6njoIEoxM5kniM4GjGvmHycMHU+hoWVHnJeosKkArWVSQvx0Z6zPW7Pniw==
-X-Received: by 2002:a17:903:1d2:b0:215:a96d:ec2c with SMTP id
- d9443c01a7336-215bd0e654fmr35187245ad.28.1733232974709; 
- Tue, 03 Dec 2024 05:36:14 -0800 (PST)
+ bh=ZjcHxmTcRcs6gnPDz+2J4eyjqpNf01UJzBW549ZcPYA=;
+ b=pTZXCjYlwsiajWn7QkKJtyyGSds4cbRV1NFeEH51BERPQ793ChF9qNXJgKgtfInSKA
+ 3+dWpcfwBZU8xNwrHhflhLZWcHnBpcxkxboBNe3OcGSMkbZXm57nWzeprLwxhmpNk69H
+ XHZIdW2dH5toWdP52UerY7HmO0s7aOlayaQZyALKGlVLyCXJGQbBS+MGbKMzfMwN5Uw+
+ 3/2NfLuO7/Yo2RByTKg6BBYXt7SlPZXNs4c5aAIRlWxJLtM/5E0yp23WVlk5NVJUoyPa
+ HCDeGbZ3BSFIZUvhUIK8vAq/HXKu15btBnwWO7jUwJpDuyoCKB7Bx1DHw0CLL7fbFXk+
+ iMVw==
+X-Gm-Message-State: AOJu0Yx4LRT8NugX27Ga41cgIC6QvDxWfeNdFIDKxr4GDOfGysptAvVN
+ FpHyu4zY5g6Xn24qst/cm5nFcoSsEXmmjuLGQQWDSOqjmIEjrAqa+tlQtMvHiw==
+X-Gm-Gg: ASbGncsoQzooYF+KvljnAOcjux9LztPV8qMZzDOUnzIrhzp3T4NTH4g10vyJ8zpQB5D
+ e9RxTb4O7VUx/zqAsxvjXokBXdhUGIPNHEZhlbY51iO9o9I9PdorHla3siWixcdU/bCuqXTf8G3
+ 2W4RXYdW0qviFyYMhqGYWCPOcoBx+porxyMGSqaN0eaAZf3tpPqIvvpD1xVyDyMhBSBFo9tPJMP
+ 07vrpNwhR+VedA9YFx+eJdurcGOF0fGGSp9l583Ywl/XTB0bYqaKlV3JAg=
+X-Google-Smtp-Source: AGHT+IHLU8Qbd8COS32ppcZTd9Xilkw/vVDaxNE5+Jl9ZL2XC+XKBqCf2F2X2DjpP5bJvCnMut7peQ==
+X-Received: by 2002:a17:902:e746:b0:215:7136:f7e3 with SMTP id
+ d9443c01a7336-2157136fb52mr209800245ad.19.1733232976853; 
+ Tue, 03 Dec 2024 05:36:16 -0800 (PST)
 Received: from kotori-desktop.lan ([116.231.112.6])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-215810cf18esm44183975ad.242.2024.12.03.05.36.12
+ d9443c01a7336-215810cf18esm44183975ad.242.2024.12.03.05.36.15
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 03 Dec 2024 05:36:14 -0800 (PST)
+ Tue, 03 Dec 2024 05:36:16 -0800 (PST)
 From: Tomita Moeko <tomitamoeko@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
  =?UTF-8?q?Corvin=20K=C3=B6hne?= <c.koehne@beckhoff.com>,
  Tomita Moeko <tomitamoeko@gmail.com>
-Subject: [PATCH v2 3/9] vfio/igd: canonicalize memory size calculations
-Date: Tue,  3 Dec 2024 21:35:42 +0800
-Message-ID: <20241203133548.38252-4-tomitamoeko@gmail.com>
+Subject: [PATCH v2 4/9] vfio/igd: add Gemini Lake and Comet Lake device ids
+Date: Tue,  3 Dec 2024 21:35:43 +0800
+Message-ID: <20241203133548.38252-5-tomitamoeko@gmail.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241203133548.38252-1-tomitamoeko@gmail.com>
 References: <20241203133548.38252-1-tomitamoeko@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::642;
- envelope-from=tomitamoeko@gmail.com; helo=mail-pl1-x642.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::442;
+ envelope-from=tomitamoeko@gmail.com; helo=mail-pf1-x442.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,167 +98,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add helper functions igd_gtt_memory_size() and igd_stolen_size() for
-calculating GTT stolen memory and Data stolen memory size in bytes,
-and use macros to replace the hardware-related magic numbers for
-better readability.
+Both Gemini Lake and Comet Lake are gen 9 devices. Many user reports
+on internet shows legacy mode of igd passthrough works as qemu treats
+them as gen 8 devices by default before e433f208973f ("vfio/igd:
+return an invalid generation for unknown devices").
 
 Signed-off-by: Tomita Moeko <tomitamoeko@gmail.com>
 ---
- hw/vfio/igd.c | 99 ++++++++++++++++++++++++++++-----------------------
- 1 file changed, 55 insertions(+), 44 deletions(-)
+ hw/vfio/igd.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
 diff --git a/hw/vfio/igd.c b/hw/vfio/igd.c
-index 2ede72d243..b5bfdc6580 100644
+index b5bfdc6580..7f389de7ac 100644
 --- a/hw/vfio/igd.c
 +++ b/hw/vfio/igd.c
-@@ -106,6 +106,51 @@ typedef struct VFIOIGDQuirk {
- #define IGD_BDSM 0x5c /* Base Data of Stolen Memory */
- #define IGD_BDSM_GEN11 0xc0 /* Base Data of Stolen Memory of gen 11 and later */
- 
-+#define IGD_GMCH_GEN6_GMS_SHIFT     3       /* SNB_GMCH in i915 */
-+#define IGD_GMCH_GEN6_GMS_MASK      0x1f
-+#define IGD_GMCH_GEN6_GGMS_SHIFT    8
-+#define IGD_GMCH_GEN6_GGMS_MASK     0x3
-+#define IGD_GMCH_GEN8_GMS_SHIFT     8       /* BDW_GMCH in i915 */
-+#define IGD_GMCH_GEN8_GMS_MASK      0xff
-+#define IGD_GMCH_GEN8_GGMS_SHIFT    6
-+#define IGD_GMCH_GEN8_GGMS_MASK     0x3
-+
-+static uint64_t igd_gtt_memory_size(int gen, uint16_t gmch)
-+{
-+    uint64_t ggms;
-+
-+    if (gen < 8) {
-+        ggms = (gmch >> IGD_GMCH_GEN6_GGMS_SHIFT) & IGD_GMCH_GEN6_GGMS_MASK;
-+    } else {
-+        ggms = (gmch >> IGD_GMCH_GEN8_GGMS_SHIFT) & IGD_GMCH_GEN8_GGMS_MASK;
-+        ggms *= 2;
-+    }
-+
-+    return ggms * MiB;
-+}
-+
-+static uint64_t igd_stolen_memory_size(int gen, uint32_t gmch)
-+{
-+    uint64_t gms;
-+
-+    if (gen < 8) {
-+        gms = (gmch >> IGD_GMCH_GEN6_GMS_SHIFT) & IGD_GMCH_GEN6_GMS_MASK;
-+    } else {
-+        gms = (gmch >> IGD_GMCH_GEN8_GMS_SHIFT) & IGD_GMCH_GEN8_GMS_MASK;
-+    }
-+
-+    if (gen < 9) {
-+            return gms * 32 * MiB;
-+    } else {
-+        if (gms < 0xf0) {
-+            return gms * 32 * MiB;
-+        } else {
-+            return (gms - 0xf0 + 1) * 4 * MiB;
-+        }
-+    }
-+
-+    return 0;
-+}
- 
- /*
-  * The rather short list of registers that we copy from the host devices.
-@@ -254,17 +299,10 @@ static int vfio_pci_igd_lpc_init(VFIOPCIDevice *vdev,
- static int vfio_igd_gtt_max(VFIOPCIDevice *vdev)
- {
-     uint32_t gmch = vfio_pci_read_config(&vdev->pdev, IGD_GMCH, sizeof(gmch));
--    int ggms, gen = igd_gen(vdev);
--
--    gmch = vfio_pci_read_config(&vdev->pdev, IGD_GMCH, sizeof(gmch));
--    ggms = (gmch >> (gen < 8 ? 8 : 6)) & 0x3;
--    if (gen >= 8) {
--        ggms = 1 << ggms;
--    }
--
--    ggms *= MiB;
-+    int gen = igd_gen(vdev);
-+    uint64_t ggms_size = igd_gtt_memory_size(gen, gmch);
- 
--    return (ggms / (4 * KiB)) * (gen < 8 ? 4 : 8);
-+    return (ggms_size / (4 * KiB)) * (gen < 8 ? 4 : 8);
- }
- 
- /*
-@@ -471,30 +509,6 @@ void vfio_probe_igd_bar0_quirk(VFIOPCIDevice *vdev, int nr)
-     QLIST_INSERT_HEAD(&vdev->bars[nr].quirks, quirk, next);
- }
- 
--static int igd_get_stolen_mb(int gen, uint32_t gmch)
--{
--    int gms;
--
--    if (gen < 8) {
--        gms = (gmch >> 3) & 0x1f;
--    } else {
--        gms = (gmch >> 8) & 0xff;
--    }
--
--    if (gen < 9) {
--        if (gms > 0x10) {
--            error_report("Unsupported IGD GMS value 0x%x", gms);
--            return 0;
--        }
--        return gms * 32;
--    } else {
--        if (gms < 0xf0)
--            return gms * 32;
--        else
--            return (gms - 0xf0) * 4 + 4;
--    }
--}
--
- void vfio_probe_igd_bar4_quirk(VFIOPCIDevice *vdev, int nr)
- {
-     g_autofree struct vfio_region_info *rom = NULL;
-@@ -504,7 +518,8 @@ void vfio_probe_igd_bar4_quirk(VFIOPCIDevice *vdev, int nr)
-     VFIOQuirk *quirk;
-     VFIOIGDQuirk *igd;
-     PCIDevice *lpc_bridge;
--    int i, ret, ggms_mb, gms_mb = 0, gen;
-+    int i, ret, gen;
-+    uint64_t ggms_size, gms_size;
-     uint64_t *bdsm_size;
-     uint32_t gmch;
-     uint16_t cmd_orig, cmd;
-@@ -666,13 +681,8 @@ void vfio_probe_igd_bar4_quirk(VFIOPCIDevice *vdev, int nr)
- 
-     QLIST_INSERT_HEAD(&vdev->bars[nr].quirks, quirk, next);
- 
--    /* Determine the size of stolen memory needed for GTT */
--    ggms_mb = (gmch >> (gen < 8 ? 8 : 6)) & 0x3;
--    if (gen >= 8) {
--        ggms_mb = 1 << ggms_mb;
--    }
--
--    gms_mb = igd_get_stolen_mb(gen, gmch);
-+    ggms_size = igd_gtt_memory_size(gen, gmch);
-+    gms_size = igd_stolen_memory_size(gen, gmch);
- 
-     /*
-      * Request reserved memory for stolen memory via fw_cfg.  VM firmware
-@@ -683,7 +693,7 @@ void vfio_probe_igd_bar4_quirk(VFIOPCIDevice *vdev, int nr)
-      * config offset 0x5C.
-      */
-     bdsm_size = g_malloc(sizeof(*bdsm_size));
--    *bdsm_size = cpu_to_le64((ggms_mb + gms_mb) * MiB);
-+    *bdsm_size = cpu_to_le64(ggms_size + gms_size);
-     fw_cfg_add_file(fw_cfg_find(), "etc/igd-bdsm-size",
-                     bdsm_size, sizeof(*bdsm_size));
- 
-@@ -734,5 +744,6 @@ void vfio_probe_igd_bar4_quirk(VFIOPCIDevice *vdev, int nr)
-                      vdev->vbasedev.name);
-     }
- 
--    trace_vfio_pci_igd_bdsm_enabled(vdev->vbasedev.name, ggms_mb + gms_mb);
-+    trace_vfio_pci_igd_bdsm_enabled(vdev->vbasedev.name,
-+                                    (ggms_size + gms_size) / MiB);
- }
+@@ -80,8 +80,10 @@ static int igd_gen(VFIOPCIDevice *vdev)
+     case 0x2200:    /* Cherryview */
+         return 8;
+     case 0x1900:    /* Skylake */
++    case 0x3100:    /* Gemini Lake */
+     case 0x5900:    /* Kaby Lake */
+     case 0x3e00:    /* Coffee Lake */
++    case 0x9B00:    /* Comet Lake */
+         return 9;
+     case 0x4500:    /* Elkhart Lake */
+         return 11;
 -- 
 2.45.2
 
