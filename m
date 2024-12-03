@@ -2,90 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 067609E16D4
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Dec 2024 10:11:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FC8B9E16E5
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Dec 2024 10:12:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tIOvp-0001fO-OZ; Tue, 03 Dec 2024 04:10:57 -0500
+	id 1tIOx8-0003ZS-Gp; Tue, 03 Dec 2024 04:12:18 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tIOvn-0001f0-MQ
- for qemu-devel@nongnu.org; Tue, 03 Dec 2024 04:10:55 -0500
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tIOx5-0003V3-8J
+ for qemu-devel@nongnu.org; Tue, 03 Dec 2024 04:12:15 -0500
+Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tIOvm-0001GH-5d
- for qemu-devel@nongnu.org; Tue, 03 Dec 2024 04:10:55 -0500
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-4349f160d62so44859985e9.2
- for <qemu-devel@nongnu.org>; Tue, 03 Dec 2024 01:10:53 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tIOx3-0001L1-Jk
+ for qemu-devel@nongnu.org; Tue, 03 Dec 2024 04:12:15 -0500
+Received: by mail-wr1-x42e.google.com with SMTP id
+ ffacd0b85a97d-385e1fcb0e1so1696175f8f.2
+ for <qemu-devel@nongnu.org>; Tue, 03 Dec 2024 01:12:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1733217052; x=1733821852; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Zklyya5OkEnNrhger6hBnXU3zSz+e7zU5Eu5GV2az4Q=;
- b=vvgpGq9gfh6sO+W6Pv4O2TWZaT8QqNsENAyPeW4halmr8r85gS+0SHxgvZXHm0hyhK
- uxO0ByW480/Lxt4ro6ceF81jx18trJqN1IqQjIYJoROilo0LOLYut1Zv4ae39rqXN/h4
- SFPfoX//RTizFAJ2BB4v1/cX4IIDdw20YNt2Q0evDhxxgQjwcsxJuJXyak6BNAOGC89C
- Hga/Cf9nvuDWnwhdv4nHuaehnu4EiMTCKjMzwjOPR75qNLN4wUkqnNoZR9iegG5+AMzU
- 4oIG3219gwWZrpGrElg4adUFCvq9wcnPDXndHEb3UoZb2yi6Ny1JxeGIJWuMgSqJYDNZ
- YxZg==
+ d=linaro.org; s=google; t=1733217132; x=1733821932; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=ulqZnli5XUfh+oOedBt25DjTzatHk+ucTL4EcKzZyGw=;
+ b=l4ohIFHQ1wv3xDmr6JqUUbvqyIiYDKYAgEa47Vc4pftjVJG/ptlVXTjLsXovVWlj67
+ //ejfBy/eb2H38Qv7OoahDnu/EmmVSZPEbmBlPIbA405BuIecSLZs2lswOCCvfEnTVi7
+ MdNfChRq7d8n8GsCCSO3cphx4To/zY5k+shn4Li58DUjgQr1nBvoPphhMe4tCnz33xv1
+ jvHn31Ou+gy+cfuFRli8v9CzGfbvU4XrlruPz68wY5vMvo4nGV2n6/2EJa2XSoZgSo4R
+ Hpzp+2EuFoKY9r1UGVSMVWQfvLwjUFVF0EYz33Zx6yP/7VCHkbGxh2hKxqI85/Cj5ZKs
+ oOSA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733217052; x=1733821852;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=Zklyya5OkEnNrhger6hBnXU3zSz+e7zU5Eu5GV2az4Q=;
- b=KEI9Jlkvpb0JUgK0Z2X5fMMefgnYUGZyRa4fkrWxFWvtpAON3jUFAdxWBmjIs0xjO4
- 5mQ95sKx27RUuwPMm59vrlIEx2vbYS3iTTD29wGQ4BSOrFaF0Zj2FmsTCHM5bLJmuR8t
- 3Kgpx4o0AUlCIGUZMkWZ6rPoGois+pLSC/Vp1swbJO3yssmDWf+ISkyBd9JGhjjXG97G
- cgy8ZFUgSc5VmtMtIiVabR5SYx+hXmc4R+D0rO6MQfaslTctBjVKq9JLXq2l0lYEm1ch
- zsmp6QORaav5qtvJ6swUGbdrZJ67ot6GHirPq8/0m1qc2WWkUNIvIwJH9PS8t8g6tIhw
- JcVw==
-X-Gm-Message-State: AOJu0YzjbblISKANe+RPfQ1avCMe4rsA1zp+/pVHxO4hea7AkYtHuvx7
- P8DiCQx+bcxkS53pWBuN6493s8krj6cyXmNXvLapi2rpG2Ke1VHmhtIP6N0QvOLBIkSf3OKrshZ
- hmtk=
-X-Gm-Gg: ASbGnctbgHau4jnhfN7Ucr1qzWvgIL6qUi42wAPv+29u8SPwd/DxFRH/SgsrvxLoogc
- 7j35yGVnwo2gvKIMyf1cTpdHVe6ftoL0EayFVARuMWpCRibHEPpojtda8wnhxufnQIfv5MK6ElP
- oCr/bt4kBEH254ERtU9KpAh2NSEaU1t0zoP1fRjt/E4o0i/MRVuoBGf7OuSjmHzlDKGg+FoG3fa
- l9OoTZ7byowyQj+eddNPRYeOIfgf2pqUe3T14dRy5J46jYfUzVEjvmBBRjRc5eH1dSjh8vA
-X-Google-Smtp-Source: AGHT+IHTGgMmemYBBcAKZN6bzYOzsR+bh6w40+IJsK3GajkxBDLAPAHbojG23XPTL2B/77QHF3Fjog==
-X-Received: by 2002:a05:600c:1c07:b0:434:9c1b:b36a with SMTP id
- 5b1f17b1804b1-434d09bf7b4mr15037615e9.13.1733217052265; 
- Tue, 03 Dec 2024 01:10:52 -0800 (PST)
-Received: from localhost.localdomain ([176.187.209.146])
+ d=1e100.net; s=20230601; t=1733217132; x=1733821932;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=ulqZnli5XUfh+oOedBt25DjTzatHk+ucTL4EcKzZyGw=;
+ b=pwHfDvLR/i/DpF4M6X0b14Uw9uaD6StaGDhtKQAi+zxzAxGgfUeYb77ChdGKj4wGwt
+ EBG4pFtEkW1ispeXrd5NpjkygvG6VseUUIHRFWLoLDvYcOu+fEbh8NoKbidC4yOGkl3r
+ IIsI3SSjCgfByf+HpWbEum3z4S64DrjCHtlW++mTVtZAJ/5NBFHvd/wElDY1aX+AMR7w
+ UX7CT7lfoXX7PXBRhWwQB4EzSrI/bozgtIL6MDphsdZiuYdEQ8twIvxk24kofmASg02M
+ kiTGNWUcIzEZJK3fd4bvsusrfkWH59SQBLseiJEozNSw8+h1XWNRZnNZa292jkQeuJUL
+ g61g==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXAbjxu/0OKyxn3tFG5LEDZQlvCgjZE1hbsviUxAaWbKhHa8sRFqgiBjUsa5U2SJtA4Q3xLLi4ptuHR@nongnu.org
+X-Gm-Message-State: AOJu0YwmzynEmaYAJOvSnbbUobUjJ2dXnyZAbHL71adMiVzIOP8hLvH3
+ 3UvgJJ/oBcSavmHj0mEmXUIFFC7MbNH+4ko2KdqnreiXiurrWr/7rynQgHUzV/0=
+X-Gm-Gg: ASbGncsjqNImHwHkdbqjAfRwHBMdRDk/o/PIDLmIZe0jrOMjoKGZM0Rt3Zs2GvkThbZ
+ Hv4hraxLQX2QpxYE9dgGnVAZg4FknAbvkM8ILGQaUHWaQGqtYS32DZ177hjZ34e2k228sIkmdQG
+ DRDTyAQQMYpH982nYGk1Gp9DkIInz/xRyv/PJnGgP68F0dPnqYbh1A9cdOfJ+bD4Yp/vVB7GYV1
+ FB/LgXf4S2Iai+6fHNnQwK+s2rrwKGsePvchyev6RloIvNZAbKPy1qiByLTZGkv6A==
+X-Google-Smtp-Source: AGHT+IH94KhLjN2GV3iWqfFWLOTMLpw+X0xC8EgyzXn8cbd8C9E94lhNq84WIV7gA/3NVhezgatqVg==
+X-Received: by 2002:a05:6000:1568:b0:382:5010:c8de with SMTP id
+ ffacd0b85a97d-385fd417c09mr1406769f8f.46.1733217131775; 
+ Tue, 03 Dec 2024 01:12:11 -0800 (PST)
+Received: from [192.168.69.223] ([176.187.209.146])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-434aa7d21bcsm217075815e9.30.2024.12.03.01.10.50
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 03 Dec 2024 01:10:51 -0800 (PST)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Thomas Huth <thuth@redhat.com>, Zhao Liu <zhao1.liu@intel.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>, Markus Armbruster <armbru@redhat.com>
-Subject: [PATCH-for-9.2? v2 2/2] tests/functional/test_empty_cpu_model: Use
- QTest accelerator
-Date: Tue,  3 Dec 2024 10:10:36 +0100
-Message-ID: <20241203091036.59898-3-philmd@linaro.org>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20241203091036.59898-1-philmd@linaro.org>
-References: <20241203091036.59898-1-philmd@linaro.org>
+ ffacd0b85a97d-385ccd3a522sm14846204f8f.52.2024.12.03.01.12.09
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 03 Dec 2024 01:12:10 -0800 (PST)
+Message-ID: <79005a21-00f9-4642-b93e-2ca9cde821ba@linaro.org>
+Date: Tue, 3 Dec 2024 10:12:08 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] hw/ide/ahci: Check for PCI device once in ahci_init()
+To: Bernhard Beschow <shentey@gmail.com>, qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>, John Snow <jsnow@redhat.com>,
+ qemu-block@nongnu.org, Beniamino Galvani <b.galvani@gmail.com>,
+ Strahinja Jankovic <strahinja.p.jankovic@gmail.com>,
+ Peter Xu <peterx@redhat.com>
+References: <20241121100152.65476-1-philmd@linaro.org>
+ <D1B09E85-E00F-4E8F-8332-51CB33A97E44@gmail.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <D1B09E85-E00F-4E8F-8332-51CB33A97E44@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,35 +101,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When testing with a HVF-only binary, we get:
+On 3/12/24 07:46, Bernhard Beschow wrote:
+> Am 21. November 2024 10:01:52 UTC schrieb "Philippe Mathieu-Daudé" <philmd@linaro.org>:
+>> object_dynamic_cast() is expensive; IRQ helpers are certainly
+>> a bad place to call it. Since the device type won't change at
+>> runtime, resolve it once when the AHCI context is initialized
+>> in ahci_init().
+>>
+>> Reported-by: Peter Xu <peterx@redhat.com>
+>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>> ---
+>> include/hw/ide/ahci.h |  2 +-
+>> hw/ide/ahci.c         | 17 +++++------------
+>> 2 files changed, 6 insertions(+), 13 deletions(-)
 
-   3/12 qemu:func-quick+func-aarch64 / func-aarch64-empty_cpu_model                              ERROR            0.62s   exit status 1
-  stderr:
-  Traceback (most recent call last):
-    File "tests/functional/test_empty_cpu_model.py", line 21, in test
-      self.assertRegex(self.vm.get_log(), r'-cpu option cannot be empty')
-  AssertionError: Regex didn't match: '-cpu option cannot be empty' not found in 'qemu-system-aarch64: No accelerator selected and no default accelerator available\n'
 
-Explicit the QTest accelerator to be able to run the test.
+>> @@ -196,13 +192,9 @@ static void ahci_irq_raise(AHCIState *s)
+>>
+>> static void ahci_irq_lower(AHCIState *s)
+>> {
+>> -    DeviceState *dev_state = s->container;
+>> -    PCIDevice *pci_dev = (PCIDevice *) object_dynamic_cast(OBJECT(dev_state),
+>> -                                                           TYPE_PCI_DEVICE);
+>> -
+>>      trace_ahci_irq_lower(s);
+>>
+>> -    if (!pci_dev || !msi_enabled(pci_dev)) {
+>> +    if (!s->pci_dev || !msi_enabled(s->pci_dev)) {
+>>          qemu_irq_lower(s->irq);
+>>      }
+>> }
+> 
+> By always triggering the "irq" property, it might be possible to push out the above two methods to the caller, i.e. the parent PCI device. This would make this device model independent from PCI, essentially turning it into an "IP block". At the same time this eliminates the need for the dynamic casts and AFAICS would also fix the missing PCI dependency in the Kconfig file. I could send a patch.
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- tests/functional/test_empty_cpu_model.py | 1 +
- 1 file changed, 1 insertion(+)
+Oh. Please go ahead, that is appreciated!
 
-diff --git a/tests/functional/test_empty_cpu_model.py b/tests/functional/test_empty_cpu_model.py
-index 0081b06d85a..e3bca707af9 100755
---- a/tests/functional/test_empty_cpu_model.py
-+++ b/tests/functional/test_empty_cpu_model.py
-@@ -13,6 +13,7 @@
- 
- class EmptyCPUModel(QemuSystemTest):
-     def test(self):
-+        self.vm.add_args('-accel', 'qtest')
-         self.vm.add_args('-S', '-display', 'none', '-machine', 'none', '-cpu', '')
-         self.vm.set_qmp_monitor(enabled=False)
-         self.vm.launch()
--- 
-2.45.2
-
+> 
+> Best regards,
+> Bernhard
 
