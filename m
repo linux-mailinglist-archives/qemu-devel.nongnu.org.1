@@ -2,56 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 372FA9E260E
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Dec 2024 17:08:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 278AC9E23A3
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Dec 2024 16:41:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tIVQV-0007R8-3w; Tue, 03 Dec 2024 11:07:03 -0500
+	id 1tIV08-0006C2-Ko; Tue, 03 Dec 2024 10:39:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <guohongyu24@mails.ucas.ac.cn>)
- id 1tIUyq-00061M-Kf
- for qemu-devel@nongnu.org; Tue, 03 Dec 2024 10:38:28 -0500
-Received: from smtp86.cstnet.cn ([159.226.251.86] helo=cstnet.cn)
- by eggs.gnu.org with esmtps (TLS1.2:DHE_RSA_AES_256_CBC_SHA1:256)
- (Exim 4.90_1) (envelope-from <guohongyu24@mails.ucas.ac.cn>)
- id 1tIUyo-0000nk-39
- for qemu-devel@nongnu.org; Tue, 03 Dec 2024 10:38:28 -0500
-Received: from guohongyu24$mails.ucas.ac.cn ( [111.199.67.46] ) by
- ajax-webmail-APP-16 (Coremail) ; Tue, 3 Dec 2024 23:38:11 +0800 (GMT+08:00)
-X-Originating-IP: [111.199.67.46]
-Date: Tue, 3 Dec 2024 23:38:11 +0800 (GMT+08:00)
-X-CM-HeaderCharset: UTF-8
-From: =?UTF-8?B?6YOt6bi/5a6H?= <guohongyu24@mails.ucas.ac.cn>
-To: qemu-devel@nongnu.org
-Cc: gaosong@loongson.cn
-Subject: 0001-target-loongarch-fix-vldi-inst.patch
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version 2024.1-cmXT5 build
- 20240627(e6c6db66) Copyright (c) 2002-2024 www.mailtech.cn cnic.cn
-Content-Type: multipart/mixed; 
- boundary="----=_Part_2215507_706442123.1733240291447"
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tIV06-0006Bn-Bd
+ for qemu-devel@nongnu.org; Tue, 03 Dec 2024 10:39:46 -0500
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tIV04-0000yB-RY
+ for qemu-devel@nongnu.org; Tue, 03 Dec 2024 10:39:46 -0500
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-434a1fe2b43so51221225e9.2
+ for <qemu-devel@nongnu.org>; Tue, 03 Dec 2024 07:39:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1733240383; x=1733845183; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=wD5Ww32SqsbLurZC3NteIq86Z3QBn4l0SlXxCzvawy8=;
+ b=trQsbMDLsjOvu4jUWLhNu4J7e2g1cz+CSPSGqoDlg7XXOhiFoMHL7wtrvkxe13RTSW
+ F/ByZWgDRVIOGewLWLDvYDDRhzI+U/9mXk+q7zTzZvNoIC6+sS8ngKS72n7MEAI/TKAH
+ IaAFfClDfYCC3vMsr5JvzWFtJ1JF+iY6loFuhevAXUTYJQR1/Nr3jcMzPJYcW7eupDb9
+ Xe08KaEUCg1KdFjjmFqVK4hesAV2gUoLwI11tFkL1R0F46ga246dvwdckx6xFLX5Tt27
+ PFb4XCEvpsFaGGvgsFK4rpgLMcipgAYCXX9UL85SWwCjoynINZPkihRa5SfblbzditL7
+ ktwA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1733240383; x=1733845183;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=wD5Ww32SqsbLurZC3NteIq86Z3QBn4l0SlXxCzvawy8=;
+ b=dGjxnFRXjkZgFk6DUwz7mg6+MJSDbRpXiiE2bQI6H8TRA1uY04XnmfQb06cpcnhWHn
+ GGwR/wXU+uIBKI7OgKppkuE736F6BWklmE7qiyGYo2H95eSLE143baaVhIwsb0TyUAhf
+ FgIxKELa3S/UjeLWlMRnbRkVNrkczNyVMZj5BZro0Tqdx9YfAOyTap/w05NB9g017QYq
+ NEbaEY+u6cdHuCGMxA6sXOiDeAWyGk7OUmER4DjbpYQGtyy8CgC1biynBwTZE+xTxO7r
+ ko8yRy5/ym0exS14oz5ZfPJuYD3ZdCY0xQ97zQRiTbyl8I3Y+owdOE47kPWV41Mk2WsK
+ fO9w==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUj3t0I97jlnU3GAxEInbPYMaThQXuCada6xMPV/jFmPbubf6EN68SlwC9ECIRZXW0hRNt4D+0bZnTD@nongnu.org
+X-Gm-Message-State: AOJu0YzdIesyf3FbSb/0WCieEzoBi4odlyXZh7ky0/5dc4wax7sJj89B
+ c1gLB8SPynRUveT8SYizBWE66M+ycBqcye7NCWWzrEcK290kQxIH/tWZprZgloA=
+X-Gm-Gg: ASbGncsCj5FsXiQEYVcctYMPh6xnvwlk3j7ZZoyMZkeDz8oQZp44SNMtn6XhDvhvik2
+ 3tmVDD5PZnPJED7rYocr2cKK6sziz3TP9hbpzUtUkwOgNHElbOo67VmM0gTkMJFexTiVEHrhLFl
+ pP+vx6eTs3nk69OznDLFFeWw6N+zDY6x0JvVOl4ZStlNKb6wWwAHjSskgMgm74XX+NGRZdkPE4k
+ XzxGHCqrmC8zO9b6hG9T/raLnNtQ3IXPRwoX3T57So1RNVk3K7mnIemmQ1fzENELw==
+X-Google-Smtp-Source: AGHT+IG5lTiZpLGWsDAfbvU/2a+K/4jrPX1DXjGGbL3KCUZszSzHPNUwbRBYK5UMebEmCmSneI0nUg==
+X-Received: by 2002:a05:600c:3509:b0:434:9c60:95a3 with SMTP id
+ 5b1f17b1804b1-434d09b50b1mr26758815e9.11.1733240383108; 
+ Tue, 03 Dec 2024 07:39:43 -0800 (PST)
+Received: from [192.168.69.223] ([176.187.209.146])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-434b0d9bc91sm199500635e9.9.2024.12.03.07.39.41
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 03 Dec 2024 07:39:42 -0800 (PST)
+Message-ID: <d310853a-2d74-4fdc-bbbb-85d2a2c43fc4@linaro.org>
+Date: Tue, 3 Dec 2024 16:39:41 +0100
 MIME-Version: 1.0
-Message-ID: <3a7d9342.9e3d1.1938d2c0078.Coremail.guohongyu24@mails.ucas.ac.cn>
-X-Coremail-Locale: zh_CN
-X-CM-TRANSID: sQCowAD3_5fkJU9njhQHAA--.31227W
-X-CM-SenderInfo: xjxrx0pqj13j2u6ptx1ovo3u1dvotugofq/1tbiDAgAA2dOwHMcWg
-	ABsa
-X-Coremail-Antispam: 1Ur529EdanIXcx71UUUUU7IcSsGvfJ3iIAIbVAYjsxI4VWUJw
- CS07vEb4IE77IF4wCS07vE1I0E4x80FVAKz4kxMIAIbVAFxVCaYxvI4VCIwcAKzIAtYxBI
- daVFxhVjvjDU=
-Received-SPF: pass client-ip=159.226.251.86;
- envelope-from=guohongyu24@mails.ucas.ac.cn; helo=cstnet.cn
-X-Spam_score_int: -4
-X-Spam_score: -0.5
-X-Spam_bar: /
-X-Spam_report: (-0.5 / 5.0 requ) BAYES_00=-1.9, PYZOR_CHECK=1.392,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
- TVD_SPACE_RATIO=0.001 autolearn=no autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] hw/core/machine: diagnose wrapping of maxmem
+To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ qemu-devel@nongnu.org
+Cc: Yanan Wang <wangyanan55@huawei.com>, Eduardo Habkost
+ <eduardo@habkost.net>, Ani Sinha <anisinha@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, Zhao Liu <zhao1.liu@intel.com>
+References: <20241127114057.255995-1-berrange@redhat.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20241127114057.255995-1-berrange@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Tue, 03 Dec 2024 11:06:37 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,46 +100,19 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-------=_Part_2215507_706442123.1733240291447
-Content-Type: multipart/alternative; 
-	boundary="----=_Part_2215509_907106438.1733240291447"
+On 27/11/24 12:40, Daniel P. Berrangé wrote:
+> The 'maxmem' parameter parsed on the command line is held in uint64_t
+> and then assigned to the MachineState field that is 'ram_addr_t'. This
+> assignment will wrap on 32-bit hosts, silently changing the user's
+> config request if it were over-sized.
+> 
+> Improve the existing diagnositics for validating 'size', and add the
+> same diagnostics for 'maxmem'
+> 
+> Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+> ---
+>   hw/core/machine.c | 10 +++++++++-
+>   1 file changed, 9 insertions(+), 1 deletion(-)
 
-------=_Part_2215509_907106438.1733240291447
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-
-
-------=_Part_2215509_907106438.1733240291447
-Content-Type: text/html; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-
-
-------=_Part_2215509_907106438.1733240291447--
-
-------=_Part_2215507_706442123.1733240291447
-Content-Type: application/octet-stream; 
-	name=0001-target-loongarch-fix-vldi-inst.patch
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment;
- filename="0001-target-loongarch-fix-vldi-inst.patch"
-
-RnJvbSAyZTgyMGY0Y2UzYTU3OTBmZDFkMTk5NzQ1ZjM3MTczZjBlMzEwNjFmIE1vbiBTZXAgMTcg
-MDA6MDA6MDAgMjAwMQpGcm9tOiBnaHkgPDIyNDc4ODM3NTZAcXEuY29tPgpEYXRlOiBUdWUsIDMg
-RGVjIDIwMjQgMjM6MzA6MTMgKzA4MDAKU3ViamVjdDogW1BBVENIXSB0YXJnZXQvbG9vbmdhcmNo
-OiBmaXggdmxkaSBpbnN0CgpTaWduZWQtb2ZmLWJ5OiBHdW8gSG9uZ3l1IDxndW9ob25neXUyNEBt
-YWlscy51Y2FzLmFjLmNuPgotLS0KIHRhcmdldC9sb29uZ2FyY2gvdGNnL2luc25fdHJhbnMvdHJh
-bnNfdmVjLmMuaW5jIHwgMiArLQogMSBmaWxlIGNoYW5nZWQsIDEgaW5zZXJ0aW9uKCspLCAxIGRl
-bGV0aW9uKC0pCgpkaWZmIC0tZ2l0IGEvdGFyZ2V0L2xvb25nYXJjaC90Y2cvaW5zbl90cmFucy90
-cmFuc192ZWMuYy5pbmMgYi90YXJnZXQvbG9vbmdhcmNoL3RjZy9pbnNuX3RyYW5zL3RyYW5zX3Zl
-Yy5jLmluYwppbmRleCA5MmIxZDIyZTI4Li5kMzE3ZGZjYzFjIDEwMDY0NAotLS0gYS90YXJnZXQv
-bG9vbmdhcmNoL3RjZy9pbnNuX3RyYW5zL3RyYW5zX3ZlYy5jLmluYworKysgYi90YXJnZXQvbG9v
-bmdhcmNoL3RjZy9pbnNuX3RyYW5zL3RyYW5zX3ZlYy5jLmluYwpAQCAtMzQ4MCw3ICszNDgwLDcg
-QEAgc3RhdGljIHVpbnQ2NF90IHZsZGlfZ2V0X3ZhbHVlKERpc2FzQ29udGV4dCAqY3R4LCB1aW50
-MzJfdCBpbW0pCiAgICAgICAgIGJyZWFrOwogICAgIGNhc2UgMToKICAgICAgICAgLyogZGF0YTog
-ezJ7MTYnMCwgaW1tWzc6MF0sIDgnMH19ICovCi0gICAgICAgIGRhdGEgPSAodCA8PCAyNCkgfCAo
-dCA8PCA4KTsKKyAgICAgICAgZGF0YSA9ICh0IDw8IDQwKSB8ICh0IDw8IDgpOwogICAgICAgICBi
-cmVhazsKICAgICBjYXNlIDI6CiAgICAgICAgIC8qIGRhdGE6IHsyezgnMCwgaW1tWzc6MF0sIDE2
-JzB9fSAqLwotLSAKMi4zNC4xCgo=
-------=_Part_2215507_706442123.1733240291447--
-
+Patch queued, thanks.
 
