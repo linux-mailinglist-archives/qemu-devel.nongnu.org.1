@@ -2,78 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE6AB9E1AE5
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Dec 2024 12:28:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 599EA9E1AFB
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Dec 2024 12:32:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tIR3Z-0007XP-1u; Tue, 03 Dec 2024 06:27:05 -0500
+	id 1tIR89-00004r-W0; Tue, 03 Dec 2024 06:31:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tIR3W-0007X1-Qk
- for qemu-devel@nongnu.org; Tue, 03 Dec 2024 06:27:02 -0500
-Received: from mail-lf1-x12f.google.com ([2a00:1450:4864:20::12f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tIR87-0008WI-04
+ for qemu-devel@nongnu.org; Tue, 03 Dec 2024 06:31:47 -0500
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tIR3U-0008OI-Uv
- for qemu-devel@nongnu.org; Tue, 03 Dec 2024 06:27:02 -0500
-Received: by mail-lf1-x12f.google.com with SMTP id
- 2adb3069b0e04-53dde5262fdso6221365e87.2
- for <qemu-devel@nongnu.org>; Tue, 03 Dec 2024 03:27:00 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tIR85-0000YI-4t
+ for qemu-devel@nongnu.org; Tue, 03 Dec 2024 06:31:46 -0500
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-434a95095efso37362225e9.0
+ for <qemu-devel@nongnu.org>; Tue, 03 Dec 2024 03:31:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1733225219; x=1733830019; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id:from
- :to:cc:subject:date:message-id:reply-to;
- bh=wUjoYVidgDMXvSJZyoW5eEVXVvcgS9gqwDzCapZSYnY=;
- b=H/YqBd3dZKAHtfcpzVPt5Nw/7AqDJiY3yLPBk/C5t/BbdZd2jXEMDrpounK20lpgIg
- +hzNh9hf/a7DeH4f1jn0/qmiIlH4lhcK6X2A9OqVHWueXQt7kXYfEzPiFAh9jQXyeQxj
- WV+MnVUukSVGbBOVNHlM7Hs/BU0csX/6QhpRm5CdGi9rysv22fgDiFsb3HS9oANX/CQE
- VQ0zICeJoBFkjqM5/IApSsAYCZm4NTPtcJtCF3zJhpCWm0jnVKvVsBsRW8jbFgptKZC1
- +YQ1zwX+UmSpG5u+X0Znrf3vvdPNY6/cx01NHHIGXy7eLsnsyl4+XHQoap4JnnDpin8T
- DV4w==
+ d=linaro.org; s=google; t=1733225503; x=1733830303; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=+dqC6y4lBqZOktJ3iXowIEuPu5elXZcaIUE++eBTpus=;
+ b=uGfaQra1nZ4aSR7ZDDJ5BoP1Po9JIKI9ChMpKkzzrCuqae+zYS1y2gAVpt/YBSdlKH
+ a1JyIsHVDAumZd4F9GndkGlqNkVZdA/3h/tglGFb7ZVb4IHOWjL3CtH/WU4TZObHp3oz
+ P3oYFgISOhaZMy+r0vy5UusuZ7qhBytsq2Jq7DScO/OAdBQBJswmnnehYpGQgO/djb+X
+ +WyY6dQoXE4/q2RkCrlXd3wAO5pSV7tgyLhFADSb9v5HMk7h2yfc4g5w3Z2aeYpc/skR
+ 4qRVrJHbPvsrpTTStNFPuXGlQYFKdLPCLbHXAM0f7s4S6gvyrdN54polZP8PXqH4HaWo
+ kWWQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733225219; x=1733830019;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=wUjoYVidgDMXvSJZyoW5eEVXVvcgS9gqwDzCapZSYnY=;
- b=WayPWddKThHJH59u/e24CBlW42Khomwp/tMw3ORYNfEhcAuHEP5jdSIwoaDGYWsZbO
- qpErhD1a1CcS53Qslm98Yf0m1JFVcBJQJK6/yyDCJxlhHrfzC4KjW9h0/ZHG2FnNDElC
- sise+ZWS70cKl5xKgf5NxM3Q8I/B6/wXIj3fgyjvdzj/CTxdhXtGQIoPBxHj8tJxN2v9
- 2xyJ6idyQmQIWNWfacG1XvFc14GqucNiK8gVJpNlYQ9cqC8fvobk1uCbAylKwDu90WnO
- By3yn7qVpntKzcHKDS5q0hdCu0VoCTwSOv/ki8Cg3pUtcEjbSHLCMGrlBBulJrpCcYrf
- ZfnA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVA0zGLkoj6yMp3yTNZFQQtaYiDX7C0xmYem76W/OQGg9RlGWTLPxwyZH5shWL+y2Yj+RpWH0CG80+L@nongnu.org
-X-Gm-Message-State: AOJu0YxNi6uVHR3/k/Pp4WnUodOqAOqvIvJBgt9KRxiCMpQhi7PS5ure
- GVogwA1+2Y13MKs6IAotDlsUdQqYIx6vlNrRvBBucepQrvDdpQs78OXp1xW83P4=
-X-Gm-Gg: ASbGncuf5Jt7qVGsYSriV9z7dih/oYGVrl6YPDdDLTayqw01FifMbRsh/neketzvAJG
- oqnPnVHbshpgEkSUW3OeOiT4Rla6u19rVqtr93UurFXQcLzeEQpovOFf1xq3yzR7+ZBmP9dQWMq
- vTTiWjPMZNacrBpOsSwgee5yV+USWtRmXGgv8F0vKlMaCfdEC0R0t/w2o/y7vSraJ7pL9s4H5k9
- Idhyxr+yw7jNlfVtaVawuCR4izgzJbARyfvH+kEmVzXE/TQXFwV2cC1ogvZo3HSnA==
-X-Google-Smtp-Source: AGHT+IGpfk8yLy/UxPXT2yneVIsc3gOiyRhB1rRId5KjNZolaRzVnXtOHgBCnKi5UjMnm6yGyhlskA==
-X-Received: by 2002:a05:6512:12cd:b0:53d:e5b0:1709 with SMTP id
- 2adb3069b0e04-53e12a22fc1mr1361361e87.38.1733225218739; 
- Tue, 03 Dec 2024 03:26:58 -0800 (PST)
-Received: from [192.168.69.223] ([176.187.209.146])
+ d=1e100.net; s=20230601; t=1733225503; x=1733830303;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=+dqC6y4lBqZOktJ3iXowIEuPu5elXZcaIUE++eBTpus=;
+ b=w8vnWvIwv/TZVWl7bQ8BcqIlT0wQPh2y1l2YpoDPM+xiVsBJ3INRTWISHoEHKOYAFK
+ fs951gorsYvM2f2zzuZfkkyZ9DAdO3k7GkWYeBrqYHHoVHdZopq77e09ByUSzkCr8F+Z
+ u3khxZWWlEsj+4I1OTpJCCbYwKIAiinImqm3BZuMcZvBJRdo95VHqjW1n3ckGyaSGeMn
+ TwzT8XzHiSwihJvMcjTxliEDKJDzRJOp/KeOVYzkqGvQuF9sCDJ5L4M+WriFuES5GLEY
+ Pv3iR1rB8CTuHSTZTL/o9b4gh7Y1qd4EGwc0TTJfjbtBKNA2GpQVNUm2f7VXO4R1gAgE
+ mQNg==
+X-Gm-Message-State: AOJu0Yx7jCH2IDAHijHXEtlrneGBzZzAaeEdCin5r+97ANd5kOqqedtp
+ Hn+uPa0xDNpoMnLRPrmnBtXW+Keq1EGOjzubwJKozQEIoK9WyaKJkNyOmAc0K/NNHTZa2r/c9xI
+ fZP0=
+X-Gm-Gg: ASbGncsXQ+4DdkTcmJ6Dona+8CCVOf0HYEuDeQdIN2DHrPWPVOi8JUCm8Hjrpyk8sub
+ E/GEKvajdV+J3PO06xPdJFDpHohieRJMIJfjM5RgIHNuv+aOLitv8dAdjBqb9X4LDeAPLpVshlJ
+ 7ZfDXrC7OXOp2GpXDGBvOU5EXO6UJCGyc5Ow8JIL/tL/XI84n+3gEBhTKByoznWnqPv1IzxrNe+
+ x4U7Nuk5l4pR98E+X0gd0sPLngLCjqhvIEO+oEfYisboveG+OUa2l8s60eK6fRfLVuTXy2d
+X-Google-Smtp-Source: AGHT+IEVy/ETINDDUHuVp/URP0xWGkcG9L/2vQlCSNOYQy/8qUAhFF776rpifuwIf75yQB5NqT0zbQ==
+X-Received: by 2002:a05:600c:4fcc:b0:42c:b67b:816b with SMTP id
+ 5b1f17b1804b1-434afb8dea4mr194514275e9.1.1733225502886; 
+ Tue, 03 Dec 2024 03:31:42 -0800 (PST)
+Received: from localhost.localdomain ([176.187.209.146])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-385dea1e4ebsm12926410f8f.1.2024.12.03.03.26.57
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 03 Dec 2024 03:26:58 -0800 (PST)
-Message-ID: <57005744-a8af-4652-9e35-1851c399c9c3@linaro.org>
-Date: Tue, 3 Dec 2024 12:26:57 +0100
+ 5b1f17b1804b1-434aa7d29fbsm220616585e9.29.2024.12.03.03.31.41
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Tue, 03 Dec 2024 03:31:42 -0800 (PST)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 00/13] Misc fixes for 2024-12-03
+Date: Tue,  3 Dec 2024 12:31:27 +0100
+Message-ID: <20241203113140.63513-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.45.2
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 0/2] OpenRISC fixes for 9.2.0
-To: Stafford Horne <shorne@gmail.com>, QEMU Development <qemu-devel@nongnu.org>
-References: <20241203110536.402131-1-shorne@gmail.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20241203110536.402131-1-shorne@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12f;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x12f.google.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,14 +92,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 3/12/24 12:05, Stafford Horne wrote:
-> This series has 2 fixes for OpenRISC that came in over that past few months.
+The following changes since commit eb22a064455aeebc105cc89bf77f48aa18b52938:
 
-> Ahmad Fatoum (1):
->    hw/openrisc/openrisc_sim: keep serial@90000000 as default
-> 
-> Joel Holdsworth (1):
->    hw/openrisc: Fixed undercounting of TTCR in continuous mode
+  Merge tag 'pull-request-2024-12-02' of https://gitlab.com/thuth/qemu into staging (2024-12-02 16:16:15 +0000)
 
-Thanks, series queued.
+are available in the Git repository at:
+
+  https://github.com/philmd/qemu.git tags/hw-misc-20241203
+
+for you to fetch changes up to 964d2a0cf8136cdafc07f6fd847ebf897965dc35:
+
+  system: Select HVF by default when no other accelerator is available (2024-12-03 12:28:06 +0100)
+
+----------------------------------------------------------------
+Misc fixes for QEMU v9.2.0
+
+----------------------------------------------------------------
+
+Ahmad Fatoum (1):
+  hw/openrisc/openrisc_sim: keep serial@90000000 as default
+
+Bibo Mao (1):
+  MAINTAINERS: add myself as the maintainer for LoongArch VirtMachine
+
+Brian Cain (1):
+  MAINTAINERS: update email addr for Brian Cain
+
+Daniel P. Berrangé (4):
+  hw/core/machine: diagnose wrapping of maxmem
+  hw/virtio: fix crash in processing balloon stats
+  tests/qtest: drop 'fuzz-' prefix from virtio-balloon test
+  tests/qtest: add test for querying balloon guest stats
+
+Joel Holdsworth (1):
+  hw/openrisc: Fixed undercounting of TTCR in continuous mode
+
+Peter Maydell (1):
+  target/riscv: Avoid bad shift in riscv_cpu_do_interrupt()
+
+Philippe Mathieu-Daudé (4):
+  ui/cocoa: Temporarily ignore annoying deprecated declaration warnings
+  meson: Add missing SDL dependency to system/main.c
+  hw/display/vga: Do not reset 'big_endian_fb' in vga_common_reset()
+  system: Select HVF by default when no other accelerator is available
+
+ MAINTAINERS                            |  4 +-
+ meson.build                            |  4 +-
+ hw/core/machine.c                      | 10 ++++-
+ hw/display/vga.c                       |  2 +-
+ hw/openrisc/cputimer.c                 | 26 +++++++-----
+ hw/openrisc/openrisc_sim.c             | 26 +++++++++---
+ hw/virtio/virtio-balloon.c             | 16 +++++++-
+ system/vl.c                            |  3 ++
+ target/riscv/cpu_helper.c              |  8 ++--
+ tests/qtest/fuzz-virtio-balloon-test.c | 37 -----------------
+ tests/qtest/virtio-balloon-test.c      | 57 ++++++++++++++++++++++++++
+ .mailmap                               |  2 +
+ tests/qtest/meson.build                |  2 +-
+ ui/cocoa.m                             |  5 +++
+ 14 files changed, 137 insertions(+), 65 deletions(-)
+ delete mode 100644 tests/qtest/fuzz-virtio-balloon-test.c
+ create mode 100644 tests/qtest/virtio-balloon-test.c
+
+-- 
+2.45.2
+
 
