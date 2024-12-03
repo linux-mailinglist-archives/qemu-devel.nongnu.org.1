@@ -2,79 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 170CF9E1B01
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Dec 2024 12:32:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC65B9E1B10
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Dec 2024 12:33:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tIR8s-0000n8-QS; Tue, 03 Dec 2024 06:32:34 -0500
+	id 1tIR8y-0000uA-Cx; Tue, 03 Dec 2024 06:32:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tIR8q-0000k3-ND
- for qemu-devel@nongnu.org; Tue, 03 Dec 2024 06:32:32 -0500
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tIR8w-0000th-Mn
+ for qemu-devel@nongnu.org; Tue, 03 Dec 2024 06:32:38 -0500
+Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tIR8p-0000bC-8a
- for qemu-devel@nongnu.org; Tue, 03 Dec 2024 06:32:32 -0500
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-4349e4e252dso50350465e9.0
- for <qemu-devel@nongnu.org>; Tue, 03 Dec 2024 03:32:30 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tIR8u-0000bT-Ty
+ for qemu-devel@nongnu.org; Tue, 03 Dec 2024 06:32:38 -0500
+Received: by mail-wr1-x432.google.com with SMTP id
+ ffacd0b85a97d-385d6e36de7so4640220f8f.0
+ for <qemu-devel@nongnu.org>; Tue, 03 Dec 2024 03:32:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1733225549; x=1733830349; darn=nongnu.org;
+ d=linaro.org; s=google; t=1733225555; x=1733830355; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=8t8QZY/FN9UNn+m+6+g6e/VW+X5qrUlO0/BnLyYU4FA=;
- b=TUh0Qxu+rCrm1E9zC/MBR5dQxsKbjavqPE1wneuyH1/q3rqK2CMtZAQH+C0YfC0KTI
- Z7/KvltAxNegvhDoqZ1CCpRC0JtjdTawrjWQSFWDnEb5Jfa6WM1opB/It24yHQMQEJt3
- YJ2XAEFElSLwwl1V0kjdmNOpmd8fpzgwAw9UsV2TF1l0UyxNE5m2xPcn0onyROylBzTE
- lW792qqMedKZwce6b7ErFNKGQB2mnob7mbT0eIW8GDHLbD2JqHeehkRD6uiLj6w749zY
- 85kNZ3xjz0YdtKTQAEEwlhf5anKpw9Y7XmPQbMpJq0S5yBX4NR0uax1q+IF91lkws9OU
- H0kA==
+ bh=mkPA+7sTb+zksQscjRLpnKKKt+PKAd6deC8dAij30IE=;
+ b=he16EbLc2a+EOpPulgqlAJROAgVrftDkh2xSSUDHVkk/c2BWnpz8i7u7X8fNeAm8rH
+ hkjlzVk7hCyFcZS5D9G7KwnnB6YRWBwSvtCHEb0tRlNbKeTtrai/m8lmXXkSb0vJ3vf+
+ 9Osje6UHtHBbCNLIOdsOBy2szTfvrt5w0PhbxQMM5rGd1Wfx0sR5gn/tZOUiwcCoclIm
+ qchnjGonl8mn6lCC4vjF4VJYOlzj83nPy5eoPLoZFxQOCNIPv1cTLqF8PVFiqp0zeUGs
+ iUMzK0QCCOpu55EUFUu0wyE5nt00pc22zkFtGEe3Tx5Xp+yzTeXpOaC2bFOpdj4XstqV
+ CBiw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733225549; x=1733830349;
+ d=1e100.net; s=20230601; t=1733225555; x=1733830355;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=8t8QZY/FN9UNn+m+6+g6e/VW+X5qrUlO0/BnLyYU4FA=;
- b=DLpNeUh+GxdxjNCS7HED2QYliuhz8Wp3Eq3nqDZ81gCRvj9nB2CMuYVMeRX3PespDn
- calIjYCHWHOd20HBpxDXSuyv9PE/MQVO45UMuY5IR9xTZXcvlIEr7rXnRBQAwsMqIcsK
- UVI7Ibn+PG1nT4WCm5+42SwUM6hhEiP8sMv8qOH7yKrR+U1SGc/YoWW860ZcR4rCpSYB
- sARdbak6cHCaxZLNuEGi5qpkz/prw6+GvRTwMBTjg+UCXlevdvgZVMhY1jbgX3fOpPuv
- KnTxbx5dYKQMaIqFvS1HLm4JMu1321L8FdRkPt16RVYEcrwzJzIcWlYUvU8K/PHnpKdQ
- M+ZA==
-X-Gm-Message-State: AOJu0YwPiTTTV2HcTqMR2KG3L8F59xso4n9ZVr754uBT0FKTUlbrqW8f
- GzlHXNgepODJ8LOtpqOp4+jkRciSEdaBRODoJbmU9dg/4EDZGROMF6DJVhm18Uwd5b3MVTSToN+
- attA=
-X-Gm-Gg: ASbGncshBcd6KD/kN03KIhLSyeNqbTh7DWidkXENFK+1IwEfZ2SQaBSsYucuNR4qyQ5
- 9Z09JqSBURWPhv627qfs3uPBQA6wwBGoOJ4SDH5N7eOukpjJV7RwTqzypuW04xBoZYFLNJNvjM2
- Egmn/fw9t8pUXWqLX5eMWquGdygK8mhq7mcqoJW+XcgwKytySDL3meVWgRUkiiewI8d/5eUliqK
- qJQwpJvGdn4j+aohJDyXJmm4hUHmEhRLhP2o6DlK16j3c1H4MwTI+a9LBThD3xwSGL0sYiO
-X-Google-Smtp-Source: AGHT+IEXhija/FXz5kQkbIYBE2R+tXlZVLZnef+JOQudtrUlkuWBlAsRqr1KI9Ue2Pj6rUfS4dI+Bg==
-X-Received: by 2002:a05:600c:220b:b0:434:a815:2b5d with SMTP id
- 5b1f17b1804b1-434d1116ebbmr17064875e9.24.1733225549547; 
- Tue, 03 Dec 2024 03:32:29 -0800 (PST)
+ bh=mkPA+7sTb+zksQscjRLpnKKKt+PKAd6deC8dAij30IE=;
+ b=j5DcnChWKRTMNvLrcA5PE7MXoMVcJIucPZuYdqhDjK0JYKiUKEC3y7p+gFkAAVcZcL
+ kk0iy0/FpSqDZNdiaRwWIoy9+Eacww0cQKHRE2wO/TR5v4b3eQAVb587GMydOmC9FoI7
+ 1mtbpBFkhEqE4P4HhNzGki9Ng4ZTejMFmUqre0nuTJdzitYjjCKnSVrgYnhnN1kIGzCe
+ SrJLciNKvlGx9fvz+IzYIYEHfODoFynycVo7oLZf5rPVIsnD87fRjVYanU9vGCqWVapN
+ dhXgQyMpUOlo2Z/FlW6YMVOOXYnLw/onE9BTd+UJmEcwNm8TvzLjeJutM2fISlvn0Jlh
+ W7Jg==
+X-Gm-Message-State: AOJu0Yz+RhpUHnNW9hwlG5da3qh5Lgf17UjlWDtFavlWds/vjEmjokOW
+ db8VI7xRyHTo+GUqvZMQ1WRXU7D5/eIxrTWq0Zh0/4TzemKqS/irVAv9lxoFwDET4nblSE98xAL
+ LGoY=
+X-Gm-Gg: ASbGncvYY14cVMK4lVi3nCQ/wptoiRgsh/xOjgz8JoncZoE8nE7ByXfVm2ENoD9Tw2m
+ h5S/+h3E7A1mdAMq/SpZNmjRNM3lRUCunmTQ9qNpWdN6L6JTYJk7H381T/PvlibwTW5b0SalG71
+ Q3EqNjAkE/xZrEQmKa4DWCGRvz09ZimspXsJh7iqOt0v5odDa1NtdivJwnmIRv7uNWQ5ac3V/EI
+ 9KmpRqAj/3VKk/Av1lZuCov8igqtVoFEpnj0EGwLTHB4dxfmQrbDtYLzvJaUPamPrda/Kmh
+X-Google-Smtp-Source: AGHT+IEsSvHBK/KirKh/PQovDt/62PmlOWWNREJ3zaV7YejD4DXKamWNWsjA7XfJ01hHxxPGPdlMgQ==
+X-Received: by 2002:a5d:5f84:0:b0:385:f1ac:3ac9 with SMTP id
+ ffacd0b85a97d-385fd3ea448mr2064523f8f.17.1733225554837; 
+ Tue, 03 Dec 2024 03:32:34 -0800 (PST)
 Received: from localhost.localdomain ([176.187.209.146])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-385e13e8eadsm11039936f8f.28.2024.12.03.03.32.28
+ ffacd0b85a97d-385df50fa9bsm12523649f8f.72.2024.12.03.03.32.33
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 03 Dec 2024 03:32:28 -0800 (PST)
+ Tue, 03 Dec 2024 03:32:34 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Subject: [PULL 09/13] hw/display/vga: Do not reset 'big_endian_fb' in
- vga_common_reset()
-Date: Tue,  3 Dec 2024 12:31:36 +0100
-Message-ID: <20241203113140.63513-10-philmd@linaro.org>
+Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Martin Pitt <mpitt@redhat.com>,
+ "Richard W . M . Jones" <rjones@redhat.com>,
+ David Hildenbrand <david@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 10/13] hw/virtio: fix crash in processing balloon stats
+Date: Tue,  3 Dec 2024 12:31:37 +0100
+Message-ID: <20241203113140.63513-11-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241203113140.63513-1-philmd@linaro.org>
 References: <20241203113140.63513-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::432;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x432.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,49 +100,90 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The 'pci-vga' device allow setting a 'big-endian-framebuffer'
-property since commit 3c2784fc864 ("vga: Expose framebuffer
-byteorder as a QOM property"). Similarly, the 'virtio-vga'
-device since commit 8be61ce2ce3 ("virtio-vga: implement
-big-endian-framebuffer property").
+From: Daniel P. Berrangé <berrange@redhat.com>
 
-Both call vga_common_reset() in their reset handler, respectively
-pci_secondary_vga_reset() and virtio_vga_base_reset_hold(), which
-reset 'big_endian_fb', overwritting the property. This is not
-correct: the hardware is expected to keep its configured
-endianness during resets.
+balloon_stats_get_all will iterate over guest stats upto the max
+VIRTIO_BALLOON_S_NR value, calling visit_type_uint64 to populate
+the QObject dict. The dict keys are obtained from the static
+array balloon_stat_names which is VIRTIO_BALLOON_S_NR in size.
 
-Move 'big_endian_fb' assignment from vga_common_reset() to
-vga_common_init() which is called once when the common VGA state
-is initialized.
+Unfortunately the way that array is declared results in any
+unassigned stats getting a NULL name, which will then cause
+visit_type_uint64 to trigger an assert in qobject_output_add_obj.
 
+The balloon_stat_names array was fortunately fully populated with
+names until recently:
+
+  commit 0d2eeef77a33315187df8519491a900bde4a3d83
+  Author: Bibo Mao <maobibo@loongson.cn>
+  Date:   Mon Oct 28 10:38:09 2024 +0800
+
+    linux-headers: Update to Linux v6.12-rc5
+
+pulled a change to include/standard-headers/linux/virtio_balloon.h
+which increased VIRTIO_BALLOON_S_NR by 6, and failed to add the new
+names to balloon_stat_names.
+
+This commit fills in the missing names, and uses a static assert to
+guarantee that any future changes to VIRTIO_BALLOON_S_NR will cause
+a build failure until balloon_stat_names is updated.
+
+This problem was detected by the Cockpit Project's automated
+integration tests on QEMU 9.2.0-rc1.
+
+Fixes: https://bugzilla.redhat.com/show_bug.cgi?id=2329448
+Fixes: 0d2eeef77a3 ("linux-headers: Update to Linux v6.12-rc5")
+Reported-by: Martin Pitt <mpitt@redhat.com>
+Reviewed-by: Richard W.M. Jones <rjones@redhat.com>
+Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+Reviewed-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Message-ID: <20241129135507.699030-2-berrange@redhat.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Acked-by: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Message-Id: <20241129101721.17836-2-philmd@linaro.org>
 ---
- hw/display/vga.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/virtio/virtio-balloon.c | 16 +++++++++++++++-
+ 1 file changed, 15 insertions(+), 1 deletion(-)
 
-diff --git a/hw/display/vga.c b/hw/display/vga.c
-index 892fedc8dce..b074b58c90d 100644
---- a/hw/display/vga.c
-+++ b/hw/display/vga.c
-@@ -1873,7 +1873,6 @@ void vga_common_reset(VGACommonState *s)
-     s->cursor_start = 0;
-     s->cursor_end = 0;
-     s->cursor_offset = 0;
--    s->big_endian_fb = s->default_endian_fb;
-     memset(s->invalidated_y_table, '\0', sizeof(s->invalidated_y_table));
-     memset(s->last_palette, '\0', sizeof(s->last_palette));
-     memset(s->last_ch_attr, '\0', sizeof(s->last_ch_attr));
-@@ -2266,6 +2265,7 @@ bool vga_common_init(VGACommonState *s, Object *obj, Error **errp)
-      * all target endian dependencies from this file.
-      */
-     s->default_endian_fb = target_words_bigendian();
-+    s->big_endian_fb = s->default_endian_fb;
+diff --git a/hw/virtio/virtio-balloon.c b/hw/virtio/virtio-balloon.c
+index 609e39a821f..afd2ad6dd62 100644
+--- a/hw/virtio/virtio-balloon.c
++++ b/hw/virtio/virtio-balloon.c
+@@ -167,19 +167,33 @@ static void balloon_deflate_page(VirtIOBalloon *balloon,
+     }
+ }
  
-     vga_dirty_log_start(s);
++/*
++ * All stats upto VIRTIO_BALLOON_S_NR /must/ have a
++ * non-NULL name declared here, since these are used
++ * as keys for populating the QDict with stats
++ */
+ static const char *balloon_stat_names[] = {
+    [VIRTIO_BALLOON_S_SWAP_IN] = "stat-swap-in",
+    [VIRTIO_BALLOON_S_SWAP_OUT] = "stat-swap-out",
+    [VIRTIO_BALLOON_S_MAJFLT] = "stat-major-faults",
+    [VIRTIO_BALLOON_S_MINFLT] = "stat-minor-faults",
+    [VIRTIO_BALLOON_S_MEMFREE] = "stat-free-memory",
++
+    [VIRTIO_BALLOON_S_MEMTOT] = "stat-total-memory",
+    [VIRTIO_BALLOON_S_AVAIL] = "stat-available-memory",
+    [VIRTIO_BALLOON_S_CACHES] = "stat-disk-caches",
+    [VIRTIO_BALLOON_S_HTLB_PGALLOC] = "stat-htlb-pgalloc",
+    [VIRTIO_BALLOON_S_HTLB_PGFAIL] = "stat-htlb-pgfail",
+-   [VIRTIO_BALLOON_S_NR] = NULL
++
++   [VIRTIO_BALLOON_S_OOM_KILL] = "stat-oom-kills",
++   [VIRTIO_BALLOON_S_ALLOC_STALL] = "stat-alloc-stalls",
++   [VIRTIO_BALLOON_S_ASYNC_SCAN] = "stat-async-scans",
++   [VIRTIO_BALLOON_S_DIRECT_SCAN] = "stat-direct-scans",
++   [VIRTIO_BALLOON_S_ASYNC_RECLAIM] = "stat-async-reclaims",
++
++   [VIRTIO_BALLOON_S_DIRECT_RECLAIM] = "stat-direct-reclaims",
+ };
++G_STATIC_ASSERT(G_N_ELEMENTS(balloon_stat_names) == VIRTIO_BALLOON_S_NR);
  
+ /*
+  * reset_stats - Mark all items in the stats array as unset
 -- 
 2.45.2
 
