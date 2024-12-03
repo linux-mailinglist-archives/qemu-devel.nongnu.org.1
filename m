@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5F039E2D5A
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Dec 2024 21:41:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC0D59E2D6A
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Dec 2024 21:42:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tIZgo-0001QM-GA; Tue, 03 Dec 2024 15:40:12 -0500
+	id 1tIZgu-0001Yb-N3; Tue, 03 Dec 2024 15:40:18 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tIZga-0001KX-1c
- for qemu-devel@nongnu.org; Tue, 03 Dec 2024 15:39:56 -0500
-Received: from mail-oi1-x230.google.com ([2607:f8b0:4864:20::230])
+ id 1tIZgb-0001Ko-Q0
+ for qemu-devel@nongnu.org; Tue, 03 Dec 2024 15:39:57 -0500
+Received: from mail-oa1-x2e.google.com ([2001:4860:4864:20::2e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tIZgX-0003AR-GI
- for qemu-devel@nongnu.org; Tue, 03 Dec 2024 15:39:54 -0500
-Received: by mail-oi1-x230.google.com with SMTP id
- 5614622812f47-3ead60cedb7so1477411b6e.1
- for <qemu-devel@nongnu.org>; Tue, 03 Dec 2024 12:39:53 -0800 (PST)
+ id 1tIZgZ-0003AX-M0
+ for qemu-devel@nongnu.org; Tue, 03 Dec 2024 15:39:57 -0500
+Received: by mail-oa1-x2e.google.com with SMTP id
+ 586e51a60fabf-27b7a1480bdso2774599fac.2
+ for <qemu-devel@nongnu.org>; Tue, 03 Dec 2024 12:39:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1733258392; x=1733863192; darn=nongnu.org;
+ d=linaro.org; s=google; t=1733258393; x=1733863193; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=YMdz/R/XzxtV9sRyJPrRUrTNoKD74mGu1MDMytu4Vg0=;
- b=TTiIIk6NaGfk3LhEM/KLPoJQXiWM5kDXTRN650gvoqBggpK8Qk+oUu1hyIz9lE2E9C
- xK2G+aJLKjKoLhBrziUZ/51eR5pUuNlA2JsQPp1HcnpWHFCRXUKCRySXr3C7GsWICXuM
- 81Nx5JIkD4uFhyBP4hFCqhAhU9opK88Q72dr/onvcZWgTPHqGt48YY1vz9AIw8jRH0Gm
- E2OHdy80yCeTJJp+TFnIivsd6WUL1vuhj51uXuIWSNtJn5E3K10pwbInro7vaCddolER
- zfTVLkAi+ULPWPSAHv5cMGsUeV0+h32tKIdid5Y5I2TPAQssmrDKWDNHW9IcQSuaJklf
- yTIQ==
+ bh=65/XNqGZ6VyYj6rTQSJdOtQFVcZddgAeG+CbEFdXJAI=;
+ b=Kix3gkYbq+x93L9YAiQeXSK5emG2+IlSaUQ43X+E/y9+JO83VAZ2cdik22C7pJEC6G
+ Mo+35IPs5mIFSmvY4GZ+IgW1OHio5r0rp0pJHeskot0PAxkSN+MpOQ5ufhy3fgvnQY1G
+ 2hH9LdooY1LgCMTmrHUEA8qoz3dC2hRRM+E+wonhm8AvDvNe9AxAao/f7UpYI32fcUUr
+ 2IfTW56LM36bZoqbEl8cw1M50WL5iO8D4jRrUXfwpubWsErincB8D1tH0fY3YkiirvEg
+ 7CVWJC3N4FrCst2PbMsrpp/955419Vt8TBA+N5HcAWMuVjnEVIe3xNWH8Z4Jp2BkOYFA
+ IYYw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733258392; x=1733863192;
+ d=1e100.net; s=20230601; t=1733258393; x=1733863193;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=YMdz/R/XzxtV9sRyJPrRUrTNoKD74mGu1MDMytu4Vg0=;
- b=bkhQ0WZsON8uB3XCcdY7NQWpPMj7GLkZAXhc4HNCJESQWzAcdrol4Eglezywx13QWJ
- +aeC/knCBKnvZBFlQYLgXAlQBBxmeLHpAh8qbIooOMamSDOtZ5EbomEuDB1pjFm5ZaMO
- ZdC6LOER8uvSxMm8hr3KUpaM+Me2Mt1dkctqt4e/uECBX4qu2RjnBs53m4ic6eX+PtpP
- Kf/QLHZ0XcFfh817l/CunsD8+ZvB6VH66HIcbOXAdIBIfGL30s5u1MIaTZ/Pr/eifa+W
- tBDRT7ORMs66cgbXAgY9qUaxm6NRZlVmo0wehxYPjCanzZiPj0HqCXCth716syVZZ0pK
- v7BA==
-X-Gm-Message-State: AOJu0YyiGe36MYNIsQgWEZWYk/yxUDDl42HM46RohNCE9wGWbjbK5K4G
- ZiLm1s+t8ctcQ+0ZDe5g2D8ka6tFTA+Nz47hjYX24opOXURwHmxDUmHMeseKgtZJIiUvhD097G1
- z8Ns=
-X-Gm-Gg: ASbGncvawp/8hlufWCVKZzRyOVyMEq/C+aNpL1uboTqVuVoDUaM83cwoJ1sutgv9iE7
- ZhZO56GZOSiA1V5B/KG44ALFmRHFQkBStl7BND/v5H6D/BdlPlz5eN9ZAvXmBUI5qOKNeOHLXEL
- ThGTubd4pF/2XQ3PbKUpRdLg4CIjEmnmqfS51xSMJ01GUFAf66qigk1rthowonAPkUsNj/Bboi5
- sS/YJ1B4FiqmrakiwG9dXXCC58Lef1/l3ybDz7unP4raYb3X5Fs1eNbwo71mf3syHU7L2h7zJfq
- 4OQ24T4+snMFiy8/Ly9Z/YPL8BPkaCPWHyAk
-X-Google-Smtp-Source: AGHT+IFeU7g93isJmMqUzcz0qL/hCV0STZ1GuM0JBtlmegJowVUa+9eDBbc9lV+DAkaUnfyD+4TAmw==
-X-Received: by 2002:a05:6870:ed8d:b0:287:4904:7125 with SMTP id
- 586e51a60fabf-29e885f8734mr4425833fac.14.1733258392167; 
- Tue, 03 Dec 2024 12:39:52 -0800 (PST)
+ bh=65/XNqGZ6VyYj6rTQSJdOtQFVcZddgAeG+CbEFdXJAI=;
+ b=PeWD84dtaCFRrDocsiwjqBPoQ4Q8jMXYIFijuouNDnIMHCVXHkCbFKQW/cPOfJjKEJ
+ ObZqfDYw5YcYjSEAWM+LUgbogTrKhCnISuHrig5E2H0UUNEGuNqfOoirUWzAF5RXS0dJ
+ nDyp9f//V0vWfL/T2ahcMxZSFvTcPkWsgzpPKDOMZGgHrIB+c2rr8ukqZmNlBxCDaaV7
+ ZZegwctE1Ue576orYddX0SlSuzdN6LbQuDCo4ftELDOp6fjAOOekDWZFIXsb3Ixdbccc
+ wzwdto0XMT6Q6Dt1aUuYHbtV6DN9dj1ho14TaLICFKwguTyV6Ztb7iD8MwiQw8ErpfFg
+ iH+g==
+X-Gm-Message-State: AOJu0YxCYR148TGxL7if7J66P7xiz34e6GYY0Jq5PF2gQD3YUNiCAJUV
+ WEQddbv1Qa6GYxveWRvRU2EHaRFBjRoDgVxkPsIrmBEQnbvlEZqmfiqMQlH7kV3u+FASvXsn7zQ
+ 04gQ=
+X-Gm-Gg: ASbGnctM5RbySmeDe702j7MgpsgVbXg0nV/594wCE+kMssFBKWE8UCycRVBOy+rnMyT
+ sQ0crIt5QBdEYrfA1U88AGL1FkLcU2Ywly6o8MqMWrJXc6v/9TYMWVZpHzkXE+od2EAtpT6b5NA
+ cc5ymog5cTustnTYoOnqACD5tqJ3r7j7BAk+J2jgKYCHGmTjvUKnJy2C+Rhbofb5EMjmr0Sh5F8
+ /3vuTBz/P/jGlVcTh7pJmBUkTmqy4O7iHz+ZyHX5SRsdEfs75m/wq4qY3EXP9gdu63MbDMnxRTg
+ fsU1VXbL6jS5TSTU+i25WKlZWjSCmflpjB3e
+X-Google-Smtp-Source: AGHT+IHmOVU3M0g9apA0UOsHEpsItgqERa8IA+AD+plf1CfdoB3FiNicEw76xwwc5l3ZbG5y4GkgvQ==
+X-Received: by 2002:a05:6870:3913:b0:29e:5e83:150e with SMTP id
+ 586e51a60fabf-29e88885e8fmr3919454fac.27.1733258393185; 
+ Tue, 03 Dec 2024 12:39:53 -0800 (PST)
 Received: from localhost.localdomain (fixed-187-189-51-143.totalplay.net.
  [187.189.51.143]) by smtp.gmail.com with ESMTPSA id
- 586e51a60fabf-29e3ae09f25sm2684018fac.49.2024.12.03.12.39.51
+ 586e51a60fabf-29e3ae09f25sm2684018fac.49.2024.12.03.12.39.52
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 03 Dec 2024 12:39:51 -0800 (PST)
+ Tue, 03 Dec 2024 12:39:52 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: peter.maydell@linaro.org
-Subject: [PATCH 01/11] target/arm: Copy entire float_status in is_ebf
-Date: Tue,  3 Dec 2024 14:39:38 -0600
-Message-ID: <20241203203949.483774-2-richard.henderson@linaro.org>
+Subject: [PATCH 02/11] softfloat: Inline pickNaNMulAdd
+Date: Tue,  3 Dec 2024 14:39:39 -0600
+Message-ID: <20241203203949.483774-3-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241203203949.483774-1-richard.henderson@linaro.org>
 References: <20241203203949.483774-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::230;
- envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x230.google.com
+Received-SPF: pass client-ip=2001:4860:4864:20::2e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x2e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,54 +97,127 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now that float_status has a bunch of fp parameters,
-it is easier to copy an existing structure than create
-one from scratch.  Begin by copying the structure that
-corresponds to the FPSR and make only the adjustments
-required for BFloat16 semantics.
+Inline pickNaNMulAdd into its only caller.  This makes
+one assert redundant with the immediately preceding IF.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/tcg/vec_helper.c | 20 +++++++-------------
- 1 file changed, 7 insertions(+), 13 deletions(-)
+ fpu/softfloat-parts.c.inc      | 35 +++++++++++++++++++++-
+ fpu/softfloat-specialize.c.inc | 54 ----------------------------------
+ 2 files changed, 34 insertions(+), 55 deletions(-)
 
-diff --git a/target/arm/tcg/vec_helper.c b/target/arm/tcg/vec_helper.c
-index e825d501a2..ad6f26545a 100644
---- a/target/arm/tcg/vec_helper.c
-+++ b/target/arm/tcg/vec_helper.c
-@@ -2813,25 +2813,19 @@ bool is_ebf(CPUARMState *env, float_status *statusp, float_status *oddstatusp)
-      * no effect on AArch32 instructions.
-      */
-     bool ebf = is_a64(env) && env->vfp.fpcr & FPCR_EBF;
--    *statusp = (float_status){
--        .tininess_before_rounding = float_tininess_before_rounding,
--        .float_rounding_mode = float_round_to_odd_inf,
--        .flush_to_zero = true,
--        .flush_inputs_to_zero = true,
--        .default_nan_mode = true,
--    };
-+
-+    *statusp = env->vfp.fp_status;
-+    set_default_nan_mode(true, statusp);
+diff --git a/fpu/softfloat-parts.c.inc b/fpu/softfloat-parts.c.inc
+index 655b7d9da5..f5c6b21fee 100644
+--- a/fpu/softfloat-parts.c.inc
++++ b/fpu/softfloat-parts.c.inc
+@@ -80,8 +80,41 @@ static FloatPartsN *partsN(pick_nan_muladd)(FloatPartsN *a, FloatPartsN *b,
  
-     if (ebf) {
--        float_status *fpst = &env->vfp.fp_status;
--        set_flush_to_zero(get_flush_to_zero(fpst), statusp);
--        set_flush_inputs_to_zero(get_flush_inputs_to_zero(fpst), statusp);
--        set_float_rounding_mode(get_float_rounding_mode(fpst), statusp);
--
-         /* EBF=1 needs to do a step with round-to-odd semantics */
-         *oddstatusp = *statusp;
-         set_float_rounding_mode(float_round_to_odd, oddstatusp);
-+    } else {
-+        set_flush_to_zero(true, statusp);
-+        set_flush_inputs_to_zero(true, statusp);
-+        set_float_rounding_mode(float_round_to_odd_inf, statusp);
+     if (s->default_nan_mode) {
+         which = 3;
++    } else if (infzero) {
++        /*
++         * Inf * 0 + NaN -- some implementations return the
++         * default NaN here, and some return the input NaN.
++         */
++        switch (s->float_infzeronan_rule) {
++        case float_infzeronan_dnan_never:
++            which = 2;
++            break;
++        case float_infzeronan_dnan_always:
++            which = 3;
++            break;
++        case float_infzeronan_dnan_if_qnan:
++            which = is_qnan(c->cls) ? 3 : 2;
++            break;
++        default:
++            g_assert_not_reached();
++        }
+     } else {
+-        which = pickNaNMulAdd(a->cls, b->cls, c->cls, infzero, have_snan, s);
++        FloatClass cls[3] = { a->cls, b->cls, c->cls };
++        Float3NaNPropRule rule = s->float_3nan_prop_rule;
++
++        assert(rule != float_3nan_prop_none);
++        if (have_snan && (rule & R_3NAN_SNAN_MASK)) {
++            /* We have at least one SNaN input and should prefer it */
++            do {
++                which = rule & R_3NAN_1ST_MASK;
++                rule >>= R_3NAN_1ST_LENGTH;
++            } while (!is_snan(cls[which]));
++        } else {
++            do {
++                which = rule & R_3NAN_1ST_MASK;
++                rule >>= R_3NAN_1ST_LENGTH;
++            } while (!is_nan(cls[which]));
++        }
      }
--
-     return ebf;
+ 
+     if (which == 3) {
+diff --git a/fpu/softfloat-specialize.c.inc b/fpu/softfloat-specialize.c.inc
+index e075c47889..f26458eaa3 100644
+--- a/fpu/softfloat-specialize.c.inc
++++ b/fpu/softfloat-specialize.c.inc
+@@ -448,60 +448,6 @@ static int pickNaN(FloatClass a_cls, FloatClass b_cls,
+     }
  }
  
+-/*----------------------------------------------------------------------------
+-| Select which NaN to propagate for a three-input operation.
+-| For the moment we assume that no CPU needs the 'larger significand'
+-| information.
+-| Return values : 0 : a; 1 : b; 2 : c; 3 : default-NaN
+-*----------------------------------------------------------------------------*/
+-static int pickNaNMulAdd(FloatClass a_cls, FloatClass b_cls, FloatClass c_cls,
+-                         bool infzero, bool have_snan, float_status *status)
+-{
+-    FloatClass cls[3] = { a_cls, b_cls, c_cls };
+-    Float3NaNPropRule rule = status->float_3nan_prop_rule;
+-    int which;
+-
+-    /*
+-     * We guarantee not to require the target to tell us how to
+-     * pick a NaN if we're always returning the default NaN.
+-     * But if we're not in default-NaN mode then the target must
+-     * specify.
+-     */
+-    assert(!status->default_nan_mode);
+-
+-    if (infzero) {
+-        /*
+-         * Inf * 0 + NaN -- some implementations return the default NaN here,
+-         * and some return the input NaN.
+-         */
+-        switch (status->float_infzeronan_rule) {
+-        case float_infzeronan_dnan_never:
+-            return 2;
+-        case float_infzeronan_dnan_always:
+-            return 3;
+-        case float_infzeronan_dnan_if_qnan:
+-            return is_qnan(c_cls) ? 3 : 2;
+-        default:
+-            g_assert_not_reached();
+-        }
+-    }
+-
+-    assert(rule != float_3nan_prop_none);
+-    if (have_snan && (rule & R_3NAN_SNAN_MASK)) {
+-        /* We have at least one SNaN input and should prefer it */
+-        do {
+-            which = rule & R_3NAN_1ST_MASK;
+-            rule >>= R_3NAN_1ST_LENGTH;
+-        } while (!is_snan(cls[which]));
+-    } else {
+-        do {
+-            which = rule & R_3NAN_1ST_MASK;
+-            rule >>= R_3NAN_1ST_LENGTH;
+-        } while (!is_nan(cls[which]));
+-    }
+-    return which;
+-}
+-
+ /*----------------------------------------------------------------------------
+ | Returns 1 if the double-precision floating-point value `a' is a quiet
+ | NaN; otherwise returns 0.
 -- 
 2.43.0
 
