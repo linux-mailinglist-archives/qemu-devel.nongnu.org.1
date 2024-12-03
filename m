@@ -2,85 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15CFB9E2DD4
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Dec 2024 22:09:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 058299E2DEB
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Dec 2024 22:16:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tIa7i-0005Hv-Uv; Tue, 03 Dec 2024 16:07:58 -0500
+	id 1tIaEe-0007aF-NX; Tue, 03 Dec 2024 16:15:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1tIa7h-0005Hm-TN
- for qemu-devel@nongnu.org; Tue, 03 Dec 2024 16:07:57 -0500
-Received: from mail-pj1-x102c.google.com ([2607:f8b0:4864:20::102c])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1tIaEc-0007Zz-2Q
+ for qemu-devel@nongnu.org; Tue, 03 Dec 2024 16:15:06 -0500
+Received: from mail-oo1-xc2e.google.com ([2607:f8b0:4864:20::c2e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1tIa7g-0002Zz-2W
- for qemu-devel@nongnu.org; Tue, 03 Dec 2024 16:07:57 -0500
-Received: by mail-pj1-x102c.google.com with SMTP id
- 98e67ed59e1d1-2ee51f8c47dso3510444a91.1
- for <qemu-devel@nongnu.org>; Tue, 03 Dec 2024 13:07:55 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1tIaEa-0003Mj-4C
+ for qemu-devel@nongnu.org; Tue, 03 Dec 2024 16:15:05 -0500
+Received: by mail-oo1-xc2e.google.com with SMTP id
+ 006d021491bc7-5f26265602eso119645eaf.1
+ for <qemu-devel@nongnu.org>; Tue, 03 Dec 2024 13:15:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1733260075; x=1733864875; darn=nongnu.org;
+ d=linaro.org; s=google; t=1733260501; x=1733865301; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=6OM2wERgAX/O8VV+420uVx+rVWF8CNr/EEB/9Zlg2fk=;
- b=JnV92BAeA9rmcVH7n2e6T7Rsik/Sz3FztZoXBGd4fcDw160W3n9q36ZBcv8Npzf6pj
- hdAQUNhGTMtGu93AfpXy8CKmige9DhqBzIwbIUnYdFIrjn0znYR1O9Xoi/bhMta2nMgQ
- fLDdrI2oHmLxUafZg3Dlf05B9pKcG8WczlqpXMfrIaZQDFUDxQrOQc4UqYlvDqinFdJ5
- 9hv3Y+ipDGCYR3UnFaF8CYacB5cLp7FGsoxwzipBkXIk2vnwpBFADiWbFC0yOium0tQv
- BauqlmZSfipMZqaUo0i6KVeWwfZRpAdXZylrN0gqwpbbaXpzbH0s7XCfBJ2sQ8ba2v/J
- PG7Q==
+ bh=H3lLIWl0gvscLNFSs37nYrnRUHcjfyoNpgFn0rHdlX0=;
+ b=gBuun+icNrJ1PP2YJoXwXG51fJyiUEhbrfYdmz9kt56PdR+yjy9L29OJyatCRPYbJy
+ cDPQSwwEmqKNis7Kt31rl9M+SF+DPeZ5MjD3Zb3VxTRJCoj0PMtQ32/BT7mPu9cLyp9s
+ E75Fm2GNaRGB5b8trCUsgwrx5QNlmAE1dRK+idC589KaztRPWszJ3JTD5XP0SFa7esmd
+ b36pd//CAdwquidpzj5ywNj+9qmqvCN3RkwN6yhbdMp1MAYpdw9Ngy9qbULFvdSR64fK
+ pHB08zlc5xQmAVuovNFXE9gkuN989A6q8ATGZ7UNgfWpkqvMfr/RAjaM+X97Vxx7P9P4
+ bkdw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733260075; x=1733864875;
+ d=1e100.net; s=20230601; t=1733260501; x=1733865301;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=6OM2wERgAX/O8VV+420uVx+rVWF8CNr/EEB/9Zlg2fk=;
- b=l9lFcPdQF0ES8YrSdL0rj5WxtVSp0Z+JlwFWTPYQwpA8A9OfopQlQxiOrVWDkhbKnD
- br/oNCDsAjLE3qvIjzop9QIwmNhiyvsoJVm4AKfIjNbWvgAUmuQW2BO8r2g5VraH4Bs4
- FBmbRo6B2vChqtXXtBVKj9h0vo1UkJWrIH4aCxId4SD6bc0GztYaZNFBVvMXnG0wtS5M
- q7VHVNb5MNho/BzuZVhwFtglO4v+mHVjU8BPfG7OSQzCALhxJGpQwdVJM943OgwzqKT8
- bAEXISISun0tb5absN98sslr4LRA1jw0d2+woKRl12nLaZSEmGFOepMQeVKiiKIoSLqr
- Ga4g==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVDcCvsHwL//7SndZTzLTkUA3InsJpfblr3LZkrzt1famsLLdMnx00JzK8wP+ypJ7b4FMNIuGMD6+pX@nongnu.org
-X-Gm-Message-State: AOJu0YzqIzVBXlU5ksRcItCZ3gAmWJ2vAA7rXQK7bU0+nL5IZe0drnrJ
- g4uRKHz7cvZr5EZNTtNmoGmgdwG6/akao/GJOJcVhwtFcZMMN1US6RHRoI0Amls=
-X-Gm-Gg: ASbGncsg5D/zOVcZeARimhBWBSbN0mgNrE+wjOSyQqLT7B8PEqot8bgECaaPHSVM3XW
- vcrv8v9a1Lu5ogOe8Va32RttJw5Vxq6cVWnP0DvEosJMpcWGmMYXu42i1O5i4Nq9S9G48k0pKaZ
- PhxqfSi0zPOyzIe8jRSi9224+udvytZ7gLoRGXKwda5mEoo236ltvCjlV2hqT42j97ZO0mzMRtE
- JjZKfDQLsNjZhy9ITc3O444LBSRHe9kMORzl75WtxfCgZ9jPGXjE+3Bld7gZQU=
-X-Google-Smtp-Source: AGHT+IGEU7xhzF+SJ5ujAzUKZqBnDXLN1FlMwl1X4LRG+/O5/V6j7B7mnIc7bFIl9E0r5ZuZurOP2A==
-X-Received: by 2002:a17:90b:3d09:b0:2ee:f80c:6889 with SMTP id
- 98e67ed59e1d1-2ef012759f0mr5540180a91.33.1733260074717; 
- Tue, 03 Dec 2024 13:07:54 -0800 (PST)
-Received: from [192.168.68.110] ([187.101.65.72])
- by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2ef2701def5sm1184a91.31.2024.12.03.13.07.52
+ bh=H3lLIWl0gvscLNFSs37nYrnRUHcjfyoNpgFn0rHdlX0=;
+ b=CVRLq97TRL4wMPyucRi8Ej9IvQoG1ae5PeUX26I7SwM4MGYZkrUjWIcL7FDNMZqu+u
+ AKWhew6azQX00k+vwwUBvcMVw+hLiXr3dP1xf5TOAwNmLwtWZKFyYq8eAAQRdOs2Yatb
+ gs/UjLADXyDzRdt6P2lvdyYPaHQqkWtKuX8CDCA5fyLXobl4ZkUGxyd7FO42EwmDrC46
+ cuZFIxegD8qnnEMvwu2SKUzlOAaEADB8uwswxjOTHgW73xw0p8ii0aBtRplzUCYMm9+Y
+ FDtXMffWSDHSSdSOClxZeM9WsMQQHLeGYpFjZjYz5gEsSgjOx/0/Pp3bEDaZgC1H6PB8
+ waWg==
+X-Gm-Message-State: AOJu0YwbRBPMxtlf0cBW6niN6iszJN2cxqzkBC3/HbJndkGFxkdlMB+T
+ eNNuSCu1EksNPprgJRG9by77vPTeyu+ftYtst3o4dlIqpj+mFL5PohXpm8Ltczo=
+X-Gm-Gg: ASbGncsEeUT5wWl87ESszN3GdRz9eIEuvVXYtlirnRzxj6yjGqZBne852VrvxDoBRDO
+ Pcw8S2rf8dlzMRwMTboeXr5hZtfcnF2oz6IuJ2S6SPoPD7euXtEfggobXTRds3C2wFw2CG/GTwg
+ 9l6t1Y1+EBdai9jmNHW3FntCC8FHHBsOz1SlJIAdM4omAt0xVzwqpEADIYvEwoPNqxMf5wbcta+
+ GNh5VxQ3EnnGHGuBCmTbzjUXf0fgoSWFi6JcPv1Yx9dk/gTTfSG/3CGmZ1dO3ixgMUJL1dE6o7O
+ vVXO4VB/aUZAKrHren0SWFnGclPd
+X-Google-Smtp-Source: AGHT+IHhg3CDhimQNYpeAVfsEtbthcMOOLZHB/9lf9DZDTGg+fhnQtdUwG7IfqWun8gMWVdzPtekFw==
+X-Received: by 2002:a05:6808:2207:b0:3e2:9468:49db with SMTP id
+ 5614622812f47-3eae4a4884dmr2463704b6e.21.1733260501293; 
+ Tue, 03 Dec 2024 13:15:01 -0800 (PST)
+Received: from [192.168.4.112] (fixed-187-189-51-143.totalplay.net.
+ [187.189.51.143]) by smtp.gmail.com with ESMTPSA id
+ 5614622812f47-3ea86346a2csm3057970b6e.46.2024.12.03.13.15.00
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 03 Dec 2024 13:07:54 -0800 (PST)
-Message-ID: <fd627284-c9ba-40e8-b592-e736ce7c51cd@ventanamicro.com>
-Date: Tue, 3 Dec 2024 18:07:52 -0300
+ Tue, 03 Dec 2024 13:15:00 -0800 (PST)
+Message-ID: <277dc7d2-4279-41b5-93a2-a8b9d8545000@linaro.org>
+Date: Tue, 3 Dec 2024 15:14:58 -0600
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] target/riscv: Include missing headers in 'internals.h'
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Weiwei Li <liwei1518@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, Bin Meng <bmeng.cn@gmail.com>,
- qemu-riscv@nongnu.org, Alistair Francis <alistair.francis@wdc.com>
-References: <20241203200828.47311-1-philmd@linaro.org>
- <20241203200828.47311-3-philmd@linaro.org>
+Subject: Re: [RFC PATCH v1 03/43] accel/tcg: Add gvec size changing operations
+To: Anton Johansson <anjo@rev.ng>
+Cc: qemu-devel@nongnu.org, ale@rev.ng, ltaylorsimpson@gmail.com,
+ bcain@quicinc.com, philmd@linaro.org, alex.bennee@linaro.org
+References: <20241121014947.18666-1-anjo@rev.ng>
+ <20241121014947.18666-4-anjo@rev.ng>
+ <b2986b74-2c74-491b-90a1-9ec79367c2e8@linaro.org>
+ <v5pkpmxto7vtshg7a5mifaozrzn6n5d7raknvydad3oxk67jeu@i4jydb4wylpb>
+ <e4910c71-8220-404b-bb43-0b885914e183@linaro.org>
+ <kxrtubx3f4yyzhlzzpgvuqvvutcbu3fclo3pgigjgpaauhxkfm@uvvdaentlh43>
 Content-Language: en-US
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <20241203200828.47311-3-philmd@linaro.org>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <kxrtubx3f4yyzhlzzpgvuqvvutcbu3fclo3pgigjgpaauhxkfm@uvvdaentlh43>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102c;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pj1-x102c.google.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c2e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oo1-xc2e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,45 +104,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-
-On 12/3/24 5:08 PM, Philippe Mathieu-Daudé wrote:
-> Rather than relying on implicit includes, explicit them,
-> in order to avoid when refactoring unrelated headers:
+On 12/3/24 14:15, Anton Johansson wrote:
+> The point is that we have a lot of Hexagon instructions where size
+> changes are probably unavoidable, another example is V6_vshuffh which
+> takes in a <16 x i16> vector and shuffles the upper <8xi16> into the upper
+> 16-bits of a <8 x i32> vector
 > 
->    target/riscv/internals.h:49:15: error: use of undeclared identifier 'PRV_S'
->       49 |         ret = PRV_S;
->          |               ^
->    target/riscv/internals.h:93:9: error: call to undeclared function 'env_archcpu'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
->       93 |     if (env_archcpu(env)->cfg.ext_zfinx) {
->          |         ^
->    target/riscv/internals.h:101:15: error: unknown type name 'float32'; did you mean 'float'?
->      101 | static inline float32 check_nanbox_s(CPURISCVState *env, uint64_t f)
->          |               ^~~~~~~
->          |               float
+>      void emit_V6_vshuffh(intptr_t vec3, intptr_t vec7) {
+>          VectorMem mem = {0};
+>          intptr_t vec2 = temp_new_gvec(&mem, 128);
+>          tcg_gen_gvec_zext(MO_32, MO_16, vec2, vec7, 128, 64, 128);
 > 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> ---
-
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-
->   target/riscv/internals.h | 3 +++
->   1 file changed, 3 insertions(+)
+>          intptr_t vec0 = temp_new_gvec(&mem, 128);
+>          tcg_gen_gvec_zext(MO_32, MO_16, vec0, (vec7 + 64ull), 128, 64, 128);
 > 
-> diff --git a/target/riscv/internals.h b/target/riscv/internals.h
-> index ddbdee885bc..76934eaa7b5 100644
-> --- a/target/riscv/internals.h
-> +++ b/target/riscv/internals.h
-> @@ -19,7 +19,10 @@
->   #ifndef RISCV_CPU_INTERNALS_H
->   #define RISCV_CPU_INTERNALS_H
->   
-> +#include "exec/cpu-common.h"
->   #include "hw/registerfields.h"
-> +#include "fpu/softfloat-types.h"
-> +#include "target/riscv/cpu_bits.h"
->   
->   /*
->    * The current MMU Modes are:
+>          intptr_t vec1 = temp_new_gvec(&mem, 128);
+>          tcg_gen_gvec_shli(MO_32, vec1, vec0, 16, 128, 128);
+>          tcg_gen_gvec_or(MO_32, vec3, vec1, vec2, 128, 128);
+>      }
+> 
+> Not to bloat the email too much with examples, you can see 3 more here
+> 
+>    https://pad.rev.ng/11IvAKhiRy2cPwC7MX9nXA
+> 
+> Maybe we rely on the target defining size-changing operations if they
+> are needed?
 
+Perhaps.
+
+I'll note that emit_V6_vpackwh_sat in particular should probably not use vectors at all. 
+I'm sure it would be shorter to simply expand directly to integer code.
+
+I'll also note that tcg's vector support isn't really designed for the way you're using 
+it.  It leads to the creation of many on-stack temporaries that would not otherwise be 
+required.
+
+When targets are emitting their own complex patterns, the expected method is to use the 
+GVecGen* structures and the callbacks therein.  This allows the JIT to select different 
+expansions depending on the host cpu vector support (or lack thereof).
+
+For a simple example, see gen_gvec_xar() in target/arm/tcg/gengvec64.c, which simply 
+combines a rotate and an xor.  For a more complex example, see gen_gvec_usqadd_qc() later 
+in that same file, where in the worst case we call an out-of-line helper.
+
+
+r~
 
