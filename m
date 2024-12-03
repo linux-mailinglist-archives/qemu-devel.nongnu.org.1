@@ -2,94 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CB989E23D5
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Dec 2024 16:43:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 910FC9E22EB
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Dec 2024 16:30:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tIV3H-0000Ut-Rf; Tue, 03 Dec 2024 10:43:03 -0500
+	id 1tIUqY-0001nv-IY; Tue, 03 Dec 2024 10:29:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tIV3A-0000PZ-Me
- for qemu-devel@nongnu.org; Tue, 03 Dec 2024 10:42:56 -0500
-Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tIV39-0001ZA-7t
- for qemu-devel@nongnu.org; Tue, 03 Dec 2024 10:42:56 -0500
-Received: by mail-wr1-x42c.google.com with SMTP id
- ffacd0b85a97d-385eed29d17so1775010f8f.0
- for <qemu-devel@nongnu.org>; Tue, 03 Dec 2024 07:42:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1733240573; x=1733845373; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=wOdRSxLkZWYqYuusmuaS5IxGsMnnjBO43S0fLPPvzcY=;
- b=MM1/m9CFjE7kM51XzhT3q2pfoNMSFilV3oFQdynGk8XlODunYNCZo5lDm4RLC+KtpR
- Y6qCzcm/1gWmAz2o9eX68VkJlp/9zDocuyJ7i5HWmqGxZ+tW9sspIhhmK63PN3kMzbq1
- zB3VBhSYMuBEqKttrPVEJWyHAvpyD+cK+6ftZKxz238QRAUZ2xXMMliVpzJqGgwODyAA
- 8GNugwc4b6gUYsocCwUcUG+IruUj1DO4xmHqii3/SHCvOLX27pecU2xiA6eJcNgXB7TN
- PVlIizgS6R8XoEl9HMwGMywQhZ2ruAw4SiGVOQuvicRuGrTCVEcxgnxU7DYfMTFXOmPH
- F2/g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733240573; x=1733845373;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=wOdRSxLkZWYqYuusmuaS5IxGsMnnjBO43S0fLPPvzcY=;
- b=Dd8xTipKzTdCflnGDkj/91eb6C2JqYO0268Cmw04NT/KhhA+O2QyWuFmcOYz20AMLb
- iG6idr4bB0KYN0rqXbEtEF/3KRs+0+vn0M4DNuT4Wfbntl5YTaZdsjqghhEzvteK5Yxi
- 3RgyXSga0FonD22qryQFGM/EzXoA61zR8V77CobdnptVNKOQjHRiz57F5SlK5273ivVr
- kkgGCRVbSGtp/LdCRdE54OqKpeFaWszIiZyb+dxyrHfVrAbRxKcv6i1XsiGeW8T9Tjlp
- k1pNHRw0TLCHOQmyhkL8eGzGJ9vbgqGkTl1jgfQE4iaSC+2tLdmPn8R4uLl3N+Ve2Oj/
- AkOw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUuibiHmhB3kyPFbSgEy4h3s+MitnmkxEU7qgYGkJmI87/K4C4MoRKKKl5mbUeUl+1E0tUJ3T0htM7E@nongnu.org
-X-Gm-Message-State: AOJu0YxbJO/yCztt5ikQH/s1KeDm8RnQE8RMaaIUFy+Ja3muvSs5NQMh
- c3ZdzlZPHMBunutr6NUXq9Iox/jHksvDmP1w3hBzd7/3qUwpEdOBCXl1n81G0etATJxzmTJOr1q
- na9g=
-X-Gm-Gg: ASbGncukKDXF0b3onlt09Q76tLbRa5sNbzPmXSYE1WoHRPo/qqL0AW7kR4aHNShsJ5Z
- byrxAk8txvOIDV+x+Wlp5A3V/AWcQvOKgE/vSBk6FZnxI0s3Z/ftrSDDhOg5t9ccZcVjMbek/GI
- 9Q1Gl95REcjNXaiUXmbxPuPA/zc9rK7WRK6tXa01mDW4XCAgMFBsUFuYL/t7mVoTkic8g4XWD1Y
- p1nQBv1DJZDfEskb0koIrLLgVyVpNApy8vCQ5G3IzcWrdbOn6XVjMwRnl+XbKf3ZA==
-X-Google-Smtp-Source: AGHT+IGRAaxp1tGbXIpVugHJEQbPg8jZXnlne5+GINUp/wX/BgfL12yPIPPFqXtrySK2VI6lPY9Ntg==
-X-Received: by 2002:a05:6000:79d:b0:385:f2d2:2ef0 with SMTP id
- ffacd0b85a97d-385fd53ece7mr2812053f8f.41.1733240573479; 
- Tue, 03 Dec 2024 07:42:53 -0800 (PST)
-Received: from [192.168.69.223] ([176.187.209.146])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-385dd99504csm13874738f8f.85.2024.12.03.07.42.52
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 03 Dec 2024 07:42:53 -0800 (PST)
-Message-ID: <ce4d9bce-e80e-44de-9e0e-013122a2f293@linaro.org>
-Date: Tue, 3 Dec 2024 16:42:51 +0100
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1tIUqQ-0001jv-A4; Tue, 03 Dec 2024 10:29:46 -0500
+Received: from mgamail.intel.com ([192.198.163.13])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1tIUqN-0008Ef-Qb; Tue, 03 Dec 2024 10:29:46 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1733239784; x=1764775784;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=WqH5S9nYqM/7K0+LRFvOaecwXadq3GKXHflnoUGJlm8=;
+ b=KUcG+VbtToMjvEFBrrd/uG8+Nd0qbq4sG/ZdivB7P9e62LWnQpZTOZaS
+ RqF9eMkTgH/2tK5B0fnyu+OjESZi3zdVZMA++wGH5BlDQGstCm1ybu2Zx
+ PFA3Nwshkxf14vbnODjboMj3k2AoBnD8kdjsbOEcW3trLkI6SQzTdKgL5
+ B1eiRT5PItNDJfuB3ODtfOwng5t2W3A84p8/JkF8Hg6c1qwwdDRnoC/8P
+ EzWXYBFlK+n3aRYlE6/E23ydc8L4uBelMuE/EjoTcitfqzHJ4ielTz9qY
+ IBFL8srbaXdRcACjHOv+0WM7ny0Wu3jmTFcxcyc/HFSFBOrI4zA7Du1Av g==;
+X-CSE-ConnectionGUID: IcZ9toOjQVq538TcWGb3QQ==
+X-CSE-MsgGUID: y5C/H4IkRYuLiGXMT9ZsUQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11275"; a="36311879"
+X-IronPort-AV: E=Sophos;i="6.12,205,1728975600"; d="scan'208";a="36311879"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Dec 2024 07:29:35 -0800
+X-CSE-ConnectionGUID: tyQ68S8cTdWQYMzvIxwtlw==
+X-CSE-MsgGUID: bwLuNQ6BSIqmm8ayDMoAtw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,205,1728975600"; d="scan'208";a="93927470"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by fmviesa009.fm.intel.com with ESMTP; 03 Dec 2024 07:29:34 -0800
+Date: Tue, 3 Dec 2024 23:47:46 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org
+Subject: Re: [PATCH v2 2/2] rust: add bindings for interrupt sources
+Message-ID: <Z08oItSaucp9Z5Xi@intel.com>
+References: <20241202110609.36775-1-pbonzini@redhat.com>
+ <20241202110609.36775-3-pbonzini@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/3 for 9.2] hw/virtio: fix crash in virtio-balloon and
- test it
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: David Hildenbrand <david@redhat.com>, Laurent Vivier
- <lvivier@redhat.com>, qemu-devel@nongnu.org,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Martin Pitt <mpitt@redhat.com>,
- "Richard W . M . Jones" <rjones@redhat.com>, Fabiano Rosas <farosas@suse.de>
-References: <20241129135507.699030-1-berrange@redhat.com>
- <24ae6e7a-1cba-4898-bfbb-5f5d3e5c3256@redhat.com>
- <6bf49e96-8939-4ee3-aa4c-4ff5ae5e4e21@linaro.org>
- <20241203030839-mutt-send-email-mst@kernel.org>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20241203030839-mutt-send-email-mst@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42c.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241202110609.36775-3-pbonzini@redhat.com>
+Received-SPF: pass client-ip=192.198.163.13; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -73
+X-Spam_score: -7.4
+X-Spam_bar: -------
+X-Spam_report: (-7.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.996,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -106,24 +79,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 3/12/24 09:08, Michael S. Tsirkin wrote:
-> On Mon, Dec 02, 2024 at 08:50:55PM +0100, Philippe Mathieu-Daudé wrote:
->> Hi,
->>
->> On 2/12/24 18:05, David Hildenbrand wrote:
->>> On 29.11.24 14:55, Daniel P. Berrangé wrote:
->>>> See patch 1 for the background info on the problem
->>>>
->>>> Changed in v2:
->>>>
->>>>    * Add qtest coverage for the crash scenario
->>>>
->>>> Daniel P. Berrangé (3):
->>>>     hw/virtio: fix crash in processing balloon stats
->>>>     tests/qtest: drop 'fuzz-' prefix from virtio-balloon test
->>>>     tests/qtest: add test for querying balloon guest stats
+On Mon, Dec 02, 2024 at 12:06:09PM +0100, Paolo Bonzini wrote:
+> Date: Mon,  2 Dec 2024 12:06:09 +0100
+> From: Paolo Bonzini <pbonzini@redhat.com>
+> Subject: [PATCH v2 2/2] rust: add bindings for interrupt sources
+> X-Mailer: git-send-email 2.47.0
+> 
+> The InterruptSource bindings let us call qemu_set_irq() and sysbus_init_irq()
+> as safe code.
+> 
+> Interrupt sources, qemu_irq in C code, are pointers to IRQState objects.
+> They are QOM link properties and can be written to outside the control
+> of the device (i.e. from a shared reference); therefore they must be
+> interior-mutable in Rust.  Since thread-safety is provided by the BQL,
+> what we want here is the newly-introduced BqlCell.  A pointer to the
+> contents of the BqlCell (an IRQState**, or equivalently qemu_irq*)
+> is then passed to the C sysbus_init_irq function.
+> 
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> ---
+>  rust/hw/char/pl011/src/device.rs | 22 ++++----
+>  rust/qemu-api/meson.build        |  2 +
+>  rust/qemu-api/src/irq.rs         | 91 ++++++++++++++++++++++++++++++++
+>  rust/qemu-api/src/lib.rs         |  2 +
+>  rust/qemu-api/src/sysbus.rs      | 26 +++++++++
+>  5 files changed, 133 insertions(+), 10 deletions(-)
+>  create mode 100644 rust/qemu-api/src/irq.rs
+>  create mode 100644 rust/qemu-api/src/sysbus.rs
+> 
 
- > Series:> Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
-Series queued, thanks.
 
