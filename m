@@ -2,67 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 910FC9E22EB
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Dec 2024 16:30:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B87B9E24F3
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Dec 2024 16:54:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tIUqY-0001nv-IY; Tue, 03 Dec 2024 10:29:55 -0500
+	id 1tIVDu-00038o-9S; Tue, 03 Dec 2024 10:54:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tIUqQ-0001jv-A4; Tue, 03 Dec 2024 10:29:46 -0500
-Received: from mgamail.intel.com ([192.198.163.13])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tIUqN-0008Ef-Qb; Tue, 03 Dec 2024 10:29:46 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1733239784; x=1764775784;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=WqH5S9nYqM/7K0+LRFvOaecwXadq3GKXHflnoUGJlm8=;
- b=KUcG+VbtToMjvEFBrrd/uG8+Nd0qbq4sG/ZdivB7P9e62LWnQpZTOZaS
- RqF9eMkTgH/2tK5B0fnyu+OjESZi3zdVZMA++wGH5BlDQGstCm1ybu2Zx
- PFA3Nwshkxf14vbnODjboMj3k2AoBnD8kdjsbOEcW3trLkI6SQzTdKgL5
- B1eiRT5PItNDJfuB3ODtfOwng5t2W3A84p8/JkF8Hg6c1qwwdDRnoC/8P
- EzWXYBFlK+n3aRYlE6/E23ydc8L4uBelMuE/EjoTcitfqzHJ4ielTz9qY
- IBFL8srbaXdRcACjHOv+0WM7ny0Wu3jmTFcxcyc/HFSFBOrI4zA7Du1Av g==;
-X-CSE-ConnectionGUID: IcZ9toOjQVq538TcWGb3QQ==
-X-CSE-MsgGUID: y5C/H4IkRYuLiGXMT9ZsUQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11275"; a="36311879"
-X-IronPort-AV: E=Sophos;i="6.12,205,1728975600"; d="scan'208";a="36311879"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
- by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Dec 2024 07:29:35 -0800
-X-CSE-ConnectionGUID: tyQ68S8cTdWQYMzvIxwtlw==
-X-CSE-MsgGUID: bwLuNQ6BSIqmm8ayDMoAtw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,205,1728975600"; d="scan'208";a="93927470"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by fmviesa009.fm.intel.com with ESMTP; 03 Dec 2024 07:29:34 -0800
-Date: Tue, 3 Dec 2024 23:47:46 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org
-Subject: Re: [PATCH v2 2/2] rust: add bindings for interrupt sources
-Message-ID: <Z08oItSaucp9Z5Xi@intel.com>
-References: <20241202110609.36775-1-pbonzini@redhat.com>
- <20241202110609.36775-3-pbonzini@redhat.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tIVDV-00037p-8V
+ for qemu-devel@nongnu.org; Tue, 03 Dec 2024 10:53:38 -0500
+Received: from mail-ej1-x629.google.com ([2a00:1450:4864:20::629])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tIVDT-0002eB-Of
+ for qemu-devel@nongnu.org; Tue, 03 Dec 2024 10:53:37 -0500
+Received: by mail-ej1-x629.google.com with SMTP id
+ a640c23a62f3a-aa545dc7105so892067266b.3
+ for <qemu-devel@nongnu.org>; Tue, 03 Dec 2024 07:53:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1733241214; x=1733846014; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=CDqrEJs5OhNeWJiBb9sU9ED27wZyZSyw4yGh+delQvg=;
+ b=YvlM548cYvUQEt+v/Rh8f5UadXU5Iv2CqhgFtX6KlUPo8OByHvq2LMxYji+htufUqZ
+ TMFAX69f7br3vj2kdsa40MzjsokJIFC5GOWw/bqZE7dcVG0Dj7jxdKu40yT5+c9ocHWB
+ 7sLgP9wfORDuodaGFqDurHftw+rL6wlYDqdc3yJBfIlV5hZoBbPt/17yhm1NekKB7vhv
+ hcaVl9WED2DnDS29GThxT3qMr0BN+WaRmzTBmsrReRBG657J1s3fzxt1a5j7Tz4Z8+kZ
+ lO74AMIUjx1OIwXmAZt7saa3fVzfUBVnrt0wdr60gVpMYtoBS3l7DlPGEo/d5aDA0y0g
+ iVnw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1733241214; x=1733846014;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=CDqrEJs5OhNeWJiBb9sU9ED27wZyZSyw4yGh+delQvg=;
+ b=cjAgEr6VpkOBQxeD0hRnjXgnHgiHRpB0/TTb+bVMdmXQtRwIX9607GiE/B5IA4CQJn
+ YASGtv8LJqPBKkDxdg5KXxL0UyOYqNKiPCLt72RAYRQX/lfm4+Uc8WxpSUTL7ewXtwyT
+ +31ghNbLWd4P2A0kEbpn/y3SmovQOfv/FebxrcQWjuM7+X8ZAAjlWWbtEMFdtmROlqhU
+ V453I/FndJYhfERphqWfbhJibRYDKrzIFgOWmGsuLc/eFdnbRC56rqbZXtuxrs95Pb5H
+ Gi/Q1oPlf+QtCdeyE8SqpX09ZpTzSRnFj8kK+1XRaG+B8+2HmF44OhllC1r5cx8UwF3f
+ gB3A==
+X-Gm-Message-State: AOJu0YwpQCqT1tFUpCLt+AazDHBHhf4L7gXu17tVyHCD/gYmuIfuzBKe
+ v+ys0xJEyaA3zssgyHQJk2rYnk1k8EP4RkyMYm7E61ir+djcHd5bpF6nIiOheKvRvtMwo4sG+ex
+ ppHM=
+X-Gm-Gg: ASbGnctKKMjNERynOg4fTSsRmTya24aa+/8RkjsUy+hxgppCmuuhYVJQXGV6LksKtcE
+ yqd6tjwugtooX/fSsTcvpHNukRS9J2We3ZflA8lxit8qbGV9MBwKzP2ucRgVob5/gCqkJjkAeGI
+ hoD2k8vaS3Jr+sqiOwaGRKYt5zkOUB++jFI7WmI3pQoYrMq48v7Xe3XVHEs0lnK3hDC+QqrvY9h
+ HawChNtAu5RmS4UTZp3ln+Hi8+cw0BSpBKsHq8Mw+fbl5jxyNuCYtMLo6fO2cnH+Q==
+X-Google-Smtp-Source: AGHT+IG3c9b2k3ackyoL47hmqGNY0K+1IrKO4aic6XfSainBKk7w6lyhZxKNK4ZdNufmG1I5GSTWSg==
+X-Received: by 2002:a17:906:3150:b0:a99:5f16:3539 with SMTP id
+ a640c23a62f3a-aa5f7ab68ebmr259380266b.0.1733241213709; 
+ Tue, 03 Dec 2024 07:53:33 -0800 (PST)
+Received: from [192.168.69.223] ([176.187.209.146])
+ by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-aa5998e64d0sm627641966b.93.2024.12.03.07.53.32
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 03 Dec 2024 07:53:33 -0800 (PST)
+Message-ID: <06569135-161a-483b-8677-36bb55a26679@linaro.org>
+Date: Tue, 3 Dec 2024 16:53:31 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241202110609.36775-3-pbonzini@redhat.com>
-Received-SPF: pass client-ip=192.198.163.13; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -73
-X-Spam_score: -7.4
-X-Spam_bar: -------
-X-Spam_report: (-7.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.996,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] system: Select HVF by default when no other
+ accelerator is available
+To: qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>
+References: <20241203094232.62232-1-philmd@linaro.org>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20241203094232.62232-1-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::629;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x629.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -79,35 +98,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Dec 02, 2024 at 12:06:09PM +0100, Paolo Bonzini wrote:
-> Date: Mon,  2 Dec 2024 12:06:09 +0100
-> From: Paolo Bonzini <pbonzini@redhat.com>
-> Subject: [PATCH v2 2/2] rust: add bindings for interrupt sources
-> X-Mailer: git-send-email 2.47.0
+On 3/12/24 10:42, Philippe Mathieu-Daudé wrote:
+> When testing with a HVF-only binary, we get:
 > 
-> The InterruptSource bindings let us call qemu_set_irq() and sysbus_init_irq()
-> as safe code.
+>     3/12 qemu:func-quick+func-aarch64 / func-aarch64-version                                      ERROR            0.29s   exit status 1
+>    stderr:
+>    Traceback (most recent call last):
+>      File "tests/functional/test_version.py", line 22, in test_qmp_human_info_version
+>        self.vm.launch()
+>      File "machine/machine.py", line 461, in launch
+>        raise VMLaunchFailure(
+>    qemu.machine.machine.VMLaunchFailure: ConnectError: Failed to establish session: EOFError
+>        Exit code: 1
+>        Command: build/qemu-system-aarch64 -display none -vga none -chardev socket,id=mon,fd=5 -mon chardev=mon,mode=control -machine none -nodefaults
+>        Output: qemu-system-aarch64: No accelerator selected and no default accelerator available
 > 
-> Interrupt sources, qemu_irq in C code, are pointers to IRQState objects.
-> They are QOM link properties and can be written to outside the control
-> of the device (i.e. from a shared reference); therefore they must be
-> interior-mutable in Rust.  Since thread-safety is provided by the BQL,
-> what we want here is the newly-introduced BqlCell.  A pointer to the
-> contents of the BqlCell (an IRQState**, or equivalently qemu_irq*)
-> is then passed to the C sysbus_init_irq function.
+> Fix by checking for HVF in configure_accelerators() and using
+> it by default when no other accelerator is available.
 > 
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > ---
->  rust/hw/char/pl011/src/device.rs | 22 ++++----
->  rust/qemu-api/meson.build        |  2 +
->  rust/qemu-api/src/irq.rs         | 91 ++++++++++++++++++++++++++++++++
->  rust/qemu-api/src/lib.rs         |  2 +
->  rust/qemu-api/src/sysbus.rs      | 26 +++++++++
->  5 files changed, 133 insertions(+), 10 deletions(-)
->  create mode 100644 rust/qemu-api/src/irq.rs
->  create mode 100644 rust/qemu-api/src/sysbus.rs
-> 
+> v2 was https://lore.kernel.org/qemu-devel/20241203091036.59898-1-philmd@linaro.org/
+> ---
+>   system/vl.c | 3 +++
+>   1 file changed, 3 insertions(+)
 
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-
+Patch queued.
 
