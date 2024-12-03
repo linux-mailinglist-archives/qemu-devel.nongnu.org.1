@@ -2,86 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6883C9E2D68
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Dec 2024 21:42:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 73B599E2D74
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Dec 2024 21:44:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tIZhH-0001me-Fs; Tue, 03 Dec 2024 15:40:39 -0500
+	id 1tIZkd-0000NI-8q; Tue, 03 Dec 2024 15:44:07 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tIZgm-0001Vk-Vf
- for qemu-devel@nongnu.org; Tue, 03 Dec 2024 15:40:09 -0500
-Received: from mail-oa1-x32.google.com ([2001:4860:4864:20::32])
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1tIZkZ-0000MI-Co
+ for qemu-devel@nongnu.org; Tue, 03 Dec 2024 15:44:03 -0500
+Received: from mail-pg1-x529.google.com ([2607:f8b0:4864:20::529])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tIZgh-0003Cv-Dg
- for qemu-devel@nongnu.org; Tue, 03 Dec 2024 15:40:08 -0500
-Received: by mail-oa1-x32.google.com with SMTP id
- 586e51a60fabf-29654932226so118749fac.0
- for <qemu-devel@nongnu.org>; Tue, 03 Dec 2024 12:40:02 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1tIZkX-0003lD-Jz
+ for qemu-devel@nongnu.org; Tue, 03 Dec 2024 15:44:03 -0500
+Received: by mail-pg1-x529.google.com with SMTP id
+ 41be03b00d2f7-7fcdbfd8090so1948324a12.2
+ for <qemu-devel@nongnu.org>; Tue, 03 Dec 2024 12:44:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1733258402; x=1733863202; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=xxwQYUCgdJ75izA3vVBTRu+vsh+0fdcxFYY32CHBmJU=;
- b=M13DV7xsaUuByWP1UsVF5CXtH1nUYLSP7gUMyX1yHbuHa84FFts7CpdnMb9uitZdTG
- TlaO4dhbL1te4yxkSD+oba/8KggLvLTQvDK2uaKNQNiYlBfi633H78o4k9hj/uD0HU9r
- bPSfBS3d6YYSYwFUwHHDFZ5QE8oXmmWIzDdGtfddNUxZPbSW0aaTWYTArimhvwyOLnCW
- KGYIjo1oq0nk1eSVcxf0HKcH2OozQUI0aBuSWh9L37IaXeaPWFLWO7rh2Qlkmdi9zEmD
- t4Eh+a7GWTfDjqPrELyKbgVpJ+QcvrAQ0t1S7LyNEl6po++tveUAqU+PxRwfrVX0H/6J
- m1Fw==
+ d=linaro.org; s=google; t=1733258640; x=1733863440; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=2m6CpvQHO/YDC11hJhBycspt3bWc9KD96XfQ75TSBo0=;
+ b=F7ELCqXUdPPP6WvApDzy6l0UGhE/4saotNa6Ct6SrwvrphV+aBhxl/BzZRptyLRrDH
+ ORXRbtfz5g2sAMd2V5K+64RcPJNBsm3tUkkejri/oe3IodcHr+D5lDhREOSYe0KvObqY
+ 8ucK9MCxcan9yWjgX7h1fuGC0K0gRuaUoEVU7PmU/GXGKcUnD/sivY206jZ5AYQU3m9R
+ jsskHQwunGkRv0gKuZd2Iu0B3xvTPTMDxmIoIcpM+yGc6MiBtgvYcowfzuxeEW/ijJZS
+ trjvLdcvrm0eZuV5D+L5Sn8seAajZNdSRYqmHHBS9/1XTP/+/we5GE3ax+W7sUq2GTy2
+ C9Zw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733258402; x=1733863202;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=xxwQYUCgdJ75izA3vVBTRu+vsh+0fdcxFYY32CHBmJU=;
- b=hg5L0VkYMBL8gM8aHpOjWnHRaT1UMPtFD1WbZrXDxDhpVy2Qm9vWvImQL6IYJp1xVF
- dmDQYHpSwhBrNZee2o0vTas/97EuBpF4iy5sQIwuzfJVu86XLT7gjicqUom0DXb50m74
- i9OQbcUDmBknxGqe2+5WBcHeogE0WnwQOyYC5jORNpF2PUM+e8aiibJxX+CirSq11yQO
- 4DJ8hNRWeCU7eXrKdZsQAl6b/BpaYRJcWsONfQLoMpJJn6ANq/b8JAfmA7O5t9dPHguo
- hBirA4bXvqDV52q801qpizq0U5TkjHYa+l8COUHCyvaA4mJdzKefqtbChrCRo4wy5eZ4
- d9Gg==
-X-Gm-Message-State: AOJu0YykpXT1hn0KlsMdx3q9er/sP5oETQf4GRlENfOXQ0MoMRZMS0CF
- 3Vkt2NEpDpML+v+/QcCa0FsE2I9S3GPhFD70OLFD4GbTqVGHMOMfWrZ2TYDxn5EfA0TAkkKSUOj
- Jaj8=
-X-Gm-Gg: ASbGncuxr2EzqemT703u6twBnMrdTajRpIo02/SYS/R26x1QuZ3qAgr4f/OUhhYVAun
- IZQJq6QkRBdVw+93+RETkHEipmHpj8mAtzB2VdkRwaacMglkuLSX9PKxsSOOBZgJjzXQaE/0zpj
- TUdx1pT/GurbBF1nlXbwe/AGv5u7sgKMt/JqiHeiw0OLW3lf3lriVxSygIo+1xWfrGXzHpVUD20
- qENT2peDS54FuAWJ9ngmH9iGX46I/J49+rUXlszJSuIyIRHemYHYN/BhyZ3p5S0Y/0SDDi1GHHC
- tDQI/2tW7k5W2M/3vX8sOxVu+cV2IdyRuS3W
-X-Google-Smtp-Source: AGHT+IE/ZDBdAavAcG/lUIhkIGCyMcS/8nmmcngxyXbY1XgLm4ZvLEjWHHlJBN3tLrMs88cKkei/pg==
-X-Received: by 2002:a05:6870:c14c:b0:29e:37af:a943 with SMTP id
- 586e51a60fabf-29e88b5a9aamr2422020fac.18.1733258401824; 
- Tue, 03 Dec 2024 12:40:01 -0800 (PST)
-Received: from localhost.localdomain (fixed-187-189-51-143.totalplay.net.
- [187.189.51.143]) by smtp.gmail.com with ESMTPSA id
- 586e51a60fabf-29e3ae09f25sm2684018fac.49.2024.12.03.12.40.01
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 03 Dec 2024 12:40:01 -0800 (PST)
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: peter.maydell@linaro.org
-Subject: [PATCH 11/11] softfloat: Replace WHICH with RET in parts_pick_nan
-Date: Tue,  3 Dec 2024 14:39:48 -0600
-Message-ID: <20241203203949.483774-12-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20241203203949.483774-1-richard.henderson@linaro.org>
-References: <20241203203949.483774-1-richard.henderson@linaro.org>
+ d=1e100.net; s=20230601; t=1733258640; x=1733863440;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=2m6CpvQHO/YDC11hJhBycspt3bWc9KD96XfQ75TSBo0=;
+ b=PqjI2JO4Vc6NT43gZwvda38crHIFKKatpbGGhj8pwYtBFE95kopeFZUOcPY7RM9cgj
+ M0MbUw5gQAeTZzABWX40E7byjiXip9QlEiTBMMOFzRen5fJp9tgNB9rz+GNjTjElhRrM
+ ol6IdS2+fdiPWy29oi7s4IOvhr+xe4t7IaYP5Gd87P+mHF4hZj8fv87V55Cl26rAr1ch
+ 7juGoGPdu7galcM5XXL0yw1AxOnPvCwTA0C9thXqucqGIH2Xcr4zNTP6NTWJeQ1KNXTm
+ qt0IttX3ky/YqMrT7X14yc4Z35r+wKGA5SzPHb2L2WtZ5OSYAfUdwGhRZdoBmHBc6AjY
+ BG4w==
+X-Gm-Message-State: AOJu0YztQ9OcGCQMR+3GNyfU9iFZ2EArewn+dbglUDuYAfRn/adoQnGz
+ 3R69VUd4LlCnElv6QpeQl47CghHu9yjvSUUJOn4mhqyng086lxrA0rwIVgGZAbc=
+X-Gm-Gg: ASbGncudHI5diTvTimoJe6J2oGv44Tbvgof3wJbxf1LqQKSbWoVEx9gnMUMwXqhzQ8r
+ Nzt4e+Qd1ceHrvyhp7kOaW+dZOtIna91IqcybAQUU7Yif1ryaKPJOmghBCwiUmTXFG3x4ennA+W
+ Qwbth1XWtloZU5tKBXJ/r0uwvpFl+rk3lajL563xvCXw067TFlqgjlRfTqpRmUdSXvaOlZ598sC
+ wNi71vYUF1bb9Wvn8GtdFjBYVWyno+3UEGKFH3wt+MtfplC/HAm6HHk+PzI2MpeWGKQKyUC30/9
+ 1WD1kW8W1p9sSxQ/zgVHuA==
+X-Google-Smtp-Source: AGHT+IG2ETHF5mGEbGuuHv5fovAe2fL+4Jyw1sfOgWoAD7vzLq8AeZOpE/ZVGMcP7mLGDqXHq3168g==
+X-Received: by 2002:a05:6a21:9998:b0:1db:e464:7b69 with SMTP id
+ adf61e73a8af0-1e1653c5e66mr5968057637.20.1733258639794; 
+ Tue, 03 Dec 2024 12:43:59 -0800 (PST)
+Received: from [192.168.1.67] (216-180-64-156.dyn.novuscom.net.
+ [216.180.64.156]) by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-7258cbb5e26sm58310b3a.119.2024.12.03.12.43.58
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 03 Dec 2024 12:43:59 -0800 (PST)
+Message-ID: <d204e918-6847-41f3-8085-72ee1206c066@linaro.org>
+Date: Tue, 3 Dec 2024 12:43:58 -0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:4860:4864:20::32;
- envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x32.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] tests/functional/aarch64: add tests for FEAT_RME
+Content-Language: en-US
+To: Jean-Philippe Brucker <jean-philippe@linaro.org>
+Cc: qemu-devel@nongnu.org, marcin.juszkiewicz@linaro.org,
+ gustavo.romero@linaro.org, qemu-arm@nongnu.org, alex.bennee@linaro.org,
+ mathieu.poirier@linaro.org, Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ Thomas Huth <thuth@redhat.com>
+References: <20241203001741.2068452-1-pierrick.bouvier@linaro.org>
+ <20241203155434.GB1903051@myrica>
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+In-Reply-To: <20241203155434.GB1903051@myrica>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::529;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pg1-x529.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,98 +103,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Replace the "index" selecting between A and B with a result variable
-of the proper type.  This improves clarity within the function.
+Hi Jean-Philippe,
+(adding Daniel and Thomas as well)
 
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- fpu/softfloat-parts.c.inc | 28 +++++++++++++---------------
- 1 file changed, 13 insertions(+), 15 deletions(-)
+On 12/3/24 07:54, Jean-Philippe Brucker wrote:
+> On Mon, Dec 02, 2024 at 04:17:41PM -0800, Pierrick Bouvier wrote:
+>> This boot an OP-TEE environment, and launch a nested guest VM inside it
+>> using the Realms feature. We do it for virt and sbsa-ref platforms.
+>>
+>> Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+>>
+>> -----
+>>
+>> v2:
+>> - move test to its own file
+>> - add sbsa test
+>> - check output of `cca-workload-attestation report`
+>>
+>> v3:
+>> - build and run test with cca-v4 images
+>> - factorize nested guest test between both tests
+>> - remove accel tcg option as it is the default when running tests
+>> Note: It's a long test and there is a work in progress to understand why
+>> debug build is so slow (x12 vs optimized).
+> 
+> Can the functional tests take as long as we want, or are they regularly
+> run by a CI?
+> 
 
-diff --git a/fpu/softfloat-parts.c.inc b/fpu/softfloat-parts.c.inc
-index 9a2287095c..e51c9827d9 100644
---- a/fpu/softfloat-parts.c.inc
-+++ b/fpu/softfloat-parts.c.inc
-@@ -40,7 +40,8 @@ static FloatPartsN *partsN(pick_nan)(FloatPartsN *a, FloatPartsN *b,
-                                      float_status *s)
- {
-     bool have_snan = false;
--    int cmp, which;
-+    FloatPartsN *ret;
-+    int cmp;
- 
-     if (is_snan(a->cls) || is_snan(b->cls)) {
-         float_raise(float_flag_invalid | float_flag_invalid_snan, s);
-@@ -55,21 +56,21 @@ static FloatPartsN *partsN(pick_nan)(FloatPartsN *a, FloatPartsN *b,
-     switch (s->float_2nan_prop_rule) {
-     case float_2nan_prop_s_ab:
-         if (have_snan) {
--            which = is_snan(a->cls) ? 0 : 1;
-+            ret = is_snan(a->cls) ? a : b;
-             break;
-         }
-         /* fall through */
-     case float_2nan_prop_ab:
--        which = is_nan(a->cls) ? 0 : 1;
-+        ret = is_nan(a->cls) ? a : b;
-         break;
-     case float_2nan_prop_s_ba:
-         if (have_snan) {
--            which = is_snan(b->cls) ? 1 : 0;
-+            ret = is_snan(b->cls) ? b : a;
-             break;
-         }
-         /* fall through */
-     case float_2nan_prop_ba:
--        which = is_nan(b->cls) ? 1 : 0;
-+        ret = is_nan(b->cls) ? b : a;
-         break;
-     case float_2nan_prop_x87:
-         /*
-@@ -85,35 +86,32 @@ static FloatPartsN *partsN(pick_nan)(FloatPartsN *a, FloatPartsN *b,
-          */
-         if (is_snan(a->cls)) {
-             if (!is_snan(b->cls)) {
--                which = is_qnan(b->cls) ? 1 : 0;
-+                ret = is_qnan(b->cls) ? b : a;
-                 break;
-             }
-         } else if (is_qnan(a->cls)) {
-             if (is_snan(b->cls) || !is_qnan(b->cls)) {
--                which = 0;
-+                ret = a;
-                 break;
-             }
-         } else {
--            which = 1;
-+            ret = b;
-             break;
-         }
-         cmp = frac_cmp(a, b);
-         if (cmp == 0) {
-             cmp = a->sign < b->sign;
-         }
--        which = cmp > 0 ? 0 : 1;
-+        ret = cmp > 0 ? a : b;
-         break;
-     default:
-         g_assert_not_reached();
-     }
- 
--    if (which) {
--        a = b;
-+    if (is_snan(ret->cls)) {
-+        parts_silence_nan(ret, s);
-     }
--    if (is_snan(a->cls)) {
--        parts_silence_nan(a, s);
--    }
--    return a;
-+    return ret;
- }
- 
- static FloatPartsN *partsN(pick_nan_muladd)(FloatPartsN *a, FloatPartsN *b,
--- 
-2.43.0
+It is run by the CI and developers as part of functional tests (make 
+check-functional). The shorter the better thus.
+Adding more (shorter) tests would be acceptable though, as they can be 
+parallelized.
 
+> The `cca-workload-attestation report` command is great for making sure the
+> RME feature is working and the guest is running in a Realm, and it's very
+> light. In my opinion it's sufficient here.
+> 
+> We could also run kvm-unit-tests on the host, various VM payloads and
+> configs (in particular edk2 boot), and performing local attestation, but
+> those would all be testing the other software components, so don't seem
+> relevant to this functional test of the QEMU emulator. That said we do
+> need regression tests for the whole software stack (including QEMU VMM)
+> and this test automation is really convenient so I'd like to extend it
+> with extra tests but outside the QEMU codebase.
+>
+
+I saw that kvm-unit-tests are mentioned in our documentation, but I'm 
+not sure if we have any functional test image running them.
+
+I'm not familiar enough with this topic to know what would be the value 
+to add such tests, or edk2 boot.
+That said, if we can have extra (short) tests upstream, I don't think it 
+would hurt anyone.
+
+For your need when working on an RME stack, it may be easier to keep 
+those specific tests on your side.
+
+Someone on this thread will probably have a better answer than mine :).
+
+> Thanks,
+> Jean
+>
 
