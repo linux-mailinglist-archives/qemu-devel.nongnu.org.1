@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 377929E1B04
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Dec 2024 12:33:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9191E9E1AFE
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Dec 2024 12:32:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tIR8f-0000QR-IN; Tue, 03 Dec 2024 06:32:21 -0500
+	id 1tIR8g-0000VY-Kl; Tue, 03 Dec 2024 06:32:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tIR8W-0000FU-2O
- for qemu-devel@nongnu.org; Tue, 03 Dec 2024 06:32:13 -0500
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tIR8b-0000LI-SH
+ for qemu-devel@nongnu.org; Tue, 03 Dec 2024 06:32:18 -0500
+Received: from mail-lf1-x12b.google.com ([2a00:1450:4864:20::12b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tIR8U-0000aC-HD
- for qemu-devel@nongnu.org; Tue, 03 Dec 2024 06:32:11 -0500
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-434a9f2da82so47142295e9.2
- for <qemu-devel@nongnu.org>; Tue, 03 Dec 2024 03:32:10 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tIR8a-0000aP-7W
+ for qemu-devel@nongnu.org; Tue, 03 Dec 2024 06:32:17 -0500
+Received: by mail-lf1-x12b.google.com with SMTP id
+ 2adb3069b0e04-53de880c77eso6361633e87.1
+ for <qemu-devel@nongnu.org>; Tue, 03 Dec 2024 03:32:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1733225529; x=1733830329; darn=nongnu.org;
+ d=linaro.org; s=google; t=1733225534; x=1733830334; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=+3la+FnavYG5s8brFqSIjvleKq1jzXECMBlEIPY8W0E=;
- b=t3bRfOr9xAEeaBVUNd3THVoVh1bQqEvg05GjKls4FgfbuBiUtqLiaRmYydx10XPGQS
- LcIxC34SMdFiWzJWuPPd4hgM7/ja9LUhHFZL86C9gXgEn0M313HasccGmyjyOBbpLTah
- 41UO+VwkAnfy3Phughl6KMDgX1frSCHYh/4vIvgKeSHTwjnxo2I93TRBK7puAWeypgZk
- /Icmm8mZzIfGcaIEXChDR87gQkWZGDW10aqbE7N+Ku9GJswLiGC5gqRrECn3qXlJM2GK
- 4cYLOFMNba2Xp2qnd9f8SEV0mQJONhkrAH3kNT9HrVggKmga2iRAUY//CapyG8Y0gsHH
- 3r9g==
+ bh=0oJ3H34REbMvqjovorF+2XA/kIyPhomBUF8Hcx8gznY=;
+ b=f90BlEz+XsVQMef1E/SGHvUiiG3QK/7TPbfJ3QMuzcptygXsUEuCUWqtb8jNTdnzhL
+ QurNL+xNRH0NJj3jJxnAYu3mUiTdXzqtogZnAG+h1+iWL7dwNWXW9hW0lst/0Y2hUwSC
+ Gze8x7jikSBtZaSQiNfhhFC0sQS+cqxTSjA9nA0b68zawWWj6z9vz7MdrlGWbTbZqPk6
+ fFBrUD35lkRHa1L9EIX5ca/nFogvJqEy3zPE4mtOzUafP9FEuo6uw4bZ4qlp02wqsOhr
+ ouNEZQ7fkztnEATFxRGJf/eF6tNKe4f5UBfODfZb/Yg8DzF5ZKVwRcB+iFKXSkndj0/V
+ p/hw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733225529; x=1733830329;
+ d=1e100.net; s=20230601; t=1733225534; x=1733830334;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=+3la+FnavYG5s8brFqSIjvleKq1jzXECMBlEIPY8W0E=;
- b=CrEo/PRVgM+U0hcjvMcgqgv5yZTqTgEzdX8G0vToJBDqtQKnvNgcs3Db4Zsj54UU8k
- ZbqHA/6Y3dUh6IA0rtj5L1neVem4HLzmb1SaxQeYWvG9pYAmj7Yhb5JBt0R/cDdgrjBE
- M0TRkRLy8fjK1YeGZK8w2Gm4jDZ5JcJ08DXDGRPEgJEAB3Lo2LCOXP34/3ntoq6NWjbh
- /J4oQr3y8c4brdJIFgANFdklfgmY0+0OQhtQPR5+r/OKz/thXwGOwDOABYOitkgCU1kA
- TtyZ7YHSprxXu3RkEdr1+q57VAICg+3zgHHkoOsV88Km1ctbasMOgGZG1VBIA8d6srIp
- wzCg==
-X-Gm-Message-State: AOJu0YyvJndIP40NBvC30SofDPMKB4QYKUvgpwNOCYBEXC8ur/dd5MDW
- byNvZtufaeW4JBOEqeXY0OluPLcIFGppFytCWo8POPuYoR/1nKNQD4BHF4qz0ycms5W/vEi+YKT
- +H4o=
-X-Gm-Gg: ASbGnctcZb3x7WBEEj9m8R3eMQvY56P3+QO1rrzp3n/guM0MbymqKFjzSLrARVOoN0U
- 4j5HTk8ETbYA53D9bDfaZHzAPoU1ORzzqUv5C/Ae1ZZc6LU0NUMORrAXYjf5FT0NbW+cQ76j5YX
- VWcbOn/Lk1qnl265TRWNGeE3P+QYFuukx/kigE/MxxcHA0QgLtbcRViSBwz0QOHkXuaD8EQnzRd
- b07kfnwYr7gvOAq5To9kXJfmf4dm1mfftIzIWz+e+cOGsHvhx+0L+yE2+I6z/AVxTdZr58B
-X-Google-Smtp-Source: AGHT+IG8vWKi/4CYhj9VZQ3l30Y0f9EYuW1U+uHKVCkubwmg2bqB/KwUQlPWxlHttMhCbdoqvHXjRQ==
-X-Received: by 2002:a05:600c:3ba5:b0:431:4f29:9542 with SMTP id
- 5b1f17b1804b1-434d09b1441mr17712145e9.6.1733225528764; 
- Tue, 03 Dec 2024 03:32:08 -0800 (PST)
+ bh=0oJ3H34REbMvqjovorF+2XA/kIyPhomBUF8Hcx8gznY=;
+ b=tyAIClt1o3AApg4G92azLQtYKjaECSKo+8kBi31889befJDtkckcTYQzzYrGDFUGox
+ BfByVQQEJaRHZwSUJRdsRamM3HhOifQFZNEdWMEwrYkNAdKP+InGroogARdElACGGRFS
+ M1GRwk8xRaSgl8fvpn1ub0AC1rteqqUfq41CYAdeR8vv8klDFRTxOENcS5WXU5cN3/qp
+ 9yxnuRuUbuDlgLQSAxHqV2aQggYV5TFBXtZMxf4kZeRopwr9iT1CXd1A+dvWfEwOQCkN
+ 9msXEM++genLW5lazNtZqnusUaxg4i/guYMy/x7A1oPT89odjICndUVDYAvitEjmdsUw
+ G3Dw==
+X-Gm-Message-State: AOJu0Yzl+SFuMZrXk4jRBKmj8c1z73iIRN63S9Tfk0p7v+yY/bP/eRX3
+ qxLcXfRa1+uaadJSb2y8V0TJm5FM5qGH+f+HJLGIDQqqjILsQSLjTfk4xdPjYAwBiGQyimPjavz
+ J9JU=
+X-Gm-Gg: ASbGncvqa4eWsOQ0J4v7fOHAgrTeRuzZvxv7ISx3CjJAgvEbBe85fmmarIQaUeLbKXK
+ x8MgE2Yi/qXptH10Bs7fr7sPKhJK1pQh+QAVowQhfxnXlk4E2TeEKxWFGI9sNaBjWrgeLXPwUa2
+ 9v2gG7ytX7Hn5w58wnfdE7MzFO5h938JCVGLZgBSLWUdvOt/11Wn+bq8joKGgs9BJO66AJsoKKB
+ Wk/+jPsQpHBj4K9hXHfVFDyF10VSV54xA9rtZ/e6O3SnzXET9tA6DCqJ9B0ZKOnKekarkd0
+X-Google-Smtp-Source: AGHT+IFNdN3s03OSyilShrap3bJHPlqpUz+VxnyixofSr5MSlcZTPJGvR/kmxUNN72deveUA7VjUvQ==
+X-Received: by 2002:a05:6512:224e:b0:533:43e2:6ac4 with SMTP id
+ 2adb3069b0e04-53e12a28294mr1264949e87.49.1733225533807; 
+ Tue, 03 Dec 2024 03:32:13 -0800 (PST)
 Received: from localhost.localdomain ([176.187.209.146])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-434b0f32793sm189031305e9.31.2024.12.03.03.32.07
+ 5b1f17b1804b1-434aa74efbesm217218755e9.7.2024.12.03.03.32.12
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 03 Dec 2024 03:32:08 -0800 (PST)
+ Tue, 03 Dec 2024 03:32:13 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PULL 05/13] meson: Add missing SDL dependency to system/main.c
-Date: Tue,  3 Dec 2024 12:31:32 +0100
-Message-ID: <20241203113140.63513-6-philmd@linaro.org>
+Cc: Brian Cain <brian.cain@oss.qualcomm.com>, Brian Cain <bcain@quicinc.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 06/13] MAINTAINERS: update email addr for Brian Cain
+Date: Tue,  3 Dec 2024 12:31:33 +0100
+Message-ID: <20241203113140.63513-7-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241203113140.63513-1-philmd@linaro.org>
 References: <20241203113140.63513-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::12b;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x12b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,67 +96,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When building QEMU configure with --disable-gtk --disable-cocoa
-on macOS we get:
+From: Brian Cain <brian.cain@oss.qualcomm.com>
 
-  User interface
-    Cocoa support                   : NO
-    SDL support                     : YES 2.30.5
-    SDL image support               : NO
-    GTK support                     : NO
-    pixman                          : YES 0.42.2
-    VTE support                     : NO
-    PNG support                     : YES 1.6.43
-    VNC support                     : YES
-    VNC SASL support                : YES
-    VNC JPEG support                : YES 3.0.3
-    spice protocol support          : YES 0.14.4
-      spice server support          : NO
-    curses support                  : YES
-    brlapi support                  : NO
+Also: add mapping for "quic_bcain@quicinc.com" which was ~briefly
+used for some replies to mailing list traffic.
 
-  User defined options
-    cocoa                           : disabled
-    docs                            : disabled
-    gtk                             : disabled
-
-  ../system/main.c:30:10: fatal error: 'SDL.h' file not found
-     30 | #include <SDL.h>
-        |          ^~~~~~~
-  1 error generated.
-
-Fix by adding the SDL dependency to main.c it's CFLAGS contains
-the SDL include directory.
-
-Fixes: 64ed6f92ff ("meson: link emulators without Makefile.target")
+Signed-off-by: Brian Cain <bcain@quicinc.com>
+Signed-off-by: Brian Cain <brian.cain@oss.qualcomm.com>
+Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20241123164641.364748-2-bcain@quicinc.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Acked-by: Paolo Bonzini <pbonzini@redhat.com>
-Message-Id: <20241120114943.85080-1-philmd@linaro.org>
 ---
- meson.build | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ MAINTAINERS | 2 +-
+ .mailmap    | 2 ++
+ 2 files changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/meson.build b/meson.build
-index a290dbfa331..147097c652e 100644
---- a/meson.build
-+++ b/meson.build
-@@ -4235,14 +4235,14 @@ foreach target : target_dirs
-       'name': 'qemu-system-' + target_name,
-       'win_subsystem': 'console',
-       'sources': files('system/main.c'),
--      'dependencies': []
-+      'dependencies': [sdl]
-     }]
-     if host_os == 'windows' and (sdl.found() or gtk.found())
-       execs += [{
-         'name': 'qemu-system-' + target_name + 'w',
-         'win_subsystem': 'windows',
-         'sources': files('system/main.c'),
--        'dependencies': []
-+        'dependencies': [sdl]
-       }]
-     endif
-     if get_option('fuzzing')
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 3d6194684f1..f92be047756 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -226,7 +226,7 @@ F: target/avr/
+ F: tests/functional/test_avr_mega2560.py
+ 
+ Hexagon TCG CPUs
+-M: Brian Cain <bcain@quicinc.com>
++M: Brian Cain <bcain@oss.qualcomm.com>
+ S: Supported
+ F: target/hexagon/
+ X: target/hexagon/idef-parser/
+diff --git a/.mailmap b/.mailmap
+index ef1b8a53f44..727ce204b2d 100644
+--- a/.mailmap
++++ b/.mailmap
+@@ -75,6 +75,8 @@ Aleksandar Rikalo <aleksandar.rikalo@syrmia.com> <aleksandar.rikalo@rt-rk.com>
+ Alexander Graf <agraf@csgraf.de> <agraf@suse.de>
+ Ani Sinha <anisinha@redhat.com> <ani@anisinha.ca>
+ Anthony Liguori <anthony@codemonkey.ws> Anthony Liguori <aliguori@us.ibm.com>
++Brian Cain <brian.cain@oss.qualcomm.com> <bcain@quicinc.com>
++Brian Cain <brian.cain@oss.qualcomm.com> <quic_bcain@quicinc.com>
+ Christian Borntraeger <borntraeger@linux.ibm.com> <borntraeger@de.ibm.com>
+ Damien Hedde <damien.hedde@dahe.fr> <damien.hedde@greensocs.com>
+ Filip Bozuta <filip.bozuta@syrmia.com> <filip.bozuta@rt-rk.com.com>
 -- 
 2.45.2
 
