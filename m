@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 278439E1B14
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Dec 2024 12:34:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A5E739E1B08
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Dec 2024 12:33:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tIR93-00014r-SI; Tue, 03 Dec 2024 06:32:45 -0500
+	id 1tIR99-0001J3-6o; Tue, 03 Dec 2024 06:32:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tIR91-00010L-Nl
- for qemu-devel@nongnu.org; Tue, 03 Dec 2024 06:32:43 -0500
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tIR96-0001I1-VY
+ for qemu-devel@nongnu.org; Tue, 03 Dec 2024 06:32:49 -0500
+Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tIR90-0000bu-3J
- for qemu-devel@nongnu.org; Tue, 03 Dec 2024 06:32:43 -0500
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-432d86a3085so45258685e9.2
- for <qemu-devel@nongnu.org>; Tue, 03 Dec 2024 03:32:41 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tIR95-0000cT-2j
+ for qemu-devel@nongnu.org; Tue, 03 Dec 2024 06:32:48 -0500
+Received: by mail-wr1-x435.google.com with SMTP id
+ ffacd0b85a97d-385e075255fso2556740f8f.0
+ for <qemu-devel@nongnu.org>; Tue, 03 Dec 2024 03:32:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1733225560; x=1733830360; darn=nongnu.org;
+ d=linaro.org; s=google; t=1733225565; x=1733830365; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Psz6QYjNWfaE66z0yRJOGzXu5KyUodxfagJJPxkvaQY=;
- b=gj7kK/tDusnQTxv5C5adruWXrIEkqyN4SeY414yHKLVjdu/7v278pLvynYzWKET5pb
- xI7MY2b8RRoYQr/hhaEfTUODq3/XD5kDjrmtW9xMrDNWULxIsV4KJFCln26AkOk5zqoH
- 0bjVaTltwqETVBUvQaBq7MPNEKT6mUJ9zLrJAHum7Fd+PHw3j8IiS15SK1lVuglycAzY
- uFMhUKEPLt1P5nQH2JSahi3HZTZeGTkdv0lnden5w7GAZL5+YcecLBYJTxfR9mOXmJ7K
- QfvN6C1POTuKyg66f59bFWpD4eXduCYuUW6BDrP15gnrZJMiWxY5+c/2MtaOGzhd0IPq
- RZXQ==
+ bh=LP08ovgAlxy3zJSGfhanCL3pqQJtbHP67JCIcBXaArA=;
+ b=vEsN5IWOSA7SlEP54JXgEnJJxYXtekQxA01y9zailEZ4FV0Z5PKKU9kJLmoxDhsLRM
+ zwQhwQu4oO8Tu2C+O9pMlH/NZYVFa3I9dttqM/Izzd1y4I5LyDmDtytozpboWLNLBNqH
+ AIwmUNMyyDc3gy5izXfdO7yz0o3iQGmAgZ8+qs2RFX0qjv67CTKiwuNt4fmyYqlJxgkC
+ trvw5b1RIPhUhzWygCtdnBmV47syDl8xB2dHFmIeDhWCjVl3wQEjbug2F3I9S1FnLlBZ
+ CI7JuIIz9allUN+hBVaQcwyOqhTcz2Jr0osafXZAg4xOhHq1zvbVQamnDda+Jjict2AF
+ F+yg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733225560; x=1733830360;
+ d=1e100.net; s=20230601; t=1733225565; x=1733830365;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Psz6QYjNWfaE66z0yRJOGzXu5KyUodxfagJJPxkvaQY=;
- b=iQMRxhAAaJCRtwOjB87r2vP1hiru7GubwIDTRnrVi3CzAwRvF6El4kJ/9nVsnYvN4p
- SZSsHJjzmDUvmJ/MR8Rhx0APeyb0RytDt27QYKg8zOBO/t6hozz2i0XgFb/yKxeuB2tr
- 5K7ZuRjTCOwfw3w2Muv4Oe9MRA7MVfcvZVF+JuwAI36kFBDDMgHYFUeTcwGlbW8hDKNL
- jocvo9b46VxRaRPqtssFNyW1ctT38gJU4OcDjWktrC/Ctxqk0A2xrxQS3jmy7ZoqgILa
- vN5kr6XZI5hY8Na0RmZ4jMCzrl4v/OEuJ+QzwA/wrE8AWpO8No1mX+6ziB5URv0ObXx4
- STYw==
-X-Gm-Message-State: AOJu0Ywha0nToedStExZr3609wf7lq4VLlFlt7IDCQZiZt9xhfcKfaIm
- r7nM3VnTgxBHNwDIttcGQIRuCMDsRYOZ4yR1VAe7d2f9MLpuplulBDoCrxLEmKwtSVgdZ9mwlyn
- nMTE=
-X-Gm-Gg: ASbGncvUAZjb+cyOCkBp3i4D8KoX0GryBpEWx1gptU7nrrjD4NFJCkIQBE7ZlVIkqxN
- DzXW7lHBJb42ELY9uLk9Oy95uAkGe/Nr+S8bFKHpih9Vfa6ocZpmsLiQU3vpBRnnM1EYFPQ0GNn
- nwVi3QWp/1fo4WLg++cDhJzrwnSEOVvPuVr5F9yaC6avYd6u9NHNDYQMFezP0Y1xhnALIpbIOo8
- dLvgIbn3qhx1So8WRSWnVZ8ZfVse5RYHaPbhzWgQcdJafRFb/okVTbvDn9SWsU0f9bNs6+y
-X-Google-Smtp-Source: AGHT+IEVoz8HWXjkCJ3vM0xt7vv7wFXmlvqdiFZntTPPhK3tn5QsZM2exo7j9qEXEn7GlARXjN/omg==
-X-Received: by 2002:a5d:47a2:0:b0:385:f47a:e9d1 with SMTP id
- ffacd0b85a97d-385fd3e8f33mr1665357f8f.17.1733225560021; 
- Tue, 03 Dec 2024 03:32:40 -0800 (PST)
+ bh=LP08ovgAlxy3zJSGfhanCL3pqQJtbHP67JCIcBXaArA=;
+ b=hYl4IeJx3vrLAIFxuWi3wPEnQJJXqYtkJyN6gzEhpaY8Xog3syDgC39+48I8o224E4
+ d8Dqq0klj7WFU9mm1b4mgG77386oNvft4I4Qms0ri/F+P4lBvuCGyWXbXl2/zExwaC7T
+ uxiDZ/cizcuvk2eu2IPiBOELiQ9TBLCSOpifoRbC0+SIWzyAHSplVzBw/1VQ4Z8nzSmb
+ 0CXb7tdvIVg5ySWh7SccXLJ5SkGHAE0LCVhcGJ/SdAE5syInnlRPjZJdLXMdCa6giprl
+ qQSY9/a/BbAsBgjyjTgy9VpCqmCxeDKHbVO57h7hnFyI1YazzOeZ0UqbJb4RhnLZlhS+
+ lQCg==
+X-Gm-Message-State: AOJu0YxEwvYTGGACSmWPtbvdX9IRAiNNqkLe2z4Bzra2ujWmvsqk4PaV
+ 8lcMg/ezIlduXBoBqagaXIxPhZ0ptcZREI+azu8W+DvHAj5ENxiW9qXku9EIVnjUaKZ93vFGeY6
+ PFMs=
+X-Gm-Gg: ASbGncvN50WEGJnnqBiMgRzZ4dPj5+HykSMQxHZsXA56ccmtB1qEPQ+H+U86V36s8G+
+ aJsP37CnLKHLUR1kvC8JGcdvcDBiyM5vIG449dSX3ZCEXC2bspKnyUQnefKGAdjeivK6zG2uBDF
+ WGZYE/4nW2n40FyLz6epyost8UedkRTKXOyqO3wPLynfJkJb/fMvFaE+yfcpxhA8RLv+cJHhcvM
+ uUTsjNbNZswHJ44MudG2cXpvieu08YcV+Y4pX2kbArlN53EWmbQB5sC8BlxbWDQKHo7XdKy
+X-Google-Smtp-Source: AGHT+IFvBel2HK3LiP4sazkdE4lBw/uzfYHrMwsLpHF0i4+dspVlm6VJ+hQkESIvTuTUo4fuFPBL6w==
+X-Received: by 2002:a05:6000:789:b0:385:f44a:a3b with SMTP id
+ ffacd0b85a97d-385fd42108amr1763074f8f.41.1733225565138; 
+ Tue, 03 Dec 2024 03:32:45 -0800 (PST)
 Received: from localhost.localdomain ([176.187.209.146])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-385e19104a0sm10690514f8f.32.2024.12.03.03.32.39
+ 5b1f17b1804b1-434b0dbe4ccsm184300625e9.13.2024.12.03.03.32.44
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 03 Dec 2024 03:32:39 -0800 (PST)
+ Tue, 03 Dec 2024 03:32:44 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Fabiano Rosas <farosas@suse.de>, "Michael S . Tsirkin" <mst@redhat.com>
-Subject: [PULL 11/13] tests/qtest: drop 'fuzz-' prefix from virtio-balloon test
-Date: Tue,  3 Dec 2024 12:31:38 +0100
-Message-ID: <20241203113140.63513-12-philmd@linaro.org>
+ Fabiano Rosas <farosas@suse.de>, "Michael S . Tsirkin" <mst@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 12/13] tests/qtest: add test for querying balloon guest stats
+Date: Tue,  3 Dec 2024 12:31:39 +0100
+Message-ID: <20241203113140.63513-13-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241203113140.63513-1-philmd@linaro.org>
 References: <20241203113140.63513-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::435;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x435.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,71 +99,61 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Daniel P. Berrangé <berrange@redhat.com>
 
-This test file is expected to be extended for arbitrary virtio-balloon
-related tests, not merely those discovered by fuzzing.
+This test would have identified the crash caused by the addition of new
+balloon stats fields.
 
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Fabiano Rosas <farosas@suse.de>
-Message-ID: <20241129135507.699030-3-berrange@redhat.com>
-[PMD: Update MAINTAINERS]
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Message-ID: <20241129135507.699030-4-berrange@redhat.com>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- MAINTAINERS                                                   | 1 +
- .../{fuzz-virtio-balloon-test.c => virtio-balloon-test.c}     | 4 ++--
- tests/qtest/meson.build                                       | 2 +-
- 3 files changed, 4 insertions(+), 3 deletions(-)
- rename tests/qtest/{fuzz-virtio-balloon-test.c => virtio-balloon-test.c} (84%)
+ tests/qtest/virtio-balloon-test.c | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index f92be047756..aaf0505a214 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -2228,6 +2228,7 @@ F: hw/virtio/virtio-balloon*.c
- F: include/hw/virtio/virtio-balloon.h
- F: system/balloon.c
- F: include/sysemu/balloon.h
-+F: tests/qtest/virtio-balloon-test.c
- 
- virtio-9p
- M: Greg Kurz <groug@kaod.org>
-diff --git a/tests/qtest/fuzz-virtio-balloon-test.c b/tests/qtest/virtio-balloon-test.c
-similarity index 84%
-rename from tests/qtest/fuzz-virtio-balloon-test.c
-rename to tests/qtest/virtio-balloon-test.c
-index ecb597fbee3..6bea33b5901 100644
---- a/tests/qtest/fuzz-virtio-balloon-test.c
+diff --git a/tests/qtest/virtio-balloon-test.c b/tests/qtest/virtio-balloon-test.c
+index 6bea33b5901..ecdd363b06c 100644
+--- a/tests/qtest/virtio-balloon-test.c
 +++ b/tests/qtest/virtio-balloon-test.c
-@@ -1,5 +1,5 @@
+@@ -8,6 +8,7 @@
+ 
+ #include "qemu/osdep.h"
+ #include "libqtest.h"
++#include "standard-headers/linux/virtio_balloon.h"
+ 
  /*
-- * QTest fuzzer-generated testcase for virtio balloon device
-+ * QTest test cases for virtio balloon device
-  *
-  * Copyright (c) 2024 Gao Shiyuan <gaoshiyuan@baidu.com>
-  *
-@@ -30,7 +30,7 @@ int main(int argc, char **argv)
+  * https://gitlab.com/qemu-project/qemu/-/issues/2576
+@@ -26,11 +27,30 @@ static void oss_fuzz_71649(void)
+     qtest_quit(s);
+ }
+ 
++static void query_stats(void)
++{
++    QTestState *s = qtest_init("-device virtio-balloon,id=balloon"
++                               " -nodefaults");
++    QDict *ret = qtest_qmp_assert_success_ref(
++        s,
++        "{ 'execute': 'qom-get', 'arguments': "     \
++        "{ 'path': '/machine/peripheral/balloon', " \
++        "  'property': 'guest-stats' } }");
++    QDict *stats = qdict_get_qdict(ret, "stats");
++
++    /* We expect 1 entry in the dict for each known kernel stat */
++    assert(qdict_size(stats) == VIRTIO_BALLOON_S_NR);
++
++    qobject_unref(ret);
++    qtest_quit(s);
++}
++
+ int main(int argc, char **argv)
  {
      g_test_init(&argc, &argv, NULL);
  
--    qtest_add_func("fuzz/virtio/oss_fuzz_71649", oss_fuzz_71649);
-+    qtest_add_func("virtio-balloon/oss_fuzz_71649", oss_fuzz_71649);
+     qtest_add_func("virtio-balloon/oss_fuzz_71649", oss_fuzz_71649);
++    qtest_add_func("virtio-balloon/query-stats", query_stats);
  
      return g_test_run();
  }
-diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
-index f2f35367ae7..bd41c9da5fd 100644
---- a/tests/qtest/meson.build
-+++ b/tests/qtest/meson.build
-@@ -88,7 +88,7 @@ qtests_i386 = \
-   (config_all_devices.has_key('CONFIG_MEGASAS_SCSI_PCI') ? ['fuzz-megasas-test'] : []) +    \
-   (config_all_devices.has_key('CONFIG_LSI_SCSI_PCI') ? ['fuzz-lsi53c895a-test'] : []) +     \
-   (config_all_devices.has_key('CONFIG_VIRTIO_SCSI') ? ['fuzz-virtio-scsi-test'] : []) +     \
--  (config_all_devices.has_key('CONFIG_VIRTIO_BALLOON') ? ['fuzz-virtio-balloon-test'] : []) + \
-+  (config_all_devices.has_key('CONFIG_VIRTIO_BALLOON') ? ['virtio-balloon-test'] : []) + \
-   (config_all_devices.has_key('CONFIG_Q35') ? ['q35-test'] : []) +                          \
-   (config_all_devices.has_key('CONFIG_SB16') ? ['fuzz-sb16-test'] : []) +                   \
-   (config_all_devices.has_key('CONFIG_SDHCI_PCI') ? ['fuzz-sdcard-test'] : []) +            \
 -- 
 2.45.2
 
