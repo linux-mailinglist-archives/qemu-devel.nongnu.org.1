@@ -2,78 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C84769E1DBD
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Dec 2024 14:37:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 09D329E1DB0
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Dec 2024 14:37:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tIT4Z-00080g-5a; Tue, 03 Dec 2024 08:36:15 -0500
+	id 1tIT4a-000810-1M; Tue, 03 Dec 2024 08:36:16 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <tomitamoeko@gmail.com>)
- id 1tIT4X-00080N-Hu
+ id 1tIT4X-00080O-Jl
  for qemu-devel@nongnu.org; Tue, 03 Dec 2024 08:36:13 -0500
-Received: from mail-pl1-x642.google.com ([2607:f8b0:4864:20::642])
+Received: from mail-pl1-x641.google.com ([2607:f8b0:4864:20::641])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <tomitamoeko@gmail.com>)
- id 1tIT4T-0001Fl-NI
+ id 1tIT4W-0001Fx-6e
  for qemu-devel@nongnu.org; Tue, 03 Dec 2024 08:36:13 -0500
-Received: by mail-pl1-x642.google.com with SMTP id
- d9443c01a7336-2155157c31fso29323255ad.1
- for <qemu-devel@nongnu.org>; Tue, 03 Dec 2024 05:36:09 -0800 (PST)
+Received: by mail-pl1-x641.google.com with SMTP id
+ d9443c01a7336-2155312884fso38388175ad.0
+ for <qemu-devel@nongnu.org>; Tue, 03 Dec 2024 05:36:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1733232968; x=1733837768; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=zmI9g/pOOT7yYV6SSPmEYet4Klt+90zecwroUxkyTHU=;
- b=RIXUDHZ23iSzoiCuVilW1xRiR1YtqL/TSuDvxS5dfznfJYChcrPicz6APARXrJ4KX+
- h3xfVdr7dE8MejOuWcTjvKiBQGkATkCyC4ktJMqUo0GFS0H0rvwLmVzFdPR7EmkqK4fJ
- 9upQCC3nXnpfqODyQwe1P018FZUYQ6fVHkpmFbKeS3N0sxfhBx2NnlMLb5sGSOM1ndTo
- GWZSMLPl0OVHKvqdvLdid1/WPD5x7jtciYaxE1JMVQLyONAc+sMpbvsfbFoO7IDKhF06
- Vg5DtjPMZ90oJabYtTBI0NZ+k5gMnb+6Dbuij4zBvQIwPjxyK+d6gfIVrUtrKC3P69fm
- av+A==
+ d=gmail.com; s=20230601; t=1733232970; x=1733837770; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=9tMqvex4RuMXL27s3iBwmhMpuv9eZ7sBnrBfQ8TBDz4=;
+ b=Q4DN9LQNJgmKZpVhNCWm43buVOTxbtNnE3Udedc5B1KEAmwOnOXI2L7/BWI7UxF1wh
+ nCzHOOH0v7MdMXRi0vTs/hOvzdLTrwcIfU7t54ZY0JZIBggJ5OCVE6YLfkT7sXD8XSxZ
+ svLS4loqZL30Ajad8WpePgpwk7IivB0KjCJYuMamYd8dg7Y43Z72CnVgHtGSN+E/PnbA
+ GfY/mHMRowzfX4gpkZCHqqjhhKvCTc0N6G+uWzU6I0WAWvKBwz04U11JsmUqwTDUvOHu
+ Z5SP85WygSSyO3/SYtPC5MlYj90jx7qkYlikDk3g8aB+6YnMI2VriyQlKwgdGGXjC8CU
+ slBQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733232968; x=1733837768;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=zmI9g/pOOT7yYV6SSPmEYet4Klt+90zecwroUxkyTHU=;
- b=HEXuL81QZaJHmjb2rQoAn2CmbmQurUspWMwVEDM3pw4Mh4z7zUZeyoasB9GKzeR4DX
- Qo7Bhp+q7yGGArUiYiExYKpLwwVQNIQh4ye2r0QJ9aPyWCD7ckdQHlqAr8Uo5+UWbANY
- jkWKE9wqeEEnJSXIBqwGWZMu7HMfMm71yZzaqsedM4OVXz3XgCsGTpT8NiGCstuvbV+g
- FuuSnVQDNXYqST4WHnDVFJG5n5l1ugzSEprqajLEWwSOQZSs3B6AJTVnM6GQtKveZTVQ
- MuC14muavbdUncrPK6dHAZTRIwhoD/O04Yc0kxsImgeqpaIsc+w9QzMzftRqO7/5Yr7J
- jRtA==
-X-Gm-Message-State: AOJu0YzyAVgBjQ5MxExXlx2KT8jmIGtpL1f3dOzke7USqi4AJe6YU0Ir
- 7jJeq8ndTaYYc+SEIpuZH5gT7Ar/i0fMoFTdEoqx08WoRUMpSacmIqDXtgKzOA==
-X-Gm-Gg: ASbGncvob/bT0AVcLL1w+B37TgTQNjqUyrRyzUNCRHcrIeIJiutKffyZrQHiAP/4QW5
- +pCtxRGuoFh9D3Ox4TNH2klARJOgyOfZzvt0Rr56SsJLA7LM5Kvyaha61h0CBj7wRd7UEpAizfq
- Uh5RbjMj3jcY1SZxElzbn9G+mVupyfhfW2g4Zf6jwuaPj4QPhB1Hv3VnuW0sJYiZ0LbCo0wWwxJ
- KX0mHhqpl49GxPh+BfM1ITH5wEX1by9I6or5HBjWs8DPDEUd0CHv9k3VT4=
-X-Google-Smtp-Source: AGHT+IHGx5y4qwghcabBpNR9C/Xx+7kvRX/Oz+5IW63TsL2HLZDZMvxuFlj80i+gMSnEL56IhJN4RA==
-X-Received: by 2002:a17:902:f610:b0:215:bd3e:613b with SMTP id
- d9443c01a7336-215bd3e62bfmr40671415ad.27.1733232967511; 
- Tue, 03 Dec 2024 05:36:07 -0800 (PST)
+ d=1e100.net; s=20230601; t=1733232970; x=1733837770;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=9tMqvex4RuMXL27s3iBwmhMpuv9eZ7sBnrBfQ8TBDz4=;
+ b=kSahAtEpJJx12Hos+HqPVr6U0gx3iRZIX4/TSzAo5HZOBXsxaEYTxTeKg9mZAu/Dig
+ yxWFQUs1EAaZv0WmGfpMHouA3hRTUUnG0k+skx0jAXR5wH7oK9p2ptj80mBO+R6j+Im0
+ BMAK3Ams4FaGGqSNGe6XwBMePvHYfMQpgfT6vaudm5Pw4wlQeplafVOTMH97Immf7EsU
+ snvcTYg7DBe3tIP6z/4Jn9PTibC5/EFndPJ+TLHIwkHGYe3yyz9LxxA5nKRutkILKSkB
+ lnSS4b4mx1VQd9WC6Qu9XvxASCaVHWPf6otnUB8zf7Kl6f+3OjljUYNtXpNsqmwRzw+e
+ ytEQ==
+X-Gm-Message-State: AOJu0YwBfNGY8hy2FA/47mcWQgRUsOxMMQmEW2CK8MDyDbnorQ9a1EJD
+ 5TVROaPfhbKRMTafF8HP23fUIcB2+x+hYYQx8hgCOthULjRTwEyxBsCIS9axsA==
+X-Gm-Gg: ASbGncsQrrjz0sf7fkvpzYb8qdqoQMonqAx7dT5fStSIKNG7HRUZfL4csaKe0NfGQH4
+ 2n5COVVnAiNVG33xqBjhfoUc0eppb245yfoNQLyKWeVmKam7zzLJMCq/nF+q5sXlW7IaQSKYcjm
+ hhN0cTST/aIfXzBFhkQKSJAz298m4m77yupeuVnW2VjtV5Jg69szUzdyucTD7aoRR0Ofqz+YFgR
+ n1dwUZv14AGbiuQ2a2kSxZKt9Gb3JT/qwbWqiP+dNF4Z6Qlual8TcgPSWs=
+X-Google-Smtp-Source: AGHT+IHDc+Te6C5tjWuB2vORZolpVl9YpK8G927+biuL0Pxp8OtF1D8XTK/nXryFMaFfDK8ujl3vpg==
+X-Received: by 2002:a17:902:dac9:b0:212:4ac2:4919 with SMTP id
+ d9443c01a7336-215bd1c9e9dmr28972305ad.17.1733232969600; 
+ Tue, 03 Dec 2024 05:36:09 -0800 (PST)
 Received: from kotori-desktop.lan ([116.231.112.6])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-215810cf18esm44183975ad.242.2024.12.03.05.36.05
+ d9443c01a7336-215810cf18esm44183975ad.242.2024.12.03.05.36.07
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 03 Dec 2024 05:36:07 -0800 (PST)
+ Tue, 03 Dec 2024 05:36:09 -0800 (PST)
 From: Tomita Moeko <tomitamoeko@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
  =?UTF-8?q?Corvin=20K=C3=B6hne?= <c.koehne@beckhoff.com>,
  Tomita Moeko <tomitamoeko@gmail.com>
-Subject: [PATCH v2 0/9] vfio/igd: Enable legacy mode on more devices
-Date: Tue,  3 Dec 2024 21:35:39 +0800
-Message-ID: <20241203133548.38252-1-tomitamoeko@gmail.com>
+Subject: [PATCH v2 1/9] vfio/igd: remove unsupported device ids
+Date: Tue,  3 Dec 2024 21:35:40 +0800
+Message-ID: <20241203133548.38252-2-tomitamoeko@gmail.com>
 X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20241203133548.38252-1-tomitamoeko@gmail.com>
+References: <20241203133548.38252-1-tomitamoeko@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::642;
- envelope-from=tomitamoeko@gmail.com; helo=mail-pl1-x642.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::641;
+ envelope-from=tomitamoeko@gmail.com; helo=mail-pl1-x641.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,59 +99,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patchset extends the support of legacy mode igd passthrough to
-all Intel Gen 11 and 12 devices (including Ice Lake, Jasper Lake,
-Rocket Lake, Alder Lake and Raptor Lake), and emulates GGC register
-in MMIO BAR0 for better compatibiltiy (It is tested Windows and GOP
-driver will read this MMIO register).
+Since e433f208973f ("vfio/igd: return an invalid generation for unknown
+devices"), the default return of igd_gen() was changed to unsupported.
+There is no need to filter out those unsupported devices.
 
-It also replaces magic numbers with macros to improve readability,
-and aligns behavior (BDSM registor mirroring and GGMS calculation for
-gen7) with i915 driver to avoid possible issues.
+Reviewed-by: Alex Williamson <alex.williamson@redhat.com>
+Reviewed-by: Corvin Köhne <c.koehne@beckhoff.com>
+Signed-off-by: Tomita Moeko <tomitamoeko@gmail.com>
+---
+ hw/vfio/igd.c | 10 ----------
+ 1 file changed, 10 deletions(-)
 
-The x-igd-gms option removed in 971ca22f041b ("vfio/igd: don't set
-stolen memory size to zero") is also added back so that data stolen
-memory size can be specified for guest. It is tested that GMS may
-related to framebuffer size, a small GMS value may cause display issues
-like blackscreen. It can be changed by DVMT Pre-allocated option in
-host BIOS, but not all BIOS comes with this option. Having it in QEMU
-helps resolves such issues.
-
-This patchset was verified on Intel i9-12900K CPU(UHD 770, 8086:4680)
-with custom OVMF firmware [1] and IntelGopDriver extracted from host
-bios. IGD device works well in both Windows and Linux guests, and
-scored 726 in 3DMark Time Spy Graphics on Windows guest.
-
-[1] https://github.com/tomitamoeko/edk2/commits/igd-pt-adl/
-
-Btw, IO BAR4 seems never be used by guest, and it the IO BAR itself
-is not working on Gen11+ devices in my experiments. There is no hints
-about that in old commit message and mailing list. It would be greatly
-appreciated if someone shares the background.
-
-Changelog:
-v2:
-* Droped "vfio/igd: fix GTT stolen memory size calculation for gen 7".
-* Fixed conditions when calculating GGMS size.
-* Added Gemini Lake and Comet Lake device ids.
-* Splited mirroring register declaration macro into a new patch.
-* Minor fixes.
-Link: https://lore.kernel.org/qemu-devel/20241201160938.44355-1-tomitamoeko@gmail.com/
-
-Tomita Moeko (9):
-  vfio/igd: remove unsupported device ids
-  vfio/igd: align generation with i915 kernel driver
-  vfio/igd: canonicalize memory size calculations
-  vfio/igd: add Gemini Lake and Comet Lake device ids
-  vfio/igd: add Alder/Raptor/Rocket/Ice/Jasper Lake device ids
-  vfio/igd: add macro for declaring mirrored registers
-  vfio/igd: emulate GGC register in mmio bar0
-  vfio/igd: emulate BDSM in mmio bar0 for gen 6-10 devices
-  vfio/igd: add x-igd-gms option back to set DSM region size for guest
-
- hw/vfio/igd.c | 248 ++++++++++++++++++++++++++++++--------------------
- 1 file changed, 151 insertions(+), 97 deletions(-)
-
+diff --git a/hw/vfio/igd.c b/hw/vfio/igd.c
+index 4047f4f071..6ba3045bf3 100644
+--- a/hw/vfio/igd.c
++++ b/hw/vfio/igd.c
+@@ -64,16 +64,6 @@ static int igd_gen(VFIOPCIDevice *vdev)
+     }
+ 
+     switch (vdev->device_id & 0xff00) {
+-    /* Old, untested, unavailable, unknown */
+-    case 0x0000:
+-    case 0x2500:
+-    case 0x2700:
+-    case 0x2900:
+-    case 0x2a00:
+-    case 0x2e00:
+-    case 0x3500:
+-    case 0xa000:
+-        return -1;
+     /* SandyBridge, IvyBridge, ValleyView, Haswell */
+     case 0x0100:
+     case 0x0400:
 -- 
 2.45.2
 
