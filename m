@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B5AD9E2D5E
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Dec 2024 21:41:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 992EB9E2D5D
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Dec 2024 21:41:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tIZhC-0001cd-Sc; Tue, 03 Dec 2024 15:40:36 -0500
+	id 1tIZhB-0001c8-SF; Tue, 03 Dec 2024 15:40:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tIZgh-0001Qo-L9
- for qemu-devel@nongnu.org; Tue, 03 Dec 2024 15:40:04 -0500
-Received: from mail-oi1-x22b.google.com ([2607:f8b0:4864:20::22b])
+ id 1tIZgi-0001SM-WE
+ for qemu-devel@nongnu.org; Tue, 03 Dec 2024 15:40:06 -0500
+Received: from mail-oi1-x229.google.com ([2607:f8b0:4864:20::229])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tIZgd-0003Bu-V5
- for qemu-devel@nongnu.org; Tue, 03 Dec 2024 15:40:01 -0500
-Received: by mail-oi1-x22b.google.com with SMTP id
- 5614622812f47-3ea36b05654so3055760b6e.1
- for <qemu-devel@nongnu.org>; Tue, 03 Dec 2024 12:39:59 -0800 (PST)
+ id 1tIZgh-0003CB-D3
+ for qemu-devel@nongnu.org; Tue, 03 Dec 2024 15:40:04 -0500
+Received: by mail-oi1-x229.google.com with SMTP id
+ 5614622812f47-3ea49cc8b88so3034783b6e.2
+ for <qemu-devel@nongnu.org>; Tue, 03 Dec 2024 12:40:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1733258399; x=1733863199; darn=nongnu.org;
+ d=linaro.org; s=google; t=1733258400; x=1733863200; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=vE9Xl02UsRFXlQRaYTkoaksxQH+Xcw8LkQwIo9WLMj4=;
- b=Aqdk3YRoihF5I5Sm2EzaMdqKOmvHTL3Oy9a7UT13m6rwgmuggvay56dC+6Bdp8wIcH
- Z6r3+TJFb3uGHNuWl/fV/36JPNGlq6nLnnwzzqVmEzbtJBBX3H/7a5gSFVJ3DLNwuhkF
- j5EgG3PeI2x9a1YTRZZOqwznNn6mkqcFa+H+Up1BLl31qOtf3Tmc/ftCPTchLd+fAnws
- XTenH01nhpBAMJDQkhGzr4Yo4QRwm/tiaRxn47LICuXaplTWZiTsvsGnvlqbCJlSDXeX
- n3kj471hpgG9ggtiR9yQu+16I18QveuDNpjVXYuTx6ilzX231GvZ72o3dHI4kCXfrfdm
- IiSA==
+ bh=KydR7DthtTuF26Sa++zJDQx95A57XILxzyCBnopfb7Y=;
+ b=vzGecq+LZKxbqMgehCDzmK0dbnPbzPu+FG/gjxG1geq1Lprl52OX+Bc7kv8tJ83Yu8
+ OvKrT3PtjcDk3vO4U3Ds54WeS0zajM31SXWwZEOiwromhdjKz+HGLCD60YXqO7aFZDW4
+ M8X7m0Zhl3fcY13yURWJhWzY2b2bg3nC1aUVJaF7ZxauOOWpLao2w4HnlpN/qFfxytW8
+ SVgP9zDSiFu/vT3hgFelneBJkd8cDt/koieSfa37zT1IUqo19xNVIwYZrK/BqZDByK+k
+ o5dd6yMTGtZ6/zhfRHETn9cF6krz998fxNvFPGHyAe/ffIKWwtC5sc4WYFHGocfdVII8
+ mUFw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733258399; x=1733863199;
+ d=1e100.net; s=20230601; t=1733258400; x=1733863200;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=vE9Xl02UsRFXlQRaYTkoaksxQH+Xcw8LkQwIo9WLMj4=;
- b=vv9gfK2S6hzRk4mPIC9up7ZkjFWPF9HKQZKCuL1Cg1NvlOqKIoa/pXM8reT/8F6e79
- X9f27QuJpwPJx4kW6ZXKTotUUZZEnfw790cdVMh3C6ZSeYSBWntRpiNnKlItt1Y6rVJy
- Sq6V31y8u2RzUsEmdxCjWDqVfN8gl6dLEb+6lQDM0HG5zaWcikRpiRo2KfMYIjRCsEU+
- OvPRZPvu3b+Io4Yh8n5/kdJFZVOIcknhlU3xLNbmyJ+2fA1HmtyuR7/Lkb6WJoICW6JO
- JsglCr6kBmzTWR6EB1M+e6scvz+T5A4pkgYi3QM0k9hd8cI2t6Pwr09a6V0w4aU128BD
- jKHw==
-X-Gm-Message-State: AOJu0YxCjF9Y0dSZaivkLIiFrfa2iPO6Z7VTkf2QZWB7nyUXsDY2gatt
- MbcgI3NtPUE5u0s7jqK4bH8vVmb2PQ06jSO3Fc50kRHKjON0Ss9UO4p3X5xPnf8uQlNk2YQnpR3
- Gvio=
-X-Gm-Gg: ASbGnctIy/8RA/q368xORJB3wWjOWbE9W4DK31aMcUw8bld1tvV9pZe7+63Py8YZk1U
- is3YRYs6DKHJAXRCeKZvHoSU0BDVXUL047y1FBr6yfTM+QKUnRY3lZHiO2Es/M7kRm9F+fhr5wa
- UOZZn90rcCjdw7E7meb96BOPYKd4/XOguEZW031BY+oQUr8yB2L4MKgAX7g1F/18+S+8LVp/uuH
- GIp/CxBBFgBQW+pfsnHcpqUnS21AY79wJbEH7brnFTVmsPSQdESfsp/VT9F1EYjphds0fPvh3CI
- jNBJ6K6usZnI5mnZQwNEYLniUa+LGkeIq87p
-X-Google-Smtp-Source: AGHT+IFXZGbyOMWyI59BMLeYD/mvVz9Oy6d2DNzS+rV3qc3IyeYa6/Fy9EAD847+FALhm7GKtpvqwQ==
-X-Received: by 2002:a05:6808:17a8:b0:3e7:5af6:af0f with SMTP id
- 5614622812f47-3eaf04252cbmr910702b6e.39.1733258398717; 
- Tue, 03 Dec 2024 12:39:58 -0800 (PST)
+ bh=KydR7DthtTuF26Sa++zJDQx95A57XILxzyCBnopfb7Y=;
+ b=rtn44EsQYqTq6bMv1jbsxXl2QhXdGDF8chVNAQs06l4z/QnIh++GdwLE7SHzG6xVmA
+ u0CDTN8EpoKykXAvNNZvd0t7n41z1n/RuT3VzeWD8cwO4nWi0rkU86UiSyDvQpCLn+Xw
+ ff2n3wjL3jI0dFCKBOigX2qTNwB0OGKqIZvDat9/i9BiQRXK/BBK0PKlHEwI3tMjNnF7
+ EovgBwN/SBwBDpJmjWpHSCFo9XoL/G9NMdtJrEBB7pNXPjgyfEAy28jJBiu8/E9zC/Qa
+ dnSNLuxRGdw994POX0NHNK4Ou/vAwyAFFe277eZpQzZXcDDE25WXz/hMLPVrfxwITqo9
+ O2pg==
+X-Gm-Message-State: AOJu0YxkrV4dJXRaGieHNWr0sgAh4p5+wsbBYz6v8NzyCGWvl265x29T
+ BlDt41iv1p8Itj58+g3mEfQsTnS8T1xt/jhFs5jeuMKZpPhlXrc76b66yp9pNDpDm8pgqA4Un23
+ ZK9g=
+X-Gm-Gg: ASbGnct+6HyMNSdSlCXv6o5QOX5q3fNf4KeERqc5gbYSRl+I+aWH4ZtF3T6sETo+YB0
+ 58313Wg4EqIw2bGm0R3Aa0peXLIBCvYJEfOVRMCMBSHYuDhDNQHD9z4gCQbnA9MW0iEfz/ocIVA
+ KJT4AgmPN7KYrqcKNpofyGBTqsN6uTZIg9bbrQ7JlPYmfUgtxPWypfigwzMdfIGMsS5uPcwXOlq
+ Rj6iK+p/qS9mbIEeSYgjStbgHaQUTOpLIqsEm7VhRHU4JZqGFnVCaiUxdttN/7DKQMO1tLi6UTK
+ +eaf75Cn9fKBpSB7GaK6vDg1pp5rJmfdnOLZ
+X-Google-Smtp-Source: AGHT+IEmBZelmxcyorYQDlDbrjlVFtWUngVzI4bXUe5KgnJqx2l+83M8zRiQT1hqUMC0wfpUSXHb4g==
+X-Received: by 2002:a05:6808:191e:b0:3e7:9f1f:b84a with SMTP id
+ 5614622812f47-3eae4f87a19mr3559095b6e.21.1733258400045; 
+ Tue, 03 Dec 2024 12:40:00 -0800 (PST)
 Received: from localhost.localdomain (fixed-187-189-51-143.totalplay.net.
  [187.189.51.143]) by smtp.gmail.com with ESMTPSA id
- 586e51a60fabf-29e3ae09f25sm2684018fac.49.2024.12.03.12.39.57
+ 586e51a60fabf-29e3ae09f25sm2684018fac.49.2024.12.03.12.39.58
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 03 Dec 2024 12:39:58 -0800 (PST)
+ Tue, 03 Dec 2024 12:39:59 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: peter.maydell@linaro.org
-Subject: [PATCH 08/11] softfloat: Inline pickNaN
-Date: Tue,  3 Dec 2024 14:39:45 -0600
-Message-ID: <20241203203949.483774-9-richard.henderson@linaro.org>
+Subject: [PATCH 09/11] softfloat: Share code between parts_pick_nan cases
+Date: Tue,  3 Dec 2024 14:39:46 -0600
+Message-ID: <20241203203949.483774-10-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241203203949.483774-1-richard.henderson@linaro.org>
 References: <20241203203949.483774-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::22b;
- envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x22b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::229;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x229.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,224 +97,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Inline pickNaN into its only caller.  This makes one assert
-redundant with the immediately preceding IF.
+Remember if there was an SNaN, and use that to simplify
+float_2nan_prop_s_{ab,ba} to only the snan component.
+Then, fall through to the corresponding
+float_2nan_prop_{ab,ba} case to handle any remaining
+nans, which must be quiet.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- fpu/softfloat-parts.c.inc      | 82 +++++++++++++++++++++++++----
- fpu/softfloat-specialize.c.inc | 96 ----------------------------------
- 2 files changed, 73 insertions(+), 105 deletions(-)
+ fpu/softfloat-parts.c.inc | 32 ++++++++++++--------------------
+ 1 file changed, 12 insertions(+), 20 deletions(-)
 
 diff --git a/fpu/softfloat-parts.c.inc b/fpu/softfloat-parts.c.inc
-index 06cfc6abb5..de51097dcf 100644
+index de51097dcf..099f1c48ef 100644
 --- a/fpu/softfloat-parts.c.inc
 +++ b/fpu/softfloat-parts.c.inc
-@@ -39,24 +39,88 @@ static void partsN(return_nan)(FloatPartsN *a, float_status *s)
+@@ -39,10 +39,12 @@ static void partsN(return_nan)(FloatPartsN *a, float_status *s)
  static FloatPartsN *partsN(pick_nan)(FloatPartsN *a, FloatPartsN *b,
                                       float_status *s)
  {
-+    int cmp, which;
-+
++    bool have_snan = false;
+     int cmp, which;
+ 
      if (is_snan(a->cls) || is_snan(b->cls)) {
          float_raise(float_flag_invalid | float_flag_invalid_snan, s);
++        have_snan = true;
      }
  
      if (s->default_nan_mode) {
-         parts_default_nan(a, s);
--    } else {
--        int cmp = frac_cmp(a, b);
--        if (cmp == 0) {
--            cmp = a->sign < b->sign;
--        }
-+        return a;
-+    }
+@@ -57,30 +59,20 @@ static FloatPartsN *partsN(pick_nan)(FloatPartsN *a, FloatPartsN *b,
  
--        if (pickNaN(a->cls, b->cls, cmp > 0, s)) {
--            a = b;
--        }
-+    cmp = frac_cmp(a, b);
-+    if (cmp == 0) {
-+        cmp = a->sign < b->sign;
-+    }
-+
-+    switch (s->float_2nan_prop_rule) {
-+    case float_2nan_prop_s_ab:
-         if (is_snan(a->cls)) {
--            parts_silence_nan(a, s);
-+            which = 0;
-+        } else if (is_snan(b->cls)) {
-+            which = 1;
-+        } else if (is_qnan(a->cls)) {
-+            which = 0;
-+        } else {
-+            which = 1;
-         }
-+        break;
-+    case float_2nan_prop_s_ba:
-+        if (is_snan(b->cls)) {
-+            which = 1;
-+        } else if (is_snan(a->cls)) {
-+            which = 0;
-+        } else if (is_qnan(b->cls)) {
-+            which = 1;
-+        } else {
-+            which = 0;
-+        }
-+        break;
-+    case float_2nan_prop_ab:
-+        which = is_nan(a->cls) ? 0 : 1;
-+        break;
-+    case float_2nan_prop_ba:
-+        which = is_nan(b->cls) ? 1 : 0;
-+        break;
-+    case float_2nan_prop_x87:
-+        /*
-+         * This implements x87 NaN propagation rules:
-+         * SNaN + QNaN => return the QNaN
-+         * two SNaNs => return the one with the larger significand, silenced
-+         * two QNaNs => return the one with the larger significand
-+         * SNaN and a non-NaN => return the SNaN, silenced
-+         * QNaN and a non-NaN => return the QNaN
-+         *
-+         * If we get down to comparing significands and they are the same,
-+         * return the NaN with the positive sign bit (if any).
-+         */
-+        if (is_snan(a->cls)) {
-+            if (is_snan(b->cls)) {
-+                which = cmp > 0 ? 0 : 1;
-+            } else {
-+                which = is_qnan(b->cls) ? 1 : 0;
-+            }
-+        } else if (is_qnan(a->cls)) {
-+            if (is_snan(b->cls) || !is_qnan(b->cls)) {
-+                which = 0;
-+            } else {
-+                which = cmp > 0 ? 0 : 1;
-+            }
-+        } else {
-+            which = 1;
-+        }
-+        break;
-+    default:
-+        g_assert_not_reached();
-+    }
-+
-+    if (which) {
-+        a = b;
-+    }
-+    if (is_snan(a->cls)) {
-+        parts_silence_nan(a, s);
-     }
-     return a;
- }
-diff --git a/fpu/softfloat-specialize.c.inc b/fpu/softfloat-specialize.c.inc
-index f7a320f6ff..cbbbab52ba 100644
---- a/fpu/softfloat-specialize.c.inc
-+++ b/fpu/softfloat-specialize.c.inc
-@@ -352,102 +352,6 @@ bool float32_is_signaling_nan(float32 a_, float_status *status)
-     }
- }
- 
--/*----------------------------------------------------------------------------
--| Select which NaN to propagate for a two-input operation.
--| IEEE754 doesn't specify all the details of this, so the
--| algorithm is target-specific.
--| The routine is passed various bits of information about the
--| two NaNs and should return 0 to select NaN a and 1 for NaN b.
--| Note that signalling NaNs are always squashed to quiet NaNs
--| by the caller, by calling floatXX_silence_nan() before
--| returning them.
--|
--| aIsLargerSignificand is only valid if both a and b are NaNs
--| of some kind, and is true if a has the larger significand,
--| or if both a and b have the same significand but a is
--| positive but b is negative. It is only needed for the x87
--| tie-break rule.
--*----------------------------------------------------------------------------*/
--
--static int pickNaN(FloatClass a_cls, FloatClass b_cls,
--                   bool aIsLargerSignificand, float_status *status)
--{
--    /*
--     * We guarantee not to require the target to tell us how to
--     * pick a NaN if we're always returning the default NaN.
--     * But if we're not in default-NaN mode then the target must
--     * specify via set_float_2nan_prop_rule().
--     */
--    assert(!status->default_nan_mode);
--
--    switch (status->float_2nan_prop_rule) {
--    case float_2nan_prop_s_ab:
--        if (is_snan(a_cls)) {
--            return 0;
--        } else if (is_snan(b_cls)) {
--            return 1;
--        } else if (is_qnan(a_cls)) {
--            return 0;
+     switch (s->float_2nan_prop_rule) {
+     case float_2nan_prop_s_ab:
+-        if (is_snan(a->cls)) {
+-            which = 0;
+-        } else if (is_snan(b->cls)) {
+-            which = 1;
+-        } else if (is_qnan(a->cls)) {
+-            which = 0;
 -        } else {
--            return 1;
--        }
+-            which = 1;
++        if (have_snan) {
++            which = is_snan(a->cls) ? 0 : 1;
++            break;
+         }
 -        break;
 -    case float_2nan_prop_s_ba:
--        if (is_snan(b_cls)) {
--            return 1;
--        } else if (is_snan(a_cls)) {
--            return 0;
--        } else if (is_qnan(b_cls)) {
--            return 1;
+-        if (is_snan(b->cls)) {
+-            which = 1;
+-        } else if (is_snan(a->cls)) {
+-            which = 0;
+-        } else if (is_qnan(b->cls)) {
+-            which = 1;
 -        } else {
--            return 0;
+-            which = 0;
 -        }
 -        break;
--    case float_2nan_prop_ab:
--        if (is_nan(a_cls)) {
--            return 0;
--        } else {
--            return 1;
--        }
--        break;
--    case float_2nan_prop_ba:
--        if (is_nan(b_cls)) {
--            return 1;
--        } else {
--            return 0;
--        }
--        break;
--    case float_2nan_prop_x87:
--        /*
--         * This implements x87 NaN propagation rules:
--         * SNaN + QNaN => return the QNaN
--         * two SNaNs => return the one with the larger significand, silenced
--         * two QNaNs => return the one with the larger significand
--         * SNaN and a non-NaN => return the SNaN, silenced
--         * QNaN and a non-NaN => return the QNaN
--         *
--         * If we get down to comparing significands and they are the same,
--         * return the NaN with the positive sign bit (if any).
--         */
--        if (is_snan(a_cls)) {
--            if (is_snan(b_cls)) {
--                return aIsLargerSignificand ? 0 : 1;
--            }
--            return is_qnan(b_cls) ? 1 : 0;
--        } else if (is_qnan(a_cls)) {
--            if (is_snan(b_cls) || !is_qnan(b_cls)) {
--                return 0;
--            } else {
--                return aIsLargerSignificand ? 0 : 1;
--            }
--        } else {
--            return 1;
--        }
--    default:
--        g_assert_not_reached();
--    }
--}
--
- /*----------------------------------------------------------------------------
- | Returns 1 if the double-precision floating-point value `a' is a quiet
- | NaN; otherwise returns 0.
++        /* fall through */
+     case float_2nan_prop_ab:
+         which = is_nan(a->cls) ? 0 : 1;
+         break;
++    case float_2nan_prop_s_ba:
++        if (have_snan) {
++            which = is_snan(b->cls) ? 1 : 0;
++            break;
++        }
++        /* fall through */
+     case float_2nan_prop_ba:
+         which = is_nan(b->cls) ? 1 : 0;
+         break;
 -- 
 2.43.0
 
