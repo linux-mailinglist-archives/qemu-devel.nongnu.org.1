@@ -2,70 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAB9E9E13D6
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Dec 2024 08:18:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D4A979E14E4
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Dec 2024 09:01:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tINB2-0008Ar-4s; Tue, 03 Dec 2024 02:18:32 -0500
+	id 1tINpq-0001F0-OI; Tue, 03 Dec 2024 03:00:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tINAy-00089v-SY; Tue, 03 Dec 2024 02:18:28 -0500
-Received: from mgamail.intel.com ([192.198.163.17])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tINAx-0007OV-Bo; Tue, 03 Dec 2024 02:18:28 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1733210307; x=1764746307;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=g1p7ypTgbIDo2kAakWW29oZ132lTGOCrVOm0ThfGnhA=;
- b=Tkhk9U7+2x3UXuYrqnq4/ahLzw0aqCVpVxuTFjyzmTUnbh2CS9g6EJx4
- JTv5fqDUrCV7zBUMuCrVSmK+zQdneyOqBYeOfFUYMMn3J5BWK8Ks+89DG
- 88f1Tu6EKy3OBvtS2ehLHO9bXMEZdC+TU6oAMmM8wugZ6RCIo/ET+omsu
- 6tTtZ4No7I8HpwfTYa1FMJGY1ijo/Q8BUEucGnVnBpAdUAl/5+WlHIjtv
- SGfHlMs9TeUSWbbzzakESKNZr0SMcXkT/lVOqlvfvd9EZowhjaF67bN7e
- 3RgQjPhf4d5z9ZOoFZuTfDQQss3k1VuM8L5olqCGi+OF1ZF9QoHM/74Qw g==;
-X-CSE-ConnectionGUID: dEnMzftHTl6OaI35Pj7QbA==
-X-CSE-MsgGUID: oGVSreouRi2T6rzcp/Y61A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11274"; a="33332364"
-X-IronPort-AV: E=Sophos;i="6.12,204,1728975600"; d="scan'208";a="33332364"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Dec 2024 23:18:25 -0800
-X-CSE-ConnectionGUID: WR1f7qTFT0+mdhuFGPYDpA==
-X-CSE-MsgGUID: RGRB0EFDToK4dt+4P3QvXg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="98362748"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by orviesa003.jf.intel.com with ESMTP; 02 Dec 2024 23:18:22 -0800
-Date: Tue, 3 Dec 2024 15:36:33 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Chuang Xu <xuchuangxclwt@bytedance.com>
-Cc: qemu-devel@nongnu.org, pbonzini@redhat.com, imammedo@redhat.com,
- xieyongji@bytedance.com, chaiwen.cc@bytedance.com,
- qemu-stable@nongnu.org, Guixiong Wei <weiguixiong@bytedance.com>,
- Yipeng Yin <yinyipeng@bytedance.com>
-Subject: Re: [PATCH v6] i386/cpu: fixup number of addressable IDs for logical
- processors in the physical package
-Message-ID: <Z061AeZRyw4jwWjd@intel.com>
-References: <20241009035638.59330-1-xuchuangxclwt@bytedance.com>
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1tINpg-0001DA-4x; Tue, 03 Dec 2024 03:00:33 -0500
+Received: from mail-vk1-xa2b.google.com ([2607:f8b0:4864:20::a2b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1tINpd-00070i-JM; Tue, 03 Dec 2024 03:00:31 -0500
+Received: by mail-vk1-xa2b.google.com with SMTP id
+ 71dfb90a1353d-5150f63db70so1408596e0c.3; 
+ Tue, 03 Dec 2024 00:00:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1733212827; x=1733817627; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=FxETQswXqcE5Qi2+tppie1f1NtEF1M+LVuf/RyGAris=;
+ b=KbvCJXI0d/v/FyzEZvzZoJffs954+f72zbJ2Rl06NrPw0Eoj9QmGzZJvTHbOPfHTVl
+ yk2807kjmB6uIGk6meANRvdAvqSIlCYCHToJYwUhHuCpuLXJE4OxlrRLigIrccZNvQzC
+ ymQSi1ykTX1u8Jwe0PT722IiA+Y/W5bKkY8t55/7x3vYboOOJnJXD+5R/wLy5Yvy7TgL
+ 8WsuKtKbspnBrYdggzPitJM5Q3963phBHRqnEZWX2TD8THswl/GvMvp5q31SyHqNj+ac
+ 4SLIc/Ikeei8bpW/1zjHZnGfDBaTHFadoHGtLSLQGJJFY/C80ml4UEPsFFOVdXK6cUW+
+ XUew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1733212827; x=1733817627;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=FxETQswXqcE5Qi2+tppie1f1NtEF1M+LVuf/RyGAris=;
+ b=Lt7qtU55eAM5bhRlcFeki6MV/IiPqYGXENQhImLdUtIpacxD8MeR54tY5LTuQmxPM3
+ vll2NCijtdBqzvVZr767V/t5fdz1yMIyHIJQwajoqnV3fIuxLZ4KjtgsyFT6xbb4ce5Q
+ XJU0vgoxEy8IIjE+kqXv/95yBXl9n7wKt+u5WxyPmyfH7cUP9+lZoOB5vRijhnyLtvWD
+ WRcT9U81yc978rGfBkuo69lZ0lA0WWOncNrzijvTQ/A6kxSGaNRbRr2IhXXbs1+U1D1N
+ Vduk11YOvMP/vrsGgESmOXhYx1Y2GvWrwzA13RqJ/n7RTNgNkJ2BNOdpOzGCk7L+bS9f
+ 1bnA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXDqY0g/NhyBGH41Afq+c2BXZpeSLptlu1JKhx7zWCtsjlAr0gyZdYVHBnu4TQ0xGCjthYpFJsBRDJ7@nongnu.org
+X-Gm-Message-State: AOJu0Yy6balONXleqRKS2egxHA5F1nQgILqVcM2sNaAfYwtyhLCD2wpz
+ vg5UMPYHQd0mWGCXDO50YqiRkFwoDwOpzbJ/wm9Ygu4jaiS1K4vh878EI7MII5rie1TlRQpCkvf
+ dIaB3yYg82R4J8Q0D5iKvPcdKinLx18By
+X-Gm-Gg: ASbGnctM9cGHWDnDF5vGMNWmlgYiEoPDY6kB1bqgSIxIto+6DyZhhebxmVyI+ounz5V
+ oDldYL9IER74qJ4BmaGAvNRxJNVITk3IJ
+X-Google-Smtp-Source: AGHT+IFTtEJqxa/E5hJ2QtLSJBSQE/K07AKJ3trQXXFfqrW9MjVxlra+coiIFG3+QKDSPYNGCW1o7rBwyTEevwOUdC4=
+X-Received: by 2002:a05:6102:d87:b0:4af:5853:fc7a with SMTP id
+ ada2fe7eead31-4af973840dbmr2075834137.23.1733212826890; Tue, 03 Dec 2024
+ 00:00:26 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241009035638.59330-1-xuchuangxclwt@bytedance.com>
-Received-SPF: pass client-ip=192.198.163.17; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -73
-X-Spam_score: -7.4
-X-Spam_bar: -------
-X-Spam_report: (-7.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.996,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+References: <20241203034932.25185-1-fea.wang@sifive.com>
+ <20241203034932.25185-7-fea.wang@sifive.com>
+In-Reply-To: <20241203034932.25185-7-fea.wang@sifive.com>
+From: Alistair Francis <alistair23@gmail.com>
+Date: Tue, 3 Dec 2024 17:00:00 +0900
+Message-ID: <CAKmqyKNsPO4=yGcV+UZ6YnFobd3Y9GgN72f+yfKeGBZYBkA6Hg@mail.gmail.com>
+Subject: Re: [PATCH v5 6/6] target/riscv: Check svukte is not enabled in RV32
+To: "Fea.Wang" <fea.wang@sifive.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, 
+ Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>, 
+ Bin Meng <bmeng.cn@gmail.com>, Weiwei Li <liwei1518@gmail.com>, 
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::a2b;
+ envelope-from=alistair23@gmail.com; helo=mail-vk1-xa2b.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -82,53 +96,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Chuang,
+On Tue, Dec 3, 2024 at 12:39=E2=80=AFPM Fea.Wang <fea.wang@sifive.com> wrot=
+e:
+>
+> The spec explicitly says svukte doesn't support RV32. So check that it
+> is not enabled in RV32.
+>
+> Signed-off-by: Fea.Wang <fea.wang@sifive.com>
 
-Could I pick this fix in my later series (with another overflow fix)?
-I can help you push this fix forward :-).
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
 
-Regards,
-Zhao
+Alistair
 
-On Wed, Oct 09, 2024 at 11:56:38AM +0800, Chuang Xu wrote:
-> Date: Wed,  9 Oct 2024 11:56:38 +0800
-> From: Chuang Xu <xuchuangxclwt@bytedance.com>
-> Subject: [PATCH v6] i386/cpu: fixup number of addressable IDs for logical
->  processors in the physical package
-> X-Mailer: git-send-email 2.39.3 (Apple Git-146)
-> 
-> When QEMU is started with:
-> -cpu host,migratable=on,host-cache-info=on,l3-cache=off
-> -smp 180,sockets=2,dies=1,cores=45,threads=2
-> 
-> On Intel platform:
-> CPUID.01H.EBX[23:16] is defined as "max number of addressable IDs for
-> logical processors in the physical package".
-> 
-> When executing "cpuid -1 -l 1 -r" in the guest, we obtain a value of 90 for
-> CPUID.01H.EBX[23:16], whereas the expected value is 128. Additionally,
-> executing "cpuid -1 -l 4 -r" in the guest yields a value of 63 for
-> CPUID.04H.EAX[31:26], which matches the expected result.
-> 
-> As (1+CPUID.04H.EAX[31:26]) rounds up to the nearest power-of-2 integer,
-> we'd beter round up CPUID.01H.EBX[23:16] to the nearest power-of-2
-> integer too. Otherwise we may encounter unexpected results in guest.
-> 
-> For example, when QEMU is started with CLI above and xtopology is disabled,
-> guest kernel 5.15.120 uses CPUID.01H.EBX[23:16]/(1+CPUID.04H.EAX[31:26]) to
-> calculate threads-per-core in detect_ht(). Then guest will get "90/(1+63)=1"
-> as the result, even though threads-per-core should actually be 2.
-> 
-> And on AMD platform:
-> CPUID.01H.EBX[23:16] is defined as "Logical processor count". Current
-> result meets our expectation.
-> 
-> So let us round up CPUID.01H.EBX[23:16] to the nearest power-of-2 integer
-> only for Intel platform to solve the unexpected result.
-> 
-> Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-> Acked-by: Igor Mammedov <imammedo@redhat.com>
-> Signed-off-by: Guixiong Wei <weiguixiong@bytedance.com>
-> Signed-off-by: Yipeng Yin <yinyipeng@bytedance.com>
-> Signed-off-by: Chuang Xu <xuchuangxclwt@bytedance.com>
+> ---
+>  target/riscv/tcg/tcg-cpu.c | 5 +++++
+>  1 file changed, 5 insertions(+)
+>
+> diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
+> index c62c221696..3b99c8c9e3 100644
+> --- a/target/riscv/tcg/tcg-cpu.c
+> +++ b/target/riscv/tcg/tcg-cpu.c
+> @@ -652,6 +652,11 @@ void riscv_cpu_validate_set_extensions(RISCVCPU *cpu=
+, Error **errp)
+>          return;
+>      }
+>
+> +    if (mcc->misa_mxl_max =3D=3D MXL_RV32 && cpu->cfg.ext_svukte) {
+> +        error_setg(errp, "svukte is not supported for RV32");
+> +        return;
+> +    }
+> +
+>      /*
+>       * Disable isa extensions based on priv spec after we
+>       * validated and set everything we need.
+> --
+> 2.34.1
+>
+>
 
