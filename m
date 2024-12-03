@@ -2,78 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9191E9E1AFE
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Dec 2024 12:32:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E6DB89E1B09
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Dec 2024 12:33:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tIR8g-0000VY-Kl; Tue, 03 Dec 2024 06:32:22 -0500
+	id 1tIR8j-0000cM-FN; Tue, 03 Dec 2024 06:32:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tIR8b-0000LI-SH
- for qemu-devel@nongnu.org; Tue, 03 Dec 2024 06:32:18 -0500
-Received: from mail-lf1-x12b.google.com ([2a00:1450:4864:20::12b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tIR8g-0000YV-UD
+ for qemu-devel@nongnu.org; Tue, 03 Dec 2024 06:32:22 -0500
+Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tIR8a-0000aP-7W
- for qemu-devel@nongnu.org; Tue, 03 Dec 2024 06:32:17 -0500
-Received: by mail-lf1-x12b.google.com with SMTP id
- 2adb3069b0e04-53de880c77eso6361633e87.1
- for <qemu-devel@nongnu.org>; Tue, 03 Dec 2024 03:32:15 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tIR8f-0000ai-B1
+ for qemu-devel@nongnu.org; Tue, 03 Dec 2024 06:32:22 -0500
+Received: by mail-wr1-x430.google.com with SMTP id
+ ffacd0b85a97d-385e1f12c82so3576524f8f.2
+ for <qemu-devel@nongnu.org>; Tue, 03 Dec 2024 03:32:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1733225534; x=1733830334; darn=nongnu.org;
+ d=linaro.org; s=google; t=1733225539; x=1733830339; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=0oJ3H34REbMvqjovorF+2XA/kIyPhomBUF8Hcx8gznY=;
- b=f90BlEz+XsVQMef1E/SGHvUiiG3QK/7TPbfJ3QMuzcptygXsUEuCUWqtb8jNTdnzhL
- QurNL+xNRH0NJj3jJxnAYu3mUiTdXzqtogZnAG+h1+iWL7dwNWXW9hW0lst/0Y2hUwSC
- Gze8x7jikSBtZaSQiNfhhFC0sQS+cqxTSjA9nA0b68zawWWj6z9vz7MdrlGWbTbZqPk6
- fFBrUD35lkRHa1L9EIX5ca/nFogvJqEy3zPE4mtOzUafP9FEuo6uw4bZ4qlp02wqsOhr
- ouNEZQ7fkztnEATFxRGJf/eF6tNKe4f5UBfODfZb/Yg8DzF5ZKVwRcB+iFKXSkndj0/V
- p/hw==
+ bh=GJvSsd8dR9/3SHrqkOdjWUtSWpDGfzavxvd+Z0C+v1Q=;
+ b=RbbrPkYLUgh0OkvoPxNUo44GBV5SVr2sZ7XqwWzVUdG8ZRFnQSHkI8WGlPa9RNyNRk
+ A7N7RLjFoE9YAiICO6CKAQ0OF5xp1JoWSeE8rjFDDnWXikJFCPB84EAtmWbqGMErmzdX
+ NBFK1+JPOlslIbYwbpo+1lqAlj1tAQzQVPYAWGgZ4wRVrL/fOTp0iYjJMkDxa/oWq8SN
+ FjUdnDb3nmrJ/XkmD9LERvh8mKQ80KstZdxa/uJYlM+I2+Ahv29E/ZRwdnI0a7bpq0Yx
+ qXEALUN5WUEXp94L6999fL4gelWPHKpSAlxoujaW/h0d91cz2URF4gDp0Nm8Ir9t3ZxW
+ /YWA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733225534; x=1733830334;
+ d=1e100.net; s=20230601; t=1733225539; x=1733830339;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=0oJ3H34REbMvqjovorF+2XA/kIyPhomBUF8Hcx8gznY=;
- b=tyAIClt1o3AApg4G92azLQtYKjaECSKo+8kBi31889befJDtkckcTYQzzYrGDFUGox
- BfByVQQEJaRHZwSUJRdsRamM3HhOifQFZNEdWMEwrYkNAdKP+InGroogARdElACGGRFS
- M1GRwk8xRaSgl8fvpn1ub0AC1rteqqUfq41CYAdeR8vv8klDFRTxOENcS5WXU5cN3/qp
- 9yxnuRuUbuDlgLQSAxHqV2aQggYV5TFBXtZMxf4kZeRopwr9iT1CXd1A+dvWfEwOQCkN
- 9msXEM++genLW5lazNtZqnusUaxg4i/guYMy/x7A1oPT89odjICndUVDYAvitEjmdsUw
- G3Dw==
-X-Gm-Message-State: AOJu0Yzl+SFuMZrXk4jRBKmj8c1z73iIRN63S9Tfk0p7v+yY/bP/eRX3
- qxLcXfRa1+uaadJSb2y8V0TJm5FM5qGH+f+HJLGIDQqqjILsQSLjTfk4xdPjYAwBiGQyimPjavz
- J9JU=
-X-Gm-Gg: ASbGncvqa4eWsOQ0J4v7fOHAgrTeRuzZvxv7ISx3CjJAgvEbBe85fmmarIQaUeLbKXK
- x8MgE2Yi/qXptH10Bs7fr7sPKhJK1pQh+QAVowQhfxnXlk4E2TeEKxWFGI9sNaBjWrgeLXPwUa2
- 9v2gG7ytX7Hn5w58wnfdE7MzFO5h938JCVGLZgBSLWUdvOt/11Wn+bq8joKGgs9BJO66AJsoKKB
- Wk/+jPsQpHBj4K9hXHfVFDyF10VSV54xA9rtZ/e6O3SnzXET9tA6DCqJ9B0ZKOnKekarkd0
-X-Google-Smtp-Source: AGHT+IFNdN3s03OSyilShrap3bJHPlqpUz+VxnyixofSr5MSlcZTPJGvR/kmxUNN72deveUA7VjUvQ==
-X-Received: by 2002:a05:6512:224e:b0:533:43e2:6ac4 with SMTP id
- 2adb3069b0e04-53e12a28294mr1264949e87.49.1733225533807; 
- Tue, 03 Dec 2024 03:32:13 -0800 (PST)
+ bh=GJvSsd8dR9/3SHrqkOdjWUtSWpDGfzavxvd+Z0C+v1Q=;
+ b=aW6lqZFkLhRNZk0z4aL3r4nJpWtSJ3Xi1n96R8vQQAQ5gWSQ4+AdkcnGdzKqNBbflL
+ totH9sA+hYyhIrYI8MFhc0/sxUj7DjjXvDzwHhQm8Jby7ksgclvTWimzjp4J8x0Ozdxq
+ aOy+kaRlBkCzPykxuP7sHvx14F2HeFf4kzrWW/WAcMt1uwBIgFnekXCkJ+dxK3uw7Yx1
+ zXwxYa7lWehOaq9iAF54UbaQfo6ETFoOcOaSf/XnSfnSSE+uZgx5xbwOj2hdgaddDgrB
+ hZSH5Vedw/SQwqaWTwpceI/9LZ6+nK7au4KJaQAV9jw6Yu6KY72o8yOD25j5WGpi1c3U
+ DRog==
+X-Gm-Message-State: AOJu0YwjYMsylXjt6X/Zs1a6l2yiA+m6eGuyBtjnsUrRLU/a3UhFH21M
+ 1lbCQ8fwKzD4rBEXg88GdUZOt7H/1TpDhFUhll4BHMIhAym9N+5MfgRR//dmAaTVqOY2l/ETonX
+ N8n4=
+X-Gm-Gg: ASbGncsYoLDtlblISmTAI+al1aJGS58nnSrGVU3rIQXV2yDTXuUScW/Yeol7nbBolqj
+ k2L1HB3XjlRfnodtgebALtcrOSuWAgWwhzBNAwY72Tt75RAyAz9hLDupKo04GYfWncGoHCVGe1o
+ GnRQ1G/uIMBRfvl0xoqPCW9S25H8gCgIYQ9rh91GDn4dlEtHWoGhPXvGE3zYQ5k1SL4AhhmoBUx
+ rmsnYfKoISBs0Yk+hTV7Po1fZLO3V5cnjRcz+AeOPpT2sYSyBELmf0PUslSAOvNnlqA3H4o
+X-Google-Smtp-Source: AGHT+IHVCmQ3Fj3EWs9DpLosvp8nJP+x6Sb4lPga8lft0vHcg2tsFP7N/y08QuwTF/55V7jLCwNdwg==
+X-Received: by 2002:a05:6000:156c:b0:385:e88a:7037 with SMTP id
+ ffacd0b85a97d-385fd3cd72emr1942211f8f.6.1733225538921; 
+ Tue, 03 Dec 2024 03:32:18 -0800 (PST)
 Received: from localhost.localdomain ([176.187.209.146])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-434aa74efbesm217218755e9.7.2024.12.03.03.32.12
+ ffacd0b85a97d-385f8448d32sm3687037f8f.96.2024.12.03.03.32.17
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 03 Dec 2024 03:32:13 -0800 (PST)
+ Tue, 03 Dec 2024 03:32:18 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Brian Cain <brian.cain@oss.qualcomm.com>, Brian Cain <bcain@quicinc.com>,
+Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Ani Sinha <anisinha@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 06/13] MAINTAINERS: update email addr for Brian Cain
-Date: Tue,  3 Dec 2024 12:31:33 +0100
-Message-ID: <20241203113140.63513-7-philmd@linaro.org>
+Subject: [PULL 07/13] hw/core/machine: diagnose wrapping of maxmem
+Date: Tue,  3 Dec 2024 12:31:34 +0100
+Message-ID: <20241203113140.63513-8-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241203113140.63513-1-philmd@linaro.org>
 References: <20241203113140.63513-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12b;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x12b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::430;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x430.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,47 +97,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Brian Cain <brian.cain@oss.qualcomm.com>
+From: Daniel P. Berrangé <berrange@redhat.com>
 
-Also: add mapping for "quic_bcain@quicinc.com" which was ~briefly
-used for some replies to mailing list traffic.
+The 'maxmem' parameter parsed on the command line is held in uint64_t
+and then assigned to the MachineState field that is 'ram_addr_t'. This
+assignment will wrap on 32-bit hosts, silently changing the user's
+config request if it were over-sized.
 
-Signed-off-by: Brian Cain <bcain@quicinc.com>
-Signed-off-by: Brian Cain <brian.cain@oss.qualcomm.com>
-Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20241123164641.364748-2-bcain@quicinc.com>
+Improve the existing diagnositics for validating 'size', and add the
+same diagnostics for 'maxmem'
+
+Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+Tested-by: Ani Sinha <anisinha@redhat.com>
+Reviewed-by: Ani Sinha <anisinha@redhat.com>
+Message-ID: <20241127114057.255995-1-berrange@redhat.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- MAINTAINERS | 2 +-
- .mailmap    | 2 ++
- 2 files changed, 3 insertions(+), 1 deletion(-)
+ hw/core/machine.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 3d6194684f1..f92be047756 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -226,7 +226,7 @@ F: target/avr/
- F: tests/functional/test_avr_mega2560.py
+diff --git a/hw/core/machine.c b/hw/core/machine.c
+index a35c4a8faec..f29fe959647 100644
+--- a/hw/core/machine.c
++++ b/hw/core/machine.c
+@@ -598,11 +598,19 @@ static void machine_set_mem(Object *obj, Visitor *v, const char *name,
+         mem->size = mc->fixup_ram_size(mem->size);
+     }
+     if ((ram_addr_t)mem->size != mem->size) {
+-        error_setg(errp, "ram size too large");
++        error_setg(errp, "ram size %llu exceeds permitted maximum %llu",
++                   (unsigned long long)mem->size,
++                   (unsigned long long)RAM_ADDR_MAX);
+         goto out_free;
+     }
  
- Hexagon TCG CPUs
--M: Brian Cain <bcain@quicinc.com>
-+M: Brian Cain <bcain@oss.qualcomm.com>
- S: Supported
- F: target/hexagon/
- X: target/hexagon/idef-parser/
-diff --git a/.mailmap b/.mailmap
-index ef1b8a53f44..727ce204b2d 100644
---- a/.mailmap
-+++ b/.mailmap
-@@ -75,6 +75,8 @@ Aleksandar Rikalo <aleksandar.rikalo@syrmia.com> <aleksandar.rikalo@rt-rk.com>
- Alexander Graf <agraf@csgraf.de> <agraf@suse.de>
- Ani Sinha <anisinha@redhat.com> <ani@anisinha.ca>
- Anthony Liguori <anthony@codemonkey.ws> Anthony Liguori <aliguori@us.ibm.com>
-+Brian Cain <brian.cain@oss.qualcomm.com> <bcain@quicinc.com>
-+Brian Cain <brian.cain@oss.qualcomm.com> <quic_bcain@quicinc.com>
- Christian Borntraeger <borntraeger@linux.ibm.com> <borntraeger@de.ibm.com>
- Damien Hedde <damien.hedde@dahe.fr> <damien.hedde@greensocs.com>
- Filip Bozuta <filip.bozuta@syrmia.com> <filip.bozuta@rt-rk.com.com>
+     if (mem->has_max_size) {
++        if ((ram_addr_t)mem->max_size != mem->max_size) {
++            error_setg(errp, "ram size %llu exceeds permitted maximum %llu",
++                       (unsigned long long)mem->max_size,
++                       (unsigned long long)RAM_ADDR_MAX);
++            goto out_free;
++        }
+         if (mem->max_size < mem->size) {
+             error_setg(errp, "invalid value of maxmem: "
+                        "maximum memory size (0x%" PRIx64 ") must be at least "
 -- 
 2.45.2
 
