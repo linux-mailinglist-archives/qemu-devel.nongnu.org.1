@@ -2,53 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B3409E3452
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Dec 2024 08:44:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 662399E348E
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Dec 2024 08:54:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tIk2P-0003yr-NG; Wed, 04 Dec 2024 02:43:09 -0500
+	id 1tIkCd-000890-TD; Wed, 04 Dec 2024 02:53:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mchehab+huawei@kernel.org>)
- id 1tIk1y-0003ma-A6; Wed, 04 Dec 2024 02:42:43 -0500
+ id 1tIkBH-0007TD-W7; Wed, 04 Dec 2024 02:52:25 -0500
 Received: from nyc.source.kernel.org ([147.75.193.91])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mchehab+huawei@kernel.org>)
- id 1tIk1w-0006ZO-1t; Wed, 04 Dec 2024 02:42:42 -0500
+ id 1tIkBF-00029K-4C; Wed, 04 Dec 2024 02:52:19 -0500
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by nyc.source.kernel.org (Postfix) with ESMTP id B822DA41C62;
- Wed,  4 Dec 2024 07:40:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39EC3C4AF0F;
- Wed,  4 Dec 2024 07:42:33 +0000 (UTC)
+ by nyc.source.kernel.org (Postfix) with ESMTP id 15A20A419EF;
+ Wed,  4 Dec 2024 07:50:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F28C5C4CED1;
+ Wed,  4 Dec 2024 07:52:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1733298153;
- bh=DZq3ehynlc63lZ3iGs1SNcajfqzDutIBxgWe19LJFlA=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=YECxV4o4AY+5zzyzQww1VLIUoA/rFeR77HUsq3vSP6lpI1OCW6HJf195bLPHFjtgv
- jNp1eF5FQuio14fP2TDuMxii8lJ3b0tALlGDEGrRY/te3jSHx50NEHyCRiIySz945V
- 4lqTwmiMffvDlLlc6f9TGFJ/4x7r5wdb1ssEtUdBpa5fuUCLr6KfKYplUGjz7xzZeZ
- 5TeuZA+w9cTXVZwK32on2FqOl6RguAXq5CtpOoqHPXQswb9+G8eH+1wwK7WkgLRDYB
- 3WsRItln7wr3p8e+2iSmTgu1FD1IWIWdQCQhv92uGvv01uVqrqoA4G9duE4z33W5Ql
- yszxKUCXt61CQ==
-Received: from mchehab by mail.kernel.org with local (Exim 4.98)
- (envelope-from <mchehab+huawei@kernel.org>)
- id 1tIk1n-00000004Kjg-1UAq; Wed, 04 Dec 2024 08:42:31 +0100
+ s=k20201202; t=1733298732;
+ bh=6rcAR5fx634iJHuLmG3RpP1qjECcf4AuZFK+vo0BkYs=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+ b=h4Bm708aGOwWi+sLdeoBl9r2YU87vdRoZ6A1uP2smaNA3Ov57u+rvrYCzwOWjEoA0
+ Pn3BCI79QhR+EMfVLApskVeRtEPCKYPLLJfBJRM5Jp+b+eZ9JOs5NkT23zZShE/YX5
+ kX/pMa8uti42JCL9M1ZXQ4DUPFg9CWPt1Wc8r+0DbXzSHFqdjD6ot+99Myl115VWJC
+ YyPCHgYmzH4F3kNXuyDwv7+BY+OULBQ9tuJpgxQ0DpmK+yJspBTHlq31UfFkXJHvBl
+ 1P9o2RchNryrXJoBYXlTm5heVJZ2jskqdxyXtvp39YYocn/kff7Y9WfaM2gbXkOdt7
+ BE5ElJxo6oXKA==
+Date: Wed, 4 Dec 2024 08:52:07 +0100
 From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-To: Igor Mammedov <imammedo@redhat.com>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Shiju Jose <shiju.jose@huawei.com>,
- Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
- Dongjiu Geng <gengdongjiu1@gmail.com>, linux-kernel@vger.kernel.org,
- qemu-arm@nongnu.org, qemu-devel@nongnu.org
-Subject: [PATCH v5 16/16] docs: acpi_hest_ghes: fix documentation for CPER size
-Date: Wed,  4 Dec 2024 08:41:24 +0100
-Message-ID: <c9a291a9b3fa22000ae100d980a0ada5d6ba9a24.1733297707.git.mchehab+huawei@kernel.org>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <cover.1733297707.git.mchehab+huawei@kernel.org>
-References: <cover.1733297707.git.mchehab+huawei@kernel.org>
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: Igor Mammedov <imammedo@redhat.com>, Shiju Jose <shiju.jose@huawei.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Ani Sinha <anisinha@redhat.com>,
+ Dongjiu Geng <gengdongjiu1@gmail.com>, <linux-kernel@vger.kernel.org>,
+ <qemu-arm@nongnu.org>, <qemu-devel@nongnu.org>
+Subject: Re: [PATCH v4 08/15] acpi/ghes: make the GHES record generation
+ more generic
+Message-ID: <20241204085207.0ecae6ae@foz.lan>
+In-Reply-To: <20241125115643.00002923@huawei.com>
+References: <cover.1732266152.git.mchehab+huawei@kernel.org>
+ <b3845a8c78ef36c633d5e20af868de4ed16650a4.1732266152.git.mchehab+huawei@kernel.org>
+ <20241125115643.00002923@huawei.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=147.75.193.91;
  envelope-from=mchehab+huawei@kernel.org; helo=nyc.source.kernel.org
 X-Spam_score_int: -73
@@ -74,36 +74,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-While the spec defines a CPER size of 4KiB for each record,
-currently it is set to 1KiB. Fix the documentation and add
-a pointer to the macro name there, as this may help to keep
-it updated.
+Em Mon, 25 Nov 2024 11:56:43 +0000
+Jonathan Cameron <Jonathan.Cameron@huawei.com> escreveu:
 
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Reviewed-by: Igor Mammedov <imammedo@redhat.com>
----
- docs/specs/acpi_hest_ghes.rst | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+> On Fri, 22 Nov 2024 10:11:25 +0100
+> Mauro Carvalho Chehab <mchehab+huawei@kernel.org> wrote:
+> 
+> > Split the code into separate functions to allow using the
+> > common CPER filling code by different error sources.
+> > 
+> > The generic code was moved to ghes_record_cper_errors(),
+> > and ghes_gen_err_data_uncorrectable_recoverable() now contains
+> > only a logic to fill the Generic Error Data part of the record,
+> > as described at:
+> > 
+> > 	ACPI 6.2: 18.3.2.7.1 Generic Error Data
+> > 
+> > The remaining code to generate a memory error now belongs to
+> > acpi_ghes_record_errors() function.
+> > 
+> > A further patch will give it a better name.
+> > 
+> > Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>  
+> 
+> One trivial follow up that is enabled by the change you are discussing with Igor.
+> Up to you that one.
+> 
+> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > +
+> > +int acpi_ghes_record_errors(uint16_t source_id, uint64_t physical_address)
+> > +{
+> > +    /* Memory Error Section Type */
+> > +    const uint8_t guid[] =
+> > +          UUID_LE(0xA5BC1114, 0x6F64, 0x4EDE, 0xB8, 0x63, 0x3E, 0x83, \
+> > +                  0xED, 0x7C, 0x83, 0xB1);
+> > +    Error *errp = NULL;
+> > +    int data_length;
+> > +    GArray *block;
+> > +
+> > +    if (!physical_address) {
+> > +        error_report("can not find Generic Error Status Block for source id %d",
+> > +                     source_id);
+> > +        return -1;
+> > +    }  
+> 
+> With this error check gone (as per discussion with Igor) you could use
+> g_autofree to deal with freeing block.
+> 
+> That would bring the errp check right next to the call that would result
+> in errp potentially being set and slightly improve readability.
+> 
+> Mind you there are no uses of this in hw/acpi currently so maybe this
+> isn't a good time to start :)
 
-diff --git a/docs/specs/acpi_hest_ghes.rst b/docs/specs/acpi_hest_ghes.rst
-index 68f1fbe0a4af..c3e9f8d9a702 100644
---- a/docs/specs/acpi_hest_ghes.rst
-+++ b/docs/specs/acpi_hest_ghes.rst
-@@ -67,8 +67,10 @@ Design Details
- (3) The address registers table contains N Error Block Address entries
-     and N Read Ack Register entries. The size for each entry is 8-byte.
-     The Error Status Data Block table contains N Error Status Data Block
--    entries. The size for each entry is 4096(0x1000) bytes. The total size
--    for the "etc/hardware_errors" fw_cfg blob is (N * 8 * 2 + N * 4096) bytes.
-+    entries. The size for each entry is defined at the source code as
-+    ACPI_GHES_MAX_RAW_DATA_LENGTH (currently 1024 bytes). The total size
-+    for the "etc/hardware_errors" fw_cfg blob is
-+    (N * 8 * 2 + N * ACPI_GHES_MAX_RAW_DATA_LENGTH) bytes.
-     N is the number of the kinds of hardware error sources.
- 
- (4) QEMU generates the ACPI linker/loader script for the firmware. The
--- 
-2.47.1
+Yeah, I prefer to not do such cleanup now. As you said, this isn't used
+right now at ghes, and there are still two series on the top of it.
 
+IMO, such kind of change should happen afterwards, and checking on
+other places were memory is allocated in the driver.
+
+Thanks,
+Mauro
 
