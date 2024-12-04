@@ -2,50 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 142F79E345C
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Dec 2024 08:46:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B3409E3452
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Dec 2024 08:44:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tIk2R-00040y-Nv; Wed, 04 Dec 2024 02:43:11 -0500
+	id 1tIk2P-0003yr-NG; Wed, 04 Dec 2024 02:43:09 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mchehab+huawei@kernel.org>)
- id 1tIk1x-0003mT-QG; Wed, 04 Dec 2024 02:42:43 -0500
+ id 1tIk1y-0003ma-A6; Wed, 04 Dec 2024 02:42:43 -0500
 Received: from nyc.source.kernel.org ([147.75.193.91])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mchehab+huawei@kernel.org>)
- id 1tIk1u-0006Yq-Ks; Wed, 04 Dec 2024 02:42:40 -0500
+ id 1tIk1w-0006ZO-1t; Wed, 04 Dec 2024 02:42:42 -0500
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by nyc.source.kernel.org (Postfix) with ESMTP id 88F2FA41C2F;
+ by nyc.source.kernel.org (Postfix) with ESMTP id B822DA41C62;
  Wed,  4 Dec 2024 07:40:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32F2AC4AF0E;
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39EC3C4AF0F;
  Wed,  4 Dec 2024 07:42:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
  s=k20201202; t=1733298153;
- bh=0CyS+5uMH4bliw7AWJd+kEIWAWXpqKGP1aXYbGP2T70=;
+ bh=DZq3ehynlc63lZ3iGs1SNcajfqzDutIBxgWe19LJFlA=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=cxXWcFIuBV+Uv+qb3yeN7e37cAaw4wxRTpUKKpdloMjvgg+jEPA0sVEQ6sFDuWcjE
- VxiH/ZVVsK0Logs1wRdr/QYITIwsWgY9Xb6nFjVk41NvjpncKmKM8gdVz/0oEKFhkO
- 9STGetQjuSOlM6jwHeB+IoCNs7V+MX41ZD4H0BUpzKySAmSAl6J3b8Gy8CkJPP2yC1
- D/eBJ1GRdNeQqPVlfXyE44syuWDDgmjmxxrE4SLnZWB5KbtAzrSp7haX7ldWRNby2F
- BgWUTmyDz3NWnh6OcnDD0JNElqAwDDQcvUXw/UWVtA1JrSPWk3UPJTItg15RTj7CxG
- 4gBRku+r/appA==
+ b=YECxV4o4AY+5zzyzQww1VLIUoA/rFeR77HUsq3vSP6lpI1OCW6HJf195bLPHFjtgv
+ jNp1eF5FQuio14fP2TDuMxii8lJ3b0tALlGDEGrRY/te3jSHx50NEHyCRiIySz945V
+ 4lqTwmiMffvDlLlc6f9TGFJ/4x7r5wdb1ssEtUdBpa5fuUCLr6KfKYplUGjz7xzZeZ
+ 5TeuZA+w9cTXVZwK32on2FqOl6RguAXq5CtpOoqHPXQswb9+G8eH+1wwK7WkgLRDYB
+ 3WsRItln7wr3p8e+2iSmTgu1FD1IWIWdQCQhv92uGvv01uVqrqoA4G9duE4z33W5Ql
+ yszxKUCXt61CQ==
 Received: from mchehab by mail.kernel.org with local (Exim 4.98)
  (envelope-from <mchehab+huawei@kernel.org>)
- id 1tIk1n-00000004Kjc-1NTs; Wed, 04 Dec 2024 08:42:31 +0100
+ id 1tIk1n-00000004Kjg-1UAq; Wed, 04 Dec 2024 08:42:31 +0100
 From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 To: Igor Mammedov <imammedo@redhat.com>
 Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
  Shiju Jose <shiju.jose@huawei.com>,
  Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
- "Michael S. Tsirkin" <mst@redhat.com>, Ani Sinha <anisinha@redhat.com>,
  Dongjiu Geng <gengdongjiu1@gmail.com>, linux-kernel@vger.kernel.org,
  qemu-arm@nongnu.org, qemu-devel@nongnu.org
-Subject: [PATCH v5 15/16] acpi/ghes: Change ghes fill logic to work with only
- one source
-Date: Wed,  4 Dec 2024 08:41:23 +0100
-Message-ID: <a633f129131a22e2aad6b1b9543b88867bf9d424.1733297707.git.mchehab+huawei@kernel.org>
+Subject: [PATCH v5 16/16] docs: acpi_hest_ghes: fix documentation for CPER size
+Date: Wed,  4 Dec 2024 08:41:24 +0100
+Message-ID: <c9a291a9b3fa22000ae100d980a0ada5d6ba9a24.1733297707.git.mchehab+huawei@kernel.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <cover.1733297707.git.mchehab+huawei@kernel.org>
 References: <cover.1733297707.git.mchehab+huawei@kernel.org>
@@ -76,56 +74,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Extending to multiple sources require a BIOS pointer to the
-beginning of the HEST table, which in turn requires a backward-compatible
-code.
-
-So, the current code supports only one source. Ensure that and simplify
-the code.
+While the spec defines a CPER size of 4KiB for each record,
+currently it is set to 1KiB. Fix the documentation and add
+a pointer to the macro name there, as this may help to keep
+it updated.
 
 Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Reviewed-by: Igor Mammedov <imammedo@redhat.com>
 ---
- hw/acpi/ghes.c | 12 ++++--------
- 1 file changed, 4 insertions(+), 8 deletions(-)
+ docs/specs/acpi_hest_ghes.rst | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/hw/acpi/ghes.c b/hw/acpi/ghes.c
-index a4453ee357bc..5efa50413af3 100644
---- a/hw/acpi/ghes.c
-+++ b/hw/acpi/ghes.c
-@@ -387,15 +387,13 @@ static void get_hw_error_offsets(uint64_t ghes_addr,
-      * As the current version supports only one source, the ack offset is
-      * just sizeof(uint64_t).
-      */
--    *read_ack_register_addr = ghes_addr +
--			      ACPI_GHES_ERROR_SOURCE_COUNT * sizeof(uint64_t);
-+    *read_ack_register_addr = ghes_addr + sizeof(uint64_t);
- }
+diff --git a/docs/specs/acpi_hest_ghes.rst b/docs/specs/acpi_hest_ghes.rst
+index 68f1fbe0a4af..c3e9f8d9a702 100644
+--- a/docs/specs/acpi_hest_ghes.rst
++++ b/docs/specs/acpi_hest_ghes.rst
+@@ -67,8 +67,10 @@ Design Details
+ (3) The address registers table contains N Error Block Address entries
+     and N Read Ack Register entries. The size for each entry is 8-byte.
+     The Error Status Data Block table contains N Error Status Data Block
+-    entries. The size for each entry is 4096(0x1000) bytes. The total size
+-    for the "etc/hardware_errors" fw_cfg blob is (N * 8 * 2 + N * 4096) bytes.
++    entries. The size for each entry is defined at the source code as
++    ACPI_GHES_MAX_RAW_DATA_LENGTH (currently 1024 bytes). The total size
++    for the "etc/hardware_errors" fw_cfg blob is
++    (N * 8 * 2 + N * ACPI_GHES_MAX_RAW_DATA_LENGTH) bytes.
+     N is the number of the kinds of hardware error sources.
  
- void ghes_record_cper_errors(const void *cper, size_t len,
-                              uint16_t source_id, Error **errp)
- {
-     uint64_t cper_addr = 0, read_ack_register_addr = 0, read_ack_register;
--    uint64_t start_addr;
-     AcpiGedState *acpi_ged_state;
-     AcpiGhesState *ags;
- 
-@@ -412,11 +410,9 @@ void ghes_record_cper_errors(const void *cper, size_t len,
-     }
-     ags = &acpi_ged_state->ghes_state;
- 
--    start_addr = le64_to_cpu(ags->hw_error_le);
--
--    start_addr += source_id * sizeof(uint64_t);
--
--    get_hw_error_offsets(start_addr, &cper_addr, &read_ack_register_addr);
-+    assert(ACPI_GHES_ERROR_SOURCE_COUNT == 1);
-+    get_hw_error_offsets(le64_to_cpu(ags->hw_error_le),
-+                         &cper_addr, &read_ack_register_addr);
- 
-     if (!cper_addr) {
-         error_setg(errp, "can not find Generic Error Status Block");
+ (4) QEMU generates the ACPI linker/loader script for the firmware. The
 -- 
 2.47.1
 
