@@ -2,84 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47F389E3759
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Dec 2024 11:18:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 362399E37C2
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Dec 2024 11:43:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tImRo-00076G-Vm; Wed, 04 Dec 2024 05:17:33 -0500
+	id 1tImp7-0001j0-2O; Wed, 04 Dec 2024 05:41:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1tImRl-00075e-8u
- for qemu-devel@nongnu.org; Wed, 04 Dec 2024 05:17:29 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1tImp4-0001iT-Ti
+ for qemu-devel@nongnu.org; Wed, 04 Dec 2024 05:41:34 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1tImRi-0007ru-J9
- for qemu-devel@nongnu.org; Wed, 04 Dec 2024 05:17:28 -0500
+ id 1tImp1-00027b-Nq
+ for qemu-devel@nongnu.org; Wed, 04 Dec 2024 05:41:34 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1733307444;
+ s=mimecast20190719; t=1733308890;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=y91Af20oAgA7njdpzt56A/kMd4t46ji/mAYP+YHjdUM=;
- b=LPDpKtRZ+dbE02GyYvP+BGfHemVdiNKgnlpxDcSuEs2IYplozGbTeB3MKeSyjDl1A9Pjlp
- MEG0Q9wNQ1KwGT0hPSpNmwxapuagocCKKhZWzofwsouG9DVDC/mtMwW/IlvELZSYnHn3BE
- +sMq+zDsuMqAw9AkAUeFy9K/5g3GvNM=
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=M7dETtT9Hmn2yejZU+CrqEVo/ZRjGNwp4sBQPBDvJAE=;
+ b=Q8LSsB5TH1Qxv7idhxnCSINEnc+9i91df0390mF8r/A9r/A5AZApoMU0s8rlUaVz1BvnMt
+ O97rDFfaUZo5QLX+nCLr9E9o7uShX6iv6Pi5qCRFGSh6ejsqJt2qp31Oco/pUoxjtr2hHo
+ OOWY+yELHsvk7xOp2S/XFiw1UEw1WTI=
 Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-671-tdWqcVniOLuAGYm7sgqDLg-1; Wed,
- 04 Dec 2024 05:17:21 -0500
-X-MC-Unique: tdWqcVniOLuAGYm7sgqDLg-1
-X-Mimecast-MFC-AGG-ID: tdWqcVniOLuAGYm7sgqDLg
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-64-qRrP_yzHNd-dzeIuk91pnw-1; Wed,
+ 04 Dec 2024 05:41:27 -0500
+X-MC-Unique: qRrP_yzHNd-dzeIuk91pnw-1
+X-Mimecast-MFC-AGG-ID: qRrP_yzHNd-dzeIuk91pnw
+Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 48C441955BFE; Wed,  4 Dec 2024 10:17:19 +0000 (UTC)
+ id EAE381955F3E; Wed,  4 Dec 2024 10:41:25 +0000 (UTC)
 Received: from redhat.com (unknown [10.42.28.92])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id C4E7E19560A2; Wed,  4 Dec 2024 10:17:15 +0000 (UTC)
-Date: Wed, 4 Dec 2024 10:17:12 +0000
+ by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 817BB1956089; Wed,  4 Dec 2024 10:41:23 +0000 (UTC)
+Date: Wed, 4 Dec 2024 10:41:19 +0000
 From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Andrea Bolognani <abologna@redhat.com>, qemu-devel@nongnu.org,
- qemu-riscv <qemu-riscv@nongnu.org>, Laurent Vivier <laurent@vivier.eu>,
- David Abdurachmanov <davidlt@rivosinc.com>, Mark Corbin <mark@dibsco.co.uk>
-Subject: Re: [PATCH] binfmt: Don't consider riscv{32,64} part of the same
- family
-Message-ID: <Z1AsKNcbY2I46Tx1@redhat.com>
-References: <20241203094702.124748-1-abologna@redhat.com>
- <cb079b65-e5fc-4667-aa63-9ff347666b6e@linaro.org>
- <Z07a_kYh4duwWKWw@redhat.com>
- <CAFEAcA8BAW4=Yk5q0CgQNL4UZpUJXiwRV6VD-52_Rw0SN=E1Cg@mail.gmail.com>
- <dc1b450a-f250-4b84-80bd-6f14888ce327@linaro.org>
+To: Thomas Huth <thuth@redhat.com>
+Cc: qemu-devel@nongnu.org,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: Re: [PATCH 2/5] tests/functional: Extract the find_free_ports()
+ function into a helper file
+Message-ID: <Z1Axz2jQIX7kfn5C@redhat.com>
+References: <20241204071911.664057-1-thuth@redhat.com>
+ <20241204071911.664057-3-thuth@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <dc1b450a-f250-4b84-80bd-6f14888ce327@linaro.org>
+In-Reply-To: <20241204071911.664057-3-thuth@redhat.com>
 User-Agent: Mutt/2.2.13 (2024-03-09)
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -49
-X-Spam_score: -5.0
+X-Spam_score_int: -50
+X-Spam_score: -5.1
 X-Spam_bar: -----
-X-Spam_report: (-5.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.996,
+X-Spam_report: (-5.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.996,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- URIBL_SBL_A=0.1 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,40 +86,168 @@ Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Dec 03, 2024 at 07:57:14AM -0600, Richard Henderson wrote:
-> On 12/3/24 04:35, Peter Maydell wrote:
-> > On Tue, 3 Dec 2024 at 10:19, Daniel P. Berrangé <berrange@redhat.com> wrote:
-> > > Separatley this from patch, we should also consider whether
-> > > it is time to do the same for aarch64/arm7.
-> > > 
-> > > If I look at this page:
-> > > 
-> > >    https://gpages.juszkiewicz.com.pl/arm-socs-table/arm-socs.html
-> > > 
-> > > and sort by 'announced' to see msot recent CPUs first, then
-> > > almost all of them have "NO" in the "aarch32 support" column.
-> > > 
-> > > IOW, on modern aarch64 CPUs, qemu-arm is the only viable way
-> > > to run 32-bit usermode binaries AFAICT, and suggests we ought
-> > > to be creating a binfmt rule for that on aarch64 hosts.
-> > 
-> > What happens if you have a host CPU that *does* support 32-bit
-> > natively and you also register the binfmt rule? Does the
-> > host kernel prefer to execute natively or does it invoke
-> > QEMU? I don't think we want to roll out something that
-> > silently downgrades native execution to emulation...
+On Wed, Dec 04, 2024 at 08:19:08AM +0100, Thomas Huth wrote:
+> We'll need this functionality in other functional tests, too, so
+> let's extract it into the qemu_test module.
+> Also add  an __enter__ and __exit__ function that can be used for
+> using this functionality in a locked context, so that tests that
+> are running in parallel don't try to compete for the same ports
+> later.
 > 
-> The registered rule applies and the kernel invokes qemu.
+> Signed-off-by: Thomas Huth <thuth@redhat.com>
+> ---
+>  tests/functional/qemu_test/ports.py | 53 +++++++++++++++++++++++++++++
+>  tests/functional/test_vnc.py        | 36 +++++---------------
+>  2 files changed, 61 insertions(+), 28 deletions(-)
+>  create mode 100644 tests/functional/qemu_test/ports.py
+> 
+> diff --git a/tests/functional/qemu_test/ports.py b/tests/functional/qemu_test/ports.py
+> new file mode 100644
+> index 0000000000..d235d3432b
+> --- /dev/null
+> +++ b/tests/functional/qemu_test/ports.py
+> @@ -0,0 +1,53 @@
+> +#!/usr/bin/env python3
+> +#
+> +# Simple functional tests for VNC functionality
+> +#
+> +# Copyright 2018, 2024 Red Hat, Inc.
+> +#
+> +# This work is licensed under the terms of the GNU GPL, version 2 or
+> +# later.  See the COPYING file in the top-level directory.
+> +
+> +import fcntl
+> +import os
+> +import socket
+> +import sys
+> +import tempfile
+> +from typing import List
+> +
+> +class Ports():
+> +
+> +    PORTS_ADDR = '127.0.0.1'
+> +    PORTS_START = 32768
+> +    PORTS_END = PORTS_START + 1024
+> +
+> +    def __enter__(self):
+> +        lock_file = os.path.join(tempfile.gettempdir(), "qemu_port_lock")
+> +        self.lock_fh = os.open(lock_file, os.O_CREAT)
+> +        fcntl.flock(self.lock_fh, fcntl.LOCK_EX)
+> +        return self
+> +
+> +    def __exit__(self, exc_type, exc_value, traceback):
+> +        fcntl.flock(self.lock_fh, fcntl.LOCK_UN)
+> +        os.close(self.lock_fh)
+> +
+> +    def check_bind(self, port: int) -> bool:
+> +        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
+> +            try:
+> +                sock.bind((self.PORTS_ADDR, port))
+> +            except OSError:
+> +                return False
+> +
+> +        return True
+> +
+> +    def find_free_ports(self, count: int) -> List[int]:
+> +        result = []
+> +        for port in range(self.PORTS_START, self.PORTS_END):
+> +            if self.check_bind(port):
+> +                result.append(port)
+> +                if len(result) >= count:
+> +                    break
+> +        assert len(result) == count
+> +        return result
+> +
+> +    def find_free_port(self) -> int:
+> +        return self.find_free_ports(1)[0]
+> diff --git a/tests/functional/test_vnc.py b/tests/functional/test_vnc.py
+> index b769d3b268..32a81259e4 100755
+> --- a/tests/functional/test_vnc.py
+> +++ b/tests/functional/test_vnc.py
+> @@ -14,22 +14,9 @@
+>  from typing import List
+>  
+>  from qemu_test import QemuSystemTest
+> -
+> +from qemu_test.ports import Ports
+>  
+>  VNC_ADDR = '127.0.0.1'
+> -VNC_PORT_START = 32768
+> -VNC_PORT_END = VNC_PORT_START + 1024
+> -
+> -
+> -def check_bind(port: int) -> bool:
+> -    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
+> -        try:
+> -            sock.bind((VNC_ADDR, port))
+> -        except OSError:
+> -            return False
+> -
+> -    return True
+> -
+>  
+>  def check_connect(port: int) -> bool:
+>      with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
+> @@ -40,18 +27,6 @@ def check_connect(port: int) -> bool:
+>  
+>      return True
+>  
+> -
+> -def find_free_ports(count: int) -> List[int]:
+> -    result = []
+> -    for port in range(VNC_PORT_START, VNC_PORT_END):
+> -        if check_bind(port):
+> -            result.append(port)
+> -            if len(result) >= count:
+> -                break
+> -    assert len(result) == count
+> -    return result
+> -
+> -
+>  class Vnc(QemuSystemTest):
+>  
+>      def test_no_vnc(self):
+> @@ -90,8 +65,7 @@ def test_change_password(self):
+>          self.vm.cmd('change-vnc-password',
+>                      password='new_password')
+>  
+> -    def test_change_listen(self):
+> -        a, b, c = find_free_ports(3)
+> +    def do_test_change_listen(self, a, b, c):
+>          self.assertFalse(check_connect(a))
+>          self.assertFalse(check_connect(b))
+>          self.assertFalse(check_connect(c))
+> @@ -113,5 +87,11 @@ def test_change_listen(self):
+>          self.assertTrue(check_connect(b))
+>          self.assertTrue(check_connect(c))
+>  
+> +    def test_change_listen(self):
+> +        with Ports() as ports:
+> +            a, b, c = ports.find_free_ports(3)
+> +            self.do_test_change_listen(a, b, c)
 
-This is all quiet difficult from a distro POV, but not QEMU's fault.
+I think it would be possible to implement a decorator using "Ports"
+such that we don't need to manually wrap the methods, and just receive
+the list of port numbers as arguments.
 
-We want to install the binfmt rules in a way that we "do the right thing"
-regardless of hardware out of the box.
+eg to make this pattern with:
 
-The systemd logic for loading binfmt rules is unconditional, loading
-everything from /usr/lib/binfmt.d, but we need a way to make things
-conditional on the lack of support for aarch32 on the currently running
-platform.
+    @findFreePorts(3)
+    def test_change_listen(self, ports):
+         ....use 'ports' list ....
+
+Fully untested, but I think something approximately like this would
+work:
+
+   def findFreePorts(num)
+     def findFreePortsDeco(func):
+       def wrapper(*args, **kwargs):
+         with Ports() as ports:
+	   freeports = ports.find_free_ports(num)
+	   func(freeports, *args, **kwargs)
+       return wrapper
+     return findFreePortsDeco
+       
 
 With regards,
 Daniel
