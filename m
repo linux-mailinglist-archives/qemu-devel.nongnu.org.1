@@ -2,89 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47C409E3088
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Dec 2024 01:54:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 29E8E9E3093
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Dec 2024 01:59:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tIdd1-0003Kg-8P; Tue, 03 Dec 2024 19:52:31 -0500
+	id 1tIdiQ-0002sJ-9D; Tue, 03 Dec 2024 19:58:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tIdce-0003H6-VK
- for qemu-devel@nongnu.org; Tue, 03 Dec 2024 19:52:09 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tIdiM-0002nU-Uq
+ for qemu-devel@nongnu.org; Tue, 03 Dec 2024 19:58:02 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tIdcc-0005rr-Hn
- for qemu-devel@nongnu.org; Tue, 03 Dec 2024 19:52:08 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tIdiJ-0007O3-Bx
+ for qemu-devel@nongnu.org; Tue, 03 Dec 2024 19:58:02 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1733273525;
+ s=mimecast20190719; t=1733273878;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=j6HNcsiqaXHAtCR81Tet2C9VNDCVc5sLauFrWeUoMuc=;
- b=Jr9tD5747O8Ttn00HIKsXd6XD0iVnL4mau1iOFHfarPLzhRx2B92mRGovUyhH/FXMPIzOc
- zZ7NWVaOZKEUBaR2ZHT+yYU1PW3irdPTR0rpALYH8PZ77NQnDqJiQrKabPyFJhLT7QGv2k
- haL3vwCLYGJz3oEUcbIJ0yQqt3FWHZk=
-Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
- [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=hFGoG81JmWWOQcbzt3xzzoNwpnoYmAVYp72V0w/Dskk=;
+ b=NwpO4ROF5LdP4J1Km2YHp7vDvSOS7GMlHimdVuESZB+ZUNjkelSAg53rCqN7bahRs3jvNW
+ fR1/HpfhZEXGVd/ha0495RBaEFbHkwbaF5Mp18XgiG552rzy+0vxZuHonkir2zRy3p1MSq
+ IYG50RFirINHF8eaNWfrHD9VKP2dsCo=
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
+ [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-314-1oLbw1FLPT2Dzv8CQWcGQQ-1; Tue, 03 Dec 2024 19:52:05 -0500
-X-MC-Unique: 1oLbw1FLPT2Dzv8CQWcGQQ-1
-X-Mimecast-MFC-AGG-ID: 1oLbw1FLPT2Dzv8CQWcGQQ
-Received: by mail-qv1-f71.google.com with SMTP id
- 6a1803df08f44-6d89309de06so65801636d6.2
- for <qemu-devel@nongnu.org>; Tue, 03 Dec 2024 16:52:05 -0800 (PST)
+ us-mta-634-p4qgZgvmNwWgi3LeFw-g2w-1; Tue, 03 Dec 2024 19:57:54 -0500
+X-MC-Unique: p4qgZgvmNwWgi3LeFw-g2w-1
+X-Mimecast-MFC-AGG-ID: p4qgZgvmNwWgi3LeFw-g2w
+Received: by mail-qk1-f199.google.com with SMTP id
+ af79cd13be357-7b6676f4361so605484585a.3
+ for <qemu-devel@nongnu.org>; Tue, 03 Dec 2024 16:57:54 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733273524; x=1733878324;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=j6HNcsiqaXHAtCR81Tet2C9VNDCVc5sLauFrWeUoMuc=;
- b=L9imlWnylOzpw4DQfBQp30c0or2QbEtvHm86QyoLf0PdNtz5LI5zlyXeNEg7FJHcpd
- /9P+qOBcsvToTAK6uso4ptVcxOk8t9nUFIvrcRCboBvWoCewN8rBKXaVkG5McG3le+4d
- vxxfO7EF0/8mcO8Qe+R04+u3xPxHpmK/5vqWW7MtONCESw/acTdDRLo4NYFbX8a/xEXQ
- UnoxXW6cHQm97SPygNJQVVx9vBkN46OKylkvt45lt2Pmh3+A3ea+qezkc2v7CiTi9cSq
- q6oHZOI7Zk18woohZ3AwmQxnkgnmCnwbHIkNl1Qej8zB2v+xtoqS4W2AunIWPK7OV+qY
- nbsQ==
-X-Gm-Message-State: AOJu0YwnYrGsW7QCwZlT/jdYqSNJY0Z9/Zm78g0FwS823hAAXiL9rIcs
- KNDj8KyYETsulmyylIbNUo4i478vEv4dDV7QtfddYi9C3+y44fdw5isALQwjxQCEq92Vh6BOYdY
- fUYOh2rsxKhLZg8dXjGKXqREFKMSfBerubpf1HscRRYDVF7yEYpQY57yTTSWDdP7hMlEO1Nei2R
- 5f9EDuQjeO1YFjePzfVX4FueYhjQ3VGOg0oQ==
-X-Gm-Gg: ASbGncuAAcyrTRt/moSUUVJLOU/4WPrb+zLbriH+0dPyXCxyVw2HThUs4tldzu2yNiI
- QJSioP39TonsDH/b6beh2KY/bKVdbUF3GEHhLd/04PK/dxASKEEP5FtQBEnowGdOVgFuQ60zuyQ
- RJcBt5gcowmS/ptSzjcAIk0hiViQ//fvH/4qHtmeURdvw9pbsUizTOWeNehslBZZKBn6yCx1dMN
- rKx42FhfnnHF/FfMX6gDkmo0cpnRnInM1fByHU5tC49J7WN8iADRshHk2Yr6yJTHQEqasdlCITg
- 3E2JL1DBgNu7wpTfSOSwMWqpLQ==
-X-Received: by 2002:ad4:5f4e:0:b0:6d8:8165:ef21 with SMTP id
- 6a1803df08f44-6d8c46ecd45mr39271026d6.49.1733273524304; 
- Tue, 03 Dec 2024 16:52:04 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IG9P/+ortXg3b41Bp+raqm8Nws9cdGRStoTLCdCOjTlHhezJ7S3s4bwJECw66qbfByvuDPnfQ==
-X-Received: by 2002:ad4:5f4e:0:b0:6d8:8165:ef21 with SMTP id
- 6a1803df08f44-6d8c46ecd45mr39270656d6.49.1733273523859; 
- Tue, 03 Dec 2024 16:52:03 -0800 (PST)
-Received: from x1n.redhat.com (pool-99-254-114-190.cpe.net.cable.rogers.com.
+ d=1e100.net; s=20230601; t=1733273874; x=1733878674;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=hFGoG81JmWWOQcbzt3xzzoNwpnoYmAVYp72V0w/Dskk=;
+ b=Pzfoy3AamYPoQHuTZ9tuYetqymqwRDil323GHGf8Ooe0EoMJMsfqB/524emLjqUZ/M
+ 9b3RaS7x4XoQaqMXZDGvTRHhM4Ohk2k9iLgtXxKtTFImIgKvmMuidwRWNLGZ2NI7j8mn
+ 0C+FXOaqWmKlJPcwl2sJni+I9QdZBbTm48CGKvMKMaBriBMQDPKURz3lZe8V3TGsaAi2
+ n1TnQicOaXEKD2PP4k4m9ixoMRQZHQbQcyVvjBC0r9/3Rb1QI/xANYxnFNwMuR7wwaqy
+ XxA+jLIFwqe523ll03QfFTPFHlZWPxXOLg1vJ65cMuLwZMT0JHtG0pM2eAxxyuEId5qf
+ bhQw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWEZM4/9dZ1x83YU1KwTz9JSQbvyv58iOOB6Uj+uMsM7Pb+821Aw0r58GQF7BAgzHO9EqwjW6qiDUMa@nongnu.org
+X-Gm-Message-State: AOJu0YwuBVGPjimAD0V0K32ecbd0KvkSKwbwA/YI8+GhSBb5+0BwAlyC
+ D9brSZumKnLwodNn31ww8pKXPGrnIdP28zk9XaIx2Zqd+scuE32W/ZQOMCtdNy0Tn22+D66wY2+
+ QYbWW8StpAOfZp6tacV+SBG3hV0baBi4bLi5KuKEKAboQqkH9tRDX
+X-Gm-Gg: ASbGncuQ2vN1yijfSa1ykcyX1pgOD0T7ClnvTzY5OiNeuob8fg5ve4cLWgOFAlMFlOv
+ LaeQAjBoeFKnOKhXisb5hbl3okVSYGh1xg4h+UxvbW13Wq29E2MjU0vpscyqICPWeGFt7rvohFu
+ 8sdj7ncUEiIdrK2BVPbm8b6kpLL929qmB3QdOWK81hazAqMOCNKjbuMcmoiUD3rQAYEk+4f0dRQ
+ 7DGnKvbbY1KcfP8I1AP/ySirR7OKGNlypqVGkapUfFXFA7AwbGPIwSnShnmet4d8HKgFcCfYJao
+ K612XvVJ6KI=
+X-Received: by 2002:a05:620a:31a2:b0:7b1:3b5e:4b50 with SMTP id
+ af79cd13be357-7b6a5d9df8bmr617668885a.19.1733273874081; 
+ Tue, 03 Dec 2024 16:57:54 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGmyaB5KiTaolM/iq6tYEKmRoeqlhxfv8EhvsBECmdnAbGAXJXpEEa0ZRxR94tt9tyjs8LkUQ==
+X-Received: by 2002:a05:620a:31a2:b0:7b1:3b5e:4b50 with SMTP id
+ af79cd13be357-7b6a5d9df8bmr617666985a.19.1733273873759; 
+ Tue, 03 Dec 2024 16:57:53 -0800 (PST)
+Received: from x1n (pool-99-254-114-190.cpe.net.cable.rogers.com.
  [99.254.114.190]) by smtp.gmail.com with ESMTPSA id
- af79cd13be357-7b68492cb81sm559974785a.34.2024.12.03.16.52.01
+ af79cd13be357-7b684920835sm563712285a.11.2024.12.03.16.57.52
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 03 Dec 2024 16:52:02 -0800 (PST)
+ Tue, 03 Dec 2024 16:57:52 -0800 (PST)
+Date: Tue, 3 Dec 2024 19:57:51 -0500
 From: Peter Xu <peterx@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-block@nongnu.org, Fabiano Rosas <farosas@suse.de>,
- "Dr . David Alan Gilbert" <dave@treblig.org>,
- Eric Blake <eblake@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
- Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>, peterx@redhat.com,
- Stefan Hajnoczi <stefanha@redhat.com>
-Subject: [PATCH RFC 11/11] tests/qtest/migration: Test successive migrations
-Date: Tue,  3 Dec 2024 19:51:38 -0500
-Message-ID: <20241204005138.702289-12-peterx@redhat.com>
-X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241204005138.702289-1-peterx@redhat.com>
-References: <20241204005138.702289-1-peterx@redhat.com>
+To: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+Cc: Fabiano Rosas <farosas@suse.de>, qemu-devel@nongnu.org,
+ qemu-block@nongnu.org,
+ Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>,
+ den@virtuozzo.com, Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Subject: Re: [PATCH 4/5] migration: Activate block devices if VM is paused
+ when migrating
+Message-ID: <Z0-pD2KgsEtklsgq@x1n>
+References: <20241125144612.16194-1-farosas@suse.de>
+ <20241125144612.16194-5-farosas@suse.de> <Z0Su2RINKfqRk969@x1n>
+ <f6fc6ed3-d1d0-4498-9ec7-1f4e55a2abf3@virtuozzo.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <f6fc6ed3-d1d0-4498-9ec7-1f4e55a2abf3@virtuozzo.com>
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -50
@@ -94,7 +94,7 @@ X-Spam_report: (-5.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.996,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -110,175 +110,127 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Fabiano Rosas <farosas@suse.de>
+On Wed, Nov 27, 2024 at 07:40:39PM +0200, Andrey Drobyshev wrote:
+> On 11/25/24 7:07 PM, Peter Xu wrote:
+> > On Mon, Nov 25, 2024 at 11:46:11AM -0300, Fabiano Rosas wrote:
+> >> Currently a VM that has been target of a migration using
+> >> late-block-activate will crash at the end of a new migration (with it
+> >> as source) when releasing ownership of the disks due to the VM having
+> >> never taken ownership of the disks in the first place.
+> >>
+> >> The issue is that late-block-activate expects a qmp_continue command
+> >> to be issued at some point on the destination VM after the migration
+> >> finishes. If the user decides to never continue the VM, but instead
+> >> issue a new migration, then bdrv_activate_all() will never be called
+> >> and the assert will be reached:
+> >>
+> >> bdrv_inactivate_recurse: Assertion `!(bs->open_flags &
+> >> BDRV_O_INACTIVE)' failed.
+> >>
+> >> Fix the issue by checking at the start of migration if the VM is
+> >> paused and call bdrv_activate_all() before migrating. Even if the
+> >> late-block-activate capability is not in play or if the VM has been
+> >> paused manually, there is no harm calling that function again.
+> >>
+> >> Signed-off-by: Fabiano Rosas <farosas@suse.de>
+> >> ---
+> >>  migration/migration.c | 19 +++++++++++++++++++
+> >>  1 file changed, 19 insertions(+)
+> >>
+> >> diff --git a/migration/migration.c b/migration/migration.c
+> >> index aedf7f0751..26af30137b 100644
+> >> --- a/migration/migration.c
+> >> +++ b/migration/migration.c
+> >> @@ -2029,6 +2029,25 @@ static bool migrate_prepare(MigrationState *s, bool resume, Error **errp)
+> >>          return false;
+> >>      }
+> >>  
+> >> +    /*
+> >> +     * The VM might have been target of a previous migration. If it
+> >> +     * was in the paused state then nothing will have required the
+> >> +     * block layer to be activated. Do it now to ensure this QEMU
+> >> +     * instance owns the disk locks.
+> >> +     */
+> >> +    if (!resume && runstate_check(RUN_STATE_PAUSED)) {
+> > 
+> > I hope this will cover all the cases that QEMU could overlook.. or I'm not
+> > sure whether we could invoke bdrv_activate_all() unconditionally, as it
+> > looks like safe to be used if all disks are active already.
+> > 
+> > I wished we don't need to bother with disk activation status at all,
+> > because IIUC migration could work all fine even if all disks are inactivate
+> > when preparing migration.. hence such change always looks like a workaround
+> > of a separate issue.
+> > 
+> >> +        Error *local_err = NULL;
+> >> +
+> >> +        g_assert(bql_locked());
+> >> +
+> >> +        bdrv_activate_all(&local_err);
+> >> +        if (local_err) {
+> >> +            error_propagate(errp, local_err);
+> >> +            return false;
+> >> +        }
+> >> +        s->block_inactive = false;
+> > 
+> > This var so far was only used within one migration iteration, and the var
+> > was only set in migration_completion_precopy() so far.  Now we're resetting
+> > it upfront of a migration.  I'm not 100% sure if it's needed, or should be
+> > put somewhere else.
+> > 
+> 
+> This variable is unconditionally set in migration_completion_precopy()
+> and used as a flag for whether or not we should be deactivating disks in
+> qemu_savevm_state_complete_precopy():
+> 
+> >     /*                                                                              
+> >      * Inactivate disks except in COLO, and track that we have done so in order 
+> >      * to remember to reactivate them if migration fails or is cancelled.           
+> >      */                                                                             
+> >     s->block_inactive = !migrate_colo();                                            
+> >     migration_rate_set(RATE_LIMIT_DISABLED);                                                                                                                   
+> >     ret = qemu_savevm_state_complete_precopy(s->to_dst_file, false,             
+> >                                              s->block_inactive);
+> 
+> Ideally we'd like to take our paused state into account right here and
+> skip inactivation.  However at this point during the 2nd migration (in
+> paused state) our current_run_state == RUN_STATE_FINISH_MIGRATE.  So if
+> we truly wanted to skip unnecessary bdrv_activate_all(), we'd have to
+> remember our paused state somewhere earlier on the call stack and pass
+> an additional flag for that. Personally I don't think this is any
+> cleaner than just blatantly calling bdrv_activate_all().
 
-Add a framework for running migrations back and forth between two
-guests (aka ping-pong migration). We have seen a couple of bugs that
-only reproduce when a guest is migrated and the destination machine is
-used as the source of a new migration.
+I did something like that.
 
-Add a simple test that does 2 migrations and another test that uses
-the late-block-activate capability, which is one area where a bug has
-been found.
+Would you please have a look at the other series I posted?  Sorry it's
+slightly longer than this patch, but it does cover more than this bug
+alone (and it should also fix this bug):
 
-Note that this does not reuse any of the existing tests
-(e.g. test_precopy_common), because there is too much ambiguity
-regarding how to handle the hooks, args->result, stop/continue, etc.
+https://lore.kernel.org/r/20241204005138.702289-1-peterx@redhat.com
 
-Signed-off-by: Fabiano Rosas <farosas@suse.de>
-Link: https://lore.kernel.org/r/20241125144612.16194-6-farosas@suse.de
-Signed-off-by: Peter Xu <peterx@redhat.com>
----
- tests/qtest/migration-test.c | 121 +++++++++++++++++++++++++++++++++++
- 1 file changed, 121 insertions(+)
+> 
+> > In general, I saw the mention of other places that may also try to
+> > invalidate disks that used to be invalidated.  If that's the case, I wish
+> > we don't need to touch migration code at all, but instead if block layer
+> > can cope with "invalidate on top of invalidated disks" it'll be perfect.
+> > 
+> 
+> This sounds similar to my initial very naive fix, which we decided not
+> to take:
+> https://lists.nongnu.org/archive/html/qemu-devel/2024-09/msg04254.html
 
-diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
-index 74645f749c..4955b3b9eb 100644
---- a/tests/qtest/migration-test.c
-+++ b/tests/qtest/migration-test.c
-@@ -1819,6 +1819,104 @@ finish:
-     test_migrate_end(from, to, args->result == MIG_TEST_SUCCEED);
- }
- 
-+static void migrate_dst_becomes_src(QTestState **from, QTestState **to,
-+                                    QTestMigrationState *src_state,
-+                                    QTestMigrationState *dst_state)
-+{
-+    *from = *to;
-+
-+    *src_state = (QTestMigrationState) { };
-+    src_state->serial = dst_state->serial;
-+    qtest_qmp_set_event_callback(*from, migrate_watch_for_events, src_state);
-+
-+    src_state->stop_seen = dst_state->stop_seen;
-+}
-+
-+static void test_precopy_ping_pong_common(MigrateCommon *args, int n,
-+                                          bool late_block_activate)
-+{
-+    QTestState *from, *to;
-+    bool keep_paused = false;
-+
-+    g_assert(!args->live);
-+
-+    g_test_message("Migrating back and forth %d times", n);
-+
-+    for (int i = 0; i < n; i++) {
-+        g_test_message("%s (%d/%d)", i % 2 ? "pong" : "ping", i + 1, n);
-+
-+        if (test_migrate_start(&from, &to, args->listen_uri, &args->start)) {
-+            return;
-+        }
-+
-+        if (late_block_activate) {
-+            migrate_set_capability(from, "late-block-activate", true);
-+            migrate_set_capability(to, "late-block-activate", true);
-+
-+            /*
-+             * The late-block-activate capability expects that the
-+             * management layer will issue a qmp_continue command on
-+             * the destination once the migration finishes. In order
-+             * to test the capability properly, make sure the test is
-+             * not issuing spurious continue commands.
-+             */
-+            keep_paused = true;
-+        }
-+
-+        if (!src_state.stop_seen) {
-+            wait_for_serial(src_state.serial);
-+        }
-+
-+        /* because of !args->live */
-+        qtest_qmp_assert_success(from, "{ 'execute' : 'stop'}");
-+        wait_for_stop(from, &src_state);
-+
-+        migrate_ensure_converge(from);
-+        migrate_qmp(from, to, args->connect_uri, args->connect_channels, "{}");
-+
-+        wait_for_migration_complete(from);
-+        wait_for_migration_complete(to);
-+
-+        /* note check_guests_ram() requires a stopped guest */
-+        check_guests_ram(to);
-+
-+        if (keep_paused) {
-+            /*
-+             * Nothing issued continue on the destination, reflect
-+             * that the guest is paused in the dst_state.
-+             */
-+            dst_state.stop_seen = true;
-+        } else {
-+            qtest_qmp_assert_success(to, "{ 'execute' : 'cont'}");
-+            wait_for_serial(dst_state.serial);
-+            dst_state.stop_seen = false;
-+        }
-+
-+        /*
-+         * Last iteration, let the guest run to make sure there's no
-+         * memory corruption. The test_migrate_end() below will check
-+         * the memory one last time.
-+         */
-+        if (i == n - 1) {
-+            qtest_qmp_assert_success(to, "{ 'execute' : 'cont'}");
-+            wait_for_serial(dst_state.serial);
-+            dst_state.stop_seen = false;
-+            break;
-+        }
-+
-+        /*
-+         * Prepare for migrating back: clear the original source and
-+         * switch source & destination.
-+         */
-+        migrate_cleanup(from, NULL);
-+        migrate_dst_becomes_src(&from, &to, &src_state, &dst_state);
-+
-+        args->start.only_target = true;
-+    }
-+
-+    test_migrate_end(from, to, true);
-+}
-+
- static void file_dirty_offset_region(void)
- {
-     g_autofree char *path = g_strdup_printf("%s/%s", tmpfs, FILE_TEST_FILENAME);
-@@ -3772,6 +3870,24 @@ static void test_migrate_dirty_limit(void)
-     test_migrate_end(from, to, true);
- }
- 
-+static void test_precopy_ping_pong(void)
-+{
-+    MigrateCommon args = {
-+        .listen_uri = "tcp:127.0.0.1:0",
-+    };
-+
-+    test_precopy_ping_pong_common(&args, 2, false);
-+}
-+
-+static void test_precopy_ping_pong_late_block(void)
-+{
-+    MigrateCommon args = {
-+        .listen_uri = "tcp:127.0.0.1:0",
-+    };
-+
-+    test_precopy_ping_pong_common(&args, 2, true);
-+}
-+
- static bool kvm_dirty_ring_supported(void)
- {
- #if defined(__linux__) && defined(HOST_X86_64)
-@@ -4055,6 +4171,11 @@ int main(int argc, char **argv)
-         }
-     }
- 
-+    migration_test_add("/migration/precopy/ping-pong/plain",
-+                       test_precopy_ping_pong);
-+    migration_test_add("/migration/precopy/ping-pong/late-block-activate",
-+                       test_precopy_ping_pong_late_block);
-+
-     ret = g_test_run();
- 
-     g_assert_cmpint(ret, ==, 0);
+I still wish this can work, either the original patch, or anything that can
+make bdrv_inactivate_all() work on inactive-state disks, then it'll be an
+easier to use block API.
+
+I don't know block layer well, but I more or less know migration.  I hope
+we can still resolve that with some other way at least in migration so that
+we don't start to request disk being active for migration, because it
+really shouldn't need to.
+
+Thanks,
+
 -- 
-2.47.0
+Peter Xu
 
 
