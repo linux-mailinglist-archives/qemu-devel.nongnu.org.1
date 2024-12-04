@@ -2,70 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C81979E3EF0
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Dec 2024 17:00:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EBF6B9E3F1D
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Dec 2024 17:05:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tIrm2-0007cl-Ae; Wed, 04 Dec 2024 10:58:46 -0500
+	id 1tIrr6-0003ri-MS; Wed, 04 Dec 2024 11:04:00 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mchehab@kernel.org>)
- id 1tIrlx-0007bS-AK; Wed, 04 Dec 2024 10:58:41 -0500
-Received: from dfw.source.kernel.org ([139.178.84.217])
+ (Exim 4.90_1) (envelope-from <mario.fleischmann@lauterbach.com>)
+ id 1tIrr3-0003r4-Ur; Wed, 04 Dec 2024 11:03:57 -0500
+Received: from bm.lauterbach.com ([62.154.241.218])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mchehab@kernel.org>)
- id 1tIrlv-00074s-N2; Wed, 04 Dec 2024 10:58:41 -0500
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by dfw.source.kernel.org (Postfix) with ESMTP id 9FD185C6F09;
- Wed,  4 Dec 2024 15:57:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28A83C4CEDF;
- Wed,  4 Dec 2024 15:58:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1733327909;
- bh=cNJNXcDyaPC/qoa52vKI7D64a4wlMaDEwHHZJBjP9+k=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=RcsDAkpFQZ/0hJEnhv77vtNHqBJns9dPdU0D2xeIc2F+dhPOwMaWREJ+tBLv9Zc/2
- ZFsDo+b1TNzXcOHEqyqYIoo+2uIWIAjsHdaxSVX8hHAXq7fYHdn6xRTM7QzozQkpbO
- 5Fk9YemsyQYa9/ydTsgB4GlvMQMJ/uiO5qFHOmS7TqH1vdwjQc8PF6Ju8ftrr4pTbA
- GnKHZx/wjXMSP6yZ5EOulwfmSNidBjopu67fNbZsnlKWtLMBEcoI2M0LUXupo30AEp
- czyiVFBgxlO7c7Oocnu17mdYoLrkNjcVV878j8lZ+ntj7eRloPLE2MEts9qsyhWurH
- SzoLP4qPovWPQ==
-Received: from mchehab by mail.kernel.org with local (Exim 4.98)
- (envelope-from <mchehab@kernel.org>) id 1tIrlf-00000000HZ4-3cIR;
- Wed, 04 Dec 2024 16:58:23 +0100
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-To: Igor Mammedov <imammedo@redhat.com>
-Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Ani Sinha <anisinha@redhat.com>, Dongjiu Geng <gengdongjiu1@gmail.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Shannon Zhao <shannon.zhaosl@gmail.com>,
- Yanan Wang <wangyanan55@huawei.com>, Zhao Liu <zhao1.liu@intel.com>,
- linux-kernel@vger.kernel.org, qemu-arm@nongnu.org, qemu-devel@nongnu.org,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH v3 5/5] acpi/generic_event_device: add logic to detect if HEST
- addr is available
-Date: Wed,  4 Dec 2024 16:57:59 +0100
-Message-ID: <d136d20b57c86ba979bd0d5238ad8d300c4f50aa.1733327276.git.mchehab+huawei@kernel.org>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <cover.1733327276.git.mchehab+huawei@kernel.org>
-References: <cover.1733327276.git.mchehab+huawei@kernel.org>
+ (Exim 4.90_1) (envelope-from <mario.fleischmann@lauterbach.com>)
+ id 1tIrr1-0007vF-9c; Wed, 04 Dec 2024 11:03:57 -0500
+Received: from [10.2.13.100] (unknown [10.2.13.100])
+ (Authenticated sender: mario.fleischmann@lauterbach.com)
+ by bm.lauterbach.com (Postfix) with ESMTPSA id 15E7940793C3;
+ Wed,  4 Dec 2024 17:03:34 +0100 (CET)
+Message-ID: <0516feb0-ba9a-4ac0-a2bd-1bf97ca9694e@lauterbach.com>
+Date: Wed, 4 Dec 2024 17:03:34 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] riscv/gdb: add virt mode debug interface
+To: Yanfeng Liu <yfliu2008@qq.com>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
+ <alex.bennee@linaro.org>
+Cc: qemu-riscv@nongnu.org, qemu-devel@nongnu.org, alistair.francis@wdc.com
+References: <tencent_B52B1EB0A504D6F690B6E6F3FD3AC9BCDC09@qq.com>
+ <8734jbh21e.fsf@draig.linaro.org>
+ <tencent_CA6E4D0C897F3ED0EF988CCE5DF541442A05@qq.com>
+ <87r06ufjiz.fsf@draig.linaro.org>
+ <tencent_AADD9A1292CD7CB89F16999E7BDD03895406@qq.com>
+Content-Language: en-US
+From: Mario Fleischmann <mario.fleischmann@lauterbach.com>
+In-Reply-To: <tencent_AADD9A1292CD7CB89F16999E7BDD03895406@qq.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=139.178.84.217; envelope-from=mchehab@kernel.org;
- helo=dfw.source.kernel.org
-X-Spam_score_int: -100
-X-Spam_score: -10.1
-X-Spam_bar: ----------
-X-Spam_report: (-10.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.999,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_HI=-5, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Bm-Milter-Handled: 166a2dfb-2e12-4590-8fa5-72e30323519f
+X-Bm-Transport-Timestamp: 1733328214096
+Received-SPF: pass client-ip=62.154.241.218;
+ envelope-from=mario.fleischmann@lauterbach.com; helo=bm.lauterbach.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,167 +63,128 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Create a new property (x-has-hest-addr) and use it to detect if
-the GHES table offsets can be calculated from the HEST address
-(qemu 9.2 and upper) or via the legacy way via an offset obtained
-from the hardware_errors firmware file.
+Hi everyone,
 
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
----
- hw/acpi/generic_event_device.c |  1 +
- hw/acpi/ghes.c                 | 24 +++++++++++++++++-------
- hw/arm/virt-acpi-build.c       | 30 ++++++++++++++++++++++++++----
- hw/core/machine.c              |  2 ++
- include/hw/acpi/ghes.h         |  1 +
- 5 files changed, 47 insertions(+), 11 deletions(-)
+I'd like to chime in here because we are sitting on a similar patch 
+which I wanted to send to the mailing list as soon as riscv-debug-spec 
+v1.0.0 becomes ratified.
 
-diff --git a/hw/acpi/generic_event_device.c b/hw/acpi/generic_event_device.c
-index c1116dd8d7ae..df6b4fab2d30 100644
---- a/hw/acpi/generic_event_device.c
-+++ b/hw/acpi/generic_event_device.c
-@@ -318,6 +318,7 @@ static void acpi_ged_send_event(AcpiDeviceIf *adev, AcpiEventStatusBits ev)
- 
- static Property acpi_ged_properties[] = {
-     DEFINE_PROP_UINT32("ged-event", AcpiGedState, ged_event_bitmap, 0),
-+    DEFINE_PROP_BOOL("x-has-hest-addr", AcpiGedState, ghes_state.hest_lookup, true),
-     DEFINE_PROP_END_OF_LIST(),
- };
- 
-diff --git a/hw/acpi/ghes.c b/hw/acpi/ghes.c
-index af55bfe106bf..c9295a3b0db7 100644
---- a/hw/acpi/ghes.c
-+++ b/hw/acpi/ghes.c
-@@ -361,6 +361,8 @@ void acpi_build_hest(GArray *table_data, GArray *hardware_errors,
- {
-     AcpiTable table = { .sig = "HEST", .rev = 1,
-                         .oem_id = oem_id, .oem_table_id = oem_table_id };
-+    AcpiGedState *acpi_ged_state;
-+    AcpiGhesState *ags;
-     int i;
- 
-     build_ghes_error_table(hardware_errors, linker, num_sources);
-@@ -381,10 +383,16 @@ void acpi_build_hest(GArray *table_data, GArray *hardware_errors,
-      * tell firmware to write into GPA the address of HEST via fw_cfg,
-      * once initialized.
-      */
--    bios_linker_loader_write_pointer(linker,
--                                     ACPI_HEST_ADDR_FW_CFG_FILE, 0,
--                                     sizeof(uint64_t),
--                                     ACPI_BUILD_TABLE_FILE, hest_offset);
-+
-+    acpi_ged_state = ACPI_GED(object_resolve_path_type("", TYPE_ACPI_GED,
-+                                                       NULL));
-+    ags = &acpi_ged_state->ghes_state;
-+    if (ags->hest_lookup) {
-+        bios_linker_loader_write_pointer(linker,
-+                                         ACPI_HEST_ADDR_FW_CFG_FILE, 0,
-+                                         sizeof(uint64_t),
-+                                         ACPI_BUILD_TABLE_FILE, hest_offset);
-+    }
- }
- 
- void acpi_ghes_add_fw_cfg(AcpiGhesState *ags, FWCfgState *s,
-@@ -398,8 +406,10 @@ void acpi_ghes_add_fw_cfg(AcpiGhesState *ags, FWCfgState *s,
-     fw_cfg_add_file_callback(s, ACPI_HW_ERROR_ADDR_FW_CFG_FILE, NULL, NULL,
-         NULL, &(ags->hw_error_le), sizeof(ags->hw_error_le), false);
- 
--    fw_cfg_add_file_callback(s, ACPI_HEST_ADDR_FW_CFG_FILE, NULL, NULL,
--        NULL, &(ags->hest_addr_le), sizeof(ags->hest_addr_le), false);
-+    if (ags->hest_lookup) {
-+        fw_cfg_add_file_callback(s, ACPI_HEST_ADDR_FW_CFG_FILE, NULL, NULL,
-+            NULL, &(ags->hest_addr_le), sizeof(ags->hest_addr_le), false);
-+    }
- 
-     ags->present = true;
- }
-@@ -520,7 +530,7 @@ void ghes_record_cper_errors(const void *cper, size_t len,
-     }
-     ags = &acpi_ged_state->ghes_state;
- 
--    if (!ags->hest_addr_le) {
-+    if (!ags->hest_lookup) {
-         get_hw_error_offsets(le64_to_cpu(ags->hw_error_le),
-                              &cper_addr, &read_ack_register_addr);
-     } else {
-diff --git a/hw/arm/virt-acpi-build.c b/hw/arm/virt-acpi-build.c
-index bd5582bc75f8..46ce3f3bb07a 100644
---- a/hw/arm/virt-acpi-build.c
-+++ b/hw/arm/virt-acpi-build.c
-@@ -893,6 +893,10 @@ static const AcpiNotificationSourceId hest_ghes_notify[] = {
-     { ACPI_HEST_SRC_ID_SYNC, ACPI_GHES_NOTIFY_SEA },
- };
- 
-+static const AcpiNotificationSourceId hest_ghes_notify_9_1[] = {
-+    { ACPI_HEST_SRC_ID_SYNC, ACPI_GHES_NOTIFY_SEA },
-+};
-+
- static
- void virt_acpi_build(VirtMachineState *vms, AcpiBuildTables *tables)
- {
-@@ -946,10 +950,28 @@ void virt_acpi_build(VirtMachineState *vms, AcpiBuildTables *tables)
-     build_dbg2(tables_blob, tables->linker, vms);
- 
-     if (vms->ras) {
--        acpi_add_table(table_offsets, tables_blob);
--        acpi_build_hest(tables_blob, tables->hardware_errors, tables->linker,
--                        hest_ghes_notify, ARRAY_SIZE(hest_ghes_notify),
--                        vms->oem_id, vms->oem_table_id);
-+        AcpiGhesState *ags;
-+        AcpiGedState *acpi_ged_state;
-+
-+        acpi_ged_state = ACPI_GED(object_resolve_path_type("", TYPE_ACPI_GED,
-+                                                       NULL));
-+        if (acpi_ged_state) {
-+            ags = &acpi_ged_state->ghes_state;
-+
-+            acpi_add_table(table_offsets, tables_blob);
-+
-+            if (!ags->hest_lookup) {
-+                acpi_build_hest(tables_blob, tables->hardware_errors,
-+                                tables->linker, hest_ghes_notify_9_1,
-+                                ARRAY_SIZE(hest_ghes_notify_9_1),
-+                                vms->oem_id, vms->oem_table_id);
-+            } else {
-+                acpi_build_hest(tables_blob, tables->hardware_errors,
-+                                tables->linker, hest_ghes_notify,
-+                                ARRAY_SIZE(hest_ghes_notify),
-+                                vms->oem_id, vms->oem_table_id);
-+            }
-+        }
-     }
- 
-     if (ms->numa_state->num_nodes > 0) {
-diff --git a/hw/core/machine.c b/hw/core/machine.c
-index f29fe959647f..b81fea273e6b 100644
---- a/hw/core/machine.c
-+++ b/hw/core/machine.c
-@@ -34,10 +34,12 @@
- #include "hw/virtio/virtio-pci.h"
- #include "hw/virtio/virtio-net.h"
- #include "hw/virtio/virtio-iommu.h"
-+#include "hw/acpi/generic_event_device.h"
- #include "audio/audio.h"
- 
- GlobalProperty hw_compat_9_1[] = {
-     { TYPE_PCI_DEVICE, "x-pcie-ext-tag", "false" },
-+    { TYPE_ACPI_GED, "x-has-hest-addr", "false" },
- };
- const size_t hw_compat_9_1_len = G_N_ELEMENTS(hw_compat_9_1);
- 
-diff --git a/include/hw/acpi/ghes.h b/include/hw/acpi/ghes.h
-index 237721fec0a2..164ed8b0f9a3 100644
---- a/include/hw/acpi/ghes.h
-+++ b/include/hw/acpi/ghes.h
-@@ -61,6 +61,7 @@ typedef struct AcpiGhesState {
-     uint64_t hest_addr_le;
-     uint64_t hw_error_le;
-     bool present; /* True if GHES is present at all on this board */
-+    bool hest_lookup; /* True if HEST address is present */
- } AcpiGhesState;
- 
- /*
--- 
-2.47.1
+For hypervisor support, `(qemu) info registers` isn't enough. We need to 
+have both read and write access to the V-bit.
+
+On 04.12.2024 14:43, Yanfeng Liu wrote:
+> On Fri, 2024-11-29 at 09:59 +0000, Alex Bennée wrote:
+>> Yanfeng <yfliu2008@qq.com> writes:
+>>
+>>> On Thu, 2024-11-28 at 14:21 +0000, Alex Bennée wrote:
+>>>> Yanfeng Liu <yfliu2008@qq.com> writes:
+>>>>
+>>>>> This adds `virt` virtual register on debug interface so that users
+>>>>> can access current virtualization mode for debugging purposes.
+>>>>>
+>>>>> Signed-off-by: Yanfeng Liu <yfliu2008@qq.com>
+>>>>> ---
+>>>>>   gdb-xml/riscv-32bit-virtual.xml |  1 +
+>>>>>   gdb-xml/riscv-64bit-virtual.xml |  1 +
+>>>>>   target/riscv/gdbstub.c          | 18 ++++++++++++------
+>>>>>   3 files changed, 14 insertions(+), 6 deletions(-)
+>>>>>
+>>>>> diff --git a/gdb-xml/riscv-32bit-virtual.xml b/gdb-xml/riscv-32bit-
+>>>>> virtual.xml
+>>>>> index 905f1c555d..d44b6ca2dc 100644
+>>>>> --- a/gdb-xml/riscv-32bit-virtual.xml
+>>>>> +++ b/gdb-xml/riscv-32bit-virtual.xml
+>>>>> @@ -8,4 +8,5 @@
+>>>>>   <!DOCTYPE feature SYSTEM "gdb-target.dtd">
+>>>>>   <feature name="org.gnu.gdb.riscv.virtual">
+>>>>>     <reg name="priv" bitsize="32"/>
+>>>>> +  <reg name="virt" bitsize="32"/>
+>>>>>   </feature>
+>>>>> diff --git a/gdb-xml/riscv-64bit-virtual.xml b/gdb-xml/riscv-64bit-
+>>>>> virtual.xml
+>>>>> index 62d86c237b..7c9b63d5b6 100644
+>>>>> --- a/gdb-xml/riscv-64bit-virtual.xml
+>>>>> +++ b/gdb-xml/riscv-64bit-virtual.xml
+>>>>> @@ -8,4 +8,5 @@
+>>>>>   <!DOCTYPE feature SYSTEM "gdb-target.dtd">
+>>>>>   <feature name="org.gnu.gdb.riscv.virtual">
+>>>>>     <reg name="priv" bitsize="64"/>
+>>>>> +  <reg name="virt" bitsize="64"/>
+>>>>>   </feature>
+>>>>
+>>>> I assume these are mirrored in gdb not a QEMU only extension?
+>>>
+>>> So far I think it is a QEMU extension and the `gdb-multiarch` doesn't treat
+>>> is
+>>> specially. My tests shows it basically works:
+>>>
+>>> ```
+>>> (gdb) ir virt
+>>> priv           0x3      prv:3 [Machine]
+>>> virt           0x0      0
+>>> (gdb) set $priv = 2
+>>> (gdb) ir virt
+>>> priv           0x1      prv:1 [Supervisor]
+>>> virt           0x0      0
+>>> (gdb) set $virt = 1
+>>> (gdb) ir virt
+>>> priv           0x1      prv:1 [Supervisor]
+>>> virt           0x1      1
+>>> (gdb) set $virt = 0
+>>> (gdb) ir virt
+>>> priv           0x1      prv:1 [Supervisor]
+>>> virt           0x0      0
+>>> (gdb) set $virt = 1
+>>> (gdb) ir virt
+>>> priv           0x1      prv:1 [Supervisor]
+>>> virt           0x1      1
+>>> (gdb) set $priv = 3
+>>> (gdb) ir virt
+>>> priv           0x3      prv:3 [Machine]
+>>> virt           0x0      0
+>>> ```
+>>
+>> A gdbstub test case would be useful for this although I don't know if
+>> the RiscV check-tcg tests switch mode at all.
+>>
+>>>
+>>> As I am rather new to QEMU, please teach how we can add it as a QEMU only
+>>> extension.
+>>
+>> You don't need to extend the XML from GDB, you can build a specific one
+>> for QEMU extensions. For example:
+>>
+>>      gdb_feature_builder_init(&param.builder,
+>>                               &cpu->dyn_sysreg_feature.desc,
+>>                               "org.qemu.gdb.arm.sys.regs",
+>>                               "system-registers.xml",
+>>                               base_reg);
+>>
+>> This exports all the system registers QEMU knows about and GDB can
+>> access generically. Note the id is org.qemu..., indicating its our
+>> schema not gdbs.
+> Thanks for teaching, I need time to digest. I guess more feature builder APIs
+> are needed (like append_reg) and the getter/setter callbacks might be at a
+> different place.
+> 
+> BTW, compared to adding virtual register `virt`, how do you think if we share
+> the V bit as part of existing `priv` register?
+
+IMHO this is a very good idea since the latest release candidate of 
+riscv-debug-spec also includes the V bit in priv:2.
+
+> Or maybe we shall talk to GDB community to get their opinions? If they agree to
+> add a few words about V bit here
+> https://sourceware.org/gdb/current/onlinedocs/gdb.html/RISC_002dV-Features.html,
+> then it saves us a lot.
+
+Except being currently not supported by GDB
+
+(gdb) info register $priv
+priv           0x5      prv:5 [INVALID]
+
+are there any reasons from QEMU's side that would speak against 
+including V in priv?
+
 
 
