@@ -2,71 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E564C9E307F
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Dec 2024 01:53:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 519FA9E3082
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Dec 2024 01:53:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tIdcT-0003B0-Bl; Tue, 03 Dec 2024 19:51:57 -0500
+	id 1tIdcS-00039i-D6; Tue, 03 Dec 2024 19:51:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tIdcK-000394-0a
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tIdcK-000396-Qe
  for qemu-devel@nongnu.org; Tue, 03 Dec 2024 19:51:50 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tIdcH-0005Kn-Qo
- for qemu-devel@nongnu.org; Tue, 03 Dec 2024 19:51:47 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tIdcI-0005L5-2E
+ for qemu-devel@nongnu.org; Tue, 03 Dec 2024 19:51:48 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1733273503;
+ s=mimecast20190719; t=1733273505;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=0fl4riJXkkfo/96dvAXYYNvSSH0WhrAGlbwismyIdZM=;
- b=QGFvOE8duz/R3dsR0McK5iAgDhqa3iYMhccgJ2lDYz0Su/xmZwrE6E35nC/fLaD90vwGDx
- lNx/mqyWy9Y8r0wfGKWp8c9BnV5iLgqjIag3SVWGJ62tidsjXGJSfJdj0hMbpfPpn9X5bd
- MAfSNAWdeTCSfXOXVpHHg8Pe0Dwvexo=
-Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
- [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=YeSfgc7Jyo9nB/kprDl4lAEUoTylMcAzUPDJAOUL/0Y=;
+ b=hdT9J/uyFeQRtXEHGR+DDIvcCJ7239fnKK0GZjXln1emKe5+EimshQTjHx7sUiIc22434N
+ gDKReAf7VGooMhyR7DgmBQT63LIXGIA+Hw3cSQ325QxFvxZ0m3/lQQtmjXRwzpb+Yyj9fB
+ /V6ijZ8udaouTBwIKq9Gb/pJ4sbHlsc=
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
+ [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-641-Mv-23AFRNvS9CZz_ZROqbA-1; Tue, 03 Dec 2024 19:51:42 -0500
-X-MC-Unique: Mv-23AFRNvS9CZz_ZROqbA-1
-X-Mimecast-MFC-AGG-ID: Mv-23AFRNvS9CZz_ZROqbA
-Received: by mail-qk1-f197.google.com with SMTP id
- af79cd13be357-7b665521dabso93600185a.0
- for <qemu-devel@nongnu.org>; Tue, 03 Dec 2024 16:51:42 -0800 (PST)
+ us-mta-635-bup9oWohPPOAhpAQUte5KA-1; Tue, 03 Dec 2024 19:51:44 -0500
+X-MC-Unique: bup9oWohPPOAhpAQUte5KA-1
+X-Mimecast-MFC-AGG-ID: bup9oWohPPOAhpAQUte5KA
+Received: by mail-qk1-f200.google.com with SMTP id
+ af79cd13be357-7b66a5121efso754671785a.0
+ for <qemu-devel@nongnu.org>; Tue, 03 Dec 2024 16:51:44 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733273501; x=1733878301;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=0fl4riJXkkfo/96dvAXYYNvSSH0WhrAGlbwismyIdZM=;
- b=m10N2yjbLpFddftJ+XWuWP0G+LtmcIwB/FFhy5Ay+QDdxhnw+vx1XyXqvIsGpC5OK0
- mDvJQf9eQQ2PThte1uIbUGQkAIq1673qzK06D2PtwdQogSMxy0O0e0LB3LruEUtJwvxG
- DHHuAdMeTHl3ul9CRO6ntGaxRmXqut8s/Ui8g9j7z/qrZHjNskRzPVwAS6A4T29ySxRR
- Lta9RpR+hFj21VYbmOkNHe8WrCTy9S2VYlaloEflh6Tbwcw+CxKkTcQnJ0tUgTInl1oF
- Fq9PT6x4JBFZ6C/SMdP3eusWM56/kHiZ9aBLbRLiAzDAoVGMqmJYjxNzzP8PC8uPF2Fp
- Jzrg==
-X-Gm-Message-State: AOJu0YwRHixjOTzXlQzJ3LX0rCqHSFIPTMspOQFTXN+xe0Gpqf0s4vK6
- dkDgfCmP8fwYE/t8Vtsq0Jzcw65ICQChrJWIE7lJ+OOHhyhlaoI3mzzCuq8wEJn+AUgZ9YoatgQ
- rm+nW2DwzQ4r/laVdiJXhzzLFjEfm+ZBX9tfGMXpfTQWTXifCchBNk9AJNJQnFkrbnixQVefcSx
- 18JUVbytTavyPybuSFm6fOsdH+cKoEaGZY5Q==
-X-Gm-Gg: ASbGnctGeoyweMXfcQeY/ihtFDEhao4BxjcdF5zKm8WNwBQ0iAqp49jGQX0u7v13pVs
- iW/thvU4J+GAc12gappJFn0zXgajJtXo3Nkqt8KAzmFz4tX/F+eO0HKBwD6E6NKWxNXwI7372yp
- 7/ub5JgYVdvMcNZ7nm11pGQbwyk/o9caj211HBz1K08iW8Ohm+HQZULPw8wRfHaSNi31ZcYSY8k
- 8ZN8BfJg4kE+pqRskIo66VFAt82DJegZGV7lYxuKH9PnwXHzQhfkoa9wmnn/vcF6m4ZaySgpm3F
- xO4RYXCezt0Vn1o4HN+dcPdflw==
-X-Received: by 2002:a05:620a:46a6:b0:7b1:1fdd:d54f with SMTP id
- af79cd13be357-7b683a8337dmr4455284885a.29.1733273501367; 
- Tue, 03 Dec 2024 16:51:41 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHiUF98Rg12DlKRKFA9F7XlETaUWaxwRZvTvLbkMQuWlcfC93WhPHc19OYxX09T5kjAqAUFcw==
-X-Received: by 2002:a05:620a:46a6:b0:7b1:1fdd:d54f with SMTP id
- af79cd13be357-7b683a8337dmr4455279485a.29.1733273500854; 
- Tue, 03 Dec 2024 16:51:40 -0800 (PST)
+ d=1e100.net; s=20230601; t=1733273503; x=1733878303;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=YeSfgc7Jyo9nB/kprDl4lAEUoTylMcAzUPDJAOUL/0Y=;
+ b=dYrvH2187VRxFsu0VwEu7vxNucHhJDX1RWy/+Hp3y4K25kgGpPu189BlM4cPZd9loV
+ Vz2rgKkLN9jzW9q/kmOl4QVdEvye8xMaWLCQ5HlePxbc66H+UUEnPxr4eIgbmjpVkFsV
+ OxJj7VT5uszJrDiST9bMQ4JbklaSYFJQgV1no6Fr7IDpCPLJP2K0Fk/5jRTVZwSmD/22
+ 48FAUIDO0bz22k5WaL/OmzaJCMsTvBmWZTO8DWixsv74AxnP4ywQcyTnk4zIHXIwxg1C
+ k6LuFhIxQNxWNVS3OoNJ5Gr/DdVzrIR7PpeFdhUnp38WrxUcN8mED5gi8/92Gg1kahsn
+ GKew==
+X-Gm-Message-State: AOJu0Yzbc2R2MrhNruuDXfE3kNOCWgMjsAsIjcAcpL1PJQowSS89CmMo
+ KDnFz3VQ6E8gYVic38a5EEvei8pwURxm/TabDjsUS3j4RbWxU1kUoRLNkTSUkZ5PjL/6pfj0qYn
+ DyvxLE+8aw0wS8GDPIK26YSxsTIDjiEUdJ9+OC9iyKK3LOkhQ03QsreCdBP4OlStXAu1Bgp5RTo
+ c7Egg4xR1VGfLW5Vmn2yJG3ZoNErEqUlntcg==
+X-Gm-Gg: ASbGncvcf0zv3MFx/KBOmNo8YuPpbOzRqcHk5D79XH8V6maHh4EEYom5i91Voekw78h
+ 0fV7iiavn3kBQtK2Ysj+BiEukG3qi0GarEACS8k2S5JYckFkcot4PBbBEKeU30nWWvwbUbg8+Fk
+ gm61fOVNDFsx0Z/IwYk4zbSrPNaVJc4DJ2HbAr/yb7CyWrskI1hPMYrpu43MRBWBortFjgbjjn1
+ /+uixiNpHR+dH2lB1ihE95T3z5U5KlDOK27eYlwBBbK3nONp1tg4t1IwV6o1A1jBsJF4SaWTq6i
+ fOmTeTadYtOM47cIpojIeE/IXQ==
+X-Received: by 2002:a05:620a:248f:b0:7b6:6add:4a3c with SMTP id
+ af79cd13be357-7b6a5d3a035mr624332285a.21.1733273503263; 
+ Tue, 03 Dec 2024 16:51:43 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHcApxcf2wNJvtEwRWGFfA1Km44uCXjtDUDtamN8kBwMkDJRh1L+c+at2kpfbDQBdZ5+y5kjA==
+X-Received: by 2002:a05:620a:248f:b0:7b6:6add:4a3c with SMTP id
+ af79cd13be357-7b6a5d3a035mr624328885a.21.1733273502774; 
+ Tue, 03 Dec 2024 16:51:42 -0800 (PST)
 Received: from x1n.redhat.com (pool-99-254-114-190.cpe.net.cable.rogers.com.
  [99.254.114.190]) by smtp.gmail.com with ESMTPSA id
- af79cd13be357-7b68492cb81sm559974785a.34.2024.12.03.16.51.39
+ af79cd13be357-7b68492cb81sm559974785a.34.2024.12.03.16.51.41
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 03 Dec 2024 16:51:39 -0800 (PST)
+ Tue, 03 Dec 2024 16:51:42 -0800 (PST)
 From: Peter Xu <peterx@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-block@nongnu.org, Fabiano Rosas <farosas@suse.de>,
@@ -76,11 +77,12 @@ Cc: qemu-block@nongnu.org, Fabiano Rosas <farosas@suse.de>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>, peterx@redhat.com,
  Stefan Hajnoczi <stefanha@redhat.com>
-Subject: [PATCH RFC 00/11] migration/block: disk activation rewrite
-Date: Tue,  3 Dec 2024 19:51:27 -0500
-Message-ID: <20241204005138.702289-1-peterx@redhat.com>
+Subject: [PATCH RFC 01/11] migration: Add helper to get target runstate
+Date: Tue,  3 Dec 2024 19:51:28 -0500
+Message-ID: <20241204005138.702289-2-peterx@redhat.com>
 X-Mailer: git-send-email 2.47.0
-Content-Type: text/plain; charset="utf-8"
+In-Reply-To: <20241204005138.702289-1-peterx@redhat.com>
+References: <20241204005138.702289-1-peterx@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
@@ -108,61 +110,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-I started looking at this problem as a whole when reviewing Fabiano's
-series, especially the patch (for a QEMU crash [1]):
+In 99% cases, after QEMU migrates to dest host, it tries to detect the
+target VM runstate using global_state_get_runstate().
 
-https://lore.kernel.org/r/20241125144612.16194-5-farosas@suse.de
+There's one outlier so far which is Xen that won't send global state.
+That's the major reason why global_state_received() check was always there
+together with global_state_get_runstate().
 
-The proposed patch could work, but it's unwanted to add such side effect to
-migration.  So I start to think about whether we can provide a cleaner
-approach, at least remove that "we must active the disk for migration"
-dependency, because migration really don't need the disks to be active..
+However it's utterly confusing why global_state_received() has anything to
+do with "let's start VM or not".
 
-It's also a pure wish that, if bdrv_inactivate_all() could be benign to be
-called even if all disks are already inactive.  Then problem also gone.
-After all, similar call on bdrv_activate_all() upon all-active disks is all
-fine.  I hope that wish could still be fair.
+Provide a helper to explain it, then we have an unified entry for getting
+the target dest QEMU runstate after migration.
 
-And when I was looking at that, I found more things spread all over the
-place on disk activation.  I decided to clean all of them up, while
-hopefully fixing the QEMU crash [1] too.
+Suggested-by: Fabiano Rosas <farosas@suse.de>
+Signed-off-by: Peter Xu <peterx@redhat.com>
+---
+ migration/migration.c | 21 +++++++++++++++++----
+ 1 file changed, 17 insertions(+), 4 deletions(-)
 
-So this is what I came up with as of today.  Marking RFC as of now, just to
-collect some feedbacks first.  At least I'd like to go with one more patch
-to deprecate late-block-active - not deprecating its function, but make it
-always happen (which is the default as of now for Libvirt), which should
-hopefully be migration-ABI-safe.
-
-With the help of Fabiano's test cases, I at least am sure this series works
-for the ping pong migrations, and all existing qtests.
-
-Let me know, thanks.
-
-[1] https://gitlab.com/qemu-project/qemu/-/issues/2395
-
-Fabiano Rosas (4):
-  tests/qtest/migration: Move more code under only_target
-  tests/qtest/migration: Don't use hardcoded strings for -serial
-  tests/qtest/migration: Support cleaning up only one side of migration
-  tests/qtest/migration: Test successive migrations
-
-Peter Xu (7):
-  migration: Add helper to get target runstate
-  migration/block: Make late-block-active the default
-  migration/block: Apply late-block-active behavior to postcopy
-  migration/block: Fix possible race with block_inactive
-  migration/block: Merge block reactivations for fail/cancel
-  migration/block: Extend the migration_block_* API to dest side
-  migration/block: Apply the migration_block_* API to postcopy
-
- migration/migration.h           |  33 ++++-
- tests/qtest/migration-helpers.h |   2 +
- migration/migration.c           | 177 +++++++++++-----------
- migration/savevm.c              |  32 ++--
- tests/qtest/migration-helpers.c |   8 +
- tests/qtest/migration-test.c    | 252 +++++++++++++++++++++++++-------
- 6 files changed, 344 insertions(+), 160 deletions(-)
-
+diff --git a/migration/migration.c b/migration/migration.c
+index 8c5bd0a75c..d2a6b939cf 100644
+--- a/migration/migration.c
++++ b/migration/migration.c
+@@ -135,6 +135,21 @@ static bool migration_needs_multiple_sockets(void)
+     return migrate_multifd() || migrate_postcopy_preempt();
+ }
+ 
++static RunState migration_get_target_runstate(void)
++{
++    /*
++     * When the global state is not migrated, it means we don't know the
++     * runstate of the src QEMU.  We don't have much choice but assuming
++     * the VM is running.  NOTE: this is pretty rare case, so far only Xen
++     * uses it.
++     */
++    if (!global_state_received()) {
++        return RUN_STATE_RUNNING;
++    }
++
++    return global_state_get_runstate();
++}
++
+ static bool transport_supports_multi_channels(MigrationAddress *addr)
+ {
+     if (addr->transport == MIGRATION_ADDRESS_TYPE_SOCKET) {
+@@ -735,8 +750,7 @@ static void process_incoming_migration_bh(void *opaque)
+      * unless we really are starting the VM.
+      */
+     if (!migrate_late_block_activate() ||
+-         (autostart && (!global_state_received() ||
+-            runstate_is_live(global_state_get_runstate())))) {
++        (autostart && runstate_is_live(migration_get_target_runstate()))) {
+         /* Make sure all file formats throw away their mutable metadata.
+          * If we get an error here, just don't restart the VM yet. */
+         bdrv_activate_all(&local_err);
+@@ -759,8 +773,7 @@ static void process_incoming_migration_bh(void *opaque)
+ 
+     dirty_bitmap_mig_before_vm_start();
+ 
+-    if (!global_state_received() ||
+-        runstate_is_live(global_state_get_runstate())) {
++    if (runstate_is_live(migration_get_target_runstate())) {
+         if (autostart) {
+             vm_start();
+         } else {
 -- 
 2.47.0
 
