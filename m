@@ -2,96 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E398A9E47F6
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Dec 2024 23:37:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE1859E480B
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Dec 2024 23:41:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tIxys-00068M-EU; Wed, 04 Dec 2024 17:36:26 -0500
+	id 1tIy3c-0001Jm-43; Wed, 04 Dec 2024 17:41:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.williamson@redhat.com>)
- id 1tIxyi-000659-UG
- for qemu-devel@nongnu.org; Wed, 04 Dec 2024 17:36:16 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.williamson@redhat.com>)
- id 1tIxyg-00084f-TG
- for qemu-devel@nongnu.org; Wed, 04 Dec 2024 17:36:16 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1733351773;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=RvmQwXJlc2d6x71WYFbbz8RLKYdXQ34xl9yttxybnSE=;
- b=JbBSwzEfgVm/meL1jXk89o9jD6IZWvva3L7AuPJgTxvH6HDWXhjaPEuE86yWzl1MsCeMsO
- dsQ91KxpbPCqY4DMR1KjmctiFafR56K9lXnK3iD+nUs0sy/v8WdkVrFR4y8R5zCzFDW+Ge
- oyxRr47MPQMLL1Qd79L8wUZk3R7ErV4=
-Received: from mail-io1-f71.google.com (mail-io1-f71.google.com
- [209.85.166.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-691-fx8vxjosNSuK34jiXwpL2Q-1; Wed, 04 Dec 2024 17:36:12 -0500
-X-MC-Unique: fx8vxjosNSuK34jiXwpL2Q-1
-X-Mimecast-MFC-AGG-ID: fx8vxjosNSuK34jiXwpL2Q
-Received: by mail-io1-f71.google.com with SMTP id
- ca18e2360f4ac-843df54fd9bso4014039f.1
- for <qemu-devel@nongnu.org>; Wed, 04 Dec 2024 14:36:12 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1tIy3Y-0001JV-35
+ for qemu-devel@nongnu.org; Wed, 04 Dec 2024 17:41:16 -0500
+Received: from mail-pg1-x530.google.com ([2607:f8b0:4864:20::530])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1tIy3W-0000vK-4z
+ for qemu-devel@nongnu.org; Wed, 04 Dec 2024 17:41:15 -0500
+Received: by mail-pg1-x530.google.com with SMTP id
+ 41be03b00d2f7-7e6d04f74faso201069a12.1
+ for <qemu-devel@nongnu.org>; Wed, 04 Dec 2024 14:41:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1733352072; x=1733956872; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=JTXlaCXNXxkbmkcqcalqylsdzpOZz+cu/IkaDF5tOFA=;
+ b=n67zM+O3kf8AHbNSMwx6qgqGpN/v+3jY5B63QMHLiSFSiGT/kgjD8EkUuMzEutGguN
+ NU2XUzIFiDzxonyATusD5k3gHrS4JAAuviOvt8LJ4hd4UnbCmw0v0pYLKtIxIgpim0SV
+ J5tG0yHxaCtoVnr7NemzMio/SuwvS3HzHJHGy7iPa5kanVqt4QGrUivt2oJtlP8wyJ1w
+ cgwDshigtMGXl8G85RNFnAfUenaVagxdn8muMyNxxTygtjQbQ50LP5QPN/OY9Pxcy8fR
+ MYESHq16KIo4WtL3f37iJrnbNs7LBfwMAv8opJUYh14tEZl1UqqJmXvlyqa88lbf4Zqu
+ DU3g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733351771; x=1733956571;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=RvmQwXJlc2d6x71WYFbbz8RLKYdXQ34xl9yttxybnSE=;
- b=Or/+iIWc5j/s95f/XYWyYjxSO/lwt8bMjkiI0hoYy5LRr6OXwE+ucpPlxJHTYDgDfz
- 2/xVdSN8ye1N/ENpUdhtnHQdEIQwvZZU8OsHpt4hdBb2v7NVMlP3kkLZttn2xXCzVZL/
- fw3oU16DYFt+otadia/LttP9X5dgP3zRJocvDaOS/dJVgQJhOjSaANwD6YfqbNKBDBFy
- DevWi2E/61iGonTTBUXKCUuQAv7l3Dua4DZ+HuhwrpvVSyqIksAZU8OKYdax18MtIkDT
- sNwQizffeIsC3svOL27zDtewaaZIgJ0DsnPPgMf7QQUatiBaa4BXj9vljnblY/Agyq5H
- zIXQ==
-X-Gm-Message-State: AOJu0YzHEysIjpHqzsTm6jaNv9AwoQph2K5bEy1RFQOAp+DTfKyWbtMU
- Q54FpwHO7NxQQGf9a+t8knMlUWFq3nyNUHMH3PlsUGqb5O1svwCDJ32r2nmAVCu1zTV+RErfpKm
- vV5d/0kRwziDoEEjj0avSoGTuBjl6SW37Eb8Fb9ViJpSBc+z+KYng
-X-Gm-Gg: ASbGncuUq9QkhKDsPEVlsTGt06Ua0g281uNZWWpke/qxFSsqHKGCBDm2mCSzmMx/GaP
- uuZWBhWCI2MU/2gsdWG+tlClqW7KqUjLKOGsON54RXTeCkhsQQgT2j1YbEdpt0aI3cVxh9WXozD
- OzTEnAV8UrGnAfbOidbVnYJ4hDbV3pGAlSPG2xLv0UVyu25pKYfGC2iNVztq3AWqqpLVXhFjGNH
- /HU54R5Zy2geq5bsSJYTzj5ntCnCc54R9DoovYo/f6oa6/sEcHNVA==
-X-Received: by 2002:a05:6e02:b4f:b0:3a7:81cd:5c4a with SMTP id
- e9e14a558f8ab-3a7f9ab968emr23010585ab.7.1733351771591; 
- Wed, 04 Dec 2024 14:36:11 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHgA7xSvTiUVoSm7EMGIyz9iZVuCLjqwL9D1/OEP8taxPbi8iEgDuLRGcEX8e+Hzalz4YEilg==
-X-Received: by 2002:a05:6e02:b4f:b0:3a7:81cd:5c4a with SMTP id
- e9e14a558f8ab-3a7f9ab968emr23010515ab.7.1733351771258; 
- Wed, 04 Dec 2024 14:36:11 -0800 (PST)
-Received: from redhat.com ([38.15.36.11]) by smtp.gmail.com with ESMTPSA id
- e9e14a558f8ab-3a808db31a4sm564285ab.40.2024.12.04.14.36.10
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 04 Dec 2024 14:36:10 -0800 (PST)
-Date: Wed, 4 Dec 2024 15:36:10 -0700
-From: Alex Williamson <alex.williamson@redhat.com>
-To: Tomita Moeko <tomitamoeko@gmail.com>
-Cc: qemu-devel@nongnu.org, =?UTF-8?B?Q8OpZHJpYw==?= Le Goater
- <clg@redhat.com>, Corvin =?UTF-8?B?S8O2aG5l?= <c.koehne@beckhoff.com>
-Subject: Re: [PATCH v2 2/9] vfio/igd: align generation with i915 kernel driver
-Message-ID: <20241204153610.09764d56.alex.williamson@redhat.com>
-In-Reply-To: <20241203133548.38252-3-tomitamoeko@gmail.com>
-References: <20241203133548.38252-1-tomitamoeko@gmail.com>
- <20241203133548.38252-3-tomitamoeko@gmail.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
+ d=1e100.net; s=20230601; t=1733352072; x=1733956872;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=JTXlaCXNXxkbmkcqcalqylsdzpOZz+cu/IkaDF5tOFA=;
+ b=qsmgW5FokPjUzHKaVkFCFgGSsnXPSXcGSNi8Q2lUZVL+qlO+jnU99iFhKHlPrU+4JW
+ MyYlO070yE1/tY2+uYrzCp25KbnSRJwClO+VKmq5td8yUXSqjeeSbbLwLwCJkVbpmBdn
+ 2KMabqHqmw61+avxD2hWslxipDWuGb48wMsBPeVBw4NcCrVq+eC2lOBdEBFtbI9ZJTvY
+ plDYXCzWGS4ln6MCWLoR7bflC//cE0M119tcwUYuSvpz0y5EY7bML6f/0Jd1ZVxgqLJB
+ 2/SInuJVsjobBEV3GnmOdMJHqTuSm3ltmvyiuXYcngwLrh+pBdogcssl9E3fXIGN7KJZ
+ Zthw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWPYzgdrKEO1waYwUevrZ6dI2eDzULOLuC3DnpVzBmu8QmXS4eLVLY+4idWYxElQOVmd7cysgE1ZILL@nongnu.org
+X-Gm-Message-State: AOJu0YzI4mQgE5Kqdx4YCGfKPOWKbwqUi/SjBydoLAiUZjfM+FIBz/8G
+ 7Wd1eMF/mGRs8mmxFchsWm8tBtPDTS+HyENWrybzn8SlJZYZGMVtGVcuPVfF90TsIfTMPRUqqb5
+ MXws=
+X-Gm-Gg: ASbGnctVM6L1tZ0LVECMX2sJiareYEGtpQFHfOWvLjxH3touNWcboXoRB4TaHSV/vMw
+ oz9ABV6u9ZpAg3FrfSBfIlCOwx1BJOJ36M1ohf4rCEaEPRv4CM/3fzGIuJc+1hqH6OMBH7GXPiV
+ dEc67d5H/lTJXDSUbucZBin0TiYZmAlMpJ3o+ZtR+ppf4fKqMaXpaZKz4BNGGjs/nvXyVNRcT+w
+ y96Eikwakt1bAjbG74RgccpWcBTjoB+qyQIzvA/J0pmDFUupMk296ZYO6cPoje+B70h3f6OxUOQ
+ SzZZDfKE1NmEp6nXpmkmIg==
+X-Google-Smtp-Source: AGHT+IGEhXAda8WFoHtO0vdLGD2GwNGg305C5d4bPor2FlC0ySyi5bHp8sHXHM/WqZOH41Zbou1dUg==
+X-Received: by 2002:a17:90b:4b82:b0:2ee:7c22:6e7c with SMTP id
+ 98e67ed59e1d1-2ef41c73dffmr1619272a91.13.1733352071938; 
+ Wed, 04 Dec 2024 14:41:11 -0800 (PST)
+Received: from [192.168.1.67] (216-180-64-156.dyn.novuscom.net.
+ [216.180.64.156]) by smtp.gmail.com with ESMTPSA id
+ 98e67ed59e1d1-2ef45f7eaf8sm64477a91.11.2024.12.04.14.41.11
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 04 Dec 2024 14:41:11 -0800 (PST)
+Message-ID: <35529516-cc96-41de-8e0d-a7807ccc09cb@linaro.org>
+Date: Wed, 4 Dec 2024 14:41:10 -0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v3 01/11] plugins: add types for callbacks related to
+ certain discontinuities
+Content-Language: en-US
+To: Julian Ganz <neither@nut.email>, qemu-devel@nongnu.org
+References: <cover.1733063076.git.neither@nut.email>
+ <5e624b7244f1b0b294b28cd513aab04b6b294b1d.1733063076.git.neither@nut.email>
+ <181b9b53a258257df1b24e7bfb8b0e6fc590c25f@nut.email>
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+In-Reply-To: <181b9b53a258257df1b24e7bfb8b0e6fc590c25f@nut.email>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124;
- envelope-from=alex.williamson@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -50
-X-Spam_score: -5.1
-X-Spam_bar: -----
-X-Spam_report: (-5.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.999,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::530;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pg1-x530.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,107 +103,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue,  3 Dec 2024 21:35:41 +0800
-Tomita Moeko <tomitamoeko@gmail.com> wrote:
-
-> Define the igd device generations according to i915 kernel driver to
-> avoid confusion, and adjust comment placement to clearly reflect the
-> relationship between ids and devices.
+On 12/3/24 00:45, Julian Ganz wrote:
+> Hi,
 > 
-> The condition of how GTT stolen memory size is calculated is changed
-> accordingly as GGMS is in multiple of 2 starting from gen 8.
+> December 2, 2024 at 8:26 PM, "Julian Ganz" wrote:
+>> diff --git a/include/qemu/qemu-plugin.h b/include/qemu/qemu-plugin.h
+>> index 0fba36ae02..9c67374b7e 100644
+>> --- a/include/qemu/qemu-plugin.h
+>> +++ b/include/qemu/qemu-plugin.h
+>> @@ -154,6 +154,49 @@ typedef void (*qemu_plugin_vcpu_simple_cb_t)(qemu_plugin_id_t id,
+> <snip>
+>> +/**
+>> + * typedef qemu_plugin_vcpu_discon_cb_t - vcpu discontinuity callback
+>> + * @vcpu_index: the current vcpu context
+>> + * @type: the type of discontinuity
+>> + * @from_pc: the source of the discontinuity, e.g. the PC before the
+>> + * transition
+>> + * @to_pc: the PC pointing to the next instruction to be executed
+>> + *
+>> + * The excact semantics of @from_pc depends on @the type of discontinuity. For
+>> + * interrupts, @from_pc will point to the next instruction which would have
+>> + * been executed. For exceptions and host calls, @from_pc will point to the
+>> + * instruction that caused the exception or issued the host call. Note that
+>> + * in the case of exceptions, the instruction is not retired and thus not
+>> + * observable via general instruction exec callbacks. The same may be the case
+>> + * for some host calls such as hypervisor call "exceptions".
 > 
-> Signed-off-by: Tomita Moeko <tomitamoeko@gmail.com>
-> ---
->  hw/vfio/igd.c | 44 ++++++++++++++++++++++----------------------
->  1 file changed, 22 insertions(+), 22 deletions(-)
+> Some more notes about this bit: I originally tried to make the from_pc
+> semantics independent from the type of event, i.e. either of the two
+> cases. I obviously did not succeed in doing so. As, in most cases, the
+> instruction pointed to by from_pc is not observable via exec callbacks
+> I could also not test this behaviour in the testing plugin (see patch
+> 11). I am therefore in favor for dropping the from_pc for the next
+> iteration of this patch series.
 > 
-> diff --git a/hw/vfio/igd.c b/hw/vfio/igd.c
-> index 6ba3045bf3..2ede72d243 100644
-> --- a/hw/vfio/igd.c
-> +++ b/hw/vfio/igd.c
-> @@ -59,33 +59,33 @@
->   */
->  static int igd_gen(VFIOPCIDevice *vdev)
->  {
-> -    if ((vdev->device_id & 0xfff) == 0xa84) {
-> -        return 8; /* Broxton */
-> +    /*
-> +     * Device IDs for Broxton/Apollo Lake are 0x0a84, 0x1a84, 0x1a85, 0x5a84
-> +     * and 0x5a85
-> +     */
 
-Your comment from review of v1 would be useful here that we can't use
-the test below, at least for 0x0a84, because it conflicts with Haswell.
-I'd forgotten that.
+Does it mean that information returned should be dependent of type of 
+event, as we previously discussed on v1?
 
-Since we're being more strict about what we support now, it may make
-sense to list specific IDs rather than this sloppy match, as Corvin
-suggested, but that could be a follow-on.  Thanks,
-
-Alex
-
-> +    if ((vdev->device_id & 0xffe) == 0xa84) {
-> +        return 9;
->      }
->  
->      switch (vdev->device_id & 0xff00) {
-> -    /* SandyBridge, IvyBridge, ValleyView, Haswell */
-> -    case 0x0100:
-> -    case 0x0400:
-> -    case 0x0a00:
-> -    case 0x0c00:
-> -    case 0x0d00:
-> -    case 0x0f00:
-> +    case 0x0100:    /* SandyBridge, IvyBridge */
->          return 6;
-> -    /* BroadWell, CherryView, SkyLake, KabyLake */
-> -    case 0x1600:
-> -    case 0x1900:
-> -    case 0x2200:
-> -    case 0x5900:
-> +    case 0x0400:    /* Haswell */
-> +    case 0x0a00:    /* Haswell */
-> +    case 0x0c00:    /* Haswell */
-> +    case 0x0d00:    /* Haswell */
-> +    case 0x0f00:    /* Valleyview/Bay Trail */
-> +        return 7;
-> +    case 0x1600:    /* Broadwell */
-> +    case 0x2200:    /* Cherryview */
->          return 8;
-> -    /* CoffeeLake */
-> -    case 0x3e00:
-> +    case 0x1900:    /* Skylake */
-> +    case 0x5900:    /* Kaby Lake */
-> +    case 0x3e00:    /* Coffee Lake */
->          return 9;
-> -    /* ElkhartLake */
-> -    case 0x4500:
-> +    case 0x4500:    /* Elkhart Lake */
->          return 11;
-> -    /* TigerLake */
-> -    case 0x9A00:
-> +    case 0x9A00:    /* Tiger Lake */
->          return 12;
->      }
->  
-> @@ -258,7 +258,7 @@ static int vfio_igd_gtt_max(VFIOPCIDevice *vdev)
->  
->      gmch = vfio_pci_read_config(&vdev->pdev, IGD_GMCH, sizeof(gmch));
->      ggms = (gmch >> (gen < 8 ? 8 : 6)) & 0x3;
-> -    if (gen > 6) {
-> +    if (gen >= 8) {
->          ggms = 1 << ggms;
->      }
->  
-> @@ -668,7 +668,7 @@ void vfio_probe_igd_bar4_quirk(VFIOPCIDevice *vdev, int nr)
->  
->      /* Determine the size of stolen memory needed for GTT */
->      ggms_mb = (gmch >> (gen < 8 ? 8 : 6)) & 0x3;
-> -    if (gen > 6) {
-> +    if (gen >= 8) {
->          ggms_mb = 1 << ggms_mb;
->      }
->  
+>> + */
+>> +typedef void (*qemu_plugin_vcpu_discon_cb_t)(qemu_plugin_id_t id,
+>> + unsigned int vcpu_index,
+>> + enum qemu_plugin_discon_type type,
+>> + uint64_t from_pc, uint64_t to_pc);
+>> +
+>>   /**
+>>   * qemu_plugin_uninstall() - Uninstall a plugin
+>>   * @id: this plugin's opaque ID
+>> -- 
+>> 2.45.2
+>>
+> 
+> Regards,
+> Julian
+> 
 
 
