@@ -2,64 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8DA29E45B0
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Dec 2024 21:28:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 843379E45CF
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Dec 2024 21:32:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tIvyf-00023t-N8; Wed, 04 Dec 2024 15:28:05 -0500
+	id 1tIvys-0002RH-VO; Wed, 04 Dec 2024 15:28:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tIvyc-0001uO-T3
- for qemu-devel@nongnu.org; Wed, 04 Dec 2024 15:28:03 -0500
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tIvyi-000298-1Q
+ for qemu-devel@nongnu.org; Wed, 04 Dec 2024 15:28:08 -0500
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tIvyZ-0001u8-OM
- for qemu-devel@nongnu.org; Wed, 04 Dec 2024 15:28:02 -0500
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-434a1639637so1989015e9.1
- for <qemu-devel@nongnu.org>; Wed, 04 Dec 2024 12:27:59 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tIvyf-0002GV-0Z
+ for qemu-devel@nongnu.org; Wed, 04 Dec 2024 15:28:07 -0500
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-4349cc45219so1875115e9.3
+ for <qemu-devel@nongnu.org>; Wed, 04 Dec 2024 12:28:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1733344078; x=1733948878; darn=nongnu.org;
+ d=linaro.org; s=google; t=1733344083; x=1733948883; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=nkZKIsDoSM+ma8HKWntZmvOsZaSUYdAuJc6HKLqlim0=;
- b=Fuc/JnqIq+P3ZFsiJXKia+YbnDZNJXx2TMWxs+P4uPXgYocFq3FaoBEzPaJoas2g0m
- tGy165DtIyut5TOZ5373dHiLm4igInBSCTi60EgEScAQhZwfhDXvLo+z5q46hXG+2kUX
- KXj8kejMkXQs/BUD4k2rJjnqoNsRFGuS9xcmPmP3skdrioog0UKDQ1sl4kSQaZ1FW5h0
- tbjvvEUYXZPgY7XMmmS+EU6oZbLPrWIWaaZL2a/s4nSGGsaPY4hnR++T6KMNn2jnQ4li
- HwM8+z4qIFH7j31UKjWFHxY8vbBGfIbDGZkvkSjbesPQXrozDi+6PUZ6lh8a9LR5IKcx
- faIA==
+ bh=9QewNS2KrXYFKBtSPrML3uVF3WnArNvnPbDN/XKhdgc=;
+ b=zkLXT/c64uMGH6KoQQilbT/8TWzf8HL2stHfoI6fw/h/gWz/rbUOn79145ycxguHxg
+ tzx0cH5x/CB+IEioYHkwGk1WN9mkIof1DS3n7NfBAbRPdGo4qZavZWmbo+cypYh+cLIo
+ woGq8GmOB+1v2y6UOKu6QgEz3KiYvF6W8re13R8EmwbB4dTsLuJJ8e9stlfpFilxBg8C
+ Oqn2Lae3nQ92+WaBuRkitAj7m8orJBvUW+OZvd4gsZBtuQOFJgtitYU2JsXfZC6BrpKh
+ xtmGCYJoRbU/nJy8XPCtNaiW/alvumlyZa222Pv5aGhmECLQGiaPC5ux5I89VD4HXAbu
+ s2ag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733344078; x=1733948878;
+ d=1e100.net; s=20230601; t=1733344083; x=1733948883;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=nkZKIsDoSM+ma8HKWntZmvOsZaSUYdAuJc6HKLqlim0=;
- b=sEA9UZk7CenTC3IA4StxbN2n1IeXCPKhI3uPJZwe0b8uoWQDVt5eFzlenvPNnB/b6a
- cUmttjMf6inerv8k/D5EhxekdSMSo1hv80kVYK7XtqoVIoTyeuofdI0R4IZBujYl2l+i
- 0lhHXO1F/6eydIe8F5HTd/H5GaneDTl0T+op+gr59moEDQlOXDlKXv/BIFs+NupT8Jl4
- 3+hOg/QWonh1PfEgdRSwsREfqQyGJrOLQKR5W64848A9KcMON7W57smEK9vZTZx27xE3
- jtciTkK6zspxqJq2LVYmcrZql1rD4fiQ5GK4RRiJbN5EVefzU55l8Nh6b3ZeoKq9Ylkk
- NupA==
-X-Gm-Message-State: AOJu0YyzS3tZjXgVXG+fk0OWzAfrcNaaLTGyv+PxWaDBHlhHnkJ9nIzm
- XQTNQQPtjy1KIf5OEvpIhuNYKX0MuUxfTddAUJn4SPMe+BdlcTpbZjzQtACyljC5u7ZFnqYbXfb
- r
-X-Gm-Gg: ASbGnctgHj8Xtjb4qK/iB/I3jqaZDUrtKLuaOG+nsB907B0QeNv6tkwQDgvbx1rAQ72
- wgTuB8tC8hmKTE9mRNryo5HRChBBV7fWCy/l4olOuxaU23qfPpxOoqDj+if0/8rsNkAVm3bRpM+
- jHcS3aFg+uklYwhmodGqEJU6ZIfdp6ngLfxdPnOpYkS6YrAO+uO9GSSUC9gsb3qwBizH8RRewm8
- vFn6JRGB7g9lYJhtGBEaRqt080Ia/08HeTuAAQKuqTpPCUm15a6Mz6Fi69wStFIttZgIv4HhQvY
- rxSPTIl6BEwOqmigWTBD8d7+
-X-Google-Smtp-Source: AGHT+IEQZCLaeqL3NJdNlkp69TPR8VsZwfrAUk0Iu/WBp1gm2bQ8hewWSnGHoj7rlbErdVRXO1pF/A==
-X-Received: by 2002:a05:600c:4748:b0:431:59ab:15cf with SMTP id
- 5b1f17b1804b1-434d09c37bcmr69319945e9.19.1733344078096; 
- Wed, 04 Dec 2024 12:27:58 -0800 (PST)
+ bh=9QewNS2KrXYFKBtSPrML3uVF3WnArNvnPbDN/XKhdgc=;
+ b=SIWegflf4qjc+rBvL7AKEo8gw87YWyQZB4TV0Fq/L8EI5jA7+hFs9sY3h4JX2uSBtL
+ 2fTFxW4hLagX6kqeBaqe7bkzxr1jdtUiW6DMDmmbyOd32n9BqJRtpqYmBt9mSQkP5aFe
+ ci6L6rGOJaWwyLaQJlq2HOuhGAkhfRyQMtvVQyRbbBreCsebLsrzNo0touPwZP7Oedik
+ zAqHRxePvuztluKDRh2+c5Jv8CwaBVmkoOenKEAMOXt7qTOa04q3vF2Z2pKAZHb1GiB2
+ b0ccMENF7mQRIJd6DZlOUVw7Fo9hSsbSe06FilXbLX2dunrMBNNWG/BhWz0Q/KTMe79a
+ 7O0Q==
+X-Gm-Message-State: AOJu0YzcDiHHx9IIi+fLUhVxDeCAyxVbAftXTsV5n4KtCszwst4WVEh0
+ Z34jer3k84JUXbkSJ8NL91eHYdv0MvzknvPdcBmGG4qzk1zdaCQchzJrro1hs/DDwPr9471DomB
+ 7
+X-Gm-Gg: ASbGncsyYCw+sxTJuGVWWefq3QDM1I9lJIxM0b+gt+WQbfWx5tqok/VEflzfgQE3+Sc
+ MNBvvGkXfb8YofCfLi4/4vlcEnh63RAwJX8w9cJroeIcnMrWSXWTx2SFHPIEksIvGkvT69v7SdI
+ iTMsxjbyrAhxJHK2aTDEeULINZ2q/Nr+mk9RSMI22Is3buXiTFoRKMKLSklj0t/IwE7oLkAnfX1
+ +ngtU7JLNlJf9KWFve5ZyMbNudyh1iMbU8SOeSfuW4+l1aHly1LoUyjWMcgeow0eXIwkARhlRMY
+ VOQPUoqzrtjQ5/JYHJupS3/d
+X-Google-Smtp-Source: AGHT+IFxlGUUFIyfkFeZ4l8REFf4CCrkxe7SUkymjFY/EOIvnxUeAib+1bgksySbStfCRyrv1tvxHg==
+X-Received: by 2002:a05:600c:1ca2:b0:434:ba13:e52b with SMTP id
+ 5b1f17b1804b1-434d0a14a83mr76478475e9.31.1733344083303; 
+ Wed, 04 Dec 2024 12:28:03 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-434d52cbd16sm34950775e9.41.2024.12.04.12.27.56
+ 5b1f17b1804b1-434d526b158sm36718205e9.8.2024.12.04.12.28.02
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 04 Dec 2024 12:27:57 -0800 (PST)
+ Wed, 04 Dec 2024 12:28:02 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
@@ -77,18 +77,18 @@ Cc: Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Alistair Francis <alistair@alistair23.me>, qemu-ppc@nongnu.org,
  Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 14/20] target: Implement CPUClass::datapath_is_big_endian
- (little-endian)
-Date: Wed,  4 Dec 2024 21:25:56 +0100
-Message-ID: <20241204202602.58083-15-philmd@linaro.org>
+Subject: [PATCH 15/20] target: Implement CPUClass::datapath_is_big_endian
+ (big-endian)
+Date: Wed,  4 Dec 2024 21:25:57 +0100
+Message-ID: <20241204202602.58083-16-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241204202602.58083-1-philmd@linaro.org>
 References: <20241204202602.58083-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -112,139 +112,138 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 For all targets which have endianness architecturally
-predefined as little endian (built using TARGET_BIG_ENDIAN=n),
-their datapath_is_big_endian() handler simply returns %false.
+predefined as big endian (built using TARGET_BIG_ENDIAN=y),
+their datapath_is_big_endian() handler simply returns %true.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/alpha/cpu.c     | 6 ++++++
- target/avr/cpu.c       | 7 ++++++-
- target/i386/cpu.c      | 6 ++++++
- target/loongarch/cpu.c | 6 ++++++
- target/tricore/cpu.c   | 6 ++++++
- 5 files changed, 30 insertions(+), 1 deletion(-)
+ target/hexagon/cpu.c  | 6 ++++++
+ target/hppa/cpu.c     | 6 ++++++
+ target/m68k/cpu.c     | 6 ++++++
+ target/openrisc/cpu.c | 6 ++++++
+ target/s390x/cpu.c    | 6 ++++++
+ 5 files changed, 30 insertions(+)
 
-diff --git a/target/alpha/cpu.c b/target/alpha/cpu.c
-index 5d75c941f7a..ee844a4c455 100644
---- a/target/alpha/cpu.c
-+++ b/target/alpha/cpu.c
-@@ -27,6 +27,11 @@
- #include "fpu/softfloat.h"
+diff --git a/target/hexagon/cpu.c b/target/hexagon/cpu.c
+index 020038fc490..6407ed80c59 100644
+--- a/target/hexagon/cpu.c
++++ b/target/hexagon/cpu.c
+@@ -245,6 +245,11 @@ void hexagon_debug(CPUHexagonState *env)
+     hexagon_dump(env, stdout, CPU_DUMP_FPU);
+ }
  
- 
-+static bool alpha_cpu_datapath_is_big_endian(CPUState *cs)
++static bool hexagon_cpu_datapath_is_big_endian(CPUState *cs)
 +{
-+    return false;
++    return true;
 +}
 +
- static void alpha_cpu_set_pc(CPUState *cs, vaddr value)
+ static void hexagon_cpu_set_pc(CPUState *cs, vaddr value)
  {
-     CPUAlphaState *env = cpu_env(cs);
-@@ -247,6 +252,7 @@ static void alpha_cpu_class_init(ObjectClass *oc, void *data)
+     cpu_env(cs)->gpr[HEX_REG_PC] = value;
+@@ -342,6 +347,7 @@ static void hexagon_cpu_class_init(ObjectClass *c, void *data)
+                                        &mcc->parent_phases);
+ 
+     cc->class_by_name = hexagon_cpu_class_by_name;
++    cc->datapath_is_big_endian = hexagon_cpu_datapath_is_big_endian;
+     cc->has_work = hexagon_cpu_has_work;
+     cc->dump_state = hexagon_dump_state;
+     cc->set_pc = hexagon_cpu_set_pc;
+diff --git a/target/hppa/cpu.c b/target/hppa/cpu.c
+index c38439c1800..8ccd224f2a4 100644
+--- a/target/hppa/cpu.c
++++ b/target/hppa/cpu.c
+@@ -203,6 +203,11 @@ static void hppa_cpu_initfn(Object *obj)
+     cpu_hppa_put_psw(env, PSW_W);
+ }
+ 
++static bool hppa_cpu_datapath_is_big_endian(CPUState *cs)
++{
++    return true;
++}
++
+ static ObjectClass *hppa_cpu_class_by_name(const char *cpu_model)
+ {
+     g_autofree char *typename = g_strconcat(cpu_model, "-cpu", NULL);
+@@ -245,6 +250,7 @@ static void hppa_cpu_class_init(ObjectClass *oc, void *data)
                                      &acc->parent_realize);
  
-     cc->class_by_name = alpha_cpu_class_by_name;
-+    cc->datapath_is_big_endian = alpha_cpu_datapath_is_big_endian;
-     cc->has_work = alpha_cpu_has_work;
-     cc->mmu_index = alpha_cpu_mmu_index;
-     cc->dump_state = alpha_cpu_dump_state;
-diff --git a/target/avr/cpu.c b/target/avr/cpu.c
-index 3132842d565..f32f1bee61f 100644
---- a/target/avr/cpu.c
-+++ b/target/avr/cpu.c
-@@ -159,6 +159,11 @@ static ObjectClass *avr_cpu_class_by_name(const char *cpu_model)
-     return object_class_by_name(cpu_model);
- }
+     cc->class_by_name = hppa_cpu_class_by_name;
++    cc->datapath_is_big_endian = hppa_cpu_datapath_is_big_endian;
+     cc->has_work = hppa_cpu_has_work;
+     cc->mmu_index = hppa_cpu_mmu_index;
+     cc->dump_state = hppa_cpu_dump_state;
+diff --git a/target/m68k/cpu.c b/target/m68k/cpu.c
+index 5fe335558aa..52f8db41d5a 100644
+--- a/target/m68k/cpu.c
++++ b/target/m68k/cpu.c
+@@ -24,6 +24,11 @@
+ #include "migration/vmstate.h"
+ #include "fpu/softfloat.h"
  
-+static bool avr_cpu_datapath_is_big_endian(CPUState *cs)
++static bool m68k_cpu_datapath_is_big_endian(CPUState *cs)
 +{
-+    return false;
++    return true;
 +}
 +
- static void avr_cpu_dump_state(CPUState *cs, FILE *f, int flags)
+ static void m68k_cpu_set_pc(CPUState *cs, vaddr value)
  {
-     CPUAVRState *env = cpu_env(cs);
-@@ -230,7 +235,7 @@ static void avr_cpu_class_init(ObjectClass *oc, void *data)
+     M68kCPU *cpu = M68K_CPU(cs);
+@@ -571,6 +576,7 @@ static void m68k_cpu_class_init(ObjectClass *c, void *data)
                                         &mcc->parent_phases);
  
-     cc->class_by_name = avr_cpu_class_by_name;
--
-+    cc->datapath_is_big_endian = avr_cpu_datapath_is_big_endian;
-     cc->has_work = avr_cpu_has_work;
-     cc->mmu_index = avr_cpu_mmu_index;
-     cc->dump_state = avr_cpu_dump_state;
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 3725dbbc4b3..f783d311579 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -2008,6 +2008,11 @@ static char *x86_cpu_class_get_model_name(X86CPUClass *cc)
-     return cpu_model_from_type(class_name);
- }
+     cc->class_by_name = m68k_cpu_class_by_name;
++    cc->datapath_is_big_endian = m68k_cpu_datapath_is_big_endian;
+     cc->has_work = m68k_cpu_has_work;
+     cc->mmu_index = m68k_cpu_mmu_index;
+     cc->dump_state = m68k_cpu_dump_state;
+diff --git a/target/openrisc/cpu.c b/target/openrisc/cpu.c
+index b96561d1f26..16e39b43ec4 100644
+--- a/target/openrisc/cpu.c
++++ b/target/openrisc/cpu.c
+@@ -25,6 +25,11 @@
+ #include "fpu/softfloat-helpers.h"
+ #include "tcg/tcg.h"
  
-+static bool x86_cpu_datapath_is_big_endian(CPUState *cs)
++static bool openrisc_cpu_datapath_is_big_endian(CPUState *cs)
 +{
-+    return false;
++    return true;
 +}
 +
- typedef struct X86CPUVersionDefinition {
-     X86CPUVersion version;
-     const char *alias;
-@@ -8588,6 +8593,7 @@ static void x86_cpu_common_class_init(ObjectClass *oc, void *data)
- 
-     cc->class_by_name = x86_cpu_class_by_name;
-     cc->parse_features = x86_cpu_parse_featurestr;
-+    cc->datapath_is_big_endian = x86_cpu_datapath_is_big_endian;
-     cc->has_work = x86_cpu_has_work;
-     cc->mmu_index = x86_cpu_mmu_index;
-     cc->dump_state = x86_cpu_dump_state;
-diff --git a/target/loongarch/cpu.c b/target/loongarch/cpu.c
-index 57cc4f314bf..b9cf0091546 100644
---- a/target/loongarch/cpu.c
-+++ b/target/loongarch/cpu.c
-@@ -742,6 +742,11 @@ static ObjectClass *loongarch_cpu_class_by_name(const char *cpu_model)
-     return oc;
- }
- 
-+static bool loongarch_cpu_datapath_is_big_endian(CPUState *cs)
-+{
-+    return false;
-+}
-+
- void loongarch_cpu_dump_state(CPUState *cs, FILE *f, int flags)
+ static void openrisc_cpu_set_pc(CPUState *cs, vaddr value)
  {
-     CPULoongArchState *env = cpu_env(cs);
-@@ -836,6 +841,7 @@ static void loongarch_cpu_class_init(ObjectClass *c, void *data)
-                                        &lacc->parent_phases);
+     OpenRISCCPU *cpu = OPENRISC_CPU(cs);
+@@ -257,6 +262,7 @@ static void openrisc_cpu_class_init(ObjectClass *oc, void *data)
+                                        &occ->parent_phases);
  
-     cc->class_by_name = loongarch_cpu_class_by_name;
-+    cc->datapath_is_big_endian = loongarch_cpu_datapath_is_big_endian;
-     cc->has_work = loongarch_cpu_has_work;
-     cc->mmu_index = loongarch_cpu_mmu_index;
-     cc->dump_state = loongarch_cpu_dump_state;
-diff --git a/target/tricore/cpu.c b/target/tricore/cpu.c
-index 1a261715907..ba53d83f662 100644
---- a/target/tricore/cpu.c
-+++ b/target/tricore/cpu.c
-@@ -29,6 +29,11 @@ static inline void set_feature(CPUTriCoreState *env, int feature)
-     env->features |= 1ULL << feature;
- }
+     cc->class_by_name = openrisc_cpu_class_by_name;
++    cc->datapath_is_big_endian = openrisc_cpu_datapath_is_big_endian;
+     cc->has_work = openrisc_cpu_has_work;
+     cc->mmu_index = openrisc_cpu_mmu_index;
+     cc->dump_state = openrisc_cpu_dump_state;
+diff --git a/target/s390x/cpu.c b/target/s390x/cpu.c
+index 514c70f3010..eda1e3b286f 100644
+--- a/target/s390x/cpu.c
++++ b/target/s390x/cpu.c
+@@ -44,6 +44,11 @@
+ #define CR0_RESET       0xE0UL
+ #define CR14_RESET      0xC2000000UL;
  
-+static bool tricore_cpu_datapath_is_big_endian(CPUState *cs)
++static bool s390_cpu_datapath_is_big_endian(CPUState *cs)
 +{
-+    return false;
++    return true;
 +}
 +
- static const gchar *tricore_gdb_arch_name(CPUState *cs)
+ #ifndef CONFIG_USER_ONLY
+ static bool is_early_exception_psw(uint64_t mask, uint64_t addr)
  {
-     return "tricore";
-@@ -191,6 +196,7 @@ static void tricore_cpu_class_init(ObjectClass *c, void *data)
-     resettable_class_set_parent_phases(rc, NULL, tricore_cpu_reset_hold, NULL,
-                                        &mcc->parent_phases);
-     cc->class_by_name = tricore_cpu_class_by_name;
-+    cc->datapath_is_big_endian = tricore_cpu_datapath_is_big_endian;
-     cc->has_work = tricore_cpu_has_work;
-     cc->mmu_index = tricore_cpu_mmu_index;
+@@ -390,6 +395,7 @@ static void s390_cpu_class_init(ObjectClass *oc, void *data)
+                                        &scc->parent_phases);
  
+     cc->class_by_name = s390_cpu_class_by_name,
++    cc->datapath_is_big_endian = s390_cpu_datapath_is_big_endian;
+     cc->has_work = s390_cpu_has_work;
+     cc->mmu_index = s390x_cpu_mmu_index;
+     cc->dump_state = s390_cpu_dump_state;
 -- 
 2.45.2
 
