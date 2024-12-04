@@ -2,85 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFB069E35E1
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Dec 2024 09:49:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D7919E35F0
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Dec 2024 09:51:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tIl4D-0000Ni-Qd; Wed, 04 Dec 2024 03:49:05 -0500
+	id 1tIl6M-0005Y3-CY; Wed, 04 Dec 2024 03:51:18 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from
- <3exdQZwgKCiwePMVLZQSOWWOTM.KWUYMUc-LMdMTVWVOVc.WZO@flex--whendrik.bounces.google.com>)
- id 1tIl4B-0000Ly-ND
- for qemu-devel@nongnu.org; Wed, 04 Dec 2024 03:49:03 -0500
-Received: from mail-wm1-x349.google.com ([2a00:1450:4864:20::349])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tIl6J-0005Vu-3x
+ for qemu-devel@nongnu.org; Wed, 04 Dec 2024 03:51:15 -0500
+Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from
- <3exdQZwgKCiwePMVLZQSOWWOTM.KWUYMUc-LMdMTVWVOVc.WZO@flex--whendrik.bounces.google.com>)
- id 1tIl4A-00015g-6E
- for qemu-devel@nongnu.org; Wed, 04 Dec 2024 03:49:03 -0500
-Received: by mail-wm1-x349.google.com with SMTP id
- 5b1f17b1804b1-434a195814fso48709325e9.3
- for <qemu-devel@nongnu.org>; Wed, 04 Dec 2024 00:49:00 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tIl6H-0002Vf-Ij
+ for qemu-devel@nongnu.org; Wed, 04 Dec 2024 03:51:14 -0500
+Received: by mail-wr1-x431.google.com with SMTP id
+ ffacd0b85a97d-385dbf79881so351723f8f.1
+ for <qemu-devel@nongnu.org>; Wed, 04 Dec 2024 00:51:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20230601; t=1733302139; x=1733906939; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:from:subject:message-id:references
- :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
- :reply-to; bh=iToU4ifoTogZaZYEzFXGtcqpRLmu4bvhKXXyDGHPJUw=;
- b=aFfCB/r1W+PYfOT8JOtbQDeY3W0bjU2tkn+Vtd5miUCGVIvEEWXR9KvCde/GXSPJo/
- VPufqE6YcwLCbBYGr533oYw2rFqT+nV1r87/ZEGTkIdmZ4reA7TiQKvR0OSTO4FXwgZN
- mvTXpoYP+ydy6xZxeINE/pzLf9EXlpo/IAq/K0nw9x8LATk+DMxTkzD+VnAnwcX7o7cT
- F71GiVF8zEjFPsoRVsUH+GvbJuZbMw5HLi8IKk/zsHuPwl0nH8c007nrSakdu8atl6/d
- EpYJVFMzaw6uAiGIe1WhkjEN8bQU6r0fy5D0JKONOrZIJr+jYFTLRfuJKhAHeXhi10pa
- mHQw==
+ d=linaro.org; s=google; t=1733302272; x=1733907072; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=W7sFc6889NF5XQTpNHkkYdysFK+mcsEJBJSdLnQpohI=;
+ b=TlbVVgzglpaDB/f4v4GHXlTZZeEzcU8dKkrupLxXQgheDfNQSy7y27lPg1LioCmgIq
+ RodTXuABjaHaOOEjOqMn9lAVD+k4MJB6j9sE1Q/LpHjEocNaPTiBY3ITmzVIUHy97sTi
+ /OwC4lHSVyosJ4NXm4snegY8O9xJAn5jeL/il96FFcx3y3UIqaQe/CnOkmN3Z1NdYnL0
+ S0bcPk3a1jLJNSPrPaA/Z5j9t/Rd+8gm9kAraGDGupIvcPUkNdlNTqUUQKUj3HCwqBpn
+ +OmGTnTfhvtTO969sBHC7twDr4Zn/VGdfNR1tttIS68ZfQablT/53i4MCyBRfAP9Skf+
+ dpog==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733302139; x=1733906939;
- h=content-transfer-encoding:cc:to:from:subject:message-id:references
- :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
- :date:message-id:reply-to;
- bh=iToU4ifoTogZaZYEzFXGtcqpRLmu4bvhKXXyDGHPJUw=;
- b=rBdlwGx/yw5dVRUOBjw6EUAYBwlFlcY0znKaFon69AcO4AqlvFDOlHHZoO6KiVv7kN
- 3ixMkLahY+2DNY65JCZE+l3/98KYEhrC4HM6PidCVoPqpjnqYqcU5TOhVySwmizZ6KX3
- AfUroIXvfzD13/Pp/WmrTn8RzlNiuS1rSdXhyD8IcohJ6uWq14Jht4CBxpsZqn7n5lC9
- iyBlgRt2YG/tmG5xSShHYZkM7kqWoTgIoBFzKbDVMKx6TkhPPiGvD+x28oTDx/4ow5jR
- uqXkpshv0HvHZu5gIFa18OOLlVgnmaYYC1HGwpDtrsDYH54w4U5aKJdtpQHqHVzOVrxD
- 8QZg==
-X-Gm-Message-State: AOJu0YxPw5u/GTkfQSXtCsp8K0c+wg9UtB3o8xOLRzPSPstz+9tyP0c1
- VdTCZgfiIikV65C0RxpM37p5DiVe2XOYi0UA61+LO2EuoOUpV74HR3e/phn4m4m1SobXEITWTmN
- Y4131eL4/B+3Vide8b+HLeCGSe6JJplURluZesOVSlx9415TlcRsxnh4EK8p/zTe7ykUDDX3ZBI
- wG0E3hags8ZkbJ0binZnF8N8HZcazCXhEYd6nGr/R5rA==
-X-Google-Smtp-Source: AGHT+IHOGBM2ZkXOs7Twgi1Hm4IPflsO3ws7GO+JLAnrUNLckMKMfR2gCWONU49AFOsL6/CBIWcOJFYUeexftg==
-X-Received: from wmow13.prod.google.com ([2002:a05:600c:474d:b0:434:9f2c:eb0f])
- (user=whendrik job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:4745:b0:434:a5b3:8fee with SMTP id
- 5b1f17b1804b1-434d0a07c49mr42095765e9.26.1733302139239; 
- Wed, 04 Dec 2024 00:48:59 -0800 (PST)
-Date: Wed,  4 Dec 2024 08:48:37 +0000
-In-Reply-To: <20241204084837.517299-1-whendrik@google.com>
-Mime-Version: 1.0
-References: <20241204084837.517299-1-whendrik@google.com>
-X-Mailer: git-send-email 2.47.0.338.g60cca15819-goog
-Message-ID: <20241204084837.517299-9-whendrik@google.com>
-Subject: [PATCH v3 8/8] i386/cpu: Adjust level for RDT on full_cpuid_auto_level
-From: Hendrik Wuethrich <whendrik@google.com>
-To: qemu-devel@nongnu.org, Jonathan.Cameron@huawei.com, eduardo@habkost.net, 
- richard.henderson@linaro.org, marcel.apfelbaum@gmail.com, mst@redhat.com, 
- pbonzini@redhat.com
-Cc: peternewman@google.com, 
- "=?UTF-8?q?=E2=80=AAHendrik=20W=C3=BCthrich?=" <whendrik@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::349;
- envelope-from=3exdQZwgKCiwePMVLZQSOWWOTM.KWUYMUc-LMdMTVWVOVc.WZO@flex--whendrik.bounces.google.com;
- helo=mail-wm1-x349.google.com
-X-Spam_score_int: -100
-X-Spam_score: -10.1
-X-Spam_bar: ----------
-X-Spam_report: (-10.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.453,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- USER_IN_DEF_DKIM_WL=-7.5 autolearn=ham autolearn_force=no
+ d=1e100.net; s=20230601; t=1733302272; x=1733907072;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=W7sFc6889NF5XQTpNHkkYdysFK+mcsEJBJSdLnQpohI=;
+ b=NIVYMCDOMKIDFJfDGyY96p0Nv2qTX1AWB5od4MWm9JfVGGE7WmMb7a4LABO5LelDFQ
+ oecxNIjgF+OhCs5+S0xhZLPIeFWFl5oUevtufIWPNr0bann/aZFeMaWhC5GL1xi23Iu/
+ uFTM/O6cZdG6+2GNTS3mcOufZooYqIPzuQI8QSY7VEBnAQIdq1J6XuLUOoQFF2ZJX6HZ
+ yWYqZpmO/kGorPNLimUARp6XFACWPC3oebPPcNzyXGrUKsERmeZlQpDQiMQbCWQITZDi
+ 4aWph7MI14KfnGhBOgp5jL5VjpHL0QbLxWFYbzHTV+L2lUH0+FKE6ULAs2XbXDCDa8ww
+ HNjA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVBTUCbdO6TFn8kbVMTW9g5In1H7332MPffyspCpgIdSXrTcuhdy2s4HnWcDU5m2uoSP/rDqgk7yiNR@nongnu.org
+X-Gm-Message-State: AOJu0Yy6Rpw5hFJSL8cS0nGz9dUwe/cpyzzFbWKsLFMF4fJla9Yp8tQA
+ fcmuuKowaerdJujWiM29aZakxb4XVVzgoZqsKOsAAU2PnEee+CMzpYDgqUEuNc4=
+X-Gm-Gg: ASbGncvNq6T45o6zVKMKW0aRHVnQMkhnH7u/VM9IZ+iE4GnSXUOZ0O3ITjnA6S2+Kbc
+ cXqtFty22YAgwN3qbecfqXq1mvR68s3teBM8MJ1G96hpHOgEEa6pvsr3hYs+RXqdyrL46McpdIY
+ 99Z1wLWY6XzLxupGbs6ycTnZqxqM+1f5/PczILi/ovtwt5PYMC5CACKFcjq7nq+6GBcw63cAuTN
+ LXALCtiUD9mwvtcdTVtROEzS6bfg/usVmExHjg+aZ+jOSqA9qwjW6op9num69v3tWWVVJACEKeX
+ eacssV2xI5+FqBXYMkxZO7u+dsLVcHBZ7Rsi
+X-Google-Smtp-Source: AGHT+IFBf7MYj1UbapXPe+g3rWgefsHY7fs+/9LZs61uBQssPCAFJSZcbr1RJdadwiFJpqKChIW/Cg==
+X-Received: by 2002:a05:6000:2c2:b0:385:e8e7:d09a with SMTP id
+ ffacd0b85a97d-385fd969071mr5515162f8f.2.1733302271874; 
+ Wed, 04 Dec 2024 00:51:11 -0800 (PST)
+Received: from [192.168.69.223] (sml13-h01-176-184-15-95.dsl.sta.abo.bbox.fr.
+ [176.184.15.95]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-385ccd3a4bbsm17913424f8f.48.2024.12.04.00.51.10
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 04 Dec 2024 00:51:10 -0800 (PST)
+Message-ID: <21e0d69f-decd-4b50-8a31-c46a3a3fa7f8@linaro.org>
+Date: Wed, 4 Dec 2024 09:51:09 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 25/67] target/arm: Remove helper_sqrt_f16
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org
+References: <20241201150607.12812-1-richard.henderson@linaro.org>
+ <20241201150607.12812-26-richard.henderson@linaro.org>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20241201150607.12812-26-richard.henderson@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::431;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x431.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,40 +99,17 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: =E2=80=AAHendrik W=C3=BCthrich <whendrik@google.com>
+On 1/12/24 16:05, Richard Henderson wrote:
+> This function is identical with helper_vfp_sqrth.
+> Replace all uses.
+> 
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+>   target/arm/tcg/helper-a64.h    |  1 -
+>   target/arm/tcg/helper-a64.c    | 11 -----------
+>   target/arm/tcg/translate-a64.c |  4 ++--
+>   3 files changed, 2 insertions(+), 14 deletions(-)
 
-Make sure that RDT monitoring and allocation features are included in
-in full_cpuid_auto_level.
-
-Signed-off-by: Hendrik W=C3=BCthrich <whendrik@google.com>
----
- target/i386/cpu.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index a400839216..787bb5ba92 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -875,6 +875,7 @@ void x86_cpu_vendor_words2str(char *dst, uint32_t vendo=
-r1,
- #else
- #define TCG_7_0_ECX_RDPID 0
- #endif
-+
- #define TCG_7_0_ECX_FEATURES (CPUID_7_0_ECX_UMIP | CPUID_7_0_ECX_PKU | \
-           /* CPUID_7_0_ECX_OSPKE is dynamic */ \
-           CPUID_7_0_ECX_LA57 | CPUID_7_0_ECX_PKS | CPUID_7_0_ECX_VAES | \
-@@ -7526,6 +7527,8 @@ void x86_cpu_expand_features(X86CPU *cpu, Error **err=
-p)
-         x86_cpu_adjust_feat_level(cpu, FEAT_C000_0001_EDX);
-         x86_cpu_adjust_feat_level(cpu, FEAT_SVM);
-         x86_cpu_adjust_feat_level(cpu, FEAT_XSAVE);
-+        x86_cpu_adjust_feat_level(cpu, FEAT_RDT_15_0_EDX);
-+        x86_cpu_adjust_feat_level(cpu, FEAT_RDT_10_0_EBX);
-=20
-         /* Intel Processor Trace requires CPUID[0x14] */
-         if ((env->features[FEAT_7_0_EBX] & CPUID_7_0_EBX_INTEL_PT)) {
---=20
-2.47.0.338.g60cca15819-goog
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
