@@ -2,59 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E17E9E450A
+	by mail.lfdr.de (Postfix) with ESMTPS id 774FA9E450C
 	for <lists+qemu-devel@lfdr.de>; Wed,  4 Dec 2024 20:49:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tIvML-0004jY-6x; Wed, 04 Dec 2024 14:48:29 -0500
+	id 1tIvMN-0004ke-S1; Wed, 04 Dec 2024 14:48:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1tIvMF-0004j2-V1
- for qemu-devel@nongnu.org; Wed, 04 Dec 2024 14:48:27 -0500
+ id 1tIvML-0004jo-3S
+ for qemu-devel@nongnu.org; Wed, 04 Dec 2024 14:48:29 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1tIvME-0000jW-H2
- for qemu-devel@nongnu.org; Wed, 04 Dec 2024 14:48:23 -0500
+ id 1tIvMJ-0000jt-As
+ for qemu-devel@nongnu.org; Wed, 04 Dec 2024 14:48:28 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1733341700;
+ s=mimecast20190719; t=1733341704;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=iB40+CdfGiCZrwqYDuttl0n++gcanzaNfeSPhLoNLeg=;
- b=QLA3ewzOVFLPUtpymCvVkd7Txx5+1NK2rcXaBGekpe/rWaI6nj3w7b2lnf4rC25dz42pxB
- TyHfljsRpO7C9CpMAp5EIT+M16qX30E6bjVniBeNZUAJQ03xbMUykc1CPgKWK1gZuzU3TE
- w6FsBDWr46mQqGmDQUo9u/qLaQM5F/g=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ bh=fSJdFkEwo+Mxi8nyJIexAIU/JjFIPGnRrQ4lzO7W7SU=;
+ b=JH2gdn0bdgo8RPqdgv+6qMyuFFmFr7n4LWUxCp/usKSha4Fb9QWl/17mQzTC0mm0LYqO1A
+ WMlgPtg/bZ6PkYu9en/PzOpNfQAJ4tAVCFj8sN6HEB9ZU6RFoyrTiVp75CAPnWmHfZ2g9+
+ ArSuiUsqd7bmlPFkv9dWXmgFghfO1Zs=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-632-0YahhZRkMaiQgIAPZ5qL-Q-1; Wed,
- 04 Dec 2024 14:48:17 -0500
-X-MC-Unique: 0YahhZRkMaiQgIAPZ5qL-Q-1
-X-Mimecast-MFC-AGG-ID: 0YahhZRkMaiQgIAPZ5qL-Q
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-326-m3OS8msDO-m_GCySoUEtkQ-1; Wed,
+ 04 Dec 2024 14:48:19 -0500
+X-MC-Unique: m3OS8msDO-m_GCySoUEtkQ-1
+X-Mimecast-MFC-AGG-ID: m3OS8msDO-m_GCySoUEtkQ
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 8EFBD1955E8C; Wed,  4 Dec 2024 19:48:16 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id D79E7195422C; Wed,  4 Dec 2024 19:48:18 +0000 (UTC)
 Received: from toolbox.redhat.com (unknown [10.42.28.92])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id CB27419560A2; Wed,  4 Dec 2024 19:48:13 +0000 (UTC)
+ id 10EE319560A2; Wed,  4 Dec 2024 19:48:16 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH 2/7] gitlab: use new(ish) cirrus-vars command for creating
- config
-Date: Wed,  4 Dec 2024 19:48:02 +0000
-Message-ID: <20241204194807.1472261-3-berrange@redhat.com>
+Subject: [PATCH 3/7] gitlab: clean packages in cirrus tasks
+Date: Wed,  4 Dec 2024 19:48:03 +0000
+Message-ID: <20241204194807.1472261-4-berrange@redhat.com>
 In-Reply-To: <20241204194807.1472261-1-berrange@redhat.com>
 References: <20241204194807.1472261-1-berrange@redhat.com>
 MIME-Version: 1.0
@@ -86,64 +85,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Rather than a giant sed command with a hardcoded list of env var name,
-we can now use the new(ish) cirrus-vars command that libvirt has added
-to the 'cirrus-run' container.
+The FreeBSD VM is somewhat low on disk space after all QEMU build deps
+are installed and a full QEMU build performed. Purging the package
+manager cache is a simple thing that reclaims about 1 GB of space.
 
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- .gitlab-ci.d/cirrus.yml       | 23 +++--------------------
- .gitlab-ci.d/cirrus/build.yml |  2 +-
- 2 files changed, 4 insertions(+), 21 deletions(-)
+ .gitlab-ci.d/cirrus.yml       | 2 ++
+ .gitlab-ci.d/cirrus/build.yml | 1 +
+ 2 files changed, 3 insertions(+)
 
 diff --git a/.gitlab-ci.d/cirrus.yml b/.gitlab-ci.d/cirrus.yml
-index adc0007e5d..16411f3d2b 100644
+index 16411f3d2b..2bd3cb35c9 100644
 --- a/.gitlab-ci.d/cirrus.yml
 +++ b/.gitlab-ci.d/cirrus.yml
-@@ -22,27 +22,10 @@
-   # actually starts the task
-   timeout: 80m
-   script:
-+    - set -o allexport
-     - source .gitlab-ci.d/cirrus/$NAME.vars
--    - sed -e "s|[@]CI_REPOSITORY_URL@|$CI_REPOSITORY_URL|g"
--          -e "s|[@]CI_COMMIT_REF_NAME@|$CI_COMMIT_REF_NAME|g"
--          -e "s|[@]CI_COMMIT_SHA@|$CI_COMMIT_SHA|g"
--          -e "s|[@]CIRRUS_VM_INSTANCE_TYPE@|$CIRRUS_VM_INSTANCE_TYPE|g"
--          -e "s|[@]CIRRUS_VM_IMAGE_SELECTOR@|$CIRRUS_VM_IMAGE_SELECTOR|g"
--          -e "s|[@]CIRRUS_VM_IMAGE_NAME@|$CIRRUS_VM_IMAGE_NAME|g"
--          -e "s|[@]CIRRUS_VM_CPUS@|$CIRRUS_VM_CPUS|g"
--          -e "s|[@]CIRRUS_VM_RAM@|$CIRRUS_VM_RAM|g"
--          -e "s|[@]UPDATE_COMMAND@|$UPDATE_COMMAND|g"
--          -e "s|[@]INSTALL_COMMAND@|$INSTALL_COMMAND|g"
--          -e "s|[@]PATH@|$PATH_EXTRA${PATH_EXTRA:+:}\$PATH|g"
--          -e "s|[@]PKG_CONFIG_PATH@|$PKG_CONFIG_PATH|g"
--          -e "s|[@]PKGS@|$PKGS|g"
--          -e "s|[@]MAKE@|$MAKE|g"
--          -e "s|[@]PYTHON@|$PYTHON|g"
--          -e "s|[@]PIP3@|$PIP3|g"
--          -e "s|[@]PYPI_PKGS@|$PYPI_PKGS|g"
--          -e "s|[@]CONFIGURE_ARGS@|$CONFIGURE_ARGS|g"
--          -e "s|[@]TEST_TARGETS@|$TEST_TARGETS|g"
--      <.gitlab-ci.d/cirrus/build.yml >.gitlab-ci.d/cirrus/$NAME.yml
-+    - set +o allexport
-+    - cirrus-vars <.gitlab-ci.d/cirrus/build.yml >.gitlab-ci.d/cirrus/$NAME.yml
-     - cat .gitlab-ci.d/cirrus/$NAME.yml
-     - cirrus-run -v --show-build-log always .gitlab-ci.d/cirrus/$NAME.yml
-   variables:
+@@ -42,6 +42,7 @@ x64-freebsd-14-build:
+     CIRRUS_VM_RAM: 8G
+     UPDATE_COMMAND: pkg update; pkg upgrade -y
+     INSTALL_COMMAND: pkg install -y
++    CLEAN_COMMAND: pkg clean -y --all
+     CONFIGURE_ARGS: --target-list-exclude=arm-softmmu,i386-softmmu,microblaze-softmmu,mips64el-softmmu,mipsel-softmmu,mips-softmmu,ppc-softmmu,sh4eb-softmmu,xtensa-softmmu
+     TEST_TARGETS: check
+ 
+@@ -54,6 +55,7 @@ aarch64-macos-build:
+     CIRRUS_VM_IMAGE_NAME: ghcr.io/cirruslabs/macos-runner:sonoma
+     UPDATE_COMMAND: brew update
+     INSTALL_COMMAND: brew install
++    CLEAN_COMMAND: brew cleanup --prune=all
+     PATH_EXTRA: /opt/homebrew/ccache/libexec:/opt/homebrew/gettext/bin
+     PKG_CONFIG_PATH: /opt/homebrew/curl/lib/pkgconfig:/opt/homebrew/ncurses/lib/pkgconfig:/opt/homebrew/readline/lib/pkgconfig
+     CONFIGURE_ARGS: --target-list-exclude=arm-softmmu,i386-softmmu,microblazeel-softmmu,mips64-softmmu,mipsel-softmmu,mips-softmmu,ppc-softmmu,sh4-softmmu,xtensaeb-softmmu
 diff --git a/.gitlab-ci.d/cirrus/build.yml b/.gitlab-ci.d/cirrus/build.yml
-index 102cdbd8b1..41abd0b31a 100644
+index 41abd0b31a..9983ab0690 100644
 --- a/.gitlab-ci.d/cirrus/build.yml
 +++ b/.gitlab-ci.d/cirrus/build.yml
-@@ -8,7 +8,7 @@ env:
-   CI_REPOSITORY_URL: "@CI_REPOSITORY_URL@"
-   CI_COMMIT_REF_NAME: "@CI_COMMIT_REF_NAME@"
-   CI_COMMIT_SHA: "@CI_COMMIT_SHA@"
--  PATH: "@PATH@"
-+  PATH: "@PATH_EXTRA@:$PATH"
-   PKG_CONFIG_PATH: "@PKG_CONFIG_PATH@"
-   PYTHON: "@PYTHON@"
-   MAKE: "@MAKE@"
+@@ -21,6 +21,7 @@ build_task:
+   install_script:
+     - @UPDATE_COMMAND@
+     - @INSTALL_COMMAND@ @PKGS@
++    - @CLEAN_COMMAND@
+     - if test -n "@PYPI_PKGS@" ; then PYLIB=$(@PYTHON@ -c 'import sysconfig; print(sysconfig.get_path("stdlib"))'); rm -f $PYLIB/EXTERNALLY-MANAGED; @PIP3@ install @PYPI_PKGS@ ; fi
+   clone_script:
+     - git clone --depth 100 "$CI_REPOSITORY_URL" .
 -- 
 2.46.0
 
