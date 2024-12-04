@@ -2,20 +2,20 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5741E9E34EF
+	by mail.lfdr.de (Postfix) with ESMTPS id 665139E34F1
 	for <lists+qemu-devel@lfdr.de>; Wed,  4 Dec 2024 09:06:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tIkOD-0004BZ-UC; Wed, 04 Dec 2024 03:05:42 -0500
+	id 1tIkOJ-0004Cj-J9; Wed, 04 Dec 2024 03:05:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1tIkO6-0004Aw-0U; Wed, 04 Dec 2024 03:05:34 -0500
+ id 1tIkO8-0004Bp-7w; Wed, 04 Dec 2024 03:05:36 -0500
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1tIkO3-00082v-Md; Wed, 04 Dec 2024 03:05:33 -0500
+ id 1tIkO6-00082v-RC; Wed, 04 Dec 2024 03:05:35 -0500
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.12; Wed, 4 Dec
@@ -30,10 +30,12 @@ To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  "open list:All patches CC here" <qemu-devel@nongnu.org>
 CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>,
  <yunlin.tang@aspeedtech.com>
-Subject: [PATCH v3 0/7] Support SDHCI and eMMC for ast2700
-Date: Wed, 4 Dec 2024 16:05:16 +0800
-Message-ID: <20241204080523.4025780-1-jamin_lin@aspeedtech.com>
+Subject: [PATCH v3 1/7] hw/sd/aspeed_sdhci: Fix coding style
+Date: Wed, 4 Dec 2024 16:05:17 +0800
+Message-ID: <20241204080523.4025780-2-jamin_lin@aspeedtech.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20241204080523.4025780-1-jamin_lin@aspeedtech.com>
+References: <20241204080523.4025780-1-jamin_lin@aspeedtech.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
@@ -62,34 +64,32 @@ From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-change from v1:
-This patch series do not support boot from an eMMC.
-Only support eMMC and SD Slot 0 as storages.
+Fix coding style issues from checkpatch.pl.
 
-change from v2:
-- Add hw/sd/aspeed_sdhci: Fix coding style patch
+Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
+---
+ hw/sd/aspeed_sdhci.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-change from v3:
-- Directly set capareg and sd_spec_version instead of property
-- Keep DEFINE_TYPES
-
-Jamin Lin (7):
-  hw/sd/aspeed_sdhci: Fix coding style
-  hw/arm/aspeed: Fix coding style
-  hw:sdhci: Introduce a new "capareg" class member to set the different
-    Capability Registers
-  hw:sdhci: Directly set sd_spec_version instead of property
-  hw/sd/aspeed_sdhci: Add AST2700 Support
-  aspeed/soc: Support SDHCI for AST2700
-  aspeed/soc: Support eMMC for AST2700
-
- hw/arm/aspeed_ast2400.c      |  3 +-
- hw/arm/aspeed_ast2600.c      | 10 ++---
- hw/arm/aspeed_ast27x0.c      | 35 +++++++++++++++++
- hw/sd/aspeed_sdhci.c         | 76 ++++++++++++++++++++++++++++++------
- include/hw/sd/aspeed_sdhci.h | 13 +++++-
- 5 files changed, 118 insertions(+), 19 deletions(-)
-
+diff --git a/hw/sd/aspeed_sdhci.c b/hw/sd/aspeed_sdhci.c
+index 98d5460905..acd6538261 100644
+--- a/hw/sd/aspeed_sdhci.c
++++ b/hw/sd/aspeed_sdhci.c
+@@ -87,10 +87,12 @@ static void aspeed_sdhci_write(void *opaque, hwaddr addr, uint64_t val,
+         sdhci->regs[TO_REG(addr)] = (uint32_t)val & ~ASPEED_SDHCI_INFO_RESET;
+         break;
+     case ASPEED_SDHCI_SDIO_140:
+-        sdhci->slots[0].capareg = deposit64(sdhci->slots[0].capareg, 0, 32, val);
++        sdhci->slots[0].capareg = deposit64(sdhci->slots[0].capareg,
++                                            0, 32, val);
+         break;
+     case ASPEED_SDHCI_SDIO_144:
+-        sdhci->slots[0].capareg = deposit64(sdhci->slots[0].capareg, 32, 32, val);
++        sdhci->slots[0].capareg = deposit64(sdhci->slots[0].capareg,
++                                            32, 32, val);
+         break;
+     case ASPEED_SDHCI_SDIO_148:
+         sdhci->slots[0].maxcurr = deposit64(sdhci->slots[0].maxcurr,
 -- 
 2.34.1
 
