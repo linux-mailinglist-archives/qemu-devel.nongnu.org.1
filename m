@@ -2,103 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30CF09E463D
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Dec 2024 22:02:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EF7389E4655
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Dec 2024 22:12:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tIwVZ-0003hO-FO; Wed, 04 Dec 2024 16:02:05 -0500
+	id 1tIwex-0005Mj-CI; Wed, 04 Dec 2024 16:11:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tIwVJ-0003ar-Jx
- for qemu-devel@nongnu.org; Wed, 04 Dec 2024 16:01:52 -0500
-Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
+ (Exim 4.90_1) (envelope-from <vikram.garhwal@bytedance.com>)
+ id 1tIuKH-0004df-4P
+ for qemu-devel@nongnu.org; Wed, 04 Dec 2024 13:42:19 -0500
+Received: from mail-qk1-x736.google.com ([2607:f8b0:4864:20::736])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tIwVE-0000SF-Oq
- for qemu-devel@nongnu.org; Wed, 04 Dec 2024 16:01:46 -0500
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id F16B31F38F;
- Wed,  4 Dec 2024 21:01:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1733346103; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=5N6oEx37xAT19fr0H5vIcKqgpMidqgoKfVB1Ms1H5Xs=;
- b=0EmmlYhRrLQh8HYfC1xngmjdL8W+1NT6rrYThPsEp8Ie2QfD1MddMFk87idAqT006mDYJD
- 39rNqcwkGdQaONP02OlETiLvY1dLzW51vH8nB9RmSkk2LGQKVEO3wf0Fvg5ffuSsz89gyn
- gfrNdLsGwKsRn6uUiXgAM3RPIK1ME5o=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1733346103;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=5N6oEx37xAT19fr0H5vIcKqgpMidqgoKfVB1Ms1H5Xs=;
- b=z9+oh7SkBe3JrfIVGcHfq3gazmZ0hSeGz86hMKax7v72PoQu3fTnwwEYa7bsZipTm8GY8A
- 1l3CrBr+f7EyheBw==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1733346102; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=5N6oEx37xAT19fr0H5vIcKqgpMidqgoKfVB1Ms1H5Xs=;
- b=GiBvvjF0elib1QnzgSLHm0GLx1MwBgYFGZ1BKF3qoxi0x7OCQ4WTtKooIblRmb5ugLYMmI
- ICnvIos8A/XNA0to04BrOEkkz/AgR7f15tT6+Sg5aLuTT1enNEgY4kEj8VEf7GYlTLapQ/
- l6X9IZfK/PqbgQk8gOzFgfi00k7CByc=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1733346102;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=5N6oEx37xAT19fr0H5vIcKqgpMidqgoKfVB1Ms1H5Xs=;
- b=I3eAf/D9XWD8nSQtmfe3l4o99TUz/pXn6iF5eMv3MHoMzU52+hkaBLOHhFR8MTvPBvIV0l
- iY8oWwhaX4Ke2ZAQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 779C613974;
- Wed,  4 Dec 2024 21:01:42 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id qeqQDzbDUGfNSwAAD6G6ig
- (envelope-from <farosas@suse.de>); Wed, 04 Dec 2024 21:01:42 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Peter Xu <peterx@redhat.com>, =?utf-8?Q?Daniel_P=2E_Berrang=C3=A9?=
- <berrange@redhat.com>
-Cc: qemu-devel@nongnu.org
-Subject: Re: [PATCH 2/6] migration: Kick postcopy threads on cancel
-In-Reply-To: <Z1DAzzB1SfY_bL17@x1n>
-References: <20241202220137.32584-1-farosas@suse.de>
- <20241202220137.32584-3-farosas@suse.de> <Z1Ch8HpiKMoqILDM@x1n>
- <87r06ni84z.fsf@suse.de> <Z1Cv4JM8IbYeiDpR@x1n>
- <Z1C1V25wydbBlsMb@redhat.com> <Z1DAzzB1SfY_bL17@x1n>
-Date: Wed, 04 Dec 2024 18:01:39 -0300
-Message-ID: <87frn3i2mk.fsf@suse.de>
+ (Exim 4.90_1) (envelope-from <vikram.garhwal@bytedance.com>)
+ id 1tIuKE-0007wP-Rt
+ for qemu-devel@nongnu.org; Wed, 04 Dec 2024 13:42:16 -0500
+Received: by mail-qk1-x736.google.com with SMTP id
+ af79cd13be357-7b65f2daae6so6230085a.1
+ for <qemu-devel@nongnu.org>; Wed, 04 Dec 2024 10:42:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=bytedance.com; s=google; t=1733337730; x=1733942530; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=HJurhTOArQPGWijqY4ldIX3NomalTmxXbM6VQAo+d5o=;
+ b=JxvwWsfwLmb+nS35R9McdCvbi9RKmAVLT+NWmyHi/iKks04y0nCSw9i3xRDt716d6w
+ DWlFLAJCwI4pIEyqBOsFAYxEHN6xRV6OCRcAVbo60lOm6BAHXaxt2RdWnZi6fiudynBL
+ tdXwa5ZYbA9kYi/Xa//nbwi4ky17dcaHPubTZcnkrAv5NUOOSWSN6u8v1+y5LszJvjOQ
+ 1w5uyQQB7gs5+V8vDo3FZraVMOhESENQrEocCePOvC8UH7wEaKrYDZ36JrQC8UenLXW5
+ njY54OyQ/R0swVyzAZ2s0v879eWQSyae9O2juR25FkhNQsjXhRp9XRDW0cpEt5W1JacA
+ q9Ig==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1733337730; x=1733942530;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=HJurhTOArQPGWijqY4ldIX3NomalTmxXbM6VQAo+d5o=;
+ b=b+R8u6ircL04g4TfAn7Llojd8EpT15+AZ3QyNYNpRtxluhSm1U5OpZzjqXPF31K24W
+ gJj32fPznaX7dPCjosDSuhQ4Gnj1ZrMi3AKjtFT1YDYd53s92OKJFKobatiDWXP6Kted
+ GaxUvvQ4VZwKrjdrn9h+REa2DZNzigsacF5YVmkXONAqvcF1YtxyJXK6IQ+497efJ4hU
+ w99vJDgsaLoDjrpeqUM3lvnL6Vx/2Q5lXvsU5KdLn3JlHST8bMgrRe6piWtbdpdrgJ45
+ nTVeiY5kspXApWzn3OCaBbtw6bWnUEpi93eI3mYUhGZ766Lx6B0wlyxtj5Uxy+VZDyMS
+ WjRg==
+X-Gm-Message-State: AOJu0YzI8mivYXnfOaxoLexDZSSbpW9vXMjrPKQ9PuHXpFRPj1NbFPIC
+ VomERL+Wsv69mCwtdh/36ACMYTdSqP9t1lLCmhgAmTvx8p3xIUW4ngem/2RdG2YKjhO4zorYujp
+ t
+X-Gm-Gg: ASbGncvyMGtCPtaIvoiKwiPDEqn01hSB2+S3lzG8uY4BK9zVlrm/v8z7IdJxqM+bcNE
+ DQlZCOeaIfNx8ApLQMORhYeDdA73sJtHrzDZpwXkW00JtdsTfommZXCmtzXqE1esi/GVt2PpUhV
+ oBvxsW0/WfaKDWp05VevyW1H98Elg/0LoIFtATaYDWh7zTVC+bQ7QQEfwaYt5vs5Vz6idJlE+Yi
+ AFy4KqZnCfzM9I1QETlEdfDXPGkqUZJoMW9f7yr4BkCM5WHzKaDtz4GqU3b7CcAZxrw8P91mOzs
+ iezLlL5FNw3I4ng=
+X-Google-Smtp-Source: AGHT+IHv0gG3XwOfc+oOjPo7zPgngwE+DDjdSvJHzvESr/qXCxrJ+fENDA2ByJWlFy4po3cQ4N3AHg==
+X-Received: by 2002:a05:620a:40d5:b0:7b6:6e7c:8efd with SMTP id
+ af79cd13be357-7b6a6200dbdmr817316085a.58.1733337730566; 
+ Wed, 04 Dec 2024 10:42:10 -0800 (PST)
+Received: from MXYWK0WKF9.bytedance.net ([71.18.96.10])
+ by smtp.gmail.com with ESMTPSA id
+ af79cd13be357-7b68492121esm638278685a.3.2024.12.04.10.42.09
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Wed, 04 Dec 2024 10:42:10 -0800 (PST)
+From: Vikram Garhwal <vikram.garhwal@bytedance.com>
+To: qemu-devel@nongnu.org
+Cc: vikram.garhwal@bytedance.com, peter.maydell@linaro.org,
+ francisco.iglesias@amd.com
+Subject: [PATCH] MAINTAINERS: Add correct email address for Vikram Garhwal
+Date: Wed,  4 Dec 2024 10:42:05 -0800
+Message-Id: <20241204184205.12952-1-vikram.garhwal@bytedance.com>
+X-Mailer: git-send-email 2.39.3 (Apple Git-145)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-4.30 / 50.00]; BAYES_HAM(-3.00)[100.00%];
- NEURAL_HAM_LONG(-1.00)[-1.000];
- NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
- RCVD_VIA_SMTP_AUTH(0.00)[]; ARC_NA(0.00)[];
- MIME_TRACE(0.00)[0:+]; MISSING_XM_UA(0.00)[];
- TO_DN_SOME(0.00)[]; MID_RHS_MATCH_FROM(0.00)[];
- RCVD_TLS_ALL(0.00)[];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- FROM_EQ_ENVFROM(0.00)[]; FROM_HAS_DN(0.00)[];
- RCPT_COUNT_THREE(0.00)[3]; RCVD_COUNT_TWO(0.00)[2];
- FUZZY_BLOCKED(0.00)[rspamd.com]; TO_MATCH_ENVRCPT_ALL(0.00)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,suse.de:mid]
-X-Spam-Score: -4.30
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
- envelope-from=farosas@suse.de; helo=smtp-out2.suse.de
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::736;
+ envelope-from=vikram.garhwal@bytedance.com; helo=mail-qk1-x736.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -107,6 +81,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Wed, 04 Dec 2024 16:11:39 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -121,171 +96,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Peter Xu <peterx@redhat.com> writes:
+Previously, maintainer role was paused due to inactive email id. Commit id:
+c009d715721861984c4987bcc78b7ee183e86d75.
 
-> On Wed, Dec 04, 2024 at 08:02:31PM +0000, Daniel P. Berrang=C3=A9 wrote:
->> On Wed, Dec 04, 2024 at 02:39:12PM -0500, Peter Xu wrote:
->> > On Wed, Dec 04, 2024 at 04:02:36PM -0300, Fabiano Rosas wrote:
->> > > Peter Xu <peterx@redhat.com> writes:
->> > >=20
->> > > > On Mon, Dec 02, 2024 at 07:01:33PM -0300, Fabiano Rosas wrote:
->> > > >> Make sure postcopy threads are released when migrate_cancel is
->> > > >> issued. Kick the postcopy_pause semaphore and have the fault thre=
-ad
->> > > >> read 'fault_thread_quit' when joining.
->> > > >>=20
->> > > >> While here fix the comment mentioning userfault_event_fd.
->> > > >>=20
->> > > >> Signed-off-by: Fabiano Rosas <farosas@suse.de>
->> > > >
->> > > > I remember when working on postcopy, I thought about failing migra=
-te-cancel
->> > > > for postcopy in general, rejecting such request.  And when working=
- on the
->> > > > recover feature, there's no concern on having it being cancelled, =
-because
->> > > > the user really shouldn't do that..
->> > > >
->> > > > The problem is migrate-cancel means crashing the VM on both sides =
-when QEMU
->> > > > already goes into postcopy stage.
->> > >=20
->> > > Well, that's the sillyness of having a cancel command, you can never
->> > > know what "cancel" means. The "documentation" says: "Cancel the curr=
-ent
->> > > executing migration process", it doesn't mention anything about the
->> > > consequences of such action.
->> >=20
->> > We definitely need cancel.  It was always used in precopy, and people =
-use
->> > it a lot!
->>=20
->> Not a fair benchmark though.
->>=20
->> People use cancel alot because 'precopy' cannot complete in a
->> predictable amount of time, any time guesstime can suddenly
->> get much worse if the guest dirties memory differently. So
->> people give up and cancel it after waiting ridiculously long
->> and never being sure if it is nearing the finish.
->>=20
->> Once a migrate has been switched to 'postcopy' phase, however,
->> we have what should be a highly predictable completion time,
->> directly related to the amount of untransferred pages. That
->> time should not get worse. The amount of time spent in the
->> 'postcopy' phase will depend on how long you let the migrate
->> run in 'precopy' before flipping to 'postcopy'
->
-> Right.  And if to be precise - the time doesn't matter, but "how many dir=
-ty
-> page left".  For extremely busy guests, longer precopy doesn't help, for
-> example.. so time isn't very relevant, IMHO.  It's just that postcopy
-> always have an upper time limit, which is guest mem size / bw.
->
->>=20
->> IOW, I think there's a reasonable case to be made that NOT
->> having the ability to cancel while in 'postcopy' phase would
->> be mostly acceptable. You give up the ability to cancel for
->> a while, in exchange for a clearly determined completion
->> time.=20
->>=20
->> > > > If the user wants to crash the VM anyway, an easier way to do is k=
-illing on
->> > > > both sides.
->> > >=20
->> > > I don't think this is fair. We expose a "cancel" command, we better =
-do
->> > > some cancelling or instead reject the command appropriately, not exp=
-ect
->> > > the user to "know better".
->> >=20
->> > That's exactly why we should fail it with a proper error message, IMHO.
->> > Because the user may not really understand the impact of postcopy.
->>=20
->> Yep, I think users/apps expect "cancel" to be safe. So if it can't be
->> safe at certain times, we should reject it in those time windows.
->>=20
->> > > > If the user wished to cancel, we should tell them "postcopy cannot=
- be
->> > > > cancelled, until complete".  That's probably the major reason why =
-people
->> > > > think postcopy is dangerous to use..
->> > >=20
->> > > We could certainly add that restriction, I don't see a problem with
->> > > it. That said, what is the actual use case for migrate_cancel? And h=
-ow
->> > > does that compare with yank? I feel like we've been kind of relying =
-on
->> > > nobody using those commands really.
->> >=20
->> > We had "cancel" first, then "yank".  I didn't remember who merged yank,
->> > especially for migration, and why it was ever needed.
->>=20
->> yank is for the case where the network connections are completely stuck,
->> causing QEMU to potentially get stalled in I/O operations until a TCP
->> timeout is reached. yank force unwedges any stuck I/O by aggresively
->> closing the connections. It is most useful in the non-migration use
->> cases though.
->>=20
->> > Migration users should have stick with "cancel" rather than "yank" - q=
-mp
->> > "yank" would "FAIL" the migration instead of showing CANCELLED, defini=
-tely
->> > should avoid.  I am not aware of anybody that uses "yank" for migratio=
-n at
->> > all.
->> >=20
->> > So yeah, both commands are slightly duplicated, and if we want to throw
->> > one, it needs to be yank, not cancel.  I'm fine keeping both..
->>=20
->> I would say the difference is like a graceful shutdown vs pulling the
->> power plug in a bare metal machine
->>=20
->> 'cancel' is intended to be graceful. It should leave you with a function=
-al
->> QEMU (or refuse to run if unsafe).
->>=20
->> 'yank' is intended to be forceful, letting you get out of bad situations
->> that would otherwise require you to kill the entire QEMU process, but
->> still with possible associated risk data loss to the QEMU backends.
->>=20
->> They have overlap, but are none the less different.
->
-> The question is more about whether yank should be used at all for
-> migration only, not about the rest instances.
->
-> My answer is yank should never be used for migration, because
-> "migrate_cancel" also unplugs the power plug.. It's not anything more
-> enforced.  It's only doing less always.
->
-> E.g. migration_yank_iochannel() is exactly what we do with
-> qmp_migrate_cancel() in the first place, only that migrate_cancel only do=
-es
-> it on the main channel (on both qemufiles even if ioc is one), however it
-> should be suffice, and behave the same way, as strong as "yank".
->
-> Meanwhile, "yank" definitely lacks the graceful side of thing, not only on
-> "cancelled", but also anything extra in migration_cancel() that wasn't
-> about shutdown().  Examples, qmp_migrate_cancel has special care on:
->
->   - migrate_dirty_limit(), where it'll shutdown the limit threads too
->     alongside if migration cancels,
->
->   - process the possible hang case with PRE_SWITCHOVER.
->
->   - if the cancel happened right during switchover, and if at that time t=
-he
->     disks are inactivated, it'll re-activate the disks
->
-> In general, there's no reason to use yank on migration, IMHO, because it's
-> not stronger either on shutting the NIC.
->
-> Considering it's confusing to mostly everyone, and tons of people asked me
-> about this.. maybe I should send a patch to remove yank from migration?
+Signed-off-by: Vikram Garhwal <vikram.garhwal@bytedance.com>
+---
+ MAINTAINERS | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Take a look at my suggestion in the other thread, it might make yank
-make sense for migration after all. But I'm not against the removal,
-it's better than the current state IMO.
+diff --git a/MAINTAINERS b/MAINTAINERS
+index aaf0505a21..b4723eecde 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -1914,6 +1914,7 @@ F: tests/qtest/fuzz-sb16-test.c
+ 
+ Xilinx CAN
+ M: Francisco Iglesias <francisco.iglesias@amd.com>
++M: Vikram Garhwal <vikram.garhwal@bytedance.com>
+ S: Maintained
+ F: hw/net/can/xlnx-*
+ F: include/hw/net/xlnx-*
+@@ -2673,6 +2674,7 @@ F: include/hw/rx/
+ CAN bus subsystem and hardware
+ M: Pavel Pisa <pisa@cmp.felk.cvut.cz>
+ M: Francisco Iglesias <francisco.iglesias@amd.com>
++M: Vikram Garhwal <vikram.garhwal@bytedance.com>
+ S: Maintained
+ W: https://canbus.pages.fel.cvut.cz/
+ F: net/can/*
+-- 
+2.39.3 (Apple Git-145)
 
->
-> Thanks,
 
