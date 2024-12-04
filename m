@@ -2,77 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44C9D9E369C
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Dec 2024 10:30:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F084E9E36BE
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Dec 2024 10:34:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tIlhj-0005Fk-OA; Wed, 04 Dec 2024 04:29:55 -0500
+	id 1tIlmF-0006j3-WB; Wed, 04 Dec 2024 04:34:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
- id 1tIlhh-0005CJ-QA
- for qemu-devel@nongnu.org; Wed, 04 Dec 2024 04:29:53 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1tIlmB-0006if-He
+ for qemu-devel@nongnu.org; Wed, 04 Dec 2024 04:34:31 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
- id 1tIlhg-0006IH-52
- for qemu-devel@nongnu.org; Wed, 04 Dec 2024 04:29:53 -0500
+ id 1tIlm9-0006lo-L1
+ for qemu-devel@nongnu.org; Wed, 04 Dec 2024 04:34:31 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1733304591;
+ s=mimecast20190719; t=1733304867;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=dicWub2SQBAtsK8i16eRhXFVuTql6558Wl7544FMwRs=;
- b=FvwmCZrtn99yqQY7OU2CiCukJmlxYwujF8BmasPR1dpVzzqATV3ssMRrDYz/oxepg/fi/n
- ch0WpGmN1V1h2Md1uLrv1Tti+f07SCQthnG++LBzem+g+UIhPkckNXPtz4O2zgoe4EsnYi
- vHhxTuB96XOvN9vVpBs2+8ZVUJdeMRk=
-Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
- [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=+/1SplKXJNRRJY8Jh+DYhXVfVHKRhSeFLNpoY8aFMis=;
+ b=TVxfcRUoF8j7Ehesv81Khyg3sfP3IR6GhVAkQHO8XyrmB3aT+NfyvMwI4henZPWyU/YxKo
+ gofOtvCG1ZOqM3iuOhdUbjRydmh5Ok77bnXIBAUzCxNjN9H9rotZxZSxDEHS89aszTRI4I
+ mZNNIA1Ivh51tLfn1tGtVtUSu5P+CWE=
+Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
+ [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-3-DsCcYoV7NFi1uxtRXrfidA-1; Wed, 04 Dec 2024 04:29:49 -0500
-X-MC-Unique: DsCcYoV7NFi1uxtRXrfidA-1
-X-Mimecast-MFC-AGG-ID: DsCcYoV7NFi1uxtRXrfidA
-Received: by mail-qv1-f72.google.com with SMTP id
- 6a1803df08f44-6d884e46548so76938356d6.2
- for <qemu-devel@nongnu.org>; Wed, 04 Dec 2024 01:29:49 -0800 (PST)
+ us-mta-116-0X5WKhVaMiSg__R9eS3Tuw-1; Wed, 04 Dec 2024 04:34:24 -0500
+X-MC-Unique: 0X5WKhVaMiSg__R9eS3Tuw-1
+X-Mimecast-MFC-AGG-ID: 0X5WKhVaMiSg__R9eS3Tuw
+Received: by mail-qv1-f69.google.com with SMTP id
+ 6a1803df08f44-6d8829edb92so16955476d6.0
+ for <qemu-devel@nongnu.org>; Wed, 04 Dec 2024 01:34:24 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733304589; x=1733909389;
+ d=1e100.net; s=20230601; t=1733304864; x=1733909664;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=dicWub2SQBAtsK8i16eRhXFVuTql6558Wl7544FMwRs=;
- b=c8npX9N55IfNQlUtF2zXCUWr+5XMgY3SrJ1pBOZ6cBlkZz1AIbOIFw6p6WOiCLBGi2
- eK6w1xwq6ScZXibbz1lyFAEMlhv7z6r5Z4QiIxude8nTN0VfoA8NTa9sXsjvWK2TjHlx
- mKc/DZxFg3vajX6eaQCRjAC5aYSdOB85EE932CqWMDuCkwFFy41MWUReUlE0P2APlMgx
- +Wy6N+qdX+oM2GaR3kB5iJ1OJ9lHV9Adh+Y7w9Nge0zKBJmoYOkYr8GhMWqS5WPtKwkh
- Aug+SVZZi9UMksHhu6Qyc6A/zMCIJOgckNwwxt/+IuHD5+kUBiDm62tO3Di6d+o5sunC
- FWJg==
-X-Gm-Message-State: AOJu0Yxdl8nZjy/yD/y225prScBoopqnI+CzLCuxH6VyAlm4Z+/v3OMy
- ekb7SUUP+cPsSyZuZ0+NVoaqQWb1KURiS2e+TZMgtVIRShPagoc6wu7RmP+YAJUzSILErR52kKU
- vCIxoeJ6sQRPvKkH6qYNCaam3hYzA3YSqF65ZMUIZ+vLjTKJrEtSdbExfzLGCcLziuFen7ctlH7
- kx7JfJnAYcv8vTZsysUFkheyj2pbA=
-X-Gm-Gg: ASbGnctCl6n72qY8Rw68L0n/8MjnTPmrT/z0dAhx3IEm/vDre55tb7njPZKDGaXXwAf
- QDWAHmEAAuBRKNl6cM7La8c+1ylzHwNND5A==
-X-Received: by 2002:a05:6214:d44:b0:6d8:a48e:a027 with SMTP id
- 6a1803df08f44-6d8b72e377dmr97575676d6.2.1733304589159; 
- Wed, 04 Dec 2024 01:29:49 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHq3BY7QGltLJUUCwQzlja2B0XdfGAPVFzQSASwb4dy/HQ61Gz/tnfaf5/ngah5rIhVGrWIGlP3AlsDCqI4LqE=
-X-Received: by 2002:a05:6214:d44:b0:6d8:a48e:a027 with SMTP id
- 6a1803df08f44-6d8b72e377dmr97575546d6.2.1733304588909; Wed, 04 Dec 2024
- 01:29:48 -0800 (PST)
+ bh=+/1SplKXJNRRJY8Jh+DYhXVfVHKRhSeFLNpoY8aFMis=;
+ b=nkSsJljeiWC5YmAwa0TnIw/i6OYT666smiAqD/Yo9O+1GZlytRM0syu9obgEDDCNHi
+ KxrpauqdxMNiO0IKuwGZ6en0BOQRyENUWOlcCB0y+zvGR5d+y9SGfRT3ngYT+tmZNL1f
+ 4JjxlsrmPjAemujikiZw/h3KqrgaxkvLc8hJeXJqgd8ghnkjRZviQEd60ErtUA1pjq2/
+ yVUA+IxmtuitJZMfKTGrSupANPhelj7gyxb/MgmY1FY4yPehyuxjrldDcECMBcqLIwwI
+ 03uqD5Jao3KRL5uXplhE/D+96j3fukttouM8OT7oufTmFIgu5vf4UH6wj3tXQNnnWhdM
+ w/Vg==
+X-Gm-Message-State: AOJu0YxX1wPsmTDKn2MKdyY/KdpB8oC1aE4AKiJcKcncXbMJIPq64bO9
+ 1zEpeBGYU69xEzrbQyvaGU7R/OrGLsu9YXdaEi04/ZfKaiFWOFyT4kAPguBiN+kplDbN1OsuCYl
+ ZMPhSbbLjUWAGXx9k8o+lPBndhfEpyDs2kBBAZafFaBU69d3ez+6SWTwzQCN0RPJX9fRoVdAQiW
+ pMSLbKiK5kHuD52lrjvwTGGBJik8w=
+X-Gm-Gg: ASbGncsCICFV1T1vuW2En9QGhThTbp5O89Jtk1Bo6QNqeIR5eMEouUkLlelqHAdPXtm
+ sd3ULRb31pznNEGnLOS8ML87bnbLFQqxRXg==
+X-Received: by 2002:a05:6214:2527:b0:6d8:95c9:af39 with SMTP id
+ 6a1803df08f44-6d895c9b249mr263020026d6.0.1733304864372; 
+ Wed, 04 Dec 2024 01:34:24 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGeOqUhmGjiY1TBF00lmMydxwjQgmKhosgBKX8mP6k1g5aAJtMDUuF6+TtNewvUGIin/pQ6hWvXCCot646RKls=
+X-Received: by 2002:a05:6214:2527:b0:6d8:95c9:af39 with SMTP id
+ 6a1803df08f44-6d895c9b249mr263019856d6.0.1733304864149; Wed, 04 Dec 2024
+ 01:34:24 -0800 (PST)
 MIME-Version: 1.0
 References: <cover.1730713917.git.mprivozn@redhat.com>
- <780bf01dec69fa68b8fe5a9c09187b124e0a56ec.1730713917.git.mprivozn@redhat.com>
-In-Reply-To: <780bf01dec69fa68b8fe5a9c09187b124e0a56ec.1730713917.git.mprivozn@redhat.com>
+ <5182ceb139a43aacaab2c8b833bf52b13279dcf0.1730713917.git.mprivozn@redhat.com>
+ <ZyuUH9SJzvJo72kC@fedora>
+In-Reply-To: <ZyuUH9SJzvJo72kC@fedora>
 From: Konstantin Kostiuk <kkostiuk@redhat.com>
-Date: Wed, 4 Dec 2024 11:29:38 +0200
-Message-ID: <CAPMcbCrLTp=G_bzt+Li82DQnWXBGEs0Kw00z8gSv9XWjan1aYg@mail.gmail.com>
-Subject: Re: [PATCH 1/4] qga: Don't access global variable in run_agent_once()
+Date: Wed, 4 Dec 2024 11:34:13 +0200
+Message-ID: <CAPMcbCo-y5aLvPYgDd6F3V_z-RwnQj-Prazyu9mRGX9V7+L8fg@mail.gmail.com>
+Subject: Re: [PATCH 2/4] qga: Invert logic on return value in main()
 To: Michal Privoznik <mprivozn@redhat.com>
-Cc: qemu-devel@nongnu.org, michael.roth@amd.com
-Content-Type: multipart/alternative; boundary="0000000000004f517f06286e6c68"
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kkostiuk@redhat.com;
+Cc: qemu-devel@nongnu.org, michael.roth@amd.com, 
+ =?UTF-8?Q?J=C3=A1n_Tomko?= <jtomko@redhat.com>
+Content-Type: multipart/alternative; boundary="000000000000b724b206286e7c7f"
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=kkostiuk@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -50
 X-Spam_score: -5.1
@@ -97,88 +99,220 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---0000000000004f517f06286e6c68
+--000000000000b724b206286e7c7f
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Reviewed-by: Konstantin Kostiuk <kkostiuk@redhat.com>
+Hi Michal,
 
-On Mon, Nov 4, 2024 at 11:54=E2=80=AFAM Michal Privoznik <mprivozn@redhat.c=
-om>
-wrote:
+Please fix the issue that Jan mentioned.
+All commits should be logically correct even if it part of one series.
+Applying this will cause regression.
 
-> The run_agent_once() function is already given GAState via an
-> argument. There's no need to access the global ga_state variable
-> which points to the argument anyways (thanks to
-> initialize_agent()). Worse, some parts of the function use the
-> argument and the other use the global variable.  Stick with the
-> function argument.
+Best Regards,
+Konstantin Kostiuk.
+
+
+On Wed, Nov 6, 2024 at 6:07=E2=80=AFPM J=C3=A1n Tomko <jtomko@redhat.com> w=
+rote:
+
+> On a Monday in 2024, Michal Privoznik wrote:
+> >Current logic on return value ('ret' variable) in main() is error
+> >prone. The variable is initialized to EXIT_SUCCESS and then set
+> >to EXIT_FAILURE on error paths. This makes it very easy to forget
+> >to set the variable to indicate error when adding new error path,
+> >as is demonstrated by handling of initialize_agent() failure.
+> >It's simply lacking setting of the variable.
+> >
+> >There's just one case where success should be indicated: when
+> >dumping the config ('-D' cmd line argument).
+> >
+> >To resolve this, initialize the variable to failure value and set
+> >it explicitly to success value in that one specific case.
+> >
+> >Signed-off-by: Michal Privoznik <mprivozn@redhat.com>
+> >---
+> > qga/main.c | 6 ++----
+> > 1 file changed, 2 insertions(+), 4 deletions(-)
+> >
+> >diff --git a/qga/main.c b/qga/main.c
+> >index 4a695235f0..c003aacbe0 100644
+> >--- a/qga/main.c
+> >+++ b/qga/main.c
+> >@@ -1579,7 +1579,7 @@ static void stop_agent(GAState *s, bool requested)
+> >
+> > int main(int argc, char **argv)
+> > {
+> >-    int ret =3D EXIT_SUCCESS;
+> >+    int ret =3D EXIT_FAILURE;
+> >     GAState *s;
+> >     GAConfig *config =3D g_new0(GAConfig, 1);
+> >     int socket_activation;
+> >@@ -1607,7 +1607,6 @@ int main(int argc, char **argv)
+> >     socket_activation =3D check_socket_activation();
+> >     if (socket_activation > 1) {
+> >         g_critical("qemu-ga only supports listening on one socket");
+> >-        ret =3D EXIT_FAILURE;
+> >         goto end;
+> >     }
+> >     if (socket_activation) {
+> >@@ -1631,7 +1630,6 @@ int main(int argc, char **argv)
+> >
+> >         if (!config->method) {
+> >             g_critical("unsupported listen fd type");
+> >-            ret =3D EXIT_FAILURE;
+> >             goto end;
+> >         }
+> >     } else if (config->channel_path =3D=3D NULL) {
+> >@@ -1643,13 +1641,13 @@ int main(int argc, char **argv)
+> >             config->channel_path =3D g_strdup(QGA_SERIAL_PATH_DEFAULT);
+> >         } else {
+> >             g_critical("must specify a path for this channel");
+> >-            ret =3D EXIT_FAILURE;
+> >             goto end;
+> >         }
+> >     }
+> >
+> >     if (config->dumpconf) {
+> >         config_dump(config);
+> >+        ret =3D EXIT_SUCCESS;
+> >         goto end;
+> >     }
+> >
 >
-> Signed-off-by: Michal Privoznik <mprivozn@redhat.com>
-> ---
->  qga/main.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> Below this there's another place that misses an EXIT_SUCCESS, on _WIN32
+> when config->daemonize is set:
 >
-> diff --git a/qga/main.c b/qga/main.c
-> index 50186760bf..4a695235f0 100644
-> --- a/qga/main.c
-> +++ b/qga/main.c
-> @@ -1519,7 +1519,7 @@ static int run_agent_once(GAState *s)
->          return EXIT_FAILURE;
->      }
+>   #ifdef _WIN32
+>       if (config->daemonize) {
+>           SERVICE_TABLE_ENTRY service_table[] =3D {
+>               { (char *)QGA_SERVICE_NAME, service_main }, { NULL, NULL } =
+};
+>           StartServiceCtrlDispatcher(service_table);
+>       } else {
+>           ret =3D run_agent(s);
+>       }
+>   #else
+>       ret =3D run_agent(s);
+>   #endif
 >
-> -    g_main_loop_run(ga_state->main_loop);
-> +    g_main_loop_run(s->main_loop);
+> But after patch 4/4 ret is set to EXIT_SUCCESS in all the cases.
 >
->      if (s->channel) {
->          ga_channel_free(s->channel);
-> --
-> 2.45.2
->
+> Jano
 >
 
---0000000000004f517f06286e6c68
+--000000000000b724b206286e7c7f
 Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-<div dir=3D"ltr">Reviewed-by: Konstantin Kostiuk &lt;<a href=3D"mailto:kkos=
-tiuk@redhat.com" target=3D"_blank">kkostiuk@redhat.com</a>&gt;</div><br><di=
-v class=3D"gmail_quote gmail_quote_container"><div dir=3D"ltr" class=3D"gma=
-il_attr">On Mon, Nov 4, 2024 at 11:54=E2=80=AFAM Michal Privoznik &lt;<a hr=
-ef=3D"mailto:mprivozn@redhat.com">mprivozn@redhat.com</a>&gt; wrote:<br></d=
-iv><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;bord=
-er-left:1px solid rgb(204,204,204);padding-left:1ex">The run_agent_once() f=
-unction is already given GAState via an<br>
-argument. There&#39;s no need to access the global ga_state variable<br>
-which points to the argument anyways (thanks to<br>
-initialize_agent()). Worse, some parts of the function use the<br>
-argument and the other use the global variable.=C2=A0 Stick with the<br>
-function argument.<br>
+<div dir=3D"ltr"><div>Hi Michal,</div><div><br></div><div>Please fix the is=
+sue that Jan mentioned. <br></div><div>All commits should be logically corr=
+ect even if it part of one series. <br></div><div>Applying this will cause =
+regression. <br></div><div><br clear=3D"all"></div><div><div dir=3D"ltr" cl=
+ass=3D"gmail_signature" data-smartmail=3D"gmail_signature"><div dir=3D"ltr"=
+><div>Best Regards,</div><div>Konstantin Kostiuk.</div></div></div></div><b=
+r></div><br><div class=3D"gmail_quote gmail_quote_container"><div dir=3D"lt=
+r" class=3D"gmail_attr">On Wed, Nov 6, 2024 at 6:07=E2=80=AFPM J=C3=A1n Tom=
+ko &lt;<a href=3D"mailto:jtomko@redhat.com">jtomko@redhat.com</a>&gt; wrote=
+:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.=
+8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">On a Monday in=
+ 2024, Michal Privoznik wrote:<br>
+&gt;Current logic on return value (&#39;ret&#39; variable) in main() is err=
+or<br>
+&gt;prone. The variable is initialized to EXIT_SUCCESS and then set<br>
+&gt;to EXIT_FAILURE on error paths. This makes it very easy to forget<br>
+&gt;to set the variable to indicate error when adding new error path,<br>
+&gt;as is demonstrated by handling of initialize_agent() failure.<br>
+&gt;It&#39;s simply lacking setting of the variable.<br>
+&gt;<br>
+&gt;There&#39;s just one case where success should be indicated: when<br>
+&gt;dumping the config (&#39;-D&#39; cmd line argument).<br>
+&gt;<br>
+&gt;To resolve this, initialize the variable to failure value and set<br>
+&gt;it explicitly to success value in that one specific case.<br>
+&gt;<br>
+&gt;Signed-off-by: Michal Privoznik &lt;<a href=3D"mailto:mprivozn@redhat.c=
+om" target=3D"_blank">mprivozn@redhat.com</a>&gt;<br>
+&gt;---<br>
+&gt; qga/main.c | 6 ++----<br>
+&gt; 1 file changed, 2 insertions(+), 4 deletions(-)<br>
+&gt;<br>
+&gt;diff --git a/qga/main.c b/qga/main.c<br>
+&gt;index 4a695235f0..c003aacbe0 100644<br>
+&gt;--- a/qga/main.c<br>
+&gt;+++ b/qga/main.c<br>
+&gt;@@ -1579,7 +1579,7 @@ static void stop_agent(GAState *s, bool requested=
+)<br>
+&gt;<br>
+&gt; int main(int argc, char **argv)<br>
+&gt; {<br>
+&gt;-=C2=A0 =C2=A0 int ret =3D EXIT_SUCCESS;<br>
+&gt;+=C2=A0 =C2=A0 int ret =3D EXIT_FAILURE;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0GAState *s;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0GAConfig *config =3D g_new0(GAConfig, 1);<br>
+&gt;=C2=A0 =C2=A0 =C2=A0int socket_activation;<br>
+&gt;@@ -1607,7 +1607,6 @@ int main(int argc, char **argv)<br>
+&gt;=C2=A0 =C2=A0 =C2=A0socket_activation =3D check_socket_activation();<br=
+>
+&gt;=C2=A0 =C2=A0 =C2=A0if (socket_activation &gt; 1) {<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0g_critical(&quot;qemu-ga only support=
+s listening on one socket&quot;);<br>
+&gt;-=C2=A0 =C2=A0 =C2=A0 =C2=A0 ret =3D EXIT_FAILURE;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0goto end;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0}<br>
+&gt;=C2=A0 =C2=A0 =C2=A0if (socket_activation) {<br>
+&gt;@@ -1631,7 +1630,6 @@ int main(int argc, char **argv)<br>
+&gt;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0if (!config-&gt;method) {<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0g_critical(&quot;unsupp=
+orted listen fd type&quot;);<br>
+&gt;-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 ret =3D EXIT_FAILURE;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0goto end;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0}<br>
+&gt;=C2=A0 =C2=A0 =C2=A0} else if (config-&gt;channel_path =3D=3D NULL) {<b=
+r>
+&gt;@@ -1643,13 +1641,13 @@ int main(int argc, char **argv)<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0config-&gt;channel_path=
+ =3D g_strdup(QGA_SERIAL_PATH_DEFAULT);<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0} else {<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0g_critical(&quot;must s=
+pecify a path for this channel&quot;);<br>
+&gt;-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 ret =3D EXIT_FAILURE;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0goto end;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0}<br>
+&gt;=C2=A0 =C2=A0 =C2=A0}<br>
+&gt;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0if (config-&gt;dumpconf) {<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0config_dump(config);<br>
+&gt;+=C2=A0 =C2=A0 =C2=A0 =C2=A0 ret =3D EXIT_SUCCESS;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0goto end;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0}<br>
+&gt;<br>
 <br>
-Signed-off-by: Michal Privoznik &lt;<a href=3D"mailto:mprivozn@redhat.com" =
-target=3D"_blank">mprivozn@redhat.com</a>&gt;<br>
----<br>
-=C2=A0qga/main.c | 2 +-<br>
-=C2=A01 file changed, 1 insertion(+), 1 deletion(-)<br>
+Below this there&#39;s another place that misses an EXIT_SUCCESS, on _WIN32=
 <br>
-diff --git a/qga/main.c b/qga/main.c<br>
-index 50186760bf..4a695235f0 100644<br>
---- a/qga/main.c<br>
-+++ b/qga/main.c<br>
-@@ -1519,7 +1519,7 @@ static int run_agent_once(GAState *s)<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0return EXIT_FAILURE;<br>
-=C2=A0 =C2=A0 =C2=A0}<br>
+when config-&gt;daemonize is set:<br>
 <br>
--=C2=A0 =C2=A0 g_main_loop_run(ga_state-&gt;main_loop);<br>
-+=C2=A0 =C2=A0 g_main_loop_run(s-&gt;main_loop);<br>
+=C2=A0 #ifdef _WIN32<br>
+=C2=A0 =C2=A0 =C2=A0 if (config-&gt;daemonize) {<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 SERVICE_TABLE_ENTRY service_table[] =3D =
+{<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 { (char *)QGA_SERVICE_NAME=
+, service_main }, { NULL, NULL } };<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 StartServiceCtrlDispatcher(service_table=
+);<br>
+=C2=A0 =C2=A0 =C2=A0 } else {<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 ret =3D run_agent(s);<br>
+=C2=A0 =C2=A0 =C2=A0 }<br>
+=C2=A0 #else<br>
+=C2=A0 =C2=A0 =C2=A0 ret =3D run_agent(s);<br>
+=C2=A0 #endif<br>
 <br>
-=C2=A0 =C2=A0 =C2=A0if (s-&gt;channel) {<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0ga_channel_free(s-&gt;channel);<br>
--- <br>
-2.45.2<br>
+But after patch 4/4 ret is set to EXIT_SUCCESS in all the cases.<br>
 <br>
+Jano<br>
 </blockquote></div>
 
---0000000000004f517f06286e6c68--
+--000000000000b724b206286e7c7f--
 
 
