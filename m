@@ -2,63 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40DBD9E3EF1
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Dec 2024 17:00:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C81979E3EF0
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Dec 2024 17:00:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tIrm1-0007cE-MG; Wed, 04 Dec 2024 10:58:45 -0500
+	id 1tIrm2-0007cl-Ae; Wed, 04 Dec 2024 10:58:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mchehab@kernel.org>)
- id 1tIrlw-0007bM-Sb
- for qemu-devel@nongnu.org; Wed, 04 Dec 2024 10:58:41 -0500
-Received: from dfw.source.kernel.org ([2604:1380:4641:c500::1])
+ id 1tIrlx-0007bS-AK; Wed, 04 Dec 2024 10:58:41 -0500
+Received: from dfw.source.kernel.org ([139.178.84.217])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mchehab@kernel.org>)
- id 1tIrlt-00074u-UK
- for qemu-devel@nongnu.org; Wed, 04 Dec 2024 10:58:40 -0500
+ id 1tIrlv-00074s-N2; Wed, 04 Dec 2024 10:58:41 -0500
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by dfw.source.kernel.org (Postfix) with ESMTP id 30DFC5C6185;
- Wed,  4 Dec 2024 15:57:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB00CC4CECD;
- Wed,  4 Dec 2024 15:58:27 +0000 (UTC)
+ by dfw.source.kernel.org (Postfix) with ESMTP id 9FD185C6F09;
+ Wed,  4 Dec 2024 15:57:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28A83C4CEDF;
+ Wed,  4 Dec 2024 15:58:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1733327907;
- bh=wU6bEN0SPz/LlKhqMAmMkomSPYpkFTOMIKtUFlzjV24=;
+ s=k20201202; t=1733327909;
+ bh=cNJNXcDyaPC/qoa52vKI7D64a4wlMaDEwHHZJBjP9+k=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=Wq0sP/uYRy6wBHCyaOxRnQnXx7qltJQxOLT4nHQXa89WS6mb34iS7kgNrSln2eLXA
- 24tHjTnarFcxmtL1b6E/aAtz487ZGnTQlLB7/aGNBTR1QjHi3jtI4h/8t/05pQxs1T
- no99A0ICF78fPZmvBY0+p3qWP3TU8rdd/87m1SoM6UwNpHtXumes6mlWSJh9ZRiph9
- 9jL5PsKnwZYKQ6VW0PQcTLEy501+ieKjkuVNF88VC+idjI3C+AG9qt/7nDLw692t/J
- 17lx14rVz/61/q+LJ5fI9jUwiCJmiPIqVdEOYh0FYaj/Eb1Za98oQOqBj+iPEAUUFq
- 28rwySq7sDjEQ==
+ b=RcsDAkpFQZ/0hJEnhv77vtNHqBJns9dPdU0D2xeIc2F+dhPOwMaWREJ+tBLv9Zc/2
+ ZFsDo+b1TNzXcOHEqyqYIoo+2uIWIAjsHdaxSVX8hHAXq7fYHdn6xRTM7QzozQkpbO
+ 5Fk9YemsyQYa9/ydTsgB4GlvMQMJ/uiO5qFHOmS7TqH1vdwjQc8PF6Ju8ftrr4pTbA
+ GnKHZx/wjXMSP6yZ5EOulwfmSNidBjopu67fNbZsnlKWtLMBEcoI2M0LUXupo30AEp
+ czyiVFBgxlO7c7Oocnu17mdYoLrkNjcVV878j8lZ+ntj7eRloPLE2MEts9qsyhWurH
+ SzoLP4qPovWPQ==
 Received: from mchehab by mail.kernel.org with local (Exim 4.98)
- (envelope-from <mchehab@kernel.org>) id 1tIrlf-00000000HZ1-3WaO;
+ (envelope-from <mchehab@kernel.org>) id 1tIrlf-00000000HZ4-3cIR;
  Wed, 04 Dec 2024 16:58:23 +0100
 From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 To: Igor Mammedov <imammedo@redhat.com>
 Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
- "Michael S. Tsirkin" <mst@redhat.com>, Ani Sinha <anisinha@redhat.com>,
- linux-kernel@vger.kernel.org, qemu-devel@nongnu.org,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Ani Sinha <anisinha@redhat.com>, Dongjiu Geng <gengdongjiu1@gmail.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Shannon Zhao <shannon.zhaosl@gmail.com>,
+ Yanan Wang <wangyanan55@huawei.com>, Zhao Liu <zhao1.liu@intel.com>,
+ linux-kernel@vger.kernel.org, qemu-arm@nongnu.org, qemu-devel@nongnu.org,
  Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH v3 4/5] acpi/generic_event_device: Update GHES migration to
- cover hest addr
-Date: Wed,  4 Dec 2024 16:57:58 +0100
-Message-ID: <9be1bc41db1705a23ade82ecfcb978e6e0db273a.1733327276.git.mchehab+huawei@kernel.org>
+Subject: [PATCH v3 5/5] acpi/generic_event_device: add logic to detect if HEST
+ addr is available
+Date: Wed,  4 Dec 2024 16:57:59 +0100
+Message-ID: <d136d20b57c86ba979bd0d5238ad8d300c4f50aa.1733327276.git.mchehab+huawei@kernel.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <cover.1733327276.git.mchehab+huawei@kernel.org>
 References: <cover.1733327276.git.mchehab+huawei@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2604:1380:4641:c500::1;
- envelope-from=mchehab@kernel.org; helo=dfw.source.kernel.org
-X-Spam_score_int: -73
-X-Spam_score: -7.4
-X-Spam_bar: -------
-X-Spam_report: (-7.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.999,
+Received-SPF: pass client-ip=139.178.84.217; envelope-from=mchehab@kernel.org;
+ helo=dfw.source.kernel.org
+X-Spam_score_int: -100
+X-Spam_score: -10.1
+X-Spam_bar: ----------
+X-Spam_report: (-10.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.999,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ RCVD_IN_DNSWL_HI=-5, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -75,62 +81,166 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The GHES migration logic at GED should now support HEST table
-location too.
+Create a new property (x-has-hest-addr) and use it to detect if
+the GHES table offsets can be calculated from the HEST address
+(qemu 9.2 and upper) or via the legacy way via an offset obtained
+from the hardware_errors firmware file.
 
 Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- hw/acpi/generic_event_device.c | 29 +++++++++++++++++++++++++++++
- 1 file changed, 29 insertions(+)
+ hw/acpi/generic_event_device.c |  1 +
+ hw/acpi/ghes.c                 | 24 +++++++++++++++++-------
+ hw/arm/virt-acpi-build.c       | 30 ++++++++++++++++++++++++++----
+ hw/core/machine.c              |  2 ++
+ include/hw/acpi/ghes.h         |  1 +
+ 5 files changed, 47 insertions(+), 11 deletions(-)
 
 diff --git a/hw/acpi/generic_event_device.c b/hw/acpi/generic_event_device.c
-index 17baf36132a8..c1116dd8d7ae 100644
+index c1116dd8d7ae..df6b4fab2d30 100644
 --- a/hw/acpi/generic_event_device.c
 +++ b/hw/acpi/generic_event_device.c
-@@ -387,6 +387,34 @@ static const VMStateDescription vmstate_ghes_state = {
-     }
+@@ -318,6 +318,7 @@ static void acpi_ged_send_event(AcpiDeviceIf *adev, AcpiEventStatusBits ev)
+ 
+ static Property acpi_ged_properties[] = {
+     DEFINE_PROP_UINT32("ged-event", AcpiGedState, ged_event_bitmap, 0),
++    DEFINE_PROP_BOOL("x-has-hest-addr", AcpiGedState, ghes_state.hest_lookup, true),
+     DEFINE_PROP_END_OF_LIST(),
  };
  
-+static const VMStateDescription vmstate_hest = {
-+    .name = "acpi-hest",
-+    .version_id = 1,
-+    .minimum_version_id = 1,
-+    .fields = (const VMStateField[]) {
-+        VMSTATE_UINT64(hest_addr_le, AcpiGhesState),
-+        VMSTATE_END_OF_LIST()
-+    },
-+};
+diff --git a/hw/acpi/ghes.c b/hw/acpi/ghes.c
+index af55bfe106bf..c9295a3b0db7 100644
+--- a/hw/acpi/ghes.c
++++ b/hw/acpi/ghes.c
+@@ -361,6 +361,8 @@ void acpi_build_hest(GArray *table_data, GArray *hardware_errors,
+ {
+     AcpiTable table = { .sig = "HEST", .rev = 1,
+                         .oem_id = oem_id, .oem_table_id = oem_table_id };
++    AcpiGedState *acpi_ged_state;
++    AcpiGhesState *ags;
+     int i;
+ 
+     build_ghes_error_table(hardware_errors, linker, num_sources);
+@@ -381,10 +383,16 @@ void acpi_build_hest(GArray *table_data, GArray *hardware_errors,
+      * tell firmware to write into GPA the address of HEST via fw_cfg,
+      * once initialized.
+      */
+-    bios_linker_loader_write_pointer(linker,
+-                                     ACPI_HEST_ADDR_FW_CFG_FILE, 0,
+-                                     sizeof(uint64_t),
+-                                     ACPI_BUILD_TABLE_FILE, hest_offset);
 +
-+static bool hest_needed(void *opaque)
-+{
-+    AcpiGedState *s = opaque;
-+    return s->ghes_state.hest_addr_le;
-+}
-+
-+static const VMStateDescription vmstate_hest_state = {
-+    .name = "acpi-ged/hest",
-+    .version_id = 1,
-+    .minimum_version_id = 1,
-+    .needed = hest_needed,
-+    .fields = (const VMStateField[]) {
-+        VMSTATE_STRUCT(ghes_state, AcpiGedState, 1,
-+                       vmstate_hest, AcpiGhesState),
-+        VMSTATE_END_OF_LIST()
++    acpi_ged_state = ACPI_GED(object_resolve_path_type("", TYPE_ACPI_GED,
++                                                       NULL));
++    ags = &acpi_ged_state->ghes_state;
++    if (ags->hest_lookup) {
++        bios_linker_loader_write_pointer(linker,
++                                         ACPI_HEST_ADDR_FW_CFG_FILE, 0,
++                                         sizeof(uint64_t),
++                                         ACPI_BUILD_TABLE_FILE, hest_offset);
 +    }
+ }
+ 
+ void acpi_ghes_add_fw_cfg(AcpiGhesState *ags, FWCfgState *s,
+@@ -398,8 +406,10 @@ void acpi_ghes_add_fw_cfg(AcpiGhesState *ags, FWCfgState *s,
+     fw_cfg_add_file_callback(s, ACPI_HW_ERROR_ADDR_FW_CFG_FILE, NULL, NULL,
+         NULL, &(ags->hw_error_le), sizeof(ags->hw_error_le), false);
+ 
+-    fw_cfg_add_file_callback(s, ACPI_HEST_ADDR_FW_CFG_FILE, NULL, NULL,
+-        NULL, &(ags->hest_addr_le), sizeof(ags->hest_addr_le), false);
++    if (ags->hest_lookup) {
++        fw_cfg_add_file_callback(s, ACPI_HEST_ADDR_FW_CFG_FILE, NULL, NULL,
++            NULL, &(ags->hest_addr_le), sizeof(ags->hest_addr_le), false);
++    }
+ 
+     ags->present = true;
+ }
+@@ -520,7 +530,7 @@ void ghes_record_cper_errors(const void *cper, size_t len,
+     }
+     ags = &acpi_ged_state->ghes_state;
+ 
+-    if (!ags->hest_addr_le) {
++    if (!ags->hest_lookup) {
+         get_hw_error_offsets(le64_to_cpu(ags->hw_error_le),
+                              &cper_addr, &read_ack_register_addr);
+     } else {
+diff --git a/hw/arm/virt-acpi-build.c b/hw/arm/virt-acpi-build.c
+index bd5582bc75f8..46ce3f3bb07a 100644
+--- a/hw/arm/virt-acpi-build.c
++++ b/hw/arm/virt-acpi-build.c
+@@ -893,6 +893,10 @@ static const AcpiNotificationSourceId hest_ghes_notify[] = {
+     { ACPI_HEST_SRC_ID_SYNC, ACPI_GHES_NOTIFY_SEA },
+ };
+ 
++static const AcpiNotificationSourceId hest_ghes_notify_9_1[] = {
++    { ACPI_HEST_SRC_ID_SYNC, ACPI_GHES_NOTIFY_SEA },
 +};
 +
- static const VMStateDescription vmstate_acpi_ged = {
-     .name = "acpi-ged",
-     .version_id = 1,
-@@ -399,6 +427,7 @@ static const VMStateDescription vmstate_acpi_ged = {
-         &vmstate_memhp_state,
-         &vmstate_cpuhp_state,
-         &vmstate_ghes_state,
-+        &vmstate_hest_state,
-         NULL
+ static
+ void virt_acpi_build(VirtMachineState *vms, AcpiBuildTables *tables)
+ {
+@@ -946,10 +950,28 @@ void virt_acpi_build(VirtMachineState *vms, AcpiBuildTables *tables)
+     build_dbg2(tables_blob, tables->linker, vms);
+ 
+     if (vms->ras) {
+-        acpi_add_table(table_offsets, tables_blob);
+-        acpi_build_hest(tables_blob, tables->hardware_errors, tables->linker,
+-                        hest_ghes_notify, ARRAY_SIZE(hest_ghes_notify),
+-                        vms->oem_id, vms->oem_table_id);
++        AcpiGhesState *ags;
++        AcpiGedState *acpi_ged_state;
++
++        acpi_ged_state = ACPI_GED(object_resolve_path_type("", TYPE_ACPI_GED,
++                                                       NULL));
++        if (acpi_ged_state) {
++            ags = &acpi_ged_state->ghes_state;
++
++            acpi_add_table(table_offsets, tables_blob);
++
++            if (!ags->hest_lookup) {
++                acpi_build_hest(tables_blob, tables->hardware_errors,
++                                tables->linker, hest_ghes_notify_9_1,
++                                ARRAY_SIZE(hest_ghes_notify_9_1),
++                                vms->oem_id, vms->oem_table_id);
++            } else {
++                acpi_build_hest(tables_blob, tables->hardware_errors,
++                                tables->linker, hest_ghes_notify,
++                                ARRAY_SIZE(hest_ghes_notify),
++                                vms->oem_id, vms->oem_table_id);
++            }
++        }
      }
+ 
+     if (ms->numa_state->num_nodes > 0) {
+diff --git a/hw/core/machine.c b/hw/core/machine.c
+index f29fe959647f..b81fea273e6b 100644
+--- a/hw/core/machine.c
++++ b/hw/core/machine.c
+@@ -34,10 +34,12 @@
+ #include "hw/virtio/virtio-pci.h"
+ #include "hw/virtio/virtio-net.h"
+ #include "hw/virtio/virtio-iommu.h"
++#include "hw/acpi/generic_event_device.h"
+ #include "audio/audio.h"
+ 
+ GlobalProperty hw_compat_9_1[] = {
+     { TYPE_PCI_DEVICE, "x-pcie-ext-tag", "false" },
++    { TYPE_ACPI_GED, "x-has-hest-addr", "false" },
  };
+ const size_t hw_compat_9_1_len = G_N_ELEMENTS(hw_compat_9_1);
+ 
+diff --git a/include/hw/acpi/ghes.h b/include/hw/acpi/ghes.h
+index 237721fec0a2..164ed8b0f9a3 100644
+--- a/include/hw/acpi/ghes.h
++++ b/include/hw/acpi/ghes.h
+@@ -61,6 +61,7 @@ typedef struct AcpiGhesState {
+     uint64_t hest_addr_le;
+     uint64_t hw_error_le;
+     bool present; /* True if GHES is present at all on this board */
++    bool hest_lookup; /* True if HEST address is present */
+ } AcpiGhesState;
+ 
+ /*
 -- 
 2.47.1
 
