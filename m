@@ -2,69 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBBC79E33E0
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Dec 2024 08:12:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB1609E3405
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Dec 2024 08:20:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tIjXw-00037q-4h; Wed, 04 Dec 2024 02:11:40 -0500
+	id 1tIjfd-0006Tk-Qa; Wed, 04 Dec 2024 02:19:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tIjXs-00037H-Rg
- for qemu-devel@nongnu.org; Wed, 04 Dec 2024 02:11:36 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tIjfQ-0006Qi-QM
+ for qemu-devel@nongnu.org; Wed, 04 Dec 2024 02:19:25 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tIjXr-00027c-Js
- for qemu-devel@nongnu.org; Wed, 04 Dec 2024 02:11:36 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tIjfM-0005Fq-DB
+ for qemu-devel@nongnu.org; Wed, 04 Dec 2024 02:19:24 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1733296295;
+ s=mimecast20190719; t=1733296758;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding;
- bh=WeROUwj/BDmYQuZ+7K3hxwfUYROEuwxgCumbH5RhtQ4=;
- b=ZpCFqGNUtCC+NXleiCsRO16LmTYMnGNTV12wP59d7+02dtKNh3+Ghfdfu3Fc1fGk66gIJA
- iUs8MDdLA8UBhiacNtCB+Msu5kky3SJAmIIK0ErA+9u3pCkUZ9523qDidTGG258BB5Iqpl
- yZFAshvGAT57E8uBIY8ahKMOtlwltDg=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ bh=/23SJ3N6uJ9khTdyRfG9XjuzbSkzNHSY0+pMDfGEyIs=;
+ b=coeFHtQgprD5wMPDGMndWp50/BrLL5POaTC9LHNRenSjmryLIIedfUhBTlQYeKLrCZsumS
+ PK31U6psMYECrhHuscPRd69ApZ9Z5Y6fFP348r1yrdtw9YlrQ+0Kn8ZUdwrIhSTMQyIH2d
+ iM/1fg3j5LBAneF2VGufFxRuTEj2/DA=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-149-ISODUfanOIqYTvR6lZcMKw-1; Wed,
- 04 Dec 2024 02:11:29 -0500
-X-MC-Unique: ISODUfanOIqYTvR6lZcMKw-1
-X-Mimecast-MFC-AGG-ID: ISODUfanOIqYTvR6lZcMKw
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-310-Mg0yJevCP_ymjZ6F6pPksA-1; Wed,
+ 04 Dec 2024 02:19:15 -0500
+X-MC-Unique: Mg0yJevCP_ymjZ6F6pPksA-1
+X-Mimecast-MFC-AGG-ID: Mg0yJevCP_ymjZ6F6pPksA
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 696FC19560B6; Wed,  4 Dec 2024 07:11:28 +0000 (UTC)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id B24451955F39; Wed,  4 Dec 2024 07:19:14 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.192.155])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 555AF19560A2; Wed,  4 Dec 2024 07:11:23 +0000 (UTC)
+ by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 0A6F61956054; Wed,  4 Dec 2024 07:19:12 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
-To: qemu-devel@nongnu.org, Yoshinori Sato <ysato@users.sourceforge.jp>,
- Magnus Damm <magnus.damm@gmail.com>
+To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-trivial@nongnu.org
-Subject: [PATCH] MAINTAINERS: Cover the tests/functional/test_sh4eb_r2d.py file
-Date: Wed,  4 Dec 2024 08:11:20 +0100
-Message-ID: <20241204071120.663446-1-thuth@redhat.com>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH for-10.0 0/5] tests/functional: Convert tests with
+ find_free_ports()
+Date: Wed,  4 Dec 2024 08:19:06 +0100
+Message-ID: <20241204071911.664057-1-thuth@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -50
 X-Spam_score: -5.1
 X-Spam_bar: -----
 X-Spam_report: (-5.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.996,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,26 +79,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This file should belong to the R2D machine in the MAINTAINERS file.
+Convert the vnc and migration test that use a find_free_ports()
+function to look for a free port. Since the functional tests can
+be run in parallel, we extract the find_free_ports() function
+into a helper and provide a locking mechanism so that the tests
+don't race for the free ports (see second patch).
 
-Signed-off-by: Thomas Huth <thuth@redhat.com>
----
- MAINTAINERS | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Thomas Huth (5):
+  tests/functional: Convert the vnc test
+  tests/functional: Extract the find_free_ports() function into a helper
+    file
+  tests/functional/test_vnc: Do not use a hard-coded VNC port
+  tests/functional/test_vnc: Remove the test_no_vnc test
+  tests/functional: Convert the migration avocado test
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index aaf0505a21..727f18fae5 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -1643,7 +1643,7 @@ F: hw/pci-host/sh_pci.c
- F: hw/timer/sh_timer.c
- F: include/hw/sh4/sh_intc.h
- F: include/hw/timer/tmu012.h
--F: tests/functional/test_sh4_r2d.py
-+F: tests/functional/test_sh4*_r2d.py
- F: tests/functional/test_sh4_tuxrun.py
- 
- SPARC Machines
+ tests/avocado/migration.py                    | 135 ------------------
+ tests/functional/meson.build                  |  20 +++
+ tests/functional/qemu_test/ports.py           |  53 +++++++
+ tests/functional/test_migration.py            |  83 +++++++++++
+ .../vnc.py => functional/test_vnc.py}         |  70 ++++-----
+ 5 files changed, 185 insertions(+), 176 deletions(-)
+ delete mode 100644 tests/avocado/migration.py
+ create mode 100644 tests/functional/qemu_test/ports.py
+ create mode 100755 tests/functional/test_migration.py
+ rename tests/{avocado/vnc.py => functional/test_vnc.py} (74%)
+ mode change 100644 => 100755
+
 -- 
 2.47.0
 
