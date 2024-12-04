@@ -2,64 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E48DC9E45BE
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Dec 2024 21:31:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CCE299E45CE
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Dec 2024 21:32:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tIvzl-0004NE-WF; Wed, 04 Dec 2024 15:29:15 -0500
+	id 1tIvzX-00049E-Jk; Wed, 04 Dec 2024 15:28:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tIvyz-0003BE-Re
- for qemu-devel@nongnu.org; Wed, 04 Dec 2024 15:28:25 -0500
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tIvz7-0003qt-MF
+ for qemu-devel@nongnu.org; Wed, 04 Dec 2024 15:28:34 -0500
+Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tIvyx-0003Ur-41
- for qemu-devel@nongnu.org; Wed, 04 Dec 2024 15:28:25 -0500
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-434ab114753so1474975e9.0
- for <qemu-devel@nongnu.org>; Wed, 04 Dec 2024 12:28:22 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tIvz2-0003ZX-7V
+ for qemu-devel@nongnu.org; Wed, 04 Dec 2024 15:28:30 -0500
+Received: by mail-wr1-x430.google.com with SMTP id
+ ffacd0b85a97d-385deda28b3so175831f8f.0
+ for <qemu-devel@nongnu.org>; Wed, 04 Dec 2024 12:28:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1733344101; x=1733948901; darn=nongnu.org;
+ d=linaro.org; s=google; t=1733344106; x=1733948906; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=+kCFZSFSFl2GPP7FnxAPq5KUTVvEzSw2EnjHpYSMwwc=;
- b=PTM+th+lByViOglR4dEWHAsKgVxSUueLcvOeIDvXbWY/hBirkZpWJ1wVQq379hpKbo
- 4nxiSau9O0FOUN/WW5X14hI/zFEvUlHc77ORhJAdkrxfd0zr3bmlykv2C8JgooYyJnyG
- LWc8DXjyYigwQ7RuXmbk+CDLBiBb2O93pWnPZmpCVFNH0g0gtsu2s+ADdF71Vp3dC7vf
- ZvH1MO5DAlg1Tc3MaGmtrSg74qDEhVDcwWeSzvnXlYX4LC8EXG+LF/Bzd8PD0m1cHLgh
- r2dfqhh+QI0SXOncQGKSk4tcEz2k4Y1y7XRsYDgC9cDm9jRvkEFHijZRx7XNfxN0Gjnh
- 85Xg==
+ bh=iGN5RJQrSmW9JWKBkRR1K+I3aJFNDNbHIDvyy4lFcWM=;
+ b=pIzrglZtozpJ2fOjAucVrt1WNYVu1lkujLAVwDF4TKcKB5HvtkAoqdntFkQEFMz8oB
+ 6rrXrlcJtk2/RrszW0SVrlGYNzobwt5bcVIiAP28UcUjNf/DBVR7Avf3yZQ/JZGwQit5
+ hKRX/dadRY+n9tGznFnEhkX09c9LKYL6IL2DaErjc3AP96+mQV7iaclst+BDp2yvwb7Q
+ reLWl8BIq/+tbHamWqCFvVCEljlFx3asiU9bzO3k0CIjYmWz+iMyP0ygtnr7kIf8o4bE
+ 1betJPtga88SYQ+9p3o529wHoj/AHoNy/8jHYw19igkHqjTCaRJpcljKpT9VFWEsP9qD
+ JvFA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733344101; x=1733948901;
+ d=1e100.net; s=20230601; t=1733344106; x=1733948906;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=+kCFZSFSFl2GPP7FnxAPq5KUTVvEzSw2EnjHpYSMwwc=;
- b=U4iIUF8hy2SjUexU1l/oKShqCirN+tCW0cUShx9HhoIZGpvNshZSn5Ncwg6lg2QpAm
- tamZuVaQP43Xjtg+WtG/sW1CSgkFYpnvc3pS+plzr+4D3ZZM3wU3WiGzVinyvUVZHhKL
- Kqz8sz1pDKy7DOms/PreGmWleZjplOu2Fd2ypT6dKfi0Rb/szTpeXfdyuL1XZ3gV+Nvv
- gZ0XLMXrQY4wwImsxcg4N1/HCaqE3L0zd676UBWKCI16gZDzA86Os1Qg4XBfZxG2mRa5
- JGpvmKhAMYw2MhML1Hf2U3JuUfhC/6SF1QljBxOszC8D7KVQyxnDKjz8hZa6HRd6n3xM
- vFGw==
-X-Gm-Message-State: AOJu0YwEY/cLvVXYQ1q6mLKKkSIbhXi9ZukOrTE1hhM5eocW/+bhh4iP
- MeqGe6mXhBisNmlhVSJcyo2TvcXD8TGYk9gN4A9vymav27H+xgG0pQgB9s+PjVz5oYKzFsaB2am
- J
-X-Gm-Gg: ASbGncvQtuh7sorJV2fAgHDoczeQNd2mk1Gv97qJ6wISF8YJfjGIfzDKPV9NenPRwIU
- sOC5s7K7GJkV63BVIG38ek7AozgrVMFQwGR+4/MZrrwl9RXrnhDmtAlNhkJYZlvFPAwFaNXMoa5
- IpM3qQ1uCS4PzjsVoV97+AemRHZLADpRUs51BKLWZFnykdPC1pdw7T29Ycr+PcuS7F4+W2K4BPC
- 2oFV81g6oRke8eKO8OPW1GlhYzLcX1UiWmx3K+L7ysEI7OjjQaN9PmqQhGxRfcLy03mLgRlDmJ7
- BgPi/E12giJ7uGHZql9AFyud
-X-Google-Smtp-Source: AGHT+IEwlcXEYWoNFtl7tKT/Gy5FK8B2HE1HWe0k/S+rt7y9oWPFjlOgO3uZdR7sqNHOrOJdTTGk0w==
-X-Received: by 2002:a05:600c:4e8a:b0:426:616e:db8d with SMTP id
- 5b1f17b1804b1-434d09c8d82mr70145375e9.15.1733344101212; 
- Wed, 04 Dec 2024 12:28:21 -0800 (PST)
+ bh=iGN5RJQrSmW9JWKBkRR1K+I3aJFNDNbHIDvyy4lFcWM=;
+ b=WIa3PQr5XP3e/8I/P3Tz46CiqJHSbeB+F6WRjUEpWjyLmZ9/BZZq+gTanGv5ND1p4x
+ /Y7C3HtaXhTxcmtIdB+vDChXM1gFWbPRoGwmRQM9zO1qsDglIB/MVUluO3xgO7dpGrqP
+ rvNKNi8Niqd5msdRfjjGyg8ounznX2SiKG/JUiKPctf1DFCq7PLVSkx5pBlykPvyAJLt
+ vIaJKsA9tCJO86G9jrZ2STxY08SvM49XA3e6yfQdghs89CMx5dzCWf7bLF25AplnKW7Q
+ 29TkiYTkekbAnf1fo/yglBTRNtdjjJbMpHeM3yuH4zUfMDbrWgDygeARx1u6Pf+blo+B
+ fUig==
+X-Gm-Message-State: AOJu0Yybgpi2yyKvJJSw28PCvjbjxoiTXZOxSf3O16X/j2rXACqCYMin
+ IQ6gz/VJOOCSJvY7frSJZ4K8hKOc8/PskZpTEswxyiDMRHwIo+YSNyH7JM3C36V0AqINPlgqY29
+ 6
+X-Gm-Gg: ASbGncuzSzz0QWcNdLRDUhLJMc7AuHLJ3H4oyvxarDthc3umVVRur35vPGHlLbr+kh0
+ zKr3A+QBtUoUWLu60/UZCXDCIFk12eKYSw5wwn1aKoH41kD6x/iqy3CpfZECQEEMx5d5tXlIXbC
+ pFit2DEK1+Js+6wy1L1Z+0azjCZ5eTv1ggTPsGu1G7IIKKA6HDohutn9jl9IApPFCnSsyRJD4gB
+ ImR7xzMXTWZSbZg2cWJsP9bYnmht+CHId4OkFCynXz5oYlIDP68sgdj66yBAGYz1puWkI78kgtw
+ cF1x5OQwZ1ir2X5j2Jo2W4ek
+X-Google-Smtp-Source: AGHT+IH/S3fZHlZzX/kr27toW1RLb1QXyLYo9TNenewW3f4YqXZzcSdz11tH2a+Z9U2wX82Jhc7Nkg==
+X-Received: by 2002:a05:6000:1a87:b0:385:e4a7:df0a with SMTP id
+ ffacd0b85a97d-385fd436393mr5816550f8f.54.1733344106323; 
+ Wed, 04 Dec 2024 12:28:26 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-434d526b375sm36220955e9.9.2024.12.04.12.28.19
+ ffacd0b85a97d-385dece67dasm16908928f8f.8.2024.12.04.12.28.25
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 04 Dec 2024 12:28:20 -0800 (PST)
+ Wed, 04 Dec 2024 12:28:25 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
@@ -77,17 +77,17 @@ Cc: Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Alistair Francis <alistair@alistair23.me>, qemu-ppc@nongnu.org,
  Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 18/20] hw/core/generic-loader: Use cpu_datapath_is_big_endian()
-Date: Wed,  4 Dec 2024 21:26:00 +0100
-Message-ID: <20241204202602.58083-19-philmd@linaro.org>
+Subject: [RFC PATCH 19/20] hw/virtio: Use cpu_datapath_is_big_endian()
+Date: Wed,  4 Dec 2024 21:26:01 +0100
+Message-ID: <20241204202602.58083-20-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241204202602.58083-1-philmd@linaro.org>
 References: <20241204202602.58083-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::430;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x430.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -112,48 +112,29 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Rather that using the binary endianness, use the vCPU one.
 
+The target affected by this change are MIPS, MicroBlaze, SH-4
+and Xtensa. SPARC, RISC-V and RX could be affected later if
+their CPUClass::datapath_is_big_endian() handler is fully
+implemented.
+
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/core/generic-loader.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ hw/virtio/virtio.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/core/generic-loader.c b/hw/core/generic-loader.c
-index abdd4c08a38..7b3b5f06565 100644
---- a/hw/core/generic-loader.c
-+++ b/hw/core/generic-loader.c
-@@ -31,7 +31,6 @@
-  */
+diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
+index b3dede476ed..c57845a16db 100644
+--- a/hw/virtio/virtio.c
++++ b/hw/virtio/virtio.c
+@@ -2257,7 +2257,7 @@ static enum virtio_device_endian virtio_default_endian(void)
  
- #include "qemu/osdep.h"
--#include "exec/tswap.h"
- #include "sysemu/dma.h"
- #include "sysemu/reset.h"
- #include "hw/boards.h"
-@@ -66,7 +65,6 @@ static void generic_loader_realize(DeviceState *dev, Error **errp)
+ static enum virtio_device_endian virtio_current_cpu_endian(void)
  {
-     GenericLoaderState *s = GENERIC_LOADER(dev);
-     hwaddr entry;
--    int big_endian;
-     ssize_t size = 0;
- 
-     s->set_pc = false;
-@@ -134,14 +132,13 @@ static void generic_loader_realize(DeviceState *dev, Error **errp)
-         s->cpu = first_cpu;
-     }
- 
--    big_endian = qemu_binary_is_bigendian();
--
-     if (s->file) {
-         AddressSpace *as = s->cpu ? s->cpu->as :  NULL;
- 
-         if (!s->force_raw) {
-             size = load_elf_as(s->file, NULL, NULL, NULL, &entry, NULL, NULL,
--                               NULL, big_endian, 0, 0, 0, as);
-+                               NULL, cpu_datapath_is_big_endian(s->cpu),
-+                               0, 0, 0, as);
- 
-             if (size < 0) {
-                 size = load_uimage_as(s->file, &entry, NULL, NULL, NULL, NULL,
+-    if (cpu_virtio_is_big_endian(current_cpu)) {
++    if (cpu_datapath_is_big_endian(current_cpu)) {
+         return VIRTIO_DEVICE_ENDIAN_BIG;
+     } else {
+         return VIRTIO_DEVICE_ENDIAN_LITTLE;
 -- 
 2.45.2
 
