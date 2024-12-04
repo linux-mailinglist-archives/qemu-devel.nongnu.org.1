@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B79A9E3403
+	by mail.lfdr.de (Postfix) with ESMTPS id E2C4E9E3406
 	for <lists+qemu-devel@lfdr.de>; Wed,  4 Dec 2024 08:20:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tIjfg-0006XT-IB; Wed, 04 Dec 2024 02:19:41 -0500
+	id 1tIjfv-0006dI-W7; Wed, 04 Dec 2024 02:19:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tIjfS-0006RT-Sy
- for qemu-devel@nongnu.org; Wed, 04 Dec 2024 02:19:29 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tIjfW-0006TJ-1l
+ for qemu-devel@nongnu.org; Wed, 04 Dec 2024 02:19:34 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tIjfQ-0005GZ-Nk
- for qemu-devel@nongnu.org; Wed, 04 Dec 2024 02:19:26 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tIjfU-0005H6-Ih
+ for qemu-devel@nongnu.org; Wed, 04 Dec 2024 02:19:29 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1733296763;
+ s=mimecast20190719; t=1733296767;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=g1uRF7EjvJkJnu1ajWbogr7mymnhMvyRYTvzFBcCrcs=;
- b=JW6xjaf2CY40L5zzTM71HRO6vOP6BrquyuQbP1wB/NniLORnNTftyDAkrbdz9OJtAlQl6x
- ebGebOnI3oRQJMlQASqbCRRG00LAAxH/CRj1WXeu4FTx3nK2AXnqv7qv39qA5lZJdzp2Jm
- zxZpbIGRMxg5I/cznKpIliwXm45OSq4=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ bh=DPc/TAIvpVYP9UaXsmRy/Dwk2j1lH5elMxHmRHmk/FQ=;
+ b=IC96RA33UDb6X1quV/IKylNcjEyK9zY2FXuhsOfUvsYqcYvfTsxnKckWPglQma4eAM6xWA
+ xfLNzx4o+ZNhWwegsYZDXBDDQXWoE3/D5BBVCByMsKQaZRWvfw4cgo7onZRV65I0xzqT/j
+ CKyqYQGWdkscdhZ4cvM8YDdRJf/8UtM=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-377-ahhJYH1tPKKPZl5MqCTGOg-1; Wed,
- 04 Dec 2024 02:19:21 -0500
-X-MC-Unique: ahhJYH1tPKKPZl5MqCTGOg-1
-X-Mimecast-MFC-AGG-ID: ahhJYH1tPKKPZl5MqCTGOg
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-251-i4JJG92dNBOyGZnTiKZ37Q-1; Wed,
+ 04 Dec 2024 02:19:26 -0500
+X-MC-Unique: i4JJG92dNBOyGZnTiKZ37Q-1
+X-Mimecast-MFC-AGG-ID: i4JJG92dNBOyGZnTiKZ37Q
 Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 7898A1956058; Wed,  4 Dec 2024 07:19:20 +0000 (UTC)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 6795219560BD; Wed,  4 Dec 2024 07:19:23 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.192.155])
  by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id C076C1956054; Wed,  4 Dec 2024 07:19:18 +0000 (UTC)
+ id 563371956054; Wed,  4 Dec 2024 07:19:20 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 2/5] tests/functional: Extract the find_free_ports() function
- into a helper file
-Date: Wed,  4 Dec 2024 08:19:08 +0100
-Message-ID: <20241204071911.664057-3-thuth@redhat.com>
+Subject: [PATCH 3/5] tests/functional/test_vnc: Do not use a hard-coded VNC
+ port
+Date: Wed,  4 Dec 2024 08:19:09 +0100
+Message-ID: <20241204071911.664057-4-thuth@redhat.com>
 In-Reply-To: <20241204071911.664057-1-thuth@redhat.com>
 References: <20241204071911.664057-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -81,148 +81,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We'll need this functionality in other functional tests, too, so
-let's extract it into the qemu_test module.
-Also add  an __enter__ and __exit__ function that can be used for
-using this functionality in a locked context, so that tests that
-are running in parallel don't try to compete for the same ports
-later.
+Two tests here are using the hard-coded VNC port :0 ... if there
+is already a QEMU or other program running that is using this
+port, the tests will be failing. Let's better detect a free port
+for these tests and use that one instead.
 
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- tests/functional/qemu_test/ports.py | 53 +++++++++++++++++++++++++++++
- tests/functional/test_vnc.py        | 36 +++++---------------
- 2 files changed, 61 insertions(+), 28 deletions(-)
- create mode 100644 tests/functional/qemu_test/ports.py
+ tests/functional/test_vnc.py | 19 +++++++++++++++----
+ 1 file changed, 15 insertions(+), 4 deletions(-)
 
-diff --git a/tests/functional/qemu_test/ports.py b/tests/functional/qemu_test/ports.py
-new file mode 100644
-index 0000000000..d235d3432b
---- /dev/null
-+++ b/tests/functional/qemu_test/ports.py
-@@ -0,0 +1,53 @@
-+#!/usr/bin/env python3
-+#
-+# Simple functional tests for VNC functionality
-+#
-+# Copyright 2018, 2024 Red Hat, Inc.
-+#
-+# This work is licensed under the terms of the GNU GPL, version 2 or
-+# later.  See the COPYING file in the top-level directory.
-+
-+import fcntl
-+import os
-+import socket
-+import sys
-+import tempfile
-+from typing import List
-+
-+class Ports():
-+
-+    PORTS_ADDR = '127.0.0.1'
-+    PORTS_START = 32768
-+    PORTS_END = PORTS_START + 1024
-+
-+    def __enter__(self):
-+        lock_file = os.path.join(tempfile.gettempdir(), "qemu_port_lock")
-+        self.lock_fh = os.open(lock_file, os.O_CREAT)
-+        fcntl.flock(self.lock_fh, fcntl.LOCK_EX)
-+        return self
-+
-+    def __exit__(self, exc_type, exc_value, traceback):
-+        fcntl.flock(self.lock_fh, fcntl.LOCK_UN)
-+        os.close(self.lock_fh)
-+
-+    def check_bind(self, port: int) -> bool:
-+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
-+            try:
-+                sock.bind((self.PORTS_ADDR, port))
-+            except OSError:
-+                return False
-+
-+        return True
-+
-+    def find_free_ports(self, count: int) -> List[int]:
-+        result = []
-+        for port in range(self.PORTS_START, self.PORTS_END):
-+            if self.check_bind(port):
-+                result.append(port)
-+                if len(result) >= count:
-+                    break
-+        assert len(result) == count
-+        return result
-+
-+    def find_free_port(self) -> int:
-+        return self.find_free_ports(1)[0]
 diff --git a/tests/functional/test_vnc.py b/tests/functional/test_vnc.py
-index b769d3b268..32a81259e4 100755
+index 32a81259e4..59c790b1ce 100755
 --- a/tests/functional/test_vnc.py
 +++ b/tests/functional/test_vnc.py
-@@ -14,22 +14,9 @@
- from typing import List
+@@ -46,8 +46,8 @@ def test_no_vnc_change_password(self):
+         self.assertEqual(set_password_response['error']['desc'],
+                          'Could not set password')
  
- from qemu_test import QemuSystemTest
--
-+from qemu_test.ports import Ports
+-    def test_change_password_requires_a_password(self):
+-        self.vm.add_args('-nodefaults', '-S', '-vnc', ':0')
++    def do_test_change_password_requires_a_password(self, port):
++        self.vm.add_args('-nodefaults', '-S', '-vnc', f':{port - 5900}')
+         self.vm.launch()
+         self.assertTrue(self.vm.qmp('query-vnc')['return']['enabled'])
+         set_password_response = self.vm.qmp('change-vnc-password',
+@@ -58,13 +58,24 @@ def test_change_password_requires_a_password(self):
+         self.assertEqual(set_password_response['error']['desc'],
+                          'Could not set password')
  
- VNC_ADDR = '127.0.0.1'
--VNC_PORT_START = 32768
--VNC_PORT_END = VNC_PORT_START + 1024
--
--
--def check_bind(port: int) -> bool:
--    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
--        try:
--            sock.bind((VNC_ADDR, port))
--        except OSError:
--            return False
--
--    return True
--
- 
- def check_connect(port: int) -> bool:
-     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
-@@ -40,18 +27,6 @@ def check_connect(port: int) -> bool:
- 
-     return True
- 
--
--def find_free_ports(count: int) -> List[int]:
--    result = []
--    for port in range(VNC_PORT_START, VNC_PORT_END):
--        if check_bind(port):
--            result.append(port)
--            if len(result) >= count:
--                break
--    assert len(result) == count
--    return result
--
--
- class Vnc(QemuSystemTest):
- 
-     def test_no_vnc(self):
-@@ -90,8 +65,7 @@ def test_change_password(self):
+-    def test_change_password(self):
+-        self.vm.add_args('-nodefaults', '-S', '-vnc', ':0,password=on')
++    def test_change_password_requires_a_password(self):
++        with Ports() as ports:
++            port = ports.find_free_port()
++            self.do_test_change_password_requires_a_password(port)
++
++    def do_test_change_password(self, port):
++        self.vm.add_args('-nodefaults', '-S',
++                         '-vnc', f':{port - 5900},password=on')
+         self.vm.launch()
+         self.assertTrue(self.vm.qmp('query-vnc')['return']['enabled'])
          self.vm.cmd('change-vnc-password',
                      password='new_password')
  
--    def test_change_listen(self):
--        a, b, c = find_free_ports(3)
-+    def do_test_change_listen(self, a, b, c):
++    def test_change_password(self):
++        with Ports() as ports:
++            port = ports.find_free_port()
++            self.do_test_change_password(port)
++
+     def do_test_change_listen(self, a, b, c):
          self.assertFalse(check_connect(a))
          self.assertFalse(check_connect(b))
-         self.assertFalse(check_connect(c))
-@@ -113,5 +87,11 @@ def test_change_listen(self):
-         self.assertTrue(check_connect(b))
-         self.assertTrue(check_connect(c))
- 
-+    def test_change_listen(self):
-+        with Ports() as ports:
-+            a, b, c = ports.find_free_ports(3)
-+            self.do_test_change_listen(a, b, c)
-+
-+
- if __name__ == '__main__':
-     QemuSystemTest.main()
 -- 
 2.47.0
 
