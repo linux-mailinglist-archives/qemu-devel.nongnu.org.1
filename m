@@ -2,92 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CBCA9E35CE
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Dec 2024 09:47:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 167CD9E35D9
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Dec 2024 09:49:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tIl1t-0003qX-6m; Wed, 04 Dec 2024 03:46:42 -0500
+	id 1tIl3x-0008Vc-5j; Wed, 04 Dec 2024 03:48:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tIl1T-0003lW-LH
- for qemu-devel@nongnu.org; Wed, 04 Dec 2024 03:46:17 -0500
-Received: from mail-ej1-x630.google.com ([2a00:1450:4864:20::630])
+ (Exim 4.90_1) (envelope-from
+ <3ahdQZwgKChsN85E4I9B7FF7C5.3FDH5DL-45M5CEFE7EL.FI7@flex--whendrik.bounces.google.com>)
+ id 1tIl3u-0008Ud-Vl
+ for qemu-devel@nongnu.org; Wed, 04 Dec 2024 03:48:47 -0500
+Received: from mail-wm1-x349.google.com ([2a00:1450:4864:20::349])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tIl1Q-0007Um-UE
- for qemu-devel@nongnu.org; Wed, 04 Dec 2024 03:46:15 -0500
-Received: by mail-ej1-x630.google.com with SMTP id
- a640c23a62f3a-aa503cced42so948886966b.3
- for <qemu-devel@nongnu.org>; Wed, 04 Dec 2024 00:46:12 -0800 (PST)
+ (Exim 4.90_1) (envelope-from
+ <3ahdQZwgKChsN85E4I9B7FF7C5.3FDH5DL-45M5CEFE7EL.FI7@flex--whendrik.bounces.google.com>)
+ id 1tIl3t-00010H-11
+ for qemu-devel@nongnu.org; Wed, 04 Dec 2024 03:48:46 -0500
+Received: by mail-wm1-x349.google.com with SMTP id
+ 5b1f17b1804b1-434a29a93cdso48742975e9.1
+ for <qemu-devel@nongnu.org>; Wed, 04 Dec 2024 00:48:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1733301971; x=1733906771; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=WpKDDl1qaZvj6mo/KodYZv8nziE2WfA+UfGelVOv52s=;
- b=kVJ2ObyXBVs3fhD5pTvL6ZkCtOeuZcO0pF/+JpHXPZrRbdozVahNlStsnsMIzuiYe6
- WMfKsmhYwlHxAjqFN13QEGOd/T9F0osiGQmS5mJ4UngZ5IJSJnAA3hq84iqPN6ZbIeY+
- pLZVuurQvuw1EO/NsfPHQZio02JuV2qdZ6OHTCqNKpZkAG3UlHCxUQYnl0PLdbKN8JUU
- upj9ovW5Kk7D8cOiSgvQ7f+J/l0ry3n++8aGSkOWP4eyh77mcsG6R5auJ2yBH7JzXdvF
- j6a08B9/+Di9rhKKgyOwrf8FzN4Ybciw8qiHli4D2V0qrRyVtWbRBgbCwO3M/RO5tmbZ
- VKnw==
+ d=google.com; s=20230601; t=1733302122; x=1733906922; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:from:subject:message-id
+ :mime-version:date:from:to:cc:subject:date:message-id:reply-to;
+ bh=uF1ofiR2T41ZDyU6Ck5ygK7yUALbkRrX0Bh/AS/hgrY=;
+ b=vZw/ivkOz+YYEWQ7/2n0uC7eK72qzJcWzKcAJIuwo6lMxqDSf9hGHgGiLXr5qD4SiX
+ S1a6CEgFkH4adA2hgJALsm79A6fNCa5p7mzuQYHFgHqmZ3fGXL6FwwEvjdsydjoc6+EO
+ LA58PsQsWU5UFm5qLzbhngIb6P78e7eMg7wkOvL7LQh2OqiL+h7hpR0iy/dw3+JGTY6K
+ avAdJ6DnzvLkqLmFDbT56oY3CoIrvIhoUitLm9uvPv5PfAiOlHgKcheYw9Vbmt6I2tMT
+ wP2auY/amka8oKuNVoziR1TAXzSSjmAAsFwNu6Y9+ctx3P6IokLCzGJe4As5cUyEjigM
+ g1ig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733301971; x=1733906771;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=WpKDDl1qaZvj6mo/KodYZv8nziE2WfA+UfGelVOv52s=;
- b=hY45yeaHZp8fxtatvXuI7BknkAOEnMRz9MOsX1i4/POj1f1mPjVouuAIhHCXs3rWvY
- MjsoCfWx2i2+zA4qy4Jue7pHsz2t7VaNazbmzvKUz5VAVO5vC6ylo+3nV0yjs0gtB374
- ATCuSBRaB7I9FURx2HlPLzpy0C/O18IkXOZh2G2eUX8pkoPPLeZUbO4CdzFrQsC+kqjl
- LGpJN2400UzyL9af+IEMHGIhsFjWecRkq/v/rnBlYcx6kxYkFbTWbt94LExj5L4Q4J8H
- 7K2Ts7n2C4MEAouTlDZdL7yAJhDKx9zNMOPtTbatd0r5KMMz9jVEj8SvujSvqG2xBykm
- UgXA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVyToBZxpuLwjSFbFMZwoG/wLuPqhBZTsNpxacLlHzKwBI3/HvGurM4+aGX+u5weQLIC0dqEz1sYsSp@nongnu.org
-X-Gm-Message-State: AOJu0Yy6R0sd55QTtn44OXl6jaCc0u6Ge1enAFu1xG0zpIdvZX39oIjf
- 0zzVf8sOWhyPjQVWkTpk7uAjjR6NziDv45R1Lt79+s5sWhNsjw4EXMiU26uUaQ0=
-X-Gm-Gg: ASbGncvxL93dSrMdXmc3MrsEUpbxiDH36QxE+rfz8OcYoBSEVG01gezV9BZBSvD8FKV
- l2wzYUyS30tsHU5oeoFgEykafsdOrB68MZDFtdWcEMgWypKtccGOteIPJSTOZy7U4MWQK468yyO
- CmX/WVyHd22XFOSw9fMZAHvUlDVQaLcdBHBQhPH5CCayHXxNJ42H3gZY4S8atBdxsbHRDe2Q2T9
- ZmcYUsA/QokvppW4/btLK3Gg2Ism7laPIodswoUDGGxWMONVf8ttL0qP5ev2s1ti00aDgmGWdbN
- prLktZWz7ilCXdYlBGgK9pCudQvfIZ5wk/vi
-X-Google-Smtp-Source: AGHT+IHnwoCPgWRjT/bGzID6islUjf0zyYgIQI50BjO5i8gBoNoNKVSTouHPWSTit+8/8EFcYYGqQA==
-X-Received: by 2002:a17:906:3110:b0:aa5:49f0:1510 with SMTP id
- a640c23a62f3a-aa5f7d03e3bmr358539666b.8.1733301971013; 
- Wed, 04 Dec 2024 00:46:11 -0800 (PST)
-Received: from [192.168.69.223] (sml13-h01-176-184-15-95.dsl.sta.abo.bbox.fr.
- [176.184.15.95]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-aa5999032c1sm703460966b.133.2024.12.04.00.46.09
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 04 Dec 2024 00:46:10 -0800 (PST)
-Message-ID: <234a2450-620b-4a78-8035-ab658cdae471@linaro.org>
-Date: Wed, 4 Dec 2024 09:46:09 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] MAINTAINERS: Cover the tests/functional/test_sh4eb_r2d.py
- file
-To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
- Yoshinori Sato <ysato@users.sourceforge.jp>,
- Magnus Damm <magnus.damm@gmail.com>
-Cc: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- qemu-trivial@nongnu.org
-References: <20241204071120.663446-1-thuth@redhat.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20241204071120.663446-1-thuth@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::630;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x630.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ d=1e100.net; s=20230601; t=1733302122; x=1733906922;
+ h=content-transfer-encoding:cc:to:from:subject:message-id
+ :mime-version:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=uF1ofiR2T41ZDyU6Ck5ygK7yUALbkRrX0Bh/AS/hgrY=;
+ b=VKZWg5cPfoiDOJJ/8/aS5EVfFLR4D2cvRsfxEnvwdCioiv5INQRtZMhDo2E+AF0s+0
+ sUUURIIVhBXtyOiLS7kDT1C5JuI1FmWCGM+ub8zP4imGZoPzT4EIBmMXUXslT5MVxFZU
+ jOTfOjcOZCOHpLC5QTce/ZU4ojwRGfb0Aq+GeGVfvpxQw7r7XZKVUbZI/H7UV3aRiAr5
+ B91ab55fZzyfpBzI8Cqm4lm6ecq2AxhvZacxp4rLMCUyouuoLki4EM1wTgNuKJHLBP1m
+ NsbH/Z2DoOy0F34NO5WPEpER0qC5DGLf/wamblHTcrO2Grciiiz3lPB6QEjnthd+E2vj
+ LC3A==
+X-Gm-Message-State: AOJu0YwvA3t6Qz3iZfBNg421eFiCMlM9tjSB7DSrvgeQyfRyTfAjZvlI
+ bp/7rfz2f35DMTWz4fM6TUVH+dYYPSwvf9RXmlJULKqN3zl4OUje8l4SjlZKHE/kc7LAqodKvbN
+ 8OE3LnEDoJ/BEPeYx18/bGnNhByiFA0OTKTDKMHDsNxvlfXICISmQOvQCMQPBYgRpX8/TTPymZn
+ TumgpQtcniEd/SewPLiSTtH9Nn6DZxuTlTPbtPbAAheA==
+X-Google-Smtp-Source: AGHT+IFX8cyc2sQMteQAItVyFkJJJWvB189hQOF2suLqSNmjh+sE44KE1C+YgpBGaO4tS8QbNqCWZL1bM0rA3Q==
+X-Received: from wmbjw17.prod.google.com
+ ([2002:a05:600c:5751:b0:434:a9bd:e68c])
+ (user=whendrik job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:4745:b0:434:a5b3:8fee with SMTP id
+ 5b1f17b1804b1-434d0a07c49mr42090405e9.26.1733302122456; 
+ Wed, 04 Dec 2024 00:48:42 -0800 (PST)
+Date: Wed,  4 Dec 2024 08:48:29 +0000
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.47.0.338.g60cca15819-goog
+Message-ID: <20241204084837.517299-1-whendrik@google.com>
+Subject: [PATCH v3 0/8] The aim of this patch series is to emulate Intel RDT
+ features in order to make testing of the linux Resctrl subsystem possible
+ with Qemu.
+From: Hendrik Wuethrich <whendrik@google.com>
+To: qemu-devel@nongnu.org, Jonathan.Cameron@huawei.com, eduardo@habkost.net, 
+ richard.henderson@linaro.org, marcel.apfelbaum@gmail.com, mst@redhat.com, 
+ pbonzini@redhat.com
+Cc: peternewman@google.com, 
+ "=?UTF-8?q?Hendrik=20W=C3=BCthrich?=" <whendrik@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::349;
+ envelope-from=3ahdQZwgKChsN85E4I9B7FF7C5.3FDH5DL-45M5CEFE7EL.FI7@flex--whendrik.bounces.google.com;
+ helo=mail-wm1-x349.google.com
+X-Spam_score_int: -100
+X-Spam_score: -10.1
+X-Spam_bar: ----------
+X-Spam_report: (-10.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.453,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ USER_IN_DEF_DKIM_WL=-7.5 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,14 +97,86 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 4/12/24 08:11, Thomas Huth wrote:
-> This file should belong to the R2D machine in the MAINTAINERS file.
-> 
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
-> ---
->   MAINTAINERS | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+From: Hendrik W=C3=BCthrich <whendrik@google.com>
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+A branch with the patches applied can be found at:
+https://github.com/Gray-Colors/Intel_RDT_patches_applied
+
+The changes made introduce the following features:
+
+* Feature enumeration for Intel RDT allocation.
+* Feature enumeration for Intel RDT monitoring.
+* Intel RDT monitoring system interface.
+* Intel RDT allocation system interface.
+
+By adding these features, a barebones implementation most of the RDT
+state and MSRs is introduced, which can be enabled through qemu
+command line flags.
+The features missing for a faithful recreation of RDT are CDP and
+non-linear MBA throttle, as well as the possibility to configure
+various values through the command line, as some properties can be
+different across different machines. For increased ease of use, the
+correct features should be automatically enabled on machines that
+support RDT functionality.
+The missing features mentioned above will be implemented in the
+following order:
+
+* Expand feature set for RDT allocation to include CDP and non-linear
+ MBA throttle
+* Allow for command line configuration of some values, such as the L3
+ CBM length
+* Automatically enable RDT on machines that officially support it.
+
+Will NOT be implemented
+* Tests to simulate interaction with the host by the guest
+
+Command line examples assuming entire patch series is applied (This
+requires a kernel with Resctrl enabled):
+
+To emulate Intel RDT features:
+
+Currently, it is necessary to force the RDT options on in qemu, as it is
+not automatically enabled for any machines. An example would be the
+following:
+-cpu Skylake-Server,+l3-cmt,+rdt-m,+rdt-a,+mba,+l3-cat,+l2-cat
+and
+-device rdt
+
+Just enabling RDT in qemu won't really help, though. The following
+option allows resctrl in the kernel:
+- Kernel options: rdt=3Dmbmlocal,mbmtotal,cmt,mba,l2cat,l3cat
+
+To use Resctrl in the Qemu, please refer to:
+https://docs.kernel.org/arch/x86/resctrl.html
+
+V2 -> V3
+- Fix up command line examples in cover letter
+- Fix CBM sizes which were wrong before
+- Warn instead of crash when -device rdt is not set, while RDT options
+  are forced on.
+
+=E2=80=AAHendrik W=C3=BCthrich (8):
+  i386: Add Intel RDT device and State to config.
+  i386: Add init and realize funciontality for RDT device.
+  i386: Add RDT functionality
+  i386: Add RDT device interface through MSRs
+  i386: Add CPUID enumeration for RDT
+  i386: Add RDT feature flags.
+  i386/cpu: Adjust CPUID level for RDT features
+  i386/cpu: Adjust level for RDT on full_cpuid_auto_level
+
+ hw/i386/Kconfig                      |   4 +
+ hw/i386/meson.build                  |   1 +
+ hw/i386/rdt.c                        | 281 +++++++++++++++++++++++++++
+ include/hw/i386/rdt.h                |  76 ++++++++
+ target/i386/cpu.c                    | 112 ++++++++++-
+ target/i386/cpu.h                    |  24 +++
+ target/i386/tcg/sysemu/misc_helper.c |  84 ++++++++
+ 7 files changed, 580 insertions(+), 2 deletions(-)
+ create mode 100644 hw/i386/rdt.c
+ create mode 100644 include/hw/i386/rdt.h
+
+--=20
+2.47.0.338.g60cca15819-goog
 
 
