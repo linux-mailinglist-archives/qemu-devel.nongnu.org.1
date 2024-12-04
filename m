@@ -2,79 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 167CD9E35D9
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Dec 2024 09:49:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A2B829E35DC
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Dec 2024 09:49:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tIl3x-0008Vc-5j; Wed, 04 Dec 2024 03:48:49 -0500
+	id 1tIl40-00008x-AH; Wed, 04 Dec 2024 03:48:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <3ahdQZwgKChsN85E4I9B7FF7C5.3FDH5DL-45M5CEFE7EL.FI7@flex--whendrik.bounces.google.com>)
- id 1tIl3u-0008Ud-Vl
- for qemu-devel@nongnu.org; Wed, 04 Dec 2024 03:48:47 -0500
-Received: from mail-wm1-x349.google.com ([2a00:1450:4864:20::349])
+ <3bRdQZwgKCh4QB8H7LCEAIIAF8.6IGK8GO-78P8FHIHAHO.ILA@flex--whendrik.bounces.google.com>)
+ id 1tIl3x-00005c-Jr
+ for qemu-devel@nongnu.org; Wed, 04 Dec 2024 03:48:49 -0500
+Received: from mail-wm1-x34a.google.com ([2a00:1450:4864:20::34a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from
- <3ahdQZwgKChsN85E4I9B7FF7C5.3FDH5DL-45M5CEFE7EL.FI7@flex--whendrik.bounces.google.com>)
- id 1tIl3t-00010H-11
- for qemu-devel@nongnu.org; Wed, 04 Dec 2024 03:48:46 -0500
-Received: by mail-wm1-x349.google.com with SMTP id
- 5b1f17b1804b1-434a29a93cdso48742975e9.1
- for <qemu-devel@nongnu.org>; Wed, 04 Dec 2024 00:48:43 -0800 (PST)
+ <3bRdQZwgKCh4QB8H7LCEAIIAF8.6IGK8GO-78P8FHIHAHO.ILA@flex--whendrik.bounces.google.com>)
+ id 1tIl3v-00010j-RR
+ for qemu-devel@nongnu.org; Wed, 04 Dec 2024 03:48:49 -0500
+Received: by mail-wm1-x34a.google.com with SMTP id
+ 5b1f17b1804b1-4349e97bfc4so60197595e9.3
+ for <qemu-devel@nongnu.org>; Wed, 04 Dec 2024 00:48:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20230601; t=1733302122; x=1733906922; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:from:subject:message-id
- :mime-version:date:from:to:cc:subject:date:message-id:reply-to;
- bh=uF1ofiR2T41ZDyU6Ck5ygK7yUALbkRrX0Bh/AS/hgrY=;
- b=vZw/ivkOz+YYEWQ7/2n0uC7eK72qzJcWzKcAJIuwo6lMxqDSf9hGHgGiLXr5qD4SiX
- S1a6CEgFkH4adA2hgJALsm79A6fNCa5p7mzuQYHFgHqmZ3fGXL6FwwEvjdsydjoc6+EO
- LA58PsQsWU5UFm5qLzbhngIb6P78e7eMg7wkOvL7LQh2OqiL+h7hpR0iy/dw3+JGTY6K
- avAdJ6DnzvLkqLmFDbT56oY3CoIrvIhoUitLm9uvPv5PfAiOlHgKcheYw9Vbmt6I2tMT
- wP2auY/amka8oKuNVoziR1TAXzSSjmAAsFwNu6Y9+ctx3P6IokLCzGJe4As5cUyEjigM
- g1ig==
+ d=google.com; s=20230601; t=1733302126; x=1733906926; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:from:subject:message-id:references
+ :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+ :reply-to; bh=139eJ467S0+ud6wwoqOA+04OQp0idjTX9nXsFXEiqo4=;
+ b=3xol754HROCyFX3Oimb4AhCARlm6IREMjJ+JEndwCWEqu3n7ZFKEs7U2R5aYmbezAD
+ 7Q5b8D72ytuxTTZnUuXQRVzFUzhS+SGetkhmfFm/mkVC1VnIwGGjyNkgC4oUbibQaWwV
+ /znr0bGsziB5JSjbkMZiQEa+R4szbF7T9rED76144bHji2FW5BgJX0KrWyvOqbSVnpjt
+ nJ9tGuOsH0DFrLYiK3ylRd2X5uULV9SQsazgMRDJf5xTbiOcq94FZCyI/J0AsLBTa1fU
+ CA1Anjs/BI0zn6mJuBEzw+Uj5D/J75I8ooyRKKbSAssnLAmGlXt92b4uH264lwOOiVH+
+ yDaw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733302122; x=1733906922;
- h=content-transfer-encoding:cc:to:from:subject:message-id
- :mime-version:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=uF1ofiR2T41ZDyU6Ck5ygK7yUALbkRrX0Bh/AS/hgrY=;
- b=VKZWg5cPfoiDOJJ/8/aS5EVfFLR4D2cvRsfxEnvwdCioiv5INQRtZMhDo2E+AF0s+0
- sUUURIIVhBXtyOiLS7kDT1C5JuI1FmWCGM+ub8zP4imGZoPzT4EIBmMXUXslT5MVxFZU
- jOTfOjcOZCOHpLC5QTce/ZU4ojwRGfb0Aq+GeGVfvpxQw7r7XZKVUbZI/H7UV3aRiAr5
- B91ab55fZzyfpBzI8Cqm4lm6ecq2AxhvZacxp4rLMCUyouuoLki4EM1wTgNuKJHLBP1m
- NsbH/Z2DoOy0F34NO5WPEpER0qC5DGLf/wamblHTcrO2Grciiiz3lPB6QEjnthd+E2vj
- LC3A==
-X-Gm-Message-State: AOJu0YwvA3t6Qz3iZfBNg421eFiCMlM9tjSB7DSrvgeQyfRyTfAjZvlI
- bp/7rfz2f35DMTWz4fM6TUVH+dYYPSwvf9RXmlJULKqN3zl4OUje8l4SjlZKHE/kc7LAqodKvbN
- 8OE3LnEDoJ/BEPeYx18/bGnNhByiFA0OTKTDKMHDsNxvlfXICISmQOvQCMQPBYgRpX8/TTPymZn
- TumgpQtcniEd/SewPLiSTtH9Nn6DZxuTlTPbtPbAAheA==
-X-Google-Smtp-Source: AGHT+IFX8cyc2sQMteQAItVyFkJJJWvB189hQOF2suLqSNmjh+sE44KE1C+YgpBGaO4tS8QbNqCWZL1bM0rA3Q==
-X-Received: from wmbjw17.prod.google.com
- ([2002:a05:600c:5751:b0:434:a9bd:e68c])
+ d=1e100.net; s=20230601; t=1733302126; x=1733906926;
+ h=content-transfer-encoding:cc:to:from:subject:message-id:references
+ :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=139eJ467S0+ud6wwoqOA+04OQp0idjTX9nXsFXEiqo4=;
+ b=YWhXPCugJTI1a/N5bqaEAfdlAG5vtUrKH9UYrqeN4pdtg1vaDTuyDOk+R5EpeLZU7c
+ 7g0k9/E7w9D3MZP5aW3xDn1r1CAab+cFoCVMMf7IdnuYODgoozCqikTrZheSsKm9/KzE
+ yxmlunMQ2YZSAEQYhSBrXK1AOxB7xmpvS3/e2/h9NCjV0PF54YExDlLnZuC+u5krrHCZ
+ yeKjgeyjNbcxOs/8WGmxf3n437anrtxVlSsgAHZ6mF8Qm7VNzx7TA8Dj/I2M/YLj/Cig
+ Vm9M85zLSYexU3bVtz4JZcXFiNdGnrSNn1gRJ7g1Whkjf0NXN3Czk0k1q12Qls6Q+AGj
+ 2KqA==
+X-Gm-Message-State: AOJu0Ywm3oyNJhQGLWfYPfSvE78e9y1q/pbz7Th0/7tBVxD4GXkB3fTJ
+ beumAinUs81khMIlU2uFYU8BH/yoAxCTA/Ku3vwtNQdghH9uv5K09esQNwHgDYEdBfTxJPkRnCO
+ V3HWR3JcATeEgTyjNVWSuX0KUw7GqgyRFXidfvjUPzNi+MwiWrWwf3vx1D3A0aVXtpDDUtM31lc
+ 445z4sI5Y9VnivSbs+PmWc2SxqkMNZp67z/o/owUcGXw==
+X-Google-Smtp-Source: AGHT+IGn3gBumleApIgsT05daGDt4z2wpuEy2AgXXAFxJQI/PZ6KbE2dtn9k06oiivsHp+xhuhwi72t/EgRhOg==
+X-Received: from wmil16.prod.google.com ([2002:a7b:c450:0:b0:434:a08d:7adb])
  (user=whendrik job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:4745:b0:434:a5b3:8fee with SMTP id
- 5b1f17b1804b1-434d0a07c49mr42090405e9.26.1733302122456; 
- Wed, 04 Dec 2024 00:48:42 -0800 (PST)
-Date: Wed,  4 Dec 2024 08:48:29 +0000
+ 2002:a05:600c:4fc9:b0:434:a986:11cf with SMTP id
+ 5b1f17b1804b1-434d09c0faamr50818825e9.8.1733302125840; 
+ Wed, 04 Dec 2024 00:48:45 -0800 (PST)
+Date: Wed,  4 Dec 2024 08:48:30 +0000
+In-Reply-To: <20241204084837.517299-1-whendrik@google.com>
 Mime-Version: 1.0
+References: <20241204084837.517299-1-whendrik@google.com>
 X-Mailer: git-send-email 2.47.0.338.g60cca15819-goog
-Message-ID: <20241204084837.517299-1-whendrik@google.com>
-Subject: [PATCH v3 0/8] The aim of this patch series is to emulate Intel RDT
- features in order to make testing of the linux Resctrl subsystem possible
- with Qemu.
+Message-ID: <20241204084837.517299-2-whendrik@google.com>
+Subject: [PATCH v3 1/8] i386: Add Intel RDT device and State to config.
 From: Hendrik Wuethrich <whendrik@google.com>
 To: qemu-devel@nongnu.org, Jonathan.Cameron@huawei.com, eduardo@habkost.net, 
  richard.henderson@linaro.org, marcel.apfelbaum@gmail.com, mst@redhat.com, 
  pbonzini@redhat.com
 Cc: peternewman@google.com, 
- "=?UTF-8?q?Hendrik=20W=C3=BCthrich?=" <whendrik@google.com>
+ "=?UTF-8?q?=E2=80=AAHendrik=20W=C3=BCthrich?=" <whendrik@google.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::349;
- envelope-from=3ahdQZwgKChsN85E4I9B7FF7C5.3FDH5DL-45M5CEFE7EL.FI7@flex--whendrik.bounces.google.com;
- helo=mail-wm1-x349.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::34a;
+ envelope-from=3bRdQZwgKCh4QB8H7LCEAIIAF8.6IGK8GO-78P8FHIHAHO.ILA@flex--whendrik.bounces.google.com;
+ helo=mail-wm1-x34a.google.com
 X-Spam_score_int: -100
 X-Spam_score: -10.1
 X-Spam_bar: ----------
@@ -97,85 +96,207 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Hendrik W=C3=BCthrich <whendrik@google.com>
+From: =E2=80=AAHendrik W=C3=BCthrich <whendrik@google.com>
 
-A branch with the patches applied can be found at:
-https://github.com/Gray-Colors/Intel_RDT_patches_applied
+Change config to show RDT, add minimal code to the rdt.c module to make
+sure things still compile.
 
-The changes made introduce the following features:
-
-* Feature enumeration for Intel RDT allocation.
-* Feature enumeration for Intel RDT monitoring.
-* Intel RDT monitoring system interface.
-* Intel RDT allocation system interface.
-
-By adding these features, a barebones implementation most of the RDT
-state and MSRs is introduced, which can be enabled through qemu
-command line flags.
-The features missing for a faithful recreation of RDT are CDP and
-non-linear MBA throttle, as well as the possibility to configure
-various values through the command line, as some properties can be
-different across different machines. For increased ease of use, the
-correct features should be automatically enabled on machines that
-support RDT functionality.
-The missing features mentioned above will be implemented in the
-following order:
-
-* Expand feature set for RDT allocation to include CDP and non-linear
- MBA throttle
-* Allow for command line configuration of some values, such as the L3
- CBM length
-* Automatically enable RDT on machines that officially support it.
-
-Will NOT be implemented
-* Tests to simulate interaction with the host by the guest
-
-Command line examples assuming entire patch series is applied (This
-requires a kernel with Resctrl enabled):
-
-To emulate Intel RDT features:
-
-Currently, it is necessary to force the RDT options on in qemu, as it is
-not automatically enabled for any machines. An example would be the
-following:
--cpu Skylake-Server,+l3-cmt,+rdt-m,+rdt-a,+mba,+l3-cat,+l2-cat
-and
--device rdt
-
-Just enabling RDT in qemu won't really help, though. The following
-option allows resctrl in the kernel:
-- Kernel options: rdt=3Dmbmlocal,mbmtotal,cmt,mba,l2cat,l3cat
-
-To use Resctrl in the Qemu, please refer to:
-https://docs.kernel.org/arch/x86/resctrl.html
-
-V2 -> V3
-- Fix up command line examples in cover letter
-- Fix CBM sizes which were wrong before
-- Warn instead of crash when -device rdt is not set, while RDT options
-  are forced on.
-
-=E2=80=AAHendrik W=C3=BCthrich (8):
-  i386: Add Intel RDT device and State to config.
-  i386: Add init and realize funciontality for RDT device.
-  i386: Add RDT functionality
-  i386: Add RDT device interface through MSRs
-  i386: Add CPUID enumeration for RDT
-  i386: Add RDT feature flags.
-  i386/cpu: Adjust CPUID level for RDT features
-  i386/cpu: Adjust level for RDT on full_cpuid_auto_level
-
- hw/i386/Kconfig                      |   4 +
- hw/i386/meson.build                  |   1 +
- hw/i386/rdt.c                        | 281 +++++++++++++++++++++++++++
- include/hw/i386/rdt.h                |  76 ++++++++
- target/i386/cpu.c                    | 112 ++++++++++-
- target/i386/cpu.h                    |  24 +++
- target/i386/tcg/sysemu/misc_helper.c |  84 ++++++++
- 7 files changed, 580 insertions(+), 2 deletions(-)
+Signed-off-by: Hendrik W=C3=BCthrich <whendrik@google.com>
+---
+ hw/i386/Kconfig       |  4 ++
+ hw/i386/meson.build   |  1 +
+ hw/i386/rdt.c         | 96 +++++++++++++++++++++++++++++++++++++++++++
+ include/hw/i386/rdt.h | 25 +++++++++++
+ target/i386/cpu.h     |  3 ++
+ 5 files changed, 129 insertions(+)
  create mode 100644 hw/i386/rdt.c
  create mode 100644 include/hw/i386/rdt.h
 
+diff --git a/hw/i386/Kconfig b/hw/i386/Kconfig
+index f4a33b6c08..4dd05ed6f2 100644
+--- a/hw/i386/Kconfig
++++ b/hw/i386/Kconfig
+@@ -10,6 +10,9 @@ config SGX
+     bool
+     depends on KVM
+=20
++config RDT
++    bool
++
+ config PC
+     bool
+     imply APPLESMC
+@@ -26,6 +29,7 @@ config PC
+     imply QXL
+     imply SEV
+     imply SGX
++    imply RDT
+     imply TEST_DEVICES
+     imply TPM_CRB
+     imply TPM_TIS_ISA
+diff --git a/hw/i386/meson.build b/hw/i386/meson.build
+index 03aad10df7..fdbf5962b5 100644
+--- a/hw/i386/meson.build
++++ b/hw/i386/meson.build
+@@ -21,6 +21,7 @@ i386_ss.add(when: 'CONFIG_VMPORT', if_true: files('vmport=
+.c'))
+ i386_ss.add(when: 'CONFIG_VTD', if_true: files('intel_iommu.c'))
+ i386_ss.add(when: 'CONFIG_SGX', if_true: files('sgx-epc.c','sgx.c'),
+                                 if_false: files('sgx-stub.c'))
++i386_ss.add(when: 'CONFIG_RDT', if_true: files('rdt.c'))
+=20
+ i386_ss.add(when: 'CONFIG_ACPI', if_true: files('acpi-common.c'))
+ i386_ss.add(when: 'CONFIG_PC', if_true: files(
+diff --git a/hw/i386/rdt.c b/hw/i386/rdt.c
+new file mode 100644
+index 0000000000..d0afbd04fb
+--- /dev/null
++++ b/hw/i386/rdt.c
+@@ -0,0 +1,96 @@
++/*
++ * Intel Resource Director Technology (RDT).
++ *
++ * Copyright 2024 Google LLC
++ *
++ * This program is free software; you can redistribute it and/or modify it
++ * under the terms of the GNU General Public License as published by the
++ * Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful, but WIT=
+HOUT
++ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
++ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
++ * for more details.
++ */
++
++#include "hw/i386/rdt.h"
++#include "qemu/osdep.h" /* Needs to be included before isa.h */
++#include "hw/isa/isa.h"
++#include "hw/qdev-properties.h"
++#include "qom/object.h"
++
++/* Max counts for allocation masks or CBMs. In other words, the size of re=
+spective MSRs*/
++#define RDT_MAX_L3_MASK_COUNT      127
++#define RDT_MAX_L2_MASK_COUNT      63
++#define RDT_MAX_MBA_THRTL_COUNT    63
++
++#define TYPE_RDT "rdt"
++#define RDT_NUM_RMID_PROP "rmids"
++
++OBJECT_DECLARE_TYPE(RDTState, RDTStateClass, RDT);
++
++struct RDTMonitor {
++    uint64_t count_local;
++    uint64_t count_remote;
++    uint64_t count_l3;
++};
++
++struct RDTAllocation {
++    uint32_t active_cos;
++};
++
++struct RDTStatePerCore {
++    uint32_t active_rmid;
++    GArray *monitors;
++
++    /*Parent RDTState*/
++    RDTState *rdtstate;
++};
++
++/*One instance of RDT-internal state to be shared by all cores*/
++struct RDTState {
++    ISADevice parent;
++
++    /*Max amount of RMIDs*/
++    uint32_t rmids;
++
++    /*Per core state*/
++    RDTStatePerCore *rdtInstances;
++    RDTAllocation *allocations;
++
++    /*RDT Allocation bitmask MSRs*/
++    uint32_t msr_L3_ia32_mask_n[RDT_MAX_L3_MASK_COUNT];
++    uint32_t msr_L2_ia32_mask_n[RDT_MAX_L2_MASK_COUNT];
++    uint32_t ia32_L2_qos_ext_bw_thrtl_n[RDT_MAX_MBA_THRTL_COUNT];
++};
++
++struct RDTStateClass {
++};
++
++OBJECT_DEFINE_TYPE(RDTState, rdt, RDT, ISA_DEVICE);
++
++static Property rdt_properties[] =3D {
++    DEFINE_PROP_UINT32(RDT_NUM_RMID_PROP, RDTState, rmids, 256),
++    DEFINE_PROP_END_OF_LIST(),
++};
++
++static void rdt_init(Object *obj)
++{
++}
++
++static void rdt_finalize(Object *obj)
++{
++}
++
++static void rdt_class_init(ObjectClass *klass, void *data)
++{
++    DeviceClass *dc =3D DEVICE_CLASS(klass);
++
++    dc->hotpluggable =3D false;
++    dc->desc =3D "RDT";
++    dc->user_creatable =3D true;
++
++    device_class_set_props(dc, rdt_properties);
++}
++
+diff --git a/include/hw/i386/rdt.h b/include/hw/i386/rdt.h
+new file mode 100644
+index 0000000000..a21d95b265
+--- /dev/null
++++ b/include/hw/i386/rdt.h
+@@ -0,0 +1,25 @@
++/*
++ * Intel Resource Director Technology (RDT).
++ *
++ * Copyright 2024 Google LLC
++ *
++ * This program is free software; you can redistribute it and/or modify it
++ * under the terms of the GNU General Public License as published by the
++ * Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful, but WIT=
+HOUT
++ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
++ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
++ * for more details.
++ */
++
++#ifndef HW_RDT_H
++#define HW_RDT_H
++
++typedef struct RDTState RDTState;
++typedef struct RDTStatePerCore RDTStatePerCore;
++typedef struct RDTMonitor RDTMonitor;
++typedef struct RDTAllocation RDTAllocation;
++
++#endif
+diff --git a/target/i386/cpu.h b/target/i386/cpu.h
+index 1e121acef5..a2941f98eb 100644
+--- a/target/i386/cpu.h
++++ b/target/i386/cpu.h
+@@ -2143,6 +2143,9 @@ struct ArchCPU {
+     struct MemoryRegion *cpu_as_root, *cpu_as_mem, *smram;
+     Notifier machine_done;
+=20
++    /* Help the RDT MSRs find the RDT device */
++    struct RDTStatePerCore *rdt;
++
+     struct kvm_msrs *kvm_msr_buf;
+=20
+     int32_t node_id; /* NUMA node this CPU belongs to */
 --=20
 2.47.0.338.g60cca15819-goog
 
