@@ -2,94 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F8469E3AA2
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Dec 2024 13:58:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C5EE9E3AA8
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Dec 2024 13:59:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tIoxF-0008BB-22; Wed, 04 Dec 2024 07:58:09 -0500
+	id 1tIoxm-0000L8-ET; Wed, 04 Dec 2024 07:58:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <rkanwal@rivosinc.com>)
- id 1tIox5-00084u-Rh
- for qemu-devel@nongnu.org; Wed, 04 Dec 2024 07:58:03 -0500
-Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1tIoxa-0008Rp-Id
+ for qemu-devel@nongnu.org; Wed, 04 Dec 2024 07:58:31 -0500
+Received: from mail-pg1-x536.google.com ([2607:f8b0:4864:20::536])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <rkanwal@rivosinc.com>)
- id 1tIox4-0000By-3F
- for qemu-devel@nongnu.org; Wed, 04 Dec 2024 07:57:59 -0500
-Received: by mail-wr1-x434.google.com with SMTP id
- ffacd0b85a97d-385e1721716so2648889f8f.3
- for <qemu-devel@nongnu.org>; Wed, 04 Dec 2024 04:57:56 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1tIoxY-0000GG-GY
+ for qemu-devel@nongnu.org; Wed, 04 Dec 2024 07:58:30 -0500
+Received: by mail-pg1-x536.google.com with SMTP id
+ 41be03b00d2f7-7fc99fc2b16so4028190a12.3
+ for <qemu-devel@nongnu.org>; Wed, 04 Dec 2024 04:58:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1733317074; x=1733921874;
- darn=nongnu.org; 
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=AdfctVdNv45/VmWP+SA5e4bfBEoBz0UqYA7wpbj9RiY=;
- b=bwMA+H/iMSonJS3+RDyPvkbUdiEo/7guL+v+Q68zahU5CdSZPSScTeyLf/fHgCF1rc
- T+djVy6S3KyuDqONrC7f7p+enNVOzL6iqlHR8SuWg+KURw/jJcwBVwLIyv2OsD2z3IUG
- 5AU5rZ56dBh4y6CYQywc5PVxFIBK1I/cyn1LsE+yChykixF5+NbVQ21qArUxIYas1yg/
- bhSxFdeiV6eE9UiU2fm9KjjTrsrWSsRr1cBkyNnXYQHqwOJZ4jk+tx5dvdwXagZL1T5V
- wa9Q0lKsqc5Hpu0gIQ0SF13g/6Yx0R778nJO9m7qKv2eIvq6+pN2RmlGTimxe/8bqtgD
- dKmg==
+ d=ventanamicro.com; s=google; t=1733317107; x=1733921907; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=RvTBnz7ZNUA8H4NoRdWH9xyQCXotA8K3zl7nZUBj5O4=;
+ b=hva8cukYpCtAAI0azwyk257ezkZm7SlWOE5JB29212wiB1wb4csCOC72iAKjGSGM+c
+ w5Lvd7lzunWGEfky7+XdfqU84LQU9TCOPVGS5J3IgURl25x85+cvgguVsUfNZG7CD2dR
+ bb402r0CSmWAn1py7UnzjQJ2ShNOJ8T7IDoF6ZdPHP3ryp8tVf8YLGBqeJpjgIXfot2k
+ q0aFEvj1vrVbsvaR8az/089exmzZHWvgI5GYmElmMh34IxWLA1EfSJVnKu6RM6NrTkpN
+ hBRxXazeC2PUJfvnBYJlYfZ0mJVdCTZpErXagiymCw9o14YBi/biWiIh5lJRm7ljOPpS
+ x4AQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733317075; x=1733921875;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=AdfctVdNv45/VmWP+SA5e4bfBEoBz0UqYA7wpbj9RiY=;
- b=OeZxmgsA6/CDPmHM91zEx+phdQCNSZMr9eXHK7lWUe1BJzSYFLXK5YMZKHM/K137kS
- 77EfbyurOKig3YDRsjyAoYGByxfGy/TuOBKXr7aYCz8KOAYN/kelQNVJvwy6x+ilU56q
- nwpq9/80zwgsXfv+5jKjmNfdQUx4M/92YbRehIGU7pftZRefkiHwgv8zGDAwCDU22gbM
- M0AbbMIDIbJTA6P6AFWelIqLEloaqS6/B0EhLNKj8PfZJcfYTBzZKrPjPL+qTbQVvsJu
- H3+GYp0pE2prC/uvzCgu2IyWEmHpCGXmUqWjML1t9LF6qbU+VZ+ZX4irHQ0uQT16xGYv
- Y4vw==
+ d=1e100.net; s=20230601; t=1733317107; x=1733921907;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=RvTBnz7ZNUA8H4NoRdWH9xyQCXotA8K3zl7nZUBj5O4=;
+ b=Av7NNA5cjOz+wwi6N1JWc6UYuJG+3MfeCIHXk4IqbhO6V6SO2SmPwWF5vw33IRYaLD
+ mjl29nwLs1DQM4MBTpVQlUCTvfLmLJsfAkjyFczVm3rKAXPwd/7oYvOj+FdJvOj3z1sj
+ GtY3AmW26hS0U+WninK9BI7zIaa2ptoRuA/ipEwyVZz1OSqH3WsJmI+WAFTbldoYRjjk
+ OiOpVfeP/wkvIww+Txy5+oxWX1DK9YU41hW/Uj3jzOritP1gA5n/Ptf49Y/iuMka7CZA
+ FpBG1TBoYR+ymZ2oepjhTDBjgFVssm1gy4a1wC1nJ9cODd9/IR9+V5swT234EGHfIygM
+ MbhQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVKzJba/B9ujVgl2HaxZo52rmp0vaAR3TR1bLTegGNlgUPG6fCaBbPbBNI1yfcf33IigqgSSEC9oQBh@nongnu.org
-X-Gm-Message-State: AOJu0Yz8kTGVtX8WaER78vFUA5QxvzCdxLXtTf6b3wO+urHvAhVdpI0M
- qOo7/+TERXxLKyYXI7HVrwNvBsnb7BIib1Gm1+95wYwc4gRN0lJfKtEf3jHRZGM=
-X-Gm-Gg: ASbGnctesqxdnKYweT6vTrl2kbODiiGZXiLPcrWPeDFF6EUcgSlXOxxYDkcSXwK0OJ2
- KjB+nrq0KVzmfKGysdKopU2Mj78oIikypTcrXwTMJ7htBH1iVIFWZAusxFCMiEnk9IVIPtBEjNw
- ZzDOf+xfWNTCSovWFZodp/E0BjqWa/wB5zfb68WDxWUOERETAUL3FWhfY0IppvkpdUA18cMEkM2
- DpSXlWw1BWay16ffCdBbhm/0VMaQyfbMwN0ECriGncAekoD3AoamMqkvofE5bwESgmhc0c224RY
- 3kvDqQ==
-X-Google-Smtp-Source: AGHT+IFsnyml7eLyL8nD58SX/Ykhd+WFATkHK4nrvyDmdvnvZFFQQgf2F3F1C2ODw+bDkjHLgO4+4g==
-X-Received: by 2002:a05:6000:4601:b0:385:fb40:e57b with SMTP id
- ffacd0b85a97d-385fd3cd413mr5382365f8f.15.1733317074609; 
- Wed, 04 Dec 2024 04:57:54 -0800 (PST)
-Received: from rkanwal-XPS-15-9520.ba.rivosinc.com ([137.59.223.84])
+ AJvYcCUBTT+UE20b0nYbfmxMwAqF4hcs9A+ttdT6JsrefQXj4FR/Nqqaj2tufoeMLIxIYpPZTzHSfI18NMLh@nongnu.org
+X-Gm-Message-State: AOJu0Yw61xY3Hpm4+BaCugpU6Wq1zqFhLce6lSGN7xzbAUTMrAnh8kjP
+ 70Nxp1bVJT1zYEgLXsR9OliwE5KrZcKqVoQxZaNTtqbzlp1/C/mgFAgOqrLzPiY=
+X-Gm-Gg: ASbGnctNIvOMgKX2d/k2e1Eg+y6yYpRKiwheFExUjgJUloVKNg+pv4rn7JabTL4n0cu
+ rzqbV6y/Mr/8L0Go2WazUVl5c7WT4+yVjei0vCVAvLyjUCFNoOQUojJLWrAs4nnZQp3ZxJLz2H1
+ Val6U2joi4djxWUVC4nqBdSsYu7gi1sMO368ER3rO5eQR8P3jJMv5q2oTVo9q8G6FHh3f7gDqMB
+ e+xz+9P58vsuLw8VLBPYocAAL8S2MdOlSLmghouTNUlDoKyQK8G9dwIYdI5M0s=
+X-Google-Smtp-Source: AGHT+IG/MOJFKipQrYvwc12bg6JIj6eFzl6NstUgbMVwBtLOjNuFu85CZpcU6vLQF/JGQUNV9MvbCw==
+X-Received: by 2002:a05:6a20:43a7:b0:1e0:be48:1797 with SMTP id
+ adf61e73a8af0-1e16539f33emr8937854637.3.1733317106835; 
+ Wed, 04 Dec 2024 04:58:26 -0800 (PST)
+Received: from [192.168.68.110] ([187.101.65.72])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-385deeb6acdsm15826428f8f.81.2024.12.04.04.57.51
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 04 Dec 2024 04:57:54 -0800 (PST)
-From: Rajnesh Kanwal <rkanwal@rivosinc.com>
-To: qemu-riscv@nongnu.org, qemu-devel@nongnu.org,
- Rajnesh Kanwal <rkanwal@rivosinc.com>
-Cc: alistair.francis@wdc.com, bin.meng@windriver.com, liweiwei@iscas.ac.cn,
- dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com,
- atishp@rivosinc.com, apatel@ventanamicro.com, beeman@rivosinc.com,
- tech-control-transfer-records@lists.riscv.org, jason.chien@sifive.com,
- frank.chang@sifive.com, richard.henderson@linaro.org
-Subject: [PATCH v4 7/7] target/riscv: machine: Add Control Transfer Record
- state description
-Date: Wed,  4 Dec 2024 17:56:45 +0500
-Message-Id: <20241204-b4-ctr_upstream_v3-v4-7-d3ce6bef9432@rivosinc.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241204-b4-ctr_upstream_v3-v4-0-d3ce6bef9432@rivosinc.com>
-References: <20241204-b4-ctr_upstream_v3-v4-0-d3ce6bef9432@rivosinc.com>
+ 98e67ed59e1d1-2ef2701d097sm1329199a91.13.2024.12.04.04.58.24
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 04 Dec 2024 04:58:26 -0800 (PST)
+Message-ID: <5414d5ae-0036-4b83-a14b-3ee524c4f55f@ventanamicro.com>
+Date: Wed, 4 Dec 2024 09:58:22 -0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Mailer: b4 0.14.2
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::434;
- envelope-from=rkanwal@rivosinc.com; helo=mail-wr1-x434.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RESEND v1] target/riscv: add support for RV64 Xiangshan
+ Nanhu CPU
+To: MollyChen <xiaoou@iscas.ac.cn>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>, Bin Meng <bmeng.cn@gmail.com>,
+ Weiwei Li <liwei1518@gmail.com>, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
+Cc: qemu-riscv@nongnu.org, qemu-devel@nongnu.org
+References: <20241204031514.34531-1-xiaoou@iscas.ac.cn>
+Content-Language: en-US
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+In-Reply-To: <20241204031514.34531-1-xiaoou@iscas.ac.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::536;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pg1-x536.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -106,58 +102,89 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add a subsection to machine.c to migrate CTR CSR state
+Hi,
 
-Signed-off-by: Rajnesh Kanwal <rkanwal@rivosinc.com>
----
- target/riscv/machine.c | 25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
+Can you please re-send the patch rebased on top of:
 
-diff --git a/target/riscv/machine.c b/target/riscv/machine.c
-index e1bdc31c7c53a8a4f539113d501c8e46f7a914e9..b67e660ef03b6053fa00d5a79e2ab20ecf3331b8 100644
---- a/target/riscv/machine.c
-+++ b/target/riscv/machine.c
-@@ -311,6 +311,30 @@ static const VMStateDescription vmstate_envcfg = {
-     }
- };
- 
-+static bool ctr_needed(void *opaque)
-+{
-+    RISCVCPU *cpu = opaque;
-+
-+    return cpu->cfg.ext_smctr || cpu->cfg.ext_ssctr;
-+}
-+
-+static const VMStateDescription vmstate_ctr = {
-+    .name = "cpu/ctr",
-+    .version_id = 1,
-+    .minimum_version_id = 1,
-+    .needed = ctr_needed,
-+    .fields = (const VMStateField[]) {
-+        VMSTATE_UINT64(env.mctrctl, RISCVCPU),
-+        VMSTATE_UINT32(env.sctrdepth, RISCVCPU),
-+        VMSTATE_UINT32(env.sctrstatus, RISCVCPU),
-+        VMSTATE_UINT64(env.vsctrctl, RISCVCPU),
-+        VMSTATE_UINT64_ARRAY(env.ctr_src, RISCVCPU, 16 << SCTRDEPTH_MAX),
-+        VMSTATE_UINT64_ARRAY(env.ctr_dst, RISCVCPU, 16 << SCTRDEPTH_MAX),
-+        VMSTATE_UINT64_ARRAY(env.ctr_data, RISCVCPU, 16 << SCTRDEPTH_MAX),
-+        VMSTATE_END_OF_LIST()
-+    }
-+};
-+
- static bool pmu_needed(void *opaque)
- {
-     RISCVCPU *cpu = opaque;
-@@ -461,6 +485,7 @@ const VMStateDescription vmstate_riscv_cpu = {
-         &vmstate_jvt,
-         &vmstate_elp,
-         &vmstate_ssp,
-+        &vmstate_ctr,
-         NULL
-     }
- };
+https://github.com/alistair23/qemu/tree/riscv-to-apply.next
 
--- 
-2.34.1
+This is the branch we use to queue RISC-V patches that are pending upstreaming.
+
+
+Thanks,
+
+Daniel
+
+On 12/4/24 12:15 AM, MollyChen wrote:
+> Add a CPU entry for the RV64 XiangShan NANHU CPU which
+> supports single-core and dual-core configurations. More
+> details can be found at
+> https://docs.xiangshan.cc/zh-cn/latest/integration/overview
+> 
+> Signed-off-by: MollyChen <xiaoou@iscas.ac.cn>
+> ---
+>   target/riscv/cpu-qom.h |  1 +
+>   target/riscv/cpu.c     | 29 +++++++++++++++++++++++++++++
+>   2 files changed, 30 insertions(+)
+> 
+> diff --git a/target/riscv/cpu-qom.h b/target/riscv/cpu-qom.h
+> index 62115375cd..8f6fac463c 100644
+> --- a/target/riscv/cpu-qom.h
+> +++ b/target/riscv/cpu-qom.h
+> @@ -49,6 +49,7 @@
+>   #define TYPE_RISCV_CPU_SIFIVE_U54       RISCV_CPU_TYPE_NAME("sifive-u54")
+>   #define TYPE_RISCV_CPU_THEAD_C906       RISCV_CPU_TYPE_NAME("thead-c906")
+>   #define TYPE_RISCV_CPU_VEYRON_V1        RISCV_CPU_TYPE_NAME("veyron-v1")
+> +#define TYPE_RISCV_CPU_XIANGSHAN_NANHU  RISCV_CPU_TYPE_NAME("xiangshan-nanhu")
+>   #define TYPE_RISCV_CPU_HOST             RISCV_CPU_TYPE_NAME("host")
+>   
+>   OBJECT_DECLARE_CPU_TYPE(RISCVCPU, RISCVCPUClass, RISCV_CPU)
+> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+> index f219f0c3b5..738d833115 100644
+> --- a/target/riscv/cpu.c
+> +++ b/target/riscv/cpu.c
+> @@ -579,6 +579,34 @@ static void rv64_veyron_v1_cpu_init(Object *obj)
+>   #endif
+>   }
+>   
+> +static void rv64_xiangshan_nanhu_cpu_init(Object *obj)
+> +{
+> +    CPURISCVState *env = &RISCV_CPU(obj)->env;
+> +    RISCVCPU *cpu = RISCV_CPU(obj);
+> +
+> +    riscv_cpu_set_misa_ext(env, RVG | RVC | RVB | RVS | RVU);
+> +    env->priv_ver = PRIV_VERSION_1_12_0;
+> +
+> +    /* Enable ISA extensions */
+> +    cpu->cfg.ext_zbc = true;
+> +    cpu->cfg.ext_zbkb = true;
+> +    cpu->cfg.ext_zbkc = true;
+> +    cpu->cfg.ext_zbkx = true;
+> +    cpu->cfg.ext_zknd = true;
+> +    cpu->cfg.ext_zkne = true;
+> +    cpu->cfg.ext_zknh = true;
+> +    cpu->cfg.ext_zksed = true;
+> +    cpu->cfg.ext_zksh = true;
+> +    cpu->cfg.ext_svinval = true;
+> +
+> +    cpu->cfg.mmu = true;
+> +    cpu->cfg.pmp = true;
+> +
+> +#ifndef CONFIG_USER_ONLY
+> +    set_satp_mode_max_supported(cpu, VM_1_10_SV39);
+> +#endif
+> +}
+> +
+>   #ifdef CONFIG_TCG
+>   static void rv128_base_cpu_init(Object *obj)
+>   {
+> @@ -2983,6 +3011,7 @@ static const TypeInfo riscv_cpu_type_infos[] = {
+>       DEFINE_VENDOR_CPU(TYPE_RISCV_CPU_SHAKTI_C,   MXL_RV64,  rv64_sifive_u_cpu_init),
+>       DEFINE_VENDOR_CPU(TYPE_RISCV_CPU_THEAD_C906, MXL_RV64,  rv64_thead_c906_cpu_init),
+>       DEFINE_VENDOR_CPU(TYPE_RISCV_CPU_VEYRON_V1,  MXL_RV64,  rv64_veyron_v1_cpu_init),
+> +    DEFINE_VENDOR_CPU(TYPE_RISCV_CPU_XIANGSHAN_NANHU, MXL_RV64, rv64_xiangshan_nanhu_cpu_init),
+>   #ifdef CONFIG_TCG
+>       DEFINE_DYNAMIC_CPU(TYPE_RISCV_CPU_BASE128,   MXL_RV128, rv128_base_cpu_init),
+>   #endif /* CONFIG_TCG */
 
 
