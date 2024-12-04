@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BA029E3141
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Dec 2024 03:13:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 58BD59E3131
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Dec 2024 03:12:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tIerw-0003qN-GW; Tue, 03 Dec 2024 21:12:00 -0500
+	id 1tIes1-0003xN-5F; Tue, 03 Dec 2024 21:12:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <yichen.wang@bytedance.com>)
- id 1tIert-0003q7-KW
- for qemu-devel@nongnu.org; Tue, 03 Dec 2024 21:11:57 -0500
-Received: from mail-qv1-xf2d.google.com ([2607:f8b0:4864:20::f2d])
+ id 1tIerv-0003qa-P2
+ for qemu-devel@nongnu.org; Tue, 03 Dec 2024 21:12:00 -0500
+Received: from mail-qv1-xf2a.google.com ([2607:f8b0:4864:20::f2a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <yichen.wang@bytedance.com>)
- id 1tIerq-0005PA-Lp
- for qemu-devel@nongnu.org; Tue, 03 Dec 2024 21:11:57 -0500
-Received: by mail-qv1-xf2d.google.com with SMTP id
- 6a1803df08f44-6d896be3992so19272376d6.1
- for <qemu-devel@nongnu.org>; Tue, 03 Dec 2024 18:11:54 -0800 (PST)
+ id 1tIeru-0005Pf-2L
+ for qemu-devel@nongnu.org; Tue, 03 Dec 2024 21:11:59 -0500
+Received: by mail-qv1-xf2a.google.com with SMTP id
+ 6a1803df08f44-6d89dc50927so20473026d6.3
+ for <qemu-devel@nongnu.org>; Tue, 03 Dec 2024 18:11:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bytedance.com; s=google; t=1733278313; x=1733883113; darn=nongnu.org;
+ d=bytedance.com; s=google; t=1733278317; x=1733883117; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=/0wN4j/oJJNTRC4MBF1twlWeye36pdO8I/CrrqHAcjQ=;
- b=frxrB2IKlmySaXuNaEAhw1cfQdcHOpzwLIm4DeokjllG88cLFk6zIDlFC2DW4StDTm
- ZYVNda2jakU470KQiUQ81CJPCasXM+HX0Chizn6hCepwS93Ofp7D14kMkhighw37wSp/
- sVgtfC5xGFvuX0zJb9DjTas3EanEgR1zE5Bf/Q45vjI8TSL1t21YOCX/UeufaEJVAnWm
- ZvrUxi/Bi3rdaql4g6nzsl/mN+p7dmm9DZav8TPGMD9oeDKyaIxAD2757hDpD1cqYa3b
- AD4SbtJKPf55auC8WUBN6fKIW/bGX7axZk0ahkEzanmDRxxWgdMGB4lYVbz3GBKipFZN
- NVag==
+ bh=2mmBF5CVSuEv5Hs4OjTWSCjE9+8hQXVfJDcSidunhtM=;
+ b=POw/v5ilRghSPrErURBmS+V431xPFb8cbsx3s918pOTBsSRcgkYZHksMnpqmsDuZ4f
+ E+ixJWTaxaYowFIKgLqNHzrXM6cRqfMEYdGqE0+usB0PlmUDDJI3Lvizu0azbfK5bAAa
+ VTKXh+jR3VGh78JmmaFh8gUNMJ8IbHiordzO4e934W37XZGMZFaA41Is95YpLaiVnucR
+ FGq2b9+4MHwwUByNwepWf2X6B4a7ei2lKluXmQgnTxmJHw/G1RoFJy6sOlnfqzzQpMsm
+ H6765RDuCwmUuWA81OJnwdHVjNKW75I0Bt6RrwbnubjBj2ykJx2iV7r7LcOGvI80WyZG
+ TYVw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733278313; x=1733883113;
+ d=1e100.net; s=20230601; t=1733278317; x=1733883117;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=/0wN4j/oJJNTRC4MBF1twlWeye36pdO8I/CrrqHAcjQ=;
- b=ksxcckKbRczC6b1xhVD8zd8Cnustp4rke4GX0MqvWLbzABCmDy+fiu/iIGD+QJnGjY
- yYZk/Mcvm6OF3dIaxK27ve4uw1oNLT7tLlNpnudWs6XF8V1yD6dEX5diIR2fhvgP5hEn
- T7TG2SA7xrrqeThEQIL9joWp9Y4HgUZ2vRt0iAxlK5xCABO0ZFNIsaMsfWfFixOMqNzy
- /mN7b3xSQn2hCZCY89DOfwsiMBUj98vvumxpNaKpV+CCeEKCe+zWp9jhKgRDFMPbCGvM
- bsVJ/ZLP5g+X6XADZkYCCZ7MLL3uDDGJeW8VK9O2+B+/4Vmqo1yVmVntoumxSDbrIrkB
- g9+w==
+ bh=2mmBF5CVSuEv5Hs4OjTWSCjE9+8hQXVfJDcSidunhtM=;
+ b=TFxsRxRoQYpIZzQvDkxTcHpnFmOo15Q4ln0bBaUmKov6rpOwjNPaOeUSY3EL542+X1
+ wR3qL3E8ZJyQ8oMa4zboeY6R7v49z8XZCu58nkPsxOnzG8EZ4zjS0OjqUYOXlqGZ7qYZ
+ 4MgQqrImCzziN7IJxrxKvndgrz89YsPb7yTC5n/wlgLOKQdtwmuqNtnKu80JWfC9lSWe
+ OFySaHTyPsURUw+5JZQD5jgvtVJUEyNBZdq++ZF3VHelbNDY6AjcOXxDQTw+Gkprc/im
+ Ryb7CBDazBmx2kRS8noHWuSUKfzRNlDV6pv+fXcJbyhWdBEHG3FwYbnH/m+qy9aLVDYX
+ /siw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXHJ704PO6JrDlwnsscwiViiF/WCGaKkowpHqQrdFEIefKSIz2PGpftMDbRQiz8KVD+W9xj6C6spATN@nongnu.org
-X-Gm-Message-State: AOJu0YygvJwNWYveN63XBawKFW89c0EiEOYhNurHS7s7GoRHS0dmF1Bo
- bhDOTNDDY8uK4inOQTDtZb4um7LGHQV1OI26QOyp4WNaED6pALGZDVxidi42iEQ=
-X-Gm-Gg: ASbGncvyc+X90A6uu2+o9/3/VjZlH6zMB19mEI3Bk6Dmh2QdiEw4MH+1QR7dXqP8mt8
- Fnf+CP492UJEOj6Xq5bVLp0JaVXmes1t4YI0zYP/ksgm0qySNNgFp3Xm1uIhHN9VgUCZ2jmZsrx
- kDrsj/KizCEL7pxu34vxpCA93UsDTRSwyMKTfzBN1fRlOyWOpOCnD5Yiwy4xL+Nbi2Em5x1n6ly
- XpidgZ0kxZzvxt3FfdiiBsZfnR03VN81HFkutQaPz1zU/fzYOqqniaI4GhNUdoEmovi7t8G4ipe
- iBtYmn9iyGRLsU4KqQ==
-X-Google-Smtp-Source: AGHT+IEN99xczOXj8OW/XtgjGtM089VwEZOvzDW5uzYqGf7/sMYDdnkqq+ragp9D1WtsYWXJ4C/2Mw==
-X-Received: by 2002:ad4:5bc4:0:b0:6d8:ac5d:b83e with SMTP id
- 6a1803df08f44-6d8b747b62emr97529876d6.47.1733278313526; 
- Tue, 03 Dec 2024 18:11:53 -0800 (PST)
+ AJvYcCW3hD6otX178w5uSH7UubYjPTyXkWLCeToanJm9cozrKe6KVDiCoVJaSwCd7pIwlySKrxars4/SH2Hy@nongnu.org
+X-Gm-Message-State: AOJu0YwF3lImCAs7iasC8vTJOscUV+u0NG58eLmSzc8KZB8NgLrkf/6f
+ Mnxs0dxrOeeDpZP2mO5+dZSoRvbU70t7vB4zIVHxZr8X6nvwjpIGGUnslg/9nzE=
+X-Gm-Gg: ASbGnct998Pk/T8Hu3+M+BK4Qys/1SqE9Oc6LtudVG7cDReXeoBswVz5VPvCvSdENP2
+ htq6VP5bfMc0TDRsadAgI8CLtqp6b9nek/mFXoOJEc8Ub0+D4fWOWz1rdjhhlxllbw5c2FERnfW
+ x1E6rooj8nxj7BXtc7TapzOgrSLMZZFXxpyfrzC0C8TaaOgbsj4kCLuqTEgk+KRbR5Mv6HLhpO2
+ jJXv7nQSNz6rQCPgrKgP9cbIroHAXl014clkVxbiU2CDK+MDT8dUPOs4XdCPVmo9dpbCR7jU6xA
+ ncsOcuVVv9zEPvLZuw==
+X-Google-Smtp-Source: AGHT+IGmXEgJ4230AasQ3H4vQpPTWDlSZa90avoi4T6n+fgxO/Ox8pgZDTVShHskOSyN645mUvfy0g==
+X-Received: by 2002:a05:6214:529a:b0:6d8:a570:faee with SMTP id
+ 6a1803df08f44-6d8b737eb6emr80611826d6.16.1733278316901; 
+ Tue, 03 Dec 2024 18:11:56 -0800 (PST)
 Received: from DY4X0N7X05.bytedance.net
  ([2601:646:8900:323:644e:288b:2b6d:d94c])
  by smtp.gmail.com with ESMTPSA id
- 6a1803df08f44-6d87ec537ebsm63488986d6.30.2024.12.03.18.11.51
+ 6a1803df08f44-6d87ec537ebsm63488986d6.30.2024.12.03.18.11.54
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 03 Dec 2024 18:11:53 -0800 (PST)
+ Tue, 03 Dec 2024 18:11:56 -0800 (PST)
 From: Yichen Wang <yichen.wang@bytedance.com>
 To: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
  "Dr. David Alan Gilbert" <dave@treblig.org>,
@@ -78,17 +78,16 @@ Cc: "Hao Xiang" <hao.xiang@linux.dev>, "Liu, Yuan1" <yuan1.liu@intel.com>,
  "Shivam Kumar" <shivam.kumar1@nutanix.com>,
  "Ho-Ren (Jack) Chuang" <horenchuang@bytedance.com>,
  "Yichen Wang" <yichen.wang@bytedance.com>
-Subject: [PATCH v8 01/12] meson: Introduce new instruction set enqcmd to the
- build system.
-Date: Tue,  3 Dec 2024 18:11:30 -0800
-Message-Id: <20241204021142.24184-2-yichen.wang@bytedance.com>
+Subject: [PATCH v8 02/12] util/dsa: Add idxd into linux header copy list.
+Date: Tue,  3 Dec 2024 18:11:31 -0800
+Message-Id: <20241204021142.24184-3-yichen.wang@bytedance.com>
 X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 In-Reply-To: <20241204021142.24184-1-yichen.wang@bytedance.com>
 References: <20241204021142.24184-1-yichen.wang@bytedance.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::f2d;
- envelope-from=yichen.wang@bytedance.com; helo=mail-qv1-xf2d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::f2a;
+ envelope-from=yichen.wang@bytedance.com; helo=mail-qv1-xf2a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -111,78 +110,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Hao Xiang <hao.xiang@linux.dev>
-
-Enable instruction set enqcmd in build.
-
-Signed-off-by: Hao Xiang <hao.xiang@linux.dev>
 Signed-off-by: Yichen Wang <yichen.wang@bytedance.com>
 Reviewed-by: Fabiano Rosas <farosas@suse.de>
 ---
- meson.build                   | 14 ++++++++++++++
- meson_options.txt             |  2 ++
- scripts/meson-buildoptions.sh |  3 +++
- 3 files changed, 19 insertions(+)
+ scripts/update-linux-headers.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/meson.build b/meson.build
-index 147097c652..50df5dd3e0 100644
---- a/meson.build
-+++ b/meson.build
-@@ -3062,6 +3062,20 @@ config_host_data.set('CONFIG_AVX512BW_OPT', get_option('avx512bw') \
-     int main(int argc, char *argv[]) { return bar(argv[0]); }
-   '''), error_message: 'AVX512BW not available').allowed())
+diff --git a/scripts/update-linux-headers.sh b/scripts/update-linux-headers.sh
+index 99a8d9fa4c..9128c7499b 100755
+--- a/scripts/update-linux-headers.sh
++++ b/scripts/update-linux-headers.sh
+@@ -200,7 +200,7 @@ rm -rf "$output/linux-headers/linux"
+ mkdir -p "$output/linux-headers/linux"
+ for header in const.h stddef.h kvm.h vfio.h vfio_ccw.h vfio_zdev.h vhost.h \
+               psci.h psp-sev.h userfaultfd.h memfd.h mman.h nvme_ioctl.h \
+-              vduse.h iommufd.h bits.h; do
++              vduse.h iommufd.h bits.h idxd.h; do
+     cp "$hdrdir/include/linux/$header" "$output/linux-headers/linux"
+ done
  
-+config_host_data.set('CONFIG_DSA_OPT', get_option('enqcmd') \
-+  .require(have_cpuid_h, error_message: 'cpuid.h not available, cannot enable ENQCMD') \
-+  .require(cc.links('''
-+    #include <stdint.h>
-+    #include <cpuid.h>
-+    #include <immintrin.h>
-+    static int __attribute__((target("enqcmd"))) bar(void *a) {
-+      uint64_t dst[8] = { 0 };
-+      uint64_t src[8] = { 0 };
-+      return _enqcmd(dst, src);
-+    }
-+    int main(int argc, char *argv[]) { return bar(argv[argc - 1]); }
-+  '''), error_message: 'ENQCMD not available').allowed())
-+
- # For both AArch64 and AArch32, detect if builtins are available.
- config_host_data.set('CONFIG_ARM_AES_BUILTIN', cc.compiles('''
-     #include <arm_neon.h>
-diff --git a/meson_options.txt b/meson_options.txt
-index 5eeaf3eee5..4386e8b1fc 100644
---- a/meson_options.txt
-+++ b/meson_options.txt
-@@ -125,6 +125,8 @@ option('avx2', type: 'feature', value: 'auto',
-        description: 'AVX2 optimizations')
- option('avx512bw', type: 'feature', value: 'auto',
-        description: 'AVX512BW optimizations')
-+option('enqcmd', type: 'feature', value: 'disabled',
-+       description: 'ENQCMD optimizations')
- option('keyring', type: 'feature', value: 'auto',
-        description: 'Linux keyring support')
- option('libkeyutils', type: 'feature', value: 'auto',
-diff --git a/scripts/meson-buildoptions.sh b/scripts/meson-buildoptions.sh
-index a8066aab03..ff6c66db1e 100644
---- a/scripts/meson-buildoptions.sh
-+++ b/scripts/meson-buildoptions.sh
-@@ -99,6 +99,7 @@ meson_options_help() {
-   printf "%s\n" '  auth-pam        PAM access control'
-   printf "%s\n" '  avx2            AVX2 optimizations'
-   printf "%s\n" '  avx512bw        AVX512BW optimizations'
-+  printf "%s\n" '  enqcmd          ENQCMD optimizations'
-   printf "%s\n" '  blkio           libblkio block device driver'
-   printf "%s\n" '  bochs           bochs image format support'
-   printf "%s\n" '  bpf             eBPF support'
-@@ -246,6 +247,8 @@ _meson_option_parse() {
-     --disable-avx2) printf "%s" -Davx2=disabled ;;
-     --enable-avx512bw) printf "%s" -Davx512bw=enabled ;;
-     --disable-avx512bw) printf "%s" -Davx512bw=disabled ;;
-+    --enable-enqcmd) printf "%s" -Denqcmd=enabled ;;
-+    --disable-enqcmd) printf "%s" -Denqcmd=disabled ;;
-     --enable-gcov) printf "%s" -Db_coverage=true ;;
-     --disable-gcov) printf "%s" -Db_coverage=false ;;
-     --enable-lto) printf "%s" -Db_lto=true ;;
 -- 
 Yichen Wang
 
