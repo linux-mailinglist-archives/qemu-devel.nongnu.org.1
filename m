@@ -2,38 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 659EE9E3457
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Dec 2024 08:45:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D27619E345E
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Dec 2024 08:47:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tIk2I-0003sy-KL; Wed, 04 Dec 2024 02:43:04 -0500
+	id 1tIk2H-0003sL-IK; Wed, 04 Dec 2024 02:43:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mchehab+huawei@kernel.org>)
- id 1tIk1v-0003mB-PO; Wed, 04 Dec 2024 02:42:41 -0500
-Received: from nyc.source.kernel.org ([147.75.193.91])
+ id 1tIk1v-0003m7-NA; Wed, 04 Dec 2024 02:42:41 -0500
+Received: from dfw.source.kernel.org ([2604:1380:4641:c500::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mchehab+huawei@kernel.org>)
- id 1tIk1s-0006Xp-HZ; Wed, 04 Dec 2024 02:42:39 -0500
+ id 1tIk1s-0006XW-Dx; Wed, 04 Dec 2024 02:42:39 -0500
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by nyc.source.kernel.org (Postfix) with ESMTP id 360C8A41C17;
- Wed,  4 Dec 2024 07:40:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08CA9C4CEE3;
+ by dfw.source.kernel.org (Postfix) with ESMTP id 82AC95C68B4;
+ Wed,  4 Dec 2024 07:41:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1408BC4CEE8;
  Wed,  4 Dec 2024 07:42:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
  s=k20201202; t=1733298153;
- bh=PPyhW6VsW+yo+jj9o/izTT956e12rFUm5rYlBvONhoQ=;
+ bh=xKr5K1TW0pYorJXNz1Ksgf7p26nCCQVwbb66JoUnk8M=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=DJ8XBERWRFmjXTGFjdtz+V4WEC/5Pv4Nd9dmhR5QRKDHErXAg1C3smig7ab9ZRAOY
- hUZ5LBbcxP73LIiByGw8DJkp3Z0CK+IXm35xC10xoT+3gRv8Rm3cKAZlWZGpzpQTdO
- a3itGBiIArjJ/Wnju0gqTlVRBF6RCxU2sUhguwmVLxaeklvh3lHUYIIkpL+dkx2mYL
- hbsFAIBIq+TNgwHDeFBvx7JeyPho6FnH8ZwxXA+JImrfiQEsVEmp7+TUvZ+SLKNCqs
- /ltZI8BVingWE8TjFnqYEYejJr0QZOkBQwJU6++B0beyKlRvHbpOWA5XVUHkCg4dD4
- vKXbIp0oRfG8A==
+ b=AJb+FyFMhbW4wtXckB9r/3Jrr1JZ2l2UyfBxBNzNFLE4AN118IU/Lkk7lXHo+oLT8
+ PzBexZjWcyPlYq8oTNDLBCtTtze9DEf4zsKFdJ8glRFMWEszQl426dD2pCy0Sum4BP
+ AazDt338RWog+J4kCkQm45YoFlq14mT3noEenF6fefbgG4h0G7lezRwucJLXu8/OHO
+ KMVvDFRftS8h6JX0//I/jUm8fMinNSLv4958QQY7r1vr2WD5ILKkCVIvcc8cPuprXj
+ KqJlNAX5VmdhqOy0nyjx5ijlRnbqQOSp9Qf44kTDLDfU/glPXivznc5euYpAKVxkIz
+ udDDeNfo0H8lg==
 Received: from mchehab by mail.kernel.org with local (Exim 4.98)
  (envelope-from <mchehab+huawei@kernel.org>)
- id 1tIk1n-00000004Kj6-0Tim; Wed, 04 Dec 2024 08:42:31 +0100
+ id 1tIk1n-00000004KjA-0ad9; Wed, 04 Dec 2024 08:42:31 +0100
 From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 To: Igor Mammedov <imammedo@redhat.com>
 Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
@@ -42,23 +42,23 @@ Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
  "Michael S. Tsirkin" <mst@redhat.com>, Ani Sinha <anisinha@redhat.com>,
  Dongjiu Geng <gengdongjiu1@gmail.com>, linux-kernel@vger.kernel.org,
  qemu-arm@nongnu.org, qemu-devel@nongnu.org
-Subject: [PATCH v5 07/16] acpi/ghes: Change the type for source_id
-Date: Wed,  4 Dec 2024 08:41:15 +0100
-Message-ID: <905c6c7329c39bde6f67f6f6636245de8baeca14.1733297707.git.mchehab+huawei@kernel.org>
+Subject: [PATCH v5 08/16] acpi/ghes: don't check if physical_address is not
+ zero
+Date: Wed,  4 Dec 2024 08:41:16 +0100
+Message-ID: <95c0fa3fc2969daf3b6bc1f007733f11b715a465.1733297707.git.mchehab+huawei@kernel.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <cover.1733297707.git.mchehab+huawei@kernel.org>
 References: <cover.1733297707.git.mchehab+huawei@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=147.75.193.91;
- envelope-from=mchehab+huawei@kernel.org; helo=nyc.source.kernel.org
+Received-SPF: pass client-ip=2604:1380:4641:c500::1;
+ envelope-from=mchehab+huawei@kernel.org; helo=dfw.source.kernel.org
 X-Spam_score_int: -73
 X-Spam_score: -7.4
 X-Spam_bar: -------
 X-Spam_report: (-7.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.996,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -75,62 +75,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-As described at: ACPI 6.5 spec at:
-	18.3.2. ACPI Error Source
+The 'physical_address' value is a faulty page. As such, 0 is
+as valid as any other value.
 
-In particular at GHES/GHESv2 table:
-	Table 18.10 Generic Hardware Error Source Structure
-
-HEST source ID is actually a 16-bit value.
-
+Suggested-by: Igor Mammedov <imammedo@redhat.com>
 Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Reviewed-by: Igor Mammedov <imammedo@redhat.com>
 ---
- hw/acpi/ghes-stub.c    | 2 +-
- hw/acpi/ghes.c         | 2 +-
- include/hw/acpi/ghes.h | 2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
+ hw/acpi/ghes.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/hw/acpi/ghes-stub.c b/hw/acpi/ghes-stub.c
-index c315de1802d6..2b64cbd2819a 100644
---- a/hw/acpi/ghes-stub.c
-+++ b/hw/acpi/ghes-stub.c
-@@ -11,7 +11,7 @@
- #include "qemu/osdep.h"
- #include "hw/acpi/ghes.h"
- 
--int acpi_ghes_record_errors(uint8_t source_id, uint64_t physical_address)
-+int acpi_ghes_record_errors(uint16_t source_id, uint64_t physical_address)
- {
-     return -1;
- }
 diff --git a/hw/acpi/ghes.c b/hw/acpi/ghes.c
-index 5f67322bf0f2..edc74c38bf8a 100644
+index edc74c38bf8a..a3dffd78b012 100644
 --- a/hw/acpi/ghes.c
 +++ b/hw/acpi/ghes.c
-@@ -383,7 +383,7 @@ void acpi_ghes_add_fw_cfg(AcpiGhesState *ags, FWCfgState *s,
-     ags->present = true;
- }
+@@ -400,10 +400,6 @@ int acpi_ghes_record_errors(uint16_t source_id, uint64_t physical_address)
  
--int acpi_ghes_record_errors(uint8_t source_id, uint64_t physical_address)
-+int acpi_ghes_record_errors(uint16_t source_id, uint64_t physical_address)
- {
-     uint64_t error_block_addr, read_ack_register_addr, read_ack_register = 0;
-     uint64_t start_addr;
-diff --git a/include/hw/acpi/ghes.h b/include/hw/acpi/ghes.h
-index 50e3a25ea384..9295e46be25e 100644
---- a/include/hw/acpi/ghes.h
-+++ b/include/hw/acpi/ghes.h
-@@ -73,7 +73,7 @@ void acpi_build_hest(GArray *table_data, GArray *hardware_errors,
-                      const char *oem_id, const char *oem_table_id);
- void acpi_ghes_add_fw_cfg(AcpiGhesState *vms, FWCfgState *s,
-                           GArray *hardware_errors);
--int acpi_ghes_record_errors(uint8_t source_id, uint64_t error_physical_addr);
-+int acpi_ghes_record_errors(uint16_t source_id, uint64_t error_physical_addr);
+     start_addr = le64_to_cpu(ags->ghes_addr_le);
  
- /**
-  * acpi_ghes_present: Report whether ACPI GHES table is present
+-    if (!physical_address) {
+-        return -1;
+-    }
+-
+     start_addr += source_id * sizeof(uint64_t);
+ 
+     cpu_physical_memory_read(start_addr, &error_block_addr,
 -- 
 2.47.1
 
