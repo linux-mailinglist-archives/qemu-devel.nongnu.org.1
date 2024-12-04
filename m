@@ -2,90 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B22A19E2FA2
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Dec 2024 00:16:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B3B739E3071
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Dec 2024 01:39:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tIc6k-0001Ps-1w; Tue, 03 Dec 2024 18:15:06 -0500
+	id 1tIdOo-0001CI-IA; Tue, 03 Dec 2024 19:37:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <atishp@rivosinc.com>)
- id 1tIc6e-0001NK-OX
- for qemu-devel@nongnu.org; Tue, 03 Dec 2024 18:15:00 -0500
-Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
+ (Exim 4.90_1) (envelope-from <ltaylorsimpson@gmail.com>)
+ id 1tIdOj-0001C1-7s
+ for qemu-devel@nongnu.org; Tue, 03 Dec 2024 19:37:45 -0500
+Received: from mail-io1-xd32.google.com ([2607:f8b0:4864:20::d32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <atishp@rivosinc.com>)
- id 1tIc6c-0001Lj-Vl
- for qemu-devel@nongnu.org; Tue, 03 Dec 2024 18:15:00 -0500
-Received: by mail-pl1-x629.google.com with SMTP id
- d9443c01a7336-215b4681c94so16277555ad.0
- for <qemu-devel@nongnu.org>; Tue, 03 Dec 2024 15:14:58 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <ltaylorsimpson@gmail.com>)
+ id 1tIdOh-0000Iw-JK
+ for qemu-devel@nongnu.org; Tue, 03 Dec 2024 19:37:44 -0500
+Received: by mail-io1-xd32.google.com with SMTP id
+ ca18e2360f4ac-841a565f871so241177939f.1
+ for <qemu-devel@nongnu.org>; Tue, 03 Dec 2024 16:37:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1733267697; x=1733872497;
- darn=nongnu.org; 
- h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
- :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=aWl6RCkJhXh66y8GBilR1MgWBHw1j2MblGEre7+EdBQ=;
- b=rZXRf9yTIGJv7MsL7UnDql1EpyogBiXda0/XEp4g++OTjt4/PZ2sBo4UQaacmGFs5h
- rtKbWq5VRM0VMh0d77AHQax8ZL4RHdyWvoWicluHR1+yIuGiSpDUVbNyC94wGwjb79nS
- Y4Q6dIayOk18EL7Wx4+YGW5g1xGmDf9QucLjLaDsl2xI7mr/UeQHLeoQ3+J9ejhZ5Ut4
- 9cK8NAW6THBF8n1f3ySycorgyFxCiBUml7BNqnnV+w2wbm4M/M6+lAcN5tqiGrTtiTR/
- CEzIdnfGr6Q9Pibi6WYbFDQH7jQIpLN/zthvwexGHZ8Iq8/hvNcgji4uF1rHObhkR4mc
- KG9g==
+ d=gmail.com; s=20230601; t=1733272661; x=1733877461; darn=nongnu.org;
+ h=thread-index:content-language:content-transfer-encoding
+ :mime-version:message-id:date:subject:in-reply-to:references:cc:to
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=wKaJY2UJNpa7445+ZQtGYwS3k7khBs3zn88GCrdeyYY=;
+ b=njCLrs4ST0L2AaA/G1Qkvlg+NctyxXfm+Y/MBjRktFFcxeIgq9Om4l54si4dd6heJW
+ 9YtWzhUvsApOPqunndiYpXwIs3PMICB7qHP2cwoLnb2wSQ+4S4UIIfnQ3NgQzr7/JLir
+ Dk7pCQvCi8dSn/iaXHAxsoUmU54aeYo6N/DFXUWudnPOWXbFPUGa2B7q8pILC63Zc8is
+ tcvJFs2jS18OZC/ENtTxFsW3U+DFATOGM7nMjmNDotXKrErKAAe+TKkhCbNlIoR9H1oc
+ 681jXy3qvA5rWvNIi22i5Va+XhZuJsfhINqW7MkhGrLgLUyjGvfPmBx+wMHEeNRf/NyM
+ LsWw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733267697; x=1733872497;
- h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
- :mime-version:subject:date:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=aWl6RCkJhXh66y8GBilR1MgWBHw1j2MblGEre7+EdBQ=;
- b=UzJnNUn1djAC2K/VytHdN5qgMiHxZCy15pogkfrhWmyIqDeUwhDQADA6Dy6V1frmyp
- 7H9tdXQKoqrOKOavm9xiFpQS3EDtNVUn6AU1Ntc5iuEqeZAVBTx0HixSSsi0SmDF7DXD
- gC037167pJlvSvg6TRBO9CiRGg12y6M5hmheggTR9LQtwjc9WalziexOD5qs+5KY8d5O
- zuGXtvn7Z4RMOzj3goQCORAxzfu9Xei0UvSfWACGecDCM73BZvkLFWl6B9ep6WDq94P7
- RTOoiE0tBu/7MYVGE3nm+wq7vsIppQ/9lAbwDrmZ4I+et81y5IiMuwbP5uP8+UUi9P5e
- UOsg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXsK1HD+4shaMj7D02YlgrO3FMOWTISMq89CwxPV+R0zf6z6xoZ7qEqgn+x+d5UOdpgg2pRVOd/HllJ@nongnu.org
-X-Gm-Message-State: AOJu0YzsWhYu5nVo4+dA3F3aP2EM58p7WxzB6JA7QMWMSVMPA31oUC04
- 2kpVQhfsVq53OLLjO44IHLZwKzGib4QutAVZV/55wXhXf8uYifuE4ZHm/1ofL30vS0ad3Gb9zyu
- 1
-X-Gm-Gg: ASbGnctZ6Ge53eI8+ElLNzD+dZdYb9piz2oQQOuhu5L8Fn86lHd7VuP4QTm8KcS+t70
- FzSONNWZkkLmWK6zB//RuigNB2UQwCJ5UD7g/pCSrgWAMZV9DjqgOmL3hkB+olo+DLudXXpkZwe
- vbYkVxML75NY0ls0HlO+hkm2msoMLa79jA4zCOR7EHamw2+5w+WsFpD/Xc1yqWlc4nyd+h4zTLi
- IqJGmuVOnRGAGnAOmWv45UfhJKADLAIKz2DjCC+cbW5XJJRnsgcqwz9JkBPUvk=
-X-Google-Smtp-Source: AGHT+IGTgPAVT7ZhRnEGuCbEfWRO+19H7I4Dju+xp5TRPG7zndoFEGt0TX6P4HuWJZr2dXM6aitAKg==
-X-Received: by 2002:a17:903:2290:b0:215:b473:1dc9 with SMTP id
- d9443c01a7336-215bd161a26mr55142985ad.46.1733267697532; 
- Tue, 03 Dec 2024 15:14:57 -0800 (PST)
-Received: from atishp.ba.rivosinc.com ([64.71.180.162])
+ d=1e100.net; s=20230601; t=1733272661; x=1733877461;
+ h=thread-index:content-language:content-transfer-encoding
+ :mime-version:message-id:date:subject:in-reply-to:references:cc:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=wKaJY2UJNpa7445+ZQtGYwS3k7khBs3zn88GCrdeyYY=;
+ b=sysqjbdfIyv/xXd2leb1/HQOOu+UbKtvngAuGx6w2jgOIBqLt1GGQ/JDvhWow2nZ33
+ nBql8XHBW/v/Hmp6ZZ1Kbe8JnSnnfi66Nhd1HETZ4zzMSBQWqaUBIX1n8EuTr8nWuxS7
+ GSHbq/ChlpXWVKuuRfWdddVWOywq1ymswpyNe2ga+jtix2GHy0aDOefDKR0CJG8XomdE
+ SsRO3H4dm8gtIstU+U7njA/KMHJeeDLZqw0XyxfDNCo6lMKEg5AvIXD4cT7t3OpPQrfN
+ VKPgOmO01A72v2TiQfi7123tKUXTzGOSgv3g/JCaiGGdhzEbi4XOOcfnjUMr/J9IHE/p
+ VwTQ==
+X-Gm-Message-State: AOJu0YxN3U5y9sfLHh3J1DCs8q7tltH3je1aCpCZdQHv2PmtKH9hHPRC
+ aQbKUinI6g83ust87abad3+f6kcf4qczKzVqPy3P9x8oBeU/3jCP
+X-Gm-Gg: ASbGncvyN8DwV+e0eAsKlD0gTKzOfYo7N7NdfEXnfTTSrlvphE855t7rUv6J41oF0a+
+ MhZoIiXMNu5u1YLFJTuZO63/2mBYi92aQmAIX6j56ZHhH+lqD72ShbklpvOrwEKMDKsBbftGHj5
+ ZN2Y0EjF1d/+D33r4T9iFY/+w3azrOd1ouKqxVMKW7Dy1Pmhxruys8KDYvXK+jKH7cl/uIlkhoA
+ EthYNlbTMpxHbQmgeps4us1GSRL/JoKB6JlwQZj3PC94cnpWiVSHgOTcQgr7eaNO3A=
+X-Google-Smtp-Source: AGHT+IFnZaZlx1J/iPzDg+brt6jzNgLDMNWuGuE6qxUzInhCxoFKRe8mQ5hcOtm0O8OJqOzJm+DKiA==
+X-Received: by 2002:a05:6602:6b19:b0:83b:a47c:dbfd with SMTP id
+ ca18e2360f4ac-8445b558760mr600359539f.6.1733272661454; 
+ Tue, 03 Dec 2024 16:37:41 -0800 (PST)
+Received: from DESKTOPUU50BPD ([2601:281:800:5d0:e463:ff0e:115e:ebbd])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7254180f78asm11032133b3a.133.2024.12.03.15.14.56
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 03 Dec 2024 15:14:57 -0800 (PST)
-From: Atish Patra <atishp@rivosinc.com>
-Date: Tue, 03 Dec 2024 15:14:49 -0800
-Subject: [PATCH v4 11/11] target/riscv: Add configuration for S[m|s]csrind,
- Smcdeleg/Ssccfg
+ ca18e2360f4ac-84405eea345sm278550339f.21.2024.12.03.16.37.38
+ (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+ Tue, 03 Dec 2024 16:37:39 -0800 (PST)
+From: <ltaylorsimpson@gmail.com>
+To: "'Brian Cain'" <brian.cain@oss.qualcomm.com>,
+ "'Anton Johansson'" <anjo@rev.ng>,
+ "'Richard Henderson'" <richard.henderson@linaro.org>
+Cc: <qemu-devel@nongnu.org>, <ale@rev.ng>, <bcain@quicinc.com>,
+ <philmd@linaro.org>, <alex.bennee@linaro.org>
+References: <20241121014947.18666-1-anjo@rev.ng>
+ <20241121014947.18666-37-anjo@rev.ng>
+ <eaf906e2-3973-466b-8a2e-f7749e844968@linaro.org>
+ <gcp5xcypulziy2ixslvsiekwidedztxydvypyc6faz2ssbzx2i@ibcmjqjzgxwp>
+ <2ee450df-b06c-420a-9e52-44b781423c6f@oss.qualcomm.com>
+In-Reply-To: <2ee450df-b06c-420a-9e52-44b781423c6f@oss.qualcomm.com>
+Subject: RE: [RFC PATCH v1 36/43] target/hexagon: Add temporary vector storage
+Date: Tue, 3 Dec 2024 17:37:37 -0700
+Message-ID: <077901db45e4$b9187750$2b4965f0$@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241203-counter_delegation-v4-11-c12a89baed86@rivosinc.com>
-References: <20241203-counter_delegation-v4-0-c12a89baed86@rivosinc.com>
-In-Reply-To: <20241203-counter_delegation-v4-0-c12a89baed86@rivosinc.com>
-To: qemu-riscv@nongnu.org, qemu-devel@nongnu.org
-Cc: kaiwenxue1@gmail.com, Atish Patra <atishp@rivosinc.com>, 
- palmer@dabbelt.com, liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, 
- bin.meng@windriver.com, dbarboza@ventanamicro.com, alistair.francis@wdc.com
-X-Mailer: b4 0.15-dev-13183
-Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
- envelope-from=atishp@rivosinc.com; helo=mail-pl1-x629.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Content-Type: text/plain;
+	charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Mailer: Microsoft Outlook 16.0
+Content-Language: en-us
+Thread-Index: AQIEexPeVLm6zD1FRBDT2o/6+kAhcQKn5JJxAVJOMAIB8qO9YgFFbC9yskk+OHA=
+X-Antivirus: Norton (VPS 241203-6, 12/3/2024), Outbound message
+X-Antivirus-Status: Clean
+Received-SPF: pass client-ip=2607:f8b0:4864:20::d32;
+ envelope-from=ltaylorsimpson@gmail.com; helo=mail-io1-xd32.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,33 +108,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add configuration options so that they can be enabled/disabld from
-qemu commandline.
 
-Acked-by: Alistair Francis <alistair.francis@wdc.com>
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Signed-off-by: Atish Patra <atishp@rivosinc.com>
----
- target/riscv/cpu.c | 4 ++++
- 1 file changed, 4 insertions(+)
 
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 410ca2e3a666..2a4f285a974f 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -1477,6 +1477,10 @@ const RISCVCPUMultiExtConfig riscv_cpu_extensions[] = {
-     /* Defaults for standard extensions */
-     MULTI_EXT_CFG_BOOL("sscofpmf", ext_sscofpmf, false),
-     MULTI_EXT_CFG_BOOL("smcntrpmf", ext_smcntrpmf, false),
-+    MULTI_EXT_CFG_BOOL("smcsrind", ext_smcsrind, false),
-+    MULTI_EXT_CFG_BOOL("smcdeleg", ext_smcdeleg, false),
-+    MULTI_EXT_CFG_BOOL("sscsrind", ext_sscsrind, false),
-+    MULTI_EXT_CFG_BOOL("ssccfg", ext_ssccfg, false),
-     MULTI_EXT_CFG_BOOL("zifencei", ext_zifencei, true),
-     MULTI_EXT_CFG_BOOL("zicfilp", ext_zicfilp, false),
-     MULTI_EXT_CFG_BOOL("zicfiss", ext_zicfiss, false),
+> -----Original Message-----
+> From: Brian Cain <brian.cain@oss.qualcomm.com>
+> Sent: Tuesday, December 3, 2024 1:28 PM
+> To: Anton Johansson <anjo@rev.ng>; Richard Henderson
+> <richard.henderson@linaro.org>
+> Cc: qemu-devel@nongnu.org; ale@rev.ng; ltaylorsimpson@gmail.com;
+> bcain@quicinc.com; philmd@linaro.org; alex.bennee@linaro.org
+> Subject: Re: [RFC PATCH v1 36/43] target/hexagon: Add temporary vector
+> storage
+>=20
+>=20
+> On 12/3/2024 12:56 PM, Anton Johansson via wrote:
+> > On 22/11/24, Richard Henderson wrote:
+> >> On 11/20/24 19:49, Anton Johansson wrote:
+> >>> Temporary vectors in helper-to-tcg generated code are allocated =
+from
+> >>> an array of bytes in CPUArchState, specified with =
+--temp-vector-block.
+> >>>
+> >>> This commits adds such a block of memory to CPUArchState, if
+> >>> CONFIG_HELPER_TO_TCG is set.
+> >>>
+> >>> Signed-off-by: Anton Johansson <anjo@rev.ng>
+> >>> ---
+> >>>    target/hexagon/cpu.h | 4 ++++
+> >>>    1 file changed, 4 insertions(+)
+> >>>
+> >>> diff --git a/target/hexagon/cpu.h b/target/hexagon/cpu.h index
+> >>> 7be4b5769e..fa6ac83e01 100644
+> >>> --- a/target/hexagon/cpu.h
+> >>> +++ b/target/hexagon/cpu.h
+> >>> @@ -97,6 +97,10 @@ typedef struct CPUArchState {
+> >>>        MMVector future_VRegs[VECTOR_TEMPS_MAX]
+> QEMU_ALIGNED(16);
+> >>>        MMVector tmp_VRegs[VECTOR_TEMPS_MAX] QEMU_ALIGNED(16);
+> >>> +#ifdef CONFIG_HELPER_TO_TCG
+> >>> +    uint8_t tmp_vmem[4096] QEMU_ALIGNED(16); #endif
+> >>> +
+> >>>        MMQReg QRegs[NUM_QREGS] QEMU_ALIGNED(16);
+> >>>        MMQReg future_QRegs[NUM_QREGS] QEMU_ALIGNED(16);
+> >> Wow.  Do you really require 4k in temp storage?
+> > No, 4k is overkill used during testing.  But consider that Hexagon
+> > uses
+> > 128- and 256-byte vectors in some cases so if the emitted code uses
+> > say
+> > 5 temporaries in its computation we end up at 1280 bytes as an upper
+> > bound.
+>=20
+> Per-packet there should be a maximum of one temporary.  But per-TB =
+it's
+> unbound.  Could we/should we have some guidance to put the brakes on
+> translation early if we encounter ~N temp references?
+>=20
+> But maybe that's not needed since the temp space can be reused within =
+a TB
+> among packets.
 
--- 
-2.34.1
+You should only need enough temporaries for one instruction.  There are =
+already temporaries (future_VRegs, tmp_VRegs, future_QRegs) in =
+CPUHexagonState to handle the needs within a packet.  There shouldn't be =
+any temps needed between the packets in a TB.
+
+The number of temps needed for a given instruction is determined by the =
+compiler - version, level of optimization.  So, you can determine this =
+by compiling all the instructions (i.e., build qemu).  I'd recommend =
+having a few extra to future proof against changes to LLVM.
+
+Taylor
+
 
 
