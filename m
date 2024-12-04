@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 604379E3083
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Dec 2024 01:53:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 027AD9E3087
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Dec 2024 01:53:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tIdcU-0003Bv-UX; Tue, 03 Dec 2024 19:51:59 -0500
+	id 1tIdcU-0003Bx-VZ; Tue, 03 Dec 2024 19:51:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tIdcQ-0003AX-Iz
- for qemu-devel@nongnu.org; Tue, 03 Dec 2024 19:51:55 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tIdcO-0005Sg-B3
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tIdcO-00039n-IN
  for qemu-devel@nongnu.org; Tue, 03 Dec 2024 19:51:53 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tIdcM-0005SU-0c
+ for qemu-devel@nongnu.org; Tue, 03 Dec 2024 19:51:51 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1733273510;
+ s=mimecast20190719; t=1733273509;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=bj8MGswrXWKOgEfQ2x9IDB2aXSksN2FVHW5jduhyU+Q=;
- b=LHtzQ7QONTVi9BPotbwkR4wGa2iw7iyHWCSF4wzkk3EqmWZ4YiVAi3uuVp1IFk3jJzbRWm
- DIxcFbaGR7+qhUqfpNCVJhr5kDUShMeT5lycBuC99XitcGdI4MQK2CsgP6G8+7eOY2zjo9
- hHDWfGTwQOAv5Rf89XSNZfczd6jVyhw=
+ bh=9eO5MPkyUkZyqcYRHcQpN0Gixuc0Ku87NoiXHCs64ME=;
+ b=iltn93Gu5jIxo0TwHzgaT9jWoiuRpkWn4ldozmllCknrWi2KwDoQ3tSIoFnDDCFqkVZ91u
+ BhvYHTLwsTc7LzTxf7rekpvlKzYjPJEVBIIPz03+tD2C5I4btFbgccmL4aAEa9xPwaWxdr
+ hwshsRZdcabEJkQEiPcuZfm1/Nbds50=
 Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
  [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-607-H3vZ0emfMpypT23YOmEWyA-1; Tue, 03 Dec 2024 19:51:46 -0500
-X-MC-Unique: H3vZ0emfMpypT23YOmEWyA-1
-X-Mimecast-MFC-AGG-ID: H3vZ0emfMpypT23YOmEWyA
+ us-mta-626-CnKCJla8OHq70XaYlIhYlg-1; Tue, 03 Dec 2024 19:51:48 -0500
+X-MC-Unique: CnKCJla8OHq70XaYlIhYlg-1
+X-Mimecast-MFC-AGG-ID: CnKCJla8OHq70XaYlIhYlg
 Received: by mail-qk1-f197.google.com with SMTP id
- af79cd13be357-7b674755f8eso973388385a.2
- for <qemu-devel@nongnu.org>; Tue, 03 Dec 2024 16:51:46 -0800 (PST)
+ af79cd13be357-7b677151a03so749213985a.3
+ for <qemu-devel@nongnu.org>; Tue, 03 Dec 2024 16:51:48 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733273505; x=1733878305;
+ d=1e100.net; s=20230601; t=1733273507; x=1733878307;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=bj8MGswrXWKOgEfQ2x9IDB2aXSksN2FVHW5jduhyU+Q=;
- b=ZOt9jZfEhoG+MOka6BBcKLDj1w2Wh6boOw8KFIYZ/F1Xg0nW/tMqcgbzRepc4/l8FB
- cvB0Qro+llF308i2xjuOfpCpkoy6ChsIAg//dGMJYLczsAIS1LpYT4cjOrR1n5FB/C96
- Au78yWp+rl7UeiCHTEs3sZlG53tlYyxpD/d8T7C2UhC3R6H+RZRjelF2Ly1auQCqu7vD
- hJjEeviOLzn2WJ+x/anBW9mId/PRY2RXZgh5FmALCIdXBZ8GXBFaxzE+5QQiXpS/oAAt
- kOZE2OMJQUsxQm8FPqfUKCfMKxts1EYm1E9lqjOETkt+fGCugTF8jyXKdNVJ7hJnf1YN
- NlgA==
-X-Gm-Message-State: AOJu0Yz0KJLyGfwGZnilqHmaq5i5qY9E1fgVzNUkadXJ7j1GZ7AR5rYb
- T70Wy6sKUAAG/WcQqRhCSEs6e7YkU5g86lrT6W8lC5B9RWsaiY3Ve1LxJQysn6ki0VNxPP7LD+X
- jbM86CHwurRdkfGM0ZTRGpIJTC065h1L7qtnnPrD9tzjNOI0d0tQw8p9aJw/vez2FXHZYOngvBK
- 5Bzw+Ra3rzGAIbUWoHQRj22KQ2JxfTc7X14g==
-X-Gm-Gg: ASbGncv+Xdk5lARTcSJndsZZoh3bthxn/byd8G8jeImjkyjmWaU07Jy2FEim2ihUGv9
- W02+Dr/blTvzpEegQ+RC1nX/J6aAz8+xzGstIRBriryNEVXciveMspG05nGCEhj0lIki2W99RPD
- +LswVwYL3caOKiLCo2JHliTsx8peWO75vZ3/nMrIMXHFlFXgLOmA7UHI4/2SH8Or57DhIZorZ9z
- sgcTvpNE5OJpyuosywM7+4e4VPJSbGB2dKEIAocMYLS6wZTsBlUEJ8df26Skh6nvo9CRFdo4qV0
- 2MYx+8YAPfFSMF4isIvC+Isceg==
-X-Received: by 2002:a05:620a:4089:b0:7b6:773f:4bd3 with SMTP id
- af79cd13be357-7b6a619aa85mr512943585a.41.1733273505181; 
- Tue, 03 Dec 2024 16:51:45 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFA9ZLwy+VY7F5c8FJAvgQAzm9ryKvqIDEYug7Ue8bxh4rdmsvy1gpAYngRmZWIWcgPCgeBeA==
-X-Received: by 2002:a05:620a:4089:b0:7b6:773f:4bd3 with SMTP id
- af79cd13be357-7b6a619aa85mr512939985a.41.1733273504711; 
- Tue, 03 Dec 2024 16:51:44 -0800 (PST)
+ bh=9eO5MPkyUkZyqcYRHcQpN0Gixuc0Ku87NoiXHCs64ME=;
+ b=o2dyUyA/YkJQIUGTiDQDY/K7Du3FzqPuTt5uNPX/Ax0k57krUgYhXlAmP+6pkl9xGS
+ TYZ/Uu6zPhennVqS/tX4m45VgBq730y6IdqRSPBEkwTqmTTC7DMfDS7gsxC3xDKp7M9b
+ WW+AgbA2jR/y2y+9PXMCQ0rPA96LWJA1Z0PhoCis3sV+BiVY1/Zp5F7yVDNbuKZFH83e
+ RNm9Ch8RibjbxGUyenZbLW2SaSd4z+BnyHOFoL+QQzX/mYPHU/g3zb7l0T+K7vzaZEh4
+ Peecrh499TlncBY3BFMdVOmhMuWhwoFavKUqqZFTS1EZW5pkQQVPID7H9pNCPt9x0kHl
+ bqcw==
+X-Gm-Message-State: AOJu0YziMHI1Z+L+knxuWCR/85aQOdAIMIdqLw5MFSk7quApD6U5hNVl
+ vfOLCtIVE5OA4njb0bj3NadPsEAotY1ojOljTkfZOcUCms91Zwbi3qUa3CM84Yw1LpD8Lmc7vuo
+ qmiTviII7Fv6dfd+cWgapw1enIjMhshvvRBHuivPgjU3SJczE7PsWocgAvV7dsHelPfC4vf8qW8
+ K+9cNEhMdcchBxaopikoOi4nRyX9m1lP6JVQ==
+X-Gm-Gg: ASbGncsCmYOd7SEaMWIORGFUu0Ffhfgey9D154bZOvHpbA5BlXQyRKfWCyt9sGNSxfA
+ iD9l9sdhhcArZyQEfpOCvOu0Gq7rg9WOjOgKfQiUO0a9x1VOs2Zf9VOESStcyQlXsYQ7+YfiTRF
+ vD9FZdjCTPv3igF+4lmMvWHxDwvK9USWfF2JzcDjAUnWx13twOrY0BA+iVz1H1Iqr+ziOkaHVBF
+ szmGaCPuUE2e+e01x+Rvm6sOkV1kHgVh90UumURZn+2hKJ48IMy0RTxZ5OhTaGL1jWDf1OgSBLB
+ MTgjzNIJfO1Rlw0dzLGTeRxUNw==
+X-Received: by 2002:a05:620a:1a9e:b0:7af:cfc0:7822 with SMTP id
+ af79cd13be357-7b6a61a70d1mr404977685a.33.1733273507118; 
+ Tue, 03 Dec 2024 16:51:47 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHg7yUx65HgLNiULxwoxOsjqoo1vP731Ts1QmtCkUb8n+BsSydYEEwKAKA54EEupxWWV13QUQ==
+X-Received: by 2002:a05:620a:1a9e:b0:7af:cfc0:7822 with SMTP id
+ af79cd13be357-7b6a61a70d1mr404975285a.33.1733273506763; 
+ Tue, 03 Dec 2024 16:51:46 -0800 (PST)
 Received: from x1n.redhat.com (pool-99-254-114-190.cpe.net.cable.rogers.com.
  [99.254.114.190]) by smtp.gmail.com with ESMTPSA id
- af79cd13be357-7b68492cb81sm559974785a.34.2024.12.03.16.51.43
+ af79cd13be357-7b68492cb81sm559974785a.34.2024.12.03.16.51.44
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 03 Dec 2024 16:51:43 -0800 (PST)
+ Tue, 03 Dec 2024 16:51:46 -0800 (PST)
 From: Peter Xu <peterx@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-block@nongnu.org, Fabiano Rosas <farosas@suse.de>,
@@ -77,24 +77,25 @@ Cc: qemu-block@nongnu.org, Fabiano Rosas <farosas@suse.de>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>, peterx@redhat.com,
  Stefan Hajnoczi <stefanha@redhat.com>
-Subject: [PATCH RFC 02/11] migration/block: Make late-block-active the default
-Date: Tue,  3 Dec 2024 19:51:29 -0500
-Message-ID: <20241204005138.702289-3-peterx@redhat.com>
+Subject: [PATCH RFC 03/11] migration/block: Apply late-block-active behavior
+ to postcopy
+Date: Tue,  3 Dec 2024 19:51:30 -0500
+Message-ID: <20241204005138.702289-4-peterx@redhat.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241204005138.702289-1-peterx@redhat.com>
 References: <20241204005138.702289-1-peterx@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -50
 X-Spam_score: -5.1
 X-Spam_bar: -----
 X-Spam_report: (-5.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.996,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -110,80 +111,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Migration capability 'late-block-active' controls when the block drives
-will be activated.  If enabled, block drives will only be activated until
-VM starts, either src runstate was "live" (RUNNING, or SUSPENDED), or it'll
-be postponed until qmp_cont().
+Postcopy never cared about late-block-active.  However there's no mention
+in the capability that it doesn't apply to postcopy.
 
-Let's do this unconditionally.  There's no harm to delay activation of
-block drives.  Meanwhile there's no ABI breakage if dest does it, because
-src QEMU has nothing to do with it, so it's no concern on ABI breakage.
-
-IIUC we could avoid introducing this cap when introducing it before, but
-now it's still not too late to just always do it.  Cap now prone to
-removal, but it'll be for later patches.
+Considering that we _assumed_ late activation is always good, do that too
+for postcopy unconditionally, just like precopy.  After this patch, we
+should have unified the behavior across all.
 
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- migration/migration.c | 38 +++++++++++++++++++-------------------
- 1 file changed, 19 insertions(+), 19 deletions(-)
+ migration/savevm.c | 23 ++++++++++-------------
+ 1 file changed, 10 insertions(+), 13 deletions(-)
 
-diff --git a/migration/migration.c b/migration/migration.c
-index d2a6b939cf..e6db9cfc50 100644
---- a/migration/migration.c
-+++ b/migration/migration.c
-@@ -743,24 +743,6 @@ static void process_incoming_migration_bh(void *opaque)
+diff --git a/migration/savevm.c b/migration/savevm.c
+index 98821c8120..0d52fe522c 100644
+--- a/migration/savevm.c
++++ b/migration/savevm.c
+@@ -2137,22 +2137,19 @@ static void loadvm_postcopy_handle_run_bh(void *opaque)
  
-     trace_vmstate_downtime_checkpoint("dst-precopy-bh-enter");
+     trace_vmstate_downtime_checkpoint("dst-postcopy-bh-announced");
  
--    /* If capability late_block_activate is set:
--     * Only fire up the block code now if we're going to restart the
--     * VM, else 'cont' will do it.
--     * This causes file locking to happen; so we don't want it to happen
--     * unless we really are starting the VM.
--     */
--    if (!migrate_late_block_activate() ||
--        (autostart && runstate_is_live(migration_get_target_runstate()))) {
--        /* Make sure all file formats throw away their mutable metadata.
--         * If we get an error here, just don't restart the VM yet. */
--        bdrv_activate_all(&local_err);
--        if (local_err) {
--            error_report_err(local_err);
--            local_err = NULL;
--            autostart = false;
--        }
+-    /* Make sure all file formats throw away their mutable metadata.
+-     * If we get an error here, just don't restart the VM yet. */
+-    bdrv_activate_all(&local_err);
+-    if (local_err) {
+-        error_report_err(local_err);
+-        local_err = NULL;
+-        autostart = false;
 -    }
 -
-     /*
-      * This must happen after all error conditions are dealt with and
-      * we're sure the VM is going to be running on this host.
-@@ -775,7 +757,25 @@ static void process_incoming_migration_bh(void *opaque)
+-    trace_vmstate_downtime_checkpoint("dst-postcopy-bh-cache-invalidated");
+-
+     dirty_bitmap_mig_before_vm_start();
  
-     if (runstate_is_live(migration_get_target_runstate())) {
-         if (autostart) {
--            vm_start();
-+            /*
-+             * Block activation is always delayed until VM starts, either
-+             * here (which means we need to start the dest VM right now..),
-+             * or until qmp_cont() later.
-+             *
-+             * We used to have cap 'late-block-activate' but now we do this
-+             * unconditionally, as it has no harm but only benefit.  E.g.,
-+             * it's not part of migration ABI on the time of disk activation.
-+             *
-+             * Make sure all file formats throw away their mutable
-+             * metadata.  If error, don't restart the VM yet.
-+             */
-+            bdrv_activate_all(&local_err);
-+            if (local_err) {
-+                error_report_err(local_err);
-+                local_err = NULL;
-+            } else {
-+                vm_start();
-+            }
-         } else {
-             runstate_set(RUN_STATE_PAUSED);
-         }
+     if (autostart) {
+-        /* Hold onto your hats, starting the CPU */
+-        vm_start();
++        /* Make sure all file formats throw away their mutable metadata.
++         * If we get an error here, just don't restart the VM yet. */
++        bdrv_activate_all(&local_err);
++        trace_vmstate_downtime_checkpoint("dst-postcopy-bh-cache-invalidated");
++        if (local_err) {
++            error_report_err(local_err);
++            local_err = NULL;
++        } else {
++            vm_start();
++        }
+     } else {
+         /* leave it paused and let management decide when to start the CPU */
+         runstate_set(RUN_STATE_PAUSED);
 -- 
 2.47.0
 
