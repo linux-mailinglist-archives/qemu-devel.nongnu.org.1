@@ -2,142 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60B009E5311
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Dec 2024 11:55:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CC8659E5319
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Dec 2024 11:56:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tJ9Vl-0004m0-Ct; Thu, 05 Dec 2024 05:55:09 -0500
+	id 1tJ9WR-0005QJ-AN; Thu, 05 Dec 2024 05:55:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tJ9Vj-0004ld-AG
- for qemu-devel@nongnu.org; Thu, 05 Dec 2024 05:55:07 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tJ9Vh-0001iK-On
- for qemu-devel@nongnu.org; Thu, 05 Dec 2024 05:55:06 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1733396104;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=wMm9ABn/0U3hPqIWqC835qUi1mKNmKdZ5mcT3Xzr/hM=;
- b=cvWz/A8b8CVPxIVWoi8aTKDBYcC5GRIZgD5ZF4CmPVMJ73Dku3f3kkZGjkXsudXA7Ecg27
- VPyedD2kQjHUBYOn2jrOLs/bH7F6DsDqF/UI2RN0t8zqeZRB28dIis/eCHopehVgrRVGZD
- WIgTZBt+HKUdWnhU93DcFhtAD0Y+HFc=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-552-Dk4d4aL9MlibY2hge8no6Q-1; Thu, 05 Dec 2024 05:55:03 -0500
-X-MC-Unique: Dk4d4aL9MlibY2hge8no6Q-1
-X-Mimecast-MFC-AGG-ID: Dk4d4aL9MlibY2hge8no6Q
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-4349cbf726cso4677025e9.3
- for <qemu-devel@nongnu.org>; Thu, 05 Dec 2024 02:55:03 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <tomitamoeko@gmail.com>)
+ id 1tJ9WP-0005QA-DK
+ for qemu-devel@nongnu.org; Thu, 05 Dec 2024 05:55:49 -0500
+Received: from mail-pg1-x543.google.com ([2607:f8b0:4864:20::543])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <tomitamoeko@gmail.com>)
+ id 1tJ9WN-0002qD-JO
+ for qemu-devel@nongnu.org; Thu, 05 Dec 2024 05:55:49 -0500
+Received: by mail-pg1-x543.google.com with SMTP id
+ 41be03b00d2f7-7fcfac22a30so846466a12.3
+ for <qemu-devel@nongnu.org>; Thu, 05 Dec 2024 02:55:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1733396146; x=1734000946; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=+Sg9Bf0uEM+6jmwHeQI7G0jHZ7j06qITo+dro1HL79Y=;
+ b=FhUEdKMuXhNPMPysUJPUYjFp8VSl9uKOiqN8RYCctfyx9rebSXGsXZKHSXZfAP7u39
+ OpbfN1HlCuPiOUFStInI8kCBy+8cZnwzJqbpxlRK6yYfsek4LESPjs6FZ4c5LvYa8LA0
+ 7peMUeLVKtmA+55v0vSli/383f6BUd+C7gYj5ESoFwVdRVTCLIzvZoQyk8INLN6Keula
+ kRsuPPcs1UgOaaYMsdouOgNxTdf8hfs2wV43tiGbhdZ1wBGgFl6XYrZbpKoE28TVa3NL
+ QL1aImRW6ZzaafzlsA8jSrHPB901kASNwBMo9/50v5Do62Z07MP3Wwe+8s/i2eZXCUSN
+ eWLg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733396102; x=1734000902;
- h=content-transfer-encoding:in-reply-to:autocrypt:from
- :content-language:references:cc:to:subject:user-agent:mime-version
- :date:message-id:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=wMm9ABn/0U3hPqIWqC835qUi1mKNmKdZ5mcT3Xzr/hM=;
- b=lmpgn5fUgA/0iCj0FT2bQIV+IeJBpCK8uZDruFeLtH7qk44XSk+6xTDPsTTNm8NThF
- 55ct3cgDlMppkWKkpR7XnnClteUsYCtsVtBgMCgJoRjNDMgRx/72enEKRtXAc8/2utXk
- vLxDjSy0ZJaEDUOx1o8DDz21FXZYcd4Rr7a0n6QYpPNlAQEdBykuVXgwBZzsUKf3sF1K
- iLYhKDjdNc5eTlt8aoUE/o7Pl40gDYsGJZ51mHSPzQFSUX6VZYYj5/5z2COfIQ5IPX5h
- UGUmaHgFB+/TfjaS9aMWYmj5EcEVedxEzTscDgIWCojvlEFP4M8RslWTfr326jAsVn8c
- eKlQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWn5JZ0jfulD0uWoF3lVi5B5XlZAIKktPztXie0BgOkNnsnMlw5Yb5Bh4bKIg1mWaqqA5V9AZ2P1bEU@nongnu.org
-X-Gm-Message-State: AOJu0Yyatc5D79h/ChZTt7YbFl1KkK7eQLIAuo6hM+h2GeBHRfmuayOC
- TyeaBryeoJamNnjBTKpSs994F+R/Jcx2ChaututkL1NhgQDW1djAvqc2M4o/rBUHMj3uuExVU26
- sbQq7DOGEPKTkP02VKiB+QR84gtq+BfunvHM99qJmRqs2pEa/QQID
-X-Gm-Gg: ASbGncs9Za6Vhcc2FvPnn8a+aSrHoz7IJZx8AvPFxqsMpB5aLbLOIJMQWqTFVPmdpFw
- 4irePSL/fosbxbGzikcRtzPVCzpEFQhnZmtwsgGVuWK6VoKNWsZcQMu0Mq2F7+u7pMAUVu/XOvw
- wGv6pDpM0NHLcSSbj2tu46mGCUa0Oli/vGIzK/+F9jXHvH/2mVhuLElnyu7JJ0ISnPqtB/2uA7I
- RfbGR09zXcx4B/KfKdJAFRqm092OOMRQDko3Z8s3aLp4W20vcUzU/CWqwAt4Vnj+2WcAKlPlGsq
- Hiu41Q==
-X-Received: by 2002:a05:6000:2806:b0:385:e8aa:2a4e with SMTP id
- ffacd0b85a97d-385fd3f2371mr5667267f8f.31.1733396102500; 
- Thu, 05 Dec 2024 02:55:02 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IE7xw//VBukVq+xgSeVcywacz4syrQR6s3bvLUy8pjOhAuwGncWa4g0vnSTxYWLTkKl6WOIzQ==
-X-Received: by 2002:a05:6000:2806:b0:385:e8aa:2a4e with SMTP id
- ffacd0b85a97d-385fd3f2371mr5667250f8f.31.1733396102155; 
- Thu, 05 Dec 2024 02:55:02 -0800 (PST)
-Received: from [192.168.0.7] (ip-109-42-48-244.web.vodafone.de.
- [109.42.48.244]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-386219096b8sm1667638f8f.84.2024.12.05.02.55.01
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 05 Dec 2024 02:55:01 -0800 (PST)
-Message-ID: <a41bb572-6bf1-4972-8223-22677a21b864@redhat.com>
-Date: Thu, 5 Dec 2024 11:55:00 +0100
+ d=1e100.net; s=20230601; t=1733396146; x=1734000946;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=+Sg9Bf0uEM+6jmwHeQI7G0jHZ7j06qITo+dro1HL79Y=;
+ b=ZjBm7YpL1vpEqY/JXvXl5syt9bl46Y5bWUgIZ/IrhquiW1lVOfEKsn2ZvuBSrq+Jsn
+ sPrRSyc7WFJAan58TQlPsqLnmpy9hLxSBIOP+GX10aSUwTT/+uCYJiT/CyA8VQNDBP5u
+ 7Ilq91UtdLY5tVVZqeIDjxmpK//N1rt8izf8CdwQTPHtsVa/jysjS4egvJNOGn5k9zou
+ wL6Ix0eM44sskrBo4gbSvcnn1y3zkKsL/DQc5Gam64n8psaEv3ohSp6u0E/GW+DGG3xi
+ Jnfv2zadpLeJiKDqysAg4Rv3oOv2Xor+VpBftInX2dXNp2krA/V33rK98vn5jNJIyPCT
+ gr4Q==
+X-Gm-Message-State: AOJu0YwpkiLCIfsKEwNfiXI6Pm8kN5KiQbAU5ECweiLDcTEFTSTXl9OY
+ FT0zcW2gtVrA9d7SBdsD/I5AQvQ0VtyMPDBqEtWvyO7qL9nAMx2hQMmn+zHULw==
+X-Gm-Gg: ASbGnctBMS8758BUTkUCRhD5XXlpUTFW6DYMF35IRhmlsf4gXQ310lba1f6dDcyk/F/
+ v+PG71+kabUkYwoABh7Jne09jg9luCKYXidWouY80gVWI3ank3+c2OR3xlepwr61sAJTyDostp5
+ YyG780pMXz6sYpq60LjJbSyVBuMdpxOELq4XpdAakbyLpjSwC2ywoLvw4gcgetqCg+E2seVqjQJ
+ AiNUOTPbbwbQKkD7W0khd4BRUX98PPOisfaYJnaqm5ppx2U5iSfCKgLCA==
+X-Google-Smtp-Source: AGHT+IF4iGgHrfG+hhn60/bQBraNoPiUicHOI3o2n+meaYQhkeCkwjUy2roHCAQGVErgYY1duz0KZA==
+X-Received: by 2002:a17:90b:3c84:b0:2ee:b2be:f398 with SMTP id
+ 98e67ed59e1d1-2ef011e4904mr14456440a91.2.1733396145801; 
+ Thu, 05 Dec 2024 02:55:45 -0800 (PST)
+Received: from kotori-desktop.lan ([58.38.120.33])
+ by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-725a2ca6747sm1010905b3a.149.2024.12.05.02.55.42
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 05 Dec 2024 02:55:45 -0800 (PST)
+From: Tomita Moeko <tomitamoeko@gmail.com>
+To: qemu-devel@nongnu.org
+Cc: Alex Williamson <alex.williamson@redhat.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
+ =?UTF-8?q?Corvin=20K=C3=B6hne?= <c.koehne@beckhoff.com>,
+ Tomita Moeko <tomitamoeko@gmail.com>
+Subject: [PATCH v3 00/10] vfio/igd: Enable legacy mode on more devices
+Date: Thu,  5 Dec 2024 18:55:25 +0800
+Message-ID: <20241205105535.30498-1-tomitamoeko@gmail.com>
+X-Mailer: git-send-email 2.45.2
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/7] gitlab: purge build files from cirrus CI jobs
-To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- qemu-devel@nongnu.org
-Cc: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-References: <20241204194807.1472261-1-berrange@redhat.com>
- <20241204194807.1472261-5-berrange@redhat.com>
-Content-Language: en-US
-From: Thomas Huth <thuth@redhat.com>
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <20241204194807.1472261-5-berrange@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -50
-X-Spam_score: -5.1
-X-Spam_bar: -----
-X-Spam_report: (-5.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.999,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::543;
+ envelope-from=tomitamoeko@gmail.com; helo=mail-pg1-x543.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -153,32 +96,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 04/12/2024 20.48, Daniel P. Berrangé wrote:
-> Uploading artifacts in Cirrus CI requires sufficient disk space to
-> create a tarball of the artifact files. IOW, whatever size the
-> artifacts are, double that. This results in space pressure on the
-> FreeBSD jobs due to limited disk size. Purging the .o files from
-> the meson build directory reclaims significant space.
-> 
-> Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
-> ---
->   .gitlab-ci.d/cirrus/build.yml | 1 +
->   1 file changed, 1 insertion(+)
-> 
-> diff --git a/.gitlab-ci.d/cirrus/build.yml b/.gitlab-ci.d/cirrus/build.yml
-> index 9983ab0690..d26a2a788c 100644
-> --- a/.gitlab-ci.d/cirrus/build.yml
-> +++ b/.gitlab-ci.d/cirrus/build.yml
-> @@ -37,6 +37,7 @@ build_task:
->         do
->           $MAKE -j$(sysctl -n hw.ncpu) $TARGET V=1 ;
->         done
-> +    - find . -not -path 'meson-logs/*' -delete
+This patchset extends the support of legacy mode igd passthrough to
+all Intel Gen 11 and 12 devices (including Ice Lake, Jasper Lake,
+Rocket Lake, Alder Lake and Raptor Lake), and emulates GGC register
+in MMIO BAR0 for better compatibiltiy (It is tested Windows and GOP
+driver will read this MMIO register).
 
-I'm not sure, but this might cause trouble if you run the Cirrus-CI job with 
-terminal access for testing the binaries manually after the build succeeded? 
-Maybe it would be better to just kill the .o files and leave the rest around?
+It also replaces magic numbers with macros to improve readability,
+and aligns behavior (BDSM registor mirroring and GGMS calculation for
+gen7) with i915 driver to avoid possible issues.
 
-  Thomas
+The x-igd-gms option removed in 971ca22f041b ("vfio/igd: don't set
+stolen memory size to zero") is also added back so that data stolen
+memory size can be specified for guest. It is tested that GMS may
+related to framebuffer size, a small GMS value may cause display issues
+like blackscreen. It can be changed by DVMT Pre-allocated option in
+host BIOS, but not all BIOS comes with this option. Having it in QEMU
+helps resolves such issues.
+
+This patchset was verified on Intel i9-12900K CPU(UHD 770, 8086:4680)
+with custom OVMF firmware [1] and IntelGopDriver extracted from host
+bios. IGD device works well in both Windows and Linux guests, and
+scored 726 in 3DMark Time Spy Graphics on Windows guest.
+
+[1] https://github.com/tomitamoeko/edk2/commits/igd-pt-adl/
+
+Btw, IO BAR4 seems never be used by guest, and it the IO BAR itself
+is not working on Gen11+ devices in my experiments. There is no hints
+about that in old commit message and mailing list. It would be greatly
+appreciated if someone shares the background.
+
+Changelog:
+v3:
+* Added new patch to fix GTT stolen memory size calculation for gen 8+
+  devicess.
+* Fixed quirk index in "vfio/igd: add macro for declaring mirrored
+  registers"
+* Fixed condition in "vfio/igd: add x-igd-gms option back to set DSM
+  region size for guest"
+* Updated comments and commit message.
+Link: https://lore.kernel.org/qemu-devel/20241203133548.38252-1-tomitamoeko@gmail.com/
+
+v2:
+* Droped "vfio/igd: fix GTT stolen memory size calculation for gen 7".
+* Fixed conditions when calculating GGMS size.
+* Added Gemini Lake and Comet Lake device ids.
+* Splited mirroring register declaration macro into a new patch.
+* Minor fixes.
+Link: https://lore.kernel.org/qemu-devel/20241201160938.44355-1-tomitamoeko@gmail.com/
+
+Tomita Moeko (10):
+  vfio/igd: remove unsupported device ids
+  vfio/igd: align generation with i915 kernel driver
+  vfio/igd: fix GTT stolen memory size calculation for gen 8+
+  vfio/igd: canonicalize memory size calculations
+  vfio/igd: add Gemini Lake and Comet Lake device ids
+  vfio/igd: add Alder/Raptor/Rocket/Ice/Jasper Lake device ids
+  vfio/igd: add macro for declaring mirrored registers
+  vfio/igd: emulate GGC register in mmio bar0
+  vfio/igd: emulate BDSM in mmio bar0 for gen 6-10 devices
+  vfio/igd: add x-igd-gms option back to set DSM region size for guest
+
+ hw/vfio/igd.c | 262 +++++++++++++++++++++++++++++++-------------------
+ 1 file changed, 165 insertions(+), 97 deletions(-)
+
+-- 
+2.45.2
 
 
