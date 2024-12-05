@@ -2,63 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 495319E6135
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Dec 2024 00:20:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC9AA9E613C
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Dec 2024 00:25:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tJL8Q-00056S-Ck; Thu, 05 Dec 2024 18:19:50 -0500
+	id 1tJLDE-0007IN-4R; Thu, 05 Dec 2024 18:24:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <d-tatianin@yandex-team.ru>)
- id 1tJL8N-00055r-Qw
- for qemu-devel@nongnu.org; Thu, 05 Dec 2024 18:19:47 -0500
-Received: from forwardcorp1a.mail.yandex.net ([178.154.239.72])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <d-tatianin@yandex-team.ru>)
- id 1tJL8M-0000X4-0B
- for qemu-devel@nongnu.org; Thu, 05 Dec 2024 18:19:47 -0500
-Received: from mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net
- [IPv6:2a02:6b8:c12:44a0:0:640:8777:0])
- by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id A5C1D60B65;
- Fri,  6 Dec 2024 02:19:39 +0300 (MSK)
-Received: from d-tatianin-lin.yandex-team.ru (unknown [2a02:6b8:b081:19::1:8])
- by mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net
- (smtpcorp/Yandex) with ESMTPSA id UJrB130IfiE0-JD04mrXL; 
- Fri, 06 Dec 2024 02:19:39 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1733440779;
- bh=OEy7/g4ZeJLYdVU3hV0Pv8T+p/lDzE3tCioeLBtxyHE=;
- h=Message-Id:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=WueW0+k/5T74Hurd8EFOdkTZVkY6FAhuNaQ2u+4ivsFbPUXREvFeXUd1o6C9cDLJZ
- uQzPxaekSTTX2fo56iWu/+iQbk6Jg3bPNVQYG3Gv6u7uKPWpJqUaN1wBcLLsRYUhhE
- fPUpDwL8NMAQ13db2VuFc1Cx3+Jwi9hN5lr2wfSc=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net;
- dkim=pass header.i=@yandex-team.ru
-From: Daniil Tatianin <d-tatianin@yandex-team.ru>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Daniil Tatianin <d-tatianin@yandex-team.ru>, Stefan Weil <sw@weilnetz.de>,
- Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
- qemu-devel@nongnu.org
-Subject: [PATCH 2/2] overcommit: introduce mem-lock-onfault
-Date: Fri,  6 Dec 2024 02:19:08 +0300
-Message-Id: <20241205231909.1161950-3-d-tatianin@yandex-team.ru>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241205231909.1161950-1-d-tatianin@yandex-team.ru>
-References: <20241205231909.1161950-1-d-tatianin@yandex-team.ru>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tJLDC-0007I9-2F
+ for qemu-devel@nongnu.org; Thu, 05 Dec 2024 18:24:46 -0500
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tJLD8-0002KT-LE
+ for qemu-devel@nongnu.org; Thu, 05 Dec 2024 18:24:45 -0500
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-434b3e32e9dso15642395e9.2
+ for <qemu-devel@nongnu.org>; Thu, 05 Dec 2024 15:24:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1733441080; x=1734045880; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=srEVO03MgqW7zZf4nGmzSVgDCZFD1nGbBJuvAH/Cxfc=;
+ b=cntrJrQL+TP2+nulkFY+43JgUXStLpMj5Wl+zUBGlmSfukHn0WHA89yIiFa9VVxJLm
+ 8qT7454oswo7UH5fDz3Ep0hFwtGNziNmNCJ3XQVm1O/vqtY1h/bPdbP7UiacgzmSupNs
+ OBc+j9Osf1wz0aeUeumzZpeCaDG0wsjBODMbZix0xoEazPBOZz3UTYYeDtVJlVnY7nuM
+ hEItGrZtkYFp/WJJ25+u3d1yGlaXC+vIb3AvJQHm/IihFg/BtAJhmyq9OxxcCcliOqLL
+ qK/CchGIJXogCZ3s7RsiG4oQdveHM8/zV/3OhiecM3s120aTfPslUIDpCewAZXxZF+M4
+ Lfzw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1733441080; x=1734045880;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=srEVO03MgqW7zZf4nGmzSVgDCZFD1nGbBJuvAH/Cxfc=;
+ b=wEYlydyNCZQE59oypr0q2n6VsZXTWh6B/ye2IAb6Lv99GJBPqG6MLE+VLZNWoo2ZWr
+ eJgBS0SbUWKOqzQ1fVS63G9Rgn6tkdgoXgtJ/ZnlapX+dFEw9vdLG5X/fR+X16ow6brs
+ gINXI2U8UA62jsBf8Z+E/jX3zb15qWnTMiQHNCwfmNBh0JUmaiwd4pJeXKK1Ox42hLte
+ IAxw2EgzUFwdU2MiuQi4mE/bvfv5oaZdXJeCrzpOQUzHbYbd7hBGvt0qcr139b3T2qjm
+ 2I9q861p/hwQt4WgncnweY48kEuqW6n8OKAMQBJs5fVY8Q3rdzj9eI9KYZAzJ1HoWYKR
+ 0Z+A==
+X-Gm-Message-State: AOJu0YxRkrExxvF30NS58GM9ORVOTBZDYgklZoGmySaLQ5sqWZkbiKBi
+ MAFs0JXf2uiPI+MtcGQ4An7/lCrfknGpDHQa6PsOgL1TtEzcoA86ThGmGk4eJWwL6fgNW2bEAWx
+ l
+X-Gm-Gg: ASbGncvPtllCfyyyO8mYEZCml2MXP0RVLy5V/ImemANbrU9mScsebEbjrVFG6nTCnwV
+ AUPpYdDYjFkUJX9lgDl0EDExz6Urb4dEmw36o1IU3XHx1iA+Tzd0FPLDLDYb9OB7u7McfChvON6
+ zEpXWYDEdQHYZ4EqesD/P0l4+LqNsvLe3rWUlq72W9Vhs7MSaom5WkgXJlrF09GQWVvbPBxIPi/
+ GJkxtfh7fn0iQ1UMqV8gnPWU3a6fynO1GU5Bhna9SFeRMWU7ztyIE20BKtOjyqK7bOzBNx0Nfh2
+ f+z6aNpPaNBHVAaJIS7QgvlQ
+X-Google-Smtp-Source: AGHT+IGzUqJf/JYdG1RMDCGxk1BoVvr96cj3Z7+iZoTRL7oa9IIi0afnjNHuwvVg81BcxvdflrdghQ==
+X-Received: by 2002:a05:600c:4e49:b0:434:a4fe:cd6d with SMTP id
+ 5b1f17b1804b1-434ddeb49d2mr8626825e9.12.1733441080002; 
+ Thu, 05 Dec 2024 15:24:40 -0800 (PST)
+Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-434d52cc2fdsm74906675e9.42.2024.12.05.15.24.38
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Thu, 05 Dec 2024 15:24:39 -0800 (PST)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Max Filippov <jcmvbkbc@gmail.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH 0/2] target/xtensa: Remove tswap() calls in semihosting
+Date: Fri,  6 Dec 2024 00:24:35 +0100
+Message-ID: <20241205232437.85235-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.45.2
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=178.154.239.72;
- envelope-from=d-tatianin@yandex-team.ru; helo=forwardcorp1a.mail.yandex.net
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -74,142 +95,19 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Locking the memory without MCL_ONFAULT instantly prefaults any mmaped
-anonymous memory with a write-fault, which introduces a lot of extra
-overhead in terms of memory usage when all you want to do is to prevent
-kcompactd from migrating and compacting QEMU pages. Add an option to
-only lock pages lazily as they're faulted by the process by using
-MCL_ONFAULT if asked.
+The first patch modifying Xtensa libisa has already been
+posted in https://lore.kernel.org/qemu-devel/20241204202602.58083-1-philmd@linaro.org/
 
-Signed-off-by: Daniil Tatianin <d-tatianin@yandex-team.ru>
----
- include/sysemu/sysemu.h  |  1 +
- migration/postcopy-ram.c |  4 ++--
- qemu-options.hx          | 13 ++++++++++---
- system/globals.c         |  1 +
- system/vl.c              | 18 ++++++++++++++++--
- 5 files changed, 30 insertions(+), 7 deletions(-)
+Philippe Mathieu-Daudé (2):
+  target/xtensa: Implement xtensa_isa_is_big_endian()
+  target/xtensa: Remove tswap() calls in semihosting simcall() helper
 
-diff --git a/include/sysemu/sysemu.h b/include/sysemu/sysemu.h
-index 7ec419ce13..b6519c3c1e 100644
---- a/include/sysemu/sysemu.h
-+++ b/include/sysemu/sysemu.h
-@@ -44,6 +44,7 @@ extern const char *keyboard_layout;
- extern int old_param;
- extern uint8_t *boot_splash_filedata;
- extern bool enable_mlock;
-+extern bool enable_mlock_onfault;
- extern bool enable_cpu_pm;
- extern QEMUClockType rtc_clock;
- 
-diff --git a/migration/postcopy-ram.c b/migration/postcopy-ram.c
-index 36ec6a3d75..8ff8c73a27 100644
---- a/migration/postcopy-ram.c
-+++ b/migration/postcopy-ram.c
-@@ -651,8 +651,8 @@ int postcopy_ram_incoming_cleanup(MigrationIncomingState *mis)
-         mis->have_fault_thread = false;
-     }
- 
--    if (enable_mlock) {
--        if (os_mlock(false) < 0) {
-+    if (enable_mlock || enable_mlock_onfault) {
-+        if (os_mlock(enable_mlock_onfault) < 0) {
-             error_report("mlock: %s", strerror(errno));
-             /*
-              * It doesn't feel right to fail at this point, we have a valid
-diff --git a/qemu-options.hx b/qemu-options.hx
-index dacc9790a4..477e0e439a 100644
---- a/qemu-options.hx
-+++ b/qemu-options.hx
-@@ -4566,21 +4566,28 @@ SRST
- ERST
- 
- DEF("overcommit", HAS_ARG, QEMU_OPTION_overcommit,
--    "-overcommit [mem-lock=on|off][cpu-pm=on|off]\n"
-+    "-overcommit [mem-lock=on|off][mem-lock-onfault=on|off][cpu-pm=on|off]\n"
-     "                run qemu with overcommit hints\n"
-     "                mem-lock=on|off controls memory lock support (default: off)\n"
-+    "                mem-lock-onfault=on|off controls memory lock on fault support (default: off)\n"
-     "                cpu-pm=on|off controls cpu power management (default: off)\n",
-     QEMU_ARCH_ALL)
- SRST
- ``-overcommit mem-lock=on|off``
-   \ 
-+``-overcommit mem-lock-onfault=on|off``
-+  \
- ``-overcommit cpu-pm=on|off``
-     Run qemu with hints about host resource overcommit. The default is
-     to assume that host overcommits all resources.
- 
-     Locking qemu and guest memory can be enabled via ``mem-lock=on``
--    (disabled by default). This works when host memory is not
--    overcommitted and reduces the worst-case latency for guest.
-+    or ``mem-lock-onfault=on`` (disabled by default). This works when
-+    host memory is not overcommitted and reduces the worst-case latency for
-+    guest. The on-fault option is better for reducing the memory footprint
-+    since it makes allocations lazy, but the pages still get locked in place
-+    once faulted by the guest or QEMU. Note that the two options are mutually
-+    exclusive.
- 
-     Guest ability to manage power state of host cpus (increasing latency
-     for other processes on the same host cpu, but decreasing latency for
-diff --git a/system/globals.c b/system/globals.c
-index 84ce943ac9..43501fe690 100644
---- a/system/globals.c
-+++ b/system/globals.c
-@@ -35,6 +35,7 @@ enum vga_retrace_method vga_retrace_method = VGA_RETRACE_DUMB;
- int display_opengl;
- const char* keyboard_layout;
- bool enable_mlock;
-+bool enable_mlock_onfault;
- bool enable_cpu_pm;
- int autostart = 1;
- int vga_interface_type = VGA_NONE;
-diff --git a/system/vl.c b/system/vl.c
-index 03819a80ef..89477f38bc 100644
---- a/system/vl.c
-+++ b/system/vl.c
-@@ -349,6 +349,10 @@ static QemuOptsList qemu_overcommit_opts = {
-             .name = "mem-lock",
-             .type = QEMU_OPT_BOOL,
-         },
-+        {
-+            .name = "mem-lock-onfault",
-+            .type = QEMU_OPT_BOOL,
-+        },
-         {
-             .name = "cpu-pm",
-             .type = QEMU_OPT_BOOL,
-@@ -792,8 +796,8 @@ static QemuOptsList qemu_run_with_opts = {
- 
- static void realtime_init(void)
- {
--    if (enable_mlock) {
--        if (os_mlock(false) < 0) {
-+    if (enable_mlock || enable_mlock_onfault) {
-+        if (os_mlock(enable_mlock_onfault) < 0) {
-             error_report("locking memory failed");
-             exit(1);
-         }
-@@ -3537,7 +3541,17 @@ void qemu_init(int argc, char **argv)
-                 if (!opts) {
-                     exit(1);
-                 }
-+
-                 enable_mlock = qemu_opt_get_bool(opts, "mem-lock", enable_mlock);
-+                enable_mlock_onfault = qemu_opt_get_bool(opts,
-+                                                         "mem-lock-onfault",
-+                                                         enable_mlock_onfault);
-+                if (enable_mlock && enable_mlock_onfault) {
-+                    error_report("mem-lock and mem-lock-onfault are mutually"
-+                                 "exclusive");
-+                    exit(1);
-+                }
-+
-                 enable_cpu_pm = qemu_opt_get_bool(opts, "cpu-pm", enable_cpu_pm);
-                 break;
-             case QEMU_OPTION_compat:
+ include/hw/xtensa/xtensa-isa.h |  1 +
+ target/xtensa/xtensa-isa.c     |  7 +++++++
+ target/xtensa/xtensa-semi.c    | 16 ++++++++++++++--
+ 3 files changed, 22 insertions(+), 2 deletions(-)
+
 -- 
-2.34.1
+2.45.2
 
 
