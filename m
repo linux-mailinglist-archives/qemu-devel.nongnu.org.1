@@ -2,57 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 913FF9E5B31
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Dec 2024 17:20:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A5BBD9E5B34
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Dec 2024 17:21:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tJEZi-0004WK-GV; Thu, 05 Dec 2024 11:19:35 -0500
+	id 1tJEbE-0006vP-PK; Thu, 05 Dec 2024 11:21:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mprivozn@redhat.com>)
- id 1tJEZR-0004Vw-30
- for qemu-devel@nongnu.org; Thu, 05 Dec 2024 11:19:17 -0500
+ id 1tJEbC-0006v1-B5
+ for qemu-devel@nongnu.org; Thu, 05 Dec 2024 11:21:06 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mprivozn@redhat.com>)
- id 1tJEZP-0007nj-Hx
- for qemu-devel@nongnu.org; Thu, 05 Dec 2024 11:19:16 -0500
+ id 1tJEb9-0008D1-Pf
+ for qemu-devel@nongnu.org; Thu, 05 Dec 2024 11:21:05 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1733415554;
+ s=mimecast20190719; t=1733415662;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=v7fSVaL4A+NJUb5Qfu7/DO8n7m7CrRilZSxiNE2PvZg=;
- b=SqxEJReJ0qFRBeWmAHTaZEvX7ULt3ajZEN+DcSm2n3o/R0H879cwZHp5hpy7aCDOv+7Lqw
- 1x7Ka+5YwPSmtNonsb5OsqxR6aZvS6xcFAOR3DhuT4SxsmykKtx91RJl9tDomDmeqDUVhD
- fmhBU0TRFfBVKDXsdpJ6n6QRljvpOFA=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ bh=ykVXfQSv6QdQnvZoPkKQ+tHuBLJ6v9t5jGthxZwquzY=;
+ b=dvlDOITpocLNWl9OlQ7vt4MVTthwejSVELew1dUu2Y4qNIPZBPx7ETRHrTMD3btMXKnR0a
+ MrHwAvQjQVIUw4SSUUvY5M7TmrmQrM9InjHtdNaexT0+EnOWOoujzK69M7gN0Ib0VtP0o8
+ diqNFj4wZJCITjQrZyIXb6a7uVpjfgw=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-311-AX5DPnzXP12EAsDLnDXHtg-1; Thu,
- 05 Dec 2024 11:19:13 -0500
-X-MC-Unique: AX5DPnzXP12EAsDLnDXHtg-1
-X-Mimecast-MFC-AGG-ID: AX5DPnzXP12EAsDLnDXHtg
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-216-nrjgre8sNzCBSJky7MUj0g-1; Thu,
+ 05 Dec 2024 11:19:16 -0500
+X-MC-Unique: nrjgre8sNzCBSJky7MUj0g-1
+X-Mimecast-MFC-AGG-ID: nrjgre8sNzCBSJky7MUj0g
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id CA80219560A3; Thu,  5 Dec 2024 16:19:12 +0000 (UTC)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 8F9C5195608A; Thu,  5 Dec 2024 16:19:15 +0000 (UTC)
 Received: from moe.brq.redhat.com (unknown [10.43.3.236])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 528DC3000197; Thu,  5 Dec 2024 16:19:10 +0000 (UTC)
+ id 313023000197; Thu,  5 Dec 2024 16:19:13 +0000 (UTC)
 From: Michal Privoznik <mprivozn@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: kkostiuk@redhat.com,
 	michael.roth@amd.com,
 	jtomko@redhat.com
-Subject: [PATCH v2 2/4] qga: Invert logic on return value in main()
-Date: Thu,  5 Dec 2024 17:18:46 +0100
-Message-ID: <9316535a7cd0e73983b57c2c775d6bfc566d4b08.1733414906.git.mprivozn@redhat.com>
+Subject: [PATCH v2 3/4] qga: Don't daemonize before channel is initialized
+Date: Thu,  5 Dec 2024 17:18:47 +0100
+Message-ID: <45717b2498a83e91479a57be7832c3868ac9d135.1733414906.git.mprivozn@redhat.com>
 In-Reply-To: <cover.1733414906.git.mprivozn@redhat.com>
 References: <cover.1733414906.git.mprivozn@redhat.com>
 MIME-Version: 1.0
@@ -84,77 +84,95 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Current logic on return value ('ret' variable) in main() is error
-prone. The variable is initialized to EXIT_SUCCESS and then set
-to EXIT_FAILURE on error paths. This makes it very easy to forget
-to set the variable to indicate error when adding new error path,
-as is demonstrated by handling of initialize_agent() failure.
-It's simply lacking setting of the variable.
+If the agent is set to daemonize but for whatever reason fails to
+init the channel, the error message is lost. Worse, the agent
+daemonizes needlessly and returns success. For instance:
 
-There's just one case where success should be indicated: when
-dumping the config ('-D' cmd line argument).
+  # qemu-ga -m virtio-serial \
+            -p /dev/nonexistent_device \
+            -f /run/qemu-ga.pid \
+            -t /run \
+            -d
+  # echo $?
+  0
 
-To resolve this, initialize the variable to failure value and set
-it explicitly to success value in that one specific case.
+This makes it needlessly hard for init scripts to detect a
+failure in qemu-ga startup. Though, they shouldn't pass '-d' in
+the first place.
+
+Let's open the channel first and only after that become a daemon.
+
+Related bug: https://bugs.gentoo.org/810628
 
 Signed-off-by: Michal Privoznik <mprivozn@redhat.com>
 Reviewed-by: Ján Tomko <jtomko@redhat.com>
 ---
- qga/main.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ qga/main.c | 24 ++++++++++++++++++------
+ 1 file changed, 18 insertions(+), 6 deletions(-)
 
 diff --git a/qga/main.c b/qga/main.c
-index 4a695235f0..68ea7f275a 100644
+index 68ea7f275a..35f061b5ea 100644
 --- a/qga/main.c
 +++ b/qga/main.c
-@@ -1579,7 +1579,7 @@ static void stop_agent(GAState *s, bool requested)
- 
- int main(int argc, char **argv)
- {
--    int ret = EXIT_SUCCESS;
-+    int ret = EXIT_FAILURE;
-     GAState *s;
-     GAConfig *config = g_new0(GAConfig, 1);
-     int socket_activation;
-@@ -1607,7 +1607,6 @@ int main(int argc, char **argv)
-     socket_activation = check_socket_activation();
-     if (socket_activation > 1) {
-         g_critical("qemu-ga only supports listening on one socket");
--        ret = EXIT_FAILURE;
-         goto end;
-     }
-     if (socket_activation) {
-@@ -1631,7 +1630,6 @@ int main(int argc, char **argv)
- 
-         if (!config->method) {
-             g_critical("unsupported listen fd type");
--            ret = EXIT_FAILURE;
-             goto end;
+@@ -1430,7 +1430,6 @@ static GAState *initialize_agent(GAConfig *config, int socket_activation)
+         if (config->daemonize) {
+             /* delay opening/locking of pidfile till filesystems are unfrozen */
+             s->deferred_options.pid_filepath = config->pid_filepath;
+-            become_daemon(NULL);
          }
-     } else if (config->channel_path == NULL) {
-@@ -1643,13 +1641,13 @@ int main(int argc, char **argv)
-             config->channel_path = g_strdup(QGA_SERIAL_PATH_DEFAULT);
-         } else {
-             g_critical("must specify a path for this channel");
--            ret = EXIT_FAILURE;
-             goto end;
+         if (config->log_filepath) {
+             /* delay opening the log file till filesystems are unfrozen */
+@@ -1438,9 +1437,6 @@ static GAState *initialize_agent(GAConfig *config, int socket_activation)
          }
-     }
- 
-     if (config->dumpconf) {
-         config_dump(config);
-+        ret = EXIT_SUCCESS;
-         goto end;
-     }
- 
-@@ -1664,6 +1662,7 @@ int main(int argc, char **argv)
-         SERVICE_TABLE_ENTRY service_table[] = {
-             { (char *)QGA_SERVICE_NAME, service_main }, { NULL, NULL } };
-         StartServiceCtrlDispatcher(service_table);
-+        ret = EXIT_SUCCESS;
+         ga_disable_logging(s);
      } else {
-         ret = run_agent(s);
+-        if (config->daemonize) {
+-            become_daemon(config->pid_filepath);
+-        }
+         if (config->log_filepath) {
+             FILE *log_file = ga_open_logfile(config->log_filepath);
+             if (!log_file) {
+@@ -1487,6 +1483,20 @@ static GAState *initialize_agent(GAConfig *config, int socket_activation)
+ 
+     ga_apply_command_filters(s);
+ 
++    if (!channel_init(s, s->config->method, s->config->channel_path,
++                      s->socket_activation ? FIRST_SOCKET_ACTIVATION_FD : -1)) {
++        g_critical("failed to initialize guest agent channel");
++        return NULL;
++    }
++
++    if (config->daemonize) {
++        if (ga_is_frozen(s)) {
++            become_daemon(NULL);
++        } else {
++            become_daemon(config->pid_filepath);
++        }
++    }
++
+     ga_state = s;
+     return s;
+ }
+@@ -1513,8 +1523,9 @@ static void cleanup_agent(GAState *s)
+ 
+ static int run_agent_once(GAState *s)
+ {
+-    if (!channel_init(s, s->config->method, s->config->channel_path,
+-                      s->socket_activation ? FIRST_SOCKET_ACTIVATION_FD : -1)) {
++    if (!s->channel &&
++        channel_init(s, s->config->method, s->config->channel_path,
++                     s->socket_activation ? FIRST_SOCKET_ACTIVATION_FD : -1)) {
+         g_critical("failed to initialize guest agent channel");
+         return EXIT_FAILURE;
      }
+@@ -1523,6 +1534,7 @@ static int run_agent_once(GAState *s)
+ 
+     if (s->channel) {
+         ga_channel_free(s->channel);
++        s->channel = NULL;
+     }
+ 
+     return EXIT_SUCCESS;
 -- 
 2.45.2
 
