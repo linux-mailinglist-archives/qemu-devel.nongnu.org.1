@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 675549E5969
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Dec 2024 16:11:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 70FF19E5971
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Dec 2024 16:12:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tJDVb-0005fA-NX; Thu, 05 Dec 2024 10:11:15 -0500
+	id 1tJDVf-0005hQ-V3; Thu, 05 Dec 2024 10:11:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1tJDVa-0005ep-3v
- for qemu-devel@nongnu.org; Thu, 05 Dec 2024 10:11:14 -0500
+ id 1tJDVd-0005ge-T7
+ for qemu-devel@nongnu.org; Thu, 05 Dec 2024 10:11:17 -0500
 Received: from mgamail.intel.com ([198.175.65.17])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1tJDVY-0005Mv-8L
- for qemu-devel@nongnu.org; Thu, 05 Dec 2024 10:11:13 -0500
+ id 1tJDVc-0005Nt-65
+ for qemu-devel@nongnu.org; Thu, 05 Dec 2024 10:11:17 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1733411472; x=1764947472;
+ t=1733411476; x=1764947476;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=5OZZXoHmzqfDaY3OPEU1rYYDn/0dOdmC6yIyc0+ynfs=;
- b=ZKwkXkkJlXg3hmFrpCAFJYvwyCGQdHaYnaRHrsq9eVGbn3w8mkvD6t/p
- 9nGapsytce/1xgfOWUENC+YftW9+fxUzZ+mbWbtvbgdVq71A+gzLgbtgZ
- Uh+0NrId+QSa+rsgsjnEpDwR9mAhpZvoD5tm4VDwjAZJJOZWmJWsK8WTh
- okZZvB664VXxfBTtQgL52+EwHX7MPp92hOiQJiSE3PnVaY56pPAa+oC2B
- CDvH3TD5ddTNPs7GCD6dtnbyZXr83wSkSNXcR1mpvunqXeFF0tqBo/NnD
- jH1qhIT1RO7z8/mauh1rnKDvZL1uHGGD62GapRD/z3Uggfp5hpVyaHfgA A==;
-X-CSE-ConnectionGUID: FTdPQGfxSNCjVgnqYbsEqA==
-X-CSE-MsgGUID: QfyOoLRlRQCn6OgrE6biRA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11277"; a="33786171"
-X-IronPort-AV: E=Sophos;i="6.12,210,1728975600"; d="scan'208";a="33786171"
+ bh=5yVOz/EdTEquJQjewhLrTNSpZfPzXEvXdfHrpNFHV4k=;
+ b=POZt0w5VMUE2QBFhQXriWv6pkcDWE7GZPSP1+p7iFQcHjHgjIRsKfihA
+ zvfIoGe2vqKxs4jZdSsZLNub1M2Z3QFk/inphnlG/TXSoAIY+T4pi8u9p
+ yjOnHy9L3s+Bj5WjExPcuMYlGaBgtdFW2fuumABDkUh4QuG6aCif1Qcj4
+ hHN4ajwoRvNIe2LjNcTG6Uuin8U8AxbZ4YG4AKatIOTn5SRYFXPLfgNPR
+ uFZimSmazmDmnjKoV7wSR/ppT6d/oOqjtXM1+hdcaPqAZwPuuelBSQ9yA
+ rv9yDU+WWFafA3EpAyhp4OWigy1qGMX4P4AAMnkGP/CiK0E3NfcRrmDqs Q==;
+X-CSE-ConnectionGUID: /o/c8ISuR9aGHuWotCn/XA==
+X-CSE-MsgGUID: GfallRMqTmuJndHOoLlT1A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11277"; a="33786185"
+X-IronPort-AV: E=Sophos;i="6.12,210,1728975600"; d="scan'208";a="33786185"
 Received: from fmviesa006.fm.intel.com ([10.60.135.146])
  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Dec 2024 07:11:10 -0800
-X-CSE-ConnectionGUID: Vz2ECWqNR8SjjOfACrJy3A==
-X-CSE-MsgGUID: 7AkyqjIKTwus29W34govlg==
+ 05 Dec 2024 07:11:14 -0800
+X-CSE-ConnectionGUID: M6PpUGHlSvSFoAXumBbZFg==
+X-CSE-MsgGUID: xl2h8GJlRpuDZZ5t5zSsXA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,210,1728975600"; d="scan'208";a="93803118"
+X-IronPort-AV: E=Sophos;i="6.12,210,1728975600"; d="scan'208";a="93803132"
 Received: from lxy-clx-4s.sh.intel.com ([10.239.48.52])
- by fmviesa006.fm.intel.com with ESMTP; 05 Dec 2024 07:11:07 -0800
+ by fmviesa006.fm.intel.com with ESMTP; 05 Dec 2024 07:11:11 -0800
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
@@ -53,9 +53,9 @@ Cc: xiaoyao.li@intel.com, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Cameron Esfahani <dirty@apple.com>, Roman Bolshakov <rbolshakov@ddn.com>,
  Marcelo Tosatti <mtosatti@redhat.com>, qemu-devel@nongnu.org
-Subject: [RFC PATCH 3/4] i386: Track cores_per_module in CPUX86State
-Date: Thu,  5 Dec 2024 09:57:15 -0500
-Message-Id: <20241205145716.472456-4-xiaoyao.li@intel.com>
+Subject: [RFC PATCH 4/4] cpu: Remove nr_cores from struct CPUState
+Date: Thu,  5 Dec 2024 09:57:16 -0500
+Message-Id: <20241205145716.472456-5-xiaoyao.li@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241205145716.472456-1-xiaoyao.li@intel.com>
 References: <20241205145716.472456-1-xiaoyao.li@intel.com>
@@ -87,75 +87,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-x86 is the only user of CPUState::nr_cores.
-
-Define cores_per_module in CPUX86State, which can serve as the
-substitute of CPUState::nr_cores. After x86 switches to use
-CPUX86State::cores_per_module, CPUState::nr_cores will lose the only
-user and QEMU can drop it.
+There is no user of it now, remove it.
 
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
 ---
- hw/i386/x86-common.c | 2 ++
- target/i386/cpu.c    | 2 +-
- target/i386/cpu.h    | 9 +++++++--
- 3 files changed, 10 insertions(+), 3 deletions(-)
+ hw/core/cpu-common.c  | 1 -
+ hw/i386/x86-common.c  | 2 +-
+ include/hw/core/cpu.h | 2 --
+ system/cpus.c         | 1 -
+ 4 files changed, 1 insertion(+), 5 deletions(-)
 
+diff --git a/hw/core/cpu-common.c b/hw/core/cpu-common.c
+index 09c79035949b..77089d4ed304 100644
+--- a/hw/core/cpu-common.c
++++ b/hw/core/cpu-common.c
+@@ -243,7 +243,6 @@ static void cpu_common_initfn(Object *obj)
+     cpu->cluster_index = UNASSIGNED_CLUSTER_INDEX;
+     /* user-mode doesn't have configurable SMP topology */
+     /* the default value is changed by qemu_init_vcpu() for system-mode */
+-    cpu->nr_cores = 1;
+     cpu->nr_threads = 1;
+     cpu->cflags_next_tb = -1;
+ 
 diff --git a/hw/i386/x86-common.c b/hw/i386/x86-common.c
-index dc031af66217..f7a20c1da30c 100644
+index f7a20c1da30c..2dd7d8e34b76 100644
 --- a/hw/i386/x86-common.c
 +++ b/hw/i386/x86-common.c
-@@ -271,6 +271,8 @@ void x86_cpu_pre_plug(HotplugHandler *hotplug_dev,
+@@ -377,7 +377,7 @@ void x86_cpu_pre_plug(HotplugHandler *hotplug_dev,
+      */
+     /* TODO: move socket_id/core_id/thread_id checks into x86_cpu_realizefn()
+      * once -smp refactoring is complete and there will be CPU private
+-     * CPUState::nr_cores and CPUState::nr_threads fields instead of globals */
++     * CPUState::nr_threads fields instead of globals */
+     x86_topo_ids_from_apicid(cpu->apic_id, &topo_info, &topo_ids);
+     if (cpu->socket_id != -1 && cpu->socket_id != topo_ids.pkg_id) {
+         error_setg(errp, "property socket-id: %u doesn't match set apic-id:"
+diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
+index c3ca0babcb3f..fb397cdfc53d 100644
+--- a/include/hw/core/cpu.h
++++ b/include/hw/core/cpu.h
+@@ -407,7 +407,6 @@ struct qemu_work_item;
+  *   Under TCG this value is propagated to @tcg_cflags.
+  *   See TranslationBlock::TCG CF_CLUSTER_MASK.
+  * @tcg_cflags: Pre-computed cflags for this cpu.
+- * @nr_cores: Number of cores within this CPU package.
+  * @nr_threads: Number of threads within this CPU core.
+  * @thread: Host thread details, only live once @created is #true
+  * @sem: WIN32 only semaphore used only for qtest
+@@ -466,7 +465,6 @@ struct CPUState {
+     CPUClass *cc;
+     /*< public >*/
  
-     init_topo_info(&topo_info, x86ms);
+-    int nr_cores;
+     int nr_threads;
  
-+    env->nr_cores = ms->smp.cores;
-+
-     if (ms->smp.modules > 1) {
-         env->nr_modules = ms->smp.modules;
-         set_bit(CPU_TOPOLOGY_LEVEL_MODULE, env->avail_cpu_topo);
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 3725dbbc4b3f..15b50c44ae79 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -6503,7 +6503,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
- 
-     topo_info.dies_per_pkg = env->nr_dies;
-     topo_info.modules_per_die = env->nr_modules;
--    topo_info.cores_per_module = cs->nr_cores / env->nr_dies / env->nr_modules;
-+    topo_info.cores_per_module = env->nr_cores;
-     topo_info.threads_per_core = cs->nr_threads;
- 
-     cores_per_pkg = topo_info.cores_per_module * topo_info.modules_per_die *
-diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-index 5795a497e567..c37a49a1a02b 100644
---- a/target/i386/cpu.h
-+++ b/target/i386/cpu.h
-@@ -2051,6 +2051,9 @@ typedef struct CPUArchState {
-     /* Number of modules within one die. */
-     unsigned nr_modules;
- 
-+    /* Number of cores within one module. */
-+    unsigned nr_cores;
-+
-     /* Bitmap of available CPU topology levels for this CPU. */
-     DECLARE_BITMAP(avail_cpu_topo, CPU_TOPOLOGY_LEVEL__MAX);
- } CPUX86State;
-@@ -2393,10 +2396,12 @@ static inline void cpu_x86_load_seg_cache_sipi(X86CPU *cpu,
- static inline uint64_t cpu_x86_get_msr_core_thread_count(X86CPU *cpu)
+     struct QemuThread *thread;
+diff --git a/system/cpus.c b/system/cpus.c
+index 1c818ff6828c..909d8128e81b 100644
+--- a/system/cpus.c
++++ b/system/cpus.c
+@@ -666,7 +666,6 @@ void qemu_init_vcpu(CPUState *cpu)
  {
-     CPUState *cs = CPU(cpu);
-+    CPUX86State *env = &cpu->env;
-     uint64_t val;
-+    uint64_t cores_per_package = env->nr_cores * env->nr_modules * env->nr_dies;
+     MachineState *ms = MACHINE(qdev_get_machine());
  
--    val = cs->nr_threads * cs->nr_cores;  /* thread count, bits 15..0 */
--    val |= ((uint32_t)cs->nr_cores << 16); /* core count, bits 31..16 */
-+    val = cs->nr_threads * cores_per_package;  /* thread count, bits 15..0 */
-+    val |= (cores_per_package << 16); /* core count, bits 31..16 */
- 
-     return val;
- }
+-    cpu->nr_cores = machine_topo_get_cores_per_socket(ms);
+     cpu->nr_threads =  ms->smp.threads;
+     cpu->stopped = true;
+     cpu->random_seed = qemu_guest_random_seed_thread_part1();
 -- 
 2.34.1
 
