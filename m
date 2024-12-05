@@ -2,63 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C5A39E4D66
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Dec 2024 06:51:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 753499E4D7E
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Dec 2024 07:06:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tJ4kj-0006hR-RP; Thu, 05 Dec 2024 00:50:17 -0500
+	id 1tJ4yk-0007Fy-6O; Thu, 05 Dec 2024 01:04:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tJ4kf-0006hB-IG; Thu, 05 Dec 2024 00:50:13 -0500
-Received: from mgamail.intel.com ([198.175.65.18])
+ id 1tJ4yf-0007FC-MF; Thu, 05 Dec 2024 01:04:41 -0500
+Received: from mgamail.intel.com ([192.198.163.11])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tJ4kd-0007Br-Vx; Thu, 05 Dec 2024 00:50:13 -0500
+ id 1tJ4yX-0005Fn-Gz; Thu, 05 Dec 2024 01:04:40 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1733377812; x=1764913812;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=163co5V0L2579CPnezHoIN6M6o+8Ub2IEuDw5h91upg=;
- b=NQ6uXEqbVLoAUbOjEUPGdnNctckrpBFjWhdDctDYWW4qPU125T3n128y
- JA5TdGaVp5Hf/dOIzdS2xOKrE9QLunz6ykVBHu0mnlEH8JavL3BNaSNpB
- AcS10vOYuzcPoT0P6BvGJa3TRClXEVv4f34u5z3AWqrv8SiT3dURXDbOk
- CvyMqoHRMdo3VcwvGsXdwMETTTBiGW5JDkmnrNopKbBEW8Rt9FWiKGSLJ
- 8TKaPfCQnFf9GPQZo/ddhNN3+XEyaxDxh6jlwAUIPw2Qawgda17rNUXVq
- b3tFXH5hJnzPA7PzbncVB2CzK2B2MV97BM+3TEju0tzb6EQWlS6gGZyqp g==;
-X-CSE-ConnectionGUID: +hsGLYkXQ2OL0aFkY3ii9w==
-X-CSE-MsgGUID: o+Ln+NEkTQSyKDySWTCzHQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11276"; a="33815692"
-X-IronPort-AV: E=Sophos;i="6.12,209,1728975600"; d="scan'208";a="33815692"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
- by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Dec 2024 21:49:51 -0800
-X-CSE-ConnectionGUID: 8xZHD59IRnCk5pAw4SIMyA==
-X-CSE-MsgGUID: aBSIfJ1iRxC2OFMTQQoN+w==
+ t=1733378673; x=1764914673;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=sRVrzqxgowgNuEq+HU+J5QCFqfpel+2YZVRxDHlc328=;
+ b=Fa3ft/CkcZgBhWR5IQ3ILiakDzQStPqmH42nA3ImHD9knjPb/LHq2Ytk
+ 4No8z9Tmo9yN24aVs1ub6EbSGnCydahfdtsVTFymvQT5yHl4NqvJSNgk3
+ vyaH5RjIXV3JuhS2+KawFi8Byhqd4uw52U6jGev4o7MzKM0TPKy9N82Zx
+ 6rPlkvdSHZZDGoVFDPSHlPq7aqyEScQS4kd9++1MIRN2aJC/eOzDnwNF8
+ p1REw95FrTLkC/RWRPf8hoxbfs3gCMHoQcah45oLcsXUSFHd4I+Vc4wqC
+ ux3yKVfQdIHccg89aHhsexXvxnkeMpdEyK/zp4ahPp9Jq+lafHkKZKRil Q==;
+X-CSE-ConnectionGUID: wbLROBxaRs2IraBL/AC+dQ==
+X-CSE-MsgGUID: hyg3H8RtRhWYvY5hC5MUSw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11276"; a="44281055"
+X-IronPort-AV: E=Sophos;i="6.12,209,1728975600"; d="scan'208";a="44281055"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+ by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Dec 2024 22:04:28 -0800
+X-CSE-ConnectionGUID: PIC/4ZFDTwaE3A95eZQQhA==
+X-CSE-MsgGUID: mauZe62oR5OcegsQ/oyWKw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,209,1728975600"; d="scan'208";a="94455084"
-Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
- by fmviesa009.fm.intel.com with ESMTP; 04 Dec 2024 21:49:49 -0800
+X-IronPort-AV: E=Sophos;i="6.12,209,1728975600"; d="scan'208";a="98961225"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by orviesa005.jf.intel.com with ESMTP; 04 Dec 2024 22:04:26 -0800
+Date: Thu, 5 Dec 2024 14:22:37 +0800
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>,
  "Michael S . Tsirkin" <mst@redhat.com>,
  Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
  Junjie Mao <junjie.mao@hotmail.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org, Zhao Liu <zhao1.liu@intel.com>
-Subject: [RFC 13/13] i386: enable rust hpet for pc when rust is enabled
-Date: Thu,  5 Dec 2024 14:07:14 +0800
-Message-Id: <20241205060714.256270-14-zhao1.liu@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241205060714.256270-1-zhao1.liu@intel.com>
+ Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
+ Zhao Liu <zhao1.liu@intel.com>
+Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org
+Subject: Re: [RFC 00/13] rust: Reinvent the wheel for HPET timer in Rust
+Message-ID: <Z1FGrQC4g8Nq0Wwr@intel.com>
 References: <20241205060714.256270-1-zhao1.liu@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=198.175.65.18; envelope-from=zhao1.liu@intel.com;
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241205060714.256270-1-zhao1.liu@intel.com>
+Received-SPF: pass client-ip=192.198.163.11; envelope-from=zhao1.liu@intel.com;
  helo=mgamail.intel.com
 X-Spam_score_int: -73
 X-Spam_score: -7.4
@@ -83,60 +86,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add HPET configuration in PC's Kconfig options, and select HPET device
-(Rust version) if Rust is supported.
+> After making empty promises for many months, I have finally written the
+> Rust version of HPET :-) I'm also very grateful for the help from Paolo,
+> Manos, and Junjie!
+> 
+> Overall, HPET in Rust maintains the same logic as the original C
+> version, adhering to the IA-HPET spec v1.0a [1]. While keeping the logic
+> unchanged, it attempts to keep up with the current development progress
+> of Rust for QEMU, leveraging the latest and ongoing Rust binding updates
+> as much as possible, such as BqlCell / BqlRefCell, qom & qdev
+> enhancements, irq binding, and more. Additionally, it introduces new
+> bindings, including gpio_{in|out}, bitops, memattrs, and timer. Finally,
+> based on Paolo's suggestion, the vmstate part is temporarily on hold.
+> 
+> Welcome your comments and feedback!
 
-Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
----
- hw/i386/Kconfig       | 2 ++
- hw/timer/Kconfig      | 1 -
- rust/hw/Kconfig       | 1 +
- rust/hw/timer/Kconfig | 2 ++
- 4 files changed, 5 insertions(+), 1 deletion(-)
- create mode 100644 rust/hw/timer/Kconfig
+Based on Paolo's rust-next branch of https://gitlab.com/bonzini/qemu at
+the commit 05de50008121 ("rust: qom: move device_id to PL011 class side").
+ 
+[snip]
 
-diff --git a/hw/i386/Kconfig b/hw/i386/Kconfig
-index 32818480d263..83ab3222c4f0 100644
---- a/hw/i386/Kconfig
-+++ b/hw/i386/Kconfig
-@@ -39,6 +39,8 @@ config PC
-     select PCSPK
-     select I8257
-     select MC146818RTC
-+    select HPET if !HAVE_RUST
-+    select X_HPET_RUST if HAVE_RUST
-     # For ACPI builder:
-     select SERIAL_ISA
-     select ACPI_PCI
-diff --git a/hw/timer/Kconfig b/hw/timer/Kconfig
-index c96fd5d97ae8..645d7531f40e 100644
---- a/hw/timer/Kconfig
-+++ b/hw/timer/Kconfig
-@@ -11,7 +11,6 @@ config A9_GTIMER
- 
- config HPET
-     bool
--    default y if PC
- 
- config I8254
-     bool
-diff --git a/rust/hw/Kconfig b/rust/hw/Kconfig
-index 4d934f30afe1..36f92ec02874 100644
---- a/rust/hw/Kconfig
-+++ b/rust/hw/Kconfig
-@@ -1,2 +1,3 @@
- # devices Kconfig
- source char/Kconfig
-+source timer/Kconfig
-diff --git a/rust/hw/timer/Kconfig b/rust/hw/timer/Kconfig
-new file mode 100644
-index 000000000000..afd980335037
---- /dev/null
-+++ b/rust/hw/timer/Kconfig
-@@ -0,0 +1,2 @@
-+config X_HPET_RUST
-+    bool
--- 
-2.34.1
+> Public and Private in QOM State
+> -------------------------------
+> 
+> I recently asked on the mailing list [4] about the reason for using
+> "<public>"/"<private>" comments in QOM structures. Peter, Junjie, and
+> Balaton provided some explanations and feedback (thank you all).
+
+And thanks Daniel!!
+
+...
+
+> [4]: https://lore.kernel.org/qemu-devel/ZxPZ5oUDRcVroh7o@intel.com/
+
+Regards,
+Zhao
 
 
