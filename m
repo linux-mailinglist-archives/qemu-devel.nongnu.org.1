@@ -2,97 +2,100 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F47F9E4F6B
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Dec 2024 09:12:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 76F629E4F91
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Dec 2024 09:19:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tJ6wu-000604-Qp; Thu, 05 Dec 2024 03:11:00 -0500
+	id 1tJ74L-0008WO-7x; Thu, 05 Dec 2024 03:18:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tJ6wk-0005za-B1
- for qemu-devel@nongnu.org; Thu, 05 Dec 2024 03:10:50 -0500
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tJ6wi-00006v-4W
- for qemu-devel@nongnu.org; Thu, 05 Dec 2024 03:10:49 -0500
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-434a099ba95so6751785e9.0
- for <qemu-devel@nongnu.org>; Thu, 05 Dec 2024 00:10:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1733386245; x=1733991045; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=PPdc0EEVHeTFn15eI1D7uHRXwLa3eD+mEiTL1Dvotuo=;
- b=u/vQdknnLrF65/vzRm1ILXx4WjG7qhgt6/WdDHiHMpPyWwLPjezsUfIOgRJvb2YieW
- AA0XxbElovYwJRmLl5fUDSgLcr/5SVn87iRprq9O0Kos6mCoyLsgUia4dQA5Y6Kf2p6l
- s4/YKKIt5pvdneb7HIMbDuOBlAyWbaxMfsDnSLGfySafOKcM/FW7Qj2rF82ty3BXJhSq
- PPFbPprrg0H9D/LDd9guRSkAgaCsLF9FrCZwmsmLZvQHtuXECBD6orC+uBP/vkXWtUlz
- euBGgaQFO3qSDtDS5pokLV58r6euhu2dDU70gLhz8Pfq0K93bBrGKCn9hoUN+diVnqc7
- CyjA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733386245; x=1733991045;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=PPdc0EEVHeTFn15eI1D7uHRXwLa3eD+mEiTL1Dvotuo=;
- b=HDFX5HN43uBnbr6fT0pkh26ph8x5dnLqdXMidSYzbF5TKD+CPauzmnaBSvOLPJ0dcU
- wdbYsFyeete2osDYlzn4oymcSGLDbEhHvYA2yLigETWNhpmo8AB5mylF4LSQNWEFH8oR
- GXsxLh9Hrb6YhG0S/twvRtizZeXeFqNtSjYN8NCC3FYIt8QR9/Nfb2F57puyAS3455ls
- xO/AY3tRcwF1gODJScy3Al/IcmWEWP0FSsdw0S1cWuQagacQS50NPzDrzpuqCkkaFh5P
- 0CPjGjzWUqX7HzkP/E5j8FCwwSxerwS1kcOvJ8WgpSeMOwrV0IVJxCcnjNAWBiyE4+fV
- Llew==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWuMJNIchoOgVKWeJ+zSjVjeVpnIUKgvJL88lQsLfIzv7uVTJydVyfrVRE2vcLfQqqP4D43AYlO+aiw@nongnu.org
-X-Gm-Message-State: AOJu0Yxk8eqTAUx/9rbnK6XpcfuQicyEqFKmKzsVlQMGKlSqrBK2Yq4O
- 0SguyHvm6vynGSMB4YYlIBvMkceUBcduiP12iLbXOvsc4hRZbpU1Cvt2YqMJhmQ=
-X-Gm-Gg: ASbGnctVPihQqj2gk7z69W+VMDTRNFeyyVnu+bszuK6ssd36a1XuBPUx3z1P9IRhnan
- FvnoF/YUJ9Jel8i2jOgNGhw34z0meD7hnXYObLCbIj6ZoaHui13mbvy+NzX5VVsYEGPKJAf8FT2
- FuiRY7AmDavmoAY9tyi5dk/96ZG0qoZAfu92mOFQMHD/rNtuarcORjjcSIy3kXJ4WpMi+wgEz5Q
- 8IvYfO1ZKEJOmiKr7Nec/21PdZ5e5g9+9MiBduXsvPS7wJG
-X-Google-Smtp-Source: AGHT+IGM60n+GSy+Mfvc9xMaw7CC4RIdZS/E2SvPbYPS2ch2qcG7zFkbAc/MOOJKeWHEJYRa9M+igg==
-X-Received: by 2002:a05:6000:2809:b0:385:f07b:93d6 with SMTP id
- ffacd0b85a97d-385fd423ac5mr5335662f8f.45.1733386245313; 
- Thu, 05 Dec 2024 00:10:45 -0800 (PST)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-434d526b577sm52931845e9.3.2024.12.05.00.10.43
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 05 Dec 2024 00:10:44 -0800 (PST)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id B708C5F8A7;
- Thu,  5 Dec 2024 08:10:42 +0000 (GMT)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Yanfeng Liu <yfliu2008@qq.com>
-Cc: Mario Fleischmann <mario.fleischmann@lauterbach.com>,
- qemu-riscv@nongnu.org,  qemu-devel@nongnu.org,  alistair.francis@wdc.com
-Subject: Re: [PATCH v2] riscv/gdb: add virt mode debug interface
-In-Reply-To: <tencent_06871EF8A4ECD65A90D4E769FC60C972DC09@qq.com> (Yanfeng
- Liu's message of "Thu, 05 Dec 2024 09:29:22 +0800")
-References: <tencent_B52B1EB0A504D6F690B6E6F3FD3AC9BCDC09@qq.com>
- <8734jbh21e.fsf@draig.linaro.org>
- <tencent_CA6E4D0C897F3ED0EF988CCE5DF541442A05@qq.com>
- <87r06ufjiz.fsf@draig.linaro.org>
- <tencent_AADD9A1292CD7CB89F16999E7BDD03895406@qq.com>
- <0516feb0-ba9a-4ac0-a2bd-1bf97ca9694e@lauterbach.com>
- <tencent_06871EF8A4ECD65A90D4E769FC60C972DC09@qq.com>
-User-Agent: mu4e 1.12.7; emacs 29.4
-Date: Thu, 05 Dec 2024 08:10:42 +0000
-Message-ID: <874j3ibldp.fsf@draig.linaro.org>
+ (Exim 4.90_1) (envelope-from <SRS0=3IWU=S6=kaod.org=clg@ozlabs.org>)
+ id 1tJ74E-0008VK-Pd; Thu, 05 Dec 2024 03:18:34 -0500
+Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <SRS0=3IWU=S6=kaod.org=clg@ozlabs.org>)
+ id 1tJ74C-00043W-MD; Thu, 05 Dec 2024 03:18:34 -0500
+Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4Y3nMY5f2Gz4x6X;
+ Thu,  5 Dec 2024 19:18:17 +1100 (AEDT)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (Client did not present a certificate)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4Y3nMT2FcCz4x6R;
+ Thu,  5 Dec 2024 19:18:13 +1100 (AEDT)
+Message-ID: <c2e4c538-2e0b-4882-8a92-6ff439cebd09@kaod.org>
+Date: Thu, 5 Dec 2024 09:18:13 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x336.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/4] docs/system/arm/fby35: document execute-in-place
+ property
+To: Pierrick Bouvier <pierrick.bouvier@linaro.org>, qemu-devel@nongnu.org
+Cc: Andrew Jeffery <andrew@codeconstruct.com.au>, qemu-arm@nongnu.org,
+ Troy Lee <leetroy@gmail.com>, Peter Maydell <peter.maydell@linaro.org>,
+ Niek Linnenbank <nieklinnenbank@gmail.com>,
+ Steven Lee <steven_lee@aspeedtech.com>, Joel Stanley <joel@jms.id.au>,
+ alex.bennee@linaro.org, Alistair Francis <alistair@alistair23.me>,
+ Jamin Lin <jamin_lin@aspeedtech.com>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
+References: <20241204203912.3037515-1-pierrick.bouvier@linaro.org>
+ <20241204203912.3037515-3-pierrick.bouvier@linaro.org>
+Content-Language: en-US, fr
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+Autocrypt: addr=clg@kaod.org; keydata=
+ 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
+In-Reply-To: <20241204203912.3037515-3-pierrick.bouvier@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
+ envelope-from=SRS0=3IWU=S6=kaod.org=clg@ozlabs.org; helo=mail.ozlabs.org
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.001, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,207 +111,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Yanfeng Liu <yfliu2008@qq.com> writes:
+Hello Pierrick,
 
-> On Wed, 2024-12-04 at 17:03 +0100, Mario Fleischmann wrote:
->> Hi everyone,
->>=20
->> I'd like to chime in here because we are sitting on a similar patch=20
->> which I wanted to send to the mailing list as soon as riscv-debug-spec=20
->> v1.0.0 becomes ratified.
->>=20
->> For hypervisor support, `(qemu) info registers` isn't enough. We need to=
-=20
->> have both read and write access to the V-bit.
->>=20
->> On 04.12.2024 14:43, Yanfeng Liu wrote:
->> > On Fri, 2024-11-29 at 09:59 +0000, Alex Benn=C3=A9e wrote:
->> > > Yanfeng <yfliu2008@qq.com> writes:
->> > >=20
->> > > > On Thu, 2024-11-28 at 14:21 +0000, Alex Benn=C3=A9e wrote:
->> > > > > Yanfeng Liu <yfliu2008@qq.com> writes:
->> > > > >=20
->> > > > > > This adds `virt` virtual register on debug interface so that u=
-sers
->> > > > > > can access current virtualization mode for debugging purposes.
->> > > > > >=20
->> > > > > > Signed-off-by: Yanfeng Liu <yfliu2008@qq.com>
->> > > > > > ---
->> > > > > > =C2=A0=C2=A0gdb-xml/riscv-32bit-virtual.xml |=C2=A0 1 +
->> > > > > > =C2=A0=C2=A0gdb-xml/riscv-64bit-virtual.xml |=C2=A0 1 +
->> > > > > > =C2=A0=C2=A0target/riscv/gdbstub.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 18 ++++++++++++------
->> > > > > > =C2=A0=C2=A03 files changed, 14 insertions(+), 6 deletions(-)
->> > > > > >=20
->> > > > > > diff --git a/gdb-xml/riscv-32bit-virtual.xml b/gdb-xml/riscv-3=
-2bit-
->> > > > > > virtual.xml
->> > > > > > index 905f1c555d..d44b6ca2dc 100644
->> > > > > > --- a/gdb-xml/riscv-32bit-virtual.xml
->> > > > > > +++ b/gdb-xml/riscv-32bit-virtual.xml
->> > > > > > @@ -8,4 +8,5 @@
->> > > > > > =C2=A0=C2=A0<!DOCTYPE feature SYSTEM "gdb-target.dtd">
->> > > > > > =C2=A0=C2=A0<feature name=3D"org.gnu.gdb.riscv.virtual">
->> > > > > > =C2=A0=C2=A0=C2=A0 <reg name=3D"priv" bitsize=3D"32"/>
->> > > > > > +=C2=A0 <reg name=3D"virt" bitsize=3D"32"/>
->> > > > > > =C2=A0=C2=A0</feature>
->> > > > > > diff --git a/gdb-xml/riscv-64bit-virtual.xml b/gdb-xml/riscv-6=
-4bit-
->> > > > > > virtual.xml
->> > > > > > index 62d86c237b..7c9b63d5b6 100644
->> > > > > > --- a/gdb-xml/riscv-64bit-virtual.xml
->> > > > > > +++ b/gdb-xml/riscv-64bit-virtual.xml
->> > > > > > @@ -8,4 +8,5 @@
->> > > > > > =C2=A0=C2=A0<!DOCTYPE feature SYSTEM "gdb-target.dtd">
->> > > > > > =C2=A0=C2=A0<feature name=3D"org.gnu.gdb.riscv.virtual">
->> > > > > > =C2=A0=C2=A0=C2=A0 <reg name=3D"priv" bitsize=3D"64"/>
->> > > > > > +=C2=A0 <reg name=3D"virt" bitsize=3D"64"/>
->> > > > > > =C2=A0=C2=A0</feature>
->> > > > >=20
->> > > > > I assume these are mirrored in gdb not a QEMU only extension?
->> > > >=20
->> > > > So far I think it is a QEMU extension and the `gdb-multiarch` does=
-n't
->> > > > treat
->> > > > is
->> > > > specially. My tests shows it basically works:
->> > > >=20
->> > > > ```
->> > > > (gdb) ir virt
->> > > > priv=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 0=
-x3=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0prv:3 [Machine]
->> > > > virt=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 0=
-x0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A00
->> > > > (gdb) set $priv =3D 2
->> > > > (gdb) ir virt
->> > > > priv=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 0=
-x1=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0prv:1 [Supervisor]
->> > > > virt=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 0=
-x0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A00
->> > > > (gdb) set $virt =3D 1
->> > > > (gdb) ir virt
->> > > > priv=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 0=
-x1=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0prv:1 [Supervisor]
->> > > > virt=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 0=
-x1=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A01
->> > > > (gdb) set $virt =3D 0
->> > > > (gdb) ir virt
->> > > > priv=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 0=
-x1=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0prv:1 [Supervisor]
->> > > > virt=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 0=
-x0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A00
->> > > > (gdb) set $virt =3D 1
->> > > > (gdb) ir virt
->> > > > priv=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 0=
-x1=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0prv:1 [Supervisor]
->> > > > virt=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 0=
-x1=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A01
->> > > > (gdb) set $priv =3D 3
->> > > > (gdb) ir virt
->> > > > priv=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 0=
-x3=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0prv:3 [Machine]
->> > > > virt=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 0=
-x0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A00
->> > > > ```
->> > >=20
->> > > A gdbstub test case would be useful for this although I don't know if
->> > > the RiscV check-tcg tests switch mode at all.
->> > >=20
->> > > >=20
->> > > > As I am rather new to QEMU, please teach how we can add it as a QE=
-MU
->> > > > only
->> > > > extension.
->> > >=20
->> > > You don't need to extend the XML from GDB, you can build a specific =
-one
->> > > for QEMU extensions. For example:
->> > >=20
->> > > =C2=A0=C2=A0=C2=A0=C2=A0 gdb_feature_builder_init(&param.builder,
->> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 &cpu->dyn_sysreg_feature.desc,
->> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 "org.qemu.gdb.arm.sys.regs",
->> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 "system-registers.xml",
->> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 base_reg);
->> > >=20
->> > > This exports all the system registers QEMU knows about and GDB can
->> > > access generically. Note the id is org.qemu..., indicating its our
->> > > schema not gdbs.
->> > Thanks for teaching, I need time to digest. I guess more feature build=
-er
->> > APIs
->> > are needed (like append_reg) and the getter/setter callbacks might be =
-at a
->> > different place.
->> >=20
->> > BTW, compared to adding virtual register `virt`, how do you think if we
->> > share
->> > the V bit as part of existing `priv` register?
->>=20
->> IMHO this is a very good idea since the latest release candidate of=20
->> riscv-debug-spec also includes the V bit in priv:2.
->>=20
->
-> Thanks for this information, I noticed the bit(2) of `priv` register is f=
-or the
-> V bit as per section 4.10.1.
->
->> > Or maybe we shall talk to GDB community to get their opinions? If they=
- agree
->> > to
->> > add a few words about V bit here
->> > https://sourceware.org/gdb/current/onlinedocs/gdb.html/RISC_002dV-Feat=
-ures.html
->> > ,
->> > then it saves us a lot.
->>=20
->> Except being currently not supported by GDB
->>=20
->> (gdb) info register $priv
->> priv=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 0x5=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0 prv:5 [INVALID]
->>=20
->> are there any reasons from QEMU's side that would speak against=20
->> including V in priv?
->>=20
->
-> My v1 patch used `bit(8)` to avoid seeing the `[INVALID]` thing at GDB si=
-de,
-> though that is due to GDB isn't in line with its own manual (i.e. use the=
- two
-> lowest bits only).
->
-> Without a doc or specification. we felt people may not know `bit(8)` in v=
-1 patch
-> was for the V bit, so I drafted patch v2 as Alistair suggested. However, =
-as Alex
-> pointed out, directly adding `virt` register in "org.gnu.gdb.riscv.virtua=
-l" XML
-> is improper. I also wanted to raise this in GDB side but my application t=
-o join
-> the mail list is still pending.
->
-> Alex and Alistair, now I am wondering if we can follow the RiscV debug
-> specification to use `bit(2)` of `priv` virtual register?=C2=A0My test sh=
-ows except
-> for the `[INVALID]` label, both set/get access seems working.
+Thanks for improving the documentation !
 
-I guess the INVALID just means gdb needs teaching about the format of
-the register.
+On 12/4/24 21:39, Pierrick Bouvier wrote:
+> Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+> ---
+>   docs/system/arm/fby35.rst | 3 +++
+>   1 file changed, 3 insertions(+)
+> 
+> diff --git a/docs/system/arm/fby35.rst b/docs/system/arm/fby35.rst
+> index bf6da6baa2a..ed9faef363c 100644
+> --- a/docs/system/arm/fby35.rst
+> +++ b/docs/system/arm/fby35.rst
+> @@ -45,3 +45,6 @@ process starts.
+>       $ screen /dev/tty0 # In a separate TMUX pane, terminal window, etc.
+>       $ screen /dev/tty1
+>       $ (qemu) c		   # Start the boot process once screen is setup.
+> +
+> +This machine model supports emulation of the boot from the CEO flash device by
+> +setting option ``execute-in-place``.
 
->
->
-> Regards,
-> yf
+Could we add a link to the "Boot options" section of the
+"Aspeed family boards" document instead ?
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+C.
 
