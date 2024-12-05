@@ -2,56 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 356689E5B32
+	by mail.lfdr.de (Postfix) with ESMTPS id 64DE49E5B33
 	for <lists+qemu-devel@lfdr.de>; Thu,  5 Dec 2024 17:20:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tJEZO-0004VS-PS; Thu, 05 Dec 2024 11:19:14 -0500
+	id 1tJEZh-0004WJ-Cb; Thu, 05 Dec 2024 11:19:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mprivozn@redhat.com>)
- id 1tJEZM-0004VE-KM
- for qemu-devel@nongnu.org; Thu, 05 Dec 2024 11:19:12 -0500
+ id 1tJEZQ-0004Vv-T9
+ for qemu-devel@nongnu.org; Thu, 05 Dec 2024 11:19:16 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mprivozn@redhat.com>)
- id 1tJEZL-0007mz-36
- for qemu-devel@nongnu.org; Thu, 05 Dec 2024 11:19:12 -0500
+ id 1tJEZP-0007nh-Gq
+ for qemu-devel@nongnu.org; Thu, 05 Dec 2024 11:19:16 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1733415550;
+ s=mimecast20190719; t=1733415554;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=4BLQEmFtZN/pOAqReGEgoFOyO7e/s9jbNxTSvf7E0hY=;
- b=J5+76LrtN+6ApwZZvcEhqgDqR8EAM+FKp5IWArgFKYwBVbiDG2i1LAIIZax66Wt3SgbRo5
- U5XT4sHpS8kNGauEGYSGtD3xzTJbfRFYBvpFJRTsQTpvLkAmjQY1FIa+cIytknZkGHhek4
- SoRuRUxpdCN4n4z1mpsbs36DVwleLwI=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=Jys/UjC3t3F8O2tUXCN6gwtKZacN/DR36JEOmhwiITk=;
+ b=FixyvquCM5izeeFy/nCxVBdamIijTlP+lne7CWFiEv2xcY46SkFVVEdU3jbXYOxqHXbmA2
+ 8XLSAetzLOdZUfQOlArfX+Q3qNCyIj2szV74fxox0ojxDquaq49MugJ5YAd8S/lkBySi3Q
+ oyXoxFk2xZ2sITE/Od9zIJ1nfdtCIn4=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-619-8z_WoPOZN3aMnM29dgHK7A-1; Thu,
- 05 Dec 2024 11:19:08 -0500
-X-MC-Unique: 8z_WoPOZN3aMnM29dgHK7A-1
-X-Mimecast-MFC-AGG-ID: 8z_WoPOZN3aMnM29dgHK7A
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-681-SBG3pESnMoWAnc4YJ3um_g-1; Thu,
+ 05 Dec 2024 11:19:11 -0500
+X-MC-Unique: SBG3pESnMoWAnc4YJ3um_g-1
+X-Mimecast-MFC-AGG-ID: SBG3pESnMoWAnc4YJ3um_g
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id B19E71956048; Thu,  5 Dec 2024 16:19:07 +0000 (UTC)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id B09D619560A5; Thu,  5 Dec 2024 16:19:10 +0000 (UTC)
 Received: from moe.brq.redhat.com (unknown [10.43.3.236])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 48762300019E; Thu,  5 Dec 2024 16:19:05 +0000 (UTC)
+ id 292AD3000197; Thu,  5 Dec 2024 16:19:07 +0000 (UTC)
 From: Michal Privoznik <mprivozn@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: kkostiuk@redhat.com,
 	michael.roth@amd.com,
 	jtomko@redhat.com
-Subject: [PATCH v2 0/4] qga: Open channel before going daemon
-Date: Thu,  5 Dec 2024 17:18:44 +0100
-Message-ID: <cover.1733414906.git.mprivozn@redhat.com>
+Subject: [PATCH v2 1/4] qga: Don't access global variable in run_agent_once()
+Date: Thu,  5 Dec 2024 17:18:45 +0100
+Message-ID: <8ae7f5d5032b14a5b956fe8aaf47bae5ca401699.1733414906.git.mprivozn@redhat.com>
+In-Reply-To: <cover.1733414906.git.mprivozn@redhat.com>
+References: <cover.1733414906.git.mprivozn@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -81,24 +84,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-v2 of:
+The run_agent_once() function is already given GAState via an
+argument. There's no need to access the global ga_state variable
+which points to the argument anyways (thanks to
+initialize_agent()). Worse, some parts of the function use the
+argument and the other use the global variable.  Stick with the
+function argument.
 
-https://lists.nongnu.org/archive/html/qemu-devel/2024-11/msg00460.html
+Signed-off-by: Michal Privoznik <mprivozn@redhat.com>
+Reviewed-by: Ján Tomko <jtomko@redhat.com>
+Reviewed-by: Konstantin Kostiuk <kkostiuk@redhat.com>
+---
+ qga/main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff to v1:
-- In 2/4 fixed one path where EXIT_FAILURE would be returned,
-- Reworked 3/4 so that channel initialization is kept in
-  run_agent_once().
-
-Michal Privoznik (4):
-  qga: Don't access global variable in run_agent_once()
-  qga: Invert logic on return value in main()
-  qga: Don't daemonize before channel is initialized
-  qga: Make run_agent() and run_agent_once() return no value
-
- qga/main.c | 52 +++++++++++++++++++++++++++++-----------------------
- 1 file changed, 29 insertions(+), 23 deletions(-)
-
+diff --git a/qga/main.c b/qga/main.c
+index 50186760bf..4a695235f0 100644
+--- a/qga/main.c
++++ b/qga/main.c
+@@ -1519,7 +1519,7 @@ static int run_agent_once(GAState *s)
+         return EXIT_FAILURE;
+     }
+ 
+-    g_main_loop_run(ga_state->main_loop);
++    g_main_loop_run(s->main_loop);
+ 
+     if (s->channel) {
+         ga_channel_free(s->channel);
 -- 
 2.45.2
 
