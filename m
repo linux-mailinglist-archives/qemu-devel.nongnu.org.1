@@ -2,69 +2,150 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3EA59E5622
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Dec 2024 14:02:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 184D69E563E
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Dec 2024 14:12:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tJBTX-0001QA-AU; Thu, 05 Dec 2024 08:00:59 -0500
+	id 1tJBca-0003KV-CV; Thu, 05 Dec 2024 08:10:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1tJBT7-0001MY-Ob
- for qemu-devel@nongnu.org; Thu, 05 Dec 2024 08:00:50 -0500
-Received: from mailgate02.uberspace.is ([2a00:d0c0:200:0:1c7b:a6ff:fee0:8ea4])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1tJBT4-0001gp-A3
- for qemu-devel@nongnu.org; Thu, 05 Dec 2024 08:00:33 -0500
-Received: from skiff.uberspace.de (skiff.uberspace.de [185.26.156.131])
- by mailgate02.uberspace.is (Postfix) with ESMTPS id 7E4431803B2
- for <qemu-devel@nongnu.org>; Thu,  5 Dec 2024 14:00:25 +0100 (CET)
-Received: (qmail 4235 invoked by uid 990); 5 Dec 2024 13:00:20 -0000
-Authentication-Results: skiff.uberspace.de;
-	auth=pass (plain)
-Received: from unknown (HELO unkown) (::1)
- by skiff.uberspace.de (Haraka/3.0.1) with ESMTPSA;
- Thu, 05 Dec 2024 14:00:20 +0100
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tJBcZ-0003KJ-8c
+ for qemu-devel@nongnu.org; Thu, 05 Dec 2024 08:10:19 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tJBcW-0006Lc-UM
+ for qemu-devel@nongnu.org; Thu, 05 Dec 2024 08:10:19 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1733404214;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=7ZXubcIT+X4yMYo1wq8pIy7ycoABgOzyvE2BpjYz7Uc=;
+ b=RBFFJGq6R73lHYJCdPWsYCgIlHbCCn+8cgeYKP2aXBRLoBQJaV8aWjhsgSBpIFYUhpatQc
+ wqYlGZ0kVjelR31lcct5KepkN8ZpfvrRlPGFr3DHMJCBGeG27NUQ9RUV6x9vzcNQZ2c1Md
+ ZP7AlnrEUpFlc3kYed3konFeeTgFTdk=
+Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
+ [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-641-2mjjx7PeOgmFkm_tM14dng-1; Thu, 05 Dec 2024 08:10:12 -0500
+X-MC-Unique: 2mjjx7PeOgmFkm_tM14dng-1
+X-Mimecast-MFC-AGG-ID: 2mjjx7PeOgmFkm_tM14dng
+Received: by mail-qv1-f69.google.com with SMTP id
+ 6a1803df08f44-6d8b3173b5bso14838486d6.3
+ for <qemu-devel@nongnu.org>; Thu, 05 Dec 2024 05:10:12 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1733404212; x=1734009012;
+ h=content-transfer-encoding:in-reply-to:autocrypt:from
+ :content-language:references:cc:to:subject:user-agent:mime-version
+ :date:message-id:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=7ZXubcIT+X4yMYo1wq8pIy7ycoABgOzyvE2BpjYz7Uc=;
+ b=CACk2ZrOESlxsJiXc+0jtE609rLRHd4/Y0XwmgTUBOe/GWETcrTINA/XMQCg9kq8Wo
+ NS43JMCFDpl3Alfv1/0wAmDwUXmvvij1cRXO/N2BiLvmczdEVm93awm4JtPNtTAraZL9
+ VM0MC0WZozLQFxDvLlr2Eumx7AU7Mn42qnVWrVvx/BVIyJMvuSef1+GknLygvNgKNDi4
+ 70FzAjb+mWHCzt/I2wnYcMpR6EHBfRQfptGWkNpiEIE93+Ph+yeoCv+EKFGxV6HUjw0A
+ aB7WALLwbh1xE2YF+Kf8TrUG2fEMC2i2t595OxpT3cz0j/NisHo2rl7gCnQSU76tVsPp
+ +MaA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVFvGZL78nM8qu40sUcp0c+4OmY5u8YI2auTYvGFPpvA/G4c/pa6Vvg9w8MUIcsaAzi1e2JjGqgOiyy@nongnu.org
+X-Gm-Message-State: AOJu0YwTnB1kzQFucLlpRSapHSfdtyQv7QfhVgwM/s+L14FO+wVd1xSg
+ 2oWuSdCXzopB1L79Djx/Miios0RtvukaXSKLNcxCEW+msXCdgLxONUJ1kvznScbE2xfCUVMBw6z
+ mDCiT7SthxFT64gx6Wq+B9dOQ7eH5SMHLOX+45zvQ8HUH1mlxAa/U
+X-Gm-Gg: ASbGncuylonkXHs99uEd8ob7pCDT0FQoJbV2M9pmAycwuDcaNspeLxqcszPja/Z75o9
+ FesfQYDRxo/0uD9613mDffR7MCDtWM1vVuRMelVoRx6VW7QCa7W/zu8FzTUX2OHsqApb+qyNwRX
+ mudHtwQLc7P+vFHwYl6anIbyV9JqSz1B4+mJZSjLL2v5KLAyAfVNVAAzhhn8TDnjclfGIYwai7A
+ Xr4byAliDhdzgjxtq+1X05rw5O/bjjFbX9F2K4rxX7hIpj0iH5TR12HckiSvMdAIicdDIRjMmUR
+ Vx3Kg6SDab67
+X-Received: by 2002:a05:6214:d6d:b0:6d8:a5da:3aba with SMTP id
+ 6a1803df08f44-6d8b738f92dmr172253196d6.20.1733404211654; 
+ Thu, 05 Dec 2024 05:10:11 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFGPc3JTo7yRmhFcc9161JO/XBRfJprZnzX5dxXrp4AFDW7YTDlFuqOiMOW8/ve8G2sIRS4cg==
+X-Received: by 2002:a05:6214:d6d:b0:6d8:a5da:3aba with SMTP id
+ 6a1803df08f44-6d8b738f92dmr172252836d6.20.1733404211323; 
+ Thu, 05 Dec 2024 05:10:11 -0800 (PST)
+Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
+ ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
+ by smtp.gmail.com with ESMTPSA id
+ 6a1803df08f44-6d8da6b687fsm6332706d6.70.2024.12.05.05.10.09
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 05 Dec 2024 05:10:10 -0800 (PST)
+Message-ID: <4525a87d-b2a1-4162-9ee4-e4ee0e86a31d@redhat.com>
+Date: Thu, 5 Dec 2024 14:10:08 +0100
 MIME-Version: 1.0
-Date: Thu, 05 Dec 2024 13:00:19 +0000
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-From: "Julian Ganz" <neither@nut.email>
-Message-ID: <c30dd97f956725875d9454685692ce3a91155646@nut.email>
-TLS-Required: No
-Subject: Re: [RFC PATCH v3 04/11] contrib/plugins: add plugin showcasing new
- dicontinuity related API
-To: "Pierrick Bouvier" <pierrick.bouvier@linaro.org>, qemu-devel@nongnu.org
-Cc: "=?utf-8?B?QWxleCBCZW5uw6ll?=" <alex.bennee@linaro.org>, "Alexandre
- Iooss" <erdnaxe@crans.org>, "Mahmoud Mandour" <ma.mandourr@gmail.com>
-In-Reply-To: <76cbce17-0318-436c-b295-0a8ef12b24b9@linaro.org>
-References: <cover.1733063076.git.neither@nut.email>
- <fa02142d349ceb6c95e80301a7f5c57ae5df6329.1733063076.git.neither@nut.email>
- <76cbce17-0318-436c-b295-0a8ef12b24b9@linaro.org>
-X-Rspamd-Bar: /
-X-Rspamd-Report: SUSPICIOUS_RECIPS(1.5) BAYES_HAM(-1.153755) MIME_GOOD(-0.1)
-X-Rspamd-Score: 0.246244
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=nut.email; s=uberspace;
- h=from:to:cc:subject:date;
- bh=c7YH6JQimKzP45LJgyBfrhYBchPiTUEtqG3riN9Yqfc=;
- b=EsAje3iv5AR9dPTfZ8m/TxpasJvHysDoQRwGp6kP0hNfAvpzGXquN3lY5aOX5HL5seDQM+1lz5
- 7C1dt5dk/4OeLgFQVPKmFc1DJ7xE4suVhGLSrKN2F8ygpPl1jnUuohHpusMKt1DuDgww5THqcx/B
- D9qX/y14+Do6JjIaIq2627NcABP3/7J4JkYdUZVgPFEpfmF4apvnm4w7EB4Y2ipfN2hhOOQWGW5I
- rfKdkcTdHm5IuyEto2p+45jPKRwU+3O5gsdW6BIvRVQzgy8gbI++0QM12Z1W7NqMc0qDIlwpfadc
- SMJHFABbA0ReO2iyPVJnp45snmKYESTwN8TH43idM+IjK1n7vYxn56ctuubpYMMWKykOhecqrgTe
- ixonJR8ANP4YMo3EgNWZ/cm3NYmhiQVNUweBLQUuF6KqBv5QOfGUOa/0xMCkbk4HNAQ4WI3ZpsPw
- Nlib7ymsQgjAQw75ja8vt4lvb0R7aaAGdqNCh++Fl2iiin+K762xsw52EINqHu9qACF/yZ7AmgWR
- RIWsjsLD4+CRfucy50YnpaQSFNrnW4aGDX1EbOn4q+B/mFuRpOaekpxVSZkxoYHCfmqJH6yYRqeX
- qdiyqbOTAuwtxwasdJE6eOaxkf+7RB+Zbn2azPRNYMyuQ1xsO7oe5jgqM8QMIRfENemD/mjutyuU
- 8=
-Received-SPF: pass client-ip=2a00:d0c0:200:0:1c7b:a6ff:fee0:8ea4;
- envelope-from=neither@nut.email; helo=mailgate02.uberspace.is
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 04/24] thread-pool: Implement generic (non-AIO) pool
+ support
+To: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
+Cc: Alex Williamson <alex.williamson@redhat.com>,
+ Fabiano Rosas <farosas@suse.de>, Peter Xu <peterx@redhat.com>,
+ Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ Avihai Horon <avihaih@nvidia.com>, Joao Martins <joao.m.martins@oracle.com>,
+ qemu-devel@nongnu.org
+References: <cover.1731773021.git.maciej.szmigiero@oracle.com>
+ <babda1bbe43024baaa4a9ac855f7930b6679f2b7.1731773021.git.maciej.szmigiero@oracle.com>
+ <455d1074-28b7-4b0b-9c67-6f6425cbf384@redhat.com>
+ <d20ed0f2-2ea6-4737-b203-dee696e3c8d6@maciej.szmigiero.name>
+Content-Language: en-US, fr
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+Autocrypt: addr=clg@redhat.com; keydata=
+ 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
+ uVKe8BVz4atMOoktmt0GWTOC8P4=
+In-Reply-To: <d20ed0f2-2ea6-4737-b203-dee696e3c8d6@maciej.szmigiero.name>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -50
+X-Spam_score: -5.1
+X-Spam_bar: -----
+X-Spam_report: (-5.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.996,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,60 +161,180 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Pierrick,
+On 11/26/24 22:22, Maciej S. Szmigiero wrote:
+> On 26.11.2024 20:29, Cédric Le Goater wrote:
+>> On 11/17/24 20:19, Maciej S. Szmigiero wrote:
+>>> From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
+>>>
+>>> Migration code wants to manage device data sending threads in one place.
+>>>
+>>> QEMU has an existing thread pool implementation, however it is limited
+>>> to queuing AIO operations only and essentially has a 1:1 mapping between
+>>> the current AioContext and the AIO ThreadPool in use.
+>>>
+>>> Implement generic (non-AIO) ThreadPool by essentially wrapping Glib's
+>>> GThreadPool.
+>>>
+>>> This brings a few new operations on a pool:
+>>> * thread_pool_wait() operation waits until all the submitted work requests
+>>> have finished.
+>>>
+>>> * thread_pool_set_max_threads() explicitly sets the maximum thread count
+>>> in the pool.
+>>>
+>>> * thread_pool_adjust_max_threads_to_work() adjusts the maximum thread count
+>>> in the pool to equal the number of still waiting in queue or unfinished work.
+>>>
+>>> Signed-off-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
+>>> ---
+>>>   include/block/thread-pool.h |   9 +++
+>>>   util/thread-pool.c          | 109 ++++++++++++++++++++++++++++++++++++
+>>>   2 files changed, 118 insertions(+)
+>>>
+>>> diff --git a/include/block/thread-pool.h b/include/block/thread-pool.h
+>>> index 6f27eb085b45..3f9f66307b65 100644
+>>> --- a/include/block/thread-pool.h
+>>> +++ b/include/block/thread-pool.h
+>>> @@ -38,5 +38,14 @@ BlockAIOCB *thread_pool_submit_aio(ThreadPoolFunc *func, void *arg,
+>>>   int coroutine_fn thread_pool_submit_co(ThreadPoolFunc *func, void *arg);
+>>>   void thread_pool_update_params(ThreadPoolAio *pool, struct AioContext *ctx);
+>>> +typedef struct ThreadPool ThreadPool;
+>>> +
+>>> +ThreadPool *thread_pool_new(void);
+>>> +void thread_pool_free(ThreadPool *pool);
+>>> +void thread_pool_submit(ThreadPool *pool, ThreadPoolFunc *func,
+>>> +                        void *opaque, GDestroyNotify opaque_destroy);
+>>> +void thread_pool_wait(ThreadPool *pool);
+>>> +bool thread_pool_set_max_threads(ThreadPool *pool, int max_threads);
+>>> +bool thread_pool_adjust_max_threads_to_work(ThreadPool *pool);
+>>
+>> We should add documentation for these routines.
+> 
+> Ack.
+> 
+>>>   #endif
+>>> diff --git a/util/thread-pool.c b/util/thread-pool.c
+>>> index 908194dc070f..d80c4181c897 100644
+>>> --- a/util/thread-pool.c
+>>> +++ b/util/thread-pool.c
+>>> @@ -374,3 +374,112 @@ void thread_pool_free_aio(ThreadPoolAio *pool)
+>>>       qemu_mutex_destroy(&pool->lock);
+>>>       g_free(pool);
+>>>   }
+>>> +
+>>> +struct ThreadPool { /* type safety */
+>>> +    GThreadPool *t;
+>>> +    size_t unfinished_el_ctr;
+>>> +    QemuMutex unfinished_el_ctr_mutex;
+>>> +    QemuCond unfinished_el_ctr_zero_cond;
+>>> +};
+>>
+>>
+>> I find the naming of the attributes a little confusing. Could we
+>> use names similar to ThreadPoolAio. Something like :
+>>
+>> struct ThreadPool { /* type safety */
+>>      GThreadPool *t;
+>>      int cur_threads;
+> 
+> "cur_work" would probably be more accurate since the code that
+> decrements this counter is still running inside a worker thread
+> so by the time this reaches zero technically there are still
+> threads running.
+> 
+>>      QemuMutex lock;
+> 
+> This lock only protects the counter above, not the rest of the
+> structure so I guess "cur_work_lock" would be more accurate.
+> 
+>>      QemuCond finished_cond;
+> 
+> I would go for "all_finished_cond", since it's only signaled once
+> all of the work is finished (the counter above reaches zero).
 
-December 5, 2024 at 12:14 AM, "Pierrick Bouvier" wrote:
-> On 12/2/24 11:26, Julian Ganz wrote:
-> >  +typedef struct {
-> >  + uint64_t interrupts;
-> >  + uint64_t exceptions;
-> >  + uint64_t hostcalls;
-> >  + bool active;
-> >=20
->=20The active field can be removed, as you can query qemu_plugin_num_vcp=
-us() to know (dynamically) how many vcpus were created.
 
-Yes, if the ids of dynamically initialized VCPUs are contiguous. I
-wasn't sure they really are. And I distinctly remember we originally
-used some query function and ended up with the maximum number of VCPUs
-supported rather then those actually used. But that may have been
-another function, or some unfortunate result of me being too cautious
-and doing
+All good for me.
 
-| qemu_plugin_vcpu_for_each(id, vcpu_init);
+> 
+>> };
+>>
+>>
+>>
+>>> +
+>>> +typedef struct {
+>>> +    ThreadPoolFunc *func;
+>>> +    void *opaque;
+>>> +    GDestroyNotify opaque_destroy;
+>>> +} ThreadPoolElement;
+>>> +
+>>> +static void thread_pool_func(gpointer data, gpointer user_data)
+>>> +{
+>>> +    ThreadPool *pool = user_data;
+>>> +    g_autofree ThreadPoolElement *el = data;
+>>> +
+>>> +    el->func(el->opaque);
+>>> +
+>>> +    if (el->opaque_destroy) {
+>>> +        el->opaque_destroy(el->opaque);
+>>> +    }
+>>> +
+>>> +    QEMU_LOCK_GUARD(&pool->unfinished_el_ctr_mutex);
+>>> +
+>>> +    assert(pool->unfinished_el_ctr > 0);
+>>> +    pool->unfinished_el_ctr--;
+>>> +
+>>> +    if (pool->unfinished_el_ctr == 0) {
+>>> +        qemu_cond_signal(&pool->unfinished_el_ctr_zero_cond);
+>>> +    }
+>>> +}
+>>> +
+>>> +ThreadPool *thread_pool_new(void)
+>>> +{
+>>> +    ThreadPool *pool = g_new(ThreadPool, 1);
+>>> +
+>>> +    pool->unfinished_el_ctr = 0;
+>>> +    qemu_mutex_init(&pool->unfinished_el_ctr_mutex);
+>>> +    qemu_cond_init(&pool->unfinished_el_ctr_zero_cond);
+>>> +
+>>> +    pool->t = g_thread_pool_new(thread_pool_func, pool, 0, TRUE, NULL);
+>>> +    /*
+>>> +     * g_thread_pool_new() can only return errors if initial thread(s)
+>>> +     * creation fails but we ask for 0 initial threads above.
+>>> +     */
+>>> +    assert(pool->t);
+>>> +
+>>> +    return pool;
+>>> +}
+>>> +
+>>> +void thread_pool_free(ThreadPool *pool)
+>>> +{
+>>> +    g_thread_pool_free(pool->t, FALSE, TRUE);
+>>> +
+>>> +    qemu_cond_destroy(&pool->unfinished_el_ctr_zero_cond);
+>>> +    qemu_mutex_destroy(&pool->unfinished_el_ctr_mutex);
+>>> +
+>>> +    g_free(pool);
+>>> +}
+>>> +
+>>> +void thread_pool_submit(ThreadPool *pool, ThreadPoolFunc *func,
+>>> +                        void *opaque, GDestroyNotify opaque_destroy)
+>>> +{
+>>> +    ThreadPoolElement *el = g_new(ThreadPoolElement, 1);
+>>
+>> Where are the ThreadPool elements freed ? I am missing something
+>> may be.
+> 
+> At the entry to thread_pool_func(), the initialization of
+> automatic storage duration variable "ThreadPoolElement *el" takes
+> ownership of this object (RAII) and frees it when this variable
+> goes out of scope (that is, when this function exits) since it is
+> marked as a g_autofree.
 
-in qemu_plugin_install.
+OK. I missed it.
 
-> >=20
->=20> + break;
-> >  + }
-> >  +}
-> >  +
-> >  +static void plugin_exit(qemu_plugin_id_t id, void *p)
-> >  +{
-> >  + g_autoptr(GString) report;
-> >  + report =3D g_string_new("VCPU, interrupts, exceptions, hostcalls\n=
-");
-> >  + int vcpu;
-> >  +
-> >  + for (vcpu =3D 0; vcpu < max_vcpus; vcpu++) {
-> >=20
->=20vcpu < qemu_plugin_num_vcpus()
+Thanks,
 
-Yes, max_vcpus was introduced as an optimization. If we can rely on all
-VCPUs with id < qemu_plugin_num_vcpus() having been active at some point
-this becomes unnecessary.
+C.
 
-> >  + qemu_plugin_register_vcpu_discon_cb(id, QEMU_PLUGIN_DISCON_TRAPS,
-> >  + vcpu_discon);
-> >  +
-> >=20
->=20The change from QEMU_PLUGIN_DISCON_TRAPS to QEMU_PLUGIN_DISCON_ALL sh=
-ould be included in this patch, instead of next one.
 
-Ah, thanks for pointing that out. I likely fumbled this at some point whe=
-n rebasing.
-
-Regards,
-Julian Ganz
 
