@@ -2,88 +2,142 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC7C59E531C
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Dec 2024 11:56:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 606179E5332
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Dec 2024 11:58:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tJ9X3-0006Np-HJ; Thu, 05 Dec 2024 05:56:29 -0500
+	id 1tJ9ZJ-00034M-8m; Thu, 05 Dec 2024 05:58:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <tomitamoeko@gmail.com>)
- id 1tJ9Wy-0006Fi-9H
- for qemu-devel@nongnu.org; Thu, 05 Dec 2024 05:56:24 -0500
-Received: from mail-pf1-x442.google.com ([2607:f8b0:4864:20::442])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <tomitamoeko@gmail.com>)
- id 1tJ9Ww-0003fR-Ki
- for qemu-devel@nongnu.org; Thu, 05 Dec 2024 05:56:24 -0500
-Received: by mail-pf1-x442.google.com with SMTP id
- d2e1a72fcca58-7258cf297d4so739433b3a.2
- for <qemu-devel@nongnu.org>; Thu, 05 Dec 2024 02:56:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1733396177; x=1734000977; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=DMVtNuBqtIXXm2C24hwxrJtPRQT47P73SaeeHd2lWK4=;
- b=faMLOlNFe0C6rRNRxTFR3FC4p5fBNFq+EPRJcwpoTEChQsxAqeaQa16ahXG6z1BZtL
- e8t2oCXsfMwPkM5ccP/fOk0sNyvhvRqHjsjEo279xJpfv7PFl5RN8BBk0JEEMPEsU0Oi
- gARwZPOtX1KZE6/CfxHLwOHF3W4aZ0VUKyE+B1SN0vHbWbgTwIklSmM0/Zq7AS6Fstkd
- ImFTNsKQDawrPHBXqS84CUdCY/5QXL5PutjXK8ED4Nz4Sq0kWAp9MoG+2kKVGfgblQr6
- P7OJS8Vx0oBWXCbhBxavX0sy9N9p78wuXQgBie0VwpGqXYEiNigIZj2F9OuiEL63prN3
- 8ZFg==
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tJ9ZF-00034D-9K
+ for qemu-devel@nongnu.org; Thu, 05 Dec 2024 05:58:45 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tJ9ZD-0003yh-Vo
+ for qemu-devel@nongnu.org; Thu, 05 Dec 2024 05:58:45 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1733396322;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=fcDgsuQAoxrCDCOSh8oogGU5LhZim/psSeqH4/93/Iw=;
+ b=gfFjKiRVbeU1gQFGDhMa4tKxMc7ncVCp6Uc/sa375IbIC9vnhXysoxkc180v/ObPWh6DVy
+ eNE7rRGJ1F09dLpUSadz1g1VhVOVASZPCi8nq7RaFBdeaUGG7I0U2MH78CQT1JNu2OyRAX
+ V0CoShz4G3EeffeBy1l33ERp0EBEg9I=
+Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
+ [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-694-spfm3QC1OgeKhBFZYqU2-w-1; Thu, 05 Dec 2024 05:58:41 -0500
+X-MC-Unique: spfm3QC1OgeKhBFZYqU2-w-1
+X-Mimecast-MFC-AGG-ID: spfm3QC1OgeKhBFZYqU2-w
+Received: by mail-qv1-f71.google.com with SMTP id
+ 6a1803df08f44-6d8897ea603so14744786d6.1
+ for <qemu-devel@nongnu.org>; Thu, 05 Dec 2024 02:58:41 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733396177; x=1734000977;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=DMVtNuBqtIXXm2C24hwxrJtPRQT47P73SaeeHd2lWK4=;
- b=rNmQBI0belaEVijB3mq1j4R5KGqGiZml1BSKv+PDatGl5111fhURKqr7m7TTElpceP
- KS2RH/Ko32rJfyLZnRptQqBkOqLWghqB5neMaMKFvAp8Td4VSdM4jWYxojtOZJ8bVN6G
- x49KT2e3B23WixAeS2EVeSqGiDId/LlvqxPJcZClznmp+Cu4hYFY7MyWTSbZuVmv1ph2
- VjBoJk1UEa0eAc08HPcZobMvUFW3bMW9ZzJWM8MPFBF5Tx7CBzZjDYUuvdhYPEtjoFf8
- uNWw6Phv5EgTSVK5ENU/rEDLNTT1ShZKyi5/nDUV46qmP/+uIcfm2L2JZMfvQdShcMDu
- yiSw==
-X-Gm-Message-State: AOJu0Yzn2BWU9rHdVb0200pzlHrCtDZ3n65v3cZmV7nLzCdy92UbFcz8
- EFWao+LRkpgVRuw9l135bAAem3+2KPTpQDIkGk5RlokNZd+OKYc/Cg4GEd+Mbw==
-X-Gm-Gg: ASbGncvzNxHnnYkUTWv+SEJkbaIRtno32zVKt2k5XcKXe76+FQdIiW/5AjkeiTjeWYT
- 5/6An4qNntsx6n9l0+FJtlBqEMkWIQzHSkMJirzAKHD/Px0S/+tI4cbLCCAemft8N2WpWO5BN2M
- 1EcGFOw2byvJEhaFWL8kY2Zh6Q9BNwM0ieYU7hNzz2qxO7JwISQrY2AxmSQBqK5JNvW2fBGh4xM
- 3Tkrx2jDwnCOfESTPstm1OsC0zF74YBj4dtrxb9fq7O67y2q1n9VIKD8A==
-X-Google-Smtp-Source: AGHT+IHuIdpgw/LuC72t6bmxi6VEw3WoD084zBzgUlsYBXDyKYexlvZXexLMVRNNov4+TTxrK/SE+A==
-X-Received: by 2002:a05:6a00:1d1c:b0:724:dba1:61ef with SMTP id
- d2e1a72fcca58-7257fcca10cmr14326435b3a.24.1733396177131; 
- Thu, 05 Dec 2024 02:56:17 -0800 (PST)
-Received: from kotori-desktop.lan ([58.38.120.33])
- by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-725a2ca6747sm1010905b3a.149.2024.12.05.02.56.14
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 05 Dec 2024 02:56:16 -0800 (PST)
-From: Tomita Moeko <tomitamoeko@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: Alex Williamson <alex.williamson@redhat.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
- =?UTF-8?q?Corvin=20K=C3=B6hne?= <c.koehne@beckhoff.com>,
- Tomita Moeko <tomitamoeko@gmail.com>
-Subject: [PATCH v3 10/10] vfio/igd: add x-igd-gms option back to set DSM
- region size for guest
-Date: Thu,  5 Dec 2024 18:55:35 +0800
-Message-ID: <20241205105535.30498-11-tomitamoeko@gmail.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20241205105535.30498-1-tomitamoeko@gmail.com>
-References: <20241205105535.30498-1-tomitamoeko@gmail.com>
+ d=1e100.net; s=20230601; t=1733396321; x=1734001121;
+ h=content-transfer-encoding:in-reply-to:autocrypt:from
+ :content-language:references:cc:to:subject:user-agent:mime-version
+ :date:message-id:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=fcDgsuQAoxrCDCOSh8oogGU5LhZim/psSeqH4/93/Iw=;
+ b=cxiqc52YM4dsebrhYRQ9gY2NpcH0LmgbtYB7/bFzH42nYZuTMiPZLjdFfT48O6YpuZ
+ MqsiReCf5njKOFscfFvFGGgl72hzRuDEEgFEX86GiglXiFnyYjeMQwPLWxvNdiRO8zN4
+ K4Kn7VFOusvMVwVAoCSeDPx3l9wRw8kdAamQ8ylpsWGLlr3HlP1dmPw6RkJYfclqHoMI
+ iEfvCrnzjDtCeUSKtfBvRllGTYWkRCWKVu0d32agqVFWrOhpa6K2yIyWj1dQXhHkSam8
+ iQOCbXKIuQ/fBFx6WtJNIG418WWTXpkEWrbW3Qyv5w6NpJhhzkACrv63lf/s+X3wOdAZ
+ fOGg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCW3JTxsmupT2cN5WSbmomNMwHZzUy3IdkuTqmE2x+ULcOG1ynrHOqCsntS7IN2oJ7uQbTLXbD81EQWM@nongnu.org
+X-Gm-Message-State: AOJu0Yxpj3zNzCn746NM2HCWnlJXpjvFdXAoQdJgXXqQ2jJInD9Trs0H
+ msGhUdhXUJWQhpyKLeVYhSRANIdyFI5PF7fCgegT1gFyFC2h8OopvVortlB2KDGfieDtgjVv9aJ
+ 74qpv5MPInMQ8So0K1WgMD7jGnSUtL8a9VhnTCR+b/6xhC4kqSEZq
+X-Gm-Gg: ASbGncu+5mcADmvbrGbtWITdvLEGIQmXKHV/bD2gZeDutcE0C7W/eWgW6OiEOA5v1dU
+ 3Mh0EEUIc95OsM8/nl0J2v2aqyl9LH5XfdPDpfpdyqN21IDnZtmzZr/5yeSQ2KgoqU9yGxuC2ul
+ qpg7K98+tDVKbrqfsKquAJq03QJKNRdwpn6WObdoxd2TrrnHSqeZwlaTLzJoIToubea7Y2aHqOc
+ WjKOUvExaMWaYZQk/rIYfpzs4kehaWvXcwBD0MBzUzkCqr9tJWrL9Gd9lZ89DFLgAcsmwKEnqjQ
+ kUrB5A==
+X-Received: by 2002:a05:6214:4791:b0:6d8:acde:8a98 with SMTP id
+ 6a1803df08f44-6d8d70830fdmr41445066d6.14.1733396321184; 
+ Thu, 05 Dec 2024 02:58:41 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHVq/4ntlHDF0opP+MohKMzybExU8al53ynF3HQNwDL82Ft7Ej3uPgG2yXC6XnfShqjV49UiQ==
+X-Received: by 2002:a05:6214:4791:b0:6d8:acde:8a98 with SMTP id
+ 6a1803df08f44-6d8d70830fdmr41444956d6.14.1733396320970; 
+ Thu, 05 Dec 2024 02:58:40 -0800 (PST)
+Received: from [192.168.0.7] (ip-109-42-48-244.web.vodafone.de.
+ [109.42.48.244]) by smtp.gmail.com with ESMTPSA id
+ 6a1803df08f44-6d8da6b84f1sm5337126d6.61.2024.12.05.02.58.39
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 05 Dec 2024 02:58:40 -0800 (PST)
+Message-ID: <21bb6a69-f524-4503-90d4-cb4d71552469@redhat.com>
+Date: Thu, 5 Dec 2024 11:58:36 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5/7] gitlab: enable ccache with Cirrus CI
+To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ qemu-devel@nongnu.org
+Cc: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+References: <20241204194807.1472261-1-berrange@redhat.com>
+ <20241204194807.1472261-6-berrange@redhat.com>
+Content-Language: en-US
+From: Thomas Huth <thuth@redhat.com>
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <20241204194807.1472261-6-berrange@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::442;
- envelope-from=tomitamoeko@gmail.com; helo=mail-pf1-x442.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -50
+X-Spam_score: -5.1
+X-Spam_bar: -----
+X-Spam_report: (-5.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.999,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,72 +153,24 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-DSM region is likely to store framebuffer in Windows, a small DSM
-region may cause display issues (e.g. half of the screen is black).
-Since 971ca22f041b ("vfio/igd: don't set stolen memory size to zero"),
-the x-igd-gms option was functionally removed, QEMU uses host's
-original value, which is determined by DVMT Pre-Allocated option in
-Intel FSP of host bios.
+On 04/12/2024 20.48, Daniel P. Berrangé wrote:
+> Add rules to configure the use of ccache with Cirrus CI jobs,
+> and preserve the cache across jobs.
+> 
+> The HomeBrew PATH was already present, but incorrect, while
+> the FreeBSD PATH was missing.
+> 
+> About 1 GB is enough to get a 99% hit rate on a pristine rebuild
+> with no code changes. Setting it much higher than this will
+> trigger ENOSPC problems on the FreeBSD builders due to limited
+> disk size.
+> 
+> Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+> ---
+>   .gitlab-ci.d/cirrus.yml       | 3 ++-
+>   .gitlab-ci.d/cirrus/build.yml | 9 +++++++++
+>   2 files changed, 11 insertions(+), 1 deletion(-)
 
-However, some vendors do not expose this config item to users. In
-such cases, x-igd-gms option can be used to manually set the data
-stolen memory size for guest. So this commit brings this option back,
-keeping its old behavior. When it is not specified, QEMU uses host's
-value.
-
-When DVMT Pre-Allocated option is available in host BIOS, user should
-set DSM region size there instead of using x-igd-gms option.
-
-Signed-off-by: Tomita Moeko <tomitamoeko@gmail.com>
----
- hw/vfio/igd.c | 26 ++++++++++++++++++++++++++
- 1 file changed, 26 insertions(+)
-
-diff --git a/hw/vfio/igd.c b/hw/vfio/igd.c
-index 73c06bbf64..b0fef90240 100644
---- a/hw/vfio/igd.c
-+++ b/hw/vfio/igd.c
-@@ -14,6 +14,7 @@
- #include "qemu/units.h"
- #include "qemu/error-report.h"
- #include "qapi/error.h"
-+#include "qapi/qmp/qerror.h"
- #include "hw/hw.h"
- #include "hw/nvram/fw_cfg.h"
- #include "pci.h"
-@@ -722,6 +723,31 @@ void vfio_probe_igd_bar4_quirk(VFIOPCIDevice *vdev, int nr)
- 
-     QLIST_INSERT_HEAD(&vdev->bars[nr].quirks, quirk, next);
- 
-+    /*
-+     * Allow user to override dsm size using x-igd-gms option, in multiples of
-+     * 32MiB. This option should only be used when the desired size cannot be
-+     * set from DVMT Pre-Allocated option in host BIOS.
-+     */
-+    if (vdev->igd_gms) {
-+        if (gen < 8) {
-+            if (vdev->igd_gms <= 0x10) {
-+                gmch &= ~(IGD_GMCH_GEN6_GMS_MASK << IGD_GMCH_GEN6_GMS_SHIFT);
-+                gmch |= vdev->igd_gms << IGD_GMCH_GEN6_GMS_SHIFT;
-+            } else {
-+                error_report(QERR_INVALID_PARAMETER_VALUE,
-+                             "x-igd-gms", "0~0x10");
-+            }
-+        } else {
-+            if (vdev->igd_gms <= 0x40) {
-+                gmch &= ~(IGD_GMCH_GEN8_GMS_MASK << IGD_GMCH_GEN8_GMS_SHIFT);
-+                gmch |= vdev->igd_gms << IGD_GMCH_GEN8_GMS_SHIFT;
-+            } else {
-+                error_report(QERR_INVALID_PARAMETER_VALUE,
-+                             "x-igd-gms", "0~0x40");
-+            }
-+        }
-+    }
-+
-     ggms_size = igd_gtt_memory_size(gen, gmch);
-     gms_size = igd_stolen_memory_size(gen, gmch);
- 
--- 
-2.45.2
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 
 
