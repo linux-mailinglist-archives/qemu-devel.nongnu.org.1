@@ -2,79 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D1409E6129
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Dec 2024 00:14:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E070D9E6136
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Dec 2024 00:20:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tJL2S-0004Bg-Vh; Thu, 05 Dec 2024 18:13:40 -0500
+	id 1tJL8P-000566-0d; Thu, 05 Dec 2024 18:19:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tJL2O-0004BP-Hp
- for qemu-devel@nongnu.org; Thu, 05 Dec 2024 18:13:36 -0500
-Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tJL2M-0007wa-RQ
- for qemu-devel@nongnu.org; Thu, 05 Dec 2024 18:13:36 -0500
-Received: by mail-wr1-x435.google.com with SMTP id
- ffacd0b85a97d-385e1f3f2a6so817197f8f.3
- for <qemu-devel@nongnu.org>; Thu, 05 Dec 2024 15:13:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1733440412; x=1734045212; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=SpWmrA6pYUisS3cjoJ5FeJTUyFujydgI2lRzcjX7Exk=;
- b=EvFwcOKedHfhmSj69bWutxk91Qv832P5DWW1ggRoKOfi67oT4cpw78DsfOHVs6UE4U
- OviLUfxx0L+oniLUU+RW4p4OrbieFBK4s5H3UbxXaHyJePtR2N2O3MuVj4wYRZO2R3+4
- sr9q5qEcNyanMUp5BmwxZJP3oeD2O5oIGbckYHu/MzaahdBwSEyASf4qdJ7SGlkiOXi1
- PTq7fQOn81J82ij/S2KknnH2IOMFmN32fCmj1jP2oNGQy8iIGVyRI6Jb+UAH/Xxg0nbU
- gKnblxbG6L0PiTSh4ENuLtPrvd23tDpFMLVQWyXu6craeoWa9sGGT9MleAd1l7bjBQQH
- xt4w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733440412; x=1734045212;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=SpWmrA6pYUisS3cjoJ5FeJTUyFujydgI2lRzcjX7Exk=;
- b=I4qmkqZF1SPubCKvyLh7OaviQ1JHnrOrMSruW5MPqdaM3EFvhwV7bcEN7KhkEQc6z3
- SPlpU0d+5wmhRhF2jhHLU4u0EbDGo2Wm37Kvs5EoU7obxXN8PLXw8TQMjByahxwCrSW7
- zVFTU026mdJdwRRQv9xFsnjyfimelYELhUtVQLR9zugf8wkWrk6/yyWkDYNGwJZt8Db0
- luni3w+TLOCB6gbbLVqY9W8/CexxhpDqgh/cLzrXZbvZZTFAs+BfraZqYF0dmk6i7iTt
- WGX/AwZYNiRtDAW4L2nlZeR6rA+f7jU6WQpyMCgTJ2ds8mL2+2UrhFyy6DuoQG0qTQ/g
- DDhQ==
-X-Gm-Message-State: AOJu0YzHJ8NG2k/D/v70m+heW8qpfDhXhxijC8opg73YS3uiGmXmF1n+
- REI0KMGO+H7CwhBS3ME+DDmOT2FoLYPu2bOv0MPv80bM3I4O2YA9FMvZaiXrbUM6YfpdrQs5t5/
- D
-X-Gm-Gg: ASbGncuJOP/Pm5sWjoSLS5bDnmI0qGoaYoerHQIWl/Gj/3iAvLLVMnIS12j+FNHkEP0
- qFSCfXGwjsXa9tFyuTP0r0e4qif/PZeEBlHHi7vS8rQz3Fp94Rs+bj6zhdHajweLrWX7cVVDiV6
- XWZK+XLUFRfntL7/5QF9OgWUq2WPgKt8beoY5fqKxrodpF1EoFg0XW4TnSzvNaXtUaiIpABqjfZ
- WT26PfK0bvPRYUveueQCUsR3VCMAvCLdkNLZopoguRP14/kSxLxMZ8bXVmdS2+yPfw6stwBuRip
- 9rYxA49T6ebRJHmOzxJt3+8S
-X-Google-Smtp-Source: AGHT+IGTebN8K4J09B4cKVcmgE2TPGweOW9yXSubGu0bsd2P2YSZ7jAJjU3KhSDKmoFAFumWXLiNEg==
-X-Received: by 2002:a05:6000:2a02:b0:385:f6b9:e750 with SMTP id
- ffacd0b85a97d-3862b33bfacmr573292f8f.9.1733440412333; 
- Thu, 05 Dec 2024 15:13:32 -0800 (PST)
-Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-386221a5eadsm3096629f8f.104.2024.12.05.15.13.31
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 05 Dec 2024 15:13:31 -0800 (PST)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Aurelien Jarno <aurelien@aurel32.net>,
- Aleksandar Rikalo <arikalo@gmail.com>
-Subject: [PATCH] target/mips: Remove tswap() calls in semihosting
- uhi_fstat_cb()
-Date: Fri,  6 Dec 2024 00:13:30 +0100
-Message-ID: <20241205231330.82355-1-philmd@linaro.org>
-X-Mailer: git-send-email 2.45.2
+ (Exim 4.90_1) (envelope-from <d-tatianin@yandex-team.ru>)
+ id 1tJL8M-00055f-CU
+ for qemu-devel@nongnu.org; Thu, 05 Dec 2024 18:19:46 -0500
+Received: from forwardcorp1a.mail.yandex.net
+ ([2a02:6b8:c0e:500:1:45:d181:df01])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <d-tatianin@yandex-team.ru>)
+ id 1tJL8I-0000Wb-RM
+ for qemu-devel@nongnu.org; Thu, 05 Dec 2024 18:19:46 -0500
+Received: from mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net
+ [IPv6:2a02:6b8:c12:44a0:0:640:8777:0])
+ by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id D607B60A98;
+ Fri,  6 Dec 2024 02:19:34 +0300 (MSK)
+Received: from d-tatianin-lin.yandex-team.ru (unknown [2a02:6b8:b081:19::1:8])
+ by mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net
+ (smtpcorp/Yandex) with ESMTPSA id UJrB130IfiE0-NncImZyA; 
+ Fri, 06 Dec 2024 02:19:34 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+ s=default; t=1733440774;
+ bh=JUoFTttEF3Deo7ER7IKccgih/eqluYY8jvvlagW8rA4=;
+ h=Message-Id:Date:Cc:Subject:To:From;
+ b=RUYZq7MkkSpDKc0uq83E21jYGHO9q0OOi+lySrnMSydcpJUvvc0zKwkpGETW2F6zW
+ amlwePFuA0JD7xTiXhOLaryM2bEKjEqU6gvhxA3+jj49qkyYol6iFTsJhfnTq7nyjU
+ bt1uW08J0oQx3mTU75GQXx8jMB+40vNwirxDS7l8=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net;
+ dkim=pass header.i=@yandex-team.ru
+From: Daniil Tatianin <d-tatianin@yandex-team.ru>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Daniil Tatianin <d-tatianin@yandex-team.ru>, Stefan Weil <sw@weilnetz.de>,
+ Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+ qemu-devel@nongnu.org
+Subject: [PATCH 0/2] overcommit: introduce mem-lock-onfault
+Date: Fri,  6 Dec 2024 02:19:06 +0300
+Message-Id: <20241205231909.1161950-1-d-tatianin@yandex-team.ru>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::435;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x435.google.com
+Received-SPF: pass client-ip=2a02:6b8:c0e:500:1:45:d181:df01;
+ envelope-from=d-tatianin@yandex-team.ru; helo=forwardcorp1a.mail.yandex.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,81 +73,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In preparation of heterogeneous emulation where cores with
-different endianness can run concurrently, we need to remove
-the tswap() calls -- which use a fixed per-binary endianness.
+Currently, passing mem-lock=on to QEMU causes memory usage to grow by
+huge amounts:
 
-Get the endianness of the UHI CPU accessed using
-mips_env_is_bigendian() and replace the tswap() calls
-by bswap() ones when necessary.
+no memlock:
+    $ qemu-system-x86_64 -overcommit mem-lock=off
+    $ ps -p $(pidof ./qemu-system-x86_64) -o rss=
+    45652
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- target/mips/tcg/sysemu/mips-semi.c | 43 +++++++++++++++++++++---------
- 1 file changed, 30 insertions(+), 13 deletions(-)
+    $ ./qemu-system-x86_64 -overcommit mem-lock=off -enable-kvm
+    $ ps -p $(pidof ./qemu-system-x86_64) -o rss=
+    39756
 
-diff --git a/target/mips/tcg/sysemu/mips-semi.c b/target/mips/tcg/sysemu/mips-semi.c
-index 5ba06e95734..66a0de6b700 100644
---- a/target/mips/tcg/sysemu/mips-semi.c
-+++ b/target/mips/tcg/sysemu/mips-semi.c
-@@ -168,6 +168,7 @@ static void uhi_fstat_cb(CPUState *cs, uint64_t ret, int err)
- 
-     if (!err) {
-         CPUMIPSState *env = cpu_env(cs);
-+        bool swap_needed = HOST_BIG_ENDIAN != mips_env_is_bigendian(env);
-         target_ulong addr = env->active_tc.gpr[5];
-         UHIStat *dst = lock_user(VERIFY_WRITE, addr, sizeof(UHIStat), 1);
-         struct gdb_stat s;
-@@ -179,19 +180,35 @@ static void uhi_fstat_cb(CPUState *cs, uint64_t ret, int err)
-         memcpy(&s, dst, sizeof(struct gdb_stat));
-         memset(dst, 0, sizeof(UHIStat));
- 
--        dst->uhi_st_dev = tswap16(be32_to_cpu(s.gdb_st_dev));
--        dst->uhi_st_ino = tswap16(be32_to_cpu(s.gdb_st_ino));
--        dst->uhi_st_mode = tswap32(be32_to_cpu(s.gdb_st_mode));
--        dst->uhi_st_nlink = tswap16(be32_to_cpu(s.gdb_st_nlink));
--        dst->uhi_st_uid = tswap16(be32_to_cpu(s.gdb_st_uid));
--        dst->uhi_st_gid = tswap16(be32_to_cpu(s.gdb_st_gid));
--        dst->uhi_st_rdev = tswap16(be32_to_cpu(s.gdb_st_rdev));
--        dst->uhi_st_size = tswap64(be64_to_cpu(s.gdb_st_size));
--        dst->uhi_st_atime = tswap64(be32_to_cpu(s.gdb_st_atime));
--        dst->uhi_st_mtime = tswap64(be32_to_cpu(s.gdb_st_mtime));
--        dst->uhi_st_ctime = tswap64(be32_to_cpu(s.gdb_st_ctime));
--        dst->uhi_st_blksize = tswap64(be64_to_cpu(s.gdb_st_blksize));
--        dst->uhi_st_blocks = tswap64(be64_to_cpu(s.gdb_st_blocks));
-+        dst->uhi_st_dev = be32_to_cpu(s.gdb_st_dev);
-+        dst->uhi_st_ino = be32_to_cpu(s.gdb_st_ino);
-+        dst->uhi_st_mode = be32_to_cpu(s.gdb_st_mode);
-+        dst->uhi_st_nlink = be32_to_cpu(s.gdb_st_nlink);
-+        dst->uhi_st_uid = be32_to_cpu(s.gdb_st_uid);
-+        dst->uhi_st_gid = be32_to_cpu(s.gdb_st_gid);
-+        dst->uhi_st_rdev = be32_to_cpu(s.gdb_st_rdev);
-+        dst->uhi_st_size = be64_to_cpu(s.gdb_st_size);
-+        dst->uhi_st_atime = be32_to_cpu(s.gdb_st_atime);
-+        dst->uhi_st_mtime = be32_to_cpu(s.gdb_st_mtime);
-+        dst->uhi_st_ctime = be32_to_cpu(s.gdb_st_ctime);
-+        dst->uhi_st_blksize = be64_to_cpu(s.gdb_st_blksize);
-+        dst->uhi_st_blocks = be64_to_cpu(s.gdb_st_blocks);
-+
-+        if (swap_needed) {
-+            bswap16s((uint16_t *)&dst->uhi_st_dev);
-+            bswap16s(&dst->uhi_st_ino);
-+            bswap32s(&dst->uhi_st_mode);
-+            bswap16s(&dst->uhi_st_nlink);
-+            bswap16s(&dst->uhi_st_uid);
-+            bswap16s(&dst->uhi_st_gid);
-+            bswap16s((uint16_t *)&dst->uhi_st_rdev);
-+            bswap64s(&dst->uhi_st_size);
-+            bswap64s(&dst->uhi_st_atime);
-+            bswap64s(&dst->uhi_st_mtime);
-+            bswap64s(&dst->uhi_st_ctime);
-+            bswap64s(&dst->uhi_st_blksize);
-+            bswap64s(&dst->uhi_st_blocks);
-+        }
- 
-         unlock_user(dst, addr, sizeof(UHIStat));
-     }
+memlock:
+    $ qemu-system-x86_64 -overcommit mem-lock=on
+    $ ps -p $(pidof ./qemu-system-x86_64) -o rss=
+    1309876
+
+    $ ./qemu-system-x86_64 -overcommit mem-lock=on -enable-kvm
+    $ ps -p $(pidof ./qemu-system-x86_64) -o rss=
+    259956
+
+This is caused by the fact that mlockall(2) automatically
+write-faults every existing and future anonymous mappings in the
+process right away.
+
+One of the reasons to enable mem-lock is to protect a QEMU process'
+pages from being compacted and migrated by kcompactd (which does so
+by messing with a live process page tables causing thousands of TLB
+flush IPIs per second) basically stealing all guest time while it's
+active.
+
+mem-lock=on helps against this (given compact_unevictable_allowed is 0),
+but the memory overhead it introduces is an undesirable side effect,
+which we can completely avoid by passing MCL_ONFAULT to mlockall, which
+is what this series allows to do with a new command line option called
+mem-lock-onfault.
+
+memlock-onfault:
+    $ qemu-system-x86_64 -overcommit mem-lock-onfault=on
+    $ ps -p $(pidof ./qemu-system-x86_64) -o rss=
+    54004
+
+    $ ./qemu-system-x86_64 -overcommit mem-lock-onfault=on -enable-kvm
+    $ ps -p $(pidof ./qemu-system-x86_64) -o rss=
+    47772
+
+You may notice the memory usage is still slightly higher, in this case
+by a few megabytes over the mem-lock=off case. I was able to trace this
+down to a bug in the linux kernel with MCL_ONFAULT not being honored for
+the early process heap (with brk(2) etc.) so it is still write-faulted in
+this case, but it's still way less than it was with just the mem-lock=on.
+
+Daniil Tatianin (2):
+  os: add an ability to lock memory on_fault
+  overcommit: introduce mem-lock-onfault
+
+ include/sysemu/os-posix.h |  2 +-
+ include/sysemu/os-win32.h |  3 ++-
+ include/sysemu/sysemu.h   |  1 +
+ migration/postcopy-ram.c  |  4 ++--
+ os-posix.c                | 10 ++++++++--
+ qemu-options.hx           | 13 ++++++++++---
+ system/globals.c          |  1 +
+ system/vl.c               | 18 ++++++++++++++++--
+ 8 files changed, 41 insertions(+), 11 deletions(-)
+
 -- 
-2.45.2
+2.34.1
 
 
