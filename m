@@ -2,70 +2,112 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E61A9E563F
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Dec 2024 14:12:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1448C9E5677
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Dec 2024 14:20:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tJBci-0003Lp-Na; Thu, 05 Dec 2024 08:10:28 -0500
+	id 1tJBl0-0005Gf-Vi; Thu, 05 Dec 2024 08:19:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1tJBcg-0003LZ-NV
- for qemu-devel@nongnu.org; Thu, 05 Dec 2024 08:10:26 -0500
-Received: from mailgate02.uberspace.is ([185.26.156.114])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tJBkz-0005GX-AC
+ for qemu-devel@nongnu.org; Thu, 05 Dec 2024 08:19:01 -0500
+Received: from smtp-out2.suse.de ([195.135.223.131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1tJBcc-0006Ml-W9
- for qemu-devel@nongnu.org; Thu, 05 Dec 2024 08:10:24 -0500
-Received: from skiff.uberspace.de (skiff.uberspace.de [185.26.156.131])
- by mailgate02.uberspace.is (Postfix) with ESMTPS id 17B3D180C3F
- for <qemu-devel@nongnu.org>; Thu,  5 Dec 2024 14:10:19 +0100 (CET)
-Received: (qmail 20596 invoked by uid 990); 5 Dec 2024 13:10:18 -0000
-Authentication-Results: skiff.uberspace.de;
-	auth=pass (plain)
-Received: from unknown (HELO unkown) (::1)
- by skiff.uberspace.de (Haraka/3.0.1) with ESMTPSA;
- Thu, 05 Dec 2024 14:10:18 +0100
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tJBkx-0000bI-OJ
+ for qemu-devel@nongnu.org; Thu, 05 Dec 2024 08:19:01 -0500
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 28DD71F396;
+ Thu,  5 Dec 2024 13:18:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1733404737; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=gnRMnqey/FjFBwms8cvqMCE6d57Vif9yJwwvQ/4sc4o=;
+ b=P7tWTdCYPwwpYPHg/O8bZYNwv0qK8+cB94RWea7cym/tiIK4K5/WEb+rUV5FGt/eG8U96p
+ F/NXh3Xgczf7Egn8WmGg+iQyAai+ZzJJ/w/39bH96vjsOcyiWrgiwH3ePkGNiUmYTzb731
+ hp8hS67a0nshojHWsq/6cak3q6cyr94=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1733404737;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=gnRMnqey/FjFBwms8cvqMCE6d57Vif9yJwwvQ/4sc4o=;
+ b=x7h+/p+kzBaRL5T1WLQLKA0N/x37eh5Slq2rEP4/AyIpvFgGefQVbV4gl3KKKYZ1qEuUQk
+ QHZumhn4/B+dnqAQ==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1733404737; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=gnRMnqey/FjFBwms8cvqMCE6d57Vif9yJwwvQ/4sc4o=;
+ b=P7tWTdCYPwwpYPHg/O8bZYNwv0qK8+cB94RWea7cym/tiIK4K5/WEb+rUV5FGt/eG8U96p
+ F/NXh3Xgczf7Egn8WmGg+iQyAai+ZzJJ/w/39bH96vjsOcyiWrgiwH3ePkGNiUmYTzb731
+ hp8hS67a0nshojHWsq/6cak3q6cyr94=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1733404737;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=gnRMnqey/FjFBwms8cvqMCE6d57Vif9yJwwvQ/4sc4o=;
+ b=x7h+/p+kzBaRL5T1WLQLKA0N/x37eh5Slq2rEP4/AyIpvFgGefQVbV4gl3KKKYZ1qEuUQk
+ QHZumhn4/B+dnqAQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A679A132EB;
+ Thu,  5 Dec 2024 13:18:56 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id 0GpcGkCoUWeqRgAAD6G6ig
+ (envelope-from <farosas@suse.de>); Thu, 05 Dec 2024 13:18:56 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: =?utf-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, Peter Xu
+ <peterx@redhat.com>
+Cc: qemu-devel@nongnu.org
+Subject: Re: [PATCH 2/6] migration: Kick postcopy threads on cancel
+In-Reply-To: <Z1GF7KheH_z5E1lc@redhat.com>
+References: <20241202220137.32584-1-farosas@suse.de>
+ <20241202220137.32584-3-farosas@suse.de> <Z1Ch8HpiKMoqILDM@x1n>
+ <87r06ni84z.fsf@suse.de> <Z1Cv4JM8IbYeiDpR@x1n>
+ <Z1C1V25wydbBlsMb@redhat.com> <Z1DAzzB1SfY_bL17@x1n>
+ <Z1GF7KheH_z5E1lc@redhat.com>
+Date: Thu, 05 Dec 2024 10:18:53 -0300
+Message-ID: <87bjxqi7ya.fsf@suse.de>
 MIME-Version: 1.0
-Date: Thu, 05 Dec 2024 13:10:18 +0000
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-From: "Julian Ganz" <neither@nut.email>
-Message-ID: <0e4171ca0baa8727c0bbec7a25fd72d8b8e1e4b8@nut.email>
-TLS-Required: No
-Subject: Re: [RFC PATCH v3 11/11] tests: add plugin asserting correctness of
- discon event's to_pc
-To: "Pierrick Bouvier" <pierrick.bouvier@linaro.org>, qemu-devel@nongnu.org
-Cc: "=?utf-8?B?QWxleCBCZW5uw6ll?=" <alex.bennee@linaro.org>, "Alexandre
- Iooss" <erdnaxe@crans.org>, "Mahmoud Mandour" <ma.mandourr@gmail.com>
-In-Reply-To: <d4b17c7d-c1d2-4e43-8eee-d1667e3ee5a2@linaro.org>
-References: <cover.1733063076.git.neither@nut.email>
- <36d316bf3e8b0aca778c5e8d1acde39a7f361946.1733063076.git.neither@nut.email>
- <d4b17c7d-c1d2-4e43-8eee-d1667e3ee5a2@linaro.org>
-X-Rspamd-Bar: +
-X-Rspamd-Report: SUSPICIOUS_RECIPS(1.5) BAYES_HAM(-0.190743) MIME_GOOD(-0.1)
-X-Rspamd-Score: 1.209256
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=nut.email; s=uberspace;
- h=from:to:cc:subject:date;
- bh=nJSZYu5K/+AFYGovpTO1YIK9Zc1H3Mwuom4DDx6UM58=;
- b=rJTKL1m9cT0dJ27DCmX1awUmRBR0bNpLEKBVueVuRsRA7V7G2KQSKiogqKC29jPuFMlJSmOJAJ
- ZfAP0b2jwdnmLus5UTeeOTWnf3a6MytfLcnAOcTJY89u92gcnJ3orV2xeZwTfwFkyU3mSR5ixdz7
- UTplRT8fpF+VlUQxSZpj5L8PYMp1YC3nVPjzOlBheSAx3h6wDkrGzJ8gJM0MpPsHAYlff6emf9rj
- 7NRshr/sZgijQllk8VmqdWihZ4026ji4eF753Dwy926KFJNHfmoB4n8nCAirnQst3FS8z0y0NvLG
- /J6MobbTvBQgSwvHT27wIqc+taKERyaoKvrDsv8eFp1X8sLItgiJvjTqTY/cQ8yKjhTffVQou01u
- PIjolVeDnTfPSyP1DtNWXHuwkAQ2SydeWim/jH8yxhgHzkh9ejiUjFqTwOhSw3tkxrDCaFB17I9o
- fixuOQJByl/7V24lNdZBGtgepPdyU3IJpRRzC5mg0Ph5BoH92yKOoszHIv/fJh4/mnhEbn5bWRpv
- nuBU0YveZPSFqKZDOPzQRbkb0qlIPBAGpkKItDj12Tg4NwPdjSI8h+8rkgrWDj8QUIPyATlKDreu
- 1lMWIS6727Kn8CmcllSB/Awuakza+JOYMY9GW+LefK6sfXHu0j3V6oJNPGxhevFUQzrwqdo3vplX
- M=
-Received-SPF: pass client-ip=185.26.156.114; envelope-from=neither@nut.email;
- helo=mailgate02.uberspace.is
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam-Score: -4.30
+X-Spamd-Result: default: False [-4.30 / 50.00]; BAYES_HAM(-3.00)[100.00%];
+ NEURAL_HAM_LONG(-1.00)[-1.000];
+ NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
+ RCVD_VIA_SMTP_AUTH(0.00)[]; ARC_NA(0.00)[];
+ MIME_TRACE(0.00)[0:+]; MISSING_XM_UA(0.00)[];
+ TO_DN_SOME(0.00)[]; MID_RHS_MATCH_FROM(0.00)[];
+ RCVD_TLS_ALL(0.00)[];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ FROM_EQ_ENVFROM(0.00)[]; FROM_HAS_DN(0.00)[];
+ RCPT_COUNT_THREE(0.00)[3]; RCVD_COUNT_TWO(0.00)[2];
+ FUZZY_BLOCKED(0.00)[rspamd.com]; TO_MATCH_ENVRCPT_ALL(0.00)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.de:mid]
+Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
+ helo=smtp-out2.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,41 +123,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Pierrick,
+Daniel P. Berrang=C3=A9 <berrange@redhat.com> writes:
 
-December 5, 2024 at 12:33 AM, "Pierrick Bouvier" wrote:
-> On 12/2/24 11:41, Julian Ganz wrote:
->=20
->=20>  +/*
-> >  + * Copyright (C) 2024, Julian Ganz <neither@nut.email>
-> >  + *
-> >  + * License: GNU GPL, version 2 or later.
-> >  + * See the COPYING file in the top-level directory.
-> >  + */
-> >=20
->=20Would be nice to include a description of the plugin here.
+> On Wed, Dec 04, 2024 at 03:51:27PM -0500, Peter Xu wrote:
+>> On Wed, Dec 04, 2024 at 08:02:31PM +0000, Daniel P. Berrang=C3=A9 wrote:
+>> > I would say the difference is like a graceful shutdown vs pulling the
+>> > power plug in a bare metal machine
+>> >=20
+>> > 'cancel' is intended to be graceful. It should leave you with a functi=
+onal
+>> > QEMU (or refuse to run if unsafe).
+>> >=20
+>> > 'yank' is intended to be forceful, letting you get out of bad situatio=
+ns
+>> > that would otherwise require you to kill the entire QEMU process, but
+>> > still with possible associated risk data loss to the QEMU backends.
+>> >=20
+>> > They have overlap, but are none the less different.
+>>=20
+>> The question is more about whether yank should be used at all for
+>> migration only, not about the rest instances.
+>>=20
+>> My answer is yank should never be used for migration, because
+>> "migrate_cancel" also unplugs the power plug.. It's not anything more
+>> enforced.  It's only doing less always.
+>>=20
+>> E.g. migration_yank_iochannel() is exactly what we do with
+>> qmp_migrate_cancel() in the first place, only that migrate_cancel only d=
+oes
+>> it on the main channel (on both qemufiles even if ioc is one), however it
+>> should be suffice, and behave the same way, as strong as "yank".
+>
+> I recall at the time the yank stuff was introduced, one of the scenarios
+> they were concerned about was related to locks held by QEMU code. eg that
+> there are scenarios where migrate_cancel may not be processed promptly
+> enough due to being stalled on mutexes held by other concurrently running
+> threads. Now I would expect any such long duration stalls on migration
+> mutexes to be bugs, but the intent of yank is to give a recovery mechanism
+> that can workaround such bugs.  The yank QMP command only interacts with
+> its own local mutexes.
 
-Agreed. I'll include one next time.
+Ok, so that could only mean a thread stuck in recv() while holding the
+BQL. I don't think we have any other locks which would stop
+migrate_cancel from making progress or other stall situations that could
+be helped by a shutdown(). Note that most of locks around qemu_file were
+a late addition. I don't think that scenario is possible today. I'll
+have to do some tests.
 
-> When booting an arm64 vm, I get this message:
-> Trap target PC mismatch
-> Expected: 23faf3a80
-> Encountered: 23faf3a84
->=20
->=20 From what I understand, it means that the next_pc we have is incorre=
-ct.
-
-Yes, this is indeed incorrect, and also a perfect example why this test
-plugin exists. There are likely other errors lurking in target specific
-code. Did you happen to also log interrupts? Do you remember what image
-you used?
-
-Btw: this also illustrates another issue I have with from_pc: we can
-test the behavior for to_pc, but doing this meaningfully for from_pc
-via a plugin is next to impossible because the instruction it points to
-is not observable via an exec callback. At least not in the general
-case, even not if we only consider a single type of event.
-
-Regards,
-Julian Ganz
+On that note, how is yank supposed to be accessed? I don't see support
+in libvirt. Is there a way to hook into QMP after the fact somehow?
 
