@@ -2,88 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42FEF9E605C
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Dec 2024 23:14:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 13D9C9E605E
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Dec 2024 23:14:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tJK5v-00019H-LF; Thu, 05 Dec 2024 17:13:11 -0500
+	id 1tJK72-0001si-H6; Thu, 05 Dec 2024 17:14:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tJK5s-00017c-GQ
- for qemu-devel@nongnu.org; Thu, 05 Dec 2024 17:13:08 -0500
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
+ (Exim 4.90_1) (envelope-from <nenut@skiff.uberspace.de>)
+ id 1tJK6z-0001jy-Mt
+ for qemu-devel@nongnu.org; Thu, 05 Dec 2024 17:14:17 -0500
+Received: from mailgate02.uberspace.is ([2a00:d0c0:200:0:1c7b:a6ff:fee0:8ea4])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tJK5q-0002Lg-FH
- for qemu-devel@nongnu.org; Thu, 05 Dec 2024 17:13:08 -0500
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-385d7b4da2bso1329587f8f.1
- for <qemu-devel@nongnu.org>; Thu, 05 Dec 2024 14:13:05 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1733436784; x=1734041584; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=vHmmfy7MY/nxP0JFjq1JP8jgOvU9Pbqs9DUdVUT7J2k=;
- b=vfge5ewSAdSu+4qSQj59ULNHdTnPhnbAI+4FZlmcXUmtPliRGyy7ng7ISI3V83LvVJ
- JBaVy7OqRaOcZqnG9Z9h8O6u9quzToN2PNROsItgZ6ZFU1Rn/WmIGhESAIGlCEg6cgqr
- yxkRWbsz6e0mTf5gQQH/4zjL9nZ4GPRPMxDUQXiYIdELTnzggtKo1YYkuBnxcyaCmasJ
- AWKsIzHYLtm4WGMhPuwWK6gCnKdHm6jgEPaHjjGxxJwBrcyOIiP75HynfDTjlkO2G/Mu
- 7wYSAj3HkgSeVy+5U2LXcGWPAV08D3wHCmvqAUlYke6gcf3Wav9n9fVs4fKoEjC/EvrY
- WGfw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733436784; x=1734041584;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=vHmmfy7MY/nxP0JFjq1JP8jgOvU9Pbqs9DUdVUT7J2k=;
- b=NsP0JWWFEx8BHLTP1qep9J4LXqLGLVtO+NBbVedGeShgv7KkJEpK52TEFJA6CeH8gu
- N+dkU3+LcLN35FXmWxQWJcehjLx1NuBXF45MPfT3UFBZ2zRvTQLM1U0wuwrOQAhcoU0S
- FgCInaiDOejgakBuroTu8LAmD5gTwgE7SYrG7+HxoFmWs5FfTiMMw0Sa1T1X3WDvYKuX
- sDuKXfjia3V75mdxXRC3xG/3TudSder8tutZXhvAcx4FBtyX2a44jIay7PXZjQG55mw6
- bK0nPfIgcMbZroeBKJCXdaIp3sddw5HeZtMbWuQwQX0qD0Cr81rZLVXyY342WC/dRkJq
- t0ng==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUmTSdaFP6Yew1t3sUtuXM6GHOfKhIZqidphPoQTl4FRMcOVlxooqvIIHH3qJQY8fcSvHE2+H52+HLh@nongnu.org
-X-Gm-Message-State: AOJu0YzNEKhwe9Z+djr5VzeoDELZU48CQzpUn2mjPFOO1NTqb8OCmZPw
- rBirUgBQQum9Fwo/ZIbkJJIKfKcv6PBLRtXvJ5A80jB4CZ07d/U1noyfbTPOQR4=
-X-Gm-Gg: ASbGncusMIZb/+Ix6HJxK156xIbr3MnkTBlgckFASibBa+18FrGnSDQ0RpgRulzjsrA
- UGLjLMwVoE3julipiQXHkP/8tQNEovBiOdrfgNcG4K8MuMytEGy+VE5vhfF7lbBAnzsjd15zquP
- WbVWu18LxhKAi02qPwlSjXZLrSw4mwujFo2Tu0mJS03bM5kscyQl8Q1+3RV2Lf6V7wHlLDYotRM
- 3InMMjYsGb6JM9ziafWnNqVEBZIw6m+J9/cFV/HiSLntn/Ihd6yj4IUQFfoTx/DE9gGKL6vw+9E
- a/2GroMeGaBwOr9V5Q==
-X-Google-Smtp-Source: AGHT+IFeIKnQ8ZbnWENTbu03WGnI/TH668TtvXlQuDf/jS8X++X0fypC63/il0OHLvviE1J7v3bDIQ==
-X-Received: by 2002:a5d:5f8c:0:b0:385:fd24:3317 with SMTP id
- ffacd0b85a97d-3862b33cfbemr538072f8f.1.1733436784368; 
- Thu, 05 Dec 2024 14:13:04 -0800 (PST)
-Received: from [192.168.69.223] (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3862c611242sm191319f8f.36.2024.12.05.14.13.03
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 05 Dec 2024 14:13:03 -0800 (PST)
-Message-ID: <9823e0e8-3d91-46db-969d-42344cefa301@linaro.org>
-Date: Thu, 5 Dec 2024 23:13:03 +0100
+ (Exim 4.90_1) (envelope-from <nenut@skiff.uberspace.de>)
+ id 1tJK6x-0002Ss-LH
+ for qemu-devel@nongnu.org; Thu, 05 Dec 2024 17:14:17 -0500
+Received: from skiff.uberspace.de (skiff.uberspace.de [185.26.156.131])
+ by mailgate02.uberspace.is (Postfix) with ESMTPS id 0E1B618043B
+ for <qemu-devel@nongnu.org>; Thu,  5 Dec 2024 23:14:06 +0100 (CET)
+Received: (qmail 29346 invoked by uid 990); 5 Dec 2024 22:14:05 -0000
+Authentication-Results: skiff.uberspace.de;
+	auth=pass (plain)
+Received: from unknown (HELO unkown) (::1)
+ by skiff.uberspace.de (Haraka/3.0.1) with ESMTPSA;
+ Thu, 05 Dec 2024 23:14:05 +0100
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v3 23/26] hw/tpm: Add TPM event log
-To: Jean-Philippe Brucker <jean-philippe@linaro.org>, peter.maydell@linaro.org
-Cc: richard.henderson@linaro.org, qemu-arm@nongnu.org, qemu-devel@nongnu.org, 
- alex.bennee@linaro.org, Stefan Berger <stefanb@linux.vnet.ibm.com>
-References: <20241125195626.856992-2-jean-philippe@linaro.org>
- <20241125195626.856992-25-jean-philippe@linaro.org>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20241125195626.856992-25-jean-philippe@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::431;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x431.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Date: Thu, 05 Dec 2024 22:14:05 +0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+From: "Julian Ganz" <nenut@skiff.uberspace.de>
+Message-ID: <176392855b0b6aac93ec1f821173ce437f1af8a6@skiff.uberspace.de>
+TLS-Required: No
+Subject: Re: [RFC PATCH v3 01/11] plugins: add types for callbacks related to
+ certain discontinuities
+To: "Julian Ganz" <neither@nut.email>, "Pierrick Bouvier"
+ <pierrick.bouvier@linaro.org>, qemu-devel@nongnu.org
+In-Reply-To: <51ac04eea17a6c5b59a240d3c57ce54a851e4989@nut.email>
+References: <cover.1733063076.git.neither@nut.email>
+ <5e624b7244f1b0b294b28cd513aab04b6b294b1d.1733063076.git.neither@nut.email>
+ <181b9b53a258257df1b24e7bfb8b0e6fc590c25f@nut.email>
+ <35529516-cc96-41de-8e0d-a7807ccc09cb@linaro.org>
+ <ca20c295f464ae7e3365e012ad9a550f70b34b51@nut.email>
+ <64e40e6f-bc90-4760-bb70-fb67d80ff4d7@linaro.org>
+ <51ac04eea17a6c5b59a240d3c57ce54a851e4989@nut.email>
+X-Rspamd-Bar: -------
+X-Rspamd-Report: REPLY(-4) BAYES_HAM(-2.995818) MIME_GOOD(-0.1)
+X-Rspamd-Score: -7.095818
+Received-SPF: pass client-ip=2a00:d0c0:200:0:1c7b:a6ff:fee0:8ea4;
+ envelope-from=nenut@skiff.uberspace.de; helo=mailgate02.uberspace.is
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -100,49 +71,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 25/11/24 20:56, Jean-Philippe Brucker wrote:
-> Provide a library allowing the VMM to create an event log that describes
-> what is loaded into memory. During remote attestation in confidential
-> computing this helps an independent verifier reconstruct the initial
-> measurements of a VM, which contain the initial state of memory and
-> CPUs.
-> 
-> We provide some definitions and structures described by the Trusted
-> Computing Group (TCG) in "TCG PC Client Platform Firmware Profile
-> Specification" Level 00 Version 1.06 Revision 52 [1]. This is the same
-> format used by UEFI, and UEFI could reuse this log after finding it in
-> DT or ACPI tables, but can also copy its content into a new one.
-> 
-> [1] https://trustedcomputinggroup.org/resource/pc-client-specific-platform-firmware-profile-specification/
-> 
-> Cc: Stefan Berger <stefanb@linux.vnet.ibm.com>
-> Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
-> ---
-> v2->v3: New
-> ---
->   qapi/tpm.json            |  14 ++
->   include/hw/tpm/tpm_log.h |  89 +++++++++++
->   hw/tpm/tpm_log.c         | 325 +++++++++++++++++++++++++++++++++++++++
->   hw/tpm/Kconfig           |   4 +
->   hw/tpm/meson.build       |   1 +
->   5 files changed, 433 insertions(+)
->   create mode 100644 include/hw/tpm/tpm_log.h
->   create mode 100644 hw/tpm/tpm_log.c
+Hi Pierrick,
 
+December 5, 2024 at 10:50 PM, "Julian Ganz" wrote:
+> December 5, 2024 at 6:56 PM, "Pierrick Bouvier" wrote:
+> > Let's try to move forward, and solve the problems we have with from_p=
+c. The testing part can be solved already (as explained in a previous mes=
+sage). In which cases can't you identify from_pc?
+> >=20
+>=20I'll have to check, but problems that I discussed with a colleague
+> included jumps to an unmapped page resulting in the appropriate
+> exception. We ultimately agreed that in such a situation from_pc should
+> point to the jump target inside the unmapped page, instead of, say, the
+> jump. We assume that most targets should already behave this way withou=
+t
+> further changes. However, in order to compute the correct from_pc, we
+> need to know the jump target before the exception is raised (i.e. right
+> after the jump instruction is executed), and that's not necessarily
+> straight-forward to do in a plugin.
 
-> +/*
-> + * Defined in: TCG PC Client Platform Firmware Profile Specification
-> + * Version 1.06 revision 52
-> + */
-> +#define TCG_EV_NO_ACTION                        0x00000003
-> +#define TCG_EV_EVENT_TAG                        0x00000006
-> +#define TCG_EV_POST_CODE2                       0x00000013
-> +#define TCG_EV_EFI_PLATFORM_FIRMWARE_BLOB2      0x8000000A
-> +
-> +struct UefiPlatformFirmwareBlob2Head {
-> +        uint8_t blob_description_size;
-> +        uint8_t blob_description[];
-> +} __attribute__((packed));
+Just remembered the joyful existence of double traps.=20=20
 
-We use QEMU_PACKED.
+Regards,
+Julian
 
