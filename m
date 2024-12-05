@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8486A9E5F86
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Dec 2024 21:36:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ABE7E9E5F88
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Dec 2024 21:36:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tJIZ9-00066m-CB; Thu, 05 Dec 2024 15:35:15 -0500
+	id 1tJIZE-000681-HZ; Thu, 05 Dec 2024 15:35:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <icegambit91@gmail.com>)
- id 1tJIZ7-00066I-08
- for qemu-devel@nongnu.org; Thu, 05 Dec 2024 15:35:13 -0500
-Received: from mail-pj1-x1036.google.com ([2607:f8b0:4864:20::1036])
+ id 1tJIZC-00067d-Ml
+ for qemu-devel@nongnu.org; Thu, 05 Dec 2024 15:35:18 -0500
+Received: from mail-pj1-x102a.google.com ([2607:f8b0:4864:20::102a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <icegambit91@gmail.com>)
- id 1tJIZ5-0004n8-Eo
- for qemu-devel@nongnu.org; Thu, 05 Dec 2024 15:35:12 -0500
-Received: by mail-pj1-x1036.google.com with SMTP id
- 98e67ed59e1d1-2eecc01b5ebso1193328a91.1
- for <qemu-devel@nongnu.org>; Thu, 05 Dec 2024 12:35:10 -0800 (PST)
+ id 1tJIZA-0004oe-MW
+ for qemu-devel@nongnu.org; Thu, 05 Dec 2024 15:35:18 -0500
+Received: by mail-pj1-x102a.google.com with SMTP id
+ 98e67ed59e1d1-2ee6abf124aso1160332a91.3
+ for <qemu-devel@nongnu.org>; Thu, 05 Dec 2024 12:35:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1733430910; x=1734035710; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1733430915; x=1734035715; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=VrlYK4yXYr2i1VgD7WUebq8opI+LmqDH8ytWZHxqCgE=;
- b=NFH1RAGse6UBvhKwSWwaiunGc4H1l+owCPpuJN2BJvf/gEaSRUVh5dC1r0BjDs/SUk
- 83GXoA6KJCSdUsTHmjeXCXoQ+Gs/QhjO0ce4pdvDMdMuIY+ecI817dsGEpjdeaXAsVEK
- Sc1wNizhSyZdluas/jETvp15k3eSEmxw/HjVAgp4OI+Ej/Nh1EqKjefwAi22XFSMwM7I
- tCdVaks0d7oroUTNKxg0vYc4h7+9scPH/HF5iL4bEPkD5E6RhBI5423vgZtbVIIDfa+Q
- 6i5uQQQxQ733FkZJIy7mYaXKfeRh0llksL9DMOJAFgD7DPoWZ0phHWXUioRNTErWRsv6
- 48+Q==
+ bh=XOxyT26bcT3QQMndkO+7h+Piz5kcLrsCzZSCVUpRwzM=;
+ b=Qpbih514ovEt4CI0288X5eq4GdZJR8ULYahsw+UwbPu4uxmDsxpKt7GD1K/Nnn+vjJ
+ C1LF5fJELT9Wvjxx7K/pw+k0PzS4oKIcmAPpkQUiqye3vgpEz/hRTgYcH4qlWZXp0Xau
+ OPEoAhwozBkcdJzT9sRKiHHytitKhutcgKi4qvJmVBrtc+xyNJqU94FhUxRKIyrgRmOy
+ Am+jPoWUxijW8UbPxY5wIZJdpddya4riwYuCHq7sGu3E6ToP4AMhA0aLn+eGByqCWxEN
+ ljdBoVcIjT02gtJCMRcECKjkls0le/7VGIA1KWF/PvtFrpWMqsb39pOwiHQ1Q5dBw8Qz
+ Qz9g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733430910; x=1734035710;
+ d=1e100.net; s=20230601; t=1733430915; x=1734035715;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=VrlYK4yXYr2i1VgD7WUebq8opI+LmqDH8ytWZHxqCgE=;
- b=ImpAnb7C7obtBOxBXBb3R9IILO1uJMY+L/qWh9Y51dl2wGVpDiKsUcxK90J6driLlu
- xzUWGEA0elze9DRpbGOflPQLn5TK6e2eHL/KldWWJd2wR7OBiin/RkVmBi5n8CgBIEQg
- 4ZIVSYexqg7agpO9u5sJQXZz2/OUsmGfKDNA0mNtfw05m7QyNhnr/XQMAB2m7Y/q+M7r
- 0nAavkAxcrHdX8HsXYaZTNc7FhErRMaPpZS1f44qnIJyquSqsYfGK8tVmpOHq5S/Lk6n
- XP7971ULlFjgfcdSzYxgmiWwCEWgF8rA4wFayW8chgw+dWznBvbMIAdiY8TVnKROhY0R
- Ia7w==
+ bh=XOxyT26bcT3QQMndkO+7h+Piz5kcLrsCzZSCVUpRwzM=;
+ b=XwrNyUT7pqmfl5BuFBL3OMmCsk1SBw33wyVvaAmvnR5aJfU4s6YzFM+EyHD2MOfaJ8
+ XN6AKDnpzq0o0Mv9LDcdomwzlIVP0p48w4uOc2ewJUf4yiSQbXZdTBjdk6R1gVLIK9Vv
+ QtZMK9a4nUmgqCVKckeAr6tPcatRR1HTDvoKK/eJEZ6d02G3SqtBJ+tXJ9WIJzeyQmvK
+ paCnha4oQ65DiVGb0EvoGm3yNp5+IdAqjWtMwrR3CS//YPUWXQtEcz3UkmPUa/82pHeF
+ QzzxX1RCE5vbVMw85GidP+kIUbHg0PLcSeRDcBSB/W2i/YweF6W9PJULchNkXDgnnlLt
+ gvSA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWqC8CElo0Q38HZe3xO6/pxTOCFFCGF+ZRVYWpKUsPSKxktPvD3Vr6ITl66m5ZBuvFqU4T++ioBjzPh@nongnu.org
-X-Gm-Message-State: AOJu0YxW+8yagTdlHOMqwpydm05I3rKgAVvtZpwmsIPibEQ+FDvLQnCh
- 71Vb5EIWB0BAH4/1pavOlTNqTrv8mY4tRs/EBfNlBPWdVGP9ZNOc
-X-Gm-Gg: ASbGnctsaGuI3OtHp+N2nhXXbONfczqwG3mPvGYyawbXwbylbpinZyFBenq4cNpCu2y
- ZwZd3JppVbRatGVUtHMn4/qdBPDWyO6S/pD0UtSi0t7TwRwQWLcuXhOgD905ye2GgDmQrsHAzIT
- qIraz0pPes62GXOAaSYHzERcCahJVfcUGv7WbNxCXy+R1rwQPd0fcMllKiS7abbsDKlGK4U3XN/
- z0f34luPbG+a0uU749Ydc7sBxdbFUZiHh356KUTb1c=
-X-Google-Smtp-Source: AGHT+IGMmafjO+Z8rkuT7OJWtzNVIwmPTIjIFSX16Kr73Am/jYb2RDv6S6vzkVafZQgeMfJhXVYZ0Q==
-X-Received: by 2002:a17:90a:d88e:b0:2ee:aef4:2c5d with SMTP id
- 98e67ed59e1d1-2ef6ab10353mr726680a91.26.1733430909765; 
- Thu, 05 Dec 2024 12:35:09 -0800 (PST)
+ AJvYcCWDShIvSKvnjlBu+H8bERiSKcZ6wmaSGWAp0EOR6yGCvy65lMNxU6E96A1UhZ8Ono8/ZaMc3ipgqFZk@nongnu.org
+X-Gm-Message-State: AOJu0YwCKhtIKaOPShonZLkskOF9lWggPsjDqyZhgt0L62PIEL22mHc8
+ oYbauMY2dWur9r4uco9T5RPHnWDAHhV7TvohZA+MwociUYe690cD17ZkyQ==
+X-Gm-Gg: ASbGncuqQ59ZZ3upjotiytNAY/Qy6iwqoCC87ahdKjLI8GVmkyyRBB/TW2A4jJJPTz1
+ hDkpEkCiI4SPt2iucZ/ZPQ9dE4zLxpwskVgWduFxXiWInO8SWtYAoJCIhZ3g4qYLnwg4ubEtvt0
+ UtU1nx1DZga4CTGgNU4ep9T+MgLOVXy00MXQvJ3gY360sHa7OnD3viTIF8VB9gGWJWGvTMGu+95
+ LaObaH0YLChRdoton+L1aPfBMX2yQGrwYohuGkftB4=
+X-Google-Smtp-Source: AGHT+IElkhleK7Y17x5rBUWKryBptOUqd5yjC77Of3O3BhGm0tFCuGgaSjYdyGz/UdDlQLdSb6QSAQ==
+X-Received: by 2002:a17:90b:37c5:b0:2ee:f687:6adb with SMTP id
+ 98e67ed59e1d1-2ef6956008bmr747090a91.3.1733430915319; 
+ Thu, 05 Dec 2024 12:35:15 -0800 (PST)
 Received: from valdaarhun.. ([2409:4081:2c01:b2be:f39d:e902:7582:5526])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2ef2701c2f2sm3705905a91.23.2024.12.05.12.35.07
+ 98e67ed59e1d1-2ef2701c2f2sm3705905a91.23.2024.12.05.12.35.12
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 05 Dec 2024 12:35:09 -0800 (PST)
+ Thu, 05 Dec 2024 12:35:14 -0800 (PST)
 From: Sahil Siddiq <icegambit91@gmail.com>
 X-Google-Original-From: Sahil Siddiq <sahilcdq@proton.me>
 To: eperezma@redhat.com,
 	sgarzare@redhat.com
 Cc: mst@redhat.com, qemu-devel@nongnu.org, Sahil Siddiq <sahilcdq@proton.me>
-Subject: [RFC v4 3/5] vhost: Data structure changes to support packed vqs
-Date: Fri,  6 Dec 2024 02:04:28 +0530
-Message-ID: <20241205203430.76251-4-sahilcdq@proton.me>
+Subject: [RFC v4 4/5] vdpa: Allocate memory for svq and map them to vdpa
+Date: Fri,  6 Dec 2024 02:04:29 +0530
+Message-ID: <20241205203430.76251-5-sahilcdq@proton.me>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241205203430.76251-1-sahilcdq@proton.me>
 References: <20241205203430.76251-1-sahilcdq@proton.me>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1036;
- envelope-from=icegambit91@gmail.com; helo=mail-pj1-x1036.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102a;
+ envelope-from=icegambit91@gmail.com; helo=mail-pj1-x102a.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -100,130 +100,224 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Introduce "struct vring_packed".
+Allocate memory for the packed vq format and map them to the vdpa
+device.
 
-Modify VhostShadowVirtqueue so it can support split
-and packed virtqueue formats.
+Since "struct vring" and "struct vring_packed's vring" both have
+the same layout memory, the implementation in svq start and svq
+stop should not differ based on the vq's format.
 
 Signed-off-by: Sahil Siddiq <sahilcdq@proton.me>
 ---
 Changes v3 -> v4:
-- Commit #2 of v3 is now commit #3 in this series.
-- vhost-shadow-virtqueue.h
-  (struct VhostShadowVirtqueue): Add bool is_packed.
-  This was initially in commit #3 of v3.
+- Based on commit #3 of v3.
+- vhost-shadow-virtqueue.c
+  (vhost_svq_memory_packed): Remove function.
+  (vhost_svq_driver_area_size,vhost_svq_descriptor_area_size): Decouple functions.
+  (vhost_svq_device_area_size): Rewrite function.
+  (vhost_svq_start): Simplify implementation.
+  (vhost_svq_stop): Unconditionally munmap().
+- vhost-shadow-virtqueue.h: New function declaration.
+- vhost-vdpa.c
+  (vhost_vdpa_svq_unmap_rings): Call vhost_vdpa_svq_unmap_ring().
+  (vhost_vdpa_svq_map_rings): New mappings.
 
- hw/virtio/vhost-shadow-virtqueue.h | 69 ++++++++++++++++++++----------
- 1 file changed, 47 insertions(+), 22 deletions(-)
+ hw/virtio/vhost-shadow-virtqueue.c | 47 ++++++++++++++++++++----------
+ hw/virtio/vhost-shadow-virtqueue.h |  1 +
+ hw/virtio/vhost-vdpa.c             | 34 +++++++++++++++++----
+ 3 files changed, 60 insertions(+), 22 deletions(-)
 
+diff --git a/hw/virtio/vhost-shadow-virtqueue.c b/hw/virtio/vhost-shadow-virtqueue.c
+index 6eee01ab3c..be06b12c9a 100644
+--- a/hw/virtio/vhost-shadow-virtqueue.c
++++ b/hw/virtio/vhost-shadow-virtqueue.c
+@@ -314,7 +314,7 @@ int vhost_svq_add(VhostShadowVirtqueue *svq, const struct iovec *out_sg,
+         return -EINVAL;
+     }
+ 
+-    if (virtio_vdev_has_feature(svq->vdev, VIRTIO_F_RING_PACKED)) {
++    if (svq->is_packed) {
+         vhost_svq_add_packed(svq, out_sg, out_num, in_sg,
+                              in_num, sgs, &qemu_head);
+     } else {
+@@ -661,19 +661,33 @@ void vhost_svq_get_vring_addr(const VhostShadowVirtqueue *svq,
+     addr->used_user_addr = (uint64_t)(uintptr_t)svq->vring.used;
+ }
+ 
+-size_t vhost_svq_driver_area_size(const VhostShadowVirtqueue *svq)
++size_t vhost_svq_descriptor_area_size(const VhostShadowVirtqueue *svq)
+ {
+     size_t desc_size = sizeof(vring_desc_t) * svq->vring.num;
+-    size_t avail_size = offsetof(vring_avail_t, ring[svq->vring.num]) +
+-                                                              sizeof(uint16_t);
++    return ROUND_UP(desc_size, qemu_real_host_page_size());
++}
+ 
+-    return ROUND_UP(desc_size + avail_size, qemu_real_host_page_size());
++size_t vhost_svq_driver_area_size(const VhostShadowVirtqueue *svq)
++{
++    size_t avail_size;
++    if (svq->is_packed) {
++        avail_size = sizeof(uint32_t);
++    } else {
++        avail_size = offsetof(vring_avail_t, ring[svq->vring.num]) +
++                                                             sizeof(uint16_t);
++    }
++    return ROUND_UP(avail_size, qemu_real_host_page_size());
+ }
+ 
+ size_t vhost_svq_device_area_size(const VhostShadowVirtqueue *svq)
+ {
+-    size_t used_size = offsetof(vring_used_t, ring[svq->vring.num]) +
+-                                                              sizeof(uint16_t);
++    size_t used_size;
++    if (svq->is_packed) {
++        used_size = sizeof(uint32_t);
++    } else {
++        used_size = offsetof(vring_used_t, ring[svq->vring.num]) +
++                                                           sizeof(uint16_t);
++    }
+     return ROUND_UP(used_size, qemu_real_host_page_size());
+ }
+ 
+@@ -718,8 +732,6 @@ void vhost_svq_set_svq_kick_fd(VhostShadowVirtqueue *svq, int svq_kick_fd)
+ void vhost_svq_start(VhostShadowVirtqueue *svq, VirtIODevice *vdev,
+                      VirtQueue *vq, VhostIOVATree *iova_tree)
+ {
+-    size_t desc_size;
+-
+     event_notifier_set_handler(&svq->hdev_call, vhost_svq_handle_call);
+     svq->next_guest_avail_elem = NULL;
+     svq->shadow_avail_idx = 0;
+@@ -728,20 +740,22 @@ void vhost_svq_start(VhostShadowVirtqueue *svq, VirtIODevice *vdev,
+     svq->vdev = vdev;
+     svq->vq = vq;
+     svq->iova_tree = iova_tree;
++    svq->is_packed = virtio_vdev_has_feature(svq->vdev, VIRTIO_F_RING_PACKED);
+ 
+     svq->vring.num = virtio_queue_get_num(vdev, virtio_get_queue_index(vq));
+     svq->num_free = svq->vring.num;
+-    svq->vring.desc = mmap(NULL, vhost_svq_driver_area_size(svq),
++    svq->vring.desc = mmap(NULL, vhost_svq_descriptor_area_size(svq),
+                            PROT_READ | PROT_WRITE, MAP_SHARED | MAP_ANONYMOUS,
+                            -1, 0);
+-    desc_size = sizeof(vring_desc_t) * svq->vring.num;
+-    svq->vring.avail = (void *)((char *)svq->vring.desc + desc_size);
++    svq->vring.avail = mmap(NULL, vhost_svq_driver_area_size(svq),
++                            PROT_READ | PROT_WRITE, MAP_SHARED | MAP_ANONYMOUS,
++                            -1, 0);
+     svq->vring.used = mmap(NULL, vhost_svq_device_area_size(svq),
+                            PROT_READ | PROT_WRITE, MAP_SHARED | MAP_ANONYMOUS,
+                            -1, 0);
+-    svq->desc_state = g_new0(SVQDescState, svq->vring.num);
+-    svq->desc_next = g_new0(uint16_t, svq->vring.num);
+-    for (unsigned i = 0; i < svq->vring.num - 1; i++) {
++    svq->desc_state = g_new0(SVQDescState, svq->num_free);
++    svq->desc_next = g_new0(uint16_t, svq->num_free);
++    for (unsigned i = 0; i < svq->num_free - 1; i++) {
+         svq->desc_next[i] = cpu_to_le16(i + 1);
+     }
+ }
+@@ -781,7 +795,8 @@ void vhost_svq_stop(VhostShadowVirtqueue *svq)
+     svq->vq = NULL;
+     g_free(svq->desc_next);
+     g_free(svq->desc_state);
+-    munmap(svq->vring.desc, vhost_svq_driver_area_size(svq));
++    munmap(svq->vring.desc, vhost_svq_descriptor_area_size(svq));
++    munmap(svq->vring.avail, vhost_svq_driver_area_size(svq));
+     munmap(svq->vring.used, vhost_svq_device_area_size(svq));
+     event_notifier_set_handler(&svq->hdev_call, NULL);
+ }
 diff --git a/hw/virtio/vhost-shadow-virtqueue.h b/hw/virtio/vhost-shadow-virtqueue.h
-index 19c842a15b..ce89bafedc 100644
+index ce89bafedc..6c0e0c4f67 100644
 --- a/hw/virtio/vhost-shadow-virtqueue.h
 +++ b/hw/virtio/vhost-shadow-virtqueue.h
-@@ -46,10 +46,56 @@ typedef struct VhostShadowVirtqueueOps {
-     VirtQueueAvailCallback avail_handler;
- } VhostShadowVirtqueueOps;
+@@ -151,6 +151,7 @@ void vhost_svq_set_svq_kick_fd(VhostShadowVirtqueue *svq, int svq_kick_fd);
+ void vhost_svq_set_svq_call_fd(VhostShadowVirtqueue *svq, int call_fd);
+ void vhost_svq_get_vring_addr(const VhostShadowVirtqueue *svq,
+                               struct vhost_vring_addr *addr);
++size_t vhost_svq_descriptor_area_size(const VhostShadowVirtqueue *svq);
+ size_t vhost_svq_driver_area_size(const VhostShadowVirtqueue *svq);
+ size_t vhost_svq_device_area_size(const VhostShadowVirtqueue *svq);
  
-+struct vring_packed {
-+    /* Actual memory layout for this queue. */
-+    struct {
-+        unsigned int num;
-+        struct vring_packed_desc *desc;
-+        struct vring_packed_desc_event *driver;
-+        struct vring_packed_desc_event *device;
-+    } vring;
+diff --git a/hw/virtio/vhost-vdpa.c b/hw/virtio/vhost-vdpa.c
+index 3cdaa12ed5..97ed569792 100644
+--- a/hw/virtio/vhost-vdpa.c
++++ b/hw/virtio/vhost-vdpa.c
+@@ -1134,6 +1134,8 @@ static void vhost_vdpa_svq_unmap_rings(struct vhost_dev *dev,
+ 
+     vhost_vdpa_svq_unmap_ring(v, svq_addr.desc_user_addr);
+ 
++    vhost_vdpa_svq_unmap_ring(v, svq_addr.avail_user_addr);
 +
-+    /* Avail used flags. */
-+    uint16_t avail_used_flags;
-+
-+    /* Index of the next avail descriptor. */
-+    uint16_t next_avail_idx;
-+
-+    /* Driver ring wrap counter */
-+    bool avail_wrap_counter;
-+};
-+
- /* Shadow virtqueue to relay notifications */
- typedef struct VhostShadowVirtqueue {
-+    /* True if packed virtqueue */
-+    bool is_packed;
-+
-+    /* Virtio queue shadowing */
-+    VirtQueue *vq;
-+
-+    /* Virtio device */
-+    VirtIODevice *vdev;
-+
-+    /* SVQ vring descriptors state */
-+    SVQDescState *desc_state;
-+
-+    /*
-+     * Backup next field for each descriptor so we can recover securely, not
-+     * needing to trust the device access.
-+     */
-+    uint16_t *desc_next;
-+
-+    /* Next free descriptor */
-+    uint16_t free_head;
-+
-+    /* Size of SVQ vring free descriptors */
-+    uint16_t num_free;
-+
-     /* Shadow vring */
--    struct vring vring;
-+    union {
-+        struct vring vring;
-+        struct vring_packed vring_packed;
+     vhost_vdpa_svq_unmap_ring(v, svq_addr.used_user_addr);
+ }
+ 
+@@ -1181,38 +1183,58 @@ static bool vhost_vdpa_svq_map_rings(struct vhost_dev *dev,
+                                      Error **errp)
+ {
+     ERRP_GUARD();
+-    DMAMap device_region, driver_region;
++    DMAMap descriptor_region, device_region, driver_region;
+     struct vhost_vring_addr svq_addr;
+     struct vhost_vdpa *v = dev->opaque;
++    size_t descriptor_size = vhost_svq_descriptor_area_size(svq);
+     size_t device_size = vhost_svq_device_area_size(svq);
+     size_t driver_size = vhost_svq_driver_area_size(svq);
+-    size_t avail_offset;
+     bool ok;
+ 
+     vhost_svq_get_vring_addr(svq, &svq_addr);
+ 
+-    driver_region = (DMAMap) {
++    descriptor_region = (DMAMap) {
+         .translated_addr = svq_addr.desc_user_addr,
++        .size = descriptor_size - 1,
++        .perm = IOMMU_RO,
 +    };
++    if (svq->is_packed) {
++        descriptor_region.perm = IOMMU_RW;
++    }
++
++    ok = vhost_vdpa_svq_map_ring(v, &descriptor_region, errp);
++    if (unlikely(!ok)) {
++        error_prepend(errp, "Cannot create vq descriptor region: ");
++        return false;
++    }
++    addr->desc_user_addr = descriptor_region.iova;
++
++    driver_region = (DMAMap) {
++        .translated_addr = svq_addr.avail_user_addr,
+         .size = driver_size - 1,
+         .perm = IOMMU_RO,
+     };
+     ok = vhost_vdpa_svq_map_ring(v, &driver_region, errp);
+     if (unlikely(!ok)) {
+         error_prepend(errp, "Cannot create vq driver region: ");
++        vhost_vdpa_svq_unmap_ring(v, descriptor_region.translated_addr);
+         return false;
+     }
+-    addr->desc_user_addr = driver_region.iova;
+-    avail_offset = svq_addr.avail_user_addr - svq_addr.desc_user_addr;
+-    addr->avail_user_addr = driver_region.iova + avail_offset;
++    addr->avail_user_addr = driver_region.iova;
  
-     /* Shadow kick notifier, sent to vhost */
-     EventNotifier hdev_kick;
-@@ -69,27 +115,12 @@ typedef struct VhostShadowVirtqueue {
-     /* Guest's call notifier, where the SVQ calls guest. */
-     EventNotifier svq_call;
- 
--    /* Virtio queue shadowing */
--    VirtQueue *vq;
--
--    /* Virtio device */
--    VirtIODevice *vdev;
--
-     /* IOVA mapping */
-     VhostIOVATree *iova_tree;
- 
--    /* SVQ vring descriptors state */
--    SVQDescState *desc_state;
--
-     /* Next VirtQueue element that guest made available */
-     VirtQueueElement *next_guest_avail_elem;
- 
--    /*
--     * Backup next field for each descriptor so we can recover securely, not
--     * needing to trust the device access.
--     */
--    uint16_t *desc_next;
--
-     /* Caller callbacks */
-     const VhostShadowVirtqueueOps *ops;
- 
-@@ -99,17 +130,11 @@ typedef struct VhostShadowVirtqueue {
-     /* Next head to expose to the device */
-     uint16_t shadow_avail_idx;
- 
--    /* Next free descriptor */
--    uint16_t free_head;
--
-     /* Last seen used idx */
-     uint16_t shadow_used_idx;
- 
-     /* Next head to consume from the device */
-     uint16_t last_used_idx;
--
--    /* Size of SVQ vring free descriptors */
--    uint16_t num_free;
- } VhostShadowVirtqueue;
- 
- bool vhost_svq_valid_features(uint64_t features, Error **errp);
+     device_region = (DMAMap) {
+         .translated_addr = svq_addr.used_user_addr,
+         .size = device_size - 1,
+         .perm = IOMMU_RW,
+     };
++    if (svq->is_packed) {
++        device_region.perm = IOMMU_WO;
++    }
++
+     ok = vhost_vdpa_svq_map_ring(v, &device_region, errp);
+     if (unlikely(!ok)) {
+         error_prepend(errp, "Cannot create vq device region: ");
++        vhost_vdpa_svq_unmap_ring(v, descriptor_region.translated_addr);
+         vhost_vdpa_svq_unmap_ring(v, driver_region.translated_addr);
+     }
+     addr->used_user_addr = device_region.iova;
 -- 
 2.47.0
 
