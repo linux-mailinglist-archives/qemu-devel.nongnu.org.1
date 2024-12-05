@@ -2,75 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 305639E557B
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Dec 2024 13:29:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E3EA59E5622
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Dec 2024 14:02:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tJAxg-0002m6-Ct; Thu, 05 Dec 2024 07:28:04 -0500
+	id 1tJBTX-0001QA-AU; Thu, 05 Dec 2024 08:00:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tJAxd-0002lF-Dd; Thu, 05 Dec 2024 07:28:01 -0500
-Received: from mgamail.intel.com ([192.198.163.19])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tJAxa-0005No-Sl; Thu, 05 Dec 2024 07:28:01 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1733401679; x=1764937679;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=R3cvo7UCjBrkosfaR7DMNE86/sLoF69l0f0xPT/L72I=;
- b=AXP9EVvB2V7wkpdmUhwJZA4tmVL2XA6ArxsiWkE0PeeaLYdRqJ27D2nq
- dXu2ySUywnOm9e5v4R375BFgjKuXeOGyB+0DUid/L3Kidu5CMq3d2R7pT
- JXU67mPcQkD0Ngb8KIUBLMUVi4bEOuSZ+TeuWYfmZ963IBuR3otBpQNVV
- NZBk5atAazTF/0NRW0AUjGy9rjNu7KeFhdWHOhxvgrDNEu8FPBVK18hPC
- yVj1vMz9wVj8NUL+CkpH77G/YM91tQOArQbvfwiOiVxB2PAmi0MEcdyMg
- EC9ebNYP9LwVLtQUv01RGr4GFUGZnb+OyuZy5r+X2GwuGoLxsG3DXIBb7 Q==;
-X-CSE-ConnectionGUID: k6KEleOoRi2JEZu5DEydKg==
-X-CSE-MsgGUID: q2IFqEwOTNS4jwu+vZ5lRA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11276"; a="33042702"
-X-IronPort-AV: E=Sophos;i="6.12,210,1728975600"; d="scan'208";a="33042702"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Dec 2024 04:27:56 -0800
-X-CSE-ConnectionGUID: nD8+nR2rRkKUsMlCWo1Cag==
-X-CSE-MsgGUID: gAxxQp6iTT+fZt+wRzWaJQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,210,1728975600"; d="scan'208";a="124995048"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by fmviesa001.fm.intel.com with ESMTP; 05 Dec 2024 04:27:53 -0800
-Date: Thu, 5 Dec 2024 20:46:05 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- Junjie Mao <junjie.mao@hotmail.com>,
- Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org,
- qemu-rust@nongnu.org
-Subject: Re: [RFC 09/13] i386/fw_cfg: move hpet_cfg definition to hpet.c
-Message-ID: <Z1GgjZOCc8vkkB3A@intel.com>
-References: <20241205060714.256270-1-zhao1.liu@intel.com>
- <20241205060714.256270-10-zhao1.liu@intel.com>
- <ed49af53-4a10-4cee-829e-d5921b8aee3c@linaro.org>
+ (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1tJBT7-0001MY-Ob
+ for qemu-devel@nongnu.org; Thu, 05 Dec 2024 08:00:50 -0500
+Received: from mailgate02.uberspace.is ([2a00:d0c0:200:0:1c7b:a6ff:fee0:8ea4])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1tJBT4-0001gp-A3
+ for qemu-devel@nongnu.org; Thu, 05 Dec 2024 08:00:33 -0500
+Received: from skiff.uberspace.de (skiff.uberspace.de [185.26.156.131])
+ by mailgate02.uberspace.is (Postfix) with ESMTPS id 7E4431803B2
+ for <qemu-devel@nongnu.org>; Thu,  5 Dec 2024 14:00:25 +0100 (CET)
+Received: (qmail 4235 invoked by uid 990); 5 Dec 2024 13:00:20 -0000
+Authentication-Results: skiff.uberspace.de;
+	auth=pass (plain)
+Received: from unknown (HELO unkown) (::1)
+ by skiff.uberspace.de (Haraka/3.0.1) with ESMTPSA;
+ Thu, 05 Dec 2024 14:00:20 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ed49af53-4a10-4cee-829e-d5921b8aee3c@linaro.org>
-Received-SPF: pass client-ip=192.198.163.19; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -73
-X-Spam_score: -7.4
-X-Spam_bar: -------
-X-Spam_report: (-7.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.996,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+Date: Thu, 05 Dec 2024 13:00:19 +0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+From: "Julian Ganz" <neither@nut.email>
+Message-ID: <c30dd97f956725875d9454685692ce3a91155646@nut.email>
+TLS-Required: No
+Subject: Re: [RFC PATCH v3 04/11] contrib/plugins: add plugin showcasing new
+ dicontinuity related API
+To: "Pierrick Bouvier" <pierrick.bouvier@linaro.org>, qemu-devel@nongnu.org
+Cc: "=?utf-8?B?QWxleCBCZW5uw6ll?=" <alex.bennee@linaro.org>, "Alexandre
+ Iooss" <erdnaxe@crans.org>, "Mahmoud Mandour" <ma.mandourr@gmail.com>
+In-Reply-To: <76cbce17-0318-436c-b295-0a8ef12b24b9@linaro.org>
+References: <cover.1733063076.git.neither@nut.email>
+ <fa02142d349ceb6c95e80301a7f5c57ae5df6329.1733063076.git.neither@nut.email>
+ <76cbce17-0318-436c-b295-0a8ef12b24b9@linaro.org>
+X-Rspamd-Bar: /
+X-Rspamd-Report: SUSPICIOUS_RECIPS(1.5) BAYES_HAM(-1.153755) MIME_GOOD(-0.1)
+X-Rspamd-Score: 0.246244
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=nut.email; s=uberspace;
+ h=from:to:cc:subject:date;
+ bh=c7YH6JQimKzP45LJgyBfrhYBchPiTUEtqG3riN9Yqfc=;
+ b=EsAje3iv5AR9dPTfZ8m/TxpasJvHysDoQRwGp6kP0hNfAvpzGXquN3lY5aOX5HL5seDQM+1lz5
+ 7C1dt5dk/4OeLgFQVPKmFc1DJ7xE4suVhGLSrKN2F8ygpPl1jnUuohHpusMKt1DuDgww5THqcx/B
+ D9qX/y14+Do6JjIaIq2627NcABP3/7J4JkYdUZVgPFEpfmF4apvnm4w7EB4Y2ipfN2hhOOQWGW5I
+ rfKdkcTdHm5IuyEto2p+45jPKRwU+3O5gsdW6BIvRVQzgy8gbI++0QM12Z1W7NqMc0qDIlwpfadc
+ SMJHFABbA0ReO2iyPVJnp45snmKYESTwN8TH43idM+IjK1n7vYxn56ctuubpYMMWKykOhecqrgTe
+ ixonJR8ANP4YMo3EgNWZ/cm3NYmhiQVNUweBLQUuF6KqBv5QOfGUOa/0xMCkbk4HNAQ4WI3ZpsPw
+ Nlib7ymsQgjAQw75ja8vt4lvb0R7aaAGdqNCh++Fl2iiin+K762xsw52EINqHu9qACF/yZ7AmgWR
+ RIWsjsLD4+CRfucy50YnpaQSFNrnW4aGDX1EbOn4q+B/mFuRpOaekpxVSZkxoYHCfmqJH6yYRqeX
+ qdiyqbOTAuwtxwasdJE6eOaxkf+7RB+Zbn2azPRNYMyuQ1xsO7oe5jgqM8QMIRfENemD/mjutyuU
+ 8=
+Received-SPF: pass client-ip=2a00:d0c0:200:0:1c7b:a6ff:fee0:8ea4;
+ envelope-from=neither@nut.email; helo=mailgate02.uberspace.is
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -87,48 +80,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Philippe,
+Hi Pierrick,
 
-On Thu, Dec 05, 2024 at 01:04:58PM +0100, Philippe Mathieu-Daudé wrote:
-> Date: Thu, 5 Dec 2024 13:04:58 +0100
-> From: Philippe Mathieu-Daudé <philmd@linaro.org>
-> Subject: Re: [RFC 09/13] i386/fw_cfg: move hpet_cfg definition to hpet.c
-> 
-> On 5/12/24 07:07, Zhao Liu wrote:
-> > HPET device needs to access and update hpet_cfg variable, but now it is
-> > defined in hw/i386/fw_cfg.c and Rust code can't access it.
-> > 
-> > Move hpet_cfg definition to hpet.c (and rename it to hpet_fw_cfg). This
-> > allows Rust HPET device implements its own global hpet_fw_cfg variable,
-> > and will further reduce the use of unsafe C code access and calls in the
-> > Rust HPET implementation.
-> > 
-> > Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-> > ---
-> >   hw/i386/fw_cfg.c        |  4 +---
-> >   hw/timer/hpet.c         | 16 +++++++++-------
-> >   include/hw/timer/hpet.h |  2 +-
-> >   3 files changed, 11 insertions(+), 11 deletions(-)
-> 
-> 
-> > diff --git a/include/hw/timer/hpet.h b/include/hw/timer/hpet.h
-> > index d17a8d43199e..dbf709251a8f 100644
-> > --- a/include/hw/timer/hpet.h
-> > +++ b/include/hw/timer/hpet.h
-> > @@ -74,7 +74,7 @@ struct hpet_fw_config
-> >       struct hpet_fw_entry hpet[8];
-> >   } QEMU_PACKED;
-> > -extern struct hpet_fw_config hpet_cfg;
-> > +extern struct hpet_fw_config hpet_fw_cfg;
-> 
-> Could this field belong to the (yet unexisting) HPETClass?
+December 5, 2024 at 12:14 AM, "Pierrick Bouvier" wrote:
+> On 12/2/24 11:26, Julian Ganz wrote:
+> >  +typedef struct {
+> >  + uint64_t interrupts;
+> >  + uint64_t exceptions;
+> >  + uint64_t hostcalls;
+> >  + bool active;
+> >=20
+>=20The active field can be removed, as you can query qemu_plugin_num_vcp=
+us() to know (dynamically) how many vcpus were created.
 
-Several instances would share the same class, so HPETClass could manage
-multiple HPETState info.
+Yes, if the ids of dynamically initialized VCPUs are contiguous. I
+wasn't sure they really are. And I distinctly remember we originally
+used some query function and ended up with the maximum number of VCPUs
+supported rather then those actually used. But that may have been
+another function, or some unfortunate result of me being too cautious
+and doing
 
-But in fw_cfg.c, do you have idea about how to get the HPETClass?
+| qemu_plugin_vcpu_for_each(id, vcpu_init);
+
+in qemu_plugin_install.
+
+> >=20
+>=20> + break;
+> >  + }
+> >  +}
+> >  +
+> >  +static void plugin_exit(qemu_plugin_id_t id, void *p)
+> >  +{
+> >  + g_autoptr(GString) report;
+> >  + report =3D g_string_new("VCPU, interrupts, exceptions, hostcalls\n=
+");
+> >  + int vcpu;
+> >  +
+> >  + for (vcpu =3D 0; vcpu < max_vcpus; vcpu++) {
+> >=20
+>=20vcpu < qemu_plugin_num_vcpus()
+
+Yes, max_vcpus was introduced as an optimization. If we can rely on all
+VCPUs with id < qemu_plugin_num_vcpus() having been active at some point
+this becomes unnecessary.
+
+> >  + qemu_plugin_register_vcpu_discon_cb(id, QEMU_PLUGIN_DISCON_TRAPS,
+> >  + vcpu_discon);
+> >  +
+> >=20
+>=20The change from QEMU_PLUGIN_DISCON_TRAPS to QEMU_PLUGIN_DISCON_ALL sh=
+ould be included in this patch, instead of next one.
+
+Ah, thanks for pointing that out. I likely fumbled this at some point whe=
+n rebasing.
 
 Regards,
-Zhao
-
+Julian Ganz
 
