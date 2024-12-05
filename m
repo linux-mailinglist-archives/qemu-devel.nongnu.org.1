@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAC609E596F
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Dec 2024 16:12:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C9EB59E5972
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Dec 2024 16:12:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tJDVZ-0005dt-4e; Thu, 05 Dec 2024 10:11:13 -0500
+	id 1tJDVa-0005eq-PN; Thu, 05 Dec 2024 10:11:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1tJDVV-0005dY-D9
+ id 1tJDVV-0005dZ-Mv
  for qemu-devel@nongnu.org; Thu, 05 Dec 2024 10:11:09 -0500
 Received: from mgamail.intel.com ([198.175.65.17])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1tJDVQ-0005MV-4I
+ id 1tJDVS-0005Mo-U4
  for qemu-devel@nongnu.org; Thu, 05 Dec 2024 10:11:09 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1733411464; x=1764947464;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=ivnOYKo8KGP4g6VC3+3PIjQOuJ0rOjMMMgJRBpsJt2Y=;
- b=fBi1aJ5coJSN7G1R/KQX/BzdCJpfJ3rBbJxPCwgywKhNbpan/cEmSciU
- Vv4NIHs6sDZ9Lt0vX8aRGW0OBbYx4oEo6LWcA6uK4A8FNFk/PUCkHqfH+
- Ft4IeTznqAY8PnkmuDi/4hkCNPVbqHZnC5gab8hQDxx4/x69/lt4qanHb
- TrKzVzS9Q4XIluUYKgGzj5FsQGbDqvWzfD+AeGTYPMTkl6DYd5ROX/G4F
- HELNwfKOh7NXbeu81NbW6sUyWMr7g0JMizc3HBUwu947ggCQfuLbz6kdh
- s4Hf8j3otU5O6dLpAJ1z7KTz6qOsxx99t4KfKtSe40VUFiFZ+AVROesA1 w==;
-X-CSE-ConnectionGUID: MNFkP2W3Tvq5VSR8zOmk9A==
-X-CSE-MsgGUID: LDVBVRuPTnabSYHLArXobQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11277"; a="33786117"
-X-IronPort-AV: E=Sophos;i="6.12,210,1728975600"; d="scan'208";a="33786117"
+ t=1733411466; x=1764947466;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=GUBrBUKmlcn1uCOimksccYgJWdP9dfdcg1bwUYf7oLc=;
+ b=jAnr2QZgAQUWJKW1IUqmbf1aXUa40N0tetLxuSobi73nc9GbHBG6dwx5
+ F/ctmAXeMW8a+/pkakvmsrKdG17OKiKuxWQbz1g2pXjzuazMuLL/H3dtx
+ FXONY/VLTKueG7sonanlErNXi3xqbghezQI6Y2BjlsHQUfnAqqd9zHdTs
+ foFeza+gTGyuSDWPjQcABCoHvob8XclvpzbwsnLXESqje7M0JXQWNwV70
+ 8Az2sO9G/hiulrY/49lfqUL5zSR06ut5ve8Yc2MA625+WtAItQS9o9Hbp
+ Wi3+FEoid0YKNGfMXN2W6w+L7kQn/CLnWVnNMHSq6aUnsTWYCMB/WPjp2 g==;
+X-CSE-ConnectionGUID: nbGhWy1XQUqb91uRQm4zRA==
+X-CSE-MsgGUID: I1ckS2g5Rkqdzv0SOosf+Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11277"; a="33786126"
+X-IronPort-AV: E=Sophos;i="6.12,210,1728975600"; d="scan'208";a="33786126"
 Received: from fmviesa006.fm.intel.com ([10.60.135.146])
  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Dec 2024 07:11:01 -0800
-X-CSE-ConnectionGUID: C4+xboo8TtGj4nTKtibtOQ==
-X-CSE-MsgGUID: ViBc2tQUT6maup22CMth0g==
+ 05 Dec 2024 07:11:04 -0800
+X-CSE-ConnectionGUID: S9bMI51cSfSWfYNuVUtibg==
+X-CSE-MsgGUID: 7S7DjVzSQSOphBJZ8MVHmw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,210,1728975600"; d="scan'208";a="93803074"
+X-IronPort-AV: E=Sophos;i="6.12,210,1728975600"; d="scan'208";a="93803087"
 Received: from lxy-clx-4s.sh.intel.com ([10.239.48.52])
- by fmviesa006.fm.intel.com with ESMTP; 05 Dec 2024 07:10:58 -0800
+ by fmviesa006.fm.intel.com with ESMTP; 05 Dec 2024 07:11:01 -0800
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
@@ -53,10 +53,13 @@ Cc: xiaoyao.li@intel.com, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Cameron Esfahani <dirty@apple.com>, Roman Bolshakov <rbolshakov@ddn.com>,
  Marcelo Tosatti <mtosatti@redhat.com>, qemu-devel@nongnu.org
-Subject: [RFC PATCH 0/4] cpu: Drop CPUState::nr_cores
-Date: Thu,  5 Dec 2024 09:57:12 -0500
-Message-Id: <20241205145716.472456-1-xiaoyao.li@intel.com>
+Subject: [RFC PATCH 1/4] i386/topology: Update the comment of
+ x86_apicid_from_topo_ids()
+Date: Thu,  5 Dec 2024 09:57:13 -0500
+Message-Id: <20241205145716.472456-2-xiaoyao.li@intel.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20241205145716.472456-1-xiaoyao.li@intel.com>
+References: <20241205145716.472456-1-xiaoyao.li@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=198.175.65.17; envelope-from=xiaoyao.li@intel.com;
@@ -85,62 +88,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The series is motivated by auditing the usage of CPUState::nr_cores and
-CPUState::nr_threads, which is motivated by [1].
+Update the comment of x86_apicid_from_topo_ids() to match the current
+implementation,
 
-The initial goal is to initialize nr_threads and nr_cores earlier for
-x86, which leads to patches [2] and [3]. Patch [2] touches all the ARCHes
-and patch [3] looks hacky. At last Igor suggested to audit nr_threads and
-nr_cores, and only set them in the pre_plug() callback for the ARCHes that
-really need them[1].
+Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+---
+ include/hw/i386/topology.h | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-By audting nr_threads and nr_cores, I found nr_cores is only used by
-x86. So we can introduce a x86 specific one and initialize in
-x86_cpu_pre_plug(), then drop nr_cores totally.
-
-However for nr_threads, it's used by MIPS and PPC as well[4]. There are
-two options:
-1. maintain separate substitute in X86/MIPS/PPS, so we can drop
-CPUState::nr_threads like for CPUState::nr_cores.
-
-2. keep CPUState::nr_threads and find place (or introduce pre_plug()) to
-initialize them earlier for MIPS/PPC.
-
-I would like to seek for opinions for which one is prefered. 
-
-This series implments the drop for CPUState::nr_cores. Though it doesn't
-help on the initial goal without the solution for nr_threads, I think it
-is still a good cleanup?
-
-BTW, by initializing nr_threads and nr_cores earlier than
-qemu_init_vcpu(), it also unblocks [5].
-
-
-[1] https://lore.kernel.org/qemu-devel/20241125103857.78a23715@imammedo.users.ipa.redhat.com/
-[2] https://lore.kernel.org/qemu-devel/5f8db586-cdda-4d00-be02-f9880a20e1a3@redhat.com/
-[3] https://lore.kernel.org/qemu-devel/20241122160317.4070177-1-xiaoyao.li@intel.com/
-[4] https://lore.kernel.org/qemu-devel/045f9cb1-2b17-4b2c-985f-3c34e3626b36@intel.com/
-[5] https://lore.kernel.org/qemu-devel/20231128171239.69b6d7b1@imammedo.users.ipa.redhat.com/
-
-Xiaoyao Li (4):
-  i386/topology: Update the comment of x86_apicid_from_topo_ids()
-  i386: Extract a common fucntion to setup value of
-    MSR_CORE_THREAD_COUNT
-  i386: Track cores_per_module in CPUX86State
-  cpu: Remove nr_cores from struct CPUState
-
- hw/core/cpu-common.c                 |  1 -
- hw/i386/x86-common.c                 |  4 +++-
- include/hw/core/cpu.h                |  2 --
- include/hw/i386/topology.h           |  5 +++--
- system/cpus.c                        |  1 -
- target/i386/cpu.c                    |  2 +-
- target/i386/cpu.h                    | 16 ++++++++++++++++
- target/i386/hvf/x86_emu.c            |  3 +--
- target/i386/kvm/kvm.c                |  5 +----
- target/i386/tcg/sysemu/misc_helper.c |  3 +--
- 10 files changed, 26 insertions(+), 16 deletions(-)
-
+diff --git a/include/hw/i386/topology.h b/include/hw/i386/topology.h
+index b2c8bf2de158..21b65219a5ca 100644
+--- a/include/hw/i386/topology.h
++++ b/include/hw/i386/topology.h
+@@ -121,9 +121,10 @@ static inline unsigned apicid_pkg_offset(X86CPUTopoInfo *topo_info)
+ }
+ 
+ /*
+- * Make APIC ID for the CPU based on Pkg_ID, Core_ID, SMT_ID
++ * Make APIC ID for the CPU based on topology and IDs of each topology level.
+  *
+- * The caller must make sure core_id < nr_cores and smt_id < nr_threads.
++ * The caller must make sure the ID of each level doesn't exceed the width of
++ * the level.
+  */
+ static inline apic_id_t x86_apicid_from_topo_ids(X86CPUTopoInfo *topo_info,
+                                                  const X86CPUTopoIDs *topo_ids)
 -- 
 2.34.1
 
