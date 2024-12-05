@@ -2,82 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11E209E5317
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Dec 2024 11:56:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 884D59E531D
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Dec 2024 11:56:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tJ9Wm-0005n0-5h; Thu, 05 Dec 2024 05:56:12 -0500
+	id 1tJ9Wr-0005yP-TD; Thu, 05 Dec 2024 05:56:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <tomitamoeko@gmail.com>)
- id 1tJ9Wi-0005gl-4j
- for qemu-devel@nongnu.org; Thu, 05 Dec 2024 05:56:08 -0500
-Received: from mail-pf1-x442.google.com ([2607:f8b0:4864:20::442])
+ id 1tJ9Wm-0005pe-6W
+ for qemu-devel@nongnu.org; Thu, 05 Dec 2024 05:56:12 -0500
+Received: from mail-pg1-x541.google.com ([2607:f8b0:4864:20::541])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <tomitamoeko@gmail.com>)
- id 1tJ9Wg-0003dK-IV
- for qemu-devel@nongnu.org; Thu, 05 Dec 2024 05:56:07 -0500
-Received: by mail-pf1-x442.google.com with SMTP id
- d2e1a72fcca58-7258bce5289so591971b3a.0
- for <qemu-devel@nongnu.org>; Thu, 05 Dec 2024 02:56:06 -0800 (PST)
+ id 1tJ9Wk-0003dn-Iu
+ for qemu-devel@nongnu.org; Thu, 05 Dec 2024 05:56:11 -0500
+Received: by mail-pg1-x541.google.com with SMTP id
+ 41be03b00d2f7-7fc22a88bcbso621892a12.2
+ for <qemu-devel@nongnu.org>; Thu, 05 Dec 2024 02:56:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1733396164; x=1734000964; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1733396168; x=1734000968; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=u6IjMTOhbbtnbKyiu9odYQrXzvjL175+vD8tdZJb7kU=;
- b=T1xquenMk0ZKS0Upc2mBNxF2qG0CemI5770FCwVx3lxCDVTE6GjAiv2iUtVwkxQ+6n
- yN+iqqI09f55mo7NNuyakq0s+mOX5kiVIJZdVSf3RpNuMq/1sxDUL7HNjPAi77aQFaSl
- uLwY9rc7YaoSwqUjWMzeeQVuLEZQBr7HH5rrhMjY9tK0GqIS8B09iF0ttqJExLHQptP+
- dIjFSrPa1BI0mT6EePOp/6OcgihBapRoaFwvGIoHhWHXai79J4jcLWwTSeh0pb8cE5H1
- Zj6ctg5sI6cTg1Euu4qWsEkRcoXeGumsN8lU8PS0DAng5TbXcHaoOI9xOdDY26ZL2qbW
- pKYw==
+ bh=DbyhL467kLFoNyl59lj+CqWMKUpCY5M1py2Usy4VavY=;
+ b=QKFPVOzwsz1cJL6QUY7vasd1JfKzjHEKKsyOXzLP0DYKPxTMP41Utxrn7Oh+nbrNr2
+ yEi7hGfKfVxAZfebwNg/g+wDZZkzq9yZZarrX6lc8c4tYO8tqBT9sahOwj54nFTAOKKK
+ qJQQ2IOFjsxiUvJWTzc6QKH+XSGTa5Y9j/a3lxjZRi4ab5iZ/xQvXOc8f7LkELMGhKIE
+ CNuMge4sDSjhF71fsiOVTqBpAxm0rWWyAgx6wRibaANp68lTUi77+M5tMUcZopTrGjE6
+ DDKek43oK+pNMr7Htn5ml9yDhVeLs8WU3JSbfCUeohlSdI3JEH7PbIZ0PaiSI+YMpv24
+ JfPg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733396164; x=1734000964;
+ d=1e100.net; s=20230601; t=1733396168; x=1734000968;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=u6IjMTOhbbtnbKyiu9odYQrXzvjL175+vD8tdZJb7kU=;
- b=HfjQAoihUIMWM/cuqhwk3EAwOt97p5w0HjRWxLBZJfnCEPVzQJqQVjW6xOQVsBLYlY
- cZk2JP3J3eXayPZp3VE7dnUvZrzqKNOoQmFA1yeJOn2zcs0IwHUnnPioF1v9XWM89gZL
- /jFHYhZg2OC2xRru4qhkNjUKtUZDp/xx5DWGTzicAJiOcRApKGlS9ifXazy58Rj9iABu
- pptNeKPHSpsoYAUpzoHSvimdTVcNe5A57GkLNYLPd5iRd/5Txt5KhQAbNhN6lNYwnFXN
- X4oQA5Z5R64bQkGGTEJClwd4t0FIw5HT15TdKEQ93oWVuLnSbj2O9/i1xVwc1AhOiov4
- s+8w==
-X-Gm-Message-State: AOJu0YydXJzj5v9N/Ig9KuSm8YCXzJuiPh0jcxEqX4SiQcyZfVpZn188
- UUOEDCXQuKgPCcHAdmkBzP+xNHU0MmG1BwDmRGqxtZ697HGc+W4WPhCcPii6vA==
-X-Gm-Gg: ASbGncsyBRBjeuFqGWcEy3ZBIC4WLtY9tT+5jywdK97k6fpXKKQNMWWugETGSAxEDsA
- l/WSNCHVgaph0qz6QeMgKjE+nG/dH/X2SLGCCuXIPft7yLjsH0q9Z0/kSdC1lme3rdmMSfy4U1J
- JJmnFGiq46X0xQKSG6kJDDAr2j2I3yf0jPXovd4pyJkspy6EJGK19Vjf6Nm7xNsVl7wfHzPgpne
- jUami/JMzFB7K6MRL9T+R99K29w3ov9rCIZaNOGAW9knKoev+3uqCHG3A==
-X-Google-Smtp-Source: AGHT+IEcXfPZNQpfUQWRyo13uSou100geH0MS+nU6Dr2t3NxXBPLbmhsbKoWJ5BEx4RpDEjSVrtrhg==
-X-Received: by 2002:a05:6a00:2d29:b0:71e:755c:6dad with SMTP id
- d2e1a72fcca58-72587ee6365mr13408932b3a.5.1733396164621; 
- Thu, 05 Dec 2024 02:56:04 -0800 (PST)
+ bh=DbyhL467kLFoNyl59lj+CqWMKUpCY5M1py2Usy4VavY=;
+ b=khkaW+FxPQyocq/RrX5lfnOcmVwLsiWBzW911Bdj8+uE5J+RZ8CQeAyhnYh9of9DT/
+ GF8Eye6fmg3TTHyEwm/nAjthvnF/2fKtVn+HBUBLsH4DIkECV5CJm8mE2YDYaWJQP5d4
+ RAAUBATqkWNP6Tfi1z9+dz0qnKfs69dutgCSO1odCM+CV+/diijETAIb2py72upeQEUy
+ H7bA6Du8TsakEFMXoaOih88XweTPin6ttMEfHIRyQo/FeZYMwSmFf8nQxFyasEmegx0A
+ JWocWHW3SYqCIwVO8exU3TGbd261qSZ4e5x8ErnYa6UTQabWHwJU7WhgeMeBQzROcv3u
+ jInQ==
+X-Gm-Message-State: AOJu0YyQUUwmz6ANSstYyV7s7lSizF4GIy2eDLh2UKzAw+v9ide2kNvS
+ mI0KHwyi900pBB3zB0HMrQ5tHv5ivnihrveUQLqbJsEvyL94veQlXhm4EV7+5Q==
+X-Gm-Gg: ASbGncsPqeiu3QQgllQ34Z/3TPwEdBJDhqBA+lIq0yd8Ghrh0Ki8qYtRogCRjulTqxm
+ AsD1GQh4uW/JRpbD6vTeq0jFxoLcXfKRTCC8BPTfXDlvEUtdYKxInthfT2Nv63FjYsed4XP1JIo
+ gsAfcqlZkBuqYHbw5foraU67fTW9Kf+qOHFXEYBkLnbgPJlDymbV4nPoMThkn5zWjUjBAGwvk4C
+ NXMwynrqYwh7mA7LyFuRUZ4raMlNPZzcAuOf7u7+17Sbcs/qHa19qtPqA==
+X-Google-Smtp-Source: AGHT+IG47WGTWjdqjMTm9Njiqcark6Mz6UkfHmV3El3oV95OeATOQQ1ZWGxpvGKi+pdlX5DAiitt6w==
+X-Received: by 2002:a05:6a21:99a0:b0:1d9:780a:4311 with SMTP id
+ adf61e73a8af0-1e1653b9e35mr14590656637.18.1733396168246; 
+ Thu, 05 Dec 2024 02:56:08 -0800 (PST)
 Received: from kotori-desktop.lan ([58.38.120.33])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-725a2ca6747sm1010905b3a.149.2024.12.05.02.56.01
+ d2e1a72fcca58-725a2ca6747sm1010905b3a.149.2024.12.05.02.56.04
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 05 Dec 2024 02:56:04 -0800 (PST)
+ Thu, 05 Dec 2024 02:56:07 -0800 (PST)
 From: Tomita Moeko <tomitamoeko@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
  =?UTF-8?q?Corvin=20K=C3=B6hne?= <c.koehne@beckhoff.com>,
  Tomita Moeko <tomitamoeko@gmail.com>
-Subject: [PATCH v3 06/10] vfio/igd: add Alder/Raptor/Rocket/Ice/Jasper Lake
- device ids
-Date: Thu,  5 Dec 2024 18:55:31 +0800
-Message-ID: <20241205105535.30498-7-tomitamoeko@gmail.com>
+Subject: [PATCH v3 07/10] vfio/igd: add macro for declaring mirrored registers
+Date: Thu,  5 Dec 2024 18:55:32 +0800
+Message-ID: <20241205105535.30498-8-tomitamoeko@gmail.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241205105535.30498-1-tomitamoeko@gmail.com>
 References: <20241205105535.30498-1-tomitamoeko@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::442;
- envelope-from=tomitamoeko@gmail.com; helo=mail-pf1-x442.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::541;
+ envelope-from=tomitamoeko@gmail.com; helo=mail-pg1-x541.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,38 +98,122 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-All gen 11 and 12 igd devices have 64 bit BDSM register at 0xC0 in its
-config space, add them to the list to support igd passthrough on Alder/
-Raptor/Rocket/Ice/Jasper Lake platforms.
+igd devices have multipe registers mirroring mmio address and pci
+config space, more than a single BDSM register. To support this,
+the read/write functions are made common and a macro is defined to
+simplify the declaration of MemoryRegionOps.
 
-Tested legacy mode of igd passthrough works properly on both linux and
-windows guests with AlderLake-S GT1 (8086:4680).
-
-Reviewed-by: Corvin Köhne <c.koehne@beckhoff.com>
 Signed-off-by: Tomita Moeko <tomitamoeko@gmail.com>
 ---
- hw/vfio/igd.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ hw/vfio/igd.c | 60 ++++++++++++++++++++++++++++++---------------------
+ 1 file changed, 36 insertions(+), 24 deletions(-)
 
 diff --git a/hw/vfio/igd.c b/hw/vfio/igd.c
-index ed236f443a..49b6547776 100644
+index 49b6547776..18d159aa8e 100644
 --- a/hw/vfio/igd.c
 +++ b/hw/vfio/igd.c
-@@ -86,9 +86,14 @@ static int igd_gen(VFIOPCIDevice *vdev)
-     case 0x3e00:    /* Coffee Lake */
-     case 0x9B00:    /* Comet Lake */
-         return 9;
-+    case 0x8A00:    /* Ice Lake */
-     case 0x4500:    /* Elkhart Lake */
-+    case 0x4E00:    /* Jasper Lake */
-         return 11;
-     case 0x9A00:    /* Tiger Lake */
-+    case 0x4C00:    /* Rocket Lake */
-+    case 0x4600:    /* Alder Lake */
-+    case 0xA700:    /* Raptor Lake */
-         return 12;
+@@ -421,16 +421,9 @@ static const MemoryRegionOps vfio_igd_index_quirk = {
+     .endianness = DEVICE_LITTLE_ENDIAN,
+ };
+ 
+-#define IGD_BDSM_MMIO_OFFSET 0x1080C0
+-
+-static uint64_t vfio_igd_quirk_bdsm_read(void *opaque,
+-                                          hwaddr addr, unsigned size)
++static uint64_t vfio_igd_pci_config_read(VFIOPCIDevice *vdev, uint64_t offset,
++                                         unsigned size)
+ {
+-    VFIOPCIDevice *vdev = opaque;
+-    uint64_t offset;
+-
+-    offset = IGD_BDSM_GEN11 + addr;
+-
+     switch (size) {
+     case 1:
+         return pci_get_byte(vdev->pdev.config + offset);
+@@ -441,21 +434,17 @@ static uint64_t vfio_igd_quirk_bdsm_read(void *opaque,
+     case 8:
+         return pci_get_quad(vdev->pdev.config + offset);
+     default:
+-        hw_error("igd: unsupported read size, %u bytes", size);
++        hw_error("igd: unsupported pci config read at %lx, size %u",
++                 offset, size);
+         break;
      }
  
+     return 0;
+ }
+ 
+-static void vfio_igd_quirk_bdsm_write(void *opaque, hwaddr addr,
+-                                       uint64_t data, unsigned size)
++static void vfio_igd_pci_config_write(VFIOPCIDevice *vdev, uint64_t offset,
++                                      uint64_t data, unsigned size)
+ {
+-    VFIOPCIDevice *vdev = opaque;
+-    uint64_t offset;
+-
+-    offset = IGD_BDSM_GEN11 + addr;
+-
+     switch (size) {
+     case 1:
+         pci_set_byte(vdev->pdev.config + offset, data);
+@@ -470,17 +459,39 @@ static void vfio_igd_quirk_bdsm_write(void *opaque, hwaddr addr,
+         pci_set_quad(vdev->pdev.config + offset, data);
+         break;
+     default:
+-        hw_error("igd: unsupported read size, %u bytes", size);
++        hw_error("igd: unsupported pci config write at %lx, size %u",
++                 offset, size);
+         break;
+     }
+ }
+ 
+-static const MemoryRegionOps vfio_igd_bdsm_quirk = {
+-    .read = vfio_igd_quirk_bdsm_read,
+-    .write = vfio_igd_quirk_bdsm_write,
+-    .endianness = DEVICE_LITTLE_ENDIAN,
++#define VFIO_IGD_QUIRK_MIRROR_REG(reg, name)                            \
++static uint64_t vfio_igd_quirk_read_##name(void *opaque,                \
++                                           hwaddr addr, unsigned size)  \
++{                                                                       \
++    VFIOPCIDevice *vdev = opaque;                                       \
++                                                                        \
++    return vfio_igd_pci_config_read(vdev, reg + addr, size);            \
++}                                                                       \
++                                                                        \
++static void vfio_igd_quirk_write_##name(void *opaque, hwaddr addr,      \
++                                        uint64_t data, unsigned size)   \
++{                                                                       \
++    VFIOPCIDevice *vdev = opaque;                                       \
++                                                                        \
++    vfio_igd_pci_config_write(vdev, reg + addr, data, size);            \
++}                                                                       \
++                                                                        \
++static const MemoryRegionOps vfio_igd_quirk_mirror_##name = {           \
++    .read = vfio_igd_quirk_read_##name,                                 \
++    .write = vfio_igd_quirk_write_##name,                               \
++    .endianness = DEVICE_LITTLE_ENDIAN,                                 \
+ };
+ 
++VFIO_IGD_QUIRK_MIRROR_REG(IGD_BDSM_GEN11, bdsm)
++
++#define IGD_BDSM_MMIO_OFFSET    0x1080C0
++
+ void vfio_probe_igd_bar0_quirk(VFIOPCIDevice *vdev, int nr)
+ {
+     VFIOQuirk *quirk;
+@@ -510,8 +521,9 @@ void vfio_probe_igd_bar0_quirk(VFIOPCIDevice *vdev, int nr)
+     quirk = vfio_quirk_alloc(1);
+     quirk->data = vdev;
+ 
+-    memory_region_init_io(&quirk->mem[0], OBJECT(vdev), &vfio_igd_bdsm_quirk,
+-                          vdev, "vfio-igd-bdsm-quirk", 8);
++    memory_region_init_io(&quirk->mem[0], OBJECT(vdev),
++                          &vfio_igd_quirk_mirror_bdsm, vdev,
++                          "vfio-igd-bdsm-quirk", 8);
+     memory_region_add_subregion_overlap(vdev->bars[0].region.mem,
+                                         IGD_BDSM_MMIO_OFFSET, &quirk->mem[0],
+                                         1);
 -- 
 2.45.2
 
