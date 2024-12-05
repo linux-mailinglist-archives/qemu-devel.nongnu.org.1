@@ -2,87 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77BF29E5D23
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Dec 2024 18:31:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB6E69E5D68
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Dec 2024 18:37:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tJFgG-0003iW-QD; Thu, 05 Dec 2024 12:30:24 -0500
+	id 1tJFle-0006HL-7i; Thu, 05 Dec 2024 12:35:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1tJFgA-0003iE-NI
- for qemu-devel@nongnu.org; Thu, 05 Dec 2024 12:30:19 -0500
-Received: from mail-ot1-x333.google.com ([2607:f8b0:4864:20::333])
+ id 1tJFlc-0006Gj-4K
+ for qemu-devel@nongnu.org; Thu, 05 Dec 2024 12:35:56 -0500
+Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1tJFg9-00033C-9a
- for qemu-devel@nongnu.org; Thu, 05 Dec 2024 12:30:18 -0500
-Received: by mail-ot1-x333.google.com with SMTP id
- 46e09a7af769-71d56fe8240so661818a34.0
- for <qemu-devel@nongnu.org>; Thu, 05 Dec 2024 09:30:16 -0800 (PST)
+ id 1tJFla-0004AF-I6
+ for qemu-devel@nongnu.org; Thu, 05 Dec 2024 12:35:55 -0500
+Received: by mail-pl1-x62f.google.com with SMTP id
+ d9443c01a7336-215ac560292so12198985ad.2
+ for <qemu-devel@nongnu.org>; Thu, 05 Dec 2024 09:35:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1733419816; x=1734024616; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=linaro.org; s=google; t=1733420153; x=1734024953; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=6QZvgeI+YuoODB9ffzZ/nnQfxTjkTOLw79885ZiR3MA=;
- b=stiU/1BK3s6xidmxsgszgP2GwDzK1WYh+R5FLv/uuMSkKQTy0p5t/zJYKFduTnKw4K
- z+fPbhCbUiVbJG1KzTSZTM3fcpRnFQsOPiWy/PqjoYQ6rBo9xr8jU9vsjYNrIfndEDvP
- 6FouchSEyn1myqsBKJI8kOP6HYARrV9UR5ZZaPArmdpy1KU9hsClNn6+3XjfePwUQFKu
- TejNxyM0be4OAF+EFCYdL201BDGcOUPiirBY0qPN33F9m+IyuzFnjvJV30GwrQFh/L4U
- Vn3XG9XVaA7kLASD7tFWjZJGyC7ON8xPCml7+u/kVlXW1GM3nKBzuEr8JqEWDJ2r6NLs
- zVkA==
+ bh=8Td0DZml5st5pFBZI4ZJuzH63i/pRhQ7OVJNuCDCCJo=;
+ b=Neyd2PEIASHQ+/0wjPIFaUobhB9+nY3Af8yOIjjmoLUOveXYbEuqCvt7AjAbml0kbK
+ whM4w8WXJhbtrrb8b7OgLGcdlAImOIqBao7r4aEt3pZSYXtRvOKVNus3zpTLx9ktmGji
+ LF/45V0xOqKshtxY2TBVMfgOfkpE5STa6FuGFIu918YGW4P6BhWE3+U09qFjCckdUIc/
+ PO4u92NyzdFI3edNpzH+9u8AfdMgC20CZNn8CncDRb3/Da3EuhecV1LGa10NvHuaINSB
+ NVSIn+XWiuJfwDDH+dFz3WwKZ5iYd/mo7LMt3AMLSYizs2zLt2LcjParyTkoSivGzlL3
+ iObw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733419816; x=1734024616;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=1e100.net; s=20230601; t=1733420153; x=1734024953;
+ h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=6QZvgeI+YuoODB9ffzZ/nnQfxTjkTOLw79885ZiR3MA=;
- b=WSvxjIcwIW6FmVdFPrMehaBmMCSpUuGT7MJXNuGGm2aRgb+K1sipM3HHXeeKJ8OKxW
- ioZ+a5AaOxEZvIL5P5YEkDx0GJXUL5O4twdA0NQreGnkWszReQb8840/FBnZWCArcNkz
- IPA2F6/j5xmmEtwRW1CnT2XlqIKhqJOndIIfWFSQXv0z0v+rhqVRs2W1c92ELpUqifmC
- b72dufM5ccaLvi141biFTU/KfHUtDa/7SO4Nbfcl8xorpngkZ5ULemLygRIaU0W+5fOU
- Fa1Vkdll8Z5VjXA4d2UUcBwCLhWrADv7HTo/vVdhT3++ZduyWnV2Y4RW6J34LQPuu/xz
- X1Ww==
+ bh=8Td0DZml5st5pFBZI4ZJuzH63i/pRhQ7OVJNuCDCCJo=;
+ b=CS3emXwUuEr6bOj/dNHsZAt2XJnqhR0O7OHiXt2N7FsFAqRYLJLTEPIHg23q1KfyAS
+ ACJqDu9le57LsmBbjprubU6hob0keMgIgP1zqQvAR0PiCKSoZ+GvyIw4LXYQ64n/eoFO
+ OM35m6XU27EoHEtrcel6QihzTvQkcB4vZrNx/GlcacmbgqvcVf2kGh5twrEpTBvp6kDk
+ bmQRVJFlNusxytWcrl+tMaPgDc5SN48W7Pxp/SgwRgJHbUfJPyHS+jdoA9U3Z5mQIaky
+ HRk2NiIbrZGd8BwsjEBPA0EK8AYjPD6yJ50CcV0rdoXJPKIGOLv96W49WZBCARwH+EYf
+ 3fdA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUCYccfAQ6au/kVZ5+G62cVm/klBNXDx5yGGcV2QFNzHUhw2UFEPnujW4BnBC2+wNcGD3WaCDPAHKjf@nongnu.org
-X-Gm-Message-State: AOJu0YzKkoSVMdZBhjO5pa1EB35Y9pBssvE7Ku/RSeatvyLOsLFzGOMN
- rGmfB2raO36Taw72FIUcdhPF1AnyTrD7fs5dy5JvzuNKGxwryBeSPCcYXMZpdug=
-X-Gm-Gg: ASbGncvZydZ8B+5YIObjuBm18R57ONd3GXjrlyhBEeDHCmxiasOsdhMlqprDj1IWLbR
- taUW/I9F5wufVHWX0H8Kno5ZUmOhfHVyIaqmtu9No/Ro4NMmh/ET7ESnliRYWDois+P+CeL77x1
- e6yo2aYZtGUVD0aX/xqg8jnkerViwnLgUablSb/jN6HCISbOG3+iTYAGZSQV0741kQheO0Zg/DR
- mMrro7yvyxdz6hzATuARQ932JIfqhskeZhUhtF7bNj+hzDELODp4Utu1YBlTrS7LDyG3kPUij8D
- gANIZGv94IWPdohvy31wCw==
-X-Google-Smtp-Source: AGHT+IEQGOCriwIVpIpk8F9BDJebGWNAeLZvcmK2Mt1ymCqqabqehZuA2Y22ccmjnYIsnai7mwMkAw==
-X-Received: by 2002:a05:6830:924:b0:71d:4ff0:f8ea with SMTP id
- 46e09a7af769-71dad60d88dmr11178674a34.10.1733419815856; 
- Thu, 05 Dec 2024 09:30:15 -0800 (PST)
+ AJvYcCWUbws+O1rDZK9BIHffn83TyO11uEnZcVt5am0hSX+vpjSoa7PCdox2PKwcjKVIkFOhUe+c/KumaYwR@nongnu.org
+X-Gm-Message-State: AOJu0YzwrAok14Xi6eDYSghftVch+9OG4UR+po9QYm/G70abD5iuVjTt
+ jdAiGei1nee47wfCpUSHIWrLwhxcs68jBc8i2gw2vYvmpY0ldWGvASz6XG9na/k=
+X-Gm-Gg: ASbGnctkJg5cdMeYE4gADnS992Y885ZPGGG3PUBLholab9v55X/qfqscf8PN2qOIAIt
+ 7PXI17/vQzvDtrDumbGDNsewFOjQk1WJz2CnBi0QNBw5pOASK58AnR5Tp16EkwH0Th94V7S/iVb
+ e+KNO1Q2XfqV59yPXkjW7m1OK1/ISvlR8KdqnYPHcQB2K3XUIb/plYW4/eRt0B6Z+hUtsTb6uHm
+ 9OgXQmphlYJj7uSFrOzQiUEqmhO2IThIxB584wW/+ThuLpSmzT0cQ8cMwakEGaHqzccFxFDCz2U
+ 30sO1X0wYl0c3KHJRv5AQg==
+X-Google-Smtp-Source: AGHT+IFIgRbcyLRKO6hR9+7rz+4M5tS472HlgqsvjjNmRpAgpA5VOaW4W24GRUfzSFw05HZ09Q5kiQ==
+X-Received: by 2002:a17:902:c412:b0:20c:9821:69af with SMTP id
+ d9443c01a7336-215bd11cb7dmr123963295ad.45.1733420152833; 
+ Thu, 05 Dec 2024 09:35:52 -0800 (PST)
 Received: from [192.168.1.67] (216-180-64-156.dyn.novuscom.net.
  [216.180.64.156]) by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-7fd15706655sm1386132a12.42.2024.12.05.09.30.15
+ d2e1a72fcca58-725a2ca6490sm1532689b3a.147.2024.12.05.09.35.52
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 05 Dec 2024 09:30:15 -0800 (PST)
-Message-ID: <997e809f-832c-4bbd-b27e-a722ac835b34@linaro.org>
-Date: Thu, 5 Dec 2024 09:30:14 -0800
+ Thu, 05 Dec 2024 09:35:52 -0800 (PST)
+Message-ID: <c8b34d17-a619-456b-8f6c-ffe0cee027e3@linaro.org>
+Date: Thu, 5 Dec 2024 09:35:51 -0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v3 11/11] tests: add plugin asserting correctness of
- discon event's to_pc
+Subject: Re: [RFC PATCH v3 01/11] plugins: add types for callbacks related to
+ certain discontinuities
 Content-Language: en-US
 To: Julian Ganz <neither@nut.email>, qemu-devel@nongnu.org
-Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Alexandre Iooss <erdnaxe@crans.org>, Mahmoud Mandour <ma.mandourr@gmail.com>
 References: <cover.1733063076.git.neither@nut.email>
- <36d316bf3e8b0aca778c5e8d1acde39a7f361946.1733063076.git.neither@nut.email>
- <d4b17c7d-c1d2-4e43-8eee-d1667e3ee5a2@linaro.org>
- <0e4171ca0baa8727c0bbec7a25fd72d8b8e1e4b8@nut.email>
+ <5e624b7244f1b0b294b28cd513aab04b6b294b1d.1733063076.git.neither@nut.email>
+ <6f182c71-2600-4bbf-ab4c-985ed7e99f71@linaro.org>
+ <67c879bcd5520d6f7bdf30b5f773436678ca8df7@nut.email>
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <0e4171ca0baa8727c0bbec7a25fd72d8b8e1e4b8@nut.email>
+In-Reply-To: <67c879bcd5520d6f7bdf30b5f773436678ca8df7@nut.email>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::333;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-ot1-x333.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x62f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -105,61 +103,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/5/24 05:10, Julian Ganz wrote:
+On 12/5/24 04:44, Julian Ganz wrote:
 > Hi Pierrick,
 > 
-> December 5, 2024 at 12:33 AM, "Pierrick Bouvier" wrote:
->> On 12/2/24 11:41, Julian Ganz wrote:
->>
->>>   +/*
->>>   + * Copyright (C) 2024, Julian Ganz <neither@nut.email>
+> December 4, 2024 at 11:45 PM, "Pierrick Bouvier" wrote:
+>> On 12/2/24 11:26, Julian Ganz wrote:
+>>>   include/qemu/plugin.h | 1 +
+>>>   include/qemu/qemu-plugin.h | 43 ++++++++++++++++++++++++++++++++++++++
+>>>   2 files changed, 44 insertions(+)
+>>>   diff --git a/include/qemu/plugin.h b/include/qemu/plugin.h
+>>>   index 9726a9ebf3..27a176b631 100644
+>>>   --- a/include/qemu/plugin.h
+>>>   +++ b/include/qemu/plugin.h
+> <snip>
+>>> +
+>>>   +/**
+>>>   + * typedef qemu_plugin_vcpu_discon_cb_t - vcpu discontinuity callback
+>>>   + * @vcpu_index: the current vcpu context
+>>>   + * @type: the type of discontinuity
+>>>   + * @from_pc: the source of the discontinuity, e.g. the PC before the
+>>>   + * transition
+>>>   + * @to_pc: the PC pointing to the next instruction to be executed
 >>>   + *
->>>   + * License: GNU GPL, version 2 or later.
->>>   + * See the COPYING file in the top-level directory.
->>>   + */
 >>>
->> Would be nice to include a description of the plugin here.
+>> Missing those parameters when building doc.
+>> include/qemu/qemu-plugin.h:198: warning: Function parameter or member 'id' not described in 'qemu_plugin_vcpu_discon_cb_t'
+>> include/qemu/qemu-plugin.h:289: warning: Function parameter or member 'type' not described in 'qemu_plugin_register_vcpu_discon_cb'
+>> 2 warnings as Errors
 > 
-> Agreed. I'll include one next time.
+> Yes, I forgot about id. But type is clearly documented. Maybe the tool
+> is confused about the name and thinks it's a reserved word or something?
+> In that case I better change that to something else.
 > 
->> When booting an arm64 vm, I get this message:
->> Trap target PC mismatch
->> Expected: 23faf3a80
->> Encountered: 23faf3a84
->>
->>   From what I understand, it means that the next_pc we have is incorrect.
+
+The type (qemu_plugin_discon_type) is documented, but the parameter 
+"type" is not. Even if the name is correctly chosen, you still need to 
+make it appear in the doc.
+
+> And note to self: also test-biuld the docs next time.
 > 
-> Yes, this is indeed incorrect, and also a perfect example why this test
-> plugin exists. There are likely other errors lurking in target specific
-> code. Did you happen to also log interrupts? Do you remember what image
-> you used?
 
-I used exactly this:
-
-./build/qemu-system-aarch64 -plugin 
-./build/tests/tcg/plugins/libdiscons.so -smp 4 -M virt -d plugin -m 8G 
--device virtio-blk-pci,drive=root -drive 
-if=none,id=root,file=./debianaarch64.img -M virt -cpu max,pauth=off 
--drive if=pflash,readonly=on,file=/usr/share/AAVMF/AAVMF_CODE.fd -drive 
-if=pflash,file=./AAVMF_VARS.fd
-
-The arm64 image is a vanilla debian stable I installed.
-AAVMF* files come from qemu-efi-aarch64 debian package.
-
-> 
-> Btw: this also illustrates another issue I have with from_pc: we can
-> test the behavior for to_pc, but doing this meaningfully for from_pc
-> via a plugin is next to impossible because the instruction it points to
-> is not observable via an exec callback. At least not in the general
-> case, even not if we only consider a single type of event.
->
-
-We can store the next_expected pc for each instruction (from 
-current_instruction + insn_length), and we should be able to compare 
-that with the expected from_pc.
-This is mostly what contrib/plugins/cflow.c does.
-
-With that, we can test from_pc.
+I was bitten by this too when I started contributing to plugins, so no 
+worries. It's safer to keep the docs enabled (that's the configure 
+default), even if it adds some latency to the build, especially when 
+touching documented headers.
 
 > Regards,
 > Julian Ganz
