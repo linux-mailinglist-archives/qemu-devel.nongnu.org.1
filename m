@@ -2,77 +2,102 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2221D9E5D21
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DFD39E5D22
 	for <lists+qemu-devel@lfdr.de>; Thu,  5 Dec 2024 18:30:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tJFfg-0003Xu-OE; Thu, 05 Dec 2024 12:29:48 -0500
+	id 1tJFg1-0003aT-Fq; Thu, 05 Dec 2024 12:30:09 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tJFff-0003XK-3Z
- for qemu-devel@nongnu.org; Thu, 05 Dec 2024 12:29:47 -0500
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tJFfd-0002ko-Ku
- for qemu-devel@nongnu.org; Thu, 05 Dec 2024 12:29:46 -0500
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-434a766b475so12084665e9.1
- for <qemu-devel@nongnu.org>; Thu, 05 Dec 2024 09:29:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1733419784; x=1734024584; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=bFGgK1p+XckRKimAjQg/rIk3yfNBLaJvo7hC4EBr6oI=;
- b=GUd72Kfp5zhNfJ856ugVs1wTgktwOZp/YkoFDgt1uqrgzYlNV+5xNx02F6+pRjpokd
- 2dVKo292wcH4wc1IT8eSr6DM4zeEaLK0yQQkQty50QufXDRoAGot7ksB3vob+t7rnUJ6
- /4nq+YId7tNJMPvdabZp5bKeRP+wwzI2De3GkuR7+VsUPH2dEgTf/a37FrFqAl3nnYb5
- GVeit7Qg9+hYQSzzhDVOrBFJ0thFBhvWpmGv1XpSKcMjfdG1TQfzk/wGJf2v0EOrGrkn
- A66gpG/lEP+zmzB87ikkxfsU70m9N+KbAA5MkJXmgeAZy4p81viBx23xy3eaU/5oRAig
- dG8g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733419784; x=1734024584;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=bFGgK1p+XckRKimAjQg/rIk3yfNBLaJvo7hC4EBr6oI=;
- b=tRd1F4ui2kZyof8Y/bclZqlwjSq0moDt9tXO6sHOkGFHV7aDXYclpcwgWOxjxBlEiR
- jHidSyWUVluZzsndd49vgalpNpplk2xTbpW1QuXInGEsqoEA6iPz7kTZLyDrTL0IefWE
- Y/7LNQTAOkhOSnT2yuAMlMay8gvcr3t8gRbKKmHqFVLRhTAKKicsciVGQsHhBA9C8xPW
- 4ysmo2N2K0F9oBcPPyGrUjO6hp9Y91EFL8eIXjRqm0+OrfdPmxksyfTzEN+OtIcwmurI
- aSAi2Kox9pw7jJmlx8f2kBNQmnHxho1bTig/gaDKYCZPqvP1SqfRhR/eBx3/NZ1BFR13
- 2R6g==
-X-Gm-Message-State: AOJu0YwL9gBVBr9Te84Af+7djLM1WpJ4Fg+jeQoDHqY5gECWaN2bEwpI
- HmXBZKA1EpVQL0XWkn8J19qykBr1nJ4B85SvGbBxydLv66jticHYyheeqVj07EKkPMJmSUXS5GE
- Jx5KB8uv21iCDBtV+UAwEUZSvnxGFDUH3crE3OV9iwK6ut78l
-X-Gm-Gg: ASbGncu0C5cTWfArhLIOz36aaI9knrMqUrCvTbIybZt1+xCaYAY9RIlkBWq+EU5fJ+h
- ouj8Rs3phqucBBfcJrMiUqmzKR+VknGKb
-X-Google-Smtp-Source: AGHT+IGs1Mslb5K/bqCKGRNc0b7W9wjb6kzdsTsinAQ7YVF3+n+eJusn4xP2TmCvL87sO+xvZ90PRld7A6+JKmmqkf0=
-X-Received: by 2002:a05:6000:156f:b0:37c:d23f:e464 with SMTP id
- ffacd0b85a97d-385fd421500mr9515912f8f.38.1733419783672; Thu, 05 Dec 2024
- 09:29:43 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <SRS0=3IWU=S6=kaod.org=clg@ozlabs.org>)
+ id 1tJFfq-0003ZX-2w; Thu, 05 Dec 2024 12:29:58 -0500
+Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <SRS0=3IWU=S6=kaod.org=clg@ozlabs.org>)
+ id 1tJFfn-0002mS-Le; Thu, 05 Dec 2024 12:29:57 -0500
+Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4Y41bs6YYvz4x6Y;
+ Fri,  6 Dec 2024 04:29:45 +1100 (AEDT)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (Client did not present a certificate)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4Y41bk4XMlz4wj1;
+ Fri,  6 Dec 2024 04:29:38 +1100 (AEDT)
+Message-ID: <96b027f9-3637-4416-9eba-a175635026ca@kaod.org>
+Date: Thu, 5 Dec 2024 18:29:38 +0100
 MIME-Version: 1.0
-References: <20241201150607.12812-1-richard.henderson@linaro.org>
- <20241201150607.12812-10-richard.henderson@linaro.org>
-In-Reply-To: <20241201150607.12812-10-richard.henderson@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 5 Dec 2024 17:29:32 +0000
-Message-ID: <CAFEAcA-BEXL7bGhv=F06ocq+fxeU_DqWhPRgTzdpAs8=qcFfew@mail.gmail.com>
-Subject: Re: [PATCH 09/67] target/arm: Convert PAC[ID]*, AUT[ID]* to decodetree
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32c.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/4] docs/system/arm/fby35: document execute-in-place
+ property
+To: Pierrick Bouvier <pierrick.bouvier@linaro.org>, qemu-devel@nongnu.org
+Cc: Andrew Jeffery <andrew@codeconstruct.com.au>, qemu-arm@nongnu.org,
+ Troy Lee <leetroy@gmail.com>, Peter Maydell <peter.maydell@linaro.org>,
+ Niek Linnenbank <nieklinnenbank@gmail.com>,
+ Steven Lee <steven_lee@aspeedtech.com>, Joel Stanley <joel@jms.id.au>,
+ alex.bennee@linaro.org, Alistair Francis <alistair@alistair23.me>,
+ Jamin Lin <jamin_lin@aspeedtech.com>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
+References: <20241204203912.3037515-1-pierrick.bouvier@linaro.org>
+ <20241204203912.3037515-3-pierrick.bouvier@linaro.org>
+ <c2e4c538-2e0b-4882-8a92-6ff439cebd09@kaod.org>
+ <3ba7dabb-67cf-450f-828c-5adf7332fc91@linaro.org>
+Content-Language: en-US, fr
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+Autocrypt: addr=clg@kaod.org; keydata=
+ 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
+In-Reply-To: <3ba7dabb-67cf-450f-828c-5adf7332fc91@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
+ envelope-from=SRS0=3IWU=S6=kaod.org=clg@ozlabs.org; helo=mail.ozlabs.org
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.001, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,22 +113,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sun, 1 Dec 2024 at 15:12, Richard Henderson
-<richard.henderson@linaro.org> wrote:
->
-> This includes PACIA, PACIZA, PACIB, PACIZB, PACDA, PACDZA, PACDB,
-> PACDZB, AUTIA, AUTIZA, AUTIB, AUTIZB, AUTDA, AUTDZA, AUTDB, AUTDZB.
->
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->  target/arm/tcg/translate-a64.c | 173 +++++++++------------------------
->  target/arm/tcg/a64.decode      |  13 +++
->  2 files changed, 58 insertions(+), 128 deletions(-)
+On 12/5/24 18:09, Pierrick Bouvier wrote:
+> On 12/5/24 00:18, Cédric Le Goater wrote:
+>> Hello Pierrick,
+>>
+>> Thanks for improving the documentation !
+>>
+>> On 12/4/24 21:39, Pierrick Bouvier wrote:
+>>> Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+>>> ---
+>>>    docs/system/arm/fby35.rst | 3 +++
+>>>    1 file changed, 3 insertions(+)
+>>>
+>>> diff --git a/docs/system/arm/fby35.rst b/docs/system/arm/fby35.rst
+>>> index bf6da6baa2a..ed9faef363c 100644
+>>> --- a/docs/system/arm/fby35.rst
+>>> +++ b/docs/system/arm/fby35.rst
+>>> @@ -45,3 +45,6 @@ process starts.
+>>>        $ screen /dev/tty0 # In a separate TMUX pane, terminal window, etc.
+>>>        $ screen /dev/tty1
+>>>        $ (qemu) c           # Start the boot process once screen is setup.
+>>> +
+>>> +This machine model supports emulation of the boot from the CEO flash device by
+>>> +setting option ``execute-in-place``.
+>>
+>> Could we add a link to the "Boot options" section of the
+>> "Aspeed family boards" document instead ?
+>>
+> 
+> The problem is that the aspeed board has other options (fmc-model, spi-model), so it would be confusing for the reader.
 
-Well, that's certainly a more compact representation than we had before :-)
+ok. Just to clarify, the Aspeed machines always boot from CE0 (if you
+exclude rainier).
 
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+With the "execute-in-place" option, the CPU fetches instructions to
+execute by reading CE0 and not from a preloaded ROM initialized at
+machine init time. I think it is good to mention the difference and
+the impact on performance : It is more accurate modeling but slower.
 
-thanks
--- PMM
+> It's worth repeating what the option means IMHO.
+
+sure. np.
+
+Thanks,
+
+C.
 
