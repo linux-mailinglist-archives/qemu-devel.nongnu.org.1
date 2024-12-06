@@ -2,78 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 044FB9E750F
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Dec 2024 17:04:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 601849E7523
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Dec 2024 17:09:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tJanj-00081M-2G; Fri, 06 Dec 2024 11:03:31 -0500
+	id 1tJasN-0004Zn-NQ; Fri, 06 Dec 2024 11:08:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tJand-00080v-QP
- for qemu-devel@nongnu.org; Fri, 06 Dec 2024 11:03:26 -0500
-Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tJanb-0006ek-J9
- for qemu-devel@nongnu.org; Fri, 06 Dec 2024 11:03:24 -0500
-Received: by mail-ed1-x52b.google.com with SMTP id
- 4fb4d7f45d1cf-5cecbddb574so2570804a12.1
- for <qemu-devel@nongnu.org>; Fri, 06 Dec 2024 08:03:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1733501002; x=1734105802; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=VYpU7huxerH/xbD8v7ChQtnPggNL6qf14qnBxnoC1oI=;
- b=WRwhkS61AoxTnnz0rKZntBeA6O3V6Kj4UebYOkxnMGLv44vcg7Bc74/vBQIiOkQqBC
- oOrLz+niCw8j37xK1roiJXA0FPN7W9odSItdVOD9++F/ytlcqcI4Rqa0n/E9jy8z7rKF
- dIDgPaoETysp9uSntJGP8zGUGiuRm6C35UPQqvuLYUqMt+VR4QX0UjVJVzH1Pb1ejHBN
- d+BX19rvGeJKYF4K1NIfTiQJguPyBGoY/AKbv0kmHbo0GAJ2fTyZx5ccuiZNPVuOMVQV
- /bJ9EcjhEOabfbEyEq/8yGjSgtzQPX4UYvPCfDiARN6sUlVM44sCTA4wBCeKK8BDtuC0
- /b6Q==
+ (Exim 4.90_1) (envelope-from <alex.williamson@redhat.com>)
+ id 1tJasG-0004Sm-Ng
+ for qemu-devel@nongnu.org; Fri, 06 Dec 2024 11:08:13 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <alex.williamson@redhat.com>)
+ id 1tJasD-00080z-Dj
+ for qemu-devel@nongnu.org; Fri, 06 Dec 2024 11:08:12 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1733501284;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=VAx9XHZ8lL9jBGampJQkp2O3S0lS12uEwutLaGi6ckg=;
+ b=QrhtlZNW4QBBSg53ERuNcQAMTFFDSj0DnK1nGk1lDeU6YH42T59jBGLFDkwZfXqfBnXUfZ
+ bF1K47qgEb3iVENPHMR4UyY4tfQHwGdlIOcTPsJgYmkWHsNU06exEM16sgR9Cwd66QT1kc
+ m8oj35WWBUI6QqRK6rOGyCFUYUo/DXQ=
+Received: from mail-io1-f71.google.com (mail-io1-f71.google.com
+ [209.85.166.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-621-097H9KNlNG-ov7d97PzOLA-1; Fri, 06 Dec 2024 11:08:03 -0500
+X-MC-Unique: 097H9KNlNG-ov7d97PzOLA-1
+X-Mimecast-MFC-AGG-ID: 097H9KNlNG-ov7d97PzOLA
+Received: by mail-io1-f71.google.com with SMTP id
+ ca18e2360f4ac-843e2e46265so34090739f.0
+ for <qemu-devel@nongnu.org>; Fri, 06 Dec 2024 08:08:03 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733501002; x=1734105802;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=VYpU7huxerH/xbD8v7ChQtnPggNL6qf14qnBxnoC1oI=;
- b=i9457XFeesBmyoB5bgZdEWxtkk2aaLxltZYfOrBLKlGoH5gZZkSy+J6cRys8o3bkXm
- UkNHd8Fny/kREBjtdKgn5GIFZKQ935Ot8LK5wOqgTrrARXxrCfU8fvcazjDd23XCTx8y
- ONiobSusvmZJzGNNsySMEgyZd4mousDlRsuyNoeTByqoVGKTc8MPtO15kWuiSmu3O/QO
- MnoquMcGV8INDXJ0JrcCkkDn4iGaPJ5B1q1ezdNZ5hHRYGB+qzbk6EibbsstRte7VdQQ
- QbNbx94yXlIjhxZE8vGPolYnyxQNb4d+gUn7nTkGFh9bRMs1pzxfSoEn4oS7wjl1KqKn
- 8TpA==
-X-Gm-Message-State: AOJu0YxyZO3cKRxYZBILTP8XSbwfArozwC7+zaZH4yxPqvt0rlSF2WLr
- Vl2+eXy2Q5aKfNFZnZK3blUeGFZ+NuH/bDzFV8RwJRmDcslUDNG3V2m2zyD0YTdCZMxuOo69kUW
- ZU7FdbuI7QUzsY5xqPaPvqsOZt2kiuVo+6+apkFjCfbL0l9uw
-X-Gm-Gg: ASbGncs5TOIsFySZnZu6VCS3A6MOH/W+XRfdRamjP07GYj8JfLSGPhCu9hMGDG6F5R4
- K8CCsOGfHTEKl5Avu7qce3zU3SpRRJKkH
-X-Google-Smtp-Source: AGHT+IEreAFspqL0AOwuuu47nU2GXVOINmLqdg+fePx1E/ZW/CpI/UOrWQu6vgJhW9Vusl4IEdbM7uOb9ewLi0Qv7Dw=
-X-Received: by 2002:a05:6402:3881:b0:5cf:c97c:821d with SMTP id
- 4fb4d7f45d1cf-5d3be462da9mr2885114a12.0.1733501001674; Fri, 06 Dec 2024
- 08:03:21 -0800 (PST)
+ d=1e100.net; s=20230601; t=1733501283; x=1734106083;
+ h=content-transfer-encoding:mime-version:organization:references
+ :in-reply-to:message-id:subject:cc:to:from:date:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=VAx9XHZ8lL9jBGampJQkp2O3S0lS12uEwutLaGi6ckg=;
+ b=BiqOExyrfyZ1v1By1D9Rza3MsZAMcTinWkyZ+PNvD7zsoR7zJ/So/sQlNVDBcx0bq3
+ KR+TNdkrZsIB6YbtXBQJAtZjvS2dIY2awMQrJ2UtAT6nZ/V6n+mGBVwjYjvDCVr3FzpE
+ dOKsOpbnGRxPG1wlKCGLmd6kQQXfryVe1PFxOCvhsBz6z9qdMr5ifQApYcb3Ht4q40K/
+ LmVNPMSL88Dqrn5zWqdHIVD7vv/LztZ38mHKCfAb0AblU3hjaCoOAZSeDRoxfSXRJqGP
+ IIO8cynPoXEVj7kjiJvkgx/XOneNT8/B9V0iqi45OG8evMUA2W8c/EtQVfdtqxS6czZI
+ TYdw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUDQuBRp5p+acheoH9B+uB3M/EAh7g8s/ZCSEXv/wYfPTKKcAnqFEY+cstKMyTu3OgoXt5h9zlkEt3q@nongnu.org
+X-Gm-Message-State: AOJu0YylosvOPFlIm9JAqvbjAvlWAAn/gH/qVoosAVLs+AOx7FmShyR/
+ 6mWBoXBDq6Wq3hKcU5VQ/7MW1lm8uM1L9Lcpue7UbI42lOuOXf+YDj2PlVSoXaiKl3aBc1j0ji0
+ vUB8aTHMk4gRXD5pKJaaU7uV7uwOBIXi0VpYbOdBfO11q3syn1Rqi
+X-Gm-Gg: ASbGncvldQG7oNNTJyFA9aI+uqw2XaPVv2CO036gC+ZJHt7UI8JhVmzT2AomPqnpA3b
+ NKxdkJv7NeZfnj6TGTqGr+eRYVPX4zIX+rxJ7tSEQZFs+hkAEKOX2O7jz6jL0AiGI2w/iTTBDPY
+ JkfGnGUpmFXZoJCwWEIoslDNaBlaWxbNzLhJfBVVH79mn7OgWyEq6LSoBbGaIw/6KgF+MOOyWPh
+ /C0HXLFd9EGD1OZmFhXwTIGsb1D/5yjZGMxoxUoxNvcF8imQbfjvQ==
+X-Received: by 2002:a05:6e02:1544:b0:3a7:e23c:d86c with SMTP id
+ e9e14a558f8ab-3a811e4b82dmr10441155ab.6.1733501282859; 
+ Fri, 06 Dec 2024 08:08:02 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGkf3QHhoWy/ERdP/UljwO9AsSonS7aK6j3Oq68fD58PIv8XIIyr7AmqTF2OgBCYr0piEvzoQ==
+X-Received: by 2002:a05:6e02:1544:b0:3a7:e23c:d86c with SMTP id
+ e9e14a558f8ab-3a811e4b82dmr10441065ab.6.1733501282519; 
+ Fri, 06 Dec 2024 08:08:02 -0800 (PST)
+Received: from redhat.com ([38.15.36.11]) by smtp.gmail.com with ESMTPSA id
+ e9e14a558f8ab-3a808db1f49sm11632175ab.34.2024.12.06.08.08.01
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 06 Dec 2024 08:08:01 -0800 (PST)
+Date: Fri, 6 Dec 2024 09:07:59 -0700
+From: Alex Williamson <alex.williamson@redhat.com>
+To: Tomita Moeko <tomitamoeko@gmail.com>
+Cc: =?UTF-8?B?Q8OpZHJpYw==?= Le Goater <clg@redhat.com>,
+ qemu-devel@nongnu.org, Corvin =?UTF-8?B?S8O2aG5l?= <c.koehne@beckhoff.com>
+Subject: Re: [PATCH v4 00/10] vfio/igd: Enable legacy mode on more devices
+Message-ID: <20241206090759.7e2ea1cc.alex.williamson@redhat.com>
+In-Reply-To: <20241206122749.9893-1-tomitamoeko@gmail.com>
+References: <20241206122749.9893-1-tomitamoeko@gmail.com>
+Organization: Red Hat
 MIME-Version: 1.0
-References: <20241201150607.12812-1-richard.henderson@linaro.org>
- <20241201150607.12812-53-richard.henderson@linaro.org>
-In-Reply-To: <20241201150607.12812-53-richard.henderson@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 6 Dec 2024 16:03:10 +0000
-Message-ID: <CAFEAcA84cd_q8WJ8ZVg05qbxb=FfsKgN2fBndoyT8VGOBsZixA@mail.gmail.com>
-Subject: Re: [PATCH 52/67] target/arm: Convert FABS,
- FNEG (vector) to decodetree
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124;
+ envelope-from=alex.williamson@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -50
+X-Spam_score: -5.1
+X-Spam_bar: -----
+X-Spam_report: (-5.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.996,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,50 +108,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sun, 1 Dec 2024 at 15:19, Richard Henderson
-<richard.henderson@linaro.org> wrote:
->
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->  target/arm/tcg/translate-a64.c | 61 ++++++++++++++++++----------------
->  target/arm/tcg/a64.decode      |  7 ++++
->  2 files changed, 39 insertions(+), 29 deletions(-)
->
-> diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
-> index 613dcdb9a2..31272c1878 100644
-> --- a/target/arm/tcg/translate-a64.c
-> +++ b/target/arm/tcg/translate-a64.c
-> @@ -9153,6 +9153,28 @@ static bool trans_SHLL_v(DisasContext *s, arg_qrr_e *a)
->      return true;
->  }
->
-> +static bool do_fabs_fneg_v(DisasContext *s, arg_qrr_e *a, bool neg)
-> +{
-> +    int check = fp_access_check_vector_hsd(s, a->q, a->esz);
-> +    uint64_t sign;
-> +
-> +    if (check <= 0) {
-> +        return check == 0;
-> +    }
-> +
-> +    sign = 1ull << ((8 << a->esz) - 1);
-> +    if (neg) {
-> +        gen_gvec_fn2i(s, a->q, a->rd, a->rn, sign,
-> +                      tcg_gen_gvec_xori, a->esz);
-> +    } else {
-> +        gen_gvec_fn2i(s, a->q, a->rd, a->rn, sign - 1,
-> +                      tcg_gen_gvec_andi, a->esz);
-> +    }
-> +    return true;
-> +}
+On Fri,  6 Dec 2024 20:27:38 +0800
+Tomita Moeko <tomitamoeko@gmail.com> wrote:
 
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+> This patchset extends the support of legacy mode igd passthrough to
+> all Intel Gen 11 and 12 devices (including Ice Lake, Jasper Lake,
+> Rocket Lake, Alder Lake and Raptor Lake), and emulates GGC register
+> in MMIO BAR0 for better compatibiltiy (It is tested Windows and GOP
+> driver will read this MMIO register).
+> 
+> It also replaces magic numbers with macros to improve readability,
+> and aligns behavior (BDSM registor mirroring and GGMS calculation for
+> gen7) with i915 driver to avoid possible issues.
+> 
+> The x-igd-gms option removed in 971ca22f041b ("vfio/igd: don't set
+> stolen memory size to zero") is also added back so that data stolen
+> memory size can be specified for guest. It is tested that GMS may
+> related to framebuffer size, a small GMS value may cause display issues
+> like blackscreen. It can be changed by DVMT Pre-allocated option in
+> host BIOS, but not all BIOS comes with this option. Having it in QEMU
+> helps resolves such issues.
+> 
+> This patchset was verified on Intel i9-12900K CPU(UHD 770, 8086:4680)
+> with custom OVMF firmware [1] and IntelGopDriver extracted from host
+> bios. IGD device works well in both Windows and Linux guests, and
+> scored 726 in 3DMark Time Spy Graphics on Windows guest.
+> 
+> [1] https://github.com/tomitamoeko/edk2/commits/igd-pt-adl/
+> 
+> Btw, IO BAR4 seems never be used by guest, and it the IO BAR itself
+> is not working on Gen11+ devices in my experiments. There is no hints
+> about that in old commit message and mailing list. It would be greatly
+> appreciated if someone shares the background.
+> 
+> Changelog:
+> v4:
+> * Move "vfio/igd: fix GTT stolen memory size calculation for gen 8+" to
+>   the first.
+> Link: https://lore.kernel.org/qemu-devel/20241205105535.30498-1-tomitamoeko@gmail.com/
 
-Annoying FEAT_AFP wrinkle: for FPCR.AH=1 we will need to make
-fabs and fneg not flip the sign bit for NaNs. I guess that means
-AH will need to be a tbflags bit so we can generate the nice
-vector code for AH=0 and fall back to something else for AH=1.
+Series:
 
-thanks
--- PMM
+Reviewed-by: Alex Williamson <alex.williamson@redhat.com>
+
 
