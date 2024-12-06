@@ -2,64 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A91B79E7512
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E2E79E7510
 	for <lists+qemu-devel@lfdr.de>; Fri,  6 Dec 2024 17:04:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tJan8-0007hu-Nm; Fri, 06 Dec 2024 11:02:54 -0500
+	id 1tJanD-0007kO-Gx; Fri, 06 Dec 2024 11:02:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tJan1-0007fq-RB
- for qemu-devel@nongnu.org; Fri, 06 Dec 2024 11:02:48 -0500
-Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
+ id 1tJan4-0007gU-DB
+ for qemu-devel@nongnu.org; Fri, 06 Dec 2024 11:02:51 -0500
+Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tJamy-0006Ut-6t
- for qemu-devel@nongnu.org; Fri, 06 Dec 2024 11:02:47 -0500
-Received: by mail-wr1-x42a.google.com with SMTP id
- ffacd0b85a97d-385d7f19f20so1060393f8f.1
- for <qemu-devel@nongnu.org>; Fri, 06 Dec 2024 08:02:43 -0800 (PST)
+ id 1tJan2-0006WS-U2
+ for qemu-devel@nongnu.org; Fri, 06 Dec 2024 11:02:50 -0500
+Received: by mail-wr1-x430.google.com with SMTP id
+ ffacd0b85a97d-3862ca8e0bbso660043f8f.0
+ for <qemu-devel@nongnu.org>; Fri, 06 Dec 2024 08:02:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1733500962; x=1734105762; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=lR3sL4vQ9I6CvOc01/h1HSKTuaHzREP3JJkYjTbyomY=;
- b=h2FuZMtSZq2sdnjZHDUH3QCqJaKNvs/zaUtip65ryDxUeKgtkuXk5J+OFq6dxW7OCf
- 7tHv+bOwl0Hoyvb64g01BldrHKNstybJ4xzG3iecvvUV46rGehQOudenhGuhhBAu3Pyx
- 0IV9xS5yiNKxRhIBv9IrVkMbrpEADFS4Z26Ng4WmkGbqChpX2nW57EULdxtF1PgkwKPi
- JDVNDGbppIQMm980jvjLXY5QWUqV16yU6pHRBZdjV60ZraJq8aSOw8M9UxxJPj/0Q3Ez
- eXvPrhYHYYCZ0/JmHDGRV+B5wImjkhVe61tyCB16gmzJzcRpuRA0Z57f853rMgvWGj4v
- +CBg==
+ d=linaro.org; s=google; t=1733500967; x=1734105767; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=nQKmXaN26XakuY5wULDcEXM0cF+Wz7SAC/9+7yYIy8o=;
+ b=vpuj1E4lLRPpCcRLCBTkfy/9rRaNVJu922Q8vCgHOiokpRNcNLLlhmI6d/CzVT7VJb
+ NOtYPbhYdCqO/DbJgz5rYfDxxW6slD8nVPmLRQum91bv1NlmbUU3bbgW59eYOOXMlebJ
+ X/uBi30eavZHatED+eYVIoSnVjvjJAD4j4yYn76pvHDA+WyVOZV7ZR4FMdBePHHhG1EJ
+ rnect46CAyHOerocw3JR6NJcGw8HHqkgitxqvZUUCdloIyxQMx38dU13zdTjxEEwFc0I
+ jHJdoPjKJZJsCPR3EF8fxS01PjUtyelP5mDq30BaqdUualBxXjTY7OAKMX1xA9y5egyt
+ yjCw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733500962; x=1734105762;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=lR3sL4vQ9I6CvOc01/h1HSKTuaHzREP3JJkYjTbyomY=;
- b=TjWVpU+4/DYN77mpc/U1Huh5DtCUXRGg/v09NvFgAy66vuhfmwSMMGHOYZ4bXSpqdV
- GBH6zDszOsRF+7onVtaajUraahFFjHWzF9JDCsC+yOoVpMJs9HcWrE+HvcFqtrjZGsP8
- Az3GO+A5VoEQSc91LV0hYb/PLw846QafFja0N7p/rvtvfHc2uINvYp29if+dYJDpy+gt
- aUNcDBIEAswgaOZbNg4mRFnuamQtHZ861TSRk6oiCEdmgzNWRY2uwfpCwLVMmZVKIwVE
- +K25HIYrLkTTGBIa2+wVdgNFK1U6V60EGlUNnNt3qxySODZRKSitVed0/japTs4sw72l
- P3Ww==
-X-Gm-Message-State: AOJu0YwvefDtN1HZk1oXwwC7laszaB+OkdUwAR54F3xbdDahRz4LjiQ6
- jK/YMfi3MFrILuNxIwvwt6mmqZvQWZdwtaYO2wPt1uuk7aUbmpZmlVUrsdOeum8=
-X-Gm-Gg: ASbGnctx7IEtM/EJu6FkUwRPsFHP3y2kOzrqxs7PbHXTP0jKQdbZ/2QOYQd4PzSBzXA
- iJYpyAT6YAK4EQXOPjC741K6U9Xvmj+2yBeEX/pXe4FzWjt7H9DX797T+SSbgAjKi5+JbQ6Y74L
- difd6Tb7jTinuicsDweG2rwzzQ9UbLn6gdpAVUTzhEC2l3+ka/ZNM12iDbHTqvraPJfX+I69Ttz
- Vv5w+uhILd/ObMSSHJtkOnXVnXA1vCfCPChImQ1fC5Puze8
-X-Google-Smtp-Source: AGHT+IHjNyo4Zn3uxKcNbbT7zvtvVZdctd9lg8KomvDhsV7UrpTJJc8fIkyJlZZl0ASsvLSR8rAZ+g==
-X-Received: by 2002:a05:6000:2c6:b0:386:3262:cd7d with SMTP id
- ffacd0b85a97d-3863262d11dmr516585f8f.45.1733500962134; 
- Fri, 06 Dec 2024 08:02:42 -0800 (PST)
+ d=1e100.net; s=20230601; t=1733500967; x=1734105767;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=nQKmXaN26XakuY5wULDcEXM0cF+Wz7SAC/9+7yYIy8o=;
+ b=DU8cgM11y1MuXquuUvRposWIP+MCFmcT7VN2iVz4u5wAonktOVPaE+pngUqmd8oW+C
+ PDTvoYAauvEpxPn6paQiOL7uvwyScuDqISYDN5ULrWGO07kKN9oOD9iaFcrD4FioYR+E
+ LTwfafihJ9PDXlKOgiItJWC8JyP4v3BExaIL8DuTPQc0PEw0wJuM9hMYOnpNw5aYNsQH
+ afZQFlj5jldYSAPB4UCcFky2wvvcyfI7BQ/f/OAYVeAYf58Phh+GSqBoVrk+/OMUqd9j
+ fFJyVG4fTNpD3YfMNj9jI8jHDjTPd3sNPUN+o5SxOAQGMgDS4u/GfKxvnSD2ml2Wc8iV
+ d00A==
+X-Gm-Message-State: AOJu0YzMt6509Q2HScRl4q9Vw7fYPJ31W95D03kh3j4mT2FaV5OgyRoY
+ dvzIUYTvgbfqzC7F9X0WvReg4ViYaxtUfjPCtFssTuYHJ0Ir+SFjh+fqtEnA+aM=
+X-Gm-Gg: ASbGncuJl21Zl39rsWyp7tWr4JUY7R+893Bs+1O2dmDL4t/E46AQj1tT5AzLZzsbrYi
+ QsG/h9lnpNDRWx5P5dFqAwIPSUDVCXhfyfHOGhCvsIA2Jk9uVOG3TwoQ2ZnzE7d7flNT+KEyj4M
+ XJ+Vuew4/KvX3BIiIK/R7w1y42gkFqo3Y5tn5YenmPSCKpIKjVI/bFUbt+Nf/R9F5C+fRwPDuxZ
+ M0vHInPZ/ko4F/VUjaqKcnfUS537eWhO1WnWqVu1N6CvTml
+X-Google-Smtp-Source: AGHT+IE3nXxUA+cTQuvr4e8tUAkisFUeUUgQBNAZhHKcI64vMsxb+6R7h86DRQBRBA3novzVjXLzxQ==
+X-Received: by 2002:a05:6000:3c3:b0:385:fb34:d5a0 with SMTP id
+ ffacd0b85a97d-3862b36d067mr3175114f8f.29.1733500961848; 
+ Fri, 06 Dec 2024 08:02:41 -0800 (PST)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-434d04da5e0sm86137845e9.0.2024.12.06.08.02.40
+ ffacd0b85a97d-3861fd46cc8sm4791799f8f.59.2024.12.06.08.02.41
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Fri, 06 Dec 2024 08:02:41 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 607185F8C4;
+ by draig.lan (Postfix) with ESMTP id 75DB25F9EA;
  Fri,  6 Dec 2024 16:02:39 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -67,16 +68,20 @@ Cc: qemu-arm@nongnu.org, Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
  Leif Lindholm <quic_llindhol@quicinc.com>,
  Peter Maydell <peter.maydell@linaro.org>,
  Radoslaw Biernacki <rad@semihalf.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PATCH 0/3] target/arm: implement SEL2 physical and virtual timers
-Date: Fri,  6 Dec 2024 16:02:36 +0000
-Message-Id: <20241206160239.3229094-1-alex.bennee@linaro.org>
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ qemu-stable@nongnu.org
+Subject: [PATCH 1/3] target/arm: document the architectural names of our
+ GTIMERs
+Date: Fri,  6 Dec 2024 16:02:37 +0000
+Message-Id: <20241206160239.3229094-2-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20241206160239.3229094-1-alex.bennee@linaro.org>
+References: <20241206160239.3229094-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::430;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x430.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,34 +104,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Follow Peter's review I've split this into a several patches as there
-are some other fixes that should be made to other EL2 times that
-shouldn't be rolled together.
+As we are about to add more physical and virtual timers lets make it
+clear what each timer does.
 
-v1
-  - improve GTIMER docs
-  - fix gt_recalc bug
-  - address review comments for the main patch
-  - cc qemu-stable (no rush for 9.2.0)
+Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+Cc: qemu-stable@nongnu.org
+---
+ target/arm/gtimer.h | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-Please review.
-
-Alex.
-
-Alex Bennée (3):
-  target/arm: document the architectural names of our GTIMERs
-  target/arm: ensure cntvoff_el2 also used for EL2 virt timer
-  target/arm: implement SEL2 physical and virtual timers
-
- include/hw/arm/bsa.h |   2 +
- target/arm/cpu.h     |   2 +
- target/arm/gtimer.h  |  14 ++--
- hw/arm/sbsa-ref.c    |   2 +
- hw/arm/virt.c        |   2 +
- target/arm/cpu.c     |   4 +
- target/arm/helper.c  | 179 +++++++++++++++++++++++++++++++++++++++++--
- 7 files changed, 194 insertions(+), 11 deletions(-)
-
+diff --git a/target/arm/gtimer.h b/target/arm/gtimer.h
+index b992941bef..de016e6da3 100644
+--- a/target/arm/gtimer.h
++++ b/target/arm/gtimer.h
+@@ -10,11 +10,11 @@
+ #define TARGET_ARM_GTIMER_H
+ 
+ enum {
+-    GTIMER_PHYS     = 0,
+-    GTIMER_VIRT     = 1,
+-    GTIMER_HYP      = 2,
+-    GTIMER_SEC      = 3,
+-    GTIMER_HYPVIRT  = 4,
++    GTIMER_PHYS     = 0, /* EL1 physical timer */
++    GTIMER_VIRT     = 1, /* EL1 virtual timer */
++    GTIMER_HYP      = 2, /* EL2 physical timer */
++    GTIMER_SEC      = 3, /* EL3 physical timer */
++    GTIMER_HYPVIRT  = 4, /* EL2 virtual timer */
+ #define NUM_GTIMERS   5
+ };
+ 
 -- 
 2.39.5
 
