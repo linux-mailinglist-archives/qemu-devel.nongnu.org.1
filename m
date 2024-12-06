@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AC8A9E6E3E
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Dec 2024 13:33:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A5249E6E31
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Dec 2024 13:31:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tJXRN-0005wa-6h; Fri, 06 Dec 2024 07:28:13 -0500
+	id 1tJXRQ-0005x0-AX; Fri, 06 Dec 2024 07:28:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <tomitamoeko@gmail.com>)
- id 1tJXRD-0005w3-En
- for qemu-devel@nongnu.org; Fri, 06 Dec 2024 07:28:03 -0500
-Received: from mail-pg1-x544.google.com ([2607:f8b0:4864:20::544])
+ id 1tJXRF-0005wZ-QX
+ for qemu-devel@nongnu.org; Fri, 06 Dec 2024 07:28:07 -0500
+Received: from mail-pg1-x542.google.com ([2607:f8b0:4864:20::542])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <tomitamoeko@gmail.com>)
- id 1tJXRB-00041H-NK
- for qemu-devel@nongnu.org; Fri, 06 Dec 2024 07:28:02 -0500
-Received: by mail-pg1-x544.google.com with SMTP id
- 41be03b00d2f7-7fc8f0598cdso2457879a12.1
- for <qemu-devel@nongnu.org>; Fri, 06 Dec 2024 04:28:01 -0800 (PST)
+ id 1tJXRE-00041Y-38
+ for qemu-devel@nongnu.org; Fri, 06 Dec 2024 07:28:05 -0500
+Received: by mail-pg1-x542.google.com with SMTP id
+ 41be03b00d2f7-7fd23d9160dso930705a12.2
+ for <qemu-devel@nongnu.org>; Fri, 06 Dec 2024 04:28:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1733488080; x=1734092880; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1733488083; x=1734092883; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=bhIrThlkutEtVHP85kOO3RvGh84lj/zvtAYPVdYZ2YE=;
- b=CfvUoFejQS4B/08LTohEVVac9Omeo/CB3LLX7dRwDFFlrICx03Ndr4FnIHlMIGJIOZ
- haW1yB3yQzfLqDGTWmJ8LdDNRdGoSsar6/kCkgFMOy+kLMOaPEcGpkYq8+9SMKP9yXpt
- 2TPlyz6qspmi3pFhrPGXdxBl10R5pN9jOjXxdQRGe+TdOSaa4sRyN2DIH9+wkrHg98zR
- qGyPCUm65gYBAw22vwSn9O/NkhUUK0ciwzSWfTYjIPMVeX1cnNGNWPhOBLKB2fyzKIXw
- EMWrFeC+DGNgUHLp/c7LTiCOtKvoshhovNTfmu03DBJP/miOW8HwQRwUqWavgDo6kQ1V
- X8rg==
+ bh=yCr1Si5UmdcLC4IV56KLZI508jQrygzNhxY3gT6chl4=;
+ b=mFXTnM3/MwT1HzpLG45V1C/ta/b6UGDKoBqqSEya11Owl7dfr42HEeB6wIQgFDJqEu
+ KEtONb+VqlDwwIm4/K4fcEZ6A//hwKzqEI+wr8dwNKIvZmZBRJYefnVd9crzSY/C2S5t
+ lDcuMxnsOryZqJF3jsAtlX5Mg9lWKEsxoEwTEsBpNYxq2QtuoBJqT5L+ThOmW7kDJI1r
+ VSpva2zun6I/fcZSoFk4WJVv1Fk574un3hF9OMfyk12IZC/qa4/lMOG/Mha+ph0D8Y3v
+ m15RMZZnOuJPgpZjQcPCqrVuQS59kEwum7ziAaFdUZVOK4EGKcSQ9a6NhZqQQIQc8LT7
+ aUYA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733488080; x=1734092880;
+ d=1e100.net; s=20230601; t=1733488083; x=1734092883;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=bhIrThlkutEtVHP85kOO3RvGh84lj/zvtAYPVdYZ2YE=;
- b=MHUjtpG/AsIQKHI09KYrlYNdXHjKkgqqOe5u+rsgJdZXHy55uhhpnigBN+RBIgd9fg
- 9GLibBITyKwuN9ewHpgT7R4hDny+Y09JTQP1KKhyKSDUSK3LpR+oY5zY5WY6+6nshK74
- wcsZoxEntfJnkVYmtBP1EOCf5iEvK2xWnfUvQJvLbBo0plQWM/6G8xvnqHjHhGWGtMgG
- 10JlABDvzavX02uAqZ90FDuX0+KucuGNWPTNWZIi/kS8Vya89oQhAXG6pDWu01TtBom6
- +0AFjJ6apFuHp/9dbxs0t4qyFtBUOHC6xWksz0y3Oi94ne5b8i3+W/F+mvzfoNry0XG7
- 4v4w==
-X-Gm-Message-State: AOJu0YwwTbesM2YUmvM4j3arN7GagGmtG1RUFK/uClBUQbf6e7IReO7s
- rkBvGFeacv9224BJzNST2NEulBLwuntZe54xGA7Jr0uwCj4glRk=
-X-Gm-Gg: ASbGncsakJd+g8pPGVXpgRCuK2DANSSOP+P4N4UZJNg25fWZ9kmypeS6drkV74LI5N7
- eYWE8EC6QMgoFqxrwG0en2Fev7BoByhyvC8ppVL+9D9ILOstMIwHXZ5HPcPOUIWtnZ7XmoFwIU0
- JBtdW88fOyQu0lMqcEtXmOoBwiH8VZ/0kqDe1lQ2tXx5N0C25uFVJNIg4zIdq04y9hUHnLn1XrS
- +GOzECmgHZ7Bteha+ulqgyllfYJ2I8MxQldH+iqCh4teodFPXShggBVkg==
-X-Google-Smtp-Source: AGHT+IH8Qyc65xY1MGfV/+jM0YE3H69rEV7PTkQNx8+hqDRClYm+5KbRHEI8fphq1VTqEXscp/V2jQ==
-X-Received: by 2002:a05:6a20:258a:b0:1e0:d0b9:9a90 with SMTP id
- adf61e73a8af0-1e17d3a210fmr12350637637.13.1733488080300; 
- Fri, 06 Dec 2024 04:28:00 -0800 (PST)
+ bh=yCr1Si5UmdcLC4IV56KLZI508jQrygzNhxY3gT6chl4=;
+ b=SQ3uNieA+2dTIW7DggA26fsxiXhFOAKkZ9jaMRgx0XzyOAwCGUsSoiH/xaSxM4Ea23
+ JXoo0DwiUnnmwKiTlDw2F3RJgPDuqoYP/DVbxO0XpHBi7nNCDRXu2FY1vNT61B3HWZzU
+ JfGSOXIAw/D0zqfwtXPaUzObTMKBZIRlYCogcW4D1T2E5HNzjL2w6ZaXYbVMXEtR0TGY
+ JTWIyL9eFZ1WaA4t7RjCddeOoLEJ/Ua54F6RPPRlo/RCnEUhZbLcTofPMRAURV1W8PEI
+ Gn98tEsr1rUR93aoembPi5ViLaruUw/q07OEcX5A0d45Yus+HyWualH4GJ/mQmcUPend
+ K4Pw==
+X-Gm-Message-State: AOJu0YwqgWZ3iRy/Ux+UdTkF+kO2nDYgj3IPq4DNI4kRrGlKMlg+97Iq
+ KIABqKGu8Z+OJvMP2qDfwXKXh4v23xOPA19DrHLK7biohdlEIG0=
+X-Gm-Gg: ASbGnctfpFsZd6Mghjx8hemoNQNyTCuo8BuKr1CLV+Xfdr0OYlFDFK6RlQBfi4xAlBV
+ agOjLfoAGv0eV5B108pvdee16hJ+7CjRUtZoh3zUdLs8uKEAPI8EeBt3MU+/ni8gzaB9q+6w2HE
+ /LVTwHqQPacheOBP5e22kmciPOps0xdSEHzZGDPruwL4vXauf8QifDzz+mjibssbd4yiy6b4HuT
+ 8DOPXqFlqeLr8cwoKxKv9s0HfzdmW/TbccOAVwqS/B4qfkOG12IJ2w8nA==
+X-Google-Smtp-Source: AGHT+IGZ/H8CQLg0JG+d4G+cGZgkcqsDPjr7UG3EqVLXEihxm4XSJquwabTpAOYvJIQ30SVdp/GkkQ==
+X-Received: by 2002:a05:6a21:99a2:b0:1e0:de01:4407 with SMTP id
+ adf61e73a8af0-1e18713703cmr5172849637.37.1733488082773; 
+ Fri, 06 Dec 2024 04:28:02 -0800 (PST)
 Received: from kotori-desktop.lan ([58.38.120.33])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-7fd15710123sm2579866a12.49.2024.12.06.04.27.58
+ 41be03b00d2f7-7fd15710123sm2579866a12.49.2024.12.06.04.28.00
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 06 Dec 2024 04:27:59 -0800 (PST)
+ Fri, 06 Dec 2024 04:28:02 -0800 (PST)
 From: Tomita Moeko <tomitamoeko@gmail.com>
 To: Alex Williamson <alex.williamson@redhat.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 Cc: qemu-devel@nongnu.org,
  =?UTF-8?q?Corvin=20K=C3=B6hne?= <c.koehne@beckhoff.com>,
  Tomita Moeko <tomitamoeko@gmail.com>
-Subject: [PATCH v4 02/10] vfio/igd: remove unsupported device ids
-Date: Fri,  6 Dec 2024 20:27:40 +0800
-Message-ID: <20241206122749.9893-3-tomitamoeko@gmail.com>
+Subject: [PATCH v4 03/10] vfio/igd: align generation with i915 kernel driver
+Date: Fri,  6 Dec 2024 20:27:41 +0800
+Message-ID: <20241206122749.9893-4-tomitamoeko@gmail.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241206122749.9893-1-tomitamoeko@gmail.com>
 References: <20241206122749.9893-1-tomitamoeko@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::544;
- envelope-from=tomitamoeko@gmail.com; helo=mail-pg1-x544.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::542;
+ envelope-from=tomitamoeko@gmail.com; helo=mail-pg1-x542.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,38 +99,96 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since e433f208973f ("vfio/igd: return an invalid generation for unknown
-devices"), the default return of igd_gen() was changed to unsupported.
-There is no need to filter out those unsupported devices.
+Define the igd device generations according to i915 kernel driver to
+avoid confusion, and adjust comment placement to clearly reflect the
+relationship between ids and devices.
 
-Reviewed-by: Alex Williamson <alex.williamson@redhat.com>
+The condition of how GTT stolen memory size is calculated is changed
+accordingly as GGMS is in multiple of 2 starting from gen 8.
+
 Reviewed-by: Corvin Köhne <c.koehne@beckhoff.com>
 Signed-off-by: Tomita Moeko <tomitamoeko@gmail.com>
 ---
- hw/vfio/igd.c | 10 ----------
- 1 file changed, 10 deletions(-)
+ hw/vfio/igd.c | 45 +++++++++++++++++++++++----------------------
+ 1 file changed, 23 insertions(+), 22 deletions(-)
 
 diff --git a/hw/vfio/igd.c b/hw/vfio/igd.c
-index 73ed1ec8e6..059ed56439 100644
+index 059ed56439..09bd4e5383 100644
 --- a/hw/vfio/igd.c
 +++ b/hw/vfio/igd.c
-@@ -64,16 +64,6 @@ static int igd_gen(VFIOPCIDevice *vdev)
+@@ -59,33 +59,34 @@
+  */
+ static int igd_gen(VFIOPCIDevice *vdev)
+ {
+-    if ((vdev->device_id & 0xfff) == 0xa84) {
+-        return 8; /* Broxton */
++    /*
++     * Device IDs for Broxton/Apollo Lake are 0x0a84, 0x1a84, 0x1a85, 0x5a84
++     * and 0x5a85, match bit 11:1 here
++     * Prefix 0x0a is taken by Haswell, this rule should be matched first.
++     */
++    if ((vdev->device_id & 0xffe) == 0xa84) {
++        return 9;
      }
  
      switch (vdev->device_id & 0xff00) {
--    /* Old, untested, unavailable, unknown */
--    case 0x0000:
--    case 0x2500:
--    case 0x2700:
--    case 0x2900:
--    case 0x2a00:
--    case 0x2e00:
--    case 0x3500:
--    case 0xa000:
--        return -1;
-     /* SandyBridge, IvyBridge, ValleyView, Haswell */
-     case 0x0100:
-     case 0x0400:
+-    /* SandyBridge, IvyBridge, ValleyView, Haswell */
+-    case 0x0100:
+-    case 0x0400:
+-    case 0x0a00:
+-    case 0x0c00:
+-    case 0x0d00:
+-    case 0x0f00:
++    case 0x0100:    /* SandyBridge, IvyBridge */
+         return 6;
+-    /* BroadWell, CherryView, SkyLake, KabyLake */
+-    case 0x1600:
+-    case 0x1900:
+-    case 0x2200:
+-    case 0x5900:
++    case 0x0400:    /* Haswell */
++    case 0x0a00:    /* Haswell */
++    case 0x0c00:    /* Haswell */
++    case 0x0d00:    /* Haswell */
++    case 0x0f00:    /* Valleyview/Bay Trail */
++        return 7;
++    case 0x1600:    /* Broadwell */
++    case 0x2200:    /* Cherryview */
+         return 8;
+-    /* CoffeeLake */
+-    case 0x3e00:
++    case 0x1900:    /* Skylake */
++    case 0x5900:    /* Kaby Lake */
++    case 0x3e00:    /* Coffee Lake */
+         return 9;
+-    /* ElkhartLake */
+-    case 0x4500:
++    case 0x4500:    /* Elkhart Lake */
+         return 11;
+-    /* TigerLake */
+-    case 0x9A00:
++    case 0x9A00:    /* Tiger Lake */
+         return 12;
+     }
+ 
+@@ -258,7 +259,7 @@ static int vfio_igd_gtt_max(VFIOPCIDevice *vdev)
+ 
+     gmch = vfio_pci_read_config(&vdev->pdev, IGD_GMCH, sizeof(gmch));
+     ggms = (gmch >> (gen < 8 ? 8 : 6)) & 0x3;
+-    if (gen > 6 && ggms != 0) {
++    if (gen >= 8 && ggms != 0) {
+         ggms = 1 << ggms;
+     }
+ 
+@@ -668,7 +669,7 @@ void vfio_probe_igd_bar4_quirk(VFIOPCIDevice *vdev, int nr)
+ 
+     /* Determine the size of stolen memory needed for GTT */
+     ggms_mb = (gmch >> (gen < 8 ? 8 : 6)) & 0x3;
+-    if (gen > 6 && ggms_mb != 0) {
++    if (gen >= 8 && ggms_mb != 0) {
+         ggms_mb = 1 << ggms_mb;
+     }
+ 
 -- 
 2.45.2
 
