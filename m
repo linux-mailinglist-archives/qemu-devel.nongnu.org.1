@@ -2,149 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0F369E6C14
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Dec 2024 11:26:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B12F49E6C19
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Dec 2024 11:26:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tJVVR-0001MH-Gk; Fri, 06 Dec 2024 05:24:17 -0500
+	id 1tJVXS-0006Mx-Jg; Fri, 06 Dec 2024 05:26:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tJVVP-0001M9-RU
- for qemu-devel@nongnu.org; Fri, 06 Dec 2024 05:24:15 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tJVVN-00046g-T8
- for qemu-devel@nongnu.org; Fri, 06 Dec 2024 05:24:15 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1733480651;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=f3YRh8Ry2KGPhX6csYnhxSV2wM8ZbGlEptkKb0YWa6Q=;
- b=gxCSSknAi7K4/N5uZwwzIm6Viamhoxc7Dmxvyfrvq2SAYzU6JwFlYzqXfnOsmsrcBP0vnu
- bDh7GkgQwktQjnMeTADDDHzRNA+odMSjwSfy2E2WcQLiGmfeo5i+HtAp35zG4XbMClqMfQ
- HIvHjrfz5LvcMaLA/GKVaZQIAg2D9mE=
-Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
- [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-300-vjLRF6cSNRSmJQKHNt6q6A-1; Fri, 06 Dec 2024 05:24:08 -0500
-X-MC-Unique: vjLRF6cSNRSmJQKHNt6q6A-1
-X-Mimecast-MFC-AGG-ID: vjLRF6cSNRSmJQKHNt6q6A
-Received: by mail-qv1-f70.google.com with SMTP id
- 6a1803df08f44-6d8897ea603so34816876d6.1
- for <qemu-devel@nongnu.org>; Fri, 06 Dec 2024 02:24:08 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <rowanbhart@gmail.com>)
+ id 1tJVXI-0006Ew-GA
+ for qemu-devel@nongnu.org; Fri, 06 Dec 2024 05:26:12 -0500
+Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <rowanbhart@gmail.com>)
+ id 1tJVXF-0004RX-PN
+ for qemu-devel@nongnu.org; Fri, 06 Dec 2024 05:26:11 -0500
+Received: by mail-pl1-x631.google.com with SMTP id
+ d9443c01a7336-215909152c5so21294835ad.3
+ for <qemu-devel@nongnu.org>; Fri, 06 Dec 2024 02:26:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1733480767; x=1734085567; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=fbtdTYVpjiZom2u6PDj/6kuYKtGHTXtnoaoW3mG0VKw=;
+ b=aVmBB9+S4EoGp3upnHIKAldF2i/3ba5j8HheocnXYtmtwOecgzW9ScCakQ1Jq+ljBC
+ YJjylVjrujrRHsYUnrA1klAjIsPY4ULSX3y469vZutOkFyaoWNrq4gJomtahVIQFvLWa
+ Pxcyad7NuVnbsubuGXw6Cz3X8uqUQ9CUmGzl+uE3ce67MVBVXhJmNGcWNKBEJz5QWxoo
+ a85IUyIwUzRkBvAen2WB8sjACdmBN60jdcdBeK7SIfkEYhkiKMPfKYnjyuSsot8hVDs1
+ zOuqmNyakehpLsQt2NK8cMzQ2M0wITwmJSZxIN5/rLfNKTTvdrHo9ZB0/7jhTMRnNAKT
+ cV0Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733480648; x=1734085448;
- h=content-transfer-encoding:in-reply-to:autocrypt:from
- :content-language:references:cc:to:subject:user-agent:mime-version
- :date:message-id:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=f3YRh8Ry2KGPhX6csYnhxSV2wM8ZbGlEptkKb0YWa6Q=;
- b=fMz766jkrSLDfR0jKy3ohGwGgMZNxI8mf1s7jPxN4txaLXRVVhBhXgiNxtitp4/7y+
- ibXrUDwtVMnBHLAlmKiWnTbfIgIcyM4OAPKF0AjjI1zjMTKTzvmtVzwibCLKr3VL8ZMk
- /Pc6HTZaDiCzHz0CUQ1xxDfsF85/Tm+FgEtg2TU/Ta2a/YjirkSCcIwAei1VKACWyM/M
- wIvo/cklLj/zFNfuFiEMzx5s27qNirGp/LZe1aij/e4Ku/hadV8KrgPlfIb7BUxX53rN
- zDW/DTV/9q+/8Oj9YUkMk+n30Emk0XfT0aQtArL6aBr0Ek7QOeHHgOWNEaWxf7f7wnNv
- bRCw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCX/kuwvN14oU6v+aV3zbYYJKOM2yhM7dktv6b/2GbThsaFcJLhz7xazTaG82KlsC+DKvtIK32DIlHEp@nongnu.org
-X-Gm-Message-State: AOJu0Yzep0XiE44zjGh8Mn3mIrveP8OBeGVHorM7S7WKJrmO81YJTqoa
- vrWklBgAujHlHmVkmH3r+bZn3BepsDdCoohXMMVej4rK86R525QwKbagVEUivYZHhixPC0OZ4WG
- MVoqVAVcfmk/1G7BsbpRSXfzJgSwFMDuvfPNQvis2t33GYgnqVMwH
-X-Gm-Gg: ASbGncvZ+7+KSgQK7GlZMIwcJ6A7/diGhdoLwxQG8KJ3d+EDPqpoGWg9d0r9FGP55tR
- tSC0r5VuDai/j1NL1IwyuFauU8Tm9THXbf+5hBFK1EYMvkHm3/rEK1QBU62E2X3xglnNBWL1rE6
- gZBUcgMbqHbe40abCS8/i1O+vI8Ezcjc7w9WTK1NJMYjOUxYC2YYcenM1TirH59h3Em7a3S2+jf
- Nww5cMqRN3eBzNc87yxtMcsuedmTGIOaUTyIRWfpQUxzhBF/1JrgNti1v1Wsuqre6LY2XXf0ZOA
- 7FRNQo799uC3
-X-Received: by 2002:a05:6214:c68:b0:6d8:a3f2:4cc with SMTP id
- 6a1803df08f44-6d8e645ec95mr53667066d6.5.1733480648345; 
- Fri, 06 Dec 2024 02:24:08 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGbVw05Qv2wO0/ajzNtPomq8yNybWwtu720n2BrnhB0Uzvzj4MccRoNIHR69iZyqstqs7J50w==
-X-Received: by 2002:a05:6214:c68:b0:6d8:a3f2:4cc with SMTP id
- 6a1803df08f44-6d8e645ec95mr53666736d6.5.1733480648036; 
- Fri, 06 Dec 2024 02:24:08 -0800 (PST)
-Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
- ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
- by smtp.gmail.com with ESMTPSA id
- 6a1803df08f44-6d8dabfbd23sm17599776d6.115.2024.12.06.02.24.06
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 06 Dec 2024 02:24:07 -0800 (PST)
-Message-ID: <24db9184-16ac-4f95-ace3-b16fdc4bb82d@redhat.com>
-Date: Fri, 6 Dec 2024 11:24:04 +0100
+ d=1e100.net; s=20230601; t=1733480767; x=1734085567;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=fbtdTYVpjiZom2u6PDj/6kuYKtGHTXtnoaoW3mG0VKw=;
+ b=NvAKMhOO2b3KO6uHsgdb43KszUTObMMBcvjfoINwNk7QcgPkIpuqrr2kHvn5Dg/env
+ VoJLJ0zTbRZaSHEXy9ftxkAFH/Q/GeyUfP9d2RQVIQnT7VxVRDNLoMKrFpkneTde5xXB
+ +bfSRRu73Hlo4EhXKrheQdYr96wlDL9Qbd3EGirCacpLNlRloCJ6rQhpgp7CKrJAowwb
+ riYiYJEcFXsDL6RoAZr9Be18cqxKFHrOCqWa3XigzDcjdz9jdl14gR8AID7+xSU7VdR1
+ iRMYooJlJn/TdnpFimghZh6ue9W9oOoc3f+QWF8ts79sB2yrK0YrofXyHBJJAS1MsM5B
+ EJjg==
+X-Gm-Message-State: AOJu0YxhIpPMkD9Jixl2xVbWMdgaeG05XAyI+lxBfp3OmR5BmK9ZH1+M
+ py+OZTMC/crEEk24/dPgn0bvE+fTxUbHBGpwjvEu0sVhBJ31IFXrhixNqKmEPWg=
+X-Gm-Gg: ASbGnctbtpL52Cat7BngK2RTdDO8nwOV1phsWqfozdBFYiISmYh3xqadcPkKdf7F3SH
+ 8FjTSJzh50+kk/B9VQKC17OvSIyeB/djQa2VwlDCBIMHEraUMXlcGsh38/4UzfezJS+3hlHlsHb
+ XSXVV9sEWEO6R9YeUwct7BtEQbBU1IQPKdU95cTkAsCJraoWaVEBd9OaW4UkhfU0Hi4bwk0n/Ie
+ MUivelVJTSP0fIJrIILsEpfW+t/bnTkQ6z4ewRRWl6MTYQ=
+X-Google-Smtp-Source: AGHT+IGqkPXb5n4UvAca38HI1MBXjkZNpFJce/uVvA7HxQk8fWufpzYirBrdr90QDsr0oR4WlqHSug==
+X-Received: by 2002:a17:903:240a:b0:215:6816:6345 with SMTP id
+ d9443c01a7336-21614d74ed8mr40712865ad.16.1733480767016; 
+ Fri, 06 Dec 2024 02:26:07 -0800 (PST)
+Received: from chaos.lan ([50.39.253.148]) by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-215f8e3e452sm25934885ad.43.2024.12.06.02.26.06
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 06 Dec 2024 02:26:06 -0800 (PST)
+From: Rowan Hart <rowanbhart@gmail.com>
+To: qemu-devel@nongnu.org
+Cc: Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Alexandre Iooss <erdnaxe@crans.org>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Mahmoud Mandour <ma.mandourr@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Rowan Hart <rowanbhart@gmail.com>
+Subject: [PATCH v2 0/3] Add additional plugin API functions to read and write
+ memory and registers
+Date: Fri,  6 Dec 2024 02:26:01 -0800
+Message-ID: <20241206102605.961658-1-rowanbhart@gmail.com>
+X-Mailer: git-send-email 2.46.1
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: =?UTF-8?Q?Re=3A_=5BPATCH_v3_00/24=5D_Multifd_=F0=9F=94=80_device_st?=
- =?UTF-8?Q?ate_transfer_support_with_VFIO_consumer?=
-To: Peter Xu <peterx@redhat.com>
-Cc: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>,
- Fabiano Rosas <farosas@suse.de>, Alex Williamson
- <alex.williamson@redhat.com>, Eric Blake <eblake@redhat.com>,
- Markus Armbruster <armbru@redhat.com>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- Avihai Horon <avihaih@nvidia.com>, Joao Martins <joao.m.martins@oracle.com>,
- qemu-devel@nongnu.org
-References: <cover.1731773021.git.maciej.szmigiero@oracle.com>
- <7605f22f-79a9-4e15-b2ae-05d83a52242a@redhat.com> <Z1IeUbDe2pMdyJfD@x1n>
-Content-Language: en-US, fr
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-Autocrypt: addr=clg@redhat.com; keydata=
- xsFNBFu8o3UBEADP+oJVJaWm5vzZa/iLgpBAuzxSmNYhURZH+guITvSySk30YWfLYGBWQgeo
- 8NzNXBY3cH7JX3/a0jzmhDc0U61qFxVgrPqs1PQOjp7yRSFuDAnjtRqNvWkvlnRWLFq4+U5t
- yzYe4SFMjFb6Oc0xkQmaK2flmiJNnnxPttYwKBPd98WfXMmjwAv7QfwW+OL3VlTPADgzkcqj
- 53bfZ4VblAQrq6Ctbtu7JuUGAxSIL3XqeQlAwwLTfFGrmpY7MroE7n9Rl+hy/kuIrb/TO8n0
- ZxYXvvhT7OmRKvbYuc5Jze6o7op/bJHlufY+AquYQ4dPxjPPVUT/DLiUYJ3oVBWFYNbzfOrV
- RxEwNuRbycttMiZWxgflsQoHF06q/2l4ttS3zsV4TDZudMq0TbCH/uJFPFsbHUN91qwwaN/+
- gy1j7o6aWMz+Ib3O9dK2M/j/O/Ube95mdCqN4N/uSnDlca3YDEWrV9jO1mUS/ndOkjxa34ia
- 70FjwiSQAsyIwqbRO3CGmiOJqDa9qNvd2TJgAaS2WCw/TlBALjVQ7AyoPEoBPj31K74Wc4GS
- Rm+FSch32ei61yFu6ACdZ12i5Edt+To+hkElzjt6db/UgRUeKfzlMB7PodK7o8NBD8outJGS
- tsL2GRX24QvvBuusJdMiLGpNz3uqyqwzC5w0Fd34E6G94806fwARAQABzSJDw6lkcmljIExl
- IEdvYXRlciA8Y2xnQHJlZGhhdC5jb20+wsGRBBMBCAA7FiEEoPZlSPBIlev+awtgUaNDx8/7
- 7KEFAmTLlVECGwMFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4AACgkQUaNDx8/77KG0eg//
- S0zIzTcxkrwJ/9XgdcvVTnXLVF9V4/tZPfB7sCp8rpDCEseU6O0TkOVFoGWM39sEMiQBSvyY
- lHrP7p7E/JYQNNLh441MfaX8RJ5Ul3btluLapm8oHp/vbHKV2IhLcpNCfAqaQKdfk8yazYhh
- EdxTBlzxPcu+78uE5fF4wusmtutK0JG0sAgq0mHFZX7qKG6LIbdLdaQalZ8CCFMKUhLptW71
- xe+aNrn7hScBoOj2kTDRgf9CE7svmjGToJzUxgeh9mIkxAxTu7XU+8lmL28j2L5uNuDOq9vl
- hM30OT+pfHmyPLtLK8+GXfFDxjea5hZLF+2yolE/ATQFt9AmOmXC+YayrcO2ZvdnKExZS1o8
- VUKpZgRnkwMUUReaF/mTauRQGLuS4lDcI4DrARPyLGNbvYlpmJWnGRWCDguQ/LBPpbG7djoy
- k3NlvoeA757c4DgCzggViqLm0Bae320qEc6z9o0X0ePqSU2f7vcuWN49Uhox5kM5L86DzjEQ
- RHXndoJkeL8LmHx8DM+kx4aZt0zVfCHwmKTkSTQoAQakLpLte7tWXIio9ZKhUGPv/eHxXEoS
- 0rOOAZ6np1U/xNR82QbF9qr9TrTVI3GtVe7Vxmff+qoSAxJiZQCo5kt0YlWwti2fFI4xvkOi
- V7lyhOA3+/3oRKpZYQ86Frlo61HU3r6d9wzOwU0EW7yjdQEQALyDNNMw/08/fsyWEWjfqVhW
- pOOrX2h+z4q0lOHkjxi/FRIRLfXeZjFfNQNLSoL8j1y2rQOs1j1g+NV3K5hrZYYcMs0xhmrZ
- KXAHjjDx7FW3sG3jcGjFW5Xk4olTrZwFsZVUcP8XZlArLmkAX3UyrrXEWPSBJCXxDIW1hzwp
- bV/nVbo/K9XBptT/wPd+RPiOTIIRptjypGY+S23HYBDND3mtfTz/uY0Jytaio9GETj+fFis6
- TxFjjbZNUxKpwftu/4RimZ7qL+uM1rG1lLWc9SPtFxRQ8uLvLOUFB1AqHixBcx7LIXSKZEFU
- CSLB2AE4wXQkJbApye48qnZ09zc929df5gU6hjgqV9Gk1rIfHxvTsYltA1jWalySEScmr0iS
- YBZjw8Nbd7SxeomAxzBv2l1Fk8fPzR7M616dtb3Z3HLjyvwAwxtfGD7VnvINPbzyibbe9c6g
- LxYCr23c2Ry0UfFXh6UKD83d5ybqnXrEJ5n/t1+TLGCYGzF2erVYGkQrReJe8Mld3iGVldB7
- JhuAU1+d88NS3aBpNF6TbGXqlXGF6Yua6n1cOY2Yb4lO/mDKgjXd3aviqlwVlodC8AwI0Sdu
- jWryzL5/AGEU2sIDQCHuv1QgzmKwhE58d475KdVX/3Vt5I9kTXpvEpfW18TjlFkdHGESM/Jx
- IqVsqvhAJkalABEBAAHCwV8EGAECAAkFAlu8o3UCGwwACgkQUaNDx8/77KEhwg//WqVopd5k
- 8hQb9VVdk6RQOCTfo6wHhEqgjbXQGlaxKHoXywEQBi8eULbeMQf5l4+tHJWBxswQ93IHBQjK
- yKyNr4FXseUI5O20XVNYDJZUrhA4yn0e/Af0IX25d94HXQ5sMTWr1qlSK6Zu79lbH3R57w9j
- hQm9emQEp785ui3A5U2Lqp6nWYWXz0eUZ0Tad2zC71Gg9VazU9MXyWn749s0nXbVLcLS0yop
- s302Gf3ZmtgfXTX/W+M25hiVRRKCH88yr6it+OMJBUndQVAA/fE9hYom6t/zqA248j0QAV/p
- LHH3hSirE1mv+7jpQnhMvatrwUpeXrOiEw1nHzWCqOJUZ4SY+HmGFW0YirWV2mYKoaGO2YBU
- wYF7O9TI3GEEgRMBIRT98fHa0NPwtlTktVISl73LpgVscdW8yg9Gc82oe8FzU1uHjU8b10lU
- XOMHpqDDEV9//r4ZhkKZ9C4O+YZcTFu+mvAY3GlqivBNkmYsHYSlFsbxc37E1HpTEaSWsGfA
- HQoPn9qrDJgsgcbBVc1gkUT6hnxShKPp4PlsZVMNjvPAnr5TEBgHkk54HQRhhwcYv1T2QumQ
- izDiU6iOrUzBThaMhZO3i927SG2DwWDVzZltKrCMD1aMPvb3NU8FOYRhNmIFR3fcalYr+9gD
- uVKe8BVz4atMOoktmt0GWTOC8P4=
-In-Reply-To: <Z1IeUbDe2pMdyJfD@x1n>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -50
-X-Spam_score: -5.1
-X-Spam_bar: -----
-X-Spam_report: (-5.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.996,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
+ envelope-from=rowanbhart@gmail.com; helo=mail-pl1-x631.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -160,28 +101,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hello !
+This patch set follows a previous patch which added the
+qemu_plugin_read_memory_vaddr function and adds a set of similar
+functions to read and write registers, virtual memory, and
+physical memory.
 
-[ ... ]
+The use case I have in mind is for use of QEMU for program analysis and
+testing. For example, a fuzzer which uses QEMU for emulation might wish to
+inject test data into a program at runtime using qemu_plugin_write_memory_vaddr
+(and likewise if testing an operating system or bare metal application using
+qemu_plugin_write_memory_hwaddr). It may also wish to read the initial contents
+of memory using qemu_plugin_read_memory_vaddr/hwaddr.
 
-> Did you test also with commit 5504a8126115 and relevant patches reverted,
-> per mentioned above [1]?  Or vanilla master branch?
+Similarly, a testing framework may wish to fake register values, perhaps to
+simulate a device failure, perhaps by using qemu_plugin_write_register to set a
+register value to an error code.
 
-I am on master and I didn't revert the "Dynamic sized kvm memslots array"
-series, which we know has benefits for other VM configs and workloads.
+I think all this functionality works together to make QEMU
+plugins more powerful and versatile, hopefully removing barriers
+to using upstream QEMU for these tasks which have historically
+required maintaining a QEMU fork downstream (like QEMUAFL
+https://github.com/AFLplusplus/qemuafl), which is tedious, error
+prone, and results in users missing out on enhancements to QEMU.
 
-For testing purposing, we could add a toggle defining a constant number of
-memslots maybe ? and 0 would mean grow-on-demand ?
+A test is provided, compile:
 
-> I wonder whether it shows the same regression in your setup.
+gcc -o tests/tcg/x86_64/inject-target tests/tcg/x86_64/inject-target.c
 
-I didn't look at performance yet and downtime with mlx5 VFs was not a
-big issue either. So I am expecting QE to share test results with vGPUs
-under load.
+And run:
 
-Thanks,
+./build/qemu-x86_64 -d plugin --plugin build/tests/tcg/plugins/libinject.so tests/tcg/x86_64/inject-target
 
-C.
+Hopefully after a number of tries, the inject plugin will inject the right
+value into the target program, leading to a victory message. This plugin
+handles simple "hypercalls", only one of which is implemented and injects
+data into guest memory.
 
+novafacing (3):
+  Expose gdb_write_register function to consumers of gdbstub
+  Add plugin API functions for register R/W, hwaddr R/W, vaddr W
+  Add inject plugin and x86_64 target for the inject plugin
+
+ gdbstub/gdbstub.c                |   2 +-
+ include/exec/gdbstub.h           |  14 +++
+ include/qemu/qemu-plugin.h       | 116 +++++++++++++++--
+ plugins/api.c                    |  66 +++++++++-
+ tests/tcg/plugins/inject.c       | 206 +++++++++++++++++++++++++++++++
+ tests/tcg/plugins/meson.build    |   2 +-
+ tests/tcg/x86_64/Makefile.target |   1 +
+ tests/tcg/x86_64/inject-target.c |  27 ++++
+ 8 files changed, 418 insertions(+), 16 deletions(-)
+ create mode 100644 tests/tcg/plugins/inject.c
+ create mode 100644 tests/tcg/x86_64/inject-target.c
+
+-- 
+2.46.1
 
 
