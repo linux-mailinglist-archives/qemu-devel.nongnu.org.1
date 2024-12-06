@@ -2,74 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52A549E7818
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Dec 2024 19:30:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 46ED29E783F
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Dec 2024 19:42:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tJd5K-0005tW-EQ; Fri, 06 Dec 2024 13:29:50 -0500
+	id 1tJdFn-0007tH-FS; Fri, 06 Dec 2024 13:40:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from
- <1263914829+auto_=qemu-devel-bounces+1263914829=qq.com=nongnu.org@qq.com>)
- id 1tJd5H-0005t9-Bd
- for qemu-devel@nongnu.org; Fri, 06 Dec 2024 13:29:48 -0500
-Received: from xmbghk7.mail.qq.com ([43.163.128.55])
+ (Exim 4.90_1) (envelope-from <mhej@vps-ovh.mhejs.net>)
+ id 1tJdFj-0007sr-O2
+ for qemu-devel@nongnu.org; Fri, 06 Dec 2024 13:40:35 -0500
+Received: from vps-ovh.mhejs.net ([145.239.82.108])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from
- <1263914829+auto_=qemu-devel-bounces+1263914829=qq.com=nongnu.org@qq.com>)
- id 1tJd5D-0000od-D7
- for qemu-devel@nongnu.org; Fri, 06 Dec 2024 13:29:47 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
- t=1733509773; bh=Tya4X6xk2Em9udC+qAiV7Z5rR3qPi1LdIgzkmCpXaXk=;
- h=From:To:Subject:Date:In-Reply-To;
- b=mONM8HTXTxhvHhYblewav1foH9FTxU228APzLYM8dGJHQW85V8Yksvpo0dgITVImv
- iKUsx/3LlqlsiR8FG33Ke9bp19E13mGo1pCmp1NhAVnfNXYHJ4Vo9GXe/QoKjQI8TN
- 3xY1wiu0MhzFcIvJXKUEYs3pN9wzgBTP1lqLA3Zw=
-X-QQ-XMRINFO: MFuljud3PUW4EHVQZqpniSQ=
-X-QQ-XMAILINFO: NmxDRtNfo6mLXkP+nKTzXtpTa2mUpZcj6iNJosSyJjqkwi84iL91oxc8Rcml9E
- JEqyRktnIUbiagYHIgVRJ6Bge8FbPstfOhmHC6jL5Jjur3grZFpICKzirLqZfLI9DnUXDHEhHODC+
- eMQZxre7HcHRs6nQ2ZU/f9bRM+QXcLzcZj+eeGqsqIieBiW57eEP/bm2m6Er/mqRMrAPgNn/AMwh7
- 16hxEtJiKV077eoEXNkCce27F/MC+HKOqh6MVj2xyWC4FihynbWqg+NNFtVQfxr5r+HxisaA8PXse
- zbRCpuVBQSPdNK3pQ/HstS4OuOeUboIstU6SxjRPF3NGJAxcQ3gYiviPIUBI7jQ2QEtmD/O7Ihv7O
- 6a5eVJw5AR7T6/eV9mVpanp+9y67cHmW0pShTExqLwDIBIzHzWUZfqmXnSQhNW8CHItDp7di+9qB3
- pXV833L7Vn/4x6x8YNPY9ERViHkoadIB7LjUYJvuSTZq4ae45CNnK2HQvJia/e1w11GvcIBqd3x8K
- Ijo+p994Ae90LcJR6/YiZUuBWugdTx8qsQumyUYC4dos0rHSmlnwgz7HcCjoGp8HlcOHzCjAaHUVF
- IDYeuA1aEWU4IdXlhpKULT6lEj5RFNH71DdHDLikbZxeUBwaLQAoqtzFwS1JZHIX/D2sBNSlpX7/z
- ew2SkO35wBbkyDC55tthKfajWuZEhfKTdJQ0xR+HqWjAdG7J4/RYTJ15ZpRiwfuFZDWnhJLgUXCN5
- HMBnPyR7/3eJyueG9PPbL/8k/tjz/eqs43Z3dzgYyUl/ziExh6XK8YgHLBqniycuxMaoIRovaKiHH
- 2EIJuIGzTyYp57ssNwbkCaQAWfvQL9BUER7aDyDRybFfoZpmZW11u4QwEdr19wR3nAY5AECq9ZtYr
- twuGx1Jpj5u3WV2JmwXqSiTrOXY4PXNt/XhZboyOsjjptt+Qmfg2nZ9234f/aiGHC4H66JShUqshk
- MQjlLH7kuDpXdP/RW93l1q1OqGPn1kAFqpTyAE4Px/RTc1oUhp1xuvQHxvHAfCrcoa7ERgem3xngD
- M8t9mVdlSbRsMRnff2X+aOVNl1ZC4yNZ44NIq
-From: "=?utf-8?B?MTI2MzkxNDgyOQ==?=" <1263914829@qq.com>
-To: "qemu-devel-request" <qemu-devel-request@nongnu.org>
-Subject: =?utf-8?B?6Ieq5Yqo5Zue5aSNOiBRZW11LWRldmVsIERpZ2Vz?=
- =?utf-8?B?dCwgVm9sIDI2MSwgSXNzdWUgMTA0?=
-Mime-Version: 1.0
-Content-Type: text/html;
-	charset="utf-8"
-Content-Transfer-Encoding: base64
-Date: Sat, 7 Dec 2024 02:26:20 +0800
-X-QQ-AUTO-REPLY: true
-Message-ID: <tencent_7472C33A5D341DB214F0566D@qq.com>
-X-QQ-MIME: TCMime 1.0 by Tencent
-X-Mailer: QQMail 2.x
-X-QQ-Mailer: QQMail 2.x
-In-Reply-To: <mailman.58.1733509514.12711.qemu-devel@nongnu.org>
-X-QQ-mid: rexmmxzc27-2t1733509576tufgredfm
-Received-SPF: pass client-ip=43.163.128.55;
- envelope-from=1263914829+auto_=qemu-devel-bounces+1263914829=qq.com=nongnu.org@qq.com;
- helo=xmbghk7.mail.qq.com
-X-Spam_score_int: 17
-X-Spam_score: 1.7
-X-Spam_bar: +
-X-Spam_report: (1.7 / 5.0 requ) BAYES_40=-0.001, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- FROM_EXCESS_BASE64=0.001, HTML_MESSAGE=0.001, HTML_MIME_NO_HTML_TAG=0.377,
- MIME_HTML_ONLY=0.1, PYZOR_CHECK=1.392, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=no autolearn_force=no
+ (Exim 4.90_1) (envelope-from <mhej@vps-ovh.mhejs.net>)
+ id 1tJdFh-0003Gu-CN
+ for qemu-devel@nongnu.org; Fri, 06 Dec 2024 13:40:35 -0500
+Received: from MUA
+ by vps-ovh.mhejs.net with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
+ (Exim 4.98) (envelope-from <mhej@vps-ovh.mhejs.net>)
+ id 1tJdFY-00000003Mfq-3JRB; Fri, 06 Dec 2024 19:40:24 +0100
+Message-ID: <48b99312-384e-4d93-9008-a83d6cce177d@maciej.szmigiero.name>
+Date: Fri, 6 Dec 2024 19:40:19 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 07/24] migration: Document the BQL behavior of load
+ SaveVMHandlers
+To: Peter Xu <peterx@redhat.com>
+Cc: Fabiano Rosas <farosas@suse.de>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>,
+ Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ Avihai Horon <avihaih@nvidia.com>, Joao Martins <joao.m.martins@oracle.com>,
+ qemu-devel@nongnu.org
+References: <cover.1731773021.git.maciej.szmigiero@oracle.com>
+ <e1949839932efaa531e2fe63ac13324e5787439c.1731773021.git.maciej.szmigiero@oracle.com>
+ <Z1DLw2Tw9vZmH06K@x1n>
+Content-Language: en-US, pl-PL
+From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
+Autocrypt: addr=mail@maciej.szmigiero.name; keydata=
+ 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
+In-Reply-To: <Z1DLw2Tw9vZmH06K@x1n>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: none client-ip=145.239.82.108;
+ envelope-from=mhej@vps-ovh.mhejs.net; helo=vps-ovh.mhejs.net
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,9 +109,85 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-6L+Z5piv5p2l6IeqUVHpgq7nrrHnmoTlgYfmnJ/oh6rliqjlm57lpI3pgq7ku7bjgII8YnIg
-IC8+PGJyICAvPuS9oOWlve+8jOaIkeacgOi/keato+WcqOS8keWBh+S4re+8jOaXoOazleS6
-suiHquWbnuWkjeS9oOeahOmCruS7tuOAguaIkeWwhuWcqOWBh+acn+e7k+adn+WQju+8jOWw
-veW/q+e7meS9oOWbnuWkjeOAgg==
+On 4.12.2024 22:38, Peter Xu wrote:
+> On Sun, Nov 17, 2024 at 08:20:02PM +0100, Maciej S. Szmigiero wrote:
+>> From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
+>>
+>> Some of these SaveVMHandlers were missing the BQL behavior annotation,
+>> making people wonder what it exactly is.
+>>
+>> Signed-off-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
+>> ---
+>>   include/migration/register.h | 9 +++++++++
+>>   1 file changed, 9 insertions(+)
+>>
+>> diff --git a/include/migration/register.h b/include/migration/register.h
+>> index 39991f3cc5d0..761e4e4d8bcb 100644
+>> --- a/include/migration/register.h
+>> +++ b/include/migration/register.h
+>> @@ -212,6 +212,8 @@ typedef struct SaveVMHandlers {
+>>       void (*state_pending_exact)(void *opaque, uint64_t *must_precopy,
+>>                                   uint64_t *can_postcopy);
+>>   
+>> +    /* This runs inside the BQL. */
+>> +
+>>       /**
+>>        * @load_state
+>>        *
+>> @@ -246,6 +248,8 @@ typedef struct SaveVMHandlers {
+>>       int (*load_state_buffer)(void *opaque, char *buf, size_t len,
+>>                                Error **errp);
+>>   
+>> +    /* The following handlers run inside the BQL. */
+>> +
+>>       /**
+>>        * @load_setup
+>>        *
+>> @@ -272,6 +276,9 @@ typedef struct SaveVMHandlers {
+>>        */
+>>       int (*load_cleanup)(void *opaque);
+>>   
+>> +
+>> +    /* This runs outside the BQL. */
+>> +
+>>       /**
+>>        * @resume_prepare
+>>        *
+>> @@ -284,6 +291,8 @@ typedef struct SaveVMHandlers {
+>>        */
+>>       int (*resume_prepare)(MigrationState *s, void *opaque);
+>>   
+>> +    /* The following handlers run inside the BQL. */
+>> +
+>>       /**
+>>        * @switchover_ack_needed
+>>        *
+>>
+> 
+> Such change is not only error prone when adding new hooks, it's also hard
+> to review..
+> 
+> If we do care about that, I suggest we attach that info to every command.
+> For example, changing from:
+> 
+>      /**
+>       * @save_state
+>       * ...
+> 
+> To:
+> 
+>      /**
+>       * @save_state (invoked with BQL)
+>       * ...
+> 
+> Or somewhere in the doc lines of each hook.
+> 
+
+This would need rewriting all the existing BQL comments/annotations
+in SaveVMHandlers since all of these are of the "separator" form as
+these introduced in this patch.
+
+Thanks,
+Maciej
 
 
