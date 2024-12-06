@@ -2,77 +2,175 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DB089E76E5
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Dec 2024 18:20:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AECEF9E77CD
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Dec 2024 19:04:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tJbz5-0002vL-Oh; Fri, 06 Dec 2024 12:19:19 -0500
+	id 1tJcfo-0006sg-NI; Fri, 06 Dec 2024 13:03:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1tJbz2-0002v3-NY
- for qemu-devel@nongnu.org; Fri, 06 Dec 2024 12:19:17 -0500
-Received: from mail-lj1-x229.google.com ([2a00:1450:4864:20::229])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1tJbz0-0000aC-2d
- for qemu-devel@nongnu.org; Fri, 06 Dec 2024 12:19:16 -0500
-Received: by mail-lj1-x229.google.com with SMTP id
- 38308e7fff4ca-2ffbf4580cbso25559341fa.2
- for <qemu-devel@nongnu.org>; Fri, 06 Dec 2024 09:19:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1733505552; x=1734110352; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=bEy6fKZZ9bEUI8c+w0mlDVBYliG5bUxmNkQ8XkcgC/g=;
- b=Af6ZHhfTB2jMy0yjlwKcVazmEWZ8kK7Azp+X2cjw1EM6u8Ts18ha1+wCKtyYBLhHKg
- WC+DzBNoRPR1BCLfjLOueVWrXbpgbiX/zedN+3nqfI28Pvl556jWSQwiPevDHT5J50yh
- 3+fcIsIYsT+CWdG6MmC53O4EI/1RW8kbH5jFWQZHOUkJ/NOPU9urh0JpfBYb/DVEfkEw
- GLhw58QuFVDWfPaJDX1PQTOiElZd5Yr8ZD/naa+T6xuHgZqqT8wORPUx8MEALQpPbvi1
- QqJRXEPbdjpJJtRj+/Uqr6VIT64TZZUnRg9RqfZ5ECwmt0auAzhGntZf8R2O4KFywNZY
- nhcg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733505552; x=1734110352;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=bEy6fKZZ9bEUI8c+w0mlDVBYliG5bUxmNkQ8XkcgC/g=;
- b=NtaCH6gOskz3laOpuyyRQiy0Kj9eM/ztdTmKVcumCznLpHRxzT9tkHvqiHUuyNYgnN
- TNWBlSOO8aITOFavz90MnyPF0VHWikIiDypOueLOYVfLRBjoXu30KIO3Qb+8QE4ItVkE
- vJArMljSCrLDm2tuwXgvsGvSS3tGEnP/detn/IlPhJqxp4KT8BuBX4mKyQTUFUM3JUeZ
- ATVJo6LZNRjDv07jpV8S+VDWIp1dncIt5GE8GoZo1evKmyq6GY1KEgyRk4WW3h03hWBH
- tbTYfJkxCzOAz6OFWCBX4ssrbuszIOoeVCwj6ch/Z34FPP241l3IA7GndtgCiDW80Ys/
- 9OhQ==
-X-Gm-Message-State: AOJu0Yyr9hcfcwfwvdeBpzrsEXMUOGmxqfpjVSVXOtT+pYT/gLNjTFEO
- Q7Ixpi/m18CoCU2oI8qAYphVA8fpkpikYLl3xbg7vGhv1AcowyZe88ZW0rfigCRQ072j1Yi3On9
- Butdu6sUWDt0PmHBvG5SkRGManjK66A==
-X-Gm-Gg: ASbGncsSFpQMprmxT/i4huiesiou89moz/0j7aTmvaleQR6zYAXvmUg407IQ50hm0Er
- 6d3LJTy2Ox9/KzIUBOonN0YeakCwIhoTPtA==
-X-Google-Smtp-Source: AGHT+IGsR13CG/7bsq4jxSlTiR2MJGB8LPRv4ScHb3EpmJT1Q4rUwtt0mzo8tt8456rDhxnzB+Bw1kvIHw2eoVm9IOE=
-X-Received: by 2002:a2e:a587:0:b0:300:1edd:914d with SMTP id
- 38308e7fff4ca-3002fc69a71mr20354761fa.40.1733505551517; Fri, 06 Dec 2024
- 09:19:11 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <Zhigang.Luo@amd.com>)
+ id 1tJcfe-0006r4-BH
+ for qemu-devel@nongnu.org; Fri, 06 Dec 2024 13:03:20 -0500
+Received: from mail-dm6nam04on2059.outbound.protection.outlook.com
+ ([40.107.102.59] helo=NAM04-DM6-obe.outbound.protection.outlook.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <Zhigang.Luo@amd.com>)
+ id 1tJcfZ-0002lK-MA
+ for qemu-devel@nongnu.org; Fri, 06 Dec 2024 13:03:18 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=IVsgCzUNv6tSbIfSie9qcARb3n034tpezJwQrJJjc9MOusiST1prFhZWKrzjz55UORUxc3jL2ftEdxv0VinRrn+tm69ipGlFTKNeCmeRxQpCFx/An/+e8dh+XbsaT6JAJ2o0X5HkVaAp9XWQi+RnetU5MKxTRM6MfLGXoXI//q99NHXeomMNZBqpLdgXxyYnbwWz4C8c9RbOIYRTd5ykeUHCyddmRV68hn20bizNSieEqibgocMu3O4W2whehb9wr8mcCbRz0NqdEgQh9PADjnKXJv+xj4iYxhAen+v85QdIXIvRE+77GGNeNwTDBji2S1LA5VLBk67qAWDYHqioyA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=LmC2uVXpkB4S/kgUwtxmUMJ5ywuZCqrrhFKoce5kMUk=;
+ b=Vj7OrQKxnMXMzQ17TaEn3refMTYTRSx/ODTa7LEusFFfS5irb14hF8sWfyGLaKSDAbdAdVtdpC7L04NsYbF913zxDRHhwGssIQVUkIEi7pYOzRGK+Wa88zKlaWgTToR839UI9Kw9XZ8LTF85cYmriWCUuDN2Nb+xub/hjYwvMPQWAr7Q8XIt7rHkkK//c+gG/zsz9FKCGOFyad+UlddtJeHIJqhcGB1fqsxQQeD1d8xZjai7Pha5vEJ3ZYHWveHTVJZN+GuV2geXDmUyS9J40yQaSbEbLrYGieitdmi8NYQV+N537/rXEe2arA+ftxRzwXKNKS4Lnr67/tWFcK/EPQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=LmC2uVXpkB4S/kgUwtxmUMJ5ywuZCqrrhFKoce5kMUk=;
+ b=yk3XfyBEce7ffbAjZTXgxk2EynY7dehzLX6ISvQC5jxZYOp5omXLkoaHK+mE3j/3+yX693yGRiMsdLCIvTY7hHUhJADBY0TGeXvRglwUrBTucFVFG0p7+3Ni49Ayz4y3zVZa0Xhyx2F7S7Dev54s4qOWO3VDsS2Kr5g0R5biPlo=
+Received: from BL1PR12MB5317.namprd12.prod.outlook.com (2603:10b6:208:31f::17)
+ by DM4PR12MB6613.namprd12.prod.outlook.com (2603:10b6:8:b8::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8230.12; Fri, 6 Dec
+ 2024 17:58:01 +0000
+Received: from BL1PR12MB5317.namprd12.prod.outlook.com
+ ([fe80::bb8a:785:463:43ec]) by BL1PR12MB5317.namprd12.prod.outlook.com
+ ([fe80::bb8a:785:463:43ec%5]) with mapi id 15.20.8230.010; Fri, 6 Dec 2024
+ 17:58:01 +0000
+From: "Luo, Zhigang" <Zhigang.Luo@amd.com>
+To: David Hildenbrand <david@redhat.com>, "qemu-devel@nongnu.org"
+ <qemu-devel@nongnu.org>
+CC: "kraxel@redhat.com" <kraxel@redhat.com>, Igor Mammedov
+ <imammedo@redhat.com>
+Subject: RE: [PATCH] hostmem-file: add the 'hmem' option
+Thread-Topic: [PATCH] hostmem-file: add the 'hmem' option
+Thread-Index: AQHbRm+T08edT93tD0m94+3Dx5+wM7LZAIAAgAB6QhA=
+Date: Fri, 6 Dec 2024 17:58:01 +0000
+Message-ID: <BL1PR12MB531759C282DC7A424CBC56E8F1312@BL1PR12MB5317.namprd12.prod.outlook.com>
+References: <20241204171114.20033-1-Zhigang.Luo@amd.com>
+ <5d4019cd-a3fb-4bed-8bab-e0388ccffee7@redhat.com>
+In-Reply-To: <5d4019cd-a3fb-4bed-8bab-e0388ccffee7@redhat.com>
+Accept-Language: en-US, en-CA
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+msip_labels: MSIP_Label_dce362fe-1558-4fb5-9f64-8a6240d76441_ActionId=5dd22655-eeb7-4b08-bf0c-0de3c86cd09f;
+ MSIP_Label_dce362fe-1558-4fb5-9f64-8a6240d76441_ContentBits=0;
+ MSIP_Label_dce362fe-1558-4fb5-9f64-8a6240d76441_Enabled=true;
+ MSIP_Label_dce362fe-1558-4fb5-9f64-8a6240d76441_Method=Standard;
+ MSIP_Label_dce362fe-1558-4fb5-9f64-8a6240d76441_Name=AMD
+ Internal Distribution Only;
+ MSIP_Label_dce362fe-1558-4fb5-9f64-8a6240d76441_SetDate=2024-12-06T17:25:16Z;
+ MSIP_Label_dce362fe-1558-4fb5-9f64-8a6240d76441_SiteId=3dd8961f-e488-4e60-8e11-a82d994e183d;
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: BL1PR12MB5317:EE_|DM4PR12MB6613:EE_
+x-ms-office365-filtering-correlation-id: a47eb961-d725-4458-dc43-08dd161f86a2
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0; ARA:13230040|1800799024|366016|376014|38070700018;
+x-microsoft-antispam-message-info: =?utf-8?B?M2ZLZjVZYUVqTTFWY3YvNVRkK3JEZTBmN2cvdDdtOGVjdTIxMUlTS0N1bVlk?=
+ =?utf-8?B?MEtlL0gyNTliMHhuK1RKWDd1eGZxcU8vK3Y4cDQ1TDg5RHFyZVZHSTRPaDZK?=
+ =?utf-8?B?ODd0KzB4MTZOV2F3MkdBOWEwazFGMjk5R0RhOG1nc3dXMlowVTZCQXQ1ekhl?=
+ =?utf-8?B?R1orQnpqWWt2VE01c0VDckRLM2lhRVBIN1BFYVVvN255Qk93UjdqVzhXajZi?=
+ =?utf-8?B?R1N0dnp5WWo0NlRGaDc5Rmk4eFdUMzRHUWkvSlQ2b2JUWE56NXg2NXJDdjRh?=
+ =?utf-8?B?MXViYkVMM21GUklXQ0xpSmlJR2VVdFM0aUprT0dXQ1ZZUkoyMC9xYmp0b2JU?=
+ =?utf-8?B?R1pBVUhGUzZMTzk3ZUdzQkpMRzFLbmZpYnUxSjlFaXBzNDRyWmtjNzZ1Zm5C?=
+ =?utf-8?B?QjMrQlhxaklxQlZZK1JReHY4MGJzQThxSXBaNGkxZldVa0FPbDRUUGs3NUpM?=
+ =?utf-8?B?VzJrdmZpSnVNVWVHQmdpMlpGYkZMbXlxOVYxdjdTc2pDY0hOWHVDNGtlN0lk?=
+ =?utf-8?B?N1pQV3l5T1FxVHdaclppMG1aTXRYM3BaWTdiUktXQ2lLMnIvbGJtY2xVdTNs?=
+ =?utf-8?B?VGlWbXgrTzRubWs0Q1lRVDJISkd5TmxqTEhPTUJsQ0tYUlJJOVRYdTJ4ZEo4?=
+ =?utf-8?B?TFB6UW5hOTgzQWNoOGRiT3BSU25CekFERVBVWndtc2ozYWN6UWpyZ3RqSGlW?=
+ =?utf-8?B?bUprZ1NWb3RYcFE3RVA3T0k5T0JtRmZVb0h3ZWkwWHMwaTA1MzZUcjQ2NVVZ?=
+ =?utf-8?B?Skw5ckVoenM5bVo3US9EVFFJWCt0bGJTd0ZDWmdKcW5vTjJhMXhINGwrVlBL?=
+ =?utf-8?B?LzIveWdJZ0RJQ2NvU2dhcmhLbUE1UHFESDNYcTBXNmVlTS9QRG9qYU9aSFNn?=
+ =?utf-8?B?cUUxNlVqR1BpYVR3R3AxS3hJOXltd3FraXpVb2g2ODArc2tKWHlOSmlQQnd4?=
+ =?utf-8?B?MWdVc3c4T3d6dllVTnd3TE9MT1BaL2s2Zzg0ZkN1WUQ5dy9xbUJkdWd3SlNU?=
+ =?utf-8?B?YUdVakF6SDVyNEp6Z1VrOFdtUWVBaDhPclFQUVZhT291SW12WG0wNmZnWjJF?=
+ =?utf-8?B?YVhvQzgyKzZBTGthMjVuY0phbExhdGpTSFVRZGJLbXJRby9XMmk3UXZOOGJo?=
+ =?utf-8?B?WW1qeTNMTWFYSlRSMHdPMThlcnBHQm1aWFQ5ejZ1bm4zYnJnWUxTdjRhamt0?=
+ =?utf-8?B?anNvS0V6QkVmY2xWOHl4UUYyeEZ1UXRubXV1RVRwMW9EaFZ6bWFqUnFtaW1p?=
+ =?utf-8?B?aTlybjFKeGdHVGF6cyt5ekRBUlpXS3ozd0ZWcHZ4VnRZNHMxMUF5VFFnbTcw?=
+ =?utf-8?B?ekM3U1ZCVUszd0FRWXZmNVRWYSt6U1VZKzVEVGJqYVRRZ1Z0WmRQZEJYWlBh?=
+ =?utf-8?B?SHpyR2ZBNHFibFB2SnBYRVhjbE1STjErRnlNWGlFYUVjZEdMdkx2emFIWTdE?=
+ =?utf-8?B?eEhEWWZ5U1gzcGk5Vm0wR2pqRWswYUN2QnIzOCtCRzJ5RVpLUFhPcEpldlRE?=
+ =?utf-8?B?MGEwL244WkwyWlQ2clVscnpETFllekFadVpkS0FPQm1OZm56WVhnelcvQWZY?=
+ =?utf-8?B?RmUvdkJMNFBhb0dQNGYrN2s3Z0dSMU13d1c2VDRxcTFUUFNReWhpMkZXcWZB?=
+ =?utf-8?B?QXU0MnFJeEkzSFlUZW1PdGNBMEVLZ2h0TEtCV0tEVTlRWFJNTUxxRUZHdFk0?=
+ =?utf-8?B?ZUpoc1JhTkhmU2hlMllMcDBYY1djb3ZUeDU1UVEwMGJJQ3h4cFRZblVUWjhF?=
+ =?utf-8?B?d3VUZlJkSXF3V24vaDRmeFp6QTRra0tmZWpnUzZYVUtSSHd1UFA4cVlmOVc5?=
+ =?utf-8?B?QjJOZHNwaU1wTElpMnhtQ2RSVlgwM3gyU0JGY2N5V0FTelRkYmZ0am1tZS9s?=
+ =?utf-8?B?ZVZsOWJQSUFFZlpDZm1NbldtblBBdSsrZlF3KzdQZTRkcWc9PQ==?=
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:BL1PR12MB5317.namprd12.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(1800799024)(366016)(376014)(38070700018); DIR:OUT; SFP:1101; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?WlViZDNKTmpxMjIvT3JlWDByMlhDNlZPTWlYeWw5Z3VNTXhRdkZETXRSVW80?=
+ =?utf-8?B?VUNMblJzVG00UGlRM0lYMDBrTXl0ZjNaN1k2SHJIUTNJNEdwMm5walZXN0s2?=
+ =?utf-8?B?YktZT2JZM09rcTQ3V015Z3BqTnJSR21YZU96TkVpZ3pBZHRCejlUdTZRY3dW?=
+ =?utf-8?B?bllmbWlSYzduQW9jNGdvL00rb1lCeURQKzBCSFlNV2ZOWTFzdkpzNDNYT2Yy?=
+ =?utf-8?B?cFN3QjZnN2xJOTd2VkpUY2NXTTVsc1cvRUxtNnEvMkhPaEh1N0JhMkJWRzJj?=
+ =?utf-8?B?UjZSczRGZjArYjBHMjlpMmhsamMvVW4xcGJHT2ViQ1lzVDJyNHJuYTdZQ2ZX?=
+ =?utf-8?B?N0d0Q1hqSHhYd0pjSG5ZcGxnNWwyMVd2YXV2ejdWVXhSbWk2UUh3NmV6VmVZ?=
+ =?utf-8?B?b2tOZXgwaW80SklWMEhvajdBMjE1MDZBbW1FalV5MTMrME80RnFtQmppZko1?=
+ =?utf-8?B?dG1pazZxWlpISTNaeGpmQjhpbmF4TnJyb2tQZEVsajFoVXQzM2xiMFVqdFk0?=
+ =?utf-8?B?ZDYxejc1dm9XbHlSK0ZPNUt4LzVBNnBEcUFWaFhtQnppUkc2NDdabTQ1MHNj?=
+ =?utf-8?B?NnU4c1NoNmxZeVRaMnB5eVR1bEwvcWkzcUxKMnF1LzUyQ0thUGhIYTVNNkxx?=
+ =?utf-8?B?UFVKZ0lWZllLdHh4NVVhM0dJRVY3WE1VWjF2S3IxNEl4Zy9ibG5GWmRxenlR?=
+ =?utf-8?B?YWVGQ1VXd1lyK0hlOFkxc09UR0RQOWFRZm81OGpFU1ZUeENSUGpjVUNyeWlu?=
+ =?utf-8?B?d3BCclo3UHdLWVBlRWszV3g0ZG85L2lqN0I2b1NuNVdhOGUzZ25DVU8rUUJ4?=
+ =?utf-8?B?K1h5Q2ltLzNQKzJ3OUVpejQvNStid1FvU2JoRTdmeUhNeGxDU0U1RHYzTjdx?=
+ =?utf-8?B?K29Za2tQby9MU1FvdW52ZGtKUFNaSVkzdjRKV0U3dDJRSTNOSGFpN3FUK2E5?=
+ =?utf-8?B?QXo1N05yUnZRcHBIMHBXWjh0L0d3NnlURGQ0QlQ2L2Rrd2pjYTBxby9SMnc4?=
+ =?utf-8?B?a3pnNnUzZlRNNGErYkhkbGlXTXJhR1RzWmdsR0JZMkgzQlRMTDdyL25hNExG?=
+ =?utf-8?B?dGFPT2h1dEF2WmhOMzBjaEJNaytrODgvZElRdi9CUHU4N1dINFpVdlVFaFk5?=
+ =?utf-8?B?ZGl1TzY0TTMwSzlxRWVEMCtxc1BtblFYb3Rva24xOHR5di9Od3MrcURFTTBW?=
+ =?utf-8?B?U1RBUVZ6aE1vZ2FRMG01Yk9lTFpsN3U2UTcydHNFeXNTM0tGZVU2TUtOV21h?=
+ =?utf-8?B?L0RqL0ZNYzM3YW5SYVdseHlpT2d1d2RBWUNjZkhBalJXa05rYUQxT29pVk5X?=
+ =?utf-8?B?SHdJMEpSblpydFUvWHNvZmtDWG5pQ2s3TXFlQms2UjJBcDBGUWZCMThVbWRE?=
+ =?utf-8?B?NlB1TDk1MU9iZGExVG41UlpmNG9VZndBSitKTmh0RFUwK1JnK2ZoRUxZSWVo?=
+ =?utf-8?B?U1lVeGtFbnF5L2FyYThCYnRYQWxCNU53Z3FaaTZORXBreUNSQVVXUTBZREVh?=
+ =?utf-8?B?cGFQYXBub0NHZEE4aWh2ZlBZOVJhdysxWW5MSlQxTHcxS0ZTeGh5Sng2RktX?=
+ =?utf-8?B?OVlFL25VZDZpYXZMcWtSZE1iKzJHRmZmWGovc3A4aGdCL2JWOGkrMTdxeUQ1?=
+ =?utf-8?B?dDhXVEZuTVZRc1h4Z1plZnI3QjlxQklKeVdxaW0yZi93UzlsWnViTTJYU3Ba?=
+ =?utf-8?B?MUxxZkJEYnNUVndBU2thUUZaV3hxVFJlb250VVRMMnF4R240NmJiMUVQeS9I?=
+ =?utf-8?B?Z2UxVGVDNVlrejJNcVhTdjR3eTJPMXBoVHRhT3NnLzdmTlVQdncyM2VtZHpa?=
+ =?utf-8?B?QWNFK25DTGNVclg2Rzh3a2lsSlkyMytFSDU0UVZWcmZkcDg5S2VLVUlkMGhT?=
+ =?utf-8?B?dUdsQWdwNUVQRXhaSVpta2Q1bnYzRWNTeThNQWplMlVmY1QzTzErZ29LZ3Ix?=
+ =?utf-8?B?dStTaGpNN20yZjN4UHlwNHY4WHhSR3dmYWJWMXVKSldMV3lqQ3NOcWRmU0Ez?=
+ =?utf-8?B?OWVkQldYRVNDTHV6bmNXYjJIYjZFRGJzOVpkdGRGWmdGcnBKSVNUNEhJR3p5?=
+ =?utf-8?B?aEZpN1JGUGFrejAzbGp3YUdYM2kyU25sM2diTElFSUs2Q2o2ejBpck90bkFP?=
+ =?utf-8?Q?9kfY=3D?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-References: <E1tJamT-007Cqk-9E@kylie.crudebyte.com>
-In-Reply-To: <E1tJamT-007Cqk-9E@kylie.crudebyte.com>
-From: Stefan Hajnoczi <stefanha@gmail.com>
-Date: Fri, 6 Dec 2024 12:19:01 -0500
-Message-ID: <CAJSP0QUcniqssNjJGxAxBf0dCCrLkAfY6LFET+S3Gq2SS8x7wA@mail.gmail.com>
-Subject: Re: [PATCH v2] 9pfs: improve v9fs_walk() tracing
-To: Christian Schoenebeck <qemu_oss@crudebyte.com>
-Cc: qemu-devel <qemu-devel@nongnu.org>, Greg Kurz <groug@kaod.org>, 
- Stefan Hajnoczi <stefanha@redhat.com>, Mads Ynddal <mads@ynddal.dk>
-Content-Type: multipart/alternative; boundary="0000000000009d5e5d06289d365d"
-Received-SPF: pass client-ip=2a00:1450:4864:20::229;
- envelope-from=stefanha@gmail.com; helo=mail-lj1-x229.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: BL1PR12MB5317.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a47eb961-d725-4458-dc43-08dd161f86a2
+X-MS-Exchange-CrossTenant-originalarrivaltime: 06 Dec 2024 17:58:01.4590 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 5uWDmm6bkHf5hpBglDdQADsV2/zOSKAG3c3uh0sjsIIxAaWnJ6fQ41SltX5BiMKX
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB6613
+Received-SPF: permerror client-ip=40.107.102.59;
+ envelope-from=Zhigang.Luo@amd.com;
+ helo=NAM04-DM6-obe.outbound.protection.outlook.com
+X-Spam_score_int: -50
+X-Spam_score: -5.1
+X-Spam_bar: -----
+X-Spam_report: (-5.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.996,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,366 +186,111 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---0000000000009d5e5d06289d365d
-Content-Type: text/plain; charset="UTF-8"
-
-On Fri, Dec 6, 2024, 11:44 Christian Schoenebeck <qemu_oss@crudebyte.com>
-wrote:
-
-> 'Twalk' is the most important request type in the 9p protocol to look out
-> for when debugging 9p communication. That's because it is the only part
-> of the 9p protocol which actually deals with human-readable path names,
-> whereas all other 9p request types work on numeric file IDs (FIDs) only.
->
-> Improve tracing of 'Twalk' requests, e.g. let's say client wanted to walk
-> to "/home/bob/src", then improve trace output from:
->
->   v9fs_walk tag 0 id 110 fid 0 newfid 1 nwnames 3
->
-> to:
->
->   v9fs_walk tag=0 id=110 fid=0 newfid=1 nwnames=3 wnames={home, bob, src}
->
-> To achieve this, add a new helper function trace_v9fs_walk_wnames() which
-> converts the received V9fsString array of individual path elements into a
-> comma-separated string presentation for being passed to the tracing system.
-> As this conversion is somewhat expensive, this conversion function is only
-> called if tracing of event 'v9fs_walk' is currently enabled.
->
-> Signed-off-by: Christian Schoenebeck <qemu_oss@crudebyte.com>
-> Reviewed-by: Greg Kurz <groug@kaod.org>
-> ---
->  V2:
->  - Use trace_event_get_state_backends(TRACE_V9FS_WALK) instead of
->    trace_event_get_state(TRACE_V9FS_WALK) && qemu_loglevel_mask(LOG_TRACE).
->  - Move that check from helper function trace_v9fs_walk_wnames() to caller
->    function v9fs_walk().
->
->  hw/9pfs/9p.c         | 36 +++++++++++++++++++++++++++++++-----
->  hw/9pfs/trace-events |  2 +-
->  2 files changed, 32 insertions(+), 6 deletions(-)
->
-
-Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
-
-
-> diff --git a/hw/9pfs/9p.c b/hw/9pfs/9p.c
-> index 578517739a..6f24c1abb3 100644
-> --- a/hw/9pfs/9p.c
-> +++ b/hw/9pfs/9p.c
-> @@ -1774,6 +1774,21 @@ static bool same_stat_id(const struct stat *a,
-> const struct stat *b)
->      return a->st_dev == b->st_dev && a->st_ino == b->st_ino;
->  }
->
-> +/*
-> + * Returns a (newly allocated) comma-separated string presentation of the
-> + * passed array for logging (tracing) purpose for trace event "v9fs_walk".
-> + *
-> + * It is caller's responsibility to free the returned string.
-> + */
-> +static char *trace_v9fs_walk_wnames(V9fsString *wnames, size_t nwnames)
-> +{
-> +    g_autofree char **arr = g_malloc0_n(nwnames + 1, sizeof(char *));
-> +    for (size_t i = 0; i < nwnames; ++i) {
-> +        arr[i] = wnames[i].data;
-> +    }
-> +    return g_strjoinv(", ", arr);
-> +}
-> +
->  static void coroutine_fn v9fs_walk(void *opaque)
->  {
->      int name_idx, nwalked;
-> @@ -1787,6 +1802,7 @@ static void coroutine_fn v9fs_walk(void *opaque)
->      size_t offset = 7;
->      int32_t fid, newfid;
->      P9ARRAY_REF(V9fsString) wnames = NULL;
-> +    g_autofree char *trace_wnames = NULL;
->      V9fsFidState *fidp;
->      V9fsFidState *newfidp = NULL;
->      V9fsPDU *pdu = opaque;
-> @@ -1800,11 +1816,9 @@ static void coroutine_fn v9fs_walk(void *opaque)
->      }
->      offset += err;
->
-> -    trace_v9fs_walk(pdu->tag, pdu->id, fid, newfid, nwnames);
-> -
->      if (nwnames > P9_MAXWELEM) {
->          err = -EINVAL;
-> -        goto out_nofid;
-> +        goto out_nofid_nownames;
->      }
->      if (nwnames) {
->          P9ARRAY_NEW(V9fsString, wnames, nwnames);
-> @@ -1814,15 +1828,23 @@ static void coroutine_fn v9fs_walk(void *opaque)
->          for (i = 0; i < nwnames; i++) {
->              err = pdu_unmarshal(pdu, offset, "s", &wnames[i]);
->              if (err < 0) {
-> -                goto out_nofid;
-> +                goto out_nofid_nownames;
->              }
->              if (name_is_illegal(wnames[i].data)) {
->                  err = -ENOENT;
-> -                goto out_nofid;
-> +                goto out_nofid_nownames;
->              }
->              offset += err;
->          }
-> +        if (trace_event_get_state_backends(TRACE_V9FS_WALK)) {
-> +            trace_wnames = trace_v9fs_walk_wnames(wnames, nwnames);
-> +            trace_v9fs_walk(pdu->tag, pdu->id, fid, newfid, nwnames,
-> +                            trace_wnames);
-> +        }
-> +    } else {
-> +        trace_v9fs_walk(pdu->tag, pdu->id, fid, newfid, nwnames, "");
->      }
-> +
->      fidp = get_fid(pdu, fid);
->      if (fidp == NULL) {
->          err = -ENOENT;
-> @@ -1957,7 +1979,11 @@ out:
->      }
->      v9fs_path_free(&dpath);
->      v9fs_path_free(&path);
-> +    goto out_pdu_complete;
-> +out_nofid_nownames:
-> +    trace_v9fs_walk(pdu->tag, pdu->id, fid, newfid, nwnames, "<?>");
->  out_nofid:
-> +out_pdu_complete:
->      pdu_complete(pdu, err);
->  }
->
-> diff --git a/hw/9pfs/trace-events b/hw/9pfs/trace-events
-> index a12e55c165..ed9f4e7209 100644
-> --- a/hw/9pfs/trace-events
-> +++ b/hw/9pfs/trace-events
-> @@ -11,7 +11,7 @@ v9fs_stat(uint16_t tag, uint8_t id, int32_t fid) "tag %d
-> id %d fid %d"
->  v9fs_stat_return(uint16_t tag, uint8_t id, int32_t mode, int32_t atime,
-> int32_t mtime, int64_t length) "tag %d id %d stat={mode %d atime %d mtime
-> %d length %"PRId64"}"
->  v9fs_getattr(uint16_t tag, uint8_t id, int32_t fid, uint64_t
-> request_mask) "tag %d id %d fid %d request_mask %"PRIu64
->  v9fs_getattr_return(uint16_t tag, uint8_t id, uint64_t result_mask,
-> uint32_t mode, uint32_t uid, uint32_t gid) "tag %d id %d
-> getattr={result_mask %"PRId64" mode %u uid %u gid %u}"
-> -v9fs_walk(uint16_t tag, uint8_t id, int32_t fid, int32_t newfid, uint16_t
-> nwnames) "tag %d id %d fid %d newfid %d nwnames %d"
-> +v9fs_walk(uint16_t tag, uint8_t id, int32_t fid, int32_t newfid, uint16_t
-> nwnames, const char* wnames) "tag=%d id=%d fid=%d newfid=%d nwnames=%d
-> wnames={%s}"
->  v9fs_walk_return(uint16_t tag, uint8_t id, uint16_t nwnames, void* qids)
-> "tag %d id %d nwnames %d qids %p"
->  v9fs_open(uint16_t tag, uint8_t id, int32_t fid, int32_t mode) "tag %d id
-> %d fid %d mode %d"
->  v9fs_open_return(uint16_t tag, uint8_t id, uint8_t type, uint32_t
-> version, uint64_t path, int iounit) "tag %u id %u qid={type %u version %u
-> path %"PRIu64"} iounit %d"
-> --
-> 2.39.5
->
->
->
-
---0000000000009d5e5d06289d365d
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"auto"><div><br><br><div class=3D"gmail_quote"><div dir=3D"ltr" =
-class=3D"gmail_attr">On Fri, Dec 6, 2024, 11:44 Christian Schoenebeck &lt;<=
-a href=3D"mailto:qemu_oss@crudebyte.com">qemu_oss@crudebyte.com</a>&gt; wro=
-te:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px =
-0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">&#39;Twalk&#=
-39; is the most important request type in the 9p protocol to look out<br>
-for when debugging 9p communication. That&#39;s because it is the only part=
-<br>
-of the 9p protocol which actually deals with human-readable path names,<br>
-whereas all other 9p request types work on numeric file IDs (FIDs) only.<br=
->
-<br>
-Improve tracing of &#39;Twalk&#39; requests, e.g. let&#39;s say client want=
-ed to walk<br>
-to &quot;/home/bob/src&quot;, then improve trace output from:<br>
-<br>
-=C2=A0 v9fs_walk tag 0 id 110 fid 0 newfid 1 nwnames 3<br>
-<br>
-to:<br>
-<br>
-=C2=A0 v9fs_walk tag=3D0 id=3D110 fid=3D0 newfid=3D1 nwnames=3D3 wnames=3D{=
-home, bob, src}<br>
-<br>
-To achieve this, add a new helper function trace_v9fs_walk_wnames() which<b=
-r>
-converts the received V9fsString array of individual path elements into a<b=
-r>
-comma-separated string presentation for being passed to the tracing system.=
-<br>
-As this conversion is somewhat expensive, this conversion function is only<=
-br>
-called if tracing of event &#39;v9fs_walk&#39; is currently enabled.<br>
-<br>
-Signed-off-by: Christian Schoenebeck &lt;<a href=3D"mailto:qemu_oss@crudeby=
-te.com" target=3D"_blank" rel=3D"noreferrer">qemu_oss@crudebyte.com</a>&gt;=
-<br>
-Reviewed-by: Greg Kurz &lt;<a href=3D"mailto:groug@kaod.org" target=3D"_bla=
-nk" rel=3D"noreferrer">groug@kaod.org</a>&gt;<br>
----<br>
-=C2=A0V2:<br>
-=C2=A0- Use trace_event_get_state_backends(TRACE_V9FS_WALK) instead of<br>
-=C2=A0 =C2=A0trace_event_get_state(TRACE_V9FS_WALK) &amp;&amp; qemu_logleve=
-l_mask(LOG_TRACE).<br>
-=C2=A0- Move that check from helper function trace_v9fs_walk_wnames() to ca=
-ller<br>
-=C2=A0 =C2=A0function v9fs_walk().<br>
-<br>
-=C2=A0hw/9pfs/9p.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0| 36 ++++++++++++++++++=
-+++++++++++++-----<br>
-=C2=A0hw/9pfs/trace-events |=C2=A0 2 +-<br>
-=C2=A02 files changed, 32 insertions(+), 6 deletions(-)<br></blockquote></d=
-iv></div><div dir=3D"auto"><br></div><div dir=3D"auto">Reviewed-by: Stefan =
-Hajnoczi &lt;<a href=3D"mailto:stefanha@redhat.com">stefanha@redhat.com</a>=
-&gt;</div><div dir=3D"auto"><br></div><div dir=3D"auto"><div class=3D"gmail=
-_quote"><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex=
-;border-left:1px solid rgb(204,204,204);padding-left:1ex">
-<br>
-diff --git a/hw/9pfs/9p.c b/hw/9pfs/9p.c<br>
-index 578517739a..6f24c1abb3 100644<br>
---- a/hw/9pfs/9p.c<br>
-+++ b/hw/9pfs/9p.c<br>
-@@ -1774,6 +1774,21 @@ static bool same_stat_id(const struct stat *a, const=
- struct stat *b)<br>
-=C2=A0 =C2=A0 =C2=A0return a-&gt;st_dev =3D=3D b-&gt;st_dev &amp;&amp; a-&g=
-t;st_ino =3D=3D b-&gt;st_ino;<br>
-=C2=A0}<br>
-<br>
-+/*<br>
-+ * Returns a (newly allocated) comma-separated string presentation of the<=
-br>
-+ * passed array for logging (tracing) purpose for trace event &quot;v9fs_w=
-alk&quot;.<br>
-+ *<br>
-+ * It is caller&#39;s responsibility to free the returned string.<br>
-+ */<br>
-+static char *trace_v9fs_walk_wnames(V9fsString *wnames, size_t nwnames)<br=
->
-+{<br>
-+=C2=A0 =C2=A0 g_autofree char **arr =3D g_malloc0_n(nwnames + 1, sizeof(ch=
-ar *));<br>
-+=C2=A0 =C2=A0 for (size_t i =3D 0; i &lt; nwnames; ++i) {<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 arr[i] =3D wnames[i].data;<br>
-+=C2=A0 =C2=A0 }<br>
-+=C2=A0 =C2=A0 return g_strjoinv(&quot;, &quot;, arr);<br>
-+}<br>
-+<br>
-=C2=A0static void coroutine_fn v9fs_walk(void *opaque)<br>
-=C2=A0{<br>
-=C2=A0 =C2=A0 =C2=A0int name_idx, nwalked;<br>
-@@ -1787,6 +1802,7 @@ static void coroutine_fn v9fs_walk(void *opaque)<br>
-=C2=A0 =C2=A0 =C2=A0size_t offset =3D 7;<br>
-=C2=A0 =C2=A0 =C2=A0int32_t fid, newfid;<br>
-=C2=A0 =C2=A0 =C2=A0P9ARRAY_REF(V9fsString) wnames =3D NULL;<br>
-+=C2=A0 =C2=A0 g_autofree char *trace_wnames =3D NULL;<br>
-=C2=A0 =C2=A0 =C2=A0V9fsFidState *fidp;<br>
-=C2=A0 =C2=A0 =C2=A0V9fsFidState *newfidp =3D NULL;<br>
-=C2=A0 =C2=A0 =C2=A0V9fsPDU *pdu =3D opaque;<br>
-@@ -1800,11 +1816,9 @@ static void coroutine_fn v9fs_walk(void *opaque)<br>
-=C2=A0 =C2=A0 =C2=A0}<br>
-=C2=A0 =C2=A0 =C2=A0offset +=3D err;<br>
-<br>
--=C2=A0 =C2=A0 trace_v9fs_walk(pdu-&gt;tag, pdu-&gt;id, fid, newfid, nwname=
-s);<br>
--<br>
-=C2=A0 =C2=A0 =C2=A0if (nwnames &gt; P9_MAXWELEM) {<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0err =3D -EINVAL;<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0 goto out_nofid;<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 goto out_nofid_nownames;<br>
-=C2=A0 =C2=A0 =C2=A0}<br>
-=C2=A0 =C2=A0 =C2=A0if (nwnames) {<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0P9ARRAY_NEW(V9fsString, wnames, nwnames);=
-<br>
-@@ -1814,15 +1828,23 @@ static void coroutine_fn v9fs_walk(void *opaque)<br=
->
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0for (i =3D 0; i &lt; nwnames; i++) {<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0err =3D pdu_unmarshal(pdu, =
-offset, &quot;s&quot;, &amp;wnames[i]);<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0if (err &lt; 0) {<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 goto out_nofid;<br=
->
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 goto out_nofid_now=
-names;<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0}<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0if (name_is_illegal(wnames[=
-i].data)) {<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0err =3D -ENOE=
-NT;<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 goto out_nofid;<br=
->
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 goto out_nofid_now=
-names;<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0}<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0offset +=3D err;<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0}<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 if (trace_event_get_state_backends(TRACE_V9FS_=
-WALK)) {<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 trace_wnames =3D trace_v9fs_walk=
-_wnames(wnames, nwnames);<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 trace_v9fs_walk(pdu-&gt;tag, pdu=
--&gt;id, fid, newfid, nwnames,<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 trace_wnames);<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 }<br>
-+=C2=A0 =C2=A0 } else {<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 trace_v9fs_walk(pdu-&gt;tag, pdu-&gt;id, fid, =
-newfid, nwnames, &quot;&quot;);<br>
-=C2=A0 =C2=A0 =C2=A0}<br>
-+<br>
-=C2=A0 =C2=A0 =C2=A0fidp =3D get_fid(pdu, fid);<br>
-=C2=A0 =C2=A0 =C2=A0if (fidp =3D=3D NULL) {<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0err =3D -ENOENT;<br>
-@@ -1957,7 +1979,11 @@ out:<br>
-=C2=A0 =C2=A0 =C2=A0}<br>
-=C2=A0 =C2=A0 =C2=A0v9fs_path_free(&amp;dpath);<br>
-=C2=A0 =C2=A0 =C2=A0v9fs_path_free(&amp;path);<br>
-+=C2=A0 =C2=A0 goto out_pdu_complete;<br>
-+out_nofid_nownames:<br>
-+=C2=A0 =C2=A0 trace_v9fs_walk(pdu-&gt;tag, pdu-&gt;id, fid, newfid, nwname=
-s, &quot;&lt;?&gt;&quot;);<br>
-=C2=A0out_nofid:<br>
-+out_pdu_complete:<br>
-=C2=A0 =C2=A0 =C2=A0pdu_complete(pdu, err);<br>
-=C2=A0}<br>
-<br>
-diff --git a/hw/9pfs/trace-events b/hw/9pfs/trace-events<br>
-index a12e55c165..ed9f4e7209 100644<br>
---- a/hw/9pfs/trace-events<br>
-+++ b/hw/9pfs/trace-events<br>
-@@ -11,7 +11,7 @@ v9fs_stat(uint16_t tag, uint8_t id, int32_t fid) &quot;ta=
-g %d id %d fid %d&quot;<br>
-=C2=A0v9fs_stat_return(uint16_t tag, uint8_t id, int32_t mode, int32_t atim=
-e, int32_t mtime, int64_t length) &quot;tag %d id %d stat=3D{mode %d atime =
-%d mtime %d length %&quot;PRId64&quot;}&quot;<br>
-=C2=A0v9fs_getattr(uint16_t tag, uint8_t id, int32_t fid, uint64_t request_=
-mask) &quot;tag %d id %d fid %d request_mask %&quot;PRIu64<br>
-=C2=A0v9fs_getattr_return(uint16_t tag, uint8_t id, uint64_t result_mask, u=
-int32_t mode, uint32_t uid, uint32_t gid) &quot;tag %d id %d getattr=3D{res=
-ult_mask %&quot;PRId64&quot; mode %u uid %u gid %u}&quot;<br>
--v9fs_walk(uint16_t tag, uint8_t id, int32_t fid, int32_t newfid, uint16_t =
-nwnames) &quot;tag %d id %d fid %d newfid %d nwnames %d&quot;<br>
-+v9fs_walk(uint16_t tag, uint8_t id, int32_t fid, int32_t newfid, uint16_t =
-nwnames, const char* wnames) &quot;tag=3D%d id=3D%d fid=3D%d newfid=3D%d nw=
-names=3D%d wnames=3D{%s}&quot;<br>
-=C2=A0v9fs_walk_return(uint16_t tag, uint8_t id, uint16_t nwnames, void* qi=
-ds) &quot;tag %d id %d nwnames %d qids %p&quot;<br>
-=C2=A0v9fs_open(uint16_t tag, uint8_t id, int32_t fid, int32_t mode) &quot;=
-tag %d id %d fid %d mode %d&quot;<br>
-=C2=A0v9fs_open_return(uint16_t tag, uint8_t id, uint8_t type, uint32_t ver=
-sion, uint64_t path, int iounit) &quot;tag %u id %u qid=3D{type %u version =
-%u path %&quot;PRIu64&quot;} iounit %d&quot;<br>
--- <br>
-2.39.5<br>
-<br>
-<br>
-</blockquote></div></div></div>
-
---0000000000009d5e5d06289d365d--
+W0FNRCBPZmZpY2lhbCBVc2UgT25seSAtIEFNRCBJbnRlcm5hbCBEaXN0cmlidXRpb24gT25seV0N
+Cg0KSGkgRGF2aWQsDQoNClRoYW5rcyBmb3IgeW91ciBjb21tZW50cy4NCkxldCBtZSBnaXZlIHlv
+dSBzb21lIGJhY2tncm91bmQgZm9yIHRoaXMgcGF0Y2guDQpJIGFtIGN1cnJlbnRseSBlbmdhZ2Vk
+IGluIGEgcHJvamVjdCB0aGF0IHJlcXVpcmVzIHRvIHBhc3MgdGhlIEVGSV9NRU1PUllfU1AgKFNw
+ZWNpYWwgUHVycG9zZSBNZW1vcnkpIHR5cGUgbWVtb3J5IGZyb20gaG9zdCB0byBhIHZpcnR1YWwg
+bWFjaGluZSB3aXRoaW4gUUVNVS4gVGhpcyBtZW1vcnkgbmVlZHMgdG8gYmUgRUZJX01FTU9SWV9T
+UCB0eXBlIGluIHRoZSB2aXJ0dWFsIG1hY2hpbmUgYXMgd2VsbC4NClRoaXMgcGFydGljdWxhciBt
+ZW1vcnkgdHlwZSBpcyBlc3NlbnRpYWwgZm9yIHRoZSBmdW5jdGlvbmFsaXR5IG9mIG15IHByb2pl
+Y3QuDQpJbiBMaW51eCwgdGhlIFNQTSBtZW1vcnkgd2lsbCBiZSBjbGFpbWVkIGJ5IGhtZW0tZGF4
+IGRyaXZlciBieSBkZWZhdWx0LiBXaXRoIHRoaXMgcGF0Y2ggSSBjYW4gdXNlIHRoZSBmb2xsb3dp
+bmcgY29uZmlnIHRvIHBhc3MgdGhlIFNQTSBtZW1vcnkgdG8gZ3Vlc3QgVk0uDQotb2JqZWN0IG1l
+bW9yeS1iYWNrZW5kLWZpbGUsc2l6ZT0zMEcsaWQ9bTEsbWVtLXBhdGg9L2Rldi9kYXgwLjAscHJl
+YWxsb2M9b24sYWxpZ249MUcsaG1lbT1vbg0KDQpJIHdhcyB0aGlua2luZyB0byBjaGFuZ2UgdGhl
+IG9wdGlvbiBuYW1lIGZyb20gImhtZW0iIHRvICJzcG0iIHRvIGF2b2lkIGNvbmZ1c2lvbi4NCg0K
+RG8geW91IGhhdmUgYW55IHN1Z2dlc3Rpb25zIHRvIGFjaGlldmUgdGhpcyBtb3JlIHJlYXNvbmFi
+bGU/DQoNClRoYW5rcywNClpoaWdhbmcNCg0KLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCkZy
+b206IERhdmlkIEhpbGRlbmJyYW5kIDxkYXZpZEByZWRoYXQuY29tPg0KU2VudDogRnJpZGF5LCBE
+ZWNlbWJlciA2LCAyMDI0IDU6MDggQU0NClRvOiBMdW8sIFpoaWdhbmcgPFpoaWdhbmcuTHVvQGFt
+ZC5jb20+OyBxZW11LWRldmVsQG5vbmdudS5vcmcNCkNjOiBrcmF4ZWxAcmVkaGF0LmNvbTsgSWdv
+ciBNYW1tZWRvdiA8aW1hbW1lZG9AcmVkaGF0LmNvbT4NClN1YmplY3Q6IFJlOiBbUEFUQ0hdIGhv
+c3RtZW0tZmlsZTogYWRkIHRoZSAnaG1lbScgb3B0aW9uDQoNCk9uIDA0LjEyLjI0IDE4OjExLCBa
+aGlnYW5nIEx1byB3cm90ZToNCj4gVGhpcyBib29sZWFuIG9wdGlvbiAnaG1lbScgYWxsb3dzIHVz
+ZXJzIHRvIHNldCBhIG1lbW9yeSByZWdpb24gZnJvbQ0KPiBtZW1vcnktYmFja2VuZC1maWxlIGFz
+IGhldGVyb2dlbmVvdXMgbWVtb3J5LiBJZiAnaG1lbT1vbicsIFFFTVUgd2lsbA0KPiBzZXQgdGhl
+IGZsYWcgUkFNX0hNRU0gaW4gdGhlIFJBTSBibG9jayBvZiB0aGUgY29ycmVzcG9uZGluZyBtZW1v
+cnkNCj4gcmVnaW9uIGFuZCBzZXQgdGhlIGU4MjAgdHlwZSB0byBFODIwX1NPRlRfUkVTRVJWRUQg
+Zm9yIHRoaXMgcmVnaW9uLg0KPg0KDQpIaSwNCg0KLi9zY3JpcHRzL2dldF9tYWludGFpbmVyLnBs
+IGlzIHlvdXIgZnJpZW5kIHRvIGZpZ3VyZSBvdXQgd2hvbSB0byBDQyBvbiBwYXRjaGVzLg0KDQpJ
+biBnZW5lcmFsOiBub3QgYSBmYW4uIFlvdSBzZWVtIHRvIGJlIGFidXNpbmcgbWVtb3J5IGJhY2tl
+bmQgcHJvcGVydGllcw0KKyBSQU0gZmxhZ3MgdG8gbWVyZWx5IG1vZGlmeSBob3cgbWVtb3J5IGlz
+IGdvaW5nIHRvIGJlIGV4cG9zZWQgaW4gdGhlDQptZW1vcnkgbWFwIG9uIHg4Ni4NCg0KSXQncyBu
+b3QgZXZlbiBjbGVhciB3aHkgaGV0ZXJvZ2VuZW91cyBtZW1vcnkgc2hvdWxkIGJlIGV4cG9zZWQg
+bGlrZQ0KdGhhdCwgYW5kIGhvdyByZWFzb25hYmxlIGl0IGlzIHRvIGVzc2VudGlhbGx5IGV4cG9z
+ZSBhbGwgb2YgZ3Vlc3QgUkFNIGFzDQpFODIwX1NPRlRfUkVTRVJWRUQuDQoNCg0KTm90ZSB0aGF0
+IHRoZSB3aG9sZSAicG1lbT1vbiIgY2FzZSB3YXMgdmVyeSBkaWZmZXJlbnQsIGJlY2F1c2UgaXQN
+CnJlcXVpcmVkIG1tYXAoKSBtb2RpZmljYXRpb25zLg0KDQo+IFNpZ25lZC1vZmYtYnk6IFpoaWdh
+bmcgTHVvIDxaaGlnYW5nLkx1b0BhbWQuY29tPg0KPiAtLS0NCj4gICBiYWNrZW5kcy9ob3N0bWVt
+LWZpbGUuYyAgICAgIHwgMjMgKysrKysrKysrKysrKysrKysrKysrKysNCj4gICBody9pMzg2L2U4
+MjBfbWVtb3J5X2xheW91dC5oIHwgIDEgKw0KPiAgIGh3L2kzODYvcGMuYyAgICAgICAgICAgICAg
+ICAgfCAxNiArKysrKysrKysrKysrKysrDQo+ICAgaW5jbHVkZS9leGVjL2NwdS1jb21tb24uaCAg
+ICB8ICAxICsNCj4gICBpbmNsdWRlL2V4ZWMvbWVtb3J5LmggICAgICAgIHwgIDMgKysrDQo+ICAg
+cWFwaS9xb20uanNvbiAgICAgICAgICAgICAgICB8ICA0ICsrKysNCj4gICBzeXN0ZW0vcGh5c21l
+bS5jICAgICAgICAgICAgIHwgIDcgKysrKysrLQ0KPiAgIDcgZmlsZXMgY2hhbmdlZCwgNTQgaW5z
+ZXJ0aW9ucygrKSwgMSBkZWxldGlvbigtKQ0KPg0KPiBkaWZmIC0tZ2l0IGEvYmFja2VuZHMvaG9z
+dG1lbS1maWxlLmMgYi9iYWNrZW5kcy9ob3N0bWVtLWZpbGUuYw0KPiBpbmRleCA3ZTUwNzJlMzNl
+Li41ZGRmZGJhZjg2IDEwMDY0NA0KPiAtLS0gYS9iYWNrZW5kcy9ob3N0bWVtLWZpbGUuYw0KPiAr
+KysgYi9iYWNrZW5kcy9ob3N0bWVtLWZpbGUuYw0KPiBAQCAtMzIsNiArMzIsNyBAQCBzdHJ1Y3Qg
+SG9zdE1lbW9yeUJhY2tlbmRGaWxlIHsNCj4gICAgICAgdWludDY0X3Qgb2Zmc2V0Ow0KPiAgICAg
+ICBib29sIGRpc2NhcmRfZGF0YTsNCj4gICAgICAgYm9vbCBpc19wbWVtOw0KPiArICAgIGJvb2wg
+aXNfaG1lbTsNCj4gICAgICAgYm9vbCByZWFkb25seTsNCj4gICAgICAgT25PZmZBdXRvIHJvbTsN
+Cj4gICB9Ow0KPiBAQCAtODgsNiArODksNyBAQCBmaWxlX2JhY2tlbmRfbWVtb3J5X2FsbG9jKEhv
+c3RNZW1vcnlCYWNrZW5kICpiYWNrZW5kLCBFcnJvciAqKmVycnApDQo+ICAgICAgIHJhbV9mbGFn
+cyB8PSBiYWNrZW5kLT5yZXNlcnZlID8gMCA6IFJBTV9OT1JFU0VSVkU7DQo+ICAgICAgIHJhbV9m
+bGFncyB8PSBiYWNrZW5kLT5ndWVzdF9tZW1mZCA/IFJBTV9HVUVTVF9NRU1GRCA6IDA7DQo+ICAg
+ICAgIHJhbV9mbGFncyB8PSBmYi0+aXNfcG1lbSA/IFJBTV9QTUVNIDogMDsNCj4gKyAgICByYW1f
+ZmxhZ3MgfD0gZmItPmlzX2htZW0gPyBSQU1fSE1FTSA6IDA7DQo+ICAgICAgIHJhbV9mbGFncyB8
+PSBSQU1fTkFNRURfRklMRTsNCj4gICAgICAgcmV0dXJuIG1lbW9yeV9yZWdpb25faW5pdF9yYW1f
+ZnJvbV9maWxlKCZiYWNrZW5kLT5tciwgT0JKRUNUKGJhY2tlbmQpLCBuYW1lLA0KPiAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgYmFja2VuZC0+c2l6ZSwgZmIt
+PmFsaWduLCByYW1fZmxhZ3MsDQo+IEBAIC0yNTYsNiArMjU4LDI1IEBAIHN0YXRpYyB2b2lkIGZp
+bGVfbWVtb3J5X2JhY2tlbmRfc2V0X3JvbShPYmplY3QgKm9iaiwgVmlzaXRvciAqdiwNCj4gICAg
+ICAgdmlzaXRfdHlwZV9Pbk9mZkF1dG8odiwgbmFtZSwgJmZiLT5yb20sIGVycnApOw0KPiAgIH0N
+Cj4NCj4gK3N0YXRpYyBib29sIGZpbGVfbWVtb3J5X2JhY2tlbmRfZ2V0X2htZW0oT2JqZWN0ICpv
+LCBFcnJvciAqKmVycnApDQo+ICt7DQo+ICsgICAgcmV0dXJuIE1FTU9SWV9CQUNLRU5EX0ZJTEUo
+byktPmlzX2htZW07DQo+ICt9DQo+ICsNCj4gK3N0YXRpYyB2b2lkIGZpbGVfbWVtb3J5X2JhY2tl
+bmRfc2V0X2htZW0oT2JqZWN0ICpvLCBib29sIHZhbHVlLCBFcnJvciAqKmVycnApDQo+ICt7DQo+
+ICsgICAgSG9zdE1lbW9yeUJhY2tlbmQgKmJhY2tlbmQgPSBNRU1PUllfQkFDS0VORChvKTsNCj4g
+KyAgICBIb3N0TWVtb3J5QmFja2VuZEZpbGUgKmZiID0gTUVNT1JZX0JBQ0tFTkRfRklMRShvKTsN
+Cj4gKw0KPiArICAgIGlmIChob3N0X21lbW9yeV9iYWNrZW5kX21yX2luaXRlZChiYWNrZW5kKSkg
+ew0KPiArICAgICAgICBlcnJvcl9zZXRnKGVycnAsICJjYW5ub3QgY2hhbmdlIHByb3BlcnR5ICdo
+bWVtJyBvZiAlcy4iLA0KPiArICAgICAgICAgICAgICAgICAgIG9iamVjdF9nZXRfdHlwZW5hbWUo
+bykpOw0KPiArICAgICAgICByZXR1cm47DQo+ICsgICAgfQ0KPiArDQo+ICsgICAgZmItPmlzX2ht
+ZW0gPSB2YWx1ZTsNCj4gK30NCj4gKw0KPiAgIHN0YXRpYyB2b2lkIGZpbGVfYmFja2VuZF91bnBh
+cmVudChPYmplY3QgKm9iaikNCj4gICB7DQo+ICAgICAgIEhvc3RNZW1vcnlCYWNrZW5kICpiYWNr
+ZW5kID0gTUVNT1JZX0JBQ0tFTkQob2JqKTsNCj4gQEAgLTI5NSw2ICszMTYsOCBAQCBmaWxlX2Jh
+Y2tlbmRfY2xhc3NfaW5pdChPYmplY3RDbGFzcyAqb2MsIHZvaWQgKmRhdGEpDQo+ICAgICAgIG9i
+amVjdF9jbGFzc19wcm9wZXJ0eV9hZGRfYm9vbChvYywgInBtZW0iLA0KPiAgICAgICAgICAgZmls
+ZV9tZW1vcnlfYmFja2VuZF9nZXRfcG1lbSwgZmlsZV9tZW1vcnlfYmFja2VuZF9zZXRfcG1lbSk7
+DQo+ICAgI2VuZGlmDQo+ICsgICAgb2JqZWN0X2NsYXNzX3Byb3BlcnR5X2FkZF9ib29sKG9jLCAi
+aG1lbSIsDQo+ICsgICAgICAgIGZpbGVfbWVtb3J5X2JhY2tlbmRfZ2V0X2htZW0sIGZpbGVfbWVt
+b3J5X2JhY2tlbmRfc2V0X2htZW0pOw0KPiAgICAgICBvYmplY3RfY2xhc3NfcHJvcGVydHlfYWRk
+X2Jvb2wob2MsICJyZWFkb25seSIsDQo+ICAgICAgICAgICBmaWxlX21lbW9yeV9iYWNrZW5kX2dl
+dF9yZWFkb25seSwNCj4gICAgICAgICAgIGZpbGVfbWVtb3J5X2JhY2tlbmRfc2V0X3JlYWRvbmx5
+KTsNCj4gZGlmZiAtLWdpdCBhL2h3L2kzODYvZTgyMF9tZW1vcnlfbGF5b3V0LmggYi9ody9pMzg2
+L2U4MjBfbWVtb3J5X2xheW91dC5oDQo+IGluZGV4IGI1MGFjZmEyMDEuLjhhZjZhOWNmYWMgMTAw
+NjQ0DQo+IC0tLSBhL2h3L2kzODYvZTgyMF9tZW1vcnlfbGF5b3V0LmgNCj4gKysrIGIvaHcvaTM4
+Ni9lODIwX21lbW9yeV9sYXlvdXQuaA0KPiBAQCAtMTUsNiArMTUsNyBAQA0KPiAgICNkZWZpbmUg
+RTgyMF9BQ1BJICAgICAgIDMNCj4gICAjZGVmaW5lIEU4MjBfTlZTICAgICAgICA0DQo+ICAgI2Rl
+ZmluZSBFODIwX1VOVVNBQkxFICAgNQ0KPiArI2RlZmluZSBFODIwX1NPRlRfUkVTRVJWRUQgIDB4
+RUZGRkZGRkYNCj4NCj4gICBzdHJ1Y3QgZTgyMF9lbnRyeSB7DQo+ICAgICAgIHVpbnQ2NF90IGFk
+ZHJlc3M7DQo+IGRpZmYgLS1naXQgYS9ody9pMzg2L3BjLmMgYi9ody9pMzg2L3BjLmMNCj4gaW5k
+ZXggMzE3YWFjYTI1YS4uNDFlOWNjMjc2YyAxMDA2NDQNCj4gLS0tIGEvaHcvaTM4Ni9wYy5jDQo+
+ICsrKyBiL2h3L2kzODYvcGMuYw0KPiBAQCAtNzg1LDYgKzc4NSwyMSBAQCBzdGF0aWMgaHdhZGRy
+IHBjX21heF91c2VkX2dwYShQQ01hY2hpbmVTdGF0ZSAqcGNtcywgdWludDY0X3QgcGNpX2hvbGU2
+NF9zaXplKQ0KPiAgICAgICByZXR1cm4gcGNfYWJvdmVfNGdfZW5kKHBjbXMpIC0gMTsNCj4gICB9
+DQo+DQo+ICtzdGF0aWMgaW50IHBjX3VwZGF0ZV9obWVtX21lbW9yeShSQU1CbG9jayAqcmIsIHZv
+aWQgKm9wYXF1ZSkNCj4gK3sNCj4gKyAgICBYODZNYWNoaW5lU3RhdGUgKng4Nm1zID0gb3BhcXVl
+Ow0KPiArICAgIHJhbV9hZGRyX3Qgb2Zmc2V0Ow0KPiArICAgIHJhbV9hZGRyX3QgbGVuZ3RoOw0K
+PiArDQo+ICsgICAgaWYgKHFlbXVfcmFtX2lzX2htZW0ocmIpKSB7DQo+ICsgICAgICAgIG9mZnNl
+dCA9IHFlbXVfcmFtX2dldF9vZmZzZXQocmIpICsgKDB4MTAwMDAwMDAwVUxMIC0geDg2bXMtPmJl
+bG93XzRnX21lbV9zaXplKTsNCj4gKyAgICAgICAgbGVuZ3RoID0gcWVtdV9yYW1fZ2V0X3VzZWRf
+bGVuZ3RoKHJiKTsNCj4gKyAgICAgICAgZTgyMF9hZGRfZW50cnkob2Zmc2V0LCBsZW5ndGgsIEU4
+MjBfU09GVF9SRVNFUlZFRCk7DQo+ICsgICAgfQ0KDQpJIGFtIHByZXR0eSBzdXJlIHRoaXMgd2ls
+bCBicmVhayBpbiBOVU1BIHNldHVwcywgd2hlcmUgd2UgaGF2ZSBtdWx0aXBsZQ0KbWVtb3J5IGJh
+Y2tlbmRzIG1hcHBlZCBpbiBkaWZmZXJlbnQgbG9jYXRpb25zLg0KDQpUaGUgd2hvbGUgIigweDEw
+MDAwMDAwMFVMTCAtIHg4Nm1zLT5iZWxvd180Z19tZW1fc2l6ZSkiIGxvb2tzIGhhY2t5Lg0KDQot
+LQ0KQ2hlZXJzLA0KDQpEYXZpZCAvIGRoaWxkZW5iDQoNCg==
 
