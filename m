@@ -2,88 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2779D9E62D2
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Dec 2024 02:01:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 17E529E6309
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Dec 2024 02:10:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tJMgO-0003cR-6f; Thu, 05 Dec 2024 19:59:00 -0500
+	id 1tJMqE-0000it-7x; Thu, 05 Dec 2024 20:09:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tJMgM-0003cG-0c
- for qemu-devel@nongnu.org; Thu, 05 Dec 2024 19:58:58 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tJMqB-0000ij-Uu
+ for qemu-devel@nongnu.org; Thu, 05 Dec 2024 20:09:07 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tJMgK-0005md-JJ
- for qemu-devel@nongnu.org; Thu, 05 Dec 2024 19:58:57 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tJMqA-0001bM-5W
+ for qemu-devel@nongnu.org; Thu, 05 Dec 2024 20:09:07 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1733446734;
+ s=mimecast20190719; t=1733447343;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=rlpFg1t4p+x/wsjA8Y1ehZs0v0oTzhln8SN7DYaHVqQ=;
- b=bX0J4/XWx8zaeASCxCzz0aAkb7K4G0WRkzzRVVZQ8Hi52RJ2dbw28uQFFOZkVtdZ1oehZe
- biTEGe3+hiDkpfvsdbzifGxtBdiGXQySXtE6aLS1yUavOcHiPB6vQKlPUzN2ZPit1SnfAN
- rBmVhmxPTq3viMVBk+0hnuKjpN2MH7g=
-Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
- [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=S1Mtxxgqg6jVzoxPtxm+RoTFopkEEAxe5lJjlIDGmkE=;
+ b=E/2sftWkWXXEOgeXd1t/PKjd17qXY/oHInWBFMEqfkjP5NPN/90QGe7P3zdQXbniYmjxYV
+ STlaVCQ6h2TbZFnMh6a/epeIV0NMDwYsTk6WKeeto+VdKM/EgxigtwtzbjpdFX+krDC1I4
+ G0CbKO8VV3zRxbKC/qbisMa7v/CIo34=
+Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com
+ [209.85.160.199]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-318-frkpDalANPSdz5MD5Y2AkA-1; Thu, 05 Dec 2024 19:58:53 -0500
-X-MC-Unique: frkpDalANPSdz5MD5Y2AkA-1
-X-Mimecast-MFC-AGG-ID: frkpDalANPSdz5MD5Y2AkA
-Received: by mail-qv1-f69.google.com with SMTP id
- 6a1803df08f44-6d8860ab00dso27078726d6.0
- for <qemu-devel@nongnu.org>; Thu, 05 Dec 2024 16:58:53 -0800 (PST)
+ us-mta-156-ylH7h2MxMFK6gPzM1wSzXQ-1; Thu, 05 Dec 2024 20:08:58 -0500
+X-MC-Unique: ylH7h2MxMFK6gPzM1wSzXQ-1
+X-Mimecast-MFC-AGG-ID: ylH7h2MxMFK6gPzM1wSzXQ
+Received: by mail-qt1-f199.google.com with SMTP id
+ d75a77b69052e-466911d43f4so30484041cf.3
+ for <qemu-devel@nongnu.org>; Thu, 05 Dec 2024 17:08:58 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733446732; x=1734051532;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=rlpFg1t4p+x/wsjA8Y1ehZs0v0oTzhln8SN7DYaHVqQ=;
- b=gSKkHhJi7cDbbhnRmWHMflARIADtBPBGo+0iXsmTFtXI43AvXmMRbGJCeW2c5p+Ukg
- 7S4R5XnHXEBUqjMgL8GT50JDPc7pXi0HkNz4syHSGgabPVLClk6XN3teXDgUVJYa/uwj
- 48vHlGUurXJXDuFmXlkiPv2HO0mboqVcrhHvbgDFx0C7NhWFYNTl1Q+LObwGfCZb8X1N
- Xc6mRN979Jt+pnfMJB/baqhnBglP2QEsYuNhsXiRb6z8K5xwH5Hi6YnhjhgmXt/Gjrc0
- R+aDpIVbDW72bQ10zRoqnjynuqOwkhAp/9LVCh/6ntXwhKofrl9NTrpHNl4Dn/UeMO/t
- ySFA==
-X-Gm-Message-State: AOJu0YxgQBNgO0GXA2l5K0W6pifDhoPukAEurlYeeehFG3dy6YBINZAq
- X0W8A0eAx0FabrXk1QIWZ9+oVubaahwpSs6trvkjaHZ7YY7e0TuWfuDr5z3IDQxvcPJjTRhigfh
- qJnKYqmVxR9Rs2wWm0gqgTbW5UC3f/LO46JUNZu4anwaV82KDqFJxPqK1myzQvmiIzmZ9nJOTqT
- C8TeTqquSgaWXXcBlIpwubcZlBlMnCXMowqA==
-X-Gm-Gg: ASbGncsghqfdP4Y6mmj5+vt0O436ZW400vd3fvRfziBlZNNE2bdtnFea7mXaSlUzitw
- U936/bJQ14HFw7WshP3EDxJV5yDMOK4eQd49K3x/i9qMqQgO8r5172UGqDoeitg3MDW+OQ4Q7pP
- AU6NyuFTYTVAVMTR4+Hu9w5yM7S6ZXz1g+Vq2fvM6cpIN/PVC3illcPpQEZEGDXg5+uODJkQZ1Q
- usBdp1TAp1g6IUxU1mSOI9mAlg3UipDfs9brEWj56h1tvLQGBKlfpfsPI7JnA+WXCE4TkeyoN2h
- Rc6C8Dsq/J0TpoxhmtJDxXRyYg==
-X-Received: by 2002:ad4:5745:0:b0:6d8:8a8f:75b0 with SMTP id
- 6a1803df08f44-6d8e7128d28mr20532646d6.14.1733446732512; 
- Thu, 05 Dec 2024 16:58:52 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEzrpn8ChXzP6fq6lz8dwmTdEkw/KsgeF2Fo83weEfj60YxFPRjaAk05xlnPU2UU1EVdJnDgg==
-X-Received: by 2002:ad4:5745:0:b0:6d8:8a8f:75b0 with SMTP id
- 6a1803df08f44-6d8e7128d28mr20532266d6.14.1733446732154; 
- Thu, 05 Dec 2024 16:58:52 -0800 (PST)
-Received: from x1n.redhat.com (pool-99-254-114-190.cpe.net.cable.rogers.com.
+ d=1e100.net; s=20230601; t=1733447337; x=1734052137;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=S1Mtxxgqg6jVzoxPtxm+RoTFopkEEAxe5lJjlIDGmkE=;
+ b=CRyRORa71t714f3BjtQ3+NLL/kg4zhcngIQeLXkADqqcLWOQExFMxkN/foI0vBp0xB
+ h8ZX3Mo/qhrbc2t0zbTH6g0Tcw5TNu+XP9sejkzO0p+7eIF8FycWM0k+mcNHSg6S/O4A
+ pb5F9GC0x+ia96o3k2k7558HPTVF/7F7PHzoueqVkzBRF+R2pKrbRBoI/Ge1/uKH6BL/
+ ubhQLvo9rJkJfN8M+6hL2XuI4kGqBdEbRhqPcRrhM+adzXCohOq2inIUh60TCPSPFdwh
+ feDga56fEQe5TGJd0RaO/o7wWi9zPJ3bgCoyJoclgtCtzWC/EZSxco3M9m3jJsFscLoB
+ 0C9g==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUGm5/8GOkLBxbWs4nIrPN5MY9uX0mSD96mBV5yYHk60HtF5TIv+NC1FA4a9HaSL2SILvLVJ2hV3mIH@nongnu.org
+X-Gm-Message-State: AOJu0Yxl2FbePXgE5axZ+ADK/CUmqhzYgE+3jRTRnyoxhpvjyyjBA1a7
+ v1svZjs1bBraimq+uWXfXvlKeavN+HHkuCDBaIGGi6AGde+pZjAe887fveG2aeX/P30zgepbxuD
+ 2T5/PdcAtSSTnLzoNiIzbsLp8CfYtAsrV5Oow8PpO0R3dJ9EymHeh
+X-Gm-Gg: ASbGncsuw7t7+ejla9C/w163wJD5JUvAtJ30LDXth8eH2YRB12LBUYfsEMB0DlYq7VL
+ WqU0DX5EHyxMAhVynUvx1y9EBHqvTiM1pHOSFzthdQqFtR6Nc2L7OzNgcq+gKxvW2AXaeaQxEvA
+ DzRgITPku0Ws2MAYex6fc9lSDyrvkNdzTh+s7S8L4gTvvf/SK6vYIN+y298St04xy3Ru1BLDFyF
+ LOJnY/RB6mejv3V5f4vJCESZZBkBrdTz1/cgPCD1pFs5p4V36ilLbtGK/WtpBU3U+ifJd13Ra00
+ 3PsjhKS2Aws=
+X-Received: by 2002:a05:622a:1b94:b0:461:17e6:264d with SMTP id
+ d75a77b69052e-46734ca3879mr23361831cf.8.1733447336719; 
+ Thu, 05 Dec 2024 17:08:56 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHajZg/1LyThU5/W6ba+NW79s7yC26qzIW59i/dGBVh6WGF+HEaa8cJwPwCe0p8D3wNwk42GA==
+X-Received: by 2002:a05:622a:1b94:b0:461:17e6:264d with SMTP id
+ d75a77b69052e-46734ca3879mr23361531cf.8.1733447336372; 
+ Thu, 05 Dec 2024 17:08:56 -0800 (PST)
+Received: from x1n (pool-99-254-114-190.cpe.net.cable.rogers.com.
  [99.254.114.190]) by smtp.gmail.com with ESMTPSA id
- 6a1803df08f44-6d8dac016cbsm12635226d6.117.2024.12.05.16.58.50
+ d75a77b69052e-467297c23fdsm14363121cf.79.2024.12.05.17.08.54
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 05 Dec 2024 16:58:51 -0800 (PST)
+ Thu, 05 Dec 2024 17:08:55 -0800 (PST)
+Date: Thu, 5 Dec 2024 20:08:53 -0500
 From: Peter Xu <peterx@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: "Maciej S . Szmigiero" <mail@maciej.szmigiero.name>, peterx@redhat.com,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
- Avihai Horon <avihaih@nvidia.com>,
- Alex Williamson <alex.williamson@redhat.com>,
- Fabiano Rosas <farosas@suse.de>, Prasad Pandit <ppandit@redhat.com>
-Subject: [PATCH v2 7/7] migration/multifd: Document the reason to sync for
- save_setup()
-Date: Thu,  5 Dec 2024 19:58:34 -0500
-Message-ID: <20241206005834.1050905-8-peterx@redhat.com>
-X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241206005834.1050905-1-peterx@redhat.com>
-References: <20241206005834.1050905-1-peterx@redhat.com>
+To: Daniil Tatianin <d-tatianin@yandex-team.ru>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Stefan Weil <sw@weilnetz.de>,
+ Fabiano Rosas <farosas@suse.de>, qemu-devel@nongnu.org
+Subject: Re: [PATCH 0/2] overcommit: introduce mem-lock-onfault
+Message-ID: <Z1JOpadES2iV_i0v@x1n>
+References: <20241205231909.1161950-1-d-tatianin@yandex-team.ru>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20241205231909.1161950-1-d-tatianin@yandex-team.ru>
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -50
@@ -109,65 +105,110 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-It's not straightforward to see why src QEMU needs to sync multifd during
-setup() phase.  After all, there's no page queued at that point.
+On Fri, Dec 06, 2024 at 02:19:06AM +0300, Daniil Tatianin wrote:
+> Currently, passing mem-lock=on to QEMU causes memory usage to grow by
+> huge amounts:
+> 
+> no memlock:
+>     $ qemu-system-x86_64 -overcommit mem-lock=off
+>     $ ps -p $(pidof ./qemu-system-x86_64) -o rss=
+>     45652
+> 
+>     $ ./qemu-system-x86_64 -overcommit mem-lock=off -enable-kvm
+>     $ ps -p $(pidof ./qemu-system-x86_64) -o rss=
+>     39756
+> 
+> memlock:
+>     $ qemu-system-x86_64 -overcommit mem-lock=on
+>     $ ps -p $(pidof ./qemu-system-x86_64) -o rss=
+>     1309876
+> 
+>     $ ./qemu-system-x86_64 -overcommit mem-lock=on -enable-kvm
+>     $ ps -p $(pidof ./qemu-system-x86_64) -o rss=
+>     259956
+> 
+> This is caused by the fact that mlockall(2) automatically
+> write-faults every existing and future anonymous mappings in the
+> process right away.
+> 
+> One of the reasons to enable mem-lock is to protect a QEMU process'
+> pages from being compacted and migrated by kcompactd (which does so
+> by messing with a live process page tables causing thousands of TLB
+> flush IPIs per second) basically stealing all guest time while it's
+> active.
+> 
+> mem-lock=on helps against this (given compact_unevictable_allowed is 0),
+> but the memory overhead it introduces is an undesirable side effect,
+> which we can completely avoid by passing MCL_ONFAULT to mlockall, which
+> is what this series allows to do with a new command line option called
+> mem-lock-onfault.
 
-For old QEMUs, there's a solid reason: EOS requires it to work.  While it's
-clueless on the new QEMUs which do not take EOS message as sync requests.
+IMHO it'll be always helpful to dig and provide information on why such
+difference existed.  E.g. guest mem should normally be the major mem sink
+and that definitely won't be affected by either ON_FAULT or not.
 
-One will figure that out only when this is conditionally removed.  In fact,
-the author did try it out.  Logically we could still avoid doing this on
-new machine types, however that needs a separate compat field and that can
-be an overkill in some trivial overhead in setup() phase.
+I had a quick look explicitly on tcg (as that really surprised me a bit..).
+When you look at the mappings there's 1G constant shmem map that always got
+locked and populated.
 
-Let's instead document it completely, to avoid someone else tries this
-again and do the debug one more time, or anyone confused on why this ever
-existed.
+It turns out to be tcg's jit buffer, alloc_code_gen_buffer_splitwx_memfd:
 
-Signed-off-by: Peter Xu <peterx@redhat.com>
----
- migration/ram.c | 27 +++++++++++++++++++++++++++
- 1 file changed, 27 insertions(+)
+    buf_rw = qemu_memfd_alloc("tcg-jit", size, 0, &fd, errp);
+    if (buf_rw == NULL) {
+        goto fail;
+    }
 
-diff --git a/migration/ram.c b/migration/ram.c
-index 5d4bdefe69..ddee703585 100644
---- a/migration/ram.c
-+++ b/migration/ram.c
-@@ -3036,6 +3036,33 @@ static int ram_save_setup(QEMUFile *f, void *opaque, Error **errp)
-         migration_ops->ram_save_target_page = ram_save_target_page_legacy;
-     }
- 
-+    /*
-+     * This operation is unfortunate..
-+     *
-+     * For legacy QEMUs using per-section sync
-+     * =======================================
-+     *
-+     * This must exist because the EOS below requires the SYNC messages
-+     * per-channel to work.
-+     *
-+     * For modern QEMUs using per-round sync
-+     * =====================================
-+     *
-+     * Logically this sync is not needed (because we know there's nothing
-+     * in the multifd queue yet!).  However as a side effect, this makes
-+     * sure the dest side won't receive any data before it properly reaches
-+     * ram_load_precopy().
-+     *
-+     * Without this sync, src QEMU can send data too soon so that dest may
-+     * not have been ready to receive it (e.g., rb->receivedmap may be
-+     * uninitialized, for example).
-+     *
-+     * Logically "wait for recv setup ready" shouldn't need to involve src
-+     * QEMU at all, however to be compatible with old QEMUs, let's stick
-+     * with this.  Fortunately the overhead is low to sync during setup
-+     * because the VM is running, so at least it's not accounted as part of
-+     * downtime.
-+     */
-     bql_unlock();
-     ret = multifd_ram_flush_and_sync(f);
-     bql_lock();
+    buf_rx = mmap(NULL, size, host_prot_read_exec(), MAP_SHARED, fd, 0);
+    if (buf_rx == MAP_FAILED) {
+        error_setg_errno(errp, errno,
+                         "failed to map shared memory for execute");
+        goto fail;
+    }
+
+Looks like that's the major reason why tcg has mlockall bloated constantly
+with roughly 1G size - that seems to be from tcg_init_machine().  I didn't
+check kvm.
+
+Logically having a on-fault option won't ever hurt, so probably not an
+issue to have it anyway.  Still, share my finding above, as IIUC that's
+mostly why it was bloated for tcg, so maybe there're other options too.
+
+> 
+> memlock-onfault:
+>     $ qemu-system-x86_64 -overcommit mem-lock-onfault=on
+>     $ ps -p $(pidof ./qemu-system-x86_64) -o rss=
+>     54004
+> 
+>     $ ./qemu-system-x86_64 -overcommit mem-lock-onfault=on -enable-kvm
+>     $ ps -p $(pidof ./qemu-system-x86_64) -o rss=
+>     47772
+> 
+> You may notice the memory usage is still slightly higher, in this case
+> by a few megabytes over the mem-lock=off case. I was able to trace this
+> down to a bug in the linux kernel with MCL_ONFAULT not being honored for
+> the early process heap (with brk(2) etc.) so it is still write-faulted in
+> this case, but it's still way less than it was with just the mem-lock=on.
+> 
+> Daniil Tatianin (2):
+>   os: add an ability to lock memory on_fault
+>   overcommit: introduce mem-lock-onfault
+> 
+>  include/sysemu/os-posix.h |  2 +-
+>  include/sysemu/os-win32.h |  3 ++-
+>  include/sysemu/sysemu.h   |  1 +
+>  migration/postcopy-ram.c  |  4 ++--
+>  os-posix.c                | 10 ++++++++--
+>  qemu-options.hx           | 13 ++++++++++---
+>  system/globals.c          |  1 +
+>  system/vl.c               | 18 ++++++++++++++++--
+>  8 files changed, 41 insertions(+), 11 deletions(-)
+> 
+> -- 
+> 2.34.1
+> 
+> 
+
 -- 
-2.47.0
+Peter Xu
 
 
