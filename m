@@ -2,93 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 222859E6E23
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Dec 2024 13:30:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 350749E6E3F
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Dec 2024 13:33:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tJXRg-00064Q-Ah; Fri, 06 Dec 2024 07:28:32 -0500
+	id 1tJXSM-0007Cs-Lk; Fri, 06 Dec 2024 07:29:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <brueckner@linux.ibm.com>)
- id 1tJXRO-0005xk-EQ; Fri, 06 Dec 2024 07:28:15 -0500
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <brueckner@linux.ibm.com>)
- id 1tJXRJ-00042z-UA; Fri, 06 Dec 2024 07:28:13 -0500
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4B6B5NRR010783;
- Fri, 6 Dec 2024 12:28:08 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=pp1; bh=mrThCEedQQvZ2UbFf
- wQqapZ5uHmFPIJ5slOmDocSbVU=; b=EJalyuIsYQ0MMdKtJmBngxcFq3E5MBjdU
- QsdVvYAC4zblOWL0JR0YP3KpeVvfacY9Mr1L/zEu/1/PMXimcOdT0moHP7Ykl41R
- aayPWrAqUK5zpQ6nPMn8vhEiNPXi8rNJMSFkFw+aME0/UIYgwpuETale4+z+QsrW
- Ox3m54H16eWIlqf0dev+zFTdjAvsBGDRU9k3vVVhu+739eQclIaAwpx0JbllQDEO
- RqOPlqA+tM4eS2gea0rcVvZy437YB0MHo16yernJ47MuMUU3kalOpcnP8CW4l8Yt
- W/v/3z7qefCxHWN8uBXJt0H8QfJCV+wpoBy8T1kRXaVCN5DwMCDSw==
-Received: from ppma23.wdc07v.mail.ibm.com
- (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 43b24rgxfv-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 06 Dec 2024 12:28:08 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4B6BC9KT031769;
- Fri, 6 Dec 2024 12:28:06 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
- by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 438ehmaked-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 06 Dec 2024 12:28:06 +0000
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com
- [10.20.54.104])
- by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 4B6CS3ld22938130
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 6 Dec 2024 12:28:03 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 06B2520043;
- Fri,  6 Dec 2024 12:28:03 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8480020040;
- Fri,  6 Dec 2024 12:28:02 +0000 (GMT)
-Received: from vela.ibmuc.com (unknown [9.171.26.200])
- by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Fri,  6 Dec 2024 12:28:02 +0000 (GMT)
-From: Hendrik Brueckner <brueckner@linux.ibm.com>
-To: qemu-devel@nongnu.org, qemu-s390x@nongnu.org, thuth@redhat.com
-Cc: nsg@linux.ibm.com, frankja@linux.ibm.com, mimu@linux.ibm.com,
- borntraeger@linux.ibm.com, Hendrik Brueckner <brueckner@linux.ibm.com>
-Subject: [RFC PATCH v2 09/15] s390x/cpumodel: add
- Miscellaneous-Instruction-Extensions Facility 4
-Date: Fri,  6 Dec 2024 13:27:45 +0100
-Message-ID: <20241206122751.189721-10-brueckner@linux.ibm.com>
-X-Mailer: git-send-email 2.43.5
-In-Reply-To: <20241206122751.189721-1-brueckner@linux.ibm.com>
-References: <20241206122751.189721-1-brueckner@linux.ibm.com>
+ (Exim 4.90_1) (envelope-from <tomitamoeko@gmail.com>)
+ id 1tJXRR-000607-Hx
+ for qemu-devel@nongnu.org; Fri, 06 Dec 2024 07:28:17 -0500
+Received: from mail-pg1-x543.google.com ([2607:f8b0:4864:20::543])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <tomitamoeko@gmail.com>)
+ id 1tJXRN-00044B-TN
+ for qemu-devel@nongnu.org; Fri, 06 Dec 2024 07:28:16 -0500
+Received: by mail-pg1-x543.google.com with SMTP id
+ 41be03b00d2f7-7e6d04f74faso1418400a12.1
+ for <qemu-devel@nongnu.org>; Fri, 06 Dec 2024 04:28:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1733488092; x=1734092892; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=DbyhL467kLFoNyl59lj+CqWMKUpCY5M1py2Usy4VavY=;
+ b=IIo3F1XipzVPKoQU7L3/CXHmYs4GRU4hq8RDGfobATi4GGnYp2ZEOnRyJK8vGeFFR4
+ VaQUhZRlPId4Xj+3sJCC6mRS1Z/JTurpfgcFdaHjoOIILlDgNkPMeOXi4zVQg/sjbCuT
+ TliT4WSoSDr6oj380aKBUR6Scf5nS85VwF9NSTnTEwrzJGqE1l712rzVsUqsjRBwvtuT
+ 91VEu/fBXSzxgWIqlq+/fM2rNtJHfNgE6GbWwK6rbufhI/L3pgacX/9MAzpSCHoSEYGk
+ +3SVem0zYqPNvg9WwHKDUvnWvC8+LaXQwT8qiPjaodALUe3PbM21HtS9AJvi8G1oBlDI
+ AfRA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1733488092; x=1734092892;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=DbyhL467kLFoNyl59lj+CqWMKUpCY5M1py2Usy4VavY=;
+ b=W3H669w60dbGAax0gfT1TKLGt1P52JdHXJjlN308F3jlFZPpXwsn3Tfx+z0D4DS6u6
+ ZhiZgx8BvW6E0UD6fiiGR4wrdids854SILZIMMCKO1yx/IN72MzkrHmxIZ97f9T3TAeW
+ 4I2BGB0OoqHWp9K7pZkbNmIc0pncSCJWHx5c38SYpoxEQFC8DujMpPMa1Q5GxzpAyouc
+ REXI7p6w0JuWceBCfjfxr8zrhMtEb6Z2B2jZmpwJxd3NKQyQvx1CA9HW3A6PH4LARlSG
+ uA+MlfV6vpgz/AidAKWYoFBNfy7NO+EvndUX0yLydvrUUUN0ecLPM/hKPTHSji1PJTLn
+ Breg==
+X-Gm-Message-State: AOJu0Yzbw8Lc381HqFSgsSZTuA66L2hhvDhvqcsZ46mPAc5neDflNcvG
+ XWRzMfnLnDhBr3eY7vJojiCUsVvWYRnuGsJQJ8Fs6PvbHZWyju4=
+X-Gm-Gg: ASbGncuavLAfUdz4BLYFL5rCjXWHE39rTDG8gfxzrOG+fXRCGSCFrbc9rOwXDVX8PQK
+ I0Vh08fdC3FZBQlmCVWFYoh3GfgdC+f1Rvbybfa7invAwlibDxR7jk57ZEWrspfC00fXPR39Os+
+ ckF2i7QMhlpR5M79bQ1wE96tcdInTOLQCju7jq/dMVEtStGsJUjjk0nipLx6aWmFywnXqshRk32
+ vOthN5iaD9YcgrZFHtJxIsAv4Ltp9Q09oBt/JtAZRaJ03FxO1Hg4/r42Q==
+X-Google-Smtp-Source: AGHT+IHsa5HWvav2cpVUakpvjSeMJk2vdddGmxJ7TKhFYDXJjteWN7/lkHX2hBlcultZsrKnIwc5cA==
+X-Received: by 2002:a17:90a:2ca3:b0:2ef:2980:4411 with SMTP id
+ 98e67ed59e1d1-2ef41c0db62mr11259048a91.9.1733488092525; 
+ Fri, 06 Dec 2024 04:28:12 -0800 (PST)
+Received: from kotori-desktop.lan ([58.38.120.33])
+ by smtp.gmail.com with ESMTPSA id
+ 41be03b00d2f7-7fd15710123sm2579866a12.49.2024.12.06.04.28.10
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 06 Dec 2024 04:28:12 -0800 (PST)
+From: Tomita Moeko <tomitamoeko@gmail.com>
+To: Alex Williamson <alex.williamson@redhat.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+Cc: qemu-devel@nongnu.org,
+ =?UTF-8?q?Corvin=20K=C3=B6hne?= <c.koehne@beckhoff.com>,
+ Tomita Moeko <tomitamoeko@gmail.com>
+Subject: [PATCH v4 07/10] vfio/igd: add macro for declaring mirrored registers
+Date: Fri,  6 Dec 2024 20:27:45 +0800
+Message-ID: <20241206122749.9893-8-tomitamoeko@gmail.com>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20241206122749.9893-1-tomitamoeko@gmail.com>
+References: <20241206122749.9893-1-tomitamoeko@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 6yldIYJvTT1FM6BVV7bFAKfIY65jjUtF
-X-Proofpoint-ORIG-GUID: 6yldIYJvTT1FM6BVV7bFAKfIY65jjUtF
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 suspectscore=0
- bulkscore=0 adultscore=0 impostorscore=0 priorityscore=1501
- lowpriorityscore=0 clxscore=1015 mlxscore=0 spamscore=0 malwarescore=0
- mlxlogscore=931 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2411120000 definitions=main-2412060089
-Received-SPF: pass client-ip=148.163.156.1;
- envelope-from=brueckner@linux.ibm.com; helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
+Received-SPF: pass client-ip=2607:f8b0:4864:20::543;
+ envelope-from=tomitamoeko@gmail.com; helo=mail-pg1-x543.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H2=-0.001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -105,26 +98,123 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This facility introduces few new instructions.
+igd devices have multipe registers mirroring mmio address and pci
+config space, more than a single BDSM register. To support this,
+the read/write functions are made common and a macro is defined to
+simplify the declaration of MemoryRegionOps.
 
-Signed-off-by: Hendrik Brueckner <brueckner@linux.ibm.com>
+Signed-off-by: Tomita Moeko <tomitamoeko@gmail.com>
 ---
- target/s390x/cpu_features_def.h.inc | 1 +
- 1 file changed, 1 insertion(+)
+ hw/vfio/igd.c | 60 ++++++++++++++++++++++++++++++---------------------
+ 1 file changed, 36 insertions(+), 24 deletions(-)
 
-diff --git a/target/s390x/cpu_features_def.h.inc b/target/s390x/cpu_features_def.h.inc
-index 0b7be0e6e9..8be2e0e46d 100644
---- a/target/s390x/cpu_features_def.h.inc
-+++ b/target/s390x/cpu_features_def.h.inc
-@@ -90,6 +90,7 @@ DEF_FEAT(EDAT_2, "edat2", STFL, 78, "Enhanced-DAT facility 2")
- DEF_FEAT(DFP_PACKED_CONVERSION, "dfppc", STFL, 80, "Decimal-floating-point packed-conversion facility")
- DEF_FEAT(PPA15, "ppa15", STFL, 81, "PPA15 is installed")
- DEF_FEAT(BPB, "bpb", STFL, 82, "Branch prediction blocking")
-+DEF_FEAT(MISC_INSTRUCTION_EXT4, "minste4", STFL, 84, "Miscellaneous-Instruction-Extensions Facility 4")
- DEF_FEAT(MSA_EXT_12, "msa12-base", STFL, 86, "Message-security-assist-extension-12 facility (excluding subfunctions)")
- DEF_FEAT(VECTOR, "vx", STFL, 129, "Vector facility")
- DEF_FEAT(INSTRUCTION_EXEC_PROT, "iep", STFL, 130, "Instruction-execution-protection facility")
+diff --git a/hw/vfio/igd.c b/hw/vfio/igd.c
+index 49b6547776..18d159aa8e 100644
+--- a/hw/vfio/igd.c
++++ b/hw/vfio/igd.c
+@@ -421,16 +421,9 @@ static const MemoryRegionOps vfio_igd_index_quirk = {
+     .endianness = DEVICE_LITTLE_ENDIAN,
+ };
+ 
+-#define IGD_BDSM_MMIO_OFFSET 0x1080C0
+-
+-static uint64_t vfio_igd_quirk_bdsm_read(void *opaque,
+-                                          hwaddr addr, unsigned size)
++static uint64_t vfio_igd_pci_config_read(VFIOPCIDevice *vdev, uint64_t offset,
++                                         unsigned size)
+ {
+-    VFIOPCIDevice *vdev = opaque;
+-    uint64_t offset;
+-
+-    offset = IGD_BDSM_GEN11 + addr;
+-
+     switch (size) {
+     case 1:
+         return pci_get_byte(vdev->pdev.config + offset);
+@@ -441,21 +434,17 @@ static uint64_t vfio_igd_quirk_bdsm_read(void *opaque,
+     case 8:
+         return pci_get_quad(vdev->pdev.config + offset);
+     default:
+-        hw_error("igd: unsupported read size, %u bytes", size);
++        hw_error("igd: unsupported pci config read at %lx, size %u",
++                 offset, size);
+         break;
+     }
+ 
+     return 0;
+ }
+ 
+-static void vfio_igd_quirk_bdsm_write(void *opaque, hwaddr addr,
+-                                       uint64_t data, unsigned size)
++static void vfio_igd_pci_config_write(VFIOPCIDevice *vdev, uint64_t offset,
++                                      uint64_t data, unsigned size)
+ {
+-    VFIOPCIDevice *vdev = opaque;
+-    uint64_t offset;
+-
+-    offset = IGD_BDSM_GEN11 + addr;
+-
+     switch (size) {
+     case 1:
+         pci_set_byte(vdev->pdev.config + offset, data);
+@@ -470,17 +459,39 @@ static void vfio_igd_quirk_bdsm_write(void *opaque, hwaddr addr,
+         pci_set_quad(vdev->pdev.config + offset, data);
+         break;
+     default:
+-        hw_error("igd: unsupported read size, %u bytes", size);
++        hw_error("igd: unsupported pci config write at %lx, size %u",
++                 offset, size);
+         break;
+     }
+ }
+ 
+-static const MemoryRegionOps vfio_igd_bdsm_quirk = {
+-    .read = vfio_igd_quirk_bdsm_read,
+-    .write = vfio_igd_quirk_bdsm_write,
+-    .endianness = DEVICE_LITTLE_ENDIAN,
++#define VFIO_IGD_QUIRK_MIRROR_REG(reg, name)                            \
++static uint64_t vfio_igd_quirk_read_##name(void *opaque,                \
++                                           hwaddr addr, unsigned size)  \
++{                                                                       \
++    VFIOPCIDevice *vdev = opaque;                                       \
++                                                                        \
++    return vfio_igd_pci_config_read(vdev, reg + addr, size);            \
++}                                                                       \
++                                                                        \
++static void vfio_igd_quirk_write_##name(void *opaque, hwaddr addr,      \
++                                        uint64_t data, unsigned size)   \
++{                                                                       \
++    VFIOPCIDevice *vdev = opaque;                                       \
++                                                                        \
++    vfio_igd_pci_config_write(vdev, reg + addr, data, size);            \
++}                                                                       \
++                                                                        \
++static const MemoryRegionOps vfio_igd_quirk_mirror_##name = {           \
++    .read = vfio_igd_quirk_read_##name,                                 \
++    .write = vfio_igd_quirk_write_##name,                               \
++    .endianness = DEVICE_LITTLE_ENDIAN,                                 \
+ };
+ 
++VFIO_IGD_QUIRK_MIRROR_REG(IGD_BDSM_GEN11, bdsm)
++
++#define IGD_BDSM_MMIO_OFFSET    0x1080C0
++
+ void vfio_probe_igd_bar0_quirk(VFIOPCIDevice *vdev, int nr)
+ {
+     VFIOQuirk *quirk;
+@@ -510,8 +521,9 @@ void vfio_probe_igd_bar0_quirk(VFIOPCIDevice *vdev, int nr)
+     quirk = vfio_quirk_alloc(1);
+     quirk->data = vdev;
+ 
+-    memory_region_init_io(&quirk->mem[0], OBJECT(vdev), &vfio_igd_bdsm_quirk,
+-                          vdev, "vfio-igd-bdsm-quirk", 8);
++    memory_region_init_io(&quirk->mem[0], OBJECT(vdev),
++                          &vfio_igd_quirk_mirror_bdsm, vdev,
++                          "vfio-igd-bdsm-quirk", 8);
+     memory_region_add_subregion_overlap(vdev->bars[0].region.mem,
+                                         IGD_BDSM_MMIO_OFFSET, &quirk->mem[0],
+                                         1);
 -- 
-2.43.5
+2.45.2
 
 
