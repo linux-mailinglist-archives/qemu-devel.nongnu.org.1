@@ -2,72 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80CE89E6E4E
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Dec 2024 13:35:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A67B9E6E74
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Dec 2024 13:42:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tJXY1-0002ZF-IZ; Fri, 06 Dec 2024 07:35:06 -0500
+	id 1tJXeI-0007ar-FT; Fri, 06 Dec 2024 07:41:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jcmvbkbc@gmail.com>)
- id 1tJXXu-0002UH-D2
- for qemu-devel@nongnu.org; Fri, 06 Dec 2024 07:34:58 -0500
-Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
+ id 1tJXeC-0007aL-GD
+ for qemu-devel@nongnu.org; Fri, 06 Dec 2024 07:41:28 -0500
+Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <jcmvbkbc@gmail.com>)
- id 1tJXXs-0005b4-I9
- for qemu-devel@nongnu.org; Fri, 06 Dec 2024 07:34:57 -0500
-Received: by mail-pl1-x634.google.com with SMTP id
- d9443c01a7336-215853ed047so19074195ad.2
- for <qemu-devel@nongnu.org>; Fri, 06 Dec 2024 04:34:55 -0800 (PST)
+ id 1tJXeA-0007Hm-UR
+ for qemu-devel@nongnu.org; Fri, 06 Dec 2024 07:41:28 -0500
+Received: by mail-pl1-x629.google.com with SMTP id
+ d9443c01a7336-215909152c5so22419115ad.3
+ for <qemu-devel@nongnu.org>; Fri, 06 Dec 2024 04:41:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1733488494; x=1734093294; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1733488885; x=1734093685; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=rm9Wr3JXKR1JN+f6IReZIpjxF/cd/DU36egFVglp+8s=;
- b=YMBCZ/SCkDvehIeY0Q9L/HOwIscBFikzeFNsKUHuhEeb2uf4Eil9P0FQ4whFgDSD3B
- 90ko8OX0mnAcg38XUjtkTnOM2E7AUcJkEMaBMi2n6x/gc5TQB0wj7JE5XCkBIzfy/yb6
- 2iguvi+WtghKbopcYooUDdJroVapN6scwDgAwNMEBERZOeNJhug7VL0qiedpGXCn8/qf
- ciVE04q1ILJsTDUmQRNr3f2PKEbbF/zcgHTL4ZpjHc0IqEZgK2v7veDv1EP3Xa6NhGRf
- EO5DmMRwFNXBuj8EEwspXOpTuypMC2IOK5Ax5zeJWs7SckWDae5QtCrVjoULQiG8RpsT
- o5hA==
+ bh=8xbbbkeN0skqJj2tVItHbNSq7aCpwAlp8pAUpWgt96o=;
+ b=IRv5Doa/nK//gqJZLICNS/ipryjrZ9IYh+o1SsVTqFGXiuc4qPiJTP9QUBNnBjlPxA
+ CKy6rUHI4j/yaynanxtGeWaoSTUYRcYK5gEV7jlpw1qSDeSvL6bdIsQ1hMIMpBsFWuTR
+ ZjVtoXPIkRMZDxAXCq+mChO9V++iNnTMdmv4YlxQdT2yPzvK5jcfFEAXkx8eXX87TB7d
+ Gkd+qFobbETLAP6t02I/257eo0VpABtNWtqw4oseGivNlvJ8D+dBc7ZypqJMDLBbB9Hx
+ jTcd+sT01pHC5FKOV0DScKTIIHeGRzxE9aqXdA57TJ+LpOiRc6kiH85ayhZv2TPRUDbD
+ Q0nw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733488494; x=1734093294;
+ d=1e100.net; s=20230601; t=1733488885; x=1734093685;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=rm9Wr3JXKR1JN+f6IReZIpjxF/cd/DU36egFVglp+8s=;
- b=ClMRXbbrZRFcuH2k3+mTMh/qP9zmTP94d+sDXavm6f1u3HdejYwy91QOX3y748qxKj
- ftlPqtuBEgNQ60JsX/RnXwZLAFD82HC8ufrbsHZ7ilGN8st6BYuBYkPD5YTQhOI1rhTL
- sUHOMKDH6tS92sHJ3NegHO6AL8pK0aindpIoSl5aVOGqs3+y3rqf/FblQFQTlq+0vDLh
- StMDV+Vk3WbRen4mQGfCtzQNopHK4zH8+fTphKGGQSvyr5Tin/CZwDaR8wQL6HVv+AxW
- qNM3XSjUgWobb26IMqgEFyibLYmnvvsOGdxLvCyfyxTMB+i7sVigDoJsMynj9OJ7Abmr
- bpSg==
-X-Gm-Message-State: AOJu0YyyxZ0YT8sNav3451EHSkpJTh9rgEQ7VQOqdwd+DVZPiRGXlo9c
- vTZ5qTps2r9kPZhlzOwXme1+fU8pC8OjueCdCYxXty04VdPT208cOwFcjjQaM8R0uLD+hBrbCJp
- BgBdcHs7cGT0vMMKSd/zBIPrBMtx078qD
-X-Gm-Gg: ASbGncuAaCL7C2zX+7adnXVpoURE8yYOoOuVn256OQZgaNhXNwZFcRI15XDLUEtq9bq
- Yqj1E9nDWPAusbfwchbIQ3eQt7hQieA==
-X-Google-Smtp-Source: AGHT+IFAGsptArtdz1n1C9bSWq4ukhqGSpvz0JYkuHcMZfEZESI8m1Efim9N8k/7lmYpUpAJiYtbKXmbl0TttDFWT84=
-X-Received: by 2002:a17:902:ce90:b0:215:98fd:cb0a with SMTP id
- d9443c01a7336-21614d4b6a2mr32612295ad.4.1733488494459; Fri, 06 Dec 2024
- 04:34:54 -0800 (PST)
+ bh=8xbbbkeN0skqJj2tVItHbNSq7aCpwAlp8pAUpWgt96o=;
+ b=VsdlFAyeMSSu4SvMYef7LrwUiwjSkNk5AIP89uf9iVfitXbHRpA0eNUsI119lMwIxT
+ DkWJE3fwFfTh6YySdc8odXldRdRG21MhVA7TpHzVJpRn/C3U0x/3gtNlYMaKr7v+7pWk
+ MO2ACdDOA8NlkOq1uFVOwTuYLxVikP6pLvqf8oT/ZVXiWxYx+akYFrkvfl/yZHahJCn3
+ 6Drom26C48zGTLbcNJmwlh3f0d6dX/wcP5W7a//CnYThHEyPyoZbV0XjP8ilU294lp0g
+ +Xs5kjyAq1pAqtcMXJy1h9rdzRNjCc09Rt3Z746wtw33dAjypx7R+Ug2ylHdELcZlzuX
+ MRgg==
+X-Gm-Message-State: AOJu0Yw7YnXBGM6Sp4f6ScrBfyNj1i3MolekU46CEvbXSYf3658LQXIf
+ YabP2GPcNVfYH0CMqpXXrX/bP8s3XR5QaRtUtde7ubJJVkCyUs784Mo3pEt9th3qatSoHtRSg6H
+ ntDA8B4EMyIIBxPKaDVSRk0qCqsw2xQ==
+X-Gm-Gg: ASbGncuErD1xbWhV4Yo6qDE+zi/6+4quACvRtC8yO/+v5bM0lbk02ZOpqae7oFqTL/t
+ Qe4kry321t2xV5nukB7u4kBM8bUmzcw==
+X-Google-Smtp-Source: AGHT+IExJhDpXVGQfwA1BfBHJ5gBewNa6hn5YvfS6gUb3zQ/6Dzi2RDsJvdYfGfrTriMK6fbsZBb37iky05m44Nzb+k=
+X-Received: by 2002:a17:903:110c:b0:215:6f9b:e447 with SMTP id
+ d9443c01a7336-21614db3f47mr45632415ad.30.1733488885488; Fri, 06 Dec 2024
+ 04:41:25 -0800 (PST)
 MIME-Version: 1.0
 References: <20241205232437.85235-1-philmd@linaro.org>
- <20241205232437.85235-2-philmd@linaro.org>
-In-Reply-To: <20241205232437.85235-2-philmd@linaro.org>
+ <20241205232437.85235-3-philmd@linaro.org>
+In-Reply-To: <20241205232437.85235-3-philmd@linaro.org>
 From: Max Filippov <jcmvbkbc@gmail.com>
-Date: Fri, 6 Dec 2024 04:35:05 -0800
-Message-ID: <CAMo8Bf+621bwyf523i_P11q7rgr=DgpcPPdyh2vaiixZRqN3_Q@mail.gmail.com>
-Subject: Re: [PATCH 1/2] target/xtensa: Implement xtensa_isa_is_big_endian()
+Date: Fri, 6 Dec 2024 04:41:36 -0800
+Message-ID: <CAMo8BfKMhNd0C2HwL2aGAjPUZS8B7u8ncyW5PicswPns28SAmA@mail.gmail.com>
+Subject: Re: [PATCH 2/2] target/xtensa: Remove tswap() calls in semihosting
+ simcall() helper
 To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
 Cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
- envelope-from=jcmvbkbc@gmail.com; helo=mail-pl1-x634.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
+ envelope-from=jcmvbkbc@gmail.com; helo=mail-pl1-x629.google.com
 X-Spam_score_int: -7
 X-Spam_score: -0.8
 X-Spam_bar: /
@@ -93,61 +94,75 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On Thu, Dec 5, 2024 at 3:24=E2=80=AFPM Philippe Mathieu-Daud=C3=A9 <philmd@=
 linaro.org> wrote:
-> Xtensa internal fields are opaque, only accessible by
-> the Xtensa libisa. Implement xtensa_isa_is_big_endian()
-> to get vCPU endianness. This should be implemented in
-> libisa, not QEMU, but I couldn't figure out where to
-> contribute this.
-
-This is a beautified version of what xtensa has in binutils, but
-binutils is also
-just another user of that internal Tensilica library. Perhaps I should make
-an artificial "upstream" for this library just to track this kind of change=
-s.
-Let me look at it.
-
+>
+> In preparation of heterogeneous emulation where cores with
+> different endianness can run concurrently, we need to remove
+> the tswap() calls -- which use a fixed per-binary endianness.
+>
+> Get the endianness of the CPU accessed using the libisa
+> xtensa_isa_is_big_endian() call and replace the tswap() calls
+> by bswap() ones when necessary.
+>
 > Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
 > ---
->  include/hw/xtensa/xtensa-isa.h | 1 +
->  target/xtensa/xtensa-isa.c     | 7 +++++++
->  2 files changed, 8 insertions(+)
+>  target/xtensa/xtensa-semi.c | 16 ++++++++++++++--
+>  1 file changed, 14 insertions(+), 2 deletions(-)
 >
-> diff --git a/include/hw/xtensa/xtensa-isa.h b/include/hw/xtensa/xtensa-is=
-a.h
-> index a289531bdc8..1cb8e6ccb66 100644
-> --- a/include/hw/xtensa/xtensa-isa.h
-> +++ b/include/hw/xtensa/xtensa-isa.h
-> @@ -829,6 +829,7 @@ const char *xtensa_funcUnit_name(xtensa_isa isa, xten=
-sa_funcUnit fun);
+> diff --git a/target/xtensa/xtensa-semi.c b/target/xtensa/xtensa-semi.c
+> index fa21b7e11fc..21d23e39de5 100644
+> --- a/target/xtensa/xtensa-semi.c
+> +++ b/target/xtensa/xtensa-semi.c
+> @@ -328,10 +328,17 @@ void HELPER(simcall)(CPUXtensaState *env)
+>              struct timeval tv =3D {0};
 >
->  int xtensa_funcUnit_num_copies(xtensa_isa isa, xtensa_funcUnit fun);
->
-> +bool xtensa_isa_is_big_endian(xtensa_isa isa);
-
-This file doesn't include stdbool.h and other boolean functions in it
-(e.g. xtensa_opcode_is_branch()) return int. I'd suggest sticking with
-that. With that change:
-
-Acked-by: Max Filippov <jcmvbkbc@gmail.com>
-
->  #ifdef __cplusplus
->  }
-> diff --git a/target/xtensa/xtensa-isa.c b/target/xtensa/xtensa-isa.c
-> index 630b4f9da1b..36eb4bcf3d4 100644
-> --- a/target/xtensa/xtensa-isa.c
-> +++ b/target/xtensa/xtensa-isa.c
-> @@ -1741,3 +1741,10 @@ int xtensa_funcUnit_num_copies(xtensa_isa isa, xte=
-nsa_funcUnit fun)
->      CHECK_FUNCUNIT(intisa, fun, XTENSA_UNDEFINED);
->      return intisa->funcUnits[fun].num_copies;
->  }
+>              if (target_tv) {
+> +                bool cpu_big_endian =3D xtensa_isa_is_big_endian(env->co=
+nfig->isa);
+> +                bool swap_needed =3D HOST_BIG_ENDIAN !=3D cpu_big_endian=
+;
 > +
-> +bool xtensa_isa_is_big_endian(xtensa_isa isa)
-> +{
-> +    xtensa_isa_internal *intisa =3D (xtensa_isa_internal *)isa;
-> +
-> +    return intisa->is_big_endian;
-> +}
+>                  cpu_memory_rw_debug(cs, target_tv,
+>                          (uint8_t *)target_tvv, sizeof(target_tvv), 0);
+> -                tv.tv_sec =3D (int32_t)tswap32(target_tvv[0]);
+> -                tv.tv_usec =3D (int32_t)tswap32(target_tvv[1]);
+> +                if (swap_needed) {
+> +                    bswap32s(&target_tvv[0]);
+> +                    bswap32s(&target_tvv[1]);
+> +                }
+> +                tv.tv_sec =3D (int32_t)target_tvv[0];
+> +                tv.tv_usec =3D (int32_t)target_tvv[1];
+
+This conversion looks a bit heavy. Maybe it would be better to
+give tswap*() an additional env argument and give the target
+a way to deal with it?
+
+>              }
+>              if (fd < 3 && sim_console) {
+>                  if ((fd =3D=3D 1 || fd =3D=3D 2) && rq =3D=3D SELECT_ONE=
+_WRITE) {
+> @@ -381,6 +388,8 @@ void HELPER(simcall)(CPUXtensaState *env)
+>              int argc =3D semihosting_get_argc();
+>              int str_offset =3D (argc + 1) * sizeof(uint32_t);
+>              int i;
+> +            bool cpu_big_endian =3D xtensa_isa_is_big_endian(env->config=
+->isa);
+> +            bool swap_needed =3D HOST_BIG_ENDIAN !=3D cpu_big_endian;
+>              uint32_t argptr;
+>
+>              for (i =3D 0; i < argc; ++i) {
+> @@ -388,6 +397,9 @@ void HELPER(simcall)(CPUXtensaState *env)
+>                  int str_size =3D strlen(str) + 1;
+>
+>                  argptr =3D tswap32(regs[3] + str_offset);
+
+The tswap() is still here.
+
+> +                if (swap_needed) {
+> +                    bswap32s(&argptr);
+> +                }
+>
+>                  cpu_memory_rw_debug(cs,
+>                                      regs[3] + i * sizeof(uint32_t),
 
 --=20
 Thanks.
