@@ -2,80 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0211A9E6E26
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Dec 2024 13:30:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C90649E6E29
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Dec 2024 13:30:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tJXRe-00061j-Lh; Fri, 06 Dec 2024 07:28:30 -0500
+	id 1tJXRg-00064F-71; Fri, 06 Dec 2024 07:28:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <brueckner@linux.ibm.com>)
- id 1tJXRL-0005xA-Ha; Fri, 06 Dec 2024 07:28:12 -0500
+ id 1tJXRO-0005xg-CS; Fri, 06 Dec 2024 07:28:15 -0500
 Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <brueckner@linux.ibm.com>)
- id 1tJXRI-00041X-CO; Fri, 06 Dec 2024 07:28:10 -0500
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4B67UdIh000889;
- Fri, 6 Dec 2024 12:28:02 GMT
+ id 1tJXRI-00041f-Gy; Fri, 06 Dec 2024 07:28:11 -0500
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4B69UMZA027543;
+ Fri, 6 Dec 2024 12:28:03 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:date:from:message-id:mime-version
- :subject:to; s=pp1; bh=H1XSzfzQ35MJNhtuvUSSmG+6rA5kKQH2J2mPrsp90
- uw=; b=M7c46/Polbz2oQFL07ZHlFeV/zjiaxR1dByBXYOLCwun+Ct/Dvrm4EsvU
- XMCdAnod42iEejxAuX0k/F+IPUlRHrNtV6bn6n6tZZmeu9n2nvRnUmxi4Mk1j0ND
- uMxjaOSfJVCYWrnPSHNolfokPSJdmQuewGJHvt7zZ8ZCn4lx7VSjb+r06pUwT+a0
- tet8hS2M6tu7uWZQtl5f/thxjciLzpHFTA6Zf0LPhCVR6yRaExfQPLUkAoNcvE/e
- hRQwThdczzYDrbQ/sFkEAQmm7L7qyTgI3fT/SFuww65S/BIal9IxAD+gLXRl7swz
- 3ELXFwo7BeUvd27ZjuRWGI/gkWp2g==
-Received: from ppma11.dal12v.mail.ibm.com
- (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 43bvxks5qs-1
+ :content-transfer-encoding:date:from:in-reply-to:message-id
+ :mime-version:references:subject:to; s=pp1; bh=9s0862AkwjAan0FMU
+ YRicXB9p5CJWO97Koe2RVcAjIg=; b=pqGfPBnyn0zpxN4asINO8khhGMo5GM8+3
+ p+e2XPSVDfaQ/1xdGjofyTy5jLPTN/bnOEKfkNUd8AcSIApJbAcAn9tIHklf3YMM
+ DyXkOS6S7aB4NN3pp2HnQ7QtjGC7uh2oZz3zrIxpmhcxm+eaJEF/rbq3ouC06DK0
+ 8BEXkCeh5VNZLvRPfuhSjJSRpZWR53751QX3d6EuzIsfm2RetywRbDWVFrK+RoYu
+ /LDLD4OYF4YTr07wXxwXgF9oeRLqeHth/i8DCwMzivcsGnIuOtP8pFGsC9Vnmzp2
+ K5RYuMdXRxlp6qL1Is5tfskyNT9gWrFXQnnMXEw5PirzWKJa9xrwQ==
+Received: from ppma23.wdc07v.mail.ibm.com
+ (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 43bxptgp1g-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
  Fri, 06 Dec 2024 12:28:02 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
- by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4B6BFOr7020058;
- Fri, 6 Dec 2024 12:28:01 GMT
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4B6BK7Dl031729;
+ Fri, 6 Dec 2024 12:28:02 GMT
 Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
- by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 438fr1xmpq-1
+ by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 438ehmake3-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 06 Dec 2024 12:28:01 +0000
+ Fri, 06 Dec 2024 12:28:02 +0000
 Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com
  [10.20.54.104])
  by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 4B6CRwJe26936038
+ 4B6CRwep33292942
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
  Fri, 6 Dec 2024 12:27:58 GMT
 Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 086A42004B;
+ by IMSVA (Postfix) with ESMTP id 8C72920040;
  Fri,  6 Dec 2024 12:27:58 +0000 (GMT)
 Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8D51A20043;
- Fri,  6 Dec 2024 12:27:57 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 1EF9920043;
+ Fri,  6 Dec 2024 12:27:58 +0000 (GMT)
 Received: from vela.ibmuc.com (unknown [9.171.26.200])
  by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Fri,  6 Dec 2024 12:27:57 +0000 (GMT)
+ Fri,  6 Dec 2024 12:27:58 +0000 (GMT)
 From: Hendrik Brueckner <brueckner@linux.ibm.com>
 To: qemu-devel@nongnu.org, qemu-s390x@nongnu.org, thuth@redhat.com
 Cc: nsg@linux.ibm.com, frankja@linux.ibm.com, mimu@linux.ibm.com,
  borntraeger@linux.ibm.com, Hendrik Brueckner <brueckner@linux.ibm.com>
-Subject: [RFC PATCH v2 00/15] KVM: s390: CPU model for gen17
-Date: Fri,  6 Dec 2024 13:27:36 +0100
-Message-ID: <20241206122751.189721-1-brueckner@linux.ibm.com>
+Subject: [RFC PATCH v2 01/15] s390x/cpumodel: add msa10 subfunctions
+Date: Fri,  6 Dec 2024 13:27:37 +0100
+Message-ID: <20241206122751.189721-2-brueckner@linux.ibm.com>
 X-Mailer: git-send-email 2.43.5
+In-Reply-To: <20241206122751.189721-1-brueckner@linux.ibm.com>
+References: <20241206122751.189721-1-brueckner@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: nnYr2wzTeivzXbIGiDN7eZDvD1JZR_AF
-X-Proofpoint-ORIG-GUID: nnYr2wzTeivzXbIGiDN7eZDvD1JZR_AF
+X-Proofpoint-GUID: p8CUE5XweHnFphiTaAJt69-9ERslV9MR
+X-Proofpoint-ORIG-GUID: p8CUE5XweHnFphiTaAJt69-9ERslV9MR
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
  definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 impostorscore=0
- malwarescore=0 lowpriorityscore=0 mlxscore=0 priorityscore=1501
- suspectscore=0 spamscore=0 adultscore=0 mlxlogscore=999 bulkscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ phishscore=0 mlxlogscore=759
+ malwarescore=0 priorityscore=1501 bulkscore=0 impostorscore=0
+ clxscore=1015 lowpriorityscore=0 adultscore=0 spamscore=0 suspectscore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.19.0-2411120000 definitions=main-2412060089
 Received-SPF: pass client-ip=148.163.158.5;
  envelope-from=brueckner@linux.ibm.com; helo=mx0b-001b2d01.pphosted.com
@@ -102,89 +104,118 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Introducing the gen17 CPU model with feature indications
-comprising of:
+MSA10 introduces new AES XTS subfunctions.
 
-* Concurrent-function facility with subcodes
-* More vector extensions
-* Ineffective-nonconstrained-transaction facility
-* Even more msa crypto extensions
-* Additional PLO subfunctions
+Signed-off-by: Hendrik Brueckner <brueckner@linux.ibm.com>
+Reviewed-by: Christian Borntraeger <borntraeger@linux.ibm.com>
+---
+ target/s390x/cpu_features.c         |  2 ++
+ target/s390x/cpu_features_def.h.inc |  6 ++++++
+ target/s390x/cpu_models.c           |  4 ++++
+ target/s390x/gen-features.c         | 20 ++++++++++++++++++++
+ 4 files changed, 32 insertions(+)
 
-For reference, see also the kernel part:
-https://lore.kernel.org/kvm/20241107152319.77816-1-brueckner@linux.ibm.com/T/#me506dc2ca538aee3cfc13620a48bdb686c459ab0
-
-Changelog v1->v2:
-- Linux headers update to Linux 6.13-rc1 as pre-req
-  for the Concurrent-function facility
-- Added missing CPU feature (group) initialization
-  for the msa12 and PLO extensions
-
-
-Feedback and review is always welcome.  Thanks a lot!
-
-Kind regards,
-Hendrik
-
-
-Hendrik Brueckner (15):
-  s390x/cpumodel: add msa10 subfunctions
-  s390x/cpumodel: add msa11 subfunctions
-  s390x/cpumodel: add msa12 changes
-  s390x/cpumodel: add msa13 subfunctions
-  s390x/cpumodel: Add ptff Query Time-Stamp Event (QTSE) support
-  linux-headers: Update to Linux 6.13-rc1
-  s390x/cpumodel: add Concurrent-functions facility support
-  s390x/cpumodel: add Vector Enhancements facility 3
-  s390x/cpumodel: add Miscellaneous-Instruction-Extensions Facility 4
-  s390x/cpumodel: add Vector-Packed-Decimal-Enhancement facility 3
-  s390x/cpumodel: add Ineffective-nonconstrained-transaction facility
-  s390x/cpumodel: Add Sequential-Instruction-Fetching facility
-  s390x/cpumodel: correct PLO feature wording
-  s390x/cpumodel: Add PLO-extension facility
-  s390x/cpumodel: gen17 model
-
- include/standard-headers/drm/drm_fourcc.h     |   1 +
- include/standard-headers/linux/ethtool.h      |   5 +
- include/standard-headers/linux/pci_regs.h     |  38 ++-
- .../standard-headers/linux/virtio_crypto.h    |   1 +
- include/standard-headers/linux/virtio_pci.h   | 131 ++++++++++
- linux-headers/asm-arm64/kvm.h                 |   6 +
- linux-headers/asm-arm64/unistd_64.h           |   4 +
- linux-headers/asm-generic/mman-common.h       |   3 +
- linux-headers/asm-generic/mman.h              |   4 +
- linux-headers/asm-generic/unistd.h            |  11 +-
- linux-headers/asm-loongarch/kvm.h             |  20 ++
- linux-headers/asm-loongarch/unistd_64.h       |   4 +
- linux-headers/asm-mips/mman.h                 |   3 +
- linux-headers/asm-mips/unistd_n32.h           |   4 +
- linux-headers/asm-mips/unistd_n64.h           |   4 +
- linux-headers/asm-mips/unistd_o32.h           |   4 +
- linux-headers/asm-powerpc/unistd_32.h         |   4 +
- linux-headers/asm-powerpc/unistd_64.h         |   4 +
- linux-headers/asm-riscv/kvm.h                 |   4 +
- linux-headers/asm-riscv/unistd_32.h           |   4 +
- linux-headers/asm-riscv/unistd_64.h           |   4 +
- linux-headers/asm-s390/kvm.h                  |   3 +-
- linux-headers/asm-s390/unistd_32.h            |   4 +
- linux-headers/asm-s390/unistd_64.h            |   4 +
- linux-headers/asm-x86/kvm.h                   |   1 +
- linux-headers/asm-x86/mman.h                  |   3 -
- linux-headers/asm-x86/unistd_32.h             |   4 +
- linux-headers/asm-x86/unistd_64.h             |   4 +
- linux-headers/asm-x86/unistd_x32.h            |   4 +
- linux-headers/linux/iommufd.h                 | 224 +++++++++++++++++-
- linux-headers/linux/kvm.h                     |   8 +
- linux-headers/linux/psci.h                    |   5 +
- linux-headers/linux/vfio.h                    |   2 +-
- target/s390x/cpu_features.c                   |  11 +
- target/s390x/cpu_features.h                   |   1 +
- target/s390x/cpu_features_def.h.inc           |  94 +++++++-
- target/s390x/cpu_models.c                     |  61 +++++
- target/s390x/gen-features.c                   | 178 ++++++++++++++
- target/s390x/kvm/kvm.c                        |   6 +
- 39 files changed, 851 insertions(+), 29 deletions(-)
-
+diff --git a/target/s390x/cpu_features.c b/target/s390x/cpu_features.c
+index cb4e2b8920..a3c239595a 100644
+--- a/target/s390x/cpu_features.c
++++ b/target/s390x/cpu_features.c
+@@ -252,6 +252,8 @@ static S390FeatGroupDef s390_feature_groups[] = {
+     FEAT_GROUP_INIT("msa8", MSA_EXT_8, "Message-security-assist-extension 8 facility"),
+     FEAT_GROUP_INIT("msa9", MSA_EXT_9, "Message-security-assist-extension 9 facility"),
+     FEAT_GROUP_INIT("msa9_pckmo", MSA_EXT_9_PCKMO, "Message-security-assist-extension 9 PCKMO subfunctions"),
++    FEAT_GROUP_INIT("msa10", MSA_EXT_10, "Message-security-assist-extension 10 facility"),
++    FEAT_GROUP_INIT("msa10_pckmo", MSA_EXT_10_PCKMO, "Message-security-assist-extension 10 PCKMO subfunctions"),
+     FEAT_GROUP_INIT("mepochptff", MULTIPLE_EPOCH_PTFF, "PTFF enhancements introduced with Multiple-epoch facility"),
+     FEAT_GROUP_INIT("esort", ENH_SORT, "Enhanced-sort facility"),
+     FEAT_GROUP_INIT("deflate", DEFLATE_CONVERSION, "Deflate-conversion facility"),
+diff --git a/target/s390x/cpu_features_def.h.inc b/target/s390x/cpu_features_def.h.inc
+index c53ac13352..104d186c3f 100644
+--- a/target/s390x/cpu_features_def.h.inc
++++ b/target/s390x/cpu_features_def.h.inc
+@@ -233,6 +233,10 @@ DEF_FEAT(KM_XTS_AES_128, "km-xts-aes-128", KM, 50, "KM XTS-AES-128")
+ DEF_FEAT(KM_XTS_AES_256, "km-xts-aes-256", KM, 52, "KM XTS-AES-256")
+ DEF_FEAT(KM_XTS_EAES_128, "km-xts-eaes-128", KM, 58, "KM XTS-Encrypted-AES-128")
+ DEF_FEAT(KM_XTS_EAES_256, "km-xts-eaes-256", KM, 60, "KM XTS-Encrypted-AES-256")
++DEF_FEAT(KM_FULL_XTS_AES_128, "km-full-xts-aes-128", KM, 82, "KM Full-XTS-AES-128")
++DEF_FEAT(KM_FULL_XTS_AES_256, "km-full-xts-aes-256", KM, 84, "KM Full-XTS-AES-256")
++DEF_FEAT(KM_FULL_XTS_EAES_128, "km-full-xts-eaes-128", KM, 90, "KM Full-XTS-Encrypted-AES-128")
++DEF_FEAT(KM_FULL_XTS_EAES_256, "km-full-xts-eaes-256", KM, 92, "KM Full-XTS-Encrypted-AES-256")
+ 
+ /* Features exposed via the KIMD instruction. */
+ DEF_FEAT(KIMD_SHA_1, "kimd-sha-1", KIMD, 1, "KIMD SHA-1")
+@@ -264,6 +268,8 @@ DEF_FEAT(PCKMO_ETDEA_256, "pckmo-etdea-192", PCKMO, 3, "PCKMO Encrypted-TDEA-192
+ DEF_FEAT(PCKMO_AES_128, "pckmo-aes-128", PCKMO, 18, "PCKMO Encrypted-AES-128-Key")
+ DEF_FEAT(PCKMO_AES_192, "pckmo-aes-192", PCKMO, 19, "PCKMO Encrypted-AES-192-Key")
+ DEF_FEAT(PCKMO_AES_256, "pckmo-aes-256", PCKMO, 20, "PCKMO Encrypted-AES-256-Key")
++DEF_FEAT(PCKMO_AES_XTS_128_DK, "pckmo-aes-xts-128-dk", PCKMO, 21, "PCKMO Encrypt-AES-XTS-128-Double-Key")
++DEF_FEAT(PCKMO_AES_XTS_256_DK, "pckmo-aes-xts-256-dk", PCKMO, 22, "PCKMO Encrypt-AES-XTS-256-Double-Key")
+ DEF_FEAT(PCKMO_ECC_P256, "pckmo-ecc-p256", PCKMO, 32, "PCKMO Encrypt-ECC-P256-Key")
+ DEF_FEAT(PCKMO_ECC_P384, "pckmo-ecc-p384", PCKMO, 33, "PCKMO Encrypt-ECC-P384-Key")
+ DEF_FEAT(PCKMO_ECC_P521, "pckmo-ecc-p521", PCKMO, 34, "PCKMO Encrypt-ECC-P521-Key")
+diff --git a/target/s390x/cpu_models.c b/target/s390x/cpu_models.c
+index a27f4b6f79..3eb8276aee 100644
+--- a/target/s390x/cpu_models.c
++++ b/target/s390x/cpu_models.c
+@@ -477,6 +477,10 @@ static void check_consistency(const S390CPUModel *model)
+         { S390_FEAT_KLMD_SHA3_512, S390_FEAT_MSA },
+         { S390_FEAT_KLMD_SHAKE_128, S390_FEAT_MSA },
+         { S390_FEAT_KLMD_SHAKE_256, S390_FEAT_MSA },
++        { S390_FEAT_KM_FULL_XTS_AES_128, S390_FEAT_MSA_EXT_4 },
++        { S390_FEAT_KM_FULL_XTS_AES_256, S390_FEAT_MSA_EXT_4 },
++        { S390_FEAT_KM_FULL_XTS_EAES_128, S390_FEAT_MSA_EXT_4 },
++        { S390_FEAT_KM_FULL_XTS_EAES_256, S390_FEAT_MSA_EXT_4 },
+         { S390_FEAT_PRNO_TRNG_QRTCR, S390_FEAT_MSA_EXT_5 },
+         { S390_FEAT_PRNO_TRNG, S390_FEAT_MSA_EXT_5 },
+         { S390_FEAT_SIE_KSS, S390_FEAT_SIE_F2 },
+diff --git a/target/s390x/gen-features.c b/target/s390x/gen-features.c
+index 2b2bfc3736..06c3bf64f3 100644
+--- a/target/s390x/gen-features.c
++++ b/target/s390x/gen-features.c
+@@ -246,6 +246,16 @@
+     S390_FEAT_PCKMO_ECC_ED25519, \
+     S390_FEAT_PCKMO_ECC_ED448
+ 
++#define S390_FEAT_GROUP_MSA_EXT_10 \
++    S390_FEAT_KM_FULL_XTS_AES_128, \
++    S390_FEAT_KM_FULL_XTS_AES_256, \
++    S390_FEAT_KM_FULL_XTS_EAES_128, \
++    S390_FEAT_KM_FULL_XTS_EAES_256
++
++#define S390_FEAT_GROUP_MSA_EXT_10_PCKMO \
++    S390_FEAT_PCKMO_AES_XTS_128_DK, \
++    S390_FEAT_PCKMO_AES_XTS_256_DK
++
+ #define S390_FEAT_GROUP_ENH_SORT \
+     S390_FEAT_ESORT_BASE, \
+     S390_FEAT_SORTL_SFLR, \
+@@ -307,10 +317,18 @@ static uint16_t group_MSA_EXT_9[] = {
+     S390_FEAT_GROUP_MSA_EXT_9,
+ };
+ 
++static uint16_t group_MSA_EXT_10[] = {
++    S390_FEAT_GROUP_MSA_EXT_10,
++};
++
+ static uint16_t group_MSA_EXT_9_PCKMO[] = {
+     S390_FEAT_GROUP_MSA_EXT_9_PCKMO,
+ };
+ 
++static uint16_t group_MSA_EXT_10_PCKMO[] = {
++    S390_FEAT_GROUP_MSA_EXT_10_PCKMO,
++};
++
+ static uint16_t group_ENH_SORT[] = {
+     S390_FEAT_GROUP_ENH_SORT,
+ };
+@@ -858,6 +876,8 @@ static FeatGroupDefSpec FeatGroupDef[] = {
+     FEAT_GROUP_INITIALIZER(MSA_EXT_8),
+     FEAT_GROUP_INITIALIZER(MSA_EXT_9),
+     FEAT_GROUP_INITIALIZER(MSA_EXT_9_PCKMO),
++    FEAT_GROUP_INITIALIZER(MSA_EXT_10),
++    FEAT_GROUP_INITIALIZER(MSA_EXT_10_PCKMO),
+     FEAT_GROUP_INITIALIZER(MULTIPLE_EPOCH_PTFF),
+     FEAT_GROUP_INITIALIZER(ENH_SORT),
+     FEAT_GROUP_INITIALIZER(DEFLATE_CONVERSION),
 -- 
 2.43.5
 
