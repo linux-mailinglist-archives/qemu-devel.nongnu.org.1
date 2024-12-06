@@ -2,62 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B12F49E6C19
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Dec 2024 11:26:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C4579E6C18
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Dec 2024 11:26:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tJVXS-0006Mx-Jg; Fri, 06 Dec 2024 05:26:23 -0500
+	id 1tJVXQ-0006Hz-U6; Fri, 06 Dec 2024 05:26:21 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <rowanbhart@gmail.com>)
- id 1tJVXI-0006Ew-GA
- for qemu-devel@nongnu.org; Fri, 06 Dec 2024 05:26:12 -0500
-Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
+ id 1tJVXH-0006Ax-9N
+ for qemu-devel@nongnu.org; Fri, 06 Dec 2024 05:26:11 -0500
+Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <rowanbhart@gmail.com>)
- id 1tJVXF-0004RX-PN
+ id 1tJVXF-0004Re-PW
  for qemu-devel@nongnu.org; Fri, 06 Dec 2024 05:26:11 -0500
-Received: by mail-pl1-x631.google.com with SMTP id
- d9443c01a7336-215909152c5so21294835ad.3
+Received: by mail-pl1-x62c.google.com with SMTP id
+ d9443c01a7336-215348d1977so15196585ad.3
  for <qemu-devel@nongnu.org>; Fri, 06 Dec 2024 02:26:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1733480767; x=1734085567; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=fbtdTYVpjiZom2u6PDj/6kuYKtGHTXtnoaoW3mG0VKw=;
- b=aVmBB9+S4EoGp3upnHIKAldF2i/3ba5j8HheocnXYtmtwOecgzW9ScCakQ1Jq+ljBC
- YJjylVjrujrRHsYUnrA1klAjIsPY4ULSX3y469vZutOkFyaoWNrq4gJomtahVIQFvLWa
- Pxcyad7NuVnbsubuGXw6Cz3X8uqUQ9CUmGzl+uE3ce67MVBVXhJmNGcWNKBEJz5QWxoo
- a85IUyIwUzRkBvAen2WB8sjACdmBN60jdcdBeK7SIfkEYhkiKMPfKYnjyuSsot8hVDs1
- zOuqmNyakehpLsQt2NK8cMzQ2M0wITwmJSZxIN5/rLfNKTTvdrHo9ZB0/7jhTMRnNAKT
- cV0Q==
+ d=gmail.com; s=20230601; t=1733480768; x=1734085568; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=nbpnqNrG3cFwIZii6c5MquwA7F8Z7zU8w7rRlBPru8Q=;
+ b=afoKekRJH6CkvBylIgDY/ubdr8ZLZ8q8If216Sqyed4iH1RaDQODO438NY3KqrO08i
+ BleqbTFI6E3N1MpKAd51M/Vr/0hUbRVlkeWP54a3nXifQcQqV1J/NR/4QXJHxwcNUHEP
+ P05yWnZSvnzi2WzYmpp6cilpjz91GWoEsnc4XEfPpoBqPuQ/1IVF/eTVj7EIsZp4nWPe
+ IuZLwXLHK0yrtw808mpxwLL5LvdPihzEtWM42OVuQkpG9E/Ky0gqL6Hp7CV4q0cpwHZ+
+ L2CxvRlmGyT2qS2ar+8IrPVO7jQcH0xTdNvZH7GgVKD7C3lF9J/Vb3EaS32qRUkQAHbR
+ SKXg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733480767; x=1734085567;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=fbtdTYVpjiZom2u6PDj/6kuYKtGHTXtnoaoW3mG0VKw=;
- b=NvAKMhOO2b3KO6uHsgdb43KszUTObMMBcvjfoINwNk7QcgPkIpuqrr2kHvn5Dg/env
- VoJLJ0zTbRZaSHEXy9ftxkAFH/Q/GeyUfP9d2RQVIQnT7VxVRDNLoMKrFpkneTde5xXB
- +bfSRRu73Hlo4EhXKrheQdYr96wlDL9Qbd3EGirCacpLNlRloCJ6rQhpgp7CKrJAowwb
- riYiYJEcFXsDL6RoAZr9Be18cqxKFHrOCqWa3XigzDcjdz9jdl14gR8AID7+xSU7VdR1
- iRMYooJlJn/TdnpFimghZh6ue9W9oOoc3f+QWF8ts79sB2yrK0YrofXyHBJJAS1MsM5B
- EJjg==
-X-Gm-Message-State: AOJu0YxhIpPMkD9Jixl2xVbWMdgaeG05XAyI+lxBfp3OmR5BmK9ZH1+M
- py+OZTMC/crEEk24/dPgn0bvE+fTxUbHBGpwjvEu0sVhBJ31IFXrhixNqKmEPWg=
-X-Gm-Gg: ASbGnctbtpL52Cat7BngK2RTdDO8nwOV1phsWqfozdBFYiISmYh3xqadcPkKdf7F3SH
- 8FjTSJzh50+kk/B9VQKC17OvSIyeB/djQa2VwlDCBIMHEraUMXlcGsh38/4UzfezJS+3hlHlsHb
- XSXVV9sEWEO6R9YeUwct7BtEQbBU1IQPKdU95cTkAsCJraoWaVEBd9OaW4UkhfU0Hi4bwk0n/Ie
- MUivelVJTSP0fIJrIILsEpfW+t/bnTkQ6z4ewRRWl6MTYQ=
-X-Google-Smtp-Source: AGHT+IGqkPXb5n4UvAca38HI1MBXjkZNpFJce/uVvA7HxQk8fWufpzYirBrdr90QDsr0oR4WlqHSug==
-X-Received: by 2002:a17:903:240a:b0:215:6816:6345 with SMTP id
- d9443c01a7336-21614d74ed8mr40712865ad.16.1733480767016; 
+ d=1e100.net; s=20230601; t=1733480768; x=1734085568;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=nbpnqNrG3cFwIZii6c5MquwA7F8Z7zU8w7rRlBPru8Q=;
+ b=nV44VwmRc+XLcJ8IrAEhHvkHHwGWfuKZxOCSjkolU382PEyI4SnEAx1YCkvg9RoOg+
+ rsD+lqWsczxDrzisABjQ7x+g/59ZBTq4oxYgFNhw/2xV+c7pnrTMx2YG0+45M5ruEl51
+ kbxn4f8kew1setTjJk0W0iiolmgXtVJ969Gt22Q6SFFtSRHuscxzq7WI7P6+cLplcjXF
+ w1EdKcBm8V+bb9Hkvkt2BJPbgMJVau3WYZ7CajQnzO4sSIRIYOfo9v4Ii3cGy+DWmVU8
+ H0tay1ZlKUlWCTKppq24Iml1uTWvf7Y6nVhztd0KAaqwXR6WbUFm+wdZ6yp9tVvSSHBy
+ 4tCw==
+X-Gm-Message-State: AOJu0Yz2KouklL6dWy+QUyUqhYRsqKjPQafplLO6z5h2RzylCnh4DhF/
+ I2/imt0qR5pFJ59nF1nuqhiw7kj6eCcsPJXHhg2MyiJzBRbux+rU4vn75zurCxY=
+X-Gm-Gg: ASbGncuA4TxmE7dYgP2Zb/mq8763KfTjK7iP38BKtRZX6JVJJIhyx/4H75klJfG9f8g
+ rNhcrILWeLhsmVBAQ05zUBNMEKnoyni343BMfSdQQigPqoRcozj9w/vCJrW0xpTc8TQ9trZqyWJ
+ XqJkx7i0nRqwoLYsrzrY8qOsNHhkKH3YVoDyIGNTU6qmHLbahcaZVtt//Gqbjgo3v1maRno+fId
+ DCi2yYpgpglqwoxp9XaNlB9XJwyz9uW1uX7a7K1ZMKotzc=
+X-Google-Smtp-Source: AGHT+IEFzBPBAzQVhCv0JdKREivN8znDY8V/NN7F0SmTW+ZrXjCuFu5eUGoI6O3mucXA2ladKaCv+g==
+X-Received: by 2002:a17:902:e841:b0:216:1eb9:4a48 with SMTP id
+ d9443c01a7336-2161eb94e44mr10657245ad.56.1733480767960; 
  Fri, 06 Dec 2024 02:26:07 -0800 (PST)
 Received: from chaos.lan ([50.39.253.148]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-215f8e3e452sm25934885ad.43.2024.12.06.02.26.06
+ d9443c01a7336-215f8e3e452sm25934885ad.43.2024.12.06.02.26.07
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 06 Dec 2024 02:26:06 -0800 (PST)
+ Fri, 06 Dec 2024 02:26:07 -0800 (PST)
 From: Rowan Hart <rowanbhart@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
@@ -68,17 +69,18 @@ Cc: Richard Henderson <richard.henderson@linaro.org>,
  Mahmoud Mandour <ma.mandourr@gmail.com>,
  Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Rowan Hart <rowanbhart@gmail.com>
-Subject: [PATCH v2 0/3] Add additional plugin API functions to read and write
- memory and registers
-Date: Fri,  6 Dec 2024 02:26:01 -0800
-Message-ID: <20241206102605.961658-1-rowanbhart@gmail.com>
+ novafacing <rowanbhart@gmail.com>
+Subject: [PATCH v2 1/3] Expose gdb_write_register function to consumers of
+ gdbstub
+Date: Fri,  6 Dec 2024 02:26:02 -0800
+Message-ID: <20241206102605.961658-2-rowanbhart@gmail.com>
 X-Mailer: git-send-email 2.46.1
-Content-Type: text/plain; charset="utf-8"
+In-Reply-To: <20241206102605.961658-1-rowanbhart@gmail.com>
+References: <20241206102605.961658-1-rowanbhart@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
- envelope-from=rowanbhart@gmail.com; helo=mail-pl1-x631.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
+ envelope-from=rowanbhart@gmail.com; helo=mail-pl1-x62c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,59 +103,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patch set follows a previous patch which added the
-qemu_plugin_read_memory_vaddr function and adds a set of similar
-functions to read and write registers, virtual memory, and
-physical memory.
+From: novafacing <rowanbhart@gmail.com>
 
-The use case I have in mind is for use of QEMU for program analysis and
-testing. For example, a fuzzer which uses QEMU for emulation might wish to
-inject test data into a program at runtime using qemu_plugin_write_memory_vaddr
-(and likewise if testing an operating system or bare metal application using
-qemu_plugin_write_memory_hwaddr). It may also wish to read the initial contents
-of memory using qemu_plugin_read_memory_vaddr/hwaddr.
+---
+ gdbstub/gdbstub.c      |  2 +-
+ include/exec/gdbstub.h | 14 ++++++++++++++
+ 2 files changed, 15 insertions(+), 1 deletion(-)
 
-Similarly, a testing framework may wish to fake register values, perhaps to
-simulate a device failure, perhaps by using qemu_plugin_write_register to set a
-register value to an error code.
-
-I think all this functionality works together to make QEMU
-plugins more powerful and versatile, hopefully removing barriers
-to using upstream QEMU for these tasks which have historically
-required maintaining a QEMU fork downstream (like QEMUAFL
-https://github.com/AFLplusplus/qemuafl), which is tedious, error
-prone, and results in users missing out on enhancements to QEMU.
-
-A test is provided, compile:
-
-gcc -o tests/tcg/x86_64/inject-target tests/tcg/x86_64/inject-target.c
-
-And run:
-
-./build/qemu-x86_64 -d plugin --plugin build/tests/tcg/plugins/libinject.so tests/tcg/x86_64/inject-target
-
-Hopefully after a number of tries, the inject plugin will inject the right
-value into the target program, leading to a victory message. This plugin
-handles simple "hypercalls", only one of which is implemented and injects
-data into guest memory.
-
-novafacing (3):
-  Expose gdb_write_register function to consumers of gdbstub
-  Add plugin API functions for register R/W, hwaddr R/W, vaddr W
-  Add inject plugin and x86_64 target for the inject plugin
-
- gdbstub/gdbstub.c                |   2 +-
- include/exec/gdbstub.h           |  14 +++
- include/qemu/qemu-plugin.h       | 116 +++++++++++++++--
- plugins/api.c                    |  66 +++++++++-
- tests/tcg/plugins/inject.c       | 206 +++++++++++++++++++++++++++++++
- tests/tcg/plugins/meson.build    |   2 +-
- tests/tcg/x86_64/Makefile.target |   1 +
- tests/tcg/x86_64/inject-target.c |  27 ++++
- 8 files changed, 418 insertions(+), 16 deletions(-)
- create mode 100644 tests/tcg/plugins/inject.c
- create mode 100644 tests/tcg/x86_64/inject-target.c
-
+diff --git a/gdbstub/gdbstub.c b/gdbstub/gdbstub.c
+index b1def7e71d..7d87a3324c 100644
+--- a/gdbstub/gdbstub.c
++++ b/gdbstub/gdbstub.c
+@@ -536,7 +536,7 @@ int gdb_read_register(CPUState *cpu, GByteArray *buf, int reg)
+     return 0;
+ }
+ 
+-static int gdb_write_register(CPUState *cpu, uint8_t *mem_buf, int reg)
++int gdb_write_register(CPUState *cpu, uint8_t *mem_buf, int reg)
+ {
+     CPUClass *cc = CPU_GET_CLASS(cpu);
+     GDBRegisterState *r;
+diff --git a/include/exec/gdbstub.h b/include/exec/gdbstub.h
+index d73f424f56..584ed73fc9 100644
+--- a/include/exec/gdbstub.h
++++ b/include/exec/gdbstub.h
+@@ -118,6 +118,20 @@ const GDBFeature *gdb_find_static_feature(const char *xmlname);
+  */
+ int gdb_read_register(CPUState *cpu, GByteArray *buf, int reg);
+ 
++/**
++ * gdb_write_register() - Write a register associated with a CPU.
++ * @cpu: The CPU associated with the register.
++ * @buf: The buffer that the register contents will be set to.
++ * @reg: The register's number returned by gdb_find_feature_register().
++ *
++ * The size of @buf must be at least the size of the register being
++ * written.
++ *
++ * Return: The number of written bytes, or 0 if an error occurred (for
++ * example, an unknown register was provided).
++ */
++int gdb_write_register(CPUState *cpu, uint8_t *mem_buf, int reg);
++
+ /**
+  * typedef GDBRegDesc - a register description from gdbstub
+  */
 -- 
 2.46.1
 
