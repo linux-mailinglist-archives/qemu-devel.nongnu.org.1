@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52A229E6C12
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Dec 2024 11:26:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 64CBA9E6C0E
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Dec 2024 11:25:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tJVVl-0001Rh-Oq; Fri, 06 Dec 2024 05:24:38 -0500
+	id 1tJVVq-0001Sb-K9; Fri, 06 Dec 2024 05:24:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tJVVk-0001RQ-C0
- for qemu-devel@nongnu.org; Fri, 06 Dec 2024 05:24:36 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tJVVo-0001SS-Op
+ for qemu-devel@nongnu.org; Fri, 06 Dec 2024 05:24:40 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tJVVi-00049v-20
- for qemu-devel@nongnu.org; Fri, 06 Dec 2024 05:24:36 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tJVVm-0004AT-Qh
+ for qemu-devel@nongnu.org; Fri, 06 Dec 2024 05:24:40 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1733480673;
+ s=mimecast20190719; t=1733480678;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=s+im4OO3hCjJQgqD3GiQCbQKHWzu0C0Dxbxj7TZu/uQ=;
- b=Rin7AQ4YNiHcIBQl6g6SWbWxM8o/Z00t3Zbz/uTRoJDLqmKKDKnwwE5+Xye230O2g4un25
- hJ0+C5a7Yz2nTAJYwRWGoPIHpZRcssnrBTnw2EEDMqHFurrNcqE11/F11XTRvtKpsFlOdS
- kQRYYjsLbsvgZ71sXQ64YM9jjq7p9uA=
+ bh=NGlSdVUVdG6wWXKx3osSCH6R4CRYkMVM5MP6idPnZfo=;
+ b=YEMLXZZ6ilXojukCKzRHgG8gED8dW3a3H/Qiazt6E5DJ+DaFqiDGrjoZxfyXNFfVNCIohB
+ uIcVP1Rz9RXhlc3MO2sEd6yHw4B8IUrPsSwN1/ywvqJ7Xa7u0JNU5dZ8ks8O/cnFJsHZBk
+ RblBfokdZ1kiC0t1M9g22fP5uGQ7JsA=
 Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-619-Gus4826VPUOV6GlZiaQs4w-1; Fri,
- 06 Dec 2024 05:24:30 -0500
-X-MC-Unique: Gus4826VPUOV6GlZiaQs4w-1
-X-Mimecast-MFC-AGG-ID: Gus4826VPUOV6GlZiaQs4w
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-681-7kZ15-N3NhSZCYH5V45qqA-1; Fri,
+ 06 Dec 2024 05:24:36 -0500
+X-MC-Unique: 7kZ15-N3NhSZCYH5V45qqA-1
+X-Mimecast-MFC-AGG-ID: 7kZ15-N3NhSZCYH5V45qqA
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id A6E9D1955F39; Fri,  6 Dec 2024 10:24:28 +0000 (UTC)
+ id 3F4871956054; Fri,  6 Dec 2024 10:24:34 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.192.66])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id C18BF3000238; Fri,  6 Dec 2024 10:24:23 +0000 (UTC)
+ id 1FDCF300019E; Fri,  6 Dec 2024 10:24:28 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
@@ -55,9 +55,9 @@ Cc: qemu-arm@nongnu.org, Alistair Francis <alistair@alistair23.me>,
  Tyrone Ting <kfting@nuvoton.com>, Hao Wu <wuhaotsh@google.com>,
  Igor Mitsyanko <i.mitsyanko@gmail.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH 4/6] tests/functional: Convert the cubieboard avocado tests
-Date: Fri,  6 Dec 2024 11:23:54 +0100
-Message-ID: <20241206102358.1186644-5-thuth@redhat.com>
+Subject: [PATCH 5/6] tests/functional: Convert the quanta-gsj avocado test
+Date: Fri,  6 Dec 2024 11:23:55 +0100
+Message-ID: <20241206102358.1186644-6-thuth@redhat.com>
 In-Reply-To: <20241206102358.1186644-1-thuth@redhat.com>
 References: <20241206102358.1186644-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -88,235 +88,153 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Straight forward conversion, just the hashsums needed to be
-updated to sha256 now.
-
-These were the last tests that used image_pow2ceil_expand in
-boot_linux_console.py, so we can remove that function from that
-file now, too.
+Straight forward conversion, basically just the hashsums needed
+to be updated to sha256 now.
 
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- MAINTAINERS                             |   1 +
- tests/avocado/boot_linux_console.py     | 157 ------------------------
- tests/functional/meson.build            |   2 +
- tests/functional/test_arm_cubieboard.py | 150 ++++++++++++++++++++++
- 4 files changed, 153 insertions(+), 157 deletions(-)
- create mode 100755 tests/functional/test_arm_cubieboard.py
+ MAINTAINERS                             |  1 +
+ tests/avocado/boot_linux_console.py     | 86 ---------------------
+ tests/functional/meson.build            |  2 +
+ tests/functional/test_arm_quanta_gsj.py | 99 +++++++++++++++++++++++++
+ 4 files changed, 102 insertions(+), 86 deletions(-)
+ create mode 100755 tests/functional/test_arm_quanta_gsj.py
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index 9b1c3459b4..dc583d5853 100644
+index dc583d5853..a62659b330 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -633,6 +633,7 @@ F: include/hw/*/allwinner*
- F: hw/arm/cubieboard.c
- F: docs/system/arm/cubieboard.rst
- F: hw/misc/axp209.c
-+F: tests/functional/test_arm_cubieboard.py
+@@ -872,6 +872,7 @@ F: tests/qtest/adm1266-test.c
+ F: pc-bios/npcm7xx_bootrom.bin
+ F: roms/vbootrom
+ F: docs/system/arm/nuvoton.rst
++F: tests/functional/test_arm_quanta_gsj.py
  
- Allwinner-h3
- M: Niek Linnenbank <nieklinnenbank@gmail.com>
+ Raspberry Pi
+ M: Peter Maydell <peter.maydell@linaro.org>
 diff --git a/tests/avocado/boot_linux_console.py b/tests/avocado/boot_linux_console.py
-index 3250168ccf..ea31f154e3 100644
+index ea31f154e3..5bc1c68af9 100644
 --- a/tests/avocado/boot_linux_console.py
 +++ b/tests/avocado/boot_linux_console.py
-@@ -24,22 +24,6 @@
- from avocado.utils import process
- from avocado.utils import archive
- 
--"""
--Round up to next power of 2
--"""
--def pow2ceil(x):
--    return 1 if x == 0 else 2**(x - 1).bit_length()
--
--"""
--Expand file size to next power of 2
--"""
--def image_pow2ceil_expand(path):
--        size = os.path.getsize(path)
--        size_aligned = pow2ceil(size)
--        if size != size_aligned:
--            with open(path, 'ab+') as fd:
--                fd.truncate(size_aligned)
--
- class LinuxKernelTest(QemuSystemTest):
-     KERNEL_COMMON_COMMAND_LINE = 'printk.time=0 '
- 
-@@ -132,147 +116,6 @@ def test_arm_virt(self):
+@@ -116,92 +116,6 @@ def test_arm_virt(self):
          console_pattern = 'Kernel command line: %s' % kernel_command_line
          self.wait_for_console_pattern(console_pattern)
  
--    def test_arm_cubieboard_initrd(self):
+-    @skipUnless(os.getenv('AVOCADO_TIMEOUT_EXPECTED'), 'Test might timeout')
+-    def test_arm_quanta_gsj(self):
 -        """
 -        :avocado: tags=arch:arm
--        :avocado: tags=machine:cubieboard
+-        :avocado: tags=machine:quanta-gsj
 -        :avocado: tags=accel:tcg
 -        """
--        deb_url = ('https://apt.armbian.com/pool/main/l/'
--                   'linux-6.6.16/linux-image-current-sunxi_24.2.1_armhf__6.6.16-Seb3e-D6b4a-P2359-Ce96bHfe66-HK01ba-V014b-B067e-R448a.deb')
--        deb_hash = 'f7c3c8c5432f765445dc6e7eab02f3bbe668256b'
--        deb_path = self.fetch_asset(deb_url, asset_hash=deb_hash)
--        kernel_path = self.extract_from_deb(deb_path,
--                                            '/boot/vmlinuz-6.6.16-current-sunxi')
--        dtb_path = '/usr/lib/linux-image-6.6.16-current-sunxi/sun4i-a10-cubieboard.dtb'
--        dtb_path = self.extract_from_deb(deb_path, dtb_path)
--        initrd_url = ('https://github.com/groeck/linux-build-test/raw/'
--                      '2eb0a73b5d5a28df3170c546ddaaa9757e1e0848/rootfs/'
--                      'arm/rootfs-armv5.cpio.gz')
--        initrd_hash = '2b50f1873e113523967806f4da2afe385462ff9b'
--        initrd_path_gz = self.fetch_asset(initrd_url, asset_hash=initrd_hash)
--        initrd_path = os.path.join(self.workdir, 'rootfs.cpio')
--        archive.gzip_uncompress(initrd_path_gz, initrd_path)
+-        # 25 MiB compressed, 32 MiB uncompressed.
+-        image_url = (
+-                'https://github.com/hskinnemoen/openbmc/releases/download/'
+-                '20200711-gsj-qemu-0/obmc-phosphor-image-gsj.static.mtd.gz')
+-        image_hash = '14895e634923345cb5c8776037ff7876df96f6b1'
+-        image_path_gz = self.fetch_asset(image_url, asset_hash=image_hash)
+-        image_name = 'obmc.mtd'
+-        image_path = os.path.join(self.workdir, image_name)
+-        archive.gzip_uncompress(image_path_gz, image_path)
 -
 -        self.vm.set_console()
--        kernel_command_line = (self.KERNEL_COMMON_COMMAND_LINE +
--                               'console=ttyS0,115200 '
--                               'usbcore.nousb '
--                               'panic=-1 noreboot')
--        self.vm.add_args('-kernel', kernel_path,
--                         '-dtb', dtb_path,
--                         '-initrd', initrd_path,
--                         '-append', kernel_command_line,
--                         '-no-reboot')
--        self.vm.launch()
--        self.wait_for_console_pattern('Boot successful.')
--
--        exec_command_and_wait_for_pattern(self, 'cat /proc/cpuinfo',
--                                                'Allwinner sun4i/sun5i')
--        exec_command_and_wait_for_pattern(self, 'cat /proc/iomem',
--                                                'system-control@1c00000')
--        exec_command_and_wait_for_pattern(self, 'reboot',
--                                                'reboot: Restarting system')
--        # Wait for VM to shut down gracefully
--        self.vm.wait()
--
--    def test_arm_cubieboard_sata(self):
--        """
--        :avocado: tags=arch:arm
--        :avocado: tags=machine:cubieboard
--        :avocado: tags=accel:tcg
--        """
--        deb_url = ('https://apt.armbian.com/pool/main/l/'
--                   'linux-6.6.16/linux-image-current-sunxi_24.2.1_armhf__6.6.16-Seb3e-D6b4a-P2359-Ce96bHfe66-HK01ba-V014b-B067e-R448a.deb')
--        deb_hash = 'f7c3c8c5432f765445dc6e7eab02f3bbe668256b'
--        deb_path = self.fetch_asset(deb_url, asset_hash=deb_hash)
--        kernel_path = self.extract_from_deb(deb_path,
--                                            '/boot/vmlinuz-6.6.16-current-sunxi')
--        dtb_path = '/usr/lib/linux-image-6.6.16-current-sunxi/sun4i-a10-cubieboard.dtb'
--        dtb_path = self.extract_from_deb(deb_path, dtb_path)
--        rootfs_url = ('https://github.com/groeck/linux-build-test/raw/'
--                      '2eb0a73b5d5a28df3170c546ddaaa9757e1e0848/rootfs/'
--                      'arm/rootfs-armv5.ext2.gz')
--        rootfs_hash = '093e89d2b4d982234bf528bc9fb2f2f17a9d1f93'
--        rootfs_path_gz = self.fetch_asset(rootfs_url, asset_hash=rootfs_hash)
--        rootfs_path = os.path.join(self.workdir, 'rootfs.cpio')
--        archive.gzip_uncompress(rootfs_path_gz, rootfs_path)
--
--        self.vm.set_console()
--        kernel_command_line = (self.KERNEL_COMMON_COMMAND_LINE +
--                               'console=ttyS0,115200 '
--                               'usbcore.nousb '
--                               'root=/dev/sda ro '
--                               'panic=-1 noreboot')
--        self.vm.add_args('-kernel', kernel_path,
--                         '-dtb', dtb_path,
--                         '-drive', 'if=none,format=raw,id=disk0,file='
--                                   + rootfs_path,
--                         '-device', 'ide-hd,bus=ide.0,drive=disk0',
--                         '-append', kernel_command_line,
--                         '-no-reboot')
--        self.vm.launch()
--        self.wait_for_console_pattern('Boot successful.')
--
--        exec_command_and_wait_for_pattern(self, 'cat /proc/cpuinfo',
--                                                'Allwinner sun4i/sun5i')
--        exec_command_and_wait_for_pattern(self, 'cat /proc/partitions',
--                                                'sda')
--        exec_command_and_wait_for_pattern(self, 'reboot',
--                                                'reboot: Restarting system')
--        # Wait for VM to shut down gracefully
--        self.vm.wait()
--
--    @skipUnless(os.getenv('AVOCADO_ALLOW_LARGE_STORAGE'), 'storage limited')
--    def test_arm_cubieboard_openwrt_22_03_2(self):
--        """
--        :avocado: tags=arch:arm
--        :avocado: tags=machine:cubieboard
--        :avocado: tags=device:sd
--        """
--
--        # This test download a 7.5 MiB compressed image and expand it
--        # to 126 MiB.
--        image_url = ('https://downloads.openwrt.org/releases/22.03.2/targets/'
--                     'sunxi/cortexa8/openwrt-22.03.2-sunxi-cortexa8-'
--                     'cubietech_a10-cubieboard-ext4-sdcard.img.gz')
--        image_hash = ('94b5ecbfbc0b3b56276e5146b899eafa'
--                      '2ac5dc2d08733d6705af9f144f39f554')
--        image_path_gz = self.fetch_asset(image_url, asset_hash=image_hash,
--                                         algorithm='sha256')
--        image_path = archive.extract(image_path_gz, self.workdir)
--        image_pow2ceil_expand(image_path)
--
--        self.vm.set_console()
--        self.vm.add_args('-drive', 'file=' + image_path + ',if=sd,format=raw',
--                         '-nic', 'user',
--                         '-no-reboot')
+-        drive_args = 'file=' + image_path + ',if=mtd,bus=0,unit=0'
+-        self.vm.add_args('-drive', drive_args)
 -        self.vm.launch()
 -
--        kernel_command_line = (self.KERNEL_COMMON_COMMAND_LINE +
--                               'usbcore.nousb '
--                               'noreboot')
+-        # Disable drivers and services that stall for a long time during boot,
+-        # to avoid running past the 90-second timeout. These may be removed
+-        # as the corresponding device support is added.
+-        kernel_command_line = self.KERNEL_COMMON_COMMAND_LINE + (
+-                'console=${console} '
+-                'mem=${mem} '
+-                'initcall_blacklist=npcm_i2c_bus_driver_init '
+-                'systemd.mask=systemd-random-seed.service '
+-                'systemd.mask=dropbearkey.service '
+-        )
 -
--        self.wait_for_console_pattern('U-Boot SPL')
--
+-        self.wait_for_console_pattern('> BootBlock by Nuvoton')
+-        self.wait_for_console_pattern('>Device: Poleg BMC NPCM730')
+-        self.wait_for_console_pattern('>Skip DDR init.')
+-        self.wait_for_console_pattern('U-Boot ')
 -        interrupt_interactive_console_until_pattern(
--                self, 'Hit any key to stop autoboot:', '=>')
--        exec_command_and_wait_for_pattern(self, "setenv extraargs '" +
--                                                kernel_command_line + "'", '=>')
--        exec_command_and_wait_for_pattern(self, 'boot', 'Starting kernel ...');
+-                self, 'Hit any key to stop autoboot:', 'U-Boot>')
+-        exec_command_and_wait_for_pattern(
+-                self, "setenv bootargs ${bootargs} " + kernel_command_line,
+-                'U-Boot>')
+-        exec_command_and_wait_for_pattern(
+-                self, 'run romboot', 'Booting Kernel from flash')
+-        self.wait_for_console_pattern('Booting Linux on physical CPU 0x0')
+-        self.wait_for_console_pattern('CPU1: thread -1, cpu 1, socket 0')
+-        self.wait_for_console_pattern('OpenBMC Project Reference Distro')
+-        self.wait_for_console_pattern('gsj login:')
 -
+-    def test_arm_quanta_gsj_initrd(self):
+-        """
+-        :avocado: tags=arch:arm
+-        :avocado: tags=machine:quanta-gsj
+-        :avocado: tags=accel:tcg
+-        """
+-        initrd_url = (
+-                'https://github.com/hskinnemoen/openbmc/releases/download/'
+-                '20200711-gsj-qemu-0/obmc-phosphor-initramfs-gsj.cpio.xz')
+-        initrd_hash = '98fefe5d7e56727b1eb17d5c00311b1b5c945300'
+-        initrd_path = self.fetch_asset(initrd_url, asset_hash=initrd_hash)
+-        kernel_url = (
+-                'https://github.com/hskinnemoen/openbmc/releases/download/'
+-                '20200711-gsj-qemu-0/uImage-gsj.bin')
+-        kernel_hash = 'fa67b2f141d56d39b3c54305c0e8a899c99eb2c7'
+-        kernel_path = self.fetch_asset(kernel_url, asset_hash=kernel_hash)
+-        dtb_url = (
+-                'https://github.com/hskinnemoen/openbmc/releases/download/'
+-                '20200711-gsj-qemu-0/nuvoton-npcm730-gsj.dtb')
+-        dtb_hash = '18315f7006d7b688d8312d5c727eecd819aa36a4'
+-        dtb_path = self.fetch_asset(dtb_url, asset_hash=dtb_hash)
+-
+-        self.vm.set_console()
+-        kernel_command_line = (self.KERNEL_COMMON_COMMAND_LINE +
+-                               'console=ttyS0,115200n8 '
+-                               'earlycon=uart8250,mmio32,0xf0001000')
+-        self.vm.add_args('-kernel', kernel_path,
+-                         '-initrd', initrd_path,
+-                         '-dtb', dtb_path,
+-                         '-append', kernel_command_line)
+-        self.vm.launch()
+-
+-        self.wait_for_console_pattern('Booting Linux on physical CPU 0x0')
+-        self.wait_for_console_pattern('CPU1: thread -1, cpu 1, socket 0')
 -        self.wait_for_console_pattern(
--            'Please press Enter to activate this console.')
+-                'Give root password for system maintenance')
 -
--        exec_command_and_wait_for_pattern(self, ' ', 'root@')
--
--        exec_command_and_wait_for_pattern(self, 'cat /proc/cpuinfo',
--                                                'Allwinner sun4i/sun5i')
--        exec_command_and_wait_for_pattern(self, 'reboot',
--                                                'reboot: Restarting system')
--        # Wait for VM to shut down gracefully
--        self.vm.wait()
--
-     @skipUnless(os.getenv('AVOCADO_TIMEOUT_EXPECTED'), 'Test might timeout')
-     def test_arm_quanta_gsj(self):
+     def test_arm_ast2600_debian(self):
          """
+         :avocado: tags=arch:arm
 diff --git a/tests/functional/meson.build b/tests/functional/meson.build
-index 905afba4a6..8457b14b37 100644
+index 8457b14b37..c7abda61d2 100644
 --- a/tests/functional/meson.build
 +++ b/tests/functional/meson.build
-@@ -21,6 +21,7 @@ test_timeouts = {
-   'arm_aspeed' : 600,
-   'arm_bpim2u' : 500,
+@@ -23,6 +23,7 @@ test_timeouts = {
    'arm_collie' : 180,
-+  'arm_cubieboard' : 360,
+   'arm_cubieboard' : 360,
    'arm_orangepi' : 540,
++  'arm_quanta_gsj' : 240,
    'arm_raspi2' : 120,
    'arm_tuxrun' : 240,
-@@ -75,6 +76,7 @@ tests_arm_system_thorough = [
-   'arm_bpim2u',
-   'arm_canona1100',
-   'arm_collie',
-+  'arm_cubieboard',
+   'arm_sx1' : 360,
+@@ -80,6 +81,7 @@ tests_arm_system_thorough = [
    'arm_emcraft_sf2',
    'arm_integratorcp',
    'arm_orangepi',
-diff --git a/tests/functional/test_arm_cubieboard.py b/tests/functional/test_arm_cubieboard.py
++  'arm_quanta_gsj',
+   'arm_raspi2',
+   'arm_smdkc210',
+   'arm_sx1',
+diff --git a/tests/functional/test_arm_quanta_gsj.py b/tests/functional/test_arm_quanta_gsj.py
 new file mode 100755
-index 0000000000..2b33a1b50b
+index 0000000000..fd921c8c92
 --- /dev/null
-+++ b/tests/functional/test_arm_cubieboard.py
-@@ -0,0 +1,150 @@
++++ b/tests/functional/test_arm_quanta_gsj.py
+@@ -0,0 +1,99 @@
 +#!/usr/bin/env python3
 +#
 +# Functional test that boots a Linux kernel and checks the console
@@ -328,142 +246,91 @@ index 0000000000..2b33a1b50b
 +
 +from qemu_test import LinuxKernelTest, Asset, exec_command_and_wait_for_pattern
 +from qemu_test import interrupt_interactive_console_until_pattern
-+from qemu_test.utils import gzip_uncompress, image_pow2ceil_expand
++from qemu_test.utils import gzip_uncompress
 +from unittest import skipUnless
 +
-+class CubieboardMachine(LinuxKernelTest):
++class EmcraftSf2Machine(LinuxKernelTest):
 +
-+    ASSET_DEB = Asset(
-+        ('https://apt.armbian.com/pool/main/l/linux-6.6.16/'
-+         'linux-image-current-sunxi_24.2.1_armhf__6.6.16-Seb3e-D6b4a-P2359-Ce96bHfe66-HK01ba-V014b-B067e-R448a.deb'),
-+        '3d968c15b121ede871dce49d13ee7644d6f74b6b121b84c9a40f51b0c80d6d22')
++    ASSET_IMAGE = Asset(
++        ('https://github.com/hskinnemoen/openbmc/releases/download/'
++         '20200711-gsj-qemu-0/obmc-phosphor-image-gsj.static.mtd.gz'),
++        'eccd4e375cde53034c84aece5c511932cacf838d9fd3f63da368a511757da72b')
 +
 +    ASSET_INITRD = Asset(
-+        ('https://github.com/groeck/linux-build-test/raw/'
-+         '2eb0a73b5d5a28df3170c546ddaaa9757e1e0848/rootfs/'
-+         'arm/rootfs-armv5.cpio.gz'),
-+        '334b8d256db67a3f2b3ad070aa08b5ade39624e0e7e35b02f4359a577bc8f39b')
++        ('https://github.com/hskinnemoen/openbmc/releases/download/'
++         '20200711-gsj-qemu-0/obmc-phosphor-initramfs-gsj.cpio.xz'),
++        '37b05009fc54db1434beac12bd7ff99a2e751a2f032ee18d9042f991dd0cdeaa')
 +
-+    ASSET_SATA_ROOTFS = Asset(
-+        ('https://github.com/groeck/linux-build-test/raw/'
-+         '2eb0a73b5d5a28df3170c546ddaaa9757e1e0848/rootfs/'
-+         'arm/rootfs-armv5.ext2.gz'),
-+        '17fc750da568580b39372133051ef2f0a963c0c0b369b845614442d025701745')
++    ASSET_KERNEL = Asset(
++        ('https://github.com/hskinnemoen/openbmc/releases/download/'
++         '20200711-gsj-qemu-0/uImage-gsj.bin'),
++        'ce6d6b37bff46c74fc7b1e90da10a431cc37a62cdb35ec199fa73473d0790110')
 +
-+    ASSET_OPENWRT = Asset(
-+        ('https://downloads.openwrt.org/releases/22.03.2/targets/sunxi/cortexa8/'
-+         'openwrt-22.03.2-sunxi-cortexa8-cubietech_a10-cubieboard-ext4-sdcard.img.gz'),
-+        '94b5ecbfbc0b3b56276e5146b899eafa2ac5dc2d08733d6705af9f144f39f554')
++    ASSET_DTB = Asset(
++        ('https://github.com/hskinnemoen/openbmc/releases/download/'
++         '20200711-gsj-qemu-0/nuvoton-npcm730-gsj.dtb'),
++        '3249b2da787d4b9ad4e61f315b160abfceb87b5e1895a7ce898ce7f40c8d4045')
 +
-+    def test_arm_cubieboard_initrd(self):
-+        self.set_machine('cubieboard')
-+        deb_path = self.ASSET_DEB.fetch()
-+        kernel_path = self.extract_from_deb(deb_path,
-+                                            '/boot/vmlinuz-6.6.16-current-sunxi')
-+        dtb_path = '/usr/lib/linux-image-6.6.16-current-sunxi/sun4i-a10-cubieboard.dtb'
-+        dtb_path = self.extract_from_deb(deb_path, dtb_path)
-+        initrd_path_gz = self.ASSET_INITRD.fetch()
-+        initrd_path = os.path.join(self.workdir, 'rootfs.cpio')
-+        gzip_uncompress(initrd_path_gz, initrd_path)
-+
-+        self.vm.set_console()
-+        kernel_command_line = (self.KERNEL_COMMON_COMMAND_LINE +
-+                               'console=ttyS0,115200 '
-+                               'usbcore.nousb '
-+                               'panic=-1 noreboot')
-+        self.vm.add_args('-kernel', kernel_path,
-+                         '-dtb', dtb_path,
-+                         '-initrd', initrd_path,
-+                         '-append', kernel_command_line,
-+                         '-no-reboot')
-+        self.vm.launch()
-+        self.wait_for_console_pattern('Boot successful.')
-+
-+        exec_command_and_wait_for_pattern(self, 'cat /proc/cpuinfo',
-+                                                'Allwinner sun4i/sun5i')
-+        exec_command_and_wait_for_pattern(self, 'cat /proc/iomem',
-+                                                'system-control@1c00000')
-+        exec_command_and_wait_for_pattern(self, 'reboot',
-+                                                'reboot: Restarting system')
-+        # Wait for VM to shut down gracefully
-+        self.vm.wait()
-+
-+    def test_arm_cubieboard_sata(self):
-+        self.set_machine('cubieboard')
-+        deb_path = self.ASSET_DEB.fetch()
-+        kernel_path = self.extract_from_deb(deb_path,
-+                                            '/boot/vmlinuz-6.6.16-current-sunxi')
-+        dtb_path = '/usr/lib/linux-image-6.6.16-current-sunxi/sun4i-a10-cubieboard.dtb'
-+        dtb_path = self.extract_from_deb(deb_path, dtb_path)
-+
-+        rootfs_path_gz = self.ASSET_SATA_ROOTFS.fetch()
-+        rootfs_path = os.path.join(self.workdir, 'rootfs.cpio')
-+        gzip_uncompress(rootfs_path_gz, rootfs_path)
-+
-+        self.vm.set_console()
-+        kernel_command_line = (self.KERNEL_COMMON_COMMAND_LINE +
-+                               'console=ttyS0,115200 '
-+                               'usbcore.nousb '
-+                               'root=/dev/sda ro '
-+                               'panic=-1 noreboot')
-+        self.vm.add_args('-kernel', kernel_path,
-+                         '-dtb', dtb_path,
-+                         '-drive', 'if=none,format=raw,id=disk0,file='
-+                                   + rootfs_path,
-+                         '-device', 'ide-hd,bus=ide.0,drive=disk0',
-+                         '-append', kernel_command_line,
-+                         '-no-reboot')
-+        self.vm.launch()
-+        self.wait_for_console_pattern('Boot successful.')
-+
-+        exec_command_and_wait_for_pattern(self, 'cat /proc/cpuinfo',
-+                                                'Allwinner sun4i/sun5i')
-+        exec_command_and_wait_for_pattern(self, 'cat /proc/partitions',
-+                                                'sda')
-+        exec_command_and_wait_for_pattern(self, 'reboot',
-+                                                'reboot: Restarting system')
-+        # Wait for VM to shut down gracefully
-+        self.vm.wait()
-+
-+    @skipUnless(os.getenv('AVOCADO_ALLOW_LARGE_STORAGE'), 'storage limited')
-+    def test_arm_cubieboard_openwrt_22_03_2(self):
-+        # This test download a 7.5 MiB compressed image and expand it
-+        # to 126 MiB.
-+        self.set_machine('cubieboard')
-+        image_path_gz = self.ASSET_OPENWRT.fetch()
-+        image_path = os.path.join(self.workdir, 'sdcard.img')
++    @skipUnless(os.getenv('QEMU_TEST_TIMEOUT_EXPECTED'), 'Test might timeout')
++    def test_arm_quanta_gsj(self):
++        self.set_machine('quanta-gsj')
++        image_path_gz = self.ASSET_IMAGE.fetch()
++        image_name = 'obmc.mtd'
++        image_path = os.path.join(self.workdir, image_name)
 +        gzip_uncompress(image_path_gz, image_path)
-+        image_pow2ceil_expand(image_path)
 +
 +        self.vm.set_console()
-+        self.vm.add_args('-drive', 'file=' + image_path + ',if=sd,format=raw',
-+                         '-nic', 'user',
-+                         '-no-reboot')
++        drive_args = 'file=' + image_path + ',if=mtd,bus=0,unit=0'
++        self.vm.add_args('-drive', drive_args)
 +        self.vm.launch()
 +
-+        kernel_command_line = (self.KERNEL_COMMON_COMMAND_LINE +
-+                               'usbcore.nousb '
-+                               'noreboot')
++        # Disable drivers and services that stall for a long time during boot,
++        # to avoid running past the 90-second timeout. These may be removed
++        # as the corresponding device support is added.
++        kernel_command_line = self.KERNEL_COMMON_COMMAND_LINE + (
++                'console=${console} '
++                'mem=${mem} '
++                'initcall_blacklist=npcm_i2c_bus_driver_init '
++                'systemd.mask=systemd-random-seed.service '
++                'systemd.mask=dropbearkey.service '
++        )
 +
-+        self.wait_for_console_pattern('U-Boot SPL')
-+
++        self.wait_for_console_pattern('> BootBlock by Nuvoton')
++        self.wait_for_console_pattern('>Device: Poleg BMC NPCM730')
++        self.wait_for_console_pattern('>Skip DDR init.')
++        self.wait_for_console_pattern('U-Boot ')
 +        interrupt_interactive_console_until_pattern(
-+                self, 'Hit any key to stop autoboot:', '=>')
-+        exec_command_and_wait_for_pattern(self, "setenv extraargs '" +
-+                                                kernel_command_line + "'", '=>')
-+        exec_command_and_wait_for_pattern(self, 'boot', 'Starting kernel ...');
++                self, 'Hit any key to stop autoboot:', 'U-Boot>')
++        exec_command_and_wait_for_pattern(
++                self, "setenv bootargs ${bootargs} " + kernel_command_line,
++                'U-Boot>')
++        exec_command_and_wait_for_pattern(
++                self, 'run romboot', 'Booting Kernel from flash')
++        self.wait_for_console_pattern('Booting Linux on physical CPU 0x0')
++        self.wait_for_console_pattern('CPU1: thread -1, cpu 1, socket 0')
++        self.wait_for_console_pattern('OpenBMC Project Reference Distro')
++        self.wait_for_console_pattern('gsj login:')
 +
++    def test_arm_quanta_gsj_initrd(self):
++        self.set_machine('quanta-gsj')
++        initrd_path = self.ASSET_INITRD.fetch()
++        kernel_path = self.ASSET_KERNEL.fetch()
++        dtb_path = self.ASSET_DTB.fetch()
++
++        self.vm.set_console()
++        kernel_command_line = (self.KERNEL_COMMON_COMMAND_LINE +
++                               'console=ttyS0,115200n8 '
++                               'earlycon=uart8250,mmio32,0xf0001000')
++        self.vm.add_args('-kernel', kernel_path,
++                         '-initrd', initrd_path,
++                         '-dtb', dtb_path,
++                         '-append', kernel_command_line)
++        self.vm.launch()
++
++        self.wait_for_console_pattern('Booting Linux on physical CPU 0x0')
++        self.wait_for_console_pattern('CPU1: thread -1, cpu 1, socket 0')
 +        self.wait_for_console_pattern(
-+            'Please press Enter to activate this console.')
-+
-+        exec_command_and_wait_for_pattern(self, ' ', 'root@')
-+
-+        exec_command_and_wait_for_pattern(self, 'cat /proc/cpuinfo',
-+                                                'Allwinner sun4i/sun5i')
-+        exec_command_and_wait_for_pattern(self, 'reboot',
-+                                                'reboot: Restarting system')
-+        # Wait for VM to shut down gracefully
-+        self.vm.wait()
++                'Give root password for system maintenance')
 +
 +if __name__ == '__main__':
 +    LinuxKernelTest.main()
