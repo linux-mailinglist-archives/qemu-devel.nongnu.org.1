@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1013D9E7C3D
-	for <lists+qemu-devel@lfdr.de>; Sat,  7 Dec 2024 00:09:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C4709E7C41
+	for <lists+qemu-devel@lfdr.de>; Sat,  7 Dec 2024 00:10:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tJhRL-00032A-Us; Fri, 06 Dec 2024 18:08:51 -0500
+	id 1tJhRN-00032c-QA; Fri, 06 Dec 2024 18:08:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tJhRJ-00030P-Bs
- for qemu-devel@nongnu.org; Fri, 06 Dec 2024 18:08:49 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tJhRL-00031p-1g
+ for qemu-devel@nongnu.org; Fri, 06 Dec 2024 18:08:51 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tJhRH-0005od-P9
- for qemu-devel@nongnu.org; Fri, 06 Dec 2024 18:08:49 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tJhRJ-0005pD-Ia
+ for qemu-devel@nongnu.org; Fri, 06 Dec 2024 18:08:50 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1733526527;
+ s=mimecast20190719; t=1733526529;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ei3jTCfsOHArePmV6xGiFJK6jrCceSkuxpU8srZa3AM=;
- b=bW1wyex20bRPv3t5ZAtZVop2fTB5Nmc561hfy/GaY90qi+96nLpkT61aXAIHXFY7BfP3dt
- rDLIqfdI61xvR5Z9FRLSGUG+KYT6AShsAk+CnjTes5b1CgQojaNsuB9HzcndcOiD4L8sbC
- 7E9wtkf06SWM0HhCJK5oxN3fu1j36Qk=
-Received: from mail-io1-f71.google.com (mail-io1-f71.google.com
- [209.85.166.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=bj8MGswrXWKOgEfQ2x9IDB2aXSksN2FVHW5jduhyU+Q=;
+ b=A8r04v2/BpN4jrt1Il3eSaFeoIzXc9dg6zDOTeqaSIMX335/JdMZ9nDxVOg8CyTTC2Nn9I
+ mPxTYstsBPmFGCBwDZ+A9o9oTFtcI8Gu7+Em3MkyAPlVXVbJ4SE4Hn8Dv9p5380J4Fw54U
+ /zU2+lz/7RUBMZFAMFQBoG87WnPn4yg=
+Received: from mail-io1-f70.google.com (mail-io1-f70.google.com
+ [209.85.166.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-551-v7NFAoYIM12E8tAYHP2k5w-1; Fri, 06 Dec 2024 18:08:46 -0500
-X-MC-Unique: v7NFAoYIM12E8tAYHP2k5w-1
-X-Mimecast-MFC-AGG-ID: v7NFAoYIM12E8tAYHP2k5w
-Received: by mail-io1-f71.google.com with SMTP id
- ca18e2360f4ac-843e5314cb8so236175239f.0
- for <qemu-devel@nongnu.org>; Fri, 06 Dec 2024 15:08:45 -0800 (PST)
+ us-mta-94-hli23DxeNsWWZEWRLgWGpA-1; Fri, 06 Dec 2024 18:08:47 -0500
+X-MC-Unique: hli23DxeNsWWZEWRLgWGpA-1
+X-Mimecast-MFC-AGG-ID: hli23DxeNsWWZEWRLgWGpA
+Received: by mail-io1-f70.google.com with SMTP id
+ ca18e2360f4ac-843eac1b9dbso231716439f.0
+ for <qemu-devel@nongnu.org>; Fri, 06 Dec 2024 15:08:47 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733526524; x=1734131324;
+ d=1e100.net; s=20230601; t=1733526526; x=1734131326;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ei3jTCfsOHArePmV6xGiFJK6jrCceSkuxpU8srZa3AM=;
- b=DK1bZXJuEWdFoUDonAHY9lHiI8TXPfSBis/HxuJpytcyRHhFlJdL9WF5lP8/UP3TwC
- uu/QgbkQz0J8+grcWSfC+CLCXGVWvyIfSYXku0jJTTW80ClNfJrYEk28VQIDxJluDLhJ
- R56ZJj6/7uf9/eIbd4PRy9M1pt+QEd/fs053VjayYpic3I9Byc8K9XKFaMnMYTiL38fC
- sS2CMdgeNtTS/y6PAcB18UhqanYMU76HBIqxalwOw4Ng79ezEG9ffrzsn5KqGhEtOP44
- vE+nA1g1KbSZqQGHL5+HQ2UVeXJARGnbgbPClBxmBVNzNFsmmgUJWFciDzlX4XgvEa7D
- strw==
-X-Gm-Message-State: AOJu0Yz8PD8SROuR+urs73jXuG/Zy6khoijGjXo3idjWbgGYxBP+X9Zl
- foPVwPn+RkWLwrjIQDm9nt0jF4fcfee9g1hvy2Bscm94HHeYqdqyBWzUUkA2wymbLOxT2R6ainl
- EXpjGXlV6eJDCd3zKkMAa00jZ/aa9/YbvuvhvbdNGFirlprdfeZ+kOwNsyBUlS9nKDn5kcXkCRY
- mBPSlOXd2wkode0Ob+QkOhh1nbbEIZ4F17nw==
-X-Gm-Gg: ASbGncuCJzE3dX7tRLC+jnfypKZ3VUz/GokoF9V9UNA6l7AHX9ZcXrg8bll/3brINcw
- te1zqA7lsSIPv0JJPG/15WBy5cAKXzJg4i0ozOllNzgwuAE6rN/lYZ6qu7WMSnNajJXQj3TDDik
- 00RzTuq3IuD+gv+8Qu8K7QaIcDe5ST9zg7qvlrtF8/vL20bY6kQ50XrhPrrU7d/ji/o+Ecq0EEt
- IRXEvJR2XcL8za93a/pI2ehN2mv0y50tBsQcNJR0osxWcqb3Fwmoe0uld4YiGmqsXWdCr9DkI86
- iJ09O03oF7wqtKt0bl6RfsJb1Q==
-X-Received: by 2002:a05:6602:6b10:b0:83d:ff89:218c with SMTP id
- ca18e2360f4ac-8447e23c40bmr558746439f.7.1733526524543; 
- Fri, 06 Dec 2024 15:08:44 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IElYceywDKXSww4XW5Xm8jXV1AUqUnfAH+yucG7kZdg7Rnp3sbDc05RnxLyAqlVKujDTb2a+w==
-X-Received: by 2002:a05:6602:6b10:b0:83d:ff89:218c with SMTP id
- ca18e2360f4ac-8447e23c40bmr558742639f.7.1733526524065; 
- Fri, 06 Dec 2024 15:08:44 -0800 (PST)
+ bh=bj8MGswrXWKOgEfQ2x9IDB2aXSksN2FVHW5jduhyU+Q=;
+ b=IZqpu3qqvPRZUJGZvYGcgGS+UStqeuJ2G6mUCMdkSWcQfKekrSUGhTaLg4XkXmi8+X
+ a1VNQZKjT4qPSc7mdPVT2eT4tJ7rpSQlyPlBn0hkcLFoOqCGRK2PM/olYpLZ8WaymTzn
+ dlN7QR0N3PAdlo50y12QFNDn3RgxKjjUB1RndUcAOi4aSsb4dgE+OneL8lo430kLwzvJ
+ DJcWmeNcMw/Sg2ubihfAoNP1djkteLG4ERaEGUrJXKPNIzgXsr/sUagw4yOiMWBdNXVU
+ xYlzPeAMdJiqbNDjNmsnsZsCDBJeX5+9dwipCSk5UphbYm4OhOVJ5eYh2wJU39McDKjE
+ x5Mw==
+X-Gm-Message-State: AOJu0YyObsqsF8lEBbr/VVkF4XShSnXMZVrWg2j9vuk8sceyBOseaMVa
+ P9k+xO8JiJzNl0HXs5SVdi8Xjs5vPmq+Kz+zy5KN478UvMBJI3AOv7OPlE7AsQXq2fFYlBYWLoc
+ Yx54pImf7GVYaGRSgK6UfDphzjzJLnhUb6+AIaROp5f09qvtjDJvm9ynGOwQ/LUjUmNeSI7lERz
+ uA551Yh22uUYDoISkAbc2lJc9b4gP1Nr9eZw==
+X-Gm-Gg: ASbGnct361u5/QFvrSUzSrSgBn9Aln12cWPLhoZdZj64ayBV/TUH3DcK1GpNhBBAY/E
+ X7qljPCOXeysiIk9uD+5z0BL6WvmwTW4QLZuchnhgwMYfpSSW3YNTXzPZAce8G0eMk5fXFWXT31
+ /gnBLzAlCW//5tjlKLyKy0UyQV5gzu0nIEIQpcEjKIvRIcbd3cJVH1WPyx1KbJ540HVyG1Z5T3M
+ FGJUSniiebwPRcrdp8N9A4pL5F1MTn8QOC5tXXCA/KupjHDglOdN++n2rErgFOo4MiyrvtH+NCa
+ k0FDd6cZt8VK6j5bzSjDnlUQuA==
+X-Received: by 2002:a05:6e02:1c43:b0:3a7:c3aa:a82b with SMTP id
+ e9e14a558f8ab-3a811dae3b7mr61957695ab.1.1733526526336; 
+ Fri, 06 Dec 2024 15:08:46 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFwTFoqMI0boqnnrTCMSIJ/MaBO3VmAH2bAWjST7Ns0G37MN56nMw+NdMUHYywLIoKDyN2qlQ==
+X-Received: by 2002:a05:6e02:1c43:b0:3a7:c3aa:a82b with SMTP id
+ e9e14a558f8ab-3a811dae3b7mr61957445ab.1.1733526526004; 
+ Fri, 06 Dec 2024 15:08:46 -0800 (PST)
 Received: from x1n.redhat.com (pool-99-254-114-190.cpe.net.cable.rogers.com.
  [99.254.114.190]) by smtp.gmail.com with ESMTPSA id
- 8926c6da1cb9f-4e2861d9a8dsm1038895173.86.2024.12.06.15.08.42
+ 8926c6da1cb9f-4e2861d9a8dsm1038895173.86.2024.12.06.15.08.44
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 06 Dec 2024 15:08:43 -0800 (PST)
+ Fri, 06 Dec 2024 15:08:44 -0800 (PST)
 From: Peter Xu <peterx@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: peterx@redhat.com, qemu-block@nongnu.org,
@@ -77,17 +77,16 @@ Cc: peterx@redhat.com, qemu-block@nongnu.org,
  Eric Blake <eblake@redhat.com>,
  "Dr . David Alan Gilbert" <dave@treblig.org>,
  Kevin Wolf <kwolf@redhat.com>,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Markus Armbruster <armbru@redhat.com>
-Subject: [PATCH v2 2/6] qmp/cont: Only activate disks if migration completed
-Date: Fri,  6 Dec 2024 18:08:34 -0500
-Message-ID: <20241206230838.1111496-3-peterx@redhat.com>
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+Subject: [PATCH v2 3/6] migration/block: Make late-block-active the default
+Date: Fri,  6 Dec 2024 18:08:35 -0500
+Message-ID: <20241206230838.1111496-4-peterx@redhat.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241206230838.1111496-1-peterx@redhat.com>
 References: <20241206230838.1111496-1-peterx@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -50
 X-Spam_score: -5.1
@@ -112,59 +111,80 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-As the comment says, the activation of disks is for the case where
-migration has completed, rather than when QEMU is still during
-migration (RUN_STATE_INMIGRATE).
+Migration capability 'late-block-active' controls when the block drives
+will be activated.  If enabled, block drives will only be activated until
+VM starts, either src runstate was "live" (RUNNING, or SUSPENDED), or it'll
+be postponed until qmp_cont().
 
-Move the code over to reflect what the comment is describing.
+Let's do this unconditionally.  There's no harm to delay activation of
+block drives.  Meanwhile there's no ABI breakage if dest does it, because
+src QEMU has nothing to do with it, so it's no concern on ABI breakage.
 
-Cc: Kevin Wolf <kwolf@redhat.com>
-Cc: Markus Armbruster <armbru@redhat.com>
+IIUC we could avoid introducing this cap when introducing it before, but
+now it's still not too late to just always do it.  Cap now prone to
+removal, but it'll be for later patches.
+
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- monitor/qmp-cmds.c | 26 ++++++++++++++------------
- 1 file changed, 14 insertions(+), 12 deletions(-)
+ migration/migration.c | 38 +++++++++++++++++++-------------------
+ 1 file changed, 19 insertions(+), 19 deletions(-)
 
-diff --git a/monitor/qmp-cmds.c b/monitor/qmp-cmds.c
-index f84a0dc523..76f21e8af3 100644
---- a/monitor/qmp-cmds.c
-+++ b/monitor/qmp-cmds.c
-@@ -96,21 +96,23 @@ void qmp_cont(Error **errp)
-         }
-     }
+diff --git a/migration/migration.c b/migration/migration.c
+index d2a6b939cf..e6db9cfc50 100644
+--- a/migration/migration.c
++++ b/migration/migration.c
+@@ -743,24 +743,6 @@ static void process_incoming_migration_bh(void *opaque)
  
--    /* Continuing after completed migration. Images have been inactivated to
--     * allow the destination to take control. Need to get control back now.
--     *
--     * If there are no inactive block nodes (e.g. because the VM was just
--     * paused rather than completing a migration), bdrv_inactivate_all() simply
--     * doesn't do anything. */
--    bdrv_activate_all(&local_err);
--    if (local_err) {
--        error_propagate(errp, local_err);
--        return;
+     trace_vmstate_downtime_checkpoint("dst-precopy-bh-enter");
+ 
+-    /* If capability late_block_activate is set:
+-     * Only fire up the block code now if we're going to restart the
+-     * VM, else 'cont' will do it.
+-     * This causes file locking to happen; so we don't want it to happen
+-     * unless we really are starting the VM.
+-     */
+-    if (!migrate_late_block_activate() ||
+-        (autostart && runstate_is_live(migration_get_target_runstate()))) {
+-        /* Make sure all file formats throw away their mutable metadata.
+-         * If we get an error here, just don't restart the VM yet. */
+-        bdrv_activate_all(&local_err);
+-        if (local_err) {
+-            error_report_err(local_err);
+-            local_err = NULL;
+-            autostart = false;
+-        }
 -    }
 -
-     if (runstate_check(RUN_STATE_INMIGRATE)) {
-         autostart = 1;
-     } else {
-+        /*
-+         * Continuing after completed migration. Images have been
-+         * inactivated to allow the destination to take control. Need to
-+         * get control back now.
-+         *
-+         * If there are no inactive block nodes (e.g. because the VM was
-+         * just paused rather than completing a migration),
-+         * bdrv_inactivate_all() simply doesn't do anything.
-+         */
-+        bdrv_activate_all(&local_err);
-+        if (local_err) {
-+            error_propagate(errp, local_err);
-+            return;
-+        }
-         vm_start();
-     }
- }
+     /*
+      * This must happen after all error conditions are dealt with and
+      * we're sure the VM is going to be running on this host.
+@@ -775,7 +757,25 @@ static void process_incoming_migration_bh(void *opaque)
+ 
+     if (runstate_is_live(migration_get_target_runstate())) {
+         if (autostart) {
+-            vm_start();
++            /*
++             * Block activation is always delayed until VM starts, either
++             * here (which means we need to start the dest VM right now..),
++             * or until qmp_cont() later.
++             *
++             * We used to have cap 'late-block-activate' but now we do this
++             * unconditionally, as it has no harm but only benefit.  E.g.,
++             * it's not part of migration ABI on the time of disk activation.
++             *
++             * Make sure all file formats throw away their mutable
++             * metadata.  If error, don't restart the VM yet.
++             */
++            bdrv_activate_all(&local_err);
++            if (local_err) {
++                error_report_err(local_err);
++                local_err = NULL;
++            } else {
++                vm_start();
++            }
+         } else {
+             runstate_set(RUN_STATE_PAUSED);
+         }
 -- 
 2.47.0
 
