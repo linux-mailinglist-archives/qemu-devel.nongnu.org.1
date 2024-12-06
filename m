@@ -2,88 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63F7B9E704F
+	by mail.lfdr.de (Postfix) with ESMTPS id 208739E704E
 	for <lists+qemu-devel@lfdr.de>; Fri,  6 Dec 2024 15:41:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tJZVR-0001uf-RK; Fri, 06 Dec 2024 09:40:33 -0500
+	id 1tJZVR-0001u9-6N; Fri, 06 Dec 2024 09:40:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tJZVO-0001te-9E
- for qemu-devel@nongnu.org; Fri, 06 Dec 2024 09:40:31 -0500
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tJZVM-0005Yy-MK
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1tJZVN-0001ta-DU
  for qemu-devel@nongnu.org; Fri, 06 Dec 2024 09:40:30 -0500
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-434ab114753so14656855e9.0
- for <qemu-devel@nongnu.org>; Fri, 06 Dec 2024 06:40:27 -0800 (PST)
+Received: from mail-ed1-x535.google.com ([2a00:1450:4864:20::535])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1tJZVK-0005TD-It
+ for qemu-devel@nongnu.org; Fri, 06 Dec 2024 09:40:29 -0500
+Received: by mail-ed1-x535.google.com with SMTP id
+ 4fb4d7f45d1cf-5cece886771so3955129a12.0
+ for <qemu-devel@nongnu.org>; Fri, 06 Dec 2024 06:40:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1733496015; x=1734100815; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=TLurNv+vebMmCeGP2GoUIEDPPuGDwPAy5lg2WnTOBXo=;
- b=bAkGhrOAd/Wrz621et5CqRrlEkIhYVuOzI72MMbW5fHn35jNGoXu7bhR7F7b21bByu
- KxJzhl3p6PR8StllmpjicEtLs4n6w8kpmGVtZhPg4FNn4dE8wlhxSOym5VPwnb5TNR4e
- 1PgV3CH+0QxDMCjJG8vQQm7S1yxSFULcJjZuAaTynis2bc/MYvnC/YjJwh1Tm+aQials
- OVnvr/028GOBH2DYaD1vYZxmXDaeneeg91ikyi0ZPrY6q5TbgKs/br0H+sNDIGDeXLdd
- rnyy7FtW5xNeK8SM6HWX6RWjwqA+e8JZiT5jAzoX0vWMPtGZ3NipFaj0cpg+gli8obvz
- ZP+A==
+ d=linaro.org; s=google; t=1733496024; x=1734100824; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=dKWsYe3dnMt1bAU3N0u0ZdoPsnUZIkj/ikSFbpwzhys=;
+ b=EdTkpuAGIjd7G5H5+mcKZdkl5ZIKFTHFDSAFs3e3dY9yv93tujlNW3GFd73OPWnTGB
+ Tj9dH/bBEEl3kjlf9r7OOX/h/xWJydqbVkPbtMMS+ZLoJhEZn1FZmOWqiywAS8OtpUhY
+ RXBGnrCTc7ae2tT9GprGqbUXtW2DUHgn0Hnc8zm+1EuAopkTokOiljsgFN8mpLpDEZMP
+ sL46WzhV0Ix8gac7JHATdrP7+dkL/If7GAmmICoDM8D3NP0BsXC7F6E43WFniIJfL6Of
+ xnwzi0576utX3WeXFOcR+bZGb4+JLfZmQy5CTnhnY7iKl+05wVKMi2pc8MSVdUJqKozr
+ Lirw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733496015; x=1734100815;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=TLurNv+vebMmCeGP2GoUIEDPPuGDwPAy5lg2WnTOBXo=;
- b=OiTloibpuyVszNEbIvudPLftnPyk00HTewjIFTzpb0j3FMsMQaxKPfZJzlR4MvMd1K
- wbt8pjzbjhc/ZmO9R/8AYTpvQFdG/0uCnImpkScntDPWg6RYkKKLPZ2Mw7a44jlF+UBe
- nvD2VdV0lqWVCPwrFEEmDVulRK+qjzZ0Wr/fc9QhFZ0Ncnd5zSoquSnOUi5gshc0F3R8
- zkQwJW3eGzwhSHGCfwsdDpfQt6KSnbAOhtuxrLMOj/6YhzZXL0fUKcO0U2X/tHH8U5p3
- Zn1x5y0MQ/OCH6KMEIiE2VyalzMnVQS8+MZwyyOxYrjw5PS4otWUn+ErF5OXYoBPNITd
- +ccg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWteCf4gMiD/TuW02Ka3ATNTom7itC4KBP3UwR0igBR7pKJ21LlbfPhZ8ewwA6Btd+0AT5fFn8XM5OG@nongnu.org
-X-Gm-Message-State: AOJu0YxpSR9uci2trNW70k9Q1UUHqPTgILwRb1zveEkwg86GdHSo3SR6
- f57jm2IqOCtrBQzPaZQxwkq3YTz1iQWDLRAU09YGPBImbId7nNWFGMeiFY6tLcs=
-X-Gm-Gg: ASbGncvfIb0cdWUhfpwXJw65TWeNbmwYKWJ4wq2iHEUy6encbeidMwT4PzlV5VaX4NL
- qwIEFVdoz8dcSnGnFTo+FVqfjxpgDqad/+zjUTwiE+PxnLVcJbEBqMcbySjEFW43YN8BXY5gXfr
- gZ+EfHucCRu7UMVurFc7xqmw9kUWUzkyNe7tl44zigCF7jC56jfn/qAwZalLhYWtpDPVxtH8dJm
- mD5NLFxNNxX4ACGfjPZ+Zp+8XXQHG3r2W22PEm+ReoBZSBiyzEwhc1+SdBJMA==
-X-Google-Smtp-Source: AGHT+IE4OKsUD+ye0UtIPo8s2bx4eSdbdfS2ZCpek/UnzazoGUch0EJd2gGWE4b/n1KG4vRQA3Ph2w==
-X-Received: by 2002:a05:600c:3c9c:b0:434:a968:89a3 with SMTP id
- 5b1f17b1804b1-434ddeabbe3mr29676405e9.9.1733496015123; 
- Fri, 06 Dec 2024 06:40:15 -0800 (PST)
-Received: from [192.168.224.213] ([95.127.41.180])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3861ecf4395sm4667168f8f.10.2024.12.06.06.40.13
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 06 Dec 2024 06:40:14 -0800 (PST)
-Message-ID: <bdbbdbf5-939f-4f58-8d9c-9e7d38ea0469@linaro.org>
-Date: Fri, 6 Dec 2024 15:40:12 +0100
+ d=1e100.net; s=20230601; t=1733496024; x=1734100824;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=dKWsYe3dnMt1bAU3N0u0ZdoPsnUZIkj/ikSFbpwzhys=;
+ b=gzh9RKHpZpdZBVWT+bul1sGz25WGMyp1tET9CaE8IK7My2tImF0pKZ+A8YH7XduIO/
+ 3tpkBGx/QatVWG81HD0XF2LBUV/lDP9R3DNWrqxlRhdEyRHTKrhaSIC9itTqgoiFmPtR
+ 92QoTCS09GmBdxNTR52RF4KNWfCiI6/3dZ7GOqqqs2Cscz5GGFvqfUWJ3d4gndnTaZ43
+ onxEOHccJoHb73e5Fb40+do/Hp8/bRV2gLvYyVAKstXIzJPR/FZX3x3epQhpu5UdOxOy
+ fCq8CP0Fe97BMC/dE2oeko55oi3ZKsDGwcN4kd3bz8vIxNAQGQmuuNUSKutYXjtWRM14
+ Hf5w==
+X-Gm-Message-State: AOJu0YyBNlXzPXDouQS61X0d8XB9D9CHd1sDbv+GvIaawQTfJY43kKw9
+ ueLSxh0sL2FPYBSl1MKf4ZzDAfwWqCT930TGHYtGNrcWZIJ8G3hc+mn0YFW4c5oGEyCG5sTwvbP
+ S6q0bFudh24LrBEz2XFLdHibHQBTKxSYIHG1vaw==
+X-Gm-Gg: ASbGncsoR6druBG+b9IAh2y7HmFdHPptgKHDoagbMBhNuX7hGCxaUhjjWXdrTcEPNQ7
+ N0EKtlVXLgJfcfj+/ww5JQnqggeGk4JN6
+X-Google-Smtp-Source: AGHT+IEVKfY88tdKA1b6dB4TV2zpAC699jPRUl5HZ8uedBj/bJO1IHnFvfLEnS8176yqmy7FjqqcTU81xNJ3qGX19cs=
+X-Received: by 2002:a05:6402:27ce:b0:5d0:d06b:cdc4 with SMTP id
+ 4fb4d7f45d1cf-5d3bdccdb54mr3046377a12.15.1733496024517; Fri, 06 Dec 2024
+ 06:40:24 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] scripts: improve error from qemu-trace-stap on missing
- 'stap'
-To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- qemu-devel@nongnu.org
-Cc: Stefan Hajnoczi <stefanha@redhat.com>, Mads Ynddal <mads@ynddal.dk>
-References: <20241206114524.1666664-1-berrange@redhat.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20241206114524.1666664-1-berrange@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
+References: <20241201150607.12812-1-richard.henderson@linaro.org>
+ <20241201150607.12812-38-richard.henderson@linaro.org>
+In-Reply-To: <20241201150607.12812-38-richard.henderson@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Fri, 6 Dec 2024 14:40:13 +0000
+Message-ID: <CAFEAcA8-GkpSxLc98y8ZopV9PMej7U4+Ruk8D+zUoEDPZYJ8aA@mail.gmail.com>
+Subject: Re: [PATCH 37/67] target/arm: Convert CLS, CLZ (vector) to decodetree
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::535;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x535.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,36 +88,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/12/24 12:45, Daniel P. Berrangé wrote:
-> If the 'stap' binary is missing in $PATH, a huge trace is thrown
-> 
->    $ qemu-trace-stap list /usr/bin/qemu-system-x86_64
->    Traceback (most recent call last):
->    File "/usr/bin/qemu-trace-stap", line 169, in <module>
->    main()
->    File "/usr/bin/qemu-trace-stap", line 165, in main
->    args.func(args)
->    File "/usr/bin/qemu-trace-stap", line 83, in cmd_run
->    subprocess.call(stapargs)
->    File "/usr/lib64/python3.12/subprocess.py", line 389, in call
->    with Popen(*popenargs, **kwargs) as p:
->    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
->    File "/usr/lib64/python3.12/subprocess.py", line 1026, in {}init{}
->    self._execute_child(args, executable, preexec_fn, close_fds,
->    File "/usr/lib64/python3.12/subprocess.py", line 1955, in _execute_child
->    raise child_exception_type(errno_num, err_msg, err_filename)
->    FileNotFoundError: [Errno 2] No such file or directory: 'stap'
-> 
-> With this change the user now gets
-> 
->    $ qemu-trace-stap list /usr/bin/qemu-system-x86_64
->    Unable to find 'stap' in $PATH
-> 
-> Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+On Sun, 1 Dec 2024 at 15:10, Richard Henderson
+<richard.henderson@linaro.org> wrote:
+>
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
->   scripts/qemu-trace-stap | 6 ++++--
->   1 file changed, 4 insertions(+), 2 deletions(-)
+>  target/arm/tcg/translate-a64.c | 37 ++++++++++++++++------------------
+>  target/arm/tcg/a64.decode      |  2 ++
+>  2 files changed, 19 insertions(+), 20 deletions(-)
+>
+> diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
+> index 4abc786cf6..312bf48020 100644
+> --- a/target/arm/tcg/translate-a64.c
+> +++ b/target/arm/tcg/translate-a64.c
+> @@ -8920,6 +8920,20 @@ static bool do_gvec_fn2(DisasContext *s, arg_qrr_e *a, GVecGen2Fn *fn)
+>  TRANS(ABS_v, do_gvec_fn2, a, tcg_gen_gvec_abs)
+>  TRANS(NEG_v, do_gvec_fn2, a, tcg_gen_gvec_neg)
+>
+> +static bool do_gvec_fn2_bhs(DisasContext *s, arg_qrr_e *a, GVecGen2Fn *fn)
+> +{
+> +    if (a->esz == MO_64) {
+> +        return false;
+> +    }
+> +    if (fp_access_check(s)) {
+> +        gen_gvec_fn2(s, a->q, a->rd, a->rn, fn, a->esz);
+> +    }
+> +    return true;
+> +}
+> +
+> +TRANS(CLS_v, do_gvec_fn2_bhs, a, gen_gvec_cls)
+> +TRANS(CLZ_v, do_gvec_fn2_bhs, a, gen_gvec_clz)
+> +
+>  /* Common vector code for handling integer to FP conversion */
+>  static void handle_simd_intfp_conv(DisasContext *s, int rd, int rn,
+>                                     int elements, int is_signed,
+> @@ -9219,13 +9233,6 @@ static void handle_2misc_64(DisasContext *s, int opcode, bool u,
+>      TCGCond cond;
+>
+>      switch (opcode) {
+> -    case 0x4: /* CLS, CLZ */
+> -        if (u) {
+> -            tcg_gen_clzi_i64(tcg_rd, tcg_rn, 64);
+> -        } else {
+> -            tcg_gen_clrsb_i64(tcg_rd, tcg_rn);
+> -        }
+> -        break;
+>      case 0x5: /* NOT */
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+This was dead code, right? We only call handle_2misc_64()
+for size == 3, but size == 3 is an unallocated encoding for
+"CLS/CLZ (vector)", which only deals with elements sizes up
+to 32 bits. Worth mentioning in the commit message, I think.
 
+(I was wondering why the new code doesn't have any cases for
+operating on 64-bit elements whereas this old code did seem
+to handle it.)
+
+>          /* This opcode is shared with CNT and RBIT but we have earlier
+>           * enforced that size == 3 if and only if this is the NOT insn.
+
+Otherwise
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+
+thanks
+-- PMM
 
