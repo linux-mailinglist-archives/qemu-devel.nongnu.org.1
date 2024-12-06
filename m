@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57CBB9E62C1
+	by mail.lfdr.de (Postfix) with ESMTPS id 419FF9E62C0
 	for <lists+qemu-devel@lfdr.de>; Fri,  6 Dec 2024 02:00:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tJMgG-0003aS-2E; Thu, 05 Dec 2024 19:58:52 -0500
+	id 1tJMgF-0003a6-D5; Thu, 05 Dec 2024 19:58:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tJMgD-0003ZA-5D
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tJMgD-0003ZC-5h
  for qemu-devel@nongnu.org; Thu, 05 Dec 2024 19:58:49 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tJMg9-0005ki-T9
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tJMgB-0005ks-1K
  for qemu-devel@nongnu.org; Thu, 05 Dec 2024 19:58:48 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1733446725;
+ s=mimecast20190719; t=1733446726;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=of03+bL8atAVQ8Sx7MKVcupnwu+B9QuMvu36EUykEjA=;
- b=NHOV1QF4BJsqGRRu1Z5+5vs11Lzxjjg8jSVL361T3IrIsldtisNt9xeWkpTfiD36XxzXbT
- k+hnnIlKjG968G4TdRac5EZY3ZLm/j9E8e7uC0OZpv6KVmLzQhHusnkTYA2JwY7LFEFLc8
- B100Hca/+6PWoc/QN9bH8OleU5cbeWQ=
-Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
- [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=eNEQZ+vPm4wSXR/zObKahxluS5nzwSvUVA2E+LmCCII=;
+ b=ObLgKXlBCcauAmbFid098fLBTPLc98NoOFTnUVb7HgpmtJJM1dKeofkS26TbocgjtTX1pd
+ tx/dZ3gedGWqlcVI0wRVHIdOWajL4GYUFnWZOt7/tPDW/n7VOynFICIc9AtY33qbnPdPbH
+ U1flHyF5ffFkgtUBZbtpTrCgNH6Kspo=
+Received: from mail-vk1-f200.google.com (mail-vk1-f200.google.com
+ [209.85.221.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-411-gVYBKsjnOAO6leXwWcEFDQ-1; Thu, 05 Dec 2024 19:58:43 -0500
-X-MC-Unique: gVYBKsjnOAO6leXwWcEFDQ-1
-X-Mimecast-MFC-AGG-ID: gVYBKsjnOAO6leXwWcEFDQ
-Received: by mail-qv1-f70.google.com with SMTP id
- 6a1803df08f44-6d88cde9cedso28575866d6.2
- for <qemu-devel@nongnu.org>; Thu, 05 Dec 2024 16:58:43 -0800 (PST)
+ us-mta-83-RkZwR9mPMTOSVnF-Mnb7Uw-1; Thu, 05 Dec 2024 19:58:45 -0500
+X-MC-Unique: RkZwR9mPMTOSVnF-Mnb7Uw-1
+X-Mimecast-MFC-AGG-ID: RkZwR9mPMTOSVnF-Mnb7Uw
+Received: by mail-vk1-f200.google.com with SMTP id
+ 71dfb90a1353d-515cf20f2c7so376676e0c.0
+ for <qemu-devel@nongnu.org>; Thu, 05 Dec 2024 16:58:45 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733446722; x=1734051522;
+ d=1e100.net; s=20230601; t=1733446724; x=1734051524;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=of03+bL8atAVQ8Sx7MKVcupnwu+B9QuMvu36EUykEjA=;
- b=AIYWUoIHyEvMwCcVc5D/uSWcaJhgW4oicaWBkQnchzFDB91BvgOerB4HXbRVYrqR2L
- mKYJfKxNDzXX6TNF8KxLBAMzfGNU0EDLutNWlHTXGC18kisFvY4VBbw6+xsXZMe2umGb
- x6qnsoltrudSlI5zpDlIePsjye/PQK8z8LjxFoZqTBQW+yOEjZz/YMwOMnmBicf6EEQh
- Ox/JGuiRwpCx5SB3Yzv0BifExmZl2mxeIjNFuTAtZFCw7OEId406o/Tg3ZC+qE5Zcgf0
- TxiuocmMbXStxvGz1dyAG3Yaar0BY0pZq7Ejl0g71zu+1R+aTbEvGudIYoB6Zb6keQUE
- 3vsg==
-X-Gm-Message-State: AOJu0YxDoT9ZeDibxCCvi2pnwmTdfdqQc3hHYotb62FfdG8zvGmQw6oR
- TpoqzMTFyDxUYWx0agTmQ/0IttywsD6bOZXx7Na0XWifhuLHkAN67j9rbEy+gJ/wcdd2kKWrO9H
- hbF4DTdStAtz7B6iS7WC2MTb7DIs111bmr6CcQ/oP3+3Gr9RyCCzaeWynvbymr+8M/7RMG2n+Po
- 9gIWaxiE4v0y5LkQLch11N/tfwuSTX+GimmQ==
-X-Gm-Gg: ASbGncvRCTWaufHCucyN+GJXfqzKOdD2DssNITbofsR2liIR6TJtY3Xs4QI6/PWcs0X
- h2qYeitCm6nLPegHO3dX0mqz0dmfj4gXHEJSZcNvWFs/sgt+YKwSER2/7t5lVN5WM0ryK89Acjr
- oo2vsEQmrSISHNjCyAkF7Y9DgDchaAmaoWOPOtY3/OpYypaWO4WqeJ0OcQyPS1bKouVNjaEvIwy
- XaX1GZZ7fdIL1rStBSvxdQfSpRC1tBWFuLkgCeMLcBIhlvUc2DpqoKk9+vPTre/0mzltBpd6fyU
- sApipkAXcNYyOBdkTSC/sAnM+A==
-X-Received: by 2002:a05:6214:226b:b0:6d8:80e8:d567 with SMTP id
- 6a1803df08f44-6d8e7171871mr19171456d6.18.1733446722285; 
- Thu, 05 Dec 2024 16:58:42 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGHqSvKx0Fdgv1BuBiyzutcmeiZvriVu0GpdIByj+uT5tm34qvjtlNTSxZPTwVTAIRnWWSCGw==
-X-Received: by 2002:a05:6214:226b:b0:6d8:80e8:d567 with SMTP id
- 6a1803df08f44-6d8e7171871mr19171086d6.18.1733446721867; 
- Thu, 05 Dec 2024 16:58:41 -0800 (PST)
+ bh=eNEQZ+vPm4wSXR/zObKahxluS5nzwSvUVA2E+LmCCII=;
+ b=kzSemO+NoDlPzSJlVHz8oQcvNTm6DdKYOhLByR+LlpDUEKQBDj8DmzEGDPZTxjiNNh
+ 4AtsEn107FpF+mGY3qEf63MmdWlUbsWLxGyEZfAX7PfKH2b8y5XaU5aL0IQPmtbVo7Fb
+ RfvRvnU2253dftvN3VTBVPQvVyIXyc2xaPy1Pg/aEYjY5n2HIWz+1lm05+lIk9d1FaRP
+ lwNB18XoLa9OOA6Jy+qg4gJYlE9+qEiuhwoMygaFXffXO3SmbjSdsBdWJFjKW/p+/EeL
+ itPz6zPDzDb0mqRwSyMoCNMdJX8LDl3Son3XkxkNyqGzW76fE7LPUJ+mZiaRj+o9MCl/
+ ro4g==
+X-Gm-Message-State: AOJu0Yzoud3N/ad/3Uq70Tan/V4R0FHm4UttfG7zAit9SCmlWrUCMH1Z
+ W+xfvqjQvL4guJhzDiymt+cAcwrxFgiFkazH/w+uLqV7jUx3aO1qsfXdrDSGsYxEOZS2Bd025jD
+ mKpLqB+RU0DWMAuuGEn0zNEi6VfPMktBO4ig91KoyvbQV2BV5ybBp4rSt9xlGKlLqPi0aGx0Pro
+ g7ivVMvixOG5L93SOQH3Af02ZH7cT1tFw34g==
+X-Gm-Gg: ASbGncu6Ull6mN2opODZg7i4r3p5B0yauOlziSM1LXpnhqjDXlA38qt1oACINrBnZXU
+ uqDC8uf30Am/y+32BB1qD6ruPqU9VhbQUbWIy0r16v59yPl4KoX4VksUXmeLXAVC8BNkm5+Zqo0
+ vbPrjyGbOJlbW3B20cGg6lPUAo7GcRwDrpDFHp1twJY9HQ5lmvO2V3yJVYoKouIOdGU1dFFl4OQ
+ GpUheaUv/aoDl1G1m/Ulmt/wD4WFn2daeenY32alCRSi06rhKLuwRTVFTE2Rpo3qOTYNkMmSNCE
+ 5ewep+9JdSwAkEtWQrB8/2B2UA==
+X-Received: by 2002:a05:6122:320b:b0:50d:83e1:94fb with SMTP id
+ 71dfb90a1353d-515fcb17e77mr2258133e0c.12.1733446724507; 
+ Thu, 05 Dec 2024 16:58:44 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHVeQ36fQkMVtmBstad6PzSsgH1UitLG9zUgtKUvTEJ/gJIZmBcg3Str9mpOaZcVRjl7pN6YA==
+X-Received: by 2002:a05:6122:320b:b0:50d:83e1:94fb with SMTP id
+ 71dfb90a1353d-515fcb17e77mr2258098e0c.12.1733446724038; 
+ Thu, 05 Dec 2024 16:58:44 -0800 (PST)
 Received: from x1n.redhat.com (pool-99-254-114-190.cpe.net.cable.rogers.com.
  [99.254.114.190]) by smtp.gmail.com with ESMTPSA id
- 6a1803df08f44-6d8dac016cbsm12635226d6.117.2024.12.05.16.58.39
+ 6a1803df08f44-6d8dac016cbsm12635226d6.117.2024.12.05.16.58.42
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 05 Dec 2024 16:58:40 -0800 (PST)
+ Thu, 05 Dec 2024 16:58:43 -0800 (PST)
 From: Peter Xu <peterx@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: "Maciej S . Szmigiero" <mail@maciej.szmigiero.name>, peterx@redhat.com,
@@ -75,10 +75,9 @@ Cc: "Maciej S . Szmigiero" <mail@maciej.szmigiero.name>, peterx@redhat.com,
  Avihai Horon <avihaih@nvidia.com>,
  Alex Williamson <alex.williamson@redhat.com>,
  Fabiano Rosas <farosas@suse.de>, Prasad Pandit <ppandit@redhat.com>
-Subject: [PATCH v2 2/7] migration/multifd: Allow to sync with sender threads
- only
-Date: Thu,  5 Dec 2024 19:58:29 -0500
-Message-ID: <20241206005834.1050905-3-peterx@redhat.com>
+Subject: [PATCH v2 3/7] migration/ram: Move RAM_SAVE_FLAG* into ram.h
+Date: Thu,  5 Dec 2024 19:58:30 -0500
+Message-ID: <20241206005834.1050905-4-peterx@redhat.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241206005834.1050905-1-peterx@redhat.com>
 References: <20241206005834.1050905-1-peterx@redhat.com>
@@ -109,168 +108,107 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Teach multifd_send_sync_main() to sync with threads only.
+Firstly, we're going to use the multifd flag soon in multifd code, so ram.c
+isn't gonna work.
 
-We already have such requests, which is when mapped-ram is enabled with
-multifd.  In that case, no SYNC messages will be pushed to the stream when
-multifd syncs the sender threads because there's no destination threads
-waiting for that.  The whole point of the sync is to make sure all threads
-flushed their jobs.
+Secondly, we have a separate RDMA flag dangling around, which is definitely
+not obvious.  There's one comment that helps, but not too much.
 
-So fundamentally we have a request to do the sync in different ways:
-
-  - Either to sync the threads only,
-  - Or to sync the threads but also with the destination side.
-
-Mapped-ram did it already because of the use_packet check in the sync
-handler of the sender thread.  It works.
-
-However it may stop working when e.g. VFIO may start to reuse multifd
-channels to push device states.  In that case VFIO has similar request on
-"thread-only sync" however we can't check a flag because such sync request
-can still come from RAM which needs the on-wire notifications.
-
-Paving way for that by allowing the multifd_send_sync_main() to specify
-what kind of sync the caller needs.  We can use it for mapped-ram already.
-
-No functional change intended.
+We should just put it altogether, so nothing will get overlooked.
 
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- migration/multifd.h        | 19 ++++++++++++++++---
- migration/multifd-nocomp.c |  7 ++++++-
- migration/multifd.c        | 15 +++++++++------
- 3 files changed, 31 insertions(+), 10 deletions(-)
+ migration/ram.h  | 25 +++++++++++++++++++++++++
+ migration/rdma.h |  7 -------
+ migration/ram.c  | 21 ---------------------
+ 3 files changed, 25 insertions(+), 28 deletions(-)
 
-diff --git a/migration/multifd.h b/migration/multifd.h
-index 50d58c0c9c..bd337631ec 100644
---- a/migration/multifd.h
-+++ b/migration/multifd.h
-@@ -19,6 +19,18 @@
- typedef struct MultiFDRecvData MultiFDRecvData;
- typedef struct MultiFDSendData MultiFDSendData;
+diff --git a/migration/ram.h b/migration/ram.h
+index 0d1981f888..cfdcccd266 100644
+--- a/migration/ram.h
++++ b/migration/ram.h
+@@ -33,6 +33,31 @@
+ #include "exec/cpu-common.h"
+ #include "io/channel.h"
  
-+typedef enum {
-+    /* No sync request */
-+    MULTIFD_SYNC_NONE = 0,
-+    /* Sync locally on the sender threads without pushing messages */
-+    MULTIFD_SYNC_LOCAL,
-+    /*
-+     * Sync not only on the sender threads, but also push "SYNC" message to
-+     * the wire (which is for a remote sync).
-+     */
-+    MULTIFD_SYNC_ALL,
-+} MultiFDSyncReq;
++/*
++ * RAM_SAVE_FLAG_ZERO used to be named RAM_SAVE_FLAG_COMPRESS, it
++ * worked for pages that were filled with the same char.  We switched
++ * it to only search for the zero value.  And to avoid confusion with
++ * RAM_SAVE_FLAG_COMPRESS_PAGE just rename it.
++ *
++ * RAM_SAVE_FLAG_FULL was obsoleted in 2009.
++ *
++ * RAM_SAVE_FLAG_COMPRESS_PAGE (0x100) was removed in QEMU 9.1.
++ */
++#define RAM_SAVE_FLAG_FULL     0x01
++#define RAM_SAVE_FLAG_ZERO     0x02
++#define RAM_SAVE_FLAG_MEM_SIZE 0x04
++#define RAM_SAVE_FLAG_PAGE     0x08
++#define RAM_SAVE_FLAG_EOS      0x10
++#define RAM_SAVE_FLAG_CONTINUE 0x20
++#define RAM_SAVE_FLAG_XBZRLE   0x40
++/*
++ * ONLY USED IN RDMA: Whenever this is found in the data stream, the flags
++ * will be passed to rdma functions in the incoming-migration side.
++ */
++#define RAM_SAVE_FLAG_HOOK     0x80
++#define RAM_SAVE_FLAG_MULTIFD_FLUSH    0x200
++/* We can't use any flag that is bigger than 0x200 */
 +
- bool multifd_send_setup(void);
- void multifd_send_shutdown(void);
- void multifd_send_channel_created(void);
-@@ -28,7 +40,7 @@ void multifd_recv_shutdown(void);
- bool multifd_recv_all_channels_created(void);
- void multifd_recv_new_channel(QIOChannel *ioc, Error **errp);
- void multifd_recv_sync_main(void);
--int multifd_send_sync_main(void);
-+int multifd_send_sync_main(MultiFDSyncReq req);
- bool multifd_queue_page(RAMBlock *block, ram_addr_t offset);
- bool multifd_recv(void);
- MultiFDRecvData *multifd_get_recv_data(void);
-@@ -143,7 +155,7 @@ typedef struct {
-     /* multifd flags for each packet */
-     uint32_t flags;
-     /*
--     * The sender thread has work to do if either of below boolean is set.
-+     * The sender thread has work to do if either of below field is set.
-      *
-      * @pending_job:  a job is pending
-      * @pending_sync: a sync request is pending
-@@ -152,7 +164,8 @@ typedef struct {
-      * cleared by the multifd sender threads.
-      */
-     bool pending_job;
--    bool pending_sync;
-+    MultiFDSyncReq pending_sync;
-+
-     MultiFDSendData *data;
+ extern XBZRLECacheStats xbzrle_counters;
  
-     /* thread local variables. No locking required */
-diff --git a/migration/multifd-nocomp.c b/migration/multifd-nocomp.c
-index 55191152f9..219f9e58ef 100644
---- a/migration/multifd-nocomp.c
-+++ b/migration/multifd-nocomp.c
-@@ -345,6 +345,8 @@ retry:
+ /* Should be holding either ram_list.mutex, or the RCU lock. */
+diff --git a/migration/rdma.h b/migration/rdma.h
+index a8d27f33b8..f55f28bbed 100644
+--- a/migration/rdma.h
++++ b/migration/rdma.h
+@@ -33,13 +33,6 @@ void rdma_start_incoming_migration(InetSocketAddress *host_port, Error **errp);
+ #define RAM_CONTROL_ROUND     1
+ #define RAM_CONTROL_FINISH    3
  
- int multifd_ram_flush_and_sync(void)
- {
-+    MultiFDSyncReq req;
-+
-     if (!migrate_multifd()) {
-         return 0;
-     }
-@@ -356,7 +358,10 @@ int multifd_ram_flush_and_sync(void)
-         }
-     }
+-/*
+- * Whenever this is found in the data stream, the flags
+- * will be passed to rdma functions in the incoming-migration
+- * side.
+- */
+-#define RAM_SAVE_FLAG_HOOK     0x80
+-
+ #define RAM_SAVE_CONTROL_NOT_SUPP -1000
+ #define RAM_SAVE_CONTROL_DELAYED  -2000
  
--    return multifd_send_sync_main();
-+    /* File migrations only need to sync with threads */
-+    req = migrate_mapped_ram() ? MULTIFD_SYNC_LOCAL : MULTIFD_SYNC_ALL;
-+
-+    return multifd_send_sync_main(req);
- }
+diff --git a/migration/ram.c b/migration/ram.c
+index 7284c34bd8..44010ff325 100644
+--- a/migration/ram.c
++++ b/migration/ram.c
+@@ -71,27 +71,6 @@
+ /***********************************************************/
+ /* ram save/restore */
  
- bool multifd_send_prepare_common(MultiFDSendParams *p)
-diff --git a/migration/multifd.c b/migration/multifd.c
-index 498e71fd10..2248bd2d46 100644
---- a/migration/multifd.c
-+++ b/migration/multifd.c
-@@ -523,7 +523,7 @@ static int multifd_zero_copy_flush(QIOChannel *c)
-     return ret;
- }
- 
--int multifd_send_sync_main(void)
-+int multifd_send_sync_main(MultiFDSyncReq req)
- {
-     int i;
-     bool flush_zero_copy;
-@@ -543,8 +543,8 @@ int multifd_send_sync_main(void)
-          * We should be the only user so far, so not possible to be set by
-          * others concurrently.
-          */
--        assert(qatomic_read(&p->pending_sync) == false);
--        qatomic_set(&p->pending_sync, true);
-+        assert(qatomic_read(&p->pending_sync) == MULTIFD_SYNC_NONE);
-+        qatomic_set(&p->pending_sync, req);
-         qemu_sem_post(&p->sem);
-     }
-     for (i = 0; i < migrate_multifd_channels(); i++) {
-@@ -635,14 +635,17 @@ static void *multifd_send_thread(void *opaque)
-              */
-             qatomic_store_release(&p->pending_job, false);
-         } else {
-+            MultiFDSyncReq req = qatomic_read(&p->pending_sync);
-+
-             /*
-              * If not a normal job, must be a sync request.  Note that
-              * pending_sync is a standalone flag (unlike pending_job), so
-              * it doesn't require explicit memory barriers.
-              */
--            assert(qatomic_read(&p->pending_sync));
-+            assert(req != MULTIFD_SYNC_NONE);
- 
--            if (use_packets) {
-+            /* Only push the SYNC message if it involves a remote sync */
-+            if (req == MULTIFD_SYNC_ALL) {
-                 p->flags = MULTIFD_FLAG_SYNC;
-                 multifd_send_fill_packet(p);
-                 ret = qio_channel_write_all(p->c, (void *)p->packet,
-@@ -654,7 +657,7 @@ static void *multifd_send_thread(void *opaque)
-                 stat64_add(&mig_stats.multifd_bytes, p->packet_len);
-             }
- 
--            qatomic_set(&p->pending_sync, false);
-+            qatomic_set(&p->pending_sync, MULTIFD_SYNC_NONE);
-             qemu_sem_post(&p->sem_sync);
-         }
-     }
+-/*
+- * RAM_SAVE_FLAG_ZERO used to be named RAM_SAVE_FLAG_COMPRESS, it
+- * worked for pages that were filled with the same char.  We switched
+- * it to only search for the zero value.  And to avoid confusion with
+- * RAM_SAVE_FLAG_COMPRESS_PAGE just rename it.
+- *
+- * RAM_SAVE_FLAG_FULL was obsoleted in 2009.
+- *
+- * RAM_SAVE_FLAG_COMPRESS_PAGE (0x100) was removed in QEMU 9.1.
+- */
+-#define RAM_SAVE_FLAG_FULL     0x01
+-#define RAM_SAVE_FLAG_ZERO     0x02
+-#define RAM_SAVE_FLAG_MEM_SIZE 0x04
+-#define RAM_SAVE_FLAG_PAGE     0x08
+-#define RAM_SAVE_FLAG_EOS      0x10
+-#define RAM_SAVE_FLAG_CONTINUE 0x20
+-#define RAM_SAVE_FLAG_XBZRLE   0x40
+-/* 0x80 is reserved in rdma.h for RAM_SAVE_FLAG_HOOK */
+-#define RAM_SAVE_FLAG_MULTIFD_FLUSH    0x200
+-/* We can't use any flag that is bigger than 0x200 */
+-
+ /*
+  * mapped-ram migration supports O_DIRECT, so we need to make sure the
+  * userspace buffer, the IO operation size and the file offset are
 -- 
 2.47.0
 
