@@ -2,107 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53E4F9E76A0
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Dec 2024 18:03:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B1309E76FC
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Dec 2024 18:23:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tJbi7-0005zr-Mq; Fri, 06 Dec 2024 12:01:47 -0500
+	id 1tJc1M-000435-RK; Fri, 06 Dec 2024 12:21:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tJbhb-0005kF-6e
- for qemu-devel@nongnu.org; Fri, 06 Dec 2024 12:01:18 -0500
-Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tJbhT-0003yG-QP
- for qemu-devel@nongnu.org; Fri, 06 Dec 2024 12:01:13 -0500
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 1FB421F37E;
- Fri,  6 Dec 2024 17:01:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1733504464; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=vHXI2zfR8pGBtrSnIXzXTu/ySpqRgvM1MZALlNeaXdY=;
- b=zF6I6RdtImpytZIBMntABgiz8WlpHPVqcRhj/vBHF98E3XrOr8wSJfE5D83//oZgRN79Sx
- TCRxQOdyf7JTNfAVjJhTXIAuw30pm7fm/Xc+iFVkBY21E5zbkpjF0y9+56vPU7l/9q1Itx
- fLQbYLTUiWPhnspGgHp/gmlOGm8/mPI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1733504464;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=vHXI2zfR8pGBtrSnIXzXTu/ySpqRgvM1MZALlNeaXdY=;
- b=aLRapy1ky7fogbDLJ7KiqDPcvkHMpAmSfUzpUgFOzlJS8L2BgdyiTCUjcAAbEDL8WTzCe1
- eH/oUDt1sErOtzBw==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1733504464; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=vHXI2zfR8pGBtrSnIXzXTu/ySpqRgvM1MZALlNeaXdY=;
- b=zF6I6RdtImpytZIBMntABgiz8WlpHPVqcRhj/vBHF98E3XrOr8wSJfE5D83//oZgRN79Sx
- TCRxQOdyf7JTNfAVjJhTXIAuw30pm7fm/Xc+iFVkBY21E5zbkpjF0y9+56vPU7l/9q1Itx
- fLQbYLTUiWPhnspGgHp/gmlOGm8/mPI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1733504464;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=vHXI2zfR8pGBtrSnIXzXTu/ySpqRgvM1MZALlNeaXdY=;
- b=aLRapy1ky7fogbDLJ7KiqDPcvkHMpAmSfUzpUgFOzlJS8L2BgdyiTCUjcAAbEDL8WTzCe1
- eH/oUDt1sErOtzBw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 9C45013647;
- Fri,  6 Dec 2024 17:01:03 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id A6JvGM8tU2dcFwAAD6G6ig
- (envelope-from <farosas@suse.de>); Fri, 06 Dec 2024 17:01:03 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Peter Xu <peterx@redhat.com>
-Cc: qemu-devel@nongnu.org, "Maciej S . Szmigiero"
- <mail@maciej.szmigiero.name>, =?utf-8?Q?C=C3=A9dric?= Le Goater
- <clg@redhat.com>, Avihai
- Horon <avihaih@nvidia.com>, Alex Williamson <alex.williamson@redhat.com>,
- Prasad Pandit <ppandit@redhat.com>
-Subject: Re: [PATCH v2 7/7] migration/multifd: Document the reason to sync
- for save_setup()
-In-Reply-To: <Z1MZ8hwPUQBLMLcb@x1n>
-References: <20241206005834.1050905-1-peterx@redhat.com>
- <20241206005834.1050905-8-peterx@redhat.com> <87r06kc1t0.fsf@suse.de>
- <Z1MZ8hwPUQBLMLcb@x1n>
-Date: Fri, 06 Dec 2024 14:01:01 -0300
-Message-ID: <87frn0bvaq.fsf@suse.de>
+ (Exim 4.90_1) (envelope-from <mchehab+huawei@kernel.org>)
+ id 1tJc1J-00041W-Da; Fri, 06 Dec 2024 12:21:37 -0500
+Received: from dfw.source.kernel.org ([2604:1380:4641:c500::1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mchehab+huawei@kernel.org>)
+ id 1tJc1H-0000uX-3Q; Fri, 06 Dec 2024 12:21:37 -0500
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+ by dfw.source.kernel.org (Postfix) with ESMTP id 9C6605C6634;
+ Fri,  6 Dec 2024 17:20:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08E2CC4CED1;
+ Fri,  6 Dec 2024 17:21:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1733505686;
+ bh=KHSPLvcdOse9dRgvQF4pAyTeTPNTrvilvb49AHVAbw8=;
+ h=From:To:Cc:Subject:Date:From;
+ b=hQgSqJE6xXw6TYTxe/2yyLe/NdEtLzPyXoEBLqJuZWHrMlRZz5d8N4jpFkxhNrMqp
+ zh9cK8H1ciAADALMxmpCiCeQa3TQEpybeK8XWACJCL4/2cCLS840APgim33gzOcvV/
+ u2giMYogtNPUWUd8zRA7xG773+AkbHV9wAmpD3zOOlMc0OPaTyrRvz8dwW1LjeXHhw
+ hlRjahTwEwsaa7hM6ml44jmoXqixloVpnReG0hrvwGTYF4FB/mO5Wj6QuzRlJXFbrK
+ 3gyDbxMhjTGZP3AvRYy6FnWFIyIibaVnGCP9SvIY/FwOg2ENl+ENU4S/nalPtn46/d
+ dMNCJ95CC6uug==
+Received: from mchehab by mail.kernel.org with local (Exim 4.98)
+ (envelope-from <mchehab+huawei@kernel.org>)
+ id 1tJc15-00000005RJX-3lA0; Fri, 06 Dec 2024 18:21:23 +0100
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+To: "Michael S . Tsirkin" <mst@redhat.com>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Shiju Jose <shiju.jose@huawei.com>,
+ Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Ani Sinha <anisinha@redhat.com>, Cleber Rosa <crosa@redhat.com>,
+ Dongjiu Geng <gengdongjiu1@gmail.com>,
+ Eduardo Habkost <eduardo@habkost.net>, Eric Blake <eblake@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>, John Snow <jsnow@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Markus Armbruster <armbru@redhat.com>, Michael Roth <michael.roth@amd.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Shannon Zhao <shannon.zhaosl@gmail.com>,
+ Yanan Wang <wangyanan55@huawei.com>, Zhao Liu <zhao1.liu@intel.com>,
+ kvm@vger.kernel.org, linux-kernel@vger.kernel.org, qemu-arm@nongnu.org,
+ qemu-devel@nongnu.org
+Subject: [PATCH 00/31] Prepare GHES driver to support error injection
+Date: Fri,  6 Dec 2024 18:12:22 +0100
+Message-ID: <cover.1733504943.git.mchehab+huawei@kernel.org>
+X-Mailer: git-send-email 2.47.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Score: -4.30
-X-Spamd-Result: default: False [-4.30 / 50.00]; BAYES_HAM(-3.00)[100.00%];
- NEURAL_HAM_LONG(-1.00)[-1.000];
- NEURAL_HAM_SHORT(-0.20)[-0.999]; MIME_GOOD(-0.10)[text/plain];
- ARC_NA(0.00)[]; RCVD_VIA_SMTP_AUTH(0.00)[];
- MISSING_XM_UA(0.00)[]; MIME_TRACE(0.00)[0:+];
- RCPT_COUNT_SEVEN(0.00)[7]; MID_RHS_MATCH_FROM(0.00)[];
- RCVD_TLS_ALL(0.00)[];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- FROM_EQ_ENVFROM(0.00)[]; FROM_HAS_DN(0.00)[];
- TO_DN_SOME(0.00)[]; RCVD_COUNT_TWO(0.00)[2];
- FUZZY_BLOCKED(0.00)[rspamd.com]; TO_MATCH_ENVRCPT_ALL(0.00)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,imap1.dmz-prg2.suse.org:helo]
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
- envelope-from=farosas@suse.de; helo=smtp-out2.suse.de
-X-Spam_score_int: -27
-X-Spam_score: -2.8
-X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2604:1380:4641:c500::1;
+ envelope-from=mchehab+huawei@kernel.org; helo=dfw.source.kernel.org
+X-Spam_score_int: -73
+X-Spam_score: -7.4
+X-Spam_bar: -------
+X-Spam_report: (-7.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.996,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -119,155 +82,134 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Peter Xu <peterx@redhat.com> writes:
+Hi Michael,
 
-> On Fri, Dec 06, 2024 at 11:40:27AM -0300, Fabiano Rosas wrote:
->> Peter Xu <peterx@redhat.com> writes:
->> 
->> > It's not straightforward to see why src QEMU needs to sync multifd during
->> > setup() phase.  After all, there's no page queued at that point.
->> >
->> > For old QEMUs, there's a solid reason: EOS requires it to work.  While it's
->> > clueless on the new QEMUs which do not take EOS message as sync requests.
->> >
->> > One will figure that out only when this is conditionally removed.  In fact,
->> > the author did try it out.  Logically we could still avoid doing this on
->> > new machine types, however that needs a separate compat field and that can
->> > be an overkill in some trivial overhead in setup() phase.
->> >
->> > Let's instead document it completely, to avoid someone else tries this
->> > again and do the debug one more time, or anyone confused on why this ever
->> > existed.
->> >
->> > Signed-off-by: Peter Xu <peterx@redhat.com>
->> > ---
->> >  migration/ram.c | 27 +++++++++++++++++++++++++++
->> >  1 file changed, 27 insertions(+)
->> >
->> > diff --git a/migration/ram.c b/migration/ram.c
->> > index 5d4bdefe69..ddee703585 100644
->> > --- a/migration/ram.c
->> > +++ b/migration/ram.c
->> > @@ -3036,6 +3036,33 @@ static int ram_save_setup(QEMUFile *f, void *opaque, Error **errp)
->> >          migration_ops->ram_save_target_page = ram_save_target_page_legacy;
->> >      }
->> >  
->> > +    /*
->> > +     * This operation is unfortunate..
->> > +     *
->> > +     * For legacy QEMUs using per-section sync
->> > +     * =======================================
->> > +     *
->> > +     * This must exist because the EOS below requires the SYNC messages
->> > +     * per-channel to work.
->> > +     *
->> > +     * For modern QEMUs using per-round sync
->> > +     * =====================================
->> > +     *
->> > +     * Logically this sync is not needed (because we know there's nothing
->> > +     * in the multifd queue yet!).
->> 
->> This is a bit misleading because even today we could split the
->> multifd_ram_flush_and_sync() into _flush and _sync (haven't I seen a
->> patch doing this somewhere? Maybe from Maciej...) and call just the
->> _sync here, which is unrelated to any multifd queue.
->
-> Yeah you have a point, maybe at least I shouldn't mention the queues, they
-> can be irrelevant.
->
->> 
->> I think we shouldn't tie "sync" with "wait for multifd threads to finish
->> sending their data (a kind of flush)" as this implies. The sync is as
->> much making sure the threads are ready to receive as it is making sure
->> the data is received in order with relation to ram scanning rounds.
->> 
->> IOW, the local sync is what ensures multifd send threads are flushed
->> while this code deals with the sync of src&dst threads, which is "just"
->> a synchronization point between the two QEMUs.
->
-> This is a remote sync, not a local sync.  But yes, it can be the
-> synchronization point.
->
-> As I mentioned below, such sync point has nothing to do with src, so it can
-> be implemented in dest alone without such sync message.  It works, though.
->
->> 
->> > However as a side effect, this makes
->> > +     * sure the dest side won't receive any data before it properly reaches
->> > +     * ram_load_precopy().
->> 
->> I'm not sure it's a side-effect. It seems deliberate to me, seeing that
->> multifd usually does its own synchronization. For instance, on the send
->> side we also need some sync to make sure ram.c doesn't send data to
->> multifd send threads that are not ready yet (i.e. the wait on
->> channels_ready at the start of multifd_send()).
->
-> Yes, and that's exactly what I wanted to express.  If dest has that
-> "channels_ready" thing, I'm pretty sure we don't need this remote sync.
-> We're using a heavier sync to service the purpose for "local sync for
-> dest".  It's ok, but it's very unclear on what it really does.
->
->> 
->> > +     *
->> > +     * Without this sync, src QEMU can send data too soon so that dest may
->> > +     * not have been ready to receive it (e.g., rb->receivedmap may be
->> > +     * uninitialized, for example).
->> > +     *
->> > +     * Logically "wait for recv setup ready" shouldn't need to involve src
->> > +     * QEMU at all, however to be compatible with old QEMUs, let's stick
->> 
->> I don't understand this statement, you're saying that QEMU src could
->> just start dumping data on the channel without a remote end? Certainly
->> for file migrations, but socket as well?
->
-> Yes.
->
-> When reaching here on sender side, all multifd channels are already there:
-> multifd_send_setup() guaranteed it.  We can start dump things, AFAICT,
-> irrelevant of what dest is doing.
->
-> Maybe the recv threads are not even created, but that isn't relevant, IMO,
-> as long as they'll be there at some point and start collecting socket
-> buffers.
->
->> 
->> > +     * with this.  Fortunately the overhead is low to sync during setup
->> > +     * because the VM is running, so at least it's not accounted as part of
->> > +     * downtime.
->> > +     */
->> >      bql_unlock();
->> >      ret = multifd_ram_flush_and_sync(f);
->> >      bql_lock();
->> 
->
-> I removed ambiguous wordings on "queue is empty", and simplified it a bit.
-> How's this one look?
->
->     /*
->      * This operation is unfortunate..
->      *
->      * For legacy QEMUs using per-section sync
->      * =======================================
->      *
->      * This must exist because the EOS below requires the SYNC messages
->      * per-channel to work.
->      *
->      * For modern QEMUs using per-round sync
->      * =====================================
->      *
->      * Logically such sync is not needed, and recv threads should not run
->      * until setup ready (using things like channels_ready on src).  Then
->      * we should be all fine.
->      *
->      * However even if we add channels_ready to recv side in new QEMUs, old
->      * QEMU won't have them so this sync will still be needed to make sure
->      * multifd recv threads won't start processing guest pages early before
->      * ram_load_setup() is properly done.
->      *
->      * Let's stick with this.  Fortunately the overhead is low to sync
->      * during setup because the VM is running, so at least it's not
->      * accounted as part of downtime.
->      */
+Could you please merge this series for ACPI stuff? All patches were already
+reviewed by Igor. The changes against v4 are just on some patch descriptions,
+plus the addition of Reviewed-by. No Code changes.
 
-Looks ok, thanks!
+Thanks,
+Mauro
+
+-
+
+During the development of a patch series meant to allow GHESv2 error injections,
+it was requested a change on how CPER offsets are calculated, by adding a new
+BIOS pointer and reworking the GHES logic. See:
+
+https://lore.kernel.org/qemu-devel/cover.1726293808.git.mchehab+huawei@kernel.org/
+
+Such change ended being a big patch, so several intermediate steps are needed,
+together with several cleanups and renames.
+
+As agreed duing v10 review, I'll be splitting the big patch series into separate pull 
+requests, starting with the cleanup series. This is the first patch set, containing
+only such preparation patches.
+
+The next series will contain the shift to use offsets from the location of the
+HEST table, together with a migration logic to make it compatible with 9.1.
+
+---
+
+v5:
+- some changes at patches description and added some R-B;
+- no changes at the code.
+
+v4:
+- merged a patch renaming the function which calculate offsets to:
+  get_hw_error_offsets(), to avoid the need of such change at the next
+  patch series;
+- removed a functional change at the logic which makes
+  the GHES record generation more generic;
+- a couple of trivial changes on patch descriptions and line break cleanups.
+
+v3:
+- improved some patch descriptions;
+- some patches got reordered to better reflect the changes;
+- patch v2 08/15: acpi/ghes: Prepare to support multiple sources on ghes
+  was split on two patches. The first one is in this cleanup series:
+      acpi/ghes: Change ghes fill logic to work with only one source
+  contains just the simplification logic. The actual preparation will
+  be moved to this series:
+     https://lore.kernel.org/qemu-devel/cover.1727782588.git.mchehab+huawei@kernel.org/
+
+v2: 
+- some indentation fixes;
+- some description improvements;
+- fixed a badly-solved merge conflict that ended renaming a parameter.
+
+Mauro Carvalho Chehab (31):
+  acpi/ghes: get rid of ACPI_HEST_SRC_ID_RESERVED
+  acpi/ghes: simplify acpi_ghes_record_errors() code
+  acpi/ghes: simplify the per-arch caller to build HEST table
+  acpi/ghes: better handle source_id and notification
+  acpi/ghes: Fix acpi_ghes_record_errors() argument
+  acpi/ghes: Remove a duplicated out of bounds check
+  acpi/ghes: Change the type for source_id
+  acpi/ghes: don't check if physical_address is not zero
+  acpi/ghes: make the GHES record generation more generic
+  acpi/ghes: better name GHES memory error function
+  acpi/ghes: don't crash QEMU if ghes GED is not found
+  acpi/ghes: rename etc/hardware_error file macros
+  acpi/ghes: better name the offset of the hardware error firmware
+  acpi/ghes: Prepare to support multiple sources on ghes
+  acpi/ghes: add a firmware file with HEST address
+  acpi/ghes: Use HEST table offsets when preparing GHES records
+  acpi/generic_event_device: Update GHES migration to cover hest addr
+  acpi/generic_event_device: add logic to detect if HEST addr is
+    available
+  acpi/ghes: add a notifier to notify when error data is ready
+  acpi/generic_event_device: add an APEI error device
+  arm/virt: Wire up a GED error device for ACPI / GHES
+  qapi/acpi-hest: add an interface to do generic CPER error injection
+  scripts/ghes_inject: add a script to generate GHES error inject
+  target/arm: add an experimental mpidr arm cpu property object
+  scripts/arm_processor_error.py: retrieve mpidr if not filled
+  acpi/ghes: move offset calculus to a separate function
+  DEBUG
+  acpi/ghes: Change ghes fill logic to work with only one source
+  HACK: use GPIO as source ID for virt-9.1 machines
+  docs: acpi_hest_ghes: fix documentation for CPER size
+  FIXME: acpi/ghes: properly set data record size
+
+ MAINTAINERS                            |  10 +
+ docs/specs/acpi_hest_ghes.rst          |   6 +-
+ hw/acpi/Kconfig                        |   5 +
+ hw/acpi/aml-build.c                    |  10 +
+ hw/acpi/generic_event_device.c         |  42 +-
+ hw/acpi/ghes-stub.c                    |   2 +-
+ hw/acpi/ghes.c                         | 391 ++++++++++----
+ hw/acpi/ghes_cper.c                    |  32 ++
+ hw/acpi/ghes_cper_stub.c               |  19 +
+ hw/acpi/meson.build                    |   2 +
+ hw/arm/virt-acpi-build.c               |  36 +-
+ hw/arm/virt.c                          |  19 +-
+ hw/core/machine.c                      |   2 +
+ include/hw/acpi/acpi_dev_interface.h   |   1 +
+ include/hw/acpi/aml-build.h            |   2 +
+ include/hw/acpi/generic_event_device.h |   1 +
+ include/hw/acpi/ghes.h                 |  39 +-
+ include/hw/arm/virt.h                  |   2 +
+ qapi/acpi-hest.json                    |  35 ++
+ qapi/meson.build                       |   1 +
+ qapi/qapi-schema.json                  |   1 +
+ scripts/arm_processor_error.py         | 390 ++++++++++++++
+ scripts/ghes_inject.py                 |  51 ++
+ scripts/qmp_helper.py                  | 702 +++++++++++++++++++++++++
+ target/arm/cpu.c                       |   1 +
+ target/arm/cpu.h                       |   1 +
+ target/arm/helper.c                    |  10 +-
+ target/arm/kvm.c                       |   2 +-
+ 28 files changed, 1678 insertions(+), 137 deletions(-)
+ create mode 100644 hw/acpi/ghes_cper.c
+ create mode 100644 hw/acpi/ghes_cper_stub.c
+ create mode 100644 qapi/acpi-hest.json
+ create mode 100644 scripts/arm_processor_error.py
+ create mode 100755 scripts/ghes_inject.py
+ create mode 100644 scripts/qmp_helper.py
+
+-- 
+2.47.1
+
+
 
