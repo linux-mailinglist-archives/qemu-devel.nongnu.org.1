@@ -2,77 +2,106 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 208739E704E
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Dec 2024 15:41:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 171DA9E705B
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Dec 2024 15:41:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tJZVR-0001u9-6N; Fri, 06 Dec 2024 09:40:33 -0500
+	id 1tJZVV-0001v0-KZ; Fri, 06 Dec 2024 09:40:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tJZVN-0001ta-DU
- for qemu-devel@nongnu.org; Fri, 06 Dec 2024 09:40:30 -0500
-Received: from mail-ed1-x535.google.com ([2a00:1450:4864:20::535])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tJZVT-0001uq-Jy
+ for qemu-devel@nongnu.org; Fri, 06 Dec 2024 09:40:35 -0500
+Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tJZVK-0005TD-It
- for qemu-devel@nongnu.org; Fri, 06 Dec 2024 09:40:29 -0500
-Received: by mail-ed1-x535.google.com with SMTP id
- 4fb4d7f45d1cf-5cece886771so3955129a12.0
- for <qemu-devel@nongnu.org>; Fri, 06 Dec 2024 06:40:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1733496024; x=1734100824; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=dKWsYe3dnMt1bAU3N0u0ZdoPsnUZIkj/ikSFbpwzhys=;
- b=EdTkpuAGIjd7G5H5+mcKZdkl5ZIKFTHFDSAFs3e3dY9yv93tujlNW3GFd73OPWnTGB
- Tj9dH/bBEEl3kjlf9r7OOX/h/xWJydqbVkPbtMMS+ZLoJhEZn1FZmOWqiywAS8OtpUhY
- RXBGnrCTc7ae2tT9GprGqbUXtW2DUHgn0Hnc8zm+1EuAopkTokOiljsgFN8mpLpDEZMP
- sL46WzhV0Ix8gac7JHATdrP7+dkL/If7GAmmICoDM8D3NP0BsXC7F6E43WFniIJfL6Of
- xnwzi0576utX3WeXFOcR+bZGb4+JLfZmQy5CTnhnY7iKl+05wVKMi2pc8MSVdUJqKozr
- Lirw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733496024; x=1734100824;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=dKWsYe3dnMt1bAU3N0u0ZdoPsnUZIkj/ikSFbpwzhys=;
- b=gzh9RKHpZpdZBVWT+bul1sGz25WGMyp1tET9CaE8IK7My2tImF0pKZ+A8YH7XduIO/
- 3tpkBGx/QatVWG81HD0XF2LBUV/lDP9R3DNWrqxlRhdEyRHTKrhaSIC9itTqgoiFmPtR
- 92QoTCS09GmBdxNTR52RF4KNWfCiI6/3dZ7GOqqqs2Cscz5GGFvqfUWJ3d4gndnTaZ43
- onxEOHccJoHb73e5Fb40+do/Hp8/bRV2gLvYyVAKstXIzJPR/FZX3x3epQhpu5UdOxOy
- fCq8CP0Fe97BMC/dE2oeko55oi3ZKsDGwcN4kd3bz8vIxNAQGQmuuNUSKutYXjtWRM14
- Hf5w==
-X-Gm-Message-State: AOJu0YyBNlXzPXDouQS61X0d8XB9D9CHd1sDbv+GvIaawQTfJY43kKw9
- ueLSxh0sL2FPYBSl1MKf4ZzDAfwWqCT930TGHYtGNrcWZIJ8G3hc+mn0YFW4c5oGEyCG5sTwvbP
- S6q0bFudh24LrBEz2XFLdHibHQBTKxSYIHG1vaw==
-X-Gm-Gg: ASbGncsoR6druBG+b9IAh2y7HmFdHPptgKHDoagbMBhNuX7hGCxaUhjjWXdrTcEPNQ7
- N0EKtlVXLgJfcfj+/ww5JQnqggeGk4JN6
-X-Google-Smtp-Source: AGHT+IEVKfY88tdKA1b6dB4TV2zpAC699jPRUl5HZ8uedBj/bJO1IHnFvfLEnS8176yqmy7FjqqcTU81xNJ3qGX19cs=
-X-Received: by 2002:a05:6402:27ce:b0:5d0:d06b:cdc4 with SMTP id
- 4fb4d7f45d1cf-5d3bdccdb54mr3046377a12.15.1733496024517; Fri, 06 Dec 2024
- 06:40:24 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tJZVR-0005eb-SM
+ for qemu-devel@nongnu.org; Fri, 06 Dec 2024 09:40:35 -0500
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 08D37210EE;
+ Fri,  6 Dec 2024 14:40:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1733496031; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=WSZyBS6dexqOYOgjdV++B1+w/x0w0WKhhGs+Fm0LvUE=;
+ b=Jhr5r1VXtF293d05RifjAKj0+Zlh7vgh/afLNQXBW180sXOuSioWYvwBoMOh6Xo+PEC9qZ
+ mq8Vj94F7D37gmxufezmjBaDFVgADowaNI//fU91OEyDfNm6HfCtMa/bjB2V2sUTdsKk5f
+ IfFq0BCyanH0WsRlqdvFCaONupqsIUc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1733496031;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=WSZyBS6dexqOYOgjdV++B1+w/x0w0WKhhGs+Fm0LvUE=;
+ b=eXi1XSr9W8dHdmHqY6fDGYk7X53VVpXL0QU5VjYVY4k8TIkPjC+IPZcMzl+arCLVuFgN+Y
+ HYoEICvC9oPAi1Cw==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1733496031; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=WSZyBS6dexqOYOgjdV++B1+w/x0w0WKhhGs+Fm0LvUE=;
+ b=Jhr5r1VXtF293d05RifjAKj0+Zlh7vgh/afLNQXBW180sXOuSioWYvwBoMOh6Xo+PEC9qZ
+ mq8Vj94F7D37gmxufezmjBaDFVgADowaNI//fU91OEyDfNm6HfCtMa/bjB2V2sUTdsKk5f
+ IfFq0BCyanH0WsRlqdvFCaONupqsIUc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1733496031;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=WSZyBS6dexqOYOgjdV++B1+w/x0w0WKhhGs+Fm0LvUE=;
+ b=eXi1XSr9W8dHdmHqY6fDGYk7X53VVpXL0QU5VjYVY4k8TIkPjC+IPZcMzl+arCLVuFgN+Y
+ HYoEICvC9oPAi1Cw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 859B7138A7;
+ Fri,  6 Dec 2024 14:40:30 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id S9sYE94MU2dHbQAAD6G6ig
+ (envelope-from <farosas@suse.de>); Fri, 06 Dec 2024 14:40:30 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Peter Xu <peterx@redhat.com>, qemu-devel@nongnu.org
+Cc: "Maciej S . Szmigiero" <mail@maciej.szmigiero.name>, peterx@redhat.com,
+ =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>, Avihai Horon
+ <avihaih@nvidia.com>, Alex
+ Williamson <alex.williamson@redhat.com>, Prasad Pandit <ppandit@redhat.com>
+Subject: Re: [PATCH v2 7/7] migration/multifd: Document the reason to sync
+ for save_setup()
+In-Reply-To: <20241206005834.1050905-8-peterx@redhat.com>
+References: <20241206005834.1050905-1-peterx@redhat.com>
+ <20241206005834.1050905-8-peterx@redhat.com>
+Date: Fri, 06 Dec 2024 11:40:27 -0300
+Message-ID: <87r06kc1t0.fsf@suse.de>
 MIME-Version: 1.0
-References: <20241201150607.12812-1-richard.henderson@linaro.org>
- <20241201150607.12812-38-richard.henderson@linaro.org>
-In-Reply-To: <20241201150607.12812-38-richard.henderson@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 6 Dec 2024 14:40:13 +0000
-Message-ID: <CAFEAcA8-GkpSxLc98y8ZopV9PMej7U4+Ruk8D+zUoEDPZYJ8aA@mail.gmail.com>
-Subject: Re: [PATCH 37/67] target/arm: Convert CLS, CLZ (vector) to decodetree
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::535;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x535.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain
+X-Spam-Score: -4.30
+X-Spamd-Result: default: False [-4.30 / 50.00]; BAYES_HAM(-3.00)[99.99%];
+ NEURAL_HAM_LONG(-1.00)[-1.000];
+ NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
+ ARC_NA(0.00)[]; RCVD_VIA_SMTP_AUTH(0.00)[];
+ MISSING_XM_UA(0.00)[]; MIME_TRACE(0.00)[0:+];
+ RCPT_COUNT_SEVEN(0.00)[8]; MID_RHS_MATCH_FROM(0.00)[];
+ RCVD_TLS_ALL(0.00)[];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
+ FROM_EQ_ENVFROM(0.00)[]; TO_MATCH_ENVRCPT_ALL(0.00)[];
+ RCVD_COUNT_TWO(0.00)[2];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid]
+Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
+ envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,68 +117,92 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sun, 1 Dec 2024 at 15:10, Richard Henderson
-<richard.henderson@linaro.org> wrote:
+Peter Xu <peterx@redhat.com> writes:
+
+> It's not straightforward to see why src QEMU needs to sync multifd during
+> setup() phase.  After all, there's no page queued at that point.
 >
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> For old QEMUs, there's a solid reason: EOS requires it to work.  While it's
+> clueless on the new QEMUs which do not take EOS message as sync requests.
+>
+> One will figure that out only when this is conditionally removed.  In fact,
+> the author did try it out.  Logically we could still avoid doing this on
+> new machine types, however that needs a separate compat field and that can
+> be an overkill in some trivial overhead in setup() phase.
+>
+> Let's instead document it completely, to avoid someone else tries this
+> again and do the debug one more time, or anyone confused on why this ever
+> existed.
+>
+> Signed-off-by: Peter Xu <peterx@redhat.com>
 > ---
->  target/arm/tcg/translate-a64.c | 37 ++++++++++++++++------------------
->  target/arm/tcg/a64.decode      |  2 ++
->  2 files changed, 19 insertions(+), 20 deletions(-)
+>  migration/ram.c | 27 +++++++++++++++++++++++++++
+>  1 file changed, 27 insertions(+)
 >
-> diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
-> index 4abc786cf6..312bf48020 100644
-> --- a/target/arm/tcg/translate-a64.c
-> +++ b/target/arm/tcg/translate-a64.c
-> @@ -8920,6 +8920,20 @@ static bool do_gvec_fn2(DisasContext *s, arg_qrr_e *a, GVecGen2Fn *fn)
->  TRANS(ABS_v, do_gvec_fn2, a, tcg_gen_gvec_abs)
->  TRANS(NEG_v, do_gvec_fn2, a, tcg_gen_gvec_neg)
->
-> +static bool do_gvec_fn2_bhs(DisasContext *s, arg_qrr_e *a, GVecGen2Fn *fn)
-> +{
-> +    if (a->esz == MO_64) {
-> +        return false;
-> +    }
-> +    if (fp_access_check(s)) {
-> +        gen_gvec_fn2(s, a->q, a->rd, a->rn, fn, a->esz);
-> +    }
-> +    return true;
-> +}
-> +
-> +TRANS(CLS_v, do_gvec_fn2_bhs, a, gen_gvec_cls)
-> +TRANS(CLZ_v, do_gvec_fn2_bhs, a, gen_gvec_clz)
-> +
->  /* Common vector code for handling integer to FP conversion */
->  static void handle_simd_intfp_conv(DisasContext *s, int rd, int rn,
->                                     int elements, int is_signed,
-> @@ -9219,13 +9233,6 @@ static void handle_2misc_64(DisasContext *s, int opcode, bool u,
->      TCGCond cond;
->
->      switch (opcode) {
-> -    case 0x4: /* CLS, CLZ */
-> -        if (u) {
-> -            tcg_gen_clzi_i64(tcg_rd, tcg_rn, 64);
-> -        } else {
-> -            tcg_gen_clrsb_i64(tcg_rd, tcg_rn);
-> -        }
-> -        break;
->      case 0x5: /* NOT */
+> diff --git a/migration/ram.c b/migration/ram.c
+> index 5d4bdefe69..ddee703585 100644
+> --- a/migration/ram.c
+> +++ b/migration/ram.c
+> @@ -3036,6 +3036,33 @@ static int ram_save_setup(QEMUFile *f, void *opaque, Error **errp)
+>          migration_ops->ram_save_target_page = ram_save_target_page_legacy;
+>      }
+>  
+> +    /*
+> +     * This operation is unfortunate..
+> +     *
+> +     * For legacy QEMUs using per-section sync
+> +     * =======================================
+> +     *
+> +     * This must exist because the EOS below requires the SYNC messages
+> +     * per-channel to work.
+> +     *
+> +     * For modern QEMUs using per-round sync
+> +     * =====================================
+> +     *
+> +     * Logically this sync is not needed (because we know there's nothing
+> +     * in the multifd queue yet!).
 
-This was dead code, right? We only call handle_2misc_64()
-for size == 3, but size == 3 is an unallocated encoding for
-"CLS/CLZ (vector)", which only deals with elements sizes up
-to 32 bits. Worth mentioning in the commit message, I think.
+This is a bit misleading because even today we could split the
+multifd_ram_flush_and_sync() into _flush and _sync (haven't I seen a
+patch doing this somewhere? Maybe from Maciej...) and call just the
+_sync here, which is unrelated to any multifd queue.
 
-(I was wondering why the new code doesn't have any cases for
-operating on 64-bit elements whereas this old code did seem
-to handle it.)
+I think we shouldn't tie "sync" with "wait for multifd threads to finish
+sending their data (a kind of flush)" as this implies. The sync is as
+much making sure the threads are ready to receive as it is making sure
+the data is received in order with relation to ram scanning rounds.
 
->          /* This opcode is shared with CNT and RBIT but we have earlier
->           * enforced that size == 3 if and only if this is the NOT insn.
+IOW, the local sync is what ensures multifd send threads are flushed
+while this code deals with the sync of src&dst threads, which is "just"
+a synchronization point between the two QEMUs.
 
-Otherwise
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+> However as a side effect, this makes
+> +     * sure the dest side won't receive any data before it properly reaches
+> +     * ram_load_precopy().
 
-thanks
--- PMM
+I'm not sure it's a side-effect. It seems deliberate to me, seeing that
+multifd usually does its own synchronization. For instance, on the send
+side we also need some sync to make sure ram.c doesn't send data to
+multifd send threads that are not ready yet (i.e. the wait on
+channels_ready at the start of multifd_send()).
+
+> +     *
+> +     * Without this sync, src QEMU can send data too soon so that dest may
+> +     * not have been ready to receive it (e.g., rb->receivedmap may be
+> +     * uninitialized, for example).
+> +     *
+> +     * Logically "wait for recv setup ready" shouldn't need to involve src
+> +     * QEMU at all, however to be compatible with old QEMUs, let's stick
+
+I don't understand this statement, you're saying that QEMU src could
+just start dumping data on the channel without a remote end? Certainly
+for file migrations, but socket as well?
+
+> +     * with this.  Fortunately the overhead is low to sync during setup
+> +     * because the VM is running, so at least it's not accounted as part of
+> +     * downtime.
+> +     */
+>      bql_unlock();
+>      ret = multifd_ram_flush_and_sync(f);
+>      bql_lock();
 
