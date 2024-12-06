@@ -2,88 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D11549E6864
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Dec 2024 09:01:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 205989E68BA
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Dec 2024 09:26:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tJTG6-0007em-3v; Fri, 06 Dec 2024 03:00:18 -0500
+	id 1tJTfD-0003gP-Dn; Fri, 06 Dec 2024 03:26:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <rowanbhart@gmail.com>)
- id 1tJTG2-0007bq-73
- for qemu-devel@nongnu.org; Fri, 06 Dec 2024 03:00:14 -0500
-Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <rowanbhart@gmail.com>)
- id 1tJTFz-0005mc-Ft
- for qemu-devel@nongnu.org; Fri, 06 Dec 2024 03:00:13 -0500
-Received: by mail-pf1-x435.google.com with SMTP id
- d2e1a72fcca58-7252b7326f4so1521433b3a.2
- for <qemu-devel@nongnu.org>; Fri, 06 Dec 2024 00:00:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1733472009; x=1734076809; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=cip0LPHBoehxlgnIZ9C55yYW9ZMranVZsujGiSNdgNE=;
- b=gvYV6u3jFjm51ljvOKzhApKFBk8cbrkAmJ+IzgEnYLwPpAZQXkkbz3KCUHck1rveOs
- bPC+P0LNKVnhDHUdU9c7fZWCs5RvC0CcEhinSsNomumlawZYBdLGMq+YnYeBAho3A5X0
- OhUN858jKkbHgf17snAQjdJdPT7K5MDoon/eV4h0rSWtlNzcy+hS98g9pAcyO332aMNt
- qYQkRhN20WuA8eib/4jwc37h84c2W6nXe9YmZabNQ0janCU1P3dfNyl4HLfpbq7P1dkk
- f2LUKBepq4zNlr10a7S3MXIh0BYA9X7+H+3OeRxGEoOeS8GM3q5QDlpGIPKuOM9z5iXl
- vC2w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733472009; x=1734076809;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=cip0LPHBoehxlgnIZ9C55yYW9ZMranVZsujGiSNdgNE=;
- b=R8QN9olgz2oSst0c77EPSMHvf8hOjnsvXuKDZkwT8pCwUVzdqdYqiaOIUyk7yZGyAT
- MF4BKydeqGdwC3fAE7h9JDEpXftUKKqx+VFnGb7yDrhE++hmbkvfEWKj1A5NyGm0a0/6
- nYZ68Oya/v1ZSm1DIgCc/lJOFAGqCkrnlQ6pBAPdpx4OeYmNYWmz47ot/yMyrZGoC3Cz
- YDOrtOUyfc2kgwTrLefMgcg1upd1MD2T3v6NqppozOu0ID4ubMJUuVOpoVa+U2k0l9rq
- wOZp7Lhkq25z3BEFvZgmKzM5C5MEn1eDGKF8u4I7xOw5mjFjgu6aBoO+XE/XsskTJrXH
- o9wQ==
-X-Gm-Message-State: AOJu0YzQPoibHMXkWwZp+WqTThT/7Jo8fQP4tg6PkU2JoiZJPm3SewnO
- wXqX8HCKvanewlMMAbUbmhmEu1pjXmn6H9M/KKU0ijU4d3fVkxEQ014dyCck6mg=
-X-Gm-Gg: ASbGncsN6OnQJjYMrUe3Fit+61GAoOenF55ALx7zoYObCjfvD5+xEb992bcpRDAz8cd
- BAnjxUyjBCwBL2ioM8sTzPdSy4h4Q2+asqIrYHaj2a8FyBjSjf6q1R+Zz3YUsYEEjG9esLbUQey
- gQSdPlfwm+99sUarSXwaThQ4tIolah3CNGNNmErMkwdE834UcO9FdFiig8D3jU8EOaMOls0P+yt
- XStTahiken5RB9iaHkrhprgr9YsyqN9cWtj6fm2y/JNpyU=
-X-Google-Smtp-Source: AGHT+IFeaI/+19fft7Y2bFyT8MXQ9gsNU9IbLO9oT4FUPqczxYi60aa2fiGlXb7b+ErgqcpvYcvZiA==
-X-Received: by 2002:a17:903:11c8:b0:215:4a31:47d8 with SMTP id
- d9443c01a7336-21614d1ef5emr29395825ad.9.1733472008636; 
- Fri, 06 Dec 2024 00:00:08 -0800 (PST)
-Received: from chaos.lan ([50.39.253.148]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-215f8e5f601sm23527525ad.73.2024.12.06.00.00.07
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 06 Dec 2024 00:00:08 -0800 (PST)
-From: Rowan Hart <rowanbhart@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Alexandre Iooss <erdnaxe@crans.org>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Mahmoud Mandour <ma.mandourr@gmail.com>, novafacing <rowanbhart@gmail.com>
-Subject: [PATCH 2/2] Add plugin API functions for register R/W, hwaddr R/W,
- vaddr W
-Date: Fri,  6 Dec 2024 00:00:04 -0800
-Message-ID: <20241206080005.775275-3-rowanbhart@gmail.com>
-X-Mailer: git-send-email 2.46.1
-In-Reply-To: <20241206080005.775275-1-rowanbhart@gmail.com>
-References: <20241206080005.775275-1-rowanbhart@gmail.com>
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1tJTfB-0003g2-76
+ for qemu-devel@nongnu.org; Fri, 06 Dec 2024 03:26:13 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1tJTf6-0005oA-Rv
+ for qemu-devel@nongnu.org; Fri, 06 Dec 2024 03:26:12 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1733473565;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=tnfdNMtlr+Jdmrr+VrzBgsyBIR8ebwMawmyfQXhm2X4=;
+ b=JrS0eBHtGgYzw0z89eL8csIE7o4yDLUjnaw+N5oC0XE5AiNDQ9dptos1Qbw82/stgER//R
+ tgYXEvWCU+U+SzG2jvrMBZYsrwbKhaGRygEjHhoz8y2uJY/9ofutmjbT51OKviEsr5sSB+
+ e8AFXz9t+gOm7YKrVvWOlsuNlPvVWzI=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-5-lFfr5hMtPT2aGld4g0rqCQ-1; Fri,
+ 06 Dec 2024 03:25:58 -0500
+X-MC-Unique: lFfr5hMtPT2aGld4g0rqCQ-1
+X-Mimecast-MFC-AGG-ID: lFfr5hMtPT2aGld4g0rqCQ
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 45E321955F42
+ for <qemu-devel@nongnu.org>; Fri,  6 Dec 2024 08:25:57 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.194.102])
+ by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id C527119560A2
+ for <qemu-devel@nongnu.org>; Fri,  6 Dec 2024 08:25:56 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 9362F21E66D2; Fri,  6 Dec 2024 09:25:54 +0100 (CET)
+From: Markus Armbruster <armbru@redhat.com>
+To: Daniel P. =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>
+Cc: qemu-devel@nongnu.org,  Paolo Bonzini <pbonzini@redhat.com>,  Peter Xu
+ <peterx@redhat.com>
+Subject: Re: [PATCH v3 0/9] Require error handling for dynamically created
+ objects
+In-Reply-To: <Z1HPF8wQG4ZqZIhF@redhat.com> ("Daniel P. =?utf-8?Q?Berrang?=
+ =?utf-8?Q?=C3=A9=22's?= message of
+ "Thu, 5 Dec 2024 16:04:39 +0000")
+References: <20241115172521.504102-1-berrange@redhat.com>
+ <87a5dbln8x.fsf@pond.sub.org> <Z1HPF8wQG4ZqZIhF@redhat.com>
+Date: Fri, 06 Dec 2024 09:25:54 +0100
+Message-ID: <87r06l6wvh.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
- envelope-from=rowanbhart@gmail.com; helo=mail-pf1-x435.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -50
+X-Spam_score: -5.1
+X-Spam_bar: -----
+X-Spam_report: (-5.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.996,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,260 +90,375 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: novafacing <rowanbhart@gmail.com>
+Daniel P. Berrang=C3=A9 <berrange@redhat.com> writes:
 
----
- include/qemu/qemu-plugin.h | 116 +++++++++++++++++++++++++++++++++----
- plugins/api.c              |  66 ++++++++++++++++++++-
- 2 files changed, 168 insertions(+), 14 deletions(-)
+> On Wed, Dec 04, 2024 at 12:07:58PM +0100, Markus Armbruster wrote:
+>> Daniel P. Berrang=C3=A9 <berrange@redhat.com> writes:
+>>=20
+>> > NB, this series is targetting 10.0, NOT for 9.2 freeze.
+>> >
+>> > With code like
+>> >
+>> >     Object *obj =3D object_new(TYPE_BLAH)
+>> >
+>> > the caller can be pretty confident that they will successfully create
+>> > an object instance of TYPE_BLAH. They know exactly what type has been
+>> > requested, so it passing an abstract type for example, it is a clear
+>> > programmer error that they'll get an assertion failure.
+>> >
+>> > Conversely with code like
+>> >
+>> >    void somefunc(const char *typename) {
+>> >       Object * obj =3D object_new(typename)
+>> >       ...
+>> >    }
+>> >
+>> > all bets are off, because the call of object_new() knows nothing
+>> > about what 'typename' resolves to.
+>>=20
+>> We know nothing *locally*.
+>>=20
+>> Commonly, a non-local argument can demonstrate safety.  Only when the
+>> type name comes from the user, we truly know nothing.
+>
+> ...except for the failures introduced by modules not being installed,
+> then all bets are off for all types unless you happen to recall
+> which have been modularized so far.
 
-diff --git a/include/qemu/qemu-plugin.h b/include/qemu/qemu-plugin.h
-index 0fba36ae02..b812593e7f 100644
---- a/include/qemu/qemu-plugin.h
-+++ b/include/qemu/qemu-plugin.h
-@@ -65,11 +65,18 @@ typedef uint64_t qemu_plugin_id_t;
-  *
-  * version 4:
-  * - added qemu_plugin_read_memory_vaddr
-+ *
-+ * version 5:
-+ * - added qemu_plugin_write_memory_vaddr
-+ * - added qemu_plugin_read_memory_hwaddr
-+ * - added qemu_plugin_write_memory_hwaddr
-+ * - added qemu_plugin_write_register
-+ *
-  */
- 
- extern QEMU_PLUGIN_EXPORT int qemu_plugin_version;
- 
--#define QEMU_PLUGIN_VERSION 4
-+#define QEMU_PLUGIN_VERSION 5
- 
- /**
-  * struct qemu_info_t - system information for plugins
-@@ -255,8 +262,6 @@ typedef struct {
-  * @QEMU_PLUGIN_CB_R_REGS: callback reads the CPU's regs
-  * @QEMU_PLUGIN_CB_RW_REGS: callback reads and writes the CPU's regs
-  *
-- * Note: currently QEMU_PLUGIN_CB_RW_REGS is unused, plugins cannot change
-- * system register state.
-  */
- enum qemu_plugin_cb_flags {
-     QEMU_PLUGIN_CB_NO_REGS,
-@@ -893,6 +898,41 @@ typedef struct {
- QEMU_PLUGIN_API
- GArray *qemu_plugin_get_registers(void);
- 
-+/**
-+ * qemu_plugin_read_register() - read register for current vCPU
-+ *
-+ * @handle: a @qemu_plugin_reg_handle handle
-+ * @buf: A GByteArray for the data owned by the plugin
-+ *
-+ * This function is only available in a context that register read access is
-+ * explicitly requested via the QEMU_PLUGIN_CB_R_REGS flag.
-+ *
-+ * Returns the size of the read register. The content of @buf is in target byte
-+ * order. On failure returns -1.
-+ */
-+QEMU_PLUGIN_API
-+int qemu_plugin_read_register(struct qemu_plugin_register *handle,
-+                              GByteArray *buf);
-+
-+/**
-+ * qemu_plugin_write_register() - write register for current vCPU
-+ *
-+ * @handle: a @qemu_plugin_reg_handle handle
-+ * @buf: A GByteArray for the data owned by the plugin
-+ *
-+ * This function is only available in a context that register write access is
-+ * explicitly requested via the QEMU_PLUGIN_CB_W_REGS flag.
-+ *
-+ * The size of @buf must be at least the size of the requested register.
-+ * Attempting to write a register with @buf smaller than the register size
-+ * will result in a crash or other undesired behavior.
-+ *
-+ * Returns the number of bytes written. On failure returns 0.
-+ */
-+QEMU_PLUGIN_API
-+int qemu_plugin_write_register(struct qemu_plugin_register *handle,
-+                              GByteArray *buf);
-+
- /**
-  * qemu_plugin_read_memory_vaddr() - read from memory using a virtual address
-  *
-@@ -916,20 +956,72 @@ bool qemu_plugin_read_memory_vaddr(uint64_t addr,
-                                    GByteArray *data, size_t len);
- 
- /**
-- * qemu_plugin_read_register() - read register for current vCPU
-+ * qemu_plugin_write_memory_vaddr() - write to memory using a virtual address
-  *
-- * @handle: a @qemu_plugin_reg_handle handle
-- * @buf: A GByteArray for the data owned by the plugin
-+ * @addr: A virtual address to write to 
-+ * @data: A byte array containing the data to write
-  *
-- * This function is only available in a context that register read access is
-- * explicitly requested via the QEMU_PLUGIN_CB_R_REGS flag.
-+ * The contents of @data will be written to memory starting at the virtual
-+ * address @addr.
-  *
-- * Returns the size of the read register. The content of @buf is in target byte
-- * order. On failure returns -1.
-+ * This function does not guarantee consistency of writes, nor does it ensure
-+ * that pending writes are flushed either before or after the write takes
-+ * place, so callers should take care when calling this function in plugin
-+ * callbacks to avoid depending on the existence of data written using this
-+ * function which may be overwritten afterward.
-+ *
-+ * Returns true on success and false on failure.
-  */
- QEMU_PLUGIN_API
--int qemu_plugin_read_register(struct qemu_plugin_register *handle,
--                              GByteArray *buf);
-+bool qemu_plugin_write_memory_vaddr(uint64_t addr,
-+                                   GByteArray *data);
-+
-+/**
-+ * qemu_plugin_read_memory_vaddr() - read from memory using a hardware address
-+ *
-+ * @addr: A virtual address to read from
-+ * @data: A byte array to store data into
-+ * @len: The number of bytes to read, starting from @addr
-+ *
-+ * @len bytes of data is read starting at @addr and stored into @data. If @data
-+ * is not large enough to hold @len bytes, it will be expanded to the necessary
-+ * size, reallocating if necessary. @len must be greater than 0.
-+ *
-+ * This function does not ensure writes are flushed prior to reading, so
-+ * callers should take care when calling this function in plugin callbacks to
-+ * avoid attempting to read data which may not yet be written and should use
-+ * the memory callback API instead.
-+ *
-+ * This function is only valid for softmmu targets.
-+ *
-+ * Returns true on success and false on failure.
-+ */
-+QEMU_PLUGIN_API
-+bool qemu_plugin_read_memory_hwaddr(uint64_t addr,
-+                                   GByteArray *data, size_t len);
-+
-+/**
-+ * qemu_plugin_write_memory_vaddr() - write to memory using a hardware address
-+ *
-+ * @addr: A virtual address to write to 
-+ * @data: A byte array containing the data to write
-+ *
-+ * The contents of @data will be written to memory starting at the hardware
-+ * address @addr.
-+ *
-+ * This function does not guarantee consistency of writes, nor does it ensure
-+ * that pending writes are flushed either before or after the write takes
-+ * place, so callers should take care when calling this function in plugin
-+ * callbacks to avoid depending on the existence of data written using this
-+ * function which may be overwritten afterward.
-+ *
-+ * This function is only valid for softmmu targets.
-+ *
-+ * Returns true on success and false on failure.
-+ */
-+QEMU_PLUGIN_API
-+bool qemu_plugin_write_memory_hwaddr(uint64_t addr,
-+                                   GByteArray *data);
- 
- /**
-  * qemu_plugin_scoreboard_new() - alloc a new scoreboard
-diff --git a/plugins/api.c b/plugins/api.c
-index 24ea64e2de..4a84cf4dfe 100644
---- a/plugins/api.c
-+++ b/plugins/api.c
-@@ -560,6 +560,24 @@ GArray *qemu_plugin_get_registers(void)
-     return create_register_handles(regs);
- }
- 
-+int qemu_plugin_read_register(struct qemu_plugin_register *reg, GByteArray *buf)
-+{
-+    g_assert(current_cpu);
-+
-+    return gdb_read_register(current_cpu, buf, GPOINTER_TO_INT(reg) - 1);
-+}
-+
-+int qemu_plugin_write_register(struct qemu_plugin_register *reg, GByteArray *buf)
-+{
-+    g_assert(current_cpu);
-+
-+    if (buf->len == 0) {
-+        return 0;
-+    }
-+
-+    return gdb_write_register(current_cpu, buf->data, GPOINTER_TO_INT(reg) - 1);
-+}
-+
- bool qemu_plugin_read_memory_vaddr(vaddr addr, GByteArray *data, size_t len)
- {
-     g_assert(current_cpu);
-@@ -580,13 +598,57 @@ bool qemu_plugin_read_memory_vaddr(vaddr addr, GByteArray *data, size_t len)
-     return true;
- }
- 
--int qemu_plugin_read_register(struct qemu_plugin_register *reg, GByteArray *buf)
-+bool qemu_plugin_write_memory_vaddr(vaddr addr, GByteArray *data)
- {
-     g_assert(current_cpu);
- 
--    return gdb_read_register(current_cpu, buf, GPOINTER_TO_INT(reg) - 1);
-+    if (data->len == 0) {
-+        return false;
-+    }
-+
-+    int result = cpu_memory_rw_debug(current_cpu, addr, data->data,
-+                                     data->len, true);
-+
-+    if (result < 0) {
-+        return false;
-+    }
-+
-+    return true;
-+}
-+
-+bool qemu_plugin_read_memory_hwaddr(hwaddr addr, GByteArray *data, size_t len)
-+{
-+#ifdef CONFIG_SOFTMMU
-+    if (len == 0) {
-+        return false;
-+    }
-+
-+    g_byte_array_set_size(data, len);
-+
-+    cpu_physical_memory_rw(addr, data->data, data->len, false);
-+
-+    return true;
-+#else
-+    return false;
-+#endif
- }
- 
-+bool qemu_plugin_write_memory_hwaddr(hwaddr addr, GByteArray *data)
-+{
-+#ifdef CONFIG_SOFTMMU
-+    if (data->len == 0) {
-+        return false;
-+    }
-+
-+    cpu_physical_memory_rw(addr, data->data, data->len, true);
-+
-+    return true;
-+#else
-+    return false;
-+#endif
-+}
-+
-+
- struct qemu_plugin_scoreboard *qemu_plugin_scoreboard_new(size_t element_size)
- {
-     return plugin_scoreboard_new(element_size);
--- 
-2.46.1
+True.  I was pretending modules don't exist until later in the message.
+
+>> >                                    It could easily be an abstract
+>> > type.
+>>=20
+>> It could also be no type at all.
+>>=20
+>> >       As a result, many code paths have added a manual check ahead
+>> > of time
+>> >
+>> >    if (object_class_is_abstract(typename)) {
+>> >       error_setg(errp, ....)
+>> >    }
+>>=20
+>> Actually, object_class_is_abstract() takes an ObjectClass, not a type
+>> name string.
+>>=20
+>> The actual guards we use are variations of
+>>=20
+>>     klass =3D object_class_by_name(typename);
+>>     if (!klass) {
+>>         error_setg(errp, "invalid object type: %s", typename);
+>>         return NULL;
+>>     }
+>>=20
+>>     if (object_class_is_abstract(klass)) {
+>>         error_setg(errp, "object type '%s' is abstract", typename);
+>>         return NULL;
+>>     }
+>>=20
+>> which covers "no type at all", too.
+>>=20
+>> Sometimes, we use module_object_class_by_name() instead, which I believe
+>> additionally loads the module providing the type, if any.  Which of the
+>> two should be used where is a mystery to me, and I suspect we're getting
+>> it wrong in places.  But this is turning into a digression.  To
+>> hopefully maintain focus, I'm pretending modules don't exist until later
+>> in this message.
+>
+> Yeah, I'm not a fan of having the separate module_object_class_by_name,
+> because it requires us to remember whether something has been modularized
+> or not.
+>
+>> Sometimes, we throw in an object_class_dynamic_cast(klass, T) to check
+>> @typename resolves to a subtype of some T.
+>>=20
+>> > ...except for where we forget to do this, such as qdev_new().
+>>=20
+>> We did not forget it there!  It's by design a thin wrapper around
+>> object_new(), with preconditions just like object_new().
+>
+> Yes, I think what I meant to write here, was "...except for where
+> we forgot todo this in *callers* of qdev_new that take user input"
+
+Correct.
+
+>> > Overall 'object_new' is a bad design because it is inherantly
+>> > unsafe to call with unvalidated typenames.
+>>=20
+>> To be fair, object_new() was not designed for use with user-provided
+>> type names.  When it chokes on type names not provided by the user, it's
+>> clearly a programming error, and assert() is a perfectly fine way to
+>> catch programming errors.  Same for qdev_new().
+>>=20
+>> However, we do in fact use these functions with user-provided type
+>> names, if rarely.  When we do, we need to validate the type name before
+>> we pass it to them.
+>>=20
+>> Trouble is the validation code is a bit involved, and reimplementing it
+>> everywhere it's needed is asking for bugs.
+>>
+>> Creating and using more interfaces that are more convenient for this
+>> purpose would avoid that.
+>
+> Yep, I don't have confidence in an API that will assert if the caller
+> forgot to validate the pre-conditions that can be triggered by user
+> input (or potentially other unexpected scenarios like something being
+> switched over to a module).
+
+Modules broke object_new(), but I'd rather not call object_new()'s
+design bad for not accomodating a feature tacked on half-baked almost a
+decade later.  But let's discuss modules further down.
+
+Asserting preconditions isn't the problem; this is how preconditions
+*should* be checked.  The problem is error-prone preconditions.
+
+Using string type names is in theory error-prone: the compiler cannot
+check the type name is valid.  It could be invalid because of a typo, or
+because it names a type that's not linked into this binary.
+
+The compiler could check with an enumeration, but then the header
+defining needed to be included basically everywhere QOM is used, and
+changed all the time.
+
+So QOM went with strings.  I can't remember "invalid type name" bugs
+surviving even basic testing in more than a decade of QOM use.
+
+Except for *user-supplied* type names.  These need to be validated, we
+failed to factor out common validation code, and ended up with bugs in
+some of the copies.
+
+>> > This problem is made worse by the proposal to introduce the idea
+>> > of 'singleton' classes[1].
+>> >
+>> > Thus, this series suggests a way to improve safety at build
+>> > time. The core idea is to allow 'object_new' to continue to be
+>> > used *if-and-only-if* given a static, const string, because that
+>> > scenario indicates the caller is aware of what type they are
+>> > creating at build time.
+>> >
+>> > A new 'object_new_dynamic' method is proposed for cases where
+>> > the typename is dynamically chosen at runtime. This method has
+>> > an "Error **errp" parameter, which can report when an abstract
+>> > type is created, leaving the assert()s only for scenarios which
+>> > are unambiguous programmer errors.
+>> >
+>> > With a little macro magic, we guarantee a compile error is
+>> > generated if 'object_new' is called with a dynamic type, forcing
+>> > all potentially unsafe code over to object_new_dynamic.
+>>=20
+>> Three cases:
+>>=20
+>> 1. Type name is literal string.  No change.  This is the most common
+>>    case.
+>>=20
+>> 2. It's not.
+>>=20
+>> 2a. Type name is user-provided.  This is rare.  We replace
+>>=20
+>>         if (... guard ...) {
+>>             ... return failure ...
+>>         }
+>>         obj =3D object_new(...);
+>>=20
+>>     by
+>>=20
+>>         obj =3D object_new_dynamic(..., errp);
+>>         if (!obj) {
+>>             ... return failure ...
+>>         }
+>>=20
+>>     This is an improvement.
+>>=20
+>> 2b. It's not.  We should replace
+>>=20
+>>         obj =3D object_new(...);
+>>=20
+>>     by
+>>=20
+>>         obj =3D object_new_dynamic(..., &error_abort);
+>>=20
+>>     Exact same behavior, just wordier, to placate the compiler.
+>>     Tolerable as long as it's relatively rare.
+>>=20
+>>     But I'm not sure it's worthwhile.  All it really does is helping
+>>     some towards not getting case 2a wrong.  But 2a is rare.
+>
+> Yes, 2a is fairly rare, but this is amplified by the consequences
+> of getting it wrong, which are an assert killing your running VM.
+> My goal was to make it much harder to screw up and trigger an
+> assert, even if that makes some valid uses more verbose.
+
+Has this been a problem in practice?  We have thirteen years of
+experience...
+
+>> > This is more tractable than adding 'Error **errp' to 'object_new'
+>> > as only a handful of places use a dynamic type name.
+>>=20
+>> True!
+>>=20
+>> Alright, enter modules.
+>>=20
+>> Modules break a fundamental design assumption: object_new() on a
+>> compiled-in type name is safe, i.e. the failure modes are all
+>> programming errors.
+>>=20
+>> Modules add new failure modes that are *not* programming errors:
+>>=20
+>> * The module providing the type was not deployed correctly.
+>>=20
+>> * It was, but the host system lacks the resources to load it.
+>
+> Hmm, yes, I hadn't considered the 2nd problem. That's more
+> unpleasant, as libvirt may well have queried QEMU earlier to
+> detect the missing module, and assume all is safe if it is
+> present.
+
+The first problem could perhaps be hand-waved away: must deploy all
+modules or else.  But that partly defeats the purpose of modules, namely
+keeping unwanted dependencies off the host.
+
+The second problem cannot: assertion failure on otherwise survivable
+resource shortage is unequivocally wrong.
+
+For more on module trouble, see "Problem 3: Loadable modules" in my memo
+"Dynamic & heterogeneous machines, initial configuration: problems"[*]
+
+>> Before modules, object_new(T) was safe unless T was user-provided.
+>> Which implies it's safe when T is a literal string.
+>>=20
+>> Since modules, object_new(T) is safe unless T is user-provided or the
+>> type named by it is compiled as module.  This does *not* imply it's safe
+>> when T is a literal string.
+>
+> Agreed.=20
+>
+>> When looking at a use of object_new(), whether the argument names a type
+>> that could be compiled as module cannot be known locally.  Therefore, we
+>> cannot know locally whether we need to handle failure, either with a
+>> suitable guard or by switching to a new function like
+>> object_new_dynamic().  This is bad.
+>>
+>> Breaking fundamental design assumptions tends to have ugly and expensive
+>> consequences.  Consequences like having to rework every single call of
+>> object_new() & friends.
+>>=20
+>> Can we reduce the damage?  Maybe.  What if we create a
+>> module_object_new() that takes an Error **, and make object_new() crash
+>> & burn when the @typename argument resolves to a type provided by a
+>> module?
+>
+> I'm doubtful about a design where maintainers have to choose the
+> right API, based on mental knowledge of what is a module or not.
+> The place where object_new is called is typically distinct from
+> the module impl, so the knowledge is separated. This opens the
+> door to forgetting to change code from object_new to module_object_new.
+> This is what motivated my attempt to try to force compile time errors
+> scenarios which had a high chance of being user specified types.
+
+We'd have to rely on the test suite here, as we've done for "type name
+is valid".
+
+> I don't have a good answer for how to extend compile time validation
+> to cover non-user specified types that might be modules, without
+> changnig 'object_new' itself to add "Error **errp" and convert as
+> many callers as possible to propagate errors. That's a huge pile
+> of tedious work and in many cases would deteriorate  to &error_abort
+> since some key common use scenarios lack a "Error *errp" to propagate
+> into.
+
+I can offer two ideas.
+
+I'll start with devices for reasons that will become apparent in a
+minute.
+
+The first idea is straighforward in conception: since the problem is
+modules breaking existing design assumptions, unbreak them.
+
+Device creation cannot fail, only realize can.  Could we delay the
+problematic failure modes introduced by modules from creation to
+realize?
+
+When creating the real thing fails, create a dummy instead.  Of course,
+the dummy needs to be sufficiently functional to provide for the things
+we do with devices before realize, such as introspection.
+
+Note that we already link information on modules into the binary, so
+that the binary knows which modules provide a certain object.  To enable
+sufficiently functional dummies, we'd have to link more.
+
+The difficulty is "the things we do with devices before realize": do we
+even know?
+
+The other difficulty is that objects don't have realize.  User-creatable
+objects have complete, which is kind of similar.  See also "Problem 5:
+QOM lacks a clear life cycle" in my memo "Dynamic & heterogeneous
+machines, initial configuration: problems"[*].
+
+The second idea is a variation of your idea to provide two interfaces
+for object creation, where using the wrong one won't compile: a common
+one that cannot fail, i.e. object_new(), and an uncommon one that can.
+Let's call that one object_try_new() for now.
+
+Your proposed "string literal" as a useful approximation of "cannot
+fail".  Modules defeat that.
+
+What if we switch from strings to something more expressive?
+
+Step one: replace string type names by symbols
+
+Change
+
+    #define TYPE_FOO "foo"
+
+    Object *object_new(const char *typename);
+
+to something like
+
+    extern const TypeInfoSafe foo_info;
+    #define TYPE_FOO &foo_info
+
+    Object *object_new(const TypeInfoSafe *type_info);
+
+Step two: different symbols for safe and unsafe types
+
+    extern const TypeInfoUnsafe bar_info;
+    #define TYPE_BAR &bar_info
+=20=20=20=20
+    Object *object_try_new(const TypeInfoUnsafe *type_info);
+
+Now you cannot pass bar_info to object_new().
+
+For a module-enabled TYPE_BAR, we already have something like
+
+    module_obj(TYPE_BAR)
+
+Make macro module_obj() require its argument to be TypeInfoUnsafe.
+
+Voil=C3=A0, the compiler enforces use of object_try_new() for objects
+provided by loadable modules.
+
+There will be some fallout around computed type names such as
+ACCEL_OPS_NAME().  Fairly rare, I think.
+
+More fallout around passing TYPE_ macros to functions that accept both
+safe and unsafe types.  How common is that?
+
+Worth exploring?
+
+>> Maybe module_object_new() and object_new_dynamic() could be fused into a
+>> single function with a better name.
+>>=20
+>> > With this series, my objections to Peter Xu's singleton series[1]
+>> > would be largely nullified.
+>> >
+>> > [1] https://lists.nongnu.org/archive/html/qemu-devel/2024-10/msg05524.=
+html
+>>=20
+>
+> With regards,
+> Daniel
+
+
+[*] Message-ID: <87o7d1i7ky.fsf@pond.sub.org>
+https://lore.kernel.org/qemu-devel/87o7d1i7ky.fsf@pond.sub.org/
 
 
