@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAFF49E7C3B
-	for <lists+qemu-devel@lfdr.de>; Sat,  7 Dec 2024 00:09:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1013D9E7C3D
+	for <lists+qemu-devel@lfdr.de>; Sat,  7 Dec 2024 00:09:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tJhRL-00031q-RM; Fri, 06 Dec 2024 18:08:51 -0500
+	id 1tJhRL-00032A-Us; Fri, 06 Dec 2024 18:08:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tJhRJ-0002zy-2w
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tJhRJ-00030P-Bs
  for qemu-devel@nongnu.org; Fri, 06 Dec 2024 18:08:49 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tJhRH-0005oW-27
- for qemu-devel@nongnu.org; Fri, 06 Dec 2024 18:08:48 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tJhRH-0005od-P9
+ for qemu-devel@nongnu.org; Fri, 06 Dec 2024 18:08:49 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1733526526;
+ s=mimecast20190719; t=1733526527;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=YeSfgc7Jyo9nB/kprDl4lAEUoTylMcAzUPDJAOUL/0Y=;
- b=QrETPzxfsPiPpl04J3ieuCEfn+05sl8TMxxL2kohQ7PHc3Wx/CuYOHDeUw/7YOIbfuEpyu
- RQinNp3tVR/N3THYxHPAzDhRumaYPZlfCNyFz55ca4gUSYnXkLsleIc31TtsJ3C3gcFkUr
- GW5+KKeJkEseyCH86fuDZ5Zxcc9wi2U=
-Received: from mail-io1-f69.google.com (mail-io1-f69.google.com
- [209.85.166.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=ei3jTCfsOHArePmV6xGiFJK6jrCceSkuxpU8srZa3AM=;
+ b=bW1wyex20bRPv3t5ZAtZVop2fTB5Nmc561hfy/GaY90qi+96nLpkT61aXAIHXFY7BfP3dt
+ rDLIqfdI61xvR5Z9FRLSGUG+KYT6AShsAk+CnjTes5b1CgQojaNsuB9HzcndcOiD4L8sbC
+ 7E9wtkf06SWM0HhCJK5oxN3fu1j36Qk=
+Received: from mail-io1-f71.google.com (mail-io1-f71.google.com
+ [209.85.166.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-524-mEmT4ZSsMmmh76IKKtBB0w-1; Fri, 06 Dec 2024 18:08:44 -0500
-X-MC-Unique: mEmT4ZSsMmmh76IKKtBB0w-1
-X-Mimecast-MFC-AGG-ID: mEmT4ZSsMmmh76IKKtBB0w
-Received: by mail-io1-f69.google.com with SMTP id
- ca18e2360f4ac-8418612c3b5so233686039f.3
- for <qemu-devel@nongnu.org>; Fri, 06 Dec 2024 15:08:44 -0800 (PST)
+ us-mta-551-v7NFAoYIM12E8tAYHP2k5w-1; Fri, 06 Dec 2024 18:08:46 -0500
+X-MC-Unique: v7NFAoYIM12E8tAYHP2k5w-1
+X-Mimecast-MFC-AGG-ID: v7NFAoYIM12E8tAYHP2k5w
+Received: by mail-io1-f71.google.com with SMTP id
+ ca18e2360f4ac-843e5314cb8so236175239f.0
+ for <qemu-devel@nongnu.org>; Fri, 06 Dec 2024 15:08:45 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733526523; x=1734131323;
+ d=1e100.net; s=20230601; t=1733526524; x=1734131324;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=YeSfgc7Jyo9nB/kprDl4lAEUoTylMcAzUPDJAOUL/0Y=;
- b=LS91gTDPlvKmYNImtUS3rcTYEbqbuD0ivo7Bh+4a6KEFXedDk938sSTR1anCNJjdzf
- 4tVJQnjWEDsVKhpao2qqTfP+ZPPAfxfvteptIKutedHMG8N7R5bcppFOidRuJ1/jJzmu
- /8VIxG9/M+ThmT3SkVZEvw99hoeX3VBDDyKe+/ZADM3U3AbSpBxvAyAkV+GUFAINq4GY
- gmwF0xF83Pyl53uALi0QIy6WKabZk7kJk0OXYQy39GW3itHbKjJ33HgZpw3iHYoPOqqI
- 4a2JJN6p9p/rBqg83oajqpt6RJpReEV9Y5AUmas7BSEFsokkn3pD/3UkvEOGZuhWKIwW
- F4ow==
-X-Gm-Message-State: AOJu0YyJhhpop7PKi8cDidauG3x2raVmFEQTHp6YmhUmgV04BgM9DH45
- rnaLGxG/xKvKjQ1EBZS5gPDVy0QdtObbtdMIsyLOYsMBw06azkaY3rsIDiNGtTeG1bpJxPiAiu/
- pc/ogCuDQ1j+1OBbW2eRllvc/yJhx7dQb0CrjPIQuye/drqpiCFpRGMepzGb9NCyYFZ+MHK/ZxU
- VF5pqFI9gBG+sQ/NAVs5tFGEWSVzxBQUHwkg==
-X-Gm-Gg: ASbGncv1j1rns5hEZMEXqnglEIlCHwuys3YApoKq/HWiYFUF9VbWRw1jr0LUyL6o4lS
- cc9GJl1vKMPZ3d4/TrEAPwnWJB2r6EnW2VlOO+w1x347tqlGNnB9n7CMiGUnXM/yRZKDCa13IHN
- vJWezvGE7m1C8se8mvug2eACg5HDw+XQt3uiJ8RTL3Sf/jOWhfreUR+eIhdo6pG0zkwXFxljZhG
- JAYiBxXFy4d3JPvYgUd98p5ANKzPSdFR1t7L87j6SAjYAnjazx7f3wbz7eovHcLoO3WfrJ8mP9Z
- LpejSZgEbN9PdDlipJUbam7OBA==
-X-Received: by 2002:a05:6e02:1c43:b0:3a7:c3aa:a82b with SMTP id
- e9e14a558f8ab-3a811dae3b7mr61956095ab.1.1733526522842; 
- Fri, 06 Dec 2024 15:08:42 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHtpW+lr+3gAKOHU9LGhBgNRJRDHf+1H5T+17CLUh7VcjL60p2b8j+a/CiPIF24GgDa2oiXIw==
-X-Received: by 2002:a05:6e02:1c43:b0:3a7:c3aa:a82b with SMTP id
- e9e14a558f8ab-3a811dae3b7mr61955835ab.1.1733526522455; 
- Fri, 06 Dec 2024 15:08:42 -0800 (PST)
+ bh=ei3jTCfsOHArePmV6xGiFJK6jrCceSkuxpU8srZa3AM=;
+ b=DK1bZXJuEWdFoUDonAHY9lHiI8TXPfSBis/HxuJpytcyRHhFlJdL9WF5lP8/UP3TwC
+ uu/QgbkQz0J8+grcWSfC+CLCXGVWvyIfSYXku0jJTTW80ClNfJrYEk28VQIDxJluDLhJ
+ R56ZJj6/7uf9/eIbd4PRy9M1pt+QEd/fs053VjayYpic3I9Byc8K9XKFaMnMYTiL38fC
+ sS2CMdgeNtTS/y6PAcB18UhqanYMU76HBIqxalwOw4Ng79ezEG9ffrzsn5KqGhEtOP44
+ vE+nA1g1KbSZqQGHL5+HQ2UVeXJARGnbgbPClBxmBVNzNFsmmgUJWFciDzlX4XgvEa7D
+ strw==
+X-Gm-Message-State: AOJu0Yz8PD8SROuR+urs73jXuG/Zy6khoijGjXo3idjWbgGYxBP+X9Zl
+ foPVwPn+RkWLwrjIQDm9nt0jF4fcfee9g1hvy2Bscm94HHeYqdqyBWzUUkA2wymbLOxT2R6ainl
+ EXpjGXlV6eJDCd3zKkMAa00jZ/aa9/YbvuvhvbdNGFirlprdfeZ+kOwNsyBUlS9nKDn5kcXkCRY
+ mBPSlOXd2wkode0Ob+QkOhh1nbbEIZ4F17nw==
+X-Gm-Gg: ASbGncuCJzE3dX7tRLC+jnfypKZ3VUz/GokoF9V9UNA6l7AHX9ZcXrg8bll/3brINcw
+ te1zqA7lsSIPv0JJPG/15WBy5cAKXzJg4i0ozOllNzgwuAE6rN/lYZ6qu7WMSnNajJXQj3TDDik
+ 00RzTuq3IuD+gv+8Qu8K7QaIcDe5ST9zg7qvlrtF8/vL20bY6kQ50XrhPrrU7d/ji/o+Ecq0EEt
+ IRXEvJR2XcL8za93a/pI2ehN2mv0y50tBsQcNJR0osxWcqb3Fwmoe0uld4YiGmqsXWdCr9DkI86
+ iJ09O03oF7wqtKt0bl6RfsJb1Q==
+X-Received: by 2002:a05:6602:6b10:b0:83d:ff89:218c with SMTP id
+ ca18e2360f4ac-8447e23c40bmr558746439f.7.1733526524543; 
+ Fri, 06 Dec 2024 15:08:44 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IElYceywDKXSww4XW5Xm8jXV1AUqUnfAH+yucG7kZdg7Rnp3sbDc05RnxLyAqlVKujDTb2a+w==
+X-Received: by 2002:a05:6602:6b10:b0:83d:ff89:218c with SMTP id
+ ca18e2360f4ac-8447e23c40bmr558742639f.7.1733526524065; 
+ Fri, 06 Dec 2024 15:08:44 -0800 (PST)
 Received: from x1n.redhat.com (pool-99-254-114-190.cpe.net.cable.rogers.com.
  [99.254.114.190]) by smtp.gmail.com with ESMTPSA id
- 8926c6da1cb9f-4e2861d9a8dsm1038895173.86.2024.12.06.15.08.40
+ 8926c6da1cb9f-4e2861d9a8dsm1038895173.86.2024.12.06.15.08.42
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 06 Dec 2024 15:08:41 -0800 (PST)
+ Fri, 06 Dec 2024 15:08:43 -0800 (PST)
 From: Peter Xu <peterx@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: peterx@redhat.com, qemu-block@nongnu.org,
@@ -77,16 +77,17 @@ Cc: peterx@redhat.com, qemu-block@nongnu.org,
  Eric Blake <eblake@redhat.com>,
  "Dr . David Alan Gilbert" <dave@treblig.org>,
  Kevin Wolf <kwolf@redhat.com>,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH v2 1/6] migration: Add helper to get target runstate
-Date: Fri,  6 Dec 2024 18:08:33 -0500
-Message-ID: <20241206230838.1111496-2-peterx@redhat.com>
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>
+Subject: [PATCH v2 2/6] qmp/cont: Only activate disks if migration completed
+Date: Fri,  6 Dec 2024 18:08:34 -0500
+Message-ID: <20241206230838.1111496-3-peterx@redhat.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241206230838.1111496-1-peterx@redhat.com>
 References: <20241206230838.1111496-1-peterx@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -50
 X-Spam_score: -5.1
@@ -95,7 +96,7 @@ X-Spam_report: (-5.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.996,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -111,71 +112,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In 99% cases, after QEMU migrates to dest host, it tries to detect the
-target VM runstate using global_state_get_runstate().
+As the comment says, the activation of disks is for the case where
+migration has completed, rather than when QEMU is still during
+migration (RUN_STATE_INMIGRATE).
 
-There's one outlier so far which is Xen that won't send global state.
-That's the major reason why global_state_received() check was always there
-together with global_state_get_runstate().
+Move the code over to reflect what the comment is describing.
 
-However it's utterly confusing why global_state_received() has anything to
-do with "let's start VM or not".
-
-Provide a helper to explain it, then we have an unified entry for getting
-the target dest QEMU runstate after migration.
-
-Suggested-by: Fabiano Rosas <farosas@suse.de>
+Cc: Kevin Wolf <kwolf@redhat.com>
+Cc: Markus Armbruster <armbru@redhat.com>
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- migration/migration.c | 21 +++++++++++++++++----
- 1 file changed, 17 insertions(+), 4 deletions(-)
+ monitor/qmp-cmds.c | 26 ++++++++++++++------------
+ 1 file changed, 14 insertions(+), 12 deletions(-)
 
-diff --git a/migration/migration.c b/migration/migration.c
-index 8c5bd0a75c..d2a6b939cf 100644
---- a/migration/migration.c
-+++ b/migration/migration.c
-@@ -135,6 +135,21 @@ static bool migration_needs_multiple_sockets(void)
-     return migrate_multifd() || migrate_postcopy_preempt();
+diff --git a/monitor/qmp-cmds.c b/monitor/qmp-cmds.c
+index f84a0dc523..76f21e8af3 100644
+--- a/monitor/qmp-cmds.c
++++ b/monitor/qmp-cmds.c
+@@ -96,21 +96,23 @@ void qmp_cont(Error **errp)
+         }
+     }
+ 
+-    /* Continuing after completed migration. Images have been inactivated to
+-     * allow the destination to take control. Need to get control back now.
+-     *
+-     * If there are no inactive block nodes (e.g. because the VM was just
+-     * paused rather than completing a migration), bdrv_inactivate_all() simply
+-     * doesn't do anything. */
+-    bdrv_activate_all(&local_err);
+-    if (local_err) {
+-        error_propagate(errp, local_err);
+-        return;
+-    }
+-
+     if (runstate_check(RUN_STATE_INMIGRATE)) {
+         autostart = 1;
+     } else {
++        /*
++         * Continuing after completed migration. Images have been
++         * inactivated to allow the destination to take control. Need to
++         * get control back now.
++         *
++         * If there are no inactive block nodes (e.g. because the VM was
++         * just paused rather than completing a migration),
++         * bdrv_inactivate_all() simply doesn't do anything.
++         */
++        bdrv_activate_all(&local_err);
++        if (local_err) {
++            error_propagate(errp, local_err);
++            return;
++        }
+         vm_start();
+     }
  }
- 
-+static RunState migration_get_target_runstate(void)
-+{
-+    /*
-+     * When the global state is not migrated, it means we don't know the
-+     * runstate of the src QEMU.  We don't have much choice but assuming
-+     * the VM is running.  NOTE: this is pretty rare case, so far only Xen
-+     * uses it.
-+     */
-+    if (!global_state_received()) {
-+        return RUN_STATE_RUNNING;
-+    }
-+
-+    return global_state_get_runstate();
-+}
-+
- static bool transport_supports_multi_channels(MigrationAddress *addr)
- {
-     if (addr->transport == MIGRATION_ADDRESS_TYPE_SOCKET) {
-@@ -735,8 +750,7 @@ static void process_incoming_migration_bh(void *opaque)
-      * unless we really are starting the VM.
-      */
-     if (!migrate_late_block_activate() ||
--         (autostart && (!global_state_received() ||
--            runstate_is_live(global_state_get_runstate())))) {
-+        (autostart && runstate_is_live(migration_get_target_runstate()))) {
-         /* Make sure all file formats throw away their mutable metadata.
-          * If we get an error here, just don't restart the VM yet. */
-         bdrv_activate_all(&local_err);
-@@ -759,8 +773,7 @@ static void process_incoming_migration_bh(void *opaque)
- 
-     dirty_bitmap_mig_before_vm_start();
- 
--    if (!global_state_received() ||
--        runstate_is_live(global_state_get_runstate())) {
-+    if (runstate_is_live(migration_get_target_runstate())) {
-         if (autostart) {
-             vm_start();
-         } else {
 -- 
 2.47.0
 
