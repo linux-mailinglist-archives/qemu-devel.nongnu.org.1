@@ -2,89 +2,108 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1950B9E729B
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Dec 2024 16:11:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A8B6A9E729E
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Dec 2024 16:11:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tJZyY-0005g1-Ok; Fri, 06 Dec 2024 10:10:38 -0500
+	id 1tJZyr-0005mc-RV; Fri, 06 Dec 2024 10:10:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tJZyV-0005ff-Qe
- for qemu-devel@nongnu.org; Fri, 06 Dec 2024 10:10:37 -0500
-Received: from mail-oi1-x233.google.com ([2607:f8b0:4864:20::233])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tJZyn-0005li-7i
+ for qemu-devel@nongnu.org; Fri, 06 Dec 2024 10:10:53 -0500
+Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tJZyT-00036p-JB
- for qemu-devel@nongnu.org; Fri, 06 Dec 2024 10:10:35 -0500
-Received: by mail-oi1-x233.google.com with SMTP id
- 5614622812f47-3ea53011deaso613240b6e.1
- for <qemu-devel@nongnu.org>; Fri, 06 Dec 2024 07:10:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1733497832; x=1734102632; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=SxL5VbJ0YJpwE8YrwqAvM2EfjoS1W637eH7sVAo2arM=;
- b=hY1W5CDL7sjGknNGA6EFrPUnpjzV7e77l2tml8nSsP2PKx9fL4wPFjKzmoET86Oeqj
- Fl+8y1PrZvfO4SQZXhYSpARjxE1p5cvciTUHgNuYuHOvKceQi9pbQX6iz+rgwmUQDytY
- la64K7agQmreib9UbL9TQ6IUgzbQIWZS550C2TAjBrL9p7k7X0rV728CRN05Bfh8Kcr4
- UNAQW5x1OeLf1fiBqi1DoD9wIEjDU9pyNKeXVfz2uMsV/VflvxMWbToMSbwpj3M6YO83
- vJyDdqCID+xaxGp2/BigVOaZXNjU/r7j7+CK2qL6lLV8GlUPOxT9vcchDHrx8+1CeewF
- NeVw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733497832; x=1734102632;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=SxL5VbJ0YJpwE8YrwqAvM2EfjoS1W637eH7sVAo2arM=;
- b=Wb6OUOksmj1jwt0XIDEOuQq7PZr8tXtTQhKwbismBGsZA7LUrsRwls+CzHmyoIN4e5
- x8fyVRwAEkDpJaYQMb1y5M1iOvxG1jeBumJ3hDGEplM58c/CPOrX+EFAn8+2CcWxSdic
- QB5lDbmpvH8H1rIMF2DF0cHDEPdhkCWqR498rXiXq+OJarRc6ll0iLqJ4//DGGbhbIxb
- bx8aXKNRdfXmO5S6GpVelLIzoy8FZy1/CYETkIEpt34XPwD+YSkkszlC4hKbwFELzfqw
- 1+2wao/W/Xo0efv5ix+gPRF+veV33VWAU8eroJW68v+QbMMZyb9kzSpQTMOWlXOeMskr
- pMrA==
-X-Gm-Message-State: AOJu0YyT83N0K+DQEi0sF4PUiE5FZE9SzmchrP3faFv531dH9wz3o/xV
- xSKt/thwXvoV97QEd9NOvhicO+npTWT92F1ZcIewDkP20BOyILqwm9k52xthba4=
-X-Gm-Gg: ASbGncuh3u8LQUojwbSE9WA9UwW2G1eFW/NbjwK/nhlUIt+NtP3XXIiv8dP55UV3qlq
- RQDpiYVjTfHWDAN6nrcUEdkajYsDgtKqXG8p75ZzLaqdP4nXT/AIRRl9bh19h1p8pOrDssT2BCz
- n90oAecG5e6yMirZFg0mhz64Rs0yw5pxzYXaX/oSmS13or+8lRZCVxD8095t3NcbvHUUwVeNjLZ
- aoTsnFTV2S53CWrhA+pk641G3kY+YzcKu0tDf3mMgMFJod45JuzY+V3Ax3wBtybK0GxQkK5BBL3
- bpBM0dUdtEEppDKMIRto31chHRNM
-X-Google-Smtp-Source: AGHT+IHrzb2xqymGzh1u01ic0i9NCPTLdEZ4Fy2Wcz1eL7PmexX0hMdxA656jdidUzqINyD9ztAAvQ==
-X-Received: by 2002:a05:6808:ed0:b0:3e7:c7c1:e6cf with SMTP id
- 5614622812f47-3eb19e0d4e4mr1405247b6e.43.1733497832211; 
- Fri, 06 Dec 2024 07:10:32 -0800 (PST)
-Received: from [192.168.4.112] (fixed-187-189-51-143.totalplay.net.
- [187.189.51.143]) by smtp.gmail.com with ESMTPSA id
- 586e51a60fabf-29f567602f5sm854842fac.23.2024.12.06.07.10.30
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 06 Dec 2024 07:10:31 -0800 (PST)
-Message-ID: <b3cd1199-f63f-4383-bc31-3666d2bc9677@linaro.org>
-Date: Fri, 6 Dec 2024 09:10:28 -0600
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tJZyl-0003EW-Ay
+ for qemu-devel@nongnu.org; Fri, 06 Dec 2024 10:10:52 -0500
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 89F6C2115A;
+ Fri,  6 Dec 2024 15:10:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1733497849; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=S/7IWdXPnTQDnx6bXZ/SGklpW+U4txaiqzpTWQhIM9w=;
+ b=igxC04KpgzFyjJgLWnAJrTxFvQk8k2XQUQA53/rcojoo7u8La0Cq3lsAsQdcoB8glBOZmi
+ yHB8lRnMcTT1X72dr2lv8nKjSrnAXxqClLhApegZlXqkchM6FC3hVgCOiJnHo9jtrcVYI8
+ iLz086AK5xvieZ5CnXlvyLRwHEYYAs0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1733497849;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=S/7IWdXPnTQDnx6bXZ/SGklpW+U4txaiqzpTWQhIM9w=;
+ b=DGkIX/2Z1Cgnug0P7TqxTfxmSu0Fm/kB3w5Z919Ccq8qw7Qm0FgYR4r7ra3hDWkAWTdCOl
+ sviqYjFM8vfAU4Cg==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1733497849; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=S/7IWdXPnTQDnx6bXZ/SGklpW+U4txaiqzpTWQhIM9w=;
+ b=igxC04KpgzFyjJgLWnAJrTxFvQk8k2XQUQA53/rcojoo7u8La0Cq3lsAsQdcoB8glBOZmi
+ yHB8lRnMcTT1X72dr2lv8nKjSrnAXxqClLhApegZlXqkchM6FC3hVgCOiJnHo9jtrcVYI8
+ iLz086AK5xvieZ5CnXlvyLRwHEYYAs0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1733497849;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=S/7IWdXPnTQDnx6bXZ/SGklpW+U4txaiqzpTWQhIM9w=;
+ b=DGkIX/2Z1Cgnug0P7TqxTfxmSu0Fm/kB3w5Z919Ccq8qw7Qm0FgYR4r7ra3hDWkAWTdCOl
+ sviqYjFM8vfAU4Cg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 1051E13647;
+ Fri,  6 Dec 2024 15:10:48 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id IPO4MfgTU2cHdgAAD6G6ig
+ (envelope-from <farosas@suse.de>); Fri, 06 Dec 2024 15:10:48 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Peter Xu <peterx@redhat.com>
+Cc: qemu-devel@nongnu.org, "Maciej S . Szmigiero"
+ <mail@maciej.szmigiero.name>, =?utf-8?Q?C=C3=A9dric?= Le Goater
+ <clg@redhat.com>, Avihai
+ Horon <avihaih@nvidia.com>, Alex Williamson <alex.williamson@redhat.com>,
+ Prasad Pandit <ppandit@redhat.com>
+Subject: Re: [PATCH v2 3/7] migration/ram: Move RAM_SAVE_FLAG* into ram.h
+In-Reply-To: <Z1MSKpiMiPsidzJO@x1n>
+References: <20241206005834.1050905-1-peterx@redhat.com>
+ <20241206005834.1050905-4-peterx@redhat.com> <874j3hc4fw.fsf@suse.de>
+ <Z1MSKpiMiPsidzJO@x1n>
+Date: Fri, 06 Dec 2024 12:10:46 -0300
+Message-ID: <87ldwsc0eh.fsf@suse.de>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 31/67] target/arm: Convert handle_fpfpcvt to decodetree
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org
-References: <20241201150607.12812-1-richard.henderson@linaro.org>
- <20241201150607.12812-32-richard.henderson@linaro.org>
- <CAFEAcA-11+JX0N4vjU_3WDNVt8nis-+ufANLG2L1TNGZhLcubQ@mail.gmail.com>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <CAFEAcA-11+JX0N4vjU_3WDNVt8nis-+ufANLG2L1TNGZhLcubQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::233;
- envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x233.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain
+X-Spam-Score: -4.30
+X-Spamd-Result: default: False [-4.30 / 50.00]; BAYES_HAM(-3.00)[100.00%];
+ NEURAL_HAM_LONG(-1.00)[-1.000];
+ NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
+ ARC_NA(0.00)[]; RCVD_VIA_SMTP_AUTH(0.00)[];
+ MISSING_XM_UA(0.00)[]; MIME_TRACE(0.00)[0:+];
+ RCPT_COUNT_SEVEN(0.00)[7]; MID_RHS_MATCH_FROM(0.00)[];
+ RCVD_TLS_ALL(0.00)[];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ FROM_EQ_ENVFROM(0.00)[]; FROM_HAS_DN(0.00)[];
+ TO_DN_SOME(0.00)[]; RCVD_COUNT_TWO(0.00)[2];
+ FUZZY_BLOCKED(0.00)[rspamd.com]; TO_MATCH_ENVRCPT_ALL(0.00)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo, suse.de:mid,
+ suse.de:email]
+Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
+ envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,50 +119,173 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/6/24 07:48, Peter Maydell wrote:
->> +static bool do_fcvt_g(DisasContext *s, arg_fcvt *a,
->> +                      ARMFPRounding rmode, bool is_signed)
->> +{
->> +    TCGv_i64 tcg_int;
->> +    int check = fp_access_check_scalar_hsd(s, a->esz);
->> +
->> +    if (check <= 0) {
->> +        return check == 0;
->> +    }
->> +
->> +    tcg_int = cpu_reg(s, a->rd);
->> +    do_fcvt_scalar(s, (a->sf ? MO_64 : MO_32) | (is_signed ? MO_SIGN : 0),
->> +                   a->esz, tcg_int, a->shift, a->rn, rmode);
->> +
->> +    if (!a->sf) {
->> +        tcg_gen_ext32u_i64(tcg_int, tcg_int);
-> 
-> For the MO_16 and MO_32 input cases we already did a
-> zero-extend-to-64-bits inside do_fcvt_scalar().
-> Maybe we should put the tcg_gen_ext32u_i64() also
-> inside do_fcvt_scalar() in the cases of MO_64 input
-> MO_32 output which are the only ones that actually need it?
+Peter Xu <peterx@redhat.com> writes:
 
-I thought about that.
+> On Fri, Dec 06, 2024 at 10:43:31AM -0300, Fabiano Rosas wrote:
+>> Peter Xu <peterx@redhat.com> writes:
+>> 
+>> > Firstly, we're going to use the multifd flag soon in multifd code, so ram.c
+>> > isn't gonna work.
+>> >
+>> > Secondly, we have a separate RDMA flag dangling around, which is definitely
+>> > not obvious.  There's one comment that helps, but not too much.
+>> >
+>> > We should just put it altogether, so nothing will get overlooked.
+>> >
+>> > Signed-off-by: Peter Xu <peterx@redhat.com>
+>> 
+>> Reviewed-by: Fabiano Rosas <farosas@suse.de>
+>> 
+>> just some comments about preexisting stuff:
+>> 
+>> > ---
+>> >  migration/ram.h  | 25 +++++++++++++++++++++++++
+>> >  migration/rdma.h |  7 -------
+>> >  migration/ram.c  | 21 ---------------------
+>> >  3 files changed, 25 insertions(+), 28 deletions(-)
+>> >
+>> > diff --git a/migration/ram.h b/migration/ram.h
+>> > index 0d1981f888..cfdcccd266 100644
+>> > --- a/migration/ram.h
+>> > +++ b/migration/ram.h
+>> > @@ -33,6 +33,31 @@
+>> >  #include "exec/cpu-common.h"
+>> >  #include "io/channel.h"
+>> >  
+>> > +/*
+>> > + * RAM_SAVE_FLAG_ZERO used to be named RAM_SAVE_FLAG_COMPRESS, it
+>> > + * worked for pages that were filled with the same char.  We switched
+>> > + * it to only search for the zero value.  And to avoid confusion with
+>> > + * RAM_SAVE_FLAG_COMPRESS_PAGE just rename it.
+>> > + *
+>> > + * RAM_SAVE_FLAG_FULL was obsoleted in 2009.
+>> > + *
+>> > + * RAM_SAVE_FLAG_COMPRESS_PAGE (0x100) was removed in QEMU 9.1.
+>> 
+>> Aren't these already covered by git log? The comment makes it seem like
+>> some special situation, but I think we're just documenting history here,
+>> no?
+>
+> I guess so.
+>
+> Maybe still useful when we hit a bug that some ancient QEMU manually
+> migrates to a new one and hit a weird 0x100 message.
+>
+>> 
+>> > + */
+>> > +#define RAM_SAVE_FLAG_FULL     0x01
+>> > +#define RAM_SAVE_FLAG_ZERO     0x02
+>> > +#define RAM_SAVE_FLAG_MEM_SIZE 0x04
+>> > +#define RAM_SAVE_FLAG_PAGE     0x08
+>> > +#define RAM_SAVE_FLAG_EOS      0x10
+>> > +#define RAM_SAVE_FLAG_CONTINUE 0x20
+>> > +#define RAM_SAVE_FLAG_XBZRLE   0x40
+>> > +/*
+>> > + * ONLY USED IN RDMA: Whenever this is found in the data stream, the flags
+>> > + * will be passed to rdma functions in the incoming-migration side.
+>> > + */
+>> > +#define RAM_SAVE_FLAG_HOOK     0x80
+>> 
+>> No 0x100?
+>
+> You just asked about it one min ago! ^^^^
 
-(0) In that case the duplicate zero-extend will be optimized away.
+Ah, so RAM_SAVE_FLAG_FULL was left behind but
+RAM_SAVE_FLAG_COMPRESS_PAGE was removed, I missed that.
 
-(1) I thought it was clearer to retain the !sf test here rather
-     than rely on a zero-extend elsewhere.
+>
+>> 
+>> > +#define RAM_SAVE_FLAG_MULTIFD_FLUSH    0x200
+>> > +/* We can't use any flag that is bigger than 0x200 */
+>> 
+>> Where does that limitation come from again? I know that
+>> RAM_SAVE_FLAG_MEM_SIZE shares a u64 with something else:
+>> 
+>>   qemu_put_be64(f, ram_bytes_total_with_ignored() |
+>>   RAM_SAVE_FLAG_MEM_SIZE);
+>> 
+>> For RAM_SAVE_FLAG_ZERO and RAM_SAVE_FLAG_PAGE, it might be a u32 (offset
+>> is ram_addr_t):
+>> 
+>>   save_page_header(pss, file, pss->block, offset | RAM_SAVE_FLAG_ZERO);
+>> 
+>> But others just go by themselves:
+>> 
+>> qemu_put_be64(f, RAM_SAVE_FLAG_MULTIFD_FLUSH);
+>
+> No matter if it goes by itself, I am guessing migration was initially
+> developed by assuming each initial 8 bytes is an address, see:
+>
+> ram_load_precopy():
+>         addr = qemu_get_be64(f);
+>         ...
+>         flags = addr & ~TARGET_PAGE_MASK;
+>         addr &= TARGET_PAGE_MASK;
+>
+> So it must be no more than 0x200, probably because it wants to work with
+> whatever architectures that have PAGE_SIZE>=1K (which is 0x400).  Then the
+> offset will never use the last 10 bits.
+>
+> Wanna me to add a comment for that in this patch?
 
-(2) In the scalar vector case, the best method for Vd.H is to clear
-     the entire vector and only then store the 0th element directly
-     from the bottom bits of either TCGv_{i32,i64}.
+Yes, please.
 
-     Otherwise we wind up with two zero-extends which cannot be folded:
-     tcg_gen_ext16u_i32 + tcg_gen_extu_i32_i64 or
-     tcg_gen_extu_i32_i64 + tcg_gen_ext16u_i64.
-     Fixing this duplication would require new tcg ops to
-     extend-and-change-type.
-
-     While Vd.S does not suffer the same fate, it's easiest to use
-     the same method as Vd.H.  See patch 55.
-
-
-r~
+>
+>> 
+>> 
+>> > +
+>> >  extern XBZRLECacheStats xbzrle_counters;
+>> >  
+>> >  /* Should be holding either ram_list.mutex, or the RCU lock. */
+>> > diff --git a/migration/rdma.h b/migration/rdma.h
+>> > index a8d27f33b8..f55f28bbed 100644
+>> > --- a/migration/rdma.h
+>> > +++ b/migration/rdma.h
+>> > @@ -33,13 +33,6 @@ void rdma_start_incoming_migration(InetSocketAddress *host_port, Error **errp);
+>> >  #define RAM_CONTROL_ROUND     1
+>> >  #define RAM_CONTROL_FINISH    3
+>> >  
+>> > -/*
+>> > - * Whenever this is found in the data stream, the flags
+>> > - * will be passed to rdma functions in the incoming-migration
+>> > - * side.
+>> > - */
+>> > -#define RAM_SAVE_FLAG_HOOK     0x80
+>> > -
+>> >  #define RAM_SAVE_CONTROL_NOT_SUPP -1000
+>> >  #define RAM_SAVE_CONTROL_DELAYED  -2000
+>> >  
+>> > diff --git a/migration/ram.c b/migration/ram.c
+>> > index 7284c34bd8..44010ff325 100644
+>> > --- a/migration/ram.c
+>> > +++ b/migration/ram.c
+>> > @@ -71,27 +71,6 @@
+>> >  /***********************************************************/
+>> >  /* ram save/restore */
+>> >  
+>> > -/*
+>> > - * RAM_SAVE_FLAG_ZERO used to be named RAM_SAVE_FLAG_COMPRESS, it
+>> > - * worked for pages that were filled with the same char.  We switched
+>> > - * it to only search for the zero value.  And to avoid confusion with
+>> > - * RAM_SAVE_FLAG_COMPRESS_PAGE just rename it.
+>> > - *
+>> > - * RAM_SAVE_FLAG_FULL was obsoleted in 2009.
+>> > - *
+>> > - * RAM_SAVE_FLAG_COMPRESS_PAGE (0x100) was removed in QEMU 9.1.
+>> > - */
+>> > -#define RAM_SAVE_FLAG_FULL     0x01
+>> > -#define RAM_SAVE_FLAG_ZERO     0x02
+>> > -#define RAM_SAVE_FLAG_MEM_SIZE 0x04
+>> > -#define RAM_SAVE_FLAG_PAGE     0x08
+>> > -#define RAM_SAVE_FLAG_EOS      0x10
+>> > -#define RAM_SAVE_FLAG_CONTINUE 0x20
+>> > -#define RAM_SAVE_FLAG_XBZRLE   0x40
+>> > -/* 0x80 is reserved in rdma.h for RAM_SAVE_FLAG_HOOK */
+>> > -#define RAM_SAVE_FLAG_MULTIFD_FLUSH    0x200
+>> > -/* We can't use any flag that is bigger than 0x200 */
+>> > -
+>> >  /*
+>> >   * mapped-ram migration supports O_DIRECT, so we need to make sure the
+>> >   * userspace buffer, the IO operation size and the file offset are
+>> 
 
