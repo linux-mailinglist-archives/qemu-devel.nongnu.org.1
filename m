@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71F569E6E49
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Dec 2024 13:34:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EF3DB9E6E1A
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Dec 2024 13:29:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tJXSP-0007Pf-9O; Fri, 06 Dec 2024 07:29:17 -0500
+	id 1tJXRh-00066A-Mn; Fri, 06 Dec 2024 07:28:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <brueckner@linux.ibm.com>)
- id 1tJXRO-0005xh-Ba; Fri, 06 Dec 2024 07:28:15 -0500
+ id 1tJXRO-0005xf-BT; Fri, 06 Dec 2024 07:28:15 -0500
 Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <brueckner@linux.ibm.com>)
- id 1tJXRI-00041p-I7; Fri, 06 Dec 2024 07:28:11 -0500
+ id 1tJXRI-00041w-I8; Fri, 06 Dec 2024 07:28:11 -0500
 Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4B6Aokvv012087;
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4B6A03bI010637;
  Fri, 6 Dec 2024 12:28:04 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
  :content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=pp1; bh=3CCW8EW/CVcSZQD7J
- fEySXBqYWpDsOjkm1NAj28EnOQ=; b=jhjRmEsE4E5U/obOlBHd0/veZo6xwfTPk
- 1YANpFs9azXhi4kAxVFRNWxr88i/hWcAoKVv5uyokHP1tvPL6aX0jQtMk/M3lFdO
- 0FhnDubjqrGmW0qNMQnYQ9wH8Zy1v0+cP0DXH03Gefz2W/NF3bIVcJXg5j7WUF8u
- 6Iw6OAcSHS0A7fo8LsxicmuKIDwjcWFW4cLtu+nmyUzNfOLSbrLd/GqHoc6HnLxA
- iQaYAzA8RS0tCiCb1k9Udm9e9IlgB9Io4lWfyLYCnBTNkyj9KHmzXNrEpAN4Gs8b
- 3iVyhKczjpsXvIw185Bau7QsPeU35KZCFAriTSCYmwWB6jFVhRhPQ==
-Received: from ppma11.dal12v.mail.ibm.com
- (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 43bk99kc2s-1
+ :mime-version:references:subject:to; s=pp1; bh=zVQDE3CM1dk1ZLl3S
+ /muZ01GMzxPHfPFPM/gOpfPAfA=; b=B1VmYC32ZjDut+NrroVpfNDfp2Ati1N20
+ YwEbOU3Qd0ft8A+e/fa5dHIm+hpHVlFs+IREY3+Stwwo0JBLTk+XzOn0urZZYRQp
+ mzdpoG/2gBOvGFOtlZvWvkI1aMaZgQfg89zl/R1flev3A58ZIbnL//QhxxerGDJi
+ CbiM5YCfwSA5Rma6o5dqWaaeyvJ8GMFssJPFmqvBIHOb9Gd3X+ppSbP3GLE2vjic
+ C+/Tano07ENedMdsuAswSe4g6HM5bfRSRM/EMIrHIxYKswkRS8xnPNT4R66RpuwD
+ NjjAWNNyGxcXwZpSADZe/w1HeQNNOFu4rm7noR7vahCP4KDSuwovQ==
+Received: from ppma13.dal12v.mail.ibm.com
+ (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 43bk99kc2w-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 06 Dec 2024 12:28:03 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
- by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4B6APBpg005278;
+ Fri, 06 Dec 2024 12:28:04 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4B68YUOo007470;
  Fri, 6 Dec 2024 12:28:03 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
- by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 438fr1xmpu-1
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+ by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 438f8jxg5w-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 06 Dec 2024 12:28:02 +0000
+ Fri, 06 Dec 2024 12:28:03 +0000
 Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com
  [10.20.54.104])
- by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 4B6CRxhP61276556
+ by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 4B6CS0rp53412100
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 6 Dec 2024 12:27:59 GMT
+ Fri, 6 Dec 2024 12:28:00 GMT
 Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9CD622004B;
- Fri,  6 Dec 2024 12:27:59 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 2DC4B20043;
+ Fri,  6 Dec 2024 12:28:00 +0000 (GMT)
 Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 2F7C920043;
+ by IMSVA (Postfix) with ESMTP id B264420040;
  Fri,  6 Dec 2024 12:27:59 +0000 (GMT)
 Received: from vela.ibmuc.com (unknown [9.171.26.200])
  by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
@@ -59,24 +59,24 @@ From: Hendrik Brueckner <brueckner@linux.ibm.com>
 To: qemu-devel@nongnu.org, qemu-s390x@nongnu.org, thuth@redhat.com
 Cc: nsg@linux.ibm.com, frankja@linux.ibm.com, mimu@linux.ibm.com,
  borntraeger@linux.ibm.com, Hendrik Brueckner <brueckner@linux.ibm.com>
-Subject: [RFC PATCH v2 03/15] s390x/cpumodel: add msa12 changes
-Date: Fri,  6 Dec 2024 13:27:39 +0100
-Message-ID: <20241206122751.189721-4-brueckner@linux.ibm.com>
+Subject: [RFC PATCH v2 04/15] s390x/cpumodel: add msa13 subfunctions
+Date: Fri,  6 Dec 2024 13:27:40 +0100
+Message-ID: <20241206122751.189721-5-brueckner@linux.ibm.com>
 X-Mailer: git-send-email 2.43.5
 In-Reply-To: <20241206122751.189721-1-brueckner@linux.ibm.com>
 References: <20241206122751.189721-1-brueckner@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: sYj2a84fbthD7hIOlrMf1EpXHjGhArsO
-X-Proofpoint-ORIG-GUID: sYj2a84fbthD7hIOlrMf1EpXHjGhArsO
+X-Proofpoint-GUID: I72lFwciIyRqt_kUWf0c3i02ZiivjDap
+X-Proofpoint-ORIG-GUID: I72lFwciIyRqt_kUWf0c3i02ZiivjDap
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
  definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  suspectscore=0
  lowpriorityscore=0 bulkscore=0 adultscore=0 clxscore=1015 malwarescore=0
- priorityscore=1501 spamscore=0 mlxlogscore=924 impostorscore=0 mlxscore=0
+ priorityscore=1501 spamscore=0 mlxlogscore=759 impostorscore=0 mlxscore=0
  phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.19.0-2411120000 definitions=main-2412060089
 Received-SPF: pass client-ip=148.163.158.5;
@@ -104,70 +104,181 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-MSA12 changes the KIMD/KLMD instruction format for SHA3/SHAKE.
+MSA13 introduces query authentication information (QAI) subfunctions.
 
 Signed-off-by: Hendrik Brueckner <brueckner@linux.ibm.com>
-Reviewed-by: Christian Borntraeger <borntraeger@linux.ibm.com>
 ---
- target/s390x/cpu_features.c         | 1 +
- target/s390x/cpu_features_def.h.inc | 1 +
- target/s390x/gen-features.c         | 8 ++++++++
- 3 files changed, 10 insertions(+)
+ target/s390x/cpu_features.c         |  2 ++
+ target/s390x/cpu_features_def.h.inc | 12 ++++++++++++
+ target/s390x/gen-features.c         | 26 ++++++++++++++++++++++++++
+ 3 files changed, 40 insertions(+)
 
 diff --git a/target/s390x/cpu_features.c b/target/s390x/cpu_features.c
-index 36930feccd..0e0b37ab95 100644
+index 0e0b37ab95..9ba127e386 100644
 --- a/target/s390x/cpu_features.c
 +++ b/target/s390x/cpu_features.c
-@@ -256,6 +256,7 @@ static S390FeatGroupDef s390_feature_groups[] = {
-     FEAT_GROUP_INIT("msa10_pckmo", MSA_EXT_10_PCKMO, "Message-security-assist-extension 10 PCKMO subfunctions"),
+@@ -257,6 +257,8 @@ static S390FeatGroupDef s390_feature_groups[] = {
      FEAT_GROUP_INIT("msa11", MSA_EXT_11, "Message-security-assist-extension 11 facility"),
      FEAT_GROUP_INIT("msa11_pckmo", MSA_EXT_11_PCKMO, "Message-security-assist-extension 11 PCKMO subfunctions"),
-+    FEAT_GROUP_INIT("msa12", MSA_EXT_12, "Message-security-assist-extension 12 facility"),
+     FEAT_GROUP_INIT("msa12", MSA_EXT_12, "Message-security-assist-extension 12 facility"),
++    FEAT_GROUP_INIT("msa13", MSA_EXT_13, "Message-security-assist-extension 13 facility"),
++    FEAT_GROUP_INIT("msa13_pckmo", MSA_EXT_13_PCKMO, "Message-security-assist-extension 13 PCKMO subfunctions"),
      FEAT_GROUP_INIT("mepochptff", MULTIPLE_EPOCH_PTFF, "PTFF enhancements introduced with Multiple-epoch facility"),
      FEAT_GROUP_INIT("esort", ENH_SORT, "Enhanced-sort facility"),
      FEAT_GROUP_INIT("deflate", DEFLATE_CONVERSION, "Deflate-conversion facility"),
 diff --git a/target/s390x/cpu_features_def.h.inc b/target/s390x/cpu_features_def.h.inc
-index 15ea51fc54..2e5dc96984 100644
+index 2e5dc96984..2132837ffe 100644
 --- a/target/s390x/cpu_features_def.h.inc
 +++ b/target/s390x/cpu_features_def.h.inc
-@@ -90,6 +90,7 @@ DEF_FEAT(EDAT_2, "edat2", STFL, 78, "Enhanced-DAT facility 2")
- DEF_FEAT(DFP_PACKED_CONVERSION, "dfppc", STFL, 80, "Decimal-floating-point packed-conversion facility")
- DEF_FEAT(PPA15, "ppa15", STFL, 81, "PPA15 is installed")
- DEF_FEAT(BPB, "bpb", STFL, 82, "Branch prediction blocking")
-+DEF_FEAT(MSA_EXT_12, "msa12-base", STFL, 86, "Message-security-assist-extension-12 facility (excluding subfunctions)")
- DEF_FEAT(VECTOR, "vx", STFL, 129, "Vector facility")
- DEF_FEAT(INSTRUCTION_EXEC_PROT, "iep", STFL, 130, "Instruction-execution-protection facility")
- DEF_FEAT(SIDE_EFFECT_ACCESS_ESOP2, "sea_esop2", STFL, 131, "Side-effect-access facility and Enhanced-suppression-on-protection facility 2")
+@@ -209,6 +209,7 @@ DEF_FEAT(KMAC_HMAC_ESHA_224, "kmac-hmac-esha-224", KMAC, 120, "KMAC HMAC-Encrypt
+ DEF_FEAT(KMAC_HMAC_ESHA_256, "kmac-hmac-esha-246", KMAC, 121, "KMAC HMAC-Encrypted-SHA-256")
+ DEF_FEAT(KMAC_HMAC_ESHA_384, "kmac-hmac-esha-384", KMAC, 122, "KMAC HMAC-Encrypted-SHA-384")
+ DEF_FEAT(KMAC_HMAC_ESHA_512, "kmac-hmac-esha-512", KMAC, 123, "KMAC HMAC-Encrypted-SHA-512")
++DEF_FEAT(KMAC_QAI, "kmac-qai", KMAC, 127, "KMAC Query-Authentication-Information")
+ 
+ /* Features exposed via the KMC instruction. */
+ DEF_FEAT(KMC_DEA, "kmc-dea", KMC, 1, "KMC DEA")
+@@ -246,6 +247,7 @@ DEF_FEAT(KM_FULL_XTS_AES_128, "km-full-xts-aes-128", KM, 82, "KM Full-XTS-AES-12
+ DEF_FEAT(KM_FULL_XTS_AES_256, "km-full-xts-aes-256", KM, 84, "KM Full-XTS-AES-256")
+ DEF_FEAT(KM_FULL_XTS_EAES_128, "km-full-xts-eaes-128", KM, 90, "KM Full-XTS-Encrypted-AES-128")
+ DEF_FEAT(KM_FULL_XTS_EAES_256, "km-full-xts-eaes-256", KM, 92, "KM Full-XTS-Encrypted-AES-256")
++DEF_FEAT(KM_QAI, "km-qai", KM, 127, "KM Query-Authentication-Information")
+ 
+ /* Features exposed via the KIMD instruction. */
+ DEF_FEAT(KIMD_SHA_1, "kimd-sha-1", KIMD, 1, "KIMD SHA-1")
+@@ -258,6 +260,7 @@ DEF_FEAT(KIMD_SHA3_512, "kimd-sha3-512", KIMD, 35, "KIMD SHA3-512")
+ DEF_FEAT(KIMD_SHAKE_128, "kimd-shake-128", KIMD, 36, "KIMD SHAKE-128")
+ DEF_FEAT(KIMD_SHAKE_256, "kimd-shake-256", KIMD, 37, "KIMD SHAKE-256")
+ DEF_FEAT(KIMD_GHASH, "kimd-ghash", KIMD, 65, "KIMD GHASH")
++DEF_FEAT(KIMD_QAI, "kimd-qai", KIMD, 127, "KIMD Query-Authentication-Information")
+ 
+ /* Features exposed via the KLMD instruction. */
+ DEF_FEAT(KLMD_SHA_1, "klmd-sha-1", KLMD, 1, "KLMD SHA-1")
+@@ -269,6 +272,7 @@ DEF_FEAT(KLMD_SHA3_384, "klmd-sha3-384", KLMD, 34, "KLMD SHA3-384")
+ DEF_FEAT(KLMD_SHA3_512, "klmd-sha3-512", KLMD, 35, "KLMD SHA3-512")
+ DEF_FEAT(KLMD_SHAKE_128, "klmd-shake-128", KLMD, 36, "KLMD SHAKE-128")
+ DEF_FEAT(KLMD_SHAKE_256, "klmd-shake-256", KLMD, 37, "KLMD SHAKE-256")
++DEF_FEAT(KLMD_QAI, "klmd-qai", KLMD, 127, "KLMD Query-Authentication-Information")
+ 
+ /* Features exposed via the PCKMO instruction. */
+ DEF_FEAT(PCKMO_EDEA, "pckmo-edea", PCKMO, 1, "PCKMO Encrypted-DEA-Key")
+@@ -286,6 +290,7 @@ DEF_FEAT(PCKMO_ECC_ED25519, "pckmo-ecc-ed25519", PCKMO, 40 , "PCKMO Encrypt-ECC-
+ DEF_FEAT(PCKMO_ECC_ED448, "pckmo-ecc-ed448", PCKMO, 41 , "PCKMO Encrypt-ECC-Ed448-Key")
+ DEF_FEAT(PCKMO_HMAC_512, "pckmo-hmac-512", PCKMO, 118, "PCKMO Encrypt-HMAC-512-Key")
+ DEF_FEAT(PCKMO_HMAC_1024, "pckmo-hmac-1024", PCKMO, 122, "PCKMO Encrypt-HMAC-1024-Key")
++DEF_FEAT(PCKMO_QAI, "pckmo-qai", PCKMO, 127, "PCKMO Query-Authentication-Information")
+ 
+ /* Features exposed via the KMCTR instruction. */
+ DEF_FEAT(KMCTR_DEA, "kmctr-dea", KMCTR, 1, "KMCTR DEA")
+@@ -300,6 +305,7 @@ DEF_FEAT(KMCTR_AES_256, "kmctr-aes-256", KMCTR, 20, "KMCTR AES-256")
+ DEF_FEAT(KMCTR_EAES_128, "kmctr-eaes-128", KMCTR, 26, "KMCTR Encrypted-AES-128")
+ DEF_FEAT(KMCTR_EAES_192, "kmctr-eaes-192", KMCTR, 27, "KMCTR Encrypted-AES-192")
+ DEF_FEAT(KMCTR_EAES_256, "kmctr-eaes-256", KMCTR, 28, "KMCTR Encrypted-AES-256")
++DEF_FEAT(KMCTR_QAI, "kmctr-qai", KMCTR, 127, "KMCTR Query-Authentication-Information")
+ 
+ /* Features exposed via the KMF instruction. */
+ DEF_FEAT(KMF_DEA, "kmf-dea", KMF, 1, "KMF DEA")
+@@ -314,6 +320,7 @@ DEF_FEAT(KMF_AES_256, "kmf-aes-256", KMF, 20, "KMF AES-256")
+ DEF_FEAT(KMF_EAES_128, "kmf-eaes-128", KMF, 26, "KMF Encrypted-AES-128")
+ DEF_FEAT(KMF_EAES_192, "kmf-eaes-192", KMF, 27, "KMF Encrypted-AES-192")
+ DEF_FEAT(KMF_EAES_256, "kmf-eaes-256", KMF, 28, "KMF Encrypted-AES-256")
++DEF_FEAT(KMF_QAI, "kmf-qai", KMF, 127, "KMF Query-Authentication-Information")
+ 
+ /* Features exposed via the KMO instruction. */
+ DEF_FEAT(KMO_DEA, "kmo-dea", KMO, 1, "KMO DEA")
+@@ -328,6 +335,7 @@ DEF_FEAT(KMO_AES_256, "kmo-aes-256", KMO, 20, "KMO AES-256")
+ DEF_FEAT(KMO_EAES_128, "kmo-eaes-128", KMO, 26, "KMO Encrypted-AES-128")
+ DEF_FEAT(KMO_EAES_192, "kmo-eaes-192", KMO, 27, "KMO Encrypted-AES-192")
+ DEF_FEAT(KMO_EAES_256, "kmo-eaes-256", KMO, 28, "KMO Encrypted-AES-256")
++DEF_FEAT(KMO_QAI, "kmo-qai", KMO, 127, "KMO Query-Authentication-Information")
+ 
+ /* Features exposed via the PCC instruction. */
+ DEF_FEAT(PCC_CMAC_DEA, "pcc-cmac-dea", PCC, 1, "PCC Compute-Last-Block-CMAC-Using-DEA")
+@@ -353,11 +361,13 @@ DEF_FEAT(PCC_SCALAR_MULT_ED25519, "pcc-scalar-mult-ed25519", PCC, 72, "PCC Scala
+ DEF_FEAT(PCC_SCALAR_MULT_ED448, "pcc-scalar-mult-ed448", PCC, 73, "PCC Scalar-Multiply-Ed448")
+ DEF_FEAT(PCC_SCALAR_MULT_X25519, "pcc-scalar-mult-x25519", PCC, 80, "PCC Scalar-Multiply-X25519")
+ DEF_FEAT(PCC_SCALAR_MULT_X448, "pcc-scalar-mult-x448", PCC, 81, "PCC Scalar-Multiply-X448")
++DEF_FEAT(PCC_QAI, "pcc-qai", PCC, 127, "PCC Query-Authentication-Information")
+ 
+ /* Features exposed via the PPNO/PRNO instruction. */
+ DEF_FEAT(PPNO_SHA_512_DRNG, "ppno-sha-512-drng", PPNO, 3, "PPNO SHA-512-DRNG")
+ DEF_FEAT(PRNO_TRNG_QRTCR, "prno-trng-qrtcr", PPNO, 112, "PRNO TRNG-Query-Raw-to-Conditioned-Ratio")
+ DEF_FEAT(PRNO_TRNG, "prno-trng", PPNO, 114, "PRNO TRNG")
++DEF_FEAT(PRNO_QAI, "prno-qai", PPNO, 127, "PRNO Query-Authentication-Information")
+ 
+ /* Features exposed via the KMA instruction. */
+ DEF_FEAT(KMA_GCM_AES_128, "kma-gcm-aes-128", KMA, 18, "KMA GCM-AES-128")
+@@ -366,6 +376,7 @@ DEF_FEAT(KMA_GCM_AES_256, "kma-gcm-aes-256", KMA, 20, "KMA GCM-AES-256")
+ DEF_FEAT(KMA_GCM_EAES_128, "kma-gcm-eaes-128", KMA, 26, "KMA GCM-Encrypted-AES-128")
+ DEF_FEAT(KMA_GCM_EAES_192, "kma-gcm-eaes-192", KMA, 27, "KMA GCM-Encrypted-AES-192")
+ DEF_FEAT(KMA_GCM_EAES_256, "kma-gcm-eaes-256", KMA, 28, "KMA GCM-Encrypted-AES-256")
++DEF_FEAT(KMA_QAI, "kma-qai", KMA, 127, "KMA Query-Authentication-Information")
+ 
+ /* Features exposed via the KDSA instruction. */
+ DEF_FEAT(KDSA_ECDSA_VERIFY_P256, "kdsa-ecdsa-verify-p256", KDSA, 1, "KDSA ECDSA-Verify-P256")
+@@ -383,6 +394,7 @@ DEF_FEAT(KDSA_EDDSA_SIGN_ED25519, "kdsa-eddsa-sign-ed25519", KDSA, 40, "KDSA EdD
+ DEF_FEAT(KDSA_EDDSA_SIGN_ED448, "kdsa-eddsa-sign-ed448", KDSA, 44, "KDSA EdDSA-Sign-Ed448")
+ DEF_FEAT(KDSA_EEDDSA_SIGN_ED25519, "kdsa-eeddsa-sign-ed25519", KDSA, 48, "KDSA Encrypted-EdDSA-Sign-Ed25519")
+ DEF_FEAT(KDSA_EEDDSA_SIGN_ED448, "kdsa-eeddsa-sign-ed448", KDSA, 52, "KDSA Encrypted-EdDSA-Sign-Ed448")
++DEF_FEAT(KDSA_QAI, "kdsa-qai", KDSA, 127, "KDSA Query-Authentication-Information")
+ 
+ /* Features exposed via the SORTL instruction. */
+ DEF_FEAT(SORTL_SFLR, "sortl-sflr", SORTL, 1, "SORTL SFLR")
 diff --git a/target/s390x/gen-features.c b/target/s390x/gen-features.c
-index d6305f945a..ab9ad51d5e 100644
+index ab9ad51d5e..3326e7df43 100644
 --- a/target/s390x/gen-features.c
 +++ b/target/s390x/gen-features.c
-@@ -270,6 +270,9 @@
-     S390_FEAT_PCKMO_HMAC_512, \
-     S390_FEAT_PCKMO_HMAC_1024
+@@ -273,6 +273,22 @@
+ #define S390_FEAT_GROUP_MSA_EXT_12 \
+     S390_FEAT_MSA_EXT_12
  
-+#define S390_FEAT_GROUP_MSA_EXT_12 \
-+    S390_FEAT_MSA_EXT_12
++#define S390_FEAT_GROUP_MSA_EXT_13 \
++    S390_FEAT_KDSA_QAI, \
++    S390_FEAT_KIMD_QAI, \
++    S390_FEAT_KLMD_QAI, \
++    S390_FEAT_KMAC_QAI, \
++    S390_FEAT_KMA_QAI, \
++    S390_FEAT_KMCTR_QAI, \
++    S390_FEAT_KMF_QAI, \
++    S390_FEAT_KMO_QAI, \
++    S390_FEAT_KM_QAI, \
++    S390_FEAT_PCC_QAI, \
++    S390_FEAT_PRNO_QAI
++
++#define S390_FEAT_GROUP_MSA_EXT_13_PCKMO \
++    S390_FEAT_PCKMO_QAI
 +
  #define S390_FEAT_GROUP_ENH_SORT \
      S390_FEAT_ESORT_BASE, \
      S390_FEAT_SORTL_SFLR, \
-@@ -339,6 +342,10 @@ static uint16_t group_MSA_EXT_11[] = {
-     S390_FEAT_GROUP_MSA_EXT_11,
+@@ -346,6 +362,10 @@ static uint16_t group_MSA_EXT_12[] = {
+     S390_FEAT_GROUP_MSA_EXT_12,
  };
  
-+static uint16_t group_MSA_EXT_12[] = {
-+    S390_FEAT_GROUP_MSA_EXT_12,
++static uint16_t group_MSA_EXT_13[] = {
++    S390_FEAT_GROUP_MSA_EXT_13,
 +};
 +
  static uint16_t group_MSA_EXT_9_PCKMO[] = {
      S390_FEAT_GROUP_MSA_EXT_9_PCKMO,
  };
-@@ -902,6 +909,7 @@ static FeatGroupDefSpec FeatGroupDef[] = {
-     FEAT_GROUP_INITIALIZER(MSA_EXT_10_PCKMO),
+@@ -358,6 +378,10 @@ static uint16_t group_MSA_EXT_11_PCKMO[] = {
+     S390_FEAT_GROUP_MSA_EXT_11_PCKMO,
+ };
+ 
++static uint16_t group_MSA_EXT_13_PCKMO[] = {
++    S390_FEAT_GROUP_MSA_EXT_13_PCKMO,
++};
++
+ static uint16_t group_ENH_SORT[] = {
+     S390_FEAT_GROUP_ENH_SORT,
+ };
+@@ -910,6 +934,8 @@ static FeatGroupDefSpec FeatGroupDef[] = {
      FEAT_GROUP_INITIALIZER(MSA_EXT_11),
      FEAT_GROUP_INITIALIZER(MSA_EXT_11_PCKMO),
-+    FEAT_GROUP_INITIALIZER(MSA_EXT_12),
+     FEAT_GROUP_INITIALIZER(MSA_EXT_12),
++    FEAT_GROUP_INITIALIZER(MSA_EXT_13),
++    FEAT_GROUP_INITIALIZER(MSA_EXT_13_PCKMO),
      FEAT_GROUP_INITIALIZER(MULTIPLE_EPOCH_PTFF),
      FEAT_GROUP_INITIALIZER(ENH_SORT),
      FEAT_GROUP_INITIALIZER(DEFLATE_CONVERSION),
