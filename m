@@ -2,74 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27FE59E692F
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Dec 2024 09:42:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A32E99E690F
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Dec 2024 09:36:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tJTuf-000846-M6; Fri, 06 Dec 2024 03:42:13 -0500
+	id 1tJToc-0008RM-Cj; Fri, 06 Dec 2024 03:35:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1tJTud-00081n-4I
- for qemu-devel@nongnu.org; Fri, 06 Dec 2024 03:42:11 -0500
-Received: from mailgate02.uberspace.is ([185.26.156.114])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1tJTub-0001Vf-1E
- for qemu-devel@nongnu.org; Fri, 06 Dec 2024 03:42:10 -0500
-Received: from skiff.uberspace.de (skiff.uberspace.de [185.26.156.131])
- by mailgate02.uberspace.is (Postfix) with ESMTPS id 2268F1814C8
- for <qemu-devel@nongnu.org>; Fri,  6 Dec 2024 09:42:06 +0100 (CET)
-Received: (qmail 28677 invoked by uid 990); 6 Dec 2024 08:42:06 -0000
-Authentication-Results: skiff.uberspace.de;
-	auth=pass (plain)
-Received: from unknown (HELO unkown) (::1)
- by skiff.uberspace.de (Haraka/3.0.1) with ESMTPSA;
- Fri, 06 Dec 2024 09:42:05 +0100
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1tJToQ-0008Jh-Jr
+ for qemu-devel@nongnu.org; Fri, 06 Dec 2024 03:35:49 -0500
+Received: from mgamail.intel.com ([198.175.65.19])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1tJToO-0000V8-32
+ for qemu-devel@nongnu.org; Fri, 06 Dec 2024 03:35:46 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1733474144; x=1765010144;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=LHW2bwV7KvSfxrZymFNIT7Gz/I7Rzo7bWPXOULc6x0w=;
+ b=RXqaShik1bOfR6vjcWiT5ufv/HFyf3jydabqXuYaVLZ0tTdIu9OW5tx6
+ nXL9m8uvGRp6qBYQIIbFGAcL3ErsKNyV2WHW3nDRutRFhkLvlMHMyTeZT
+ 9i6kN0HamzyCxcs7RQD48+rm6GbJtrYJOAN3xc2dv+AkF5vKdief56NmC
+ kAQNAkkK67ju6/ioEcE59s+2c+PoHykphLZe0FBIZUhOgbM6vZwdsj6Yo
+ axbFL9beDBxl3262PBGUN3dMWHgY+L8DIQn5aU/4+DybGt6zTyCbEdq9j
+ OCd363zO0vTv6L8YsCBXzZQeW3I1AsFlcadb1T80frVjY/GDidXeO9LHn w==;
+X-CSE-ConnectionGUID: fc6gpaF5ShqA88dzz95e0g==
+X-CSE-MsgGUID: G6xlKXNDQ7uXit4H7D5NZA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11277"; a="33703090"
+X-IronPort-AV: E=Sophos;i="6.12,212,1728975600"; d="scan'208";a="33703090"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 06 Dec 2024 00:35:41 -0800
+X-CSE-ConnectionGUID: Sn1dbOY5TvymiagqyNnR0Q==
+X-CSE-MsgGUID: z5M21bfxTo+n7iHZrPWFmA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,212,1728975600"; d="scan'208";a="94025149"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by fmviesa006.fm.intel.com with ESMTP; 06 Dec 2024 00:35:40 -0800
+Date: Fri, 6 Dec 2024 16:53:52 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org, Zhao Liu <zhao1.liu@intel.com>
+Subject: Re: [PATCH] hpet: do not overwrite properties on post_load
+Message-ID: <Z1K7oMumN1Mu+1v9@intel.com>
+References: <20241205203721.347233-1-pbonzini@redhat.com>
 MIME-Version: 1.0
-Date: Fri, 06 Dec 2024 08:42:05 +0000
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-From: "Julian Ganz" <neither@nut.email>
-Message-ID: <c850ee89e15d2775e7c0137a218286e7060874dd@nut.email>
-TLS-Required: No
-Subject: Re: [RFC PATCH v3 11/11] tests: add plugin asserting correctness of
- discon event's to_pc
-To: "Pierrick Bouvier" <pierrick.bouvier@linaro.org>, qemu-devel@nongnu.org
-Cc: "=?utf-8?B?QWxleCBCZW5uw6ll?=" <alex.bennee@linaro.org>, "Alexandre
- Iooss" <erdnaxe@crans.org>, "Mahmoud Mandour" <ma.mandourr@gmail.com>
-In-Reply-To: <cda016be-c82e-4b54-a506-22afe6ec2eb2@linaro.org>
-References: <cover.1733063076.git.neither@nut.email>
- <36d316bf3e8b0aca778c5e8d1acde39a7f361946.1733063076.git.neither@nut.email>
- <d4b17c7d-c1d2-4e43-8eee-d1667e3ee5a2@linaro.org>
- <0e4171ca0baa8727c0bbec7a25fd72d8b8e1e4b8@nut.email>
- <997e809f-832c-4bbd-b27e-a722ac835b34@linaro.org>
- <450f3beedf979437fa3de8bfab1ee72f66c67ada@nut.email>
- <cda016be-c82e-4b54-a506-22afe6ec2eb2@linaro.org>
-X-Rspamd-Bar: -
-X-Rspamd-Report: SUSPICIOUS_RECIPS(1.5) BAYES_HAM(-2.499932) MIME_GOOD(-0.1)
-X-Rspamd-Score: -1.099932
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=nut.email; s=uberspace;
- h=from:to:cc:subject:date;
- bh=/VAl0p2o5RuRA+Dq3JgaMsutRVu8kwOsZc4LvSuJWvo=;
- b=lqxawnjNvqJuh76BwhT6aatwUO/xfqr1/+8AKBM7gvzauksjTQiVUxS1hsuYSpkW3txRSMkpcc
- QV93gXmBZl86wsJCOOwnvaqymFMMdgRWhgHop7U/gtA6D6B2jEkhB64fpEHFTiRPailjT7CbkgYm
- 3p3S4rGCcy+2P0DroopBPRMexsUP1STwoYcgInCK9hHM0ROFXrOMviTsKm0ADNMWnmRInjYKUMb2
- ngn92URMjiuEjty7UWDurpX+y3ZWsZYmXC5AcFlRCiLfKe81zaem980wDziO+rUgK/uI4ki+xz4d
- CItn21dToQiFlF35301tyus9VfOLVdeIVvg2ydAl44fZMvjt2GMvll7pHEIPGTV9zJUYy6IW3eWv
- Xx4rv3WvqH0Hvq6+a2ZSM8YZU1dMqUpAszCkb5zzsv43+5a6n72KEucDPjhI1z663+4F3uHFmFiO
- o8DvpwPjCBE9e7TetSWRmOadOfi2+LXoGa4QCnVH9BFopLH0z6S8Zkzdmf849YaoYFiGH8vwg84e
- GyM7X0Xj+ajtmgGChEbEmcv2knQh3TdHAxpg1xctc/CGEoz/jzir6tFUv+X4YjDyJEhWvRyG8Ech
- 5jWeC7Cv5qr+hC5GjLfTSwdp3i1KmO12bzx+Cqz8qf98OaZ6lROdoVL1O/i1JXoDGfoCiKYJSzcE
- s=
-Received-SPF: pass client-ip=185.26.156.114; envelope-from=neither@nut.email;
- helo=mailgate02.uberspace.is
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241205203721.347233-1-pbonzini@redhat.com>
+Received-SPF: pass client-ip=198.175.65.19; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -73
+X-Spam_score: -7.4
+X-Spam_bar: -------
+X-Spam_report: (-7.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.996,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,33 +80,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Pierrick,
+On Thu, Dec 05, 2024 at 09:37:21PM +0100, Paolo Bonzini wrote:
+> Date: Thu,  5 Dec 2024 21:37:21 +0100
+> From: Paolo Bonzini <pbonzini@redhat.com>
+> Subject: [PATCH] hpet: do not overwrite properties on post_load
+> X-Mailer: git-send-email 2.47.1
+> 
+> Migration relies on having the same device configuration on the source
+> and destination.  Therefore, there is no need to modify flags,
+> timer capabilities and the fw_cfg HPET block id on migration;
+> it was set to exactly the same values by realize.
+> 
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> ---
+>  hw/timer/hpet.c | 10 ----------
+>  1 file changed, 10 deletions(-)
 
-December 5, 2024 at 11:28 PM, "Pierrick Bouvier" wrote:
-> On 12/5/24 13:22, Julian Ganz wrote:
-> >  December 5, 2024 at 6:30 PM, "Pierrick Bouvier" wrote:
-> > > We can store the next_expected pc for each instruction (from curren=
-t_instruction + insn_length), and we should be able to compare that with =
-the expected from_pc.
-> > >  This is mostly what contrib/plugins/cflow.c does.
-> > >=20
->=20> >  With that, we can test from_pc.
-> > >=20
->=20>  I'm not confident that this will work reliably for branch, jump an=
-d
-> >  other "interesting" instructions. But I can have a closer look at th=
-e
-> >  cflow plugin and try to figure out how that plugin handles those cas=
-es.
-> >=20
->=20It won't work for latest instructions in a tb (because we don't know =
-what will be the next one), but should be good for all the others cases.
+Indeed, thanks!
 
-IIUC qemu will schedule interrupts "opportunistically" between tb
-executions. If that's the case we'll observe interrupts exclusively
-after the last instruction in a tb. That strikes me as a serious
-limitation.
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
-Regards,
-Julian Ganz
+> diff --git a/hw/timer/hpet.c b/hw/timer/hpet.c
+> index 5399f1b2a3f..18c8ce26e0d 100644
+> --- a/hw/timer/hpet.c
+> +++ b/hw/timer/hpet.c
+> @@ -275,16 +275,6 @@ static int hpet_post_load(void *opaque, int version_id)
+>                          - qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
+>      }
+>  
+> -    /* Push number of timers into capability returned via HPET_ID */
+> -    s->capability &= ~HPET_ID_NUM_TIM_MASK;
+> -    s->capability |= (s->num_timers - 1) << HPET_ID_NUM_TIM_SHIFT;
+> -    hpet_cfg.hpet[s->hpet_id].event_timer_block_id = (uint32_t)s->capability;
+> -
+> -    /* Derive HPET_MSI_SUPPORT from the capability of the first timer. */
+> -    s->flags &= ~(1 << HPET_MSI_SUPPORT);
+> -    if (s->timer[0].config & HPET_TN_FSB_CAP) {
+> -        s->flags |= 1 << HPET_MSI_SUPPORT;
+
+About the MSI (FSB) support, I haven't seen it being used anywhere. Is it the
+dead code?
+
+> -    }
+>      return 0;
+>  }
+>  
+> -- 
+> 2.47.1
+> 
 
