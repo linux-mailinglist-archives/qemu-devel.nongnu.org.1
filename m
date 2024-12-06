@@ -2,88 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C6DC9E7BD3
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Dec 2024 23:30:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B39E29E7BF4
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Dec 2024 23:49:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tJgpO-0000fe-O3; Fri, 06 Dec 2024 17:29:38 -0500
+	id 1tJh7L-0004LA-Lz; Fri, 06 Dec 2024 17:48:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tJgpN-0000fW-H2
- for qemu-devel@nongnu.org; Fri, 06 Dec 2024 17:29:37 -0500
-Received: from mail-oo1-xc2a.google.com ([2607:f8b0:4864:20::c2a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tJgpM-0006n5-00
- for qemu-devel@nongnu.org; Fri, 06 Dec 2024 17:29:37 -0500
-Received: by mail-oo1-xc2a.google.com with SMTP id
- 006d021491bc7-5f25da4f999so1309943eaf.3
- for <qemu-devel@nongnu.org>; Fri, 06 Dec 2024 14:29:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1733524174; x=1734128974; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id:from
- :to:cc:subject:date:message-id:reply-to;
- bh=jbZZIV5TMdZI79L8VBQe82kDtT1Hn2hmKK11vEnoH4Q=;
- b=q7qB5bUH1jWp64EvliP/wHXFn4vXVOQCGqJD6C4jMlOQrKCCinfwhaNQ621S5q1gJ9
- uEELlugvsRc4AUcGAXDcLkmHCnfbeSYjPRrYPFEWNvzxp9iHvF2uSWtEDBXpLc0P3Yse
- xiTfFhATIKQqJV/aqFzN7Ya6SNOxwdhqQgch5GkIkd1gHWTdmBo+miypDZ+O56oRlShf
- 007Bj9a0xmrzJDyKN+doBevBCirz4Ssx2bIIdKODwbxWZ0b8oaFJ7HRj0maJBO65XHMC
- sgCk2/MpLCzV3o1/XhluGbU+GErpSo1iftJImmK31Ihp7Nhi/qkQqbfr0e+m2tliYQ+W
- Qndw==
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tJh7G-0004Kk-6o
+ for qemu-devel@nongnu.org; Fri, 06 Dec 2024 17:48:07 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tJh7D-0002P8-QW
+ for qemu-devel@nongnu.org; Fri, 06 Dec 2024 17:48:05 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1733525282;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=+Fkg/7cYOKwyJQydpOJlGtHFlIosoCFOSZD7Yx9UNW8=;
+ b=ggnnbHarGxxHVNLP1oKdrnRT4Xw634HiqIv4Y9CHPSp1xGbdG+tnoI38cZ3UiVmzioo63n
+ lNU00YADUBdXstPPvLpDfEr6vmgGGtPtpOctS50siMi+SnUQ48w5oRm4ywchCjwNigiO2I
+ 5O/cvzr9XSm4bIjC0ms5Ev9kGlYN8Lw=
+Received: from mail-io1-f70.google.com (mail-io1-f70.google.com
+ [209.85.166.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-73-MnYod6qnPXGlfx-8MVr5-w-1; Fri, 06 Dec 2024 17:47:59 -0500
+X-MC-Unique: MnYod6qnPXGlfx-8MVr5-w-1
+X-Mimecast-MFC-AGG-ID: MnYod6qnPXGlfx-8MVr5-w
+Received: by mail-io1-f70.google.com with SMTP id
+ ca18e2360f4ac-843e91a4b37so262587739f.3
+ for <qemu-devel@nongnu.org>; Fri, 06 Dec 2024 14:47:59 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733524174; x=1734128974;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=jbZZIV5TMdZI79L8VBQe82kDtT1Hn2hmKK11vEnoH4Q=;
- b=URf+eILX+wPu0OIHJDLbSmQl5LwtKretOj2VbHweiwjtkomD2y7q5Elhrvbd6N9vjM
- 7ucx+a9Q7qN6sf4psj/LwP3YlSyVpjBD3wOoZqkmdjQG8jTQArqFa6el9Zyz0b+d7FOd
- kecy+FOFLCVYEdNO+5VfGMie6pPYHBg+V0qk9yNi/cj8n28NguN4PbAejyX363teRNWl
- vGgllYzPhbdB9BU+9Eb7P9DZzY1y/Ajw537WLpnUlDmRipUgTzCw5iaSEXbiy8c1dATU
- Ktdz8ZTCXa0fnN1qngamxCHo2k2GEf8H29sOdnOk0kznB57mbVRBgs/RzMgrWjazQGa4
- Bcxg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVo2qwtJcJxAcg5BL7j+V3uifeWPz6UstAi13Z0U4whZ+0mQ5mjDg9ns70xyJ37DBYwEpo+nPz3l5n/@nongnu.org
-X-Gm-Message-State: AOJu0YzJ3+jECCjLU5LbKzWqs5s/S74T8sbNiFyWraHysEi4YKAIUGVK
- /iIrbXglTJVam2uTrnQfMOzIVjjt4IQyxyJaYYNw+2Ky6WDCcKbpIuJ/JFfRIfc=
-X-Gm-Gg: ASbGncuQxejLksEevV0cBZekddZs0JDHCvH4jemXUq2dwjuM3syLxRdEEYlF+gNH9wc
- Xhralowc059UViJIlgWh0xJczY0YYpP1Ra86iOHQxzU3Cs6rCfTjw/6MvoSpFU2WCPFSTm+CZk0
- kuSbMo0CqkfCKnz81JSfN1H4h5Cb+VevJVibO/9wmLpgwLtS7ooAlZRfJCu6Bn6R+/zHxOuDTKq
- WMBZ6vNcD265QK7XJ3Vu4C1gZYfVXJfGY6ibhbI/luNDPWYQ6Qa81rSzU6T+1Vb4asdZUhkCOZH
- x/n4u0B2AGf9i6zFg8+XzTuSNPzI
-X-Google-Smtp-Source: AGHT+IHKBNsHgCD4MXVjVWdqTM7le6tySCPyR5Fk2ehNzQQ0eDXOoFc8gHNgEP/q4iqyWWUNeoNV1w==
-X-Received: by 2002:a4a:e845:0:b0:5eb:b282:5916 with SMTP id
- 006d021491bc7-5f287113ed6mr5247075eaf.7.1733524174597; 
- Fri, 06 Dec 2024 14:29:34 -0800 (PST)
-Received: from [192.168.4.112] (fixed-187-189-51-143.totalplay.net.
- [187.189.51.143]) by smtp.gmail.com with ESMTPSA id
- 006d021491bc7-5f279244c05sm900534eaf.19.2024.12.06.14.29.32
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 06 Dec 2024 14:29:34 -0800 (PST)
-Message-ID: <ba552040-4ebc-4a99-be72-91937daa1055@linaro.org>
-Date: Fri, 6 Dec 2024 16:29:30 -0600
+ d=1e100.net; s=20230601; t=1733525278; x=1734130078;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=+Fkg/7cYOKwyJQydpOJlGtHFlIosoCFOSZD7Yx9UNW8=;
+ b=eAX8Sh9wPeQWFY+9/GHY/bzqG6KLywoOmjO39YkLnhgZGRXaFP71oBfRcyo6GRHze0
+ GyNZSgrTdSsplRF4cLSdjWkx05IkKONOdeRXiSDCE/qj3Pbo8fPwhAs7zpMgOVb+haWF
+ bQRRMg4E6PbdHvS4Ph9gvLVR67HGP3yYGavRRT/bbW7QPwR3aGoywmYpnkU5ZS6WuIx5
+ fyOmHWgYrUsZ7+7FZ0IwKZZSyKdFO1FehDrwvxUzohCeQmElNUjRUbgMwza7f7x1uijT
+ Y1b5Zz5/XVP5ZGAaMkZCx0ysfhA1FisGABWooMWhIrqrbbGqBUBseCj4YdW53dpUMRv6
+ dpew==
+X-Gm-Message-State: AOJu0YxbX7A3RWJPuMwGxStuIw4S5KPxsEf7Gl2FlVYMgrpdlu81+o22
+ vS7ftIYZOgUbQAnvotd1qPJDYCJxRGVJhs/7V4eND13LxM88n/av8kphadme8SVwsXPTQmU63qW
+ eWZ5YmfoIHu4M9CYe6a9RRoAWXcnyv+xBGTLNagKdzeGyOB7Dmytdomo5CcF3tLgEMb5gZX2ygh
+ yDWJBikggF65z5B1h9mQcCS4rrC+tgkW1HYQ==
+X-Gm-Gg: ASbGnct6TxrXM9MylxnNslswrpryinkYe2L3o+krbJJR/02l/Ln8J9nwfe6PyHnoyha
+ PZwycPLXZV+qTgnVpNdT1NjfGUI4BuYRUaE/qDwuUWTzETmajMloEJrEtMjkJqb74pCGzinUkDG
+ w//M+dD0hQEm5mIkqGPIJ5rrmzIY3+qEbSyvWN2qSVkzINhOqy9DwKQoFqZe4C7FA0lp12l467z
+ 0Hk2/NWsGe8PxjKFZhWTY/MrVAPs8/lMFcbQBlY5aOwvklTK2jed8R01cHciTqjOsSY140A51Nq
+ XUh62DzLmX3gEAgo71bR0RC+/A==
+X-Received: by 2002:a05:6602:6c02:b0:83a:7a19:1de0 with SMTP id
+ ca18e2360f4ac-8447e376d6amr779930939f.14.1733525278450; 
+ Fri, 06 Dec 2024 14:47:58 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IF8DSqaxj415LP8wRw0CtLJD/nOFoGNi/rQAvcBgEg8FjnENUr6HA+fY/OPMACjE4aQ2MVY7g==
+X-Received: by 2002:a05:6602:6c02:b0:83a:7a19:1de0 with SMTP id
+ ca18e2360f4ac-8447e376d6amr779927739f.14.1733525278060; 
+ Fri, 06 Dec 2024 14:47:58 -0800 (PST)
+Received: from x1n.redhat.com (pool-99-254-114-190.cpe.net.cable.rogers.com.
+ [99.254.114.190]) by smtp.gmail.com with ESMTPSA id
+ ca18e2360f4ac-84473a5bd28sm125601439f.38.2024.12.06.14.47.56
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 06 Dec 2024 14:47:57 -0800 (PST)
+From: Peter Xu <peterx@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Prasad Pandit <ppandit@redhat.com>,
+ "Maciej S . Szmigiero" <mail@maciej.szmigiero.name>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
+ Alex Williamson <alex.williamson@redhat.com>, peterx@redhat.com,
+ Avihai Horon <avihaih@nvidia.com>, Fabiano Rosas <farosas@suse.de>
+Subject: [PATCH v3 0/7] migration/multifd: Some VFIO / postcopy preparations
+ on flush
+Date: Fri,  6 Dec 2024 17:47:48 -0500
+Message-ID: <20241206224755.1108686-1-peterx@redhat.com>
+X-Mailer: git-send-email 2.47.0
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 0/6] Enhance documentation for new developers
-To: Pierrick Bouvier <pierrick.bouvier@linaro.org>, qemu-devel@nongnu.org
-References: <20241206192900.3893118-1-pierrick.bouvier@linaro.org>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20241206192900.3893118-1-pierrick.bouvier@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c2a;
- envelope-from=richard.henderson@linaro.org; helo=mail-oo1-xc2a.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -50
+X-Spam_score: -5.1
+X-Spam_bar: -----
+X-Spam_report: (-5.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.996,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,16 +107,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/6/24 13:28, Pierrick Bouvier wrote:
-> Pierrick Bouvier (6):
->    docs/devel: remove dead video link for sourcehut submit process
->    docs/devel: add git-publish for patch submitting
->    docs/devel: add b4 for patch retrieval
->    docs/devel: add information on how to setup build environments
->    docs: add a codebase section
->    docs: add a glossary
+CI: https://gitlab.com/peterx/qemu/-/pipelines/1577280033
+ (note: it's a pipeline of two patchsets, to save CI credits and time)
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+v1: https://lore.kernel.org/r/20241205185303.897010-1-peterx@redhat.com
+v2: https://lore.kernel.org/r/20241206005834.1050905-1-peterx@redhat.com
 
-r~
+v3 changelog:
+- R-bs collected
+- Update commit message of patch 1 [Fabiano]
+- English updates [Fabiano]
+- Update comment for MULTIFD_SYNC_ALL [Fabiano]
+- In multifd_send_sync_main(), assert on req type [Fabiano]
+- Some more comments and cleanup for RAM_SAVE_FLAG_* movement [Fabiano]
+- Update the last document patch [Fabiano]
+
+This series provides some changes that may be helpful for either VFIO or
+postcopy integration on top of multifd.
+
+For VFIO, only patches 1 & 2 are relevant.
+
+For postcopy, it's about patches 3-7, but it needs to be based on 1+2
+because of a context dependency.
+
+All these patches can be seen as cleanups / slight optimizations on top of
+master branch with/without the VFIO/postcopy work.
+
+Besides CI, qtests, and some real-world multifd tests just to monitor the
+sync events happen all correct, I made sure to cover 7.2 machine type
+(which uses the legacy sync) so it still works as before - basically sync
+will be more frequent, but all thing keeps working smoothly so far.
+
+Thanks,
+
+Peter Xu (7):
+  migration/multifd: Further remove the SYNC on complete
+  migration/multifd: Allow to sync with sender threads only
+  migration/ram: Move RAM_SAVE_FLAG* into ram.h
+  migration/multifd: Unify RAM_SAVE_FLAG_MULTIFD_FLUSH messages
+  migration/multifd: Remove sync processing on postcopy
+  migration/multifd: Cleanup src flushes on condition check
+  migration/multifd: Document the reason to sync for save_setup()
+
+ migration/multifd.h        | 27 ++++++++++--
+ migration/ram.h            | 28 ++++++++++++
+ migration/rdma.h           |  7 ---
+ migration/multifd-nocomp.c | 74 ++++++++++++++++++++++++++++++-
+ migration/multifd.c        | 17 +++++---
+ migration/ram.c            | 89 +++++++++++++++++---------------------
+ 6 files changed, 173 insertions(+), 69 deletions(-)
+
+-- 
+2.47.0
+
 
