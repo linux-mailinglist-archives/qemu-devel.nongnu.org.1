@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60C1E9E7BF2
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Dec 2024 23:49:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BECCB9E7BEE
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Dec 2024 23:49:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tJh7R-0004NC-PR; Fri, 06 Dec 2024 17:48:17 -0500
+	id 1tJh7S-0004Nn-IE; Fri, 06 Dec 2024 17:48:18 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tJh7P-0004Mk-4L
- for qemu-devel@nongnu.org; Fri, 06 Dec 2024 17:48:15 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tJh7Q-0004ND-V1
+ for qemu-devel@nongnu.org; Fri, 06 Dec 2024 17:48:16 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tJh7N-0002QP-O4
- for qemu-devel@nongnu.org; Fri, 06 Dec 2024 17:48:14 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tJh7P-0002Qb-AK
+ for qemu-devel@nongnu.org; Fri, 06 Dec 2024 17:48:16 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1733525293;
+ s=mimecast20190719; t=1733525294;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=KaWXvIbyGkvjWCcWSsdzmNjfpjFNGapBznL6Ic3T0Zo=;
- b=bcVwtOXuMcMl/2Nd4oQowzgrmMxmcZPsIziopECrqmtBEDOLsL8TU1fzeTLb2t361Hcooi
- XF9GgPv3R9VV2EbhTLmjXahTczn+rud29ytCYxIToQNYFSWD39XQQoGyxiBuKGnYXKIRMk
- 3yhnL9Kl0PdglLlSWMwV8z5FeHlnB1w=
+ bh=VcILogkNzClRSFChag2j5EOuO0zmv9yeRvDNl/B1JUw=;
+ b=U3h+qZb6mhYeV1kt/DEyTV/JndJEjhH+1IcTHrOTUn786CXDRel2ilMTbklGE3+WQwCV4b
+ 1WUlrVj/GH2pJKJSI9orYS3eOsV6yhvwqS04i64SxNBfl3ZQuooDXuuWK7FV4WzSGiRrM2
+ njeZ9UFERSDbWt74apCybBuahS8TTNg=
 Received: from mail-io1-f70.google.com (mail-io1-f70.google.com
  [209.85.166.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-638-nD_BDoCeN7aONcDf7mvkkQ-1; Fri, 06 Dec 2024 17:48:12 -0500
-X-MC-Unique: nD_BDoCeN7aONcDf7mvkkQ-1
-X-Mimecast-MFC-AGG-ID: nD_BDoCeN7aONcDf7mvkkQ
+ us-mta-314-Z6qYBrHZPQWJ2T50a1OJ1g-1; Fri, 06 Dec 2024 17:48:13 -0500
+X-MC-Unique: Z6qYBrHZPQWJ2T50a1OJ1g-1
+X-Mimecast-MFC-AGG-ID: Z6qYBrHZPQWJ2T50a1OJ1g
 Received: by mail-io1-f70.google.com with SMTP id
- ca18e2360f4ac-8418612c3b5so232160739f.3
- for <qemu-devel@nongnu.org>; Fri, 06 Dec 2024 14:48:12 -0800 (PST)
+ ca18e2360f4ac-84181157edbso247549939f.2
+ for <qemu-devel@nongnu.org>; Fri, 06 Dec 2024 14:48:13 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733525291; x=1734130091;
+ d=1e100.net; s=20230601; t=1733525292; x=1734130092;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=KaWXvIbyGkvjWCcWSsdzmNjfpjFNGapBznL6Ic3T0Zo=;
- b=XcvBp+vDpocvJSfu8bhroclDiwX3fD0OaJu7TXHv9AapgnineW4qwBLCoUjGEHoE6g
- /0hhiLTVJBhwJTYbuu+OwYOnPbW7gq1jNdXOKPy/368k6eYJB7yC59ef7SqjjipfYUdw
- 55K+aZyHytuOrHAUKvx7mfYPlpjhTGswVW6bGqkKpW30FO4eFIcvDiP+RVj5NbrvRThN
- e97HFsENeAtjYt1xTQRz8YjTCFonS0fq6jLi3XdrBPvJ+YLe6hsP0rWSy4shYiRvlGc5
- cpIfgdgfMfCyoLFhYm6O7x0nevovKZKKdpREw8BUjAOyPZFQ/zjfEboRt5jeCR5gQfDE
- buCA==
-X-Gm-Message-State: AOJu0YyKLWpLI8lM+fdiqoQlCzqMuqLoU4Y4QG4/dSKd66L8FkRUkRHD
- aYC0mNlN6sJjGqScDU5EhM7VpVAv313aVf7L+/AIFIsDxJasygd2hkmIj6LcuAhDgbrj2/rmaf1
- 1WxdtB/T0LnXmB8VRxAaRSb0V9eFDDHmas4mtX8bBZM/2m6uka7Gs4dNOojZ7386AFu0Y7G8Oor
- FkFZfWuAmp6u0wlI3HK3EJdmIgiD6C/fhhfQ==
-X-Gm-Gg: ASbGncvavI6omANecod1F0K4OjOGNQscXDhvs+Us/fvC3JgReYGqLWgM/9T2qPQIXeR
- LwRLZrhHGRJU+bWa9VRDQdFytlOVLBnjrtgNgN12wigoTh0yJoP7tUCBL7NvjeTHwY/VrFujl6f
- 4Zl+oWyLJqs4jtpqFkvKS4h4TDbqOo/Jgxt833RWov8w8WtYk4VsSDi1KejQ+NhoNr6Lcvr6J15
- hlBPkC3PofEuo0kI3Mq5t33BDfc3GezLKbMGPKycUGgJP9mrCXOScdMlA4CbBCTPkjtZwf3Zhrf
- x5vusLaXCsxnlTQpSEQbMcpupA==
-X-Received: by 2002:a05:6602:1610:b0:843:e89d:b62b with SMTP id
- ca18e2360f4ac-8447e32bdf7mr478795339f.11.1733525290890; 
- Fri, 06 Dec 2024 14:48:10 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IELHrJW4urV9sPJvpj5tARdb9tBTOqrUrQ7szZmZuw1fhu+VECo1p00l9St/ZQKmg2OQikCvA==
-X-Received: by 2002:a05:6602:1610:b0:843:e89d:b62b with SMTP id
- ca18e2360f4ac-8447e32bdf7mr478793139f.11.1733525290514; 
- Fri, 06 Dec 2024 14:48:10 -0800 (PST)
+ bh=VcILogkNzClRSFChag2j5EOuO0zmv9yeRvDNl/B1JUw=;
+ b=AqaFB92Wwd0Eu+UarxdsSaT00KshPXWX+4FIk9fZbQEHaFOK+euBh378i4Xrg06ia4
+ cYUGnsr+l5hbdBxfPv/PfEGPM9hvKF7N27x7tTIhJkkaoZFgO4FRQFdIlzeNHk50XhTk
+ KF7X3rE1Agi2Nyt7TSFMYE3NvAHIfyC9enTrOC7Pdamy1pS7ZUf4xMZbk/YOsjc8ep2S
+ 1eBWImJRJdwhAXRGI79wj9NH5L3j6wzxwxD0uT/LTCboNRb2MnFtHkftBRcUjXEXHIuB
+ 3Ovmgby2kPKzPUSko10R46bantGDf6NZkCfOlpgX7nwGaUbBIh7Mtelx0lxqn4RMuxPt
+ 1nrQ==
+X-Gm-Message-State: AOJu0Yx8e0az0BtBkbt+17qQCIrGXHYnS5rfjSZCU1MCChLE5NaIM7/9
+ vIL9VOzHqbWSMpQXPaoqh3cLrHZnu2RZPiKP6iKvWciliSqPCTkL0eWtgX1AJD/+Uubm/aRSz7P
+ enRKnWxDaaC2lwxvFiuFUHtoUs1KZsGOuDR/1TdjkHYtNsgXuryKMgv4c6HSyaXoNc+b5ufbEJi
+ LObEi6dW36H7exP5Hkgm+Z2fE5jxx+3muehA==
+X-Gm-Gg: ASbGncvzhpuqCLZglqul+rT0JA473HA0zYKN7TeSaquXuOYFDw2AEBYynANyWYIGvvT
+ Bl1A6StiqqWZtxtlPdpNGUukb2IJ2xc2RjebFd0XkipAPRYonN6Rvwa3DyPlhPm00Rv10n4dZUW
+ nkEqmIf8yx6BXOi43ErZadMU7digWz9P2TKIpBBgXs7o2bFy9zbDhP3OWUEZ74FeNaveIFwE2n1
+ oDpYoJyLqc5eRQyTVPsugHr2Bi/jUJn2YL4WjI+mhdUFRiIIaAb2x4bp42Z/6KzzTWHxh7oybqx
+ ZCzrdmJJKZo+uqyUxyMCemgWmg==
+X-Received: by 2002:a05:6602:6002:b0:83a:c0ba:73c6 with SMTP id
+ ca18e2360f4ac-8447e2bcd22mr522332139f.11.1733525292312; 
+ Fri, 06 Dec 2024 14:48:12 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFp4Tw4BsBCUsKd2ABGGRFGlSO7HAA1Q8gQ0DYuA69AGs+18LqF/peLiZcN/ssGfJOr20bvNQ==
+X-Received: by 2002:a05:6602:6002:b0:83a:c0ba:73c6 with SMTP id
+ ca18e2360f4ac-8447e2bcd22mr522330039f.11.1733525291908; 
+ Fri, 06 Dec 2024 14:48:11 -0800 (PST)
 Received: from x1n.redhat.com (pool-99-254-114-190.cpe.net.cable.rogers.com.
  [99.254.114.190]) by smtp.gmail.com with ESMTPSA id
- ca18e2360f4ac-84473a5bd28sm125601439f.38.2024.12.06.14.48.07
+ ca18e2360f4ac-84473a5bd28sm125601439f.38.2024.12.06.14.48.10
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 06 Dec 2024 14:48:08 -0800 (PST)
+ Fri, 06 Dec 2024 14:48:11 -0800 (PST)
 From: Peter Xu <peterx@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Prasad Pandit <ppandit@redhat.com>,
@@ -75,9 +75,10 @@ Cc: Prasad Pandit <ppandit@redhat.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
  Alex Williamson <alex.williamson@redhat.com>, peterx@redhat.com,
  Avihai Horon <avihaih@nvidia.com>, Fabiano Rosas <farosas@suse.de>
-Subject: [PATCH v3 5/7] migration/multifd: Remove sync processing on postcopy
-Date: Fri,  6 Dec 2024 17:47:53 -0500
-Message-ID: <20241206224755.1108686-6-peterx@redhat.com>
+Subject: [PATCH v3 6/7] migration/multifd: Cleanup src flushes on condition
+ check
+Date: Fri,  6 Dec 2024 17:47:54 -0500
+Message-ID: <20241206224755.1108686-7-peterx@redhat.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241206224755.1108686-1-peterx@redhat.com>
 References: <20241206224755.1108686-1-peterx@redhat.com>
@@ -108,38 +109,125 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Multifd never worked with postcopy, at least yet so far.
+The src flush condition check is over complicated, and it's getting more
+out of control if postcopy will be involved.
 
-Remove the sync processing there, because it's confusing, and they should
-never appear.  Now if RAM_SAVE_FLAG_MULTIFD_FLUSH is observed, we fail hard
-instead of trying to invoke multifd code.
+In general, we have two modes to do the sync: legacy or modern ways.
+Legacy uses per-section flush, modern uses per-round flush.
 
-Reviewed-by: Fabiano Rosas <farosas@suse.de>
+Mapped-ram always uses the modern, which is per-round.
+
+Introduce two helpers, which can greatly simplify the code, and hopefully
+make it readable again.
+
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- migration/ram.c | 8 --------
- 1 file changed, 8 deletions(-)
+ migration/multifd.h        |  2 ++
+ migration/multifd-nocomp.c | 42 ++++++++++++++++++++++++++++++++++++++
+ migration/ram.c            | 10 +++------
+ 3 files changed, 47 insertions(+), 7 deletions(-)
 
+diff --git a/migration/multifd.h b/migration/multifd.h
+index 0fef431f6b..bd785b9873 100644
+--- a/migration/multifd.h
++++ b/migration/multifd.h
+@@ -355,6 +355,8 @@ static inline uint32_t multifd_ram_page_count(void)
+ void multifd_ram_save_setup(void);
+ void multifd_ram_save_cleanup(void);
+ int multifd_ram_flush_and_sync(QEMUFile *f);
++bool multifd_ram_sync_per_round(void);
++bool multifd_ram_sync_per_section(void);
+ size_t multifd_ram_payload_size(void);
+ void multifd_ram_fill_packet(MultiFDSendParams *p);
+ int multifd_ram_unfill_packet(MultiFDRecvParams *p, Error **errp);
+diff --git a/migration/multifd-nocomp.c b/migration/multifd-nocomp.c
+index 58372db0f4..c1f686c0ce 100644
+--- a/migration/multifd-nocomp.c
++++ b/migration/multifd-nocomp.c
+@@ -344,6 +344,48 @@ retry:
+     return true;
+ }
+ 
++/*
++ * We have two modes for multifd flushes:
++ *
++ * - Per-section mode: this is the legacy way to flush, it requires one
++ *   MULTIFD_FLAG_SYNC message for each RAM_SAVE_FLAG_EOS.
++ *
++ * - Per-round mode: this is the modern way to flush, it requires one
++ *   MULTIFD_FLAG_SYNC message only for each round of RAM scan.  Normally
++ *   it's paired with a new RAM_SAVE_FLAG_MULTIFD_FLUSH message in network
++ *   based migrations.
++ *
++ * One thing to mention is mapped-ram always use the modern way to sync.
++ */
++
++/* Do we need a per-section multifd flush (legacy way)? */
++bool multifd_ram_sync_per_section(void)
++{
++    if (!migrate_multifd()) {
++        return false;
++    }
++
++    if (migrate_mapped_ram()) {
++        return false;
++    }
++
++    return migrate_multifd_flush_after_each_section();
++}
++
++/* Do we need a per-round multifd flush (modern way)? */
++bool multifd_ram_sync_per_round(void)
++{
++    if (!migrate_multifd()) {
++        return false;
++    }
++
++    if (migrate_mapped_ram()) {
++        return true;
++    }
++
++    return !migrate_multifd_flush_after_each_section();
++}
++
+ int multifd_ram_flush_and_sync(QEMUFile *f)
+ {
+     MultiFDSyncReq req;
 diff --git a/migration/ram.c b/migration/ram.c
-index 90811aabd4..154ff5abd4 100644
+index 154ff5abd4..5d4bdefe69 100644
 --- a/migration/ram.c
 +++ b/migration/ram.c
-@@ -3772,15 +3772,7 @@ int ram_load_postcopy(QEMUFile *f, int channel)
-                                          TARGET_PAGE_SIZE);
-             }
-             break;
--        case RAM_SAVE_FLAG_MULTIFD_FLUSH:
--            multifd_recv_sync_main();
--            break;
-         case RAM_SAVE_FLAG_EOS:
--            /* normal exit */
+@@ -1302,9 +1302,7 @@ static int find_dirty_block(RAMState *rs, PageSearchStatus *pss)
+         pss->page = 0;
+         pss->block = QLIST_NEXT_RCU(pss->block, next);
+         if (!pss->block) {
 -            if (migrate_multifd() &&
--                migrate_multifd_flush_after_each_section()) {
--                multifd_recv_sync_main();
--            }
-             break;
-         default:
-             error_report("Unknown combination of migration flags: 0x%x"
+-                (!migrate_multifd_flush_after_each_section() ||
+-                 migrate_mapped_ram())) {
++            if (multifd_ram_sync_per_round()) {
+                 QEMUFile *f = rs->pss[RAM_CHANNEL_PRECOPY].pss_channel;
+                 int ret = multifd_ram_flush_and_sync(f);
+                 if (ret < 0) {
+@@ -3178,8 +3176,7 @@ static int ram_save_iterate(QEMUFile *f, void *opaque)
+ 
+ out:
+     if (ret >= 0 && migration_is_running()) {
+-        if (migrate_multifd() && migrate_multifd_flush_after_each_section() &&
+-            !migrate_mapped_ram()) {
++        if (multifd_ram_sync_per_section()) {
+             ret = multifd_ram_flush_and_sync(f);
+             if (ret < 0) {
+                 return ret;
+@@ -3252,8 +3249,7 @@ static int ram_save_complete(QEMUFile *f, void *opaque)
+         }
+     }
+ 
+-    if (migrate_multifd() &&
+-        migrate_multifd_flush_after_each_section()) {
++    if (multifd_ram_sync_per_section()) {
+         /*
+          * Only the old dest QEMU will need this sync, because each EOS
+          * will require one SYNC message on each channel.
 -- 
 2.47.0
 
