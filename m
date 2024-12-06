@@ -2,87 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FF8F9E77EC
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Dec 2024 19:16:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0849B9E77ED
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Dec 2024 19:16:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tJcrx-0003Kq-02; Fri, 06 Dec 2024 13:16:01 -0500
+	id 1tJcru-0002iP-DH; Fri, 06 Dec 2024 13:15:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tJcrI-0002e0-1e
- for qemu-devel@nongnu.org; Fri, 06 Dec 2024 13:15:21 -0500
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tJcrA-0005Sl-JL
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1tJcrB-0002Wc-Se
  for qemu-devel@nongnu.org; Fri, 06 Dec 2024 13:15:14 -0500
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-4349f160d62so16581035e9.2
- for <qemu-devel@nongnu.org>; Fri, 06 Dec 2024 10:15:12 -0800 (PST)
+Received: from mail-oi1-x22a.google.com ([2607:f8b0:4864:20::22a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1tJcr9-0005Sh-Pc
+ for qemu-devel@nongnu.org; Fri, 06 Dec 2024 13:15:13 -0500
+Received: by mail-oi1-x22a.google.com with SMTP id
+ 5614622812f47-3ea49cc8b88so1120085b6e.2
+ for <qemu-devel@nongnu.org>; Fri, 06 Dec 2024 10:15:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1733508911; x=1734113711; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=drnor6SocDhMk0Sf/VXY5/KGSh3UPEWhTs9UqjHuGlg=;
- b=BSDhbKH4cTIS9c9S3Rsrp4CKbevQE5m+sQYvxe9VEntFqFC1mbS4wwsYD8ArzZ3Hin
- tONTi/Z5KYVMtmUTXJIZq0RTdCxH26L3lV3uV1eodXpdviCYRIzQbt2aj+khT/ZIWfnN
- Mj9XGSztoUGv0RcM+wsJL2mFDsZEQRzOQOy6zgBJerAvxVpyN+kYOYTtVmvTzFahFQzA
- vzEHmtcVR1efdcEzHv1q5qAtrbLSBKwDGbL0u0JL4QFMF0gtHtMMZxD5xmtCZu1nsTLb
- jZbFj6fbpbWFL9Mqa2l4vAZ7fNSlCgDX4VF8knITirzkR4FWPReeNVXI6WlUnaWEq4xp
- Chmw==
+ d=linaro.org; s=google; t=1733508910; x=1734113710; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=RgiFX+en6Qe18ZkyNDWy6LhFrZEhoqiQtCUXX4CHSvQ=;
+ b=X42rRpY6WV06Pa4lbmjDj+D6lW3tFLQNsj18OOa23NUOFaXLFSi5pEsZZy7Ay72BQR
+ kDHQiMawOyl6YqZL9n/gI7BAuoJ75nHocDsBdudvnm2ABERrG2+OdX/7y24qQ98kHtE+
+ D0ZEn47vSoIm1EXjNEfwLuWMMac/xuBE4/Ew6HM0mohCJ/7KFVLtI9ED8l0rFbdyvhJ2
+ rClkRJIkqH2pwqb+vwhNsUUI8kVJIccErpgOxJApkEypQ8CUObZAdAler0jSLQp89QeH
+ 3jkzTAJU32N2s+AjKgzIWEWtfHZ6kXbiA+wqt3ujAYZhzdM4M1DeOYe8HmWbGmRhHmK0
+ FGRA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733508911; x=1734113711;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=drnor6SocDhMk0Sf/VXY5/KGSh3UPEWhTs9UqjHuGlg=;
- b=t0Pnh4/0mU1BcJMHigZu3S8+BOslwWKWcKiWKDT+qNERYzgf+L9CEyRTXH4V3gguU/
- Qwl1tQW/2uObwi1qp64/0ocoGq4V1z7QbJRtmfiCF+zlS6ohhE9jFnYB8AfSy0EOCUp9
- OQYi07g118FFrGrT0kdEWr88I7S/ALH4bwpmrmmi0JbFkpsC154bicK5DPzr07N+d67U
- wj17L/tUjiLZlMvjiH4mJtGd1VE0LKHzKY3T14po1LTziFeSsGen1YTGBXH9vjNNBqL1
- 9RmksGbCUonug8EeS9N/TOa/0xLjU8vhanpbko+Ieu4f3hK+XYz9Ickx186lI3DwQjz7
- vIWA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVN/jUQG37qXRQXXKtSe4B5fyf2EnvsFbxAstVy8RLyu8r27ImQHfeamHLRZuLbXTRBGnoAeupCNsCz@nongnu.org
-X-Gm-Message-State: AOJu0YzKoHVLMjptS7hnVfN7dkt4Jh+Wv+sw9I1AqbPfp6OLvppAjHi+
- VOsvaqG73sd3GzBCdoT/ByhKAF8AqhCcUeLFT4pYZcFsMfYAGRQSytoG7jXKBrs=
-X-Gm-Gg: ASbGnctne1z0jRK54MjhKCbFMfPdSo3vyrlF269Caf4noLX1y8Ua9asZK6G3RylOdGs
- dRcB8xJPFRjjjWtninbtOl5+SSD0wF6GrDRko0eJ+G4zqoEHsTjOUctsxA3Axvz55fXdcjpU6lI
- RZnN/ECHe8d40WgB37AfEjreQtCfwCH12FfyOo9dzRPOcc7xJm2NrYC2dUdv9pLMO+JJDEyyVU0
- MdnJXUrxndOSjbJ4wjZ17AtI+0zg6hfBDpd/Nlhs8JPUKsLoNJbHb4M06s6JAaZLGk=
-X-Google-Smtp-Source: AGHT+IGk6jyHWGkuEqUt2nikNgIYoWi02w1uOvaD7SfUIJVYOlUZ9MUpEoMHqHxXGJHFI6dagna2Qw==
-X-Received: by 2002:a05:600c:3aca:b0:431:5863:4240 with SMTP id
- 5b1f17b1804b1-434dded69bfmr34076075e9.24.1733508910870; 
- Fri, 06 Dec 2024 10:15:10 -0800 (PST)
-Received: from localhost.localdomain ([95.127.41.180])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-434da1133c3sm62876255e9.31.2024.12.06.10.14.52
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 06 Dec 2024 10:14:54 -0800 (PST)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: Jiahui Cen <cenjiahui@huawei.com>,
-	qemu-devel@nongnu.org
-Cc: Gerd Hoffmann <kraxel@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
- Gustavo Romero <gustavo.romero@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Zhao Liu <zhao1.liu@intel.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Bernhard Beschow <shentey@gmail.com>
-Subject: [PATCH 6/6] hw/nvram/fw_cfg: Remove fw_cfg_add_extra_pci_roots()
-Date: Fri,  6 Dec 2024 19:13:52 +0100
-Message-ID: <20241206181352.6836-7-philmd@linaro.org>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20241206181352.6836-1-philmd@linaro.org>
-References: <20241206181352.6836-1-philmd@linaro.org>
+ d=1e100.net; s=20230601; t=1733508910; x=1734113710;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=RgiFX+en6Qe18ZkyNDWy6LhFrZEhoqiQtCUXX4CHSvQ=;
+ b=PK3J9GphG4wWq33jQu41xeuAOGnPdkc5rdNIV+liIYeOg4Vo8yagssq7xQmLCJUbhm
+ DnCDdaHttgqpXctRAtyx8pDaxDHmTqruxfPugaf5MSYmx0/dfIu5QRfmBwLzq3xYFZt/
+ 2KJ+kdItW0POv/YhPDm0vyfu5zc+YaIym3v4huIHnt+9uqG3axbBLKKucFFSqn+CRZQu
+ 4+oZbtXpA44qezEtKtIpSv2a91c23e2oTVPsLrx6+7vGQmvM1ElJZk1aOHwkyKxeSFTp
+ oXGd1M+mfWoHwoKJA2dxm5EjNXf/99KLviZl1cXvdidrcaKgLcrsoKa5LFiT78jjc2q4
+ 7tmg==
+X-Gm-Message-State: AOJu0YwUPtL6fhJxyhr34y2w1KA3cOUDYM54ugDaGdI29Gw61Kg12KOM
+ x+jXApYYotkdFLi3W8BlrV/bOBZ1PkNryFEDa9KIaPpnOg6hlX56bdBNHV5yla8=
+X-Gm-Gg: ASbGnct086KkROEFM9ziF1k/6Pebo8+OmuxIqMc1MXvovgctWmyESnrr7peY1jspKN2
+ +4j5Ea9pBwVFfCPafR7SEQ3n6jKY4zXTTAcs5uoFY+1E1LzG0wbaGNQOHH1dbAhU6Dj4HFOSYnA
+ OFDE3XnsoWjmsaYlwyOtAOUdIbODvWPPRjRUPpg+eCZ0XRzIZDthkhDNnDtkgtQpW4XTdqMA+cR
+ kOBtgRPZvhEzNje+Jsx9BcyHN23lY1XahcNPvDdSw3gxK69fpHXDj8R/Z+s6BLifI6tS97koVnx
+ Hx/UUT8iDh0j/bt0guFx7dSahX08
+X-Google-Smtp-Source: AGHT+IE0UaQDUJJHTWi+ixmBaEaPVeonluluGxcWOiGHyMxGwXMvLQfQgDYlXprXDjSG5cHn2VdxDA==
+X-Received: by 2002:a05:6808:1927:b0:3ea:51d8:ff0b with SMTP id
+ 5614622812f47-3eb19ccf525mr2474967b6e.24.1733508908885; 
+ Fri, 06 Dec 2024 10:15:08 -0800 (PST)
+Received: from [192.168.4.112] (fixed-187-189-51-143.totalplay.net.
+ [187.189.51.143]) by smtp.gmail.com with ESMTPSA id
+ 5614622812f47-3eb076b8c08sm846163b6e.13.2024.12.06.10.15.07
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 06 Dec 2024 10:15:08 -0800 (PST)
+Message-ID: <535a9c3e-7cf3-4054-bf94-d9386ab63f67@linaro.org>
+Date: Fri, 6 Dec 2024 12:15:06 -0600
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 58/67] target/arm: Convert [US]CVTF (vector, fixed-point)
+ scalar to decodetree
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org
+References: <20241201150607.12812-1-richard.henderson@linaro.org>
+ <20241201150607.12812-59-richard.henderson@linaro.org>
+ <CAFEAcA84p8+7bMtiAiRug3E9OXfe9n-ornGwuk5P3-M4EEy5ZQ@mail.gmail.com>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <CAFEAcA84p8+7bMtiAiRug3E9OXfe9n-ornGwuk5P3-M4EEy5ZQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::22a;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x22a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -105,83 +101,111 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now that all uses of fw_cfg_add_extra_pci_roots() have been
-converted to the newer pci_bus_add_fw_cfg_extra_pci_roots(),
-we can remove that bogus method. hw/nvram/fw_cfg must
-stay generic. Device specific entries have to be implemented
-using TYPE_FW_CFG_DATA_GENERATOR_INTERFACE.
+On 12/6/24 10:27, Peter Maydell wrote:
+> On Sun, 1 Dec 2024 at 15:12, Richard Henderson
+> <richard.henderson@linaro.org> wrote:
+>>
+>> Remove disas_simd_scalar_shift_imm as these were the
+>> last insns decoded by that function.
+>>
+>> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+>> ---
+>>   target/arm/tcg/translate-a64.c | 47 ----------------------------------
+>>   target/arm/tcg/a64.decode      |  8 ++++++
+>>   2 files changed, 8 insertions(+), 47 deletions(-)
+>>
+>> diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
+>> index 9808b976fd..ea178f85c2 100644
+>> --- a/target/arm/tcg/translate-a64.c
+>> +++ b/target/arm/tcg/translate-a64.c
+>> @@ -9543,52 +9543,6 @@ static void handle_simd_shift_fpint_conv(DisasContext *s, bool is_scalar,
+>>       gen_restore_rmode(tcg_rmode, tcg_fpstatus);
+>>   }
+>>
+>> -/* AdvSIMD scalar shift by immediate
+>> - *  31 30  29 28         23 22  19 18  16 15    11  10 9    5 4    0
+>> - * +-----+---+-------------+------+------+--------+---+------+------+
+>> - * | 0 1 | U | 1 1 1 1 1 0 | immh | immb | opcode | 1 |  Rn  |  Rd  |
+>> - * +-----+---+-------------+------+------+--------+---+------+------+
+>> - *
+>> - * This is the scalar version so it works on a fixed sized registers
+>> - */
+>> -static void disas_simd_scalar_shift_imm(DisasContext *s, uint32_t insn)
+>> -{
+>> -    int rd = extract32(insn, 0, 5);
+>> -    int rn = extract32(insn, 5, 5);
+>> -    int opcode = extract32(insn, 11, 5);
+>> -    int immb = extract32(insn, 16, 3);
+>> -    int immh = extract32(insn, 19, 4);
+>> -    bool is_u = extract32(insn, 29, 1);
+>> -
+>> -    if (immh == 0) {
+>> -        unallocated_encoding(s);
+>> -        return;
+>> -    }
+>> -
+>> -    switch (opcode) {
+>> -    case 0x1c: /* SCVTF, UCVTF */
+>> -        handle_simd_shift_intfp_conv(s, true, false, is_u, immh, immb,
+>> -                                     opcode, rn, rd);
+>> -        break;
+>> -    default:
+>> -    case 0x00: /* SSHR / USHR */
+>> -    case 0x02: /* SSRA / USRA */
+>> -    case 0x04: /* SRSHR / URSHR */
+>> -    case 0x06: /* SRSRA / URSRA */
+>> -    case 0x08: /* SRI */
+>> -    case 0x0a: /* SHL / SLI */
+>> -    case 0x0c: /* SQSHLU */
+>> -    case 0x0e: /* SQSHL, UQSHL */
+>> -    case 0x10: /* SQSHRUN */
+>> -    case 0x11: /* SQRSHRUN */
+>> -    case 0x12: /* SQSHRN, UQSHRN */
+>> -    case 0x13: /* SQRSHRN, UQRSHRN */
+>> -    case 0x1f: /* FCVTZS, FCVTZU */
+>> -        unallocated_encoding(s);
+>> -        break;
+>> -    }
+>> -}
+>> -
+>>   static void handle_2misc_64(DisasContext *s, int opcode, bool u,
+>>                               TCGv_i64 tcg_rd, TCGv_i64 tcg_rn,
+>>                               TCGv_i32 tcg_rmode, TCGv_ptr tcg_fpstatus)
+>> @@ -10489,7 +10443,6 @@ static const AArch64DecodeTable data_proc_simd[] = {
+>>       { 0x0e200800, 0x9f3e0c00, disas_simd_two_reg_misc },
+>>       { 0x0f000400, 0x9f800400, disas_simd_shift_imm },
+>>       { 0x5e200800, 0xdf3e0c00, disas_simd_scalar_two_reg_misc },
+>> -    { 0x5f000400, 0xdf800400, disas_simd_scalar_shift_imm },
+>>       { 0x0e780800, 0x8f7e0c00, disas_simd_two_reg_misc_fp16 },
+>>       { 0x00000000, 0x00000000, NULL }
+>>   };
+>> diff --git a/target/arm/tcg/a64.decode b/target/arm/tcg/a64.decode
+>> index 707715f433..197555555e 100644
+>> --- a/target/arm/tcg/a64.decode
+>> +++ b/target/arm/tcg/a64.decode
+>> @@ -1699,6 +1699,14 @@ FCVTAU_f        0111 1110 0.1 00001 11001 0 ..... .....     @icvt_sd
+>>   @fcvt_fixed_d   .... .... . 1 ...... ...... rn:5 rd:5       \
+>>                   &fcvt sf=0 esz=3 shift=%fcvt_f_sh_d
+>>
+>> +SCVTF_f         0101 1111 0 ....... 111001 ..... .....      @fcvt_fixed_h
+>> +SCVTF_f         0101 1111 0 ....... 111001 ..... .....      @fcvt_fixed_s
+>> +SCVTF_f         0101 1111 0 ....... 111001 ..... .....      @fcvt_fixed_d
+>> +
+>> +UCVTF_f         0111 1111 0 ....... 111001 ..... .....      @fcvt_fixed_h
+>> +UCVTF_f         0111 1111 0 ....... 111001 ..... .....      @fcvt_fixed_s
+>> +UCVTF_f         0111 1111 0 ....... 111001 ..... .....      @fcvt_fixed_d
+>> +
+>>   FCVTZS_f        0101 1111 0 ....... 111111 ..... .....      @fcvt_fixed_h
+>>   FCVTZS_f        0101 1111 0 ....... 111111 ..... .....      @fcvt_fixed_s
+>>   FCVTZS_f        0101 1111 0 ....... 111111 ..... .....      @fcvt_fixed_d
+> 
+> Aren't we missing the new trans functions for these insns ?
+No, we're sharing the trans functions with the previous patch.
+The (vector, integer) insns decode with shift=0.
+These (vector, fixed-point) insns decode a proper shift field.
 
-This mostly reverts commit 0abd38885ac0fcdb08653922f339849cad387961
-("fw_cfg: Refactor extra pci roots addition").
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- include/hw/nvram/fw_cfg.h |  9 ---------
- hw/nvram/fw_cfg.c         | 23 -----------------------
- 2 files changed, 32 deletions(-)
+r~
 
-diff --git a/include/hw/nvram/fw_cfg.h b/include/hw/nvram/fw_cfg.h
-index fcb06f18cc3..80a1549ad05 100644
---- a/include/hw/nvram/fw_cfg.h
-+++ b/include/hw/nvram/fw_cfg.h
-@@ -312,15 +312,6 @@ bool fw_cfg_add_file_from_generator(FWCfgState *s,
-                                     Object *parent, const char *part,
-                                     const char *filename, Error **errp);
- 
--/**
-- * fw_cfg_add_extra_pci_roots:
-- * @bus: main pci root bus to be scanned from
-- * @s: fw_cfg device being modified
-- *
-- * Add a new fw_cfg item...
-- */
--void fw_cfg_add_extra_pci_roots(PCIBus *bus, FWCfgState *s);
--
- FWCfgState *fw_cfg_init_io_dma(uint32_t iobase, uint32_t dma_iobase,
-                                 AddressSpace *dma_as);
- FWCfgState *fw_cfg_init_mem(hwaddr ctl_addr, hwaddr data_addr);
-diff --git a/hw/nvram/fw_cfg.c b/hw/nvram/fw_cfg.c
-index b94cd27bd85..053db7e08cc 100644
---- a/hw/nvram/fw_cfg.c
-+++ b/hw/nvram/fw_cfg.c
-@@ -41,7 +41,6 @@
- #include "qemu/cutils.h"
- #include "qapi/error.h"
- #include "hw/acpi/aml-build.h"
--#include "hw/pci/pci_bus.h"
- #include "hw/loader.h"
- 
- #define FW_CFG_FILE_SLOTS_DFLT 0x20
-@@ -1057,28 +1056,6 @@ bool fw_cfg_add_file_from_generator(FWCfgState *s,
-     return true;
- }
- 
--void fw_cfg_add_extra_pci_roots(PCIBus *bus, FWCfgState *s)
--{
--    int extra_hosts = 0;
--
--    if (!bus) {
--        return;
--    }
--
--    QLIST_FOREACH(bus, &bus->child, sibling) {
--        /* look for expander root buses */
--        if (pci_bus_is_root(bus)) {
--            extra_hosts++;
--        }
--    }
--
--    if (extra_hosts && s) {
--        uint64_t *val = g_malloc(sizeof(*val));
--        *val = cpu_to_le64(extra_hosts);
--        fw_cfg_add_file(s, "etc/extra-pci-roots", val, sizeof(*val));
--    }
--}
--
- static void fw_cfg_machine_reset(void *opaque)
- {
-     MachineClass *mc = MACHINE_GET_CLASS(qdev_get_machine());
--- 
-2.45.2
 
 
