@@ -2,87 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A5249E6E31
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Dec 2024 13:31:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B8E0A9E6E4D
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Dec 2024 13:35:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tJXRQ-0005x0-AX; Fri, 06 Dec 2024 07:28:17 -0500
+	id 1tJXRi-00066T-4f; Fri, 06 Dec 2024 07:28:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <tomitamoeko@gmail.com>)
- id 1tJXRF-0005wZ-QX
- for qemu-devel@nongnu.org; Fri, 06 Dec 2024 07:28:07 -0500
-Received: from mail-pg1-x542.google.com ([2607:f8b0:4864:20::542])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <tomitamoeko@gmail.com>)
- id 1tJXRE-00041Y-38
- for qemu-devel@nongnu.org; Fri, 06 Dec 2024 07:28:05 -0500
-Received: by mail-pg1-x542.google.com with SMTP id
- 41be03b00d2f7-7fd23d9160dso930705a12.2
- for <qemu-devel@nongnu.org>; Fri, 06 Dec 2024 04:28:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1733488083; x=1734092883; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=yCr1Si5UmdcLC4IV56KLZI508jQrygzNhxY3gT6chl4=;
- b=mFXTnM3/MwT1HzpLG45V1C/ta/b6UGDKoBqqSEya11Owl7dfr42HEeB6wIQgFDJqEu
- KEtONb+VqlDwwIm4/K4fcEZ6A//hwKzqEI+wr8dwNKIvZmZBRJYefnVd9crzSY/C2S5t
- lDcuMxnsOryZqJF3jsAtlX5Mg9lWKEsxoEwTEsBpNYxq2QtuoBJqT5L+ThOmW7kDJI1r
- VSpva2zun6I/fcZSoFk4WJVv1Fk574un3hF9OMfyk12IZC/qa4/lMOG/Mha+ph0D8Y3v
- m15RMZZnOuJPgpZjQcPCqrVuQS59kEwum7ziAaFdUZVOK4EGKcSQ9a6NhZqQQIQc8LT7
- aUYA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733488083; x=1734092883;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=yCr1Si5UmdcLC4IV56KLZI508jQrygzNhxY3gT6chl4=;
- b=SQ3uNieA+2dTIW7DggA26fsxiXhFOAKkZ9jaMRgx0XzyOAwCGUsSoiH/xaSxM4Ea23
- JXoo0DwiUnnmwKiTlDw2F3RJgPDuqoYP/DVbxO0XpHBi7nNCDRXu2FY1vNT61B3HWZzU
- JfGSOXIAw/D0zqfwtXPaUzObTMKBZIRlYCogcW4D1T2E5HNzjL2w6ZaXYbVMXEtR0TGY
- JTWIyL9eFZ1WaA4t7RjCddeOoLEJ/Ua54F6RPPRlo/RCnEUhZbLcTofPMRAURV1W8PEI
- Gn98tEsr1rUR93aoembPi5ViLaruUw/q07OEcX5A0d45Yus+HyWualH4GJ/mQmcUPend
- K4Pw==
-X-Gm-Message-State: AOJu0YwqgWZ3iRy/Ux+UdTkF+kO2nDYgj3IPq4DNI4kRrGlKMlg+97Iq
- KIABqKGu8Z+OJvMP2qDfwXKXh4v23xOPA19DrHLK7biohdlEIG0=
-X-Gm-Gg: ASbGnctfpFsZd6Mghjx8hemoNQNyTCuo8BuKr1CLV+Xfdr0OYlFDFK6RlQBfi4xAlBV
- agOjLfoAGv0eV5B108pvdee16hJ+7CjRUtZoh3zUdLs8uKEAPI8EeBt3MU+/ni8gzaB9q+6w2HE
- /LVTwHqQPacheOBP5e22kmciPOps0xdSEHzZGDPruwL4vXauf8QifDzz+mjibssbd4yiy6b4HuT
- 8DOPXqFlqeLr8cwoKxKv9s0HfzdmW/TbccOAVwqS/B4qfkOG12IJ2w8nA==
-X-Google-Smtp-Source: AGHT+IGZ/H8CQLg0JG+d4G+cGZgkcqsDPjr7UG3EqVLXEihxm4XSJquwabTpAOYvJIQ30SVdp/GkkQ==
-X-Received: by 2002:a05:6a21:99a2:b0:1e0:de01:4407 with SMTP id
- adf61e73a8af0-1e18713703cmr5172849637.37.1733488082773; 
- Fri, 06 Dec 2024 04:28:02 -0800 (PST)
-Received: from kotori-desktop.lan ([58.38.120.33])
- by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-7fd15710123sm2579866a12.49.2024.12.06.04.28.00
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 06 Dec 2024 04:28:02 -0800 (PST)
-From: Tomita Moeko <tomitamoeko@gmail.com>
-To: Alex Williamson <alex.williamson@redhat.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Cc: qemu-devel@nongnu.org,
- =?UTF-8?q?Corvin=20K=C3=B6hne?= <c.koehne@beckhoff.com>,
- Tomita Moeko <tomitamoeko@gmail.com>
-Subject: [PATCH v4 03/10] vfio/igd: align generation with i915 kernel driver
-Date: Fri,  6 Dec 2024 20:27:41 +0800
-Message-ID: <20241206122749.9893-4-tomitamoeko@gmail.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20241206122749.9893-1-tomitamoeko@gmail.com>
-References: <20241206122749.9893-1-tomitamoeko@gmail.com>
+ (Exim 4.90_1) (envelope-from <brueckner@linux.ibm.com>)
+ id 1tJXRO-0005xd-Ap; Fri, 06 Dec 2024 07:28:15 -0500
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <brueckner@linux.ibm.com>)
+ id 1tJXRI-00042F-KW; Fri, 06 Dec 2024 07:28:12 -0500
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4B6ALD1I010831;
+ Fri, 6 Dec 2024 12:28:06 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:date:from:in-reply-to:message-id
+ :mime-version:references:subject:to; s=pp1; bh=wIAMV2ID/AdvX8BJ4
+ US3JQ/iLJeaKscTezA7exiV1A0=; b=nmzgiA/k4stXpDWKnAlTkSHSbyurxLQPj
+ zW7JG9wSFY7awNgb/OlZCLAB0hNDe5e/2LUH0fX9RMwH1wDbzwUl9jA2SDTaX1S6
+ xEE5xUZQJNMnWO7KS0+clAZSSeiDQnJoT9ItJ5cOz+cghEyJrmI1yIr8PX1AcTGV
+ CS7Fe0xfYJHMm6n52IM0C1o4kgNCbWaYMpOZZlXlWpQQWH4CPk0HCh+ecD9JjEK2
+ xi1w9LIbKBwt5+6szHTlbIwmM1y8W8L+n/d4L+FL3geL6AUsKrcIffUA3b6BQQNL
+ xWYnLFRlrPsaw4wOMI/5QXlhhg4UvE/pZzXmU2xjCFIXEbEwM+s8w==
+Received: from ppma21.wdc07v.mail.ibm.com
+ (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 43b24rgxfq-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 06 Dec 2024 12:28:05 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4B6A3MOd023551;
+ Fri, 6 Dec 2024 12:28:04 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+ by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 438e1ndjdj-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 06 Dec 2024 12:28:04 +0000
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com
+ [10.20.54.104])
+ by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 4B6CS0oK56689018
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 6 Dec 2024 12:28:00 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id AF9C32004B;
+ Fri,  6 Dec 2024 12:28:00 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 4254C2004D;
+ Fri,  6 Dec 2024 12:28:00 +0000 (GMT)
+Received: from vela.ibmuc.com (unknown [9.171.26.200])
+ by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Fri,  6 Dec 2024 12:28:00 +0000 (GMT)
+From: Hendrik Brueckner <brueckner@linux.ibm.com>
+To: qemu-devel@nongnu.org, qemu-s390x@nongnu.org, thuth@redhat.com
+Cc: nsg@linux.ibm.com, frankja@linux.ibm.com, mimu@linux.ibm.com,
+ borntraeger@linux.ibm.com, Hendrik Brueckner <brueckner@linux.ibm.com>
+Subject: [RFC PATCH v2 05/15] s390x/cpumodel: Add ptff Query Time-Stamp Event
+ (QTSE) support
+Date: Fri,  6 Dec 2024 13:27:41 +0100
+Message-ID: <20241206122751.189721-6-brueckner@linux.ibm.com>
+X-Mailer: git-send-email 2.43.5
+In-Reply-To: <20241206122751.189721-1-brueckner@linux.ibm.com>
+References: <20241206122751.189721-1-brueckner@linux.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::542;
- envelope-from=tomitamoeko@gmail.com; helo=mail-pg1-x542.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: QHLrB-TKOTiYwm5NtoVCOkdlXT-X1A5_
+X-Proofpoint-ORIG-GUID: QHLrB-TKOTiYwm5NtoVCOkdlXT-X1A5_
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 suspectscore=0
+ bulkscore=0 adultscore=1 impostorscore=0 priorityscore=1501
+ lowpriorityscore=0 clxscore=1015 mlxscore=0 spamscore=0 malwarescore=0
+ mlxlogscore=977 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2411120000 definitions=main-2412060089
+Received-SPF: pass client-ip=148.163.156.1;
+ envelope-from=brueckner@linux.ibm.com; helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H2=-0.001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -99,97 +105,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Define the igd device generations according to i915 kernel driver to
-avoid confusion, and adjust comment placement to clearly reflect the
-relationship between ids and devices.
+Introduce a new PTFF subfunction to query-stamp events.
 
-The condition of how GTT stolen memory size is calculated is changed
-accordingly as GGMS is in multiple of 2 starting from gen 8.
-
-Reviewed-by: Corvin Köhne <c.koehne@beckhoff.com>
-Signed-off-by: Tomita Moeko <tomitamoeko@gmail.com>
+Signed-off-by: Hendrik Brueckner <brueckner@linux.ibm.com>
 ---
- hw/vfio/igd.c | 45 +++++++++++++++++++++++----------------------
- 1 file changed, 23 insertions(+), 22 deletions(-)
+ target/s390x/cpu_features.c         | 1 +
+ target/s390x/cpu_features_def.h.inc | 1 +
+ target/s390x/gen-features.c         | 9 +++++++++
+ 3 files changed, 11 insertions(+)
 
-diff --git a/hw/vfio/igd.c b/hw/vfio/igd.c
-index 059ed56439..09bd4e5383 100644
---- a/hw/vfio/igd.c
-+++ b/hw/vfio/igd.c
-@@ -59,33 +59,34 @@
-  */
- static int igd_gen(VFIOPCIDevice *vdev)
- {
--    if ((vdev->device_id & 0xfff) == 0xa84) {
--        return 8; /* Broxton */
-+    /*
-+     * Device IDs for Broxton/Apollo Lake are 0x0a84, 0x1a84, 0x1a85, 0x5a84
-+     * and 0x5a85, match bit 11:1 here
-+     * Prefix 0x0a is taken by Haswell, this rule should be matched first.
-+     */
-+    if ((vdev->device_id & 0xffe) == 0xa84) {
-+        return 9;
-     }
+diff --git a/target/s390x/cpu_features.c b/target/s390x/cpu_features.c
+index 9ba127e386..385a2ff860 100644
+--- a/target/s390x/cpu_features.c
++++ b/target/s390x/cpu_features.c
+@@ -241,6 +241,7 @@ static S390FeatGroupDef s390_feature_groups[] = {
+     FEAT_GROUP_INIT("plo", PLO, "Perform-locked-operation facility"),
+     FEAT_GROUP_INIT("tods", TOD_CLOCK_STEERING, "Tod-clock-steering facility"),
+     FEAT_GROUP_INIT("gen13ptff", GEN13_PTFF, "PTFF enhancements introduced with z13"),
++    FEAT_GROUP_INIT("gen17ptff", GEN17_PTFF, "PTFF enhancements introduced with gen17"),
+     FEAT_GROUP_INIT("msa", MSA, "Message-security-assist facility"),
+     FEAT_GROUP_INIT("msa1", MSA_EXT_1, "Message-security-assist-extension 1 facility"),
+     FEAT_GROUP_INIT("msa2", MSA_EXT_2, "Message-security-assist-extension 2 facility"),
+diff --git a/target/s390x/cpu_features_def.h.inc b/target/s390x/cpu_features_def.h.inc
+index 2132837ffe..f96cb5a7d8 100644
+--- a/target/s390x/cpu_features_def.h.inc
++++ b/target/s390x/cpu_features_def.h.inc
+@@ -181,6 +181,7 @@ DEF_FEAT(PTFF_QSI, "ptff-qsi", PTFF, 2, "PTFF Query Steering Information")
+ DEF_FEAT(PTFF_QPT, "ptff-qpc", PTFF, 3, "PTFF Query Physical Clock")
+ DEF_FEAT(PTFF_QUI, "ptff-qui", PTFF, 4, "PTFF Query UTC Information")
+ DEF_FEAT(PTFF_QTOU, "ptff-qtou", PTFF, 5, "PTFF Query TOD Offset User")
++DEF_FEAT(PTFF_QTSE, "ptff-qtse", PTFF, 6, "PTFF Query Time-Stamp Event")
+ DEF_FEAT(PTFF_QSIE, "ptff-qsie", PTFF, 10, "PTFF Query Steering Information Extended")
+ DEF_FEAT(PTFF_QTOUE, "ptff-qtoue", PTFF, 13, "PTFF Query TOD Offset User Extended")
+ DEF_FEAT(PTFF_STO, "ptff-sto", PTFF, 65, "PTFF Set TOD Offset")
+diff --git a/target/s390x/gen-features.c b/target/s390x/gen-features.c
+index 3326e7df43..302b653214 100644
+--- a/target/s390x/gen-features.c
++++ b/target/s390x/gen-features.c
+@@ -64,6 +64,9 @@
+     S390_FEAT_PTFF_STOE, \
+     S390_FEAT_PTFF_STOUE
  
-     switch (vdev->device_id & 0xff00) {
--    /* SandyBridge, IvyBridge, ValleyView, Haswell */
--    case 0x0100:
--    case 0x0400:
--    case 0x0a00:
--    case 0x0c00:
--    case 0x0d00:
--    case 0x0f00:
-+    case 0x0100:    /* SandyBridge, IvyBridge */
-         return 6;
--    /* BroadWell, CherryView, SkyLake, KabyLake */
--    case 0x1600:
--    case 0x1900:
--    case 0x2200:
--    case 0x5900:
-+    case 0x0400:    /* Haswell */
-+    case 0x0a00:    /* Haswell */
-+    case 0x0c00:    /* Haswell */
-+    case 0x0d00:    /* Haswell */
-+    case 0x0f00:    /* Valleyview/Bay Trail */
-+        return 7;
-+    case 0x1600:    /* Broadwell */
-+    case 0x2200:    /* Cherryview */
-         return 8;
--    /* CoffeeLake */
--    case 0x3e00:
-+    case 0x1900:    /* Skylake */
-+    case 0x5900:    /* Kaby Lake */
-+    case 0x3e00:    /* Coffee Lake */
-         return 9;
--    /* ElkhartLake */
--    case 0x4500:
-+    case 0x4500:    /* Elkhart Lake */
-         return 11;
--    /* TigerLake */
--    case 0x9A00:
-+    case 0x9A00:    /* Tiger Lake */
-         return 12;
-     }
- 
-@@ -258,7 +259,7 @@ static int vfio_igd_gtt_max(VFIOPCIDevice *vdev)
- 
-     gmch = vfio_pci_read_config(&vdev->pdev, IGD_GMCH, sizeof(gmch));
-     ggms = (gmch >> (gen < 8 ? 8 : 6)) & 0x3;
--    if (gen > 6 && ggms != 0) {
-+    if (gen >= 8 && ggms != 0) {
-         ggms = 1 << ggms;
-     }
- 
-@@ -668,7 +669,7 @@ void vfio_probe_igd_bar4_quirk(VFIOPCIDevice *vdev, int nr)
- 
-     /* Determine the size of stolen memory needed for GTT */
-     ggms_mb = (gmch >> (gen < 8 ? 8 : 6)) & 0x3;
--    if (gen > 6 && ggms_mb != 0) {
-+    if (gen >= 8 && ggms_mb != 0) {
-         ggms_mb = 1 << ggms_mb;
-     }
- 
++#define S390_FEAT_GROUP_GEN17_PTFF \
++    S390_FEAT_PTFF_QTSE
++
+ #define S390_FEAT_GROUP_MSA \
+     S390_FEAT_MSA, \
+     S390_FEAT_KMAC_DEA, \
+@@ -318,6 +321,11 @@ static uint16_t group_GEN13_PTFF[] = {
+ static uint16_t group_MULTIPLE_EPOCH_PTFF[] = {
+     S390_FEAT_GROUP_MULTIPLE_EPOCH_PTFF,
+ };
++
++static uint16_t group_GEN17_PTFF[] = {
++    S390_FEAT_GROUP_GEN17_PTFF,
++};
++
+ static uint16_t group_MSA[] = {
+     S390_FEAT_GROUP_MSA,
+ };
+@@ -918,6 +926,7 @@ static FeatGroupDefSpec FeatGroupDef[] = {
+     FEAT_GROUP_INITIALIZER(PLO),
+     FEAT_GROUP_INITIALIZER(TOD_CLOCK_STEERING),
+     FEAT_GROUP_INITIALIZER(GEN13_PTFF),
++    FEAT_GROUP_INITIALIZER(GEN17_PTFF),
+     FEAT_GROUP_INITIALIZER(MSA),
+     FEAT_GROUP_INITIALIZER(MSA_EXT_1),
+     FEAT_GROUP_INITIALIZER(MSA_EXT_2),
 -- 
-2.45.2
+2.43.5
 
 
