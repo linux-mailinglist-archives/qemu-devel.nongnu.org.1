@@ -2,82 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C0679E6E40
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Dec 2024 13:33:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A7D199E6E34
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Dec 2024 13:32:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tJXSN-0007Jf-Js; Fri, 06 Dec 2024 07:29:15 -0500
+	id 1tJXSS-0007oR-SL; Fri, 06 Dec 2024 07:29:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <tomitamoeko@gmail.com>)
- id 1tJXRW-00062i-Bw
- for qemu-devel@nongnu.org; Fri, 06 Dec 2024 07:28:23 -0500
-Received: from mail-pf1-x442.google.com ([2607:f8b0:4864:20::442])
+ id 1tJXRX-00062n-MJ
+ for qemu-devel@nongnu.org; Fri, 06 Dec 2024 07:28:25 -0500
+Received: from mail-pg1-x544.google.com ([2607:f8b0:4864:20::544])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <tomitamoeko@gmail.com>)
- id 1tJXRT-000477-Oe
- for qemu-devel@nongnu.org; Fri, 06 Dec 2024 07:28:21 -0500
-Received: by mail-pf1-x442.google.com with SMTP id
- d2e1a72fcca58-7252b7326f4so1694189b3a.2
- for <qemu-devel@nongnu.org>; Fri, 06 Dec 2024 04:28:19 -0800 (PST)
+ id 1tJXRW-00047J-54
+ for qemu-devel@nongnu.org; Fri, 06 Dec 2024 07:28:23 -0500
+Received: by mail-pg1-x544.google.com with SMTP id
+ 41be03b00d2f7-7f43259d220so1366380a12.3
+ for <qemu-devel@nongnu.org>; Fri, 06 Dec 2024 04:28:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1733488098; x=1734092898; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1733488100; x=1734092900; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=pJksUVkEtwEudvlxsC5f5lHQl1QlNlGKcBR7V40Y6N8=;
- b=cF2v5Xyuc6dD8QzfIZOTUE/qBd7zTizmRF90WS6G6r5vmLWGnRNNRRdaPpFkjN2t65
- 5Ndi+y195fy08eO0Jgqqd6Me0WEPSZccPegAhWHbVF+5zw8QZLO/SQ9uTQjpDvYYLbHw
- jMufCXm+7TqL+A7xX/gsWbFdeOCMGsMxqVdO9RYJ6BbH3S2G9MbAh6w15C6a+HVrtZ4R
- iFo5lmDDAKyOZPefXHgKxiAYL41jFZ/t7lIEZSYl7Mnliw/oAQ31Aa8ULg/sUpFEDurD
- wsSuh54NdSJXaJZEj2QA4B3j0jFHPvXd3y/EHKrmXhGIevRhXmPzxh8uiykaH2yyX32h
- pzvA==
+ bh=DMVtNuBqtIXXm2C24hwxrJtPRQT47P73SaeeHd2lWK4=;
+ b=NQctH7kvEmWVFI7CeCVq1+j/WvAumC9T7WQerc2CEU2SCFZuEFSOfSp/67kc84nHsu
+ k9Y9CzY7t56QSTbbmeowAnutOZv225IA2HmF5Ly+ELEQbx+HJdAXtq6FYS1oeZsdsI1+
+ 4/Vfp1DY2/stPIcMtD5+4V1AnzuYXfXI+UfP/NCcvT3IBZQ9dGsshkVzeGfuXu+ft3+y
+ qrPBpyK10x2TMHT0RwG+5MuXEvZjIQZzzx40TNNl+/DiFf6WvSh8GpRVrE4koC/CKOGf
+ nhCgHzLjwNhYXOUcwMf/6wdR0YC//f7tqQitlkXIFVKcgFJcBWBVO3QtQiAIWULMTWiq
+ 63IA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733488098; x=1734092898;
+ d=1e100.net; s=20230601; t=1733488100; x=1734092900;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=pJksUVkEtwEudvlxsC5f5lHQl1QlNlGKcBR7V40Y6N8=;
- b=PMTuncABVAOZzo8K7+icTCV47pR/zYuyFPPY3Cy9bleM9cCqbjQm2C/H+4c3qlYfHt
- bT8vso7koYnfDMH4N6UTKnF1Ag0qbfN30MC+1A65qMuhEsnkP73QO+OZ0gfmBzyDv8BR
- g4tY+p1PW3R1DmeGH1WhnDAB53YsIWcO4YdyHa6mNTQ7pUj4dvt5Ny4Cybrll22mdPlh
- LoY5cJmxnNb1U4aka977kdQViyhy4eCLjsDvfOb6rw6uEK+B1y79xwD9J/ZTTxT6ByY0
- fT8cEO9S3QexbJO3k0r7wrOxPCp5L5qwOxDh4vAIAsNacpmO3n8SuxYrT92IPFanGw/o
- QpSA==
-X-Gm-Message-State: AOJu0YwMC3hMkpTZKG+wJn0POopXVELNdhye1IrRABtVD4u2CKAXkSl0
- SFTJuloHFzMt+GLYVsNezVbptQzilD5522B74zHcO3KIOxOHxxQ=
-X-Gm-Gg: ASbGncuAcIDB/LWFHbkw7etrX/8NPWo5SkId2/SJhbNIXdiHCKfH3Dt773z2F0Y5BRY
- TcA3RTkxU9VpsHoqssj51rUjck74zWgoQXPgMqWazDp3bUjNftY1dUlQl9XIc7SihF6IbApPPAI
- rOS1SqMF3AxysfzF2QIknNJvp9mfDEpVMgWyh6Hj8GMBMDsWY4ZuX0v8l/L5G2L0j/W91aravop
- qDSr++aWycRfalYwRTzg2eN1UWu+mQE2HSIEaAhxo1P7+MNB0CimK3SwA==
-X-Google-Smtp-Source: AGHT+IFR5YiU72D3L7D+7WF+NcaK+QXd/DKpK5EVePqLoxZlsQ1jzzgi7Y6gXOyfUn4YuZJYddc/LA==
-X-Received: by 2002:a05:6a00:b46:b0:71e:1722:d019 with SMTP id
- d2e1a72fcca58-725b81f81a2mr4462054b3a.22.1733488098280; 
- Fri, 06 Dec 2024 04:28:18 -0800 (PST)
+ bh=DMVtNuBqtIXXm2C24hwxrJtPRQT47P73SaeeHd2lWK4=;
+ b=IfB/PVVzYbTz8GRld+W92YqhjGgWsTGnItCV4j/k0DUVBCvdnNXphMQnImJUbmjJRn
+ pb0m1DM/4T/Aqa9PZHkBtPuRmaIMXBylDblggXdcyNkrbCqBeXJH5IKiOOzXMu/Cw0zV
+ tfHlKQrKkoebcdqBfyPWNRJeguVhEmNT5McbIH/UCA9UuD5TxSDfZgMrnjf3UX+HnXX5
+ 65YXAh2Txb3PSutqgd0fihMHyZehrpx2KeJBDnJheRyqFpe+rKuPap90yrOKt2X0PXhn
+ OPwQkpqNYu2inK7EBERtYTN6KynnHILGxtsYud0/WiMT+S36eF5AWTMIGNqKAcZQNIzd
+ SYug==
+X-Gm-Message-State: AOJu0YzGDJOMXMKGRn7LjPKWS+B5x6WEdMk8mB+El2PtaIh/JAcV0rBP
+ ummvX6cPd8L7lM1k2BX0Ra98ViRRij0phhi4/6gw+VbPgzdiREM=
+X-Gm-Gg: ASbGncusGFVxO75zCRKuve0QUF8O6SCVjLqFaAf0EhGylnFJkbAjfXhT6IjT2Xxgy+Y
+ X7BCzCR/wNuj4NfYe5bcvHHQIxKD6wvp5cZwgF+HEdew5cFI9pgIaqP8K0mShmIISPUTLZuUi7q
+ E+L5nKXSZC6V4OQ3xfTEdaxoZuXv83F1FqEVr2A0BhZGoHhaa8X9JGtc6UCvRqr4+C12j9QpZ4O
+ i6WCM96rSgPOjfzcdjjle+/wxop1eiJSwEHPPCF4W0/voMPhOCOgHdKtQ==
+X-Google-Smtp-Source: AGHT+IFdzu6UBx6uy8wj9XCQFmYeHr/v0kMEdPLe1RtkivWLvxnhflrseuRRC/x5+4679b0O8esaog==
+X-Received: by 2002:a05:6a20:4324:b0:1e0:dbc6:8647 with SMTP id
+ adf61e73a8af0-1e1870ad665mr3957896637.1.1733488100421; 
+ Fri, 06 Dec 2024 04:28:20 -0800 (PST)
 Received: from kotori-desktop.lan ([58.38.120.33])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-7fd15710123sm2579866a12.49.2024.12.06.04.28.15
+ 41be03b00d2f7-7fd15710123sm2579866a12.49.2024.12.06.04.28.18
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 06 Dec 2024 04:28:17 -0800 (PST)
+ Fri, 06 Dec 2024 04:28:20 -0800 (PST)
 From: Tomita Moeko <tomitamoeko@gmail.com>
 To: Alex Williamson <alex.williamson@redhat.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 Cc: qemu-devel@nongnu.org,
  =?UTF-8?q?Corvin=20K=C3=B6hne?= <c.koehne@beckhoff.com>,
  Tomita Moeko <tomitamoeko@gmail.com>
-Subject: [PATCH v4 09/10] vfio/igd: emulate BDSM in mmio bar0 for gen 6-10
- devices
-Date: Fri,  6 Dec 2024 20:27:47 +0800
-Message-ID: <20241206122749.9893-10-tomitamoeko@gmail.com>
+Subject: [PATCH v4 10/10] vfio/igd: add x-igd-gms option back to set DSM
+ region size for guest
+Date: Fri,  6 Dec 2024 20:27:48 +0800
+Message-ID: <20241206122749.9893-11-tomitamoeko@gmail.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241206122749.9893-1-tomitamoeko@gmail.com>
 References: <20241206122749.9893-1-tomitamoeko@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::442;
- envelope-from=tomitamoeko@gmail.com; helo=mail-pf1-x442.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::544;
+ envelope-from=tomitamoeko@gmail.com; helo=mail-pg1-x544.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,69 +99,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-A recent commit in i915 driver [1] claims the BDSM register at 0x1080c0
-of mmio bar0 has been there since gen 6. Mirror this register to the 32
-bit BDSM register at 0x5c in pci config space for gen6-10 devices.
+DSM region is likely to store framebuffer in Windows, a small DSM
+region may cause display issues (e.g. half of the screen is black).
+Since 971ca22f041b ("vfio/igd: don't set stolen memory size to zero"),
+the x-igd-gms option was functionally removed, QEMU uses host's
+original value, which is determined by DVMT Pre-Allocated option in
+Intel FSP of host bios.
 
-[1] https://patchwork.freedesktop.org/patch/msgid/20240202224340.30647-7-ville.syrjala@linux.intel.com
+However, some vendors do not expose this config item to users. In
+such cases, x-igd-gms option can be used to manually set the data
+stolen memory size for guest. So this commit brings this option back,
+keeping its old behavior. When it is not specified, QEMU uses host's
+value.
 
-Reviewed-by: Corvin Köhne <c.koehne@beckhoff.com>
+When DVMT Pre-Allocated option is available in host BIOS, user should
+set DSM region size there instead of using x-igd-gms option.
+
 Signed-off-by: Tomita Moeko <tomitamoeko@gmail.com>
 ---
- hw/vfio/igd.c | 26 ++++++++++++++++++--------
- 1 file changed, 18 insertions(+), 8 deletions(-)
+ hw/vfio/igd.c | 26 ++++++++++++++++++++++++++
+ 1 file changed, 26 insertions(+)
 
 diff --git a/hw/vfio/igd.c b/hw/vfio/igd.c
-index 12e0553e83..73c06bbf64 100644
+index 73c06bbf64..b0fef90240 100644
 --- a/hw/vfio/igd.c
 +++ b/hw/vfio/igd.c
-@@ -489,7 +489,8 @@ static const MemoryRegionOps vfio_igd_quirk_mirror_##name = {           \
- };
- 
- VFIO_IGD_QUIRK_MIRROR_REG(IGD_GMCH, ggc)
--VFIO_IGD_QUIRK_MIRROR_REG(IGD_BDSM_GEN11, bdsm)
-+VFIO_IGD_QUIRK_MIRROR_REG(IGD_BDSM, bdsm)
-+VFIO_IGD_QUIRK_MIRROR_REG(IGD_BDSM_GEN11, bdsm64)
- 
- #define IGD_GGC_MMIO_OFFSET     0x108040
- #define IGD_BDSM_MMIO_OFFSET    0x1080C0
-@@ -516,7 +517,7 @@ void vfio_probe_igd_bar0_quirk(VFIOPCIDevice *vdev, int nr)
-      * into MMIO space and read from MMIO space by the Windows driver.
-      */
-     gen = igd_gen(vdev);
--    if (gen < 11) {
-+    if (gen < 6) {
-         return;
-     }
- 
-@@ -530,12 +531,21 @@ void vfio_probe_igd_bar0_quirk(VFIOPCIDevice *vdev, int nr)
-                                         IGD_GGC_MMIO_OFFSET, &quirk->mem[0],
-                                         1);
- 
--    memory_region_init_io(&quirk->mem[1], OBJECT(vdev),
--                          &vfio_igd_quirk_mirror_bdsm, vdev,
--                          "vfio-igd-bdsm-quirk", 8);
--    memory_region_add_subregion_overlap(vdev->bars[0].region.mem,
--                                        IGD_BDSM_MMIO_OFFSET, &quirk->mem[1],
--                                        1);
-+    if (gen < 11) {
-+        memory_region_init_io(&quirk->mem[1], OBJECT(vdev),
-+                              &vfio_igd_quirk_mirror_bdsm, vdev,
-+                              "vfio-igd-bdsm-quirk", 4);
-+        memory_region_add_subregion_overlap(vdev->bars[0].region.mem,
-+                                            IGD_BDSM_MMIO_OFFSET,
-+                                            &quirk->mem[1], 1);
-+    } else {
-+        memory_region_init_io(&quirk->mem[1], OBJECT(vdev),
-+                              &vfio_igd_quirk_mirror_bdsm64, vdev,
-+                              "vfio-igd-bdsm-quirk", 8);
-+        memory_region_add_subregion_overlap(vdev->bars[0].region.mem,
-+                                            IGD_BDSM_MMIO_OFFSET,
-+                                            &quirk->mem[1], 1);
-+    }
+@@ -14,6 +14,7 @@
+ #include "qemu/units.h"
+ #include "qemu/error-report.h"
+ #include "qapi/error.h"
++#include "qapi/qmp/qerror.h"
+ #include "hw/hw.h"
+ #include "hw/nvram/fw_cfg.h"
+ #include "pci.h"
+@@ -722,6 +723,31 @@ void vfio_probe_igd_bar4_quirk(VFIOPCIDevice *vdev, int nr)
  
      QLIST_INSERT_HEAD(&vdev->bars[nr].quirks, quirk, next);
- }
+ 
++    /*
++     * Allow user to override dsm size using x-igd-gms option, in multiples of
++     * 32MiB. This option should only be used when the desired size cannot be
++     * set from DVMT Pre-Allocated option in host BIOS.
++     */
++    if (vdev->igd_gms) {
++        if (gen < 8) {
++            if (vdev->igd_gms <= 0x10) {
++                gmch &= ~(IGD_GMCH_GEN6_GMS_MASK << IGD_GMCH_GEN6_GMS_SHIFT);
++                gmch |= vdev->igd_gms << IGD_GMCH_GEN6_GMS_SHIFT;
++            } else {
++                error_report(QERR_INVALID_PARAMETER_VALUE,
++                             "x-igd-gms", "0~0x10");
++            }
++        } else {
++            if (vdev->igd_gms <= 0x40) {
++                gmch &= ~(IGD_GMCH_GEN8_GMS_MASK << IGD_GMCH_GEN8_GMS_SHIFT);
++                gmch |= vdev->igd_gms << IGD_GMCH_GEN8_GMS_SHIFT;
++            } else {
++                error_report(QERR_INVALID_PARAMETER_VALUE,
++                             "x-igd-gms", "0~0x40");
++            }
++        }
++    }
++
+     ggms_size = igd_gtt_memory_size(gen, gmch);
+     gms_size = igd_stolen_memory_size(gen, gmch);
+ 
 -- 
 2.45.2
 
