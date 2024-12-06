@@ -2,73 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B1BD9E792E
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Dec 2024 20:44:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DC3C9E795C
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Dec 2024 20:59:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tJeET-0001vg-8H; Fri, 06 Dec 2024 14:43:21 -0500
+	id 1tJeSc-0006DC-Ms; Fri, 06 Dec 2024 14:57:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1tJeEQ-0001ux-ID
- for qemu-devel@nongnu.org; Fri, 06 Dec 2024 14:43:18 -0500
-Received: from mail-pg1-x529.google.com ([2607:f8b0:4864:20::529])
+ id 1tJeSZ-0006Cz-I4
+ for qemu-devel@nongnu.org; Fri, 06 Dec 2024 14:57:55 -0500
+Received: from mail-pg1-x52d.google.com ([2607:f8b0:4864:20::52d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1tJeEO-0007m6-Cl
- for qemu-devel@nongnu.org; Fri, 06 Dec 2024 14:43:18 -0500
-Received: by mail-pg1-x529.google.com with SMTP id
- 41be03b00d2f7-7fbc65f6c72so2452097a12.1
- for <qemu-devel@nongnu.org>; Fri, 06 Dec 2024 11:43:16 -0800 (PST)
+ id 1tJeSX-00035P-De
+ for qemu-devel@nongnu.org; Fri, 06 Dec 2024 14:57:55 -0500
+Received: by mail-pg1-x52d.google.com with SMTP id
+ 41be03b00d2f7-7fd24e274fdso1069755a12.2
+ for <qemu-devel@nongnu.org>; Fri, 06 Dec 2024 11:57:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1733514195; x=1734118995; darn=nongnu.org;
+ d=linaro.org; s=google; t=1733515071; x=1734119871; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=VDsQj6Tx2Hgt2tRuxm2uoTNTdw7TFqMvw6RHuQeRPEs=;
- b=rI90hz3Te5Cv38zsGxLk6M7y2l+Q8X9SFPrWHRJc4CLZj2jvPmuMdsyq8/G9h/vuDG
- mG2Sn86vyiaBdqsJNvDH9xzuQXUeDZIUyMs+bgQk86PfBJBDRFshBesKPBReT8fkj4YZ
- G91FXBFir7FQi/xHThS1IOCitpCj4TDvM4lW2eY+JYkxHgP4+lYsKuIV/AQANRGiW71X
- L9xfNyHEZRLVpI8/Fyd/eHXcN7/4iHA375b9u4IOAdjXxhB0TcroUuMw1FVSco1z/iou
- LEwmhK0W04ECRm5LVR3qclwpXFB6DZSpv31eXMvQDYtoCRjUEDe/B9M0PLESQlBaZp59
- EQLg==
+ bh=0Z6U5/XqLUZqn3Az4ARGp2ILgNds5O9rQqXIddILeC0=;
+ b=bcpMfQZC8dzwW5XHRNxYsa5oEytHXFSeDObw/dvErrufbPC9eAccUHwzDjHgRzFNB7
+ 6LDuyY7CMfHU4Dc5fRcCgpMk3yItZThfR/IK1e8hO9dRdqQ/n0aQqk099vRiN95fwoPG
+ fFNyLpEvgGCG1nUqYbWGBlHo7hldkSgRFIEBz2Qchzf4HcGnvwtPt+xxN52w/UpP2eB5
+ fp19dkBAl0VdlC1+YrsHlUBUnb++UemZYgqELUhgUgl5fDbfSlxBumfss+X54sLMFVHK
+ zmp35Ny4+jCQ/7BjQQaRucet+M263gcSX099WkaGCYl0/EzDPj20LxOjerYiruDfFM/8
+ qUzA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733514195; x=1734118995;
+ d=1e100.net; s=20230601; t=1733515071; x=1734119871;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=VDsQj6Tx2Hgt2tRuxm2uoTNTdw7TFqMvw6RHuQeRPEs=;
- b=fyl6ldaUcWti5p8I2HjvlidQElf8PJUWFPvAg38pF308nKEQJQB4BokrQSGtuTUb15
- 5raM5943mIem2l/kywRf8bpoEv1my8/I+zbqpbZ++3n/vtKcGCseg0GNjvKQLfuAzsOf
- mNXwA9XuMu5jrYfj6JRY6q2LqDfsCMgjFpzkcK7ERLoEbTYuB1bXKKpYIVlcedhh6PqN
- klGpRE+CnWrGx9UkasR8hn6/KyXCCs38Za6GKUaXWVGL4O2eTCaE2xzyB27RbaqUr+3u
- GCwvwV+mV3N572xPc9lfnHWYJIdzKuY5dn8oDEo5qtYFpGZDImmJYBNHsf0eifTGFZ2d
- O/3w==
+ bh=0Z6U5/XqLUZqn3Az4ARGp2ILgNds5O9rQqXIddILeC0=;
+ b=R/u3uxS4WYBsebuFwXlJRRarCE225xUq/T3R8HyexnsYn9Ijm0ieRaFH3YAiKyzfm/
+ ZvY7fVZV478WT5n0r3DjOPdSuiY6uRIBvFCU/3ex5kpLEjn4oL2Z2jI73qPTO4vdnOFR
+ DMXJtFkFFhDT3Jk6nhDlHNIsLL7gQ1PHv9d+wCr6uYNnQVGEoGt/blksE4RXrfBXCZf0
+ Rk7ETaYZWa5osnM8cEIntD8knQ/2SzvRT2DGnXn+upRXRcnU0VyWWIr/C6xyJ1tC/dRC
+ WAse7lUSiy8cHSsfRmTZ8YmMs+iblMsOj2lvLmU8Uso1oQK50r1yYUlJURO2oG/sTRYD
+ uzRA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCX5115P19RHt2nz78bedcjEC53JsqzdY54KPu5bczYtlqoirHevK+28ZUDokMyrBD8gT7V+e7UlxLqB@nongnu.org
-X-Gm-Message-State: AOJu0YzH7yOXwuDj6W3JfTewLXwobxZg02XD9145IYdaRbq04eBkBmIh
- qRZNhEUooIk8oYroTVMSfUftAxW7gxAm+TjonYoKgQB7FHB+OH+rF7+gwfOzSA4=
-X-Gm-Gg: ASbGnculsPEg1qGg2JezQ51cFLnXUS1r+qkWhY8omZsp/qMHtBMYVGLXwFoSY5Lmwk7
- 9L98+qw30uSbVbbfSoG7hDzEIppatrHBAn6sK1V7rBCqJNbS4P1uUbfxrxnqpl9eIRwzc1qwGOa
- NzKKs4DtPQyXWMc+JzPSRJNKVizjUofHHalNmrIBsq383iD8je8vEGQnN8mOStG9LKNsV8SDbTY
- ++Uy5/4UiwCN2EsohwoOlv6GsxRN3n4yQSjmOAtTPfZh7yTsVvtOLPhSO55FOTxDWTE35W+NRKC
- Oq2lF+4MYpDGzmayGQJ4ow==
-X-Google-Smtp-Source: AGHT+IHh5NpglCGT/ptzXXM+EV0JPWKHtZSAR97ItWF6LBNSnc3Ct8PHf24a/RMYFImvDfxIdAl5ZQ==
-X-Received: by 2002:a05:6a21:9989:b0:1e0:d123:7154 with SMTP id
- adf61e73a8af0-1e1870bb909mr5433484637.17.1733514195089; 
- Fri, 06 Dec 2024 11:43:15 -0800 (PST)
+ AJvYcCXbaGJeV/FdRTmw4Nz0M2dWOmjsuZp5FW9/vSiUygzx79rmJHRBZB7wOemxiB9wr1WBEeowH9LLyYVo@nongnu.org
+X-Gm-Message-State: AOJu0YzSeKemP75BclKRHewN1X8kyk1n3p+45R78chMbBwiMdo4Xf2TC
+ Vj/5ij+p3vzGn6z2QpAqYuLJSy7vRP1tr2TwbFPBtXuYBgfkWnMCdZ5u5bfwKpTioK/aQAkZsiy
+ u3Co=
+X-Gm-Gg: ASbGncs6Xax+Gr+/cH2bpEFhVPaaG4O3KA/djnZOqAJF53RteIouJYiLOQgyQiV3d8K
+ dCQds2cFcer1UcGEL5PCVHUTqS0AFGo6FLr/BxANS8Kc1po78x4dNlzraMDdzWExTw8BkOFGpz6
+ epLhhMHIH0blnzm8bJ9aXV0jmrHirBYNmx0MdnngXqZ7kB0okrPSbd2btY1kgExXfk+vMeSvkAY
+ lBSliVZ3wtLYBRuy5T07mlRoTUENLoinDbagTu+tqmX5WGwVU6fJBKskXCGu0noSMwmpitJOjf8
+ Kd4IeE6gd9Crs/KfDC1U/w==
+X-Google-Smtp-Source: AGHT+IFI7TZ74WtRYRB/w0rfso+4/otKtf2v8oOlOAt1gc1XzPyjn/ww39oinu3DgH64o1BtUbeVBw==
+X-Received: by 2002:a05:6a21:114f:b0:1e1:6ef2:fbe3 with SMTP id
+ adf61e73a8af0-1e1870a7623mr7261892637.5.1733515071612; 
+ Fri, 06 Dec 2024 11:57:51 -0800 (PST)
 Received: from [192.168.1.67] (216-180-64-156.dyn.novuscom.net.
  [216.180.64.156]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-725a29e8f29sm3308971b3a.43.2024.12.06.11.43.14
+ d2e1a72fcca58-725a29c59bdsm3335252b3a.13.2024.12.06.11.57.50
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 06 Dec 2024 11:43:14 -0800 (PST)
-Message-ID: <55c95bd1-a1bc-460c-b4fe-1f52f8af2c2e@linaro.org>
-Date: Fri, 6 Dec 2024 11:43:14 -0800
+ Fri, 06 Dec 2024 11:57:51 -0800 (PST)
+Message-ID: <5ec40cb8-8a9d-4d13-b78e-79ea30317dbf@linaro.org>
+Date: Fri, 6 Dec 2024 11:57:50 -0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/3] Add additional plugin API functions to read and
- write memory and registers
+Subject: Re: [PATCH v2 3/3] Add inject plugin and x86_64 target for the inject
+ plugin
 Content-Language: en-US
 To: Rowan Hart <rowanbhart@gmail.com>, qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
@@ -76,14 +77,15 @@ Cc: Richard Henderson <richard.henderson@linaro.org>,
  <alex.bennee@linaro.org>, Alexandre Iooss <erdnaxe@crans.org>,
  Mahmoud Mandour <ma.mandourr@gmail.com>, Paolo Bonzini
  <pbonzini@redhat.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>, Peter Maydell <peter.maydell@linaro.org>
+ <philmd@linaro.org>
 References: <20241206102605.961658-1-rowanbhart@gmail.com>
+ <20241206102605.961658-4-rowanbhart@gmail.com>
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <20241206102605.961658-1-rowanbhart@gmail.com>
+In-Reply-To: <20241206102605.961658-4-rowanbhart@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::529;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pg1-x529.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52d;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pg1-x52d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -106,79 +108,305 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Rowan,
-
-thanks for this submission!
-
 On 12/6/24 02:26, Rowan Hart wrote:
-> This patch set follows a previous patch which added the
-> qemu_plugin_read_memory_vaddr function and adds a set of similar
-> functions to read and write registers, virtual memory, and
-> physical memory.
+> From: novafacing <rowanbhart@gmail.com>
 > 
-> The use case I have in mind is for use of QEMU for program analysis and
-> testing. For example, a fuzzer which uses QEMU for emulation might wish to
-> inject test data into a program at runtime using qemu_plugin_write_memory_vaddr
-> (and likewise if testing an operating system or bare metal application using
-> qemu_plugin_write_memory_hwaddr). It may also wish to read the initial contents
-> of memory using qemu_plugin_read_memory_vaddr/hwaddr.
-> 
-
-I am personally in favor to adding such features in upstream QEMU, but 
-we should discuss it with the maintainers, because it would allow to 
-change the state of execution, which is something qemu plugins actively 
-didn't try to do. It's a real paradigm shift for plugins.
-
-By writing to memory/registers, we can start replacing instructions and 
-control flow, and there is a whole set of consequences to that.
-
-> Similarly, a testing framework may wish to fake register values, perhaps to
-> simulate a device failure, perhaps by using qemu_plugin_write_register to set a
-> register value to an error code.
-> 
-> I think all this functionality works together to make QEMU
-> plugins more powerful and versatile, hopefully removing barriers
-> to using upstream QEMU for these tasks which have historically
-> required maintaining a QEMU fork downstream (like QEMUAFL
-> https://github.com/AFLplusplus/qemuafl), which is tedious, error
-> prone, and results in users missing out on enhancements to QEMU.
-> 
-> A test is provided, compile:
-> 
-> gcc -o tests/tcg/x86_64/inject-target tests/tcg/x86_64/inject-target.c
-> 
-> And run:
-> 
-> ./build/qemu-x86_64 -d plugin --plugin build/tests/tcg/plugins/libinject.so tests/tcg/x86_64/inject-target
-> 
-> Hopefully after a number of tries, the inject plugin will inject the right
-> value into the target program, leading to a victory message. This plugin
-> handles simple "hypercalls", only one of which is implemented and injects
-> data into guest memory.
-> 
-
-The hypercall functionality would be useful for plugins as a whole. And 
-I think it definitely deserves to be worked on, if maintainers are open 
-to that as well.
-
-> novafacing (3):
->    Expose gdb_write_register function to consumers of gdbstub
->    Add plugin API functions for register R/W, hwaddr R/W, vaddr W
->    Add inject plugin and x86_64 target for the inject plugin
-> 
->   gdbstub/gdbstub.c                |   2 +-
->   include/exec/gdbstub.h           |  14 +++
->   include/qemu/qemu-plugin.h       | 116 +++++++++++++++--
->   plugins/api.c                    |  66 +++++++++-
+> ---
 >   tests/tcg/plugins/inject.c       | 206 +++++++++++++++++++++++++++++++
 >   tests/tcg/plugins/meson.build    |   2 +-
 >   tests/tcg/x86_64/Makefile.target |   1 +
 >   tests/tcg/x86_64/inject-target.c |  27 ++++
->   8 files changed, 418 insertions(+), 16 deletions(-)
+>   4 files changed, 235 insertions(+), 1 deletion(-)
 >   create mode 100644 tests/tcg/plugins/inject.c
 >   create mode 100644 tests/tcg/x86_64/inject-target.c
 > 
+> diff --git a/tests/tcg/plugins/inject.c b/tests/tcg/plugins/inject.c
+> new file mode 100644
+> index 0000000000..9edc2cd34e
+> --- /dev/null
+> +++ b/tests/tcg/plugins/inject.c
 
-Regards,
-Pierrick
+Could we find a better name?
+
+> @@ -0,0 +1,206 @@
+> +/*
+> + * Copyright (C) 2024, Rowan Hart <rowanbhart@gmail.com>
+> + *
+> + * License: GNU GPL, version 2 or later.
+> + *   See the COPYING file in the top-level directory.
+> + */
+
+We can add a comment here about what the plugin is doing.
+
+> +#include "glib.h"
+> +#include <assert.h>
+> +#include <inttypes.h>
+> +#include <stdio.h>
+> +#include <stdlib.h>
+> +#include <string.h>
+> +#include <unistd.h>
+> +
+> +#include <qemu-plugin.h>
+> +
+> +/*
+> + * Specifies a Hypercall for an architecture:
+> + *
+> + * - Architecture name
+> + * - Whether it is enabled
+> + * - The hypercall instruction
+> + * - The register names to pass the hypercall # and args
+> + */
+> +struct HypercallSpec {
+> +    const char *name;
+> +    const bool enabled;
+> +    const char *hypercall;
+> +    const bool little_endian;
+> +    const char *num_reg;
+> +    const char *arg0_reg;
+> +    const char *arg1_reg;
+> +};
+> +
+> +static const struct HypercallSpec *hypercall_spec;
+> +
+> +static const struct HypercallSpec hypercall_specs[] = {
+> +    { "aarch64", false, NULL, true, 0, 0, 0 },
+> +    { "aarch64_be", false, NULL, false, 0, 0, 0 },
+> +    { "alpha", false, NULL, true, 0, 0, 0 },
+> +    { "arm", false, NULL, true, 0, 0, 0 },
+> +    { "armeb", false, NULL, false, 0, 0, 0 },
+> +    { "avr", false, NULL, true, 0, 0, 0 },
+> +    { "hexagon", false, NULL, true, 0, 0, 0 },
+> +    { "hppa", false, NULL, false, 0, 0, 0 },
+> +    { "i386", false, NULL, true, 0, 0, 0 },
+> +    { "loongarch64", false, NULL, true, 0, 0, 0 },
+> +    { "m68k", false, NULL, false, 0, 0, 0 },
+> +    { "microblaze", false, NULL, false, 0, 0, 0 },
+> +    { "microblazeel", false, NULL, true, 0, 0, 0 },
+> +    { "mips", false, NULL, false, 0, 0, 0 },
+> +    { "mips64", false, NULL, false, 0, 0, 0 },
+> +    { "mips64el", false, NULL, true, 0, 0, 0 },
+> +    { "mipsel", false, NULL, true, 0, 0, 0 },
+> +    { "mipsn32", false, NULL, false, 0, 0, 0 },
+> +    { "mipsn32el", false, NULL, true, 0, 0, 0 },
+> +    { "or1k", false, NULL, false, 0, 0, 0 },
+> +    { "ppc", false, NULL, false, 0, 0, 0 },
+> +    { "ppc64", false, NULL, false, 0, 0, 0 },
+> +    { "ppc64le", false, NULL, true, 0, 0, 0 },
+> +    { "riscv32", false, NULL, true, 0, 0, 0 },
+> +    { "riscv64", false, NULL, true, 0, 0, 0 },
+> +    { "rx", false, NULL, true, 0, 0, 0 },
+> +    { "s390x", false, NULL, false, 0, 0, 0 },
+> +    { "sh4", false, NULL, true, 0, 0, 0 },
+> +    { "sh4eb", false, NULL, false, 0, 0, 0 },
+> +    { "sparc", false, NULL, false, 0, 0, 0 },
+> +    { "sparc32plus", false, NULL, false, 0, 0, 0 },
+> +    { "sparc64", false, NULL, false, 0, 0, 0 },
+> +    { "tricore", false, NULL, true, 0, 0, 0 },
+> +    { "x86_64", true, "\x0f\xa2", true, "rax", "rdi", "rsi" },
+> +    { "xtensa", false, NULL, true, 0, 0, 0 },
+> +    { "xtensaeb", false, NULL, false, 0, 0, 0 },
+> +    { NULL, false, NULL, false, 0, 0, 0 },
+> +};
+> +
+> +QEMU_PLUGIN_EXPORT int qemu_plugin_version = QEMU_PLUGIN_VERSION;
+> +
+> +/*
+> + * Returns a handle to a register with a given name, or NULL if there is no
+> + * such register.
+> + */
+> +static struct qemu_plugin_register *get_register(const char *name)
+> +{
+> +    GArray *registers = qemu_plugin_get_registers();
+> +
+> +    struct qemu_plugin_register *handle = NULL;
+> +
+> +    qemu_plugin_reg_descriptor *reg_descriptors =
+> +        (qemu_plugin_reg_descriptor *)registers->data;
+> +
+> +    for (size_t i = 0; i < registers->len; i++) {
+> +        if (!strcmp(reg_descriptors[i].name, name)) {
+> +            handle = reg_descriptors[i].handle;
+> +        }
+> +    }
+> +
+> +    g_array_free(registers, true);
+> +
+> +    return handle;
+> +}
+> +
+> +/*
+> + * Transforms a byte array with at most 8 entries into a uint64_t
+> + * depending on the target machine's endianness.
+> + */
+> +static uint64_t byte_array_to_uint64(GByteArray *buf)
+> +{
+> +    uint64_t value = 0;
+> +    if (hypercall_spec->little_endian) {
+> +        for (int i = 0; i < buf->len && i < sizeof(uint64_t); i++) {
+> +            value |= ((uint64_t)buf->data[i]) << (i * 8);
+> +        }
+> +    } else {
+> +        for (int i = 0; i < buf->len && i < sizeof(uint64_t); i++) {
+> +            value |= ((uint64_t)buf->data[i]) << ((buf->len - 1 - i) * 8);
+> +        }
+> +    }
+> +    return value;
+> +}
+> +
+> +/*
+> + * Handle a "hyperacll" instruction, which has some special meaning for this
+> + * plugin.
+> + */
+> +static void hypercall(unsigned int vcpu_index, void *userdata)
+> +{
+> +    uint64_t num = 0, arg0 = 0, arg1 = 0;
+> +    GByteArray *buf = g_byte_array_new();
+> +    qemu_plugin_read_register(get_register(hypercall_spec->num_reg), buf);
+> +    num = byte_array_to_uint64(buf);
+> +
+> +    g_byte_array_set_size(buf, 0);
+> +    qemu_plugin_read_register(get_register(hypercall_spec->arg0_reg), buf);
+> +    arg0 = byte_array_to_uint64(buf);
+> +
+> +    g_byte_array_set_size(buf, 0);
+> +    qemu_plugin_read_register(get_register(hypercall_spec->arg1_reg), buf);
+> +    arg1 = byte_array_to_uint64(buf);
+> +
+> +    switch (num) {
+> +    /*
+> +     * The write hypercall (#0x13371337) tells the plugin to write random bytes
+> +     * of a given size into the memory of the emulated system at a particular
+> +     * vaddr
+> +     */
+
+One challenge with picking a random value, is how to ensure this pattern 
+has no other meaning for all architectures? I'm not sure we can find a 
+single pattern of bytes that works for all arch, even though that would 
+be definitely stylish :).
+
+In more, it seems that we are reinventing the syscall interface, while 
+we already have it. But as the current instrumentation only works for 
+user-mode, having a specific hypercall interface might be worth it for 
+plugins, so system mode could benefit from it too.
+
+The work done here could serve later to define a proper interface.
+
+> +    case 0x13371337: {
+> +        GByteArray *data = g_byte_array_new();
+> +        g_byte_array_set_size(data, arg1);
+> +        for (uint64_t i = 0; i < arg1; i++) {
+> +            data->data[i] = (uint8_t)g_random_int();
+> +        }
+> +        qemu_plugin_write_memory_vaddr(arg0, data);
+> +        break;
+> +    }
+> +    default:
+> +        break;
+> +    }
+> +
+> +    g_byte_array_free(buf, TRUE);
+> +}
+> +
+> +/*
+> + * Callback on translation of a translation block.
+> + */
+> +static void vcpu_tb_trans(qemu_plugin_id_t id, struct qemu_plugin_tb *tb)
+> +{
+> +    for (size_t i = 0; i < qemu_plugin_tb_n_insns(tb); i++) {
+> +        struct qemu_plugin_insn *insn = qemu_plugin_tb_get_insn(tb, i);
+> +        GByteArray *insn_data = g_byte_array_new();
+> +        size_t insn_len = qemu_plugin_insn_size(insn);
+> +        g_byte_array_set_size(insn_data, insn_len);
+> +        qemu_plugin_insn_data(insn, insn_data->data, insn_data->len);
+> +        if (!memcmp(insn_data->data, hypercall_spec->hypercall, insn_data->len)) {
+> +            qemu_plugin_register_vcpu_insn_exec_cb(insn, hypercall,
+> +                                                   QEMU_PLUGIN_CB_R_REGS, NULL);
+> +        }
+> +        g_byte_array_free(insn_data, true);
+> +    }
+> +}
+> +
+> +
+> +/*
+> + * Called when the plugin is installed
+> + */
+> +QEMU_PLUGIN_EXPORT int qemu_plugin_install(qemu_plugin_id_t id,
+> +                                           const qemu_info_t *info, int argc,
+> +                                           char **argv)
+> +{
+> +    hypercall_spec = &hypercall_specs[0];
+> +    while (hypercall_spec->name != NULL) {
+> +        if (!strcmp(hypercall_spec->name, info->target_name)) {
+> +            break;
+> +        }
+> +        hypercall_spec++;
+> +    }
+> +
+> +    if (hypercall_spec->name == NULL) {
+> +        qemu_plugin_outs("Error: no hypercall spec.");
+> +        return -1;
+> +    }
+> +
+> +    qemu_plugin_register_vcpu_tb_trans_cb(id, vcpu_tb_trans);
+> +
+> +    return 0;
+> +}
+> diff --git a/tests/tcg/plugins/meson.build b/tests/tcg/plugins/meson.build
+> index f847849b1b..96782416d3 100644
+> --- a/tests/tcg/plugins/meson.build
+> +++ b/tests/tcg/plugins/meson.build
+> @@ -1,6 +1,6 @@
+>   t = []
+>   if get_option('plugins')
+> -  foreach i : ['bb', 'empty', 'inline', 'insn', 'mem', 'syscall']
+> +  foreach i : ['bb', 'empty', 'inline', 'insn', 'mem', 'syscall', 'inject']
+>       if host_os == 'windows'
+>         t += shared_module(i, files(i + '.c') + '../../../contrib/plugins/win32_linker.c',
+>                           include_directories: '../../../include/qemu',
+> diff --git a/tests/tcg/x86_64/Makefile.target b/tests/tcg/x86_64/Makefile.target
+> index d6dff559c7..7c8e21636d 100644
+> --- a/tests/tcg/x86_64/Makefile.target
+> +++ b/tests/tcg/x86_64/Makefile.target
+> @@ -18,6 +18,7 @@ X86_64_TESTS += adox
+>   X86_64_TESTS += test-1648
+>   X86_64_TESTS += test-2175
+>   X86_64_TESTS += cross-modifying-code
+> +X86_64_TESTS += inject-target
+>   TESTS=$(MULTIARCH_TESTS) $(X86_64_TESTS) test-x86_64
+>   else
+>   TESTS=$(MULTIARCH_TESTS)
+> diff --git a/tests/tcg/x86_64/inject-target.c b/tests/tcg/x86_64/inject-target.c
+> new file mode 100644
+> index 0000000000..c886e5ab8b
+> --- /dev/null
+> +++ b/tests/tcg/x86_64/inject-target.c
+> @@ -0,0 +1,27 @@
+> +#include <stddef.h>
+> +#include <stdint.h>
+> +#include <stdio.h>
+> +
+> +#define hypercall(num, arg0, arg1)                                \
+> +    unsigned int _a __attribute__((unused)) = 0;                  \
+> +    unsigned int _b __attribute__((unused)) = 0;                  \
+> +    unsigned int _c __attribute__((unused)) = 0;                  \
+> +    unsigned int _d __attribute__((unused)) = 0;                  \
+> +    __asm__ __volatile__("cpuid\n\t"                              \
+> +                         : "=a"(_a), "=b"(_b), "=c"(_c), "=d"(_d) \
+> +                         : "a"(num), "D"(arg0), "S"(arg1));
+> +
+> +int main(void)
+> +{
+> +    uint16_t value;
+> +
+> +    for (size_t i = 0; i < 1000000; i++) {
+> +        hypercall(0x13371337, &value, sizeof(value));
+> +        if (value == 0x1337) {
+> +            printf("Victory!\n");
+> +            return 0;
+> +        }
+> +    }
+> +    return 1;
+> +}
+> +
+
 
