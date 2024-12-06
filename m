@@ -2,32 +2,32 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA2E69E7A69
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Dec 2024 22:12:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 67F739E7A73
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Dec 2024 22:13:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tJfcg-00016b-Cj; Fri, 06 Dec 2024 16:12:26 -0500
+	id 1tJfd5-0001Vs-T7; Fri, 06 Dec 2024 16:12:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1tJfcb-00016M-H7
- for qemu-devel@nongnu.org; Fri, 06 Dec 2024 16:12:21 -0500
+ id 1tJfcy-0001Fh-6b
+ for qemu-devel@nongnu.org; Fri, 06 Dec 2024 16:12:46 -0500
 Received: from vps-ovh.mhejs.net ([145.239.82.108])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1tJfcZ-0000Vi-Vm
- for qemu-devel@nongnu.org; Fri, 06 Dec 2024 16:12:21 -0500
+ id 1tJfcq-0000WX-Mp
+ for qemu-devel@nongnu.org; Fri, 06 Dec 2024 16:12:39 -0500
 Received: from MUA
  by vps-ovh.mhejs.net with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
  (Exim 4.98) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1tJfcV-00000003MwQ-3ien; Fri, 06 Dec 2024 22:12:15 +0100
-Message-ID: <0d1c8659-71c1-42df-8438-f70f7ffc4610@maciej.szmigiero.name>
-Date: Fri, 6 Dec 2024 22:12:10 +0100
+ id 1tJfcn-00000003Mwd-0DYE; Fri, 06 Dec 2024 22:12:33 +0100
+Message-ID: <454ab654-634c-4286-87f8-6379aa6fa27c@maciej.szmigiero.name>
+Date: Fri, 6 Dec 2024 22:12:27 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 06/24] migration: Add qemu_loadvm_load_state_buffer()
- and its handler
+Subject: Re: [PATCH v3 10/24] migration/multifd: Device state transfer support
+ - receive side
 To: Peter Xu <peterx@redhat.com>
 Cc: Fabiano Rosas <farosas@suse.de>,
  Alex Williamson <alex.williamson@redhat.com>,
@@ -37,8 +37,8 @@ Cc: Fabiano Rosas <farosas@suse.de>,
  Avihai Horon <avihaih@nvidia.com>, Joao Martins <joao.m.martins@oracle.com>,
  qemu-devel@nongnu.org
 References: <cover.1731773021.git.maciej.szmigiero@oracle.com>
- <d791cb76e8c43a30b49758ed641bf566f5325e2a.1731773021.git.maciej.szmigiero@oracle.com>
- <Z1DKVpGEzp2X4oOr@x1n>
+ <8679a04fda669b0e8f0e3b8c598aa4a58a67de40.1731773021.git.maciej.szmigiero@oracle.com>
+ <Z1HPf850jFdBD9IS@x1n>
 Content-Language: en-US, pl-PL
 From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
 Autocrypt: addr=mail@maciej.szmigiero.name; keydata=
@@ -82,7 +82,7 @@ Autocrypt: addr=mail@maciej.szmigiero.name; keydata=
  xNT833IQSNqyuEnxG9/M82yYa+9ClBiRKM2JyvgnBEbiWA15rAQkOqZGJfFJ3bmTFePx4R/I
  ZVehUxCRY5IS1FLe16tymf9lCASrPXnkO2+hkHpBCwt75wnccS3DwtIGqwagVVmciCxAFg9E
  WZ4dI5B0IUziKtBxgwJG4xY5rp7WbzywjCeaaKubtcLQ9bSBkkK4U8Fu58g6Hg==
-In-Reply-To: <Z1DKVpGEzp2X4oOr@x1n>
+In-Reply-To: <Z1HPf850jFdBD9IS@x1n>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Received-SPF: none client-ip=145.239.82.108;
@@ -109,71 +109,219 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 4.12.2024 22:32, Peter Xu wrote:
-> On Sun, Nov 17, 2024 at 08:20:01PM +0100, Maciej S. Szmigiero wrote:
+On 5.12.2024 17:06, Peter Xu wrote:
+> On Sun, Nov 17, 2024 at 08:20:05PM +0100, Maciej S. Szmigiero wrote:
 >> From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
 >>
->> qemu_loadvm_load_state_buffer() and its load_state_buffer
->> SaveVMHandler allow providing device state buffer to explicitly
->> specified device via its idstr and instance id.
+>> Add a basic support for receiving device state via multifd channels -
+>> channels that are shared with RAM transfers.
 >>
->> Reviewed-by: Fabiano Rosas <farosas@suse.de>
+>> Depending whether MULTIFD_FLAG_DEVICE_STATE flag is present or not in the
+>> packet header either device state (MultiFDPacketDeviceState_t) or RAM
+>> data (existing MultiFDPacket_t) is read.
+>>
+>> The received device state data is provided to
+>> qemu_loadvm_load_state_buffer() function for processing in the
+>> device's load_state_buffer handler.
+>>
 >> Signed-off-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
 > 
 > Reviewed-by: Peter Xu <peterx@redhat.com>
 > 
-> One nitpick:
+> Only a few nitpicks:
 > 
 >> ---
->>   include/migration/register.h | 17 +++++++++++++++++
->>   migration/savevm.c           | 23 +++++++++++++++++++++++
->>   migration/savevm.h           |  3 +++
->>   3 files changed, 43 insertions(+)
+>>   migration/multifd.c | 87 +++++++++++++++++++++++++++++++++++++++++----
+>>   migration/multifd.h | 26 +++++++++++++-
+>>   2 files changed, 105 insertions(+), 8 deletions(-)
 >>
->> diff --git a/include/migration/register.h b/include/migration/register.h
->> index ff0faf5f68c8..39991f3cc5d0 100644
->> --- a/include/migration/register.h
->> +++ b/include/migration/register.h
->> @@ -229,6 +229,23 @@ typedef struct SaveVMHandlers {
->>        */
->>       int (*load_state)(QEMUFile *f, void *opaque, int version_id);
->>   
->> +    /* This runs outside the BQL. */
->> +
->> +    /**
->> +     * @load_state_buffer
->> +     *
->> +     * Load device state buffer provided to qemu_loadvm_load_state_buffer().
->> +     *
->> +     * @opaque: data pointer passed to register_savevm_live()
->> +     * @buf: the data buffer to load
->> +     * @len: the data length in buffer
->> +     * @errp: pointer to Error*, to store an error if it happens.
->> +     *
->> +     * Returns zero to indicate success and negative for error
->> +     */
->> +    int (*load_state_buffer)(void *opaque, char *buf, size_t len,
->> +                             Error **errp);
->> +
->>       /**
->>        * @load_setup
->>        *
->> diff --git a/migration/savevm.c b/migration/savevm.c
->> index a254c38edcca..1f58a2fa54ae 100644
->> --- a/migration/savevm.c
->> +++ b/migration/savevm.c
->> @@ -3085,6 +3085,29 @@ int qemu_loadvm_approve_switchover(void)
->>       return migrate_send_rp_switchover_ack(mis);
+>> diff --git a/migration/multifd.c b/migration/multifd.c
+>> index 999b88b7ebcb..9578a985449b 100644
+>> --- a/migration/multifd.c
+>> +++ b/migration/multifd.c
+>> @@ -21,6 +21,7 @@
+>>   #include "file.h"
+>>   #include "migration.h"
+>>   #include "migration-stats.h"
+>> +#include "savevm.h"
+>>   #include "socket.h"
+>>   #include "tls.h"
+>>   #include "qemu-file.h"
+>> @@ -252,14 +253,24 @@ static int multifd_recv_unfill_packet_header(MultiFDRecvParams *p,
+>>       return 0;
 >>   }
 >>   
->> +int qemu_loadvm_load_state_buffer(const char *idstr, uint32_t instance_id,
->> +                                  char *buf, size_t len, Error **errp)
+>> -static int multifd_recv_unfill_packet(MultiFDRecvParams *p, Error **errp)
+>> +static int multifd_recv_unfill_packet_device_state(MultiFDRecvParams *p,
+>> +                                                   Error **errp)
+>> +{
+>> +    MultiFDPacketDeviceState_t *packet = p->packet_dev_state;
+>> +
+>> +    packet->instance_id = be32_to_cpu(packet->instance_id);
+>> +    p->next_packet_size = be32_to_cpu(packet->next_packet_size);
+>> +
+>> +    return 0;
+>> +}
+>> +
+>> +static int multifd_recv_unfill_packet_ram(MultiFDRecvParams *p, Error **errp)
+>>   {
+>>       const MultiFDPacket_t *packet = p->packet;
+>>       int ret = 0;
+>>   
+>>       p->next_packet_size = be32_to_cpu(packet->next_packet_size);
+>>       p->packet_num = be64_to_cpu(packet->packet_num);
+>> -    p->packets_recved++;
+>>   
+>>       if (!(p->flags & MULTIFD_FLAG_SYNC)) {
+>>           ret = multifd_ram_unfill_packet(p, errp);
+>> @@ -271,6 +282,17 @@ static int multifd_recv_unfill_packet(MultiFDRecvParams *p, Error **errp)
+>>       return ret;
+>>   }
+>>   
+>> +static int multifd_recv_unfill_packet(MultiFDRecvParams *p, Error **errp)
+>> +{
+>> +    p->packets_recved++;
+>> +
+>> +    if (p->flags & MULTIFD_FLAG_DEVICE_STATE) {
+>> +        return multifd_recv_unfill_packet_device_state(p, errp);
+>> +    }
+>> +
+>> +    return multifd_recv_unfill_packet_ram(p, errp);
+>> +}
+>> +
+>>   static bool multifd_send_should_exit(void)
+>>   {
+>>       return qatomic_read(&multifd_send_state->exiting);
+>> @@ -1023,6 +1045,7 @@ static void multifd_recv_cleanup_channel(MultiFDRecvParams *p)
+>>       p->packet_len = 0;
+>>       g_free(p->packet);
+>>       p->packet = NULL;
+>> +    g_clear_pointer(&p->packet_dev_state, g_free);
+>>       g_free(p->normal);
+>>       p->normal = NULL;
+>>       g_free(p->zero);
+>> @@ -1124,6 +1147,28 @@ void multifd_recv_sync_main(void)
+>>       trace_multifd_recv_sync_main(multifd_recv_state->packet_num);
+>>   }
+>>   
+>> +static int multifd_device_state_recv(MultiFDRecvParams *p, Error **errp)
+>> +{
+>> +    g_autofree char *idstr = NULL;
+>> +    g_autofree char *dev_state_buf = NULL;
+>> +    int ret;
+>> +
+>> +    dev_state_buf = g_malloc(p->next_packet_size);
+>> +
+>> +    ret = qio_channel_read_all(p->c, dev_state_buf, p->next_packet_size, errp);
+>> +    if (ret != 0) {
+>> +        return ret;
+>> +    }
+>> +
+>> +    idstr = g_strndup(p->packet_dev_state->idstr,
+>> +                      sizeof(p->packet_dev_state->idstr));
+>> +
+>> +    return qemu_loadvm_load_state_buffer(idstr,
+>> +                                         p->packet_dev_state->instance_id,
+>> +                                         dev_state_buf, p->next_packet_size,
+>> +                                         errp);
+>> +}
+>> +
+>>   static void *multifd_recv_thread(void *opaque)
+>>   {
+>>       MultiFDRecvParams *p = opaque;
+>> @@ -1137,6 +1182,7 @@ static void *multifd_recv_thread(void *opaque)
+>>       while (true) {
+>>           MultiFDPacketHdr_t hdr;
+>>           uint32_t flags = 0;
+>> +        bool is_device_state = false;
+>>           bool has_data = false;
+>>           uint8_t *pkt_buf;
+>>           size_t pkt_len;
+>> @@ -1159,8 +1205,14 @@ static void *multifd_recv_thread(void *opaque)
+>>                   break;
+>>               }
+>>   
+>> -            pkt_buf = (uint8_t *)p->packet + sizeof(hdr);
+>> -            pkt_len = p->packet_len - sizeof(hdr);
+>> +            is_device_state = p->flags & MULTIFD_FLAG_DEVICE_STATE;
+>> +            if (is_device_state) {
+>> +                pkt_buf = (uint8_t *)p->packet_dev_state + sizeof(hdr);
+>> +                pkt_len = sizeof(*p->packet_dev_state) - sizeof(hdr);
+>> +            } else {
+>> +                pkt_buf = (uint8_t *)p->packet + sizeof(hdr);
+>> +                pkt_len = p->packet_len - sizeof(hdr);
+>> +            }
+>>   
+>>               ret = qio_channel_read_all_eof(p->c, (char *)pkt_buf, pkt_len,
+>>                                              &local_err);
+>> @@ -1178,9 +1230,14 @@ static void *multifd_recv_thread(void *opaque)
+>>               flags = p->flags;
+>>               /* recv methods don't know how to handle the SYNC flag */
+>>               p->flags &= ~MULTIFD_FLAG_SYNC;
+>> -            if (!(flags & MULTIFD_FLAG_SYNC)) {
+>> -                has_data = p->normal_num || p->zero_num;
+>> +
+>> +            if (is_device_state) {
+>> +                has_data = p->next_packet_size > 0;
+>> +            } else {
+>> +                has_data = !(flags & MULTIFD_FLAG_SYNC) &&
+>> +                    (p->normal_num || p->zero_num);
+>>               }
+>> +
+>>               qemu_mutex_unlock(&p->mutex);
+>>           } else {
+>>               /*
+>> @@ -1209,14 +1266,29 @@ static void *multifd_recv_thread(void *opaque)
+>>           }
+>>   
+>>           if (has_data) {
+>> -            ret = multifd_recv_state->ops->recv(p, &local_err);
+>> +            if (is_device_state) {
+>> +                assert(use_packets);
+>> +                ret = multifd_device_state_recv(p, &local_err);
+>> +            } else {
+>> +                ret = multifd_recv_state->ops->recv(p, &local_err);
+>> +            }
+>>               if (ret != 0) {
+>>                   break;
+>>               }
+>> +        } else if (is_device_state) {
+>> +            error_setg(&local_err,
+>> +                       "multifd: received empty device state packet");
+>> +            break;
 > 
-> Suggest to always return bool as success/fail, especially when using
-> Error**.
+> You used assert anyway elsewhere, and this also smells like programming
+> error.  We could stick with assert above and reduce "if / elif ...":
+> 
+>      if (is_device_state) {
+>          assert(p->next_packet_size > 0);
+>          has_data = true;
+>      }
+> 
+> Then drop else if.
+
+It's not necessarily a programming error, but rather a problem with the
+received bit stream or its incompatibility with the receiving QEMU version.
+
+So I think returning an error is more appropriate than triggering
+an assert() failure for that.
+
+>>           }
+>>   
+>>           if (use_packets) {
+>>               if (flags & MULTIFD_FLAG_SYNC) {
+>> +                if (is_device_state) {
+>> +                    error_setg(&local_err,
+>> +                               "multifd: received SYNC device state packet");
+>> +                    break;
+>> +                }
+> 
+> Same here. I'd use assert().
 > 
 
-Will change the return type to bool then.
+Same here :) - the sender sent us possibly wrong packet or packet of
+incompatible version, we should handle this gracefully rather than
+assert()/abort() QEMU.
 
 Thanks,
 Maciej
