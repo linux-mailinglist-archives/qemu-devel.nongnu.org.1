@@ -2,80 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54C019E701A
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Dec 2024 15:35:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 63F7B9E704F
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Dec 2024 15:41:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tJZQ6-0000Tf-VN; Fri, 06 Dec 2024 09:35:02 -0500
+	id 1tJZVR-0001uf-RK; Fri, 06 Dec 2024 09:40:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tJZQ3-0000T8-PY
- for qemu-devel@nongnu.org; Fri, 06 Dec 2024 09:34:59 -0500
-Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tJZVO-0001te-9E
+ for qemu-devel@nongnu.org; Fri, 06 Dec 2024 09:40:31 -0500
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tJZQ1-0003wS-O3
- for qemu-devel@nongnu.org; Fri, 06 Dec 2024 09:34:59 -0500
-Received: by mail-wr1-x42c.google.com with SMTP id
- ffacd0b85a97d-3862a921123so651393f8f.3
- for <qemu-devel@nongnu.org>; Fri, 06 Dec 2024 06:34:57 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tJZVM-0005Yy-MK
+ for qemu-devel@nongnu.org; Fri, 06 Dec 2024 09:40:30 -0500
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-434ab114753so14656855e9.0
+ for <qemu-devel@nongnu.org>; Fri, 06 Dec 2024 06:40:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1733495696; x=1734100496; darn=nongnu.org;
+ d=linaro.org; s=google; t=1733496015; x=1734100815; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=7p/pCWiWYAa7p+4sfQ7+6ToNkUn2W0vom0JjKjiKcSM=;
- b=erdfSeAXJ7K+oyulgZawFmu5Cce1hrKcI85vRbV2r2ZkadtvOeODgeaeuqdIdirv6S
- M0/RQovvtCoAJ4Ebpkkg8XmFnSokOfe8o5E9TQCPNi3/EUL7YuIcGuMWnJP20oMJLYHW
- qMbnvLcc2uWYMdq8ktH5CEEX+22TXsy1ikGLvDvfUrGYLJQ3bRe/srzWrf01EU/vuAVC
- hzFRcsZc/i/1HreiKFRX/iJEsiFzggIBQAml1FhmY4DJXWeYe2yYJGUnvSQygiCSFOxu
- E5NE0WTaszv4/i+jRJEtxCzO4uImR8aZMJMhIM2G8iFqwrMDUUHkDPwBpLMM8YZaUXwW
- WZHg==
+ bh=TLurNv+vebMmCeGP2GoUIEDPPuGDwPAy5lg2WnTOBXo=;
+ b=bAkGhrOAd/Wrz621et5CqRrlEkIhYVuOzI72MMbW5fHn35jNGoXu7bhR7F7b21bByu
+ KxJzhl3p6PR8StllmpjicEtLs4n6w8kpmGVtZhPg4FNn4dE8wlhxSOym5VPwnb5TNR4e
+ 1PgV3CH+0QxDMCjJG8vQQm7S1yxSFULcJjZuAaTynis2bc/MYvnC/YjJwh1Tm+aQials
+ OVnvr/028GOBH2DYaD1vYZxmXDaeneeg91ikyi0ZPrY6q5TbgKs/br0H+sNDIGDeXLdd
+ rnyy7FtW5xNeK8SM6HWX6RWjwqA+e8JZiT5jAzoX0vWMPtGZ3NipFaj0cpg+gli8obvz
+ ZP+A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733495696; x=1734100496;
+ d=1e100.net; s=20230601; t=1733496015; x=1734100815;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=7p/pCWiWYAa7p+4sfQ7+6ToNkUn2W0vom0JjKjiKcSM=;
- b=t2DUo/EgMvvkEB2RNWMj8LHGz1pkCvzEwzALvESxFLH5pRrtUb9E1BAqD6ThENmGIy
- gY600p1szy2YFmLN/edrFALL89gznv1OgEFj7uMb69wWOMp2oT1ecqFUz87n6XiFS7GH
- AFLjBeOaSdBNWihoib5kks3QWxHJP85GtxTGD016+33/4kjf8iB3l5AWkn2eWRKVJeCI
- 76faAOhFC+N9FAtzdiF01hpOTa0ZGfBgXLvuGbFGshWGH6FhvGIlJ2kqagvCHM+8UdUb
- 8L/0XFNblUQR3bN4WGJMGNr3Ab/FmnAM0L3r8u6xUYGsH27SfwNUEtMn/4S7J2SNnPIn
- jVWw==
-X-Gm-Message-State: AOJu0Yx1TozUvFnnu5yg1qe529u8EYZWMC0v+eq8ZgR2DM6JDTc7Eu7m
- +R/xaakktRORK2VvhUYRYCbpIXDTy/oTPhZ33wmpdgoPE637RVLaye9BjhxfkXQ=
-X-Gm-Gg: ASbGnctjlvqfDPn1fTg3o/3XuLrDf7YVf29kQeFv4D1ER5zLt6NA7qSNY767g1x03sN
- zMs3bAYXEhOjo271F8cOGLIIv5NWSi68fHyTnAYItDL6F1SUhQVJwXhfBK/Tl92N0lrisfE+0PE
- +5zWfp61dEaj3yQ0inUzykUckwHlBa92X7D7UgWPmVubc5g11xmgDYhYwjjgej6dKpM0aL6Nyz2
- 6FnVaYJ63XCL8MhX+2xoRfSmXZ+ayl8u1kwPGkfzuJ0UlAxnxpMeIsKhaZGvQ==
-X-Google-Smtp-Source: AGHT+IFOFwRnLv3/BgTOzJpIgnLNcKxNAKNMuRt786v3csh5R8PT935ONby+LVNaL2TGoHyEClQe9A==
-X-Received: by 2002:a5d:47ab:0:b0:386:256c:8e5c with SMTP id
- ffacd0b85a97d-3862b36c8a6mr2351176f8f.20.1733495695556; 
- Fri, 06 Dec 2024 06:34:55 -0800 (PST)
+ bh=TLurNv+vebMmCeGP2GoUIEDPPuGDwPAy5lg2WnTOBXo=;
+ b=OiTloibpuyVszNEbIvudPLftnPyk00HTewjIFTzpb0j3FMsMQaxKPfZJzlR4MvMd1K
+ wbt8pjzbjhc/ZmO9R/8AYTpvQFdG/0uCnImpkScntDPWg6RYkKKLPZ2Mw7a44jlF+UBe
+ nvD2VdV0lqWVCPwrFEEmDVulRK+qjzZ0Wr/fc9QhFZ0Ncnd5zSoquSnOUi5gshc0F3R8
+ zkQwJW3eGzwhSHGCfwsdDpfQt6KSnbAOhtuxrLMOj/6YhzZXL0fUKcO0U2X/tHH8U5p3
+ Zn1x5y0MQ/OCH6KMEIiE2VyalzMnVQS8+MZwyyOxYrjw5PS4otWUn+ErF5OXYoBPNITd
+ +ccg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWteCf4gMiD/TuW02Ka3ATNTom7itC4KBP3UwR0igBR7pKJ21LlbfPhZ8ewwA6Btd+0AT5fFn8XM5OG@nongnu.org
+X-Gm-Message-State: AOJu0YxpSR9uci2trNW70k9Q1UUHqPTgILwRb1zveEkwg86GdHSo3SR6
+ f57jm2IqOCtrBQzPaZQxwkq3YTz1iQWDLRAU09YGPBImbId7nNWFGMeiFY6tLcs=
+X-Gm-Gg: ASbGncvfIb0cdWUhfpwXJw65TWeNbmwYKWJ4wq2iHEUy6encbeidMwT4PzlV5VaX4NL
+ qwIEFVdoz8dcSnGnFTo+FVqfjxpgDqad/+zjUTwiE+PxnLVcJbEBqMcbySjEFW43YN8BXY5gXfr
+ gZ+EfHucCRu7UMVurFc7xqmw9kUWUzkyNe7tl44zigCF7jC56jfn/qAwZalLhYWtpDPVxtH8dJm
+ mD5NLFxNNxX4ACGfjPZ+Zp+8XXQHG3r2W22PEm+ReoBZSBiyzEwhc1+SdBJMA==
+X-Google-Smtp-Source: AGHT+IE4OKsUD+ye0UtIPo8s2bx4eSdbdfS2ZCpek/UnzazoGUch0EJd2gGWE4b/n1KG4vRQA3Ph2w==
+X-Received: by 2002:a05:600c:3c9c:b0:434:a968:89a3 with SMTP id
+ 5b1f17b1804b1-434ddeabbe3mr29676405e9.9.1733496015123; 
+ Fri, 06 Dec 2024 06:40:15 -0800 (PST)
 Received: from [192.168.224.213] ([95.127.41.180])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3862e52a96csm1244596f8f.33.2024.12.06.06.34.53
+ ffacd0b85a97d-3861ecf4395sm4667168f8f.10.2024.12.06.06.40.13
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 06 Dec 2024 06:34:54 -0800 (PST)
-Message-ID: <30502a2f-3d33-4583-8e78-4da50ce1e247@linaro.org>
-Date: Fri, 6 Dec 2024 15:34:52 +0100
+ Fri, 06 Dec 2024 06:40:14 -0800 (PST)
+Message-ID: <bdbbdbf5-939f-4f58-8d9c-9e7d38ea0469@linaro.org>
+Date: Fri, 6 Dec 2024 15:40:12 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] target/xtensa: Remove tswap() calls in semihosting
- simcall() helper
-To: Max Filippov <jcmvbkbc@gmail.com>
-Cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>
-References: <20241205232437.85235-1-philmd@linaro.org>
- <20241205232437.85235-3-philmd@linaro.org>
- <CAMo8BfKMhNd0C2HwL2aGAjPUZS8B7u8ncyW5PicswPns28SAmA@mail.gmail.com>
+Subject: Re: [PATCH] scripts: improve error from qemu-trace-stap on missing
+ 'stap'
+To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ qemu-devel@nongnu.org
+Cc: Stefan Hajnoczi <stefanha@redhat.com>, Mads Ynddal <mads@ynddal.dk>
+References: <20241206114524.1666664-1-berrange@redhat.com>
 Content-Language: en-US
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <CAMo8BfKMhNd0C2HwL2aGAjPUZS8B7u8ncyW5PicswPns28SAmA@mail.gmail.com>
+In-Reply-To: <20241206114524.1666664-1-berrange@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,81 +99,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/12/24 13:41, Max Filippov wrote:
-> On Thu, Dec 5, 2024 at 3:24 PM Philippe Mathieu-Daudé <philmd@linaro.org> wrote:
->>
->> In preparation of heterogeneous emulation where cores with
->> different endianness can run concurrently, we need to remove
->> the tswap() calls -- which use a fixed per-binary endianness.
->>
->> Get the endianness of the CPU accessed using the libisa
->> xtensa_isa_is_big_endian() call and replace the tswap() calls
->> by bswap() ones when necessary.
->>
->> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->> ---
->>   target/xtensa/xtensa-semi.c | 16 ++++++++++++++--
->>   1 file changed, 14 insertions(+), 2 deletions(-)
->>
->> diff --git a/target/xtensa/xtensa-semi.c b/target/xtensa/xtensa-semi.c
->> index fa21b7e11fc..21d23e39de5 100644
->> --- a/target/xtensa/xtensa-semi.c
->> +++ b/target/xtensa/xtensa-semi.c
->> @@ -328,10 +328,17 @@ void HELPER(simcall)(CPUXtensaState *env)
->>               struct timeval tv = {0};
->>
->>               if (target_tv) {
->> +                bool cpu_big_endian = xtensa_isa_is_big_endian(env->config->isa);
->> +                bool swap_needed = HOST_BIG_ENDIAN != cpu_big_endian;
->> +
->>                   cpu_memory_rw_debug(cs, target_tv,
->>                           (uint8_t *)target_tvv, sizeof(target_tvv), 0);
->> -                tv.tv_sec = (int32_t)tswap32(target_tvv[0]);
->> -                tv.tv_usec = (int32_t)tswap32(target_tvv[1]);
->> +                if (swap_needed) {
->> +                    bswap32s(&target_tvv[0]);
->> +                    bswap32s(&target_tvv[1]);
->> +                }
->> +                tv.tv_sec = (int32_t)target_tvv[0];
->> +                tv.tv_usec = (int32_t)target_tvv[1];
+On 6/12/24 12:45, Daniel P. Berrangé wrote:
+> If the 'stap' binary is missing in $PATH, a huge trace is thrown
 > 
-> This conversion looks a bit heavy. Maybe it would be better to
-> give tswap*() an additional env argument and give the target
-> a way to deal with it?
+>    $ qemu-trace-stap list /usr/bin/qemu-system-x86_64
+>    Traceback (most recent call last):
+>    File "/usr/bin/qemu-trace-stap", line 169, in <module>
+>    main()
+>    File "/usr/bin/qemu-trace-stap", line 165, in main
+>    args.func(args)
+>    File "/usr/bin/qemu-trace-stap", line 83, in cmd_run
+>    subprocess.call(stapargs)
+>    File "/usr/lib64/python3.12/subprocess.py", line 389, in call
+>    with Popen(*popenargs, **kwargs) as p:
+>    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>    File "/usr/lib64/python3.12/subprocess.py", line 1026, in {}init{}
+>    self._execute_child(args, executable, preexec_fn, close_fds,
+>    File "/usr/lib64/python3.12/subprocess.py", line 1955, in _execute_child
+>    raise child_exception_type(errno_num, err_msg, err_filename)
+>    FileNotFoundError: [Errno 2] No such file or directory: 'stap'
+> 
+> With this change the user now gets
+> 
+>    $ qemu-trace-stap list /usr/bin/qemu-system-x86_64
+>    Unable to find 'stap' in $PATH
+> 
+> Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+> ---
+>   scripts/qemu-trace-stap | 6 ++++--
+>   1 file changed, 4 insertions(+), 2 deletions(-)
 
-Yeah, something like that. TBH I'm not really happy with these
-changes, and am having hard time figuring out a simple and
-meaningful API.
-
-> 
->>               }
->>               if (fd < 3 && sim_console) {
->>                   if ((fd == 1 || fd == 2) && rq == SELECT_ONE_WRITE) {
->> @@ -381,6 +388,8 @@ void HELPER(simcall)(CPUXtensaState *env)
->>               int argc = semihosting_get_argc();
->>               int str_offset = (argc + 1) * sizeof(uint32_t);
->>               int i;
->> +            bool cpu_big_endian = xtensa_isa_is_big_endian(env->config->isa);
->> +            bool swap_needed = HOST_BIG_ENDIAN != cpu_big_endian;
->>               uint32_t argptr;
->>
->>               for (i = 0; i < argc; ++i) {
->> @@ -388,6 +397,9 @@ void HELPER(simcall)(CPUXtensaState *env)
->>                   int str_size = strlen(str) + 1;
->>
->>                   argptr = tswap32(regs[3] + str_offset);
-> 
-> The tswap() is still here.
-
-Oops!
-
-> 
->> +                if (swap_needed) {
->> +                    bswap32s(&argptr);
->> +                }
->>
->>                   cpu_memory_rw_debug(cs,
->>                                       regs[3] + i * sizeof(uint32_t),
-> 
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
