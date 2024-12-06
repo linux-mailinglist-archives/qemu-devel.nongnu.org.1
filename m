@@ -2,82 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A67B9E6E74
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Dec 2024 13:42:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F8EE9E6FF3
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Dec 2024 15:21:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tJXeI-0007ar-FT; Fri, 06 Dec 2024 07:41:34 -0500
+	id 1tJZC8-0008OF-Nm; Fri, 06 Dec 2024 09:20:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jcmvbkbc@gmail.com>)
- id 1tJXeC-0007aL-GD
- for qemu-devel@nongnu.org; Fri, 06 Dec 2024 07:41:28 -0500
-Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
+ (Exim 4.90_1) (envelope-from <wannacu2049@gmail.com>)
+ id 1tJV72-00074w-Ol
+ for qemu-devel@nongnu.org; Fri, 06 Dec 2024 04:59:05 -0500
+Received: from mail-pj1-x1035.google.com ([2607:f8b0:4864:20::1035])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <jcmvbkbc@gmail.com>)
- id 1tJXeA-0007Hm-UR
- for qemu-devel@nongnu.org; Fri, 06 Dec 2024 07:41:28 -0500
-Received: by mail-pl1-x629.google.com with SMTP id
- d9443c01a7336-215909152c5so22419115ad.3
- for <qemu-devel@nongnu.org>; Fri, 06 Dec 2024 04:41:26 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <wannacu2049@gmail.com>)
+ id 1tJV71-0005Jj-6l
+ for qemu-devel@nongnu.org; Fri, 06 Dec 2024 04:59:04 -0500
+Received: by mail-pj1-x1035.google.com with SMTP id
+ 98e67ed59e1d1-2e9ff7a778cso2426549a91.1
+ for <qemu-devel@nongnu.org>; Fri, 06 Dec 2024 01:59:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1733488885; x=1734093685; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=8xbbbkeN0skqJj2tVItHbNSq7aCpwAlp8pAUpWgt96o=;
- b=IRv5Doa/nK//gqJZLICNS/ipryjrZ9IYh+o1SsVTqFGXiuc4qPiJTP9QUBNnBjlPxA
- CKy6rUHI4j/yaynanxtGeWaoSTUYRcYK5gEV7jlpw1qSDeSvL6bdIsQ1hMIMpBsFWuTR
- ZjVtoXPIkRMZDxAXCq+mChO9V++iNnTMdmv4YlxQdT2yPzvK5jcfFEAXkx8eXX87TB7d
- Gkd+qFobbETLAP6t02I/257eo0VpABtNWtqw4oseGivNlvJ8D+dBc7ZypqJMDLBbB9Hx
- jTcd+sT01pHC5FKOV0DScKTIIHeGRzxE9aqXdA57TJ+LpOiRc6kiH85ayhZv2TPRUDbD
- Q0nw==
+ d=gmail.com; s=20230601; t=1733479140; x=1734083940; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=6hhdywC7D5JRaBsBgD33rZ4eiOcKwqdK5waiOdjt6Qo=;
+ b=CcAHCFXcN+vL52dammOU+4gJdR38eTCrdbCVpGBgiQXIEPBFHdO2TtMoguSdMg3aa7
+ R/myaQpN6+TCGUO+rE5nuQskrjVNPn2EH/Ws8suzMWAvRpUPSmO3wlbDAyPeYjnkkoww
+ MfP8NQBksoGXmH5DXWi2rV6iOQuqDfrE4jR0fMDVlw6+Stgn4fYRCKblTiKuJ12+11O/
+ GsaqKoYlrUMbobCREmyrljqSEmrzsche9O878CY8m2piNVZkpddSG3+9HEyRIq14PdRe
+ WxTaAOhHJ5lBEghKWfjaUi+zvEfbnx8F1E1QSspKZ+86jnguwi+I77dk4OgNJBEXezJG
+ f+4w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733488885; x=1734093685;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=8xbbbkeN0skqJj2tVItHbNSq7aCpwAlp8pAUpWgt96o=;
- b=VsdlFAyeMSSu4SvMYef7LrwUiwjSkNk5AIP89uf9iVfitXbHRpA0eNUsI119lMwIxT
- DkWJE3fwFfTh6YySdc8odXldRdRG21MhVA7TpHzVJpRn/C3U0x/3gtNlYMaKr7v+7pWk
- MO2ACdDOA8NlkOq1uFVOwTuYLxVikP6pLvqf8oT/ZVXiWxYx+akYFrkvfl/yZHahJCn3
- 6Drom26C48zGTLbcNJmwlh3f0d6dX/wcP5W7a//CnYThHEyPyoZbV0XjP8ilU294lp0g
- +Xs5kjyAq1pAqtcMXJy1h9rdzRNjCc09Rt3Z746wtw33dAjypx7R+Ug2ylHdELcZlzuX
- MRgg==
-X-Gm-Message-State: AOJu0Yw7YnXBGM6Sp4f6ScrBfyNj1i3MolekU46CEvbXSYf3658LQXIf
- YabP2GPcNVfYH0CMqpXXrX/bP8s3XR5QaRtUtde7ubJJVkCyUs784Mo3pEt9th3qatSoHtRSg6H
- ntDA8B4EMyIIBxPKaDVSRk0qCqsw2xQ==
-X-Gm-Gg: ASbGncuErD1xbWhV4Yo6qDE+zi/6+4quACvRtC8yO/+v5bM0lbk02ZOpqae7oFqTL/t
- Qe4kry321t2xV5nukB7u4kBM8bUmzcw==
-X-Google-Smtp-Source: AGHT+IExJhDpXVGQfwA1BfBHJ5gBewNa6hn5YvfS6gUb3zQ/6Dzi2RDsJvdYfGfrTriMK6fbsZBb37iky05m44Nzb+k=
-X-Received: by 2002:a17:903:110c:b0:215:6f9b:e447 with SMTP id
- d9443c01a7336-21614db3f47mr45632415ad.30.1733488885488; Fri, 06 Dec 2024
- 04:41:25 -0800 (PST)
+ d=1e100.net; s=20230601; t=1733479140; x=1734083940;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=6hhdywC7D5JRaBsBgD33rZ4eiOcKwqdK5waiOdjt6Qo=;
+ b=H3A24TJ2ccpnGMjcPgQYisFsQDkb26EOpUVGh90/F3B6F0v1zYjZHU69DF4dNpW/kx
+ WFS5EPPpuUrgfGOLX+Xo/tOYIit42Znjgkkay8RhJ93x9sHis8dXxhreDzkLWUu5zrZm
+ tDobbavqHAQCFuEb+2KxGvcsBMSZWcgxdXL3lNFY/6lY8VPXuTd6ooOKkmc3uKjUmaXP
+ hbjWLBEEXO5Lt+OYboKSJlrwr5kGusghXYQSXlrfA7pINOv+FWIo5CyG1NaSCnoJ+t8l
+ 9zbc5wZ/0Lg1hHH9Q3SrS83z8VB41u6lqqvc/1/MH0TMfUpH3HDlbnycef1GgvoAy85V
+ 01gw==
+X-Gm-Message-State: AOJu0Yw6ZyU5rT7+Iv/YqhwJteetNb9Gv1E/h2bzvy6sOJwi6yt9Aezh
+ e7u61MN8L6j4Q6ejqiXy9T91LHYlLPpASVLA29mIkE1bKR6XJ53KfacuDZ0l6HVQQg==
+X-Gm-Gg: ASbGnct7ovsE9RTJ/n0/SPn6k/weSOSvfTQveIryM4Brcm7q+62NTz8YWh66j7eH9Gu
+ W36NsDSnhoc5wlwCGIe0Lit41nBqxR8Lo55XqL1Wz0T0qnydDJN8TOpLjfRov4cpxCFV/GVUd1Z
+ Nh4Qx3+dFBK6ORLvuzhrvtMm3QBUbU1vKBBhy/55vHTbKic0h6w1PlLpflyZ1tN31P4f+SMvdP+
+ aSSLFUbV9FZc/GzYAUVYS43TQRMo9pHw44siMsj6+4K+2WESmGG+4D/phjDYXU=
+X-Google-Smtp-Source: AGHT+IE7iKEerPKFM7IOBOrFEhkktFUVh5dirNiMNYG+HB78zL/QOhkUbnsg+v3Iy7/L4Z9PpkYr1g==
+X-Received: by 2002:a17:90a:e003:b0:2ee:7862:4385 with SMTP id
+ 98e67ed59e1d1-2ef41be554cmr11676656a91.7.1733479139658; 
+ Fri, 06 Dec 2024 01:58:59 -0800 (PST)
+Received: from localhost.localdomain ([61.183.83.60])
+ by smtp.gmail.com with ESMTPSA id
+ 98e67ed59e1d1-2ef45f7d7b1sm3052950a91.6.2024.12.06.01.58.57
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 06 Dec 2024 01:58:59 -0800 (PST)
+From: wannacu <wannacu2049@gmail.com>
+To: qemu-devel@nongnu.org
+Cc: wannacu <wannacu2049@gmail.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Eduardo Habkost <eduardo@habkost.net>
+Subject: [PATCH] tcg/optimize: Fix constant folding of setcond
+Date: Fri,  6 Dec 2024 17:58:24 +0800
+Message-ID: <20241206095824.281216-1-wannacu2049@gmail.com>
+X-Mailer: git-send-email 2.47.1
 MIME-Version: 1.0
-References: <20241205232437.85235-1-philmd@linaro.org>
- <20241205232437.85235-3-philmd@linaro.org>
-In-Reply-To: <20241205232437.85235-3-philmd@linaro.org>
-From: Max Filippov <jcmvbkbc@gmail.com>
-Date: Fri, 6 Dec 2024 04:41:36 -0800
-Message-ID: <CAMo8BfKMhNd0C2HwL2aGAjPUZS8B7u8ncyW5PicswPns28SAmA@mail.gmail.com>
-Subject: Re: [PATCH 2/2] target/xtensa: Remove tswap() calls in semihosting
- simcall() helper
-To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
- envelope-from=jcmvbkbc@gmail.com; helo=mail-pl1-x629.google.com
-X-Spam_score_int: -7
-X-Spam_score: -0.8
-X-Spam_bar: /
-X-Spam_report: (-0.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- FROM_LOCAL_NOVOWEL=0.5, HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=0.828,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1035;
+ envelope-from=wannacu2049@gmail.com; helo=mail-pj1-x1035.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Fri, 06 Dec 2024 09:20:34 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,79 +96,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Dec 5, 2024 at 3:24=E2=80=AFPM Philippe Mathieu-Daud=C3=A9 <philmd@=
-linaro.org> wrote:
->
-> In preparation of heterogeneous emulation where cores with
-> different endianness can run concurrently, we need to remove
-> the tswap() calls -- which use a fixed per-binary endianness.
->
-> Get the endianness of the CPU accessed using the libisa
-> xtensa_isa_is_big_endian() call and replace the tswap() calls
-> by bswap() ones when necessary.
->
-> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
-> ---
->  target/xtensa/xtensa-semi.c | 16 ++++++++++++++--
->  1 file changed, 14 insertions(+), 2 deletions(-)
->
-> diff --git a/target/xtensa/xtensa-semi.c b/target/xtensa/xtensa-semi.c
-> index fa21b7e11fc..21d23e39de5 100644
-> --- a/target/xtensa/xtensa-semi.c
-> +++ b/target/xtensa/xtensa-semi.c
-> @@ -328,10 +328,17 @@ void HELPER(simcall)(CPUXtensaState *env)
->              struct timeval tv =3D {0};
->
->              if (target_tv) {
-> +                bool cpu_big_endian =3D xtensa_isa_is_big_endian(env->co=
-nfig->isa);
-> +                bool swap_needed =3D HOST_BIG_ENDIAN !=3D cpu_big_endian=
-;
-> +
->                  cpu_memory_rw_debug(cs, target_tv,
->                          (uint8_t *)target_tvv, sizeof(target_tvv), 0);
-> -                tv.tv_sec =3D (int32_t)tswap32(target_tvv[0]);
-> -                tv.tv_usec =3D (int32_t)tswap32(target_tvv[1]);
-> +                if (swap_needed) {
-> +                    bswap32s(&target_tvv[0]);
-> +                    bswap32s(&target_tvv[1]);
-> +                }
-> +                tv.tv_sec =3D (int32_t)target_tvv[0];
-> +                tv.tv_usec =3D (int32_t)target_tvv[1];
+The `z_mask` field of TCGTemp argument needs to be
+properly set for the upcoming `fold_setcond_zmask` call
 
-This conversion looks a bit heavy. Maybe it would be better to
-give tswap*() an additional env argument and give the target
-a way to deal with it?
+This patch resolves issues with running some x86_64
+applications (e.g., FontForge, Krita) on riscv64
 
->              }
->              if (fd < 3 && sim_console) {
->                  if ((fd =3D=3D 1 || fd =3D=3D 2) && rq =3D=3D SELECT_ONE=
-_WRITE) {
-> @@ -381,6 +388,8 @@ void HELPER(simcall)(CPUXtensaState *env)
->              int argc =3D semihosting_get_argc();
->              int str_offset =3D (argc + 1) * sizeof(uint32_t);
->              int i;
-> +            bool cpu_big_endian =3D xtensa_isa_is_big_endian(env->config=
-->isa);
-> +            bool swap_needed =3D HOST_BIG_ENDIAN !=3D cpu_big_endian;
->              uint32_t argptr;
->
->              for (i =3D 0; i < argc; ++i) {
-> @@ -388,6 +397,9 @@ void HELPER(simcall)(CPUXtensaState *env)
->                  int str_size =3D strlen(str) + 1;
->
->                  argptr =3D tswap32(regs[3] + str_offset);
+Signed-off-by: wannacu <wannacu2049@gmail.com>
+---
+ tcg/optimize.c                   |  3 +++
+ tests/tcg/x86_64/Makefile.target |  1 +
+ tests/tcg/x86_64/setcond.c       | 28 ++++++++++++++++++++++++++++
+ 3 files changed, 32 insertions(+)
+ create mode 100644 tests/tcg/x86_64/setcond.c
 
-The tswap() is still here.
+diff --git a/tcg/optimize.c b/tcg/optimize.c
+index e9ef16b3c6..e580b8d8b1 100644
+--- a/tcg/optimize.c
++++ b/tcg/optimize.c
+@@ -834,6 +834,9 @@ static int do_constant_folding_cond1(OptContext *ctx, TCGOp *op, TCGArg dest,
+                              ? INDEX_op_and_i32 : INDEX_op_and_i64);
+         TCGOp *op2 = tcg_op_insert_before(ctx->tcg, op, and_opc, 3);
+         TCGArg tmp = arg_new_temp(ctx);
++        /* Set z_mask for the follwing `fold_setcond_zmask` call. */
++        arg_info(tmp)->z_mask = (ctx->type == TCG_TYPE_I32
++                                      ? UINT32_MAX : UINT64_MAX);
+ 
+         op2->args[0] = tmp;
+         op2->args[1] = *p1;
+diff --git a/tests/tcg/x86_64/Makefile.target b/tests/tcg/x86_64/Makefile.target
+index d6dff559c7..085efa01e1 100644
+--- a/tests/tcg/x86_64/Makefile.target
++++ b/tests/tcg/x86_64/Makefile.target
+@@ -9,6 +9,7 @@
+ include $(SRC_PATH)/tests/tcg/i386/Makefile.target
+ 
+ X86_64_TESTS += test-2413
++X86_64_TESTS += setcond.c
+ 
+ ifeq ($(filter %-linux-user, $(TARGET)),$(TARGET))
+ X86_64_TESTS += vsyscall
+diff --git a/tests/tcg/x86_64/setcond.c b/tests/tcg/x86_64/setcond.c
+new file mode 100644
+index 0000000000..317a7e74d2
+--- /dev/null
++++ b/tests/tcg/x86_64/setcond.c
+@@ -0,0 +1,28 @@
++#include <stdint.h>
++#include <assert.h>
++
++uint8_t test(uint8_t a)
++{
++    uint8_t res = 0xff;
++    asm(
++        "lea -0x1160(%%edi), %%edx\n\t"
++        "lea -0xd7b0(%%edi), %%ecx\n\t"
++        "cmp $0x9f, %%edx\n\t"
++        "setbe %%dl\n\t"
++        "cmp $0x4f, %%ecx\n\t"
++        "setbe %%cl\n\t"
++        "or %%ecx, %%edx\n\t"
++        "cmp $0x200b, %%edi\n\t"
++        "sete %0\n\t"
++        : "=r"(res)
++    );
++    return res;
++}
++
++int main(void)
++{
++    for (uint8_t a = 0; a < 0xff; a++) {
++        assert(test(a) == 0);
++    }
++    return 0;
++}
+-- 
+2.47.1
 
-> +                if (swap_needed) {
-> +                    bswap32s(&argptr);
-> +                }
->
->                  cpu_memory_rw_debug(cs,
->                                      regs[3] + i * sizeof(uint32_t),
-
---=20
-Thanks.
--- Max
 
