@@ -2,87 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 733319E6E18
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Dec 2024 13:29:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 71F569E6E49
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Dec 2024 13:34:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tJXRD-0005vn-Tj; Fri, 06 Dec 2024 07:28:03 -0500
+	id 1tJXSP-0007Pf-9O; Fri, 06 Dec 2024 07:29:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <tomitamoeko@gmail.com>)
- id 1tJXRB-0005vE-GH
- for qemu-devel@nongnu.org; Fri, 06 Dec 2024 07:28:01 -0500
-Received: from mail-pg1-x543.google.com ([2607:f8b0:4864:20::543])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <tomitamoeko@gmail.com>)
- id 1tJXR9-00040n-NZ
- for qemu-devel@nongnu.org; Fri, 06 Dec 2024 07:28:01 -0500
-Received: by mail-pg1-x543.google.com with SMTP id
- 41be03b00d2f7-7ea8de14848so1519834a12.2
- for <qemu-devel@nongnu.org>; Fri, 06 Dec 2024 04:27:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1733488078; x=1734092878; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=UCFppN4wAZK14wOe4SWzJCCX/Db2Lt6zBXlKLoRhMX4=;
- b=D0G7KueDeKUk3rOb3r+fJjGeP58DVKPAHYCAzgdu1igLA3GF9pgT+pL0y6cxuItQ7c
- LbB1TWhEXmN9BmDuK/sxAOKHm2X7g9CenJz/rqGphYiB1OKXLmL9VbzZBUdxrZo+vFQG
- PCzQ1EJLZ6i8NugTy9hqiGi7kADSvs4DB91sQ6KCtLjLN34mdqPhx4w61jtHZobd24s3
- hh1I38dAh2btonWyCI7sPazFhXNdTg6OfNyZqvmZqGUzhDXxt5js+KtOUlJAWS2ZbB30
- NkegFbZvcGHBG66Ev0aixj6gIXg+aDVYDYDf6ciN16fNsCAy5l4p2D/cWL2uDSLjHM1d
- kRzQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733488078; x=1734092878;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=UCFppN4wAZK14wOe4SWzJCCX/Db2Lt6zBXlKLoRhMX4=;
- b=cIL+cqHDq98w4vIMGADw69YZ0d5W424ABmJdJH7PhkYqS4iA/SfEe5Es6eCL41MHsL
- 2YGv+/HaNfw5Ddfr6Y/dDUCff7Eigxw+KAEkC04WcuXga03mmjxswJya4hPttFa+1GV6
- SJsakkHVfP+Ivbq4T340tHQzusXugqrSTRtpZ6ykbCUCCC19+IKwsmo1EFY7j/WWIOZ/
- MoPuJkm3R2dih/U2OTyn5+dxttG3J7WaaFJcqBtEUPNlttM8IR+F9lVok+J4QQ38542j
- 5KQ/XSWaCbtySbOfssVW+Kgtn63Dht7B4O9FTopFeATeGYIKOK8//cqVRyq/7YpkNphl
- 4VPg==
-X-Gm-Message-State: AOJu0YxmoGzkcdkDbKzbzN4Zg3pyzMviKbxWT4468pYyCAjA9vKW5rCS
- P99s1rG6K50kNZuphxpdAcElTJ7ihP46d0676XcUmGP4dT+hjggp8X1ZrU5+6Q==
-X-Gm-Gg: ASbGncsN4cp7yO+QFT85er+8wcuiZqYHwkOiFqVbS2vrhWbwWQ1HGYQQZ1JbbP2vtqs
- MgcwGDgJPUbT4tjW82YEb4fnXMngpvqmc1+ZBJ662wBhu+eplQpyUWf+RLsh2BZ5W1D4iLGPDKB
- NBKH7lfOANBfFHb+3HsTK4D9OrKAGswr+cg0x5qAbuIhb3mWHOlLn+SaDB5aWX9BZ0dnGhn0+ZG
- xhV9UAVRsqtFt7JqkHjcA+8Sdo7212DKpr1iifCHk86pFG1+A5LYZ85wQ==
-X-Google-Smtp-Source: AGHT+IHTqkestPcILl8ajPIZnHE76q78Vur6R7bcMCSLVLp3vFNrJPb6EWBjRkEAYYnb8hXsKBSAAQ==
-X-Received: by 2002:a05:6a20:a104:b0:1e0:ca1c:8581 with SMTP id
- adf61e73a8af0-1e1870c975dmr4673936637.21.1733488078128; 
- Fri, 06 Dec 2024 04:27:58 -0800 (PST)
-Received: from kotori-desktop.lan ([58.38.120.33])
- by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-7fd15710123sm2579866a12.49.2024.12.06.04.27.56
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 06 Dec 2024 04:27:57 -0800 (PST)
-From: Tomita Moeko <tomitamoeko@gmail.com>
-To: Alex Williamson <alex.williamson@redhat.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Cc: qemu-devel@nongnu.org,
- =?UTF-8?q?Corvin=20K=C3=B6hne?= <c.koehne@beckhoff.com>,
- Tomita Moeko <tomitamoeko@gmail.com>
-Subject: [PATCH v4 01/10] vfio/igd: fix GTT stolen memory size calculation for
- gen 8+
-Date: Fri,  6 Dec 2024 20:27:39 +0800
-Message-ID: <20241206122749.9893-2-tomitamoeko@gmail.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20241206122749.9893-1-tomitamoeko@gmail.com>
-References: <20241206122749.9893-1-tomitamoeko@gmail.com>
+ (Exim 4.90_1) (envelope-from <brueckner@linux.ibm.com>)
+ id 1tJXRO-0005xh-Ba; Fri, 06 Dec 2024 07:28:15 -0500
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <brueckner@linux.ibm.com>)
+ id 1tJXRI-00041p-I7; Fri, 06 Dec 2024 07:28:11 -0500
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4B6Aokvv012087;
+ Fri, 6 Dec 2024 12:28:04 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:date:from:in-reply-to:message-id
+ :mime-version:references:subject:to; s=pp1; bh=3CCW8EW/CVcSZQD7J
+ fEySXBqYWpDsOjkm1NAj28EnOQ=; b=jhjRmEsE4E5U/obOlBHd0/veZo6xwfTPk
+ 1YANpFs9azXhi4kAxVFRNWxr88i/hWcAoKVv5uyokHP1tvPL6aX0jQtMk/M3lFdO
+ 0FhnDubjqrGmW0qNMQnYQ9wH8Zy1v0+cP0DXH03Gefz2W/NF3bIVcJXg5j7WUF8u
+ 6Iw6OAcSHS0A7fo8LsxicmuKIDwjcWFW4cLtu+nmyUzNfOLSbrLd/GqHoc6HnLxA
+ iQaYAzA8RS0tCiCb1k9Udm9e9IlgB9Io4lWfyLYCnBTNkyj9KHmzXNrEpAN4Gs8b
+ 3iVyhKczjpsXvIw185Bau7QsPeU35KZCFAriTSCYmwWB6jFVhRhPQ==
+Received: from ppma11.dal12v.mail.ibm.com
+ (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 43bk99kc2s-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 06 Dec 2024 12:28:03 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4B6APBpg005278;
+ Fri, 6 Dec 2024 12:28:03 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+ by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 438fr1xmpu-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 06 Dec 2024 12:28:02 +0000
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com
+ [10.20.54.104])
+ by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 4B6CRxhP61276556
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 6 Dec 2024 12:27:59 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 9CD622004B;
+ Fri,  6 Dec 2024 12:27:59 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 2F7C920043;
+ Fri,  6 Dec 2024 12:27:59 +0000 (GMT)
+Received: from vela.ibmuc.com (unknown [9.171.26.200])
+ by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Fri,  6 Dec 2024 12:27:59 +0000 (GMT)
+From: Hendrik Brueckner <brueckner@linux.ibm.com>
+To: qemu-devel@nongnu.org, qemu-s390x@nongnu.org, thuth@redhat.com
+Cc: nsg@linux.ibm.com, frankja@linux.ibm.com, mimu@linux.ibm.com,
+ borntraeger@linux.ibm.com, Hendrik Brueckner <brueckner@linux.ibm.com>
+Subject: [RFC PATCH v2 03/15] s390x/cpumodel: add msa12 changes
+Date: Fri,  6 Dec 2024 13:27:39 +0100
+Message-ID: <20241206122751.189721-4-brueckner@linux.ibm.com>
+X-Mailer: git-send-email 2.43.5
+In-Reply-To: <20241206122751.189721-1-brueckner@linux.ibm.com>
+References: <20241206122751.189721-1-brueckner@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::543;
- envelope-from=tomitamoeko@gmail.com; helo=mail-pg1-x543.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: sYj2a84fbthD7hIOlrMf1EpXHjGhArsO
+X-Proofpoint-ORIG-GUID: sYj2a84fbthD7hIOlrMf1EpXHjGhArsO
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0
+ lowpriorityscore=0 bulkscore=0 adultscore=0 clxscore=1015 malwarescore=0
+ priorityscore=1501 spamscore=0 mlxlogscore=924 impostorscore=0 mlxscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2411120000 definitions=main-2412060089
+Received-SPF: pass client-ip=148.163.158.5;
+ envelope-from=brueckner@linux.ibm.com; helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H2=-0.001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -99,43 +104,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On gen 8 and later devices, the GTT stolen memory size when GGMS equals
-0 is 0 (no preallocated memory) rather than 1MB [1].
+MSA12 changes the KIMD/KLMD instruction format for SHA3/SHAKE.
 
-[1] 3.1.13, 5th Generation Intel Core Processor Family Datasheet Vol. 2
-    https://www.intel.com/content/www/us/en/content-details/330835
-
-Fixes: c4c45e943e51 ("vfio/pci: Intel graphics legacy mode assignment")
-
-Reported-By: Alex Williamson <alex.williamson@redhat.com>
-Signed-off-by: Tomita Moeko <tomitamoeko@gmail.com>
+Signed-off-by: Hendrik Brueckner <brueckner@linux.ibm.com>
+Reviewed-by: Christian Borntraeger <borntraeger@linux.ibm.com>
 ---
- hw/vfio/igd.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ target/s390x/cpu_features.c         | 1 +
+ target/s390x/cpu_features_def.h.inc | 1 +
+ target/s390x/gen-features.c         | 8 ++++++++
+ 3 files changed, 10 insertions(+)
 
-diff --git a/hw/vfio/igd.c b/hw/vfio/igd.c
-index 4047f4f071..73ed1ec8e6 100644
---- a/hw/vfio/igd.c
-+++ b/hw/vfio/igd.c
-@@ -268,7 +268,7 @@ static int vfio_igd_gtt_max(VFIOPCIDevice *vdev)
+diff --git a/target/s390x/cpu_features.c b/target/s390x/cpu_features.c
+index 36930feccd..0e0b37ab95 100644
+--- a/target/s390x/cpu_features.c
++++ b/target/s390x/cpu_features.c
+@@ -256,6 +256,7 @@ static S390FeatGroupDef s390_feature_groups[] = {
+     FEAT_GROUP_INIT("msa10_pckmo", MSA_EXT_10_PCKMO, "Message-security-assist-extension 10 PCKMO subfunctions"),
+     FEAT_GROUP_INIT("msa11", MSA_EXT_11, "Message-security-assist-extension 11 facility"),
+     FEAT_GROUP_INIT("msa11_pckmo", MSA_EXT_11_PCKMO, "Message-security-assist-extension 11 PCKMO subfunctions"),
++    FEAT_GROUP_INIT("msa12", MSA_EXT_12, "Message-security-assist-extension 12 facility"),
+     FEAT_GROUP_INIT("mepochptff", MULTIPLE_EPOCH_PTFF, "PTFF enhancements introduced with Multiple-epoch facility"),
+     FEAT_GROUP_INIT("esort", ENH_SORT, "Enhanced-sort facility"),
+     FEAT_GROUP_INIT("deflate", DEFLATE_CONVERSION, "Deflate-conversion facility"),
+diff --git a/target/s390x/cpu_features_def.h.inc b/target/s390x/cpu_features_def.h.inc
+index 15ea51fc54..2e5dc96984 100644
+--- a/target/s390x/cpu_features_def.h.inc
++++ b/target/s390x/cpu_features_def.h.inc
+@@ -90,6 +90,7 @@ DEF_FEAT(EDAT_2, "edat2", STFL, 78, "Enhanced-DAT facility 2")
+ DEF_FEAT(DFP_PACKED_CONVERSION, "dfppc", STFL, 80, "Decimal-floating-point packed-conversion facility")
+ DEF_FEAT(PPA15, "ppa15", STFL, 81, "PPA15 is installed")
+ DEF_FEAT(BPB, "bpb", STFL, 82, "Branch prediction blocking")
++DEF_FEAT(MSA_EXT_12, "msa12-base", STFL, 86, "Message-security-assist-extension-12 facility (excluding subfunctions)")
+ DEF_FEAT(VECTOR, "vx", STFL, 129, "Vector facility")
+ DEF_FEAT(INSTRUCTION_EXEC_PROT, "iep", STFL, 130, "Instruction-execution-protection facility")
+ DEF_FEAT(SIDE_EFFECT_ACCESS_ESOP2, "sea_esop2", STFL, 131, "Side-effect-access facility and Enhanced-suppression-on-protection facility 2")
+diff --git a/target/s390x/gen-features.c b/target/s390x/gen-features.c
+index d6305f945a..ab9ad51d5e 100644
+--- a/target/s390x/gen-features.c
++++ b/target/s390x/gen-features.c
+@@ -270,6 +270,9 @@
+     S390_FEAT_PCKMO_HMAC_512, \
+     S390_FEAT_PCKMO_HMAC_1024
  
-     gmch = vfio_pci_read_config(&vdev->pdev, IGD_GMCH, sizeof(gmch));
-     ggms = (gmch >> (gen < 8 ? 8 : 6)) & 0x3;
--    if (gen > 6) {
-+    if (gen > 6 && ggms != 0) {
-         ggms = 1 << ggms;
-     }
++#define S390_FEAT_GROUP_MSA_EXT_12 \
++    S390_FEAT_MSA_EXT_12
++
+ #define S390_FEAT_GROUP_ENH_SORT \
+     S390_FEAT_ESORT_BASE, \
+     S390_FEAT_SORTL_SFLR, \
+@@ -339,6 +342,10 @@ static uint16_t group_MSA_EXT_11[] = {
+     S390_FEAT_GROUP_MSA_EXT_11,
+ };
  
-@@ -678,7 +678,7 @@ void vfio_probe_igd_bar4_quirk(VFIOPCIDevice *vdev, int nr)
- 
-     /* Determine the size of stolen memory needed for GTT */
-     ggms_mb = (gmch >> (gen < 8 ? 8 : 6)) & 0x3;
--    if (gen > 6) {
-+    if (gen > 6 && ggms_mb != 0) {
-         ggms_mb = 1 << ggms_mb;
-     }
- 
++static uint16_t group_MSA_EXT_12[] = {
++    S390_FEAT_GROUP_MSA_EXT_12,
++};
++
+ static uint16_t group_MSA_EXT_9_PCKMO[] = {
+     S390_FEAT_GROUP_MSA_EXT_9_PCKMO,
+ };
+@@ -902,6 +909,7 @@ static FeatGroupDefSpec FeatGroupDef[] = {
+     FEAT_GROUP_INITIALIZER(MSA_EXT_10_PCKMO),
+     FEAT_GROUP_INITIALIZER(MSA_EXT_11),
+     FEAT_GROUP_INITIALIZER(MSA_EXT_11_PCKMO),
++    FEAT_GROUP_INITIALIZER(MSA_EXT_12),
+     FEAT_GROUP_INITIALIZER(MULTIPLE_EPOCH_PTFF),
+     FEAT_GROUP_INITIALIZER(ENH_SORT),
+     FEAT_GROUP_INITIALIZER(DEFLATE_CONVERSION),
 -- 
-2.45.2
+2.43.5
 
 
