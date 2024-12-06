@@ -2,90 +2,106 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7EDA9E6FE7
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Dec 2024 15:15:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D93CA9E6FF1
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Dec 2024 15:20:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tJZ6z-0005nW-Ri; Fri, 06 Dec 2024 09:15:18 -0500
+	id 1tJZAh-00075i-Jw; Fri, 06 Dec 2024 09:19:07 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tJZ6f-0005hc-6K
- for qemu-devel@nongnu.org; Fri, 06 Dec 2024 09:14:58 -0500
-Received: from mail-oi1-x22e.google.com ([2607:f8b0:4864:20::22e])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tJZAg-00075X-2l
+ for qemu-devel@nongnu.org; Fri, 06 Dec 2024 09:19:06 -0500
+Received: from smtp-out2.suse.de ([195.135.223.131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tJZ6d-0006d2-KK
- for qemu-devel@nongnu.org; Fri, 06 Dec 2024 09:14:56 -0500
-Received: by mail-oi1-x22e.google.com with SMTP id
- 5614622812f47-3e63e5c0c50so1133076b6e.0
- for <qemu-devel@nongnu.org>; Fri, 06 Dec 2024 06:14:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1733494494; x=1734099294; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=9DO3MfHseDPhC40PHjPiKrOrG7RrBBPn6LvQQR8Im1s=;
- b=huYBFxMD2S7naUVTqkjC6dnGdbpgAy5Hg0a0B7A2uYkupN4JiTA9pioL7KHS19eR6V
- oPEh5Cl7277FHPDwN4jL6IlFopnRmZiONxM6zWr6pesot7W+o7TVs99OMMQhi6w1Otuu
- SzOORMKC1lfZ2jG1l7k3T8gHU66JxboN8wE0n2u6aewyzgYJ/HA7iLxEPs0lCNvtjaTk
- zm+j8rZKolxRLQqMQxJVzj6hjjK+7anRggSJSgyQiBV6LFGisln6Koiv3sc8+RAzjqtm
- efEBDOhWFk+CscwVU3vioUddh/a4xSmDxjo34h2LNbGRfm5wk/P+TGbkdG0szQJRcbz7
- GSdw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733494494; x=1734099294;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=9DO3MfHseDPhC40PHjPiKrOrG7RrBBPn6LvQQR8Im1s=;
- b=AWWZjs7diBAwg4ce9tG4oDVIclwFjG6WfePl/2DALvn1a70uOU1+6f4lD4FcjAgXMO
- 6wEXqqCAUkoQe+7Gz+P/eAP+7HBsRWWfwSwkmT9ejF/3EgPcdn+8suSSVPs5+2wwijDZ
- vkEOTfpq7PHPgW3Z0t6orb7SRzd+naUxK86o+XjOpDjTdAs5pYlLKwN7cEPfeUEhXWTQ
- DkJAqFW8vfPKM6FrYVDvsHJiJfMRIyahJxdHSrLFUzayGxkgZe4iEhkbwa4s0UeoDg2g
- W7+AyGmwA4JfOitQLlHZWg7bhYEPKUvllMznwQoLgJ6d6egKc54+H1ASlTgoSKBrSzd0
- qcTg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWN07yK+kBbjrwS0UrVQDEzFjmN8X3pR2f5N805Oi2PZwm+DuQSuOYeOQwR0SkgSazPfcmt5N+DqgWB@nongnu.org
-X-Gm-Message-State: AOJu0YzJeWQB6cT1ALJri06QsJzSrVktuxHjFZ8JNrExrSs3edtAD/p5
- WMCSdsrEthaZ5F/s7FLmFpkoFKeXYnSn0D7rxZjiBThaGMpJgUW5/w2tZ/tOKE4=
-X-Gm-Gg: ASbGncvl41WzpRsznU25kKIuIW5DfTDqSA4aPuRA0agCu8NjQXbzQIAqNaqFQjV30f6
- pJ3kOlC0VhVa6QUfuVMIVd91g0uIFkJOS4cqAhdIXNp15pV0DVxBIub4ABmdoxXO7XAbDWN22zE
- FaVZIFTHnznCOnZYWkLL7hvs2CrfHuapXKGaCsE1xqHb2YZ+vp8BLSTwPOYfu9C0Kr1KRGyQZLv
- 29sNJ9E6OwG2NipLbvyewDvNZxVxVqxW99E0XggyGuKv+oxxNGfjwMR56uiKVI5Y/9d4nh/bcl6
- jmnKltW6usJ8euTdaalZp9YzoUNM
-X-Google-Smtp-Source: AGHT+IFYLHc/QJAzfJOsw9G9EygckyFDzQBrq5rkYrRqmcNOwkWeZZvZhe2yTn7S6W+av1/2HOAanw==
-X-Received: by 2002:a05:6808:120d:b0:3ea:3672:e638 with SMTP id
- 5614622812f47-3eb18324f55mr1963656b6e.3.1733494494089; 
- Fri, 06 Dec 2024 06:14:54 -0800 (PST)
-Received: from [192.168.4.112] (fixed-187-189-51-143.totalplay.net.
- [187.189.51.143]) by smtp.gmail.com with ESMTPSA id
- 5614622812f47-3eb07674e24sm753922b6e.9.2024.12.06.06.14.52
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 06 Dec 2024 06:14:53 -0800 (PST)
-Message-ID: <df9cbf33-2e74-4ce7-a5d4-1cb952fabd83@linaro.org>
-Date: Fri, 6 Dec 2024 08:14:51 -0600
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tJZAe-0007Hx-5P
+ for qemu-devel@nongnu.org; Fri, 06 Dec 2024 09:19:05 -0500
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 6DE781F37E;
+ Fri,  6 Dec 2024 14:19:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1733494742; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=pwKMMeqb6McDAwbFPaQtPW7rMasnfMpxj/nNcEowxQQ=;
+ b=NnGMdFrohCfxfUxfR41nKwWrrP3iZiUrgMMlyPvjvE1DqFcHz2EgrzNi/FosiKjzAcatx9
+ QsABgV/2ZVkhO5Y7uaz43+Ow4FKaEOipVBjrj+7MWDRz9BdIa49Gxlc1KYqKhLMDxnGucT
+ PGVW4hh4X/OW+D3pptSaDv/TV8pitY4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1733494742;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=pwKMMeqb6McDAwbFPaQtPW7rMasnfMpxj/nNcEowxQQ=;
+ b=ZzuLy4KV1yeacEMoklVRQF4U1307p6eWHOoHw+qXNEepC74y7GCknClm5jwf15bLGW8LfF
+ P5C1uyCsQ0xOQsCA==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1733494742; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=pwKMMeqb6McDAwbFPaQtPW7rMasnfMpxj/nNcEowxQQ=;
+ b=NnGMdFrohCfxfUxfR41nKwWrrP3iZiUrgMMlyPvjvE1DqFcHz2EgrzNi/FosiKjzAcatx9
+ QsABgV/2ZVkhO5Y7uaz43+Ow4FKaEOipVBjrj+7MWDRz9BdIa49Gxlc1KYqKhLMDxnGucT
+ PGVW4hh4X/OW+D3pptSaDv/TV8pitY4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1733494742;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=pwKMMeqb6McDAwbFPaQtPW7rMasnfMpxj/nNcEowxQQ=;
+ b=ZzuLy4KV1yeacEMoklVRQF4U1307p6eWHOoHw+qXNEepC74y7GCknClm5jwf15bLGW8LfF
+ P5C1uyCsQ0xOQsCA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id DEF2E138A7;
+ Fri,  6 Dec 2024 14:19:01 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id x9iHKNUHU2f8ZgAAD6G6ig
+ (envelope-from <farosas@suse.de>); Fri, 06 Dec 2024 14:19:01 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Peter Xu <peterx@redhat.com>, qemu-devel@nongnu.org
+Cc: "Maciej S . Szmigiero" <mail@maciej.szmigiero.name>, peterx@redhat.com,
+ =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>, Avihai Horon
+ <avihaih@nvidia.com>, Alex
+ Williamson <alex.williamson@redhat.com>, Prasad Pandit <ppandit@redhat.com>
+Subject: Re: [PATCH v2 6/7] migration/multifd: Cleanup src flushes on
+ condition check
+In-Reply-To: <20241206005834.1050905-7-peterx@redhat.com>
+References: <20241206005834.1050905-1-peterx@redhat.com>
+ <20241206005834.1050905-7-peterx@redhat.com>
+Date: Fri, 06 Dec 2024 11:18:59 -0300
+Message-ID: <87wmgcc2ss.fsf@suse.de>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v2 00/15] KVM: s390: CPU model for gen17
-To: Hendrik Brueckner <brueckner@linux.ibm.com>, qemu-devel@nongnu.org,
- qemu-s390x@nongnu.org, thuth@redhat.com
-Cc: nsg@linux.ibm.com, frankja@linux.ibm.com, mimu@linux.ibm.com,
- borntraeger@linux.ibm.com
-References: <20241206122751.189721-1-brueckner@linux.ibm.com>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20241206122751.189721-1-brueckner@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::22e;
- envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x22e.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Type: text/plain
+X-Spam-Score: -4.30
+X-Spamd-Result: default: False [-4.30 / 50.00]; BAYES_HAM(-3.00)[100.00%];
+ NEURAL_HAM_LONG(-1.00)[-1.000];
+ NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
+ ARC_NA(0.00)[]; RCVD_VIA_SMTP_AUTH(0.00)[];
+ MISSING_XM_UA(0.00)[]; MIME_TRACE(0.00)[0:+];
+ RCPT_COUNT_SEVEN(0.00)[8]; MID_RHS_MATCH_FROM(0.00)[];
+ RCVD_TLS_ALL(0.00)[];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ FROM_EQ_ENVFROM(0.00)[]; FROM_HAS_DN(0.00)[];
+ TO_DN_SOME(0.00)[]; RCVD_COUNT_TWO(0.00)[2];
+ FUZZY_BLOCKED(0.00)[rspamd.com]; TO_MATCH_ENVRCPT_ALL(0.00)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.de:mid]
+Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
+ helo=smtp-out2.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -102,20 +118,234 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/6/24 06:27, Hendrik Brueckner wrote:
-> Introducing the gen17 CPU model with feature indications
-> comprising of:
-> 
-> * Concurrent-function facility with subcodes
-> * More vector extensions
-> * Ineffective-nonconstrained-transaction facility
-> * Even more msa crypto extensions
-> * Additional PLO subfunctions
+Peter Xu <peterx@redhat.com> writes:
 
-Is the revised Principals of Operation public yet?
-I can only find SA22-7832-13 from 2022.
+> The src flush condition check is over complicated, and it's getting more
+> out of control if postcopy will be involved.
+>
+> In general, we have two modes to do the sync: legacy or modern ways.
+> Legacy uses per-section flush, modern uses per-round flush.
+>
+> Mapped-ram always uses the modern, which is per-round.
+>
+> Introduce two helpers, which can greatly simplify the code, and hopefully
+> make it readable again.
+>
+> Signed-off-by: Peter Xu <peterx@redhat.com>
+> ---
+>  migration/multifd.h        |  2 ++
+>  migration/multifd-nocomp.c | 42 ++++++++++++++++++++++++++++++++++++++
+>  migration/ram.c            | 10 +++------
+>  3 files changed, 47 insertions(+), 7 deletions(-)
+>
+> diff --git a/migration/multifd.h b/migration/multifd.h
+> index c9ae57ea02..582040922f 100644
+> --- a/migration/multifd.h
+> +++ b/migration/multifd.h
+> @@ -351,6 +351,8 @@ static inline uint32_t multifd_ram_page_count(void)
+>  void multifd_ram_save_setup(void);
+>  void multifd_ram_save_cleanup(void);
+>  int multifd_ram_flush_and_sync(QEMUFile *f);
+> +bool multifd_ram_sync_per_round(void);
+> +bool multifd_ram_sync_per_section(void);
+>  size_t multifd_ram_payload_size(void);
+>  void multifd_ram_fill_packet(MultiFDSendParams *p);
+>  int multifd_ram_unfill_packet(MultiFDRecvParams *p, Error **errp);
+> diff --git a/migration/multifd-nocomp.c b/migration/multifd-nocomp.c
+> index 58372db0f4..c1f686c0ce 100644
+> --- a/migration/multifd-nocomp.c
+> +++ b/migration/multifd-nocomp.c
+> @@ -344,6 +344,48 @@ retry:
+>      return true;
+>  }
+>  
+> +/*
+> + * We have two modes for multifd flushes:
+> + *
+> + * - Per-section mode: this is the legacy way to flush, it requires one
+> + *   MULTIFD_FLAG_SYNC message for each RAM_SAVE_FLAG_EOS.
+> + *
+> + * - Per-round mode: this is the modern way to flush, it requires one
+> + *   MULTIFD_FLAG_SYNC message only for each round of RAM scan.  Normally
+> + *   it's paired with a new RAM_SAVE_FLAG_MULTIFD_FLUSH message in network
+> + *   based migrations.
+> + *
+> + * One thing to mention is mapped-ram always use the modern way to sync.
+> + */
+> +
+> +/* Do we need a per-section multifd flush (legacy way)? */
+> +bool multifd_ram_sync_per_section(void)
+> +{
+> +    if (!migrate_multifd()) {
+> +        return false;
+> +    }
+> +
+> +    if (migrate_mapped_ram()) {
+> +        return false;
+> +    }
+> +
+> +    return migrate_multifd_flush_after_each_section();
+> +}
+> +
+> +/* Do we need a per-round multifd flush (modern way)? */
+> +bool multifd_ram_sync_per_round(void)
+> +{
+> +    if (!migrate_multifd()) {
+> +        return false;
+> +    }
+> +
+> +    if (migrate_mapped_ram()) {
+> +        return true;
+> +    }
+> +
+> +    return !migrate_multifd_flush_after_each_section();
+> +}
+> +
+>  int multifd_ram_flush_and_sync(QEMUFile *f)
+>  {
+>      MultiFDSyncReq req;
+> diff --git a/migration/ram.c b/migration/ram.c
+> index 154ff5abd4..5d4bdefe69 100644
+> --- a/migration/ram.c
+> +++ b/migration/ram.c
+> @@ -1302,9 +1302,7 @@ static int find_dirty_block(RAMState *rs, PageSearchStatus *pss)
+>          pss->page = 0;
+>          pss->block = QLIST_NEXT_RCU(pss->block, next);
+>          if (!pss->block) {
+> -            if (migrate_multifd() &&
+> -                (!migrate_multifd_flush_after_each_section() ||
+> -                 migrate_mapped_ram())) {
+> +            if (multifd_ram_sync_per_round()) {
 
+If we're already implicitly declaring which parts of the code mean
+"round" or "section", we could fold the flush into the function and call
+it unconditionally.
 
-r~
+We don't need ram.c code to be deciding about multifd. This could be all
+hidden away in the multifd-nocomp code:
+
+-- >8 --
+diff --git a/migration/multifd-nocomp.c b/migration/multifd-nocomp.c
+index c1f686c0ce..6a7eee4c25 100644
+--- a/migration/multifd-nocomp.c
++++ b/migration/multifd-nocomp.c
+@@ -358,32 +358,26 @@ retry:
+  * One thing to mention is mapped-ram always use the modern way to sync.
+  */
+ 
+-/* Do we need a per-section multifd flush (legacy way)? */
+-bool multifd_ram_sync_per_section(void)
++int multifd_ram_sync_per_section(QEMUFile *f)
+ {
+-    if (!migrate_multifd()) {
+-        return false;
++    if (!migrate_multifd() || !migrate_multifd_flush_after_each_section()) {
++        return 0;
+     }
+ 
+     if (migrate_mapped_ram()) {
+-        return false;
++        return 0;
+     }
+ 
+-    return migrate_multifd_flush_after_each_section();
++    return multifd_ram_flush_and_sync(f);
+ }
+ 
+-/* Do we need a per-round multifd flush (modern way)? */
+-bool multifd_ram_sync_per_round(void)
++int multifd_ram_sync_per_round(QEMUFile *f)
+ {
+-    if (!migrate_multifd()) {
+-        return false;
++    if (!migrate_multifd() || migrate_multifd_flush_after_each_section()) {
++        return 0;
+     }
+ 
+-    if (migrate_mapped_ram()) {
+-        return true;
+-    }
+-
+-    return !migrate_multifd_flush_after_each_section();
++    return multifd_ram_flush_and_sync(f);
+ }
+ 
+ int multifd_ram_flush_and_sync(QEMUFile *f)
+diff --git a/migration/multifd.h b/migration/multifd.h
+index 582040922f..3b42128167 100644
+--- a/migration/multifd.h
++++ b/migration/multifd.h
+@@ -351,8 +351,8 @@ static inline uint32_t multifd_ram_page_count(void)
+ void multifd_ram_save_setup(void);
+ void multifd_ram_save_cleanup(void);
+ int multifd_ram_flush_and_sync(QEMUFile *f);
+-bool multifd_ram_sync_per_round(void);
+-bool multifd_ram_sync_per_section(void);
++int multifd_ram_sync_per_round(QEMUFile *f);
++int multifd_ram_sync_per_section(QEMUFile *f);
+ size_t multifd_ram_payload_size(void);
+ void multifd_ram_fill_packet(MultiFDSendParams *p);
+ int multifd_ram_unfill_packet(MultiFDRecvParams *p, Error **errp);
+diff --git a/migration/ram.c b/migration/ram.c
+index ddee703585..fe33c8e0e8 100644
+--- a/migration/ram.c
++++ b/migration/ram.c
+@@ -1302,12 +1302,10 @@ static int find_dirty_block(RAMState *rs, PageSearchStatus *pss)
+         pss->page = 0;
+         pss->block = QLIST_NEXT_RCU(pss->block, next);
+         if (!pss->block) {
+-            if (multifd_ram_sync_per_round()) {
+-                QEMUFile *f = rs->pss[RAM_CHANNEL_PRECOPY].pss_channel;
+-                int ret = multifd_ram_flush_and_sync(f);
+-                if (ret < 0) {
+-                    return ret;
+-                }
++            QEMUFile *f = rs->pss[RAM_CHANNEL_PRECOPY].pss_channel;
++            int ret = multifd_ram_sync_per_round(f);
++            if (ret < 0) {
++                return ret;
+             }
+ 
+             /* Hit the end of the list */
+@@ -3203,11 +3201,9 @@ static int ram_save_iterate(QEMUFile *f, void *opaque)
+ 
+ out:
+     if (ret >= 0 && migration_is_running()) {
+-        if (multifd_ram_sync_per_section()) {
+-            ret = multifd_ram_flush_and_sync(f);
+-            if (ret < 0) {
+-                return ret;
+-            }
++        ret = multifd_ram_sync_per_section(f);
++        if (ret < 0) {
++            return ret;
+         }
+ 
+         qemu_put_be64(f, RAM_SAVE_FLAG_EOS);
+@@ -3276,15 +3272,13 @@ static int ram_save_complete(QEMUFile *f, void *opaque)
+         }
+     }
+ 
+-    if (multifd_ram_sync_per_section()) {
+-        /*
+-         * Only the old dest QEMU will need this sync, because each EOS
+-         * will require one SYNC message on each channel.
+-         */
+-        ret = multifd_ram_flush_and_sync(f);
+-        if (ret < 0) {
+-            return ret;
+-        }
++    /*
++     * Only the old dest QEMU will need this sync, because each EOS
++     * will require one SYNC message on each channel.
++     */
++    ret = multifd_ram_sync_per_section(f);
++    if (ret < 0) {
++        return ret;
+     }
+ 
+     if (migrate_mapped_ram()) {
+-- 
+2.35.3
 
 
