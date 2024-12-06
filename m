@@ -2,83 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07F929E64AC
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Dec 2024 04:14:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 418479E64B8
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Dec 2024 04:20:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tJOnc-0002ZT-IU; Thu, 05 Dec 2024 22:14:36 -0500
+	id 1tJOsq-0006GC-2D; Thu, 05 Dec 2024 22:20:00 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tJOnZ-0002Qr-Oc
- for qemu-devel@nongnu.org; Thu, 05 Dec 2024 22:14:33 -0500
-Received: from mail-oo1-xc32.google.com ([2607:f8b0:4864:20::c32])
+ id 1tJOsn-0006FT-QN
+ for qemu-devel@nongnu.org; Thu, 05 Dec 2024 22:19:57 -0500
+Received: from mail-ot1-x330.google.com ([2607:f8b0:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tJOnX-0004b8-VR
- for qemu-devel@nongnu.org; Thu, 05 Dec 2024 22:14:33 -0500
-Received: by mail-oo1-xc32.google.com with SMTP id
- 006d021491bc7-5f1f1da0c8eso484478eaf.1
- for <qemu-devel@nongnu.org>; Thu, 05 Dec 2024 19:14:31 -0800 (PST)
+ id 1tJOsm-0006Ae-9s
+ for qemu-devel@nongnu.org; Thu, 05 Dec 2024 22:19:57 -0500
+Received: by mail-ot1-x330.google.com with SMTP id
+ 46e09a7af769-71d4032b3e9so1415886a34.1
+ for <qemu-devel@nongnu.org>; Thu, 05 Dec 2024 19:19:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1733454870; x=1734059670; darn=nongnu.org;
+ d=linaro.org; s=google; t=1733455195; x=1734059995; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:message-id:date:subject:cc
  :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=jWsAgdjbqze/KpwUsly9HuM39GzG0bcUuYjHr9574Rw=;
- b=OYNiq7SvbKZWxL05Lw2aSvNRcoLZOYYyprq3a+1u9GDeGVGyr4OeKAbEbgo36eqY53
- szmO4Yc/X0i5e8kelSEQDaaU1o5xIR4lD8BmEMJIhPTrk/K6WdKLuXs+RinK+YIRXPsu
- 86Q+FQcTDB4llrtFQs1F5EuWYfkbmi6YIrPL7Zo2EThsL610b4z1qhru8zbZMTnCNmJD
- Oe3LaiHDKgJ6t1nTiVPG9NtsgexMRdwC7tobEYwIyp3J2wuuVJHFn6yqxvBwep6rRlpD
- zVV9yvZkc8ZTsG9ejp1iqvljtY1h7GG59sObDIu0XAdKYP8Qr1iHthGJ29LUtsmptngu
- 0a0g==
+ bh=9N64e/pgYn1nLyblM4Tcpb97CAaIRtiZkD+VUNH0Gl4=;
+ b=XnPd//klYcvi7MGkUGT394ZB1HqCSaAIuPJ/DMi2LXRIURPt0ZJiPVp1TTfQhRJDjP
+ mQBQjUA69UCAZFS6JPF/YnJ+JpAliFC2vdjtDFqfQvlmIPiA317rKtZ7ZWe6dAMuU5ME
+ /zgu0NeXlakd9qgJ5TviTAAB+s+Jx18Qb5v414uMz34VSMJQV0EZaFvqeHIlVXUXJwzT
+ 4mpuvR+SKEKUCd3ZdAq5Ak3AG57cdjL35I6IDbfmJZmhsmYqGoj2rt5w+nUZm0r8XQCq
+ ehdZyiZBVFyLbvvXepewp0TmpRYkb/rJXWYTQSxdT5M0KB0/n3o4tRQyNXk5IHIFUBAd
+ Fq6A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733454870; x=1734059670;
+ d=1e100.net; s=20230601; t=1733455195; x=1734059995;
  h=content-transfer-encoding:mime-version:message-id:date:subject:cc
  :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=jWsAgdjbqze/KpwUsly9HuM39GzG0bcUuYjHr9574Rw=;
- b=URVMipgrofAM84jYaJUwzDHe8+x1KebfjNbMHxoutKcny2qSmuUnTI12DhROetjG4j
- WFTp4T/nkFDjBDQIwgmmIavTXC4aAbphqcMi3dlkOzAjwmoy5VKHu+XCPxwLExq5vKAR
- +cGB7L/vMtAbsZc28CugnViAcKCaBDXbTq1+KYrDqbrD8/qfMm7++ha1P34Wq+b3znA2
- SVOdYnBGBC7alRFE9n3IjdoGvHsaIuG+rDl1IH6hNz2I9sipfopqzNoreguRFbzZ98ka
- fgEpfTTp1hp9OhFo+k9+afCO+ifNyax+W10G9Zm0ShACL9eJgoMBqs18tMysEcrwCkCn
- SXWQ==
-X-Gm-Message-State: AOJu0YzFVCyFCyQggL6tX7cS86Zkk8tdZUlnQR5OZCiM5srYifsBjfrV
- DeHBMblXC8i87echO95lNB0BqPjGMH9o3u5JQe9AiKdEALSJ9TvcquR0IobLfBjlTJlSjl+sSxz
- yzJmwih3y
-X-Gm-Gg: ASbGncuT1TsdIjsnso5UW+1mzn94X0rAlKt8wUClY18aD1+kwZZuKjhs0Om9EkqrVXz
- Vig7IfBAF8EosQC9aQf5GC6bfCb0VwbV9C4GmE3OXiZ6hNisEqgaPy7tpbHwun8pYEfJ5kJOW7n
- P7MLR8gPKcGl+7DNFsHK6RBUybHlvrh6AhTgx0gJcnIR8SLGaA431uwJ9PsphZKnV3VnufDte0I
- 7KouQLzHzPPx8pFrjUScgBZ40zNQjLQVuPrn4IFnvq9AWEPTMDN4q43vTbJ6j3G1xL/387X9W9c
- uZcM3XrMZKSiCZU2FM7BknNqQhyhfjtUkK/p
-X-Google-Smtp-Source: AGHT+IHarJXdcrsJKaw/JLAoVlmBlTR6TWMJLrb6L4fqBPiE+eq5npoutdY9ZNTJyu4dx2mP7DaLzQ==
-X-Received: by 2002:a05:6820:607:b0:5f1:e3d1:b994 with SMTP id
- 006d021491bc7-5f286b74c1fmr1030055eaf.0.1733454870582; 
- Thu, 05 Dec 2024 19:14:30 -0800 (PST)
+ bh=9N64e/pgYn1nLyblM4Tcpb97CAaIRtiZkD+VUNH0Gl4=;
+ b=Hnw3+3wSq7qqLtWuYZM0g8TDUeULI+kuH3ZHCaQ2q/f3/p9jRpoCCYQO9ZCyAtsyDn
+ aExGrM+kww2z7w4ndFs+mMRyzWGmjv9RAbBErairv1Ib4v773r5nkKQsWYrHLgN0iWUy
+ QgK2q0dG1/175/KOnda0BpR+81Qpkh6+Ki99hH5H8b1Gw+7uGYWizNsg04CiQekBxOUq
+ V0JvwG7mzDh1kNoXqTNrjZKGRif/rf+obtH/17uyq4s47LrKbah+K+Qlci7NgnKMy5T/
+ Y18CmE+aXpJLh8wimqsafctEe0H2+DPLKHt9VnFqP4FAUUjgrZ0h5kPq3EUARPAU1eNV
+ PfkQ==
+X-Gm-Message-State: AOJu0Yz0sZQA9/XTbC7RUaGXknSlHUjteEH3SJ6jhM5H9ioTWRYym5iC
+ S9SaU+KSUErgQYncHc0pxvNAJX9u7wQ2Klz8s9DBjXXc039+usuJqdNQTGbetZoUTzC0Y2FJBsN
+ IWM+OGtIp
+X-Gm-Gg: ASbGncvPsZ3uh0iP9BrxvvQUlFyXrq96c95kdJVsVX1r6Ep0mSAm5U9h4q1GL8CFITZ
+ i8Y7t9aZE1LLeEFlc+XgolTXfN4GMgO7HA1TJM1IaZwCWckO25dL5iO4R1HRCCW8r7wBtjULPsi
+ A4DjYuBvg1crWS3KaDvTL3Gm3rPWe4+jhquxhQ564loDbOMM5FG600k5HTsnU/rNbrxWqrHUpGm
+ Y1sCNcZeMjjUdpVcoxl8E/CHoGktGIfjJ/NxoRVlw9Y8TFy7mftCVluIjKB+k7zL6NIsu2YZEsF
+ Ay9H8hJvTVO9Xtjw4Nlq6uENEvVlwHpxj3wY
+X-Google-Smtp-Source: AGHT+IGdTjt2EOWXZCX5uR4YlHzx4NQtw+8N2yyoCFQxhFNVQp8rJXCsD0rsftKOjVEjZn6fnjHWmg==
+X-Received: by 2002:a9d:5ccc:0:b0:71d:53b6:ef5a with SMTP id
+ 46e09a7af769-71dc2c64885mr2443693a34.6.1733455194894; 
+ Thu, 05 Dec 2024 19:19:54 -0800 (PST)
 Received: from localhost.localdomain (fixed-187-189-51-143.totalplay.net.
  [187.189.51.143]) by smtp.gmail.com with ESMTPSA id
- 006d021491bc7-5f2793249e8sm548936eaf.39.2024.12.05.19.14.29
+ 006d021491bc7-5f2793255bbsm541045eaf.40.2024.12.05.19.19.53
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 05 Dec 2024 19:14:30 -0800 (PST)
+ Thu, 05 Dec 2024 19:19:54 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org
-Subject: [PATCH] target/arm: Use float_round_to_odd in helper_fcvtx_f64_to_f32
-Date: Thu,  5 Dec 2024 21:14:28 -0600
-Message-ID: <20241206031428.78634-1-richard.henderson@linaro.org>
+Subject: [PATCH 0/2] target/arm: Two more float_status conversions
+Date: Thu,  5 Dec 2024 21:19:50 -0600
+Message-ID: <20241206031952.78776-1-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c32;
- envelope-from=richard.henderson@linaro.org; helo=mail-oo1-xc32.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::330;
+ envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,45 +94,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Softfloat has native support for round-to-odd.  Use it.
+Hi Peter,
 
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- target/arm/tcg/helper-a64.c | 18 ++++--------------
- 1 file changed, 4 insertions(+), 14 deletions(-)
+You probably have something like this in your AFP tree already,
+but while I'm sending all of the other float_status patches, I
+thought I might as well send these two.
 
-diff --git a/target/arm/tcg/helper-a64.c b/target/arm/tcg/helper-a64.c
-index 1daf3f27c0..ff48bac1a8 100644
---- a/target/arm/tcg/helper-a64.c
-+++ b/target/arm/tcg/helper-a64.c
-@@ -386,23 +386,13 @@ float64 HELPER(frecpx_f64)(float64 a, float_status *fpst)
- 
- float32 HELPER(fcvtx_f64_to_f32)(float64 a, CPUARMState *env)
- {
--    /* Von Neumann rounding is implemented by using round-to-zero
--     * and then setting the LSB of the result if Inexact was raised.
--     */
-     float32 r;
-     float_status *fpst = &env->vfp.fp_status;
--    float_status tstat = *fpst;
--    int exflags;
-+    int old = get_float_rounding_mode(fpst);
- 
--    set_float_rounding_mode(float_round_to_zero, &tstat);
--    set_float_exception_flags(0, &tstat);
--    r = float64_to_float32(a, &tstat);
--    exflags = get_float_exception_flags(&tstat);
--    if (exflags & float_flag_inexact) {
--        r = make_float32(float32_val(r) | 1);
--    }
--    exflags |= get_float_exception_flags(fpst);
--    set_float_exception_flags(exflags, fpst);
-+    set_float_rounding_mode(float_round_to_odd, fpst);
-+    r = float64_to_float32(a, fpst);
-+    set_float_rounding_mode(old, fpst);
-     return r;
- }
- 
+Based-on: 20241206031224.78525-1-richard.henderson@linaro.org
+(target/arm: Helper type cleanups)
+
+r~
+
+Richard Henderson (2):
+  target/arm: Use float_status in helper_fcvtx_f64_to_f32
+  target/arm: Use float_status in helper_vfp_fcvt{ds,sd}
+
+ target/arm/helper.h            |  4 ++--
+ target/arm/tcg/helper-a64.h    |  2 +-
+ target/arm/tcg/helper-a64.c    |  3 +--
+ target/arm/tcg/translate-a64.c | 17 +++++++++++------
+ target/arm/tcg/translate-vfp.c |  4 ++--
+ target/arm/vfp_helper.c        |  8 ++++----
+ 6 files changed, 21 insertions(+), 17 deletions(-)
+
 -- 
 2.43.0
 
