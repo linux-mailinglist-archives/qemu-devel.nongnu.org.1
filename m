@@ -2,38 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A8849E7F36
-	for <lists+qemu-devel@lfdr.de>; Sat,  7 Dec 2024 09:58:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F62D9E7F3E
+	for <lists+qemu-devel@lfdr.de>; Sat,  7 Dec 2024 09:59:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tJqcX-0007c7-5L; Sat, 07 Dec 2024 03:57:01 -0500
+	id 1tJqcZ-0007da-6V; Sat, 07 Dec 2024 03:57:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mchehab+huawei@kernel.org>)
- id 1tJqcS-0007Z0-71; Sat, 07 Dec 2024 03:56:56 -0500
-Received: from dfw.source.kernel.org ([139.178.84.217])
+ id 1tJqcS-0007Zf-SK; Sat, 07 Dec 2024 03:56:57 -0500
+Received: from dfw.source.kernel.org ([2604:1380:4641:c500::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mchehab+huawei@kernel.org>)
- id 1tJqcO-0002Ug-Mr; Sat, 07 Dec 2024 03:56:55 -0500
+ id 1tJqcP-0002Un-5s; Sat, 07 Dec 2024 03:56:55 -0500
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by dfw.source.kernel.org (Postfix) with ESMTP id 54ADC5C4B5A;
+ by dfw.source.kernel.org (Postfix) with ESMTP id 5C8935C4B9A;
  Sat,  7 Dec 2024 08:56:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16A47C4CEE4;
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D3A8C4CEE9;
  Sat,  7 Dec 2024 08:56:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
  s=k20201202; t=1733561805;
- bh=EZFsmHMf3WbcMSlyh1u3n8d24jrZ2fM6gqwzFgnZ1EY=;
+ bh=er2E7uTLlujIsFePhTmXIu236pd9wB9P2GkaIjEE/Vc=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=rpLnRI25kA9ADhu+bFHvSFWkiT7w7hmKX79NpYztvJg+YBM3XlCI9XCSimB97irAT
- XvH1KQHgP9WDE/GUYSrnkO8gY3kCfO869uxmKKS5v6sVyWPZy3zXO3DX4ckzcKM9PQ
- z4BbQsQJFzhuP5SbLyJJQTMlCK2A/jAC0p2Jnq1l55uSWiG4ecKBa16wXwCZ+W9kg2
- DRdRyT7nQVCZvsRVbXf4vrC85UJYzbhCIsEWfbLt+PcC6FTzs9xAAwKZcMdenxyGIT
- D2ilLYJzM+6OjuhhCHsipKdDs11twZbb1SXe5DDc8nPw8PQ1Wfx9d1Fcn5MUcStQZH
- 7q3Ff1Dun8ANA==
+ b=IJV9brqAmsq1klILgWPVuVo74lJekKqAntx7ov2mwa53oYIVFVKv9zjsjdfd29M3f
+ BjdNKVG3vJpPnVhW4qAGKetH51HL+ZLZxp6fEt5D1UkKmcsTe2E5bcQfX1gdapcjCc
+ eL8jks27meZhdOFUNIcZtpqQlJOw/GqHRQvoOEoIBQDuGwR4jJ2tnbgRpHMJG4wVw3
+ NoHixiWRH6/OLCLikCEpJcTQAJiw5G+hkQoV4WyxyH3cdNgKAPGP3xHJ6C+DTH4qwu
+ /dEELyZxC1ApgIFk/jxn7m6e5SKyyM3N/wCdg2rsctNEbiC6q8PXW+dQaoB3JQVhC1
+ YDBK/4j6DZE0Q==
 Received: from mchehab by mail.kernel.org with local (Exim 4.98)
  (envelope-from <mchehab+huawei@kernel.org>)
- id 1tJqcF-00000005j5C-0rbc; Sat, 07 Dec 2024 09:56:43 +0100
+ id 1tJqcF-00000005j5G-0yeh; Sat, 07 Dec 2024 09:56:43 +0100
 From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 To: "Michael S . Tsirkin" <mst@redhat.com>
 Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
@@ -42,23 +42,22 @@ Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
  Ani Sinha <anisinha@redhat.com>, Dongjiu Geng <gengdongjiu1@gmail.com>,
  Igor Mammedov <imammedo@redhat.com>, linux-kernel@vger.kernel.org,
  qemu-arm@nongnu.org, qemu-devel@nongnu.org
-Subject: [PATCH v6 11/16] acpi/ghes: don't crash QEMU if ghes GED is not found
-Date: Sat,  7 Dec 2024 09:54:17 +0100
-Message-ID: <070b31b912eae803a47ab070f1ca747bd1e69e95.1733561462.git.mchehab+huawei@kernel.org>
+Subject: [PATCH v6 12/16] acpi/ghes: rename etc/hardware_error file macros
+Date: Sat,  7 Dec 2024 09:54:18 +0100
+Message-ID: <c470330293c0cf8cfca0210ca3d74f08ef11a11f.1733561462.git.mchehab+huawei@kernel.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <cover.1733561462.git.mchehab+huawei@kernel.org>
 References: <cover.1733561462.git.mchehab+huawei@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=139.178.84.217;
+Received-SPF: pass client-ip=2604:1380:4641:c500::1;
  envelope-from=mchehab+huawei@kernel.org; helo=dfw.source.kernel.org
-X-Spam_score_int: -100
-X-Spam_score: -10.1
-X-Spam_bar: ----------
-X-Spam_report: (-10.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.996,
+X-Spam_score_int: -73
+X-Spam_score: -7.4
+X-Spam_bar: -------
+X-Spam_report: (-7.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.996,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_HI=-5, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -75,32 +74,112 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Make error handling within ghes_record_cper_errors() consistent,
-i.e. instead abort just print a error in case ghes GED is not found.
+Now that we have also have a file to store HEST data location,
+which is part of GHES, better name the file where CPER records
+are stored.
 
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+No functional changes.
+
 Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Reviewed-by: Igor Mammedov <imammedo@redhat.com>
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- hw/acpi/ghes.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ hw/acpi/ghes.c | 38 +++++++++++++++++++++++---------------
+ 1 file changed, 23 insertions(+), 15 deletions(-)
 
 diff --git a/hw/acpi/ghes.c b/hw/acpi/ghes.c
-index 414a4a1ee00e..2df5ddf68a13 100644
+index 2df5ddf68a13..52c2b69d3664 100644
 --- a/hw/acpi/ghes.c
 +++ b/hw/acpi/ghes.c
-@@ -371,7 +371,10 @@ void ghes_record_cper_errors(const void *cper, size_t len,
+@@ -28,8 +28,8 @@
+ #include "hw/nvram/fw_cfg.h"
+ #include "qemu/uuid.h"
  
-     acpi_ged_state = ACPI_GED(object_resolve_path_type("", TYPE_ACPI_GED,
-                                                        NULL));
--    g_assert(acpi_ged_state);
-+    if (!acpi_ged_state) {
-+        error_setg(errp, "Can't find ACPI_GED object");
-+        return;
-+    }
-     ags = &acpi_ged_state->ghes_state;
+-#define ACPI_GHES_ERRORS_FW_CFG_FILE        "etc/hardware_errors"
+-#define ACPI_GHES_DATA_ADDR_FW_CFG_FILE     "etc/hardware_errors_addr"
++#define ACPI_HW_ERROR_FW_CFG_FILE           "etc/hardware_errors"
++#define ACPI_HW_ERROR_ADDR_FW_CFG_FILE      "etc/hardware_errors_addr"
  
-     start_addr = le64_to_cpu(ags->ghes_addr_le);
+ /* The max size in bytes for one error block */
+ #define ACPI_GHES_MAX_RAW_DATA_LENGTH   (1 * KiB)
+@@ -234,7 +234,7 @@ static void build_ghes_error_table(GArray *hardware_errors, BIOSLinker *linker)
+         ACPI_GHES_MAX_RAW_DATA_LENGTH * ACPI_GHES_ERROR_SOURCE_COUNT);
+ 
+     /* Tell guest firmware to place hardware_errors blob into RAM */
+-    bios_linker_loader_alloc(linker, ACPI_GHES_ERRORS_FW_CFG_FILE,
++    bios_linker_loader_alloc(linker, ACPI_HW_ERROR_FW_CFG_FILE,
+                              hardware_errors, sizeof(uint64_t), false);
+ 
+     for (i = 0; i < ACPI_GHES_ERROR_SOURCE_COUNT; i++) {
+@@ -243,17 +243,21 @@ static void build_ghes_error_table(GArray *hardware_errors, BIOSLinker *linker)
+          * corresponding "Generic Error Status Block"
+          */
+         bios_linker_loader_add_pointer(linker,
+-            ACPI_GHES_ERRORS_FW_CFG_FILE, sizeof(uint64_t) * i,
+-            sizeof(uint64_t), ACPI_GHES_ERRORS_FW_CFG_FILE,
+-            error_status_block_offset + i * ACPI_GHES_MAX_RAW_DATA_LENGTH);
++                                       ACPI_HW_ERROR_FW_CFG_FILE,
++                                       sizeof(uint64_t) * i,
++                                       sizeof(uint64_t),
++                                       ACPI_HW_ERROR_FW_CFG_FILE,
++                                       error_status_block_offset +
++                                       i * ACPI_GHES_MAX_RAW_DATA_LENGTH);
+     }
+ 
+     /*
+      * tell firmware to write hardware_errors GPA into
+      * hardware_errors_addr fw_cfg, once the former has been initialized.
+      */
+-    bios_linker_loader_write_pointer(linker, ACPI_GHES_DATA_ADDR_FW_CFG_FILE,
+-        0, sizeof(uint64_t), ACPI_GHES_ERRORS_FW_CFG_FILE, 0);
++    bios_linker_loader_write_pointer(linker, ACPI_HW_ERROR_ADDR_FW_CFG_FILE, 0,
++                                     sizeof(uint64_t),
++                                     ACPI_HW_ERROR_FW_CFG_FILE, 0);
+ }
+ 
+ /* Build Generic Hardware Error Source version 2 (GHESv2) */
+@@ -290,8 +294,10 @@ static void build_ghes_v2(GArray *table_data,
+     build_append_gas(table_data, AML_AS_SYSTEM_MEMORY, 0x40, 0,
+                      4 /* QWord access */, 0);
+     bios_linker_loader_add_pointer(linker, ACPI_BUILD_TABLE_FILE,
+-        address_offset + GAS_ADDR_OFFSET, sizeof(uint64_t),
+-        ACPI_GHES_ERRORS_FW_CFG_FILE, source_id * sizeof(uint64_t));
++                                   address_offset + GAS_ADDR_OFFSET,
++                                   sizeof(uint64_t),
++                                   ACPI_HW_ERROR_FW_CFG_FILE,
++                                   source_id * sizeof(uint64_t));
+ 
+     /* Notification Structure */
+     build_ghes_hw_error_notification(table_data, notify);
+@@ -308,9 +314,11 @@ static void build_ghes_v2(GArray *table_data,
+     build_append_gas(table_data, AML_AS_SYSTEM_MEMORY, 0x40, 0,
+                      4 /* QWord access */, 0);
+     bios_linker_loader_add_pointer(linker, ACPI_BUILD_TABLE_FILE,
+-        address_offset + GAS_ADDR_OFFSET,
+-        sizeof(uint64_t), ACPI_GHES_ERRORS_FW_CFG_FILE,
+-        (ACPI_GHES_ERROR_SOURCE_COUNT + source_id) * sizeof(uint64_t));
++                                   address_offset + GAS_ADDR_OFFSET,
++                                   sizeof(uint64_t),
++                                   ACPI_HW_ERROR_FW_CFG_FILE,
++                                   (ACPI_GHES_ERROR_SOURCE_COUNT + source_id)
++                                   * sizeof(uint64_t));
+ 
+     /*
+      * Read Ack Preserve field
+@@ -346,11 +354,11 @@ void acpi_ghes_add_fw_cfg(AcpiGhesState *ags, FWCfgState *s,
+                           GArray *hardware_error)
+ {
+     /* Create a read-only fw_cfg file for GHES */
+-    fw_cfg_add_file(s, ACPI_GHES_ERRORS_FW_CFG_FILE, hardware_error->data,
++    fw_cfg_add_file(s, ACPI_HW_ERROR_FW_CFG_FILE, hardware_error->data,
+                     hardware_error->len);
+ 
+     /* Create a read-write fw_cfg file for Address */
+-    fw_cfg_add_file_callback(s, ACPI_GHES_DATA_ADDR_FW_CFG_FILE, NULL, NULL,
++    fw_cfg_add_file_callback(s, ACPI_HW_ERROR_ADDR_FW_CFG_FILE, NULL, NULL,
+         NULL, &(ags->ghes_addr_le), sizeof(ags->ghes_addr_le), false);
+ 
+     ags->present = true;
 -- 
 2.47.1
 
