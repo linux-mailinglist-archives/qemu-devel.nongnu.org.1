@@ -2,95 +2,143 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD9C99E7F5E
-	for <lists+qemu-devel@lfdr.de>; Sat,  7 Dec 2024 10:21:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A14F9E7FAC
+	for <lists+qemu-devel@lfdr.de>; Sat,  7 Dec 2024 12:01:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tJr01-0004a9-9P; Sat, 07 Dec 2024 04:21:17 -0500
+	id 1tJsYw-0007b5-2A; Sat, 07 Dec 2024 06:01:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tJqzx-0004Zk-GB
- for qemu-devel@nongnu.org; Sat, 07 Dec 2024 04:21:13 -0500
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tJqzv-0005RZ-Ug
- for qemu-devel@nongnu.org; Sat, 07 Dec 2024 04:21:13 -0500
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-4349fb56260so18415305e9.3
- for <qemu-devel@nongnu.org>; Sat, 07 Dec 2024 01:21:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1733563270; x=1734168070; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=IC7m/KyPoRokYoUodJq+MoEsSQ+WiBEiUbDYQMEv3ns=;
- b=dy5IbicLxkl0HYmWiQxwtOpEQZDx0bvNTYycwBTKHeI32kjJwa5sbCRHbrmKf+Wic8
- mYg4oHks7ujExb8hs0Xog9MpoDP+0Hp0DQwM/2noQ++GBsWA/qZjnBxxgq9/6BnrX7V4
- 1ezgPUftJ1n1TivgLkPFNiSeeM8M2D9dhN779YDrg9Jd9J+K1/pmqn7uQcnE7Rcm3LHx
- 0Fh+Rl0PBWoN87x5CtJGRaRzyLzBrwlQkIjWxNUQISdDYqTrXPFwV7vjFOEPwSY5uzCO
- xp8smlvnwY4eue911bs2b1ISHNsJis6cBru5GYGCVd68v9JyCcx8eZbDMdhYDnCofRbf
- WZKw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733563270; x=1734168070;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=IC7m/KyPoRokYoUodJq+MoEsSQ+WiBEiUbDYQMEv3ns=;
- b=okmRw7xom6ymKHPdHvhfsHbF2VtTvHu3sTQqJaHwHuuXYG5vp8vefeQm4kILrcJv1C
- 6prE0Q3i/XViBalfh3HIxREQAQTvxNkpoW8qM0ASnIDVKsIsOJykn9MfnOdIaIVBsB9D
- TzK+MX9448H8jULmGkGQAwyR76PbOkMGebmlhT7OSpc3cYsATvrv7UURoJu+KuwYMphI
- tgEy6jq9bknTXeRYA2T1SBa1cFCpxHmdhW+AH1vHYqSBGA4dk4oVZfR0xfflcJyz7qaV
- tArRNbgxqmANYW0zblUlBWIAKWePLcR5aZ6EHbMJbOoklJyOYm1zyuks9ezeIFBcSkn9
- thsg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCW5FQ8ts0l/bsEzdF+e6EAwmHTcG5l2tp8fq0aGfCorMqzvB/MTaM01L8y+z3rj20cUX6ccOrH2W3vO@nongnu.org
-X-Gm-Message-State: AOJu0YyulvwgS9OJX77InZP8ifHtCHd5+caBltWiIJjiAcBLl8vmZywf
- iAsrDFrpTWXpUxRN27k0dv93VNYurJlso2lDYgI+m4ITRwvoDykzEkCo7V14jVQ=
-X-Gm-Gg: ASbGncv4SPCQK+lGCUgqCCXMx+wWHDdpwrJ2lAhqOJ3GUd0X9/iktuuQdHGH6IQMtXQ
- UZyV/6+WaPrk/3drhzOFCpMi12PbCN0XDrUwEKkYKUegRm+l0bJIOojeZ78d3uGJgP37Mg9WOSx
- fdrLJl9TnX8tOSk6fJgI9qC63SXcee2PwTnD3Oeo0i3tf5rFaUHQmXnYl4UgDr1k04c5Td6r1Hm
- uLik4Em52JbviJTDFpH/bBhtYoCbb7HfKHRWXowsPIScO2+4Ok/xJVoDpi0lqvmh9P+o2sbZWWz
- eCljrP+9Cjuia+IMwo+OxV/3ZRBVZvhW
-X-Google-Smtp-Source: AGHT+IEzkO49rE7qjUB2YWYY8taJ0ME1Rwzp9yBdNq3rhhQWpGtSY3AN7rjrkgb0dQnMVMySs9XOjQ==
-X-Received: by 2002:a05:600c:1386:b0:42c:c401:6d8b with SMTP id
- 5b1f17b1804b1-434ddea7f1fmr49259665e9.7.1733563269929; 
- Sat, 07 Dec 2024 01:21:09 -0800 (PST)
-Received: from [192.168.1.17] (lfbn-bay-1-170-196.w83-193.abo.wanadoo.fr.
- [83.193.250.196]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-434da0d6a07sm79924405e9.13.2024.12.07.01.21.08
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 07 Dec 2024 01:21:08 -0800 (PST)
-Message-ID: <06e90014-40b3-4928-b61f-6598193151f1@linaro.org>
-Date: Sat, 7 Dec 2024 10:21:07 +0100
+ (Exim 4.90_1) (envelope-from <Julia.Zhang@amd.com>)
+ id 1tJsYu-0007ai-2h
+ for qemu-devel@nongnu.org; Sat, 07 Dec 2024 06:01:24 -0500
+Received: from mail-bn8nam11on2078.outbound.protection.outlook.com
+ ([40.107.236.78] helo=NAM11-BN8-obe.outbound.protection.outlook.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <Julia.Zhang@amd.com>)
+ id 1tJsYs-0007i9-7O
+ for qemu-devel@nongnu.org; Sat, 07 Dec 2024 06:01:23 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=yHPHu6pXdfHs081Mw/7q2vDkwN8NRL4YlrTtsdH7R+sZO2tYhIDXhQ8cA3Ps5m7vVHxeJBZRIYi3Nx0OZzjS/fF5rScqtTSHo5o2/pHy1Amaych+CSvCwJhxzgk32dQSb3sPxymNrlds7DZ6qEQtOC4iT4w6LuCg+lD/vKunaxtRSB58etCz85fPEPxL/JkJo54oMhU+yVssfwqEIvaT/79bsZwbvqgS1oLf2c8Hy4S0UoVzEjOYW/BiBpwTAre/QFsK9HgWHgIzE0fbya+pOibpyD7tbDP4RYDk6zVBW6R5Mm72prr2ir5x4wsG+twpmptJJ4h2I4Tsdbqn/Lwi/w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=z4261N78RZ6zefSdf6LbgNLoktvOrHLnF03ZMxWyzmQ=;
+ b=iTc0nK5/Vlmi2q1nB52p4HFlFldv+Wxp90Rzwwe21O133oN+uQ75OJ5+EavYwZLvsHqF+/TYzrt95YSarBhY2MdGVenc//xXcfQ2B7hKGegTaKFqWdU2OfvDh4N4FTrO880RMzhc4I0C00f6g4zAhn+r0tBM0o3qUyY1VYnHIIC5jvUDTBLMoNp+x8fG8/Tf42LabBFglIwHGEVs78tBDt8CzUzb7XoXxpSEC0llWHCTcjhHN/zuUrCe7DZjjNb0Bbn5wspK+3Llb+iBn55MQSeIvUVrizBSGuNWhnsJvtzXd9As3DoI0KwEf9uZX2z9NWK34QlVh0SZ1pmNPE1JjQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=z4261N78RZ6zefSdf6LbgNLoktvOrHLnF03ZMxWyzmQ=;
+ b=1oKPlguMMTnxoJwHt8V38Ob4HHB+9mPSYSIdHZtR7pAa6h4U3asIPrYgWAMhxKHt5yCaHVUV/HAVxbwWKOTUzwPFODOqSotTO65HhZvAZwhEV3gGv6btRKLvNJmvGtJx4ppvNRR1BOP+siVTIGzVeZfcYGanmWOWM4/mmePAZPA=
+Received: from BN8PR12CA0009.namprd12.prod.outlook.com (2603:10b6:408:60::22)
+ by LV3PR12MB9185.namprd12.prod.outlook.com (2603:10b6:408:199::13)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8230.11; Sat, 7 Dec
+ 2024 10:56:14 +0000
+Received: from BN3PEPF0000B372.namprd21.prod.outlook.com
+ (2603:10b6:408:60:cafe::fd) by BN8PR12CA0009.outlook.office365.com
+ (2603:10b6:408:60::22) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8230.10 via Frontend Transport; Sat,
+ 7 Dec 2024 10:56:14 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ BN3PEPF0000B372.mail.protection.outlook.com (10.167.243.169) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.8272.0 via Frontend Transport; Sat, 7 Dec 2024 10:56:14 +0000
+Received: from jenkins-julia.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Sat, 7 Dec
+ 2024 04:56:09 -0600
+From: Julia Zhang <julia.zhang@amd.com>
+To: Stefano Stabellini <sstabellini@kernel.org>, Anthony PERARD
+ <anthony.perard@citrix.com>, Paul Durrant <paul@xen.org>, "Edgar E .
+ Iglesias" <edgar.iglesias@gmail.com>, "Michael S . Tsirkin" <mst@redhat.com>, 
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ <xen-devel@lists.xenproject.org>
+CC: Alex Deucher <alexander.deucher@amd.com>,
+ =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>, "Xenia
+ Ragiadakou" <burzalodowa@gmail.com>, Julia Zhang <julia.zhang@amd.com>, "Chen
+ Jiqian" <Jiqian.Chen@amd.com>, Huang Rui <ray.huang@amd.com>, Penny Zheng
+ <penny.zheng@amd.com>, Zhu Lingshan <Lingshan.Zhu@amd.com>,
+ =?UTF-8?q?Roger=20Pau=20Monn=C3=A9?= <roger.pau@citrix.com>, Jan Beulich
+ <jbeulich@suse.com>, Juergen Gross <jgross@suse.com>, Oleksandr Tyshchenko
+ <oleksandr_tyshchenko@epam.com>, <qemu-devel@nongnu.org>
+Subject: [PATCH 0/3] Support getting p2pdma_distance
+Date: Sat, 7 Dec 2024 18:55:34 +0800
+Message-ID: <20241207105537.542441-1-julia.zhang@amd.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC 06/13] rust: add bindings for memattrs
-To: Peter Maydell <peter.maydell@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>
-Cc: Richard Henderson <richard.henderson@linaro.org>,
- Zhao Liu <zhao1.liu@intel.com>, "Michael S . Tsirkin" <mst@redhat.com>,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- Junjie Mao <junjie.mao@hotmail.com>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
- <alex.bennee@linaro.org>, qemu-devel@nongnu.org, qemu-rust@nongnu.org
-References: <20241205060714.256270-1-zhao1.liu@intel.com>
- <20241205060714.256270-7-zhao1.liu@intel.com>
- <b34733f3-1525-4e35-8c07-f84ad56b01e0@linaro.org>
- <1f008c2a-aaf6-497d-becd-f36f5d9aea17@redhat.com>
- <CAFEAcA9SCfMcrhpd_x0LmgwtD-5XwT4TY+QXBJMOjWbdtBPCUg@mail.gmail.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <CAFEAcA9SCfMcrhpd_x0LmgwtD-5XwT4TY+QXBJMOjWbdtBPCUg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN3PEPF0000B372:EE_|LV3PR12MB9185:EE_
+X-MS-Office365-Filtering-Correlation-Id: aa9c35be-606c-4060-c2c3-08dd16adc4e9
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|7416014|1800799024|36860700013|82310400026|376014; 
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?9EPrNKWyXB2jffhGJwu6FONbnhxmpPnqjMVjmAU+oEtNU+cSqk7+YZniU1oM?=
+ =?us-ascii?Q?zev8Wsp/joaRMxiUYDWVRiW0c9Q9Shc7uDInq2mJc1Fx3en/vupaj8fQqh5T?=
+ =?us-ascii?Q?u6ePcwQwGExdSRtxSO3jpyZxKryL4w4pvrNnr2AYhWdgUcVtuHQ6htAbo3Us?=
+ =?us-ascii?Q?shmdgzpoTDs/GiW1UPkF0Ppg/KCU1NQnA02cqD8fedJbpNDzGJZ4vhOjBgU0?=
+ =?us-ascii?Q?ppTtWbW7UAUIPaTMCdVQCNS3c94B2YDJeqNivn6exkQIVRMCluaup9RMpHHq?=
+ =?us-ascii?Q?HGO2vh+DK7NNpL+rKpD+sftBJwB2qH8YH0nkcEG3pMBff5qnl4tG+S7mCNTc?=
+ =?us-ascii?Q?44KJ3sAWmcSuD9GQlFOzPavmE2aBFuISVd6SYO3HcOuLbNuVDaLWJID2JQz3?=
+ =?us-ascii?Q?+A37W8+cdAwGFJ3tGdKfgHaGQvO70WjUPrVNR+kYnsTeDdNkaTc8KHn5pf/E?=
+ =?us-ascii?Q?hqElxP9Ray6KAf0nQbRhppRRu3R9jeTpbRootsevWe/TLihhmP2vae/wP/tL?=
+ =?us-ascii?Q?YyoHHN0ckcXgEoTpJNeCq0dyExKLcWgVoYnBaf2WRbveeeW0J3/z4kUT7rMn?=
+ =?us-ascii?Q?0qXbC4oDsPC5hYCUZxTW1RyKrWO4Btghc+ywQJSXp2glemYunu5IHmwoucH1?=
+ =?us-ascii?Q?HaD/HcApTnrk0/0V0DuLZetbI42/f8S7gKX/840FdYOgE7aN9jji/y8UbAZk?=
+ =?us-ascii?Q?QPpVaYGz8kgZoXo1bKUiZdSy2UyohrzccXq/pg8BAi2MVt+eZRSICVu5cBTI?=
+ =?us-ascii?Q?M3KTZdcvqv9rhB7nwti5CS1U33Dk5ZPt+uYPlpjPqUQ3UClzT3gIHwi4ggF2?=
+ =?us-ascii?Q?EE2sg3q2QH+YhjJP927UQlhiUrY8wBU/PET4BPp+6iVxey6Fwh6bPKlj64zR?=
+ =?us-ascii?Q?QPAsq+0PBNgHNDg4s9euLbFS+EeS/isTGRT9iAkw9/DaDOTt/gstaS5mATFc?=
+ =?us-ascii?Q?ICysk89vQFEVUNv+lJa8iPuKmFeORVtoDrAelNSOxEvKsFQX1FwXe73xLf1j?=
+ =?us-ascii?Q?kcUs7UvBVMBj2P7huSAyWtyfHo/DKuBIxrN3bj/iZgubIoMplqTmA1oUz3v6?=
+ =?us-ascii?Q?Ts39gcol9xmzbVdBQgNYBeAwbVSgve+Pi47l/3fjUDhTJOjMNXQziqKvOg/9?=
+ =?us-ascii?Q?hpQ2Fx2pC/3QLxM2Cf75DtPIlF/1tbn1J1PgfreLN2kkqvpPErTyXa/PUAtN?=
+ =?us-ascii?Q?MwpPSUEAUKIVmHe+YiRTWBImViE+Dmdlwmr/XLtw5HbBpw5TeQMknoVWf3oe?=
+ =?us-ascii?Q?sFghtmVkF2Zw2vTLzmFfondRb7aEASgLh7o2ly6NQjjPNKndfUOY1DXyd7aK?=
+ =?us-ascii?Q?cKaAW43AQMxXwXDGGq9wus2ktTb+YA+akoBVH4YDFQ66B1QdrtiklSevfCnv?=
+ =?us-ascii?Q?XjsCvlaWXxDKA/6czVCQegzffPenLboDnbsJNeoLBSm3IDbP1S3NZSEXUdN8?=
+ =?us-ascii?Q?sCLV8DnS0y9BCPB1mn+aaPwvWPK/omX3?=
+X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230040)(7416014)(1800799024)(36860700013)(82310400026)(376014); DIR:OUT;
+ SFP:1101; 
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Dec 2024 10:56:14.4504 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: aa9c35be-606c-4060-c2c3-08dd16adc4e9
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
+ Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: BN3PEPF0000B372.namprd21.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR12MB9185
+Received-SPF: permerror client-ip=40.107.236.78;
+ envelope-from=Julia.Zhang@amd.com;
+ helo=NAM11-BN8-obe.outbound.protection.outlook.com
+X-Spam_score_int: -50
+X-Spam_score: -5.1
+X-Spam_bar: -----
+X-Spam_report: (-5.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.996,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_MSPIKE_H2=-0.001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -107,51 +155,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/12/24 11:59, Peter Maydell wrote:
-> On Thu, 5 Dec 2024 at 18:30, Paolo Bonzini <pbonzini@redhat.com> wrote:
->>
->> On 12/5/24 19:15, Richard Henderson wrote:
->>> On 12/5/24 00:07, Zhao Liu wrote:
->>>> The MemTxAttrs structure is composed of bitfield members, and bindgen is
->>>> unable to generate an equivalent macro definition for
->>>> MEMTXATTRS_UNSPECIFIED.
->>>
->>> I'm happy to move away from bit fields to uint32_t or suchlike to enable
->>> MEMTXATTRS_UNSPECIFIED be a compile-time constant.
->>
->> Yeah, if we go from
->>
->> typedef struct MemTxAttrs {
->>       unsigned int unspecified:1;
->>       unsigned int secure:1;
->>       unsigned int space:2;
->>       unsigned int user:1;
->>       unsigned int memory:1;
->>       unsigned int requester_id:16;
->>       unsigned int pid:8;
->> } MemTxAttrs;
->>
->> to
->>
->> typedef struct MemTxAttrs {
->>       uint8_t unspecified;
->>       uint8_t secure;
->>       uint8_t space;
->>       uint8_t user;
->>       uint8_t memory;
->>       uint8_t pid;
->>       uint16_t requester_id;
->> } MemTxAttrs;
->>
->> is still decently packed and simplifies things a lot.
-> 
-> The old struct is 4 bytes, and the new one is 8 bytes. We do
-> a lot of directly passing 'struct MemTxAttrs' arguments around
-> as arguments to functions (i.e. not passing pointers to them),
-> so increasing it in size is not completely free.
+To implement dGPU prime feature, virtgpu needs to import/export buffer
+between virtio iGPU and passthrough dGPU. Before that, virtgpu has to
+checkout p2pdma_distance. But calling function pci_p2pdma_distance in guest
+VM will only get virtual p2pdma_distance instead of real physical
+p2pdma_distance.
 
-Should we add a check to not pass 8 bytes?
+This series is to support handling the new virtgpu command from the guest
+VM to get the physical p2pdma_distance of two PCI devices of guest VM.
 
-   QEMU_BUILD_BUG_ON(sizeof(MemTxAttrs) != sizeof(uint64_t));
+Julia Zhang (3):
+  virtio-gpu: set hostaddr for virtio iGPU
+  pci: introduce a function to get PCIDevice
+  virtio-gpu: add a new command to calculate p2pdma_distance
+
+ hw/display/virtio-gpu-virgl.c               | 47 +++++++++++++++++++++
+ hw/display/virtio-gpu.c                     |  6 +++
+ hw/i386/xen/xen-hvm.c                       |  6 +++
+ hw/pci/pci.c                                | 22 ++++++++++
+ hw/xen/xen_pt.c                             | 10 ++---
+ hw/xen/xen_pt.h                             |  1 -
+ include/hw/pci/pci.h                        |  2 +
+ include/hw/pci/pci_device.h                 |  1 +
+ include/hw/virtio/virtio-gpu-bswap.h        | 12 ++++++
+ include/hw/virtio/virtio-gpu.h              |  2 +
+ include/hw/xen/xen.h                        |  3 ++
+ include/standard-headers/linux/virtio_gpu.h | 19 +++++++++
+ 12 files changed, 125 insertions(+), 6 deletions(-)
+
+-- 
+2.34.1
 
 
