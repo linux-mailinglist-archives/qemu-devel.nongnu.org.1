@@ -2,78 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73AE39E8032
-	for <lists+qemu-devel@lfdr.de>; Sat,  7 Dec 2024 14:49:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F7A89E8064
+	for <lists+qemu-devel@lfdr.de>; Sat,  7 Dec 2024 16:17:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tJvA2-0005K9-IQ; Sat, 07 Dec 2024 08:47:54 -0500
+	id 1tJwY4-0001N1-BO; Sat, 07 Dec 2024 10:16:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1tJvA0-0005Jm-P3
- for qemu-devel@nongnu.org; Sat, 07 Dec 2024 08:47:52 -0500
-Received: from mailgate02.uberspace.is ([185.26.156.114])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1tJv9y-0005nD-Vx
- for qemu-devel@nongnu.org; Sat, 07 Dec 2024 08:47:52 -0500
-Received: from skiff.uberspace.de (skiff.uberspace.de [185.26.156.131])
- by mailgate02.uberspace.is (Postfix) with ESMTPS id 39E04180C09
- for <qemu-devel@nongnu.org>; Sat,  7 Dec 2024 14:47:48 +0100 (CET)
-Received: (qmail 27804 invoked by uid 990); 7 Dec 2024 13:47:48 -0000
-Authentication-Results: skiff.uberspace.de;
-	auth=pass (plain)
-Received: from unknown (HELO unkown) (::1)
- by skiff.uberspace.de (Haraka/3.0.1) with ESMTPSA;
- Sat, 07 Dec 2024 14:47:48 +0100
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1tJwY2-0001Mi-O2
+ for qemu-devel@nongnu.org; Sat, 07 Dec 2024 10:16:46 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1tJwY0-00082I-Oe
+ for qemu-devel@nongnu.org; Sat, 07 Dec 2024 10:16:46 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1733584603;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=buWahY26YGerNzLHfmySJVio+/sH3JcpVBTbZ+QbVEk=;
+ b=LzSpP+3tsGVQtDpk+iOQ1prilRDNQve6iGZZRg+sOWjMZRs0wtMI6qFH2F9z5PELLVY/qD
+ LZc79bLL2tsK0cwbMmuKzFBYQKV6zPbL0rLB83uMMYJzhRBqxcLbWr4eFNgHVfaCpQ/6EI
+ sdG5ViJFFK6uo4JiuTYpAAvIeDzyIMY=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-396-ra82krBVOB2rHcR1JLV2jA-1; Sat,
+ 07 Dec 2024 10:16:39 -0500
+X-MC-Unique: ra82krBVOB2rHcR1JLV2jA-1
+X-Mimecast-MFC-AGG-ID: ra82krBVOB2rHcR1JLV2jA
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 8843919560AA; Sat,  7 Dec 2024 15:16:35 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.194.102])
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id F31C31955F3E; Sat,  7 Dec 2024 15:16:33 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id A692321E66D2; Sat,  7 Dec 2024 16:16:31 +0100 (CET)
+From: Markus Armbruster <armbru@redhat.com>
+To: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Cc: "Michael S . Tsirkin" <mst@redhat.com>,  Jonathan Cameron
+ <Jonathan.Cameron@huawei.com>,  Shiju Jose <shiju.jose@huawei.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,  Ani Sinha
+ <anisinha@redhat.com>,  Cleber Rosa <crosa@redhat.com>,  Dongjiu Geng
+ <gengdongjiu1@gmail.com>,  Eduardo Habkost <eduardo@habkost.net>,  Eric
+ Blake <eblake@redhat.com>,  Igor Mammedov <imammedo@redhat.com>,  John
+ Snow <jsnow@redhat.com>,  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Michael Roth <michael.roth@amd.com>,  Paolo Bonzini
+ <pbonzini@redhat.com>,  Peter Maydell <peter.maydell@linaro.org>,  Shannon
+ Zhao <shannon.zhaosl@gmail.com>,  Yanan Wang <wangyanan55@huawei.com>,
+ Zhao Liu <zhao1.liu@intel.com>,  kvm@vger.kernel.org,
+ linux-kernel@vger.kernel.org,  qemu-arm@nongnu.org, qemu-devel@nongnu.org
+Subject: Re: [PATCH 00/31] Prepare GHES driver to support error injection
+In-Reply-To: <20241207093922.1efa02ec@foz.lan> (Mauro Carvalho Chehab's
+ message of "Sat, 7 Dec 2024 09:39:22 +0100")
+References: <cover.1733504943.git.mchehab+huawei@kernel.org>
+ <87frn03tun.fsf@pond.sub.org> <87wmgc2f48.fsf@pond.sub.org>
+ <20241207093922.1efa02ec@foz.lan>
+Date: Sat, 07 Dec 2024 16:16:31 +0100
+Message-ID: <87o71no75c.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Date: Sat, 07 Dec 2024 13:47:47 +0000
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-From: "Julian Ganz" <neither@nut.email>
-Message-ID: <7bfbd34424d0662e6a0ac25348bd5269a93edb2e@nut.email>
-TLS-Required: No
-Subject: Re: [RFC PATCH v3 11/11] tests: add plugin asserting correctness of
- discon event's to_pc
-To: "Richard Henderson" <richard.henderson@linaro.org>, "Pierrick Bouvier"
- <pierrick.bouvier@linaro.org>, qemu-devel@nongnu.org
-Cc: "=?utf-8?B?QWxleCBCZW5uw6ll?=" <alex.bennee@linaro.org>, "Alexandre
- Iooss" <erdnaxe@crans.org>, "Mahmoud Mandour" <ma.mandourr@gmail.com>
-In-Reply-To: <21c28157-6d3b-4b07-9dd6-241b3198be93@linaro.org>
-References: <cover.1733063076.git.neither@nut.email>
- <36d316bf3e8b0aca778c5e8d1acde39a7f361946.1733063076.git.neither@nut.email>
- <d4b17c7d-c1d2-4e43-8eee-d1667e3ee5a2@linaro.org>
- <0e4171ca0baa8727c0bbec7a25fd72d8b8e1e4b8@nut.email>
- <997e809f-832c-4bbd-b27e-a722ac835b34@linaro.org>
- <450f3beedf979437fa3de8bfab1ee72f66c67ada@nut.email>
- <cda016be-c82e-4b54-a506-22afe6ec2eb2@linaro.org>
- <c850ee89e15d2775e7c0137a218286e7060874dd@nut.email>
- <867d8a3a-ddf4-4655-9bfc-51c1a2ad8203@linaro.org>
- <b02abe90-d57b-4010-aace-1b47d92e5c26@linaro.org>
- <70666b89-1f04-4615-ae16-e1eefac2a446@linaro.org>
- <21c28157-6d3b-4b07-9dd6-241b3198be93@linaro.org>
-X-Rspamd-Bar: +
-X-Rspamd-Report: SUSPICIOUS_RECIPS(1.5) BAYES_HAM(-0.089371) MIME_GOOD(-0.1)
-X-Rspamd-Score: 1.310628
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=nut.email; s=uberspace;
- h=from:to:cc:subject:date;
- bh=EJAXzIOg13VeVv7XmzTaCBez5ObSuyLDZhZeI6z+RoI=;
- b=rGBrqbx2PYGmlGV2kF1u9yn7lxwa58HtPxXQB94M1FraqNBozA18XMxKLeMvymIWJ63JBE+S11
- 0iAsThtaoxU9irSVgjFuhjE+mb2y+PBnbQXwFIN/Eh2i053mEV8sHplI0CFP+5dXSRRuw0rH/JOJ
- vZ8Mbs9hUNZSSynCW37mZqT3u3BXYY1G5mhvC3mr4LUnjWiFsK4xIZvyVOZ+9xsxSmTqRsc+Ir2V
- OTBnyuZ9xYOWFwkdWE1aZdNre7Ja0EPIRRbHaTQncVinCtdI+6ig0uSEuR7jb7B1cqdpKhJXbmBY
- mG01aQtBoTlqQDl1+t3i6mo6JXGrM1qp9KI4k3ilZqFKDpD5A13M7bf9xwOHKDieT272l8uWML13
- 4Oj7Vk9Wv5fP/hoXIiOLY69X1bSH2TLfX2lhlKxF3kLuAjEZklTHJ72iAFNMa6t5UC0GV/1WPoSH
- Y93m2AGGJZ57MZ4rWnvGSWcyE5HuNgDaIcGcE3TGabrhm+QDocRgINaBU8TN8+Q3j1g3ISU5CQis
- HkQCNGBuaorFpdgl91rnw+SJd8X9p+nA9NrKCu5dBeitl0I7+nwlslC2gXuspn/yrp1LIG0md/ir
- wszGI13mwiODCmi8VEAzy9CiYDnLf0IHoHHD0FdTGiNij9fAl1MA9d2c1PFMs3TVYZChySbUcbkF
- Y=
-Received-SPF: pass client-ip=185.26.156.114; envelope-from=neither@nut.email;
- helo=mailgate02.uberspace.is
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -50
+X-Spam_score: -5.1
+X-Spam_bar: -----
+X-Spam_report: (-5.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.999,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -91,43 +95,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Richard,
+Mauro Carvalho Chehab <mchehab+huawei@kernel.org> writes:
 
-December 6, 2024 at 11:56 PM, "Richard Henderson" wrote:
-> On 12/6/24 14:40, Pierrick Bouvier wrote:
->=20
->=20>=20
->=20> Do we have an architecture agnostic pc representation, or do we hav=
-e to add this for every > target in {arch}_cpu_exec_interrupt?
-> >=20
->=20We have CPUClass.get_pc, which is almost certainly what you want.
+[...]
 
-I was wondering about this but honestly failed to do so until the
-current series was done. I'll definitely use this for to_pc in the next
-iteration. I'll still need to gather from_pc "manually", but that's ok.
+>> However, it doesn't apply for me.  What's your base?
+>
+> That's weird. Despite my mistake, the series is based on v9.2.0-rc3 
+> (which was identical to master last time I rebased).
 
-> The call to TCGCPUOps.cpu_exec_interrupt is only a hint that an interru=
-pt might be ready: interrupts can still be masked, etc.
->=20
->=20 From the current bool return value you can tell if a discontinuity a=
-ctually occurred. But if you want to categorize that event in any way you=
- need to update each architecture.
->=20
->=20You could simplify such updates by changing the return type from bool=
- to an enum. While you would have to simultaneously update all targets fo=
-r the change in function signature, if you select enumerators such that 0=
- -> no-op and 1 -> uncategorized, then you can also tell if a target has =
-been updated. Because this is still C, the current return true/false stat=
-ements will Just Work. :-)
->=20
->=20On the other hand, the previous patches to add plugin calls to each c=
-pu_exec_interrupt are in the end approximately the same level of difficul=
-ty, and is more straightforward, so YMMV.
+Either something conflicting got committed meanwhile, or I screwed up
+somehow.
 
-Good to hear. I think I'll stick to the current setup. It likely also
-probably makes things easier or less awkward if the API is extended to
-cover things like branches and jumps in the future.
+> Should it be based against some other branch?
 
-Regards,
-Julian
+No, master is fine.
+
 
