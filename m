@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43D959E884F
-	for <lists+qemu-devel@lfdr.de>; Sun,  8 Dec 2024 23:49:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 536809E8854
+	for <lists+qemu-devel@lfdr.de>; Sun,  8 Dec 2024 23:50:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tKQ5B-00078k-Gj; Sun, 08 Dec 2024 17:48:57 -0500
+	id 1tKQ5D-00079L-NH; Sun, 08 Dec 2024 17:48:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tKQ58-00077t-IC
- for qemu-devel@nongnu.org; Sun, 08 Dec 2024 17:48:54 -0500
-Received: from mail-oo1-xc31.google.com ([2607:f8b0:4864:20::c31])
+ id 1tKQ59-000788-LN
+ for qemu-devel@nongnu.org; Sun, 08 Dec 2024 17:48:55 -0500
+Received: from mail-oo1-xc29.google.com ([2607:f8b0:4864:20::c29])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tKQ57-0006Cz-0I
- for qemu-devel@nongnu.org; Sun, 08 Dec 2024 17:48:54 -0500
-Received: by mail-oo1-xc31.google.com with SMTP id
- 006d021491bc7-5f2abc195f3so313842eaf.0
- for <qemu-devel@nongnu.org>; Sun, 08 Dec 2024 14:48:52 -0800 (PST)
+ id 1tKQ58-0006DJ-2E
+ for qemu-devel@nongnu.org; Sun, 08 Dec 2024 17:48:55 -0500
+Received: by mail-oo1-xc29.google.com with SMTP id
+ 006d021491bc7-5f29e2e756bso246354eaf.3
+ for <qemu-devel@nongnu.org>; Sun, 08 Dec 2024 14:48:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1733698132; x=1734302932; darn=nongnu.org;
+ d=linaro.org; s=google; t=1733698133; x=1734302933; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ngH9p42c0w/Bs34iA9YcexqT8mFBvJQCf0c5QlB9/w4=;
- b=G1y7BZHMrJaIZ2tIxgufoy5EwG/Yiv3KcNAAj7ZZ0Y1fh9XS91liliVDoj6AHkVC5y
- dVeViPNejValpl76AyqG60JPrRPG48E72qaYEF9vMt4Oen8nb4vKo0kCfylgzMPgfvrv
- d4eqjbizFhCbxtkIW4ULzk0GPpwSCBwfV77LXlRdSaAsjZflFvRGAPJxHq0B9eLUrSYu
- BcGL7tbWIbQ18LRk6UlINT2wC2B96+pAfKa/p93TxFD2mOnPbQKmzFLQ5dbVdyOtHltN
- rtpvTW17k+jHJ4K8Sv/Z1g5FR3rXAyjvB6qFwV41ZsS8z7VOMJN/2LtHIkF7hcxjI8Ni
- ryIg==
+ bh=3V0186xH70riO7Fn9lXQ499lIB9ZSqDTvKf2GBot8Cs=;
+ b=h0SaTVpiQTkUcj6T2neyk+dcjkjmH0n9jxjzCZnbBqGI3/NWwVHxg3+JIizeOkAqYw
+ FQiilBBZd0KHtpgCGJSTkfM+fk9blHj9jxolhsMT+o3pKe6yRe4UqMAS11GJyvdJ8nIy
+ 4uhcIxLOyjNtJIHXgAq0kKYPpqFgi7D9xSixEJxRQhnM20gvd/k6CWCasoq15WM+XUr7
+ VqdS82FF+4HgVKGMFGPePz1E5NYpZmbmS+POfjOUggFGEDs0IMmjfy4GlQ+TFr4rbbnn
+ C+Da3cMyLcIls2ISDLzJUvxYbZsF7RoQnNvx4c/LQw9Ne/5UKkVl5HsDDsQFnM/W+buj
+ Gdxg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733698132; x=1734302932;
+ d=1e100.net; s=20230601; t=1733698133; x=1734302933;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ngH9p42c0w/Bs34iA9YcexqT8mFBvJQCf0c5QlB9/w4=;
- b=fe+RbFsPFvIYipf1IjhvFClVDvdLoj6ofKngHgDHsVeylwCuNapLj1NyLlaOletQR9
- WXu2ee8iSnDcjXe9twS7DMdqvtvaxrATT4aW68lR7Xfclqklg3ANNAH0iHWYaZ919tXp
- LmSqnn2N3NKO0vzxORn8FakczJy82XeAo7Cw8UC+W7VYBTPD0NBFwf1Vdt4AO4pdXDj9
- XN95coeJfZAzPIuLVMBQZ3339wTpMZ3Q/+Wbhod++6gyMXoD7z5xLxQn7X81J20qOqw9
- WnL/kEk25GxuGelbrF2QWpadSh+Sx6kek+dWnrnMraCNGMhK0X55W1qiHjpxhKzZXJWn
- fcsA==
-X-Gm-Message-State: AOJu0YyRSsGnnuUobEm0dx8WjLM9CUas+fmMmM/r/RvOrVKvpbvOzbDe
- idFwxaE9r/G0Vxp6C/fs9Qm1aEyURBKEI4Dq3DQR0s7Kh9HCOyfKPvKwuR7NlQMQJ3LFSWHpQxh
- KniH/pw==
-X-Gm-Gg: ASbGncsXZpmZGaKOSQ2rjBJAmwOW4DpwglEb8w4UTQ5h0+kLoyfTxl4Wb4NYMX1IGMz
- gT9g4Czo4ci3KaWb/E0EG7JBS6MOit041DANvbb402Ds+NhGXihZuZeT0qh+SueRDdzdlPjLlB5
- ewUzikAcOOGvc+W3nx+aFW7cIzaqH2J8UaIKCvLHyCIXGhfBCmjLpEoLEQcrAqFDvBCrY3OxNCZ
- tol5sK/Alez1tSiX0jVDxRJJG1qFWlwHr6S1fXsHqz9gTl9/ihg+iLAOgFoTjlKnOpBNCedXCx9
- U3N0WmwrXYuPhf2sShpvwmExgEz17b0EkD30
-X-Google-Smtp-Source: AGHT+IGFA+vc+Z/biMOGy2363BXcy9M4AAz+Lj6mTuiEyPlF8CiTzZt5aSoASu1Zt04YV1uzci2pSg==
-X-Received: by 2002:a05:6820:8109:b0:5ee:bb2:bdc3 with SMTP id
- 006d021491bc7-5f286e7caf6mr8275875eaf.2.1733698131796; 
- Sun, 08 Dec 2024 14:48:51 -0800 (PST)
+ bh=3V0186xH70riO7Fn9lXQ499lIB9ZSqDTvKf2GBot8Cs=;
+ b=ojr5/3BF2Dzfcy1u4TgN0jpLef5IdQwsXxJFPncV3b+ZNaDc4qrcJ3zuECVBA39wdC
+ I7ztlJmESoQPOSls1kylxHIqs1fwkb0+BavY1+XsMc4H45L264JGKuw8dWIc17tx9zGm
+ XgbYzJaCFfPAHqV+Q9ysfvfLABZOpV8pYWmoLaLWnJPiN2CWIEozqhMRv7RP6Ckgc8IQ
+ rkdUiAi7879MXjvq/pVVVbMEJx6XDNNvzoSnOuSd9ujX4K3mbZM8SuinB50xR10bSEHS
+ A02+BCMltHgtAiJGEE/pkokozK6LCIn6UD+HxBPoPmifhZY0mEexQhrggJ8m+2bFmAJJ
+ 0ZOg==
+X-Gm-Message-State: AOJu0YwZXTkGID4vY4SDWI+v1YwwTwYGnvWwAV3ZctLlo7S7kTOCIvmZ
+ +fljAsmJoRsrLNF+qnSL9sxX8bKRB2PFcGhkL+alMxV98bHz5J2AFkf6u4Taef4B6bLdJue9BkJ
+ ixX+wKw==
+X-Gm-Gg: ASbGncsIX1icSTGc4txMIcxTNUfpyyrAd0DJ95AlSYHQ8awHdA5bPJK6sXi6wUxtvtO
+ K03WAGy6PF2s3UcaCZqJp0h+nwW5UdVY+2n3AB5VmnieAHjOufaipfAna1pS9w6h/VelrcoTZwj
+ UJmLJyxNsK+COqtyb0BK2DtgEdnlEgoxYR0sqhikKf/gPvmi9/V2KGnXBq0TfHHbH757IUjfQp3
+ gD2seGdHl43j+7jPuOPGVrOo6b6XIWrILyz8nyg3qMx+aN5p0VLWofBK+5uCIfOXEAXFyC1TbW9
+ zFySA53xuee0IEse6PHrnsqujVvmmI2bqMvc
+X-Google-Smtp-Source: AGHT+IHaMk+xh0LW+ojBEr5HAMS0YY/8kOmsTFBDQ5Ywoy8HuUjmROIkoobOgRaLNZZ9TaZ/TpoCLA==
+X-Received: by 2002:a05:6820:1614:b0:5ee:d925:d6a4 with SMTP id
+ 006d021491bc7-5f28700e87cmr6880348eaf.3.1733698133017; 
+ Sun, 08 Dec 2024 14:48:53 -0800 (PST)
 Received: from localhost.localdomain (fixed-187-189-51-143.totalplay.net.
  [187.189.51.143]) by smtp.gmail.com with ESMTPSA id
- 46e09a7af769-71dc497ee8fsm1925198a34.39.2024.12.08.14.48.50
+ 46e09a7af769-71dc497ee8fsm1925198a34.39.2024.12.08.14.48.51
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 08 Dec 2024 14:48:51 -0800 (PST)
+ Sun, 08 Dec 2024 14:48:52 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: bcain@oss.qualcomm.com, peter.maydell@linaro.org,
  mark.cave-ayland@ilande.co.uk
-Subject: [PATCH 04/17] softfloat: Remove float_muladd_halve_result
-Date: Sun,  8 Dec 2024 16:48:31 -0600
-Message-ID: <20241208224844.570491-5-richard.henderson@linaro.org>
+Subject: [PATCH 05/17] softfloat: Add float_round_nearest_even_max
+Date: Sun,  8 Dec 2024 16:48:32 -0600
+Message-ID: <20241208224844.570491-6-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241208224844.570491-1-richard.henderson@linaro.org>
 References: <20241208224844.570491-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c31;
- envelope-from=richard.henderson@linaro.org; helo=mail-oo1-xc31.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c29;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oo1-xc29.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,73 +98,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-All uses have been convered to float*_muladd_scalbn.
+This rounding mode is used by Hexagon.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/fpu/softfloat.h   | 3 ---
- fpu/softfloat.c           | 6 ------
- fpu/softfloat-parts.c.inc | 4 ----
- 3 files changed, 13 deletions(-)
+ include/fpu/softfloat-types.h | 2 ++
+ fpu/softfloat-parts.c.inc     | 3 +++
+ 2 files changed, 5 insertions(+)
 
-diff --git a/include/fpu/softfloat.h b/include/fpu/softfloat.h
-index c34ce0477d..aa69aecfb0 100644
---- a/include/fpu/softfloat.h
-+++ b/include/fpu/softfloat.h
-@@ -120,14 +120,11 @@ bfloat16 bfloat16_squash_input_denormal(bfloat16 a, float_status *status);
- | Using these differs from negating an input or output before calling
- | the muladd function in that this means that a NaN doesn't have its
- | sign bit inverted before it is propagated.
--| We also support halving the result before rounding, as a special
--| case to support the ARM fused-sqrt-step instruction FRSQRTS.
- *----------------------------------------------------------------------------*/
- enum {
-     float_muladd_negate_c = 1,
-     float_muladd_negate_product = 2,
-     float_muladd_negate_result = 4,
--    float_muladd_halve_result = 8,
- };
+diff --git a/include/fpu/softfloat-types.h b/include/fpu/softfloat-types.h
+index 8f39691dfd..c6429665ce 100644
+--- a/include/fpu/softfloat-types.h
++++ b/include/fpu/softfloat-types.h
+@@ -138,6 +138,8 @@ typedef enum __attribute__((__packed__)) {
+     float_round_to_odd       = 5,
+     /* Not an IEEE rounding mode: round to closest odd, overflow to inf */
+     float_round_to_odd_inf   = 6,
++    /* Not an IEEE rounding mode: round to nearest even, overflow to max */
++    float_round_nearest_even_max = 7,
+ } FloatRoundMode;
  
- /*----------------------------------------------------------------------------
-diff --git a/fpu/softfloat.c b/fpu/softfloat.c
-index a4174de692..81e7a7524b 100644
---- a/fpu/softfloat.c
-+++ b/fpu/softfloat.c
-@@ -2274,9 +2274,6 @@ float32_muladd(float32 xa, float32 xb, float32 xc, int flags, float_status *s)
-     if (unlikely(!can_use_fpu(s))) {
-         goto soft;
-     }
--    if (unlikely(flags & float_muladd_halve_result)) {
--        goto soft;
--    }
- 
-     float32_input_flush3(&ua.s, &ub.s, &uc.s, s);
-     if (unlikely(!f32_is_zon3(ua, ub, uc))) {
-@@ -2345,9 +2342,6 @@ float64_muladd(float64 xa, float64 xb, float64 xc, int flags, float_status *s)
-     if (unlikely(!can_use_fpu(s))) {
-         goto soft;
-     }
--    if (unlikely(flags & float_muladd_halve_result)) {
--        goto soft;
--    }
- 
-     float64_input_flush3(&ua.s, &ub.s, &uc.s, s);
-     if (unlikely(!f64_is_zon3(ua, ub, uc))) {
+ /*
 diff --git a/fpu/softfloat-parts.c.inc b/fpu/softfloat-parts.c.inc
-index 5133358878..5b5969725b 100644
+index 5b5969725b..2b6adeef4c 100644
 --- a/fpu/softfloat-parts.c.inc
 +++ b/fpu/softfloat-parts.c.inc
-@@ -567,10 +567,6 @@ static FloatPartsN *partsN(muladd_scalbn)(FloatPartsN *a, FloatPartsN *b,
-     a->exp = p_widen.exp;
+@@ -155,6 +155,9 @@ static void partsN(uncanon_normal)(FloatPartsN *p, float_status *s,
+     int exp, flags = 0;
  
-  return_normal:
--    /* TODO: Replace all use of float_muladd_halve_result with scale. */
--    if (flags & float_muladd_halve_result) {
--        a->exp -= 1;
--    }
-     a->exp += scale;
-  finish_sign:
-     if (flags & float_muladd_negate_result) {
+     switch (s->float_rounding_mode) {
++    case float_round_nearest_even_max:
++        overflow_norm = true;
++        /* fall through */
+     case float_round_nearest_even:
+         if (N > 64 && frac_lsb == 0) {
+             inc = ((p->frac_hi & 1) || (p->frac_lo & round_mask) != frac_lsbm1
 -- 
 2.43.0
 
