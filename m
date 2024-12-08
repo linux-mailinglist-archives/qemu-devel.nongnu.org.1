@@ -2,80 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51A409E8863
-	for <lists+qemu-devel@lfdr.de>; Sun,  8 Dec 2024 23:51:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A02D49E8861
+	for <lists+qemu-devel@lfdr.de>; Sun,  8 Dec 2024 23:51:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tKQ5G-0007Ao-Td; Sun, 08 Dec 2024 17:49:02 -0500
+	id 1tKQ5H-0007BM-RQ; Sun, 08 Dec 2024 17:49:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tKQ5E-00079k-9H
- for qemu-devel@nongnu.org; Sun, 08 Dec 2024 17:49:00 -0500
-Received: from mail-oi1-x233.google.com ([2607:f8b0:4864:20::233])
+ id 1tKQ5F-0007AR-Fx
+ for qemu-devel@nongnu.org; Sun, 08 Dec 2024 17:49:01 -0500
+Received: from mail-ot1-x333.google.com ([2607:f8b0:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tKQ5C-0006EW-Md
- for qemu-devel@nongnu.org; Sun, 08 Dec 2024 17:48:59 -0500
-Received: by mail-oi1-x233.google.com with SMTP id
- 5614622812f47-3ea49150430so2052430b6e.1
- for <qemu-devel@nongnu.org>; Sun, 08 Dec 2024 14:48:58 -0800 (PST)
+ id 1tKQ5E-0006Eq-24
+ for qemu-devel@nongnu.org; Sun, 08 Dec 2024 17:49:01 -0500
+Received: by mail-ot1-x333.google.com with SMTP id
+ 46e09a7af769-71deed20e69so251201a34.2
+ for <qemu-devel@nongnu.org>; Sun, 08 Dec 2024 14:48:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1733698137; x=1734302937; darn=nongnu.org;
+ d=linaro.org; s=google; t=1733698139; x=1734302939; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=9z7LwVl4Onw4FA8ZAnPozMScnx/mfNwPcZbWnSZkFg8=;
- b=SBrPCG5HeCesc+hNKFz74NLZm2XuvZe067b+EyXcIHs1JJJVsKxrIdJs/tdlzc+t0E
- tWGx84VcZsbgBpuMewDTB9zwiS1dvZ3fDIZxlnFWrsSbNXxCdtQhx5ePSlT3K6EETjey
- oGB1DWuHmdIcQR+Ljm/EPA/0VUdmbdgxQo+0HGNGofiGg//6h4rIBwbQ+so+7eFfH7KX
- RE8nmxglpdU/W31rEuRUvNpjcYTU+2j8j0gt7B1Nqtt19XNTQwL0yJFTqwMzo0oj54/i
- yd0HMIvLR7b+fwZlLFli3ez8rlFlNTIUiCp2g5Edzm1558s3GlFSGEmnHtMMUZVSnG72
- GSHw==
+ bh=5xxQ+Dq7R8GnM1J7sgIMgZ9zk0m58GoMVFOUgAxTchA=;
+ b=r28TckVR3dovnSqAfSZVj4OhWo5my+T/O3dIn38DjlSHMmPEvFnrMEfqoJ5iQguNwH
+ X1Bt4ARqJPP5MQN91j2FcjC+iXUGtFrlaq0jfaWBkHX2u3E9lzh8SsQsITv4tPlKKLqJ
+ 7z7mdu2TX7QoFVa5gVjqige6k3Cr993s+eFlP4p5qwLM4eTQ4xp4DDGBAWO2wGQXi0Q6
+ Np1bYdVg7/4ud73+o7KcGLiW8+NrrwwP3q6vrZuf/Gb23qP6szFgLhnwT4SZZX5qXW2W
+ iXKvSKmPslpYTL6GAkzc2+aB8IDjdg58LmQ7h9CmDZKcT3oXJDO+ufpOfGsCeyr1uGLW
+ m76g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733698137; x=1734302937;
+ d=1e100.net; s=20230601; t=1733698139; x=1734302939;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=9z7LwVl4Onw4FA8ZAnPozMScnx/mfNwPcZbWnSZkFg8=;
- b=i3u+fOqIyvhRHw+M27b4JAPT//9KMNToGbNDzESMhcD6E81BcS5A7UWo0ehngeD54Z
- ocMMxgMTk3A2GY33KTIeXuG85g+/zflDOOUE5VXMZ6SCGQmRlBH+aNSY7hZfN6Kv4HCa
- TfmfsRoOUE2ZuSFayA6lKeADtRK6LnpWF3xx6WvPxBpXqW0GpsHAuNVgV6OTQFPCi3Pa
- UJT0SoXQv3IEMDAh+Ar8UbqKcOV1VxSBBsZ5VEx+BA5sbmXunsaICkSUCq7LutJT+ljU
- UHWC5XSiW6k/pVwF7QGq5G1Bvyf6IWSeiDC6HkcPccGvQnnF/vXoemBflzLYw9kqpafb
- 4gSQ==
-X-Gm-Message-State: AOJu0YyVhQDIQP4Uqha8Yh3KZPvolrSg0XSwrAjXhUdQ3qCFgrnETpvR
- o5lyA3RCP5h1Vf3h9F+u4GKSexSs4eE1ZIYKEiup63RfikPXq70RSM42syRmKUFlFdBNfQBaC3S
- czyOCNA==
-X-Gm-Gg: ASbGncsAvUu7vcQHr9i2jQqPWVWttRL3O72Cji1Zv1L37aZ+XxT2NdFQS6cvkK8CVCH
- AqoYTZ2cplz8DaVxyZ5Fc3A6ClKjWfnOzlDEGJTQjcVAMw3ZMi2q5Z6Cfg4wBV56Jn2tKTr1FqQ
- VhdkHery6hDDIQkk+Fjx3FnAuIG1ZQhuq+KHh8VrH0Em/jv0uw1WBOtwU30F6FymMOHPXHDWOC9
- QHJwu4sYQdQMqaYzeZSmgvs54lIWLKTNrI6tvAJ2y9Soe2CCxuBdSnwPk9zcu/WY2U6+CH/Wdze
- nJ8Kq4DboZr+bfCxvZElP0DvRDViGRA5SpeV
-X-Google-Smtp-Source: AGHT+IE2cTGNOpPGPhRoDi57fxWCGdjwwuyWqBIVAYRUxqrCyrMjRQXFY42m+YSWKOphxAFfXx8/9A==
-X-Received: by 2002:a05:6808:251a:b0:3ea:4aad:a889 with SMTP id
- 5614622812f47-3eb19dd0645mr9668297b6e.26.1733698137650; 
- Sun, 08 Dec 2024 14:48:57 -0800 (PST)
+ bh=5xxQ+Dq7R8GnM1J7sgIMgZ9zk0m58GoMVFOUgAxTchA=;
+ b=CvzOWqBmp4e074xgwi255IWgOzP2k+0P4Qybp3Fbsh5WcxWAkuSIr1I4GR2BwHjVJy
+ 6XC4vMMX5FRbyX3ANUjc2wNxeZPGA3eFUXZ6qtfvqIrzsZN54Bse93txsI5FVMS+zjW4
+ hQ2/eAcxox9j+xZnQNPvJZ5juXCw9/zloi3+teSihex0lvAV0PTJ6qPZoXRBvk1/BBHa
+ oMJGW0bDqQGpYXaahwnSyVOjgS8TouhDCAhWrqJDGSayNXcsI9t4/W/0nGXPFeo63/lQ
+ ZRlrUcC0wENaBAnRjKpHPeiW1R0InbzkhoTgBrxp+svGPmBbBoNN4eZ6231xsiT7Cj5O
+ WHyQ==
+X-Gm-Message-State: AOJu0YwpB42H4WxNchPhGLZdWwFdoGqTyNWgkLMvIfiFgFLLNaRXhBcU
+ 6F+H9vrdVu+JfPkHsdoHwxkKVBzdlBnk4l7FF8h1Fl9lNzzf6CP73J2tffBO4wusvKGQI0hpprf
+ 3V3Lvgw==
+X-Gm-Gg: ASbGncsZSjmegayJvRL5AuO88pN+HWaewgVArHT2LaQRpuUvQjJNbYxvB/oBvFmjeDk
+ i+Jt8ur4wIc2R0uzoXziFfrMjvx0JYJ9D/eGqdRvdSj0LDTkKU5TJ4UfBb0HQoxLQi8/LWBYxU+
+ YBaF0IR/+jOrQNEsWoPq4I15dVAmdthFVddYlRI507yW2HpLFJvpE5FRlv4/Uk7jRnlkBggKv+n
+ eDgvBzs6cBQgNieUgqh0pqzOvqpw8PiGZedITraYBA4Pc2c2i3BQLpwUimBBDiAoraFi9VJ2nko
+ n5vI9qKYFv72tRRLGEn2bE/psXVqRf+IzxpN
+X-Google-Smtp-Source: AGHT+IERuQph16M8PSd9N4kNcsyFTPSDkZD5rhoeVbLnzaONZiBvPM8RvWfBbgi3Pt7cIF5PGpR26A==
+X-Received: by 2002:a05:6830:4114:b0:71d:548d:6f76 with SMTP id
+ 46e09a7af769-71dcf54b629mr7206117a34.26.1733698138847; 
+ Sun, 08 Dec 2024 14:48:58 -0800 (PST)
 Received: from localhost.localdomain (fixed-187-189-51-143.totalplay.net.
  [187.189.51.143]) by smtp.gmail.com with ESMTPSA id
- 46e09a7af769-71dc497ee8fsm1925198a34.39.2024.12.08.14.48.56
+ 46e09a7af769-71dc497ee8fsm1925198a34.39.2024.12.08.14.48.57
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 08 Dec 2024 14:48:57 -0800 (PST)
+ Sun, 08 Dec 2024 14:48:58 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: bcain@oss.qualcomm.com, peter.maydell@linaro.org,
  mark.cave-ayland@ilande.co.uk
-Subject: [PATCH 09/17] target/hexagon: Use float32_muladd for helper_sffms
-Date: Sun,  8 Dec 2024 16:48:36 -0600
-Message-ID: <20241208224844.570491-10-richard.henderson@linaro.org>
+Subject: [PATCH 10/17] target/hexagon: Use float32_muladd_scalbn for
+ helper_sffma_sc
+Date: Sun,  8 Dec 2024 16:48:37 -0600
+Message-ID: <20241208224844.570491-11-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241208224844.570491-1-richard.henderson@linaro.org>
 References: <20241208224844.570491-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::233;
- envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x233.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::333;
+ envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,29 +99,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-There are no special cases for this instruction.  Since hexagon
-always uses default-nan mode, explicitly negating the first
-input is unnecessary.  Use float_muladd_negate_product instead.
+This instruction has a special case that 0 * x + c returns c
+without the normal sign folding that comes with 0 + -0.
+Use the new float_muladd_suppress_add_product_zero to
+describe this.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/hexagon/op_helper.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ target/hexagon/op_helper.c | 11 +++--------
+ 1 file changed, 3 insertions(+), 8 deletions(-)
 
 diff --git a/target/hexagon/op_helper.c b/target/hexagon/op_helper.c
-index 7d459cc6f3..aa5ab4a31f 100644
+index aa5ab4a31f..eb010422bf 100644
 --- a/target/hexagon/op_helper.c
 +++ b/target/hexagon/op_helper.c
-@@ -1208,10 +1208,9 @@ float32 HELPER(sffma_sc)(CPUHexagonState *env, float32 RxV,
- float32 HELPER(sffms)(CPUHexagonState *env, float32 RxV,
-                       float32 RsV, float32 RtV)
+@@ -1192,15 +1192,10 @@ static float32 check_nan(float32 dst, float32 x, float_status *fp_status)
+ float32 HELPER(sffma_sc)(CPUHexagonState *env, float32 RxV,
+                          float32 RsV, float32 RtV, float32 PuV)
  {
--    float32 neg_RsV;
+-    size4s_t tmp;
      arch_fpop_start(env);
--    neg_RsV = float32_set_sign(RsV, float32_is_neg(RsV) ? 0 : 1);
--    RxV = internal_fmafx(neg_RsV, RtV, RxV, 0, &env->fp_status);
-+    RxV = float32_muladd(RsV, RtV, RxV, float_muladd_negate_product,
-+                         &env->fp_status);
+-    RxV = check_nan(RxV, RxV, &env->fp_status);
+-    RxV = check_nan(RxV, RsV, &env->fp_status);
+-    RxV = check_nan(RxV, RtV, &env->fp_status);
+-    tmp = internal_fmafx(RsV, RtV, RxV, fSXTN(8, 64, PuV), &env->fp_status);
+-    if (!(float32_is_zero(RxV) && is_zero_prod(RsV, RtV))) {
+-        RxV = tmp;
+-    }
++    RxV = float32_muladd_scalbn(RsV, RtV, RxV, fSXTN(8, 64, PuV),
++                                float_muladd_suppress_add_product_zero,
++                                &env->fp_status);
      arch_fpop_end(env);
      return RxV;
  }
