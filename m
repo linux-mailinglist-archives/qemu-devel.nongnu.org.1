@@ -2,83 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 944909E877A
-	for <lists+qemu-devel@lfdr.de>; Sun,  8 Dec 2024 20:18:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 750119E877E
+	for <lists+qemu-devel@lfdr.de>; Sun,  8 Dec 2024 20:19:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tKMmt-0005JP-Ji; Sun, 08 Dec 2024 14:17:51 -0500
+	id 1tKMmu-0005Kc-Pn; Sun, 08 Dec 2024 14:17:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <phil@philjordan.eu>)
- id 1tKMml-0005Iw-NV
+ id 1tKMml-0005Ix-NY
  for qemu-devel@nongnu.org; Sun, 08 Dec 2024 14:17:44 -0500
-Received: from mail-ej1-x62d.google.com ([2a00:1450:4864:20::62d])
+Received: from mail-ej1-x62c.google.com ([2a00:1450:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <phil@philjordan.eu>)
- id 1tKMmj-0001Vr-R1
+ id 1tKMmk-0001Vx-1B
  for qemu-devel@nongnu.org; Sun, 08 Dec 2024 14:17:43 -0500
-Received: by mail-ej1-x62d.google.com with SMTP id
- a640c23a62f3a-aa560a65fd6so669634766b.0
- for <qemu-devel@nongnu.org>; Sun, 08 Dec 2024 11:17:40 -0800 (PST)
+Received: by mail-ej1-x62c.google.com with SMTP id
+ a640c23a62f3a-aa5325af6a0so568070666b.2
+ for <qemu-devel@nongnu.org>; Sun, 08 Dec 2024 11:17:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=philjordan-eu.20230601.gappssmtp.com; s=20230601; t=1733685459; x=1734290259;
+ d=philjordan-eu.20230601.gappssmtp.com; s=20230601; t=1733685460; x=1734290260;
  darn=nongnu.org; 
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=h3BoSGB7P8OJJqEoTDM7+AVqy5XBZWcK8vMNoo4I1hk=;
- b=1Gl3W/s3JXNjoVatDL29lRWGP2JPG+O4N7zWNk340QQbipXeuQbr9WtRGpgRp23RvW
- qOP/VaQ+Q8Zye51IQAoOC7p+KwBRDSlK3XB3W36DPY6n0E4BhGdT9+L7vbbHLDlEDsZv
- uO+RHvHyw+N4TM9JBS1D93qknQTmRrpODW3lBhwy8voPDD0BBWmdDPEkyCAcSSBKetjS
- zQZMY0+OzKAE+SuB3t/i4xTm5fkGR+fXpTvB+A3stVb1FaIGESv9sdr6OjNBhrrkoT/C
- 7EkWaLR2IqV585vkOVLmK0by/beOeaZFo+BIH2OZo2StO3AZnYxq0zeA2zGSf+p7Js+l
- C/tQ==
+ bh=ZDLwO59qMJIads3fEO76SDUFkR5YOH4ziTSFt3LfxpA=;
+ b=sC61SZWFa5egoTTtR89TGWcbt+Ym8F7RSF/+Jaf019tZMs9bi2uw3uSZCjlMGqQFAC
+ FpDgFs9U5NZDX0eU0ifV/22pGgD1p1VdIFfnq9E/e7Vb00y6ve1msaA8mnbnMZlcnzPr
+ JGYMGNnrjt5D23tQ4G2E0svhbdSA5Vk9iKHezdJnpLusBDebKW6zSqaLTGuaNpnCTS4a
+ Dx3QPYm8Gb46xvZFyCbThPkjoI85sEsVtwxsMg/+7vpLXYmopNTqBFI5JBlTS0Xww906
+ PQP7bCv/7feFTtwOBgIeDWOrjEdYaBeo1JrQEIp2Vv0BuswEXyody1Cpi5Jie/jNaAk/
+ Erow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733685459; x=1734290259;
+ d=1e100.net; s=20230601; t=1733685460; x=1734290260;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=h3BoSGB7P8OJJqEoTDM7+AVqy5XBZWcK8vMNoo4I1hk=;
- b=LWBwkm8rNJ/CXVH2z4oWCQTcqTbjRUcpQ4+Wv+L3yN1GXqwjzLd5xeePMk7jB125HN
- UztRZ8vMrUJUrqhTd659ek3i1zZLK9z++spSgssPaEM0MCYa5wdbBmnK+r6Eck4+AJ1+
- 8Co2QHoOcTscjG6YWD3sAmY3j9RMvs8Ku6AU8IeFYZd0htXLQ3PEHd5WYDiNWbjsiwVE
- hVvzvgKeT1e/A8qn7a9UF+lu/nDJ0gV0bIHlZJwoR5qUbEgHFcA4mj9DL8SX7QQH5w+U
- B4QXCqztM8SdKdVxE+oQhatiw5fOXTRIhXjwT6LVGTA7nWt3wDJotTXgVcNb8OMqLXLc
- frrg==
-X-Gm-Message-State: AOJu0YxMt00LkTodXMwbK8AT4A0gBBTf7KyXkMtj5SVyhBV2AW4D5mAl
- ztbHog6tr4iBNE1sx+KhquwRmel/mcNYsnPvbuLDSLkL0Qj903e1v3SLgLO69XM0HRhR2MkXy+X
- eLw==
-X-Gm-Gg: ASbGncuNG62vppSO4AMKG2bedSzXQ1DvVQDkJ+wOTc63166EAHUmDefH4PDbrFIbjyL
- GcR+UI7K0xmujQ+TryllDy5ooQe+PBcGcJFJ5hmE3WRIuYNNFa0egEQDl4T+iKbqA17CT2ML6/v
- zdnsB6gj+ZL1j7Tk7etsap1FLux7AW55xWoJxMJSdAB73c1LqCkZZ/F0JP8HVJuHRU0lRyuCiqE
- k7fvCJPO5ZnqKwlHLESFKNO6zafLO6ARcnlkH8lnJACLAtNyrw3uSRKH0pwZSGTX/sMhzjGRLZ6
- pA6N41KLs4cFlSsbcFk43v4sSg==
-X-Google-Smtp-Source: AGHT+IHaYl5CqQoxB+CLjhFxgkNPtEow3xA0EplaiR3IpyclqIxYyKoLa+w2uJiFDLFVpAecQqzhbg==
-X-Received: by 2002:a17:907:950f:b0:aa6:6ca2:b774 with SMTP id
- a640c23a62f3a-aa66ca2b86emr434968366b.6.1733685458900; 
- Sun, 08 Dec 2024 11:17:38 -0800 (PST)
+ bh=ZDLwO59qMJIads3fEO76SDUFkR5YOH4ziTSFt3LfxpA=;
+ b=KAOiTHsRmNI/lRNdFzAZ5/4f9pIlxVJOpZWvD7twNRyHc80+NnQR7ZjqBcZjqDuboZ
+ xnVnh6gGBiBr4IbWqOCNaAPMeGzf3Y9/rFWcNwffaYYtRp3M+vrmN9OccrJw1YenDrJ8
+ HpAZX5hjpn4YMrGMGGATW4a2EfHdxbia5VdlSBUQIDYlFs1QjCkKw+9Em8uvQc5kRanm
+ M1gLqhqQDfc+3UL9XhzfHiF4nv4xnANOICWYPR9OpFy1qSVu7Q6XuMqscB+WJAbb3x8p
+ ZTFq6/Chsm4yf7uLAp6Z+/kpsU7N+TOiGZrcRuIAD0iHQbkvsu3cl9adt2RPSGifC5v2
+ nuoQ==
+X-Gm-Message-State: AOJu0Yzm4YtIp+435imT4/iagTNg92tC0kXa6g4oZ8xnmXtv+c82e/9f
+ 0bfIEgcz6FXBzexqCeKe/p+hD0EOmTR8WYP2JTBlktfGCUit4pt078PrySWyuBz/mRc1AdHT7EQ
+ GEQ==
+X-Gm-Gg: ASbGnctY//VZASMBwylOtXeZ/A+cYa9d2GpvLzvXky+N1FONsEzTi4HO+/cobS2RgHK
+ xPbAsL+0e8kucmoGLwH2qyuAxMTrWjCQ53noW9xS6jQGcHx2BmX3r7SWZyKTnloHUZWes0cFub1
+ ak1vf08fSCEfCOgHFLahEO2fgRSdQqsjF9WVWnSRShHFhtEuaiw/dWSv7UKnlk3JxmxIqzc7tcj
+ c8u2vkUMpFnEZcaXelpDB/+Yo9dsvWDWjqHTltnQqk4+znDHcXiWWXryRPgwdS2x7nw3ROB8eP6
+ Za2EGCpwJCo0W6+vIEXBNWWm3A==
+X-Google-Smtp-Source: AGHT+IGSUTH0PqdBxOdEhYLxFUrd1SQgJvDp6AJd5F8+uJE77vebklbh+La6rdOxo8r5J/NYYXmHjw==
+X-Received: by 2002:a17:906:4d1:b0:aa6:19c9:ad08 with SMTP id
+ a640c23a62f3a-aa63a20d60bmr876454066b.48.1733685460493; 
+ Sun, 08 Dec 2024 11:17:40 -0800 (PST)
 Received: from localhost.localdomain (h082218084190.host.wavenet.at.
  [82.218.84.190]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-aa665119a06sm240350866b.121.2024.12.08.11.17.37
+ a640c23a62f3a-aa665119a06sm240350866b.121.2024.12.08.11.17.38
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sun, 08 Dec 2024 11:17:37 -0800 (PST)
+ Sun, 08 Dec 2024 11:17:39 -0800 (PST)
 From: Phil Dennis-Jordan <phil@philjordan.eu>
 To: qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org, philmd@linaro.org, thuth@redhat.com,
  zhao1.liu@intel.com, imammedo@redhat.com, akihiko.odaki@daynix.com,
  Phil Dennis-Jordan <phil@philjordan.eu>
-Subject: [PATCH 1/6] hw/usb/hcd-xhci-pci: Don't trigger MSI on higher vector
- than allocated
-Date: Sun,  8 Dec 2024 20:16:41 +0100
-Message-Id: <20241208191646.64857-2-phil@philjordan.eu>
+Subject: [PATCH 2/6] hw/usb/hcd-xhci-pci: Moves msi/msix properties from NEC
+ to superclass
+Date: Sun,  8 Dec 2024 20:16:42 +0100
+Message-Id: <20241208191646.64857-3-phil@philjordan.eu>
 X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 In-Reply-To: <20241208191646.64857-1-phil@philjordan.eu>
 References: <20241208191646.64857-1-phil@philjordan.eu>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: neutral client-ip=2a00:1450:4864:20::62d;
- envelope-from=phil@philjordan.eu; helo=mail-ej1-x62d.google.com
+Received-SPF: neutral client-ip=2a00:1450:4864:20::62c;
+ envelope-from=phil@philjordan.eu; helo=mail-ej1-x62c.google.com
 X-Spam_score_int: -10
 X-Spam_score: -1.1
 X-Spam_bar: -
@@ -100,31 +100,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-QEMU would crash with a failed assertion if the XHCI controller
-attempted to raise the interrupt on a higher vector than the highest
-configured for the device by the guest driver.
-
-This change adds a check so the interrupt is dropped instead of crashing
-the VM.
+The NEC XHCI controller exposes the underlying PCI device's msi and
+msix properties, but the superclass and thus the qemu-xhci device do
+not. There does not seem to be any obvious reason for this limitation.
+This change moves these properties to the superclass so they are
+exposed by both PCI XHCI device variants.
 
 Signed-off-by: Phil Dennis-Jordan <phil@philjordan.eu>
 ---
- hw/usb/hcd-xhci-pci.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/usb/hcd-xhci-nec.c | 2 --
+ hw/usb/hcd-xhci-pci.c | 7 +++++++
+ 2 files changed, 7 insertions(+), 2 deletions(-)
 
+diff --git a/hw/usb/hcd-xhci-nec.c b/hw/usb/hcd-xhci-nec.c
+index 0c063b3697d..408bf065e5a 100644
+--- a/hw/usb/hcd-xhci-nec.c
++++ b/hw/usb/hcd-xhci-nec.c
+@@ -39,8 +39,6 @@ struct XHCINecState {
+ };
+ 
+ static Property nec_xhci_properties[] = {
+-    DEFINE_PROP_ON_OFF_AUTO("msi", XHCIPciState, msi, ON_OFF_AUTO_AUTO),
+-    DEFINE_PROP_ON_OFF_AUTO("msix", XHCIPciState, msix, ON_OFF_AUTO_AUTO),
+     DEFINE_PROP_UINT32("intrs", XHCINecState, intrs, XHCI_MAXINTRS),
+     DEFINE_PROP_UINT32("slots", XHCINecState, slots, XHCI_MAXSLOTS),
+     DEFINE_PROP_END_OF_LIST(),
 diff --git a/hw/usb/hcd-xhci-pci.c b/hw/usb/hcd-xhci-pci.c
-index a039f5778a6..376635e889b 100644
+index 376635e889b..0278b0fbce2 100644
 --- a/hw/usb/hcd-xhci-pci.c
 +++ b/hw/usb/hcd-xhci-pci.c
-@@ -73,7 +73,7 @@ static bool xhci_pci_intr_raise(XHCIState *xhci, int n, bool level)
-         return true;
-     }
+@@ -197,6 +197,12 @@ static void xhci_instance_init(Object *obj)
+     qdev_alias_all_properties(DEVICE(&s->xhci), obj);
+ }
  
--    if (msi_enabled(pci_dev) && level) {
-+    if (msi_enabled(pci_dev) && level && n < msi_nr_vectors_allocated(pci_dev)) {
-         msi_notify(pci_dev, n);
-         return true;
-     }
++static Property xhci_pci_properties[] = {
++    DEFINE_PROP_ON_OFF_AUTO("msi", XHCIPciState, msi, ON_OFF_AUTO_AUTO),
++    DEFINE_PROP_ON_OFF_AUTO("msix", XHCIPciState, msix, ON_OFF_AUTO_AUTO),
++    DEFINE_PROP_END_OF_LIST(),
++};
++
+ static void xhci_class_init(ObjectClass *klass, void *data)
+ {
+     PCIDeviceClass *k = PCI_DEVICE_CLASS(klass);
+@@ -208,6 +214,7 @@ static void xhci_class_init(ObjectClass *klass, void *data)
+     k->realize      = usb_xhci_pci_realize;
+     k->exit         = usb_xhci_pci_exit;
+     k->class_id     = PCI_CLASS_SERIAL_USB;
++    device_class_set_props(dc, xhci_pci_properties);
+ }
+ 
+ static const TypeInfo xhci_pci_info = {
 -- 
 2.39.5 (Apple Git-154)
 
