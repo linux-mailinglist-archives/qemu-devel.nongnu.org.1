@@ -2,74 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF6A79E9974
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Dec 2024 15:52:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 111C69E9A5B
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Dec 2024 16:22:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tKf7Y-0000WZ-6y; Mon, 09 Dec 2024 09:52:24 -0500
+	id 1tKfYx-0000VU-1K; Mon, 09 Dec 2024 10:20:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tKf7V-0000WF-1h
- for qemu-devel@nongnu.org; Mon, 09 Dec 2024 09:52:21 -0500
-Received: from mgamail.intel.com ([192.198.163.17])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tKf7S-0000CS-8Y
- for qemu-devel@nongnu.org; Mon, 09 Dec 2024 09:52:20 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1733755938; x=1765291938;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=E9pXy7EBNZ3g4C/MtPNp0Cd39GKSq38KtSuMgDZQWL0=;
- b=HsimUFUTS/oe+NiXYsrxSqy6lhSCESbIZhVJvjzCZnmV9ixi0WomCiJ9
- zMh/Uw9++nZtR4e+NhuY1dBUug1EOyMfkB68iQO4pqop0m+15dvUzWCM+
- /eH0vdzp+KsNxsqkfNni5Sz3VjFDqUu4O4ZDgdpQp9g4j5SGXOYbGEfEg
- vUQUnOOw5vf8JO9RI2TjflTB8Vhn08U2sHcbgUm5FDWaBMoMmbxGKiJb6
- dOLTr8kb+kqeDUYiMsB0I9fPwnMwgRVEm4bWzdDQBQ9lb1SBddDsXvsjI
- 3FA3694f1iVmbAeJjP8DrveAMTDTAiGtvdCgjOIWMc9r3PewMe4etQrGq g==;
-X-CSE-ConnectionGUID: mXz/xj9ASTeAUTWTjTbVXQ==
-X-CSE-MsgGUID: oqFzaortSKms5bIdLvpigg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11281"; a="33972713"
-X-IronPort-AV: E=Sophos;i="6.12,219,1728975600"; d="scan'208";a="33972713"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Dec 2024 06:52:15 -0800
-X-CSE-ConnectionGUID: KjYDs8rdSjaV74dAT5+8OQ==
-X-CSE-MsgGUID: HVbSeieARqyBOVLP0OtUMQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,219,1728975600"; d="scan'208";a="125933160"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by orviesa002.jf.intel.com with ESMTP; 09 Dec 2024 06:52:13 -0800
-Date: Mon, 9 Dec 2024 23:10:27 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Ani Sinha <anisinha@redhat.com>
-Cc: Sergio Lopez <slp@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, imammedo@redhat.com,
- qemu-devel@nongnu.org,
- Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>
-Subject: Re: [PATCH] hw/i386/cpu: remove default_cpu_version and simplify
-Message-ID: <Z1cIY357gcsE1IgJ@intel.com>
-References: <20241208064810.893451-1-anisinha@redhat.com>
+ (Exim 4.90_1) (envelope-from <dorjoychy111@gmail.com>)
+ id 1tKfYv-0000VM-Ty
+ for qemu-devel@nongnu.org; Mon, 09 Dec 2024 10:20:41 -0500
+Received: from mail-vk1-xa35.google.com ([2607:f8b0:4864:20::a35])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <dorjoychy111@gmail.com>)
+ id 1tKfYu-000488-A0
+ for qemu-devel@nongnu.org; Mon, 09 Dec 2024 10:20:41 -0500
+Received: by mail-vk1-xa35.google.com with SMTP id
+ 71dfb90a1353d-51623968932so598568e0c.1
+ for <qemu-devel@nongnu.org>; Mon, 09 Dec 2024 07:20:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1733757638; x=1734362438; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=7J3Gi5sEZKOigphPUHH1DeQSygmC5fikQaEHNAsgQjs=;
+ b=Nmp9ZuUUN5v6KmrM3jGV4KIkweRybPoIYYI1EUNf0N8nGg7a6pRGd2BI1fLCTk/1Mo
+ ciuSfBFajDndGxRkQlkB+9WQEuBindIa6o5LJK0kKrxETgahYghtL0qqWKbcIL9EAdVG
+ suETrGMa19b8isxpwIB75mB44NjfbQJqAzj9QZjMafgJ0GQdu2qcfItK0FNMwCS65yKd
+ 0YaaZ5ouS48ZNxbawyWC6uOLB5w8NLr7XyXnS+8eWgborzkSeuSLJ2Sd2A5JThTUmStE
+ FzaxYsOPGwSOeoHETRftnoFOKX7PL6yvZLqCNVZqWM8MTTKOaNrIoW77ysMg9u+cUo4B
+ zfHA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1733757638; x=1734362438;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=7J3Gi5sEZKOigphPUHH1DeQSygmC5fikQaEHNAsgQjs=;
+ b=pFBikkLQEowVpeFrglruCC0MiWkTozFVKmNVbCqKeoHnX7C1YC7U++nsZ4fdt/F7Ds
+ aOoNCn5mlpfNMah1eQJvBD8yWcMV9+81pc2aoeinc/GO5xxKwQ+YxDUzCKovhaG/qvwE
+ /Nw9Hp4lCY1iP2yEiHkrgfbIQW+YHTHALmCknu9sxbH8Z50abXjlOg7r53HKIiCIXn+9
+ 66/PB67DiYScyYIlpKDOBNbPYIv4OADL67URvPeZc6k+HhwHKdblSY/ZvVcbcVcUTCls
+ ARIv4CJiMdefjIwZMR68O0vjfcyvyGx/3OMZY7m5Xyuz3iWPVTOGAqvLsBaSHIbU4tai
+ an7A==
+X-Gm-Message-State: AOJu0YwaobknuCu+X1M7BOKBR/pbxPvzF30XPiVXaOWEb71pR2RP/IvJ
+ I2bdVLjB7Wi0/Mh16PWOf+J9yXKTe4NOuumUj1VwMfe1KJ6gSM8rtor6i5AXx0+VC1sDnSWE925
+ OUesCHE+eyRENgOLDCtBtfrFbnfg=
+X-Gm-Gg: ASbGncvoeHU7BBov3IXIPf3TkUSSINSM6tkVvBm2HxMpUfi0s7vYYJ0xe6xVvC5xKgr
+ rpIb04MSvjjOwwkyUywOH161L/Kx1gESL/w==
+X-Google-Smtp-Source: AGHT+IHqyHQdgYrNM9UjnuRs1bSuZ0N1Bjpo4WyciK1QM8xyZL6BlCMqqwR+uWoaItk7enR0tsBCcIceDj7NDFGay18=
+X-Received: by 2002:a05:6122:6413:b0:516:1106:4c1a with SMTP id
+ 71dfb90a1353d-5161106580fmr7672627e0c.12.1733757638684; Mon, 09 Dec 2024
+ 07:20:38 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241208064810.893451-1-anisinha@redhat.com>
-Received-SPF: pass client-ip=192.198.163.17; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -48
-X-Spam_score: -4.9
-X-Spam_bar: ----
-X-Spam_report: (-4.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.489,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+References: <20241109122844.24057-1-dorjoychy111@gmail.com>
+ <50eaf439-5812-41be-b279-55274bb3ca78@amazon.com>
+In-Reply-To: <50eaf439-5812-41be-b279-55274bb3ca78@amazon.com>
+From: Dorjoy Chowdhury <dorjoychy111@gmail.com>
+Date: Mon, 9 Dec 2024 21:20:49 +0600
+Message-ID: <CAFfO_h4yV7+EKKu7On2Z7jr3NXD7-izRe3=hK+7dLeSaq3yR6g@mail.gmail.com>
+Subject: Re: [PATCH] docs/nitro-enclave: Fix terminal commands formatting
+To: pbonzini@redhat.com
+Cc: qemu-devel@nongnu.org, Alexander Graf <graf@amazon.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::a35;
+ envelope-from=dorjoychy111@gmail.com; helo=mail-vk1-xa35.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -86,56 +91,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-+Daniel,
+On Mon, Dec 2, 2024 at 9:36=E2=80=AFPM Alexander Graf <graf@amazon.com> wro=
+te:
+>
+>
+> On 09.11.24 13:28, Dorjoy Chowdhury wrote:
+> >
+> > Signed-off-by: Dorjoy Chowdhury <dorjoychy111@gmail.com>
+>
+>
+> (nit: Please make sure to always have a patch description in the body of
+> the patch, even if it feels like the subject says it all)
+>
+> Reviewed-by: Alexander Graf <graf@amazon.com>
+>
 
-On Sun, Dec 08, 2024 at 12:18:10PM +0530, Ani Sinha wrote:
-> Date: Sun,  8 Dec 2024 12:18:10 +0530
-> From: Ani Sinha <anisinha@redhat.com>
-> Subject: [PATCH] hw/i386/cpu: remove default_cpu_version and simplify
-> X-Mailer: git-send-email 2.45.2
-> 
-> commit 0788a56bd1ae3 ("i386: Make unversioned CPU models be aliases")
-> introduced 'default_cpu_version' for PCMachineClass. This created three
-> categories of CPU models:
->  - Most unversioned CPU models would use version 1 by default.
->  - For machines 4.0.1 and older that do not support cpu model aliases, a
->    special default_cpu_version value of CPU_VERSION_LEGACY is used.
->  - It was thought that future machines would use the latest value of cpu
->    versions corresponding to default_cpu_version value of
->    CPU_VERSION_LATEST [1].
-> 
-> Unfortunately, all pc machines still use the default cpu version of 1 for
-> unversioned cpu models. Only microvms use CPU_VERSION_LATEST.
-
-Hi Ani,
-
-So could we use CPU_VERSION_LATEST for other machines now?
-
-Mapping unversioned cpu models to the latest version sounds like more
-user friendly.
+cc Paolo. This has been reviewed so can be picked up for merging.
 
 Regards,
-Zhao
-
-> This change cleans up the complicated logic around default_cpu_version
-> including getting rid of default_cpu_version property itself. A couple of new
-> flags are introduced, one for the legacy model for machines 4.0.1 and older
-> and other for microvms. For older machines, a new pc machine property is
-> introduced that separates pc machine versions 4.0.1 and older from the newer
-> machines. 4.0.1 and older machines are scheduled to be deleted towards
-> end of 2025 since they would be 6 years old by then. At that time, we can
-> remove all logic around legacy cpus. Microvms are the only machines that
-> continue to use the latest cpu version. If this changes later, we can
-> remove all logic around x86_cpu_model_last_version(). Default cpu version
-> for unversioned cpu models is hardcoded to the value 1 and applies
-> unconditionally for all pc machine types of version 4.1 and above.
-> 
-> This change also removes all complications around CPU_VERSION_AUTO
-> including removal of the value itself.
-> 
-> 1) See commit dcafd1ef0af227 ("i386: Register versioned CPU models")
-> 
-> CC: imammedo@redhat.com
-> Signed-off-by: Ani Sinha <anisinha@redhat.com>
- 
+Dorjoy
 
