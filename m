@@ -2,96 +2,109 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEF8F9EA08A
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Dec 2024 21:45:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 388FE9EA08B
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Dec 2024 21:45:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tKkcQ-0007v8-8E; Mon, 09 Dec 2024 15:44:38 -0500
+	id 1tKkcR-0007vb-0x; Mon, 09 Dec 2024 15:44:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tKkcN-0007uG-91
- for qemu-devel@nongnu.org; Mon, 09 Dec 2024 15:44:35 -0500
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tKkcO-0007uS-AY
+ for qemu-devel@nongnu.org; Mon, 09 Dec 2024 15:44:36 -0500
 Received: from smtp-out1.suse.de ([195.135.223.130])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tKkcL-0003vv-OB
- for qemu-devel@nongnu.org; Mon, 09 Dec 2024 15:44:35 -0500
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tKkcM-0003vy-8K
+ for qemu-devel@nongnu.org; Mon, 09 Dec 2024 15:44:36 -0500
 Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
  [IPv6:2a07:de40:b281:104:10:150:64:97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 8B08C21164
- for <qemu-devel@nongnu.org>; Mon,  9 Dec 2024 20:44:31 +0000 (UTC)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 01B9A21120;
+ Mon,  9 Dec 2024 20:44:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1733777071; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
- mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
- bh=+cHXMsQcEvRVgzUUjDLticY6pUewHL3nKkRBpNsB04I=;
- b=wOmSkRFck5dz9eKAsQn8c7y8Pb4Y2zKpBePEshBWbW7Jrr/fY/pAjslrFDtkd2lGOZgWNw
- loozyoeUz/JM+evtMhSl7tMYqUonKU+JQE0QVH08E7TnhY11xRAYlvYrXZCBiPQm/lSkqL
- BwWMciezSAPJ7F1dGuOo9abx/XBuCgQ=
+ t=1733777073; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=bbHsdthAsQ/+YpYiF8cXnLmBRstyq/XRwgKJkw7wgGY=;
+ b=QmJEfHBAkv4PaWdfvS8m1LIQOkUrvq0+O/FJpLNiuW/AlMecvea1lWHoTb+5SA91OlNQVU
+ 6EFXgdea9BcyxCWLWCfgk/kyrBnUletd3gkxYEB+/eGEJVycKKIZE8Hh4+hGq/frUhyK+D
+ ekz0fR8reW5feUh9g0HBZ5NhruJoyp0=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1733777071;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
- mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
- bh=+cHXMsQcEvRVgzUUjDLticY6pUewHL3nKkRBpNsB04I=;
- b=DcucpEwsm0qantHm74EmgHMKNCCgeosBE742lYQ7+1pXpgogD7LVROpakvvFGK46Kx2F9x
- 4Evl+DQpLQD2ucDA==
+ s=susede2_ed25519; t=1733777073;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=bbHsdthAsQ/+YpYiF8cXnLmBRstyq/XRwgKJkw7wgGY=;
+ b=HCRTgfMjuIpKcAHu+uz5wfXCf9wOuMP9cMfNUQkDZn1b7yeHMzKVVWF8gntMvd2LyO9zXD
+ vfARBXg2kSIAKSDw==
 Authentication-Results: smtp-out1.suse.de;
- dkim=pass header.d=suse.de header.s=susede2_rsa header.b=wOmSkRFc;
- dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=DcucpEws
+ dkim=pass header.d=suse.de header.s=susede2_rsa header.b=QmJEfHBA;
+ dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=HCRTgfMj
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1733777071; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
- mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
- bh=+cHXMsQcEvRVgzUUjDLticY6pUewHL3nKkRBpNsB04I=;
- b=wOmSkRFck5dz9eKAsQn8c7y8Pb4Y2zKpBePEshBWbW7Jrr/fY/pAjslrFDtkd2lGOZgWNw
- loozyoeUz/JM+evtMhSl7tMYqUonKU+JQE0QVH08E7TnhY11xRAYlvYrXZCBiPQm/lSkqL
- BwWMciezSAPJ7F1dGuOo9abx/XBuCgQ=
+ t=1733777073; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=bbHsdthAsQ/+YpYiF8cXnLmBRstyq/XRwgKJkw7wgGY=;
+ b=QmJEfHBAkv4PaWdfvS8m1LIQOkUrvq0+O/FJpLNiuW/AlMecvea1lWHoTb+5SA91OlNQVU
+ 6EFXgdea9BcyxCWLWCfgk/kyrBnUletd3gkxYEB+/eGEJVycKKIZE8Hh4+hGq/frUhyK+D
+ ekz0fR8reW5feUh9g0HBZ5NhruJoyp0=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1733777071;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
- mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
- bh=+cHXMsQcEvRVgzUUjDLticY6pUewHL3nKkRBpNsB04I=;
- b=DcucpEwsm0qantHm74EmgHMKNCCgeosBE742lYQ7+1pXpgogD7LVROpakvvFGK46Kx2F9x
- 4Evl+DQpLQD2ucDA==
+ s=susede2_ed25519; t=1733777073;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=bbHsdthAsQ/+YpYiF8cXnLmBRstyq/XRwgKJkw7wgGY=;
+ b=HCRTgfMjuIpKcAHu+uz5wfXCf9wOuMP9cMfNUQkDZn1b7yeHMzKVVWF8gntMvd2LyO9zXD
+ vfARBXg2kSIAKSDw==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id CE3A7138D2
- for <qemu-devel@nongnu.org>; Mon,  9 Dec 2024 20:44:30 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0D256138D2;
+ Mon,  9 Dec 2024 20:44:31 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id TLT+I65WV2ebbwAAD6G6ig
- (envelope-from <farosas@suse.de>)
- for <qemu-devel@nongnu.org>; Mon, 09 Dec 2024 20:44:30 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id oLT3MK9WV2ebbwAAD6G6ig
+ (envelope-from <farosas@suse.de>); Mon, 09 Dec 2024 20:44:31 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 0/6] qtest: Fix some memory issues
-Date: Mon,  9 Dec 2024 17:44:21 -0300
-Message-Id: <20241209204427.17763-1-farosas@suse.de>
+Cc: Peter Xu <peterx@redhat.com>
+Subject: [PATCH 1/6] tests/qtest/migration: Do proper cleanup in the
+ dirty_limit test
+Date: Mon,  9 Dec 2024 17:44:22 -0300
+Message-Id: <20241209204427.17763-2-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
+In-Reply-To: <20241209204427.17763-1-farosas@suse.de>
+References: <20241209204427.17763-1-farosas@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 8B08C21164
-X-Spamd-Result: default: False [-3.01 / 50.00]; BAYES_HAM(-3.00)[99.99%];
- NEURAL_HAM_LONG(-1.00)[-1.000]; MID_CONTAINS_FROM(1.00)[];
- R_MISSING_CHARSET(0.50)[]; NEURAL_HAM_SHORT(-0.20)[-1.000];
- R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- MIME_GOOD(-0.10)[text/plain]; MX_GOOD(-0.01)[];
- TO_MATCH_ENVRCPT_ALL(0.00)[]; ARC_NA(0.00)[];
- RCVD_VIA_SMTP_AUTH(0.00)[]; FROM_EQ_ENVFROM(0.00)[];
- ASN(0.00)[asn:25478, ipnet:::/0, country:RU];
- MIME_TRACE(0.00)[0:+]; FROM_HAS_DN(0.00)[];
- PREVIOUSLY_DELIVERED(0.00)[qemu-devel@nongnu.org];
- RCVD_TLS_ALL(0.00)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:mid];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- FUZZY_BLOCKED(0.00)[rspamd.com]; TO_DN_NONE(0.00)[];
- RCVD_COUNT_TWO(0.00)[2]; RCPT_COUNT_ONE(0.00)[1];
- DKIM_TRACE(0.00)[suse.de:+]
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Rspamd-Action: no action
+X-Rspamd-Queue-Id: 01B9A21120
 X-Spam-Score: -3.01
+X-Rspamd-Action: no action
+X-Spamd-Result: default: False [-3.01 / 50.00]; BAYES_HAM(-3.00)[100.00%];
+ MID_CONTAINS_FROM(1.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
+ R_MISSING_CHARSET(0.50)[];
+ R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
+ MX_GOOD(-0.01)[]; ARC_NA(0.00)[]; RCPT_COUNT_TWO(0.00)[2];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ MIME_TRACE(0.00)[0:+]; FUZZY_BLOCKED(0.00)[rspamd.com];
+ TO_DN_SOME(0.00)[];
+ RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from]; 
+ RCVD_COUNT_TWO(0.00)[2]; TO_MATCH_ENVRCPT_ALL(0.00)[];
+ FROM_HAS_DN(0.00)[]; RCVD_VIA_SMTP_AUTH(0.00)[];
+ RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+ FROM_EQ_ENVFROM(0.00)[];
+ ASN(0.00)[asn:25478, ipnet:::/0, country:RU];
+ RCVD_TLS_ALL(0.00)[]; DKIM_TRACE(0.00)[suse.de:+];
+ SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:mid,suse.de:email]
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
 Received-SPF: pass client-ip=195.135.223.130; envelope-from=farosas@suse.de;
  helo=smtp-out1.suse.de
 X-Spam_score_int: -43
@@ -117,28 +130,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-I'm trying to get the qtests to run with asan/valgrind without any
-warnings so I can run a test before every PR. Here are a few fixes.
+The dirty_limit test does two migrations in a row and is leaking the
+first 'to' instance. Do proper cleanup.
 
-CI run: https://gitlab.com/farosas/qemu/-/pipelines/1580782506
+Signed-off-by: Fabiano Rosas <farosas@suse.de>
+---
+ tests/qtest/migration-test.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-Fabiano Rosas (6):
-  tests/qtest/migration: Do proper cleanup in the dirty_limit test
-  tests/qtest/migration: Initialize buffer in probe_o_direct_support
-  tests/qtest/bios-tables-test: Free tables at dump_aml_files
-  tests/qtest/virtio-iommu-test: Don't pass uninitialized data into
-    qtest_memwrite
-  tests/qtest/qos-test: Plug a couple of leaks
-  tests/qtest/test-x86-cpuid-compat: Free allocated memory
-
- tests/qtest/bios-tables-test.c      |  1 +
- tests/qtest/migration-helpers.c     |  1 +
- tests/qtest/migration-test.c        |  5 +++++
- tests/qtest/qos-test.c              | 35 ++++++++++++++++++++---------
- tests/qtest/test-x86-cpuid-compat.c |  4 ++++
- tests/qtest/virtio-iommu-test.c     |  4 ++--
- 6 files changed, 38 insertions(+), 12 deletions(-)
-
+diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
+index 74d3000198..c3d54f1236 100644
+--- a/tests/qtest/migration-test.c
++++ b/tests/qtest/migration-test.c
+@@ -3682,6 +3682,11 @@ static void test_migrate_dirty_limit(void)
+     migrate_cancel(from);
+     wait_for_migration_status(from, "cancelled", NULL);
+ 
++    /* destination always fails after cancel */
++    migration_event_wait(to, "failed");
++    qtest_set_expected_status(to, EXIT_FAILURE);
++    qtest_quit(to);
++
+     /* Check if dirty limit throttle switched off, set timeout 1ms */
+     do {
+         throttle_us_per_full =
 -- 
 2.35.3
 
