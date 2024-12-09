@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 173009EA068
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Dec 2024 21:38:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E2E799EA06D
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Dec 2024 21:39:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tKkVC-0006Gl-Fs; Mon, 09 Dec 2024 15:37:10 -0500
+	id 1tKkVE-0006I5-61; Mon, 09 Dec 2024 15:37:12 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <phil@philjordan.eu>)
- id 1tKkV7-0006De-W5
+ id 1tKkV8-0006EC-Te
  for qemu-devel@nongnu.org; Mon, 09 Dec 2024 15:37:06 -0500
-Received: from mail-ej1-x634.google.com ([2a00:1450:4864:20::634])
+Received: from mail-ej1-x631.google.com ([2a00:1450:4864:20::631])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <phil@philjordan.eu>)
- id 1tKkV5-0003DC-IA
- for qemu-devel@nongnu.org; Mon, 09 Dec 2024 15:37:05 -0500
-Received: by mail-ej1-x634.google.com with SMTP id
- a640c23a62f3a-aa560a65fd6so870330866b.0
- for <qemu-devel@nongnu.org>; Mon, 09 Dec 2024 12:37:02 -0800 (PST)
+ id 1tKkV6-0003De-Sp
+ for qemu-devel@nongnu.org; Mon, 09 Dec 2024 15:37:06 -0500
+Received: by mail-ej1-x631.google.com with SMTP id
+ a640c23a62f3a-a9e8522445dso966119666b.1
+ for <qemu-devel@nongnu.org>; Mon, 09 Dec 2024 12:37:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=philjordan-eu.20230601.gappssmtp.com; s=20230601; t=1733776622; x=1734381422;
+ d=philjordan-eu.20230601.gappssmtp.com; s=20230601; t=1733776623; x=1734381423;
  darn=nongnu.org; 
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Hi0SZTNhz11ho3vCY2FYS+EKuGIwlKWvrSV2lPVozDU=;
- b=LytLI0b4iJMT6mfRLDoHGMDH0C/XjYWsXujFYX1U/r/nifkvCkEQrUpeSjpEynhl5w
- Rsw8EIEnoTSjoODXWu0r7B538DG+pUEYzUib68JvFku+aO/NBQnU/iJ5jyljwwyTHsbj
- XsBmgSilDfCx+17WxR9GPNvMpkm7Syd/MURkGTjk2Z1qhTdslzolfu9R1kmtCSI0fpTs
- H4Oz4WyrA8YSghBAC3P2LFwzEvXlltk9dqGTLGuVEwx+OU8weo1fjLIvznbYML+vc/mn
- sP8e98AtqT/FQlTOtiXzDvODgmWtGKfxMv7ZZPgibqvwJHxsR6INqVTx2806Qgx9vojs
- N9MA==
+ bh=80w6MVYCpseGDOCn7UKs1ZHKVvdaX2IHhBei9UGetlE=;
+ b=rfuVEk5WfTeJ3xysFPn1GjsVsvOqMg33iFMtgDaa0Nbhs6EflHvGkWrHAQ5mO/sdN8
+ p5fzjMM4JUWjHGUNyiSbkr71Qmq9kC4TPshkr7tDu/ywm8FqQk+6qkTpp9UXDHbsqxe3
+ 7wmZY1oGFouc/xWdWtQW62FHZ9mjkk+R47AzAX86qpg2AT4I0aD7P8dYmul6phKDlvWb
+ lhYbZAiQf6fXHm+AlnaRqhldOSy9oEhBkZM44Z2Vjqccn3bv/+BhiWxmSmFD9+qOHtDT
+ mC0K9uduRaiq4JNndGfSI7zgkQLwRx+5f/Z4M2eGsTulQUe6qBGhQjzFrx6IH0WyxMXk
+ RGDg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733776622; x=1734381422;
+ d=1e100.net; s=20230601; t=1733776623; x=1734381423;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Hi0SZTNhz11ho3vCY2FYS+EKuGIwlKWvrSV2lPVozDU=;
- b=mklPMLx4q8YKAPKYF+9UIcee5uzOIOOpyr6cigUKsZKJI9USR8Q0VWaMLUkvkA/iY1
- WpKhgCzwBBZ0feGcHXl8/tab6QlwndPd45v8GSa2CH8YjWPySVka4CbqkGXjM1lI4vvk
- ilYSXDsc/BpnH2x8MZ6i/oow9D1vmr6SEriVyl23shlp61DoKZ3tf3P30+5l6o0prqfA
- eh41uYocxnQiw4ml2yLT2DnlE5adi1DOsbNLfxWE1w2pgk02hPfLhML8TO4uCSNmSpNg
- 5KqeddzYOoNVc8hAx6VxmzcSbeGzB1qeFY5soSxjyUnXqsz7fcYp6v2dm6RoaEFuip6l
- 8r3A==
-X-Gm-Message-State: AOJu0YxWUTyGCbtgGtb6X7f30vZuT0TivWAVAYvhFpOvzK/anPPvvOjs
- N1xGo5ZRq8kTPzA3uFcbL7AcFUSenGZdaK03lRrIagWld02V8DQjsoLq6+hfOb58h42CqFGk7ft
- OZw==
-X-Gm-Gg: ASbGncsAxUhc1YAvOd1NzHjsvrDCp+mWmtCAH7oZYFzzSKSoive3+3+G9yP/5WxczmZ
- vgtba7CRxET9ZN0kXClTkoT/BRpXzrgo6JxIE78i/UKubuTJtH98sJck1bsCkU0Se0sZXHveoBK
- p6AjnjNM4HlzamF5p6m/rMWRypXuKgoRxAaADOUJGpcaUlWtgBld83v1/57gr0FUMlBKB1bWgUj
- CCVUOyUjEyLH2ZxzI+Yh4vS5wT08deAtAi3/XST6gH3VhEu4shpvQAcd4ok74e4fbe5CFhWdmr+
- s4+rHI9vLh4AVTEXFKA6QHsaAHN0+w==
-X-Google-Smtp-Source: AGHT+IF97ZP4nL6Caxhy2PrICmPoNEio8MDbDpQr48YBwj0h6+Tmb9xVPRXPbfzgKVgW2Kg/0c4fyg==
-X-Received: by 2002:a17:907:3f11:b0:aa6:42d8:afac with SMTP id
- a640c23a62f3a-aa6a01bea0bmr85134066b.15.1733776621756; 
- Mon, 09 Dec 2024 12:37:01 -0800 (PST)
+ bh=80w6MVYCpseGDOCn7UKs1ZHKVvdaX2IHhBei9UGetlE=;
+ b=eVdiRcBxT0cIgZp5fepC4BW/edj1tYLnhAp5BT3yYKPJ0IdFCjEdruMJLGdaMkyMb0
+ GT51sfr7ZFy9BkPJ/7lOMWhEVIU+mKYZpCniHidK1WCUxewIv7pdOYQ0J5oTwg88W+gT
+ EzDgRosAJDQJlSewMx8yU4iS0FWClR+LUOhXCl7T14JUUMut0HQpm6OUDnl6qssmsage
+ otwyDJ8H8phYM9gRAVz/iz9YFU84eVk3gi5w2GJvCNEOBA5Aen9dYtkIhnF0kDqjkIUP
+ HaeKhSWolj12DDtH0nksTEufqD5BJGnbNbknHNLVrXCpnGQQ8XFSF+kkM2B+SGtvRvBD
+ 06pA==
+X-Gm-Message-State: AOJu0YyK323DY7NPIQHtueSjPtd6zA+09ELL4uDJBr76MMvQVih2vURO
+ TzWQjf0nIG4DerjNwqoEzrmyi/69HYBM08ZcLvNOGusD9sUfnenEQCHnhmcdRyV2Y/OFuTPOyO0
+ +TA==
+X-Gm-Gg: ASbGncv15YGbtCZyb2BKkearM/6jcIqbMLN+y6xtyplAPwTNe7CDXBs2U24kfaIj29f
+ fViwyW8mgxaeyVOAVXHAQ9pc69ate8vOdUUV+/8XLwwiawprSB2dWib2ylSlr3Bi2df0bY2A4rH
+ 1Z663M/0zQYIf/I6yM1x9Dv1PGqTklzxXWXydOHd8DnCkZ50GPwiNHrkjh29lA3zuMNJgIyRdsA
+ MXA5e3QcrrI5E1bbGZauUbpEXW/fyByhYM6A/fw9W32W219R9QAhyRD8oc9e3u08YP8qYl+FOsh
+ nA+eF8FRZ3GiZTAWwcWzGpL35WULJw==
+X-Google-Smtp-Source: AGHT+IHOA10+IOWGH1xs673rmZxDJL/OiFnvd5GyWVUohsMAsTmIkOG70k/3jPi/czq8ZesF7SOLlA==
+X-Received: by 2002:a17:906:9ca:b0:aa6:8430:cb02 with SMTP id
+ a640c23a62f3a-aa69ce64479mr187055566b.61.1733776622848; 
+ Mon, 09 Dec 2024 12:37:02 -0800 (PST)
 Received: from localhost.localdomain (h082218084190.host.wavenet.at.
  [82.218.84.190]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-aa692e4e9d5sm141783566b.129.2024.12.09.12.37.00
+ a640c23a62f3a-aa692e4e9d5sm141783566b.129.2024.12.09.12.37.01
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 09 Dec 2024 12:37:01 -0800 (PST)
+ Mon, 09 Dec 2024 12:37:02 -0800 (PST)
 From: phil@philjordan.eu
 To: qemu-devel@nongnu.org
 Cc: Cameron Esfahani <dirty@apple.com>, Roman Bolshakov <rbolshakov@ddn.com>,
@@ -70,16 +70,16 @@ Cc: Cameron Esfahani <dirty@apple.com>, Roman Bolshakov <rbolshakov@ddn.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Alexander Graf <agraf@csgraf.de>, Peter Maydell <peter.maydell@linaro.org>,
  qemu-arm@nongnu.org, Phil Dennis-Jordan <phil@philjordan.eu>
-Subject: [PATCH 04/11] i386/hvf: Pre-fetch emulated instructions
-Date: Mon,  9 Dec 2024 21:36:22 +0100
-Message-Id: <20241209203629.74436-5-phil@philjordan.eu>
+Subject: [PATCH 05/11] i386/hvf: Decode APIC access x86 instruction outside BQL
+Date: Mon,  9 Dec 2024 21:36:23 +0100
+Message-Id: <20241209203629.74436-6-phil@philjordan.eu>
 X-Mailer: git-send-email 2.39.3 (Apple Git-146)
 In-Reply-To: <20241209203629.74436-1-phil@philjordan.eu>
 References: <20241209203629.74436-1-phil@philjordan.eu>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: neutral client-ip=2a00:1450:4864:20::634;
- envelope-from=phil@philjordan.eu; helo=mail-ej1-x634.google.com
+Received-SPF: neutral client-ip=2a00:1450:4864:20::631;
+ envelope-from=phil@philjordan.eu; helo=mail-ej1-x631.google.com
 X-Spam_score_int: -10
 X-Spam_score: -1.1
 X-Spam_bar: -
@@ -103,113 +103,78 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Phil Dennis-Jordan <phil@philjordan.eu>
 
-The HVF x86 instruction decoder has previously read each instruction
-component a few bytes at a time. The HVF vCPU VM exit reports the length
-of the faulted instruction, so we can just pre-fetch the memory for the
-whole thing in one go, saving extra round-trips for most instructions.
+The HVF accelerator suffers from severe BQL contention under common
+practical workloads. x86 instruction decoding for software-emulating
+faulted instructions is a somewhat expensive operation, and there
+is no need to hold the BQL while performing it. Except in very
+unusual edge cases, only an RCU read lock is acquired during the
+instruction fetch from memory.
 
-The old code path is retained in case there is a race between VM exit
-and another thread overwriting the faulted instruction. In this case,
-the instruction length could be wrong, so we allow fetching additional
-instruction bytes the traditional way if the prefetched bytes are
-overrun.
+This change therefore moves instruction decoding for APIC access
+VM exits to before the BQL is acquired. This improves performance
+on APIC-heavy workloads.
+
+It would be nice to eventually move instruction decoding outside
+the BQL for MMIO EPT faults as well, but that case is more
+complicated as not every EPT fault exit needs decoding/executing.
 
 Signed-off-by: Phil Dennis-Jordan <phil@philjordan.eu>
 ---
- target/i386/hvf/hvf.c        |  6 +++---
- target/i386/hvf/x86_decode.c | 18 +++++++++++++++---
- target/i386/hvf/x86_decode.h |  5 ++++-
- 3 files changed, 22 insertions(+), 7 deletions(-)
+ target/i386/hvf/hvf.c | 13 ++++++-------
+ 1 file changed, 6 insertions(+), 7 deletions(-)
 
 diff --git a/target/i386/hvf/hvf.c b/target/i386/hvf/hvf.c
-index 936c31dbdd..095f934923 100644
+index 095f934923..3f1ff0f013 100644
 --- a/target/i386/hvf/hvf.c
 +++ b/target/i386/hvf/hvf.c
-@@ -522,7 +522,7 @@ int hvf_vcpu_exec(CPUState *cpu)
-                 struct x86_decode decode;
+@@ -444,6 +444,7 @@ int hvf_vcpu_exec(CPUState *cpu)
+     CPUX86State *env = &x86_cpu->env;
+     int ret = 0;
+     uint64_t rip = 0;
++    struct x86_decode decode;
  
+     if (hvf_process_events(cpu)) {
+         return EXCP_HLT;
+@@ -481,6 +482,11 @@ int hvf_vcpu_exec(CPUState *cpu)
+         rip = rreg(cpu->accel->fd, HV_X86_RIP);
+         env->eflags = rreg(cpu->accel->fd, HV_X86_RFLAGS);
+ 
++        if (exit_reason == EXIT_REASON_APIC_ACCESS) {
++            load_regs(cpu);
++            decode_instruction(env, &decode, ins_len);
++        }
++
+         bql_lock();
+ 
+         update_apic_tpr(cpu);
+@@ -519,8 +525,6 @@ int hvf_vcpu_exec(CPUState *cpu)
+             slot = hvf_find_overlap_slot(gpa, 1);
+             /* mmio */
+             if (ept_emulation_fault(slot, gpa, exit_qual)) {
+-                struct x86_decode decode;
+-
                  load_regs(cpu);
--                decode_instruction(env, &decode);
-+                decode_instruction(env, &decode, ins_len);
+                 decode_instruction(env, &decode, ins_len);
                  exec_instruction(env, &decode);
-                 store_regs(cpu);
+@@ -559,7 +563,6 @@ int hvf_vcpu_exec(CPUState *cpu)
+                 macvm_set_rip(cpu, rip + ins_len);
                  break;
-@@ -562,7 +562,7 @@ int hvf_vcpu_exec(CPUState *cpu)
-             struct x86_decode decode;
+             }
+-            struct x86_decode decode;
  
              load_regs(cpu);
--            decode_instruction(env, &decode);
-+            decode_instruction(env, &decode, ins_len);
-             assert(ins_len == decode.len);
-             exec_instruction(env, &decode);
-             store_regs(cpu);
-@@ -667,7 +667,7 @@ int hvf_vcpu_exec(CPUState *cpu)
-             struct x86_decode decode;
- 
-             load_regs(cpu);
--            decode_instruction(env, &decode);
-+            decode_instruction(env, &decode, ins_len);
+             decode_instruction(env, &decode, ins_len);
+@@ -664,10 +667,6 @@ int hvf_vcpu_exec(CPUState *cpu)
+             break;
+         }
+         case EXIT_REASON_APIC_ACCESS: { /* TODO */
+-            struct x86_decode decode;
+-
+-            load_regs(cpu);
+-            decode_instruction(env, &decode, ins_len);
              exec_instruction(env, &decode);
              store_regs(cpu);
              break;
-diff --git a/target/i386/hvf/x86_decode.c b/target/i386/hvf/x86_decode.c
-index a4a28f113f..79dfc30408 100644
---- a/target/i386/hvf/x86_decode.c
-+++ b/target/i386/hvf/x86_decode.c
-@@ -73,8 +73,13 @@ static inline uint64_t decode_bytes(CPUX86State *env, struct x86_decode *decode,
-         VM_PANIC_EX("%s invalid size %d\n", __func__, size);
-         break;
-     }
--    target_ulong va  = linear_rip(env_cpu(env), env->eip) + decode->len;
--    vmx_read_mem(env_cpu(env), &val, va, size);
-+
-+    if (decode->len + size < decode->prefetch_len) {
-+        memcpy(&val, decode->prefetch_buf + decode->len, size);
-+    } else {
-+        target_ulong va  = linear_rip(env_cpu(env), env->eip) + decode->len;
-+        vmx_read_mem(env_cpu(env), &val, va, size);
-+    }
-     decode->len += size;
-     
-     return val;
-@@ -2099,9 +2104,16 @@ static void decode_opcodes(CPUX86State *env, struct x86_decode *decode)
-     }
- }
- 
--uint32_t decode_instruction(CPUX86State *env, struct x86_decode *decode)
-+uint32_t decode_instruction(CPUX86State *env, x86_decode *decode,
-+                            uint32_t ins_len)
- {
-     memset(decode, 0, sizeof(*decode));
-+
-+    target_ulong va = linear_rip(env_cpu(env), env->eip);
-+    uint32_t prefetch_len = MIN(ins_len, sizeof(sizeof(decode->prefetch_buf)));
-+    vmx_read_mem(env_cpu(env), decode->prefetch_buf, va, prefetch_len);
-+    decode->prefetch_len = prefetch_len;
-+
-     decode_prefix(env, decode);
-     set_addressing_size(env, decode);
-     set_operand_size(env, decode);
-diff --git a/target/i386/hvf/x86_decode.h b/target/i386/hvf/x86_decode.h
-index a2d7a2a27b..0ff368210b 100644
---- a/target/i386/hvf/x86_decode.h
-+++ b/target/i386/hvf/x86_decode.h
-@@ -297,11 +297,14 @@ typedef struct x86_decode {
-     bool is_fpu;
-     uint32_t flags_mask;
- 
-+    uint8_t prefetch_buf[16];
-+    uint16_t prefetch_len;
- } x86_decode;
- 
- uint64_t sign(uint64_t val, int size);
- 
--uint32_t decode_instruction(CPUX86State *env, struct x86_decode *decode);
-+uint32_t decode_instruction(CPUX86State *env, x86_decode *decode,
-+                            uint32_t ins_len);
- 
- target_ulong get_reg_ref(CPUX86State *env, int reg, int rex_present,
-                          int is_extended, int size);
 -- 
 2.39.3 (Apple Git-146)
 
