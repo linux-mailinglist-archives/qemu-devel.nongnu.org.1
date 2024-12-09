@@ -2,72 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4849A10293
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Jan 2025 10:02:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 516BBA10400
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Jan 2025 11:27:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tXcng-0006X4-9o; Tue, 14 Jan 2025 04:01:28 -0500
+	id 1tXe8H-0003m3-JO; Tue, 14 Jan 2025 05:26:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
- id 1tXcnH-0006Tf-2N
- for qemu-devel@nongnu.org; Tue, 14 Jan 2025 04:01:07 -0500
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <maobibo@loongson.cn>) id 1tXcn8-0006tw-JE
- for qemu-devel@nongnu.org; Tue, 14 Jan 2025 04:01:00 -0500
-Received: from loongson.cn (unknown [10.20.42.62])
- by gateway (Coremail) with SMTP id _____8CxSOG8J4Zn_RtjAA--.62439S3;
- Tue, 14 Jan 2025 17:00:44 +0800 (CST)
-Received: from [10.20.42.62] (unknown [10.20.42.62])
- by front1 (Coremail) with SMTP id qMiowMBxjcW4J4Zn+8whAA--.1909S3;
- Tue, 14 Jan 2025 17:00:42 +0800 (CST)
-Subject: Re: [PATCH] feat: add loongarch page table walker support for
- debugger memory access
-To: Miao Hao <haomiao23s@ict.ac.cn>
-Cc: qemu-devel@nongnu.org, "lixianglai@loongson.cn" <lixianglai@loongson.cn>, 
- gaosong@loongson.cn
-References: <20241219032455.28608-1-haomiao23s@ict.ac.cn>
- <b041dacf-df2f-f25f-33c5-a53ad9cc2059@loongson.cn>
- <b3f8f34b-4477-4396-a3a9-ef38209c87c3@ict.ac.cn>
- <4c5d0d22-a32a-e398-ba39-e94a41377580@loongson.cn>
- <dee04480-5582-4270-982b-8adcdc13dc0f@ict.ac.cn>
-From: bibo mao <maobibo@loongson.cn>
-Message-ID: <08ed3694-8e18-8254-50c4-e98591b91891@loongson.cn>
-Date: Tue, 14 Jan 2025 17:00:55 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1tXe8D-0003lZ-5W; Tue, 14 Jan 2025 05:26:45 -0500
+Received: from frasgout.his.huawei.com ([185.176.79.56])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1tXe8A-00038C-SQ; Tue, 14 Jan 2025 05:26:44 -0500
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4YXQHM4jwtz6L5Jy;
+ Tue, 14 Jan 2025 18:25:03 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
+ by mail.maildlp.com (Postfix) with ESMTPS id 446931402C6;
+ Tue, 14 Jan 2025 18:26:30 +0800 (CST)
+Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
+ (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Tue, 14 Jan
+ 2025 11:26:29 +0100
+Date: Mon, 9 Dec 2024 11:45:34 +0000
+To: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+CC: "Michael S . Tsirkin" <mst@redhat.com>, Shiju Jose
+ <shiju.jose@huawei.com>, Ani Sinha <anisinha@redhat.com>, Dongjiu Geng
+ <gengdongjiu1@gmail.com>, Igor Mammedov <imammedo@redhat.com>,
+ <linux-kernel@vger.kernel.org>, <qemu-arm@nongnu.org>,
+ <qemu-devel@nongnu.org>
+Subject: Re: [PATCH v6 09/16] acpi/ghes: make the GHES record generation
+ more generic
+Message-ID: <20241209114534.000079a6@huawei.com>
+In-Reply-To: <a35a02028136f9d5445b41760c892de302801500.1733561462.git.mchehab+huawei@kernel.org>
+References: <cover.1733561462.git.mchehab+huawei@kernel.org>
+ <a35a02028136f9d5445b41760c892de302801500.1733561462.git.mchehab+huawei@kernel.org>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-In-Reply-To: <dee04480-5582-4270-982b-8adcdc13dc0f@ict.ac.cn>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qMiowMBxjcW4J4Zn+8whAA--.1909S3
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoW3uFyfKr1DXrW5Zr4UXF13GFX_yoWkGr1xpr
- 1kJFWUJry5Jrn5Jr1jgw1UJFyqyr1UJw1DXr18XFyUJrsrtr12gr1UXr1qgr18Jr48Jw1U
- Xr1UJr17Zr15JrgCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
- sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
- 0xBIdaVrnRJUUUvjb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
- IYs7xG6rWj6s0DM7CIcVAFz4kK6r106r15M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
- e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
- 0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
- GcCE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa020Ex4CE44I27wAqx4
- xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v2
- 6r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwCYjI0SjxkI62AI1cAE67
- vIY487MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAF
- wI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUAVWUtwCIc4
- 0Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AK
- xVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr
- 1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjxU25EfUUUU
- U
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -33
-X-Spam_score: -3.4
-X-Spam_bar: ---
-X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-1.518,
+X-Originating-IP: [10.203.177.66]
+X-ClientProxiedBy: lhrpeml500009.china.huawei.com (7.191.174.84) To
+ frapeml500008.china.huawei.com (7.182.85.71)
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -25
+X-Spam_score: -2.6
+X-Spam_bar: --
+X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_96_XX=3.405,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H2=-1.787,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -82,263 +67,160 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jonathan Cameron <Jonathan.Cameron@huawei.com>
+From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Miao,
+On Sat,  7 Dec 2024 09:54:15 +0100
+Mauro Carvalho Chehab <mchehab+huawei@kernel.org> wrote:
 
-What is status about this patch? Will there be updated version?
+> Split the code into separate functions to allow using the
+> common CPER filling code by different error sources.
+> 
+> The generic code was moved to ghes_record_cper_errors(),
+> and ghes_gen_err_data_uncorrectable_recoverable() now contains
+> only a logic to fill the Generic Error Data part of the record,
+> as described at:
+> 
+> 	ACPI 6.2: 18.3.2.7.1 Generic Error Data
+> 
+> The remaining code to generate a memory error now belongs to
+> acpi_ghes_record_errors() function.
+> 
+> A further patch will give it a better name.
+> 
+> Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
-Regards
-Bibo Mao
+Igor tagged this in previous posting.  Any reason for dropping?
 
-On 2025/1/2 下午2:33, Miao Hao wrote:
 > 
-> On 2024/12/31 19:29, bibo mao wrote:
->>
->>
->> On 2024/12/30 下午3:04, Miao Hao wrote:
->>> Hi Bibo,
->>>
->>> Thanks for your review. I apologize for my late respond due to some 
->>> personal reasons.
->>>
->>> On 2024/12/19 17:57, bibo mao wrote:
->>>> Hi Miao,
->>>>
->>>> Thanks for doing this. It is useful to debug VM.
->>>>
->>>> On 2024/12/19 上午11:24, Miao Hao wrote:
->>>>> Signed-off-by: Miao Hao <haomiao23s@ict.ac.cn>
->>>>> ---
->>>>>   target/loongarch/cpu_helper.c     | 104 
->>>>> ++++++++++++++++++++++++++++--
->>>>>   target/loongarch/internals.h      |   4 +-
->>>>>   target/loongarch/tcg/tlb_helper.c |   4 +-
->>>>>   3 files changed, 104 insertions(+), 8 deletions(-)
->>>>>
->>>>> diff --git a/target/loongarch/cpu_helper.c 
->>>>> b/target/loongarch/cpu_helper.c
->>>>> index 580362ac3e..c0828a813d 100644
->>>>> --- a/target/loongarch/cpu_helper.c
->>>>> +++ b/target/loongarch/cpu_helper.c
->>>>> @@ -141,9 +141,95 @@ bool loongarch_tlb_search(CPULoongArchState 
->>>>> *env, target_ulong vaddr,
->>>>>       return false;
->>>>>   }
->>>>>   +static int loongarch_page_table_walker(CPULoongArchState *env, 
->>>>> hwaddr *physical,
->>>>> +                                 int *prot, target_ulong address)
->>>>> +{
->>>>> +    CPUState *cs = env_cpu(env);
->>>>> +    target_ulong index, phys;
->>>>> +    int shift;
->>>>> +    uint64_t dir_base, dir_width;
->>>>> +    uint64_t base;
->>>>> +    int level;
->>>>> +
->>>>> +    /* 0:64bit, 1:128bit, 2:192bit, 3:256bit */
->>>>> +    shift = FIELD_EX64(env->CSR_PWCL, CSR_PWCL, PTEWIDTH);
->>>>> +    shift = (shift + 1) * 3;
->>>
->>> the assignment of variable shift and the corresponding comment is 
->>> incorrect here, and details are logged in the v1.03 change log of 
->>> LoongArch specification volume1 
->>> (https://loongson.cn/uploads/images/2023102309132647981.%E9%BE%99%E8%8A%AF%E6%9E%B6%E6%9E%84%E5%8F%82%E8%80%83%E6%89%8B%E5%86%8C%E5%8D%B7%E4%B8%80_r1p10.pdf) 
->>>
->>>
->>>      /* 0:64bit, 1:128bit, 2:256bit, 3:512bit */
->>>      shift = FIELD_EX64(env->CSR_PWCL, CSR_PWCL, PTEWIDTH);
->>>      shift = shift + 3;
->>>
->>>>> +
->>>>> +    if ((address >> 63) & 0x1) {
->>>>> +        base = env->CSR_PGDH;
->>>>> +    } else {
->>>>> +        base = env->CSR_PGDL;
->>>>> +    }
->>>>> +    base &= TARGET_PHYS_MASK;
->>>>> +
->>>>> +    for (level = 4; level > 0; level--) {
->>>>> +        get_dir_base_width(env, &dir_base, &dir_width, level);
->>>>> +
->>>>> +        if (dir_width != 0) {
->>>> how about check whether it equeal to 0 firstly like this?
->>>>            if (dir_width == 0)
->>>>                continue;
->>>>
->>> It's good to reduce code nesting, I will adopt this suggestion.
->>>>> +            /* get next level page directory */
->>>>> +            index = (address >> dir_base) & ((1 << dir_width) - 1);
->>>>> +            phys = base | index << shift;
->>>> Here will only load first 64bit if shift is not 0, such as 1:128bit, 
->>>> 2:192bit, 3:256bit
->>>>
->>> After fixing the assignment of shift, this issue no longer exists. 
->>> Shift is less than or equal to 6, and index is 6 bit. Thus, index << 
->>> shift is at most 12 bit.
->>>
->>>>> +            base = ldq_phys(cs->as, phys) & TARGET_PHYS_MASK;
->>>>> +            if (!FIELD_EX64(base, TLBENTRY, HUGE)) {
->>>>> +                /* mask off page dir permission bits */
->>>>> +                base &= TARGET_PAGE_MASK;
->>>>> +            } else {
->>>>> +                /* base is a huge pte */
->>>>> +                break;
->>>>> +            }
->>>>> +
->>>>> +            if (base == 0) {
->>>> physical adddress 0 is valid and Valid bit will be checked in later. 
->>>> Can we remove this?
->>> the value of base equals to 0 means that the current page directory 
->>> entry does not point to next level page directory, so we return here
->> There is no document about page directory entry with value 0, do I 
->> miss something?
->>
->> In theory physical address 0 is valid, page with physical address 0 
->> can be set as page directory entry.
->>
->> Regards
->> Bibo Mao
->>
-> OK, it seems that entries in page directory table does not have 
-> attribute bits, so we can remove this.
-> 
-> 
-> Regards
-> 
-> Miao Hao
-> 
->>>>> +                return TLBRET_NOMATCH;
->>>>> +            }
->>>>
->>>>> +        }
->>>>> +    }
->>>>> +
->>>>> +    /* pte */
->>>>> +    if (FIELD_EX64(base, TLBENTRY, HUGE)) {
->>>>> +        /* Huge Page. base is pte */
->>>>> +        base = FIELD_DP64(base, TLBENTRY, LEVEL, 0);
->>>>> +        base = FIELD_DP64(base, TLBENTRY, HUGE, 0);
->>>>> +        if (FIELD_EX64(base, TLBENTRY, HGLOBAL)) {
->>>>> +            base = FIELD_DP64(base, TLBENTRY, HGLOBAL, 0);
->>>>> +            base = FIELD_DP64(base, TLBENTRY, G, 1);
->>>>> +        }
->>>>> +    } else {
->>>>> +        /* Normal Page. base points to pte */
->>>>> +        get_dir_base_width(env, &dir_base, &dir_width, 0);
->>>>> +        index = (address >> dir_base) & ((1 << dir_width) - 1);
->>>>> +        phys = base | index << shift;
->>>> Ditto, shift may be wider than 64-bit.
->>>>
->>>> Regards
->>>> Bibo Mao
->>>
->>> Ditto, shift is less than or equal to 6.
->>>
->>>
->>> Regards
->>>
->>> Miao Hao
->>>
->>>>> +        base = ldq_phys(cs->as, phys);
->>>>> +    }
->>>>> +
->>>>> +    /* TODO: check plv and other bits? */
->>>>> +
->>>>> +    /* base is pte, in normal pte format */
->>>>> +    if (!FIELD_EX64(base, TLBENTRY, V)) {
->>>>> +        return TLBRET_NOMATCH;
->>>>> +    }
->>>>> +
->>>>> +    if (!FIELD_EX64(base, TLBENTRY, D)) {
->>>>> +        *prot = PAGE_READ;
->>>>> +    } else {
->>>>> +        *prot = PAGE_READ | PAGE_WRITE;
->>>>> +    }
->>>>> +
->>>>> +    /* get TARGET_PAGE_SIZE aligned physical address */
->>>>> +    base += (address & TARGET_PHYS_MASK) & ((1 << dir_base) - 1);
->>>>> +    /* mask RPLV, NX, NR bits */
->>>>> +    base = FIELD_DP64(base, TLBENTRY_64, RPLV, 0);
->>>>> +    base = FIELD_DP64(base, TLBENTRY_64, NX, 0);
->>>>> +    base = FIELD_DP64(base, TLBENTRY_64, NR, 0);
->>>>> +    /* mask other attribute bits */
->>>>> +    *physical = base & TARGET_PAGE_MASK;
->>>>> +
->>>>> +    return 0;
->>>>> +}
->>>>> +
->>>>>   static int loongarch_map_address(CPULoongArchState *env, hwaddr 
->>>>> *physical,
->>>>>                                    int *prot, target_ulong address,
->>>>> -                                 MMUAccessType access_type, int 
->>>>> mmu_idx)
->>>>> +                                 MMUAccessType access_type, int 
->>>>> mmu_idx,
->>>>> +                                 int is_debug)
->>>>>   {
->>>>>       int index, match;
->>>>>   @@ -151,6 +237,13 @@ static int 
->>>>> loongarch_map_address(CPULoongArchState *env, hwaddr *physical,
->>>>>       if (match) {
->>>>>           return loongarch_map_tlb_entry(env, physical, prot,
->>>>>                                          address, access_type, 
->>>>> index, mmu_idx);
->>>>> +    } else if (is_debug) {
->>>>> +        /*
->>>>> +         * For debugger memory access, we want to do the map when 
->>>>> there is a
->>>>> +         * legal mapping, even if the mapping is not yet in TLB. 
->>>>> return 0 if
->>>>> +         * there is a valid map, else none zero.
->>>>> +         */
->>>>> +        return loongarch_page_table_walker(env, physical, prot, 
->>>>> address);
->>>>>       }
->>>>>         return TLBRET_NOMATCH;
->>>>> @@ -158,7 +251,8 @@ static int 
->>>>> loongarch_map_address(CPULoongArchState *env, hwaddr *physical,
->>>>>   #else
->>>>>   static int loongarch_map_address(CPULoongArchState *env, hwaddr 
->>>>> *physical,
->>>>>                                    int *prot, target_ulong address,
->>>>> -                                 MMUAccessType access_type, int 
->>>>> mmu_idx)
->>>>> +                                 MMUAccessType access_type, int 
->>>>> mmu_idx,
->>>>> +                                 int is_debug)
->>>>>   {
->>>>>       return TLBRET_NOMATCH;
->>>>>   }
->>>>> @@ -178,7 +272,7 @@ static hwaddr dmw_va2pa(CPULoongArchState *env, 
->>>>> target_ulong va,
->>>>>     int get_physical_address(CPULoongArchState *env, hwaddr *physical,
->>>>>                            int *prot, target_ulong address,
->>>>> -                         MMUAccessType access_type, int mmu_idx)
->>>>> +                         MMUAccessType access_type, int mmu_idx, 
->>>>> int is_debug)
->>>>>   {
->>>>>       int user_mode = mmu_idx == MMU_USER_IDX;
->>>>>       int kernel_mode = mmu_idx == MMU_KERNEL_IDX;
->>>>> @@ -222,7 +316,7 @@ int get_physical_address(CPULoongArchState 
->>>>> *env, hwaddr *physical,
->>>>>         /* Mapped address */
->>>>>       return loongarch_map_address(env, physical, prot, address,
->>>>> -                                 access_type, mmu_idx);
->>>>> +                                 access_type, mmu_idx, is_debug);
->>>>>   }
->>>>>     hwaddr loongarch_cpu_get_phys_page_debug(CPUState *cs, vaddr addr)
->>>>> @@ -232,7 +326,7 @@ hwaddr 
->>>>> loongarch_cpu_get_phys_page_debug(CPUState *cs, vaddr addr)
->>>>>       int prot;
->>>>>         if (get_physical_address(env, &phys_addr, &prot, addr, 
->>>>> MMU_DATA_LOAD,
->>>>> -                             cpu_mmu_index(cs, false)) != 0) {
->>>>> +                             cpu_mmu_index(cs, false), 1) != 0) {
->>>>>           return -1;
->>>>>       }
->>>>>       return phys_addr;
->>>
+> # Conflicts:
+> #	roms/edk2
+Should clear this out.
+
+A few formatting things inline but beyond that looks good to me.
+
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+
+>  /*
+> @@ -383,15 +356,18 @@ void acpi_ghes_add_fw_cfg(AcpiGhesState *ags, FWCfgState *s,
+>      ags->present = true;
+>  }
+>  
+> -int acpi_ghes_record_errors(uint16_t source_id, uint64_t physical_address)
+> +void ghes_record_cper_errors(const void *cper, size_t len,
+> +                             uint16_t source_id, Error **errp)
+>  {
+>      uint64_t error_block_addr, read_ack_register_addr, read_ack_register = 0;
+>      uint64_t start_addr;
+> -    bool ret = -1;
+>      AcpiGedState *acpi_ged_state;
+>      AcpiGhesState *ags;
+>  
+> -    assert(source_id < ACPI_GHES_ERROR_SOURCE_COUNT);
+> +    if (len > ACPI_GHES_MAX_RAW_DATA_LENGTH) {
+> +        error_setg(errp, "GHES CPER record is too big: %ld", len);
+> +        return;
+> +    }
+>  
+>      acpi_ged_state = ACPI_GED(object_resolve_path_type("", TYPE_ACPI_GED,
+>                                                         NULL));
+> @@ -406,6 +382,10 @@ int acpi_ghes_record_errors(uint16_t source_id, uint64_t physical_address)
+>                               sizeof(error_block_addr));
+>  
+>      error_block_addr = le64_to_cpu(error_block_addr);
+> +    if (!error_block_addr) {
+> +        error_setg(errp, "can not find Generic Error Status Block");
+> +        return;
+> +    }
+>  
+>      read_ack_register_addr = start_addr +
+>                               ACPI_GHES_ERROR_SOURCE_COUNT * sizeof(uint64_t);
+> @@ -415,24 +395,63 @@ int acpi_ghes_record_errors(uint16_t source_id, uint64_t physical_address)
+>  
+>      /* zero means OSPM does not acknowledge the error */
+>      if (!read_ack_register) {
+> -        error_report("OSPM does not acknowledge previous error,"
+> -                     " so can not record CPER for current error anymore");
+> -    } else if (error_block_addr) {
+> -        read_ack_register = cpu_to_le64(0);
+> -        /*
+> -         * Clear the Read Ack Register, OSPM will write it to 1 when
+> -         * it acknowledges this error.
+> -         */
+> -        cpu_physical_memory_write(read_ack_register_addr,
+> -                                  &read_ack_register, sizeof(uint64_t));
+> -
+> -        ret = acpi_ghes_record_mem_error(error_block_addr,
+> -                                         physical_address);
+> -    } else {
+> -        error_report("can not find Generic Error Status Block");
+> +        error_setg(errp,
+> +                   "OSPM does not acknowledge previous error,"
+> +                   " so can not record CPER for current error anymore");
+> +        return;
+>      }
+>  
+> -    return ret;
+> +    read_ack_register = cpu_to_le64(0);
+> +    /*
+> +     * Clear the Read Ack Register, OSPM will write 1 to this register when
+> +     * it acknowledges the error.
+> +     */
+> +    cpu_physical_memory_write(read_ack_register_addr,
+> +        &read_ack_register, sizeof(uint64_t));
+
+Maybe rewrap that line now it's indented less?
+
+> +
+> +    /* Write the generic error data entry into guest memory */
+> +    cpu_physical_memory_write(error_block_addr, cper, len);
+> +
+> +    return;
+> +}
+> +
+> +int acpi_ghes_record_errors(uint16_t source_id, uint64_t physical_address)
+> +{
+> +    /* Memory Error Section Type */
+> +    const uint8_t guid[] =
+> +          UUID_LE(0xA5BC1114, 0x6F64, 0x4EDE, 0xB8, 0x63, 0x3E, 0x83, \
+> +                  0xED, 0x7C, 0x83, 0xB1);
+> +    Error *errp = NULL;
+> +    int data_length;
+> +    GArray *block;
+> +
+> +    block = g_array_new(false, true /* clear */, 1);
+> +
+> +    data_length = ACPI_GHES_DATA_LENGTH + ACPI_GHES_MEM_CPER_LENGTH;
+> +    /*
+> +     * It should not run out of the preallocated memory if adding a new generic
+> +     * error data entry
+> +     */
+> +    assert((data_length + ACPI_GHES_GESB_SIZE) <=
+> +            ACPI_GHES_MAX_RAW_DATA_LENGTH);
+> +
+> +    ghes_gen_err_data_uncorrectable_recoverable(block, guid,
+> +                                                data_length);
+
+Trivial: That fits on one line under 80 chars.
+
+> +
+> +    /* Build the memory section CPER for above new generic error data entry */
+> +    acpi_ghes_build_append_mem_cper(block, physical_address);
+> +
+> +    /* Report the error */
+> +    ghes_record_cper_errors(block->data, block->len, source_id, &errp);
+> +
+> +    g_array_free(block, true);
+> +
+> +    if (errp) {
+> +        error_report_err(errp);
+> +        return -1;
+> +    }
+> +
+> +    return 0;
+>  }
+
 
 
