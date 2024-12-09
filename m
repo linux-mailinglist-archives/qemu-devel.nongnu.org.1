@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 159079E9E0E
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F8D99E9E10
 	for <lists+qemu-devel@lfdr.de>; Mon,  9 Dec 2024 19:33:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tKiXM-0002TL-Es; Mon, 09 Dec 2024 13:31:16 -0500
+	id 1tKiXL-0002Sp-8m; Mon, 09 Dec 2024 13:31:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1tKiXK-0002SN-9C
+ id 1tKiXJ-0002Rv-Vb
  for qemu-devel@nongnu.org; Mon, 09 Dec 2024 13:31:14 -0500
-Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
+Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1tKiXG-0006tC-79
+ id 1tKiXH-0006tT-7s
  for qemu-devel@nongnu.org; Mon, 09 Dec 2024 13:31:13 -0500
-Received: by mail-pf1-x434.google.com with SMTP id
- d2e1a72fcca58-7259a26ad10so3814230b3a.1
- for <qemu-devel@nongnu.org>; Mon, 09 Dec 2024 10:31:09 -0800 (PST)
+Received: by mail-pf1-x433.google.com with SMTP id
+ d2e1a72fcca58-7258bce5289so3670455b3a.0
+ for <qemu-devel@nongnu.org>; Mon, 09 Dec 2024 10:31:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1733769069; x=1734373869; darn=nongnu.org;
+ d=linaro.org; s=google; t=1733769070; x=1734373870; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=KJHfvwnJg5sZrvdjrL2PvGyTWu88t+rIUYQX6WpdBU0=;
- b=uF9rfbcB0FydaEX23+7mulF5rWb8FqWuB5OLO60rRbDq7+fXK6ZFwo+c4yDO3m5z3Z
- MoQ2Ep7QGxWV8HGr9AO3KNvp2zxqrMrvdtNYv5IRmbP4/jxbDUhO8f0ApqOoTaHwjaZD
- OswsE1ujaY9ukFe7EqHqLA/vsEAafUma/AbQ8BmZ+uFMgiLIQivthHtH7RqeTyt3toZj
- LIr66vaizIVRE9RPv9aQZF09JUxHWRD983HfscZS56eeeCgl/qLwmnKgh3pN3yu9cUHW
- Hh+6DQ+arGNbv8GKd6PI47Pvj93Mbz945DmohBc7yXVx1czjhwS1hkgweMqhbu6fTdSD
- abvA==
+ bh=oUKq6vEd08BNHFL5xy+IGBW1qUyoIpn1SmzghDG21Ks=;
+ b=suP7GaWbcb/NqWo9BY4r1ChUGurpmSk6CApq7rSSGn5GRz26K4H41FAD9c2jiGSszD
+ JBpqzYI+K0yOlyKtg89Q9kQiQxU+qmc5iGK/RU7wb42YHXP3KgIPuMmEU9G+bwEJdoub
+ to+oktZTVi/vysktOEcSfmIEKAi49jwZl6yU7C3f6LlUkqJLdfiEziI1Ygn2LPDHijIY
+ +odI9T7w/lI7/1B+17F79ed1wSaqWQcYR+SNndx1lrxBkmXkbQSBTaCY3Uk3iRIqLHRZ
+ ymHiLbOSxrMQ+9dXQK2sYNT1293poZ9FmRNAWzG2ctG/VdL0YZSvfh6226VmN1rtjokY
+ MOgQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733769069; x=1734373869;
+ d=1e100.net; s=20230601; t=1733769070; x=1734373870;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=KJHfvwnJg5sZrvdjrL2PvGyTWu88t+rIUYQX6WpdBU0=;
- b=jaD5TUXOs/PwBiFLR8nXG64RZhsIjVd8BClYSO7VI0BE+7I4txD4Dq5FgZdYIIvuGe
- DGbBi5/62vv74CIu8a8DdfDqs+xc9bxeqXHtUjePv14dSWrrFKNbsqL+UllIHJC2Bkha
- jgrQV2tCzpBzXETiOrcyNVxjTfiQllHS4PZIEGzIQ3iTFaogbJpuWN9F+3XHdadote72
- OWk2rkwMsahi9gBJzLCMtMndtbpFJ/894QTuntFsUItUj2NMLHlbMXf7nTkhpCrL7YHQ
- jReh7Objm2p+fewa9vhs9WPULU5ANHQaoi/6OmZZ77yTwa8KONJPibv+dGGTAazPpFvo
- 9lpQ==
-X-Gm-Message-State: AOJu0Ywi1gQGkTUb1mCpDHNC9g+Wjqargn9F8mZoIdXl8K2EMHFEv57S
- cwcO+qv9Xy0UUYmeUtBZqgIY/fKMeWMa3jCkkeObdYe26CRbewwB+I6RwvqZUSpOFmp19BTJdWX
- WrPg=
-X-Gm-Gg: ASbGncsvKt8z7ar4FOI4B8R9Ti5yoNNR98yvx9KFkW/wA9WVb8d3BmAqNff+7K1Tjpr
- pJhJQisY9C9ueuzPVubO2/gvDvmzcp8hTinJRU7w0o10bFcfnwbfVZuMUymQncQF3Qx1MnMhLlY
- kocBKWdCrYz9mVmpDsO8toqE/nxK1moI0QoaxWr7O1zkvr8riVA4IUPL2nrmBtj3EL09Rf6c51l
- D7I5DsEtQlBwKcj6HPEH3RR1kPDaoTq3WDh12piFAHbhNYQsUwLScWKIIMstefZMxNIclNd38co
- Az0QR9FVF7/g
-X-Google-Smtp-Source: AGHT+IH0W32vCMU/REHgWwitNQj0RdYViGRDdgZtnn1QKAsNMZMXRkehKM+GP8TM3mJLL1QW2KCPyw==
-X-Received: by 2002:a05:6a00:4513:b0:725:4a1b:38ec with SMTP id
- d2e1a72fcca58-7288810e22fmr752631b3a.3.1733769068840; 
- Mon, 09 Dec 2024 10:31:08 -0800 (PST)
+ bh=oUKq6vEd08BNHFL5xy+IGBW1qUyoIpn1SmzghDG21Ks=;
+ b=Mm6OcgbHrMWrl4SvBYoth53G72MnP24t3mrt3tFeGxDn5cQ53Ie/BO6t//15Kpbjge
+ 0pjI5h7SePkCyt0B48EaOMsSW0VJzX7cdFpEIoBEUjL5kWerDwVQn4z8OqZz4xvH4XeF
+ mjA3A4xfdBRhFfFk42V9kgQUUv3IG0VRWvVn33oSJco+DWydjgv5M2/13QEE+RdVpMs+
+ pozpm3eXHBvTGnpuu5q+Ypl3MzP0HdPU6z9oE3RzjEmhksPOZUnkG10bOAhSZgjmyH63
+ mlYkgrfCrTm1nRSWAUOHzBDuoUbImZrA206ZJXTBy+Q6gtLzBvmA0SgwJacWF4RYrZ3i
+ zsgQ==
+X-Gm-Message-State: AOJu0YwcfTN/3pjTHi6DL1y5tNSE8AGxE5iuchdp9aaxXF7bq6bIesLM
+ CLcQr8cHDhkl9f3PmIJ7abYvCfmkgE7WmnmIoJVVyOkseMv01J3sQ9i4dPaV2pir8NNO9LbiQcF
+ Xseg=
+X-Gm-Gg: ASbGncs20i6WCc3a+zpSXwt61XEz72GatYjVI+kDhY/4un8uMFeR65LH/oJJnmUmZg8
+ tNVjN1/ZsgPOOtVWAQTFzaD7lD1FE2AHz6A+uu1awvLUe8MQ4kc9FsQAl5xOJNyG3UQcWW2dPh1
+ 9xrUDL8tk5KvLwEOhqYRNYjP0iRsX0Nkfg6ZpyJdP6vvBE/d9D9JFyWilsZLuxUBgtWaGB4pTIJ
+ SvO41WBAt3/lGTn9z4g6hCGfiKq2GYDvVvxznJPytTjMelkYSrut+YSxB3wBe45X0bjsxz9f+bC
+ ueu+uogs/l1B
+X-Google-Smtp-Source: AGHT+IGHgMJ38Jmr7nbffgCDllf16U7JHr53zhYSJkDuJ8Dm6v3gmzXLAgJmZrZFftLzkhyV7DOVuA==
+X-Received: by 2002:a05:6a00:174b:b0:727:3c8f:3707 with SMTP id
+ d2e1a72fcca58-7273c8f3efemr2557724b3a.23.1733769069981; 
+ Mon, 09 Dec 2024 10:31:09 -0800 (PST)
 Received: from pc.. (216-180-64-156.dyn.novuscom.net. [216.180.64.156])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-725e2388d37sm3322821b3a.73.2024.12.09.10.31.07
+ d2e1a72fcca58-725e2388d37sm3322821b3a.73.2024.12.09.10.31.09
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 09 Dec 2024 10:31:08 -0800 (PST)
+ Mon, 09 Dec 2024 10:31:09 -0800 (PST)
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: manos.pitsidianakis@linaro.org, Andrew Melnychenko <andrew@daynix.com>,
@@ -79,24 +79,23 @@ Cc: manos.pitsidianakis@linaro.org, Andrew Melnychenko <andrew@daynix.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH v4 1/6] docs/devel: remove dead video link for sourcehut
- submit process
-Date: Mon,  9 Dec 2024 10:30:59 -0800
-Message-Id: <20241209183104.365796-2-pierrick.bouvier@linaro.org>
+Subject: [PATCH v4 2/6] docs/devel: add git-publish for patch submitting
+Date: Mon,  9 Dec 2024 10:31:00 -0800
+Message-Id: <20241209183104.365796-3-pierrick.bouvier@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241209183104.365796-1-pierrick.bouvier@linaro.org>
 References: <20241209183104.365796-1-pierrick.bouvier@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x434.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -112,29 +111,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Reviewed-by: Thomas Huth <thuth@redhat.com>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- docs/devel/submitting-a-patch.rst | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ docs/devel/submitting-a-patch.rst | 25 +++++++++++++++++++++++++
+ 1 file changed, 25 insertions(+)
 
 diff --git a/docs/devel/submitting-a-patch.rst b/docs/devel/submitting-a-patch.rst
-index 10b062eec26..03b2ac298aa 100644
+index 03b2ac298aa..69df7682c5e 100644
 --- a/docs/devel/submitting-a-patch.rst
 +++ b/docs/devel/submitting-a-patch.rst
-@@ -252,10 +252,7 @@ patches to the QEMU mailing list by following these steps:
- #. Send your patches to the QEMU mailing list using the web-based
-    ``git-send-email`` UI at https://git.sr.ht/~USERNAME/qemu/send-email
+@@ -235,6 +235,31 @@ to another list.) ``git send-email`` (`step-by-step setup guide
+ works best for delivering the patch without mangling it, but
+ attachments can be used as a last resort on a first-time submission.
  
--`This video
--<https://spacepub.space/videos/watch/ad258d23-0ac6-488c-83fc-2bacf578de3a>`__
--shows the web-based ``git-send-email`` workflow. Documentation is
--available `here
-+Documentation for sourcehut is available `here
- <https://man.sr.ht/git.sr.ht/#sending-patches-upstream>`__.
++.. _use_git_publish:
++
++Use git-publish
++~~~~~~~~~~~~~~~
++
++If you already configured git send-email, you can simply use `git-publish
++<https://github.com/stefanha/git-publish>`__ to send series.
++
++::
++
++    $ git checkout master -b my-feature
++    $ # work on new commits, add your 'Signed-off-by' lines to each
++    $ git publish
++    $ ... more work, rebase on master, ...
++    $ git publish # will send a v2
++
++Each time you post a series, git-publish will create a local tag with the format
++``<branchname>-v<version>`` to record the patch series.
++
++When sending patch emails, 'git publish' will consult the output of
++'scripts/get_maintainers.pl' and automatically CC anyone listed as maintainers
++of the affected code. Generally you should accept the suggested CC list, but
++there may sometimes be scenarios where it is appropriate to cut it down (eg on
++certain large tree-wide cleanups), or augment it with other interested people.
++
+ .. _if_you_cannot_send_patch_emails:
  
- .. _cc_the_relevant_maintainer:
+ If you cannot send patch emails
 -- 
 2.39.5
 
