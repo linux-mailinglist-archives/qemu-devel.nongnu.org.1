@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9652D9EA06A
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Dec 2024 21:38:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 40CAB9EA065
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Dec 2024 21:38:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tKkVR-0006J8-PT; Mon, 09 Dec 2024 15:37:26 -0500
+	id 1tKkVV-0006Oe-FD; Mon, 09 Dec 2024 15:37:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <phil@philjordan.eu>)
- id 1tKkVA-0006FH-9U
- for qemu-devel@nongnu.org; Mon, 09 Dec 2024 15:37:08 -0500
-Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
+ id 1tKkVB-0006Gz-It
+ for qemu-devel@nongnu.org; Mon, 09 Dec 2024 15:37:09 -0500
+Received: from mail-ej1-x636.google.com ([2a00:1450:4864:20::636])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <phil@philjordan.eu>)
- id 1tKkV8-0003ES-Ks
- for qemu-devel@nongnu.org; Mon, 09 Dec 2024 15:37:08 -0500
-Received: by mail-ej1-x62f.google.com with SMTP id
- a640c23a62f3a-a9f1c590ecdso885673266b.1
- for <qemu-devel@nongnu.org>; Mon, 09 Dec 2024 12:37:05 -0800 (PST)
+ id 1tKkVA-0003F6-9N
+ for qemu-devel@nongnu.org; Mon, 09 Dec 2024 15:37:09 -0500
+Received: by mail-ej1-x636.google.com with SMTP id
+ a640c23a62f3a-aa67af4dc60so282399566b.2
+ for <qemu-devel@nongnu.org>; Mon, 09 Dec 2024 12:37:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=philjordan-eu.20230601.gappssmtp.com; s=20230601; t=1733776625; x=1734381425;
+ d=philjordan-eu.20230601.gappssmtp.com; s=20230601; t=1733776627; x=1734381427;
  darn=nongnu.org; 
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=xw6Nq/8rslxJnUqkSeXiT5oto8WsRm37mAQv6Zrh7Zo=;
- b=10BtnBuKV4kcVgE0DHwEefoen9gFWctr/d3uBG9O7EByyHzpVxQzesF7Pg5mFXMOPf
- FEhsP8kG99qJNyTx0aPJpsFSLSKFEcPwkKfOFE2s5nxFcux16gmU0xV3UMjP/Ki8Tca5
- Zu5I/VNbG5F14JZCPGujjnXW3aMSYIG4XVXob9rycbkG9Ec2ivok9bhQLRb/fECDEqxy
- lSXhT8k/uzJzDBzx6euLGnWV92XpdT/40REo/zpwQcgXKvfO3GMl1XvMqC5nA0TVSJQy
- J+Z2+XnGt0iLYiNeemp/qIluX4ArIh1cSqjk4Ia6AbYFyK2Nj62PRG60eeUvYYnHXKoL
- xjdQ==
+ bh=krA8fyL06OMuWhugQwkTM4Lyyjdxb/hlEgT8wYfNtek=;
+ b=DkUsGM+KIIwkBxED9MqBqpJHwgDBcD6lkysQ8SbbbwolQElrnW3/7Zzyhz+CfULahK
+ n3RHaFywC/Cl+OAlKteWSRlmkiQaXWa7rxOVJ2YqNAPVQVXhZYayBNa64QnaKWx6EKMC
+ /qHShBzTzcBmpICw1sm3RU2iP+0aDyMFouSEacD+Bl3a2Ra5HPXrjtsn5ilXfPr4cT8Y
+ Jz9hvjZNXKb9DhSxKnCr3pHsQIdIB5EyrJiGDVEdHcGxVPoKjXqzF6OXz1H1Bl/34ODG
+ HHk4cGidKyf/lv6K6IUXe1C1wOnPDjm5RmBNU2DBsECZW2FbsH1COgWQgGLoE0VlSw65
+ 6r+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733776625; x=1734381425;
+ d=1e100.net; s=20230601; t=1733776627; x=1734381427;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=xw6Nq/8rslxJnUqkSeXiT5oto8WsRm37mAQv6Zrh7Zo=;
- b=kIJl6RbyJ76mA2elpCECbGMWn1I7fUMQJ4RYlllYEyWpWLWIJE1MdRp6PvtNbyUr6W
- /wiDr5H951vJEkLtXoMETa5kizu9qyoiS8JM4QZ0zcNWH9/KQjV9XmBEerQWN3oDowBJ
- JBBfBrzP17TcSBIlf9aJ6cpPVtSJWMV4EvfFo5mtExb+VrMNlWkj4AOZssDnBNMbyNYV
- 1iUkF/vfId/8QtyxJVdlZgkdnfwK3y2Xi8mwbgNNpY9Jn8GygPS/i6YLRV7l23LAy+Sl
- EhkVkeo/PsJVBjr66cr5ArWwcguwcJ6H8mDVd0EmmVh93YWYi4jEsWoZz1PO5rsTy+fL
- V/+Q==
-X-Gm-Message-State: AOJu0YwI74v73fzWDoZaQZGy/GtqwZWiP25iwFX8BU/wftZ4VocyZLUm
- 3M5RKnn+xwr6UngY+3sPRLkTxxxSX+aXRbUlhvx9PNTq5WC3al+ljppPvu/9L77mk/Rj+t3T8HM
- e1g==
-X-Gm-Gg: ASbGncsaDy1vs5DUi4qyncum+fPxrGCVYoM/CcUZ0+Bn6vnHPM6lKokF46mrhEPOYSP
- r1P2R4G0Sz1Ic0iK8igpUsa8pDAjfjMtLKeyEXsDXAY+GorPVdmmTJRA7o3KcFrdZc+f9QvAhbV
- 9S4oEjkEBEXW7p+dNwifX5y45gAo6ktLDhwUXJ4iiCgAyjaTxLzIbOxNW29sf6+jIbxWOL7Zvzh
- VgeTmh1D0K4j5OFDFz7yNgXMtBLeJeA26fNadrMO9wjJVOTfwa2NeGWjrq4OlQLu/b0gCYjQQ/i
- e1z74pn1dRlms7CfhYz1PP6aT4WdLQ==
-X-Google-Smtp-Source: AGHT+IHMg8u6xatM3JB2nocPT1UsXkGcZR+sI4zYs81yAcFM4A0d7QHtdMwFv1r1VAuu+oR+0IFR5A==
-X-Received: by 2002:a17:907:1dc4:b0:aa6:6c08:dc71 with SMTP id
- a640c23a62f3a-aa69cd8131emr196188866b.23.1733776624887; 
- Mon, 09 Dec 2024 12:37:04 -0800 (PST)
+ bh=krA8fyL06OMuWhugQwkTM4Lyyjdxb/hlEgT8wYfNtek=;
+ b=wU1yLiNiON3UYvtVlAJBopSDWDCJJTSq45iSAAgSnR8FhqDDYlmBiNwXfa7obqU5wB
+ ii7Vg+9BW5qQ9bGArIJ86naKf0+BSUp9fmLdXfTcWsWLbdvP64ip+mkC9/BFdhhoHFfN
+ G78jPRbJTJozRZo4EnDCVdjWKreODV5AnS9NsrFqh30VbqSYbGR1UQE7R3oYZIk5VhEe
+ nKIfZIsRGlqIGsl99CuwWZEF5gugE1qHUWggojcOp1wvXvjtTjno60LI/49wsJqNWvzV
+ mzL34LKJAmTYokxFwHo36OgalTfr+1jJOWO0PVyaXuTh/KVeqFAsx2dg0s5FoCbiprEM
+ QXAw==
+X-Gm-Message-State: AOJu0YykmxOcYlpKytd2GPzC/B6IZrAUToYC5GrHhb2c1YFL/ZVBBHRV
+ S+q076x6BEoccg6BYrmOrI8iV3AX9/A7GsBKXAomVThAa9VjP+1DPLYoBmClBMf2+k/olwyFkrs
+ RmA==
+X-Gm-Gg: ASbGncsrZHdztH+8vB9h9/FtoP62kOat7IM4tl7vtltEdLN6MChllmsAxZ3dxD7g9iy
+ i6HGKgB25g70KsqPorfdAJNFwefGn28LLQy2il6MlPaXhqAA3ZQDJ6EBItlkcbM98F1toNwpypa
+ dV5wToGnEzWCCylTG+iqm51QJhoAi2er2omAoe7HGA87BUI1TK+t9FRY2FqiFSY2r/KDFU9A4UR
+ jWuVw6ustC/oXPqsvwMpkBiFlcU+KXQ/oA/uS4HiD0ErwPlPJg/ZHXLad4zfOoS8ho5H9aC/x5E
+ 7JEMOz+fSauBFtII5G3sq5qNofwvkQ==
+X-Google-Smtp-Source: AGHT+IGgYAERzRBwAhCxDsdhEYv5W+Jsd6e8CC7QdEOBvUYGE+tR8QXY7+Jt1+n08n5gXMqgtFr/ig==
+X-Received: by 2002:a17:907:9554:b0:aa6:7d82:5414 with SMTP id
+ a640c23a62f3a-aa67d825937mr591543966b.30.1733776626628; 
+ Mon, 09 Dec 2024 12:37:06 -0800 (PST)
 Received: from localhost.localdomain (h082218084190.host.wavenet.at.
  [82.218.84.190]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-aa692e4e9d5sm141783566b.129.2024.12.09.12.37.04
+ a640c23a62f3a-aa692e4e9d5sm141783566b.129.2024.12.09.12.37.05
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 09 Dec 2024 12:37:04 -0800 (PST)
+ Mon, 09 Dec 2024 12:37:05 -0800 (PST)
 From: phil@philjordan.eu
 To: qemu-devel@nongnu.org
 Cc: Cameron Esfahani <dirty@apple.com>, Roman Bolshakov <rbolshakov@ddn.com>,
@@ -70,17 +70,16 @@ Cc: Cameron Esfahani <dirty@apple.com>, Roman Bolshakov <rbolshakov@ddn.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Alexander Graf <agraf@csgraf.de>, Peter Maydell <peter.maydell@linaro.org>,
  qemu-arm@nongnu.org, Phil Dennis-Jordan <phil@philjordan.eu>
-Subject: [PATCH 07/11] i386/hvf: Enables APIC_ACCESS VM exits by setting
- APICBASE
-Date: Mon,  9 Dec 2024 21:36:25 +0100
-Message-Id: <20241209203629.74436-8-phil@philjordan.eu>
+Subject: [PATCH 08/11] i386/hvf: Variable type fixup in decoder
+Date: Mon,  9 Dec 2024 21:36:26 +0100
+Message-Id: <20241209203629.74436-9-phil@philjordan.eu>
 X-Mailer: git-send-email 2.39.3 (Apple Git-146)
 In-Reply-To: <20241209203629.74436-1-phil@philjordan.eu>
 References: <20241209203629.74436-1-phil@philjordan.eu>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: neutral client-ip=2a00:1450:4864:20::62f;
- envelope-from=phil@philjordan.eu; helo=mail-ej1-x62f.google.com
+Received-SPF: neutral client-ip=2a00:1450:4864:20::636;
+ envelope-from=phil@philjordan.eu; helo=mail-ej1-x636.google.com
 X-Spam_score_int: -10
 X-Spam_score: -1.1
 X-Spam_bar: -
@@ -104,88 +103,29 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Phil Dennis-Jordan <phil@philjordan.eu>
 
-This change activates virtualised APIC access VM exits so the new
-fast-pathed implementation will be taken.
-
-Two parts are required for enabling APIC_ACCESS exits rather than
-falling back to "regular" MMIO EPT faults: Hypervisor.framework
-needs to know the current APIC base address, and the APIC access
-virtualisation ctl, VMCS_PRI_PROC_BASED2_CTLS_APIC_ACCESSES,
-must be set in the VMCS. The latter has already been set in QEMU's
-HVF accel, but setting the APIC base address has been missing.
-
-This change calls hv_vmx_vcpu_set_apic_address() before a vCPU
-runs for the first time, and whenever the APICBASE MSR is modified
-and the xAPIC is enabled. Additionally, the APIC access ctl is
-toggled when the APIC is enabled or disabled, or changes mode.
-
-In addition to making APIC access VM exits occur at all, it also
-makes APIC relocation work, at least on the fast path. (QEMU does
-not currently support different address spaces per vCPU, which
-is why the purely EPT fault based software APIC - and thus the slow
-path - does not properly support relocation.)
+decode_bytes reads 1, 2, 4, or 8 bytes at a time. The destination
+variable should therefore be a uint64_t, not a target_ulong.
 
 Signed-off-by: Phil Dennis-Jordan <phil@philjordan.eu>
 ---
- target/i386/hvf/hvf.c     | 11 +++++++++++
- target/i386/hvf/x86_emu.c | 18 ++++++++++++++++++
- 2 files changed, 29 insertions(+)
+ target/i386/hvf/x86_decode.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/target/i386/hvf/hvf.c b/target/i386/hvf/hvf.c
-index 2a13a9e49b..a7b8d124bb 100644
---- a/target/i386/hvf/hvf.c
-+++ b/target/i386/hvf/hvf.c
-@@ -341,6 +341,17 @@ int hvf_arch_init_vcpu(CPUState *cpu)
- 
- void hvf_vcpu_before_first_run(CPUState *cpu)
+diff --git a/target/i386/hvf/x86_decode.c b/target/i386/hvf/x86_decode.c
+index 79dfc30408..6c7cfc820f 100644
+--- a/target/i386/hvf/x86_decode.c
++++ b/target/i386/hvf/x86_decode.c
+@@ -61,8 +61,8 @@ uint64_t sign(uint64_t val, int size)
+ static inline uint64_t decode_bytes(CPUX86State *env, struct x86_decode *decode,
+                                     int size)
  {
-+    X86CPU *x86_cpu = X86_CPU(cpu);
-+    hv_vcpuid_t vcpu = cpu->accel->fd;
-+    uint64_t apic_base;
-+    hv_return_t apicbase_result;
+-    target_ulong val = 0;
+-    
++    uint64_t val = 0;
 +
-+    if (cpu_is_apic_enabled(x86_cpu->apic_state)
-+        && !is_x2apic_mode(x86_cpu->apic_state)) {
-+        apic_base = MSR_IA32_APICBASE_BASE & cpu_get_apic_base(x86_cpu->apic_state);
-+        apicbase_result = hv_vmx_vcpu_set_apic_address(vcpu, apic_base);
-+        assert_hvf_ok(apicbase_result);
-+    }
- }
- 
- static void hvf_store_events(CPUState *cpu, uint32_t ins_len, uint64_t idtvec_info)
-diff --git a/target/i386/hvf/x86_emu.c b/target/i386/hvf/x86_emu.c
-index 197fa155a0..88a946cb0f 100644
---- a/target/i386/hvf/x86_emu.c
-+++ b/target/i386/hvf/x86_emu.c
-@@ -797,10 +797,28 @@ void simulate_wrmsr(CPUX86State *env)
-         break;
-     case MSR_IA32_APICBASE: {
-         int r;
-+        hv_return_t res;
- 
-         r = cpu_set_apic_base(cpu->apic_state, data);
-         if (r < 0) {
-             raise_exception(env, EXCP0D_GPF, 0);
-+        } else {
-+            uint64_t pbc = rvmcs(cs->accel->fd, VMCS_SEC_PROC_BASED_CTLS);
-+            uint64_t new_pbc;
-+            if (cpu_is_apic_enabled(cpu->apic_state)
-+                && !is_x2apic_mode(cpu->apic_state)) {
-+                res = hv_vmx_vcpu_set_apic_address(cs->accel->fd,
-+                                                   data & MSR_IA32_APICBASE_BASE);
-+                assert_hvf_ok(res);
-+
-+                new_pbc = pbc | VMCS_PRI_PROC_BASED2_CTLS_APIC_ACCESSES;
-+            } else {
-+                new_pbc = pbc & ~VMCS_PRI_PROC_BASED2_CTLS_APIC_ACCESSES;
-+            }
-+            if (new_pbc != pbc) {
-+                wvmcs(cs->accel->fd, VMCS_SEC_PROC_BASED_CTLS,
-+                    cap2ctrl(hvf_state->hvf_caps->vmx_cap_procbased2, new_pbc));
-+            }
-         }
- 
-         break;
+     switch (size) {
+     case 1:
+     case 2:
 -- 
 2.39.3 (Apple Git-146)
 
