@@ -2,95 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 857109E94BE
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Dec 2024 13:48:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0762F9E9529
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Dec 2024 13:57:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tKd6w-0008CP-5g; Mon, 09 Dec 2024 07:43:41 -0500
+	id 1tKdK0-0004L1-21; Mon, 09 Dec 2024 07:57:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tKd22-0004Yy-HA
- for qemu-devel@nongnu.org; Mon, 09 Dec 2024 07:38:42 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mchehab+huawei@kernel.org>)
+ id 1tKdJp-0004Ji-LV; Mon, 09 Dec 2024 07:56:58 -0500
+Received: from dfw.source.kernel.org ([139.178.84.217])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tKd1w-0007as-Cp
- for qemu-devel@nongnu.org; Mon, 09 Dec 2024 07:38:33 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1733747906;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=T6KMN/KKwz/drY0m0B/GAzuPFwO/9IuBICqSOgF3wlY=;
- b=KjystAASfB/h9av5tZ4PqlUtqDOIdjs5sFHfASFI6EqzOxY3DnpOoUOI4zQWk+o9JqSK8F
- 3DD4IdZHVgO5yepdKJEyTTgnZOEvNjeQBRNG/k/Lv8wwPoa+U5M5FwRmOG9dgmh1MkJzgx
- VIm4k+fG7Bjbc8EDOy/oaoUCJgxHHYY=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-529-5SkZ6bASP8uC9z-rmISFqw-1; Mon, 09 Dec 2024 07:38:25 -0500
-X-MC-Unique: 5SkZ6bASP8uC9z-rmISFqw-1
-X-Mimecast-MFC-AGG-ID: 5SkZ6bASP8uC9z-rmISFqw
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-3862c67763dso1816110f8f.3
- for <qemu-devel@nongnu.org>; Mon, 09 Dec 2024 04:38:25 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733747903; x=1734352703;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=T6KMN/KKwz/drY0m0B/GAzuPFwO/9IuBICqSOgF3wlY=;
- b=DoQNFmnxVkZyq84e06+Gp2s+cSEdkDSh16j4+S5nQyeE3FOe5atwpMrxtaf/7oqL00
- zN0htOhSB/qAeNW1e8SBrU7PyhKq9I71JUlIzR7YweZMu/emFgmbJnmoLv4MZ8yXBKOE
- FZQpwxOTBnwzQQW1r7vdQAc0w+zkcsneKL11xnYo6+SKf5GftJCny5gNndzUjLxY0/eM
- W6OGY8pxfRMX+OXe36OqKlKeJehX1mGJWmcFvpn7JuvODAbmrEE3Xd+TS190Q+OyRjZe
- JhVKidkVEMRzaf2ZtFTdj61ct0UQ5rDilyAUIuYIvobC2nCQug1RPwcQY/DHPMh3tVq5
- Un+Q==
-X-Gm-Message-State: AOJu0YwW6TR622/DsIfJO/wGENb/Tfsii523q/iF25Effi29ctFqzAR3
- 9f6/Z9RFrOFa3/pCnomJYNuJURaCgGWKUUlI+hOPmc2neTbLmlQW4g96eZzN1lpVbhBoLyk4C3u
- vbRj+rvGBHEW+Kk4CUnU/O7190/nqz1VdMzJaGT6on9i2kQvW7vRbapMWqxbXEmkXZA/RmRPiEO
- 1xd7dIFb0TJLjHlQAL7z86cNFTCWozJnvZTvhe
-X-Gm-Gg: ASbGnct+stPTvPYTKvNNqnW0QoCcXcn3gUTELjisBmA6Z9V9T6J4H4UcUZm/iMCed9u
- R54jebc4HRwIsvVI6HW03kTmnW6FBQxLwHgfYS4jRn5yFVW3R8J8j3wkcWIfh8z35OnpMzF/sae
- Qzvy+c2Ng+Rc33kWWFmi6Et/wzIAbg33/AGLY4mg1cdTanZ8Spz9ZQg6k2L6gYaKOQG5Ht7uGeR
- ENbnNnnEsVd55haykpvIUGpfRvdVL1tepFrbjid1ZRwpBFOym6uoA==
-X-Received: by 2002:a05:6000:4715:b0:385:fb34:d585 with SMTP id
- ffacd0b85a97d-3862b37f1fcmr9529702f8f.34.1733747903513; 
- Mon, 09 Dec 2024 04:38:23 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHNIjYvCBUUw5SuI6EdubzMkYBb+V9p2OLC1S6N1gh//MaK5456gKjpwFzm1ivquRIqCgHGWg==
-X-Received: by 2002:a05:6000:4715:b0:385:fb34:d585 with SMTP id
- ffacd0b85a97d-3862b37f1fcmr9529680f8f.34.1733747903085; 
- Mon, 09 Dec 2024 04:38:23 -0800 (PST)
-Received: from [192.168.10.47] ([151.81.118.45])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-434f0d6a825sm71952995e9.20.2024.12.09.04.38.21
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 09 Dec 2024 04:38:21 -0800 (PST)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-rust@nongnu.org, Zhao Liu <zhao1.liu@intel.com>,
- Junjie Mao <junjie.mao@hotmail.com>
-Subject: [PATCH 26/26] rust: callbacks: allow passing optional callbacks as ()
-Date: Mon,  9 Dec 2024 13:37:17 +0100
-Message-ID: <20241209123717.99077-27-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241209123717.99077-1-pbonzini@redhat.com>
-References: <20241209123717.99077-1-pbonzini@redhat.com>
+ (Exim 4.90_1) (envelope-from <mchehab+huawei@kernel.org>)
+ id 1tKdJn-0001So-DF; Mon, 09 Dec 2024 07:56:57 -0500
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+ by dfw.source.kernel.org (Postfix) with ESMTP id 4F2245C5B30;
+ Mon,  9 Dec 2024 12:56:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4D6AC4CED1;
+ Mon,  9 Dec 2024 12:56:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1733749009;
+ bh=AwatSeIitxHKMVxau0ctM0Z69MO8L7GCr6CTMv35TjY=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+ b=psKlawxLvSbyTHmtZYS5hK9j6fytRvyVPx4gtyU6B34TBFtZHe2yRxcCgIAo9fkIH
+ 8Wq7I8O5KHnOa6ljfovXtGmXTnKBPBG2PNQVdEqMOx+oQChFuzIllDYjhJckHEAIoO
+ oCWmE7+tzp4Hg4E1RpMFOSiHocCl21ZMPkNugHNDCPcV7jm1yRHoFwZt9Y+iVAavi/
+ RzsstVB67o24IUATf2ZXsTrk+DHYUaGBA9E5dAkp23w3kaieRpPaVrINhQVtZTQcva
+ fOT4WOfTU68J0pUe49jqIstca2ozN4LyujVMfoeindS7pIeNM8BdPeBEGzRotDbDrA
+ sHcQmpN7IGfIg==
+Date: Mon, 9 Dec 2024 13:56:44 +0100
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: "Michael S . Tsirkin" <mst@redhat.com>, Shiju Jose
+ <shiju.jose@huawei.com>, Ani Sinha <anisinha@redhat.com>, Dongjiu Geng
+ <gengdongjiu1@gmail.com>, Igor Mammedov <imammedo@redhat.com>,
+ <linux-kernel@vger.kernel.org>, <qemu-arm@nongnu.org>,
+ <qemu-devel@nongnu.org>
+Subject: Re: [PATCH v6 08/16] acpi/ghes: don't check if physical_address is
+ not zero
+Message-ID: <20241209135644.19869834@foz.lan>
+In-Reply-To: <20241209113640.000055ab@huawei.com>
+References: <cover.1733561462.git.mchehab+huawei@kernel.org>
+ <95c0fa3fc2969daf3b6bc1f007733f11b715a465.1733561462.git.mchehab+huawei@kernel.org>
+ <20241209113640.000055ab@huawei.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -25
-X-Spam_score: -2.6
-X-Spam_bar: --
-X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.489,
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=139.178.84.217;
+ envelope-from=mchehab+huawei@kernel.org; helo=dfw.source.kernel.org
+X-Spam_score_int: -75
+X-Spam_score: -7.6
+X-Spam_bar: -------
+X-Spam_report: (-7.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.489,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_HI=-5, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,151 +75,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In some cases, callbacks are optional.  Using "Some(function)" and "None"
-does not work well, because when someone writes "None" the compiler does
-not know what to use for "F" in "Option<F>".
+Em Mon, 9 Dec 2024 11:36:40 +0000
+Jonathan Cameron <Jonathan.Cameron@huawei.com> escreveu:
 
-Therefore, adopt () to mean a "null" callback.  It is possible to enforce
-that a callback is valid by adding a "let _: () = F::ASSERT_IS_SOME" before
-the invocation of F::call.
+> On Sat,  7 Dec 2024 09:54:14 +0100
+> Mauro Carvalho Chehab <mchehab+huawei@kernel.org> wrote:
+> 
+> > The 'physical_address' value is a faulty page. As such, 0 is
+> > as valid as any other value.  
+> Still not sure on what faulty pages are :)
+> 
+> Given I tagged previous (after you'd sent this)
+> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- rust/qemu-api/src/callbacks.rs | 97 ++++++++++++++++++++++++++++++++++
- 1 file changed, 97 insertions(+)
+It seems I forgot adding this tag, from Igor's review, as per:
+	https://lore.kernel.org/qemu-devel/20241204141246.37a7cb9d@imammedo.users.ipa.redhat.com/
+This patch was reviwed by Igor already, so:
 
-diff --git a/rust/qemu-api/src/callbacks.rs b/rust/qemu-api/src/callbacks.rs
-index 6401d807198..83c681d6478 100644
---- a/rust/qemu-api/src/callbacks.rs
-+++ b/rust/qemu-api/src/callbacks.rs
-@@ -76,6 +76,31 @@
- /// call_it(&move |_| String::from(x), "hello workd");
- /// ```
- ///
-+/// `()` can be used to indicate "no function":
-+///
-+/// ```
-+/// # use qemu_api::callbacks::FnCall;
-+/// fn optional<F: for<'a> FnCall<(&'a str,), String>>(_f: &F, s: &str) -> Option<String> {
-+///     if F::IS_SOME {
-+///         Some(F::call((s,)))
-+///     } else {
-+///         None
-+///     }
-+/// }
-+///
-+/// assert!(optional(&(), "hello world").is_none());
-+/// ```
-+///
-+/// Invoking `F::call` will then be a run-time error.
-+///
-+/// ```should_panic
-+/// # use qemu_api::callbacks::FnCall;
-+/// # fn call_it<F: for<'a> FnCall<(&'a str,), String>>(_f: &F, s: &str) -> String {
-+/// #     F::call((s,))
-+/// # }
-+/// let s: String = call_it(&(), "hello world"); // panics
-+/// ```
-+///
- /// # Safety
- ///
- /// Because `Self` is a zero-sized type, all instances of the type are
-@@ -90,10 +115,70 @@ pub unsafe trait FnCall<Args, R = ()>: 'static + Sync + Sized {
-     /// Rust 1.79.0+.
-     const ASSERT_ZERO_SIZED: () = { assert!(mem::size_of::<Self>() == 0) };
- 
-+    /// Referring to this constant asserts that the `Self` type is an actual
-+    /// function type, which can be used to catch incorrect use of `()`
-+    /// at  compile time.
-+    ///
-+    /// # Examples
-+    ///
-+    /// ```compile_fail
-+    /// # use qemu_api::callbacks::FnCall;
-+    /// fn call_it<F: for<'a> FnCall<(&'a str,), String>>(_f: &F, s: &str) -> String {
-+    ///     let _: () = F::ASSERT_IS_SOME;
-+    ///     F::call((s,))
-+    /// }
-+    ///
-+    /// let s: String = call_it((), "hello world"); // does not compile
-+    /// ```
-+    ///
-+    /// Note that this use more simply `const { assert!(F::IS_SOME) }` in
-+    /// Rust 1.79.0 or newer.
-+    const ASSERT_IS_SOME: () = { assert!(Self::IS_SOME) };
-+
-+    /// `true` if `Self` is an actual function type and not `()`.
-+    ///
-+    /// # Examples
-+    ///
-+    /// You can use `IS_SOME` to catch this at compile time:
-+    ///
-+    /// ```compile_fail
-+    /// # use qemu_api::callbacks::FnCall;
-+    /// fn call_it<F: for<'a> FnCall<(&'a str,), String>>(_f: &F, s: &str) -> String {
-+    ///     const { assert!(F::IS_SOME) }
-+    ///     F::call((s,))
-+    /// }
-+    ///
-+    /// let s: String = call_it((), "hello world"); // does not compile
-+    /// ```
-+    const IS_SOME: bool;
-+
-+    /// `false` if `Self` is an actual function type, `true` if it is `()`.
-+    fn is_none() -> bool {
-+        !Self::IS_SOME
-+    }
-+
-+    /// `true` if `Self` is an actual function type, `false` if it is `()`.
-+    fn is_some() -> bool {
-+        Self::IS_SOME
-+    }
-+
-     /// Call the function with the arguments in args.
-     fn call(a: Args) -> R;
- }
- 
-+/// `()` acts as a "null" callback.  Using `()` and `function` is nicer
-+/// than `None` and `Some(function)`, because the compiler is unable to
-+/// infer the type of just `None`.  Therefore, the trait itself acts as the
-+/// option type, with functions [`FnCall::is_some`] and [`FnCall::is_none`].
-+unsafe impl<Args, R> FnCall<Args, R> for () {
-+    const IS_SOME: bool = false;
-+
-+    /// Call the function with the arguments in args.
-+    fn call(_a: Args) -> R {
-+        panic!("callback not specified")
-+    }
-+}
-+
- macro_rules! impl_call {
-     ($($args:ident,)* ) => (
-         // SAFETY: because each function is treated as a separate type,
-@@ -103,6 +188,8 @@ unsafe impl<F, $($args,)* R> FnCall<($($args,)*), R> for F
-         where
-             F: 'static + Sync + Sized + Fn($($args, )*) -> R,
-         {
-+            const IS_SOME: bool = true;
-+
-             #[inline(always)]
-             fn call(a: ($($args,)*)) -> R {
-                 let _: () = Self::ASSERT_ZERO_SIZED;
-@@ -138,4 +225,14 @@ fn do_test_call<'a, F: FnCall<(&'a str,), String>>(_f: &F) -> String {
-     fn test_call() {
-         assert_eq!(do_test_call(&str::to_owned), "hello world")
-     }
-+
-+    // The `_f` parameter is unused but it helps the compiler infer `F`.
-+    fn do_test_is_some<'a, F: FnCall<(&'a str,), String>>(_f: &F) {
-+        assert_eq!(F::is_some(), true);
-+    }
-+
-+    #[test]
-+    fn test_is_some() {
-+        do_test_is_some(&str::to_owned);
-+    }
- }
--- 
-2.47.1
+Reviewed-by: Igor Mammedov <imammedo@redhat.com>
 
+> 
+> > 
+> > Suggested-by: Igor Mammedov <imammedo@redhat.com>
+> > Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+> > ---
+> >  hw/acpi/ghes.c | 4 ----
+> >  1 file changed, 4 deletions(-)
+> > 
+> > diff --git a/hw/acpi/ghes.c b/hw/acpi/ghes.c
+> > index edc74c38bf8a..a3dffd78b012 100644
+> > --- a/hw/acpi/ghes.c
+> > +++ b/hw/acpi/ghes.c
+> > @@ -400,10 +400,6 @@ int acpi_ghes_record_errors(uint16_t source_id, uint64_t physical_address)
+> >  
+> >      start_addr = le64_to_cpu(ags->ghes_addr_le);
+> >  
+> > -    if (!physical_address) {
+> > -        return -1;
+> > -    }
+> > -
+> >      start_addr += source_id * sizeof(uint64_t);
+> >  
+> >      cpu_physical_memory_read(start_addr, &error_block_addr,  
+> 
+
+
+
+Thanks,
+Mauro
 
