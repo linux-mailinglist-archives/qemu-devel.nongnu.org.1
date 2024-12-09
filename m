@@ -2,65 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17E439E8C62
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Dec 2024 08:41:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 16A129E8C2B
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Dec 2024 08:30:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tKYOH-0008EA-6X; Mon, 09 Dec 2024 02:41:13 -0500
+	id 1tKYBw-00051L-Np; Mon, 09 Dec 2024 02:28:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <d-tatianin@yandex-team.ru>)
- id 1tKYOE-0008Ds-3l
- for qemu-devel@nongnu.org; Mon, 09 Dec 2024 02:41:10 -0500
-Received: from forwardcorp1a.mail.yandex.net
- ([2a02:6b8:c0e:500:1:45:d181:df01])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1tKYBu-000513-8V; Mon, 09 Dec 2024 02:28:26 -0500
+Received: from mgamail.intel.com ([198.175.65.15])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <d-tatianin@yandex-team.ru>)
- id 1tKYOA-0000s1-38
- for qemu-devel@nongnu.org; Mon, 09 Dec 2024 02:41:08 -0500
-Received: from mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net
- [IPv6:2a02:6b8:c0c:292a:0:640:622b:0])
- by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id D25EA60C0B;
- Mon,  9 Dec 2024 10:40:57 +0300 (MSK)
-Received: from [IPV6:2a02:6b8:b081:b658::1:2f] (unknown
- [2a02:6b8:b081:b658::1:2f])
- by mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id tefNta1IaGk0-86DIyEPR; Mon, 09 Dec 2024 10:40:57 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1733730057;
- bh=Gf31hWQCpmJb0B35QiqTORZaZSvWTMGgEbXCl1SxleQ=;
- h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
- b=Md55/tVihimbUHFWjBstChgedZhD++cmQiGO08dJQ8IfWpTaFix/PMsKQjfcpoGB1
- vU30G4rW0wnCDLTzJ0r62eLrFOpxFtjB22MCSRzkiUF7nCczzsFQIHfKIr5nFUp2VC
- sXPYKvE9kjvLH/TPGSXnZGIUemeltp0/OsvXpHuI=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net;
- dkim=pass header.i=@yandex-team.ru
-Message-ID: <779a4733-888b-4591-af5e-381572c84c20@yandex-team.ru>
-Date: Mon, 9 Dec 2024 10:40:51 +0300
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1tKYBr-00087F-Aq; Mon, 09 Dec 2024 02:28:26 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1733729303; x=1765265303;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=F5pBLLFvUtiHKYH0oeEWoJGCsUU3wTP7lL98qNGVMC8=;
+ b=ACGQO74AV46ygpyO5eNgPheiBmHPNJcdj3tGzhow3+jQaA0Ec24qw1Nf
+ RJljLWhr9xbXnsgwpvvn/xGxO88ih1546N2vqNdK5NznQFvpgMQyy/c85
+ 4SDtKirfYUZozp85uXoycCchDHeb9DGAKHwlWqsM4wlP9IB/ymM+rGTpS
+ Cw/4muYn637kXcIGrHPAyNEDgr8NYSYxusN4B+y5rNnsA0k1xiiIFSlXW
+ OY2c/a2xAy7wv7WxAYypvAzN1BSN6aIZ4SkDDdWJ4DXQxM4QTs3TwOGvb
+ mtOglDvI9fHqARbO78igELvLNIMvouoEWzNlqd2CXT2bb7777eel2O4wb Q==;
+X-CSE-ConnectionGUID: zXP6zXiOQ+iFsKeOCeNRgQ==
+X-CSE-MsgGUID: tTK1UKiNQOmaBNuWOqmg+Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11280"; a="37691787"
+X-IronPort-AV: E=Sophos;i="6.12,218,1728975600"; d="scan'208";a="37691787"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+ by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 Dec 2024 23:28:19 -0800
+X-CSE-ConnectionGUID: 7SsGGPXlSACUBE3wmVDf0Q==
+X-CSE-MsgGUID: RX5YxjrbT/aQRxMNJMHlhQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="100021619"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by orviesa003.jf.intel.com with ESMTP; 08 Dec 2024 23:28:13 -0800
+Date: Mon, 9 Dec 2024 15:46:27 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: "Michael S . Tsirkin" <mst@redhat.com>,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ Junjie Mao <junjie.mao@hotmail.com>,
+ Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org,
+ qemu-rust@nongnu.org
+Subject: Re: [RFC 11/13] rust/timer/hpet: add basic HPET timer & state
+Message-ID: <Z1agU6385snA9Xc4@intel.com>
+References: <20241205060714.256270-1-zhao1.liu@intel.com>
+ <20241205060714.256270-12-zhao1.liu@intel.com>
+ <b107c5c3-9ee4-4939-a4e3-eff0cd92bad6@redhat.com>
+ <CABgObfbojr4fkXq8tuuXCAGUdr3Vefddx=ERtMUx9w6Bqy0a3g@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/2] overcommit: introduce mem-lock-onfault
-To: Peter Xu <peterx@redhat.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Stefan Weil <sw@weilnetz.de>,
- Fabiano Rosas <farosas@suse.de>, qemu-devel@nongnu.org
-References: <20241205231909.1161950-1-d-tatianin@yandex-team.ru>
- <Z1JOpadES2iV_i0v@x1n>
-Content-Language: en-US
-From: Daniil Tatianin <d-tatianin@yandex-team.ru>
-In-Reply-To: <Z1JOpadES2iV_i0v@x1n>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a02:6b8:c0e:500:1:45:d181:df01;
- envelope-from=d-tatianin@yandex-team.ru; helo=forwardcorp1a.mail.yandex.net
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CABgObfbojr4fkXq8tuuXCAGUdr3Vefddx=ERtMUx9w6Bqy0a3g@mail.gmail.com>
+Received-SPF: pass client-ip=198.175.65.15; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -48
+X-Spam_score: -4.9
+X-Spam_bar: ----
+X-Spam_report: (-4.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.495,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -77,120 +88,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/6/24 4:08 AM, Peter Xu wrote:
+On Thu, Dec 05, 2024 at 10:20:47PM +0100, Paolo Bonzini wrote:
+> Date: Thu, 5 Dec 2024 22:20:47 +0100
+> From: Paolo Bonzini <pbonzini@redhat.com>
+> Subject: Re: [RFC 11/13] rust/timer/hpet: add basic HPET timer & state
+> 
+> On Thu, Dec 5, 2024 at 9:23 PM Paolo Bonzini <pbonzini@redhat.com> wrote:
+> > > +    /// Instance id (HPET timer block ID).
+> > > +    hpet_id: BqlCell<usize>,
+> > > +}
+> > > +
+> > Like flags this does not need to be a cell.
+> 
+> Well, this *should not* need to be a cell (ideally fw_cfg would call a
+> C function to generate FW_CFG_HPET) but it can't be done yet, so you
+> can keep it. flags need not be a BqlCell though.
 
-> On Fri, Dec 06, 2024 at 02:19:06AM +0300, Daniil Tatianin wrote:
->> Currently, passing mem-lock=on to QEMU causes memory usage to grow by
->> huge amounts:
->>
->> no memlock:
->>      $ qemu-system-x86_64 -overcommit mem-lock=off
->>      $ ps -p $(pidof ./qemu-system-x86_64) -o rss=
->>      45652
->>
->>      $ ./qemu-system-x86_64 -overcommit mem-lock=off -enable-kvm
->>      $ ps -p $(pidof ./qemu-system-x86_64) -o rss=
->>      39756
->>
->> memlock:
->>      $ qemu-system-x86_64 -overcommit mem-lock=on
->>      $ ps -p $(pidof ./qemu-system-x86_64) -o rss=
->>      1309876
->>
->>      $ ./qemu-system-x86_64 -overcommit mem-lock=on -enable-kvm
->>      $ ps -p $(pidof ./qemu-system-x86_64) -o rss=
->>      259956
->>
->> This is caused by the fact that mlockall(2) automatically
->> write-faults every existing and future anonymous mappings in the
->> process right away.
->>
->> One of the reasons to enable mem-lock is to protect a QEMU process'
->> pages from being compacted and migrated by kcompactd (which does so
->> by messing with a live process page tables causing thousands of TLB
->> flush IPIs per second) basically stealing all guest time while it's
->> active.
->>
->> mem-lock=on helps against this (given compact_unevictable_allowed is 0),
->> but the memory overhead it introduces is an undesirable side effect,
->> which we can completely avoid by passing MCL_ONFAULT to mlockall, which
->> is what this series allows to do with a new command line option called
->> mem-lock-onfault.
-> IMHO it'll be always helpful to dig and provide information on why such
-> difference existed.  E.g. guest mem should normally be the major mem sink
-> and that definitely won't be affected by either ON_FAULT or not.
->
-> I had a quick look explicitly on tcg (as that really surprised me a bit..).
-> When you look at the mappings there's 1G constant shmem map that always got
-> locked and populated.
->
-> It turns out to be tcg's jit buffer, alloc_code_gen_buffer_splitwx_memfd:
+Thank you! I'll look at how to implement C function's workflow.
 
-Thanks for looking into this! I'd guessed it was something to do with 
-JIT, makes sense.
+At least, I'll leave a TODO to remind me to cleanup this BqlCell.
+(Now I did overuse the BqlCell a bit! :-) This is also an opportunity
+for me to carefully review the correct usage.)
 
->      buf_rw = qemu_memfd_alloc("tcg-jit", size, 0, &fd, errp);
->      if (buf_rw == NULL) {
->          goto fail;
->      }
->
->      buf_rx = mmap(NULL, size, host_prot_read_exec(), MAP_SHARED, fd, 0);
->      if (buf_rx == MAP_FAILED) {
->          error_setg_errno(errp, errno,
->                           "failed to map shared memory for execute");
->          goto fail;
->      }
->
-> Looks like that's the major reason why tcg has mlockall bloated constantly
-> with roughly 1G size - that seems to be from tcg_init_machine().  I didn't
-> check kvm.
->
-> Logically having a on-fault option won't ever hurt, so probably not an
-> issue to have it anyway.  Still, share my finding above, as IIUC that's
-> mostly why it was bloated for tcg, so maybe there're other options too.
+Regards,
+Zhao
 
-Yeah, the situation with KVM is slightly better, although it's still a 
-~200MiB overhead with default Q35 and no extra devices (I haven't 
-measured the difference with various devices).
-
-I think it's definitely nice to have an on-fault option for this, as 
-optimizing every possible mmap caller for the rare mem-lock=on case 
-might be too ambitious.
-
-Thanks!
-
->
->> memlock-onfault:
->>      $ qemu-system-x86_64 -overcommit mem-lock-onfault=on
->>      $ ps -p $(pidof ./qemu-system-x86_64) -o rss=
->>      54004
->>
->>      $ ./qemu-system-x86_64 -overcommit mem-lock-onfault=on -enable-kvm
->>      $ ps -p $(pidof ./qemu-system-x86_64) -o rss=
->>      47772
->>
->> You may notice the memory usage is still slightly higher, in this case
->> by a few megabytes over the mem-lock=off case. I was able to trace this
->> down to a bug in the linux kernel with MCL_ONFAULT not being honored for
->> the early process heap (with brk(2) etc.) so it is still write-faulted in
->> this case, but it's still way less than it was with just the mem-lock=on.
->>
->> Daniil Tatianin (2):
->>    os: add an ability to lock memory on_fault
->>    overcommit: introduce mem-lock-onfault
->>
->>   include/sysemu/os-posix.h |  2 +-
->>   include/sysemu/os-win32.h |  3 ++-
->>   include/sysemu/sysemu.h   |  1 +
->>   migration/postcopy-ram.c  |  4 ++--
->>   os-posix.c                | 10 ++++++++--
->>   qemu-options.hx           | 13 ++++++++++---
->>   system/globals.c          |  1 +
->>   system/vl.c               | 18 ++++++++++++++++--
->>   8 files changed, 41 insertions(+), 11 deletions(-)
->>
->> -- 
->> 2.34.1
->>
->>
 
