@@ -2,78 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FA249E9398
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Dec 2024 13:14:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0055D9E94B6
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Dec 2024 13:47:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tKcd5-0006WP-85; Mon, 09 Dec 2024 07:12:47 -0500
+	id 1tKd1O-0003tj-Hu; Mon, 09 Dec 2024 07:37:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1tKcd0-0006Ui-6l
- for qemu-devel@nongnu.org; Mon, 09 Dec 2024 07:12:42 -0500
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1tKd10-0003k7-FI
+ for qemu-devel@nongnu.org; Mon, 09 Dec 2024 07:37:35 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1tKccx-0003FV-Sh
- for qemu-devel@nongnu.org; Mon, 09 Dec 2024 07:12:41 -0500
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1tKd0x-0007O1-7I
+ for qemu-devel@nongnu.org; Mon, 09 Dec 2024 07:37:30 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1733746356;
+ s=mimecast20190719; t=1733747845;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=lJEEsaURfVoDvb8dB2uQwjfnC42uQGL+gF42sMAsGow=;
- b=MvCo8AbWU9uDCp49REQUfhhcpXODzFLx3wnCCWHmmQLvGfLHNa5ZgD/JO8RRbl8uu5tGWx
- C5JYLeNjaMemYG955onFEh7EizX8DH8iEuWTWlRjWBK0lUKD7j/JXhrzRwf0jDy65U3Pcm
- yAFCBoHqKD0n3Spf40veK/4iJdCYB1M=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-662-qevOGh03OxOnwmHFCdvy8g-1; Mon,
- 09 Dec 2024 07:12:30 -0500
-X-MC-Unique: qevOGh03OxOnwmHFCdvy8g-1
-X-Mimecast-MFC-AGG-ID: qevOGh03OxOnwmHFCdvy8g
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 4B78B19560A2; Mon,  9 Dec 2024 12:12:29 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.194.102])
- by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 55348195608A; Mon,  9 Dec 2024 12:12:28 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 01F5C21EC35A; Mon,  9 Dec 2024 13:12:26 +0100 (CET)
-From: Markus Armbruster <armbru@redhat.com>
-To: Steven Sistare <steven.sistare@oracle.com>
-Cc: qemu-devel@nongnu.org,  Peter Xu <peterx@redhat.com>,  Fabiano Rosas
- <farosas@suse.de>,  David Hildenbrand <david@redhat.com>,  Marcel
- Apfelbaum <marcel.apfelbaum@gmail.com>,  Eduardo Habkost
- <eduardo@habkost.net>,  Philippe Mathieu-Daude <philmd@linaro.org>,  Paolo
- Bonzini <pbonzini@redhat.com>,  "Daniel P. Berrange" <berrange@redhat.com>
-Subject: Re: [PATCH V4 09/19] migration: incoming channel
-In-Reply-To: <a7eaff5d-0030-445c-a31c-ce645666ecf3@oracle.com> (Steven
- Sistare's message of "Thu, 5 Dec 2024 15:45:17 -0500")
-References: <1733145611-62315-1-git-send-email-steven.sistare@oracle.com>
- <1733145611-62315-10-git-send-email-steven.sistare@oracle.com>
- <87ser2cfw6.fsf@pond.sub.org>
- <a7eaff5d-0030-445c-a31c-ce645666ecf3@oracle.com>
-Date: Mon, 09 Dec 2024 13:12:25 +0100
-Message-ID: <87seqxf42e.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=zZQyy3tQP8OD/1fdEQoI4TyeNI1Ugh3Z/zVs5dSJoV4=;
+ b=XT+LuuzkxMR/IeKL6y2S/0sU4R0ZSwuVpkP8FtvxeG6mWtzU0qTRToosDJEb2ygPLxSIaI
+ F7o6TKbjoJdYNROe2QaSqmre/5YNskdrjIscYGpdwaSp62FOoKMC4NCakd0spnhUGk8gFX
+ yV3PwWgOLVoJU57QJwWLCtKiH/q8FVk=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-636-wvvWIQnINZm5NupN401KYw-1; Mon, 09 Dec 2024 07:37:22 -0500
+X-MC-Unique: wvvWIQnINZm5NupN401KYw-1
+X-Mimecast-MFC-AGG-ID: wvvWIQnINZm5NupN401KYw
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-434fb68b7d1so5863905e9.0
+ for <qemu-devel@nongnu.org>; Mon, 09 Dec 2024 04:37:21 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1733747840; x=1734352640;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=zZQyy3tQP8OD/1fdEQoI4TyeNI1Ugh3Z/zVs5dSJoV4=;
+ b=D9OeBQB1jmhYu6Mcc52Zq6fJX3aOqmI9FDy0cavhS2FOSCrb4E45gXruAi86QFYuXK
+ mCPhyEvAIoHXtGp6NaxqKVqMUelF5hixAyKanhjGjQYMyCpKWQ0YcGWSWwyBGd8cHC4Z
+ /2fKstjbdETA6bzUGO90maEgQ7hRLMBx9eiq6vKbM41QHXn9bEUbcZDJt+LLsqZLQ/N1
+ bP+Hzz84i+DLTorC8WNnZa+hccuil3U7fFRlJH/h9HX/XouGyOEexriJx9RHINHPjXBX
+ zeaQ9Bl3yxwL++E32CouSf+ITMoRdcKM48Rwn7h2zk2fKFXE1RA4JjmnL9vHOHuToJXv
+ eH0A==
+X-Gm-Message-State: AOJu0Yz87A1mZPyK0T9x8miBUUjmaYbk7hhS83QQb/r1nvo/Wcz5rpVP
+ SvLEmO1wYCU9KLtEc5wW/PsqubsQsfT/cxeHAi82spzdUObvRcHcwwgH33qtcJUKck2ddHjb7oi
+ 7F2oM/TG6FWuzA4hi9CeDMegz0nuILIxV48+Swh8MRArOGbpRzFO41UsP696Mqtl9jLq8fvxzyf
+ OgKo6iw7fT0cBEL6s79jTQS2D6hbG8qhLoz0X6
+X-Gm-Gg: ASbGncuTG/8kgt+rhpE54SC90N1LFxiYcW9Wv344h3qZ71DBNWEPKNpO8SE6JZUdYyY
+ I1Tx3VbveukCwFKLjzfY1yP6bgT73UvpIQUPwZakeWgrAOdoWLRj+UifmI94FsVEIhxezNNe3ny
+ IQ7RTIlw4z6A5RaDnUwSEygJNXwTJuv5VxAX8UJe93MfOKgnNufYcPmoSmScRZ2tYSKWYG4mHvp
+ 1ia1kELyGL1g5WflyYLdSlfgeFMC41gjnuV0S2dV4XVIItILAVYmA==
+X-Received: by 2002:a05:6000:4007:b0:385:f1d6:7b6a with SMTP id
+ ffacd0b85a97d-3862b3cf82fmr9949590f8f.55.1733747840357; 
+ Mon, 09 Dec 2024 04:37:20 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGolfB89T8KXr5Cv135D5++LYQhk9wH3nb1mgiHOKNvN464Xu7YokNKKTOvxu6HnRBtGViNEA==
+X-Received: by 2002:a05:6000:4007:b0:385:f1d6:7b6a with SMTP id
+ ffacd0b85a97d-3862b3cf82fmr9949565f8f.55.1733747839849; 
+ Mon, 09 Dec 2024 04:37:19 -0800 (PST)
+Received: from [192.168.10.47] ([151.81.118.45])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-3862a4ae481sm10589989f8f.25.2024.12.09.04.37.19
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 09 Dec 2024 04:37:19 -0800 (PST)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-rust@nongnu.org, Zhao Liu <zhao1.liu@intel.com>,
+ Junjie Mao <junjie.mao@hotmail.com>
+Subject: [PATCH 00/26] rust: bundle of prerequisites for HPET implementation
+Date: Mon,  9 Dec 2024 13:36:51 +0100
+Message-ID: <20241209123717.99077-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.47.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -25
-X-Spam_score: -2.6
+X-Spam_score_int: -24
+X-Spam_score: -2.5
 X-Spam_bar: --
-X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.495,
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.489,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ URIBL_SBL_A=0.1 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,271 +104,165 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Steven Sistare <steven.sistare@oracle.com> writes:
+These are the initial set of bindings and support code that are needed
+to apply Zhao's posted HPET implementation, and for him to apply
+my review comments.  They include:
 
-> On 12/5/2024 10:23 AM, Markus Armbruster wrote:
->> Steve Sistare <steven.sistare@oracle.com> writes:
->> 
->>> Extend the -incoming option to allow an @MigrationChannel to be specified.
->>> This allows channels other than 'main' to be described on the command
->>> line, which will be needed for CPR.
->>>
->>> Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
->> [...]
->> 
->>> diff --git a/qemu-options.hx b/qemu-options.hx
->>> index 02b9118..fab50ce 100644
->>> --- a/qemu-options.hx
->>> +++ b/qemu-options.hx
->>> @@ -4937,10 +4937,17 @@ DEF("incoming", HAS_ARG, QEMU_OPTION_incoming, \
->>>      "-incoming exec:cmdline\n" \
->>>      "                accept incoming migration on given file descriptor\n" \
->>>      "                or from given external command\n" \
->>> +    "-incoming @MigrationChannel\n" \
->>> +    "                accept incoming migration on the channel\n" \
->>>      "-incoming defer\n" \
->>>      "                wait for the URI to be specified via migrate_incoming\n",
->>>      QEMU_ARCH_ALL)
->>>  SRST
->>> +The -incoming option specifies the migration channel for an incoming
->>> +migration.  It may be used multiple times to specify multiple
->>> +migration channel types.
->>
->> Really?  If I understand the code below correctly, the last -incoming
->> wins, and any previous ones are silently ignored.
->
-> See patch "cpr-channel", where the cpr channel is saved separately.
-> Last wins, per channel type.
-> I did this to preserve the current behavior of -incoming in which last wins.
+- QOM cleanups (already posted)
 
-Documentation needs to be clarified then.
+- interrupts sources and cells (posted and reviewed)
 
-> qemu_start_incoming_migration will need modification if more types are added.
->
->>>                             The channel type is specified in @MigrationChannel,
->>> +and is 'main' for all other forms of -incoming.
->>> +
->>>  ``-incoming tcp:[host]:port[,to=maxport][,ipv4=on|off][,ipv6=on|off]``
->>>    \
->>>  ``-incoming rdma:host:port[,ipv4=on|off][,ipv6=on|off]``
->>> @@ -4960,6 +4967,16 @@ SRST
->>>     Accept incoming migration as an output from specified external
->>>     command.
->>> +``-incoming @MigrationChannel``
->>> +    Accept incoming migration on the channel.  See the QAPI documentation
->>> +    for the syntax of the @MigrationChannel data element.  For example:
->>> +    ::
->>
->> I get what you're trying to express, but there's no precedence for
->> referring to QAPI types like @TypeName in option documentation.  But
->> let's ignore this until after we nailed down the actual interface, on
->> which I have questions below.
->
-> Ack.
->
->>> +
->>> +        -incoming '{"channel-type": "main",
->>> +                    "addr": { "transport": "socket",
->>> +                              "type": "unix",
->>> +                              "path": "my.sock" }}'
->>> +
->>>  ``-incoming defer``
->>>      Wait for the URI to be specified via migrate\_incoming. The monitor
->>>      can be used to change settings (such as migration parameters) prior
->>> diff --git a/system/vl.c b/system/vl.c
->>> index 4151a79..2c24c60 100644
->>> --- a/system/vl.c
->>> +++ b/system/vl.c
->>> @@ -123,6 +123,7 @@
->>>  #include "qapi/qapi-visit-block-core.h"
->>>  #include "qapi/qapi-visit-compat.h"
->>>  #include "qapi/qapi-visit-machine.h"
->>> +#include "qapi/qapi-visit-migration.h"
->>>  #include "qapi/qapi-visit-ui.h"
->>>  #include "qapi/qapi-commands-block-core.h"
->>>  #include "qapi/qapi-commands-migration.h"
->>> @@ -159,6 +160,7 @@ typedef struct DeviceOption {
->>>  static const char *cpu_option;
->>>  static const char *mem_path;
->>>  static const char *incoming;
->>> +static MigrationChannelList *incoming_channels;
->>>  static const char *loadvm;
->>>  static const char *accelerators;
->>>  static bool have_custom_ram_size;
->>> @@ -1821,6 +1823,35 @@ static void object_option_add_visitor(Visitor *v)
->>>     QTAILQ_INSERT_TAIL(&object_opts, opt, next);
->>> }
->>> +static void incoming_option_parse(const char *str)
->>> +{
->>> +    MigrationChannel *channel;
->>> +
->>> +    if (str[0] == '{') {
->>> +        QObject *obj = qobject_from_json(str, &error_fatal);
->>> +        Visitor *v = qobject_input_visitor_new(obj);
->>> +
->>> +        qobject_unref(obj);
->>> +        visit_type_MigrationChannel(v, "channel", &channel, &error_fatal);
->>> +        visit_free(v);
->>> +    } else if (!strcmp(str, "defer")) {
->>> +        channel = NULL;
->>> +    } else {
->>> +        migrate_uri_parse(str, &channel, &error_fatal);
->>> +    }
->>> +
->>> +    /* New incoming spec replaces the previous */
->>> +
->>> +    if (incoming_channels) {
->>> +        qapi_free_MigrationChannelList(incoming_channels);
->>> +    }
->>> +    if (channel) {
->>> +        incoming_channels = g_new0(MigrationChannelList, 1);
->>> +        incoming_channels->value = channel;
->>> +    }
->>> +    incoming = str;
->>> +}
->>
->> @incoming is set to @optarg.
->>
->> @incoming_channels is set to a MigrationChannelList of exactly one
->> element, parsed from @incoming.  Except when @incoming is "defer", then
->> @incoming_channels is set to null.
->>
->> @incoming is only ever used as a flag.  Turn it into a bool?
->
-> The remembered incoming specifier is also used in an error message in
-> qmp_x_exit_preconfig:
->     error_reportf_err(local_err, "-incoming %s: ", incoming);
->
->> Oh, wait...  see my comment on the next hunk.
->>
->> Option -incoming resembles QMP command migrate-incoming.  Differences:
->>
->> * migrate-incoming keeps legacy URI and modern argument separate: there
->>   are two named arguments, and exactly one of them must be passed.
->>   -incoming overloads them: if @optarg starts with '{', it's modern,
->>   else legacy URI.
->>
->>   Because of that, -incoming *only* supports JSON syntax for modern, not
->>   dotted keys.  Other JSON-capable arguments support both.
->
-> Not sure I follow.
-> Could you give me a dotted key example for a JSON-capable argument?
-> Do we care about dotted key for incoming, given the user can specify
-> a simple legacy URI?
+- bit deposit and extract operations (new)
 
-A quick grep for the usual parser qobject_input_visitor_new() finds
--audiodev, -blockdev, -compat, -display, and -netdev.  Beware, the
-latter two come with backward compatibility gunk.  There's also -device
-and -object, also with backward compatibility gunk.
+- QOM generalization beyond DeviceState (new)
 
-Simple example:
+- callbacks system (new)
 
-    JSON        -compat '{"deprecated-input": "reject", "deprecated-output": "hide"}
-    dotted keys -compat deprecated-input=reject,deprecated-output=hide
+This is the code that I aim at integrating in QEMU 10.0, and is also
+what is needed to develop additional bindings (for e.g. timers) more
+or less independently.  I'll focus here on the changes to QOM because they
+represent the bulk of the patches.  The bit operations and callbacks are
+just one or two patches each, and better explained by the doc comments
+in the patch itself.
 
-Slightly more interesting:
+With respect to qdev, some of this was already explained in the "Rust
+in QEMU roadmap".  The patches are split in two series, corresponding
+to patches 7-14 and 15-24.
 
-    JSON        -audiodev '{"id": "audiodev0", "driver": "wav", "in": {"voices": 4}}'
-    dotted keys -audiodev id=audiodev0,driver=wav,in.voices=4
+The first and previously posted part mostly removes code duplication,
+while keeping the focus very much on four elements of DeviceClass
+(realize, legacy reset, properties, vmstate).
 
->>   How can a management application detect that -incoming supports
->>   modern?
->
-> How does mgmt detect when other arguments support JSON?
+The second instead starts to establish a correspondence between the
+QOM class hierarchy and the Rust trait system.  The hierarchy of classes
+is visible as an ObjectImpl::ParentType associated type, and also present
+in the implementation of the ClassInitImpl<ClassType> trait.  The
+ClassInitImpl trait is implemented for each Rust-defined QOM class as
+before, but now its implementation is split over multiple blanket impls,
+one for each superclass.  This allows code reuse of the class_init
+wrappers, and is implemented in patches 15-18.
 
-Easy when an option supports it from the start: -audiodev, -blockdev,
--compat.  Awkward when we extend an existing option to support it:
--display, -netdev, -device, -object.
+After a brief cleanup intermission in patches 19-21, patches 22-23 provide
+the method invocation infrastructure.  Taking inspiration from glib-rs's
+GObject bindings, an IsA<> trait declares what is a subclass of what,
+which allows two things:
 
-As far as I can tell at a glance, libvirt
+- safe and efficient typecasts, which are compile-time checked so that
+  it is an error if the destination type is not a superclass.
 
-* Remains unaware of -display JSON arguments
+- automatically making methods available to all subclasses.  This is done
+  through another blanket implementation of a trait, as in glib-rs (see
+  https://gtk-rs.org/gtk4-rs/stable/latest/docs/src/gtk4/auto/widget.rs.html#5377),
+  though the details are a bit different.
 
-* Assumes -netdev accepts JSON when QMP netdev-add supports backend type
-  "dgram", see commit 697e26fac66 (qemu: capabilities: Detect support
-  for JSON args for -netdev) v8.10.0
+The differences with glib-rs are not small, but fortunately it is the QEMU
+version that is simpler.  QEMU does not use a complicated macro like glib's
+(https://gtk-rs.org/gtk-rs-core/git/docs/glib/macro.wrapper.html)  to
+wrap all subclasses of GObject with an opaque Rust type.  While macros
+in general, and procedural macros in particular, may be a useful tool(*),
+for now I prefer to ensure that the infrastructure is usable and readable
+even without any macro magic.
 
-* Assumes -device accepts JSON when QMP device_add has feature
-  json-cli-hotplug, see commit 1a691fe1c84 (qemu: capabilities:
-  Re-enable JSON syntax for -device) v8.1.0
+The two pieces allow defining QOM class hierarchies entirely in Rust;
+patch 24 for example gives TYPE_PL011 its own class type PL011Class,
+and stores the device id in PL011Class instead of PL011State.
 
-* Assumes -object accepts JSON when object-add supports object type
-  "secret", see commit f763b6e4390 (qemu: capabilities: Enable detection
-  of QEMU_CAPS_OBJECT_QAPIFIED) v7.2.0
+I understand that this is a lot of code, and a lot of added lines in
+particular.  Fortunately about 40% of it is docs, which is definitely
+a change for QEMU's standards. :)  Also all except the last two patches
+have already been used by Zhao, who did not report any particular problem
+adopting them.
 
-In theory, such indirect probing can fall apart when somebody backports
-JSON syntax *without* the thing libvirt probes for.  They then get to
-adjust libvirt's detection logic, too.  Hasn't been an issue in practice
-as far as I know.
+Excepting the docs, the bulk of the new code is in the BqlCell and
+BqlRefCell implementations, as well as in patch 22.  Fortunately these
+patches are also relatively boring.  The more interesting patches to
+review are patch 15-18 for QOM, and 25 for the callbacks.  Patch 25 is
+also the trickiest to explain from the point of view of using advanced
+language features; (**) I tried to explain that in the doc comments
+and commit messages but please ask for more if necessary.
 
-> The presence of cpr-transfer mode implies -incoming JSON support, though
-> that is indirect.
+This series is available at branch rust-next of
+https://gitlab.com/bonzini/qemu.git.
+Thanks,
 
-Might be good enough.
+Paolo
 
-> We could add a feature to the migrate-incoming command, like json-cli
-> for device_add.  Seems like overkill though.  'feature' is little used,
-> except for unstable and deprecated.
+(*) For example they could automate the declaration of various traits,
+many of which are "unsafe" as a reminder that they interact with C code.
+This should be pretty easy, considering that the amount of code required
+to write QOM types is already smaller in Rust than in C.  qdev properties
+are also a useful target, as exemplified by Manos's previously posted
+series.
 
-'feature' is best used sparingly.  But when it's needed, using it is
-*fine*.
+(**) In particular, zero-sized types and the Fn trait.
 
->>   Sure overloading -incoming this way is a good idea?
->>
->> * migrate-incoming takes a list of channels, currently restricted to a
->>   single channel.  -incoming takes a channel.  If we lift the
->>   restriction, -incoming syntax will become even messier: we'll have to
->>   additionally overload list of channel.
->>
->>   Should -incoming take a list from the start, like migrate-incoming
->>   does?
->
-> That was my first try.  However, to support the equivalent of '-incoming deferred',
-> we need to add an 'defer' key to the channel, and when defer is true, the other
-> keys that are currently mandatory must be omitted.  The tweaks to the implementation
-> and specification seemed not worth worth it.
->
-> If we want -incoming to also support a channel list in the future, we can simply
-> check for an initial '[' token.
 
-Yes, but it'll then have to support single channels both as list of one
-channel object, and channel object, unlike migrate-incoming.
+Paolo Bonzini (26):
+  bql: check that the BQL is not dropped within marked sections
+  rust: cell: add BQL-enforcing Cell variant
+  rust: cell: add BQL-enforcing RefCell variant
+  rust: define prelude
+  rust: add bindings for interrupt sources
+  rust: add a bit operation module
+  rust: qom: add default definitions for ObjectImpl
+  rust: qom: rename Class trait to ClassInitImpl
+  rust: qom: convert type_info! macro to an associated const
+  rust: qom: move ClassInitImpl to the instance side
+  rust: qdev: move device_class_init! body to generic function,
+    ClassInitImpl implementation to macro
+  rust: qdev: move bridge for realize and reset functions out of pl011
+  rust: qom: automatically use Drop trait to implement instance_finalize
+  rust: qom: move bridge for TypeInfo functions out of pl011
+  rust: qom: split ObjectType from ObjectImpl trait
+  rust: qom: change the parent type to an associated type
+  rust: qom: put class_init together from multiple ClassInitImpl<>
+  rust: qom: add possibility of overriding unparent
+  rust: rename qemu-api modules to follow C code a bit more
+  rust: re-export C types from qemu-api submodules
+  rust: tests: allow writing more than one test
+  rust: qom: add casting functionality
+  rust: qom: add initial subset of methods on Object
+  rust: qom: move device_id to PL011 class side
+  rust: qemu-api: add a module to wrap functions and zero-sized closures
+  rust: callbacks: allow passing optional callbacks as ()
 
-Syntactical differences between CLI and QMP for things that are
-semantically identical add unnecessary complexity, don't you think?
+ include/qemu/main-loop.h               |  15 +
+ stubs/iothread-lock.c                  |  15 +
+ system/cpus.c                          |  15 +
+ rust/Cargo.toml                        |   1 +
+ rust/hw/char/pl011/src/device.rs       | 156 ++---
+ rust/hw/char/pl011/src/device_class.rs |  34 -
+ rust/qemu-api-macros/src/lib.rs        |   2 +-
+ rust/qemu-api/Cargo.toml               |   3 +-
+ rust/qemu-api/meson.build              |  14 +-
+ rust/qemu-api/src/bitops.rs            | 119 ++++
+ rust/qemu-api/src/callbacks.rs         | 238 +++++++
+ rust/qemu-api/src/cell.rs              | 822 +++++++++++++++++++++++++
+ rust/qemu-api/src/definitions.rs       |  91 ---
+ rust/qemu-api/src/device_class.rs      |  74 ---
+ rust/qemu-api/src/irq.rs               |  91 +++
+ rust/qemu-api/src/lib.rs               |  15 +-
+ rust/qemu-api/src/module.rs            |  43 ++
+ rust/qemu-api/src/prelude.rs           |  18 +
+ rust/qemu-api/src/qdev.rs              | 146 +++++
+ rust/qemu-api/src/qom.rs               | 556 +++++++++++++++++
+ rust/qemu-api/src/sysbus.rs            |  51 ++
+ rust/qemu-api/src/vmstate.rs           |   9 +-
+ rust/qemu-api/tests/tests.rs           | 208 +++++--
+ 23 files changed, 2374 insertions(+), 362 deletions(-)
+ create mode 100644 rust/qemu-api/src/bitops.rs
+ create mode 100644 rust/qemu-api/src/callbacks.rs
+ create mode 100644 rust/qemu-api/src/cell.rs
+ delete mode 100644 rust/qemu-api/src/definitions.rs
+ delete mode 100644 rust/qemu-api/src/device_class.rs
+ create mode 100644 rust/qemu-api/src/irq.rs
+ create mode 100644 rust/qemu-api/src/module.rs
+ create mode 100644 rust/qemu-api/src/prelude.rs
+ create mode 100644 rust/qemu-api/src/qdev.rs
+ create mode 100644 rust/qemu-api/src/qom.rs
+ create mode 100644 rust/qemu-api/src/sysbus.rs
 
->>> +
->>>   static void object_option_parse(const char *str)
->>>   {
->>>       QemuOpts *opts;
->>> @@ -2730,7 +2761,7 @@ void qmp_x_exit_preconfig(Error **errp)
->>>       if (incoming) {
->>>           Error *local_err = NULL;
->>>           if (strcmp(incoming, "defer") != 0) {
->>> -            qmp_migrate_incoming(incoming, false, NULL, true, true,
->>> +            qmp_migrate_incoming(NULL, true, incoming_channels, true, true,
->>>                                    &local_err);
->>
->> You move the parsing of legacy URI from within qmp_migrate_incoming()
->> into incoming_option_parse().
->>
->> The alternative is not to parse it in incoming_option_parse(), but pass
->> it to qmp_migrate_incoming() like this:
->>
->>                 qmp_migrate_incoming(incoming, !incoming, incoming_channels,
->>                                      true, true, &local_err);
->
-> Sure, I can tweak that, but I need to define an additional incoming_uri variable:
->     qmp_migrate_incoming(incoming_uri, !!incoming_channels, incoming_channels, ...
->
-> Only one of incoming_uri and incoming_channels can be non-NULL (checked in
-> qemu_start_incoming_migration).
->
-> Would you prefer I continue down this path, or revert to the previous -cpr-uri
-> option?  I made this change to make the incoming interface look more like the
-> V4 outgoing interface, in which the user adds a cpr channel to the migrate command
-> channels.
-
-I'm not sure.  Peter, what do you think?
+-- 
+2.47.1
 
 
