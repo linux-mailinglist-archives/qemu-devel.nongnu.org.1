@@ -2,80 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EAED9E9495
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Dec 2024 13:44:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DFC519E94D8
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Dec 2024 13:52:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tKd1T-0003y9-Nd; Mon, 09 Dec 2024 07:37:59 -0500
+	id 1tKd30-0004kq-Em; Mon, 09 Dec 2024 07:39:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tKd1P-0003wd-R5
+ id 1tKd1Q-0003wx-9o
  for qemu-devel@nongnu.org; Mon, 09 Dec 2024 07:37:56 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tKd1M-0007Ra-Br
+ id 1tKd1M-0007S0-CQ
  for qemu-devel@nongnu.org; Mon, 09 Dec 2024 07:37:55 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1733747867;
+ s=mimecast20190719; t=1733747870;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=rnI0niveAFX2WdKfqxklK+1Zt06kPSFJCN7eFa7HF+8=;
- b=JKKeKJDr/MFU5pmOM9Yhn5rhxjOrLv/dTkwB0fp3e8KSqtYbXgClDWxibz4q20Ak9Nksg9
- 9pKGqY2CiTNB56i47inSReccjtPy9PumrkQPVX+feXejOaTU7aG3lm9NdeZa8wnpklTLCW
- 6/i1KIuLpISKzbNqcX70HiGB8ZyeMb8=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=dUpcjFB07jJVa4XSFzhd/IiH28exWmu8j4Bb3GB+WDw=;
+ b=Uo7LuefCq+0lPb/LawCUDN+0qDnxE1chP0p7ojiNdCT520UKa2n+A3NuQzTKvQ+F1VZbrq
+ 6NMH1rmOspk1koPhrycc2YdBPVLR/VrpI5oFyKLcf2/9Z6S+UkIaEha24OuWrJfT1/o3PP
+ 1VtP/hzpkaoNvt1Ga7Qi6nSdEERiHj8=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-353-gHA1aVjTO12IlGRPdoVo3w-1; Mon, 09 Dec 2024 07:37:46 -0500
-X-MC-Unique: gHA1aVjTO12IlGRPdoVo3w-1
-X-Mimecast-MFC-AGG-ID: gHA1aVjTO12IlGRPdoVo3w
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-385d51ba2f5so1655300f8f.2
- for <qemu-devel@nongnu.org>; Mon, 09 Dec 2024 04:37:46 -0800 (PST)
+ us-mta-681-xVkBYPq4NWG0JdE97xe4Lw-1; Mon, 09 Dec 2024 07:37:49 -0500
+X-MC-Unique: xVkBYPq4NWG0JdE97xe4Lw-1
+X-Mimecast-MFC-AGG-ID: xVkBYPq4NWG0JdE97xe4Lw
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-434f5b7b4a2so9343745e9.0
+ for <qemu-devel@nongnu.org>; Mon, 09 Dec 2024 04:37:49 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733747864; x=1734352664;
+ d=1e100.net; s=20230601; t=1733747867; x=1734352667;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=rnI0niveAFX2WdKfqxklK+1Zt06kPSFJCN7eFa7HF+8=;
- b=W/OEzT58pqLF7jDFiZb3jPUgCCtw+H4n84dn3hG0aSs6D239Jjx6K/Kxj8ffHpcvrp
- y9tPHTEMB+Z2IwYj7mzHlDtNUOFVQdedwPVOF9S4Lg7keNvRHUs9Uh3BFPWTAjgSJj2o
- nM63/ehtpfasiPnLd7vhBX8PgquFZ9VpTALmR+uW8v9IhPRq/j/A94642k0BZTYfriR2
- /TFlnHPICRF20F9fwXb/+z3cW0gwsJ2RGjc9snfpAgfaxOg7fAAauWkV2zWXdz710qco
- PQDvCFQc6z1mGfeNDCE3+LHlVCbA42S9JEc0rL6Rv3vrXhrzJs0n+JqV90LNq5VcUj+s
- LqoA==
-X-Gm-Message-State: AOJu0YxI815ZAFO8RsCiW7fJ0/z+toetuTDwDXoZwyQsP/6+ml8IJiUl
- AMF7H1AUtnIbKokolJ+sDOPVaNW72514S9TVI0fWzD5j8aY2B5ZNedcCTvPeZe2WTe345ve6P2s
- Ns1gZednnKHCzuOxwmjfPZXk3lTQT5bphrSoIOe2S7hBvb4GKxMb6WGt6hLpaYd4h3CNtCrHVAd
- UEc3T47kT0pKNYqBqh6ZSbIqfCsaZtpmvydu98
-X-Gm-Gg: ASbGncsXZJRsWJm2J6tnf4T8yWQrL7Otq4ZI5u9ofe7iyE6yEPu6hLbjDFfCBZSogoN
- L88xWe/CCiMRFdzmR+huoCCTRshHEiiQJGgTzbIbeZ2tv/tINV3XFqpSqw/nJ7rzHSJ2wnDcpQO
- D9MJmsrZFpbG++sk7bHkJDKkRN1KLjmck1j/D5IBTDgZJdKcC/nBPG8ra5W2zxXOkiEDUK+SdO5
- w/xuHj7qgIgyambsS7jQqPPYsN7manXBH5KT2hyNMB1r+fbVKcDyQ==
-X-Received: by 2002:a5d:6c69:0:b0:385:e013:39ec with SMTP id
- ffacd0b85a97d-3862b33f0d1mr9303165f8f.8.1733747864322; 
- Mon, 09 Dec 2024 04:37:44 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEaI5mpcGtPfQA/5tjvnqn4QZw2Pce8+RV3HgH+A6JNVqnFNEEY9kcB0+Ainpq7S21I/hgG8A==
-X-Received: by 2002:a5d:6c69:0:b0:385:e013:39ec with SMTP id
- ffacd0b85a97d-3862b33f0d1mr9303141f8f.8.1733747863883; 
- Mon, 09 Dec 2024 04:37:43 -0800 (PST)
+ bh=dUpcjFB07jJVa4XSFzhd/IiH28exWmu8j4Bb3GB+WDw=;
+ b=pylIRHXqwOWOUd0OVOb59ksz6hEw17qQXvr6z5s7fv5TeAmgiSXlwM8a/1eqrw9qBV
+ Wabg803mRfpfLAa2BbnbI8f53URvXrZSvRMtOOc1YouDolv3DQGDlsWf3tLIpxVjDYpM
+ MJ1CMHyP4nWnmkOaFXqpLc3hzjh8tORFa66GigKVfZ8bUC01utJZ3/kxiC/dCb7bnAwt
+ Auwmnw0pwi5SRu9SwDSjzGaPwzCwq0OjNWwSaBHLIKQUOYh0sQwO6PpWCAEWdkExEOJ9
+ thc6XiZzPqQS5DTuio6bEi2g/fQNVzT3LKhzUl7CKOwswRcKfF/x/LiUiKThmj9XfEDA
+ XGVA==
+X-Gm-Message-State: AOJu0Yw8DysR7l2AvMyP2/cPwEJTNr0HQq45uKpkTepyCIMzXT/Vusss
+ vZVmnz7z1NEFlwTz+wbj1emDIjADehDokUiLmPvLAL7Cn8IYzONtmozQXfvEjyixba6fTOOshDr
+ +uqPHmTiKBSjbWohk8LGLM48iuZXYimCSG6IHsZXlZ41rYqM6YJDGUObVSzPRUXO6SRGAGF+/WH
+ kBqx/QN2b5k8aV1J/QTmJImeGiJBuF1fMO8o9w
+X-Gm-Gg: ASbGnctMbjlxR+tzZymShoWxq1JlSuU8h379CQ312CR7r+HnAz9bm10+zaNvHokmosG
+ A4Nk6OdGkg5E9VpS0Jv98l0OsVJwSwqjI5aDITnd9TX9W1ncY41BUSLEEMh2n89Xj/lOSkmE7HG
+ vf4IEepAbVy0g95AWjk0d0DyZ9mzetw71gm/C44BixPFiepmOEXM7yJjEMx8S9W0MrH543+xsH8
+ kTzAmAfaAYvT9VhvhryaqtNyEPY89DGjwir4/QU0Dsr0Ofgp8fIJA==
+X-Received: by 2002:a05:600c:3550:b0:434:e9ee:c2d with SMTP id
+ 5b1f17b1804b1-434fff9c1femr2317905e9.26.1733747867094; 
+ Mon, 09 Dec 2024 04:37:47 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEjB6e+Wg3uC2Gu/Ao4y0rgxEjkl/WZ+bdpEsGWQg1pkCV7rgfFy9Vi+GICVUc7VCyEUYSnYA==
+X-Received: by 2002:a05:600c:3550:b0:434:e9ee:c2d with SMTP id
+ 5b1f17b1804b1-434fff9c1femr2317715e9.26.1733747866665; 
+ Mon, 09 Dec 2024 04:37:46 -0800 (PST)
 Received: from [192.168.10.47] ([151.81.118.45])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3861ecf40a0sm12875064f8f.13.2024.12.09.04.37.43
+ 5b1f17b1804b1-434ea1ae415sm82976755e9.33.2024.12.09.04.37.44
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 09 Dec 2024 04:37:43 -0800 (PST)
+ Mon, 09 Dec 2024 04:37:45 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-rust@nongnu.org, Zhao Liu <zhao1.liu@intel.com>,
  Junjie Mao <junjie.mao@hotmail.com>
-Subject: [PATCH 10/26] rust: qom: move ClassInitImpl to the instance side
-Date: Mon,  9 Dec 2024 13:37:01 +0100
-Message-ID: <20241209123717.99077-11-pbonzini@redhat.com>
+Subject: [PATCH 11/26] rust: qdev: move device_class_init! body to generic
+ function, ClassInitImpl implementation to macro
+Date: Mon,  9 Dec 2024 13:37:02 +0100
+Message-ID: <20241209123717.99077-12-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241209123717.99077-1-pbonzini@redhat.com>
 References: <20241209123717.99077-1-pbonzini@redhat.com>
@@ -106,83 +107,274 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Put all traits on the instance struct, which makes it possible to reuse
-class structs if no new virtual methods or class fields are added.
-This is almost always the case for devices (because they are leaf
-classes), which is the primary use case for Rust.
+Use a trait to access the former parameters to device_class_init!.
+This allows hiding the details of the class_init implementation behind
+a generic function and makes higher-level functionality available from
+qemu_api.
 
-This is also simpler: soon we will find the implemented methods without
-macros, and this removes the need to go from the class struct to the
-instance struct to find the implementation of the *Impl traits.
+The implementation of ClassInitImpl is then the same for all devices and
+is easily macroized.  Later on, we can remove the need to implement
+ClassInitImpl by hand for all device types, and stop making
+rust_device_class_init<>() public.
+
+While at it, document the members of DeviceImpl.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- rust/hw/char/pl011/src/device.rs | 4 ++--
- rust/qemu-api/src/definitions.rs | 8 ++++----
- rust/qemu-api/tests/tests.rs     | 2 +-
- 3 files changed, 7 insertions(+), 7 deletions(-)
+ rust/hw/char/pl011/src/device.rs       | 34 +++++-----
+ rust/hw/char/pl011/src/device_class.rs |  8 ---
+ rust/qemu-api/src/device_class.rs      | 87 +++++++++++++++++++++-----
+ rust/qemu-api/tests/tests.rs           | 30 ++++-----
+ 4 files changed, 103 insertions(+), 56 deletions(-)
 
 diff --git a/rust/hw/char/pl011/src/device.rs b/rust/hw/char/pl011/src/device.rs
-index bcb146c24d6..2384d4bcb95 100644
+index 2384d4bcb95..28b1924337d 100644
 --- a/rust/hw/char/pl011/src/device.rs
 +++ b/rust/hw/char/pl011/src/device.rs
-@@ -116,7 +116,7 @@ pub struct PL011Class {
+@@ -12,11 +12,13 @@
+     bindings::{self, *},
+     c_str,
+     definitions::ObjectImpl,
+-    device_class::TYPE_SYS_BUS_DEVICE,
++    device_class::{DeviceImpl, TYPE_SYS_BUS_DEVICE},
++    impl_device_class,
+     irq::InterruptSource,
+ };
+ 
+ use crate::{
++    device_class,
+     memory_ops::PL011_OPS,
+     registers::{self, Interrupt},
+     RegisterOffset,
+@@ -116,14 +118,20 @@ pub struct PL011Class {
      _inner: [u8; 0],
  }
  
--impl qemu_api::definitions::ClassInitImpl for PL011Class {
-+impl qemu_api::definitions::ClassInitImpl for PL011State {
-     const CLASS_INIT: Option<unsafe extern "C" fn(klass: *mut ObjectClass, data: *mut c_void)> =
-         Some(crate::device_class::pl011_class_init);
-     const CLASS_BASE_INIT: Option<
-@@ -649,7 +649,7 @@ pub struct PL011LuminaryClass {
+-impl qemu_api::definitions::ClassInitImpl for PL011State {
+-    const CLASS_INIT: Option<unsafe extern "C" fn(klass: *mut ObjectClass, data: *mut c_void)> =
+-        Some(crate::device_class::pl011_class_init);
+-    const CLASS_BASE_INIT: Option<
+-        unsafe extern "C" fn(klass: *mut ObjectClass, data: *mut c_void),
+-    > = None;
++impl DeviceImpl for PL011State {
++    fn properties() -> &'static [Property] {
++        &device_class::PL011_PROPERTIES
++    }
++    fn vmsd() -> Option<&'static VMStateDescription> {
++        Some(&device_class::VMSTATE_PL011)
++    }
++    const REALIZE: Option<unsafe extern "C" fn(*mut DeviceState, *mut *mut Error)> =
++        Some(device_class::pl011_realize);
++    const RESET: Option<unsafe extern "C" fn(*mut DeviceState)> = Some(device_class::pl011_reset);
+ }
+ 
++impl_device_class!(PL011State);
++
+ impl PL011State {
+     /// Initializes a pre-allocated, unitialized instance of `PL011State`.
+     ///
+@@ -649,17 +657,13 @@ pub struct PL011LuminaryClass {
      }
  }
  
--impl qemu_api::definitions::ClassInitImpl for PL011LuminaryClass {
-+impl qemu_api::definitions::ClassInitImpl for PL011Luminary {
-     const CLASS_INIT: Option<unsafe extern "C" fn(klass: *mut ObjectClass, data: *mut c_void)> =
-         None;
-     const CLASS_BASE_INIT: Option<
-diff --git a/rust/qemu-api/src/definitions.rs b/rust/qemu-api/src/definitions.rs
-index 6ecfaf51b09..487712611f6 100644
---- a/rust/qemu-api/src/definitions.rs
-+++ b/rust/qemu-api/src/definitions.rs
-@@ -9,8 +9,8 @@
- use crate::bindings::{Object, ObjectClass, TypeInfo};
+-impl qemu_api::definitions::ClassInitImpl for PL011Luminary {
+-    const CLASS_INIT: Option<unsafe extern "C" fn(klass: *mut ObjectClass, data: *mut c_void)> =
+-        None;
+-    const CLASS_BASE_INIT: Option<
+-        unsafe extern "C" fn(klass: *mut ObjectClass, data: *mut c_void),
+-    > = None;
+-}
+-
+ impl ObjectImpl for PL011Luminary {
+     type Class = PL011LuminaryClass;
+     const TYPE_NAME: &'static CStr = crate::TYPE_PL011_LUMINARY;
+     const PARENT_TYPE_NAME: Option<&'static CStr> = Some(crate::TYPE_PL011);
+     const INSTANCE_INIT: Option<unsafe extern "C" fn(obj: *mut Object)> = Some(pl011_luminary_init);
+ }
++
++impl DeviceImpl for PL011Luminary {}
++
++impl_device_class!(PL011Luminary);
+diff --git a/rust/hw/char/pl011/src/device_class.rs b/rust/hw/char/pl011/src/device_class.rs
+index a707fde1384..c61b6bb0258 100644
+--- a/rust/hw/char/pl011/src/device_class.rs
++++ b/rust/hw/char/pl011/src/device_class.rs
+@@ -93,14 +93,6 @@ extern "C" fn pl011_post_load(opaque: *mut c_void, version_id: c_int) -> c_int {
+     ),
+ }
  
- /// Trait a type must implement to be registered with QEMU.
--pub trait ObjectImpl: Sized {
--    type Class: ClassInitImpl;
-+pub trait ObjectImpl: ClassInitImpl + Sized {
-+    type Class;
-     const TYPE_NAME: &'static CStr;
-     const PARENT_TYPE_NAME: Option<&'static CStr>;
-     const ABSTRACT: bool = false;
-@@ -32,8 +32,8 @@ pub trait ObjectImpl: Sized {
-         instance_finalize: Self::INSTANCE_FINALIZE,
-         abstract_: Self::ABSTRACT,
-         class_size: core::mem::size_of::<Self::Class>(),
--        class_init: <Self::Class as ClassInitImpl>::CLASS_INIT,
--        class_base_init: <Self::Class as ClassInitImpl>::CLASS_BASE_INIT,
-+        class_init: <Self as ClassInitImpl>::CLASS_INIT,
-+        class_base_init: <Self as ClassInitImpl>::CLASS_BASE_INIT,
-         class_data: core::ptr::null_mut(),
-         interfaces: core::ptr::null_mut(),
+-qemu_api::device_class_init! {
+-    pl011_class_init,
+-    props => PL011_PROPERTIES,
+-    realize_fn => Some(pl011_realize),
+-    legacy_reset_fn => Some(pl011_reset),
+-    vmsd => VMSTATE_PL011,
+-}
+-
+ /// # Safety
+ ///
+ /// We expect the FFI user of this function to pass a valid pointer, that has
+diff --git a/rust/qemu-api/src/device_class.rs b/rust/qemu-api/src/device_class.rs
+index 922bbce1bb8..f683f94f2a5 100644
+--- a/rust/qemu-api/src/device_class.rs
++++ b/rust/qemu-api/src/device_class.rs
+@@ -2,25 +2,80 @@
+ // Author(s): Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+ // SPDX-License-Identifier: GPL-2.0-or-later
+ 
+-use std::ffi::CStr;
++use std::{ffi::CStr, os::raw::c_void};
+ 
+-use crate::bindings;
++use crate::{
++    bindings::{self, DeviceClass, DeviceState, Error, ObjectClass, Property, VMStateDescription},
++    zeroable::Zeroable,
++};
++
++/// Trait providing the contents of [`DeviceClass`].
++pub trait DeviceImpl {
++    /// _Realization_ is the second stage of device creation. It contains
++    /// all operations that depend on device properties and can fail (note:
++    /// this is not yet supported for Rust devices).
++    ///
++    /// If not `None`, the parent class's `realize` method is overridden
++    /// with the function pointed to by `REALIZE`.
++    const REALIZE: Option<unsafe extern "C" fn(*mut DeviceState, *mut *mut Error)> = None;
++
++    /// If not `None`, the parent class's `reset` method is overridden
++    /// with the function pointed to by `RESET`.
++    ///
++    /// Rust does not yet support the three-phase reset protocol; this is
++    /// usually okay for leaf classes.
++    const RESET: Option<unsafe extern "C" fn(dev: *mut DeviceState)> = None;
++
++    /// An array providing the properties that the user can set on the
++    /// device.  Not a `const` because referencing statics in constants
++    /// is unstable until Rust 1.83.0.
++    fn properties() -> &'static [Property] {
++        &[Zeroable::ZERO; 1]
++    }
++
++    /// A `VMStateDescription` providing the migration format for the device
++    /// Not a `const` because referencing statics in constants is unstable
++    /// until Rust 1.83.0.
++    fn vmsd() -> Option<&'static VMStateDescription> {
++        None
++    }
++}
++
++/// # Safety
++///
++/// We expect the FFI user of this function to pass a valid pointer that
++/// can be downcasted to type `DeviceClass`, because `T` implements
++/// `DeviceImpl`.
++pub unsafe extern "C" fn rust_device_class_init<T: DeviceImpl>(
++    klass: *mut ObjectClass,
++    _: *mut c_void,
++) {
++    let mut dc = ::core::ptr::NonNull::new(klass.cast::<DeviceClass>()).unwrap();
++    unsafe {
++        let dc = dc.as_mut();
++        if let Some(realize_fn) = <T as DeviceImpl>::REALIZE {
++            dc.realize = Some(realize_fn);
++        }
++        if let Some(reset_fn) = <T as DeviceImpl>::RESET {
++            bindings::device_class_set_legacy_reset(dc, Some(reset_fn));
++        }
++        if let Some(vmsd) = <T as DeviceImpl>::vmsd() {
++            dc.vmsd = vmsd;
++        }
++        bindings::device_class_set_props(dc, <T as DeviceImpl>::properties().as_ptr());
++    }
++}
+ 
+ #[macro_export]
+-macro_rules! device_class_init {
+-    ($func:ident, props => $props:ident, realize_fn => $realize_fn:expr, legacy_reset_fn => $legacy_reset_fn:expr, vmsd => $vmsd:ident$(,)*) => {
+-        pub unsafe extern "C" fn $func(
+-            klass: *mut $crate::bindings::ObjectClass,
+-            _: *mut ::std::os::raw::c_void,
+-        ) {
+-            let mut dc =
+-                ::core::ptr::NonNull::new(klass.cast::<$crate::bindings::DeviceClass>()).unwrap();
+-            unsafe {
+-                dc.as_mut().realize = $realize_fn;
+-                dc.as_mut().vmsd = &$vmsd;
+-                $crate::bindings::device_class_set_legacy_reset(dc.as_mut(), $legacy_reset_fn);
+-                $crate::bindings::device_class_set_props(dc.as_mut(), $props.as_ptr());
+-            }
++macro_rules! impl_device_class {
++    ($type:ty) => {
++        impl $crate::definitions::ClassInitImpl for $type {
++            const CLASS_INIT: Option<
++                unsafe extern "C" fn(klass: *mut ObjectClass, data: *mut ::std::os::raw::c_void),
++            > = Some($crate::device_class::rust_device_class_init::<$type>);
++            const CLASS_BASE_INIT: Option<
++                unsafe extern "C" fn(klass: *mut ObjectClass, data: *mut ::std::os::raw::c_void),
++            > = None;
+         }
      };
+ }
 diff --git a/rust/qemu-api/tests/tests.rs b/rust/qemu-api/tests/tests.rs
-index 7f9df348b00..fd0c979121c 100644
+index fd0c979121c..b8b12a40422 100644
 --- a/rust/qemu-api/tests/tests.rs
 +++ b/rust/qemu-api/tests/tests.rs
-@@ -59,7 +59,7 @@ impl ObjectImpl for DummyState {
+@@ -2,13 +2,14 @@
+ // Author(s): Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+ // SPDX-License-Identifier: GPL-2.0-or-later
+ 
+-use std::{ffi::CStr, os::raw::c_void};
++use std::ffi::CStr;
+ 
+ use qemu_api::{
+     bindings::*,
+     c_str, declare_properties, define_property,
+-    definitions::{ClassInitImpl, ObjectImpl},
+-    device_class, device_class_init,
++    definitions::ObjectImpl,
++    device_class::{self, DeviceImpl},
++    impl_device_class,
+     zeroable::Zeroable,
+ };
+ 
+@@ -45,28 +46,23 @@ pub struct DummyClass {
+             ),
+     }
+ 
+-    device_class_init! {
+-        dummy_class_init,
+-        props => DUMMY_PROPERTIES,
+-        realize_fn => None,
+-        legacy_reset_fn => None,
+-        vmsd => VMSTATE,
+-    }
+-
+     impl ObjectImpl for DummyState {
+         type Class = DummyClass;
+         const TYPE_NAME: &'static CStr = c_str!("dummy");
          const PARENT_TYPE_NAME: Option<&'static CStr> = Some(device_class::TYPE_DEVICE);
      }
  
--    impl ClassInitImpl for DummyClass {
-+    impl ClassInitImpl for DummyState {
-         const CLASS_INIT: Option<unsafe extern "C" fn(klass: *mut ObjectClass, data: *mut c_void)> =
-             Some(dummy_class_init);
-         const CLASS_BASE_INIT: Option<
+-    impl ClassInitImpl for DummyState {
+-        const CLASS_INIT: Option<unsafe extern "C" fn(klass: *mut ObjectClass, data: *mut c_void)> =
+-            Some(dummy_class_init);
+-        const CLASS_BASE_INIT: Option<
+-            unsafe extern "C" fn(klass: *mut ObjectClass, data: *mut c_void),
+-        > = None;
++    impl DeviceImpl for DummyState {
++        fn properties() -> &'static [Property] {
++            &DUMMY_PROPERTIES
++        }
++        fn vmsd() -> Option<&'static VMStateDescription> {
++            Some(&VMSTATE)
++        }
+     }
+ 
++    impl_device_class!(DummyState);
++
+     unsafe {
+         module_call_init(module_init_type::MODULE_INIT_QOM);
+         object_unref(object_new(DummyState::TYPE_NAME.as_ptr()).cast());
 -- 
 2.47.1
 
