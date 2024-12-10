@@ -2,92 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 056BC9EA356
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Dec 2024 01:07:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 68CE59EA34E
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Dec 2024 01:07:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tKnlh-0004mp-3V; Mon, 09 Dec 2024 19:06:25 -0500
+	id 1tKnm7-0004pU-OI; Mon, 09 Dec 2024 19:06:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kowal@linux.ibm.com>)
- id 1tKnlJ-0004jO-KZ; Mon, 09 Dec 2024 19:06:02 -0500
+ id 1tKnlL-0004kU-Mt; Mon, 09 Dec 2024 19:06:03 -0500
 Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kowal@linux.ibm.com>)
- id 1tKnlF-0001pK-2Q; Mon, 09 Dec 2024 19:06:00 -0500
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4B9F3LLi014817;
- Tue, 10 Dec 2024 00:05:49 GMT
+ id 1tKnlI-0001pt-MI; Mon, 09 Dec 2024 19:06:03 -0500
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4B9MvIZu029843;
+ Tue, 10 Dec 2024 00:05:52 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
  :content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=pp1; bh=7+/UgsdPg1jIT9vtO
- cDkXs2w6qq0NpPlXgAuaEAO2+E=; b=KTQDFnJomnsL+z8+/OzFnMF79ywJh3Jxs
- EBmYxScid47TyDLGsLPjjfr+dB8ewAd1Bi6YuhHn97B67vK+NMvekHwPcYblad8B
- 2nl+Udi+I8+qnc7qL6G8AIYx+Hhsm0sKPGfxHik3/SOl7A5zJ3mTzLKtEaCSJzXl
- i536npQ5deHdiHKhLyidReGJKFw8KHGLmCQHMpjU12HK7nMVWxkhEPzVBzIvCGZZ
- mCax81+Atg6jZ/7UZQVrWgSoIfa+p6idtq07AsnUIpBKrGlY4rz+sDIaJiGsgxiz
- OzhxC6zYDZ+SwMgxXWS8O91JhUD8xI0VAu0kOlTf9O7JxnYjL8DJg==
+ :mime-version:references:subject:to; s=pp1; bh=zNwTYOtfrkButu8Xp
+ 4X7XJAMWMI6Ka8KesnV15YC15E=; b=WBbKrIPVaNixEMtAqi7+sIYyJtskyliZ6
+ ElT/yI09g24XvByz6JGd0MCEAIZwgn6S/WtB5MuQZIvV6yPU3CIctBhU3VoN/kOs
+ JNXchC6Qnrf9x8by6wzHpVRtgPJWWkAgwSmM/byrMAn2LnOG4JJt+u+F8KqBjTnZ
+ 99/+uR9Ku5NywPaC0WYuR8foVROWtv3DRnmU/mmvzlBrmMzAhp0h8fD5YhTjyFeK
+ uzGAJsyu9lf7apybezHjRAyG4yH1Kc8hvPFWgObja34okYt7D31xgQeRzc/ZRvJF
+ QcbLSleBvRQ523VCv4enwn5m0aWWgn6JexVApDmV0cniTdqrtGsiA==
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 43ccsjb9wp-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 43ce0xb5d7-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 10 Dec 2024 00:05:49 +0000 (GMT)
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
- by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 4BA05mU4012211;
- Tue, 10 Dec 2024 00:05:48 GMT
+ Tue, 10 Dec 2024 00:05:52 +0000 (GMT)
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+ by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 4BA01jBB025858;
+ Tue, 10 Dec 2024 00:05:51 GMT
 Received: from ppma21.wdc07v.mail.ibm.com
  (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 43ccsjb9wf-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 43ce0xb5cm-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 10 Dec 2024 00:05:48 +0000 (GMT)
+ Tue, 10 Dec 2024 00:05:51 +0000 (GMT)
 Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4B9N5MtS032589;
- Tue, 10 Dec 2024 00:05:48 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
- by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 43d1pn1126-1
+ by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4B9N0MRG032590;
+ Tue, 10 Dec 2024 00:05:50 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+ by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 43d1pn112m-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 10 Dec 2024 00:05:48 +0000
+ Tue, 10 Dec 2024 00:05:50 +0000
 Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com
  [10.20.54.103])
- by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 4BA05iX356820158
+ by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 4BA05kP237159280
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 10 Dec 2024 00:05:44 GMT
+ Tue, 10 Dec 2024 00:05:46 GMT
 Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4A2722004B;
+ by IMSVA (Postfix) with ESMTP id 5B4CD20043;
+ Tue, 10 Dec 2024 00:05:46 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 89F5320040;
  Tue, 10 Dec 2024 00:05:44 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 763B320040;
- Tue, 10 Dec 2024 00:05:42 +0000 (GMT)
 Received: from gfwr518.rchland.ibm.com (unknown [9.10.239.106])
  by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Tue, 10 Dec 2024 00:05:42 +0000 (GMT)
+ Tue, 10 Dec 2024 00:05:44 +0000 (GMT)
 From: Michael Kowal <kowal@linux.ibm.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, fbarrat@linux.ibm.com, npiggin@gmail.com,
  milesg@linux.ibm.com, danielhb413@gmail.com,
  david@gibson.dropbear.id.au, harshpb@linux.ibm.com, thuth@redhat.com,
  lvivier@redhat.com, pbonzini@redhat.com
-Subject: [PATCH v2 03/14] ppc/xive2: Add grouping level to notification
-Date: Mon,  9 Dec 2024 18:05:07 -0600
-Message-Id: <20241210000527.9541-5-kowal@linux.ibm.com>
+Subject: [PATCH v2 03/14] ppc/xive2: Support group-matching when looking for
+ target
+Date: Mon,  9 Dec 2024 18:05:08 -0600
+Message-Id: <20241210000527.9541-6-kowal@linux.ibm.com>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241210000527.9541-1-kowal@linux.ibm.com>
 References: <20241210000527.9541-1-kowal@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: LyJg91khB4MxUVYcAkivAsnihwC8YA__
-X-Proofpoint-ORIG-GUID: auxIkrg0lt8YUnBPXB6Qh_xPF6BRSTRH
+X-Proofpoint-GUID: E5uA1Bsnn1h2Rg6nuHBLPvBeMFt0QucL
+X-Proofpoint-ORIG-GUID: xkS-ktiB_E1JRkoTwOE081QKi99RW0m2
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
  definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 adultscore=0
- impostorscore=0 spamscore=0 lowpriorityscore=0 bulkscore=0 mlxlogscore=999
- mlxscore=0 priorityscore=1501 suspectscore=0 malwarescore=0 phishscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2411120000
- definitions=main-2412090187
+ lowpriorityscore=0
+ spamscore=0 clxscore=1015 impostorscore=0 mlxscore=0 mlxlogscore=999
+ priorityscore=1501 malwarescore=0 adultscore=0 bulkscore=0 phishscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2411120000 definitions=main-2412090187
 Received-SPF: pass client-ip=148.163.158.5; envelope-from=kowal@linux.ibm.com;
  helo=mx0b-001b2d01.pphosted.com
 X-Spam_score_int: -26
@@ -115,352 +116,337 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Frederic Barrat <fbarrat@linux.ibm.com>
 
-The NSR has a (so far unused) grouping level field. When a interrupt
-is presented, that field tells the hypervisor or OS if the interrupt
-is for an individual VP or for a VP-group/crowd. This patch reworks
-the presentation API to allow to set/unset the level when
-raising/accepting an interrupt.
-
-It also renames xive_tctx_ipb_update() to xive_tctx_pipr_update() as
-the IPB is only used for VP-specific target, whereas the PIPR always
-needs to be updated.
+If an END has the 'i' bit set (ignore), then it targets a group of
+VPs. The size of the group depends on the VP index of the target
+(first 0 found when looking at the least significant bits of the
+index) so a mask is applied on the VP index of a running thread to
+know if we have a match.
 
 Signed-off-by: Frederic Barrat <fbarrat@linux.ibm.com>
 Signed-off-by: Michael Kowal <kowal@linux.ibm.com>
 ---
- include/hw/ppc/xive.h      |  9 +++-
- include/hw/ppc/xive_regs.h | 25 ++++++++---
- hw/intc/xive.c             | 88 ++++++++++++++++++++++----------------
- hw/intc/xive2.c            | 19 ++++----
- hw/intc/trace-events       |  2 +-
- 5 files changed, 90 insertions(+), 53 deletions(-)
+ include/hw/ppc/xive.h  |  5 +++-
+ include/hw/ppc/xive2.h |  1 +
+ hw/intc/pnv_xive2.c    | 33 ++++++++++++++-------
+ hw/intc/xive.c         | 56 +++++++++++++++++++++++++-----------
+ hw/intc/xive2.c        | 65 ++++++++++++++++++++++++++++++------------
+ 5 files changed, 114 insertions(+), 46 deletions(-)
 
 diff --git a/include/hw/ppc/xive.h b/include/hw/ppc/xive.h
-index 41a4263a9d..4d1ce376f1 100644
+index 971da029eb..21ce5a9df3 100644
 --- a/include/hw/ppc/xive.h
 +++ b/include/hw/ppc/xive.h
-@@ -508,6 +508,11 @@ static inline uint8_t xive_priority_to_ipb(uint8_t priority)
-         0 : 1 << (XIVE_PRIORITY_MAX - priority);
- }
+@@ -424,6 +424,7 @@ void xive_router_end_notify(XiveRouter *xrtr, XiveEAS *eas);
+ typedef struct XiveTCTXMatch {
+     XiveTCTX *tctx;
+     uint8_t ring;
++    bool precluded;
+ } XiveTCTXMatch;
  
-+static inline uint8_t xive_priority_to_pipr(uint8_t priority)
-+{
-+    return priority > XIVE_PRIORITY_MAX ? 0xFF : priority;
-+}
+ #define TYPE_XIVE_PRESENTER "xive-presenter"
+@@ -452,7 +453,9 @@ int xive_presenter_tctx_match(XivePresenter *xptr, XiveTCTX *tctx,
+ bool xive_presenter_notify(XiveFabric *xfb, uint8_t format,
+                            uint8_t nvt_blk, uint32_t nvt_idx,
+                            bool cam_ignore, uint8_t priority,
+-                           uint32_t logic_serv);
++                           uint32_t logic_serv, bool *precluded);
 +
- /*
-  * Convert an Interrupt Pending Buffer (IPB) register to a Pending
-  * Interrupt Priority Register (PIPR), which contains the priority of
-@@ -540,8 +545,10 @@ void xive_tctx_pic_print_info(XiveTCTX *tctx, GString *buf);
- Object *xive_tctx_create(Object *cpu, XivePresenter *xptr, Error **errp);
- void xive_tctx_reset(XiveTCTX *tctx);
- void xive_tctx_destroy(XiveTCTX *tctx);
--void xive_tctx_ipb_update(XiveTCTX *tctx, uint8_t ring, uint8_t ipb);
-+void xive_tctx_pipr_update(XiveTCTX *tctx, uint8_t ring, uint8_t priority,
-+                           uint8_t group_level);
- void xive_tctx_reset_signal(XiveTCTX *tctx, uint8_t ring);
-+void xive_tctx_notify(XiveTCTX *tctx, uint8_t ring, uint8_t group_level);
++uint32_t xive_get_vpgroup_size(uint32_t nvp_index);
  
  /*
-  * KVM XIVE device helpers
-diff --git a/include/hw/ppc/xive_regs.h b/include/hw/ppc/xive_regs.h
-index 326327fc79..54bc6c53b4 100644
---- a/include/hw/ppc/xive_regs.h
-+++ b/include/hw/ppc/xive_regs.h
-@@ -7,10 +7,9 @@
-  * access to the different fields.
-  *
-  *
-- * Copyright (c) 2016-2018, IBM Corporation.
-+ * Copyright (c) 2016-2024, IBM Corporation.
-  *
-- * This code is licensed under the GPL version 2 or later. See the
-- * COPYING file in the top-level directory.
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-  */
+  * XIVE Fabric (Interface between Interrupt Controller and Machine)
+diff --git a/include/hw/ppc/xive2.h b/include/hw/ppc/xive2.h
+index 5bccf41159..17c31fcb4b 100644
+--- a/include/hw/ppc/xive2.h
++++ b/include/hw/ppc/xive2.h
+@@ -121,6 +121,7 @@ uint64_t xive2_tm_pull_os_ctx(XivePresenter *xptr, XiveTCTX *tctx,
+                                hwaddr offset, unsigned size);
+ void xive2_tm_pull_os_ctx_ol(XivePresenter *xptr, XiveTCTX *tctx,
+                              hwaddr offset, uint64_t value, unsigned size);
++bool xive2_tm_irq_precluded(XiveTCTX *tctx, int ring, uint8_t priority);
+ void xive2_tm_set_hv_target(XivePresenter *xptr, XiveTCTX *tctx,
+                             hwaddr offset, uint64_t value, unsigned size);
+ void xive2_tm_pull_phys_ctx_ol(XivePresenter *xptr, XiveTCTX *tctx,
+diff --git a/hw/intc/pnv_xive2.c b/hw/intc/pnv_xive2.c
+index 834d32287b..3fb466bb2c 100644
+--- a/hw/intc/pnv_xive2.c
++++ b/hw/intc/pnv_xive2.c
+@@ -660,21 +660,34 @@ static int pnv_xive2_match_nvt(XivePresenter *xptr, uint8_t format,
+                                                    logic_serv);
+             }
  
- #ifndef PPC_XIVE_REGS_H
-@@ -146,7 +145,14 @@
- #define TM_SPC_PULL_PHYS_CTX_OL 0xc38   /* Pull phys ctx to odd cache line    */
- /* XXX more... */
- 
--/* NSR fields for the various QW ack types */
-+/*
-+ * NSR fields for the various QW ack types
-+ *
-+ * P10 has an extra bit in QW3 for the group level instead of the
-+ * reserved 'i' bit. Since it is not used and we don't support group
-+ * interrupts on P9, we use the P10 definition for the group level so
-+ * that we can have common macros for the NSR
-+ */
- #define TM_QW0_NSR_EB           PPC_BIT8(0)
- #define TM_QW1_NSR_EO           PPC_BIT8(0)
- #define TM_QW3_NSR_HE           PPC_BITMASK8(0, 1)
-@@ -154,8 +160,15 @@
- #define  TM_QW3_NSR_HE_POOL     1
- #define  TM_QW3_NSR_HE_PHYS     2
- #define  TM_QW3_NSR_HE_LSI      3
--#define TM_QW3_NSR_I            PPC_BIT8(2)
--#define TM_QW3_NSR_GRP_LVL      PPC_BIT8(3, 7)
-+#define TM_NSR_GRP_LVL          PPC_BITMASK8(2, 7)
-+/*
-+ * On P10, the format of the 6-bit group level is: 2 bits for the
-+ * crowd size and 4 bits for the group size. Since group/crowd size is
-+ * always a power of 2, we encode the log. For example, group_level=4
-+ * means crowd size = 0 and group size = 16 (2^4)
-+ * Same encoding is used in the NVP and NVGC structures for
-+ * PGoFirst and PGoNext fields
-+ */
- 
- /*
-  * EAS (Event Assignment Structure)
+-            /*
+-             * Save the context and follow on to catch duplicates,
+-             * that we don't support yet.
+-             */
+             if (ring != -1) {
+-                if (match->tctx) {
++                /*
++                 * For VP-specific match, finding more than one is a
++                 * problem. For group notification, it's possible.
++                 */
++                if (!cam_ignore && match->tctx) {
+                     qemu_log_mask(LOG_GUEST_ERROR, "XIVE: already found a "
+                                   "thread context NVT %x/%x\n",
+                                   nvt_blk, nvt_idx);
+-                    return false;
++                    /* Should set a FIR if we ever model it */
++                    return -1;
++                }
++                /*
++                 * For a group notification, we need to know if the
++                 * match is precluded first by checking the current
++                 * thread priority. If the interrupt can be delivered,
++                 * we always notify the first match (for now).
++                 */
++                if (cam_ignore &&
++                    xive2_tm_irq_precluded(tctx, ring, priority)) {
++                        match->precluded = true;
++                } else {
++                    if (!match->tctx) {
++                        match->ring = ring;
++                        match->tctx = tctx;
++                    }
++                    count++;
+                 }
+-
+-                match->ring = ring;
+-                match->tctx = tctx;
+-                count++;
+             }
+         }
+     }
 diff --git a/hw/intc/xive.c b/hw/intc/xive.c
-index 7b06a48139..d2690a7d10 100644
+index 6e73f7b063..9345cddead 100644
 --- a/hw/intc/xive.c
 +++ b/hw/intc/xive.c
-@@ -26,19 +26,6 @@
-  * XIVE Thread Interrupt Management context
-  */
- 
--
--static uint8_t exception_mask(uint8_t ring)
--{
--    switch (ring) {
--    case TM_QW1_OS:
--        return TM_QW1_NSR_EO;
--    case TM_QW3_HV_PHYS:
--        return TM_QW3_NSR_HE;
--    default:
--        g_assert_not_reached();
--    }
--}
--
- static qemu_irq xive_tctx_output(XiveTCTX *tctx, uint8_t ring)
- {
-         switch (ring) {
-@@ -58,11 +45,10 @@ static uint64_t xive_tctx_accept(XiveTCTX *tctx, uint8_t ring)
- {
-     uint8_t *regs = &tctx->regs[ring];
-     uint8_t nsr = regs[TM_NSR];
--    uint8_t mask = exception_mask(ring);
- 
-     qemu_irq_lower(xive_tctx_output(tctx, ring));
- 
--    if (regs[TM_NSR] & mask) {
-+    if (regs[TM_NSR] != 0) {
-         uint8_t cppr = regs[TM_PIPR];
-         uint8_t alt_ring;
-         uint8_t *alt_regs;
-@@ -77,11 +63,18 @@ static uint64_t xive_tctx_accept(XiveTCTX *tctx, uint8_t ring)
- 
-         regs[TM_CPPR] = cppr;
- 
--        /* Reset the pending buffer bit */
--        alt_regs[TM_IPB] &= ~xive_priority_to_ipb(cppr);
-+        /*
-+         * If the interrupt was for a specific VP, reset the pending
-+         * buffer bit, otherwise clear the logical server indicator
-+         */
-+        if (regs[TM_NSR] & TM_NSR_GRP_LVL) {
-+            regs[TM_NSR] &= ~TM_NSR_GRP_LVL;
-+        } else {
-+            alt_regs[TM_IPB] &= ~xive_priority_to_ipb(cppr);
-+        }
- 
--        /* Drop Exception bit */
--        regs[TM_NSR] &= ~mask;
-+        /* Drop the exception bit and any group/crowd */
-+        regs[TM_NSR] = 0;
- 
-         trace_xive_tctx_accept(tctx->cs->cpu_index, alt_ring,
-                                alt_regs[TM_IPB], regs[TM_PIPR],
-@@ -91,7 +84,7 @@ static uint64_t xive_tctx_accept(XiveTCTX *tctx, uint8_t ring)
-     return ((uint64_t)nsr << 8) | regs[TM_CPPR];
- }
- 
--static void xive_tctx_notify(XiveTCTX *tctx, uint8_t ring)
-+void xive_tctx_notify(XiveTCTX *tctx, uint8_t ring, uint8_t group_level)
- {
-     /* HV_POOL ring uses HV_PHYS NSR, CPPR and PIPR registers */
-     uint8_t alt_ring = (ring == TM_QW2_HV_POOL) ? TM_QW3_HV_PHYS : ring;
-@@ -101,13 +94,13 @@ static void xive_tctx_notify(XiveTCTX *tctx, uint8_t ring)
-     if (alt_regs[TM_PIPR] < alt_regs[TM_CPPR]) {
-         switch (ring) {
-         case TM_QW1_OS:
--            regs[TM_NSR] |= TM_QW1_NSR_EO;
-+            regs[TM_NSR] = TM_QW1_NSR_EO | (group_level & 0x3F);
-             break;
-         case TM_QW2_HV_POOL:
--            alt_regs[TM_NSR] = (TM_QW3_NSR_HE_POOL << 6);
-+            alt_regs[TM_NSR] = (TM_QW3_NSR_HE_POOL << 6) | (group_level & 0x3F);
-             break;
-         case TM_QW3_HV_PHYS:
--            regs[TM_NSR] |= (TM_QW3_NSR_HE_PHYS << 6);
-+            regs[TM_NSR] = (TM_QW3_NSR_HE_PHYS << 6) | (group_level & 0x3F);
-             break;
-         default:
-             g_assert_not_reached();
-@@ -175,17 +168,27 @@ static void xive_tctx_set_cppr(XiveTCTX *tctx, uint8_t ring, uint8_t cppr)
-     regs[TM_PIPR] = pipr_min;
- 
-     /* CPPR has changed, check if we need to raise a pending exception */
--    xive_tctx_notify(tctx, ring_min);
-+    xive_tctx_notify(tctx, ring_min, 0);
- }
- 
--void xive_tctx_ipb_update(XiveTCTX *tctx, uint8_t ring, uint8_t ipb)
--{
-+void xive_tctx_pipr_update(XiveTCTX *tctx, uint8_t ring, uint8_t priority,
-+                           uint8_t group_level)
-+ {
-+    /* HV_POOL ring uses HV_PHYS NSR, CPPR and PIPR registers */
-+    uint8_t alt_ring = (ring == TM_QW2_HV_POOL) ? TM_QW3_HV_PHYS : ring;
-+    uint8_t *alt_regs = &tctx->regs[alt_ring];
-     uint8_t *regs = &tctx->regs[ring];
- 
--    regs[TM_IPB] |= ipb;
--    regs[TM_PIPR] = xive_ipb_to_pipr(regs[TM_IPB]);
--    xive_tctx_notify(tctx, ring);
--}
-+    if (group_level == 0) {
-+        /* VP-specific */
-+        regs[TM_IPB] |= xive_priority_to_ipb(priority);
-+        alt_regs[TM_PIPR] = xive_ipb_to_pipr(regs[TM_IPB]);
-+    } else {
-+        /* VP-group */
-+        alt_regs[TM_PIPR] = xive_priority_to_pipr(priority);
-+    }
-+    xive_tctx_notify(tctx, ring, group_level);
-+ }
- 
- /*
-  * XIVE Thread Interrupt Management Area (TIMA)
-@@ -401,13 +404,13 @@ static void xive_tm_set_os_lgs(XivePresenter *xptr, XiveTCTX *tctx,
- }
- 
- /*
-- * Adjust the IPB to allow a CPU to process event queues of other
-+ * Adjust the PIPR to allow a CPU to process event queues of other
-  * priorities during one physical interrupt cycle.
-  */
- static void xive_tm_set_os_pending(XivePresenter *xptr, XiveTCTX *tctx,
-                                    hwaddr offset, uint64_t value, unsigned size)
- {
--    xive_tctx_ipb_update(tctx, TM_QW1_OS, xive_priority_to_ipb(value & 0xff));
-+    xive_tctx_pipr_update(tctx, TM_QW1_OS, value & 0xff, 0);
- }
- 
- static void xive_os_cam_decode(uint32_t cam, uint8_t *nvt_blk,
-@@ -485,16 +488,20 @@ static void xive_tctx_need_resend(XiveRouter *xrtr, XiveTCTX *tctx,
-         /* Reset the NVT value */
-         nvt.w4 = xive_set_field32(NVT_W4_IPB, nvt.w4, 0);
-         xive_router_write_nvt(xrtr, nvt_blk, nvt_idx, &nvt, 4);
-+
-+        uint8_t *regs = &tctx->regs[TM_QW1_OS];
-+        regs[TM_IPB] |= ipb;
-     }
-+
-     /*
--     * Always call xive_tctx_ipb_update(). Even if there were no
-+     * Always call xive_tctx_pipr_update(). Even if there were no
-      * escalation triggered, there could be a pending interrupt which
-      * was saved when the context was pulled and that we need to take
-      * into account by recalculating the PIPR (which is not
-      * saved/restored).
-      * It will also raise the External interrupt signal if needed.
-      */
--    xive_tctx_ipb_update(tctx, TM_QW1_OS, ipb);
-+    xive_tctx_pipr_update(tctx, TM_QW1_OS, 0xFF, 0); /* fxb */
- }
- 
- /*
-@@ -1650,6 +1657,12 @@ static uint32_t xive_tctx_hw_cam_line(XivePresenter *xptr, XiveTCTX *tctx)
+@@ -1671,6 +1671,16 @@ static uint32_t xive_tctx_hw_cam_line(XivePresenter *xptr, XiveTCTX *tctx)
      return xive_nvt_cam_line(blk, 1 << 7 | (pir & 0x7f));
  }
  
-+static uint8_t xive_get_group_level(uint32_t nvp_index)
++uint32_t xive_get_vpgroup_size(uint32_t nvp_index)
 +{
-+    /* FIXME add crowd encoding */
-+    return ctz32(~nvp_index) + 1;
++    /*
++     * Group size is a power of 2. The position of the first 0
++     * (starting with the least significant bits) in the NVP index
++     * gives the size of the group.
++     */
++    return 1 << (ctz32(~nvp_index) + 1);
++}
++
+ static uint8_t xive_get_group_level(uint32_t nvp_index)
+ {
+     /* FIXME add crowd encoding */
+@@ -1743,30 +1753,39 @@ int xive_presenter_tctx_match(XivePresenter *xptr, XiveTCTX *tctx,
+ /*
+  * This is our simple Xive Presenter Engine model. It is merged in the
+  * Router as it does not require an extra object.
+- *
+- * It receives notification requests sent by the IVRE to find one
+- * matching NVT (or more) dispatched on the processor threads. In case
+- * of a single NVT notification, the process is abbreviated and the
+- * thread is signaled if a match is found. In case of a logical server
+- * notification (bits ignored at the end of the NVT identifier), the
+- * IVPE and IVRE select a winning thread using different filters. This
+- * involves 2 or 3 exchanges on the PowerBus that the model does not
+- * support.
+- *
+- * The parameters represent what is sent on the PowerBus
+  */
+ bool xive_presenter_notify(XiveFabric *xfb, uint8_t format,
+                            uint8_t nvt_blk, uint32_t nvt_idx,
+                            bool cam_ignore, uint8_t priority,
+-                           uint32_t logic_serv)
++                           uint32_t logic_serv, bool *precluded)
+ {
+     XiveFabricClass *xfc = XIVE_FABRIC_GET_CLASS(xfb);
+-    XiveTCTXMatch match = { .tctx = NULL, .ring = 0 };
++    XiveTCTXMatch match = { .tctx = NULL, .ring = 0, .precluded = false };
+     uint8_t group_level;
+     int count;
+ 
+     /*
+-     * Ask the machine to scan the interrupt controllers for a match
++     * Ask the machine to scan the interrupt controllers for a match.
++     *
++     * For VP-specific notification, we expect at most one match and
++     * one call to the presenters is all we need (abbreviated notify
++     * sequence documented by the architecture).
++     *
++     * For VP-group notification, match_nvt() is the equivalent of the
++     * "histogram" and "poll" commands sent to the power bus to the
++     * presenters. 'count' could be more than one, but we always
++     * select the first match for now. 'precluded' tells if (at least)
++     * one thread matches but can't take the interrupt now because
++     * it's running at a more favored priority. We return the
++     * information to the router so that it can take appropriate
++     * actions (backlog, escalation, broadcast, etc...)
++     *
++     * If we were to implement a better way of dispatching the
++     * interrupt in case of multiple matches (instead of the first
++     * match), we would need a heuristic to elect a thread (for
++     * example, the hardware keeps track of an 'age' in the TIMA) and
++     * a new command to the presenters (the equivalent of the "assign"
++     * power bus command in the documented full notify sequence.
+      */
+     count = xfc->match_nvt(xfb, format, nvt_blk, nvt_idx, cam_ignore,
+                            priority, logic_serv, &match);
+@@ -1779,6 +1798,8 @@ bool xive_presenter_notify(XiveFabric *xfb, uint8_t format,
+         group_level = cam_ignore ? xive_get_group_level(nvt_idx) : 0;
+         trace_xive_presenter_notify(nvt_blk, nvt_idx, match.ring, group_level);
+         xive_tctx_pipr_update(match.tctx, match.ring, priority, group_level);
++    } else {
++        *precluded = match.precluded;
+     }
+ 
+     return !!count;
+@@ -1818,7 +1839,7 @@ void xive_router_end_notify(XiveRouter *xrtr, XiveEAS *eas)
+     uint8_t nvt_blk;
+     uint32_t nvt_idx;
+     XiveNVT nvt;
+-    bool found;
++    bool found, precluded;
+ 
+     uint8_t end_blk = xive_get_field64(EAS_END_BLOCK, eas->w);
+     uint32_t end_idx = xive_get_field64(EAS_END_INDEX, eas->w);
+@@ -1901,8 +1922,9 @@ void xive_router_end_notify(XiveRouter *xrtr, XiveEAS *eas)
+     found = xive_presenter_notify(xrtr->xfb, format, nvt_blk, nvt_idx,
+                           xive_get_field32(END_W7_F0_IGNORE, end.w7),
+                           priority,
+-                          xive_get_field32(END_W7_F1_LOG_SERVER_ID, end.w7));
+-
++                          xive_get_field32(END_W7_F1_LOG_SERVER_ID, end.w7),
++                          &precluded);
++    /* we don't support VP-group notification on P9, so precluded is not used */
+     /* TODO: Auto EOI. */
+ 
+     if (found) {
+diff --git a/hw/intc/xive2.c b/hw/intc/xive2.c
+index db372f4b30..2cb03c758e 100644
+--- a/hw/intc/xive2.c
++++ b/hw/intc/xive2.c
+@@ -739,6 +739,12 @@ int xive2_router_write_nvgc(Xive2Router *xrtr, bool crowd,
+    return xrc->write_nvgc(xrtr, crowd, nvgc_blk, nvgc_idx, nvgc);
+ }
+ 
++static bool xive2_vp_match_mask(uint32_t cam1, uint32_t cam2,
++                                uint32_t vp_mask)
++{
++    return (cam1 & vp_mask) == (cam2 & vp_mask);
 +}
 +
  /*
   * The thread context register words are in big-endian format.
   */
-@@ -1735,6 +1748,7 @@ bool xive_presenter_notify(XiveFabric *xfb, uint8_t format,
- {
-     XiveFabricClass *xfc = XIVE_FABRIC_GET_CLASS(xfb);
-     XiveTCTXMatch match = { .tctx = NULL, .ring = 0 };
-+    uint8_t group_level;
-     int count;
+@@ -753,44 +759,50 @@ int xive2_presenter_tctx_match(XivePresenter *xptr, XiveTCTX *tctx,
+     uint32_t qw1w2 = xive_tctx_word2(&tctx->regs[TM_QW1_OS]);
+     uint32_t qw0w2 = xive_tctx_word2(&tctx->regs[TM_QW0_USER]);
  
-     /*
-@@ -1748,9 +1762,9 @@ bool xive_presenter_notify(XiveFabric *xfb, uint8_t format,
+-    /*
+-     * TODO (PowerNV): ignore mode. The low order bits of the NVT
+-     * identifier are ignored in the "CAM" match.
+-     */
++    uint32_t vp_mask = 0xFFFFFFFF;
  
-     /* handle CPU exception delivery */
-     if (count) {
--        trace_xive_presenter_notify(nvt_blk, nvt_idx, match.ring);
--        xive_tctx_ipb_update(match.tctx, match.ring,
--                             xive_priority_to_ipb(priority));
-+        group_level = cam_ignore ? xive_get_group_level(nvt_idx) : 0;
-+        trace_xive_presenter_notify(nvt_blk, nvt_idx, match.ring, group_level);
-+        xive_tctx_pipr_update(match.tctx, match.ring, priority, group_level);
-     }
+     if (format == 0) {
+-        if (cam_ignore == true) {
+-            /*
+-             * F=0 & i=1: Logical server notification (bits ignored at
+-             * the end of the NVT identifier)
+-             */
+-            qemu_log_mask(LOG_UNIMP, "XIVE: no support for LS NVT %x/%x\n",
+-                          nvt_blk, nvt_idx);
+-            return -1;
++        /*
++         * i=0: Specific NVT notification
++         * i=1: VP-group notification (bits ignored at the end of the
++         *      NVT identifier)
++         */
++        if (cam_ignore) {
++            vp_mask = ~(xive_get_vpgroup_size(nvt_idx) - 1);
+         }
  
-     return !!count;
-diff --git a/hw/intc/xive2.c b/hw/intc/xive2.c
-index 24e504fce1..54e4f784fc 100644
---- a/hw/intc/xive2.c
-+++ b/hw/intc/xive2.c
-@@ -563,8 +563,11 @@ static void xive2_tctx_need_resend(Xive2Router *xrtr, XiveTCTX *tctx,
-                                    uint8_t nvp_blk, uint32_t nvp_idx,
-                                    bool do_restore)
- {
--    Xive2Nvp nvp;
-     uint8_t ipb;
-+    uint8_t backlog_level;
-+    uint8_t backlog_prio;
-+    uint8_t *regs = &tctx->regs[TM_QW1_OS];
-+    Xive2Nvp nvp;
+-        /* F=0 & i=0: Specific NVT notification */
++        /* For VP-group notifications, threads with LGS=0 are excluded */
  
-     /*
-      * Grab the associated thread interrupt context registers in the
-@@ -593,15 +596,15 @@ static void xive2_tctx_need_resend(Xive2Router *xrtr, XiveTCTX *tctx,
-         nvp.w2 = xive_set_field32(NVP2_W2_IPB, nvp.w2, 0);
-         xive2_router_write_nvp(xrtr, nvp_blk, nvp_idx, &nvp, 2);
-     }
-+    regs[TM_IPB] = ipb;
-+    backlog_prio = xive_ipb_to_pipr(ipb);
-+    backlog_level = 0;
-+
-     /*
--     * Always call xive_tctx_ipb_update(). Even if there were no
--     * escalation triggered, there could be a pending interrupt which
--     * was saved when the context was pulled and that we need to take
--     * into account by recalculating the PIPR (which is not
--     * saved/restored).
--     * It will also raise the External interrupt signal if needed.
-+     * Compute the PIPR based on the restored state.
-+     * It will raise the External interrupt signal if needed.
-      */
--    xive_tctx_ipb_update(tctx, TM_QW1_OS, ipb);
-+    xive_tctx_pipr_update(tctx, TM_QW1_OS, backlog_prio, backlog_level);
+         /* PHYS ring */
+         if ((be32_to_cpu(qw3w2) & TM2_QW3W2_VT) &&
+-            cam == xive2_tctx_hw_cam_line(xptr, tctx)) {
++            !(cam_ignore && tctx->regs[TM_QW3_HV_PHYS + TM_LGS] == 0) &&
++            xive2_vp_match_mask(cam,
++                                xive2_tctx_hw_cam_line(xptr, tctx),
++                                vp_mask)) {
+             return TM_QW3_HV_PHYS;
+         }
+ 
+         /* HV POOL ring */
+         if ((be32_to_cpu(qw2w2) & TM2_QW2W2_VP) &&
+-            cam == xive_get_field32(TM2_QW2W2_POOL_CAM, qw2w2)) {
++            !(cam_ignore && tctx->regs[TM_QW2_HV_POOL + TM_LGS] == 0) &&
++            xive2_vp_match_mask(cam,
++                                xive_get_field32(TM2_QW2W2_POOL_CAM, qw2w2),
++                                vp_mask)) {
+             return TM_QW2_HV_POOL;
+         }
+ 
+         /* OS ring */
+         if ((be32_to_cpu(qw1w2) & TM2_QW1W2_VO) &&
+-            cam == xive_get_field32(TM2_QW1W2_OS_CAM, qw1w2)) {
++            !(cam_ignore && tctx->regs[TM_QW1_OS + TM_LGS] == 0) &&
++            xive2_vp_match_mask(cam,
++                                xive_get_field32(TM2_QW1W2_OS_CAM, qw1w2),
++                                vp_mask)) {
+             return TM_QW1_OS;
+         }
+     } else {
+         /* F=1 : User level Event-Based Branch (EBB) notification */
+ 
++        /* FIXME: what if cam_ignore and LGS = 0 ? */
+         /* USER ring */
+         if  ((be32_to_cpu(qw1w2) & TM2_QW1W2_VO) &&
+              (cam == xive_get_field32(TM2_QW1W2_OS_CAM, qw1w2)) &&
+@@ -802,6 +814,22 @@ int xive2_presenter_tctx_match(XivePresenter *xptr, XiveTCTX *tctx,
+     return -1;
  }
  
- /*
-diff --git a/hw/intc/trace-events b/hw/intc/trace-events
-index 3dcf147198..7435728c51 100644
---- a/hw/intc/trace-events
-+++ b/hw/intc/trace-events
-@@ -282,7 +282,7 @@ xive_router_end_notify(uint8_t end_blk, uint32_t end_idx, uint32_t end_data) "EN
- xive_router_end_escalate(uint8_t end_blk, uint32_t end_idx, uint8_t esc_blk, uint32_t esc_idx, uint32_t end_data) "END 0x%02x/0x%04x -> escalate END 0x%02x/0x%04x data 0x%08x"
- xive_tctx_tm_write(uint32_t index, uint64_t offset, unsigned int size, uint64_t value) "target=%d @0x%"PRIx64" sz=%d val=0x%" PRIx64
- xive_tctx_tm_read(uint32_t index, uint64_t offset, unsigned int size, uint64_t value) "target=%d @0x%"PRIx64" sz=%d val=0x%" PRIx64
--xive_presenter_notify(uint8_t nvt_blk, uint32_t nvt_idx, uint8_t ring) "found NVT 0x%x/0x%x ring=0x%x"
-+xive_presenter_notify(uint8_t nvt_blk, uint32_t nvt_idx, uint8_t ring, uint8_t group_level) "found NVT 0x%x/0x%x ring=0x%x group_level=%d"
- xive_end_source_read(uint8_t end_blk, uint32_t end_idx, uint64_t addr) "END 0x%x/0x%x @0x%"PRIx64
++bool xive2_tm_irq_precluded(XiveTCTX *tctx, int ring, uint8_t priority)
++{
++    uint8_t *regs = &tctx->regs[ring];
++
++    /*
++     * The xive2_presenter_tctx_match() above tells if there's a match
++     * but for VP-group notification, we still need to look at the
++     * priority to know if the thread can take the interrupt now or if
++     * it is precluded.
++     */
++    if (priority < regs[TM_CPPR]) {
++        return false;
++    }
++    return true;
++}
++
+ static void xive2_router_realize(DeviceState *dev, Error **errp)
+ {
+     Xive2Router *xrtr = XIVE2_ROUTER(dev);
+@@ -841,7 +869,7 @@ static void xive2_router_end_notify(Xive2Router *xrtr, uint8_t end_blk,
+     Xive2End end;
+     uint8_t priority;
+     uint8_t format;
+-    bool found;
++    bool found, precluded;
+     Xive2Nvp nvp;
+     uint8_t nvp_blk;
+     uint32_t nvp_idx;
+@@ -922,7 +950,8 @@ static void xive2_router_end_notify(Xive2Router *xrtr, uint8_t end_blk,
+     found = xive_presenter_notify(xrtr->xfb, format, nvp_blk, nvp_idx,
+                           xive2_end_is_ignore(&end),
+                           priority,
+-                          xive_get_field32(END2_W7_F1_LOG_SERVER_ID, end.w7));
++                          xive_get_field32(END2_W7_F1_LOG_SERVER_ID, end.w7),
++                          &precluded);
  
- # pnv_xive.c
+     /* TODO: Auto EOI. */
+ 
 -- 
 2.43.0
 
