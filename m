@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D52609EA62A
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Dec 2024 04:06:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BA7829EA62F
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Dec 2024 04:07:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tKqYw-00005V-2J; Mon, 09 Dec 2024 22:05:26 -0500
+	id 1tKqZ0-00007s-QB; Mon, 09 Dec 2024 22:05:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1tKqYu-000056-3H; Mon, 09 Dec 2024 22:05:24 -0500
-Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
+ id 1tKqYx-00006X-8E; Mon, 09 Dec 2024 22:05:27 -0500
+Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1tKqYs-0003G9-Jw; Mon, 09 Dec 2024 22:05:23 -0500
-Received: by mail-pl1-x630.google.com with SMTP id
- d9443c01a7336-2167141dfa1so3548605ad.1; 
- Mon, 09 Dec 2024 19:05:21 -0800 (PST)
+ id 1tKqYv-0003GX-I6; Mon, 09 Dec 2024 22:05:26 -0500
+Received: by mail-pl1-x62f.google.com with SMTP id
+ d9443c01a7336-2165cb60719so11470935ad.0; 
+ Mon, 09 Dec 2024 19:05:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1733799920; x=1734404720; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1733799923; x=1734404723; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=iwlscf/yHkFwlKkBbkoVTudgjbVzWybWKSC3cCOM7sY=;
- b=UCNVUmnqi/tRQEfJjDsntQJfKJiJ1PRDD+uCgnSDi2l28RgqH3bd/8RA84ySMJKWLh
- 2BjtOV81PTeBjhYgvwrEaQRI2o54uAl3PddGZ/cr903dp9yL5IrbW6pA/3dw/FZQdaJJ
- KrcUKTo9BXZzH/BKqk2xfaXoSwt5SjzJJk7T91LDNchajoncXbw1ZJcqUTLDXIBiAT2/
- TUaDjyUHvB1ks6LH/Ddk73LGmyZXtJam8lnPg/3vVQljUqDhF/tboXar9kinf+tXkPQI
- g+2AaV6iHWYMbV1o5rrbjrojDXT6lVnGPoibdzbYYYEt9WeINAp+dykRTXsninKbPyzg
- Gs4g==
+ bh=JE6gi1e3jrRqP6eAPvMmiiVnw5XrKK0H22R6GNUrJ94=;
+ b=PYabYiu1V9GpSf/BXhMq0Ix6rtZs2ZhN3lDiC35p/0R+7oJ9V6y3w9Rllsoor2Eww8
+ OkrpPwPZZrywDjWdVkHHeaxtVIOw9t13lCf9BB4tyXx2z4qx60hYey5HK3V/y7fLa8LC
+ vyrxdJVPutANgA9+luBnqO4O5+hnotrW7cXqvFW5rg130hAIND7zHS3L6owNsrdSosSi
+ +yyxktudJBWBhKwepsjaJkieLFUjRqUDHPYdqohVCtQh0HMtWRKRWeXHfwpFONWIYWe9
+ PrYFxuo/tPftcXC0mNM4iBZNoQMbq4g8TBRbiPeDro+XpnO0AeUU/B8n9eCrLX7vhdjO
+ j65Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733799920; x=1734404720;
+ d=1e100.net; s=20230601; t=1733799923; x=1734404723;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=iwlscf/yHkFwlKkBbkoVTudgjbVzWybWKSC3cCOM7sY=;
- b=sZFFa/6Vjd6mbyXwCjtyWgKC6n3A9AHS5hd29du0/h2Z6HQ1AlgeG3kR8mf12IqiSZ
- nDipM0vgJ2tdY5G1zG2K7wWbCmP1g+mfcuigOktSWNHjSZYG6KwcLzWG3uKd59Vw+Kh2
- 5nDRHDQsydXkvVjpYlTkLEUkYPP4mkgAA1CKRm2i8GHwR9UyCXSoGPd/HPhzz3Jq3n9i
- yTnUp+VnT3A14l0UN6UFx3gAsmzcV9kTOFE71Gd9V69Iuciz3St7R10h0/xGDubX04MQ
- yS2dMOLFy7ygT+wOmKeeFyaI1ZwoCYsNi9XxQBncncZvayI++bQLhZEV5/KnF2xXfxco
- tf7Q==
+ bh=JE6gi1e3jrRqP6eAPvMmiiVnw5XrKK0H22R6GNUrJ94=;
+ b=jwTMfLojMxXBT2Sbt4ktGQ6SWvO6BjOWsDa/qQfwt32UJtKEhW/fmVw0Oi534XO8G0
+ cqMOhZI2Fbc9eVFC9w0GM6jFC5SyYS+F/x+hrjvMPoddzBUZDLnHXkd0TTn8G91kqpPy
+ QJrknyZXqh4Dc2h9Rwu7Rw0+iXl5u0IywXIFGvZ42IkRIYfixWNnxvEf63AdCxP6aLnP
+ 361Gam3Etrc+EEm8EAjNYU2Ck0pLoYrvWD9lTBdHtvWs37mnQAVSPaAI6d9jHQvoHabh
+ eDqxeIqoYGKBz/33kaMKQY/5kf4+e9AKP7DYZiCQoGG2ff/74GmifPMpKY2IH8TD6Q0L
+ 2Wxw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXTHtUVD7l8/D/fcrdq95veCxUkGnxRF79H6/KkwuO06D8CLtDSblE/b/0DVulXbxVRiM/Dh6Lqbxkx@nongnu.org
-X-Gm-Message-State: AOJu0YxYMFObBWtchcKavOkmYqet+u8JIjgLKXIC77hnHc7nBv9W7qci
- Z/yoUXXihcCuBJsHI5LD1QByHIyjUS6WUs+HZsIWOeH6INJVu3uoZivq2w==
-X-Gm-Gg: ASbGncv86s3OMLjOSEjjo8LhblowmdeQRg7mvSbyO/grnHjvg3csCyFEEbwHAbsXq+r
- XevMKBK2Nv6cFomxAVAYY0wu2lSCVRFQyki4LOUXC9ngz6Ee8oAA1V5kBHZFkvOH5Zi6A4eKrAW
- DTNkVsO4gciRvw+vh4wzsW27fQ5DuGAcJkXJtTU1+E+4dVfbheNb4QamTvFXVzzV3ryQmxWv/CP
- f9jEdhejSh3FTNtUlvkrW8NjeYCt9Tsfy8HR1dwERFi7wYDzGDJ5BADnYoU
-X-Google-Smtp-Source: AGHT+IEy/NDADGuSH/dKILIqAmBCe6e29nl/xE8A5SNJGI59ClrjBWou9AM/cHwdSQdTm7XmW7XlKQ==
-X-Received: by 2002:a17:902:f706:b0:216:39fa:5c97 with SMTP id
- d9443c01a7336-21670a06bbemr28454995ad.11.1733799920522; 
- Mon, 09 Dec 2024 19:05:20 -0800 (PST)
+ AJvYcCXhVTzwTiGtZTtSs4CKvbwqVpzthCJvHsWaIt5V/BY1+E8pgM4LUK1M6GB+GIcWvBfKnZrzHaUH4n50@nongnu.org
+X-Gm-Message-State: AOJu0YwXWM0v7rMv/PpeAmKxoLAq3yBpx0qQe0YuzDjoCK+k28auKOUF
+ PocDnVGA0s2/QhCPVRX3p7jm3O+L4/AzHEHRqDar1/d9zT/rzSBAh9qZFQ==
+X-Gm-Gg: ASbGnctOv54cOoeU9dka358x4pv49ozcWJ9hctu29XjcfUDQOfMm0i2pLx2XLPDnGXH
+ F0HOJRyO4hYDdgeNuFx8O5T7Bzs8b0QxFcoJb6OXlX7Q1fVEdZ3I9y09CyBk8q15CkMaLpRcJTr
+ ac5uprNwwoIXXt4pxbIA9BScIqdxK1n+KmVFeTXeqQRpCZXvsZF1OTjnB64zMVkgOcAb7OaVSdd
+ QgajzBMJ+D88gD8sMkExODA6zDRTtkHpJzU9No7rtRgdYmPY/vxV+dXPVOf
+X-Google-Smtp-Source: AGHT+IG5BaZD9fGDiC5EEHW/84z+kWAH+PdjsfIqUv4mn0YKzvhj4pgPl1tKmA1tVBA+YHaPVCtOWw==
+X-Received: by 2002:a17:902:da89:b0:215:19ae:77bf with SMTP id
+ d9443c01a7336-21669fe13e4mr37475065ad.19.1733799923527; 
+ Mon, 09 Dec 2024 19:05:23 -0800 (PST)
 Received: from wheely.local0.net ([220.253.106.119])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-21631118cedsm44813865ad.150.2024.12.09.19.05.17
+ d9443c01a7336-21631118cedsm44813865ad.150.2024.12.09.19.05.20
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 09 Dec 2024 19:05:20 -0800 (PST)
+ Mon, 09 Dec 2024 19:05:23 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-ppc@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org,
  Harsh Prateek Bora <harshpb@linux.ibm.com>,
  =?UTF-8?q?Fr=C3=A9d=C3=A9ric=20Barrat?= <fbarrat@linux.ibm.com>
-Subject: [PATCH 7/9] ppc/pnv/occ: Update pstate frequency tables
-Date: Tue, 10 Dec 2024 13:04:47 +1000
-Message-ID: <20241210030451.1306608-8-npiggin@gmail.com>
+Subject: [PATCH 8/9] ppc/pnv/occ: Add POWER10 OCC-OPAL data format
+Date: Tue, 10 Dec 2024 13:04:48 +1000
+Message-ID: <20241210030451.1306608-9-npiggin@gmail.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241210030451.1306608-1-npiggin@gmail.com>
 References: <20241210030451.1306608-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x630.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x62f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,46 +97,89 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Make each pstate have a different frequency, because that's easier
-to observe and test.
+Add POWER10 OCC-OPAL data format. POWER10 changes major version and
+adds a few fields.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- hw/ppc/pnv_occ.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ hw/ppc/pnv_occ.c | 43 ++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 42 insertions(+), 1 deletion(-)
 
 diff --git a/hw/ppc/pnv_occ.c b/hw/ppc/pnv_occ.c
-index 918b08ba2ff..5567fbf008e 100644
+index 5567fbf008e..aa46e118e93 100644
 --- a/hw/ppc/pnv_occ.c
 +++ b/hw/ppc/pnv_occ.c
-@@ -681,11 +681,11 @@ static bool occ_init_homer_memory(PnvOCC *occ, Error **errp)
-         static_data.v2.pstate_turbo = -1;
-         static_data.v2.pstate_ultra_turbo = 0;
-         static_data.v2.pstates[0].id = 0;
--        static_data.v2.pstates[1].freq_khz = cpu_to_be32(3000);
-+        static_data.v2.pstates[1].freq_khz = cpu_to_be32(4000);
-         static_data.v2.pstates[1].id = -1;
-         static_data.v2.pstates[1].freq_khz = cpu_to_be32(3000);
-         static_data.v2.pstates[2].id = -2;
--        static_data.v2.pstates[2].freq_khz = cpu_to_be32(3000);
-+        static_data.v2.pstates[2].freq_khz = cpu_to_be32(2000);
-         for (i = 0; i < chip->nr_cores; i++) {
-             static_data.v2.core_max[i] = 1;
-         }
-@@ -701,11 +701,11 @@ static bool occ_init_homer_memory(PnvOCC *occ, Error **errp)
-         static_data.v9.pstate_turbo = 1;
-         static_data.v9.pstate_ultra_turbo = 0;
-         static_data.v9.pstates[0].id = 0;
--        static_data.v9.pstates[0].freq_khz = cpu_to_be32(3000);
-+        static_data.v9.pstates[0].freq_khz = cpu_to_be32(4000);
-         static_data.v9.pstates[1].id = 1;
-         static_data.v9.pstates[1].freq_khz = cpu_to_be32(3000);
-         static_data.v9.pstates[2].id = 2;
--        static_data.v9.pstates[2].freq_khz = cpu_to_be32(3000);
-+        static_data.v9.pstates[2].freq_khz = cpu_to_be32(2000);
-         for (i = 0; i < chip->nr_cores; i++) {
+@@ -263,14 +263,20 @@ static const TypeInfo pnv_occ_power9_type_info = {
+ 
+ static void pnv_occ_power10_class_init(ObjectClass *klass, void *data)
+ {
++    PnvOCCClass *poc = PNV_OCC_CLASS(klass);
+     DeviceClass *dc = DEVICE_CLASS(klass);
+ 
+     dc->desc = "PowerNV OCC Controller (POWER10)";
++    poc->opal_shared_memory_offset = P9_HOMER_OPAL_DATA_OFFSET;
++    poc->opal_shared_memory_version = 0xA0;
++    poc->xscom_size = PNV9_XSCOM_OCC_SIZE;
++    poc->xscom_ops = &pnv_occ_power9_xscom_ops;
++    assert(!dc->user_creatable);
+ }
+ 
+ static const TypeInfo pnv_occ_power10_type_info = {
+     .name          = TYPE_PNV10_OCC,
+-    .parent        = TYPE_PNV9_OCC,
++    .parent        = TYPE_PNV_OCC,
+     .class_init    = pnv_occ_power10_class_init,
+ };
+ 
+@@ -710,6 +716,37 @@ static bool occ_init_homer_memory(PnvOCC *occ, Error **errp)
              static_data.v9.core_max[i] = 1;
          }
+         break;
++    case 0xA0:
++        if (chip->chip_id == 0) {
++            static_data.v10.occ_role = OCC_ROLE_MASTER;
++        } else {
++            static_data.v10.occ_role = OCC_ROLE_SLAVE;
++        }
++        static_data.v10.pstate_min = 4;
++        static_data.v10.pstate_fixed_freq = 3;
++        static_data.v10.pstate_base = 2;
++        static_data.v10.pstate_ultra_turbo = 1;
++        static_data.v10.pstate_fmax = 0;
++        static_data.v10.minor = 0x01;
++        static_data.v10.pstates[0].valid = 1;
++        static_data.v10.pstates[0].id = 0;
++        static_data.v10.pstates[0].freq_khz = cpu_to_be32(4200);
++        static_data.v10.pstates[1].valid = 1;
++        static_data.v10.pstates[1].id = 1;
++        static_data.v10.pstates[1].freq_khz = cpu_to_be32(4000);
++        static_data.v10.pstates[2].valid = 1;
++        static_data.v10.pstates[2].id = 2;
++        static_data.v10.pstates[2].freq_khz = cpu_to_be32(3800);
++        static_data.v10.pstates[3].valid = 1;
++        static_data.v10.pstates[3].id = 3;
++        static_data.v10.pstates[3].freq_khz = cpu_to_be32(3000);
++        static_data.v10.pstates[4].valid = 1;
++        static_data.v10.pstates[4].id = 4;
++        static_data.v10.pstates[4].freq_khz = cpu_to_be32(2000);
++        for (i = 0; i < chip->nr_cores; i++) {
++            static_data.v10.core_max[i] = 1;
++        }
++        break;
+     default:
+         g_assert_not_reached();
+     }
+@@ -725,6 +762,10 @@ static bool occ_init_homer_memory(PnvOCC *occ, Error **errp)
+     dynamic_data.cur_pwr_cap = cpu_to_be16(PCAP_MAX_POWER_W);
+     dynamic_data.soft_min_pwr_cap = cpu_to_be16(PCAP_SOFT_MIN_POWER_W);
+     switch (poc->opal_shared_memory_version) {
++    case 0xA0:
++        dynamic_data.minor_version = 0x1;
++        dynamic_data.v10.wof_enabled = 0x1;
++        break;
+     case 0x90:
+         dynamic_data.minor_version = 0x1;
+         break;
 -- 
 2.45.2
 
