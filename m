@@ -2,92 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A615A9EA367
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Dec 2024 01:11:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 48B849EA369
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Dec 2024 01:11:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tKnoO-0008Hk-01; Mon, 09 Dec 2024 19:09:15 -0500
+	id 1tKnoZ-0000Do-1G; Mon, 09 Dec 2024 19:09:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kowal@linux.ibm.com>)
- id 1tKnln-0004pI-0g; Mon, 09 Dec 2024 19:06:31 -0500
+ id 1tKnlp-0004pv-J3; Mon, 09 Dec 2024 19:06:33 -0500
 Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kowal@linux.ibm.com>)
- id 1tKnll-0001we-Di; Mon, 09 Dec 2024 19:06:30 -0500
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4B9KQTRa019995;
- Tue, 10 Dec 2024 00:06:22 GMT
+ id 1tKnlm-0001x3-V9; Mon, 09 Dec 2024 19:06:33 -0500
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4B9GNbvx007134;
+ Tue, 10 Dec 2024 00:06:24 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
  :content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=pp1; bh=215zH4o9R5n+liRkP
- j1cmaCMFsYAUfkJ5EjH09CcQnE=; b=hIOJFrUh2bcDApVuu0PLN732kKIypn/bg
- ynSKHCP9W+zfw4UQAOa8cXwHnrEzwFJPDuFs5mn7RZF06iZvucdEYCKyKCJIWy2U
- dHv+34+rr6M/028MLsLcwzKHXMWMOostMSp01cZGLQxDPr7rgfTZqEtNixxKBrDg
- y2OgA5b63Caet+yrBE7yJF7CCOUYe7cRZrKL/4iGinOptE+DQ/wxQ80bCNh/7vMG
- 09EEYIxoEat+pKZhLEwUNDSuDmDIOpqSEIWjGrqL1GEurn2J+emfroRlfCdeQLwW
- Cd/TYl9IykjYH89EKmKtIq/SQAddMS0Havq5MiVdugVsxz9ON4gDw==
+ :mime-version:references:subject:to; s=pp1; bh=QOqU/9/Kv72oqxXxj
+ 2dcmKKu9PsYnGzThPYr4C/pjp0=; b=S4W7QbYrLs5S/YPj1Os9h3WGQ4s4RuVB5
+ K4SC+B4x8+5EWpBHstHaM4Zq9Fqc4wyF6tMECmEh902onHF0dsEwOIIi7QroiAg1
+ q4HKkYOaEWv5OJlwZUvmI+Hc/kTMUWdQcqfN3+/AGaphcf1jNM4/93BhbNOTbAUk
+ vCu+cSKyRf0aybDYXVOLvkwES09SIBhlWtCHZL/2Zz5XnJCPrgUr96kUKV2hjfL4
+ qZVL/lZKnMsNR7QZjq8lZ7VCuwEXUVN0qurdaWhbuQiUIqcMbomIcM909jgOdfRb
+ u3xtsAwp7+hwkKSuoHULxKEL6eHd7++NdCWEbVmuOhDFzkR/o09HQ==
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 43ce38m5e6-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 43ce1vm6ha-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 10 Dec 2024 00:06:22 +0000 (GMT)
-Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
- by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 4BA06MZd017825;
- Tue, 10 Dec 2024 00:06:22 GMT
+ Tue, 10 Dec 2024 00:06:24 +0000 (GMT)
+Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
+ by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 4BA063rm004178;
+ Tue, 10 Dec 2024 00:06:24 GMT
 Received: from ppma13.dal12v.mail.ibm.com
  (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 43ce38m5e3-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 43ce1vm6h6-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 10 Dec 2024 00:06:22 +0000 (GMT)
+ Tue, 10 Dec 2024 00:06:23 +0000 (GMT)
 Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
- by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4B9Ju3mI023169;
- Tue, 10 Dec 2024 00:06:21 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
- by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 43d2wjrrt6-1
+ by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4B9K5L6M023062;
+ Tue, 10 Dec 2024 00:06:23 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+ by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 43d2wjrrte-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 10 Dec 2024 00:06:21 +0000
+ Tue, 10 Dec 2024 00:06:23 +0000
 Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com
  [10.20.54.103])
- by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 4BA06Hn665864136
+ by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 4BA06JpJ41222494
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 10 Dec 2024 00:06:17 GMT
+ Tue, 10 Dec 2024 00:06:19 GMT
 Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9045420043;
+ by IMSVA (Postfix) with ESMTP id AAA3B2004F;
+ Tue, 10 Dec 2024 00:06:19 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id D2BB420040;
  Tue, 10 Dec 2024 00:06:17 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id BF01220040;
- Tue, 10 Dec 2024 00:06:15 +0000 (GMT)
 Received: from gfwr518.rchland.ibm.com (unknown [9.10.239.106])
  by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Tue, 10 Dec 2024 00:06:15 +0000 (GMT)
+ Tue, 10 Dec 2024 00:06:17 +0000 (GMT)
 From: Michael Kowal <kowal@linux.ibm.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, fbarrat@linux.ibm.com, npiggin@gmail.com,
  milesg@linux.ibm.com, danielhb413@gmail.com,
  david@gibson.dropbear.id.au, harshpb@linux.ibm.com, thuth@redhat.com,
  lvivier@redhat.com, pbonzini@redhat.com
-Subject: [PATCH v2 11/14] pnv/xive: Only support crowd size of 0, 2, 4 and 16
-Date: Mon,  9 Dec 2024 18:05:23 -0600
-Message-Id: <20241210000527.9541-21-kowal@linux.ibm.com>
+Subject: [PATCH v2 11/14] ppc/xive2: Check crowd backlog when scanning group
+ backlog
+Date: Mon,  9 Dec 2024 18:05:24 -0600
+Message-Id: <20241210000527.9541-22-kowal@linux.ibm.com>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241210000527.9541-1-kowal@linux.ibm.com>
 References: <20241210000527.9541-1-kowal@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: iFZwgfztgCE01Zn7xO5-h5LoIIs24bu8
-X-Proofpoint-ORIG-GUID: w8T3xcWWl4sMskai05WxYlpPuXhgdw0C
+X-Proofpoint-GUID: 2W5IoxGX1JArH4MvjSFjlghoKc2n4PK_
+X-Proofpoint-ORIG-GUID: gPjVdqHTZZRTHYZUZYDZsP9AxKmKTpwq
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
  definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 suspectscore=0
- spamscore=0 clxscore=1015 priorityscore=1501 lowpriorityscore=0
- impostorscore=0 bulkscore=0 mlxscore=0 malwarescore=0 mlxlogscore=999
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2411120000 definitions=main-2412090187
+ lowpriorityscore=0
+ priorityscore=1501 clxscore=1015 phishscore=0 bulkscore=0 mlxlogscore=735
+ impostorscore=0 spamscore=0 malwarescore=0 suspectscore=0 adultscore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2411120000 definitions=main-2412090182
 Received-SPF: pass client-ip=148.163.156.1; envelope-from=kowal@linux.ibm.com;
  helo=mx0a-001b2d01.pphosted.com
 X-Spam_score_int: -26
@@ -113,54 +114,167 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Glenn Miles <milesg@linux.vnet.ibm.com>
+From: Frederic Barrat <fbarrat@linux.ibm.com>
 
-XIVE crowd sizes are encoded into a 2-bit field as follows:
-  0: 0b00
-  2: 0b01
-  4: 0b10
- 16: 0b11
+When processing a backlog scan for group interrupts, also take
+into account crowd interrupts.
 
-A crowd size of 8 is not supported.
-
-Signed-off-by: Glenn Miles <milesg@linux.vnet.ibm.com>
+Signed-off-by: Frederic Barrat <fbarrat@linux.ibm.com>
 Signed-off-by: Michael Kowal <kowal@linux.ibm.com>
 ---
- hw/intc/xive.c | 21 ++++++++++++++++++++-
- 1 file changed, 20 insertions(+), 1 deletion(-)
+ include/hw/ppc/xive2_regs.h |  4 ++
+ hw/intc/xive2.c             | 82 +++++++++++++++++++++++++------------
+ 2 files changed, 60 insertions(+), 26 deletions(-)
 
-diff --git a/hw/intc/xive.c b/hw/intc/xive.c
-index 2a7ce72606..df77098dd7 100644
---- a/hw/intc/xive.c
-+++ b/hw/intc/xive.c
-@@ -1687,7 +1687,26 @@ static uint8_t xive_get_group_level(bool crowd, bool ignore,
-     uint8_t level = 0;
+diff --git a/include/hw/ppc/xive2_regs.h b/include/hw/ppc/xive2_regs.h
+index 9bcf7a8a6f..b11395c563 100644
+--- a/include/hw/ppc/xive2_regs.h
++++ b/include/hw/ppc/xive2_regs.h
+@@ -236,4 +236,8 @@ void xive2_nvgc_pic_print_info(Xive2Nvgc *nvgc, uint32_t nvgc_idx,
+ #define NVx_BACKLOG_OP            PPC_BITMASK(52, 53)
+ #define NVx_BACKLOG_PRIO          PPC_BITMASK(57, 59)
  
-     if (crowd) {
--        level = ((ctz32(~nvp_blk) + 1) & 0b11) << 4;
-+        /* crowd level is bit position of first 0 from the right in nvp_blk */
-+        level = ctz32(~nvp_blk) + 1;
++/* split the 6-bit crowd/group level */
++#define NVx_CROWD_LVL(level)      ((level >> 4) & 0b11)
++#define NVx_GROUP_LVL(level)      (level & 0b1111)
 +
-+        /*
-+         * Supported crowd sizes are 2^1, 2^2, and 2^4. 2^3 is not supported.
-+         * HW will encode level 4 as the value 3.  See xive2_pgofnext().
-+         */
-+        switch (level) {
-+        case 1:
-+        case 2:
-+            break;
-+        case 4:
-+            level = 3;
-+            break;
-+        default:
-+            g_assert_not_reached();
-+        }
+ #endif /* PPC_XIVE2_REGS_H */
+diff --git a/hw/intc/xive2.c b/hw/intc/xive2.c
+index 20d63e8f6e..c29d8e4831 100644
+--- a/hw/intc/xive2.c
++++ b/hw/intc/xive2.c
+@@ -366,6 +366,35 @@ static void xive2_end_enqueue(Xive2End *end, uint32_t data)
+     end->w1 = xive_set_field32(END2_W1_PAGE_OFF, end->w1, qindex);
+ }
+ 
++static void xive2_pgofnext(uint8_t *nvgc_blk, uint32_t *nvgc_idx,
++                           uint8_t next_level)
++{
++    uint32_t mask, next_idx;
++    uint8_t next_blk;
 +
-+        /* Crowd level bits reside in upper 2 bits of the 6 bit group level */
-+        level <<= 4;
++    /*
++     * Adjust the block and index of a VP for the next group/crowd
++     * size (PGofFirst/PGofNext field in the NVP and NVGC structures).
++     *
++     * The 6-bit group level is split into a 2-bit crowd and 4-bit
++     * group levels. Encoding is similar. However, we don't support
++     * crowd size of 8. So a crowd level of 0b11 is bumped to a crowd
++     * size of 16.
++     */
++    next_blk = NVx_CROWD_LVL(next_level);
++    if (next_blk == 3) {
++        next_blk = 4;
++    }
++    mask = (1 << next_blk) - 1;
++    *nvgc_blk &= ~mask;
++    *nvgc_blk |= mask >> 1;
++
++    next_idx = NVx_GROUP_LVL(next_level);
++    mask = (1 << next_idx) - 1;
++    *nvgc_idx &= ~mask;
++    *nvgc_idx |= mask >> 1;
++}
++
+ /*
+  * Scan the group chain and return the highest priority and group
+  * level of pending group interrupts.
+@@ -376,29 +405,28 @@ static uint8_t xive2_presenter_backlog_scan(XivePresenter *xptr,
+                                             uint8_t *out_level)
+ {
+     Xive2Router *xrtr = XIVE2_ROUTER(xptr);
+-    uint32_t nvgc_idx, mask;
++    uint32_t nvgc_idx;
+     uint32_t current_level, count;
+-    uint8_t prio;
++    uint8_t nvgc_blk, prio;
+     Xive2Nvgc nvgc;
+ 
+     for (prio = 0; prio <= XIVE_PRIORITY_MAX; prio++) {
+-        current_level = first_group & 0xF;
++        current_level = first_group & 0x3F;
++        nvgc_blk = nvp_blk;
++        nvgc_idx = nvp_idx;
+ 
+         while (current_level) {
+-            mask = (1 << current_level) - 1;
+-            nvgc_idx = nvp_idx & ~mask;
+-            nvgc_idx |= mask >> 1;
+-            qemu_log("fxb %s checking backlog for prio %d group idx %x\n",
+-                     __func__, prio, nvgc_idx);
+-
+-            if (xive2_router_get_nvgc(xrtr, false, nvp_blk, nvgc_idx, &nvgc)) {
+-                qemu_log_mask(LOG_GUEST_ERROR, "XIVE: No NVG %x/%x\n",
+-                              nvp_blk, nvgc_idx);
++            xive2_pgofnext(&nvgc_blk, &nvgc_idx, current_level);
++
++            if (xive2_router_get_nvgc(xrtr, NVx_CROWD_LVL(current_level),
++                                      nvgc_blk, nvgc_idx, &nvgc)) {
++                qemu_log_mask(LOG_GUEST_ERROR, "XIVE: No NVGC %x/%x\n",
++                              nvgc_blk, nvgc_idx);
+                 return 0xFF;
+             }
+             if (!xive2_nvgc_is_valid(&nvgc)) {
+-                qemu_log_mask(LOG_GUEST_ERROR, "XIVE: Invalid NVG %x/%x\n",
+-                              nvp_blk, nvgc_idx);
++                qemu_log_mask(LOG_GUEST_ERROR, "XIVE: Invalid NVGC %x/%x\n",
++                              nvgc_blk, nvgc_idx);
+                 return 0xFF;
+             }
+ 
+@@ -407,7 +435,7 @@ static uint8_t xive2_presenter_backlog_scan(XivePresenter *xptr,
+                 *out_level = current_level;
+                 return prio;
+             }
+-            current_level = xive_get_field32(NVGC2_W0_PGONEXT, nvgc.w0) & 0xF;
++            current_level = xive_get_field32(NVGC2_W0_PGONEXT, nvgc.w0) & 0x3F;
+         }
      }
-     if (ignore) {
-         level |= (ctz32(~nvp_index) + 1) & 0b1111;
+     return 0xFF;
+@@ -419,22 +447,23 @@ static void xive2_presenter_backlog_decr(XivePresenter *xptr,
+                                          uint8_t group_level)
+ {
+     Xive2Router *xrtr = XIVE2_ROUTER(xptr);
+-    uint32_t nvgc_idx, mask, count;
++    uint32_t nvgc_idx, count;
++    uint8_t nvgc_blk;
+     Xive2Nvgc nvgc;
+ 
+-    group_level &= 0xF;
+-    mask = (1 << group_level) - 1;
+-    nvgc_idx = nvp_idx & ~mask;
+-    nvgc_idx |= mask >> 1;
++    nvgc_blk = nvp_blk;
++    nvgc_idx = nvp_idx;
++    xive2_pgofnext(&nvgc_blk, &nvgc_idx, group_level);
+ 
+-    if (xive2_router_get_nvgc(xrtr, false, nvp_blk, nvgc_idx, &nvgc)) {
+-        qemu_log_mask(LOG_GUEST_ERROR, "XIVE: No NVG %x/%x\n",
+-                      nvp_blk, nvgc_idx);
++    if (xive2_router_get_nvgc(xrtr, NVx_CROWD_LVL(group_level),
++                              nvgc_blk, nvgc_idx, &nvgc)) {
++        qemu_log_mask(LOG_GUEST_ERROR, "XIVE: No NVGC %x/%x\n",
++                      nvgc_blk, nvgc_idx);
+         return;
+     }
+     if (!xive2_nvgc_is_valid(&nvgc)) {
+-        qemu_log_mask(LOG_GUEST_ERROR, "XIVE: Invalid NVG %x/%x\n",
+-                      nvp_blk, nvgc_idx);
++        qemu_log_mask(LOG_GUEST_ERROR, "XIVE: Invalid NVGC %x/%x\n",
++                      nvgc_blk, nvgc_idx);
+         return;
+     }
+     count = xive2_nvgc_get_backlog(&nvgc, group_prio);
+@@ -442,7 +471,8 @@ static void xive2_presenter_backlog_decr(XivePresenter *xptr,
+         return;
+     }
+     xive2_nvgc_set_backlog(&nvgc, group_prio, count - 1);
+-    xive2_router_write_nvgc(xrtr, false, nvp_blk, nvgc_idx, &nvgc);
++    xive2_router_write_nvgc(xrtr, NVx_CROWD_LVL(group_level),
++                            nvgc_blk, nvgc_idx, &nvgc);
+ }
+ 
+ /*
 -- 
 2.43.0
 
