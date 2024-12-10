@@ -2,99 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20E339EAB18
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Dec 2024 09:55:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CA1A29EAB21
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Dec 2024 09:56:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tKw17-00042x-5s; Tue, 10 Dec 2024 03:54:53 -0500
+	id 1tKw25-0005KI-5O; Tue, 10 Dec 2024 03:55:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xadimgnik@gmail.com>)
- id 1tKw0y-00042h-R5
- for qemu-devel@nongnu.org; Tue, 10 Dec 2024 03:54:44 -0500
-Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <xadimgnik@gmail.com>)
- id 1tKw0u-0004M2-I4
- for qemu-devel@nongnu.org; Tue, 10 Dec 2024 03:54:44 -0500
-Received: by mail-ed1-x52f.google.com with SMTP id
- 4fb4d7f45d1cf-5d3d479b1e6so4385671a12.2
- for <qemu-devel@nongnu.org>; Tue, 10 Dec 2024 00:54:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1733820877; x=1734425677; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:organization:content-language
- :references:cc:to:subject:reply-to:user-agent:mime-version:date
- :message-id:from:from:to:cc:subject:date:message-id:reply-to;
- bh=eMmuDzCOtk0P3qAVSDrdvfD9qizU1PjXn3xjXpj8i7Q=;
- b=esHz944Ip4gPfo3i74f3qubIwEBAJCS65DD+yKreh6itZOmvXvA9HuLoPr0jINbJIM
- ywmwU3VQ4UATEnzccWn4HpXy2q4Fqhqs9ZNiqWpK9RAKgdqTVE5ifHYFUGo4jk4OydTY
- wiuOGnA/NENED9R5ygTmMOXpIwhHCi02E9rBUOhJ0r0pQywtO5SBwO8uVfvuh8qeVc9B
- QyC7AJfLu5kyAzTGiILVMD8qMRS3Ord0aGoe6+V7igcrW5lXBHcc2cqbKb0vUxlbBgbB
- XlVPcSjTRGOsk2u8pU8jDEQTtMCl0S2kDcQrRlXqeTjym3gxXP/BKaufQsfhBiXmmV8I
- Vh/Q==
+ (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
+ id 1tKw1x-0005G6-GN
+ for qemu-devel@nongnu.org; Tue, 10 Dec 2024 03:55:45 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
+ id 1tKw1v-0004cV-IT
+ for qemu-devel@nongnu.org; Tue, 10 Dec 2024 03:55:45 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1733820942;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=ctpum92POoP9+D9Pr2k+Szw3dF2BItWGwSKVcY1eWkc=;
+ b=OqErsKQHOqBu5aH0MM5mo98jrPD/21FWmyx18Sq4rGpMQUYdpmnhBWAcvbXcWpiz1z+Zpc
+ HdArlXpgn7ihH1Jtx6Uxy7IRL5En9BqyDPk63HcT80BD9xJAj5YhLpITxqEEvFpsjexVf0
+ 19Gn5BusAUGBZgrEc7/4Oztz90p327o=
+Received: from mail-yw1-f198.google.com (mail-yw1-f198.google.com
+ [209.85.128.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-385-4PO7rlTxN1W8c7Lvxp5e4g-1; Tue, 10 Dec 2024 03:55:40 -0500
+X-MC-Unique: 4PO7rlTxN1W8c7Lvxp5e4g-1
+X-Mimecast-MFC-AGG-ID: 4PO7rlTxN1W8c7Lvxp5e4g
+Received: by mail-yw1-f198.google.com with SMTP id
+ 00721157ae682-6eeeb850458so71615867b3.2
+ for <qemu-devel@nongnu.org>; Tue, 10 Dec 2024 00:55:40 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733820877; x=1734425677;
- h=content-transfer-encoding:in-reply-to:organization:content-language
- :references:cc:to:subject:reply-to:user-agent:mime-version:date
- :message-id:from:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=eMmuDzCOtk0P3qAVSDrdvfD9qizU1PjXn3xjXpj8i7Q=;
- b=Nc2JkUe58gd5FkjJgkIPNgO6BgWSwk1u6s5m9R7UEn3EnfU3TSXGA17GiOzW8qD7aH
- HNfwWAloyyZpTQOESq3zI6aSD3kMO+QnXvd7cd8AwyP3mvpyu8Z8lSLSlPyrzrrwatC1
- eTh5r7hQ084+w1POGKvRiGfodJuiBDOIpLwywxWfDOU61bQOS72LnmSRD/ELUCZB0svu
- M90LAyLCXrQhEqHZ6DZbzXiSDJHB2AWHG4Z2qfyYYnSxRzqu0VL5ChrKia67jKwRPTmp
- Nd4WI8iKn+bq3hw/SRWiM1aaH5HBBBAZDlMEweBSnH0KmgHmr4LneYTswHdksu7CJvy9
- gxHg==
+ d=1e100.net; s=20230601; t=1733820940; x=1734425740;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=ctpum92POoP9+D9Pr2k+Szw3dF2BItWGwSKVcY1eWkc=;
+ b=Rm4dDo6XILs0Uy/abuxfMwLmKWqQ+gJuWScTeFYhJpJJZpKXxzz4Gcu+gSlD0vCma8
+ ll2f9YWmMyWr1HE8WwZfLx35or5LU+sN5bKV4Srx8IJjetG16jAd9mg03RBXOWAIUI5F
+ lmZ3zaQuGjOmqCXoD9T33DZsoLK7nwS8hrgCtyzxWDgnMRvv9IrQ5hOou7COHunoE5mo
+ 3lWR6+bNyd88QQQzep5I9ANhqr/F++fFbd1gw1nynnnsVHLPlFP/iXxF4TXhMhkHal7N
+ EQ/ms66yhpN8zOsTiLc9z06UqMKpFxJmga35wF/Xzm7izoYE/E5oqT73y5BA3irwqdyx
+ IEbw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVbCyZQ4NR+1ZT8Y6nFrdIEtAEiOJRzA1ud5pRxOk3RuhjGJemPd7heXWVyMKrwiSadTKBwEP0n9maN@nongnu.org
-X-Gm-Message-State: AOJu0YynSqXychT1PIVox7EoK6VdIB3mvXmh53nKmL0usmYNoOgHm0Ty
- EwXCU9NkrpL1+BLtH8KT9ErpArMgpaG1xsbOHQSz7maOcug8gD0d
-X-Gm-Gg: ASbGncs5t/4NOpde3ACLlXdBabtjOgZLCezgjwj9h3PSejZdzSbd+BpjISIdDTZBpln
- 23WmAWK0tZo0GlSKmPt7WEOMj8dVXUh77X2u6yb8m9rhTLafpl9R0bYacZTWhsuN3xBqSFge/r3
- RNPKzcm0d/b/aayqL1xTjhvbFlrmUQ/ndobGaBrsP2P2/jHpcaHS/8DMY9e3p/7K92axbJVZAZg
- aQeRwsS692Pm4JRhagE8kYgoR9LlQf5k1JVOeFgfvMjwJHrpE7tm5YzsW39RhrDsiGbNft7q98R
- x8rm3XQ=
-X-Google-Smtp-Source: AGHT+IHqv0gN5Y6seCjNUmRACQ4qGrQhe9Oe9Xxqu5KtInfnMah2xk1/OLK5CT7rLnXQtRS+OSCzOQ==
-X-Received: by 2002:a05:6402:4490:b0:5d3:da65:ff26 with SMTP id
- 4fb4d7f45d1cf-5d418604a7amr7866661a12.31.1733820876486; 
- Tue, 10 Dec 2024 00:54:36 -0800 (PST)
-Received: from [192.168.9.8] (54-240-197-234.amazon.com. [54.240.197.234])
- by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5d3cedbb8fesm5738281a12.22.2024.12.10.00.54.35
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 10 Dec 2024 00:54:35 -0800 (PST)
-From: Paul Durrant <xadimgnik@gmail.com>
-X-Google-Original-From: Paul Durrant <paul@xen.org>
-Message-ID: <48f0be10-718c-409f-b5ac-d0775add9824@xen.org>
-Date: Tue, 10 Dec 2024 08:54:34 +0000
+ AJvYcCWhtACiLxPHH00dsbe5u8HQy5yLe1Xy6CUmuFA4A5pseLnx652Emo7SRiwJAxSV5I1tygJluQ6RQ7ya@nongnu.org
+X-Gm-Message-State: AOJu0Yyf8YV1VbakqojWC1rHA+3EZaDv5YWKm7ZRRiZs1LX/0+U9sHso
+ 1pY8oDqeTYzbAD3JN3n6pXIUsjQ1t7j7AQmq5bmucfqox1bH9V/G9zf64yZ+gaY2QIOU9nOy3nv
+ cV90nNGtDWizdIhDQpcRp/PsR9CLEIisVcH0p1CgoRSB1/vjNYVjHSrjXIMN3/NP9xXhmtbVf2O
+ K2a43fLaehZheM4AsWaCCertKKOBc=
+X-Gm-Gg: ASbGncskvW84Fdo3eG82/+U6lW1eNiLfXm47q6a6Kho5WC2I1/koEyWHRdx9Jv1MBBr
+ qI/NCGX72xamDduqefKaazT9bTzzixhO7/0c=
+X-Received: by 2002:a05:690c:8b1a:b0:6ef:6f24:d0bc with SMTP id
+ 00721157ae682-6efe3c6c947mr89148817b3.27.1733820939803; 
+ Tue, 10 Dec 2024 00:55:39 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHLhzFR22dFHyACCdC1AzchxKBqOE2f8fGDHbeccuI3o50Sh16DCmZW1b5uoMGDNflEYPv7BB5ylIHYq42B7vU=
+X-Received: by 2002:a05:690c:8b1a:b0:6ef:6f24:d0bc with SMTP id
+ 00721157ae682-6efe3c6c947mr89148757b3.27.1733820939527; Tue, 10 Dec 2024
+ 00:55:39 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5] hw/acpi: Add vmclock device
-To: David Woodhouse <dwmw2@infradead.org>, qemu-devel@nongnu.org
-Cc: "Michael S. Tsirkin" <mst@redhat.com>, Igor Mammedov
- <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Peter Hilber <peter.hilber@opensynergy.com>,
- "Mohamed Abuelfotoh, Hazem" <abuehaze@amazon.com>
-References: <7bdd6feab5bb6c32c9c83ef3d184882c2499baa6.camel@infradead.org>
-Content-Language: en-US
-Organization: Xen Project
-In-Reply-To: <7bdd6feab5bb6c32c9c83ef3d184882c2499baa6.camel@infradead.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
- envelope-from=xadimgnik@gmail.com; helo=mail-ed1-x52f.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+References: <20241205203430.76251-1-sahilcdq@proton.me>
+ <20241205203430.76251-4-sahilcdq@proton.me>
+In-Reply-To: <20241205203430.76251-4-sahilcdq@proton.me>
+From: Eugenio Perez Martin <eperezma@redhat.com>
+Date: Tue, 10 Dec 2024 09:55:03 +0100
+Message-ID: <CAJaqyWfBpyJAwv2m9r0ik_pmoN2OSJvcvSjYuq_vPAXSZP138A@mail.gmail.com>
+Subject: Re: [RFC v4 3/5] vhost: Data structure changes to support packed vqs
+To: Sahil Siddiq <icegambit91@gmail.com>
+Cc: sgarzare@redhat.com, mst@redhat.com, qemu-devel@nongnu.org, 
+ Sahil Siddiq <sahilcdq@proton.me>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=eperezma@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -25
+X-Spam_score: -2.6
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.489,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,87 +99,145 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: paul@xen.org
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 03/12/2024 17:33, David Woodhouse wrote:
-> From: David Woodhouse <dwmw@amazon.co.uk>
-> 
-> The vmclock device addresses the problem of live migration with
-> precision clocks. The tolerances of a hardware counter (e.g. TSC) are
-> typically around ±50PPM. A guest will use NTP/PTP/PPS to discipline that
-> counter against an external source of 'real' time, and track the precise
-> frequency of the counter as it changes with environmental conditions.
-> 
-> When a guest is live migrated, anything it knows about the frequency of
-> the underlying counter becomes invalid. It may move from a host where
-> the counter running at -50PPM of its nominal frequency, to a host where
-> it runs at +50PPM. There will also be a step change in the value of the
-> counter, as the correctness of its absolute value at migration is
-> limited by the accuracy of the source and destination host's time
-> synchronization.
-> 
-> The device exposes a shared memory region to guests, which can be mapped
-> all the way to userspace. In the first phase, this merely advertises a
-> 'disruption_marker', which indicates that the guest should throw away any
-> NTP synchronization it thinks it has, and start again.
-> 
-> Because the region can be exposed all the way to userspace, applications
-> can still use time from a fast vDSO 'system call', and check the
-> disruption marker to be sure that their timestamp is indeed truthful.
-> 
-> The structure also allows for the precise time, as known by the host, to
-> be exposed directly to guests so that they don't have to wait for NTP to
-> resync from scratch.
-> 
-> The values and fields are based on the nascent virtio-rtc specification,
-> and the intent is that a version (hopefully precisely this version) of
-> this structure will be included as an optional part of that spec. In the
-> meantime, a simple ACPI device along the lines of VMGENID is perfectly
-> sufficient and is compatible with what's being shipped in certain
-> commercial hypervisors.
-> 
-> Linux guest support was merged into the 6.13-rc1 kernel:
-> https://git.kernel.org/torvalds/c/205032724226
-> 
-> Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
-> ---
-> This is basically unchanged since the last time the structure was
-> changed in July, apart from fairly trivial cosmetic changes and now
-> importing the header file from Linux.
-> 
-> 
-> v5:
->   • Trivial simplification to AML generation.
->   • Import vmclock-abi.h from Linux now the guest support is merged.
-> 
-> v4:
->   • Trivial checkpatch fixes and comment improvements.
-> 
-> v3:
->   • Add comment that vmclock-abi.h will come from the Linux kernel
->     headers once it gets merged there.
-> 
-> v2:
->   • Change esterror/maxerror fields to nanoseconds.
->   • Change to officially assigned AMZNC10C ACPI HID.
->   • Fix little-endian handling of fields in update.
-> 
->   hw/acpi/Kconfig                              |   5 +
->   hw/acpi/meson.build                          |   1 +
->   hw/acpi/vmclock.c                            | 184 +++++++++++++++++++
->   hw/i386/Kconfig                              |   1 +
->   hw/i386/acpi-build.c                         |  10 +-
->   include/hw/acpi/vmclock.h                    |  34 ++++
->   include/standard-headers/linux/vmclock-abi.h | 182 ++++++++++++++++++
->   scripts/update-linux-headers.sh              |   1 +
->   8 files changed, 417 insertions(+), 1 deletion(-)
->   create mode 100644 hw/acpi/vmclock.c
->   create mode 100644 include/hw/acpi/vmclock.h
->   create mode 100644 include/standard-headers/linux/vmclock-abi.h
-> 
+On Thu, Dec 5, 2024 at 9:35=E2=80=AFPM Sahil Siddiq <icegambit91@gmail.com>=
+ wrote:
+>
+> Introduce "struct vring_packed".
+>
+> Modify VhostShadowVirtqueue so it can support split
+> and packed virtqueue formats.
+>
 
-Reviewed-by: Paul Durrant <paul@xen.org>
+This patch should be before the previous one or it does not compile, isn't =
+it?
+
+> Signed-off-by: Sahil Siddiq <sahilcdq@proton.me>
+> ---
+> Changes v3 -> v4:
+> - Commit #2 of v3 is now commit #3 in this series.
+> - vhost-shadow-virtqueue.h
+>   (struct VhostShadowVirtqueue): Add bool is_packed.
+>   This was initially in commit #3 of v3.
+>
+>  hw/virtio/vhost-shadow-virtqueue.h | 69 ++++++++++++++++++++----------
+>  1 file changed, 47 insertions(+), 22 deletions(-)
+>
+> diff --git a/hw/virtio/vhost-shadow-virtqueue.h b/hw/virtio/vhost-shadow-=
+virtqueue.h
+> index 19c842a15b..ce89bafedc 100644
+> --- a/hw/virtio/vhost-shadow-virtqueue.h
+> +++ b/hw/virtio/vhost-shadow-virtqueue.h
+> @@ -46,10 +46,56 @@ typedef struct VhostShadowVirtqueueOps {
+>      VirtQueueAvailCallback avail_handler;
+>  } VhostShadowVirtqueueOps;
+>
+> +struct vring_packed {
+> +    /* Actual memory layout for this queue. */
+> +    struct {
+> +        unsigned int num;
+> +        struct vring_packed_desc *desc;
+> +        struct vring_packed_desc_event *driver;
+> +        struct vring_packed_desc_event *device;
+> +    } vring;
+> +
+> +    /* Avail used flags. */
+> +    uint16_t avail_used_flags;
+> +
+> +    /* Index of the next avail descriptor. */
+> +    uint16_t next_avail_idx;
+> +
+> +    /* Driver ring wrap counter */
+> +    bool avail_wrap_counter;
+> +};
+> +
+>  /* Shadow virtqueue to relay notifications */
+>  typedef struct VhostShadowVirtqueue {
+> +    /* True if packed virtqueue */
+> +    bool is_packed;
+> +
+> +    /* Virtio queue shadowing */
+> +    VirtQueue *vq;
+> +
+> +    /* Virtio device */
+> +    VirtIODevice *vdev;
+> +
+> +    /* SVQ vring descriptors state */
+> +    SVQDescState *desc_state;
+> +
+> +    /*
+> +     * Backup next field for each descriptor so we can recover securely,=
+ not
+> +     * needing to trust the device access.
+> +     */
+> +    uint16_t *desc_next;
+> +
+> +    /* Next free descriptor */
+> +    uint16_t free_head;
+> +
+> +    /* Size of SVQ vring free descriptors */
+> +    uint16_t num_free;
+> +
+>      /* Shadow vring */
+> -    struct vring vring;
+> +    union {
+> +        struct vring vring;
+> +        struct vring_packed vring_packed;
+> +    };
+>
+>      /* Shadow kick notifier, sent to vhost */
+>      EventNotifier hdev_kick;
+> @@ -69,27 +115,12 @@ typedef struct VhostShadowVirtqueue {
+>      /* Guest's call notifier, where the SVQ calls guest. */
+>      EventNotifier svq_call;
+>
+> -    /* Virtio queue shadowing */
+> -    VirtQueue *vq;
+> -
+> -    /* Virtio device */
+> -    VirtIODevice *vdev;
+> -
+>      /* IOVA mapping */
+>      VhostIOVATree *iova_tree;
+>
+> -    /* SVQ vring descriptors state */
+> -    SVQDescState *desc_state;
+> -
+>      /* Next VirtQueue element that guest made available */
+>      VirtQueueElement *next_guest_avail_elem;
+>
+> -    /*
+> -     * Backup next field for each descriptor so we can recover securely,=
+ not
+> -     * needing to trust the device access.
+> -     */
+> -    uint16_t *desc_next;
+> -
+>      /* Caller callbacks */
+>      const VhostShadowVirtqueueOps *ops;
+>
+> @@ -99,17 +130,11 @@ typedef struct VhostShadowVirtqueue {
+>      /* Next head to expose to the device */
+>      uint16_t shadow_avail_idx;
+>
+> -    /* Next free descriptor */
+> -    uint16_t free_head;
+> -
+>      /* Last seen used idx */
+>      uint16_t shadow_used_idx;
+>
+>      /* Next head to consume from the device */
+>      uint16_t last_used_idx;
+> -
+> -    /* Size of SVQ vring free descriptors */
+> -    uint16_t num_free;
+>  } VhostShadowVirtqueue;
+>
+>  bool vhost_svq_valid_features(uint64_t features, Error **errp);
+> --
+> 2.47.0
+>
 
 
