@@ -2,86 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D6269EA62E
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Dec 2024 04:07:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 08B2E9EA68C
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Dec 2024 04:24:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tKqZ4-00008w-7G; Mon, 09 Dec 2024 22:05:34 -0500
+	id 1tKqpo-0000Gx-G3; Mon, 09 Dec 2024 22:22:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1tKqZ1-00008D-8G; Mon, 09 Dec 2024 22:05:31 -0500
-Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1tKqYz-0003HE-7z; Mon, 09 Dec 2024 22:05:31 -0500
-Received: by mail-pl1-x62e.google.com with SMTP id
- d9443c01a7336-216401de828so17083045ad.3; 
- Mon, 09 Dec 2024 19:05:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1733799927; x=1734404727; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=HeWNwp+7gNfaxpbB+LR/oQe4Y23byGeRB+Qua9V3R1E=;
- b=jCyinH5zEdfl7YEdHMT87hSsArfTLOWVNf/esakzgQmsjiA4Mpue9UrzG57IMjeQb/
- 0Da3ToYF/+jXCAdK2fL4r2zbVkza/CQfY/0+wLKXe/rimAJF1yfR9wKZVVl2PAU9xRI/
- BM3/VGHmq5VgUXdgzummgb6ZHaQGe2ZQ80X06AmR8mRr+o9sRBbFMqEU1hXSAaXEjWE9
- YETMVB9JCk19bQnF8nFnkRt5qVKnnGrxmf3aHgx97MsElqmlKV6UsMO/jAnbavtPK9TG
- RNgHZzZP2qMc/Ns+kUnwHif4eE6/GhjCu93JPcwJeDoJ1V+za/QjgjhGpM2BMREnPGLx
- vUGw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733799927; x=1734404727;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=HeWNwp+7gNfaxpbB+LR/oQe4Y23byGeRB+Qua9V3R1E=;
- b=cwB2xeLkD6e/3LBK1O/atSGEYfFOBc5q1Yk2VXCdY9HRgBjDvo0g8ts5jXxQNXINk8
- +ysUiHndVe0A4eF9M7mL5m6WfbO5t8/3VlndDpfb0FU2ZjXW4+6xNZA18GCG0AQ71yEP
- zXw5BGP51qOcRPyEPdomVWgbfeAEh2nd/PnqjBN3ZoAYFOSlh2/nOpRJ6kSckoG9xrF+
- b6P5xDDoKfTOEt4stKMQmIDWpX+XPmAgGzJKZZ0L8FTjBUK4w14E+VD/yR531kHCYfBm
- XImRh2yrcP9AW4e2W+sc5a0Ct/whZ6UBvwTuQfn6xUkZALbsWC9jpR8ILJxMLJNiP1JJ
- BnDw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWVFZa3PHWFm5DZRmAJxrIsuBE3c6IoeUk+3HmGkWdnqPpjzJCq2pgPvLlcY4GM+Yd9Mj6voe0JOoR9@nongnu.org
-X-Gm-Message-State: AOJu0Yw54/amyYU3CG4BAJlhaQ6pK7KgcVzl9naDG0uP7QzybotKCb8H
- d8Sm36vX67xv7EhPRSnLp80ulbQWdn8uyO0JWAlsCfHvLMhheXHf61ZhQg==
-X-Gm-Gg: ASbGncuYRrcv5Mp0fASS2qCNeKKxGPBgXnZHQ0hRn7GTpZPzrIlKST8rhcMoNlZAkYr
- rCcn0TZe8kqEJ0rBiW0flIkl9Q+OtUPxvcsZ8kFubRVXx98oUkd9t9BMlVA8hUz/r5v5mBK8agk
- ZoA6hkvZgXoF/Jt5gYp47c+E5OY4Kky7b8ZOUp7fbMWmhjyRipsuvFgFCHalzeNwG3jMbpv3CR2
- v3QVWHOUpcgVpRgawiYHgxtHsR+Obwn+ozKseQ/ZmNljoD+7rEWlPpYNqjT
-X-Google-Smtp-Source: AGHT+IEUJ9V1QYHTMpRg+GnVM7KUOHdwtSlSFdX55gLnrVIhFERaa5dmiYuGDeh4TMs5NKmHBuRkWQ==
-X-Received: by 2002:a17:902:dac8:b0:215:b087:5d62 with SMTP id
- d9443c01a7336-2166a03f16cmr48662655ad.36.1733799927000; 
- Mon, 09 Dec 2024 19:05:27 -0800 (PST)
-Received: from wheely.local0.net ([220.253.106.119])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-21631118cedsm44813865ad.150.2024.12.09.19.05.23
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 09 Dec 2024 19:05:26 -0800 (PST)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: qemu-ppc@nongnu.org
-Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- =?UTF-8?q?Fr=C3=A9d=C3=A9ric=20Barrat?= <fbarrat@linux.ibm.com>
-Subject: [PATCH 9/9] ppc/pnv/occ: Implement a basic dynamic OCC model
-Date: Tue, 10 Dec 2024 13:04:49 +1000
-Message-ID: <20241210030451.1306608-10-npiggin@gmail.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20241210030451.1306608-1-npiggin@gmail.com>
-References: <20241210030451.1306608-1-npiggin@gmail.com>
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1tKqpm-0000GG-IS
+ for qemu-devel@nongnu.org; Mon, 09 Dec 2024 22:22:50 -0500
+Received: from mgamail.intel.com ([192.198.163.17])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1tKqpj-0004qd-U3
+ for qemu-devel@nongnu.org; Mon, 09 Dec 2024 22:22:50 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1733800968; x=1765336968;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=1zJ2q09lrsn1GGJjRKPAI0mV8Ctn3tNfX5jW4g2WZr4=;
+ b=PRKMicJQdX3QqjeSofkXDZ2J9HclPRBB+/kUsjIvSzFYXLN0z/vrSKCc
+ sywkryxwLhCUNFpgxsSEK3zGw4QFzhqg2hFV/vsmTbGtGR/ytICxv5YHz
+ qjyhHVy8lFztJIfjbVINpxsbR7GZi9+HbjHGKQHZDizeuhDh4bpZx0Js7
+ i6LhHkQakncgiuQoNXM2DBZ+S95ZFf2nRkxxetXfR85zPHu2hSemJlkiv
+ iqTzYmwC0zPPHbLWYeaJSOjN3xraiRSCFDBNr+42uJeeQZJv+8B+uo/Vm
+ RYGSG5r9C32KocsSW0kCzqgcYMD/txVkOj6IRgr7sYfpatS6XmMq7di3c w==;
+X-CSE-ConnectionGUID: 8Xrs8ro1SQGHWCRFE76xfQ==
+X-CSE-MsgGUID: E1DfzUqwRx2dVaWSiFi8Pg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11281"; a="34035380"
+X-IronPort-AV: E=Sophos;i="6.12,221,1728975600"; d="scan'208";a="34035380"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Dec 2024 19:22:45 -0800
+X-CSE-ConnectionGUID: filPZePvSaKrUQyK9UGIbw==
+X-CSE-MsgGUID: tqfch3mhSLaZL3j2Nfma/Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,221,1728975600"; d="scan'208";a="99333945"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.247.1])
+ ([10.124.247.1])
+ by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Dec 2024 19:22:42 -0800
+Message-ID: <e7ca010e-fe97-46d0-aaae-316eef0cc2fd@intel.com>
+Date: Tue, 10 Dec 2024 11:22:39 +0800
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: (Proposal) New TDX Global Metadata To Report FIXED0 and FIXED1
+ CPUID Bits
+To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
+ "pbonzini@redhat.com" <pbonzini@redhat.com>,
+ "seanjc@google.com" <seanjc@google.com>
+Cc: "Huang, Kai" <kai.huang@intel.com>,
+ "binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>,
+ "Chatre, Reinette" <reinette.chatre@intel.com>,
+ "Zhao, Yan Y" <yan.y.zhao@intel.com>,
+ "tony.lindgren@linux.intel.com" <tony.lindgren@linux.intel.com>,
+ "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+ "Hunter, Adrian" <adrian.hunter@intel.com>,
+ "Yamahata, Isaku" <isaku.yamahata@intel.com>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+References: <43b26df1-4c27-41ff-a482-e258f872cc31@intel.com>
+ <d63e1f3f0ad8ead9d221cff5b1746dc7a7fa065c.camel@intel.com>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <d63e1f3f0ad8ead9d221cff5b1746dc7a7fa065c.camel@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x62e.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=192.198.163.17; envelope-from=xiaoyao.li@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -38
+X-Spam_score: -3.9
+X-Spam_bar: ---
+X-Spam_report: (-3.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.489,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=0.999, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,239 +95,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The OCC is an On Chip Controller that handles various thermal and power
-management. It is a PPC405 microcontroller that runs its own firmware
-which is out of scope of the powernv machine model. Some dynamic
-behaviour and interfaces that are important for host CPU testing can be
-implemented with a much simpler state machine.
+On 12/7/2024 2:41 AM, Edgecombe, Rick P wrote:
+> On Fri, 2024-12-06 at 10:42 +0800, Xiaoyao Li wrote:
+>> # Interaction with TDX_FEATURES0.VE_REDUCTION
+>>
+>> TDX introduces a new feature VE_REDUCTION[2]. From the perspective of
+>> host VMM, VE_REDUCTION turns several CPUID bits from fixed1 to
+>> configurable, e.g., MTRR, MCA, MCE, etc. However, from the perspective
+>> of TD guest, it’s an opt-in feature. The actual value seen by TD guest
+>> depends on multiple factors: 1). If TD guest enables REDUCE_VE in
+>> TDCS.TD_CTLS, 2) TDCS.FEATURE_PARAVIRT_CTRL, 3) CPUID value configured
+>> by host VMM via TD_PARAMS.CPUID_CONFIG[]. (Please refer to latest TDX
+>> 1.5 spec for more details.)
+>>
+>> Since host VMM has no idea on the setting of 1) and 2) when creating the
+>> TD. We make the design to treat them as configurable bits and the global
+>> metadata interface doesn’t report them as fixed1 bits for simplicity.
+>>
+>> Host VMM must be aware itself that the value of these VE_REDUCTION
+>> related CPUID bits might not be what it configures. The actual value
+>> seen by TD guest also depends on the guest enabling and configuration of
+>> VE_REDUCTION.
+> 
+> As we've been working on this, I've started to wonder whether this is a halfway
+> solution that is not worth it. Today there are directly configurable bits,
+> XFAM/attribute controlled bits, other opt-ins (like #VE reduction). And this has
+> only gotten more complicated as time has gone on.
+> 
+> If we really want to fully solve the problem of userspace understanding which
+> configurations are possible, the TDX module would almost need to expose some
+> sort of CPUID logic DSL that could be used to evaluate user configuration.
+> 
+> On the other extreme we could just say, this kind of logic is just going to need
+> to be hand coded somewhere, like is currently done in the QEMU patches.
 
-This change adds a 100ms timer that ticks through a simple state machine
-that looks for "OCC command requests" coming from host firmware, and
-responds to them.
+I think hand coded some specific handling for special case is acceptable 
+when it's unavoidable. However, an auto-adaptive interface for general 
+cases is always better than hand code/hard code something. E.g., current 
+QEMU implementation hardcodes the fixed0 and fixed1 information based on 
+TDX 1.5.06 spec. When different versions of TDX module have different 
+fixed0 and fixed1 information, QEMU will needs interface to get the 
+version of TDX module and maintain different information for each 
+version of TDX module. It's a disaster IMHO.
 
-For now the powercap command is implemented because that is used by
-OPAL and exported to Linux and is easy to test.
+> The solution in this proposal decreases the work the VMM has to do, but in the
+> long term won't remove hand coding completely. As long as we are designing
+> something, what kind of bar should we target?
 
-  $ F=/sys/firmware/opal/powercap/system-powercap/powercap-current
-  $ cat $F
-  100
-  $ echo 50 | sudo tee $F
-  50
-  $ cat $F
-  50
-
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
- include/hw/ppc/pnv_occ.h |   3 +
- hw/ppc/pnv_occ.c         | 145 +++++++++++++++++++++++++++++++++++++++
- 2 files changed, 148 insertions(+)
-
-diff --git a/include/hw/ppc/pnv_occ.h b/include/hw/ppc/pnv_occ.h
-index f9948609808..3ec42de0ff1 100644
---- a/include/hw/ppc/pnv_occ.h
-+++ b/include/hw/ppc/pnv_occ.h
-@@ -41,6 +41,9 @@ DECLARE_INSTANCE_CHECKER(PnvOCC, PNV10_OCC, TYPE_PNV10_OCC)
- struct PnvOCC {
-     DeviceState xd;
- 
-+    /* OCC dynamic model is driven by this timer. */
-+    QEMUTimer state_machine_timer;
-+
-     /* OCC Misc interrupt */
-     uint64_t occmisc;
- 
-diff --git a/hw/ppc/pnv_occ.c b/hw/ppc/pnv_occ.c
-index aa46e118e93..11081ecc4b7 100644
---- a/hw/ppc/pnv_occ.c
-+++ b/hw/ppc/pnv_occ.c
-@@ -35,6 +35,7 @@
- #define OCB_OCI_OCCMISC_AND     0x4021
- #define OCB_OCI_OCCMISC_OR      0x4022
- #define   OCCMISC_PSI_IRQ       PPC_BIT(0)
-+#define   OCCMISC_IRQ_SHMEM     PPC_BIT(3)
- 
- /* OCC sensors */
- #define OCC_SENSOR_DATA_BLOCK_OFFSET          0x0000
-@@ -67,6 +68,11 @@ static void pnv_occ_set_misc(PnvOCC *occ, uint64_t val)
-     qemu_set_irq(occ->psi_irq, !!(val & OCCMISC_PSI_IRQ));
- }
- 
-+static void pnv_occ_raise_msg_irq(PnvOCC *occ)
-+{
-+    pnv_occ_set_misc(occ, occ->occmisc | OCCMISC_PSI_IRQ | OCCMISC_IRQ_SHMEM);
-+}
-+
- static uint64_t pnv_occ_power8_xscom_read(void *opaque, hwaddr addr,
-                                           unsigned size)
- {
-@@ -281,6 +287,20 @@ static const TypeInfo pnv_occ_power10_type_info = {
- };
- 
- static bool occ_init_homer_memory(PnvOCC *occ, Error **errp);
-+static bool occ_model_tick(PnvOCC *occ);
-+
-+/* Relatively arbitrary */
-+#define OCC_POLL_MS 100
-+
-+static void occ_state_machine_timer(void *opaque)
-+{
-+    PnvOCC *occ = opaque;
-+    uint64_t next = qemu_clock_get_ms(QEMU_CLOCK_VIRTUAL) + OCC_POLL_MS;
-+
-+    if (occ_model_tick(occ)) {
-+        timer_mod(&occ->state_machine_timer, next);
-+    }
-+}
- 
- static void pnv_occ_realize(DeviceState *dev, Error **errp)
- {
-@@ -306,6 +326,10 @@ static void pnv_occ_realize(DeviceState *dev, Error **errp)
-                           PNV_OCC_SENSOR_DATA_BLOCK_SIZE);
- 
-     qdev_init_gpio_out(dev, &occ->psi_irq, 1);
-+
-+    timer_init_ms(&occ->state_machine_timer, QEMU_CLOCK_VIRTUAL,
-+                  occ_state_machine_timer, occ);
-+    timer_mod(&occ->state_machine_timer, OCC_POLL_MS);
- }
- 
- static Property pnv_occ_properties[] = {
-@@ -646,6 +670,27 @@ static bool occ_write_static_data(PnvOCC *occ,
-     return true;
- }
- 
-+static bool occ_read_dynamic_data(PnvOCC *occ,
-+                                  struct occ_dynamic_data *dynamic_data,
-+                                  Error **errp)
-+{
-+    PnvOCCClass *poc = PNV_OCC_GET_CLASS(occ);
-+    PnvHomer *homer = occ->homer;
-+    hwaddr static_addr = homer->base + poc->opal_shared_memory_offset;
-+    hwaddr dynamic_addr = static_addr + OPAL_DYNAMIC_DATA_OFFSET;
-+    MemTxResult ret;
-+
-+    ret = address_space_read(&address_space_memory, dynamic_addr,
-+                             MEMTXATTRS_UNSPECIFIED, dynamic_data,
-+                             sizeof(*dynamic_data));
-+    if (ret != MEMTX_OK) {
-+        error_setg(errp, "OCC: cannot read OCC-OPAL dynamic data");
-+        return false;
-+    }
-+
-+    return true;
-+}
-+
- static bool occ_write_dynamic_data(PnvOCC *occ,
-                                   struct occ_dynamic_data *dynamic_data,
-                                   Error **errp)
-@@ -667,6 +712,106 @@ static bool occ_write_dynamic_data(PnvOCC *occ,
-     return true;
- }
- 
-+static bool occ_opal_send_response(PnvOCC *occ,
-+                                   struct occ_dynamic_data *dynamic_data,
-+                                   enum occ_response_status status,
-+                                   uint8_t *data, uint16_t datalen)
-+{
-+    struct opal_command_buffer *cmd = &dynamic_data->cmd;
-+    struct occ_response_buffer *rsp = &dynamic_data->rsp;
-+
-+    rsp->request_id = cmd->request_id;
-+    rsp->cmd = cmd->cmd;
-+    rsp->status = status;
-+    rsp->data_size = cpu_to_be16(datalen);
-+    if (datalen) {
-+        memcpy(rsp->data, data, datalen);
-+    }
-+    if (!occ_write_dynamic_data(occ, dynamic_data, NULL)) {
-+        return false;
-+    }
-+    /* Would be a memory barrier here */
-+    rsp->flag = OCC_FLAG_RSP_READY;
-+    cmd->flag = 0;
-+    if (!occ_write_dynamic_data(occ, dynamic_data, NULL)) {
-+        return false;
-+    }
-+
-+    pnv_occ_raise_msg_irq(occ);
-+
-+    return true;
-+}
-+
-+/* Returns error status */
-+static bool occ_opal_process_command(PnvOCC *occ,
-+                                     struct occ_dynamic_data *dynamic_data)
-+{
-+    struct opal_command_buffer *cmd = &dynamic_data->cmd;
-+    struct occ_response_buffer *rsp = &dynamic_data->rsp;
-+
-+    if (rsp->flag == 0) {
-+        /* Spend one "tick" in the in-progress state */
-+        rsp->flag = OCC_FLAG_CMD_IN_PROGRESS;
-+        return occ_write_dynamic_data(occ, dynamic_data, NULL);
-+    } else if (rsp->flag != OCC_FLAG_CMD_IN_PROGRESS) {
-+        return occ_opal_send_response(occ, dynamic_data,
-+                                      OCC_RSP_INTERNAL_ERROR,
-+                                      NULL, 0);
-+    }
-+
-+    switch (cmd->cmd) {
-+    case 0xD1: /* SET_POWER_CAP */
-+        uint16_t data;
-+        if (be16_to_cpu(cmd->data_size) != 2) {
-+            return occ_opal_send_response(occ, dynamic_data,
-+                                          OCC_RSP_INVALID_CMD_DATA_LENGTH,
-+                                          (uint8_t *)&dynamic_data->cur_pwr_cap,
-+                                          2);
-+        }
-+        data = be16_to_cpu(*(uint16_t *)cmd->data);
-+        if (data == 0) { /* clear power cap */
-+            dynamic_data->pwr_cap_type = 0x00; /* none */
-+            data = PCAP_MAX_POWER_W;
-+        } else {
-+            dynamic_data->pwr_cap_type = 0x02; /* user set in-band */
-+            if (data < PCAP_HARD_MIN_POWER_W) {
-+                data = PCAP_HARD_MIN_POWER_W;
-+            } else if (data > PCAP_MAX_POWER_W) {
-+                data = PCAP_MAX_POWER_W;
-+            }
-+        }
-+        dynamic_data->cur_pwr_cap = cpu_to_be16(data);
-+        return occ_opal_send_response(occ, dynamic_data,
-+                                      OCC_RSP_SUCCESS,
-+                                      (uint8_t *)&dynamic_data->cur_pwr_cap, 2);
-+
-+    default:
-+        return occ_opal_send_response(occ, dynamic_data,
-+                                      OCC_RSP_INVALID_COMMAND,
-+                                      NULL, 0);
-+    }
-+    g_assert_not_reached();
-+}
-+
-+static bool occ_model_tick(PnvOCC *occ)
-+{
-+    struct occ_dynamic_data dynamic_data;
-+
-+    if (!occ_read_dynamic_data(occ, &dynamic_data, NULL)) {
-+        /* Can't move OCC state field to safe because we can't map it! */
-+        qemu_log("OCC: failed to read HOMER data, shutting down OCC\n");
-+        return false;
-+    }
-+    if (dynamic_data.cmd.flag == OPAL_FLAG_CMD_READY) {
-+        if (!occ_opal_process_command(occ, &dynamic_data)) {
-+            qemu_log("OCC: failed to write HOMER data, shutting down OCC\n");
-+            return false;
-+        }
-+    }
-+
-+    return true;
-+}
-+
- static bool occ_init_homer_memory(PnvOCC *occ, Error **errp)
- {
-     PnvOCCClass *poc = PNV_OCC_GET_CLASS(occ);
--- 
-2.45.2
-
+For this specific #VE reduction case, I think userspace doesn't need to 
+do any hand coding. Userspace just treats the bits related to #VE 
+reduction as configurable as reported by TDX module/KVM. And userspace 
+doesn't care if the value seen by TD guest is matched with what gets 
+configured by it because they are out of control of userspace.
 
