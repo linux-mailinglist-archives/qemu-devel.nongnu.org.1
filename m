@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25B269EB522
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Dec 2024 16:35:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C25159EB551
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Dec 2024 16:45:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tL2Eu-0001Sa-FJ; Tue, 10 Dec 2024 10:33:33 -0500
+	id 1tL2PC-0002fi-H3; Tue, 10 Dec 2024 10:44:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tL2EC-0001KE-FM; Tue, 10 Dec 2024 10:32:50 -0500
+ id 1tL2P9-0002fT-Kn; Tue, 10 Dec 2024 10:44:07 -0500
 Received: from mgamail.intel.com ([198.175.65.17])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tL2EA-0000rI-C9; Tue, 10 Dec 2024 10:32:48 -0500
+ id 1tL2P7-00022h-H9; Tue, 10 Dec 2024 10:44:07 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1733844766; x=1765380766;
+ t=1733845446; x=1765381446;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=lDfSvcdtU5wg9X7Z6lt3evGywYSTE29GME0kFIPv9v8=;
- b=IJVuJ98YpjlqLs79VS/o1JWwKkibpmXO3+TfaGZsZGPZjgxdx2mSdvC6
- FB62hSjg+rqy0CfvDhQAbrrdu80MhFLKP6K8rxM8Koe7yMyZR2nr5GzvT
- gZE8eawz6sag8GfrlW/GGI0bkkyVsz8sm8tFJxovlLaPy2PKzuJ+yDM2y
- rECOTs7O7cufhTKynqiQRzIcrkkuTmG0mCIfLNv/JBAfWmxazUfZ7oXQa
- EtrcVvmK0F0gGOfGcVYyQC0hacOzFjNOQNkYArXAvpGHtFmyc+2/sCwf8
- tLAXyuJhmsI44FDnZyyliqizns8AHEPq3iRwafo+mswyEeVbcYJrmCX9e Q==;
-X-CSE-ConnectionGUID: 3isgrvsqQwWQ+9L7yAdc0g==
-X-CSE-MsgGUID: KMxF2RlRQpKJpzw+dpumaw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11282"; a="34247348"
-X-IronPort-AV: E=Sophos;i="6.12,222,1728975600"; d="scan'208";a="34247348"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ bh=pDWZ/cee+vIPlZALlx6jDXoxQc7ILwuIIDd+JeIrWI8=;
+ b=dV9ffb7zZuskz95ipv8gIVcBTPT83Cb5sC3Qc4Ju1PGXvj+uQZPMtZh7
+ Vp7Qk/s9BEguUHXX53f737wrwGctM4oIB2+yy56xmbTTRKOdkQ1GaNjtH
+ LI9/kXM4xazBkLdIKQLFgrFhPDvNIFJOCpMUPxyJbG9iSjdw14KLrkWjE
+ IaDGkFCqgnXWjh4CQJQbQQ74RPvXghJRTA5zg/nRHiLMXPOOF0WdjGDAd
+ FFdH9TMug/U5HznlspnEPuq2NA9SSaFdgMw1YpMkuaqiI5IDnYU09352Z
+ +UOM1Vdr/Fed+su/bFClBRLbz9dDe6tZH8W7vYylr2AlrtCaN931SwalW w==;
+X-CSE-ConnectionGUID: bfkyQsKoTKauUn980FC8aA==
+X-CSE-MsgGUID: R0pQgHXSSZO8Um5B/BvTdg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11282"; a="34249165"
+X-IronPort-AV: E=Sophos;i="6.12,222,1728975600"; d="scan'208";a="34249165"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Dec 2024 07:32:42 -0800
-X-CSE-ConnectionGUID: gLeKG73aQMKYjrEL3JSG9Q==
-X-CSE-MsgGUID: 0DfeerprRKuKemSgybFTfg==
+ 10 Dec 2024 07:44:02 -0800
+X-CSE-ConnectionGUID: /uxuTAKQSWil5IwJGzdXtw==
+X-CSE-MsgGUID: bupINUsXQHmacpMaTDpOQQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,222,1728975600"; d="scan'208";a="95147471"
+X-IronPort-AV: E=Sophos;i="6.12,222,1728975600"; d="scan'208";a="95645703"
 Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
  ([10.239.160.36])
- by fmviesa006.fm.intel.com with ESMTP; 10 Dec 2024 07:32:41 -0800
-Date: Tue, 10 Dec 2024 23:50:55 +0800
+ by fmviesa008.fm.intel.com with ESMTP; 10 Dec 2024 07:44:01 -0800
+Date: Wed, 11 Dec 2024 00:02:15 +0800
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>
 Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org,
  Junjie Mao <junjie.mao@hotmail.com>
 Subject: Re: [PATCH 14/26] rust: qom: move bridge for TypeInfo functions out
  of pl011
-Message-ID: <Z1hjX+5Yyi46N+sX@intel.com>
+Message-ID: <Z1hmB4znBSsJV6uO@intel.com>
 References: <20241209123717.99077-1-pbonzini@redhat.com>
  <20241209123717.99077-15-pbonzini@redhat.com>
 MIME-Version: 1.0
@@ -81,81 +81,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Dec 09, 2024 at 01:37:05PM +0100, Paolo Bonzini wrote:
-> Date: Mon,  9 Dec 2024 13:37:05 +0100
-> From: Paolo Bonzini <pbonzini@redhat.com>
-> Subject: [PATCH 14/26] rust: qom: move bridge for TypeInfo functions out of
->  pl011
-> X-Mailer: git-send-email 2.47.1
-> 
-> Allow the ObjectImpl trait to expose Rust functions that avoid raw
-> pointers (though INSTANCE_INIT for example is still unsafe).
-> ObjectImpl::TYPE_INFO adds thunks around the functions in
-> ObjectImpl.
-> 
-> While at it, document `TypeInfo`.
-> 
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> ---
->  rust/hw/char/pl011/src/device.rs | 40 +++++++--------------
->  rust/qemu-api/src/definitions.rs | 61 +++++++++++++++++++++++++++++---
->  2 files changed, 69 insertions(+), 32 deletions(-)
-> 
-> diff --git a/rust/hw/char/pl011/src/device.rs b/rust/hw/char/pl011/src/device.rs
-> index 56403c36609..b9f8fb134b5 100644
-> --- a/rust/hw/char/pl011/src/device.rs
-> +++ b/rust/hw/char/pl011/src/device.rs
-> @@ -110,7 +110,7 @@ impl ObjectImpl for PL011State {
->      type Class = PL011Class;
->      const TYPE_NAME: &'static CStr = crate::TYPE_PL011;
->      const PARENT_TYPE_NAME: Option<&'static CStr> = Some(TYPE_SYS_BUS_DEVICE);
-> -    const INSTANCE_INIT: Option<unsafe extern "C" fn(obj: *mut Object)> = Some(pl011_init);
-> +    const INSTANCE_INIT: Option<unsafe fn(&mut Self)> = Some(Self::init);
+> +unsafe extern "C" fn rust_instance_init<T: ObjectImpl>(obj: *mut Object) {
+> +    // SAFETY: obj is an instance of T, since rust_instance_init<T>
+> +    // is called from QOM core as the instance_init function
+> +    // for class T
+> +    unsafe { T::INSTANCE_INIT.unwrap()(&mut *obj.cast::<T>()) }
+> +}
 
-No need to keep `unsafe` here?
+Here's the difference, why doesn't init() narrow the unsafe scope like
+post_init() does?
 
-> +///
-> +/// - the struct must be `#[repr(C)]`
-> +///
-> +/// - `Class` and `TYPE` must match the data in the `TypeInfo` (this is
-> +///   automatic if the class is defined via `ObjectImpl`).
-> +///
-> +/// - the first field of the struct must be of the instance struct corresponding
-> +///   to the superclass declared as `PARENT_TYPE_NAME`
->  pub trait ObjectImpl: ClassInitImpl + Sized {
-> +    /// The QOM class object corresponding to this struct.  Not used yet.
->      type Class;
+> +unsafe extern "C" fn rust_instance_post_init<T: ObjectImpl>(obj: *mut Object) {
+> +    // SAFETY: obj is an instance of T, since rust_instance_post_init<T>
+> +    // is called from QOM core as the instance_post_init function
+> +    // for class T
+> +    //
+> +    // FIXME: it's not really guaranteed that there are no backpointers to
+> +    // obj; it's quite possible that they have been created by instance_init().
+> +    // The receiver should be &self, not &mut self.
+> +    T::INSTANCE_POST_INIT.unwrap()(unsafe { &mut *obj.cast::<T>() })
+> +}
 > +
-> +    /// The name of the type, which can be passed to `object_new()` to
-> +    /// generate an instance of this type.
->      const TYPE_NAME: &'static CStr;
-> +
-> +    /// The parent of the type.  This should match the first field of
-> +    /// the struct that implements `ObjectImpl`:
->      const PARENT_TYPE_NAME: Option<&'static CStr>;
-> +
-> +    /// Whether the object can be instantiated
->      const ABSTRACT: bool = false;
-> -    const INSTANCE_INIT: Option<unsafe extern "C" fn(obj: *mut Object)> = None;
-> -    const INSTANCE_POST_INIT: Option<unsafe extern "C" fn(obj: *mut Object)> = None;
-> +
-> +    /// Function that is called to initialize an object.  The parent class will
-> +    /// have already been initialized so the type is only responsible for
-> +    /// initializing its own members.
-> +    ///
-> +    /// FIXME: The argument is not really a valid reference. `&mut
-> +    /// MaybeUninit<Self>` would be a better description.
-> +    const INSTANCE_INIT: Option<unsafe fn(&mut Self)> = None;
 
-And here.
-
-> +    /// Function that is called to finish initialization of an object, once
-> +    /// `INSTANCE_INIT` functions have been called.
-> +    const INSTANCE_POST_INIT: Option<fn(&mut Self)> = None;
->  
-
-Otherwise,
-
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
 
