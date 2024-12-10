@@ -2,77 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F21489EB12C
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Dec 2024 13:48:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB3969EB141
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Dec 2024 13:53:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tKze1-0003gF-6n; Tue, 10 Dec 2024 07:47:17 -0500
+	id 1tKzj8-0004m1-CB; Tue, 10 Dec 2024 07:52:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1tKzdq-0003fo-NC
- for qemu-devel@nongnu.org; Tue, 10 Dec 2024 07:47:08 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <brueckner@linux.ibm.com>)
+ id 1tKziK-0004gb-Vy; Tue, 10 Dec 2024 07:51:46 -0500
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1tKzdm-0005Aa-P1
- for qemu-devel@nongnu.org; Tue, 10 Dec 2024 07:47:06 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1733834819;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=5XfFEJ9jZ6xPsUI9vLDesczkJLEwDFFs3vMsovVCmTk=;
- b=a7uSdrqOdpx/J58trOml9x6fnpiVIHHAz9CLOQTgC9q5+LcIEzjAtf6kk+p2dyP/uuQY8z
- axmiAfBLznYpC0nSH59fdtSZVYuHXfj6B0T0lQpeG0tnaqo0bmW+GBb0oV4QV6ruZOzVeH
- jvtuW6H3D6OVarkbiHFR0STyH2e26aY=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-606-ITyZk9NKP7yFGI4YczOfuQ-1; Tue,
- 10 Dec 2024 07:46:53 -0500
-X-MC-Unique: ITyZk9NKP7yFGI4YczOfuQ-1
-X-Mimecast-MFC-AGG-ID: ITyZk9NKP7yFGI4YczOfuQ
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 294A51955BF9; Tue, 10 Dec 2024 12:46:52 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.194.102])
- by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 593DC195605A; Tue, 10 Dec 2024 12:46:46 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 05BCD21EC35A; Tue, 10 Dec 2024 13:46:44 +0100 (CET)
-From: Markus Armbruster <armbru@redhat.com>
-To: Steve Sistare <steven.sistare@oracle.com>
-Cc: qemu-devel@nongnu.org,  Peter Xu <peterx@redhat.com>,  Fabiano Rosas
- <farosas@suse.de>,  David Hildenbrand <david@redhat.com>,  Marcel
- Apfelbaum <marcel.apfelbaum@gmail.com>,  Eduardo Habkost
- <eduardo@habkost.net>,  Philippe Mathieu-Daude <philmd@linaro.org>,  Paolo
- Bonzini <pbonzini@redhat.com>,  "Daniel P. Berrange" <berrange@redhat.com>
-Subject: Re: [PATCH V4 09/19] migration: incoming channel
-In-Reply-To: <87ser2cfw6.fsf@pond.sub.org> (Markus Armbruster's message of
- "Thu, 05 Dec 2024 16:23:53 +0100")
-References: <1733145611-62315-1-git-send-email-steven.sistare@oracle.com>
- <1733145611-62315-10-git-send-email-steven.sistare@oracle.com>
- <87ser2cfw6.fsf@pond.sub.org>
-Date: Tue, 10 Dec 2024 13:46:44 +0100
-Message-ID: <87pllz4sej.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ (Exim 4.90_1) (envelope-from <brueckner@linux.ibm.com>)
+ id 1tKziH-0005dr-G0; Tue, 10 Dec 2024 07:51:44 -0500
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BA81hDZ002915;
+ Tue, 10 Dec 2024 12:51:39 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:date:from:in-reply-to:message-id
+ :mime-version:references:subject:to; s=pp1; bh=JTMMSgfsN/pQB2OoJ
+ QGS2jo2oheEO0dCjdVjwSfr6OE=; b=eJ/bdF7Mdd/t61EHKAlTVQQPMz5tka4y6
+ UUfVJiu7TReBKxxpUFXXBcIilFmZYJ2/9oZFIDQoT+dVO1gnSyo9j8lWLxa6hTpt
+ 2TNpWwReWQZm7pA236yHfqkIo4bbrAnbKFetunjqarL2ihfk5CB+cST/Ue18o0NY
+ HcP0fa3tFZZLD8oVcvdbwCJE2xBWWIFAspmL15MRy2vqu1NY78tamM3q/YFbC+fv
+ P2Q1efwSxj5fVwT8uehI1hMlw1s78V4zzqvW3M5MVlRZ2yom7SDpTbgFi65c7Bq9
+ vIuc8VMOUJELVJCQSvaI/Dd5WBHDldlp4Cu9521lzsZxXVRK6OfDQ==
+Received: from ppma13.dal12v.mail.ibm.com
+ (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 43ce0xdysh-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 10 Dec 2024 12:51:39 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4BA8bORX023039;
+ Tue, 10 Dec 2024 12:51:38 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+ by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 43d2wjubng-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 10 Dec 2024 12:51:38 +0000
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com
+ [10.20.54.100])
+ by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 4BACpYrt61407554
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 10 Dec 2024 12:51:35 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id D92432004B;
+ Tue, 10 Dec 2024 12:51:34 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 7504020043;
+ Tue, 10 Dec 2024 12:51:34 +0000 (GMT)
+Received: from vela.ibmuc.com (unknown [9.171.9.236])
+ by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Tue, 10 Dec 2024 12:51:34 +0000 (GMT)
+From: Hendrik Brueckner <brueckner@linux.ibm.com>
+To: qemu-devel@nongnu.org, qemu-s390x@nongnu.org, thuth@redhat.com
+Cc: nsg@linux.ibm.com, frankja@linux.ibm.com, mimu@linux.ibm.com,
+ Hendrik Brueckner <brueckner@linux.ibm.com>
+Subject: [RFC PATCH] s390x/cpumodel: add MSA 12 consistency checks
+Date: Tue, 10 Dec 2024 13:51:28 +0100
+Message-ID: <20241210125128.38231-1-brueckner@linux.ibm.com>
+X-Mailer: git-send-email 2.43.5
+In-Reply-To: <07b6501d-f342-444c-bb9e-45e314c750ed@linux.ibm.com>
+References: <07b6501d-f342-444c-bb9e-45e314c750ed@linux.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -25
-X-Spam_score: -2.6
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: NW5wiqfd81l2Y0yRG7-MaUUIHHMExJlj
+X-Proofpoint-ORIG-GUID: NW5wiqfd81l2Y0yRG7-MaUUIHHMExJlj
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0
+ spamscore=0 clxscore=1015 impostorscore=0 mlxscore=0 mlxlogscore=779
+ priorityscore=1501 malwarescore=0 adultscore=0 bulkscore=0 phishscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2411120000 definitions=main-2412100093
+Received-SPF: pass client-ip=148.163.158.5;
+ envelope-from=brueckner@linux.ibm.com; helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
 X-Spam_bar: --
-X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.52,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H2=-0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,148 +104,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Markus Armbruster <armbru@redhat.com> writes:
+The MSA 12 facility depends on MSA 6 for which only its
+subfunctions are defined as features.  Hence, require all
+MSA 6 subfunctions as pre-requisite for MSA 12.
 
-> Steve Sistare <steven.sistare@oracle.com> writes:
->
->> Extend the -incoming option to allow an @MigrationChannel to be specified.
->> This allows channels other than 'main' to be described on the command
->> line, which will be needed for CPR.
->>
->> Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
+Signed-off-by: Hendrik Brueckner <brueckner@linux.ibm.com>
+---
+ target/s390x/cpu_models.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-[...]
-
->> diff --git a/system/vl.c b/system/vl.c
->> index 4151a79..2c24c60 100644
->> --- a/system/vl.c
->> +++ b/system/vl.c
->> @@ -123,6 +123,7 @@
->>  #include "qapi/qapi-visit-block-core.h"
->>  #include "qapi/qapi-visit-compat.h"
->>  #include "qapi/qapi-visit-machine.h"
->> +#include "qapi/qapi-visit-migration.h"
->>  #include "qapi/qapi-visit-ui.h"
->>  #include "qapi/qapi-commands-block-core.h"
->>  #include "qapi/qapi-commands-migration.h"
->> @@ -159,6 +160,7 @@ typedef struct DeviceOption {
->>  static const char *cpu_option;
->>  static const char *mem_path;
->>  static const char *incoming;
->> +static MigrationChannelList *incoming_channels;
->>  static const char *loadvm;
->>  static const char *accelerators;
->>  static bool have_custom_ram_size;
->> @@ -1821,6 +1823,35 @@ static void object_option_add_visitor(Visitor *v)
->>      QTAILQ_INSERT_TAIL(&object_opts, opt, next);
->>  }
->>  
->> +static void incoming_option_parse(const char *str)
->> +{
->> +    MigrationChannel *channel;
->> +
->> +    if (str[0] == '{') {
->> +        QObject *obj = qobject_from_json(str, &error_fatal);
->> +        Visitor *v = qobject_input_visitor_new(obj);
->> +
->> +        qobject_unref(obj);
->> +        visit_type_MigrationChannel(v, "channel", &channel, &error_fatal);
->> +        visit_free(v);
->> +    } else if (!strcmp(str, "defer")) {
->> +        channel = NULL;
->> +    } else {
->> +        migrate_uri_parse(str, &channel, &error_fatal);
->> +    }
->> +
->> +    /* New incoming spec replaces the previous */
->> +
->> +    if (incoming_channels) {
->> +        qapi_free_MigrationChannelList(incoming_channels);
->> +    }
->> +    if (channel) {
->> +        incoming_channels = g_new0(MigrationChannelList, 1);
->> +        incoming_channels->value = channel;
->> +    }
->> +    incoming = str;
->> +}
->
-> @incoming is set to @optarg.
->
-> @incoming_channels is set to a MigrationChannelList of exactly one
-> element, parsed from @incoming.  Except when @incoming is "defer", then
-> @incoming_channels is set to null.
->
-> @incoming is only ever used as a flag.  Turn it into a bool?
->
-> Oh, wait...  see my comment on the next hunk.
->
-> Option -incoming resembles QMP command migrate-incoming.  Differences:
->
-> * migrate-incoming keeps legacy URI and modern argument separate: there
->   are two named arguments, and exactly one of them must be passed.
->   -incoming overloads them: if @optarg starts with '{', it's modern,
->   else legacy URI.
->
->   Because of that, -incoming *only* supports JSON syntax for modern, not
->   dotted keys.  Other JSON-capable arguments support both.
-
-Here's a way to avoid restricting modern to JSON.
-
-Legacy URI is either "defer" or starts with "KEYWORD:", where KEYWORD is
-one of a few well-known words.
-
-As long as we don't support an implied key, a non-empty dotted keys
-argument starts with "KEY=", where KEY cannot contain ':'.
-
-This lets us distinguish legacy URI from dotted keys.  Say, if the
-argument is "defer" or starts with letters followed by ':', assume URI.
-
->   How can a management application detect that -incoming supports
->   modern?
->
->   Sure overloading -incoming this way is a good idea?
-
-It'll be a pain to document.
-
-> * migrate-incoming takes a list of channels, currently restricted to a
->   single channel.  -incoming takes a channel.  If we lift the
->   restriction, -incoming syntax will become even messier: we'll have to
->   additionally overload list of channel.
->
->   Should -incoming take a list from the start, like migrate-incoming
->   does?
->
->> +
->>  static void object_option_parse(const char *str)
->>  {
->>      QemuOpts *opts;
->> @@ -2730,7 +2761,7 @@ void qmp_x_exit_preconfig(Error **errp)
->>      if (incoming) {
->>          Error *local_err = NULL;
->>          if (strcmp(incoming, "defer") != 0) {
->> -            qmp_migrate_incoming(incoming, false, NULL, true, true,
->> +            qmp_migrate_incoming(NULL, true, incoming_channels, true, true,
->>                                   &local_err);
->
-> You move the parsing of legacy URI from within qmp_migrate_incoming()
-> into incoming_option_parse().
->
-> The alternative is not to parse it in incoming_option_parse(), but pass
-> it to qmp_migrate_incoming() like this:
->
->                qmp_migrate_incoming(incoming, !incoming, incoming_channels,
->                                     true, true, &local_err);
->
->>              if (local_err) {
->>                  error_reportf_err(local_err, "-incoming %s: ", incoming);
->> @@ -3477,7 +3508,7 @@ void qemu_init(int argc, char **argv)
->>                  if (!incoming) {
->>                      runstate_set(RUN_STATE_INMIGRATE);
->>                  }
->> -                incoming = optarg;
->> +                incoming_option_parse(optarg);
->>                  break;
->>              case QEMU_OPTION_only_migratable:
->>                  only_migratable = 1;
+diff --git a/target/s390x/cpu_models.c b/target/s390x/cpu_models.c
+index beb50b5300..a95e54fa8c 100644
+--- a/target/s390x/cpu_models.c
++++ b/target/s390x/cpu_models.c
+@@ -553,6 +553,18 @@ static void check_consistency(const S390CPUModel *model)
+         { S390_FEAT_PLO_QSTG, S390_FEAT_PLO_EXT },
+         { S390_FEAT_PLO_QSTX, S390_FEAT_PLO_EXT },
+         { S390_FEAT_PLO_QSTO, S390_FEAT_PLO_EXT },
++        { S390_FEAT_MSA_EXT_12, S390_FEAT_KIMD_SHA3_224 },
++        { S390_FEAT_MSA_EXT_12, S390_FEAT_KIMD_SHA3_256 },
++        { S390_FEAT_MSA_EXT_12, S390_FEAT_KIMD_SHA3_384 },
++        { S390_FEAT_MSA_EXT_12, S390_FEAT_KIMD_SHA3_512 },
++        { S390_FEAT_MSA_EXT_12, S390_FEAT_KIMD_SHAKE_128 },
++        { S390_FEAT_MSA_EXT_12, S390_FEAT_KIMD_SHAKE_256 },
++        { S390_FEAT_MSA_EXT_12, S390_FEAT_KLMD_SHA3_224 },
++        { S390_FEAT_MSA_EXT_12, S390_FEAT_KLMD_SHA3_256 },
++        { S390_FEAT_MSA_EXT_12, S390_FEAT_KLMD_SHA3_384 },
++        { S390_FEAT_MSA_EXT_12, S390_FEAT_KLMD_SHA3_512 },
++        { S390_FEAT_MSA_EXT_12, S390_FEAT_KLMD_SHAKE_128 },
++        { S390_FEAT_MSA_EXT_12, S390_FEAT_KLMD_SHAKE_256 },
+     };
+     int i;
+ 
+-- 
+2.43.5
 
 
