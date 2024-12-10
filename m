@@ -2,79 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86F0F9EB5F5
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Dec 2024 17:19:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 04FAC9EB635
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Dec 2024 17:24:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tL2wF-0002WJ-J8; Tue, 10 Dec 2024 11:18:19 -0500
+	id 1tL2wK-0002Xn-Gi; Tue, 10 Dec 2024 11:18:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tL2wE-0002W0-6Y
- for qemu-devel@nongnu.org; Tue, 10 Dec 2024 11:18:18 -0500
-Received: from mail-lf1-x133.google.com ([2a00:1450:4864:20::133])
+ id 1tL2wI-0002XV-IH
+ for qemu-devel@nongnu.org; Tue, 10 Dec 2024 11:18:22 -0500
+Received: from mail-lf1-x135.google.com ([2a00:1450:4864:20::135])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tL2wC-0006Ka-Ej
- for qemu-devel@nongnu.org; Tue, 10 Dec 2024 11:18:17 -0500
-Received: by mail-lf1-x133.google.com with SMTP id
- 2adb3069b0e04-54020b0dcd2so2072382e87.1
- for <qemu-devel@nongnu.org>; Tue, 10 Dec 2024 08:18:16 -0800 (PST)
+ id 1tL2wG-0006LB-DX
+ for qemu-devel@nongnu.org; Tue, 10 Dec 2024 11:18:22 -0500
+Received: by mail-lf1-x135.google.com with SMTP id
+ 2adb3069b0e04-53ff1f7caaeso3304413e87.0
+ for <qemu-devel@nongnu.org>; Tue, 10 Dec 2024 08:18:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1733847495; x=1734452295; darn=nongnu.org;
+ d=linaro.org; s=google; t=1733847499; x=1734452299; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=jketwBKoo02OCAcU1bp5I+NgSnbqc1IWZRElDFeh+xg=;
- b=glnCh/l0d4JLsT1FkAD23fJIkb/0IsE0J70HkT2MvN5Mpy53qr6G6GYXWes2wRHXVi
- 6MjcMDBhP62uZaYZL/k5VnAY6CRA1QEqJ4813q+c/kEQWQn1GVAUv6rliXnPA+JbCi21
- MMxo/3eL4/a95b799Rmv5h92tsN1vTQWIYywHNIfcHT7hGICHHIKlkGGlYZaEQzh6S9M
- grU086p0m931eCKMm4x308Q7s1z98f/K+tvpC4PV/jCgDUVSMFOzlv2RVS3ZgXA3yqLz
- z8NndD+PkOarYTWeeuMXIQ2QGlsIpjEZtPVNaS7rFe6j65Uo2tsO4np8a3oc3zJric5N
- xLnw==
+ bh=hyFQvqa4ZP5fftH7OfmG1SrHIoV27DETz0Thv1W0mFA=;
+ b=wxfCKH4677cCN8GoYrerGE1rI2rBtBzNBvte0dpw/en4y5/e6PI4PVMdhXnW9euEHY
+ kMtHZT55h9wfDDAdPA4DjjDzEEmJeZCTtS36GOu/6yRe7fAjoba1MbvjyN5PKAj6cEFK
+ 0+AHec8XKcrVQ4cNq3fAshnDs9ZF93E2SkOjBYeX2HJjPOaWLsD4YMfL3ffoiqP3H19n
+ WHtf33o/DR2cdpb1D5DQzroP2BqEB6vEtvIrIUlPq1+XS5lEWPacEhEd9ti0uygYf+nR
+ RXrpqUGiYgsMMpNTKhbgJfNaKeFuR5FxLP3xj7PnoQ65IMTn6DtnP91jPzOmLQlvxTe1
+ HIZA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733847495; x=1734452295;
+ d=1e100.net; s=20230601; t=1733847499; x=1734452299;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=jketwBKoo02OCAcU1bp5I+NgSnbqc1IWZRElDFeh+xg=;
- b=YqSSPL2xAhBZd4PgD0jTp5C2Iyl8zfGbCzwL34+zUNuvqwbkZ0WqSt0bGLL4hPLicE
- boUGNqhlyycmP8b+dwDUrUUNgBWj4ESggthblCV+NPfqMlnQ2wJdmkpvn4YenTwJ1YC3
- Zc9fXOTfNlXFNjvaacR3m1PE5wTOi+gPPxGiB/Xh6ELFN6nJjbk6Zsp5H9qtBXILJz96
- sSP66C6AUfDh9r8MFJL4OKppQV+N5dfYjourv6T6NH5Jqwn/vD41tz3NpwCydaOoyDWI
- 296rnck3SUHpddA3Vz3gvEtdTzs18VaF/6wtk5gb3ab8qVBxCSRp1kxO1iYLWiJDFTM5
- /FYA==
-X-Gm-Message-State: AOJu0YwjFKkS4jJmt46yQoILGhtJ7iOa69csdgPhwEaXknHh9XDluGer
- Asc3gABu7b9EXQXz/kUL8X9vI0DZrFLPEUd3I3jGPyad/oNiY/83YWkHBfBrWYUxkCRu6viahe3
- OATIKNduW
-X-Gm-Gg: ASbGnctsojQXk4kClk7zqWUyoys0j1EFvw2owk+GuRqliW5Ql8Mbq0tIxLyJCOnWHHi
- CIeRnVb5p/MbryBUttm559gVGEBYDH8g6KQvrTY3f3otjmbVOfhZ/78HpcCD7VJOPH459CYdVu4
- SNIRMQIbUmD3ps/B35X5NZ+CxS7q6SGT1z3gnpcfEEGeoILmjCZNegEeov14srmOwpGqRCXG0iv
- uA0EWdw7mMucFv5DlHd41uEekAiju0eqlU0aP8DaF3hvlfawvn63oANziw=
-X-Google-Smtp-Source: AGHT+IGHpyA4C9ra7T2Pcj0v5l5MSeCHiwNgSCebH7saMt+4ZsHzRcHcikxJIZS1u8CCci00Ft5Wug==
-X-Received: by 2002:a05:6512:3a83:b0:53e:94f8:bb3e with SMTP id
- 2adb3069b0e04-540251f216emr1408444e87.19.1733847494723; 
- Tue, 10 Dec 2024 08:18:14 -0800 (PST)
+ bh=hyFQvqa4ZP5fftH7OfmG1SrHIoV27DETz0Thv1W0mFA=;
+ b=YSsO/99DCRzfyhXA4jI5EhtujNXRq4Btavn8DeSR6chzAS69/muDaNHytGdgGNBYqy
+ Lk0xa8lt2vfHPiHBcCEvHTyVahUBrTlVNyyS2+XyFduvURdLWcznbqfCiidO8iHrgdgx
+ 2Iyc32e/r+c9cxFzAtW8DA4H7qzyFiw4j+sFaosPgVahRQvI4PG2oxn6+3GcQeKWnyp1
+ /9wZR/WUeZE8rYoD95amAwjracC6FGOFSiq+xC/eNIiL+eYPpj6+5eLcqvD1GNyDXG+I
+ nzFI8+sWsBJ9k5czbAz+cBzb4UH/ur55FZ9wTfkyYy3IOy7+uhPc5oe3idkn4f4MYzP8
+ q4Qw==
+X-Gm-Message-State: AOJu0Yy0tpPtD4yGIbDAP/xEbNfT/AKnO6fq5rMfRi6yK0yfik1bmNh3
+ Rux8CVZoQweauX9lr+O3ETNPRJizR/asb4Gkq3glE6GJtJXfXxvaf21yZ8Boj93+sKlzH4tIaZ2
+ e7N2yVHuU
+X-Gm-Gg: ASbGncshz8Dvxe1lkI3G2/WO+kQFT9+d0lTNfuaAa6ywxtZ5Z/dVWIt2ncEYvZTSfk4
+ etcQvfLUAyxTX+9869rYrJUVxY2EKB4NJ9lMmld25phxVcMluUxyZyhi0L+XCi2sWn2x8FRzv2s
+ uj4q/tyYanYMjQVREavHOM+teR0PuXl8376+s5H3tY0OOMCRBmkRulF332ZlIPjUU6xUVten1my
+ igsKc7tSzIApc/rvkEWhDYMJuLnAh1iR0a+o/gVf3qUdGN7II36wtavBvM=
+X-Google-Smtp-Source: AGHT+IF71oDLq2KyZhHmglvOYvUoedy+ilDRnfWHCOZqqcR9nG8aweeG2I+jeLll3aKbCuzc+JJ0Ow==
+X-Received: by 2002:a05:6512:138c:b0:540:1a0c:9ba4 with SMTP id
+ 2adb3069b0e04-540240d2faemr1572220e87.29.1733847498707; 
+ Tue, 10 Dec 2024 08:18:18 -0800 (PST)
 Received: from stoup.. ([91.209.212.80]) by smtp.gmail.com with ESMTPSA id
- 2adb3069b0e04-53f93377eefsm1026343e87.67.2024.12.10.08.18.10
+ 2adb3069b0e04-53f93377eefsm1026343e87.67.2024.12.10.08.18.15
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 10 Dec 2024 08:18:13 -0800 (PST)
+ Tue, 10 Dec 2024 08:18:17 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 08/69] target/arm: Convert CLZ, CLS to decodetree
-Date: Tue, 10 Dec 2024 10:16:32 -0600
-Message-ID: <20241210161733.1830573-9-richard.henderson@linaro.org>
+	Peter Maydell <peter.maydell@linaro.org>
+Subject: [PATCH v2 09/69] target/arm: Convert PAC[ID]*, AUT[ID]* to decodetree
+Date: Tue, 10 Dec 2024 10:16:33 -0600
+Message-ID: <20241210161733.1830573-10-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241210161733.1830573-1-richard.henderson@linaro.org>
 References: <20241210161733.1830573-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::133;
- envelope-from=richard.henderson@linaro.org; helo=mail-lf1-x133.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::135;
+ envelope-from=richard.henderson@linaro.org; helo=mail-lf1-x135.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,127 +96,234 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+This includes PACIA, PACIZA, PACIB, PACIZB, PACDA, PACDZA, PACDB,
+PACDZB, AUTIA, AUTIZA, AUTIB, AUTIZB, AUTDA, AUTDZA, AUTDB, AUTDZB.
+
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/tcg/translate-a64.c | 72 ++++++++++++++--------------------
- target/arm/tcg/a64.decode      |  3 ++
- 2 files changed, 33 insertions(+), 42 deletions(-)
+ target/arm/tcg/translate-a64.c | 173 +++++++++------------------------
+ target/arm/tcg/a64.decode      |  13 +++
+ 2 files changed, 58 insertions(+), 128 deletions(-)
 
 diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
-index 1805d77f43..552b45b4e2 100644
+index 552b45b4e2..852545dfcc 100644
 --- a/target/arm/tcg/translate-a64.c
 +++ b/target/arm/tcg/translate-a64.c
-@@ -7738,6 +7738,32 @@ TRANS(REV16, gen_rr, a->rd, a->rn, a->sf ? gen_rev16_64 : gen_rev16_32)
- TRANS(REV32, gen_rr, a->rd, a->rn, a->sf ? gen_rev32 : gen_rev_32)
- TRANS(REV64, gen_rr, a->rd, a->rn, tcg_gen_bswap64_i64)
+@@ -7764,6 +7764,35 @@ static void gen_cls32(TCGv_i64 tcg_rd, TCGv_i64 tcg_rn)
+ TRANS(CLZ, gen_rr, a->rd, a->rn, a->sf ? gen_clz64 : gen_clz32)
+ TRANS(CLS, gen_rr, a->rd, a->rn, a->sf ? tcg_gen_clrsb_i64 : gen_cls32)
  
-+static void gen_clz32(TCGv_i64 tcg_rd, TCGv_i64 tcg_rn)
++static bool gen_pacaut(DisasContext *s, arg_pacaut *a, NeonGenTwo64OpEnvFn fn)
 +{
-+    TCGv_i32 t32 = tcg_temp_new_i32();
++    TCGv_i64 tcg_rd, tcg_rn;
 +
-+    tcg_gen_extrl_i64_i32(t32, tcg_rn);
-+    tcg_gen_clzi_i32(t32, t32, 32);
-+    tcg_gen_extu_i32_i64(tcg_rd, t32);
++    if (a->z) {
++        if (a->rn != 31) {
++            return false;
++        }
++        tcg_rn = tcg_constant_i64(0);
++    } else {
++        tcg_rn = cpu_reg_sp(s, a->rn);
++    }
++    if (s->pauth_active) {
++        tcg_rd = cpu_reg(s, a->rd);
++        fn(tcg_rd, tcg_env, tcg_rd, tcg_rn);
++    }
++    return true;
 +}
 +
-+static void gen_clz64(TCGv_i64 tcg_rd, TCGv_i64 tcg_rn)
-+{
-+    tcg_gen_clzi_i64(tcg_rd, tcg_rn, 64);
-+}
++TRANS_FEAT(PACIA, aa64_pauth, gen_pacaut, a, gen_helper_pacia)
++TRANS_FEAT(PACIB, aa64_pauth, gen_pacaut, a, gen_helper_pacib)
++TRANS_FEAT(PACDA, aa64_pauth, gen_pacaut, a, gen_helper_pacda)
++TRANS_FEAT(PACDB, aa64_pauth, gen_pacaut, a, gen_helper_pacdb)
 +
-+static void gen_cls32(TCGv_i64 tcg_rd, TCGv_i64 tcg_rn)
-+{
-+    TCGv_i32 t32 = tcg_temp_new_i32();
-+
-+    tcg_gen_extrl_i64_i32(t32, tcg_rn);
-+    tcg_gen_clrsb_i32(t32, t32);
-+    tcg_gen_extu_i32_i64(tcg_rd, t32);
-+}
-+
-+TRANS(CLZ, gen_rr, a->rd, a->rn, a->sf ? gen_clz64 : gen_clz32)
-+TRANS(CLS, gen_rr, a->rd, a->rn, a->sf ? tcg_gen_clrsb_i64 : gen_cls32)
++TRANS_FEAT(AUTIA, aa64_pauth, gen_pacaut, a, gen_helper_autia)
++TRANS_FEAT(AUTIB, aa64_pauth, gen_pacaut, a, gen_helper_autib)
++TRANS_FEAT(AUTDA, aa64_pauth, gen_pacaut, a, gen_helper_autda)
++TRANS_FEAT(AUTDB, aa64_pauth, gen_pacaut, a, gen_helper_autdb)
 +
  /* Logical (shifted register)
   *   31  30 29 28       24 23   22 21  20  16 15    10 9    5 4    0
   * +----+-----+-----------+-------+---+------+--------+------+------+
-@@ -8322,40 +8348,6 @@ static void disas_cond_select(DisasContext *s, uint32_t insn)
-     }
- }
- 
--static void handle_clz(DisasContext *s, unsigned int sf,
--                       unsigned int rn, unsigned int rd)
--{
--    TCGv_i64 tcg_rd, tcg_rn;
--    tcg_rd = cpu_reg(s, rd);
--    tcg_rn = cpu_reg(s, rn);
--
--    if (sf) {
--        tcg_gen_clzi_i64(tcg_rd, tcg_rn, 64);
--    } else {
--        TCGv_i32 tcg_tmp32 = tcg_temp_new_i32();
--        tcg_gen_extrl_i64_i32(tcg_tmp32, tcg_rn);
--        tcg_gen_clzi_i32(tcg_tmp32, tcg_tmp32, 32);
--        tcg_gen_extu_i32_i64(tcg_rd, tcg_tmp32);
--    }
--}
--
--static void handle_cls(DisasContext *s, unsigned int sf,
--                       unsigned int rn, unsigned int rd)
--{
--    TCGv_i64 tcg_rd, tcg_rn;
--    tcg_rd = cpu_reg(s, rd);
--    tcg_rn = cpu_reg(s, rn);
--
--    if (sf) {
--        tcg_gen_clrsb_i64(tcg_rd, tcg_rn);
--    } else {
--        TCGv_i32 tcg_tmp32 = tcg_temp_new_i32();
--        tcg_gen_extrl_i64_i32(tcg_tmp32, tcg_rn);
--        tcg_gen_clrsb_i32(tcg_tmp32, tcg_tmp32);
--        tcg_gen_extu_i32_i64(tcg_rd, tcg_tmp32);
--    }
--}
--
- /* Data-processing (1 source)
-  *   31  30  29  28             21 20     16 15    10 9    5 4    0
-  * +----+---+---+-----------------+---------+--------+------+------+
-@@ -8381,14 +8373,6 @@ static void disas_data_proc_1src(DisasContext *s, uint32_t insn)
+@@ -8373,134 +8402,6 @@ static void disas_data_proc_1src(DisasContext *s, uint32_t insn)
  #define MAP(SF, O2, O1) ((SF) | (O1 << 1) | (O2 << 7))
  
      switch (MAP(sf, opcode2, opcode)) {
--    case MAP(0, 0x00, 0x04): /* CLZ */
--    case MAP(1, 0x00, 0x04):
--        handle_clz(s, sf, rn, rd);
+-    case MAP(1, 0x01, 0x00): /* PACIA */
+-        if (s->pauth_active) {
+-            tcg_rd = cpu_reg(s, rd);
+-            gen_helper_pacia(tcg_rd, tcg_env, tcg_rd, cpu_reg_sp(s, rn));
+-        } else if (!dc_isar_feature(aa64_pauth, s)) {
+-            goto do_unallocated;
+-        }
 -        break;
--    case MAP(0, 0x00, 0x05): /* CLS */
--    case MAP(1, 0x00, 0x05):
--        handle_cls(s, sf, rn, rd);
+-    case MAP(1, 0x01, 0x01): /* PACIB */
+-        if (s->pauth_active) {
+-            tcg_rd = cpu_reg(s, rd);
+-            gen_helper_pacib(tcg_rd, tcg_env, tcg_rd, cpu_reg_sp(s, rn));
+-        } else if (!dc_isar_feature(aa64_pauth, s)) {
+-            goto do_unallocated;
+-        }
 -        break;
-     case MAP(1, 0x01, 0x00): /* PACIA */
-         if (s->pauth_active) {
-             tcg_rd = cpu_reg(s, rd);
-@@ -8542,6 +8526,10 @@ static void disas_data_proc_1src(DisasContext *s, uint32_t insn)
-     case MAP(0, 0x00, 0x02): /* REV/REV32 */
-     case MAP(1, 0x00, 0x02):
-     case MAP(1, 0x00, 0x03): /* REV64 */
-+    case MAP(0, 0x00, 0x04): /* CLZ */
-+    case MAP(1, 0x00, 0x04):
-+    case MAP(0, 0x00, 0x05): /* CLS */
-+    case MAP(1, 0x00, 0x05):
+-    case MAP(1, 0x01, 0x02): /* PACDA */
+-        if (s->pauth_active) {
+-            tcg_rd = cpu_reg(s, rd);
+-            gen_helper_pacda(tcg_rd, tcg_env, tcg_rd, cpu_reg_sp(s, rn));
+-        } else if (!dc_isar_feature(aa64_pauth, s)) {
+-            goto do_unallocated;
+-        }
+-        break;
+-    case MAP(1, 0x01, 0x03): /* PACDB */
+-        if (s->pauth_active) {
+-            tcg_rd = cpu_reg(s, rd);
+-            gen_helper_pacdb(tcg_rd, tcg_env, tcg_rd, cpu_reg_sp(s, rn));
+-        } else if (!dc_isar_feature(aa64_pauth, s)) {
+-            goto do_unallocated;
+-        }
+-        break;
+-    case MAP(1, 0x01, 0x04): /* AUTIA */
+-        if (s->pauth_active) {
+-            tcg_rd = cpu_reg(s, rd);
+-            gen_helper_autia(tcg_rd, tcg_env, tcg_rd, cpu_reg_sp(s, rn));
+-        } else if (!dc_isar_feature(aa64_pauth, s)) {
+-            goto do_unallocated;
+-        }
+-        break;
+-    case MAP(1, 0x01, 0x05): /* AUTIB */
+-        if (s->pauth_active) {
+-            tcg_rd = cpu_reg(s, rd);
+-            gen_helper_autib(tcg_rd, tcg_env, tcg_rd, cpu_reg_sp(s, rn));
+-        } else if (!dc_isar_feature(aa64_pauth, s)) {
+-            goto do_unallocated;
+-        }
+-        break;
+-    case MAP(1, 0x01, 0x06): /* AUTDA */
+-        if (s->pauth_active) {
+-            tcg_rd = cpu_reg(s, rd);
+-            gen_helper_autda(tcg_rd, tcg_env, tcg_rd, cpu_reg_sp(s, rn));
+-        } else if (!dc_isar_feature(aa64_pauth, s)) {
+-            goto do_unallocated;
+-        }
+-        break;
+-    case MAP(1, 0x01, 0x07): /* AUTDB */
+-        if (s->pauth_active) {
+-            tcg_rd = cpu_reg(s, rd);
+-            gen_helper_autdb(tcg_rd, tcg_env, tcg_rd, cpu_reg_sp(s, rn));
+-        } else if (!dc_isar_feature(aa64_pauth, s)) {
+-            goto do_unallocated;
+-        }
+-        break;
+-    case MAP(1, 0x01, 0x08): /* PACIZA */
+-        if (!dc_isar_feature(aa64_pauth, s) || rn != 31) {
+-            goto do_unallocated;
+-        } else if (s->pauth_active) {
+-            tcg_rd = cpu_reg(s, rd);
+-            gen_helper_pacia(tcg_rd, tcg_env, tcg_rd, tcg_constant_i64(0));
+-        }
+-        break;
+-    case MAP(1, 0x01, 0x09): /* PACIZB */
+-        if (!dc_isar_feature(aa64_pauth, s) || rn != 31) {
+-            goto do_unallocated;
+-        } else if (s->pauth_active) {
+-            tcg_rd = cpu_reg(s, rd);
+-            gen_helper_pacib(tcg_rd, tcg_env, tcg_rd, tcg_constant_i64(0));
+-        }
+-        break;
+-    case MAP(1, 0x01, 0x0a): /* PACDZA */
+-        if (!dc_isar_feature(aa64_pauth, s) || rn != 31) {
+-            goto do_unallocated;
+-        } else if (s->pauth_active) {
+-            tcg_rd = cpu_reg(s, rd);
+-            gen_helper_pacda(tcg_rd, tcg_env, tcg_rd, tcg_constant_i64(0));
+-        }
+-        break;
+-    case MAP(1, 0x01, 0x0b): /* PACDZB */
+-        if (!dc_isar_feature(aa64_pauth, s) || rn != 31) {
+-            goto do_unallocated;
+-        } else if (s->pauth_active) {
+-            tcg_rd = cpu_reg(s, rd);
+-            gen_helper_pacdb(tcg_rd, tcg_env, tcg_rd, tcg_constant_i64(0));
+-        }
+-        break;
+-    case MAP(1, 0x01, 0x0c): /* AUTIZA */
+-        if (!dc_isar_feature(aa64_pauth, s) || rn != 31) {
+-            goto do_unallocated;
+-        } else if (s->pauth_active) {
+-            tcg_rd = cpu_reg(s, rd);
+-            gen_helper_autia(tcg_rd, tcg_env, tcg_rd, tcg_constant_i64(0));
+-        }
+-        break;
+-    case MAP(1, 0x01, 0x0d): /* AUTIZB */
+-        if (!dc_isar_feature(aa64_pauth, s) || rn != 31) {
+-            goto do_unallocated;
+-        } else if (s->pauth_active) {
+-            tcg_rd = cpu_reg(s, rd);
+-            gen_helper_autib(tcg_rd, tcg_env, tcg_rd, tcg_constant_i64(0));
+-        }
+-        break;
+-    case MAP(1, 0x01, 0x0e): /* AUTDZA */
+-        if (!dc_isar_feature(aa64_pauth, s) || rn != 31) {
+-            goto do_unallocated;
+-        } else if (s->pauth_active) {
+-            tcg_rd = cpu_reg(s, rd);
+-            gen_helper_autda(tcg_rd, tcg_env, tcg_rd, tcg_constant_i64(0));
+-        }
+-        break;
+-    case MAP(1, 0x01, 0x0f): /* AUTDZB */
+-        if (!dc_isar_feature(aa64_pauth, s) || rn != 31) {
+-            goto do_unallocated;
+-        } else if (s->pauth_active) {
+-            tcg_rd = cpu_reg(s, rd);
+-            gen_helper_autdb(tcg_rd, tcg_env, tcg_rd, tcg_constant_i64(0));
+-        }
+-        break;
+     case MAP(1, 0x01, 0x10): /* XPACI */
+         if (!dc_isar_feature(aa64_pauth, s) || rn != 31) {
+             goto do_unallocated;
+@@ -8530,6 +8431,22 @@ static void disas_data_proc_1src(DisasContext *s, uint32_t insn)
+     case MAP(1, 0x00, 0x04):
+     case MAP(0, 0x00, 0x05): /* CLS */
+     case MAP(1, 0x00, 0x05):
++    case MAP(1, 0x01, 0x00): /* PACIA */
++    case MAP(1, 0x01, 0x01): /* PACIB */
++    case MAP(1, 0x01, 0x02): /* PACDA */
++    case MAP(1, 0x01, 0x03): /* PACDB */
++    case MAP(1, 0x01, 0x04): /* AUTIA */
++    case MAP(1, 0x01, 0x05): /* AUTIB */
++    case MAP(1, 0x01, 0x06): /* AUTDA */
++    case MAP(1, 0x01, 0x07): /* AUTDB */
++    case MAP(1, 0x01, 0x08): /* PACIZA */
++    case MAP(1, 0x01, 0x09): /* PACIZB */
++    case MAP(1, 0x01, 0x0a): /* PACDZA */
++    case MAP(1, 0x01, 0x0b): /* PACDZB */
++    case MAP(1, 0x01, 0x0c): /* AUTIZA */
++    case MAP(1, 0x01, 0x0d): /* AUTIZB */
++    case MAP(1, 0x01, 0x0e): /* AUTDZA */
++    case MAP(1, 0x01, 0x0f): /* AUTDZB */
          unallocated_encoding(s);
          break;
      }
 diff --git a/target/arm/tcg/a64.decode b/target/arm/tcg/a64.decode
-index dd44651f34..410eaa9333 100644
+index 410eaa9333..9083ac4ac3 100644
 --- a/target/arm/tcg/a64.decode
 +++ b/target/arm/tcg/a64.decode
-@@ -696,6 +696,9 @@ REV16           . 10 11010110 00000 000001 ..... .....  @rr_sf
- REV32           . 10 11010110 00000 000010 ..... .....  @rr_sf
- REV64           1 10 11010110 00000 000011 ..... .....  @rr
+@@ -699,6 +699,19 @@ REV64           1 10 11010110 00000 000011 ..... .....  @rr
+ CLZ             . 10 11010110 00000 000100 ..... .....  @rr_sf
+ CLS             . 10 11010110 00000 000101 ..... .....  @rr_sf
  
-+CLZ             . 10 11010110 00000 000100 ..... .....  @rr_sf
-+CLS             . 10 11010110 00000 000101 ..... .....  @rr_sf
++&pacaut         rd rn z
++@pacaut         . .. ........ ..... .. z:1 ... rn:5 rd:5  &pacaut
++
++PACIA           1 10 11010110 00001 00.000 ..... .....  @pacaut
++PACIB           1 10 11010110 00001 00.001 ..... .....  @pacaut
++PACDA           1 10 11010110 00001 00.010 ..... .....  @pacaut
++PACDB           1 10 11010110 00001 00.011 ..... .....  @pacaut
++
++AUTIA           1 10 11010110 00001 00.100 ..... .....  @pacaut
++AUTIB           1 10 11010110 00001 00.101 ..... .....  @pacaut
++AUTDA           1 10 11010110 00001 00.110 ..... .....  @pacaut
++AUTDB           1 10 11010110 00001 00.111 ..... .....  @pacaut
 +
  # Logical (shifted reg)
  # Add/subtract (shifted reg)
