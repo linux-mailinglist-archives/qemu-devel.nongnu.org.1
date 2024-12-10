@@ -2,95 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A08209EA366
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Dec 2024 01:11:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A8359EA361
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Dec 2024 01:10:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tKnod-0000Ww-Gc; Mon, 09 Dec 2024 19:09:28 -0500
+	id 1tKnnt-0007SE-Ok; Mon, 09 Dec 2024 19:08:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kowal@linux.ibm.com>)
- id 1tKnlU-0004lu-Kk; Mon, 09 Dec 2024 19:06:17 -0500
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ id 1tKnlX-0004mC-8Y; Mon, 09 Dec 2024 19:06:23 -0500
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kowal@linux.ibm.com>)
- id 1tKnlS-0001s7-P0; Mon, 09 Dec 2024 19:06:12 -0500
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4B9GAlN4030748;
- Tue, 10 Dec 2024 00:06:04 GMT
+ id 1tKnlU-0001sS-JT; Mon, 09 Dec 2024 19:06:14 -0500
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4B9M1OBt015519;
+ Tue, 10 Dec 2024 00:06:06 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
  :content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=pp1; bh=r2t4kH7sdHbDgHwhN
- s48jsdfggZlKwwR1zTjXghwUNI=; b=F7Q1l0f7uXiK/tScYpWbX5ODnUq//jRkh
- M83E8KpYPGw9HKNllKUL7FON/hGw6fIPAeMSl2RwFCGYqQmLlghr7d7p/WuqA/yX
- XJpG3dMkUOthage8qtnwMEUks8Tgil7yMGBb0zBXoyKDuzG4oPCy+/CXLDVSTInL
- RlbE7WhOChAW5L/Ke3buzE3nol1cwS507gisXh3eBcqDypE6fbxnMQex+A5PrU8W
- Q87kwHOBBy+izu1xF+rGrP5mMYHoEVbKm2Gye5sibtl9+hOQ0eSGjoi+2UXO5TAo
- YsSkPhfV3TI7608bZJl2ZWgRqMcz2M9pJ7nRcOe54qyEPuLuwvjCA==
+ :mime-version:references:subject:to; s=pp1; bh=zj1qexOSZEWjBo7UV
+ v+NqHPSILh/U6lPkabYZ+Xajl8=; b=VryMP51FVUWxVDEl6UpOjGL/OuFQWtqhL
+ //6uNmVB+L2sxnWNqQZ90SWMTsMJm/iIhUd/Fcqp+Q2SpAGcXSsqibZp/5id8CFi
+ xV1juim3yW057dLwWN7sgIj1UI2Ie2YPvpmqOTo+F1fcNdepOm5lRbgyvJnWpdVB
+ ptuAz4dsw23h/MPRQNJ/bgfQhcaTv8JhBeXe9T/ffVRjiW83tIMd8gqYNhUjE/f1
+ SIZeVHBrl77NgCatMZo2CS9ur/Ine6r0VEbqKZjN5o0/A3S0TXFSdnrsEUW2DHRC
+ 6D2jw0R6TNWjOwl4LNusRVLA+J96QWREhX23QX82DbiRmAPC596YQ==
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 43ce1vm6ej-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 43cbsq3gh6-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 10 Dec 2024 00:06:04 +0000 (GMT)
-Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
- by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 4BA063rk004178;
- Tue, 10 Dec 2024 00:06:03 GMT
-Received: from ppma21.wdc07v.mail.ibm.com
- (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 43ce1vm6e8-1
+ Tue, 10 Dec 2024 00:06:06 +0000 (GMT)
+Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
+ by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 4BA065PH029950;
+ Tue, 10 Dec 2024 00:06:05 GMT
+Received: from ppma22.wdc07v.mail.ibm.com
+ (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 43cbsq3gh2-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 10 Dec 2024 00:06:03 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4B9MsdhE032575;
- Tue, 10 Dec 2024 00:06:02 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
- by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 43d1pn1159-1
+ Tue, 10 Dec 2024 00:06:05 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4B9MWFNX016930;
+ Tue, 10 Dec 2024 00:06:04 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+ by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 43d12y16us-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 10 Dec 2024 00:06:02 +0000
+ Tue, 10 Dec 2024 00:06:04 +0000
 Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com
  [10.20.54.103])
- by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 4BA05wGp56623378
+ by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 4BA0612g47972806
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 10 Dec 2024 00:05:59 GMT
+ Tue, 10 Dec 2024 00:06:01 GMT
 Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D2EC82004B;
- Tue, 10 Dec 2024 00:05:58 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id E6AF620043;
+ Tue, 10 Dec 2024 00:06:00 +0000 (GMT)
 Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 0D3D620040;
- Tue, 10 Dec 2024 00:05:57 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 2144D20040;
+ Tue, 10 Dec 2024 00:05:59 +0000 (GMT)
 Received: from gfwr518.rchland.ibm.com (unknown [9.10.239.106])
  by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Tue, 10 Dec 2024 00:05:56 +0000 (GMT)
+ Tue, 10 Dec 2024 00:05:58 +0000 (GMT)
 From: Michael Kowal <kowal@linux.ibm.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, fbarrat@linux.ibm.com, npiggin@gmail.com,
  milesg@linux.ibm.com, danielhb413@gmail.com,
  david@gibson.dropbear.id.au, harshpb@linux.ibm.com, thuth@redhat.com,
  lvivier@redhat.com, pbonzini@redhat.com
-Subject: [PATCH v2 06/14] ppc/xive2: Process group backlog when updating the
+Subject: [PATCH v2 07/14] ppc/xive2: Process group backlog when updating the
  CPPR
-Date: Mon,  9 Dec 2024 18:05:14 -0600
-Message-Id: <20241210000527.9541-12-kowal@linux.ibm.com>
+Date: Mon,  9 Dec 2024 18:05:15 -0600
+Message-Id: <20241210000527.9541-13-kowal@linux.ibm.com>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241210000527.9541-1-kowal@linux.ibm.com>
 References: <20241210000527.9541-1-kowal@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: TbG9JBhehbPSVBHT07-bXovwT5d1U2y2
-X-Proofpoint-ORIG-GUID: SFYcMHU9gfG4d3K1gJfl8h1PZkxpDq0s
+X-Proofpoint-ORIG-GUID: vsx7ZPKvg0BHAwvtjSAeLRXGGudPYu72
+X-Proofpoint-GUID: usxwXRogDEwl8gPm84eEeIkbjLR_pbtP
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
  definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0
- priorityscore=1501 clxscore=1015 phishscore=0 bulkscore=0 mlxlogscore=999
- impostorscore=0 spamscore=0 malwarescore=0 suspectscore=0 adultscore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2411120000 definitions=main-2412090182
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=kowal@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
+ mlxlogscore=999 adultscore=0
+ lowpriorityscore=0 clxscore=1015 phishscore=0 impostorscore=0
+ suspectscore=0 spamscore=0 mlxscore=0 priorityscore=1501 malwarescore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2411120000 definitions=main-2412090187
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=kowal@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
 X-Spam_score_int: -26
 X-Spam_score: -2.7
 X-Spam_bar: --
@@ -129,10 +129,10 @@ Signed-off-by: Michael Kowal <kowal@linux.ibm.com>
  3 files changed, 177 insertions(+), 4 deletions(-)
 
 diff --git a/include/hw/ppc/xive2.h b/include/hw/ppc/xive2.h
-index d88db05687..e61b978f37 100644
+index ebf301bb5b..fc7422fea7 100644
 --- a/include/hw/ppc/xive2.h
 +++ b/include/hw/ppc/xive2.h
-@@ -115,6 +115,10 @@ typedef struct Xive2EndSource {
+@@ -113,6 +113,10 @@ typedef struct Xive2EndSource {
   * XIVE2 Thread Interrupt Management Area (POWER10)
   */
  
@@ -144,10 +144,10 @@ index d88db05687..e61b978f37 100644
                             uint64_t value, unsigned size);
  uint64_t xive2_tm_pull_os_ctx(XivePresenter *xptr, XiveTCTX *tctx,
 diff --git a/hw/intc/xive.c b/hw/intc/xive.c
-index 9345cddead..74a78da88b 100644
+index 412bb94b91..308de5aefc 100644
 --- a/hw/intc/xive.c
 +++ b/hw/intc/xive.c
-@@ -603,7 +603,7 @@ static const XiveTmOp xive2_tm_operations[] = {
+@@ -589,7 +589,7 @@ static const XiveTmOp xive2_tm_operations[] = {
       * MMIOs below 2K : raw values and special operations without side
       * effects
       */
@@ -156,7 +156,7 @@ index 9345cddead..74a78da88b 100644
                                                       NULL },
      { XIVE_TM_HV_PAGE, TM_QW1_OS + TM_WORD2,      4, xive2_tm_push_os_ctx,
                                                       NULL },
-@@ -611,7 +611,7 @@ static const XiveTmOp xive2_tm_operations[] = {
+@@ -597,7 +597,7 @@ static const XiveTmOp xive2_tm_operations[] = {
                                                       NULL },
      { XIVE_TM_OS_PAGE, TM_QW1_OS + TM_LGS,        1, xive_tm_set_os_lgs,
                                                       NULL },
@@ -166,10 +166,10 @@ index 9345cddead..74a78da88b 100644
      { XIVE_TM_HV_PAGE, TM_QW3_HV_PHYS + TM_WORD2, 1, xive_tm_vt_push,
                                                       NULL },
 diff --git a/hw/intc/xive2.c b/hw/intc/xive2.c
-index 7130892482..0c53f71879 100644
+index bb18a56e8f..47f7a099de 100644
 --- a/hw/intc/xive2.c
 +++ b/hw/intc/xive2.c
-@@ -18,6 +18,7 @@
+@@ -17,6 +17,7 @@
  #include "hw/ppc/xive.h"
  #include "hw/ppc/xive2.h"
  #include "hw/ppc/xive2_regs.h"
@@ -177,7 +177,7 @@ index 7130892482..0c53f71879 100644
  
  uint32_t xive2_router_get_config(Xive2Router *xrtr)
  {
-@@ -764,6 +765,172 @@ void xive2_tm_push_os_ctx(XivePresenter *xptr, XiveTCTX *tctx,
+@@ -767,6 +768,172 @@ void xive2_tm_push_os_ctx(XivePresenter *xptr, XiveTCTX *tctx,
      }
  }
  
@@ -321,9 +321,9 @@ index 7130892482..0c53f71879 100644
 +            return;
 +        }
 +
-+        backlog_prio = xive2_presenter_backlog_check(tctx->xptr,
-+                                                     nvp_blk, nvp_idx,
-+                                                     first_group, &group_level);
++        backlog_prio = xive2_presenter_backlog_scan(tctx->xptr,
++                                                    nvp_blk, nvp_idx,
++                                                    first_group, &group_level);
 +        tctx->regs[ring_min + TM_LSMFB] = backlog_prio;
 +        if (backlog_prio != 0xFF) {
 +            xive2_presenter_backlog_decr(tctx->xptr, nvp_blk, nvp_idx,
@@ -350,7 +350,7 @@ index 7130892482..0c53f71879 100644
  static void xive2_tctx_set_target(XiveTCTX *tctx, uint8_t ring, uint8_t target)
  {
      uint8_t *regs = &tctx->regs[ring];
-@@ -934,7 +1101,9 @@ int xive2_presenter_tctx_match(XivePresenter *xptr, XiveTCTX *tctx,
+@@ -937,7 +1104,9 @@ int xive2_presenter_tctx_match(XivePresenter *xptr, XiveTCTX *tctx,
  
  bool xive2_tm_irq_precluded(XiveTCTX *tctx, int ring, uint8_t priority)
  {
@@ -361,7 +361,7 @@ index 7130892482..0c53f71879 100644
  
      /*
       * The xive2_presenter_tctx_match() above tells if there's a match
-@@ -942,7 +1111,7 @@ bool xive2_tm_irq_precluded(XiveTCTX *tctx, int ring, uint8_t priority)
+@@ -945,7 +1114,7 @@ bool xive2_tm_irq_precluded(XiveTCTX *tctx, int ring, uint8_t priority)
       * priority to know if the thread can take the interrupt now or if
       * it is precluded.
       */
