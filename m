@@ -2,86 +2,104 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF8479EB286
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Dec 2024 15:02:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC6EE9EB3C5
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Dec 2024 15:45:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tL0o9-0007D3-Li; Tue, 10 Dec 2024 09:01:49 -0500
+	id 1tL1T1-0001qR-U2; Tue, 10 Dec 2024 09:44:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tL0o0-0007Bh-3e
- for qemu-devel@nongnu.org; Tue, 10 Dec 2024 09:01:43 -0500
-Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tL0ny-00073a-BU
- for qemu-devel@nongnu.org; Tue, 10 Dec 2024 09:01:39 -0500
-Received: by mail-wr1-x42b.google.com with SMTP id
- ffacd0b85a97d-38632b8ae71so2531827f8f.0
- for <qemu-devel@nongnu.org>; Tue, 10 Dec 2024 06:01:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1733839296; x=1734444096; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=RdRScNNnNoENuVLHw8PuiKPoBlDS12DHM2t0d0p1jZs=;
- b=Z3eZGxZpugw7SAMgUYU4V6Grn7mvVijYGMqQw6ByET/josQva5VhI/yvF32yetDCq8
- mHnHM2ApwdOVmZVRPLFLhEXyiXjx9sd20c/fBwyzuaUJgDvd2s0D88DC7Elct178Q7WJ
- DKRjpaGhXvPVMeWoBsVbJfchDaEs3oQ7tEqDQ0nDiWBg8sDc84cL7TLSZbSXM5H3F2ij
- QC9t21uYv8HHI82V+UReTUsR6fmCZrnyvXXFmlQsnb+EsUFi0Dlm7srObu8TktwRbpfe
- ikbpqvdiH9D/YpJhv6N5HnocxMyMixmU3d/Y3szehk2fo7WGwI7QA1VtdVCNGJQ5YhP3
- 0eaw==
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1tL1T0-0001qI-Kb
+ for qemu-devel@nongnu.org; Tue, 10 Dec 2024 09:44:02 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1tL1Sy-0003lo-Vx
+ for qemu-devel@nongnu.org; Tue, 10 Dec 2024 09:44:02 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1733841839;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=J/zzOTSfqUTmfALM/YBRcPueD1DnD5tW7Uz5MKR6Juc=;
+ b=a6j8hsFydJq0CX9364R7zok0Z9MN2gVZitV1n5EcOcfJgCiAIF0F8cinNhEFRTLh5dk3HH
+ ooxuYSuRhMwhASRraGxQjX/yjqEXdtzSdifnQ7nKh5ExBw5czEfnhdqckubG7qQfwNF90b
+ 8zhwA6fq2x6h+VGW//9HXLFjhC8KCYI=
+Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com
+ [209.85.210.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-455-IqO88-vWMKunTktU3oT8_w-1; Tue, 10 Dec 2024 09:43:56 -0500
+X-MC-Unique: IqO88-vWMKunTktU3oT8_w-1
+X-Mimecast-MFC-AGG-ID: IqO88-vWMKunTktU3oT8_w
+Received: by mail-pf1-f200.google.com with SMTP id
+ d2e1a72fcca58-72522df68a9so4795227b3a.2
+ for <qemu-devel@nongnu.org>; Tue, 10 Dec 2024 06:43:56 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733839296; x=1734444096;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1733841835; x=1734446635;
+ h=to:references:message-id:content-transfer-encoding:cc:date
+ :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=RdRScNNnNoENuVLHw8PuiKPoBlDS12DHM2t0d0p1jZs=;
- b=MiIQs1DJwC4aPlBq64w8c1JIDDjfK5FuH3FwZxAbJk5JEK2EWiLVGkLeOvZsrAo3AL
- inmvgds/CO3Xf2vwq8cmAeOB2fRX0cSVhbpotBNOJ1i4fLuKya3EGt49oEc0/j+qQkDf
- aJx9h+frnctuS3ufUZwFilv1rmmuunxkrZVoP2HfGADJqwUAVhvMb/xzcdwwke7nibbh
- 6DAP3bjkkLXEw2UxZGXng2+BwiGSeqUk0beFnK1kPdYh1JNNN4ByiRoAPZe5Ush6CFSn
- xldEqEnO87a0acaRFgy9DSaFgUr2nNaZmJSjI+eQPjupJgXdT27jyKw5aPsSv01sIWhw
- rXcw==
-X-Gm-Message-State: AOJu0YwTMDMXeZxd9R62nQs1DxyGJUgNz/OFN/z3LfczxbhpKrzZ79hL
- e1cLCnzkdjq/H/Ty+AERrCWSguhCBB8dCMAQVGv4THa/C+iUeatLArxUk8g4lV1D3HnjRSCOMxQ
- wxBM=
-X-Gm-Gg: ASbGncul0R2dMqovUWLVD/Yw+zhvObDW6ZMJhkmv5kHENiEqeXrkmbtG2WoxFnU+165
- LfuKMb4xhFqOZbQ7wnE0Sx3wW9BdG1VbTeB3S6tgLEKGOAK7Vhb3YbhYkYZg4kduvz5oa2aYat/
- axiQqIA+OebdkdfaEt103TzVmAdAvAY1nskcgDBNdOCQX2oeXpX1HyMBe4loujqhsDbn64PCT9j
- utp//mq5KmVXhwRKaAvBx1yojH1v4s/CgQu9qd+ncYA72zJIZBrbvnodJBk37G9+kRVaSX6M7A5
- QIaqwF6zYPJy97oNu6i0vuio
-X-Google-Smtp-Source: AGHT+IHar9U+KPALI0tVw7uqpNhs8V+dQZQyGT/hntMtI5CD5zWhG0A/69h9I7X7W8Wh9SujyhC9Hg==
-X-Received: by 2002:a5d:588b:0:b0:386:3711:ff8c with SMTP id
- ffacd0b85a97d-386453def57mr3183190f8f.23.1733839295816; 
- Tue, 10 Dec 2024 06:01:35 -0800 (PST)
-Received: from localhost.localdomain (223.132.22.93.rev.sfr.net.
- [93.22.132.223]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3862294b1e3sm15836567f8f.109.2024.12.10.06.01.34
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 10 Dec 2024 06:01:35 -0800 (PST)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 3/3] system: Remove mentions of cpu_physical_memory_rw() API
-Date: Tue, 10 Dec 2024 15:01:12 +0100
-Message-ID: <20241210140112.43313-4-philmd@linaro.org>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20241210140112.43313-1-philmd@linaro.org>
-References: <20241210140112.43313-1-philmd@linaro.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+ bh=J/zzOTSfqUTmfALM/YBRcPueD1DnD5tW7Uz5MKR6Juc=;
+ b=CbEz4uCCgZUx6QA1fUsjM1tgl//TaCl5NO6CeZAPLMlBD0Wi30oJ+PknPAtLHWn5n7
+ QVATkpNOHcWA6XQmJxi2tg3gmxSsBYCyG+yK8jPEfP6ld+pdDQB4DCFZCb5Kj5Fu1ahb
+ LZbHMYYDzN+qJSSGUhXKXlSzkNjUUV/FC395J09DTKOQb+B8XATZON+zWeXAnYO9ucjy
+ qBAlRkWsjpaX2rbPvbgKAHlCTyDDeYsYYfc7YWvoXGZYiNjVtJCdQNBxPMvhPvvTzzFd
+ uJPt/WhCJExm0pDrSTMcwvSIgBOviigZ8e7HI958gsOrLUc5uQq27HpRDlqcSbJ3D+PR
+ OkpA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUsXeiIzr+0/uuvlnJl7zjDk+kO4JD6/PfB19BztAVqVkrckpISRp5IhktoycEy+dNvD/7EenMFIuDs@nongnu.org
+X-Gm-Message-State: AOJu0Ywbxu2cek6nREPIipMXyl19P7qiW7NRuVDm8t0Z8meFEjgM6v7D
+ dHRwfUf5fBqa/XNtFBEuZ32D90vpxPOz5NtSq/Nh1LNDQNNSTfdC0BwoLdKpnVGkpTtMXX1E4nH
+ q2VnLTIlv1ir91TPwsZr6cIKXlxsNpWXt0tt9ukmpq4Gs9nUWuRLm
+X-Gm-Gg: ASbGnctFmdS9T1tAPJjt7yt4azEGFQeKIZ1ewwhwUJuACO1DPtnSjd31dhP4vOOZd3E
+ 9mSu4km4p2qP+OzoqEUpX28I++gEI4s1WJoREj1gr/OHaQuurOOyLWJdCIJRXzezMMske795x97
+ SeZBLgHYadZ7L5QD2+qqfbSvCIEIVeq+TtH3eg2y/mCGQYIYoyAjjAtlHWJXSvmPV6WzcqMl/YD
+ Bagt+H30SwTnXvAnN9+zzOi0AM1oDWHE3CGFzFWYIDHOlLPLvyYPKT5BiwUqzy+ZsTQ
+X-Received: by 2002:a05:6a20:3d88:b0:1d9:6c9c:75ea with SMTP id
+ adf61e73a8af0-1e1b1a74592mr7812627637.5.1733841835080; 
+ Tue, 10 Dec 2024 06:43:55 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEVbmrI5OQ4RakbT7Kge3/vgEOV2ZpZ1ioXuvby4qdefimaSrt8zY4nmmP31h6opZnVkoBYjA==
+X-Received: by 2002:a05:6a20:3d88:b0:1d9:6c9c:75ea with SMTP id
+ adf61e73a8af0-1e1b1a74592mr7812575637.5.1733841834707; 
+ Tue, 10 Dec 2024 06:43:54 -0800 (PST)
+Received: from smtpclient.apple ([115.96.26.49])
+ by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-725cf9f681esm6077045b3a.98.2024.12.10.06.43.51
+ (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+ Tue, 10 Dec 2024 06:43:54 -0800 (PST)
+Content-Type: text/plain;
+	charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3776.700.51.11.1\))
+Subject: Re: [PATCH] hw/i386/cpu: remove default_cpu_version and simplify
+From: Ani Sinha <anisinha@redhat.com>
+In-Reply-To: <8FE9B724-4233-4D94-AC17-5D6B90F55D7C@redhat.com>
+Date: Tue, 10 Dec 2024 20:13:38 +0530
+Cc: Sergio Lopez <slp@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>, Michael Tsirkin <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Igor Mammedov <imammedo@redhat.com>, qemu-devel <qemu-devel@nongnu.org>,
+ Daniel Berrange <berrange@redhat.com>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <891266A0-3863-48FA-9440-64EB9364E665@redhat.com>
+References: <20241208064810.893451-1-anisinha@redhat.com>
+ <Z1cIY357gcsE1IgJ@intel.com>
+ <8FE9B724-4233-4D94-AC17-5D6B90F55D7C@redhat.com>
+To: Zhao Liu <zhao1.liu@intel.com>
+X-Mailer: Apple Mail (2.3776.700.51.11.1)
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=anisinha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -25
+X-Spam_score: -2.6
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.52,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,149 +115,99 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The previous commit mechanically replaced the legacy
-API calls by more recent ones. Finish the cleaning by
-manually removing the methods and the few mentions in
-the documentation.
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- docs/devel/loads-stores.rst            | 23 --------------------
- scripts/coccinelle/exec_rw_const.cocci | 29 --------------------------
- include/exec/cpu-common.h              | 12 -----------
- system/physmem.c                       |  7 -------
- 4 files changed, 71 deletions(-)
 
-diff --git a/docs/devel/loads-stores.rst b/docs/devel/loads-stores.rst
-index 9471bac8599..37000393111 100644
---- a/docs/devel/loads-stores.rst
-+++ b/docs/devel/loads-stores.rst
-@@ -442,29 +442,6 @@ Regexes for git grep:
-  - ``\<ldu\?[bwlq]\(_[bl]e\)\?_phys\>``
-  - ``\<st[bwlq]\(_[bl]e\)\?_phys\>``
- 
--``cpu_physical_memory_*``
--~~~~~~~~~~~~~~~~~~~~~~~~~
--
--These are convenience functions which are identical to
--``address_space_*`` but operate specifically on the system address space,
--always pass a ``MEMTXATTRS_UNSPECIFIED`` set of memory attributes and
--ignore whether the memory transaction succeeded or failed.
--For new code they are better avoided:
--
--* there is likely to be behaviour you need to model correctly for a
--  failed read or write operation
--* a device should usually perform operations on its own AddressSpace
--  rather than using the system address space
--
--``cpu_physical_memory_read``
--
--``cpu_physical_memory_write``
--
--``cpu_physical_memory_rw``
--
--Regexes for git grep:
-- - ``\<cpu_physical_memory_\(read\|write\|rw\)\>``
--
- ``cpu_memory_rw_debug``
- ~~~~~~~~~~~~~~~~~~~~~~~
- 
-diff --git a/scripts/coccinelle/exec_rw_const.cocci b/scripts/coccinelle/exec_rw_const.cocci
-index 1a202969519..3d94e1e8630 100644
---- a/scripts/coccinelle/exec_rw_const.cocci
-+++ b/scripts/coccinelle/exec_rw_const.cocci
-@@ -21,13 +21,6 @@ expression E1, E2, E3, E4, E5;
- + address_space_rw(E1, E2, E3, E4, E5, true)
- |
- 
--- cpu_physical_memory_rw(E1, E2, E3, 0)
--+ cpu_physical_memory_rw(E1, E2, E3, false)
--|
--- cpu_physical_memory_rw(E1, E2, E3, 1)
--+ cpu_physical_memory_rw(E1, E2, E3, true)
--|
--
- - cpu_physical_memory_map(E1, E2, 0)
- + cpu_physical_memory_map(E1, E2, false)
- |
-@@ -62,18 +55,6 @@ symbol true, false;
- + address_space_write(E1, E2, E3, E4, E5)
- )
- 
--// Avoid uses of cpu_physical_memory_rw() with a constant is_write argument.
--@@
--expression E1, E2, E3;
--@@
--(
--- cpu_physical_memory_rw(E1, E2, E3, false)
--+ cpu_physical_memory_read(E1, E2, E3)
--|
--- cpu_physical_memory_rw(E1, E2, E3, true)
--+ cpu_physical_memory_write(E1, E2, E3)
--)
--
- // Remove useless cast
- @@
- expression E1, E2, E3, E4, E5, E6;
-@@ -93,16 +74,6 @@ type T;
- + address_space_write_rom(E1, E2, E3, E4, E5)
- |
- 
--- cpu_physical_memory_rw(E1, (T *)(E2), E3, E4)
--+ cpu_physical_memory_rw(E1, E2, E3, E4)
--|
--- cpu_physical_memory_read(E1, (T *)(E2), E3)
--+ cpu_physical_memory_read(E1, E2, E3)
--|
--- cpu_physical_memory_write(E1, (T *)(E2), E3)
--+ cpu_physical_memory_write(E1, E2, E3)
--|
--
- - dma_memory_read(E1, E2, (T *)(E3), E4)
- + dma_memory_read(E1, E2, E3, E4)
- |
-diff --git a/include/exec/cpu-common.h b/include/exec/cpu-common.h
-index 638dc806a5f..76906dfd189 100644
---- a/include/exec/cpu-common.h
-+++ b/include/exec/cpu-common.h
-@@ -140,18 +140,6 @@ void cpu_address_space_init(CPUState *cpu, int asidx,
-  */
- void cpu_address_space_destroy(CPUState *cpu, int asidx);
- 
--void cpu_physical_memory_rw(hwaddr addr, void *buf,
--                            hwaddr len, bool is_write);
--static inline void cpu_physical_memory_read(hwaddr addr,
--                                            void *buf, hwaddr len)
--{
--    cpu_physical_memory_rw(addr, buf, len, false);
--}
--static inline void cpu_physical_memory_write(hwaddr addr,
--                                             const void *buf, hwaddr len)
--{
--    cpu_physical_memory_rw(addr, (void *)buf, len, true);
--}
- void *cpu_physical_memory_map(hwaddr addr,
-                               hwaddr *plen,
-                               bool is_write);
-diff --git a/system/physmem.c b/system/physmem.c
-index dc1db3a3846..be7816479f3 100644
---- a/system/physmem.c
-+++ b/system/physmem.c
-@@ -2999,13 +2999,6 @@ MemTxResult address_space_set(AddressSpace *as, hwaddr addr,
-     return error;
- }
- 
--void cpu_physical_memory_rw(hwaddr addr, void *buf,
--                            hwaddr len, bool is_write)
--{
--    address_space_rw(&address_space_memory, addr, MEMTXATTRS_UNSPECIFIED,
--                     buf, len, is_write);
--}
--
- enum write_rom_type {
-     WRITE_DATA,
-     FLUSH_CACHE,
--- 
-2.45.2
+> On 9 Dec 2024, at 9:08=E2=80=AFPM, Ani Sinha <anisinha@redhat.com> =
+wrote:
+>=20
+>=20
+>=20
+>> On 9 Dec 2024, at 8:40=E2=80=AFPM, Zhao Liu <zhao1.liu@intel.com> =
+wrote:
+>>=20
+>> +Daniel,
+>>=20
+>> On Sun, Dec 08, 2024 at 12:18:10PM +0530, Ani Sinha wrote:
+>>> Date: Sun,  8 Dec 2024 12:18:10 +0530
+>>> From: Ani Sinha <anisinha@redhat.com>
+>>> Subject: [PATCH] hw/i386/cpu: remove default_cpu_version and =
+simplify
+>>> X-Mailer: git-send-email 2.45.2
+>>>=20
+>>> commit 0788a56bd1ae3 ("i386: Make unversioned CPU models be =
+aliases")
+>>> introduced 'default_cpu_version' for PCMachineClass. This created =
+three
+>>> categories of CPU models:
+>>> - Most unversioned CPU models would use version 1 by default.
+>>> - For machines 4.0.1 and older that do not support cpu model =
+aliases, a
+>>>  special default_cpu_version value of CPU_VERSION_LEGACY is used.
+>>> - It was thought that future machines would use the latest value of =
+cpu
+>>>  versions corresponding to default_cpu_version value of
+>>>  CPU_VERSION_LATEST [1].
+>>>=20
+>>> Unfortunately, all pc machines still use the default cpu version of =
+1 for
+>>> unversioned cpu models. Only microvms use CPU_VERSION_LATEST.
+>>=20
+>> Hi Ani,
+>>=20
+>> So could we use CPU_VERSION_LATEST for other machines now?
+>>=20
+>> Mapping unversioned cpu models to the latest version sounds like more
+>> user friendly.
+>=20
+> Note that even though that was the intention when default_cpu_version =
+was introduced, it was never done that way. We have been using cpu =
+version 1 for a long time.
+
+Had a conversation with Igor offline. CPU_VERSION_LATEST does not work =
+since it=E2=80=99s a moving target. Therefore for a specific machine, =
+what version of cpu model will be chosen will depend on what is latest =
+and this will change with time. It can break guests that stick to a =
+single cpu model.
+
+One way to fix this would be to keep a fixed mapping between cpu model =
+and machine versions. However, it will be a nightmare to maintain such =
+mappings.
+
+>=20
+>>=20
+>> Regards,
+>> Zhao
+>>=20
+>>> This change cleans up the complicated logic around =
+default_cpu_version
+>>> including getting rid of default_cpu_version property itself. A =
+couple of new
+>>> flags are introduced, one for the legacy model for machines 4.0.1 =
+and older
+>>> and other for microvms. For older machines, a new pc machine =
+property is
+>>> introduced that separates pc machine versions 4.0.1 and older from =
+the newer
+>>> machines. 4.0.1 and older machines are scheduled to be deleted =
+towards
+>>> end of 2025 since they would be 6 years old by then. At that time, =
+we can
+>>> remove all logic around legacy cpus. Microvms are the only machines =
+that
+>>> continue to use the latest cpu version. If this changes later, we =
+can
+>>> remove all logic around x86_cpu_model_last_version(). Default cpu =
+version
+>>> for unversioned cpu models is hardcoded to the value 1 and applies
+>>> unconditionally for all pc machine types of version 4.1 and above.
+>>>=20
+>>> This change also removes all complications around CPU_VERSION_AUTO
+>>> including removal of the value itself.
+>>>=20
+>>> 1) See commit dcafd1ef0af227 ("i386: Register versioned CPU models")
+>>>=20
+>>> CC: imammedo@redhat.com
+>>> Signed-off-by: Ani Sinha <anisinha@redhat.com>
+
 
 
