@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 658879EBEEC
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Dec 2024 00:06:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ACBB39EBEF3
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Dec 2024 00:07:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tL9IV-0006zT-HX; Tue, 10 Dec 2024 18:05:43 -0500
+	id 1tL9JK-0007gQ-C0; Tue, 10 Dec 2024 18:06:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1tL9IQ-0006vX-L6
- for qemu-devel@nongnu.org; Tue, 10 Dec 2024 18:05:39 -0500
+ id 1tL9Io-0007No-F4
+ for qemu-devel@nongnu.org; Tue, 10 Dec 2024 18:06:05 -0500
 Received: from vps-ovh.mhejs.net ([145.239.82.108])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1tL9IP-00086W-CS
- for qemu-devel@nongnu.org; Tue, 10 Dec 2024 18:05:38 -0500
+ id 1tL9If-00086r-Fa
+ for qemu-devel@nongnu.org; Tue, 10 Dec 2024 18:06:02 -0500
 Received: from MUA
  by vps-ovh.mhejs.net with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
  (Exim 4.98) (envelope-from <mhej@vps-ovh.mhejs.net>)
- id 1tL9IK-00000003Z2q-1unf; Wed, 11 Dec 2024 00:05:32 +0100
-Message-ID: <16d6b391-1cec-4ad6-bedb-7c9923fbd89e@maciej.szmigiero.name>
-Date: Wed, 11 Dec 2024 00:05:32 +0100
+ id 1tL9IX-00000003Z37-2zPt; Wed, 11 Dec 2024 00:05:45 +0100
+Message-ID: <f1bfd8df-54a6-43a8-a1fc-7687b994d7cc@maciej.szmigiero.name>
+Date: Wed, 11 Dec 2024 00:05:40 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 08/24] migration: Add thread pool of optional load
- threads
+Subject: Re: [PATCH v3 16/24] migration/multifd: Send final SYNC only after
+ device state is complete
 To: Peter Xu <peterx@redhat.com>
-Cc: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>,
- Alex Williamson <alex.williamson@redhat.com>, Eric Blake
- <eblake@redhat.com>, Fabiano Rosas <farosas@suse.de>,
- Markus Armbruster <armbru@redhat.com>,
+Cc: Fabiano Rosas <farosas@suse.de>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>,
+ Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
  =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
  Avihai Horon <avihaih@nvidia.com>, Joao Martins <joao.m.martins@oracle.com>,
  qemu-devel@nongnu.org
 References: <cover.1731773021.git.maciej.szmigiero@oracle.com>
- <877b7108c9cb9064615606d4c731cb12c549b7f9.1731773021.git.maciej.szmigiero@oracle.com>
- <9a229308-2c80-4ee2-8c49-5fec2207ad74@redhat.com>
- <489d1769-3807-4007-888c-608c1e9407fb@maciej.szmigiero.name>
- <Z1DcVH6j7pzboucr@x1n> <Z1HRh6e91dM8nrGY@x1n>
+ <0b8131dc6107841969d254e88e9d6e14220f1ea5.1731773021.git.maciej.szmigiero@oracle.com>
+ <87mshln2e8.fsf@suse.de>
+ <945bab06-b6e6-449e-b810-7800b996ba83@maciej.szmigiero.name>
+ <Z1H4zS_TXZtVJOhw@x1n>
 Content-Language: en-US, pl-PL
 From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
 Autocrypt: addr=mail@maciej.szmigiero.name; keydata=
@@ -84,9 +84,9 @@ Autocrypt: addr=mail@maciej.szmigiero.name; keydata=
  xNT833IQSNqyuEnxG9/M82yYa+9ClBiRKM2JyvgnBEbiWA15rAQkOqZGJfFJ3bmTFePx4R/I
  ZVehUxCRY5IS1FLe16tymf9lCASrPXnkO2+hkHpBCwt75wnccS3DwtIGqwagVVmciCxAFg9E
  WZ4dI5B0IUziKtBxgwJG4xY5rp7WbzywjCeaaKubtcLQ9bSBkkK4U8Fu58g6Hg==
-In-Reply-To: <Z1HRh6e91dM8nrGY@x1n>
+In-Reply-To: <Z1H4zS_TXZtVJOhw@x1n>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=145.239.82.108;
  envelope-from=mhej@vps-ovh.mhejs.net; helo=vps-ovh.mhejs.net
 X-Spam_score_int: -16
@@ -111,22 +111,84 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5.12.2024 17:15, Peter Xu wrote:
-> On Wed, Dec 04, 2024 at 05:48:52PM -0500, Peter Xu wrote:
->>>>> @@ -71,6 +72,10 @@
->>>>>    const unsigned int postcopy_ram_discard_version;
->>>>> +static ThreadPool *load_threads;
->>>>> +static int load_threads_ret;
->>>>> +static bool load_threads_abort;
+On 5.12.2024 20:02, Peter Xu wrote:
+> On Tue, Nov 26, 2024 at 10:22:42PM +0100, Maciej S. Szmigiero wrote:
+>> On 26.11.2024 21:52, Fabiano Rosas wrote:
+>>> "Maciej S. Szmigiero" <mail@maciej.szmigiero.name> writes:
+>>>
+>>>> From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
+>>>>
+>>>> Currently, ram_save_complete() sends a final SYNC multifd packet near this
+>>>> function end, after sending all of the remaining RAM data.
+>>>>
+>>>> On the receive side, this SYNC packet will cause multifd channel threads
+>>>> to block, waiting for the final sem_sync posting in
+>>>> multifd_recv_terminate_threads().
+>>>>
+>>>> However, multifd_recv_terminate_threads() won't be called until the
+>>>> migration is complete, which causes a problem if multifd channels are
+>>>> still required for transferring device state data after RAM transfer is
+>>>> complete but before finishing the migration process.
+>>>>
+>>>> Defer sending the final SYNC packet to the end of sending of
+>>>> post-switchover iterable data instead if device state transfer is possible.
+>>>>
+>>>> Signed-off-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
+>>>
+>>> Reviewed-by: Fabiano Rosas <farosas@suse.de>
+>>>
+>>> I wonder whether we could just defer the sync for the !device_state case
+>>> as well.
+>>>
+>>
+>> AFAIK this should work, just wanted to be extra cautious with bit
+>> stream timing changes in case there's for example some race in an
+>> older QEMU version.
 > 
-> One thing I forgot to mention in the previous reply..
+> I see the issue, but maybe we don't even need this patch..
 > 
-> We should avoid adding random global vars.  I hope we can still move these
-> into MigrationIncomingState.
+> When I was working on commit 637280aeb2 previously, I forgot that the SYNC
+> messages are together with the FLUSH which got removed.  It means now in
+> complete() we will sent SYNCs always, but always without FLUSH.
 > 
+> On new binaries, it means SYNCs are not collected properly on dest threads
+> so it'll hang all threads there.
+> 
+> So yeah, at least from that part it's me to blame..
+> 
+> I think maybe VFIO doesn't need to change the generic path to sync, because
+> logically speaking VFIO can also use multifd_send_sync_main() in its own
+> complete() hook to flush everything.  Here the trick is such sync doesn't
+> need to be attached to any message (either SYNC or FLUSH, that only RAM
+> uses).  The sync is about "sync against all sender threads", just like what
+> we do exactly with mapped-ram.  Mapped-ram tricked that path with a
+> use_packet check in sender thread, however for VFIO we could already expose
+> a new parameter to multifd_send_sync_main() saying "let's only sync
+> threads".
+> 
+> I sent two small patches here:
+> 
+> https://lore.kernel.org/r/20241205185303.897010-1-peterx@redhat.com
+> 
+> The 1st patch should fix the SYNC message hang for 637280aeb2 that I did.
+> The 2nd patch introduced the flag that I said.  I think after that applied
+> VFIO should be able to sync directly with:
+> 
+>    multifd_send_sync_main(MULTIFD_SYNC_THREADS);
+> 
+> Then maybe we don't need this patch anymore.  Please have a look.
+> 
+> PS: the two patches could be ready to merge already even before VFIO, if
+> they're properly reviewed and acked.
 
-Sure, this should be possible even if the thread pool
-initialization happens in qemu_loadvm_state_setup().
+Thanks Peter for this alternate solution
+
+I think/hope that by the time I will be preparing the next version of
+this patch multifd device state set these SYNC patches will be already
+merged and I can develop/test against them.
+  
+> Thanks,
+> 
 
 Thanks,
 Maciej
