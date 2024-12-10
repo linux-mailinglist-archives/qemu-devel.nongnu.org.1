@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF56C9EBB19
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Dec 2024 21:50:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C3B099EBB00
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Dec 2024 21:48:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tL75o-0007Nu-SV; Tue, 10 Dec 2024 15:44:28 -0500
+	id 1tL75x-0007TS-QJ; Tue, 10 Dec 2024 15:44:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tL75S-00074o-Fc
- for qemu-devel@nongnu.org; Tue, 10 Dec 2024 15:44:06 -0500
-Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
+ id 1tL75b-0007Bf-AN
+ for qemu-devel@nongnu.org; Tue, 10 Dec 2024 15:44:15 -0500
+Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tL75I-00020S-O7
- for qemu-devel@nongnu.org; Tue, 10 Dec 2024 15:44:06 -0500
-Received: by mail-wr1-x436.google.com with SMTP id
- ffacd0b85a97d-3862d161947so2934014f8f.3
- for <qemu-devel@nongnu.org>; Tue, 10 Dec 2024 12:43:56 -0800 (PST)
+ id 1tL75N-00024H-Dr
+ for qemu-devel@nongnu.org; Tue, 10 Dec 2024 15:44:15 -0500
+Received: by mail-wr1-x432.google.com with SMTP id
+ ffacd0b85a97d-385e0e224cbso3083543f8f.2
+ for <qemu-devel@nongnu.org>; Tue, 10 Dec 2024 12:44:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1733863435; x=1734468235; darn=nongnu.org;
+ d=linaro.org; s=google; t=1733863440; x=1734468240; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=uQa8lE+2zCWqeETwyUKylE9fAVCRJIjj0umvCIZJA8E=;
- b=QvQroJ6N7oGTL9Xpv5Hg96lWMsoz0+vowWu4KdhsM4tGHXOMXHRMV+zHCC9agshUJ8
- eyPYIw4kj6xrRBUBQwte2v9iZKM4CeU9YO2M5vnid8UTI7sACY6bvTdq0EhRA9oc0Z3D
- JV+4uOT8R85m7TmBoHsIxAQWB0Gda6xkWEbyftHcLjL54lIl5li+TAv7rpywlUuxvhuL
- +FfoTQR2X+jHxNkH1lSruFsMFNUq+HCevY9VQkSKnRhmc0AvCXudXiWMc3JUXTGDYEBL
- jCgyexxSBIgnC0TK6mU7T+wcWkk/K7PDMJMaa1eYivfYMSfY3ajDRlXndEWHHZnrJtcf
- GMrA==
+ bh=2HRwD3Xk/RE1GAmonVu05a0HKbmwgTGs+7B2YTG5x8w=;
+ b=TawC/hXlSiAL32jZ3lmfGCkg+qr32jBkN4F3nemKpK3FO76QgVvMyNovOANUNpdB2m
+ jJxnZFti1NE3o+CWxKmvJUlTTcdYTnpQPpatf4yl0ZkPWHQvr3MYl7KoIKOKMjw5B3Wr
+ jlV9oYNhEqAIlEQ2ByY9RU3TgUcmoYRKFVYkdBMCokGsMHEVGjipxzLLqu8aCokFecPi
+ /lHxMIfOS+PBjiP9W8cKBTnrOt5FY/5FTM4vkGqx3DhMvKMH0DT0DyQwDBSeadU6TimU
+ uHkGvcZIf6sTp/em9iWyHCabQe6n7qKgyON+k50DjM5CAvKbKrmvqkj7nGnn7ifhX2CE
+ Mkrg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733863435; x=1734468235;
+ d=1e100.net; s=20230601; t=1733863440; x=1734468240;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=uQa8lE+2zCWqeETwyUKylE9fAVCRJIjj0umvCIZJA8E=;
- b=s7PoMTgBNpBm+DucRjScfiqqFUD2GwM/vQRaIeoQsB/83MfiWu/9Cf7b9Ocw0cJ/VD
- 0K1XfuFQ80j4GdqETlXZ/UHIQMwQCsoE+V1fldajHxl5tG6qAzX9QMkQfDivbaZlmIHP
- anV1OPi0G3AKd0O55P6pH3ViVW3pNLp3w+NkLVh57FOkQJ4Pyd5zAg/THeienOwG7AMO
- T49o81bMhGMkJLs3nqXiHZbxd6Sc11l+y4hDJOAEwko7Tw7t20i1/yloT0PzJ8Ssp0ZZ
- vwUoiWBkgwk8fd8j1C+wkbF2FVdYWUMu14N9dNc+3D9JVR0E7dWoCk+CGU0Yv3oIPMi2
- hIHQ==
-X-Gm-Message-State: AOJu0YyNcS1srA9/s+aJKHYK8YDDDGfG50yk+iAbB4EITahsgMOQ4mGG
- 1MloMX89VFE/gvnaLIjO6HpzpZElUy13dMa665xg2jRH1yok7JBomPINLQIiIvs=
-X-Gm-Gg: ASbGncu01O5jhtH1waVWWN23YNAomNKets1/6gCLTh074LU3YqPtXQ4GnwFoMvd8sVM
- VOC7Tp47hr0CiItCtogayszm8gSp8UUj4FKJ+xSJ6bODrsNijE7FjAu8fu7ztP+S0ktG/xOirdF
- VeAbiIo4MNy9BuXeRUMHEDJqkNBwSOV8bUr0crrBa8A8O6CSnmtvRjllctMbQ1tg86mQJ2C6UlY
- AkUC7mjowAVWZqqyGc+nYOK4cvxhcZ72oFVIA43he3YoBkAG5k1
-X-Google-Smtp-Source: AGHT+IELup0DkqbwWAfx5Wrg+LModdBAQX/HYN40KMOjTNWi2OqrgOg1NF36ZqsCmAHuV7yeDvpyuA==
-X-Received: by 2002:a05:6000:1445:b0:386:4a24:1914 with SMTP id
- ffacd0b85a97d-3864cea3a2bmr387389f8f.37.1733863434885; 
- Tue, 10 Dec 2024 12:43:54 -0800 (PST)
+ bh=2HRwD3Xk/RE1GAmonVu05a0HKbmwgTGs+7B2YTG5x8w=;
+ b=feBssl6eLcN7sdnZqYka2SPp5UzyQR2HLUF3hszV4A51z+pfRWieV1qP2whC3aob0+
+ Y3cvvto4y6zeL3R4+HaFEkh8+nOQDuyrTywElaMlzUtyus6a2yTrYQOuDs9/KQfflm74
+ GeXXN7J0r/SRCZ4QqWEjDJZB354hNLZJFuwutBA+YgM7WZxoAEXgi7oI0a9xH7KbYwxr
+ evDob2wFj0f0HKkA2qTG4w6IFYX5K4iJj6q1P3q9Fdqj5oSYP7TiEsY0aT5HGZCD6n8L
+ n8GjwGe9vfVlT8FfApi6AOJ3vpiXnCw6LLiKAo8T229+cDl2HNVVTbIyrSPRxVc5Jooe
+ 6uHQ==
+X-Gm-Message-State: AOJu0YxhFGvyeiZUYF8Lu5rxUKQCeNLRpAiw8jxR6ZfIKcGVerXU6UM9
+ 1/lwnV4sD3XDV3ur88U9MtSgker5u/4IN8XVmZ7b9/gBvfZKz0H3X3rwL0agvuQ=
+X-Gm-Gg: ASbGnctcZmXknofM18uvT4j1Xse6I55Lr5pjbW4vHzxb/UoV4JdIzRVPlDu6RSsft6w
+ 1Djl4XAijP2YZaKkxDEdIlwKUwUGfjPxWFvX7aQq59bKwTTvOkQ2LqYh2GfYA/CLLNYl14T8Mbf
+ BMV9T0vUxmvg9ZVgt7619kHXMw+Z5t0mmmN3c0cxGzTIwlsGNMIU5eAUOLxqhvGtjVedF9sayjH
+ urnUgz3/G4nKMHPTJlBNy0dTfjXi8FeikCwLTdlB5EhlRoJSL/Z
+X-Google-Smtp-Source: AGHT+IHq2T+gcmyKuDV8D626sye8AgfmtLn4NAc6bBpmLa9dQxWimWBoA6KnrEVJVH2Zu6kkt/OZPQ==
+X-Received: by 2002:adf:e192:0:b0:385:ee40:2d75 with SMTP id
+ ffacd0b85a97d-3864ce559camr421357f8f.20.1733863439964; 
+ Tue, 10 Dec 2024 12:43:59 -0800 (PST)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38637072adasm11021748f8f.81.2024.12.10.12.43.52
+ ffacd0b85a97d-3861f4a85f2sm16563189f8f.29.2024.12.10.12.43.53
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 10 Dec 2024 12:43:53 -0800 (PST)
+ Tue, 10 Dec 2024 12:43:56 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 44DE15FD45;
+ by draig.lan (Postfix) with ESMTP id 593C35FD4D;
  Tue, 10 Dec 2024 20:43:50 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -95,24 +95,24 @@ Cc: Daniel Henrique Barboza <dbarboza@ventanamicro.com>, qemu-s390x@nongnu.org,
  "Michael S. Tsirkin" <mst@redhat.com>,
  Alistair Francis <alistair.francis@wdc.com>,
  Anders Roxell <anders.roxell@linaro.org>
-Subject: [PATCH 10/20] tests/functional: update the riscv32 tuxrun tests
-Date: Tue, 10 Dec 2024 20:43:39 +0000
-Message-Id: <20241210204349.723590-11-alex.bennee@linaro.org>
+Subject: [PATCH 11/20] tests/functional: update the riscv64 tuxrun tests
+Date: Tue, 10 Dec 2024 20:43:40 +0000
+Message-Id: <20241210204349.723590-12-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241210204349.723590-1-alex.bennee@linaro.org>
 References: <20241210204349.723590-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::436;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x436.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::432;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x432.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -129,22 +129,34 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Now there are new up to date images available we should update to them.
+Note we re-use the riscv32 kernel and rootfs for test_riscv64_rv32.
 
 Cc: Anders Roxell <anders.roxell@linaro.org>
 Reviewed-by: Thomas Huth <thuth@redhat.com>
 Tested-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20241121165806.476008-31-alex.bennee@linaro.org>
+Message-Id: <20241121165806.476008-32-alex.bennee@linaro.org>
 ---
- tests/functional/test_riscv32_tuxrun.py | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ tests/functional/test_riscv64_tuxrun.py | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/tests/functional/test_riscv32_tuxrun.py b/tests/functional/test_riscv32_tuxrun.py
-index 49b57cd428..3c570208d0 100755
---- a/tests/functional/test_riscv32_tuxrun.py
-+++ b/tests/functional/test_riscv32_tuxrun.py
-@@ -17,11 +17,11 @@
- class TuxRunRiscV32Test(TuxRunBaselineTest):
+diff --git a/tests/functional/test_riscv64_tuxrun.py b/tests/functional/test_riscv64_tuxrun.py
+index 4e2449539c..0d8de36204 100755
+--- a/tests/functional/test_riscv64_tuxrun.py
++++ b/tests/functional/test_riscv64_tuxrun.py
+@@ -17,18 +17,18 @@
+ class TuxRunRiscV64Test(TuxRunBaselineTest):
+ 
+     ASSET_RISCV64_KERNEL = Asset(
+-        'https://storage.tuxboot.com/20230331/riscv64/Image',
+-        'cd634badc65e52fb63465ec99e309c0de0369f0841b7d9486f9729e119bac25e')
++        'https://storage.tuxboot.com/buildroot/20241119/riscv64/Image',
++        '2bd8132a3bf21570290042324fff48c987f42f2a00c08de979f43f0662ebadba')
+     ASSET_RISCV64_ROOTFS = Asset(
+-        'https://storage.tuxboot.com/20230331/riscv64/rootfs.ext4.zst',
+-        'b18e3a3bdf27be03da0b285e84cb71bf09eca071c3a087b42884b6982ed679eb')
++        'https://storage.tuxboot.com/buildroot/20241119/riscv64/rootfs.ext4.zst',
++        'aa4736a9872651dfc0d95e709465eedf1134fd19d42b8cb305bfd776f9801004')
  
      ASSET_RISCV32_KERNEL = Asset(
 -        'https://storage.tuxboot.com/20230331/riscv32/Image',
@@ -157,7 +169,7 @@ index 49b57cd428..3c570208d0 100755
 +        'https://storage.tuxboot.com/buildroot/20241119/riscv32/rootfs.ext4.zst',
 +        '511ad34e63222db08d6c1da16fad224970de36517a784110956ba6a24a0ee5f6')
  
-     def test_riscv32(self):
+     def test_riscv64(self):
          self.set_machine('virt')
 -- 
 2.39.5
