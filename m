@@ -2,155 +2,190 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D7D99EBB21
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Dec 2024 21:51:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E2A0F9EBBB3
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Dec 2024 22:20:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tL7AP-0008Qn-43; Tue, 10 Dec 2024 15:49:13 -0500
+	id 1tL7d7-0005Ir-7D; Tue, 10 Dec 2024 16:18:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nicolinc@nvidia.com>)
- id 1tL7AC-0007rj-N0; Tue, 10 Dec 2024 15:49:04 -0500
-Received: from mail-co1nam11on2060e.outbound.protection.outlook.com
- ([2a01:111:f403:2416::60e]
- helo=NAM11-CO1-obe.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <eric.mackay@oracle.com>)
+ id 1tL7d4-0005IZ-AW
+ for qemu-devel@nongnu.org; Tue, 10 Dec 2024 16:18:50 -0500
+Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nicolinc@nvidia.com>)
- id 1tL7A9-0002m1-Bu; Tue, 10 Dec 2024 15:49:00 -0500
+ (Exim 4.90_1) (envelope-from <eric.mackay@oracle.com>)
+ id 1tL7d2-0005p7-B8
+ for qemu-devel@nongnu.org; Tue, 10 Dec 2024 16:18:50 -0500
+Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BAJJKpW019141;
+ Tue, 10 Dec 2024 21:18:45 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+ :content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=
+ corp-2023-11-20; bh=EVqXUKzUyMlpwvAraB/0+dfJcUWn/iZahXOUrIBJ3Vk=; b=
+ GhVIibjxvn9iuNC2Oa02emA3AkW5ne0YBjB6/Q/vAbZhX6zWF0/kYYb18XHtfCHu
+ M8B0XMuE0v7o2siEsxN9W+yjcrs9XVeqYVvDWLZR4HnX18Gc84/+SIcm4YbPID1H
+ atdsuw6B5dN7xaOZev/mHVsjE32cLeffflUWsoq6DpkVSuIJDHVtprkdq1hPb+vR
+ BvAdphOEKDaJu/FTrQ1NXR1gg7EE/yTkaupMn30+P7fhdvA9Y6+gvKDmTJALT4qF
+ Y2f0hFI/3PLj1xG8kfBouIGEFYQw7DVo+NjJVJMOmnYL6tTVHTlyD3X8p4eK7D4j
+ ofkM6KdlHHo5QVI1xuN4Mg==
+Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com
+ (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 43cewt70ya-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 10 Dec 2024 21:18:45 +0000 (GMT)
+Received: from pps.filterd
+ (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+ by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
+ with ESMTP id 4BAJo7rc020591; Tue, 10 Dec 2024 21:18:44 GMT
+Received: from nam10-bn7-obe.outbound.protection.outlook.com
+ (mail-bn7nam10lp2043.outbound.protection.outlook.com [104.47.70.43])
+ by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
+ 43cct8vemp-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 10 Dec 2024 21:18:44 +0000
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=yMmilJl2F+Gk+2PL5R500c57hZu0eMLp80T+KuVSPS0GBXxx9Lv532j13oT/BIn2mF0XH3It8b0q0pAIWZny0fJDQVkB3MiPA/O0t5xJ0nCNrT21oHqxAu8st35aJ5wAboWuFJRHpODHi/+OBOOVMJW7IrJSZ8/FKko9X3Cutu4P2h+MleS5GINgN1LpNZyeuNNOPPIpoAf9hRS7ECuaHF5Wqufl9cIWBKmLU49JtufFG1fl316pPUM+Mt5Yf2TnY/wQaSsXS9yVTkn1Z9VUalLC1dxVYWoClfD0gSxLQ99rlqhFq/zfQ6gscTQygMyBxXWvgwrrKJSSdgq8dZhpIw==
+ b=fJtTCdwOaoaVOtHf0Ds/cnsVfuG7AiQnx9/joa3PjwsTwQ6xuctYMFHAdQdrgsUP/rOBYhQz1Dq4AQ3GVwfnQHXn5XR2cCPJiTL4G6mOvoo1SBJp8TJ+ylvylD9MLhPp5ZbKTfuhGbW8gEGuB6BRKt1Gx9Z4vTXHW0Z4DkM7vSfhvbV/hdcww+Sv3mMVl/YywSnmI0plMsWhPbBRD1fm4WqN1TB6U5IgUhTE03FLHZ1VS2gd/cVumAyMTRy0mR2GRQ0mk0cV6iuhUfElLYbO8qohqkZ/shWZtd974bO19LLgQBmqrf4NuxT2EAmUsltXQ0k1R+wjnHuKaiBFKzWjDA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=RJ6O0qV4o8GaUzk8LSE1mcozPWGYSHHBzVGxPO255m8=;
- b=BXeIHS8YKMERhLD0I2XCB8SaFPWOovFkjXvHTtW9U9rfZMq38lpDJ8CvpWVgVS6xMrO+kKXnSu/pJI0nR4q+qOwJxDV/ZXx+3JOCGs+WhfRkJlLodCNS8ujSi/1zbG0RaEQtwtvFmMCouRfw1LScGaWwh/7zeabCV+neaqKJjDvmnsTQDdC0WhdPZ+IzPZYJdg32l6IB4PSiOUbhApZlIXCDIVA2hUok1k7hjOVtQKoB14qdIX+J7lhP2gNGSiuj3RdQCVzaIOPQqUEO+7xb47UF6aJmf3JjZhwTxAsNgoitAUfuqbb8OljSkIjAzVvBi1zbbMYSVenyG23IOLvrqQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.118.232) smtp.rcpttodomain=huawei.com smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
+ bh=EVqXUKzUyMlpwvAraB/0+dfJcUWn/iZahXOUrIBJ3Vk=;
+ b=tmipFGKeBr6QSKueiEWiWdkydoWCjR2cUKgCkc9m09kgvz/bZlJFnvoq1FcSjzX+nMAL0v3nLFnNG49mkLVV9SCGNPOsJghUGSXScQgFDm/xl+E8ybBVRoWnS/FNoVrhFZtX/u2LwiPKSj0LPRJnxF9H+dobd4ZNw81ScyfinzbA0kpEu3EJD2FZKhRAfb6fQwK2BC5FYBnOSrgYZfRIRtwYH10YKx2mc5jcRZdKkv3YzaYFXxXQCYSvoBV2AyER50ZXRQUtfw5pT7OF8ZQqoycDf4A3uG9hs7LkLEHqlZYE2u6mXbD8wzcwVDNaYZKEBZrLRWqBncTA8/HSaeOeSA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=RJ6O0qV4o8GaUzk8LSE1mcozPWGYSHHBzVGxPO255m8=;
- b=Z6+GCHgC/YHJ/V8voR1FFU5BSfCUnI7occlVoa3Pt9gxk1h7J1EWBWq/A9yUpUxZIubmOnsfw7+J7PCXQdqCuSAHpHen2yj2R179VxookcMmf0FWl7EDafs9WARfmFFu0CekJMncqN+3lA7cIMFlwxqCg3Fgkd2LCe/24ugVCHs9TWORNdpgYO26uCVxsL3O9ttjEozcfL9fpE+XR80uFDVFPmR+ySGj41uGlXXR+C7nTVnbfW7AVkaI5BqozgplyF+2+f9tMUfmNsLsvgohYnshL5hfWHD05p/noKJvVBuFouVHX2Kdsj4M+yD1RjUNFNX0TJkyZxCin1mM4ZMs5Q==
-Received: from BN9PR03CA0707.namprd03.prod.outlook.com (2603:10b6:408:ef::22)
- by IA0PR12MB8981.namprd12.prod.outlook.com (2603:10b6:208:484::18)
+ bh=EVqXUKzUyMlpwvAraB/0+dfJcUWn/iZahXOUrIBJ3Vk=;
+ b=md2DL8wEVNmkFPgm9PZJLZx/mW9qyuifTvP1sCMdJM9cp6U5ELWFjkjFUvtsI5q6HEIhWfI+Z/z4gMKF8ojG1lF0KstIE9xKQ0q7yw82/u9vwE44Ep0UKdjbj5dRMPRzucy9O1gATis+CEsQn4ApEw21YKHM6l2g9ZhUrnn/2zY=
+Received: from MN2PR10MB4269.namprd10.prod.outlook.com (2603:10b6:208:1d1::8)
+ by CYYPR10MB7607.namprd10.prod.outlook.com (2603:10b6:930:bf::17)
  with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8230.12; Tue, 10 Dec
- 2024 20:48:43 +0000
-Received: from BN1PEPF00004688.namprd05.prod.outlook.com
- (2603:10b6:408:ef:cafe::5a) by BN9PR03CA0707.outlook.office365.com
- (2603:10b6:408:ef::22) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8230.18 via Frontend Transport; Tue,
- 10 Dec 2024 20:48:43 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.232)
- smtp.mailfrom=nvidia.com;
- dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.118.232 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.118.232; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.118.232) by
- BN1PEPF00004688.mail.protection.outlook.com (10.167.243.133) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8251.15 via Frontend Transport; Tue, 10 Dec 2024 20:48:42 +0000
-Received: from drhqmail202.nvidia.com (10.126.190.181) by mail.nvidia.com
- (10.127.129.5) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Tue, 10 Dec
- 2024 12:48:30 -0800
-Received: from drhqmail203.nvidia.com (10.126.190.182) by
- drhqmail202.nvidia.com (10.126.190.181) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.4; Tue, 10 Dec 2024 12:48:30 -0800
-Received: from Asurada-Nvidia (10.127.8.11) by mail.nvidia.com
- (10.126.190.182) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4 via Frontend
- Transport; Tue, 10 Dec 2024 12:48:30 -0800
-Date: Tue, 10 Dec 2024 12:48:28 -0800
-From: Nicolin Chen <nicolinc@nvidia.com>
-To: Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>
-CC: "eric.auger@redhat.com" <eric.auger@redhat.com>, "qemu-arm@nongnu.org"
- <qemu-arm@nongnu.org>, "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- "peter.maydell@linaro.org" <peter.maydell@linaro.org>, "jgg@nvidia.com"
- <jgg@nvidia.com>, "ddutile@redhat.com" <ddutile@redhat.com>, Linuxarm
- <linuxarm@huawei.com>, "Wangzhou (B)" <wangzhou1@hisilicon.com>, jiangkunkun
- <jiangkunkun@huawei.com>, Jonathan Cameron <jonathan.cameron@huawei.com>,
- "zhangfei.gao@linaro.org" <zhangfei.gao@linaro.org>
-Subject: Re: [RFC PATCH 4/5] hw/arm/virt-acpi-build: Build IORT with multiple
- SMMU nodes
-Message-ID: <Z1ipHKP4L/++143Q@Asurada-Nvidia>
-References: <20241108125242.60136-5-shameerali.kolothum.thodi@huawei.com>
- <1dcea5ca-806f-4f51-8b13-faf5d62eb086@redhat.com>
- <efb9fb7fb0f04d92b7776cdbc474585d@huawei.com>
- <48bb0455-7c2e-4cc6-aa15-ebe4311d8430@redhat.com>
- <0803ec1a010a46b9811543e1044c3176@huawei.com>
- <aafc5fba-8d68-4796-a846-265362e7acac@redhat.com>
- <30ff8ac9ee9b4012aa6962c86ac06375@huawei.com>
- <41a67d4e-f7b8-4586-8d52-c32df400b675@redhat.com>
- <e13f2e9c0a6341e8b25b7945bc7bf413@huawei.com>
- <c14feb2934a0478180635bbdb27d5e53@huawei.com>
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8230.17; Tue, 10 Dec
+ 2024 21:18:42 +0000
+Received: from MN2PR10MB4269.namprd10.prod.outlook.com
+ ([fe80::f430:b41f:d4c4:9f9]) by MN2PR10MB4269.namprd10.prod.outlook.com
+ ([fe80::f430:b41f:d4c4:9f9%7]) with mapi id 15.20.8230.016; Tue, 10 Dec 2024
+ 21:18:41 +0000
+From: Eric Mackay <eric.mackay@oracle.com>
+To: Igor Mammedov <imammedo@redhat.com>, "qemu-devel@nongnu.org"
+ <qemu-devel@nongnu.org>
+CC: "mst@redhat.com" <mst@redhat.com>, "imammedo@redhat.com"
+ <imammedo@redhat.com>, "anisinha@redhat.com" <anisinha@redhat.com>, Boris
+ Ostrovsky <boris.ostrovsky@oracle.com>
+Subject: Re: [PATCH 0/3] cpuhp: ensure that cpu hotremove works the 1st time
+Thread-Topic: [PATCH 0/3] cpuhp: ensure that cpu hotremove works the 1st time
+Thread-Index: AQHbS0kW1rScowda9E6LXPBRR5xyvw==
+Date: Tue, 10 Dec 2024 21:18:41 +0000
+Message-ID: <MN2PR10MB42695BDC3BF1DE5E62FDFA448C3D2@MN2PR10MB4269.namprd10.prod.outlook.com>
+References: <20241210163945.3422623-1-imammedo@redhat.com>
+In-Reply-To: <20241210163945.3422623-1-imammedo@redhat.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+msip_labels: 
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: MN2PR10MB4269:EE_|CYYPR10MB7607:EE_
+x-ms-office365-filtering-correlation-id: 90a17d73-7f29-497f-1dd0-08dd196038ee
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0; ARA:13230040|376014|1800799024|366016|38070700018;
+x-microsoft-antispam-message-info: =?iso-8859-1?Q?hpEwJ6YpP+UdQI1kSuFXasgm0PlSC+VqhwFdfyEyyLYTcd+vU07NjRMqCe?=
+ =?iso-8859-1?Q?oVeKMgcjQCM8EztL02wQRmLrZQh0SafB4GWNsx6YWTerUZp+ovPLPIMOh8?=
+ =?iso-8859-1?Q?W7Nwtka885a1qJBIOhxXea08Ac4phwtrOqym/VAKeLmSlK3SdMS8rO6Txo?=
+ =?iso-8859-1?Q?eqtv5kSVQv8uw6ym/vaYwvK+mpu2F0fsexqRfVxNDp9IEDvxl/jaPGYrxD?=
+ =?iso-8859-1?Q?wehdx1MxQl/dgkVy3ER4gLq8VqoMdpYbTXx5yg+tuYzegmkjq5ftq9ORw5?=
+ =?iso-8859-1?Q?w7hM2+wyqeE24hlqhxiowJ+WUK7zmSHHL7BMRrU7MdF6aXqt4jd0kuktTh?=
+ =?iso-8859-1?Q?MDulNLE9M0I1ICMImUN4ByDKVjDdtaS4oBI0P7wwwGTVo/SxdL6m9x2b/L?=
+ =?iso-8859-1?Q?R8OgPWm+WzKsLJ39B2ALoZeLofdrfT2iEcig8DHcRGX/YhPjQ3OMmO9tUt?=
+ =?iso-8859-1?Q?jTtsUUUswBL6/s4ADsE8GbWivHgm6XduqTFANXxv1fy0QpZ5GrKxfqb99I?=
+ =?iso-8859-1?Q?Xb8WRBWPn72K2BTfWbrG6k6RoLXbRKvfT2jFme4TxDz1ejCtLp6z3gdPBW?=
+ =?iso-8859-1?Q?/rGwVc8ZKs+vLAMdFqzfbrz6aj887bf4+wnOVeWD4I/LTPvARODB7TmRTI?=
+ =?iso-8859-1?Q?kX3JbFp0xXFTy5yJjSuX+/PT+GZIBF16kfYBFvoR9+WjRaU7u05uftQvpQ?=
+ =?iso-8859-1?Q?vdUrc7a7GxsESEJKcFuIWRcTlVa+aIQ/Rfmub3GGayN+b3ERAsSd7mef1k?=
+ =?iso-8859-1?Q?5ZxsZfMlGw/4IbiQzL33ar1lpAClVPIYz4uUaS3mkoDLfKjknsYxD1MOFy?=
+ =?iso-8859-1?Q?seMEmY8yjl6b8PqrcwP+comWoV/O5P6adcL4wdj96WOPvKSwzaaUvvAEqc?=
+ =?iso-8859-1?Q?9dlwEBfdRYErY7q0y1BRfniH2vDixd0xneo2MUL5gbKPy7EOT/E+jt2fJQ?=
+ =?iso-8859-1?Q?FabfOxEN+wLrWlWWVO/3ChuiCUr0qGCLfxBcfCBHygtKJVtTGnPOPlZbhL?=
+ =?iso-8859-1?Q?+HJ+pw63+j/mCHAMGWuHp2keLBYQYPb8lqwZLsQv78dLWnNstNSj+myvJ3?=
+ =?iso-8859-1?Q?dZ/jFoDxrw9hWu/vKxZXDOwAUDyPvb3TNeJEFgwByZoeDsw/ewTkGZUpFP?=
+ =?iso-8859-1?Q?O9sXm10SpKQr3rUhj+KmLd6XAYFedG8kideFJZkaaFcDShCAEN6iZq9UCv?=
+ =?iso-8859-1?Q?CUbQIiDEWKMEkRrTrWVAnwdOpeesJfvlzbPgQdIxQi7fLlc7RtLTqDx+WA?=
+ =?iso-8859-1?Q?eqI2WL+Zmck1mv0E/3hLzuVRNOhp9q/std3TnBxJThHmUV6K6E99qhXgFe?=
+ =?iso-8859-1?Q?ZjZliygxPxMiWjeNPjS9zQlrGLp8UuQvje9Acz4pHPuAyTBNZlmsoV63vM?=
+ =?iso-8859-1?Q?lf289CbqRMvcdOWZsABms3TdIJxyDQ7+jnN5bJV4RTDSI3sDco0ZbPr2iK?=
+ =?iso-8859-1?Q?TZx5je00hD962ZMCyo5D+Nszp7yxnSZm1maGIA=3D=3D?=
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:MN2PR10MB4269.namprd10.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(376014)(1800799024)(366016)(38070700018); DIR:OUT; SFP:1101; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?DsN8mU8VVofYqhWySl1obQvyB3HEJHR2lY3JMGsF5893cA37gKKvfV4rgs?=
+ =?iso-8859-1?Q?OGFxm+3Zh0YaI3vG3qy48HuNggbWGxJR4cXYicbMTWAbVaFyBKh+AENmcr?=
+ =?iso-8859-1?Q?Vqf99/smUpz8gHwnwrXbqa3mhghgBnFUGtbd3sVOvKHDhZZKbRxp+TkmnT?=
+ =?iso-8859-1?Q?KXIEQXuYYtQ4m5J4OdWmjVh+jcqy71E7VF6gg1JKN8PYV4Vp10buYagbgK?=
+ =?iso-8859-1?Q?abBeWWnXQTlibGLrn2vrF7s4buLtFXsjm/ChL81XcUrPf4w2OCyQZmS/Zp?=
+ =?iso-8859-1?Q?KWyQbdBAGgKWs8sSCNGRFz+uWn8gDhkYdYCCMSnQf0LoKx/YrF2/7eujsY?=
+ =?iso-8859-1?Q?fkLYCzSSRyrPhD7BQYEiuadRaljWP5Qyr0cUvc5eLJx3lT2clkiMGdo38y?=
+ =?iso-8859-1?Q?4SIRYgrKDNAdfxFzXJpdtmuJjCLlpv074ic1QBqOznUKo2X78vjxCUtlRS?=
+ =?iso-8859-1?Q?5sT6ZBR46ExKUQSvZaUUuDJiqW1kShCPJTmPsN0cN7hEuXa8dTOApiqhiv?=
+ =?iso-8859-1?Q?jrniaqD6Nwao3U2hlOTzu4AfqmqMoxffcXuF97q2vQBbmleecEyZAlm31D?=
+ =?iso-8859-1?Q?ixRTxEkikiB1kquiOV6N0iFsdgH/qCzxr7Ga2f/LpN5xFdcIdkVfBrxbuI?=
+ =?iso-8859-1?Q?1sZ1cdfoJRio8uMn1Ohxdd8Odj8ahb/s5sKqEFByMoApr+G5lqpsI8e4Qg?=
+ =?iso-8859-1?Q?WXhOhx3qLEKr9T4BbKr2n2VrW0k3Ik802qHIMondpalxcTq8sS6PNselrn?=
+ =?iso-8859-1?Q?OIrv46uYfcaDuzBuhEE5My2flgKM00qx4WYfLxuoOkjdUNFgMMkTqOs95s?=
+ =?iso-8859-1?Q?4eqHXpGaIBLh5dvR/+ZfiCcL2BGJOWvBH9xf36JchyGqflxL554itXSNtb?=
+ =?iso-8859-1?Q?bZo2+7VysA6ukhzyPJSBxNyPCiCrqt1IzCVOFslnMeQrEfUvmwLmAdoeGQ?=
+ =?iso-8859-1?Q?Yg7MSJDorBvJ8zHQnPsgyu2IugJcA32RTJKnrHzfOgX7NILDcXrQ92twk7?=
+ =?iso-8859-1?Q?+P8rXeGzKTgfpFe4eo8z7UAzmMR7vWhDlve+ur+dkzrlnYXAmYtdUpNjgJ?=
+ =?iso-8859-1?Q?kIm4+0dlnFL6lpvjSIeeNWvGF0kYeQAQD5lEuZ336HFxxkbdpCOXsfd6ls?=
+ =?iso-8859-1?Q?OJ/IbR2K0xqYE1gy4zuR/N4z1wwaNC6Ggcv/qhL6DmZjYe3NCFC0r4JL/D?=
+ =?iso-8859-1?Q?9ZTi4YN65w4eONjGNnbjLxaOsEF7krvB31dXbz/m/Cxet6rinYZZI6rtZA?=
+ =?iso-8859-1?Q?q9NRxErIaEH7ZAEYjwjK0r5s0Op46t+AF9JTGNr75Fseh1ok1YPWktPQVh?=
+ =?iso-8859-1?Q?R/mDS/m1zeZG6INKjWQ8Ec4F0vnqma7++wEfqEgwJJCf3MgJmFaUm+H6MS?=
+ =?iso-8859-1?Q?KfJ99hWgcAP+4Gw4bx9Az0YHZ/g4MWXJNGiftE5LpciT4yfa1pbGHgHnYM?=
+ =?iso-8859-1?Q?zKPA0LLJYnUvwLZgI58juANNhi5/zqIVHfnYQUQS+V6LBpdJ5sTscX5DVU?=
+ =?iso-8859-1?Q?XgPePVA8jMuYgTb3h4VYgaJDZgnRR4X/pZj6AFjOeREo6XRr4AjTtcX87M?=
+ =?iso-8859-1?Q?wc58o6yPsYxB6EMras0NTgaTBjnpPsMzWI8HCzqvpYwlH3JCjrFdXHRNCb?=
+ =?iso-8859-1?Q?h/x51MR4q7NjnbopC0PanNOo0Fnjy21UY2?=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <c14feb2934a0478180635bbdb27d5e53@huawei.com>
-X-NV-OnPremToCloud: AnonymousSubmission
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN1PEPF00004688:EE_|IA0PR12MB8981:EE_
-X-MS-Office365-Filtering-Correlation-Id: 50bc86cd-0bb4-4d16-b40f-08dd195c088a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230040|1800799024|376014|7416014|36860700013|82310400026; 
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?sOB2KEFcldy8wCamNiqWphY5kS6hyksnkNd+OVV8N+JVMzkdPNG6J7BEZbvk?=
- =?us-ascii?Q?KUEVlsmSGZegFDIf9mDzTWlCLTVKFvbofQ/lzckVBWJkJtY/7ODNeo/nRsZY?=
- =?us-ascii?Q?7JZOFZwqq273B0Ozejbsqom/1gOX3WYv7QiPJPRs1Kzp76gPgN2kDLfQ2Boi?=
- =?us-ascii?Q?1Vtf0EjPBJtwqR61Vc/xScsHEolGMtNFYqyMn6QvDvv1Ydp2ZdPnA60DT9HB?=
- =?us-ascii?Q?xPLp1W0yVo1kH2kWS4rs0ba2/VcKKQ1UfJN3Vbe4M+bHHr8Vp0eZOuo8n4ST?=
- =?us-ascii?Q?s8TE+kpLETbxs+/UnjCbIC6NNg1GfksXzTv25R/6+uWp0LJjaP8jHUtiSV36?=
- =?us-ascii?Q?yqlDMQ6qYEk0YWFuQms2/dPmzmwrBNwReJECbIpdurzquhEHckybdeW2IYjM?=
- =?us-ascii?Q?RriO5gdy26Qmjfn6ndOTgohgqnX8YP5ieydmNcZcWQ5wjb7rLOJtmR8TEDO6?=
- =?us-ascii?Q?DSEblXEtXfYU1Hh3WE5pieJcAd1g6ghWOL+WfA6jO/1l7PEO3avLVaoQ6C9U?=
- =?us-ascii?Q?rUvJz3muLJfeIiUcmCtt9QtPNNN3wR5vyhgwflwsrK99anxYL/p77425cB3y?=
- =?us-ascii?Q?z49hdSe6mIBXENOFQmal1SADkRDbvC1Z23qDo+qHtRIfINZdRSwh4+9T+Ene?=
- =?us-ascii?Q?Qjc4nnN1qjOTuufvVLYTKySegyKC0lMsF5gEXL4bJfotGFqivU2lpEIchaAE?=
- =?us-ascii?Q?65l5Ed71aIfSHv/etu7lJmtTx75o/kvW7wsmtmbckCn68LdpjTTSvnBiblaZ?=
- =?us-ascii?Q?sAyI3qOZmF0Xr9ddIoCWJ4pNWszZ3CJBHekNUu14U9HWdLqeI4npIFSIKxOb?=
- =?us-ascii?Q?oHfKgSggFWamNPPT6d2eKvWUuC0dqMQWUxvK8LrnFr8chUa4BEJB9SB2UUqA?=
- =?us-ascii?Q?mtjIomzVO/V2LvwbHFcNg3J/NEoBV53gUhgm5luFBNIFs5Kl8UkQxNHXv9LY?=
- =?us-ascii?Q?72iuicWwn2vKTUdJXcZZ7EfL6vBbxEKFLo2XL4CaNcm3skNr/iazRUhmIAXP?=
- =?us-ascii?Q?cvXTWfFY7doQrC2zCy5FZvv/yWBDXrvWPHnc3yuIXxCt8v9iSCjjRYwXu6G1?=
- =?us-ascii?Q?t8fk19nb0pOGey31L750PMmK3MJCqzm+TCvIJtfCpXHy9d1C9x9iviYn4/eM?=
- =?us-ascii?Q?bu+rdhWCBPsagnBSzu60amWXjuGiQFspyf9N/8AaAqfGXFEFIsNiqxtqyeNr?=
- =?us-ascii?Q?fguSwOCEMZwhvryNMliw3HgWwxVViF39h8tmWzSGoGD74ZzQm+hxKkW5JDJS?=
- =?us-ascii?Q?5gfwyFABt6bsqAEfusuYEXfWO6y5fLO+C/Ffew43SiUI+oqK0aqobW9EI5VR?=
- =?us-ascii?Q?JGPtXFUMB5rEVBO1UKIo1VYhD6LgbBL13hfilCK01Aq7k6zaLaMZR7WE6Y3H?=
- =?us-ascii?Q?/An/A/UfXh/xT4PzhKO67fzRo2olJFe9dkT2wrWOuAhWqGaa56JbgRtt7X5D?=
- =?us-ascii?Q?vzV4uWCII6Dj5JhjO/vGxEioIGqZJJPM?=
-X-Forefront-Antispam-Report: CIP:216.228.118.232; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:mail.nvidia.com; PTR:dc7edge1.nvidia.com; CAT:NONE;
- SFS:(13230040)(1800799024)(376014)(7416014)(36860700013)(82310400026); DIR:OUT;
- SFP:1101; 
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Dec 2024 20:48:42.5440 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 50bc86cd-0bb4-4d16-b40f-08dd195c088a
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a; Ip=[216.228.118.232];
- Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource: BN1PEPF00004688.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB8981
-Received-SPF: softfail client-ip=2a01:111:f403:2416::60e;
- envelope-from=nicolinc@nvidia.com;
- helo=NAM11-CO1-obe.outbound.protection.outlook.com
-X-Spam_score_int: -25
-X-Spam_score: -2.6
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: BqTsCktnuxInQuKXuau8hHIvRs9a33Hlqrcl5+5q4PCNCGFL5JGb7W0Pt4POwzU/dsptk1pHHFR26cj9u38r5C4YpddrXCJAiAK2cfKUbBsR1GDHK2xO4WeTQmQxDOwoXePSLT+PZkki8eUHA5szkpr9tXZdnYnbgHgHSQnoVQhxgvFgf0ytazfoGs5fYeh6eX1iKJD0y9HwEtNN5FVLv2/nw/UmpFZT3gqQqaW3LMBPuWTuFPjrIw1owmwYEqF54ehMFppilQpgdMNRe2BD9xFtuVCFhRAJ82At2T5w1Z04mbPBl8k1YknPq1wbS42NANDcFeHW9JEBFQ/ppkewvGa9Wbg2bS4ZkfQElTnhYuRXryxNx9/XRuI7TTwT+w9YJCpB7etvaeHBr/X+3lQVhNJTCFb3hmnvvEFEZdom5bsyJ04cQVL9Koo/4VMoIemKAkeUMFhb53K0Fwxh1kkXhMPGxvZKHLNV5s9PS8IHME4umG9K7k4gz3GB027KB83zZ/iSjRU572q5iOXPCspzsu/Yzp4qaZXXoIUakmWvRjz92Wm5C0GvevZQMUcli4yAw5hYgGpkD1mJJkHZWIzmzpx6qe+lO3VvOGjEuPke7/w=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: MN2PR10MB4269.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 90a17d73-7f29-497f-1dd0-08dd196038ee
+X-MS-Exchange-CrossTenant-originalarrivaltime: 10 Dec 2024 21:18:41.9149 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: W7XwzqySZMGe+jCajVslVZrridublgHQtA5fNM+Uz57WJmTvk+kiCZ3boWj/atPJ2TL1mC9I4zKFRP3ND3qjQQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CYYPR10MB7607
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2024-12-10_12,2024-12-10_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0
+ malwarescore=0 adultscore=0
+ phishscore=0 suspectscore=0 spamscore=0 mlxlogscore=999 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2411120000
+ definitions=main-2412100154
+X-Proofpoint-ORIG-GUID: K9Ed1YT7sthJiZy_M9bDc4Wbtyjb0RKs
+X-Proofpoint-GUID: K9Ed1YT7sthJiZy_M9bDc4Wbtyjb0RKs
+Received-SPF: pass client-ip=205.220.165.32;
+ envelope-from=eric.mackay@oracle.com; helo=mx0a-00069f02.pphosted.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.52,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H2=-0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -166,89 +201,110 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Nov 21, 2024 at 09:46:16AM +0000, Shameerali Kolothum Thodi wrote:
-> Hi Eric,
-> 
-> > -----Original Message-----
-> > From: Shameerali Kolothum Thodi
-> > Sent: Wednesday, November 20, 2024 4:26 PM
-> > To: 'eric.auger@redhat.com' <eric.auger@redhat.com>; qemu-
-> > arm@nongnu.org; qemu-devel@nongnu.org
-> > Cc: peter.maydell@linaro.org; jgg@nvidia.com; nicolinc@nvidia.com;
-> > ddutile@redhat.com; Linuxarm <linuxarm@huawei.com>; Wangzhou (B)
-> > <wangzhou1@hisilicon.com>; jiangkunkun <jiangkunkun@huawei.com>;
-> > Jonathan Cameron <jonathan.cameron@huawei.com>;
-> > zhangfei.gao@linaro.org
-> > Subject: RE: [RFC PATCH 4/5] hw/arm/virt-acpi-build: Build IORT with
-> > multiple SMMU nodes
-> > 
-> > > > I think I have an idea why the hot add was not working.
-> > > >
-> > > > When we have the PCIe topology as something like below,
-> > > >
-> > > > -device pxb-pcie,id=pcie.1,bus_nr=8,bus=pcie.0 \ -device
-> > > > pcie-root-port,id=pcie.port1,bus=pcie.1,chassis=1 \ -device
-> > > > pcie-root-port,id=pcie.port2,bus=pcie.1,chassis=2 \ -device
-> > > > arm-smmuv3-nested,id=smmuv1,pci-bus=pcie.1 \ ...
-> > > >
-> > > > The current IORT generation includes the pcie-root-port dev ids also
-> > > > in the SMMUv3 node idmaps.
-> > > >
-> > > > Hence, when Guest kernel loads, pcieport is also behind the SMMUv3.
-> > > >
-> > > > [    1.466670] pcieport 0000:64:00.0: Adding to iommu group 1
-> > > > ...
-> > > > [    1.448205] pcieport 0000:64:01.0: Adding to iommu group 2
-> > >
-> > > But it should be the same without multi-instantiation, no? I would
-> > > have expected this as normal. Has you tested hot-plug without the
-> > > series laterly? Do you have the same pb?
-> > 
-> > That is a good question. I will give it a try soon and update.
-> 
-> I tried hot add with the current SMMUv3(iommu=smmuv3) and hot add
-> works when I added a virtio dev to pcie-root-port connected to a pxb-pcie.
-> 
-> And now I think I know(hopefully) the reason why it is not working with
-> smmuv3-nested case. I think the root cause is this commit here,
-> 
-> (series: " cover-letter: Add HW accelerated nesting support for arm SMMUv3")
-
-> This changes the way address space is returned for the devices.
-> 
-> static AddressSpace *smmu_find_add_as(PCIBus *bus, void *opaque, int devfn)
-> {
->     SMMUState *s = opaque;
->     SMMUPciBus *sbus = smmu_get_sbus(s, bus);
->     SMMUDevice *sdev = smmu_get_sdev(s, sbus, bus, devfn);
-> 
->     /* Return the system as if the device uses stage-2 only */
->     if (s->nested && !sdev->s1_hwpt) {
->         return &sdev->as_sysmem;
->     } else {
->         return &sdev->as;
->     }
-> }
-> 
-> If we have entries in the SMMUv3 idmap for bus:devfn, then I think we should
-> return IOMMU address space here. But the logic above returns sysmem
-> address space for anything other than vfio/iommufd devices.
->
-> The hot add works when I hacked the logic to return IOMMU address space
-> for pcie root port devices.
-
-That is to bypass the "if (memory_region_is_iommu(section->mr))"
-in vfio_listener_region_add(), when the device gets initially
-attached to the default container.
-
-Once a device reaches to the pci_device_set_iommu_device() call,
-it should be attached to an IDENTIY/bypass proxy s1_hwpt, so the
-smmu_find_add_as() will return the iommu as.
-
-So, the fact that your hack is working means the hotplug routine
-is likely missing a pci_device_set_iommu_device() call, IMHO, or
-probably it should do pci_device_iommu_address_space() after the
-device finishes pci_device_set_iommu_device() instead..
-
-Nicolin
+I tested your patch series, and I can confirm it fixes our bug repro case (=
+not involving the guest kernel).=0A=
+Thank you=0A=
+=0A=
+On Tue, 10 Dec 2024 17:39:42 +0100=0A=
+Igor Mammedov <imammedo@redhat.com> wrote:=0A=
+=0A=
+> CPU hotremove event is not delivered to OSPM if the CPU=0A=
+> has been hotplugged before OS has booted.=0A=
+> For details see [2/3].=0A=
+> =0A=
+> Igor Mammedov (3):=0A=
+>   tests: acpi: whitelist expected blobs=0A=
+>   cpuhp: make sure that remove events are handled within the same SCI=0A=
+>   tests: acpi: update expected blobs=0A=
+> =0A=
+>  hw/acpi/cpu.c                                 |  43 ++++++++++++++----=
+=0A=
+>  tests/data/acpi/x86/pc/DSDT                   | Bin 8526 -> 8593 bytes=
+=0A=
+>  tests/data/acpi/x86/pc/DSDT.acpierst          | Bin 8437 -> 8504 bytes=
+=0A=
+>  tests/data/acpi/x86/pc/DSDT.acpihmat          | Bin 9851 -> 9918 bytes=
+=0A=
+>  tests/data/acpi/x86/pc/DSDT.bridge            | Bin 15397 -> 15464 bytes=
+=0A=
+>  tests/data/acpi/x86/pc/DSDT.cphp              | Bin 8990 -> 9057 bytes=
+=0A=
+>  tests/data/acpi/x86/pc/DSDT.dimmpxm           | Bin 10180 -> 10247 bytes=
+=0A=
+>  tests/data/acpi/x86/pc/DSDT.hpbridge          | Bin 8477 -> 8544 bytes=
+=0A=
+>  tests/data/acpi/x86/pc/DSDT.hpbrroot          | Bin 5033 -> 5100 bytes=
+=0A=
+>  tests/data/acpi/x86/pc/DSDT.ipmikcs           | Bin 8598 -> 8665 bytes=
+=0A=
+>  tests/data/acpi/x86/pc/DSDT.memhp             | Bin 9885 -> 9952 bytes=
+=0A=
+>  tests/data/acpi/x86/pc/DSDT.nohpet            | Bin 8384 -> 8451 bytes=
+=0A=
+>  tests/data/acpi/x86/pc/DSDT.numamem           | Bin 8532 -> 8599 bytes=
+=0A=
+>  tests/data/acpi/x86/pc/DSDT.roothp            | Bin 12319 -> 12386 bytes=
+=0A=
+>  tests/data/acpi/x86/q35/DSDT                  | Bin 8355 -> 8422 bytes=
+=0A=
+>  tests/data/acpi/x86/q35/DSDT.acpierst         | Bin 8372 -> 8439 bytes=
+=0A=
+>  tests/data/acpi/x86/q35/DSDT.acpihmat         | Bin 9680 -> 9747 bytes=
+=0A=
+>  .../data/acpi/x86/q35/DSDT.acpihmat-generic-x | Bin 12565 -> 12632 bytes=
+=0A=
+>  .../acpi/x86/q35/DSDT.acpihmat-noinitiator    | Bin 8634 -> 8701 bytes=
+=0A=
+>  tests/data/acpi/x86/q35/DSDT.applesmc         | Bin 8401 -> 8468 bytes=
+=0A=
+>  tests/data/acpi/x86/q35/DSDT.bridge           | Bin 11968 -> 12035 bytes=
+=0A=
+>  tests/data/acpi/x86/q35/DSDT.core-count       | Bin 12913 -> 12980 bytes=
+=0A=
+>  tests/data/acpi/x86/q35/DSDT.core-count2      | Bin 33770 -> 33837 bytes=
+=0A=
+>  tests/data/acpi/x86/q35/DSDT.cphp             | Bin 8819 -> 8886 bytes=
+=0A=
+>  tests/data/acpi/x86/q35/DSDT.cxl              | Bin 13146 -> 13213 bytes=
+=0A=
+>  tests/data/acpi/x86/q35/DSDT.dimmpxm          | Bin 10009 -> 10076 bytes=
+=0A=
+>  tests/data/acpi/x86/q35/DSDT.ipmibt           | Bin 8430 -> 8497 bytes=
+=0A=
+>  tests/data/acpi/x86/q35/DSDT.ipmismbus        | Bin 8443 -> 8510 bytes=
+=0A=
+>  tests/data/acpi/x86/q35/DSDT.ivrs             | Bin 8372 -> 8439 bytes=
+=0A=
+>  tests/data/acpi/x86/q35/DSDT.memhp            | Bin 9714 -> 9781 bytes=
+=0A=
+>  tests/data/acpi/x86/q35/DSDT.mmio64           | Bin 9485 -> 9552 bytes=
+=0A=
+>  tests/data/acpi/x86/q35/DSDT.multi-bridge     | Bin 13208 -> 13275 bytes=
+=0A=
+>  tests/data/acpi/x86/q35/DSDT.noacpihp         | Bin 8235 -> 8302 bytes=
+=0A=
+>  tests/data/acpi/x86/q35/DSDT.nohpet           | Bin 8213 -> 8280 bytes=
+=0A=
+>  tests/data/acpi/x86/q35/DSDT.numamem          | Bin 8361 -> 8428 bytes=
+=0A=
+>  tests/data/acpi/x86/q35/DSDT.pvpanic-isa      | Bin 8456 -> 8523 bytes=
+=0A=
+>  tests/data/acpi/x86/q35/DSDT.thread-count     | Bin 12913 -> 12980 bytes=
+=0A=
+>  tests/data/acpi/x86/q35/DSDT.thread-count2    | Bin 33770 -> 33837 bytes=
+=0A=
+>  tests/data/acpi/x86/q35/DSDT.tis.tpm12        | Bin 8961 -> 9028 bytes=
+=0A=
+>  tests/data/acpi/x86/q35/DSDT.tis.tpm2         | Bin 8987 -> 9054 bytes=
+=0A=
+>  tests/data/acpi/x86/q35/DSDT.type4-count      | Bin 18589 -> 18656 bytes=
+=0A=
+>  tests/data/acpi/x86/q35/DSDT.viot             | Bin 14612 -> 14679 bytes=
+=0A=
+>  tests/data/acpi/x86/q35/DSDT.xapic            | Bin 35718 -> 35785 bytes=
+=0A=
+>  43 files changed, 34 insertions(+), 9 deletions(-)=0A=
+> =0A=
+> -- =0A=
+> 2.43.0=
 
