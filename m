@@ -2,83 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 202D19EBD98
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Dec 2024 23:17:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 74ED99EBDB1
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Dec 2024 23:18:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tL8Wg-0007uw-9t; Tue, 10 Dec 2024 17:16:18 -0500
+	id 1tL8Ya-0000dt-3P; Tue, 10 Dec 2024 17:18:16 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tL8Wc-0007ul-NY
- for qemu-devel@nongnu.org; Tue, 10 Dec 2024 17:16:14 -0500
-Received: from mail-oi1-x22e.google.com ([2607:f8b0:4864:20::22e])
+ id 1tL8YY-0000dl-3N
+ for qemu-devel@nongnu.org; Tue, 10 Dec 2024 17:18:14 -0500
+Received: from mail-oi1-x22d.google.com ([2607:f8b0:4864:20::22d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tL8Wb-00035w-8Q
- for qemu-devel@nongnu.org; Tue, 10 Dec 2024 17:16:14 -0500
-Received: by mail-oi1-x22e.google.com with SMTP id
- 5614622812f47-3eb3c143727so46104b6e.1
- for <qemu-devel@nongnu.org>; Tue, 10 Dec 2024 14:16:12 -0800 (PST)
+ id 1tL8YW-0003Ew-MY
+ for qemu-devel@nongnu.org; Tue, 10 Dec 2024 17:18:13 -0500
+Received: by mail-oi1-x22d.google.com with SMTP id
+ 5614622812f47-3eb6210742aso56235b6e.1
+ for <qemu-devel@nongnu.org>; Tue, 10 Dec 2024 14:18:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1733868972; x=1734473772; darn=nongnu.org;
+ d=linaro.org; s=google; t=1733869091; x=1734473891; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:to:subject:user-agent:mime-version:date:message-id:from
  :to:cc:subject:date:message-id:reply-to;
- bh=eKmWHiJG6C87eF9fM3OB7SD4ZdvHbUKlcHgR7wLVDgw=;
- b=FXWQj9jgNQavgSwIMrJV8CiWgcT+GVv1S8sr5p2i6eodJiMC1pqHfe70Gpks+Bmauq
- 3ynuS1y0gG3veeEmYijA5WsQrymrvZ4M4J5HwnmUiBp58nO2GP9jKjP1dYOMhagFgKPj
- g1TfnZCJZQ2fvJIOawvUKRbW6Qct6iDDp+IjaYuLe4uOaktYgpATIUvxBStceFK0v7fA
- 7Fjmy8ONpyC1GTDB8HxaRoimRdmGby5j27DWWm1LEi4b9tr4OFrJxZJVYYboRmjs3o+k
- OF86yEAuNXAvmUZY6j19roZ+6ydAv3h4ljGVf0IhLzyc+g0qIPMkSmZCIrJwJIWx/7wF
- fcLg==
+ bh=Vl20P6btBfBB9m55zw6VNnWmkan8dZFdndQSrABbobk=;
+ b=wK2iqjNdvX9kwh5AQGDEWChTpjig860SeLQ10M2KlFE1F6/kzju4K2UX/5GdFLr8E+
+ 2JiRHAAatN6GwoiYa7CerlvT+6RIVfHG5o+m2Sy9jLu/wQZcgBvRCnzi+VTu0F0gY7/2
+ /pgjhj66xGH9GnBFQuQQNYBguPpU6CCIbRFqoLQBP0q/6BV6zELsg8ePyxFcYT6dGugX
+ ov3Uck9Kb6Ip218HGUxXBfJZ5+YTpuflCrnF6BkEXZh0m8L//AsIUftmBWIpy9iudTLO
+ imTIbWPFvejapsue22Vgbg2D+ppm5wVu7flPBvYEFQz/keA41no+6H8MJzpl4hCHv4bi
+ pjLg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733868972; x=1734473772;
+ d=1e100.net; s=20230601; t=1733869091; x=1734473891;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=eKmWHiJG6C87eF9fM3OB7SD4ZdvHbUKlcHgR7wLVDgw=;
- b=kQ5E0HRs3RIFLPduhHKzaVdGR3jRLJEaVthD4SKamL9ITuYv7U9VAOuLUjFwz3hQF1
- 0XE875daP4vL2YI1Su5fQkFOduoJLiX+lLLOb7955aYo0k2ft37aqNqaK1E3owAQnxoW
- 3k0siBNhdpz8Z/asaTnFSL+fEdYxMSq1Sv5jly6DIX8hLYXUwsJy7HiNH/w2uprqkaFD
- uxntp5JUQxYRMmedrNnie5JQQfHE7Zds1Gsg9Ktr3ioATc+pkHuWqZttOxdb85ulQAMc
- 8gdKEy9fAdWHCrWPLzUtCxXVZqF4HneKtIDxuy6jEsdftXHHAx6CYGOtQCXMRjY3iT/M
- XTiQ==
+ bh=Vl20P6btBfBB9m55zw6VNnWmkan8dZFdndQSrABbobk=;
+ b=YEcEiKNjGh5SqICoSdZdDUX0VA+Pn2Y3zy0I/ezrrXoGGXqyP6PTcDfCprwjkd0hJr
+ boWQ4JNfhpWRsYY7aa9pbeWITdrNEzVN5+rTBENU3SIFPQbvdA9T1e8RhFXwLBu3QKbD
+ jita8hJqb4dUABS5B4k76ohPXfmfL9+yyqwMEJicpkehQcAwYps0nOnepvWd2v2W4Trp
+ w6LUH3gjtI2xBCmo7h7hSUfOkYyFj74L6/JdAlaENVaqkHK/KWamUgKowK7uRJ0cKdYO
+ daB1yGEBU5/ldLisSx8L/V9V+cgvxoP9icf8OFQt5MzNiUuPYiU9XH7B5Bbk3/C1tgb3
+ dGLQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWtAmkVWwPBLzvJ5OoFzZZTmkCGyK7CaImgp20DC6gr3Iq99Cv8SJK4TfY1Ao1KfbMs6P78R61Stp2f@nongnu.org
-X-Gm-Message-State: AOJu0Yzen7nOOwi8+sl1Bd7zNz8768pb2GyJLsXjww+NL9Tb9Fd6F0Co
- b4OiAzsANtMnS7ZHz5XmNbGFsE3RAC6gy9ftxc/FLYtWyk4JjnFX7TP+WS8o554=
-X-Gm-Gg: ASbGncvaK5A2Xpn5lMl+f56jlS5TXu9gZwBLcohFOAF5P1XGBvpH6D3lIKA+quhpVSM
- ASpVK5vadmF1LC6wfPFF5Rz4U44X0Ld+ntKxPYcWadQf/jjalTXoQ+uRz37Vc8iw6rbeuEt/6Gy
- 7Oj9gCBxme5U1jvvZMF2ebe4RNqXNpbUEWv8TNd2cjVLYaYLcrilo0R+kb/pm/4SAPWTvXK2mAx
- fyEm3ZBR3zig1akdPRO4zvxQGM8iGJj/Hp4IxV3l4gKviHZPaimrK9AVRLGYJtXY1YjwLN449Y4
- OfD5UB0UTKTSRn92LCFqxfgWYfzk2+Rc
-X-Google-Smtp-Source: AGHT+IHjHeZvGP4uptSc4iIrFb8/Qdf6kRfnQ3No2LejRXBJNqBhexcGXR1N2aH+12Z8V8cXi8eB9Q==
-X-Received: by 2002:a05:6808:318e:b0:3eb:643b:defc with SMTP id
- 5614622812f47-3eb86af7836mr252643b6e.7.1733868971828; 
- Tue, 10 Dec 2024 14:16:11 -0800 (PST)
+ AJvYcCX/c7VLRTa1wAbg+Y3SEd10RHUd/lnDkYLyRUXHE+b94ZtBsyH7MnQN6/+uIzFaaOmWTIU8EzH8+XLu@nongnu.org
+X-Gm-Message-State: AOJu0YwxzBlJc8F8ww7oFqRXy5a0Jw97yobRxz63+3noElYdcI1ukiw7
+ Q1vDpXqnzKwPlwWygxcwOUK7wf3ntjig7VEXCCVzr9phVxgAN04jMehhd8qSbc0=
+X-Gm-Gg: ASbGnctK1QHkG14KxODHdXPGL7iNxaPdQkcmMJnUehil0ppuRVxZKl8a26wGLZDA5zE
+ gMabvTqBh8/vpamfqC5iVPrvLb4Ez6BCpyzefWoa3ndYYGPjhvoNAGyyl/DzwA4dUUKNv+RBtWM
+ YVMzZvfNpl39yOeVrhrS5EGThCuiGNkPJ3ZTAy1/FNwPm1a92gPJl1qtZsR2SrcElZdSIPY3k6c
+ DoARz30zpoVA/BYdlbMbIKF60XoSb9Hg0Jx0GjcS5VWhDiLGrTifPRGhz9MZtepQRQOMfWW266P
+ X+tEJ0qAo1hgPiP32ID+XZMqczDf8zJ8
+X-Google-Smtp-Source: AGHT+IG1LKDzhb0Xj/ad1TQYmiEcrISER4yHVW7yMFvyfeANr6LMGFZzzMQGf4Fmibxe4dPk/s/wLw==
+X-Received: by 2002:a05:6808:2226:b0:3eb:4292:e6c9 with SMTP id
+ 5614622812f47-3eb86a34b80mr217799b6e.2.1733869091252; 
+ Tue, 10 Dec 2024 14:18:11 -0800 (PST)
 Received: from [192.168.4.112] (fixed-187-189-51-143.totalplay.net.
  [187.189.51.143]) by smtp.gmail.com with ESMTPSA id
- 46e09a7af769-71dc4a0267esm2995940a34.52.2024.12.10.14.16.10
+ 5614622812f47-3eb4b26c93asm1446207b6e.34.2024.12.10.14.18.09
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 10 Dec 2024 14:16:11 -0800 (PST)
-Message-ID: <a22eb1f7-4cf3-4aa2-b240-73191687c07b@linaro.org>
-Date: Tue, 10 Dec 2024 16:16:09 -0600
+ Tue, 10 Dec 2024 14:18:10 -0800 (PST)
+Message-ID: <37c01f87-dfba-420a-b254-aea801a40ed8@linaro.org>
+Date: Tue, 10 Dec 2024 16:18:07 -0600
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 16/20] util/qemu-timer: fix indentation
+Subject: Re: [PATCH 19/20] tests/functional: remove hacky sleep from the tests
 To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
  qemu-devel@nongnu.org
 References: <20241210204349.723590-1-alex.bennee@linaro.org>
- <20241210204349.723590-17-alex.bennee@linaro.org>
+ <20241210204349.723590-20-alex.bennee@linaro.org>
 Content-Language: en-US
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20241210204349.723590-17-alex.bennee@linaro.org>
+In-Reply-To: <20241210204349.723590-20-alex.bennee@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::22e;
- envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x22e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::22d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x22d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,26 +102,12 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 12/10/24 14:43, Alex Bennée wrote:
-> Purely cosmetic.
+> We have proper detection of prompts now so we don't need to guess with
+> sleep() sprinkled through the test. The extra step of calling halt is
+> just to flush the final bits of the log (although the last line is
+> still missed).
 > 
 > Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-> ---
->   util/qemu-timer.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/util/qemu-timer.c b/util/qemu-timer.c
-> index ffe9a3c5c1..7b71655416 100644
-> --- a/util/qemu-timer.c
-> +++ b/util/qemu-timer.c
-> @@ -680,7 +680,7 @@ int64_t qemu_clock_advance_virtual_time(int64_t dest)
->       aio_context = qemu_get_aio_context();
->   
->       deadline = qemu_clock_deadline_ns_all(QEMU_CLOCK_VIRTUAL,
-> -                                                      QEMU_TIMER_ATTR_ALL);
-> +                                          QEMU_TIMER_ATTR_ALL);
->       /*
->        * A deadline of < 0 indicates this timer is not enabled, so we
->        * won't get far trying to run it forward.
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
