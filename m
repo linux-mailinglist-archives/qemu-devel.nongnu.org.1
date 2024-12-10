@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85EAC9EA626
+	by mail.lfdr.de (Postfix) with ESMTPS id A67399EA629
 	for <lists+qemu-devel@lfdr.de>; Tue, 10 Dec 2024 04:06:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tKqYe-0008Np-00; Mon, 09 Dec 2024 22:05:08 -0500
+	id 1tKqYl-0008S0-9W; Mon, 09 Dec 2024 22:05:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1tKqYb-0008NG-Pg; Mon, 09 Dec 2024 22:05:05 -0500
-Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
+ id 1tKqYh-0008R0-WD; Mon, 09 Dec 2024 22:05:12 -0500
+Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1tKqYa-000324-1c; Mon, 09 Dec 2024 22:05:05 -0500
-Received: by mail-pl1-x62c.google.com with SMTP id
- d9443c01a7336-21654fdd5daso14394095ad.1; 
- Mon, 09 Dec 2024 19:05:03 -0800 (PST)
+ id 1tKqYd-0003DD-4t; Mon, 09 Dec 2024 22:05:11 -0500
+Received: by mail-pl1-x62e.google.com with SMTP id
+ d9443c01a7336-21669fd5c7cso9006425ad.3; 
+ Mon, 09 Dec 2024 19:05:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1733799901; x=1734404701; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1733799905; x=1734404705; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=LruQ9KYnQvDqCmEjdJ3ocQyVzKWaqruAqXQDYmuVWDI=;
- b=KWtziRYEZYhLAm/1kd4PfpBDA9r9DUz7B3XNNxaMJNdWoBoC1r0s0WiwvJP268F/O3
- rO+bFswfYbgbMdA3SvnfCPLSRsbLwAOJKyl+IXG9Ua/ukiD3UNukVZMkG76fEc5P8gSq
- Q/PlZPxjGiOvw2HF0zPjM+FcsdNdSFwPYBnz3yBrNF6cry/gq3w7EjLMrkCPVXsn1TPx
- BUGhNGN+5sZuy2RHhzP9I39ALP3WQPHRvUReAqlPEUxhwIg3PwnriN3Bu+Thrk5vWz1Q
- UTasP8xrAktKelCiq/2fDOC4Iel6sfLtmDYRMTrfpxGLS5d1VpjYsrBPMGh/dZqHkFHh
- XpBg==
+ bh=EgNAx/j9cKMKl1uMhP2lNjnmIgFYxQ7SDIVb2mQjXaM=;
+ b=QdZc/uMuixsvnpNET5pewhopLnYw57H/dljgDJK6CJhs3O1JqScMhlm47JtbohS8Hw
+ LmbJxwAylvdEhM2uh5+2kJoIVALgvUR92PeIyU9ILLQ1STgf/wg9s7Iw0K3UI7EiVL5p
+ t+TWFD1/BzDZS3c0w5aSJvqsl//7vPApXXsp1P7tVGNOegq9eksbyb47lcaSkTc1rMu7
+ aFuxRYgXB0SdCbkaV+bXDsg7WSi/oMfpGv7o6OnECm46AMtvR3Pj4FNX2ynxgBoxzxu5
+ RRUJEGkr/34UvnDCoLQTqrASoN84P3gCQ11VjmDrDSnPoLdftdsn4uquEpHoDyyn4DlJ
+ 8MEA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733799901; x=1734404701;
+ d=1e100.net; s=20230601; t=1733799905; x=1734404705;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=LruQ9KYnQvDqCmEjdJ3ocQyVzKWaqruAqXQDYmuVWDI=;
- b=eOJHvcsG/0AZO/MMmvWDtAEkqikmwyjKm9j1hfVx06e9ea52WwBOZrLkCUZmuYnhvQ
- DFgO35QljhnI+LB7Q/wM1qmJVC1177mErkrWMHKPGhffLjDJZGnr6eB3GW0PB9AZtKXW
- MSDX/AOOODRd1IkjLTiv7Bz7ODKmXTFov30zGyT3fMe6YAiW/UnT/KU/El8KYAr4tncH
- xLgRSmQMwRIJBNiK2b6k/2G9BO2+5yZ+SKTuqdL7RpXO3QjcBX3pa/TokCRjsPa5hJ/f
- oUpp7gQxrKh9pkDXKTj4zwTXauW3t+RP3isWjZhsU6K2TgNBFh4Xfhpx+odJJdKRHYuH
- muPw==
+ bh=EgNAx/j9cKMKl1uMhP2lNjnmIgFYxQ7SDIVb2mQjXaM=;
+ b=jtEWSltBB47ka4c6uMbpvCRzx3zWr62uAu0LiN+IQrmhoZhnBcByn/KkBhqiCf4ddg
+ DDl0h6to335BuyjrSE7CLOoae4ZLK83LzEejH7U3DL7stoGM1lCvjUr/fUPaebxiDOCC
+ 9pGS3UFfWJl5HRXcPs7A4zSLEUPl9uzjVVImWI9w5HW8j1hzPupIpbr1bfdJskgIjp8i
+ C8uRxNd5euhnFv/Dd+I7Kh98PhKIj0KPaxFVUFXyYNYt4bKYl2mWBybPRiQ+Wt/wbAxJ
+ PCGpWrmKfa5n5IZHmqBULhePqBq17ACXukzKQu5Zg5OJOONXEEGRCFIlTFhUdsDK7vPu
+ EXCQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXnFwjN5T607KW2jlS2IJhwqU0eLOa/rK/gb5+tW807kabj+3W3plGVJ5vU4AN5DGKx6qmrDNJd8mIt@nongnu.org
-X-Gm-Message-State: AOJu0YxMQuFLP+Y1SLqUaOvyEk9ma+fVrSByA6geNoEmsKxBYYs7CeO3
- ZeYMI0yd9XM52qGXexSET2eI+onVVSbYE+6M4ZAL2O6moxanVOBPQw+8vQ==
-X-Gm-Gg: ASbGncvRYQ2kthtvUg95A0+pfwxqQDdZi6wAqUxLJcoDwC2dFCGBguN+vIhD0eUVtLI
- KcjvWVc+1SYV7fi/YqMVvZragfevlM3x2M6TtM3JIVc7skPipY5lEOjpdQXN5nEeZar+QziUdxe
- VtoQjA0s6vi7S3TGfNqG7pmD0Po/ISMUSaYpo9O1CZUUuRPXoyhCIMoe+i5aO4CzyYkpXg0BnHR
- oqGxzyaTzUv7cNgXH+DyD0UJ1tkrlTDXIgFLA/5pt8sFyBW/qhZk/WLLZRt
-X-Google-Smtp-Source: AGHT+IEeZ47upPHlR1XHdhXujprX+K/RYm7BKOFrEw7Zft4zif//BXfWbvRQY4MK3LKEitsCr7ml7A==
-X-Received: by 2002:a17:902:e947:b0:216:239e:f90f with SMTP id
- d9443c01a7336-216239efc60mr226081345ad.37.1733799901431; 
- Mon, 09 Dec 2024 19:05:01 -0800 (PST)
+ AJvYcCUpI9lat2sk5CT9J+IA8SJC+MiV25fQgeD2xAYaGGSFbi5z8BiQgRrBmkd51afkMaathgCEk1kP0Rp+@nongnu.org
+X-Gm-Message-State: AOJu0Yyva1NbEaN3pIHlG4tym5/fZQuWx1kLtRO7FuD798emD6Eu1+jc
+ ZEK+mRZe6/abZmqNG8rdn6jGXfZLB90z11dHF0lvkCz68IPwLjAtV89HEA==
+X-Gm-Gg: ASbGncueNmNqlK/UIC0NEqipF/9cElSLJslbO6trkbcLQVxSZj7r3VgWqmtcDVVQ5g3
+ 8sT2xcboChmqa4XT96Z3DHY0P46ZjwQBT3GGvT8a49MotplJyvEQunKxs/5kXdpIcuVLqLfWB8k
+ pistzojk40AaeFcmDUThC1kiYoO6wd+KyI3o65wBHiApJeKMEIPtq4XARimXO9JDoUAHhlLMM98
+ t2kmXbkvt/mkO60NaJzpE3G+Wu0ExJBjxuq6AoFdx68YOyKOKqjdO1xVu5S
+X-Google-Smtp-Source: AGHT+IFxTvzA3QloZH6LA5GdCGtClXoZ+PpmuHpVV1K+D4DKg14b/BaebSaTKY/MAHysLR5hmQbMzQ==
+X-Received: by 2002:a17:902:d2c5:b0:216:725c:a11a with SMTP id
+ d9443c01a7336-216725ca612mr21655975ad.10.1733799904748; 
+ Mon, 09 Dec 2024 19:05:04 -0800 (PST)
 Received: from wheely.local0.net ([220.253.106.119])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-21631118cedsm44813865ad.150.2024.12.09.19.04.58
+ d9443c01a7336-21631118cedsm44813865ad.150.2024.12.09.19.05.01
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 09 Dec 2024 19:05:01 -0800 (PST)
+ Mon, 09 Dec 2024 19:05:04 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-ppc@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org,
  Harsh Prateek Bora <harshpb@linux.ibm.com>,
  =?UTF-8?q?Fr=C3=A9d=C3=A9ric=20Barrat?= <fbarrat@linux.ibm.com>
-Subject: [PATCH 1/9] ppc/pnv/homer: Fix OCC registers
-Date: Tue, 10 Dec 2024 13:04:41 +1000
-Message-ID: <20241210030451.1306608-2-npiggin@gmail.com>
+Subject: [PATCH 2/9] ppc/pnv/homer: Make dummy reads return 0
+Date: Tue, 10 Dec 2024 13:04:42 +1000
+Message-ID: <20241210030451.1306608-3-npiggin@gmail.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241210030451.1306608-1-npiggin@gmail.com>
 References: <20241210030451.1306608-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x62c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x62e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,139 +97,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The HOMER OCC registers seem to have bitrotted and fail for various
-reasons on powernv8, 9, and 10.
+HOMER memory implements some dummy registers that return a nonsense
+value to satisfy skiboot accesses caused by "SLW" init and register
+save/restore programming that has never worked under QEMU:
 
-The major problems are that POWER8 has the wrong version value and its
-pstate ordering is incorrect. POWER9/10 have not set the OCC state to
-active. Non-zero chips are also set to OCC slaves for POWER9/10.
+[    0.265000943,3] SLW: Failed to set HRMOR for CPU 0,RC=0x1
+[    0.265356988,3] Disabling deep stop states
 
-Unfortunately skiboot has also bitrotted and requires fixes that are
-not yet in the bios files to run. With a patched skiboot, before this
-change, powernv9/10 report:
-
-[    0.262050394,3] OCC: Chip: 0: OCC not active
-[    0.262128603,3] OCC: Initialization on all chips did not complete(timed out)
-
-powernv8 reports:
-
-[    0.173572100,3] OCC: Unknown OCC-OPAL interface version.
-[    0.173812059,3] OCC: Initialization on all chips did not complete(timed out)
-
-After this patch, all report:
-
-[    0.176815668,5] OCC: All Chip Rdy after 0 ms
+To simplify a later change to implement HOMER as a RAM area, make
+these return zero, which has the same result.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- hw/ppc/pnv_homer.c | 41 +++++++++++++++++++++++++++++------------
- 1 file changed, 29 insertions(+), 12 deletions(-)
+ hw/ppc/pnv_homer.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/hw/ppc/pnv_homer.c b/hw/ppc/pnv_homer.c
-index f9a203d11d0..9aedc08cc00 100644
+index 9aedc08cc00..658b0186a38 100644
 --- a/hw/ppc/pnv_homer.c
 +++ b/hw/ppc/pnv_homer.c
-@@ -70,21 +70,24 @@ static uint64_t pnv_power8_homer_read(void *opaque, hwaddr addr,
-     PnvHomer *homer = PNV_HOMER(opaque);
- 
-     switch (addr) {
--    case PNV8_OCC_PSTATE_VERSION:
--    case PNV8_OCC_PSTATE_MIN:
--    case PNV8_OCC_PSTATE_ID_ZERO:
--        return 0;
-     case PNV8_OCC_PSTATE_VALID:
-+        return 1;
-     case PNV8_OCC_PSTATE_THROTTLE:
-+        return 0;
-+    case PNV8_OCC_PSTATE_VERSION:
-+        return 0x02;
-+    case PNV8_OCC_PSTATE_MIN:
-+        return -2;
-     case PNV8_OCC_PSTATE_NOM:
-     case PNV8_OCC_PSTATE_TURBO:
--    case PNV8_OCC_PSTATE_ID_ONE:
-+        return -1;
-+    case PNV8_OCC_PSTATE_ULTRA_TURBO:
-+        return 0;
-+    case PNV8_OCC_PSTATE_ID_ZERO:
-+        return 0;
-     case PNV8_OCC_VDD_VOLTAGE_IDENTIFIER:
+@@ -89,7 +89,7 @@ static uint64_t pnv_power8_homer_read(void *opaque, hwaddr addr,
      case PNV8_OCC_VCS_VOLTAGE_IDENTIFIER:
          return 1;
--    case PNV8_OCC_PSTATE_ULTRA_TURBO:
--    case PNV8_OCC_PSTATE_ID_TWO:
--        return 2;
      case PNV8_OCC_PSTATE_DATA:
-         return 0x1000000000000000;
+-        return 0x1000000000000000;
++        return 0;
      /* P8 frequency for 0, 1, and 2 pstates */
-@@ -92,6 +95,10 @@ static uint64_t pnv_power8_homer_read(void *opaque, hwaddr addr,
+     case PNV8_OCC_PSTATE_ZERO_FREQUENCY:
      case PNV8_OCC_PSTATE_ONE_FREQUENCY:
-     case PNV8_OCC_PSTATE_TWO_FREQUENCY:
-         return 3000;
-+    case PNV8_OCC_PSTATE_ID_ONE:
-+        return -1;
-+    case PNV8_OCC_PSTATE_ID_TWO:
-+        return -2;
-     }
-     /* pstate table core max array */
-     if (core_max_array(homer, addr)) {
-@@ -192,11 +199,12 @@ static const TypeInfo pnv_homer_power8_type_info = {
- 
- /* P9 Pstate table */
- 
-+#define PNV9_OCC_PSTATE_VALID            0xe2000
- #define PNV9_OCC_PSTATE_ID_ZERO          0xe2018
- #define PNV9_OCC_PSTATE_ID_ONE           0xe2020
- #define PNV9_OCC_PSTATE_ID_TWO           0xe2028
- #define PNV9_OCC_PSTATE_DATA             0xe2000
--#define PNV9_OCC_PSTATE_DATA_AREA        0xe2008
-+#define PNV9_OCC_PSTATE_MINOR_VERSION    0xe2008
- #define PNV9_OCC_PSTATE_MIN              0xe2003
- #define PNV9_OCC_PSTATE_NOM              0xe2004
- #define PNV9_OCC_PSTATE_TURBO            0xe2005
-@@ -211,7 +219,7 @@ static const TypeInfo pnv_homer_power8_type_info = {
- #define PNV9_OCC_PSTATE_TWO_FREQUENCY    0xe202c
- #define PNV9_OCC_ROLE_MASTER_OR_SLAVE    0xe2002
- #define PNV9_CORE_MAX_BASE               0xe2819
--
-+#define PNV9_DYNAMIC_DATA_STATE          0xe2b80
- 
- static uint64_t pnv_power9_homer_read(void *opaque, hwaddr addr,
-                                       unsigned size)
-@@ -219,11 +227,17 @@ static uint64_t pnv_power9_homer_read(void *opaque, hwaddr addr,
-     PnvHomer *homer = PNV_HOMER(opaque);
- 
-     switch (addr) {
-+    case PNV9_OCC_PSTATE_VALID:
-+        return 1;
-     case PNV9_OCC_MAX_PSTATE_ULTRA_TURBO:
-     case PNV9_OCC_PSTATE_ID_ZERO:
-         return 0;
--    case PNV9_OCC_PSTATE_DATA:
-     case PNV9_OCC_ROLE_MASTER_OR_SLAVE:
-+        if (homer->chip->chip_id == 0) {
-+            return 0x1; /* master */
-+        } else {
-+            return 0x0; /* slave */
-+        }
-     case PNV9_OCC_PSTATE_NOM:
-     case PNV9_OCC_PSTATE_TURBO:
-     case PNV9_OCC_PSTATE_ID_ONE:
-@@ -241,10 +255,13 @@ static uint64_t pnv_power9_homer_read(void *opaque, hwaddr addr,
-         return 3000;
-     case PNV9_OCC_PSTATE_MAJOR_VERSION:
-         return 0x90;
-+    case PNV9_OCC_PSTATE_MINOR_VERSION:
-+        return 0x01;
+@@ -259,7 +259,7 @@ static uint64_t pnv_power9_homer_read(void *opaque, hwaddr addr,
+         return 0x01;
      case PNV9_CHIP_HOMER_BASE:
--    case PNV9_OCC_PSTATE_DATA_AREA:
      case PNV9_CHIP_HOMER_IMAGE_POINTER:
-         return 0x1000000000000000;
-+    case PNV9_DYNAMIC_DATA_STATE:
-+        return 0x03; /* active */
+-        return 0x1000000000000000;
++        return 0;
+     case PNV9_DYNAMIC_DATA_STATE:
+         return 0x03; /* active */
      }
-     /* pstate table core max array */
-     if (core_max_array(homer, addr)) {
 -- 
 2.45.2
 
