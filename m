@@ -2,85 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FC639EB1CB
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Dec 2024 14:24:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 70A0A9EB288
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Dec 2024 15:02:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tL0Cp-0005y8-5T; Tue, 10 Dec 2024 08:23:15 -0500
+	id 1tL0o6-0007B8-BH; Tue, 10 Dec 2024 09:01:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tL0Cl-0005xw-Pw
- for qemu-devel@nongnu.org; Tue, 10 Dec 2024 08:23:11 -0500
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tL0nh-0007AH-Vo
+ for qemu-devel@nongnu.org; Tue, 10 Dec 2024 09:01:26 -0500
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tL0Ck-0001kC-3Z
- for qemu-devel@nongnu.org; Tue, 10 Dec 2024 08:23:11 -0500
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-434b3e32e9dso60160905e9.2
- for <qemu-devel@nongnu.org>; Tue, 10 Dec 2024 05:23:09 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tL0ng-00070o-4p
+ for qemu-devel@nongnu.org; Tue, 10 Dec 2024 09:01:21 -0500
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-434acf1f9abso53996535e9.2
+ for <qemu-devel@nongnu.org>; Tue, 10 Dec 2024 06:01:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1733836988; x=1734441788; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=rSwfECw1HRJO1kdHWBYXyzdU//dlJB0pg0gdADzsEok=;
- b=obG7y/uNreIOtrHYkxbchgd7dObMQHZR1xCB9Yx7tewLVIqC0vXLNTxjt9Xi7Sd71f
- OoiIBbvUYp3QuSuqGyva8WfZojBU6dhNeqzDGgf4bkR3Ah6lqWpyjUILidpJEWaVdrvB
- 78N14S63wNV6pniVovuIM9j2NuxmtwI9AFA+o4HaFlha2enumWmhiAcHJXnF/bkzRL0Z
- pQl713CfcQp5AZHvqpORsZaBjDDs7SR4bES0gBw3TqkhYHr9cOOEfomXmD0A4JIXcUPv
- 4JvchHVWbaUpWIiF+CeZiTWkldABynT3x1NzYLHbQa4X9WuWyITyWVjRzXUN/r/FK3iq
- 2B0g==
+ d=linaro.org; s=google; t=1733839277; x=1734444077; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=Datbz+9X6Gzq1er7ALCf4IjQlEIK6u8ufTgOUCXC0FQ=;
+ b=kyflqbPbAg+Xz/Hp4kFkRyRp/x78pOgD+VpPC/ZqbA3Bg2GIwNW7QoKz9DmBekWVAC
+ EcYf8wNtu6OPlPZGFa3qYFzSCAT2JX0QQz6piBkngG55R7/qxGA05AwozCcJr2OQFbND
+ FIMkcgWHr6KIH0AxtP218J0V+ElOC+vl5cqfZozKluf4mfRls1wLIzQ+y3TbYm+vhwuM
+ 2r7P20RM3DLqJaOFXM76NTMIGTehHfE3Nh++mHqMcVfVB2jck/j45QndBDwSCwKHx6tf
+ LqexcWWB6gO6/f7YoyPneg3+Bu4VSQWeV9FPXEiQ6IvO8jh/MrLomJuuNcahW4ohOvya
+ 9Epg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733836988; x=1734441788;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=rSwfECw1HRJO1kdHWBYXyzdU//dlJB0pg0gdADzsEok=;
- b=BsjUCpvb9UPOGndNXlhuV/If7S9MHv/Ub0WXUhLMGTTiLUxL7ZNhVNCJo25AYnJO0C
- 5ibXVLgqGu8dD8AjfNcrdXvXq4+fVavRdjaE48jedtclEJP0fEJ20h9kYdw8VTOwcURi
- qwpjCe/vrQGPZtayFrkaz6a+7NcLziNdB2vsqWc7MD1UqWRmvmdo5VPFCK5BBYCmkze5
- KYkVtSAGKiSusCTNwUJ52gkrP1YYcmPDEynD9Bq3mkUOH8IkAqwx8A4NO1HMHpQoy2Jh
- K8s3TlJEcgQJhaoVXpnDDspS5bSG79fUrfdKA0+tqRePSmC9ROZJKkNn11hPIIW/4PF3
- fyqw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXHQpHSid1vzFjwTfoWA9B9nB7JOwG4Znpb0fZG6SbBugvKEinKO6Q5kDJY+cYS6vrGtMlckB17Qs1K@nongnu.org
-X-Gm-Message-State: AOJu0YzCXJyteLSCGpTfIYQsSwrnY3MYCHGtSzgoT6yjsNS7jSW77Y0g
- ODwCgNgu77JvtOdAoUPQ8T6MLNSPOVstsdhisFcaHtN/jB/aITmPPibzalYaMIc=
-X-Gm-Gg: ASbGncsQPrPw9UQj7BKM7DIWochZwk+ITIsdPu/O3TSdEtU6KyJvH4sS0rE3lisDwAD
- tAyVOg1IWROsAF8E+knvzm8YZQgEjadYGwGEz+jK6MunJ5wHg5g/Sh3SFSvVn/Xg4z1N4dLk4zi
- 6xxCxSXU7naTsPQPDXnFUC913yyNGlu1ZRKLeY7bYyeMhHQ3qJJlwbxZn/9BoiOQJkVL94o+Fso
- nHRrECn4IXJbUsdWzk8/WyfMAtP4PEuB5hE/0mZPvStnumFXs64G02xq8YY1G2ULuKtzXDSDDsF
- Tud6No3eOfU/mEnYdhW0tk8D
-X-Google-Smtp-Source: AGHT+IEBo7npa6DIBWE6DE/b0pr9W1e7WRq/58Nln3YbFdX/FD4vhSWfSRjZ7t4K1krBYmdwhOtrGQ==
-X-Received: by 2002:a5d:6d89:0:b0:385:f72a:a3b0 with SMTP id
- ffacd0b85a97d-3862b3ea28bmr10560205f8f.55.1733836988015; 
- Tue, 10 Dec 2024 05:23:08 -0800 (PST)
-Received: from [192.168.224.213] (223.132.22.93.rev.sfr.net. [93.22.132.223])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38636c919e5sm9946241f8f.18.2024.12.10.05.23.06
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 10 Dec 2024 05:23:07 -0800 (PST)
-Message-ID: <ad2e35bd-ac8f-4987-b970-f0e8de90acc3@linaro.org>
-Date: Tue, 10 Dec 2024 14:23:05 +0100
+ d=1e100.net; s=20230601; t=1733839277; x=1734444077;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=Datbz+9X6Gzq1er7ALCf4IjQlEIK6u8ufTgOUCXC0FQ=;
+ b=M/JxjohEZWluEkCDv6BL+mSbP+6GPKslieHXY+pr71pdxIEfX2bUTn+S01n9WMFfGd
+ hgpwFFJE8tbz9+BeMdPifTdrrqYjEkAN2D8qKqnQnXY6N75ya4x9t0l3ViYBNezDC5FD
+ uiI+7dXp3QnPsH6b4QErNnmYUt8uF6StJLKdTRmzhIKCEpmjGiHxeItRBZpwVS2HqF1m
+ nLxP91+MWPyvPzigchC2YyCKezvQyh0mVGG5nNG4odv7JEUiJH4Bcn8PZ2LYOJA5mxK+
+ kkeqZsnRqL4fBkXrqxe1MxDIeg00BstXm0BnzRgeJRryQKM/ehtvzbAVTxf0Bp3wlS1B
+ 33mA==
+X-Gm-Message-State: AOJu0Yzp0GJjbZeff/snwXt6A9HUNs/lrKKO+z0Thxh+cwTgSn6XKcci
+ 3IBygrRu/xA7zxonML8UO7zVHpUIzVf9AqYCv7j/mhJgfsEpU2QIVYXmPj7hoB3slzu06n+dIuZ
+ NVBY=
+X-Gm-Gg: ASbGncsBQ+9/1UxgunkI9VR6yWlju5TV+anD3JQMmBCPGlOTy1fmBpVdBuHEm1GirRL
+ x9zKqXOH/brXiiVV4sCzdmwtxbJVvxppIUGXX0NJ4sDC166H75/h20Bvnx1gwaUk+aSYuJbKhdh
+ bHnoNCHIi03GO8a73SKZv9zm7FlPw0afdjqQc5h8G55wjGIQ4gXV8FqJegk4ZMzoEmVSKDNsOJx
+ pGPelgbNLZJqlPeEpfBIlTgZ/+QUC6OXJTPUd9+09HxsdDcITVdr+a1rorR6I5cfIeCUNnAeebP
+ sLh1ot4er1KzAVQJX5rXTcT4
+X-Google-Smtp-Source: AGHT+IFk0FofuuPUg4CzQGsQal5SK1OvYDomzbSurC7tkuK1IKglha2OfhuIJY4coz2RvcgbRscX0g==
+X-Received: by 2002:a05:600c:4f03:b0:430:5887:c238 with SMTP id
+ 5b1f17b1804b1-434fff3a2fbmr39337315e9.11.1733839277326; 
+ Tue, 10 Dec 2024 06:01:17 -0800 (PST)
+Received: from localhost.localdomain (223.132.22.93.rev.sfr.net.
+ [93.22.132.223]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-435d4cd4a78sm17931215e9.28.2024.12.10.06.01.15
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Tue, 10 Dec 2024 06:01:16 -0800 (PST)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v2 0/3] bulk: Remove legacy cpu_physical_memory_rw() API
+Date: Tue, 10 Dec 2024 15:01:09 +0100
+Message-ID: <20241210140112.43313-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.45.2
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] tests/functional: Convert the intel_iommu avocado test
-To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
- "Michael S. Tsirkin" <mst@redhat.com>
-Cc: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>,
- Eric Auger <eric.auger@redhat.com>,
- =?UTF-8?Q?Cl=C3=A9ment_Mathieu--Drif?= <clement.mathieu--drif@eviden.com>,
- Yi Liu <yi.l.liu@intel.com>, Jason Wang <jasowang@redhat.com>
-References: <20241210125639.101033-1-thuth@redhat.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20241210125639.101033-1-thuth@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,63 +94,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/12/24 13:56, Thomas Huth wrote:
-> Convert the intel_iommu test to the new functional framework.
-> This test needs some changes since we neither support the old 'LinuxTest'
-> class in the functional framework yet, nor a way to use SSH for running
-> commands in the guest. So we now directly download a Fedora kernel and
-> initrd and set up the serial console for executing the commands and for
-> looking for the results. Instead of configuring the cloud image via
-> cloud-init, we now simply mount the file system manually from an initrd
-> rescue shell.
-> 
-> While the old test was exercising the network with a "dnf install"
-> command (which is not the best option for the CI since this depends
-> on third party servers), the new code is now setting up a little
-> HTTP server in the guest and transfers a file from the guest to the
-> host instead.
-> 
-> The test should now run much faster and more reliable (since we
-> don't depend on the third party servers for "dnf install" anymore),
-> so we can also drop the @skipUnless decorator now.
-> 
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
-> ---
->   v2:
->   - Download the cloud image qcow2 and use it as file system
->     to exercise the virtio-block device
->   - Instead of removing the "dnf install", transfer a file
->     via virtio-net to the host
->   - This needs find_free_port() now:
->   Based-on: <20241204071911.664057-1-thuth@redhat.com>
-> 
->   MAINTAINERS                          |   1 +
->   tests/avocado/intel_iommu.py         | 122 -------------------
->   tests/functional/meson.build         |   2 +
->   tests/functional/test_intel_iommu.py | 176 +++++++++++++++++++++++++++
->   4 files changed, 179 insertions(+), 122 deletions(-)
->   delete mode 100644 tests/avocado/intel_iommu.py
->   create mode 100755 tests/functional/test_intel_iommu.py
+cpu_physical_memory_rw() API is documented as legacy
+since 2017 (commit b7ecba0f6f6). Replace it by a more
+recent API. Noticed while discussing with Peter:
+https://lore.kernel.org/qemu-devel/e979b3ba-e701-4ac6-962a-19e4598ba947@linaro.org
 
+Philippe Mathieu-Daudé (3):
+  dump/dump: Include missing 'exec/memory.h' header
+  bulk: Replace legacy cpu_physical_memory_rw() API
+  system: Remove mentions of cpu_physical_memory_rw() API
 
-> +        # Check virtio-net via HTTP:
-> +        exec_command_and_wait_for_pattern(self, 'dhclient eth0', prompt)
-> +        exec_command_and_wait_for_pattern(self,
-> +                                    'python3 -m http.server 8080 & sleep 1',
-> +                                    'Serving HTTP on 0.0.0.0 port 8080')
-> +        hl = hashlib.sha256()
-> +        url = f'http://localhost:{freeport}{filename}'
-> +        self.log.info(f'Downloading {url} ...')
-> +        with urllib.request.urlopen(url) as response:
-> +            while True:
-> +                chunk = response.read(1 << 20)
-> +                if not chunk:
-> +                    break
-> +                hl.update(chunk)
-> +
-> +        digest = hl.hexdigest()
-> +        self.log.info(f'sha256sum of download is {digest}.')
-> +        self.assertEqual(digest, hashsum)
+ docs/devel/loads-stores.rst            | 23 -------
+ scripts/coccinelle/exec_rw_const.cocci | 29 ---------
+ hw/xtensa/bootparam.h                  |  7 +-
+ include/exec/cpu-common.h              | 12 ----
+ accel/kvm/kvm-all.c                    |  5 +-
+ dump/dump.c                            |  5 +-
+ gdbstub/system.c                       |  7 +-
+ hw/acpi/ghes.c                         | 19 ++++--
+ hw/acpi/nvdimm.c                       | 21 ++++--
+ hw/acpi/vmgenid.c                      |  6 +-
+ hw/arm/omap1.c                         | 18 ++++--
+ hw/audio/marvell_88w8618.c             |  4 +-
+ hw/char/riscv_htif.c                   |  8 ++-
+ hw/display/omap_lcdc.c                 | 13 ++--
+ hw/dma/i8257.c                         | 17 +++--
+ hw/dma/omap_dma.c                      | 15 +++--
+ hw/dma/rc4030.c                        |  3 +-
+ hw/dma/sifive_pdma.c                   | 13 ++--
+ hw/gpio/zaurus.c                       |  5 +-
+ hw/i386/kvm/clock.c                    |  4 +-
+ hw/i386/vapic.c                        | 42 +++++++-----
+ hw/intc/apic.c                         |  6 +-
+ hw/m68k/next-cube.c                    |  4 +-
+ hw/microblaze/boot.c                   |  4 +-
+ hw/net/fsl_etsec/rings.c               | 24 ++++---
+ hw/net/mcf_fec.c                       | 16 +++--
+ hw/net/opencores_eth.c                 | 15 +++--
+ hw/net/xgmac.c                         | 13 ++--
+ hw/ppc/e500.c                          |  4 +-
+ hw/ppc/pegasos2.c                      |  6 +-
+ hw/ppc/pnv.c                           |  4 +-
+ hw/ppc/ppc405_boards.c                 |  5 +-
+ hw/ppc/spapr.c                         |  4 +-
+ hw/ppc/spapr_drc.c                     |  7 +-
+ hw/ppc/spapr_events.c                  | 21 +++---
+ hw/ppc/spapr_hcall.c                   | 15 +++--
+ hw/ppc/spapr_rtas.c                    |  7 +-
+ hw/ppc/spapr_tpm_proxy.c               |  7 +-
+ hw/ppc/virtex_ml507.c                  |  4 +-
+ hw/s390x/css.c                         |  6 +-
+ hw/s390x/ipl.c                         |  8 ++-
+ hw/s390x/sclp.c                        | 11 ++--
+ hw/scsi/vmw_pvscsi.c                   | 16 +++--
+ hw/xen/xen-hvm-common.c                | 10 ++-
+ hw/xen/xen_pt_graphics.c               |  4 +-
+ hw/xtensa/xtfpga.c                     |  7 +-
+ system/cpus.c                          |  4 +-
+ system/physmem.c                       |  7 --
+ target/i386/kvm/xen-emu.c              |  3 +-
+ target/i386/monitor.c                  | 90 ++++++++++++++++++--------
+ target/i386/nvmm/nvmm-all.c            |  3 +-
+ target/i386/whpx/whpx-all.c            |  5 +-
+ target/riscv/kvm/kvm-cpu.c             |  6 +-
+ target/riscv/monitor.c                 |  4 +-
+ target/s390x/diag.c                    | 13 +++-
+ target/s390x/helper.c                  |  5 +-
+ target/s390x/mmu_helper.c              |  6 +-
+ 57 files changed, 391 insertions(+), 259 deletions(-)
 
-Nice :)
+-- 
+2.45.2
+
 
