@@ -2,75 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1373D9EB619
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Dec 2024 17:21:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 008029EB5F7
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Dec 2024 17:19:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tL2vu-0002OL-Pl; Tue, 10 Dec 2024 11:17:58 -0500
+	id 1tL2vw-0002Pi-8L; Tue, 10 Dec 2024 11:18:00 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tL2vl-0002Ng-AF
+ id 1tL2vl-0002Nl-MM
  for qemu-devel@nongnu.org; Tue, 10 Dec 2024 11:17:49 -0500
-Received: from mail-lf1-x12f.google.com ([2a00:1450:4864:20::12f])
+Received: from mail-lj1-x233.google.com ([2a00:1450:4864:20::233])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tL2vh-0006Ev-Um
- for qemu-devel@nongnu.org; Tue, 10 Dec 2024 11:17:48 -0500
-Received: by mail-lf1-x12f.google.com with SMTP id
- 2adb3069b0e04-540254357c8so1117683e87.1
- for <qemu-devel@nongnu.org>; Tue, 10 Dec 2024 08:17:43 -0800 (PST)
+ id 1tL2vj-0006FO-N0
+ for qemu-devel@nongnu.org; Tue, 10 Dec 2024 11:17:49 -0500
+Received: by mail-lj1-x233.google.com with SMTP id
+ 38308e7fff4ca-2ffd6af012eso61404831fa.2
+ for <qemu-devel@nongnu.org>; Tue, 10 Dec 2024 08:17:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1733847462; x=1734452262; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=PyLVQvN/SswxDvNgDRjPnWQqQm43Ri2JxpixcdvW9EI=;
- b=kf0FgzlcqCfh/hcZxNQldAlJrUDkFqZ7Q9QyXAlh6BFZ1FkFfxWrLdmPqbdzigUDbd
- 8thKVOjbbavCOxRdDfeAuKERaBFR85WnGXFVZZbMoWe/WZFyAP8BqtiJQ/QThol6QM5x
- mtyp5JrCa/PxlgnIZNB+VTN5lCsWjmfF/1MT8bG8OqNrORkAFpEZRY2MrOJJFy6DTOEw
- EFgyEq5KyKb3JMEIja7g60ec46YrdzVhXi6sK1WamYv2U0TMAd/Od9AyomyeIiSoizkS
- gTZmUy6aFtPz0CcywoLNDJO4pY0r1vT0kgzX/lVtNicxlsZNWdimbDelcqZcP/QXNoPa
- FtZA==
+ d=linaro.org; s=google; t=1733847466; x=1734452266; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=fQWBBpBVBB2pYpCBMt9NLIFTJDB68D9O686ayP1ZAos=;
+ b=YWnXYVc0tmd1bzs1oOkY34Rh6wvbWSkNERxRKVK6YGFH3VxG7BGASPbyqrThoyaaEk
+ L4dcKaTcF5849CXBd8ZJAIlDiL+mm+AF6XtcNCem6tzZ5qKcsanIo/pYhsRR8+mbRLCl
+ V3s/ar5DHNwfdYv9j+dFwpp24n9LkaWuCMN/t2GcuBojhdYBll33uAyfIXZpbb1pGKeN
+ R8DmEnG5il4/dx5Vg21nYdy49xG9Eept02aYAxfQsucPNuZwCakc7AN8h8OaaL/iC3w1
+ HYYQOZ1737y72mEjfncdApbmIAxBdfY6nPUKjkvkP1LR53rjQlW/f+tqVWWE5BaHdakK
+ L2RQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733847462; x=1734452262;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=PyLVQvN/SswxDvNgDRjPnWQqQm43Ri2JxpixcdvW9EI=;
- b=VnD+JB/PWQ8ZG/kirfqfBv48Tfh+auQIC49z53Cj2x7cCo9tBGYEZwnNztbA4Sy84j
- B9rFQBiNRypF99K/sm/lT6fX1UcigMjAC+EdOk5ydGn7E1TbvVRhMpFvQwwDS4LA9oMP
- Y3qJXR/TPQI2c2QN0BBsnc/plCm+7LmO/Tc9rSyu8FjWXnIvBUrrpmF+yyDmLRZdcLrS
- EARRax6YQbUbwc/Zey5w/4cF4l6pJiZcVoawp1mljzhTLA+j6sIdlU4mrqUapdKad+BL
- JSZFQQULCgGX75XEna9swEraJtYn6/kes5WkliCRycmkTHjPBC1J1tiKDIPTUvgsHU5j
- 7ngA==
-X-Gm-Message-State: AOJu0YwrNeIF5Ez4yozRW6Lb5qO3h9A4rcI/dUr3BIUtx/UP02rIsLeA
- TGFMF1TuFDKiNtigS5V0Bzyzpws8pMBrsNioTMEx9wEFw8+923rfQqfyaIvbSRiTACD8c/y0ie+
- ZYGEdjFqZ
-X-Gm-Gg: ASbGncu2AVs1uujlVUoyHomnUYixlPFSdv5+EorqQZSCVbs+Xv27bW7cly9B8bKobX8
- P4HVQNWN3m3F4Ca9vx1RnZ9oDyih+Ppv75dIX+/tMAMU+rpNBObgr7fzVWkgSxZp1PIZV3GoOnr
- UybFkxalWwrLkV7avfwXUhtiyAO8pTKiy46AVCcQezPQSnfEI1XrkQftGBOT5G4L55KpfYq/zLT
- vJOegHYwJirPd/ZucyjnBTXvDn8owL2yYqRukUIYRlxwrpoRsLWVSMrofk=
-X-Google-Smtp-Source: AGHT+IEWG4yMqhuIBM5a6M4fCghj26APoQ5IYxs/7JilHzo831o/Jj2T6cSr7ybsHFnekuoxMBZ8Ew==
-X-Received: by 2002:a05:6512:39ca:b0:540:228d:b8e3 with SMTP id
- 2adb3069b0e04-5402410f377mr2099162e87.44.1733847462335; 
- Tue, 10 Dec 2024 08:17:42 -0800 (PST)
+ d=1e100.net; s=20230601; t=1733847466; x=1734452266;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=fQWBBpBVBB2pYpCBMt9NLIFTJDB68D9O686ayP1ZAos=;
+ b=PEc+ugNiZKj5psRiqBNzgkQPKIBXCmhppJL8faVd1q6iW/mcPeAk8y+uuWI+kacXp8
+ 9ljXMqvxvJ63NzCR0C3NbqiZm1vhBLk8XyySYmHA61HoDqS29FnL7uc4lmT2oRCSkW7i
+ Q3h9wC7y0gA/seyBwVvMlZc+zRV/lnTulcSAbmJlejlbv7HIm8kbRHImQVWTt8y4gnpq
+ rb3ztB9thVCNG8nWmbm0LWe0m9mdHKMXv7dwX5Lve5MnIa9TIYwe4coFZPJjbeP0DKcm
+ gNynPoBsNs9MUnuseFYVAyxn02DsPjW/0R7KVGkbELudpZdk5Y0d3Qijl2coru+fGkMy
+ BrKA==
+X-Gm-Message-State: AOJu0YwYnObDrKghGtBnSmC0O5TUv/k6NxGVTbahfhRvpoE+CAw+Zz9X
+ GeYWNUpZ7sNZIYEVMxJPMpwKjQSrHY2U1WN0FNqbXj9LGOBZzxso4uJ6G1/JFaNyIjqkUdoZlXv
+ atGFkZPam
+X-Gm-Gg: ASbGnctg5opS78cUg/aCrGkYabgb2QnRnY5uP8zXkLMLyyjCFcWy1TKX8mn5DyMhH7F
+ 92NAtAY8HSFswtsF/c+Vfz4WFKPTbi6NN5DP+fVCewe+2ADDpEK8TfdLlpFnvDt0XB38hRxvaIT
+ qYvOs/tvPnr59NWQ549ipUQmMF5fUQ0sipcGvqS6PLqKyihmLavz6WFAyEt1PJ5vLVrAb4lFFl9
+ HLhCoee3iHIA8EsEffubkIeyi//04dXlITOyKDppXq6GCBTa39qxSKx28Q=
+X-Google-Smtp-Source: AGHT+IEj+kFGLfHpaBjf3mqeX/ndPZwb6QkY+ibDiYsfHILmhwDB3OeYkzZM+z2SQPkbKkPZKaBByQ==
+X-Received: by 2002:a05:6512:230b:b0:540:2022:e3c8 with SMTP id
+ 2adb3069b0e04-5402410762dmr1996437e87.41.1733847465740; 
+ Tue, 10 Dec 2024 08:17:45 -0800 (PST)
 Received: from stoup.. ([91.209.212.80]) by smtp.gmail.com with ESMTPSA id
- 2adb3069b0e04-53f93377eefsm1026343e87.67.2024.12.10.08.17.37
+ 2adb3069b0e04-53f93377eefsm1026343e87.67.2024.12.10.08.17.43
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 10 Dec 2024 08:17:40 -0800 (PST)
+ Tue, 10 Dec 2024 08:17:45 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org
-Subject: [PATCH v2 00/69] target/arm: AArch64 decodetree conversion, final part
-Date: Tue, 10 Dec 2024 10:16:24 -0600
-Message-ID: <20241210161733.1830573-1-richard.henderson@linaro.org>
+Cc: qemu-arm@nongnu.org,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v2 01/69] target/arm: Add section labels for "Data Processing
+ (register)"
+Date: Tue, 10 Dec 2024 10:16:25 -0600
+Message-ID: <20241210161733.1830573-2-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20241210161733.1830573-1-richard.henderson@linaro.org>
+References: <20241210161733.1830573-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12f;
- envelope-from=richard.henderson@linaro.org; helo=mail-lf1-x12f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::233;
+ envelope-from=richard.henderson@linaro.org; helo=mail-lj1-x233.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,117 +98,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Finish the conversion of all aarch64 instructions to decodetree.
+At the same time, use ### to separate 3rd-level sections.
+We already use ### for 4.1.92 Data Processing (immediate),
+but not the two following two third-level sections:
+4.1.93 Branches, and 4.1.94 Loads and stores.
 
-Changes for v2:
-  - Apply review nits as appropriate.
-  - Split out gen_gvec_fabs, gen_gvec_fneg and share with a32 neon.
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+---
+ target/arm/tcg/a64.decode | 19 +++++++++++++++++--
+ 1 file changed, 17 insertions(+), 2 deletions(-)
 
-Patches lacking review:
-  23-target-arm-Fix-decode-of-fp16-vector-fabs-fneg.patch
-  24-target-arm-Convert-FMOV-FABS-FNEG-scalar-to-decod.patch
-  29-target-arm-Convert-BFCVT-to-decodetree.patch
-  43-target-arm-Convert-handle_rev-to-decodetree.patch
-  53-target-arm-Implement-gen_gvec_fabs-gen_gvec_fneg.patch
-  57-target-arm-Convert-FCVT-vector-integer-scalar-to-.patch
-  58-target-arm-Convert-FCVT-vector-fixed-point-scalar.patch
-  60-target-arm-Convert-US-CVTF-vector-fixed-point-sca.patch
-  62-target-arm-Convert-US-CVTF-vector-to-decodetree.patch
-  63-target-arm-Convert-FCVTZ-SU-vector-fixed-point-to.patch
-  64-target-arm-Convert-FCVT-vector-integer-to-decodet.patch
-  67-target-arm-Introduce-gen_gvec_urecpe-gen_gvec_urs.patch
-  68-target-arm-Convert-URECPE-and-URSQRTE-to-decodetr.patch
-
-
-r~
-
-
-Richard Henderson (69):
-  target/arm: Add section labels for "Data Processing (register)"
-  target/arm: Convert UDIV, SDIV to decodetree
-  target/arm: Convert LSLV, LSRV, ASRV, RORV to decodetree
-  target/arm: Convert CRC32, CRC32C to decodetree
-  target/arm: Convert SUBP, IRG, GMI to decodetree
-  target/arm: Convert PACGA to decodetree
-  target/arm: Convert RBIT, REV16, REV32, REV64 to decodetree
-  target/arm: Convert CLZ, CLS to decodetree
-  target/arm: Convert PAC[ID]*, AUT[ID]* to decodetree
-  target/arm: Convert XPAC[ID] to decodetree
-  target/arm: Convert disas_logic_reg to decodetree
-  target/arm: Convert disas_add_sub_ext_reg to decodetree
-  target/arm: Convert disas_add_sub_reg to decodetree
-  target/arm: Convert disas_data_proc_3src to decodetree
-  target/arm: Convert disas_adc_sbc to decodetree
-  target/arm: Convert RMIF to decodetree
-  target/arm: Convert SETF8, SETF16 to decodetree
-  target/arm: Convert CCMP, CCMN to decodetree
-  target/arm: Convert disas_cond_select to decodetree
-  target/arm: Introduce fp_access_check_scalar_hsd
-  target/arm: Introduce fp_access_check_vector_hsd
-  target/arm: Convert FCMP, FCMPE, FCCMP, FCCMPE to decodetree
-  target/arm: Fix decode of fp16 vector fabs, fneg
-  target/arm: Convert FMOV, FABS, FNEG (scalar) to decodetree
-  target/arm: Pass fpstatus to vfp_sqrt*
-  target/arm: Remove helper_sqrt_f16
-  target/arm: Convert FSQRT (scalar) to decodetree
-  target/arm: Convert FRINT[NPMSAXI] (scalar) to decodetree
-  target/arm: Convert BFCVT to decodetree
-  target/arm: Convert FRINT{32,64}[ZX] (scalar) to decodetree
-  target/arm: Convert FCVT (scalar) to decodetree
-  target/arm: Convert handle_fpfpcvt to decodetree
-  target/arm: Convert FJCVTZS to decodetree
-  target/arm: Convert handle_fmov to decodetree
-  target/arm: Convert SQABS, SQNEG to decodetree
-  target/arm: Convert ABS, NEG to decodetree
-  target/arm: Introduce gen_gvec_cls, gen_gvec_clz
-  target/arm: Convert CLS, CLZ (vector) to decodetree
-  target/arm: Introduce gen_gvec_cnt, gen_gvec_rbit
-  target/arm: Convert CNT, NOT, RBIT (vector) to decodetree
-  target/arm: Convert CMGT, CMGE, GMLT, GMLE, CMEQ (zero) to decodetree
-  target/arm: Introduce gen_gvec_rev{16,32,64}
-  target/arm: Convert handle_rev to decodetree
-  target/arm: Move helper_neon_addlp_{s8,s16} to neon_helper.c
-  target/arm: Introduce gen_gvec_{s,u}{add,ada}lp
-  target/arm: Convert handle_2misc_pairwise to decodetree
-  target/arm: Remove helper_neon_{add,sub}l_u{16,32}
-  target/arm: Introduce clear_vec
-  target/arm: Convert XTN, SQXTUN, SQXTN, UQXTN to decodetree
-  target/arm: Convert FCVTN, BFCVTN to decodetree
-  target/arm: Convert FCVTXN to decodetree
-  target/arm: Convert SHLL to decodetree
-  target/arm: Implement gen_gvec_fabs, gen_gvec_fneg
-  target/arm: Convert FABS, FNEG (vector) to decodetree
-  target/arm: Convert FSQRT (vector) to decodetree
-  target/arm: Convert FRINT* (vector) to decodetree
-  target/arm: Convert FCVT* (vector, integer) scalar to decodetree
-  target/arm: Convert FCVT* (vector, fixed-point) scalar to decodetree
-  target/arm: Convert [US]CVTF (vector, integer) scalar to decodetree
-  target/arm: Convert [US]CVTF (vector, fixed-point) scalar to
-    decodetree
-  target/arm: Rename helper_gvec_vcvt_[hf][su] with _rz
-  target/arm: Convert [US]CVTF (vector) to decodetree
-  target/arm: Convert FCVTZ[SU] (vector, fixed-point) to decodetree
-  target/arm: Convert FCVT* (vector, integer) to decodetree
-  target/arm: Convert handle_2misc_fcmp_zero to decodetree
-  target/arm: Convert FRECPE, FRECPX, FRSQRTE to decodetree
-  target/arm: Introduce gen_gvec_urecpe, gen_gvec_ursqrte
-  target/arm: Convert URECPE and URSQRTE to decodetree
-  target/arm: Convert FCVTL to decodetree
-
- target/arm/helper.h             |   43 +-
- target/arm/tcg/helper-a64.h     |    7 -
- target/arm/tcg/translate.h      |   35 +
- target/arm/tcg/gengvec.c        |  369 ++
- target/arm/tcg/helper-a64.c     |  104 -
- target/arm/tcg/neon_helper.c    |  106 +-
- target/arm/tcg/translate-a64.c  | 5670 ++++++++++---------------------
- target/arm/tcg/translate-neon.c |  337 +-
- target/arm/tcg/translate-vfp.c  |    6 +-
- target/arm/tcg/vec_helper.c     |   65 +-
- target/arm/vfp_helper.c         |   16 +-
- target/arm/tcg/a64.decode       |  502 ++-
- 12 files changed, 2888 insertions(+), 4372 deletions(-)
-
+diff --git a/target/arm/tcg/a64.decode b/target/arm/tcg/a64.decode
+index 331a8e180c..d28efb884d 100644
+--- a/target/arm/tcg/a64.decode
++++ b/target/arm/tcg/a64.decode
+@@ -161,7 +161,7 @@ UBFM            . 10 100110 . ...... ...... ..... ..... @bitfield_32
+ EXTR            1 00 100111 1 0 rm:5 imm:6 rn:5 rd:5     &extract sf=1
+ EXTR            0 00 100111 0 0 rm:5 0 imm:5 rn:5 rd:5   &extract sf=0
+ 
+-# Branches
++### Branches
+ 
+ %imm26   0:s26 !function=times_4
+ @branch         . ..... .......................... &i imm=%imm26
+@@ -291,7 +291,7 @@ HLT             1101 0100 010 ................ 000 00 @i16
+ # DCPS2         1101 0100 101 ................ 000 10 @i16
+ # DCPS3         1101 0100 101 ................ 000 11 @i16
+ 
+-# Loads and stores
++### Loads and stores
+ 
+ &stxr           rn rt rt2 rs sz lasr
+ &stlr           rn rt sz lasr
+@@ -649,6 +649,21 @@ CPYP            00 011 1 01000 ..... .... 01 ..... ..... @cpy
+ CPYM            00 011 1 01010 ..... .... 01 ..... ..... @cpy
+ CPYE            00 011 1 01100 ..... .... 01 ..... ..... @cpy
+ 
++### Data Processing (register)
++
++# Data Processing (2-source)
++# Data Processing (1-source)
++# Logical (shifted reg)
++# Add/subtract (shifted reg)
++# Add/subtract (extended reg)
++# Add/subtract (carry)
++# Rotate right into flags
++# Evaluate into flags
++# Conditional compare (regster)
++# Conditional compare (immediate)
++# Conditional select
++# Data Processing (3-source)
++
+ ### Cryptographic AES
+ 
+ AESE            01001110 00 10100 00100 10 ..... .....  @r2r_q1e0
 -- 
 2.43.0
 
