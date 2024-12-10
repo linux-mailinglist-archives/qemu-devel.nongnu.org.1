@@ -2,91 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 905E19EB140
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Dec 2024 13:53:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F2D399EB15C
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Dec 2024 13:58:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tKziy-0004hf-Cv; Tue, 10 Dec 2024 07:52:26 -0500
+	id 1tKznN-000754-HC; Tue, 10 Dec 2024 07:56:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1tKziJ-0004gL-5Q
- for qemu-devel@nongnu.org; Tue, 10 Dec 2024 07:51:43 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tKznK-00074g-OT
+ for qemu-devel@nongnu.org; Tue, 10 Dec 2024 07:56:54 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1tKziH-0005du-D4
- for qemu-devel@nongnu.org; Tue, 10 Dec 2024 07:51:42 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tKznI-0006Cf-Ev
+ for qemu-devel@nongnu.org; Tue, 10 Dec 2024 07:56:54 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1733835099;
+ s=mimecast20190719; t=1733835410;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=sPyybanmad0FLuxRatzsYWHqkMc3/rWd0IqmsyO6XOU=;
- b=VZwI6rda7rbbcmkbUdNe3XLDvGo8aePt5Ztiw8YtTKjnFh3jPkdq7D3hcU1sPNR/bDro4s
- ucO/MRhuNsOfmzs6CL5nfZrMHomd9T2gmtHNhet0D3mQSX53orrrvk11yACxLbwTWCkql3
- t2Q3XDhYjLZvJel0QFVT1NfZNRWwQxM=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-623-q18xvicqMWKeTxFWf7_Ihg-1; Tue, 10 Dec 2024 07:51:38 -0500
-X-MC-Unique: q18xvicqMWKeTxFWf7_Ihg-1
-X-Mimecast-MFC-AGG-ID: q18xvicqMWKeTxFWf7_Ihg
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-434fe2b605eso10314325e9.2
- for <qemu-devel@nongnu.org>; Tue, 10 Dec 2024 04:51:38 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733835097; x=1734439897;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=sPyybanmad0FLuxRatzsYWHqkMc3/rWd0IqmsyO6XOU=;
- b=HGN1ivhgA+vZ3vMaMmlPdL5MhIiOiCBVyWqNgWPQIOWN4WyzgT/H10AH7m1whpTCzD
- Vt7rz6Bqn5f8PX0V9VMP8uwL7VZJM36FsVqtk+nE1M9qpkJQ51GQF74a6l1W7W3PZESH
- jR3nbil7vRpWrJRnkQl7cn5ltsUvasAE0wX7mYYEcWyuh+mQCiZQBQOeKi3VpgvO22+e
- a8wTNWtxKFgYlNy/r4C3lBtKaUflTNEx5hBvp6ohnyze/eUYdEmnvYhoxMRNZdlITe5c
- H5/AYWXKycFlDZs+7FBw3+7m1SyU/WtiDhVXVanBKkwt1zYjdBCFUhHgnyA/9ZzT4hkH
- m7pg==
-X-Gm-Message-State: AOJu0YzC5025z3JG3EBL2vTPbAJXjUr3IyE3g2zMt7tnYyNPcX+flcDi
- hqbJ0fFaE4aV/TvUuCssXs+qWLtwwd1cTJ2VVpDaCWf8TSG991qu2ImBCUdWyC6CnKmlO0E7/Wj
- rA0GDXJMOD1Ik+sion7cmoYh5Qle8rPg55WKzVDKzuRQfn39tH5Hi
-X-Gm-Gg: ASbGnctFJHYoyFUIgzaQ1aocAGo7xWQD+5tvVW/ce2o6uIouncFVvUlnvUCImEW+bKb
- wHhgQjmczd1ZYu1GuwrnzJuQhNV2EjjskNGI9sbiaQVyWZKF0cjR/QRA5RlIQY/46D4jtyNtWe3
- +H1C/64KfzAcKlmI4OWVrvFkm+o7F5WqM6nDcxCyfakWSRumaLJV+OO1vx5up4BHKRiNvoU2opj
- 0l+zFazgwUc3WYl3QqbLczPKICGITKVkrP/muRDcLHJd8ioT7cHUQ16wkifyELgeQ4mKmbUzgMn
- /anvyulIKoeVPiSqkBygOqDl6Q==
-X-Received: by 2002:a05:600c:3b87:b0:434:9d62:aa23 with SMTP id
- 5b1f17b1804b1-434fffa2b17mr32631795e9.20.1733835096230; 
- Tue, 10 Dec 2024 04:51:36 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHPHFURe9SxXSD6/iSwX7bNKwCxHV3anvx2r0ec2qVyUH7GnXYQZk9TLg794VpcGqlzt0fQQw==
-X-Received: by 2002:a05:600c:3b87:b0:434:9d62:aa23 with SMTP id
- 5b1f17b1804b1-434fffa2b17mr32631345e9.20.1733835094877; 
- Tue, 10 Dec 2024 04:51:34 -0800 (PST)
-Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
- [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-434f981880csm71186785e9.44.2024.12.10.04.51.34
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 10 Dec 2024 04:51:34 -0800 (PST)
-Date: Tue, 10 Dec 2024 13:51:33 +0100
-From: Igor Mammedov <imammedo@redhat.com>
-To: Eric Mackay <eric.mackay@oracle.com>
-Cc: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, Boris Ostrovsky
- <boris.ostrovsky@oracle.com>, "mst@redhat.com" <mst@redhat.com>,
- "anisinha@redhat.com" <anisinha@redhat.com>
-Subject: Re: [External] : Re: [RFC PATCH 0/1] ACPI: Fix missing CPU
- hotplug/hotunplug events with > 255 vCPUs
-Message-ID: <20241210135133.1cad008c@imammedo.users.ipa.redhat.com>
-In-Reply-To: <MN2PR10MB42694AF9F93475A6391AAC248C3D2@MN2PR10MB4269.namprd10.prod.outlook.com>
-References: <20241204005636.18705-1-eric.mackay@oracle.com>
- <20241209153606.49556593@imammedo.users.ipa.redhat.com>
- <MN2PR10MB42694AF9F93475A6391AAC248C3D2@MN2PR10MB4269.namprd10.prod.outlook.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=R8IynrDJjHAHoreom1XXTOUM/SOcmXKHCwz135eaD0Q=;
+ b=cd/t90caFiEroqX+OaBXo03AlgxLz72pQ961ClrAuRKLzdN/W3UJJ+C45zAhNaunA8H/aB
+ c1I7lExPwiKi11iVw5++UoDgYXWPgHsW0coOozfyfhekZ1W8wUA56BfLGk6wigx9IH77Yy
+ E8nPlOO3xMaH7A4cEX+zqwTJeeZNCZw=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-655-wm9AO2VWO0i9opEFdplCtA-1; Tue,
+ 10 Dec 2024 07:56:47 -0500
+X-MC-Unique: wm9AO2VWO0i9opEFdplCtA-1
+X-Mimecast-MFC-AGG-ID: wm9AO2VWO0i9opEFdplCtA
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id D6C4F1955F40; Tue, 10 Dec 2024 12:56:45 +0000 (UTC)
+Received: from thuth-p1g4.redhat.com (unknown [10.39.193.133])
+ by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 5D760195605A; Tue, 10 Dec 2024 12:56:41 +0000 (UTC)
+From: Thomas Huth <thuth@redhat.com>
+To: qemu-devel@nongnu.org,
+	"Michael S. Tsirkin" <mst@redhat.com>
+Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ Eric Auger <eric.auger@redhat.com>,
+ =?UTF-8?q?Cl=C3=A9ment=20Mathieu--Drif?= <clement.mathieu--drif@eviden.com>,
+ Yi Liu <yi.l.liu@intel.com>, Jason Wang <jasowang@redhat.com>
+Subject: [PATCH v2] tests/functional: Convert the intel_iommu avocado test
+Date: Tue, 10 Dec 2024 13:56:39 +0100
+Message-ID: <20241210125639.101033-1-thuth@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=imammedo@redhat.com;
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -25
 X-Spam_score: -2.6
@@ -111,128 +82,386 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 10 Dec 2024 01:22:24 +0000
-Eric Mackay <eric.mackay@oracle.com> wrote:
+Convert the intel_iommu test to the new functional framework.
+This test needs some changes since we neither support the old 'LinuxTest'
+class in the functional framework yet, nor a way to use SSH for running
+commands in the guest. So we now directly download a Fedora kernel and
+initrd and set up the serial console for executing the commands and for
+looking for the results. Instead of configuring the cloud image via
+cloud-init, we now simply mount the file system manually from an initrd
+rescue shell.
 
-> On Mon,  9 Dec 2024 15:36:06 +0100
-> Igor Mammedov imammedo@redhat.com<mailto:imammedo@redhat.com> wrote:
-> 
-> > On Tue,  3 Dec 2024 16:56:35 -0800
-> > Eric Mackay eric.mackay@oracle.com<mailto:eric.mackay@oracle.com> wrote:
-> >  
-> >> ACPI hotplug with 255 or less vCPUs can use the legacy CPU hotplug interface, which does
-> >> not support hotunplug. If it's available, hotunplug will use the modern CPU hotplug interface.
-> >> This creates a situation where hotplug and hotunplug are using different interfaces, but
-> >> the end result is still functional. CPUs can be hotplugged and hotunplugged at will.  
-> >
-> > only one kind of interface should be in use. And for quite a while firmware shipped
-> > with QEMU is using QEMU provided ACPI tables, which in turn switch interface to
-> > modern hotplug when guest OS loads ACPI tables, see:
-> >          if (opts.has_legacy_cphp) {
-> >             method = aml_method("_INI", 0, AML_SERIALIZED);
-> > or firmware does the switch (OVMF usecase) before guest OS.
-> >
-> > if any hotplug action happened before guest switched hotplug favour,
-> > it will trigger SCI, which guest OS should process it (incl. switching
-> > to modern interface and sending necessary device check/remove events)
-> > once ACPI tables are processed.
-> >  
-> >> With > 255 vCPUs, both hotplug and hotunplug will use the modern ACPI interface.
-> >> There is no priority or rules of mutual exclusion defined in this interface,
-> >> and the behavior in the guest is implementation-defined.
-> >>
-> >> Unfortunately, it is possible to have both a hotplug and hotunplug event pending
-> >> for the same vCPU. When the guest processes its pending events, it may see the
-> >> hotplug but ignore the hotunplug.
-> >>
-> >> The most recent event is likely to reflect the desired state of the system, so
-> >> ignoring the hotunplug event in this scenario is unacceptable.  
-> >
-> > QEMU has delivered both events as it was intended (and in order plug then unplug).
-> > I'd say that ignoring events is a guest bug.
-> >
-> > With unplug, potentially if fixing guest is not an option
-> > one can try retry device_del to trigger unplug event again.
-> >
-> > PS:
-> > I vaguely recall linux kernel wiping GPE state on boot during
-> > initialization, but that is guest problem and should be fixed
-> > on guest side.
-> > (unexpectedly enough, Windows handles GPE state as expected)  
-> 
-> Consider the scenario where a hotplug is requested, the hotplug bit is then set.
-> ACPI event is sent to the guest. Before guest can act on it (either timing or
-> perhaps the guest is paused), unplug is requested for that same CPU, and the
-> unplug bit is now set. ACPI event is sent to guest again. The guest now wakes
-> up or becomes able to perform work, sees there is a pending ACPI event. The
-> guest now requests to read ACPI_CPU_FLAGS_OFFSET_RW, and sees both plug and
-> unplug are set. How does it know which to do first?
+While the old test was exercising the network with a "dnf install"
+command (which is not the best option for the CI since this depends
+on third party servers), the new code is now setting up a little
+HTTP server in the guest and transfers a file from the guest to the
+host instead.
 
-looking at the code some more, it looks like 2 parties are at fault
- 1. linux kernel clearing GPE status bits on boot without processing events,
-    (if it had processed pending CPU hotplug event, that would have cleared all
-     insert flags which are NOPs at this point)
- 2. a bug in CPU_SCAN_METHOD AML code, which doesn't take remove event branch
-    if there is insert event on the same CPU. So #1 effectively hides unplug
-    until user triggers the next (un)plug event.
-    Unplug request is just a request and if it didn't happen for some reason
-    the user shall repeat it.
-    However it doesn't excuse QEMU behavior which effectively doesn't process
-    pending remove event in the same scan loop.
+The test should now run much faster and more reliable (since we
+don't depend on the third party servers for "dnf install" anymore),
+so we can also drop the @skipUnless decorator now.
 
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+---
+ v2:
+ - Download the cloud image qcow2 and use it as file system
+   to exercise the virtio-block device
+ - Instead of removing the "dnf install", transfer a file
+   via virtio-net to the host
+ - This needs find_free_port() now:
+ Based-on: <20241204071911.664057-1-thuth@redhat.com>
 
-> >> Repro: This can be seen in practice when a q35 VM is started in qemu, with
-> >> maxcpus=260 or something above 255, and a few statically allocated CPUs.
-> >> Example smp line: "-smp 4,sockets=2,dies=1,cores=65,threads=2,maxcpus=260"
-> >> Then use libvirt to add vCPUs up to the maximum before continuing the VM. After
-> >> the guest starts up, delete one of the vCPUs. 'lscpu' in the guest should still
-> >> show 260.  
-> >
-> > above should work especially with unplug event happening after guest OS has booted.
-> > Lets simplify reproducer to QEMU only (i.e. getting rid of libvirt part) and see
-> > where it leads us.  
-> 
-> The guest has not processed the hotplug events that took place before the guest
-> OS booted. There is nothing to tell the guest OS that it needs to check ACPI
-> event flags, or to clear the hotplug bits since the CPUs are already present.
-> When the unplug comes, this is the first time the guest OS knows to check for
-> hotplug/unplug events. When it reads ACPI_CPU_FLAGS_OFFSET_RW it will see that
-> hotplug is still set for all the CPUs that came online before it booted, and it
-> will recognize they are already present. For the CPU that a unplug was
-> requested, the hotplug bit was never cleared prior, so the
-> ACPI_CPU_FLAGS_OFFSET_RW read will show both hotplug and unplug flags set. It's
-> now implementation-defined in the guest what it wants to do, or whether it
-> assigns priority to one event type or the other.
-> 
-> Agreed, the libvirt part shouldn't be important. I can come up with instructions for QEMU-only repro.
+ MAINTAINERS                          |   1 +
+ tests/avocado/intel_iommu.py         | 122 -------------------
+ tests/functional/meson.build         |   2 +
+ tests/functional/test_intel_iommu.py | 176 +++++++++++++++++++++++++++
+ 4 files changed, 179 insertions(+), 122 deletions(-)
+ delete mode 100644 tests/avocado/intel_iommu.py
+ create mode 100755 tests/functional/test_intel_iommu.py
 
-one way to reproduce it would be use qmeu with uefi,
-boot till grub prompt and then do device_del and let guest to finish boot.
-The 2nd device_del works as workaround.
-
-
-> >> The proposed solution is to enforce mutual exclusion between the hotplug and hotunplug
-> >> bits in the modern ACPI interface. Setting a new pending event will clear a previously
-> >> pending event of the opposite type, thus preserving only the most recently requested
-> >> state.  
-> >
-> > Once VM is in running state, clearing flags from QEMU side is not safe.
-> > Effectively it would introduce a race with guest code.  
-> 
-> Yes, I see what you mean. Agreed this is not safe.
-> 
-> > Also I'm not sure that flags are the issue here,
-> > Capturing some CPUHP traces on QEMU side and logs from guest side
-> > might help to clarify what's going on.  
-> 
-> Will work on providing those traces and logs
-> 
-> >> Eric Mackay (1):
-> >>   ACPI: Enforce mutual exclusion betwen CPU insertion and removal events
-> >>
-> >>  hw/acpi/cpu.c         | 36 ++++++++++++++++++++++++++++++++----
-> >>  include/hw/acpi/cpu.h |  4 ++++
-> >>  2 files changed, 36 insertions(+), 4 deletions(-)
-> >>  
+diff --git a/MAINTAINERS b/MAINTAINERS
+index a62659b330..2ca452dbf9 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -3679,6 +3679,7 @@ S: Supported
+ F: hw/i386/intel_iommu.c
+ F: hw/i386/intel_iommu_internal.h
+ F: include/hw/i386/intel_iommu.h
++F: tests/functional/test_intel_iommu.py
+ 
+ AMD-Vi Emulation
+ S: Orphan
+diff --git a/tests/avocado/intel_iommu.py b/tests/avocado/intel_iommu.py
+deleted file mode 100644
+index 992583fa7d..0000000000
+--- a/tests/avocado/intel_iommu.py
++++ /dev/null
+@@ -1,122 +0,0 @@
+-# INTEL_IOMMU Functional tests
+-#
+-# Copyright (c) 2021 Red Hat, Inc.
+-#
+-# Author:
+-#  Eric Auger <eric.auger@redhat.com>
+-#
+-# This work is licensed under the terms of the GNU GPL, version 2 or
+-# later.  See the COPYING file in the top-level directory.
+-import os
+-
+-from avocado import skipUnless
+-from avocado_qemu.linuxtest import LinuxTest
+-
+-@skipUnless(os.getenv('QEMU_TEST_FLAKY_TESTS'), 'Test is unstable on GitLab')
+-class IntelIOMMU(LinuxTest):
+-    """
+-    :avocado: tags=arch:x86_64
+-    :avocado: tags=distro:fedora
+-    :avocado: tags=distro_version:31
+-    :avocado: tags=machine:q35
+-    :avocado: tags=accel:kvm
+-    :avocado: tags=intel_iommu
+-    :avocado: tags=flaky
+-    """
+-
+-    IOMMU_ADDON = ',iommu_platform=on,disable-modern=off,disable-legacy=on'
+-    kernel_path = None
+-    initrd_path = None
+-    kernel_params = None
+-
+-    def set_up_boot(self):
+-        path = self.download_boot()
+-        self.vm.add_args('-device', 'virtio-blk-pci,bus=pcie.0,' +
+-                         'drive=drv0,id=virtio-disk0,bootindex=1,'
+-                         'werror=stop,rerror=stop' + self.IOMMU_ADDON)
+-        self.vm.add_args('-device', 'virtio-gpu-pci' + self.IOMMU_ADDON)
+-        self.vm.add_args('-drive',
+-                         'file=%s,if=none,cache=writethrough,id=drv0' % path)
+-
+-    def setUp(self):
+-        super(IntelIOMMU, self).setUp(None, 'virtio-net-pci' + self.IOMMU_ADDON)
+-
+-    def add_common_args(self):
+-        self.vm.add_args('-device', 'virtio-rng-pci,rng=rng0')
+-        self.vm.add_args('-object',
+-                         'rng-random,id=rng0,filename=/dev/urandom')
+-
+-    def common_vm_setup(self, custom_kernel=None):
+-        self.require_accelerator("kvm")
+-        self.add_common_args()
+-        self.vm.add_args("-accel", "kvm")
+-
+-        if custom_kernel is None:
+-            return
+-
+-        kernel_url = self.distro.pxeboot_url + 'vmlinuz'
+-        kernel_hash = '5b6f6876e1b5bda314f93893271da0d5777b1f3c'
+-        initrd_url = self.distro.pxeboot_url + 'initrd.img'
+-        initrd_hash = 'dd0340a1b39bd28f88532babd4581c67649ec5b1'
+-        self.kernel_path = self.fetch_asset(kernel_url, asset_hash=kernel_hash)
+-        self.initrd_path = self.fetch_asset(initrd_url, asset_hash=initrd_hash)
+-
+-    def run_and_check(self):
+-        if self.kernel_path:
+-            self.vm.add_args('-kernel', self.kernel_path,
+-                             '-append', self.kernel_params,
+-                             '-initrd', self.initrd_path)
+-        self.launch_and_wait()
+-        self.ssh_command('cat /proc/cmdline')
+-        self.ssh_command('dmesg | grep -e DMAR -e IOMMU')
+-        self.ssh_command('find /sys/kernel/iommu_groups/ -type l')
+-        self.ssh_command('dnf -y install numactl-devel')
+-
+-    def test_intel_iommu(self):
+-        """
+-        :avocado: tags=intel_iommu_intremap
+-        """
+-
+-        self.common_vm_setup(True)
+-        self.vm.add_args('-device', 'intel-iommu,intremap=on')
+-        self.vm.add_args('-machine', 'kernel_irqchip=split')
+-
+-        self.kernel_params = (self.distro.default_kernel_params +
+-                              ' quiet intel_iommu=on')
+-        self.run_and_check()
+-
+-    def test_intel_iommu_strict(self):
+-        """
+-        :avocado: tags=intel_iommu_strict
+-        """
+-
+-        self.common_vm_setup(True)
+-        self.vm.add_args('-device', 'intel-iommu,intremap=on')
+-        self.vm.add_args('-machine', 'kernel_irqchip=split')
+-        self.kernel_params = (self.distro.default_kernel_params +
+-                              ' quiet intel_iommu=on,strict')
+-        self.run_and_check()
+-
+-    def test_intel_iommu_strict_cm(self):
+-        """
+-        :avocado: tags=intel_iommu_strict_cm
+-        """
+-
+-        self.common_vm_setup(True)
+-        self.vm.add_args('-device', 'intel-iommu,intremap=on,caching-mode=on')
+-        self.vm.add_args('-machine', 'kernel_irqchip=split')
+-        self.kernel_params = (self.distro.default_kernel_params +
+-                              ' quiet intel_iommu=on,strict')
+-        self.run_and_check()
+-
+-    def test_intel_iommu_pt(self):
+-        """
+-        :avocado: tags=intel_iommu_pt
+-        """
+-
+-        self.common_vm_setup(True)
+-        self.vm.add_args('-device', 'intel-iommu,intremap=on')
+-        self.vm.add_args('-machine', 'kernel_irqchip=split')
+-        self.kernel_params = (self.distro.default_kernel_params +
+-                              ' quiet intel_iommu=on iommu=pt')
+-        self.run_and_check()
+diff --git a/tests/functional/meson.build b/tests/functional/meson.build
+index 30c3eda7e4..84ffb7d98c 100644
+--- a/tests/functional/meson.build
++++ b/tests/functional/meson.build
+@@ -27,6 +27,7 @@ test_timeouts = {
+   'arm_raspi2' : 120,
+   'arm_tuxrun' : 240,
+   'arm_sx1' : 360,
++  'intel_iommu': 300,
+   'mips_malta' : 120,
+   'netdev_ethtool' : 180,
+   'ppc_40p' : 240,
+@@ -238,6 +239,7 @@ tests_x86_64_system_quick = [
+ 
+ tests_x86_64_system_thorough = [
+   'acpi_bits',
++  'intel_iommu',
+   'x86_64_tuxrun',
+   'linux_initrd',
+   'multiprocess',
+diff --git a/tests/functional/test_intel_iommu.py b/tests/functional/test_intel_iommu.py
+new file mode 100755
+index 0000000000..e234813cee
+--- /dev/null
++++ b/tests/functional/test_intel_iommu.py
+@@ -0,0 +1,176 @@
++#!/usr/bin/env python3
++#
++# INTEL_IOMMU Functional tests
++#
++# Copyright (c) 2021 Red Hat, Inc.
++#
++# Author:
++#  Eric Auger <eric.auger@redhat.com>
++#
++# This work is licensed under the terms of the GNU GPL, version 2 or
++# later.  See the COPYING file in the top-level directory.
++
++import hashlib
++import urllib.request
++
++from qemu_test import LinuxKernelTest, Asset, exec_command_and_wait_for_pattern
++from qemu_test.ports import Ports
++
++class IntelIOMMU(LinuxKernelTest):
++
++    ASSET_KERNEL = Asset(
++        ('https://archives.fedoraproject.org/pub/archive/fedora/linux/releases'
++         '/31/Server/x86_64/os/images/pxeboot/vmlinuz'),
++        'd4738d03dbbe083ca610d0821d0a8f1488bebbdccef54ce33e3adb35fda00129')
++
++    ASSET_INITRD = Asset(
++        ('https://archives.fedoraproject.org/pub/archive/fedora/linux/releases'
++         '/31/Server/x86_64/os/images/pxeboot/initrd.img'),
++        '277cd6c7adf77c7e63d73bbb2cded8ef9e2d3a2f100000e92ff1f8396513cd8b')
++
++    ASSET_DISKIMAGE = Asset(
++        ('https://archives.fedoraproject.org/pub/archive/fedora/linux/releases'
++         '/31/Cloud/x86_64/images/Fedora-Cloud-Base-31-1.9.x86_64.qcow2'),
++        'e3c1b309d9203604922d6e255c2c5d098a309c2d46215d8fc026954f3c5c27a0')
++
++    default_kernel_params = ('root=/dev/vda1 console=ttyS0 net.ifnames=0 '
++                             'quiet rd.rescue ')
++    IOMMU_ADDON = ',iommu_platform=on,disable-modern=off,disable-legacy=on'
++    kernel_path = None
++    initrd_path = None
++    kernel_params = None
++
++    def add_common_args(self, path):
++        self.vm.add_args('-drive', f'file={path},if=none,id=drv0,snapshot=on')
++        self.vm.add_args('-device', 'virtio-blk-pci,bus=pcie.0,' +
++                         'drive=drv0,id=virtio-disk0,bootindex=1,'
++                         'werror=stop,rerror=stop' + self.IOMMU_ADDON)
++        self.vm.add_args('-device', 'virtio-gpu-pci' + self.IOMMU_ADDON)
++        self.vm.add_args('-device', 'virtio-rng-pci,rng=r0')
++        self.vm.add_args('-object', 'rng-random,id=r0,filename=/dev/urandom')
++        self.vm.add_args("-m", "1G")
++        self.vm.add_args("-accel", "kvm")
++
++    def common_vm_setup(self):
++        self.set_machine('q35')
++        self.require_accelerator("kvm")
++        self.require_netdev('user')
++
++        self.kernel_path = self.ASSET_KERNEL.fetch()
++        self.initrd_path = self.ASSET_INITRD.fetch()
++        image_path = self.ASSET_DISKIMAGE.fetch()
++        self.add_common_args(image_path)
++        self.kernel_params = self.default_kernel_params
++
++    def add_nic_args(self, hostport):
++        self.vm.add_args('-netdev',
++                         'user,id=n1,hostfwd=tcp::%d-:8080' % hostport)
++        self.vm.add_args('-device',
++                         'virtio-net-pci,netdev=n1' + self.IOMMU_ADDON)
++
++    def run_and_check(self, freeport):
++        self.add_nic_args(freeport)
++
++        if self.kernel_path:
++            self.vm.add_args('-kernel', self.kernel_path,
++                             '-append', self.kernel_params,
++                             '-initrd', self.initrd_path)
++        self.vm.set_console()
++        self.vm.launch()
++        self.wait_for_console_pattern('Entering emergency mode.')
++        prompt = '# '
++        self.wait_for_console_pattern(prompt)
++
++        # Copy a file (checked later), umount afterwards to drop disk cache:
++        exec_command_and_wait_for_pattern(self, 'mount /dev/vda1 /sysroot',
++                                          prompt)
++        filename = '/boot/initramfs-5.3.7-301.fc31.x86_64.img'
++        exec_command_and_wait_for_pattern(self, (f'cp /sysroot{filename}'
++                                                 ' /sysroot/root/data'),
++                                          prompt)
++        exec_command_and_wait_for_pattern(self, 'umount /sysroot', prompt)
++
++        # Switch from initrd to the cloud image filesystem:
++        exec_command_and_wait_for_pattern(self, 'mount /dev/vda1 /sysroot',
++                                          prompt)
++        exec_command_and_wait_for_pattern(self,
++                ('for d in dev proc sys run ; do '
++                 'mount -o bind /$d /sysroot/$d ; done'), prompt)
++        exec_command_and_wait_for_pattern(self, 'chroot /sysroot', prompt)
++
++        # Checking for IOMMU enablement:
++        self.log.info("Checking whether IOMMU has been enabled...")
++        exec_command_and_wait_for_pattern(self, 'cat /proc/cmdline',
++                                          'intel_iommu=on')
++        self.wait_for_console_pattern(prompt)
++        exec_command_and_wait_for_pattern(self, 'dmesg | grep DMAR:',
++                                          'IOMMU enabled')
++        self.wait_for_console_pattern(prompt)
++        exec_command_and_wait_for_pattern(self,
++                                    'find /sys/kernel/iommu_groups/ -type l',
++                                    'devices/0000:00:')
++        self.wait_for_console_pattern(prompt)
++
++        # Check hard disk device via sha256sum:
++        self.log.info("Checking hard disk...")
++        hashsum = '0dc7472f879be70b2f3daae279e3ae47175ffe249691e7d97f47222b65b8a720'
++        exec_command_and_wait_for_pattern(self, 'sha256sum ' + filename,
++                                          hashsum)
++        self.wait_for_console_pattern(prompt)
++        exec_command_and_wait_for_pattern(self, 'sha256sum /root/data',
++                                          hashsum)
++        self.wait_for_console_pattern(prompt)
++
++        # Check virtio-net via HTTP:
++        exec_command_and_wait_for_pattern(self, 'dhclient eth0', prompt)
++        exec_command_and_wait_for_pattern(self,
++                                    'python3 -m http.server 8080 & sleep 1',
++                                    'Serving HTTP on 0.0.0.0 port 8080')
++        hl = hashlib.sha256()
++        url = f'http://localhost:{freeport}{filename}'
++        self.log.info(f'Downloading {url} ...')
++        with urllib.request.urlopen(url) as response:
++            while True:
++                chunk = response.read(1 << 20)
++                if not chunk:
++                    break
++                hl.update(chunk)
++
++        digest = hl.hexdigest()
++        self.log.info(f'sha256sum of download is {digest}.')
++        self.assertEqual(digest, hashsum)
++
++    def test_intel_iommu(self):
++        self.common_vm_setup()
++        self.vm.add_args('-device', 'intel-iommu,intremap=on')
++        self.vm.add_args('-machine', 'kernel_irqchip=split')
++        self.kernel_params += 'intel_iommu=on'
++        with Ports() as ports:
++            self.run_and_check(ports.find_free_port())
++
++    def test_intel_iommu_strict(self):
++        self.common_vm_setup()
++        self.vm.add_args('-device', 'intel-iommu,intremap=on')
++        self.vm.add_args('-machine', 'kernel_irqchip=split')
++        self.kernel_params += 'intel_iommu=on,strict'
++        with Ports() as ports:
++            self.run_and_check(ports.find_free_port())
++
++    def test_intel_iommu_strict_cm(self):
++        self.common_vm_setup()
++        self.vm.add_args('-device', 'intel-iommu,intremap=on,caching-mode=on')
++        self.vm.add_args('-machine', 'kernel_irqchip=split')
++        self.kernel_params += 'intel_iommu=on,strict'
++        with Ports() as ports:
++            self.run_and_check(ports.find_free_port())
++
++    def test_intel_iommu_pt(self):
++        self.common_vm_setup()
++        self.vm.add_args('-device', 'intel-iommu,intremap=on')
++        self.vm.add_args('-machine', 'kernel_irqchip=split')
++        self.kernel_params += 'intel_iommu=on iommu=pt'
++        with Ports() as ports:
++            self.run_and_check(ports.find_free_port())
++
++if __name__ == '__main__':
++    LinuxKernelTest.main()
+-- 
+2.47.1
 
 
