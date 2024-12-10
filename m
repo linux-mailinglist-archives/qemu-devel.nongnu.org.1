@@ -2,84 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECAD29EB674
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Dec 2024 17:30:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 568769EB594
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Dec 2024 17:03:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tL33Q-0003Sl-PM; Tue, 10 Dec 2024 11:25:44 -0500
+	id 1tL2h6-00008i-8c; Tue, 10 Dec 2024 11:02:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tL331-0001QS-HX
- for qemu-devel@nongnu.org; Tue, 10 Dec 2024 11:25:22 -0500
-Received: from mail-lf1-x12d.google.com ([2a00:1450:4864:20::12d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tL32z-0007hp-4K
- for qemu-devel@nongnu.org; Tue, 10 Dec 2024 11:25:19 -0500
-Received: by mail-lf1-x12d.google.com with SMTP id
- 2adb3069b0e04-540218726d5so1896685e87.2
- for <qemu-devel@nongnu.org>; Tue, 10 Dec 2024 08:25:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1733847915; x=1734452715; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=YgMoUG1TjCgvuCMS0XzFgGW8rdp5HC+s8kCN2kuLaCY=;
- b=OZeBZbpWnT2ebZAiOo8wUVNGO5tysu2V4udlSpPt7cM0n+9MXgGTfD9RkvuUbzEjqR
- mY1f6TgPapAJPVP8TuTE4T1rkrRPoMkQ0oUCI8J0G5OD+zjw7qFE4MxqHY+90f4+hVix
- iMASj7cx+9IDXVCLjwjRbAmTA8JpTt9m1vKGrj8GmgYUYwEqmXVYo2jHET2GDTm2fQwp
- BX5yxpGRLzRMMEGql0kkCsash633wryRC85hKo5qYLZFEKCviZmG9nMSxU5R4E9BjQRq
- Dbg+nD8IrDqUFYP276ji6CdgqttLV2Q6OB0lixsUINeVossWrrsTaQrCefxgOrnnvHMQ
- Koow==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733847915; x=1734452715;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=YgMoUG1TjCgvuCMS0XzFgGW8rdp5HC+s8kCN2kuLaCY=;
- b=q4NwpkOtpwNQCF1eAznITsUVINHLgKMVkT24y+idGQwL+OJH7ACBzwc94LWlFPaAC/
- 6CJm+oLW8K7nfUpP1s2vrivOdf16fR2nRK0gcgp/UzMpxoc3jiY7z+hyABBAUPmob3nW
- 29QkCAeJo9gWmPZ52Z0mY/rC4y1NFx0B6C+0gfjF8qaU8SjLW1Dv2vWz0GV5kQ9FySo8
- 1oKd9pxdxZp1ozutcRg44viVANMdsymEeLRFIRIbdy+503yeM93NmSbXcdcWHaLVo9JR
- NVDBVudnszXwbKT3wV4TGlCvTLatlndrKaqM1p0xSn73Y7iWrLYpFZsoAUZKb5sikFNn
- 0MnQ==
-X-Gm-Message-State: AOJu0YzTnMWLSrCULKM7rX0iqVzlWG5y/TjvDwKfwtz+MkfAGoLFysJ6
- xKynwNzyrz7ASISvUS4GPq4fcnt8RX8DNdhn/La2zWxjj3OPbgLk5bINFpuZMFfl6oPUWrQq4y9
- D/KKte70U
-X-Gm-Gg: ASbGncsrKnduh+3mWEuSxHNV8j35Zi2dIHAQthS92K3dz5afXLpDGh/+i4LCtAnQPyH
- Dm7vvtjW3jjYvnOk0eIa3tLtjHAsb4ftqkcDx/rNdlUfHN7boDc1sG1ze/9T+KCiSCHdrXczesc
- UIwB+TVqC9GCZni5f9tjW9uZ93vnVhpXJQa/TGH0YLQsQFCY72oX8p2BvZRAuqi+TLACGjr/1tU
- axeglbB7ksu1aFmHwBEWG1cipX6SKJD+DKFH9KU09+EWZcJ2aQQqhur17Q=
-X-Google-Smtp-Source: AGHT+IFuPyejxbDtu/HQBgz+lxeGECLJXkV1/hscJxeyfIH8K4AkRfl8xqoJeBwZWxiYkemyg3dXIA==
-X-Received: by 2002:a05:6512:2205:b0:540:788:d6d8 with SMTP id
- 2adb3069b0e04-540240bd722mr2014064e87.18.1733847915117; 
- Tue, 10 Dec 2024 08:25:15 -0800 (PST)
-Received: from stoup.. ([91.209.212.80]) by smtp.gmail.com with ESMTPSA id
- 2adb3069b0e04-5402960b0absm26024e87.102.2024.12.10.08.25.10
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 10 Dec 2024 08:25:13 -0800 (PST)
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org,
-	Peter Maydell <peter.maydell@linaro.org>
-Subject: [PATCH v2 69/69] target/arm: Convert FCVTL to decodetree
-Date: Tue, 10 Dec 2024 10:17:33 -0600
-Message-ID: <20241210161733.1830573-70-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20241210161733.1830573-1-richard.henderson@linaro.org>
-References: <20241210161733.1830573-1-richard.henderson@linaro.org>
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1tL2h3-00008I-L5
+ for qemu-devel@nongnu.org; Tue, 10 Dec 2024 11:02:38 -0500
+Received: from mgamail.intel.com ([192.198.163.11])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1tL2h1-0003zn-Dd
+ for qemu-devel@nongnu.org; Tue, 10 Dec 2024 11:02:37 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1733846556; x=1765382556;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=sstZsmT0WfDiNXZ6P9Im73TSWOcO+CICCOPeDhjlfeM=;
+ b=UCTYiBdll0RlNRqV0jjaL81eucT96JQQAErQi3fiZxRBMt1laGpVXO22
+ 30OsV4kCV51r1QpbM4wp+T1lFf8iqWj/jSb4ZVTofTuYB7AbPLeuPVO2t
+ 4D2EsOkX2rOXQDicFyBjfXAQmX1uiq3pE4kH7KqQxpQqspZTxWsDQF89v
+ FILVOCQw57zIWSA+7UzIQGVyM0HAiPAwD29s7pD61oBQY0E3kdJm608Kt
+ L+yTXmbqoPEKVPjsPf18dGeYKJbWQ9DjU+M9hMdGtJgPgnjCbTQ1xFU6W
+ TVMCNntzNQ37+g6qZHbzzcQpJfyIqmDFhr+HYcv0i2yJYL0prb24QTM5J w==;
+X-CSE-ConnectionGUID: bzRVSh6qTiKhUHWV4beX6Q==
+X-CSE-MsgGUID: 5jsUCU1FSfWdepKPXG8Y0g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11282"; a="44805495"
+X-IronPort-AV: E=Sophos;i="6.12,222,1728975600"; d="scan'208";a="44805495"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Dec 2024 08:02:33 -0800
+X-CSE-ConnectionGUID: A9seGaktQomJm4WhPfFJMw==
+X-CSE-MsgGUID: KEucCcVkRoOmpzgzbRriLQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,222,1728975600"; d="scan'208";a="95154509"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by fmviesa006.fm.intel.com with ESMTP; 10 Dec 2024 08:02:31 -0800
+Date: Wed, 11 Dec 2024 00:20:45 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>,
+ Daniel P =?iso-8859-1?Q?=2E_Berrang=E9?= <berrange@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>
+Cc: qemu-devel@nongnu.org
+Subject: Re: [PATCH 00/16] qom/object: Deprecate type_register()
+Message-ID: <Z1hqXesuVF93B36S@intel.com>
+References: <20241029085934.2799066-1-zhao1.liu@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12d;
- envelope-from=richard.henderson@linaro.org; helo=mail-lf1-x12d.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241029085934.2799066-1-zhao1.liu@intel.com>
+Received-SPF: pass client-ip=192.198.163.11; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -48
+X-Spam_score: -4.9
+X-Spam_bar: ----
+X-Spam_report: (-4.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.52,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -96,296 +82,157 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Remove lookup_disas_fn, handle_2misc_widening,
-disas_simd_two_reg_misc, disas_data_proc_simd,
-disas_data_proc_simd_fp, disas_a64_legacy, as
-this is the final insn to be converted.
+Hi Paolo and Dainel,
 
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- target/arm/tcg/translate-a64.c | 202 +++------------------------------
- target/arm/tcg/a64.decode      |   2 +
- 2 files changed, 18 insertions(+), 186 deletions(-)
+Kindly ping. Do you agree with this idea?
 
-diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
-index fa3170da86..3e57b98c27 100644
---- a/target/arm/tcg/translate-a64.c
-+++ b/target/arm/tcg/translate-a64.c
-@@ -1465,31 +1465,6 @@ static inline void gen_check_sp_alignment(DisasContext *s)
-      */
- }
- 
--/*
-- * This provides a simple table based table lookup decoder. It is
-- * intended to be used when the relevant bits for decode are too
-- * awkwardly placed and switch/if based logic would be confusing and
-- * deeply nested. Since it's a linear search through the table, tables
-- * should be kept small.
-- *
-- * It returns the first handler where insn & mask == pattern, or
-- * NULL if there is no match.
-- * The table is terminated by an empty mask (i.e. 0)
-- */
--static inline AArch64DecodeFn *lookup_disas_fn(const AArch64DecodeTable *table,
--                                               uint32_t insn)
--{
--    const AArch64DecodeTable *tptr = table;
--
--    while (tptr->mask) {
--        if ((insn & tptr->mask) == tptr->pattern) {
--            return tptr->disas_fn;
--        }
--        tptr++;
--    }
--    return NULL;
--}
--
- /*
-  * The instruction disassembly implemented here matches
-  * the instruction encoding classifications in chapter C4
-@@ -9508,8 +9483,7 @@ static gen_helper_gvec_2_ptr * const f_frsqrte[] = {
- };
- TRANS(FRSQRTE_v, do_gvec_op2_fpst, a->esz, a->q, a->rd, a->rn, 0, f_frsqrte)
- 
--static void handle_2misc_widening(DisasContext *s, int opcode, bool is_q,
--                                  int size, int rn, int rd)
-+static bool trans_FCVTL_v(DisasContext *s, arg_qrr_e *a)
- {
-     /* Handle 2-reg-misc ops which are widening (so each size element
-      * in the source becomes a 2*size element in the destination.
-@@ -9517,173 +9491,43 @@ static void handle_2misc_widening(DisasContext *s, int opcode, bool is_q,
-      */
-     int pass;
- 
--    if (size == 3) {
-+    if (!fp_access_check(s)) {
-+        return true;
-+    }
-+
-+    if (a->esz == MO_64) {
-         /* 32 -> 64 bit fp conversion */
-         TCGv_i64 tcg_res[2];
--        int srcelt = is_q ? 2 : 0;
-+        TCGv_i32 tcg_op = tcg_temp_new_i32();
-+        int srcelt = a->q ? 2 : 0;
- 
-         for (pass = 0; pass < 2; pass++) {
--            TCGv_i32 tcg_op = tcg_temp_new_i32();
-             tcg_res[pass] = tcg_temp_new_i64();
--
--            read_vec_element_i32(s, tcg_op, rn, srcelt + pass, MO_32);
-+            read_vec_element_i32(s, tcg_op, a->rn, srcelt + pass, MO_32);
-             gen_helper_vfp_fcvtds(tcg_res[pass], tcg_op, tcg_env);
-         }
-         for (pass = 0; pass < 2; pass++) {
--            write_vec_element(s, tcg_res[pass], rd, pass, MO_64);
-+            write_vec_element(s, tcg_res[pass], a->rd, pass, MO_64);
-         }
-     } else {
-         /* 16 -> 32 bit fp conversion */
--        int srcelt = is_q ? 4 : 0;
-+        int srcelt = a->q ? 4 : 0;
-         TCGv_i32 tcg_res[4];
-         TCGv_ptr fpst = fpstatus_ptr(FPST_FPCR);
-         TCGv_i32 ahp = get_ahp_flag();
- 
-         for (pass = 0; pass < 4; pass++) {
-             tcg_res[pass] = tcg_temp_new_i32();
--
--            read_vec_element_i32(s, tcg_res[pass], rn, srcelt + pass, MO_16);
-+            read_vec_element_i32(s, tcg_res[pass], a->rn, srcelt + pass, MO_16);
-             gen_helper_vfp_fcvt_f16_to_f32(tcg_res[pass], tcg_res[pass],
-                                            fpst, ahp);
-         }
-         for (pass = 0; pass < 4; pass++) {
--            write_vec_element_i32(s, tcg_res[pass], rd, pass, MO_32);
-+            write_vec_element_i32(s, tcg_res[pass], a->rd, pass, MO_32);
-         }
-     }
--}
--
--/* AdvSIMD two reg misc
-- *   31  30  29 28       24 23  22 21       17 16    12 11 10 9    5 4    0
-- * +---+---+---+-----------+------+-----------+--------+-----+------+------+
-- * | 0 | Q | U | 0 1 1 1 0 | size | 1 0 0 0 0 | opcode | 1 0 |  Rn  |  Rd  |
-- * +---+---+---+-----------+------+-----------+--------+-----+------+------+
-- */
--static void disas_simd_two_reg_misc(DisasContext *s, uint32_t insn)
--{
--    int size = extract32(insn, 22, 2);
--    int opcode = extract32(insn, 12, 5);
--    bool u = extract32(insn, 29, 1);
--    bool is_q = extract32(insn, 30, 1);
--    int rn = extract32(insn, 5, 5);
--    int rd = extract32(insn, 0, 5);
--
--    switch (opcode) {
--    case 0xc ... 0xf:
--    case 0x16 ... 0x1f:
--    {
--        /* Floating point: U, size[1] and opcode indicate operation;
--         * size[0] indicates single or double precision.
--         */
--        int is_double = extract32(size, 0, 1);
--        opcode |= (extract32(size, 1, 1) << 5) | (u << 6);
--        size = is_double ? 3 : 2;
--        switch (opcode) {
--        case 0x17: /* FCVTL, FCVTL2 */
--            if (!fp_access_check(s)) {
--                return;
--            }
--            handle_2misc_widening(s, opcode, is_q, size, rn, rd);
--            return;
--        default:
--        case 0x16: /* FCVTN, FCVTN2 */
--        case 0x36: /* BFCVTN, BFCVTN2 */
--        case 0x56: /* FCVTXN, FCVTXN2 */
--        case 0x2f: /* FABS */
--        case 0x6f: /* FNEG */
--        case 0x7f: /* FSQRT */
--        case 0x18: /* FRINTN */
--        case 0x19: /* FRINTM */
--        case 0x38: /* FRINTP */
--        case 0x39: /* FRINTZ */
--        case 0x59: /* FRINTX */
--        case 0x79: /* FRINTI */
--        case 0x58: /* FRINTA */
--        case 0x1e: /* FRINT32Z */
--        case 0x1f: /* FRINT64Z */
--        case 0x5e: /* FRINT32X */
--        case 0x5f: /* FRINT64X */
--        case 0x1d: /* SCVTF */
--        case 0x5d: /* UCVTF */
--        case 0x1a: /* FCVTNS */
--        case 0x1b: /* FCVTMS */
--        case 0x3a: /* FCVTPS */
--        case 0x3b: /* FCVTZS */
--        case 0x5a: /* FCVTNU */
--        case 0x5b: /* FCVTMU */
--        case 0x7a: /* FCVTPU */
--        case 0x7b: /* FCVTZU */
--        case 0x5c: /* FCVTAU */
--        case 0x1c: /* FCVTAS */
--        case 0x2c: /* FCMGT (zero) */
--        case 0x2d: /* FCMEQ (zero) */
--        case 0x2e: /* FCMLT (zero) */
--        case 0x6c: /* FCMGE (zero) */
--        case 0x6d: /* FCMLE (zero) */
--        case 0x3d: /* FRECPE */
--        case 0x7d: /* FRSQRTE */
--        case 0x3c: /* URECPE */
--        case 0x7c: /* URSQRTE */
--            unallocated_encoding(s);
--            return;
--        }
--        break;
--    }
--    default:
--    case 0x0: /* REV64, REV32 */
--    case 0x1: /* REV16 */
--    case 0x2: /* SADDLP, UADDLP */
--    case 0x3: /* SUQADD, USQADD */
--    case 0x4: /* CLS, CLZ */
--    case 0x5: /* CNT, NOT, RBIT */
--    case 0x6: /* SADALP, UADALP */
--    case 0x7: /* SQABS, SQNEG */
--    case 0x8: /* CMGT, CMGE */
--    case 0x9: /* CMEQ, CMLE */
--    case 0xa: /* CMLT */
--    case 0xb: /* ABS, NEG */
--    case 0x12: /* XTN, XTN2, SQXTUN, SQXTUN2 */
--    case 0x13: /* SHLL, SHLL2 */
--    case 0x14: /* SQXTN, SQXTN2, UQXTN, UQXTN2 */
--        unallocated_encoding(s);
--        return;
--    }
--    g_assert_not_reached();
--}
--
--/* C3.6 Data processing - SIMD, inc Crypto
-- *
-- * As the decode gets a little complex we are using a table based
-- * approach for this part of the decode.
-- */
--static const AArch64DecodeTable data_proc_simd[] = {
--    /* pattern  ,  mask     ,  fn                        */
--    { 0x0e200800, 0x9f3e0c00, disas_simd_two_reg_misc },
--    { 0x00000000, 0x00000000, NULL }
--};
--
--static void disas_data_proc_simd(DisasContext *s, uint32_t insn)
--{
--    /* Note that this is called with all non-FP cases from
--     * table C3-6 so it must UNDEF for entries not specifically
--     * allocated to instructions in that table.
--     */
--    AArch64DecodeFn *fn = lookup_disas_fn(&data_proc_simd[0], insn);
--    if (fn) {
--        fn(s, insn);
--    } else {
--        unallocated_encoding(s);
--    }
--}
--
--/* C3.6 Data processing - SIMD and floating point */
--static void disas_data_proc_simd_fp(DisasContext *s, uint32_t insn)
--{
--    if (extract32(insn, 28, 1) == 1 && extract32(insn, 30, 1) == 0) {
--        unallocated_encoding(s); /* in decodetree */
--    } else {
--        /* SIMD, including crypto */
--        disas_data_proc_simd(s, insn);
--    }
-+    clear_vec_high(s, true, a->rd);
-+    return true;
- }
- 
- static bool trans_OK(DisasContext *s, arg_OK *a)
-@@ -9749,20 +9593,6 @@ static bool btype_destination_ok(uint32_t insn, bool bt, int btype)
-     return false;
- }
- 
--/* C3.1 A64 instruction index by encoding */
--static void disas_a64_legacy(DisasContext *s, uint32_t insn)
--{
--    switch (extract32(insn, 25, 4)) {
--    case 0x7:
--    case 0xf:      /* Data processing - SIMD and floating point */
--        disas_data_proc_simd_fp(s, insn);
--        break;
--    default:
--        unallocated_encoding(s);
--        break;
--    }
--}
--
- static void aarch64_tr_init_disas_context(DisasContextBase *dcbase,
-                                           CPUState *cpu)
- {
-@@ -9965,7 +9795,7 @@ static void aarch64_tr_translate_insn(DisasContextBase *dcbase, CPUState *cpu)
-     if (!disas_a64(s, insn) &&
-         !disas_sme(s, insn) &&
-         !disas_sve(s, insn)) {
--        disas_a64_legacy(s, insn);
-+        unallocated_encoding(s);
-     }
- 
-     /*
-diff --git a/target/arm/tcg/a64.decode b/target/arm/tcg/a64.decode
-index f35d123821..7aa10f5147 100644
---- a/target/arm/tcg/a64.decode
-+++ b/target/arm/tcg/a64.decode
-@@ -1866,6 +1866,8 @@ FRSQRTE_v       0.10 1110 1.1 00001 11011 0 ..... .....     @qrr_sd
- URECPE_v        0.00 1110 101 00001 11001 0 ..... .....     @qrr_s
- URSQRTE_v       0.10 1110 101 00001 11001 0 ..... .....     @qrr_s
- 
-+FCVTL_v         0.00 1110 0.1 00001 01111 0 ..... .....     @qrr_sd
-+
- &fcvt_q         rd rn esz q shift
- @fcvtq_h        . q:1 . ...... 001 .... ...... rn:5 rd:5    \
-                 &fcvt_q esz=1 shift=%fcvt_f_sh_h
--- 
-2.43.0
+Thanks,
+Zhao
 
+On Tue, Oct 29, 2024 at 04:59:18PM +0800, Zhao Liu wrote:
+> Date: Tue, 29 Oct 2024 16:59:18 +0800
+> From: Zhao Liu <zhao1.liu@intel.com>
+> Subject: [PATCH 00/16] qom/object: Deprecate type_register()
+> X-Mailer: git-send-email 2.34.1
+> 
+> Hi maintainers,
+> 
+> This series is trying to deprecate type_register() and just keep
+> type_register_static() to register QOM type.
+> 
+> This series chosen to deprecate type_register() since changes required
+> to deprecate type_register() are smaller. (type_register_static() needs
+> 1000+ LOC changes.)
+> 
+> The two main changes are patch 15 and 16, while the others are trivial
+> replacements.
+> 
+> This series is based on commit fdf250e5a37830 ("Merge tag
+> 'pull-maintainer-oct-misc-241024-1' of https://gitlab.com/stsquad/qemu
+> into staging").
+> 
+> 
+> Introduction
+> ============
+> 
+> The type_register() and type_register_static() have existed since the
+> birth of QOM (commit 2f28d2ff9dce ("qom: add the base Object class
+> (v2)")).
+> 
+> In the code implementation, type_register_static() has always been just
+> a wrapper around type_register(), and they are essentially the same.
+> 
+> The only difference between them is described in the documentation 
+> (include/qom/object.h):
+> 
+> * type_register_static()
+> 
+> > @info and all of the strings it points to should exist for the life time
+> > that the type is registered.
+> 
+> * type_register()
+> 
+> > Unlike type_register_static(), this call does not require @info or its
+> > string members to continue to exist after the call returns.
+> 
+> From the documentation, the difference between these two interfaces
+> arises from the lifetime of 2 cases:
+> 
+> 1. the strings contained in the TypeInfo parameter.
+> 
+> The *_static variant requires the strings to have a long lifetime
+> (static).
+> 
+> I reviewed the discussions on the mailing list about the QOM v1 patch
+> [1], and I understand that the consideration for static is due to
+> Anthony's idea that in certain cases, the string field could be "const
+> char *", allowing the address to be directly copied to the created
+> Type/TypeImpl.
+> 
+> However, this consideration seems unnecessary in the merged v2 version,
+> as Anthony followed Paolo's suggestion to pass all string fields by
+> copying them via g_strdup() to the created TypeImple. This remains true
+> to this day.
+> 
+> [1]: https://lore.kernel.org/qemu-devel/4EF1EEA4.40209@us.ibm.com/
+> 
+> 
+> 2. the function pointer and a special item called "class_data" in
+> TypeInfo
+> 
+> I suppose that there are currently no lifetime issues about these items
+> in QEMU, as neither type_register() nor type_register_static()
+> explicitly checks whether the parameters are static. If there were any
+> issues, they would likely be easily detected.
+> 
+> Furthermore, I haven't seen any preference for these items in the usage
+> of type_register() and type_register_static().
+> 
+> 
+> Based on points 1 and 2, I think it is sufficient to explain that
+> type_register() and type_register_static() are redundant in usage and do
+> not require distinction. Additionally, since they are consistent in the
+> code, it is safe to deprecate either one.
+> 
+> Since the changes required to deprecate type_register() are smaller,
+> choose to deprecate type_register() and delete the requirement about
+> string lifetime from the documentation.
+> 
+> 
+> Thanks and Best Regards,
+> Zhao
+> ---
+> Zhao Liu (16):
+>   arm: Replace type_register() with type_register_static()
+>   hw/block: Replace type_register() with type_register_static()
+>   hw/net: Replace type_register() with type_register_static()
+>   ppc: Replace type_register() with type_register_static()
+>   hw/rtc: Replace type_register() with type_register_static()
+>   hw/scsi: Replace type_register() with type_register_static()
+>   hw/sensor: Replace type_register() with type_register_static()
+>   hw/usb: Replace type_register() with type_register_static()
+>   hw/virtio: Replace type_register() with type_register_static()
+>   i386: Replace type_register() with type_register_static()
+>   target/mips: Replace type_register() with type_register_static()
+>   target/sparc: Replace type_register() with type_register_static()
+>   target/xtensa: Replace type_register() with type_register_static()
+>   ui: Replace type_register() with type_register_static()
+>   script/codeconverter/qom_type_info: Deprecate MakeTypeRegisterStatic
+>     and MakeTypeRegisterNotStatic
+>   qom/object: Deprecate type_register()
+> 
+>  hw/arm/armsse.c                               |  2 +-
+>  hw/arm/smmuv3.c                               |  4 ++--
+>  hw/block/m25p80.c                             |  2 +-
+>  hw/net/e1000.c                                |  2 +-
+>  hw/net/eepro100.c                             |  2 +-
+>  hw/ppc/spapr.c                                |  2 +-
+>  hw/rtc/m48t59-isa.c                           |  2 +-
+>  hw/rtc/m48t59.c                               |  2 +-
+>  hw/scsi/megasas.c                             |  2 +-
+>  hw/scsi/mptsas.c                              |  2 +-
+>  hw/sensor/tmp421.c                            |  2 +-
+>  hw/usb/hcd-ehci-pci.c                         |  2 +-
+>  hw/usb/hcd-uhci.c                             |  2 +-
+>  hw/virtio/virtio-pci.c                        |  8 ++++----
+>  include/hw/i386/pc.h                          |  4 ++--
+>  include/qom/object.h                          | 14 -------------
+>  qom/object.c                                  |  7 +------
+>  .../codeconverter/qom_type_info.py            | 20 -------------------
+>  target/arm/cpu.c                              |  2 +-
+>  target/arm/cpu64.c                            |  2 +-
+>  target/i386/cpu.c                             |  2 +-
+>  target/mips/cpu.c                             |  2 +-
+>  target/ppc/kvm.c                              |  2 +-
+>  target/sparc/cpu.c                            |  2 +-
+>  target/xtensa/helper.c                        |  2 +-
+>  ui/console-vc.c                               |  2 +-
+>  ui/dbus.c                                     |  2 +-
+>  ui/gtk.c                                      |  2 +-
+>  ui/spice-app.c                                |  2 +-
+>  29 files changed, 32 insertions(+), 71 deletions(-)
+> 
+> -- 
+> 2.34.1
+> 
 
