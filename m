@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 308939ED176
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Dec 2024 17:27:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C32D9ED140
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Dec 2024 17:24:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tLPSH-0000OK-1o; Wed, 11 Dec 2024 11:20:53 -0500
+	id 1tLPSJ-0000Pi-8a; Wed, 11 Dec 2024 11:20:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tLPSE-0000NK-7e
- for qemu-devel@nongnu.org; Wed, 11 Dec 2024 11:20:50 -0500
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ id 1tLPSG-0000OH-5C
+ for qemu-devel@nongnu.org; Wed, 11 Dec 2024 11:20:52 -0500
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tLPSC-0007lR-Lw
- for qemu-devel@nongnu.org; Wed, 11 Dec 2024 11:20:50 -0500
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-43618283d48so12310835e9.1
- for <qemu-devel@nongnu.org>; Wed, 11 Dec 2024 08:20:48 -0800 (PST)
+ id 1tLPSE-0007lh-Lj
+ for qemu-devel@nongnu.org; Wed, 11 Dec 2024 11:20:51 -0500
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-435004228c0so31045765e9.0
+ for <qemu-devel@nongnu.org>; Wed, 11 Dec 2024 08:20:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1733934047; x=1734538847; darn=nongnu.org;
+ d=linaro.org; s=google; t=1733934049; x=1734538849; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=GJ2MxfIn+bPI815lGa0YYGJVtmHJ6iQzs9ubSygVReI=;
- b=CKD0pyToKz8Ks8RSiTY/CmPYRr/AG2YmNukOVTtp3o+bZeGGLNvYrD9rfFVUIW89MK
- jHV7H6QBBuezFCy9xXunhE9i4NOAgW0AVcf5zVndWy8LWKxj7xgjfhQqvlKUokB+NQvs
- vbXyaYTBoXhMdTwHm+O4dy4CKBn2SkwQFcfgkT/EMWFbm7vkun9Cn9dZPYYGHCmcYmwn
- 78MfS93sfJ9XF3wKVb+yM2J+dOhHA8iEq1mjf+Jxd2ulJlHVe4+rn8sS2QbrEqJlpxoS
- X+EvmdWw1NZqDG/W8mdohVtrE/gjXyEHsK4zIIiL74FxfJamwDq4hiMCI3zXXwDS4Ztz
- RfRQ==
+ :reply-to; bh=+U+8i8q/4gXE3A3yYLQmyNCA5wUq2DI1uSwKXqmKO3k=;
+ b=hJePzYhzrZ2M69iwOF+slc5pXWWiOjZNYiURPs6P2JXo0rvIJNtfkwhtxVlxcGql6d
+ viync8E3ZniH53oqVqa9SYs4hIqV8Pqy/MRJNd0y1XGioFGUoZP929mk20CHQDm8kCt+
+ 7x2TAJeA48rWUzuSjO0o+dN/pE8JcUBxJ6iXyHjRB0hGHtGyHcMoFbfFIP/XUSWgw4l5
+ 3bigSZa9c8e2SMqhD9n8JHXHfSXHbwO8OHRWE41H7ivqgpkcsEHw8PcgPjEtY6s8E2VT
+ OaJMQnh8NGvz8NP5Mjpbu2FT29cMplDao1FBvo1LnKx5PCaBw9oW12m6Jg1pCJzn9vh0
+ NcvA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733934047; x=1734538847;
+ d=1e100.net; s=20230601; t=1733934049; x=1734538849;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=GJ2MxfIn+bPI815lGa0YYGJVtmHJ6iQzs9ubSygVReI=;
- b=qv1Agj8Ndl0VacNwQu73U/ZTyxL5pjpWPpwp/CLQ6NvNmogEo5KazBBNDLKRH/FPgN
- 6i494/2UA5PnZ9fRpTjDyf5lrZTsyjVfBa0Q9/lNpe+nK4l8DPBaD4HV9IU3T8f7tDxn
- 2QYQy3oxWfiIRJOhKfRiGZeJUmMKbKELnt3eDtBvgjXzeECbxL2ObUi+aykHBn7YtaAZ
- ffqKOVlK0lRydeznZXycbMxkzNxTj24nyKe9VosN7rZ7eUi7HLno+Aps8buwAWx1Dn6Z
- Eitgqf6HFqEjQ4vorsXXL027rR4hxlsTHmVET36NWHNXCXqKJrwZjRIaqVBsdSVGE5U5
- LhBw==
-X-Gm-Message-State: AOJu0YxvXoif+EAAU0ucqoxh+L+9OU+J5tJASgA/Vw51YbVx6Nyd8D89
- ljp4VMmVQgbLZBQld9sYEfKUIdOq8tyHqLQaLMN7HJsRjb1mEK/ZryXdvFIe6NVdIzqIBjYk6Wp
- U
-X-Gm-Gg: ASbGncsvIb7HL6FLBTNlvwTIAwK5KAn651+fT0CK9L51DzaKCFlvyUn2YE8p1yQt+Qo
- 1Z23nqjs01UHejzdyOVV8Gs2GIervC6kxpL++Dwhv/5h2+0enHG7xaiBzB72OzDhji++KfEJkBl
- RkFx/zD+hmLPFERQy8j1L0TJsoUV7wXAPjenPGUl1tO1zUppf3q5ejJ/TbOQcR8CQ8LIYYll8SB
- alEcTKyz3v7gXdpJyf2DX3NYLgx4i61CDdN4glAkT3U4Qzgjl3BokmD2Rxk
-X-Google-Smtp-Source: AGHT+IHbNwGi42RPHzPeAaV49J8dicMj7ttfd4ajM7NNaERdDyTJxMh7R4KmYLPDXNvJqGuhIl91RA==
-X-Received: by 2002:a05:6000:1565:b0:385:fd24:3303 with SMTP id
- ffacd0b85a97d-3864cdeb18bmr2513796f8f.0.1733934047296; 
- Wed, 11 Dec 2024 08:20:47 -0800 (PST)
+ bh=+U+8i8q/4gXE3A3yYLQmyNCA5wUq2DI1uSwKXqmKO3k=;
+ b=LMBRoqo6OEGG3W4r/l2HukeiYPuuFgLgbVfgUsC6W8XnxNTmlnPOToLRMAScH4FYZv
+ OSci2a3KbPzoksTE9CTKxUlYIBkHfuDRZTwyipTmbNbQs4o2pUjKx/CrT5tkV+Y16pc9
+ waId/ow6/hxirrMrsmLg5XR5ZKeohfeUD8qjO+Eb0B5y7hHjWiPqaly0sMcwVePIhT4w
+ swrhpdgX2V2tOxBlb/bfOXjxoUXwh92P62+Nt+AHpZ7jMmWjx9vUe9hr/bpn/tnwwznE
+ ZXHHVG+WPEwtfeLwS45RmRGgtkFu0xVbdT+jfNSDspgXKsm4783Q3mi/gpWy3IMbJTIz
+ OjmA==
+X-Gm-Message-State: AOJu0YzuU0lRwnMHoHgZYANG5GgqdRxm0Ly6SPRn3BZG9ZDu8E5nptAb
+ Ckz5GPtlMot2PRgpk9G8Dxxlbl46DWRiFGm8jTsD4LTz5DXfITIBzuXw9yCLz+F82X/4jqvGS6/
+ m
+X-Gm-Gg: ASbGnct90R9VMSxstj/mfri9UOem9udgL/LL6u/ZhWv6AZiZPH5Ua2NZiZCua5zZfHd
+ IjlKz155VxrIbMVWimhb0HHA9BTBUsxNrgiWL2z0U9/gSV+A2y4nb5SN7F9nQXXlvsj5WaG83lj
+ 1ApnlV3f9do1iodnVQb8+4duNIA5ysa/0q2NeG5P3K9noEsFOClEWMhDssOShtQmhpvtVqlenGx
+ LIHsluSC5MOpDYzMcs8Tqk6ytXE1blTAQ3kqpOmqBeA3S9OsIWVJUVsHGo9
+X-Google-Smtp-Source: AGHT+IFKtzJvQ6sUnbqCaP1iE3nvgUiHFSPqtWzWWiUtqkXm1NudkNm8FI9ZrnNaxGumgI/nfj02nQ==
+X-Received: by 2002:a05:600c:1f0d:b0:434:f753:6012 with SMTP id
+ 5b1f17b1804b1-4361c3c7155mr35342975e9.17.1733934049030; 
+ Wed, 11 Dec 2024 08:20:49 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-434f4dfdcdfsm121460595e9.39.2024.12.11.08.20.46
+ 5b1f17b1804b1-434f4dfdcdfsm121460595e9.39.2024.12.11.08.20.47
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 11 Dec 2024 08:20:46 -0800 (PST)
+ Wed, 11 Dec 2024 08:20:48 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 35/72] target/m68k: In frem helper,
- initialize local float_status from env->fp_status
-Date: Wed, 11 Dec 2024 16:19:27 +0000
-Message-Id: <20241211162004.2795499-36-peter.maydell@linaro.org>
+Subject: [PULL 36/72] target/m68k: Init local float_status from env fp_status
+ in gdb get/set reg
+Date: Wed, 11 Dec 2024 16:19:28 +0000
+Message-Id: <20241211162004.2795499-37-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241211162004.2795499-1-peter.maydell@linaro.org>
 References: <20241211162004.2795499-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x329.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x331.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,44 +96,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In the frem helper, we have a local float_status because we want to
-execute the floatx80_div() with a custom rounding mode.  Instead of
-zero-initializing the local float_status and then having to set it up
-with the m68k standard behaviour (including the NaN propagation rule
-and copying the rounding precision from env->fp_status), initialize
-it as a complete copy of env->fp_status. This will avoid our having
-to add new code in this function for every new config knob we add
-to fp_status.
+In cf_fpu_gdb_get_reg() and cf_fpu_gdb_set_reg() we do the conversion
+from float64 to floatx80 using a scratch float_status, because we
+don't want the conversion to affect the CPU's floating point exception
+status. Currently we use a zero-initialized float_status. This will
+get steadily more awkward as we add config knobs to float_status
+that the target must initialize. Avoid having to add any of that
+configuration here by instead initializing our local float_status
+from the env->fp_status.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20241202131347.498124-31-peter.maydell@linaro.org
+Message-id: 20241202131347.498124-32-peter.maydell@linaro.org
 ---
- target/m68k/fpu_helper.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ target/m68k/helper.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/target/m68k/fpu_helper.c b/target/m68k/fpu_helper.c
-index a605162b71f..e3f4a188501 100644
---- a/target/m68k/fpu_helper.c
-+++ b/target/m68k/fpu_helper.c
-@@ -615,15 +615,13 @@ void HELPER(frem)(CPUM68KState *env, FPReg *res, FPReg *val0, FPReg *val1)
+diff --git a/target/m68k/helper.c b/target/m68k/helper.c
+index 9bfc6ae97c0..beefeb7069c 100644
+--- a/target/m68k/helper.c
++++ b/target/m68k/helper.c
+@@ -36,7 +36,8 @@ static int cf_fpu_gdb_get_reg(CPUState *cs, GByteArray *mem_buf, int n)
+     CPUM68KState *env = &cpu->env;
  
-     fp_rem = floatx80_rem(val1->d, val0->d, &env->fp_status);
-     if (!floatx80_is_any_nan(fp_rem)) {
--        float_status fp_status = { };
-+        /* Use local temporary fp_status to set different rounding mode */
-+        float_status fp_status = env->fp_status;
-         uint32_t quotient;
-         int sign;
+     if (n < 8) {
+-        float_status s = {};
++        /* Use scratch float_status so any exceptions don't change CPU state */
++        float_status s = env->fp_status;
+         return gdb_get_reg64(mem_buf, floatx80_to_float64(env->fregs[n].d, &s));
+     }
+     switch (n) {
+@@ -56,7 +57,8 @@ static int cf_fpu_gdb_set_reg(CPUState *cs, uint8_t *mem_buf, int n)
+     CPUM68KState *env = &cpu->env;
  
-         /* Calculate quotient directly using round to nearest mode */
--        set_float_2nan_prop_rule(float_2nan_prop_ab, &fp_status);
-         set_float_rounding_mode(float_round_nearest_even, &fp_status);
--        set_floatx80_rounding_precision(
--            get_floatx80_rounding_precision(&env->fp_status), &fp_status);
-         fp_quot.d = floatx80_div(val1->d, val0->d, &fp_status);
- 
-         sign = extractFloatx80Sign(fp_quot.d);
+     if (n < 8) {
+-        float_status s = {};
++        /* Use scratch float_status so any exceptions don't change CPU state */
++        float_status s = env->fp_status;
+         env->fregs[n].d = float64_to_floatx80(ldq_be_p(mem_buf), &s);
+         return 8;
+     }
 -- 
 2.34.1
 
