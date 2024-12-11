@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11FD49ED164
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Dec 2024 17:26:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B1899ED135
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Dec 2024 17:22:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tLPSz-0002EY-Ki; Wed, 11 Dec 2024 11:21:37 -0500
+	id 1tLPT1-0002K2-DM; Wed, 11 Dec 2024 11:21:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tLPSp-0001XS-A2
- for qemu-devel@nongnu.org; Wed, 11 Dec 2024 11:21:27 -0500
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ id 1tLPSq-0001bz-5E
+ for qemu-devel@nongnu.org; Wed, 11 Dec 2024 11:21:28 -0500
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tLPSn-0007ux-GR
+ id 1tLPSo-0007vJ-Gq
  for qemu-devel@nongnu.org; Wed, 11 Dec 2024 11:21:27 -0500
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-436202dd7f6so6285435e9.0
- for <qemu-devel@nongnu.org>; Wed, 11 Dec 2024 08:21:25 -0800 (PST)
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-43618283dedso16754255e9.3
+ for <qemu-devel@nongnu.org>; Wed, 11 Dec 2024 08:21:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1733934084; x=1734538884; darn=nongnu.org;
+ d=linaro.org; s=google; t=1733934085; x=1734538885; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=E85lj8XRhj/Fk3RQPB/aLYeRqkABA8VMdndxVbT9joA=;
- b=mqD6/oj+XSZNoVUCkC0+isFlnMbSzIcX+c+HNJlL8hBXVYC0OWGB3mD0RtDlXvrnUL
- PsjFX6O9A37As22gLkvN/tAfYY0nZFczVnRD72ZBA0f6iQDY5qXJ1GhXgLaJd6SN3yYx
- G29NxsLkit/3Rro/JjbydmEfY2hX9xvZ0avEZeeBVyeLe647FaKrFOBaQAU3fo8PZ9j0
- vWNFo7ept3+UxuDMzae9QDGWrYk96kgwm7ikaY0vpBPkRaO2l1b2q5B7jDuxgFHRCkO1
- Yfn4QUV5X2rhZYpBAJ2a6RB9lo+rzMe2RihwFczWSUSdvdEFvXCisG0T/xNzLXnujRei
- /myA==
+ :reply-to; bh=gSbZ33dYhUCvriB7gJIYOSjh0uJ7qwYxR0y7su+tpkc=;
+ b=KRE/1KwIeFrD58JIyaLgz64RScARneDJwpxkS/FS6ViUjeELV/trhloF/8vDyzA1ci
+ i3LEzNpUUHiXRPmYaNTkb2wwyOyJWi23R0SZFsxyIG86apvEVlOFcrl6fNMA9Z+IUmpT
+ gnG5nJzIYJJB4b7TyUjwFTrYPX4LUgNKenjgoizJq3yW46yL7FwY6U86KXC94i0OE83h
+ c/q1NPx4eDUUWXMV/jQPn4XqVdP+XM2XxHBKxgKebaUuA4RlCoSbWKG0kLJ1ObyWW8jP
+ 4NfalotmV8UYdqxlflzXaxTCuUSPTSGBmv7Wbpcv4KzyONGjQM+AvyDAQt7f8U3MuZWy
+ pCpw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733934084; x=1734538884;
+ d=1e100.net; s=20230601; t=1733934085; x=1734538885;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=E85lj8XRhj/Fk3RQPB/aLYeRqkABA8VMdndxVbT9joA=;
- b=H8eF4aueI66PEiBXrpPls2I7V7I8LOXF22y3snvKBQKq7kLX9UxCikGWtfFJv4rwBU
- y3vBVzXuBovzcesRTc+2tbUxQCmyWzQo1pxXMGiYEgk5kCMgmvHZlG3kNHcfcByz0dD1
- yRXKmrsnNHdneoTcfPAgQ9YDmOUvVApA/a8TCiH1E79lt9+u4e2jLchTC4Xii4tcD9M6
- pD+JfCfJ3tTUAb/l4T0NtI6QGsVW1vNI0FRAxd8HhAIbHtU+50/JqW9EPLE3O+rAJowq
- ziMPwAz7HkzJ4J5n7twdsNUU7JwuLogLuWkIAxb675bPquFloaNq2ltBtxJvkuCdK2Il
- 7e+A==
-X-Gm-Message-State: AOJu0YyNTEm7agtE70uY967UkJ4p/gT+NJ+7Aumv0zfi5nCryEy9TR97
- nfZPfUvHGccAge3sUP+9lVmM1v78pH/znYPbjbyGH0Yi7l1wHfZJVjhYeQEVPWkusj8xCrWplVL
- a
-X-Gm-Gg: ASbGncseOvAVUw//tbOpsqJ1lOkfuWYheTALBOC8E656AfVvM1FEaYoLAhWfWSBoB1J
- hePme0SGqpI9Zi3GoByF6a+HoKaZCwQSyvRY6sSJhvv1oJeezToVtHAG8EGkdJ3vAm6Xc/r26nD
- NJ9ac7PTrgcnDWDJsDEongzIpluGj9iztYPRLOujYeuBj2t38hHRx9q4aKt88Pf1jU3bpDeCFo/
- ygv+NW5nRvo9d6ij/8UWmU/B0u/kLsQheT7nG7lmHUKeZtKHL06n2SoDPng
-X-Google-Smtp-Source: AGHT+IHi5cWI9HumJccejp+wfPPknBU5WEKTBa1FEGvsjA+YUOV6I/k2m11jg3kEUIWFYlpsCdabRw==
-X-Received: by 2002:a05:600c:4e50:b0:431:5df7:b310 with SMTP id
- 5b1f17b1804b1-43622832e88mr2983255e9.8.1733934084148; 
- Wed, 11 Dec 2024 08:21:24 -0800 (PST)
+ bh=gSbZ33dYhUCvriB7gJIYOSjh0uJ7qwYxR0y7su+tpkc=;
+ b=s05U8bICx92m4aRPcv+z0ppH+MyzHn3Qe0dLi8T6xlyRYSKSa5SVbsJ8xQ7Ufgtumx
+ m8MypPVA1xdAfrP1yU+7C6D26NwBVFOT9QK20q8FUFfxgRyaDLCkHJV/8EKc/tVhBWgv
+ dtA0srs3SLNEq0yyYXJfSc0vHIECq0LkETlRbmh6cAKQVc0ATIGZBY3eLQ98RtF6wX48
+ DXpAqMBzEnEAezyAWiwLfKen3hMYRwdRv7FCm+BUxosU4vf0ouka3i5jOM7pz79xkF8P
+ 9OSqebMDy+d2dBiuLlZTCQoRBR1HH5ILGx7OkRWZQJoQb0NTk9SjYmh7Cwf0TAAyIjft
+ 8UxQ==
+X-Gm-Message-State: AOJu0Yx7QaNRg75iDceTGZu57arMf7RsOf3JREUuVCB2b+kB3Fq2gsYI
+ WLqcbfIbZNwNhe0ZtrUxmDPuctq2UQO1QHBoS46PHUVVl5ncWmI4ZUV46wd1v9+4HHArlwzIWfx
+ F
+X-Gm-Gg: ASbGncuDfdMTiDxKi7t8WCLlGSOPVFN63RMvdlCmE40yH5NandBY2Ze2dqcilCla61I
+ s+osy8iiAZMosT9fRl/FZz3PXyQbEE2zZA1zknrkrvUhy0rOos3l/dpK8V9hizFjrc0zlFDs3rO
+ +RFf9xz1uasSRGxB8/NguTtULnlwpTvqkrOWGj8vmVkWA9Fchqtab7vfe0Fx9xiHNlH4work5r7
+ I4bYHb0hd6qrH6hJqj9nIL+BTymF74L9zqPvX3FN3k6HMPylyd17n1BieFA
+X-Google-Smtp-Source: AGHT+IFFUD4MdrOm47MBTREZv0Zu8sIiii5xNVD/e17gQHbodrAbO1lH2rK0zKCh3+rQDQnVfzSVRQ==
+X-Received: by 2002:a05:600c:4f48:b0:426:647b:1bfc with SMTP id
+ 5b1f17b1804b1-4362286dca8mr3464295e9.30.1733934085039; 
+ Wed, 11 Dec 2024 08:21:25 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-434f4dfdcdfsm121460595e9.39.2024.12.11.08.21.23
+ 5b1f17b1804b1-434f4dfdcdfsm121460595e9.39.2024.12.11.08.21.24
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 11 Dec 2024 08:21:23 -0800 (PST)
+ Wed, 11 Dec 2024 08:21:24 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 70/72] softfloat: Replace WHICH with RET in parts_pick_nan
-Date: Wed, 11 Dec 2024 16:20:02 +0000
-Message-Id: <20241211162004.2795499-71-peter.maydell@linaro.org>
+Subject: [PULL 71/72] MAINTAINERS: update email address for Leif Lindholm
+Date: Wed, 11 Dec 2024 16:20:03 +0000
+Message-Id: <20241211162004.2795499-72-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241211162004.2795499-1-peter.maydell@linaro.org>
 References: <20241211162004.2795499-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x331.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,102 +96,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Richard Henderson <richard.henderson@linaro.org>
+From: Leif Lindholm <quic_llindhol@quicinc.com>
 
-Replace the "index" selecting between A and B with a result variable
-of the proper type.  This improves clarity within the function.
+I'm migrating to Qualcomm's new open source email infrastructure, so
+update my email address, and update the mailmap to match.
 
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Signed-off-by: Leif Lindholm <leif.lindholm@oss.qualcomm.com>
+Reviewed-by: Leif Lindholm <quic_llindhol@quicinc.com>
+Reviewed-by: Brian Cain <brian.cain@oss.qualcomm.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-id: 20241203203949.483774-12-richard.henderson@linaro.org
+Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-id: 20241205114047.1125842-1-leif.lindholm@oss.qualcomm.com
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- fpu/softfloat-parts.c.inc | 28 +++++++++++++---------------
- 1 file changed, 13 insertions(+), 15 deletions(-)
+ MAINTAINERS | 2 +-
+ .mailmap    | 5 +++--
+ 2 files changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/fpu/softfloat-parts.c.inc b/fpu/softfloat-parts.c.inc
-index abe24aeaa00..ba8de7be76e 100644
---- a/fpu/softfloat-parts.c.inc
-+++ b/fpu/softfloat-parts.c.inc
-@@ -40,7 +40,8 @@ static FloatPartsN *partsN(pick_nan)(FloatPartsN *a, FloatPartsN *b,
-                                      float_status *s)
- {
-     bool have_snan = false;
--    int cmp, which;
-+    FloatPartsN *ret;
-+    int cmp;
- 
-     if (is_snan(a->cls) || is_snan(b->cls)) {
-         float_raise(float_flag_invalid | float_flag_invalid_snan, s);
-@@ -55,21 +56,21 @@ static FloatPartsN *partsN(pick_nan)(FloatPartsN *a, FloatPartsN *b,
-     switch (s->float_2nan_prop_rule) {
-     case float_2nan_prop_s_ab:
-         if (have_snan) {
--            which = is_snan(a->cls) ? 0 : 1;
-+            ret = is_snan(a->cls) ? a : b;
-             break;
-         }
-         /* fall through */
-     case float_2nan_prop_ab:
--        which = is_nan(a->cls) ? 0 : 1;
-+        ret = is_nan(a->cls) ? a : b;
-         break;
-     case float_2nan_prop_s_ba:
-         if (have_snan) {
--            which = is_snan(b->cls) ? 1 : 0;
-+            ret = is_snan(b->cls) ? b : a;
-             break;
-         }
-         /* fall through */
-     case float_2nan_prop_ba:
--        which = is_nan(b->cls) ? 1 : 0;
-+        ret = is_nan(b->cls) ? b : a;
-         break;
-     case float_2nan_prop_x87:
-         /*
-@@ -85,35 +86,32 @@ static FloatPartsN *partsN(pick_nan)(FloatPartsN *a, FloatPartsN *b,
-          */
-         if (is_snan(a->cls)) {
-             if (!is_snan(b->cls)) {
--                which = is_qnan(b->cls) ? 1 : 0;
-+                ret = is_qnan(b->cls) ? b : a;
-                 break;
-             }
-         } else if (is_qnan(a->cls)) {
-             if (is_snan(b->cls) || !is_qnan(b->cls)) {
--                which = 0;
-+                ret = a;
-                 break;
-             }
-         } else {
--            which = 1;
-+            ret = b;
-             break;
-         }
-         cmp = frac_cmp(a, b);
-         if (cmp == 0) {
-             cmp = a->sign < b->sign;
-         }
--        which = cmp > 0 ? 0 : 1;
-+        ret = cmp > 0 ? a : b;
-         break;
-     default:
-         g_assert_not_reached();
-     }
- 
--    if (which) {
--        a = b;
-+    if (is_snan(ret->cls)) {
-+        parts_silence_nan(ret, s);
-     }
--    if (is_snan(a->cls)) {
--        parts_silence_nan(a, s);
--    }
--    return a;
-+    return ret;
- }
- 
- static FloatPartsN *partsN(pick_nan_muladd)(FloatPartsN *a, FloatPartsN *b,
+diff --git a/MAINTAINERS b/MAINTAINERS
+index aaf0505a214..9ae6a78ae9c 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -915,7 +915,7 @@ F: include/hw/ssi/imx_spi.h
+ SBSA-REF
+ M: Radoslaw Biernacki <rad@semihalf.com>
+ M: Peter Maydell <peter.maydell@linaro.org>
+-R: Leif Lindholm <quic_llindhol@quicinc.com>
++R: Leif Lindholm <leif.lindholm@oss.qualcomm.com>
+ R: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+ L: qemu-arm@nongnu.org
+ S: Maintained
+diff --git a/.mailmap b/.mailmap
+index 727ce204b2d..5f6df414e1f 100644
+--- a/.mailmap
++++ b/.mailmap
+@@ -87,8 +87,9 @@ Huacai Chen <chenhuacai@kernel.org> <chenhc@lemote.com>
+ Huacai Chen <chenhuacai@kernel.org> <chenhuacai@loongson.cn>
+ James Hogan <jhogan@kernel.org> <james.hogan@imgtec.com>
+ Juan Quintela <quintela@trasno.org> <quintela@redhat.com>
+-Leif Lindholm <quic_llindhol@quicinc.com> <leif.lindholm@linaro.org>
+-Leif Lindholm <quic_llindhol@quicinc.com> <leif@nuviainc.com>
++Leif Lindholm <leif.lindholm@oss.qualcomm.com> <quic_llindhol@quicinc.com>
++Leif Lindholm <leif.lindholm@oss.qualcomm.com> <leif.lindholm@linaro.org>
++Leif Lindholm <leif.lindholm@oss.qualcomm.com> <leif@nuviainc.com>
+ Luc Michel <luc@lmichel.fr> <luc.michel@git.antfield.fr>
+ Luc Michel <luc@lmichel.fr> <luc.michel@greensocs.com>
+ Luc Michel <luc@lmichel.fr> <lmichel@kalray.eu>
 -- 
 2.34.1
 
