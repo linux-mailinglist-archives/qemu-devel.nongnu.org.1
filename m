@@ -2,64 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 438709EDAE0
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Dec 2024 00:06:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 549939EDAE1
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Dec 2024 00:06:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tLVlO-0003ac-0M; Wed, 11 Dec 2024 18:05:02 -0500
+	id 1tLVlP-0003bZ-0e; Wed, 11 Dec 2024 18:05:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <d-tatianin@yandex-team.ru>)
- id 1tLVlH-0003Se-JU
- for qemu-devel@nongnu.org; Wed, 11 Dec 2024 18:04:57 -0500
-Received: from forwardcorp1a.mail.yandex.net ([178.154.239.72])
+ id 1tLVlK-0003Vp-Fq
+ for qemu-devel@nongnu.org; Wed, 11 Dec 2024 18:04:58 -0500
+Received: from forwardcorp1a.mail.yandex.net
+ ([2a02:6b8:c0e:500:1:45:d181:df01])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <d-tatianin@yandex-team.ru>)
- id 1tLVlF-0002M9-DQ
- for qemu-devel@nongnu.org; Wed, 11 Dec 2024 18:04:55 -0500
+ id 1tLVlI-0002OF-No
+ for qemu-devel@nongnu.org; Wed, 11 Dec 2024 18:04:58 -0500
 Received: from mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net
  [IPv6:2a02:6b8:c1f:5829:0:640:f281:0])
- by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id 17FC461469;
- Thu, 12 Dec 2024 02:04:51 +0300 (MSK)
+ by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id 72C2B61447;
+ Thu, 12 Dec 2024 02:04:54 +0300 (MSK)
 Received: from d-tatianin-lin.yandex-team.ru (unknown
  [2a02:6b8:b081:1227::1:8])
  by mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id b4xnrS4GamI0-IWDYxWwA; Thu, 12 Dec 2024 02:04:50 +0300
+ ESMTPSA id b4xnrS4GamI0-7E3QJreo; Thu, 12 Dec 2024 02:04:54 +0300
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1733958290;
- bh=7GZCvWgBz83cLwycZqDRu6o5tDHlLyTyQSPwIy527ac=;
+ s=default; t=1733958294;
+ bh=i/w5rDBnwVLOj5y9aLzNQFkTm4o3GZ3TpsdbgF93iB8=;
  h=Message-Id:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=0CG20qFKFz7eryJxG4hCHg2Jzp3/6HcwQf1IumEz4bunrGxwZWL2HiaCxtEnEp+oV
- BMWMI2/SmGdT5bVjESC1wGcp2AtSRhwEzuBjedk4osOslsaMNo9heQ/V8ziIBhIV8k
- 1sjmixfD2VEdVc3D0Q2I/0MGIfL4U8W0tJsDMCPE=
+ b=Xl/vXkbamKZdI2X5/dD8+eQqQRhglOwXIQnKJiaUKoObLR7dIL8b2bMO5ctZsNCHb
+ 3MH8DoRR9+ZfdzT/hvFthWXin6DE1tbpllC03X7GZfbftWOcUUFle7VRbod/mmQgzT
+ +cRZfQDqLDCLSj5zN4etGo3vlEOE9jhZQu+6THlY=
 Authentication-Results: mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
 From: Daniil Tatianin <d-tatianin@yandex-team.ru>
 To: Paolo Bonzini <pbonzini@redhat.com>
 Cc: Daniil Tatianin <d-tatianin@yandex-team.ru>, Stefan Weil <sw@weilnetz.de>,
  Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
- qemu-devel@nongnu.org,
- Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Subject: [PATCH v3 1/4] os: add an ability to lock memory on_fault
-Date: Thu, 12 Dec 2024 02:04:30 +0300
-Message-Id: <20241211230433.1371327-2-d-tatianin@yandex-team.ru>
+ qemu-devel@nongnu.org
+Subject: [PATCH v3 2/4] system/vl: extract overcommit option parsing into a
+ helper
+Date: Thu, 12 Dec 2024 02:04:31 +0300
+Message-Id: <20241211230433.1371327-3-d-tatianin@yandex-team.ru>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241211230433.1371327-1-d-tatianin@yandex-team.ru>
 References: <20241211230433.1371327-1-d-tatianin@yandex-team.ru>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=178.154.239.72;
+Received-SPF: pass client-ip=2a02:6b8:c0e:500:1:45:d181:df01;
  envelope-from=d-tatianin@yandex-team.ru; helo=forwardcorp1a.mail.yandex.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -75,105 +76,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This will be used in the following commits to make it possible to only
-lock memory on fault instead of right away.
+This will be extended in the future commits, let's move it out of line
+right away so that it's easier to read.
 
-Reviewed-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Reviewed-by: Peter Xu <peterx@redhat.com>
 Signed-off-by: Daniil Tatianin <d-tatianin@yandex-team.ru>
 ---
- include/sysemu/os-posix.h |  2 +-
- include/sysemu/os-win32.h |  3 ++-
- migration/postcopy-ram.c  |  2 +-
- os-posix.c                | 10 ++++++++--
- system/vl.c               |  2 +-
- 5 files changed, 13 insertions(+), 6 deletions(-)
+ system/vl.c | 21 ++++++++++++++-------
+ 1 file changed, 14 insertions(+), 7 deletions(-)
 
-diff --git a/include/sysemu/os-posix.h b/include/sysemu/os-posix.h
-index b881ac6c6f..ce5b3bccf8 100644
---- a/include/sysemu/os-posix.h
-+++ b/include/sysemu/os-posix.h
-@@ -53,7 +53,7 @@ bool os_set_runas(const char *user_id);
- void os_set_chroot(const char *path);
- void os_setup_limits(void);
- void os_setup_post(void);
--int os_mlock(void);
-+int os_mlock(bool on_fault);
- 
- /**
-  * qemu_alloc_stack:
-diff --git a/include/sysemu/os-win32.h b/include/sysemu/os-win32.h
-index b82a5d3ad9..cd61d69e10 100644
---- a/include/sysemu/os-win32.h
-+++ b/include/sysemu/os-win32.h
-@@ -123,8 +123,9 @@ static inline bool is_daemonized(void)
-     return false;
- }
- 
--static inline int os_mlock(void)
-+static inline int os_mlock(bool on_fault)
- {
-+    (void)on_fault;
-     return -ENOSYS;
- }
- 
-diff --git a/migration/postcopy-ram.c b/migration/postcopy-ram.c
-index a535fd2e30..36ec6a3d75 100644
---- a/migration/postcopy-ram.c
-+++ b/migration/postcopy-ram.c
-@@ -652,7 +652,7 @@ int postcopy_ram_incoming_cleanup(MigrationIncomingState *mis)
-     }
- 
-     if (enable_mlock) {
--        if (os_mlock() < 0) {
-+        if (os_mlock(false) < 0) {
-             error_report("mlock: %s", strerror(errno));
-             /*
-              * It doesn't feel right to fail at this point, we have a valid
-diff --git a/os-posix.c b/os-posix.c
-index 43f9a43f3f..0948128134 100644
---- a/os-posix.c
-+++ b/os-posix.c
-@@ -327,18 +327,24 @@ void os_set_line_buffering(void)
-     setvbuf(stdout, NULL, _IOLBF, 0);
- }
- 
--int os_mlock(void)
-+int os_mlock(bool on_fault)
- {
- #ifdef HAVE_MLOCKALL
-     int ret = 0;
-+    int flags = MCL_CURRENT | MCL_FUTURE;
- 
--    ret = mlockall(MCL_CURRENT | MCL_FUTURE);
-+    if (on_fault) {
-+        flags |= MCL_ONFAULT;
-+    }
-+
-+    ret = mlockall(flags);
-     if (ret < 0) {
-         error_report("mlockall: %s", strerror(errno));
-     }
- 
-     return ret;
- #else
-+    (void)on_fault;
-     return -ENOSYS;
- #endif
- }
 diff --git a/system/vl.c b/system/vl.c
-index 54998fdbc7..03819a80ef 100644
+index 03819a80ef..f0b3ad0df7 100644
 --- a/system/vl.c
 +++ b/system/vl.c
-@@ -793,7 +793,7 @@ static QemuOptsList qemu_run_with_opts = {
- static void realtime_init(void)
- {
-     if (enable_mlock) {
--        if (os_mlock() < 0) {
-+        if (os_mlock(false) < 0) {
-             error_report("locking memory failed");
-             exit(1);
-         }
+@@ -1855,6 +1855,19 @@ static void object_option_parse(const char *str)
+     visit_free(v);
+ }
+ 
++static void overcommit_parse(const char *str)
++{
++    QemuOpts *opts;
++
++    opts = qemu_opts_parse_noisily(qemu_find_opts("overcommit"),
++                                   str, false);
++    if (!opts) {
++        exit(1);
++    }
++    enable_mlock = qemu_opt_get_bool(opts, "mem-lock", enable_mlock);
++    enable_cpu_pm = qemu_opt_get_bool(opts, "cpu-pm", enable_cpu_pm);
++}
++
+ /*
+  * Very early object creation, before the sandbox options have been activated.
+  */
+@@ -3532,13 +3545,7 @@ void qemu_init(int argc, char **argv)
+                 object_option_parse(optarg);
+                 break;
+             case QEMU_OPTION_overcommit:
+-                opts = qemu_opts_parse_noisily(qemu_find_opts("overcommit"),
+-                                               optarg, false);
+-                if (!opts) {
+-                    exit(1);
+-                }
+-                enable_mlock = qemu_opt_get_bool(opts, "mem-lock", enable_mlock);
+-                enable_cpu_pm = qemu_opt_get_bool(opts, "cpu-pm", enable_cpu_pm);
++                overcommit_parse(optarg);
+                 break;
+             case QEMU_OPTION_compat:
+                 {
 -- 
 2.34.1
 
