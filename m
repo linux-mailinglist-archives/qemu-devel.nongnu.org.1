@@ -2,81 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF4639ED1CE
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Dec 2024 17:31:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F40F59ED236
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Dec 2024 17:38:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tLPZL-0003BH-DU; Wed, 11 Dec 2024 11:28:11 -0500
+	id 1tLPZO-0003cn-7F; Wed, 11 Dec 2024 11:28:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tLPZF-0002v8-05
- for qemu-devel@nongnu.org; Wed, 11 Dec 2024 11:28:05 -0500
+ id 1tLPZI-0003JE-Ke
+ for qemu-devel@nongnu.org; Wed, 11 Dec 2024 11:28:08 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tLPZC-0000Mt-La
- for qemu-devel@nongnu.org; Wed, 11 Dec 2024 11:28:04 -0500
+ id 1tLPZG-0000P0-Qt
+ for qemu-devel@nongnu.org; Wed, 11 Dec 2024 11:28:08 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1733934481;
+ s=mimecast20190719; t=1733934486;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=5/gPO2yFneY2SAFLMqoaZO1g8ZLO9OFPO/sZ1iMHfZo=;
- b=iNEr7Bb3ZFzGvp8rWusW+EF0VScGlPLDUyYxvXHNWqRFiUByeFMYJgZ3gWbsiAKFM6XRqG
- ltVOcJ166nUlLMumSRBpEdLPMsgwDLhwBRTk0uf2YICfqznnoA5Zg6ep36gYby3w/nf0Dw
- qXXhw/DP34clJnuSjopebCxIPu3snuk=
-Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
- [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=LqP+CF9Cn7KtMzYzo4JT11mnT2881O+4ObbCwnw7e7k=;
+ b=GWTnYjpU3KkiBrJd1vHZr1UnT/RzJHcYyY2C+gDNIhVVRuOBI3zkBzwORteMdtSP650bqN
+ mV4N4+zXHj49HgT8/JZFF3bcz6J/rlm7f8Q7l+sLEtI59J5URmgVWG81Se7rCggSVP9AmW
+ UFBeS+izVSN6mRgZ9zmfL/D2YT5uiVM=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-648-fMWhQFAIN-m6QewmsL3XTA-1; Wed, 11 Dec 2024 11:28:00 -0500
-X-MC-Unique: fMWhQFAIN-m6QewmsL3XTA-1
-X-Mimecast-MFC-AGG-ID: fMWhQFAIN-m6QewmsL3XTA
-Received: by mail-qk1-f197.google.com with SMTP id
- af79cd13be357-7b6c51069f5so598028785a.3
- for <qemu-devel@nongnu.org>; Wed, 11 Dec 2024 08:28:00 -0800 (PST)
+ us-mta-628-4Y5l2xPTNQWCndCk76ZNsQ-1; Wed, 11 Dec 2024 11:28:03 -0500
+X-MC-Unique: 4Y5l2xPTNQWCndCk76ZNsQ-1
+X-Mimecast-MFC-AGG-ID: 4Y5l2xPTNQWCndCk76ZNsQ
+Received: by mail-ej1-f70.google.com with SMTP id
+ a640c23a62f3a-aa61e72d68dso533991866b.3
+ for <qemu-devel@nongnu.org>; Wed, 11 Dec 2024 08:28:03 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733934479; x=1734539279;
+ d=1e100.net; s=20230601; t=1733934482; x=1734539282;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=5/gPO2yFneY2SAFLMqoaZO1g8ZLO9OFPO/sZ1iMHfZo=;
- b=DXh2fakpsyYIrvD7o5oUzeE32ZtX64n48wHs3N+7HVetPTqyVLcGmr5E9Izf6doQIR
- 4p+emNJ1XGdIxCNfNQK3aBliuCM3ps/1ymiZ+VPkour8eNeeQe3kySuZlTLkfBNQNZaG
- ccfBQkpfJk9GcYBzT3gHf7nCvQse/Cqzh7Ib8XQWE1gNyBy0lIrJY+v+uZRaf32nhbq6
- lSso4EdCT+JMr+QbES1vQcxb217WoWBY1mBpUwcAXPKtGwpHqHvE18saA3SWNKaQQa1+
- E53D2Dwi2SPjU4I4kyZRA7KrEaLOXw3n7E9iPsm9vt8l5GpiTVw55ZiH7pDFerYm+eFG
- Fyew==
-X-Gm-Message-State: AOJu0Yzvf0hSQJYXIHy5v2B2xEwvCCGeKOAv3gBfIKpEPVUWRc5i3sAh
- DCqvOvGoFCI85DvOQ6sYUxjTq9m3rKAgIfdv2CYGt9RgLV08XHWgOKBnSoYWobXTOC+ePCxkS6b
- GbGosA9ogrB+36v4c9kFB8fsH21tq7kbl98O8aXvMljw0RCoFpAkbDfeaPP8hBYtTaub6wEE23I
- DcqHL9vA0iuP7Jkb+oMSyEraKx2GHOAq13wnWd
-X-Gm-Gg: ASbGnctmQHil8k0lP9OguEOIg/5wFXL6agipadnAVv1SlC1g4KUHeFDNmoB8asWsoHW
- SSltqyqJORlbxP7Js3c/WPod77C3d5HWvPB9cF8FIH27dJsJI+h2ndSLBpKkl4lI1VjuM/Cn+5N
- f4JQ4C9tja8ZX/zUx9KsI90WP2P94in5baNMbBifizLMV1CboCVdpJ6MonMPBxtHJGudi2JTp/0
- Iep+RjLbvcAQFgwsIl9723FCSGs1vHCD8PpKYFBpHU3zj4selfJifLP
-X-Received: by 2002:a05:620a:191b:b0:7b6:d273:9b52 with SMTP id
- af79cd13be357-7b6eb4d86f2mr540882785a.24.1733934479480; 
- Wed, 11 Dec 2024 08:27:59 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFpohvuDi1xtSCheyj9p63ZFmjUYzmt3Bgcpvj+6T03bsNvqZaHmQ+p1DQO6Bkt4ffC5hIbfQ==
-X-Received: by 2002:a05:620a:191b:b0:7b6:d273:9b52 with SMTP id
- af79cd13be357-7b6eb4d86f2mr540878185a.24.1733934479079; 
- Wed, 11 Dec 2024 08:27:59 -0800 (PST)
+ bh=LqP+CF9Cn7KtMzYzo4JT11mnT2881O+4ObbCwnw7e7k=;
+ b=nUBRN/vdI2kzFtC3gI+cQcoOCn5h6tv+cG4uyZbIgt5Fr/wIL4e2V0UTaR0jEdqzrt
+ yjakzElEbcScU9ZduVts5mCSWb/y1Iexgj8Rtz98D1IdspdT6u0I70YE2jfSJZ8lm2Ql
+ 8/rWqBgEZJ/NfxpS53XwFE11bqtoWott0GxoGdWeptJcTXYBnYStKVgtIillB6Jl3JEK
+ 9+d/Uz3csnd/+uxSJNUXTk1Mb2Bfiiy/AIycRoxsVrjR6dVZZZMU0aUSfg/e6XqkIZUk
+ 3tmAEPIGQMFlw1/waubVPK5ZAx2LwN2J6lmon1MDAOd9eHPf0+gYGSjkU4NxndGjKVkh
+ lshA==
+X-Gm-Message-State: AOJu0YwOetpmFDuZqeQv2A5AENqVGuUYScGdQUYdKZZLNRXVGLAG67e/
+ ZxYBOREiNUk3HmTcwvceA0Fwkd8Q98yIVxLpB2YoOong2cr0mJDPBK56KdRiVIW2xgqv6Rc9SLL
+ N1lo/6JhzH8qiySb3cKypHdQ/4DGFhSI1zOmO4x2nrMrL2+S3HmyEww6qt1y2chYJAusuLVSln7
+ HnxAOX4CN3ZKTB+s+rAIDLQp590r+xgtKUPcmX
+X-Gm-Gg: ASbGncvyhLtfjZbNzsnSgFv7n7E1JH5B1m8iSyg+BR2dK9CUikjyDMjETqn1cMLrVkW
+ PbcWewlp00geCLPTmpVG7/ryukFWy7BY4FuUQKXBOk6AEms3RzeRUv+wDuapTK1ErkQ+6FvUMH7
+ 2ikP2u1FwomR65Yfql/DZpPkOUvZMNE+7u4futDuFntisnco9R5Dm0XV+GJPZ5keC9jWezSW0rh
+ vk/dcaKhcj7gVgFdzGCj7QC6AhTRZugSWDjyneh+3ClDHUtmobSElDu
+X-Received: by 2002:a17:907:72cd:b0:aa6:b5e0:8c59 with SMTP id
+ a640c23a62f3a-aa6b5e095bbmr284803866b.35.1733934481827; 
+ Wed, 11 Dec 2024 08:28:01 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFc6vl+2WSCOzXnfgV1+umZZeyGRF8tr8hut8ZDv9tjCDjucUv6J4ePnAKpf8+f+p/87DsWNw==
+X-Received: by 2002:a17:907:72cd:b0:aa6:b5e0:8c59 with SMTP id
+ a640c23a62f3a-aa6b5e095bbmr284800166b.35.1733934481352; 
+ Wed, 11 Dec 2024 08:28:01 -0800 (PST)
 Received: from [192.168.10.3] ([151.81.118.45])
  by smtp.gmail.com with ESMTPSA id
- af79cd13be357-7b6cbf228a5sm400514785a.105.2024.12.11.08.27.57
+ a640c23a62f3a-aa66c646defsm648486566b.181.2024.12.11.08.28.00
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 11 Dec 2024 08:27:58 -0800 (PST)
+ Wed, 11 Dec 2024 08:28:00 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Junjie Mao <junjie.mao@hotmail.com>,
-	Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL 14/49] rust/qemu-api: Fix fragment-specifiers in
- define_property macro
-Date: Wed, 11 Dec 2024 17:26:44 +0100
-Message-ID: <20241211162720.320070-15-pbonzini@redhat.com>
+Subject: [PULL 15/49] clock: clear callback on unparent
+Date: Wed, 11 Dec 2024 17:26:45 +0100
+Message-ID: <20241211162720.320070-16-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241211162720.320070-1-pbonzini@redhat.com>
 References: <20241211162720.320070-1-pbonzini@redhat.com>
@@ -107,49 +105,106 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Junjie Mao <junjie.mao@hotmail.com>
-
-For the matcher of macro, "expr" is used for expressions, while "ident"
-is used for variable/function names, and "ty" matches types.
-
-In define_property macro, $field is a member name of type $state, so it
-should be defined as "ident", though offset_of! doesn't complain about
-this. $type is the type of $field, since it is not used in the macro, so
-that no type mismatch error is triggered either.
-
-Fix fragment-specifiers of $field and $type.
-
-Signed-off-by: Junjie Mao <junjie.mao@hotmail.com>
-Co-developed-by: Zhao Liu <zhao1.liu@intel.com>
-Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-Link: https://lore.kernel.org/r/20241017143245.1248589-2-zhao1.liu@intel.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- rust/qemu-api/src/device_class.rs | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/hw/clock.h   |  8 --------
+ hw/core/clock.c      | 22 +++++++++++++++++-----
+ hw/core/qdev-clock.c |  5 +----
+ 3 files changed, 18 insertions(+), 17 deletions(-)
 
-diff --git a/rust/qemu-api/src/device_class.rs b/rust/qemu-api/src/device_class.rs
-index 0ba798d3e3c..922bbce1bb8 100644
---- a/rust/qemu-api/src/device_class.rs
-+++ b/rust/qemu-api/src/device_class.rs
-@@ -27,7 +27,7 @@ macro_rules! device_class_init {
+diff --git a/include/hw/clock.h b/include/hw/clock.h
+index eb58599131c..a279bd4ba5e 100644
+--- a/include/hw/clock.h
++++ b/include/hw/clock.h
+@@ -141,14 +141,6 @@ Clock *clock_new(Object *parent, const char *name);
+ void clock_set_callback(Clock *clk, ClockCallback *cb,
+                         void *opaque, unsigned int events);
  
- #[macro_export]
- macro_rules! define_property {
--    ($name:expr, $state:ty, $field:ident, $prop:expr, $type:expr, default = $defval:expr$(,)*) => {
-+    ($name:expr, $state:ty, $field:ident, $prop:expr, $type:ty, default = $defval:expr$(,)*) => {
-         $crate::bindings::Property {
-             // use associated function syntax for type checking
-             name: ::std::ffi::CStr::as_ptr($name),
-@@ -38,7 +38,7 @@ macro_rules! define_property {
-             ..$crate::zeroable::Zeroable::ZERO
+-/**
+- * clock_clear_callback:
+- * @clk: the clock to delete the callback from
+- *
+- * Unregister the callback registered with clock_set_callback.
+- */
+-void clock_clear_callback(Clock *clk);
+-
+ /**
+  * clock_set_source:
+  * @clk: the clock.
+diff --git a/hw/core/clock.c b/hw/core/clock.c
+index cbe7b1bc469..391095eb4e5 100644
+--- a/hw/core/clock.c
++++ b/hw/core/clock.c
+@@ -44,16 +44,12 @@ Clock *clock_new(Object *parent, const char *name)
+ void clock_set_callback(Clock *clk, ClockCallback *cb, void *opaque,
+                         unsigned int events)
+ {
++    assert(OBJECT(clk)->parent);
+     clk->callback = cb;
+     clk->callback_opaque = opaque;
+     clk->callback_events = events;
+ }
+ 
+-void clock_clear_callback(Clock *clk)
+-{
+-    clock_set_callback(clk, NULL, NULL, 0);
+-}
+-
+ bool clock_set(Clock *clk, uint64_t period)
+ {
+     if (clk->period == period) {
+@@ -168,6 +164,16 @@ static void clock_period_prop_get(Object *obj, Visitor *v, const char *name,
+     visit_type_uint64(v, name, &period, errp);
+ }
+ 
++static void clock_unparent(Object *obj)
++{
++    /*
++     * Callback are registered by the parent, which might die anytime after
++     * it's unparented the children.  Avoid having a callback to a deleted
++     * object in case the clock is still referenced somewhere else (eg: by
++     * a clock output).
++     */
++    clock_set_callback(CLOCK(obj), NULL, NULL, 0);
++}
+ 
+ static void clock_initfn(Object *obj)
+ {
+@@ -200,11 +206,17 @@ static void clock_finalizefn(Object *obj)
+     g_free(clk->canonical_path);
+ }
+ 
++static void clock_class_init(ObjectClass *klass, void *data)
++{
++    klass->unparent = clock_unparent;
++}
++
+ static const TypeInfo clock_info = {
+     .name              = TYPE_CLOCK,
+     .parent            = TYPE_OBJECT,
+     .instance_size     = sizeof(Clock),
+     .instance_init     = clock_initfn,
++    .class_init        = clock_class_init,
+     .instance_finalize = clock_finalizefn,
+ };
+ 
+diff --git a/hw/core/qdev-clock.c b/hw/core/qdev-clock.c
+index 82799577f3e..ca65685c04e 100644
+--- a/hw/core/qdev-clock.c
++++ b/hw/core/qdev-clock.c
+@@ -87,11 +87,8 @@ void qdev_finalize_clocklist(DeviceState *dev)
+         if (!ncl->output && !ncl->alias) {
+             /*
+              * We kept a reference on the input clock to ensure it lives up to
+-             * this point so we can safely remove the callback.
+-             * It avoids having a callback to a deleted object if ncl->clock
+-             * is still referenced somewhere else (eg: by a clock output).
++             * this point; it is used by the monitor to show the frequency.
+              */
+-            clock_clear_callback(ncl->clock);
+             object_unref(OBJECT(ncl->clock));
          }
-     };
--    ($name:expr, $state:ty, $field:ident, $prop:expr, $type:expr$(,)*) => {
-+    ($name:expr, $state:ty, $field:ident, $prop:expr, $type:ty$(,)*) => {
-         $crate::bindings::Property {
-             // use associated function syntax for type checking
-             name: ::std::ffi::CStr::as_ptr($name),
+         g_free(ncl->name);
 -- 
 2.47.1
 
