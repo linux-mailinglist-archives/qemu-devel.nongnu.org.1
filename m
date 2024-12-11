@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C83D9ED37C
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Dec 2024 18:29:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 451D99ED3B8
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Dec 2024 18:34:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tLQV0-0005uj-40; Wed, 11 Dec 2024 12:27:46 -0500
+	id 1tLQV2-000655-IN; Wed, 11 Dec 2024 12:27:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1tLQUt-0005no-St
- for qemu-devel@nongnu.org; Wed, 11 Dec 2024 12:27:40 -0500
+ id 1tLQUw-0005qh-Jw
+ for qemu-devel@nongnu.org; Wed, 11 Dec 2024 12:27:43 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1tLQUr-00019j-RG
- for qemu-devel@nongnu.org; Wed, 11 Dec 2024 12:27:38 -0500
+ id 1tLQUu-0001AK-LH
+ for qemu-devel@nongnu.org; Wed, 11 Dec 2024 12:27:42 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1733938057;
+ s=mimecast20190719; t=1733938059;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=qb8V/aQYbLIrxdTuncepi3lH2bYt4JVi2kewINYlyDI=;
- b=JGBnsFArHLGDwnWnlomL5sO2tMH4QjlCFm+nNkr+x1DRyx0SUML29CDLkqLuaVT/XNmn8P
- 28nVTkKenvAAI826dkCoDmCpVRjfN4FWqDUTmiswCmufHdEyl/E4XGmDsU8oLVnLoTavaE
- NyxngTKWuuVeemgxoOaJFT9Xj0x0n1g=
+ bh=2mGODSMuPQz9KoSxfoSlSzJp+nFYF+zH6/PXo6OcUQA=;
+ b=T7wonYdBomSMurgaqvFm+0JbuG75IGEpQeznsN8fIL8FWGuALdncOLhlLDDs99UA+XxHoO
+ L+Dgvsx4vGIHz7XLllnBEqCDRhESNgCCVbUgvJz6LD5JllpkPRR4muORg2nQheORrbMivs
+ gN+cM+G5NGuTqDqpXf9swiruB0IVfHs=
 Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-313-4ZRq53XHNPylUTFwLipGSQ-1; Wed,
- 11 Dec 2024 12:27:35 -0500
-X-MC-Unique: 4ZRq53XHNPylUTFwLipGSQ-1
-X-Mimecast-MFC-AGG-ID: 4ZRq53XHNPylUTFwLipGSQ
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-211-_t1uTGu2Mz6N66mkOYC5jA-1; Wed,
+ 11 Dec 2024 12:27:38 -0500
+X-MC-Unique: _t1uTGu2Mz6N66mkOYC5jA-1
+X-Mimecast-MFC-AGG-ID: _t1uTGu2Mz6N66mkOYC5jA
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id A428619560B3; Wed, 11 Dec 2024 17:27:34 +0000 (UTC)
+ id 9E20619560B6; Wed, 11 Dec 2024 17:27:37 +0000 (UTC)
 Received: from toolbox.redhat.com (unknown [10.42.28.49])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 7A2931956048; Wed, 11 Dec 2024 17:27:32 +0000 (UTC)
+ id 4100C1956048; Wed, 11 Dec 2024 17:27:34 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Thomas Huth <huth@tuxfamily.org>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH v2 14/31] tests/functional: switch over to using
- self.socket_dir(...)
-Date: Wed, 11 Dec 2024 17:26:30 +0000
-Message-ID: <20241211172648.2893097-15-berrange@redhat.com>
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Thomas Huth <thuth@redhat.com>
+Subject: [PATCH v2 15/31] tests/functional: remove redundant 'rmtree' call
+Date: Wed, 11 Dec 2024 17:26:31 +0000
+Message-ID: <20241211172648.2893097-16-berrange@redhat.com>
 In-Reply-To: <20241211172648.2893097-1-berrange@redhat.com>
 References: <20241211172648.2893097-1-berrange@redhat.com>
 MIME-Version: 1.0
@@ -86,34 +86,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This removes direct creation of temporary dirs
+Everything in the scratch directory is automatically purged. Calling
+'rmtree' again breaks the ability to optionally preserve the scratch
+directory contents.
 
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- tests/functional/test_arm_aspeed.py | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ tests/functional/test_sh4eb_r2d.py | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/tests/functional/test_arm_aspeed.py b/tests/functional/test_arm_aspeed.py
-index 9561129c51..5bd31e43ee 100755
---- a/tests/functional/test_arm_aspeed.py
-+++ b/tests/functional/test_arm_aspeed.py
-@@ -9,7 +9,6 @@
- import os
- import time
- import subprocess
--import tempfile
+diff --git a/tests/functional/test_sh4eb_r2d.py b/tests/functional/test_sh4eb_r2d.py
+index b8dadabf3c..c8954c93eb 100755
+--- a/tests/functional/test_sh4eb_r2d.py
++++ b/tests/functional/test_sh4eb_r2d.py
+@@ -4,8 +4,6 @@
+ #
+ # SPDX-License-Identifier: GPL-2.0-or-later
  
+-import shutil
+-
  from qemu_test import LinuxKernelTest, Asset
  from qemu_test import exec_command_and_wait_for_pattern
-@@ -226,7 +225,7 @@ def test_arm_ast2600_evb_buildroot_tpm(self):
+ from qemu_test.utils import archive_extract
+@@ -26,7 +24,6 @@ def test_sh4eb_r2d(self):
+                                                     'initramfs.cpio.gz'),
+                            console_index=1, wait_for='Type exit when done')
+         exec_command_and_wait_for_pattern(self, 'exit', 'Restarting system')
+-        shutil.rmtree(self.scratch_file('sh4eb'))
  
-         tpmstate_dir = self.scratch_file('swtpmstate')
-         os.mkdir(tpmstate_dir)
--        socket_dir = tempfile.TemporaryDirectory(prefix="qemu_")
-+        socket_dir = self.socket_dir()
-         socket = os.path.join(socket_dir.name, 'swtpm-socket')
- 
-         # We must put the TPM state dir in /tmp/, not the build dir,
+ if __name__ == '__main__':
+     LinuxKernelTest.main()
 -- 
 2.46.0
 
