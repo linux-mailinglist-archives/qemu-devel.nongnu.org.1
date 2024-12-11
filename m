@@ -2,86 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1603A9ECF7A
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Dec 2024 16:15:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 552599ECF83
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Dec 2024 16:18:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tLOQM-0007kM-CA; Wed, 11 Dec 2024 10:14:50 -0500
+	id 1tLOTc-0000Ic-Am; Wed, 11 Dec 2024 10:18:12 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <rakicaleksandar1999@gmail.com>)
- id 1tLOQJ-0007kC-SY
- for qemu-devel@nongnu.org; Wed, 11 Dec 2024 10:14:48 -0500
-Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
+ id 1tLOTN-0000HT-Sl
+ for qemu-devel@nongnu.org; Wed, 11 Dec 2024 10:18:00 -0500
+Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <rakicaleksandar1999@gmail.com>)
- id 1tLOQI-0007FC-Bq
- for qemu-devel@nongnu.org; Wed, 11 Dec 2024 10:14:47 -0500
-Received: by mail-ed1-x532.google.com with SMTP id
- 4fb4d7f45d1cf-5d3ea2a5a9fso471047a12.2
- for <qemu-devel@nongnu.org>; Wed, 11 Dec 2024 07:14:45 -0800 (PST)
+ id 1tLOTM-0007jK-EK
+ for qemu-devel@nongnu.org; Wed, 11 Dec 2024 10:17:57 -0500
+Received: by mail-ed1-x531.google.com with SMTP id
+ 4fb4d7f45d1cf-5d0bf4ec53fso1183321a12.0
+ for <qemu-devel@nongnu.org>; Wed, 11 Dec 2024 07:17:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1733930084; x=1734534884; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1733930275; x=1734535075; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
  bh=DkFMQ5IUpPXHbUyHcc5o274RRCN41gtiFzl1FIq7oKA=;
- b=HwXzY+Etg67AWF1sdlhJN70vPx8hncJlV5GLbRuFkE4dThmJjot+IMWSYL03cLR5eQ
- /DutPbhAKp3aByN8jay4cuM364iMSgyIEbyFPnS6zoCSEt76iImMbjtuuIGC3ltzQ1bz
- c6Hr6lBlyft8lWU2YDOd36la5OgDkslH/5tZ4Pzem/6/GPz/XIUTB5DxxfQlxSOnSTHf
- 7luuJvz4S6hoIT1+TyMNymEBSkVh/5lTIrjBaDO+eMYL6klwTTRl/gcbK+jii3UGZ0KL
- +FPuLZssKkNjd/FZ4Hg+D0V3fn3uMity28yNvhpjIkhKBa/l93x1jlLeZpj+xQGEMbT+
- 37Qw==
+ b=JKBDbHZxc6V4ozrkq5A0VD2g84TB8U/Vz/f4byRCfv6N67DxOweV1S4BPKbJuBi2TW
+ GIIR9GS3eEFmQhfhUO8HRhz3SRrtOriH7k5LAdcSvpmTtDt8xTualnqr9keyzjYmFbB8
+ zC5fa+1Pu6g2OIN7p4ZGGqWeE4NF/2dwTLaKzzmR7RcCinchXWHvVy3zmHZy3TuTrogf
+ 3WEtrspp3c5uhDhcRRcd+NOgZf0C5VUq/jgSUhOmS7IMtqyB8/CRn50I5t6yqEtInv9d
+ XufqVDiR91CGWCbwg55SHpnKRdV1nD3ZuNhLI3qo8Ead/hAZpygu2lDsfRRWXI3xSJqE
+ mfoA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733930084; x=1734534884;
+ d=1e100.net; s=20230601; t=1733930275; x=1734535075;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
  bh=DkFMQ5IUpPXHbUyHcc5o274RRCN41gtiFzl1FIq7oKA=;
- b=oxx9oaUtrXbHcnEqS0D+HfLu2y8X5ntXvlpj4mAikLyolweoddEAqEOPnCbW+wqROg
- 0uw05u10mpLVRyEGKtR8mSP3dSVvPz4Z2meZYzswaPx62KmZNT/mZgkIwUHj6nKb/a0F
- 3EtKhNsCK7g7CnErJTnxh/ujoZCm0bJihAZPV1HS3rzA+VOk/guLieCzeBfi/DTm8kDp
- yaXXO5ZYhCWGUe3sqZOgIDkuaTYo7IXfTuCMCZwfxzM/t6CTyuVHQoqno06sVzr+m7Xa
- /GphUkg6JpkscNJf0UB+5+4R1H6taMWxmOotisMNrpv3SAkEvafmJtsZNUEuYBe7Icew
- FSNA==
+ b=MeREeYGcaSnGhvPraKJ8t7dG/sunHZWCcXh2CcZ0RwfvercmVFUMy/1LlocwlzmThA
+ CsnvqBMw1GGG4rqa6D0qVd11kqIIgfujaCfngNJta9mPETYWN0T45VwtS9AjVWbR8P2+
+ Vo2XNTD+dutUO85CTxsRSPL4kf0RayIDjSxPoyLzyyyJzP1TzuUp+etggKzHvL0/eKDJ
+ /x34PCIkq6I+LAUGfYwrG0ctQlcgQe1/ZZPyZAxPoBgaj4IoAYyugNCd+7NtwbcC2J8z
+ wIZvAuua+KtAJqiKq6hyzOrcFESKpDVdPW9VqucNS7Cw2nMOqbIMPpkAt10u84eBuRwL
+ Z1dQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUx2rDLGxDvuNOm2PnOq+GOns/KyvWtbpkux7qYOVxA2dBAjRw8+rDafocdcagKiRfHan7oeevpmbqO@nongnu.org
-X-Gm-Message-State: AOJu0Yydrv6TMUkr1vuBpObyfGmEHWeskGGB8KQiseu6M3VcZ17w4mko
- eRWCVdqmHs9/unqKl98ThI8OzuAgoJw/lJW7JTfO/56VpYF340BO
-X-Gm-Gg: ASbGncu41aoTfrrJjR4Of3MpZFBitVYijok5dxCf2poXoISm9hNhJOdjmtZJYv48SD1
- eCibpv8VAki4RsI/7ueOAA70hMecbZx3itXWAAAAOt8ex9LJK9D/cVCtWZ56VH+v7pcsu0TfriY
- 4JCRKNkRB72PqR3m2Q6PXKqAYvwdtB6t7wnRhjCzqM8C6XjPtBnMh0hZidmU2HMTR0VgWt4M8Gl
- QU1tdOEQj2qY5y4w8B9ZbuqwFQM5QhlmQdiCdsGgENLvrLvFJiA1D3ymiMi7aywLwXGaZbgewgQ
- fA==
-X-Google-Smtp-Source: AGHT+IHfquRmoLW6Z3IFjs+yK/D1C+BHlFzPjxPYwUQWdSZp+loI2FX5s026pGYTVF62aY10qcKsjw==
-X-Received: by 2002:a05:6402:3484:b0:5d0:e852:dca0 with SMTP id
- 4fb4d7f45d1cf-5d433192e50mr938294a12.11.1733930083365; 
- Wed, 11 Dec 2024 07:14:43 -0800 (PST)
+ AJvYcCX8HyVvVIlZWzXixyJQX5vJYsyWQYx3IPOilN0QJbvATEalvvpgwJh7jJEL/ivBBiy6ue3juZSARZDJ@nongnu.org
+X-Gm-Message-State: AOJu0YzISoSu5QqQj88URoMP5ABU0qJniPVk2zbfDq9loyLFqWt/D7bZ
+ JJQdZqUzUeNV5kO02oPdVOZcjkGxCU6ZAQZP8QtByNMSSsUaYSOc+Q786Ngv
+X-Gm-Gg: ASbGnctfvMIVvHJ4Qc2K4iDSTiRpcq+eLQQb6UoOF5uVxrDbfM/SVoeqUHpq6EPfXuu
+ kx8gg/uI2clSIIni+HaB2MDeRwhdr/d8+Piskijz0pI25/KaqeS1LH/XDxNzEnQvzrDEhvlRbt+
+ RRuSgKzp0601+FqFuX3MhDLdRHcbIVG560HKriwTyYPXhiNLN+1vbfBadTFaEUywYsuuTZj7xHA
+ QGcM+H9l+8ZkDPGPQPMnSxFdf4Ss2BmG6+U16ehBpoG6KT14JJMJx2fKTYPGZVZj3AFn4NJxWbx
+ BQ==
+X-Google-Smtp-Source: AGHT+IGbl2U4Wxmalx1k0d/JPvfkTyzMXU3GEGOOCnMc5G2btq6uJzDs3hSEVoy4Kp+pRd0fMyIKqg==
+X-Received: by 2002:a17:907:94c1:b0:a99:a6e0:fa0b with SMTP id
+ a640c23a62f3a-aa6b116812emr130779066b.5.1733930274615; 
+ Wed, 11 Dec 2024 07:17:54 -0800 (PST)
 Received: from L-H2N0CV05D839062.. ([79.175.87.218])
  by smtp.googlemail.com with ESMTPSA id
- 4fb4d7f45d1cf-5d3db53b828sm6676669a12.74.2024.12.11.07.14.41
+ a640c23a62f3a-aa6a3dcbcc2sm262527666b.117.2024.12.11.07.17.53
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 11 Dec 2024 07:14:42 -0800 (PST)
+ Wed, 11 Dec 2024 07:17:54 -0800 (PST)
 From: Aleksandar Rakic <rakicaleksandar1999@gmail.com>
 X-Google-Original-From: Aleksandar Rakic <aleksandar.rakic@htecgroup.com>
 To: rakicaleksandar1999@gmail.com
-Cc: aleksandar.rakic@htecgroup.com, alex.bennee@linaro.org,
- amarkovic@wavecomp.com, arikalo@gmail.com, aurelien@aurel32.net,
- berrange@redhat.com, cfu@mips.com, djordje.todorovic@htecgroup.com,
+Cc: aleksandar.rakic@htecgroup.com, alex.bennee@linaro.org, arikalo@gmail.com,
+ aurelien@aurel32.net, berrange@redhat.com, cfu@mips.com,
+ djordje.todorovic@htecgroup.com, fshahbazker@wavecomp.com,
  hreitz@redhat.com, jiaxun.yang@flygoat.com, kwolf@redhat.com,
  pbonzini@redhat.com, peter.maydell@linaro.org, philmd@linaro.org,
- pierrick.bouvier@linaro.org, qemu-devel@nongnu.org, yongbok.kim@mips.com
-Subject: Re: [PATCH v3 1/4] Add support for emulation of CRC32 instructions
-Date: Wed, 11 Dec 2024 16:14:26 +0100
-Message-Id: <20241211151426.87373-1-aleksandar.rakic@htecgroup.com>
+ pierrick.bouvier@linaro.org, qemu-devel@nongnu.org
+Subject: Re: [PATCH v3 2/4] Skip NaN mode check for soft-float
+Date: Wed, 11 Dec 2024 16:17:37 +0100
+Message-Id: <20241211151737.87765-1-aleksandar.rakic@htecgroup.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241112164130.2396737-3-aleksandar.rakic@htecgroup.com>
-References: <20241112164130.2396737-3-aleksandar.rakic@htecgroup.com>
+In-Reply-To: <20241112164130.2396737-4-aleksandar.rakic@htecgroup.com>
+References: <20241112164130.2396737-4-aleksandar.rakic@htecgroup.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::532;
- envelope-from=rakicaleksandar1999@gmail.com; helo=mail-ed1-x532.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::531;
+ envelope-from=rakicaleksandar1999@gmail.com; helo=mail-ed1-x531.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
