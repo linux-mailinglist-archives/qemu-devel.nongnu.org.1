@@ -2,72 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C237C9ECF84
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Dec 2024 16:19:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C5D069ED017
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Dec 2024 16:43:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tLOUc-0001S7-Dt; Wed, 11 Dec 2024 10:19:14 -0500
+	id 1tLOr3-0001Ug-ST; Wed, 11 Dec 2024 10:42:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tLOUa-0001Rm-2U; Wed, 11 Dec 2024 10:19:12 -0500
-Received: from mgamail.intel.com ([198.175.65.12])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tLOUX-0007nk-Af; Wed, 11 Dec 2024 10:19:11 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1733930349; x=1765466349;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=V+IF91RnFmWIgV9M5T6wVfRAj5Yvc+Z9uPR42MeFPXk=;
- b=DBmkTehCd03afrzDdD1/FLqGhqdphRnVe9kzA7a3Jd7fxDEs/5zfi1u/
- oAe3TjocFUfvVIv3DtkTBGayHhFqEBSCyZzGHzueKWEnp+P8jHLNTDoTS
- R6IZ9L1L/Z/KzGKSUEFExUTaU+kJ5+RFAQDtP893dFUNPwwTsR9CvGJE7
- Tm4ZzWR0Py2OgYuENJOG7lNHIxaF5Npf7bESVCcfm2ToZth55pLMucxAZ
- E8gvhvl/gLl+E73yvaERMSRNrFxLrs0jWGx5zf0N7AQN1D1S8s7hwflCu
- U1XMwvMuFB+B0APNxUyJblpF+xVvn3H54oDF6W8klNYa6Ay6IZzmTECO9 w==;
-X-CSE-ConnectionGUID: 1tYOVv3+TuuV56BrBi5fDA==
-X-CSE-MsgGUID: +Q9LJA4iRYSO6PwWQDLBjw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11278"; a="45697017"
-X-IronPort-AV: E=Sophos;i="6.12,214,1728975600"; d="scan'208";a="45697017"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Dec 2024 07:19:06 -0800
-X-CSE-ConnectionGUID: UI8nKOhJQxCmEkUEw1EoEQ==
-X-CSE-MsgGUID: XHg9YqcDQsGunqCFdOPBXw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="95671935"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by orviesa010.jf.intel.com with ESMTP; 11 Dec 2024 07:19:05 -0800
-Date: Wed, 11 Dec 2024 23:37:19 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org,
- Junjie Mao <junjie.mao@hotmail.com>
-Subject: Re: [PATCH 13/26] rust: qom: automatically use Drop trait to
- implement instance_finalize
-Message-ID: <Z1mxrzMyCqsGoqQa@intel.com>
-References: <20241209123717.99077-1-pbonzini@redhat.com>
- <20241209123717.99077-14-pbonzini@redhat.com>
- <Z1hpT6F9jVlj2+ba@intel.com>
- <CABgObfYa1HZoRs+RVSxax02jAcMb86P3VM-fJa0KHHTTiDTuYw@mail.gmail.com>
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1tLOqf-0001UU-DZ
+ for qemu-devel@nongnu.org; Wed, 11 Dec 2024 10:42:01 -0500
+Received: from mail-oi1-x231.google.com ([2607:f8b0:4864:20::231])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1tLOqd-000284-PW
+ for qemu-devel@nongnu.org; Wed, 11 Dec 2024 10:42:01 -0500
+Received: by mail-oi1-x231.google.com with SMTP id
+ 5614622812f47-3ea68fc1a7cso2948160b6e.0
+ for <qemu-devel@nongnu.org>; Wed, 11 Dec 2024 07:41:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1733931715; x=1734536515; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=/V+6WmErS68we8rDOWo1x2NG3NOtYVZMtfAEc8POf5w=;
+ b=UOpECAHRICF9EsNi4zMPWlbcUqx5Gg/Wqr3ILpLXrCgpuMtZQ2mEnMP+DJmV0JDT8e
+ ofBgyybYlUs9KA6OnX2Oo1NWWYlEmQJhdFvVEMGZfM0PrccO3FD7Lx9xpud1G5DhbTjA
+ 7I45KcTwz11ZiB83yMkUarY8ziiFM01LBQyRwIPRdRrqTmTOU/CIFnR0viHhCaC6wuKg
+ ZV+5dwsiW/lW1IQJ8e0T8e3jCxhf7wbRfwqQw32q5q4H5gYPI5nr14Zl4I/6bLzpEjWV
+ z9dcjYfzuZP3mQpVrVnjfAR7Vl73vPvKnN3jpSta19j2/GlfZg/mq9/Z+ycyLDOq5FaF
+ AupQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1733931715; x=1734536515;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=/V+6WmErS68we8rDOWo1x2NG3NOtYVZMtfAEc8POf5w=;
+ b=Lci+l2gpVpWXRGRHLocIPCSkV4Z/3vx3ivK0GmnhLwFiUDsww9taPZN9z7ggS1zjnC
+ Vy0oW/WHZO8J6t8NJJo66ABuY/FtLeatmZubiC3k5KnfGHGIZVwPYXkyb8pSDzHylqUJ
+ JQ0DgDNIk2c1Dly0GU/c4SbKfjVo46o/6QOz+CTbqSpffk86WWpyXBbTgSk9PtndSm+P
+ fabTDAyd8iHSnUWg5pwjUdU6B+CGBHddOChU2fqw2zQsS0pIqL2YF5z5a0MqEGxC2lZZ
+ aF2QoEfNm7YBE/UF9GShANb896nNdRfUJYY+3v1T1LySFK2ZLrYN4BcsKnTpBAbnOlzz
+ oaTg==
+X-Gm-Message-State: AOJu0YxYPw2VxuO/W0xvVbfFP769CfTnx6TdXFOPc+YZ7jnAiOc8P/HG
+ Vp/GxnKrHOImux9tJD8KF9kdSsF7XILtBlHBihLlpIuGXmb3Z10Imf5v+pCDKNCEX4pNZhoa8Kt
+ xnZz+LWf/
+X-Gm-Gg: ASbGncu0Mhr3fRwS3GPkVWu2EGIlMIrHS/lTNVQla73Xj9XeGI7CnFydpNEfZ5RkECo
+ MMwotnyEDIsvKFDE1kn4MY5Ix0rXor/m7YX6Jb9DTPg37PW7V4/97bgCCrL9u8d96+Q/nMX1DVC
+ dmKOkusDPVRIZ3z0MYf0CwddjkTkX9Jhr6ZpWr211GGHGdni3pteNYjYna/xLg84ifNdAU8vGoH
+ /Qy6GihUiXt/NojMO7/0V7xgBEaw6bnJnIn4dElc7g0435c3enQLAx+r4E/c06RhjBOSeA=
+X-Google-Smtp-Source: AGHT+IG8lutSFEcQU6zheKFx4KPvg+XxzQLRM/fzevOvROvUfMFPS2s/jOdMYUPhj6LCVApuwR0mXQ==
+X-Received: by 2002:a05:6808:3a08:b0:3ea:6149:d6ef with SMTP id
+ 5614622812f47-3eb85acf173mr2282374b6e.1.1733931714651; 
+ Wed, 11 Dec 2024 07:41:54 -0800 (PST)
+Received: from [172.20.4.119] ([187.217.227.247])
+ by smtp.gmail.com with ESMTPSA id
+ 5614622812f47-3eb8be9ab58sm163430b6e.38.2024.12.11.07.41.53
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 11 Dec 2024 07:41:54 -0800 (PST)
+Message-ID: <919e6491-3aeb-4437-9e54-2b132d7892bc@linaro.org>
+Date: Wed, 11 Dec 2024 09:41:51 -0600
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CABgObfYa1HZoRs+RVSxax02jAcMb86P3VM-fJa0KHHTTiDTuYw@mail.gmail.com>
-Received-SPF: pass client-ip=198.175.65.12; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -48
-X-Spam_score: -4.9
-X-Spam_bar: ----
-X-Spam_report: (-4.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.472,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/6] target/arm: Implement fine-grained-trap handling
+ for FEAT_XS
+To: qemu-devel@nongnu.org
+References: <20241211144440.2700268-1-peter.maydell@linaro.org>
+ <20241211144440.2700268-2-peter.maydell@linaro.org>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20241211144440.2700268-2-peter.maydell@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::231;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x231.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -84,58 +100,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Dec 11, 2024 at 01:42:32PM +0100, Paolo Bonzini wrote:
-> Date: Wed, 11 Dec 2024 13:42:32 +0100
-> From: Paolo Bonzini <pbonzini@redhat.com>
-> Subject: Re: [PATCH 13/26] rust: qom: automatically use Drop trait to
->  implement instance_finalize
+On 12/11/24 08:44, Peter Maydell wrote:
+> FEAT_XS introduces a set of new TLBI maintenance instructions with an
+> "nXS" qualifier.  These behave like the stardard ones except that
+> they do not wait for memory accesses with the XS attribute to
+> complete.  They have an interaction with the fine-grained-trap
+> handling: the FGT bits that a hypervisor can use to trap TLBI
+> maintenance instructions normally trap also the nXS variants, but the
+> hypervisor can elect to not trap the nXS variants by setting
+> HCRX_EL2.FGTnXS to 1.
 > 
-> On Tue, Dec 10, 2024 at 4:58 PM Zhao Liu <zhao1.liu@intel.com> wrote:
-> > Great idea. It nicely balances the differences between Rust and C QOM
-> > conventions.
+> Add support to our FGT mechanism for these TLBI bits. For each
+> TLBI-trapping FGT bit we define, for example:
+>   * FGT_TLBIVAE1 -- the same value we do at present for the
+>     normal variant of the insn
+>   * FGT_TLBIVAE1NXS -- for the nXS qualified insn; the value of
+>     this enum has an NXS bit ORed into it
 > 
-> Except it does not work. :(  Suppose you have
+> In access_check_cp_reg() we can then ignore the trap bit for an
+> access where ri->fgt has the NXS bit set and HCRX_EL2.FGTnXS is 1.
 > 
->        pub struct MySuperclass {
->            parent: DeviceState,
->            field: Box<MyData>,
->            ...
->        }
-> 
->        impl Drop for MySuperclass {
->            ...
->        }
-> 
->        pub struct MySubclass {
->            parent: MySuperclass,
->            ...
->        }
-> 
-> When instance_finalize is called for MySubclass, it will walk the
-> struct's list of fields and call the drop method for MySuperclass.
-> Then, object_deinit recurses to the superclass and calls the same drop
-> method again.  This will cause double-freeing of the Box<MyData>, or
-> more in general double-dropping.
+> Signed-off-by: Peter Maydell<peter.maydell@linaro.org>
+> ---
+>   target/arm/cpregs.h        | 72 ++++++++++++++++++++++----------------
+>   target/arm/cpu-features.h  |  5 +++
+>   target/arm/helper.c        |  5 ++-
+>   target/arm/tcg/op_helper.c | 11 +++++-
+>   4 files changed, 61 insertions(+), 32 deletions(-)
 
-Good catch! Yes, there is indeed such an issue... The above example
-could become a test case :-), which I supposed could trigger a double-
-dropping error when compiling.
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
-> What's happening here is that QOM wants to control the drop order of
-> MySuperclass and MySubclass's fields.  To do so, the parent field must
-> be marked ManuallyDrop<>, which is quite ugly.  Perhaps we can add a
-> wrapper type ParentField<> that is specific to QOM.  This hides the
-> implementation detail of *what* is special about the ParentField, and
-> it will also be easy to check for in the #[derive(Object)] macro.
-> Maybe in the future it will even make sense to have special functions
-> implemented on ParentField, I don't know...
-
-I also looked into the implementation of ManuallyDrop, and I agree with
-a new ParentField (or simply ObjectParent). This wrapper is simple
-enough but also useful for QOM. I will pay more attention to the
-recursed relationships in QOM in review as well...
-
-Thanks,
-Zhao
-
+r~
 
