@@ -2,78 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA61D9ED1C0
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Dec 2024 17:30:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A12D89ED180
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Dec 2024 17:27:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tLPT0-0002Ii-FL; Wed, 11 Dec 2024 11:21:38 -0500
+	id 1tLPSw-00021x-Ok; Wed, 11 Dec 2024 11:21:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tLPSj-0001KR-Sw
- for qemu-devel@nongnu.org; Wed, 11 Dec 2024 11:21:22 -0500
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ id 1tLPSl-0001Lz-Nj
+ for qemu-devel@nongnu.org; Wed, 11 Dec 2024 11:21:25 -0500
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tLPSh-0007tW-Vv
- for qemu-devel@nongnu.org; Wed, 11 Dec 2024 11:21:21 -0500
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-434a1fe2b43so69482675e9.2
- for <qemu-devel@nongnu.org>; Wed, 11 Dec 2024 08:21:19 -0800 (PST)
+ id 1tLPSj-0007tn-J9
+ for qemu-devel@nongnu.org; Wed, 11 Dec 2024 11:21:23 -0500
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-434f30ba149so25943045e9.0
+ for <qemu-devel@nongnu.org>; Wed, 11 Dec 2024 08:21:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1733934078; x=1734538878; darn=nongnu.org;
+ d=linaro.org; s=google; t=1733934079; x=1734538879; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=EDkpBBfEr+kYrGwFggLG/G/iyWn141UY3RpqFYSFXYw=;
- b=klx1dFC9ul4A6G3k2rWIk7sSgSDcxcYfQO689lQz8UYWpikXkNiIig9TnFMayJ3cFr
- 8kRv2ZvCaSexkWPApOC0dUPv5TXIKha9djnSiKlLVsO5buycbzfaTxkqKagPs6lFAQNP
- zH0uI12ir8py2j5XfCHiaRgq3xDUudI14enSNQXJyuFFcxAii4bG1lwEKNtBd0+HM40b
- 4Xz8D0xOJz1DtIxo5f7iDqAP9xBJAulMC0duE7tNHjgEtXMZaTGuyUsUm+lYHL9W7kKy
- OHw7nT8/NBwjPVjhmgr4m/AzfAKRq0v7bTP7kv/JXRSs/M/27zK1EYrBD0SwsceukfiZ
- iY+Q==
+ :reply-to; bh=5+3C2AdZ9fftwrmxk/ig7qIyG/mfuZxKLEQCuOb4ibU=;
+ b=FSY9KYZhsZrqA9lgHwinrmbX6KXWluu1gDZjh1FGbcmaMa1FhBbi7sQIQGATZpt8V0
+ AvsiyuN905+58RVrnDKTKBv5/Y38TplRGsElsv9pzi33f/JLBQH3bjrXeGQOrgbD0yOc
+ 0JxT+jrrIKskWBSS0h0LskCi+jv+G+8Y0DuvAnr4G2cvYWapzp3SbPvsVslRjO7NiEXG
+ HMT2yq/JPnH2zySYv88Zy72kt/T5BTHPUoX5c6kcq4P51yqOrtE5FsWc8WtB2bQ1/IIh
+ eT9MGJSbS8wLcNS+mJ40+E/6ivSygDSbvla1a3d1uOX9qcB1EyOVSz3InYcmvjm02ol0
+ b2Tg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733934078; x=1734538878;
+ d=1e100.net; s=20230601; t=1733934079; x=1734538879;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=EDkpBBfEr+kYrGwFggLG/G/iyWn141UY3RpqFYSFXYw=;
- b=wDr/9IqGlTQqozG8Dj6hutXU7VLZ2uOZT2FagFtlKV9ir4JPAyQ3OhlXkD60qpuQGb
- hCMsg9x/PPjJ3sEJrWzDnT79/rTtl75QfHHHmF82bYn5me5g7sJVRZL1igm9z/N6wtuD
- /gOjayCduFeIK7GWuKOn8Uk/kw6XqJ//D+4rVAhPSh8H44DZ8Aaa4SIawkWb5Ws94WYF
- BrI4pST2D6VkJ+GMUj8Rr1xtBREJVeUbnwiikva0X5jIirstmALvmY09lLZKXc54Jsa4
- NiSJ5dvrreMi+R1N+YbZOIRjvF+3u8r3UzCgMOw+sIMfdZDIs6znoB3SQN96vPJ2nu+Q
- jotg==
-X-Gm-Message-State: AOJu0YxA3hiQPoNu0zGL5BuqJJxX75c6cMMySUmaYLgFlge/CuQ0Y8wv
- XEcDO3AcnDgw1sl4VO+LW09Lf168sjfVETErZ++4nC/r8+tDVK4UARIbfL0rsRdRsgLe5GtBFSX
- h
-X-Gm-Gg: ASbGncumXP3uCAiLmmEXlniZ80kmrLU+4bCnZh2YytARrLF3z3Ao+Wyq41rnZbiWdru
- vAQijd3dFeANa9aY8QZSL5TVpVBqYMvn9CPgCE9tiETPq8UM52k6NbTcQYo+yKkqxL1yJiQztKI
- dRjccsl6d/Q7aIr+9sSxWDR6w1q/Ayur3JBT++DnVE4DB8WAybAj9Z3oPd6f1DsyM3jvVGbS06Q
- vRP700Sf/5OWwuoBhfchSV42hhzFDBJG/XckWQuYPfVInP4O+WOdzyop1PB
-X-Google-Smtp-Source: AGHT+IEBh7JDFK4baUzCNTc44sra/iizHxCa+p1nG9iADdYhnx55x/ba1xQzaTyvcF4fwWsLzjdSWA==
-X-Received: by 2002:a05:600c:19ca:b0:434:f819:251a with SMTP id
- 5b1f17b1804b1-4362282ab8emr3245905e9.9.1733934078582; 
- Wed, 11 Dec 2024 08:21:18 -0800 (PST)
+ bh=5+3C2AdZ9fftwrmxk/ig7qIyG/mfuZxKLEQCuOb4ibU=;
+ b=GJ31I7KEZ2DueWGCdSddU6P3TTph9RCTUIYs5UP4gl9dHJ3wty7b7t11b8SppZs0LS
+ yOTgBHSJIESb5yqW7z0g+pjcoz71qHM4zcu6g2kUAGnHeZ4ByydevcThQhQzpVJflFyI
+ kXgF3gBS7X6L7wNV+8GExxcbUx5zZtE1FJgNScoN4qpmUOqiY90zcNcIjiqOZ0NB9Bfx
+ I2FuFlCsR+joPqM3rREIDOZkcAoQoW8FEcA4h93TXLW8d1OVhh6sQgTgU1FjzG8x2CRn
+ 5JnyO9GGFZMpIxYBML6methmOh5Es7lfcb7ZVbmF0C1kWgKv+fuThgKyRvvZ2wdzFM6u
+ 0QQw==
+X-Gm-Message-State: AOJu0Yz26YYkJuZY/K1LayFoi4CiRq7z0fOOdMCygQoZPDdm7Ut9L8xy
+ zA3/aNiE8Efq0GPvtY0QcvezOZBk+cuh9Yyb1IP2dPeu666KnooF29vDQwxNAiPDWhL1Q7DADUw
+ Y
+X-Gm-Gg: ASbGncui/pAZnRFjTYHnciYvs6sO/Axy3EBS5Z61oInQMdMZAHFsdoQjUmkXWc1l4Od
+ E6V41E91Vpwwh9/BJ7XR5SZ8D4zVXFS0L+z9EMniti2AYXLJ3ywCyaev6VCt/uMRkkdqGq4rFfo
+ wh5PkOVUwxy6G5QhenutiFGgoWaaTXh/cOrvVxseyAPpOOccq4pD9hfr3QbnsER5q0dLi1ALodc
+ n4EZvh8VLArp3JJBzf9MeQ694cSpnIbocBuKjjuFBo4/rbiI4KKXE8wYgpm
+X-Google-Smtp-Source: AGHT+IFEkKKRg30SD0pVjKVuw93S1OtWePsFg+1Qz9W1gtupLPJX6/FD2k6buc3HrzWevg9Gt8KSfQ==
+X-Received: by 2002:a05:600c:4f86:b0:434:f871:1b97 with SMTP id
+ 5b1f17b1804b1-4361c42e258mr26904065e9.33.1733934079514; 
+ Wed, 11 Dec 2024 08:21:19 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-434f4dfdcdfsm121460595e9.39.2024.12.11.08.21.17
+ 5b1f17b1804b1-434f4dfdcdfsm121460595e9.39.2024.12.11.08.21.18
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 11 Dec 2024 08:21:17 -0800 (PST)
+ Wed, 11 Dec 2024 08:21:18 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 64/72] softfloat: Pad array size in pick_nan_muladd
-Date: Wed, 11 Dec 2024 16:19:56 +0000
-Message-Id: <20241211162004.2795499-65-peter.maydell@linaro.org>
+Subject: [PULL 65/72] softfloat: Move propagateFloatx80NaN to softfloat.c
+Date: Wed, 11 Dec 2024 16:19:57 +0000
+Message-Id: <20241211162004.2795499-66-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241211162004.2795499-1-peter.maydell@linaro.org>
 References: <20241211162004.2795499-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,32 +97,144 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Richard Henderson <richard.henderson@linaro.org>
 
-While all indices into val[] should be in [0-2], the mask
-applied is two bits.  To help static analysis see there is
-no possibility of read beyond the end of the array, pad the
-array to 4 entries, with the final being (implicitly) NULL.
+This function is part of the public interface and
+is not "specialized" to any target in any way.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-id: 20241203203949.483774-6-richard.henderson@linaro.org
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Message-id: 20241203203949.483774-7-richard.henderson@linaro.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- fpu/softfloat-parts.c.inc | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fpu/softfloat.c                | 52 ++++++++++++++++++++++++++++++++++
+ fpu/softfloat-specialize.c.inc | 52 ----------------------------------
+ 2 files changed, 52 insertions(+), 52 deletions(-)
 
-diff --git a/fpu/softfloat-parts.c.inc b/fpu/softfloat-parts.c.inc
-index 525db617411..5fcdbc87fd7 100644
---- a/fpu/softfloat-parts.c.inc
-+++ b/fpu/softfloat-parts.c.inc
-@@ -106,7 +106,7 @@ static FloatPartsN *partsN(pick_nan_muladd)(FloatPartsN *a, FloatPartsN *b,
-         }
-         ret = c;
-     } else {
--        FloatPartsN *val[3] = { a, b, c };
-+        FloatPartsN *val[R_3NAN_1ST_MASK + 1] = { a, b, c };
-         Float3NaNPropRule rule = s->float_3nan_prop_rule;
+diff --git a/fpu/softfloat.c b/fpu/softfloat.c
+index 027a8e576d3..6ba1cfd32a0 100644
+--- a/fpu/softfloat.c
++++ b/fpu/softfloat.c
+@@ -4920,6 +4920,58 @@ void normalizeFloatx80Subnormal(uint64_t aSig, int32_t *zExpPtr,
+     *zExpPtr = 1 - shiftCount;
+ }
  
-         assert(rule != float_3nan_prop_none);
++/*----------------------------------------------------------------------------
++| Takes two extended double-precision floating-point values `a' and `b', one
++| of which is a NaN, and returns the appropriate NaN result.  If either `a' or
++| `b' is a signaling NaN, the invalid exception is raised.
++*----------------------------------------------------------------------------*/
++
++floatx80 propagateFloatx80NaN(floatx80 a, floatx80 b, float_status *status)
++{
++    bool aIsLargerSignificand;
++    FloatClass a_cls, b_cls;
++
++    /* This is not complete, but is good enough for pickNaN.  */
++    a_cls = (!floatx80_is_any_nan(a)
++             ? float_class_normal
++             : floatx80_is_signaling_nan(a, status)
++             ? float_class_snan
++             : float_class_qnan);
++    b_cls = (!floatx80_is_any_nan(b)
++             ? float_class_normal
++             : floatx80_is_signaling_nan(b, status)
++             ? float_class_snan
++             : float_class_qnan);
++
++    if (is_snan(a_cls) || is_snan(b_cls)) {
++        float_raise(float_flag_invalid, status);
++    }
++
++    if (status->default_nan_mode) {
++        return floatx80_default_nan(status);
++    }
++
++    if (a.low < b.low) {
++        aIsLargerSignificand = 0;
++    } else if (b.low < a.low) {
++        aIsLargerSignificand = 1;
++    } else {
++        aIsLargerSignificand = (a.high < b.high) ? 1 : 0;
++    }
++
++    if (pickNaN(a_cls, b_cls, aIsLargerSignificand, status)) {
++        if (is_snan(b_cls)) {
++            return floatx80_silence_nan(b, status);
++        }
++        return b;
++    } else {
++        if (is_snan(a_cls)) {
++            return floatx80_silence_nan(a, status);
++        }
++        return a;
++    }
++}
++
+ /*----------------------------------------------------------------------------
+ | Takes an abstract floating-point value having sign `zSign', exponent `zExp',
+ | and extended significand formed by the concatenation of `zSig0' and `zSig1',
+diff --git a/fpu/softfloat-specialize.c.inc b/fpu/softfloat-specialize.c.inc
+index f26458eaa31..f7a320f6ff9 100644
+--- a/fpu/softfloat-specialize.c.inc
++++ b/fpu/softfloat-specialize.c.inc
+@@ -551,58 +551,6 @@ floatx80 floatx80_silence_nan(floatx80 a, float_status *status)
+     return a;
+ }
+ 
+-/*----------------------------------------------------------------------------
+-| Takes two extended double-precision floating-point values `a' and `b', one
+-| of which is a NaN, and returns the appropriate NaN result.  If either `a' or
+-| `b' is a signaling NaN, the invalid exception is raised.
+-*----------------------------------------------------------------------------*/
+-
+-floatx80 propagateFloatx80NaN(floatx80 a, floatx80 b, float_status *status)
+-{
+-    bool aIsLargerSignificand;
+-    FloatClass a_cls, b_cls;
+-
+-    /* This is not complete, but is good enough for pickNaN.  */
+-    a_cls = (!floatx80_is_any_nan(a)
+-             ? float_class_normal
+-             : floatx80_is_signaling_nan(a, status)
+-             ? float_class_snan
+-             : float_class_qnan);
+-    b_cls = (!floatx80_is_any_nan(b)
+-             ? float_class_normal
+-             : floatx80_is_signaling_nan(b, status)
+-             ? float_class_snan
+-             : float_class_qnan);
+-
+-    if (is_snan(a_cls) || is_snan(b_cls)) {
+-        float_raise(float_flag_invalid, status);
+-    }
+-
+-    if (status->default_nan_mode) {
+-        return floatx80_default_nan(status);
+-    }
+-
+-    if (a.low < b.low) {
+-        aIsLargerSignificand = 0;
+-    } else if (b.low < a.low) {
+-        aIsLargerSignificand = 1;
+-    } else {
+-        aIsLargerSignificand = (a.high < b.high) ? 1 : 0;
+-    }
+-
+-    if (pickNaN(a_cls, b_cls, aIsLargerSignificand, status)) {
+-        if (is_snan(b_cls)) {
+-            return floatx80_silence_nan(b, status);
+-        }
+-        return b;
+-    } else {
+-        if (is_snan(a_cls)) {
+-            return floatx80_silence_nan(a, status);
+-        }
+-        return a;
+-    }
+-}
+-
+ /*----------------------------------------------------------------------------
+ | Returns 1 if the quadruple-precision floating-point value `a' is a quiet
+ | NaN; otherwise returns 0.
 -- 
 2.34.1
 
