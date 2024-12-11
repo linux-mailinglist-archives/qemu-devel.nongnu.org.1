@@ -2,154 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCF7D9ECFB8
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Dec 2024 16:29:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C237C9ECF84
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Dec 2024 16:19:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tLOd9-0004r0-JN; Wed, 11 Dec 2024 10:28:03 -0500
+	id 1tLOUc-0001S7-Dt; Wed, 11 Dec 2024 10:19:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dfaggioli@suse.com>)
- id 1tLOd7-0004qi-8B
- for qemu-devel@nongnu.org; Wed, 11 Dec 2024 10:28:01 -0500
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dfaggioli@suse.com>)
- id 1tLOd5-0000DY-8x
- for qemu-devel@nongnu.org; Wed, 11 Dec 2024 10:28:01 -0500
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-435004228c0so30268105e9.0
- for <qemu-devel@nongnu.org>; Wed, 11 Dec 2024 07:27:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=suse.com; s=google; t=1733930876; x=1734535676; darn=nongnu.org;
- h=mime-version:user-agent:organization:autocrypt:date:cc:to:from
- :subject:message-id:from:to:cc:subject:date:message-id:reply-to;
- bh=/EM9BcU/0ML5fsUhSgqDL22asp9FS9Z3TFMw7SunoOE=;
- b=HntPUjW7AtKkfphMCSPJb7bSCwWPzkOsebnDrSAlzF1p8MZXr9I81VQ3E1fQXTectb
- 5Zvq3OsNV6bLq6n26aJpu75KqUXI66F6KOfle+Jezvm8Mt4P94H1eynZjSCW7BsbzLQd
- nwm0VQ8DqSZ2NUcAdPoqTm6VFCcDx12Q65gV/xG6XOWEfyI3O8+pn1eMr+/a1xqu547m
- 3QLdmJoXyOaHwyGMMxUkehOcNKl0f8dmHi5tDgEL97OmV0GPGqOoa+AIINKoqq9BOdNv
- aXGmO+NXRygPntQ0V/axIlpu2RS2nF5niJWr7L76uQ6QqwLzPBZVk6Lf8gazlP6t8HvS
- 2hSQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733930876; x=1734535676;
- h=mime-version:user-agent:organization:autocrypt:date:cc:to:from
- :subject:message-id:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=/EM9BcU/0ML5fsUhSgqDL22asp9FS9Z3TFMw7SunoOE=;
- b=fS2cin1nZhFNAndS9vGviCJZRdGnGR/MfL0Ex6tr5RoISlQBbZfpRmtuM3Z3aTX7mj
- 2iziMcE5OWDpP7IptRsoHB9EQjSc/DOg1+fdU0NB99ajT+Lw+CIEz4P0fA2NPCFsPDH/
- +vsFwebZ/+GfsKP/INp30HqXigLYKE9+9X9dNftPdRiMSERHHdo7atUO0QieYOIZuLep
- V2eazSvI45PYFtTkrkIqPcj+HpQVmu9fm0+u1Ev9KBRN+qhLHhr+VDddC6HxvCXSR1X6
- EkY/Ri8qQgnL67Bft6gpdv4UqX+SOH5lGxJYW55MMgn43jpx08Uv6wQZ+tyjWb1XWIeF
- xWiA==
-X-Gm-Message-State: AOJu0YyIoboCQhHKnJMxuGwRnwWGkXBM3rtNBqJe6E/L1lL7TL9TOe/3
- veMA3BQRv328LNXtiRWa21k7UH9wrEvqmKR/N+POnfSmcPwaT1sf0Lb16Jr2dgnYG2i4uruO47U
- oiXY=
-X-Gm-Gg: ASbGncs+M1DmTJ1kKI+upKoriuugbPNbahZi2dd3FZlqyo2L/vNvUeQNE3CuEryKA54
- Lzg1SBdeg5T9h6dhvbk+4xXBzHtw04b8hr/OD03XMJMIY4SQz4tDeuAkiGrbmvcbiSKbGywzF7d
- x/G4AdJ9I/miG9AI9Mg01Cij91Y0jDwO+eiSEqnV8G4YwHDDhsEP8fn8XnjkAZTjvk1QPCbgLCJ
- 3jKcqJ0j4+3G2NYYH0bUeGNOdkoxd4QbATqQkhzwf69qjDPTcSPlcyV6klRugOg6cdIxaOm8U3i
- tOyhnFu3TvX30dqv
-X-Google-Smtp-Source: AGHT+IF+CiA6S9KoNl0n/M0rWD+fIMDVnEyX+7teMUIMbWmAKUA8t2g4Qr3qZWBUoh6CP1znUWItKA==
-X-Received: by 2002:a05:600c:3109:b0:434:a04d:1670 with SMTP id
- 5b1f17b1804b1-4361c2b7e29mr31937095e9.0.1733930876464; 
- Wed, 11 Dec 2024 07:27:56 -0800 (PST)
-Received: from Wayreth.fritz.box (87.78.186.89.cust.ip.kpnqwest.it.
- [89.186.78.87]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3878251dee1sm1496538f8f.102.2024.12.11.07.27.55
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 11 Dec 2024 07:27:56 -0800 (PST)
-Message-ID: <23260a79710e2c302028afa401a969ca9cc389f9.camel@suse.com>
-Subject: No display in Xen PV guests: "This VM has no graphic display device."
-From: Dario Faggioli <dfaggioli@suse.com>
-To: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-Cc: Akihiko Odaki <akihiko.odaki@daynix.com>, Philippe
- =?ISO-8859-1?Q?Mathieu-Daud=E9?=	 <philmd@linaro.org>, Paul Durrant
- <paul@xen.org>, Anthony PERARD	 <anthony@xenproject.org>, "Edgar E .
- Iglesias" <edgar.iglesias@gmail.com>,  Charles Arnold <CARNOLD@suse.com>
-Date: Wed, 11 Dec 2024 16:27:54 +0100
-Autocrypt: addr=dfaggioli@suse.com; prefer-encrypt=mutual;
- keydata=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
- fkAJ0OEQQ==
-Organization: SUSE Software Solutions Italy S.r.l.
-Content-Type: multipart/signed; micalg="pgp-sha256";
- protocol="application/pgp-signature"; boundary="=-X3Bzke3B260cxcLEJz3c"
-User-Agent: Evolution 3.54.2 (by Flathub.org) 
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1tLOUa-0001Rm-2U; Wed, 11 Dec 2024 10:19:12 -0500
+Received: from mgamail.intel.com ([198.175.65.12])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1tLOUX-0007nk-Af; Wed, 11 Dec 2024 10:19:11 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1733930349; x=1765466349;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=V+IF91RnFmWIgV9M5T6wVfRAj5Yvc+Z9uPR42MeFPXk=;
+ b=DBmkTehCd03afrzDdD1/FLqGhqdphRnVe9kzA7a3Jd7fxDEs/5zfi1u/
+ oAe3TjocFUfvVIv3DtkTBGayHhFqEBSCyZzGHzueKWEnp+P8jHLNTDoTS
+ R6IZ9L1L/Z/KzGKSUEFExUTaU+kJ5+RFAQDtP893dFUNPwwTsR9CvGJE7
+ Tm4ZzWR0Py2OgYuENJOG7lNHIxaF5Npf7bESVCcfm2ToZth55pLMucxAZ
+ E8gvhvl/gLl+E73yvaERMSRNrFxLrs0jWGx5zf0N7AQN1D1S8s7hwflCu
+ U1XMwvMuFB+B0APNxUyJblpF+xVvn3H54oDF6W8klNYa6Ay6IZzmTECO9 w==;
+X-CSE-ConnectionGUID: 1tYOVv3+TuuV56BrBi5fDA==
+X-CSE-MsgGUID: +Q9LJA4iRYSO6PwWQDLBjw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11278"; a="45697017"
+X-IronPort-AV: E=Sophos;i="6.12,214,1728975600"; d="scan'208";a="45697017"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+ by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Dec 2024 07:19:06 -0800
+X-CSE-ConnectionGUID: UI8nKOhJQxCmEkUEw1EoEQ==
+X-CSE-MsgGUID: XHg9YqcDQsGunqCFdOPBXw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="95671935"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by orviesa010.jf.intel.com with ESMTP; 11 Dec 2024 07:19:05 -0800
+Date: Wed, 11 Dec 2024 23:37:19 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org,
+ Junjie Mao <junjie.mao@hotmail.com>
+Subject: Re: [PATCH 13/26] rust: qom: automatically use Drop trait to
+ implement instance_finalize
+Message-ID: <Z1mxrzMyCqsGoqQa@intel.com>
+References: <20241209123717.99077-1-pbonzini@redhat.com>
+ <20241209123717.99077-14-pbonzini@redhat.com>
+ <Z1hpT6F9jVlj2+ba@intel.com>
+ <CABgObfYa1HZoRs+RVSxax02jAcMb86P3VM-fJa0KHHTTiDTuYw@mail.gmail.com>
 MIME-Version: 1.0
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=dfaggioli@suse.com; helo=mail-wm1-x32a.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CABgObfYa1HZoRs+RVSxax02jAcMb86P3VM-fJa0KHHTTiDTuYw@mail.gmail.com>
+Received-SPF: pass client-ip=198.175.65.12; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -48
+X-Spam_score: -4.9
+X-Spam_bar: ----
+X-Spam_report: (-4.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.472,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -166,73 +84,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Wed, Dec 11, 2024 at 01:42:32PM +0100, Paolo Bonzini wrote:
+> Date: Wed, 11 Dec 2024 13:42:32 +0100
+> From: Paolo Bonzini <pbonzini@redhat.com>
+> Subject: Re: [PATCH 13/26] rust: qom: automatically use Drop trait to
+>  implement instance_finalize
+> 
+> On Tue, Dec 10, 2024 at 4:58 PM Zhao Liu <zhao1.liu@intel.com> wrote:
+> > Great idea. It nicely balances the differences between Rust and C QOM
+> > conventions.
+> 
+> Except it does not work. :(  Suppose you have
+> 
+>        pub struct MySuperclass {
+>            parent: DeviceState,
+>            field: Box<MyData>,
+>            ...
+>        }
+> 
+>        impl Drop for MySuperclass {
+>            ...
+>        }
+> 
+>        pub struct MySubclass {
+>            parent: MySuperclass,
+>            ...
+>        }
+> 
+> When instance_finalize is called for MySubclass, it will walk the
+> struct's list of fields and call the drop method for MySuperclass.
+> Then, object_deinit recurses to the superclass and calls the same drop
+> method again.  This will cause double-freeing of the Box<MyData>, or
+> more in general double-dropping.
 
---=-X3Bzke3B260cxcLEJz3c
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Good catch! Yes, there is indeed such an issue... The above example
+could become a test case :-), which I supposed could trigger a double-
+dropping error when compiling.
 
-Hello everyone,
+> What's happening here is that QOM wants to control the drop order of
+> MySuperclass and MySubclass's fields.  To do so, the parent field must
+> be marked ManuallyDrop<>, which is quite ugly.  Perhaps we can add a
+> wrapper type ParentField<> that is specific to QOM.  This hides the
+> implementation detail of *what* is special about the ParentField, and
+> it will also be easy to check for in the #[derive(Object)] macro.
+> Maybe in the future it will even make sense to have special functions
+> implemented on ParentField, I don't know...
 
-We've found an issue that manifests in Xen PV guests. We have
-encountered it when testing our (SUSE and openSUSE) packaged version of
-9.1.x, but I've been able to reproduce it even using the upstream
-master branch.
+I also looked into the implementation of ManuallyDrop, and I agree with
+a new ParentField (or simply ObjectParent). This wrapper is simple
+enough but also useful for QOM. I will pay more attention to the
+recursed relationships in QOM in review as well...
 
-QEMU 8.2.8 works fine, so something happened during 9.0 or 9.1
-development (and not backported to stable).
+Thanks,
+Zhao
 
-Basically, it's enough to try to create a Xen PV guest with virt-
-manager and the only output of the virt-manager window will be "This VM
-has no graphic display device" (while, e.g., `xl console <domid>` works
-fine).
-
-There is some additional info in this bug, but not all of that makes
-sense (we were in a hurry for a fix, and this is not my area :-/):
-
-https://bugzilla.suse.com/show_bug.cgi?id=3D1232712
-
-However, what I eventually figured out though (through a couple of
-bisections), is that if I revert _both_:
-
-- 6ece1df966 hw/xen: Register framebuffer backend via xen_backend_init()
-- e99441a379 ui/curses: Do not use console_select().
-
-Things work again.
-
-As I said, this is not my field, so there's not much more that I can
-say for now. Nevertheless, I'm happy to try to help as much as I can
-(e.g., testing theories, trying patches, etc)... So let me know what I
-can do. :-)
-
-Regards,
---=20
-Dario Faggioli, Ph.D
-http://about.me/dario.faggioli
-Virtualization Software Engineer
-SUSE Labs, SUSE https://www.suse.com/
--------------------------------------------------------------------
-<<This happens because _I_ choose it to happen!>> (Raistlin Majere)
-
---=-X3Bzke3B260cxcLEJz3c
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEES5ssOj3Vhr0WPnOLFkJ4iaW4c+4FAmdZr3oACgkQFkJ4iaW4
-c+6GKw/+LzDm/5h92Dv96ZVSSJlGKAtw3YOiIvVAKIszWgdOZZSECnrHyvhI93JW
-XSTGou+nHWlSuAocm81ir1PKzsco/0qEl+oQa9o0jjHtkGd5yHjA++311v9v+WvI
-zC4VgTaUn5F3DJEqgT5TnOHK59JJtf5TeNNlEK2zYVcFWzxxflRHNcAuj5f5F72N
-+CRHZITaOuT0M0CxK/7DZrbumfHgRQxdAfPFnI5R/d1NIF7Y6Jsc0CRBpXcZCRMV
-Z9FQ1M8TaNolhY4AYqjSLBKRPNJvxY4w4z9e4ElJaPbzwMIblVhkX0If3KITuE+D
-KB7KxbVxnXtMYCGpTM/cLzz11CBJBeJRNuZEnihH7zq1sN6Ag+gZIsjpoEOMGjJb
-qcJb/MM6JpzJjKPwpbyZwpz8c67kzU60lcOJUsJy3AwzX4VRl9xZcnH8QwFXIS3Y
-Xaa0+qucNOJBmUbyq4rj9NCEhjGy5AKu1HZHcfle9pbFxeaWqRBNQyJsMzmEOSN1
-6/zTkBePgw+IF07s+LvSH4MY5sZd5ff/1EXXZZpNIT5A92zY1+aOMRl0VwIHZfJ9
-Tuan3zzMyx5hq280GStU8urLvEm0eTdeJb0+eK2oQ/dMpENwmAy94GPqknUFeOxi
-wPLMuKWYmdY7HnsNQwZoQxbjEhmt8V2aa9l/XigjdsO2gzu/dlA=
-=FgP4
------END PGP SIGNATURE-----
-
---=-X3Bzke3B260cxcLEJz3c--
 
