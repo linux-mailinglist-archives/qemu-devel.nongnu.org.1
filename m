@@ -2,78 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A3EE9ED166
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Dec 2024 17:26:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E0539ED182
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Dec 2024 17:27:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tLPS3-0000Ho-UI; Wed, 11 Dec 2024 11:20:39 -0500
+	id 1tLPS5-0000Im-Ng; Wed, 11 Dec 2024 11:20:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tLPRz-0000G1-4h
+ id 1tLPRz-0000G2-9c
  for qemu-devel@nongnu.org; Wed, 11 Dec 2024 11:20:35 -0500
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tLPRw-0007i1-WF
- for qemu-devel@nongnu.org; Wed, 11 Dec 2024 11:20:34 -0500
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-434e69857d9so5481455e9.0
- for <qemu-devel@nongnu.org>; Wed, 11 Dec 2024 08:20:32 -0800 (PST)
+ id 1tLPRx-0007iB-QT
+ for qemu-devel@nongnu.org; Wed, 11 Dec 2024 11:20:35 -0500
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-4361e89b6daso5559135e9.3
+ for <qemu-devel@nongnu.org>; Wed, 11 Dec 2024 08:20:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1733934031; x=1734538831; darn=nongnu.org;
+ d=linaro.org; s=google; t=1733934032; x=1734538832; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=m+1slj9CEPjQ+UJLwRK3O4Qe3zcWWfdTbryXtY+6Fyc=;
- b=COzxIHnm7h4+q/IrGJ6yPYwaCNe+6WyWbdxM5yjiVe0Wgmj4+XCzV5ryNQ8sMb8Yh/
- cCnpC6q3yLTaMKhWdv8PN7Ik7MvIG4kZTxOYSGU71saTLsyaIOTTMYYfMTDCLEvtdOrQ
- TBEoLnopvqeCGkqbpG0By6dj4BT8TL1sQHk3ZjIkCQiv2KC4yeUDbVfGvl3GMTel3i2a
- XopV2TwbsQqMTzeuOCOOU7vshBLB9Tlb5hVbpb+W0XaCCHgds/ADvgE7shcK1wMNkZfO
- 4ZvUi24OtUx/4MSOmC2KvxDkfjYxNKj+I4JUt2On1ZOkn0CuDO64E/LJt5r0Y5fZvo4u
- pazg==
+ :reply-to; bh=VgRz67Z5K6+YnxII3Thd0LIi5lCTv/FCJxlYwTXEoK0=;
+ b=S5AL4420Wy1Guhf34quhFhNx9MGkvlfLMIbQt9RPyHfm3vIaS1tlH0Ozi+PnCWXrmQ
+ ztLcdNOha1wTbkjds1AH90tB4ekWEpqkfGnHZ07eZ9SWwcefIMH/xgfX/B9P6keINreh
+ MfJRSix3ZXutFGxbE+cKdn3xOVK2wKd+cJA9TD2xVvU+g/mXlERh6zLCpKOH48Z3h9/4
+ IrGN0LT+dNUPEdMm1GVlxdJ5V30eicDi23nXBhTG4MBvqfisJRxayvPHPWoYaua4TIXd
+ LzJmfrVIK9yM25bIuIbyedxi/y4lJkigAV9l6zLwq5s9DsoX0w6fr3lD0agFlgB4TSTB
+ 2Atw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733934031; x=1734538831;
+ d=1e100.net; s=20230601; t=1733934032; x=1734538832;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=m+1slj9CEPjQ+UJLwRK3O4Qe3zcWWfdTbryXtY+6Fyc=;
- b=ef3MWhdumTU9TMkF16BSzUWpudR5QRuLhMzIGhjdlHRxDGW1qoSiRhOuwhv+xH4PIN
- tfJKdf4q0t1y8M2UiqlZNWLGcK/W1v7Sx/ylgp/J7ezX6QjvjhuEcQXqbCEQDK0XO5Tn
- RPnw1qMABIJYV3L5MFBncRZeDeE6RbaF4AS8xaE57oNFWhbokk09gfbBVVoTtnSif7pM
- Ggp/Ta7lTPeWwFm0StVhv438/27Vem3xz64YaW0SQ1AOs0B/sojDZGz2wIgaMPG5WkZK
- cbClpXmIXcxKYFEoJ04b8j30uUOg35LxXiSP9k3v5zgZh6vZ8fFtjTJuEn79vpjj9dTf
- Fh7Q==
-X-Gm-Message-State: AOJu0YxkQITj/YFGe8VTxmotPIvL2kWJbMITXxYWfai6qxJJJPNkmRuY
- 2N3aDGcFKWnDCLTh0SK9xqIoCu6PMm9w+zAlVDmu49NpBKvcSgUZQQR6OJwmWvTd0Y4S0tTZhIW
- 6
-X-Gm-Gg: ASbGnctaMp1YUn3cUtf+1N3XDzckJV5wQ2h4J74kxyuRsUMPh6ooPf5RJsPgUQiI9Rt
- fiupkn9ORE9vji933PZNveL50VUspQXB/l7hs7ZtcZe7UNZU98piyBxkBPClADlm/w0NxpAkhJN
- FyVz/8doNhAy/ZfAcw9Mo9BpFDfH3QFGCHoQ9sB8iVxVXp29kJ/ZewrhExZxJSV5k1w4LD1amke
- KIiBBwm7tSSd+FYLZ9oOtKXE5J0s+DTu9E197ifCGhesk6gGPPoirwHzNVO
-X-Google-Smtp-Source: AGHT+IGENe7Zxc0K86mCeS8MQd2Fsym9oD1wmlF6RiUlemyueyON5HG3R4oA9Lfg6m1mXdpjwXUTbw==
-X-Received: by 2002:a05:600c:3505:b0:434:e69c:d338 with SMTP id
- 5b1f17b1804b1-4361c5d3135mr24489545e9.5.1733934031281; 
- Wed, 11 Dec 2024 08:20:31 -0800 (PST)
+ bh=VgRz67Z5K6+YnxII3Thd0LIi5lCTv/FCJxlYwTXEoK0=;
+ b=RO25eGhCtq8c9naMRzoCyWZQ5TMdjV+H5HiuzpLEaT3TA7eNCJhEAfwRIejXwqpdVf
+ rhfe083A0qaI983ZO/W5DZ8LmWt+hi+iRHt77QkhjD2Yd3CZsLHgJC42mMXiCVPDpS3R
+ +9u3US2eHP9DDd7X0Yw0CFdA89PWzgs+kdjYSxzn6bpq8SJAZdy5B5C1Z3z/uWiRbuIf
+ EPjiqOX7COigxpMzOC15YvV0+cTZam+IH9xCzGP/30eck03hTE4rnKevy4TGjP9LOKVQ
+ 63Y93KOWzwCw9mRYYHrPSiDbDbTqqKHLTV+vQY91c182PSwfhxZzthT7aalkgQKDYBSt
+ V58A==
+X-Gm-Message-State: AOJu0Yxx0O0rrzIkWjhDW3MulpO/CJlggex62k+yeX4zI0s3fq+YoTGS
+ eioglPFzihvAsRA1+1UgTzjVJrfLW41JwzLecYtFOw9fAax93XHA2iIFCO6wvqawqkmj8kUp1V3
+ K
+X-Gm-Gg: ASbGncvZ765iLDLIMM9RIRt++jgkGhHV0y2YHlT6zs1jwyFFcBZicihfrsQ5WFCrFCf
+ NcxRaf1zqWRHxXgpCIsZs0gggpb9l2P5SFkP0rUAmqp3VDuCcLcMYXXnHwHbVIn85UfdEyOFMj7
+ UNX2VAAZ7c/DjQVaXZXUbyzuVLGcDOOL6wxXvnB3GuSqU8xu82PsuU9hmD8670rOLZ5/2XjVXk4
+ q9lzSjgsjDT9ep5Pq/0tdxW6m86nCs/Xer+QkfENmWYZdh2mw43XHWIZ0XJ
+X-Google-Smtp-Source: AGHT+IFzTBAHrP+RL+Z+z6uM11RfGmE2xoDOAyrbZBgTTim4wqommtjom1wYb/mQtS9keFTd+/JgoQ==
+X-Received: by 2002:a05:600c:3552:b0:434:f131:1e6d with SMTP id
+ 5b1f17b1804b1-4361c360e94mr33896165e9.10.1733934032172; 
+ Wed, 11 Dec 2024 08:20:32 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-434f4dfdcdfsm121460595e9.39.2024.12.11.08.20.30
+ 5b1f17b1804b1-434f4dfdcdfsm121460595e9.39.2024.12.11.08.20.31
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 11 Dec 2024 08:20:30 -0800 (PST)
+ Wed, 11 Dec 2024 08:20:31 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 20/72] softfloat: Allow runtime choice of NaN propagation for
- muladd
-Date: Wed, 11 Dec 2024 16:19:12 +0000
-Message-Id: <20241211162004.2795499-21-peter.maydell@linaro.org>
+Subject: [PULL 21/72] tests/fp: Explicitly set 3-NaN propagation rule
+Date: Wed, 11 Dec 2024 16:19:13 +0000
+Message-Id: <20241211162004.2795499-22-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241211162004.2795499-1-peter.maydell@linaro.org>
 References: <20241211162004.2795499-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x336.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x329.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,345 +95,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-IEEE 758 does not define a fixed rule for which NaN to pick as the
-result if both operands of a 3-operand fused multiply-add operation
-are NaNs.  As a result different architectures have ended up with
-different rules for propagating NaNs.
-
-QEMU currently hardcodes the NaN propagation logic into the binary
-because pickNaNMulAdd() has an ifdef ladder for different targets.
-We want to make the propagation rule instead be selectable at
-runtime, because:
- * this will let us have multiple targets in one QEMU binary
- * the Arm FEAT_AFP architectural feature includes letting
-   the guest select a NaN propagation rule at runtime
-
-In this commit we add an enum for the propagation rule, the field in
-float_status, and the corresponding getters and setters.  We change
-pickNaNMulAdd to honour this, but because all targets still leave
-this field at its default 0 value, the fallback logic will pick the
-rule type with the old ifdef ladder.
-
-It's valid not to set a propagation rule if default_nan_mode is
-enabled, because in that case there's no need to pick a NaN; all the
-callers of pickNaNMulAdd() catch this case and skip calling it.
+Explicitly set a rule in the softfloat tests for propagating NaNs in
+the muladd case.  In meson.build we put -DTARGET_ARM in fpcflags, and
+so we should select here the Arm rule of float_3nan_prop_s_cab.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20241202131347.498124-16-peter.maydell@linaro.org
+Message-id: 20241202131347.498124-17-peter.maydell@linaro.org
 ---
- include/fpu/softfloat-helpers.h |  11 +++
- include/fpu/softfloat-types.h   |  55 +++++++++++
- fpu/softfloat-specialize.c.inc  | 167 ++++++++------------------------
- 3 files changed, 107 insertions(+), 126 deletions(-)
+ tests/fp/fp-bench.c | 1 +
+ tests/fp/fp-test.c  | 1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/include/fpu/softfloat-helpers.h b/include/fpu/softfloat-helpers.h
-index 0bf44dc6087..cf06b4e16bf 100644
---- a/include/fpu/softfloat-helpers.h
-+++ b/include/fpu/softfloat-helpers.h
-@@ -81,6 +81,12 @@ static inline void set_float_2nan_prop_rule(Float2NaNPropRule rule,
-     status->float_2nan_prop_rule = rule;
- }
+diff --git a/tests/fp/fp-bench.c b/tests/fp/fp-bench.c
+index fde64836194..39d80c9038f 100644
+--- a/tests/fp/fp-bench.c
++++ b/tests/fp/fp-bench.c
+@@ -493,6 +493,7 @@ static void run_bench(void)
+      * doesn't specify match those used by the Arm architecture.
+      */
+     set_float_2nan_prop_rule(float_2nan_prop_s_ab, &soft_status);
++    set_float_3nan_prop_rule(float_3nan_prop_s_cab, &soft_status);
+     set_float_infzeronan_rule(float_infzeronan_dnan_if_qnan, &soft_status);
  
-+static inline void set_float_3nan_prop_rule(Float3NaNPropRule rule,
-+                                            float_status *status)
-+{
-+    status->float_3nan_prop_rule = rule;
-+}
-+
- static inline void set_float_infzeronan_rule(FloatInfZeroNaNRule rule,
-                                              float_status *status)
- {
-@@ -143,6 +149,11 @@ static inline Float2NaNPropRule get_float_2nan_prop_rule(float_status *status)
-     return status->float_2nan_prop_rule;
- }
+     f = bench_funcs[operation][precision];
+diff --git a/tests/fp/fp-test.c b/tests/fp/fp-test.c
+index 251c278ede9..f290d523ab1 100644
+--- a/tests/fp/fp-test.c
++++ b/tests/fp/fp-test.c
+@@ -940,6 +940,7 @@ void run_test(void)
+      * doesn't specify match those used by the Arm architecture.
+      */
+     set_float_2nan_prop_rule(float_2nan_prop_s_ab, &qsf);
++    set_float_3nan_prop_rule(float_3nan_prop_s_cab, &qsf);
+     set_float_infzeronan_rule(float_infzeronan_dnan_if_qnan, &qsf);
  
-+static inline Float3NaNPropRule get_float_3nan_prop_rule(float_status *status)
-+{
-+    return status->float_3nan_prop_rule;
-+}
-+
- static inline FloatInfZeroNaNRule get_float_infzeronan_rule(float_status *status)
- {
-     return status->float_infzeronan_rule;
-diff --git a/include/fpu/softfloat-types.h b/include/fpu/softfloat-types.h
-index 47bb22c4e25..d9f0797edaf 100644
---- a/include/fpu/softfloat-types.h
-+++ b/include/fpu/softfloat-types.h
-@@ -80,6 +80,8 @@ this code that are retained.
- #ifndef SOFTFLOAT_TYPES_H
- #define SOFTFLOAT_TYPES_H
- 
-+#include "hw/registerfields.h"
-+
- /*
-  * Software IEC/IEEE floating-point types.
-  */
-@@ -207,6 +209,58 @@ typedef enum __attribute__((__packed__)) {
-     float_2nan_prop_x87,
- } Float2NaNPropRule;
- 
-+/*
-+ * 3-input NaN propagation rule, for fused multiply-add. Individual
-+ * architectures have different rules for which input NaN is
-+ * propagated to the output when there is more than one NaN on the
-+ * input.
-+ *
-+ * If default_nan_mode is enabled then it is valid not to set a NaN
-+ * propagation rule, because the softfloat code guarantees not to try
-+ * to pick a NaN to propagate in default NaN mode.  When not in
-+ * default-NaN mode, it is an error for the target not to set the rule
-+ * in float_status if it uses a muladd, and we will assert if we need
-+ * to handle an input NaN and no rule was selected.
-+ *
-+ * The naming scheme for Float3NaNPropRule values is:
-+ *  float_3nan_prop_s_abc:
-+ *    = "Prefer SNaN over QNaN, then operand A over B over C"
-+ *  float_3nan_prop_abc:
-+ *    = "Prefer A over B over C regardless of SNaN vs QNAN"
-+ *
-+ * For QEMU, the multiply-add operation is A * B + C.
-+ */
-+
-+/*
-+ * We set the Float3NaNPropRule enum values up so we can select the
-+ * right value in pickNaNMulAdd in a data driven way.
-+ */
-+FIELD(3NAN, 1ST, 0, 2)   /* which operand is most preferred ? */
-+FIELD(3NAN, 2ND, 2, 2)   /* which operand is next most preferred ? */
-+FIELD(3NAN, 3RD, 4, 2)   /* which operand is least preferred ? */
-+FIELD(3NAN, SNAN, 6, 1)  /* do we prefer SNaN over QNaN ? */
-+
-+#define PROPRULE(X, Y, Z) \
-+    ((X << R_3NAN_1ST_SHIFT) | (Y << R_3NAN_2ND_SHIFT) | (Z << R_3NAN_3RD_SHIFT))
-+
-+typedef enum __attribute__((__packed__)) {
-+    float_3nan_prop_none = 0,     /* No propagation rule specified */
-+    float_3nan_prop_abc = PROPRULE(0, 1, 2),
-+    float_3nan_prop_acb = PROPRULE(0, 2, 1),
-+    float_3nan_prop_bac = PROPRULE(1, 0, 2),
-+    float_3nan_prop_bca = PROPRULE(1, 2, 0),
-+    float_3nan_prop_cab = PROPRULE(2, 0, 1),
-+    float_3nan_prop_cba = PROPRULE(2, 1, 0),
-+    float_3nan_prop_s_abc = float_3nan_prop_abc | R_3NAN_SNAN_MASK,
-+    float_3nan_prop_s_acb = float_3nan_prop_acb | R_3NAN_SNAN_MASK,
-+    float_3nan_prop_s_bac = float_3nan_prop_bac | R_3NAN_SNAN_MASK,
-+    float_3nan_prop_s_bca = float_3nan_prop_bca | R_3NAN_SNAN_MASK,
-+    float_3nan_prop_s_cab = float_3nan_prop_cab | R_3NAN_SNAN_MASK,
-+    float_3nan_prop_s_cba = float_3nan_prop_cba | R_3NAN_SNAN_MASK,
-+} Float3NaNPropRule;
-+
-+#undef PROPRULE
-+
- /*
-  * Rule for result of fused multiply-add 0 * Inf + NaN.
-  * This must be a NaN, but implementations differ on whether this
-@@ -241,6 +295,7 @@ typedef struct float_status {
-     FloatRoundMode float_rounding_mode;
-     FloatX80RoundPrec floatx80_rounding_precision;
-     Float2NaNPropRule float_2nan_prop_rule;
-+    Float3NaNPropRule float_3nan_prop_rule;
-     FloatInfZeroNaNRule float_infzeronan_rule;
-     bool tininess_before_rounding;
-     /* should denormalised results go to zero and set the inexact flag? */
-diff --git a/fpu/softfloat-specialize.c.inc b/fpu/softfloat-specialize.c.inc
-index a769c71f545..b4f3f0efa82 100644
---- a/fpu/softfloat-specialize.c.inc
-+++ b/fpu/softfloat-specialize.c.inc
-@@ -475,6 +475,10 @@ static int pickNaN(FloatClass a_cls, FloatClass b_cls,
- static int pickNaNMulAdd(FloatClass a_cls, FloatClass b_cls, FloatClass c_cls,
-                          bool infzero, bool have_snan, float_status *status)
- {
-+    FloatClass cls[3] = { a_cls, b_cls, c_cls };
-+    Float3NaNPropRule rule = status->float_3nan_prop_rule;
-+    int which;
-+
-     /*
-      * We guarantee not to require the target to tell us how to
-      * pick a NaN if we're always returning the default NaN.
-@@ -500,145 +504,56 @@ static int pickNaNMulAdd(FloatClass a_cls, FloatClass b_cls, FloatClass c_cls,
-         }
-     }
- 
-+    if (rule == float_3nan_prop_none) {
- #if defined(TARGET_ARM)
--
--    /* This looks different from the ARM ARM pseudocode, because the ARM ARM
--     * puts the operands to a fused mac operation (a*b)+c in the order c,a,b.
--     */
--    if (is_snan(c_cls)) {
--        return 2;
--    } else if (is_snan(a_cls)) {
--        return 0;
--    } else if (is_snan(b_cls)) {
--        return 1;
--    } else if (is_qnan(c_cls)) {
--        return 2;
--    } else if (is_qnan(a_cls)) {
--        return 0;
--    } else {
--        return 1;
--    }
-+        /*
-+         * This looks different from the ARM ARM pseudocode, because the ARM ARM
-+         * puts the operands to a fused mac operation (a*b)+c in the order c,a,b
-+         */
-+        rule = float_3nan_prop_s_cab;
- #elif defined(TARGET_MIPS)
--    if (snan_bit_is_one(status)) {
--        /* Prefer sNaN over qNaN, in the a, b, c order. */
--        if (is_snan(a_cls)) {
--            return 0;
--        } else if (is_snan(b_cls)) {
--            return 1;
--        } else if (is_snan(c_cls)) {
--            return 2;
--        } else if (is_qnan(a_cls)) {
--            return 0;
--        } else if (is_qnan(b_cls)) {
--            return 1;
-+        if (snan_bit_is_one(status)) {
-+            rule = float_3nan_prop_s_abc;
-         } else {
--            return 2;
-+            rule = float_3nan_prop_s_cab;
-         }
--    } else {
--        /* Prefer sNaN over qNaN, in the c, a, b order. */
--        if (is_snan(c_cls)) {
--            return 2;
--        } else if (is_snan(a_cls)) {
--            return 0;
--        } else if (is_snan(b_cls)) {
--            return 1;
--        } else if (is_qnan(c_cls)) {
--            return 2;
--        } else if (is_qnan(a_cls)) {
--            return 0;
--        } else {
--            return 1;
--        }
--    }
- #elif defined(TARGET_LOONGARCH64)
--    /* Prefer sNaN over qNaN, in the c, a, b order. */
--    if (is_snan(c_cls)) {
--        return 2;
--    } else if (is_snan(a_cls)) {
--        return 0;
--    } else if (is_snan(b_cls)) {
--        return 1;
--    } else if (is_qnan(c_cls)) {
--        return 2;
--    } else if (is_qnan(a_cls)) {
--        return 0;
--    } else {
--        return 1;
--    }
-+        rule = float_3nan_prop_s_cab;
- #elif defined(TARGET_PPC)
--    /* If fRA is a NaN return it; otherwise if fRB is a NaN return it;
--     * otherwise return fRC. Note that muladd on PPC is (fRA * fRC) + frB
--     */
--    if (is_nan(a_cls)) {
--        return 0;
--    } else if (is_nan(c_cls)) {
--        return 2;
--    } else {
--        return 1;
--    }
-+        /*
-+         * If fRA is a NaN return it; otherwise if fRB is a NaN return it;
-+         * otherwise return fRC. Note that muladd on PPC is (fRA * fRC) + frB
-+         */
-+        rule = float_3nan_prop_acb;
- #elif defined(TARGET_S390X)
--    if (is_snan(a_cls)) {
--        return 0;
--    } else if (is_snan(b_cls)) {
--        return 1;
--    } else if (is_snan(c_cls)) {
--        return 2;
--    } else if (is_qnan(a_cls)) {
--        return 0;
--    } else if (is_qnan(b_cls)) {
--        return 1;
--    } else {
--        return 2;
--    }
-+        rule = float_3nan_prop_s_abc;
- #elif defined(TARGET_SPARC)
--    /* Prefer SNaN over QNaN, order C, B, A. */
--    if (is_snan(c_cls)) {
--        return 2;
--    } else if (is_snan(b_cls)) {
--        return 1;
--    } else if (is_snan(a_cls)) {
--        return 0;
--    } else if (is_qnan(c_cls)) {
--        return 2;
--    } else if (is_qnan(b_cls)) {
--        return 1;
--    } else {
--        return 0;
--    }
-+        rule = float_3nan_prop_s_cba;
- #elif defined(TARGET_XTENSA)
--    /*
--     * For Xtensa, the (inf,zero,nan) case sets InvalidOp and returns
--     * an input NaN if we have one (ie c).
--     */
--    if (status->use_first_nan) {
--        if (is_nan(a_cls)) {
--            return 0;
--        } else if (is_nan(b_cls)) {
--            return 1;
-+        if (status->use_first_nan) {
-+            rule = float_3nan_prop_abc;
-         } else {
--            return 2;
-+            rule = float_3nan_prop_cba;
-         }
--    } else {
--        if (is_nan(c_cls)) {
--            return 2;
--        } else if (is_nan(b_cls)) {
--            return 1;
--        } else {
--            return 0;
--        }
--    }
- #else
--    /* A default implementation: prefer a to b to c.
--     * This is unlikely to actually match any real implementation.
--     */
--    if (is_nan(a_cls)) {
--        return 0;
--    } else if (is_nan(b_cls)) {
--        return 1;
--    } else {
--        return 2;
--    }
-+        rule = float_3nan_prop_abc;
- #endif
-+    }
-+
-+    assert(rule != float_3nan_prop_none);
-+    if (have_snan && (rule & R_3NAN_SNAN_MASK)) {
-+        /* We have at least one SNaN input and should prefer it */
-+        do {
-+            which = rule & R_3NAN_1ST_MASK;
-+            rule >>= R_3NAN_1ST_LENGTH;
-+        } while (!is_snan(cls[which]));
-+    } else {
-+        do {
-+            which = rule & R_3NAN_1ST_MASK;
-+            rule >>= R_3NAN_1ST_LENGTH;
-+        } while (!is_nan(cls[which]));
-+    }
-+    return which;
- }
- 
- /*----------------------------------------------------------------------------
+     genCases_setLevel(test_level);
 -- 
 2.34.1
 
