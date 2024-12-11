@@ -2,78 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B1899ED135
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Dec 2024 17:22:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 17AAF9ED159
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Dec 2024 17:25:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tLPT1-0002K2-DM; Wed, 11 Dec 2024 11:21:39 -0500
+	id 1tLPT0-0002Jz-Ts; Wed, 11 Dec 2024 11:21:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tLPSq-0001bz-5E
- for qemu-devel@nongnu.org; Wed, 11 Dec 2024 11:21:28 -0500
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ id 1tLPSr-0001h7-Jw
+ for qemu-devel@nongnu.org; Wed, 11 Dec 2024 11:21:29 -0500
+Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tLPSo-0007vJ-Gq
- for qemu-devel@nongnu.org; Wed, 11 Dec 2024 11:21:27 -0500
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-43618283dedso16754255e9.3
- for <qemu-devel@nongnu.org>; Wed, 11 Dec 2024 08:21:26 -0800 (PST)
+ id 1tLPSp-0007vn-Qf
+ for qemu-devel@nongnu.org; Wed, 11 Dec 2024 11:21:29 -0500
+Received: by mail-wr1-x434.google.com with SMTP id
+ ffacd0b85a97d-3863703258fso522697f8f.1
+ for <qemu-devel@nongnu.org>; Wed, 11 Dec 2024 08:21:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1733934085; x=1734538885; darn=nongnu.org;
+ d=linaro.org; s=google; t=1733934086; x=1734538886; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=gSbZ33dYhUCvriB7gJIYOSjh0uJ7qwYxR0y7su+tpkc=;
- b=KRE/1KwIeFrD58JIyaLgz64RScARneDJwpxkS/FS6ViUjeELV/trhloF/8vDyzA1ci
- i3LEzNpUUHiXRPmYaNTkb2wwyOyJWi23R0SZFsxyIG86apvEVlOFcrl6fNMA9Z+IUmpT
- gnG5nJzIYJJB4b7TyUjwFTrYPX4LUgNKenjgoizJq3yW46yL7FwY6U86KXC94i0OE83h
- c/q1NPx4eDUUWXMV/jQPn4XqVdP+XM2XxHBKxgKebaUuA4RlCoSbWKG0kLJ1ObyWW8jP
- 4NfalotmV8UYdqxlflzXaxTCuUSPTSGBmv7Wbpcv4KzyONGjQM+AvyDAQt7f8U3MuZWy
- pCpw==
+ :reply-to; bh=ht1nZ84ts/9AMVIYYfAfz6P7yX4A1c2tCexcQoTh5N4=;
+ b=aZMCrW3stth5tQ0wyh6z0J4LuE9aWBaDRpFESp5A3inu0MD4zlqKSK2erN9sJVPOrF
+ 1RjWZ9fE+luFqWCrQOekkspEiGZBo/if/iA/WjphajQHVLHZuLFEYu5U3mmjXeE4dNo8
+ MYJulhTWUO05l9w92CvnKCXkHa4oApY8Y7TanWxQgB+oyXYS47OrUNNK34j3AR8mN5pV
+ r2YsdzN8Z9ss5e60UQ4Z086KjOLKowm55lMEZFa3JeU1eGrx+YT5ydcgxm+2ra3CGJ/i
+ DgXWnWZMzL24y/jbIlmOMGM3ub822IOZWsYWKTaQOgbp9auJm+9IEBFmdUypq1tE/zTQ
+ dD3w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733934085; x=1734538885;
+ d=1e100.net; s=20230601; t=1733934086; x=1734538886;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=gSbZ33dYhUCvriB7gJIYOSjh0uJ7qwYxR0y7su+tpkc=;
- b=s05U8bICx92m4aRPcv+z0ppH+MyzHn3Qe0dLi8T6xlyRYSKSa5SVbsJ8xQ7Ufgtumx
- m8MypPVA1xdAfrP1yU+7C6D26NwBVFOT9QK20q8FUFfxgRyaDLCkHJV/8EKc/tVhBWgv
- dtA0srs3SLNEq0yyYXJfSc0vHIECq0LkETlRbmh6cAKQVc0ATIGZBY3eLQ98RtF6wX48
- DXpAqMBzEnEAezyAWiwLfKen3hMYRwdRv7FCm+BUxosU4vf0ouka3i5jOM7pz79xkF8P
- 9OSqebMDy+d2dBiuLlZTCQoRBR1HH5ILGx7OkRWZQJoQb0NTk9SjYmh7Cwf0TAAyIjft
- 8UxQ==
-X-Gm-Message-State: AOJu0Yx7QaNRg75iDceTGZu57arMf7RsOf3JREUuVCB2b+kB3Fq2gsYI
- WLqcbfIbZNwNhe0ZtrUxmDPuctq2UQO1QHBoS46PHUVVl5ncWmI4ZUV46wd1v9+4HHArlwzIWfx
- F
-X-Gm-Gg: ASbGncuDfdMTiDxKi7t8WCLlGSOPVFN63RMvdlCmE40yH5NandBY2Ze2dqcilCla61I
- s+osy8iiAZMosT9fRl/FZz3PXyQbEE2zZA1zknrkrvUhy0rOos3l/dpK8V9hizFjrc0zlFDs3rO
- +RFf9xz1uasSRGxB8/NguTtULnlwpTvqkrOWGj8vmVkWA9Fchqtab7vfe0Fx9xiHNlH4work5r7
- I4bYHb0hd6qrH6hJqj9nIL+BTymF74L9zqPvX3FN3k6HMPylyd17n1BieFA
-X-Google-Smtp-Source: AGHT+IFFUD4MdrOm47MBTREZv0Zu8sIiii5xNVD/e17gQHbodrAbO1lH2rK0zKCh3+rQDQnVfzSVRQ==
-X-Received: by 2002:a05:600c:4f48:b0:426:647b:1bfc with SMTP id
- 5b1f17b1804b1-4362286dca8mr3464295e9.30.1733934085039; 
+ bh=ht1nZ84ts/9AMVIYYfAfz6P7yX4A1c2tCexcQoTh5N4=;
+ b=q1TqEwLEulunE1ytCfiqpSObBn12LznOOD8OK+TRGaEi7uFbobO4aThEDX430j8Sh1
+ j84Ffqg4bvQ8+oYix9sf1JfSltO+aCCIGCyCD63uiFM9Q/d6z/Xq7nJkXUPP2RgiTd87
+ naeDgzmKMgt4SXy5JrAMulXjuBXerqWnul/IkfIYt960TBJG2LV7Haum+YlqrNmWrHWG
+ 9Wq/oDKMxlj9jiBRClsAxGZq10uLEIUL63/hcGMuS0vaYHZt4HWKktUMK/I1El7EaSMr
+ HhbjJQKqjjcBLkH6XERSVr60YBLUKwAkisvRKIuofWKuJ9CZW93brSo5mnDCZgcCTd1d
+ r3Ew==
+X-Gm-Message-State: AOJu0YzvH5SMeT1+geE+K0g9bm8ZXPfVBLG9N2BIukfw4IKiSh4FUTCw
+ g5la1kxG9bsTVkkWe7g91rLxpdYbZCvajG33zq6NdXPIIKIN4TUT5/KVE0oCZbxWdEtl02GFAyx
+ S
+X-Gm-Gg: ASbGncs3vfixMm5cFg2vG0G8iNx3FezDp/zdV0AcQcJ98gZpZa9/mKoA3wlhEle1c8d
+ XdUGWI1sXBYyP1m4TLmrPm0LSkHju/3uxyv8yuQYADL0RyAD1fkcUDuEOn3UYakbVSql36PvQek
+ vA5B/o0fN+3BQ+o2AFrRH9pfszdWy858ySeBC+S1MlFoAXaN2AhlmDOPLt8o/4do6GLFkP047t3
+ 2y/cHNeEVIIP6PDlgvhzzoNrMFFTPbrRMrwVKjd/Ac/z4n2zolBsuctN2oi
+X-Google-Smtp-Source: AGHT+IGZSf7lVbD0dwuOtt/JRrKF1T3d3PVRZt8EufCiTHqETbuo9S0V3TSKEqW52tRdCYsxcHSKpg==
+X-Received: by 2002:a5d:5f4a:0:b0:386:34af:9bae with SMTP id
+ ffacd0b85a97d-3864de8eccdmr2861516f8f.4.1733934085978; 
  Wed, 11 Dec 2024 08:21:25 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-434f4dfdcdfsm121460595e9.39.2024.12.11.08.21.24
+ 5b1f17b1804b1-434f4dfdcdfsm121460595e9.39.2024.12.11.08.21.25
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 11 Dec 2024 08:21:24 -0800 (PST)
+ Wed, 11 Dec 2024 08:21:25 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 71/72] MAINTAINERS: update email address for Leif Lindholm
-Date: Wed, 11 Dec 2024 16:20:03 +0000
-Message-Id: <20241211162004.2795499-72-peter.maydell@linaro.org>
+Subject: [PULL 72/72] MAINTAINERS: Add correct email address for Vikram Garhwal
+Date: Wed, 11 Dec 2024 16:20:04 +0000
+Message-Id: <20241211162004.2795499-73-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241211162004.2795499-1-peter.maydell@linaro.org>
 References: <20241211162004.2795499-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::434;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x434.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,52 +95,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Leif Lindholm <quic_llindhol@quicinc.com>
+From: Vikram Garhwal <vikram.garhwal@bytedance.com>
 
-I'm migrating to Qualcomm's new open source email infrastructure, so
-update my email address, and update the mailmap to match.
+Previously, maintainer role was paused due to inactive email id. Commit id:
+c009d715721861984c4987bcc78b7ee183e86d75.
 
-Signed-off-by: Leif Lindholm <leif.lindholm@oss.qualcomm.com>
-Reviewed-by: Leif Lindholm <quic_llindhol@quicinc.com>
-Reviewed-by: Brian Cain <brian.cain@oss.qualcomm.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-id: 20241205114047.1125842-1-leif.lindholm@oss.qualcomm.com
+Signed-off-by: Vikram Garhwal <vikram.garhwal@bytedance.com>
+Reviewed-by: Francisco Iglesias <francisco.iglesias@amd.com>
+Message-id: 20241204184205.12952-1-vikram.garhwal@bytedance.com
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- MAINTAINERS | 2 +-
- .mailmap    | 5 +++--
- 2 files changed, 4 insertions(+), 3 deletions(-)
+ MAINTAINERS | 2 ++
+ 1 file changed, 2 insertions(+)
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index aaf0505a214..9ae6a78ae9c 100644
+index 9ae6a78ae9c..1d2003a9a1d 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -915,7 +915,7 @@ F: include/hw/ssi/imx_spi.h
- SBSA-REF
- M: Radoslaw Biernacki <rad@semihalf.com>
- M: Peter Maydell <peter.maydell@linaro.org>
--R: Leif Lindholm <quic_llindhol@quicinc.com>
-+R: Leif Lindholm <leif.lindholm@oss.qualcomm.com>
- R: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
- L: qemu-arm@nongnu.org
+@@ -1914,6 +1914,7 @@ F: tests/qtest/fuzz-sb16-test.c
+ 
+ Xilinx CAN
+ M: Francisco Iglesias <francisco.iglesias@amd.com>
++M: Vikram Garhwal <vikram.garhwal@bytedance.com>
  S: Maintained
-diff --git a/.mailmap b/.mailmap
-index 727ce204b2d..5f6df414e1f 100644
---- a/.mailmap
-+++ b/.mailmap
-@@ -87,8 +87,9 @@ Huacai Chen <chenhuacai@kernel.org> <chenhc@lemote.com>
- Huacai Chen <chenhuacai@kernel.org> <chenhuacai@loongson.cn>
- James Hogan <jhogan@kernel.org> <james.hogan@imgtec.com>
- Juan Quintela <quintela@trasno.org> <quintela@redhat.com>
--Leif Lindholm <quic_llindhol@quicinc.com> <leif.lindholm@linaro.org>
--Leif Lindholm <quic_llindhol@quicinc.com> <leif@nuviainc.com>
-+Leif Lindholm <leif.lindholm@oss.qualcomm.com> <quic_llindhol@quicinc.com>
-+Leif Lindholm <leif.lindholm@oss.qualcomm.com> <leif.lindholm@linaro.org>
-+Leif Lindholm <leif.lindholm@oss.qualcomm.com> <leif@nuviainc.com>
- Luc Michel <luc@lmichel.fr> <luc.michel@git.antfield.fr>
- Luc Michel <luc@lmichel.fr> <luc.michel@greensocs.com>
- Luc Michel <luc@lmichel.fr> <lmichel@kalray.eu>
+ F: hw/net/can/xlnx-*
+ F: include/hw/net/xlnx-*
+@@ -2673,6 +2674,7 @@ F: include/hw/rx/
+ CAN bus subsystem and hardware
+ M: Pavel Pisa <pisa@cmp.felk.cvut.cz>
+ M: Francisco Iglesias <francisco.iglesias@amd.com>
++M: Vikram Garhwal <vikram.garhwal@bytedance.com>
+ S: Maintained
+ W: https://canbus.pages.fel.cvut.cz/
+ F: net/can/*
 -- 
 2.34.1
 
