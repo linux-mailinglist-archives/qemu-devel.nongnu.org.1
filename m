@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59B209ED12D
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Dec 2024 17:21:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 308939ED176
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Dec 2024 17:27:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tLPSG-0000O0-0c; Wed, 11 Dec 2024 11:20:52 -0500
+	id 1tLPSH-0000OK-1o; Wed, 11 Dec 2024 11:20:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tLPSD-0000Mq-3S
- for qemu-devel@nongnu.org; Wed, 11 Dec 2024 11:20:49 -0500
-Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
+ id 1tLPSE-0000NK-7e
+ for qemu-devel@nongnu.org; Wed, 11 Dec 2024 11:20:50 -0500
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tLPSB-0007lC-Ie
- for qemu-devel@nongnu.org; Wed, 11 Dec 2024 11:20:48 -0500
-Received: by mail-wr1-x42d.google.com with SMTP id
- ffacd0b85a97d-3862d16b4f5so545897f8f.0
- for <qemu-devel@nongnu.org>; Wed, 11 Dec 2024 08:20:47 -0800 (PST)
+ id 1tLPSC-0007lR-Lw
+ for qemu-devel@nongnu.org; Wed, 11 Dec 2024 11:20:50 -0500
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-43618283d48so12310835e9.1
+ for <qemu-devel@nongnu.org>; Wed, 11 Dec 2024 08:20:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1733934046; x=1734538846; darn=nongnu.org;
+ d=linaro.org; s=google; t=1733934047; x=1734538847; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=jSuOu2n5x/+mHXTv9G32cuk510bUbTH6keT/6j4dWJk=;
- b=VP59xEBmncdJDStrrZo4x/oPBIClc5vGzMSuTGJ3BoKx9eqz62TPj8Rg4Lj/fjULuC
- RZfbkVXrnH7QqN8Cc3j5BJqidB4gezC3i8fjSp7oz6IlNXFwz7HByy8YuajF8d4rEpNf
- fB5CRCn02GB8hmxzTn1rhcafGb2+pYl2fcrZU6tG411/N74a53ucMvJ5fwoOPxb3DYpK
- GiWJsCMwxXmChmMijNydbaiaRd2qgEmY9SUcf0F57YOm3vrRpa5mD5Qv/0GXIq1tlZXl
- xIOzfBL5Wtyp0IC/902pE4whB6dXTqvTWpA3DWT3P8a7saQzg748BCNhnO7NMLyrWpC9
- /Aig==
+ :reply-to; bh=GJ2MxfIn+bPI815lGa0YYGJVtmHJ6iQzs9ubSygVReI=;
+ b=CKD0pyToKz8Ks8RSiTY/CmPYRr/AG2YmNukOVTtp3o+bZeGGLNvYrD9rfFVUIW89MK
+ jHV7H6QBBuezFCy9xXunhE9i4NOAgW0AVcf5zVndWy8LWKxj7xgjfhQqvlKUokB+NQvs
+ vbXyaYTBoXhMdTwHm+O4dy4CKBn2SkwQFcfgkT/EMWFbm7vkun9Cn9dZPYYGHCmcYmwn
+ 78MfS93sfJ9XF3wKVb+yM2J+dOhHA8iEq1mjf+Jxd2ulJlHVe4+rn8sS2QbrEqJlpxoS
+ X+EvmdWw1NZqDG/W8mdohVtrE/gjXyEHsK4zIIiL74FxfJamwDq4hiMCI3zXXwDS4Ztz
+ RfRQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733934046; x=1734538846;
+ d=1e100.net; s=20230601; t=1733934047; x=1734538847;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=jSuOu2n5x/+mHXTv9G32cuk510bUbTH6keT/6j4dWJk=;
- b=Wt+q89TseUUiooovrMs1tEiLvfagUUBeO9jw50XYcHdvFGZHjLHpA52LcCQ57eh2J4
- Z2g6LtpxM6toAisQ/4V6y3xUmeCWxjx0dRP4Y9EXx7OUIb9UPAlstxNh3YBII6U6h1Vr
- GiSCCkxLWVW8Xwi61RGVcuOkHffA5Rf5HcQGTwJRmxo5AvGA0VV6PEjQFZXTGg6dIiAr
- zndn1IRNiuO/GjRc45/5ilv7Cd4WLOr8fCmHv33s6GJdmGEQIczkNzwwbaJ2blXhGFa6
- O1eXEAU/3e1SrHK1Pg/0dDXlhqdnHEM0nigqXgVrGLHJqk7QuVLkNO1d2u+rqUqiufoI
- rXTg==
-X-Gm-Message-State: AOJu0Yy3pmFQ1qe9mzduLvh8uhiy8EGzsS05cYazciYdvXCVU3zFjh5q
- guNcjLAFdFE3qk4dk9NXxrDhSj9xypuV0d9d0dBTpzyKAgVSNmKWm04vFGm42IrQQBjOxn+VhYp
- n
-X-Gm-Gg: ASbGncsG2XxzgZJQhacGCw7rEPi6rsDJJ87rBjrz0sH3h5+v9vLjg6Hf/sii9jre1Ir
- ppgqwt5cMLVC4d3X9jiBpQcLLABPkl8ZhNx6AB6ab37UuRKSBOIs54DjOTI8yWOXp92ftfIkWcZ
- TvO6TLrQR74gxeZ4JV5qVyWSQutpyNCgQ6A3cIv8TWLn6q6I1w/cyO1e9ftn5nyaLW7jktD9aF9
- SKFWDy6n5drr5z5HWAj4wPlCUrevxOsuoakE+q8RswEQzeQRCWasbLUlWZV
-X-Google-Smtp-Source: AGHT+IFs6i00E1V4Y3ueYPMb6K18RaWiU6pPPVjNRpjsaKZ+xZQxej9u1yCMzn4PjHSGSaHVaoWQsg==
-X-Received: by 2002:a5d:47aa:0:b0:385:faf5:ebc8 with SMTP id
- ffacd0b85a97d-3864dedfe22mr2254661f8f.21.1733934046202; 
- Wed, 11 Dec 2024 08:20:46 -0800 (PST)
+ bh=GJ2MxfIn+bPI815lGa0YYGJVtmHJ6iQzs9ubSygVReI=;
+ b=qv1Agj8Ndl0VacNwQu73U/ZTyxL5pjpWPpwp/CLQ6NvNmogEo5KazBBNDLKRH/FPgN
+ 6i494/2UA5PnZ9fRpTjDyf5lrZTsyjVfBa0Q9/lNpe+nK4l8DPBaD4HV9IU3T8f7tDxn
+ 2QYQy3oxWfiIRJOhKfRiGZeJUmMKbKELnt3eDtBvgjXzeECbxL2ObUi+aykHBn7YtaAZ
+ ffqKOVlK0lRydeznZXycbMxkzNxTj24nyKe9VosN7rZ7eUi7HLno+Aps8buwAWx1Dn6Z
+ Eitgqf6HFqEjQ4vorsXXL027rR4hxlsTHmVET36NWHNXCXqKJrwZjRIaqVBsdSVGE5U5
+ LhBw==
+X-Gm-Message-State: AOJu0YxvXoif+EAAU0ucqoxh+L+9OU+J5tJASgA/Vw51YbVx6Nyd8D89
+ ljp4VMmVQgbLZBQld9sYEfKUIdOq8tyHqLQaLMN7HJsRjb1mEK/ZryXdvFIe6NVdIzqIBjYk6Wp
+ U
+X-Gm-Gg: ASbGncsvIb7HL6FLBTNlvwTIAwK5KAn651+fT0CK9L51DzaKCFlvyUn2YE8p1yQt+Qo
+ 1Z23nqjs01UHejzdyOVV8Gs2GIervC6kxpL++Dwhv/5h2+0enHG7xaiBzB72OzDhji++KfEJkBl
+ RkFx/zD+hmLPFERQy8j1L0TJsoUV7wXAPjenPGUl1tO1zUppf3q5ejJ/TbOQcR8CQ8LIYYll8SB
+ alEcTKyz3v7gXdpJyf2DX3NYLgx4i61CDdN4glAkT3U4Qzgjl3BokmD2Rxk
+X-Google-Smtp-Source: AGHT+IHbNwGi42RPHzPeAaV49J8dicMj7ttfd4ajM7NNaERdDyTJxMh7R4KmYLPDXNvJqGuhIl91RA==
+X-Received: by 2002:a05:6000:1565:b0:385:fd24:3303 with SMTP id
+ ffacd0b85a97d-3864cdeb18bmr2513796f8f.0.1733934047296; 
+ Wed, 11 Dec 2024 08:20:47 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-434f4dfdcdfsm121460595e9.39.2024.12.11.08.20.45
+ 5b1f17b1804b1-434f4dfdcdfsm121460595e9.39.2024.12.11.08.20.46
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 11 Dec 2024 08:20:45 -0800 (PST)
+ Wed, 11 Dec 2024 08:20:46 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 34/72] target/loongarch: Use normal float_status in fclass_s
- and fclass_d helpers
-Date: Wed, 11 Dec 2024 16:19:26 +0000
-Message-Id: <20241211162004.2795499-35-peter.maydell@linaro.org>
+Subject: [PULL 35/72] target/m68k: In frem helper,
+ initialize local float_status from env->fp_status
+Date: Wed, 11 Dec 2024 16:19:27 +0000
+Message-Id: <20241211162004.2795499-36-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241211162004.2795499-1-peter.maydell@linaro.org>
 References: <20241211162004.2795499-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x329.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,54 +96,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In target/loongarch's helper_fclass_s() and helper_fclass_d() we pass
-a zero-initialized float_status struct to float32_is_quiet_nan() and
-float64_is_quiet_nan(), with the cryptic comment "for
-snan_bit_is_one".
-
-This pattern appears to have been copied from target/riscv, where it
-is used because the functions there do not have ready access to the
-CPU state struct. The comment presumably refers to the fact that the
-main reason the is_quiet_nan() functions want the float_state is
-because they want to know about the snan_bit_is_one config.
-
-In the loongarch helpers, though, we have the CPU state struct
-to hand. Use the usual env->fp_status here. This avoids our needing
-to track that we need to update the initializer of the local
-float_status structs when the core softfloat code adds new
-options for targets to configure their behaviour.
+In the frem helper, we have a local float_status because we want to
+execute the floatx80_div() with a custom rounding mode.  Instead of
+zero-initializing the local float_status and then having to set it up
+with the m68k standard behaviour (including the NaN propagation rule
+and copying the rounding precision from env->fp_status), initialize
+it as a complete copy of env->fp_status. This will avoid our having
+to add new code in this function for every new config knob we add
+to fp_status.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20241202131347.498124-30-peter.maydell@linaro.org
+Message-id: 20241202131347.498124-31-peter.maydell@linaro.org
 ---
- target/loongarch/tcg/fpu_helper.c | 6 ++----
+ target/m68k/fpu_helper.c | 6 ++----
  1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/target/loongarch/tcg/fpu_helper.c b/target/loongarch/tcg/fpu_helper.c
-index 37a48599366..aea5e0fe5e6 100644
---- a/target/loongarch/tcg/fpu_helper.c
-+++ b/target/loongarch/tcg/fpu_helper.c
-@@ -359,8 +359,7 @@ uint64_t helper_fclass_s(CPULoongArchState *env, uint64_t fj)
-     } else if (float32_is_zero_or_denormal(f)) {
-         return sign ? 1 << 4 : 1 << 8;
-     } else if (float32_is_any_nan(f)) {
--        float_status s = { }; /* for snan_bit_is_one */
--        return float32_is_quiet_nan(f, &s) ? 1 << 1 : 1 << 0;
-+        return float32_is_quiet_nan(f, &env->fp_status) ? 1 << 1 : 1 << 0;
-     } else {
-         return sign ? 1 << 3 : 1 << 7;
-     }
-@@ -378,8 +377,7 @@ uint64_t helper_fclass_d(CPULoongArchState *env, uint64_t fj)
-     } else if (float64_is_zero_or_denormal(f)) {
-         return sign ? 1 << 4 : 1 << 8;
-     } else if (float64_is_any_nan(f)) {
--        float_status s = { }; /* for snan_bit_is_one */
--        return float64_is_quiet_nan(f, &s) ? 1 << 1 : 1 << 0;
-+        return float64_is_quiet_nan(f, &env->fp_status) ? 1 << 1 : 1 << 0;
-     } else {
-         return sign ? 1 << 3 : 1 << 7;
-     }
+diff --git a/target/m68k/fpu_helper.c b/target/m68k/fpu_helper.c
+index a605162b71f..e3f4a188501 100644
+--- a/target/m68k/fpu_helper.c
++++ b/target/m68k/fpu_helper.c
+@@ -615,15 +615,13 @@ void HELPER(frem)(CPUM68KState *env, FPReg *res, FPReg *val0, FPReg *val1)
+ 
+     fp_rem = floatx80_rem(val1->d, val0->d, &env->fp_status);
+     if (!floatx80_is_any_nan(fp_rem)) {
+-        float_status fp_status = { };
++        /* Use local temporary fp_status to set different rounding mode */
++        float_status fp_status = env->fp_status;
+         uint32_t quotient;
+         int sign;
+ 
+         /* Calculate quotient directly using round to nearest mode */
+-        set_float_2nan_prop_rule(float_2nan_prop_ab, &fp_status);
+         set_float_rounding_mode(float_round_nearest_even, &fp_status);
+-        set_floatx80_rounding_precision(
+-            get_floatx80_rounding_precision(&env->fp_status), &fp_status);
+         fp_quot.d = floatx80_div(val1->d, val0->d, &fp_status);
+ 
+         sign = extractFloatx80Sign(fp_quot.d);
 -- 
 2.34.1
 
