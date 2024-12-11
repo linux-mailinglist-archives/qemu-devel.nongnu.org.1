@@ -2,79 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFDFE9ED1A5
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Dec 2024 17:29:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B20A9ED1AE
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Dec 2024 17:30:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tLPa2-0000yX-6e; Wed, 11 Dec 2024 11:28:54 -0500
+	id 1tLPa2-00019G-MP; Wed, 11 Dec 2024 11:28:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tLPZx-0000dC-JA
- for qemu-devel@nongnu.org; Wed, 11 Dec 2024 11:28:49 -0500
+ id 1tLPZy-0000l4-FP
+ for qemu-devel@nongnu.org; Wed, 11 Dec 2024 11:28:50 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tLPZv-0000al-T4
- for qemu-devel@nongnu.org; Wed, 11 Dec 2024 11:28:49 -0500
+ id 1tLPZw-0000aq-F0
+ for qemu-devel@nongnu.org; Wed, 11 Dec 2024 11:28:50 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1733934527;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=1qS4FLutt/4Sk0zExJZjpAJYdJnqb7SMdrl1fvxcvDM=;
- b=Dalm2dAyqoPE2vuKU6XKzA9jDccXBROf2ZvX1vvFs6az9fF2TjuOW8hswwVpkfYYe9Mq8B
- GlKjpARx//eE7TKssHLyC7Pbdxvt+xRcA/RJybQsuNWvMG0fDJ8cxFd5E4bQJZ177D+y70
- 0cU0ow2e7WxG86geWPePiu/uOXpBp9k=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=EK+6NhPLRnfB+w3ii90rEiEDD8OWs1ZakSYY9qmOsvM=;
+ b=X580G6WT+7ZRiQVuOTZIu8/wqVAl5NvpAQxMnjxNydPCB8OdPVy5HxvE0IlfQU7TxXH1Wi
+ +MKNbGd3zECcCr/lLcWma5HOS1JkLpq86cqtgZJUA72D8oyvZby0o7JL8FRO3U1MTlSalM
+ 7E11riZRTOJW0+g+ved9TpmEeoXmfO4=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-133-iwXdbfABMma-r-59NgVI3g-1; Wed, 11 Dec 2024 11:28:44 -0500
-X-MC-Unique: iwXdbfABMma-r-59NgVI3g-1
-X-Mimecast-MFC-AGG-ID: iwXdbfABMma-r-59NgVI3g
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-38634103b0dso2810435f8f.2
- for <qemu-devel@nongnu.org>; Wed, 11 Dec 2024 08:28:44 -0800 (PST)
+ us-mta-321-IGgLTkXOMx-7vjyvGgnRZA-1; Wed, 11 Dec 2024 11:28:46 -0500
+X-MC-Unique: IGgLTkXOMx-7vjyvGgnRZA-1
+X-Mimecast-MFC-AGG-ID: IGgLTkXOMx-7vjyvGgnRZA
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-436228ebc5eso545515e9.3
+ for <qemu-devel@nongnu.org>; Wed, 11 Dec 2024 08:28:46 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733934523; x=1734539323;
+ d=1e100.net; s=20230601; t=1733934525; x=1734539325;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=1qS4FLutt/4Sk0zExJZjpAJYdJnqb7SMdrl1fvxcvDM=;
- b=WMm6Lo0PYmXxq/uJaFBtDWxqsGO3obOJb4B4MGrkY/JaLngtHRyFM20Ovj89rOpKQv
- E4p2KfQR1Tvg2v4EYmyxG8byX3FJsmyOyivfXzwp8MsvVyhHVrNTMKICOZEO2IhcUq5o
- 5pwZl9Zgn22kralLANdHC6speyjdxIb8vpw6t8SDfmgdjrjirz3j6JSsB853Zv0x5E6G
- /SG2vm6eCVl/Yf4NEuCoiNEoaldjA3Hpv3znbD0Ah4M5i9jKSTAFMSIQ9rGHJfIL9gl2
- ucHu3983EYmqf5Vx9/VAIlfuuzjUbpHO/MdefkTv6qu/8EbsmcqM3LAvhnmaC53N/hiK
- b+Dg==
-X-Gm-Message-State: AOJu0Yy+bsyF6H9+Q/u4SlPD1vbBmZkD0pwk0JoIWvaOp31eKajIKmfZ
- IuHpoyxrFw3mgrKQ1N+NCG60Opt75/lKp6SiulSMPVpqKnH6O+r1ynZF8XeN6Ynwpb14nFa7ddz
- Mpf2NS6Ns3TZUl0+uHMwJGRoomXc8VKGCq5Ne311kYPmUVLR+8Tpf8Jx7Q/mlEtHNkl267ogLd/
- nJViRWoidpLg5XokICSIF+lKZ6mukxfqwVaGia
-X-Gm-Gg: ASbGnctDjBkbtqYE8a3b3MKVEQLAisbnAu52mc+JkcZ4T0pkAkzzzMcdO0Whmi5zIx7
- 5qSGI9PmIObmk7KkP1ymx42BZj9JHb2dkH0adbh4x6lhh86Y8KzXBQNL/fAplk7svCgj44EMjD7
- tk6WE2rgCDZ5sBecIVZQmiouI5bokyHJZjD/YzlcT9G6JbD38QDoNeipXjwnTclW22yrSzHIW6/
- IYazPhQHHkTaejkOHkQDqAdwpOyft2+bPyfBroEluUISew8HaEyUiBA
-X-Received: by 2002:a05:6000:1fad:b0:382:4b2a:4683 with SMTP id
- ffacd0b85a97d-3878768842fmr240687f8f.2.1733934522757; 
- Wed, 11 Dec 2024 08:28:42 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHKkrbbkNT4OV2i5Il92UD68pQBbGj/9xVKbgcwTXTooiAB5o8AxUnKC6/SaH7JaqjDw2D37A==
-X-Received: by 2002:a05:6000:1fad:b0:382:4b2a:4683 with SMTP id
- ffacd0b85a97d-3878768842fmr240667f8f.2.1733934522309; 
- Wed, 11 Dec 2024 08:28:42 -0800 (PST)
+ bh=EK+6NhPLRnfB+w3ii90rEiEDD8OWs1ZakSYY9qmOsvM=;
+ b=wO5Bb93Hpkn52S/blx73fsBXC6GjavsfuHc14ORHi1ICN0fhb338pAlzQmYAN4DU5P
+ /PfehYjtVqPsQm1Sjtilw1pq7QABTlp3WU3QzS0PmjF5t7P5ORPY2QW6RIdAUPw4MVUV
+ wN1Nv5xyWF5VSgghekYrvneFGU09wVv62zpb3jjiGagfz5UWRT/rG2QEEjPrW5iCOX9r
+ prMENmXUACMvaK4J/qOcLf3QAdfJ97JIvgzwerKz9OeRJVd+blvX9wMyUymEvijM3uc3
+ 0RWwfTTdZ3tUb75biFLyHfo9NjX1+BM/t9SSP7Yebp8E9X1+CSX4wFfKAX+33kdcAuPK
+ QJhA==
+X-Gm-Message-State: AOJu0YyQytHJE4wCAENt62aMvL1dLJClS50bsJa+4brPqtvqeVAi1auU
+ 8jPSLfQytpe432Hd3anncU9fzVD0JEgrl9ipHxrjQaQkYC5pdbNytZ53IFxO5A47L4sU5ALDcFd
+ bE900NGLLAQuaSFa1GED/dd9BAdR++Iht32tCU7gopItMOIncAbZPdFxcFyq0MilQk4Q1mc1oSJ
+ LSJaABfgCwk9j/yif0Ho6Tu8XGyxZ7y9W8L2D+
+X-Gm-Gg: ASbGncsITO16PcREgrcK3yU7D1NxgxmGTD3jqZVGfLhrGbIL02gVkjJ/WzC672mpzJc
+ ox2HIEYLUPaq3s1IibVdiEExcIIC9CPWef+9iT+RX7Xe1Oh6kHNKIPkPX0DP0nk5Q8BE9Go3gA0
+ mAx/jA3j+qVOuWQEExqY7YcLCi0tATGWMAp4YKFzIqCgSQwJwSA2dC4topGaOPAUAQ/DrgtxOJ9
+ gE+M7ibcJxssUUpa6Y39+e2IjF1V9GF5KfD5T+W7H9RSiL8YGW01fn2
+X-Received: by 2002:a05:600c:1c16:b0:434:a315:19c with SMTP id
+ 5b1f17b1804b1-4361c3445a8mr31170375e9.3.1733934524960; 
+ Wed, 11 Dec 2024 08:28:44 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IF1NQSjtWwRbIgKj+KS2F0+VKRwFApGXkxJY9BRaohVm5M+WwGRd+Ack1uUA6b6Po3ix0qjOg==
+X-Received: by 2002:a05:600c:1c16:b0:434:a315:19c with SMTP id
+ 5b1f17b1804b1-4361c3445a8mr31170085e9.3.1733934524448; 
+ Wed, 11 Dec 2024 08:28:44 -0800 (PST)
 Received: from [192.168.10.3] ([151.81.118.45])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-387824c50b7sm1608536f8f.57.2024.12.11.08.28.40
+ 5b1f17b1804b1-4361ec75410sm16194305e9.1.2024.12.11.08.28.43
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 11 Dec 2024 08:28:40 -0800 (PST)
+ Wed, 11 Dec 2024 08:28:43 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL 34/49] qom/object: Remove type_register()
-Date: Wed, 11 Dec 2024 17:27:04 +0100
-Message-ID: <20241211162720.320070-35-pbonzini@redhat.com>
+Subject: [PULL 35/49] bql: check that the BQL is not dropped within marked
+ sections
+Date: Wed, 11 Dec 2024 17:27:05 +0100
+Message-ID: <20241211162720.320070-36-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241211162720.320070-1-pbonzini@redhat.com>
 References: <20241211162720.320070-1-pbonzini@redhat.com>
@@ -105,84 +106,111 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Zhao Liu <zhao1.liu@intel.com>
+The Big QEMU Lock (BQL) is used to provide interior mutability to Rust
+code.  While BqlCell performs indivisible accesses, an equivalent of
+RefCell will allow the borrower to hold to the interior content for a
+long time.  If the BQL is dropped, another thread could come and mutate
+the data from C code (Rust code would panic on borrow_mut() instead).
+In order to prevent this, add a new BQL primitive that can mark
+BQL-atomic sections and aborts if the BQL is dropped within them.
 
-At present, type_register() and type_register_static() are identical,
-although their documentation expects the *_static variant to accept
-the Typeinfo with the strings that have the static lifetime.
-
-However, the code implementation doesn't have any check or guarantee for
-static lifetime. In fact, this is unnecessary because type_new()
-duplicates all strings, thereby taking ownership of them.
-
-Therefore, type_register() and type_register_static() are redundant, so
-one of them should be removed.
-
-Since the changes required to remove type_register() were smaller,
-type_register() was replaced with type_register_static() throughout the
-code base.  Drop its definition, and delete the requirement about string
-lifetime from the documentation.
-
-Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Link: https://lore.kernel.org/r/20241029085934.2799066-17-zhao1.liu@intel.com
 ---
- include/qom/object.h | 14 --------------
- qom/object.c         |  7 +------
- 2 files changed, 1 insertion(+), 20 deletions(-)
+ include/qemu/main-loop.h | 15 +++++++++++++++
+ stubs/iothread-lock.c    | 15 +++++++++++++++
+ system/cpus.c            | 15 +++++++++++++++
+ 3 files changed, 45 insertions(+)
 
-diff --git a/include/qom/object.h b/include/qom/object.h
-index 43c135984a6..a201c9712a1 100644
---- a/include/qom/object.h
-+++ b/include/qom/object.h
-@@ -880,24 +880,10 @@ const char *object_get_typename(const Object *obj);
-  * type_register_static:
-  * @info: The #TypeInfo of the new type.
-  *
-- * @info and all of the strings it points to should exist for the life time
-- * that the type is registered.
-- *
-  * Returns: the new #Type.
+diff --git a/include/qemu/main-loop.h b/include/qemu/main-loop.h
+index 5764db157c9..646306c272f 100644
+--- a/include/qemu/main-loop.h
++++ b/include/qemu/main-loop.h
+@@ -262,6 +262,21 @@ AioContext *iohandler_get_aio_context(void);
   */
- Type type_register_static(const TypeInfo *info);
+ bool bql_locked(void);
  
--/**
-- * type_register:
-- * @info: The #TypeInfo of the new type
-- *
-- * Unlike type_register_static(), this call does not require @info or its
-- * string members to continue to exist after the call returns.
-- *
-- * Returns: the new #Type.
-- */
--Type type_register(const TypeInfo *info);
--
++/**
++ * bql_block: Allow/deny releasing the BQL
++ *
++ * The Big QEMU Lock (BQL) is used to provide interior mutability to
++ * Rust code, but this only works if other threads cannot run while
++ * the Rust code has an active borrow.  This is because C code in
++ * other threads could come in and mutate data under the Rust code's
++ * feet.
++ *
++ * @increase: Whether to increase or decrease the blocking counter.
++ *            Releasing the BQL while the counter is nonzero triggers
++ *            an assertion failure.
++ */
++void bql_block_unlock(bool increase);
++
  /**
-  * type_register_static_array:
-  * @infos: The array of the new type #TypeInfo structures.
-diff --git a/qom/object.c b/qom/object.c
-index 9edc06d391f..c7660f9a097 100644
---- a/qom/object.c
-+++ b/qom/object.c
-@@ -175,17 +175,12 @@ static TypeImpl *type_register_internal(const TypeInfo *info)
-     return ti;
- }
+  * qemu_in_main_thread: return whether it's possible to safely access
+  * the global state of the block layer.
+diff --git a/stubs/iothread-lock.c b/stubs/iothread-lock.c
+index d7890e5581c..54676598950 100644
+--- a/stubs/iothread-lock.c
++++ b/stubs/iothread-lock.c
+@@ -1,6 +1,8 @@
+ #include "qemu/osdep.h"
+ #include "qemu/main-loop.h"
  
--TypeImpl *type_register(const TypeInfo *info)
-+TypeImpl *type_register_static(const TypeInfo *info)
++static uint32_t bql_unlock_blocked;
++
+ bool bql_locked(void)
  {
-     assert(info->parent);
-     return type_register_internal(info);
- }
+     return false;
+@@ -12,4 +14,17 @@ void bql_lock_impl(const char *file, int line)
  
--TypeImpl *type_register_static(const TypeInfo *info)
--{
--    return type_register(info);
--}
--
- void type_register_static_array(const TypeInfo *infos, int nr_infos)
+ void bql_unlock(void)
  {
-     int i;
++    assert(!bql_unlock_blocked);
++}
++
++void bql_block_unlock(bool increase)
++{
++    uint32_t new_value;
++
++    assert(bql_locked());
++
++    /* check for overflow! */
++    new_value = bql_unlock_blocked + increase - !increase;
++    assert((new_value > bql_unlock_blocked) == increase);
++    bql_unlock_blocked = new_value;
+ }
+diff --git a/system/cpus.c b/system/cpus.c
+index 1c818ff6828..ba633c7688b 100644
+--- a/system/cpus.c
++++ b/system/cpus.c
+@@ -514,6 +514,20 @@ bool qemu_in_vcpu_thread(void)
+ 
+ QEMU_DEFINE_STATIC_CO_TLS(bool, bql_locked)
+ 
++static uint32_t bql_unlock_blocked;
++
++void bql_block_unlock(bool increase)
++{
++    uint32_t new_value;
++
++    assert(bql_locked());
++
++    /* check for overflow! */
++    new_value = bql_unlock_blocked + increase - !increase;
++    assert((new_value > bql_unlock_blocked) == increase);
++    bql_unlock_blocked = new_value;
++}
++
+ bool bql_locked(void)
+ {
+     return get_bql_locked();
+@@ -540,6 +554,7 @@ void bql_lock_impl(const char *file, int line)
+ void bql_unlock(void)
+ {
+     g_assert(bql_locked());
++    g_assert(!bql_unlock_blocked);
+     set_bql_locked(false);
+     qemu_mutex_unlock(&bql);
+ }
 -- 
 2.47.1
 
