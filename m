@@ -2,55 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 462F29EC4EB
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Dec 2024 07:39:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D7019EC4E5
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Dec 2024 07:39:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tLGH4-0005zy-7Z; Wed, 11 Dec 2024 01:32:42 -0500
+	id 1tLGHA-0006ar-GB; Wed, 11 Dec 2024 01:32:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tLGGB-0004kR-Tl
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tLGGD-0004ld-Pm
  for qemu-devel@nongnu.org; Wed, 11 Dec 2024 01:31:50 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tLGG4-0008Ub-3R
- for qemu-devel@nongnu.org; Wed, 11 Dec 2024 01:31:43 -0500
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tLGGB-0008VX-Jd
+ for qemu-devel@nongnu.org; Wed, 11 Dec 2024 01:31:49 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1733898699;
+ s=mimecast20190719; t=1733898702;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=CNBqPx336DLTVky+zcW0GEcgKcrVHbF97M4lHBU9XJQ=;
- b=hUwxWzzPk28i0BoK/vZsZKW0H2CVl/Auw0loQJTdntf9mRLz1TldV3Y/Fu3BWM2t3DacpF
- AmVT92Q/KMXJOsHPmBavbXpl1JjbRL4PuHwMHk4xFvv5KyvHdBqGCikeekExeQF/wrRKeL
- nJ5UbmbsxXw7cidnlc7klnyr/uB+JvA=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ bh=vfhwq9kS1jpGYe1Yv9g+Pi+C2jI0WdU7qzoqs9fe0qw=;
+ b=aDMUa7fm6uvNhCBXHQv1CX+F7Q7caUlsbuJdWw0l6Cvgf8ClO2QMUgnROKpTWImxclYgZH
+ S+IQS9Kea2X8Lcf23aQjO6buRF4MeionDenKoHOQWZ1snjHY2IJKN21hTBRyShbEe5uszf
+ k+ASe8UfhA9276JR0ON2zR25OWDDCP0=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-611-7XpgGyhvNpWl24mNGD3Oxw-1; Wed,
- 11 Dec 2024 01:31:37 -0500
-X-MC-Unique: 7XpgGyhvNpWl24mNGD3Oxw-1
-X-Mimecast-MFC-AGG-ID: 7XpgGyhvNpWl24mNGD3Oxw
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-619-UQhTs52jMMe9bi7VEf4kLQ-1; Wed,
+ 11 Dec 2024 01:31:39 -0500
+X-MC-Unique: UQhTs52jMMe9bi7VEf4kLQ-1
+X-Mimecast-MFC-AGG-ID: UQhTs52jMMe9bi7VEf4kLQ
 Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id CD57D1956048; Wed, 11 Dec 2024 06:31:36 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id A54981955E70; Wed, 11 Dec 2024 06:31:38 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.39.194.144])
  by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 4D53C1956054; Wed, 11 Dec 2024 06:31:35 +0000 (UTC)
+ id 440BC1956054; Wed, 11 Dec 2024 06:31:37 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
-Cc: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
- Thomas Huth <thuth@redhat.com>
-Subject: [PULL 14/24] tests/functional: Move debian boot test from avocado
-Date: Wed, 11 Dec 2024 07:30:48 +0100
-Message-ID: <20241211063058.1222038-15-clg@redhat.com>
+Cc: Jamin Lin <jamin_lin@aspeedtech.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+Subject: [PULL 15/24] test/qtest/aspeed_smc-test: Move testcases to
+ test_palmetto_bmc function
+Date: Wed, 11 Dec 2024 07:30:49 +0100
+Message-ID: <20241211063058.1222038-16-clg@redhat.com>
 In-Reply-To: <20241211063058.1222038-1-clg@redhat.com>
 References: <20241211063058.1222038-1-clg@redhat.com>
 MIME-Version: 1.0
@@ -66,7 +67,7 @@ X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.52,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,85 +83,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This simply moves the debian boot test from the avocado testsuite to
-the new functional testsuite. No changes in the test.
+From: Jamin Lin <jamin_lin@aspeedtech.com>
 
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Link: https://lore.kernel.org/r/20241206131132.520911-8-clg@redhat.com
+So far, the test cases are used for testing SMC model with AST2400 BMC.
+However, AST2400 is end off live and ASPEED is no longer support this SOC.
+To test SMC model for AST2500, AST2600 and AST1030, move the test cases
+from main to test_palmetto_bmc function.
+
+Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
+Link: https://lore.kernel.org/r/20241127091543.1243114-2-jamin_lin@aspeedtech.com
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- tests/avocado/boot_linux_console.py         | 26 ---------------------
- tests/functional/test_arm_aspeed_rainier.py | 24 +++++++++++++++++++
- 2 files changed, 24 insertions(+), 26 deletions(-)
+ tests/qtest/aspeed_smc-test.c | 16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
-diff --git a/tests/avocado/boot_linux_console.py b/tests/avocado/boot_linux_console.py
-index 12e24bb05a75..738dd5a8c4bf 100644
---- a/tests/avocado/boot_linux_console.py
-+++ b/tests/avocado/boot_linux_console.py
-@@ -470,29 +470,3 @@ def test_arm_quanta_gsj_initrd(self):
-         self.wait_for_console_pattern('CPU1: thread -1, cpu 1, socket 0')
-         self.wait_for_console_pattern(
-                 'Give root password for system maintenance')
--
--    def test_arm_ast2600_debian(self):
--        """
--        :avocado: tags=arch:arm
--        :avocado: tags=machine:rainier-bmc
--        """
--        deb_url = ('http://snapshot.debian.org/archive/debian/'
--                   '20220606T211338Z/'
--                   'pool/main/l/linux/'
--                   'linux-image-5.17.0-2-armmp_5.17.6-1%2Bb1_armhf.deb')
--        deb_hash = '8acb2b4439faedc2f3ed4bdb2847ad4f6e0491f73debaeb7f660c8abe4dcdc0e'
--        deb_path = self.fetch_asset(deb_url, asset_hash=deb_hash,
--                                    algorithm='sha256')
--        kernel_path = self.extract_from_deb(deb_path, '/boot/vmlinuz-5.17.0-2-armmp')
--        dtb_path = self.extract_from_deb(deb_path,
--                '/usr/lib/linux-image-5.17.0-2-armmp/aspeed-bmc-ibm-rainier.dtb')
--
--        self.vm.set_console()
--        self.vm.add_args('-kernel', kernel_path,
--                         '-dtb', dtb_path,
--                         '-net', 'nic')
--        self.vm.launch()
--        self.wait_for_console_pattern("Booting Linux on physical CPU 0xf00")
--        self.wait_for_console_pattern("SMP: Total of 2 processors activated")
--        self.wait_for_console_pattern("No filesystem could mount root")
--
-diff --git a/tests/functional/test_arm_aspeed_rainier.py b/tests/functional/test_arm_aspeed_rainier.py
-index a60274926d6f..b856aea6dbd7 100644
---- a/tests/functional/test_arm_aspeed_rainier.py
-+++ b/tests/functional/test_arm_aspeed_rainier.py
-@@ -36,5 +36,29 @@ def test_arm_aspeed_emmc_boot(self):
-         self.wait_for_console_pattern('mmcblk0: p1 p2 p3 p4 p5 p6 p7')
-         self.wait_for_console_pattern('IBM eBMC (OpenBMC for IBM Enterprise')
+diff --git a/tests/qtest/aspeed_smc-test.c b/tests/qtest/aspeed_smc-test.c
+index 4673371d9539..ec1fa6ec15ac 100644
+--- a/tests/qtest/aspeed_smc-test.c
++++ b/tests/qtest/aspeed_smc-test.c
+@@ -610,14 +610,12 @@ static void test_write_block_protect_bottom_bit(void)
+     flash_reset();
+ }
  
-+    ASSET_DEBIAN_LINUX_ARMHF_DEB = Asset(
-+            ('http://snapshot.debian.org/archive/debian/20220606T211338Z/pool/main/l/linux/linux-image-5.17.0-2-armmp_5.17.6-1%2Bb1_armhf.deb'),
-+        '8acb2b4439faedc2f3ed4bdb2847ad4f6e0491f73debaeb7f660c8abe4dcdc0e')
+-int main(int argc, char **argv)
++static int test_palmetto_bmc(void)
+ {
+     g_autofree char *tmp_path = NULL;
+     int ret;
+     int fd;
+ 
+-    g_test_init(&argc, &argv, NULL);
+-
+     fd = g_file_open_tmp("qtest.m25p80.XXXXXX", &tmp_path, NULL);
+     g_assert(fd >= 0);
+     ret = ftruncate(fd, FLASH_SIZE);
+@@ -644,8 +642,18 @@ int main(int argc, char **argv)
+ 
+     flash_reset();
+     ret = g_test_run();
+-
+     qtest_quit(global_qtest);
+     unlink(tmp_path);
 +
-+    def test_arm_debian_kernel_boot(self):
-+        self.set_machine('rainier-bmc')
++    return ret;
++}
 +
-+        deb_path = self.ASSET_DEBIAN_LINUX_ARMHF_DEB.fetch()
++int main(int argc, char **argv)
++{
++    int ret;
 +
-+        kernel_path = self.extract_from_deb(deb_path, '/boot/vmlinuz-5.17.0-2-armmp')
-+        dtb_path = self.extract_from_deb(deb_path,
-+                '/usr/lib/linux-image-5.17.0-2-armmp/aspeed-bmc-ibm-rainier.dtb')
++    g_test_init(&argc, &argv, NULL);
++    ret = test_palmetto_bmc();
 +
-+        self.vm.set_console()
-+        self.vm.add_args('-kernel', kernel_path,
-+                         '-dtb', dtb_path,
-+                         '-net', 'nic')
-+        self.vm.launch()
-+
-+        self.wait_for_console_pattern("Booting Linux on physical CPU 0xf00")
-+        self.wait_for_console_pattern("SMP: Total of 2 processors activated")
-+        self.wait_for_console_pattern("No filesystem could mount root")
-+
-+
- if __name__ == '__main__':
-     AspeedTest.main()
+     return ret;
+ }
 -- 
 2.47.1
 
