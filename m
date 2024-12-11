@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 034699ED20C
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Dec 2024 17:34:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB3C69ED1F3
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Dec 2024 17:33:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tLPZu-0008Li-JP; Wed, 11 Dec 2024 11:28:46 -0500
+	id 1tLPZu-0008Oj-TX; Wed, 11 Dec 2024 11:28:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tLPZn-0007lf-9N
- for qemu-devel@nongnu.org; Wed, 11 Dec 2024 11:28:39 -0500
+ id 1tLPZp-00084B-DB
+ for qemu-devel@nongnu.org; Wed, 11 Dec 2024 11:28:41 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tLPZl-0000ZB-EU
- for qemu-devel@nongnu.org; Wed, 11 Dec 2024 11:28:38 -0500
+ id 1tLPZn-0000ZQ-G9
+ for qemu-devel@nongnu.org; Wed, 11 Dec 2024 11:28:41 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1733934516;
+ s=mimecast20190719; t=1733934518;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=5OIwR35d63e1rEw4wpchzcthjW0MxeFOPrWTnC7Wi88=;
- b=L9kzaSukodJfhdKO+o7A23ikWWsWe/l4rFcU6mg7gs18IeBKntM7e1Ll2IeS4/zBpZdavx
- Ln2aP7O82P3x3IIpAgLlZsvOccy0oM97VRUhIODQjeWJzeYYX22MCuEvrVYYO7rVkba6Jd
- vowu7eE75Mvuo9glCcCGk8HI1+ekCUY=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=fir0u+8ptlpf2CF197Bj8LY/8X91SvFC4TuyE/kpTSo=;
+ b=WGRsqXEPOOt6eOZwikI+WQObsZmnHJGJWT15Ht3U0Pajwv7cZzZ9K0cMhJkSBrYqGpPqxw
+ tA9MlVKqcaXWSBhfgVn/ypKGJgEg3rvGUqZZB3rJLnfFSLHPsexaFyIdifUZGIgWUx0aAZ
+ fBNky0NxK5bF0XO4hy2R8EFCnu5STK0=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-47-BCfykE_XO0uqv_nP199CCA-1; Wed, 11 Dec 2024 11:28:35 -0500
-X-MC-Unique: BCfykE_XO0uqv_nP199CCA-1
-X-Mimecast-MFC-AGG-ID: BCfykE_XO0uqv_nP199CCA
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-38639b4f19cso2567934f8f.0
- for <qemu-devel@nongnu.org>; Wed, 11 Dec 2024 08:28:35 -0800 (PST)
+ us-mta-189--K7pNdq0PqSwEOW5FIerOQ-1; Wed, 11 Dec 2024 11:28:37 -0500
+X-MC-Unique: -K7pNdq0PqSwEOW5FIerOQ-1
+X-Mimecast-MFC-AGG-ID: -K7pNdq0PqSwEOW5FIerOQ
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-4359eb032c9so16807975e9.2
+ for <qemu-devel@nongnu.org>; Wed, 11 Dec 2024 08:28:37 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733934514; x=1734539314;
+ d=1e100.net; s=20230601; t=1733934516; x=1734539316;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=5OIwR35d63e1rEw4wpchzcthjW0MxeFOPrWTnC7Wi88=;
- b=Vqf+EgPNshzxLgbzN+s2d798erHatUIDF9vOYgyS3xykFpynZzMK6B/NcHryQfWpS3
- kx5yYQhBkSU27bK/TPRYb0OgEC+D17KHvsE+q6aBwSeiAzYRCi0hqDXI1E1zsMNWid7S
- NZqqoeEy70nIplYsaU8H23rDaBuNqm/ji1rNNMbdXNq6n6hChH4TamgvD/kPKV/1GOM6
- HnARXLR73ne7C1cwRkF+v0D1aXd5stfpLBtlVlrWXIdqewsU//xmjnF2eAql+Aw96UyI
- YHlZ7Wd7gliQVeqsmCfs5Jro+YgTd/G6Q5hru//yNxZrjvq73s/9pwU6M22i2sw7TJmj
- djcg==
-X-Gm-Message-State: AOJu0YzgP7zrnqNXM5B4KihizVcZmTEXXzCAawTLjXdgpV1fd81DTGuG
- oqvAriV64szQA4kkH1VsyTV7YMhQDcBUlkfk1x6dzogxpx6ElC2eYaDOSrCWGaxG01IERjRALd0
- fOZ/74EIJokSnaMCsOpQvdgQ0umYNPooOFO8GK2Qu+K7RnkIWvuE8si5bSlESjEIpyc8L7iiCI9
- fylL4hdLWo6gAPulzgL/HJycRjJ/zePR94rXp0
-X-Gm-Gg: ASbGncsROq3+KYBSqQddFsXwQ1EX/cfJNbXsTWHrbulegcEDNTQbuCATce3lEO0QqwC
- 0uJPGyaHFpLUCcMQaZPXsPq1b5m3fDRTliwb5/I8C7xkehbtHWeR2dq2WdrpFFGTULGbr8xuZ4l
- G9K4QVj9Bj4fmruLERa+mqbGtkVLvoExOBzUIZWWdWTsy7JMEsS2V8RKWJ7MvPYfO0KWu1Bgn/r
- emI280ykaZzlL8rHcqD1INRilWcPfK0Od1gZTDOMx3h3PQZ1BGyAYRT
-X-Received: by 2002:a5d:47c9:0:b0:385:e2d5:cdf2 with SMTP id
- ffacd0b85a97d-3864ce96d24mr2798066f8f.19.1733934513809; 
- Wed, 11 Dec 2024 08:28:33 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IE7/QgjT1Pp9NCd7DV7Kt51LP7hQ4uWkoHPTs2nKS9PEidkIuOl+AQ8Hho/kCDMDXVOIP82oQ==
-X-Received: by 2002:a5d:47c9:0:b0:385:e2d5:cdf2 with SMTP id
- ffacd0b85a97d-3864ce96d24mr2798048f8f.19.1733934513406; 
- Wed, 11 Dec 2024 08:28:33 -0800 (PST)
+ bh=fir0u+8ptlpf2CF197Bj8LY/8X91SvFC4TuyE/kpTSo=;
+ b=Gy12X5ftyPxFNQ9QgshTeHWlyFwrIgimqHXkhUmb3X9Rd1zNv9AQ8+2XFOhNySLBvL
+ xYjOfKh/qC+lV24+Hj04UhBQnC7X38LLEYYYtRhc7b484wkp65xLD8CYEQyx9pgcMzYx
+ uG1dI9DQeV3QCmXEdruPtAtFy1Jpvj4ae326AqgdaHcyO8Vo6saNR9RGnBjXfnxZhvYQ
+ m2y31esO3WiSWxhFQGa9UkOUsZ72MpzA+SHRmx3tJZ+7sFYhzjjp7zNjgiHXMi+veamB
+ +wtRx1B/zF091IZtz1wufZv6TrTE6c0vXXiMrhZkEaJG8mUEyrqAc/F8/CZWCmkNvF3Q
+ 4C5g==
+X-Gm-Message-State: AOJu0Yw/GRp4LQ9GhbTLxN1dq7CBYoGFJqeL45bApNvWq1ZjaN8v2372
+ UUIdhzaoQagYmnp8Mwmt/5oZngN1B5gPgkOVD6JJrElAKTUdjRquiQQxhkFDexLQSAL2IQdOVEH
+ M0CiIF20n0js4Z+j3QZcfsH0TneV+1xWlNWqdWLVrtMwVl6YWkfgkCqcQ6J5Vi3c0GUxID97+U6
+ C+DZtlKPHr7sBCySWuoaliyOGKRTRKQYg8mE8S
+X-Gm-Gg: ASbGncsVFQy2sAufVGBQ2kH/riRkhATU8F8ZPS+pbv5tnfjV7KFh31/CUiDI0XblPvG
+ D0t1ocecbo4brYatRYQRb8HIoSHjf780fYTUFVsm8bWY4bFeukIBXlL2kHOT3lZ3j73bca164Le
+ YW+Mg5AX7K2GHotIcTzFKKszZrlxoSXkJhrVvw2CNl5p6j8DHgpCcGsTG6PDOwjfTi2xKYmh0e2
+ ILs/VEH5ZOhUj50uC0E31DDHYF/NFSdQAOvS0PfkCYSjUnSqUiDUlYX
+X-Received: by 2002:a5d:6d89:0:b0:385:f10a:335 with SMTP id
+ ffacd0b85a97d-3878768dc29mr173507f8f.21.1733934515769; 
+ Wed, 11 Dec 2024 08:28:35 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFjknTRrR32eQpKOFykRk7Mt96sKD5ztFpsNMc6XcY4rXEktA2XbAyEo9NNYvRP6l1Z77UdeQ==
+X-Received: by 2002:a5d:6d89:0:b0:385:f10a:335 with SMTP id
+ ffacd0b85a97d-3878768dc29mr173484f8f.21.1733934515238; 
+ Wed, 11 Dec 2024 08:28:35 -0800 (PST)
 Received: from [192.168.10.3] ([151.81.118.45])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38782514dadsm1614319f8f.68.2024.12.11.08.28.32
+ ffacd0b85a97d-387824a5005sm1631254f8f.41.2024.12.11.08.28.34
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 11 Dec 2024 08:28:32 -0800 (PST)
+ Wed, 11 Dec 2024 08:28:34 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL 30/49] target/sparc: Replace type_register() with
+Subject: [PULL 31/49] target/xtensa: Replace type_register() with
  type_register_static()
-Date: Wed, 11 Dec 2024 17:27:00 +0100
-Message-ID: <20241211162720.320070-31-pbonzini@redhat.com>
+Date: Wed, 11 Dec 2024 17:27:01 +0100
+Message-ID: <20241211162720.320070-32-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241211162720.320070-1-pbonzini@redhat.com>
 References: <20241211162720.320070-1-pbonzini@redhat.com>
@@ -113,22 +113,22 @@ type_register() will be deprecated.
 
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Link: https://lore.kernel.org/r/20241029085934.2799066-13-zhao1.liu@intel.com
+Link: https://lore.kernel.org/r/20241029085934.2799066-14-zhao1.liu@intel.com
 ---
- target/sparc/cpu.c | 2 +-
+ target/xtensa/helper.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/target/sparc/cpu.c b/target/sparc/cpu.c
-index dd7af86de73..adba24af2c6 100644
---- a/target/sparc/cpu.c
-+++ b/target/sparc/cpu.c
-@@ -1008,7 +1008,7 @@ static void sparc_register_cpudef_type(const struct sparc_def_t *def)
-         .class_data = (void *)def,
-     };
- 
--    type_register(&ti);
-+    type_register_static(&ti);
-     g_free(typename);
+diff --git a/target/xtensa/helper.c b/target/xtensa/helper.c
+index ca214b948a9..2978c471c1f 100644
+--- a/target/xtensa/helper.c
++++ b/target/xtensa/helper.c
+@@ -198,7 +198,7 @@ void xtensa_register_core(XtensaConfigList *node)
+     node->next = xtensa_cores;
+     xtensa_cores = node;
+     type.name = g_strdup_printf(XTENSA_CPU_TYPE_NAME("%s"), node->config->name);
+-    type_register(&type);
++    type_register_static(&type);
+     g_free((gpointer)type.name);
  }
  
 -- 
