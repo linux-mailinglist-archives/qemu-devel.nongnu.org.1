@@ -2,70 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E6AF9EC745
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Dec 2024 09:30:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C3019EC831
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Dec 2024 10:02:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tLI69-0001WR-0a; Wed, 11 Dec 2024 03:29:33 -0500
+	id 1tLIaB-0005rI-P1; Wed, 11 Dec 2024 04:00:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tLI67-0001WF-NF; Wed, 11 Dec 2024 03:29:31 -0500
-Received: from mgamail.intel.com ([198.175.65.14])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tLIa8-0005r7-3b
+ for qemu-devel@nongnu.org; Wed, 11 Dec 2024 04:00:32 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tLI61-0004f0-Ln; Wed, 11 Dec 2024 03:29:31 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1733905766; x=1765441766;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=fpdGrgg/u8jB2bTx3wdentdKExrhoV3HbZoCmgbv02Y=;
- b=IGWXVJUYikodIKWiO1AiQn/SUSoUnozCvP8fiYxIVrDJ2f+aTK9HS1XN
- r2WzuqZwhr2Exgt+eGzixomOz0oMqPWt4/xmNzDnMVUtGPUJvxLWuVTtT
- HjI/mJuyW6FzPtXk7i2GVFQp79+Lw84FsjBRzdczzrkWE9D236ikGMzAv
- 1oYM2JGj1TfZBBQKQkyuvcx7WkW4HP3gPHex9O8ZuulpnyKIQ04hQh+gt
- h626QiQx8D3rxJwM88OnHzmRMdlaGpG/tmhzBO4MI14MQjEZ3bDAHMFqa
- brCSGwAXKbJheWW2BmbvgH0ZtNbP5DoaF0MiylCt1zrJuWTYQvO7P1jK4 g==;
-X-CSE-ConnectionGUID: i8hmbTKwQ8GkkM5CXuOdZw==
-X-CSE-MsgGUID: +ZJfYn0HSaiqEtTaqDITmw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11282"; a="38059022"
-X-IronPort-AV: E=Sophos;i="6.12,225,1728975600"; d="scan'208";a="38059022"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
- by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Dec 2024 00:29:23 -0800
-X-CSE-ConnectionGUID: uQCvDu32T2efNr51pMD0LQ==
-X-CSE-MsgGUID: 5ZNBchjbS3ez3//O3IFNPQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,225,1728975600"; d="scan'208";a="96077937"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by fmviesa010.fm.intel.com with ESMTP; 11 Dec 2024 00:29:21 -0800
-Date: Wed, 11 Dec 2024 16:47:36 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org,
- Junjie Mao <junjie.mao@hotmail.com>
-Subject: Re: [PATCH 16/26] rust: qom: change the parent type to an associated
- type
-Message-ID: <Z1lRqJnB/o3UJ5q8@intel.com>
-References: <20241209123717.99077-1-pbonzini@redhat.com>
- <20241209123717.99077-17-pbonzini@redhat.com>
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tLIa4-0007p7-2M
+ for qemu-devel@nongnu.org; Wed, 11 Dec 2024 04:00:31 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1733907623;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=MaKWt+sa+9MTo4wMwi1e7BQIyjX/csXwGJl8YCq44Rk=;
+ b=bMWCvraWnOEN5VQze/Phq1twsWZP18DCi3QyrycfwizvraGj7CsTWFXaDqcyFTdDWkGDPk
+ XGnOqrJg4/a78CjyC5isQi7v3/zqYSnixGs1txyO61ctxaz5EzNzNYVAXQvtddXcFAGBRr
+ eSavACFPDy84CDso7WeOVuNyxcDBSuM=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-550-7DSoQknDOz6KyJCc3BhVHg-1; Wed,
+ 11 Dec 2024 04:00:20 -0500
+X-MC-Unique: 7DSoQknDOz6KyJCc3BhVHg-1
+X-Mimecast-MFC-AGG-ID: 7DSoQknDOz6KyJCc3BhVHg
+Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 543EC1955F3B; Wed, 11 Dec 2024 09:00:18 +0000 (UTC)
+Received: from thuth-p1g4.redhat.com (unknown [10.39.193.186])
+ by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 47BC51956094; Wed, 11 Dec 2024 09:00:15 +0000 (UTC)
+From: Thomas Huth <thuth@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Stefan Hajnoczi <stefanha@redhat.com>
+Subject: [PULL 00/26] First s390x and functional testing patches for v10.0
+Date: Wed, 11 Dec 2024 09:59:44 +0100
+Message-ID: <20241211090014.619351-1-thuth@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241209123717.99077-17-pbonzini@redhat.com>
-Received-SPF: pass client-ip=198.175.65.14; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -48
-X-Spam_score: -4.9
-X-Spam_bar: ----
-X-Spam_report: (-4.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.52,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -25
+X-Spam_score: -2.6
+X-Spam_bar: --
+X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.52,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,45 +79,133 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Dec 09, 2024 at 01:37:07PM +0100, Paolo Bonzini wrote:
-> Date: Mon,  9 Dec 2024 13:37:07 +0100
-> From: Paolo Bonzini <pbonzini@redhat.com>
-> Subject: [PATCH 16/26] rust: qom: change the parent type to an associated
->  type
-> X-Mailer: git-send-email 2.47.1
-> 
-> Avoid duplicated code to retrieve the QOM type strings from the
-> Rust type.
-> 
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> ---
->  rust/hw/char/pl011/src/device.rs | 6 ++++--
->  rust/qemu-api/src/definitions.rs | 8 ++------
->  rust/qemu-api/tests/tests.rs     | 3 +--
->  3 files changed, 7 insertions(+), 10 deletions(-)
-> 
+ Hi!
 
-...
-> @@ -76,11 +76,7 @@ pub trait ObjectImpl: ObjectType + ClassInitImpl {
->  
->      const TYPE_INFO: TypeInfo = TypeInfo {
->          name: Self::TYPE_NAME.as_ptr(),
-> -        parent: if let Some(pname) = Self::PARENT_TYPE_NAME {
-> -            pname.as_ptr()
-> -        } else {
-> -            core::ptr::null_mut()
-> -        },
-> +        parent: Self::ParentType::TYPE_NAME.as_ptr(),
+The following changes since commit ae35f033b874c627d81d51070187fbf55f0bf1a7:
 
-Object is implemented at C side, so at leaset the ParentType should be
-TYPE_OBJECT.
+  Update version for v9.2.0 release (2024-12-10 16:20:54 +0000)
 
->          instance_size: core::mem::size_of::<Self>(),
->          instance_align: core::mem::align_of::<Self>(),
->          instance_init: match Self::INSTANCE_INIT {
+are available in the Git repository at:
 
-Great!
+  https://gitlab.com/thuth/qemu.git tags/pull-request-2024-12-11
 
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+for you to fetch changes up to f29c96d0f5760f72220623500ee659f1fc2d1542:
+
+  tests/functional: remove pointless with statement (2024-12-11 09:19:12 +0100)
+
+----------------------------------------------------------------
+* Add compat machines for QEMU 10.0
+* Add s390x CPU model for the gen17 mainframe
+* Convert some more avocado tests to the new functional framework
+* Some minor clean-ups for functional tests
+
+----------------------------------------------------------------
+Cornelia Huck (1):
+      hw: add compat machines for 10.0
+
+Daniel P. Berrangé (4):
+      hw/i386: define _AS_LATEST() macros for machine types
+      docs: replace 'Edit on GitLab' with 'View page source'
+      tests/functional: remove unused system imports
+      tests/functional: remove pointless with statement
+
+Hendrik Brueckner (15):
+      s390x/cpumodel: add msa10 subfunctions
+      s390x/cpumodel: add msa11 subfunctions
+      s390x/cpumodel: add msa12 changes
+      s390x/cpumodel: add msa13 subfunctions
+      s390x/cpumodel: Add ptff Query Time-Stamp Event (QTSE) support
+      linux-headers: Update to Linux 6.13-rc1
+      s390x/cpumodel: add Concurrent-functions facility support
+      s390x/cpumodel: add Vector Enhancements facility 3
+      s390x/cpumodel: add Miscellaneous-Instruction-Extensions Facility 4
+      s390x/cpumodel: add Vector-Packed-Decimal-Enhancement facility 3
+      s390x/cpumodel: add Ineffective-nonconstrained-transaction facility
+      s390x/cpumodel: Add Sequential-Instruction-Fetching facility
+      s390x/cpumodel: correct PLO feature wording
+      s390x/cpumodel: Add PLO-extension facility
+      s390x/cpumodel: gen17 model
+
+Thomas Huth (6):
+      tests/functional: Bump the timeout of the sh4_tuxrun test
+      MAINTAINERS: Cover the tests/functional/test_sh4eb_r2d.py file
+      tests/functional: Convert the xlnx_versal_virt avocado test
+      tests/functional: Convert the emcraft_sf2 avocado test
+      tests/functional: Convert the smdkc210 avocado test
+      tests/functional: Convert the cubieboard avocado tests
+
+ MAINTAINERS                                    |   6 +-
+ docs/conf.py                                   |   2 +-
+ include/hw/boards.h                            |   3 +
+ include/hw/i386/pc.h                           |   7 +-
+ include/standard-headers/drm/drm_fourcc.h      |   1 +
+ include/standard-headers/linux/ethtool.h       |   5 +
+ include/standard-headers/linux/pci_regs.h      |  38 +++-
+ include/standard-headers/linux/virtio_crypto.h |   1 +
+ include/standard-headers/linux/virtio_pci.h    | 131 ++++++++++++
+ linux-headers/asm-arm64/kvm.h                  |   6 +
+ linux-headers/asm-arm64/unistd_64.h            |   4 +
+ linux-headers/asm-generic/mman-common.h        |   3 +
+ linux-headers/asm-generic/mman.h               |   4 +
+ linux-headers/asm-generic/unistd.h             |  11 +-
+ linux-headers/asm-loongarch/kvm.h              |  20 ++
+ linux-headers/asm-loongarch/unistd_64.h        |   4 +
+ linux-headers/asm-mips/mman.h                  |   3 +
+ linux-headers/asm-mips/unistd_n32.h            |   4 +
+ linux-headers/asm-mips/unistd_n64.h            |   4 +
+ linux-headers/asm-mips/unistd_o32.h            |   4 +
+ linux-headers/asm-powerpc/unistd_32.h          |   4 +
+ linux-headers/asm-powerpc/unistd_64.h          |   4 +
+ linux-headers/asm-riscv/kvm.h                  |   4 +
+ linux-headers/asm-riscv/unistd_32.h            |   4 +
+ linux-headers/asm-riscv/unistd_64.h            |   4 +
+ linux-headers/asm-s390/kvm.h                   |   3 +-
+ linux-headers/asm-s390/unistd_32.h             |   4 +
+ linux-headers/asm-s390/unistd_64.h             |   4 +
+ linux-headers/asm-x86/kvm.h                    |   1 +
+ linux-headers/asm-x86/mman.h                   |   3 -
+ linux-headers/asm-x86/unistd_32.h              |   4 +
+ linux-headers/asm-x86/unistd_64.h              |   4 +
+ linux-headers/asm-x86/unistd_x32.h             |   4 +
+ linux-headers/linux/iommufd.h                  | 224 +++++++++++++++++++-
+ linux-headers/linux/kvm.h                      |   8 +
+ linux-headers/linux/psci.h                     |   5 +
+ linux-headers/linux/vfio.h                     |   2 +-
+ target/s390x/cpu_features.h                    |   1 +
+ target/s390x/cpu_features_def.h.inc            |  94 ++++++++-
+ hw/arm/virt.c                                  |   9 +-
+ hw/core/machine.c                              |   3 +
+ hw/i386/pc.c                                   |   3 +
+ hw/i386/pc_piix.c                              |  20 +-
+ hw/i386/pc_q35.c                               |  20 +-
+ hw/m68k/virt.c                                 |   9 +-
+ hw/ppc/spapr.c                                 |  15 +-
+ hw/s390x/s390-virtio-ccw.c                     |  14 +-
+ target/s390x/cpu_features.c                    |  11 +
+ target/s390x/cpu_models.c                      |  61 ++++++
+ target/s390x/gen-features.c                    | 178 ++++++++++++++++
+ target/s390x/kvm/kvm.c                         |   6 +
+ tests/avocado/boot_linux_console.py            | 269 -------------------------
+ tests/functional/meson.build                   |   6 +
+ tests/functional/test_aarch64_sbsaref.py       |   1 -
+ tests/functional/test_aarch64_xlnx_versal.py   |  37 ++++
+ tests/functional/test_acpi_bits.py             |   1 -
+ tests/functional/test_arm_cubieboard.py        | 150 ++++++++++++++
+ tests/functional/test_arm_emcraft_sf2.py       |  52 +++++
+ tests/functional/test_arm_smdkc210.py          |  57 ++++++
+ tests/functional/test_m68k_mcf5208evb.py       |   2 -
+ tests/functional/test_microblaze_s3adsp1800.py |   1 -
+ tests/functional/test_mips64el_loongson3v.py   |   1 -
+ tests/functional/test_or1k_sim.py              |   2 -
+ tests/functional/test_ppc64_hv.py              |   7 +-
+ tests/functional/test_s390x_topology.py        |   1 -
+ tests/functional/test_sh4_tuxrun.py            |   4 -
+ tests/functional/test_sh4eb_r2d.py             |   1 -
+ tests/functional/test_virtio_version.py        |   2 -
+ 68 files changed, 1248 insertions(+), 337 deletions(-)
+ create mode 100755 tests/functional/test_aarch64_xlnx_versal.py
+ create mode 100755 tests/functional/test_arm_cubieboard.py
+ create mode 100755 tests/functional/test_arm_emcraft_sf2.py
+ create mode 100755 tests/functional/test_arm_smdkc210.py
 
 
