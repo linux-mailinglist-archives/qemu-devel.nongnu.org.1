@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69BBC9ED1B1
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Dec 2024 17:30:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA61D9ED1C0
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Dec 2024 17:30:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tLPSv-0001ud-Su; Wed, 11 Dec 2024 11:21:33 -0500
+	id 1tLPT0-0002Ii-FL; Wed, 11 Dec 2024 11:21:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tLPSj-0001KQ-R7
+ id 1tLPSj-0001KR-Sw
  for qemu-devel@nongnu.org; Wed, 11 Dec 2024 11:21:22 -0500
-Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tLPSh-0007tM-7w
- for qemu-devel@nongnu.org; Wed, 11 Dec 2024 11:21:20 -0500
-Received: by mail-wr1-x42c.google.com with SMTP id
- ffacd0b85a97d-385de9f789cso5071952f8f.2
- for <qemu-devel@nongnu.org>; Wed, 11 Dec 2024 08:21:18 -0800 (PST)
+ id 1tLPSh-0007tW-Vv
+ for qemu-devel@nongnu.org; Wed, 11 Dec 2024 11:21:21 -0500
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-434a1fe2b43so69482675e9.2
+ for <qemu-devel@nongnu.org>; Wed, 11 Dec 2024 08:21:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1733934077; x=1734538877; darn=nongnu.org;
+ d=linaro.org; s=google; t=1733934078; x=1734538878; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=WxD1Jy1Rj/MBN3Hz79N9s4ZRpfmRU1nfzEotTIZVleI=;
- b=AhFQRpGqNnV7KIPPWT7WPsjPrqv9aaX9HuPZgTWKNR7f7/Vmjgoh2VztIu29Aq+umT
- YNjEJBGczDBNu5P+my/6g0jSLkyDPy9gQzWM789QJbgvH1GJZlMBHHdGNG8zaZf6VKmY
- hrktZ4gxmQl8axeSYmxVj/0keXu8dDdCYsYYjxvhlk8knbsLus9yfVtTchmZRrRpHgkA
- MDUq/mssszXezpUWAnji3jPidXQ/1oCLl/YJsyMA1AEWl/d4AshKWj05mpp9ImnnszFf
- WZs9evoiOU8Os4oAWOgqd41DQfHuW5bNMVvEWmHUn55byVHg6LAUeAjgJjt13/sin4zd
- mHkQ==
+ :reply-to; bh=EDkpBBfEr+kYrGwFggLG/G/iyWn141UY3RpqFYSFXYw=;
+ b=klx1dFC9ul4A6G3k2rWIk7sSgSDcxcYfQO689lQz8UYWpikXkNiIig9TnFMayJ3cFr
+ 8kRv2ZvCaSexkWPApOC0dUPv5TXIKha9djnSiKlLVsO5buycbzfaTxkqKagPs6lFAQNP
+ zH0uI12ir8py2j5XfCHiaRgq3xDUudI14enSNQXJyuFFcxAii4bG1lwEKNtBd0+HM40b
+ 4Xz8D0xOJz1DtIxo5f7iDqAP9xBJAulMC0duE7tNHjgEtXMZaTGuyUsUm+lYHL9W7kKy
+ OHw7nT8/NBwjPVjhmgr4m/AzfAKRq0v7bTP7kv/JXRSs/M/27zK1EYrBD0SwsceukfiZ
+ iY+Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733934077; x=1734538877;
+ d=1e100.net; s=20230601; t=1733934078; x=1734538878;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=WxD1Jy1Rj/MBN3Hz79N9s4ZRpfmRU1nfzEotTIZVleI=;
- b=jKq0ImaO/r6IKQbi+4FiQdTLi2nFilzgWMdLlS55rUW+ZTdDZDh7py8g112B2AgwSH
- qrLtcyv9CHQBwsaeAKz9bhfqDSY4BSQcGQlsDPNWvK3HGpy99LuXx5FT4rgmWhUqH5NL
- Hg/kJtpQbhbwovO70PQDnnDOCLR09eQKaIzrZWJFxAgozIbBmnhhH5F0kad2FgFEH+Zp
- HFhs0VEiX1l88zc6myLiCeCsKTEgumNcI3Mi6+L6br4gpEEv2m7j0biOLBG+Rp+rQcQe
- UxMSCE4VOYedenSgNYcjzXNk+rKclFl6hEjkmkj+5lXkFhtGu9XnN20Uk/dGYHcU1eer
- LtSQ==
-X-Gm-Message-State: AOJu0YyHG82to6xGuMibcOi9F1L/iUqv+/07iuZo5KEprdPtIT/TsW3s
- uXm/AhUaEoOIYsqLeDD1gzy7gO+vrngg59cvvz0eQRaXoMj6PE7LayEsCetwXb5pQ3TiLtvrbcN
- X
-X-Gm-Gg: ASbGncvjLzSvimtoh2zN3MUoJcL2eBLHlCQkQkf6h8174C/JQHIYnrejI7OxLz32MVa
- TEv5GX1Wxt+X4H+IzLMZIiHWAqL3Z+30PLOyFPRcvyBbEG6YZrd2j8hE287guLlNsBsNN5AI0os
- h29at347T7KMnhwSTbs57727EqzlJ8LBoOQwXRhDhGeFD9Xe/C98VPq0OISGJv/ulZsGFfBZ7Ph
- 3AM9ANhqhrHWrcVmW2VNrgXkkTU42UaXJ+mN6CdgKCPHd4EIQbXMlwbYcHD
-X-Google-Smtp-Source: AGHT+IFRVEvVm30fL3SZv4nPO+1EtSnuPt2UB/IKrWSxjSBSTTiCPzmfPiWoN3DUm7kK+15GtsTg1A==
-X-Received: by 2002:adf:e181:0:b0:385:edd1:2249 with SMTP id
- ffacd0b85a97d-387876c4969mr189948f8f.50.1733934077631; 
- Wed, 11 Dec 2024 08:21:17 -0800 (PST)
+ bh=EDkpBBfEr+kYrGwFggLG/G/iyWn141UY3RpqFYSFXYw=;
+ b=wDr/9IqGlTQqozG8Dj6hutXU7VLZ2uOZT2FagFtlKV9ir4JPAyQ3OhlXkD60qpuQGb
+ hCMsg9x/PPjJ3sEJrWzDnT79/rTtl75QfHHHmF82bYn5me5g7sJVRZL1igm9z/N6wtuD
+ /gOjayCduFeIK7GWuKOn8Uk/kw6XqJ//D+4rVAhPSh8H44DZ8Aaa4SIawkWb5Ws94WYF
+ BrI4pST2D6VkJ+GMUj8Rr1xtBREJVeUbnwiikva0X5jIirstmALvmY09lLZKXc54Jsa4
+ NiSJ5dvrreMi+R1N+YbZOIRjvF+3u8r3UzCgMOw+sIMfdZDIs6znoB3SQN96vPJ2nu+Q
+ jotg==
+X-Gm-Message-State: AOJu0YxA3hiQPoNu0zGL5BuqJJxX75c6cMMySUmaYLgFlge/CuQ0Y8wv
+ XEcDO3AcnDgw1sl4VO+LW09Lf168sjfVETErZ++4nC/r8+tDVK4UARIbfL0rsRdRsgLe5GtBFSX
+ h
+X-Gm-Gg: ASbGncumXP3uCAiLmmEXlniZ80kmrLU+4bCnZh2YytARrLF3z3Ao+Wyq41rnZbiWdru
+ vAQijd3dFeANa9aY8QZSL5TVpVBqYMvn9CPgCE9tiETPq8UM52k6NbTcQYo+yKkqxL1yJiQztKI
+ dRjccsl6d/Q7aIr+9sSxWDR6w1q/Ayur3JBT++DnVE4DB8WAybAj9Z3oPd6f1DsyM3jvVGbS06Q
+ vRP700Sf/5OWwuoBhfchSV42hhzFDBJG/XckWQuYPfVInP4O+WOdzyop1PB
+X-Google-Smtp-Source: AGHT+IEBh7JDFK4baUzCNTc44sra/iizHxCa+p1nG9iADdYhnx55x/ba1xQzaTyvcF4fwWsLzjdSWA==
+X-Received: by 2002:a05:600c:19ca:b0:434:f819:251a with SMTP id
+ 5b1f17b1804b1-4362282ab8emr3245905e9.9.1733934078582; 
+ Wed, 11 Dec 2024 08:21:18 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-434f4dfdcdfsm121460595e9.39.2024.12.11.08.21.16
+ 5b1f17b1804b1-434f4dfdcdfsm121460595e9.39.2024.12.11.08.21.17
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 11 Dec 2024 08:21:16 -0800 (PST)
+ Wed, 11 Dec 2024 08:21:17 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 63/72] softfloat: Remove which from parts_pick_nan_muladd
-Date: Wed, 11 Dec 2024 16:19:55 +0000
-Message-Id: <20241211162004.2795499-64-peter.maydell@linaro.org>
+Subject: [PULL 64/72] softfloat: Pad array size in pick_nan_muladd
+Date: Wed, 11 Dec 2024 16:19:56 +0000
+Message-Id: <20241211162004.2795499-65-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241211162004.2795499-1-peter.maydell@linaro.org>
 References: <20241211162004.2795499-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,84 +98,32 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Richard Henderson <richard.henderson@linaro.org>
 
-Assign the pointer return value to 'a' directly,
-rather than going through an intermediary index.
+While all indices into val[] should be in [0-2], the mask
+applied is two bits.  To help static analysis see there is
+no possibility of read beyond the end of the array, pad the
+array to 4 entries, with the final being (implicitly) NULL.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-id: 20241203203949.483774-5-richard.henderson@linaro.org
+Message-id: 20241203203949.483774-6-richard.henderson@linaro.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- fpu/softfloat-parts.c.inc | 32 ++++++++++----------------------
- 1 file changed, 10 insertions(+), 22 deletions(-)
+ fpu/softfloat-parts.c.inc | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/fpu/softfloat-parts.c.inc b/fpu/softfloat-parts.c.inc
-index be7e93127d4..525db617411 100644
+index 525db617411..5fcdbc87fd7 100644
 --- a/fpu/softfloat-parts.c.inc
 +++ b/fpu/softfloat-parts.c.inc
-@@ -65,9 +65,9 @@ static FloatPartsN *partsN(pick_nan_muladd)(FloatPartsN *a, FloatPartsN *b,
-                                             FloatPartsN *c, float_status *s,
-                                             int ab_mask, int abc_mask)
- {
--    int which;
-     bool infzero = (ab_mask == float_cmask_infzero);
-     bool have_snan = (abc_mask & float_cmask_snan);
-+    FloatPartsN *ret;
- 
-     if (unlikely(have_snan)) {
-         float_raise(float_flag_invalid | float_flag_invalid_snan, s);
-@@ -104,42 +104,30 @@ static FloatPartsN *partsN(pick_nan_muladd)(FloatPartsN *a, FloatPartsN *b,
-         default:
-             g_assert_not_reached();
+@@ -106,7 +106,7 @@ static FloatPartsN *partsN(pick_nan_muladd)(FloatPartsN *a, FloatPartsN *b,
          }
--        which = 2;
-+        ret = c;
+         ret = c;
      } else {
--        FloatClass cls[3] = { a->cls, b->cls, c->cls };
-+        FloatPartsN *val[3] = { a, b, c };
+-        FloatPartsN *val[3] = { a, b, c };
++        FloatPartsN *val[R_3NAN_1ST_MASK + 1] = { a, b, c };
          Float3NaNPropRule rule = s->float_3nan_prop_rule;
  
          assert(rule != float_3nan_prop_none);
-         if (have_snan && (rule & R_3NAN_SNAN_MASK)) {
-             /* We have at least one SNaN input and should prefer it */
-             do {
--                which = rule & R_3NAN_1ST_MASK;
-+                ret = val[rule & R_3NAN_1ST_MASK];
-                 rule >>= R_3NAN_1ST_LENGTH;
--            } while (!is_snan(cls[which]));
-+            } while (!is_snan(ret->cls));
-         } else {
-             do {
--                which = rule & R_3NAN_1ST_MASK;
-+                ret = val[rule & R_3NAN_1ST_MASK];
-                 rule >>= R_3NAN_1ST_LENGTH;
--            } while (!is_nan(cls[which]));
-+            } while (!is_nan(ret->cls));
-         }
-     }
- 
--    switch (which) {
--    case 0:
--        break;
--    case 1:
--        a = b;
--        break;
--    case 2:
--        a = c;
--        break;
--    default:
--        g_assert_not_reached();
-+    if (is_snan(ret->cls)) {
-+        parts_silence_nan(ret, s);
-     }
--    if (is_snan(a->cls)) {
--        parts_silence_nan(a, s);
--    }
--    return a;
-+    return ret;
- 
-  default_nan:
-     parts_default_nan(a, s);
 -- 
 2.34.1
 
