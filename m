@@ -2,101 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E2779ECF82
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Dec 2024 16:18:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 15DA19ECF87
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Dec 2024 16:20:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tLOTb-0000IK-UD; Wed, 11 Dec 2024 10:18:12 -0500
+	id 1tLOVX-00022V-KK; Wed, 11 Dec 2024 10:20:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjrosato@linux.ibm.com>)
- id 1tLOTK-0000HA-6S; Wed, 11 Dec 2024 10:17:55 -0500
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjrosato@linux.ibm.com>)
- id 1tLOTI-0007j2-DR; Wed, 11 Dec 2024 10:17:53 -0500
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BBCqAMN007279;
- Wed, 11 Dec 2024 15:17:48 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=pp1; bh=x/Qyeh
- RfoalIw5pgygEv6C5tvbp8dNhSJSB6tJ3cBaY=; b=bRhfw6CRR5XpTdgVozasoz
- 7mq9SWHaNg8ai1q/VKP0/tiUdwUjpBMVv8c5wt51lMwRSIJuiusblsFE/sqXYgE1
- naZrvYt0mt5NQ7WAipej1ePBUFv0c2rko2BV7TwEiXOu5k49fk6JKdiu8MTtmnzh
- ZUlZ6wzvHyvLmEq6Ht3OuRk2N3CeD+snzCrD6BlMJz3EZij4i4Ei/OKGOsQ11QIp
- tWTSvgmb7McD7XXaPSBh4TACQGLh2fzp2U0XctrD7aD5caRnhLFVcnJ8k9vw10n7
- D3FvwoJ/V18yNiicJMv0Oo9xaEKjPmSBQ2WV6Qn6+Vuu0NMF//IfPHCVBIpDAM+A
- ==
-Received: from ppma21.wdc07v.mail.ibm.com
- (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 43cdv8x42s-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 11 Dec 2024 15:17:47 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4BBD91m1032496;
- Wed, 11 Dec 2024 15:17:46 GMT
-Received: from smtprelay05.dal12v.mail.ibm.com ([172.16.1.7])
- by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 43d1pna4v4-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 11 Dec 2024 15:17:46 +0000
-Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com
- [10.39.53.228])
- by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 4BBFHi4r6357748
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 11 Dec 2024 15:17:45 GMT
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D9AFA58055;
- Wed, 11 Dec 2024 15:17:44 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8A9AC5804B;
- Wed, 11 Dec 2024 15:17:43 +0000 (GMT)
-Received: from [9.61.107.222] (unknown [9.61.107.222])
- by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Wed, 11 Dec 2024 15:17:43 +0000 (GMT)
-Message-ID: <9f97d172-15c2-4253-9450-7cfc9ffb4ce5@linux.ibm.com>
-Date: Wed, 11 Dec 2024 10:17:42 -0500
+ (Exim 4.90_1) (envelope-from <frank.chang@sifive.com>)
+ id 1tLOVL-00021a-Vi
+ for qemu-devel@nongnu.org; Wed, 11 Dec 2024 10:20:00 -0500
+Received: from mail-lf1-x12a.google.com ([2a00:1450:4864:20::12a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <frank.chang@sifive.com>)
+ id 1tLOVJ-0007qK-Gk
+ for qemu-devel@nongnu.org; Wed, 11 Dec 2024 10:19:59 -0500
+Received: by mail-lf1-x12a.google.com with SMTP id
+ 2adb3069b0e04-53e3a90336eso4460968e87.3
+ for <qemu-devel@nongnu.org>; Wed, 11 Dec 2024 07:19:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=sifive.com; s=google; t=1733930393; x=1734535193; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=TL4gQ2fEGCLHdGfGn5WYkqO+iCyJSpSvK12PkwjzyPY=;
+ b=eO/sb7Y9xogkmAA2ox/BDRZoFV9LdUj32UQxilubRUZIzVao1Ec8SS2j/IzB65CSba
+ dEP/8XVkmkuxBo327VhUvjk378nVpsH8lacHCqiuWp0KrbS7tqb8MsAIrI/VykemFQzr
+ CZJWga4Bdvop9CF4v8ZsxBKaSJagcwLWt9cnFHSYQegELkcfh+0iaYFhhZafbyFU+gAY
+ MX6EBpDDa7NC4gww3RX4kr6sUwpxuTbYOGfCXAm2r0SeHXtBaUdroEUrdGGV4bBOBhC9
+ G9KbKw3hb6WsXMu1BcVCTm0QbvM5zdN+Vtz6cRDo+ojuusJiIV6KJcRzf/DJKjgH0Jo4
+ AfNw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1733930393; x=1734535193;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=TL4gQ2fEGCLHdGfGn5WYkqO+iCyJSpSvK12PkwjzyPY=;
+ b=p+gGuomvuXmvNYbqdsQRZFMhSgRla786F7MTuEkzrqpTrRoQ15cS1zF7LoKjzd/OT9
+ Kvt3f+NrqHDgzpKWUGvPT41G9yieMOArb1inrtFgpdnNfdcwFRhmLTR6MOQJmnsCiJ6l
+ oqiv+uzDzvPrCesG/v8LEjs5u48c7CAY7Lc1mDZ6XpHnIAhwHLGG0ORA5fYh0nIxtegs
+ i41QpOwxcTfCGhIBL3iPLU/xP8lcj6YIdltXPTsbScmn2+joUZ0M0V9QxcJoTj/YELrT
+ ZuDhjUq4y2mJ4uMxowSv0lt7LxXJ/oQVnvS5LNXzle7M46YDCCj/EPeCnhbWyCT+S0k+
+ QY0Q==
+X-Gm-Message-State: AOJu0YwIY4Cbm4GsYxTlYEdOWZewISSoKrNcSnSKkmsUJIrXMtJ5U89z
+ v5mnJIBd8GDhbP+jYf231M2642ATQ25Y9I6oP8/DuudItcuFsFHLiIg4Vy4v5o1tS9aDYxSslwI
+ B12hXyBPFQTuwbX25MAhdVy6G2wR0Im+IGJSxcUCAu/0JSWAJz52MbR0FRK/TGAAR8B4b3oke7j
+ rXlqrR3SyXE9GKpZ/GKQRK+z5x0HMalliygM7C3TZcEkNvGb8=
+X-Gm-Gg: ASbGncupBR9bJXx+FvDQLVltn7PDw8fUaJAa0OKr6qLiXi9YnRp1UMeBwZTNAqZmcUM
+ f1ow5kyQkCYkB9ymGJkPJc0FADRRHbSRulNjlH+SGdh7euSAAGijZsXTyPqMD63ulA9BD9/lHDg
+ TIrFBimPlsIJhrZQNVHBU4t7b8p7FPuPGBJDhCOo1y1lAPXp+rxDaDcHJkU/gf/0uhHbNKDisEp
+ VJiPEmBidgjaoI3vRcQ0LKz0Cm6ui11bqjdabvN7SbeLAb4F2/Ak80jiUd1gBMc6hXOsOdDEkHK
+ 5SY3OKMSe8XcVJk3lvM=
+X-Google-Smtp-Source: AGHT+IF4KARwDF54ch042fB8IxyidvlCD6qWOtZGaDv/mlevbKVZSD2+1m5+Mitn+678D4orEAyikA==
+X-Received: by 2002:a05:6512:1095:b0:540:1b2d:8ef3 with SMTP id
+ 2adb3069b0e04-5402a609b7cmr1092783e87.52.1733930393131; 
+ Wed, 11 Dec 2024 07:19:53 -0800 (PST)
+Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com.
+ [209.85.167.50]) by smtp.gmail.com with ESMTPSA id
+ 2adb3069b0e04-54019e628a9sm1335617e87.106.2024.12.11.07.19.52
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 11 Dec 2024 07:19:52 -0800 (PST)
+Received: by mail-lf1-f50.google.com with SMTP id
+ 2adb3069b0e04-540218726d5so2963380e87.2; 
+ Wed, 11 Dec 2024 07:19:52 -0800 (PST)
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXVwR0CWqXcA7ZVYtk+j/vMJevQ92/yuarDpvGbQObGSPNHDsjdlJJR4Sn5UoHnO+et4VyjaSqV93Vs@nongnu.org
+X-Received: by 2002:a05:6512:12c5:b0:540:1fcd:1d8d with SMTP id
+ 2adb3069b0e04-5402a60a1b0mr857674e87.57.1733930392090; Wed, 11 Dec 2024
+ 07:19:52 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] s390x/pci: add support for guests that request direct
- mapping
-To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clegoate@redhat.com>,
- qemu-s390x@nongnu.org
-Cc: farman@linux.ibm.com, schnelle@linux.ibm.com, thuth@redhat.com,
- pasic@linux.ibm.com, borntraeger@linux.ibm.com,
- richard.henderson@linaro.org, david@redhat.com, iii@linux.ibm.com,
- qemu-devel@nongnu.org
-References: <20241209192927.107503-1-mjrosato@linux.ibm.com>
- <20241209192927.107503-2-mjrosato@linux.ibm.com>
- <cc6d2f65-1d71-4a78-9a9a-0fe7d16957d5@redhat.com>
-Content-Language: en-US
-From: Matthew Rosato <mjrosato@linux.ibm.com>
-In-Reply-To: <cc6d2f65-1d71-4a78-9a9a-0fe7d16957d5@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 724mf47xns8goCPGMCIl0tZCCNh2hhF3
-X-Proofpoint-ORIG-GUID: 724mf47xns8goCPGMCIl0tZCCNh2hhF3
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- impostorscore=0 lowpriorityscore=0 spamscore=0 clxscore=1015 mlxscore=0
- malwarescore=0 adultscore=0 phishscore=0 suspectscore=0 mlxlogscore=883
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2411120000 definitions=main-2412110108
-Received-SPF: pass client-ip=148.163.156.1;
- envelope-from=mjrosato@linux.ibm.com; helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
+References: <20241122032217.3816540-1-frank.chang@sifive.com>
+In-Reply-To: <20241122032217.3816540-1-frank.chang@sifive.com>
+From: Frank Chang <frank.chang@sifive.com>
+Date: Wed, 11 Dec 2024 23:19:40 +0800
+X-Gmail-Original-Message-ID: <CANzO1D0aoM3YH-2FFzs4N7_C7Ev-1WxAqeUgjjYV7=ztdMsBug@mail.gmail.com>
+Message-ID: <CANzO1D0aoM3YH-2FFzs4N7_C7Ev-1WxAqeUgjjYV7=ztdMsBug@mail.gmail.com>
+Subject: Re: [PATCH v9 0/6] Add Smrnmi support
+To: frank.chang@sifive.com
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::12a;
+ envelope-from=frank.chang@sifive.com; helo=mail-lf1-x12a.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H2=-0.001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -113,57 +107,155 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/11/24 9:40 AM, Cédric Le Goater wrote:
-> On 12/9/24 20:29, Matthew Rosato wrote:
+Hi,
 
->>   static int reg_ioat(CPUS390XState *env, S390PCIBusDevice *pbdev, ZpciFib fib,
->>                       uintptr_t ra)
->>   {
->> @@ -1008,7 +1036,7 @@ static int reg_ioat(CPUS390XState *env, S390PCIBusDevice *pbdev, ZpciFib fib,
->>       }
->>         /* currently we only support designation type 1 with translation */
->> -    if (!(dt == ZPCI_IOTA_RTTO && t)) {
->> +    if (t && !(dt == ZPCI_IOTA_RTTO)) {
-> 
-> Is this change part of the patchset ? It looks like some other issue.
-> I might be wrong.
-> 
+A gentle ping on this.
 
-Definitely part of this patch.
-Before we only allow a single type of translation request from the guest.  So, guest needed to be requesting translation (t) and it had to be of a certain type (dt==ZPCI_IOTA_RTTO) else we fail.
-Now we are allowing either that same single translation type (so t && dt==ZPCI_IOTA_RTTO) OR no translation (!t).  So it becomes valid to have (!t) but still invalid to have (t) with any other dt value besides (dt==ZPCI_IOTA_RTTO), hence the new check.
+Regards,
+Frank Chang
 
->>           error_report("unsupported ioat dt %d t %d", dt, t);
->>           s390_program_interrupt(env, PGM_OPERAND, ra);
->>           return -EINVAL;
->> @@ -1018,13 +1046,23 @@ static int reg_ioat(CPUS390XState *env, S390PCIBusDevice *pbdev, ZpciFib fib,
->>       iommu->pal = pal;
->>       iommu->g_iota = g_iota;
->>   -    s390_pci_iommu_enable(iommu);
->> +    if (t) {
->> +        s390_pci_iommu_enable(iommu);
->> +    } else {
->> +        s390_pci_iommu_dm_enable(iommu);
->> +        /* If not translating, map everything now */
->> +        s390_pci_setup_stage2_map(iommu);
->> +    }
-> 
-> 
-> I don't understand how we can enter "map everything" case.
-> Could you explain a bit more the scenario ?
-> 
+<frank.chang@sifive.com> =E6=96=BC 2024=E5=B9=B411=E6=9C=8822=E6=97=A5 =E9=
+=80=B1=E4=BA=94 =E4=B8=8A=E5=8D=8811:23=E5=AF=AB=E9=81=93=EF=BC=9A
 
-Sure, this actually relates directly to the check I discussed up above...
-
-Before, we would only ever accept a guest MPCIFC instruction of type ZPCI_MOD_FC_REG_IOAT that specified "designation type 1 with translation".  All else would be rejected.
-Now, we would accept either the above OR a guest MPCIFC instruction that specifies "no translation" - this is the case that gets us into the "map everything" scenario.
-
-Patch 2 adds a CLP indication that we advertise to the guest that tells them whether or not the device group in question supports the "map everything case", so it's safe/allowable to issue a MPCIFC instruction that specifies "no translation" to a device in that group.
-
-The referenced kernel series in the cover letter implements the linux guest behavior necessary to exploit this "no translation" case via the optional kernel parameter iommu.passthrough=1.  
-
-Hope that helps,
-Matt
-
-
+>
+> From: Frank Chang <frank.chang@sifive.com>
+>
+> This patchset added support for Smrnmi Extension in RISC-V.
+>
+> There are four new CSRs and one new instruction added to allow NMI to be
+> resumable in RISC-V, which are:
+>
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>   * mnscratch (0x740)
+>   * mnepc     (0x741)
+>   * mncause   (0x742)
+>   * mnstatus  (0x744)
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>   * mnret: To return from RNMI interrupt/exception handler.
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>
+> RNMI also has higher priority than any other interrupts or exceptions
+> and cannot be disabled by software.
+>
+> RNMI may be used to route to other devices such as Bus Error Unit or
+> Watchdog Timer in the future.
+>
+> The interrupt/exception trap handler addresses of RNMI are
+> implementation defined.
+>
+> If anyone wants to test the patches, we can use the customized OpenSBI[1]=
+,
+> and the customized QEMU[2].
+>
+> We implemented a PoC RNMI trap handler in the customized OpenSBI.
+> In the customized QEMU, we use the Smrnmi patches and the patch from
+> Damien Hedde[3]. The patch from Damien Hedde can be used to inject
+> the RNMI signal with the qmp command.
+>
+> [1] https://github.com/TommyWu-fdgkhdkgh/opensbi/tree/dev/twu/master
+> [2] https://github.com/sifive/qemu/tree/upstream-smrnmi-v8
+> [3] https://lists.gnu.org/archive/html/qemu-devel/2019-06/msg06232.html
+>
+> Test commands :
+> $ ./build/qemu-system-riscv64 -M virt -cpu rv64,smrnmi=3Dtrue,
+> rnmi-interrupt-vector=3D{Offset of the RNMI handler in the customized
+> OpenSBI.} -m 4G -smp 2 -serial mon:stdio -serial null -nographic
+> -bios fw_jump.elf -kernel Image -initrd rootfs.cpio
+> -qmp unix:/tmp/qmp-sock,server,wait=3Doff
+>
+> Use qmp command to inject the RNMI.
+>
+> Assert RNMI:
+> $ ./scripts/qmp/qmp-shell /tmp/qmp-sock
+> (QEMU) gpio-set path=3D/machine/soc0/harts[0] gpio=3Driscv.cpu.rnmi numbe=
+r=3D0 value=3Dtrue
+>
+> De-assert RNMI:
+> (QEMU) gpio-set path=3D/machine/soc0/harts[0] gpio=3Driscv.cpu.rnmi numbe=
+r=3D0 value=3Dfalse
+>
+> Changelog:
+>
+> v9
+>   * Add Zicfilp support for Smrnmi.
+>   * Change the existence checks for 'rnmi-interrupt-vector' and
+>     'rnmi-exception-vector' to use 'num_rnmi_irqvec' and 'num_rnmi_excpve=
+c'.
+>   * Add warn_once messages for cases where the user sets
+>     'rnmi-interrupt-vector' or 'rnmi-exception-vector' property without
+>     enabling Smrnmi.
+>
+> v8
+>   * Set virt to false when trapping to M-mode by RNMI.
+>   (Thanks to Cl=C3=A9ment for the suggestions.)
+>
+> v7
+>   * Rename 'nmi_execp' to 'nnmi_excep' and refactor RNMI exception
+>     checking codes.
+>   (Thanks to Cl=C3=A9ment for the suggestions.)
+>   * Add the missing REQUIRE_SMRNMI() check and remove the redundant
+>     check in 'helper_mnret'.
+>   * Rebase to riscv-to-apply.next.
+>   (Thanks to Alistair for the suggestions.)
+>
+> v6
+>   * Delete the redundant code in 'riscv_cpu_do_interrupt'.
+>   (Thank Alvin for the suggestion.)
+>   * Split the shared code in 'helper_mret' and 'helper_mnret' into a
+>     helper function 'check_ret_from_m_mode'.
+>   (Thank Alistair for the suggestion.)
+>
+> v5
+>   * Move the patch that adds the Smrnmi extension to the last patch.
+>   (Thank Alistair for the suggestion.)
+>   * Implement an M-mode software PoC for this with implemented handlers.
+>   (Thank Andrew Jones for the suggestion.)
+>   * Add a commit message to all patches of the series.
+>   (Thank Andrew Jones for the suggestion.)
+>
+> v4
+>   * Fix some coding style issues.
+>   (Thank Daniel for the suggestions.)
+>
+> v3
+>   * Update to the newest version of Smrnmi extension specification.
+>
+> v2
+>   * split up the series into more commits for convenience of review.
+>   * add missing rnmi_irqvec and rnmi_excpvec properties to riscv_harts.
+>
+> Frank Chang (1):
+>   target/riscv: Add Zicfilp support for Smrnmi
+>
+> Tommy Wu (5):
+>   target/riscv: Add 'ext_smrnmi' in the RISCVCPUConfig
+>   target/riscv: Add Smrnmi CSRs
+>   target/riscv: Handle Smrnmi interrupt and exception
+>   target/riscv: Add Smrnmi mnret instruction
+>   target/riscv: Add Smrnmi cpu extension
+>
+>  hw/riscv/riscv_hart.c                         | 40 ++++++++
+>  include/hw/riscv/riscv_hart.h                 |  4 +
+>  target/riscv/cpu.c                            | 18 ++++
+>  target/riscv/cpu.h                            | 10 ++
+>  target/riscv/cpu_bits.h                       | 24 +++++
+>  target/riscv/cpu_cfg.h                        |  1 +
+>  target/riscv/cpu_helper.c                     | 96 +++++++++++++++++--
+>  target/riscv/csr.c                            | 82 ++++++++++++++++
+>  target/riscv/helper.h                         |  1 +
+>  target/riscv/insn32.decode                    |  3 +
+>  .../riscv/insn_trans/trans_privileged.c.inc   | 20 ++++
+>  target/riscv/op_helper.c                      | 54 ++++++++++-
+>  12 files changed, 342 insertions(+), 11 deletions(-)
+>
+> --
+> 2.34.1
+>
+>
 
