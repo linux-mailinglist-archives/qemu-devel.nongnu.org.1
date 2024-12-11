@@ -2,81 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75F109EDAD5
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Dec 2024 00:05:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C68B9EDADE
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Dec 2024 00:06:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tLVki-0002uC-2E; Wed, 11 Dec 2024 18:04:20 -0500
+	id 1tLVko-0002zU-0j; Wed, 11 Dec 2024 18:04:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tLVkg-0002tH-08
- for qemu-devel@nongnu.org; Wed, 11 Dec 2024 18:04:18 -0500
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tLVkl-0002yC-S6
+ for qemu-devel@nongnu.org; Wed, 11 Dec 2024 18:04:23 -0500
+Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tLVkd-0001xt-Rf
- for qemu-devel@nongnu.org; Wed, 11 Dec 2024 18:04:17 -0500
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-434a736518eso81064555e9.1
- for <qemu-devel@nongnu.org>; Wed, 11 Dec 2024 15:04:15 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tLVkj-00020r-JT
+ for qemu-devel@nongnu.org; Wed, 11 Dec 2024 18:04:23 -0500
+Received: by mail-wr1-x431.google.com with SMTP id
+ ffacd0b85a97d-3862b364538so4192f8f.1
+ for <qemu-devel@nongnu.org>; Wed, 11 Dec 2024 15:04:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1733958254; x=1734563054; darn=nongnu.org;
+ d=linaro.org; s=google; t=1733958259; x=1734563059; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=VCHSGNyFv8LSm9JlTuEHKD53SXdp1uauhC0W87/H+/o=;
- b=YywzPHbWUWQp+LriOA1CcyVn2HTyfr2hPLLOv8gtwPo1GCVfVn15ZM0fjBtpQsl4Rf
- CFVhPETVF5/EJHfjaHmlmx6IxJO2QqTUXj+AChr8oscMXJCLV2UHthyvL2ifbSOmaZrH
- qK1OsWkF+3mTocxJQpLBoZ0QF/UYZJsEwg5alQA6/msC9EPFS/zpm7vvZilPhjJPmS3i
- LEOYYTLT2GiI7htjI7Ab0SBgzBHNUDBIECHFf3z9p6vZt1nMEYEZ17BYng7HSaXvsB33
- HdMUio5oAKzcU+TF3EAGvJMF84c33J1yFTDiM9j/7IZJ4kSuxrHbWMbvUEWZY4gxnbFP
- vqjQ==
+ bh=2CyImSr/vh1Hw5UwjATJ/bss7/ONFU9Y4xODnyBojcs=;
+ b=UQAyced1MDSkY9dJpr7ZzoiGcU6leSsIWzdg+uN+OfiI4vs3y8qqf2cVbV2r+xVjXA
+ l46bzLnmzu+HTV/6h6elTVgNo/c5QQo+J6k8Y0v7gMPepHx1zfOwYx4+C+LVJlFjYe5/
+ SnfqQTEG2Qnx/TeIiu9c7mXxHHwGvcZeG1pXVvlUufm6oHncsPMhNk6PwWcIv01YRVPV
+ /Y3jkA3FFyO8edFyRICdRUh3DZzee0eJmW8CnmZqz+Gee+5RDV1vjR+J1wSibIlbboeF
+ 4/2Y3AdvykHsmxufl72bKuZItzYJC0JyxBFFtqpX2K21yZrgrB/WOElfyhCyuePIn9sY
+ xEAQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733958254; x=1734563054;
+ d=1e100.net; s=20230601; t=1733958259; x=1734563059;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=VCHSGNyFv8LSm9JlTuEHKD53SXdp1uauhC0W87/H+/o=;
- b=dub2oGi2K0W0ndVvKy/8nXt3hDB7wFcBGrasx9KjHp6DTePV1LjANVyb9LFlsuE4h6
- DdqiCC4Vx20lDtURpj6EEdZ8A8fJYl5xgrYwxEVXjx41MFphtbAVYzYNWCk2ZvxWcB/k
- bKYYa+DRi9Ao3bbY5IU3jexQ5vPPVrhXwoH2N/cSp1OIHPLxx/rLwnoJk+aLJZqHr7e3
- aVR1FQB2VoZvKODkkY1AMzzipjaahRdcy1tCblEMik+p77hqaD2WOh17whKRESN+mosK
- Nlh0/WnaBnTcBrnOou7Zz60WFQZ99cbLpBvq+LjENirOqzz/sweILDMuh7jwUruAfrlq
- 5JcQ==
-X-Gm-Message-State: AOJu0YzZItUtMAUzeXi9FTk24LfFptX+wTB+JSNrXfQzSQZ6bISoBb64
- zaw+YkkqWy4RxTL5n6GbUgcvg1AJRWaJtQEEAZ5VeuW4U5ZWv2TNuZUWNDsJlTQ02cCNtxGuL4i
- P
-X-Gm-Gg: ASbGncuf1Ux8EYALlJFL9pg7xyPOkxYCuWLL0kEEFxr8bXYgiwauDnU6bf1JHiZk4rf
- 6TI/kz+Q5+TLeujtbO+BjVgTbNEOy/A6kkeE4c7REGZ3AGZtXNgJIApq1UelsPCHkRW9jsX4SHc
- lOBQIP277rpwIOd/xWz9W5hUzYT8zYl7ikp49VRwEu41iN3YSAxGDCV3j+TIyp0Iw3a2F17EhGi
- cLU2Xr9IKMqzPA+KePbZ11Su2ZSW6o30iyq+2CqLD9M0b1lEz36YbfMnXcDNMEvQqr42Cf6okan
- I5CG7gmfFLvKgGWGGlDLyercklrlbG7x9Q==
-X-Google-Smtp-Source: AGHT+IGc3/AWzOOAriMV+IbB28ThDUkQnPPwa4fCXVt4koxt2DxrUannj4gUNc61UUYJBiBPXKTxTw==
-X-Received: by 2002:a5d:598c:0:b0:385:ebaf:3824 with SMTP id
- ffacd0b85a97d-3864cea38edmr4351410f8f.27.1733958254128; 
- Wed, 11 Dec 2024 15:04:14 -0800 (PST)
+ bh=2CyImSr/vh1Hw5UwjATJ/bss7/ONFU9Y4xODnyBojcs=;
+ b=g22aPwDasLvTKf2CHEx00LadcwkVJHZ92KVrPvaCbdMUMsuJtEs7i6WHgs4603u6Be
+ tkgsipafYCbkrwBwansknocBlziw3CbaWtE+77iPsVC/PTwKwPv8lHAEE5SUpiXoGog0
+ mCPMjN2If5IAEChsc5y4b6nr+pGiFBNhTPuDGoeGqDN2Ea0TB37ZgDhKeNpRfbqfSznv
+ zoWp69diaQXaYtRYOtddxeG2jiOieRXQ6bLZS6f4gmFKlKU7eUsVx39HprZ9uy+cpjEN
+ 896l0UkHs07cJPw5CcHPiOVd4ID5WxSS1A7Fob6SE7yBlIdU1MTroaXk5cmmD5Ib5IWV
+ hX7A==
+X-Gm-Message-State: AOJu0YzgxOsPz19Ktvl37HzpVrzWZVsArlFKFVXUlEEEWzQ4ym6h9smh
+ IFpe0hZaZmSOL7Ix+zpkHrBF9JhvxKrfczKLjVGbNkEcUjB1k1QhfEE+HGSkjp+tiAhQdnzb1v2
+ 5
+X-Gm-Gg: ASbGnct4r04C3PSpqTVLhj86cUYgtARhGAKsm1eat25GaehauRYodOhD0nQI+xQs/4H
+ heN6OvmrEpvVfPQ2Mi5rWU+6TtwiPIZz7dUeWc8msSavyakFL7R+6LjzJMW0F2CiotqComxakYu
+ iwPd90/kC8/E8+NbzFIDZFEqDdM/3dRIt1ku5jcXcdXW/Ng0FHtKIwVn0GN0ZHcMMKGhU0NiXy4
+ McQvAqQEerug0yZlGdbpXjJbmduUJ9TP9+jvBUEBl8yeRt0JOZK/3EK6Vk0axqx5FXX5T9kqa5u
+ S+kXCcULHNakYuMRd+cyD3cNGOLIBXEPEA==
+X-Google-Smtp-Source: AGHT+IHqHQT7Cea2Wnc1ed4/tVD7++I0hUY9dC1tLd1/pRYYVNW7km+DEaIbfVAJ6hA0okp2xjfubQ==
+X-Received: by 2002:a05:6000:2cf:b0:386:32ca:7b5e with SMTP id
+ ffacd0b85a97d-38788807815mr629903f8f.16.1733958259604; 
+ Wed, 11 Dec 2024 15:04:19 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-435aab63baesm62036735e9.38.2024.12.11.15.04.13
+ ffacd0b85a97d-387824bd8b9sm2332636f8f.47.2024.12.11.15.04.18
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 11 Dec 2024 15:04:13 -0800 (PST)
+ Wed, 11 Dec 2024 15:04:19 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>, qemu-ppc@nongnu.org,
  qemu-arm@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 3/9] accel/tcg: Include missing 'exec/tswap.h' header in
- translator.c
-Date: Thu, 12 Dec 2024 00:03:51 +0100
-Message-ID: <20241211230357.97036-4-philmd@linaro.org>
+Subject: [PATCH v2 4/9] hw/arm: Include missing 'exec/tswap.h' header
+Date: Thu, 12 Dec 2024 00:03:52 +0100
+Message-ID: <20241211230357.97036-5-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241211230357.97036-1-philmd@linaro.org>
 References: <20241211230357.97036-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::431;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,31 +98,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-translator.c indirectly gets "exec/tswap.h" declarations via
-"exec/cpu-all.h". Include it directly to be able to remove the
-former from the latter, otherwise we get:
+Some files indirectly get "exec/tswap.h" declarations via
+"exec/cpu-all.h". Include it directly to be able to remove
+the former from the latter, otherwise we get:
 
-  accel/tcg/translator.c:433:15: error: call to undeclared function 'tswap16'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-    433 |         tgt = tswap16(raw);
-        |               ^
+  hw/arm/boot.c:175:19: error: call to undeclared function 'tswap32'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+    175 |         code[i] = tswap32(insn);
+        |                   ^
+  hw/arm/npcm7xx.c:326:26: error: call to undeclared function 'tswap32'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+    326 |         board_setup[i] = tswap32(board_setup[i]);
+        |                          ^
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- accel/tcg/translator.c | 1 +
- 1 file changed, 1 insertion(+)
+ hw/arm/boot.c    | 1 +
+ hw/arm/npcm7xx.c | 1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/accel/tcg/translator.c b/accel/tcg/translator.c
-index cbad00a5172..ff5dabc9014 100644
---- a/accel/tcg/translator.c
-+++ b/accel/tcg/translator.c
-@@ -15,6 +15,7 @@
- #include "exec/cpu_ldst.h"
- #include "exec/plugin-gen.h"
- #include "exec/cpu_ldst.h"
+diff --git a/hw/arm/boot.c b/hw/arm/boot.c
+index 5301d8d318c..30ba98d52fb 100644
+--- a/hw/arm/boot.c
++++ b/hw/arm/boot.c
+@@ -26,6 +26,7 @@
+ #include "qemu/config-file.h"
+ #include "qemu/option.h"
+ #include "qemu/units.h"
 +#include "exec/tswap.h"
- #include "tcg/tcg-op-common.h"
- #include "internal-target.h"
- #include "disas/disas.h"
+ 
+ /* Kernel boot protocol is specified in the kernel docs
+  * Documentation/arm/Booting and Documentation/arm64/booting.txt
+diff --git a/hw/arm/npcm7xx.c b/hw/arm/npcm7xx.c
+index af04c4b7ec4..3a5ef26f689 100644
+--- a/hw/arm/npcm7xx.c
++++ b/hw/arm/npcm7xx.c
+@@ -28,6 +28,7 @@
+ #include "qemu/units.h"
+ #include "sysemu/sysemu.h"
+ #include "target/arm/cpu-qom.h"
++#include "exec/tswap.h"
+ 
+ /*
+  * This covers the whole MMIO space. We'll use this to catch any MMIO accesses
 -- 
 2.45.2
 
