@@ -2,77 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34A449ED16B
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Dec 2024 17:26:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C7C19ED149
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Dec 2024 17:24:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tLPSq-0001Wm-BB; Wed, 11 Dec 2024 11:21:28 -0500
+	id 1tLPSs-0001eg-Uf; Wed, 11 Dec 2024 11:21:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tLPSi-0001IE-2e
- for qemu-devel@nongnu.org; Wed, 11 Dec 2024 11:21:20 -0500
-Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
+ id 1tLPSj-0001KO-Pi
+ for qemu-devel@nongnu.org; Wed, 11 Dec 2024 11:21:22 -0500
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tLPSf-0007sn-Qw
- for qemu-devel@nongnu.org; Wed, 11 Dec 2024 11:21:19 -0500
-Received: by mail-wr1-x436.google.com with SMTP id
- ffacd0b85a97d-385deda28b3so5144678f8f.0
+ id 1tLPSf-0007sy-R6
+ for qemu-devel@nongnu.org; Wed, 11 Dec 2024 11:21:20 -0500
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-4361dc6322fso5906855e9.3
  for <qemu-devel@nongnu.org>; Wed, 11 Dec 2024 08:21:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1733934075; x=1734538875; darn=nongnu.org;
+ d=linaro.org; s=google; t=1733934076; x=1734538876; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=+m7UpkWXOD0kaMSleyeT/gE67bFfwBTpfKeuDgBDdb8=;
- b=HFBgsITz8lrQ7HgtPeEsRx8aXiJZdJGA/DaNzap5B/mQO01xx6FyuFEt7rOQK8KNtG
- 7T+zTQmbETUZjMRjWNyVw7oOw9DRO/jbU2uke5at99ZTuVf6NOl1dtoSvB5w0TKCPou7
- PQC2WXPCEHFTYiIe9dxFUMMi5J4kv196Od2EPrAvCOrzSxtFxkpAkZZYQZsCDdd2tODj
- ooZA+nrEA+PUHqm976+G46fjPWrBE0vOWeArSV5o4CYoQuhaoeE44twb6p0FYXC3DACe
- Ncw9pF4tFJeZ4bsRrUZVDbMwc0Tg/EvmZbcaedYyuqfpeVStLpc3NWCctqxjNcK/6jaO
- dzbA==
+ :reply-to; bh=D00DSruytulbxjjJ4e78+Qdhi69cDsAe2XaYdtO6NTo=;
+ b=a1xpGjNlSG5xouRdtwNQ5CKigMBpMpaOvgWTe1gWlcNe0dPfGJjYizSTFXL5/QKa52
+ wQhJ2/yfWy9II3X8WXj6kPYI/8vkhE1/wk1J5Q42Y57M+9P4WT5EU4VSq7864lYQogSW
+ xNoXCwf1hhWjEm9LVWGEfjaqDn5LJyAiqZk3XwxrKbkOVKanE4fQ7mf1Buemce+hdKep
+ BO9YANPoMsjcWMZ12JrcYHqiCQycUF9TWDFD+d3dhHbpFFwHn+CmybZz9r86PNNVvJLr
+ pAvsKi5XOLwihy5VdLjoSx05SGlInIfGSAjAOWSzNKYN/NBSlTNUG3M3WkhK1UckB2vw
+ 9Fbw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733934075; x=1734538875;
+ d=1e100.net; s=20230601; t=1733934076; x=1734538876;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=+m7UpkWXOD0kaMSleyeT/gE67bFfwBTpfKeuDgBDdb8=;
- b=HfdmrxjgH8hEjHgNduCc8wB6Vg4cT9lTvXTdI40NnH7rnJ0gQLR0hxHp/ArHXm/ue0
- TGvCPvQnEKaqLMRnH0oT0Qo7Q0cX23KA4jLTzjXi2kzJdBhxm5LFLrsedgLc9lrAfkei
- Tj4cLLrb9CeD69ALzWHJmKcLNhDd4nVhrWHJ8fmA7I4xe3iFQbYLzoEd24fkhfcMUbti
- dZuUxbW3ma0Na4QWiml5IJU4ZMR0NNC3kg6FDI2Pur7G0veudRGKHXUeWWshsQtbUHmr
- gondn5sAYlo/c8z5WwbPdJVGIKnru0AA2ide7yhdtDS+HKdaRG6f9mELmsBOtPq1u3xL
- GH6A==
-X-Gm-Message-State: AOJu0YyC7hwWZGW5rM2+ndZeDNKLhghUdWg2gkUgBPrrCkDjzOgmuJhj
- W1SCW7xIKws9KZqaY/nddY3+i+iNYAgZxNhjtmUksqn+lpFDP8fEc2tPMfGnOtGCAGQeRC9ufXB
- c
-X-Gm-Gg: ASbGncuI7/bthH1AooEFMA8W+vMhR6rXLkFnfy9Zsma7i5w3cKunEdcBbyUeTtrliGV
- dkHCiOZN2ijBkvWL+hGyhm/bt0DsjDcLkUPqHKU48xtH98NWzTJlR6XCqOFttxSV6y6R5TncAuj
- 6dW28wY6BqEN/gj1M1i7n7FIi/QK6XesXVweX+V9+TsiHrOyy1xafRjXi4BGmhAMSRm04Dgb6cz
- 5N68esho8aAqB83LjLi0FdSvQtPHvWBB8ZkP2kQC1o3LVyrsGZiAp+Lajus
-X-Google-Smtp-Source: AGHT+IEMfZL6b5VV69W+JW/c0lvj4LORiteHdoaWiUeafzKSnSELulH5iEbr7d9LOvHB+4DkGx9cgg==
-X-Received: by 2002:a5d:6f16:0:b0:385:ee59:4510 with SMTP id
- ffacd0b85a97d-38787688638mr208420f8f.9.1733934074780; 
- Wed, 11 Dec 2024 08:21:14 -0800 (PST)
+ bh=D00DSruytulbxjjJ4e78+Qdhi69cDsAe2XaYdtO6NTo=;
+ b=nXyizC3SOPEvaTbPOwBSYaITcyerRcCf+qavOZGWH+YnXx0odO2v88SvzLoNs2Zo3A
+ InVBGYNy0eODTjFTNJ2x+6GjgMKm9iP0eNenU9rDD6/dRdTatOKSvVHqYZKme88EcSg1
+ +Poa50EQPpx2C0uNGZWsbXx/WfpxjHQqnfNmW/vaMZ9ZNz1qO3CmGV4f5gFrBGNd6DqE
+ 9gSgEp4esF7kYktXecgNXJ07TH2zbF5HsvpkfYMJuPiKHQOiH3avk12E1ks9OccZ8UKq
+ 0ceJICaCc+w34AOAE6o18iwBDMP9tDhfT9GmfgvmOLZQkQyYfIIAF7UM0RcF0egBCfTW
+ tA/w==
+X-Gm-Message-State: AOJu0YzHdKoISzq8IFKdXh/Wc58Huc6awyci6KXKICKkFCD08jvSaeXZ
+ hMTkt+IhxlHMHcmoOWvoxdb7EipjSk/IbuNe+t3+ZUJ8vH04gos0cXrhrH8ZY7xagvdv+6vvXX8
+ E
+X-Gm-Gg: ASbGncv1X4mOs/Zv/sbuV8UPWnjA57+XRtCwmQAPdzI9urwDbUqJFnKSBwoAz6gmyt1
+ gE2ye712tssQM50jVht0qKKfLkIGqIkJ7z8fGSO31s9OT9l/0DMh0Y3ceBxcYW2m5Lk6sbgeQVK
+ fzEjbU10MXCGJHqXBBfI1NdgUdTdTc5sKjKJ7wmA7ykeqUTa22c26bddCa4KNmgpXVOIcxPiu5C
+ 6tCK46QgUfDxpFBiOBJQv3FBJ0PLZoYHOMD5TqBWRO0eNNFXQIEl5pRIRDu
+X-Google-Smtp-Source: AGHT+IEK5K4s41L+y15+QchqtoBbbgh+OSPX2oonZ29eXnyvngqJfQejFrzcuPoC8wAe5kvgHP5fPQ==
+X-Received: by 2002:a05:600c:5108:b0:434:a4fe:cd71 with SMTP id
+ 5b1f17b1804b1-4361c35d6b9mr28382815e9.12.1733934075760; 
+ Wed, 11 Dec 2024 08:21:15 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  5b1f17b1804b1-434f4dfdcdfsm121460595e9.39.2024.12.11.08.21.14
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 11 Dec 2024 08:21:14 -0800 (PST)
+ Wed, 11 Dec 2024 08:21:15 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 60/72] fpu: Remove default handling for dnan_pattern
-Date: Wed, 11 Dec 2024 16:19:52 +0000
-Message-Id: <20241211162004.2795499-61-peter.maydell@linaro.org>
+Subject: [PULL 61/72] softfloat: Inline pickNaNMulAdd
+Date: Wed, 11 Dec 2024 16:19:53 +0000
+Message-Id: <20241211162004.2795499-62-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241211162004.2795499-1-peter.maydell@linaro.org>
 References: <20241211162004.2795499-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::436;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x436.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,42 +96,140 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now that all our targets have bene converted to explicitly specify
-their pattern for the default NaN value we can remove the remaining
-fallback code in parts64_default_nan().
+From: Richard Henderson <richard.henderson@linaro.org>
 
+Inline pickNaNMulAdd into its only caller.  This makes
+one assert redundant with the immediately preceding IF.
+
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-id: 20241203203949.483774-3-richard.henderson@linaro.org
+[PMM: keep comment from old code in new location]
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20241202131347.498124-55-peter.maydell@linaro.org
 ---
- fpu/softfloat-specialize.c.inc | 14 --------------
- 1 file changed, 14 deletions(-)
+ fpu/softfloat-parts.c.inc      | 41 +++++++++++++++++++++++++-
+ fpu/softfloat-specialize.c.inc | 54 ----------------------------------
+ 2 files changed, 40 insertions(+), 55 deletions(-)
 
+diff --git a/fpu/softfloat-parts.c.inc b/fpu/softfloat-parts.c.inc
+index 655b7d9da51..c1a97c35b20 100644
+--- a/fpu/softfloat-parts.c.inc
++++ b/fpu/softfloat-parts.c.inc
+@@ -79,9 +79,48 @@ static FloatPartsN *partsN(pick_nan_muladd)(FloatPartsN *a, FloatPartsN *b,
+     }
+ 
+     if (s->default_nan_mode) {
++        /*
++         * We guarantee not to require the target to tell us how to
++         * pick a NaN if we're always returning the default NaN.
++         * But if we're not in default-NaN mode then the target must
++         * specify.
++         */
+         which = 3;
++    } else if (infzero) {
++        /*
++         * Inf * 0 + NaN -- some implementations return the
++         * default NaN here, and some return the input NaN.
++         */
++        switch (s->float_infzeronan_rule) {
++        case float_infzeronan_dnan_never:
++            which = 2;
++            break;
++        case float_infzeronan_dnan_always:
++            which = 3;
++            break;
++        case float_infzeronan_dnan_if_qnan:
++            which = is_qnan(c->cls) ? 3 : 2;
++            break;
++        default:
++            g_assert_not_reached();
++        }
+     } else {
+-        which = pickNaNMulAdd(a->cls, b->cls, c->cls, infzero, have_snan, s);
++        FloatClass cls[3] = { a->cls, b->cls, c->cls };
++        Float3NaNPropRule rule = s->float_3nan_prop_rule;
++
++        assert(rule != float_3nan_prop_none);
++        if (have_snan && (rule & R_3NAN_SNAN_MASK)) {
++            /* We have at least one SNaN input and should prefer it */
++            do {
++                which = rule & R_3NAN_1ST_MASK;
++                rule >>= R_3NAN_1ST_LENGTH;
++            } while (!is_snan(cls[which]));
++        } else {
++            do {
++                which = rule & R_3NAN_1ST_MASK;
++                rule >>= R_3NAN_1ST_LENGTH;
++            } while (!is_nan(cls[which]));
++        }
+     }
+ 
+     if (which == 3) {
 diff --git a/fpu/softfloat-specialize.c.inc b/fpu/softfloat-specialize.c.inc
-index 5954a6213b9..e075c47889a 100644
+index e075c47889a..f26458eaa31 100644
 --- a/fpu/softfloat-specialize.c.inc
 +++ b/fpu/softfloat-specialize.c.inc
-@@ -135,20 +135,6 @@ static void parts64_default_nan(FloatParts64 *p, float_status *status)
-     uint64_t frac;
-     uint8_t dnan_pattern = status->default_nan_pattern;
+@@ -448,60 +448,6 @@ static int pickNaN(FloatClass a_cls, FloatClass b_cls,
+     }
+ }
  
--    if (dnan_pattern == 0) {
+-/*----------------------------------------------------------------------------
+-| Select which NaN to propagate for a three-input operation.
+-| For the moment we assume that no CPU needs the 'larger significand'
+-| information.
+-| Return values : 0 : a; 1 : b; 2 : c; 3 : default-NaN
+-*----------------------------------------------------------------------------*/
+-static int pickNaNMulAdd(FloatClass a_cls, FloatClass b_cls, FloatClass c_cls,
+-                         bool infzero, bool have_snan, float_status *status)
+-{
+-    FloatClass cls[3] = { a_cls, b_cls, c_cls };
+-    Float3NaNPropRule rule = status->float_3nan_prop_rule;
+-    int which;
+-
+-    /*
+-     * We guarantee not to require the target to tell us how to
+-     * pick a NaN if we're always returning the default NaN.
+-     * But if we're not in default-NaN mode then the target must
+-     * specify.
+-     */
+-    assert(!status->default_nan_mode);
+-
+-    if (infzero) {
 -        /*
--         * This case is true for Alpha, ARM, MIPS, OpenRISC, PPC, RISC-V,
--         * S390, SH4, TriCore, and Xtensa.  Our other supported targets
--         * do not have floating-point.
+-         * Inf * 0 + NaN -- some implementations return the default NaN here,
+-         * and some return the input NaN.
 -         */
--        if (snan_bit_is_one(status)) {
--            /* sign bit clear, set all frac bits other than msb */
--            dnan_pattern = 0b00111111;
--        } else {
--            /* sign bit clear, set frac msb */
--            dnan_pattern = 0b01000000;
+-        switch (status->float_infzeronan_rule) {
+-        case float_infzeronan_dnan_never:
+-            return 2;
+-        case float_infzeronan_dnan_always:
+-            return 3;
+-        case float_infzeronan_dnan_if_qnan:
+-            return is_qnan(c_cls) ? 3 : 2;
+-        default:
+-            g_assert_not_reached();
 -        }
 -    }
-     assert(dnan_pattern != 0);
- 
-     sign = dnan_pattern >> 7;
+-
+-    assert(rule != float_3nan_prop_none);
+-    if (have_snan && (rule & R_3NAN_SNAN_MASK)) {
+-        /* We have at least one SNaN input and should prefer it */
+-        do {
+-            which = rule & R_3NAN_1ST_MASK;
+-            rule >>= R_3NAN_1ST_LENGTH;
+-        } while (!is_snan(cls[which]));
+-    } else {
+-        do {
+-            which = rule & R_3NAN_1ST_MASK;
+-            rule >>= R_3NAN_1ST_LENGTH;
+-        } while (!is_nan(cls[which]));
+-    }
+-    return which;
+-}
+-
+ /*----------------------------------------------------------------------------
+ | Returns 1 if the double-precision floating-point value `a' is a quiet
+ | NaN; otherwise returns 0.
 -- 
 2.34.1
 
