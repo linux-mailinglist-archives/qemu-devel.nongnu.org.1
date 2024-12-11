@@ -2,79 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7167C9ED20E
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Dec 2024 17:34:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 098F29ED219
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Dec 2024 17:35:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tLPdH-000508-Jf; Wed, 11 Dec 2024 11:32:17 -0500
+	id 1tLPcR-0003tE-MU; Wed, 11 Dec 2024 11:31:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tLPcA-0003Gx-Lc
+ id 1tLPcC-0003Iu-1d
  for qemu-devel@nongnu.org; Wed, 11 Dec 2024 11:31:08 -0500
-Received: from mail-qt1-x82b.google.com ([2607:f8b0:4864:20::82b])
+Received: from mail-qt1-x82f.google.com ([2607:f8b0:4864:20::82f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tLPc8-00018v-Rm
- for qemu-devel@nongnu.org; Wed, 11 Dec 2024 11:31:06 -0500
-Received: by mail-qt1-x82b.google.com with SMTP id
- d75a77b69052e-467918c360aso5206951cf.0
- for <qemu-devel@nongnu.org>; Wed, 11 Dec 2024 08:31:04 -0800 (PST)
+ id 1tLPcA-00019N-Ar
+ for qemu-devel@nongnu.org; Wed, 11 Dec 2024 11:31:07 -0500
+Received: by mail-qt1-x82f.google.com with SMTP id
+ d75a77b69052e-4678f681608so6617361cf.1
+ for <qemu-devel@nongnu.org>; Wed, 11 Dec 2024 08:31:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1733934664; x=1734539464; darn=nongnu.org;
+ d=linaro.org; s=google; t=1733934665; x=1734539465; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ifcSfCHSTTtxXndi5QQbGHpzoZtEugLsXBXrGvDqkmU=;
- b=PFWBMLA4D3f8YLrZ2ikn7HvTKOHB8++C6vAjRuesDA1b4m3bd1rU1Luun6viGtNOgg
- KX9ubPYUUBBQha5z4M+GsebBz1y9CqWcPdIkDcHDGcgbJNYB+r7QXXZFAITR/bNfSTdo
- 7hnTLnJtExJfTpGAYXiZnlhMhKb8FNLMLxCK9GhH2Aba6wlrhpoPJAuzxKVsCOd5ypr2
- HDVNw8GUEHqCqTELkXl5HYygxZoTGrqvggpckXzzEsIQ+FhY4JbQEUEnknfSsIBG3PSV
- /ZE6375fiJt9V+9Ix6hCLUCn7+fuDCo8eNNPtsVG/7gS+A6Iqfbsoh89HoNIMqr+l1y2
- wY2g==
+ bh=s63N5H1NJdR8gVUhJ6lBSzQfPRwDYdjmVxlruA0DAg4=;
+ b=KapA97snaboMbk1DHeCZw3RxEwoDQyqqGS1uwAGAiOLRP65VVyhrCTTUPA75ALe9cs
+ FgGIYzvfTlPxGoJkBWUVqUydjeT2TCzNX+7NFQ7lPTbUhvQRfm2CUpc+e9fG4jvpvbeD
+ RAF8wcQk9ln5oEYbdgSwl80w+n0DZ2ehnmOcRrN1Mzh3GqWbMdk76pr4VX5WAUyVZvKd
+ kIIyjC+INvCsRFRxkiQ++F1eNhKoikkp3kwHKOxvugyyqVGtmJaSUgcFj627KYbNZW0o
+ IdNbJ7ASAldcpSGevTfgLI2TcGlVt2f8Y6GA+Q+Oa9QhvxawiKMGDdffYqYlPnYQEMvn
+ ohYQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733934664; x=1734539464;
+ d=1e100.net; s=20230601; t=1733934665; x=1734539465;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ifcSfCHSTTtxXndi5QQbGHpzoZtEugLsXBXrGvDqkmU=;
- b=vvYrTaDh2mO6yuVEApRr2VZMmDWJCjhrhBrC+hzQGe5Be/EznkAgvGIXZujrtL+0nq
- UKH4oNLpKkv+EFzmSxEod40xNXXLhdRGZR4NCFCOHoBBwd/50/vwcBR7Y2wG9N6q/fCS
- yNm4zhv+S8NNm2y8DWwP4VyQgEJO8qms+vDQpu6m6NnYt0I3QcoIU0TGLWNjw0uuwOti
- I5Pea1fmVTmR3ZA/0bZvbHm1/ZFygJlVnrdDu01SERiDU5lynjpVcC24r74fx21DwhjU
- bUqED2/+2N5suGE6MbNwsLQoVzVDSOuKLr+G6m5wu2uKWQrRb3+LfqIgFLJPOa0YnlZf
- tLAw==
-X-Gm-Message-State: AOJu0Yxc5wLqUoC++1Yj/KUvyn0xH+qRPEFk60zNogSWFuyR0tGM0+Ae
- aYVFT5ixiWHjzXnzlG1tUFUFVIJ+HasZQkc1RdATID+1T/sVWoCdnpbCZHxBm8jnbAGQmH5xXSx
- ZigjUmc9f
-X-Gm-Gg: ASbGncvweV7YzT6dt2AY41mXm2EzOaRGm+FrIvIHHjl9CB3cvWa/U7zGeK+aL8S1KI3
- iM/jWN85BYWc37bPhm9jHJnaU+FWpGkP9jcdyjUAxcgFtBQWSjQZaRyD4X+Un/sCgeyzFRBUbhq
- Ikx7TcFuiQ+NyKMQo4BZ8GHsw3G4FRr8zJqQtGRm9BQ8E0Hrlf/mr0MiyGZxbR95iU6VfcljjXy
- eNUpWoGASkTvh0dx8bME7PtvIa/kmxJoqjjp9l7GpQQwRQpzog5DCXTBw0I4Q==
-X-Google-Smtp-Source: AGHT+IEs4DeUBL/n2fhJ1WeRK03xY+6asPXLgMeywi79P2okcMjp47jSMm6PHss9DKURtjfh5NVXlw==
-X-Received: by 2002:ac8:5803:0:b0:467:5711:bdb8 with SMTP id
- d75a77b69052e-46795444052mr5950951cf.46.1733934663468; 
- Wed, 11 Dec 2024 08:31:03 -0800 (PST)
+ bh=s63N5H1NJdR8gVUhJ6lBSzQfPRwDYdjmVxlruA0DAg4=;
+ b=LGeURszGwkERWC7whXNXuDk1bJmT7+351yKdff692yLSx/1fq5agJ00gGvox/Cqi22
+ iTXh8GehDaEWZrR9gm0fWd+/vI/pHKwbludX01j+sduITvrbGk4SmVPcOfwuqmnBm0+u
+ jjRQUE9gsjyP6JGaDr9PtnzROTlCHTJBJ2voLMzhFqrE9Aue4c0EiRMQeHz1CCc1CZiY
+ cFXUmlHoAjbItMyFsOqprwQ62NhHDOq/sdG2eosfWel90mRUYyusX+OXlImm673su/Ew
+ 7n5433V1QLBDz27EFvu8cUE9q3gkDXOBoaGyjJkzmy4OaajKGmzhHQ1pm+Yg41PtqsvK
+ 9fdg==
+X-Gm-Message-State: AOJu0YxwDMMZQRDg2x9U0zeOoBXVglVGNwFyCe/wQgAJZ4X49xxYUOj7
+ kfB0yUA/kcsQ8CDrI88mXpyAUE/3aVhLKfKemVt+/QJ1kR5vt6jcw9atPOiX1W9Akcea6dPseAd
+ TrBTvnTWe
+X-Gm-Gg: ASbGncsRaEeaHBbh3wonL2UwD2kkKqhMwA1tEUpF0AOBQGAQFJvLw7b+ZB/9bGcPB2R
+ zr7I3e77CH37WZVGaDZ4GwI7Wsg83jBd9gKuTJMjaKE/+S0m+8AzdCBLeVezgCSd0ZjHo3sxKxZ
+ q5Nw/qmwmhmrhiS8aHi4vFAQ4w8IO/L8KjiDKCS5tzvjVgdGUUlMzEffTcvE8M7AjSvpcQwjRB5
+ A04gLVXp4RR6EKyDlesakM0feYNJq3/T55wE8ywEIhUy8AvGHGujOiMPBPIfQ==
+X-Google-Smtp-Source: AGHT+IE5T8wTyTf4MDMl+oGcotgQGxu+YGmdLudMdt8KcyKvi5pPKsLrXjraUpx7GmX03nlB2vSWSQ==
+X-Received: by 2002:a05:622a:15d4:b0:467:6b59:423 with SMTP id
+ d75a77b69052e-467954a2d88mr6898901cf.55.1733934665346; 
+ Wed, 11 Dec 2024 08:31:05 -0800 (PST)
 Received: from stoup.. ([187.217.227.247]) by smtp.gmail.com with ESMTPSA id
- d75a77b69052e-46755db613csm43849381cf.70.2024.12.11.08.31.01
+ d75a77b69052e-46755db613csm43849381cf.70.2024.12.11.08.31.03
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 11 Dec 2024 08:31:03 -0800 (PST)
+ Wed, 11 Dec 2024 08:31:05 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v3 02/69] target/arm: Convert UDIV, SDIV to decodetree
-Date: Wed, 11 Dec 2024 10:29:29 -0600
-Message-ID: <20241211163036.2297116-3-richard.henderson@linaro.org>
+Subject: [PATCH v3 03/69] target/arm: Convert LSLV, LSRV, ASRV,
+ RORV to decodetree
+Date: Wed, 11 Dec 2024 10:29:30 -0600
+Message-ID: <20241211163036.2297116-4-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241211163036.2297116-1-richard.henderson@linaro.org>
 References: <20241211163036.2297116-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::82b;
- envelope-from=richard.henderson@linaro.org; helo=mail-qt1-x82b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::82f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-qt1-x82f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,131 +101,103 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/tcg/translate-a64.c | 64 +++++++++++++++++-----------------
- target/arm/tcg/a64.decode      |  7 ++++
- 2 files changed, 39 insertions(+), 32 deletions(-)
+ target/arm/tcg/translate-a64.c | 46 ++++++++++++++++------------------
+ target/arm/tcg/a64.decode      |  4 +++
+ 2 files changed, 25 insertions(+), 25 deletions(-)
 
 diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
-index b2851ea503..9f687ba840 100644
+index 9f687ba840..8b7ca2c68a 100644
 --- a/target/arm/tcg/translate-a64.c
 +++ b/target/arm/tcg/translate-a64.c
-@@ -7485,6 +7485,36 @@ TRANS(UQRSHRN_si, do_scalar_shift_imm_narrow, a, uqrshrn_fns, 0, false)
- TRANS(SQSHRUN_si, do_scalar_shift_imm_narrow, a, sqshrun_fns, MO_SIGN, false)
- TRANS(SQRSHRUN_si, do_scalar_shift_imm_narrow, a, sqrshrun_fns, MO_SIGN, false)
+@@ -7575,6 +7575,23 @@ static void shift_reg_imm(TCGv_i64 dst, TCGv_i64 src, int sf,
+     }
+ }
  
-+static bool do_div(DisasContext *s, arg_rrr_sf *a, bool is_signed)
++static bool do_shift_reg(DisasContext *s, arg_rrr_sf *a,
++                         enum a64_shift_type shift_type)
 +{
-+    TCGv_i64 tcg_n, tcg_m, tcg_rd;
-+    tcg_rd = cpu_reg(s, a->rd);
++    TCGv_i64 tcg_shift = tcg_temp_new_i64();
++    TCGv_i64 tcg_rd = cpu_reg(s, a->rd);
++    TCGv_i64 tcg_rn = read_cpu_reg(s, a->rn, a->sf);
 +
-+    if (!a->sf && is_signed) {
-+        tcg_n = tcg_temp_new_i64();
-+        tcg_m = tcg_temp_new_i64();
-+        tcg_gen_ext32s_i64(tcg_n, cpu_reg(s, a->rn));
-+        tcg_gen_ext32s_i64(tcg_m, cpu_reg(s, a->rm));
-+    } else {
-+        tcg_n = read_cpu_reg(s, a->rn, a->sf);
-+        tcg_m = read_cpu_reg(s, a->rm, a->sf);
-+    }
-+
-+    if (is_signed) {
-+        gen_helper_sdiv64(tcg_rd, tcg_n, tcg_m);
-+    } else {
-+        gen_helper_udiv64(tcg_rd, tcg_n, tcg_m);
-+    }
-+
-+    if (!a->sf) { /* zero extend final result */
-+        tcg_gen_ext32u_i64(tcg_rd, tcg_rd);
-+    }
++    tcg_gen_andi_i64(tcg_shift, cpu_reg(s, a->rm), a->sf ? 63 : 31);
++    shift_reg(tcg_rd, tcg_rn, a->sf, shift_type, tcg_shift);
 +    return true;
 +}
 +
-+TRANS(SDIV, do_div, a, true)
-+TRANS(UDIV, do_div, a, false)
++TRANS(LSLV, do_shift_reg, a, A64_SHIFT_TYPE_LSL)
++TRANS(LSRV, do_shift_reg, a, A64_SHIFT_TYPE_LSR)
++TRANS(ASRV, do_shift_reg, a, A64_SHIFT_TYPE_ASR)
++TRANS(RORV, do_shift_reg, a, A64_SHIFT_TYPE_ROR)
 +
- /* Shift a TCGv src by TCGv shift_amount, put result in dst.
-  * Note that it is the caller's responsibility to ensure that the
-  * shift amount is in range (ie 0..31 or 0..63) and provide the ARM
-@@ -8425,32 +8455,6 @@ static void disas_data_proc_1src(DisasContext *s, uint32_t insn)
- #undef MAP
+ /* Logical (shifted register)
+  *   31  30 29 28       24 23   22 21  20  16 15    10 9    5 4    0
+  * +----+-----+-----------+-------+---+------+--------+------+------+
+@@ -8456,19 +8473,6 @@ static void disas_data_proc_1src(DisasContext *s, uint32_t insn)
  }
  
--static void handle_div(DisasContext *s, bool is_signed, unsigned int sf,
--                       unsigned int rm, unsigned int rn, unsigned int rd)
--{
--    TCGv_i64 tcg_n, tcg_m, tcg_rd;
--    tcg_rd = cpu_reg(s, rd);
--
--    if (!sf && is_signed) {
--        tcg_n = tcg_temp_new_i64();
--        tcg_m = tcg_temp_new_i64();
--        tcg_gen_ext32s_i64(tcg_n, cpu_reg(s, rn));
--        tcg_gen_ext32s_i64(tcg_m, cpu_reg(s, rm));
--    } else {
--        tcg_n = read_cpu_reg(s, rn, sf);
--        tcg_m = read_cpu_reg(s, rm, sf);
--    }
--
--    if (is_signed) {
--        gen_helper_sdiv64(tcg_rd, tcg_n, tcg_m);
--    } else {
--        gen_helper_udiv64(tcg_rd, tcg_n, tcg_m);
--    }
--
--    if (!sf) { /* zero extend final result */
--        tcg_gen_ext32u_i64(tcg_rd, tcg_rd);
--    }
--}
  
- /* LSLV, LSRV, ASRV, RORV */
- static void handle_shift_reg(DisasContext *s,
-@@ -8552,12 +8556,6 @@ static void disas_data_proc_2src(DisasContext *s, uint32_t insn)
-             }
+-/* LSLV, LSRV, ASRV, RORV */
+-static void handle_shift_reg(DisasContext *s,
+-                             enum a64_shift_type shift_type, unsigned int sf,
+-                             unsigned int rm, unsigned int rn, unsigned int rd)
+-{
+-    TCGv_i64 tcg_shift = tcg_temp_new_i64();
+-    TCGv_i64 tcg_rd = cpu_reg(s, rd);
+-    TCGv_i64 tcg_rn = read_cpu_reg(s, rn, sf);
+-
+-    tcg_gen_andi_i64(tcg_shift, cpu_reg(s, rm), sf ? 63 : 31);
+-    shift_reg(tcg_rd, tcg_rn, sf, shift_type, tcg_shift);
+-}
+-
+ /* CRC32[BHWX], CRC32C[BHWX] */
+ static void handle_crc32(DisasContext *s,
+                          unsigned int sf, unsigned int sz, bool crc32c,
+@@ -8579,18 +8583,6 @@ static void disas_data_proc_2src(DisasContext *s, uint32_t insn)
+             tcg_gen_or_i64(cpu_reg(s, rd), cpu_reg(s, rm), t);
          }
          break;
--    case 2: /* UDIV */
--        handle_div(s, false, sf, rm, rn, rd);
+-    case 8: /* LSLV */
+-        handle_shift_reg(s, A64_SHIFT_TYPE_LSL, sf, rm, rn, rd);
 -        break;
--    case 3: /* SDIV */
--        handle_div(s, true, sf, rm, rn, rd);
+-    case 9: /* LSRV */
+-        handle_shift_reg(s, A64_SHIFT_TYPE_LSR, sf, rm, rn, rd);
 -        break;
-     case 4: /* IRG */
-         if (sf == 0 || !dc_isar_feature(aa64_mte_insn_reg, s)) {
+-    case 10: /* ASRV */
+-        handle_shift_reg(s, A64_SHIFT_TYPE_ASR, sf, rm, rn, rd);
+-        break;
+-    case 11: /* RORV */
+-        handle_shift_reg(s, A64_SHIFT_TYPE_ROR, sf, rm, rn, rd);
+-        break;
+     case 12: /* PACGA */
+         if (sf == 0 || !dc_isar_feature(aa64_pauth, s)) {
              goto do_unallocated;
-@@ -8616,6 +8614,8 @@ static void disas_data_proc_2src(DisasContext *s, uint32_t insn)
-     }
-     default:
+@@ -8616,6 +8608,10 @@ static void disas_data_proc_2src(DisasContext *s, uint32_t insn)
      do_unallocated:
-+    case 2: /* UDIV */
-+    case 3: /* SDIV */
+     case 2: /* UDIV */
+     case 3: /* SDIV */
++    case 8: /* LSLV */
++    case 9: /* LSRV */
++    case 10: /* ASRV */
++    case 11: /* RORV */
          unallocated_encoding(s);
          break;
      }
 diff --git a/target/arm/tcg/a64.decode b/target/arm/tcg/a64.decode
-index d28efb884d..c218f6afbc 100644
+index c218f6afbc..3db55b78a6 100644
 --- a/target/arm/tcg/a64.decode
 +++ b/target/arm/tcg/a64.decode
-@@ -28,6 +28,7 @@
- &r              rn
- &ri             rd imm
- &rri_sf         rd rn imm sf
-+&rrr_sf         rd rn rm sf
- &i              imm
- &rr_e           rd rn esz
- &rri_e          rd rn imm esz
-@@ -652,6 +653,12 @@ CPYE            00 011 1 01100 ..... .... 01 ..... ..... @cpy
- ### Data Processing (register)
+@@ -658,6 +658,10 @@ CPYE            00 011 1 01100 ..... .... 01 ..... ..... @cpy
  
- # Data Processing (2-source)
-+
-+@rrr_sf         sf:1 .......... rm:5 ...... rn:5 rd:5   &rrr_sf
-+
-+UDIV            . 00 11010110 ..... 00001 0 ..... ..... @rrr_sf
-+SDIV            . 00 11010110 ..... 00001 1 ..... ..... @rrr_sf
-+
+ UDIV            . 00 11010110 ..... 00001 0 ..... ..... @rrr_sf
+ SDIV            . 00 11010110 ..... 00001 1 ..... ..... @rrr_sf
++LSLV            . 00 11010110 ..... 00100 0 ..... ..... @rrr_sf
++LSRV            . 00 11010110 ..... 00100 1 ..... ..... @rrr_sf
++ASRV            . 00 11010110 ..... 00101 0 ..... ..... @rrr_sf
++RORV            . 00 11010110 ..... 00101 1 ..... ..... @rrr_sf
+ 
  # Data Processing (1-source)
  # Logical (shifted reg)
- # Add/subtract (shifted reg)
 -- 
 2.43.0
 
