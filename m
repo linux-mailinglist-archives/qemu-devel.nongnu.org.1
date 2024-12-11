@@ -2,77 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EC059ED13B
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Dec 2024 17:22:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D3E659ED146
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Dec 2024 17:24:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tLPT1-0002K1-Cw; Wed, 11 Dec 2024 11:21:39 -0500
+	id 1tLPSy-0002A6-0G; Wed, 11 Dec 2024 11:21:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tLPSo-0001SS-Gv
+ id 1tLPSo-0001Si-JP
  for qemu-devel@nongnu.org; Wed, 11 Dec 2024 11:21:26 -0500
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tLPSm-0007ua-DT
+ id 1tLPSm-0007uq-LX
  for qemu-devel@nongnu.org; Wed, 11 Dec 2024 11:21:26 -0500
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-434e69857d9so5486745e9.0
- for <qemu-devel@nongnu.org>; Wed, 11 Dec 2024 08:21:23 -0800 (PST)
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-434e69857d9so5486795e9.0
+ for <qemu-devel@nongnu.org>; Wed, 11 Dec 2024 08:21:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1733934082; x=1734538882; darn=nongnu.org;
+ d=linaro.org; s=google; t=1733934083; x=1734538883; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=1xX8e653UqvPhJfMFTssKOZTmDKSbqOxXbCRuKU7FMk=;
- b=tnes/nuGgLsyQMmNqwS190Plf2AhfFK+/w2coH1UEo+kkPNkpsgFvvvjOKAq88K8gY
- Xkw9n4M59GWnD+XtiH4zbpNMYqbq39NVZuVWoiAf7rry+n6ETaVSlG+ZZUTzBdD/4PmA
- w3pLMAducC8lF2gjHxcjM31a3QOB5zhfgDUmXM3O38MWygoZmuLkpIN/qiNe8HcaDrTb
- tATBPVmhd/4KgwjoStbLt191a4MSrZhdMi49D3aATlqK1jsN+qAZoJOLj34/bqdS20pa
- VvPLdy2m0QkX0ufS+nIozYxw4AyItuxtlwdzVNrSbm3ma4l6HH2uMlzH7BkeQ467XWsS
- esoQ==
+ :reply-to; bh=doRTkzLWp9CB3fDTzYDP5bn9+hyyRKBZGVgyCVKSal4=;
+ b=sBH+xyer+4c0o2Dv1L66d4LSbAgPDGqhduB1yQiyLB2U5HwXBL8Xxp81JGIju5qk8/
+ gRky1G2woe/gVFMeXpj521j1hA3RoHD14Xh4VHfxUsOKd3d4r0qycblnVjFqtSq+iGv8
+ +STAuEAHVSBHj6gmFAEkQgmBgrcO+clC6Jc3IUjtargYm1U856w9l30yUVnhGzH1Qru6
+ VEb1NRMJkWQpg+BPJu8COm6lePsKV/d3aMZKuBi3702Tc8u9yoONvIpJ0Hppv44qsj6s
+ 3PLXOWAv0Skt8RQEtaJMiGLJxnQH44I5TikiG+336IfwI6X56/sPSGtjapNdUb5PNhnt
+ YISg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733934082; x=1734538882;
+ d=1e100.net; s=20230601; t=1733934083; x=1734538883;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=1xX8e653UqvPhJfMFTssKOZTmDKSbqOxXbCRuKU7FMk=;
- b=HeXlD9Nm6krHrddbS7CAwbXBLdeFbCop6pNyxuZKdmEdhxHVjL1ryiCjX9rAqjHdsU
- VzdGtE5Ht7jV0ZIPHgDuSafbQkcgwSBxvy1liApUH3D3ukLfOVAsiFZbA7o97AEIcmMd
- x8gM0qf/cf3tLgPJxbhA0EXWUrc6T8Dbdm95Yc7UR9ndrd9W+qhpdiCgwq1ysCnO6jeh
- Eqg07ZupwhViULLDHgAAE6pTDrguriodrEyoBGIqM+DYpvFyK5H4DCN397rwAfU3ruB/
- CVwJU/o4jNoEcvzBKg23sMhXUO2L+YIuWN3HNIBlD1QWUXX+i7pZQOcm9wVjkvG0ypYL
- /W9w==
-X-Gm-Message-State: AOJu0YxD7H8EQkqDlgwcxopVeG2yNdOrokNaEAIUmcfeM7+aRcUWYaHk
- LjxFVxRDyFSXyS2ZWCSAUEZ4IaFpOGzup4gF+gSNgEPfe9HScQ72KXlJLTJIzXzQWtmmjPnFhcg
- 3
-X-Gm-Gg: ASbGnculf20kfr+DHVhWgPHbTigEyJr8H/VP+hjiP5h29Y9c01Fml+rHbT757DzVDuQ
- oSkR/7lBZZ4PgE34RUh+NWlm/OjEFQ32ASc17WxdARwJREhWBAkdLduTI+gtJGUlMe8Z4JkDR+O
- yBJlFC2ySnoSwRDeai+VDMgmpMm7HzFRz0F8vZP3LIV460buZrrW8t62NAuIFnw6wFLWN6epCvx
- uKP337fuDXz1gSoQqitXcrBrQRqdvu0LMjmBoCF0ei6w67xkKOZBBtzOFVo
-X-Google-Smtp-Source: AGHT+IEiTMHt2U8u3uL+OcmHkA0mZMo+NbFE6U1FJ3+6vgzw/RgXs5wsl8KsrFv+EmkSq5hFfIDH+A==
-X-Received: by 2002:a7b:ca57:0:b0:436:2155:be54 with SMTP id
- 5b1f17b1804b1-4362155c09amr11155535e9.1.1733934082324; 
- Wed, 11 Dec 2024 08:21:22 -0800 (PST)
+ bh=doRTkzLWp9CB3fDTzYDP5bn9+hyyRKBZGVgyCVKSal4=;
+ b=iPCc7M3VxV+EUVisBGj6/rZI63YJUETOX2LbISY0A5fz2T4q2thJlQafpaVU80qnof
+ A0KKHrAzeN0Dp0Br5zByxhBB8x2d4PHHMmqrqqSz4vsVgjALXfDcM6smrzpnEqgsakVI
+ rqoUdevRdsjeATrHzYgD+Ktlh/hdB0dZFk+w1D2fiNVpPnyMRbuFYCDIS6NXLa1EHV+u
+ veyO/z0AOkZAObep20AbXCnrt8rOwVtnPiEQs+WSHl/G5iEHkBJRvlla8kgwvuDwzBKC
+ /HvvsFBfugNONc1gmdZiVwVDDM+OrnwfqpRHA1WkCdDcwiKOt8HmET7XvTdWzU83LXds
+ uIcw==
+X-Gm-Message-State: AOJu0YyfFg3IHN4Vvgv9QsLict1f1gh8i1o1kOOs6gkKoZuXypTe9acR
+ RkiJ4/kzwUpq/j9Paid3sNZj/XwNayaH4WVWEZCwP1yG1as/9QsIhSCzmFoq/lYiw9WQJYdG1BU
+ B
+X-Gm-Gg: ASbGncupf38z8khJ+bCp2KAku9EMZouyRSK9rm2QVgPHdKcgMooAhZYuKxZQVU845f+
+ X2VGLduwwYVF/FQLQ5laNkUyHoojxN2PzpdBk9EG4B/UEpj2z7VyHuOeU3R2SknjLruBId/GPys
+ jNWt9Vj9o6F1/6lrQg2M+T0daabfimva0yFQILg5TJ7mwEddcGHyk27UGGbxVr7S8mnXPbPDf2D
+ ouN+K2w30dK1RRVmXBrbrlxn559o0hZ2Z/TCNojTZK/n2+eLyVc5x0goGb4
+X-Google-Smtp-Source: AGHT+IGZk0AK0IjKsvlbFKBNy84R/VVcxn9ZjMkUpngAEIQcm5aH6bJ+cITVGoddelnqsozCJmqZ/Q==
+X-Received: by 2002:a05:600c:c8a:b0:434:fddf:5c06 with SMTP id
+ 5b1f17b1804b1-4361c5b8720mr25750205e9.1.1733934083222; 
+ Wed, 11 Dec 2024 08:21:23 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-434f4dfdcdfsm121460595e9.39.2024.12.11.08.21.21
+ 5b1f17b1804b1-434f4dfdcdfsm121460595e9.39.2024.12.11.08.21.22
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 11 Dec 2024 08:21:21 -0800 (PST)
+ Wed, 11 Dec 2024 08:21:22 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 68/72] softfloat: Share code between parts_pick_nan cases
-Date: Wed, 11 Dec 2024 16:20:00 +0000
-Message-Id: <20241211162004.2795499-69-peter.maydell@linaro.org>
+Subject: [PULL 69/72] softfloat: Sink frac_cmp in parts_pick_nan until needed
+Date: Wed, 11 Dec 2024 16:20:01 +0000
+Message-Id: <20241211162004.2795499-70-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241211162004.2795499-1-peter.maydell@linaro.org>
 References: <20241211162004.2795499-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x334.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x336.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,78 +97,66 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Richard Henderson <richard.henderson@linaro.org>
 
-Remember if there was an SNaN, and use that to simplify
-float_2nan_prop_s_{ab,ba} to only the snan component.
-Then, fall through to the corresponding
-float_2nan_prop_{ab,ba} case to handle any remaining
-nans, which must be quiet.
+Move the fractional comparison to the end of the
+float_2nan_prop_x87 case.  This is not required for
+any other 2nan propagation rule.  Reorganize the
+x87 case itself to break out of the switch when the
+fractional comparison is not required.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Message-id: 20241203203949.483774-10-richard.henderson@linaro.org
+Message-id: 20241203203949.483774-11-richard.henderson@linaro.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- fpu/softfloat-parts.c.inc | 32 ++++++++++++--------------------
- 1 file changed, 12 insertions(+), 20 deletions(-)
+ fpu/softfloat-parts.c.inc | 19 +++++++++----------
+ 1 file changed, 9 insertions(+), 10 deletions(-)
 
 diff --git a/fpu/softfloat-parts.c.inc b/fpu/softfloat-parts.c.inc
-index a1b148e90b9..3c77dcbb154 100644
+index 3c77dcbb154..abe24aeaa00 100644
 --- a/fpu/softfloat-parts.c.inc
 +++ b/fpu/softfloat-parts.c.inc
-@@ -39,10 +39,12 @@ static void partsN(return_nan)(FloatPartsN *a, float_status *s)
- static FloatPartsN *partsN(pick_nan)(FloatPartsN *a, FloatPartsN *b,
-                                      float_status *s)
- {
-+    bool have_snan = false;
-     int cmp, which;
- 
-     if (is_snan(a->cls) || is_snan(b->cls)) {
-         float_raise(float_flag_invalid | float_flag_invalid_snan, s);
-+        have_snan = true;
+@@ -52,11 +52,6 @@ static FloatPartsN *partsN(pick_nan)(FloatPartsN *a, FloatPartsN *b,
+         return a;
      }
  
-     if (s->default_nan_mode) {
-@@ -57,30 +59,20 @@ static FloatPartsN *partsN(pick_nan)(FloatPartsN *a, FloatPartsN *b,
- 
+-    cmp = frac_cmp(a, b);
+-    if (cmp == 0) {
+-        cmp = a->sign < b->sign;
+-    }
+-
      switch (s->float_2nan_prop_rule) {
      case float_2nan_prop_s_ab:
--        if (is_snan(a->cls)) {
--            which = 0;
--        } else if (is_snan(b->cls)) {
--            which = 1;
--        } else if (is_qnan(a->cls)) {
--            which = 0;
--        } else {
--            which = 1;
-+        if (have_snan) {
-+            which = is_snan(a->cls) ? 0 : 1;
+         if (have_snan) {
+@@ -89,20 +84,24 @@ static FloatPartsN *partsN(pick_nan)(FloatPartsN *a, FloatPartsN *b,
+          * return the NaN with the positive sign bit (if any).
+          */
+         if (is_snan(a->cls)) {
+-            if (is_snan(b->cls)) {
+-                which = cmp > 0 ? 0 : 1;
+-            } else {
++            if (!is_snan(b->cls)) {
+                 which = is_qnan(b->cls) ? 1 : 0;
++                break;
+             }
+         } else if (is_qnan(a->cls)) {
+             if (is_snan(b->cls) || !is_qnan(b->cls)) {
+                 which = 0;
+-            } else {
+-                which = cmp > 0 ? 0 : 1;
++                break;
+             }
+         } else {
+             which = 1;
 +            break;
          }
--        break;
--    case float_2nan_prop_s_ba:
--        if (is_snan(b->cls)) {
--            which = 1;
--        } else if (is_snan(a->cls)) {
--            which = 0;
--        } else if (is_qnan(b->cls)) {
--            which = 1;
--        } else {
--            which = 0;
--        }
--        break;
-+        /* fall through */
-     case float_2nan_prop_ab:
-         which = is_nan(a->cls) ? 0 : 1;
-         break;
-+    case float_2nan_prop_s_ba:
-+        if (have_snan) {
-+            which = is_snan(b->cls) ? 1 : 0;
-+            break;
++        cmp = frac_cmp(a, b);
++        if (cmp == 0) {
++            cmp = a->sign < b->sign;
 +        }
-+        /* fall through */
-     case float_2nan_prop_ba:
-         which = is_nan(b->cls) ? 1 : 0;
++        which = cmp > 0 ? 0 : 1;
          break;
+     default:
+         g_assert_not_reached();
 -- 
 2.34.1
 
