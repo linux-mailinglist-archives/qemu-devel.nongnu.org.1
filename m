@@ -2,40 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 549939EDAE1
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Dec 2024 00:06:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EDF0A9EDAD8
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Dec 2024 00:05:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tLVlP-0003bZ-0e; Wed, 11 Dec 2024 18:05:03 -0500
+	id 1tLVlQ-0003cH-BA; Wed, 11 Dec 2024 18:05:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <d-tatianin@yandex-team.ru>)
- id 1tLVlK-0003Vp-Fq
- for qemu-devel@nongnu.org; Wed, 11 Dec 2024 18:04:58 -0500
+ id 1tLVlM-0003au-Nn
+ for qemu-devel@nongnu.org; Wed, 11 Dec 2024 18:05:01 -0500
 Received: from forwardcorp1a.mail.yandex.net
  ([2a02:6b8:c0e:500:1:45:d181:df01])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <d-tatianin@yandex-team.ru>)
- id 1tLVlI-0002OF-No
- for qemu-devel@nongnu.org; Wed, 11 Dec 2024 18:04:58 -0500
+ id 1tLVlK-0002Oc-Vb
+ for qemu-devel@nongnu.org; Wed, 11 Dec 2024 18:05:00 -0500
 Received: from mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net
  [IPv6:2a02:6b8:c1f:5829:0:640:f281:0])
- by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id 72C2B61447;
- Thu, 12 Dec 2024 02:04:54 +0300 (MSK)
+ by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id A05E96145B;
+ Thu, 12 Dec 2024 02:04:57 +0300 (MSK)
 Received: from d-tatianin-lin.yandex-team.ru (unknown
  [2a02:6b8:b081:1227::1:8])
  by mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id b4xnrS4GamI0-7E3QJreo; Thu, 12 Dec 2024 02:04:54 +0300
+ ESMTPSA id b4xnrS4GamI0-aTQBHnXU; Thu, 12 Dec 2024 02:04:57 +0300
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1733958294;
- bh=i/w5rDBnwVLOj5y9aLzNQFkTm4o3GZ3TpsdbgF93iB8=;
+ s=default; t=1733958297;
+ bh=Vid9eybyfHkBbtn2DvtJa1fgolplJfizmxOi8mOdV4s=;
  h=Message-Id:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=Xl/vXkbamKZdI2X5/dD8+eQqQRhglOwXIQnKJiaUKoObLR7dIL8b2bMO5ctZsNCHb
- 3MH8DoRR9+ZfdzT/hvFthWXin6DE1tbpllC03X7GZfbftWOcUUFle7VRbod/mmQgzT
- +cRZfQDqLDCLSj5zN4etGo3vlEOE9jhZQu+6THlY=
+ b=VUaXkpQuwgitdxYTmK62r2fe/46rjucr3JbG2UgPUm+jpAKYWZcT/faFRRNxsIusT
+ qPWYMgIjTt3hQ7X6CppdOB34UiIEyHkddz1tnrGQhnfXSTCfcBpCYVbtnrTb0J8/HW
+ C7Pht/9qfThgX35D5XA6xtDlLVpXbP1MVDY2BPmk=
 Authentication-Results: mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
 From: Daniil Tatianin <d-tatianin@yandex-team.ru>
@@ -43,10 +43,9 @@ To: Paolo Bonzini <pbonzini@redhat.com>
 Cc: Daniil Tatianin <d-tatianin@yandex-team.ru>, Stefan Weil <sw@weilnetz.de>,
  Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
  qemu-devel@nongnu.org
-Subject: [PATCH v3 2/4] system/vl: extract overcommit option parsing into a
- helper
-Date: Thu, 12 Dec 2024 02:04:31 +0300
-Message-Id: <20241211230433.1371327-3-d-tatianin@yandex-team.ru>
+Subject: [PATCH v3 3/4] sysemu: introduce a new MlockState enum
+Date: Thu, 12 Dec 2024 02:04:32 +0300
+Message-Id: <20241211230433.1371327-4-d-tatianin@yandex-team.ru>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241211230433.1371327-1-d-tatianin@yandex-team.ru>
 References: <20241211230433.1371327-1-d-tatianin@yandex-team.ru>
@@ -76,53 +75,125 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This will be extended in the future commits, let's move it out of line
-right away so that it's easier to read.
+Replace the boolean value enable_mlock with an enum and add a helper to
+decide whether we should be calling os_mlock.
+
+This is a stepping stone towards introducing a new mlock mode, which
+will be the third possible state of this enum.
 
 Signed-off-by: Daniil Tatianin <d-tatianin@yandex-team.ru>
 ---
- system/vl.c | 21 ++++++++++++++-------
- 1 file changed, 14 insertions(+), 7 deletions(-)
+ hw/virtio/virtio-mem.c   |  2 +-
+ include/sysemu/sysemu.h  | 10 +++++++++-
+ migration/postcopy-ram.c |  2 +-
+ system/globals.c         |  7 ++++++-
+ system/vl.c              |  9 +++++++--
+ 5 files changed, 24 insertions(+), 6 deletions(-)
 
-diff --git a/system/vl.c b/system/vl.c
-index 03819a80ef..f0b3ad0df7 100644
---- a/system/vl.c
-+++ b/system/vl.c
-@@ -1855,6 +1855,19 @@ static void object_option_parse(const char *str)
-     visit_free(v);
- }
+diff --git a/hw/virtio/virtio-mem.c b/hw/virtio/virtio-mem.c
+index 80ada89551..78d27eb141 100644
+--- a/hw/virtio/virtio-mem.c
++++ b/hw/virtio/virtio-mem.c
+@@ -988,7 +988,7 @@ static void virtio_mem_device_realize(DeviceState *dev, Error **errp)
+         return;
+     }
  
-+static void overcommit_parse(const char *str)
-+{
-+    QemuOpts *opts;
+-    if (enable_mlock) {
++    if (should_mlock(mlock_state)) {
+         error_setg(errp, "Incompatible with mlock");
+         return;
+     }
+diff --git a/include/sysemu/sysemu.h b/include/sysemu/sysemu.h
+index 7ec419ce13..f1c9895057 100644
+--- a/include/sysemu/sysemu.h
++++ b/include/sysemu/sysemu.h
+@@ -43,10 +43,18 @@ extern int display_opengl;
+ extern const char *keyboard_layout;
+ extern int old_param;
+ extern uint8_t *boot_splash_filedata;
+-extern bool enable_mlock;
+ extern bool enable_cpu_pm;
+ extern QEMUClockType rtc_clock;
+ 
++typedef enum {
++    MLOCK_OFF = 0,
++    MLOCK_ON,
++} MlockState;
 +
-+    opts = qemu_opts_parse_noisily(qemu_find_opts("overcommit"),
-+                                   str, false);
-+    if (!opts) {
-+        exit(1);
-+    }
-+    enable_mlock = qemu_opt_get_bool(opts, "mem-lock", enable_mlock);
-+    enable_cpu_pm = qemu_opt_get_bool(opts, "cpu-pm", enable_cpu_pm);
++bool should_mlock(MlockState);
++
++extern MlockState mlock_state;
++
+ #define MAX_OPTION_ROMS 16
+ typedef struct QEMUOptionRom {
+     const char *name;
+diff --git a/migration/postcopy-ram.c b/migration/postcopy-ram.c
+index 36ec6a3d75..a6a26a9cbb 100644
+--- a/migration/postcopy-ram.c
++++ b/migration/postcopy-ram.c
+@@ -651,7 +651,7 @@ int postcopy_ram_incoming_cleanup(MigrationIncomingState *mis)
+         mis->have_fault_thread = false;
+     }
+ 
+-    if (enable_mlock) {
++    if (should_mlock(mlock_state)) {
+         if (os_mlock(false) < 0) {
+             error_report("mlock: %s", strerror(errno));
+             /*
+diff --git a/system/globals.c b/system/globals.c
+index 84ce943ac9..c6452d4a0d 100644
+--- a/system/globals.c
++++ b/system/globals.c
+@@ -31,10 +31,15 @@
+ #include "sysemu/cpus.h"
+ #include "sysemu/sysemu.h"
+ 
++bool should_mlock(MlockState state)
++{
++    return state == MLOCK_ON;
 +}
 +
- /*
-  * Very early object creation, before the sandbox options have been activated.
-  */
-@@ -3532,13 +3545,7 @@ void qemu_init(int argc, char **argv)
-                 object_option_parse(optarg);
-                 break;
-             case QEMU_OPTION_overcommit:
--                opts = qemu_opts_parse_noisily(qemu_find_opts("overcommit"),
--                                               optarg, false);
--                if (!opts) {
--                    exit(1);
--                }
--                enable_mlock = qemu_opt_get_bool(opts, "mem-lock", enable_mlock);
--                enable_cpu_pm = qemu_opt_get_bool(opts, "cpu-pm", enable_cpu_pm);
-+                overcommit_parse(optarg);
-                 break;
-             case QEMU_OPTION_compat:
-                 {
+ enum vga_retrace_method vga_retrace_method = VGA_RETRACE_DUMB;
+ int display_opengl;
+ const char* keyboard_layout;
+-bool enable_mlock;
++MlockState mlock_state;
+ bool enable_cpu_pm;
+ int autostart = 1;
+ int vga_interface_type = VGA_NONE;
+diff --git a/system/vl.c b/system/vl.c
+index f0b3ad0df7..a41306ac84 100644
+--- a/system/vl.c
++++ b/system/vl.c
+@@ -792,7 +792,7 @@ static QemuOptsList qemu_run_with_opts = {
+ 
+ static void realtime_init(void)
+ {
+-    if (enable_mlock) {
++    if (should_mlock(mlock_state)) {
+         if (os_mlock(false) < 0) {
+             error_report("locking memory failed");
+             exit(1);
+@@ -1858,13 +1858,18 @@ static void object_option_parse(const char *str)
+ static void overcommit_parse(const char *str)
+ {
+     QemuOpts *opts;
++    bool enable_mlock;
+ 
+     opts = qemu_opts_parse_noisily(qemu_find_opts("overcommit"),
+                                    str, false);
+     if (!opts) {
+         exit(1);
+     }
+-    enable_mlock = qemu_opt_get_bool(opts, "mem-lock", enable_mlock);
++
++    enable_mlock = qemu_opt_get_bool(opts, "mem-lock",
++                                     should_mlock(mlock_state));
++    mlock_state = enable_mlock ? MLOCK_ON : MLOCK_OFF;
++
+     enable_cpu_pm = qemu_opt_get_bool(opts, "cpu-pm", enable_cpu_pm);
+ }
+ 
 -- 
 2.34.1
 
