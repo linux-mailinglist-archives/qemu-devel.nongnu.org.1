@@ -2,54 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C3019EC831
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Dec 2024 10:02:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 334459EC82A
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Dec 2024 10:01:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tLIaB-0005rI-P1; Wed, 11 Dec 2024 04:00:35 -0500
+	id 1tLIa8-0005qr-A3; Wed, 11 Dec 2024 04:00:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tLIa8-0005r7-3b
- for qemu-devel@nongnu.org; Wed, 11 Dec 2024 04:00:32 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tLIa5-0005qV-Qm
+ for qemu-devel@nongnu.org; Wed, 11 Dec 2024 04:00:29 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tLIa4-0007p7-2M
- for qemu-devel@nongnu.org; Wed, 11 Dec 2024 04:00:31 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tLIa4-0007pJ-2C
+ for qemu-devel@nongnu.org; Wed, 11 Dec 2024 04:00:29 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1733907623;
+ s=mimecast20190719; t=1733907627;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=MaKWt+sa+9MTo4wMwi1e7BQIyjX/csXwGJl8YCq44Rk=;
- b=bMWCvraWnOEN5VQze/Phq1twsWZP18DCi3QyrycfwizvraGj7CsTWFXaDqcyFTdDWkGDPk
- XGnOqrJg4/a78CjyC5isQi7v3/zqYSnixGs1txyO61ctxaz5EzNzNYVAXQvtddXcFAGBRr
- eSavACFPDy84CDso7WeOVuNyxcDBSuM=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=3dxDc22YP4Eyy/4L7iCCPLQYp58xT/xQlzHGS8WYxZA=;
+ b=KIv6v44PZDUylpzxM9VESU01IX8zUOTKW+8NKQoXnhCgmkwPr8qVLFlTyf29QTCfdqF8wk
+ 3AEhOCAa1k/NP2YdykpzGLOPNJR9rS1GlsRPjQVk51JCaJrFvL/TcjptALMKqiUK8uj+cs
+ Dl3gSiozffzI4lIGdzX//ucT/F7PLGw=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-550-7DSoQknDOz6KyJCc3BhVHg-1; Wed,
- 11 Dec 2024 04:00:20 -0500
-X-MC-Unique: 7DSoQknDOz6KyJCc3BhVHg-1
-X-Mimecast-MFC-AGG-ID: 7DSoQknDOz6KyJCc3BhVHg
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-342-XPFejslwOP6QP9t3NlC5GA-1; Wed,
+ 11 Dec 2024 04:00:24 -0500
+X-MC-Unique: XPFejslwOP6QP9t3NlC5GA-1
+X-Mimecast-MFC-AGG-ID: XPFejslwOP6QP9t3NlC5GA
 Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 543EC1955F3B; Wed, 11 Dec 2024 09:00:18 +0000 (UTC)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id AC45D195608B; Wed, 11 Dec 2024 09:00:22 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.193.186])
  by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 47BC51956094; Wed, 11 Dec 2024 09:00:15 +0000 (UTC)
+ id 4E97D1956089; Wed, 11 Dec 2024 09:00:18 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
- Stefan Hajnoczi <stefanha@redhat.com>
-Subject: [PULL 00/26] First s390x and functional testing patches for v10.0
-Date: Wed, 11 Dec 2024 09:59:44 +0100
-Message-ID: <20241211090014.619351-1-thuth@redhat.com>
+ Stefan Hajnoczi <stefanha@redhat.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Cornelia Huck <cohuck@redhat.com>
+Subject: [PULL 01/26] hw/i386: define _AS_LATEST() macros for machine types
+Date: Wed, 11 Dec 2024 09:59:45 +0100
+Message-ID: <20241211090014.619351-2-thuth@redhat.com>
+In-Reply-To: <20241211090014.619351-1-thuth@redhat.com>
+References: <20241211090014.619351-1-thuth@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -79,133 +85,121 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
- Hi!
+From: Daniel P. Berrangé <berrange@redhat.com>
 
-The following changes since commit ae35f033b874c627d81d51070187fbf55f0bf1a7:
+Follow the other architecture targets by adding extra macros for
+defining a versioned machine type as the latest. This reduces the
+size of the changes when introducing new machine types at the start
+of each release cycle.
 
-  Update version for v9.2.0 release (2024-12-10 16:20:54 +0000)
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Cornelia Huck <cohuck@redhat.com>
+Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+Message-ID: <20240910163041.3764176-1-berrange@redhat.com>
+Signed-off-by: Cornelia Huck <cohuck@redhat.com>
+Message-ID: <20241126103005.3794748-2-cohuck@redhat.com>
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+---
+ include/hw/i386/pc.h |  4 +++-
+ hw/i386/pc_piix.c    | 11 +++++------
+ hw/i386/pc_q35.c     | 11 ++++++-----
+ 3 files changed, 14 insertions(+), 12 deletions(-)
 
-are available in the Git repository at:
-
-  https://gitlab.com/thuth/qemu.git tags/pull-request-2024-12-11
-
-for you to fetch changes up to f29c96d0f5760f72220623500ee659f1fc2d1542:
-
-  tests/functional: remove pointless with statement (2024-12-11 09:19:12 +0100)
-
-----------------------------------------------------------------
-* Add compat machines for QEMU 10.0
-* Add s390x CPU model for the gen17 mainframe
-* Convert some more avocado tests to the new functional framework
-* Some minor clean-ups for functional tests
-
-----------------------------------------------------------------
-Cornelia Huck (1):
-      hw: add compat machines for 10.0
-
-Daniel P. Berrangé (4):
-      hw/i386: define _AS_LATEST() macros for machine types
-      docs: replace 'Edit on GitLab' with 'View page source'
-      tests/functional: remove unused system imports
-      tests/functional: remove pointless with statement
-
-Hendrik Brueckner (15):
-      s390x/cpumodel: add msa10 subfunctions
-      s390x/cpumodel: add msa11 subfunctions
-      s390x/cpumodel: add msa12 changes
-      s390x/cpumodel: add msa13 subfunctions
-      s390x/cpumodel: Add ptff Query Time-Stamp Event (QTSE) support
-      linux-headers: Update to Linux 6.13-rc1
-      s390x/cpumodel: add Concurrent-functions facility support
-      s390x/cpumodel: add Vector Enhancements facility 3
-      s390x/cpumodel: add Miscellaneous-Instruction-Extensions Facility 4
-      s390x/cpumodel: add Vector-Packed-Decimal-Enhancement facility 3
-      s390x/cpumodel: add Ineffective-nonconstrained-transaction facility
-      s390x/cpumodel: Add Sequential-Instruction-Fetching facility
-      s390x/cpumodel: correct PLO feature wording
-      s390x/cpumodel: Add PLO-extension facility
-      s390x/cpumodel: gen17 model
-
-Thomas Huth (6):
-      tests/functional: Bump the timeout of the sh4_tuxrun test
-      MAINTAINERS: Cover the tests/functional/test_sh4eb_r2d.py file
-      tests/functional: Convert the xlnx_versal_virt avocado test
-      tests/functional: Convert the emcraft_sf2 avocado test
-      tests/functional: Convert the smdkc210 avocado test
-      tests/functional: Convert the cubieboard avocado tests
-
- MAINTAINERS                                    |   6 +-
- docs/conf.py                                   |   2 +-
- include/hw/boards.h                            |   3 +
- include/hw/i386/pc.h                           |   7 +-
- include/standard-headers/drm/drm_fourcc.h      |   1 +
- include/standard-headers/linux/ethtool.h       |   5 +
- include/standard-headers/linux/pci_regs.h      |  38 +++-
- include/standard-headers/linux/virtio_crypto.h |   1 +
- include/standard-headers/linux/virtio_pci.h    | 131 ++++++++++++
- linux-headers/asm-arm64/kvm.h                  |   6 +
- linux-headers/asm-arm64/unistd_64.h            |   4 +
- linux-headers/asm-generic/mman-common.h        |   3 +
- linux-headers/asm-generic/mman.h               |   4 +
- linux-headers/asm-generic/unistd.h             |  11 +-
- linux-headers/asm-loongarch/kvm.h              |  20 ++
- linux-headers/asm-loongarch/unistd_64.h        |   4 +
- linux-headers/asm-mips/mman.h                  |   3 +
- linux-headers/asm-mips/unistd_n32.h            |   4 +
- linux-headers/asm-mips/unistd_n64.h            |   4 +
- linux-headers/asm-mips/unistd_o32.h            |   4 +
- linux-headers/asm-powerpc/unistd_32.h          |   4 +
- linux-headers/asm-powerpc/unistd_64.h          |   4 +
- linux-headers/asm-riscv/kvm.h                  |   4 +
- linux-headers/asm-riscv/unistd_32.h            |   4 +
- linux-headers/asm-riscv/unistd_64.h            |   4 +
- linux-headers/asm-s390/kvm.h                   |   3 +-
- linux-headers/asm-s390/unistd_32.h             |   4 +
- linux-headers/asm-s390/unistd_64.h             |   4 +
- linux-headers/asm-x86/kvm.h                    |   1 +
- linux-headers/asm-x86/mman.h                   |   3 -
- linux-headers/asm-x86/unistd_32.h              |   4 +
- linux-headers/asm-x86/unistd_64.h              |   4 +
- linux-headers/asm-x86/unistd_x32.h             |   4 +
- linux-headers/linux/iommufd.h                  | 224 +++++++++++++++++++-
- linux-headers/linux/kvm.h                      |   8 +
- linux-headers/linux/psci.h                     |   5 +
- linux-headers/linux/vfio.h                     |   2 +-
- target/s390x/cpu_features.h                    |   1 +
- target/s390x/cpu_features_def.h.inc            |  94 ++++++++-
- hw/arm/virt.c                                  |   9 +-
- hw/core/machine.c                              |   3 +
- hw/i386/pc.c                                   |   3 +
- hw/i386/pc_piix.c                              |  20 +-
- hw/i386/pc_q35.c                               |  20 +-
- hw/m68k/virt.c                                 |   9 +-
- hw/ppc/spapr.c                                 |  15 +-
- hw/s390x/s390-virtio-ccw.c                     |  14 +-
- target/s390x/cpu_features.c                    |  11 +
- target/s390x/cpu_models.c                      |  61 ++++++
- target/s390x/gen-features.c                    | 178 ++++++++++++++++
- target/s390x/kvm/kvm.c                         |   6 +
- tests/avocado/boot_linux_console.py            | 269 -------------------------
- tests/functional/meson.build                   |   6 +
- tests/functional/test_aarch64_sbsaref.py       |   1 -
- tests/functional/test_aarch64_xlnx_versal.py   |  37 ++++
- tests/functional/test_acpi_bits.py             |   1 -
- tests/functional/test_arm_cubieboard.py        | 150 ++++++++++++++
- tests/functional/test_arm_emcraft_sf2.py       |  52 +++++
- tests/functional/test_arm_smdkc210.py          |  57 ++++++
- tests/functional/test_m68k_mcf5208evb.py       |   2 -
- tests/functional/test_microblaze_s3adsp1800.py |   1 -
- tests/functional/test_mips64el_loongson3v.py   |   1 -
- tests/functional/test_or1k_sim.py              |   2 -
- tests/functional/test_ppc64_hv.py              |   7 +-
- tests/functional/test_s390x_topology.py        |   1 -
- tests/functional/test_sh4_tuxrun.py            |   4 -
- tests/functional/test_sh4eb_r2d.py             |   1 -
- tests/functional/test_virtio_version.py        |   2 -
- 68 files changed, 1248 insertions(+), 337 deletions(-)
- create mode 100755 tests/functional/test_aarch64_xlnx_versal.py
- create mode 100755 tests/functional/test_arm_cubieboard.py
- create mode 100755 tests/functional/test_arm_emcraft_sf2.py
- create mode 100755 tests/functional/test_arm_smdkc210.py
+diff --git a/include/hw/i386/pc.h b/include/hw/i386/pc.h
+index 14ee06287d..890427c56e 100644
+--- a/include/hw/i386/pc.h
++++ b/include/hw/i386/pc.h
+@@ -320,7 +320,7 @@ extern const size_t pc_compat_2_3_len;
+     } \
+     type_init(pc_machine_init_##suffix)
+ 
+-#define DEFINE_PC_VER_MACHINE(namesym, namestr, initfn, ...) \
++#define DEFINE_PC_VER_MACHINE(namesym, namestr, initfn, isdefault, malias, ...) \
+     static void MACHINE_VER_SYM(init, namesym, __VA_ARGS__)( \
+         MachineState *machine) \
+     { \
+@@ -334,6 +334,8 @@ extern const size_t pc_compat_2_3_len;
+         MACHINE_VER_SYM(options, namesym, __VA_ARGS__)(mc); \
+         mc->init = MACHINE_VER_SYM(init, namesym, __VA_ARGS__); \
+         MACHINE_VER_DEPRECATION(__VA_ARGS__); \
++        mc->is_default = isdefault; \
++        mc->alias = malias; \
+     } \
+     static const TypeInfo MACHINE_VER_SYM(info, namesym, __VA_ARGS__) = \
+     { \
+diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
+index 2bf6865d40..4953676170 100644
+--- a/hw/i386/pc_piix.c
++++ b/hw/i386/pc_piix.c
+@@ -446,7 +446,10 @@ static void pc_i440fx_init(MachineState *machine)
+ }
+ 
+ #define DEFINE_I440FX_MACHINE(major, minor) \
+-    DEFINE_PC_VER_MACHINE(pc_i440fx, "pc-i440fx", pc_i440fx_init, major, minor);
++    DEFINE_PC_VER_MACHINE(pc_i440fx, "pc-i440fx", pc_i440fx_init, false, NULL, major, minor);
++
++#define DEFINE_I440FX_MACHINE_AS_LATEST(major, minor) \
++    DEFINE_PC_VER_MACHINE(pc_i440fx, "pc-i440fx", pc_i440fx_init, true, "pc", major, minor);
+ 
+ static void pc_i440fx_machine_options(MachineClass *m)
+ {
+@@ -477,17 +480,13 @@ static void pc_i440fx_machine_options(MachineClass *m)
+ static void pc_i440fx_machine_9_2_options(MachineClass *m)
+ {
+     pc_i440fx_machine_options(m);
+-    m->alias = "pc";
+-    m->is_default = true;
+ }
+ 
+-DEFINE_I440FX_MACHINE(9, 2);
++DEFINE_I440FX_MACHINE_AS_LATEST(9, 2);
+ 
+ static void pc_i440fx_machine_9_1_options(MachineClass *m)
+ {
+     pc_i440fx_machine_9_2_options(m);
+-    m->alias = NULL;
+-    m->is_default = false;
+     compat_props_add(m->compat_props, hw_compat_9_1, hw_compat_9_1_len);
+     compat_props_add(m->compat_props, pc_compat_9_1, pc_compat_9_1_len);
+ }
+diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
+index 8319b6d45e..42bdedbaa4 100644
+--- a/hw/i386/pc_q35.c
++++ b/hw/i386/pc_q35.c
+@@ -327,10 +327,13 @@ static void pc_q35_init(MachineState *machine)
+ }
+ 
+ #define DEFINE_Q35_MACHINE(major, minor) \
+-    DEFINE_PC_VER_MACHINE(pc_q35, "pc-q35", pc_q35_init, major, minor);
++    DEFINE_PC_VER_MACHINE(pc_q35, "pc-q35", pc_q35_init, false, NULL, major, minor);
++
++#define DEFINE_Q35_MACHINE_AS_LATEST(major, minor) \
++    DEFINE_PC_VER_MACHINE(pc_q35, "pc-q35", pc_q35_init, false, "q35", major, minor);
+ 
+ #define DEFINE_Q35_MACHINE_BUGFIX(major, minor, micro) \
+-    DEFINE_PC_VER_MACHINE(pc_q35, "pc-q35", pc_q35_init, major, minor, micro);
++    DEFINE_PC_VER_MACHINE(pc_q35, "pc-q35", pc_q35_init, false, NULL, major, minor, micro);
+ 
+ static void pc_q35_machine_options(MachineClass *m)
+ {
+@@ -359,15 +362,13 @@ static void pc_q35_machine_options(MachineClass *m)
+ static void pc_q35_machine_9_2_options(MachineClass *m)
+ {
+     pc_q35_machine_options(m);
+-    m->alias = "q35";
+ }
+ 
+-DEFINE_Q35_MACHINE(9, 2);
++DEFINE_Q35_MACHINE_AS_LATEST(9, 2);
+ 
+ static void pc_q35_machine_9_1_options(MachineClass *m)
+ {
+     pc_q35_machine_9_2_options(m);
+-    m->alias = NULL;
+     compat_props_add(m->compat_props, hw_compat_9_1, hw_compat_9_1_len);
+     compat_props_add(m->compat_props, pc_compat_9_1, pc_compat_9_1_len);
+ }
+-- 
+2.47.1
 
 
