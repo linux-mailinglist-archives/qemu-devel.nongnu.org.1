@@ -2,71 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D2DA9ED26F
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Dec 2024 17:45:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F0489ED22C
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Dec 2024 17:37:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tLPe2-0008Bp-2n; Wed, 11 Dec 2024 11:33:02 -0500
+	id 1tLPde-0006WN-3B; Wed, 11 Dec 2024 11:32:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tLPd4-0004we-1O
- for qemu-devel@nongnu.org; Wed, 11 Dec 2024 11:32:02 -0500
+ id 1tLPd6-000530-UO
+ for qemu-devel@nongnu.org; Wed, 11 Dec 2024 11:32:05 -0500
 Received: from mail-qt1-x833.google.com ([2607:f8b0:4864:20::833])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tLPd1-0001KJ-Vp
- for qemu-devel@nongnu.org; Wed, 11 Dec 2024 11:32:01 -0500
+ id 1tLPd5-0001LK-25
+ for qemu-devel@nongnu.org; Wed, 11 Dec 2024 11:32:04 -0500
 Received: by mail-qt1-x833.google.com with SMTP id
- d75a77b69052e-4674f1427deso48062421cf.1
- for <qemu-devel@nongnu.org>; Wed, 11 Dec 2024 08:31:59 -0800 (PST)
+ d75a77b69052e-4678664e22fso13282391cf.2
+ for <qemu-devel@nongnu.org>; Wed, 11 Dec 2024 08:32:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1733934719; x=1734539519; darn=nongnu.org;
+ d=linaro.org; s=google; t=1733934722; x=1734539522; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=TmvLC72KaZzM8jiapnL2kS3QqFWjexV3Z72ZJbn8iE0=;
- b=rTqELhjL8kFUn6HcuFGTkO7cYqXG/pAkkeaS1dSZUncvxjxI1x7b5rnqQ9yHIFWXs1
- IrgBVVEbfQ9KkqpSjRfVwEq7eIQk6pOyiEUXNTaMRTdrLahBBE6s9CJhIix7d+d40N7s
- bJLd7zqEmBSX2qVrhv4A9eU66/xHVh+kKVGB3KNKeQp9T7g6XP2lwF4kc/B2GNoa6nYN
- J0WM9yefPRNhSKp+kI/lk2Kx57b9OVOABJpN8M+Hv0XVevoGc3Dxx9rGymtjXhIDpbVT
- IwfqJb8xN+J8hfbtZqusC6dAWN1bQgn3msT1faSN10nqVaHWauPuzGveo9KEvoPMol32
- Vi6w==
+ bh=qB2IZAS09IccrdqxBacklaTzmXPtI54chcpe7/zCzag=;
+ b=q9VnoxaCKTZSGYGgNHbBmEfW9i3Rvu/P3tiWhKmmaVCzTn1uRYHf7hkccF4clrdOyy
+ uaXo4fcyinJqGDb1OJ7eMFs0y19XwCyoCaoSknxnzRPeMmVyO0ZWHf8kzu8TjrmbGFGS
+ FherlWXlp6o1BxhLUMZ5rB2CiqPo7/pIHPnZuEDaf1SFpCdMwiKl8dPA8johTNigTckD
+ r7P+4A1TmZw1QrczJdgwqjNQGJJP/uOd9Ok9UcTqkIz4j8DrEoFDaK8mDFFoYhCecc60
+ r/99S4w/8fuKFbnHJfc+h68auLFZqQSzdUeqn0ysxXIsPkwmkQxeXLTqLalW7lSk3NlP
+ En8A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733934719; x=1734539519;
+ d=1e100.net; s=20230601; t=1733934722; x=1734539522;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=TmvLC72KaZzM8jiapnL2kS3QqFWjexV3Z72ZJbn8iE0=;
- b=T7KxTsGlJZMbq/QoVggZng/6YxddaVgM27cu8clfvwYDGT+pXujXUNoe0DS7VwqfFS
- O2mvX1mM7q4A/jSgKZg7YcUj0n6mUaTpoOXoU4Ssopy/IUGFl25VuwHzUfptxetG/UK3
- /bmY69ju47aAFl2fqzP59nC7JX3ggZk3iH9eQzsWeTIqb+n1k4K0YeT3cSyruTxxIaLS
- jo6NR+QgRNfJk56jEDSPQVmkH1qeBZX+AJfal2XzELJjNqSLo+YQEuqEqFyMeJvRykHP
- Oolrc7gI5rS6huvDFnlcjZvunYXR86/UzxDc+9D7+86guM45FMUiVaG3Zxc1zocmvoNV
- lvAA==
-X-Gm-Message-State: AOJu0Yx6rt6Xx+v/pKeGhXy8UPt0j2yjIgRgzPQt2EMjswWZT33rvZQ0
- E1c4ImI/lnT1yw90lMs3toZOhHzn1Yo1AavE8mluA3Drsfx/Gau7zewVQv8kLRvB0bc9zYIcFri
- yoRySVNDk
-X-Gm-Gg: ASbGncuyPrm4hGXAKkEXk2qM7mkbiiS5si9JiNu75lT3mqEJF6YtELO6u0nMr9Tv/Io
- jnyQ0J2h50NF6oBHS3BtQetIFUQIG/FG8vKUoJtXQ4YN9KoiPN8kUk6Qls/yMX4e/8lQJOqcNcA
- KwoYwz5BlZw0p8ASLHIMaeWrF6oYmPP6SeoK5gmbMIu1p6HiU1Qrr810sVIYH54Eq9dLARGzn9U
- 3ApVxX4i0lRFKvDvnv8p0S8ebajSwpfpqHQx1IayjmneaU04PeUPSpSPB8lIA==
-X-Google-Smtp-Source: AGHT+IGfYBp7vaYRJBwv3LN1vR1WDF6yQpP0y7QMhklYq4fk+1cpy88RFJflUiu1RjOAGDY0BMdw/g==
-X-Received: by 2002:a05:622a:4c16:b0:466:a032:dbbb with SMTP id
- d75a77b69052e-46789298f1dmr57776341cf.1.1733934718804; 
- Wed, 11 Dec 2024 08:31:58 -0800 (PST)
+ bh=qB2IZAS09IccrdqxBacklaTzmXPtI54chcpe7/zCzag=;
+ b=YP8f/e7V1U5TnCBI3pd8iX9lYykXtlgfamxc/b9c9KHunWoI6jIe4HJlYxH1YKtLmb
+ 27MLc2nZME3koqkUuIDv+3H8vULAMcrWqDMechtFEOnEl492QDG6CKFV9n6FXv/QSoCm
+ ddUGZXf0iXn8ZPv5vVwPCq6n7CKlwXTCN+uoMT8R+6dBC6vnLYrm3spS/AF1bYFjz+3a
+ akc3S0IOkF73Ggae6HWaQMhNJDloZggOjnJrwV8a2agsc1ueaILN+4TZ5JGI5PCYllR0
+ JaHG+gNbza8DK+wgFdbNfvH4QItH/fjqBYAPWTqsik/XcRohfVznqhImsQQB9pZpkDgI
+ kBqQ==
+X-Gm-Message-State: AOJu0YzcWQK0OYVtDCCEZlTHqxfsst6mNL53HgcB++hw37v95kjQzLGw
+ Xcrgn4krSjmNTcOU8WQKUYfKx1bzG7TcMFomntE6r7TcPCP5VzIICFqf5w9ie/y1lBHjg0pEzap
+ DWlLY2LFH
+X-Gm-Gg: ASbGnctzpzgjfh1HolMCdhCIemH2aLuaoePSDcgTIEEHXHmhK+0vwJ8VFGNv+3tLbvY
+ o9wbxaT/RDl3hLOU8PYl8gDYXuwZ0oMRSV7QTxC24zf52cp9YI+JMF6N0YGTd1KHF8DeUtMawE9
+ vdEGb8WheVM1oofHAt2Z86XarriI7Wp0qfLwQU0ax245N++vzBw1zaazPe/YuISW3zQLZuitCS9
+ ApcNijRarAD1uh0taw8YIbro4QmEg74T/6N2xG3mie5D2uNlIX4aSk6Zk1Pbw==
+X-Google-Smtp-Source: AGHT+IEBCdPG9+UN0lwgj80Qf92dHhSj+yrkm5Lj+e2y+J51kYzUPd1mGdrIT9uJVoejghxkkwoprA==
+X-Received: by 2002:ac8:5947:0:b0:466:9197:b503 with SMTP id
+ d75a77b69052e-46789379413mr58417541cf.46.1733934720543; 
+ Wed, 11 Dec 2024 08:32:00 -0800 (PST)
 Received: from stoup.. ([187.217.227.247]) by smtp.gmail.com with ESMTPSA id
- d75a77b69052e-46755db613csm43849381cf.70.2024.12.11.08.31.56
+ d75a77b69052e-46755db613csm43849381cf.70.2024.12.11.08.31.59
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 11 Dec 2024 08:31:58 -0800 (PST)
+ Wed, 11 Dec 2024 08:32:00 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org,
 	Peter Maydell <peter.maydell@linaro.org>
-Subject: [PATCH v3 18/69] target/arm: Convert CCMP, CCMN to decodetree
-Date: Wed, 11 Dec 2024 10:29:45 -0600
-Message-ID: <20241211163036.2297116-19-richard.henderson@linaro.org>
+Subject: [PATCH v3 19/69] target/arm: Convert disas_cond_select to decodetree
+Date: Wed, 11 Dec 2024 10:29:46 -0600
+Message-ID: <20241211163036.2297116-20-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241211163036.2297116-1-richard.henderson@linaro.org>
 References: <20241211163036.2297116-1-richard.henderson@linaro.org>
@@ -80,7 +80,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,149 +96,153 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+This includes CSEL, CSINC, CSINV, CSNEG.  Remove disas_data_proc_reg,
+as these were the last insns decoded by that function.
+
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/tcg/translate-a64.c | 66 +++++++++++-----------------------
- target/arm/tcg/a64.decode      |  6 ++--
- 2 files changed, 25 insertions(+), 47 deletions(-)
+ target/arm/tcg/translate-a64.c | 84 ++++++----------------------------
+ target/arm/tcg/a64.decode      |  3 ++
+ 2 files changed, 17 insertions(+), 70 deletions(-)
 
 diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
-index 774689641d..56a445a3c2 100644
+index 56a445a3c2..9c6365f5ef 100644
 --- a/target/arm/tcg/translate-a64.c
 +++ b/target/arm/tcg/translate-a64.c
-@@ -8092,68 +8092,46 @@ static bool do_setf(DisasContext *s, int rn, int shift)
- TRANS_FEAT(SETF8, aa64_condm_4, do_setf, a->rn, 24)
- TRANS_FEAT(SETF16, aa64_condm_4, do_setf, a->rn, 16)
+@@ -8171,39 +8171,17 @@ static bool trans_CCMP(DisasContext *s, arg_CCMP *a)
+     return true;
+ }
  
--/* Conditional compare (immediate / register)
-- *  31 30 29 28 27 26 25 24 23 22 21  20    16 15  12  11  10  9   5  4 3   0
-- * +--+--+--+------------------------+--------+------+----+--+------+--+-----+
-- * |sf|op| S| 1  1  0  1  0  0  1  0 |imm5/rm | cond |i/r |o2|  Rn  |o3|nzcv |
-- * +--+--+--+------------------------+--------+------+----+--+------+--+-----+
-- *        [1]                             y                [0]       [0]
+-/* Conditional select
+- *   31   30  29  28             21 20  16 15  12 11 10 9    5 4    0
+- * +----+----+---+-----------------+------+------+-----+------+------+
+- * | sf | op | S | 1 1 0 1 0 1 0 0 |  Rm  | cond | op2 |  Rn  |  Rd  |
+- * +----+----+---+-----------------+------+------+-----+------+------+
 - */
--static void disas_cc(DisasContext *s, uint32_t insn)
-+/* CCMP, CCMN */
-+static bool trans_CCMP(DisasContext *s, arg_CCMP *a)
+-static void disas_cond_select(DisasContext *s, uint32_t insn)
++static bool trans_CSEL(DisasContext *s, arg_CSEL *a)
  {
--    unsigned int sf, op, y, cond, rn, nzcv, is_imm;
--    TCGv_i32 tcg_t0, tcg_t1, tcg_t2;
--    TCGv_i64 tcg_tmp, tcg_y, tcg_rn;
-+    TCGv_i32 tcg_t0 = tcg_temp_new_i32();
-+    TCGv_i32 tcg_t1 = tcg_temp_new_i32();
-+    TCGv_i32 tcg_t2 = tcg_temp_new_i32();
-+    TCGv_i64 tcg_tmp = tcg_temp_new_i64();
-+    TCGv_i64 tcg_rn, tcg_y;
-     DisasCompare c;
--
--    if (!extract32(insn, 29, 1)) {
--        unallocated_encoding(s);
--        return;
--    }
--    if (insn & (1 << 10 | 1 << 4)) {
+-    unsigned int sf, else_inv, rm, cond, else_inc, rn, rd;
+-    TCGv_i64 tcg_rd, zero;
++    TCGv_i64 tcg_rd = cpu_reg(s, a->rd);
++    TCGv_i64 zero = tcg_constant_i64(0);
+     DisasCompare64 c;
+ 
+-    if (extract32(insn, 29, 1) || extract32(insn, 11, 1)) {
+-        /* S == 1 or op2<1> == 1 */
 -        unallocated_encoding(s);
 -        return;
 -    }
 -    sf = extract32(insn, 31, 1);
--    op = extract32(insn, 30, 1);
--    is_imm = extract32(insn, 11, 1);
--    y = extract32(insn, 16, 5); /* y = rm (reg) or imm5 (imm) */
+-    else_inv = extract32(insn, 30, 1);
+-    rm = extract32(insn, 16, 5);
 -    cond = extract32(insn, 12, 4);
+-    else_inc = extract32(insn, 10, 1);
 -    rn = extract32(insn, 5, 5);
--    nzcv = extract32(insn, 0, 4);
-+    unsigned nzcv;
+-    rd = extract32(insn, 0, 5);
++    a64_test_cc(&c, a->cond);
  
-     /* Set T0 = !COND.  */
--    tcg_t0 = tcg_temp_new_i32();
--    arm_test_cc(&c, cond);
-+    arm_test_cc(&c, a->cond);
-     tcg_gen_setcondi_i32(tcg_invert_cond(c.cond), tcg_t0, c.value, 0);
- 
-     /* Load the arguments for the new comparison.  */
--    if (is_imm) {
--        tcg_y = tcg_temp_new_i64();
--        tcg_gen_movi_i64(tcg_y, y);
-+    if (a->imm) {
-+        tcg_y = tcg_constant_i64(a->y);
-     } else {
--        tcg_y = cpu_reg(s, y);
-+        tcg_y = cpu_reg(s, a->y);
-     }
--    tcg_rn = cpu_reg(s, rn);
-+    tcg_rn = cpu_reg(s, a->rn);
- 
-     /* Set the flags for the new comparison.  */
--    tcg_tmp = tcg_temp_new_i64();
--    if (op) {
--        gen_sub_CC(sf, tcg_tmp, tcg_rn, tcg_y);
-+    if (a->op) {
-+        gen_sub_CC(a->sf, tcg_tmp, tcg_rn, tcg_y);
-     } else {
--        gen_add_CC(sf, tcg_tmp, tcg_rn, tcg_y);
-+        gen_add_CC(a->sf, tcg_tmp, tcg_rn, tcg_y);
-     }
- 
--    /* If COND was false, force the flags to #nzcv.  Compute two masks
-+    /*
-+     * If COND was false, force the flags to #nzcv.  Compute two masks
-      * to help with this: T1 = (COND ? 0 : -1), T2 = (COND ? -1 : 0).
-      * For tcg hosts that support ANDC, we can make do with just T1.
-      * In either case, allow the tcg optimizer to delete any unused mask.
-      */
--    tcg_t1 = tcg_temp_new_i32();
--    tcg_t2 = tcg_temp_new_i32();
-     tcg_gen_neg_i32(tcg_t1, tcg_t0);
-     tcg_gen_subi_i32(tcg_t2, tcg_t0, 1);
- 
-+    nzcv = a->nzcv;
-     if (nzcv & 8) { /* N */
-         tcg_gen_or_i32(cpu_NF, cpu_NF, tcg_t1);
-     } else {
-@@ -8190,6 +8168,7 @@ static void disas_cc(DisasContext *s, uint32_t insn)
-             tcg_gen_and_i32(cpu_VF, cpu_VF, tcg_t2);
+-    tcg_rd = cpu_reg(s, rd);
+-
+-    a64_test_cc(&c, cond);
+-    zero = tcg_constant_i64(0);
+-
+-    if (rn == 31 && rm == 31 && (else_inc ^ else_inv)) {
++    if (a->rn == 31 && a->rm == 31 && (a->else_inc ^ a->else_inv)) {
+         /* CSET & CSETM.  */
+-        if (else_inv) {
++        if (a->else_inv) {
+             tcg_gen_negsetcond_i64(tcg_invert_cond(c.cond),
+                                    tcg_rd, c.value, zero);
+         } else {
+@@ -8211,53 +8189,23 @@ static void disas_cond_select(DisasContext *s, uint32_t insn)
+                                 tcg_rd, c.value, zero);
          }
+     } else {
+-        TCGv_i64 t_true = cpu_reg(s, rn);
+-        TCGv_i64 t_false = read_cpu_reg(s, rm, 1);
+-        if (else_inv && else_inc) {
++        TCGv_i64 t_true = cpu_reg(s, a->rn);
++        TCGv_i64 t_false = read_cpu_reg(s, a->rm, 1);
++
++        if (a->else_inv && a->else_inc) {
+             tcg_gen_neg_i64(t_false, t_false);
+-        } else if (else_inv) {
++        } else if (a->else_inv) {
+             tcg_gen_not_i64(t_false, t_false);
+-        } else if (else_inc) {
++        } else if (a->else_inc) {
+             tcg_gen_addi_i64(t_false, t_false, 1);
+         }
+         tcg_gen_movcond_i64(c.cond, tcg_rd, c.value, zero, t_true, t_false);
      }
+ 
+-    if (!sf) {
++    if (!a->sf) {
+         tcg_gen_ext32u_i64(tcg_rd, tcg_rd);
+     }
+-}
+-
+-/*
+- * Data processing - register
+- *  31  30 29  28      25    21  20  16      10         0
+- * +--+---+--+---+-------+-----+-------+-------+---------+
+- * |  |op0|  |op1| 1 0 1 | op2 |       |  op3  |         |
+- * +--+---+--+---+-------+-----+-------+-------+---------+
+- */
+-static void disas_data_proc_reg(DisasContext *s, uint32_t insn)
+-{
+-    int op1 = extract32(insn, 28, 1);
+-    int op2 = extract32(insn, 21, 4);
+-
+-    if (!op1) {
+-        goto do_unallocated;
+-    }
+-
+-    switch (op2) {
+-    case 0x4: /* Conditional select */
+-        disas_cond_select(s, insn);
+-        break;
+-
+-    default:
+-    do_unallocated:
+-    case 0x0:
+-    case 0x2: /* Conditional compare */
+-    case 0x6: /* Data-processing */
+-    case 0x8 ... 0xf: /* (3 source) */
+-        unallocated_encoding(s);
+-        break;
+-    }
 +    return true;
  }
  
- /* Conditional select
-@@ -8266,10 +8245,6 @@ static void disas_data_proc_reg(DisasContext *s, uint32_t insn)
-     }
- 
-     switch (op2) {
--    case 0x2: /* Conditional compare */
--        disas_cc(s, insn); /* both imm and reg forms */
+ static void handle_fp_compare(DisasContext *s, int size,
+@@ -11212,10 +11160,6 @@ static bool btype_destination_ok(uint32_t insn, bool bt, int btype)
+ static void disas_a64_legacy(DisasContext *s, uint32_t insn)
+ {
+     switch (extract32(insn, 25, 4)) {
+-    case 0x5:
+-    case 0xd:      /* Data processing - register */
+-        disas_data_proc_reg(s, insn);
 -        break;
--
-     case 0x4: /* Conditional select */
-         disas_cond_select(s, insn);
-         break;
-@@ -8277,6 +8252,7 @@ static void disas_data_proc_reg(DisasContext *s, uint32_t insn)
-     default:
-     do_unallocated:
-     case 0x0:
-+    case 0x2: /* Conditional compare */
-     case 0x6: /* Data-processing */
-     case 0x8 ... 0xf: /* (3 source) */
-         unallocated_encoding(s);
+     case 0x7:
+     case 0xf:      /* Data processing - SIMD and floating point */
+         disas_data_proc_simd_fp(s, insn);
 diff --git a/target/arm/tcg/a64.decode b/target/arm/tcg/a64.decode
-index ae2c6831d7..a9d7d57199 100644
+index a9d7d57199..5670846768 100644
 --- a/target/arm/tcg/a64.decode
 +++ b/target/arm/tcg/a64.decode
-@@ -761,8 +761,10 @@ RMIF            1 01 11010000 imm:6 00001 rn:5 0 mask:4
- SETF8           0 01 11010000 00000 000010 rn:5 01101
- SETF16          0 01 11010000 00000 010010 rn:5 01101
+@@ -766,6 +766,9 @@ SETF16          0 01 11010000 00000 010010 rn:5 01101
+ CCMP            sf:1 op:1 1 11010010 y:5 cond:4 imm:1 0 rn:5 0 nzcv:4
  
--# Conditional compare (regster)
--# Conditional compare (immediate)
-+# Conditional compare
-+
-+CCMP            sf:1 op:1 1 11010010 y:5 cond:4 imm:1 0 rn:5 0 nzcv:4
-+
  # Conditional select
++
++CSEL            sf:1 else_inv:1 011010100 rm:5 cond:4 0 else_inc:1 rn:5 rd:5
++
  # Data Processing (3-source)
  
+ &rrrr           rd rn rm ra
 -- 
 2.43.0
 
