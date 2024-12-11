@@ -2,84 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A9259ED160
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Dec 2024 17:26:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CACA9ED130
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Dec 2024 17:22:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tLPRh-00004t-E5; Wed, 11 Dec 2024 11:20:17 -0500
+	id 1tLPRk-00007t-DL; Wed, 11 Dec 2024 11:20:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tLPRe-0008Tv-U6
- for qemu-devel@nongnu.org; Wed, 11 Dec 2024 11:20:14 -0500
-Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
+ id 1tLPRi-00006I-97
+ for qemu-devel@nongnu.org; Wed, 11 Dec 2024 11:20:18 -0500
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tLPRc-0007Zi-AO
- for qemu-devel@nongnu.org; Wed, 11 Dec 2024 11:20:14 -0500
-Received: by mail-wr1-x435.google.com with SMTP id
- ffacd0b85a97d-385deda28b3so5143720f8f.0
- for <qemu-devel@nongnu.org>; Wed, 11 Dec 2024 08:20:11 -0800 (PST)
+ id 1tLPRc-0007Zx-DC
+ for qemu-devel@nongnu.org; Wed, 11 Dec 2024 11:20:18 -0500
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-434ab938e37so45363075e9.0
+ for <qemu-devel@nongnu.org>; Wed, 11 Dec 2024 08:20:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1733934010; x=1734538810; darn=nongnu.org;
+ d=linaro.org; s=google; t=1733934011; x=1734538811; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=wZ9Ks1ZvuwkBmBypHf4VRn8ygrg0mYJ8EjWruN3aUCY=;
- b=J97hiwd5c4IwL3Do0AKpIdESJSnuIOzIm2gLiMNzt3nzLHXSBAr4sws7GL8Cz71Imk
- 0yYjvqiNebCD+x/NrN5kFU+AtT1TLkemzKD/b6eUNofVfgBH0hSB5lX5GP8B/Xdc4vPC
- f/qLD1fuHpdpllmlqYpOxTrcffmX06g78tTEuNg9OSsBGpscB5SUM7ZfB6MGqkCHqXRV
- n/aXD379Fn62PDtVNht1YKXuVF4RIod3YxfKcQzQ4mWEh/6ANTWvgGn4V1VyPbD19wWB
- W0Ttz0sVUt6IMfPi9rQB7xxcIbkjw5QCkmkahtmIniKc4cPovTnYLVl2kVwtM9YZKvpg
- PwlQ==
+ :reply-to; bh=9TlLdeT9MEbDY4em53wVDo7ir4MgWFdTWtmRTWldJXc=;
+ b=NGm3v9EPMmYYPZlv+mxVxsCqojxh6Z8/Xlh5iIg0GB/EJDQ/VdYqqw5NBrAfNax6xR
+ YISBbeQK191fz2K98t0fgFjLpVMNIJB1+OQKgR1mK4UbCeFzseoX6XO/yyX683J3DFVb
+ n9jynYqSBTzFyjEda5aqmdZSCS4+vZH7iiopBQT8L83WgeD1IAE9f5t33aJC8y25Pf6f
+ y7X7xQ7uj0RZnzaveYzl4Ir8daI9gSp4pUpNK8fCy2Vd9mn1Q5lXftWe5uRJ41VEdR8B
+ PyGqCRtWSWSLsWZh5jbTOa0kow1np/hSizjTalfGLNxym9KOLUR8QzTVviji0+u9YRCx
+ VD+A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733934010; x=1734538810;
+ d=1e100.net; s=20230601; t=1733934011; x=1734538811;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=wZ9Ks1ZvuwkBmBypHf4VRn8ygrg0mYJ8EjWruN3aUCY=;
- b=rTcxrtLkSkpSfvwJ/EoOtz6Vr2jlOxzgrr5eA2jc3EIba/yxQzmzHhrg9/7Aekmcz7
- XJgtLhYCCjdnpgDPw2J8wczU5ZGQQt37lYasiq7NdEB5ZnEOwsSL2TZ+A5+q+Hb+5lWC
- vRXrxmrOs6hE7vL6SXY8X6i/KKIaW5eu0NSQgjtHKJw1IEZ3cAvobxDwG0zfgTbuMZ66
- mb7bb+StRTnqJG95pBww8TnqKWv0HodKlIaF5VuFBWJzHg2Hej+6EHqVzgpdZ357MwBT
- GFGI2xhnTZcROHOHQ1bE2cs7kMmiwIKI/fg9wvpXeKMKXAyHvLMZYBKO0weUJrTKZPOn
- ziqQ==
-X-Gm-Message-State: AOJu0YwbVQok2ScqCYbbbXfRghnDURG/sGPMxFEjJaHePUNdFGDr1KPO
- 3EUKccwwBgM7Xv4Z1eaAYw1djffn0dfrofm5mM5VaGd+w+7R1nVjpzwTbJB4myFO8xA2WXW3kVi
- U
-X-Gm-Gg: ASbGncuMIibDuIIuYpF1SaYhn3SzWk9KBI3N9aHzx3Ed6+kYVJ1i6aqhMjVGYgjdqY9
- B2N9Bh6cz79sf1pgD627z6Zkt/N5oM1FQQHAEfJWCXrJdgBOvOdL4EGQS8cb2K3j0YPSyOAhEBs
- wHSXeZrpKEMTEvAcZyCLvfYhP+bm9QZvVZLC0BwuZkJzf/U/9wYBvJsqVLV71pXU1xAPJKaoYEC
- MWIGlVmy4eVYyDgJooS9wI/4MGV+DcD3juq4YYB5L8o0+rUx07WmgylYu/z
-X-Google-Smtp-Source: AGHT+IGqt9/zdVpulGS7pnK6Od1KbeZEFLOpPta+dIlFBZdgmn2b1LhodkAWw80Wd4nlXREx+NEvaw==
-X-Received: by 2002:a05:6000:a05:b0:385:fc8c:24b6 with SMTP id
- ffacd0b85a97d-387876973b2mr213414f8f.27.1733934009648; 
- Wed, 11 Dec 2024 08:20:09 -0800 (PST)
+ bh=9TlLdeT9MEbDY4em53wVDo7ir4MgWFdTWtmRTWldJXc=;
+ b=irCeKVJIdK+LGXNN6/SPEgReA+qG0bHhAp/lL+9T2ZlUmpG/WtDmy8OvItVxpBpn4C
+ YvTCXmyQNY6NgNtP05Cm0fUB9IjuTSgv/Z67Bvdv+LT9nBrNx2UEe2XGArdJ1HXsrkGx
+ 93MJg5893rR7d2JVFX5AFT6iPT7Z2LU7xSjChsNSGH4Zg7WEd7iw2HvaTh+SAMIFnibY
+ xoBQKq3QK55FZW0akr1cHsam/xn7l0fxz21oEgjJN/iQuk4ckTBoVqC3+7RGcxEoF6zo
+ mSdKqlhfRt2PLAgPlYEO4uFI1OFLrE3Vuaabl0ix2MBYluiJ50m4n3ovdMclg6RNqUOo
+ WUYg==
+X-Gm-Message-State: AOJu0YwU/zxBfTNR4hplmQXB6l8U2a5DkypqjEPbi3ASiCZohaGL52JT
+ ZtnKOjkVFPJ4cUX9dLOlhvvug8CYSyEduM0cVOg6jGfP/zecSIpYHYPaaWlyFaSC9wIq4N9Lozz
+ m
+X-Gm-Gg: ASbGnctlO/XqVjPbw0qqopsjYw2sPaDauH+f9byCEpg7jeuNfEbWrp9dXFJnUes9uYr
+ IFVreClub1tmP7SU5tXi+Ic/eTO6mNmuLvEAqVwOPcdPahviaReJ1xpdwT++/rOwbjDbPBbxK6A
+ it9b5I/sqrEgXw+v84GjEu51mMkK446CfLDeYHlFX6+n7xfRj7oiK2inSEAyeDdU0K4yXemChEu
+ OvMYNM1tY4ykmwsCbXg3Nk/QdeuRSwdynz0JG64gqQak5j94KdOXQqnb0xl
+X-Google-Smtp-Source: AGHT+IExfihj0XLfd390o0W615iKh7G8Vd8JnN650TUXebyg1TW6twQOcDu04ErrhZUgQSmcMnQiAw==
+X-Received: by 2002:a05:600c:19cf:b0:434:9934:575 with SMTP id
+ 5b1f17b1804b1-4361c38cf38mr30621865e9.16.1733934010723; 
+ Wed, 11 Dec 2024 08:20:10 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-434f4dfdcdfsm121460595e9.39.2024.12.11.08.20.08
+ 5b1f17b1804b1-434f4dfdcdfsm121460595e9.39.2024.12.11.08.20.09
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 11 Dec 2024 08:20:08 -0800 (PST)
+ Wed, 11 Dec 2024 08:20:10 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 01/72] hw/net/lan9118: Extract lan9118_phy
-Date: Wed, 11 Dec 2024 16:18:53 +0000
-Message-Id: <20241211162004.2795499-2-peter.maydell@linaro.org>
+Subject: [PULL 02/72] hw/net/lan9118_phy: Reuse in imx_fec and consolidate
+ implementations
+Date: Wed, 11 Dec 2024 16:18:54 +0000
+Message-Id: <20241211162004.2795499-3-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241211162004.2795499-1-peter.maydell@linaro.org>
 References: <20241211162004.2795499-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::435;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x435.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,108 +98,46 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Bernhard Beschow <shentey@gmail.com>
 
-A very similar implementation of the same device exists in imx_fec. Prepare for
-a common implementation by extracting a device model into its own files.
+imx_fec models the same PHY as lan9118_phy. The code is almost the same with
+imx_fec having more logging and tracing. Merge these improvements into
+lan9118_phy and reuse in imx_fec to fix the code duplication.
 
-Some migration state has been moved into the new device model which breaks
-migration compatibility for the following machines:
-* smdkc210
-* realview-*
-* vexpress-*
-* kzm
-* mps2-*
-
-While breaking migration ABI, fix the size of the MII registers to be 16 bit,
-as defined by IEEE 802.3u.
+Some migration state how resides in the new device model which breaks migration
+compatibility for the following machines:
+* imx25-pdk
+* sabrelite
+* mcimx7d-sabre
+* mcimx6ul-evk
 
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 Tested-by: Guenter Roeck <linux@roeck-us.net>
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Message-id: 20241102125724.532843-2-shentey@gmail.com
+Message-id: 20241102125724.532843-3-shentey@gmail.com
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- include/hw/net/lan9118_phy.h |  37 ++++++++
- hw/net/lan9118.c             | 137 +++++-----------------------
- hw/net/lan9118_phy.c         | 169 +++++++++++++++++++++++++++++++++++
- hw/net/Kconfig               |   4 +
- hw/net/meson.build           |   1 +
- 5 files changed, 233 insertions(+), 115 deletions(-)
- create mode 100644 include/hw/net/lan9118_phy.h
- create mode 100644 hw/net/lan9118_phy.c
+ include/hw/net/imx_fec.h |   9 ++-
+ hw/net/imx_fec.c         | 146 ++++-----------------------------------
+ hw/net/lan9118_phy.c     |  82 ++++++++++++++++------
+ hw/net/Kconfig           |   1 +
+ hw/net/trace-events      |  10 +--
+ 5 files changed, 85 insertions(+), 163 deletions(-)
 
-diff --git a/include/hw/net/lan9118_phy.h b/include/hw/net/lan9118_phy.h
-new file mode 100644
-index 00000000000..af12fc33d5f
---- /dev/null
-+++ b/include/hw/net/lan9118_phy.h
-@@ -0,0 +1,37 @@
-+/*
-+ * SMSC LAN9118 PHY emulation
-+ *
-+ * Copyright (c) 2009 CodeSourcery, LLC.
-+ * Written by Paul Brook
-+ *
-+ * This work is licensed under the terms of the GNU GPL, version 2 or later.
-+ * See the COPYING file in the top-level directory.
-+ */
-+
-+#ifndef HW_NET_LAN9118_PHY_H
-+#define HW_NET_LAN9118_PHY_H
-+
-+#include "qom/object.h"
-+#include "hw/sysbus.h"
-+
-+#define TYPE_LAN9118_PHY "lan9118-phy"
-+OBJECT_DECLARE_SIMPLE_TYPE(Lan9118PhyState, LAN9118_PHY)
-+
-+typedef struct Lan9118PhyState {
-+    SysBusDevice parent_obj;
-+
-+    uint16_t status;
-+    uint16_t control;
-+    uint16_t advertise;
-+    uint16_t ints;
-+    uint16_t int_mask;
-+    qemu_irq irq;
-+    bool link_down;
-+} Lan9118PhyState;
-+
-+void lan9118_phy_update_link(Lan9118PhyState *s, bool link_down);
-+void lan9118_phy_reset(Lan9118PhyState *s);
-+uint16_t lan9118_phy_read(Lan9118PhyState *s, int reg);
-+void lan9118_phy_write(Lan9118PhyState *s, int reg, uint16_t val);
-+
-+#endif
-diff --git a/hw/net/lan9118.c b/hw/net/lan9118.c
-index db28a0ef306..99e87b7178c 100644
---- a/hw/net/lan9118.c
-+++ b/hw/net/lan9118.c
-@@ -16,6 +16,7 @@
- #include "net/net.h"
- #include "net/eth.h"
- #include "hw/irq.h"
+diff --git a/include/hw/net/imx_fec.h b/include/hw/net/imx_fec.h
+index 2d13290c787..83b21637eeb 100644
+--- a/include/hw/net/imx_fec.h
++++ b/include/hw/net/imx_fec.h
+@@ -31,6 +31,8 @@ OBJECT_DECLARE_SIMPLE_TYPE(IMXFECState, IMX_FEC)
+ #define TYPE_IMX_ENET "imx.enet"
+ 
+ #include "hw/sysbus.h"
 +#include "hw/net/lan9118_phy.h"
- #include "hw/net/lan9118.h"
- #include "hw/ptimer.h"
- #include "hw/qdev-properties.h"
-@@ -139,14 +140,6 @@ do { printf("lan9118: " fmt , ## __VA_ARGS__); } while (0)
- #define MAC_CR_RXEN     0x00000004
- #define MAC_CR_RESERVED 0x7f404213
++#include "hw/irq.h"
+ #include "net/net.h"
  
--#define PHY_INT_ENERGYON            0x80
--#define PHY_INT_AUTONEG_COMPLETE    0x40
--#define PHY_INT_FAULT               0x20
--#define PHY_INT_DOWN                0x10
--#define PHY_INT_AUTONEG_LP          0x08
--#define PHY_INT_PARFAULT            0x04
--#define PHY_INT_AUTONEG_PAGE        0x02
--
- #define GPT_TIMER_EN    0x20000000
- 
- /*
-@@ -228,11 +221,8 @@ struct lan9118_state {
-     uint32_t mac_mii_data;
-     uint32_t mac_flow;
+ #define ENET_EIR               1
+@@ -264,11 +266,8 @@ struct IMXFECState {
+     uint32_t tx_descriptor[ENET_TX_RING_NUM];
+     uint32_t tx_ring_num;
  
 -    uint32_t phy_status;
 -    uint32_t phy_control;
@@ -207,408 +146,426 @@ index db28a0ef306..99e87b7178c 100644
 -    uint32_t phy_int_mask;
 +    Lan9118PhyState mii;
 +    IRQState mii_irq;
+     uint32_t phy_num;
+     bool phy_connected;
+     struct IMXFECState *phy_consumer;
+diff --git a/hw/net/imx_fec.c b/hw/net/imx_fec.c
+index 6294d292023..4ee6f742063 100644
+--- a/hw/net/imx_fec.c
++++ b/hw/net/imx_fec.c
+@@ -203,17 +203,12 @@ static const VMStateDescription vmstate_imx_eth_txdescs = {
  
-     int32_t eeprom_writable;
-     uint8_t eeprom[128];
-@@ -274,8 +264,8 @@ struct lan9118_state {
- 
- static const VMStateDescription vmstate_lan9118 = {
-     .name = "lan9118",
+ static const VMStateDescription vmstate_imx_eth = {
+     .name = TYPE_IMX_FEC,
 -    .version_id = 2,
--    .minimum_version_id = 1,
+-    .minimum_version_id = 2,
 +    .version_id = 3,
 +    .minimum_version_id = 3,
      .fields = (const VMStateField[]) {
-         VMSTATE_PTIMER(timer, lan9118_state),
-         VMSTATE_UINT32(irq_cfg, lan9118_state),
-@@ -301,11 +291,6 @@ static const VMStateDescription vmstate_lan9118 = {
-         VMSTATE_UINT32(mac_mii_acc, lan9118_state),
-         VMSTATE_UINT32(mac_mii_data, lan9118_state),
-         VMSTATE_UINT32(mac_flow, lan9118_state),
--        VMSTATE_UINT32(phy_status, lan9118_state),
--        VMSTATE_UINT32(phy_control, lan9118_state),
--        VMSTATE_UINT32(phy_advertise, lan9118_state),
--        VMSTATE_UINT32(phy_int, lan9118_state),
--        VMSTATE_UINT32(phy_int_mask, lan9118_state),
-         VMSTATE_INT32(eeprom_writable, lan9118_state),
-         VMSTATE_UINT8_ARRAY(eeprom, lan9118_state, 128),
-         VMSTATE_INT32(tx_fifo_size, lan9118_state),
-@@ -385,9 +370,11 @@ static void lan9118_reload_eeprom(lan9118_state *s)
-     lan9118_mac_changed(s);
- }
+         VMSTATE_UINT32_ARRAY(regs, IMXFECState, ENET_MAX),
+         VMSTATE_UINT32(rx_descriptor, IMXFECState),
+         VMSTATE_UINT32(tx_descriptor[0], IMXFECState),
+-        VMSTATE_UINT32(phy_status, IMXFECState),
+-        VMSTATE_UINT32(phy_control, IMXFECState),
+-        VMSTATE_UINT32(phy_advertise, IMXFECState),
+-        VMSTATE_UINT32(phy_int, IMXFECState),
+-        VMSTATE_UINT32(phy_int_mask, IMXFECState),
+         VMSTATE_END_OF_LIST()
+     },
+     .subsections = (const VMStateDescription * const []) {
+@@ -222,14 +217,6 @@ static const VMStateDescription vmstate_imx_eth = {
+     },
+ };
  
--static void phy_update_irq(lan9118_state *s)
-+static void lan9118_update_irq(void *opaque, int n, int level)
+-#define PHY_INT_ENERGYON            (1 << 7)
+-#define PHY_INT_AUTONEG_COMPLETE    (1 << 6)
+-#define PHY_INT_FAULT               (1 << 5)
+-#define PHY_INT_DOWN                (1 << 4)
+-#define PHY_INT_AUTONEG_LP          (1 << 3)
+-#define PHY_INT_PARFAULT            (1 << 2)
+-#define PHY_INT_AUTONEG_PAGE        (1 << 1)
+-
+ static void imx_eth_update(IMXFECState *s);
+ 
+ /*
+@@ -238,47 +225,19 @@ static void imx_eth_update(IMXFECState *s);
+  * For now we don't handle any GPIO/interrupt line, so the OS will
+  * have to poll for the PHY status.
+  */
+-static void imx_phy_update_irq(IMXFECState *s)
++static void imx_phy_update_irq(void *opaque, int n, int level)
  {
--    if (s->phy_int & s->phy_int_mask) {
-+    lan9118_state *s = opaque;
-+
-+    if (level) {
-         s->int_sts |= PHY_INT;
-     } else {
-         s->int_sts &= ~PHY_INT;
-@@ -395,33 +382,10 @@ static void phy_update_irq(lan9118_state *s)
-     lan9118_update(s);
- }
- 
--static void phy_update_link(lan9118_state *s)
+-    imx_eth_update(s);
+-}
+-
+-static void imx_phy_update_link(IMXFECState *s)
 -{
 -    /* Autonegotiation status mirrors link status.  */
 -    if (qemu_get_queue(s->nic)->link_down) {
+-        trace_imx_phy_update_link("down");
 -        s->phy_status &= ~0x0024;
 -        s->phy_int |= PHY_INT_DOWN;
 -    } else {
+-        trace_imx_phy_update_link("up");
 -        s->phy_status |= 0x0024;
 -        s->phy_int |= PHY_INT_ENERGYON;
 -        s->phy_int |= PHY_INT_AUTONEG_COMPLETE;
 -    }
--    phy_update_irq(s);
--}
--
- static void lan9118_set_link(NetClientState *nc)
+-    imx_phy_update_irq(s);
++    imx_eth_update(opaque);
+ }
+ 
+ static void imx_eth_set_link(NetClientState *nc)
  {
--    phy_update_link(qemu_get_nic_opaque(nc));
+-    imx_phy_update_link(IMX_FEC(qemu_get_nic_opaque(nc)));
 -}
 -
--static void phy_reset(lan9118_state *s)
+-static void imx_phy_reset(IMXFECState *s)
 -{
+-    trace_imx_phy_reset();
+-
 -    s->phy_status = 0x7809;
 -    s->phy_control = 0x3000;
 -    s->phy_advertise = 0x01e1;
 -    s->phy_int_mask = 0;
 -    s->phy_int = 0;
--    phy_update_link(s);
-+    lan9118_phy_update_link(&LAN9118(qemu_get_nic_opaque(nc))->mii,
+-    imx_phy_update_link(s);
++    lan9118_phy_update_link(&IMX_FEC(qemu_get_nic_opaque(nc))->mii,
 +                            nc->link_down);
  }
  
- static void lan9118_reset(DeviceState *d)
-@@ -478,8 +442,6 @@ static void lan9118_reset(DeviceState *d)
-     s->read_word_n = 0;
-     s->write_word_n = 0;
- 
--    phy_reset(s);
--
-     s->eeprom_writable = 0;
-     lan9118_reload_eeprom(s);
- }
-@@ -678,7 +640,7 @@ static void do_tx_packet(lan9118_state *s)
-     uint32_t status;
- 
-     /* FIXME: Honor TX disable, and allow queueing of packets.  */
--    if (s->phy_control & 0x4000)  {
-+    if (s->mii.control & 0x4000) {
-         /* This assumes the receive routine doesn't touch the VLANClient.  */
-         qemu_receive_packet(qemu_get_queue(s->nic), s->txp->data, s->txp->len);
-     } else {
-@@ -834,68 +796,6 @@ static void tx_fifo_push(lan9118_state *s, uint32_t val)
-     }
- }
- 
--static uint32_t do_phy_read(lan9118_state *s, int reg)
--{
+ static uint32_t imx_phy_read(IMXFECState *s, int reg)
+ {
 -    uint32_t val;
--
+     uint32_t phy = reg / 32;
+ 
+     if (!s->phy_connected) {
+@@ -296,54 +255,7 @@ static uint32_t imx_phy_read(IMXFECState *s, int reg)
+ 
+     reg %= 32;
+ 
 -    switch (reg) {
--    case 0: /* Basic Control */
--        return s->phy_control;
--    case 1: /* Basic Status */
--        return s->phy_status;
--    case 2: /* ID1 */
--        return 0x0007;
--    case 3: /* ID2 */
--        return 0xc0d1;
--    case 4: /* Auto-neg advertisement */
--        return s->phy_advertise;
--    case 5: /* Auto-neg Link Partner Ability */
--        return 0x0f71;
--    case 6: /* Auto-neg Expansion */
--        return 1;
--        /* TODO 17, 18, 27, 29, 30, 31 */
--    case 29: /* Interrupt source.  */
+-    case 0:     /* Basic Control */
+-        val = s->phy_control;
+-        break;
+-    case 1:     /* Basic Status */
+-        val = s->phy_status;
+-        break;
+-    case 2:     /* ID1 */
+-        val = 0x0007;
+-        break;
+-    case 3:     /* ID2 */
+-        val = 0xc0d1;
+-        break;
+-    case 4:     /* Auto-neg advertisement */
+-        val = s->phy_advertise;
+-        break;
+-    case 5:     /* Auto-neg Link Partner Ability */
+-        val = 0x0f71;
+-        break;
+-    case 6:     /* Auto-neg Expansion */
+-        val = 1;
+-        break;
+-    case 29:    /* Interrupt source.  */
 -        val = s->phy_int;
 -        s->phy_int = 0;
--        phy_update_irq(s);
--        return val;
--    case 30: /* Interrupt mask */
--        return s->phy_int_mask;
+-        imx_phy_update_irq(s);
+-        break;
+-    case 30:    /* Interrupt mask */
+-        val = s->phy_int_mask;
+-        break;
+-    case 17:
+-    case 18:
+-    case 27:
+-    case 31:
+-        qemu_log_mask(LOG_UNIMP, "[%s.phy]%s: reg %d not implemented\n",
+-                      TYPE_IMX_FEC, __func__, reg);
+-        val = 0;
+-        break;
 -    default:
--        qemu_log_mask(LOG_GUEST_ERROR,
--                      "do_phy_read: PHY read reg %d\n", reg);
--        return 0;
+-        qemu_log_mask(LOG_GUEST_ERROR, "[%s.phy]%s: Bad address at offset %d\n",
+-                      TYPE_IMX_FEC, __func__, reg);
+-        val = 0;
+-        break;
 -    }
--}
 -
--static void do_phy_write(lan9118_state *s, int reg, uint32_t val)
--{
+-    trace_imx_phy_read(val, phy, reg);
+-
+-    return val;
++    return lan9118_phy_read(&s->mii, reg);
+ }
+ 
+ static void imx_phy_write(IMXFECState *s, int reg, uint32_t val)
+@@ -365,39 +277,7 @@ static void imx_phy_write(IMXFECState *s, int reg, uint32_t val)
+ 
+     reg %= 32;
+ 
+-    trace_imx_phy_write(val, phy, reg);
+-
 -    switch (reg) {
--    case 0: /* Basic Control */
+-    case 0:     /* Basic Control */
 -        if (val & 0x8000) {
--            phy_reset(s);
--            break;
--        }
--        s->phy_control = val & 0x7980;
--        /* Complete autonegotiation immediately.  */
--        if (val & 0x1000) {
--            s->phy_status |= 0x0020;
+-            imx_phy_reset(s);
+-        } else {
+-            s->phy_control = val & 0x7980;
+-            /* Complete autonegotiation immediately.  */
+-            if (val & 0x1000) {
+-                s->phy_status |= 0x0020;
+-            }
 -        }
 -        break;
--    case 4: /* Auto-neg advertisement */
+-    case 4:     /* Auto-neg advertisement */
 -        s->phy_advertise = (val & 0x2d7f) | 0x80;
 -        break;
--        /* TODO 17, 18, 27, 31 */
--    case 30: /* Interrupt mask */
+-    case 30:    /* Interrupt mask */
 -        s->phy_int_mask = val & 0xff;
--        phy_update_irq(s);
+-        imx_phy_update_irq(s);
+-        break;
+-    case 17:
+-    case 18:
+-    case 27:
+-    case 31:
+-        qemu_log_mask(LOG_UNIMP, "[%s.phy)%s: reg %d not implemented\n",
+-                      TYPE_IMX_FEC, __func__, reg);
 -        break;
 -    default:
--        qemu_log_mask(LOG_GUEST_ERROR,
--                      "do_phy_write: PHY write reg %d = 0x%04x\n", reg, val);
+-        qemu_log_mask(LOG_GUEST_ERROR, "[%s.phy]%s: Bad address at offset %d\n",
+-                      TYPE_IMX_FEC, __func__, reg);
+-        break;
 -    }
--}
--
- static void do_mac_write(lan9118_state *s, int reg, uint32_t val)
- {
-     switch (reg) {
-@@ -929,9 +829,9 @@ static void do_mac_write(lan9118_state *s, int reg, uint32_t val)
-         if (val & 2) {
-             DPRINTF("PHY write %d = 0x%04x\n",
-                     (val >> 6) & 0x1f, s->mac_mii_data);
--            do_phy_write(s, (val >> 6) & 0x1f, s->mac_mii_data);
-+            lan9118_phy_write(&s->mii, (val >> 6) & 0x1f, s->mac_mii_data);
-         } else {
--            s->mac_mii_data = do_phy_read(s, (val >> 6) & 0x1f);
-+            s->mac_mii_data = lan9118_phy_read(&s->mii, (val >> 6) & 0x1f);
-             DPRINTF("PHY read %d = 0x%04x\n",
-                     (val >> 6) & 0x1f, s->mac_mii_data);
-         }
-@@ -1126,7 +1026,7 @@ static void lan9118_writel(void *opaque, hwaddr offset,
-         break;
-     case CSR_PMT_CTRL:
-         if (val & 0x400) {
--            phy_reset(s);
-+            lan9118_phy_reset(&s->mii);
-         }
-         s->pmt_ctrl &= ~0x34e;
-         s->pmt_ctrl |= (val & 0x34e);
-@@ -1373,6 +1273,13 @@ static void lan9118_realize(DeviceState *dev, Error **errp)
-     const MemoryRegionOps *mem_ops =
-             s->mode_16bit ? &lan9118_16bit_mem_ops : &lan9118_mem_ops;
++    lan9118_phy_write(&s->mii, reg, val);
+ }
  
-+    qemu_init_irq(&s->mii_irq, lan9118_update_irq, s, 0);
+ static void imx_fec_read_bd(IMXFECBufDesc *bd, dma_addr_t addr)
+@@ -682,9 +562,6 @@ static void imx_eth_reset(DeviceState *d)
+ 
+     s->rx_descriptor = 0;
+     memset(s->tx_descriptor, 0, sizeof(s->tx_descriptor));
+-
+-    /* We also reset the PHY */
+-    imx_phy_reset(s);
+ }
+ 
+ static uint32_t imx_default_read(IMXFECState *s, uint32_t index)
+@@ -1329,6 +1206,13 @@ static void imx_eth_realize(DeviceState *dev, Error **errp)
+     sysbus_init_irq(sbd, &s->irq[0]);
+     sysbus_init_irq(sbd, &s->irq[1]);
+ 
++    qemu_init_irq(&s->mii_irq, imx_phy_update_irq, s, 0);
 +    object_initialize_child(OBJECT(s), "mii", &s->mii, TYPE_LAN9118_PHY);
 +    if (!sysbus_realize_and_unref(SYS_BUS_DEVICE(&s->mii), errp)) {
 +        return;
 +    }
 +    qdev_connect_gpio_out(DEVICE(&s->mii), 0, &s->mii_irq);
 +
-     memory_region_init_io(&s->mmio, OBJECT(dev), mem_ops, s,
-                           "lan9118-mmio", 0x100);
-     sysbus_init_mmio(sbd, &s->mmio);
+     qemu_macaddr_default_if_unset(&s->conf.macaddr);
+ 
+     s->nic = qemu_new_nic(&imx_eth_net_info, &s->conf,
 diff --git a/hw/net/lan9118_phy.c b/hw/net/lan9118_phy.c
-new file mode 100644
-index 00000000000..b22c3c28556
---- /dev/null
+index b22c3c28556..d2dcd732ac1 100644
+--- a/hw/net/lan9118_phy.c
 +++ b/hw/net/lan9118_phy.c
-@@ -0,0 +1,169 @@
-+/*
-+ * SMSC LAN9118 PHY emulation
+@@ -4,6 +4,8 @@
+  * Copyright (c) 2009 CodeSourcery, LLC.
+  * Written by Paul Brook
+  *
++ * Copyright (c) 2013 Jean-Christophe Dubois. <jcd@tribudubois.net>
 + *
-+ * Copyright (c) 2009 CodeSourcery, LLC.
-+ * Written by Paul Brook
-+ *
-+ * This code is licensed under the GNU GPL v2
-+ *
-+ * Contributions after 2012-01-13 are licensed under the terms of the
-+ * GNU GPL, version 2 or (at your option) any later version.
-+ */
-+
-+#include "qemu/osdep.h"
-+#include "hw/net/lan9118_phy.h"
-+#include "hw/irq.h"
-+#include "hw/resettable.h"
-+#include "migration/vmstate.h"
-+#include "qemu/log.h"
-+
-+#define PHY_INT_ENERGYON            (1 << 7)
-+#define PHY_INT_AUTONEG_COMPLETE    (1 << 6)
-+#define PHY_INT_FAULT               (1 << 5)
-+#define PHY_INT_DOWN                (1 << 4)
-+#define PHY_INT_AUTONEG_LP          (1 << 3)
-+#define PHY_INT_PARFAULT            (1 << 2)
-+#define PHY_INT_AUTONEG_PAGE        (1 << 1)
-+
-+static void lan9118_phy_update_irq(Lan9118PhyState *s)
-+{
-+    qemu_set_irq(s->irq, !!(s->ints & s->int_mask));
-+}
-+
-+uint16_t lan9118_phy_read(Lan9118PhyState *s, int reg)
-+{
-+    uint16_t val;
-+
-+    switch (reg) {
-+    case 0: /* Basic Control */
-+        return s->control;
-+    case 1: /* Basic Status */
-+        return s->status;
-+    case 2: /* ID1 */
-+        return 0x0007;
-+    case 3: /* ID2 */
-+        return 0xc0d1;
-+    case 4: /* Auto-neg advertisement */
-+        return s->advertise;
-+    case 5: /* Auto-neg Link Partner Ability */
-+        return 0x0f71;
-+    case 6: /* Auto-neg Expansion */
-+        return 1;
-+        /* TODO 17, 18, 27, 29, 30, 31 */
-+    case 29: /* Interrupt source. */
-+        val = s->ints;
-+        s->ints = 0;
-+        lan9118_phy_update_irq(s);
-+        return val;
-+    case 30: /* Interrupt mask */
-+        return s->int_mask;
-+    default:
-+        qemu_log_mask(LOG_GUEST_ERROR,
-+                      "lan9118_phy_read: PHY read reg %d\n", reg);
-+        return 0;
-+    }
-+}
-+
-+void lan9118_phy_write(Lan9118PhyState *s, int reg, uint16_t val)
-+{
-+    switch (reg) {
-+    case 0: /* Basic Control */
-+        if (val & 0x8000) {
-+            lan9118_phy_reset(s);
-+            break;
-+        }
-+        s->control = val & 0x7980;
-+        /* Complete autonegotiation immediately. */
-+        if (val & 0x1000) {
-+            s->status |= 0x0020;
-+        }
+  * This code is licensed under the GNU GPL v2
+  *
+  * Contributions after 2012-01-13 are licensed under the terms of the
+@@ -16,6 +18,7 @@
+ #include "hw/resettable.h"
+ #include "migration/vmstate.h"
+ #include "qemu/log.h"
++#include "trace.h"
+ 
+ #define PHY_INT_ENERGYON            (1 << 7)
+ #define PHY_INT_AUTONEG_COMPLETE    (1 << 6)
+@@ -36,59 +39,88 @@ uint16_t lan9118_phy_read(Lan9118PhyState *s, int reg)
+ 
+     switch (reg) {
+     case 0: /* Basic Control */
+-        return s->control;
++        val = s->control;
 +        break;
-+    case 4: /* Auto-neg advertisement */
-+        s->advertise = (val & 0x2d7f) | 0x80;
+     case 1: /* Basic Status */
+-        return s->status;
++        val = s->status;
 +        break;
-+        /* TODO 17, 18, 27, 31 */
-+    case 30: /* Interrupt mask */
-+        s->int_mask = val & 0xff;
-+        lan9118_phy_update_irq(s);
+     case 2: /* ID1 */
+-        return 0x0007;
++        val = 0x0007;
 +        break;
-+    default:
-+        qemu_log_mask(LOG_GUEST_ERROR,
-+                      "lan9118_phy_write: PHY write reg %d = 0x%04x\n", reg, val);
-+    }
-+}
+     case 3: /* ID2 */
+-        return 0xc0d1;
++        val = 0xc0d1;
++        break;
+     case 4: /* Auto-neg advertisement */
+-        return s->advertise;
++        val = s->advertise;
++        break;
+     case 5: /* Auto-neg Link Partner Ability */
+-        return 0x0f71;
++        val = 0x0f71;
++        break;
+     case 6: /* Auto-neg Expansion */
+-        return 1;
+-        /* TODO 17, 18, 27, 29, 30, 31 */
++        val = 1;
++        break;
+     case 29: /* Interrupt source. */
+         val = s->ints;
+         s->ints = 0;
+         lan9118_phy_update_irq(s);
+-        return val;
++        break;
+     case 30: /* Interrupt mask */
+-        return s->int_mask;
++        val = s->int_mask;
++        break;
++    case 17:
++    case 18:
++    case 27:
++    case 31:
++        qemu_log_mask(LOG_UNIMP, "%s: reg %d not implemented\n",
++                      __func__, reg);
++        val = 0;
++        break;
+     default:
+-        qemu_log_mask(LOG_GUEST_ERROR,
+-                      "lan9118_phy_read: PHY read reg %d\n", reg);
+-        return 0;
++        qemu_log_mask(LOG_GUEST_ERROR, "%s: Bad address at offset %d\n",
++                      __func__, reg);
++        val = 0;
++        break;
+     }
 +
-+void lan9118_phy_update_link(Lan9118PhyState *s, bool link_down)
-+{
-+    s->link_down = link_down;
++    trace_lan9118_phy_read(val, reg);
 +
-+    /* Autonegotiation status mirrors link status. */
-+    if (link_down) {
-+        s->status &= ~0x0024;
-+        s->ints |= PHY_INT_DOWN;
-+    } else {
-+        s->status |= 0x0024;
-+        s->ints |= PHY_INT_ENERGYON;
-+        s->ints |= PHY_INT_AUTONEG_COMPLETE;
-+    }
-+    lan9118_phy_update_irq(s);
-+}
++    return val;
+ }
+ 
+ void lan9118_phy_write(Lan9118PhyState *s, int reg, uint16_t val)
+ {
++    trace_lan9118_phy_write(val, reg);
 +
-+void lan9118_phy_reset(Lan9118PhyState *s)
-+{
-+    s->control = 0x3000;
-+    s->status = 0x7809;
-+    s->advertise = 0x01e1;
-+    s->int_mask = 0;
-+    s->ints = 0;
-+    lan9118_phy_update_link(s, s->link_down);
-+}
+     switch (reg) {
+     case 0: /* Basic Control */
+         if (val & 0x8000) {
+             lan9118_phy_reset(s);
+-            break;
+-        }
+-        s->control = val & 0x7980;
+-        /* Complete autonegotiation immediately. */
+-        if (val & 0x1000) {
+-            s->status |= 0x0020;
++        } else {
++            s->control = val & 0x7980;
++            /* Complete autonegotiation immediately. */
++            if (val & 0x1000) {
++                s->status |= 0x0020;
++            }
+         }
+         break;
+     case 4: /* Auto-neg advertisement */
+         s->advertise = (val & 0x2d7f) | 0x80;
+         break;
+-        /* TODO 17, 18, 27, 31 */
+     case 30: /* Interrupt mask */
+         s->int_mask = val & 0xff;
+         lan9118_phy_update_irq(s);
+         break;
++    case 17:
++    case 18:
++    case 27:
++    case 31:
++        qemu_log_mask(LOG_UNIMP, "%s: reg %d not implemented\n",
++                      __func__, reg);
++        break;
+     default:
+-        qemu_log_mask(LOG_GUEST_ERROR,
+-                      "lan9118_phy_write: PHY write reg %d = 0x%04x\n", reg, val);
++        qemu_log_mask(LOG_GUEST_ERROR, "%s: Bad address at offset %d\n",
++                      __func__, reg);
++        break;
+     }
+ }
+ 
+@@ -98,9 +130,11 @@ void lan9118_phy_update_link(Lan9118PhyState *s, bool link_down)
+ 
+     /* Autonegotiation status mirrors link status. */
+     if (link_down) {
++        trace_lan9118_phy_update_link("down");
+         s->status &= ~0x0024;
+         s->ints |= PHY_INT_DOWN;
+     } else {
++        trace_lan9118_phy_update_link("up");
+         s->status |= 0x0024;
+         s->ints |= PHY_INT_ENERGYON;
+         s->ints |= PHY_INT_AUTONEG_COMPLETE;
+@@ -110,6 +144,8 @@ void lan9118_phy_update_link(Lan9118PhyState *s, bool link_down)
+ 
+ void lan9118_phy_reset(Lan9118PhyState *s)
+ {
++    trace_lan9118_phy_reset();
 +
-+static void lan9118_phy_reset_hold(Object *obj, ResetType type)
-+{
-+    Lan9118PhyState *s = LAN9118_PHY(obj);
-+
-+    lan9118_phy_reset(s);
-+}
-+
-+static void lan9118_phy_init(Object *obj)
-+{
-+    Lan9118PhyState *s = LAN9118_PHY(obj);
-+
-+    qdev_init_gpio_out(DEVICE(s), &s->irq, 1);
-+}
-+
-+static const VMStateDescription vmstate_lan9118_phy = {
-+    .name = "lan9118-phy",
-+    .version_id = 1,
-+    .minimum_version_id = 1,
-+    .fields = (const VMStateField[]) {
+     s->control = 0x3000;
+     s->status = 0x7809;
+     s->advertise = 0x01e1;
+@@ -137,8 +173,8 @@ static const VMStateDescription vmstate_lan9118_phy = {
+     .version_id = 1,
+     .minimum_version_id = 1,
+     .fields = (const VMStateField[]) {
+-        VMSTATE_UINT16(control, Lan9118PhyState),
+         VMSTATE_UINT16(status, Lan9118PhyState),
 +        VMSTATE_UINT16(control, Lan9118PhyState),
-+        VMSTATE_UINT16(status, Lan9118PhyState),
-+        VMSTATE_UINT16(advertise, Lan9118PhyState),
-+        VMSTATE_UINT16(ints, Lan9118PhyState),
-+        VMSTATE_UINT16(int_mask, Lan9118PhyState),
-+        VMSTATE_BOOL(link_down, Lan9118PhyState),
-+        VMSTATE_END_OF_LIST()
-+    }
-+};
-+
-+static void lan9118_phy_class_init(ObjectClass *klass, void *data)
-+{
-+    ResettableClass *rc = RESETTABLE_CLASS(klass);
-+    DeviceClass *dc = DEVICE_CLASS(klass);
-+
-+    rc->phases.hold = lan9118_phy_reset_hold;
-+    dc->vmsd = &vmstate_lan9118_phy;
-+}
-+
-+static const TypeInfo types[] = {
-+    {
-+        .name          = TYPE_LAN9118_PHY,
-+        .parent        = TYPE_SYS_BUS_DEVICE,
-+        .instance_size = sizeof(Lan9118PhyState),
-+        .instance_init = lan9118_phy_init,
-+        .class_init    = lan9118_phy_class_init,
-+    }
-+};
-+
-+DEFINE_TYPES(types)
+         VMSTATE_UINT16(advertise, Lan9118PhyState),
+         VMSTATE_UINT16(ints, Lan9118PhyState),
+         VMSTATE_UINT16(int_mask, Lan9118PhyState),
 diff --git a/hw/net/Kconfig b/hw/net/Kconfig
-index 7fcc0d7faa2..6b2ff2f937a 100644
+index 6b2ff2f937a..7f80218d10f 100644
 --- a/hw/net/Kconfig
 +++ b/hw/net/Kconfig
-@@ -62,8 +62,12 @@ config VMXNET3_PCI
- config SMC91C111
-     bool
+@@ -93,6 +93,7 @@ config ALLWINNER_SUN8I_EMAC
  
-+config LAN9118_PHY
-+    bool
-+
- config LAN9118
+ config IMX_FEC
      bool
 +    select LAN9118_PHY
-     select PTIMER
  
- config NE2000_ISA
-diff --git a/hw/net/meson.build b/hw/net/meson.build
-index 00a9e9dd515..3bb5d749a83 100644
---- a/hw/net/meson.build
-+++ b/hw/net/meson.build
-@@ -19,6 +19,7 @@ system_ss.add(when: 'CONFIG_VMXNET3_PCI', if_true: files('vmxnet3.c'))
+ config CADENCE
+     bool
+diff --git a/hw/net/trace-events b/hw/net/trace-events
+index d0f1d8c0fbe..6100ec324a7 100644
+--- a/hw/net/trace-events
++++ b/hw/net/trace-events
+@@ -10,6 +10,12 @@ allwinner_sun8i_emac_set_link(bool active) "Set link: active=%u"
+ allwinner_sun8i_emac_read(uint64_t offset, uint64_t val) "MMIO read: offset=0x%" PRIx64 " value=0x%" PRIx64
+ allwinner_sun8i_emac_write(uint64_t offset, uint64_t val) "MMIO write: offset=0x%" PRIx64 " value=0x%" PRIx64
  
- system_ss.add(when: 'CONFIG_SMC91C111', if_true: files('smc91c111.c'))
- system_ss.add(when: 'CONFIG_LAN9118', if_true: files('lan9118.c'))
-+system_ss.add(when: 'CONFIG_LAN9118_PHY', if_true: files('lan9118_phy.c'))
- system_ss.add(when: 'CONFIG_NE2000_ISA', if_true: files('ne2000-isa.c'))
- system_ss.add(when: 'CONFIG_OPENCORES_ETH', if_true: files('opencores_eth.c'))
- system_ss.add(when: 'CONFIG_XGMAC', if_true: files('xgmac.c'))
++# lan9118_phy.c
++lan9118_phy_read(uint16_t val, int reg) "[0x%02x] -> 0x%04" PRIx16
++lan9118_phy_write(uint16_t val, int reg) "[0x%02x] <- 0x%04" PRIx16
++lan9118_phy_update_link(const char *s) "%s"
++lan9118_phy_reset(void) ""
++
+ # lance.c
+ lance_mem_readw(uint64_t addr, uint32_t ret) "addr=0x%"PRIx64"val=0x%04x"
+ lance_mem_writew(uint64_t addr, uint32_t val) "addr=0x%"PRIx64"val=0x%04x"
+@@ -428,12 +434,8 @@ i82596_set_multicast(uint16_t count) "Added %d multicast entries"
+ i82596_channel_attention(void *s) "%p: Received CHANNEL ATTENTION"
+ 
+ # imx_fec.c
+-imx_phy_read(uint32_t val, int phy, int reg) "0x%04"PRIx32" <= phy[%d].reg[%d]"
+ imx_phy_read_num(int phy, int configured) "read request from unconfigured phy %d (configured %d)"
+-imx_phy_write(uint32_t val, int phy, int reg) "0x%04"PRIx32" => phy[%d].reg[%d]"
+ imx_phy_write_num(int phy, int configured) "write request to unconfigured phy %d (configured %d)"
+-imx_phy_update_link(const char *s) "%s"
+-imx_phy_reset(void) ""
+ imx_fec_read_bd(uint64_t addr, int flags, int len, int data) "tx_bd 0x%"PRIx64" flags 0x%04x len %d data 0x%08x"
+ imx_enet_read_bd(uint64_t addr, int flags, int len, int data, int options, int status) "tx_bd 0x%"PRIx64" flags 0x%04x len %d data 0x%08x option 0x%04x status 0x%04x"
+ imx_eth_tx_bd_busy(void) "tx_bd ran out of descriptors to transmit"
 -- 
 2.34.1
 
