@@ -2,91 +2,153 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9628D9ED3AD
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Dec 2024 18:33:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A1D39ED459
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Dec 2024 19:03:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tLQZJ-0006qs-Ck; Wed, 11 Dec 2024 12:32:13 -0500
+	id 1tLR1d-0005ne-Ga; Wed, 11 Dec 2024 13:01:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tLQYy-0006DX-FD
- for qemu-devel@nongnu.org; Wed, 11 Dec 2024 12:31:52 -0500
-Received: from mail-oi1-x236.google.com ([2607:f8b0:4864:20::236])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tLQYb-0001jG-NG
- for qemu-devel@nongnu.org; Wed, 11 Dec 2024 12:31:32 -0500
-Received: by mail-oi1-x236.google.com with SMTP id
- 5614622812f47-3eb40876bbfso1043799b6e.0
- for <qemu-devel@nongnu.org>; Wed, 11 Dec 2024 09:31:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1733938287; x=1734543087; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=LnLTVgw145mbt5EGwmR5QWovOiZGC3LgHjn40Qa46rQ=;
- b=lUGlimZPG5sf/Ja9kRvbiFbuL77KaWZZBjgSHM53LTMeUHlnZEp711IDEhCVr0gBab
- n929pYlI7bL4SAIEF0Qv41pQ0+RJnMqcszTMkElOcqQjRvM2mv0VjN5J+FkAB+4+riT6
- T71xSWe55ZjkMLVpdZgSrFjNpxhTipffLrc+NRiXvjzsoCDhtjGAe4LdkU/NGwJfWZHS
- acPkEKJiECLOEEkLktPZHxUS6CPD7B6piqDptUjblxQx6EINwpSI/oQziZrnk0RsaiYk
- DZVAgLBXH6I/E4m88aTAmbCSim7AUQ8wPqEdO+iLufFjzQjN3Uy0E6POaQpa018BvN4D
- 7VuQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733938287; x=1734543087;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=LnLTVgw145mbt5EGwmR5QWovOiZGC3LgHjn40Qa46rQ=;
- b=XJhm9K8+gAVnB+BXk6lfBZPJjDKhvvYByhGgLgFSQHQ+q9x73axgknjnCvp+3ElvlR
- sPlbgtOZvICeM6hCUnkiHU1Y3cxPcBfECPq3wTM4o+A18Meb0XGXRv21XTkX1aLZrwuP
- YlnRjEOE6qdwDAQRgPmJW8UvYUPaS7YydmGPWMDn1wDfnkZFY+Oh6p++az8qOgiokI9X
- FFpNGbkNb2o3jKYhpJrzBhzoJi62IAoUOJRVURt+77RvAjpnopGUG6fuzNnu+Vu+IKcZ
- fri1lebn4dpC/UpqfubyD9ZhcH7mhJ5USwbFy7ipC0eXYmVgxL+rB0anrq4vs5ZGukF9
- 1/Hg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXsJ7475ba+4U5ksChdWCcFcaYIS8m3CPGNh85EtDX4MBEvB7J7nwpllYDsmTeq1C+CxtJ/k7ciVGs4@nongnu.org
-X-Gm-Message-State: AOJu0Yw9hzxYgYVObe/dBqiE3zbMB3ejgAxOdRWPZowoAw3zdm1gkKot
- FBlTi2k93qxKZQzeDPBZsZaDct9azJBUWpFeU+/awyN/cxiS+jZTVapxMcqW+LQ=
-X-Gm-Gg: ASbGncsmxe9mNAwOEfHeeVL3Y7vuEMnvm6Sf2kH56MxYHcCoajkW8YRKe9snKhcORvi
- KSZt8xdTX1Mt1BtACLcB/bI7irzB6XQIhr+5qK7ejVSdpcGlzMOd+4q9RBibRoG+tGp3LPPmQd6
- JgXgNRsfeH2RxCG+E3T9zFA2HzKVMD+RM4jQjJc0I/inhwLZYjl7xcRc874lMJdeA/2nbREbarv
- 6Ni9RSaSd9xLBzNnv+IaXhA/D20hG7xAc53fdGB6OdyUqudW/M7lZdyRRfzjftFT8v+zr4=
-X-Google-Smtp-Source: AGHT+IHQAeLtWxyKDXhgbZP2hCzIBCDHvkTfsYztMrY5RJZwoITQxRrtGK67C6wDTLJeEPDHK+nAZg==
-X-Received: by 2002:a05:6808:3c4f:b0:3ea:6415:c44 with SMTP id
- 5614622812f47-3eb85aef8b1mr2925815b6e.8.1733938286953; 
- Wed, 11 Dec 2024 09:31:26 -0800 (PST)
-Received: from [172.20.4.119] ([187.217.227.247])
- by smtp.gmail.com with ESMTPSA id
- 5614622812f47-3eb63def321sm1211436b6e.53.2024.12.11.09.31.25
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 11 Dec 2024 09:31:26 -0800 (PST)
-Message-ID: <0ec58c58-2814-4b1f-8725-d8c57bb4b54b@linaro.org>
-Date: Wed, 11 Dec 2024 11:31:23 -0600
+ (Exim 4.90_1) (envelope-from <jgg@nvidia.com>)
+ id 1tLR1V-0005mV-OS; Wed, 11 Dec 2024 13:01:22 -0500
+Received: from mail-bn7nam10on20624.outbound.protection.outlook.com
+ ([2a01:111:f403:2009::624]
+ helo=NAM10-BN7-obe.outbound.protection.outlook.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jgg@nvidia.com>)
+ id 1tLR1R-0004n9-J2; Wed, 11 Dec 2024 13:01:21 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=MuLfPxEUFmzXP/37c0K75repNjlMJWtw8MVwer3sty74NaQdmPYt04ECo/l12LJTYbdgivxp225rczhIoQxfolwNgCiMT6g2X2iUN8X3fHvz/KPNyPP4uo9QhM7I+cEtGvrXLX2KAKkOg7XWxZEELuNMqbLUWhWhDzVi5yjglfQQAoaXWmKdW8ZZBm4SD96pK0G59dREw0hXSLaAGJNBFmhLeZiNLBBLEEwqeYdJH71QZaMql/WZqfQrq1cNVBflYosHgBwyRItOu9EciIcZ9n0gKE+cSuYav93kUElqiRyCfDIf5nctl0XPcVtmJPOGUerzziCCRxV7hRt+l3Etzw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=dVHsGdHVeuSjkexTKVTx0T5w5Mem6zy9WMEuIyWEfSY=;
+ b=W+S10NRhHEFvPxAHY++FTgF65r9MtvSxZMZA9JuX0KhZV3KIWBWje88o4facP9hIvQfmT+moei6yZHbl9/kK+xdrnGogEkROoj6zElqYkB0yXjwuFrOZPr99+vxKkRCBH+y91zRfPa7N6xakDbIwySkEd0Joi7whbGRJRII8HlGYWvtmvylg8uvq6WNXD247v/c0MwICXDlc4HMS4wUr7jg7KGubkt1iZMkdYgxQvPzVA2XoW888SExl6gTx2ANr9s2ZM4Vvi79z+5QXdvrKnLTb8hj9vZH7oXIQBw/g90/Gg8uylcCKgkwtCb+at5E/xlc91JTnGNoa0EiM1ukkgg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=dVHsGdHVeuSjkexTKVTx0T5w5Mem6zy9WMEuIyWEfSY=;
+ b=pqSDOZYXjtnz8Q5+BHD//b/PPkjet+OuO+SmYZO0Di6Lx28cAOk+T2/AGCA2yms0zvUU+bQUq4f8F2QS0hekjcgU7R9JOyZOfOG/TIzWZhUimIQ5Jq1X5Mb4Ey9bgltoRy3/9pQSCLnPtBRrtRPRaH+ux0KxvJCZxwwDuvj1/kmxKjynDOP4gslOfWjParkrH/X7WR+1CusQ3/IyDfCzcxn4tfu+3DS/E8xvTFsvJY3u2/ZeutmjTKuOBb4sG06Cs3dO8m8vHgUNmL/sEt+CP74/jyHBAS5SLbHM7ch61U0FvYqEfAzS9FQNjpodbhR/EcmWSfVpjolSv/IqKwZSGg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH3PR12MB8659.namprd12.prod.outlook.com (2603:10b6:610:17c::13)
+ by SA3PR12MB7880.namprd12.prod.outlook.com (2603:10b6:806:305::18)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8230.22; Wed, 11 Dec
+ 2024 18:01:11 +0000
+Received: from CH3PR12MB8659.namprd12.prod.outlook.com
+ ([fe80::6eb6:7d37:7b4b:1732]) by CH3PR12MB8659.namprd12.prod.outlook.com
+ ([fe80::6eb6:7d37:7b4b:1732%5]) with mapi id 15.20.8251.008; Wed, 11 Dec 2024
+ 18:01:10 +0000
+Date: Wed, 11 Dec 2024 14:01:09 -0400
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Nicolin Chen <nicolinc@nvidia.com>
+Cc: eric.auger@redhat.com, ddutile@redhat.com,
+ Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
+ qemu-arm@nongnu.org, qemu-devel@nongnu.org,
+ peter.maydell@linaro.org, linuxarm@huawei.com,
+ wangzhou1@hisilicon.com, jiangkunkun@huawei.com,
+ jonathan.cameron@huawei.com, zhangfei.gao@linaro.org
+Subject: Re: [RFC PATCH 5/5] hw/arm/virt-acpi-build: Add IORT RMR regions to
+ handle MSI nested binding
+Message-ID: <20241211180109.GO2347147@nvidia.com>
+References: <20241108125242.60136-1-shameerali.kolothum.thodi@huawei.com>
+ <20241108125242.60136-6-shameerali.kolothum.thodi@huawei.com>
+ <Z1jIXHmFcBFIUeKn@Asurada-Nvidia>
+ <20241211004821.GM2347147@nvidia.com>
+ <Z1jqsVTiMwW/Zk5z@Asurada-Nvidia>
+ <20241211131112.GN2347147@nvidia.com>
+ <Z1nJ1HYxnCdsEKng@Asurada-Nvidia>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Z1nJ1HYxnCdsEKng@Asurada-Nvidia>
+X-ClientProxiedBy: MN0PR02CA0028.namprd02.prod.outlook.com
+ (2603:10b6:208:530::22) To CH3PR12MB8659.namprd12.prod.outlook.com
+ (2603:10b6:610:17c::13)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 42/69] target/arm: Introduce gen_gvec_rev{16,32,64}
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org, Peter Maydell <peter.maydell@linaro.org>
-References: <20241211163036.2297116-1-richard.henderson@linaro.org>
- <20241211163036.2297116-43-richard.henderson@linaro.org>
- <934e7598-8927-4d35-9784-6d33d7892952@linaro.org>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <934e7598-8927-4d35-9784-6d33d7892952@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::236;
- envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x236.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR12MB8659:EE_|SA3PR12MB7880:EE_
+X-MS-Office365-Filtering-Correlation-Id: 31672a01-1ff3-4853-b787-08dd1a0dcb4c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014|7416014;
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?PNNh2DawRVmyYH59MyvMW+oleiaMlTU6gb4FTXmowr8PGCqMmgtp9YOGjWGN?=
+ =?us-ascii?Q?bcLZ6ajT1U9/lTU6zZvjYeRXH4RC11n9ajPIidOEfvylMs9im9Q9j3LEnEza?=
+ =?us-ascii?Q?MuOeafec3njf+OHnqsveTOpbIE6AKI9FFMFobXlukF42V0e7X1+ZNyYZLNh8?=
+ =?us-ascii?Q?JTFUOgn4XMfQXDsek/q1DJTu4sARnok6+IIdcWnuMCbl/scQvMLihDgl9etn?=
+ =?us-ascii?Q?vdbsT10xEicQPFEKaFGENb8OQQQpGGCwuCTqFKIvz2HDRaFyw0M07Fo7bROY?=
+ =?us-ascii?Q?wLeisLi+snVy0SoSh52EL41zDeGXC81iEU31t36dOZSbd2Vy+wo6FCNNoDEO?=
+ =?us-ascii?Q?0P2GkWwiMUjfSC3fXLHfOYztalHplWh8eHTSfon6aqir5HPX/0AyelVMYtK6?=
+ =?us-ascii?Q?as4vfXGNiBTReyPMwClNam1YEh9kZRapIX5smSCBo59UhR5gKxDgO/UA1ABC?=
+ =?us-ascii?Q?egxe+N8gF9A15PTajOwHRsLnMh0bHRWNubORutxyJQ3+A3qySRnTFFjgHy1a?=
+ =?us-ascii?Q?E+ffw1CY3WYfIGptiHsTaUd1Updvd6pkY/YR1FMG426mccS0K0DRbihJQvPD?=
+ =?us-ascii?Q?hWBLvIRsRG3dcfgDU0L32WM1yPbuLsnWhxeza01DNALZrmqkdgjXwWNIEqU+?=
+ =?us-ascii?Q?QO9mB2Vu5ztE/22zHtLJxu0iWicaKMzuM5ug4DgJbDnm5eZiskZ5sBWdP6so?=
+ =?us-ascii?Q?ghgHYgXJxxg/1VpQtO5etieo/k/ihWC5tqMz+gSoX9S4CnzPavynOJdi4bDj?=
+ =?us-ascii?Q?b4lxyoy18dhDthrwgVScAw5BycV1mFValuIUDWGxvJ6wqSKI2f3qtB+mSEuA?=
+ =?us-ascii?Q?oFpbwG8Wak+mPqMoCQqI64iS+MVA4sZ4Mdg1bVkqsstFSXCkK08fKGU1WVHn?=
+ =?us-ascii?Q?rnvolqiLbLLT2BS6D6hwJI8mo1io7Oo22RlNKUx6zV11LhmNOnJmBjmDrMP4?=
+ =?us-ascii?Q?IYt+ir8T5KJ9xtB6Gzc3VCkMvKnyxHE92HNq1FQASfa2ctbozYMt0YY8aaV9?=
+ =?us-ascii?Q?YBs6pj5jjcOW/bKNfDQniREIulePFJ1rwhTpnyP9ebslO5rTcMPxD3TCBsM/?=
+ =?us-ascii?Q?GwZlBCWcgl7Qjs/Viz+UO7sp9LDBMRxFDX60EGfb/wg/oEgUshd4r8qlz+0C?=
+ =?us-ascii?Q?82pxxdrU3cfmBL4nVmv8aXMBxWJ8baRwORPM1SNNUakCYPovwKfEqH4IVofv?=
+ =?us-ascii?Q?vWMa3PmKB5qX+jLysGye9YFgaqBqx0L1fkBPwiv/9LCm4dnH6zo/+F+kdC7o?=
+ =?us-ascii?Q?Vd5REdGS+phnrhiG0zHoJQl6+RVl+svKW1xUSL0uniYvLZfjWARpINcKZi+P?=
+ =?us-ascii?Q?vbDxHxzqAHsVfmsqcCcNkdGE/oZSYYlEOPrjpH7c8dOfDg=3D=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:CH3PR12MB8659.namprd12.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(1800799024)(366016)(376014)(7416014); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?THsZ0VFmvlyuI9rxBVeI9bwW6Wxbubsv4JmQ10WCAoytzMZtmbcPEFsHt3jB?=
+ =?us-ascii?Q?aLkhqeFPBekFmt5dBpHblUxRh754O1EskgByN6c5P49eHo3YFwAhsS7RQkO6?=
+ =?us-ascii?Q?S8/DcB0skp/9qcj3mCrJysSsaJeZdonN2Kp8KuGF7zPnnD2EFVWVq7mEmR0P?=
+ =?us-ascii?Q?TghODID6eWAJIkOcJq/E3nwN9AzVgPQ/VG6hCWnFL7MEtCfqpwiGUHyFC4EE?=
+ =?us-ascii?Q?qU5kE238aAmLC/6BKeA1LX7CaPHt9HTQWJN/nmqKRCCcH1PctSeySX82PEGY?=
+ =?us-ascii?Q?O3gFhER4YX+QpZiMUSW/oW4t1tR3pTX6gwEskqbSCnbQvG9tRhDR5HSjnPH1?=
+ =?us-ascii?Q?leJrkxYHTdrlMLoxtbWrPAVCMrNRxS/zJUqVMqI9fbJuavpSCqD+xNQOOlEL?=
+ =?us-ascii?Q?JNihTEAUKDtREy1aauHa2kxZJ0x6fhKnO74zmRtJ0W4JlRKyDK/rpGCpoifp?=
+ =?us-ascii?Q?wYEXoSXN9jy+OBhuOdhS1mGsnhtvHnCOhJkCodN2d3galdS8cr/GcBLVn9Ti?=
+ =?us-ascii?Q?BNPwN+3/j5uQfxZObWB02R/VtIJKm36GqdFnEh18i8jzJl0/nNVIz76imear?=
+ =?us-ascii?Q?UMmaqHdGm5E+iC9RdivisKq2MhoOx8CDkMJkZsxThHs64Axm+X99klxznnCY?=
+ =?us-ascii?Q?24czV4BUjOAX1PTmzeuKiNIPglc6F5iSNj6UhaZXAB+nqup4k7fxi0HOfmnS?=
+ =?us-ascii?Q?lcVK/F2ryjz8w93XOlNRqXfoKige5zd+uGcnaQ7rB4p4YJGFRGTUzfGq6aMT?=
+ =?us-ascii?Q?S1zizypv5SegsFD3kToxKHFz5mtf8RHfojQlc9wLc0YU0E3LswEB8XOEJrqo?=
+ =?us-ascii?Q?AjFbHDGbjH+bd2CBzunsdIgTlGgOYk5VzZ61T3D7Hgkwrc2S72qpze6HzE/X?=
+ =?us-ascii?Q?AC0Fmx2ycKlZEIvKL9CYPpM3txl1c5kNROCm7QcYI1YrdcTtFxT6pmQY0ZdX?=
+ =?us-ascii?Q?EuMG6yK9LJ0AVliF2R3Kx3B4Nb2RjIRrpcdOb7OJHcB0jofm9EBUBkWy32Fj?=
+ =?us-ascii?Q?rnzsDSuA9FOaXIsBWfqaYAYuP1bnc47Hgh4VvymDwPPgyAadiNg2/Hkj6i3r?=
+ =?us-ascii?Q?SKWXcM4Yq5qfgKOddbLu8DgKa6rL0SAxtOeejDueRPCElyhOGKp1xtsOw8wM?=
+ =?us-ascii?Q?qb4Ppk/JbhVljpNx91UkkvR0sKZNGDQz/h6/Xvna+eaD/dAQ1LpkPlAS30Dp?=
+ =?us-ascii?Q?9XwTxmNPlv9UBA5AG9h0vSPXfpftXZ2MCjlORLm9OSWQ9RIOUd6bZgkCHyqB?=
+ =?us-ascii?Q?Lqz23NnvHyJF8OzsltkbHHhwtt6k0VBsgp5WapW8k7M3tWNVaMR9pIeseRLi?=
+ =?us-ascii?Q?koQXcy9PGwfn+3T1j5DR9HvnK36cX+mUO1KfXOSnrTCKytP1OlWu0ZRmJx2T?=
+ =?us-ascii?Q?nLdlV+/u4L6P9vdCubOLgbDInlv5sqx+pcSJRkLLDvXa5wlERKNXh4I5PYpL?=
+ =?us-ascii?Q?8yNqKKG7wP94DKt7KdFNzWu7uNTP7wsS0IehKjpoxbFD4st1PDkUbNzpybPt?=
+ =?us-ascii?Q?D2w8JvTuUpVCPsrdTlgr+64WgspdMRnYoKB1ig5+C6lRYE7nS/gj8aWB3D7e?=
+ =?us-ascii?Q?s1hFdeb6lcITfDv0yVcT7QT8bdBmzKGAVnLzBfQL?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 31672a01-1ff3-4853-b787-08dd1a0dcb4c
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB8659.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Dec 2024 18:01:10.5683 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: n+vuqK+nSH3cfOJnQfofQuS343q7er5oPfThp5wImfgifVXYiAg7xw5rosmGjza0
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR12MB7880
+Received-SPF: softfail client-ip=2a01:111:f403:2009::624;
+ envelope-from=jgg@nvidia.com;
+ helo=NAM10-BN7-obe.outbound.protection.outlook.com
+X-Spam_score_int: -25
+X-Spam_score: -2.6
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.472,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,42 +164,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/11/24 11:19, Philippe Mathieu-Daudé wrote:
-> On 11/12/24 17:30, Richard Henderson wrote:
->> Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
->> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
->> ---
->>   target/arm/tcg/translate.h      |  6 +++
->>   target/arm/tcg/gengvec.c        | 58 ++++++++++++++++++++++
->>   target/arm/tcg/translate-neon.c | 88 +++++++--------------------------
->>   3 files changed, 81 insertions(+), 71 deletions(-)
->>
->> diff --git a/target/arm/tcg/translate.h b/target/arm/tcg/translate.h
->> index cb8e1b2586..342ebedafc 100644
->> --- a/target/arm/tcg/translate.h
->> +++ b/target/arm/tcg/translate.h
->> @@ -586,6 +586,12 @@ void gen_gvec_cnt(unsigned vece, uint32_t rd_ofs, uint32_t rn_ofs,
->>                     uint32_t opr_sz, uint32_t max_sz);
->>   void gen_gvec_rbit(unsigned vece, uint32_t rd_ofs, uint32_t rn_ofs,
->>                      uint32_t opr_sz, uint32_t max_sz);
->> +void gen_gvec_rev16(unsigned vece, uint32_t rd_ofs, uint32_t rn_ofs,
->> +                    uint32_t opr_sz, uint32_t max_sz);
->> +void gen_gvec_rev32(unsigned vece, uint32_t rd_ofs, uint32_t rn_ofs,
->> +                    uint32_t opr_sz, uint32_t max_sz);
->> +void gen_gvec_rev64(unsigned vece, uint32_t rd_ofs, uint32_t rn_ofs,
->> +                    uint32_t opr_sz, uint32_t max_sz);
+On Wed, Dec 11, 2024 at 09:20:20AM -0800, Nicolin Chen wrote:
+> On Wed, Dec 11, 2024 at 09:11:12AM -0400, Jason Gunthorpe wrote:
+> > On Tue, Dec 10, 2024 at 05:28:17PM -0800, Nicolin Chen wrote:
+> > > > I would ideally turn it around and provide that range information to
+> > > > the kernel and totally ignore the SW_MSI reserved region once
+> > > > userspace provides it.
+> > > 
+> > > Hmm.. that sounds like a uAPI for vITS range..but yes..
+> > 
+> > It controls the window that the kernel uses to dynamically map the ITS
+> > pages.
 > 
-> Remembering https://lore.kernel.org/qemu-devel/20230822124042.54739-1-philmd@linaro.org/, 
-> these gvec helpers might be useful for other targets.
+> Can we use SET_OPTION for vITS mapping (non-RMR solution) too? 
 
-These may be factored incorrectly for other usage.  Here, for rev<N>, N is the size of the 
-container, and vece specifies the size of the element within each container.  It's reverse 
-of the usual meaning of vece, but it maps well to the Arm instruction encoding.
+There are two parts to the vITS flow:
 
-The only other bswap I can recall with vector operands is s390x VLBR/VSTBR, and similar 
-for Power VSX, which performs the reversal at the same time as a load/store.  So in this 
-case the heavy lifting of the bswap gets pushed off to MO_BSWAP.
+ 1) mapping the phsical ITS page - I expect this to go through
+    IOMMUFD_CMD_IOAS_MAP_FILE
+ 2) Conveying the MSI addr per-irq - this doesn't feel like set_option
+    is quite the right fit since it is an array of msis
 
+> 
+> > > So, VMM can GET_OPTION(SW_MSI) for msi_base to extract the
+> > > info from kernel. Likely need a second call for its length?
+> > > Since IOMMU_OPTION only supports one val64 input or output.
+> > 
+> > No, just forget about the kernel's SW_MSI region. The VMM uses this
+> > API and overrides it and iommufd completely ignores SW_MSI.
+> > 
+> > There is nothing special about the range hard coded into the smmu
+> > driver.
+> 
+> OK. We will have SET_OPTION(IOMMU_OPTION_SW_MSI_START) and
+> SET_OPTION(IOMMU_OPTION_SW_MSI_LAST).
 
-r~
+Maybe length, but yes
+
+> I think we will need some validation to the range too, although
+> iommufd doesn't have the information about the underlying ITS
+> driver: what if user space sets range to a page size, while the
+> ITS driver requires multiple pages?
+
+Ideally the kernel would detect and fail IRQ setup in these cases.
+
+I suggest enforcing a minimal range of something XXM big at least,
+then it won't happen.
+
+Jason
 
