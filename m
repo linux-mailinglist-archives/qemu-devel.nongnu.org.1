@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E95969EC247
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Dec 2024 03:36:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DB1429EC28D
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Dec 2024 03:54:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tLCa1-0003PA-9x; Tue, 10 Dec 2024 21:36:01 -0500
+	id 1tLCqY-0005xb-KW; Tue, 10 Dec 2024 21:53:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tLCZx-0003Oz-W8
- for qemu-devel@nongnu.org; Tue, 10 Dec 2024 21:35:58 -0500
-Received: from mgamail.intel.com ([198.175.65.9])
+ id 1tLCqW-0005xQ-DV
+ for qemu-devel@nongnu.org; Tue, 10 Dec 2024 21:53:04 -0500
+Received: from mgamail.intel.com ([192.198.163.9])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tLCZu-000469-9N
- for qemu-devel@nongnu.org; Tue, 10 Dec 2024 21:35:55 -0500
+ id 1tLCqT-0006Ea-2K
+ for qemu-devel@nongnu.org; Tue, 10 Dec 2024 21:53:03 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1733884554; x=1765420554;
+ t=1733885581; x=1765421581;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=xW4/4eTof//ZWgA2pABeuts83EI7xp8TFkcaPye/Xcc=;
- b=T5BbIuNM0DRISMuHRRNKT3w9KvNI8Znta3W7JufBmIAocxFjheVGQmwr
- kFBpElFqnfpowVcTB8dobH6OXH/fqxPMxVB7o0NdODAt6CCmivKXvwuA7
- gaZRxnt0t5wweA+9//jV0dPyLZwRMdCLgjgyM6itkEdA02TOoE5TLLbI8
- 6F08qP4o5RS5xN9bQW/f9tiWK3bFK3ON0ke6btrz8EN3oh3k61Th8ksJv
- I2VqTMPFWpxQUqfYUbTY1m8lCClGZ8xk+OfxULf2IQSVdUvtNjMf7hg0m
- 9JunIx9phaXT3gVk9aNNl5/UZGdSRNz5SIJb0/w3vK6Ic0Zg+17UHjA2w g==;
-X-CSE-ConnectionGUID: lx6yJe+PRpKi8CqWhJ/zMg==
-X-CSE-MsgGUID: K94ia15ASESyc/7nnz4Fqg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11282"; a="56730608"
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="56730608"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Dec 2024 18:35:52 -0800
-X-CSE-ConnectionGUID: Uz48BeXzSX6kLjOQPpHj2Q==
-X-CSE-MsgGUID: hOmMFJ4bTvyJ/9THPEVkMQ==
+ bh=jvTXnFQyJFuI1x1d/dIocobfgD/iUZi9Zxq3/Fz8HRw=;
+ b=j+KVCLIJrqlAkyVocJZaV7C8B7Y6YcPGEAMSL0mEEZkdWOLXaszsOoFC
+ cDoq6QhEnw0hXFfxF5Ls5j6GXCXqlXCUqI4hgD9xDcmNxtAxnd9YJpCkY
+ YyV9s/g/Wov3ledwrZwNM9Ye6RypBiXNbwW8IQkNsAmhLKlnHxt2/H1/3
+ ubaAGVtwHDpXbWzJAmsqsQ2CKJbXn1OefrPE5IBmV1pU9gRSyzNFfPnhW
+ JRQ+lOuhI0ZoWOvOGZz8hAuHiracuvnyE08Rkeg6qRZvVJ7EA3RAbh0s7
+ Ratwzr9F5limpXudx++yO8YvTiM1Cbr2oWFicx+HnnVgSqQv5ykEroliY g==;
+X-CSE-ConnectionGUID: BLBQ+81FTpS8hz1vBLuZDA==
+X-CSE-MsgGUID: KUqoKH4TR0aBKL4SdlhdhA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11282"; a="44921533"
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="44921533"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+ by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Dec 2024 18:38:14 -0800
+X-CSE-ConnectionGUID: LaR84/qRTaqcWveAXPGR9g==
+X-CSE-MsgGUID: QcUPusPNRz6CdEGBRugh3g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="95431400"
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="100671139"
 Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
  ([10.239.160.36])
- by orviesa010.jf.intel.com with ESMTP; 10 Dec 2024 18:35:50 -0800
-Date: Wed, 11 Dec 2024 10:54:04 +0800
+ by orviesa003.jf.intel.com with ESMTP; 10 Dec 2024 18:38:11 -0800
+Date: Wed, 11 Dec 2024 10:56:26 +0800
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Xiaoyao Li <xiaoyao.li@intel.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
@@ -55,16 +55,15 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Cameron Esfahani <dirty@apple.com>, Roman Bolshakov <rbolshakov@ddn.com>,
  Marcelo Tosatti <mtosatti@redhat.com>, qemu-devel@nongnu.org
-Subject: Re: [RFC PATCH 1/4] i386/topology: Update the comment of
- x86_apicid_from_topo_ids()
-Message-ID: <Z1j+zDk0w66tReuf@intel.com>
+Subject: Re: [RFC PATCH 4/4] cpu: Remove nr_cores from struct CPUState
+Message-ID: <Z1j/Wjs2ZNam/sBd@intel.com>
 References: <20241205145716.472456-1-xiaoyao.li@intel.com>
- <20241205145716.472456-2-xiaoyao.li@intel.com>
+ <20241205145716.472456-5-xiaoyao.li@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241205145716.472456-2-xiaoyao.li@intel.com>
-Received-SPF: pass client-ip=198.175.65.9; envelope-from=zhao1.liu@intel.com;
+In-Reply-To: <20241205145716.472456-5-xiaoyao.li@intel.com>
+Received-SPF: pass client-ip=192.198.163.9; envelope-from=zhao1.liu@intel.com;
  helo=mgamail.intel.com
 X-Spam_score_int: -48
 X-Spam_score: -4.9
@@ -89,35 +88,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Dec 05, 2024 at 09:57:13AM -0500, Xiaoyao Li wrote:
-> Date: Thu, 5 Dec 2024 09:57:13 -0500
+On Thu, Dec 05, 2024 at 09:57:16AM -0500, Xiaoyao Li wrote:
+> Date: Thu, 5 Dec 2024 09:57:16 -0500
 > From: Xiaoyao Li <xiaoyao.li@intel.com>
-> Subject: [RFC PATCH 1/4] i386/topology: Update the comment of
->  x86_apicid_from_topo_ids()
+> Subject: [RFC PATCH 4/4] cpu: Remove nr_cores from struct CPUState
 > X-Mailer: git-send-email 2.34.1
 > 
-> Update the comment of x86_apicid_from_topo_ids() to match the current
-> implementation,
+> There is no user of it now, remove it.
 > 
 > Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
 > ---
->  include/hw/i386/topology.h | 5 +++--
->  1 file changed, 3 insertions(+), 2 deletions(-)
+>  hw/core/cpu-common.c  | 1 -
+>  hw/i386/x86-common.c  | 2 +-
+>  include/hw/core/cpu.h | 2 --
+>  system/cpus.c         | 1 -
+>  4 files changed, 1 insertion(+), 5 deletions(-)
 > 
-> diff --git a/include/hw/i386/topology.h b/include/hw/i386/topology.h
-> index b2c8bf2de158..21b65219a5ca 100644
-> --- a/include/hw/i386/topology.h
-> +++ b/include/hw/i386/topology.h
-> @@ -121,9 +121,10 @@ static inline unsigned apicid_pkg_offset(X86CPUTopoInfo *topo_info)
->  }
->  
->  /*
-> - * Make APIC ID for the CPU based on Pkg_ID, Core_ID, SMT_ID
-> + * Make APIC ID for the CPU based on topology and IDs of each topology level.
-
-Maybe "based on sub-topology ID"?
-
-Otherwise,
 
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
