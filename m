@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8B439ED1A6
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Dec 2024 17:29:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C2769ED1CF
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Dec 2024 17:31:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tLPZR-0004Cd-Ey; Wed, 11 Dec 2024 11:28:17 -0500
+	id 1tLPZa-0005Zq-Ig; Wed, 11 Dec 2024 11:28:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tLPZN-0003sR-2r
- for qemu-devel@nongnu.org; Wed, 11 Dec 2024 11:28:13 -0500
+ id 1tLPZP-0004D9-Mv
+ for qemu-devel@nongnu.org; Wed, 11 Dec 2024 11:28:15 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tLPZL-0000Q9-L2
- for qemu-devel@nongnu.org; Wed, 11 Dec 2024 11:28:12 -0500
+ id 1tLPZN-0000Qu-Ts
+ for qemu-devel@nongnu.org; Wed, 11 Dec 2024 11:28:15 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1733934491;
+ s=mimecast20190719; t=1733934493;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=D5J96IsavK0+zLTS8zAT5ylnqyelCMG7OfRE3uftyvc=;
- b=CgNoblda7PuARx717CTc6Iig9VQpXkIUx9/nuSiRu1SBYJMj9EEjC2J76C92ZwZdvlRCYL
- BxCShxsUQXx2LgFzUdP7sYgOm4mW7hcEJ1fv0afrfY1++mGG7nIYmx+S/9kkTwv3yerTAS
- gmBRi8u0Op7uiHy4tzoTH8FHEpSi9Wo=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=U53bRzTunzKKb0GQrA7zkMI5MCQHR4iyv2n5IEYAQ8U=;
+ b=KvbBQkpfcJNYHjl9Fgs4GaOZ/voTHfsWmVeq7oTRwMVzomHw6yVBXW+TYZP4o/LGKEBpj2
+ 8w3sqXvKPiQcT/QqM9WdmW8zlea3JL8SZL5n/qqO7eVmZTaqQWQnXhCzsxeJJu2WEW2qIO
+ wS0k2+5eUfDOgdeIuzbBh2byOqn86uU=
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
+ [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-437-s2RBuASKNOGSQww_RXLZSg-1; Wed, 11 Dec 2024 11:28:09 -0500
-X-MC-Unique: s2RBuASKNOGSQww_RXLZSg-1
-X-Mimecast-MFC-AGG-ID: s2RBuASKNOGSQww_RXLZSg
-Received: by mail-ej1-f69.google.com with SMTP id
- a640c23a62f3a-aa6a1bf7a82so259386166b.1
- for <qemu-devel@nongnu.org>; Wed, 11 Dec 2024 08:28:09 -0800 (PST)
+ us-mta-65-4GLVIrnUPOGVMh0x2jpF2g-1; Wed, 11 Dec 2024 11:28:11 -0500
+X-MC-Unique: 4GLVIrnUPOGVMh0x2jpF2g-1
+X-Mimecast-MFC-AGG-ID: 4GLVIrnUPOGVMh0x2jpF2g
+Received: by mail-ed1-f70.google.com with SMTP id
+ 4fb4d7f45d1cf-5d3d6d924c1so5811827a12.2
+ for <qemu-devel@nongnu.org>; Wed, 11 Dec 2024 08:28:11 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733934488; x=1734539288;
+ d=1e100.net; s=20230601; t=1733934490; x=1734539290;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=D5J96IsavK0+zLTS8zAT5ylnqyelCMG7OfRE3uftyvc=;
- b=KQJR1bXjO1SG5/QpZ1zblcxtgkGqp8A9hVt9spVhFrIDkUQ5W13HZUJr8G/Ldbp9Zp
- HKgI/iAJY9nhb6+1BBTCH5ZG1StYL13aDdwZkKHaEs+1NYh3rCs7tPMjau3a7F4fKJ+E
- sRsCYL4j/L4JkIPHG+BDPpBzpF2nIMPcqVWM8hGWqHb1tGWAT2Ah8rngkiwhTvzRds+l
- ftGZmh5CbaDHpHEnK2DnGI+aQ3+KckYhdnaYGwXbV0PItcNggqsZW/Cwixn2Yoq0GE+N
- QFgXnDf0kKfT3MTMpREVyofMU6MkaUn9HpkPHqYi7A/DXOtdbK4Q9nAGIluvVPMapgAT
- SKEA==
-X-Gm-Message-State: AOJu0YwRwWDPyXRYtpUW/oWqyE6BoDpMdbuTbJMl9XuB5Gqty6B6m2BK
- VeJxeJ66EmhOKemsFhEDRyyMdqCiunCVTmducOlXVV/XS//rO6/JjTXgsPXz/8kwDFX6mfpeQ8v
- yRK/r9NZg7ARD2zXCIF4UD0OuWQIcJ7A7Q+fPSFz7xZW+KmckzaAe3mM4bvy+7bQcdgHiLJxpif
- E1z0ZrklLThSfa5WebqtwUMWhmSBWUzu7FgZ9X
-X-Gm-Gg: ASbGncu4T0KrGAvEy+4K4Gt5nwonhS56owjhv1z8r6HlhHJUo+GxCrVv1i7n6y6INh3
- B3AzIYW+Qkmy3mJi/WqY7WoFcCqdXtrgQZcMlKudT9KPZTE6OSxqtVtwT24vfE2tT9yG19AMsnG
- u4OACEcLCKT5Ny285Jf/GYM4lA0z/FvqxJGCPfF5BRRSimrZo35wDK85biApGTk0Sd03e5+hmcJ
- WM0J2cVRGKpAeyMrA3BxbWCJ9jzAHhDZBP/VPlYfG4kYgrWGwrbIlQt
-X-Received: by 2002:a17:907:b1b:b0:aa6:b926:c102 with SMTP id
- a640c23a62f3a-aa6c1cf1b14mr50108366b.43.1733934488227; 
- Wed, 11 Dec 2024 08:28:08 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGn1Bo58DoK8n8mo0K3lhk8bd2RzSerin38VigwmRR8DfvHf8J4ZxtUTLl0sbJ7UCdBG9xcEA==
-X-Received: by 2002:a17:907:b1b:b0:aa6:b926:c102 with SMTP id
- a640c23a62f3a-aa6c1cf1b14mr50105166b.43.1733934487777; 
- Wed, 11 Dec 2024 08:28:07 -0800 (PST)
+ bh=U53bRzTunzKKb0GQrA7zkMI5MCQHR4iyv2n5IEYAQ8U=;
+ b=h1j/kIRbJb7ZXOGdUKhFibyeUiv7mBb0w3rSDMAlb7VRsfpl0FuMSUOcdBZ5SGgRIl
+ 1/cQXYUDCh/XH5xQxHjg46GNCfHdnMFttLbhajnSdCtUmhFU1Hv0pEjWUQeBSTGj31eO
+ c6hNYH06Pba70KGaizVtUkRwNJh0TDGDYEVsiG6rFTgxxqJA0DGOZv577mXSeJncUiJ6
+ vlQpA3GxJNosGDN6Wa5YnziQyzt4cEBnBfxnr/VP65JW3Yts8Q9tucvHLyxanzqLF6eA
+ wQQF0uz9qKIMy2jhxWoZR4GaFfMlyCz/0ujBsd2BzYWX6O1Sn0F9bVHEM37SlFSNTMav
+ xlAQ==
+X-Gm-Message-State: AOJu0YxoTmWkNu1iiOTCX7Ap5R1rEydnd6zJXuQm3u5PNo4dlD7ouN7g
+ Oi3Js8UNrouBSUBfqtAYfnL07t42hXLHg8TN5YbMQjeZpXyev7xOZCTXrRj5k6nRNleZf+J6ijX
+ sgPCR20lJfSl6Bs1vV5mYn6WHbsFvTya/zGwKxj6jmx1If08/0/EdnJYYJgzUEV7BO1u8q1cXmX
+ 8DNPPswJwbiHymQGaC4yM2hXdQvk/xrFN9FhUj
+X-Gm-Gg: ASbGncvPKdpqqNts8hdXnKkUK85oHqH5Q+6NdU2onEggocjWM6uFQQrTIxqAefvw3Ju
+ Yun7nwT0x8DvA4NmBHPK8ZjgOEM1bvO0y1JZ3/SNktlfzph9rJxY2jM2OSMG4koaAzljc4UvoL8
+ F0Zj/09eZf7aUBVgFCdI6JMXMdYDBj+Oqvwm6P9INOams04AFlEN4ozU6rPWJIGiYlxtz9nCRVI
+ AhHkDrq0Gn+fUDDi4NOCPQVrLldX+bmoSBjNBCHvcM4uTCY/HzC09TO
+X-Received: by 2002:a05:6402:348b:b0:5d1:2440:9b05 with SMTP id
+ 4fb4d7f45d1cf-5d43316e59fmr3937133a12.28.1733934490041; 
+ Wed, 11 Dec 2024 08:28:10 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHbDS98Odgfq44TgA7/FFlWXLa9928Q9PM0QDMwSD0nOM+fL4YHTH8H0uB04014eCD3gdXT1g==
+X-Received: by 2002:a05:6402:348b:b0:5d1:2440:9b05 with SMTP id
+ 4fb4d7f45d1cf-5d43316e59fmr3937103a12.28.1733934489588; 
+ Wed, 11 Dec 2024 08:28:09 -0800 (PST)
 Received: from [192.168.10.3] ([151.81.118.45])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-aa68880b344sm480539466b.184.2024.12.11.08.28.06
- for <qemu-devel@nongnu.org>
+ 4fb4d7f45d1cf-5d3f3cf8c6esm5314127a12.85.2024.12.11.08.28.08
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 11 Dec 2024 08:28:06 -0800 (PST)
+ Wed, 11 Dec 2024 08:28:09 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 18/49] kvm: remove unnecessary #ifdef
-Date: Wed, 11 Dec 2024 17:26:48 +0100
-Message-ID: <20241211162720.320070-19-pbonzini@redhat.com>
+Cc: Zhao Liu <zhao1.liu@intel.com>
+Subject: [PULL 19/49] arm: Replace type_register() with type_register_static()
+Date: Wed, 11 Dec 2024 17:26:49 +0100
+Message-ID: <20241211162720.320070-20-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241211162720.320070-1-pbonzini@redhat.com>
 References: <20241211162720.320070-1-pbonzini@redhat.com>
@@ -105,40 +105,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- target/i386/kvm/kvm_i386.h | 11 +----------
- 1 file changed, 1 insertion(+), 10 deletions(-)
+From: Zhao Liu <zhao1.liu@intel.com>
 
-diff --git a/target/i386/kvm/kvm_i386.h b/target/i386/kvm/kvm_i386.h
-index 9de9c0d3038..7edb154a16e 100644
---- a/target/i386/kvm/kvm_i386.h
-+++ b/target/i386/kvm/kvm_i386.h
-@@ -13,8 +13,7 @@
+Replace type_register() with type_register_static() because
+type_register() will be deprecated.
+
+Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Link: https://lore.kernel.org/r/20241029085934.2799066-2-zhao1.liu@intel.com
+---
+ hw/arm/armsse.c    | 2 +-
+ hw/arm/smmuv3.c    | 4 ++--
+ target/arm/cpu.c   | 2 +-
+ target/arm/cpu64.c | 2 +-
+ 4 files changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/hw/arm/armsse.c b/hw/arm/armsse.c
+index 255346a595a..58ed504b2bc 100644
+--- a/hw/arm/armsse.c
++++ b/hw/arm/armsse.c
+@@ -1731,7 +1731,7 @@ static void armsse_register_types(void)
+             .class_init = armsse_class_init,
+             .class_data = (void *)&armsse_variants[i],
+         };
+-        type_register(&ti);
++        type_register_static(&ti);
+     }
+ }
  
- #include "sysemu/kvm.h"
+diff --git a/hw/arm/smmuv3.c b/hw/arm/smmuv3.c
+index 4c49b5a885f..6e847e8773d 100644
+--- a/hw/arm/smmuv3.c
++++ b/hw/arm/smmuv3.c
+@@ -2065,8 +2065,8 @@ static const TypeInfo smmuv3_iommu_memory_region_info = {
  
--#ifdef CONFIG_KVM
--
-+/* always false if !CONFIG_KVM */
- #define kvm_pit_in_kernel() \
-     (kvm_irqchip_in_kernel() && !kvm_irqchip_is_split())
- #define kvm_pic_in_kernel()  \
-@@ -22,14 +21,6 @@
- #define kvm_ioapic_in_kernel() \
-     (kvm_irqchip_in_kernel() && !kvm_irqchip_is_split())
+ static void smmuv3_register_types(void)
+ {
+-    type_register(&smmuv3_type_info);
+-    type_register(&smmuv3_iommu_memory_region_info);
++    type_register_static(&smmuv3_type_info);
++    type_register_static(&smmuv3_iommu_memory_region_info);
+ }
  
--#else
--
--#define kvm_pit_in_kernel()      0
--#define kvm_pic_in_kernel()      0
--#define kvm_ioapic_in_kernel()   0
--
--#endif  /* CONFIG_KVM */
--
- bool kvm_has_smm(void);
- bool kvm_enable_x2apic(void);
- bool kvm_hv_vpindex_settable(void);
+ type_init(smmuv3_register_types)
+diff --git a/target/arm/cpu.c b/target/arm/cpu.c
+index 6938161b954..17519b5e468 100644
+--- a/target/arm/cpu.c
++++ b/target/arm/cpu.c
+@@ -2755,7 +2755,7 @@ void arm_cpu_register(const ARMCPUInfo *info)
+     };
+ 
+     type_info.name = g_strdup_printf("%s-" TYPE_ARM_CPU, info->name);
+-    type_register(&type_info);
++    type_register_static(&type_info);
+     g_free((void *)type_info.name);
+ }
+ 
+diff --git a/target/arm/cpu64.c b/target/arm/cpu64.c
+index 458d1cee012..c1cac912a08 100644
+--- a/target/arm/cpu64.c
++++ b/target/arm/cpu64.c
+@@ -841,7 +841,7 @@ void aarch64_cpu_register(const ARMCPUInfo *info)
+     };
+ 
+     type_info.name = g_strdup_printf("%s-" TYPE_ARM_CPU, info->name);
+-    type_register(&type_info);
++    type_register_static(&type_info);
+     g_free((void *)type_info.name);
+ }
+ 
 -- 
 2.47.1
 
