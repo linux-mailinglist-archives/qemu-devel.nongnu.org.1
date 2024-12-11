@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DA009ED148
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Dec 2024 17:24:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D266B9ED16A
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Dec 2024 17:26:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tLPSK-0000TC-7G; Wed, 11 Dec 2024 11:20:56 -0500
+	id 1tLPSL-0000YZ-Qj; Wed, 11 Dec 2024 11:20:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tLPSI-0000Pe-C3
- for qemu-devel@nongnu.org; Wed, 11 Dec 2024 11:20:54 -0500
+ id 1tLPSK-0000Tm-0t
+ for qemu-devel@nongnu.org; Wed, 11 Dec 2024 11:20:56 -0500
 Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tLPSG-0007m0-Dm
- for qemu-devel@nongnu.org; Wed, 11 Dec 2024 11:20:54 -0500
+ id 1tLPSI-0007mR-9t
+ for qemu-devel@nongnu.org; Wed, 11 Dec 2024 11:20:55 -0500
 Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-4361f796586so8314165e9.3
- for <qemu-devel@nongnu.org>; Wed, 11 Dec 2024 08:20:52 -0800 (PST)
+ 5b1f17b1804b1-43622267b2eso1762885e9.0
+ for <qemu-devel@nongnu.org>; Wed, 11 Dec 2024 08:20:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1733934051; x=1734538851; darn=nongnu.org;
+ d=linaro.org; s=google; t=1733934053; x=1734538853; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=29O0/DLcrT8c2OpSddhWFboFUPNGO6o5HYkb0BNPIH0=;
- b=s6+uvASTZ8ulz9D3glnITwS72a8xBGMLUTjvwINKwqGRq8IzWcsbc9kj7fRzEqGj+v
- YC3rq3sepWf1XN86xtzSv4Y4lluGw6nPFgcr0EoP4i4rfm3I/A+2/8cIXgv/TjNcEDyo
- k/oO4+zk9ItFqJZmYTxtaa89vTVWPN0h1G/lkiNab3Umn1uqE6OaC0xbZQ5vrerBENCi
- fkOn55xHMgSjCxNNmGwAxTqSVEr62HXEKdUey9owV+l8XwGlFgT8dJab/RiDM0z1ECEj
- X83jjqmvifU1w/TxxzTEOCqU4TvEERVaO70FGZrzqz9IMS4TTEYw1ZcuYPHVXt6aqw2s
- sIoA==
+ :reply-to; bh=0hVwJ7PhWgaa1nanKp9sPo09AWgYuiJDE+Q3tkgukF8=;
+ b=jTM8UaFk+YYbnx302Iyyb8Ca9z0sKEc2LNLLf11EMk716N8eJYua8FQmnomQT0pA+6
+ Z5BKgz9ER3U+S9AlXJW65g+2NSls0F5D61B29n88xjJ/W2ZOJsWIdiv88joZg60daUNE
+ bIHcvTFJ2wnQgzrqzKCymUZW6a/uhK2P3Dk9eaDmrQqdjwCtPHKG1ZTFfgvpHdUjvfYQ
+ V11WzPoQ2TBYVB3w8VaBA224vlF4syMZgOXwmHG2gzQrfIuUgwquGbqL1GXtKDoYi46s
+ HpNzC3iYlqYRt+bmhCbm423EcRpREJHYgDJsy9ZI1etjZdwttATq+cDOBVQAlW2JBoYV
+ gY/w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733934051; x=1734538851;
+ d=1e100.net; s=20230601; t=1733934053; x=1734538853;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=29O0/DLcrT8c2OpSddhWFboFUPNGO6o5HYkb0BNPIH0=;
- b=OZaC21PVjKUeJjGCLMDxrv8V9+ecqWCPUjby1OqTStyzWrXSlrW3aW4VFnMotZAdT4
- 2K9XX1xL9nnxi0fPD/67x/3hDctrqFNB6vtqYErUa2vh6BY2mKES/I+sKERSOusQQ3Yp
- 9A+PDOEmL+i9ZlSuez5EHtDGWF7+5TWgR0RYNg7DDcpcigiUtWFLCG7BdDZq/lYIMWzp
- jqcxgn0I2YWeBXUcv2L/SMvHej3OYI6yfNoDnDQDOEqB4A27YHK6JbRnAdzXWZbjRVEh
- oySGdR74OmNZ/I/4ZvAPWLPifhEVXrbXJg8/Sp8FkuH0lbpHLIVAMhI29AXb1ih3zc39
- 4XVw==
-X-Gm-Message-State: AOJu0Yx2Am/wdSpgO9hMwM6yyIe+5wz0rgJpzh8wlRbxRWNIsG1X+CD1
- gCn+23Tj7rAARDHJAoZBS9+SmuzMAKBvVwFaEPuH58/0dv0vEYRfOseBG66alkoKeLgRfF0OPEQ
- i
-X-Gm-Gg: ASbGncuDsmF7qgV48DBJYDTi5t7cE7AEegVmPi8XpbClIKcdzLAVZdT8R1D7DcvvT4M
- 9Te5drNWkmh1S35CY5+ZsB5annDycmrY0W3jv4mfTCXcDtIkRMSlYR8/NSP55Jvbq6+WEV5CKkI
- BYb1lEPoBkD334pZ/aGNI4Ob5ecLZL61hCVK8K6a445OtuZDv/7zmqfEsm0ceNtP92/IGg2Jr9J
- 5xr1fmsS9k7w8kh1k30l0vK+0LXDn8cBKT3MdTbNRffmVEXRq07a4w5gVkc
-X-Google-Smtp-Source: AGHT+IH78QrEhS1/5AF2lKOzp2KIYbUILskSLpOhzq7bImQH7XfkLdxsRQ+dDUOdrCgMqNhOwP+JVg==
-X-Received: by 2002:a05:600c:4f11:b0:428:d31:ef25 with SMTP id
- 5b1f17b1804b1-4361c3ab1bdmr32696415e9.12.1733934051020; 
- Wed, 11 Dec 2024 08:20:51 -0800 (PST)
+ bh=0hVwJ7PhWgaa1nanKp9sPo09AWgYuiJDE+Q3tkgukF8=;
+ b=X0CSRJpINUYzp0vCHXajLTYzPbO0Jqen+juGU/KcfsVoZLDvvegSQUJLcj00dqsjoh
+ LQ/xFeZhekBvQ1CfdscTt85QrO+tk8c+6AylIpQt2wE+zZ1wKLS4wTpghcauWIY+OPVa
+ R1+5L4ShhN6EHpWe8xvmUBH4PnET/eY2Kv4eNU9j8q+YuzNVnyzOlaBV0UCTuhD0WwiX
+ FsZEzLtSoSMUEIRUFHCFq4T8P+n/0uBnPZgSKXjVQuxKZY911uyP6/7M+5WRY3se48a5
+ sEbsKp90PYH3EU9FsCD5Hl97EAg9C4eNu98AWPM0sGVPApj+mqZR7sf2v3LpIzbeQ+h3
+ Ds3w==
+X-Gm-Message-State: AOJu0YxZMNawmbSiyGFmBaOr4Dl2T3abyhXcaNIOO3T53pAGDp2+ZKwb
+ esy+4FSRlOhqcB9COuTiyzAAU3bNvNo7hqpawQCG5m9Gb/xIR+eckVlmtff2rZpr0ELyoSmcKKU
+ 7
+X-Gm-Gg: ASbGncue4WlUabmuvyBu9b5o9+StZCW1Lz7WmPV73HeiU5iE5oS24/u/R2gtctJuktx
+ XRe579GEWPFk6QcYZrDu2Lu9vDZ5fIoIiNYknmkWSPVLm97UsW0nojum9Lyl+x7QGhvwdVL3ipa
+ 26OR54qqWpfZXja+9SHaLT2GPH0jdIlW4vFW7QBr65Qq7eGugQYw+rizMXG++M7J91Nn8e/Tw25
+ 4KsxVoToDAneQLdry6uyZjUqB03+ybWsaTqbUnipq1M9STx9rk1dP9yjkAv
+X-Google-Smtp-Source: AGHT+IF5CcG0bjD68FvO5pJZdYKWWSFxhbSN+FQR+p1QriUsNZQYX2UJuRDOIx5TcJyjFG1UqJZiPA==
+X-Received: by 2002:a05:600c:5101:b0:434:ffb2:f9df with SMTP id
+ 5b1f17b1804b1-4361c3a6550mr30727475e9.17.1733934052743; 
+ Wed, 11 Dec 2024 08:20:52 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-434f4dfdcdfsm121460595e9.39.2024.12.11.08.20.50
+ 5b1f17b1804b1-434f4dfdcdfsm121460595e9.39.2024.12.11.08.20.51
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 11 Dec 2024 08:20:50 -0800 (PST)
+ Wed, 11 Dec 2024 08:20:51 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 38/72] target/ppc: Use env->fp_status in helper_compute_fprf
- functions
-Date: Wed, 11 Dec 2024 16:19:30 +0000
-Message-Id: <20241211162004.2795499-39-peter.maydell@linaro.org>
+Subject: [PULL 39/72] target/arm: Copy entire float_status in is_ebf
+Date: Wed, 11 Dec 2024 16:19:31 +0000
+Message-Id: <20241211162004.2795499-40-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241211162004.2795499-1-peter.maydell@linaro.org>
 References: <20241211162004.2795499-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
  envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32a.google.com
@@ -96,37 +96,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In the helper_compute_fprf functions, we pass a dummy float_status
-in to the is_signaling_nan() function. This is unnecessary, because
-we have convenient access to the CPU env pointer here and that
-is already set up with the correct values for the snan_bit_is_one
-and no_signaling_nans config settings. is_signaling_nan() doesn't
-ever update the fp_status with any exception flags, so there is
-no reason not to use env->fp_status here.
+From: Richard Henderson <richard.henderson@linaro.org>
 
-Use env->fp_status instead of the dummy fp_status.
+Now that float_status has a bunch of fp parameters,
+it is easier to copy an existing structure than create
+one from scratch.  Begin by copying the structure that
+corresponds to the FPSR and make only the adjustments
+required for BFloat16 semantics.
 
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Message-id: 20241203203949.483774-2-richard.henderson@linaro.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20241202131347.498124-34-peter.maydell@linaro.org
 ---
- target/ppc/fpu_helper.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ target/arm/tcg/vec_helper.c | 20 +++++++-------------
+ 1 file changed, 7 insertions(+), 13 deletions(-)
 
-diff --git a/target/ppc/fpu_helper.c b/target/ppc/fpu_helper.c
-index 230466a87f3..d93cfed17b4 100644
---- a/target/ppc/fpu_helper.c
-+++ b/target/ppc/fpu_helper.c
-@@ -155,8 +155,7 @@ void helper_compute_fprf_##tp(CPUPPCState *env, tp arg)           \
-     } else if (tp##_is_infinity(arg)) {                           \
-         fprf = neg ? 0x09 << FPSCR_FPRF : 0x05 << FPSCR_FPRF;     \
-     } else {                                                      \
--        float_status dummy = { };  /* snan_bit_is_one = 0 */      \
--        if (tp##_is_signaling_nan(arg, &dummy)) {                 \
-+        if (tp##_is_signaling_nan(arg, &env->fp_status)) {        \
-             fprf = 0x00 << FPSCR_FPRF;                            \
-         } else {                                                  \
-             fprf = 0x11 << FPSCR_FPRF;                            \
+diff --git a/target/arm/tcg/vec_helper.c b/target/arm/tcg/vec_helper.c
+index e825d501a22..ad6f26545ac 100644
+--- a/target/arm/tcg/vec_helper.c
++++ b/target/arm/tcg/vec_helper.c
+@@ -2813,25 +2813,19 @@ bool is_ebf(CPUARMState *env, float_status *statusp, float_status *oddstatusp)
+      * no effect on AArch32 instructions.
+      */
+     bool ebf = is_a64(env) && env->vfp.fpcr & FPCR_EBF;
+-    *statusp = (float_status){
+-        .tininess_before_rounding = float_tininess_before_rounding,
+-        .float_rounding_mode = float_round_to_odd_inf,
+-        .flush_to_zero = true,
+-        .flush_inputs_to_zero = true,
+-        .default_nan_mode = true,
+-    };
++
++    *statusp = env->vfp.fp_status;
++    set_default_nan_mode(true, statusp);
+ 
+     if (ebf) {
+-        float_status *fpst = &env->vfp.fp_status;
+-        set_flush_to_zero(get_flush_to_zero(fpst), statusp);
+-        set_flush_inputs_to_zero(get_flush_inputs_to_zero(fpst), statusp);
+-        set_float_rounding_mode(get_float_rounding_mode(fpst), statusp);
+-
+         /* EBF=1 needs to do a step with round-to-odd semantics */
+         *oddstatusp = *statusp;
+         set_float_rounding_mode(float_round_to_odd, oddstatusp);
++    } else {
++        set_flush_to_zero(true, statusp);
++        set_flush_inputs_to_zero(true, statusp);
++        set_float_rounding_mode(float_round_to_odd_inf, statusp);
+     }
+-
+     return ebf;
+ }
+ 
 -- 
 2.34.1
 
