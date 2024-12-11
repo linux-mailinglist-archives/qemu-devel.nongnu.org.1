@@ -2,79 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB0B29ECEF2
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Dec 2024 15:46:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB8149ECEE9
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Dec 2024 15:46:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tLNxN-0006u6-NK; Wed, 11 Dec 2024 09:44:54 -0500
+	id 1tLNxk-0006uB-2N; Wed, 11 Dec 2024 09:45:18 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tLNxK-0006sw-TR
- for qemu-devel@nongnu.org; Wed, 11 Dec 2024 09:44:50 -0500
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ id 1tLNxL-0006tT-KB
+ for qemu-devel@nongnu.org; Wed, 11 Dec 2024 09:44:51 -0500
+Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tLNxJ-0003sQ-7W
- for qemu-devel@nongnu.org; Wed, 11 Dec 2024 09:44:50 -0500
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-434a1fe2b43so68507185e9.2
- for <qemu-devel@nongnu.org>; Wed, 11 Dec 2024 06:44:48 -0800 (PST)
+ id 1tLNxK-0003sc-3h
+ for qemu-devel@nongnu.org; Wed, 11 Dec 2024 09:44:51 -0500
+Received: by mail-wr1-x42e.google.com with SMTP id
+ ffacd0b85a97d-385e87b25f0so483708f8f.0
+ for <qemu-devel@nongnu.org>; Wed, 11 Dec 2024 06:44:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1733928287; x=1734533087; darn=nongnu.org;
+ d=linaro.org; s=google; t=1733928288; x=1734533088; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=M7va31x/VOYddYKA/oiv6RnIYgMyqPQV86yEQWd9Sec=;
- b=oUyz1bKQ2mKbYTyCYyCPSZZL6NZnAG+y/WikCnY1wW9XS3En29v3cmUIVSiW+HkfZW
- PQSGQeIotrcmPDF8vOSbgdPR7Ge0LPDTgSY7ky4LdNrPhownDVDwtvsWLDepY+7emt5z
- XGqcKdmUuzmLLs7hBBaVbleOQCsXIJubcO4bvVle4Iwa8zJgAuxYXjhLAJOGMfoeDB1C
- 2UHs4A4oMU6fHZa2d8JShMrspjLXKwe54Zl1IL5e6KONMxpo7/AGRNnkTzRn+wr0frvz
- Na6YHrTo5DWKJfvAkPcdqssn3Av10rSTtvAdnj2EUZo/MrC3Zs9QQGyi4g9ucKWl3AVs
- cavg==
+ :reply-to; bh=OtTkwTKI52bcxg/lJzvBSIA6PD09skuET2+JQoRaIc4=;
+ b=eR+VPz2y0lKC1kb6T2eM9G8BPt0evEq/KC2FMp2WJmoFV3Ck77b3UefbYOqdidglfh
+ OGp1+1zteQ5dYhcGqZX5xJObM6VfEGc7plhqd8yYIq/zoLld060t3AgO2JKfetpCDReU
+ N4cXvwLEnM2kXaRo3JN+7WYOHs917xGeyOCZhN1akWEx4apzwU4sV4Xi1ynRvj4R8UUU
+ 56g7DzzhJ+GLPFDPy4O/vTCwjWJq3/u/XkjApdp/tY3Y/r0VmBmvaOzZSAgaaV5fYW1S
+ 9cqRD76DKyCZ/WLj2Kvi+tauNikakYGsFqSIuEZy81dAWSRNn/LxGJnh3T4iG0X71yRZ
+ 69LQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733928287; x=1734533087;
+ d=1e100.net; s=20230601; t=1733928288; x=1734533088;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=M7va31x/VOYddYKA/oiv6RnIYgMyqPQV86yEQWd9Sec=;
- b=OZQRdj6vcSp5IfmwKbbyeowDd3wlTur/sYuJSyk58weo6r1aEE2EFiThRmlt15ILEh
- Rnsr2gpr0ywZVMjFmbR8ZgudlJnLufd2t0LYcH8NF7Kb9m4iyp950mEkH+cIMD9Es5oq
- 2EHfjE88mMDpbLSvqegU1BrV79HWiNtfHCTZpMy/iciF6LoU0urK8FAOJjsTHw0cT3dv
- azcWNtbmPHhBC3QSTnGcSgcpR6nsAXqwvPtkm+3NZFzdYSbfpppMKJJKFElvX1HXWAGv
- vDhFvakG1+YpUqqbFNRrbWvrYZ33EHTb17pT9ROqVzD336QyekWbL9Coc5Hf18jnBHIH
- sgOA==
+ bh=OtTkwTKI52bcxg/lJzvBSIA6PD09skuET2+JQoRaIc4=;
+ b=Y8C2kS7aj99rykQ/qpRblg3Ac9kar5Txzdv1JSmUV5MzhVcZ+RKglYhesPmOZ9BQHP
+ Sbkc2ZOQ4OXPqH/47lrE3ZVrf6vVnVb9869c5t4PMHTqTvjXCTYFfzRuqFdTfIl+8YL4
+ JqKyAofYfskdmufqypdG/YXAKYgEmE4Li1UYeHkpV99nC84ywgyOelhj40jiXVBT/E11
+ yA0dZErAwGhyUhpII9A5ljcP/PjHDkU04wjndzldmVPGaKQ62etRQqgCqtIHyxnSsvOK
+ kEyPuUKJ13AcHePx+AcK+sPLfBZnZD6s6yuhs/i8duDaJeaxouAPxpauzA6MXswZsZWo
+ zwbQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVopPrmdfPluChu7z9V0DHW/17zRI8BZAIdsjfA0IvdM7qpo4q0sGzhVBog1g7iFbkJ6Un08XN7CLgD@nongnu.org
-X-Gm-Message-State: AOJu0YwP+rW5Z+p4fHPbrcXGDPm9Vashp03vW61QOdftKGjBFQ2nwtya
- 8hLQaxY4ZmIzq1l7HnexVLtPk25MId4VlugN8Wl948A21vieK2KtwecVST/Rh6o4e5bBxgkIEtJ
- 2
-X-Gm-Gg: ASbGncu4UExUoBCYFoKNF9Xtyo2/Efpc7Eo2ACMb8lKBZQ22PU3sPirMKJOCI3zSDwH
- 69dmtH2P6LWRaXxGt/SYuoAYe8ZOL71w1e9KX9FYK9Yo1KBd83XEt/t7hJjKOTjWh/AHAMWdyOs
- B4s6n5ovmoiMMGDLm1zshmk8DhuO9i+sDbUx8ZYZHN4LlYuxI3UkniJ25jWGvi1zJOGYn0+cAIy
- XfqLF7nnxpXnDJRte0Ki1UKzbFeWQVytE3DvVdNRydZ8HWQlV6ZYPjtwKPG
-X-Google-Smtp-Source: AGHT+IEJAwcaRDBxa3IX33/WMbtD1mBXdWIlwVvVE5ZC88fjSMX7xesJKfj0QgNoVT7i2br2jXMjYQ==
-X-Received: by 2002:a05:600c:4f11:b0:426:647b:1bfc with SMTP id
- 5b1f17b1804b1-4361c4485dfmr28057045e9.30.1733928287469; 
- Wed, 11 Dec 2024 06:44:47 -0800 (PST)
+ AJvYcCVIT0S18QPNvqM5BCRlrnSm8LJ8qkLiAJEFgAKLF1TWlJJG0iBtTKzQ8Jsz+kp0oOqVjE46ZNBdo7C4@nongnu.org
+X-Gm-Message-State: AOJu0YzEQ0p5Lh+H1ak9XrQdSYzt//+gAPPDgSBG5AybcTxDAOkTLd/y
+ 6IMGIsJHIog/4UDxVqMHrA4Bm6exRppg50gwH3QLQt9CKvLuGgz8fPPkeVP5BYI=
+X-Gm-Gg: ASbGncs3/VAJ+2fBjvibPaDGLonHjiU5EglsFpe4ccVP1rZYV4ReoLlyxt4tzD+BPGF
+ zb7N+1oi4pcAbHSjWiydHgSJyqg0am4/+eoqjVcl2nA8Y644BYf6bdMpZrvbvReEpSdozmXKpof
+ 2elVBTL/RgTNf5/VnuggnX0YPmGf+6SMfUKn6GXZiMLNN3JjD7mVZYV+/XTpdMeXR1DhVZyymiG
+ OfnIHIltLt91J8HTG48ATU2kV5d9AU/EZn/qiq3qIwOI7Ldc2VU2UtDDHLa
+X-Google-Smtp-Source: AGHT+IEc3+vF597N7ere9YiGlkmyldx4o90YrOiY4AxYeJr789FIgACB1I4kzwKdrHzsrTWV0IIKOg==
+X-Received: by 2002:a05:6000:186b:b0:386:3672:73e7 with SMTP id
+ ffacd0b85a97d-3864de9e81fmr2504639f8f.9.1733928288468; 
+ Wed, 11 Dec 2024 06:44:48 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4361e54ef20sm19477685e9.5.2024.12.11.06.44.46
+ 5b1f17b1804b1-4361e54ef20sm19477685e9.5.2024.12.11.06.44.47
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 11 Dec 2024 06:44:46 -0800 (PST)
+ Wed, 11 Dec 2024 06:44:47 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
-Subject: [PATCH v2 5/6] target/arm: Enable FEAT_XS for the max cpu
-Date: Wed, 11 Dec 2024 14:44:39 +0000
-Message-Id: <20241211144440.2700268-6-peter.maydell@linaro.org>
+Subject: [PATCH v2 6/6] tests/tcg/aarch64: add system test for FEAT_XS
+Date: Wed, 11 Dec 2024 14:44:40 +0000
+Message-Id: <20241211144440.2700268-7-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241211144440.2700268-1-peter.maydell@linaro.org>
 References: <20241211144440.2700268-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x335.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,41 +98,53 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 
-Add FEAT_XS feature report value in max cpu's ID_AA64ISAR1 sys register.
+Add system test to make sure FEAT_XS is enabled for max cpu emulation
+and that QEMU doesn't crash when encountering an NXS instruction
+variant.
 
 Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+[PMM: In ISAR field test, mask with 0xf, not 0xff; use < rather
+ than an equality test to follow the standard ID register field
+ check guidelines]
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-[PMM: Add entry for FEAT_XS to documentation]
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- docs/system/arm/emulation.rst | 1 +
- target/arm/tcg/cpu64.c        | 1 +
- 2 files changed, 2 insertions(+)
+ tests/tcg/aarch64/system/feat-xs.c | 27 +++++++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
+ create mode 100644 tests/tcg/aarch64/system/feat-xs.c
 
-diff --git a/docs/system/arm/emulation.rst b/docs/system/arm/emulation.rst
-index 38534dcdd32..60176d08597 100644
---- a/docs/system/arm/emulation.rst
-+++ b/docs/system/arm/emulation.rst
-@@ -154,6 +154,7 @@ the following architecture extensions:
- - FEAT_VMID16 (16-bit VMID)
- - FEAT_WFxT (WFE and WFI instructions with timeout)
- - FEAT_XNX (Translation table stage 2 Unprivileged Execute-never)
-+- FEAT_XS (XS attribute)
- 
- For information on the specifics of these extensions, please refer
- to the `Arm Architecture Reference Manual for A-profile architecture
-diff --git a/target/arm/tcg/cpu64.c b/target/arm/tcg/cpu64.c
-index 2963d7510f3..449cec5a626 100644
---- a/target/arm/tcg/cpu64.c
-+++ b/target/arm/tcg/cpu64.c
-@@ -1163,6 +1163,7 @@ void aarch64_max_tcg_initfn(Object *obj)
-     t = FIELD_DP64(t, ID_AA64ISAR1, BF16, 2);     /* FEAT_BF16, FEAT_EBF16 */
-     t = FIELD_DP64(t, ID_AA64ISAR1, DGH, 1);      /* FEAT_DGH */
-     t = FIELD_DP64(t, ID_AA64ISAR1, I8MM, 1);     /* FEAT_I8MM */
-+    t = FIELD_DP64(t, ID_AA64ISAR1, XS, 1);       /* FEAT_XS */
-     cpu->isar.id_aa64isar1 = t;
- 
-     t = cpu->isar.id_aa64isar2;
+diff --git a/tests/tcg/aarch64/system/feat-xs.c b/tests/tcg/aarch64/system/feat-xs.c
+new file mode 100644
+index 00000000000..f310fc837e0
+--- /dev/null
++++ b/tests/tcg/aarch64/system/feat-xs.c
+@@ -0,0 +1,27 @@
++/*
++ * FEAT_XS Test
++ *
++ * Copyright (c) 2024 Linaro Ltd
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++
++#include <minilib.h>
++#include <stdint.h>
++
++int main(void)
++{
++    uint64_t isar1;
++
++    asm volatile ("mrs %0, id_aa64isar1_el1" : "=r"(isar1));
++    if (((isar1 >> 56) & 0xf) < 1) {
++        ml_printf("FEAT_XS not supported by CPU");
++        return 1;
++    }
++    /* VMALLE1NXS */
++    asm volatile (".inst 0xd508971f");
++    /* VMALLE1OSNXS */
++    asm volatile (".inst 0xd508911f");
++
++    return 0;
++}
 -- 
 2.34.1
 
