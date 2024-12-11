@@ -2,97 +2,103 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF6E19ECEB2
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Dec 2024 15:33:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 575579ECEDC
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Dec 2024 15:43:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tLNkr-0002Vx-Vc; Wed, 11 Dec 2024 09:31:57 -0500
+	id 1tLNv5-0005Yc-17; Wed, 11 Dec 2024 09:42:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <craig.blackmore@embecosm.com>)
- id 1tLNki-0002Ud-5C
- for qemu-devel@nongnu.org; Wed, 11 Dec 2024 09:31:48 -0500
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <craig.blackmore@embecosm.com>)
- id 1tLNkg-0001sh-7o
- for qemu-devel@nongnu.org; Wed, 11 Dec 2024 09:31:47 -0500
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-434ab938e37so44439295e9.0
- for <qemu-devel@nongnu.org>; Wed, 11 Dec 2024 06:31:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=embecosm.com; s=google; t=1733927502; x=1734532302; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=DP93KB0owwkFFsz3BszVpTFgYFRBoYBfyVmESKBcPk4=;
- b=gHHMp2Oy58v78yOr2Vj2PkJnFQgJMlDMQ9KzTJERsSAoYCBPOLVUdPB8u508q2RYIt
- lY0spnkqSad5lXHbe7LkxElC65v6IK4r2YeLYwArPceECL+vtyfFQ0v98050LDUZV+1o
- 5Q9b0SvgdqgcAw7P4phGh3FPZmfax7+HQp97tQ2gUsdrhXmk7+w1gJ+jIPerP3EEDHEL
- TZQKhb61ASCDQFHsmtM7LPS0ZtOhsyRPdHtGYF3Iu4ckydSG9WVdd8lPGZV4npTzHX6m
- WSdoQmS8TV20XDzePTzrxEfKKN47APr6I0uT2gSr2jztdP9oIsgUm91wxTZwjVWozosM
- fiEA==
+ (Exim 4.90_1) (envelope-from <clegoate@redhat.com>)
+ id 1tLNuk-0005UF-DK
+ for qemu-devel@nongnu.org; Wed, 11 Dec 2024 09:42:12 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <clegoate@redhat.com>)
+ id 1tLNug-0003dh-0a
+ for qemu-devel@nongnu.org; Wed, 11 Dec 2024 09:42:09 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1733928124;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=Fie4e9/SqiKEIJ0BgBQG34M0q5HC6FdXlnKmBKvG7qI=;
+ b=FIjU97VHdUOBFfeGZWUbHul0/jAwkfu59/MnbJCtUd/ttbBC4BdjhkRQqDV6PwEGhDibdO
+ gJYA/vgkGNz/gXpwpXTTpMzNQk+9iSfDsQRG/7hlg5UI7xyqoiJf+qkh2JROkl9VPw0vaR
+ zBrBmyeD+vt7BT/yq1fSRnC2ZGv+RUs=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-490-UKmlBJFsOV2yvTNG1dJU5Q-1; Wed, 11 Dec 2024 09:40:55 -0500
+X-MC-Unique: UKmlBJFsOV2yvTNG1dJU5Q-1
+X-Mimecast-MFC-AGG-ID: UKmlBJFsOV2yvTNG1dJU5Q
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-3862c67763dso2921714f8f.3
+ for <qemu-devel@nongnu.org>; Wed, 11 Dec 2024 06:40:55 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733927502; x=1734532302;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=DP93KB0owwkFFsz3BszVpTFgYFRBoYBfyVmESKBcPk4=;
- b=mdgI3/LSFDBX4R8cddUePSAaW6oLK89VgcOAoVSL+dc76FVLhR2gIB87AY6kbOfsx9
- EmeThg89fupWc//AbgCym1NhUrMkA/lubT/uI8fY+LUB5h6P9NXVVnYZheGLxlnNOwG2
- RGE6oUQ6cpJjgoqiHunSuL2t5y2n9fuTikwA/Whc5ofhByoQOImGZB35x/qfED+TQEUi
- Z+rWMgyndtH5D37pT2Vf3fI42HpTr61YSl6u0kilA6B0osD/TJN/qm28yLsvSPJYM1XU
- eYBAQYsiBfpmUOZ5gdZBoPOSAp9+EbJtmKy70NpEqBu79aI4AMhPw2xH0COxoiId7pfE
- jyKQ==
-X-Gm-Message-State: AOJu0YwBjcoWCXOcumy3/aohWHkDlUIgYgJLPcnDb/XG0ZtW/3M5Z3SQ
- hdSg2vs/Pgp9kwRlzGKf7UzMyD9EPefW3VVamLzOmcDNv+Np7yt0azyLIwNSRBfQecYcwJg+pKA
- bMkU=
-X-Gm-Gg: ASbGncvznpLxPh8HedfhbsiQxmFvEz0TUS2sn2ZZ4xoE0IhvWKJ7ZBbQlOOHCTOzKU9
- qN2xBL4kahjwBsFABcU8X2uHkOCampuKn4PY2SMVpGE8zRgs3x20kXOsDtDP00uyBGXNtWX4ghd
- oYvpXIafc0JgDJ91E9LMb1S5PpG3etG/OhBSFeQqrB9iqyDKID0rpsuMMIbFFz4+bOIzfaxyajc
- YzCs5/1KpOBHzayaXR8fkMf6brHsPs7RsRl4zBjMVaAxY9UQkOA9oVLFs4lC7cugqtj0RqQYrvI
- Ot/SacahULPE5BYm7Ah6KdbkmbbGpPncodmD7C1/9jKzDA==
-X-Google-Smtp-Source: AGHT+IGQK/PcW0mFKEYF9+6jTSHK9DasgrRmRZc2Z0g/D8v45TzM+sb9gySL5pw95+qO5CJiEntKlA==
-X-Received: by 2002:a05:600c:4450:b0:434:a1d3:a30f with SMTP id
- 5b1f17b1804b1-4361c346cbbmr20975055e9.6.1733927501945; 
- Wed, 11 Dec 2024 06:31:41 -0800 (PST)
-Received: from dorian..
- (sals-04-b2-v4wan-167965-cust660.vm36.cable.virginm.net. [80.3.10.149])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-434e8ec8072sm153602425e9.18.2024.12.11.06.31.40
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 11 Dec 2024 06:31:41 -0800 (PST)
-From: Craig Blackmore <craig.blackmore@embecosm.com>
-To: qemu-devel@nongnu.org,
-	qemu-riscv@nongnu.org
-Cc: Craig Blackmore <craig.blackmore@embecosm.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>, Bin Meng <bmeng.cn@gmail.com>,
- Weiwei Li <liwei1518@gmail.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Helene Chelin <helene.chelin@embecosm.com>, Nathan Egge <negge@google.com>,
- Max Chou <max.chou@sifive.com>, Paolo Savini <paolo.savini@embecosm.com>
-Subject: [RFC PATCH v5 1/1] target/riscv: rvv: Use wider accesses for unit
- stride load/store
-Date: Wed, 11 Dec 2024 14:31:18 +0000
-Message-ID: <20241211143118.661268-2-craig.blackmore@embecosm.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20241211143118.661268-1-craig.blackmore@embecosm.com>
-References: <20241211143118.661268-1-craig.blackmore@embecosm.com>
+ d=1e100.net; s=20230601; t=1733928054; x=1734532854;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Fie4e9/SqiKEIJ0BgBQG34M0q5HC6FdXlnKmBKvG7qI=;
+ b=aSXeeCoqrpLx89mSGq0gek6dtJsT8g5LJPaG6ptKPFqaEV7WiLTDY22GcuYZIajT2C
+ uuykGBUsN2G73fG3Iee4rW5E0E66be0XkdE4Tv3sPSM8e412dn/xBVZQvSwsztFH/vBz
+ eda/wLsreTK12beMatzoV8TMlKx7RQLlXkksl4j/Fki3dCGrdBP2EaJlTvoJtTvVV7Uy
+ fpGHsi1d//8UQptSVxK7+WxntgUjcSsmrDVYz0nhRqUvZGaPrX7gRGp5h8k2Y0wWZTyQ
+ QmwS/yGOs4sZN2G6ASr4V2kpbN0BipK/ZYT0OxTQplLFJlqrNnVgyw5TOuA0eEtXLh4L
+ a9FA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUfKQ7OgFEOWmQ1U/SHb8u5xhXg1TfPL7VqzUDjYDZwU3EcgcuFzD61Khlnm/BWlsrUU4YQ53EahuNs@nongnu.org
+X-Gm-Message-State: AOJu0YzH/69RqnOC6jsgTbZGhAT8RScf/LYxmriQiKWKt9ClmeqnQP2u
+ I8R97ZZ6Mz/f0Me8zG8+LfiU3uYToAyBxZv6n/2oGW/38RCwXQ5s0CECe+h5t6CGBE5796OMk1r
+ Y9QDBrpazWoNX9Ws5yqz1NeEVb9Sqap4Elxe8WaDfUTxyvq2MsvM1
+X-Gm-Gg: ASbGnctKGWTadS8WYcFycw2QysR+Gpv/IUwuX2gWk+mIFOBtCV9gptREmCt/LeEjK+M
+ Wdx/tIedEK77wKaYTmcLLkCd4RGoVnSmNVL7EPavcsfxS1Hba3iBZwtvFeYyDugl+qeC2bM3U7g
+ dRGToF1ivpmlAOAGaOPo4iZJcUP2VYBgcv+iam+RBBZydzRGRd72shEjn3Fbt04NscVAn6Xe5uu
+ a+nlHYMWDQ4GHIyltdjF1CyvRVp76ITn3e4OFtnvnfH8jWAiE7ej5K0JnFTx7U74GZ2Biugda5F
+ 5Dvxi8zZ5sn9Cl8Pm/GsbllCHsNom59mlt8=
+X-Received: by 2002:a5d:64a1:0:b0:385:ed1e:2105 with SMTP id
+ ffacd0b85a97d-3864ce5f9b2mr2876451f8f.26.1733928054107; 
+ Wed, 11 Dec 2024 06:40:54 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGP3/NfP0tU3DLmmvvWNBrQwhme/o4KGnD1KsbQ4zv9Ts/LEgigB5av0UEZVDiodvFxA6F5ZA==
+X-Received: by 2002:a5d:64a1:0:b0:385:ed1e:2105 with SMTP id
+ ffacd0b85a97d-3864ce5f9b2mr2876416f8f.26.1733928053523; 
+ Wed, 11 Dec 2024 06:40:53 -0800 (PST)
+Received: from [192.168.23.161] (92-184-116-132.mobile.fr.orangecustomers.net.
+ [92.184.116.132]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-43618fa49b6sm42217175e9.15.2024.12.11.06.40.51
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 11 Dec 2024 06:40:52 -0800 (PST)
+Message-ID: <cc6d2f65-1d71-4a78-9a9a-0fe7d16957d5@redhat.com>
+Date: Wed, 11 Dec 2024 15:40:50 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=craig.blackmore@embecosm.com; helo=mail-wm1-x329.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] s390x/pci: add support for guests that request direct
+ mapping
+To: Matthew Rosato <mjrosato@linux.ibm.com>, qemu-s390x@nongnu.org
+Cc: farman@linux.ibm.com, schnelle@linux.ibm.com, thuth@redhat.com,
+ pasic@linux.ibm.com, borntraeger@linux.ibm.com,
+ richard.henderson@linaro.org, david@redhat.com, iii@linux.ibm.com,
+ qemu-devel@nongnu.org
+References: <20241209192927.107503-1-mjrosato@linux.ibm.com>
+ <20241209192927.107503-2-mjrosato@linux.ibm.com>
+Content-Language: en-US, fr
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clegoate@redhat.com>
+In-Reply-To: <20241209192927.107503-2-mjrosato@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=clegoate@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -25
+X-Spam_score: -2.6
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.472,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,168 +114,189 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Use atomic load/store functions to access multiple elements from host.
+On 12/9/24 20:29, Matthew Rosato wrote:
+> When receiving a guest mpcifc(4) or mpcifc(6) instruction without the T
+> bit set, treat this as a request to perform direct mapping instead of
+> address translation.  In order to facilitiate this, pin the entirety of
+> guest memory into the host iommu.
+> 
+> Subsequent guest DMA operations are all expected to be of the format
+> guest_phys+sdma, allowing them to be used as lookup into the host
+> iommu table.
+> 
+> Signed-off-by: Matthew Rosato <mjrosato@linux.ibm.com>
+> ---
+>   hw/s390x/s390-pci-bus.c         | 23 ++++++++++++++++++
+>   hw/s390x/s390-pci-inst.c        | 42 +++++++++++++++++++++++++++++++--
+>   include/hw/s390x/s390-pci-bus.h |  2 ++
+>   3 files changed, 65 insertions(+), 2 deletions(-)
+> 
+> diff --git a/hw/s390x/s390-pci-bus.c b/hw/s390x/s390-pci-bus.c
+> index 40b2567aa7..8d4224e032 100644
+> --- a/hw/s390x/s390-pci-bus.c
+> +++ b/hw/s390x/s390-pci-bus.c
+> @@ -18,6 +18,7 @@
+>   #include "hw/s390x/s390-pci-inst.h"
+>   #include "hw/s390x/s390-pci-kvm.h"
+>   #include "hw/s390x/s390-pci-vfio.h"
+> +#include "hw/boards.h"
+>   #include "hw/pci/pci_bus.h"
+>   #include "hw/qdev-properties.h"
+>   #include "hw/pci/pci_bridge.h"
+> @@ -720,6 +721,27 @@ void s390_pci_iommu_enable(S390PCIIOMMU *iommu)
+>                                TYPE_S390_IOMMU_MEMORY_REGION, OBJECT(&iommu->mr),
+>                                name, iommu->pal + 1);
+>       iommu->enabled = true;
+> +    iommu->direct_map = false;
+> +    memory_region_add_subregion(&iommu->mr, 0, MEMORY_REGION(&iommu->iommu_mr));
+> +    g_free(name);
+> +}
+> +
+> +void s390_pci_iommu_dm_enable(S390PCIIOMMU *iommu)
 
-Co-authored-by: Paolo Savini <paolo.savini@embecosm.com>
+This is duplicating s390_pci_iommu_enable(). May be we could add a new
+argument to s390_pci_iommu_enable() instead ?
 
-Signed-off-by: Paolo Savini <paolo.savini@embecosm.com>
-Signed-off-by: Craig Blackmore <craig.blackmore@embecosm.com>
----
- target/riscv/trace-events    | 12 +++++
- target/riscv/vector_helper.c | 95 +++++++++++++++++++++++++++++++++---
- 2 files changed, 101 insertions(+), 6 deletions(-)
+> +{
+> +    MachineState *ms = MACHINE(qdev_get_machine());
+> +
+> +    /*
+> +     * For direct-mapping we must map the entire guest address space.  Because
+> +     * the mappings are contiguous we are not restricted to individual 4K
+> +     * mappings via vfio, so let's not worry about the DMA limit when> +     * calculating the range.
+> +     */
+> +    char *name = g_strdup_printf("iommu-s390-%04x", iommu->pbdev->uid);
+> +    memory_region_init_iommu(&iommu->iommu_mr, sizeof(iommu->iommu_mr),
+> +                             TYPE_S390_IOMMU_MEMORY_REGION, OBJECT(&iommu->mr),
+> +                             name, iommu->pba + ms->ram_size);
+> +    iommu->enabled = true;
+> +    iommu->direct_map = true;
+>       memory_region_add_subregion(&iommu->mr, 0, MEMORY_REGION(&iommu->iommu_mr));
+>       g_free(name);
+>   }
+> @@ -727,6 +749,7 @@ void s390_pci_iommu_enable(S390PCIIOMMU *iommu)
+>   void s390_pci_iommu_disable(S390PCIIOMMU *iommu)
+>   {
+>       iommu->enabled = false;
+> +    iommu->direct_map = false;
+>       g_hash_table_remove_all(iommu->iotlb);
+>       memory_region_del_subregion(&iommu->mr, MEMORY_REGION(&iommu->iommu_mr));
+>       object_unparent(OBJECT(&iommu->iommu_mr));
+> diff --git a/hw/s390x/s390-pci-inst.c b/hw/s390x/s390-pci-inst.c
+> index 41655082da..f4d8fe8fe8 100644
+> --- a/hw/s390x/s390-pci-inst.c
+> +++ b/hw/s390x/s390-pci-inst.c
+> @@ -16,6 +16,7 @@
+>   #include "exec/memory.h"
+>   #include "qemu/error-report.h"
+>   #include "sysemu/hw_accel.h"
+> +#include "hw/boards.h"
+>   #include "hw/pci/pci_device.h"
+>   #include "hw/s390x/s390-pci-inst.h"
+>   #include "hw/s390x/s390-pci-bus.h"
+> @@ -990,6 +991,33 @@ int pci_dereg_irqs(S390PCIBusDevice *pbdev)
+>       return 0;
+>   }
+>   
+> +static void s390_pci_setup_stage2_map(S390PCIIOMMU *iommu)
 
-diff --git a/target/riscv/trace-events b/target/riscv/trace-events
-index 49ec4d3b7d..9db6b274db 100644
---- a/target/riscv/trace-events
-+++ b/target/riscv/trace-events
-@@ -9,3 +9,15 @@ pmpaddr_csr_write(uint64_t mhartid, uint32_t addr_index, uint64_t val) "hart %"
- 
- mseccfg_csr_read(uint64_t mhartid, uint64_t val) "hart %" PRIu64 ": read mseccfg, val: 0x%" PRIx64
- mseccfg_csr_write(uint64_t mhartid, uint64_t val) "hart %" PRIu64 ": write mseccfg, val: 0x%" PRIx64
-+
-+# ldst_atomicity
-+load_atom2_fallback(uint32_t memop, uintptr_t ra) "mop:0x%"PRIx32", ra:0x%"PRIxPTR""
-+load_atom4_fallback(uint32_t memop, uintptr_t ra) "mop:0x%"PRIx32", ra:0x%"PRIxPTR""
-+load_atom8_or_exit_fallback(uintptr_t ra) "ra:0x%"PRIxPTR""
-+load_atom8_fallback(uint32_t memop, uintptr_t ra) "mop:0x%"PRIx32", ra:0x%"PRIxPTR""
-+load_atom16_fallback(uint32_t memop, uintptr_t ra) "mop:0x%"PRIx32", ra:0x%"PRIxPTR""
-+load_atom16_or_exit_fallback(uintptr_t ra) "ra:0x%"PRIxPTR""
-+store_atom2_fallback(uint32_t memop, uintptr_t ra) "mop:0x%"PRIx32", ra:0x%"PRIxPTR""
-+store_atom4_fallback(uint32_t memop, uintptr_t ra) "mop:0x%"PRIx32", ra:0x%"PRIxPTR""
-+store_atom8_fallback(uint32_t memop, uintptr_t ra) "mop:0x%"PRIx32", ra:0x%"PRIxPTR""
-+store_atom16_fallback(uint32_t memop, uintptr_t ra) "mop:0x%"PRIx32", ra:0x%"PRIxPTR""
-diff --git a/target/riscv/vector_helper.c b/target/riscv/vector_helper.c
-index a85dd1d200..63c76a24d1 100644
---- a/target/riscv/vector_helper.c
-+++ b/target/riscv/vector_helper.c
-@@ -31,6 +31,12 @@
- #include "vector_internals.h"
- #include <math.h>
- 
-+#if CONFIG_TCG && !HOST_BIG_ENDIAN
-+#include "trace.h"
-+#include "../accel/tcg/internal-common.h"
-+#include "../accel/tcg/ldst_atomicity.c.inc"
-+#endif
-+
- target_ulong HELPER(vsetvl)(CPURISCVState *env, target_ulong s1,
-                             target_ulong s2)
- {
-@@ -206,10 +212,84 @@ vext_continus_ldst_tlb(CPURISCVState *env, vext_ldst_elem_fn_tlb *ldst_tlb,
-     }
- }
- 
-+#if CONFIG_TCG && !HOST_BIG_ENDIAN
-+/* Atomic operations for load/store */
-+
-+/*
-+ * Return true if there are enough elements for this size access and the
-+ * alignment guarantees atomicity with {load,store}_atom_<size>.
-+ */
-+
-+static inline QEMU_ALWAYS_INLINE bool
-+ok_for_atomic(uint32_t size, void *host, uint32_t reg_start, uint32_t evl,
-+              uint32_t log2_esz)
-+{
-+  return (reg_start + (size >> log2_esz)) <= evl
-+         && ((uintptr_t) host % size) == 0;
-+}
-+
-+#define GEN_VEXT_LDST_ATOMIC_HOST(SIZE, TYPE, MEMOP)                         \
-+static inline QEMU_ALWAYS_INLINE void                                        \
-+vext_ldst_atom_##SIZE##_host(CPURISCVState *env, void *vd,                   \
-+                             uint32_t byte_offset, void *host, bool is_load, \
-+                             uintptr_t ra)                                   \
-+{                                                                            \
-+    TYPE *vd_ptr = (TYPE *) (vd + byte_offset);                              \
-+    if (is_load) {                                                           \
-+        *vd_ptr = load_atom_##SIZE(env_cpu(env), ra, host, MEMOP);           \
-+    } else {                                                                 \
-+        store_atom_##SIZE(env_cpu(env), ra, host, MEMOP, *vd_ptr);           \
-+    }                                                                        \
-+}                                                                            \
-+
-+GEN_VEXT_LDST_ATOMIC_HOST(2, uint16_t, MO_16)
-+GEN_VEXT_LDST_ATOMIC_HOST(4, uint32_t, MO_32)
-+GEN_VEXT_LDST_ATOMIC_HOST(8, uint64_t, MO_64)
-+GEN_VEXT_LDST_ATOMIC_HOST(16, Int128, MO_128)
-+#endif
-+
-+/* Perform the largest atomic load/store possible for the evl and alignment.  */
-+
-+static inline QEMU_ALWAYS_INLINE uint32_t
-+vext_ldst_atomic_chunk_host(CPURISCVState *env,
-+                            vext_ldst_elem_fn_host *ldst_host,
-+                            void *vd, uint32_t evl, uint32_t reg_start,
-+                            void *host, uint32_t esz, bool is_load,
-+                            uint32_t log2_esz, uintptr_t ra)
-+{
-+#if CONFIG_TCG && !HOST_BIG_ENDIAN
-+    uint32_t byte_offset = reg_start * esz;
-+
-+    if (ok_for_atomic(16, host, reg_start, evl, log2_esz)) {
-+        vext_ldst_atom_16_host(env, vd, byte_offset, host, is_load, ra);
-+        return 16;
-+    }
-+
-+    if (ok_for_atomic(8, host, reg_start, evl, log2_esz)) {
-+        vext_ldst_atom_8_host(env, vd, byte_offset, host, is_load, ra);
-+        return 8;
-+    }
-+
-+    if (ok_for_atomic(4, host, reg_start, evl, log2_esz)) {
-+        vext_ldst_atom_4_host(env, vd, byte_offset, host, is_load, ra);
-+        return 4;
-+    }
-+
-+    if (ok_for_atomic(2, host, reg_start, evl, log2_esz)) {
-+        vext_ldst_atom_2_host(env, vd, byte_offset, host, is_load, ra);
-+        return 2;
-+    }
-+#endif
-+
-+    ldst_host(vd, reg_start, host);
-+    return 1;
-+}
-+
- static inline QEMU_ALWAYS_INLINE void
- vext_continus_ldst_host(CPURISCVState *env, vext_ldst_elem_fn_host *ldst_host,
-                         void *vd, uint32_t evl, uint32_t reg_start, void *host,
--                        uint32_t esz, bool is_load)
-+                        uint32_t esz, bool is_load, uint32_t log2_esz,
-+                        uintptr_t ra)
- {
- #if HOST_BIG_ENDIAN
-     for (; reg_start < evl; reg_start++, host += esz) {
-@@ -225,10 +305,13 @@ vext_continus_ldst_host(CPURISCVState *env, vext_ldst_elem_fn_host *ldst_host,
-         } else {
-             memcpy(host, vd + byte_offset, size);
-         }
--    } else {
--        for (; reg_start < evl; reg_start++, host += esz) {
--            ldst_host(vd, reg_start, host);
--        }
-+        return;
-+    }
-+    uint32_t chunk = 0;
-+    for (; reg_start < evl; reg_start += (chunk >> log2_esz),
-+                            host += chunk) {
-+        chunk = vext_ldst_atomic_chunk_host(env, ldst_host, vd, evl, reg_start,
-+                                            host, esz, is_load, log2_esz, ra);
-     }
- #endif
- }
-@@ -343,7 +426,7 @@ vext_page_ldst_us(CPURISCVState *env, void *vd, target_ulong addr,
-     if (flags == 0) {
-         if (nf == 1) {
-             vext_continus_ldst_host(env, ldst_host, vd, evl, env->vstart, host,
--                                    esz, is_load);
-+                                    esz, is_load, log2_esz, ra);
-         } else {
-             for (i = env->vstart; i < evl; ++i) {
-                 k = 0;
--- 
-2.43.0
+This is very much like s390_pci_batch_unmap(). Could we introduce a
+common helper ?
+
+> +{
+> +    MachineState *ms = MACHINE(qdev_get_machine());
+> +    uint64_t remain = ms->ram_size, start = iommu->pba, mask, size, curr = 0;
+> +    uint64_t end = start + remain - 1;
+> +    IOMMUTLBEvent event = {
+> +        .type = IOMMU_NOTIFIER_MAP,
+> +        .entry = {
+> +            .target_as = &address_space_memory,
+> +            .translated_addr = 0,
+> +            .perm = IOMMU_RW,
+> +        },
+> +    };
+> +
+> +    while (remain >= TARGET_PAGE_SIZE) {
+> +        mask = dma_aligned_pow2_mask(start, end, 64);
+> +        size = mask + 1;
+> +        event.entry.iova = start;
+> +        event.entry.addr_mask = mask;
+> +        event.entry.translated_addr = curr;
+> +        memory_region_notify_iommu(&iommu->iommu_mr, 0, event);
+> +        start += size;
+> +        curr += size;
+> +        remain -= size;
+> +    }
+> +}
+> +
+>   static int reg_ioat(CPUS390XState *env, S390PCIBusDevice *pbdev, ZpciFib fib,
+>                       uintptr_t ra)
+>   {
+> @@ -1008,7 +1036,7 @@ static int reg_ioat(CPUS390XState *env, S390PCIBusDevice *pbdev, ZpciFib fib,
+>       }
+>   
+>       /* currently we only support designation type 1 with translation */
+> -    if (!(dt == ZPCI_IOTA_RTTO && t)) {
+> +    if (t && !(dt == ZPCI_IOTA_RTTO)) {
+
+Is this change part of the patchset ? It looks like some other issue.
+I might be wrong.
+
+>           error_report("unsupported ioat dt %d t %d", dt, t);
+>           s390_program_interrupt(env, PGM_OPERAND, ra);
+>           return -EINVAL;
+> @@ -1018,13 +1046,23 @@ static int reg_ioat(CPUS390XState *env, S390PCIBusDevice *pbdev, ZpciFib fib,
+>       iommu->pal = pal;
+>       iommu->g_iota = g_iota;
+>   
+> -    s390_pci_iommu_enable(iommu);
+> +    if (t) {
+> +        s390_pci_iommu_enable(iommu);
+> +    } else {
+> +        s390_pci_iommu_dm_enable(iommu);
+> +        /* If not translating, map everything now */
+> +        s390_pci_setup_stage2_map(iommu);
+> +    }
+
+
+I don't understand how we can enter "map everything" case.
+Could you explain a bit more the scenario ?
+
+Thanks,
+
+C.
+
+>       return 0;
+>   }
+>   
+>   void pci_dereg_ioat(S390PCIIOMMU *iommu)
+>   {
+> +    MachineState *ms = MACHINE(qdev_get_machine());
+> +    if (iommu->direct_map) {
+> +        s390_pci_batch_unmap(iommu, iommu->pba, ms->ram_size);
+> +    }
+>       s390_pci_iommu_disable(iommu);
+>       iommu->pba = 0;
+>       iommu->pal = 0;
+> diff --git a/include/hw/s390x/s390-pci-bus.h b/include/hw/s390x/s390-pci-bus.h
+> index 2c43ea123f..2aa55e3fd0 100644
+> --- a/include/hw/s390x/s390-pci-bus.h
+> +++ b/include/hw/s390x/s390-pci-bus.h
+> @@ -278,6 +278,7 @@ struct S390PCIIOMMU {
+>       MemoryRegion mr;
+>       IOMMUMemoryRegion iommu_mr;
+>       bool enabled;
+> +    bool direct_map;
+>       uint64_t g_iota;
+>       uint64_t pba;
+>       uint64_t pal;
+> @@ -389,6 +390,7 @@ int pci_chsc_sei_nt2_have_event(void);
+>   void s390_pci_sclp_configure(SCCB *sccb);
+>   void s390_pci_sclp_deconfigure(SCCB *sccb);
+>   void s390_pci_iommu_enable(S390PCIIOMMU *iommu);
+> +void s390_pci_iommu_dm_enable(S390PCIIOMMU *iommu);
+>   void s390_pci_iommu_disable(S390PCIIOMMU *iommu);
+>   void s390_pci_generate_error_event(uint16_t pec, uint32_t fh, uint32_t fid,
+>                                      uint64_t faddr, uint32_t e);
 
 
