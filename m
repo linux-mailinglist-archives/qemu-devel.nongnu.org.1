@@ -2,149 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87DD29ED346
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Dec 2024 18:21:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D50D9ED392
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Dec 2024 18:30:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tLQOe-0004Mo-3w; Wed, 11 Dec 2024 12:21:12 -0500
+	id 1tLQUQ-0005RJ-Sm; Wed, 11 Dec 2024 12:27:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nicolinc@nvidia.com>)
- id 1tLQON-0004Kq-H7; Wed, 11 Dec 2024 12:20:55 -0500
-Received: from mail-dm6nam10on2061e.outbound.protection.outlook.com
- ([2a01:111:f403:2413::61e]
- helo=NAM10-DM6-obe.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1tLQUK-0005Qi-3A
+ for qemu-devel@nongnu.org; Wed, 11 Dec 2024 12:27:05 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nicolinc@nvidia.com>)
- id 1tLQOK-0000gv-Pt; Wed, 11 Dec 2024 12:20:54 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=a8pDjVWE9uG/tSPlcchFUKirvyk17AVchGm/mOYB2g+GXyNxLrD/4lIk6FjaZs5NMm9suigrhazv9tDOifEvr/i7WTwqHA49AQ3DZlliYsd3LQGxR+2ezgT5RQuchnTs7REZ2jpOat3lNQ82u06uIbcU/kDGaDrT1wZWyraB52ZJeJwUQNF/BptR1QWla6sJUpyLOLyuMtnL3WYVLZCAvC0//heKOtO0DHoCH24OlFWHsfCvya6beQ5smSKYUY7e23npBBr9VQ8lb9KJik83avj0tOvFlTbXEcTDpH6qK6nCBcigRIzHdfn6+r1amBxmpRtYTR/mHgFTDdKHWixdoQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=afjQvGZZheHaxe1msmJk+Feq3i+OUgTEfDw0zRxJOWE=;
- b=dSUl1Q30A4NTTlN3emALd5xXmK9l6c9P/guHupUcyDbHwoEBOZ679Vt4jHjkNxRO/P/Cm0aVrSuWB4WNgDeo+4agWKa7DQLd4aFO6z2TJB8c30yA0SRslcBNVdIFtsPpCClDINl5Xt7PJENBweFIq2ZnFvDuTo58nFnnagtKjPHrP+8KuJpYYogfqq8NWonc/s7hCUp4USu9+BOI8BwpmWZWwL4qhafLRZug7WKdxjCfil32lUivZ/LURAhh6kGGoiELufqMJC4OIWXgTYZQgxQEuH++Ncqs72IFMI2aTx3bMEUg6rJOG5T9oa+MbY3WMyfcskKxNiaCU8yEJLLMgg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=redhat.com smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=afjQvGZZheHaxe1msmJk+Feq3i+OUgTEfDw0zRxJOWE=;
- b=ReuX418rIAtaxrZ3kbbKvH7CEzULPKzoOfJ8D8RoOvkPeqtM64hXQK+H64tVpn87p/mhHTXCLVefGKcvK2CdOHp8DnvjF8P5iKd44lRaBl2jia8sPs7z4QByzV2/agkjI3AEadQqT1jOLoC1wxlLv5HbPyz1hOWkhgds8GHybwqDN+/tk6vXYi+yCPVGBCELwi/cVlsAnvbjCOvBCE9t/2OCq7H71Z6W7tl+YgY54yMaTRTbCrl2q3krWMexEBoQ8fbrYBYOHbgKDmJu6mWx3WdqDpuxz8GuPgVzYq7odE22nxrpPhkJkmm/79rEwBJ2d0He/x1QjnoIGDD1ut7joA==
-Received: from BYAPR07CA0004.namprd07.prod.outlook.com (2603:10b6:a02:bc::17)
- by DS0PR12MB8455.namprd12.prod.outlook.com (2603:10b6:8:158::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8251.14; Wed, 11 Dec
- 2024 17:20:46 +0000
-Received: from MWH0EPF000971E2.namprd02.prod.outlook.com
- (2603:10b6:a02:bc:cafe::fb) by BYAPR07CA0004.outlook.office365.com
- (2603:10b6:a02:bc::17) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8230.18 via Frontend Transport; Wed,
- 11 Dec 2024 17:20:46 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
- smtp.mailfrom=nvidia.com;
- dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- MWH0EPF000971E2.mail.protection.outlook.com (10.167.243.69) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8251.15 via Frontend Transport; Wed, 11 Dec 2024 17:20:45 +0000
-Received: from rnnvmail202.nvidia.com (10.129.68.7) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Wed, 11 Dec
- 2024 09:20:23 -0800
-Received: from rnnvmail205.nvidia.com (10.129.68.10) by rnnvmail202.nvidia.com
- (10.129.68.7) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Wed, 11 Dec
- 2024 09:20:23 -0800
-Received: from Asurada-Nvidia (10.127.8.11) by mail.nvidia.com (10.129.68.10)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4 via Frontend
- Transport; Wed, 11 Dec 2024 09:20:22 -0800
-Date: Wed, 11 Dec 2024 09:20:20 -0800
-From: Nicolin Chen <nicolinc@nvidia.com>
-To: Jason Gunthorpe <jgg@nvidia.com>
-CC: <eric.auger@redhat.com>, <ddutile@redhat.com>, Shameer Kolothum
- <shameerali.kolothum.thodi@huawei.com>, <qemu-arm@nongnu.org>,
- <qemu-devel@nongnu.org>, <peter.maydell@linaro.org>, <linuxarm@huawei.com>,
- <wangzhou1@hisilicon.com>, <jiangkunkun@huawei.com>,
- <jonathan.cameron@huawei.com>, <zhangfei.gao@linaro.org>
-Subject: Re: [RFC PATCH 5/5] hw/arm/virt-acpi-build: Add IORT RMR regions to
- handle MSI nested binding
-Message-ID: <Z1nJ1HYxnCdsEKng@Asurada-Nvidia>
-References: <20241108125242.60136-1-shameerali.kolothum.thodi@huawei.com>
- <20241108125242.60136-6-shameerali.kolothum.thodi@huawei.com>
- <Z1jIXHmFcBFIUeKn@Asurada-Nvidia>
- <20241211004821.GM2347147@nvidia.com>
- <Z1jqsVTiMwW/Zk5z@Asurada-Nvidia>
- <20241211131112.GN2347147@nvidia.com>
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1tLQUF-000165-0l
+ for qemu-devel@nongnu.org; Wed, 11 Dec 2024 12:27:03 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1733938016;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=Vg7ouLRKRr5uTPGUap2HkSeDZDQ5P6j4KbeDqXlr1IU=;
+ b=IBrarZGUdC86j/gaNN8LzeLkRSMF79t8gvb8ENwnsd5X6ZvgIxVLFEPXwwEXY9w8rAh4/G
+ 1Zfh5KeGEjdIm42quXp6YACwQN9rkj3g1RAnrzNBAuvvhftgwMdpQz2xR4ZqCKHwb2q55K
+ g42LIZM3fVZiXXDdwTWOT/YaeG3bmKU=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-487-lRd5GZN9MG-de_wYDnC5ag-1; Wed,
+ 11 Dec 2024 12:26:54 -0500
+X-MC-Unique: lRd5GZN9MG-de_wYDnC5ag-1
+X-Mimecast-MFC-AGG-ID: lRd5GZN9MG-de_wYDnC5ag
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 8FF491955F40; Wed, 11 Dec 2024 17:26:52 +0000 (UTC)
+Received: from toolbox.redhat.com (unknown [10.42.28.49])
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 6E7501956048; Wed, 11 Dec 2024 17:26:49 +0000 (UTC)
+From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Thomas Huth <huth@tuxfamily.org>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+Subject: [PATCH v2 00/31] tests/functional: various improvements wrt
+ assets/scratch files
+Date: Wed, 11 Dec 2024 17:26:16 +0000
+Message-ID: <20241211172648.2893097-1-berrange@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20241211131112.GN2347147@nvidia.com>
-X-NV-OnPremToCloud: AnonymousSubmission
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MWH0EPF000971E2:EE_|DS0PR12MB8455:EE_
-X-MS-Office365-Filtering-Correlation-Id: d7abd1ec-1eec-42ae-1e1e-08dd1a08263c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230040|7416014|82310400026|1800799024|376014|36860700013; 
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?RnI8t12RoYSHXVx7IvCADVLUJ83XnBMNkMrO34F9gyDi91VIKURKws2zhZQA?=
- =?us-ascii?Q?athbeFgPuTG1/47NH39J4vgppJlVFEM0CpFFkqj+CU/KgZnFqOgx8lAXwN3S?=
- =?us-ascii?Q?TO0ToQyfQQVW71SaOSz/rcFdD00gEZnddmiRefYyiS/dYAXhhRwM6ME/yxgU?=
- =?us-ascii?Q?mDen781aoa/Q1Ylg4OUNk8x4tD4tNdhShV5mt7wm2KfX/UtDJ81vwYSINfI7?=
- =?us-ascii?Q?TACox4TBLdSC+DqjurGJ0+91WZnJ3lw2nvFS9x8JQF6e2RLtfzrcPXwevkUp?=
- =?us-ascii?Q?lolp1zfS8vd4CLv9lW2gxeAczNjFoejoneIUxKk4LXPATUSiybVcJmoA2poQ?=
- =?us-ascii?Q?/t3SvADC5Hixc5aNZLkfAOTwIGjZ1ywWt05KUbFpvFKL15aQ8N80Jvd15/D2?=
- =?us-ascii?Q?8srkCC5cZENEIgvlbzT8MIITl6I4wjvYgx8kyE6mbEpUnz0IJDX1Ifi0zJKZ?=
- =?us-ascii?Q?ff9Rk3bqpV4DFFvrTlVVPdvve1JqslE/nylDa4z1sDYu5SAG4cBA+mlWany/?=
- =?us-ascii?Q?aZMl1D9CInPl+PTqqPzrAL5KSDo/UaCAo6Y8zZIrTHTfqRISGC4CbtYGcTX5?=
- =?us-ascii?Q?KAobP33/7B/jc6cdYOA0LWZWW6FNHGTQbSGThbcHMIkIQe/Do6woXJFpV7pC?=
- =?us-ascii?Q?KZwRGGpB+voOqIcTzJX/2/hWcD+mzrJnngjZ7w0U8LvzpTVAIVOvkYer/vt2?=
- =?us-ascii?Q?MnNUDH6anRQ945SV1DmamXePXvop2gAVBIa0ZcPn5wCSIG6sJ4PR4eqQrC1G?=
- =?us-ascii?Q?k9k1F6YsuVkyTFVSFMXz87PPtGmzijKc9rjSOHciIOuTMIPe+AHkVezKC4W2?=
- =?us-ascii?Q?kDXoLYZDtztZxSrtrng6mjS/L72fITBAm8irG7/PSBlVFFZ7VxUYsX8iXHRy?=
- =?us-ascii?Q?VXY0pMdptpi7lkVZ3QoD9cIQmBHTlAZ4DCeK/x/Grec57MkIOqfDw6IFgi3x?=
- =?us-ascii?Q?K+QY3+ETHicaINUSyMuySPxwN82RxyHRWai50uzahIoj6ISdgKdzThGOc5A3?=
- =?us-ascii?Q?jHZhWvetaVG0qh3OH8GnV+4Dh6osWsVaqR4n4wGQeJluPDTmwTdKKtiNpJPL?=
- =?us-ascii?Q?1MuJdRHF6AXLOtGp1MPFhPOl2t9MnY4LG0Q+xsQcXSNbEolZvR3KN2Wt/GNj?=
- =?us-ascii?Q?mBO8uYhT1VNW2EtiuVCLe9wTcnjNJK+PJOAm1koB67zLp2gAjq9FCBUJRpiP?=
- =?us-ascii?Q?QtBEE0+cqofnAbzfWd5KjGYl6tfjk5/mVlx3KKZf1FAcKQYplyHD/AqpxwzO?=
- =?us-ascii?Q?0qLcbzdElOdoNdw50X/+v67xhKILPeR1u2GEqHJQ465cBSSCqOB4AbFofcGV?=
- =?us-ascii?Q?NNwmiClm/eWobLdN0dLOpTpAdg6pkBQSQ+UTHeOF9TpqGRJJxXBwqvBQC9Iv?=
- =?us-ascii?Q?5ll1mKC1Wh5BEfDxaE6nrO0uHAcFQQcm5u90qifdFH+jI88xkMYo44AJ4dDH?=
- =?us-ascii?Q?xny/K9yV+HhbmsV0/T4gWKcPjoJQkb8V?=
-X-Forefront-Antispam-Report: CIP:216.228.117.161; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:mail.nvidia.com; PTR:dc6edge2.nvidia.com; CAT:NONE;
- SFS:(13230040)(7416014)(82310400026)(1800799024)(376014)(36860700013); DIR:OUT;
- SFP:1101; 
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Dec 2024 17:20:45.8450 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: d7abd1ec-1eec-42ae-1e1e-08dd1a08263c
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a; Ip=[216.228.117.161];
- Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource: MWH0EPF000971E2.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB8455
-Received-SPF: softfail client-ip=2a01:111:f403:2413::61e;
- envelope-from=nicolinc@nvidia.com;
- helo=NAM10-DM6-obe.outbound.protection.outlook.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -25
 X-Spam_score: -2.6
 X-Spam_bar: --
 X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.472,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -160,37 +83,147 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Dec 11, 2024 at 09:11:12AM -0400, Jason Gunthorpe wrote:
-> On Tue, Dec 10, 2024 at 05:28:17PM -0800, Nicolin Chen wrote:
-> > > I would ideally turn it around and provide that range information to
-> > > the kernel and totally ignore the SW_MSI reserved region once
-> > > userspace provides it.
-> > 
-> > Hmm.. that sounds like a uAPI for vITS range..but yes..
-> 
-> It controls the window that the kernel uses to dynamically map the ITS
-> pages.
+This series is an attempt to bring a little more guaranteed order
+to asset and scratch file handling in the functional tests. The
+main highlights are:
 
-Can we use SET_OPTION for vITS mapping (non-RMR solution) too? 
+ * Add custom @skipXXXXX decorators for common scenarios
+   present in QEMU tests
 
-> > So, VMM can GET_OPTION(SW_MSI) for msi_base to extract the
-> > info from kernel. Likely need a second call for its length?
-> > Since IOMMU_OPTION only supports one val64 input or output.
-> 
-> No, just forget about the kernel's SW_MSI region. The VMM uses this
-> API and overrides it and iommufd completely ignores SW_MSI.
-> 
-> There is nothing special about the range hard coded into the smmu
-> driver.
+ * Add helpers for creating file paths for various well
+   known types of data, or well known locations, to avoid
+   adhoc path manipulation
 
-OK. We will have SET_OPTION(IOMMU_OPTION_SW_MSI_START) and
-SET_OPTION(IOMMU_OPTION_SW_MSI_LAST).
+ * Add helpers to simplify uncompressing and extracting
+   archives, from files downloaded as assets
 
-I think we will need some validation to the range too, although
-iommufd doesn't have the information about the underlying ITS
-driver: what if user space sets range to a page size, while the
-ITS driver requires multiple pages?
+The series overall has a neutral diffstat, but if you look at
+just test files,  as opposed to the shared infra, you'll see
+a significant reduction of lines of code in the tests, and I
+believe its easier to read them with less boilerplate.
 
-Thanks
-Nicolin
+This is based on:
+
+     https://gitlab.com/thuth/qemu.git tags/pull-request-2024-12-11
+
+Changes in v2:
+
+ * Put archive & uncompress helpers in their own files
+ * Have archive_extract & uncompress directly handle
+   assets and format detection
+ * Drop has_cmd/has_cmds helpers in favour of 'which'
+ * Drop obsolete tessract version check
+ * Simplify 'which' impl
+ * Replace 'run_cmd' with direct use of subprocess
+ * Remove even more unused imports
+ * Gracefully handle asset download failure by skipping tests
+ * Drop redundant hardcoded ./contrib path in virtio GPU test
+ * Various docs improvements to decorators
+ * Drop formatting change to import statements
+
+Daniel P. Berrangé (31):
+  tests/functional: remove many unused imports
+  tests/functional: resolve str(Asset) to cache file path
+  tests/functional: remove duplicated 'which' function impl
+  tests/functional: simplify 'which' implementation
+  tests/functional: drop 'tesseract_available' helper
+  tests/functional: introduce some helpful decorators
+  tests/functional: switch to new test skip decorators
+  tests/functional: drop 'has_cmd' and 'has_cmds' helpers
+  tests/functional: add helpers for building file paths
+  tests/functional: switch over to using self.log_file(...)
+  tests/functional: switch over to using self.build_file(...)
+  tests/functional: switch over to using self.data_file(...)
+  tests/functional: switch over to using self.scratch_file()
+  tests/functional: switch over to using self.socket_dir(...)
+  tests/functional: remove redundant 'rmtree' call
+  tests/functional: move archive handling into new archive.py file
+  tests/functional: move uncompress handling into new uncompress.py file
+  tests/functional: add common zip_extract helper
+  tests/functional: add common deb_extract helper
+  tests/functional: let cpio_extract accept filenames
+  tests/functional: add a generalized archive_extract
+  tests/functional: add 'archive_extract' to QemuBaseTest
+  tests/functional: convert tests to new archive_extract helper
+  tests/functional: add a generalized uncompress helper
+  tests/functional: add 'uncompress' to QemuBaseTest
+  tests/functional: convert tests to new uncompress helper
+  tests/functional: drop back compat imports from utils.py
+  tests/functional: replace 'run_cmd' with subprocess helpers
+  tests/functional: remove now unused 'run_cmd' helper
+  tests/functional: skip tests if assets are not available
+  tests/functional: ignore errors when caching assets, except for 404
+
+ tests/functional/qemu_test/__init__.py        |   9 +-
+ tests/functional/qemu_test/archive.py         | 117 ++++++++++
+ tests/functional/qemu_test/asset.py           |  26 ++-
+ tests/functional/qemu_test/cmd.py             |  76 ++-----
+ tests/functional/qemu_test/decorators.py      | 107 +++++++++
+ tests/functional/qemu_test/linuxkernel.py     |  30 +--
+ tests/functional/qemu_test/tesseract.py       |  21 +-
+ tests/functional/qemu_test/testcase.py        | 205 ++++++++++++++++--
+ tests/functional/qemu_test/tuxruntest.py      |  19 +-
+ tests/functional/qemu_test/uncompress.py      |  83 +++++++
+ tests/functional/qemu_test/utils.py           |  45 ----
+ tests/functional/test_aarch64_aspeed.py       |  23 +-
+ tests/functional/test_aarch64_raspi3.py       |   9 +-
+ tests/functional/test_aarch64_raspi4.py       |  21 +-
+ tests/functional/test_aarch64_sbsaref.py      |  12 +-
+ .../functional/test_aarch64_sbsaref_alpine.py |   1 -
+ .../test_aarch64_sbsaref_freebsd.py           |   1 -
+ tests/functional/test_aarch64_virt.py         |  14 +-
+ tests/functional/test_acpi_bits.py            | 124 ++++-------
+ tests/functional/test_alpha_clipper.py        |   6 +-
+ tests/functional/test_arm_aspeed.py           |  46 ++--
+ tests/functional/test_arm_bflt.py             |  13 +-
+ tests/functional/test_arm_bpim2u.py           |  44 ++--
+ tests/functional/test_arm_canona1100.py       |  10 +-
+ tests/functional/test_arm_collie.py           |   2 +-
+ tests/functional/test_arm_cubieboard.py       |  40 ++--
+ tests/functional/test_arm_emcraft_sf2.py      |   2 +-
+ tests/functional/test_arm_integratorcp.py     |  28 +--
+ tests/functional/test_arm_orangepi.py         |  60 +++--
+ tests/functional/test_arm_raspi2.py           |  21 +-
+ tests/functional/test_arm_smdkc210.py         |  18 +-
+ tests/functional/test_arm_sx1.py              |   2 +-
+ tests/functional/test_arm_vexpress.py         |  10 +-
+ tests/functional/test_linux_initrd.py         |   7 +-
+ tests/functional/test_m68k_mcf5208evb.py      |   8 +-
+ tests/functional/test_m68k_nextcube.py        |  24 +-
+ tests/functional/test_m68k_q800.py            |   5 +-
+ .../functional/test_microblaze_s3adsp1800.py  |   9 +-
+ .../test_microblazeel_s3adsp1800.py           |  10 +-
+ tests/functional/test_mips64el_fuloong2e.py   |  10 +-
+ tests/functional/test_mips64el_loongson3v.py  |   8 +-
+ tests/functional/test_mips64el_malta.py       |  45 ++--
+ tests/functional/test_mips_malta.py           |  19 +-
+ tests/functional/test_mipsel_malta.py         |  24 +-
+ tests/functional/test_or1k_sim.py             |   7 +-
+ tests/functional/test_ppc64_e500.py           |   7 +-
+ tests/functional/test_ppc64_hv.py             |  39 +---
+ tests/functional/test_ppc64_tuxrun.py         |   7 +-
+ tests/functional/test_ppc_40p.py              |   7 +-
+ tests/functional/test_ppc_amiga.py            |  20 +-
+ tests/functional/test_ppc_bamboo.py           |  15 +-
+ tests/functional/test_ppc_mac.py              |   8 +-
+ tests/functional/test_ppc_mpc8544ds.py        |   8 +-
+ tests/functional/test_ppc_virtex_ml507.py     |  10 +-
+ tests/functional/test_rx_gdbsim.py            |  13 +-
+ tests/functional/test_s390x_ccw_virtio.py     |   6 +-
+ tests/functional/test_s390x_topology.py       |   7 +-
+ tests/functional/test_sh4_r2d.py              |  14 +-
+ tests/functional/test_sh4eb_r2d.py            |  14 +-
+ tests/functional/test_sparc64_sun4u.py        |  11 +-
+ tests/functional/test_sparc_sun4m.py          |   7 +-
+ tests/functional/test_virtio_gpu.py           |  16 +-
+ tests/functional/test_xtensa_lx60.py          |   8 +-
+ tests/lcitool/libvirt-ci                      |   2 +-
+ 64 files changed, 885 insertions(+), 755 deletions(-)
+ create mode 100644 tests/functional/qemu_test/archive.py
+ create mode 100644 tests/functional/qemu_test/decorators.py
+ create mode 100644 tests/functional/qemu_test/uncompress.py
+
+-- 
+2.46.0
+
 
