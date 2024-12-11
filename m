@@ -2,84 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB8149ECEE9
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Dec 2024 15:46:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 25AD29ECF6E
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Dec 2024 16:11:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tLNxk-0006uB-2N; Wed, 11 Dec 2024 09:45:18 -0500
+	id 1tLOLW-00061j-0U; Wed, 11 Dec 2024 10:09:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tLNxL-0006tT-KB
- for qemu-devel@nongnu.org; Wed, 11 Dec 2024 09:44:51 -0500
-Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tLNxK-0003sc-3h
- for qemu-devel@nongnu.org; Wed, 11 Dec 2024 09:44:51 -0500
-Received: by mail-wr1-x42e.google.com with SMTP id
- ffacd0b85a97d-385e87b25f0so483708f8f.0
- for <qemu-devel@nongnu.org>; Wed, 11 Dec 2024 06:44:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1733928288; x=1734533088; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=OtTkwTKI52bcxg/lJzvBSIA6PD09skuET2+JQoRaIc4=;
- b=eR+VPz2y0lKC1kb6T2eM9G8BPt0evEq/KC2FMp2WJmoFV3Ck77b3UefbYOqdidglfh
- OGp1+1zteQ5dYhcGqZX5xJObM6VfEGc7plhqd8yYIq/zoLld060t3AgO2JKfetpCDReU
- N4cXvwLEnM2kXaRo3JN+7WYOHs917xGeyOCZhN1akWEx4apzwU4sV4Xi1ynRvj4R8UUU
- 56g7DzzhJ+GLPFDPy4O/vTCwjWJq3/u/XkjApdp/tY3Y/r0VmBmvaOzZSAgaaV5fYW1S
- 9cqRD76DKyCZ/WLj2Kvi+tauNikakYGsFqSIuEZy81dAWSRNn/LxGJnh3T4iG0X71yRZ
- 69LQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733928288; x=1734533088;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=OtTkwTKI52bcxg/lJzvBSIA6PD09skuET2+JQoRaIc4=;
- b=Y8C2kS7aj99rykQ/qpRblg3Ac9kar5Txzdv1JSmUV5MzhVcZ+RKglYhesPmOZ9BQHP
- Sbkc2ZOQ4OXPqH/47lrE3ZVrf6vVnVb9869c5t4PMHTqTvjXCTYFfzRuqFdTfIl+8YL4
- JqKyAofYfskdmufqypdG/YXAKYgEmE4Li1UYeHkpV99nC84ywgyOelhj40jiXVBT/E11
- yA0dZErAwGhyUhpII9A5ljcP/PjHDkU04wjndzldmVPGaKQ62etRQqgCqtIHyxnSsvOK
- kEyPuUKJ13AcHePx+AcK+sPLfBZnZD6s6yuhs/i8duDaJeaxouAPxpauzA6MXswZsZWo
- zwbQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVIT0S18QPNvqM5BCRlrnSm8LJ8qkLiAJEFgAKLF1TWlJJG0iBtTKzQ8Jsz+kp0oOqVjE46ZNBdo7C4@nongnu.org
-X-Gm-Message-State: AOJu0YzEQ0p5Lh+H1ak9XrQdSYzt//+gAPPDgSBG5AybcTxDAOkTLd/y
- 6IMGIsJHIog/4UDxVqMHrA4Bm6exRppg50gwH3QLQt9CKvLuGgz8fPPkeVP5BYI=
-X-Gm-Gg: ASbGncs3/VAJ+2fBjvibPaDGLonHjiU5EglsFpe4ccVP1rZYV4ReoLlyxt4tzD+BPGF
- zb7N+1oi4pcAbHSjWiydHgSJyqg0am4/+eoqjVcl2nA8Y644BYf6bdMpZrvbvReEpSdozmXKpof
- 2elVBTL/RgTNf5/VnuggnX0YPmGf+6SMfUKn6GXZiMLNN3JjD7mVZYV+/XTpdMeXR1DhVZyymiG
- OfnIHIltLt91J8HTG48ATU2kV5d9AU/EZn/qiq3qIwOI7Ldc2VU2UtDDHLa
-X-Google-Smtp-Source: AGHT+IEc3+vF597N7ere9YiGlkmyldx4o90YrOiY4AxYeJr789FIgACB1I4kzwKdrHzsrTWV0IIKOg==
-X-Received: by 2002:a05:6000:186b:b0:386:3672:73e7 with SMTP id
- ffacd0b85a97d-3864de9e81fmr2504639f8f.9.1733928288468; 
- Wed, 11 Dec 2024 06:44:48 -0800 (PST)
-Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4361e54ef20sm19477685e9.5.2024.12.11.06.44.47
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 11 Dec 2024 06:44:47 -0800 (PST)
-From: Peter Maydell <peter.maydell@linaro.org>
-To: qemu-arm@nongnu.org,
-	qemu-devel@nongnu.org
-Subject: [PATCH v2 6/6] tests/tcg/aarch64: add system test for FEAT_XS
-Date: Wed, 11 Dec 2024 14:44:40 +0000
-Message-Id: <20241211144440.2700268-7-peter.maydell@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241211144440.2700268-1-peter.maydell@linaro.org>
-References: <20241211144440.2700268-1-peter.maydell@linaro.org>
+ (Exim 4.90_1) (envelope-from <quic_bcain@quicinc.com>)
+ id 1tLOLP-00061Q-1p
+ for qemu-devel@nongnu.org; Wed, 11 Dec 2024 10:09:43 -0500
+Received: from mx0a-0031df01.pphosted.com ([205.220.168.131])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <quic_bcain@quicinc.com>)
+ id 1tLOLM-0006dk-OB
+ for qemu-devel@nongnu.org; Wed, 11 Dec 2024 10:09:42 -0500
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+ by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BBF81Mg004033;
+ Wed, 11 Dec 2024 15:09:35 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+ cc:content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+ 0TMsP5w/eT/8sxWDSHYoq5H8FPmdILkdvTBp/RxISuk=; b=C73GbFdHWpsw3vMa
+ ITaDxzTZ+jd6On+z7PrN6bSAKVVeJthSy40fhvZQ7fm47jirSmVS1S2Z+So+pt+Q
+ kWFKkcqZZL4j+pGV6WiSkl016sRodwtrzfJZSfPw00xt20tPOPOZfKIlcaP5gAr0
+ AcNkLaAaWRTTLqMjdx03bJ+YOEtndOhIY+ED7XlryRhdkxRzvjSRKq52WGxmnj9I
+ F/CylXPdcDo771sVWlVjQawRArSk6AfIxG9rJqp9LDSf5vl6Vm4Gn0oaun/IvqNl
+ qT3GXEwr/kXx/UiepRSDnrz79Dy7+7pG/DNzmKyL8OH/Tn+baBtFl2SqI8CQiWm+
+ Kbed1w==
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com
+ [129.46.96.20])
+ by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 43fd40g06a-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 11 Dec 2024 15:09:34 +0000 (GMT)
+Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com
+ [10.47.97.35])
+ by NALASPPMTA03.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 4BBF9Yju031090
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 11 Dec 2024 15:09:34 GMT
+Received: from [10.111.162.254] (10.80.80.8) by nalasex01c.na.qualcomm.com
+ (10.47.97.35) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Wed, 11 Dec
+ 2024 07:09:33 -0800
+Message-ID: <3587c265-0d3a-422d-86b0-007789581ec9@quicinc.com>
+Date: Wed, 11 Dec 2024 09:09:31 -0600
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42e.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/2] Misc Hexagon QOL
+To: Anton Johansson <anjo@rev.ng>, <qemu-devel@nongnu.org>
+CC: <ale@rev.ng>, <ltaylorsimpson@gmail.com>, <brian.cain@oss.qualcomm.com>
+References: <20241206160103.24988-1-anjo@rev.ng>
+Content-Language: en-US
+From: Brian Cain <quic_bcain@quicinc.com>
+In-Reply-To: <20241206160103.24988-1-anjo@rev.ng>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01c.na.qualcomm.com (10.47.97.35)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800
+ signatures=585085
+X-Proofpoint-GUID: 5UH3S9aiEpPP8Ql7hYsrrOyvaHs-B4CU
+X-Proofpoint-ORIG-GUID: 5UH3S9aiEpPP8Ql7hYsrrOyvaHs-B4CU
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 spamscore=0
+ suspectscore=0 impostorscore=0 phishscore=0 clxscore=1015 bulkscore=0
+ lowpriorityscore=0 mlxlogscore=966 priorityscore=1501 mlxscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2411120000 definitions=main-2412110109
+Received-SPF: pass client-ip=205.220.168.131;
+ envelope-from=quic_bcain@quicinc.com; helo=mx0a-0031df01.pphosted.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -96,56 +100,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 
-Add system test to make sure FEAT_XS is enabled for max cpu emulation
-and that QEMU doesn't crash when encountering an NXS instruction
-variant.
+On 12/6/2024 10:01 AM, Anton Johansson via wrote:
+> Separate submission of patches 35 and 37 from the helper-to-tcg
+> patchset:
+>
+>    https://lore.kernel.org/qemu-devel/20241121014947.18666-1-anjo@rev.ng/
+>
+> Anton Johansson (2):
+>    target/hexagon: Use argparse in all python scripts
+>    target/hexagon: Make HVX vector args. restrict *
+>
+>   target/hexagon/gen_analyze_funcs.py     |  6 +++--
+>   target/hexagon/gen_decodetree.py        | 19 ++++++++++---
+>   target/hexagon/gen_helper_funcs.py      |  7 ++---
+>   target/hexagon/gen_helper_protos.py     |  7 ++---
+>   target/hexagon/gen_idef_parser_funcs.py | 11 ++++++--
+>   target/hexagon/gen_op_attribs.py        | 11 ++++++--
+>   target/hexagon/gen_opcodes_def.py       | 11 ++++++--
+>   target/hexagon/gen_printinsn.py         | 11 ++++++--
+>   target/hexagon/gen_tcg_func_table.py    | 11 ++++++--
+>   target/hexagon/gen_tcg_funcs.py         |  9 ++++---
+>   target/hexagon/gen_trans_funcs.py       | 18 ++++++++++---
+>   target/hexagon/hex_common.py            | 33 +++++++++++------------
+>   target/hexagon/meson.build              |  2 +-
+>   target/hexagon/mmvec/macros.h           | 36 ++++++++++++-------------
+>   14 files changed, 127 insertions(+), 65 deletions(-)
 
-Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-[PMM: In ISAR field test, mask with 0xf, not 0xff; use < rather
- than an equality test to follow the standard ID register field
- check guidelines]
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
----
- tests/tcg/aarch64/system/feat-xs.c | 27 +++++++++++++++++++++++++++
- 1 file changed, 27 insertions(+)
- create mode 100644 tests/tcg/aarch64/system/feat-xs.c
-
-diff --git a/tests/tcg/aarch64/system/feat-xs.c b/tests/tcg/aarch64/system/feat-xs.c
-new file mode 100644
-index 00000000000..f310fc837e0
---- /dev/null
-+++ b/tests/tcg/aarch64/system/feat-xs.c
-@@ -0,0 +1,27 @@
-+/*
-+ * FEAT_XS Test
-+ *
-+ * Copyright (c) 2024 Linaro Ltd
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+
-+#include <minilib.h>
-+#include <stdint.h>
-+
-+int main(void)
-+{
-+    uint64_t isar1;
-+
-+    asm volatile ("mrs %0, id_aa64isar1_el1" : "=r"(isar1));
-+    if (((isar1 >> 56) & 0xf) < 1) {
-+        ml_printf("FEAT_XS not supported by CPU");
-+        return 1;
-+    }
-+    /* VMALLE1NXS */
-+    asm volatile (".inst 0xd508971f");
-+    /* VMALLE1OSNXS */
-+    asm volatile (".inst 0xd508911f");
-+
-+    return 0;
-+}
--- 
-2.34.1
+Queued to hex-next, thanks.
 
 
