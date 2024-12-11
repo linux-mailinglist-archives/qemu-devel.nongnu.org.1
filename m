@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A34C9ED71C
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Dec 2024 21:19:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 498809ED71F
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Dec 2024 21:19:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tLT9m-0007KC-EL; Wed, 11 Dec 2024 15:18:02 -0500
+	id 1tLT9n-0007LD-8j; Wed, 11 Dec 2024 15:18:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tLT9a-0007JW-4s
- for qemu-devel@nongnu.org; Wed, 11 Dec 2024 15:17:50 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tLT9f-0007KU-GD
+ for qemu-devel@nongnu.org; Wed, 11 Dec 2024 15:17:58 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tLT9Y-0004Ck-OS
- for qemu-devel@nongnu.org; Wed, 11 Dec 2024 15:17:49 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tLT9d-0004DM-Ut
+ for qemu-devel@nongnu.org; Wed, 11 Dec 2024 15:17:55 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1733948268;
+ s=mimecast20190719; t=1733948272;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=R7ZPor/d6qfaqpGPHzGBJG+I4KBraL5l1GdaMqLuqQs=;
- b=MqgufnUtAWjCpaTMwih+ahcrD+nQnUHfnwy7fx3tpbFMH0o8WWTDkJnpVXHoXL2U118XZh
- TVnNmd11RvwZxxizkRmj54FIHsj1WYqb7ga78pcRMtzfSrfZ8DIRMAiPKEn4dsF2KwespY
- M85s/OLOHIoprIJOmwlS7y8ixotW+us=
+ bh=IFXaLF/2fvXDkwgl6NvuvEBWo6+E26Pv3ho2hdhkbGU=;
+ b=ZsGuV4B7jh1AVni8bwF12m27K610qDHON8V2YGaghYVQRSWh0shJ6HdNpDoSd6o9OVUvIU
+ ylXV4tTl39+iDHVbzfNRCogi+gK9WHGCr0iVMurewqe+LMrU+2/d6cZr3JJYRZx2dyTV1r
+ PoNhmyc2xV6sJzKTKdx//fyqSIuB2gM=
 Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
  [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-687-upDYD7GhNFW9avnbS6KX8w-1; Wed, 11 Dec 2024 15:17:47 -0500
-X-MC-Unique: upDYD7GhNFW9avnbS6KX8w-1
-X-Mimecast-MFC-AGG-ID: upDYD7GhNFW9avnbS6KX8w
+ us-mta-633-eSoyn-cANIG4Id7V6XMU6Q-1; Wed, 11 Dec 2024 15:17:49 -0500
+X-MC-Unique: eSoyn-cANIG4Id7V6XMU6Q-1
+X-Mimecast-MFC-AGG-ID: eSoyn-cANIG4Id7V6XMU6Q
 Received: by mail-qk1-f197.google.com with SMTP id
- af79cd13be357-7b6e1b0373bso235549985a.2
- for <qemu-devel@nongnu.org>; Wed, 11 Dec 2024 12:17:47 -0800 (PST)
+ af79cd13be357-7b6e9fb0436so500882285a.0
+ for <qemu-devel@nongnu.org>; Wed, 11 Dec 2024 12:17:48 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733948266; x=1734553066;
+ d=1e100.net; s=20230601; t=1733948268; x=1734553068;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=R7ZPor/d6qfaqpGPHzGBJG+I4KBraL5l1GdaMqLuqQs=;
- b=o8PtPW1zj45shTCUHWskf1MhN34y2WO/PCCYgtJlDELBha/uo6YraJPIY2zwgpVkZJ
- wUTR1BeksSUsdSSB/NbpdXqwh55J5qZ4ZdDVZmUzqXdv/cgmnWv1na2XhK43067iiTo8
- RwOrMK1mCCkX+sEuC28ONHD1sUanVYEEPaGiHfBFRSjxhauYJMVRg9m2cz44uGSquWVe
- h1cSdCMNYJTDZ5ND7zR7o3vd/uL8QyXfm8RHKc3kkuJFkE77QNMiZAYvpJ9NYLsjRVy2
- 3V7C2+A29he63yyUKobW3PAiWhQt9YPMpiudaPw6vALp0WbuOMIcBGr3XOK269pnkd8o
- MJwg==
-X-Gm-Message-State: AOJu0YxhKyxDrMxTcDLMdWeF4Q/pWQq2imD8FF5Deiid7e6Fi1Rq6sle
- 8l9ETiwXvEG4D72QFvzmsfGcYPN3VF0Gq1UYSLq/w7qplSlOxd0tdFimCI7qNEssobFjGwb+X6m
- AL02SvM+uAvolOKGusolVSjy2Eec6WYk+KaF9h/KMXbRKjnfnzyIkkIL4eOQ2HweOGYG98o9At+
- pn1PG/EoQ56ihKstGC6xoDBOKhC4InHx7koA==
-X-Gm-Gg: ASbGncsLq6WautBJkeLjteZSCL3Se28JB9blkHsJ8FuQhT/pjz/rcrytb8MvrLX6I6E
- nXwZ8FVxOcdJWRwhrSx4DxaPS5eIdh01LF36Pgfpb9GM0Lw+MBsa4ktiGKRZCiyXq1PUFowKlyB
- TMw9zvH8wpC2JE21KT3iBYzH7+DwpCWMsNa6VY9QlfHrWs+cBJ/G+4vh+1TmNSl8G6Jr4YuGPiP
- QcnNAaxwLd1PNCVCpS8HxmYuDPq7GUDxmzBozzzdnz2fiK480DJ3BHw3zmbgZXNnIPcPsa/SmIs
- zNAPdtODS9LoEUplIsEtPA81Jhn+TQ==
-X-Received: by 2002:a05:620a:1b84:b0:7b6:ecaa:9638 with SMTP id
- af79cd13be357-7b6f25cf9demr104343585a.55.1733948266010; 
- Wed, 11 Dec 2024 12:17:46 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFzh2TIe0o90/z83/yVHm5+GnzmtKIOmFfdCGit5K7/tU4Vb8EDrp49iG1wN+r2DZOHja28wg==
-X-Received: by 2002:a05:620a:1b84:b0:7b6:ecaa:9638 with SMTP id
- af79cd13be357-7b6f25cf9demr104340185a.55.1733948265641; 
- Wed, 11 Dec 2024 12:17:45 -0800 (PST)
+ bh=IFXaLF/2fvXDkwgl6NvuvEBWo6+E26Pv3ho2hdhkbGU=;
+ b=BHpXD6p81li73bhDYP6EZfwDr4q+lQzRYe7WU6mR6He8YBYBQISen9un0B2Uq9pqYO
+ nrnxbISs5UpEqA7+CrGmRrSFgp6UxtimISD/K5btbNLt2zaigtxi+I+b4xZt0j4BRsc3
+ 1V1eaTDslrE1JMvyz0XmI2Lxewnoi27+wEUIsoYFDSmMeYubk4RhuuhSeEpwwJKjehHR
+ JWTTkrWlvlLv0awonpNzHtOGQ2KWyi2xeyTZTO2CgJhqU28JIgGmSRVUtx833qjIVuAP
+ ByYy0czl7XBnHa+28+1ruOnsEbwqi0K+QJtIjm/cCFcgw5H/joxRzba+o0acu3p/7J5k
+ Mwow==
+X-Gm-Message-State: AOJu0YxCFUgj9EIa0hVEXx8aLFXtPtVwADlmnLR8/uQD+Ty9T225w6Ez
+ Y6b1KDqv1S2VvHycuEvUiGqyRZI1CjwZUvFN0RSWANyr+LzO17U59B1UtnE0+OWzfE6tkgBUQw0
+ dkF8DRfw9tWFO6cO8hm8sV4VeyksEEEhSo/0pZiY1eCysKjs/5bHuAtTs3ndWzrxeFj93mz/GDs
+ wUjhoufF8zmePrfhrWRdrhxc/Xz8yaHZ7LHw==
+X-Gm-Gg: ASbGncso8ZHz4pPxmRbDGgYxOmx+kJUvIMePb6xKw2foYsxBYeD2/yA0h/9H9biMhCQ
+ v4l21T6QvCvkg0qIWuC+BG74h2ToeS0fzj8PKPKox2n0AukadSUtb0uRMF95679EVaUeI60RjKl
+ BdwfeRT27PqNgIg3uZgrDeyhIXa0vBls2gI7cf6kZL00KXCzyt+BuhGJt1Ryl4E0xAcN5odqlxS
+ mg5/+AjasDq1e4fyj5D0lRGfsXLne34/pu/pY52ZYo5wh8a60VILYv5m8fz1ty6ctjnzaZiHK9D
+ CBS0h3ua51SkAdU3pamBq1hBcO0LFg==
+X-Received: by 2002:a05:620a:2694:b0:7b6:6a3b:539b with SMTP id
+ af79cd13be357-7b6f2542a96mr117636385a.17.1733948267965; 
+ Wed, 11 Dec 2024 12:17:47 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEmqcZWSZ4uS9cn/ekqKSkDSEDhi2uJtBuXlmrpWWP4T6hSQUf3P3dkJcxTfZMEOcYoWhOJNA==
+X-Received: by 2002:a05:620a:2694:b0:7b6:6a3b:539b with SMTP id
+ af79cd13be357-7b6f2542a96mr117632585a.17.1733948267602; 
+ Wed, 11 Dec 2024 12:17:47 -0800 (PST)
 Received: from x1n.redhat.com (pool-99-254-114-190.cpe.net.cable.rogers.com.
  [99.254.114.190]) by smtp.gmail.com with ESMTPSA id
- af79cd13be357-7b6c8c6425csm438857485a.100.2024.12.11.12.17.43
+ af79cd13be357-7b6c8c6425csm438857485a.100.2024.12.11.12.17.45
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 11 Dec 2024 12:17:44 -0800 (PST)
+ Wed, 11 Dec 2024 12:17:46 -0800 (PST)
 From: Peter Xu <peterx@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Stefan Hajnoczi <stefanha@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
  Peter Maydell <peter.maydell@linaro.org>, peterx@redhat.com,
  Paolo Bonzini <pbonzini@redhat.com>, Maxim Levitsky <mlevitsk@redhat.com>,
  Fabiano Rosas <farosas@suse.de>
-Subject: [PATCH 2/3] scripts/qemu-gdb: Simplify fs_base fetching for coroutines
-Date: Wed, 11 Dec 2024 15:17:38 -0500
-Message-ID: <20241211201739.1380222-3-peterx@redhat.com>
+Subject: [PATCH 3/3] scripts/qemu-gdb: Support coroutine dumps in coredumps
+Date: Wed, 11 Dec 2024 15:17:39 -0500
+Message-ID: <20241211201739.1380222-4-peterx@redhat.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241211201739.1380222-1-peterx@redhat.com>
 References: <20241211201739.1380222-1-peterx@redhat.com>
@@ -107,50 +107,96 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-There're a bunch of code trying to fetch fs_base in different ways.  IIUC
-the simplest way instead is "$fs_base".  It also has the benefit that it'll
-work for both live gdb session or coredumps.
+Dumping coroutines don't yet work with coredumps.  Let's make it work.
+
+We still kept most of the old code because they can be either more
+flexible, or prettier.  Only add the fallbacks when they stop working.
+
+Currently the raw unwind is pretty ugly, but it works, like this:
+
+(gdb) qemu bt
+Coroutine at 0x7fc474728748:
 
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- scripts/qemugdb/coroutine.py | 23 ++---------------------
- 1 file changed, 2 insertions(+), 21 deletions(-)
+ scripts/qemugdb/coroutine.py | 50 +++++++++++++++++++++++++++++++-----
+ 1 file changed, 43 insertions(+), 7 deletions(-)
 
 diff --git a/scripts/qemugdb/coroutine.py b/scripts/qemugdb/coroutine.py
-index 7db46d4b68..20f76ed37b 100644
+index 20f76ed37b..b29ee16205 100644
 --- a/scripts/qemugdb/coroutine.py
 +++ b/scripts/qemugdb/coroutine.py
-@@ -13,28 +13,9 @@
+@@ -46,9 +46,30 @@ def get_jmpbuf_regs(jmpbuf):
+         'r15': jmpbuf[JB_R15],
+         'rip': glibc_ptr_demangle(jmpbuf[JB_PC], pointer_guard) }
  
- VOID_PTR = gdb.lookup_type('void').pointer()
+-def bt_jmpbuf(jmpbuf):
+-    '''Backtrace a jmpbuf'''
+-    regs = get_jmpbuf_regs(jmpbuf)
++def symbol_lookup(addr):
++    # Example: "__clone3 + 44 in section .text of /lib64/libc.so.6"
++    result = gdb.execute(f"info symbol {hex(addr)}", to_string=True).strip()
++    return result.split(" in ")[0]
++
++def dump_backtrace(regs):
++    '''
++    Backtrace dump with raw registers, mimic GDB command 'bt'.
++    '''
++    # Here only rbp and rip that matter..
++    rbp = regs['rbp']
++    rip = regs['rip']
++    i = 0
++
++    while rbp:
++        print(f"#{i}\t{symbol_lookup(rip)}")
++        rip = gdb.parse_and_eval(f"*(uint64_t *)(uint64_t)({hex(rbp)} + 8)")
++        rbp = gdb.parse_and_eval(f"*(uint64_t *)(uint64_t)({hex(rbp)})")
++        i += 1
++
++def dump_backtrace_live(regs):
++    '''
++    Backtrace dump with gdb's 'bt' command, only usable in a live session.
++    '''
+     old = dict()
  
--def get_fs_base():
--    '''Fetch %fs base value using arch_prctl(ARCH_GET_FS).  This is
--       pthread_self().'''
--    # %rsp - 120 is scratch space according to the SystemV ABI
--    old = gdb.parse_and_eval('*(uint64_t*)($rsp - 120)')
--    gdb.execute('call (int)arch_prctl(0x1003, $rsp - 120)', False, True)
--    fs_base = gdb.parse_and_eval('*(uint64_t*)($rsp - 120)')
--    gdb.execute('set *(uint64_t*)($rsp - 120) = %s' % old, False, True)
--    return fs_base
+     # remember current stack frame and select the topmost
+@@ -69,6 +90,17 @@ def bt_jmpbuf(jmpbuf):
+ 
+     selected_frame.select()
+ 
++def bt_jmpbuf(jmpbuf):
++    '''Backtrace a jmpbuf'''
++    regs = get_jmpbuf_regs(jmpbuf)
++    try:
++        # This reuses gdb's "bt" command, which can be slightly prettier
++        # but only works with live sessions.
++        dump_backtrace_live(regs)
++    except:
++        # If above doesn't work, fallback to poor man's unwind
++        dump_backtrace(regs)
++
+ def co_cast(co):
+     return co.cast(gdb.lookup_type('CoroutineUContext').pointer())
+ 
+@@ -101,10 +133,14 @@ def invoke(self, arg, from_tty):
+ 
+         gdb.execute("bt")
+ 
+-        if gdb.parse_and_eval("qemu_in_coroutine()") == False:
+-            return
 -
- def pthread_self():
--    '''Fetch pthread_self() from the glibc start_thread function.'''
--    f = gdb.newest_frame()
--    while f.name() != 'start_thread':
--        f = f.older()
--        if f is None:
--            return get_fs_base()
--
--    try:
--        return f.read_var("arg")
--    except ValueError:
--        return get_fs_base()
-+    '''Fetch the base address of TLS.'''
-+    return gdb.parse_and_eval("$fs_base")
+-        co_ptr = gdb.parse_and_eval("qemu_coroutine_self()")
++        try:
++            # This only works with a live session
++            co_ptr = gdb.parse_and_eval("qemu_coroutine_self()")
++            if co_ptr == False:
++                return
++        except:
++            # Fallback to use hard-coded ucontext vars if it's coredump
++            co_ptr = gdb.parse_and_eval("co_tls_current")
  
- def get_glibc_pointer_guard():
-     '''Fetch glibc pointer guard value'''
+         while True:
+             co = co_cast(co_ptr)
 -- 
 2.47.0
 
