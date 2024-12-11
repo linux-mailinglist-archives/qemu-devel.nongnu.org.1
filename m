@@ -2,77 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38B229ED12E
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Dec 2024 17:21:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D4DE49ED145
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Dec 2024 17:24:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tLPS8-0000KA-Sw; Wed, 11 Dec 2024 11:20:44 -0500
+	id 1tLPSA-0000L4-Ph; Wed, 11 Dec 2024 11:20:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tLPS7-0000Jp-2J
- for qemu-devel@nongnu.org; Wed, 11 Dec 2024 11:20:43 -0500
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ id 1tLPS8-0000KV-Cw
+ for qemu-devel@nongnu.org; Wed, 11 Dec 2024 11:20:44 -0500
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tLPS5-0007jw-Km
- for qemu-devel@nongnu.org; Wed, 11 Dec 2024 11:20:42 -0500
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-434a852bb6eso66243095e9.3
- for <qemu-devel@nongnu.org>; Wed, 11 Dec 2024 08:20:41 -0800 (PST)
+ id 1tLPS6-0007k7-Tq
+ for qemu-devel@nongnu.org; Wed, 11 Dec 2024 11:20:44 -0500
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-43621d27adeso2074495e9.2
+ for <qemu-devel@nongnu.org>; Wed, 11 Dec 2024 08:20:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1733934040; x=1734538840; darn=nongnu.org;
+ d=linaro.org; s=google; t=1733934041; x=1734538841; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=LqLnmo8ZeuKt9gJbN0OoofaNl977bhykVsCXiY8ZDEI=;
- b=P+rdJQfcUzZVPwyYsYGpnQCEAMyLQ1sZPFQmJaKpXen4gF/i3SsnFmFOb3w1YKja+k
- VRUGSkwvq7BIm+5jlcoaQ7K5zjc015C1AEQHBomhBiEwqOxZBT7zGdsTW4d3BLFIJDzy
- HujdOEb9oAk6D9xQ44qvtt3jNwMXeNBgL1ATNfzoX1izyXkYouhZ8/2lZ2Pv/GFMT5jh
- mk7AgA2GHpHQlWA8NIBhexRx9YqKbgtq4M19h3IIN5Dye8h0r4q7pd5cHMq3x2wI+mn9
- m2ZXcMvI+8RNmLnO80Ba8rbwO7tAgDw7kK+H1dt901OF8Pp9HSlG3JAicxEif7m8EIdB
- WHUg==
+ :reply-to; bh=klkjETkK46JGPy4cr1z4ranKH2QbJ9BDEJxJzYH0IXk=;
+ b=q4qWPh94sCdPCFM4DBiNt1lhYJqFAAn4xD9CfEBrEpR5nKv0RtF8l4XgQKMiMZG/Nv
+ ndpM1FkMZmZ3Dx3jBbe6/zZExI7dC7Hponu7bg3LI0jA3CPoAbPXP+3n/R416ftMrvbm
+ /1u73rjqt54z0VW9VwbSkNdJHKJ/TM7omsStlCrr0EngZE6BFrWqNAay9SkkEwRuRTw8
+ fh8eH+ucq0TpnELrGjdkwX/IlW3jpIHQp9C1YnL2FKllrPZWZrrKolSsJ2wx7avd8WI7
+ YwbbqTQVf6kyfY57SzdM+TpT61sZI6Kq9tup5mfiOeQrAM/YE2MxHZSdnb2Hm/mq9JVG
+ kYOw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733934040; x=1734538840;
+ d=1e100.net; s=20230601; t=1733934041; x=1734538841;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=LqLnmo8ZeuKt9gJbN0OoofaNl977bhykVsCXiY8ZDEI=;
- b=i89xNfQ4zX4nisAvsmur0liy9QOI3711zXiwMucjVwVmx4BpRE+q+w1tDaWnUYE6j+
- ss2TnIoqp08fTiY39hdY6zcdrgPLisQQRODtOQtea9WzTywuPveXzT5gguM9ySqfo1P5
- RvAdICb/A1Yb2eyGgc4w6eTBvGoPiSVZYDMSMVLpAeaIgdomLir3HLDbnbbK5c2Arh0v
- 5x9YAh1SNw/OZXYcaCajL+XdFFks0XE+VcfdNqS4DGdBnepuTx69G4W2OrdhAxBSIjOO
- kxBKdSKgAHENPjmmF51L1hd2wOOjviGhmLr/HyGSsx7LEXYXpo/N7SMmjfBZbelFhugd
- Nuiw==
-X-Gm-Message-State: AOJu0YzI45YqBKHJ3NUb2JA/fT6AlaRoqN54ZOSnc3mPiSL+taafoWMn
- nbO0yeQ9m1J6/aEL/PpPmgbKLSsHL1ajUviA9KFIB7MA1R/oN4/3yiM/6aEjamOY4qUL7hxJKrx
- W
-X-Gm-Gg: ASbGncv7z/nSk9tGD6L9lqh7HIMkYXtfmFtVpq1SrRvzBWDGmNg8L80A8tXfRjjbRga
- 87tlDQpmaWItWWPyYmm3luVl6sNszR4GwSAQkrJp6P9D+fWjQ5VK/T1z9l6LnpidiBrl/QIGF2P
- cbg/5Vb+/wL3fcyFoTfqF+qUnWJB46j00mObzzLS1sFNU6gTcXZttTS+mrXeHx2R+kNaJcB7b4I
- aaMFqmBbldwmrCeuGLpYaajsOF2wE2azaYtLmIFhUel39QzquFB40BIHBLm
-X-Google-Smtp-Source: AGHT+IFU5ZMOzQ6Hu0uGs9UwcPRaHRlYja1z/LX7WiLgRQTJV5K7Jq6W3EtVH5GPe9DMdRNdOXSmcg==
-X-Received: by 2002:a05:600c:1c16:b0:434:a386:6cf with SMTP id
- 5b1f17b1804b1-4361c344b7emr29878255e9.2.1733934040246; 
- Wed, 11 Dec 2024 08:20:40 -0800 (PST)
+ bh=klkjETkK46JGPy4cr1z4ranKH2QbJ9BDEJxJzYH0IXk=;
+ b=TylJQ10qcWixTlbrEtjJ00FnTG/KPvrXnRQu4+XJy24bMQibnQgeJZ0cuDQbknCj5B
+ meh4X6Wq0A9ELps5focMRhMcyiwKziFoWmwWtxgfM1b4a/oAEBxyFn3aZbSM9tx1GGtv
+ j3JVY3VtQs5tKaiRZoKk/uNs2k/u3unJVFJb5hyJiGR/fPHfmfHvfejfsYH7mbc768SA
+ DR7SvruLMEDxJjvcTXSCWnBb/nEbySWo5MQK5TLu/Zo+aYWFhZnjb1u0zUtRZ96LAG/h
+ MMYyVKbwm/eobqG9grPYnSo6ATzGxUPhKGb7nM4XB3h82vlQli+3MZiJHia97HjCbXX4
+ Ibgg==
+X-Gm-Message-State: AOJu0YzDp2jSjgxh8D+iWTuioDDEA1kaIe69ZkjNuYEws/F8TPnXtyZt
+ /qKh2I6Sd3tmCxbJzWZnS9AxnNBm4kwwL/2qxSbsG7TlpiEed329sF64yfioq+3UGF1gRfIN1m+
+ B
+X-Gm-Gg: ASbGnctTpj6jHaUXdrhp9K9xUXwtHdr6JxgR1Pjo3u+u1Js6C0DL51EdpXBmejNXg7k
+ 2gLbMjOIY9bPpmwynDjheP6TDOmmlQLJlxw4RtjayYcHb+/7IvfhZ5hq6FGuQDxmT3hCGcLIDw9
+ aRMSnUQOngnoLj0M/l7b+8oU2cKN6BJ1SuY7Zl15n/05m0nl96PcPb8Y+fAGew+A9Vz8F/pGae8
+ FcxtQTaQqNgc+vlI+UK9YSb2SDo4bVeW0/MTfPiRJ7qY4tzif/PfDTd3GEs
+X-Google-Smtp-Source: AGHT+IFQE0RJDaztCcgLF64vEcbBGI9BO8Eo66BkUXxZ/4ZzeMrWkZw/u0ESYgGWRor+BQV1DgXttw==
+X-Received: by 2002:a05:600c:3109:b0:434:f335:855 with SMTP id
+ 5b1f17b1804b1-4361c441e47mr21076895e9.28.1733934041313; 
+ Wed, 11 Dec 2024 08:20:41 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-434f4dfdcdfsm121460595e9.39.2024.12.11.08.20.38
+ 5b1f17b1804b1-434f4dfdcdfsm121460595e9.39.2024.12.11.08.20.40
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 11 Dec 2024 08:20:38 -0800 (PST)
+ Wed, 11 Dec 2024 08:20:40 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 28/72] target/xtensa: Set Float3NaNPropRule explicitly
-Date: Wed, 11 Dec 2024 16:19:20 +0000
-Message-Id: <20241211162004.2795499-29-peter.maydell@linaro.org>
+Subject: [PULL 29/72] target/i386: Set Float3NaNPropRule explicitly
+Date: Wed, 11 Dec 2024 16:19:21 +0000
+Message-Id: <20241211162004.2795499-30-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241211162004.2795499-1-peter.maydell@linaro.org>
 References: <20241211162004.2795499-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x330.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x336.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,50 +95,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Set the Float3NaNPropRule explicitly for xtensa, and remove the
-ifdef from pickNaNMulAdd().
+Set the Float3NaNPropRule explicitly for i386.  We had no
+i386-specific behaviour in the old ifdef ladder, so we were using the
+default "prefer a then b then c" fallback; this is actually the
+correct per-the-spec handling for i386.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20241202131347.498124-24-peter.maydell@linaro.org
+Message-id: 20241202131347.498124-25-peter.maydell@linaro.org
 ---
- target/xtensa/fpu_helper.c     | 2 ++
- fpu/softfloat-specialize.c.inc | 8 --------
- 2 files changed, 2 insertions(+), 8 deletions(-)
+ target/i386/tcg/fpu_helper.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/target/xtensa/fpu_helper.c b/target/xtensa/fpu_helper.c
-index f2d212d05df..4b1b021d824 100644
---- a/target/xtensa/fpu_helper.c
-+++ b/target/xtensa/fpu_helper.c
-@@ -62,6 +62,8 @@ void xtensa_use_first_nan(CPUXtensaState *env, bool use_first)
-     set_use_first_nan(use_first, &env->fp_status);
-     set_float_2nan_prop_rule(use_first ? float_2nan_prop_ab : float_2nan_prop_ba,
-                              &env->fp_status);
-+    set_float_3nan_prop_rule(use_first ? float_3nan_prop_abc : float_3nan_prop_cba,
-+                             &env->fp_status);
+diff --git a/target/i386/tcg/fpu_helper.c b/target/i386/tcg/fpu_helper.c
+index 3295753e075..4303b3356aa 100644
+--- a/target/i386/tcg/fpu_helper.c
++++ b/target/i386/tcg/fpu_helper.c
+@@ -180,6 +180,7 @@ void cpu_init_fp_statuses(CPUX86State *env)
+      * there are multiple input NaNs they are selected in the order a, b, c.
+      */
+     set_float_infzeronan_rule(float_infzeronan_dnan_never, &env->sse_status);
++    set_float_3nan_prop_rule(float_3nan_prop_abc, &env->sse_status);
  }
  
- void HELPER(wur_fpu2k_fcr)(CPUXtensaState *env, uint32_t v)
-diff --git a/fpu/softfloat-specialize.c.inc b/fpu/softfloat-specialize.c.inc
-index 28db409d22c..67428dab98a 100644
---- a/fpu/softfloat-specialize.c.inc
-+++ b/fpu/softfloat-specialize.c.inc
-@@ -505,15 +505,7 @@ static int pickNaNMulAdd(FloatClass a_cls, FloatClass b_cls, FloatClass c_cls,
-     }
- 
-     if (rule == float_3nan_prop_none) {
--#if defined(TARGET_XTENSA)
--        if (status->use_first_nan) {
--            rule = float_3nan_prop_abc;
--        } else {
--            rule = float_3nan_prop_cba;
--        }
--#else
-         rule = float_3nan_prop_abc;
--#endif
-     }
- 
-     assert(rule != float_3nan_prop_none);
+ static inline uint8_t save_exception_flags(CPUX86State *env)
 -- 
 2.34.1
 
