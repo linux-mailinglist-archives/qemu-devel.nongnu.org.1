@@ -2,77 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3E659ED146
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Dec 2024 17:24:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 11FD49ED164
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Dec 2024 17:26:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tLPSy-0002A6-0G; Wed, 11 Dec 2024 11:21:36 -0500
+	id 1tLPSz-0002EY-Ki; Wed, 11 Dec 2024 11:21:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tLPSo-0001Si-JP
- for qemu-devel@nongnu.org; Wed, 11 Dec 2024 11:21:26 -0500
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ id 1tLPSp-0001XS-A2
+ for qemu-devel@nongnu.org; Wed, 11 Dec 2024 11:21:27 -0500
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tLPSm-0007uq-LX
- for qemu-devel@nongnu.org; Wed, 11 Dec 2024 11:21:26 -0500
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-434e69857d9so5486795e9.0
- for <qemu-devel@nongnu.org>; Wed, 11 Dec 2024 08:21:24 -0800 (PST)
+ id 1tLPSn-0007ux-GR
+ for qemu-devel@nongnu.org; Wed, 11 Dec 2024 11:21:27 -0500
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-436202dd7f6so6285435e9.0
+ for <qemu-devel@nongnu.org>; Wed, 11 Dec 2024 08:21:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1733934083; x=1734538883; darn=nongnu.org;
+ d=linaro.org; s=google; t=1733934084; x=1734538884; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=doRTkzLWp9CB3fDTzYDP5bn9+hyyRKBZGVgyCVKSal4=;
- b=sBH+xyer+4c0o2Dv1L66d4LSbAgPDGqhduB1yQiyLB2U5HwXBL8Xxp81JGIju5qk8/
- gRky1G2woe/gVFMeXpj521j1hA3RoHD14Xh4VHfxUsOKd3d4r0qycblnVjFqtSq+iGv8
- +STAuEAHVSBHj6gmFAEkQgmBgrcO+clC6Jc3IUjtargYm1U856w9l30yUVnhGzH1Qru6
- VEb1NRMJkWQpg+BPJu8COm6lePsKV/d3aMZKuBi3702Tc8u9yoONvIpJ0Hppv44qsj6s
- 3PLXOWAv0Skt8RQEtaJMiGLJxnQH44I5TikiG+336IfwI6X56/sPSGtjapNdUb5PNhnt
- YISg==
+ :reply-to; bh=E85lj8XRhj/Fk3RQPB/aLYeRqkABA8VMdndxVbT9joA=;
+ b=mqD6/oj+XSZNoVUCkC0+isFlnMbSzIcX+c+HNJlL8hBXVYC0OWGB3mD0RtDlXvrnUL
+ PsjFX6O9A37As22gLkvN/tAfYY0nZFczVnRD72ZBA0f6iQDY5qXJ1GhXgLaJd6SN3yYx
+ G29NxsLkit/3Rro/JjbydmEfY2hX9xvZ0avEZeeBVyeLe647FaKrFOBaQAU3fo8PZ9j0
+ vWNFo7ept3+UxuDMzae9QDGWrYk96kgwm7ikaY0vpBPkRaO2l1b2q5B7jDuxgFHRCkO1
+ Yfn4QUV5X2rhZYpBAJ2a6RB9lo+rzMe2RihwFczWSUSdvdEFvXCisG0T/xNzLXnujRei
+ /myA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733934083; x=1734538883;
+ d=1e100.net; s=20230601; t=1733934084; x=1734538884;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=doRTkzLWp9CB3fDTzYDP5bn9+hyyRKBZGVgyCVKSal4=;
- b=iPCc7M3VxV+EUVisBGj6/rZI63YJUETOX2LbISY0A5fz2T4q2thJlQafpaVU80qnof
- A0KKHrAzeN0Dp0Br5zByxhBB8x2d4PHHMmqrqqSz4vsVgjALXfDcM6smrzpnEqgsakVI
- rqoUdevRdsjeATrHzYgD+Ktlh/hdB0dZFk+w1D2fiNVpPnyMRbuFYCDIS6NXLa1EHV+u
- veyO/z0AOkZAObep20AbXCnrt8rOwVtnPiEQs+WSHl/G5iEHkBJRvlla8kgwvuDwzBKC
- /HvvsFBfugNONc1gmdZiVwVDDM+OrnwfqpRHA1WkCdDcwiKOt8HmET7XvTdWzU83LXds
- uIcw==
-X-Gm-Message-State: AOJu0YyfFg3IHN4Vvgv9QsLict1f1gh8i1o1kOOs6gkKoZuXypTe9acR
- RkiJ4/kzwUpq/j9Paid3sNZj/XwNayaH4WVWEZCwP1yG1as/9QsIhSCzmFoq/lYiw9WQJYdG1BU
- B
-X-Gm-Gg: ASbGncupf38z8khJ+bCp2KAku9EMZouyRSK9rm2QVgPHdKcgMooAhZYuKxZQVU845f+
- X2VGLduwwYVF/FQLQ5laNkUyHoojxN2PzpdBk9EG4B/UEpj2z7VyHuOeU3R2SknjLruBId/GPys
- jNWt9Vj9o6F1/6lrQg2M+T0daabfimva0yFQILg5TJ7mwEddcGHyk27UGGbxVr7S8mnXPbPDf2D
- ouN+K2w30dK1RRVmXBrbrlxn559o0hZ2Z/TCNojTZK/n2+eLyVc5x0goGb4
-X-Google-Smtp-Source: AGHT+IGZk0AK0IjKsvlbFKBNy84R/VVcxn9ZjMkUpngAEIQcm5aH6bJ+cITVGoddelnqsozCJmqZ/Q==
-X-Received: by 2002:a05:600c:c8a:b0:434:fddf:5c06 with SMTP id
- 5b1f17b1804b1-4361c5b8720mr25750205e9.1.1733934083222; 
- Wed, 11 Dec 2024 08:21:23 -0800 (PST)
+ bh=E85lj8XRhj/Fk3RQPB/aLYeRqkABA8VMdndxVbT9joA=;
+ b=H8eF4aueI66PEiBXrpPls2I7V7I8LOXF22y3snvKBQKq7kLX9UxCikGWtfFJv4rwBU
+ y3vBVzXuBovzcesRTc+2tbUxQCmyWzQo1pxXMGiYEgk5kCMgmvHZlG3kNHcfcByz0dD1
+ yRXKmrsnNHdneoTcfPAgQ9YDmOUvVApA/a8TCiH1E79lt9+u4e2jLchTC4Xii4tcD9M6
+ pD+JfCfJ3tTUAb/l4T0NtI6QGsVW1vNI0FRAxd8HhAIbHtU+50/JqW9EPLE3O+rAJowq
+ ziMPwAz7HkzJ4J5n7twdsNUU7JwuLogLuWkIAxb675bPquFloaNq2ltBtxJvkuCdK2Il
+ 7e+A==
+X-Gm-Message-State: AOJu0YyNTEm7agtE70uY967UkJ4p/gT+NJ+7Aumv0zfi5nCryEy9TR97
+ nfZPfUvHGccAge3sUP+9lVmM1v78pH/znYPbjbyGH0Yi7l1wHfZJVjhYeQEVPWkusj8xCrWplVL
+ a
+X-Gm-Gg: ASbGncseOvAVUw//tbOpsqJ1lOkfuWYheTALBOC8E656AfVvM1FEaYoLAhWfWSBoB1J
+ hePme0SGqpI9Zi3GoByF6a+HoKaZCwQSyvRY6sSJhvv1oJeezToVtHAG8EGkdJ3vAm6Xc/r26nD
+ NJ9ac7PTrgcnDWDJsDEongzIpluGj9iztYPRLOujYeuBj2t38hHRx9q4aKt88Pf1jU3bpDeCFo/
+ ygv+NW5nRvo9d6ij/8UWmU/B0u/kLsQheT7nG7lmHUKeZtKHL06n2SoDPng
+X-Google-Smtp-Source: AGHT+IHi5cWI9HumJccejp+wfPPknBU5WEKTBa1FEGvsjA+YUOV6I/k2m11jg3kEUIWFYlpsCdabRw==
+X-Received: by 2002:a05:600c:4e50:b0:431:5df7:b310 with SMTP id
+ 5b1f17b1804b1-43622832e88mr2983255e9.8.1733934084148; 
+ Wed, 11 Dec 2024 08:21:24 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-434f4dfdcdfsm121460595e9.39.2024.12.11.08.21.22
+ 5b1f17b1804b1-434f4dfdcdfsm121460595e9.39.2024.12.11.08.21.23
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 11 Dec 2024 08:21:22 -0800 (PST)
+ Wed, 11 Dec 2024 08:21:23 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 69/72] softfloat: Sink frac_cmp in parts_pick_nan until needed
-Date: Wed, 11 Dec 2024 16:20:01 +0000
-Message-Id: <20241211162004.2795499-70-peter.maydell@linaro.org>
+Subject: [PULL 70/72] softfloat: Replace WHICH with RET in parts_pick_nan
+Date: Wed, 11 Dec 2024 16:20:02 +0000
+Message-Id: <20241211162004.2795499-71-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241211162004.2795499-1-peter.maydell@linaro.org>
 References: <20241211162004.2795499-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x336.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x331.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,66 +98,100 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Richard Henderson <richard.henderson@linaro.org>
 
-Move the fractional comparison to the end of the
-float_2nan_prop_x87 case.  This is not required for
-any other 2nan propagation rule.  Reorganize the
-x87 case itself to break out of the switch when the
-fractional comparison is not required.
+Replace the "index" selecting between A and B with a result variable
+of the proper type.  This improves clarity within the function.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Message-id: 20241203203949.483774-11-richard.henderson@linaro.org
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-id: 20241203203949.483774-12-richard.henderson@linaro.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- fpu/softfloat-parts.c.inc | 19 +++++++++----------
- 1 file changed, 9 insertions(+), 10 deletions(-)
+ fpu/softfloat-parts.c.inc | 28 +++++++++++++---------------
+ 1 file changed, 13 insertions(+), 15 deletions(-)
 
 diff --git a/fpu/softfloat-parts.c.inc b/fpu/softfloat-parts.c.inc
-index 3c77dcbb154..abe24aeaa00 100644
+index abe24aeaa00..ba8de7be76e 100644
 --- a/fpu/softfloat-parts.c.inc
 +++ b/fpu/softfloat-parts.c.inc
-@@ -52,11 +52,6 @@ static FloatPartsN *partsN(pick_nan)(FloatPartsN *a, FloatPartsN *b,
-         return a;
-     }
+@@ -40,7 +40,8 @@ static FloatPartsN *partsN(pick_nan)(FloatPartsN *a, FloatPartsN *b,
+                                      float_status *s)
+ {
+     bool have_snan = false;
+-    int cmp, which;
++    FloatPartsN *ret;
++    int cmp;
  
--    cmp = frac_cmp(a, b);
--    if (cmp == 0) {
--        cmp = a->sign < b->sign;
--    }
--
+     if (is_snan(a->cls) || is_snan(b->cls)) {
+         float_raise(float_flag_invalid | float_flag_invalid_snan, s);
+@@ -55,21 +56,21 @@ static FloatPartsN *partsN(pick_nan)(FloatPartsN *a, FloatPartsN *b,
      switch (s->float_2nan_prop_rule) {
      case float_2nan_prop_s_ab:
          if (have_snan) {
-@@ -89,20 +84,24 @@ static FloatPartsN *partsN(pick_nan)(FloatPartsN *a, FloatPartsN *b,
-          * return the NaN with the positive sign bit (if any).
+-            which = is_snan(a->cls) ? 0 : 1;
++            ret = is_snan(a->cls) ? a : b;
+             break;
+         }
+         /* fall through */
+     case float_2nan_prop_ab:
+-        which = is_nan(a->cls) ? 0 : 1;
++        ret = is_nan(a->cls) ? a : b;
+         break;
+     case float_2nan_prop_s_ba:
+         if (have_snan) {
+-            which = is_snan(b->cls) ? 1 : 0;
++            ret = is_snan(b->cls) ? b : a;
+             break;
+         }
+         /* fall through */
+     case float_2nan_prop_ba:
+-        which = is_nan(b->cls) ? 1 : 0;
++        ret = is_nan(b->cls) ? b : a;
+         break;
+     case float_2nan_prop_x87:
+         /*
+@@ -85,35 +86,32 @@ static FloatPartsN *partsN(pick_nan)(FloatPartsN *a, FloatPartsN *b,
           */
          if (is_snan(a->cls)) {
--            if (is_snan(b->cls)) {
--                which = cmp > 0 ? 0 : 1;
--            } else {
-+            if (!is_snan(b->cls)) {
-                 which = is_qnan(b->cls) ? 1 : 0;
-+                break;
+             if (!is_snan(b->cls)) {
+-                which = is_qnan(b->cls) ? 1 : 0;
++                ret = is_qnan(b->cls) ? b : a;
+                 break;
              }
          } else if (is_qnan(a->cls)) {
              if (is_snan(b->cls) || !is_qnan(b->cls)) {
-                 which = 0;
--            } else {
--                which = cmp > 0 ? 0 : 1;
-+                break;
+-                which = 0;
++                ret = a;
+                 break;
              }
          } else {
-             which = 1;
-+            break;
+-            which = 1;
++            ret = b;
+             break;
          }
-+        cmp = frac_cmp(a, b);
-+        if (cmp == 0) {
-+            cmp = a->sign < b->sign;
-+        }
-+        which = cmp > 0 ? 0 : 1;
+         cmp = frac_cmp(a, b);
+         if (cmp == 0) {
+             cmp = a->sign < b->sign;
+         }
+-        which = cmp > 0 ? 0 : 1;
++        ret = cmp > 0 ? a : b;
          break;
      default:
          g_assert_not_reached();
+     }
+ 
+-    if (which) {
+-        a = b;
++    if (is_snan(ret->cls)) {
++        parts_silence_nan(ret, s);
+     }
+-    if (is_snan(a->cls)) {
+-        parts_silence_nan(a, s);
+-    }
+-    return a;
++    return ret;
+ }
+ 
+ static FloatPartsN *partsN(pick_nan_muladd)(FloatPartsN *a, FloatPartsN *b,
 -- 
 2.34.1
 
