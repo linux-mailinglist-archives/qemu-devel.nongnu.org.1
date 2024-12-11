@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62C6D9EC243
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Dec 2024 03:33:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E95969EC247
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Dec 2024 03:36:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tLCWY-0001QM-HU; Tue, 10 Dec 2024 21:32:29 -0500
+	id 1tLCa1-0003PA-9x; Tue, 10 Dec 2024 21:36:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tLCWN-0001Q8-Px
- for qemu-devel@nongnu.org; Tue, 10 Dec 2024 21:32:15 -0500
+ id 1tLCZx-0003Oz-W8
+ for qemu-devel@nongnu.org; Tue, 10 Dec 2024 21:35:58 -0500
 Received: from mgamail.intel.com ([198.175.65.9])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tLCWL-0003eo-Iw
- for qemu-devel@nongnu.org; Tue, 10 Dec 2024 21:32:15 -0500
+ id 1tLCZu-000469-9N
+ for qemu-devel@nongnu.org; Tue, 10 Dec 2024 21:35:55 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1733884333; x=1765420333;
+ t=1733884554; x=1765420554;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=qo3WvSNNEiH5rlzR0eOyduxBtXFY8hdFTDsVEJzvgUo=;
- b=OOy2PFjWXicTLhjLeKZ0Y43fZ1JkJHxEnddN2xWRVfFU22CSvzfI1sHT
- 1ZyUTWBOhx6uL5U+jhO1h1stH2o/4mERMgRI2Z2lU+pF6iV1v+NuQ4oQK
- XdY/BlEWFKKBMstgsTSOlQbRZig5xN+hnSu4Gpp1ClJYlITg9sf2Xz7g9
- qn6+PXaCZvfg+ESJs2zsE03d1L65ZlqXmAC5roqGs3dswuV2YYm9lZW0G
- KUbO5Ld+7516S7DAe4s3CWEKbSxim41P0MePixw3zi0YydSdxBpJA6fam
- /tZ7ML0FTcCRPKvUxsqp9P+6zX3ypO7veewhmbyf5zRoHH5yBJZ9RB0P2 g==;
-X-CSE-ConnectionGUID: 6OIgTggYQwivzMDib+X9oQ==
-X-CSE-MsgGUID: jFPzX6yBTg+yWrBB9X0XKw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11282"; a="56730283"
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="56730283"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ bh=xW4/4eTof//ZWgA2pABeuts83EI7xp8TFkcaPye/Xcc=;
+ b=T5BbIuNM0DRISMuHRRNKT3w9KvNI8Znta3W7JufBmIAocxFjheVGQmwr
+ kFBpElFqnfpowVcTB8dobH6OXH/fqxPMxVB7o0NdODAt6CCmivKXvwuA7
+ gaZRxnt0t5wweA+9//jV0dPyLZwRMdCLgjgyM6itkEdA02TOoE5TLLbI8
+ 6F08qP4o5RS5xN9bQW/f9tiWK3bFK3ON0ke6btrz8EN3oh3k61Th8ksJv
+ I2VqTMPFWpxQUqfYUbTY1m8lCClGZ8xk+OfxULf2IQSVdUvtNjMf7hg0m
+ 9JunIx9phaXT3gVk9aNNl5/UZGdSRNz5SIJb0/w3vK6Ic0Zg+17UHjA2w g==;
+X-CSE-ConnectionGUID: lx6yJe+PRpKi8CqWhJ/zMg==
+X-CSE-MsgGUID: K94ia15ASESyc/7nnz4Fqg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11282"; a="56730608"
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="56730608"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Dec 2024 18:32:09 -0800
-X-CSE-ConnectionGUID: DEQ99AOTSHyVL6JflpY4GA==
-X-CSE-MsgGUID: iEQ2RCzQRPq22m8odfE4CA==
+ 10 Dec 2024 18:35:52 -0800
+X-CSE-ConnectionGUID: Uz48BeXzSX6kLjOQPpHj2Q==
+X-CSE-MsgGUID: hOmMFJ4bTvyJ/9THPEVkMQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="100672187"
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="95431400"
 Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
  ([10.239.160.36])
- by orviesa004.jf.intel.com with ESMTP; 10 Dec 2024 18:32:06 -0800
-Date: Wed, 11 Dec 2024 10:50:20 +0800
+ by orviesa010.jf.intel.com with ESMTP; 10 Dec 2024 18:35:50 -0800
+Date: Wed, 11 Dec 2024 10:54:04 +0800
 From: Zhao Liu <zhao1.liu@intel.com>
-To: Igor Mammedov <imammedo@redhat.com>, Xiaoyao Li <xiaoyao.li@intel.com>
+To: Xiaoyao Li <xiaoyao.li@intel.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
  Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Igor Mammedov <imammedo@redhat.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Yanan Wang <wangyanan55@huawei.com>, "Michael S. Tsirkin" <mst@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Cameron Esfahani <dirty@apple.com>, Roman Bolshakov <rbolshakov@ddn.com>,
- Marcelo Tosatti <mtosatti@redhat.com>, qemu-devel@nongnu.org,
- Zhao Liu <zhao1.liu@intel.com>
-Subject: Re: [RFC PATCH 3/4] i386: Track cores_per_module in CPUX86State
-Message-ID: <Z1j97K+xpgIp6sYc@intel.com>
+ Marcelo Tosatti <mtosatti@redhat.com>, qemu-devel@nongnu.org
+Subject: Re: [RFC PATCH 1/4] i386/topology: Update the comment of
+ x86_apicid_from_topo_ids()
+Message-ID: <Z1j+zDk0w66tReuf@intel.com>
 References: <20241205145716.472456-1-xiaoyao.li@intel.com>
- <20241205145716.472456-4-xiaoyao.li@intel.com>
- <20241210174338.0fb05ecf@imammedo.users.ipa.redhat.com>
+ <20241205145716.472456-2-xiaoyao.li@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241210174338.0fb05ecf@imammedo.users.ipa.redhat.com>
+In-Reply-To: <20241205145716.472456-2-xiaoyao.li@intel.com>
 Received-SPF: pass client-ip=198.175.65.9; envelope-from=zhao1.liu@intel.com;
  helo=mgamail.intel.com
 X-Spam_score_int: -48
@@ -89,61 +89,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Dec 10, 2024 at 05:43:38PM +0100, Igor Mammedov wrote:
-> Date: Tue, 10 Dec 2024 17:43:38 +0100
-> From: Igor Mammedov <imammedo@redhat.com>
-> Subject: Re: [RFC PATCH 3/4] i386: Track cores_per_module in CPUX86State
-> X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
+On Thu, Dec 05, 2024 at 09:57:13AM -0500, Xiaoyao Li wrote:
+> Date: Thu, 5 Dec 2024 09:57:13 -0500
+> From: Xiaoyao Li <xiaoyao.li@intel.com>
+> Subject: [RFC PATCH 1/4] i386/topology: Update the comment of
+>  x86_apicid_from_topo_ids()
+> X-Mailer: git-send-email 2.34.1
 > 
-> On Thu,  5 Dec 2024 09:57:15 -0500
-> Xiaoyao Li <xiaoyao.li@intel.com> wrote:
+> Update the comment of x86_apicid_from_topo_ids() to match the current
+> implementation,
 > 
-> > x86 is the only user of CPUState::nr_cores.
-> > 
-> > Define cores_per_module in CPUX86State, which can serve as the
-> > substitute of CPUState::nr_cores. After x86 switches to use
-> > CPUX86State::cores_per_module, CPUState::nr_cores will lose the only
-> > user and QEMU can drop it.
-> > 
-> > Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
-> > ---
-> >  hw/i386/x86-common.c | 2 ++
-> >  target/i386/cpu.c    | 2 +-
-> >  target/i386/cpu.h    | 9 +++++++--
-> >  3 files changed, 10 insertions(+), 3 deletions(-)
-> > 
-> > diff --git a/hw/i386/x86-common.c b/hw/i386/x86-common.c
-> > index dc031af66217..f7a20c1da30c 100644
-> > --- a/hw/i386/x86-common.c
-> > +++ b/hw/i386/x86-common.c
-> > @@ -271,6 +271,8 @@ void x86_cpu_pre_plug(HotplugHandler *hotplug_dev,
-> >  
-> >      init_topo_info(&topo_info, x86ms);
-> >  
-> > +    env->nr_cores = ms->smp.cores;
-> this doesn't look like the same as in qemu_init_vcpu(),
-> which uses machine_topo_get_cores_per_socket()
-> Can you clarify the change?
+> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+> ---
+>  include/hw/i386/topology.h | 5 +++--
+>  1 file changed, 3 insertions(+), 2 deletions(-)
+> 
+> diff --git a/include/hw/i386/topology.h b/include/hw/i386/topology.h
+> index b2c8bf2de158..21b65219a5ca 100644
+> --- a/include/hw/i386/topology.h
+> +++ b/include/hw/i386/topology.h
+> @@ -121,9 +121,10 @@ static inline unsigned apicid_pkg_offset(X86CPUTopoInfo *topo_info)
+>  }
+>  
+>  /*
+> - * Make APIC ID for the CPU based on Pkg_ID, Core_ID, SMT_ID
+> + * Make APIC ID for the CPU based on topology and IDs of each topology level.
 
-I think Xiaoyao is correct here. CPUState.nr_cores means number of cores
-in socket, and current CPUX86State.nr_cores means number of cores per
-module (or parent container) ...though they have same name. (It's better
-to mention the such difference in commit message.)
+Maybe "based on sub-topology ID"?
 
-However, I also think that names like nr_cores or nr_* are prone to
-errors. Names like cores_per_module are clearer, similar to the naming
-in X86CPUTopoInfo. This might be an opportunity to clean up the current
-nr_* naming convention.
+Otherwise,
 
-And further, we can directly cache two additional items in CPUX86State:
-threads_per_pkg and cores_per_pkg, as these are the most common
-calculations and can help avoid missing any topology levels.
-
-I think both of these changes can be made on top of the current series.
-
-@xiaoyao, do you agree?
-
-Regards,
-Zhao
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
 
