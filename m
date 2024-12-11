@@ -2,86 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59EF09ED28B
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Dec 2024 17:47:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 888ED9ED262
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Dec 2024 17:43:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tLPht-0001an-W5; Wed, 11 Dec 2024 11:37:02 -0500
+	id 1tLPiK-0003sC-TT; Wed, 11 Dec 2024 11:37:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tLPhj-00017b-8G
- for qemu-devel@nongnu.org; Wed, 11 Dec 2024 11:36:51 -0500
-Received: from mail-qv1-xf30.google.com ([2607:f8b0:4864:20::f30])
+ id 1tLPho-0001Ss-Iq
+ for qemu-devel@nongnu.org; Wed, 11 Dec 2024 11:36:56 -0500
+Received: from mail-qv1-xf2e.google.com ([2607:f8b0:4864:20::f2e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tLPhe-0002I5-Ua
- for qemu-devel@nongnu.org; Wed, 11 Dec 2024 11:36:49 -0500
-Received: by mail-qv1-xf30.google.com with SMTP id
- 6a1803df08f44-6d8edad9932so39772606d6.0
- for <qemu-devel@nongnu.org>; Wed, 11 Dec 2024 08:36:46 -0800 (PST)
+ id 1tLPhm-0002Jx-D0
+ for qemu-devel@nongnu.org; Wed, 11 Dec 2024 11:36:56 -0500
+Received: by mail-qv1-xf2e.google.com with SMTP id
+ 6a1803df08f44-6d8a3e99e32so55392046d6.2
+ for <qemu-devel@nongnu.org>; Wed, 11 Dec 2024 08:36:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1733935006; x=1734539806; darn=nongnu.org;
+ d=linaro.org; s=google; t=1733935013; x=1734539813; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=fmnG9zV0F6eG9aGozAfqS/Ir0uR/PDhoKeXguNvBnYQ=;
- b=aIma41Ndsti+hWY0C2DhLuq0j9eh8aQB0zsC1+Gw7+0yc8Q/HLQ6sz0IRdZjAX94U4
- q0kMxzAO5CKI3F3C/YWG98wbpwILTv2iQzFImDGasUuEu0eKkCIJg7mSzTEZb3CDS8sw
- SD5RPMRjZFypQ8HsMy0mVyc/wGlkJlyduDJ7c00WUMzDRnk1sfLnkgCyDkrvSFxnqztH
- CvmdyJgOyzcNZpov85SPAcWTPTMb31ulZjqb//v6pc3OClQxU5Tv6PS/E+s1cqlwyWMO
- vFxRGXiJIOeU+uPw7OwvYsM78mclOJYOXFt+vN25x2ogyR1OyNOtCiR+Un3594LT/4P8
- csYw==
+ bh=liAAdjYKod9NdKwXJas+WzjDNtaLglsOGyeZ0ckUOos=;
+ b=rX0MazkyTVm7MUprROHcs4uAUUtD0Js36kYyXfW786IxejgK42U1VHyplR2cPgquM0
+ s7hLyIhRgBlJk4B3TRpwJz8cqx95GGcnzUqxa2Ifp5pn6regXTcbLGuxAMbizMWgTToQ
+ KY7lUzK6ntU5m/V3WOnOrdqdCptHY+ox7sN+4SWa5mVObQPAbPDdt4GivnZLITTujEDC
+ 499HNmZhAG4SYFSTN2A9vdBkUpylsmN7U2qsSpM105ZToIl9ynZvODn7k2bA1kQKJ8QQ
+ tyxslwR2wY15JKGbCNR4fBcTw93HsmjC2eTPRKDyV7PPLXknWVzEUtzg+fJ2hck2q2ky
+ urSQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733935006; x=1734539806;
+ d=1e100.net; s=20230601; t=1733935013; x=1734539813;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=fmnG9zV0F6eG9aGozAfqS/Ir0uR/PDhoKeXguNvBnYQ=;
- b=T7UXYBxwgQiR5/MfQ0fpwmfj0SKEZc4JkgEy8xZSlCci99BmCms7lA1/Z1m/erRp3G
- /3HFVcNh0UT6ECqdDyHweuRzI7dgSdEbUqeVzrWBxTHAu0/8YpSvNbrGrKZzD6zEd1MO
- pNMmNXXFpFHrjgYxVnhQrjhVoBEerE0YeddtS30/zmAEGfrBt/1Sz/1rDQOT5WdTxehS
- UXsmcw8NNnEk73zjGBsi/JUf1grcxi80SJTpu14hucfZx/EIl0H5FLR3aQ7q87e4gTFK
- 6cGeHIaWaRO0C2oOUarXEeBEemvizeJ/qo5QO5g9mE5SNDcpGsUbq4ELf6h7Iw/lYju4
- wpNQ==
-X-Gm-Message-State: AOJu0YyrhSuxNKrIK2snIyeGvwGllVgvt8b7IhL922aW76fE+uVPle9o
- 19LZu6Om3kUEWUeWgZf1Re7MWMLj3TD/sIe7jdPEkuY1AWQWDaGqX4syQ+r2GEA4XfE9N+DBqcv
- jRC14mLyJ
-X-Gm-Gg: ASbGncuH84/BgqaVYbhzM70kNJfCt5DHeeSzgy/75ER5+6k34XpA6JgGvVDiMiSh8Vz
- H/fGxJCi72q3c3+GuJdGCaej8gFMc2nN5iVUaGPvRk5EdfCgYUtlhoDlGE3UQ6QhmzpKfkYlhGq
- p09t4BxyyJadykDEMptn8jzkUXEGWN6TlvdvuLj3O7JK7WjhCuQvz/PCe0N4y6KD1tekHPmpx6Q
- s6iRSNkfEoQraIIiuEsdFxdhQjRYtc7tmWA4Nlgrv+9w+/4JYXrcAOhwJJheTOC
-X-Google-Smtp-Source: AGHT+IFBd3cJqmsJ1L3Ue+YKTl457Vp+Teq+yBMdM/6g53Bha81Eh5orhZqsw5hlukfzIxg6PrasDQ==
-X-Received: by 2002:ad4:518e:0:b0:6da:dbf0:962a with SMTP id
- 6a1803df08f44-6dadbf0985dmr29519856d6.9.1733935005974; 
- Wed, 11 Dec 2024 08:36:45 -0800 (PST)
+ bh=liAAdjYKod9NdKwXJas+WzjDNtaLglsOGyeZ0ckUOos=;
+ b=L0/u1JzQgJ9O1MfTHKAURfRvJgK4HKJbkWKfzIYxS0+G0P0qsW5IYMcq9zuGNtoA4Y
+ F/sVNdfG3c+I+/WO8jraIpdlMtili3YpceTcyixz+pMoUZM/YL1BrNcANb/2aPoEKXgY
+ Yb1JnZcnMfCgagz0/3fxJT9hnwaIDrdDPbdRJ69MzGfhINnSce4Q6J5IH9Z/a4poI77G
+ axJCpw/uMYxCY9m+LVYRUKFUR5u7hkSTnvc6j79E45+As61cXi4Efx5R1oFtjrTwKeNR
+ 0+41xLDo+sL+GXD05ekh7DVx/ZDpl9WJrk/zAFCBFGK9QbqJslVyoaj8lXWE0S25MB7c
+ EmdA==
+X-Gm-Message-State: AOJu0YzkUMvZLpQduacsYX94moM1joK1Sm7L3V7XNyngkt6fu8WdNv4c
+ LaNgkreErtU4I6Jy7TPLHwcVyxCo0/Hrlnf1+232B35A0wcWRgMMqZppFu6FQf0rnh4Pgf8HFqB
+ Al6PWIJ2r
+X-Gm-Gg: ASbGncvr0WzPhcNE5dy/ZQCdIsrlUjSKxSTzesk2erQoKPGGCRzyApitTlxYNhgW6pE
+ bpbfuNBb6EBXTJGV2XWzn9hjOn3hj1yaDdvKz8V34bi4lWyoPMPNM+xLzDnR8qlBAsOFDnS06Wq
+ MhUzoQlI78eSiBGAyUbXTOXh0objeHWdYVUMzOlPPwc7D5monYe/aBkGS+0BDz+qttJYHQpQEGW
+ BjiZLvny+4sYQh2hHvsHj2HnO8LDs9euEDzMDivwrDFR/IivglG+dc3hEKX8Q==
+X-Google-Smtp-Source: AGHT+IHK3jgkhsKwjId1JVRniVrZDenY93pg0Hp6bunFGsPQL7Eu4FMjZyw/t6qbr891aJLsF8Qh4A==
+X-Received: by 2002:a05:6214:20ee:b0:6d8:9660:8877 with SMTP id
+ 6a1803df08f44-6d934b0e2bemr70592696d6.18.1733935013479; 
+ Wed, 11 Dec 2024 08:36:53 -0800 (PST)
 Received: from stoup.. ([187.217.227.247]) by smtp.gmail.com with ESMTPSA id
- 6a1803df08f44-6d8da675214sm71856276d6.11.2024.12.11.08.36.44
+ 6a1803df08f44-6d8da675214sm71856276d6.11.2024.12.11.08.36.51
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 11 Dec 2024 08:36:45 -0800 (PST)
+ Wed, 11 Dec 2024 08:36:53 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org,
 	Peter Maydell <peter.maydell@linaro.org>
-Subject: [PATCH v3 60/69] target/arm: Convert [US]CVTF (vector,
- fixed-point) scalar to decodetree
-Date: Wed, 11 Dec 2024 10:30:27 -0600
-Message-ID: <20241211163036.2297116-61-richard.henderson@linaro.org>
+Subject: [PATCH v3 61/69] target/arm: Rename helper_gvec_vcvt_[hf][su] with _rz
+Date: Wed, 11 Dec 2024 10:30:28 -0600
+Message-ID: <20241211163036.2297116-62-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241211163036.2297116-1-richard.henderson@linaro.org>
 References: <20241211163036.2297116-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::f30;
- envelope-from=richard.henderson@linaro.org; helo=mail-qv1-xf30.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::f2e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-qv1-xf2e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,100 +96,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Remove disas_simd_scalar_shift_imm as these were the
-last insns decoded by that function.
+Emphasize that these functions use round-to-zero mode.
 
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/tcg/translate-a64.c | 47 ----------------------------------
- target/arm/tcg/a64.decode      |  8 ++++++
- 2 files changed, 8 insertions(+), 47 deletions(-)
+ target/arm/helper.h             | 8 ++++----
+ target/arm/tcg/translate-neon.c | 8 ++++----
+ target/arm/tcg/vec_helper.c     | 8 ++++----
+ 3 files changed, 12 insertions(+), 12 deletions(-)
 
-diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
-index 6e9d040ebf..08f24908a4 100644
---- a/target/arm/tcg/translate-a64.c
-+++ b/target/arm/tcg/translate-a64.c
-@@ -9531,52 +9531,6 @@ static void handle_simd_shift_fpint_conv(DisasContext *s, bool is_scalar,
-     gen_restore_rmode(tcg_rmode, tcg_fpstatus);
- }
+diff --git a/target/arm/helper.h b/target/arm/helper.h
+index 04e422ab08..f2cfee40de 100644
+--- a/target/arm/helper.h
++++ b/target/arm/helper.h
+@@ -650,13 +650,13 @@ DEF_HELPER_FLAGS_4(gvec_touizs, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
  
--/* AdvSIMD scalar shift by immediate
-- *  31 30  29 28         23 22  19 18  16 15    11  10 9    5 4    0
-- * +-----+---+-------------+------+------+--------+---+------+------+
-- * | 0 1 | U | 1 1 1 1 1 0 | immh | immb | opcode | 1 |  Rn  |  Rd  |
-- * +-----+---+-------------+------+------+--------+---+------+------+
-- *
-- * This is the scalar version so it works on a fixed sized registers
-- */
--static void disas_simd_scalar_shift_imm(DisasContext *s, uint32_t insn)
--{
--    int rd = extract32(insn, 0, 5);
--    int rn = extract32(insn, 5, 5);
--    int opcode = extract32(insn, 11, 5);
--    int immb = extract32(insn, 16, 3);
--    int immh = extract32(insn, 19, 4);
--    bool is_u = extract32(insn, 29, 1);
--
--    if (immh == 0) {
--        unallocated_encoding(s);
--        return;
--    }
--
--    switch (opcode) {
--    case 0x1c: /* SCVTF, UCVTF */
--        handle_simd_shift_intfp_conv(s, true, false, is_u, immh, immb,
--                                     opcode, rn, rd);
--        break;
--    default:
--    case 0x00: /* SSHR / USHR */
--    case 0x02: /* SSRA / USRA */
--    case 0x04: /* SRSHR / URSHR */
--    case 0x06: /* SRSRA / URSRA */
--    case 0x08: /* SRI */
--    case 0x0a: /* SHL / SLI */
--    case 0x0c: /* SQSHLU */
--    case 0x0e: /* SQSHL, UQSHL */
--    case 0x10: /* SQSHRUN */
--    case 0x11: /* SQRSHRUN */
--    case 0x12: /* SQSHRN, UQSHRN */
--    case 0x13: /* SQRSHRN, UQRSHRN */
--    case 0x1f: /* FCVTZS, FCVTZU */
--        unallocated_encoding(s);
--        break;
--    }
--}
--
- static void handle_2misc_64(DisasContext *s, int opcode, bool u,
-                             TCGv_i64 tcg_rd, TCGv_i64 tcg_rn,
-                             TCGv_i32 tcg_rmode, TCGv_ptr tcg_fpstatus)
-@@ -10476,7 +10430,6 @@ static const AArch64DecodeTable data_proc_simd[] = {
-     { 0x0e200800, 0x9f3e0c00, disas_simd_two_reg_misc },
-     { 0x0f000400, 0x9f800400, disas_simd_shift_imm },
-     { 0x5e200800, 0xdf3e0c00, disas_simd_scalar_two_reg_misc },
--    { 0x5f000400, 0xdf800400, disas_simd_scalar_shift_imm },
-     { 0x0e780800, 0x8f7e0c00, disas_simd_two_reg_misc_fp16 },
-     { 0x00000000, 0x00000000, NULL }
- };
-diff --git a/target/arm/tcg/a64.decode b/target/arm/tcg/a64.decode
-index 146500d9c4..30e1834d99 100644
---- a/target/arm/tcg/a64.decode
-+++ b/target/arm/tcg/a64.decode
-@@ -1699,6 +1699,14 @@ FCVTAU_f        0111 1110 0.1 00001 11001 0 ..... .....     @icvt_sd
- @fcvt_fixed_d   .... .... . 1 ...... ...... rn:5 rd:5       \
-                 &fcvt sf=0 esz=3 shift=%fcvt_f_sh_d
+ DEF_HELPER_FLAGS_4(gvec_vcvt_sf, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
+ DEF_HELPER_FLAGS_4(gvec_vcvt_uf, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
+-DEF_HELPER_FLAGS_4(gvec_vcvt_fs, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
+-DEF_HELPER_FLAGS_4(gvec_vcvt_fu, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
++DEF_HELPER_FLAGS_4(gvec_vcvt_rz_fs, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
++DEF_HELPER_FLAGS_4(gvec_vcvt_rz_fu, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
  
-+SCVTF_f         0101 1111 0 ....... 111001 ..... .....      @fcvt_fixed_h
-+SCVTF_f         0101 1111 0 ....... 111001 ..... .....      @fcvt_fixed_s
-+SCVTF_f         0101 1111 0 ....... 111001 ..... .....      @fcvt_fixed_d
-+
-+UCVTF_f         0111 1111 0 ....... 111001 ..... .....      @fcvt_fixed_h
-+UCVTF_f         0111 1111 0 ....... 111001 ..... .....      @fcvt_fixed_s
-+UCVTF_f         0111 1111 0 ....... 111001 ..... .....      @fcvt_fixed_d
-+
- FCVTZS_f        0101 1111 0 ....... 111111 ..... .....      @fcvt_fixed_h
- FCVTZS_f        0101 1111 0 ....... 111111 ..... .....      @fcvt_fixed_s
- FCVTZS_f        0101 1111 0 ....... 111111 ..... .....      @fcvt_fixed_d
+ DEF_HELPER_FLAGS_4(gvec_vcvt_sh, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
+ DEF_HELPER_FLAGS_4(gvec_vcvt_uh, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
+-DEF_HELPER_FLAGS_4(gvec_vcvt_hs, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
+-DEF_HELPER_FLAGS_4(gvec_vcvt_hu, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
++DEF_HELPER_FLAGS_4(gvec_vcvt_rz_hs, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
++DEF_HELPER_FLAGS_4(gvec_vcvt_rz_hu, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
+ 
+ DEF_HELPER_FLAGS_4(gvec_vcvt_rm_ss, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
+ DEF_HELPER_FLAGS_4(gvec_vcvt_rm_us, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
+diff --git a/target/arm/tcg/translate-neon.c b/target/arm/tcg/translate-neon.c
+index b9b3d1c1fb..f9ca889bec 100644
+--- a/target/arm/tcg/translate-neon.c
++++ b/target/arm/tcg/translate-neon.c
+@@ -1409,13 +1409,13 @@ static bool do_fp_2sh(DisasContext *s, arg_2reg_shift *a,
+ 
+ DO_FP_2SH(VCVT_SF, gen_helper_gvec_vcvt_sf)
+ DO_FP_2SH(VCVT_UF, gen_helper_gvec_vcvt_uf)
+-DO_FP_2SH(VCVT_FS, gen_helper_gvec_vcvt_fs)
+-DO_FP_2SH(VCVT_FU, gen_helper_gvec_vcvt_fu)
++DO_FP_2SH(VCVT_FS, gen_helper_gvec_vcvt_rz_fs)
++DO_FP_2SH(VCVT_FU, gen_helper_gvec_vcvt_rz_fu)
+ 
+ DO_FP_2SH(VCVT_SH, gen_helper_gvec_vcvt_sh)
+ DO_FP_2SH(VCVT_UH, gen_helper_gvec_vcvt_uh)
+-DO_FP_2SH(VCVT_HS, gen_helper_gvec_vcvt_hs)
+-DO_FP_2SH(VCVT_HU, gen_helper_gvec_vcvt_hu)
++DO_FP_2SH(VCVT_HS, gen_helper_gvec_vcvt_rz_hs)
++DO_FP_2SH(VCVT_HU, gen_helper_gvec_vcvt_rz_hu)
+ 
+ static bool do_1reg_imm(DisasContext *s, arg_1reg_imm *a,
+                         GVecGen2iFn *fn)
+diff --git a/target/arm/tcg/vec_helper.c b/target/arm/tcg/vec_helper.c
+index 60381258cf..282dba4bfd 100644
+--- a/target/arm/tcg/vec_helper.c
++++ b/target/arm/tcg/vec_helper.c
+@@ -2507,12 +2507,12 @@ DO_3OP_PAIR(gvec_uminp_s, MIN, uint32_t, H4)
+ 
+ DO_VCVT_FIXED(gvec_vcvt_sf, helper_vfp_sltos, uint32_t)
+ DO_VCVT_FIXED(gvec_vcvt_uf, helper_vfp_ultos, uint32_t)
+-DO_VCVT_FIXED(gvec_vcvt_fs, helper_vfp_tosls_round_to_zero, uint32_t)
+-DO_VCVT_FIXED(gvec_vcvt_fu, helper_vfp_touls_round_to_zero, uint32_t)
++DO_VCVT_FIXED(gvec_vcvt_rz_fs, helper_vfp_tosls_round_to_zero, uint32_t)
++DO_VCVT_FIXED(gvec_vcvt_rz_fu, helper_vfp_touls_round_to_zero, uint32_t)
+ DO_VCVT_FIXED(gvec_vcvt_sh, helper_vfp_shtoh, uint16_t)
+ DO_VCVT_FIXED(gvec_vcvt_uh, helper_vfp_uhtoh, uint16_t)
+-DO_VCVT_FIXED(gvec_vcvt_hs, helper_vfp_toshh_round_to_zero, uint16_t)
+-DO_VCVT_FIXED(gvec_vcvt_hu, helper_vfp_touhh_round_to_zero, uint16_t)
++DO_VCVT_FIXED(gvec_vcvt_rz_hs, helper_vfp_toshh_round_to_zero, uint16_t)
++DO_VCVT_FIXED(gvec_vcvt_rz_hu, helper_vfp_touhh_round_to_zero, uint16_t)
+ 
+ #undef DO_VCVT_FIXED
+ 
 -- 
 2.43.0
 
