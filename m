@@ -2,120 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C4E89ED174
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Dec 2024 17:27:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C576C9ED1E2
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Dec 2024 17:32:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tLPSq-0001S1-2o; Wed, 11 Dec 2024 11:21:28 -0500
+	id 1tLPYv-00005w-Ev; Wed, 11 Dec 2024 11:27:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1tLPSa-00016l-3z
- for qemu-devel@nongnu.org; Wed, 11 Dec 2024 11:21:12 -0500
-Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1tLPSY-0007qV-FS
- for qemu-devel@nongnu.org; Wed, 11 Dec 2024 11:21:11 -0500
-Received: by mail-pf1-x430.google.com with SMTP id
- d2e1a72fcca58-725ee27e905so3832340b3a.2
- for <qemu-devel@nongnu.org>; Wed, 11 Dec 2024 08:21:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1733934069; x=1734538869; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=R/8rIeF0TDteUXFj/RITr0ALWgOxAOP826Or7EBLfgI=;
- b=FEE+LKhXGE08VpF+W4P8Zs6wisfopXMBFmIkTWROy8c6gg/sq5rbi7EGCqMxrENH2M
- AjpXZR4xy+pQTWrJPDP4jv2n5mBcpphGimluQHUy0ppvdQBggISh+eM9r+Vq1aqXEQU/
- M04WNTTxGk+wuuS7aJQDltYHOfTXA+FUetQg6GeHqqStlGuofCJsDghmAt2SEcMoZNLK
- A/0+btIvmMLDapEi4OuOEMKai+ZQMF1PQ2V+CcS3O4W7SQyuZeeSEm3fst62le5QpXjV
- qRjplf8bQ+lGpK3hUIbHOSXTIdZcPtvgO886XHoXVUG878r51MtVo+DEPziXVcWw926x
- jZ4g==
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1tLPYl-0008Ao-EJ
+ for qemu-devel@nongnu.org; Wed, 11 Dec 2024 11:27:35 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1tLPYh-0000Cn-Hx
+ for qemu-devel@nongnu.org; Wed, 11 Dec 2024 11:27:35 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1733934450;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=Vcbh0wU54u4cln27mRHhUKd6cSh5sGI+hr+czhapRFQ=;
+ b=Kzzr0umiF4oE/KkAjQZLSlUB0Xo3yronOuz0xvwQLpDeilPyNYZWZjsk8e6qy8OImXLQJc
+ yIvKyhoZ1E/BKcAZXJICYVXHmv5rsFQrwql4gDwUDyfrXykN60IEZeQ+qk8QKdtTHPhyBA
+ m0l45ZdcUowjRbyWvCsWPEPO8BdsiOk=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-280-eMk01x7YPnqVe9A8A-DySg-1; Wed, 11 Dec 2024 11:27:25 -0500
+X-MC-Unique: eMk01x7YPnqVe9A8A-DySg-1
+X-Mimecast-MFC-AGG-ID: eMk01x7YPnqVe9A8A-DySg
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-385e27c5949so4177073f8f.3
+ for <qemu-devel@nongnu.org>; Wed, 11 Dec 2024 08:27:25 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733934069; x=1734538869;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=R/8rIeF0TDteUXFj/RITr0ALWgOxAOP826Or7EBLfgI=;
- b=vBpFQdUeezNi6ZhcMXNwaeF8/K29+ZGIDY9qDnSvndrESm3tKqPfq+SzL00CaG64Dp
- udclxO9pZHJWpitU4bHATdp/ZS2NEZBGeO4XyONnIkSheRBDGyaDAXyhnfE/gL5anr3B
- iuE75Vbd5iJuR2S2SVy6RO8X1MzncRpa1oy4QglJRjhi1WmAC6heLgqhPGKixMnX7mqp
- zoSN5fbnt0INM/y1uz3ZhAN6GeNPJDFskbFRN+yy/cJKZkr4beNbkM1h9JZBuj5Urm3d
- AK8mNaVWvFCcXp9aO/qHiUFR+5DNuFnI5jrIPQPMkeFMAcIHHJrK10SwO0m4He+y04CT
- +UQw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVVrWegkqK4ABTllxH7KR/Yy+iCXxZuyDC8maKFewTuscdKbh1W8T5Eq01A/un8KnsITv5/HTj46aCy@nongnu.org
-X-Gm-Message-State: AOJu0YyoNUf0CKYQ92vAVWxkTIMu0Mdt9czlV2HsB2XWxFgeK2t8JP6T
- eZL/D/REYUzOGQtA+v8oFiUkDXnX5rXThtiqLg8pn0OpqiZZjmm5rqe6yaHozEo=
-X-Gm-Gg: ASbGncvEkIQdCTdhg5ylY0anPCdVCV12B62i2xQ9vWURKaRz5ZJCZs5+wxlOOylswPK
- DqQMqJZLBF3ruzqi0l141MqSlDoINSUMLR3OkMV0s6buOGE1cmvhdyZ0l5SO0lOkaONSyxyVK4A
- KLYpkfhAQE5s7ntKbV7a6kFhQQL0564eBUT/JCzg0rEcVqT3ahqWi7MB5sPAHoAKNB04vcyO+uf
- 3Hc0QVJ08T6F5VHbfFR3wkG3n5TNiI9olgq1L7dCY46NUl5mQ+pAC93IFHAgDgaSMS5o2a6KGwy
- iOXDyQv/EQKbTgaG8JLcbIqEDg==
-X-Google-Smtp-Source: AGHT+IHVEtZAk+HzNzF2+zrLOq2c1LiYiL0X2EinosbU0WqAKvQRBhnLix7+bf2/ztLjZteojuXsRw==
-X-Received: by 2002:a05:6a21:e92:b0:1db:eff0:6ae7 with SMTP id
- adf61e73a8af0-1e1cdb2359emr637538637.33.1733934068701; 
- Wed, 11 Dec 2024 08:21:08 -0800 (PST)
-Received: from [192.168.1.67] (216-180-64-156.dyn.novuscom.net.
- [216.180.64.156]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-725d36e66e1sm7811131b3a.178.2024.12.11.08.21.07
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 11 Dec 2024 08:21:08 -0800 (PST)
-Message-ID: <41bb7f1a-35b7-4f38-b8cc-9b40bb3da1ed@linaro.org>
-Date: Wed, 11 Dec 2024 08:21:06 -0800
+ d=1e100.net; s=20230601; t=1733934443; x=1734539243;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Vcbh0wU54u4cln27mRHhUKd6cSh5sGI+hr+czhapRFQ=;
+ b=jjhKekdrhcLFpC27fiV9JCufoC4QdhiFG7Oep1MtFL1+JHdutx8k9+vZbB/sSSSp12
+ lQZ2vVg7qg8/aUQP3VLhSFA0dUB96XMv+QhxigXp39zPrIWb51gUYr+hkwXbHzr5DQkW
+ WOhlxhSwKyghMCW7n7G6i7E76ur5x7ennlnu580F9C0WqUz3H3OffHGnb5+3ZLGFqL6K
+ 0Ls2WGBJqehXJyfGAgQfZrBou7lSTQ060K2sCnOjsv4NVasTdW90xJpcPEPMHql70Gzh
+ D9bx1ulL+ibudk6S3Y/ZDMBOzOTrdQuVCnTqCXdH/fvV3fk+DTPqLURZwVsAChpB68kt
+ djpQ==
+X-Gm-Message-State: AOJu0Yx5H8nE1xc7gowZKUbwFFKpbuR5UR6bvRGX3e66qDXzBxjBtiHd
+ HkdkYQD2TpZS5qL5g3HJz9OmCFNvlWBLXtYIqBbWOdE4XXoExx2rDsMWW7AV90KIyc7OzkXNsCD
+ aIJmwYsIxhdTyiq0yjGrtrvgKb8+RU4Wak9V3EXl12pyt9z975Q2LX/En24BdG1h4zkL3R8bF+z
+ hByuJhmAWMKZr+DbxY5ouBJalyyP6w7CTFykbc
+X-Gm-Gg: ASbGncvS7emSeP48D2TmzWy1/4s+dp3BehCMRfkJmV4mFLkLg3t2uE5o1c6avTwuQbi
+ pZ22omtKlMB9Z0ncSW1k+dS+Musd10Zs/aWZd9TUO2O3LykdiBPKtD8pguLlABi6WPNDdZJ7g08
+ uIUbSrUgO5mWdWZcTj626L8SRtDYmdVG5B0pghIAIzVetrPJ0mlV1NI6+WWVqDZvTSbj0+nAhGw
+ SnDKbnOz6bg0KyCj+leshXQvj65HTYsL37VK3TqMsUjItB4IUBWr5CA
+X-Received: by 2002:a5d:6d89:0:b0:385:f10a:335 with SMTP id
+ ffacd0b85a97d-3878768dc29mr171093f8f.21.1733934443353; 
+ Wed, 11 Dec 2024 08:27:23 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IE3O1JCVuN081k07IHVXaUTbbT2qdHhjVJcqdD6FZufdUOHDoXwts9z6ZWe76G6zMcaJRD/BA==
+X-Received: by 2002:a5d:6d89:0:b0:385:f10a:335 with SMTP id
+ ffacd0b85a97d-3878768dc29mr171073f8f.21.1733934442871; 
+ Wed, 11 Dec 2024 08:27:22 -0800 (PST)
+Received: from [192.168.10.3] ([151.81.118.45])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-4361e323828sm13763055e9.0.2024.12.11.08.27.22
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 11 Dec 2024 08:27:22 -0800 (PST)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: qemu-devel@nongnu.org
+Subject: [PULL 00/49] rust, QOM, kvm changes for 2024-12-11
+Date: Wed, 11 Dec 2024 17:26:30 +0100
+Message-ID: <20241211162720.320070-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.47.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 15/20] tests/functional/aarch64: add tests for FEAT_RME
-To: Thomas Huth <thuth@redhat.com>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
- <alex.bennee@linaro.org>, qemu-devel@nongnu.org
-Cc: Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- qemu-s390x@nongnu.org, Halil Pasic <pasic@linux.ibm.com>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>, Weiwei Li <liwei1518@gmail.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, Cleber Rosa <crosa@redhat.com>,
- Palmer Dabbelt <palmer@dabbelt.com>,
- Leif Lindholm <quic_llindhol@quicinc.com>, Eric Farman
- <farman@linux.ibm.com>, =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?=
- <marcandre.lureau@redhat.com>, John Snow <jsnow@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- Aurelien Jarno <aurelien@aurel32.net>, Paolo Bonzini <pbonzini@redhat.com>,
- Joel Stanley <joel@jms.id.au>, Bernhard Beschow <shentey@gmail.com>,
- qemu-ppc@nongnu.org, qemu-riscv@nongnu.org,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- Laurent Vivier <lvivier@redhat.com>, qemu-arm@nongnu.org,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Fabiano Rosas <farosas@suse.de>, Markus Armbruster <armbru@redhat.com>,
- Bin Meng <bmeng.cn@gmail.com>, Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Beraldo Leal <bleal@redhat.com>, Peter Maydell <peter.maydell@linaro.org>,
- Radoslaw Biernacki <rad@semihalf.com>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- Nicholas Piggin <npiggin@gmail.com>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Alistair Francis <alistair.francis@wdc.com>
-References: <20241210204349.723590-1-alex.bennee@linaro.org>
- <20241210204349.723590-16-alex.bennee@linaro.org>
- <ba91b0da-ea60-4802-b336-f3a650d06ae4@redhat.com>
-Content-Language: en-US
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <ba91b0da-ea60-4802-b336-f3a650d06ae4@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
-Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x430.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -25
+X-Spam_score: -2.6
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.472,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -131,61 +102,158 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-T24gMTIvMTEvMjQgMDA6MDQsIFRob21hcyBIdXRoIHdyb3RlOg0KPiBPbiAxMC8xMi8yMDI0
-IDIxLjQzLCBBbGV4IEJlbm7DqWUgd3JvdGU6DQo+PiBGcm9tOiBQaWVycmljayBCb3V2aWVy
-IDxwaWVycmljay5ib3V2aWVyQGxpbmFyby5vcmc+DQo+Pg0KPj4gVGhpcyBib290IGFuIE9Q
-LVRFRSBlbnZpcm9ubWVudCwgYW5kIGxhdW5jaCBhIG5lc3RlZCBndWVzdCBWTSBpbnNpZGUg
-aXQNCj4+IHVzaW5nIHRoZSBSZWFsbXMgZmVhdHVyZS4gV2UgZG8gaXQgZm9yIHZpcnQgYW5k
-IHNic2EtcmVmIHBsYXRmb3Jtcy4NCj4+DQo+PiBTaWduZWQtb2ZmLWJ5OiBQaWVycmljayBC
-b3V2aWVyIDxwaWVycmljay5ib3V2aWVyQGxpbmFyby5vcmc+DQo+Pg0KPj4gLS0tLS0NCj4+
-DQo+PiB2MjoNCj4+IC0gbW92ZSB0ZXN0IHRvIGl0cyBvd24gZmlsZQ0KPj4gLSBhZGQgc2Jz
-YSB0ZXN0DQo+PiAtIGNoZWNrIG91dHB1dCBvZiBgY2NhLXdvcmtsb2FkLWF0dGVzdGF0aW9u
-IHJlcG9ydGANCj4+DQo+PiB2MzoNCj4+IC0gYnVpbGQgYW5kIHJ1biB0ZXN0IHdpdGggY2Nh
-LXY0IGltYWdlcw0KPj4gLSBmYWN0b3JpemUgbmVzdGVkIGd1ZXN0IHRlc3QgYmV0d2VlbiBi
-b3RoIHRlc3RzDQo+PiAtIHJlbW92ZSBhY2NlbCB0Y2cgb3B0aW9uIGFzIGl0IGlzIHRoZSBk
-ZWZhdWx0IHdoZW4gcnVubmluZyB0ZXN0cw0KPj4gTm90ZTogSXQncyBhIGxvbmcgdGVzdCBh
-bmQgdGhlcmUgaXMgYSB3b3JrIGluIHByb2dyZXNzIHRvIHVuZGVyc3RhbmQgd2h5DQo+PiBk
-ZWJ1ZyBidWlsZCBpcyBzbyBzbG93ICh4MTIgdnMgb3B0aW1pemVkKS4NCj4+DQo+PiB2NDoN
-Cj4+IC0gdXNlIHBhdXRoLWltcGRlZj1vbiB0byBzcGVlZCB1cCBidWlsZCB0aW1lIGV4ZWN1
-dGlvbiAoeDIuNSBmYXN0ZXIpDQo+PiAtIGluY3JlYXNlIHRpbWVvdXQgdmFsdWUNCj4+DQo+
-PiBTaWduZWQtb2ZmLWJ5OiBQaWVycmljayBCb3V2aWVyIDxwaWVycmljay5ib3V2aWVyQGxp
-bmFyby5vcmc+DQo+PiBNZXNzYWdlLUlkOiA8MjAyNDEyMDMyMTM2MjkuMjQ4MjgwNi0xLXBp
-ZXJyaWNrLmJvdXZpZXJAbGluYXJvLm9yZz4NCj4+IFNpZ25lZC1vZmYtYnk6IEFsZXggQmVu
-bsOpZSA8YWxleC5iZW5uZWVAbGluYXJvLm9yZz4NCj4+IC0tLQ0KPj4gICAgdGVzdHMvZnVu
-Y3Rpb25hbC9tZXNvbi5idWlsZCAgICAgICAgICAgICAgICAgfCAgIDQgKw0KPj4gICAgdGVz
-dHMvZnVuY3Rpb25hbC90ZXN0X2FhcmNoNjRfcm1lX3Nic2FyZWYucHkgfCAgNzAgKysrKysr
-KysrKysrKw0KPj4gICAgdGVzdHMvZnVuY3Rpb25hbC90ZXN0X2FhcmNoNjRfcm1lX3ZpcnQu
-cHkgICAgfCAxMDAgKysrKysrKysrKysrKysrKysrKw0KPj4gICAgMyBmaWxlcyBjaGFuZ2Vk
-LCAxNzQgaW5zZXJ0aW9ucygrKQ0KPj4gICAgY3JlYXRlIG1vZGUgMTAwNzU1IHRlc3RzL2Z1
-bmN0aW9uYWwvdGVzdF9hYXJjaDY0X3JtZV9zYnNhcmVmLnB5DQo+PiAgICBjcmVhdGUgbW9k
-ZSAxMDA3NTUgdGVzdHMvZnVuY3Rpb25hbC90ZXN0X2FhcmNoNjRfcm1lX3ZpcnQucHkNCj4+
-DQo+PiBkaWZmIC0tZ2l0IGEvdGVzdHMvZnVuY3Rpb25hbC9tZXNvbi5idWlsZCBiL3Rlc3Rz
-L2Z1bmN0aW9uYWwvbWVzb24uYnVpbGQNCj4+IGluZGV4IDBhNzZiZDk5NTQuLjRlMjA3YzUz
-ZDUgMTAwNjQ0DQo+PiAtLS0gYS90ZXN0cy9mdW5jdGlvbmFsL21lc29uLmJ1aWxkDQo+PiAr
-KysgYi90ZXN0cy9mdW5jdGlvbmFsL21lc29uLmJ1aWxkDQo+PiBAQCAtMTMsNiArMTMsOCBA
-QCBlbmRpZg0KPj4gICAgdGVzdF90aW1lb3V0cyA9IHsNCj4+ICAgICAgJ2FhcmNoNjRfYXNw
-ZWVkJyA6IDYwMCwNCj4+ICAgICAgJ2FhcmNoNjRfcmFzcGk0JyA6IDQ4MCwNCj4+ICsgICdh
-YXJjaDY0X3JtZV92aXJ0JyA6IDEyMDAsDQo+PiArICAnYWFyY2g2NF9ybWVfc2JzYXJlZicg
-OiAxMjAwLA0KPiANCj4gSSB3YXMgYSBsaXR0bGUgYml0IHdvcnJpZWQgd2hlbiBJIHNhdyB0
-aGUgYmlnIHRpbWVvdXQgdmFsdWVzIGhlcmUsIGJ1dA0KPiB0aGF0J3Mgb25seSBmb3IgZGVi
-dWcgYnVpbGRzLCByaWdodD8gSSBnYXZlIGl0IGEgdHJ5IGluIGEgc3RhbmRhcmQgYnVpbGQs
-DQo+IHRoZSB0ZXN0cyBib3RoIGZpbmlzaGVkIHdpdGhpbiA1IG1pbnV0ZXMsIHNvIHRoZSBz
-dGFuZGFyZCBydW50aW1lIHN0aWxsDQo+IHNlZW1zIHRvIGJlIG9rLg0KPiANCg0KWWVzLCBp
-dCdzIGZvciBkZWJ1ZyBvbmx5Lg0KDQo+IFRlc3RlZC1ieTogVGhvbWFzIEh1dGggPHRodXRo
-QHJlZGhhdC5jb20+DQo+IA0KPiAgID4gKyAgICAjIFRoaXMgdGVzdHMgdGhlIEZFQVRfUk1F
-IGNwdSBpbXBsZW1lbnRhdGlvbiwgYnkgYm9vdGluZyBhIFZNDQo+IHN1cHBvcnRpbmcgaXQs
-DQo+ICAgPiArICAgICMgYW5kIGxhdW5jaGluZyBhIG5lc3RlZCBWTSB1c2luZyBpdC4NCj4g
-ICA+ICsgICAgZGVmIHRlc3RfYWFyY2g2NF9ybWVfc2JzYXJlZihzZWxmKToNCj4gICA+ICsg
-ICAgICAgIHN0YWNrX3BhdGhfdGFyX2d6ID0gc2VsZi5BU1NFVF9STUVfU1RBQ0tfU0JTQS5m
-ZXRjaCgpDQo+ICAgPiArICAgICAgICBhcmNoaXZlX2V4dHJhY3Qoc3RhY2tfcGF0aF90YXJf
-Z3osIHNlbGYud29ya2RpcikNCj4gICA+ICsNCj4gICA+ICsgICAgICAgIHNlbGYuc2V0X21h
-Y2hpbmUoJ3Nic2EtcmVmJykNCj4gICA+ICsgICAgICAgIHNlbGYudm0uc2V0X2NvbnNvbGUo
-KQ0KPiAgID4gKyAgICAgICAgc2VsZi5yZXF1aXJlX2FjY2VsZXJhdG9yKCd0Y2cnKQ0KPiAN
-Cj4gUGxlYXNlIG1vdmUgdGhlIHNldF9tYWNoaW5lIGFuZCByZXF1aXJlX2FjY2VsZXJhdG9y
-IHRvIHRoZSBiZWdpbm5pbmcgb2YgdGhlDQo+IGZ1bmN0aW9uIHNpbmNlIHRoZXkgY2FuIHNr
-aXAgdGhlIHRlc3QgaW4gY2FzZSB0aGUgcHJlcmVxdWlzaXRlIGlzIG5vdA0KPiBhdmFpbGFi
-bGUuIE90aGVyd2lzZSB5b3UndmUgZXh0cmFjdGVkIHRoZSBhc3NldCBpbiB2YWluLg0KPg0K
-DQpBbGV4LCBjb3VsZCB5b3UgcGxlYXNlIGtpbmRseSB1cGRhdGUgaXQsIGFzIGl0J3MgcGFy
-dCBvZiB5b3VyIHNlcmllcyBub3c/DQoNCj4gICAgVGhvbWFzDQo+IA0KDQpUaGFua3MsDQpQ
-aWVycmljaw0K
+The following changes since commit ae35f033b874c627d81d51070187fbf55f0bf1a7:
+
+  Update version for v9.2.0 release (2024-12-10 16:20:54 +0000)
+
+are available in the Git repository at:
+
+  https://gitlab.com/bonzini/qemu.git tags/for-upstream
+
+for you to fetch changes up to 166e8a1fd15bfa527b25fc15ca315e572c0556d2:
+
+  rust: qom: change the parent type to an associated type (2024-12-11 15:57:19 +0100)
+
+----------------------------------------------------------------
+* rust: better integration with clippy, rustfmt and rustdoc
+* rust: interior mutability types
+* rust: add a bit operations module
+* rust: first part of QOM rework
+* kvm: remove unnecessary #ifdef
+* clock: small cleanups, improve handling of Clock lifetimes
+
+----------------------------------------------------------------
+Junjie Mao (1):
+      rust/qemu-api: Fix fragment-specifiers in define_property macro
+
+Paolo Bonzini (32):
+      ci: enable rust in the Debian and Ubuntu system build job
+      rust: apply --cfg MESON to all crates
+      rust: allow using build-root bindings.rs from cargo
+      rust: build: move rustc_args.py invocation to qemu-api crate
+      rust: build: restrict --cfg generation to only required symbols
+      rust: build: generate lint flags from Cargo.toml
+      rust: cargo: store desired warning levels in workspace Cargo.toml
+      rust: build: move strict lints handling to rustc_args.py
+      rust: fix a couple style issues from clippy
+      rust: build: establish a baseline of lints across all crates
+      rust: build: add "make clippy", "make rustfmt", "make rustdoc"
+      rust: ci: add job that runs Rust tools
+      rust: fix doc test syntax
+      clock: clear callback on unparent
+      clock: treat outputs and inputs the same in NamedClockList
+      clock: inline most of qdev_init_clocklist
+      kvm: remove unnecessary #ifdef
+      bql: check that the BQL is not dropped within marked sections
+      rust: cell: add BQL-enforcing Cell variant
+      rust: cell: add BQL-enforcing RefCell variant
+      rust: define prelude
+      rust: add bindings for interrupt sources
+      rust: add a bit operation module
+      rust: qom: add default definitions for ObjectImpl
+      rust: qom: rename Class trait to ClassInitImpl
+      rust: qom: convert type_info! macro to an associated const
+      rust: qom: move ClassInitImpl to the instance side
+      rust: qdev: move device_class_init! body to generic function, ClassInitImpl implementation to macro
+      rust: qdev: move bridge for realize and reset functions out of pl011
+      rust: qom: move bridge for TypeInfo functions out of pl011
+      rust: qom: split ObjectType from ObjectImpl trait
+      rust: qom: change the parent type to an associated type
+
+Zhao Liu (16):
+      arm: Replace type_register() with type_register_static()
+      hw/block: Replace type_register() with type_register_static()
+      hw/net: Replace type_register() with type_register_static()
+      ppc: Replace type_register() with type_register_static()
+      hw/rtc: Replace type_register() with type_register_static()
+      hw/scsi: Replace type_register() with type_register_static()
+      hw/sensor: Replace type_register() with type_register_static()
+      hw/usb: Replace type_register() with type_register_static()
+      hw/virtio: Replace type_register() with type_register_static()
+      i386: Replace type_register() with type_register_static()
+      target/mips: Replace type_register() with type_register_static()
+      target/sparc: Replace type_register() with type_register_static()
+      target/xtensa: Replace type_register() with type_register_static()
+      ui: Replace type_register() with type_register_static()
+      script/codeconverter/qom_type_info: Deprecate MakeTypeRegisterStatic and MakeTypeRegisterNotStatic
+      qom/object: Remove type_register()
+
+ meson.build                                        |  57 +-
+ include/hw/clock.h                                 |   8 -
+ include/hw/i386/pc.h                               |   4 +-
+ include/qemu/main-loop.h                           |  15 +
+ include/qom/object.h                               |  14 -
+ target/i386/kvm/kvm_i386.h                         |  11 +-
+ hw/arm/armsse.c                                    |   2 +-
+ hw/arm/smmuv3.c                                    |   4 +-
+ hw/block/m25p80.c                                  |   2 +-
+ hw/core/clock.c                                    |  22 +-
+ hw/core/qdev-clock.c                               |  86 +--
+ hw/net/e1000.c                                     |   2 +-
+ hw/net/eepro100.c                                  |   2 +-
+ hw/ppc/spapr.c                                     |   2 +-
+ hw/rtc/m48t59-isa.c                                |   2 +-
+ hw/rtc/m48t59.c                                    |   2 +-
+ hw/scsi/megasas.c                                  |   2 +-
+ hw/scsi/mptsas.c                                   |   2 +-
+ hw/sensor/tmp421.c                                 |   2 +-
+ hw/usb/hcd-ehci-pci.c                              |   2 +-
+ hw/usb/hcd-uhci.c                                  |   2 +-
+ hw/virtio/virtio-pci.c                             |   8 +-
+ qom/object.c                                       |   7 +-
+ stubs/iothread-lock.c                              |  15 +
+ system/cpus.c                                      |  15 +
+ target/arm/cpu.c                                   |   2 +-
+ target/arm/cpu64.c                                 |   2 +-
+ target/i386/cpu.c                                  |   2 +-
+ target/mips/cpu.c                                  |   2 +-
+ target/ppc/kvm.c                                   |   2 +-
+ target/sparc/cpu.c                                 |   2 +-
+ target/xtensa/helper.c                             |   2 +-
+ ui/console-vc.c                                    |   2 +-
+ ui/dbus.c                                          |   2 +-
+ ui/gtk.c                                           |   2 +-
+ ui/spice-app.c                                     |   2 +-
+ .gitlab-ci.d/buildtest.yml                         |   4 +-
+ .gitlab-ci.d/static_checks.yml                     |  24 +
+ rust/Cargo.toml                                    |  82 ++
+ rust/hw/char/pl011/.gitignore                      |   2 -
+ rust/hw/char/pl011/Cargo.toml                      |   3 +
+ rust/hw/char/pl011/src/device.rs                   | 124 ++--
+ rust/hw/char/pl011/src/device_class.rs             |  34 -
+ rust/hw/char/pl011/src/lib.rs                      |  19 +-
+ rust/hw/char/pl011/src/memory_ops.rs               |   4 +-
+ rust/meson.build                                   |  22 +
+ rust/qemu-api-macros/Cargo.toml                    |   3 +
+ rust/qemu-api/.gitignore                           |   2 +-
+ rust/qemu-api/Cargo.toml                           |   8 +-
+ rust/qemu-api/README.md                            |  10 +-
+ rust/qemu-api/build.rs                             |  39 +-
+ rust/qemu-api/meson.build                          |  14 +-
+ rust/qemu-api/src/bindings.rs                      |  29 +
+ rust/qemu-api/src/bitops.rs                        | 119 +++
+ rust/qemu-api/src/cell.rs                          | 822 +++++++++++++++++++++
+ rust/qemu-api/src/definitions.rs                   | 149 +++-
+ rust/qemu-api/src/device_class.rs                  | 126 +++-
+ rust/qemu-api/src/irq.rs                           |  91 +++
+ rust/qemu-api/src/lib.rs                           |  29 +-
+ rust/qemu-api/src/prelude.rs                       |  10 +
+ rust/qemu-api/src/sysbus.rs                        |  33 +
+ rust/qemu-api/src/zeroable.rs                      |   6 +-
+ rust/qemu-api/tests/tests.rs                       |  43 +-
+ .../codeconverter/codeconverter/qom_type_info.py   |  20 -
+ scripts/rust/rustc_args.py                         | 181 ++++-
+ .../docker/dockerfiles/fedora-rust-nightly.docker  |   4 +
+ tests/lcitool/refresh                              |   4 +
+ 67 files changed, 1927 insertions(+), 445 deletions(-)
+ delete mode 100644 rust/hw/char/pl011/.gitignore
+ create mode 100644 rust/qemu-api/src/bindings.rs
+ create mode 100644 rust/qemu-api/src/bitops.rs
+ create mode 100644 rust/qemu-api/src/cell.rs
+ create mode 100644 rust/qemu-api/src/irq.rs
+ create mode 100644 rust/qemu-api/src/prelude.rs
+ create mode 100644 rust/qemu-api/src/sysbus.rs
+-- 
+2.47.1
+
 
