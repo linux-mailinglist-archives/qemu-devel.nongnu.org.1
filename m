@@ -2,80 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBA609ED204
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Dec 2024 17:33:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 02DAF9ED2A5
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Dec 2024 17:50:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tLPZ0-0000sB-QI; Wed, 11 Dec 2024 11:27:51 -0500
+	id 1tLPZ7-0001fR-1N; Wed, 11 Dec 2024 11:27:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tLPYq-0000B0-6a
- for qemu-devel@nongnu.org; Wed, 11 Dec 2024 11:27:41 -0500
+ id 1tLPYu-0000VH-Ce
+ for qemu-devel@nongnu.org; Wed, 11 Dec 2024 11:27:44 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tLPYo-0000EO-28
- for qemu-devel@nongnu.org; Wed, 11 Dec 2024 11:27:39 -0500
+ id 1tLPYq-0000F2-Qt
+ for qemu-devel@nongnu.org; Wed, 11 Dec 2024 11:27:43 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1733934457;
+ s=mimecast20190719; t=1733934460;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=C3gKLyE/tjMRxcMCdanJmcUrY5p/mjIojvO+9H4ft54=;
- b=P44DolZAZXaTq7JAQKYdnBJMOVUZLFFloGbi7ZfEUVMjm/mwcN1mrqSOl9mIzwV5TQj8It
- eFj/Myi5letSW0YIKg1z/6g2YqZpwVz+Mx7hFVIQ/RxOAl1Pvs1RirFIlW0YT61t/nfLgM
- NNSkw2/z7l0LsZAEKcm5IxcJ006EACw=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=W+KSm+Bbgkjh6xkJkmH8LuJ1hbwlcHQrSiZuvza+mjs=;
+ b=Zd1W/44us+q9lBFz2LDiSdQItJK3R+vNJ3znRk5s8xo2aBsm5G3O+SgiO3zObo4MUhSvQS
+ X0b0asYlfR7F+rvFZgaBMbd5Rb5oMZIW1TbvWYGlPKM6iKrvmWobQFTc5dlC+634EHiS/4
+ 2r57PP75G3C7C7vrr1ExM4hy0Ka8FBc=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-677-jtX8riAZOqGy9IQH4Dgv6w-1; Wed, 11 Dec 2024 11:27:35 -0500
-X-MC-Unique: jtX8riAZOqGy9IQH4Dgv6w-1
-X-Mimecast-MFC-AGG-ID: jtX8riAZOqGy9IQH4Dgv6w
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-385df115288so2971991f8f.2
- for <qemu-devel@nongnu.org>; Wed, 11 Dec 2024 08:27:35 -0800 (PST)
+ us-mta-607-Ew-Mg1QTMTKX1TSoKTGDmw-1; Wed, 11 Dec 2024 11:27:37 -0500
+X-MC-Unique: Ew-Mg1QTMTKX1TSoKTGDmw-1
+X-Mimecast-MFC-AGG-ID: Ew-Mg1QTMTKX1TSoKTGDmw
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-385e03f54d0so374150f8f.3
+ for <qemu-devel@nongnu.org>; Wed, 11 Dec 2024 08:27:37 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733934454; x=1734539254;
+ d=1e100.net; s=20230601; t=1733934456; x=1734539256;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=C3gKLyE/tjMRxcMCdanJmcUrY5p/mjIojvO+9H4ft54=;
- b=pC6oy+1OOYlohFrfG5xDFUR7aDMIaUG72yZx+jlHuooOrSBqnQDdDbund2W5jSeUIu
- t8wqEpgYqa5sLczXKEvIUz7ahoCU3DgnrCY2eevZuxFjLA+QWAxoYIm3S4cZuKxI9xk0
- NHnT8fHCqZ5xYnkXkJQ49INYieZF8Bptz4YhjLQQu+GgmCk/hqqNQWS0rxN5sCnCVBRy
- VmgX/l15aQDXwiy6rWdaK8ZM4g/3WyFM99puX4LGML/FubUPrlHDNBHlMjgOPdz97A8t
- 24CGwK7OGBe0oSZLg+IlGQEmzMNli3dpGReI2Y0WpmNax2O2lCbV1XS2yj/se5qw2cBo
- 8V1w==
-X-Gm-Message-State: AOJu0YyNvRwW6UafDR/wFsZ9m2GPdjCJXv5jNFKbAewMQ/C/lRSePa4O
- KxSxsCy1PHalb6pm4AU7tHqTPURiXTFz6ZbZM+Enl4/+MU6GH2LqRqdPaw/Kwfkhyut2wq6gGHh
- jBUiRiPH1Gbx+L/GNXbxU20A0QuaLyAjkIPxo17l44XB24lihPjbqRWjoPNgPB5frDbC/BhtGbN
- ZPMpIpXvxcQjkjNVbmprR188BbeVThP3ftQqMj
-X-Gm-Gg: ASbGnctx0jjp1O5+3YkLQmcyFKl2lDj7mAAoXQteXX3ItnWlj/jL2LaZPe3eolM4Av3
- NOKgnXy/xRO6GTVf/6IFc1Q+EFak0/+sbbTaOt0QajZUH9PKA3zyPlBf/Lw2ucH4/TAu2D7eeGF
- 6n8CslEOwHB5OoIv8ctbwDo0xmvWVPpcivdGdw3FUg6zwAPjDWm3fDkfvvAdZHDjGCor9wzp3wX
- PbYTsy2kKN7XX6V9UU1i3UbwrDK+t6sebtXcgbgP8fAj7i3mgoC6ppG
-X-Received: by 2002:a5d:6da4:0:b0:385:e0ea:d4ef with SMTP id
- ffacd0b85a97d-3864cea1edcmr2490334f8f.58.1733934454217; 
- Wed, 11 Dec 2024 08:27:34 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFGXbScukZBJmV0tcqFwx+LRTdB21ClwwYtGiCA0uqYHHQLS1ae7QzI3Fac+y6iFlaeThMs2A==
-X-Received: by 2002:a5d:6da4:0:b0:385:e0ea:d4ef with SMTP id
- ffacd0b85a97d-3864cea1edcmr2490309f8f.58.1733934453815; 
- Wed, 11 Dec 2024 08:27:33 -0800 (PST)
+ bh=W+KSm+Bbgkjh6xkJkmH8LuJ1hbwlcHQrSiZuvza+mjs=;
+ b=gApdWBFdy+c/4goy8oTbQRjCvVMGgEmZ9uUhF98MbDDeiXjeqySp5uy3WpwaAFlwDt
+ L6Y7dQOdIGGyU2X/NNdps9gcWXLf4mhrLfQUsW3zuOYytGiUvGTmC72JOUTgqp9GgWFz
+ kBRlodHu5OYvO9rCDvmvOpAyDOfTHs4VtWUrWiz563V66cA8dSC3pCLzAGFY+xqMpPCo
+ rtElz3siQiNdjxpISzCNh/Q6s+jRcy35yK6FilQlk7a6nIvkOghN+WutEr2+NuGOQf9T
+ KmkMBu//Ls1Pumked3imHuVidJEsYI+Fxo5+8zMCaqU+IHPN/o62CBNfq3+BxifHci1g
+ Wq3A==
+X-Gm-Message-State: AOJu0Ywj5DWAJIevE7FeHNXQ+8fZAR5J090kU1GZPXaru0eOYyJUkJdO
+ qHizudpV7UpI4gIR3tis3I9Xvkyu7CgPxRynRgrO5dJ+DsZEFnTrb9sE/5oUveaqHrgVsD/2nQ5
+ 6cRU+0/cuFabgO508pwRs1nLwmE/ev4svOczYBN41z58KsAacqCNOd0q+D8mnNlxyaH3bHjGwzm
+ X06NS0UE5Qt7OItgnjxTCoEwevHvCa5UGD2PUH
+X-Gm-Gg: ASbGnct+2SF0qv+a4aTTQirg8/B8QKRo+H//4HyVBX6uXD3d4zcP4z5cDkrZ3e9n7fN
+ /2okY7nkr6Q/8M9rBx2bO0Ia73IrEahTUpxMZy1cRK2vQsihPZaNFWHJYA6b2NJFmyiu5zpiBGN
+ oipCyx3faNHg0qNQW8vdUtgvI3ic///yNeLSU5Fmhilwg8mX/gqEojh9bB81RHp4xkM6bRmEKfY
+ 01ndIxlrJTGZ/Hy74d2WsqwCJPgGwdo3OlwrDMeZ01hGLFzoXcZhBbD
+X-Received: by 2002:a05:6000:2a7:b0:385:e17a:ce61 with SMTP id
+ ffacd0b85a97d-3864ced37d6mr3463213f8f.53.1733934456099; 
+ Wed, 11 Dec 2024 08:27:36 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IE28wpQAp7PzxHpAIfTHwYeSW9kVTW2HCZP4xPiqLGxMUDODANToF2Tb6m70R59/f/ii9r0uQ==
+X-Received: by 2002:a05:6000:2a7:b0:385:e17a:ce61 with SMTP id
+ ffacd0b85a97d-3864ced37d6mr3463194f8f.53.1733934455592; 
+ Wed, 11 Dec 2024 08:27:35 -0800 (PST)
 Received: from [192.168.10.3] ([151.81.118.45])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-387824a3e38sm1614427f8f.23.2024.12.11.08.27.33
+ ffacd0b85a97d-387824a4ea3sm1618415f8f.28.2024.12.11.08.27.34
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 11 Dec 2024 08:27:33 -0800 (PST)
+ Wed, 11 Dec 2024 08:27:34 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 05/49] rust: build: restrict --cfg generation to only required
- symbols
-Date: Wed, 11 Dec 2024 17:26:35 +0100
-Message-ID: <20241211162720.320070-6-pbonzini@redhat.com>
+Subject: [PULL 06/49] rust: build: generate lint flags from Cargo.toml
+Date: Wed, 11 Dec 2024 17:26:36 +0100
+Message-ID: <20241211162720.320070-7-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241211162720.320070-1-pbonzini@redhat.com>
 References: <20241211162720.320070-1-pbonzini@redhat.com>
@@ -106,129 +105,166 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Parse the Cargo.toml file, looking for the unexpected_cfgs
-configuration.  When generating --cfg options from the
-config-host.h file, only use those that are included in the
-configuration.
+Cargo.toml makes it possible to describe the desired lint level settings
+in a nice format.  We can extend this to Meson-built crates, by teaching
+rustc_args.py to fetch lint and --check-cfg arguments from Cargo.toml.
+--check-cfg arguments come from the unexpected_cfgs lint as well as crate
+features
+
+Start with qemu-api, since it already has a [lints.rust] table and
+an invocation of rustc_args.py.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- rust/qemu-api/meson.build  |  2 +-
- scripts/rust/rustc_args.py | 61 ++++++++++++++++++++++++++++----------
- 2 files changed, 46 insertions(+), 17 deletions(-)
+ meson.build                |  3 +-
+ rust/qemu-api/meson.build  |  4 +-
+ scripts/rust/rustc_args.py | 83 +++++++++++++++++++++++++++++++++++++-
+ 3 files changed, 86 insertions(+), 4 deletions(-)
 
+diff --git a/meson.build b/meson.build
+index 2f1f2aece4d..1e1d8f5cd61 100644
+--- a/meson.build
++++ b/meson.build
+@@ -120,7 +120,8 @@ if have_rust
+ endif
+ 
+ if have_rust
+-  rustc_args = find_program('scripts/rust/rustc_args.py')
++  rustc_args = [find_program('scripts/rust/rustc_args.py'),
++    '--rustc-version', rustc.version()]
+   rustfmt = find_program('rustfmt', required: false)
+ 
+   # Prohibit code that is forbidden in Rust 2024
 diff --git a/rust/qemu-api/meson.build b/rust/qemu-api/meson.build
-index 5df6b35bf88..2ff6d2ce3d0 100644
+index 2ff6d2ce3d0..1ed79672cc9 100644
 --- a/rust/qemu-api/meson.build
 +++ b/rust/qemu-api/meson.build
-@@ -1,5 +1,5 @@
+@@ -1,6 +1,6 @@
  _qemu_api_cfg = run_command(rustc_args,
--  '--config-headers', config_host_h,
-+  '--config-headers', config_host_h, files('Cargo.toml'),
-   capture: true, check: true).stdout().strip().split()
+-  '--config-headers', config_host_h, files('Cargo.toml'),
+-  capture: true, check: true).stdout().strip().split()
++  '--config-headers', config_host_h, '--features', '--lints', files('Cargo.toml'),
++  capture: true, check: true).stdout().strip().splitlines()
  
  # _qemu_api_cfg += ['--cfg', 'feature="allocator"']
+ if rustc.version().version_compare('>=1.77.0')
 diff --git a/scripts/rust/rustc_args.py b/scripts/rust/rustc_args.py
-index e4cc9720e16..942dd2b2bab 100644
+index 942dd2b2bab..9b9778a1cac 100644
 --- a/scripts/rust/rustc_args.py
 +++ b/scripts/rust/rustc_args.py
-@@ -26,30 +26,51 @@
+@@ -25,9 +25,10 @@
+ """
  
  import argparse
++from dataclasses import dataclass
  import logging
-+from pathlib import Path
-+from typing import Any, Iterable, Mapping, Optional, Set
+ from pathlib import Path
+-from typing import Any, Iterable, Mapping, Optional, Set
++from typing import Any, Iterable, List, Mapping, Optional, Set
  
--from typing import List
-+try:
-+    import tomllib
-+except ImportError:
-+    import tomli as tomllib
+ try:
+     import tomllib
+@@ -61,6 +62,45 @@ def get_table(self, key: str) -> Mapping[Any, Any]:
+         return table
  
  
--def generate_cfg_flags(header: str) -> List[str]:
-+class CargoTOML:
-+    tomldata: Mapping[Any, Any]
-+    check_cfg: Set[str]
-+
-+    def __init__(self, path: str):
-+        with open(path, 'rb') as f:
-+            self.tomldata = tomllib.load(f)
-+
-+        self.check_cfg = set(self.find_check_cfg())
-+
-+    def find_check_cfg(self) -> Iterable[str]:
-+        toml_lints = self.lints
-+        rust_lints = toml_lints.get("rust", {})
-+        cfg_lint = rust_lints.get("unexpected_cfgs", {})
-+        return cfg_lint.get("check-cfg", [])
-+
-+    @property
-+    def lints(self) -> Mapping[Any, Any]:
-+        return self.get_table("lints")
-+
-+    def get_table(self, key: str) -> Mapping[Any, Any]:
-+        table = self.tomldata.get(key, {})
-+
-+        return table
++@dataclass
++class LintFlag:
++    flags: List[str]
++    priority: int
 +
 +
-+def generate_cfg_flags(header: str, cargo_toml: CargoTOML) -> Iterable[str]:
++def generate_lint_flags(cargo_toml: CargoTOML) -> Iterable[str]:
++    """Converts Cargo.toml lints to rustc -A/-D/-F/-W flags."""
++
++    toml_lints = cargo_toml.lints
++
++    lint_list = []
++    for k, v in toml_lints.items():
++        prefix = "" if k == "rust" else k + "::"
++        for lint, data in v.items():
++            level = data if isinstance(data, str) else data["level"]
++            priority = 0 if isinstance(data, str) else data.get("priority", 0)
++            if level == "deny":
++                flag = "-D"
++            elif level == "allow":
++                flag = "-A"
++            elif level == "warn":
++                flag = "-W"
++            elif level == "forbid":
++                flag = "-F"
++            else:
++                raise Exception(f"invalid level {level} for {prefix}{lint}")
++
++            # This may change if QEMU ever invokes clippy-driver or rustdoc by
++            # hand.  For now, check the syntax but do not add non-rustc lints to
++            # the command line.
++            if k == "rust":
++                lint_list.append(LintFlag(flags=[flag, prefix + lint], priority=priority))
++
++    lint_list.sort(key=lambda x: x.priority)
++    for lint in lint_list:
++        yield from lint.flags
++
++
+ def generate_cfg_flags(header: str, cargo_toml: CargoTOML) -> Iterable[str]:
      """Converts defines from config[..].h headers to rustc --cfg flags."""
  
--    def cfg_name(name: str) -> str:
--        """Filter function for C #defines"""
--        if (
--            name.startswith("CONFIG_")
--            or name.startswith("TARGET_")
--            or name.startswith("HAVE_")
--        ):
--            return name
--        return ""
--
-     with open(header, encoding="utf-8") as cfg:
-         config = [l.split()[1:] for l in cfg if l.startswith("#define")]
- 
-     cfg_list = []
-     for cfg in config:
--        name = cfg_name(cfg[0])
--        if not name:
-+        name = cfg[0]
-+        if f'cfg({name})' not in cargo_toml.check_cfg:
-             continue
-         if len(cfg) >= 2 and cfg[1] != "1":
-             continue
-@@ -59,7 +80,6 @@ def cfg_name(name: str) -> str:
- 
- 
- def main() -> None:
--    # pylint: disable=missing-function-docstring
-     parser = argparse.ArgumentParser()
-     parser.add_argument("-v", "--verbose", action="store_true")
-     parser.add_argument(
-@@ -71,12 +91,21 @@ def main() -> None:
-         required=False,
-         default=[],
+@@ -97,13 +137,54 @@ def main() -> None:
+         dest="cargo_toml",
+         help="path to Cargo.toml file",
      )
 +    parser.add_argument(
-+        metavar="TOML_FILE",
++        "--features",
++        action="store_true",
++        dest="features",
++        help="generate --check-cfg arguments for features",
++        required=False,
++        default=None,
++    )
++    parser.add_argument(
++        "--lints",
++        action="store_true",
++        dest="lints",
++        help="generate arguments from [lints] table",
++        required=False,
++        default=None,
++    )
++    parser.add_argument(
++        "--rustc-version",
++        metavar="VERSION",
++        dest="rustc_version",
 +        action="store",
-+        dest="cargo_toml",
-+        help="path to Cargo.toml file",
++        help="version of rustc",
++        required=False,
++        default="1.0.0",
 +    )
      args = parser.parse_args()
      if args.verbose:
          logging.basicConfig(level=logging.DEBUG)
      logging.debug("args: %s", args)
+ 
++    rustc_version = tuple((int(x) for x in args.rustc_version.split('.')[0:2]))
+     cargo_toml = CargoTOML(args.cargo_toml)
+ 
++    if args.lints:
++        for tok in generate_lint_flags(cargo_toml):
++            print(tok)
 +
-+    cargo_toml = CargoTOML(args.cargo_toml)
++    if rustc_version >= (1, 80):
++        if args.lints:
++            for cfg in sorted(cargo_toml.check_cfg):
++                print("--check-cfg")
++                print(cfg)
++        if args.features:
++            for feature in cargo_toml.get_table("features"):
++                if feature != "default":
++                    print("--check-cfg")
++                    print(f'cfg(feature,values("{feature}"))')
 +
      for header in args.config_headers:
--        for tok in generate_cfg_flags(header):
-+        for tok in generate_cfg_flags(header, cargo_toml):
+         for tok in generate_cfg_flags(header, cargo_toml):
              print(tok)
- 
- 
 -- 
 2.47.1
 
