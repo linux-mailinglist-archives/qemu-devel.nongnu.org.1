@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 191909EC847
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Dec 2024 10:04:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E8889EC83E
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Dec 2024 10:04:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tLIbf-0007ef-L6; Wed, 11 Dec 2024 04:02:07 -0500
+	id 1tLIbY-0006uV-AV; Wed, 11 Dec 2024 04:02:00 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tLIam-0005vE-4P
- for qemu-devel@nongnu.org; Wed, 11 Dec 2024 04:01:14 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tLIaj-0005uu-Op
+ for qemu-devel@nongnu.org; Wed, 11 Dec 2024 04:01:11 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tLIah-0007sa-Ko
- for qemu-devel@nongnu.org; Wed, 11 Dec 2024 04:01:11 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tLIae-0007sT-8F
+ for qemu-devel@nongnu.org; Wed, 11 Dec 2024 04:01:08 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1733907666;
+ s=mimecast20190719; t=1733907663;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=pPdRS9haFwIBvhoMtX2yy1Qh2YtZc+1DS/UycqOM9vg=;
- b=Fg1PT7Q78DXwpSPA44AvSiUx6pVQxZ/zbQMIB4Plps53BESe6rx39oX9ARiY0cS0+Ljr9R
- NWEjdSR0Zbb/RisynVH+AyPshbqDyIZmRr2s5tq3FmvZ6eZklrFtc/vqhuALs7ppKbCouS
- VuOYMY40lypAsDC4s7RFIlCkbztkVAY=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ bh=AbiMEoxU6MrYfb/yIFm2dbLnVIXoNmjPXR3qh6mwIS8=;
+ b=hKDKQA55P1VObeA7KJhgVlykVMNcPWtXyGfPULFkuFlMcPF21guCv88FfwzGyJnNzEE3FN
+ nNaMVqzMszJnxIfkeUYnlofOPL0APrPwtTuv2IwBhJL52kXmVySLIBIz/Kd6LXRf6ceSzF
+ t/Jz/NGzS0wBKvfu3R4kAxBZL2xFH7c=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-328-D4Qs8-RjMgST1LZJcl13uA-1; Wed,
- 11 Dec 2024 04:01:01 -0500
-X-MC-Unique: D4Qs8-RjMgST1LZJcl13uA-1
-X-Mimecast-MFC-AGG-ID: D4Qs8-RjMgST1LZJcl13uA
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-80--7mFsScYPaeu4hCY8_kipw-1; Wed,
+ 11 Dec 2024 04:01:02 -0500
+X-MC-Unique: -7mFsScYPaeu4hCY8_kipw-1
+X-Mimecast-MFC-AGG-ID: -7mFsScYPaeu4hCY8_kipw
 Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 43BED19560BF; Wed, 11 Dec 2024 09:00:57 +0000 (UTC)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id C791D19560A2; Wed, 11 Dec 2024 09:01:00 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.193.186])
  by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 2AAE71956089; Wed, 11 Dec 2024 09:00:54 +0000 (UTC)
+ id D942F1956089; Wed, 11 Dec 2024 09:00:57 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
@@ -50,9 +50,10 @@ Cc: Peter Maydell <peter.maydell@linaro.org>,
  Stefan Hajnoczi <stefanha@redhat.com>,
  Hendrik Brueckner <brueckner@linux.ibm.com>,
  Janosch Frank <frankja@linux.ibm.com>
-Subject: [PULL 11/26] s390x/cpumodel: add Vector Enhancements facility 3
-Date: Wed, 11 Dec 2024 09:59:55 +0100
-Message-ID: <20241211090014.619351-12-thuth@redhat.com>
+Subject: [PULL 12/26] s390x/cpumodel: add Miscellaneous-Instruction-Extensions
+ Facility 4
+Date: Wed, 11 Dec 2024 09:59:56 +0100
+Message-ID: <20241211090014.619351-13-thuth@redhat.com>
 In-Reply-To: <20241211090014.619351-1-thuth@redhat.com>
 References: <20241211090014.619351-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -67,7 +68,7 @@ X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.52,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_PASS=-0.001, T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,43 +86,28 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Hendrik Brueckner <brueckner@linux.ibm.com>
 
-The Vector Enhancements facility 3 introduces new instructions and
-extends support for doubleword/quadword elements.
+This facility introduces few new instructions.
 
 Signed-off-by: Hendrik Brueckner <brueckner@linux.ibm.com>
 Reviewed-by: Janosch Frank <frankja@linux.ibm.com>
-Message-ID: <20241206122751.189721-9-brueckner@linux.ibm.com>
+Message-ID: <20241206122751.189721-10-brueckner@linux.ibm.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
  target/s390x/cpu_features_def.h.inc | 1 +
- target/s390x/cpu_models.c           | 2 ++
- 2 files changed, 3 insertions(+)
+ 1 file changed, 1 insertion(+)
 
 diff --git a/target/s390x/cpu_features_def.h.inc b/target/s390x/cpu_features_def.h.inc
-index 09872ab3d8..0b7be0e6e9 100644
+index 0b7be0e6e9..8be2e0e46d 100644
 --- a/target/s390x/cpu_features_def.h.inc
 +++ b/target/s390x/cpu_features_def.h.inc
-@@ -116,6 +116,7 @@ DEF_FEAT(BEAR_ENH, "beareh", STFL, 193, "BEAR-enhancement facility")
- DEF_FEAT(RDP, "rdp", STFL, 194, "Reset-DAT-protection facility")
- DEF_FEAT(PAI, "pai", STFL, 196, "Processor-Activity-Instrumentation facility")
- DEF_FEAT(PAIE, "paie", STFL, 197, "Processor-Activity-Instrumentation extension-1")
-+DEF_FEAT(VECTOR_ENH3, "vxeh3", STFL, 198, "Vector Enhancements facility 3")
- DEF_FEAT(CCF_BASE, "ccf-base", STFL, 201, "Concurrent-Functions facility")
- 
- /* Features exposed via SCLP SCCB Byte 80 - 98  (bit numbers relative to byte-80) */
-diff --git a/target/s390x/cpu_models.c b/target/s390x/cpu_models.c
-index 117434b9a8..5d548de79c 100644
---- a/target/s390x/cpu_models.c
-+++ b/target/s390x/cpu_models.c
-@@ -458,6 +458,8 @@ static void check_consistency(const S390CPUModel *model)
-         { S390_FEAT_VECTOR_PACKED_DECIMAL_ENH, S390_FEAT_VECTOR_PACKED_DECIMAL },
-         { S390_FEAT_VECTOR_PACKED_DECIMAL_ENH2, S390_FEAT_VECTOR_PACKED_DECIMAL_ENH },
-         { S390_FEAT_VECTOR_ENH, S390_FEAT_VECTOR },
-+        { S390_FEAT_VECTOR_ENH2, S390_FEAT_VECTOR_ENH },
-+        { S390_FEAT_VECTOR_ENH3, S390_FEAT_VECTOR_ENH2 },
-         { S390_FEAT_INSTRUCTION_EXEC_PROT, S390_FEAT_SIDE_EFFECT_ACCESS_ESOP2 },
-         { S390_FEAT_SIDE_EFFECT_ACCESS_ESOP2, S390_FEAT_ESOP },
-         { S390_FEAT_CMM_NT, S390_FEAT_CMM },
+@@ -90,6 +90,7 @@ DEF_FEAT(EDAT_2, "edat2", STFL, 78, "Enhanced-DAT facility 2")
+ DEF_FEAT(DFP_PACKED_CONVERSION, "dfppc", STFL, 80, "Decimal-floating-point packed-conversion facility")
+ DEF_FEAT(PPA15, "ppa15", STFL, 81, "PPA15 is installed")
+ DEF_FEAT(BPB, "bpb", STFL, 82, "Branch prediction blocking")
++DEF_FEAT(MISC_INSTRUCTION_EXT4, "minste4", STFL, 84, "Miscellaneous-Instruction-Extensions Facility 4")
+ DEF_FEAT(MSA_EXT_12, "msa12-base", STFL, 86, "Message-security-assist-extension-12 facility (excluding subfunctions)")
+ DEF_FEAT(VECTOR, "vx", STFL, 129, "Vector facility")
+ DEF_FEAT(INSTRUCTION_EXEC_PROT, "iep", STFL, 130, "Instruction-execution-protection facility")
 -- 
 2.47.1
 
