@@ -2,85 +2,140 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C7F19EDB11
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Dec 2024 00:18:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA4D49EDC07
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Dec 2024 00:43:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tLVx1-0005xF-Gz; Wed, 11 Dec 2024 18:17:03 -0500
+	id 1tLWKv-0004aL-Rj; Wed, 11 Dec 2024 18:41:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tLVwz-0005x0-IG
- for qemu-devel@nongnu.org; Wed, 11 Dec 2024 18:17:01 -0500
-Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tLVwx-0004gt-Ne
- for qemu-devel@nongnu.org; Wed, 11 Dec 2024 18:17:01 -0500
-Received: by mail-wr1-x429.google.com with SMTP id
- ffacd0b85a97d-385e3621518so4566487f8f.1
- for <qemu-devel@nongnu.org>; Wed, 11 Dec 2024 15:16:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1733959017; x=1734563817; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=gbSGjVPA/lUnmHLhOPQnoo2PcyTUkwD5q//e7yXLaso=;
- b=QAHGtcgx7yfn3mehPzNZGEGf9pw0LAEVTQa3H1/2jZRRYtOPmrEGV1GkRpT6D50ERo
- R0Z3YyrzoTE0CvZK06f202rpfywWKUCsWm0GL+jC0jNNGGzQjG6NkXa299VqmfKGSH6e
- 8jB74hwXY/KHt4UuYgys9XByEpKp5QGXEflRR+rXPae5s+PvUdnjmIJNv6nJd3uXzgnl
- CiJTYg8ymUKncIU4AD8EhKgjGxnk1OxQf4sq8zenSHYPmwCZpiOpx7VLwzJtGpM/TQHN
- /CyhBnbWZY2/N6SKBYgcKCA9IxMWgXIJR/UEmSlUYJIUm17Vc8626mkMaMzFRnNJFGw4
- KWDA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733959017; x=1734563817;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=gbSGjVPA/lUnmHLhOPQnoo2PcyTUkwD5q//e7yXLaso=;
- b=CV/mqzEVdaKmD+dEBVDlUFBD10MDRDMZRsCFkuT31JOww5GTt6l41o+pgXfauV5lhX
- c6SG7zbfeK+10wuiWyd6iqKdKxHhtE09oNkj00b+Xwdqi9591o1rSTxpnuq6Hg+MHvKZ
- EZGbnu09r2G+6+EKaRu/q9PN+OARsLg799CtznZDIWFfBS8w7lUrSaM/GNZyemioFcCa
- jr5zQ/T2+oEeYnY40LtH4TTrZ+dqFXD74xt9RLScbOvsTEhcSMMtPDSfvmnjI6K0rtuM
- Q7OEJQMyKaP8rhMXK05jcXRX1x8ZcDCEaS65f5Ruz63m+m5XjU92Ff4NabedNdl5mOIh
- fc2A==
-X-Gm-Message-State: AOJu0YyH5ltgwWB3jv4T6mZYeL/krzPOv2i1ewJZhm/0XuZ8oflW3huh
- rO5rP5RsKACBfZiENqHh5LMxdI5DcBV9iqO5PU5wFdjUWD5tgWyCYecGhJsnQWM370HILvwQrzC
- p
-X-Gm-Gg: ASbGncuiSSektNWKsrwghcX/lVrvZWsH3Am1Tqv0ubAya1ksEyg/oHNmLSvykJJomQF
- bIlzrVi5Iqg4w6TPI0lB+nk24JndLPYDwLfsIY57q19lu8OqGSgCxuD+IU3Hi240WqxFcAJWLat
- J0wh/vJOxoGEpAhHmEl0iv3KGIkxawIhgPQi1O64qR0a7Zi765BynJNstbJ06tqLb++Jecgtptl
- F8Jta5e2+jlvMLZ3laBPw4aEwqBLgCIz4RWLUnAmIxpvAhlCvJOA/CucQ2d/FyWxCRYHg5SNvTq
- 3gkrikjKyfqbqj75ewhGb4vGSIbTA61zgA==
-X-Google-Smtp-Source: AGHT+IEWEFOix3wu54uX7iFSdKYiJQep4+oz/Md/7zVlYeKMKB7tfUMDhtanImxPXlI4broaPTLnHQ==
-X-Received: by 2002:a5d:6dac:0:b0:386:2ebe:7ae2 with SMTP id
- ffacd0b85a97d-387876aeddemr1213478f8f.45.1733959017526; 
- Wed, 11 Dec 2024 15:16:57 -0800 (PST)
-Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3878248f810sm2316596f8f.22.2024.12.11.15.16.56
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 11 Dec 2024 15:16:57 -0800 (PST)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [RFC PATCH] meson: Run some compiler checks using -Wno-unused-value
-Date: Thu, 12 Dec 2024 00:16:55 +0100
-Message-ID: <20241211231655.98148-1-philmd@linaro.org>
-X-Mailer: git-send-email 2.45.2
+ (Exim 4.90_1) (envelope-from <Michael.Roth@amd.com>)
+ id 1tLWKq-0004Xv-W5
+ for qemu-devel@nongnu.org; Wed, 11 Dec 2024 18:41:41 -0500
+Received: from mail-dm3nam02on2046.outbound.protection.outlook.com
+ ([40.107.95.46] helo=NAM02-DM3-obe.outbound.protection.outlook.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <Michael.Roth@amd.com>)
+ id 1tLWKm-0007sP-Hd
+ for qemu-devel@nongnu.org; Wed, 11 Dec 2024 18:41:39 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ua02P7KKslqVOiXj1fKiMmxW5WHe6WxLhJQje4FLOZLfk2nR2CYcT+ANTE1Ry6yJMvW/EUqFcOOTvdLxJyDXCua/z69Q/h3BY9PR9kcLax4I0LckIwaPCOgqGhJfizlOHl3rdNZMNpk1snXQJYe5PLg+Jq2ANdQ1u+g4wGq+OGVJMqcuKGZght5aTSpUYHGNPiJXJo1GO6unSYIQJD3v4V4pgDBpIoDIyIWacDyO7kTi9T1Nv4NDcm1TICfG53PxdGm4lL8xDYIKKhIWQzeqsWXGTi4D4Ue1BOti7njIeNqJyXlAaCywu+UJQ1ytcyyZKsYk9Vx0WgLUyf2io6DseA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=dy7D2UX/lA0Ew5ynAsKDHR3iv/ZZ7NkfuaNY18wADMg=;
+ b=HTyAFRX5A7rkdT728JUMDoBKeJ8RX/doD2AzEcjw2hUbuLcOfy3wGXT0aT/WAVss10Fs1Q6fKLRyrtZ5HPXAMNbZUfynV+UZzb5J0y6oq5EeALGxbmSiYpUeNTS9qFgUwiERXc1QvHFDfoC8wb0jRyOrfC5J7aoBPQ0g7YYd9f7uoDFFMEk7j5+zdNHas6B2Y2Dgm3A5ghGeD7XYu3PqL4uvAxHfQJrr2wTUxkzr/j1y9vEeEfd+7uCDtdeCVfQ26EYJeeOD386+Le8yi9/0eLgPOu1O++I1vs7jl0OIDqp/AoKFQQCE0f/0iosBQm2ecpEDqSY9yByoJnYR/fr2qA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=nongnu.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=dy7D2UX/lA0Ew5ynAsKDHR3iv/ZZ7NkfuaNY18wADMg=;
+ b=BzwoxQaUrbl+k7O2A0cOHXDZP8ewK0VhuZPy4DiLUbnb/lsnQxndUE5MBpNr523Cqnamf5BZsOT8LpEbdW9nUXW3zMlNbN9wJrf/CnD5r5w1joKQdNO3KVPlP0fDXH8LfLjww34IbXEUb4KR91yZuv+C2BDZLh7AjYRtk1m/LcY=
+Received: from BL1PR13CA0353.namprd13.prod.outlook.com (2603:10b6:208:2c6::28)
+ by PH0PR12MB7930.namprd12.prod.outlook.com (2603:10b6:510:283::7)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8230.20; Wed, 11 Dec
+ 2024 23:36:18 +0000
+Received: from BL02EPF0001A101.namprd05.prod.outlook.com
+ (2603:10b6:208:2c6:cafe::8d) by BL1PR13CA0353.outlook.office365.com
+ (2603:10b6:208:2c6::28) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8251.10 via Frontend Transport; Wed,
+ 11 Dec 2024 23:36:17 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ BL02EPF0001A101.mail.protection.outlook.com (10.167.241.132) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.8251.15 via Frontend Transport; Wed, 11 Dec 2024 23:36:17 +0000
+Received: from localhost (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Wed, 11 Dec
+ 2024 17:36:16 -0600
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::429;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x429.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Transfer-Encoding: quoted-printable
+Subject: [ANNOUNCE] QEMU 9.2.0 is now available
+From: Michael Roth <michael.roth@amd.com>
+To: <qemu-devel@nongnu.org>
+CC: Peter Maydell <peter.maydell@linaro.org>
+Date: Wed, 11 Dec 2024 17:36:00 -0600
+Message-ID: <173396016084.690778.14513056087610218483@amd.com>
+User-Agent: alot/0.9
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL02EPF0001A101:EE_|PH0PR12MB7930:EE_
+X-MS-Office365-Filtering-Correlation-Id: cd83f4c0-ad8a-4873-9d8d-08dd1a3c9c04
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|1800799024|36860700013|82310400026|376014; 
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?dTVuaFlmRlJDQ3FzcjlTLzE2V3lUTmZRZkRRd2R3alpjdXdUUzE1dzJDaEYx?=
+ =?utf-8?B?cUNTWkQ5SW15LzNWTXc4cmw1aFFkMkhxL0w1blJ6NThoeTFyUU5lWW5kd2E3?=
+ =?utf-8?B?YXUvbG04SXl0L0FUcXJrWTZGSWQ0OXJTWXg0TGNKUGVIQU9KV1BEWXd5TVpI?=
+ =?utf-8?B?REFyQmVaODRoeGhGWDJyWjdrODJObHB2QWpIWWZHbjR0cmYrL3VKbUpDNHlM?=
+ =?utf-8?B?V2FVdHlQYTRUQmR0Q2pINUZzaWdTOGlheFNFRXVvNWY1WVhwdzBBY3JQc21p?=
+ =?utf-8?B?Q05yOEFiYVdHZzBhRDlCb3c2elV4cVdKQ0lpczNqaXlzdmhWY2F2ZUZJcDVG?=
+ =?utf-8?B?eWRGU3FQMGpyekhWQkdYby9GYkNsMG1tejBGTVU0SmhGS1JGOVBrcFB1aFFx?=
+ =?utf-8?B?Y0VEdGd5c2E2cW0xOGdJL1BGa0dnLzU4N1F6SlFuclZLcTNvUVpPTnRwQlJ1?=
+ =?utf-8?B?T1RNRkt3Wks3d3A5NEFUclJxdnQ5MDhtb1czTEdXMk5mblM3NCtWbEdhaUQv?=
+ =?utf-8?B?a3VOS3g5WXJILzdZQUpMbVVYQ1dxN0U2Mjg0TElONWo1a0JZbi9xNkpwVUNq?=
+ =?utf-8?B?UmNCcWExSDU1S1JxSndWSHcvMWF1N0crMDlhZVgzeXJFTHJ5QzRocVR2WjY4?=
+ =?utf-8?B?SkR6ck5rN05nZGdScE9hMC9WYnJXd2NnMm1tQ3p6RWpHR1J1R2doQjRZdys2?=
+ =?utf-8?B?QlJPRzJqMDYwL3JwR2dtSXQ2R3JaUlpjQ2N6YUNHSVpMVWYzbG9kMWhUcTZP?=
+ =?utf-8?B?Q1A3NTg5SmJseWdMQVp0bmpmTDY1TzQxdGZaQlZaVTZFejNyZGNXQTk2anBq?=
+ =?utf-8?B?WE5TVy9BRzJzMlpOTVZiR3E1YTZDU1ovbVlzRElDUWZxYlpVUDR4dmVRNGg1?=
+ =?utf-8?B?UkVVUzgyVVNSdVZaSG9RZzQvblR1SllqeXRvVDdSNkxpNVp6UVBPbFFoWjgv?=
+ =?utf-8?B?Y25sUE5BUDlHcmJ0Q1B6bHZ0ZTErUi94cW02amd0VWFWVmtHU2ZXQ25FL1Mw?=
+ =?utf-8?B?bVAvbE1VTmxzRERCVDJ5LzdMc1hXWXlsdGQ5aVlkZ2l2UGRGNERBVlllb2k3?=
+ =?utf-8?B?WGloa2E5SnFQbTB0T2hDeStpWExSTmcxSmJ5MHBodVZibjJsS0lZMWdoODZr?=
+ =?utf-8?B?NnhCcUZWZDJBajAvWlQ2WWFxYjc4TjBYcXlxRWxMV1Zkb0RuVHhZbGJ5L1hV?=
+ =?utf-8?B?UEZUdmJIWDgyY1JNYm1xZ0tKeVFka1FlOGUrcGNjQm0zNk4xSEV1Y01tTUV2?=
+ =?utf-8?B?bklsQ2pNOEJLZ001NVRSVm83U1R2M3R1VDJaajZXYTBycjNiSW40QytTclYr?=
+ =?utf-8?B?UTY3b1hsTnhMWEpWQWw1MGtPQk5DLzI4OHNDZmlCSHFBcHNqMjJLSnFQYkN1?=
+ =?utf-8?B?QlRqWGM4SlhjeG5qZnBRUUxTMUJIY2VEMmhGd3JTQUxFUXIzc0R4KzJnbWtG?=
+ =?utf-8?B?bEJmV2UvKzgwWGtmSzBBZGtnOVdpdk9zSmE1dVkrU2JsenVNaWt2VHJBOEdN?=
+ =?utf-8?B?TVpTWVZOQVIvS1FHN3RwSlY5UUZHenR0ZlEzM2JaOTBzTkdEV29vdTg0YUJ5?=
+ =?utf-8?B?WmlvSkxBNk9xd3dtWHdZWFFpNDJHd0ZDbnByeGNseGJrZFdhbmNNVnA0bkJm?=
+ =?utf-8?B?STQzcHY1M3RoY1ljNW4zVjB3VXFlcDhqbHNha1lQV0I4MUIrR0hQV3ZGL1No?=
+ =?utf-8?B?OGo2c3orRTdPU0FmTm1zN1Y0eC93ZnU3cnozR1ZDQzhPMDRSNkxLYnl3WFRJ?=
+ =?utf-8?B?ZUtDdUlqR3VDY0JBZWJGOWlZV05GY2VNN0FjQy9xV2psdkdkZ0ZNS0krSURp?=
+ =?utf-8?B?NXZ2RTFOUXdrcG5PeFdqNXNSQXlINXNNMUg5QmtFRTNONVVPRFF2VURRalEz?=
+ =?utf-8?B?QVgwMjYvcHNKK2NXeFgxcjJzSCtDNGFLMS9IN0puMEJYQ2c9PQ==?=
+X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230040)(1800799024)(36860700013)(82310400026)(376014); DIR:OUT;
+ SFP:1101; 
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Dec 2024 23:36:17.3605 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: cd83f4c0-ad8a-4873-9d8d-08dd1a3c9c04
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
+ Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: BL02EPF0001A101.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB7930
+Received-SPF: permerror client-ip=40.107.95.46;
+ envelope-from=Michael.Roth@amd.com;
+ helo=NAM02-DM3-obe.outbound.protection.outlook.com
+X-Spam_score_int: -25
+X-Spam_score: -2.6
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.472,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,134 +151,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When running Clang static analyzer on macOS I'm getting:
+Hello,
 
-  include/qemu/osdep.h:634:8: error: redefinition of 'iovec'
-    634 | struct iovec {
-        |        ^
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types/_iovec_t.h:31:8: note: previous definition is here
-     31 | struct iovec {
-        |        ^
-  1 error generated.
+On behalf of the QEMU Team, I'd like to announce the availability of
+the QEMU 9.2.0 release. This release contains 1700+ commits from 209
+authors.
 
-Looking at meson-logs.txt, the analyzer enables -Wunused-value
-making meson generated code to fail:
+You can grab the tarball from our download page here:
 
-    Code:
-    #include <sys/uio.h>
-            void bar(void) {
-                sizeof(struct iovec);
-            }
-    -----------
-    stderr:
-    meson-private/tmpe8_1b_00/testfile.c:3:13: error: expression result unused [-Werror,-Wunused-value]
-        3 |             sizeof(struct iovec);
-          |             ^~~~~~~~~~~~~~~~~~~~
-    1 error generated.
-    -----------
-    Checking for type "struct iovec" : NO
+  https://www.qemu.org/download/#source
 
-    Code:
-    #include <utmpx.h>
-            void bar(void) {
-                sizeof(struct utmpx);
-            }
-    -----------
-    stderr:
-    meson-private/tmp3n0u490p/testfile.c:3:13: error: expression result unused [-Werror,-Wunused-value]
-        3 |             sizeof(struct utmpx);
-          |             ^~~~~~~~~~~~~~~~~~~~
-    1 error generated.
-    -----------
-    Checking for type "struct utmpx" : NO
+The full list of changes are available at:
 
-    Code:
+  https://wiki.qemu.org/ChangeLog/9.2
 
-            #include <getopt.h>
-            int main(void) {
-                /* If it's not defined as a macro, try to use as a symbol */
-                #ifndef optreset
-                    optreset;
-                #endif
-                return 0;
-            }
-    -----------
-    stderr:
-    meson-private/tmp1rzob_os/testfile.c:6:17: error: expression result unused [-Werror,-Wunused-value]
-        6 |                 optreset;
-          |                 ^~~~~~~~
-    1 error generated.
-    -----------
-    Header "getopt.h" has symbol "optreset" : NO
+Highlights include:
 
-    Code:
+ * virtio-gpu: support for 3D acceleration of Vulkan applications via
+   Venus Vulkan driver in the guest and virglrenderer host library
+ * crypto: GLib crypto backend now supports SHA-384 hashes
+ * migration: QATzip-accelerated compression support while using
+   multiple migration streams
+ * Rust: experimental support for device models written in Rust (for
+   development use only)
 
-            #include <vmnet/vmnet.h>
-            int main(void) {
-                /* If it's not defined as a macro, try to use as a symbol */
-                #ifndef VMNET_BRIDGED_MODE
-                    VMNET_BRIDGED_MODE;
-                #endif
-                return 0;
-            }
-    -----------
-    stderr:
-    meson-private/tmpl9jgsxpt/testfile.c:6:17: error: expression result unused [-Werror,-Wunused-value]
-        6 |                 VMNET_BRIDGED_MODE;
-          |                 ^~~~~~~~~~~~~~~~~~
-    1 error generated.
-    -----------
-    Header "vmnet/vmnet.h" has symbol "VMNET_BRIDGED_MODE" with dependency appleframeworks: NO
-    ../meson.build:1174: WARNING: vmnet.framework API is outdated, disabling
+ * ARM: emulation support for FEAT_EBF16, FEAT_CMOW architecture
+   features
+ * ARM: support for two-stage SMMU translation for sbsa-ref and virt
+   boards
+ * ARM: support for CPU Security Extensions for xilinx-zynq-a9 board
+ * ARM: 64GB+ memory support when using HVF acceleration on newer Mac
+   systems
+ * HPPA: SeaBIOS-hppa v17 firmware with various fixes and enhancements
+ * RISC-V: IOMMU support for virt machine
+ * RISC-V: support for control flow integrity and Svvptc extensions,
+   and support for Bit-Manipulation extension on OpenTitan boards
+ * RISC-V: improved performance for vector unit-stride/whole register
+   ld/st instructions
+ * s390x: support for booting from other devices if the previous ones
+   fail
+ * x86: support for new nitro-enclave machine type that can emulate
+   AWS Nitro Enclave and can boot from Enclave Image Format files.
+ * x86: KVM support for enabling AVX10, as well as enabling specific
+   AVX10 versions via command-line
 
-Fix by explicitly disabling -Wunused-value from these meson checks.
+ * and lots more...
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
-RFC: Probably meson should do that in has_header_symbol() / has_type()?
----
- meson.build | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
-
-diff --git a/meson.build b/meson.build
-index 147097c652e..a431aa982ac 100644
---- a/meson.build
-+++ b/meson.build
-@@ -1166,7 +1166,8 @@ cocoa = dependency('appleframeworks',
- vmnet = dependency('appleframeworks', modules: 'vmnet', required: get_option('vmnet'))
- if vmnet.found() and not cc.has_header_symbol('vmnet/vmnet.h',
-                                               'VMNET_BRIDGED_MODE',
--                                              dependencies: vmnet)
-+                                              dependencies: vmnet,
-+                                              args: '-Wno-unused-value')
-   vmnet = not_found
-   if get_option('vmnet').enabled()
-     error('vmnet.framework API is outdated')
-@@ -2690,7 +2691,7 @@ config_host_data.set('CONFIG_RTNETLINK',
- config_host_data.set('CONFIG_SYSMACROS',
-                      cc.has_header_symbol('sys/sysmacros.h', 'makedev'))
- config_host_data.set('HAVE_OPTRESET',
--                     cc.has_header_symbol('getopt.h', 'optreset'))
-+                     cc.has_header_symbol('getopt.h', 'optreset', args: '-Wno-unused-value'))
- config_host_data.set('HAVE_IPPROTO_MPTCP',
-                      cc.has_header_symbol('netinet/in.h', 'IPPROTO_MPTCP'))
- 
-@@ -2708,10 +2709,12 @@ config_host_data.set('HAVE_BLK_ZONE_REP_CAPACITY',
- # has_type
- config_host_data.set('CONFIG_IOVEC',
-                      cc.has_type('struct iovec',
--                                 prefix: '#include <sys/uio.h>'))
-+                                 prefix: '#include <sys/uio.h>',
-+                                 args: '-Wno-unused-value'))
- config_host_data.set('HAVE_UTMPX',
-                      cc.has_type('struct utmpx',
--                                 prefix: '#include <utmpx.h>'))
-+                                 prefix: '#include <utmpx.h>',
-+                                 args: '-Wno-unused-value'))
- 
- config_host_data.set('CONFIG_EVENTFD', cc.links('''
-   #include <sys/eventfd.h>
--- 
-2.45.2
-
+Thank you to everyone involved!
 
