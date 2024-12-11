@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 277C29ED191
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Dec 2024 17:28:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 331A99ED1AF
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Dec 2024 17:30:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tLPYp-0008GZ-Cx; Wed, 11 Dec 2024 11:27:39 -0500
+	id 1tLPYu-0008Uh-I7; Wed, 11 Dec 2024 11:27:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tLPYj-0007sf-MQ
- for qemu-devel@nongnu.org; Wed, 11 Dec 2024 11:27:33 -0500
+ id 1tLPYl-000852-2d
+ for qemu-devel@nongnu.org; Wed, 11 Dec 2024 11:27:35 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tLPYg-0000CW-Ue
- for qemu-devel@nongnu.org; Wed, 11 Dec 2024 11:27:33 -0500
+ id 1tLPYh-0000Cz-JR
+ for qemu-devel@nongnu.org; Wed, 11 Dec 2024 11:27:34 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1733934449;
+ s=mimecast20190719; t=1733934451;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Eybao4hIER+UtTO8XJ3/cn/2NUI2ozda1q+92b4PeHk=;
- b=MVFIS7v734N4sfeNPJe9oOaiBt4OFpvOVD/AS5Orki22q+hl5vhnjMpChly+dXzInImpid
- Ea1/eLsT9AL9UsbC853f4wvJt0e9G4/m8KMwyjQiGj8tW6PX78xQLh7Fteg/mMggJIUgp3
- hi+iRbV9f/NkmCUWEXSRb0Zn6jn8yqY=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=UZDaJLaXxvNnfQSMhxbd05Wgutxnybe8yELIo6TkQK8=;
+ b=jB8mf7PyQYyNx6g8o9sFHhJLzHK2mVNBjSRV91gML8Fgw8+rAV6H0zuFU0QfoC+oFb8ce4
+ SrcB+WUAbt/8zw+fZO/Rf6uxWgcI9L4F1EL6af+FpZx7EmfJuWBLxc/7VX9IBHuf6al8az
+ ld3s1dzbb7zS6NUJixY0hGywTjhg10Y=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-616-gBYZBtTxMXuAWsAWntThvg-1; Wed, 11 Dec 2024 11:27:27 -0500
-X-MC-Unique: gBYZBtTxMXuAWsAWntThvg-1
-X-Mimecast-MFC-AGG-ID: gBYZBtTxMXuAWsAWntThvg
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-43619b135bcso4467895e9.1
- for <qemu-devel@nongnu.org>; Wed, 11 Dec 2024 08:27:27 -0800 (PST)
+ us-mta-644-ikiZBFv9OhWXBQCYIEKkRA-1; Wed, 11 Dec 2024 11:27:29 -0500
+X-MC-Unique: ikiZBFv9OhWXBQCYIEKkRA-1
+X-Mimecast-MFC-AGG-ID: ikiZBFv9OhWXBQCYIEKkRA
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-385e1339790so4748292f8f.2
+ for <qemu-devel@nongnu.org>; Wed, 11 Dec 2024 08:27:29 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733934445; x=1734539245;
+ d=1e100.net; s=20230601; t=1733934448; x=1734539248;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Eybao4hIER+UtTO8XJ3/cn/2NUI2ozda1q+92b4PeHk=;
- b=ibrq67Gt1R2Mtcp+J+ot5L27qx8dQF653SMqTheZx9ZiDV7kF9U1SoAZktsTYZpeAh
- LoUukbVpIi1w5DY1Z+qp3KqehWdur+L8ix4+pZw3PRL7EnJUzkj48xTDO2eX89B4bK+h
- wE1UgR1624dIN+AsGarhmHQYbpXzJnoYGBuZXjNuxIO/k5hGGFTfX0yKv+oFqp/BCqUI
- 5Df8BYdKoxvKJUrO8KXyYvveHLfVwy3YnJocJ+cz1E/bPIEPcPI+ycSHjC8NLOS9kgIX
- SxkDQ0b66uUnp3e2I4MW7W/HjRIBJQPAzTgR9QhfU6LK02sXXIISm5W9pROIPLLG3Y1w
- 0j6g==
-X-Gm-Message-State: AOJu0YzJMycYY9hFgMC4eTCnGhYJXXtRGPBYIbKn1inaripFEMwixzYE
- dzMo919xn7vFpSv5fZMgdgAHHM65wZR+5V5qfzRgYzk15T/xVujbTLYkBdknJ4FYO0J8mir10Pk
- KFU6f+9Crc/4Kv/y/AxKbMFSeVsZFW61v+CnlSZqxh2vc8UTU5Ljrjq2K1INnLjC9X3dFyUoiEO
- YPGY3owkJ+TXBDfhgO9FJ4+ZR7BN97QP8zPgi5
-X-Gm-Gg: ASbGnct3Vd29wVHNSSeW+mOqigDhKpj6WpR7X6MsHUNMZz7r8112MhUa5bsX6JVN9M8
- jD+vmmo7NXq+pEJaF0nmqjvze8c69FbVu8X+z9dDqyboRlAh1CJt2WosUyWhEsddsVYNyHDM4Yg
- jcpNGh3SHsmNCPnQ/kCEazjaTTXdHWbjn+q26R6587HWaY/4Zfq9lM5SMSoCr9XiRUT/U+MHmge
- OpzNHNGq6l7JlcrDe9o/o2/z3fSUlQNsDar+LVYOVNloAEgPMdmJ+E7
-X-Received: by 2002:adf:e18a:0:b0:386:2a3b:8aa with SMTP id
- ffacd0b85a97d-3864cec5c0emr2916453f8f.37.1733934445220; 
- Wed, 11 Dec 2024 08:27:25 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFpMhtghde5G2OcyrdBwiv16Dq4/Y9DU1JcH8yB0KDK2sUGVvszcABphbnH61ucYPeSTeZ5QA==
-X-Received: by 2002:adf:e18a:0:b0:386:2a3b:8aa with SMTP id
- ffacd0b85a97d-3864cec5c0emr2916435f8f.37.1733934444794; 
- Wed, 11 Dec 2024 08:27:24 -0800 (PST)
+ bh=UZDaJLaXxvNnfQSMhxbd05Wgutxnybe8yELIo6TkQK8=;
+ b=eChwZEaZBcTpWzs64dwrQogZ4b15xbRoH9UdmWFFPyw8lT57v6RBPOdggPmF8iNXbg
+ mqAmJz6czToStYPebbYjY7vWO+XaBM+TPCvhRCXj//Cvzhml7PnFpCzefF1g0tRusQ5m
+ 3KG/NLF3cAW4rzU+Tcfw62UN2I/IqSVzVW1jCaN4CCQIVuvLTukdiuEJnQIWiDNIfp8o
+ wTkihBnNKImI8p8DHeh95HeR7V54iLnnVpP5iuJ/XkWMAw0uL8p4SACcWNTbqw6C8vsn
+ duRwxTfxj67GbOte5rPXTX1LSN8cv6kS7oU9zCgOQASPqmudPnY4jpms6Qt9j/B+H/Lt
+ QxDg==
+X-Gm-Message-State: AOJu0YyT5XhfCzblnLuCB0/oNKa3hDu7L6Gdn9+vCdI0r62RfdzCEFax
+ rjuREJMD7e7we5iWRdzEisSfNJrjeO+0+KTBbVuSBUv6gA2CH0ydu+bf6RXR00jL/wmqluBrE79
+ iMbvpEBLbbxaeNaxSseGzo1zHCBS6TyVZ3qJaVrJYeZ/QZtZG1yMOOAQhN22e1R4UUBMHN6cEUl
+ WdyYAYtSnG6li/nhzxbnfHI/8/dgWtqY8iJgrT
+X-Gm-Gg: ASbGncvRMaa3wX75HaHcio0of3R2tQDrO+tzjw+B68/FnK+SMhH+7awVrcPSD+k1J45
+ 06wnOoi1MifO0jKQ8Nzfp4F7J3kADFxTMQIzzRDAlrEE/ahEz8l2q2Yy8h1p9V1VgT9sufyMy8S
+ wJsMYHwslF23YMsEPIGyJZO4F6zNICn1/m1zbCXNXzt3LLgVn/zu4bztIC6MpZ4+/8Ml6YKErgN
+ 4v11A+k3z/3fSaLpdJwN5fCgcsik8yzyIDxQZGId43PLGzWBDC3kDg3
+X-Received: by 2002:a5d:6da4:0:b0:386:1ab5:f0e1 with SMTP id
+ ffacd0b85a97d-3864ce968c0mr3420058f8f.14.1733934447963; 
+ Wed, 11 Dec 2024 08:27:27 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IELYwlbdIdIUQ5HDugRJgsVK67zkR1rE8rwXy521OSPCaRokZLBnNJMXfZ/4Sz955gYYC3iaw==
+X-Received: by 2002:a5d:6da4:0:b0:386:1ab5:f0e1 with SMTP id
+ ffacd0b85a97d-3864ce968c0mr3420029f8f.14.1733934447531; 
+ Wed, 11 Dec 2024 08:27:27 -0800 (PST)
 Received: from [192.168.10.3] ([151.81.118.45])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-387824a4f4dsm1603306f8f.31.2024.12.11.08.27.23
+ 5b1f17b1804b1-434fc530a2dsm89229625e9.11.2024.12.11.08.27.25
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 11 Dec 2024 08:27:23 -0800 (PST)
+ Wed, 11 Dec 2024 08:27:25 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PULL 01/49] ci: enable rust in the Debian and Ubuntu system build job
-Date: Wed, 11 Dec 2024 17:26:31 +0100
-Message-ID: <20241211162720.320070-2-pbonzini@redhat.com>
+Subject: [PULL 02/49] rust: apply --cfg MESON to all crates
+Date: Wed, 11 Dec 2024 17:26:32 +0100
+Message-ID: <20241211162720.320070-3-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241211162720.320070-1-pbonzini@redhat.com>
 References: <20241211162720.320070-1-pbonzini@redhat.com>
@@ -105,38 +105,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We have fixed all incompatibilities with older versions of rustc
-and bindgen.  Enable Rust on Debian to check that the minimum
-supported version of Rust is indeed 1.63.0, and 0.60.x for bindgen.
+We might have more uses for --cfg MESON, even though right now it's only
+qemu-api that has generated files.  Since we're going to add more flags
+to the add_project_arguments calls for Rust, it makes sense to also add
+--cfg MESON everywhere.
 
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- .gitlab-ci.d/buildtest.yml | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ meson.build               | 7 ++++---
+ rust/qemu-api/meson.build | 2 +-
+ 2 files changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
-index 336223484d8..4265a577834 100644
---- a/.gitlab-ci.d/buildtest.yml
-+++ b/.gitlab-ci.d/buildtest.yml
-@@ -40,7 +40,7 @@ build-system-ubuntu:
-     job: amd64-ubuntu2204-container
-   variables:
-     IMAGE: ubuntu2204
--    CONFIGURE_ARGS: --enable-docs
-+    CONFIGURE_ARGS: --enable-docs --enable-rust
-     TARGETS: alpha-softmmu microblazeel-softmmu mips64el-softmmu
-     MAKE_CHECK_ARGS: check-build
+diff --git a/meson.build b/meson.build
+index 147097c652e..c35ce64cd61 100644
+--- a/meson.build
++++ b/meson.build
+@@ -3422,10 +3422,11 @@ if have_rust
+   # is safe; https://github.com/rust-lang/rust/pull/54675 says that
+   # passing -nodefaultlibs to the linker "was more ideological to
+   # start with than anything".
+-  add_project_arguments(rustc_args + ['-C', 'default-linker-libraries'],
++  add_project_arguments(rustc_args +
++      ['--cfg', 'MESON', '-C', 'default-linker-libraries'],
+       native: false, language: 'rust')
+-
+-  add_project_arguments(rustc_args, native: true, language: 'rust')
++  add_project_arguments(rustc_args + ['--cfg', 'MESON'],
++      native: true, language: 'rust')
+ endif
  
-@@ -71,7 +71,7 @@ build-system-debian:
-     job: amd64-debian-container
-   variables:
-     IMAGE: debian
--    CONFIGURE_ARGS: --with-coroutine=sigaltstack
-+    CONFIGURE_ARGS: --with-coroutine=sigaltstack --enable-rust
-     TARGETS: arm-softmmu i386-softmmu riscv64-softmmu sh4eb-softmmu
-       sparc-softmmu xtensa-softmmu
-     MAKE_CHECK_ARGS: check-build
+ hxtool = find_program('scripts/hxtool')
+diff --git a/rust/qemu-api/meson.build b/rust/qemu-api/meson.build
+index 6f637af7b1b..cad9ac4844e 100644
+--- a/rust/qemu-api/meson.build
++++ b/rust/qemu-api/meson.build
+@@ -1,4 +1,4 @@
+-_qemu_api_cfg = ['--cfg', 'MESON']
++_qemu_api_cfg = []
+ # _qemu_api_cfg += ['--cfg', 'feature="allocator"']
+ if rustc.version().version_compare('>=1.77.0')
+   _qemu_api_cfg += ['--cfg', 'has_offset_of']
 -- 
 2.47.1
 
