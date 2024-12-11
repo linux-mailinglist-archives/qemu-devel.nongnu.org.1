@@ -2,75 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A068F9ED129
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Dec 2024 17:21:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A9259ED160
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Dec 2024 17:26:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tLPRe-0008Tm-K5; Wed, 11 Dec 2024 11:20:14 -0500
+	id 1tLPRh-00004t-E5; Wed, 11 Dec 2024 11:20:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tLPRc-0008SP-TB
- for qemu-devel@nongnu.org; Wed, 11 Dec 2024 11:20:12 -0500
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ id 1tLPRe-0008Tv-U6
+ for qemu-devel@nongnu.org; Wed, 11 Dec 2024 11:20:14 -0500
+Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tLPRa-0007ZM-J8
- for qemu-devel@nongnu.org; Wed, 11 Dec 2024 11:20:12 -0500
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-4361a50e337so11076665e9.0
- for <qemu-devel@nongnu.org>; Wed, 11 Dec 2024 08:20:09 -0800 (PST)
+ id 1tLPRc-0007Zi-AO
+ for qemu-devel@nongnu.org; Wed, 11 Dec 2024 11:20:14 -0500
+Received: by mail-wr1-x435.google.com with SMTP id
+ ffacd0b85a97d-385deda28b3so5143720f8f.0
+ for <qemu-devel@nongnu.org>; Wed, 11 Dec 2024 08:20:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1733934009; x=1734538809; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:from:to:cc:subject:date:message-id:reply-to;
- bh=iyuNGqtPMNpkJD7hox7H695EjSntUvN4R/R5om7QWzM=;
- b=cc1fTl+mo6cLjOHQUZo89VRxiZ85Slhc8jK8gVp4CtoKFLYYNs8LVh/Y/Q9m7KytcO
- LgAhkG5rNgtb5daHJAsBcq4rFKhEAoIQcdYcmcE6/hW/6aGoT21/IBRXI+HF3+9w9NE8
- ywG9VimGysv/7po6Ij62U9SOy6k2mnOhbOhGGyAauhord3fuYOMQKb605J6ewij4gwbF
- VuX+1vVALpEJTy2+kXeUmjj83zcN1EITLboDMUOToDYBM2jGLlyPXdgmYKspJqhB1LLe
- IcJ/flluykvgb3g0QTGpTOR4cD17KgBl1yz2PBZWJLW+79OAHJp/e1W0stdNiWQvVDz/
- yDuQ==
+ d=linaro.org; s=google; t=1733934010; x=1734538810; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=wZ9Ks1ZvuwkBmBypHf4VRn8ygrg0mYJ8EjWruN3aUCY=;
+ b=J97hiwd5c4IwL3Do0AKpIdESJSnuIOzIm2gLiMNzt3nzLHXSBAr4sws7GL8Cz71Imk
+ 0yYjvqiNebCD+x/NrN5kFU+AtT1TLkemzKD/b6eUNofVfgBH0hSB5lX5GP8B/Xdc4vPC
+ f/qLD1fuHpdpllmlqYpOxTrcffmX06g78tTEuNg9OSsBGpscB5SUM7ZfB6MGqkCHqXRV
+ n/aXD379Fn62PDtVNht1YKXuVF4RIod3YxfKcQzQ4mWEh/6ANTWvgGn4V1VyPbD19wWB
+ W0Ttz0sVUt6IMfPi9rQB7xxcIbkjw5QCkmkahtmIniKc4cPovTnYLVl2kVwtM9YZKvpg
+ PwlQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733934009; x=1734538809;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=iyuNGqtPMNpkJD7hox7H695EjSntUvN4R/R5om7QWzM=;
- b=QInCBwR/AOy0LujVzE/AHmFXvS5ztINCxba3+CbpVM9uuHtmmvjIs9bqOg1i7RC2EB
- 2PeY8gkDXTvamxxHyTSx2709V5fu1WpI0NT0mGfAIssQYnuNZljONVWPKcsNc+WNuBu9
- TXVPjZwCuam9kodDwGlJZJiLLLtPWOH3a7uWyzHW7+NWYuv4popwympaDWACjmyADdDh
- JwKLyvyeZMyaLqF4ule0PLyxRqEcl9pVHvoQyV0RRvTXgoEATrTQ4CcG2oGWZzmmqYp6
- bxfaNk1Y5jJ6BPjAhcLM/3amFkoCXSt5R0myp4IOzTutaHTETcs/QU5HaolOEOq3bcbo
- CPPw==
-X-Gm-Message-State: AOJu0Yw84KGsKP1uUOcONipq4kGFQ7FEIJbXvEBQRC/GZWk7ed473Obd
- IT3ow0M58LCjNgYATgYb57N2fNp+P6MO7wUu92dUOygdwiRXhqvFjA3XSuq9c9KBHAOaKu63J5J
- Y
-X-Gm-Gg: ASbGncvI71CLYGh9h/hqLOjYw5+tQioRHZJjNR2tFjPmd8F70ch64ynqENBnG5iMZ5W
- 9lR3KWm27zVnXEkMhW0OBK64+m1KtZAqBCcPETurMVprm5oMIPFsLcBLvMoENDyfwEUpTHAzHgO
- xSFJAIJHlbY179otzYOptWvYfhK+79eXEj23qrzdM67zwB+QmZJhYlyQu+jMBe5nbEd11JnrdKm
- jy22eF0IzOPA5yriAiytHAIVNnheAk6HRhFc1LMm6yMlhIS0bYWQidbIXn7
-X-Google-Smtp-Source: AGHT+IFTZ2EmfdI0B6PO9OrnEEFnBrukjXIwE2PuMpiueW0SaQ5B9uQYzXvL+RWZyJB8gakPa8rKCg==
-X-Received: by 2002:a05:600c:a011:b0:434:eb73:b0c0 with SMTP id
- 5b1f17b1804b1-4361c38d930mr25033855e9.5.1733934008649; 
- Wed, 11 Dec 2024 08:20:08 -0800 (PST)
+ d=1e100.net; s=20230601; t=1733934010; x=1734538810;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=wZ9Ks1ZvuwkBmBypHf4VRn8ygrg0mYJ8EjWruN3aUCY=;
+ b=rTcxrtLkSkpSfvwJ/EoOtz6Vr2jlOxzgrr5eA2jc3EIba/yxQzmzHhrg9/7Aekmcz7
+ XJgtLhYCCjdnpgDPw2J8wczU5ZGQQt37lYasiq7NdEB5ZnEOwsSL2TZ+A5+q+Hb+5lWC
+ vRXrxmrOs6hE7vL6SXY8X6i/KKIaW5eu0NSQgjtHKJw1IEZ3cAvobxDwG0zfgTbuMZ66
+ mb7bb+StRTnqJG95pBww8TnqKWv0HodKlIaF5VuFBWJzHg2Hej+6EHqVzgpdZ357MwBT
+ GFGI2xhnTZcROHOHQ1bE2cs7kMmiwIKI/fg9wvpXeKMKXAyHvLMZYBKO0weUJrTKZPOn
+ ziqQ==
+X-Gm-Message-State: AOJu0YwbVQok2ScqCYbbbXfRghnDURG/sGPMxFEjJaHePUNdFGDr1KPO
+ 3EUKccwwBgM7Xv4Z1eaAYw1djffn0dfrofm5mM5VaGd+w+7R1nVjpzwTbJB4myFO8xA2WXW3kVi
+ U
+X-Gm-Gg: ASbGncuMIibDuIIuYpF1SaYhn3SzWk9KBI3N9aHzx3Ed6+kYVJ1i6aqhMjVGYgjdqY9
+ B2N9Bh6cz79sf1pgD627z6Zkt/N5oM1FQQHAEfJWCXrJdgBOvOdL4EGQS8cb2K3j0YPSyOAhEBs
+ wHSXeZrpKEMTEvAcZyCLvfYhP+bm9QZvVZLC0BwuZkJzf/U/9wYBvJsqVLV71pXU1xAPJKaoYEC
+ MWIGlVmy4eVYyDgJooS9wI/4MGV+DcD3juq4YYB5L8o0+rUx07WmgylYu/z
+X-Google-Smtp-Source: AGHT+IGqt9/zdVpulGS7pnK6Od1KbeZEFLOpPta+dIlFBZdgmn2b1LhodkAWw80Wd4nlXREx+NEvaw==
+X-Received: by 2002:a05:6000:a05:b0:385:fc8c:24b6 with SMTP id
+ ffacd0b85a97d-387876973b2mr213414f8f.27.1733934009648; 
+ Wed, 11 Dec 2024 08:20:09 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-434f4dfdcdfsm121460595e9.39.2024.12.11.08.20.06
+ 5b1f17b1804b1-434f4dfdcdfsm121460595e9.39.2024.12.11.08.20.08
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 11 Dec 2024 08:20:07 -0800 (PST)
+ Wed, 11 Dec 2024 08:20:08 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 00/72] target-arm queue
-Date: Wed, 11 Dec 2024 16:18:52 +0000
-Message-Id: <20241211162004.2795499-1-peter.maydell@linaro.org>
+Subject: [PULL 01/72] hw/net/lan9118: Extract lan9118_phy
+Date: Wed, 11 Dec 2024 16:18:53 +0000
+Message-Id: <20241211162004.2795499-2-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20241211162004.2795499-1-peter.maydell@linaro.org>
+References: <20241211162004.2795499-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::435;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x435.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,164 +95,521 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-First arm pullreq of the cycle; this is mostly my softfloat NaN
-handling series. (Lots more in my to-review queue, but I don't
-like pullreqs growing too close to a hundred patches at a time :-))
+From: Bernhard Beschow <shentey@gmail.com>
 
-thanks
--- PMM
+A very similar implementation of the same device exists in imx_fec. Prepare for
+a common implementation by extracting a device model into its own files.
 
-The following changes since commit 97f2796a3736ed37a1b85dc1c76a6c45b829dd17:
+Some migration state has been moved into the new device model which breaks
+migration compatibility for the following machines:
+* smdkc210
+* realview-*
+* vexpress-*
+* kzm
+* mps2-*
 
-  Open 10.0 development tree (2024-12-10 17:41:17 +0000)
+While breaking migration ABI, fix the size of the MII registers to be 16 bit,
+as defined by IEEE 802.3u.
 
-are available in the Git repository at:
-
-  https://git.linaro.org/people/pmaydell/qemu-arm.git tags/pull-target-arm-20241211
-
-for you to fetch changes up to 1abe28d519239eea5cf9620bb13149423e5665f8:
-
-  MAINTAINERS: Add correct email address for Vikram Garhwal (2024-12-11 15:31:09 +0000)
-
-----------------------------------------------------------------
-target-arm queue:
- * hw/net/lan9118: Extract PHY model, reuse with imx_fec, fix bugs
- * fpu: Make muladd NaN handling runtime-selected, not compile-time
- * fpu: Make default NaN pattern runtime-selected, not compile-time
- * fpu: Minor NaN-related cleanups
- * MAINTAINERS: email address updates
-
-----------------------------------------------------------------
-Bernhard Beschow (5):
-      hw/net/lan9118: Extract lan9118_phy
-      hw/net/lan9118_phy: Reuse in imx_fec and consolidate implementations
-      hw/net/lan9118_phy: Fix off-by-one error in MII_ANLPAR register
-      hw/net/lan9118_phy: Reuse MII constants
-      hw/net/lan9118_phy: Add missing 100 mbps full duplex advertisement
-
-Leif Lindholm (1):
-      MAINTAINERS: update email address for Leif Lindholm
-
-Peter Maydell (54):
-      fpu: handle raising Invalid for infzero in pick_nan_muladd
-      fpu: Check for default_nan_mode before calling pickNaNMulAdd
-      softfloat: Allow runtime choice of inf * 0 + NaN result
-      tests/fp: Explicitly set inf-zero-nan rule
-      target/arm: Set FloatInfZeroNaNRule explicitly
-      target/s390: Set FloatInfZeroNaNRule explicitly
-      target/ppc: Set FloatInfZeroNaNRule explicitly
-      target/mips: Set FloatInfZeroNaNRule explicitly
-      target/sparc: Set FloatInfZeroNaNRule explicitly
-      target/xtensa: Set FloatInfZeroNaNRule explicitly
-      target/x86: Set FloatInfZeroNaNRule explicitly
-      target/loongarch: Set FloatInfZeroNaNRule explicitly
-      target/hppa: Set FloatInfZeroNaNRule explicitly
-      softfloat: Pass have_snan to pickNaNMulAdd
-      softfloat: Allow runtime choice of NaN propagation for muladd
-      tests/fp: Explicitly set 3-NaN propagation rule
-      target/arm: Set Float3NaNPropRule explicitly
-      target/loongarch: Set Float3NaNPropRule explicitly
-      target/ppc: Set Float3NaNPropRule explicitly
-      target/s390x: Set Float3NaNPropRule explicitly
-      target/sparc: Set Float3NaNPropRule explicitly
-      target/mips: Set Float3NaNPropRule explicitly
-      target/xtensa: Set Float3NaNPropRule explicitly
-      target/i386: Set Float3NaNPropRule explicitly
-      target/hppa: Set Float3NaNPropRule explicitly
-      fpu: Remove use_first_nan field from float_status
-      target/m68k: Don't pass NULL float_status to floatx80_default_nan()
-      softfloat: Create floatx80 default NaN from parts64_default_nan
-      target/loongarch: Use normal float_status in fclass_s and fclass_d helpers
-      target/m68k: In frem helper, initialize local float_status from env->fp_status
-      target/m68k: Init local float_status from env fp_status in gdb get/set reg
-      target/sparc: Initialize local scratch float_status from env->fp_status
-      target/ppc: Use env->fp_status in helper_compute_fprf functions
-      fpu: Allow runtime choice of default NaN value
-      tests/fp: Set default NaN pattern explicitly
-      target/microblaze: Set default NaN pattern explicitly
-      target/i386: Set default NaN pattern explicitly
-      target/hppa: Set default NaN pattern explicitly
-      target/alpha: Set default NaN pattern explicitly
-      target/arm: Set default NaN pattern explicitly
-      target/loongarch: Set default NaN pattern explicitly
-      target/m68k: Set default NaN pattern explicitly
-      target/mips: Set default NaN pattern explicitly
-      target/openrisc: Set default NaN pattern explicitly
-      target/ppc: Set default NaN pattern explicitly
-      target/sh4: Set default NaN pattern explicitly
-      target/rx: Set default NaN pattern explicitly
-      target/s390x: Set default NaN pattern explicitly
-      target/sparc: Set default NaN pattern explicitly
-      target/xtensa: Set default NaN pattern explicitly
-      target/hexagon: Set default NaN pattern explicitly
-      target/riscv: Set default NaN pattern explicitly
-      target/tricore: Set default NaN pattern explicitly
-      fpu: Remove default handling for dnan_pattern
-
-Richard Henderson (11):
-      target/arm: Copy entire float_status in is_ebf
-      softfloat: Inline pickNaNMulAdd
-      softfloat: Use goto for default nan case in pick_nan_muladd
-      softfloat: Remove which from parts_pick_nan_muladd
-      softfloat: Pad array size in pick_nan_muladd
-      softfloat: Move propagateFloatx80NaN to softfloat.c
-      softfloat: Use parts_pick_nan in propagateFloatx80NaN
-      softfloat: Inline pickNaN
-      softfloat: Share code between parts_pick_nan cases
-      softfloat: Sink frac_cmp in parts_pick_nan until needed
-      softfloat: Replace WHICH with RET in parts_pick_nan
-
-Vikram Garhwal (1):
-      MAINTAINERS: Add correct email address for Vikram Garhwal
-
- MAINTAINERS                       |   4 +-
- include/fpu/softfloat-helpers.h   |  38 +++-
- include/fpu/softfloat-types.h     |  89 +++++++-
- include/hw/net/imx_fec.h          |   9 +-
- include/hw/net/lan9118_phy.h      |  37 ++++
- include/hw/net/mii.h              |   6 +
- target/mips/fpu_helper.h          |  20 ++
- target/sparc/helper.h             |   4 +-
- fpu/softfloat.c                   |  19 ++
- hw/net/imx_fec.c                  | 146 ++------------
- hw/net/lan9118.c                  | 137 ++-----------
- hw/net/lan9118_phy.c              | 222 ++++++++++++++++++++
- linux-user/arm/nwfpe/fpa11.c      |   5 +
- target/alpha/cpu.c                |   2 +
- target/arm/cpu.c                  |  10 +
- target/arm/tcg/vec_helper.c       |  20 +-
- target/hexagon/cpu.c              |   2 +
- target/hppa/fpu_helper.c          |  12 ++
- target/i386/tcg/fpu_helper.c      |  12 ++
- target/loongarch/tcg/fpu_helper.c |  14 +-
- target/m68k/cpu.c                 |  14 +-
- target/m68k/fpu_helper.c          |   6 +-
- target/m68k/helper.c              |   6 +-
- target/microblaze/cpu.c           |   2 +
- target/mips/msa.c                 |  10 +
- target/openrisc/cpu.c             |   2 +
- target/ppc/cpu_init.c             |  19 ++
- target/ppc/fpu_helper.c           |   3 +-
- target/riscv/cpu.c                |   2 +
- target/rx/cpu.c                   |   2 +
- target/s390x/cpu.c                |   5 +
- target/sh4/cpu.c                  |   2 +
- target/sparc/cpu.c                |   6 +
- target/sparc/fop_helper.c         |   8 +-
- target/sparc/translate.c          |   4 +-
- target/tricore/helper.c           |   2 +
- target/xtensa/cpu.c               |   4 +
- target/xtensa/fpu_helper.c        |   3 +-
- tests/fp/fp-bench.c               |   7 +
- tests/fp/fp-test-log2.c           |   1 +
- tests/fp/fp-test.c                |   7 +
- fpu/softfloat-parts.c.inc         | 152 +++++++++++---
- fpu/softfloat-specialize.c.inc    | 412 ++------------------------------------
- .mailmap                          |   5 +-
- hw/net/Kconfig                    |   5 +
- hw/net/meson.build                |   1 +
- hw/net/trace-events               |  10 +-
- 47 files changed, 778 insertions(+), 730 deletions(-)
+Signed-off-by: Bernhard Beschow <shentey@gmail.com>
+Tested-by: Guenter Roeck <linux@roeck-us.net>
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Message-id: 20241102125724.532843-2-shentey@gmail.com
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+---
+ include/hw/net/lan9118_phy.h |  37 ++++++++
+ hw/net/lan9118.c             | 137 +++++-----------------------
+ hw/net/lan9118_phy.c         | 169 +++++++++++++++++++++++++++++++++++
+ hw/net/Kconfig               |   4 +
+ hw/net/meson.build           |   1 +
+ 5 files changed, 233 insertions(+), 115 deletions(-)
  create mode 100644 include/hw/net/lan9118_phy.h
  create mode 100644 hw/net/lan9118_phy.c
+
+diff --git a/include/hw/net/lan9118_phy.h b/include/hw/net/lan9118_phy.h
+new file mode 100644
+index 00000000000..af12fc33d5f
+--- /dev/null
++++ b/include/hw/net/lan9118_phy.h
+@@ -0,0 +1,37 @@
++/*
++ * SMSC LAN9118 PHY emulation
++ *
++ * Copyright (c) 2009 CodeSourcery, LLC.
++ * Written by Paul Brook
++ *
++ * This work is licensed under the terms of the GNU GPL, version 2 or later.
++ * See the COPYING file in the top-level directory.
++ */
++
++#ifndef HW_NET_LAN9118_PHY_H
++#define HW_NET_LAN9118_PHY_H
++
++#include "qom/object.h"
++#include "hw/sysbus.h"
++
++#define TYPE_LAN9118_PHY "lan9118-phy"
++OBJECT_DECLARE_SIMPLE_TYPE(Lan9118PhyState, LAN9118_PHY)
++
++typedef struct Lan9118PhyState {
++    SysBusDevice parent_obj;
++
++    uint16_t status;
++    uint16_t control;
++    uint16_t advertise;
++    uint16_t ints;
++    uint16_t int_mask;
++    qemu_irq irq;
++    bool link_down;
++} Lan9118PhyState;
++
++void lan9118_phy_update_link(Lan9118PhyState *s, bool link_down);
++void lan9118_phy_reset(Lan9118PhyState *s);
++uint16_t lan9118_phy_read(Lan9118PhyState *s, int reg);
++void lan9118_phy_write(Lan9118PhyState *s, int reg, uint16_t val);
++
++#endif
+diff --git a/hw/net/lan9118.c b/hw/net/lan9118.c
+index db28a0ef306..99e87b7178c 100644
+--- a/hw/net/lan9118.c
++++ b/hw/net/lan9118.c
+@@ -16,6 +16,7 @@
+ #include "net/net.h"
+ #include "net/eth.h"
+ #include "hw/irq.h"
++#include "hw/net/lan9118_phy.h"
+ #include "hw/net/lan9118.h"
+ #include "hw/ptimer.h"
+ #include "hw/qdev-properties.h"
+@@ -139,14 +140,6 @@ do { printf("lan9118: " fmt , ## __VA_ARGS__); } while (0)
+ #define MAC_CR_RXEN     0x00000004
+ #define MAC_CR_RESERVED 0x7f404213
+ 
+-#define PHY_INT_ENERGYON            0x80
+-#define PHY_INT_AUTONEG_COMPLETE    0x40
+-#define PHY_INT_FAULT               0x20
+-#define PHY_INT_DOWN                0x10
+-#define PHY_INT_AUTONEG_LP          0x08
+-#define PHY_INT_PARFAULT            0x04
+-#define PHY_INT_AUTONEG_PAGE        0x02
+-
+ #define GPT_TIMER_EN    0x20000000
+ 
+ /*
+@@ -228,11 +221,8 @@ struct lan9118_state {
+     uint32_t mac_mii_data;
+     uint32_t mac_flow;
+ 
+-    uint32_t phy_status;
+-    uint32_t phy_control;
+-    uint32_t phy_advertise;
+-    uint32_t phy_int;
+-    uint32_t phy_int_mask;
++    Lan9118PhyState mii;
++    IRQState mii_irq;
+ 
+     int32_t eeprom_writable;
+     uint8_t eeprom[128];
+@@ -274,8 +264,8 @@ struct lan9118_state {
+ 
+ static const VMStateDescription vmstate_lan9118 = {
+     .name = "lan9118",
+-    .version_id = 2,
+-    .minimum_version_id = 1,
++    .version_id = 3,
++    .minimum_version_id = 3,
+     .fields = (const VMStateField[]) {
+         VMSTATE_PTIMER(timer, lan9118_state),
+         VMSTATE_UINT32(irq_cfg, lan9118_state),
+@@ -301,11 +291,6 @@ static const VMStateDescription vmstate_lan9118 = {
+         VMSTATE_UINT32(mac_mii_acc, lan9118_state),
+         VMSTATE_UINT32(mac_mii_data, lan9118_state),
+         VMSTATE_UINT32(mac_flow, lan9118_state),
+-        VMSTATE_UINT32(phy_status, lan9118_state),
+-        VMSTATE_UINT32(phy_control, lan9118_state),
+-        VMSTATE_UINT32(phy_advertise, lan9118_state),
+-        VMSTATE_UINT32(phy_int, lan9118_state),
+-        VMSTATE_UINT32(phy_int_mask, lan9118_state),
+         VMSTATE_INT32(eeprom_writable, lan9118_state),
+         VMSTATE_UINT8_ARRAY(eeprom, lan9118_state, 128),
+         VMSTATE_INT32(tx_fifo_size, lan9118_state),
+@@ -385,9 +370,11 @@ static void lan9118_reload_eeprom(lan9118_state *s)
+     lan9118_mac_changed(s);
+ }
+ 
+-static void phy_update_irq(lan9118_state *s)
++static void lan9118_update_irq(void *opaque, int n, int level)
+ {
+-    if (s->phy_int & s->phy_int_mask) {
++    lan9118_state *s = opaque;
++
++    if (level) {
+         s->int_sts |= PHY_INT;
+     } else {
+         s->int_sts &= ~PHY_INT;
+@@ -395,33 +382,10 @@ static void phy_update_irq(lan9118_state *s)
+     lan9118_update(s);
+ }
+ 
+-static void phy_update_link(lan9118_state *s)
+-{
+-    /* Autonegotiation status mirrors link status.  */
+-    if (qemu_get_queue(s->nic)->link_down) {
+-        s->phy_status &= ~0x0024;
+-        s->phy_int |= PHY_INT_DOWN;
+-    } else {
+-        s->phy_status |= 0x0024;
+-        s->phy_int |= PHY_INT_ENERGYON;
+-        s->phy_int |= PHY_INT_AUTONEG_COMPLETE;
+-    }
+-    phy_update_irq(s);
+-}
+-
+ static void lan9118_set_link(NetClientState *nc)
+ {
+-    phy_update_link(qemu_get_nic_opaque(nc));
+-}
+-
+-static void phy_reset(lan9118_state *s)
+-{
+-    s->phy_status = 0x7809;
+-    s->phy_control = 0x3000;
+-    s->phy_advertise = 0x01e1;
+-    s->phy_int_mask = 0;
+-    s->phy_int = 0;
+-    phy_update_link(s);
++    lan9118_phy_update_link(&LAN9118(qemu_get_nic_opaque(nc))->mii,
++                            nc->link_down);
+ }
+ 
+ static void lan9118_reset(DeviceState *d)
+@@ -478,8 +442,6 @@ static void lan9118_reset(DeviceState *d)
+     s->read_word_n = 0;
+     s->write_word_n = 0;
+ 
+-    phy_reset(s);
+-
+     s->eeprom_writable = 0;
+     lan9118_reload_eeprom(s);
+ }
+@@ -678,7 +640,7 @@ static void do_tx_packet(lan9118_state *s)
+     uint32_t status;
+ 
+     /* FIXME: Honor TX disable, and allow queueing of packets.  */
+-    if (s->phy_control & 0x4000)  {
++    if (s->mii.control & 0x4000) {
+         /* This assumes the receive routine doesn't touch the VLANClient.  */
+         qemu_receive_packet(qemu_get_queue(s->nic), s->txp->data, s->txp->len);
+     } else {
+@@ -834,68 +796,6 @@ static void tx_fifo_push(lan9118_state *s, uint32_t val)
+     }
+ }
+ 
+-static uint32_t do_phy_read(lan9118_state *s, int reg)
+-{
+-    uint32_t val;
+-
+-    switch (reg) {
+-    case 0: /* Basic Control */
+-        return s->phy_control;
+-    case 1: /* Basic Status */
+-        return s->phy_status;
+-    case 2: /* ID1 */
+-        return 0x0007;
+-    case 3: /* ID2 */
+-        return 0xc0d1;
+-    case 4: /* Auto-neg advertisement */
+-        return s->phy_advertise;
+-    case 5: /* Auto-neg Link Partner Ability */
+-        return 0x0f71;
+-    case 6: /* Auto-neg Expansion */
+-        return 1;
+-        /* TODO 17, 18, 27, 29, 30, 31 */
+-    case 29: /* Interrupt source.  */
+-        val = s->phy_int;
+-        s->phy_int = 0;
+-        phy_update_irq(s);
+-        return val;
+-    case 30: /* Interrupt mask */
+-        return s->phy_int_mask;
+-    default:
+-        qemu_log_mask(LOG_GUEST_ERROR,
+-                      "do_phy_read: PHY read reg %d\n", reg);
+-        return 0;
+-    }
+-}
+-
+-static void do_phy_write(lan9118_state *s, int reg, uint32_t val)
+-{
+-    switch (reg) {
+-    case 0: /* Basic Control */
+-        if (val & 0x8000) {
+-            phy_reset(s);
+-            break;
+-        }
+-        s->phy_control = val & 0x7980;
+-        /* Complete autonegotiation immediately.  */
+-        if (val & 0x1000) {
+-            s->phy_status |= 0x0020;
+-        }
+-        break;
+-    case 4: /* Auto-neg advertisement */
+-        s->phy_advertise = (val & 0x2d7f) | 0x80;
+-        break;
+-        /* TODO 17, 18, 27, 31 */
+-    case 30: /* Interrupt mask */
+-        s->phy_int_mask = val & 0xff;
+-        phy_update_irq(s);
+-        break;
+-    default:
+-        qemu_log_mask(LOG_GUEST_ERROR,
+-                      "do_phy_write: PHY write reg %d = 0x%04x\n", reg, val);
+-    }
+-}
+-
+ static void do_mac_write(lan9118_state *s, int reg, uint32_t val)
+ {
+     switch (reg) {
+@@ -929,9 +829,9 @@ static void do_mac_write(lan9118_state *s, int reg, uint32_t val)
+         if (val & 2) {
+             DPRINTF("PHY write %d = 0x%04x\n",
+                     (val >> 6) & 0x1f, s->mac_mii_data);
+-            do_phy_write(s, (val >> 6) & 0x1f, s->mac_mii_data);
++            lan9118_phy_write(&s->mii, (val >> 6) & 0x1f, s->mac_mii_data);
+         } else {
+-            s->mac_mii_data = do_phy_read(s, (val >> 6) & 0x1f);
++            s->mac_mii_data = lan9118_phy_read(&s->mii, (val >> 6) & 0x1f);
+             DPRINTF("PHY read %d = 0x%04x\n",
+                     (val >> 6) & 0x1f, s->mac_mii_data);
+         }
+@@ -1126,7 +1026,7 @@ static void lan9118_writel(void *opaque, hwaddr offset,
+         break;
+     case CSR_PMT_CTRL:
+         if (val & 0x400) {
+-            phy_reset(s);
++            lan9118_phy_reset(&s->mii);
+         }
+         s->pmt_ctrl &= ~0x34e;
+         s->pmt_ctrl |= (val & 0x34e);
+@@ -1373,6 +1273,13 @@ static void lan9118_realize(DeviceState *dev, Error **errp)
+     const MemoryRegionOps *mem_ops =
+             s->mode_16bit ? &lan9118_16bit_mem_ops : &lan9118_mem_ops;
+ 
++    qemu_init_irq(&s->mii_irq, lan9118_update_irq, s, 0);
++    object_initialize_child(OBJECT(s), "mii", &s->mii, TYPE_LAN9118_PHY);
++    if (!sysbus_realize_and_unref(SYS_BUS_DEVICE(&s->mii), errp)) {
++        return;
++    }
++    qdev_connect_gpio_out(DEVICE(&s->mii), 0, &s->mii_irq);
++
+     memory_region_init_io(&s->mmio, OBJECT(dev), mem_ops, s,
+                           "lan9118-mmio", 0x100);
+     sysbus_init_mmio(sbd, &s->mmio);
+diff --git a/hw/net/lan9118_phy.c b/hw/net/lan9118_phy.c
+new file mode 100644
+index 00000000000..b22c3c28556
+--- /dev/null
++++ b/hw/net/lan9118_phy.c
+@@ -0,0 +1,169 @@
++/*
++ * SMSC LAN9118 PHY emulation
++ *
++ * Copyright (c) 2009 CodeSourcery, LLC.
++ * Written by Paul Brook
++ *
++ * This code is licensed under the GNU GPL v2
++ *
++ * Contributions after 2012-01-13 are licensed under the terms of the
++ * GNU GPL, version 2 or (at your option) any later version.
++ */
++
++#include "qemu/osdep.h"
++#include "hw/net/lan9118_phy.h"
++#include "hw/irq.h"
++#include "hw/resettable.h"
++#include "migration/vmstate.h"
++#include "qemu/log.h"
++
++#define PHY_INT_ENERGYON            (1 << 7)
++#define PHY_INT_AUTONEG_COMPLETE    (1 << 6)
++#define PHY_INT_FAULT               (1 << 5)
++#define PHY_INT_DOWN                (1 << 4)
++#define PHY_INT_AUTONEG_LP          (1 << 3)
++#define PHY_INT_PARFAULT            (1 << 2)
++#define PHY_INT_AUTONEG_PAGE        (1 << 1)
++
++static void lan9118_phy_update_irq(Lan9118PhyState *s)
++{
++    qemu_set_irq(s->irq, !!(s->ints & s->int_mask));
++}
++
++uint16_t lan9118_phy_read(Lan9118PhyState *s, int reg)
++{
++    uint16_t val;
++
++    switch (reg) {
++    case 0: /* Basic Control */
++        return s->control;
++    case 1: /* Basic Status */
++        return s->status;
++    case 2: /* ID1 */
++        return 0x0007;
++    case 3: /* ID2 */
++        return 0xc0d1;
++    case 4: /* Auto-neg advertisement */
++        return s->advertise;
++    case 5: /* Auto-neg Link Partner Ability */
++        return 0x0f71;
++    case 6: /* Auto-neg Expansion */
++        return 1;
++        /* TODO 17, 18, 27, 29, 30, 31 */
++    case 29: /* Interrupt source. */
++        val = s->ints;
++        s->ints = 0;
++        lan9118_phy_update_irq(s);
++        return val;
++    case 30: /* Interrupt mask */
++        return s->int_mask;
++    default:
++        qemu_log_mask(LOG_GUEST_ERROR,
++                      "lan9118_phy_read: PHY read reg %d\n", reg);
++        return 0;
++    }
++}
++
++void lan9118_phy_write(Lan9118PhyState *s, int reg, uint16_t val)
++{
++    switch (reg) {
++    case 0: /* Basic Control */
++        if (val & 0x8000) {
++            lan9118_phy_reset(s);
++            break;
++        }
++        s->control = val & 0x7980;
++        /* Complete autonegotiation immediately. */
++        if (val & 0x1000) {
++            s->status |= 0x0020;
++        }
++        break;
++    case 4: /* Auto-neg advertisement */
++        s->advertise = (val & 0x2d7f) | 0x80;
++        break;
++        /* TODO 17, 18, 27, 31 */
++    case 30: /* Interrupt mask */
++        s->int_mask = val & 0xff;
++        lan9118_phy_update_irq(s);
++        break;
++    default:
++        qemu_log_mask(LOG_GUEST_ERROR,
++                      "lan9118_phy_write: PHY write reg %d = 0x%04x\n", reg, val);
++    }
++}
++
++void lan9118_phy_update_link(Lan9118PhyState *s, bool link_down)
++{
++    s->link_down = link_down;
++
++    /* Autonegotiation status mirrors link status. */
++    if (link_down) {
++        s->status &= ~0x0024;
++        s->ints |= PHY_INT_DOWN;
++    } else {
++        s->status |= 0x0024;
++        s->ints |= PHY_INT_ENERGYON;
++        s->ints |= PHY_INT_AUTONEG_COMPLETE;
++    }
++    lan9118_phy_update_irq(s);
++}
++
++void lan9118_phy_reset(Lan9118PhyState *s)
++{
++    s->control = 0x3000;
++    s->status = 0x7809;
++    s->advertise = 0x01e1;
++    s->int_mask = 0;
++    s->ints = 0;
++    lan9118_phy_update_link(s, s->link_down);
++}
++
++static void lan9118_phy_reset_hold(Object *obj, ResetType type)
++{
++    Lan9118PhyState *s = LAN9118_PHY(obj);
++
++    lan9118_phy_reset(s);
++}
++
++static void lan9118_phy_init(Object *obj)
++{
++    Lan9118PhyState *s = LAN9118_PHY(obj);
++
++    qdev_init_gpio_out(DEVICE(s), &s->irq, 1);
++}
++
++static const VMStateDescription vmstate_lan9118_phy = {
++    .name = "lan9118-phy",
++    .version_id = 1,
++    .minimum_version_id = 1,
++    .fields = (const VMStateField[]) {
++        VMSTATE_UINT16(control, Lan9118PhyState),
++        VMSTATE_UINT16(status, Lan9118PhyState),
++        VMSTATE_UINT16(advertise, Lan9118PhyState),
++        VMSTATE_UINT16(ints, Lan9118PhyState),
++        VMSTATE_UINT16(int_mask, Lan9118PhyState),
++        VMSTATE_BOOL(link_down, Lan9118PhyState),
++        VMSTATE_END_OF_LIST()
++    }
++};
++
++static void lan9118_phy_class_init(ObjectClass *klass, void *data)
++{
++    ResettableClass *rc = RESETTABLE_CLASS(klass);
++    DeviceClass *dc = DEVICE_CLASS(klass);
++
++    rc->phases.hold = lan9118_phy_reset_hold;
++    dc->vmsd = &vmstate_lan9118_phy;
++}
++
++static const TypeInfo types[] = {
++    {
++        .name          = TYPE_LAN9118_PHY,
++        .parent        = TYPE_SYS_BUS_DEVICE,
++        .instance_size = sizeof(Lan9118PhyState),
++        .instance_init = lan9118_phy_init,
++        .class_init    = lan9118_phy_class_init,
++    }
++};
++
++DEFINE_TYPES(types)
+diff --git a/hw/net/Kconfig b/hw/net/Kconfig
+index 7fcc0d7faa2..6b2ff2f937a 100644
+--- a/hw/net/Kconfig
++++ b/hw/net/Kconfig
+@@ -62,8 +62,12 @@ config VMXNET3_PCI
+ config SMC91C111
+     bool
+ 
++config LAN9118_PHY
++    bool
++
+ config LAN9118
+     bool
++    select LAN9118_PHY
+     select PTIMER
+ 
+ config NE2000_ISA
+diff --git a/hw/net/meson.build b/hw/net/meson.build
+index 00a9e9dd515..3bb5d749a83 100644
+--- a/hw/net/meson.build
++++ b/hw/net/meson.build
+@@ -19,6 +19,7 @@ system_ss.add(when: 'CONFIG_VMXNET3_PCI', if_true: files('vmxnet3.c'))
+ 
+ system_ss.add(when: 'CONFIG_SMC91C111', if_true: files('smc91c111.c'))
+ system_ss.add(when: 'CONFIG_LAN9118', if_true: files('lan9118.c'))
++system_ss.add(when: 'CONFIG_LAN9118_PHY', if_true: files('lan9118_phy.c'))
+ system_ss.add(when: 'CONFIG_NE2000_ISA', if_true: files('ne2000-isa.c'))
+ system_ss.add(when: 'CONFIG_OPENCORES_ETH', if_true: files('opencores_eth.c'))
+ system_ss.add(when: 'CONFIG_XGMAC', if_true: files('xgmac.c'))
+-- 
+2.34.1
+
 
