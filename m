@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68A869ED1AD
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Dec 2024 17:29:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A77C9ED1B4
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Dec 2024 17:30:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tLPZf-0006CN-Ua; Wed, 11 Dec 2024 11:28:32 -0500
+	id 1tLPZj-0006tc-LX; Wed, 11 Dec 2024 11:28:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tLPZZ-0005mz-Rn
- for qemu-devel@nongnu.org; Wed, 11 Dec 2024 11:28:26 -0500
+ id 1tLPZf-0006cl-LB
+ for qemu-devel@nongnu.org; Wed, 11 Dec 2024 11:28:31 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tLPZY-0000UP-0r
- for qemu-devel@nongnu.org; Wed, 11 Dec 2024 11:28:25 -0500
+ id 1tLPZd-0000WH-QC
+ for qemu-devel@nongnu.org; Wed, 11 Dec 2024 11:28:31 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1733934503;
+ s=mimecast20190719; t=1733934509;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=WfR3bsD3EZkoCdmWNV8N9zfVxdC7BnuxFxYvftQbw4s=;
- b=BZAfFDHWyMJmHwgV7KzViAbsgBi94NHzk2HzT8XzWK7hngKkGnCER+FvEOC9NQqjWueS1n
- sxd1Ktct8EYLidtskMGiQPgNycpwJrO94EcLnDGvwM51hfLvgubACLb3czujMml/8UHvfZ
- Sw3nUEHdAics2yhDjtNoME5RC3ryWD0=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=Gss1FsL60dR5exmv70NK5RIAMB4XZY8Tdq7PdjogwBY=;
+ b=PAgrJJ+XYLhf0ABVc+SEURu4xrpSiaMlwGRhcaxhjK2k9CVziFzYvSSqzWhimG7GurV1Uq
+ CX91wJ7p6bq7hIQach7xDHJSSm/pKo6PPy0xHkLTJtxiT3uT2wLm3jM4ShAegKAYiZBYkT
+ /ISg2b6nev9ETsPIaOO13zAQnJ8Fdg4=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-35-d-LKAo3bOKKYMxlCez4lnw-1; Wed, 11 Dec 2024 11:28:22 -0500
-X-MC-Unique: d-LKAo3bOKKYMxlCez4lnw-1
-X-Mimecast-MFC-AGG-ID: d-LKAo3bOKKYMxlCez4lnw
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-43621907030so5609185e9.1
- for <qemu-devel@nongnu.org>; Wed, 11 Dec 2024 08:28:22 -0800 (PST)
+ us-mta-311-8tMG5_zQMPaIP6oR6ZQ08A-1; Wed, 11 Dec 2024 11:28:24 -0500
+X-MC-Unique: 8tMG5_zQMPaIP6oR6ZQ08A-1
+X-Mimecast-MFC-AGG-ID: 8tMG5_zQMPaIP6oR6ZQ08A
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-385ded5e92aso2724879f8f.3
+ for <qemu-devel@nongnu.org>; Wed, 11 Dec 2024 08:28:23 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733934500; x=1734539300;
+ d=1e100.net; s=20230601; t=1733934502; x=1734539302;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=WfR3bsD3EZkoCdmWNV8N9zfVxdC7BnuxFxYvftQbw4s=;
- b=DAWJb5bWL9ZMf9w6NRl1mw+eHsnI8oVH40deJAUlWcsGh2et/8hXE32WJa9LhCOf5D
- DCtcNMfSVLA6eYSiRYfNmmvKzDFkgMEfQ3YW8stvNFXYhFLwdgBWhlGtRWg6vlfQj9sF
- Cbn7qtP6qLHcxyncyUZ3W59gCcLgIH1VMpdg/hODdk5ZSZsn44gPrWmvYAsjr12AwsGz
- 2gnQiWxM5SK02TftgF+KSj0HUjEeumaVjpv4mWcipc6ekks6Gxc1+iEHR+EETr3TtrGZ
- t4zh1dhg00lXbK5kjpV9km/OowCLOirjZEcVxyUhyNjdNGa+EcgHLI/a6nWjECnveIy0
- 2Kzw==
-X-Gm-Message-State: AOJu0YzQhrH83hb3ziFWmMGk/mFK7LCiv6IzDqPSkF2NKkxUTiM7T5KE
- EZ2nDHoeXnca9PFbHJjvC4/MdSqrKF3TkSMPOyYPjNi3seO1SCRv9ajP/nx26eEfDN5+gvG2yYy
- duHYWDjV8AokgM9KI7rHtPOc0iPVit5IVLf/fuT0dyi40wemJYWX80qXtrv/bYsl3nlnBRisARz
- X/i2cwU2fLnWpQZr/S7WNN6v1BbVkgeQGitGcF
-X-Gm-Gg: ASbGncv7KHmsIsizPSgghsvGRUuVoGfOhhmckysLcNq6T9seEaNkzYtIheqJm7N3v+W
- e5zQQ9Gn/JMoRv0Tv0bPNYwZj/CyGpROJn/oVbdVfWTwQZberfiBa5vPXGbd0uP5XhzR8U2/CLE
- e5mhprR8KPrO0z8Hovw3g3CgQFzgrPKd/gkrafx5Y2NgBOncdbUyuvnwJy6gqMl/LZBdUuqNl74
- ny3R2O9/ClTrla/bnkNvhOtkOjlQcytJiW72TZ5KYcHpNBeW3NRn2XS
-X-Received: by 2002:a05:6000:1787:b0:386:31a9:31ea with SMTP id
- ffacd0b85a97d-3864cea3c64mr3771950f8f.33.1733934500329; 
- Wed, 11 Dec 2024 08:28:20 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFiHoZt3Gpwb3xgDhc5Nq79I/SiF74+IuReGehRxJI3Jlt8QrP41XcFNzLJIxtWLiGbG6nngA==
-X-Received: by 2002:a05:6000:1787:b0:386:31a9:31ea with SMTP id
- ffacd0b85a97d-3864cea3c64mr3771930f8f.33.1733934499965; 
- Wed, 11 Dec 2024 08:28:19 -0800 (PST)
+ bh=Gss1FsL60dR5exmv70NK5RIAMB4XZY8Tdq7PdjogwBY=;
+ b=Lrvl1740c4ukjneM3DKQQAPHyx+SgnrT1PkJAXxUlmVX8bLtvxYI71xuEd2Lc6K3wI
+ R8Cp/weoYolhYI4MfPtCjdkG13FSK99n8dv3OJzM/d5EjFaEzl+xQpRusEbkogXCH6VW
+ mlosSBBenqlJu5UepQvKLi6Oqver64CZdQebHmLojUCQNgsxCyiLCVyeCkBCvIOCxSN4
+ BCqR4C2qM0Pg76z9fI5f6V1tjfvnB2PGkC8fGuGNR/CYqOzxwB+ZXR5z30C64Q13pTzh
+ m8gE5DUdKQNJSuR7Jok2NC0cMTa/XT6m+sA9qAHWHOM0C8RsIxDnuoc+NNlBtNxe9Mur
+ mS7w==
+X-Gm-Message-State: AOJu0YxYEQK0cqmgnGQp5cEnFU+3T0n05ij+ZcYc71t8oS15/PkLONgQ
+ 0VuK9vXS5UofYdd2HTmyqONZCwRszZb+1Qrwq2zQIt7OsSxDV0UcnWe3DYawnl1dpFh8Di23v3V
+ qpaxRetWLVfT9ry4igZFiJyPx24Vl8Bwvz9J4bOvMAhzsNrm3fs51pPHE4O/SfyKZBThd1XjUNe
+ JFGhbE2wQND8gWK85/nkwQbqkQp/W7TBa9X29B
+X-Gm-Gg: ASbGncu1eNMusqxcKqtNzAYXOy6PIPmpkQ65opmuUVjY4qz4ohoaXhxNsVP6EdQxhTL
+ gxqMSH6AdN/Fr259+UnrQjiFHcwhLylajLNTOWkXT3SWM7rbsz62Ao4ZHnUP0ECSJ86U6jyXT2/
+ OffwRKl/eART656q00fqYM693m0AeIiz3eQSUU1ymiJOYuM2fovUR6afo8T1p0ZkF9rnP+LM6iu
+ Os3k/YBWBcFsc+INTPyNLrTY5cKbJtQhg5nvfTcSSpM8QVPy05yXq8d
+X-Received: by 2002:a05:6000:144f:b0:385:e30a:3945 with SMTP id
+ ffacd0b85a97d-3864ce542b4mr2783605f8f.23.1733934502293; 
+ Wed, 11 Dec 2024 08:28:22 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHvGs1q3jSVbR5IZ/k+HnPcfTtlGAUFIzmWsMw6WcgOFkE6ZWNMgn3gM9pYrpiujWdIHsehgQ==
+X-Received: by 2002:a05:6000:144f:b0:385:e30a:3945 with SMTP id
+ ffacd0b85a97d-3864ce542b4mr2783593f8f.23.1733934501941; 
+ Wed, 11 Dec 2024 08:28:21 -0800 (PST)
 Received: from [192.168.10.3] ([151.81.118.45])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38782514f29sm1663118f8f.77.2024.12.11.08.28.19
+ ffacd0b85a97d-3878248e57fsm1665175f8f.8.2024.12.11.08.28.20
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 11 Dec 2024 08:28:19 -0800 (PST)
+ Wed, 11 Dec 2024 08:28:21 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL 24/49] hw/scsi: Replace type_register() with
+Subject: [PULL 25/49] hw/sensor: Replace type_register() with
  type_register_static()
-Date: Wed, 11 Dec 2024 17:26:54 +0100
-Message-ID: <20241211162720.320070-25-pbonzini@redhat.com>
+Date: Wed, 11 Dec 2024 17:26:55 +0100
+Message-ID: <20241211162720.320070-26-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241211162720.320070-1-pbonzini@redhat.com>
 References: <20241211162720.320070-1-pbonzini@redhat.com>
@@ -108,43 +108,29 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Zhao Liu <zhao1.liu@intel.com>
 
-Replace type_register() with type_register_static() because\
+Replace type_register() with type_register_static() because
 type_register() will be deprecated.
 
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Link: https://lore.kernel.org/r/20241029085934.2799066-7-zhao1.liu@intel.com
+Link: https://lore.kernel.org/r/20241029085934.2799066-8-zhao1.liu@intel.com
 ---
- hw/scsi/megasas.c | 2 +-
- hw/scsi/mptsas.c  | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ hw/sensor/tmp421.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/scsi/megasas.c b/hw/scsi/megasas.c
-index b33229d71a4..df58aeb9952 100644
---- a/hw/scsi/megasas.c
-+++ b/hw/scsi/megasas.c
-@@ -2576,7 +2576,7 @@ static void megasas_register_types(void)
-         type_info.class_init = megasas_class_init;
-         type_info.interfaces = info->interfaces;
- 
--        type_register(&type_info);
-+        type_register_static(&type_info);
+diff --git a/hw/sensor/tmp421.c b/hw/sensor/tmp421.c
+index b6f0b62ab11..82e604279c5 100644
+--- a/hw/sensor/tmp421.c
++++ b/hw/sensor/tmp421.c
+@@ -384,7 +384,7 @@ static void tmp421_register_types(void)
+             .class_init = tmp421_class_init,
+             .class_data = (void *) &devices[i],
+         };
+-        type_register(&ti);
++        type_register_static(&ti);
      }
  }
  
-diff --git a/hw/scsi/mptsas.c b/hw/scsi/mptsas.c
-index 361b75e633a..c6bc3479e99 100644
---- a/hw/scsi/mptsas.c
-+++ b/hw/scsi/mptsas.c
-@@ -1450,7 +1450,7 @@ static const TypeInfo mptsas_info = {
- 
- static void mptsas_register_types(void)
- {
--    type_register(&mptsas_info);
-+    type_register_static(&mptsas_info);
- }
- 
- type_init(mptsas_register_types)
 -- 
 2.47.1
 
