@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 428049EE58A
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Dec 2024 12:52:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 32D7C9EE568
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Dec 2024 12:49:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tLhgL-0003MQ-Jj; Thu, 12 Dec 2024 06:48:37 -0500
+	id 1tLhgM-0003bu-SB; Thu, 12 Dec 2024 06:48:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1tLhg8-0002rC-Mt
- for qemu-devel@nongnu.org; Thu, 12 Dec 2024 06:48:25 -0500
+ id 1tLhg9-0002sH-Iu
+ for qemu-devel@nongnu.org; Thu, 12 Dec 2024 06:48:27 -0500
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1tLhg7-0007OI-Co
- for qemu-devel@nongnu.org; Thu, 12 Dec 2024 06:48:24 -0500
+ id 1tLhg7-0007OM-LK
+ for qemu-devel@nongnu.org; Thu, 12 Dec 2024 06:48:25 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:MIME-Version:
  References:In-Reply-To:Message-Id:Date:To:From:Sender:Reply-To:Cc:
  Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
  Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
- bh=bvY1uyqfDSve5G72JqQ8LUzLGJB3lyOoOElhjWLwLuo=; b=kFbKtSP7DCd4wKOlWj9YFf86rQ
- 4Z372LCFb/1S06QRu0VmF156ezKhsS0V5C94yto/exhPRd7anMb2CLj1o2TqI7kbdw37ZeHsjNmEo
- 8REU19vx0ULShaBVi2205Pq95VGQd2RP243HjlkQYQZoVCHd8bedLOySEmHF5nYZhDvmrmE+KGT5I
- pzwYkGYzVOXSfbr6sN3U7COJK9R7Oj9Sg4+75lo9ZcdBO+MyBBuDvDIM8yCBWulkge66omGDdKTcb
- M0v1dPzEuD0IL7Bj86HevB5qmw8VIpzZ1nU4WuWQV1dmZvHjlaDc6E6hUifRJlqIyj/g4/24CDvW5
- rYn8hh72juqspYrytHAUK/OtSfRktHMKc6lF0Uhdx7sDIDUVP/GFG6TSVgHsxGteUYobH+p+LxCZ9
- kCQ4lJ6d6Nr+HSPDqvolTL4BjZ4JH1Up0koepvN2drfCAbTC+7PAYYR8kDZM4LY66oFaIGpEW8BYC
- wkI8i1Q1mLCzwlj8UmSbHHAAxo5/N0S/H2/NwKKuXOvkI/vQsSmlki3+1PfGrD27kS/q5y9qun1zS
- jFyscI1yEv1xkmeOiTAK5KqFDKeHHVUVb87nReS1g+V2SePL6k6Xmh8MinIevbu3zctvMducY/c3h
- 0PNZCmGvZz3MIfH6ARwdrQsJ/EBmT0LlZ9eYowMwM=;
+ bh=64a6R+THUE1vG6dBHDl+GyoKtpAm/lobYJpjaZjJ/6w=; b=lfKDPb+TeRdGZDe6SZghQCBXSh
+ 7UFyPUJLnzXj7hTMSGjutq2n4GYn1163R+yfnvRifHB14WnffNXaSwCWz0L3y7A3DOpo9V4ZbDNva
+ Dm3CGlBCbXpfwIhsnq0gqNMyl4KV3Core5/G74xBonkMrf9mab2ezgEyOTELFaFz/UYaNBHoLYx9m
+ C32EhvLpbt5usG6Y90dy1ppSwpjeASoo89pswjiw2XkxzGxpS7ErSgQvU1IfnFW68nG+hk6nbESWR
+ KE/GU8L0BbBV9Xl0hao6T2bLdLJqgL8QOk0P3a50mN6zxqFiZkoBZTDsAd2TqAucu5/9Jzi6/fHwe
+ YObz/lNQvl5v0Y5hAqwubUWnaUVQvUBCsEdvbklnybkxA5+biZuJ/5T7OQ8/T2UNwXR7oxwqxhrXn
+ YS/fGvHozdS349vCaQ0X+MVSO5XXjgRQXwRe4MMqzDqfxT3RqdOy9wfPTn8mCH+6N69aubsKrF0GJ
+ hBT5+GauPZZu+CsyaZsh8SUwemhxxJxyc7yvp3et5GYCEOt/fqRS2WRq3ncrHS4wJ03mVC/md2XdY
+ jjFGHCGbsrHuVO//yBijEzzOzRSNmChM2fXaXCVJSgRKkfbXQqlnRzXrol23FkhAaPsrvDlFsCAPp
+ e9Q0pzzLhm6Py7JIfjCt5JigiI0jjWYiJlLfpZWFE=;
 Received: from [2a02:8012:c93d:0:260e:bf57:a4e9:8142]
  (helo=cheesecake.fritz.box)
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1tLhfR-00070a-5m; Thu, 12 Dec 2024 11:47:41 +0000
+ id 1tLhfR-00070a-FX; Thu, 12 Dec 2024 11:47:41 +0000
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 To: huth@tuxfamily.org,
 	qemu-devel@nongnu.org
-Date: Thu, 12 Dec 2024 11:46:19 +0000
-Message-Id: <20241212114620.549285-34-mark.cave-ayland@ilande.co.uk>
+Date: Thu, 12 Dec 2024 11:46:20 +0000
+Message-Id: <20241212114620.549285-35-mark.cave-ayland@ilande.co.uk>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241212114620.549285-1-mark.cave-ayland@ilande.co.uk>
 References: <20241212114620.549285-1-mark.cave-ayland@ilande.co.uk>
@@ -50,7 +50,8 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a02:8012:c93d:0:260e:bf57:a4e9:8142
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: [PATCH v2 33/34] next-cube: add my copyright to the top of the file
+Subject: [PATCH v2 34/34] next-cube: replace boiler-plate GPL 2.0 or later
+ license text with SPDX identifier
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
@@ -76,27 +77,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This series has involved rewriting and/or updating a considerable part of the
-next-cube emulation so update the copyright in next-cube.c to reflect this.
-
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Reviewed-by: Thomas Huth <huth@tuxfamily.org>
 ---
- hw/m68k/next-cube.c | 1 +
- 1 file changed, 1 insertion(+)
+ hw/m68k/next-cube.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
 diff --git a/hw/m68k/next-cube.c b/hw/m68k/next-cube.c
-index 7b0769c0d3..1e96bb02f8 100644
+index 1e96bb02f8..3c2f3e295c 100644
 --- a/hw/m68k/next-cube.c
 +++ b/hw/m68k/next-cube.c
-@@ -2,6 +2,7 @@
-  * NeXT Cube System Driver
-  *
+@@ -4,10 +4,7 @@
   * Copyright (c) 2011 Bryce Lanham
-+ * Copyright (c) 2024 Mark Cave-Ayland
+  * Copyright (c) 2024 Mark Cave-Ayland
   *
-  * This code is free software; you can redistribute it and/or modify
-  * it under the terms of the GNU General Public License as published
+- * This code is free software; you can redistribute it and/or modify
+- * it under the terms of the GNU General Public License as published
+- * by the Free Software Foundation; either version 2 of the License,
+- * or (at your option) any later version.
++ * SPDX-License-Identifier: GPL-2.0-or-later
+  */
+ 
+ #include "qemu/osdep.h"
 -- 
 2.39.5
 
