@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 990649EE25E
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Dec 2024 10:14:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 618239EE271
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Dec 2024 10:15:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tLfGY-0003Ug-78; Thu, 12 Dec 2024 04:13:50 -0500
+	id 1tLfGa-0003ad-2c; Thu, 12 Dec 2024 04:13:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1tLfGU-0003TP-Sw
- for qemu-devel@nongnu.org; Thu, 12 Dec 2024 04:13:46 -0500
-Received: from mail-pj1-x1032.google.com ([2607:f8b0:4864:20::1032])
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1tLfGX-0003Xt-QP
+ for qemu-devel@nongnu.org; Thu, 12 Dec 2024 04:13:49 -0500
+Received: from mail-pj1-x1036.google.com ([2607:f8b0:4864:20::1036])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1tLfGT-0008Pj-Bt
- for qemu-devel@nongnu.org; Thu, 12 Dec 2024 04:13:46 -0500
-Received: by mail-pj1-x1032.google.com with SMTP id
- 98e67ed59e1d1-2ee9a780de4so230498a91.3
- for <qemu-devel@nongnu.org>; Thu, 12 Dec 2024 01:13:45 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1tLfGW-0008QJ-9A
+ for qemu-devel@nongnu.org; Thu, 12 Dec 2024 04:13:49 -0500
+Received: by mail-pj1-x1036.google.com with SMTP id
+ 98e67ed59e1d1-2ee50ffcf14so1312990a91.0
+ for <qemu-devel@nongnu.org>; Thu, 12 Dec 2024 01:13:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1733994823; x=1734599623; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1733994827; x=1734599627; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ULR1MOYYwr9yyGYfXLKVNEWBcuu6r/97Xn5RLFPLZiU=;
- b=Z9FajGgF2An6Xz8gs8ivsuJUzjD2J8DLU8SV8VivWXaxKC5Sb6t5CFHjKeJkbBrQz8
- av+j/Oamc+GsNLkQ3LX9987l9sQOLzu6JzAjE6mVlaOTQBfxNf318q+X4oQIY6t6VNpP
- rZHPPjKJ4ZEcNuR7TI0eATZNoqZkjp/jDPfjgA/vmw42EHLtfE/l7ZlUJ3/q1rPD528T
- ukv6JIm59FonXCxOo3OL8e5qwR1T36XiBbobOYSOgy3cUCCxfRUrSEAadtGBQpSTs2VF
- rnVSE5CtFLc3kCap3a0AtBrbH6WNidWAkhcDgN14fW97ww8ho0vQQyLzjryWupD1tywh
- dB+g==
+ bh=Ucwi6GLl0n1B3UVmS7TAz0uWRjmTT8zXFyAAzX+VsQg=;
+ b=DvjWIJJih+tY9UwffiHrHRzk6/DhIoq4mGiFsKurrsNDvHuRTH93wpSFSPEjdzHplP
+ EwUPAKnIDTv1SoS7E0lM2ajBRWkFgNri+K4r49X9RCdhLvvsPmdW764a3zqrVqljQZGZ
+ Fo5hc7wCBVJP57B5ZFsvZafcExgCe9dLcDc2hgC9FIZxAeGCWqFDJBRGDpw3GxB+5C9W
+ q9iPayxvXnecQ0RNjhsQ7u93wah48ezNqmNhPX/xo/CZ76ij+zvGu+lrvYJT/cECnR/s
+ 9L2U41IgsxjPYRHvlKJU8NlBhQtuzIozIkpxaiP3YxFz4kRPszcGPSaTUnApjgCUjgKv
+ l42A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733994823; x=1734599623;
+ d=1e100.net; s=20230601; t=1733994827; x=1734599627;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ULR1MOYYwr9yyGYfXLKVNEWBcuu6r/97Xn5RLFPLZiU=;
- b=NIhO4biYqNL3z2oyk51vxdbZdqnOD6Sr63euY8DdHuaxwOlDNVf7l1CrGPGvuLVBwt
- wmfPNPsg1bp2+hvZnOgG2OXqrb7ZUwcUWAyu8ApnEAAAPKzngcVLww3vxW24uqYG/FDB
- 8oNa9Dd3owZqO+9X17r3Lvch6ZHKvxKvNMnQNAtrM0GcrTD/dMSrpjZjTj2ldygvDyBo
- VedHVZoyc4Ryd9cEeuiHNzZ0Wo+gJbzTPQUt30rKqX7IGNdIxle68WJVL98l0+J+Hyxy
- ZE/xCAEr/iqH9aRM84kjYcJ7VfqlVdcXgonGJo6RmemM5mvQ2iayNWcblP1q+X7X70co
- i0eQ==
-X-Gm-Message-State: AOJu0YxznPioK31Qzzw0IK/m9WsO0isU+uQmyiawDVsmFtD8qWGiyNCy
- beuwJWHKxw+LAVk/m7g30ZJClF1bOB5zRGzn6ZVrYZXV+UI2YRineWZkIg==
-X-Gm-Gg: ASbGnct3jQbZuShGG64eybggsnszOaWVWWCvfrrn/RwVvcWcOfI3ifCWpoYI3UP8X0t
- v1gVNx1haWkEWDHaqN+cx8X5CBq+Szp4xyLaKBA/gdvOdtwTN1/mODeMZPNaD/1Qb5OZehjXlbk
- khPJ96Dwh+L13ROOpLXocf+HZYdOOTI95JdSXvrATyGQWgFF3uz2zjzuX6krpJlaLX7MMNssu9P
- dc0iZ4xSMkXFuJtrr0WuTVB//NO3crRihrCa672wyf2+5iUzsdnxo+xArw=
-X-Google-Smtp-Source: AGHT+IGvLUkOVAVtOjJpi8pvPdgsZ4JY+K6gBQ/YqsTjZ5g39Y9YLHrEQ1LrywEc/Xr7gU5yy732Kw==
-X-Received: by 2002:a17:90b:4b04:b0:2ee:d824:b594 with SMTP id
- 98e67ed59e1d1-2f1393264c0mr4236965a91.31.1733994823468; 
- Thu, 12 Dec 2024 01:13:43 -0800 (PST)
+ bh=Ucwi6GLl0n1B3UVmS7TAz0uWRjmTT8zXFyAAzX+VsQg=;
+ b=uGJkIMXObQooFqDQnLH6q73V4Tx+mRhUkm5O3qJD+9LP/ehyI7jHy4A+Nnyj7kkGLU
+ olQ61GcwnGPkqJDw9StMFkRsb/eCVFt280Kf7BC0kYLYGKy6Gd9aVmaEriHoswN0vVlZ
+ wiKzsXLN7KyRXff9FQxXK/nrmhzJGnLK+gNSGJGyWXvz9xrfxrzRrG3MXCMUhQUp26ux
+ SIKmNLhzLRvNbBFDkFwRftFl5TtuNWeoX13dm7vpA/CbRxeZbDZx8P7MGVJ0FuTf9lbr
+ b6jr/lRAmm8lrHE4PqSkQbzlXbL13Bm9QIrWrYPMbK18IVM6debpLpkMhiCD5yrsRepK
+ hb5A==
+X-Gm-Message-State: AOJu0YwaERJ46xC+0bflN2fFG9gLu54fE59lyI7rTzz/G2GyRpZ8jI0j
+ t9Jx5ngigp5a8D1Gy+jChyFtyKRw/2qE+b+k89DNzZXUvbLFWKtMmrTpYQ==
+X-Gm-Gg: ASbGncvuLX30YuqH0mvR4qVmb/CkANy7IRzR9KgPFWf4Gnt3hPzvfoB2TcGFzRazDEW
+ UZ5KVWnR6SgKzJih76XcQq1ZA8iI9QVrDDjseB3CLffjflXPlCeD6jig95c+0NdkDaV8DplFLai
+ Etd2Drt5FAeZdJkM7R6ygiyL/gT/ST0DURSnwtyBnN0FW7X//Rl2+7KMImEWdbpvlRU2majYnBb
+ 43fon/B+FkcB8jl+8IrqBYEu0f+8pVW6ZPv2EpcZTiABd6zv1UHOj0TqaI=
+X-Google-Smtp-Source: AGHT+IEx6rq8Abxx5Wz1SytB24rBtT1pu0kxc+lCl/qHXCieTOHz/HwmOcAweE21/r3EOJu6O72xwA==
+X-Received: by 2002:a17:90b:1f81:b0:2e2:c2b0:d03e with SMTP id
+ 98e67ed59e1d1-2f13abc6e43mr3677301a91.5.1733994826672; 
+ Thu, 12 Dec 2024 01:13:46 -0800 (PST)
 Received: from wheely.local0.net ([1.146.48.169])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2f142d92e2csm787021a91.9.2024.12.12.01.13.40
+ 98e67ed59e1d1-2f142d92e2csm787021a91.9.2024.12.12.01.13.43
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 12 Dec 2024 01:13:43 -0800 (PST)
+ Thu, 12 Dec 2024 01:13:46 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, Gerd Hoffmann <kraxel@redhat.com>,
  Kevin Wolf <kwolf@redhat.com>
-Subject: [PATCH 03/11] usb/msd: Ensure packet structure layout is correct
-Date: Thu, 12 Dec 2024 19:13:14 +1000
-Message-ID: <20241212091323.1442995-4-npiggin@gmail.com>
+Subject: [PATCH 04/11] usb/msd: Improved handling of mass storage reset
+Date: Thu, 12 Dec 2024 19:13:15 +1000
+Message-ID: <20241212091323.1442995-5-npiggin@gmail.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241212091323.1442995-1-npiggin@gmail.com>
 References: <20241212091323.1442995-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1032;
- envelope-from=npiggin@gmail.com; helo=mail-pj1-x1032.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1036;
+ envelope-from=npiggin@gmail.com; helo=mail-pj1-x1036.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,37 +94,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-These structures are hardware interfaces, ensure the layout is
-correct.
+The mass storage reset request handling does not reset in-flight
+SCSI requests or USB MSD packets. Implement this by calling the
+device reset handler which should take care of everything.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- hw/usb/dev-storage.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ hw/usb/dev-storage.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/hw/usb/dev-storage.c b/hw/usb/dev-storage.c
-index 2d7306b0572..87c22476f6b 100644
+index 87c22476f6b..c7c36ac80fa 100644
 --- a/hw/usb/dev-storage.c
 +++ b/hw/usb/dev-storage.c
-@@ -27,7 +27,7 @@
- #define MassStorageReset  0xff
- #define GetMaxLun         0xfe
- 
--struct usb_msd_cbw {
-+struct QEMU_PACKED usb_msd_cbw {
-     uint32_t sig;
-     uint32_t tag;
-     uint32_t data_len;
-@@ -636,6 +636,9 @@ static const TypeInfo usb_storage_dev_type_info = {
- 
- static void usb_msd_register_types(void)
- {
-+    qemu_build_assert(sizeof(struct usb_msd_cbw) == 31);
-+    qemu_build_assert(sizeof(struct usb_msd_csw) == 13);
-+
-     type_register_static(&usb_storage_dev_type_info);
- }
- 
+@@ -359,7 +359,7 @@ static void usb_msd_handle_control(USBDevice *dev, USBPacket *p,
+         /* Class specific requests.  */
+     case ClassInterfaceOutRequest | MassStorageReset:
+         /* Reset state ready for the next CBW.  */
+-        s->mode = USB_MSDM_CBW;
++        usb_msd_handle_reset(dev);
+         break;
+     case ClassInterfaceRequest | GetMaxLun:
+         maxlun = 0;
 -- 
 2.45.2
 
