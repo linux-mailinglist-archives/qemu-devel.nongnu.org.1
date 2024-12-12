@@ -2,81 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2ACBA9EFBB8
+	by mail.lfdr.de (Postfix) with ESMTPS id 20D339EFBB7
 	for <lists+qemu-devel@lfdr.de>; Thu, 12 Dec 2024 19:56:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tLoKg-0004ou-RH; Thu, 12 Dec 2024 13:54:42 -0500
+	id 1tLoKr-0004zO-KS; Thu, 12 Dec 2024 13:54:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tLoKe-0004og-HF
- for qemu-devel@nongnu.org; Thu, 12 Dec 2024 13:54:40 -0500
-Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tLoKp-0004yq-47
+ for qemu-devel@nongnu.org; Thu, 12 Dec 2024 13:54:51 -0500
+Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tLoKc-0006Zg-Ro
- for qemu-devel@nongnu.org; Thu, 12 Dec 2024 13:54:40 -0500
-Received: by mail-pl1-x633.google.com with SMTP id
- d9443c01a7336-2165448243fso10863785ad.1
- for <qemu-devel@nongnu.org>; Thu, 12 Dec 2024 10:54:38 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tLoKn-0006aA-EH
+ for qemu-devel@nongnu.org; Thu, 12 Dec 2024 13:54:50 -0500
+Received: by mail-pf1-x42a.google.com with SMTP id
+ d2e1a72fcca58-725e71a11f7so1704021b3a.1
+ for <qemu-devel@nongnu.org>; Thu, 12 Dec 2024 10:54:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734029677; x=1734634477; darn=nongnu.org;
+ d=linaro.org; s=google; t=1734029688; x=1734634488; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Pl4taCtFHZe8oQC4px0PP3McFaT9srtUpF3ia8zOgEk=;
- b=GpV2Zh8zBLMzZzxT+92bpSq3tjTPhB22Hgyy3Hd60JekXUmZVGtL+rSp3tFWbQ2lnC
- rvNAfsI3vSJ8qzXIBVbmYN7fWjlBlJob5umxiHlbHHAkrMDX1wQV3CPVIYy6kMKAbELo
- DmzQucaaZFzm80tyNowTyrwVH4RjnxxpT4ThQ28OQLB8hS63L5/YD52W3DwAfNroqZOM
- FQcCQnI8fWxNvJiPCHSIU5mXb6MCqSLVIL8wmaXCSxDGv3UDqqHdIiIW30U0+KbU0dLK
- EG4+XYnnHE2JMDtSGrnDTnO1flru338E3cPqovmpNHT+GHXNLXhhdw4k73V6VXLB6rXi
- 0NLQ==
+ bh=BSVRLQ/NCbTr+znZaNjcUH8IYeWT9qLO5QVBWX7wORU=;
+ b=rzVYXHRIeIC9ukl6nnTzowbGMk8EFI4pOAy4sg+rlEZYoToCXkA0eB6tH85ZzWBpdm
+ G/tZFeiEpmcFIVPrCLVRy1zUrKNpINhXGfmoxwrnseXtXn/WY54D6dHZW44S62EzvB1e
+ s1LljfaV066ISObWtgAROik73FYtwzK4XxtRprFJKuulgmUtFfsGcKCvANKa/3kVOI9v
+ pGZb1G+gq+2s2Q1+ig/Qo551zmYGgbTyfOO2qaM9THOl1Eca3gHjIsCSKCgLVR0JyM6Z
+ fN1hcYIz1ZrItmm2770VRP3yRF0khHm0VR78FQyVkeS8BxZ3UwmAIXhhovbfhRNyGeZ7
+ X3dA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734029677; x=1734634477;
+ d=1e100.net; s=20230601; t=1734029688; x=1734634488;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Pl4taCtFHZe8oQC4px0PP3McFaT9srtUpF3ia8zOgEk=;
- b=XkV9KLCz4QftIn9XE0CSRVzqXaVwbGynghFf7taY0ENKHHaBxEtCikQdplKlrVBQeW
- eBUsbjQEQADJqMhvBZ/n08uM2pGUPymNnFalMU0CjL7tzmzdYFWnF0LF/Eov/VzYDKFx
- b+h7eXDHZc4WK+JqP43GGkcWi8xl6vwtF1Fy1PRArsAt4lebKXDSf+s9vgdk8A0CqZiE
- pr/F2u8U22YZJPecBSSzjJw5U3Ro6IQnrUtgQbtlEC92s/6tPwkcXIBLXcsk+f+Y61Xx
- pPwISDKpv6GMw0Y4xinArZqS7048Zjx+0kyoJsZ+ofpOc+zFj2sfHdSeUHk7tVrqbTUG
- yhDg==
-X-Gm-Message-State: AOJu0Yz59tpaQagzazsAdAV/LZ9dy/qe/MtOxQMyLsrNaTpNmT9Cslng
- GRO+l5csgDrGaYHg9TJQS8ja2Uz8bhOnhtOmGXss+dHuVkyXrlNuxFgIH0CPpMqv5zhkdD/j9Nl
- K
-X-Gm-Gg: ASbGncvzo7h81TB6cJ1VXFxo5AZawExJw7rio5w4mtnAUTaKzqHfkisU6cXKm0Q9i3I
- wCUEXiGp65ksP7aZUijGH5BZ/iBv3kqPZFF5pzDGBJOGfCVjmM/hWHXooAO1GFSoxoPCgeuxZHl
- vjhDEf39Lhb31O+SvRVXnOb6U259Lx8R8vGYk/H5N3zyZ8WrQBOzOYUlFKMEDysmkYheI9z+KNV
- FdAQzWGy9Uj/lywocaNt4/C3rfdPNm7ympIT6l7noPxBT4yHHDjA4urNXBOQiT4NUE3jZubiVDj
- HDEWfiV32kw/Ukeh2DssPyQyTdEL8JY=
-X-Google-Smtp-Source: AGHT+IFx9eLiDTQfJwfgDAMUAoqCUp/MTS3FsvXzicRxBBDsxtidDJpG+pFvS7xhUIg8r3MKg2cvWQ==
-X-Received: by 2002:a17:902:f648:b0:216:6855:164 with SMTP id
- d9443c01a7336-2178aeefc23mr74126785ad.39.1734029677241; 
- Thu, 12 Dec 2024 10:54:37 -0800 (PST)
+ bh=BSVRLQ/NCbTr+znZaNjcUH8IYeWT9qLO5QVBWX7wORU=;
+ b=fQ2yjSoZ1TseIZfIY5KV2fHJxQ/aECy4d0QRXfZfywZHC9+aUcR7t3zczGEkgsEPdC
+ 6yui8rkYMyElKJiRG8uTqD68b/QK1gIBIyMDzdCbVMdq2P8h+rnZddnmDwZRhSvycs6a
+ /YD8C5tXF7cLZ4gOY1Qm2cIYtL82Hn71GtcifafzYd8hRjwcSGcYoYpl4HK9HP9Ey0dk
+ dJovugAkwSsot59yXlePmLnpIf1b/55T48IPbRl4/1YaCYb84V5GrjwG43D40Tl52dLs
+ z0u7PJBKuezEfTq/PVo9/6+CclaPnZkgKosT7SUYA8jHiX0l5v24rVoehD+ONWGOB89G
+ OrqA==
+X-Gm-Message-State: AOJu0YyZ9J6AqRYbrTh/piw+MfBGRKzTEGX2/aZScUnvfmAgbIPukeYV
+ YudfSmUi3Hf4Howw/hgV7hE/wc2+0koM9pCR4L/7CmsKw7PXqWmVuvpwIyZ3mpbYTVYzgOXn0lB
+ 4
+X-Gm-Gg: ASbGncskpYykMCTaShpixGyhJ75oeymU+MMD7IYkNwzs+fFOuD0XW/IHUr/2ZEUH8mK
+ VLgZTtAhb0p5YDNLUG+i5Xm4qCj6RmaREM/Nlp+eaMu4uOw249BmkA2lpDKRmMIwmeAW73Hx628
+ y0Mfuf4+j974Sm2r/9y3N9CS2TBIoabpOUloDtICxaGg95cQEI5PLgstrQuL8mqAGS6JwPo+Rl9
+ 4AJdM1dRS/OJv/iQZOXen1iF8XiyeQwxWRs782dMIeXlDoW2oLWV3akUodm3vOMbh75PHY2Kfac
+ Ryw9SFuT0U4mW+htIWER0d0gk3Y+GB8=
+X-Google-Smtp-Source: AGHT+IHVXn2W0r6tSoU77aUt+fJJfO9dJ9F7xpCFOmjp8kKXPWlbXNvPPa5bMX3EM6iHOqc6KPq/qg==
+X-Received: by 2002:a05:6a00:4c87:b0:725:4301:ed5a with SMTP id
+ d2e1a72fcca58-72907c19ba0mr1714891b3a.2.1734029687822; 
+ Thu, 12 Dec 2024 10:54:47 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-21653b0d4f5sm69493115ad.70.2024.12.12.10.54.34
+ d2e1a72fcca58-725ee10f928sm7499833b3a.32.2024.12.12.10.54.44
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 12 Dec 2024 10:54:36 -0800 (PST)
+ Thu, 12 Dec 2024 10:54:47 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 04/18] accel/tcg: Declare mmap_[un]lock() in
- 'exec/page-protection.h'
-Date: Thu, 12 Dec 2024 19:53:27 +0100
-Message-ID: <20241212185341.2857-5-philmd@linaro.org>
+Subject: [PATCH 05/18] accel/tcg: Use tb_page_addr_t type in page_unprotect()
+Date: Thu, 12 Dec 2024 19:53:28 +0100
+Message-ID: <20241212185341.2857-6-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241212185341.2857-1-philmd@linaro.org>
 References: <20241212185341.2857-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
- envelope-from=philmd@linaro.org; helo=mail-pl1-x633.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
+ envelope-from=philmd@linaro.org; helo=mail-pf1-x42a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,155 +98,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Move mmap_lock(), mmap_unlock() declarations and the
-WITH_MMAP_LOCK_GUARD() definition to 'exec/page-protection.h'.
+Match with the page_protect() prototype, use a tb_page_addr_t
+argument instead of target_ulong.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/exec/exec-all.h        | 17 -----------------
- include/exec/page-protection.h | 24 ++++++++++++++++++++++++
- accel/tcg/cpu-exec.c           |  1 +
- accel/tcg/translate-all.c      |  1 +
- accel/tcg/watchpoint.c         |  1 +
- linux-user/flatload.c          |  1 +
- target/arm/helper.c            |  1 +
- 7 files changed, 29 insertions(+), 17 deletions(-)
+ include/exec/translate-all.h | 2 +-
+ accel/tcg/user-exec.c        | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/exec/exec-all.h b/include/exec/exec-all.h
-index 2e4c4cc4b46..b5ea607cf45 100644
---- a/include/exec/exec-all.h
-+++ b/include/exec/exec-all.h
-@@ -27,7 +27,6 @@
+diff --git a/include/exec/translate-all.h b/include/exec/translate-all.h
+index 85c9460c7ca..c50661a05d5 100644
+--- a/include/exec/translate-all.h
++++ b/include/exec/translate-all.h
+@@ -27,7 +27,7 @@ void tb_check_watchpoint(CPUState *cpu, uintptr_t retaddr);
+ 
+ #ifdef CONFIG_USER_ONLY
+ void page_protect(tb_page_addr_t page_addr);
+-int page_unprotect(target_ulong address, uintptr_t pc);
++int page_unprotect(tb_page_addr_t address, uintptr_t pc);
  #endif
- #include "exec/mmu-access-type.h"
- #include "exec/translation-block.h"
--#include "qemu/clang-tsa.h"
  
- /**
-  * cpu_loop_exit_requested:
-@@ -520,18 +519,6 @@ static inline tb_page_addr_t get_page_addr_code(CPUArchState *env,
- }
- 
- #if defined(CONFIG_USER_ONLY)
--void TSA_NO_TSA mmap_lock(void);
--void TSA_NO_TSA mmap_unlock(void);
--bool have_mmap_lock(void);
--
--static inline void mmap_unlock_guard(void *unused)
--{
--    mmap_unlock();
--}
--
--#define WITH_MMAP_LOCK_GUARD()                                            \
--    for (int _mmap_lock_iter __attribute__((cleanup(mmap_unlock_guard)))  \
--         = (mmap_lock(), 0); _mmap_lock_iter == 0; _mmap_lock_iter = 1)
- 
- /**
-  * adjust_signal_pc:
-@@ -585,10 +572,6 @@ G_NORETURN void cpu_loop_exit_sigbus(CPUState *cpu, target_ulong addr,
-                                      uintptr_t ra);
- 
- #else
--static inline void mmap_lock(void) {}
--static inline void mmap_unlock(void) {}
--#define WITH_MMAP_LOCK_GUARD()
--
- void tlb_reset_dirty(CPUState *cpu, ram_addr_t start1, ram_addr_t length);
- void tlb_reset_dirty_range_all(ram_addr_t start, ram_addr_t length);
- 
-diff --git a/include/exec/page-protection.h b/include/exec/page-protection.h
-index c43231af8b5..bae3355f62c 100644
---- a/include/exec/page-protection.h
-+++ b/include/exec/page-protection.h
-@@ -38,4 +38,28 @@
+ #endif /* TRANSLATE_ALL_H */
+diff --git a/accel/tcg/user-exec.c b/accel/tcg/user-exec.c
+index 06016eb0301..4ed6dd19f30 100644
+--- a/accel/tcg/user-exec.c
++++ b/accel/tcg/user-exec.c
+@@ -696,7 +696,7 @@ void page_protect(tb_page_addr_t address)
+  * immediately exited. (We can only return 2 if the 'pc' argument is
+  * non-zero.)
   */
- #define PAGE_PASSTHROUGH 0x0800
- 
-+#ifdef CONFIG_USER_ONLY
-+
-+#include "qemu/clang-tsa.h"
-+
-+void TSA_NO_TSA mmap_lock(void);
-+void TSA_NO_TSA mmap_unlock(void);
-+bool have_mmap_lock(void);
-+
-+static inline void mmap_unlock_guard(void *unused)
-+{
-+    mmap_unlock();
-+}
-+
-+#define WITH_MMAP_LOCK_GUARD() \
-+    for (int _mmap_lock_iter __attribute__((cleanup(mmap_unlock_guard))) \
-+         = (mmap_lock(), 0); _mmap_lock_iter == 0; _mmap_lock_iter = 1)
-+#else
-+
-+static inline void mmap_lock(void) {}
-+static inline void mmap_unlock(void) {}
-+#define WITH_MMAP_LOCK_GUARD()
-+
-+#endif /* !CONFIG_USER_ONLY */
-+
- #endif
-diff --git a/accel/tcg/cpu-exec.c b/accel/tcg/cpu-exec.c
-index c13f4a7cbbf..f82870a1e2a 100644
---- a/accel/tcg/cpu-exec.c
-+++ b/accel/tcg/cpu-exec.c
-@@ -25,6 +25,7 @@
- #include "trace.h"
- #include "disas/disas.h"
- #include "exec/exec-all.h"
-+#include "exec/page-protection.h"
- #include "tcg/tcg.h"
- #include "qemu/atomic.h"
- #include "qemu/rcu.h"
-diff --git a/accel/tcg/translate-all.c b/accel/tcg/translate-all.c
-index a8b24be0b96..d586ac9bb1d 100644
---- a/accel/tcg/translate-all.c
-+++ b/accel/tcg/translate-all.c
-@@ -44,6 +44,7 @@
- #endif
- 
- #include "exec/cputlb.h"
-+#include "exec/page-protection.h"
- #include "exec/translate-all.h"
- #include "exec/translator.h"
- #include "exec/tb-flush.h"
-diff --git a/accel/tcg/watchpoint.c b/accel/tcg/watchpoint.c
-index ca641eb95cf..8923301b8b8 100644
---- a/accel/tcg/watchpoint.c
-+++ b/accel/tcg/watchpoint.c
-@@ -22,6 +22,7 @@
- #include "qemu/error-report.h"
- #include "exec/exec-all.h"
- #include "exec/translate-all.h"
-+#include "exec/page-protection.h"
- #include "system/tcg.h"
- #include "system/replay.h"
- #include "hw/core/tcg-cpu-ops.h"
-diff --git a/linux-user/flatload.c b/linux-user/flatload.c
-index 0e4be5bf44a..d5cb1830ddf 100644
---- a/linux-user/flatload.c
-+++ b/linux-user/flatload.c
-@@ -34,6 +34,7 @@
- #include "qemu/osdep.h"
- 
- #include "qemu.h"
-+#include "exec/page-protection.h"
- #include "user-internals.h"
- #include "loader.h"
- #include "user-mmap.h"
-diff --git a/target/arm/helper.c b/target/arm/helper.c
-index 63fe4ba318b..c35cb0f6a54 100644
---- a/target/arm/helper.c
-+++ b/target/arm/helper.c
-@@ -13,6 +13,7 @@
- #include "internals.h"
- #include "cpu-features.h"
- #include "exec/helper-proto.h"
-+#include "exec/page-protection.h"
- #include "qemu/main-loop.h"
- #include "qemu/timer.h"
- #include "qemu/bitops.h"
+-int page_unprotect(target_ulong address, uintptr_t pc)
++int page_unprotect(tb_page_addr_t address, uintptr_t pc)
+ {
+     PageFlagsNode *p;
+     bool current_tb_invalidated;
 -- 
 2.45.2
 
