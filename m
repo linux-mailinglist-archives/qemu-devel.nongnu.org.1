@@ -2,122 +2,102 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01EA09EE7AC
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Dec 2024 14:31:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CBFB49EE860
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Dec 2024 15:07:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tLjGC-0007OQ-LC; Thu, 12 Dec 2024 08:29:44 -0500
+	id 1tLjqO-0008DR-7F; Thu, 12 Dec 2024 09:07:09 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eauger@redhat.com>) id 1tLjG9-0007Ne-Lj
- for qemu-devel@nongnu.org; Thu, 12 Dec 2024 08:29:41 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <prvs=06952aba3=kenneth_jia@asus.com>)
+ id 1tLjIX-0008WD-P2; Thu, 12 Dec 2024 08:32:09 -0500
+Received: from ms.asus.com ([103.10.4.142])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eauger@redhat.com>) id 1tLjG6-0006df-2I
- for qemu-devel@nongnu.org; Thu, 12 Dec 2024 08:29:40 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1734010176;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=gwEJLU8VfEe4WpG6Kyyy8koTZmYNzH3QNWOlLWxrr8c=;
- b=EQLH9IsDNhhN9BPxTbm9f4Au8DhacMvhSIeSqZSEogy+eFXwRyUmAAnKdzJ1iSNVA4waNI
- IaFe/bZmmsPAomciVQEPMlcLJMBwzdRNFlTYMAjCsXbzk9k+lsnl+XWk4aySNSfFrW89Bj
- zcTJm8/1NVT2gO5tRfOJxpBORkBaQ8Y=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-141-utSibjJmMe6mHbybqrmKbQ-1; Thu, 12 Dec 2024 08:29:35 -0500
-X-MC-Unique: utSibjJmMe6mHbybqrmKbQ-1
-X-Mimecast-MFC-AGG-ID: utSibjJmMe6mHbybqrmKbQ
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-43624b081f3so5702865e9.1
- for <qemu-devel@nongnu.org>; Thu, 12 Dec 2024 05:29:35 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734010174; x=1734614974;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=gwEJLU8VfEe4WpG6Kyyy8koTZmYNzH3QNWOlLWxrr8c=;
- b=cuRMCJd3jy4Dt+2VILO9NrukPbofuD0vAHVPltkWXpuVL6FkijshBDo0/Do6JxLsfU
- Z+D6ijSgbFXUL8OXH6N/rUgNHSda7qqlYrGoF6NK0mTAZ3skPL61caUqbaucDHLJ6JEf
- Uq2Can89kw6lUxb4a2tPgluBAyWjOfOx3QphBfPS2kfw+pR4B4Tz09gbPSVuf2Hi+rE0
- nT83vtN8KSERr1cRqOjhXXUTuTjnb5vaE1M8b7U+/abOGalRUnRKmQBaJgucRTKbOQhZ
- cMyuq+LaFErtU/gtA93NTPf+1xItW+tJoe8KT4pwLqcEVm4cdCPd2yT1Ry6l4vkKs/Q3
- ZUoQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCX8cf6W5x30IqvkOYV3DwlHxvk0Y1Wp8Yq+79LXbOwYN6og9drprYwpYXpgV4DDVJbQenLW+zneIZh6@nongnu.org
-X-Gm-Message-State: AOJu0YwKNHNWUDQz87G6rMWt6AlbtoEuEAfiU/LvLrX3YI56ZE2Bwo6K
- UxNP0fzosVCwfJljs22TcyN4BX8V7CIKOuCljynUpeqJavQzXDrAK5HJiWqKpF6Qep6LKgnGbNA
- L7PBZeB4EJybVUqSRewOPFe6GMz7MC3LgXhwSd5YZpCnH3D6pX48R
-X-Gm-Gg: ASbGnctBu2/YJvE8L4xMWO+j6CSnwBeVLriu3kt6ZaZVshOEzI7vXkp7cp+VhDaAZcT
- /28lZ5Z4+ndXoYBS2CErIyi8/NEA3Dmy29Ypm59fnksMQXBwPtLzPspK09XDU3kn/x45BKDUftG
- S6c38jFKsSW+u83K32ZXrSV0NBC7rjJUiKfcw+ivI8AN2u+sjosfWwhSbejH2Lmjv8KGVmmbYTG
- t6lMt2/WSCIZguHXsYXrqyyXb63AGUUdVY60PY+QYXXOh7FdR4f+u1p/I/kkNM9+E/nR+BnBxcO
- PxyAZDhxZayCnhVXUp101yA=
-X-Received: by 2002:a5d:64ab:0:b0:385:c511:240a with SMTP id
- ffacd0b85a97d-38787696b5amr2543347f8f.25.1734010174184; 
- Thu, 12 Dec 2024 05:29:34 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGTfSI/0zDLuU0Exc652J9apgcTbTgWAF7L89bL0PLGIQC9v8M+acncx/nDbCMCg2misxlIvw==
-X-Received: by 2002:a5d:64ab:0:b0:385:c511:240a with SMTP id
- ffacd0b85a97d-38787696b5amr2543320f8f.25.1734010173698; 
- Thu, 12 Dec 2024 05:29:33 -0800 (PST)
-Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874?
- ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38782514db8sm4103844f8f.84.2024.12.12.05.29.31
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 12 Dec 2024 05:29:32 -0800 (PST)
-Message-ID: <7b29665f-a9b5-4f51-ace1-7bad4eaba10c@redhat.com>
-Date: Thu, 12 Dec 2024 14:29:29 +0100
+ (Exim 4.90_1) (envelope-from <prvs=06952aba3=kenneth_jia@asus.com>)
+ id 1tLjIV-0008Cn-IF; Thu, 12 Dec 2024 08:32:09 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+ d=asus.com; i=@asus.com; q=dns/txt; s=asuscom;
+ t=1734010328; x=1765546328;
+ h=from:to:cc:subject:date:message-id:mime-version;
+ bh=+BWRoSgWsOE7X8gxhEeW0GKnSxnR6+ax66jypHGL0EM=;
+ b=kSEIwmPlsA74iIJV6EMf8DtoY9h5NgfN7Axe5t2Nge8i8folPRv+DkN7
+ gMKv3aXwpXHr8TZT8rbXrVtviwDHWoFvWbKZkLQBXqLWKVr4NxGMEAE1j
+ xZHT+kT+75GOzQHkOmSgAccuA+LV8S8PoauqB8TBPMH2WpksPrubnfSal M=;
+IronPort-Data: A9a23:I1xTWqm+lBSgH6QIZooBKpTo5gybJ0RdPkR7XQ2eYbSJt1+Wr1Gzt
+ xIWDT2DPquCZWDyf4snYITnoUIDv5/RnIJmTwtpqyljRS4T+ZvOCOrCIxarNUt+DOWaFxs/s
+ J92hvosjiwQZiWBzvt4GuW5xZVE/fjUAOC6U4YoAwgpLSd8UiAtlBl/rOAwh49skLCRDhiE0
+ T/Ii5S31GKNgFaYDEpFs8pvlzsy5JweiBtA1nQiaPZCukPplnV9JPrz8onqdxMU6qENdgKLb
+ 76rIIORpws1zD90Yj+RqYsXR2VRKlLk0ahivVINM0SqqkAqSiXfSc/XPtJEAatco23hc9ycV
+ LyhHHF/IOskFvSkpQgTb/VXOwRfLfJf2rrIGlyuiN6Pn2/tLn/W7cw7WSnaPaVAkgp2KUhl3
+ rk1GGlTKy7b3qS/y7n9Qe52nsIuMI/iJ54E0p1i5WiGV7B8ENaYH+OTvLe03x9p7ixKNfXTY
+ cwUdTpYbhXJSxRUJ0xRA5U79AutriCmL20H9gLIzUYxyzHZkQJb3aPyCf/UefiTavVZwE+q/
+ VuTqgwVBTlfbrRz0wGt63+pm6rGhybTXoUUG7ulsPlwjzW7zWgcIAcbWVuyvb+yjUvWc8pfK
+ kgR9gIqrK477kvtScPyNzW6qXuFuCkYWtx4GvYi5QyB1qff40CSAW1sZjdHZMYrq+c9QjAn3
+ ViPhM/zGDdz9raSTDSU69+8oiiyMC49N2IOZSYYCwAC5rHLuYw2k1fDQ8huFIazidv6Hyy2x
+ CqFxBXSnJ1K0pRNjfT9pgyB2mvESoX1czPZLz7/BgqNhj6Vrqb/D2B0wTA3Ncp9Ebs=
+IronPort-HdrOrdr: A9a23:5vRwV60O56Yu4XZpLDYOogqjBFckLtp133Aq2lEZdPUMSL38qy
+ iv9M516faGskd0ZJhAo6HxBEDuewK+yXcY2+Qs1NSZLXrbUQmTXeNfBOLZqlWKcREWndQy6U
+ 4USchD4arLbGSS4/yX3ODyKadG/DDOytHPuQ7x9QYVcekxBpsQlzuQKWugYzZLrEkqP+tFKH
+ LTi/A32wZJNx4sH7WG7stpZZm4m/Tb0I/jaQQLQwUq8hWKkFqTmcHHOgndwxMXST8K3rs462
+ jClGXCl9uej80=
+X-Talos-CUID: 9a23:WXESg2DWaC35lN76EwxG5BENOMUqSVnM9WXMc22TVGJTZoTAHA==
+X-Talos-MUID: =?us-ascii?q?9a23=3AqgDWzw1sjfJ1021UQiCDgpNB6jUjuq7zBmoAioo?=
+ =?us-ascii?q?/nsiHETVfCzvDhQbse9py?=
+Received: from unknown (HELO ACC-EX16-V01.acc.corpnet.asus) ([172.29.34.11])
+ by ms.asus.com with ESMTP; 12 Dec 2024 21:31:55 +0800
+Received: from ACC-EX16-V03.acc.corpnet.asus (172.29.34.13) by
+ ACC-EX16-V01.acc.corpnet.asus (172.29.34.11) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.43; Thu, 12 Dec 2024 21:31:54 +0800
+Received: from ACC-EX16-V03.acc.corpnet.asus ([fe80::3dae:532a:2ef6:9654]) by
+ ACC-EX16-V03.acc.corpnet.asus ([fe80::3dae:532a:2ef6:9654%3]) with
+ mapi id 15.01.2507.043; Thu, 12 Dec 2024 21:31:48 +0800
+To: "'qemu-arm@nongnu.org'" <qemu-arm@nongnu.org>
+CC: =?gb2312?B?J0OopmRyaWMgTGUgR29hdGVyJw==?= <clg@redhat.com>,
+ =?gb2312?B?J1BoaWxpcHBlIE1hdGhpZXUtRGF1ZKimJw==?= <philmd@linaro.org>,
+ "'Jamin Lin'" <jamin_lin@aspeedtech.com>, 'Andrew Jeffery'
+ <andrew@codeconstruct.com.au>, 'Gavin Shan' <gshan@redhat.com>, "'open
+ list:All patches CC here'" <qemu-devel@nongnu.org>
+Subject: [PATCH]    hw/arm/aspeed: fix connect_serial_hds_to_uarts
+Thread-Topic: [PATCH]    hw/arm/aspeed: fix connect_serial_hds_to_uarts
+Thread-Index: AdtMmbwfoRQua2veTYW8MQ+0Vi041Q==
+Date: Thu, 12 Dec 2024 13:31:48 +0000
+Message-ID: <5f9b0c53f1644922ba85522046e92f4c@asus.com>
+Accept-Language: zh-CN, en-US
+Content-Language: zh-CN
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [116.235.194.63]
+x-tm-as-product-ver: SMEX-14.0.0.3223-9.1.2019-28826.004
+x-tm-as-result: No-10--14.720100-8.000000
+x-tmase-matchedrid: 17iyaxE7EzIfHU5fltg9RrbW4WOZNAUnj5XD/cFEQwaQ+UeH24Dz4Lhu
+ upHpXEmLU2VRnkEujdpjybcuQlsAB7ipA0mFNtPDyGyaQXOvRx4pihtGF1HQYaINgcEzNI9j7AI
+ n5hx14Jqif1w5aAHlEkOBQVcKGV65AyTN38gAq/3vgBmbjAvGcP4HMKRDK5w12YGbrr/jo0ffOn
+ cxfqt6MFxvJFCPsGl/3S/hhdntlxAm0dhXKknEYuKkRrdQOxlEJeVHOyz36PR3+86qkOXr2qF1m
+ 9FYSo2UVs7wr6DPfUIagKanydgPttdASTplK1Vu5PkCeM7tNe3Ed+T1CCeSceHZCF6RvUzMY3Pf
+ SmNBHfKjg0lrtKMWyoAII85gNIZEPRhkRGot+L5w0hoJ16zIu7LMDEFKafMtcHZCeuS/TLNsMSR
+ /KkjaoxLRXl5vgI6AUvWcNoeLMyxYKVgm72vjJg==
+x-tm-as-user-approved-sender: No
+x-tm-as-user-blocked-sender: No
+x-tmase-result: 10--14.720100-8.000000
+x-tmase-version: SMEX-14.0.0.3223-9.1.2019-28826.004
+x-tm-snts-smtp: F343C16444858CD64C6543F9F7079A6048EF239BBCBDAED2B483D0437155F81A2000:9
+Content-Type: multipart/alternative;
+ boundary="_000_5f9b0c53f1644922ba85522046e92f4casuscom_"
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFCv2 00/20] kvm/arm: Introduce a customizable aarch64 KVM
- host model
-Content-Language: en-US
-To: Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>,
- "eric.auger@redhat.com" <eric.auger@redhat.com>,
- Cornelia Huck <cohuck@redhat.com>,
- "eric.auger.pro@gmail.com" <eric.auger.pro@gmail.com>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>,
- "kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>,
- "peter.maydell@linaro.org" <peter.maydell@linaro.org>,
- "richard.henderson@linaro.org" <richard.henderson@linaro.org>,
- "alex.bennee@linaro.org" <alex.bennee@linaro.org>,
- "maz@kernel.org" <maz@kernel.org>,
- "oliver.upton@linux.dev" <oliver.upton@linux.dev>,
- "sebott@redhat.com" <sebott@redhat.com>,
- "armbru@redhat.com" <armbru@redhat.com>,
- "berrange@redhat.com" <berrange@redhat.com>,
- "abologna@redhat.com" <abologna@redhat.com>,
- "jdenemar@redhat.com" <jdenemar@redhat.com>
-Cc: "shahuang@redhat.com" <shahuang@redhat.com>,
- "mark.rutland@arm.com" <mark.rutland@arm.com>,
- "philmd@linaro.org" <philmd@linaro.org>,
- "pbonzini@redhat.com" <pbonzini@redhat.com>,
- "Wangzhou (B)" <wangzhou1@hisilicon.com>, Linuxarm <linuxarm@huawei.com>
-References: <20241206112213.88394-1-cohuck@redhat.com>
- <edc12140-6345-4868-938d-c80c4d2c2004@redhat.com>
- <38604260-6f92-4f16-9a4d-c310cbc52d77@redhat.com>
- <4fb49b5b02bb417399ee871b2c85bb35@huawei.com>
-From: Eric Auger <eauger@redhat.com>
-In-Reply-To: <4fb49b5b02bb417399ee871b2c85bb35@huawei.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=eauger@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -25
-X-Spam_score: -2.6
-X-Spam_bar: --
-X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.496,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Received-SPF: pass client-ip=103.10.4.142;
+ envelope-from=prvs=06952aba3=kenneth_jia@asus.com; helo=ms.asus.com
+X-Spam_score_int: 6
+X-Spam_score: 0.6
+X-Spam_bar: /
+X-Spam_report: (0.6 / 5.0 requ) BAYES_00=-1.9, CHARSET_FARAWAY_HEADER=3.2,
+ DKIMWL_WL_HIGH=-0.496, DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1,
+ DKIM_VALID_EF=-0.1, HTML_MESSAGE=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Thu, 12 Dec 2024 09:05:35 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -129,143 +109,167 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  =?gb2312?B?S2VubmV0aCBKaWEovNa8zbarX7uqy7bJz7qjKQ==?=
+ <kenneth_jia@asus.com>
+From: kenneth_jia--- via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Shameer,
-On 12/12/24 14:09, Shameerali Kolothum Thodi wrote:
-> Hi Eric,
-> 
->> -----Original Message-----
->> From: Eric Auger <eauger@redhat.com>
->> Sent: Thursday, December 12, 2024 8:42 AM
->> To: eric.auger@redhat.com; Cornelia Huck <cohuck@redhat.com>;
->> eric.auger.pro@gmail.com; qemu-devel@nongnu.org; qemu-
->> arm@nongnu.org; kvmarm@lists.linux.dev; peter.maydell@linaro.org;
->> richard.henderson@linaro.org; alex.bennee@linaro.org; maz@kernel.org;
->> oliver.upton@linux.dev; sebott@redhat.com; Shameerali Kolothum Thodi
->> <shameerali.kolothum.thodi@huawei.com>; armbru@redhat.com;
->> berrange@redhat.com; abologna@redhat.com; jdenemar@redhat.com
->> Cc: shahuang@redhat.com; mark.rutland@arm.com; philmd@linaro.org;
->> pbonzini@redhat.com
->> Subject: Re: [PATCH RFCv2 00/20] kvm/arm: Introduce a customizable
->> aarch64 KVM host model
->>
->> Shameer,
->>
->> On 12/12/24 09:12, Eric Auger wrote:
->>> Connie,
->>>
->>> On 12/6/24 12:21, Cornelia Huck wrote:
->>>> A respin/update on the aarch64 KVM cpu models. Also available at
->>>> gitlab.com/cohuck/qemu arm-cpu-model-rfcv2
->>>>
->>>> Find Eric's original cover letter below, so that I do not need to
->>>> repeat myself on the aspects that have not changed since RFCv1 :)
->>>>
->>>> Changes from RFCv1:
->>>>
->>>> Rebased on more recent QEMU (some adaptions in the register
->> conversions
->>>> of the first few patches.)
->>>>
->>>> Based on feedback, I have removed the "custom" cpu model; instead, I
->>>> have added the new SYSREG_<REG>_<FIELD> properties to the "host"
->> model.
->>>> This works well if you want to tweak anything that does not correspond
->>>> to the existing properties for the host model; however, if you e.g.
->>>> wanted to tweak sve, you have two ways to do so -- we'd probably either
->>>> want to check for conflicts, or just declare precedence. The kvm-specific
->>>> props remain unchanged, as they are orthogonal to this configuration.
->>>>
->>>> The cpu model expansion for the "host" model now dumps the new
->> SYSREG_
->>>> properties in addition to the existing host model properties; this is a
->>>> bit ugly, but I don't see a good way on how to split this up.
->>>>
->>>> Some more adaptions due to the removal of the "custom" model.
->>>>
->>>> Things *not* changed from RFCv1:
->>>>
->>>> SYSREG_ property naming (can be tweaked easily, once we are clear on
->> what
->>>> the interface should look like.)
->>>>
->>>> Sysreg generation scripts, and the generated files (I have not updated
->>>> anything there.) I think generating the various definitions makes sense,
->>>> as long as we double-check the generated files on each update (which
->> would
->>>> be something to trigger manually anyway.)
->>>>
->>>> What I would like us to reach some kind of consensus on:
->>>>
->>>> How to continue with the patches moving the ID registers from the isar
->>>> struct into the idregs array. These are a bit of churn to drag along;
->>>> if they make sense, maybe they can be picked independently of this
->> series?
->>>>
->>>> Whether it make sense to continue with the approach of tweaking
->> values in
->>>> the ID registers in general. If we want to be able to migrate between
->> cpus
->>>> that do not differ wildly, we'll encounter differences that cannot be
->>>> expressed via FEAT_xxx -- e.g. when comparing various AmpereAltra Max
->> systems,
->>>> they only differ in parts of CTR_EL0 -- which is not a feature register, but
->>>> a writable register.
->>> In v1 most of the commenters said they would prefer to see FEAT props
->>> instead of IDREG field props. I think we shall try to go in this
->>> direction anyway. As you pointed out there will be some cases where
->> FEAT
->>> won't be enough (CTR_EL0 is a good example). So I tend to think the end
->>> solution will be a mix of FEAT and ID reg field props.
->>>
->>> Personally I would smoothly migrate what we can from ID reg field props
->>> to FEAT props (maybe using prop aliases?), starting from the easiest 1-1
->>> mappings and then adressing the FEAT that are more complex but are
->>> explictly needed to enable the use cases we are interested in, at RedHat:
->>> migration within Ampere AltraMax family, migration within NVidia Grace
->>> family, migration within AmpereOne family and migration between
->> Graviton3/4.
->>>
->>> We have no info about other's use cases. If some of you want to see some
->>> other live migration combinations addressed, please raise your voice.
->> In relation to [1] you seem to be also interested in the migration
->> between heterogeneous systems with qemu.
-> 
-> Yes. That is correct.
-> 
->> Do you think targeting migration within a cpu family is enough for your
->> use cases. How different are the source and destination host on your
->> cases. Do you thing feat props are relevant in your case or would you
->> need lower granularity at idreg field levelto pass the migration?
-> 
-> I think, from the current requirement we have for migration, the source and
-> destination mostly can be handled by FEAT_XXX. But like Ampere, we do need
-> to manage the CTR_EL0 differences[1].
-OK
-> 
-> Also we do have differences in GIC support as well(AA64PFR0_EL1.GIC) which 
-> I am not sure how to manage with FEAT_XXX.
-interesting. We need to further look at this one.
-> 
-> And we are checking with our Product team whether we need to support migration
-> from an old CPU type in which case we have to do a bit more analysis.
-Sure, please come back to us whenever you get more insights. It will
-help us define the scope of this upstream work
+--_000_5f9b0c53f1644922ba85522046e92f4casuscom_
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
 
-Thanks!
+RnJvbSAyNGQzYmFkYmJiOWRjYzBkMjIwNjA5YTdkZDMwZjhkYTUwMDJjYmE3IE1vbiBTZXAgMTcg
+MDA6MDA6MDAgMjAwMQ0KRnJvbTogS2VubmV0aCBKaWEgPGtlbm5ldGhfamlhQGFzdXMuY29tPg0K
+RGF0ZTogVGh1LCAxMiBEZWMgMjAyNCAyMDo0MjowNCArMDgwMA0KU3ViamVjdDogW1BBVENIXSAg
+ICBody9hcm0vYXNwZWVkOiBmaXggY29ubmVjdF9zZXJpYWxfaGRzX3RvX3VhcnRzDQoNCiAgIElu
+IHRoZSBsb29wLCB3ZSBuZWVkIGlnbm9yZSB0aGUgaW5kZXggaW5jcmVhc2Ugd2hlbiB1YXJ0ID09
+IHVhcnRfY2hvc2VuDQogICBXZSBzaG91bGQgaW5jcmVhc2UgdGhlIGluZGV4IG9ubHkgYWZ0ZXIg
+d2UgYWxsb2NhdGUgYSBzZXJpYWwuDQoNClNpZ25lZC1vZmYtYnk6IEtlbm5ldGggSmlhIDxrZW5u
+ZXRoX2ppYUBhc3VzLmNvbT4NCi0tLQ0KaHcvYXJtL2FzcGVlZC5jIHwgNCArKy0tDQoxIGZpbGUg
+Y2hhbmdlZCwgMiBpbnNlcnRpb25zKCspLCAyIGRlbGV0aW9ucygtKQ0KDQpkaWZmIC0tZ2l0IGEv
+aHcvYXJtL2FzcGVlZC5jIGIvaHcvYXJtL2FzcGVlZC5jDQppbmRleCA1NTY0OThmMmEwLi5kOGNi
+MmQxNDI5IDEwMDY0NA0KLS0tIGEvaHcvYXJtL2FzcGVlZC5jDQorKysgYi9ody9hcm0vYXNwZWVk
+LmMNCkBAIC0zNjQsMTEgKzM2NCwxMSBAQCBzdGF0aWMgdm9pZCBjb25uZWN0X3NlcmlhbF9oZHNf
+dG9fdWFydHMoQXNwZWVkTWFjaGluZVN0YXRlICpibWMpDQogICAgIGludCB1YXJ0X2Nob3NlbiA9
+IGJtYy0+dWFydF9jaG9zZW4gPyBibWMtPnVhcnRfY2hvc2VuIDogYW1jLT51YXJ0X2RlZmF1bHQ7
+DQoNCiAgICAgYXNwZWVkX3NvY191YXJ0X3NldF9jaHIocywgdWFydF9jaG9zZW4sIHNlcmlhbF9o
+ZCgwKSk7DQotICAgIGZvciAoaW50IGkgPSAxLCB1YXJ0ID0gc2MtPnVhcnRzX2Jhc2U7IGkgPCBz
+Yy0+dWFydHNfbnVtOyBpKyssIHVhcnQrKykgew0KKyAgICBmb3IgKGludCBpID0gMSwgdWFydCA9
+IHNjLT51YXJ0c19iYXNlOyBpIDwgc2MtPnVhcnRzX251bTsgdWFydCsrKSB7DQogICAgICAgICBp
+ZiAodWFydCA9PSB1YXJ0X2Nob3Nlbikgew0KICAgICAgICAgICAgIGNvbnRpbnVlOw0KICAgICAg
+ICAgfQ0KLSAgICAgICAgYXNwZWVkX3NvY191YXJ0X3NldF9jaHIocywgdWFydCwgc2VyaWFsX2hk
+KGkpKTsNCisgICAgICAgIGFzcGVlZF9zb2NfdWFydF9zZXRfY2hyKHMsIHVhcnQsIHNlcmlhbF9o
+ZChpKyspKTsNCiAgICAgfQ0KfQ0KDQotLQ0KMi4zNC4xDQo=
 
-Eric
-> 
-> Thanks,
-> Shameer
-> 
-> 1. https://lore.kernel.org/kvmarm/20241022073943.35764-1-shameerali.kolothum.thodi@huawei.com/
-> 
-> 
-> 
->  
->  
+--_000_5f9b0c53f1644922ba85522046e92f4casuscom_
+Content-Type: text/html; charset="gb2312"
+Content-Transfer-Encoding: quoted-printable
 
+<html xmlns:v=3D"urn:schemas-microsoft-com:vml" xmlns:o=3D"urn:schemas-micr=
+osoft-com:office:office" xmlns:w=3D"urn:schemas-microsoft-com:office:word" =
+xmlns:m=3D"http://schemas.microsoft.com/office/2004/12/omml" xmlns=3D"http:=
+//www.w3.org/TR/REC-html40">
+<head>
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dgb2312">
+<meta name=3D"Generator" content=3D"Microsoft Word 15 (filtered medium)">
+<style><!--
+/* Font Definitions */
+@font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+@font-face
+	{font-family:=B5=C8=CF=DF;
+	panose-1:2 1 6 0 3 1 1 1 1 1;}
+@font-face
+	{font-family:"\@=B5=C8=CF=DF";
+	panose-1:2 1 6 0 3 1 1 1 1 1;}
+/* Style Definitions */
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	text-align:justify;
+	text-justify:inter-ideograph;
+	font-size:10.5pt;
+	font-family:=B5=C8=CF=DF;}
+a:link, span.MsoHyperlink
+	{mso-style-priority:99;
+	color:#0563C1;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{mso-style-priority:99;
+	color:#954F72;
+	text-decoration:underline;}
+span.EmailStyle17
+	{mso-style-type:personal-compose;
+	font-family:=B5=C8=CF=DF;
+	color:windowtext;}
+.MsoChpDefault
+	{mso-style-type:export-only;
+	font-family:=B5=C8=CF=DF;}
+/* Page Definitions */
+@page WordSection1
+	{size:612.0pt 792.0pt;
+	margin:72.0pt 90.0pt 72.0pt 90.0pt;}
+div.WordSection1
+	{page:WordSection1;}
+--></style><!--[if gte mso 9]><xml>
+<o:shapedefaults v:ext=3D"edit" spidmax=3D"1026" />
+</xml><![endif]--><!--[if gte mso 9]><xml>
+<o:shapelayout v:ext=3D"edit">
+<o:idmap v:ext=3D"edit" data=3D"1" />
+</o:shapelayout></xml><![endif]-->
+</head>
+<body lang=3D"ZH-CN" link=3D"#0563C1" vlink=3D"#954F72" style=3D"text-justi=
+fy-trim:punctuation">
+<div class=3D"WordSection1">
+<p class=3D"MsoNormal"><span lang=3D"EN-US">From 24d3badbbb9dcc0d220609a7dd=
+30f8da5002cba7 Mon Sep 17 00:00:00 2001<o:p></o:p></span></p>
+<p class=3D"MsoNormal"><span lang=3D"EN-US">From: Kenneth Jia &lt;kenneth_j=
+ia@asus.com&gt;<o:p></o:p></span></p>
+<p class=3D"MsoNormal"><span lang=3D"EN-US">Date: Thu, 12 Dec 2024 20:42:04=
+ &#43;0800<o:p></o:p></span></p>
+<p class=3D"MsoNormal"><span lang=3D"EN-US">Subject: [PATCH]&nbsp;&nbsp;&nb=
+sp; hw/arm/aspeed: fix connect_serial_hds_to_uarts<o:p></o:p></span></p>
+<p class=3D"MsoNormal"><span lang=3D"EN-US"><o:p>&nbsp;</o:p></span></p>
+<p class=3D"MsoNormal"><span lang=3D"EN-US">&nbsp;&nbsp; In the loop, we ne=
+ed ignore the index increase when uart =3D=3D uart_chosen<o:p></o:p></span>=
+</p>
+<p class=3D"MsoNormal"><span lang=3D"EN-US">&nbsp;&nbsp; We should increase=
+ the index only after we allocate a serial.<o:p></o:p></span></p>
+<p class=3D"MsoNormal"><span lang=3D"EN-US"><o:p>&nbsp;</o:p></span></p>
+<p class=3D"MsoNormal"><span lang=3D"EN-US">Signed-off-by: Kenneth Jia &lt;=
+kenneth_jia@asus.com&gt;<o:p></o:p></span></p>
+<p class=3D"MsoNormal"><span lang=3D"EN-US">---<o:p></o:p></span></p>
+<p class=3D"MsoNormal"><span lang=3D"EN-US">hw/arm/aspeed.c | 4 &#43;&#43;-=
+-<o:p></o:p></span></p>
+<p class=3D"MsoNormal"><span lang=3D"EN-US">1 file changed, 2 insertions(&#=
+43;), 2 deletions(-)<o:p></o:p></span></p>
+<p class=3D"MsoNormal"><span lang=3D"EN-US"><o:p>&nbsp;</o:p></span></p>
+<p class=3D"MsoNormal"><span lang=3D"EN-US">diff --git a/hw/arm/aspeed.c b/=
+hw/arm/aspeed.c<o:p></o:p></span></p>
+<p class=3D"MsoNormal"><span lang=3D"EN-US">index 556498f2a0..d8cb2d1429 10=
+0644<o:p></o:p></span></p>
+<p class=3D"MsoNormal"><span lang=3D"EN-US">--- a/hw/arm/aspeed.c<o:p></o:p=
+></span></p>
+<p class=3D"MsoNormal"><span lang=3D"EN-US">&#43;&#43;&#43; b/hw/arm/aspeed=
+.c<o:p></o:p></span></p>
+<p class=3D"MsoNormal"><span lang=3D"EN-US">@@ -364,11 &#43;364,11 @@ stati=
+c void connect_serial_hds_to_uarts(AspeedMachineState *bmc)<o:p></o:p></spa=
+n></p>
+<p class=3D"MsoNormal"><span lang=3D"EN-US">&nbsp;&nbsp;&nbsp;&nbsp; int ua=
+rt_chosen =3D bmc-&gt;uart_chosen ? bmc-&gt;uart_chosen : amc-&gt;uart_defa=
+ult;<o:p></o:p></span></p>
+<p class=3D"MsoNormal"><span lang=3D"EN-US"><o:p>&nbsp;</o:p></span></p>
+<p class=3D"MsoNormal"><span lang=3D"EN-US">&nbsp;&nbsp;&nbsp;&nbsp; aspeed=
+_soc_uart_set_chr(s, uart_chosen, serial_hd(0));<o:p></o:p></span></p>
+<p class=3D"MsoNormal"><span lang=3D"EN-US">-&nbsp;&nbsp;&nbsp; for (int i =
+=3D 1, uart =3D sc-&gt;uarts_base; i &lt; sc-&gt;uarts_num; i&#43;&#43;, ua=
+rt&#43;&#43;) {<o:p></o:p></span></p>
+<p class=3D"MsoNormal"><span lang=3D"EN-US">&#43;&nbsp;&nbsp;&nbsp; for (in=
+t i =3D 1, uart =3D sc-&gt;uarts_base; i &lt; sc-&gt;uarts_num; uart&#43;&#=
+43;) {<o:p></o:p></span></p>
+<p class=3D"MsoNormal"><span lang=3D"EN-US">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&=
+nbsp;&nbsp;&nbsp; if (uart =3D=3D uart_chosen) {<o:p></o:p></span></p>
+<p class=3D"MsoNormal"><span lang=3D"EN-US">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&=
+nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; continue;<o:p></o:p></span></p>
+<p class=3D"MsoNormal"><span lang=3D"EN-US">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&=
+nbsp;&nbsp;&nbsp; }<o:p></o:p></span></p>
+<p class=3D"MsoNormal"><span lang=3D"EN-US">-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp; aspeed_soc_uart_set_chr(s, uart, serial_hd(i));<o:p></o:p></sp=
+an></p>
+<p class=3D"MsoNormal"><span lang=3D"EN-US">&#43;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp; aspeed_soc_uart_set_chr(s, uart, serial_hd(i&#43;&#43;));<=
+o:p></o:p></span></p>
+<p class=3D"MsoNormal"><span lang=3D"EN-US">&nbsp;&nbsp;&nbsp;&nbsp; }<o:p>=
+</o:p></span></p>
+<p class=3D"MsoNormal"><span lang=3D"EN-US">}<o:p></o:p></span></p>
+<p class=3D"MsoNormal"><span lang=3D"EN-US"><o:p>&nbsp;</o:p></span></p>
+<p class=3D"MsoNormal"><span lang=3D"EN-US">--<o:p></o:p></span></p>
+<p class=3D"MsoNormal"><span lang=3D"EN-US">2.34.1<o:p></o:p></span></p>
+</div>
+</body>
+</html>
+
+--_000_5f9b0c53f1644922ba85522046e92f4casuscom_--
 
