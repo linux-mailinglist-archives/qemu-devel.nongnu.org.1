@@ -2,91 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8DE59EDC58
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Dec 2024 01:03:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DB68B9EDC5D
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Dec 2024 01:04:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tLWfO-0004yK-MF; Wed, 11 Dec 2024 19:02:54 -0500
+	id 1tLWgh-0006nt-PU; Wed, 11 Dec 2024 19:04:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tLWfI-0004eU-MF
- for qemu-devel@nongnu.org; Wed, 11 Dec 2024 19:02:50 -0500
-Received: from mail-ot1-x32c.google.com ([2607:f8b0:4864:20::32c])
+ id 1tLWge-0006mr-Hq
+ for qemu-devel@nongnu.org; Wed, 11 Dec 2024 19:04:12 -0500
+Received: from mail-oa1-x36.google.com ([2001:4860:4864:20::36])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tLWfG-000388-Fw
- for qemu-devel@nongnu.org; Wed, 11 Dec 2024 19:02:48 -0500
-Received: by mail-ot1-x32c.google.com with SMTP id
- 46e09a7af769-71ddc7325beso7770a34.3
- for <qemu-devel@nongnu.org>; Wed, 11 Dec 2024 16:02:45 -0800 (PST)
+ id 1tLWgc-0003Zb-S3
+ for qemu-devel@nongnu.org; Wed, 11 Dec 2024 19:04:12 -0500
+Received: by mail-oa1-x36.google.com with SMTP id
+ 586e51a60fabf-29f88004a92so18556fac.1
+ for <qemu-devel@nongnu.org>; Wed, 11 Dec 2024 16:04:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1733961764; x=1734566564; darn=nongnu.org;
+ d=linaro.org; s=google; t=1733961849; x=1734566649; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=XD6rH8e4DcKBxo5nQAKAM3oIHGLg0tbYPGNozz874ic=;
- b=KIiW1idYOSIu2A8bNh9Xd/ahleJv2GXczmFAQhj7j6BnywsT4LXxrwq4qcaORRB/Ao
- +zW1eqo9/LvnpXS0IUGuo4WoIePuZPKguAL1vMUExjXrVi7GTXqXEpK2b/tBT7ekxbON
- O/nTavvkk1QpHnV/glnnEnOIvsfDmdSBRXa2Ya7y2y/2JGokmiSirj+aqgR/mIDYpRbf
- BnJJkPFaPHJW+hITZEWWtDtwCixUQDmRJMf2xxsYosOQExKarTdidZuEAU2lz8Rm5W75
- BeV7ZSt8TXy89Q6etgW8fC63nZ/ThLLB4ZYcWP32o+makUOuntS7Yp5XHS/5Q1ktWuFe
- whbQ==
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=3knoNcxwCUKI8eh4Orst1pBB7RV+WEfi8TnkBIo+Pss=;
+ b=BVcjMEYGW6agXWjw3CAy1gUAMVinRFjK+ZFP4Ld3vNftXXBsa6dElF0EnM7pYy6RGC
+ TzcnHa3SGHeVCQthLv56w3KJTaeboARUFSPGMfNuyXo2FZUmGVGwzb4rt7OEyLWemJxk
+ LBZajfB6Dh9+RofrMGhMb8YMzrPBKncRIT/zEzinpAWYQwq7wCI+Z1IIND4DeUK7cPF1
+ Fw1vACi1qh9GQZQJLPqQo4h/M5PwO8g90QkP88TP1QxJSws5yPRMkN5lOCu+fQg+gJgR
+ KxiLcE8P1fvDcODPeANLlP1gX5tumFECn6Qx9pP7SxGnDpmHH7aYJE7FsVYYFdiqqLxC
+ wRRg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733961764; x=1734566564;
+ d=1e100.net; s=20230601; t=1733961849; x=1734566649;
  h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :references:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=XD6rH8e4DcKBxo5nQAKAM3oIHGLg0tbYPGNozz874ic=;
- b=FGglP3xWhhVoh4kZVuOFlmXHiMXIV6aUuJ8otqy0MSes6V49jeobAZAlf2SSimjfi/
- k8uxvAkttXbj/T23kNRzxbTXCXmutC/czw50fbzdVNrBMIYb63Ck5kCRU60hzcuRTsEV
- eSgZVDAEjiQmlGsl69rTDrHrjOqBIqJQ5VbJyzd0LbxIrMwCsPu83yVOUfZIFkEA55R2
- u8l88kBtNXtrmaZYaiflQmnrFrg0Zk6MMsIZjoFMR+n77uMAOdvrv3MeUY/TfOa8fVTI
- 9ZcKdQb9O7pE+3IAP32WO9m2Di4DBsE/YN2+0ZJS5Jw+FQZBwk1u7mlL0q5MUdPOHkA6
- 6hkA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVp/LyZ2a1OamrTv+vdwFXx3wCMnN4q656ixM31JjmI/cLMqcR3dQfUSxsTciFpliZ82UiUJNy4CuEO@nongnu.org
-X-Gm-Message-State: AOJu0YxIjqaT+q/jkfZfux1q6FA9YViEeDqHBfQVU1jkw1+3ddfoaIdL
- gGE1P5idAaXd816f41nla6aS9/uTkCHXQa0QmQFMymGPKEmMxbXQcc/z9AHXLIs=
-X-Gm-Gg: ASbGnctBmkwNpSSqFvnEdRjaUaO9kZU+XA/JPEl9E2p6oafTRvbHR+lUGupufBM55/E
- RjeIzwpIdRWdXUVWEynAqrdhrcez1O9PIP7u+hftYhXcgQO8U+6phybtT3rQOEHFGeCtAvWXGRt
- FHge/VCDxkOiPMO92Ty/1deoVIq04H3mEID6RESzN2w5fYQLBlUk8ojYRRfB59DjkJfBocx+Bus
- eeniQAB8yrYHEB1ZHnmK6tt2GbaSVeusl6a1T68D5A4wnNlN4xZnWSjI6+3KG1ZK+VHoKED6FTs
- 0aYHZcP9WbZomKDh/Rqy19U5vnhquJUq
-X-Google-Smtp-Source: AGHT+IFtPkMoRBlUjntLV5QfDy+qqaPAq0d1LMVKQ2V33bGTnl1jN1b3/bbkdTuYzcuIXPKwmvZKBQ==
-X-Received: by 2002:a05:6830:908:b0:71e:1fbe:db2a with SMTP id
- 46e09a7af769-71e29bbcd30mr795534a34.12.1733961764292; 
- Wed, 11 Dec 2024 16:02:44 -0800 (PST)
+ bh=3knoNcxwCUKI8eh4Orst1pBB7RV+WEfi8TnkBIo+Pss=;
+ b=osOlNfjMgxQ68FcrttlfWYx1S4AZcLUzkulcs3h1TOocRPmQUa8eJJXA8FSJqqsnkJ
+ 9Mb4bEi+TwhvS7CZ9aLN93GG7JJ6VsNOnwiDqPbe8KROGp5KDP59tlmjT9jqZUrcEwAn
+ psC/3vxJAWKLJPaw3MSB8sZ4uPHxZW95oFg/pAglKRNPoxoRro0bmO2mMcsjHr5eCbCk
+ la7d7Rj45Om+1GihbQNiCClCdlxxMLg0a8+6ARWrIx24SZyTmph7R90W6Bn3WX9SW6be
+ rpjk9H0fq1z7sFjH/XLxSPVuXMhL2AsEqbHlZviJLd+M4bW4eOXO1shdN3HfLlQg5ry/
+ qiOQ==
+X-Gm-Message-State: AOJu0YwF6U560LbR7LBSgNMQNr19p9wwHm8nwJOzIvyiNmsA72FT/sVe
+ HuNtd7u9hiQ67fPu5JiZ1w3e+ozMtrPVhREb7uDcXVJP/Eqt9nRcIrw+R2rw434DoK6y2NPw1gv
+ emtBG45nT
+X-Gm-Gg: ASbGncsazY6y8la1yD3cQrMgsn9GYdOxay8WTGJdpAlf854P0EFGELX4cHj/CxQ3DaY
+ 8PUxQxLt0n5kn4xUr+C5lvv5iJUNfDzsz+TtAWFRJ1uZbwWMOi1GhsV1V39tBiMjqbuC34gjkSm
+ lrtv0GqSNFSC1+auLsQ30qS9C/lNvlLSZmwzDy7ra1AHthww+uVd2WA/woiEbdP+iip+mAcixOT
+ LJHcKs1RMISPeZl84zDtf+w13izA8bcclQEt7Udsp5eVyhJQSuVaIsKNRk6L9HOvWde8haWyQxj
+ pTPMXFiL1o2P4sCSm8RIfjhrfcOlFX+T
+X-Google-Smtp-Source: AGHT+IEWnIwG4dxYy5874WFv884WoBTsKtGU71MAitkfkRnpu4vkTXnCoLDbB5jc6jHFA2A8308GGQ==
+X-Received: by 2002:a05:6870:658d:b0:296:df26:8a6e with SMTP id
+ 586e51a60fabf-2a012d85269mr2930031fac.35.1733961848866; 
+ Wed, 11 Dec 2024 16:04:08 -0800 (PST)
 Received: from [192.168.4.112] (fixed-187-189-51-143.totalplay.net.
  [187.189.51.143]) by smtp.gmail.com with ESMTPSA id
- 006d021491bc7-5f2bc5e42aesm1643560eaf.3.2024.12.11.16.02.43
+ 586e51a60fabf-29f56666e51sm4131556fac.1.2024.12.11.16.04.07
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 11 Dec 2024 16:02:43 -0800 (PST)
-Message-ID: <1c8aa2b0-f6fb-420b-80a2-424c7c723280@linaro.org>
-Date: Wed, 11 Dec 2024 18:02:41 -0600
+ Wed, 11 Dec 2024 16:04:08 -0800 (PST)
+Message-ID: <a0ce2f59-3479-4a6a-af8f-3dda78fa4b03@linaro.org>
+Date: Wed, 11 Dec 2024 18:04:06 -0600
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 9/9] exec/cpu-all: Do not include 'exec/tswap.h' header
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: qemu-ppc@nongnu.org, qemu-arm@nongnu.org
-References: <20241211230357.97036-1-philmd@linaro.org>
- <20241211230357.97036-10-philmd@linaro.org>
+Subject: Re: [PATCH v2 0/2] qtest: Remove uses of 'first_cpu'
+To: qemu-devel@nongnu.org
+References: <20241211233727.98923-1-philmd@linaro.org>
 Content-Language: en-US
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20241211230357.97036-10-philmd@linaro.org>
+In-Reply-To: <20241211233727.98923-1-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::32c;
- envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x32c.google.com
+Received-SPF: pass client-ip=2001:4860:4864:20::36;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x36.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,32 +99,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/11/24 17:03, Philippe Mathieu-Daudé wrote:
-> Nothing in "exec/cpu-all.h" requires "exec/tswap.h" declarations.
-> Remove it to reduce headers preprocessing and poisonned target
-> definitions polution.
+On 12/11/24 17:37, Philippe Mathieu-Daudé wrote:
+> Replace first_cpu->as by address_space_memory.
 > 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> ---
->   include/exec/cpu-all.h | 1 -
->   1 file changed, 1 deletion(-)
+> Philippe Mathieu-Daudé (2):
+>    system/qtest: Remove uses of 'first_cpu'
+>    qtest/fuzz: Remove uses of 'first_cpu'
 > 
-> diff --git a/include/exec/cpu-all.h b/include/exec/cpu-all.h
-> index 45e66769380..b45defdbf43 100644
-> --- a/include/exec/cpu-all.h
-> +++ b/include/exec/cpu-all.h
-> @@ -22,7 +22,6 @@
->   #include "exec/page-protection.h"
->   #include "exec/cpu-common.h"
->   #include "exec/memory.h"
-> -#include "exec/tswap.h"
->   #include "hw/core/cpu.h"
->   
->   /* some important defines:
+>   system/qtest.c                    | 53 ++++++++++++++++---------------
+>   tests/qtest/fuzz/generic_fuzz.c   |  3 +-
+>   tests/qtest/fuzz/qtest_wrappers.c | 53 ++++++++++++++++---------------
+>   3 files changed, 56 insertions(+), 53 deletions(-)
+> 
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-
-\o/
 
 r~
 
