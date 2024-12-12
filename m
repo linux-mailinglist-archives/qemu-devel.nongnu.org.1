@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA6D19EE4C0
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Dec 2024 12:07:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DF049EE4C3
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Dec 2024 12:07:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tLh1j-0008P4-No; Thu, 12 Dec 2024 06:06:39 -0500
+	id 1tLh1n-0008Pt-NF; Thu, 12 Dec 2024 06:06:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1tLh1h-0008Ot-77
- for qemu-devel@nongnu.org; Thu, 12 Dec 2024 06:06:37 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1tLh1l-0008Pd-0E
+ for qemu-devel@nongnu.org; Thu, 12 Dec 2024 06:06:41 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1tLh1f-0003Dz-26
- for qemu-devel@nongnu.org; Thu, 12 Dec 2024 06:06:36 -0500
+ id 1tLh1i-0003JC-N4
+ for qemu-devel@nongnu.org; Thu, 12 Dec 2024 06:06:40 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1734001594;
+ s=mimecast20190719; t=1734001598;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=/23KkrWdcUPvaqcKF/aTMDxAi9azol/22cu8/eqV75Y=;
- b=A/gQpeOoyqbuSOibWQKKkxc4npGls9JzaI8dffdfL7ewZ+cCv5KsTayJ3Kl3otuR1Gwtmn
- lqp0wPZD9F3mTkMusvBMMvMOcDa6F0GjDF+cyvrKSWNEA2WhquhtBH4mUyrv4SWqU4kmi9
- 7MZD5afs1GWaYHzO+5rAsS8U5aMQVx4=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ bh=1/bwMY6Mn/smQQOpvu3RHneR0VzkgUccGHWcP9erI/I=;
+ b=JS8xtf8pCirlK3qK8oBf/1Jg2uFyJ21dpU+Bt2rEOCPHWqqXETx7zC3R96QFvfcBqprNpa
+ XRW1bcwOKtvibhrwBPJ93LZZCcVLMXtxQ4y3ovLzxhYXDbRO+O+yPPeo0RcFQ7jehe3HlT
+ PvmufeknXcDSmZaoVrLnVOIQ/evxuPU=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-13-TNMK_wmRPPOPpLDhz9LWKA-1; Thu,
- 12 Dec 2024 06:06:30 -0500
-X-MC-Unique: TNMK_wmRPPOPpLDhz9LWKA-1
-X-Mimecast-MFC-AGG-ID: TNMK_wmRPPOPpLDhz9LWKA
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-460-0WIJpf0jN_eq-N0gQOhJuA-1; Thu,
+ 12 Dec 2024 06:06:36 -0500
+X-MC-Unique: 0WIJpf0jN_eq-N0gQOhJuA-1
+X-Mimecast-MFC-AGG-ID: 0WIJpf0jN_eq-N0gQOhJuA
 Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id C1FD51955F45; Thu, 12 Dec 2024 11:06:29 +0000 (UTC)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id D73E619560AB; Thu, 12 Dec 2024 11:06:35 +0000 (UTC)
 Received: from toolbox.redhat.com (unknown [10.42.28.114])
  by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 9A2E81956089; Thu, 12 Dec 2024 11:06:25 +0000 (UTC)
+ id 1E73E1956086; Thu, 12 Dec 2024 11:06:32 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Michael Roth <michael.roth@amd.com>, Markus Armbruster <armbru@redhat.com>,
@@ -52,17 +52,16 @@ Cc: Michael Roth <michael.roth@amd.com>, Markus Armbruster <armbru@redhat.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH v3 2/4] qapi: change 'unsigned special_features' to 'uint64_t
- features'
-Date: Thu, 12 Dec 2024 11:06:14 +0000
-Message-ID: <20241212110616.3147676-3-berrange@redhat.com>
+Subject: [PATCH v3 4/4] qapi: expose all schema features to code
+Date: Thu, 12 Dec 2024 11:06:16 +0000
+Message-ID: <20241212110616.3147676-5-berrange@redhat.com>
 In-Reply-To: <20241212110616.3147676-1-berrange@redhat.com>
 References: <20241212110616.3147676-1-berrange@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -25
 X-Spam_score: -2.6
@@ -87,327 +86,316 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The "special_features" field / parameter holds the subset of schema
-features that are for internal code use. Specifically 'DEPRECATED'
-and 'UNSTABLE'.
+This replaces use of the constants from the QapiSpecialFeatures
+enum, with constants from the auto-generate QapiFeatures enum
+in qapi-features.h
 
-This special casing of internal features is going to be removed, so
-prepare for that by renaming to 'features'. Using a fixed size type
-is also best practice for bit fields.
+The 'deprecated' and 'unstable' features still have a little bit of
+special handling, being force defined to be the 1st + 2nd features
+in the enum, regardless of whether they're used in the schema. This
+retains compatibility with common code that references the features
+via the QapiSpecialFeatures constants.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- include/qapi/compat-policy.h  |  2 +-
- include/qapi/qmp/dispatch.h   |  4 ++--
- include/qapi/util.h           |  2 +-
- include/qapi/visitor-impl.h   |  4 ++--
- include/qapi/visitor.h        | 12 ++++++------
- qapi/qapi-forward-visitor.c   |  8 ++++----
- qapi/qapi-util.c              |  6 +++---
- qapi/qapi-visit-core.c        | 12 ++++++------
- qapi/qmp-dispatch.c           |  2 +-
- qapi/qmp-registry.c           |  4 ++--
- qapi/qobject-input-visitor.c  |  4 ++--
- qapi/qobject-output-visitor.c |  6 +++---
- scripts/qapi/types.py         |  2 +-
- 13 files changed, 34 insertions(+), 34 deletions(-)
+ meson.build                              |  1 +
+ scripts/qapi/commands.py                 |  1 +
+ scripts/qapi/features.py                 | 51 ++++++++++++++++++++++++
+ scripts/qapi/gen.py                      |  6 +--
+ scripts/qapi/main.py                     |  2 +
+ scripts/qapi/schema.py                   | 30 +++++++++++++-
+ scripts/qapi/types.py                    |  7 +++-
+ scripts/qapi/visit.py                    |  3 +-
+ tests/meson.build                        |  2 +
+ tests/qapi-schema/features-too-many.err  |  2 +
+ tests/qapi-schema/features-too-many.json | 13 ++++++
+ tests/qapi-schema/features-too-many.out  |  0
+ tests/qapi-schema/meson.build            |  1 +
+ 13 files changed, 112 insertions(+), 7 deletions(-)
+ create mode 100644 scripts/qapi/features.py
+ create mode 100644 tests/qapi-schema/features-too-many.err
+ create mode 100644 tests/qapi-schema/features-too-many.json
+ create mode 100644 tests/qapi-schema/features-too-many.out
 
-diff --git a/include/qapi/compat-policy.h b/include/qapi/compat-policy.h
-index 8b7b25c0b5..ea65e10744 100644
---- a/include/qapi/compat-policy.h
-+++ b/include/qapi/compat-policy.h
-@@ -18,7 +18,7 @@
+diff --git a/meson.build b/meson.build
+index 147097c652..3815878b23 100644
+--- a/meson.build
++++ b/meson.build
+@@ -3444,6 +3444,7 @@ qapi_gen_depends = [ meson.current_source_dir() / 'scripts/qapi/__init__.py',
+                      meson.current_source_dir() / 'scripts/qapi/schema.py',
+                      meson.current_source_dir() / 'scripts/qapi/source.py',
+                      meson.current_source_dir() / 'scripts/qapi/types.py',
++                     meson.current_source_dir() / 'scripts/qapi/features.py',
+                      meson.current_source_dir() / 'scripts/qapi/visit.py',
+                      meson.current_source_dir() / 'scripts/qapi-gen.py'
+ ]
+diff --git a/scripts/qapi/commands.py b/scripts/qapi/commands.py
+index d629d2d97e..bf88bfc442 100644
+--- a/scripts/qapi/commands.py
++++ b/scripts/qapi/commands.py
+@@ -355,6 +355,7 @@ def visit_begin(self, schema: QAPISchema) -> None:
+ #include "qemu/osdep.h"
+ #include "%(prefix)sqapi-commands.h"
+ #include "%(prefix)sqapi-init-commands.h"
++#include "%(prefix)sqapi-features.h"
  
- extern CompatPolicy compat_policy;
- 
--bool compat_policy_input_ok(unsigned special_features,
-+bool compat_policy_input_ok(uint64_t features,
-                             const CompatPolicy *policy,
-                             ErrorClass error_class,
-                             const char *kind, const char *name,
-diff --git a/include/qapi/qmp/dispatch.h b/include/qapi/qmp/dispatch.h
-index f2e956813a..e0ee1ad3ac 100644
---- a/include/qapi/qmp/dispatch.h
-+++ b/include/qapi/qmp/dispatch.h
-@@ -33,7 +33,7 @@ typedef struct QmpCommand
-     /* Runs in coroutine context if QCO_COROUTINE is set */
-     QmpCommandFunc *fn;
-     QmpCommandOptions options;
--    unsigned special_features;
-+    uint64_t features;
-     QTAILQ_ENTRY(QmpCommand) node;
-     bool enabled;
-     const char *disable_reason;
-@@ -43,7 +43,7 @@ typedef QTAILQ_HEAD(QmpCommandList, QmpCommand) QmpCommandList;
- 
- void qmp_register_command(QmpCommandList *cmds, const char *name,
-                           QmpCommandFunc *fn, QmpCommandOptions options,
--                          unsigned special_features);
-+                          uint64_t features);
- const QmpCommand *qmp_find_command(const QmpCommandList *cmds,
-                                    const char *name);
- void qmp_disable_command(QmpCommandList *cmds, const char *name,
-diff --git a/include/qapi/util.h b/include/qapi/util.h
-index b8254247b8..29bc4eb865 100644
---- a/include/qapi/util.h
-+++ b/include/qapi/util.h
-@@ -18,7 +18,7 @@ typedef enum {
- 
- typedef struct QEnumLookup {
-     const char *const *array;
--    const unsigned char *const special_features;
-+    const uint64_t *const features;
-     const int size;
- } QEnumLookup;
- 
-diff --git a/include/qapi/visitor-impl.h b/include/qapi/visitor-impl.h
-index 2badec5ba4..7beb0dbfa5 100644
---- a/include/qapi/visitor-impl.h
-+++ b/include/qapi/visitor-impl.h
-@@ -115,11 +115,11 @@ struct Visitor
- 
-     /* Optional */
-     bool (*policy_reject)(Visitor *v, const char *name,
--                          unsigned special_features, Error **errp);
-+                          uint64_t features, Error **errp);
- 
-     /* Optional */
-     bool (*policy_skip)(Visitor *v, const char *name,
--                        unsigned special_features);
-+                        uint64_t features);
- 
-     /* Must be set */
-     VisitorType type;
-diff --git a/include/qapi/visitor.h b/include/qapi/visitor.h
-index 27b85d4700..f6a9b0743f 100644
---- a/include/qapi/visitor.h
-+++ b/include/qapi/visitor.h
-@@ -463,29 +463,29 @@ bool visit_optional(Visitor *v, const char *name, bool *present);
- /*
-  * Should we reject member @name due to policy?
-  *
-- * @special_features is the member's special features encoded as a
-- * bitset of QapiSpecialFeature.
-+ * @features is the member's special features encoded as a
-+ * bitset of QapiFeature.
-  *
-  * @name must not be NULL.  This function is only useful between
-  * visit_start_struct() and visit_end_struct(), since only objects
-  * have deprecated members.
-  */
- bool visit_policy_reject(Visitor *v, const char *name,
--                         unsigned special_features, Error **errp);
-+                         uint64_t features, Error **errp);
- 
- /*
-  *
-  * Should we skip member @name due to policy?
-  *
-- * @special_features is the member's special features encoded as a
-- * bitset of QapiSpecialFeature.
-+ * @features is the member's special features encoded as a
-+ * bitset of QapiFeature.
-  *
-  * @name must not be NULL.  This function is only useful between
-  * visit_start_struct() and visit_end_struct(), since only objects
-  * have deprecated members.
-  */
- bool visit_policy_skip(Visitor *v, const char *name,
--                       unsigned special_features);
-+                       uint64_t features);
- 
- /*
-  * Set policy for handling deprecated management interfaces.
-diff --git a/qapi/qapi-forward-visitor.c b/qapi/qapi-forward-visitor.c
-index e36d9bc9ba..6e9a784a9f 100644
---- a/qapi/qapi-forward-visitor.c
-+++ b/qapi/qapi-forward-visitor.c
-@@ -246,7 +246,7 @@ static void forward_field_optional(Visitor *v, const char *name, bool *present)
- }
- 
- static bool forward_field_policy_reject(Visitor *v, const char *name,
--                                        unsigned special_features,
-+                                        uint64_t features,
-                                         Error **errp)
+ void %(c_prefix)sqmp_init_marshal(QmpCommandList *cmds)
  {
-     ForwardFieldVisitor *ffv = to_ffv(v);
-@@ -254,18 +254,18 @@ static bool forward_field_policy_reject(Visitor *v, const char *name,
-     if (!forward_field_translate_name(ffv, &name, errp)) {
-         return true;
-     }
--    return visit_policy_reject(ffv->target, name, special_features, errp);
-+    return visit_policy_reject(ffv->target, name, features, errp);
- }
+diff --git a/scripts/qapi/features.py b/scripts/qapi/features.py
+new file mode 100644
+index 0000000000..f32f9fe5f4
+--- /dev/null
++++ b/scripts/qapi/features.py
+@@ -0,0 +1,51 @@
++"""
++QAPI features generator
++
++Copyright 2024 Red Hat
++
++This work is licensed under the terms of the GNU GPL, version 2.
++# See the COPYING file in the top-level directory.
++"""
++
++from typing import Dict
++
++from .common import c_enum_const, c_name
++from .gen import QAPISchemaMonolithicCVisitor
++from .schema import (
++    QAPISchema,
++    QAPISchemaFeature,
++)
++
++
++class QAPISchemaGenFeatureVisitor(QAPISchemaMonolithicCVisitor):
++
++    def __init__(self, prefix: str):
++        super().__init__(
++            prefix, 'qapi-features',
++            ' * Schema-defined QAPI features',
++            __doc__)
++
++        self.features: Dict[str, QAPISchemaFeature] = {}
++
++    def visit_begin(self, schema: QAPISchema) -> None:
++        self.features = schema.features()
++        self._genh.add("#include \"qapi/util.h\"\n\n")
++
++    def visit_end(self) -> None:
++        self._genh.add("typedef enum {\n")
++        for f in self.features:
++            self._genh.add(f"    {c_enum_const('qapi_feature', f.name)}")
++            if f.name in QAPISchemaFeature.SPECIAL_NAMES:
++                self._genh.add(f" = {c_enum_const('qapi', f.name)},\n")
++            else:
++                self._genh.add(",\n")
++
++        self._genh.add("} " + c_name('QapiFeature') + ";\n")
++
++
++def gen_features(schema: QAPISchema,
++                 output_dir: str,
++                 prefix: str) -> None:
++    vis = QAPISchemaGenFeatureVisitor(prefix)
++    schema.visit(vis)
++    vis.write(output_dir)
+diff --git a/scripts/qapi/gen.py b/scripts/qapi/gen.py
+index b51f8d955e..d3c56d45c8 100644
+--- a/scripts/qapi/gen.py
++++ b/scripts/qapi/gen.py
+@@ -42,9 +42,9 @@
  
- static bool forward_field_policy_skip(Visitor *v, const char *name,
--                                      unsigned special_features)
-+                                      uint64_t features)
- {
-     ForwardFieldVisitor *ffv = to_ffv(v);
  
-     if (!forward_field_translate_name(ffv, &name, NULL)) {
-         return true;
-     }
--    return visit_policy_skip(ffv->target, name, special_features);
-+    return visit_policy_skip(ffv->target, name, features);
- }
+ def gen_features(features: Sequence[QAPISchemaFeature]) -> str:
+-    featenum = [f"1u << {c_enum_const('qapi', feat.name)}"
+-                for feat in features if feat.is_special()]
+-    return ' | '.join(featenum) or '0'
++    feats = [f"1u << {c_enum_const('qapi_feature', feat.name)}"
++             for feat in features]
++    return ' | '.join(feats) or '0'
  
- static void forward_field_complete(Visitor *v, void *opaque)
-diff --git a/qapi/qapi-util.c b/qapi/qapi-util.c
-index 65a7d18437..3d849fe034 100644
---- a/qapi/qapi-util.c
-+++ b/qapi/qapi-util.c
-@@ -37,19 +37,19 @@ static bool compat_policy_input_ok1(const char *adjective,
-     }
- }
  
--bool compat_policy_input_ok(unsigned special_features,
-+bool compat_policy_input_ok(uint64_t features,
-                             const CompatPolicy *policy,
-                             ErrorClass error_class,
-                             const char *kind, const char *name,
-                             Error **errp)
- {
--    if ((special_features & 1u << QAPI_DEPRECATED)
-+    if ((features & 1u << QAPI_DEPRECATED)
-         && !compat_policy_input_ok1("Deprecated",
-                                     policy->deprecated_input,
-                                     error_class, kind, name, errp)) {
-         return false;
-     }
--    if ((special_features & (1u << QAPI_UNSTABLE))
-+    if ((features & (1u << QAPI_UNSTABLE))
-         && !compat_policy_input_ok1("Unstable",
-                                     policy->unstable_input,
-                                     error_class, kind, name, errp)) {
-diff --git a/qapi/qapi-visit-core.c b/qapi/qapi-visit-core.c
-index 6c13510a2b..706c61e026 100644
---- a/qapi/qapi-visit-core.c
-+++ b/qapi/qapi-visit-core.c
-@@ -141,21 +141,21 @@ bool visit_optional(Visitor *v, const char *name, bool *present)
- }
+ class QAPIGen:
+diff --git a/scripts/qapi/main.py b/scripts/qapi/main.py
+index 316736b6a2..2b9a2c0c02 100644
+--- a/scripts/qapi/main.py
++++ b/scripts/qapi/main.py
+@@ -18,6 +18,7 @@
+ from .introspect import gen_introspect
+ from .schema import QAPISchema
+ from .types import gen_types
++from .features import gen_features
+ from .visit import gen_visit
  
- bool visit_policy_reject(Visitor *v, const char *name,
--                         unsigned special_features, Error **errp)
-+                         uint64_t features, Error **errp)
- {
-     trace_visit_policy_reject(v, name);
-     if (v->policy_reject) {
--        return v->policy_reject(v, name, special_features, errp);
-+        return v->policy_reject(v, name, features, errp);
-     }
-     return false;
- }
  
- bool visit_policy_skip(Visitor *v, const char *name,
--                       unsigned special_features)
-+                       uint64_t features)
- {
-     trace_visit_policy_skip(v, name);
-     if (v->policy_skip) {
--        return v->policy_skip(v, name, special_features);
-+        return v->policy_skip(v, name, features);
-     }
-     return false;
- }
-@@ -409,8 +409,8 @@ static bool input_type_enum(Visitor *v, const char *name, int *obj,
-         return false;
-     }
+@@ -49,6 +50,7 @@ def generate(schema_file: str,
  
--    if (lookup->special_features
--        && !compat_policy_input_ok(lookup->special_features[value],
-+    if (lookup->features
-+        && !compat_policy_input_ok(lookup->features[value],
-                                    &v->compat_policy,
-                                    ERROR_CLASS_GENERIC_ERROR,
-                                    "value", enum_str, errp)) {
-diff --git a/qapi/qmp-dispatch.c b/qapi/qmp-dispatch.c
-index 176b549473..d411eebf4e 100644
---- a/qapi/qmp-dispatch.c
-+++ b/qapi/qmp-dispatch.c
-@@ -173,7 +173,7 @@ QDict *coroutine_mixed_fn qmp_dispatch(const QmpCommandList *cmds, QObject *requ
-                   "The command %s has not been found", command);
-         goto out;
-     }
--    if (!compat_policy_input_ok(cmd->special_features, &compat_policy,
-+    if (!compat_policy_input_ok(cmd->features, &compat_policy,
-                                 ERROR_CLASS_COMMAND_NOT_FOUND,
-                                 "command", command, &err)) {
-         goto out;
-diff --git a/qapi/qmp-registry.c b/qapi/qmp-registry.c
-index 485bc5e6fc..bfcabec526 100644
---- a/qapi/qmp-registry.c
-+++ b/qapi/qmp-registry.c
-@@ -17,7 +17,7 @@
+     schema = QAPISchema(schema_file)
+     gen_types(schema, output_dir, prefix, builtins)
++    gen_features(schema, output_dir, prefix)
+     gen_visit(schema, output_dir, prefix, builtins)
+     gen_commands(schema, output_dir, prefix, gen_tracing)
+     gen_events(schema, output_dir, prefix)
+diff --git a/scripts/qapi/schema.py b/scripts/qapi/schema.py
+index e97c978d38..39c91af245 100644
+--- a/scripts/qapi/schema.py
++++ b/scripts/qapi/schema.py
+@@ -933,8 +933,11 @@ def connect_doc(self, doc: Optional[QAPIDoc]) -> None:
+ class QAPISchemaFeature(QAPISchemaMember):
+     role = 'feature'
  
- void qmp_register_command(QmpCommandList *cmds, const char *name,
-                           QmpCommandFunc *fn, QmpCommandOptions options,
--                          unsigned special_features)
-+                          uint64_t features)
- {
-     QmpCommand *cmd = g_malloc0(sizeof(*cmd));
++    # Features which are standardized across all schemas
++    SPECIAL_NAMES = ['deprecated', 'unstable']
++
+     def is_special(self) -> bool:
+-        return self.name in ('deprecated', 'unstable')
++        return self.name in QAPISchemaFeature.SPECIAL_NAMES
  
-@@ -28,7 +28,7 @@ void qmp_register_command(QmpCommandList *cmds, const char *name,
-     cmd->fn = fn;
-     cmd->enabled = true;
-     cmd->options = options;
--    cmd->special_features = special_features;
-+    cmd->features = features;
-     QTAILQ_INSERT_TAIL(cmds, cmd, node);
- }
  
-diff --git a/qapi/qobject-input-visitor.c b/qapi/qobject-input-visitor.c
-index f110a804b2..ff9c726de3 100644
---- a/qapi/qobject-input-visitor.c
-+++ b/qapi/qobject-input-visitor.c
-@@ -664,10 +664,10 @@ static void qobject_input_optional(Visitor *v, const char *name, bool *present)
- }
+ class QAPISchemaObjectTypeMember(QAPISchemaMember):
+@@ -1138,6 +1141,16 @@ def __init__(self, fname: str):
+         self._entity_list: List[QAPISchemaEntity] = []
+         self._entity_dict: Dict[str, QAPISchemaDefinition] = {}
+         self._module_dict: Dict[str, QAPISchemaModule] = OrderedDict()
++        # NB, values in the dict will identify the first encountered
++        #     usage of a named feature only
++        self._feature_dict: Dict[str, QAPISchemaFeature] = OrderedDict()
++
++        # All schemas get the names defined in the QapiSpecialFeature enum.
++        # Use of OrderedDict ensures they are emitted first when generating
++        # the enum definition, thus matching QapiSpecialFeature.
++        for f in QAPISchemaFeature.SPECIAL_NAMES:
++            self._feature_dict[f] = QAPISchemaFeature(f, None)
++
+         self._schema_dir = os.path.dirname(fname)
+         self._make_module(QAPISchemaModule.BUILTIN_MODULE_NAME)
+         self._make_module(fname)
+@@ -1147,6 +1160,9 @@ def __init__(self, fname: str):
+         self._def_exprs(exprs)
+         self.check()
  
- static bool qobject_input_policy_reject(Visitor *v, const char *name,
--                                        unsigned special_features,
-+                                        uint64_t features,
-                                         Error **errp)
- {
--    return !compat_policy_input_ok(special_features, &v->compat_policy,
-+    return !compat_policy_input_ok(features, &v->compat_policy,
-                                    ERROR_CLASS_GENERIC_ERROR,
-                                    "parameter", name, errp);
- }
-diff --git a/qapi/qobject-output-visitor.c b/qapi/qobject-output-visitor.c
-index 74770edd73..8902287caa 100644
---- a/qapi/qobject-output-visitor.c
-+++ b/qapi/qobject-output-visitor.c
-@@ -210,13 +210,13 @@ static bool qobject_output_type_null(Visitor *v, const char *name,
- }
++    def features(self) -> List[QAPISchemaFeature]:
++        return self._feature_dict.values()
++
+     def _def_entity(self, ent: QAPISchemaEntity) -> None:
+         self._entity_list.append(ent)
  
- static bool qobject_output_policy_skip(Visitor *v, const char *name,
--                                       unsigned special_features)
-+                                       uint64_t features)
- {
-     CompatPolicy *pol = &v->compat_policy;
+@@ -1258,6 +1274,12 @@ def _make_features(
+     ) -> List[QAPISchemaFeature]:
+         if features is None:
+             return []
++
++        for f in features:
++            feat = QAPISchemaFeature(f['name'], info)
++            if feat.name not in self._feature_dict:
++                self._feature_dict[feat.name] = feat
++
+         return [QAPISchemaFeature(f['name'], info,
+                                   QAPISchemaIfCond(f.get('if')))
+                 for f in features]
+@@ -1485,6 +1507,12 @@ def check(self) -> None:
+         for doc in self.docs:
+             doc.check()
  
--    return ((special_features & 1u << QAPI_DEPRECATED)
-+    return ((features & 1u << QAPI_DEPRECATED)
-             && pol->deprecated_output == COMPAT_POLICY_OUTPUT_HIDE)
--        || ((special_features & 1u << QAPI_UNSTABLE)
-+        || ((features & 1u << QAPI_UNSTABLE)
-             && pol->unstable_output == COMPAT_POLICY_OUTPUT_HIDE);
- }
- 
++        features = list(self._feature_dict.values())
++        if len(features) > 64:
++            raise QAPISemError(
++                features[64].info,
++                "Maximum of 64 schema features is permitted")
++
+     def visit(self, visitor: QAPISchemaVisitor) -> None:
+         visitor.visit_begin(self)
+         for mod in self._module_dict.values():
 diff --git a/scripts/qapi/types.py b/scripts/qapi/types.py
-index 0dd0b00ada..7bc3f8241f 100644
+index ade6b7a3d7..5294e5ea3b 100644
 --- a/scripts/qapi/types.py
 +++ b/scripts/qapi/types.py
-@@ -71,7 +71,7 @@ def gen_enum_lookup(name: str,
-     if feats:
-         ret += mcgen('''
-     },
--    .special_features = (const unsigned char[%(max_index)s]) {
-+    .features = (const uint64_t[%(max_index)s]) {
+@@ -308,11 +308,14 @@ def _begin_user_module(self, name: str) -> None:
+ #include "qapi/dealloc-visitor.h"
+ #include "%(types)s.h"
+ #include "%(visit)s.h"
++#include "%(prefix)sqapi-features.h"
  ''',
-                      max_index=max_index)
-         ret += feats
+-                                      types=types, visit=visit))
++                                      types=types, visit=visit,
++                                      prefix=self._prefix))
+         self._genh.preamble_add(mcgen('''
+ #include "qapi/qapi-builtin-types.h"
+-'''))
++''',
++                                      prefix=self._prefix))
+ 
+     def visit_begin(self, schema: QAPISchema) -> None:
+         # gen_object() is recursive, ensure it doesn't visit the empty type
+diff --git a/scripts/qapi/visit.py b/scripts/qapi/visit.py
+index 8dbf4ef1c3..2d678c281d 100644
+--- a/scripts/qapi/visit.py
++++ b/scripts/qapi/visit.py
+@@ -360,8 +360,9 @@ def _begin_user_module(self, name: str) -> None:
+ #include "qemu/osdep.h"
+ #include "qapi/error.h"
+ #include "%(visit)s.h"
++#include "%(prefix)sqapi-features.h"
+ ''',
+-                                      visit=visit))
++                                      visit=visit, prefix=self._prefix))
+         self._genh.preamble_add(mcgen('''
+ #include "qapi/qapi-builtin-visit.h"
+ #include "%(types)s.h"
+diff --git a/tests/meson.build b/tests/meson.build
+index 907a4c1c98..a4ede66d0d 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -16,6 +16,8 @@ test_qapi_outputs = [
+   'test-qapi-events-sub-sub-module.h',
+   'test-qapi-events.c',
+   'test-qapi-events.h',
++  'test-qapi-features.c',
++  'test-qapi-features.h',
+   'test-qapi-init-commands.c',
+   'test-qapi-init-commands.h',
+   'test-qapi-introspect.c',
+diff --git a/tests/qapi-schema/features-too-many.err b/tests/qapi-schema/features-too-many.err
+new file mode 100644
+index 0000000000..bbbd6e5202
+--- /dev/null
++++ b/tests/qapi-schema/features-too-many.err
+@@ -0,0 +1,2 @@
++features-too-many.json: In command 'go-fish':
++features-too-many.json:2: Maximum of 64 schema features is permitted
+diff --git a/tests/qapi-schema/features-too-many.json b/tests/qapi-schema/features-too-many.json
+new file mode 100644
+index 0000000000..aab0a0b5f1
+--- /dev/null
++++ b/tests/qapi-schema/features-too-many.json
+@@ -0,0 +1,13 @@
++# Max 64 features, with 2 specials, so 63rd custom is invalid
++{ 'command': 'go-fish',
++  'features': [
++      'f00', 'f01', 'f02', 'f03', 'f04', 'f05', 'f06', 'f07',
++      'f08', 'f09', 'f0a', 'f0b', 'f0c', 'f0d', 'f0e', 'f0f',
++      'f10', 'f11', 'f12', 'f13', 'f14', 'f15', 'f16', 'f17',
++      'f18', 'f19', 'f1a', 'f1b', 'f1c', 'f1d', 'f1e', 'f1f',
++      'f20', 'f21', 'f22', 'f23', 'f24', 'f25', 'f26', 'f27',
++      'f28', 'f29', 'f2a', 'f2b', 'f2c', 'f2d', 'f2e', 'f2f',
++      'f30', 'f31', 'f32', 'f33', 'f34', 'f35', 'f36', 'f37',
++      'f38', 'f39', 'f3a', 'f3b', 'f3c', 'f3d', 'f3e'
++  ]
++}
+diff --git a/tests/qapi-schema/features-too-many.out b/tests/qapi-schema/features-too-many.out
+new file mode 100644
+index 0000000000..e69de29bb2
+diff --git a/tests/qapi-schema/meson.build b/tests/qapi-schema/meson.build
+index 0f479d9317..9577178b6f 100644
+--- a/tests/qapi-schema/meson.build
++++ b/tests/qapi-schema/meson.build
+@@ -105,6 +105,7 @@ schemas = [
+   'event-case.json',
+   'event-member-invalid-dict.json',
+   'event-nest-struct.json',
++  'features-too-many.json',
+   'features-bad-type.json',
+   'features-deprecated-type.json',
+   'features-duplicate-name.json',
 -- 
 2.46.0
 
