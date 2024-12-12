@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 666769EFBD2
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Dec 2024 19:57:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D21609EFBC7
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Dec 2024 19:56:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tLoMW-00022Q-Fg; Thu, 12 Dec 2024 13:56:36 -0500
+	id 1tLoMa-0002W8-MB; Thu, 12 Dec 2024 13:56:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tLoMM-0001lG-9s
- for qemu-devel@nongnu.org; Thu, 12 Dec 2024 13:56:26 -0500
-Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tLoMU-0002Eu-31
+ for qemu-devel@nongnu.org; Thu, 12 Dec 2024 13:56:34 -0500
+Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tLoMF-0006sT-Nz
- for qemu-devel@nongnu.org; Thu, 12 Dec 2024 13:56:26 -0500
-Received: by mail-pf1-x42e.google.com with SMTP id
- d2e1a72fcca58-7242f559a9fso1142042b3a.1
- for <qemu-devel@nongnu.org>; Thu, 12 Dec 2024 10:56:19 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tLoMS-0006tc-BC
+ for qemu-devel@nongnu.org; Thu, 12 Dec 2024 13:56:33 -0500
+Received: by mail-pf1-x433.google.com with SMTP id
+ d2e1a72fcca58-725ce7b82cbso1113815b3a.0
+ for <qemu-devel@nongnu.org>; Thu, 12 Dec 2024 10:56:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734029777; x=1734634577; darn=nongnu.org;
+ d=linaro.org; s=google; t=1734029789; x=1734634589; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=8ZyQqmYchOy//62KNVupcJGjIjPSDBJu9hZW1p798Mo=;
- b=wW4EZLjpA/XS7xUkXEwiqmNJxjQyDmIL/rBzswpl79RB+XtSHDqIJ+umsj3X2/Fcf1
- DZM52W1Z33XTOz1/7T5NSekbjvCli/ybiZ3X5wApSD/dLNnIkJ7xXv0G3RCNtjjQYk21
- u4jtqCjcHi+xWvP3HzaE5cRmm0ig3V61sd0lp993pIMuYaX2cA0h9pzwu7LmKfWBrOSP
- Y/ckwbmLyegt6VBcNVVIu1dRNSDycFk/RZTkOubhcGkwRfAHN9C6YIxyRfFWrbSgit0B
- dWxGxNsbR/IIm5geFIU5S3FHxqq4OgIs0J/3KBOYXg3yuBrQRa7Z1bWwCsx9Nmsi3ISD
- 6ItA==
+ bh=NYC6oRELj+5ympYW3tq1E6/ibkizwxjQsKp5dy3fobw=;
+ b=TZ9lkeo+fvSzeBvkj0/7+BWR6LmVO6ibjtluFKm9u7lvZ1t/a6kEFJfPWehOtBQ1Nm
+ TAXj7R2RhpVVYDHyWY/xYoRikLJx1/7gmrJrT7BR71BtsDb1mwxSa6dhmA52bMfIAvlE
+ FJIamEuWK3/ZRGsoE/UmkoYuKQoPpHGTMZwRAP7qyxurjpnpYSsQhxR54GgMpNg0pVlg
+ LlppeWvOIQQC9JXXqfWAwNGnxMHEkJQspw/8YVCXAYcm8lz8ISIpQKEjI4FlV2QM5/6x
+ iTxuOgI8VVG2WYV89ZdvV5FGNjRM58BYev9JDkpaDgQqpI+iwm/CyUV6TRi813BqEkVB
+ thUw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734029777; x=1734634577;
+ d=1e100.net; s=20230601; t=1734029789; x=1734634589;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=8ZyQqmYchOy//62KNVupcJGjIjPSDBJu9hZW1p798Mo=;
- b=Qxn4SwuW1yTQEt0scZlURI94Ow02ZFVAb7h7L3vkczLZX5GgM3+iLXQ8IzMfb+nh/4
- /r+FILx8PlKV2sOKVD2F9VuHQPrFcfNuahGjZ0to4KfM7/syTuGH1KcIQbfsQvvQ1foA
- HguX65Hsra7cF3TFXnPrCQERLxIwyXmqtLMcZrqzBx3ZcIcuaZ2JX3GCA8aNPTnMIHK9
- hVJoTdiUH7A1miOVrsZwIyraXtofPk773yoZaj18ZyuCJazhPTm75PeT2ko7oKwPKHBp
- euMhcLqgEOv63rLHx2stQRqj7Fx1KuFONVA0qKEDRyAVrxIb0fT9xpUcAovRP5TU1xXO
- o4/A==
-X-Gm-Message-State: AOJu0YyLvAcmDvlzuoCVnurhOo323INUcd0MP2cSYHtYnCsZSJ2H0omX
- 8clobLy/VoR793XBAnDCuMhkySV1pwCA0SeZ4ECbdT3ABFszFa03CCPfE3xtVCJG/jOeQjs8B3I
- +
-X-Gm-Gg: ASbGncvDoPEyaBlRAfoGj0jniiR0oYeg8wlzpmsUpqv+oxELjWCCi6UjSRz2uzarHUZ
- udIDE3f+lbqfzqDkztm6jvtcGaeFjKDntWe3zwmiUiTs7UTJTUyQStNcjhLjjV63J0K+EjBAZO3
- LS4o4KNnAJUs7ggnmgMWDJmNI65jDLhJpsLVUvyOrQwSh6bCpy9wFFbIhbfgpqCbt+2BYB1WA0R
- 45lGvHg+QMg+DaEFixGCX69ffUA77qYxNHqLSB4vrAEIuZfB3ZKWijPdMorFQu55VEQS2pNoa2p
- JONNScblyAqrRZG+GxWV0Xg0nV7QRJo=
-X-Google-Smtp-Source: AGHT+IHM57byOq8DidLWbTmPN2WQBgsCoNziLeUwN5Tnn5M4sqXtv1HJMh32t/398Ma0glSbYRgoiw==
-X-Received: by 2002:a05:6a00:2ea7:b0:725:e309:7110 with SMTP id
- d2e1a72fcca58-72906980ae5mr1767868b3a.5.1734029777632; 
- Thu, 12 Dec 2024 10:56:17 -0800 (PST)
+ bh=NYC6oRELj+5ympYW3tq1E6/ibkizwxjQsKp5dy3fobw=;
+ b=iLgf0sHNaiwvv4pol1W+Jet9ImOpZMrvoCb9sYEYtnTQV39KeQwPKUB4FSaCeUiEeS
+ mh+P4tzkTqcXjc/l1ueeQ2otZu/p5Efq2eNM29n/4PYI1AC98dqS2pOtrBx/x7/2v0tr
+ /U2IhFyc3TskQCxXaUsZVjejiagP7Uss/I9vfGsaZkwjuTxc/MW72S1PDDVXx9L0N2lS
+ +JQbPrdpob8nTyoUa+HECzKuzJz/aqDo+PcsGwSQ/KjYq/x3DgQjkwzvb4QGk6hclBKp
+ FXISgeXIwJdbGCoERjeQLucTuaPrjMcJBwSWb6iW2Mb+NnYJZGlkc1pB57mFOc3a/sk/
+ Xm9g==
+X-Gm-Message-State: AOJu0YyFgXB5eKZy+wnnwayadthzB+uyJ+/WZ3EaHXNyC6KPaKcUPjEz
+ InYiXXtpv70fcgrs0FjBGTk4uqD2BvYTrwFtV4vsD4DTlPxwTOCcrJm8M4utKEvvUpphURE7V+R
+ 7
+X-Gm-Gg: ASbGncvq3F/7jU8psoEXqjvuRzX/fEaMkwTa+BQSMvC0ZCXuzCkrUlHhsSReyIfslH0
+ 1+HNwOf1IZ9WxVsiJK8dcZ/tyQ+3FAXNtBsQyyCwLxmkTMnlWDHRhYDrXq3CMSAp8Pi6A/5EEzn
+ 14JWAQ689I+9HSMq5E3H3TtweqsVHzcBnijcSF6TpJ3zlMEjpFgZ+ditj1xmcbnaG6F7QlBQqzx
+ Q+j+25yI3F03dMS/q8kv90y0rG/NSg4rAZ3D+9diZMy9svrxphXPl11nw64moSC2NZM4kEX8cac
+ 2LNaCyjhFIN63IApN13OI1HwqUnOnDY=
+X-Google-Smtp-Source: AGHT+IFkU2xkXlA8Y2CzEYBoSsiW8RBj7199k7WmkhLHeDk0U2aEGg9++ya8Sf3VjW0R/4DAYuNf1w==
+X-Received: by 2002:a05:6a00:999:b0:725:cfd0:dffa with SMTP id
+ d2e1a72fcca58-72906a01c5emr2101090b3a.5.1734029788724; 
+ Thu, 12 Dec 2024 10:56:28 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-72904a0b171sm746922b3a.172.2024.12.12.10.56.14
+ d2e1a72fcca58-725ceb7c00asm9859657b3a.95.2024.12.12.10.56.25
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 12 Dec 2024 10:56:17 -0800 (PST)
+ Thu, 12 Dec 2024 10:56:28 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 13/18] accel/tcg: Move user-related declarations out of
- 'exec/cpu-all.h' (3/4)
-Date: Thu, 12 Dec 2024 19:53:36 +0100
-Message-ID: <20241212185341.2857-14-philmd@linaro.org>
+Subject: [PATCH 14/18] accel/tcg: Move user-related declarations out of
+ 'exec/cpu-all.h' (4/4)
+Date: Thu, 12 Dec 2024 19:53:37 +0100
+Message-ID: <20241212185341.2857-15-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241212185341.2857-1-philmd@linaro.org>
 References: <20241212185341.2857-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
- envelope-from=philmd@linaro.org; helo=mail-pf1-x42e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
+ envelope-from=philmd@linaro.org; helo=mail-pf1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -104,127 +104,138 @@ emulation from "exec/cpu-all.h" to "user/page-protection.h".
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- bsd-user/qemu.h                |  1 +
- include/exec/cpu-all.h         | 12 ------------
- include/user/page-protection.h | 12 ++++++++++++
- linux-user/qemu.h              |  1 +
- target/arm/tcg/sve_helper.c    |  3 +++
- target/hppa/op_helper.c        |  3 +++
- target/sparc/ldst_helper.c     |  3 +++
- 7 files changed, 23 insertions(+), 12 deletions(-)
+ include/exec/cpu-all.h         | 6 ------
+ include/user/page-protection.h | 2 ++
+ accel/tcg/tb-maint.c           | 3 +++
+ bsd-user/signal.c              | 1 +
+ cpu-target.c                   | 1 +
+ linux-user/arm/cpu_loop.c      | 1 +
+ linux-user/signal.c            | 1 +
+ target/arm/tcg/helper-a64.c    | 3 +++
+ target/s390x/tcg/mem_helper.c  | 4 +++-
+ 9 files changed, 15 insertions(+), 7 deletions(-)
 
-diff --git a/bsd-user/qemu.h b/bsd-user/qemu.h
-index 3736c417860..04faee459df 100644
---- a/bsd-user/qemu.h
-+++ b/bsd-user/qemu.h
-@@ -26,6 +26,7 @@
- #include "exec/exec-all.h"
- 
- #include "user/abitypes.h"
-+#include "user/page-protection.h"
- 
- extern char **environ;
- 
 diff --git a/include/exec/cpu-all.h b/include/exec/cpu-all.h
-index 86cd40020c9..73b11f58abb 100644
+index 73b11f58abb..f7eea33b101 100644
 --- a/include/exec/cpu-all.h
 +++ b/include/exec/cpu-all.h
-@@ -130,18 +130,6 @@ extern const TargetPageBits target_page;
+@@ -126,12 +126,6 @@ extern const TargetPageBits target_page;
  
- int page_get_flags(target_ulong address);
+ #define TARGET_PAGE_ALIGN(addr) ROUND_UP((addr), TARGET_PAGE_SIZE)
  
--/**
-- * page_check_range
-- * @start: first byte of range
-- * @len: length of range
-- * @flags: flags required for each page
-- *
-- * Return true if every page in [@start, @start+@len) has @flags set.
-- * Return false if any page is unmapped.  Thus testing flags == 0 is
-- * equivalent to testing for flags == PAGE_VALID.
-- */
--bool page_check_range(target_ulong start, target_ulong last, int flags);
+-#if defined(CONFIG_USER_ONLY)
 -
- #endif
- 
+-int page_get_flags(target_ulong address);
+-
+-#endif
+-
  CPUArchState *cpu_copy(CPUArchState *env);
+ 
+ /* Flags for use in ENV->INTERRUPT_PENDING.
 diff --git a/include/user/page-protection.h b/include/user/page-protection.h
-index d21fab1aaf9..bdd98a37de1 100644
+index bdd98a37de1..51daa186480 100644
 --- a/include/user/page-protection.h
 +++ b/include/user/page-protection.h
-@@ -34,6 +34,18 @@ void page_set_flags(target_ulong start, target_ulong last, int flags);
+@@ -19,6 +19,8 @@
+ void page_protect(tb_page_addr_t page_addr);
+ int page_unprotect(tb_page_addr_t address, uintptr_t pc);
  
- void page_reset_target_data(target_ulong start, target_ulong last);
- 
-+/**
-+ * page_check_range
-+ * @start: first byte of range
-+ * @len: length of range
-+ * @flags: flags required for each page
-+ *
-+ * Return true if every page in [@start, @start+@len) has @flags set.
-+ * Return false if any page is unmapped.  Thus testing flags == 0 is
-+ * equivalent to testing for flags == PAGE_VALID.
-+ */
-+bool page_check_range(target_ulong start, target_ulong last, int flags);
++int page_get_flags(target_ulong address);
 +
  /**
-  * page_check_range_empty:
+  * page_set_flags:
   * @start: first byte of range
-diff --git a/linux-user/qemu.h b/linux-user/qemu.h
-index 67bc81b1499..5f007501518 100644
---- a/linux-user/qemu.h
-+++ b/linux-user/qemu.h
-@@ -5,6 +5,7 @@
- #include "exec/cpu_ldst.h"
- 
- #include "user/abitypes.h"
-+#include "user/page-protection.h"
- 
- #include "syscall_defs.h"
- #include "target_syscall.h"
-diff --git a/target/arm/tcg/sve_helper.c b/target/arm/tcg/sve_helper.c
-index 904296705c6..5a543b8dbc0 100644
---- a/target/arm/tcg/sve_helper.c
-+++ b/target/arm/tcg/sve_helper.c
-@@ -29,6 +29,9 @@
- #include "vec_internal.h"
- #include "sve_ldst_internal.h"
- #include "hw/core/tcg-cpu-ops.h"
+diff --git a/accel/tcg/tb-maint.c b/accel/tcg/tb-maint.c
+index 8e272cf790f..3f1bebf6ab5 100644
+--- a/accel/tcg/tb-maint.c
++++ b/accel/tcg/tb-maint.c
+@@ -33,6 +33,9 @@
+ #include "tb-internal.h"
+ #include "internal-common.h"
+ #include "internal-target.h"
 +#ifdef CONFIG_USER_ONLY
 +#include "user/page-protection.h"
 +#endif
  
  
- /* Return a value for NZCV as per the ARM PredTest pseudofunction.
-diff --git a/target/hppa/op_helper.c b/target/hppa/op_helper.c
-index 744325969f5..beb8f88799e 100644
---- a/target/hppa/op_helper.c
-+++ b/target/hppa/op_helper.c
-@@ -25,6 +25,9 @@
- #include "exec/cpu_ldst.h"
- #include "qemu/timer.h"
- #include "trace.h"
-+#ifdef CONFIG_USER_ONLY
-+#include "user/page-protection.h"
-+#endif
- 
- G_NORETURN void HELPER(excp)(CPUHPPAState *env, int excp)
- {
-diff --git a/target/sparc/ldst_helper.c b/target/sparc/ldst_helper.c
-index d92c9f15934..4c54e456553 100644
---- a/target/sparc/ldst_helper.c
-+++ b/target/sparc/ldst_helper.c
-@@ -26,6 +26,9 @@
- #include "exec/exec-all.h"
+ /* List iterators for lists of tagged pointers in TranslationBlock. */
+diff --git a/bsd-user/signal.c b/bsd-user/signal.c
+index da49b9bffc1..edbcd461bfa 100644
+--- a/bsd-user/signal.c
++++ b/bsd-user/signal.c
+@@ -22,6 +22,7 @@
+ #include "qemu/log.h"
+ #include "qemu.h"
  #include "exec/page-protection.h"
- #include "exec/cpu_ldst.h"
++#include "user/page-protection.h"
+ #include "user/tswap-target.h"
+ #include "gdbstub/user.h"
+ #include "signal-common.h"
+diff --git a/cpu-target.c b/cpu-target.c
+index 4a88f1c6db8..69a49202110 100644
+--- a/cpu-target.c
++++ b/cpu-target.c
+@@ -29,6 +29,7 @@
+ #include "migration/vmstate.h"
+ #ifdef CONFIG_USER_ONLY
+ #include "qemu.h"
++#include "user/page-protection.h"
+ #else
+ #include "hw/core/sysemu-cpu-ops.h"
+ #include "exec/address-spaces.h"
+diff --git a/linux-user/arm/cpu_loop.c b/linux-user/arm/cpu_loop.c
+index ec665862d93..709f718a99d 100644
+--- a/linux-user/arm/cpu_loop.c
++++ b/linux-user/arm/cpu_loop.c
+@@ -25,6 +25,7 @@
+ #include "signal-common.h"
+ #include "semihosting/common-semi.h"
+ #include "exec/page-protection.h"
++#include "user/page-protection.h"
+ #include "target/arm/syndrome.h"
+ 
+ #define get_user_code_u32(x, gaddr, env)                \
+diff --git a/linux-user/signal.c b/linux-user/signal.c
+index 9b6d772882d..a191e9b26f2 100644
+--- a/linux-user/signal.c
++++ b/linux-user/signal.c
+@@ -33,6 +33,7 @@
+ #include "trace.h"
+ #include "signal-common.h"
+ #include "host-signal.h"
++#include "user/page-protection.h"
+ #include "user/safe-syscall.h"
+ #include "tcg/tcg.h"
+ 
+diff --git a/target/arm/tcg/helper-a64.c b/target/arm/tcg/helper-a64.c
+index 8f42a28d07b..bc144688dd5 100644
+--- a/target/arm/tcg/helper-a64.c
++++ b/target/arm/tcg/helper-a64.c
+@@ -34,6 +34,9 @@
+ #include "qemu/atomic128.h"
+ #include "fpu/softfloat.h"
+ #include <zlib.h> /* for crc32 */
 +#ifdef CONFIG_USER_ONLY
 +#include "user/page-protection.h"
 +#endif
- #include "asi.h"
  
- //#define DEBUG_MMU
+ /* C2.4.7 Multiply and divide */
+ /* special cases for 0 and LLONG_MIN are mandated by the standard */
+diff --git a/target/s390x/tcg/mem_helper.c b/target/s390x/tcg/mem_helper.c
+index 0e12dae2aa8..307388e5bd1 100644
+--- a/target/s390x/tcg/mem_helper.c
++++ b/target/s390x/tcg/mem_helper.c
+@@ -31,7 +31,9 @@
+ #include "qemu/int128.h"
+ #include "qemu/atomic128.h"
+ 
+-#if !defined(CONFIG_USER_ONLY)
++#if defined(CONFIG_USER_ONLY)
++#include "user/page-protection.h"
++#else
+ #include "hw/s390x/storage-keys.h"
+ #include "hw/boards.h"
+ #endif
 -- 
 2.45.2
 
