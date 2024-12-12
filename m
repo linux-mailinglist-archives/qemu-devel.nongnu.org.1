@@ -2,87 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F7519EE16C
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Dec 2024 09:37:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E80A9EE184
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Dec 2024 09:42:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tLegU-0007Tm-3h; Thu, 12 Dec 2024 03:36:34 -0500
+	id 1tLel6-0004Oh-SY; Thu, 12 Dec 2024 03:41:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1tLegC-0006tK-O5
- for qemu-devel@nongnu.org; Thu, 12 Dec 2024 03:36:20 -0500
-Received: from mail-pg1-x52f.google.com ([2607:f8b0:4864:20::52f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1tLeg8-0005et-GJ
- for qemu-devel@nongnu.org; Thu, 12 Dec 2024 03:36:13 -0500
-Received: by mail-pg1-x52f.google.com with SMTP id
- 41be03b00d2f7-7fd45005a09so241177a12.2
- for <qemu-devel@nongnu.org>; Thu, 12 Dec 2024 00:36:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1733992567; x=1734597367; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=NaApFk3HAaCXgWS7Qs9/zC6MeE/OKY1N8pZvwvf4rQY=;
- b=Gact2AcGYk3uek+BpLhkK7s1Zbn5F9wbxDeR+GHs9d7ymi+7nDex6HAnNHLjjwLSY/
- 87/oUkJjWMc6+ut2XTfCq/PDnFBUqEM68JYXmi7DbZrN36HHiFn4xXonrqkxs0czvCbm
- 8J9pyibIMBfo1Coqh/8ikx0FAyQdvACOcuvLLeoIyt+O1hVaHqtLK3n2E7w1alx6sp1f
- FVvogxCgjxOvbrJaXxWbeCnmh/vMohVAVWNsLOQ4T4uGGvkBNdIeiEzA+kK8x7GHyngZ
- yicsizdVqvslfVVMgFKLY9AjCgkKcZoZh3HTgaMkF6ANPkyoRPIqsBuy9AcS2uJfQCUc
- W3uQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733992567; x=1734597367;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=NaApFk3HAaCXgWS7Qs9/zC6MeE/OKY1N8pZvwvf4rQY=;
- b=ZHGsymYUfCQhm8m6UcRawrefQA6d9M6SxWZPhr7qtrPiGpGB0qtFlptpVU8wBf1lzd
- gdBRXqWA2pJWZ1wqqb2Bg7Q/jVhSlAj0blmuG7ZWQgni/MNY19TN9EF23/ebDz4W15sE
- 5uasK+imZ/ecX5Z0SrVWpxgIbbmGHYZUV3V91MTPuIUTSG78/3N+va5MRk1todjLoebo
- U9gfjJqXXZAaoBmx9fz2Azl26ksb/DS82+wUef4MmsOxfLXX5kHT5Z3tS+1uTRD1mydV
- dpeMScDXWHjCi1TINvHWTeDIIUPNivD1S//KNlh7ieP/ZExZUz6t3YwBDRKxBfyN1pQw
- CErg==
-X-Gm-Message-State: AOJu0YxLjpH70zBhpMmJGuLqsDoJe0AEKcYnSMtSRBxsBCWqnyfV0MN4
- Hns+ApXjQK9OTcDviWXcoPtvVnK+hg2h6kAidZrCQd/XT5UQCDomIQaHrQ==
-X-Gm-Gg: ASbGncuvEoyu4668Gb/VqK4GstE137YjxW4zzruqJPlzR8MFrVCu6dAxNUAzAGzSMtT
- 2hg3+394Ds5Um4hxzqvKkqiHKVG0sPhP8PZLwV7s55j8mZ0xeaJsvucdE8IwFSxDYqdHkZrh/Ry
- LDw3QGyAQL7ol6gGX/n7wNIUgKPR/Z4V+IAqcDe/X3fCRhfliobZnngfC/IPSABsazJP0ZQ3aJF
- dpSvlOSMS+Qt94/ilKcHRyfY7MjYq0XD80sH0cMPr8fGjil5EW7QRBFEY0=
-X-Google-Smtp-Source: AGHT+IF4TqI4fcyqbkyEuRC4eLKvxegCoUwYBV3Mwew6PTXk5uDXEIgP6gtmSfuTyKCdCvX4iCN9Tg==
-X-Received: by 2002:a17:90b:4f86:b0:2ef:31a9:95c6 with SMTP id
- 98e67ed59e1d1-2f139293c58mr4954099a91.14.1733992567474; 
- Thu, 12 Dec 2024 00:36:07 -0800 (PST)
-Received: from wheely.local0.net ([1.146.48.169])
- by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2f142dae788sm714624a91.12.2024.12.12.00.36.02
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 12 Dec 2024 00:36:07 -0800 (PST)
-From: Nicholas Piggin <npiggin@gmail.com>
+ (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
+ id 1tLel4-0004OK-S7
+ for qemu-devel@nongnu.org; Thu, 12 Dec 2024 03:41:19 -0500
+Received: from mgamail.intel.com ([198.175.65.20])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
+ id 1tLel1-0007zO-Uk
+ for qemu-devel@nongnu.org; Thu, 12 Dec 2024 03:41:18 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1733992876; x=1765528876;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=r49JnXnEeu+UashthEgPaZnm39B8LIbPQuYUUMQ+vWw=;
+ b=K9SlOh8XglDQlqAfWKY1kbCkMrCUMvjj9c8T1WSeJGV96xKbUNS5wAGF
+ CtfgmKXAbnMRoeL94S6jxbtlmu7bP3hn52URYkIicGqX1hg2v0JTBwyE1
+ beeFFSYB5F0CY/D9OEnvQzq+y6Tzz+SMZ5RYRox5BsA7s12JxY52/LObQ
+ Rp+4ZbpWgMbfbeaUCrt1r6GluNlNa/2MBU9BuSxpUH0dW0enb8LfUjZ0i
+ SUvJKo772Kvv2QIxOTzUILC/gbfVRhMgSf5mlOg8AOIhXS1Kev5D2uwF1
+ Arplz9/sEbRKhKm50B2c1a3eU7yY1Ebn0uuqWKkIfmNS5vI2t13czI5tm A==;
+X-CSE-ConnectionGUID: vRl9oE34SY2Ti6ak/5TkUw==
+X-CSE-MsgGUID: /fEvfJMBR3CEruUQBJRL6g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11283"; a="34124691"
+X-IronPort-AV: E=Sophos;i="6.12,228,1728975600"; d="scan'208";a="34124691"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+ by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 12 Dec 2024 00:41:11 -0800
+X-CSE-ConnectionGUID: SH3tnL6xTOush1C8VR1Hrw==
+X-CSE-MsgGUID: IHAbTSRWQEGIOA72y//gEw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="119406914"
+Received: from spr-s2600bt.bj.intel.com ([10.240.192.127])
+ by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 12 Dec 2024 00:41:08 -0800
+From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 To: qemu-devel@nongnu.org
-Cc: Nicholas Piggin <npiggin@gmail.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Fabiano Rosas <farosas@suse.de>, Laurent Vivier <lvivier@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Dmitry Fleytman <dmitry.fleytman@gmail.com>,
- Akihiko Odaki <akihiko.odaki@daynix.com>,
- Sriram Yagnaraman <sriram.yagnaraman@ericsson.com>
-Subject: [PATCH 8/8] qtest/xhci: add a test for TR NOOP commands
-Date: Thu, 12 Dec 2024 18:35:01 +1000
-Message-ID: <20241212083502.1439033-9-npiggin@gmail.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20241212083502.1439033-1-npiggin@gmail.com>
-References: <20241212083502.1439033-1-npiggin@gmail.com>
+Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
+ mst@redhat.com, peterx@redhat.com, jasowang@redhat.com, jgg@nvidia.com,
+ nicolinc@nvidia.com, joao.m.martins@oracle.com,
+ clement.mathieu--drif@eviden.com, kevin.tian@intel.com, yi.l.liu@intel.com,
+ chao.p.peng@intel.com, Zhenzhong Duan <zhenzhong.duan@intel.com>
+Subject: [PATCH v6 00/20] intel_iommu: Enable stage-1 translation for emulated
+ device
+Date: Thu, 12 Dec 2024 16:37:37 +0800
+Message-Id: <20241212083757.605022-1-zhenzhong.duan@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52f;
- envelope-from=npiggin@gmail.com; helo=mail-pg1-x52f.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Received-SPF: pass client-ip=198.175.65.20;
+ envelope-from=zhenzhong.duan@intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -48
+X-Spam_score: -4.9
+X-Spam_bar: ----
+X-Spam_report: (-4.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.472,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -99,82 +84,136 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Run some TR NOOP commands through the transfer ring.
+Hi,
 
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
- tests/qtest/usb-hcd-xhci-test.c | 41 +++++++++++++++++++++++++++++++--
- 1 file changed, 39 insertions(+), 2 deletions(-)
+Per Jason Wang's suggestion, iommufd nesting series[1] is split into
+"Enable stage-1 translation for emulated device" series and
+"Enable stage-1 translation for passthrough device" series.
 
-diff --git a/tests/qtest/usb-hcd-xhci-test.c b/tests/qtest/usb-hcd-xhci-test.c
-index 8733299e52f..93614e55461 100644
---- a/tests/qtest/usb-hcd-xhci-test.c
-+++ b/tests/qtest/usb-hcd-xhci-test.c
-@@ -326,7 +326,8 @@ static void set_link_trb(XHCIQState *s, uint64_t ring, uint32_t c,
- static void submit_cr_trb(XHCIQState *s, XHCITRB *trb)
- {
-     XHCITRB t;
--    uint64_t cr_addr = s->command_ring + s->cr_trb_idx * sizeof(*trb);
-+    uint64_t cr_addr = s->command_ring +
-+                       s->cr_trb_idx * sizeof(*trb);
- 
-     trb->control |= s->cr_trb_c; /* C */
- 
-@@ -345,9 +346,35 @@ static void submit_cr_trb(XHCIQState *s, XHCITRB *trb)
-     xhci_db_writel(s, 0, 0); /* doorbell 0 */
- }
- 
-+static void submit_tr_trb(XHCIQState *s, int slot, XHCITRB *trb)
-+{
-+    XHCITRB t;
-+    uint64_t tr_addr = s->slots[slot].transfer_ring +
-+                       s->slots[slot].tr_trb_idx * sizeof(*trb);
-+
-+    trb->control |= s->slots[slot].tr_trb_c; /* C */
-+
-+    t.parameter = cpu_to_le64(trb->parameter);
-+    t.status = cpu_to_le32(trb->status);
-+    t.control = cpu_to_le32(trb->control);
-+
-+    qtest_memwrite(s->parent->qts, tr_addr, &t, sizeof(t));
-+    s->slots[slot].tr_trb_idx++;
-+    /* Last entry contains the link, so wrap back */
-+    if (s->slots[slot].tr_trb_idx == s->slots[slot].tr_trb_entries - 1) {
-+        set_link_trb(s, s->slots[slot].transfer_ring,
-+                        s->slots[slot].tr_trb_c,
-+                        s->slots[slot].tr_trb_entries);
-+        s->slots[slot].tr_trb_idx = 0;
-+        s->slots[slot].tr_trb_c ^= 1;
-+    }
-+    xhci_db_writel(s, slot, 1); /* doorbell slot, EP0 target */
-+}
-+
- /*
-  * This test brings up an endpoint and runs some noops through its command
-- * ring and gets responses back on the event ring.
-+ * ring and gets responses back on the event ring, then brings up a device
-+ * context and runs some noops through its transfer ring.
-  *
-  * This could be librified in future (like AHCI0 to have a way to bring up
-  * an endpoint to test device protocols.
-@@ -501,6 +528,16 @@ static void pci_xhci_stress_rings(void)
- 
-     /* XXX: Could check EP state is running */
- 
-+    /* Wrap the transfer ring a few times */
-+    for (i = 0; i < 100; i++) {
-+        /* Issue a transfer ring slot 0 noop */
-+        memset(&trb, 0, sizeof(trb));
-+        trb.control |= TR_NOOP << TRB_TYPE_SHIFT;
-+        trb.control |= TRB_TR_IOC;
-+        submit_tr_trb(s, slotid, &trb);
-+        wait_event_trb(s, &trb);
-+    }
-+
-     /* Shut it down */
-     qpci_msix_disable(s->dev);
- 
+PATCH1-5:  Some preparing work before support stage-1 translation
+PATCH6-9:  Implement stage-1 translation for emulated device
+PATCH10-14:Emulate iotlb invalidation of stage-1 mapping
+PATCH15-17:Set default aw_bits to 48 in all modes, update DMAR table
+PATCH18-19:Expose scalable mode "x-flts" and "fs1gp" to cmdline
+PATCH20:   Add qtest
+
+Note in spec revision 3.4, it renames "First-level" to "First-stage",
+"Second-level" to "Second-stage". But the scalable mode was added
+before that change. So we keep old favor using First-level/fl/Second-level/sl
+in code but change to use stage-1/stage-2 in commit log.
+But keep in mind First-level/fl/stage-1 all have same meaning,
+same for Second-level/sl/stage-2.
+
+Test done:
+- two VFIO devices hotplug/unplug in legacy and scalable mode with x-flts=on/off
+- vhost with caching-mode=off
+- windows 2019 VM bootup
+
+Qemu code can be found at [2]
+The whole nesting series can be found at [3]
+
+[1] https://lists.gnu.org/archive/html/qemu-devel/2024-01/msg02740.html
+[2] https://github.com/yiliu1765/qemu/tree/zhenzhong/iommufd_stage1_emu_v6
+[3] https://github.com/yiliu1765/qemu/tree/zhenzhong/iommufd_nesting_rfcv2
+
+Thanks
+Zhenzhong
+
+Changelog:
+v6:
+- s/"Legacy mode: not support x-flts=on"/"x-flts is only available in scalable mode" (Clement)
+- drop scalable modern mode concept totally (Jason, Clement)
+
+v5:
+- add new patch8 to check if translation result fall in ir range (Liuyi)
+- remove unused parameter ih from vtd_piotlb_page_invalidate() (Liuyi)
+- define target as pointer in vtd_find_as_by_sid_and_pasid() (Liuyi)
+- s/x-fls/x-flts (Liuyi)
+- set default aw_bits to 48 for all modes (jason)
+- fix return value of vtd_iova_to_flpte()
+- merge piotlb inv notify to vtd_iotlb_page_invalidate_notify(),
+  no functional change
+
+v4:
+- s/Scalable legacy/Scalable in logging (Clement)
+- test the mode first to make the intention clearer (Clement)
+- s/x-cap-fs1gp/fs1gp and s/VTD_FL_RW_MASK/VTD_FL_RW (Jason)
+- introduce x-fls instead of updating x-scalable-mode (Jason)
+- Refine comment log in patch4 (jason)
+- s/tansltion/translation/ and s/VTD_SPTE_RSVD_LEN/VTD_FPTE_RSVD_LEN/ (Liuyi)
+- update the order and naming of VTD_FPTE_PAGE_* (Liuyi)
+
+v3:
+- drop unnecessary !(s->ecap & VTD_ECAP_SMTS) (Clement)
+- simplify calculation of return value for vtd_iova_fl_check_canonical() (Liuyi)
+- make A/D bit setting atomic (Liuyi)
+- refine error msg (Clement, Liuyi)
+
+v2:
+- check ecap/cap bits instead of s->scalable_modern in vtd_pe_type_check() (Clement)
+- declare VTD_ECAP_FLTS/FS1GP after the feature is implemented (Clement)
+- define VTD_INV_DESC_PIOTLB_G (Clement)
+- make error msg consistent in vtd_process_piotlb_desc() (Clement)
+- refine commit log in patch16 (Clement)
+- add VTD_ECAP_IR to ECAP_MODERN_FIXED1 (Clement)
+- add a knob x-cap-fs1gp to control stage-1 1G paging capability
+- collect Clement's R-B
+
+v1:
+- define VTD_HOST_AW_AUTO (Clement)
+- passing pgtt as a parameter to vtd_update_iotlb (Clement)
+- prefix sl_/fl_ to second/first level specific functions (Clement)
+- pick reserved bit check from Clement, add his Co-developed-by
+- Update test without using libqtest-single.h (Thomas)
+
+rfcv2:
+- split from nesting series (Jason)
+- merged some commits from Clement
+- add qtest (jason)
+
+
+Clément Mathieu--Drif (4):
+  intel_iommu: Check if the input address is canonical
+  intel_iommu: Set accessed and dirty bits during stage-1 translation
+  intel_iommu: Add an internal API to find an address space with PASID
+  intel_iommu: Add support for PASID-based device IOTLB invalidation
+
+Yi Liu (2):
+  intel_iommu: Rename slpte to pte
+  intel_iommu: Implement stage-1 translation
+
+Yu Zhang (1):
+  intel_iommu: Use the latest fault reasons defined by spec
+
+Zhenzhong Duan (13):
+  intel_iommu: Make pasid entry type check accurate
+  intel_iommu: Add a placeholder variable for scalable mode stage-1
+    translation
+  intel_iommu: Flush stage-2 cache in PASID-selective PASID-based iotlb
+    invalidation
+  intel_iommu: Check stage-1 translation result with interrupt range
+  intel_iommu: Flush stage-1 cache in iotlb invalidation
+  intel_iommu: Process PASID-based iotlb invalidation
+  intel_iommu: piotlb invalidation should notify unmap
+  tests/acpi: q35: allow DMAR acpi table changes
+  intel_iommu: Set default aw_bits to 48 starting from QEMU 9.2
+  tests/acpi: q35: Update host address width in DMAR
+  intel_iommu: Introduce a property x-flts for stage-1 translation
+  intel_iommu: Introduce a property to control FS1GP cap bit setting
+  tests/qtest: Add intel-iommu test
+
+ MAINTAINERS                       |   1 +
+ hw/i386/intel_iommu_internal.h    | 101 ++++-
+ include/hw/i386/intel_iommu.h     |   8 +-
+ hw/i386/intel_iommu.c             | 732 ++++++++++++++++++++++++------
+ hw/i386/pc.c                      |   1 +
+ tests/qtest/intel-iommu-test.c    |  64 +++
+ tests/data/acpi/x86/q35/DMAR.dmar | Bin 120 -> 120 bytes
+ tests/qtest/meson.build           |   1 +
+ 8 files changed, 748 insertions(+), 160 deletions(-)
+ create mode 100644 tests/qtest/intel-iommu-test.c
+
 -- 
-2.45.2
+2.34.1
 
 
