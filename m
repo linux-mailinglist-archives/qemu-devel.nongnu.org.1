@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04CC09EE196
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Dec 2024 09:43:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B39EF9EE1B2
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Dec 2024 09:45:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tLemU-0005zU-Pt; Thu, 12 Dec 2024 03:42:46 -0500
+	id 1tLemR-0005T2-0X; Thu, 12 Dec 2024 03:42:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1tLem6-00059U-BX
- for qemu-devel@nongnu.org; Thu, 12 Dec 2024 03:42:23 -0500
+ id 1tLemA-0005OR-F7
+ for qemu-devel@nongnu.org; Thu, 12 Dec 2024 03:42:29 -0500
 Received: from mgamail.intel.com ([198.175.65.20])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1tLem4-00084H-JI
- for qemu-devel@nongnu.org; Thu, 12 Dec 2024 03:42:22 -0500
+ id 1tLem8-00084H-S2
+ for qemu-devel@nongnu.org; Thu, 12 Dec 2024 03:42:26 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1733992940; x=1765528940;
+ t=1733992945; x=1765528945;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=v8cdXhNvgi7BchDh9A4TaoafLBjuvM1O5VUFhf/JQvI=;
- b=gpRUUzIAleMsuYbgxbhHMYhT7IfxIN6Bvz5foT1avKiK61v9glFhQ3iU
- YbcfxpTT2rCIJ1cwMPgpQ43lUnI/8dUiurRp9K4qNe18JZpYjY1ZKm04n
- sCp+IGS5Ex3gDA07F2t9THRFFp7v5sdR1QKim8UqddAhaOKhqjMuQso95
- W4AdtQIHmf8t9fbE7LPrSvMqXyAVhF94UjVVUBS1gMoLao3ZFIfUkXpRs
- rENmKcsm2bnfRozFIS3ueK0NpzJxCVoQBAqQ+Jlx192B/74apZuWsfvuZ
- bUBJhu8YZnAIEZAzTlrBJJDgZAoQvUjTymTEg1GYZP6h6EkpCvehCMcdu g==;
-X-CSE-ConnectionGUID: 2NqLZzhNThesQJnJ7f/UTA==
-X-CSE-MsgGUID: Evn3NXhNRkenBfXQwtB/Hw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11283"; a="34124994"
-X-IronPort-AV: E=Sophos;i="6.12,228,1728975600"; d="scan'208";a="34124994"
+ bh=s0ggyZwu1G7bhjgQC3xPTDR13v1PzA5LRko9ioCPvfg=;
+ b=A7Vjq1hY6wiAj7Ny2Z4CtxARjT3theLQgLzq78Sjeme73Zos5t64oqxp
+ ZMqFgBZO7k00Cwhza9N6genadfcgtaCb9UTPB1tO8HZnFdnrYWP9qJMZl
+ uK0puuOIDxnvfu69fxMKeqivLYY8NkYMHpOtf8hRhP97o5Uds+38CZzcy
+ 01rEWxzAXR5FvivnjOebQPFTZgqOzPjbrA7ipBqdRa5GCZ2g97gakL9lF
+ ofXNHDoXylJrBCTEQbzT6PphR8PcOOV3SCjMtYQfseIHCBA1C8BAoDt9Y
+ ixBiR9reSSaVh60WxYDQprEl+fAr8hp+qfvjV6+LluSI8R73MZg5r9gb8 g==;
+X-CSE-ConnectionGUID: Ue3ls91ESX+cjVDHSpEuZA==
+X-CSE-MsgGUID: OlyM8ChqQn6D0WOlKzaGPw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11283"; a="34125003"
+X-IronPort-AV: E=Sophos;i="6.12,228,1728975600"; d="scan'208";a="34125003"
 Received: from fmviesa002.fm.intel.com ([10.60.135.142])
  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Dec 2024 00:42:20 -0800
-X-CSE-ConnectionGUID: JGnRV4YqSRSOs2GJdWeGZw==
-X-CSE-MsgGUID: eI0iLGY4SWuYMJboUKUT9g==
+ 12 Dec 2024 00:42:24 -0800
+X-CSE-ConnectionGUID: UofLG1FyQV69+naFe+4uLA==
+X-CSE-MsgGUID: Up0+r+YLRASYdkpLbS58ag==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="119407171"
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="119407186"
 Received: from spr-s2600bt.bj.intel.com ([10.240.192.127])
  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Dec 2024 00:42:16 -0800
+ 12 Dec 2024 00:42:20 -0800
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 To: qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
@@ -51,14 +51,19 @@ Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
  nicolinc@nvidia.com, joao.m.martins@oracle.com,
  clement.mathieu--drif@eviden.com, kevin.tian@intel.com, yi.l.liu@intel.com,
  chao.p.peng@intel.com, Zhenzhong Duan <zhenzhong.duan@intel.com>,
- Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>
-Subject: [PATCH v6 15/20] tests/acpi: q35: allow DMAR acpi table changes
-Date: Thu, 12 Dec 2024 16:37:52 +0800
-Message-Id: <20241212083757.605022-16-zhenzhong.duan@intel.com>
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>
+Subject: [PATCH v6 16/20] intel_iommu: Set default aw_bits to 48 starting from
+ QEMU 9.2
+Date: Thu, 12 Dec 2024 16:37:53 +0800
+Message-Id: <20241212083757.605022-17-zhenzhong.duan@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241212083757.605022-1-zhenzhong.duan@intel.com>
 References: <20241212083757.605022-1-zhenzhong.duan@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=198.175.65.20;
  envelope-from=zhenzhong.duan@intel.com; helo=mgamail.intel.com
@@ -85,19 +90,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+According to VTD spec, stage-1 page table could support 4-level and
+5-level paging.
+
+However, 5-level paging translation emulation is unsupported yet.
+That means the only supported value for aw_bits is 48. So default
+aw_bits to 48 when stage-1 translation is turned on.
+
+For legacy and scalable modes, 48 is the default choice for modern
+OS when both 48 and 39 are supported. So it makes sense to set
+default to 48 for these two modes too starting from QEMU 9.2.
+Use pc_compat_9_1 to handle the compatibility for machines before
+9.2.
+
+Suggested-by: Jason Wang <jasowang@redhat.com>
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+Reviewed-by: Clément Mathieu--Drif<clement.mathieu--drif@eviden.com>
+Reviewed-by: Yi Liu <yi.l.liu@intel.com>
 Acked-by: Jason Wang <jasowang@redhat.com>
 ---
- tests/qtest/bios-tables-test-allowed-diff.h | 1 +
- 1 file changed, 1 insertion(+)
+ include/hw/i386/intel_iommu.h | 2 +-
+ hw/i386/pc.c                  | 1 +
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
-index dfb8523c8b..46f80be9ca 100644
---- a/tests/qtest/bios-tables-test-allowed-diff.h
-+++ b/tests/qtest/bios-tables-test-allowed-diff.h
-@@ -1 +1,2 @@
- /* List of comma-separated changed AML files to ignore */
-+"tests/data/acpi/x86/q35/DMAR.dmar",
+diff --git a/include/hw/i386/intel_iommu.h b/include/hw/i386/intel_iommu.h
+index a434c2489c..72428fefa4 100644
+--- a/include/hw/i386/intel_iommu.h
++++ b/include/hw/i386/intel_iommu.h
+@@ -45,7 +45,7 @@ OBJECT_DECLARE_SIMPLE_TYPE(IntelIOMMUState, INTEL_IOMMU_DEVICE)
+ #define DMAR_REG_SIZE               0x230
+ #define VTD_HOST_AW_39BIT           39
+ #define VTD_HOST_AW_48BIT           48
+-#define VTD_HOST_ADDRESS_WIDTH      VTD_HOST_AW_39BIT
++#define VTD_HOST_ADDRESS_WIDTH      VTD_HOST_AW_48BIT
+ #define VTD_HAW_MASK(aw)            ((1ULL << (aw)) - 1)
+ 
+ #define DMAR_REPORT_F_INTR          (1)
+diff --git a/hw/i386/pc.c b/hw/i386/pc.c
+index 317aaca25a..5c1ceebe6a 100644
+--- a/hw/i386/pc.c
++++ b/hw/i386/pc.c
+@@ -83,6 +83,7 @@ GlobalProperty pc_compat_9_1[] = {
+     { "ICH9-LPC", "x-smi-swsmi-timer", "off" },
+     { "ICH9-LPC", "x-smi-periodic-timer", "off" },
+     { TYPE_INTEL_IOMMU_DEVICE, "stale-tm", "on" },
++    { TYPE_INTEL_IOMMU_DEVICE, "aw-bits", "39" },
+ };
+ const size_t pc_compat_9_1_len = G_N_ELEMENTS(pc_compat_9_1);
+ 
 -- 
 2.34.1
 
