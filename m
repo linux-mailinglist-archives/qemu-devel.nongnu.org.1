@@ -2,65 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32D7C9EE568
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Dec 2024 12:49:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 515309EE5A5
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Dec 2024 12:54:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tLhgM-0003bu-SB; Thu, 12 Dec 2024 06:48:38 -0500
+	id 1tLhlt-0002V2-Md; Thu, 12 Dec 2024 06:54:21 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1tLhg9-0002sH-Iu
- for qemu-devel@nongnu.org; Thu, 12 Dec 2024 06:48:27 -0500
-Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1tLhg7-0007OM-LK
- for qemu-devel@nongnu.org; Thu, 12 Dec 2024 06:48:25 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:MIME-Version:
- References:In-Reply-To:Message-Id:Date:To:From:Sender:Reply-To:Cc:
- Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
- Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
- bh=64a6R+THUE1vG6dBHDl+GyoKtpAm/lobYJpjaZjJ/6w=; b=lfKDPb+TeRdGZDe6SZghQCBXSh
- 7UFyPUJLnzXj7hTMSGjutq2n4GYn1163R+yfnvRifHB14WnffNXaSwCWz0L3y7A3DOpo9V4ZbDNva
- Dm3CGlBCbXpfwIhsnq0gqNMyl4KV3Core5/G74xBonkMrf9mab2ezgEyOTELFaFz/UYaNBHoLYx9m
- C32EhvLpbt5usG6Y90dy1ppSwpjeASoo89pswjiw2XkxzGxpS7ErSgQvU1IfnFW68nG+hk6nbESWR
- KE/GU8L0BbBV9Xl0hao6T2bLdLJqgL8QOk0P3a50mN6zxqFiZkoBZTDsAd2TqAucu5/9Jzi6/fHwe
- YObz/lNQvl5v0Y5hAqwubUWnaUVQvUBCsEdvbklnybkxA5+biZuJ/5T7OQ8/T2UNwXR7oxwqxhrXn
- YS/fGvHozdS349vCaQ0X+MVSO5XXjgRQXwRe4MMqzDqfxT3RqdOy9wfPTn8mCH+6N69aubsKrF0GJ
- hBT5+GauPZZu+CsyaZsh8SUwemhxxJxyc7yvp3et5GYCEOt/fqRS2WRq3ncrHS4wJ03mVC/md2XdY
- jjFGHCGbsrHuVO//yBijEzzOzRSNmChM2fXaXCVJSgRKkfbXQqlnRzXrol23FkhAaPsrvDlFsCAPp
- e9Q0pzzLhm6Py7JIfjCt5JigiI0jjWYiJlLfpZWFE=;
-Received: from [2a02:8012:c93d:0:260e:bf57:a4e9:8142]
- (helo=cheesecake.fritz.box)
- by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1tLhfR-00070a-FX; Thu, 12 Dec 2024 11:47:41 +0000
-From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-To: huth@tuxfamily.org,
-	qemu-devel@nongnu.org
-Date: Thu, 12 Dec 2024 11:46:20 +0000
-Message-Id: <20241212114620.549285-35-mark.cave-ayland@ilande.co.uk>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20241212114620.549285-1-mark.cave-ayland@ilande.co.uk>
-References: <20241212114620.549285-1-mark.cave-ayland@ilande.co.uk>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tLhlr-0002UV-Px
+ for qemu-devel@nongnu.org; Thu, 12 Dec 2024 06:54:19 -0500
+Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tLhlp-0000Us-SE
+ for qemu-devel@nongnu.org; Thu, 12 Dec 2024 06:54:19 -0500
+Received: by mail-wr1-x431.google.com with SMTP id
+ ffacd0b85a97d-385d7b4da2bso437678f8f.1
+ for <qemu-devel@nongnu.org>; Thu, 12 Dec 2024 03:54:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1734004455; x=1734609255; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=EjT6SCOybnu/XpMhC/RGVVXaIvF4ar1s31Q/izSDY0Q=;
+ b=Nu2k9MwT3ZjyUmma5iF0IUlmARqZuGx8kiIvWq4fstFCFDA2vRlLyq/DOyclg7+Vvn
+ NuTzRTayK7yN65/hB/sRfRkpaJE/hFD0fMvd27uiIRC3KyNMoafAPb5vUNvfRvVC0SIb
+ p2De7+yQZHXXOlD4m0IJbzrvPruNgnsyYyLFU33HECzc5kQVyiJb/wTSnD4n/m/gBERA
+ UHvuHMdVAJ54tKheZfnix0ZdeXsGlw01hEoe3Wt379bj7Pw2DV35q/hZbjVrgKBuFLQz
+ C3jNHTZuYtRYN4uqSS4q2aeVXIfsjlqZzAoHmj+bgUlaP1Tb8RlTcMajSORGQZ0ZDIOY
+ cosA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1734004455; x=1734609255;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=EjT6SCOybnu/XpMhC/RGVVXaIvF4ar1s31Q/izSDY0Q=;
+ b=mQNAZ9Am9X0TLfHOCrj8VNUWGKNAhbZMyqTig+gXrtU7kBgxkZlVNl/UgA3iE9L+lD
+ MlG6C/arw31HW9FDTCar6BDMSECyPptKsZ8D3T9fZO64ryEQ0V7zD9U19kGWTdGvmfCD
+ eAhG3ireZ3shT98KYntoqCiBZlVDDZN0XlOMSk73TSHgLjg6q5jkoXXMUTR8VZvm1ofr
+ y7mCGxckezRpTjAmd4vWEmgavPM7Pdi/J3BpbAuOnWdNfivZCgFtPmD3/gZQOZNzHHLs
+ EPiPrhGOLwB4Qd+3EF6CNQP+uNG9wxWlStHGbg/67j4sCICU15Lzch3c6DriZOZDpLN1
+ DVig==
+X-Gm-Message-State: AOJu0YwLNwXsAyW/EhzYwa3op2VlaJtJY6bVgtzSxT85Fxiyo3oUxy3E
+ XpqblQthivkC2o9g5jp3rgwgkjXHrFSTLerod08tuc+/GYFGvm4CEatBiy8bPNafNew1Pf/fDKb
+ A
+X-Gm-Gg: ASbGnctbdPz552535pkMFhPdgvp0XGBIR1/FagtOpgKB0p7zcFKJJtlN59omc+/QNuG
+ eX2okcAc17N3hWcrWtk6gZyHdc9ueHuCjrqE0stTavpabrUKTpVJQ+JaTfQRE1kDx/OY8Sh8rOm
+ nFc9WEHT0+am3iLKtcGfRu280hjSwVuWYkqSORZOwqd5rgEpgLaDZ9YZH+nmegrOi8TDLYWmBuY
+ rtS0c97YyzMBeOOzjsxzSUqYBRxknHo4GkOBrS+wPmRI4PUEz7Ysyg0x6xqHaMrpBFdp0hAHddO
+ eXcFWKLT3WxexhIrxSuBITLpEVAw43fvcNL+
+X-Google-Smtp-Source: AGHT+IEfYbSoUMLflqdpaOQ4fS0GcEDokIdLlAomTsOo2Vft0iE1A4ybCHRMOgJMsGoGComdBUH64Q==
+X-Received: by 2002:a05:6000:4026:b0:385:e9de:d521 with SMTP id
+ ffacd0b85a97d-3864ce867a0mr5659114f8f.8.1734004455319; 
+ Thu, 12 Dec 2024 03:54:15 -0800 (PST)
+Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-387824a5085sm3817100f8f.38.2024.12.12.03.54.14
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Thu, 12 Dec 2024 03:54:14 -0800 (PST)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH] semihosting/uaccess: Briefly document returned values
+Date: Thu, 12 Dec 2024 12:54:13 +0100
+Message-ID: <20241212115413.42109-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.45.2
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a02:8012:c93d:0:260e:bf57:a4e9:8142
-X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: [PATCH v2 34/34] next-cube: replace boiler-plate GPL 2.0 or later
- license text with SPDX identifier
-X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
-Received-SPF: pass client-ip=2001:41c9:1:41f::167;
- envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
+Received-SPF: pass client-ip=2a00:1450:4864:20::431;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -77,28 +95,117 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
----
- hw/m68k/next-cube.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+Since it is not obvious the get/put_user*() methods
+can return an error, add brief docstrings about it.
+Also remind to use *unlock_user() when appropriate.
 
-diff --git a/hw/m68k/next-cube.c b/hw/m68k/next-cube.c
-index 1e96bb02f8..3c2f3e295c 100644
---- a/hw/m68k/next-cube.c
-+++ b/hw/m68k/next-cube.c
-@@ -4,10 +4,7 @@
-  * Copyright (c) 2011 Bryce Lanham
-  * Copyright (c) 2024 Mark Cave-Ayland
-  *
-- * This code is free software; you can redistribute it and/or modify
-- * it under the terms of the GNU General Public License as published
-- * by the Free Software Foundation; either version 2 of the License,
-- * or (at your option) any later version.
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-  */
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ include/semihosting/uaccess.h | 55 +++++++++++++++++++++++++++++++++++
+ 1 file changed, 55 insertions(+)
+
+diff --git a/include/semihosting/uaccess.h b/include/semihosting/uaccess.h
+index c2fa5a655de..6bc90b12d6f 100644
+--- a/include/semihosting/uaccess.h
++++ b/include/semihosting/uaccess.h
+@@ -19,41 +19,96 @@
+ #include "exec/tswap.h"
+ #include "exec/page-protection.h"
  
- #include "qemu/osdep.h"
++/**
++ * get_user_u64:
++ *
++ * Returns: 0 on success, -1 on error.
++ */
+ #define get_user_u64(val, addr)                                         \
+     ({ uint64_t val_ = 0;                                               \
+        int ret_ = cpu_memory_rw_debug(env_cpu(env), (addr),             \
+                                       &val_, sizeof(val_), 0);          \
+        (val) = tswap64(val_); ret_; })
+ 
++/**
++ * get_user_u32:
++ *
++ * Returns: 0 on success, -1 on error.
++ */
+ #define get_user_u32(val, addr)                                         \
+     ({ uint32_t val_ = 0;                                               \
+        int ret_ = cpu_memory_rw_debug(env_cpu(env), (addr),             \
+                                       &val_, sizeof(val_), 0);          \
+        (val) = tswap32(val_); ret_; })
+ 
++/**
++ * get_user_u8:
++ *
++ * Returns: 0 on success, -1 on error.
++ */
+ #define get_user_u8(val, addr)                                          \
+     ({ uint8_t val_ = 0;                                                \
+        int ret_ = cpu_memory_rw_debug(env_cpu(env), (addr),             \
+                                       &val_, sizeof(val_), 0);          \
+        (val) = val_; ret_; })
+ 
++/**
++ * get_user_ual:
++ *
++ * Returns: 0 on success, -1 on error.
++ */
+ #define get_user_ual(arg, p) get_user_u32(arg, p)
+ 
++/**
++ * put_user_u64:
++ *
++ * Returns: 0 on success, -1 on error.
++ */
+ #define put_user_u64(val, addr)                                         \
+     ({ uint64_t val_ = tswap64(val);                                    \
+        cpu_memory_rw_debug(env_cpu(env), (addr), &val_, sizeof(val_), 1); })
+ 
++/**
++ * put_user_u32:
++ *
++ * Returns: 0 on success, -1 on error.
++ */
+ #define put_user_u32(val, addr)                                         \
+     ({ uint32_t val_ = tswap32(val);                                    \
+        cpu_memory_rw_debug(env_cpu(env), (addr), &val_, sizeof(val_), 1); })
+ 
++/**
++ * put_user_ual:
++ *
++ * Returns: 0 on success, -1 on error.
++ */
+ #define put_user_ual(arg, p) put_user_u32(arg, p)
+ 
++/**
++ * uaccess_lock_user:
++ *
++ * The returned pointer should be freed using uaccess_unlock_user().
++ */
+ void *uaccess_lock_user(CPUArchState *env, target_ulong addr,
+                         target_ulong len, bool copy);
++/**
++ * lock_user:
++ *
++ * The returned pointer should be freed using unlock_user().
++ */
+ #define lock_user(type, p, len, copy) uaccess_lock_user(env, p, len, copy)
+ 
++/**
++ * uaccess_lock_user_string:
++ *
++ * The returned string should be freed using uaccess_unlock_user().
++ */
+ char *uaccess_lock_user_string(CPUArchState *env, target_ulong addr);
++/**
++ * uaccess_lock_user_string:
++ *
++ * The returned string should be freed using unlock_user().
++ */
+ #define lock_user_string(p) uaccess_lock_user_string(env, p)
+ 
+ void uaccess_unlock_user(CPUArchState *env, void *p,
 -- 
-2.39.5
+2.45.2
 
 
