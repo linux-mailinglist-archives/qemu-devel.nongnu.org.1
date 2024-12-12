@@ -2,95 +2,140 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1949D9EEB25
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Dec 2024 16:21:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CA9859EEB74
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Dec 2024 16:25:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tLkzh-0004jp-K0; Thu, 12 Dec 2024 10:20:50 -0500
+	id 1tLl3j-000394-3U; Thu, 12 Dec 2024 10:24:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tLkzJ-0004RC-2d
- for qemu-devel@nongnu.org; Thu, 12 Dec 2024 10:20:26 -0500
-Received: from mail-ot1-x329.google.com ([2607:f8b0:4864:20::329])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tLkzC-0006Ri-UA
- for qemu-devel@nongnu.org; Thu, 12 Dec 2024 10:20:24 -0500
-Received: by mail-ot1-x329.google.com with SMTP id
- 46e09a7af769-71e3048970eso285588a34.1
- for <qemu-devel@nongnu.org>; Thu, 12 Dec 2024 07:20:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734016817; x=1734621617; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id:from
- :to:cc:subject:date:message-id:reply-to;
- bh=+YIjhIymedfUy6rLt7WJQt3ZaZQVZKTAu2cfR72h1gQ=;
- b=Q2sLOff3laoTxfAZ79GNgi+7fAfE0Gr1VleqQWT2KozVwIaZBT+KpuB2ibxNqT3g3K
- 2xNkhS2OtLLotF6zkat61gmel3KClAcH/GwUDhojWJ14AFyKr3Cbjt/QLz6Oei4WEX9h
- S5j03IFj9neCUcL9myWDXh1V4Zqd+MlP5r3lCQgu4Yuk771q4L8CwQzN6S4Fm0hfRRqu
- 6Axjf8DDdZgsfpxCyfVC443MUJQu6eoZwqB7TTMRdOuIzgcFJWyREC+Y98WnThhJPPpk
- wi1zCAsCogAzCM55PXIi8VGnhKvu4hGSemIOyBG4/Q4ogLktCBqZh91RYC+zq3MwhL1m
- qX3Q==
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1tLl3d-00038F-NX
+ for qemu-devel@nongnu.org; Thu, 12 Dec 2024 10:24:54 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1tLl3W-0006yS-Qv
+ for qemu-devel@nongnu.org; Thu, 12 Dec 2024 10:24:53 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1734017084;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=nFlZ8BPgfoQockJuyNVqOGjYmTIzqU0ALiB07FSCzyQ=;
+ b=NdiVVrAHMbo50OkKI43Zayg7n5nPtxW0/3Mcog1+g/+GOxsIrhkrvgDY5ytR/TzT74xH8N
+ hsBcrRJWXp6cptfY3pNKubeEw8GGeMYHaM6ibsdY7NyabfjFiHI9qBwj3a6zgm+odtAB/+
+ IgfPH8H5+ZMINlrIajJIiELyT4eR9PY=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-314-ps6hdz3kMjiDGT7ulSWRpQ-1; Thu, 12 Dec 2024 10:24:42 -0500
+X-MC-Unique: ps6hdz3kMjiDGT7ulSWRpQ-1
+X-Mimecast-MFC-AGG-ID: ps6hdz3kMjiDGT7ulSWRpQ
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-385ed79291eso1066345f8f.0
+ for <qemu-devel@nongnu.org>; Thu, 12 Dec 2024 07:24:42 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734016817; x=1734621617;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=+YIjhIymedfUy6rLt7WJQt3ZaZQVZKTAu2cfR72h1gQ=;
- b=a5+u4wqT3A84PF30GbOgbZkKBIGoVBI9NCxfmTCGwEP4QtwFkwZg5+Up10DL6nGUYs
- PsvLiXu6MVRVT8SU345OehFm/vg0VmBCeQD5I4WvFyTeEymcY+sLS7mxuZFhbq0BkgdW
- Ix35i59da9Szcxy0JJAY9O2lcNWcdeMytz1YUy9mJWLsVW6IpAAaDuXv1FjfLxaLkh/m
- VSZvGDt7Pv5GSL63gmwnUcVod1R8i8laV+JafIFYMX9js1ytrJumH+dNUYy9qDdLrO5V
- 6OEQb3ELOhQBa6DS5QXazMguLuqd4RUZLDa4ce/blFIBQ8u+0Ua6/V50Lm0YpnzGE+ho
- i3iQ==
+ d=1e100.net; s=20230601; t=1734017081; x=1734621881;
+ h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+ :from:references:cc:to:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=nFlZ8BPgfoQockJuyNVqOGjYmTIzqU0ALiB07FSCzyQ=;
+ b=BImo056ywe8zZlKedRj2/8SkTIbVg9FtSz80eLxSth5uSgEqbz72Lw/C6Xs2DusftS
+ YQXzbYhXzaJCzPSu4DzgaDQ9q8/Wl4da9cAJdi9ONsu5fJeEbUVSAxfXrj2F6hK+4ubk
+ MVveC30CDHhx9OLBCrG9cMdDz4QVlkL5yLDXu7i/KXBE0dZQU4ys8UGCnn/YkdHG1HT3
+ iwjQA5dvOFuux6n65X/8o4zHHnAR+EI/ThPRFdRAwB6DbKUjDto892AWpu1aIoNlvVNf
+ r95f8JzrS9ahaNxByTP55ymqY0PmqwSn7z8d6RoEi0pb/ONOkDuevjlIN42wBON/E7sy
+ 51jw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCW5q0Y2kMnn7hg97o5MRzKW5nnLcwoUm4vbnvIqXbKryeI8jCPjbiNxuLdbM2y6saz/6EZH/T6pTq+h@nongnu.org
-X-Gm-Message-State: AOJu0YwaypmtiW9Jigz6N3ifc5nwvZEo94Odq4LIjcNCeFOuud6kAFs9
- 9oXsC1Vit52fAtmUbyXlXIdbC1b2jL7yahSrW3SjF5HsdfhlMt1MoJ0w6kTGNFHKm9aVEB70Xvv
- AdNb5Za/v
-X-Gm-Gg: ASbGncvHR/QBTQjaOYouIyXTgFL64ChPZaPL5AgPlmgEi9taqhDh/k2R6eb4U0HGOA8
- 4QfumKNRBzQEdcPscbaxn2MIU/8FV6CB+rE6XLmveOmtBqD2u7RR+1F0qk7ktEBJCxtpT6U3bst
- w5lHMBGY1fcIo8FEHd5vKbS5/hn13sHZ/DjFdmzBkOkXZCQLWdGeuspH83dNmfqW1jcHeoUhtr/
- lVLC0+ahtgze3jO+JXWLnMWVCJHfg1pcAM61JbFMHKxLgi+uewITAuuxHqHIQ1h0YWXTA4/XlEz
- jB/LQJW9Fe+CRMRcYL83Ggm+cRO1bqNWXN8=
-X-Google-Smtp-Source: AGHT+IGBF35bA/wNExOk+FtVRUe4h5IjWJSEapfOGV19sdXATCoRui9jy29J184t5VuqSRKEkr44BQ==
-X-Received: by 2002:a05:6830:6619:b0:710:f375:a6c9 with SMTP id
- 46e09a7af769-71e36e27d15mr572121a34.7.1734016817193; 
- Thu, 12 Dec 2024 07:20:17 -0800 (PST)
-Received: from [192.168.4.112] (fixed-187-189-51-143.totalplay.net.
- [187.189.51.143]) by smtp.gmail.com with ESMTPSA id
- 46e09a7af769-71e17a169c4sm980158a34.25.2024.12.12.07.20.16
+ AJvYcCVMT2HLhdecJx5nPGqYeXdB9yMK4Kt8stvT2h/oUAoH53ZuCVoagKcHYedyocKGPZ8PShwnATFQIR2X@nongnu.org
+X-Gm-Message-State: AOJu0Yze0fKhvUbMPAb679JovC57oaxXDv3l2vKKaBYCjJZu1oPw0XhH
+ 0K+YNT0IE39g19Nb6T8eXlLmMcSpMgcfRRVPWulWGIS2r8HaphADsZztKmnS0cKtXYD38N4vJyT
+ UVG/4sLk3mR4pFOJrZpxjipFFqUSX+YPq45NeNIDWWdFMviHW0BZ/
+X-Gm-Gg: ASbGncsHS2ilUA2gHKD/eVahqyNxREp4TNxl8E1mfFv1hw650sPtTpfcfOALs/r7mg2
+ FAeT/koSnlcFxH8PW8btyIGl6NdGU4N3ErmxzbQq5xNCUeE66exYSvUPMny/Oc2f9pEAy7suIhY
+ QURVaoSm8F8vPalY6DIgu8kJg5/PH7LT6MZgNeBD9shv8dtJqXEwD2lmgAY8kH3KUKzZNBv0yVb
+ 4KLJqvT7JJLzREH3WjMIWddpWTsabzOpyxXB/AxMBYuTQ3DxuREItTksP5K
+X-Received: by 2002:a05:6000:481a:b0:385:f7e5:de88 with SMTP id
+ ffacd0b85a97d-387887ac0dcmr2911246f8f.3.1734017081524; 
+ Thu, 12 Dec 2024 07:24:41 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFKHs0kfyoX2AvuBCh/uU0GB2IVmgdgEmmPPcUjTe6dmbeimNBlFFNPxLPHn6nqw6SLhe5C1Q==
+X-Received: by 2002:a05:6000:481a:b0:385:f7e5:de88 with SMTP id
+ ffacd0b85a97d-387887ac0dcmr2911217f8f.3.1734017081137; 
+ Thu, 12 Dec 2024 07:24:41 -0800 (PST)
+Received: from [192.168.10.27] ([151.81.118.45])
+ by smtp.googlemail.com with ESMTPSA id
+ ffacd0b85a97d-38782514e86sm4367236f8f.72.2024.12.12.07.24.38
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 12 Dec 2024 07:20:16 -0800 (PST)
-Message-ID: <9743dbdd-f722-4239-8b50-0f6215c36ccc@linaro.org>
-Date: Thu, 12 Dec 2024 09:20:15 -0600
+ Thu, 12 Dec 2024 07:24:40 -0800 (PST)
+Message-ID: <d1a0de70-718a-452b-b20a-1934358d53de@redhat.com>
+Date: Thu, 12 Dec 2024 16:24:37 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] qemu/atomic: Rename atomic128-cas.h headers using
- .h.inc suffix
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+Subject: Re: [PATCH 1/2] system: Restrict libSDL CPPFLAGS to vl.c
+To: Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
-References: <20241212141018.59428-1-philmd@linaro.org>
- <20241212141018.59428-2-philmd@linaro.org>
- <ee831fff-eb0a-4e56-8eee-99222e55d707@linaro.org>
- <8c52c730-cc87-466f-b36e-270d738b86f1@linaro.org>
- <5e8c7bd6-4afa-45bd-af79-3e03b9e6075a@linaro.org>
- <ad7c3026-e307-4ae0-a985-c447ffa68aa0@linaro.org>
+Cc: =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ Pankaj Gupta <pankaj.gupta.linux@gmail.com>,
+ Wei Yang <richardw.yang@linux.intel.com>,
+ Haozhong Zhang <haozhong.zhang@intel.com>
+References: <20241212092632.18538-1-philmd@linaro.org>
+ <20241212092632.18538-2-philmd@linaro.org>
+ <88d424da-a876-43b1-b0fe-4c0ff084d2a1@linaro.org>
+From: Paolo Bonzini <pbonzini@redhat.com>
 Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <ad7c3026-e307-4ae0-a985-c447ffa68aa0@linaro.org>
+Autocrypt: addr=pbonzini@redhat.com; keydata=
+ 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
+In-Reply-To: <88d424da-a876-43b1-b0fe-4c0ff084d2a1@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::329;
- envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x329.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -25
+X-Spam_score: -2.6
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.496,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,43 +151,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/12/24 09:17, Philippe Mathieu-Daudé wrote:
-> On 12/12/24 16:11, Richard Henderson wrote:
->> On 12/12/24 09:09, Philippe Mathieu-Daudé wrote:
->>> On 12/12/24 16:02, Richard Henderson wrote:
->>>> On 12/12/24 08:10, Philippe Mathieu-Daudé wrote:
->>>>> Since commit 139c1837db ("meson: rename included C source files
->>>>> to .c.inc"), QEMU standard procedure for included C files is to
->>>>> use *.c.inc.
->>>>>
->>>>> Besides, since commit 6a0057aa22 ("docs/devel: make a statement
->>>>> about includes") this is documented in the Coding Style:
->>>>>
->>>>>    If you do use template header files they should be named with
->>>>>    the ``.c.inc`` or ``.h.inc`` suffix to make it clear they are
->>>>>    being included for expansion.
->>>>>
->>>>> Therefore rename 'atomic128-cas.h' as 'atomic128-cas.h.inc'.
->>>>
->>>> But these are not templates, nor included multiple times, so...
->>>> I don't get it.
->>> I wanted to avoid including "qemu/atomic.h" in each of them due to:
->>>
->>>      host/include/generic/host/atomic128-cas.h:23:11: error: call to undeclared 
->>> function 'qatomic_cmpxchg__nocheck'; ISO C99 and later do not support implicit function 
->>> declarations [-Wimplicit-function- declaration]
->>>         23 |     r.i = qatomic_cmpxchg__nocheck(ptr_align, c.i, n.i);
->>>            |           ^
->>>      1 error generated.
+On 12/12/24 14:18, Richard Henderson wrote:
+> On 12/12/24 03:26, Philippe Mathieu-Daudé wrote:
+>> Only vl.c includes libSDL headers.
+>> No need to pass them to all system_ss[] files.
 >>
->> And why would you ever have that?
+>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>> ---
+>>   system/meson.build | 5 ++++-
+>>   1 file changed, 4 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/system/meson.build b/system/meson.build
+>> index 4952f4b2c7d..f7e2c8b826f 100644
+>> --- a/system/meson.build
+>> +++ b/system/meson.build
+>> @@ -23,8 +23,11 @@ system_ss.add(files(
+>>     'runstate-hmp-cmds.c',
+>>     'runstate.c',
+>>     'tpm-hmp-cmds.c',
+>> +), libpmem, libdaxctl)
+>> +
+>> +system_ss.add(files(
+>>     'vl.c',
+>> -), sdl, libpmem, libdaxctl)
+>> +), sdl)
+>>   if have_tpm
+>>     system_ss.add(files('tpm.c'))
 > 
-> To have "not template" headers self-contained; but I'm fine discarding
-> these 2 patches and keeping the last one of this series.
+> I'm sure Paolo will correct me, but I don't think this does what you 
+> think it does.  I believe this has no change at all.
 
-If you have another reason for the change, then that should be the reason in the commit 
-message.  But what you copied from Coding Style isn't the reason.
+No need to correct anything! :)
 
+> The presence of sdl within a *particular* source_set.add() call is 
+> immaterial.  If the condition is true (and here, because the condition 
+> is missing it is true), all of the files and dependencies get lumped 
+> together.  In the end, everything gets copied into common_ss.
 
-r~
+Yep.  You can have different flags, including library CFLAGS/CPPFLAGS, 
+for specific vs system (the former ends up in the libqemu-*.a.p 
+directory, vs libcommon.a.p for system), or for those sourcesets that 
+are used also by user-mode emulation (IIRC libhwcore.a.p) or by tests 
+(the various directories libio.a.p, libmigration.a.p).  However, here 
+there is no effect at all.
+
+If you want to do this as a cleanup to keep the libraries close to their 
+users, I have no objection, but please adjust the commit message and 
+squash the two patches together.
+
+Paolo
+
+> Both of these patches only alters the order of the items in the link 
+> ordering.
+> 
+> 
+> r~
+> 
+> 
+> 
+
 
