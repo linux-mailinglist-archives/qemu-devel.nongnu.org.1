@@ -2,72 +2,119 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A21A9EE805
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Dec 2024 14:47:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E8BDF9EE80E
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Dec 2024 14:50:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tLjVz-0007Wk-48; Thu, 12 Dec 2024 08:46:03 -0500
+	id 1tLjZf-0002h2-Mg; Thu, 12 Dec 2024 08:49:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vkuznets@redhat.com>)
- id 1tLjVN-0007TB-MG
- for qemu-devel@nongnu.org; Thu, 12 Dec 2024 08:45:30 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vkuznets@redhat.com>)
- id 1tLjVK-0003cC-F0
- for qemu-devel@nongnu.org; Thu, 12 Dec 2024 08:45:25 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1734011121;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=81cVUqQuOeY7z2nPcKsGnCBnf66r+iuJcrd9VyY4oB4=;
- b=EtmDYhW0Y7oUSMJFVrm2cB6lYW1ci7cJadgxJjh7k+OyzQhIjRHUNbsWLGFes9PUNzwyA0
- cb+TY6DgxFE7f0Ws/7VfC7+THaV3xyCLL6yYeHawhEPDQPF9AUEX1ye62lbWvKi4HZOScc
- iaoURoqPEmHQ+eOoozhARE2btpSKXPM=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-253-bKXjqWweP0W4JssFiaa84A-1; Thu,
- 12 Dec 2024 08:45:15 -0500
-X-MC-Unique: bKXjqWweP0W4JssFiaa84A-1
-X-Mimecast-MFC-AGG-ID: bKXjqWweP0W4JssFiaa84A
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tLjZV-0002gK-Ml
+ for qemu-devel@nongnu.org; Thu, 12 Dec 2024 08:49:42 -0500
+Received: from smtp-out2.suse.de ([195.135.223.131])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tLjZT-00040y-Bl
+ for qemu-devel@nongnu.org; Thu, 12 Dec 2024 08:49:40 -0500
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
+ [IPv6:2a07:de40:b281:104:10:150:64:97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 57EBD1955E7A; Thu, 12 Dec 2024 13:45:14 +0000 (UTC)
-Received: from fedora.redhat.com (unknown [10.45.225.198])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 4B43A1955F41; Thu, 12 Dec 2024 13:45:12 +0000 (UTC)
-From: Vitaly Kuznetsov <vkuznets@redhat.com>
-To: qemu-devel@nongnu.org, Kevin Wolf <kwolf@redhat.com>,
- Hanna Reitz <hreitz@redhat.com>, qemu-block@nongnu.org
-Cc: Eric Blake <eblake@redhat.com>, Philippe Mathieu-Daude <philmd@linaro.org>
-Subject: [PATCH v4 2/2] vpc: Read images exported from Azure correctly
-Date: Thu, 12 Dec 2024 14:45:04 +0100
-Message-ID: <20241212134504.1983757-3-vkuznets@redhat.com>
-In-Reply-To: <20241212134504.1983757-1-vkuznets@redhat.com>
-References: <20241212134504.1983757-1-vkuznets@redhat.com>
+ by smtp-out2.suse.de (Postfix) with ESMTPS id C8E7C1F37C;
+ Thu, 12 Dec 2024 13:49:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1734011377; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=rW0pGTjuBreHoVvh10CVLL4puWiaZ7MeSik02t1A0tA=;
+ b=B6L5AsuklidJNepi3Ds90eHqqLwZWIuZkwPN/zVt891Rvqhqo2uPaqgWsqTM5vau8pMblL
+ 6fBuiflahjTTSLoH3TWwsEJenbbFVuP+l3VhjyR2gBrQ1W3MJ6ZecCIQjdbSkJfQYV+Nu6
+ vT2+yEtPdY2wNU04fNuR8DMUuPfJtyQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1734011377;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=rW0pGTjuBreHoVvh10CVLL4puWiaZ7MeSik02t1A0tA=;
+ b=AAOpk8LPKegnZsZP/zv3j8isRTaVDQIhWiVgO5+aiN5P5FcBc/eoRVL0S1i5yqElMx43Pu
+ VLAKVfZPqTw4poAQ==
+Authentication-Results: smtp-out2.suse.de;
+ dkim=pass header.d=suse.de header.s=susede2_rsa header.b=qVfSX6MS;
+ dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=kraiFxGQ
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1734011375; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=rW0pGTjuBreHoVvh10CVLL4puWiaZ7MeSik02t1A0tA=;
+ b=qVfSX6MS5FBnN59k9btttyF/0Vqtzmt64Tjfkhr5dYiR1NgStORu8JjaQOH3tqdBewNKSu
+ CJqwIR/ko6S0QYsk7xkyJEl2mP/wZ+7yUGqli5Bji64IQk38RL0hVgucTWHYBXA3uzUNHq
+ tzFiEQpO7yIgu/54j6qDbFLhCybMUE4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1734011375;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=rW0pGTjuBreHoVvh10CVLL4puWiaZ7MeSik02t1A0tA=;
+ b=kraiFxGQDZ3mEXCAtUt3Oj6YDMWED2N4yE1t3pFjbUj4yJXIZkIQlMo13epd10plAyWnvt
+ Awt15S3p/JWEpJCA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 51C5013939;
+ Thu, 12 Dec 2024 13:49:35 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id I5dFBu/pWmcXYwAAD6G6ig
+ (envelope-from <farosas@suse.de>); Thu, 12 Dec 2024 13:49:35 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Daoud LAMALMI <daoudlamalmi@pm.me>, "qemu-devel@nongnu.org"
+ <qemu-devel@nongnu.org>
+Cc: BALATON Zoltan <balaton@eik.bme.hu>, Nicholas Piggin
+ <npiggin@gmail.com>, Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Bernhard Beschow <shentey@gmail.com>
+Subject: Re: MPC5553/MPC5554 Emulation (information request)
+In-Reply-To: <kvndhk2oZokSDFW29-5pef8r1zmug70mTlHmrKT99LrvOaAflAeBV-vD6I6BAiAkHavpsN23lKJ6mN4Bd7UYFDe2tgbSegrXYVK6p-tR5F4=@pm.me>
+References: <kvndhk2oZokSDFW29-5pef8r1zmug70mTlHmrKT99LrvOaAflAeBV-vD6I6BAiAkHavpsN23lKJ6mN4Bd7UYFDe2tgbSegrXYVK6p-tR5F4=@pm.me>
+Date: Thu, 12 Dec 2024 10:49:32 -0300
+Message-ID: <87ed2df1ub.fsf@suse.de>
 MIME-Version: 1.0
 Content-Type: text/plain
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=vkuznets@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -25
-X-Spam_score: -2.6
-X-Spam_bar: --
-X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.496,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Rspamd-Queue-Id: C8E7C1F37C
+X-Spam-Score: -4.20
+X-Rspamd-Action: no action
+X-Spamd-Result: default: False [-4.20 / 50.00]; BAYES_HAM(-2.69)[98.63%];
+ NEURAL_HAM_LONG(-1.00)[-1.000];
+ R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
+ MX_GOOD(-0.01)[]; FUZZY_BLOCKED(0.00)[rspamd.com];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from]; 
+ ARC_NA(0.00)[]; TO_DN_EQ_ADDR_SOME(0.00)[]; TO_DN_SOME(0.00)[];
+ TO_MATCH_ENVRCPT_ALL(0.00)[]; MIME_TRACE(0.00)[0:+];
+ SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+ FREEMAIL_ENVRCPT(0.00)[gmail.com];
+ FREEMAIL_CC(0.00)[eik.bme.hu,gmail.com,ilande.co.uk];
+ RCVD_TLS_ALL(0.00)[]; RCVD_COUNT_TWO(0.00)[2];
+ MID_RHS_MATCH_FROM(0.00)[]; FROM_EQ_ENVFROM(0.00)[];
+ FROM_HAS_DN(0.00)[]; RCPT_COUNT_FIVE(0.00)[6];
+ RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+ ASN(0.00)[asn:25478, ipnet:::/0, country:RU];
+ RCVD_VIA_SMTP_AUTH(0.00)[]; DKIM_TRACE(0.00)[suse.de:+];
+ MISSING_XM_UA(0.00)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:rdns,
+ imap1.dmz-prg2.suse.org:helo, nongnu.org:email, suse.de:mid, suse.de:dkim]
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
+ helo=smtp-out2.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,60 +130,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-It was found that 'qemu-nbd' is not able to work with some disk images
-exported from Azure. Looking at the 512b footer (which contains VPC
-metadata):
+Daoud LAMALMI via <qemu-devel@nongnu.org> writes:
 
-00000000  63 6f 6e 65 63 74 69 78  00 00 00 02 00 01 00 00  |conectix........|
-00000010  ff ff ff ff ff ff ff ff  2e c7 9b 96 77 61 00 00  |............wa..|
-00000020  00 07 00 00 57 69 32 6b  00 00 00 01 40 00 00 00  |....Wi2k....@...|
-00000030  00 00 00 01 40 00 00 00  28 a2 10 3f 00 00 00 02  |....@...(..?....|
-00000040  ff ff e7 47 8c 54 df 94  bd 35 71 4c 94 5f e5 44  |...G.T...5qL._.D|
-00000050  44 53 92 1a 00 00 00 00  00 00 00 00 00 00 00 00  |DS..............|
-00000060  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
+> Goal
+> ----
+>
+> I'd like to know if it is planned for QEMU to be able to emulate the MPC5553/MPC5554 microcontrollers.
+>
+> Technical details
+> -----------------
+>
+> I know that the e200z6 processor can already be emulated. I don't know how much work is needed to emulate those microcontrollers fully based on the work that has already been done.
+>
+> Additional information
+> ----------------------
+>
+> If it is not planned, I'll most likely start educating myself on this project to try and patch it in as it's a need that is quite important for me. I'll try not to waste your time and read as much as I can about your guidelines. Would you advise me against trying to do this? I'd like to know how hard you think this will be.
+>
+> DISCLAIMER : I am still very much a newbie in embedded systems, I'm only in the first year of my master's degree in embedded systems.
+>
+> Sent with Proton Mail secure email.
 
-we can see that Azure uses a different 'Creator application' --
-'wa\0\0' (offset 0x1c, likely reads as 'Windows Azure') and QEMU uses this
-field to determine how it can get image size. Apparently, Azure uses 'new'
-method, just like Hyper-V.
-
-Overall, it seems that only VPC and old QEMUs need to be ignored as all new
-creator apps seem to have reliable current_size. Invert the logic and make
-'current_size' method the default to avoid adding every new creator app to
-the list.
-
-Signed-off-by: Vitaly Kuznetsov <vkuznets@redhat.com>
----
- block/vpc.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
-
-diff --git a/block/vpc.c b/block/vpc.c
-index fb0ded1c4344..a5f626baf04a 100644
---- a/block/vpc.c
-+++ b/block/vpc.c
-@@ -237,6 +237,7 @@ static void vpc_parse_options(BlockDriverState *bs, QemuOpts *opts,
-  *      'd2v '  :  current_size     Disk2vhd
-  *      'tap\0' :  current_size     XenServer
-  *      'CTXS'  :  current_size     XenConverter
-+ *      'wa\0\0':  current_size     Azure
-  *
-  *  The user can override the table values via drive options, however
-  *  even with an override we will still use current_size for images
-@@ -244,11 +245,8 @@ static void vpc_parse_options(BlockDriverState *bs, QemuOpts *opts,
-  */
- static bool vpc_ignore_current_size(VHDFooter *footer)
- {
--    return !!strncmp(footer->creator_app, "win ", 4) &&
--           !!strncmp(footer->creator_app, "qem2", 4) &&
--           !!strncmp(footer->creator_app, "d2v ", 4) &&
--           !!strncmp(footer->creator_app, "CTXS", 4) &&
--           !!memcmp(footer->creator_app, "tap", 4));
-+    return !strncmp(footer->creator_app, "vpc ", 4) ||
-+           !strncmp(footer->creator_app, "qemu", 4);
- }
- 
- static int vpc_open(BlockDriverState *bs, QDict *options, int flags,
--- 
-2.47.0
-
+Adding some people to CC that might be able to help.
 
