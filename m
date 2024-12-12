@@ -2,93 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F2359EEA8E
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Dec 2024 16:15:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BA4859EEB30
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Dec 2024 16:22:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tLkql-00068B-LD; Thu, 12 Dec 2024 10:11:35 -0500
+	id 1tLkuj-0004CP-TH; Thu, 12 Dec 2024 10:15:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tLkqj-00066U-OA
- for qemu-devel@nongnu.org; Thu, 12 Dec 2024 10:11:33 -0500
-Received: from mail-oi1-x235.google.com ([2607:f8b0:4864:20::235])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tLkqg-0003Ly-2N
- for qemu-devel@nongnu.org; Thu, 12 Dec 2024 10:11:31 -0500
-Received: by mail-oi1-x235.google.com with SMTP id
- 5614622812f47-3eb40876bbfso134076b6e.0
- for <qemu-devel@nongnu.org>; Thu, 12 Dec 2024 07:11:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734016286; x=1734621086; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id:from
- :to:cc:subject:date:message-id:reply-to;
- bh=40Zo8V4LF1yIaYiA/NIJ/KoVW3/wpiJOBuOUU6k7hGo=;
- b=wT7h/R2UNycgfuA8BJtulu3jdZ3hvOC4z6xh5rEfApu2AVuUAMBC3yAxgD3IX7gKC1
- oErYxU0Lb+Jiz3/5O62dtgvmn1i/MnCOuHM2RDSEkdtk7tc1VmjTygvRnrsNrONxxQZ5
- OTkzDRhs6LKIm61lzNq469ze5uEWXzBi/iiqGd0SJECholEnbXh40iK0/Y8HuyrTWNRX
- loIQ3GHZVg07Yql9uXgN23byqUKI/8zniqWxvfazWxzrHIkFAop47BadIg08Q0OuEhZo
- 8JNyEKMi5U/MdJRCy8NV0yNhq7cBVoQZqrRFve487iomQM6eNwAPPB4o3iL78CWulmPS
- PK0Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734016286; x=1734621086;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=40Zo8V4LF1yIaYiA/NIJ/KoVW3/wpiJOBuOUU6k7hGo=;
- b=eqeQMBsrXO2eJIv94EzJqVpiBGoumwh0e5hyDHluwIoaonN5x4BTjrLuxlFcojf7qP
- YmwjEk6oyRhcMHqpQEiYCEEGMMpI48oZjVqy7IHgfTr8eMWndJSnCbT/0xntnr1653+P
- UPxOUcPdMS5B/20Ty98ONJsvdGvWfrY069KieZg0Uno3IKafW5jc9y8peQELs6TsF/ML
- znXUoV6/RZqpkjoj7VVc0750JqsoTWKNgjL6UgRv26hRrZhRjDxpZJbuK0cm6PaHYrG6
- SaA5AcYc3h+IQ6nYlNADeLumhcVikN+89XmL9H0Pbzf/B7PSb9pFVMOMuD19PAmmzBz/
- JzdQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXYNhvEEIqy/vXGvqreHeilQb1VHhoIhOpvJM48/wMYQXfCKfBPyURjvEQvK81lBTZ5TVD6LOeb1puU@nongnu.org
-X-Gm-Message-State: AOJu0YzmyFOZ9rcW2GgAURbMVqihuDUz98ewRS+i2gJ5MJ2PFquVqJss
- QKZMHleg0FdE8BKqNY8WgE1Ge7A15zjvc2jSfEQsCfH0LgBYPPJconCHZ7TwvikliLIdeuIp7d2
- dFwG5xXff
-X-Gm-Gg: ASbGnctl/p9cUHI4rViaH7zOXyK1gIaI01oVZLjIW2wbzhTdbw9XKc93/YYucuqSMxE
- ObIIZ30dOzhA00msZLBw0n/wlZiTG/tNr0rgcMCKPDPTqnhHHW4i/2tEF9uWPvrsKC3uIQjtMgu
- m6Zy+tTK1PhnucOOOeTutztRm63g+I7SbyiYXkZ4t+mtShOGQa1T5Vn7AARH9crAlvsCmXtUFu7
- f+MXFF5APjtYada5+JvkKEsvQEgB20gguxHwR1/JqkHht1vW1WrwunShZwmRRXB4AMv/AHTlTYf
- zncE/OhSwk+H5Hbzki4jOVxIQow+62I+/ik=
-X-Google-Smtp-Source: AGHT+IGA4dfoh7GYE7Db9oAloHanZTbdaBE9LcvSrfPWdPuz87hJM0bhJMOEyDoEd19YqHOp8PJokw==
-X-Received: by 2002:a05:6808:2021:b0:3eb:4829:59e with SMTP id
- 5614622812f47-3eb85aef4a3mr4515545b6e.6.1734016286601; 
- Thu, 12 Dec 2024 07:11:26 -0800 (PST)
-Received: from [192.168.4.112] (fixed-187-189-51-143.totalplay.net.
- [187.189.51.143]) by smtp.gmail.com with ESMTPSA id
- 5614622812f47-3eb8ccd18d6sm650362b6e.37.2024.12.12.07.11.26
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 12 Dec 2024 07:11:26 -0800 (PST)
-Message-ID: <5e8c7bd6-4afa-45bd-af79-3e03b9e6075a@linaro.org>
-Date: Thu, 12 Dec 2024 09:11:24 -0600
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] qemu/atomic: Rename atomic128-cas.h headers using
- .h.inc suffix
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1tLkta-0003A5-1J; Thu, 12 Dec 2024 10:14:30 -0500
+Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1tLktT-0003fG-9N; Thu, 12 Dec 2024 10:14:29 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:MIME-Version:
+ Message-Id:Date:To:From:Sender:Reply-To:Cc:Content-Type:Content-ID:
+ Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+ :Resent-Message-ID:In-Reply-To:References;
+ bh=0K+wmele5k2RU7N7ggIHaJYf7b8+tS9y0ujopotcxkY=; b=oPu9yUYHfI+Rm4c/5o02oPmtfm
+ fqsoqulWhpBYSai8T9eZxYoEd/RNPEpWkgnMwvVkg92XMnRle3cx2LqN/E5pMY9+uy91hGFUaHKP8
+ 3xAmz/AktKnP0ROZOJwlkA7JuGN6gEGYPlYcYMqr9gAMw//8SufcLcVSIrTrUw+MBOZ5xtqMnibgc
+ zZPzUcCWUDxXIpu4NFHaRhIqCNOfbh+O8Go8y5flqy0g5DmGPkA71lJVL6FEgg6/qiExymqOIMBN5
+ 0BMI0/21brMy5AjV0NXpjzvqukg461izjgJ3QTCbx2Ha2glngSxtCD5pQeBDVLFuLpOJyr4+d1zVm
+ 0Ndm/tOOj1+KqyVHvUbMkaFHloKjoAtl7mbISdN1ndR+XOf43UPXuC/0Bn0iAGNrHBxXdv0W1yhJb
+ vUauxIItDUQb14Zw4wH6Wg3kKkNC+kI7KNAuZj5balFPD6IrUWMQr5HBDH8nFoHV+7WK/zbZWmjr0
+ eHQ7/vaHdHCrdV3SWXsYTNjj6z6o1eQIXsLanzFbzEixKgy+a6y4Zq6wVkxTFPlW4UKySHyhCRFOW
+ FF7CM1Ih4F3yy/9URFPlE7AG0jvu10ojM0dejpgePB8TTQ9Atdj2HrQHk4nmPCXkxFecoyJzgEBSG
+ FVMw2IOQkgnDIPtKNn2u40umC94v4nJ/tptGaUpu0=;
+Received: from [2a02:8012:c93d:0:260e:bf57:a4e9:8142]
+ (helo=cheesecake.fritz.box)
+ by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1tLksr-0008Ue-Gv; Thu, 12 Dec 2024 15:13:49 +0000
+From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+To: npiggin@gmail.com, danielhb413@gmail.com, qemu-ppc@nongnu.org,
  qemu-devel@nongnu.org
-References: <20241212141018.59428-1-philmd@linaro.org>
- <20241212141018.59428-2-philmd@linaro.org>
- <ee831fff-eb0a-4e56-8eee-99222e55d707@linaro.org>
- <8c52c730-cc87-466f-b36e-270d738b86f1@linaro.org>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <8c52c730-cc87-466f-b36e-270d738b86f1@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Date: Thu, 12 Dec 2024 15:14:01 +0000
+Message-Id: <20241212151412.570454-1-mark.cave-ayland@ilande.co.uk>
+X-Mailer: git-send-email 2.39.5
+MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::235;
- envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x235.google.com
+X-SA-Exim-Connect-IP: 2a02:8012:c93d:0:260e:bf57:a4e9:8142
+X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
+Subject: [RFC PATCH 00/11] target/ppc: implement legacy address-swizzling
+ MSR_LE support
+X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
+X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
+Received-SPF: pass client-ip=2001:41c9:1:41f::167;
+ envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -105,34 +73,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/12/24 09:09, Philippe Mathieu-Daudé wrote:
-> On 12/12/24 16:02, Richard Henderson wrote:
->> On 12/12/24 08:10, Philippe Mathieu-Daudé wrote:
->>> Since commit 139c1837db ("meson: rename included C source files
->>> to .c.inc"), QEMU standard procedure for included C files is to
->>> use *.c.inc.
->>>
->>> Besides, since commit 6a0057aa22 ("docs/devel: make a statement
->>> about includes") this is documented in the Coding Style:
->>>
->>>    If you do use template header files they should be named with
->>>    the ``.c.inc`` or ``.h.inc`` suffix to make it clear they are
->>>    being included for expansion.
->>>
->>> Therefore rename 'atomic128-cas.h' as 'atomic128-cas.h.inc'.
->>
->> But these are not templates, nor included multiple times, so...
->> I don't get it.
-> I wanted to avoid including "qemu/atomic.h" in each of them due to:
-> 
->      host/include/generic/host/atomic128-cas.h:23:11: error: call to undeclared function 
-> 'qatomic_cmpxchg__nocheck'; ISO C99 and later do not support implicit function 
-> declarations [-Wimplicit-function-declaration]
->         23 |     r.i = qatomic_cmpxchg__nocheck(ptr_align, c.i, n.i);
->            |           ^
->      1 error generated.
+This series is my attempt at reworking Gitlab issue #2661 [1] suitable for inclusion
+upstream. In summary, older PPC designs include BLRM (Byte Lane Reverse and Munging)
+logic [2] and in particular the CPU uses address swizzling to perform word swaps in
+little-endian mode. The main changes I've made compared to the provided PoC patch is
+to ensure that configurations where address swizzling is disabled are not penalised.
 
-And why would you ever have that?
+Patches 1-4 introduce general accessor functions gen_ld_tl() and gen_st_tl() for CPU
+loads and stores, whilst patches 5-6 implement the basic address swizzling logic.
+Patch 7 applies the address swizzle to translator_ldl() whilst patches 8-9 apply the
+swizzling logic to the load and store atomics. Patch 10 applies the swizzle to
+gen_conditional_store() and finally patch 11 ensures that default_tcg_memop_mask is
+set correctly when address swizzling is enabled.
 
-r~
+The series boots the test ISO image provided in GitLab [1], however it is marked RFC
+mainly for 2 reasons:
+
+- Is there a better (i.e. more efficient) way to perform the swizzle?
+
+- Which CPUs should have address swizzling little-endian mode enabled? I was unable to
+  find a concise list of the relevant CPUs.
+
+For testing purposes the address swizzling little-endian mode is hard-coded to enabled
+in the need_addrswizzle_le() function introduced by patch 5 when MSR_LE is set.
+
+Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+
+[1]: https://gitlab.com/qemu-project/qemu/-/issues/2661
+[2]: https://wiki.preterhuman.net/images/f/fc/Endian.pdf
+
+
+Mark Cave-Ayland (11):
+  target/ppc: introduce gen_ld_tl() function
+  target/ppc: replace tcg_gen_qemu_ld_tl() with gen_ld_tl()
+  target/ppc: introduce gen_st_tl() function
+  target/ppc: replace tcg_gen_qemu_st_tl() with gen_st_tl()
+  target/ppc: introduce need_addrswizzle_le() function
+  target/ppc: introduce gen_addr_swizzle_le() function
+  target/ppc: implement address swizzle for instruction translation
+  target/ppc: implement address swizzle for gen_ld_atomic()
+  target/ppc: implement address swizzle for gen_st_atomic()
+  target/ppc: implement address swizzle for gen_conditional_store()
+  target/ppc: update DisasContext default_tcg_memop_mask value
+
+ target/ppc/translate.c                     | 262 ++++++++++++++++++---
+ target/ppc/translate/fixedpoint-impl.c.inc |   4 +-
+ 2 files changed, 226 insertions(+), 40 deletions(-)
+
+-- 
+2.39.5
+
 
