@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A09D9EEB2F
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Dec 2024 16:22:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C9FB9EEAE0
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Dec 2024 16:18:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tLkvj-0005Uo-2u; Thu, 12 Dec 2024 10:16:44 -0500
+	id 1tLkvH-0005Ea-K6; Thu, 12 Dec 2024 10:16:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1tLktr-0003ex-Jl; Thu, 12 Dec 2024 10:14:51 -0500
+ id 1tLktq-0003eZ-8L; Thu, 12 Dec 2024 10:14:48 -0500
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1tLktn-0003gt-1H; Thu, 12 Dec 2024 10:14:46 -0500
+ id 1tLktn-0003h2-QS; Thu, 12 Dec 2024 10:14:46 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:MIME-Version:
  References:In-Reply-To:Message-Id:Date:To:From:Sender:Reply-To:Cc:
  Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
  Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
- bh=cAQZTLK6BzAysn+TUWjXmmrwVyYjM7uScooDVo5CvNI=; b=KJexrUf8LTUrOM8ONh+psdb0zs
- tfcvXKa9lL+GrOCFsj+EJz60OXX8bADTjz1jd0WL6gIzYc2Ho0bml5lG0zdPWCt+ZeOWZ2RloqOU2
- DhhgYse0RcHkhkZk6q+gNAlxIB8rLly0gLRIoeRdB9Lv1DcRJ2c6m037Pa+Kg+canRIboOmdb6zkZ
- I0rwb+J4f+RqmY9nyJ9Q1vPbhhZGqYZBWGie51Bz9n4RhTaJe7Wf4GXZxES47pukzz7YRjxShgj7h
- /4y4+nx21QpYOax2QOERtygwE/zfIXWny3eIzeytTrpCqLz60rVQyUdbWqxshGISJPytNYYIb+Kff
- Fm/bZW2abPKh2RSnsoy/Ulb2cJ3BwZMCTgJM8oJ8XR86Rbtq/CiUFsL4OcEUGF9/UhaggGXlNKvgi
- +McgreK0lnm5/u+K3ahLh+0XxIpMookvlaUFVX+HNpJg8oQGpfqqCN2VavlD1834A+BDkeRGU5ogG
- 1T5UNuqBIEBeWQ53YkwQ1MEgYKygOp/Y4WVTwbBTebdb8yiyEhrTlj8QZzQNjNnYGoCneezIQUhMH
- JjV6iAMZ3GX/tHdELo6g0dTgRTorCOOvuDcv0rK81mcAf1XBJJEima5+/+ce9hKV1zKwbHEYPo3vy
- s7t5XAGA4CbyqSt/RoyRe+wYrzE4UAVtTk1ZoimnY=;
+ bh=VVnaZsJ2GflS1eyAYVQtNIu9ewyB4hBJfRYsfK5TDd4=; b=tGGcwhtoGgWqlpj2g9q+64ohtr
+ D7I12jCHtlMQFA8w59YAFc8EdD49hGmrKkZ0YKx+Q3BOtkdQjJ9x9/E1unHLugqXqI73b+08Hueqd
+ VSNCDyqYJlHmQxOmYIkw+45WvCKDdLUbZWfAKGteAozl7n3NKsEtW01lBvDDSib+86h4FGV1F+rG4
+ f/QgJXZlbmg+kYoUK/8VAzm3W9NimXvSESM8FppLb4E3jEnDqQC6ebYIXcCUDuDaOKck2/NhzIpPZ
+ QKqJrR5n5iij66Sn3z9oZw1K0LlbT9tvASbYrQLAodDnR4EoaiHV43/qW8FomZzSUCtn3oPbWjHPh
+ K6WOnjWJT7JwjOvQxnaKVYr86jqX5G4G/XwqgsHID2TgVJskUHAKmInpIviQbyoqVTx3EAD+UdToj
+ TzV4aXrKXcbsJ2sf4fHwIzdRltM7mKzP7gcP5xJFjrfCCiY8YSZyqNVrjebHW1LwvN7kmJ6i9kqCt
+ SmJYS/7shL3U3n6AbI3UKo+44rGZj7vf0z8aTF7fnI7TsmyHDNpJ6hT8yr5KWpWfsdtuuUOF3HK7E
+ RvRbS8oLN5JrT3J7Bd947jk0mkz7ruHJoS6FfhjBLYOj2SwwljFz1h8+o7QtJdK3o4mn0s/bbBIYY
+ bQT6oLMjkMjiY2S42mr1AMdHxNUP37nvbdo0k86Os=;
 Received: from [2a02:8012:c93d:0:260e:bf57:a4e9:8142]
  (helo=cheesecake.fritz.box)
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1tLkt9-0008Ue-Vo; Thu, 12 Dec 2024 15:14:04 +0000
+ id 1tLktB-0008Ue-NR; Thu, 12 Dec 2024 15:14:10 +0000
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 To: npiggin@gmail.com, danielhb413@gmail.com, qemu-ppc@nongnu.org,
  qemu-devel@nongnu.org
-Date: Thu, 12 Dec 2024 15:14:05 +0000
-Message-Id: <20241212151412.570454-5-mark.cave-ayland@ilande.co.uk>
+Date: Thu, 12 Dec 2024 15:14:06 +0000
+Message-Id: <20241212151412.570454-6-mark.cave-ayland@ilande.co.uk>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241212151412.570454-1-mark.cave-ayland@ilande.co.uk>
 References: <20241212151412.570454-1-mark.cave-ayland@ilande.co.uk>
@@ -48,8 +48,7 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a02:8012:c93d:0:260e:bf57:a4e9:8142
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: [RFC PATCH 04/11] target/ppc: replace tcg_gen_qemu_st_tl() with
- gen_st_tl()
+Subject: [RFC PATCH 05/11] target/ppc: introduce need_addrswizzle_le() function
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
@@ -75,70 +74,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-To ensure that all memory stores are performed by gen_st_tl(), convert all
-remaining users of tcg_gen_qemu_st_tl() with gen_st_tl().
+This function determines whether the MSR_LE bit should be used to implement
+little endian accesses using address swizzling, instead of reversing the
+byte order.
+
+(FIXME: which CPUs?)
 
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 ---
- target/ppc/translate.c                     | 10 +++++-----
- target/ppc/translate/fixedpoint-impl.c.inc |  2 +-
- 2 files changed, 6 insertions(+), 6 deletions(-)
+ target/ppc/translate.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
 diff --git a/target/ppc/translate.c b/target/ppc/translate.c
-index bf94f3a5de..4c47f97607 100644
+index 4c47f97607..1211435039 100644
 --- a/target/ppc/translate.c
 +++ b/target/ppc/translate.c
-@@ -2724,7 +2724,7 @@ static void glue(gen_, name##epx)(DisasContext *ctx)                          \
-     gen_set_access_type(ctx, ACCESS_INT);                                     \
-     EA = tcg_temp_new();                                                      \
-     gen_addr_reg_index(ctx, EA);                                              \
--    tcg_gen_qemu_st_tl(                                                       \
-+    gen_st_tl(ctx,                                                            \
-         cpu_gpr[rD(ctx->opcode)], EA, PPC_TLB_EPID_STORE, stop);              \
+@@ -208,6 +208,12 @@ struct DisasContext {
+ #define DISAS_CHAIN        DISAS_TARGET_2  /* lookup next tb, pc updated */
+ #define DISAS_CHAIN_UPDATE DISAS_TARGET_3  /* lookup next tb, pc stale */
+ 
++/* Return true iff address swizzling required */
++static inline bool need_addrswizzle_le(const DisasContext *ctx)
++{
++    return ctx->le_mode && true;
++}
++
+ /* Return true iff byteswap is needed in a scalar memop */
+ static inline bool need_byteswap(const DisasContext *ctx)
+ {
+@@ -2578,7 +2584,9 @@ static TCGv do_ea_calc_ra(DisasContext *ctx, int ra)
+ static void gen_ld_tl(DisasContext *ctx, TCGv val, TCGv addr, TCGArg idx,
+                       MemOp memop)
+ {
+-    tcg_gen_qemu_ld_tl(val, addr, idx, memop);
++    if (!need_addrswizzle_le(ctx)) {
++        tcg_gen_qemu_ld_tl(val, addr, idx, memop);
++    }
  }
  
-@@ -2980,7 +2980,7 @@ static void gen_fetch_inc_conditional(DisasContext *ctx, MemOp memop,
-     /* E.g. for fetch and increment bounded... */
-     /* mem(EA,s) = (t != t2 ? u = t + 1 : t) */
-     tcg_gen_movcond_tl(cond, u, t, t2, u, t);
--    tcg_gen_qemu_st_tl(u, EA, ctx->mem_idx, memop);
-+    gen_st_tl(ctx, u, EA, ctx->mem_idx, memop);
+ #define GEN_QEMU_LOAD_TL(ldop, op)                                      \
+@@ -2619,7 +2627,9 @@ GEN_QEMU_LOAD_64(ld64ur, BSWAP_MEMOP(MO_UQ))
+ static void gen_st_tl(DisasContext *ctx, TCGv val, TCGv addr, TCGArg idx,
+                       MemOp memop)
+ {
+-    tcg_gen_qemu_st_tl(val, addr, idx, memop);
++    if (!need_addrswizzle_le(ctx)) {
++        tcg_gen_qemu_st_tl(val, addr, idx, memop);
++    }
+ }
  
-     /* RT = (t != t2 ? t : u = 1<<(s*8-1)) */
-     tcg_gen_movcond_tl(cond, cpu_gpr[rD(ctx->opcode)], t, t2, t,
-@@ -3045,7 +3045,7 @@ static void gen_ld_atomic(DisasContext *ctx, MemOp memop)
-             }
-             tcg_gen_movcond_tl(TCG_COND_NE, t1, t0, t1,
-                                cpu_gpr[(rt + 2) & 31], t0);
--            tcg_gen_qemu_st_tl(t1, EA, ctx->mem_idx, memop);
-+            gen_st_tl(ctx, t1, EA, ctx->mem_idx, memop);
-             tcg_gen_mov_tl(dst, t0);
-         }
-         break;
-@@ -3149,8 +3149,8 @@ static void gen_st_atomic(DisasContext *ctx, MemOp memop)
-             gen_ld_tl(ctx, t2, ea_plus_s, ctx->mem_idx, memop);
-             tcg_gen_movcond_tl(TCG_COND_EQ, s, t, t2, src, t);
-             tcg_gen_movcond_tl(TCG_COND_EQ, s2, t, t2, src, t2);
--            tcg_gen_qemu_st_tl(s, EA, ctx->mem_idx, memop);
--            tcg_gen_qemu_st_tl(s2, ea_plus_s, ctx->mem_idx, memop);
-+            gen_st_tl(ctx, s, EA, ctx->mem_idx, memop);
-+            gen_st_tl(ctx, s2, ea_plus_s, ctx->mem_idx, memop);
-         }
-         break;
-     default:
-diff --git a/target/ppc/translate/fixedpoint-impl.c.inc b/target/ppc/translate/fixedpoint-impl.c.inc
-index 717e3f122f..6b2265bd8f 100644
---- a/target/ppc/translate/fixedpoint-impl.c.inc
-+++ b/target/ppc/translate/fixedpoint-impl.c.inc
-@@ -35,7 +35,7 @@ static bool do_ldst(DisasContext *ctx, int rt, int ra, TCGv displ, bool update,
-     ea = do_ea_calc(ctx, ra, displ);
-     mop ^= ctx->default_tcg_memop_mask;
-     if (store) {
--        tcg_gen_qemu_st_tl(cpu_gpr[rt], ea, ctx->mem_idx, mop);
-+        gen_st_tl(ctx, cpu_gpr[rt], ea, ctx->mem_idx, mop);
-     } else {
-         gen_ld_tl(ctx, cpu_gpr[rt], ea, ctx->mem_idx, mop);
-     }
+ #define GEN_QEMU_STORE_TL(stop, op)                                     \
 -- 
 2.39.5
 
