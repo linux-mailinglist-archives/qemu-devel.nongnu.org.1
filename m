@@ -2,64 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03DF19EE2FA
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Dec 2024 10:27:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE7B09EE2F3
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Dec 2024 10:27:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tLfTD-00004r-D9; Thu, 12 Dec 2024 04:26:55 -0500
+	id 1tLfTE-00005L-4p; Thu, 12 Dec 2024 04:26:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tLfT2-0008VZ-3s
- for qemu-devel@nongnu.org; Thu, 12 Dec 2024 04:26:44 -0500
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tLfT8-0008WK-Ur
+ for qemu-devel@nongnu.org; Thu, 12 Dec 2024 04:26:51 -0500
+Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tLfT0-0004JF-Kc
- for qemu-devel@nongnu.org; Thu, 12 Dec 2024 04:26:43 -0500
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-43626213fffso1532435e9.1
- for <qemu-devel@nongnu.org>; Thu, 12 Dec 2024 01:26:42 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tLfT7-0004Jx-DL
+ for qemu-devel@nongnu.org; Thu, 12 Dec 2024 04:26:50 -0500
+Received: by mail-wr1-x435.google.com with SMTP id
+ ffacd0b85a97d-385e27c75f4so247961f8f.2
+ for <qemu-devel@nongnu.org>; Thu, 12 Dec 2024 01:26:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1733995601; x=1734600401; darn=nongnu.org;
+ d=linaro.org; s=google; t=1733995607; x=1734600407; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=6fcVPgvimFEsFW71qxmndkzKREqPen94Au3/alZtzNY=;
- b=JNd/6yM0b9YBNnW/8bCQpFEFPSdhJgFHK/mpWgAu+B0osxAaAGPre1v7+sAX/zm/jV
- itelYweNPTKGPvP9cjCdm6LlS6VQ8U0b9gUDsZlMrnm36u8RQMrxp8O3KarwiBSRFDs4
- tbR7b6P7i+y+SWFVBvhWxqI43NoV2rjDKuxSsRB9jmJjN0hHr+cEls/UFYVWkCwDArwz
- fqoeDASLU2ifhN1lB7qArviubUccNFFzYHWTa/V73qwHRfY/wKA8XNeAD/URkwiutGX8
- wmD+HwWumx7aPvtAkdoVwz9RCKiC1MT3sK8dsY/FdSYqPYECB8wUvLvotL78WSJrNRk8
- tcew==
+ bh=eNG57DpRLzLCRIZNlUcHaasL5EEpkFJjMdjoE5KeIVg=;
+ b=rYg2V5S1H1x36knG4ZCxp1HLN9LMof8lndXREeimof5Lk6HpTmTvY2KQf/xQAvyeVQ
+ +zW7mrmAgvf2cXrsyw9QXAaQ0noP7ervRAVM0oS5GEMcutiH+PVCZ8kSf4jfWatFzgm5
+ WJOeJHIvZIfMpxCSTxXKO2rcz9J3CrFU8DnsUV/IeKRLvvxPikSEP5VVXeBkA/Z+1SxQ
+ RcXAHU0paHAOwhCCUKG09ukeGeuLTpPP0piio3H+q4FXS7DsuOhq1I/RgtLv+bIHU+pE
+ bASC2W8X4BHbTS55uTqjE2ZrstmDw4xy8U0T0n7WX2ExguGH40Wzo9CVotywlOAGpCcz
+ ZJMQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733995601; x=1734600401;
+ d=1e100.net; s=20230601; t=1733995607; x=1734600407;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=6fcVPgvimFEsFW71qxmndkzKREqPen94Au3/alZtzNY=;
- b=mEakGe4D9a0FqWrPdwrLGBJVkiPJrwSsKc1NdSWOrRhF+M5mPn1+pjOivlVj20KZ3N
- shwkSylrC9v2jfpyIa9u8iHqHTY6nfk6lFfq4x4e/041BzAbnAGfdEzY5nT2Yqidsna3
- V36yqyBdYiipVpBciXSsod8lZZnBVqvH4nBFMOSn0Bmc8eYTd2pMc2WF8uFo7cT9YSUV
- L6k3NVBpr+NTYzvMU0n7lv9M8ZT4FKozITmVOXcOBsfSfbvMLyOQqOEE+gXL2KRLSrXP
- S96hBQht6VtqrdhXg9eTk46UNJ9ARCscWWYuNe2y5y5IU3RrMuSlexNf3I+yXdwS8C1v
- VApQ==
-X-Gm-Message-State: AOJu0Yw4d0Me1QH2pk40C2m0FY6gt0mqCJhC00TFGn8aWkVr06I2YVv3
- 00k1IYyy107nSHmeIJWBG4WRnCEww7tAXL0DmZjqtu1I5AC1wlKdXml8EpD5SSbjhxVvn+CpCi2
- X
-X-Gm-Gg: ASbGncvmb3Ll86K/s5cmxIqVEKBJw3MmP0dIpUNwvU9nfnoky4nw9PYY8Ha8Ix+4qtN
- TB3DyOith6ulIcaEtc1IBbtpWdpi07ki4JQ8Xd26NbTlF4wqATJhLKjfGhI39rZoKXe809yLLEA
- yVjCRH258QKgIfC2hv6tM1Ikq0OMrijXZiQtQF73UYVe5iM70qFvPMdO6FbUszAk59RSPqsqui+
- pTuzI3vmN26lcNI8lecysgQLYekvE45QHuxc+qF2Yp++tR3UZaNiZHrwaR0A9FhrHiACO9LzsI0
- V5LOvMjRk4dUAUV0yApK+ZBbHp/mH1o=
-X-Google-Smtp-Source: AGHT+IH+7wT4QKwhXpLgzamPaEXG3F3Fzq66ExLhqDLRG4bF4F+LWZXAQrKRa5NU3nnyZCVPtHd6qA==
-X-Received: by 2002:a05:600c:c8c:b0:434:f9ad:7222 with SMTP id
- 5b1f17b1804b1-436230dfe7cmr16098915e9.7.1733995600683; 
- Thu, 12 Dec 2024 01:26:40 -0800 (PST)
+ bh=eNG57DpRLzLCRIZNlUcHaasL5EEpkFJjMdjoE5KeIVg=;
+ b=XMFTLDZlgSOk3Z4LKhNg8sLNdOfrNoD34ZujwY6dt4oTrJRgCPUrdLIqGe/XWTlpkx
+ GmVa3+Elzflw/bf/adQflPnZJ5P202Pl2sEz2X22K3eKxiVH5v0dUujQ2ytFebVGbCaz
+ hP7CJwwqBSIj+ubQRwTam626klrD8fkYOF/IGQwG0PV5fyPaIRx/BwjetHapYiVfP5Wo
+ lEOm+TgVamxURG+YGtZgpI0b6M9qVMhewpTUqw0gfgHJbNpegrTUOndF5yUTiKenzJzY
+ R4DiXZqFMyjQlD27xhjlSUn4FzzxxlJDhjC5ImQn2HiyHOveoWeuWUCVMnCuJqc9cghM
+ aAdw==
+X-Gm-Message-State: AOJu0Yw0QDj/2rZ4Vh1WOdp1JGI+UjcTz+LKbW7lalmAc89H9VcRU2QX
+ UiO41MAwHd8b6H/ElHyZCrOPCpIQ0MlLartNQ/xXnpG4n+JBijmH/mnYKY+Ox74c6ZZzX0d4FO9
+ 8
+X-Gm-Gg: ASbGnctGeUTMDB8OdloLQcqMRIkl8DBWeAo1Oy5R1INPOlyDHK06fPC2DWne9jhCaMI
+ YbM6VNkii7TJePE0UveTvJZSmpw35L/GdlOpUnB5oKR3DS/P0X0pQt0pjl3A0Mb7W1c5KLlj6wi
+ l+dv7Ze8IdrkjHqWweuDLJTGiy3s8eqzWF8Da+nMmNebgCymIC/phX5qT37ORrHWaeja+8aKMbG
+ g7gLVi4cnfaK1pK23shtirh17XVvWFn9a/AryikrbSt6kPUFLGOhe870nJdkg2iXwMpl5X+Ttqm
+ jWT+k/vwtJkMKbd0jfRQ6Yf0WDdqxdw=
+X-Google-Smtp-Source: AGHT+IGQAfoSO1aP3sbgQfNf4TUN0FaWHfn0sm0UVTku4xzi01OWerwmZ/bBlz2lkpw6SeT/mdlI8g==
+X-Received: by 2002:a05:6000:1885:b0:385:ec89:2efd with SMTP id
+ ffacd0b85a97d-3864ce9247bmr4555146f8f.22.1733995607640; 
+ Thu, 12 Dec 2024 01:26:47 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3878251c151sm3476412f8f.90.2024.12.12.01.26.39
+ ffacd0b85a97d-38782521845sm3448273f8f.106.2024.12.12.01.26.44
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 12 Dec 2024 01:26:39 -0800 (PST)
+ Thu, 12 Dec 2024 01:26:45 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
@@ -68,17 +68,18 @@ Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>,
  Haozhong Zhang <haozhong.zhang@intel.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 1/2] system: Restrict libSDL CPPFLAGS to vl.c
-Date: Thu, 12 Dec 2024 10:26:31 +0100
-Message-ID: <20241212092632.18538-2-philmd@linaro.org>
+Subject: [PATCH 2/2] system: Restrict libpmem and libdaxctl CPPFLAGS to
+ physmem.c
+Date: Thu, 12 Dec 2024 10:26:32 +0100
+Message-ID: <20241212092632.18538-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241212092632.18538-1-philmd@linaro.org>
 References: <20241212092632.18538-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::435;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x435.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,31 +102,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Only vl.c includes libSDL headers.
+Only physmem.c includes libpmem and libdaxctl headers.
 No need to pass them to all system_ss[] files.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- system/meson.build | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ system/meson.build | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
 diff --git a/system/meson.build b/system/meson.build
-index 4952f4b2c7d..f7e2c8b826f 100644
+index f7e2c8b826f..50d915bd80c 100644
 --- a/system/meson.build
 +++ b/system/meson.build
-@@ -23,8 +23,11 @@ system_ss.add(files(
+@@ -2,10 +2,13 @@ specific_ss.add(when: 'CONFIG_SYSTEM_ONLY', if_true: [files(
+   'arch_init.c',
+   'ioport.c',
+   'memory.c',
+-  'physmem.c',
+   'watchpoint.c',
+ )])
+ 
++specific_ss.add(when: 'CONFIG_SYSTEM_ONLY', if_true: [files(
++  'physmem.c',
++), libpmem, libdaxctl])
++
+ system_ss.add(files(
+   'balloon.c',
+   'bootdevice.c',
+@@ -23,7 +26,7 @@ system_ss.add(files(
    'runstate-hmp-cmds.c',
    'runstate.c',
    'tpm-hmp-cmds.c',
-+), libpmem, libdaxctl)
-+
-+system_ss.add(files(
-   'vl.c',
--), sdl, libpmem, libdaxctl)
-+), sdl)
+-), libpmem, libdaxctl)
++))
  
- if have_tpm
-   system_ss.add(files('tpm.c'))
+ system_ss.add(files(
+   'vl.c',
 -- 
 2.45.2
 
