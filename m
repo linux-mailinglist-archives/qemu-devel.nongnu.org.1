@@ -2,82 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF1AE9EE870
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Dec 2024 15:09:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 00BBF9EE87C
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Dec 2024 15:11:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tLjsr-0002v6-MF; Thu, 12 Dec 2024 09:09:42 -0500
+	id 1tLjtf-0003cD-Mp; Thu, 12 Dec 2024 09:10:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tLjsY-0002uK-UM
- for qemu-devel@nongnu.org; Thu, 12 Dec 2024 09:09:28 -0500
-Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tLjtc-0003bW-V6
+ for qemu-devel@nongnu.org; Thu, 12 Dec 2024 09:10:29 -0500
+Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tLjsU-0002M3-4h
- for qemu-devel@nongnu.org; Thu, 12 Dec 2024 09:09:20 -0500
-Received: by mail-ed1-x533.google.com with SMTP id
- 4fb4d7f45d1cf-5d3d0205bd5so855069a12.3
- for <qemu-devel@nongnu.org>; Thu, 12 Dec 2024 06:09:11 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tLjtb-0002eK-1F
+ for qemu-devel@nongnu.org; Thu, 12 Dec 2024 09:10:28 -0500
+Received: by mail-wr1-x42a.google.com with SMTP id
+ ffacd0b85a97d-385deda28b3so463222f8f.0
+ for <qemu-devel@nongnu.org>; Thu, 12 Dec 2024 06:10:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734012550; x=1734617350; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=N1DWhVe3qIDN1JPJ29LWZKhrb8imTI0TbHJHSkmU2RU=;
- b=JmxKko9aRKb5ujxdP+MMF2MWWVUR/KW/LYMLVQVbuJTi2Mf23msblAfajevkIRc+f6
- T6DEAi9PjSocrq5Gnj55GIxHSCfpFMRVIcInK8V7yRTezPkdKjVaK+1aBqiVRV18ABAq
- oPIic+LFEebjRoXPNGzuLE+mW8beRC1Djpe3DHnK1gIoDe3WqcYtfbeV1XlU7HQ19yXL
- P2sJOcnCuFZOzM+Rb8IFnOsFzt/BXq54xh+kZ6BYUoeUNtdCCsp3T0xRqfs1k3ph3EyK
- kP7DKKPnlcMGPUjmiiYZzug5F0H1C1Q9WagnPSDh2JtgqAmGbK/aGz41mVev50t07Fsh
- trew==
+ d=linaro.org; s=google; t=1734012624; x=1734617424; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=Z6lYC8dWochLcUJNegfdM4xCIAMjFl1Jo4JV99TZ6P8=;
+ b=XEFi39V11HB8hq5J9LgodN2kizRIzW4x6gYslEyECXEjlsbks+fCYnhhXxkCwKNyDn
+ nDZQIBvCa0O8GsKGpT9sQNeali0MrxwfHEuIg9mtm4EMN4ZVAbMlYxl6bniiTXdAmQiR
+ TEzSAVMm5t4G/7LnctXCf7KOtJgfHNukVkfWKVat491wihtG5kmKaMB/e/al8c0x/2gw
+ bSY/086FGw6SqyaAkLjUMjL2GpfA2NZf2hu3zXpHFaIQUjTtSiWqYISy1O65Ws+Ty/IP
+ pphWHF0zAC2PMLwNYltS22sj5pROt1WBUvpNoSDq6QwiSmtw5HtyYdW9vaKn73/4aArz
+ vV3g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734012550; x=1734617350;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=N1DWhVe3qIDN1JPJ29LWZKhrb8imTI0TbHJHSkmU2RU=;
- b=WB6tWdYF+rxA/wtf0PGI904otx75nzEBawpYgjwV6jmHpwRgx9SbpxFxj9LH5c2LoP
- gjQyjlWQhZ2Ml2WnRR0GWfTCqIwBqF0lOlspk6zLt+JIHg1wVkOZX/yDB8rW+kNkGrlp
- V0lMd/ewRv+vXQR2DCNx7U7dmt6TkRY1Qoh2TVkqEjay7xTkVzsgfW5lmzhlyM3v78iY
- BrPog27fW8UzZSDd11N5ci0ZdvvJahylC6w2iCfot0geM9SX8BFSuoWlHvlhoCM7LUk/
- aM5z0AfPW2qUUxhpVWXxzrReXXijWlKD1JeW2SLpstu6dTeYbJai8QWJTy/7A56mfTVv
- dWzQ==
-X-Gm-Message-State: AOJu0Yxflc/Pi4AFjA8YaSV/lqCZj/dk9Z4WSij8UcMQyfxRG1LmoNur
- jePgviMLXgiJb6gJz0iR4a3FELHAkfOJuwATFROj/ZcSo9arTrun3ov+YYMJz70=
-X-Gm-Gg: ASbGnctkA8pgIYQiHtQGwc/xUuRZHKl9v86HqLgYjUjUcq4fFFluCNtGg8R1NhuIl4S
- bcSsBobhtuURLkr5KVbVjvD8EueD+ObbA0+KuRQ1sLpBhIm7wXOffgU1wRUPzT8lnnyqg8YhmGq
- uKaozePBvEvB1XPIR7NVVh7T3ESA4oOcWIolY2c07mvdsh8XRJyLcw/BDgF81DGRzZO4pUNAKDM
- nlQdkJJl+GQ/HDOQVdmCYZPm8vCER+1ymC+8sKj8hjTGkmmtiRotFg=
-X-Google-Smtp-Source: AGHT+IEUV38q83hWjV4GY5BLJs+GXwq/C55F24Prye1jvpEk5P4NXkjKjn9yG0JqqJsAfOAZfw5RAg==
-X-Received: by 2002:a17:907:68a9:b0:aa6:59ee:1a19 with SMTP id
- a640c23a62f3a-aa6c1d073b4mr361658866b.60.1734012549608; 
- Thu, 12 Dec 2024 06:09:09 -0800 (PST)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-aa69964872asm485835466b.103.2024.12.12.06.09.08
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 12 Dec 2024 06:09:09 -0800 (PST)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 179955F769;
- Thu, 12 Dec 2024 14:09:08 +0000 (GMT)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org,  Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: Re: [PATCH] semihosting/uaccess: Briefly document returned values
-In-Reply-To: <20241212115413.42109-1-philmd@linaro.org> ("Philippe
- =?utf-8?Q?Mathieu-Daud=C3=A9=22's?= message of "Thu, 12 Dec 2024 12:54:13
- +0100")
-References: <20241212115413.42109-1-philmd@linaro.org>
-User-Agent: mu4e 1.12.7; emacs 29.4
-Date: Thu, 12 Dec 2024 14:09:08 +0000
-Message-ID: <875xnpro1n.fsf@draig.linaro.org>
+ d=1e100.net; s=20230601; t=1734012624; x=1734617424;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=Z6lYC8dWochLcUJNegfdM4xCIAMjFl1Jo4JV99TZ6P8=;
+ b=Ie+iPohZZySoBv6WB7a063SdufDDiKJAc+QF3rfFfhPaUYIM/7lPERy66wSJRoLoCI
+ 84HILqzPchvfkiM6/pDNyhIM/ZfMejyMtwfm31AO1V3KV/MJA+OmVVj4dWt29jOgIomf
+ 00B53MNHASg5dGYSGENFi2/TKeFyHuqqsb18CmA50iq2K9m5Nd8VeQQMwRvQIWoInjpu
+ XyMpxCUPC3KkyahBSIspAXIVuAtFq0HkusxkOXsdXsJNb+sO1fJZi5kk205XcXtihpy5
+ MI0BZ7xW3II3G963fKcZQsVVfz2xlce00im9HR+trcwXnXVtFn44oTnLdvwf/6ZBZxJj
+ hfhw==
+X-Gm-Message-State: AOJu0YywysLel6rePy9476YlXjMp8oYPiLBc7mFZ8otKiGB4X8KAjUwb
+ 1oovkSg9aViJqGh+0+qZ476hL6Rz8NCGR3zlKkZWTqlorDrtsmKXDkpNo7T2RT6DEHil2Xxd5iA
+ 1
+X-Gm-Gg: ASbGncsdha92hq2Gi6dyfA4oSTmmObLPX3uDgjuCh7gan45Bh4xnnKHEW3b0cNLHxoG
+ OCnB/96aioLkP6r5zV/KsilAA+0W9MGFXDmER5+FrFDMnk/BF2d3LzNqxE3KhjY/uH6ebnNfZ8C
+ EjLkE7wDHfJirNYxymhx1YL+EFcCb+chPrNv/wvwQST2jnrWMf3U0DDQbrAYqdzzBe1dNy9C38d
+ wpD4NXaLihthCuHWbUWyOK7Kx1hAuGwCc+5Imi24AFnQ/wWGipsL0bbN7xL6UF9HwAB2otR5VTu
+ ET3lzik8oCI4LP9UXYiYhwhYmyAyyek=
+X-Google-Smtp-Source: AGHT+IFsA0QLrNiuOIE4UpylrjvoWGygdJAiisbjeBD9qT5hEAzJICOh5vlPbJ8Qe49m74jDzAhZ6g==
+X-Received: by 2002:a5d:64cf:0:b0:386:3918:16cd with SMTP id
+ ffacd0b85a97d-387877dcaafmr2725943f8f.59.1734012620165; 
+ Thu, 12 Dec 2024 06:10:20 -0800 (PST)
+Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-43625579464sm17794725e9.10.2024.12.12.06.10.19
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Thu, 12 Dec 2024 06:10:19 -0800 (PST)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH 0/3] qemu/atomic: Header cleanups
+Date: Thu, 12 Dec 2024 15:10:15 +0100
+Message-ID: <20241212141018.59428-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.45.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::533;
- envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x533.google.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,17 +94,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> writes:
+- Include "qemu/atomic.h" in "qemu/atomic128.h"
+- Use .h.inc suffix
 
-> Since it is not obvious the get/put_user*() methods
-> can return an error, add brief docstrings about it.
-> Also remind to use *unlock_user() when appropriate.
->
-> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+Philippe Mathieu-Daudé (3):
+  qemu/atomic: Rename atomic128-cas.h headers using .h.inc suffix
+  qemu/atomic: Rename atomic128-ldst.h headers using .h.inc suffix
+  qemu/atomic128: Include missing 'qemu/atomic.h' header
 
-Queued to semihosting/next, thanks.
+ host/include/aarch64/host/atomic128-cas.h                    | 2 +-
+ include/qemu/atomic128.h                                     | 5 +++--
+ .../aarch64/host/{atomic128-ldst.h => atomic128-ldst.h.inc}  | 0
+ .../generic/host/{atomic128-cas.h => atomic128-cas.h.inc}    | 0
+ .../generic/host/{atomic128-ldst.h => atomic128-ldst.h.inc}  | 0
+ .../host/{atomic128-ldst.h => atomic128-ldst.h.inc}          | 0
+ .../x86_64/host/{atomic128-ldst.h => atomic128-ldst.h.inc}   | 2 +-
+ host/include/x86_64/host/load-extract-al16-al8.h.inc         | 2 +-
+ 8 files changed, 6 insertions(+), 5 deletions(-)
+ rename host/include/aarch64/host/{atomic128-ldst.h => atomic128-ldst.h.inc} (100%)
+ rename host/include/generic/host/{atomic128-cas.h => atomic128-cas.h.inc} (100%)
+ rename host/include/generic/host/{atomic128-ldst.h => atomic128-ldst.h.inc} (100%)
+ rename host/include/loongarch64/host/{atomic128-ldst.h => atomic128-ldst.h.inc} (100%)
+ rename host/include/x86_64/host/{atomic128-ldst.h => atomic128-ldst.h.inc} (96%)
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+-- 
+2.45.2
+
 
