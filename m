@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 404749EE557
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Dec 2024 12:47:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A15329EE559
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Dec 2024 12:48:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tLheW-0006r8-Cq; Thu, 12 Dec 2024 06:46:44 -0500
+	id 1tLheb-0006s5-K7; Thu, 12 Dec 2024 06:46:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1tLheU-0006qm-1F
- for qemu-devel@nongnu.org; Thu, 12 Dec 2024 06:46:42 -0500
+ id 1tLheX-0006rR-Pm
+ for qemu-devel@nongnu.org; Thu, 12 Dec 2024 06:46:45 -0500
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1tLheR-0007B0-Q0
- for qemu-devel@nongnu.org; Thu, 12 Dec 2024 06:46:41 -0500
+ id 1tLheV-0007Bh-Pl
+ for qemu-devel@nongnu.org; Thu, 12 Dec 2024 06:46:45 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:MIME-Version:
  References:In-Reply-To:Message-Id:Date:To:From:Sender:Reply-To:Cc:
  Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
  Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
- bh=gSRZ84p/o+uVH6BE0fgH48VInYzmzA5a6bI3xpxAUZ8=; b=KE6CK6xNTbiY4NnAzPRejQkjm/
- Bqf/WoUXBwdS62zHF+JQcAWmCj741HGmsxnHMVhK3huKDvCAIUUP16GVGjZQKB+FV35xzdQgtVaSA
- F2CgidKn72hyqB96la9kV9mh0Kpr8fX9K+QGoIijFlfYv9g9lA+bOjLJYeT9NNsIw2+FIj91fOVPw
- Dbd3Z6vUSLeI0nfQiJrqFWv+QuplPSjwlG4QL8W9Yx6Dv5Me3xNbhUqNJdzD/XMvNfjvdAokk7qPR
- TP9Y5Q/9o+GXnr+IEMEqkiK4bAiS0x/gTsnsGHQI1vwYj7LvgpayGmnE78LbToNbd0dyNz82UH0G+
- tW9Ro8pn2ESCkFBPHqYb+wuXjhuHWvpXn3rhpsphq+mCIkfzmBXdUWQZbXtOe2ZD1QMjpduLVKv5U
- ZHJQ7K0cu8QaBJnWqlqJKbFHFKPe0tDwT51tpy2S3qldCqPuwHM8Y65L4xH9Wl7ZkHtsBikSY+mkZ
- fdtrcGKbfJj6ZTH5ifQgfAL3JfK4QWumSrWAYumd9mhjXMnF0WCq4l7OwERhykIY4+jzEJLz2KovG
- jNsiGb6J475zVHeRzSYHSYgOci1vcDdpJCq7RIZCiC4S8+qq9r72DV7MtQyha/srEKcFvh8sOThtv
- QoOB9bqxs82pkR+Jge/fVyuBWQWIald14lK6esMpw=;
+ bh=TW6acEL97ls8l8AGKBm2A8W3Y/leu7DELxMRD7Pnh6E=; b=Rqw8GQO5p5fOfFwYT1RUCmQJql
+ 61/E43t4pZWIzWKj2uDNbONhgfmXm+KCpRjdyNVbDCJxbMuZaDNRP1PlSmK0JqojsPa8ka1jFNhkz
+ tUrNfvVm3XqsxBDKsaQV7q7Y20NReY/MQy14smRmvF5WC7Ia6QFPvbdkwZG3G/tPYepdQmOLXD07o
+ 31mNpEb3bvkn3/QkDZLgWUEFc2xiEhSxaTg2/Pp/ygvrAxMMa9v2+RfYnR2LkqV/Lc3Y1ZgckI7Fc
+ CoTAWt+jcWOkVh2FE0RPSEDs51UCsbZ2bNq4pkk9QIpHiRB9zYs0Fw7+ha1GPkVRp7Q8j0Smmnnty
+ I7jbXIgDri93yTFJkK0JooDpT9CAZ6TYcNlHq7SNlWX7+GQWLg6sNbBaFyOtns0+ChbC1aB5E7xVf
+ zr61Qnd85H9WNNVn+kY9XgoFm9UO9Cfg0E2/40SABglmbcmxzadgkZL2o6JUDmJhExT0Ew1D9u9/t
+ 2BjWi2MMUPcgFP3jTE3t1WoYqJOwCmS5oP966eK0inAJR6k2FhQSEcPmeangU/flqnvFlWlglV4do
+ hLZpHK0Ji9wv6WIPrPdHLLqRyODBEArzfAbgQz5Ws5vNft4cBBSIT2u0SnwGfA5OPa5hlyEf0lg+e
+ J/l836s6nNaWTblbtebSMnxirYd4w6x03yv7wmQgg=;
 Received: from [2a02:8012:c93d:0:260e:bf57:a4e9:8142]
  (helo=cheesecake.fritz.box)
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1tLhdv-00070a-28; Thu, 12 Dec 2024 11:46:07 +0000
+ id 1tLhdv-00070a-FT; Thu, 12 Dec 2024 11:46:11 +0000
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 To: huth@tuxfamily.org,
 	qemu-devel@nongnu.org
-Date: Thu, 12 Dec 2024 11:45:49 +0000
-Message-Id: <20241212114620.549285-4-mark.cave-ayland@ilande.co.uk>
+Date: Thu, 12 Dec 2024 11:45:50 +0000
+Message-Id: <20241212114620.549285-5-mark.cave-ayland@ilande.co.uk>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241212114620.549285-1-mark.cave-ayland@ilande.co.uk>
 References: <20241212114620.549285-1-mark.cave-ayland@ilande.co.uk>
@@ -50,8 +50,7 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a02:8012:c93d:0:260e:bf57:a4e9:8142
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: [PATCH v2 03/34] next-cube: create new next.scsi container memory
- region
+Subject: [PATCH v2 04/34] next-cube: move next_scsi_init() to next_pc_realize()
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
@@ -77,40 +76,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Move the ESP SCSI and SCSI CSR registers to the new next.scsi container memory
-region.
+This reflects that the SCSI interface exists within the NeXT Peripheral
+Controller (PC).
 
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Reviewed-by: Thomas Huth <huth@tuxfamily.org>
 ---
- hw/m68k/next-cube.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ hw/m68k/next-cube.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
 diff --git a/hw/m68k/next-cube.c b/hw/m68k/next-cube.c
-index 550e7f0b0a..f95ed4a170 100644
+index f95ed4a170..9b3578cd4f 100644
 --- a/hw/m68k/next-cube.c
 +++ b/hw/m68k/next-cube.c
-@@ -94,6 +94,7 @@ struct NeXTPC {
- 
-     MemoryRegion mmiomem;
-     MemoryRegion scrmem;
-+    MemoryRegion scsimem;
- 
-     uint32_t scr1;
-     uint32_t scr2;
-@@ -843,7 +844,12 @@ static void next_scsi_init(DeviceState *pcdev)
-     sysbusdev = SYS_BUS_DEVICE(dev);
-     sysbus_realize_and_unref(sysbusdev, &error_fatal);
-     sysbus_connect_irq(sysbusdev, 0, qdev_get_gpio_in(pcdev, NEXT_SCSI_I));
--    sysbus_mmio_map(sysbusdev, 0, 0x2114000);
+@@ -908,6 +908,9 @@ static void next_pc_realize(DeviceState *dev, Error **errp)
+                           "next.scr", 0x20000);
+     sysbus_init_mmio(sbd, &s->mmiomem);
+     sysbus_init_mmio(sbd, &s->scrmem);
 +
-+    memory_region_init(&next_pc->scsimem, OBJECT(next_pc), "next.scsi", 0x40);
-+    memory_region_add_subregion(&next_pc->scsimem, 0x0,
-+                                sysbus_mmio_get_region(sysbusdev, 0));
-+
-+    memory_region_add_subregion(&next_pc->scrmem, 0x14000, &next_pc->scsimem);
++    /* SCSI */
++    next_scsi_init(dev);
+ }
  
-     next_pc->scsi_reset = qdev_get_gpio_in(dev, 0);
-     next_pc->scsi_dma = qdev_get_gpio_in(dev, 1);
+ /*
+@@ -1051,8 +1054,6 @@ static void next_cube_init(MachineState *machine)
+ 
+     /* TODO: */
+     /* Network */
+-    /* SCSI */
+-    next_scsi_init(pcdev);
+ 
+     /* DMA */
+     memory_region_init_io(&m->dmamem, NULL, &next_dma_ops, machine,
 -- 
 2.39.5
 
