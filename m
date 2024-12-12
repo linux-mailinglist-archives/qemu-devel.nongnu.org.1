@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEE3E9EFBC5
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Dec 2024 19:56:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 104579EFBBD
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Dec 2024 19:56:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tLoLx-0006yS-Db; Thu, 12 Dec 2024 13:56:01 -0500
+	id 1tLoM7-0008P3-I4; Thu, 12 Dec 2024 13:56:12 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tLoLl-0006jt-0K
- for qemu-devel@nongnu.org; Thu, 12 Dec 2024 13:55:51 -0500
-Received: from mail-pj1-x102a.google.com ([2607:f8b0:4864:20::102a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tLoLv-00079e-46
+ for qemu-devel@nongnu.org; Thu, 12 Dec 2024 13:55:59 -0500
+Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tLoLh-0006qD-L3
- for qemu-devel@nongnu.org; Thu, 12 Dec 2024 13:55:47 -0500
-Received: by mail-pj1-x102a.google.com with SMTP id
- 98e67ed59e1d1-2eed82ca5b4so795133a91.2
- for <qemu-devel@nongnu.org>; Thu, 12 Dec 2024 10:55:45 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tLoLt-0006rB-Fj
+ for qemu-devel@nongnu.org; Thu, 12 Dec 2024 13:55:58 -0500
+Received: by mail-pf1-x433.google.com with SMTP id
+ d2e1a72fcca58-725ef0397aeso855298b3a.2
+ for <qemu-devel@nongnu.org>; Thu, 12 Dec 2024 10:55:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734029743; x=1734634543; darn=nongnu.org;
+ d=linaro.org; s=google; t=1734029755; x=1734634555; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=D1n7XC7xi+MDcynuS7YvQbch88e08UKjXYajcUgA5ak=;
- b=CNSjHlhSyr9lqq7Z+7AMERGjgaSDBMhB++VW/nid6vN4e8UvDEwMx38+9rJaq9AFTQ
- yKDqgBkB+/MvYiJSDjCCHuIQfMA9wbFTOmi7b2kE1NsNbUKTDw33ie812IvhBU1LewCP
- kgLg5j4TC8aGffPmEDN2eijHTZL4hrwMyMmH0GlZgyRv1OB3O3zQ1l69xYa0PMgE98le
- DEjjLL5nrBDVxM4DZEk24jYh3Hu/FzGV937NKscXgYU9QbpnImwp3YETC0JyLD97w59D
- QQHQAcCgz5COrbx+v0trhJf2Y9Ry1UepTY1N3R/tYugE3OZHFRz1edkr0KHZ7gsmV32g
- QmQg==
+ bh=CdnrZGUpPexZaRp1gyb0f+RzXNxhb5NfrEmgTu8F7Mg=;
+ b=v5C1JNiDlgdabxT/Q8X/VnkKqTRST9HJlyKDUO4l+gv3cwsDdWH38AR46P3aJFhcbj
+ 4rODYm6SACHnNywqpAbwfwu9R6Ds3is3NJ9tLyd1tDXw1/r2oh/4RPY6R5gadE3TFD1q
+ FqXB4Nd+wKVyvC7+GCPN2bJwyJi8862mJocTnuE7evc01GAgR8wTHvsiPP5HQsqZoOGe
+ 64hnsewWzkwkbfLKXYziy4mrd/z7yNOFV6xHnxQ8TfPk2tRmURh2vssOfN90zzlwVAS4
+ 6mmXXvZ7ttrXZ8V1c7rY4kIa0f+hfINdSEGFQrn/iuZxjywoZ34hojgZMKe/ITbotLqz
+ 5yrw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734029743; x=1734634543;
+ d=1e100.net; s=20230601; t=1734029755; x=1734634555;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=D1n7XC7xi+MDcynuS7YvQbch88e08UKjXYajcUgA5ak=;
- b=Pp8ljpLbWZlel/gBpRrMCLN8vCnthVV8GaTXZzMae1kJImGy3DDbgsep5zcqQvduHR
- TZLx3Ur2JGnVpq+ZnqsLSxKOtUMLm0nLnKHSIiZhcM1A+wvdBhQ/T0PbTTpL1xrzk4FU
- VV3UcIl4Brqi/r8N/mhE/dXxtrr38nEG3FRHGkREE7RyfxY/G4MK1xw+epZQ6TLRyKTk
- xtpFBAt7GuWVsIX91T1Qy9ZYh0OV+QfcEwxAldlZN6N5ztfhMnKpwilWv3ADJoLs0Ifb
- wX1dqT6uiOUtdu7P6o8rz9QtG7gLgT8HwRsNi7v81e7AuMA08ShHOCoD4gvaKI/Jzdk4
- esww==
-X-Gm-Message-State: AOJu0Yw8HxukOYu5yxLUCffEU8jLGfrQWg6T5BIIykRU1kqO8gxl5anD
- zqTLVLXGW84/F7ygE1NmQr0aiQqpjyMte8nOS2Fz4/TnGr+hB048isXGqWN8ch8vZBycNt+/xue
- q
-X-Gm-Gg: ASbGncuQYEfOQLfEbYlKkCGfpVL1htrU3JAqHPAExMOKPln2gPCqVsSy6JLfqHCSzsH
- ylBuQ4ZdK89dCfjCOhEuZH/749YChSu5uWscLNwjz4ymq7HPjGv9nDPgRBycnTHYODSs6EuUiG1
- 2toOxga8FmQy4nWSJZgr8E/hzQ4kdkAOqciJKTiylGLdhcW1VG0CzGVBrxnOZqPVrZByeU0UdON
- Y/Jer2kQZP4dyl3R69qLGFE8uiG8SfrQTq6wrLmiWE1hiXbaauvgz0MyFqefclnudD5jh/UinDj
- YZciAy/5mpPnqaSbAGgidOmGnvIFMnw=
-X-Google-Smtp-Source: AGHT+IHxMrXErsgg5aA8HGY51xHibK/19ppf4Y6eZwr+JG3+GG1ZHq1hG0tqfh193adkaqF3LQ5p7Q==
-X-Received: by 2002:a17:90b:2e4e:b0:2ea:8d1e:a85f with SMTP id
- 98e67ed59e1d1-2f127fd7c19mr14135244a91.17.1734029743673; 
- Thu, 12 Dec 2024 10:55:43 -0800 (PST)
+ bh=CdnrZGUpPexZaRp1gyb0f+RzXNxhb5NfrEmgTu8F7Mg=;
+ b=GAR0b9rnWnJ0c+dqCfH6+Qm0h2WHvtvXl21Wc4KhROHDf7iIes4zYO5AEf0s7Uf5t0
+ n7EYShNe5OlMd8UTSR6KhNfiM4V1eGfT1xMdxpIET7BhdAsL9SfLKhSh4zX5JCQDe2RJ
+ J2HgaIg3/6sVBtoEKgk4DFRzJdyhqFkr2J1o8pE6wvVwsIqdbS8u4f/9DBtEBF0amYCl
+ jgQAZnxKyfLVcP8YqfYPY+6Cqe/xJ3xabSPc7tJSFekzrrtg4iFlcZEZDGEV0BogaMjK
+ gm61E+tNQI+tYIKBpijoJlkmtZk1AHsIZS5/POdqj/tLJkXbrkz4Zy4Vo+DDDA1HAZer
+ 5Y9A==
+X-Gm-Message-State: AOJu0YyPktDfhA3r6yFIk5RBNVFT5CVOANm+1isn2W4+vKpL4mRmUR4x
+ /OopkDx9lvk6YMHccu/4RUNM5etYFIyLs0K69QxM9TE7gLrYx+5vT5gRFSzmKJk3Zj4//Dy1WmV
+ M
+X-Gm-Gg: ASbGncsQ251N8iCWcQoqyL0fjloZg82cyFQhvozVpjHAuB0jyWkUtwE+aAHHDuyex5X
+ CEsRkEhmF8vUgsjklcQTQ6fLu6I3D9oayOaqCIdLswN4I7/XpGwbOWSJU+jXbrfcwxEaZ39Q7N6
+ sXSBqI5Aw9Jh+NQO0QEtNLsruNZOmUTMoqGwu81Jb5tL0QjERuLq5Kte7u4ARsJvWiFbe9e5+4B
+ azAhe4QqO+WJZtckhcrZSRCUcBPOxcJ6l39ZcJW3i5vf7mHYoOmOg8Qb6p+dM3lu4a0wYvqI+tG
+ Vo8SlR8Z5kgVq401blDJQ1nwalM1bXA=
+X-Google-Smtp-Source: AGHT+IE5bIF9VtLylFp1j+0DZ2Ndsno1rZUC7F8vX1IC/vjDv3nvLZ2NAyLsHTzaYZ/0TM+/P6mzHw==
+X-Received: by 2002:a05:6a20:728f:b0:1e1:ab63:c5e8 with SMTP id
+ adf61e73a8af0-1e1dab643edmr1888496637.26.1734029754866; 
+ Thu, 12 Dec 2024 10:55:54 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2f142de360fsm1612797a91.27.2024.12.12.10.55.40
+ d2e1a72fcca58-725da7e0181sm9392168b3a.134.2024.12.12.10.55.52
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 12 Dec 2024 10:55:43 -0800 (PST)
+ Thu, 12 Dec 2024 10:55:54 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 10/18] accel/tcg: Move TranslationBlock declarations to
- 'tb-internal.h'
-Date: Thu, 12 Dec 2024 19:53:33 +0100
-Message-ID: <20241212185341.2857-11-philmd@linaro.org>
+Subject: [PATCH 11/18] accel/tcg: Move user-related declarations out of
+ 'exec/cpu-all.h' (1/4)
+Date: Thu, 12 Dec 2024 19:53:34 +0100
+Message-ID: <20241212185341.2857-12-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241212185341.2857-1-philmd@linaro.org>
 References: <20241212185341.2857-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102a;
- envelope-from=philmd@linaro.org; helo=mail-pj1-x102a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
+ envelope-from=philmd@linaro.org; helo=mail-pf1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,177 +99,118 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Move declarations related to TranslationBlock out of the
-generic "internal-target.h" to "tb-internal.h".
+Move declarations related to page protection under user
+emulation from "exec/cpu-all.h" to "user/page-protection.h".
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- accel/tcg/internal-target.h | 32 ------------------------------
- accel/tcg/tb-internal.h     | 39 +++++++++++++++++++++++++++++++++++++
- accel/tcg/cpu-exec.c        |  1 +
- accel/tcg/cputlb.c          |  1 +
- accel/tcg/tb-maint.c        |  1 +
- accel/tcg/translate-all.c   |  1 +
- accel/tcg/translator.c      |  1 +
- 7 files changed, 44 insertions(+), 32 deletions(-)
+ include/exec/cpu-all.h         | 5 -----
+ include/user/page-protection.h | 8 ++++++++
+ bsd-user/main.c                | 1 +
+ bsd-user/mmap.c                | 1 +
+ linux-user/main.c              | 1 +
+ linux-user/mmap.c              | 1 +
+ linux-user/syscall.c           | 1 +
+ 7 files changed, 13 insertions(+), 5 deletions(-)
 
-diff --git a/accel/tcg/internal-target.h b/accel/tcg/internal-target.h
-index 0437d798295..1cfa318dc6c 100644
---- a/accel/tcg/internal-target.h
-+++ b/accel/tcg/internal-target.h
-@@ -36,42 +36,10 @@ static inline void page_table_config_init(void) { }
- void page_table_config_init(void);
+diff --git a/include/exec/cpu-all.h b/include/exec/cpu-all.h
+index 1c8e0446d06..3d97323893b 100644
+--- a/include/exec/cpu-all.h
++++ b/include/exec/cpu-all.h
+@@ -127,11 +127,6 @@ extern const TargetPageBits target_page;
+ #define TARGET_PAGE_ALIGN(addr) ROUND_UP((addr), TARGET_PAGE_SIZE)
+ 
+ #if defined(CONFIG_USER_ONLY)
+-void page_dump(FILE *f);
+-
+-typedef int (*walk_memory_regions_fn)(void *, target_ulong,
+-                                      target_ulong, unsigned long);
+-int walk_memory_regions(void *, walk_memory_regions_fn);
+ 
+ int page_get_flags(target_ulong address);
+ 
+diff --git a/include/user/page-protection.h b/include/user/page-protection.h
+index 448c7a03449..ea11cf9e328 100644
+--- a/include/user/page-protection.h
++++ b/include/user/page-protection.h
+@@ -12,9 +12,17 @@
+ #error Cannot include this header from system emulation
  #endif
  
--#ifdef CONFIG_USER_ONLY
--#include "user/page-protection.h"
--/*
-- * For user-only, page_protect sets the page read-only.
-- * Since most execution is already on read-only pages, and we'd need to
-- * account for other TBs on the same page, defer undoing any page protection
-- * until we receive the write fault.
-- */
--static inline void tb_lock_page0(tb_page_addr_t p0)
--{
--    page_protect(p0);
--}
--
--static inline void tb_lock_page1(tb_page_addr_t p0, tb_page_addr_t p1)
--{
--    page_protect(p1);
--}
--
--static inline void tb_unlock_page1(tb_page_addr_t p0, tb_page_addr_t p1) { }
--static inline void tb_unlock_pages(TranslationBlock *tb) { }
--#else
--void tb_lock_page0(tb_page_addr_t);
--void tb_lock_page1(tb_page_addr_t, tb_page_addr_t);
--void tb_unlock_page1(tb_page_addr_t, tb_page_addr_t);
--void tb_unlock_pages(TranslationBlock *);
--#endif
--
- #ifdef CONFIG_SOFTMMU
--void tb_invalidate_phys_range_fast(ram_addr_t ram_addr,
--                                   unsigned size,
--                                   uintptr_t retaddr);
- G_NORETURN void cpu_io_recompile(CPUState *cpu, uintptr_t retaddr);
- #endif /* CONFIG_SOFTMMU */
++#include "cpu-param.h"
++#include "exec/target_long.h"
+ #include "exec/translation-block.h"
  
--bool tb_invalidate_phys_page_unwind(tb_page_addr_t addr, uintptr_t pc);
--
- /**
-  * tcg_req_mo:
-  * @type: TCGBar
-diff --git a/accel/tcg/tb-internal.h b/accel/tcg/tb-internal.h
-index 8313f90fd71..90be61f296a 100644
---- a/accel/tcg/tb-internal.h
-+++ b/accel/tcg/tb-internal.h
-@@ -9,6 +9,45 @@
- #ifndef ACCEL_TCG_TB_INTERNAL_TARGET_H
- #define ACCEL_TCG_TB_INTERNAL_TARGET_H
- 
-+#include "exec/cpu-all.h"
-+#include "exec/exec-all.h"
-+#include "exec/translation-block.h"
+ void page_protect(tb_page_addr_t page_addr);
+ int page_unprotect(tb_page_addr_t address, uintptr_t pc);
++typedef int (*walk_memory_regions_fn)(void *, target_ulong,
++                                      target_ulong, unsigned long);
 +
-+#ifdef CONFIG_USER_ONLY
++int walk_memory_regions(void *, walk_memory_regions_fn);
++
++void page_dump(FILE *f);
+ 
+ #endif
+diff --git a/bsd-user/main.c b/bsd-user/main.c
+index 61ca73c4781..0a5bc578365 100644
+--- a/bsd-user/main.c
++++ b/bsd-user/main.c
+@@ -38,6 +38,7 @@
+ #include "qemu/plugin.h"
+ #include "exec/exec-all.h"
+ #include "user/guest-base.h"
 +#include "user/page-protection.h"
-+/*
-+ * For user-only, page_protect sets the page read-only.
-+ * Since most execution is already on read-only pages, and we'd need to
-+ * account for other TBs on the same page, defer undoing any page protection
-+ * until we receive the write fault.
-+ */
-+static inline void tb_lock_page0(tb_page_addr_t p0)
-+{
-+    page_protect(p0);
-+}
-+
-+static inline void tb_lock_page1(tb_page_addr_t p0, tb_page_addr_t p1)
-+{
-+    page_protect(p1);
-+}
-+
-+static inline void tb_unlock_page1(tb_page_addr_t p0, tb_page_addr_t p1) { }
-+static inline void tb_unlock_pages(TranslationBlock *tb) { }
-+#else
-+void tb_lock_page0(tb_page_addr_t);
-+void tb_lock_page1(tb_page_addr_t, tb_page_addr_t);
-+void tb_unlock_page1(tb_page_addr_t, tb_page_addr_t);
-+void tb_unlock_pages(TranslationBlock *);
-+#endif
-+
-+#ifdef CONFIG_SOFTMMU
-+void tb_invalidate_phys_range_fast(ram_addr_t ram_addr,
-+                                   unsigned size,
-+                                   uintptr_t retaddr);
-+#endif /* CONFIG_SOFTMMU */
-+
-+bool tb_invalidate_phys_page_unwind(tb_page_addr_t addr, uintptr_t pc);
-+
- void tb_check_watchpoint(CPUState *cpu, uintptr_t retaddr);
+ #include "tcg/startup.h"
+ #include "qemu/timer.h"
+ #include "qemu/envlist.h"
+diff --git a/bsd-user/mmap.c b/bsd-user/mmap.c
+index 775e905960b..346f2cefd32 100644
+--- a/bsd-user/mmap.c
++++ b/bsd-user/mmap.c
+@@ -18,6 +18,7 @@
+  */
+ #include "qemu/osdep.h"
+ #include "exec/page-protection.h"
++#include "user/page-protection.h"
  
- #endif
-diff --git a/accel/tcg/cpu-exec.c b/accel/tcg/cpu-exec.c
-index 396fa6f4a6b..e9eaab223f9 100644
---- a/accel/tcg/cpu-exec.c
-+++ b/accel/tcg/cpu-exec.c
-@@ -41,6 +41,7 @@
- #include "tb-jmp-cache.h"
- #include "tb-hash.h"
- #include "tb-context.h"
-+#include "tb-internal.h"
- #include "internal-common.h"
- #include "internal-target.h"
+ #include "qemu.h"
  
-diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
-index 451cf13e876..4f6eebd90ec 100644
---- a/accel/tcg/cputlb.c
-+++ b/accel/tcg/cputlb.c
-@@ -40,6 +40,7 @@
- #include "tb-internal.h"
- #include "trace.h"
- #include "tb-hash.h"
-+#include "tb-internal.h"
- #include "internal-common.h"
- #include "internal-target.h"
- #ifdef CONFIG_PLUGIN
-diff --git a/accel/tcg/tb-maint.c b/accel/tcg/tb-maint.c
-index bdf5a0b7d58..8e272cf790f 100644
---- a/accel/tcg/tb-maint.c
-+++ b/accel/tcg/tb-maint.c
-@@ -30,6 +30,7 @@
- #include "tcg/tcg.h"
- #include "tb-hash.h"
- #include "tb-context.h"
-+#include "tb-internal.h"
- #include "internal-common.h"
- #include "internal-target.h"
- 
-diff --git a/accel/tcg/translate-all.c b/accel/tcg/translate-all.c
-index bad3fce0ffb..572a8a87972 100644
---- a/accel/tcg/translate-all.c
-+++ b/accel/tcg/translate-all.c
-@@ -62,6 +62,7 @@
- #include "tb-jmp-cache.h"
- #include "tb-hash.h"
- #include "tb-context.h"
-+#include "tb-internal.h"
- #include "internal-common.h"
- #include "internal-target.h"
- #include "tcg/perf.h"
-diff --git a/accel/tcg/translator.c b/accel/tcg/translator.c
-index ff5dabc9014..ce5eae4349e 100644
---- a/accel/tcg/translator.c
-+++ b/accel/tcg/translator.c
-@@ -19,6 +19,7 @@
- #include "tcg/tcg-op-common.h"
- #include "internal-target.h"
- #include "disas/disas.h"
-+#include "tb-internal.h"
- 
- static void set_can_do_io(DisasContextBase *db, bool val)
- {
+diff --git a/linux-user/main.c b/linux-user/main.c
+index b09af8d4365..06037304cb1 100644
+--- a/linux-user/main.c
++++ b/linux-user/main.c
+@@ -39,6 +39,7 @@
+ #include "qemu/module.h"
+ #include "qemu/plugin.h"
+ #include "user/guest-base.h"
++#include "user/page-protection.h"
+ #include "exec/exec-all.h"
+ #include "exec/gdbstub.h"
+ #include "gdbstub/user.h"
+diff --git a/linux-user/mmap.c b/linux-user/mmap.c
+index e4bf5d5f39c..4e0444b4cbc 100644
+--- a/linux-user/mmap.c
++++ b/linux-user/mmap.c
+@@ -22,6 +22,7 @@
+ #include "exec/log.h"
+ #include "exec/page-protection.h"
+ #include "qemu.h"
++#include "user/page-protection.h"
+ #include "user-internals.h"
+ #include "user-mmap.h"
+ #include "target_mman.h"
+diff --git a/linux-user/syscall.c b/linux-user/syscall.c
+index 1ce4c79784f..c54b199b6d3 100644
+--- a/linux-user/syscall.c
++++ b/linux-user/syscall.c
+@@ -135,6 +135,7 @@
+ #include "signal-common.h"
+ #include "loader.h"
+ #include "user-mmap.h"
++#include "user/page-protection.h"
+ #include "user/safe-syscall.h"
+ #include "qemu/guest-random.h"
+ #include "qemu/selfmap.h"
 -- 
 2.45.2
 
