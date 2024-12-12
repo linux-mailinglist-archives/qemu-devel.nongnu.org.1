@@ -2,57 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25E779EE58D
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Dec 2024 12:53:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 404749EE557
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Dec 2024 12:47:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tLheX-0006rP-Cv; Thu, 12 Dec 2024 06:46:45 -0500
+	id 1tLheW-0006r8-Cq; Thu, 12 Dec 2024 06:46:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1tLheU-0006qn-1c
+ id 1tLheU-0006qm-1F
  for qemu-devel@nongnu.org; Thu, 12 Dec 2024 06:46:42 -0500
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1tLheR-0007Az-QW
+ id 1tLheR-0007B0-Q0
  for qemu-devel@nongnu.org; Thu, 12 Dec 2024 06:46:41 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
- MIME-Version:References:In-Reply-To:Message-Id:Date:To:From:Sender:Reply-To:
- Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
- Resent-To:Resent-Cc:Resent-Message-ID;
- bh=DKzEpPmI0MZmSbnedA2smid+AevzVEfve3PG/SI1rcg=; b=G6H9Gk6S/NrKmKzdNMHbbZTKI1
- d21bmXcF3JxYAxWwwo53ZNBhPvfuO3KDtV+Hlf9ydcOfJq56d2baJOjF88gAsBSROa740bdCiw+jd
- XAJ9lSAib7Mq4T0PwdX0IrHSaWxpSnOQI4WnCp1kCexx5ayZaeWxOIzpBxZg9whAeOwecdYeif98y
- YVl864Q6wdPRMDNfcmjwa+1RPJG7ldWYYLVH8+KVurcI35hP9GAlkQoRGhwEEbQffilb4b9mO3zTV
- JN/v0Ftwh8UtyTy0suPog58BBKeHaZhMDJAzEs03FLWGRlT71kFSCZZdLOnN3tR6l7hxc1Ewl9u+w
- AjU/DBEJ2RiXvdX6a+Y8S/H+gUuhgMK3i8SAtzvVr1fA76vvM0xaemnUA82aa+xgFPkiolHO9kDPW
- uN4+xjygP3PFVxSpIhK/k1hjnVbZZN6orB2E/qPSrDpVx5FD0Vv/1mTJzVhHJk/eK5plNTSBM18Qh
- pYxFOf/HNbF0y4l4X6oGfAG/dE6vkelb0MdDAqNHVGM1X6NX/+yGCs2lPa+CR/eV/TYnXaimWA1Fm
- fs9lguqPyhrrJGUe4xILC7Nj+9r+h5KZOGOKok0eZfnWsZjRIVt1oYLpYdvtLuUPpHt5fTYMmwxKl
- Cb92kZlvsiR6Th/bteB4DvMpKyyyXX9PADrobnOGE=;
+ d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:MIME-Version:
+ References:In-Reply-To:Message-Id:Date:To:From:Sender:Reply-To:Cc:
+ Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+ Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
+ bh=gSRZ84p/o+uVH6BE0fgH48VInYzmzA5a6bI3xpxAUZ8=; b=KE6CK6xNTbiY4NnAzPRejQkjm/
+ Bqf/WoUXBwdS62zHF+JQcAWmCj741HGmsxnHMVhK3huKDvCAIUUP16GVGjZQKB+FV35xzdQgtVaSA
+ F2CgidKn72hyqB96la9kV9mh0Kpr8fX9K+QGoIijFlfYv9g9lA+bOjLJYeT9NNsIw2+FIj91fOVPw
+ Dbd3Z6vUSLeI0nfQiJrqFWv+QuplPSjwlG4QL8W9Yx6Dv5Me3xNbhUqNJdzD/XMvNfjvdAokk7qPR
+ TP9Y5Q/9o+GXnr+IEMEqkiK4bAiS0x/gTsnsGHQI1vwYj7LvgpayGmnE78LbToNbd0dyNz82UH0G+
+ tW9Ro8pn2ESCkFBPHqYb+wuXjhuHWvpXn3rhpsphq+mCIkfzmBXdUWQZbXtOe2ZD1QMjpduLVKv5U
+ ZHJQ7K0cu8QaBJnWqlqJKbFHFKPe0tDwT51tpy2S3qldCqPuwHM8Y65L4xH9Wl7ZkHtsBikSY+mkZ
+ fdtrcGKbfJj6ZTH5ifQgfAL3JfK4QWumSrWAYumd9mhjXMnF0WCq4l7OwERhykIY4+jzEJLz2KovG
+ jNsiGb6J475zVHeRzSYHSYgOci1vcDdpJCq7RIZCiC4S8+qq9r72DV7MtQyha/srEKcFvh8sOThtv
+ QoOB9bqxs82pkR+Jge/fVyuBWQWIald14lK6esMpw=;
 Received: from [2a02:8012:c93d:0:260e:bf57:a4e9:8142]
  (helo=cheesecake.fritz.box)
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1tLhdr-00070a-CN; Thu, 12 Dec 2024 11:46:06 +0000
+ id 1tLhdv-00070a-28; Thu, 12 Dec 2024 11:46:07 +0000
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 To: huth@tuxfamily.org,
 	qemu-devel@nongnu.org
-Date: Thu, 12 Dec 2024 11:45:48 +0000
-Message-Id: <20241212114620.549285-3-mark.cave-ayland@ilande.co.uk>
+Date: Thu, 12 Dec 2024 11:45:49 +0000
+Message-Id: <20241212114620.549285-4-mark.cave-ayland@ilande.co.uk>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241212114620.549285-1-mark.cave-ayland@ilande.co.uk>
 References: <20241212114620.549285-1-mark.cave-ayland@ilande.co.uk>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a02:8012:c93d:0:260e:bf57:a4e9:8142
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: [PATCH v2 02/34] next-cube: remove overlap between next.dma and
- next.mmio memory regions
+Subject: [PATCH v2 03/34] next-cube: create new next.scsi container memory
+ region
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
@@ -78,101 +77,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Change the start of the next.mmio memory region so that it follows on directly
-after the next.dma memory region. Increase the address offsets in
-next_mmio_read() and next_mmio_write(), and reduce the size of the next.mmio
-memory region accordingly.
+Move the ESP SCSI and SCSI CSR registers to the new next.scsi container memory
+region.
 
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/m68k/next-cube.c | 28 ++++++++++++++--------------
- 1 file changed, 14 insertions(+), 14 deletions(-)
+ hw/m68k/next-cube.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
 diff --git a/hw/m68k/next-cube.c b/hw/m68k/next-cube.c
-index 0418fbc8aa..550e7f0b0a 100644
+index 550e7f0b0a..f95ed4a170 100644
 --- a/hw/m68k/next-cube.c
 +++ b/hw/m68k/next-cube.c
-@@ -266,23 +266,23 @@ static uint64_t next_mmio_read(void *opaque, hwaddr addr, unsigned size)
-     uint64_t val;
+@@ -94,6 +94,7 @@ struct NeXTPC {
  
-     switch (addr) {
--    case 0x7000:
-+    case 0x2000:    /* 0x2005000 */
-         /* DPRINTF("Read INT status: %x\n", s->int_status); */
-         val = s->int_status;
-         break;
+     MemoryRegion mmiomem;
+     MemoryRegion scrmem;
++    MemoryRegion scsimem;
  
--    case 0x7800:
-+    case 0x2800:    /* 0x2007800 */
-         DPRINTF("MMIO Read INT mask: %x\n", s->int_mask);
-         val = s->int_mask;
-         break;
+     uint32_t scr1;
+     uint32_t scr2;
+@@ -843,7 +844,12 @@ static void next_scsi_init(DeviceState *pcdev)
+     sysbusdev = SYS_BUS_DEVICE(dev);
+     sysbus_realize_and_unref(sysbusdev, &error_fatal);
+     sysbus_connect_irq(sysbusdev, 0, qdev_get_gpio_in(pcdev, NEXT_SCSI_I));
+-    sysbus_mmio_map(sysbusdev, 0, 0x2114000);
++
++    memory_region_init(&next_pc->scsimem, OBJECT(next_pc), "next.scsi", 0x40);
++    memory_region_add_subregion(&next_pc->scsimem, 0x0,
++                                sysbus_mmio_get_region(sysbusdev, 0));
++
++    memory_region_add_subregion(&next_pc->scrmem, 0x14000, &next_pc->scsimem);
  
--    case 0xc000 ... 0xc003:
--        val = extract32(s->scr1, (4 - (addr - 0xc000) - size) << 3,
-+    case 0x7000 ... 0x7003:    /* 0x200c000 */
-+        val = extract32(s->scr1, (4 - (addr - 0x7000) - size) << 3,
-                         size << 3);
-         break;
- 
--    case 0xd000 ... 0xd003:
--        val = extract32(s->scr2, (4 - (addr - 0xd000) - size) << 3,
-+    case 0x8000 ... 0x8003:    /* 0x200d000 */
-+        val = extract32(s->scr2, (4 - (addr - 0x8000) - size) << 3,
-                         size << 3);
-         break;
- 
-@@ -301,25 +301,25 @@ static void next_mmio_write(void *opaque, hwaddr addr, uint64_t val,
-     NeXTPC *s = NEXT_PC(opaque);
- 
-     switch (addr) {
--    case 0x7000:
-+    case 0x2000:    /* 0x2005000 */
-         DPRINTF("INT Status old: %x new: %x\n", s->int_status,
-                 (unsigned int)val);
-         s->int_status = val;
-         break;
- 
--    case 0x7800:
-+    case 0x2800:    /* 0x2007800 */
-         DPRINTF("INT Mask old: %x new: %x\n", s->int_mask, (unsigned int)val);
-         s->int_mask  = val;
-         break;
- 
--    case 0xc000 ... 0xc003:
-+    case 0x7000 ... 0x7003:    /* 0x200c000 */
-         DPRINTF("SCR1 Write: %x\n", (unsigned int)val);
--        s->scr1 = deposit32(s->scr1, (4 - (addr - 0xc000) - size) << 3,
-+        s->scr1 = deposit32(s->scr1, (4 - (addr - 0x7000) - size) << 3,
-                             size << 3, val);
-         break;
- 
--    case 0xd000 ... 0xd003:
--        s->scr2 = deposit32(s->scr2, (4 - (addr - 0xd000) - size) << 3,
-+    case 0x8000 ... 0x8003:    /* 0x200d000 */
-+        s->scr2 = deposit32(s->scr2, (4 - (addr - 0x8000) - size) << 3,
-                             size << 3, val);
-         next_scr2_led_update(s);
-         next_scr2_rtc_update(s);
-@@ -897,7 +897,7 @@ static void next_pc_realize(DeviceState *dev, Error **errp)
-     qdev_init_gpio_in(dev, next_irq, NEXT_NUM_IRQS);
- 
-     memory_region_init_io(&s->mmiomem, OBJECT(s), &next_mmio_ops, s,
--                          "next.mmio", 0xd0000);
-+                          "next.mmio", 0x9000);
-     memory_region_init_io(&s->scrmem, OBJECT(s), &next_scr_ops, s,
-                           "next.scr", 0x20000);
-     sysbus_init_mmio(sbd, &s->mmiomem);
-@@ -1000,7 +1000,7 @@ static void next_cube_init(MachineState *machine)
-     sysbus_create_simple(TYPE_NEXTFB, 0x0B000000, NULL);
- 
-     /* MMIO */
--    sysbus_mmio_map(SYS_BUS_DEVICE(pcdev), 0, 0x02000000);
-+    sysbus_mmio_map(SYS_BUS_DEVICE(pcdev), 0, 0x02005000);
- 
-     /* BMAP IO - acts as a catch-all for now */
-     sysbus_mmio_map(SYS_BUS_DEVICE(pcdev), 1, 0x02100000);
+     next_pc->scsi_reset = qdev_get_gpio_in(dev, 0);
+     next_pc->scsi_dma = qdev_get_gpio_in(dev, 1);
 -- 
 2.39.5
 
