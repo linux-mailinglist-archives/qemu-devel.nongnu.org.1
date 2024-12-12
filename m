@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D21BB9EEADF
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Dec 2024 16:18:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3590A9EEAEB
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Dec 2024 16:19:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tLkxE-0007ba-IT; Thu, 12 Dec 2024 10:18:18 -0500
+	id 1tLkvE-0004wD-3J; Thu, 12 Dec 2024 10:16:13 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1tLkuF-0003va-7e; Thu, 12 Dec 2024 10:15:14 -0500
+ id 1tLkuF-0003vZ-7A; Thu, 12 Dec 2024 10:15:14 -0500
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1tLkuD-0003uJ-2V; Thu, 12 Dec 2024 10:15:10 -0500
+ id 1tLkuD-0003uV-Dc; Thu, 12 Dec 2024 10:15:10 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:MIME-Version:
  References:In-Reply-To:Message-Id:Date:To:From:Sender:Reply-To:Cc:
  Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
  Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
- bh=wMWr+/32bt+QmZysuEMt/P2NvfOADfqTFHhlBuvcNBU=; b=gqcf4hCXKMEQHJOFo2hc0tTxS5
- NsYw+gpjX2QYbSjPu79CardpRN/YPuJvPYHHuQ6FrWmKPjXMX252L4NTwy6b4r47ARlikhwhwvogO
- mLL3lYviXCX8huiOfDu71ml+/CjDZl8leN1WXa0SkoxCos5noUqrFknrGyyrPsN8cwLvbNF05d72b
- ouqpW38SE/7Aq0Mt+IPHVXe0WxNCUPP2paMsxY/aBEBEC82w1Ja9nOLZ6bfxwoPNCAH8vFVGhcoP3
- umCmeSJTgceJFjAEhRh/rsEzJgUb+0Yw+gWttY/qqM2tniYbU22zZ+Wswwlxl92HAT72zkWhC1xmw
- QPdC/FVykAaqVm6jEGVZQr2YRhoEgC8fOSmGC/wDW5gPzIeo+I13/1lRYpDE9yaAQtOw1RoS25JPD
- Tn9clToGItdciBh3/PHNalbPs3EzkTSPZhb22aLx+yNpit5p9fBsdGPzD/zVlWrw/WimVlwN3il0R
- wynClSKmDnQUHCnOo8KGRajQwy/+kuhtz8S1jIVQGzj70as64FQ/nVtGYM2QWz7r9QI5PlCOPfZ2a
- wE8tYKLDWH/hSTDgZz4NnvWFLgvHYjckGGc7lz9O1F8flum9SjcOIO4llcaCmOorLHDfzhNfz5EnZ
- PPkBAIxl8atnhhTQ/5Dl+gFojlL4AEEWQxQWwrpJ4=;
+ bh=Px9HUwsmu6zWLJ+nb6mDRAmYsNBhD0kHW7MypdC0u48=; b=ZYZKJ0Pel6kSELakO4meoOuvEU
+ ww69jLW7GoCpiFPzUSh6W9lyEpNZYJg3EGsmo/VlFJ9h7PWg77/mda7AmYxiDYl7D/GXxCrFfjSFQ
+ /yQa5F4aR5AzHaZrO/xK6STMiUNNw+DeZWqK65bkhhoBBEtLDOX7CbH4ob17u87B96l2kQxerm3F9
+ KbV+qxdPHZ0D49uV/Kemc+uCrpNizpFxmiV8AUdOCp8g8HvMf56H9pKkCvzNU2cnAYlwmX+/tOBHK
+ 7KsW7lw60lW7lb0kPIU8Xs2ywa0m1NLHMC7bCXjbpahD9akZG3+sS8PmR3gwyG38LRpM9cL73so4S
+ bDhSrnotWWUS7o72K8PtOWJ8Vz5/URStn27dXF+uGaHice5lOO3gH3Xr8rTdMBq0hj0YZheWd1t9Y
+ pdr6CYPgDzgVYzr4Ku3RGKIWsCbipgEWbuJBFwtrQxSBSfk13vv0lrSirhWdCuWYrkvZ9a0AdOQ10
+ XDMdlJdhlVOfx/1bqRZyAn6rddE5/hHkSUxFMxAqqgA6mkBYUrd2iX+nfzrWG11ygZhQSbDHjViyY
+ VUo3Y8k1g5J0K96/bmahdQ35soqNpkQgTwvwkPVchWr0v//r7NFQIWuclmTS+xHcd6E5SH0euWX6b
+ BH2Q+3THmn7xR2wxC5/Y38ImaZBkJewpC10amKNEc=;
 Received: from [2a02:8012:c93d:0:260e:bf57:a4e9:8142]
  (helo=cheesecake.fritz.box)
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1tLktb-0008Ue-Jb; Thu, 12 Dec 2024 15:14:35 +0000
+ id 1tLktf-0008Ue-Pw; Thu, 12 Dec 2024 15:14:36 +0000
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 To: npiggin@gmail.com, danielhb413@gmail.com, qemu-ppc@nongnu.org,
  qemu-devel@nongnu.org
-Date: Thu, 12 Dec 2024 15:14:11 +0000
-Message-Id: <20241212151412.570454-11-mark.cave-ayland@ilande.co.uk>
+Date: Thu, 12 Dec 2024 15:14:12 +0000
+Message-Id: <20241212151412.570454-12-mark.cave-ayland@ilande.co.uk>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241212151412.570454-1-mark.cave-ayland@ilande.co.uk>
 References: <20241212151412.570454-1-mark.cave-ayland@ilande.co.uk>
@@ -48,8 +48,8 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a02:8012:c93d:0:260e:bf57:a4e9:8142
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: [RFC PATCH 10/11] target/ppc: implement address swizzle for
- gen_conditional_store()
+Subject: [RFC PATCH 11/11] target/ppc: update DisasContext
+ default_tcg_memop_mask value
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
@@ -75,41 +75,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The gen_conditional_store() function uses tcg_gen_atomic_cmpxchg_tl() within its
-implementation. Update gen_conditional_store() so that it implements the address
-swizzle if required.
+If address swizzling is enabled for little endian accesses, don't use little endian
+memory ordering. This is because the conversion is performed by swizzling the
+physical address lines as opposed to reversing the memory storage order.
 
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 ---
- target/ppc/translate.c | 15 ++++++++++++---
- 1 file changed, 12 insertions(+), 3 deletions(-)
+ target/ppc/translate.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/target/ppc/translate.c b/target/ppc/translate.c
-index fc44e3293a..e8ae96cd46 100644
+index e8ae96cd46..4a0be4d70c 100644
 --- a/target/ppc/translate.c
 +++ b/target/ppc/translate.c
-@@ -3345,9 +3345,18 @@ static void gen_conditional_store(DisasContext *ctx, MemOp memop)
-     tcg_gen_brcond_tl(TCG_COND_NE, EA, cpu_reserve, lfail);
-     tcg_gen_brcondi_tl(TCG_COND_NE, cpu_reserve_length, memop_size(memop), lfail);
- 
--    tcg_gen_atomic_cmpxchg_tl(t0, cpu_reserve, cpu_reserve_val,
--                              cpu_gpr[rs], ctx->mem_idx,
--                              DEF_MEMOP(memop) | MO_ALIGN);
-+    if (!need_addrswizzle_le(ctx)) {
-+        tcg_gen_atomic_cmpxchg_tl(t0, cpu_reserve, cpu_reserve_val,
-+                                  cpu_gpr[rs], ctx->mem_idx,
-+                                  DEF_MEMOP(memop) | MO_ALIGN);
-+    } else {
-+        TCGv ta = tcg_temp_new();
-+
-+        gen_addr_swizzle_le(ta, cpu_reserve, memop);
-+        tcg_gen_atomic_cmpxchg_tl(t0, ta, cpu_reserve_val,
-+                                  cpu_gpr[rs], ctx->mem_idx,
-+                                  DEF_MEMOP(memop) | MO_ALIGN);
-+    }
-     tcg_gen_setcond_tl(TCG_COND_EQ, t0, t0, cpu_reserve_val);
-     tcg_gen_shli_tl(t0, t0, CRF_EQ_BIT);
-     tcg_gen_or_tl(cr0, cr0, t0);
+@@ -6664,7 +6664,8 @@ static void ppc_tr_init_disas_context(DisasContextBase *dcbase, CPUState *cs)
+     ctx->access_type = -1;
+     ctx->need_access_type = !mmu_is_64bit(env->mmu_model);
+     ctx->le_mode = (hflags >> HFLAGS_LE) & 1;
+-    ctx->default_tcg_memop_mask = ctx->le_mode ? MO_LE : MO_BE;
++    ctx->default_tcg_memop_mask = (!need_addrswizzle_le(ctx) &&
++                                   ctx->le_mode) ? MO_LE : MO_BE;
+     ctx->flags = env->flags;
+ #if defined(TARGET_PPC64)
+     ctx->excp_model = env->excp_model;
 -- 
 2.39.5
 
