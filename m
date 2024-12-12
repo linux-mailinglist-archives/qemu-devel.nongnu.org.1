@@ -2,135 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 184499EE31D
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Dec 2024 10:34:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 68B3D9EE32E
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Dec 2024 10:36:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tLfZx-0002In-GY; Thu, 12 Dec 2024 04:33:54 -0500
+	id 1tLfbY-0003i7-Ey; Thu, 12 Dec 2024 04:35:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tLfZn-0002H5-Jf
- for qemu-devel@nongnu.org; Thu, 12 Dec 2024 04:33:44 -0500
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1tLfbW-0003hb-Rd
+ for qemu-devel@nongnu.org; Thu, 12 Dec 2024 04:35:30 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tLfZk-0006Yi-Iw
- for qemu-devel@nongnu.org; Thu, 12 Dec 2024 04:33:42 -0500
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1tLfbU-0006sA-UA
+ for qemu-devel@nongnu.org; Thu, 12 Dec 2024 04:35:30 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1733996019;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ s=mimecast20190719; t=1733996127;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=yiIM67NB2mLW6gP+ZHVrKpq+a52jW9Qr7upW40i+TRM=;
- b=P7Ed50Vp+M3K0lgmpc90DCWKD98z/0pg/jCJQVvJ4lHIdTUFoYaB4DDNJzGnDuuc8mvFBO
- 8rDNWd6mdLnSlhJcVhRXdJ66elZtNFmvRCBDk3HSMOuEAWKdHuWLRBM8DuQKOMMbWaGqQL
- 9CCObmmcN97fOafK09QtVodlgl5otPM=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-605-yd0p3CVGPYqVIqF8dBkF8g-1; Thu, 12 Dec 2024 04:33:37 -0500
-X-MC-Unique: yd0p3CVGPYqVIqF8dBkF8g-1
-X-Mimecast-MFC-AGG-ID: yd0p3CVGPYqVIqF8dBkF8g
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-436248d1240so2411595e9.0
- for <qemu-devel@nongnu.org>; Thu, 12 Dec 2024 01:33:37 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733996016; x=1734600816;
- h=content-transfer-encoding:in-reply-to:autocrypt:content-language
- :from:references:cc:to:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=yiIM67NB2mLW6gP+ZHVrKpq+a52jW9Qr7upW40i+TRM=;
- b=r0r/QmKqCRL+/KjO5pHUgTxYdSioAMaJhE5IuxBtJQP2DiUSkUdzOIwyE3sUbLJ5QH
- 2tyLTsldhz9g8KNihu5JNl7c4+nbW2CO8Q81IYm+cSYwr2jCCilrFDMvXmBB+A1D2zHg
- 2DIdSfom/u/93TlgRYqBo6KHz24pvXchxVrg5j9+sqxBjxxaxiAERA06hHFpS6zUYefi
- gRvmMxecpA3JjsrWXq6vEkW+qlxIqam5nIM7VRoXjNGtIOihi6BUHcVgLuVeV+AYk2+6
- ZKPk1AwTQGtH7zwwGGft/sbcHexMBDFjFN/OuoeSlaGbOrsjOwE8sKEs9FKhqLdg6QYM
- Akwg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXX3zfkhiLXPlT+WcSZFMFd33NFWFaqphi5vAwPPCNoFMVwUwl1iDfv7701JtR43N93vrzstUxCQki+@nongnu.org
-X-Gm-Message-State: AOJu0YxryAmRDj9vg5eGdCfTr5lBDFLcN8bkLcbg3Scd/NiBMCJliLvA
- xMFgTOgLebWQkPMeFpznN3CvlvV0PbmzGYBfidWLUUu7t1BOn2IxuZ6mcPMxOWackDj9KPSfEEl
- WdiBxfhO+wzLY4Rp3d1tYHMvndy6hA8PGmlQyYJRTcgWkWaQRKYyA
-X-Gm-Gg: ASbGncsoickPDhgnGSbljli3LvAhRg/XkHOySfJlPGWbWf90ruF9xvVVizHTLikdu+Z
- sRpYYQLjAOedn6+mxenEgFZ2I+IdCkCzVBQqVkttnjgfSuSqAzJaWqb9LrpMqhKm4C9v5xwy8G5
- Oq3Kcp4mhu1RKfd8u35171/ztmXAAAe21FHoAOzgQ4Hnl2wydyjBWTeB9HBmmxrpQ97TJ+s1H+S
- E7EGENGrZOfy4wGh67Ktmw1m2H9qiR0GEQFcG1R1I/Tuv0sMt8bxkCJm6EPrTdek9URmPJNFt2Q
- rNKx5Q==
-X-Received: by 2002:a5d:5f91:0:b0:385:e43a:4dd8 with SMTP id
- ffacd0b85a97d-3864ce86740mr4346054f8f.4.1733996016111; 
- Thu, 12 Dec 2024 01:33:36 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGmpQfrllvCOB3PPukKyhwQ7o6rEzQV6j4Pc3p0+9nDHM2+PilbTEmjSWx9mV/7V75+7HQTqA==
-X-Received: by 2002:a5d:5f91:0:b0:385:e43a:4dd8 with SMTP id
- ffacd0b85a97d-3864ce86740mr4346029f8f.4.1733996015744; 
- Thu, 12 Dec 2024 01:33:35 -0800 (PST)
-Received: from [10.33.192.206] (nat-pool-str-t.redhat.com. [149.14.88.106])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3878251dd5bsm3466346f8f.99.2024.12.12.01.33.35
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 12 Dec 2024 01:33:35 -0800 (PST)
-Message-ID: <ff5351d2-be1b-4b40-b6d0-43cdb10fb29c@redhat.com>
-Date: Thu, 12 Dec 2024 10:33:34 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 13/31] tests/functional: switch over to using
- self.scratch_file()
-To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- qemu-devel@nongnu.org
-Cc: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ in-reply-to:in-reply-to:references:references;
+ bh=1H2CuKHGFwe8PU0fXtMReYR93FZpZUQ4Bqvm3+ByV4o=;
+ b=N/4S3E+OLMxqw9wuAOSvprNDJhfmPeZjBerfUKt/TlDD+GSj4saWUsZmlCHEAlzD9WkG86
+ rTIrCPgDF2e0K9X5rTokGFi4qSegCM8Q2lLQhZtgu1dXBZ2x3cyWpAp6tXvcnkUDp8KvyP
+ NjdSko+ff7w1e9MXOgZTxtF2iHxB5SQ=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-17-1COXBa7UP0Gp4RevDOrFKg-1; Thu,
+ 12 Dec 2024 04:35:25 -0500
+X-MC-Unique: 1COXBa7UP0Gp4RevDOrFKg-1
+X-Mimecast-MFC-AGG-ID: 1COXBa7UP0Gp4RevDOrFKg
+Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id A784C195604F; Thu, 12 Dec 2024 09:35:24 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.114])
+ by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 501141956086; Thu, 12 Dec 2024 09:35:22 +0000 (UTC)
+Date: Thu, 12 Dec 2024 09:35:19 +0000
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Thomas Huth <thuth@redhat.com>
+Cc: qemu-devel@nongnu.org,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Thomas Huth <huth@tuxfamily.org>
+Subject: Re: [PATCH v2 05/31] tests/functional: drop 'tesseract_available'
+ helper
+Message-ID: <Z1quVwBUetdjM8fK@redhat.com>
 References: <20241211172648.2893097-1-berrange@redhat.com>
- <20241211172648.2893097-14-berrange@redhat.com>
-From: Thomas Huth <thuth@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <20241211172648.2893097-14-berrange@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+ <20241211172648.2893097-6-berrange@redhat.com>
+ <1ad6e5e3-a54a-4361-b31f-3b08bad5180f@redhat.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+In-Reply-To: <1ad6e5e3-a54a-4361-b31f-3b08bad5180f@redhat.com>
+User-Agent: Mutt/2.2.13 (2024-03-09)
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -25
 X-Spam_score: -2.6
@@ -152,23 +88,82 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/12/2024 18.26, Daniel P. Berrangé wrote:
-> Replace any instances of
+On Thu, Dec 12, 2024 at 07:57:37AM +0100, Thomas Huth wrote:
+> On 11/12/2024 18.26, Daniel P. Berrangé wrote:
+> > Platforms we target have new enough tesseract that it suffices to merely
+> > check if the binary exists.
+> > 
+> > Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+> > ---
+> >   tests/functional/qemu_test/tesseract.py | 12 +-----------
+> >   tests/functional/test_m68k_nextcube.py  |  8 +++-----
+> >   2 files changed, 4 insertions(+), 16 deletions(-)
+> > 
+> > diff --git a/tests/functional/qemu_test/tesseract.py b/tests/functional/qemu_test/tesseract.py
+> > index ef1833139d..1b7818090a 100644
+> > --- a/tests/functional/qemu_test/tesseract.py
+> > +++ b/tests/functional/qemu_test/tesseract.py
+> > @@ -7,17 +7,7 @@
+> >   import logging
+> > -from . import has_cmd, run_cmd
+> > -
+> > -def tesseract_available(expected_version):
+> > -    (has_tesseract, _) = has_cmd('tesseract')
+> > -    if not has_tesseract:
+> > -        return False
+> > -    (stdout, stderr, ret) = run_cmd([ 'tesseract', '--version'])
+> > -    if ret:
+> > -        return False
+> > -    version = stdout.split()[1]
+> > -    return int(version.split('.')[0]) >= expected_version
+> > +from . import run_cmd
+> >   def tesseract_ocr(image_path, tesseract_args=''):
+> >       console_logger = logging.getLogger('console')
+> > diff --git a/tests/functional/test_m68k_nextcube.py b/tests/functional/test_m68k_nextcube.py
+> > index 0124622c40..1022e8f468 100755
+> > --- a/tests/functional/test_m68k_nextcube.py
+> > +++ b/tests/functional/test_m68k_nextcube.py
+> > @@ -13,7 +13,8 @@
+> >   from qemu_test import QemuSystemTest, Asset
+> >   from unittest import skipUnless
+> > -from qemu_test.tesseract import tesseract_available, tesseract_ocr
+> > +from qemu_test import has_cmd
+> > +from qemu_test.tesseract import tesseract_ocr
+> >   PIL_AVAILABLE = True
+> >   try:
+> > @@ -53,10 +54,7 @@ def test_bootrom_framebuffer_size(self):
+> >           self.assertEqual(width, 1120)
+> >           self.assertEqual(height, 832)
+> > -    # Tesseract 4 adds a new OCR engine based on LSTM neural networks. The
+> > -    # new version is faster and more accurate than version 3. The drawback is
+> > -    # that it is still alpha-level software.
+> > -    @skipUnless(tesseract_available(4), 'tesseract OCR tool not available')
+> > +    @skipUnless(*has_cmd('tesseract') 'tesseract OCR tool not available')
 > 
->    os.path.join(self.workdir, ".../...")
->    self.workdir + "/.../..."
-> 
-> with
-> 
->    self.scratch_file("...", "...")
-> 
-> which is more compact and portable
+> The *has_cmd('tesseract') already provides the error message, so you've got
+> to drop the 'tesseract OCR tool not available' part now, otherwise this ends
+> up in an SyntaxError. You likely didn't notice since it gets replaced later
+> anyway, but for bisectability, it would be good to fix it.
 
-Looks much nicer, indeed, thanks for tackling it!
+Opps, yes, will address it.
 
-Reviewed-by: Thomas Huth <thuth@redhat.com>
+> 
+> Anyway, this is yet another good example why we should rather get rid of
+> has_cmd() ... it's too error prone, I made the same or similar mistake in
+> the past already, too.
+> 
+>  Thomas
+> 
+
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
