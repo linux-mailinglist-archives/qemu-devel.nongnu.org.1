@@ -2,68 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4895E9EE332
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Dec 2024 10:37:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C5AF89EE37E
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Dec 2024 10:56:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tLfdM-0005sP-C6; Thu, 12 Dec 2024 04:37:24 -0500
+	id 1tLfvP-0005vn-EF; Thu, 12 Dec 2024 04:56:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tLfdJ-0005rS-Hs; Thu, 12 Dec 2024 04:37:21 -0500
-Received: from mgamail.intel.com ([198.175.65.12])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tLfdH-0007Vu-GL; Thu, 12 Dec 2024 04:37:21 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1733996240; x=1765532240;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=mlYoJrzGX5NuPJYlKB4uXOWtJvTEY8ZIW1Kq3WDJKxI=;
- b=nRrGT1G43Pa39PPfTA+AD9deFE/LrpnaPFFJ9jICeqlDfDe5esCwyEHU
- u+xc8gz50NDFAcksBCGtEZ3UIwsvo4tKLlzCow5/s0mbBHfxTlW4cpTzr
- W28NVmrZSAQ1nBh9Vx93D8Xw+0WVAmDLN+dvxgC+zm/LUYUl2O27eDnh8
- DFOthAL+sSS5EPLtjFlhdOOBG26M7HlVIh66uriGO4G7BUnWKAOnLqduh
- 7SR3zcywP7k+0TQTK2oBjA3CYCo786BTwd8iTWLJPYXdoFgXjyyE9gkmy
- aL31m+eJrYeKcdqRFfUmGTpMR+KqyV4qtzvEt0Lp4HXBNbY27bLveZLYN w==;
-X-CSE-ConnectionGUID: Jx1duiFoQD2HXB2LHgcBuQ==
-X-CSE-MsgGUID: NgGqCYU7TyiTk9aPuNv44g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11278"; a="45790707"
-X-IronPort-AV: E=Sophos;i="6.12,214,1728975600"; d="scan'208";a="45790707"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Dec 2024 01:37:17 -0800
-X-CSE-ConnectionGUID: DpKcTb3TQEWjI8OndLiLMg==
-X-CSE-MsgGUID: lGRW47QqTM+0SrD5YDUSew==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,228,1728975600"; d="scan'208";a="95932009"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by fmviesa006.fm.intel.com with ESMTP; 12 Dec 2024 01:37:15 -0800
-Date: Thu, 12 Dec 2024 17:55:30 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org,
- Junjie Mao <junjie.mao@hotmail.com>
-Subject: Re: [PATCH 20/26] rust: re-export C types from qemu-api submodules
-Message-ID: <Z1qzEudUZP4OY5gh@intel.com>
-References: <20241209123717.99077-1-pbonzini@redhat.com>
- <20241209123717.99077-21-pbonzini@redhat.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tLfvJ-0005v1-K1
+ for qemu-devel@nongnu.org; Thu, 12 Dec 2024 04:55:59 -0500
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tLfvG-0005vr-M2
+ for qemu-devel@nongnu.org; Thu, 12 Dec 2024 04:55:57 -0500
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-434a852bb6eso3978595e9.3
+ for <qemu-devel@nongnu.org>; Thu, 12 Dec 2024 01:55:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1733997351; x=1734602151; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=x212bhFbd7tjCXnM1kJhf/PFqXLKhb2HDmMIdiUt4KA=;
+ b=p/X054NY3mlPTJ7csLLN1fDdgFuFwSHQMYBYjiqGo/GOGmNl+GybsCX2m27FSurArU
+ b/8dL9qoEgkRsDlCMpNWyjRUjvCzReMn76DzXf5yJH2hQR+/Wu9ORXMMYqC09lEjh+Ph
+ ac/0crHXHDnKQEYERIR4c5BEiKdYIZNr0VLnkOJ6eUBqefDy2+Npudwv2RbYWd/4Av2x
+ aSJlQmsAO+NpFLbgTS8aidRmmIA1KI95gMaxP6o6iYVQ3i69LSIYAcPEcxExj6vIwUw6
+ 73WeeXNu/I96jD0GIRqeXIEqYedVSg0i8+ecyYDOobGSDKxZA3xYBkpYgxKdgQn1ll4r
+ pfeg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1733997351; x=1734602151;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=x212bhFbd7tjCXnM1kJhf/PFqXLKhb2HDmMIdiUt4KA=;
+ b=IGOtJqmL3ZasuW0PKmLxPMjXByMWVmA4A25wXQDhxt9gktUwEBFayjRl790XAZSSPh
+ 2mhH3l9+0hNSNODpTMLwnoscE52G/NISrUEX7964vacT6HvNanErR0Ln80wOzJHuMnK7
+ FW9SucrtxPWiUPeaJfi5lL2djtxM4/hd3gvcU1T7mIIqiZbVjywvI60ukH3NQih3t+HY
+ gVW6SUd5st4qTElWlxUTcn9/DPe1mMY+vsE7M0zGlJswkj/oukDUuyaVjxFOvge7u7St
+ jAi9R+VR1uLwwwlFj9hy4wH/4BuhPdJTfko9FMv97FWuVB7pudgncIcZs1hzDppocCMI
+ nj/A==
+X-Gm-Message-State: AOJu0Yys+nJ0QDkqW/F9dzmfnfnW3y/zcPlctTjghOTTC7atCDnKhbP4
+ rk1doV8yYcHq9FieKo+0Bk7C0YadAie0DZXrYGF09SJknafsBWK3neRfMKsTApI=
+X-Gm-Gg: ASbGncv/S33H+mXYn/OkUDrCl9wsy7aYOe48Nwvze8GAmHj5IojOXszQ4Nj4ElFl/uu
+ DYVazdMsDPCTATNVWOPeePBeTnaat/oo7R6sMkQiBTrHnXKa+DvXNg+dETgY+FSIAuT+gU6/WZM
+ dnTq6DyKrWUhor3zMM1od6nVj24Sn8vQoTNHnJb3UJn7UEzTJS1dvWlDqMxSNGFBaUkOJROp7uk
+ DU1JQdeIu4hVVTJL5/GfdYWIVjbyWfl4o0d8zffrE38vvEsyZMnuWwwelNjrnX2i+Pg1lzUe0I0
+ NvFkzOf+TZcHtQ9Fu7wZuQ==
+X-Google-Smtp-Source: AGHT+IHHCwMJXClBV3EAQLuXdMJclSQaPRAFF12ObHw5vm/J7hUSOP0HHaWcCI+CLAQqetccJhbvsQ==
+X-Received: by 2002:a05:600c:3b18:b0:434:fd77:5436 with SMTP id
+ 5b1f17b1804b1-4361c38d24fmr52684475e9.15.1733997351472; 
+ Thu, 12 Dec 2024 01:55:51 -0800 (PST)
+Received: from [192.168.1.74] (88-187-86-199.subs.proxad.net. [88.187.86.199])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-436256c8baasm11390435e9.36.2024.12.12.01.55.50
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 12 Dec 2024 01:55:51 -0800 (PST)
+Message-ID: <48a61a76-3c91-4ab0-8ae7-0a9a34082c75@linaro.org>
+Date: Thu, 12 Dec 2024 10:55:50 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241209123717.99077-21-pbonzini@redhat.com>
-Received-SPF: pass client-ip=198.175.65.12; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -48
-X-Spam_score: -4.9
-X-Spam_bar: ----
-X-Spam_report: (-4.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.472,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH] meson: Run some compiler checks using
+ -Wno-unused-value
+To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>
+References: <20241211231655.98148-1-philmd@linaro.org>
+ <Z1qptPHK6QOh_TRH@redhat.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <Z1qptPHK6QOh_TRH@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -80,24 +99,86 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Dec 09, 2024 at 01:37:11PM +0100, Paolo Bonzini wrote:
-> Date: Mon,  9 Dec 2024 13:37:11 +0100
-> From: Paolo Bonzini <pbonzini@redhat.com>
-> Subject: [PATCH 20/26] rust: re-export C types from qemu-api submodules
-> X-Mailer: git-send-email 2.47.1
+On 12/12/24 10:15, Daniel P. Berrangé wrote:
+> On Thu, Dec 12, 2024 at 12:16:55AM +0100, Philippe Mathieu-Daudé wrote:
+>> When running Clang static analyzer on macOS I'm getting:
 > 
-> Long term we do not want device code to use "bindings" at all, so make it
-> possible to get the relevant types from the other modules of qemu-api.
 > 
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> ---
->  rust/qemu-api/src/qdev.rs    |  7 +++++--
->  rust/qemu-api/src/qom.rs     | 10 ++++++----
->  rust/qemu-api/src/sysbus.rs  |  3 ++-
->  rust/qemu-api/src/vmstate.rs |  9 +++++----
->  rust/qemu-api/tests/tests.rs |  3 ++-
->  5 files changed, 20 insertions(+), 12 deletions(-)
+> snip
+> 
+>> Fix by explicitly disabling -Wunused-value from these meson checks.
+>>
+>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>> ---
+>> RFC: Probably meson should do that in has_header_symbol() / has_type()?
+> 
+> How are you enabling the use of static analyzers ?  There are several
+> different ways to change compiler options and I vaguely recall some
+> approaches can trip up meson.
 
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+I prefix my build with 'scan-build':
+
+$ scan-build make
+scan-build: Using '/usr/bin/clang' for static analysis
+config-host.mak is out-of-date, running configure
+C compiler for the host machine: clang (clang 16.0.0 "Apple clang 
+version 16.0.0 (clang-1600.0.26.4)")
+
+You can reproduce without using scan-build by passing
+--extra-cflags=-Wunused-value to ./configure.
+
+We have a "disable some undesirable warnings" section in
+warn_flags[] in meson.build. If we want to ignore unused
+we should add it there, but I'd rather not ignore them ;)
+
+> 
+>> ---
+>>   meson.build | 11 +++++++----
+>>   1 file changed, 7 insertions(+), 4 deletions(-)
+>>
+>> diff --git a/meson.build b/meson.build
+>> index 147097c652e..a431aa982ac 100644
+>> --- a/meson.build
+>> +++ b/meson.build
+>> @@ -1166,7 +1166,8 @@ cocoa = dependency('appleframeworks',
+>>   vmnet = dependency('appleframeworks', modules: 'vmnet', required: get_option('vmnet'))
+>>   if vmnet.found() and not cc.has_header_symbol('vmnet/vmnet.h',
+>>                                                 'VMNET_BRIDGED_MODE',
+>> -                                              dependencies: vmnet)
+>> +                                              dependencies: vmnet,
+>> +                                              args: '-Wno-unused-value')
+>>     vmnet = not_found
+>>     if get_option('vmnet').enabled()
+>>       error('vmnet.framework API is outdated')
+>> @@ -2690,7 +2691,7 @@ config_host_data.set('CONFIG_RTNETLINK',
+>>   config_host_data.set('CONFIG_SYSMACROS',
+>>                        cc.has_header_symbol('sys/sysmacros.h', 'makedev'))
+>>   config_host_data.set('HAVE_OPTRESET',
+>> -                     cc.has_header_symbol('getopt.h', 'optreset'))
+>> +                     cc.has_header_symbol('getopt.h', 'optreset', args: '-Wno-unused-value'))
+>>   config_host_data.set('HAVE_IPPROTO_MPTCP',
+>>                        cc.has_header_symbol('netinet/in.h', 'IPPROTO_MPTCP'))
+>>   
+>> @@ -2708,10 +2709,12 @@ config_host_data.set('HAVE_BLK_ZONE_REP_CAPACITY',
+>>   # has_type
+>>   config_host_data.set('CONFIG_IOVEC',
+>>                        cc.has_type('struct iovec',
+>> -                                 prefix: '#include <sys/uio.h>'))
+>> +                                 prefix: '#include <sys/uio.h>',
+>> +                                 args: '-Wno-unused-value'))
+>>   config_host_data.set('HAVE_UTMPX',
+>>                        cc.has_type('struct utmpx',
+>> -                                 prefix: '#include <utmpx.h>'))
+>> +                                 prefix: '#include <utmpx.h>',
+>> +                                 args: '-Wno-unused-value'))
+>>   
+>>   config_host_data.set('CONFIG_EVENTFD', cc.links('''
+>>     #include <sys/eventfd.h>
+>> -- 
+>> 2.45.2
+>>
+> 
+> With regards,
+> Daniel
 
 
