@@ -2,144 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B24489EE232
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Dec 2024 10:02:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4267B9EE208
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Dec 2024 09:57:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tLf5B-0007Q4-DO; Thu, 12 Dec 2024 04:02:05 -0500
+	id 1tLf0Y-0005UD-46; Thu, 12 Dec 2024 03:57:18 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tLf56-0007PW-Kw
- for qemu-devel@nongnu.org; Thu, 12 Dec 2024 04:02:01 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1tLf0V-0005TK-9v; Thu, 12 Dec 2024 03:57:15 -0500
+Received: from mgamail.intel.com ([198.175.65.14])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tLf54-00059S-Bp
- for qemu-devel@nongnu.org; Thu, 12 Dec 2024 04:02:00 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1733994116;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=NoHtOjhiBLP5zfiZvA/y9IVhth53zOn67Co5jxdr+xo=;
- b=WNalDXhZWONDUjQq88SUE6r6RhU3NUI+xQo0yj/Lyv/EhyQcAjlAJBBSEnGE177PyLoYqz
- R3bJkMS8RnAvCzGP0ibySNBcnlVdCZZiBPEa5NLKYvSV+LbsgC7udeoGOd+6ms3n813fxx
- D5dkwGNxZmfw23k0L0rdBVvey0TZrsg=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-563-Q46FRG6oOfGR_WK27k5p5Q-1; Thu, 12 Dec 2024 04:01:54 -0500
-X-MC-Unique: Q46FRG6oOfGR_WK27k5p5Q-1
-X-Mimecast-MFC-AGG-ID: Q46FRG6oOfGR_WK27k5p5Q
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-4361efc9d1fso3225815e9.2
- for <qemu-devel@nongnu.org>; Thu, 12 Dec 2024 01:01:54 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733994113; x=1734598913;
- h=content-transfer-encoding:in-reply-to:autocrypt:content-language
- :from:references:cc:to:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=NoHtOjhiBLP5zfiZvA/y9IVhth53zOn67Co5jxdr+xo=;
- b=Ob6UzRwN6/1f8RfzgpShB3xH3Mo9Qz/j40KPge28GAYX/vV6KL7k3yF75sflsFH7Yx
- IJFhDtD3or09OGKF1PUIbId69+6rhgjE9iL4YPSu26M0pBYGayXClr+mI2EBUFCT3QQC
- VJkyIY2Q9yx05/3fom5haDfBCL05RRhSySbcWMQ9AbiWVYBhA2IVCmCU0orvVLG/BHsZ
- 9Bd4R2BxPcgOWd2ah6ZbD9PRJR2czP6atBsDacY6ABActep64RjpB4oMVbR5dbJU7Mdu
- ptelKwlvs3tXarsaqulE+8Nzufc/JFIx0DUfDzdijo9GAb99vIjZLFJy/lSQt6SEXYGo
- KMJA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWZnt9KIZLGngBRasSMC9YCmz6SsQCUsq2xZIuMkf+zivCl5/S5oxoFzeCAZcCJBtqfv7kdmetRMVpT@nongnu.org
-X-Gm-Message-State: AOJu0YydG1EqILob/YVRekCMsD/BaVmP/TBYNXGKuOADhKpPyV1Vd2ws
- 9vlu2Y+K8MctZzKaF/Sk7dcVPs02UC61mCbPYAjOjIyY8RmDYdvxPoyUiv4lmRZogg+NFnJgW3/
- qp/7RbqXNaB5J4Rk1GUjoKw/6Lre94BVOyE2G2/4G8UVZD9U9wyiw
-X-Gm-Gg: ASbGncvaqr0BQFIBqL5a0IzkKDD3h/dNUDTyQSf/MXfEs0rwnn55kAG2GYL3XW9MTSV
- bk2go3azTIyFqn5+wxAXEmZdtnp2zLInM89kBwmG9Au35kzgZhRaLTsyDlEkGsCgkJXBpSlOYc1
- BQOpyGbj97kBeO7ByQCtr2gwxye46iMFFubWB2iKpTnxXCippQNknXRoS6AR4Uvqrp4A8G134Jq
- pwdbnK1mVNm2IBhQbaNa3B6pk7m5UpnN2lALEADKGZDQb0r+3Wf9Wg2sk2GNXhGPtV8e8wNmZdL
- HLb2ng==
-X-Received: by 2002:a05:600c:83cf:b0:434:f7e3:bfa0 with SMTP id
- 5b1f17b1804b1-4361c3e351fmr42768975e9.21.1733994113115; 
- Thu, 12 Dec 2024 01:01:53 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGEUdyLZgnoYdFxJ7QiFJJVrmKuv88ihavjqRli0RW2pRowvx05Oubhg9Gq41D1anpRV/CZkA==
-X-Received: by 2002:a05:600c:83cf:b0:434:f7e3:bfa0 with SMTP id
- 5b1f17b1804b1-4361c3e351fmr42768825e9.21.1733994112811; 
- Thu, 12 Dec 2024 01:01:52 -0800 (PST)
-Received: from [10.33.192.206] (nat-pool-str-t.redhat.com. [149.14.88.106])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4362557c608sm10237155e9.16.2024.12.12.01.01.52
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 12 Dec 2024 01:01:52 -0800 (PST)
-Message-ID: <be7ff592-4870-4544-82b5-3f3ce95965a9@redhat.com>
-Date: Thu, 12 Dec 2024 10:01:51 +0100
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1tLf0S-0003fQ-9s; Thu, 12 Dec 2024 03:57:15 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1733993833; x=1765529833;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=Wbwd++wwkn1Mj3aQSNGe3XqFI2JDXUXwmz5MPa6CSOw=;
+ b=FIF3zz7DzzG7DW8/vA/pqs24eoVRBGNCiRo7va4fTGtC0ZmFN/1jIug9
+ HCzM/rdZNaYwdoZAYox0wKWjjjrsrXIj5IGpJD3ReXaO+ZqwEjqc1vCxQ
+ 36dDmpTEYYg1wdEXb0O3Y8GGOSVM5pWANwt5Jd0ctsB2pu3Jw/t0U072I
+ vGdZOSe/X9WIXgtEfnuBpPHuPs1EskBGwtw/qI7B83NVzL11yQLFwDtb3
+ qanMEnEceZI5SsLcNGZYd4AGu1nmFV5Ek384Wzjl9sWeMIqySiRUN7B1f
+ Ue71mgKZMYw+eFTq6pBQ4AOegRyiqowSWU0nGe0MVDwhuhLiNGyqDBWUR Q==;
+X-CSE-ConnectionGUID: SPCl93BFTjS3s8w+wjdpEg==
+X-CSE-MsgGUID: lWQC01mkQAydFlavhgQ9tQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11283"; a="38184634"
+X-IronPort-AV: E=Sophos;i="6.12,228,1728975600"; d="scan'208";a="38184634"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+ by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 12 Dec 2024 00:57:09 -0800
+X-CSE-ConnectionGUID: qhCk3v74TLO4ATFF3AYsHg==
+X-CSE-MsgGUID: +wPK0zIxRAG+fAFaaRL43w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,228,1728975600"; d="scan'208";a="101026587"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by fmviesa004.fm.intel.com with ESMTP; 12 Dec 2024 00:57:07 -0800
+Date: Thu, 12 Dec 2024 17:15:22 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org,
+ Junjie Mao <junjie.mao@hotmail.com>
+Subject: Re: [PATCH 17/26] rust: qom: put class_init together from multiple
+ ClassInitImpl<>
+Message-ID: <Z1qpqvwRYZ4GaRE6@intel.com>
+References: <20241209123717.99077-1-pbonzini@redhat.com>
+ <20241209123717.99077-18-pbonzini@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 09/31] tests/functional: add helpers for building file
- paths
-To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- qemu-devel@nongnu.org
-Cc: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Thomas Huth <huth@tuxfamily.org>
-References: <20241211172648.2893097-1-berrange@redhat.com>
- <20241211172648.2893097-10-berrange@redhat.com>
-From: Thomas Huth <thuth@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <20241211172648.2893097-10-berrange@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -25
-X-Spam_score: -2.6
-X-Spam_bar: --
-X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.472,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241209123717.99077-18-pbonzini@redhat.com>
+Received-SPF: pass client-ip=198.175.65.14; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -48
+X-Spam_score: -4.9
+X-Spam_bar: ----
+X-Spam_report: (-4.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.472,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -155,24 +81,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/12/2024 18.26, Daniel P. Berrangé wrote:
-> Add helper methods that construct paths for
-> 
->   * log files - to be preserved at the end of a test
->   * scratch files - to be purged at the end of a test
->   * build files - anything relative to the build root
->   * data files - anything relative to the functional test source root
->   * socket files - a short temporary dir to avoid UNIX socket limits
-> 
-> These are to be used instead of direct access to the self.workdir,
-> or self.logdir variables, or any other place where paths are built
-> manually.
-> 
-> Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
-> ---
->   tests/functional/qemu_test/testcase.py | 95 ++++++++++++++++++++++++++
->   1 file changed, 95 insertions(+)
+> Since CLASS_BASE_INIT applies to the type that is being defined,
+> and only to it, move it to ObjectImpl.
 
-Reviewed-by: Thomas Huth <thuth@redhat.com>
+It makes sense since class_base_init() is used when subclass is being
+initialized.
+
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> ---
+>  rust/hw/char/pl011/src/device.rs  | 19 +------
+>  rust/qemu-api/src/definitions.rs  | 85 +++++++++++++++++++++++--------
+>  rust/qemu-api/src/device_class.rs | 50 +++++++-----------
+>  rust/qemu-api/src/sysbus.rs       | 18 ++++++-
+>  rust/qemu-api/tests/tests.rs      |  9 +---
+>  5 files changed, 101 insertions(+), 80 deletions(-)
+
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
 
