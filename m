@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E180B9EE55B
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Dec 2024 12:48:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 378E99EE565
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Dec 2024 12:49:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tLhex-0006wA-6S; Thu, 12 Dec 2024 06:47:11 -0500
+	id 1tLhfH-0006yz-Da; Thu, 12 Dec 2024 06:47:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1tLhek-0006tm-NI
- for qemu-devel@nongnu.org; Thu, 12 Dec 2024 06:47:00 -0500
+ id 1tLheq-0006uc-Dx
+ for qemu-devel@nongnu.org; Thu, 12 Dec 2024 06:47:05 -0500
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1tLhej-0007Dn-Bb
- for qemu-devel@nongnu.org; Thu, 12 Dec 2024 06:46:58 -0500
+ id 1tLheo-0007EB-22
+ for qemu-devel@nongnu.org; Thu, 12 Dec 2024 06:47:03 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:MIME-Version:
  References:In-Reply-To:Message-Id:Date:To:From:Sender:Reply-To:Cc:
  Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
  Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
- bh=MpwjL08BZt9sSoDtyKHEQ42gSzPU8yr0aiGDzCfoK/Y=; b=wXMSezPbq9HmimzDqSr9w3lSDc
- IfR2e/NyyrITq4lzEQFktjX+1Z796yN2MdmeYueEMdCJx4HSbvtOj0uOL59OwWkMuK0FB3ZY5dBvT
- WHeXIwGzN/Ou+HTgrjweCklehj0aquXIkrLDe4cX3vuRj7C/+qOt2SR3JEFLqr2lL5Cul1C9hFPvb
- 8w5GNd+lDPaXDaMgMrMP/E2JYUF1O9pyzuLODGE6GlOmgda747PZ4QXf9FYGbdLhNT9XGkJGv2oN0
- ZKboBbzubqM3HIiW84dzt0zyH89u21YN0JnoMBkKBlHzdmB7Q8yHdEgaglQOKl5boW9+bqA2ESabO
- 4t0K1E/KqLacFsr8mMqFJaNcR2ia9ZsWQc9d3Gz/TwK3xMggohwLgZ1kKuJzTGPpD4WZWpFeKbFdX
- fUpXViNAfgvsDUF8gD4ziQWrdc57JmSx3440dFuMobIjAaPvJ5r+ByZM5EkHfy9JW144m6AVRpsrT
- z4HktXqn+2yQAqiqOBY4U23ZOSADlvBnb/Pn4D2NUSNmNrcUFtiYy5VxGFFbqZEIqb5HP8/P5otpb
- oSgTUUI1mY9uWmW/BJdoBXNk72mXdFVaUFVRRZhOwKMcxdGpd5u4lNGmqqVvUWQ+j11kJARgnE80A
- IpIRfmb/elHmkPxd9S7v0LSxhQjmdXhqUuvSYP7Yw=;
+ bh=mPL0mA6GmeXe4+/ZbC2Xbi8t4/wlTO5peNBXEd6WPOw=; b=vk7ZM34C96o8LIZj8oa2CQQp0M
+ d1zSZEJZSGnAI9glZmlldfxspL03x9/bd5yoIB4iAek56d6zxKYmqumSDVic0mc16bSaGUabBVXyB
+ AgSBaHZNUnF9q6H9hdLEPbbU8So1f76XFQlF8M/SjIJirvw8R4ZQDVWM3ORgbl+UoXnjxxtHfdKN/
+ XTuUY4jwahfz1J5t0D4izpxtJwb2iPb5EzNF1pmIhjP8b+zqDTzSR1wsL/72jFkluSV8bWJ11tB92
+ ec5BSR7QnMQfuP+h1csT9RX4Mv04B+Buy+2J1x+4ZrzY2ArVKH6voAetPQ/Syj5rIVJwFpukr6Yyf
+ U7xrZrawCCHmAru10Krlao7gQLB04krZyj83M02edRFGVbQlf6bN2ud92blPfMQQ8AYaemSNMpz80
+ 8yLA9YCQU0z7kjvIkNBpYGiK9gr2evNrPzdqy6F+ZMf5Hj3KgaC+4UKSGB3jT8E3jb+JiLBbPwDQI
+ giVgTY+PTDDvyF+Fm8tN0K8v7fzUTBLADZyVzw83JpGgbQ4wz+eBH7EYPn8rbj0DMK6M9GlTkyeZy
+ X5YPZmPlZUA9lzNIxxpD8qhB/ceK0qlYOyLS9ObYXdAG+XIfuPahiShnIa+xaC/zJEwNt9GASb2gd
+ uBSMseu3Sav1CysQ8VvqFKdEAWGgZK3Q2qL4UAxr4=;
 Received: from [2a02:8012:c93d:0:260e:bf57:a4e9:8142]
  (helo=cheesecake.fritz.box)
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1tLhe9-00070a-9z; Thu, 12 Dec 2024 11:46:25 +0000
+ id 1tLheD-00070a-GA; Thu, 12 Dec 2024 11:46:29 +0000
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 To: huth@tuxfamily.org,
 	qemu-devel@nongnu.org
-Date: Thu, 12 Dec 2024 11:45:55 +0000
-Message-Id: <20241212114620.549285-10-mark.cave-ayland@ilande.co.uk>
+Date: Thu, 12 Dec 2024 11:45:56 +0000
+Message-Id: <20241212114620.549285-11-mark.cave-ayland@ilande.co.uk>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241212114620.549285-1-mark.cave-ayland@ilande.co.uk>
 References: <20241212114620.549285-1-mark.cave-ayland@ilande.co.uk>
@@ -50,8 +50,8 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a02:8012:c93d:0:260e:bf57:a4e9:8142
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: [PATCH v2 09/34] next-cube: move floppy disk MMIO to separate memory
- region in next-pc
+Subject: [PATCH v2 10/34] next-cube: map ESCC registers as a subregion of the
+ next.scr memory region
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
@@ -77,122 +77,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The dummy floppy disk device is part of the next-pc device, and not related to
-the NeXTCube SCRs.
+Since the ESCC device exists within the memory range of the next.scr memory region, map
+the ESCC device registers as a subregion of the next.scr memory region instead of
+directly to the system address space.
 
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 Reviewed-by: Thomas Huth <huth@tuxfamily.org>
 ---
- hw/m68k/next-cube.c | 61 ++++++++++++++++++++++++++++++++++++---------
- 1 file changed, 49 insertions(+), 12 deletions(-)
+ hw/m68k/next-cube.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
 diff --git a/hw/m68k/next-cube.c b/hw/m68k/next-cube.c
-index ea1006efb3..d08026ccf9 100644
+index d08026ccf9..efbb11e74b 100644
 --- a/hw/m68k/next-cube.c
 +++ b/hw/m68k/next-cube.c
-@@ -108,6 +108,7 @@ struct NeXTPC {
+@@ -980,6 +980,7 @@ static const MemoryRegionOps next_floppy_ops = {
  
-     M68kCPU *cpu;
- 
-+    MemoryRegion floppy_mem;
-     MemoryRegion mmiomem;
-     MemoryRegion scrmem;
- 
-@@ -368,11 +369,6 @@ static uint64_t next_scr_readfn(void *opaque, hwaddr addr, unsigned size)
-     uint64_t val;
- 
-     switch (addr) {
--    case 0x14108:
--        DPRINTF("FD read @ %x\n", (unsigned int)addr);
--        val = 0x40 | 0x04 | 0x2 | 0x1;
--        break;
--
-     /*
-      * These 4 registers are the hardware timer, not sure which register
-      * is the latch instead of data, but no problems so far.
-@@ -402,13 +398,6 @@ static void next_scr_writefn(void *opaque, hwaddr addr, uint64_t val,
-                              unsigned size)
- {
-     switch (addr) {
--    case 0x14108:
--        DPRINTF("FDCSR Write: %"PRIx64 "\n", val);
--        if (val == 0x0) {
--            /* qemu_irq_raise(s->fd_irq[0]); */
--        }
--        break;
--
-     /* Hardware timer latch - not implemented yet */
-     case 0x1a000:
-     default:
-@@ -948,6 +937,47 @@ static const TypeInfo next_scsi_info = {
-     .class_init = next_scsi_class_init,
- };
- 
-+static void next_floppy_write(void *opaque, hwaddr addr, uint64_t val,
-+                              unsigned size)
-+{
-+    switch (addr) {
-+    case 0:
-+        DPRINTF("FDCSR Write: %"PRIx64 "\n", val);
-+        if (val == 0x0) {
-+            /* qemu_irq_raise(s->fd_irq[0]); */
-+        }
-+        break;
-+
-+    default:
-+        g_assert_not_reached();
-+    }
-+}
-+
-+static uint64_t next_floppy_read(void *opaque, hwaddr addr, unsigned size)
-+{
-+    uint64_t val;
-+
-+    switch (addr) {
-+    case 0:
-+        DPRINTF("FD read @ %x\n", (unsigned int)addr);
-+        val = 0x40 | 0x04 | 0x2 | 0x1;
-+        break;
-+
-+    default:
-+        g_assert_not_reached();
-+    }
-+
-+    return val;
-+}
-+
-+static const MemoryRegionOps next_floppy_ops = {
-+    .read = next_floppy_read,
-+    .write = next_floppy_write,
-+    .valid.min_access_size = 1,
-+    .valid.max_access_size = 4,
-+    .endianness = DEVICE_BIG_ENDIAN,
-+};
-+
  static void next_escc_init(DeviceState *pcdev)
  {
++    NeXTPC *next_pc = NEXT_PC(pcdev);
      DeviceState *dev;
-@@ -1006,6 +1036,10 @@ static void next_pc_realize(DeviceState *dev, Error **errp)
+     SysBusDevice *s;
  
-     s->scsi_reset = qdev_get_gpio_in(d, 0);
-     s->scsi_dma = qdev_get_gpio_in(d, 1);
+@@ -997,7 +998,9 @@ static void next_escc_init(DeviceState *pcdev)
+     sysbus_realize_and_unref(s, &error_fatal);
+     sysbus_connect_irq(s, 0, qdev_get_gpio_in(pcdev, NEXT_SCC_I));
+     sysbus_connect_irq(s, 1, qdev_get_gpio_in(pcdev, NEXT_SCC_DMA_I));
+-    sysbus_mmio_map(s, 0, 0x2118000);
 +
-+    /* Floppy */
-+    memory_region_add_subregion(&s->scrmem, 0x14108,
-+                                &s->floppy_mem);
++    memory_region_add_subregion(&next_pc->scrmem, 0x18000,
++                                sysbus_mmio_get_region(s, 0));
  }
  
- static void next_pc_init(Object *obj)
-@@ -1024,6 +1058,9 @@ static void next_pc_init(Object *obj)
-     sysbus_init_mmio(sbd, &s->scrmem);
- 
-     object_initialize_child(obj, "next-scsi", &s->next_scsi, TYPE_NEXT_SCSI);
-+
-+    memory_region_init_io(&s->floppy_mem, OBJECT(s), &next_floppy_ops, s,
-+                          "next.floppy", 4);
- }
- 
- /*
+ static void next_pc_reset(DeviceState *dev)
 -- 
 2.39.5
 
