@@ -2,89 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B9E39EE4D5
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Dec 2024 12:12:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 710B49EE4D8
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Dec 2024 12:13:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tLh6z-0006d2-4p; Thu, 12 Dec 2024 06:12:05 -0500
+	id 1tLh7u-0007w1-0N; Thu, 12 Dec 2024 06:13:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tLh6w-0006cj-Sy
- for qemu-devel@nongnu.org; Thu, 12 Dec 2024 06:12:02 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tLh7l-0007uA-DA
+ for qemu-devel@nongnu.org; Thu, 12 Dec 2024 06:12:54 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tLh6v-0004lu-HM
- for qemu-devel@nongnu.org; Thu, 12 Dec 2024 06:12:02 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tLh7g-0004pB-Sw
+ for qemu-devel@nongnu.org; Thu, 12 Dec 2024 06:12:51 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1734001920;
+ s=mimecast20190719; t=1734001967;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=hN/KfQKTHzSV2u4y1nPUtCqCO2RyDk1xieIGuZko3r0=;
- b=NIIVtJiRPVoTQrIRgcPDp8JDr4doowNOBCcfLwMIRtiHGjss7vlpChPGIw1CiYQfySTbxE
- w1AjGomjotkwobf6u8+9Yw7YYZWP9/5E5p71qlz6i53i09Hj8hWF0M6uURFZocNX52nwEJ
- i4UXjS7qWbnlnAbWPMk6tgZIF4WjltQ=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=dudOo0bSRj2Hz2DZGOZoTGAZ8Sj68rIZTJtzICyKa1c=;
+ b=fbQ+/4AaMQmAu6c6uLB38N/b2F1Z3tgX8zPAjsWhc8/MtQgnRLGNcMnVML2/1zrzcJAhpd
+ HKX9uyq9nYBCA8Ek+dP6pGXf9nAgW6rsSp469jbrgRJW18Hae87cuqMggu0plnBJSWeo6V
+ dRHiSgKYgQUb0mNS8mYlf5uwbB3QSW8=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-637-OO4295-7N5-Knmfhu8yuwg-1; Thu, 12 Dec 2024 06:11:57 -0500
-X-MC-Unique: OO4295-7N5-Knmfhu8yuwg-1
-X-Mimecast-MFC-AGG-ID: OO4295-7N5-Knmfhu8yuwg
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-436225d4389so4462185e9.1
- for <qemu-devel@nongnu.org>; Thu, 12 Dec 2024 03:11:57 -0800 (PST)
+ us-mta-627-VQhJ4OF8NTGBaLmlxqCb5Q-1; Thu, 12 Dec 2024 06:12:45 -0500
+X-MC-Unique: VQhJ4OF8NTGBaLmlxqCb5Q-1
+X-Mimecast-MFC-AGG-ID: VQhJ4OF8NTGBaLmlxqCb5Q
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-3862b364578so864097f8f.1
+ for <qemu-devel@nongnu.org>; Thu, 12 Dec 2024 03:12:45 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734001916; x=1734606716;
- h=content-transfer-encoding:in-reply-to:autocrypt:content-language
- :from:references:cc:to:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=hN/KfQKTHzSV2u4y1nPUtCqCO2RyDk1xieIGuZko3r0=;
- b=J/fE7MuzJA7r+g6CFzmJtZ6SULFlo3m3sR3OjW8JHa4Ty57pjkXkGAECO0paFTkPHi
- 2RvmfcN5Y2OdWubxhoYZTTDMkbdl9AtG4RstYa2SeczsGuExjdUI5h75b2sZCOT3Uyte
- JagjTKYTaDjDWVxtKEoIHWSc1oZy2t/B+rPF/M+9u3hOh3YBjk1qrU47tR+BblbxoBIl
- binMP+Qd80Qk2kPzAvSaVHY45cBgj20d6P6Ell5PmEEPUckvDmKEQeYTb0K2pUg0JhVC
- cDtc7dlA9qOzfcQQBWiaTUnNedGYdESxn51BtVDR76iL/KR8RZDMXY5HmXUhnRCnIBTR
- JWGQ==
+ d=1e100.net; s=20230601; t=1734001964; x=1734606764;
+ h=content-transfer-encoding:in-reply-to:autocrypt:from
+ :content-language:references:cc:to:subject:user-agent:mime-version
+ :date:message-id:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=dudOo0bSRj2Hz2DZGOZoTGAZ8Sj68rIZTJtzICyKa1c=;
+ b=R43hreAsd1qimC2/0RCsVnPkoDnW3jCecNYtqzQvk2SjX0KelP0U49XhiU8jtsc0Mc
+ h2NeRh2yuehgz90VRNhc7qsDDuBfo33s30nEGZA7DG57DeLW8rVEI5cURjERzKhRDKnm
+ E8BA61yEz7/485uuvVmwitEG2ATdyZY7ckI4NdQf4wmyIKA/MyKr4eyA0klik4KtP8rD
+ 8r9i9Oq0ACWxsHhBEixjuhX7rJ6LqqGl7HpHqKxjuFa0cKH0gPfZpUjhE/22sJdcmq1s
+ uRmbrYL69tzNQnnbfRJEU6Luw99ro8qRc0nlUA/et6nbO/AsX++lJV/brx9GX03fk0ii
+ 6X+Q==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVt41JAw74B6OijcVbhWbY352xB7nd0333Ez1mhJwCGa9idV4UJdakdyAPX4YfSVz0i1Xa2A7YOmLlf@nongnu.org
-X-Gm-Message-State: AOJu0Yx4edeSMObTV88kDI5z9+se+zPUNRvFUQQ4UWqDLq28xyq7EY8D
- sUuM0FSd7LGUI8ol4+d7xrt9zfcoAONzf290gK1MXTnExYUGwfZiFXRQCZzMsVjbuIOpWegDd7t
- YtlQ+gOe8eTWkZJhFiMfedZQhruETHzAOrR6gl178wz9Q7kgt6Zfe
-X-Gm-Gg: ASbGncvP82j/c+mcMSuCQaQUgYurX0FXe/IyAo9ulBcVuHrFQHXmll+L5fkaCVHdPrh
- jsBjNQWal+ZFXFSlNamuV15iumLP1eaySifDEa3qcuMk51yp5ZnZ0YQdmPsCwNLrTb82CP9Se76
- Q7XaM6z09UfGU2j+1fxAMUzAuYVgHIuEyg4/kVH/ut1VXWauKhdqkOvDq9qqW6YwYBKrayUPeZJ
- WKIV/+8zWWjxwIGkyi230t/wBfYt0Lt5Y3o7olU2MGS+EDwjpTCVPyj4apyNvhexxATCXepWpbX
- fSfHvQ==
-X-Received: by 2002:a05:600c:314f:b0:434:fb8b:deee with SMTP id
- 5b1f17b1804b1-436231188b3mr19107295e9.16.1734001916094; 
- Thu, 12 Dec 2024 03:11:56 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IH9HJYKiuWePEae0jaQIkkF7VMLLHIKC1OdSu/85gNSMvasAPC198xNglmCtO5KdzlxfUb1Qg==
-X-Received: by 2002:a05:600c:314f:b0:434:fb8b:deee with SMTP id
- 5b1f17b1804b1-436231188b3mr19107085e9.16.1734001915732; 
- Thu, 12 Dec 2024 03:11:55 -0800 (PST)
+ AJvYcCUHJGulNxXs8nbvAE4JrbbhNr10wQ9dLk0IM7sYy5raHskeGGwjWLBiKTbzVN5gj6faHcG6DmdSYxZE@nongnu.org
+X-Gm-Message-State: AOJu0YyUnYblMC/DB1fOJ3eegvQh3IUG0M205e24QDljgEt8mPuXfg3p
+ qD6KDy4U6RbB5m0W4C2p7kUwgeKtEBtnkDK8W2zFWxym9h7SFu2KXKmurNJlhNNb/J9ePb6lbHW
+ DjzwsSIvuZLwFcOZyyJ/9iuRLFcwsXJheOBvMs/SvWCskp8vkjKW+
+X-Gm-Gg: ASbGncvyxy8pbRLwJjAbhrQAkM//IssAMdYxBIOOHdElPB8qxnpzzCHDSltgwRjcyIF
+ 7qjp9HgnBIj6AOpkUUSGk2YZDEnZpQ+jj54Li8i+7STxu46eprY055v0vY043VLkz8VCb8ci5QW
+ cz/W2bwaLxINketnMEHxhsSpSkTFJ1SXlnvusXT0AoVe0kc0CVteNZZ+awVj+jY0oqm6enh2+m8
+ F5s4c51X+5vfYucb6rvDSvdVIEhLVAO89mIwiRk3D9WraFFXMApzaPvkUyggUT1ySWEIyehapd4
+ OEoZ7w==
+X-Received: by 2002:a05:6000:186e:b0:385:df17:2148 with SMTP id
+ ffacd0b85a97d-3878884747emr2043275f8f.20.1734001964214; 
+ Thu, 12 Dec 2024 03:12:44 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGzNOCztfr5W4Tddn7zZWwTjQJ3cXv6nLarXiOTF8QuHqM4lzfY3k9jRAx545XRciekwdwPaA==
+X-Received: by 2002:a05:6000:186e:b0:385:df17:2148 with SMTP id
+ ffacd0b85a97d-3878884747emr2043263f8f.20.1734001963930; 
+ Thu, 12 Dec 2024 03:12:43 -0800 (PST)
 Received: from [10.33.192.206] (nat-pool-str-t.redhat.com. [149.14.88.106])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4362557c66esm13391975e9.14.2024.12.12.03.11.55
+ ffacd0b85a97d-387824bd889sm3766191f8f.44.2024.12.12.03.12.43
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 12 Dec 2024 03:11:55 -0800 (PST)
-Message-ID: <21c5f9ea-ba85-4d3c-a53f-652671f08c0d@redhat.com>
-Date: Thu, 12 Dec 2024 12:11:54 +0100
+ Thu, 12 Dec 2024 03:12:43 -0800 (PST)
+Message-ID: <8f096ace-71a3-49d4-86d0-4ef6f5b52eab@redhat.com>
+Date: Thu, 12 Dec 2024 12:12:42 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 28/31] tests/functional: replace 'run_cmd' with
- subprocess helpers
+Subject: Re: [PATCH v2 29/31] tests/functional: remove now unused 'run_cmd'
+ helper
 To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
  qemu-devel@nongnu.org
 Cc: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Thomas Huth <huth@tuxfamily.org>
 References: <20241211172648.2893097-1-berrange@redhat.com>
- <20241211172648.2893097-29-berrange@redhat.com>
-From: Thomas Huth <thuth@redhat.com>
+ <20241211172648.2893097-30-berrange@redhat.com>
 Content-Language: en-US
+From: Thomas Huth <thuth@redhat.com>
 Autocrypt: addr=thuth@redhat.com; keydata=
  xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
  yYkTm9+7zBUc0sW5AuPGR/dp3pSLX/yFWsA/UB4nJsHqgDvDU7BImSeiTrnpMOTXb7Arw2a2
@@ -127,7 +127,7 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <20241211172648.2893097-29-berrange@redhat.com>
+In-Reply-To: <20241211172648.2893097-30-berrange@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
@@ -156,12 +156,13 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 11/12/2024 18.26, Daniel P. Berrangé wrote:
-> The 'run_cmd' helper is re-implementing a convenient helper that
-> already exists in the form of the 'run' and 'check_call' methods
-> provided by 'subprocess'.
+> All usage has been replaced by direct 'subprocess' helpers.
 > 
 > Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 > ---
+>   tests/functional/qemu_test/__init__.py |  2 +-
+>   tests/functional/qemu_test/cmd.py      | 11 -----------
+>   2 files changed, 1 insertion(+), 12 deletions(-)
 
 Reviewed-by: Thomas Huth <thuth@redhat.com>
 
