@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 720119EEAEC
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Dec 2024 16:19:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D0C9F9EEAFC
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Dec 2024 16:20:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tLkvH-0005CV-L3; Thu, 12 Dec 2024 10:16:15 -0500
+	id 1tLkvK-0005Uq-8U; Thu, 12 Dec 2024 10:16:18 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1tLkuF-0003wL-WF; Thu, 12 Dec 2024 10:15:14 -0500
+ id 1tLkuH-0003wi-38; Thu, 12 Dec 2024 10:15:14 -0500
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1tLku3-0003ik-HP; Thu, 12 Dec 2024 10:15:11 -0500
+ id 1tLkuB-0003jP-A7; Thu, 12 Dec 2024 10:15:12 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:MIME-Version:
  References:In-Reply-To:Message-Id:Date:To:From:Sender:Reply-To:Cc:
  Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
  Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
- bh=rlvoZT+6+Va2hBWLqrFSaLkap8KQtdDfAf3TILXFvjQ=; b=gIWdg3kyG0cAzdXDhnp2CMkvxr
- 7q7eVtxO4juFfaB7A2YwTxdmAmdAUMNtwpYgFWrlDfsLE5zo4ZHt6OV9a3QN+8ExPM2Svu3MSdizf
- TPzvOmfVGWfi3KtnXp4GT4ZTuWdkYorvPvNk3M6PA7Wp6SZRLXz8yWYtxQ3h9NZu/PxQaquKtZweT
- n+BLvU4WQqdOpMtcKSX5ai43ktz7/Y09HMizP221DcXr1xZSLUjhS8y5f67WIbXzomPua1Mn6vfdg
- FkN0YHQaGPvh7c+7u6Zku9NI73Q4NeYl6is2Qn1I/QpRxaPnVpGGhpgjIbwG1MAVHuJ4v3dk2MCoA
- tyOlJWaj4Vh/11Y0k68y9AQyL2ZGo57aJaXbngYAMqJ6MbsJFFr1WCcRNbjSRXl4yZzQj8qKbKEh2
- vpnyAIg+9/hYdMiCL+Ydv5J7F5ykpUURnjICCy5lTIG9o1Q+ZsjC1YbTYSxcMF4dtOM2cP09losHx
- o1um7MhYuj1If3XkYeOGRGGXJU5nW9T+Cx7dHZHyrkvRdB5BrN1K//LR5pLC8d62dFykcgEa/XzF5
- 7hP6hLQpkc4qisZ9baK/Uz0nQ4zGAdR5qNUIdZUJzLpSvoWYpQxYp+l/FL0k7ELXxzbMjs/0uhRuO
- BZFblVto+Kyo7AqgBv7kL0xg3leIwRY4z4ZDeTzJI=;
+ bh=DMGNUjzmKsMvZ/ENfaWJHv64f/zSYMmZ7qFj90kllSk=; b=Yis/fsxi1tHVNHdgW8AG3KYlHm
+ OgBFvVXHATUk5V0M9lk9arwMvgSg1O9dRahYGkL7a9SYU1Nd2s5l4lxlTbRhLCSSRIC0pFeofVtRN
+ 4wDsEPilTuh0dzyX7cIaxkKMLfitnmb/+vc0HuGnHSV5QjM0yU8RXJ8BMnin4/R5o165TYKSujHtJ
+ od5VX8PjVnvTi77nnkt286xtFLfdrlERsmtn2XJohk3N5zuIEcRjuqxX9zr7zvbQKibRNywa5N5/n
+ 9yyYpK03l2flVSAhzjg1SmPYH/QXM/KZ35FPlUvW/vrc82slfNh2RVfSvPfyob0KlIy6XkytZIh4W
+ BY+X8lS5Y061jOP/szyQ7bGPEbiTiQ33R8KqZSIFfV13EL21jbP4D1CBaJ3V+NyBBj9sH+Dp2jH96
+ Dhr3wfrRwxFOO0nziBLTpH9WROAqqQGRSbWkm3PaAHBu0UmjkGEkFgY45a5HYSdykodvzFzU8Yqrp
+ KlSVWWB8K63E1YuNPEFLWFe27vXkk09hG2m2nWm2vZCgYODozp17nVQa7pQle3B/8eJrgWZgEa/PS
+ Q1me+JEXOlDxXj6eXbL8+AKhlaAWSVjX9o9nb2U0mmCEI3rRYAvawtBPKXWdOgdq/B+/hAWA0lSmh
+ vcBxLYLg0kLj9pZYkMuaTw4f5wqzF+o9uBYEER5ig=;
 Received: from [2a02:8012:c93d:0:260e:bf57:a4e9:8142]
  (helo=cheesecake.fritz.box)
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1tLktS-0008Ue-Vn; Thu, 12 Dec 2024 15:14:27 +0000
+ id 1tLktX-0008Ue-9r; Thu, 12 Dec 2024 15:14:31 +0000
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 To: npiggin@gmail.com, danielhb413@gmail.com, qemu-ppc@nongnu.org,
  qemu-devel@nongnu.org
-Date: Thu, 12 Dec 2024 15:14:09 +0000
-Message-Id: <20241212151412.570454-9-mark.cave-ayland@ilande.co.uk>
+Date: Thu, 12 Dec 2024 15:14:10 +0000
+Message-Id: <20241212151412.570454-10-mark.cave-ayland@ilande.co.uk>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241212151412.570454-1-mark.cave-ayland@ilande.co.uk>
 References: <20241212151412.570454-1-mark.cave-ayland@ilande.co.uk>
@@ -48,8 +48,8 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a02:8012:c93d:0:260e:bf57:a4e9:8142
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: [RFC PATCH 08/11] target/ppc: implement address swizzle for
- gen_ld_atomic()
+Subject: [RFC PATCH 09/11] target/ppc: implement address swizzle for
+ gen_st_atomic()
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
@@ -75,123 +75,112 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The gen_ld_atomic() function uses a number of TCG atomic primitives within its
-implementation. Update gen_ld_atomic() so that it implements the address swizzle
+The gen_st_atomic() function uses a number of TCG atomic primitives within its
+implementation. Update gen_st_atomic() so that it implements the address swizzle
 if required.
 
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 ---
- target/ppc/translate.c | 81 +++++++++++++++++++++++++++++++++++++-----
- 1 file changed, 72 insertions(+), 9 deletions(-)
+ target/ppc/translate.c | 72 +++++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 64 insertions(+), 8 deletions(-)
 
 diff --git a/target/ppc/translate.c b/target/ppc/translate.c
-index 74aa398f25..b549525bb6 100644
+index b549525bb6..fc44e3293a 100644
 --- a/target/ppc/translate.c
 +++ b/target/ppc/translate.c
-@@ -3039,31 +3039,94 @@ static void gen_ld_atomic(DisasContext *ctx, MemOp memop)
+@@ -3208,28 +3208,84 @@ static void gen_st_atomic(DisasContext *ctx, MemOp memop)
      memop |= MO_ALIGN;
      switch (gpr_FC) {
-     case 0: /* Fetch and add */
--        tcg_gen_atomic_fetch_add_tl(dst, EA, src, ctx->mem_idx, memop);
+     case 0: /* add and Store */
+-        tcg_gen_atomic_add_fetch_tl(discard, EA, src, ctx->mem_idx, memop);
 +        if (need_addrswizzle_le(ctx)) {
 +            TCGv ta = tcg_temp_new();
 +
 +            gen_addr_swizzle_le(ta, EA, memop);
-+            tcg_gen_atomic_fetch_add_tl(dst, ta, src, ctx->mem_idx, memop);
++            tcg_gen_atomic_add_fetch_tl(discard, ta, src, ctx->mem_idx, memop);
 +        } else {
-+            tcg_gen_atomic_fetch_add_tl(dst, EA, src, ctx->mem_idx, memop);
++            tcg_gen_atomic_add_fetch_tl(discard, EA, src, ctx->mem_idx, memop);
 +        }
          break;
-     case 1: /* Fetch and xor */
--        tcg_gen_atomic_fetch_xor_tl(dst, EA, src, ctx->mem_idx, memop);
+     case 1: /* xor and Store */
+-        tcg_gen_atomic_xor_fetch_tl(discard, EA, src, ctx->mem_idx, memop);
 +        if (need_addrswizzle_le(ctx)) {
 +            TCGv ta = tcg_temp_new();
 +
 +            gen_addr_swizzle_le(ta, EA, memop);
-+            tcg_gen_atomic_fetch_xor_tl(dst, ta, src, ctx->mem_idx, memop);
++            tcg_gen_atomic_xor_fetch_tl(discard, ta, src, ctx->mem_idx, memop);
 +        } else {
-+            tcg_gen_atomic_fetch_xor_tl(dst, EA, src, ctx->mem_idx, memop);
++            tcg_gen_atomic_xor_fetch_tl(discard, EA, src, ctx->mem_idx, memop);
 +        }
          break;
-     case 2: /* Fetch and or */
--        tcg_gen_atomic_fetch_or_tl(dst, EA, src, ctx->mem_idx, memop);
+     case 2: /* Or and Store */
+-        tcg_gen_atomic_or_fetch_tl(discard, EA, src, ctx->mem_idx, memop);
 +        if (need_addrswizzle_le(ctx)) {
 +            TCGv ta = tcg_temp_new();
 +
 +            gen_addr_swizzle_le(ta, EA, memop);
-+            tcg_gen_atomic_fetch_or_tl(dst, ta, src, ctx->mem_idx, memop);
++            tcg_gen_atomic_or_fetch_tl(discard, ta, src, ctx->mem_idx, memop);
 +        } else {
-+            tcg_gen_atomic_fetch_or_tl(dst, EA, src, ctx->mem_idx, memop);
++            tcg_gen_atomic_or_fetch_tl(discard, EA, src, ctx->mem_idx, memop);
 +        }
          break;
-     case 3: /* Fetch and 'and' */
--        tcg_gen_atomic_fetch_and_tl(dst, EA, src, ctx->mem_idx, memop);
+     case 3: /* 'and' and Store */
+-        tcg_gen_atomic_and_fetch_tl(discard, EA, src, ctx->mem_idx, memop);
 +        if (need_addrswizzle_le(ctx)) {
 +            TCGv ta = tcg_temp_new();
 +
 +            gen_addr_swizzle_le(ta, EA, memop);
-+            tcg_gen_atomic_fetch_and_tl(dst, ta, src, ctx->mem_idx, memop);
++            tcg_gen_atomic_and_fetch_tl(discard, ta, src, ctx->mem_idx, memop);
 +        } else {
-+            tcg_gen_atomic_fetch_and_tl(dst, EA, src, ctx->mem_idx, memop);
++            tcg_gen_atomic_and_fetch_tl(discard, EA, src, ctx->mem_idx, memop);
 +        }
          break;
-     case 4:  /* Fetch and max unsigned */
--        tcg_gen_atomic_fetch_umax_tl(dst, EA, src, ctx->mem_idx, memop);
+     case 4:  /* Store max unsigned */
+-        tcg_gen_atomic_umax_fetch_tl(discard, EA, src, ctx->mem_idx, memop);
 +        if (need_addrswizzle_le(ctx)) {
 +            TCGv ta = tcg_temp_new();
 +
 +            gen_addr_swizzle_le(ta, EA, memop);
-+            tcg_gen_atomic_fetch_umax_tl(dst, ta, src, ctx->mem_idx, memop);
++            tcg_gen_atomic_umax_fetch_tl(discard, ta, src, ctx->mem_idx, memop);
 +        } else {
-+            tcg_gen_atomic_fetch_umax_tl(dst, EA, src, ctx->mem_idx, memop);
++            tcg_gen_atomic_umax_fetch_tl(discard, EA, src, ctx->mem_idx, memop);
 +        }
          break;
-     case 5:  /* Fetch and max signed */
--        tcg_gen_atomic_fetch_smax_tl(dst, EA, src, ctx->mem_idx, memop);
+     case 5:  /* Store max signed */
+-        tcg_gen_atomic_smax_fetch_tl(discard, EA, src, ctx->mem_idx, memop);
 +        if (need_addrswizzle_le(ctx)) {
 +            TCGv ta = tcg_temp_new();
 +
 +            gen_addr_swizzle_le(ta, EA, memop);
-+            tcg_gen_atomic_fetch_smax_tl(dst, ta, src, ctx->mem_idx, memop);
++            tcg_gen_atomic_smax_fetch_tl(discard, ta, src, ctx->mem_idx, memop);
 +        } else {
-+            tcg_gen_atomic_fetch_smax_tl(dst, EA, src, ctx->mem_idx, memop);
++            tcg_gen_atomic_smax_fetch_tl(discard, EA, src, ctx->mem_idx, memop);
 +        }
          break;
-     case 6:  /* Fetch and min unsigned */
--        tcg_gen_atomic_fetch_umin_tl(dst, EA, src, ctx->mem_idx, memop);
+     case 6:  /* Store min unsigned */
+-        tcg_gen_atomic_umin_fetch_tl(discard, EA, src, ctx->mem_idx, memop);
 +        if (need_addrswizzle_le(ctx)) {
 +            TCGv ta = tcg_temp_new();
 +
 +            gen_addr_swizzle_le(ta, EA, memop);
-+            tcg_gen_atomic_fetch_umin_tl(dst, ta, src, ctx->mem_idx, memop);
++            tcg_gen_atomic_umin_fetch_tl(discard, ta, src, ctx->mem_idx, memop);
 +        } else {
-+            tcg_gen_atomic_fetch_umin_tl(dst, EA, src, ctx->mem_idx, memop);
++            tcg_gen_atomic_umin_fetch_tl(discard, EA, src, ctx->mem_idx, memop);
 +        }
          break;
-     case 7:  /* Fetch and min signed */
--        tcg_gen_atomic_fetch_smin_tl(dst, EA, src, ctx->mem_idx, memop);
+     case 7:  /* Store min signed */
+-        tcg_gen_atomic_smin_fetch_tl(discard, EA, src, ctx->mem_idx, memop);
 +        if (need_addrswizzle_le(ctx)) {
 +            TCGv ta = tcg_temp_new();
 +
 +            gen_addr_swizzle_le(ta, EA, memop);
-+            tcg_gen_atomic_fetch_smin_tl(dst, ta, src, ctx->mem_idx, memop);
++            tcg_gen_atomic_smin_fetch_tl(discard, ta, src, ctx->mem_idx, memop);
 +        } else {
-+            tcg_gen_atomic_fetch_smin_tl(dst, EA, src, ctx->mem_idx, memop);
++            tcg_gen_atomic_smin_fetch_tl(discard, EA, src, ctx->mem_idx, memop);
 +        }
          break;
-     case 8: /* Swap */
--        tcg_gen_atomic_xchg_tl(dst, EA, src, ctx->mem_idx, memop);
-+        if (need_addrswizzle_le(ctx)) {
-+            TCGv ta = tcg_temp_new();
-+
-+            gen_addr_swizzle_le(ta, EA, memop);
-+            tcg_gen_atomic_xchg_tl(dst, ta, src, ctx->mem_idx, memop);
-+        } else {
-+            tcg_gen_atomic_xchg_tl(dst, EA, src, ctx->mem_idx, memop);
-+        }
-         break;
- 
-     case 16: /* Compare and swap not equal */
+     case 24: /* Store twin  */
+         if (tb_cflags(ctx->base.tb) & CF_PARALLEL) {
 -- 
 2.39.5
 
