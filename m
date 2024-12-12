@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 098CB9EE26C
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Dec 2024 10:15:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 75EB79EE263
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Dec 2024 10:14:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tLfGl-0004Cs-5q; Thu, 12 Dec 2024 04:14:03 -0500
+	id 1tLfGp-0004FU-5C; Thu, 12 Dec 2024 04:14:07 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1tLfGi-0004AI-Uu
- for qemu-devel@nongnu.org; Thu, 12 Dec 2024 04:14:00 -0500
-Received: from mail-pj1-x102d.google.com ([2607:f8b0:4864:20::102d])
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1tLfGm-0004EM-Eb
+ for qemu-devel@nongnu.org; Thu, 12 Dec 2024 04:14:04 -0500
+Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1tLfGg-0008RY-Ua
- for qemu-devel@nongnu.org; Thu, 12 Dec 2024 04:14:00 -0500
-Received: by mail-pj1-x102d.google.com with SMTP id
- 98e67ed59e1d1-2ee74291415so235145a91.3
- for <qemu-devel@nongnu.org>; Thu, 12 Dec 2024 01:13:58 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1tLfGk-00006j-KE
+ for qemu-devel@nongnu.org; Thu, 12 Dec 2024 04:14:03 -0500
+Received: by mail-pl1-x62c.google.com with SMTP id
+ d9443c01a7336-21145812538so3715315ad.0
+ for <qemu-devel@nongnu.org>; Thu, 12 Dec 2024 01:14:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1733994837; x=1734599637; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1733994841; x=1734599641; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ruI2VEm52N1m+U4TsADLxrOxUekJ4XCSufFXN4VqY+o=;
- b=P0TWr59xlOg6DI6VDV3bIT5MtKPlvsDixXFveJ/NNX4maMbbAlNlv14b+XuwmCWcz2
- 8cfzGviaPjXJJAySDZZxhuE0sn7CaultacKjb6Z1yP9OCBGIX9Tar8w9xGwWyB8ZdZN6
- 3C4pwd+89/EYxvy9huT1elo2/Jz453mu5KxK2GnqKHHBjQnbmudoqjrH1rw55EoFVI48
- ZFvQDAubjb0Nk6KHQWGFXZMCBuoiVuGDJCEx3lBv6TWo3tuH13wRTV/K1toTnuWi13x+
- C7oobB0oSSJgXtFAgV5HO9sdSBsxTL6ZO4iFpcNbihbgPNtgUHlYp8nSwJxy8NT4SS5F
- y3eQ==
+ bh=md9GySIJ3TCHpzC0bgJMV4Q1M309e6Yb0FYtaFc/bk4=;
+ b=TgqO2/fxEyqhmeEONUEchntgH78wA4jutKZyyZQI17GEOP79vLgRI1YFmuenygqSo5
+ ACVBxkeryyfpj2btMZdXGaMfEMovHoLt9NEwaf2l2pSamhwXWFcsyrb7Q/2+BHGLn+GV
+ V/NiniaSy/bMwG/Ty5nVT4W/op853zgsR0xxu2Yy+u4z/BKoYPEDs+hgVekOWwCm+vU0
+ cwcB7rLQnqpenn3B1NxbZuz/9ht9M66Y1t/CY4QgGpnxi24F6rGOIWvCM3LmerQmMJI1
+ c7GLzAUjojgsOlqW1BQ/IGEz9RFOIJ6cyJhdnm+EqzCHo6LKRsXZYGiMP7SCvlJ9F5Su
+ xECw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1733994837; x=1734599637;
+ d=1e100.net; s=20230601; t=1733994841; x=1734599641;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ruI2VEm52N1m+U4TsADLxrOxUekJ4XCSufFXN4VqY+o=;
- b=htGQn0cPDSEHxbyal+xBnVuoKif5b28ARZE6Ny+WPmUG5gWJ30hZsc/9mpcDPsZy6m
- zTa1+DJKV3Gpl4VGcAfzYHbxahH5UyQQ/5e44u0FyGAvDAsNEuFlLO3I096XOxvnBtoo
- HOzhBgPwKwroIv/C1McRmIE/gaH3R1xcSUsA+E2YhDlfC+bltmAcMto5Pvan9OCOxjy1
- kA1LynNgiexV9JvTgSQYTc/fa0lXMwjpgv4nKoXfCPH8TT+gwZLddmXZc7Ll12LN7z9R
- PgmPrk/0ggLvCjUZBoe0JzMdkpvED2q7kC4ZJ4bUVKX4tlryyq1kWfFDPvY3sqk/O2jr
- dlDg==
-X-Gm-Message-State: AOJu0Ywk3ToimEm1N7ZSz0IJTf4LMmlJozdcI+VbqvoC41HAxLJTE6Dm
- /68NrfZbn+7b8GneDzu7YXxdxxMwFAOoe2hthPzl4RUFywJF1mWsX9Q5NQ==
-X-Gm-Gg: ASbGncsNqAk55zUK+caDO4sXAbGv97nW+mPzIOFuXwbIKdnDH4Z6c80WI9SMiSvU7Ja
- tcHxMszSGpxTRIVLPlwDyQoksrVih3ZxvO3SOZS76lNdmw2V5Dw3fNt9puAq492gVYb3vaHEkLK
- 0NEhkZ8ZU0mhqYQGOOhGIn9WfApW17CHwbGCocONZ1pWfbJS5tvK+7VxFkOzrwkJkcLWWNWC+HM
- fqJYEv2QLSYkKvtOYGW3dGk4sCWcCgIYK+RGkI2E2qEyR/4c8imwvM141k=
-X-Google-Smtp-Source: AGHT+IEJu+I9QoecG2NkTNlLhwkGIWEdgXRubn8Ku/pP9wUfm3yOXPL6xkLiqfj+z24YIW6gI/l4ig==
-X-Received: by 2002:a17:90b:17cc:b0:2ee:7c02:8ef1 with SMTP id
- 98e67ed59e1d1-2f127fbcec5mr8792724a91.11.1733994837258; 
- Thu, 12 Dec 2024 01:13:57 -0800 (PST)
+ bh=md9GySIJ3TCHpzC0bgJMV4Q1M309e6Yb0FYtaFc/bk4=;
+ b=lrf5kD4mTqZ3Cg4SbFqbevjk6WrkKFgX0KsJRLplkyrKtpKhEr9PfUw7097xpwDcYb
+ TWOkf/9GVIK8E7aaoIM0Pgn2Y2PeiqwkeGLuCyNJOlLoitn0IDxKigyLapenpLzqoERr
+ +Ez2KMATDjCyfaju07m/ALcx5RbrXvemAZT/L0mS2W3iusl6SIaYSOPQ3vxwdvXXtTX4
+ Wd1n68E7x5FdhHLaKipuXv1nV2Ulo3m9/ZI2EFT+7uSmyizMs04ZbHFimQBvvWb6cH6G
+ T5+RSA0nvXsoBvrBisPGVUrAYbqEZrgKBpNPaqpdxSUDPzpW7M7yONxb/zsLf93/B93I
+ x6BQ==
+X-Gm-Message-State: AOJu0YyODfzY610wffTTau2pWeDAso1Bz1lJFrypAq2Xn4gaVPocrxfV
+ 0mp/iFqIL1Yx38YgHm+j/5yu+0G0HJBli0KThLww00ytuCcN1E61P5L+NQ==
+X-Gm-Gg: ASbGncs3V1bKfHyZUSWIZzmej95mu2WfPmN2AFOH0UR0BdzCTt7eLl8xG4sMSeFdxfj
+ 6vcdmoAaiaiNWq4Lv+pQJCO5iJi874AjFwtMuRz3y2zcyFGmBRG6UpkvB9pwwtcKSUzJYD5YMeU
+ oyvRyEdWB909gxYpMds5IrV1W2zQeARMUtnyGzEcGUSN02u0E2QXWJ/gNBDzFoJsTAg004lcPOU
+ VfTnGmGKS0qbI36Cx3pIDFXkxN+1VKk97Z2LFYW4QKjewqUKumUjPu9LTY=
+X-Google-Smtp-Source: AGHT+IF+Oro7OkMLzh8csvIDMa/cw+yX5StFgD3DXFfEqsD7ncFzNCvbPmAT4HatWKaB3OO32nXjsw==
+X-Received: by 2002:a17:90b:1b0f:b0:2ee:d433:7c54 with SMTP id
+ 98e67ed59e1d1-2f1392b94e8mr4675722a91.19.1733994840654; 
+ Thu, 12 Dec 2024 01:14:00 -0800 (PST)
 Received: from wheely.local0.net ([1.146.48.169])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2f142d92e2csm787021a91.9.2024.12.12.01.13.54
+ 98e67ed59e1d1-2f142d92e2csm787021a91.9.2024.12.12.01.13.57
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 12 Dec 2024 01:13:56 -0800 (PST)
+ Thu, 12 Dec 2024 01:14:00 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, Gerd Hoffmann <kraxel@redhat.com>,
  Kevin Wolf <kwolf@redhat.com>
-Subject: [PATCH 07/11] usb/msd: Split async packet tracking into data and csw
-Date: Thu, 12 Dec 2024 19:13:18 +1000
-Message-ID: <20241212091323.1442995-8-npiggin@gmail.com>
+Subject: [PATCH 08/11] usb/msd: Add some additional assertions
+Date: Thu, 12 Dec 2024 19:13:19 +1000
+Message-ID: <20241212091323.1442995-9-npiggin@gmail.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241212091323.1442995-1-npiggin@gmail.com>
 References: <20241212091323.1442995-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102d;
- envelope-from=npiggin@gmail.com; helo=mail-pj1-x102d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x62c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,257 +94,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The async packet handling logic has places that infer whether the
-async packet is data or CSW, based on context. This is not wrong,
-it just makes the logic easier to follow if they are categorised
-when they are accepted.
+Add more assertions to help verify internal logic.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- include/hw/usb/msd.h |   5 +-
- hw/usb/dev-storage.c | 121 +++++++++++++++++++++++++++----------------
- 2 files changed, 79 insertions(+), 47 deletions(-)
+ hw/usb/dev-storage.c | 23 +++++++++++++++++++----
+ 1 file changed, 19 insertions(+), 4 deletions(-)
 
-diff --git a/include/hw/usb/msd.h b/include/hw/usb/msd.h
-index f9fd862b529..a40d15f5def 100644
---- a/include/hw/usb/msd.h
-+++ b/include/hw/usb/msd.h
-@@ -33,8 +33,11 @@ struct MSDState {
-     struct usb_msd_csw csw;
-     SCSIRequest *req;
-     SCSIBus bus;
-+
-     /* For async completion.  */
--    USBPacket *packet;
-+    USBPacket *data_packet;
-+    USBPacket *csw_in_packet;
-+
-     /* usb-storage only */
-     BlockConf conf;
-     bool removable;
 diff --git a/hw/usb/dev-storage.c b/hw/usb/dev-storage.c
-index 064bb700cbc..4e23537cd75 100644
+index 4e23537cd75..c04cee0041b 100644
 --- a/hw/usb/dev-storage.c
 +++ b/hw/usb/dev-storage.c
-@@ -178,18 +178,33 @@ static const USBDesc desc = {
-     .str   = desc_strings,
- };
- 
--static void usb_msd_packet_complete(MSDState *s, int status)
-+static void usb_msd_data_packet_complete(MSDState *s, int status)
- {
--    USBPacket *p = s->packet;
-+    USBPacket *p = s->data_packet;
- 
-     /*
--     * Set s->packet to NULL before calling usb_packet_complete
--     * because another request may be issued before
--     * usb_packet_complete returns.
-+     * Set s->data_packet to NULL before calling usb_packet_complete
-+     * because another request may be issued before usb_packet_complete
-+     * returns.
-      */
-     trace_usb_msd_packet_complete();
-+    s->data_packet = NULL;
-+    p->status = status;
-+    usb_packet_complete(&s->dev, p);
-+}
-+
-+static void usb_msd_csw_packet_complete(MSDState *s, int status)
-+{
-+    USBPacket *p = s->csw_in_packet;
-+
-+    /*
-+     * Set s->csw_in_packet to NULL before calling usb_packet_complete
-+     * because another request may be issued before usb_packet_complete
-+     * returns.
-+     */
-+    trace_usb_msd_packet_complete();
-+    s->csw_in_packet = NULL;
-     p->status = status;
--    s->packet = NULL;
-     usb_packet_complete(&s->dev, p);
- }
- 
-@@ -197,8 +212,12 @@ static void usb_msd_fatal_error(MSDState *s)
- {
-     trace_usb_msd_fatal_error();
- 
--    if (s->packet) {
--        usb_msd_packet_complete(s, USB_RET_STALL);
-+    if (s->data_packet) {
-+        usb_msd_data_packet_complete(s, USB_RET_STALL);
-+    }
-+
-+    if (s->csw_in_packet) {
-+        usb_msd_csw_packet_complete(s, USB_RET_STALL);
-     }
- 
-     /*
-@@ -243,7 +262,7 @@ static void usb_msd_send_status(MSDState *s, USBPacket *p)
- void usb_msd_transfer_data(SCSIRequest *req, uint32_t len)
- {
+@@ -264,13 +264,24 @@ void usb_msd_transfer_data(SCSIRequest *req, uint32_t len)
      MSDState *s = DO_UPCAST(MSDState, dev.qdev, req->bus->qbus.parent);
--    USBPacket *p = s->packet;
-+    USBPacket *p = s->data_packet;
+     USBPacket *p = s->data_packet;
  
-     if ((s->mode == USB_MSDM_DATAOUT) != (req->cmd.mode == SCSI_XFER_TO_DEV)) {
-         usb_msd_fatal_error(s);
-@@ -254,10 +273,10 @@ void usb_msd_transfer_data(SCSIRequest *req, uint32_t len)
-     s->scsi_off = 0;
-     if (p) {
-         usb_msd_copy_data(s, p);
--        p = s->packet;
-+        p = s->data_packet;
-         if (p && p->actual_length == p->iov.size) {
-             /* USB_RET_SUCCESS status clears previous ASYNC status */
--            usb_msd_packet_complete(s, USB_RET_SUCCESS);
-+            usb_msd_data_packet_complete(s, USB_RET_SUCCESS);
-         }
-     }
- }
-@@ -265,7 +284,7 @@ void usb_msd_transfer_data(SCSIRequest *req, uint32_t len)
- void usb_msd_command_complete(SCSIRequest *req, size_t resid)
- {
-     MSDState *s = DO_UPCAST(MSDState, dev.qdev, req->bus->qbus.parent);
--    USBPacket *p = s->packet;
-+    USBPacket *p = s->data_packet;
- 
-     trace_usb_msd_cmd_complete(req->status, req->tag);
- 
-@@ -274,35 +293,37 @@ void usb_msd_command_complete(SCSIRequest *req, size_t resid)
-     s->csw.residue = cpu_to_le32(s->data_len);
-     s->csw.status = req->status != 0;
- 
--    if (s->packet) {
--        if (s->data_len == 0 && s->mode == USB_MSDM_DATAOUT) {
--            /* A deferred packet with no write data remaining must be
--               the status read packet.  */
--            usb_msd_send_status(s, p);
--            s->mode = USB_MSDM_CBW;
--        } else if (s->mode == USB_MSDM_CSW) {
--            usb_msd_send_status(s, p);
--            s->mode = USB_MSDM_CBW;
--        } else {
--            if (s->data_len) {
--                int len = (p->iov.size - p->actual_length);
--                usb_packet_skip(p, len);
--                if (len > s->data_len) {
--                    len = s->data_len;
--                }
--                s->data_len -= len;
--            }
--            if (s->data_len == 0) {
--                s->mode = USB_MSDM_CSW;
-+    scsi_req_unref(req);
-+    s->req = NULL;
-+
-+    if (p) {
-+        g_assert(s->mode == USB_MSDM_DATAIN || s->mode == USB_MSDM_DATAOUT);
-+        if (s->data_len) {
-+            int len = (p->iov.size - p->actual_length);
-+            usb_packet_skip(p, len);
-+            if (len > s->data_len) {
-+                len = s->data_len;
-             }
-+            s->data_len -= len;
+-    if ((s->mode == USB_MSDM_DATAOUT) != (req->cmd.mode == SCSI_XFER_TO_DEV)) {
+-        usb_msd_fatal_error(s);
+-        return;
++    if (s->mode == USB_MSDM_DATAIN) {
++        if (req->cmd.mode == SCSI_XFER_TO_DEV) {
++            usb_msd_fatal_error(s);
++            return;
 +        }
-+        if (s->data_len == 0) {
-+            s->mode = USB_MSDM_CSW;
-         }
-         /* USB_RET_SUCCESS status clears previous ASYNC status */
--        usb_msd_packet_complete(s, USB_RET_SUCCESS);
-+        usb_msd_data_packet_complete(s, USB_RET_SUCCESS);
-     } else if (s->data_len == 0) {
-         s->mode = USB_MSDM_CSW;
-     }
--    scsi_req_unref(req);
--    s->req = NULL;
-+
-+    if (s->mode == USB_MSDM_CSW) {
-+        p = s->csw_in_packet;
-+        if (p) {
-+            usb_msd_send_status(s, p);
-+            s->mode = USB_MSDM_CBW;
-+            /* USB_RET_SUCCESS status clears previous ASYNC status */
-+            usb_msd_csw_packet_complete(s, USB_RET_SUCCESS);
++    } else if (s->mode == USB_MSDM_DATAOUT) {
++        if (req->cmd.mode != SCSI_XFER_TO_DEV) {
++            usb_msd_fatal_error(s);
++            return;
 +        }
-+    }
- }
- 
- void usb_msd_request_cancelled(SCSIRequest *req)
-@@ -332,8 +353,12 @@ void usb_msd_handle_reset(USBDevice *dev)
-     }
-     assert(s->req == NULL);
- 
--    if (s->packet) {
--        usb_msd_packet_complete(s, USB_RET_STALL);
-+    if (s->data_packet) {
-+        usb_msd_data_packet_complete(s, USB_RET_STALL);
-+    }
-+
-+    if (s->csw_in_packet) {
-+        usb_msd_csw_packet_complete(s, USB_RET_STALL);
-     }
- 
-     memset(&s->csw, 0, sizeof(s->csw));
-@@ -388,11 +413,15 @@ static void usb_msd_cancel_io(USBDevice *dev, USBPacket *p)
- {
-     MSDState *s = USB_STORAGE_DEV(dev);
- 
--    assert(s->packet == p);
--    s->packet = NULL;
--
--    if (s->req) {
--        scsi_req_cancel(s->req);
-+    if (p == s->data_packet) {
-+        s->data_packet = NULL;
-+        if (s->req) {
-+            scsi_req_cancel(s->req);
-+        }
-+    } else if (p == s->csw_in_packet) {
-+        s->csw_in_packet = NULL;
 +    } else {
 +        g_assert_not_reached();
      }
- }
  
-@@ -493,7 +522,7 @@ static void usb_msd_handle_data_out(USBDevice *dev, USBPacket *p)
-         }
-         if (p->actual_length < p->iov.size) {
-             trace_usb_msd_packet_async();
--            s->packet = p;
-+            s->data_packet = p;
-             p->status = USB_RET_ASYNC;
-         }
-         break;
-@@ -525,7 +554,7 @@ static void usb_msd_handle_data_in(USBDevice *dev, USBPacket *p)
++    assert(s->scsi_len == 0);
+     s->scsi_len = len;
+     s->scsi_off = 0;
++
+     if (p) {
+         usb_msd_copy_data(s, p);
+         p = s->data_packet;
+@@ -288,6 +299,10 @@ void usb_msd_command_complete(SCSIRequest *req, size_t resid)
  
-         /* Waiting for SCSI write to complete.  */
-         trace_usb_msd_packet_async();
--        s->packet = p;
-+        s->csw_in_packet = p;
-         p->status = USB_RET_ASYNC;
-         break;
+     trace_usb_msd_cmd_complete(req->status, req->tag);
  
-@@ -537,7 +566,7 @@ static void usb_msd_handle_data_in(USBDevice *dev, USBPacket *p)
-         if (s->req) {
-             /* still in flight */
-             trace_usb_msd_packet_async();
--            s->packet = p;
-+            s->csw_in_packet = p;
-             p->status = USB_RET_ASYNC;
-         } else {
-             usb_msd_send_status(s, p);
-@@ -565,7 +594,7 @@ static void usb_msd_handle_data_in(USBDevice *dev, USBPacket *p)
-         }
-         if (p->actual_length < p->iov.size && s->mode == USB_MSDM_DATAIN) {
-             trace_usb_msd_packet_async();
--            s->packet = p;
-+            s->data_packet = p;
-             p->status = USB_RET_ASYNC;
-         }
-         break;
++    g_assert(s->req);
++    /* The CBW is what starts the SCSI request */
++    g_assert(s->mode != USB_MSDM_CBW);
++
+     s->csw.sig = cpu_to_le32(0x53425355);
+     s->csw.tag = cpu_to_le32(req->tag);
+     s->csw.residue = cpu_to_le32(s->data_len);
+@@ -486,7 +501,7 @@ static void usb_msd_handle_data_out(USBDevice *dev, USBPacket *p)
+         trace_usb_msd_cmd_submit(cbw.lun, tag, cbw.flags,
+                                  cbw.cmd_len, s->data_len);
+         assert(le32_to_cpu(s->csw.residue) == 0);
+-        s->scsi_len = 0;
++        assert(s->scsi_len == 0);
+         s->req = scsi_req_new(scsi_dev, tag, cbw.lun,
+                               cbw.cmd, cbw.cmd_len, NULL);
+         if (s->commandlog) {
 -- 
 2.45.2
 
