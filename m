@@ -2,35 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 899009EE861
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Dec 2024 15:07:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE91D9EE85E
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Dec 2024 15:07:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tLjpu-0007tr-Qm; Thu, 12 Dec 2024 09:06:40 -0500
+	id 1tLjqD-00085n-BJ; Thu, 12 Dec 2024 09:06:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gerben@altlinux.org>)
- id 1tLhdw-0006nb-BK
- for qemu-devel@nongnu.org; Thu, 12 Dec 2024 06:46:09 -0500
+ id 1tLhxY-00063w-W4
+ for qemu-devel@nongnu.org; Thu, 12 Dec 2024 07:06:25 -0500
 Received: from air.basealt.ru ([193.43.8.18])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gerben@altlinux.org>)
- id 1tLhdt-00076R-52
- for qemu-devel@nongnu.org; Thu, 12 Dec 2024 06:46:07 -0500
+ id 1tLhxX-0005HS-1K
+ for qemu-devel@nongnu.org; Thu, 12 Dec 2024 07:06:24 -0500
 Received: from boringlust.malta.altlinux.ru (obninsk.basealt.ru
  [217.15.195.17])
- by air.basealt.ru (Postfix) with ESMTPSA id DD0F72337E;
- Thu, 12 Dec 2024 14:45:59 +0300 (MSK)
+ by air.basealt.ru (Postfix) with ESMTPSA id A4833233A0;
+ Thu, 12 Dec 2024 15:06:19 +0300 (MSK)
 From: gerben@altlinux.org
-To: fred.konrad@greensocs.com,
-	qemu-devel@nongnu.org
-Cc: sdl.qemu@linuxtesting.org, Denis Rastyogin <gerben@altlinux.org>,
- David Meliksetyan <d.meliksetyan@fobos-nt.ru>
-Subject: [PATCH] hw/display: refine upper limit for offset value in assert
- check
-Date: Thu, 12 Dec 2024 14:45:39 +0300
-Message-ID: <20241212114554.517379-1-gerben@altlinux.org>
+To: peter.maydell@linaro.org, richard.henderson@linaro.org,
+ qemu-devel@nongnu.org
+Cc: sdl.qemu@linuxtesting.org,
+	Denis Rastyogin <gerben@altlinux.org>
+Subject: [PATCH] target/arm: remove redundant code
+Date: Thu, 12 Dec 2024 15:06:14 +0300
+Message-ID: <20241212120618.518369-1-gerben@altlinux.org>
 X-Mailer: git-send-email 2.42.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -40,10 +39,10 @@ X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
 X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Thu, 12 Dec 2024 09:05:35 -0500
+X-Mailman-Approved-At: Thu, 12 Dec 2024 09:05:36 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,40 +59,28 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Denis Rastyogin <gerben@altlinux.org>
 
-Accessing an element of the s->core_registers array
-with a size of 236 (0x3AC) may lead to a buffer overflow,
-as the index 'offset' can exceed the valid range and reach values
-up to 5139 (0x504C >> 2). This change addresses
-a potential vulnerability when writing data.
+This call is redundant as it only retrieves a value that is not used further.
 
 Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Reported-by: David Meliksetyan <d.meliksetyan@fobos-nt.ru>
 Signed-off-by: Denis Rastyogin <gerben@altlinux.org>
 ---
- hw/display/xlnx_dp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ target/arm/vfp_helper.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/hw/display/xlnx_dp.c b/hw/display/xlnx_dp.c
-index 6ab2335499..69ccc7ccc2 100644
---- a/hw/display/xlnx_dp.c
-+++ b/hw/display/xlnx_dp.c
-@@ -743,6 +743,7 @@ static void xlnx_dp_write(void *opaque, hwaddr offset, uint64_t value,
-     DPRINTF("core write @%" PRIx64 " = 0x%8.8" PRIX64 "\n", offset, value);
+diff --git a/target/arm/vfp_helper.c b/target/arm/vfp_helper.c
+index 62638d2b1f..f020c3c34b 100644
+--- a/target/arm/vfp_helper.c
++++ b/target/arm/vfp_helper.c
+@@ -1095,8 +1095,6 @@ float64 HELPER(rintd)(float64 x, void *fp_status)
  
-     offset = offset >> 2;
-+    assert(offset <= (0x3AC >> 2));
+     ret = float64_round_to_int(x, fp_status);
  
-     switch (offset) {
-     /*
-@@ -896,7 +897,6 @@ static void xlnx_dp_write(void *opaque, hwaddr offset, uint64_t value,
-         xlnx_dp_update_irq(s);
-         break;
-     default:
--        assert(offset <= (0x504C >> 2));
-         s->core_registers[offset] = value;
-         break;
-     }
+-    new_flags = get_float_exception_flags(fp_status);
+-
+     /* Suppress any inexact exceptions the conversion produced */
+     if (!(old_flags & float_flag_inexact)) {
+         new_flags = get_float_exception_flags(fp_status);
 -- 
 2.42.2
 
