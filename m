@@ -2,86 +2,104 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 771C19EE880
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Dec 2024 15:12:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DDEBF9EE885
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Dec 2024 15:12:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tLjtu-0003fp-Gd; Thu, 12 Dec 2024 09:10:46 -0500
+	id 1tLjvY-0006Fu-Hb; Thu, 12 Dec 2024 09:12:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tLjtr-0003fP-1x
- for qemu-devel@nongnu.org; Thu, 12 Dec 2024 09:10:43 -0500
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tLjtp-0002fk-HC
- for qemu-devel@nongnu.org; Thu, 12 Dec 2024 09:10:42 -0500
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-434a852bb6eso6603145e9.3
- for <qemu-devel@nongnu.org>; Thu, 12 Dec 2024 06:10:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734012639; x=1734617439; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=MaGVoGgymsYq6sy3eZaaquvyYzqgHMU5IlSKupTJhl4=;
- b=fEI1pXOD5R4ulSOKWT2Y73StOnc6F2ANel1YiMw5kVTHEJrH+l3umkinvckI+t8v2K
- 0IdevsOFCdtSeN1jpYIznaRz1FVXErog/xdwgXLrtzBovKsQVJj3YQnPxTasMitW1G7Y
- 9uRrTS4kpYU5sBtLyx73/PZXZE+i0UaruS34B+vs1cMXeAOBGnsalsVbsjmPT+uW+G/O
- rlFPnSKvF3HA2x5r/kSnzLi2IREBrS74l5i2Wy5ra70iFRL24BuxmKqZT1PvGWbcRgU3
- AE64dJR7Y48mvIZ9kzXXtRC39mRojTAa4BSXMj1zebTHOInylDLD27FvUqS+3nxgvv9t
- Yxew==
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1tLjvV-0006CT-IO
+ for qemu-devel@nongnu.org; Thu, 12 Dec 2024 09:12:25 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1tLjvS-0002sc-W9
+ for qemu-devel@nongnu.org; Thu, 12 Dec 2024 09:12:25 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1734012741;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=lNzM/5KHaOdjwOXaIll3vIt6zX42tMOo69nIstNet+E=;
+ b=JIp8Rkv2AWrhrH9K2i2SDoSuxZESa02DeyyzCdDsx17w7TLuze8XXhkn6aZ1ozHNwmdUAh
+ dzH6Vcsk+UDrgVQ+ylvmcoIfUMLrFdk8izmdTC2/gzGb3KY+DJqeNU9s/XTBxqleK6qG+Q
+ Zmt7gW/SFI+6vh9IzvAfaQaWyNAs2nw=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-178-scuoFotnOkWD2EavOLcaqw-1; Thu, 12 Dec 2024 09:12:19 -0500
+X-MC-Unique: scuoFotnOkWD2EavOLcaqw-1
+X-Mimecast-MFC-AGG-ID: scuoFotnOkWD2EavOLcaqw
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-4361efc9dc6so4159265e9.3
+ for <qemu-devel@nongnu.org>; Thu, 12 Dec 2024 06:12:19 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734012639; x=1734617439;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=MaGVoGgymsYq6sy3eZaaquvyYzqgHMU5IlSKupTJhl4=;
- b=QvHzUuq61kP8ejvNxBthMjTDvZB86Su6aR5k4sYv6YHsgfTs+r3jgNnGijPNShCje+
- 51NG+ZbpInD8sv57isFWDuVQI7UmW1UvmBCRqNMT/0+HIBp9jgePE6GOlyS4uDpoSAGw
- H8vlLR3FZQcSH8xL2ZBxAwABmp0rB8kVlp6+oe5rg/VowLelzrBjtsw60lMWKMOzhdvm
- q+ShNARkcD7rNxE3r5p2xNmTViw9nbjzYpukGrDWRIuoq6KDD1YNmLRVpZpBHACAa9Ss
- 8TsEhkHaMI+WgKkj3P9DHdy9z8BQQmpTHZ4xwWmwRcgATCheiZSAljtQt4/7k9a0rI2n
- bRPg==
-X-Gm-Message-State: AOJu0YztQHaB4u86lWPR6SJy38bDAgIh0RhVjgoc1+dPtcSPL1/68iOG
- VEHuJCzz4C8lr2Wwa4CyGcAO//k76AKorX2iX7GfmoaRQ9PvTYazPwpSJe/cmFwJWczJesh+6ih
- c
-X-Gm-Gg: ASbGnct9pag67WT+FihLQOE/P0c37xpf2MzRSOaKYVU2Berg+jymwWP4pvKHWkaR2Xy
- G+jQ/QK3BD5P8Mlx+R37K1oL86kk7UVaYC8NF8lT7IvGCgNC3HWY9yHkFTtrPJJid6zRyJ9MMV7
- RUNy5puUObnvrp2n6eL0EOqvZR59sYRt5QhglSxj3pk0GXILZ8IXgfx7tRozu2N6eubIj8Z8zDy
- /MH3Nb74qiqwpU+wXNXHI/FkeYaaBk7RUuMwzqvZQAIA8vtW8Turhn8D2umw0A1qNeNcr7tXulb
- +JOb+F/mtBdtL+aN9O2PRi5TCPLv2uI=
-X-Google-Smtp-Source: AGHT+IFxPk85C+oe4412jrTkEbEoKjxrfL4NW2N5CLseX21FA72mhnu12fF8Hk/p2As7fCqHnyrJig==
-X-Received: by 2002:a05:600c:3acf:b0:434:f8a0:9dd8 with SMTP id
- 5b1f17b1804b1-4361c345006mr55413915e9.1.1734012639097; 
- Thu, 12 Dec 2024 06:10:39 -0800 (PST)
-Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-436256b7c62sm17778065e9.34.2024.12.12.06.10.38
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 12 Dec 2024 06:10:38 -0800 (PST)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 3/3] qemu/atomic128: Include missing 'qemu/atomic.h' header
-Date: Thu, 12 Dec 2024 15:10:18 +0100
-Message-ID: <20241212141018.59428-4-philmd@linaro.org>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20241212141018.59428-1-philmd@linaro.org>
-References: <20241212141018.59428-1-philmd@linaro.org>
+ d=1e100.net; s=20230601; t=1734012738; x=1734617538;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:reply-to:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=lNzM/5KHaOdjwOXaIll3vIt6zX42tMOo69nIstNet+E=;
+ b=XstKhsC7zPF398/tMzdCk3vwJ/kOQ4/V/aEp4liGIhAF0QlNjV0fSHV3EOorpU8qSU
+ 7lawqgBgCd9o7n+/2a1ApAiFQGKUFUpfVLl89qMxZE0hacBGU+HerAzF/sQhV+u+JW9E
+ 2tNpE2wYZmlqNYS8PnTo5bqkvvyBEyZZHmiIPzhnKTygidlEtansRuHQcNn0JqmXyYIc
+ X1AN6e187iIOXtNbSxGumk6aOCltnwaS0zPuJcDk9amDUr8kRwiaQ07MIoM2DcazCFWL
+ 1kc9fY4PhsU3Pb0cEgmu0Tzsr+T41m0CeMp0ZCEDzXtvoI0h/GtfLYSyA6coaFyCB59S
+ 7BpQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUhoFIFys3J+VsVKo6zwdGgFzATvjZ72bIt41mNr5EoaW7LLTNlOLOOBEvIMOsVhr3H1ah1TgouCB4H@nongnu.org
+X-Gm-Message-State: AOJu0YyS81Lt069SVWZzhTECTRahByMSEtSQUd7F6qw7TfgqXGzeTLXI
+ J6ey/8P83S/ZH7I4DLuPVMalv9eMd6y1PEJiAp9vRDaaUINeXgJvJBfu5v0EKcnWArdpI3ZFV8L
+ on0qC6k2VleM2REpEWu+TP2g2PhtSccIHSQ+4rrexGXQQkWv/z5wk
+X-Gm-Gg: ASbGncs9DHbPidx/8zs2Ycb99fUgD7uA6v7NAT9h5CVEm4lpl22JuDXUJgv7y7U1syi
+ ByZRLQA0f4VneLDRTpOo8K2En8ZivjOYN0fj1wKIbnh4n/Fw2XprcRr3cfSl10eWlK4VyV/iKZZ
+ W18k8jYHwjZKhdrq/Lbn/E/rgBUtSv/SL6FYs9ZsQfwNFZ7hcdimovgc+r5nfNKH0KYBNIwxGpy
+ wVGl8P9bkPfP5tamL7VLlCt3EzJxhNmX+/ty9X0D47lgFXnNjgXeKdX50v/dK0rLwwA4Mkjxbbc
+ vKj6+Lf23a3ME9x+SADKQ8EMgzZE
+X-Received: by 2002:a05:600c:5107:b0:434:fb65:ebbb with SMTP id
+ 5b1f17b1804b1-43622842924mr34681905e9.17.1734012738450; 
+ Thu, 12 Dec 2024 06:12:18 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGU8Gkh/6x9u1nP/VCWEubXoDik5WGdtMCiI9rgLd/giqAVYpPerfHi1FsZqd0S62AvM7EIUQ==
+X-Received: by 2002:a05:600c:5107:b0:434:fb65:ebbb with SMTP id
+ 5b1f17b1804b1-43622842924mr34677335e9.17.1734012733105; 
+ Thu, 12 Dec 2024 06:12:13 -0800 (PST)
+Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874?
+ ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-436255531f2sm17862685e9.9.2024.12.12.06.12.11
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 12 Dec 2024 06:12:12 -0800 (PST)
+Message-ID: <f06b5f10-6ff4-4851-96db-56d6596bd176@redhat.com>
+Date: Thu, 12 Dec 2024 15:12:10 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFCv2 01/20] kvm: kvm_get_writable_id_regs
+Content-Language: en-US
+To: Richard Henderson <richard.henderson@linaro.org>,
+ Cornelia Huck <cohuck@redhat.com>, eric.auger.pro@gmail.com,
+ qemu-devel@nongnu.org, qemu-arm@nongnu.org, kvmarm@lists.linux.dev
+References: <20241206112213.88394-1-cohuck@redhat.com>
+ <20241206112213.88394-2-cohuck@redhat.com>
+ <a1ad71d4-4148-42ee-b77a-fc4df1f5c2c0@linaro.org>
+From: Eric Auger <eric.auger@redhat.com>
+In-Reply-To: <a1ad71d4-4148-42ee-b77a-fc4df1f5c2c0@linaro.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Received-SPF: pass client-ip=170.10.133.124;
+ envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -25
+X-Spam_score: -2.6
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.496,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,38 +112,47 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-qatomic_cmpxchg__nocheck() is declared in "qemu/atomic.h".
-Include it in order to avoid when refactoring unrelated headers:
+Hi Richard,
 
-    In file included from ../../accel/tcg/tcg-runtime-gvec.c:22:
-    In file included from include/exec/helper-proto-common.h:10:
-    In file included from include/qemu/atomic128.h:61:
-    host/include/generic/host/atomic128-cas.h.inc:23:11: error: call to undeclared function 'qatomic_cmpxchg__nocheck'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-       23 |     r.i = qatomic_cmpxchg__nocheck(ptr_align, c.i, n.i);
-          |           ^
-    1 error generated.
+On 12/12/24 14:59, Richard Henderson wrote:
+> On 12/6/24 05:21, Cornelia Huck wrote:
+>> +#define NR_ID_REGS (3 * 8 * 8)
+>> +
+>> +typedef struct IdRegMap {
+>> +    uint64_t regs[NR_ID_REGS];
+>> +} IdRegMap;
+>> +
+>
+> Where does the NR_ID_REGS come from?  In particular the * 3?
+> IIRC, all of the id registers are in op0=3, op1=0, crn=0, crm={0-7},
+> op2={0-7}.
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- include/qemu/atomic128.h | 1 +
- 1 file changed, 1 insertion(+)
+According to the KVM API and code,
 
-diff --git a/include/qemu/atomic128.h b/include/qemu/atomic128.h
-index 448fb644799..31e5c48d8fa 100644
---- a/include/qemu/atomic128.h
-+++ b/include/qemu/atomic128.h
-@@ -13,6 +13,7 @@
- #ifndef QEMU_ATOMIC128_H
- #define QEMU_ATOMIC128_H
- 
-+#include "qemu/atomic.h"
- #include "qemu/int128.h"
- 
- /*
--- 
-2.45.2
+"The Feature ID space is defined as the AArch64 System register space
+with +op0==3, op1=={0, 1, 3}, CRn==0, CRm=={0-7}, op2=={0-7}."
+
+
+hence that choice
+
+See:
+https://lore.kernel.org/all/20230919175017.538312-3-jingzhangos@google.com/
+
+Definitively we can add a comment
+
+Thanks
+
+Eric
+
+>
+> Whatever the actual answer, some comments would be good.
+>
+>
+> r~
+>
 
 
