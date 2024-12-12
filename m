@@ -2,81 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A81AA9EDE10
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Dec 2024 05:00:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A054F9EDEB8
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Dec 2024 06:19:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tLaLm-0003cb-Hq; Wed, 11 Dec 2024 22:58:54 -0500
+	id 1tLbaj-0007Vi-QN; Thu, 12 Dec 2024 00:18:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1tLaLj-0003cP-Mb
- for qemu-devel@nongnu.org; Wed, 11 Dec 2024 22:58:51 -0500
-Received: from mgamail.intel.com ([198.175.65.21])
+ (Exim 4.90_1) (envelope-from <binbin.wu@linux.intel.com>)
+ id 1tLbaf-0007VU-S2
+ for qemu-devel@nongnu.org; Thu, 12 Dec 2024 00:18:21 -0500
+Received: from mgamail.intel.com ([192.198.163.13])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1tLaLg-0002qc-Rh
- for qemu-devel@nongnu.org; Wed, 11 Dec 2024 22:58:51 -0500
+ (Exim 4.90_1) (envelope-from <binbin.wu@linux.intel.com>)
+ id 1tLbac-0004Al-64
+ for qemu-devel@nongnu.org; Thu, 12 Dec 2024 00:18:21 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1733975929; x=1765511929;
+ t=1733980698; x=1765516698;
  h=message-id:date:mime-version:subject:to:cc:references:
  from:in-reply-to:content-transfer-encoding;
- bh=KuBxYiWjPrSVCA/5xZDwFUtlhAPlHGsdlEQRvLdDuJ0=;
- b=gDdC7+qw11unc7h2x88C0hjbSN+CVJ0umzEtNfax2UaNpqyAg0d7PxHn
- qrTrhSJNZcFXOdmGLN2yz252MpvQmoSE+mVoyVi2l8Oz7oQm0F8RjaiwL
- 492JUEfbiZwvspf7/n561KsmQ7M0guSa7IiAPHq6S4KNMR4z8/r40z3Y8
- k7wW1i1lJ+flrnMmB+T5EglPjJaeHd0gC4q3+TAgbZSHsYGRHkh9NkLTV
- oIK1UFti+KwCpJz99/1uPkpfQWUAx9wjxq6NIF1PbJvCKkiwMTw7wamEb
- D2QW6WmJ9/Zc54hfE76em+8QVx+LARjJmNECEM/UHs65k1a15/oulqZHN A==;
-X-CSE-ConnectionGUID: vmyd6wOVTrWrBGV3b4pmZg==
-X-CSE-MsgGUID: 503ysZxnSlmvb45aw6nyBw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11283"; a="34299862"
-X-IronPort-AV: E=Sophos;i="6.12,227,1728975600"; d="scan'208";a="34299862"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Dec 2024 19:58:47 -0800
-X-CSE-ConnectionGUID: fILQ16xOQIuZEXz6nX6uhg==
-X-CSE-MsgGUID: uhCcXsOdQOmLAE4xH4f9aQ==
+ bh=dugcJKA6XIHtmk4l+Lj2z0oS3nv9cLyv9kh2TLQdnzU=;
+ b=MY8lZOQ1pb6xX352a0cq1na4Z9jdbWR0qL8oF4VvJXQqo0bEcXHvN1g9
+ S3nW6/+AfoJsV4Q4WCl82Crw6Of3+ktNMC6NfE6bmhI09GEIEk/QDbGI4
+ 69K5pIkhXBi42MFT76BwPgnid/0MVf4qUIuBnsuxqNoQNUFNqZKKbl1Td
+ 76ctNQGY02xWBATHO8Wg9zmaZ6HWrnc/19ZpvPOcfOv6MbiIYhZhlvSBz
+ 5175y6p/E/qHY7Y3NKUlu4c5uUSWe7WDR2EAOw8Okn0dbJpyVtLv3Ofe9
+ O1arp28mVRq2ecuESuHpix6mU8Xil66zYN5kYCCVDe2W3jx2GtiDmzlgH w==;
+X-CSE-ConnectionGUID: HFKPV8lVQKWYtZNM96CWuA==
+X-CSE-MsgGUID: slE/Kz+2TqyFIBT7S/KUVQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11283"; a="37224574"
+X-IronPort-AV: E=Sophos;i="6.12,227,1728975600"; d="scan'208";a="37224574"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+ by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Dec 2024 21:18:14 -0800
+X-CSE-ConnectionGUID: TuGYZe1JT2qe/62g3wFttA==
+X-CSE-MsgGUID: 9LZCchpGT0ODsaQKS0nTUw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="101165835"
-Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.247.1])
- ([10.124.247.1])
- by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Dec 2024 19:58:43 -0800
-Message-ID: <e34bf684-2269-4dd8-b215-c63e27d7ae1c@intel.com>
-Date: Thu, 12 Dec 2024 11:58:39 +0800
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="133484581"
+Received: from unknown (HELO [10.238.0.149]) ([10.238.0.149])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Dec 2024 21:18:12 -0800
+Message-ID: <72e1da62-5fd2-4633-b304-24be3dac1e7f@linux.intel.com>
+Date: Thu, 12 Dec 2024 13:18:09 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 1/4] i386/topology: Update the comment of
- x86_apicid_from_topo_ids()
-To: Zhao Liu <zhao1.liu@intel.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Igor Mammedov <imammedo@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Yanan Wang <wangyanan55@huawei.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Cameron Esfahani <dirty@apple.com>, Roman Bolshakov <rbolshakov@ddn.com>,
- Marcelo Tosatti <mtosatti@redhat.com>, qemu-devel@nongnu.org
-References: <20241205145716.472456-1-xiaoyao.li@intel.com>
- <20241205145716.472456-2-xiaoyao.li@intel.com> <Z1j+zDk0w66tReuf@intel.com>
+Subject: Re: [PATCH] i386/kvm: Set return value after handling
+ KVM_EXIT_HYPERCALL
+To: Xiaoyao Li <xiaoyao.li@intel.com>, pbonzini@redhat.com,
+ qemu-devel@nongnu.org
+Cc: seanjc@google.com, michael.roth@amd.com, rick.p.edgecombe@intel.com,
+ isaku.yamahata@intel.com, farrah.chen@intel.com, kvm@vger.kernel.org
+References: <20241212032628.475976-1-binbin.wu@linux.intel.com>
+ <2144c2c0-4a5d-4efd-b5e2-f2b4096c08b5@intel.com>
 Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <Z1j+zDk0w66tReuf@intel.com>
+From: Binbin Wu <binbin.wu@linux.intel.com>
+In-Reply-To: <2144c2c0-4a5d-4efd-b5e2-f2b4096c08b5@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=198.175.65.21; envelope-from=xiaoyao.li@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -38
-X-Spam_score: -3.9
-X-Spam_bar: ---
-X-Spam_report: (-3.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.472,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=1, RCVD_IN_DNSWL_MED=-2.3,
+Content-Transfer-Encoding: 8bit
+Received-SPF: none client-ip=192.198.163.13;
+ envelope-from=binbin.wu@linux.intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -47
+X-Spam_score: -4.8
+X-Spam_bar: ----
+X-Spam_report: (-4.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.472,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,44 +85,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/11/2024 10:54 AM, Zhao Liu wrote:
-> On Thu, Dec 05, 2024 at 09:57:13AM -0500, Xiaoyao Li wrote:
->> Date: Thu, 5 Dec 2024 09:57:13 -0500
->> From: Xiaoyao Li <xiaoyao.li@intel.com>
->> Subject: [RFC PATCH 1/4] i386/topology: Update the comment of
->>   x86_apicid_from_topo_ids()
->> X-Mailer: git-send-email 2.34.1
+
+
+
+On 12/12/2024 11:44 AM, Xiaoyao Li wrote:
+> On 12/12/2024 11:26 AM, Binbin Wu wrote:
+>> Userspace should set the ret field of hypercall after handling
+>> KVM_EXIT_HYPERCALL.  Otherwise, a stale value could be returned to KVM.
 >>
->> Update the comment of x86_apicid_from_topo_ids() to match the current
->> implementation,
->>
->> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+>> Fixes: 47e76d03b15 ("i386/kvm: Add KVM_EXIT_HYPERCALL handling for KVM_HC_MAP_GPA_RANGE")
+>> Reported-by: Farrah Chen <farrah.chen@intel.com>
+>> Signed-off-by: Binbin Wu <binbin.wu@linux.intel.com>
+>> Tested-by: Farrah Chen <farrah.chen@intel.com>
 >> ---
->>   include/hw/i386/topology.h | 5 +++--
->>   1 file changed, 3 insertions(+), 2 deletions(-)
+>> To test the TDX code in kvm-coco-queue, please apply the patch to the QEMU,
+>> otherwise, TDX guest boot could fail.
+>> A matching QEMU tree including this patch is here:
+>> https://github.com/intel-staging/qemu-tdx/releases/tag/tdx-qemu-upstream-v6.1-fix_kvm_hypercall_return_value
 >>
->> diff --git a/include/hw/i386/topology.h b/include/hw/i386/topology.h
->> index b2c8bf2de158..21b65219a5ca 100644
->> --- a/include/hw/i386/topology.h
->> +++ b/include/hw/i386/topology.h
->> @@ -121,9 +121,10 @@ static inline unsigned apicid_pkg_offset(X86CPUTopoInfo *topo_info)
->>   }
->>   
->>   /*
->> - * Make APIC ID for the CPU based on Pkg_ID, Core_ID, SMT_ID
->> + * Make APIC ID for the CPU based on topology and IDs of each topology level.
-> 
-> Maybe "based on sub-topology ID"?
+>> Previously, the issue was not triggered because no one would modify the ret
+>> value. But with the refactor patch for __kvm_emulate_hypercall() in KVM,
+>> https://lore.kernel.org/kvm/20241128004344.4072099-7-seanjc@google.com/, the
+>> value could be modified.
+>> ---
+>>   target/i386/kvm/kvm.c | 8 ++++++--
+>>   1 file changed, 6 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+>> index 8e17942c3b..4bcccb48d1 100644
+>> --- a/target/i386/kvm/kvm.c
+>> +++ b/target/i386/kvm/kvm.c
+>> @@ -6005,10 +6005,14 @@ static int kvm_handle_hc_map_gpa_range(struct kvm_run *run)
+>>     static int kvm_handle_hypercall(struct kvm_run *run)
+>>   {
+>> +    int ret = -EINVAL;
+>> +
+>>       if (run->hypercall.nr == KVM_HC_MAP_GPA_RANGE)
+>> -        return kvm_handle_hc_map_gpa_range(run);
+>> +        ret = kvm_handle_hc_map_gpa_range(run);
+>> +
+>> +    run->hypercall.ret = ret;
+>
+> Updating run->hypercall.ret is useful only when QEMU needs to re-enter the guest. For the case of ret < 0, QEMU will stop the vcpu.
 
-I interpret "sub-topology ID" the same as "IDs of each topology level". 
-But only with the information of IDs cannot produce a APIC ID, we need 
-the width of each level as well. I think the "topology" expresses the 
-width information, so I used the statement as "topology and IDs of each 
-topology level"
+IMHO, assign run->hypercall.ret anyway should be OK, no need to add a
+per-condition on ret, although the value is not used when ret < 0.
 
-> Otherwise,
-> 
-> Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-> 
+Currently, since QEMU will stop the vcpu when ret < 0, this patch doesn't
+convert ret to -Exxx that the ABI expects.
+
+>
+> I think we might need re-think on the handling of KVM_EXIT_HYPERCALL. E.g., in what error case should QEMU stop the vcpu, and in what case can QEMU return the error back to the guest via run->hypercall.ret.
+
+Actually, I had the similar question before.
+https://lore.kernel.org/kvm/d25cc62c-0f56-4be2-968a-63c8b1d63b5a@linux.intel.com/
+
+It might depends on the hypercall number?
+Another option is QEMU always sets run->hypercall.ret appropriately and continues the vcpu thread.
+
+
+>
+>> -    return -EINVAL;
+>> +    return ret;
+>>   }
+>>     #define VMX_INVALID_GUEST_STATE 0x80000021
+>>
+>> base-commit: ae35f033b874c627d81d51070187fbf55f0bf1a7
+>
 
 
