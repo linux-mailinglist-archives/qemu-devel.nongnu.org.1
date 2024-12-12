@@ -2,61 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68C279EFBC3
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Dec 2024 19:56:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E8FE79EFC25
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Dec 2024 20:14:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tLoM0-0007NO-UR; Thu, 12 Dec 2024 13:56:04 -0500
+	id 1tLoco-00053M-Bo; Thu, 12 Dec 2024 14:13:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1tLoLl-0006ju-0K
- for qemu-devel@nongnu.org; Thu, 12 Dec 2024 13:55:51 -0500
-Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1tLoLf-0006po-0O
- for qemu-devel@nongnu.org; Thu, 12 Dec 2024 13:55:48 -0500
-Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id C120C4E60F7;
- Thu, 12 Dec 2024 19:55:39 +0100 (CET)
-X-Virus-Scanned: amavisd-new at eik.bme.hu
-Received: from zero.eik.bme.hu ([127.0.0.1])
- by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
- with ESMTP id AODKhdqjZVS1; Thu, 12 Dec 2024 19:55:37 +0100 (CET)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id CC69C4E60F5; Thu, 12 Dec 2024 19:55:37 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id CA14B746F60;
- Thu, 12 Dec 2024 19:55:37 +0100 (CET)
-Date: Thu, 12 Dec 2024 19:55:37 +0100 (CET)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: =?ISO-8859-15?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>
-cc: qemu-devel@nongnu.org, 
- =?ISO-8859-15?Q?Marc-Andr=E9_Lureau?= <marcandre.lureau@redhat.com>, 
- Pankaj Gupta <pankaj.gupta.linux@gmail.com>, 
- Wei Yang <richardw.yang@linux.intel.com>, 
- Paolo Bonzini <pbonzini@redhat.com>, 
- Haozhong Zhang <haozhong.zhang@intel.com>
-Subject: Re: [PATCH 2/2] system: Restrict libpmem and libdaxctl CPPFLAGS to
- physmem.c
-In-Reply-To: <684c89b4-a898-484f-aff9-92b46bc78c04@linaro.org>
-Message-ID: <1a36f9f9-3783-9d40-7e85-b0ff290e3857@eik.bme.hu>
-References: <20241212092632.18538-1-philmd@linaro.org>
- <20241212092632.18538-3-philmd@linaro.org>
- <5c323271-8563-342f-35d1-6f9575265f72@eik.bme.hu>
- <684c89b4-a898-484f-aff9-92b46bc78c04@linaro.org>
-MIME-Version: 1.0
-Content-Type: multipart/mixed;
- boundary="3866299591-558334730-1734029737=:55625"
-Received-SPF: pass client-ip=2001:738:2001:2001::2001;
- envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
+ (Exim 4.90_1) (envelope-from
+ <3yjVbZwYKCuMXJFSOHLTTLQJ.HTRVJRZ-IJaJQSTSLSZ.TWL@flex--seanjc.bounces.google.com>)
+ id 1tLocn-00053E-5A
+ for qemu-devel@nongnu.org; Thu, 12 Dec 2024 14:13:25 -0500
+Received: from mail-pf1-x44a.google.com ([2607:f8b0:4864:20::44a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from
+ <3yjVbZwYKCuMXJFSOHLTTLQJ.HTRVJRZ-IJaJQSTSLSZ.TWL@flex--seanjc.bounces.google.com>)
+ id 1tLoch-00023m-Hb
+ for qemu-devel@nongnu.org; Thu, 12 Dec 2024 14:13:24 -0500
+Received: by mail-pf1-x44a.google.com with SMTP id
+ d2e1a72fcca58-725eb1e9139so1429517b3a.1
+ for <qemu-devel@nongnu.org>; Thu, 12 Dec 2024 11:13:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=google.com; s=20230601; t=1734030795; x=1734635595; darn=nongnu.org;
+ h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+ :date:from:to:cc:subject:date:message-id:reply-to;
+ bh=6ftIVrUurcXgbz47VOJZBrN/RkIsB3yO2o5gVSwEAPY=;
+ b=A/QaIKjP+zuv/Lx9PYWDw7ot+fBxTWeMGfx0okt/WXrmcgQBKoF6H7j6siQTT+Pa2W
+ teA2aiwbH5oXekTf4JGeFuCJtgo7Oe4TnKJ/yOUJJ7Rbp/X/5XeGt/4Y6u2RswQj8AG6
+ seMh6YVD84CL4dTzJFVLoSIfORGZgASjmJXOSXs2IzfeN6oFcBOnaMJ+4eTPhhzhoOlj
+ YqSOa8hX9zEpmYn1hkhsAltSOgRC3R+fK8va2qlX5W3FmSofKACbWOcqbYgI/d2mpapg
+ Uflg1hbXj197Kr2e5jDvDxCkCHJ4Ak9Gh7tOykChe8lAGnifnYnY4n16dEcXBiOfrklt
+ B++A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1734030795; x=1734635595;
+ h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+ :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=6ftIVrUurcXgbz47VOJZBrN/RkIsB3yO2o5gVSwEAPY=;
+ b=jsj7wxBI84MXPwRocUNJfO4M0LKQ2w4PVgioRPn+8xUE1CUamz6kdTbaFsHVH1l2Yh
+ CIZ4LW5Q96ohB/QOuS9CuoTnV5iKjs3yTTLyW/sk1MPHTXvxbgO0l+zKhfuCTU+xyL12
+ ycJswUDQZ7BbAJI1DWHSJWFmnCfq+S3DVDkC6fXmqqG6ea78nnnqtER+3mz6oVEgyxgo
+ FgfdbPgX6w9ImDNQsY6hDYagMc2JxOjEIOArkJ2AMgvqs+sduZtIaZ4U220lfT8yEZNJ
+ ohbOzMW6sDri7+JtVD094gbCsIq/dYTzsnrMJGibsoJhfaTt5zQQ0LfJvATxzlr9VCZB
+ zUgw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXYCkxZDMa4HLcLPnGiaLGiVcdd2wKYLxd1j/0ktyGnhMHnE7DMGkKIlDsKsj9GWQUwxHrCKfCzcN5v@nongnu.org
+X-Gm-Message-State: AOJu0YwO5bKwowV50ZDg0LuH4LzlcxjkhKtRmjWvHUyEtBxoVGZ5Sqnz
+ nxz4tD+n51F5RhTFUVeY3NrRfv4Eky4QpIZ10rrJkDGEHvGVz6kiWwAchRZgriXODUbt7bD5y7B
+ vKA==
+X-Google-Smtp-Source: AGHT+IF/aSjkRAiUPE7prVrWmTY9lJSRlT0SoFYjGPreKIZ7z0XPtDKtWZqE+xUKFKN++gtnigcObWThIsU=
+X-Received: from pfvf8.prod.google.com ([2002:a05:6a00:1ac8:b0:725:d24b:1b95])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6a00:84c:b0:725:eacf:cfdb
+ with SMTP id d2e1a72fcca58-72906f4b6demr2262010b3a.24.1734030794662; Thu, 12
+ Dec 2024 11:13:14 -0800 (PST)
+Date: Thu, 12 Dec 2024 11:13:13 -0800
+In-Reply-To: <1a5e2988-9a7d-4415-86ad-8a7a98dbc5eb@redhat.com>
+Mime-Version: 1.0
+References: <20241212032628.475976-1-binbin.wu@linux.intel.com>
+ <Z1qZygKqvjIfpOXD@intel.com> <1a5e2988-9a7d-4415-86ad-8a7a98dbc5eb@redhat.com>
+Message-ID: <Z1s1yeWKnvmh718N@google.com>
+Subject: Re: [PATCH] i386/kvm: Set return value after handling
+ KVM_EXIT_HYPERCALL
+From: Sean Christopherson <seanjc@google.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Zhao Liu <zhao1.liu@intel.com>, Binbin Wu <binbin.wu@linux.intel.com>,
+ xiaoyao.li@intel.com, 
+ qemu-devel@nongnu.org, michael.roth@amd.com, rick.p.edgecombe@intel.com, 
+ isaku.yamahata@intel.com, farrah.chen@intel.com, kvm@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::44a;
+ envelope-from=3yjVbZwYKCuMXJFSOHLTTLQJ.HTRVJRZ-IJaJQSTSLSZ.TWL@flex--seanjc.bounces.google.com;
+ helo=mail-pf1-x44a.google.com
+X-Spam_score_int: -16
+X-Spam_score: -1.7
 X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -72,83 +95,87 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+On Thu, Dec 12, 2024, Paolo Bonzini wrote:
+> On 12/12/24 09:07, Zhao Liu wrote:
+> > On Thu, Dec 12, 2024 at 11:26:28AM +0800, Binbin Wu wrote:
+> > > Date: Thu, 12 Dec 2024 11:26:28 +0800
+> > > From: Binbin Wu <binbin.wu@linux.intel.com>
+> > > Subject: [PATCH] i386/kvm: Set return value after handling
+> > >   KVM_EXIT_HYPERCALL
+> > > X-Mailer: git-send-email 2.46.0
+> > > 
+> > > Userspace should set the ret field of hypercall after handling
+> > > KVM_EXIT_HYPERCALL.  Otherwise, a stale value could be returned to KVM.
+> > > 
+> > > Fixes: 47e76d03b15 ("i386/kvm: Add KVM_EXIT_HYPERCALL handling for KVM_HC_MAP_GPA_RANGE")
+> > > Reported-by: Farrah Chen <farrah.chen@intel.com>
+> > > Signed-off-by: Binbin Wu <binbin.wu@linux.intel.com>
+> > > Tested-by: Farrah Chen <farrah.chen@intel.com>
+> > > ---
+> > > To test the TDX code in kvm-coco-queue, please apply the patch to the QEMU,
+> > > otherwise, TDX guest boot could fail.
+> > > A matching QEMU tree including this patch is here:
+> > > https://github.com/intel-staging/qemu-tdx/releases/tag/tdx-qemu-upstream-v6.1-fix_kvm_hypercall_return_value
+> > > 
+> > > Previously, the issue was not triggered because no one would modify the ret
+> > > value. But with the refactor patch for __kvm_emulate_hypercall() in KVM,
+> > > https://lore.kernel.org/kvm/20241128004344.4072099-7-seanjc@google.com/, the
+> > > value could be modified.
+> > 
+> > Could you explain the specific reasons here in detail? It would be
+> > helpful with debugging or reproducing the issue.
+> > 
+> > > ---
+> > >   target/i386/kvm/kvm.c | 8 ++++++--
+> > >   1 file changed, 6 insertions(+), 2 deletions(-)
+> > > 
+> > > diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+> > > index 8e17942c3b..4bcccb48d1 100644
+> > > --- a/target/i386/kvm/kvm.c
+> > > +++ b/target/i386/kvm/kvm.c
+> > > @@ -6005,10 +6005,14 @@ static int kvm_handle_hc_map_gpa_range(struct kvm_run *run)
+> > >   static int kvm_handle_hypercall(struct kvm_run *run)
+> > >   {
+> > > +    int ret = -EINVAL;
+> > > +
+> > >       if (run->hypercall.nr == KVM_HC_MAP_GPA_RANGE)
+> > > -        return kvm_handle_hc_map_gpa_range(run);
+> > > +        ret = kvm_handle_hc_map_gpa_range(run);
+> > > +
+> > > +    run->hypercall.ret = ret;
+> > 
+> > ret may be negative but hypercall.ret is u64. Do we need to set it to
+> > -ret?
+> 
+> If ret is less than zero, will stop the VM anyway as
+> RUN_STATE_INTERNAL_ERROR.
+> 
+> If this has to be fixed in QEMU, I think there's no need to set anything
+> if ret != 0; also because kvm_convert_memory() returns -1 on error and
+> that's not how the error would be passed to the guest.
+> 
+> However, I think the right fix should simply be this in KVM:
+> 
+> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+> index 83fe0a78146f..e2118ba93ef6 100644
+> --- a/arch/x86/kvm/x86.c
+> +++ b/arch/x86/kvm/x86.c
+> @@ -10066,6 +10066,7 @@ unsigned long __kvm_emulate_hypercall(struct kvm_vcpu *vcpu, unsigned long nr,
+>  		}
+>  		vcpu->run->exit_reason        = KVM_EXIT_HYPERCALL;
+> +		vcpu->run->ret                = 0;
 
---3866299591-558334730-1734029737=:55625
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8BIT
+		vcpu->run->hypercall.ret
 
-On Thu, 12 Dec 2024, Philippe Mathieu-Daudé wrote:
-> On 12/12/24 14:11, BALATON Zoltan wrote:
->> On Thu, 12 Dec 2024, Philippe Mathieu-Daudé wrote:
->>> Only physmem.c includes libpmem and libdaxctl headers.
->>> No need to pass them to all system_ss[] files.
->> 
->> I think doing this patch first would leave the other one unnecessary so 
->
-> This one is about libpmem / libdaxctl in physmem.c,
-> the previous one is about libsdl in vl.c. I'm missing
-> what inverting the order would change.
+>  		vcpu->run->hypercall.nr       = KVM_HC_MAP_GPA_RANGE;
+>  		vcpu->run->hypercall.args[0]  = gpa;
+>  		vcpu->run->hypercall.args[1]  = npages;
+> 
+> While there is arguably a change in behavior of the kernel both with
+> the patches in kvm-coco-queue and with the above one, _in practice_
+> the above change is one that userspace will not notice.
 
-It seems odd to add the libpmem, libdaxctl libs to one set in the first 
-patch then remove it right away in the next patch. Swapping patches would 
-avoid that and move these to the final place without churn then the sdl 
-change is simpler.
-
-> Besides in 2 patches it is simpler to check what CPPFLAGS are applied.
->
-> Anyhow if you insist, I can squash. I don't care much as long as
-> we reduce the flags applied to system_ss[].
-
-I don't insist and don't mind much either but I see others also suggested 
-squashing patches so this will be resolved by that.
-
-Regards,
-BALATON Zoltan
-
->> you could do both in one patch with less churn and maybe reduce this series 
->> to a single patch.
->> 
->> Regards,
->> BALATON Zoltan
->> 
->>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->>> ---
->>> system/meson.build | 7 +++++--
->>> 1 file changed, 5 insertions(+), 2 deletions(-)
->>> 
->>> diff --git a/system/meson.build b/system/meson.build
->>> index f7e2c8b826f..50d915bd80c 100644
->>> --- a/system/meson.build
->>> +++ b/system/meson.build
->>> @@ -2,10 +2,13 @@ specific_ss.add(when: 'CONFIG_SYSTEM_ONLY', if_true: 
->>> [files(
->>>   'arch_init.c',
->>>   'ioport.c',
->>>   'memory.c',
->>> -  'physmem.c',
->>>   'watchpoint.c',
->>> )])
->>> 
->>> +specific_ss.add(when: 'CONFIG_SYSTEM_ONLY', if_true: [files(
->>> +  'physmem.c',
->>> +), libpmem, libdaxctl])
->>> +
->>> system_ss.add(files(
->>>   'balloon.c',
->>>   'bootdevice.c',
->>> @@ -23,7 +26,7 @@ system_ss.add(files(
->>>   'runstate-hmp-cmds.c',
->>>   'runstate.c',
->>>   'tpm-hmp-cmds.c',
->>> -), libpmem, libdaxctl)
->>> +))
->>> 
->>> system_ss.add(files(
->>>   'vl.c',
->>> 
->
->
---3866299591-558334730-1734029737=:55625--
+I agree that KVM should initialize "ret", but I don't think '0' is the right
+value.  KVM shouldn't assume userspace will successfully handle the hypercall.
+What happens if KVM sets vcpu->run->hypercall.ret to a non-zero value, e.g. -KVM_ENOSYS?
 
