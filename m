@@ -2,79 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEE9B9F19F8
-	for <lists+qemu-devel@lfdr.de>; Sat, 14 Dec 2024 00:31:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5ACD79F1A1E
+	for <lists+qemu-devel@lfdr.de>; Sat, 14 Dec 2024 00:35:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tMF8J-0002ga-9e; Fri, 13 Dec 2024 18:31:43 -0500
+	id 1tMF8a-00037l-4b; Fri, 13 Dec 2024 18:32:00 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tMF80-0002Zu-Nx
- for qemu-devel@nongnu.org; Fri, 13 Dec 2024 18:31:27 -0500
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tMF86-0002hu-0s
+ for qemu-devel@nongnu.org; Fri, 13 Dec 2024 18:31:34 -0500
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tMF7z-0002zp-0w
- for qemu-devel@nongnu.org; Fri, 13 Dec 2024 18:31:24 -0500
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-435004228c0so27163355e9.0
- for <qemu-devel@nongnu.org>; Fri, 13 Dec 2024 15:31:22 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tMF84-00030J-8t
+ for qemu-devel@nongnu.org; Fri, 13 Dec 2024 18:31:29 -0500
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-436202dd7f6so24327765e9.0
+ for <qemu-devel@nongnu.org>; Fri, 13 Dec 2024 15:31:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734132681; x=1734737481; darn=nongnu.org;
+ d=linaro.org; s=google; t=1734132686; x=1734737486; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=1ymSCUtBkTutu1ujFHz/qu8GtFUMUQrGBaFmmGh0PqI=;
- b=t/mLYhX7sEvTLT38EKp8+Tkx11ywG2iyRB+v0zNluDuzi0IedkCcCQcmpwkjACCAo7
- HX7O1ILl+mF1UGC+ZOXx8ueaV8gD3jVONyRzHREsWa5edKB0bxhpYNL0PrFJGLMo/Y0K
- s8JkdxjbHanDyoVmIvOlDEDUW4l7/wZ2zAVrC5mbLCY00Zria8p3U0yPSimZk5HQXuJH
- ERWp1JPBX70xNNcBhwfJrskzgcNUtgkUWGMUtWe+1e13wTg9JEprhe0gPHDFuSVN7lxf
- mUd8Ow5rtpwY5SBQcU0A7pO4F6JnQFDion21kXeZEe55mBBgRUQevUThjOXplabv+3ZT
- 2GTA==
+ bh=1BIyU7zMqnqhErJ1i6ewmJ4DGVFapxFjoG/3YA/JeJ8=;
+ b=DB73Xybw7qo3NB+ywl/U1uhA+ntE3DSurTd8C+8wbHFFl7UmDYRIpZx7eCJae2ZK1i
+ XO9mW6M4bosym9b/47Y1keZFalaTJxpMP/boRQgKgizOT+8sgxeBr9Uf5MSKaGmiNiif
+ 7kK6urjZqINlCovNQSNzt2OKJyM7f1t7LNsy/ha2lSTAnzK9Q8TR+gj2qHtOA5d+7/mK
+ t5OJKDu2MOfveUNhDI4asBdbxu9vRdZV8CzusViZP1zn94a+0yxH3tP1Lbl/D5BiNjdF
+ 67PayWR1pmfsWzqDoFs7Vev1yW6QZVztd+jY/WhsPJHVZ4wnL32VvtyjbKPhEIJNq9fZ
+ ANCQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734132681; x=1734737481;
+ d=1e100.net; s=20230601; t=1734132686; x=1734737486;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=1ymSCUtBkTutu1ujFHz/qu8GtFUMUQrGBaFmmGh0PqI=;
- b=LHW2jnbuqU4fqkmFPEPYi+SJuUXFfjUuxXuqhA/C8dHEAPqDbMG1TysVrZP62KnHE7
- 67xw8/fme5EGWJUjjqdHreHjugByawma8TusLJQXMYiYZnoTaKsWB8kOKo1QFiplJ7by
- iFVJTF8u4vHx3RfivVk/3TGHP3Zit+/v6JQJ3faYwrK1Ybv9PyEWG47s7vwRBT4FAzRr
- YDMgBFiU0F7SN/MnzEWQoxcNhDVBBsAA22B9Y+1G0KVCchLLHJntwl67yYm1UKyxAw26
- JhTqvfnMahikr555HditFXtMAcjSw85VucGmnfWKZfKU4kekoDEhaSW1om3+3yO8WG3/
- h6uw==
-X-Gm-Message-State: AOJu0YwRBLs8VF8JG0msu0hTSUJTCAnce4EZBVUym8PspcuZOuBXe4Kf
- UflDVmfcf5KTrfkIujUaH+QKk3KDjpDL+shCeLXUej03eBad/EDG2Fk1NilC/rbGhb9AfUDFfJy
- xG8o=
-X-Gm-Gg: ASbGncv4UdFCqv0LlXHkAZjHINY/sDlA08Tc3gVD3xzrt5vHOnF4Wb6zcc52z4sQpxS
- piUMChTpQVbGqlaAScoWkEzwR3G5++t1PEZrbzZNKx/AoEjYNEjKbl67YEEzob8jO6LBNWipgKJ
- CB6SqbopYi6Nfa/iAdS7yv5OBU/rOFdz9Sb/uFZMQidhZwxYmpGOrpyBYXVHSu1OhvuucIfqSXW
- Z8f1UDfDWGF0R9tFyhYawVRDS+b99ZRbT2M2EYSEs4FrH9PwI7Wo7JOlW0W82TOvGRZ0s6rtLvI
- yMJw5A==
-X-Google-Smtp-Source: AGHT+IHYzBGCN6evdfgKJYFb+x0tQ8pFJNgs6yuJA1NOrGC2osMDNj1EKpNEIwfBZhXUf712IQmEqw==
-X-Received: by 2002:a05:6000:2a8:b0:385:fc00:f5e1 with SMTP id
- ffacd0b85a97d-38880ac5fbfmr4626423f8f.9.1734132681217; 
- Fri, 13 Dec 2024 15:31:21 -0800 (PST)
+ bh=1BIyU7zMqnqhErJ1i6ewmJ4DGVFapxFjoG/3YA/JeJ8=;
+ b=Y9DIgcR6vdgNrkLx4qLROesJwQHDDn1/3hQPsHYGnYaPNH07Y9EyDAAdU7qskdZ1mW
+ Lc8IuBluI3HPqApTGhYTLFyJM73Wmt1SLMvZ0HpRQgwK0lMwR2ugGxa9fFEhY39714ko
+ 1GMEemCVL5zzPqAUers6xTfHNSmbwrGgIyTt/Tq/ZfKiE9pB+BLqbUJAgQt/YzUmC9za
+ deXMo+K3T2n8MA02h4oNgGSBjOfoLpwfAUIXvRAYrNEay059BfQIXJWi2V895NHPFR8k
+ gi3EK2qSBgsGTQY124A+lzvbRNjAQFE6p8pnCgdJn1HgDfmOxFge5Qu/CcnKuSM/iTvR
+ Z9/w==
+X-Gm-Message-State: AOJu0Yx7/Gyz+wRvP/Ds6T8x5FwbotEKsJfBcRtsQKLlWErIDh08IVdJ
+ 9UdNkvpc3TSzNHwS+YkvqAFwakSC0dr/mgV9DdZj9UubUfahtLhIBvsxgfhbAC87yFJjs3spezF
+ uhyQ=
+X-Gm-Gg: ASbGncvhGD+7jwi5QedIds+Qz+FCOs5DCTVrvuxYduzEoLWrogdsuWxUHsOT8uNOf8l
+ isFeXe3iXfk9XJrbe5SqpKzV25D8t7pXVD7mEwIsz2QReQ5dzhp7Jbkz3QlTQR7qMJbl/PATJn+
+ nIhRzCvRWO1A9p0dG8kDVCqY4Z2R0H8UVZeRAokK35l7jQWVDLsxqSJWml6GCVIR8Dp4dKBfEfq
+ nMmrI9MtWs+awjLsuVAguxZsES2OsyYzqHAZrfcrb5Yn6T6V+ZiZ+q57r0KtUHTuNWmBDwi5pI2
+ pQhZNQ==
+X-Google-Smtp-Source: AGHT+IEppK21NcUq/KApsIWNVb+6PipzoBmSZ4xqGjuMtZW5rDmTIr+K+btrO0nOSG+zll9gurTqPA==
+X-Received: by 2002:a05:6000:786:b0:385:e394:37ea with SMTP id
+ ffacd0b85a97d-38880acdab9mr3216004f8f.22.1734132686459; 
+ Fri, 13 Dec 2024 15:31:26 -0800 (PST)
 Received: from localhost.localdomain ([45.93.146.194])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-388c801a47csm840455f8f.44.2024.12.13.15.31.19
+ ffacd0b85a97d-388c806086dsm804587f8f.91.2024.12.13.15.31.25
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 13 Dec 2024 15:31:20 -0800 (PST)
+ Fri, 13 Dec 2024 15:31:26 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Thomas Huth <thuth@redhat.com>
-Subject: [PULL 04/20] hw/riscv/virt: Remove pointless GPEX_HOST() cast
-Date: Sat, 14 Dec 2024 00:30:39 +0100
-Message-ID: <20241213233055.39574-5-philmd@linaro.org>
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+Subject: [PULL 05/20] hw/nvram/fw_cfg: Rename
+ fw_cfg_add_[file]_from_generator()
+Date: Sat, 14 Dec 2024 00:30:40 +0100
+Message-ID: <20241213233055.39574-6-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241213233055.39574-1-philmd@linaro.org>
 References: <20241213233055.39574-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,61 +98,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-No need to QOM-cast twice, since the intermediate value
-is not used.
+fw_cfg_add_from_generator() is adding a 'file' entry,
+so rename as fw_cfg_add_file_from_generator() for
+clarity. Besides, we might introduce generators for
+other entry types.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Message-Id: <20241125140535.4526-7-philmd@linaro.org>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Message-Id: <20241206181352.6836-2-philmd@linaro.org>
 ---
- hw/riscv/virt.c | 20 +++++++++-----------
- 1 file changed, 9 insertions(+), 11 deletions(-)
+ include/hw/nvram/fw_cfg.h | 6 +++---
+ hw/nvram/fw_cfg.c         | 4 ++--
+ system/vl.c               | 2 +-
+ 3 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
-index 45a8c4f8190..2feb851f159 100644
---- a/hw/riscv/virt.c
-+++ b/hw/riscv/virt.c
-@@ -1140,23 +1140,21 @@ static inline DeviceState *gpex_pcie_init(MemoryRegion *sys_mem,
-     dev = qdev_new(TYPE_GPEX_HOST);
+diff --git a/include/hw/nvram/fw_cfg.h b/include/hw/nvram/fw_cfg.h
+index fa426776192..14e68966c59 100644
+--- a/include/hw/nvram/fw_cfg.h
++++ b/include/hw/nvram/fw_cfg.h
+@@ -291,7 +291,7 @@ void *fw_cfg_modify_file(FWCfgState *s, const char *filename, void *data,
+                          size_t len);
  
-     /* Set GPEX object properties for the virt machine */
--    object_property_set_uint(OBJECT(GPEX_HOST(dev)), PCI_HOST_ECAM_BASE,
-+    object_property_set_uint(OBJECT(dev), PCI_HOST_ECAM_BASE,
-                             ecam_base, NULL);
--    object_property_set_int(OBJECT(GPEX_HOST(dev)), PCI_HOST_ECAM_SIZE,
-+    object_property_set_int(OBJECT(dev), PCI_HOST_ECAM_SIZE,
-                             ecam_size, NULL);
--    object_property_set_uint(OBJECT(GPEX_HOST(dev)),
--                             PCI_HOST_BELOW_4G_MMIO_BASE,
-+    object_property_set_uint(OBJECT(dev), PCI_HOST_BELOW_4G_MMIO_BASE,
-                              mmio_base, NULL);
--    object_property_set_int(OBJECT(GPEX_HOST(dev)), PCI_HOST_BELOW_4G_MMIO_SIZE,
-+    object_property_set_int(OBJECT(dev), PCI_HOST_BELOW_4G_MMIO_SIZE,
-                             mmio_size, NULL);
--    object_property_set_uint(OBJECT(GPEX_HOST(dev)),
--                             PCI_HOST_ABOVE_4G_MMIO_BASE,
-+    object_property_set_uint(OBJECT(dev), PCI_HOST_ABOVE_4G_MMIO_BASE,
-                              high_mmio_base, NULL);
--    object_property_set_int(OBJECT(GPEX_HOST(dev)), PCI_HOST_ABOVE_4G_MMIO_SIZE,
-+    object_property_set_int(OBJECT(dev), PCI_HOST_ABOVE_4G_MMIO_SIZE,
-                             high_mmio_size, NULL);
--    object_property_set_uint(OBJECT(GPEX_HOST(dev)), PCI_HOST_PIO_BASE,
-+    object_property_set_uint(OBJECT(dev), PCI_HOST_PIO_BASE,
-                             pio_base, NULL);
--    object_property_set_int(OBJECT(GPEX_HOST(dev)), PCI_HOST_PIO_SIZE,
-+    object_property_set_int(OBJECT(dev), PCI_HOST_PIO_SIZE,
-                             pio_size, NULL);
+ /**
+- * fw_cfg_add_from_generator:
++ * fw_cfg_add_file_from_generator:
+  * @s: fw_cfg device being modified
+  * @filename: name of new fw_cfg file item
+  * @gen_id: name of object implementing FW_CFG_DATA_GENERATOR interface
+@@ -307,8 +307,8 @@ void *fw_cfg_modify_file(FWCfgState *s, const char *filename, void *data,
+  *
+  * Returns: %true on success, %false on error.
+  */
+-bool fw_cfg_add_from_generator(FWCfgState *s, const char *filename,
+-                               const char *gen_id, Error **errp);
++bool fw_cfg_add_file_from_generator(FWCfgState *s, const char *filename,
++                                    const char *gen_id, Error **errp);
  
-     sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
-@@ -1189,7 +1187,7 @@ static inline DeviceState *gpex_pcie_init(MemoryRegion *sys_mem,
-         gpex_set_irq_num(GPEX_HOST(dev), i, PCIE_IRQ + i);
-     }
- 
--    GPEX_HOST(dev)->gpex_cfg.bus = PCI_HOST_BRIDGE(GPEX_HOST(dev))->bus;
-+    GPEX_HOST(dev)->gpex_cfg.bus = PCI_HOST_BRIDGE(dev)->bus;
-     return dev;
+ /**
+  * fw_cfg_add_extra_pci_roots:
+diff --git a/hw/nvram/fw_cfg.c b/hw/nvram/fw_cfg.c
+index b644577734c..fe3b86135a7 100644
+--- a/hw/nvram/fw_cfg.c
++++ b/hw/nvram/fw_cfg.c
+@@ -1027,8 +1027,8 @@ void *fw_cfg_modify_file(FWCfgState *s, const char *filename,
+     return NULL;
  }
  
+-bool fw_cfg_add_from_generator(FWCfgState *s, const char *filename,
+-                               const char *gen_id, Error **errp)
++bool fw_cfg_add_file_from_generator(FWCfgState *s, const char *filename,
++                                    const char *gen_id, Error **errp)
+ {
+     FWCfgDataGeneratorClass *klass;
+     GByteArray *array;
+diff --git a/system/vl.c b/system/vl.c
+index 2f855d83fbb..f103532a9a1 100644
+--- a/system/vl.c
++++ b/system/vl.c
+@@ -1184,7 +1184,7 @@ static int parse_fw_cfg(void *opaque, QemuOpts *opts, Error **errp)
+         size = strlen(str); /* NUL terminator NOT included in fw_cfg blob */
+         buf = g_memdup(str, size);
+     } else if (nonempty_str(gen_id)) {
+-        if (!fw_cfg_add_from_generator(fw_cfg, name, gen_id, errp)) {
++        if (!fw_cfg_add_file_from_generator(fw_cfg, name, gen_id, errp)) {
+             return -1;
+         }
+         return 0;
 -- 
 2.45.2
 
