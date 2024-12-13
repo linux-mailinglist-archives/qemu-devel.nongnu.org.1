@@ -2,83 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B53249F1670
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Dec 2024 20:41:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EF7C29F1698
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Dec 2024 20:44:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tMBXI-0008O1-TD; Fri, 13 Dec 2024 14:41:16 -0500
+	id 1tMBaD-0002mB-24; Fri, 13 Dec 2024 14:44:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <corey@minyard.net>) id 1tMBXB-0008KN-Ig
- for qemu-devel@nongnu.org; Fri, 13 Dec 2024 14:41:11 -0500
-Received: from mail-pj1-x102e.google.com ([2607:f8b0:4864:20::102e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tMBa2-0002lx-6a
+ for qemu-devel@nongnu.org; Fri, 13 Dec 2024 14:44:06 -0500
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <corey@minyard.net>) id 1tMBX5-0005uk-93
- for qemu-devel@nongnu.org; Fri, 13 Dec 2024 14:41:08 -0500
-Received: by mail-pj1-x102e.google.com with SMTP id
- 98e67ed59e1d1-2ef748105deso1529040a91.1
- for <qemu-devel@nongnu.org>; Fri, 13 Dec 2024 11:41:01 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tMBZw-0007Vs-HS
+ for qemu-devel@nongnu.org; Fri, 13 Dec 2024 14:44:05 -0500
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-43621d27adeso15192555e9.2
+ for <qemu-devel@nongnu.org>; Fri, 13 Dec 2024 11:43:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=minyard-net.20230601.gappssmtp.com; s=20230601; t=1734118860; x=1734723660;
- darn=nongnu.org; 
- h=in-reply-to:content-disposition:mime-version:references:reply-to
- :message-id:subject:cc:to:from:date:from:to:cc:subject:date
- :message-id:reply-to;
- bh=GSiWKN+kCNpnqW7BHZfE2kBExQhRyMzULnhv8eAuOGE=;
- b=CdrraH/8pfpVp8OXxZNoOyAgtYU/q6vcGzLF0fVjGx2eAs+t3oT7i80k/N5ho53/Ov
- nBqaaicXIemG+HbN+w6crgmoMQOXxojND1/6RGOtPYH0s5gPD//CpiIGHMzk1iI4fUnq
- 3tLAu9LjxSF6yug9NG11e7PC8Umit4ZJM4RjoQJO7haMNzQPWeLpbEdk9aAC1Ekqp2GT
- XZVR3BmPftmmhKqWFc0nGJjYFIb28EYfjXn3HIIisdOf/UOL2xPdIuZh9rP70IOoq0Ig
- 5nAekOOTivsTVWXPrS1H0l2BPxlrnWn8oHjBvlhyEW8dc3/aOY9a9xW57ZlUJ1KoUmA0
- KWrw==
+ d=linaro.org; s=google; t=1734119038; x=1734723838; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=9gNXJcmQCHIrAo8+4s0W5awkESMTIQ5Z7OjnDJ8fjj8=;
+ b=ZB4xBsdQC/uPHd0oeD+DkM7R98SvuwsdESiCyKkqsjSKP+4tm6d2E088C7LjzaxzWE
+ EBUFEqgSryGTFRoP9yIKSodFEQg8Tsq+qASvEgzl98AGNfdfPTmKzCoUMwR/W6kTt4OS
+ HFkQ6t3pu8K6xVJ6u+k2nSM97S5KN5leaApKiHreLjTULOjdNlsRyLRrZ7SXdFrarxi8
+ j+Qn581n7WE5Ht3FiD/HDMARRESknTl5+h33tdoJRMwD2I4kSOs94w0mvu45/2aSOcHN
+ uC0tsDWvTOBuUuBLxYrbXOGO5NMuhHLhzxaqfCuGvZEosDvZzSpLF0K/py4jwVDrsKJZ
+ TbLQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734118860; x=1734723660;
- h=in-reply-to:content-disposition:mime-version:references:reply-to
- :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=GSiWKN+kCNpnqW7BHZfE2kBExQhRyMzULnhv8eAuOGE=;
- b=R0gKviX0TtA/nI6+Ebv374Ez/8FYG6xHq6gcbmPJu7Vc8TE5s5b4OD+XHYAK3i4Egl
- /dSbK1yKBqH2ajcsWKOvKeap3xAZx9jFtL1c4l9h5gzBNePE9agMkjYM1l/nfnuCaGx6
- 4Uo4hLd1IIZrAoebq0CFc96BHraWEZ0vcffyUU7vgrv1tVEFhkBldvDBvBMQ+FkmDqXh
- VT9VT7kTRmWVA4BO1KWZrA/rBtCbfvWOxEGGdamOHC/aLPGNsxlgk3XkzquWheN82TMK
- fboJL+A9UlAxRqB8YKedwVdWtLY0gRcXhtAi8exSH/znoJM3BLVvq1MABPGj1vIfQT57
- Gc8g==
-X-Gm-Message-State: AOJu0Yxx8Yo+jWbuqzUvGYW1PF/ENPIGele879tQFveHKHWJBVIm5qPK
- LZJeEP/idhCVnG0qGXeiz4iXiVjhgTSUa11LvQn5fBRpRP4tQT5IfoeQCrhmY5c=
-X-Gm-Gg: ASbGncvsU2YlwjvwPw1BhqITpe+vYeKTy2wIy6dMJLMdvGZ2fgQspgSh826ZNg6SC+I
- 6A+IajoMpFXYiy5dnkcf03kQUUUUjuUF9f4Gn3u9kdZHjZD6WYLoLg0NV5h/psSpoQNdRmqOeIP
- PrKjStr3SwiMzb4RpVy5L9H0bcLZH6pBfnY4knj3gJLwZXUwGvFooxvHIQZBr7rOBDRQkTdfFew
- mTAycO+mePC/slH+nsZSZw25YTpSW2fvZDfdFJn1+PHPC8Y4M7E3D7TfwIS
-X-Google-Smtp-Source: AGHT+IGdcgl5KBSwf2/wlAC2BfeJcZBBj2noupbRvIRXOp18b/m164BCtQLXBF5b/c5xcMkktzXQ2Q==
-X-Received: by 2002:a17:902:da84:b0:216:6a4a:9a39 with SMTP id
- d9443c01a7336-21892a86816mr62937595ad.56.1734118860277; 
- Fri, 13 Dec 2024 11:41:00 -0800 (PST)
-Received: from mail.minyard.net ([2001:470:b8f6:1b:8995:3830:b502:80f0])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-218a1db58a8sm1380675ad.24.2024.12.13.11.40.59
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 13 Dec 2024 11:40:59 -0800 (PST)
-Date: Fri, 13 Dec 2024 13:40:54 -0600
-From: Corey Minyard <corey@minyard.net>
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org, Corey Minyard <minyard@acm.org>
-Subject: Re: [PATCH 34/71] hw/ipmi: Constify all Property
-Message-ID: <Z1yNxiQNsb4bMNCu@mail.minyard.net>
-References: <20241213190750.2513964-1-richard.henderson@linaro.org>
- <20241213190750.2513964-39-richard.henderson@linaro.org>
+ d=1e100.net; s=20230601; t=1734119038; x=1734723838;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=9gNXJcmQCHIrAo8+4s0W5awkESMTIQ5Z7OjnDJ8fjj8=;
+ b=i1bB3EUVPzZu7q7yqc8bgTCdwNQBBQrgrtTGhAEIMPqXKlYzPlvccV9NO1pMq4Qak0
+ V9WPFgeRneIX5BauxdveARw3rh9/Y4rFx9CluyCIFLhVCDSO50NzbtfjKiH6yPsLkjrI
+ wcStBx3ymWBia4B+h9ppVentS2Z4BiTaigJfWuA+0K5Jt4WFxnj3txzXtbS10yGKwwHf
+ SepNEpVccfDW++HDGyfIdopPyE80GarBl/8Ri21gc6027NeBwePIpQKChSA+yGUbNhoG
+ 4DVxWy/TevkR7w/rQjLqdQdu6HGrCSwXT0hj3GS8jlcCMSq+d1w2qYI78TDopQ2CFhgl
+ VIHg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXUkw+PWiLz6qXtMdgffdqWVQmiO300TqF5F/9HjxaQ7+4gl73u7vh+jUUWafge7ZxCFJDvP6xmnv/z@nongnu.org
+X-Gm-Message-State: AOJu0YwX6QcO67ueFaA7cpjjufqf4cFOX6OQ6xCwG8FiUbAAn+MOmgYH
+ 9Aa4zukzX3QnHxmZDbVqKJXTOGe85AJqcJP0UmPpPngIWxqJNFwPGx0Dxpb4rGdNaythjcjQV/t
+ IKSA=
+X-Gm-Gg: ASbGncvb73I1PLOEKc9Czux0qgQZQNgYhd8nSJRttVXT+TQLFZYYfJvdx8WVqtKL+yk
+ wzutxmg+NBiD0NGpOP3ggYcykJlcjx90lRlbyGrlsTPbrNTmhuty6PKuOFUI5uizYqL/HIGGPkk
+ WzeD/5sTm5NZuk93BeWRDShGLkCz6slsMIcLoKJuIoTDbyjhaJDzUfv6+lQ8+fYKYCKAq6vGX6M
+ TwEGMXLysof75t0w1ya0w8qXVuX8A5qUKGM8bX8VHZYP5XgXZVemxswWteG80L40bMZ3A6WKxzm
+ uK13XNHd8mtp4LYL2Q2cPFh8XOpQiLjGejsMKN93/N/S2A==
+X-Google-Smtp-Source: AGHT+IFNXcrV54y5fdmnwb218hKFXph2Jnpv6RfEjNOmPptx0U0HdpU6j85KrcSv/Qnc6AbNVVAOkQ==
+X-Received: by 2002:a05:600c:3c8d:b0:431:52f5:f48d with SMTP id
+ 5b1f17b1804b1-4362aab939bmr35628035e9.31.1734119037179; 
+ Fri, 13 Dec 2024 11:43:57 -0800 (PST)
+Received: from [192.168.224.213] (183.red-95-127-61.dynamicip.rima-tde.net.
+ [95.127.61.183]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-388c80470afsm356393f8f.75.2024.12.13.11.43.54
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 13 Dec 2024 11:43:55 -0800 (PST)
+Message-ID: <67b7a33b-2bf6-41ba-b421-058875e3c0ff@linaro.org>
+Date: Fri, 13 Dec 2024 20:43:51 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241213190750.2513964-39-richard.henderson@linaro.org>
-Received-SPF: none client-ip=2607:f8b0:4864:20::102e;
- envelope-from=corey@minyard.net; helo=mail-pj1-x102e.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 00/71] whole-tree: Constify Property structures
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+References: <20241213190750.2513964-1-richard.henderson@linaro.org>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20241213190750.2513964-1-richard.henderson@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,88 +95,101 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: corey@minyard.net
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Acked-by: Corey Minyard <cminyard@mvista.com>
+On 13/12/24 20:06, Richard Henderson wrote:
+> Since d36f165d952 (qdev: make properties array "const"), we can
+> define our Property structure const.  Do this across the entire tree.
+> 
+> There are a few other minor changes:
+>    - Two instances where it was obvious that an empty property list
+>      could be removed entirely.  There are other empty lists that
+>      probably should be removed, but I didn't look further into usage.
+>    - In hw/misc/xlnx-versal-trng.c, adjust a Property to use the
+>      correct PropertyInfo in the definition, rather than setting
+>      it at runtime.
+>    - One instance where { } was used instead of DEFINE_PROP_END_OF_LIST.
+>      Not a bug, but wrong style.
+> 
+> 
+> r~
+> 
+> 
+> Richard Henderson (71):
+>    target/arm: Constify all Property
+>    target/avr: Constify all Property
+>    target/hexagon: Constify all Property
+>    target/i386: Constify all Property
+>    target/microblaze: Constify all Property
+>    target/mips: Constify all Property
+>    target/ppc: Remove empty property list
+>    target/riscv: Constify all Property
+>    target/s390x: Constify all Property
+>    target/sparc: Constify all Property and PropertyInfo
+>    cpu-target: Constify all Property
+>    hw/9pfs: Constify all Property
+>    hw/acpi: Constify all Property
+>    hw/adc: Constify all Property
+>    hw/arm: Constify all Property
+>    hw/audio: Constify all Property
+>    hw/avr: Constify all Property
+>    hw/block/xen-block: Unexport PropertyInfo
+>    hw/block: Constify all Property
+>    hw/char: Constify all Property
+>    hw/core: Constify all Property
+>    hw/cpu: Constify all Property
+>    hw/cxl: Constify all Property
+>    hw/display: Constify all Property
+>    hw/dma: Constify all Property
+>    hw/gpio: Constify all Property
+>    hw/hyperv: Constify all Property
+>    hw/i2c: Constify all Property
+>    hw/i386: Constify all Property
+>    hw/ide: Constify all Property
+>    hw/input: Constify all Property
+>    hw/intc: Constify all Property
+>    hw/ipack: Constify all Property
+>    hw/ipmi: Constify all Property
+>    hw/isa: Constify all Property
+>    hw/m68k: Constify all Property
+>    hw/mem: Constify all Property
+>    hw/mips: Constify all Property
+>    hw/misc/xlnx-versal-trng: Constify trng_props
+>    hw/misc: Constify all Property
+>    hw/net: Constify all Property
+>    hw/nubus: Constify all Property
+>    hw/nvme: Constify all Property
+>    hw/nvram: Constify all Property
+>    hw/pci-bridge: Constify all Property
+>    hw/pci-host/astro: Remove empty Property list
+>    hw/pci-host: Constify all Property
+>    hw/pci: Constify all Property
+>    hw/ppc: Constify all Property
+>    hw/remote: Constify all Property
+>    hw/riscv: Constify all Property
+>    hw/rtc: Constify all Property
+>    hw/rx: Constify all Property
+>    hw/s390x: Constify all Property
+>    hw/scsi: Constify all Property
+>    hw/sd: Constify all Property
+>    hw/sparc: Constify all Property
+>    hw/sparc64: Constify all Property
+>    hw/ssi: Constify all Property
+>    hw/timer: Constify all Property
+>    hw/tpm: Constify all Property
+>    hw/tricore: Constify all Property
+>    hw/ufs: Constify all Property
+>    hw/usb: Constify all Property
+>    hw/vfio: Constify all Property
+>    hw/virtio: Constify all Property
+>    hw/watchdog: Constify all Property
+>    hw/xen: Constify all Property
+>    hw/xen: Use DEFINE_PROP_END_OF_LIST in xen_sysdev_properties
+>    tests/unit: Constify all Property
+>    docs: Constify all Property in examples
 
-On Fri, Dec 13, 2024 at 01:07:08PM -0600, Richard Henderson wrote:
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->  hw/ipmi/ipmi.c            | 2 +-
->  hw/ipmi/ipmi_bmc_extern.c | 2 +-
->  hw/ipmi/ipmi_bmc_sim.c    | 2 +-
->  hw/ipmi/isa_ipmi_bt.c     | 2 +-
->  hw/ipmi/isa_ipmi_kcs.c    | 2 +-
->  5 files changed, 5 insertions(+), 5 deletions(-)
-> 
-> diff --git a/hw/ipmi/ipmi.c b/hw/ipmi/ipmi.c
-> index bbb07b151e..850b3bc463 100644
-> --- a/hw/ipmi/ipmi.c
-> +++ b/hw/ipmi/ipmi.c
-> @@ -108,7 +108,7 @@ void ipmi_bmc_find_and_link(Object *obj, Object **bmc)
->                               OBJ_PROP_LINK_STRONG);
->  }
->  
-> -static Property ipmi_bmc_properties[] = {
-> +static const Property ipmi_bmc_properties[] = {
->      DEFINE_PROP_UINT8("slave_addr",  IPMIBmc, slave_addr, 0x20),
->      DEFINE_PROP_END_OF_LIST(),
->  };
-> diff --git a/hw/ipmi/ipmi_bmc_extern.c b/hw/ipmi/ipmi_bmc_extern.c
-> index 29c5af3cc3..cfec1da87c 100644
-> --- a/hw/ipmi/ipmi_bmc_extern.c
-> +++ b/hw/ipmi/ipmi_bmc_extern.c
-> @@ -515,7 +515,7 @@ static void ipmi_bmc_extern_finalize(Object *obj)
->      timer_free(ibe->extern_timer);
->  }
->  
-> -static Property ipmi_bmc_extern_properties[] = {
-> +static const Property ipmi_bmc_extern_properties[] = {
->      DEFINE_PROP_CHR("chardev", IPMIBmcExtern, chr),
->      DEFINE_PROP_END_OF_LIST(),
->  };
-> diff --git a/hw/ipmi/ipmi_bmc_sim.c b/hw/ipmi/ipmi_bmc_sim.c
-> index 33c839c65a..8a55893e89 100644
-> --- a/hw/ipmi/ipmi_bmc_sim.c
-> +++ b/hw/ipmi/ipmi_bmc_sim.c
-> @@ -2191,7 +2191,7 @@ static void ipmi_sim_realize(DeviceState *dev, Error **errp)
->      vmstate_register(NULL, 0, &vmstate_ipmi_sim, ibs);
->  }
->  
-> -static Property ipmi_sim_properties[] = {
-> +static const Property ipmi_sim_properties[] = {
->      DEFINE_PROP_UINT16("fruareasize", IPMIBmcSim, fru.areasize, 1024),
->      DEFINE_PROP_STRING("frudatafile", IPMIBmcSim, fru.filename),
->      DEFINE_PROP_STRING("sdrfile", IPMIBmcSim, sdr_filename),
-> diff --git a/hw/ipmi/isa_ipmi_bt.c b/hw/ipmi/isa_ipmi_bt.c
-> index 7b36d51494..16062abb31 100644
-> --- a/hw/ipmi/isa_ipmi_bt.c
-> +++ b/hw/ipmi/isa_ipmi_bt.c
-> @@ -135,7 +135,7 @@ static void *isa_ipmi_bt_get_backend_data(IPMIInterface *ii)
->      return &iib->bt;
->  }
->  
-> -static Property ipmi_isa_properties[] = {
-> +static const Property ipmi_isa_properties[] = {
->      DEFINE_PROP_UINT32("ioport", ISAIPMIBTDevice, bt.io_base,  0xe4),
->      DEFINE_PROP_INT32("irq",   ISAIPMIBTDevice, isairq,  5),
->      DEFINE_PROP_END_OF_LIST(),
-> diff --git a/hw/ipmi/isa_ipmi_kcs.c b/hw/ipmi/isa_ipmi_kcs.c
-> index f52b32e590..7e7a37659e 100644
-> --- a/hw/ipmi/isa_ipmi_kcs.c
-> +++ b/hw/ipmi/isa_ipmi_kcs.c
-> @@ -142,7 +142,7 @@ static void *isa_ipmi_kcs_get_backend_data(IPMIInterface *ii)
->      return &iik->kcs;
->  }
->  
-> -static Property ipmi_isa_properties[] = {
-> +static const Property ipmi_isa_properties[] = {
->      DEFINE_PROP_UINT32("ioport", ISAIPMIKCSDevice, kcs.io_base,  0xca2),
->      DEFINE_PROP_INT32("irq",   ISAIPMIKCSDevice, isairq,  5),
->      DEFINE_PROP_END_OF_LIST(),
-> -- 
-> 2.43.0
-> 
+Series:
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
 
