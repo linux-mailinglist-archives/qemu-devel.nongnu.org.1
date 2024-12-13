@@ -2,90 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A1DD9F15B7
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Dec 2024 20:20:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CAA689F15C9
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Dec 2024 20:28:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tMB6t-0005uC-Fk; Fri, 13 Dec 2024 14:14:01 -0500
+	id 1tMB6l-0005gr-9o; Fri, 13 Dec 2024 14:13:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tMB6l-0005mQ-6O
- for qemu-devel@nongnu.org; Fri, 13 Dec 2024 14:13:51 -0500
-Received: from mail-oa1-x2a.google.com ([2001:4860:4864:20::2a])
+ id 1tMB6i-0005XN-PA
+ for qemu-devel@nongnu.org; Fri, 13 Dec 2024 14:13:48 -0500
+Received: from mail-oa1-x35.google.com ([2001:4860:4864:20::35])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tMB6f-0007SU-9Q
- for qemu-devel@nongnu.org; Fri, 13 Dec 2024 14:13:49 -0500
-Received: by mail-oa1-x2a.google.com with SMTP id
- 586e51a60fabf-294ec8e1d8aso1684567fac.1
- for <qemu-devel@nongnu.org>; Fri, 13 Dec 2024 11:13:44 -0800 (PST)
+ id 1tMB6h-0007Sj-3z
+ for qemu-devel@nongnu.org; Fri, 13 Dec 2024 14:13:48 -0500
+Received: by mail-oa1-x35.google.com with SMTP id
+ 586e51a60fabf-2a01707db44so650420fac.2
+ for <qemu-devel@nongnu.org>; Fri, 13 Dec 2024 11:13:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734117223; x=1734722023; darn=nongnu.org;
+ d=linaro.org; s=google; t=1734117224; x=1734722024; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=gHwJArgtR7CjMdMdWS4p4NXW2ugDhJf5dpnL9eQostM=;
- b=SXcrlsGG66rbccSDoUWD1lH8x2od0SxfJZHZxdxnKcKYGBBuVDiI7yShG4eukwvv2F
- Uvo8dNNeaPwwqGSluNxgV0NYolYt9WPx0vKScg2OIAsOgbu95RdJSgFmsDvk6MG0w5Ws
- OeFnboJIuRgUmGyR6ZAAEC/5I/Jn+Qcv7nHktXmn56r8cK/bELpLjSQs+jwr25GeUwEz
- YWC19wtI9jcOkjVJiHOsRT4yBdrF3+BgBLAsncLIqFJZLC1Dt3ZGm6CIt4A4Uaz8wQOF
- JXBAgnxT2tWCEpCk4Gum7exoagOmJscOwapKnQYlx4I8q8HQQzJGzu8ueJCxdf6TAqMQ
- XksA==
+ bh=2mACfDBbl1zp2rBr4xmrT6K6hg/pPK23y61jj5zZUfg=;
+ b=XynybG96KeT2sSBCym8ibYLPyLKT+Lf/l2IFNsS2ymEQPzRh3X0tZlVoOKbZ2iAGmR
+ c6f8nEE1qhgjSoXY9o+aZsW0WuEhCtxER2soDx45+iJsDb0RhSU00LoO6oIHKuQD9stt
+ Vkt6s0s20lwLM7Dh2RXIe2d819muw7k1rdtdqbOLc00GsyAoUnRPUxyxWiEmFvhrzrzZ
+ n5k3zEBZ61H/w/EJfbSmzNqXhm2TFJzD/QgpBW3TpQgtT51wXVei5uH0WSfH71IaHU1S
+ cD5wF24r/jE9tzxHwg012g3P02s82ONlgxTMzMU6W24NgWlocCIYqAQmaqF94QTno96R
+ vX4g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734117223; x=1734722023;
+ d=1e100.net; s=20230601; t=1734117224; x=1734722024;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=gHwJArgtR7CjMdMdWS4p4NXW2ugDhJf5dpnL9eQostM=;
- b=W0MEv4eNDea/DWfOo/W11maYrVFGnMwRM6zWH4rutMo9wxOw4XERYGtd4vwojuaxQf
- DA4SfbsvWMJ6pn1Iy6mqCHVB7VwyGv3SA9sHMfMupeBzRIThgWHkpULZKAEwkZF2SnDV
- BDC1KygG6+P34OvLKAkM7JxUN198cRFkKvMLSqbipDD/ukTtqA1RbKYrS7WjjkjTKlFr
- c3+WJ2dTeB8cnZz0O6L3TvZ+9UK/2dxKNOL/0RG7MQMVDAak6r32HOsG2RZuIkc0oWYY
- ih3/C3IUK+XjsUX2P8oXC297vB1qVLvx8WRisA44/RzWi9aJmspFoQ57/xQ7MnQZmCgy
- mbxg==
-X-Gm-Message-State: AOJu0Yz2+yFQhN2K4Rj19xF4HmZEg7gWTjT37Tuolxp11070YTDsxqyC
- j2LKOnyUVla53LoANynEWLY/T2UviDTB/nHiWg5hEUhHA7ZKj7IlHOMijqGxMyIZ4lRLRUw9MUZ
- lzDVVxxYM
-X-Gm-Gg: ASbGncs0Iw6Gc+uKorDfcAQ3hMStFS2Rc6UyRH5+Ix1/EpQV6na6hoGgoax5QSgc8KE
- tWn07tJQBkS38N6qeS7QSqNxHZmli2KKx90mDWgmVGQo6AZev5pMjLHYA4RM/onHR7Ckb4Giyws
- XYxviDyzKJXQ2AY3uzLUQvQf5FVe9lI9eFhFFY5h8pZW9WeB7MtgMMbCNqn20g8/gL3TKDkh4l+
- vu6Z1pkdKMGcBd85m3VT6Ocw+3uPBdtlNOrhN8CQvcA+xKr/F0pdxpY9h51ts9R
-X-Google-Smtp-Source: AGHT+IHbX9L4Xx0OB5O23fcpRCWFzJyjyxEt1OLlDmWe4wASoffulqhcIKDCrBwWWRj+lo4Hi6zISg==
-X-Received: by 2002:a05:6808:f12:b0:3eb:5ab2:5db2 with SMTP id
- 5614622812f47-3eba69993acmr2562050b6e.37.1734117223453; 
- Fri, 13 Dec 2024 11:13:43 -0800 (PST)
+ bh=2mACfDBbl1zp2rBr4xmrT6K6hg/pPK23y61jj5zZUfg=;
+ b=BSOUqKYmZ4nfOyUHm6d/o9lM5GQWKD7Me5apr5o8MpUHziq/G7rh8O5VC0UxuR1JiC
+ mLW4Ux8oBQ6Iea1dOLCEugt51KSRfNwqRVdmla8JDk7773JdgdVSe9nekesBU3Gu3QQv
+ O6ZycIQjNXvhXOKzkMkjIT4QIAIX5PsCA6cV17ISvdN6Fp4xN/hZYn+HIo49PykaIf/m
+ DkRDlJXWQwkW4aIBhtpm0RwfcYKzPJ+BNUORAE+WqHmK1cOaa1c28Y/KNB1LZDisWe1k
+ LyYnW6ER029+m2xVQYy6OQWB31WcFbOGvozG8LDg++5cFhl21FjeKJScTkJ1otqntCCZ
+ qAPQ==
+X-Gm-Message-State: AOJu0YzhBFp9fwHtf4H7TceSr8yRtqo18KFS2AUWPPOZnxqTpxxYDTSc
+ 4ax8AgHQhkjL1hv62n7OkFo5bfnwgR1mdQikVzaZk2vG6TugUXDtUkzq11eHjneLzNnjq93mVpm
+ NzNP3ZplM
+X-Gm-Gg: ASbGncsfDpDFVV57JJInKQWOxJ61kUP53ET0wK/A5uUlOtYbTVp+Ly03t233PJgNZBf
+ FEakzi168w8Wzeo02KO6OROcTBPZDr7RGCpOxpv/9bd3rrwLR4rNCoxAvzlq/66epQCq2aHfdds
+ EnyW+7P6GIFOtma3Wt32Q4HqfyND3siniKHOC94vT9SnLOdcinHq5eBDbd3O0uweBd9lE5VYrRM
+ zj+PzPomyv12YWfCv+V2+WSb8UcvkOHBOnfsz8UU6VO/+0ayWzfPMVcFmR/juRi
+X-Google-Smtp-Source: AGHT+IEmuiFWl1I1MYWJAgAOZexB/d8jUengi7ZrtuwOBe3P5Elu+6t0mlPCwF3o1pnhMCYhX28Dng==
+X-Received: by 2002:a05:6808:f88:b0:3eb:5160:f859 with SMTP id
+ 5614622812f47-3eba681d8f8mr2365306b6e.9.1734117224684; 
+ Fri, 13 Dec 2024 11:13:44 -0800 (PST)
 Received: from stoup.. ([187.217.227.247]) by smtp.gmail.com with ESMTPSA id
- 5614622812f47-3ebb478a497sm3545b6e.10.2024.12.13.11.13.41
+ 5614622812f47-3ebb478a497sm3545b6e.10.2024.12.13.11.13.43
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 13 Dec 2024 11:13:42 -0800 (PST)
+ Fri, 13 Dec 2024 11:13:44 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Jonathan Cameron <jonathan.cameron@huawei.com>,
- Fan Ni <fan.ni@samsung.com>, David Hildenbrand <david@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>,
- Xiao Guangrong <xiaoguangrong.eric@gmail.com>,
- Alexander Bulekov <alxndr@bu.edu>, Paolo Bonzini <pbonzini@redhat.com>,
- Bandan Das <bsd@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
- Fabiano Rosas <farosas@suse.de>, Darren Kenny <darren.kenny@oracle.com>,
- Qiuhao Li <Qiuhao.Li@outlook.com>
-Subject: [PATCH 37/71] hw/mem: Constify all Property
-Date: Fri, 13 Dec 2024 13:07:11 -0600
-Message-ID: <20241213190750.2513964-42-richard.henderson@linaro.org>
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>
+Subject: [PATCH 38/71] hw/mips: Constify all Property
+Date: Fri, 13 Dec 2024 13:07:12 -0600
+Message-ID: <20241213190750.2513964-43-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241213190750.2513964-1-richard.henderson@linaro.org>
 References: <20241213190750.2513964-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:4860:4864:20::2a;
- envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x2a.google.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Received-SPF: pass client-ip=2001:4860:4864:20::35;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x35.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,64 +98,22 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- hw/mem/cxl_type3.c  | 2 +-
- hw/mem/nvdimm.c     | 2 +-
- hw/mem/pc-dimm.c    | 2 +-
- hw/mem/sparse-mem.c | 2 +-
- 4 files changed, 4 insertions(+), 4 deletions(-)
+ hw/mips/cps.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/mem/cxl_type3.c b/hw/mem/cxl_type3.c
-index 5cf754b38f..12205c4d32 100644
---- a/hw/mem/cxl_type3.c
-+++ b/hw/mem/cxl_type3.c
-@@ -1216,7 +1216,7 @@ static void ct3d_reset(DeviceState *dev)
- 
+diff --git a/hw/mips/cps.c b/hw/mips/cps.c
+index 13046628cd..1a2208666c 100644
+--- a/hw/mips/cps.c
++++ b/hw/mips/cps.c
+@@ -166,7 +166,7 @@ static void mips_cps_realize(DeviceState *dev, Error **errp)
+                             sysbus_mmio_get_region(SYS_BUS_DEVICE(&s->gcr), 0));
  }
  
--static Property ct3_props[] = {
-+static const Property ct3_props[] = {
-     DEFINE_PROP_LINK("memdev", CXLType3Dev, hostmem, TYPE_MEMORY_BACKEND,
-                      HostMemoryBackend *), /* for backward compatibility */
-     DEFINE_PROP_LINK("persistent-memdev", CXLType3Dev, hostpmem,
-diff --git a/hw/mem/nvdimm.c b/hw/mem/nvdimm.c
-index 1631a7d13f..10506d52e4 100644
---- a/hw/mem/nvdimm.c
-+++ b/hw/mem/nvdimm.c
-@@ -246,7 +246,7 @@ static void nvdimm_write_label_data(NVDIMMDevice *nvdimm, const void *buf,
-     memory_region_set_dirty(mr, backend_offset, size);
- }
- 
--static Property nvdimm_properties[] = {
-+static const Property nvdimm_properties[] = {
-     DEFINE_PROP_BOOL(NVDIMM_UNARMED_PROP, NVDIMMDevice, unarmed, false),
-     DEFINE_PROP_END_OF_LIST(),
- };
-diff --git a/hw/mem/pc-dimm.c b/hw/mem/pc-dimm.c
-index 27919ca45d..49c5f9fd44 100644
---- a/hw/mem/pc-dimm.c
-+++ b/hw/mem/pc-dimm.c
-@@ -150,7 +150,7 @@ out:
-     return slot;
- }
- 
--static Property pc_dimm_properties[] = {
-+static const Property pc_dimm_properties[] = {
-     DEFINE_PROP_UINT64(PC_DIMM_ADDR_PROP, PCDIMMDevice, addr, 0),
-     DEFINE_PROP_UINT32(PC_DIMM_NODE_PROP, PCDIMMDevice, node, 0),
-     DEFINE_PROP_INT32(PC_DIMM_SLOT_PROP, PCDIMMDevice, slot,
-diff --git a/hw/mem/sparse-mem.c b/hw/mem/sparse-mem.c
-index 6e8f4f84fb..8d681adfc0 100644
---- a/hw/mem/sparse-mem.c
-+++ b/hw/mem/sparse-mem.c
-@@ -96,7 +96,7 @@ static const MemoryRegionOps sparse_mem_ops = {
-         },
- };
- 
--static Property sparse_mem_properties[] = {
-+static const Property sparse_mem_properties[] = {
-     /* The base address of the memory */
-     DEFINE_PROP_UINT64("baseaddr", SparseMemState, baseaddr, 0x0),
-     /* The length of the sparse memory region */
+-static Property mips_cps_properties[] = {
++static const Property mips_cps_properties[] = {
+     DEFINE_PROP_UINT32("num-vp", MIPSCPSState, num_vp, 1),
+     DEFINE_PROP_UINT32("num-irq", MIPSCPSState, num_irq, 256),
+     DEFINE_PROP_STRING("cpu-type", MIPSCPSState, cpu_type),
 -- 
 2.43.0
 
