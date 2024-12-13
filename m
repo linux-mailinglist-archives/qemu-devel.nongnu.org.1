@@ -2,71 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 799B69F15D0
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Dec 2024 20:30:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E4C369F15EF
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Dec 2024 20:34:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tMB9M-0001YW-91; Fri, 13 Dec 2024 14:16:32 -0500
+	id 1tMB9l-0002sq-0r; Fri, 13 Dec 2024 14:16:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tMB7V-0007dV-6R
- for qemu-devel@nongnu.org; Fri, 13 Dec 2024 14:14:38 -0500
+ id 1tMB7V-0007dZ-Io
+ for qemu-devel@nongnu.org; Fri, 13 Dec 2024 14:14:39 -0500
 Received: from mail-oi1-x22f.google.com ([2607:f8b0:4864:20::22f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tMB7O-0007cg-Rm
- for qemu-devel@nongnu.org; Fri, 13 Dec 2024 14:14:34 -0500
+ id 1tMB7R-0007cl-Rt
+ for qemu-devel@nongnu.org; Fri, 13 Dec 2024 14:14:36 -0500
 Received: by mail-oi1-x22f.google.com with SMTP id
- 5614622812f47-3e63e5c0c50so1018045b6e.0
- for <qemu-devel@nongnu.org>; Fri, 13 Dec 2024 11:14:28 -0800 (PST)
+ 5614622812f47-3eb9a0a2089so985252b6e.1
+ for <qemu-devel@nongnu.org>; Fri, 13 Dec 2024 11:14:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734117267; x=1734722067; darn=nongnu.org;
+ d=linaro.org; s=google; t=1734117268; x=1734722068; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=rpq4UUf6dVqmk0jMJhoczKkqUStkLqI71UYDr3fDwHQ=;
- b=qhIA9E41vo+5jnrVNuMubUBYjGSCxvHJfWJPs2kQhS/BEd4Gd3lIKFMwi9OMRNrDxP
- bHUJPksLlQ5ZZjPwZue6ymaSzJsb/JVL713eVgxKwA+ufE9/5V7NQqn6xU5doiDLV0ze
- d+uItq5I1BpMaBWdHKhhr33ZtOw2CfFM7f51ftecjnZ5hHoxdxDKw1aGVxl9Z+Nsa3oG
- pZUSPUFyzb8K+9Kl8SqnRjeBmpOWoGVBCSTZYVSQu+OF7YRtwtxpklqd7s+BFmY4j31c
- rjbhCt6SzIcuyAyl9YehjexjsWcbqDcrpFyn65/UwvYegWRgEyQ6LIb8H1X9f+x1YnrQ
- vwOg==
+ bh=ZOHSZv4UJCEktEuRNTiGAa+gSN3tW2NIQ00CdmYCkmw=;
+ b=Fmf3PZcI2xSvN83oYFjbvpmypyvoDmA2OIBy893GQLEeRXd2zTtQ+kOkPeW+gWNZaz
+ wA79Yg2XvXxQ7iYKB+hWvwtv7Q/wkNcomgo7eAF8Mj261Cmhptip4MY8qpC0YtwYN101
+ Ibx4rm83yOQM9hms6l/PV2qxfVAN1tl/MXL81ddrRO1hjECtrCG6lC6fiBZJrP1pG9uk
+ qdRb+JbUmVRH2ZH1kwXrDeSA+05hvgkVkxBLMGJUV61xGAGA+hp7kAF0CdFsxToLM0xB
+ xyxQZyiccLmnFqY7dLOCqLOAElohkxbcEWTaeAMpiIKTT03ML9QO3KB+H8BIdJDUV063
+ qkOA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734117267; x=1734722067;
+ d=1e100.net; s=20230601; t=1734117268; x=1734722068;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=rpq4UUf6dVqmk0jMJhoczKkqUStkLqI71UYDr3fDwHQ=;
- b=azpVH0yq9mAuY0pdGYOc1a8ABRfpBS+1cDJRLMagwD32CRhLLGutVjVU4Nvy2pd+v4
- UMzkNYtwYJRXIn/yhpV6pB3OIrNJcTsxFWJQHMN0AKeVmL6cr+7Jk27TLleA2cRyweuD
- Qiv/4nWnKdH3UzEH97gnf7oq3OhSwpy/haXcXuSKQ27IDtf0NFF/mDOFbvWV+nxo4Mg5
- 3zi7+LXrR0c+ZI7mKFrEFDWQ3EoEo6Tra8WoLKYXcuM97AzFBVuDoTlg0nHZXM0NAG59
- tbTqjdDVkAfz2Hq0tJqkotYrHLQY5np8It9IrouKVL4IXoeScbNQd5SPQfhHp80scmXD
- kuDQ==
-X-Gm-Message-State: AOJu0YwvkOCQyFrhoQdnYwX2Oqn7Xd9bd02lvjZmwgVX9N8ORpzPf7cl
- Im0Rhk1hmVztrPC/8N0uGVE/SksX8TUly31JSO8zmBPY2eaWPSRCw+q0+Uk2cMrxlBlS+UO0NAy
- caxIwg1e9
-X-Gm-Gg: ASbGncsNkUaZrVY8gc4f64J4kS53OOMbirYdFWos9b2JxWjx6EdgDL6y4W0XeBBo+9b
- SeB/evzLroAS8nZ3cSD9B87mO1S8UGPBVpHkYmqjOj/gC/LK5ry6DdO78i95WHzS/x82ZJ/sHE5
- hz32KtEwKBD65i5ohN8BG3pw1yX9jS7WJ5PTxtL64n/uCmkJh30nlOB1jjboakJim79hbNDO3ux
- CTbAVQoXHv51v05y6ALvA1Hqv0lANowUWPxk2D+Y899+EVOh6RWN4auRM4449qH
-X-Google-Smtp-Source: AGHT+IFTiUpK4SMcy0MXtvg3evRUpzInwl8nGjaN1K8ysZSKq7+DZIM9wyIrf6kL1Wep0zWIUpPC2g==
-X-Received: by 2002:a05:6808:2008:b0:3e6:d7:9464 with SMTP id
- 5614622812f47-3eb94f629cdmr4108402b6e.14.1734117267233; 
- Fri, 13 Dec 2024 11:14:27 -0800 (PST)
+ bh=ZOHSZv4UJCEktEuRNTiGAa+gSN3tW2NIQ00CdmYCkmw=;
+ b=c42ZbwBxVX5fyvpWlAFLMIeMRHVwY4LUKDJXRoC8RaOmiKtr8AVPpXmzreMZZXNQ/D
+ uP86fG74RTOsQ8ESTIUVbGr7HIaMv258NCe+z/E8ve8yrnYButrSnOErd4unhAk6TKzl
+ N5sBVmSC6MFLbZFrAfVtDlxX9zxD4otyLsszOmv9BiOqgbEZp03rw8Gir/8gYKLhY6+o
+ HEbMLJU9rMKlI71lzv+esYsVvA1BCETVNsewa7wAxVrOlQ/Rx0cjkzIlCCPoIQvev8wq
+ N1351z+u+/KfuhyOqVJ5Okelgisp4EWBmbtsxMXi8fKMGo4QYyc2HZtR9Pu1O+8HCtNP
+ wPTQ==
+X-Gm-Message-State: AOJu0Yxh5TaP9YxAh9ThJsWeehnvFqysrrO0ubXUYCNQ9I3GaILG85as
+ pTCPc9ciK+1GlLjsnZdLQXvO5vdUsMKhMlGE5TnTe7n89zatIkdsBf3e7wUFY4JRmjCThkpz6FB
+ CQw2PIV3T
+X-Gm-Gg: ASbGncuL7tlhFeqNSXkJTuo7MUM9SJFPh0NBYc2zcxjVSyWo0ejlWYZGJUQIjnv/7K2
+ gaNk6yJrzN3hmKuJfC06SM95F17H+Qy0G2ioyp+45gPnqUssq+gLew4Al/K+4/pbjrQD0atTWxc
+ r37wgvDQ/iMN9Nx4i0KIAbiKHDSg2r/IvOwVPHvH00LqNGK2BzbtiZ7dT7XWh49aPlLcFdK2Uix
+ +TXizlNhaoIDK9pW3PXR9pYTbQNyoYIGPaoDojdYHptghDzhJJYHnEtrS+Jdr4S
+X-Google-Smtp-Source: AGHT+IGDv+I2UhiFDy1K8kqQKhzztTTmffHYFJbe7CdHJpPZxObJ0/0BL74oQ8deflij1/ZIteAxpg==
+X-Received: by 2002:a05:6808:2191:b0:3e5:ef2d:f53b with SMTP id
+ 5614622812f47-3eba6868153mr2325253b6e.11.1734117268658; 
+ Fri, 13 Dec 2024 11:14:28 -0800 (PST)
 Received: from stoup.. ([187.217.227.247]) by smtp.gmail.com with ESMTPSA id
- 5614622812f47-3ebb478a497sm3545b6e.10.2024.12.13.11.14.26
+ 5614622812f47-3ebb478a497sm3545b6e.10.2024.12.13.11.14.27
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 13 Dec 2024 11:14:26 -0800 (PST)
+ Fri, 13 Dec 2024 11:14:28 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
  Artyom Tarasenko <atar4qemu@gmail.com>
-Subject: [PATCH 57/71] hw/sparc: Constify all Property
-Date: Fri, 13 Dec 2024 13:07:31 -0600
-Message-ID: <20241213190750.2513964-62-richard.henderson@linaro.org>
+Subject: [PATCH 58/71] hw/sparc64: Constify all Property
+Date: Fri, 13 Dec 2024 13:07:32 -0600
+Message-ID: <20241213190750.2513964-63-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241213190750.2513964-1-richard.henderson@linaro.org>
 References: <20241213190750.2513964-1-richard.henderson@linaro.org>
@@ -98,15 +98,23 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- hw/sparc/sun4m.c       | 2 +-
- hw/sparc/sun4m_iommu.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ hw/sparc64/sun4u.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/hw/sparc/sun4m.c b/hw/sparc/sun4m.c
-index d52e6a7213..b8cce271a7 100644
---- a/hw/sparc/sun4m.c
-+++ b/hw/sparc/sun4m.c
-@@ -732,7 +732,7 @@ static void prom_realize(DeviceState *ds, Error **errp)
+diff --git a/hw/sparc64/sun4u.c b/hw/sparc64/sun4u.c
+index 541c7f74fa..050cb1d1cd 100644
+--- a/hw/sparc64/sun4u.c
++++ b/hw/sparc64/sun4u.c
+@@ -374,7 +374,7 @@ static void ebus_realize(PCIDevice *pci_dev, Error **errp)
+     pci_register_bar(pci_dev, 1, PCI_BASE_ADDRESS_SPACE_IO, &s->bar1);
+ }
+ 
+-static Property ebus_properties[] = {
++static const Property ebus_properties[] = {
+     DEFINE_PROP_UINT64("console-serial-base", EbusState,
+                        console_serial_base, 0),
+     DEFINE_PROP_END_OF_LIST(),
+@@ -471,7 +471,7 @@ static void prom_realize(DeviceState *ds, Error **errp)
      sysbus_init_mmio(dev, &s->prom);
  }
  
@@ -115,17 +123,13 @@ index d52e6a7213..b8cce271a7 100644
      {/* end of property list */},
  };
  
-diff --git a/hw/sparc/sun4m_iommu.c b/hw/sparc/sun4m_iommu.c
-index 6f765e97e4..3d6fcdf576 100644
---- a/hw/sparc/sun4m_iommu.c
-+++ b/hw/sparc/sun4m_iommu.c
-@@ -368,7 +368,7 @@ static void iommu_init(Object *obj)
-     sysbus_init_mmio(dev, &s->iomem);
+@@ -532,7 +532,7 @@ static void ram_init(hwaddr addr, ram_addr_t RAM_size)
+     sysbus_mmio_map(s, 0, addr);
  }
  
--static Property iommu_properties[] = {
-+static const Property iommu_properties[] = {
-     DEFINE_PROP_UINT32("version", IOMMUState, version, 0),
+-static Property ram_properties[] = {
++static const Property ram_properties[] = {
+     DEFINE_PROP_UINT64("size", RamDevice, size, 0),
      DEFINE_PROP_END_OF_LIST(),
  };
 -- 
