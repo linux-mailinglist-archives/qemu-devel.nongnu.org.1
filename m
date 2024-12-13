@@ -2,84 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A07829F13EB
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Dec 2024 18:39:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9269F9F13E4
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Dec 2024 18:38:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tM9aG-00089D-LW; Fri, 13 Dec 2024 12:36:12 -0500
+	id 1tM9aN-0000Ix-4z; Fri, 13 Dec 2024 12:36:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tM9Y3-0008Ha-55
+ id 1tM9Y4-0008Ht-C6
  for qemu-devel@nongnu.org; Fri, 13 Dec 2024 12:33:57 -0500
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tM9Xz-0001kJ-Om
- for qemu-devel@nongnu.org; Fri, 13 Dec 2024 12:33:54 -0500
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-436345cc17bso3210265e9.0
- for <qemu-devel@nongnu.org>; Fri, 13 Dec 2024 09:33:51 -0800 (PST)
+ id 1tM9Y2-0001kW-GX
+ for qemu-devel@nongnu.org; Fri, 13 Dec 2024 12:33:56 -0500
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-4361b6f9faeso12763325e9.1
+ for <qemu-devel@nongnu.org>; Fri, 13 Dec 2024 09:33:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734111230; x=1734716030; darn=nongnu.org;
+ d=linaro.org; s=google; t=1734111231; x=1734716031; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=LHYKnsZII936z/JzPGS2acHwiW7ATdMySxAu7M3/+ak=;
- b=lEXY1DNF83rdYg10DecIsEpjMbPDvk8BFAairfAK1zcxe4i6m4XvTISK9Gqs+5ShYJ
- e1k0ZdtsofSo5yWsLT1xwBw2wZl6m6U+SKFXGV/Ol1hZcgw+JQ9euzYCGxOWJODN6Krg
- KqNmL9YjQ9+2ymyEUXsEeTyaV1hyMMnOT27CS9+2tcC9NnDPE4FJcYsEzSfpkEkP9b2S
- 2SEImf2qY3c73T/efX0Hx241wpDKzqk3vi2jvWEDcHqlTF8o7wMBLPsNFLlU+JeQsmbb
- rytdS5cRJXfqfGkyOQLhzbafba7uj30N5BPXTUn9iVcs+5iJ31UeSGxiGhFxuFdLnVLw
- vrkQ==
+ :reply-to; bh=1pl3yiGui8waosH6gArdPVMZTP/hR95Dt5JKzQYZcYE=;
+ b=tTkuFmcVwJ2LLri3J6dV7HjH6FN/dSrXWxLrxCmUIy7Bazam5L4i/57ldKFfShNxuX
+ /SzFCAmIxcoeJa3HTJaHoeEvnKFKQCt88HdbYmMuCmDNQC4cnYbOc7Pr2SqScLAOO8ze
+ kvOooRtnxvp/MEzQ5pNUxjdibEnqDlHDseYP6PJjG4Chp1lpL6R6P4vq8emClKUCUh+5
+ rYpkMNc+BQBecIi5DXhztPpSF5qYHiQj7WqwyxhLTNFspxOV8YrE4Q+wWPDGdezTDSfh
+ kQOLG5GyvUntaRDUyaV3/8Y4WiUdYrQIuZuw1A5mLBHT+qLNKWPDxg7/rBAKIGZwqUMp
+ MXeg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734111230; x=1734716030;
+ d=1e100.net; s=20230601; t=1734111231; x=1734716031;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=LHYKnsZII936z/JzPGS2acHwiW7ATdMySxAu7M3/+ak=;
- b=gM2wvCD8jE1vBkNZluxpQKUs8DUwei7/vkTJPyJ3SjSbduo1gxi6+FVnt6eTCyLWtV
- N0Ho5ND9jXS0F/Q0sGs62CaTZNxyJtjq/W7HSzJFstPQ7Fi/SzpwBLRbJZaf8KMoxGpw
- XHHvZlADTI6OuMtAOMLFYP1GHgH5Lei1NGcM5ZQZlbmuOUgYAuMH1eHs66QV9LZxrGEd
- Dv+t7L6764q0bd2zBJ+HDimdfFZmj5+x7dlXw54jAF5/2jO6xskKeru0qVBS3Vade9T0
- pAjfzZEVi/I065q55J0cHgevLA5pnHEvCCSRcrZtsG9EXwdnF9PSzkMqIZY5XaCiRXIa
- g4JQ==
-X-Gm-Message-State: AOJu0YyGF+WUMk3qKuNlhj9CRLraHoxrfntindbfXesLxcAvlR3alLrj
- NRjwQGqmqz56MOHVijqSD8GMzNveLh5GyHK/hfoKEgwesl207pqWBXu+GmcXUbxq+udIUotmTii
- M
-X-Gm-Gg: ASbGncupv9bcABPTZlUnE34iUiiH982wE+ylCXzZuxXne6z6/Ei4zL3FlLi0h5v5nHk
- H2QIwIU0BIouF4tJTLbjXKFmqN5CZupihe932JQxGVXM84mHBCOw2NauMqMvmdcC4zc36TfujZB
- oTBR4GrQte7Tm46SZxtHgObWlkJTYDl4A+bTGOFAG1tewPTVcQAmnQdZJ4KwGf9KVGjPfpLfa8M
- 7cI7uuH+wCm0twa5N2Mr/bKY+LALRI5aIzkt5oP1k1QXFoqGgR9QJeDsUEL5A==
-X-Google-Smtp-Source: AGHT+IHvRqTw3Den4/0CV4VgouU4mWKCjmlhKKeGPF2vti8T12Rhp/hNMjsfkZ13u8HjzHmeqbaS1w==
-X-Received: by 2002:a05:600c:83c9:b0:431:5044:e388 with SMTP id
- 5b1f17b1804b1-4362aaa9a2dmr24723545e9.22.1734111230113; 
- Fri, 13 Dec 2024 09:33:50 -0800 (PST)
+ bh=1pl3yiGui8waosH6gArdPVMZTP/hR95Dt5JKzQYZcYE=;
+ b=iTG7md1QK2jUCdwH1bBbNOUN5jLIzxTN2iasHtdh+3G0eplNEY5Z+Xw7CbMEgQV/r+
+ V34f+0HVkV1Wmcd1HLThDXQGZoxbdeaz0cusg1eakfc7VPLNEz4rp6RS3br+JRtuMKh+
+ fKIwTQ4g6SiOtKNLOCJOYydN896Cr1kfRTwxEoJ37r6XTFkRqnZ1qjkZ3qTTzoKYDYV2
+ DlFUr2PBbeBs52ubfKW5bJAEthP28xtRPfnMo8FEyenxatup5sVGy9N28TjCUXxr1xpe
+ KzzVdZab3dbiLuTovB4YY7FegsxPrZPHccEW1djaDkSmnVFkI4Zg41eB6mwQz2pMOPqd
+ 22Qg==
+X-Gm-Message-State: AOJu0YwL/c0xUr1fGNpLcxgSO0rP5zIo7kv5qTRDkyBK2x14IWkYHi44
+ mswWtvYVbqn6PsIBjb8x2/M1UHM+F/e9Tm2gcrqXIsD19D5nYBMeXk03goCpMV0eZCCmb6bPcJQ
+ /
+X-Gm-Gg: ASbGnctZF/YM1qkR+zXsaZtNREN6OL7Q9iF+Uw31voyJQFq4E2hg8hc8SiHsEvnnKnD
+ 8yKWR+zXnFo8KrhXhOWc3OG/R0lukMZm0+kj53L6XyL1QWtWzMN2Xqlw/fkPt7Oj/SV8a+ynzxr
+ oxkWONw5u0LhR0VL8eBiODH7OcR10o39WlCHAKKdz6CqLFTcBCd5HytUAqD83aa4Uy/PlJc4YbA
+ b7QNY5FHFRe3+CiioLBgiUPC7OCxizwKueNKy/nzuPSPlC+eU+xEegcq6zn5g==
+X-Google-Smtp-Source: AGHT+IH84UfD0L7BxoEChBWL/3/L9p2LTxNZHh9Y2k82JCOfA/WUNauFD/AQbKkPh1Yri4Wjt2vX/A==
+X-Received: by 2002:a05:600c:1da6:b0:434:fa73:a906 with SMTP id
+ 5b1f17b1804b1-4362b10e8a7mr25002765e9.4.1734111231069; 
+ Fri, 13 Dec 2024 09:33:51 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-388c80162ddsm87026f8f.37.2024.12.13.09.33.49
+ ffacd0b85a97d-388c80162ddsm87026f8f.37.2024.12.13.09.33.50
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 13 Dec 2024 09:33:49 -0800 (PST)
+ Fri, 13 Dec 2024 09:33:50 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 74/85] docs/system/arm/virt: document missing properties
-Date: Fri, 13 Dec 2024 17:32:18 +0000
-Message-Id: <20241213173229.3308926-75-peter.maydell@linaro.org>
+Subject: [PULL 75/85] MAINTAINERS: correct my email address
+Date: Fri, 13 Dec 2024 17:32:19 +0000
+Message-Id: <20241213173229.3308926-76-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241213173229.3308926-1-peter.maydell@linaro.org>
 References: <20241213173229.3308926-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- WEIRD_QUOTING=0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,54 +95,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+From: Brian Cain <brian.cain@oss.qualcomm.com>
 
-Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Message-id: 20241206192254.3889131-5-pierrick.bouvier@linaro.org
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Mea culpa, I don't know how I got this wrong in 2dfe93699c.  Still
+getting used to the new address, I suppose.  Somehow I got it right in the
+mailmap, though.
+
+Signed-off-by: Brian Cain <brian.cain@oss.qualcomm.com>
+Message-id: 20241209181242.1434231-1-brian.cain@oss.qualcomm.com
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- docs/system/arm/virt.rst | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ MAINTAINERS | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/docs/system/arm/virt.rst b/docs/system/arm/virt.rst
-index e67e7f0f7c5..f87adeb444c 100644
---- a/docs/system/arm/virt.rst
-+++ b/docs/system/arm/virt.rst
-@@ -167,10 +167,18 @@ iommu
-   ``smmuv3``
-     Create an SMMUv3
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 7c1ab51b2d1..822f34344b0 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -226,7 +226,7 @@ F: target/avr/
+ F: tests/functional/test_avr_mega2560.py
  
-+default-bus-bypass-iommu
-+  Set ``on``/``off`` to enable/disable `bypass_iommu
-+  <https://gitlab.com/qemu-project/qemu/-/blob/master/docs/bypass-iommu.txt>`_
-+  for default root bus.
-+
- ras
-   Set ``on``/``off`` to enable/disable reporting host memory errors to a guest
-   using ACPI and guest external abort exceptions. The default is off.
- 
-+acpi
-+  Set ``on``/``off``/``auto`` to enable/disable ACPI.
-+
- dtb-randomness
-   Set ``on``/``off`` to pass random seeds via the guest DTB
-   rng-seed and kaslr-seed nodes (in both "/chosen" and
-@@ -184,6 +192,14 @@ dtb-randomness
- dtb-kaslr-seed
-   A deprecated synonym for dtb-randomness.
- 
-+x-oem-id
-+  Set string (up to 6 bytes) to override the default value of field OEMID in ACPI
-+  table header.
-+
-+x-oem-table-id
-+  Set string (up to 8 bytes) to override the default value of field OEM Table ID
-+  in ACPI table header.
-+
- Linux guest kernel configuration
- """"""""""""""""""""""""""""""""
- 
+ Hexagon TCG CPUs
+-M: Brian Cain <bcain@oss.qualcomm.com>
++M: Brian Cain <brian.cain@oss.qualcomm.com>
+ S: Supported
+ F: target/hexagon/
+ X: target/hexagon/idef-parser/
 -- 
 2.34.1
 
