@@ -2,79 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A28929F158A
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Dec 2024 20:12:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 371C49F1580
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Dec 2024 20:10:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tMB2G-0002sQ-IU; Fri, 13 Dec 2024 14:09:12 -0500
+	id 1tMB2F-0002qD-TN; Fri, 13 Dec 2024 14:09:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tMB1j-0002VM-CM
- for qemu-devel@nongnu.org; Fri, 13 Dec 2024 14:08:40 -0500
-Received: from mail-ot1-x32d.google.com ([2607:f8b0:4864:20::32d])
+ id 1tMB1i-0002VL-SE
+ for qemu-devel@nongnu.org; Fri, 13 Dec 2024 14:08:42 -0500
+Received: from mail-ot1-x330.google.com ([2607:f8b0:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tMB1Y-0006VT-7M
+ id 1tMB1h-0006Xc-6m
  for qemu-devel@nongnu.org; Fri, 13 Dec 2024 14:08:38 -0500
-Received: by mail-ot1-x32d.google.com with SMTP id
- 46e09a7af769-71e3005916aso392464a34.2
- for <qemu-devel@nongnu.org>; Fri, 13 Dec 2024 11:08:25 -0800 (PST)
+Received: by mail-ot1-x330.google.com with SMTP id
+ 46e09a7af769-71e15717a2dso933243a34.3
+ for <qemu-devel@nongnu.org>; Fri, 13 Dec 2024 11:08:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734116905; x=1734721705; darn=nongnu.org;
+ d=linaro.org; s=google; t=1734116916; x=1734721716; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=/N1O6+KdnI0Nthc0qwwbnzGBocJ9psam8as1orMligo=;
- b=B9QiR2oY+6rhxt+qKsFf3jl2U12fVDRpZgF7pcTigE6cgqMxWLJ3oFUdG5zn94x9/E
- H2sE2CtBUtm9hqizY1eHIj7ldieVCSZbyW1U418/1UN4rsfzf4+uWVfI0VwgBYi4Qqcn
- O/RtYIqu2t7v1AhtTdxvfAR2zGjukGVef6hTooGgPqCyDDkN27FQRGLmopTALp3RYXzJ
- Qkgk3npQecOADXqpTmaam8Cz1KfDdgFkWMPUn9I3HmZe2FFRXJraxc+DIBQRYRfHRvJS
- 1ELTHWo9KDifIEd8yAx933hkAyxTmalD359Nj0uluFOnGyGE61xYJUM7Rp7q4LPiYFAi
- pWDg==
+ bh=bMmfxBtIiIXQAk+hQuWMNvOte8CftqHpp2z6mVglAAg=;
+ b=PsxB3Kt1Pk8kIaIYCsx4pH3CLcCzmAfQl5wzZhRHjwv2y14bVCXrNxWcztlBvtMqoO
+ 58jJvPb7Jn0wJeLovvy8kpVuG6To+UpTXbTqbJARQfTNsEcCNgLhnifJX0re/MJDM1nA
+ fCXIz5S25ozjGGYHeXg0EbbXMY0kmtD1mOHEuaYN56ZTcdcrhrJ/DWzGGGY5tx8EPTeg
+ mSgm0c28nbL4ykBAKfHGLHj+e+Bw//Xoae+2k0itRS2JeFQ/IvN6Ogk9WWkgFZaaUjcv
+ VeMmlFfxrtC2O89CqlJeV/cJGWRZjh/FxTOBWkGJKfNgbK0fX/BbXLjVTRW7Pog7KiK2
+ mRoQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734116905; x=1734721705;
+ d=1e100.net; s=20230601; t=1734116916; x=1734721716;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=/N1O6+KdnI0Nthc0qwwbnzGBocJ9psam8as1orMligo=;
- b=Tv8yP5aApUMO1kyk6FVnKqPHM33nw6b6oRrVLn3F0XMKnavXOn3TwrNee0Hp3aO6Xd
- 8CAcpVl6OUEkA+Zd40c6nN3A9PxHmnr9xOQmqcU4LxBO0oEHHQPJHFeDuIsLCGilROwe
- HlmxIAitqzsy6RZAoS7LYLEcuTVy3cFYODKpRDEx/65qmsTlboNkXvUtERaNZ5Wut2Ua
- /DSKoj9bWvGZiVKfoMBcYrqCN41qwMT2mPVmzZy97XGQzbpkC2el/VsF/ZzueBeK7XMW
- mHDdbm7FDCKcZibCZ5NGV4nZj33aO9IgM/oxaxfZaKSF2jsd3vE8ZVO2i3swZv2I7iyC
- 641w==
-X-Gm-Message-State: AOJu0YyoqSQLmcTPawThf/fQK3sAOwOAt+koly7LvRwZnIm19RZI1v75
- wjj+y2oud3bK9c3zXzmDJ+w6gPf+9eIsYvQ8dIzsai5SkcZpZa2YalHj2AhFlOCP4pEpC7/wdFi
- eCxi9O4wl
-X-Gm-Gg: ASbGncuicPUqgEq5cTBHC0dQq8oMoj5Vs1IBAzEYmboMc+vWNrL1kSR1iKCanzCV07h
- f+/t5S1krQo/GwmrSTvajftj5HxjMwrWZSiV2SjytH1+VAiZL28+ZOPvBWAF0SSSeomaHxgMt8A
- ZV5j54GG/IPv0UfzIXVlO4awS4nxrNWKgaV7aSEU4UGcJdSEP+fY74QzXhmtabEKk2bLnLiL0oH
- pBOEabqNWhVKQi/qu2IIlXabcsjFq5no0jwEgmuz7ISwVbb4es6okVY9gjl3gJK
-X-Google-Smtp-Source: AGHT+IHE8OiA5O21jl1bl6r3rLUoq5bZS1aL1TbJmx+Mx8kSDE8A/boiyGC5l9ThClarUHh8ociCDA==
-X-Received: by 2002:a05:6830:6c12:b0:71e:5a:f4e6 with SMTP id
- 46e09a7af769-71e3ba24b35mr1944612a34.20.1734116904828; 
- Fri, 13 Dec 2024 11:08:24 -0800 (PST)
+ bh=bMmfxBtIiIXQAk+hQuWMNvOte8CftqHpp2z6mVglAAg=;
+ b=hqjqXjKQocBTGtlYRvCZCOMiXvQsCklesLD8YQvn/2W63dJBW7twQgoNGYWgQUjTp5
+ 0mUvqfSZIdLD8aslGiwl4Jibb0RS3V7Dv8TYe0meowIdKk/GNfHrqVoF8mhx4SBgw9X7
+ bkhe8wUxHsgutnIX5FHut6CaPwTWT2coqkOFgzO6EgH6RPYs7VFYEcTrMVMep4PuoBXa
+ 5boXxieSZwdq44MNLOPyET+zg6FBXor2QCHRF8LAFMvYDRvU5+DKTUr8w/6k5O87RJQn
+ t1NXx5vVidzoKVNJdHvj+zcnXIU81EP+oKbLJpeT1jun78Bfq2SYMuyfBJpRDWeZWESr
+ 06Fg==
+X-Gm-Message-State: AOJu0Ywir1CN7KxDQge4u6a/IeeMBbsrQ9/J1ZQ8f6ZGDAv2N2Uxt+EA
+ 2xj8OWHLXXlOxrILPUP2VAUE/IIvC7rDpUJEANyyB3H9tUuFn7Ztg74cWUdNumMbXFG/MMz/izG
+ MgvWd7Ia4
+X-Gm-Gg: ASbGncusHNhXdNjHAk4aY6oDyBf6XfIeCS9TA4msFM2D84JvAHZ10irNABWZwQ04zyA
+ HO2SYZKvyE/GbV8ft3kwOgORGFRJz+vL4EO1c755G6ZaJNUKWczeUZabTX2Vfzna+eex5kSS3Ib
+ NuY65kBy3i6SuPxeA9bT0sJIwESZnJkCWEBH5ImgcG49JOhj6hvA8sgCFqN0DNE5jVMsmxeZB1N
+ S80Oi7iUoRc3Uv5iBbfmnAwdWdjU3HpQ1AbpEvzXFOMYb3Rm6w7olUBVjbJLb3K
+X-Google-Smtp-Source: AGHT+IHR9dtrRL4g/E7x0+FRYpPWMzlKYyihfOxPXAT7iSgrm3iYxLMSyRaqRPWEIdZBAwzGSr5TAQ==
+X-Received: by 2002:a05:6830:380a:b0:718:a52:e1cc with SMTP id
+ 46e09a7af769-71e3ba3a182mr2496590a34.25.1734116915785; 
+ Fri, 13 Dec 2024 11:08:35 -0800 (PST)
 Received: from stoup.. ([187.217.227.247]) by smtp.gmail.com with ESMTPSA id
- 46e09a7af769-71e4834da91sm29697a34.18.2024.12.13.11.08.17
+ 46e09a7af769-71e4834da91sm29697a34.18.2024.12.13.11.08.27
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 13 Dec 2024 11:08:24 -0800 (PST)
+ Fri, 13 Dec 2024 11:08:35 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Nicholas Piggin <npiggin@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- qemu-ppc@nongnu.org (open list:PowerPC TCG CPUs)
-Subject: [PATCH 07/71] target/ppc: Remove empty property list
-Date: Fri, 13 Dec 2024 13:06:41 -0600
-Message-ID: <20241213190750.2513964-12-richard.henderson@linaro.org>
+Cc: Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>, Bin Meng <bmeng.cn@gmail.com>,
+ Weiwei Li <liwei1518@gmail.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ qemu-riscv@nongnu.org (open list:RISC-V TCG CPUs)
+Subject: [PATCH 08/71] target/riscv: Constify all Property
+Date: Fri, 13 Dec 2024 13:06:42 -0600
+Message-ID: <20241213190750.2513964-13-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241213190750.2513964-1-richard.henderson@linaro.org>
 References: <20241213190750.2513964-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::32d;
- envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x32d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::330;
+ envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,33 +102,22 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/ppc/cpu_init.c | 6 ------
- 1 file changed, 6 deletions(-)
+ target/riscv/cpu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
-index 1253dbf622..5e95790def 100644
---- a/target/ppc/cpu_init.c
-+++ b/target/ppc/cpu_init.c
-@@ -7414,11 +7414,6 @@ static void ppc_disas_set_info(CPUState *cs, disassemble_info *info)
- #endif
- }
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+index 80b09952e7..4329015076 100644
+--- a/target/riscv/cpu.c
++++ b/target/riscv/cpu.c
+@@ -2661,7 +2661,7 @@ RISCVCPUImpliedExtsRule *riscv_multi_ext_implied_rules[] = {
+     NULL
+ };
  
--static Property ppc_cpu_properties[] = {
--    /* add default property here */
--    DEFINE_PROP_END_OF_LIST(),
--};
--
- #ifndef CONFIG_USER_ONLY
- #include "hw/core/sysemu-cpu-ops.h"
+-static Property riscv_cpu_properties[] = {
++static const Property riscv_cpu_properties[] = {
+     DEFINE_PROP_BOOL("debug", RISCVCPU, cfg.debug, true),
  
-@@ -7468,7 +7463,6 @@ static void ppc_cpu_class_init(ObjectClass *oc, void *data)
-     device_class_set_parent_unrealize(dc, ppc_cpu_unrealize,
-                                       &pcc->parent_unrealize);
-     pcc->pvr_match = ppc_pvr_match_default;
--    device_class_set_props(dc, ppc_cpu_properties);
- 
-     resettable_class_set_parent_phases(rc, NULL, ppc_cpu_reset_hold, NULL,
-                                        &pcc->parent_phases);
+     {.name = "pmu-mask", .info = &prop_pmu_mask},
 -- 
 2.43.0
 
