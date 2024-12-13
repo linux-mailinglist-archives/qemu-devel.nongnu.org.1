@@ -2,77 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7014A9F15D8
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Dec 2024 20:31:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B66419F159E
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Dec 2024 20:15:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tMB7X-0007Sk-Pw; Fri, 13 Dec 2024 14:14:40 -0500
+	id 1tMB7E-0006WH-6M; Fri, 13 Dec 2024 14:14:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tMB6v-0006CQ-LH
+ id 1tMB6x-0006CT-2P
  for qemu-devel@nongnu.org; Fri, 13 Dec 2024 14:14:03 -0500
-Received: from mail-oa1-x30.google.com ([2001:4860:4864:20::30])
+Received: from mail-oa1-x29.google.com ([2001:4860:4864:20::29])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tMB6r-0007V0-2T
- for qemu-devel@nongnu.org; Fri, 13 Dec 2024 14:14:01 -0500
-Received: by mail-oa1-x30.google.com with SMTP id
- 586e51a60fabf-29fc424237bso905223fac.0
- for <qemu-devel@nongnu.org>; Fri, 13 Dec 2024 11:13:56 -0800 (PST)
+ id 1tMB6t-0007VL-1x
+ for qemu-devel@nongnu.org; Fri, 13 Dec 2024 14:14:02 -0500
+Received: by mail-oa1-x29.google.com with SMTP id
+ 586e51a60fabf-29e61fcc3d2so1616999fac.2
+ for <qemu-devel@nongnu.org>; Fri, 13 Dec 2024 11:13:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734117235; x=1734722035; darn=nongnu.org;
+ d=linaro.org; s=google; t=1734117237; x=1734722037; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=nUKbNfLNV7tMpEPRQXiu5pUDo41X11Gr2PRR67Zp9bQ=;
- b=y6O9yECdk1IEQeyjfZ18sFJICDheGvB0V0h1RXGzfkwehBKJi+LJu7+XJAYBbtVUFx
- peX3WkhAT/KOil+FJ1yVYcTdXb0odBfLA8Sy5J4o/Lwgbmc+Vs2/Lt9z9I6wOeEi++Cc
- XqKD1GfQ2RnWI7L4EHoy/lB6rqOxpPqs16uBRnsANzaLu562viA6HqqAskhtC7D1PXyX
- Vmy8FSsYxSQXqKUq/eUlq98KOpxwG7QdzYYIgD9tfYVCDZnH9VKuLTz9CRu+nDRpM73v
- GDiFO/5MQOyklzr9yHHxmhZ9H1kKm3EApAjzWffzel7HUCjRXORlXbEY3ryeiKsGILmB
- wlNg==
+ bh=FiW+nVfejzKaY0iptH499hOz00aUO6MutHuzR37Z/m0=;
+ b=AwRwh+25T8+CXpngTjJBJP5G7E6kciV3InQg/fPVQhKgGajnxkLwtL5QbGklZiRefE
+ px+348etybMUjdNN0OdaW7wC0DKlTar1bZUxGKGCN6SXEJmXBsreY3W7JWyld+/bTLnJ
+ uv4lbc9GcxftPz34SuOKbDx7gFVzGYfWEl/T44kisGoxJrgOvod1PARCbxS+zkjuKlo8
+ srglzu/SyvOdZN0cqzfJECkwim7/ijvgSbABbab9nCTYvXEhhueeAewYlot0p7AaSGkf
+ oqwiyQ7A4QuCQZxz/LsgU9jW0QR2RjXmNkLl4x9OwcOWdgdgK/RefUUkyJjkmDBklabe
+ PMnw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734117235; x=1734722035;
+ d=1e100.net; s=20230601; t=1734117237; x=1734722037;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=nUKbNfLNV7tMpEPRQXiu5pUDo41X11Gr2PRR67Zp9bQ=;
- b=pKOmD2gEMNJ0wFexDGdNGyqUoxigCScxV6Icy6VtFlhHvxtB0PHCZXptuTs3FC7fCR
- X7tDh6gr6Boe5pttaHK2zeouCLJGoCvNQfASsLsv+V95LKp0Nbd4HZC33rE66hVzY+Co
- oIvWDl53skrM3+mRubnnM1dPvkn4EqY2UiRb3NboK58y9+gadQFYu3Qhd/3igw3oW/9u
- VZ89RMQj0nImMcXHlEdfPHACFl4JKhUDBAQm3JQdaObs/7oNMk/AYyeu5AJw0s/ERw5M
- oS5+m/qrMbLjii8l5B97uNE3Tn74QOtFdiweJn+TcNSMTtkCYlpZ5iDuET2ZNLihZ+rs
- OvFA==
-X-Gm-Message-State: AOJu0Yxk5gW6Se+ytUf1ZJJh3pKxxAcUxy1w+DHFZ9XDkk5UevZ2KRRl
- OhZ+Ic3OxZaJyAjFopIh5bBgd9bLQ7SFUsgKOTB/snNkLj4MddvWDWjmVbxfXzkFpU8GhldkVD+
- MoYtSKWPv
-X-Gm-Gg: ASbGncsJ4xwITSacAKtbo6wqsIwQupOeCaK8oyHi0RuOJ8quVceA+VlQhpjZgCcv+68
- gFJB/Qyga0JS5ouZyvy0Q5cZ0G0nSP9vQKILXeegxeXiL6mbfeNphBHmI0n2pKPU/qrzQHShmO6
- H4oWbBXaL6DWCZZlb7oGNS/VOBIANKLDcutQ3ftGnSQe+mHISsJucywkvx7Kdan/u03x4JG66MR
- +0iT3qqVHngYcsSvkwtrd4C/TNEqGksEcUbLAtmz9dC0IspMz+q7cdOQlyJUZ9l
-X-Google-Smtp-Source: AGHT+IHemLjXV9z1C+LJquCum9tw315+U2mAp7/7xU4Ss7HY96NJWP1dbriTWOGF/3Nqku9VDWMFNA==
-X-Received: by 2002:a05:6808:1482:b0:3eb:63c9:fe87 with SMTP id
- 5614622812f47-3eba6864579mr2334125b6e.16.1734117235695; 
- Fri, 13 Dec 2024 11:13:55 -0800 (PST)
+ bh=FiW+nVfejzKaY0iptH499hOz00aUO6MutHuzR37Z/m0=;
+ b=Px3lEy/dUVSxnHmrIcRMXaaS/1gleEelEEZXVUFlgF72CYJYigVCXV4kBhPxEjwgGY
+ yVDHZRJoXsoWUP8y3QMbwi+cH97FvSCI8p9hOA8JS9s1dJF6GFKi1vLwQDmIsgWDusLN
+ Efo/l+SUQl6ngms+ib//QIoZT5xDw0h88VKN/tw/89llBUo7G3POZkDtosk1zNnngaIK
+ qbRW+kZpBueAZuLGPbCSLXhH7zKO5SUPDgF8OeVeB5nf2wflyfeTZMcsXRxU7ZCttUrm
+ 66HRf/q2wxLV8xwV8KdelwdGUjByOZlv34qAOXPyZIv7Oyu+6cfV0+qrSH80pWj2xEGh
+ I3zw==
+X-Gm-Message-State: AOJu0Yxi6cRAvB6bhrarhovpST/GlS6fwe/7phQxejgWr9teRP0JXGkS
+ 7tRktiKXvJf5rQOoXncE+psLxKwtEqpKf1mA/hle2A1SQkzvqbp0NIzhkAyhaV92RR+XGPjPuG0
+ msOj30ywG
+X-Gm-Gg: ASbGncuH5Mqg0+mpk0X9tR7h8x7WhuLcx1THDzm0W5b1B6/xuG93ncxggAZ5fZnLCzZ
+ dhnN6prbI5PEFa486IDTFv8uEQDsABitLMyDD/heXwShQnN0BTaXuq4YGYUPvDAyXRCPtMbAArp
+ djyRrSNeB8iqY2rrnCKR5vhDfJqtguyzdYQCZj4HEsy0lypfYWMXJJic4OV8h75//j5F2Ve7Wqh
+ kIcRrAG0EU9JcFsEUDERyj2+FY7uXSROKrJI4vM0JjH1ExyGxtEgyXyJxzswZxb
+X-Google-Smtp-Source: AGHT+IEG51rF8aMmGoMqatA1nitSyJifEw6DrRgS4x3z/9CxWQvMDzX6vDhwOr3mGaAX8nLThD54TA==
+X-Received: by 2002:a05:6808:158c:b0:3eb:6351:c265 with SMTP id
+ 5614622812f47-3eba6864516mr2393535b6e.16.1734117237556; 
+ Fri, 13 Dec 2024 11:13:57 -0800 (PST)
 Received: from stoup.. ([187.217.227.247]) by smtp.gmail.com with ESMTPSA id
- 5614622812f47-3ebb478a497sm3545b6e.10.2024.12.13.11.13.54
+ 5614622812f47-3ebb478a497sm3545b6e.10.2024.12.13.11.13.55
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 13 Dec 2024 11:13:55 -0800 (PST)
+ Fri, 13 Dec 2024 11:13:57 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Laurent Vivier <laurent@vivier.eu>
-Subject: [PATCH 42/71] hw/nubus: Constify all Property
-Date: Fri, 13 Dec 2024 13:07:16 -0600
-Message-ID: <20241213190750.2513964-47-richard.henderson@linaro.org>
+Cc: Keith Busch <kbusch@kernel.org>, Klaus Jensen <its@irrelevant.dk>,
+ Jesper Devantier <foss@defmacro.it>, qemu-block@nongnu.org (open list:nvme)
+Subject: [PATCH 43/71] hw/nvme: Constify all Property
+Date: Fri, 13 Dec 2024 13:07:17 -0600
+Message-ID: <20241213190750.2513964-48-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241213190750.2513964-1-richard.henderson@linaro.org>
 References: <20241213190750.2513964-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:4860:4864:20::30;
- envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x30.google.com
+Received-SPF: pass client-ip=2001:4860:4864:20::29;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x29.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,36 +98,50 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- hw/nubus/nubus-bridge.c | 2 +-
- hw/nubus/nubus-device.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ hw/nvme/ctrl.c   | 2 +-
+ hw/nvme/ns.c     | 2 +-
+ hw/nvme/subsys.c | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/hw/nubus/nubus-bridge.c b/hw/nubus/nubus-bridge.c
-index a42c86080f..83893e5a46 100644
---- a/hw/nubus/nubus-bridge.c
-+++ b/hw/nubus/nubus-bridge.c
-@@ -23,7 +23,7 @@ static void nubus_bridge_init(Object *obj)
-     qdev_init_gpio_out(DEVICE(s), bus->irqs, NUBUS_IRQS);
+diff --git a/hw/nvme/ctrl.c b/hw/nvme/ctrl.c
+index ec75419566..33a3062466 100644
+--- a/hw/nvme/ctrl.c
++++ b/hw/nvme/ctrl.c
+@@ -8927,7 +8927,7 @@ static void nvme_exit(PCIDevice *pci_dev)
+     memory_region_del_subregion(&n->bar0, &n->iomem);
  }
  
--static Property nubus_bridge_properties[] = {
-+static const Property nubus_bridge_properties[] = {
-     DEFINE_PROP_UINT16("slot-available-mask", NubusBridge,
-                        bus.slot_available_mask, 0xffff),
-     DEFINE_PROP_END_OF_LIST()
-diff --git a/hw/nubus/nubus-device.c b/hw/nubus/nubus-device.c
-index 26fbcf29a2..7cafc13427 100644
---- a/hw/nubus/nubus-device.c
-+++ b/hw/nubus/nubus-device.c
-@@ -107,7 +107,7 @@ static void nubus_device_realize(DeviceState *dev, Error **errp)
-     }
+-static Property nvme_props[] = {
++static const Property nvme_props[] = {
+     DEFINE_BLOCK_PROPERTIES(NvmeCtrl, namespace.blkconf),
+     DEFINE_PROP_LINK("pmrdev", NvmeCtrl, pmr.dev, TYPE_MEMORY_BACKEND,
+                      HostMemoryBackend *),
+diff --git a/hw/nvme/ns.c b/hw/nvme/ns.c
+index 526e15aa80..192b80f18d 100644
+--- a/hw/nvme/ns.c
++++ b/hw/nvme/ns.c
+@@ -799,7 +799,7 @@ static void nvme_ns_realize(DeviceState *dev, Error **errp)
+     nvme_attach_ns(n, ns);
  }
  
--static Property nubus_device_properties[] = {
-+static const Property nubus_device_properties[] = {
-     DEFINE_PROP_INT32("slot", NubusDevice, slot, -1),
-     DEFINE_PROP_STRING("romfile", NubusDevice, romfile),
-     DEFINE_PROP_END_OF_LIST()
+-static Property nvme_ns_props[] = {
++static const Property nvme_ns_props[] = {
+     DEFINE_BLOCK_PROPERTIES(NvmeNamespace, blkconf),
+     DEFINE_PROP_BOOL("detached", NvmeNamespace, params.detached, false),
+     DEFINE_PROP_BOOL("shared", NvmeNamespace, params.shared, true),
+diff --git a/hw/nvme/subsys.c b/hw/nvme/subsys.c
+index 77deaf2c2c..3171c3888c 100644
+--- a/hw/nvme/subsys.c
++++ b/hw/nvme/subsys.c
+@@ -216,7 +216,7 @@ static void nvme_subsys_realize(DeviceState *dev, Error **errp)
+     nvme_subsys_setup(subsys, errp);
+ }
+ 
+-static Property nvme_subsystem_props[] = {
++static const Property nvme_subsystem_props[] = {
+     DEFINE_PROP_STRING("nqn", NvmeSubsystem, params.nqn),
+     DEFINE_PROP_BOOL("fdp", NvmeSubsystem, params.fdp.enabled, false),
+     DEFINE_PROP_SIZE("fdp.runs", NvmeSubsystem, params.fdp.runs,
 -- 
 2.43.0
 
