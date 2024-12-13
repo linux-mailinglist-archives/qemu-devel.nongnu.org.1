@@ -2,76 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 373659F0676
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Dec 2024 09:36:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 131479F073E
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Dec 2024 10:07:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tM18k-0003PI-Uz; Fri, 13 Dec 2024 03:35:14 -0500
+	id 1tM1cB-0002f2-IX; Fri, 13 Dec 2024 04:05:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tM18j-0003Oj-AT; Fri, 13 Dec 2024 03:35:13 -0500
-Received: from mgamail.intel.com ([198.175.65.9])
+ (Exim 4.90_1) (envelope-from <mario.fleischmann@lauterbach.com>)
+ id 1tM1c0-0002ek-Mc; Fri, 13 Dec 2024 04:05:28 -0500
+Received: from bm.lauterbach.com ([62.154.241.218])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tM18d-0008OD-Ge; Fri, 13 Dec 2024 03:35:12 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1734078907; x=1765614907;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=YaE4IkK5AV+coszAICjl/n893OwhkcIehAwDV4r7L5Y=;
- b=OH4Bdy9HYnuYIdzzDIZy39cuZVQXcb7V2XYtHBBVsd1IQi5BWLO5e4Aq
- 4i82TkFUy83mfnIglZvUAu54SXUtZEKQPol7SL/s3IREao/9XN/W6v8i6
- 74tdX4kO2LNZhfzcbY2AOryBMtmaXEVpeGGNXpGHoHylWFN8laRAbpMZS
- LWM7+xsK0gl730T5RDiYsEudbE+9un2lHKh81DdsnEl4LeRQOQrFzTQuq
- ptQBLE92oPJgMnF/AkoBSXYdBQFHCPJBf28v8GN/yu9+uvr4b8gIQy2ux
- PtpbOXCUC9roP4iS4YsQ809NYrFnvHzG1prap/4KgxRRkxRwi2uul++gF A==;
-X-CSE-ConnectionGUID: Ukq8+HRbTMau7yQCONDn2Q==
-X-CSE-MsgGUID: I5bc4yXnTnqyfqz6/OJYPg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11284"; a="56997677"
-X-IronPort-AV: E=Sophos;i="6.12,230,1728975600"; d="scan'208";a="56997677"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Dec 2024 00:35:03 -0800
-X-CSE-ConnectionGUID: S9E/mUSpQdirWdjDlM+/Bw==
-X-CSE-MsgGUID: n6p+iwYqRQ2LZj5jPgMrWA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,230,1728975600"; d="scan'208";a="127287537"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by orviesa002.jf.intel.com with ESMTP; 13 Dec 2024 00:35:02 -0800
-Date: Fri, 13 Dec 2024 16:53:17 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel <qemu-devel@nongnu.org>, qemu-rust@nongnu.org,
- Junjie Mao <junjie.mao@hotmail.com>
-Subject: Re: [PATCH 14/26] rust: qom: move bridge for TypeInfo functions out
- of pl011
-Message-ID: <Z1v1/WswJ+rNU5th@intel.com>
-References: <20241209123717.99077-1-pbonzini@redhat.com>
- <20241209123717.99077-15-pbonzini@redhat.com>
- <Z1hjX+5Yyi46N+sX@intel.com>
- <ada60844-546a-42ca-a05f-7b6dc225ff53@redhat.com>
- <Z1lGZdXsVR5ra4hl@intel.com>
- <CABgObfbs57rVNU4jTwUbPeZEbvEKpVPAZj0Pd8OF75D8ojQEMQ@mail.gmail.com>
- <Z1nEUmzHa5dA5C0d@intel.com>
- <CABgObfY0T1N5-6ZwMWERsptEXHYhWnZP=TABGt3iovjtM3uWBA@mail.gmail.com>
+ (Exim 4.90_1) (envelope-from <mario.fleischmann@lauterbach.com>)
+ id 1tM1bn-0006WS-Lq; Fri, 13 Dec 2024 04:05:28 -0500
+Received: from [10.2.13.100] (unknown [10.2.13.100])
+ (Authenticated sender: mario.fleischmann@lauterbach.com)
+ by bm.lauterbach.com (Postfix) with ESMTPSA id 00AB1426D093;
+ Fri, 13 Dec 2024 10:04:55 +0100 (CET)
+Message-ID: <5d28f5aa-bb59-4198-a6ff-495a0ea9a16a@lauterbach.com>
+Date: Fri, 13 Dec 2024 10:04:54 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CABgObfY0T1N5-6ZwMWERsptEXHYhWnZP=TABGt3iovjtM3uWBA@mail.gmail.com>
-Received-SPF: pass client-ip=198.175.65.9; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -48
-X-Spam_score: -4.9
-X-Spam_bar: ----
-X-Spam_report: (-4.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.496,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+From: Mario Fleischmann <mario.fleischmann@lauterbach.com>
+Subject: Re: [PATCH v3] riscv/gdb: add V bit to priv register
+To: Yanfeng Liu <yfliu2008@qq.com>, qemu-riscv@nongnu.org
+Cc: qemu-devel@nongnu.org, alistair.francis@wdc.com, alex.bennee@linaro.org
+References: <tencent_D006B250779A0740A99BB51DA4A8F95EBF07@qq.com>
+Content-Language: en-US
+In-Reply-To: <tencent_D006B250779A0740A99BB51DA4A8F95EBF07@qq.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Bm-Milter-Handled: 166a2dfb-2e12-4590-8fa5-72e30323519f
+X-Bm-Transport-Timestamp: 1734080695009
+Received-SPF: pass client-ip=62.154.241.218;
+ envelope-from=mario.fleischmann@lauterbach.com; helo=bm.lauterbach.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,129 +58,85 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-> I see -- though, thinking more about it, since you have
-> 
->     fn init_timer(&mut self) {
->         let raw_ptr: *mut HPETState = self;
-> 
->         for i in 0..HPET_MAX_TIMERS {
->             let mut timer = self.get_timer(i).borrow_mut();
->             timer.init(i, raw_ptr).init_timer_with_state();
->         }
->     }
-> 
-> It seems to me that you can do everything in instance_init. Later on a
-> function like the above
-> will become something like
-> 
-> impl HPETTimer {
->     fn init_timer(hpet: NonNull<HPETState>, n: usize) -> impl PinInit<Self> {
+Hi,
 
-Thank you! I should pass NonNull type other than `*mut HPETState` for now :-)
+apologies for the delayed review; I've just gotten to it now.
 
->         pin_init!(&this in HPETTimer {
->             index: n,
->             qemu_timer <- Timer::init_ns(...),
->             state: hpet,
->             config: 0,
->             cmp: 0,
->             fsb: 0,
->             cmp64: 0,
->             period: 0,
->             wrap_flag: false,
->             last: 0,
->         }
->     }
-> }
-
-That's the right and ideal way, and I like it.
-
-> But even now you can write something that takes a &mut self as the
-> first argument. It's undefined behavior but it's okay as long as we
-> have a path forward.
-
-Yes, I agree. In the next version, I can follow your suggestion and put
-these embedded items into instance_init(), to be better prepared for the
-next step.
-
-> > > > > The way that this will become safe is to use the pinned_init crate from
-> > > > > Linux: instance_init returns the initialization as an "impl
-> > > > PinInit<Self>",
-> > > >
-> > > > Then do we need to place OBJECT in some suitable memory location (Box or
-> > > > something) for Rust implementation?
-> > > >
-> > >
-> > > Allocation is still done by the C code, so I am not sure I understand the
-> > > question. Rust code allocates QOM objects with object_new() so they are
-> > > malloc-ed.
-> >
-> > Sorry, I'm not familiar enough with this piece...I have the question
-> > because PinInit doc said "you will need a suitable memory location that
-> > can hold a T. This can be KBox<T>, Arc<T>, UniqueArc<T> or even the
-> > stack (see stack_pin_init!)."
+On 06.12.2024 01:14, Yanfeng Liu wrote:
+> This adds virtualization mode (V bit) as bit(2) of register `priv`
+> per RiscV debug spec v1.0.0-rc3. Checked with gdb-multiarch v12.1.
 > 
-> Ah, I see. You can use __pinned_init directly on the memory that is
-> passed to rust_instance_init. See for example the implementation of
-> InPlaceWrite for Box
-> (https://docs.rs/pinned-init/latest/src/pinned_init/lib.rs.html#1307).
+> Note that GDB may display `INVALID` tag for the value when V bit
+> is set, this doesn't affect accessing to the bit.
+> 
+> Signed-off-by: Yanfeng Liu <yfliu2008@qq.com>
+> ---
+>   target/riscv/gdbstub.c | 7 ++++++-
+>   1 file changed, 6 insertions(+), 1 deletion(-)
+> 
+> diff --git a/target/riscv/gdbstub.c b/target/riscv/gdbstub.c
+> index c07df972f1..8cc095cda3 100644
+> --- a/target/riscv/gdbstub.c
+> +++ b/target/riscv/gdbstub.c
+> @@ -213,7 +213,10 @@ static int riscv_gdb_get_virtual(CPUState *cs, GByteArray *buf, int n)
+>           RISCVCPU *cpu = RISCV_CPU(cs);
+>           CPURISCVState *env = &cpu->env;
+>   
+> -        return gdb_get_regl(buf, env->priv);
+> +        /* Per RiscV debug spec v1.0.0 rc3 */
 
-Thank you! I understand your intention. A similar implementation would
-also be quite natural in rust_instance_init.
+Now that rc4 is released, you might also cite "RISC-V Debug
+Specification v1.0.0 rc4".
 
-> > I see that the core point is ensuring that structures cannot be moved.
-> > Given that object_new() on the C side ensures that the allocated object
-> > will not be moved, Rust side does not need to worry about pinning, correct?
-> 
-> Sort of... You still need to worry about it for two reasons:
-> 
-> 1) if you have &mut Self you can move values out of the object using
-> e.g. mem::replace or mem::swap. Those would move the value in memory
-> and cause trouble (think of moving a QEMUTimer while it is pointed to
-> by the QEMUTimerList). This is solved by 1) using &Self all the time +
-> interior mutability
+> +        target_ulong vbit = (env->virt_enabled) ? BIT(2) : 0;
+> +
+> +        return gdb_get_regl(buf, env->priv | vbit);
+>   #endif
+>       }
+>       return 0;
+> @@ -230,6 +233,8 @@ static int riscv_gdb_set_virtual(CPUState *cs, uint8_t *mem_buf, int n)
+>           if (env->priv == PRV_RESERVED) {
+>               env->priv = PRV_S;
+>           }
+> +        env->virt_enabled = (env->priv == PRV_M) ? 0 :
+> +                            ((ldtul_p(mem_buf) & BIT(2)) >> 2);
 
-With your help and through our discussions, I have gained a clearer
-understanding of this intention.
+Looking at the other places in the source code where virt_enabled is 
+set, we should also check here if the H extension is active.
+Alternatively, you might also consider using riscv_cpu_set_mode():
 
-> 2) using pinned_init's "PinnedDrop" functionality,
-> because &Self can be used in QEMU-specific APIs but (obviously) not in
-> the built-in Drop trait.
-> 
-> 2) right now marking something as pinned is an indirect way to tell
-> the compiler and miri that there are external references to it. For a
-> longer discussion you can read
-> https://crates.io/crates/pinned-aliasable or
-> https://gist.github.com/Darksonn/1567538f56af1a8038ecc3c664a42462.
+Message-ID: <20240711-smcntrpmf_v7-v8-1-b7c38ae7b263@rivosinc.com>
+Date: Thu, 11 Jul 2024 15:31:04 -0700
+Subject: [PATCH v8 01/13] target/riscv: Combine set_mode and set_virt 
+functions.
+From: Atish Patra <atishp@rivosinc.com>
 
-Thanks for sharing!
+>   #endif
+>           return sizeof(target_ulong);
+>       }
 
-> Linux does this with a wrapper type similar to the one in pinned-aliasable:
-> 
-> /// Stores an opaque value.
-> ///
-> /// This is meant to be used with FFI objects that are never
-> interpreted by Rust code.
-> #[repr(transparent)]
-> pub struct Opaque<T> {
->     value: UnsafeCell<MaybeUninit<T>>,
->     _pin: PhantomPinned,
-> }
-> 
-> It's on my todo list to introduce it in qemu_api::cell and (for
-> example) change qom::Object from
-> 
->     pub use bindings::Object
-> 
-> to
-> 
->     pub type Object = Opaque<bindings::Object>;
-> 
-> Or something like that.
+In addition, we need to swap the virtual supervisor registers from the H 
+extension, e.g. vsstatus:
 
-Yes, I agree with this idea. It's what we need.
+"When V=1, vsstatus substitutes for the usual sstatus, so instructions 
+that normally read or modify sstatus actually access vsstatus instead." 
+(privileged spec)
 
-Regards,
-Zhao
+With the current patch, I was able to read and modify V, but the 
+registers were not changing:
+
+(gdb) info register $priv
+priv           0x4      prv:4 [INVALID]
+(gdb) info register $sstatus
+sstatus        0x200004022      8589951010
+(gdb) set $priv = 0x0
+(gdb) info register $priv
+priv           0x0      prv:0 [User/Application]
+(gdb) info register $sstatus
+sstatus        0x200004022      8589951010
+
+Take a look at riscv_cpu_swap_hypervisor_regs() which I believe does the 
+thing we need here. Note that the function is supposed be called before 
+the mode switch.
 
 
