@@ -2,71 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7241E9F1A1F
-	for <lists+qemu-devel@lfdr.de>; Sat, 14 Dec 2024 00:35:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D3D329F1A1B
+	for <lists+qemu-devel@lfdr.de>; Sat, 14 Dec 2024 00:35:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tMF9q-0005yy-NZ; Fri, 13 Dec 2024 18:33:23 -0500
+	id 1tMF9Z-0004ps-L1; Fri, 13 Dec 2024 18:33:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tMF9D-00043m-LA
- for qemu-devel@nongnu.org; Fri, 13 Dec 2024 18:32:40 -0500
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tMF9H-00049F-EC
+ for qemu-devel@nongnu.org; Fri, 13 Dec 2024 18:32:43 -0500
 Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tMF9B-000394-1O
- for qemu-devel@nongnu.org; Fri, 13 Dec 2024 18:32:39 -0500
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tMF9F-0003Ap-Ia
+ for qemu-devel@nongnu.org; Fri, 13 Dec 2024 18:32:42 -0500
 Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-434e3953b65so16061545e9.1
- for <qemu-devel@nongnu.org>; Fri, 13 Dec 2024 15:32:36 -0800 (PST)
+ 5b1f17b1804b1-436341f575fso8169465e9.1
+ for <qemu-devel@nongnu.org>; Fri, 13 Dec 2024 15:32:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734132755; x=1734737555; darn=nongnu.org;
+ d=linaro.org; s=google; t=1734132759; x=1734737559; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=CV9+f4SVBhtl9L6i7qT0yd0Q3TADzotsfEUks6qSmCU=;
- b=wK3DvIh7YjKOXqQ40AHmVpuGiNO7yf3RKyJbfRopeW/PwMnjx9T7D1u3aJM/MDDxp8
- hV9SU7KW+DWbCRwkLsU2KdflK0OAoXs2xi4nXrzoPuJW42AVIUivjiBdgSnAET5yv0l0
- wGXSL294rWRg0/CZhGmVa+HzTAzNCLzmMZBwUnwCTmvIyOTw+iC6NdSyF01QDRur92Ga
- Zpk+7EzpTGm7KfQkJklu/mHBz0JfQi01IsI3D1176zzYRjtNiAGd+R1YycyFmXY+YVw9
- xdvZgCFXAYth6n+abKDghAHSAlEtuPHWbTB4sCEsci3PX7Eg3ShnO8ZwticQVfF5OEAu
- qIwQ==
+ bh=u+FKK+MzoThj9yRh3UKNCCARWEWpodVhzuwrRKzUzmI=;
+ b=Y9AIMNMn5K+HbEA0G0nlGLTPuwCya3/unefq5XdtFmEIzBTxjiOIPbEB/F//G3VP9s
+ 783u9dXfHi/7ovXo8J0mAKFcgsIQyCKF5IsBlK5mX3oI24zVTwKhFHnt7KKfG3na2jEO
+ Fk7mHO4zzBnMCrW7ZlSzh4p8O0yvcFl2NbrjOATLRfcj5ortvXXP62Ub+HAGIASkIUIs
+ J/Rc2IXeiFLxRc/Jadxn46aO7fxlh7PcU5zON+ZKUlIDbc0tOJ9bQPyA3fQaMOOFNHEW
+ pzTA+YkaRfDtIofPEQ3ouBAJnRKuZRjM67dh1Hkp21/mMKzjZSmS0C2VSY8sXk4xB9KB
+ KkTQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734132755; x=1734737555;
+ d=1e100.net; s=20230601; t=1734132759; x=1734737559;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=CV9+f4SVBhtl9L6i7qT0yd0Q3TADzotsfEUks6qSmCU=;
- b=PEyqIiJdImO48ig1p+3lnB9jDNzQ9NSKg2FLpDp+vHdG6ZteVXPwX8emmLAzuncxuN
- YS/lpQQ0KI7gwcGUCJIvuLvi5DDXpBOSNoAed28Zj1THCCjGbJYXbwQf5DPKUlRR8xzS
- 2JAAesRU8NvuElg4jsO8EtnLoX8k5VLgF6RqxYscgN6I8d11QRuwLINXeObiqrjNkeiG
- x+0AM5mrJxMNrRBoWH85G6QY842SGvNATAX3xO7yMt69qVoOFAdvPqu56iBuIA6BN8uo
- U3R2v1LmFz/JU7UG4VvhRl9aWB9IHy33/tdsueNjFgOU3bDpjdrMB180mRXtxJG6TsXb
- xNSg==
-X-Gm-Message-State: AOJu0YwfhehaB2d+HXuNeCmWh0E7umdiMl11wbpRTSHNQXKYrulgy95l
- TqJx03Oo0KVD9OKTT3ONDrWl3zGB1+Fjy7w4RrZmr8bcQkjKg3M4JtFYRADiuth6xHqD8FvUYVR
- Nj0k=
-X-Gm-Gg: ASbGncuRNjXOX2qXr31pUOdAHCaziobCN3wliC6eeSVykPaQuy4+J4WAZyUn7Lv7C28
- 1F9CKda226sgxiMTrNaK1GZsxCPhryr0N+7OKxPjYBWVXGpzePrfha9zDgCpkIsMGrLHBBUbcWM
- 7kx4pjfjX9EFi1vTStOPAqSzNdASB5Sz36QocMSMJsKtfhEg22UYTiPe7hLYD1nPPueL1NiN0mF
- 3/iKg5gve1GFZATkfjz5mFsb/iWg8lx5B3nCAlEOct60gcdFIZXqmStog5Y9Ayt5ozkZJxXEYNv
- 0NzNkQ==
-X-Google-Smtp-Source: AGHT+IHcFpmrkGUsvL3jUwj3xLyYxHDCtFxKIpOXF5zJFPYdgXUFm+/jUSL/vovNuOu1loW3KAZXYg==
-X-Received: by 2002:a05:600c:214a:b0:434:f7e3:bfbd with SMTP id
- 5b1f17b1804b1-4362aa947admr38604895e9.23.1734132755094; 
- Fri, 13 Dec 2024 15:32:35 -0800 (PST)
+ bh=u+FKK+MzoThj9yRh3UKNCCARWEWpodVhzuwrRKzUzmI=;
+ b=hYJqEhTPBCD+Ku9bTGVPhi25NnOScYoOVyVbTVCdOPZTlllb48j6o2FxaGty1KeMTD
+ ZXu2pqsfT+FyPkVNzb8YpaVi8+H7aNtR9rWgAN1CjakPQ53IaQmcLdQ6yvJQ6TWeVwWo
+ h58xKK8ARjXuGOe92Ha5HOud2ji9EBtVo7axtwMWsnx86fHo6CTGs7z8ml7oUg6J/gVL
+ XQjLRczaB8X3SsMGXtsi1L8CHtanplORIIUWt59tHBSgn2DU55rjP8i7doGrJpc9GUrL
+ pq5GUEljLhZF+d0ICut9feOop8irtT6ppUeM3HdO8/JOpT0PAGs+NubxDfJWQ2n9y+tj
+ IPWQ==
+X-Gm-Message-State: AOJu0YzqaB49z7dMPIQ43It0WSjXRUVX3KSl3wTC+f3bUWmhoszBPiPz
+ Q6aVlCqsEryKCIzABfqxZhZkkfZQyTBEdWBXA5XOLYJ9E/lT2OSO02fb7qzNOe7Idn/yBmiKOR0
+ rJQY=
+X-Gm-Gg: ASbGncut7I7XwW/1m1cXRW/dR3gRiwvyn3EbgZDx/O4m68K0j6Ku+KJn64uCDgcM2rb
+ 7uH2j7khl8K6sd2NBnNKuWsG1/fa9ZbKXVbaka6osVKcl6Z39cMSlE4w4SKbvjJCYESS9SuVjwX
+ rOUbDY27RPrcr3fCbDm4Fi1YoDbLFTOoKgXINDeI8XoIazvRrERAT1NiGecqLCBzKDrQib4d/mT
+ NY10pp1oKgqiM3PbanOUJC7EO5RpUfOGzHeSYA9KvBgoVBF/4yi27rvPsLHdP016Em60dKpAI0B
+ CJCB7Q==
+X-Google-Smtp-Source: AGHT+IHzlWluQd7Db73U7CRejk7ED7FLmdCjfQ8gNRuVj2DWv3IJy+Bpk3JDJAi2aDL7zAxmA5OSbg==
+X-Received: by 2002:a05:600c:3b9c:b0:434:f739:7cd9 with SMTP id
+ 5b1f17b1804b1-4362aa362e5mr47575235e9.9.1734132759552; 
+ Fri, 13 Dec 2024 15:32:39 -0800 (PST)
 Received: from localhost.localdomain ([45.93.146.194])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4362557c502sm63157165e9.11.2024.12.13.15.32.33
+ 5b1f17b1804b1-4361ec75410sm78743755e9.1.2024.12.13.15.32.38
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 13 Dec 2024 15:32:34 -0800 (PST)
+ Fri, 13 Dec 2024 15:32:39 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 19/20] hw/sh4/r2d: Include missing 'exec/tswap.h' header
-Date: Sat, 14 Dec 2024 00:30:54 +0100
-Message-ID: <20241213233055.39574-20-philmd@linaro.org>
+Subject: [PULL 20/20] hw/xtensa: Include missing 'exec/tswap.h' header
+Date: Sat, 14 Dec 2024 00:30:55 +0100
+Message-ID: <20241213233055.39574-21-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241213233055.39574-1-philmd@linaro.org>
 References: <20241213233055.39574-1-philmd@linaro.org>
@@ -97,33 +97,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-r2d.c indirectly get "exec/tswap.h" declarations via
-"exec/cpu-all.h". Include it directly to be able to
-remove the former from the latter, otherwise we get:
+Some files indirectly get "exec/tswap.h" declarations via
+"exec/cpu-all.h". Include it directly to be able to remove
+the former from the latter, otherwise we get:
 
-  hw/sh4/r2d.c:357:35: error: call to undeclared function 'tswap32'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-    357 |         boot_params.loader_type = tswap32(1);
-        |                                   ^
+  hw/xtensa/bootparam.h:40:16: error: call to undeclared function 'tswap16'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+     40 |         .tag = tswap16(tag),
+        |                ^
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20241211230357.97036-8-philmd@linaro.org>
+Message-Id: <20241211230357.97036-9-philmd@linaro.org>
 ---
- hw/sh4/r2d.c | 1 +
- 1 file changed, 1 insertion(+)
+ hw/xtensa/bootparam.h | 1 +
+ hw/xtensa/xtfpga.c    | 1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/hw/sh4/r2d.c b/hw/sh4/r2d.c
-index 7eecd79fcc1..e6cc156c238 100644
---- a/hw/sh4/r2d.c
-+++ b/hw/sh4/r2d.c
-@@ -43,6 +43,7 @@
- #include "hw/loader.h"
- #include "hw/usb.h"
- #include "hw/block/flash.h"
+diff --git a/hw/xtensa/bootparam.h b/hw/xtensa/bootparam.h
+index f57ff850bcb..4418c78d5bb 100644
+--- a/hw/xtensa/bootparam.h
++++ b/hw/xtensa/bootparam.h
+@@ -2,6 +2,7 @@
+ #define HW_XTENSA_BOOTPARAM_H
+ 
+ #include "exec/cpu-common.h"
 +#include "exec/tswap.h"
  
- #define FLASH_BASE 0x00000000
- #define FLASH_SIZE (16 * MiB)
+ #define BP_TAG_COMMAND_LINE     0x1001  /* command line (0-terminated string)*/
+ #define BP_TAG_INITRD           0x1002  /* ramdisk addr and size (bp_meminfo) */
+diff --git a/hw/xtensa/xtfpga.c b/hw/xtensa/xtfpga.c
+index 398e6256e1d..2e264c61988 100644
+--- a/hw/xtensa/xtfpga.c
++++ b/hw/xtensa/xtfpga.c
+@@ -35,6 +35,7 @@
+ #include "hw/qdev-properties.h"
+ #include "elf.h"
+ #include "exec/memory.h"
++#include "exec/tswap.h"
+ #include "hw/char/serial-mm.h"
+ #include "net/net.h"
+ #include "hw/sysbus.h"
 -- 
 2.45.2
 
