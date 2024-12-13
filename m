@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DF999F01D7
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Dec 2024 02:16:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 43BF29F01D1
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Dec 2024 02:16:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tLuG0-0005bN-KF; Thu, 12 Dec 2024 20:14:16 -0500
+	id 1tLuG3-0005lW-Qn; Thu, 12 Dec 2024 20:14:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tLuFy-0005bD-MC
- for qemu-devel@nongnu.org; Thu, 12 Dec 2024 20:14:14 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tLuG0-0005bL-2X
+ for qemu-devel@nongnu.org; Thu, 12 Dec 2024 20:14:16 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tLuFx-0000ax-8l
- for qemu-devel@nongnu.org; Thu, 12 Dec 2024 20:14:14 -0500
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tLuFy-0000bG-Kr
+ for qemu-devel@nongnu.org; Thu, 12 Dec 2024 20:14:15 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1734052452;
+ s=mimecast20190719; t=1734052453;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=m002wEHjt34wmmf8tuiB51lCnoVpWPUUxPt3b8N6FbE=;
- b=dTkfjBvIeXbEWDKYDF0n05VrRk2+tLzZC4zNfmmjjBgyy1h2k9AJ0xDmiUYrYcWpRzSlev
- CKNdCkOeMptp5wYN+y4T+HC3s0G2R8SqImf52mEa19nbcQsJSoYvxFuf4TZE1bMil0MjpB
- M7LHjQXFEFIvlOKEo5GgqXLMZYvOolo=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ bh=Wx9G0AY9Fsp3e2AflA94nNknerQd2UMco4NcmkG6NBo=;
+ b=YZq+Dmx5Ie9fx/UOJ9ArWuCAoQHyC7vWfVFXw0Cs421xchBc3leW7b0krpQyd/pQudlrP0
+ PsQdH8099y6RD1wejbXYyuInyqdfNCYZUGFyocNkD50B4i4u99GSpKk1GccPUqKz/jJNAh
+ NYyO98gZeW9a7pzDgXNcNHpXjjBH4y0=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-614-k3iOu0f4OgCYZAsiHK-FBQ-1; Thu,
- 12 Dec 2024 20:14:08 -0500
-X-MC-Unique: k3iOu0f4OgCYZAsiHK-FBQ-1
-X-Mimecast-MFC-AGG-ID: k3iOu0f4OgCYZAsiHK-FBQ
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-195-cPdM_cdwNwy-IJqWGBMOCA-1; Thu,
+ 12 Dec 2024 20:14:09 -0500
+X-MC-Unique: cPdM_cdwNwy-IJqWGBMOCA-1
+X-Mimecast-MFC-AGG-ID: cPdM_cdwNwy-IJqWGBMOCA
 Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 12B9019560B8; Fri, 13 Dec 2024 01:14:07 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id CA0511955F40; Fri, 13 Dec 2024 01:14:08 +0000 (UTC)
 Received: from jsnow-thinkpadp16vgen1.westford.csb (unknown [10.22.88.22])
  by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id D3C131956086; Fri, 13 Dec 2024 01:14:02 +0000 (UTC)
+ id 54C4A1956086; Fri, 13 Dec 2024 01:14:07 +0000 (UTC)
 From: John Snow <jsnow@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Michael Roth <michael.roth@amd.com>, Markus Armbruster <armbru@redhat.com>,
@@ -50,15 +50,15 @@ Cc: Michael Roth <michael.roth@amd.com>, Markus Armbruster <armbru@redhat.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Victor Toso de Carvalho <victortoso@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>, John Snow <jsnow@redhat.com>
-Subject: [RFC PATCH v2 12/35] docs/qapi-domain: add :since: directive option
-Date: Thu, 12 Dec 2024 20:12:41 -0500
-Message-ID: <20241213011307.2942030-13-jsnow@redhat.com>
+Subject: [RFC PATCH v2 13/35] docs/qapi-domain: add "Arguments:" field lists
+Date: Thu, 12 Dec 2024 20:12:42 -0500
+Message-ID: <20241213011307.2942030-14-jsnow@redhat.com>
 In-Reply-To: <20241213011307.2942030-1-jsnow@redhat.com>
 References: <20241213011307.2942030-1-jsnow@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=jsnow@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=jsnow@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -25
 X-Spam_score: -2.6
@@ -83,77 +83,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add a little special markup for registering "Since:" information. Adding
-it as an option instead of generic content lets us hoist the information
-into the Signature bar, optionally put it in the index, etc.
+This adds special rendering for Sphinx's typed field lists.
+
+This patch does not add any QAPI-aware markup, rendering, or
+cross-referencing for the type names, yet. That feature requires a
+subclass to TypedField which will happen in its own commit quite a bit
+later in this series; after all the basic fields and objects have been
+established first.
+
+The syntax for this field is:
+
+:arg type name: description
+   description cont'd
+
+You can omit the type or the description, but you cannot omit the name
+-- if you do so, it degenerates into a "normal field list" entry, and
+probably isn't what you want.
 
 Signed-off-by: John Snow <jsnow@redhat.com>
 ---
- docs/sphinx/qapi-domain.py | 29 +++++++++++++++++++++++++++--
- 1 file changed, 27 insertions(+), 2 deletions(-)
+ docs/sphinx/qapi-domain.py | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
 diff --git a/docs/sphinx/qapi-domain.py b/docs/sphinx/qapi-domain.py
-index dd4e218a1a0..f525579661b 100644
+index f525579661b..15a615d8adb 100644
 --- a/docs/sphinx/qapi-domain.py
 +++ b/docs/sphinx/qapi-domain.py
-@@ -4,6 +4,7 @@
+@@ -34,6 +34,7 @@
+ from sphinx.locale import _, __
+ from sphinx.roles import XRefRole
+ from sphinx.util import logging
++from sphinx.util.docfields import TypedField
+ from sphinx.util.docutils import SphinxDirective
+ from sphinx.util.nodes import make_id, make_refnode
  
- from __future__ import annotations
+@@ -240,8 +241,18 @@ def _toc_entry_name(self, sig_node: desc_signature) -> str:
+ class QAPICommand(QAPIObject):
+     """Description of a QAPI Command."""
  
-+import re
- from typing import (
-     TYPE_CHECKING,
-     Any,
-@@ -83,6 +84,18 @@ def process_link(
-         return title, target
+-    # Nothing unique for now! Changed in later commits O:-)
+-    pass
++    doc_field_types = QAPIObject.doc_field_types.copy()
++    doc_field_types.extend(
++        [
++            # :arg TypeName ArgName: descr
++            TypedField(
++                "argument",
++                label=_("Arguments"),
++                names=("arg",),
++                can_collapse=False,
++            ),
++        ]
++    )
  
  
-+def since_validator(param: str) -> str:
-+    """
-+    Validate the `:since: X.Y` option field.
-+    """
-+    match = re.match(r"[0-9]+\.[0-9]+", param)
-+    if not match:
-+        raise ValueError(
-+            f":since: requires a version number in X.Y format; not {param!r}"
-+        )
-+    return param
-+
-+
- # Alias for the return of handle_signature(), which is used in several places.
- # (In the Python domain, this is Tuple[str, str] instead.)
- Signature = str
-@@ -103,6 +116,8 @@ class QAPIObject(ObjectDescription[Signature]):
-         {
-             # Borrowed from the Python domain:
-             "module": directives.unchanged,  # Override contextual module name
-+            # These are QAPI originals:
-+            "since": since_validator,
-         }
-     )
- 
-@@ -114,9 +129,19 @@ def get_signature_prefix(self, sig: str) -> List[nodes.Node]:
-             space_node(" "),
-         ]
- 
--    def get_signature_suffix(self, sig: str) -> list[nodes.Node]:
-+    def get_signature_suffix(self, sig: str) -> List[nodes.Node]:
-         """Returns a suffix to put after the object name in the signature."""
--        return []
-+        ret: List[nodes.Node] = []
-+
-+        if "since" in self.options:
-+            ret += [
-+                space_node(" "),
-+                addnodes.desc_sig_element(
-+                    "", f"(Since: {self.options['since']})"
-+                ),
-+            ]
-+
-+        return ret
- 
-     def handle_signature(self, sig: str, signode: desc_signature) -> Signature:
-         """
+ class QAPIModule(SphinxDirective):
 -- 
 2.47.0
 
