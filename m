@@ -2,24 +2,24 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 385CE9F11CB
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Dec 2024 17:08:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A61469F11CC
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Dec 2024 17:08:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tM8Bn-0001nU-Go; Fri, 13 Dec 2024 11:06:51 -0500
+	id 1tM8Bo-0001q9-FE; Fri, 13 Dec 2024 11:06:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <phil@philjordan.eu>)
- id 1tM8BV-0001hN-PU
+ id 1tM8BV-0001hL-N6
  for qemu-devel@nongnu.org; Fri, 13 Dec 2024 11:06:35 -0500
-Received: from mail-ej1-x62b.google.com ([2a00:1450:4864:20::62b])
+Received: from mail-ej1-x635.google.com ([2a00:1450:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <phil@philjordan.eu>)
- id 1tM8BS-0006f4-2E
- for qemu-devel@nongnu.org; Fri, 13 Dec 2024 11:06:33 -0500
-Received: by mail-ej1-x62b.google.com with SMTP id
- a640c23a62f3a-aa692211331so373676266b.1
+ id 1tM8BR-0006ey-Gq
+ for qemu-devel@nongnu.org; Fri, 13 Dec 2024 11:06:31 -0500
+Received: by mail-ej1-x635.google.com with SMTP id
+ a640c23a62f3a-aa66e4d1d5aso305031966b.2
  for <qemu-devel@nongnu.org>; Fri, 13 Dec 2024 08:06:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=philjordan-eu.20230601.gappssmtp.com; s=20230601; t=1734105987; x=1734710787;
@@ -27,58 +27,58 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=jRHJVPywLGuIe9/mffxsEcUXl8cWfA9NHuC9ZmkCOio=;
- b=rSEacpD31vbCPVqUR+7g/X4YWEeUb9yhR0dFMIscCvrnF0+T+o/aToqA4Uq3RJVHSp
- ugX4kMBqVyFrxYcwPZU2D4292msz7T1/RzDDtzm6YmZbV5j4d4Y7JnImu3dWF0Wos2kB
- YLn6lfZFa70hHst6cV24lvQ9K1RAVZljqltq+R4iH7ZZfkMJdRMifePndLR4Zr58zGuy
- gDKcJ6W+L4qO8U7uLjvKoOpsuQtkU3D+6hkg+7vafYpWrJefTkUXB3ig6T1fFgP6aF0S
- FLYBA3uCIszlkmDGPXYUY0MEW3bOWT00ys9E+yX4zttCFOSmu7x5Q3OwbLmJjeOftqA5
- aaYg==
+ bh=acRq5wtuEZY6qfWLgIt8kj488PEzJr2oq6KQkbWz1tc=;
+ b=Juo99WLdbB8NPlYsW98ipotd+LJLFeeEphSmCnUdikcz2DP8qBI2jBEQUClMT0510M
+ kPvPpZiKjz+g1eegTcymCjfy/hA5p2IoWErd3QYo1kR9jnOlQopUlzWCQYtOOFwtCNrN
+ ky7A11Sv8q108zRQtBfFFlu9o5F7hRMboYltOwat3+fqJ4UTFmdaaAxoLnF3buLm4bzk
+ 1hJMAldgVTBLOLDsoNNWIiPFBT7YaSe5ZhV+z83rBLKhcKIX/PbQph6ow3LvC9jeSYr8
+ 9UabU7IHr57k2ETWvR9oXTdU9SmMF2PmpKJZslsAeyRwUs7BecAC+yzTiX0UF735gMu7
+ LbAA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1734105987; x=1734710787;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=jRHJVPywLGuIe9/mffxsEcUXl8cWfA9NHuC9ZmkCOio=;
- b=EOvYYOne5jmzd1QCBTlakkxw6awzNh/uzxfJoaCDQLrtRlZBDBQXkZshFIT79x/XQ0
- 06XO6+V9/MpEopeYCKJgeF2JdxKHMNz4bUc5Ye5HqG3lEFG9a9YYA/qZk00hC5N8731m
- K0dhsyQ30ptrNvS0WHjvpyc8o+XM1cfFK2biGzd/7ym/LEYkTnbSsYWUWDHJESR67Qiw
- w37K+opxwFHY+mtQsFU+LKnNgZnUDo0dYmOyoBhVaQCwcX5zPTR7770VM5+7DZUnZZXZ
- f47+ea7bEfk8K9nrrsGlD5CjO9LlQLnAb+pskE5h6R4DComZmKx+OD1yG/dj2Un191L6
- I+Dw==
-X-Gm-Message-State: AOJu0YywESfc3F+Ln/LsaCaOOrL/IfGcUpXPxf9FuI1pjcjHQ6cPosKf
- 8rbnwNKDqYphofQePYyjFO85XFvgG3MvxXQnrE32EcEV7Z9zZnqaDcnVGwWZVltmxi/dDyiGdcr
- 15Q==
-X-Gm-Gg: ASbGncsQ+tBiaqSYt66rhYwjKnWvx/7ULBPy9f7cTaDp1X/oAHyYNCmrPxDFeqljTal
- 7qcMNVJl6HlBw22YWhgSI1eazBKVKVxsp9t80IlqVruWYYR8Z03sTLBQddnh1BsKp2SxRXtack6
- PS6X/2kYYMIHnRZ6MShnvnmZbgJBNbVgcPzcVruPYe45vBdEnHXssABxbqShyIY6gqqXm14tGPK
- 4k8AAz3rxqTZ1gU6pR/4TMYlZ0Ep0fonOP27gZHZlOHichjwxoZPcnRyD06nvEkpAMmYttNwB4o
- oFw7q4Ft7/7TZV3ZzApwHH+NOd+9cyQE
-X-Google-Smtp-Source: AGHT+IGYTDh2abbXkhDKixrPRTb0iMB6Hr2e1jrwj4SdyViS695Qp5O496VJwB7HuqNIWNbOF3A4Dg==
-X-Received: by 2002:a17:907:1c9e:b0:aa6:489e:5848 with SMTP id
- a640c23a62f3a-aab7b8485admr241965266b.25.1734105985939; 
- Fri, 13 Dec 2024 08:06:25 -0800 (PST)
+ bh=acRq5wtuEZY6qfWLgIt8kj488PEzJr2oq6KQkbWz1tc=;
+ b=dh73de4NDKLh/jd0rpbXtRSXR1IEeLNeXVB3jEZFRj0ZqfHwmz5uOvyYcJOI9sRDo9
+ aHLwtQYgApCMaHcHy5eBmrxEwx62gGNK5UP0nHzIWWGkWyqoivvh7+POwbeN++FHZlo/
+ iLnHVnERlOCi5CUBrkc5LqnYyY8rXuahZ0eEHAnpP/mpCpCTmVAVIk8tNsWOsIV7bjDt
+ pjzf1uOFLukrcZSpMeUBhXDq4OHBrlkwxwz/x9juElPJG8gMCpSIoVzx14o1k1T2AlIl
+ CRtSf0rQxq/ni2qkzABo7YPedR365uDJ0h/Kt/Zdp+VBR+kgWWA1lf+qmU7+TPe+Gieg
+ LMIw==
+X-Gm-Message-State: AOJu0Ywg+9vAMFUGe4asq/aYm0p1n6fqBwF0Riq9/Ejn+HLqkC3jHajm
+ u/LD1MWTO4JHJBqsDsZ2e0MVQGj/1SNx+tAA6EL0G2TfnK+0MQdn0Ejt2J1TwG/g0Sk6pf8vXVB
+ /zg==
+X-Gm-Gg: ASbGnctCd3Bj1ePgEfLNQyXePs+zlzd997qwBH+aAAC4OR6IVJKfCOHTmoyx/ROPI3H
+ qY9wZRY7XeKQX2gOz+eFT51qszyDmoXLxHsHR85W4w9E7cQ5WrB743yi8U3HH62xgRbP4Mfj1cP
+ D+0JhBYb1KuPAb2R93ttpIrOYR5L6n7gP3i1GXZUq1W8NUkdijsQcQMaCxzeX5prMdC38W4I+Rm
+ qcoB2rVbAwYMQ/W4GCoGHn8KUMvuDwR8OQRqdBfBHmNyFpa5vLbUmlajqqRs7JHO+FmIeSIGRRD
+ jHlkIfwfA1BA/LJIuvTAgHI5QX7CYP5o
+X-Google-Smtp-Source: AGHT+IFISrcJgZSd7pbDNX+2Mk3hdeXSTSjPHDrcG41VfJMZ3t6J5GTJ5qNn7x2NoGV4TUZER6HYIg==
+X-Received: by 2002:a17:906:7314:b0:aa6:74a9:ce6e with SMTP id
+ a640c23a62f3a-aab77909d56mr332290666b.16.1734105986885; 
+ Fri, 13 Dec 2024 08:06:26 -0800 (PST)
 Received: from localhost.localdomain (h082218084190.host.wavenet.at.
  [82.218.84.190]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-aa667843413sm916683166b.24.2024.12.13.08.06.25
+ a640c23a62f3a-aa667843413sm916683166b.24.2024.12.13.08.06.26
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 13 Dec 2024 08:06:25 -0800 (PST)
+ Fri, 13 Dec 2024 08:06:26 -0800 (PST)
 From: Phil Dennis-Jordan <phil@philjordan.eu>
 To: qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org, philmd@linaro.org, thuth@redhat.com,
  zhao1.liu@intel.com, imammedo@redhat.com, akihiko.odaki@daynix.com,
  Phil Dennis-Jordan <phil@philjordan.eu>
-Subject: [PATCH v2 2/6] hw/usb/hcd-xhci-pci: Move msi/msix properties from NEC
- to superclass
-Date: Fri, 13 Dec 2024 17:06:15 +0100
-Message-Id: <20241213160619.66509-3-phil@philjordan.eu>
+Subject: [PATCH v2 3/6] hw/usb/hcd-xhci-pci: Use event ring 0 if mapping
+ unsupported
+Date: Fri, 13 Dec 2024 17:06:16 +0100
+Message-Id: <20241213160619.66509-4-phil@philjordan.eu>
 X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 In-Reply-To: <20241213160619.66509-1-phil@philjordan.eu>
 References: <20241213160619.66509-1-phil@philjordan.eu>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: neutral client-ip=2a00:1450:4864:20::62b;
- envelope-from=phil@philjordan.eu; helo=mail-ej1-x62b.google.com
+Received-SPF: neutral client-ip=2a00:1450:4864:20::635;
+ envelope-from=phil@philjordan.eu; helo=mail-ej1-x635.google.com
 X-Spam_score_int: -10
 X-Spam_score: -1.1
 X-Spam_bar: -
@@ -100,56 +100,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The NEC XHCI controller exposes the underlying PCI device's msi and
-msix properties, but the superclass and thus the qemu-xhci device do
-not. There does not seem to be any obvious reason for this limitation.
-This change moves these properties to the superclass so they are
-exposed by both PCI XHCI device variants.
+The XHCI specification, section 4.17.1 specifies that "If Interrupter
+Mapping is not supported, the Interrupter Target field shall be
+ignored by the xHC and all Events targeted at Interrupter 0."
+
+QEMU's XHCI device has so far not specially addressed this case,
+so we add a check to xhci_event() to redirect to event ring and
+interrupt 0 if mapping is disabled.
 
 Signed-off-by: Phil Dennis-Jordan <phil@philjordan.eu>
 ---
- hw/usb/hcd-xhci-nec.c | 2 --
- hw/usb/hcd-xhci-pci.c | 7 +++++++
- 2 files changed, 7 insertions(+), 2 deletions(-)
+ hw/usb/hcd-xhci.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/hw/usb/hcd-xhci-nec.c b/hw/usb/hcd-xhci-nec.c
-index 0c063b3697d..408bf065e5a 100644
---- a/hw/usb/hcd-xhci-nec.c
-+++ b/hw/usb/hcd-xhci-nec.c
-@@ -39,8 +39,6 @@ struct XHCINecState {
- };
+diff --git a/hw/usb/hcd-xhci.c b/hw/usb/hcd-xhci.c
+index d85adaca0dc..5fb140c2382 100644
+--- a/hw/usb/hcd-xhci.c
++++ b/hw/usb/hcd-xhci.c
+@@ -644,6 +644,10 @@ static void xhci_event(XHCIState *xhci, XHCIEvent *event, int v)
+     dma_addr_t erdp;
+     unsigned int dp_idx;
  
- static Property nec_xhci_properties[] = {
--    DEFINE_PROP_ON_OFF_AUTO("msi", XHCIPciState, msi, ON_OFF_AUTO_AUTO),
--    DEFINE_PROP_ON_OFF_AUTO("msix", XHCIPciState, msix, ON_OFF_AUTO_AUTO),
-     DEFINE_PROP_UINT32("intrs", XHCINecState, intrs, XHCI_MAXINTRS),
-     DEFINE_PROP_UINT32("slots", XHCINecState, slots, XHCI_MAXSLOTS),
-     DEFINE_PROP_END_OF_LIST(),
-diff --git a/hw/usb/hcd-xhci-pci.c b/hw/usb/hcd-xhci-pci.c
-index 516e6909d20..35f02132bb4 100644
---- a/hw/usb/hcd-xhci-pci.c
-+++ b/hw/usb/hcd-xhci-pci.c
-@@ -198,6 +198,12 @@ static void xhci_instance_init(Object *obj)
-     qdev_alias_all_properties(DEVICE(&s->xhci), obj);
- }
- 
-+static Property xhci_pci_properties[] = {
-+    DEFINE_PROP_ON_OFF_AUTO("msi", XHCIPciState, msi, ON_OFF_AUTO_AUTO),
-+    DEFINE_PROP_ON_OFF_AUTO("msix", XHCIPciState, msix, ON_OFF_AUTO_AUTO),
-+    DEFINE_PROP_END_OF_LIST(),
-+};
++    if (xhci->numintrs == 1) {
++        v = 0;
++    }
 +
- static void xhci_class_init(ObjectClass *klass, void *data)
- {
-     PCIDeviceClass *k = PCI_DEVICE_CLASS(klass);
-@@ -209,6 +215,7 @@ static void xhci_class_init(ObjectClass *klass, void *data)
-     k->realize      = usb_xhci_pci_realize;
-     k->exit         = usb_xhci_pci_exit;
-     k->class_id     = PCI_CLASS_SERIAL_USB;
-+    device_class_set_props(dc, xhci_pci_properties);
- }
- 
- static const TypeInfo xhci_pci_info = {
+     if (v >= xhci->numintrs) {
+         DPRINTF("intr nr out of range (%d >= %d)\n", v, xhci->numintrs);
+         return;
 -- 
 2.39.5 (Apple Git-154)
 
