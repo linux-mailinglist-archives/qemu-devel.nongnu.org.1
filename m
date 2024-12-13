@@ -2,79 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA54F9F0276
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Dec 2024 02:58:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EEADB9F029E
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Dec 2024 03:23:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tLuv0-0008BO-UV; Thu, 12 Dec 2024 20:56:40 -0500
+	id 1tLvGn-0006SN-DX; Thu, 12 Dec 2024 21:19:09 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <binbin.wu@linux.intel.com>)
- id 1tLuul-0008BD-FW
- for qemu-devel@nongnu.org; Thu, 12 Dec 2024 20:56:23 -0500
-Received: from mgamail.intel.com ([192.198.163.8])
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tLvGk-0006Qx-Cm
+ for qemu-devel@nongnu.org; Thu, 12 Dec 2024 21:19:06 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <binbin.wu@linux.intel.com>)
- id 1tLuui-0002dV-B2
- for qemu-devel@nongnu.org; Thu, 12 Dec 2024 20:56:23 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1734054980; x=1765590980;
- h=message-id:date:mime-version:subject:from:to:cc:
- references:in-reply-to:content-transfer-encoding;
- bh=NyAt7fLg31sOOP5MsQWn9EgGROvizgBib4DX+ww1UBw=;
- b=Inq3dy7Srygo0+aoZK78Fjo5PyAuPYjuaVkLGHQZ8VPc9lpPdynWn9bD
- JqpRsUQuprwO3wp4OnpKEm+Efuv0id77/MatvXkkZvTLCGJOdeIFFepGC
- px7vUyscuvOV1ZbiUANwsKtqn8jnGejQzTbqadglgrvfQPpSsNs3r7wXz
- F/IG8vx8kugRwapw4l/2ryOtwXFVc4LFs6KM/Ypg9mmkqLc88dWfkSd/3
- lhdjNBMeoGW63Mwzzeon4DrrSZTyq1ZI+hNAInfUIthFloC0RJWR91xP0
- +U2qQz07anoBqU54wLoddJ+oLmuIpW09P7Hfe6+0FGLN4Dw5Qs6vz38Eo Q==;
-X-CSE-ConnectionGUID: h/tlaA0sR6KfNvn+NExVlA==
-X-CSE-MsgGUID: VB9PQVbJQGu8PDeNVtiIkA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11284"; a="52025354"
-X-IronPort-AV: E=Sophos;i="6.12,230,1728975600"; d="scan'208";a="52025354"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Dec 2024 17:56:14 -0800
-X-CSE-ConnectionGUID: D8jsdFF4RlyGSwH5qcdBcA==
-X-CSE-MsgGUID: YzFOYt+DRReDruSUNIs15g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="96844586"
-Received: from unknown (HELO [10.238.9.154]) ([10.238.9.154])
- by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Dec 2024 17:56:11 -0800
-Message-ID: <4462ce8a-70dc-4f13-a1e4-2f75b38d5e25@linux.intel.com>
-Date: Fri, 13 Dec 2024 09:56:09 +0800
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tLvGd-0007sS-JI
+ for qemu-devel@nongnu.org; Thu, 12 Dec 2024 21:19:06 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1734056337;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=usIhsdTlnYV78OFK2JxoJV0XhuDWm4nGuA4M+ywKzec=;
+ b=TnfCf9QYwJu3CHeAR1T1YjGzAvac52vs9FOMJUqGNxWBogbri5fkoexc319A+VoSLdZjJL
+ wQcM5O+pNFVCVjCi9LHaAzKxb+QyrIbi7h3hkohJF6T7/zDCGm+WPCXmyvgjL6GpXZnWTR
+ 8Ai3jUiuzTvG4QYfUmLg9EpXDW74lto=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-177-VRbnmKdwOvCssuXgduLZrA-1; Thu,
+ 12 Dec 2024 21:18:51 -0500
+X-MC-Unique: VRbnmKdwOvCssuXgduLZrA-1
+X-Mimecast-MFC-AGG-ID: VRbnmKdwOvCssuXgduLZrA
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 67CCA19560A3; Fri, 13 Dec 2024 02:18:50 +0000 (UTC)
+Received: from jsnow-thinkpadp16vgen1.westford.csb (unknown [10.22.88.22])
+ by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id DD8AC195605A; Fri, 13 Dec 2024 02:18:45 +0000 (UTC)
+From: John Snow <jsnow@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ Michael Roth <michael.roth@amd.com>, Markus Armbruster <armbru@redhat.com>,
+ John Snow <jsnow@redhat.com>
+Subject: [PATCH 00/23] docs: add basic sphinx-domain rST generator to qapidoc
+Date: Thu, 12 Dec 2024 21:18:03 -0500
+Message-ID: <20241213021827.2956769-1-jsnow@redhat.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] i386/kvm: Set return value after handling
- KVM_EXIT_HYPERCALL
-From: Binbin Wu <binbin.wu@linux.intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>,
- Sean Christopherson <seanjc@google.com>
-Cc: Zhao Liu <zhao1.liu@intel.com>, xiaoyao.li@intel.com,
- qemu-devel@nongnu.org, michael.roth@amd.com, rick.p.edgecombe@intel.com,
- isaku.yamahata@intel.com, farrah.chen@intel.com, kvm@vger.kernel.org
-References: <20241212032628.475976-1-binbin.wu@linux.intel.com>
- <Z1qZygKqvjIfpOXD@intel.com>
- <1a5e2988-9a7d-4415-86ad-8a7a98dbc5eb@redhat.com>
- <Z1s1yeWKnvmh718N@google.com>
- <5b8f7d63-ef0a-487f-bf9d-44421691fa85@redhat.com>
- <745b2b6e-7dd0-4437-bbbf-673ddc0df014@linux.intel.com>
-Content-Language: en-US
-In-Reply-To: <745b2b6e-7dd0-4437-bbbf-673ddc0df014@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=192.198.163.8;
- envelope-from=binbin.wu@linux.intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -47
-X-Spam_score: -4.8
-X-Spam_bar: ----
-X-Spam_report: (-4.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.496,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=jsnow@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -25
+X-Spam_score: -2.6
+X-Spam_bar: --
+X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.496,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,155 +79,92 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-
-
-On 12/13/2024 9:46 AM, Binbin Wu wrote:
->
->
->
-> On 12/13/2024 5:28 AM, Paolo Bonzini wrote:
->> On 12/12/24 20:13, Sean Christopherson wrote:
->>> On Thu, Dec 12, 2024, Paolo Bonzini wrote:
->>>> On 12/12/24 09:07, Zhao Liu wrote:
->>>>> On Thu, Dec 12, 2024 at 11:26:28AM +0800, Binbin Wu wrote:
->>>>>> Date: Thu, 12 Dec 2024 11:26:28 +0800
->>>>>> From: Binbin Wu <binbin.wu@linux.intel.com>
->>>>>> Subject: [PATCH] i386/kvm: Set return value after handling
->>>>>>    KVM_EXIT_HYPERCALL
->>>>>> X-Mailer: git-send-email 2.46.0
->>>>>>
->>>>>> Userspace should set the ret field of hypercall after handling
->>>>>> KVM_EXIT_HYPERCALL.  Otherwise, a stale value could be returned to KVM.
->>>>>>
->>>>>> Fixes: 47e76d03b15 ("i386/kvm: Add KVM_EXIT_HYPERCALL handling for KVM_HC_MAP_GPA_RANGE")
->>>>>> Reported-by: Farrah Chen <farrah.chen@intel.com>
->>>>>> Signed-off-by: Binbin Wu <binbin.wu@linux.intel.com>
->>>>>> Tested-by: Farrah Chen <farrah.chen@intel.com>
->>>>>> ---
->>>>>> To test the TDX code in kvm-coco-queue, please apply the patch to the QEMU,
->>>>>> otherwise, TDX guest boot could fail.
->>>>>> A matching QEMU tree including this patch is here:
->>>>>> https://github.com/intel-staging/qemu-tdx/releases/tag/tdx-qemu-upstream-v6.1-fix_kvm_hypercall_return_value
->>>>>>
->>>>>> Previously, the issue was not triggered because no one would modify the ret
->>>>>> value. But with the refactor patch for __kvm_emulate_hypercall() in KVM,
->>>>>> https://lore.kernel.org/kvm/20241128004344.4072099-7-seanjc@google.com/, the
->>>>>> value could be modified.
->>>>>
->>>>> Could you explain the specific reasons here in detail? It would be
->>>>> helpful with debugging or reproducing the issue.
->>>>>
->>>>>> ---
->>>>>>    target/i386/kvm/kvm.c | 8 ++++++--
->>>>>>    1 file changed, 6 insertions(+), 2 deletions(-)
->>>>>>
->>>>>> diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
->>>>>> index 8e17942c3b..4bcccb48d1 100644
->>>>>> --- a/target/i386/kvm/kvm.c
->>>>>> +++ b/target/i386/kvm/kvm.c
->>>>>> @@ -6005,10 +6005,14 @@ static int kvm_handle_hc_map_gpa_range(struct kvm_run *run)
->>>>>>    static int kvm_handle_hypercall(struct kvm_run *run)
->>>>>>    {
->>>>>> +    int ret = -EINVAL;
->>>>>> +
->>>>>>        if (run->hypercall.nr == KVM_HC_MAP_GPA_RANGE)
->>>>>> -        return kvm_handle_hc_map_gpa_range(run);
->>>>>> +        ret = kvm_handle_hc_map_gpa_range(run);
->>>>>> +
->>>>>> +    run->hypercall.ret = ret;
->>>>>
->>>>> ret may be negative but hypercall.ret is u64. Do we need to set it to
->>>>> -ret?
->>>>
->>>> If ret is less than zero, will stop the VM anyway as
->>>> RUN_STATE_INTERNAL_ERROR.
->>>>
->>>> If this has to be fixed in QEMU, I think there's no need to set anything
->>>> if ret != 0; also because kvm_convert_memory() returns -1 on error and
->>>> that's not how the error would be passed to the guest.
->>>>
->>>> However, I think the right fix should simply be this in KVM:
->>>>
->>>> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
->>>> index 83fe0a78146f..e2118ba93ef6 100644
->>>> --- a/arch/x86/kvm/x86.c
->>>> +++ b/arch/x86/kvm/x86.c
->>>> @@ -10066,6 +10066,7 @@ unsigned long __kvm_emulate_hypercall(struct kvm_vcpu *vcpu, unsigned long nr,
->>>>           }
->>>>           vcpu->run->exit_reason        = KVM_EXIT_HYPERCALL;
->>>> +        vcpu->run->ret                = 0;
->>>
->>>         vcpu->run->hypercall.ret
->>>
->>>> vcpu->run->hypercall.nr       = KVM_HC_MAP_GPA_RANGE;
->>>>           vcpu->run->hypercall.args[0]  = gpa;
->>>>           vcpu->run->hypercall.args[1]  = npages;
->>>>
->>>> While there is arguably a change in behavior of the kernel both with
->>>> the patches in kvm-coco-queue and with the above one, _in practice_
->>>> the above change is one that userspace will not notice.
->>>
->>> I agree that KVM should initialize "ret", but I don't think '0' is the right
->>> value.  KVM shouldn't assume userspace will successfully handle the hypercall.
->>> What happens if KVM sets vcpu->run->hypercall.ret to a non-zero value, e.g. -KVM_ENOSYS?
->>
->> Unfortunately QEMU is never writing vcpu->run->hypercall.ret, so the guest sees -KVM_ENOSYS; this is basically the same bug that Binbin is fixing, just with a different value passed to the guest.
->>
->> In other words, the above one-liner is pulling the "don't break userspace" card.
->>
->> Paolo
->>
->>
-> If the change need to be done in KVM, there are other 3 functions that use
-> KVM_EXIT_HYPERCALL based on the code in kvm-coco-queue.
->
-> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-> index 40fe7258843e..a624f7289282 100644
-> --- a/arch/x86/kvm/svm/sev.c
-> +++ b/arch/x86/kvm/svm/sev.c
-> @@ -3633,6 +3633,7 @@ static int snp_begin_psc_msr(struct vcpu_svm *svm, u64 ghcb_msr)
->         }
->
->         vcpu->run->exit_reason = KVM_EXIT_HYPERCALL;
-> +       vcpu->run->ret         = 0;
->         vcpu->run->hypercall.nr = KVM_HC_MAP_GPA_RANGE;
->         vcpu->run->hypercall.args[0] = gpa;
->         vcpu->run->hypercall.args[1] = 1;
-> @@ -3796,6 +3797,7 @@ static int snp_begin_psc(struct vcpu_svm *svm, struct psc_buffer *psc)
->         case VMGEXIT_PSC_OP_PRIVATE:
->         case VMGEXIT_PSC_OP_SHARED:
->                 vcpu->run->exit_reason = KVM_EXIT_HYPERCALL;
-> +               vcpu->run->ret         = 0;
->                 vcpu->run->hypercall.nr = KVM_HC_MAP_GPA_RANGE;
->                 vcpu->run->hypercall.args[0] = gfn_to_gpa(gfn);
->                 vcpu->run->hypercall.args[1] = npages;
-> diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-> index 85c8aee263c1..c50c2edc8c56 100644
-> --- a/arch/x86/kvm/vmx/tdx.c
-> +++ b/arch/x86/kvm/vmx/tdx.c
-> @@ -1161,6 +1161,7 @@ static void __tdx_map_gpa(struct vcpu_tdx * tdx)
->         pr_err("%s: gpa = 0x%llx, size = 0x%llx", __func__, gpa, size);
->
->         tdx->vcpu.run->exit_reason       = KVM_EXIT_HYPERCALL;
-> +       tdx->vcpu->run->ret              = 0;
-Sorry, this should be  " tdx->vcpu.run->ret              = 0;"
-
-> tdx->vcpu.run->hypercall.nr      = KVM_HC_MAP_GPA_RANGE;
->         tdx->vcpu.run->hypercall.args[0] = gpa & ~gfn_to_gpa(kvm_gfn_direct_bits(tdx->vcpu.kvm));
->         tdx->vcpu.run->hypercall.args[1] = size / PAGE_SIZE;
-> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-> index 4f94b1e24eae..3f82bb2357e3 100644
-> --- a/arch/x86/kvm/x86.c
-> +++ b/arch/x86/kvm/x86.c
-> @@ -10070,6 +10070,7 @@ int ____kvm_emulate_hypercall(struct kvm_vcpu *vcpu, unsigned long nr,
->                 }
->
->                 vcpu->run->exit_reason        = KVM_EXIT_HYPERCALL;
-> +               vcpu->run->ret                = 0;
->                 vcpu->run->hypercall.nr       = KVM_HC_MAP_GPA_RANGE;
->                 vcpu->run->hypercall.args[0]  = gpa;
->                 vcpu->run->hypercall.args[1]  = npages;
->
+based-on: https://patchew.org/QEMU/20241213011307.2942030-1-jsnow@redhat.co=
+m/=0D
+=0D
+Hi!=0D
+=0D
+This series is a very, very barebones implementation for the new QAPI=0D
+doc generator. It does not have many features that I presented on at KVM=0D
+Forum; the point of this patch set is instead to present a stripped down=0D
+basis for ongoing work so we can discuss on-list with full context of=0D
+the code available to do so.=0D
+=0D
+The documentation this series generates is *not suitable* for replacing=0D
+the current document generator, it has a few glaring omissions - on=0D
+purpose - those features have been factored out intentionally so they=0D
+can be reviewed with fuller context and more careful review.=0D
+=0D
+What this series does:=0D
+=0D
+- Adds the new "Transmogrifier" rST generator to qapidoc.py, which=0D
+  generates an in-memory rST document using qapi-domain directives.=0D
+- Adds a test document that showcases this new transmogrifier.=0D
+=0D
+What this series very notably does not do (yet):=0D
+=0D
+- "ifcond" data for anything other than top-level entities is not=0D
+  considered or rendered. This means "if" statements for features and=0D
+  members are entirely absent.=0D
+=0D
+- The inliner is not present at all. This series renders only=0D
+  documentation exactly as it is exists in the source files.=0D
+=0D
+- *branches* are themselves not considered at all; they're skipped=0D
+   entirely for now. They will be included alongside the inliner in=0D
+   either a subsequent series or a followup to this series.=0D
+=0D
+- Undocumented members and return statements are not autogenerated.=0D
+=0D
+- Pseudofeatures (Things like allow-oob) are not generated as documented=0D
+  features.=0D
+=0D
+- Documentation culling: all entities are documented whether or not=0D
+  they're relevant to the wire format.=0D
+=0D
+My goal in doing it this way is to save the "fancy" features for later=0D
+so we can focus on reviewing and tightening up the core functionality of=0D
+the transmogrifier. Once we're on steadier ground, I will re-add the=0D
+fanciful features while adjusting the qapi-domain mechanisms. Once=0D
+everything looks "roughly right, give or take some minor nits", I will=0D
+switch back to the qapi-domain series itself for review before we merge=0D
+everything together.=0D
+=0D
+John Snow (23):=0D
+  docs/qapidoc: support header-less freeform sections=0D
+  qapi/parser: adjust info location for doc body section=0D
+  docs/qapidoc: remove example section support=0D
+  qapi: expand tags to all doc sections=0D
+  qapi/schema: add __repr__ to QAPIDoc.Section=0D
+  docs/qapidoc: add transmogrifier stub=0D
+  docs/qapidoc: add transmogrifier class stub=0D
+  docs/qapidoc: add visit_module() method=0D
+  qapi/source: allow multi-line QAPISourceInfo advancing=0D
+  docs/qapidoc: add visit_freeform() method=0D
+  docs/qapidoc: add preamble() method=0D
+  docs/qapidoc: add visit_paragraph() method=0D
+  docs/qapidoc: add visit_errors() method=0D
+  docs/qapidoc: add format_type() method=0D
+  docs/qapidoc: add add_field() and generate_field() helper methods=0D
+  docs/qapidoc: add visit_feature() method=0D
+  docs/qapidoc: record current documented entity in transmogrifier=0D
+  docs/qapidoc: add visit_returns() method=0D
+  docs/qapidoc: add visit_member() method=0D
+  docs/qapidoc: add visit_sections() method=0D
+  docs/qapidoc: add visit_entity()=0D
+  docs/qapidoc: implement transmogrify() method=0D
+  docs/qapidoc: add transmogrifier test document=0D
+=0D
+ docs/index.rst         |   1 +=0D
+ docs/qapi/index.rst    |  53 ++++++=0D
+ docs/sphinx/qapidoc.py | 419 ++++++++++++++++++++++++++++++++++++++---=0D
+ scripts/qapi/parser.py |  97 +++++++---=0D
+ scripts/qapi/source.py |   4 +-=0D
+ 5 files changed, 524 insertions(+), 50 deletions(-)=0D
+ create mode 100644 docs/qapi/index.rst=0D
+=0D
+-- =0D
+2.47.0=0D
+=0D
 
 
