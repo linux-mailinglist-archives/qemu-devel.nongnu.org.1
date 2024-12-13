@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73C1D9F19FA
-	for <lists+qemu-devel@lfdr.de>; Sat, 14 Dec 2024 00:32:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EF59F9F1A07
+	for <lists+qemu-devel@lfdr.de>; Sat, 14 Dec 2024 00:33:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tMF8O-00033f-HD; Fri, 13 Dec 2024 18:31:48 -0500
+	id 1tMF8f-000390-Je; Fri, 13 Dec 2024 18:32:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tMF8G-0002nt-TK
- for qemu-devel@nongnu.org; Fri, 13 Dec 2024 18:31:41 -0500
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tMF8M-00032M-OL
+ for qemu-devel@nongnu.org; Fri, 13 Dec 2024 18:31:47 -0500
+Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tMF8F-00031Z-7L
- for qemu-devel@nongnu.org; Fri, 13 Dec 2024 18:31:40 -0500
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-43624b2d453so27059335e9.2
- for <qemu-devel@nongnu.org>; Fri, 13 Dec 2024 15:31:38 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tMF8L-000321-4W
+ for qemu-devel@nongnu.org; Fri, 13 Dec 2024 18:31:46 -0500
+Received: by mail-wr1-x42a.google.com with SMTP id
+ ffacd0b85a97d-3862a921123so1697880f8f.3
+ for <qemu-devel@nongnu.org>; Fri, 13 Dec 2024 15:31:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734132697; x=1734737497; darn=nongnu.org;
+ d=linaro.org; s=google; t=1734132701; x=1734737501; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=WxphwPmo3ws4n0VvyoWJoeeSK4RqOZYnTK7zd+ejDWM=;
- b=uhYL9VZJamjij+QtEgJ9KFyjDGAWo1BbThNGLg+nOY8GybQsvS8N52MU9+g2WprDA2
- Dvf2wfw4yWLX7b4WMJfU2IlFllBilEmFUxHPg6BcYMjUcVXFR2T5kRnjuikw6n4sqI6y
- nGgpvqUuqwvLS/PmrWGLCrcAIFkDqfu+YomoYnIT14y4dXz+p3zSQkByLcL5gr+wP3od
- 5CgOEt9Yq8euNrKgmQtFG3R5ucHlifC3VC3hux9OwxlE3dROpAbYDfXW0Tcjj7jjnLAq
- 3mxlMhXm6JoSunc7cQLW3fOrjZ0207YkXwvmwxwMajO/SCrMFxAZmUVgaR3ZwP8N1L5v
- uS+w==
+ bh=bGLsAY1QOgkinuwwLWyIxYZvjMgpGCzP2nfQjOcTbV8=;
+ b=SbzNgFM8kikmxtsqU5OaAqSR7+CMVbqC9a2Txn4m258AL6bWpRhXMcGPCvGCN2Ojmg
+ XvS6IQGZhacRa6DcYLFVHvyprMUZsyN/e+8eKmcy+mlpEmxSmQmn2yjso1pAbXDZ8uW9
+ 3T3pxfHbFNt6xT8y9urAdrkzkgSeIs4efGb3g8Iq6QigEbqg9zM1R8oYy9TbcoO8hb2W
+ K3gH+B7FcOiL6m/pfuSehn8A25gDUrGsv94/Nskg+JSOttEA9rTz5X9oFy3Mj6jnH2X/
+ cwdbdYeTilDGzHWk6LaXZqZJyaXpdTEHunhdkxKlknDDuQ7Dd3HZ6UaI7CWb2dpoxPL0
+ zttQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734132697; x=1734737497;
+ d=1e100.net; s=20230601; t=1734132701; x=1734737501;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=WxphwPmo3ws4n0VvyoWJoeeSK4RqOZYnTK7zd+ejDWM=;
- b=u8hEnRmM2z1m+icY4ig7gFxQxTVjHjm2DjTRxhc0YX8XoS3Ye4Fp/1+lUMhT4b+Bxh
- hVb/GSpSFNqWWSJ2u8qEoMqmM+vI+8vt5LQGKGcmwwDS2SJ8Na7pzpSL3SFt/bBfXvEs
- arRpw5SiXEWxadM5c7Pb/vJZPe/Gp47ycbwK42fmyMwX+OUlaECjgNEm8JqHKL1pCMoV
- YhGz5U7XqT+xouEP3qsitXioIvCcPyC8QrIb+XNbwDQQmPA+plrEvHVUnMBj65c/Ptpf
- X85wjTuU9ZxUTmFc8iw7WYs4rn3x9V1ljShpSLsmu5iGErd8aXsQxYICFFqHT+EimSTf
- P/+w==
-X-Gm-Message-State: AOJu0Yxrj1f9neT1QXnLDDB4RrHxREHHP2nb63HZAjdcvEDkUv2e3y4Y
- ++smE6BoSwKsWztCoWYLHx7zuc9XM3VMmZBxachfsg8Z2x1aaITOKQVedV6HbIzVjCHtgPsaSkW
- go1s=
-X-Gm-Gg: ASbGnctsOYQi0WtMt0sniHlRzI2cSS8QH10JxpwII+MEhJxatdCu4E/UWq9D45ZfJQ2
- 7wo5WCkX5OgKrVvoCUzGGa23uXbwHDxw4/UqXtxSTwlFwjJyPzGnFhzogwmTYVkFtpWiqMvy14i
- JXwSd30XuUISqoyvXqENEpZEhoLM4wOSgTpY+4anLwQ0hc2YnA/J8+/m428KFVN4F5+3akrEaMO
- uAncpxQGLQwEF1QsYBgcdVAFQxQ4/mJ+5ru7k/AyBQ7n/0YebkNsqcvnUMf7yjYEWVBg8915fO8
- nxjuPg==
-X-Google-Smtp-Source: AGHT+IGKBZ6hFs3GXw17zJ/tbB9Ur/BQhVwWJwPC1SJrRLKyMHp5+X+2+pHY83b3KtYetVMvNxKtxw==
-X-Received: by 2002:a05:6000:18c6:b0:385:fe66:9f32 with SMTP id
- ffacd0b85a97d-3888e0bfcc4mr3511109f8f.52.1734132696932; 
- Fri, 13 Dec 2024 15:31:36 -0800 (PST)
+ bh=bGLsAY1QOgkinuwwLWyIxYZvjMgpGCzP2nfQjOcTbV8=;
+ b=OjKNa9pEMrc8L/rckpN33OFmoF808mqV1QGIIgy+CJiUbn5Vh12fofeKRaJUckMhet
+ 9VltBMgaBFdCjztAab5Bshl1PQLxx21eV39A9PApxyj/QaBk7C0AIW3KA2VwtR6HRc+j
+ xeiY/HzwbmX1PK1O371+804gxIv1eENtxxMNAcUpczx1M2iKVbkcN/wkf9wHCbscC8m1
+ xkKB3GrJJWg7GH4IHMJbwF27QnUmE6GycgOfS+Mw4YD7vpr+vh+K6Gd7AmhxXdDThoTb
+ 9mH5bd0GVT9GcG3NwL3K4WdTcdaDRPEKqr9RDQk5HmtL09Zi3/TbLjoYr48UA5bPOT4j
+ QLKQ==
+X-Gm-Message-State: AOJu0YxZuoLKfLJJ39P7T9lEITZtfw4VYBMszcF+Jf/p87VtINEYF5F6
+ LBBVSfb2hCq5TsooLnVHhH1YLqaqVLYEyOvFBXjMsxTDwRd2I3JqNv7PTsCCDsHjfLXSUr/F51Y
+ 6Pno=
+X-Gm-Gg: ASbGncv/ftPL8VmsslcEDZf4r294b8Xc5u4M9ShXuKwhZ4rglVd5c8tBwUQkT4aLMYB
+ unSoao7Uft7m1B3tdprobhmMFQWpEMVoXBo4SluRMLqC4yzUgwprugsHOMmHa6EmMAE3xD6nN9w
+ u3gpZfZIesTKUgTs+pWVTG8RhTLiqy1iwsC5rRCGCrEJ6R3TDnMKLFlzIUw9oKvvG2B5fySY7Pz
+ 9rmbSPlK56L1gPlCI0ZkhR9MsmcuwaOOxJ6R1tsDu7l4af6uVlh8pQL12Xp0FyR4ZLPute2f7U2
+ s5ffeQ==
+X-Google-Smtp-Source: AGHT+IFnNsNu+qUMzcLjg0KQjYC6n3utD8jvcknr6dN1qh+4psvFXLXY/G4wAED6P2Mp5Oq2Wc0cAQ==
+X-Received: by 2002:a05:6000:1fae:b0:385:ea2b:12cc with SMTP id
+ ffacd0b85a97d-38880acd0b7mr3491819f8f.13.1734132701437; 
+ Fri, 13 Dec 2024 15:31:41 -0800 (PST)
 Received: from localhost.localdomain ([45.93.146.194])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-388c8012112sm849517f8f.11.2024.12.13.15.31.35
+ ffacd0b85a97d-388c8046bf8sm821961f8f.82.2024.12.13.15.31.40
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 13 Dec 2024 15:31:36 -0800 (PST)
+ Fri, 13 Dec 2024 15:31:40 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PULL 07/20] hw/nvram/fw_cfg: Skip FW_CFG_DATA_GENERATOR when no data
- to generate
-Date: Sat, 14 Dec 2024 00:30:42 +0100
-Message-ID: <20241213233055.39574-8-philmd@linaro.org>
+Subject: [PULL 08/20] hw/pci: Have PCI_BUS implement
+ TYPE_FW_CFG_DATA_GENERATOR_INTERFACE
+Date: Sat, 14 Dec 2024 00:30:43 +0100
+Message-ID: <20241213233055.39574-9-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241213233055.39574-1-philmd@linaro.org>
 References: <20241213233055.39574-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,77 +98,91 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Allow the FW_CFG_DATA_GENERATOR interface get_data() handler to
-return NULL when there is nothing to generate. In that case
-fw_cfg_add_file_from_generator() will not add any item and
-return %true.
+The FW_CFG_DATA_GENERATOR interface allows any object to
+produce a blob of data consumable by the fw_cfg device.
+Implement that for PCI bus objects.
 
-Reported-by: Daniel P. Berrangé <berrange@redhat.com>
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-Id: <20241213133352.10915-4-philmd@linaro.org>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Message-Id: <20241213133352.10915-5-philmd@linaro.org>
 ---
- include/hw/nvram/fw_cfg.h | 13 ++++++++-----
- hw/nvram/fw_cfg.c         |  3 ++-
- 2 files changed, 10 insertions(+), 6 deletions(-)
+ hw/pci/pci.c | 37 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 37 insertions(+)
 
-diff --git a/include/hw/nvram/fw_cfg.h b/include/hw/nvram/fw_cfg.h
-index fcb06f18cc3..6089681f421 100644
---- a/include/hw/nvram/fw_cfg.h
-+++ b/include/hw/nvram/fw_cfg.h
-@@ -30,8 +30,9 @@ struct FWCfgDataGeneratorClass {
-      * @obj: the object implementing this interface
-      * @errp: pointer to a NULL-initialized error object
-      *
--     * Returns: reference to a byte array containing the data on success,
--     *          or NULL on error.
-+     * Returns: A byte array containing data to add, or NULL without
-+     *          @errp set if no data is required, or NULL with @errp
-+     *          set on failure.
-      *
-      * The caller should release the reference when no longer
-      * required.
-@@ -298,14 +299,16 @@ void *fw_cfg_modify_file(FWCfgState *s, const char *filename, void *data,
-  * @parent: the object in which to resolve the @part
-  * @errp: pointer to a NULL initialized error object
-  *
-- * Add a new NAMED fw_cfg item with the content generated from the
-- * @part object. The data generated by the @part object is copied
-- * into the data structure of the fw_cfg device.
-+ * If the @part object generates content, add a new NAMED fw_cfg item with it.
-+ * The data generated by the @part object is copied into the data structure of
-+ * the fw_cfg device.
-  * The next available (unused) selector key starting at FW_CFG_FILE_FIRST
-  * will be used; also, a new entry will be added to the file directory
-  * structure residing at key value FW_CFG_FILE_DIR, containing the item name,
-  * data size, and assigned selector key value.
-  *
-+ * If the @part object does not generate content, no fw_cfg item is added.
-+ *
-  * Returns: %true on success, %false on error.
-  */
- bool fw_cfg_add_file_from_generator(FWCfgState *s,
-diff --git a/hw/nvram/fw_cfg.c b/hw/nvram/fw_cfg.c
-index b94cd27bd85..46c62c8f09e 100644
---- a/hw/nvram/fw_cfg.c
-+++ b/hw/nvram/fw_cfg.c
-@@ -1031,6 +1031,7 @@ bool fw_cfg_add_file_from_generator(FWCfgState *s,
-                                     Object *parent, const char *part,
-                                     const char *filename, Error **errp)
+diff --git a/hw/pci/pci.c b/hw/pci/pci.c
+index 1416ae202c3..8844251eceb 100644
+--- a/hw/pci/pci.c
++++ b/hw/pci/pci.c
+@@ -46,6 +46,7 @@
+ #include "hw/pci/msix.h"
+ #include "hw/hotplug.h"
+ #include "hw/boards.h"
++#include "hw/nvram/fw_cfg.h"
+ #include "qapi/error.h"
+ #include "qemu/cutils.h"
+ #include "pci-internal.h"
+@@ -216,11 +217,41 @@ static uint16_t pcibus_numa_node(PCIBus *bus)
+     return NUMA_NODE_UNASSIGNED;
+ }
+ 
++static GByteArray *pci_bus_fw_cfg_gen_data(Object *obj, Error **errp)
++{
++    PCIBus *bus = PCI_BUS(obj);
++    GByteArray *byte_array;
++    uint64_t extra_hosts = 0;
++
++    if (!bus) {
++        return NULL;
++    }
++
++    QLIST_FOREACH(bus, &bus->child, sibling) {
++        /* look for expander root buses */
++        if (pci_bus_is_root(bus)) {
++            extra_hosts++;
++        }
++    }
++
++    if (!extra_hosts) {
++        return NULL;
++    }
++    extra_hosts = cpu_to_le64(extra_hosts);
++
++    byte_array = g_byte_array_new();
++    g_byte_array_append(byte_array,
++                        (const void *)&extra_hosts, sizeof(extra_hosts));
++
++    return byte_array;
++}
++
+ static void pci_bus_class_init(ObjectClass *klass, void *data)
  {
-+    ERRP_GUARD();
-     FWCfgDataGeneratorClass *klass;
-     GByteArray *array;
-     Object *obj;
-@@ -1048,7 +1049,7 @@ bool fw_cfg_add_file_from_generator(FWCfgState *s,
-     }
-     klass = FW_CFG_DATA_GENERATOR_GET_CLASS(obj);
-     array = klass->get_data(obj, errp);
--    if (!array) {
-+    if (*errp || !array) {
-         return false;
-     }
-     size = array->len;
+     BusClass *k = BUS_CLASS(klass);
+     PCIBusClass *pbc = PCI_BUS_CLASS(klass);
+     ResettableClass *rc = RESETTABLE_CLASS(klass);
++    FWCfgDataGeneratorClass *fwgc = FW_CFG_DATA_GENERATOR_CLASS(klass);
+ 
+     k->print_dev = pcibus_dev_print;
+     k->get_dev_path = pcibus_get_dev_path;
+@@ -232,6 +263,8 @@ static void pci_bus_class_init(ObjectClass *klass, void *data)
+ 
+     pbc->bus_num = pcibus_num;
+     pbc->numa_node = pcibus_numa_node;
++
++    fwgc->get_data = pci_bus_fw_cfg_gen_data;
+ }
+ 
+ static const TypeInfo pci_bus_info = {
+@@ -240,6 +273,10 @@ static const TypeInfo pci_bus_info = {
+     .instance_size = sizeof(PCIBus),
+     .class_size = sizeof(PCIBusClass),
+     .class_init = pci_bus_class_init,
++    .interfaces = (InterfaceInfo[]) {
++        { TYPE_FW_CFG_DATA_GENERATOR_INTERFACE },
++        { }
++    }
+ };
+ 
+ static const TypeInfo cxl_interface_info = {
 -- 
 2.45.2
 
