@@ -2,80 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E23869F1A1A
-	for <lists+qemu-devel@lfdr.de>; Sat, 14 Dec 2024 00:35:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4795A9F19F2
+	for <lists+qemu-devel@lfdr.de>; Sat, 14 Dec 2024 00:31:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tMF7m-0002C3-Sk; Fri, 13 Dec 2024 18:31:10 -0500
+	id 1tMF7a-0001qK-2g; Fri, 13 Dec 2024 18:30:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tMF7j-00028G-TG
- for qemu-devel@nongnu.org; Fri, 13 Dec 2024 18:31:08 -0500
-Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tMF7L-0001ns-IA
+ for qemu-devel@nongnu.org; Fri, 13 Dec 2024 18:30:48 -0500
+Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tMF7i-0002y0-3U
- for qemu-devel@nongnu.org; Fri, 13 Dec 2024 18:31:07 -0500
-Received: by mail-wr1-x42c.google.com with SMTP id
- ffacd0b85a97d-385e06af753so1233385f8f.2
- for <qemu-devel@nongnu.org>; Fri, 13 Dec 2024 15:31:05 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tMF7J-0002vn-Cp
+ for qemu-devel@nongnu.org; Fri, 13 Dec 2024 18:30:43 -0500
+Received: by mail-wr1-x433.google.com with SMTP id
+ ffacd0b85a97d-385d7b4da2bso2180098f8f.1
+ for <qemu-devel@nongnu.org>; Fri, 13 Dec 2024 15:30:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734132664; x=1734737464; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=o+pQd2baBlmY/N24Ub4eY1nVz17amZBdVdb84Jx0GrY=;
- b=xfLTB+D8NTb8rId3vns/m1d1yjpal733qY4JlFGTGLXvxldgs3oHfP/WrS09yJQzJg
- s3iGcLFwtOA7djXoZWKnMNhkT2M3tTFE/hcebiuSan/bZ5aXvlkunwOHIFxdczkWaEBd
- 9Lz5jr2kpP9UyixOzofJePu5ukIm0cW3jS7/N1m8vs3wrEqGsz8YJLxyr4pSCAxoLtSe
- C+4wLZSWXb7dCaKQj/umiz7KNPZ02bfoOfjBpcZzYA1EuUU6A2FU2TQW+AnzIYGe/usU
- b6oBA4OQLzGiHTizR5HJ+IckaOEcR4yGJdYudFwdFOexnePnqUNuaDWTx5iBxhiprE7G
- P3mA==
+ d=linaro.org; s=google; t=1734132639; x=1734737439; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=g7fvn8USEKMq16SLa2wUNwg/HO1Jl6iGLjfEKjPyOMg=;
+ b=RWby0vRBRb7tMQVZaHUYmdx67oVe+N071IXM7dP2ecQ+pg8iX+zmEPZLlbmb+J8Pvh
+ KAz7CSn3xbHfxxWo6b93DzlDhaDJ0ZLVmhghr5wUggyaLxkPVmKD5XFfy2hwwg0k+mQg
+ seeLyRmCXMFbn9Ox2gcGFb1R39oeBX0kQqkVNW4VtRkeYH/1zk8Tt66birFuS06AP2Tp
+ sXjZ04Gh22taIz/Ly4S8Lg2XzFhkOwfINnl1U7h9GrX4CrHHp9GikwcwydyxOYvGprIN
+ 1TuxHXIYPtxD2naeI9gNDyZ9rlPTq8NAHYDQAogSFqY6N0+HJuzTLPllkvg/LEqVjrI+
+ 9U4A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734132664; x=1734737464;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=o+pQd2baBlmY/N24Ub4eY1nVz17amZBdVdb84Jx0GrY=;
- b=mlVJ03i+rJxwdRrws+AJRDLdiCDCovSJZBwEsRrvH75eOXA3U2Za9/lu50bXTxtTD7
- QahqcL6mPexCxEZKtQXjMrrLYUmrbvSHqScbSSIhL0RQMQVGHG7iGYI0k4H7UUtczPMR
- DXLihR9hJUiWXeyUxgJomh6Y9SY4KkfjMHdq4WNYOsUiMcL2ok9xC7bw45NEeTJ982yB
- snpaP9NTVXlLejEDX3/jAHh2XoWnH8evYFGPrs3CWYbZHRg0+jFkggPbpnaGktPJo8B5
- BlfceUpCNG7RGMzCveBTqgn9dAJuBQv7pQiOj0wDeuyS/W8QjJ4AIPJTDFhz+zeP3xRy
- q1Kg==
-X-Gm-Message-State: AOJu0Yzy0e8YzclrWjotsanfn1MDb6vYzrRmuEd1QgUU3hO/uqWNo/sE
- ULPnF1z163Mi3p3SzRV8GbqoDnZ9oTITButKVwsIgLgV2vPZR0/TLCYRpUi75V+fHi3zh4lM2Qq
- 1AXs=
-X-Gm-Gg: ASbGncsq7aKP7vNrx2EElTWmI5d93vs9EXXCGGNRNSfKzk0SROTb2O/NZgV/Ieu9oz3
- /GgZrKu2/OeSmjVNhf5t9UohOTaixzadq7U68mZNtKiMVfq3J2mIDxEEL7IOyhnQr9QDnVDvXlC
- rt1yZG7IagvHDQt5WK040RKFweYWpdJe8uE0NPqb55LDnEB+oy02z4voOi9/qfxl77z7kwAuw8r
- YQ1uHHC//ukivTVk6nOZ+q/0dom4FK/8lXQ254ZOpjKKaxmu4Mdhu178affldYnzRZ1xUlhVMyN
- duiizw==
-X-Google-Smtp-Source: AGHT+IFgwEUAeUvtio+G1STrD/sSIgV+JoHjDmfPQ9W7JDVusM99HHk3BAWEhI9iLu+LDHOiGyjMvA==
-X-Received: by 2002:a5d:588c:0:b0:385:e2c4:1f8d with SMTP id
- ffacd0b85a97d-3888dcd4760mr3194762f8f.19.1734132664122; 
- Fri, 13 Dec 2024 15:31:04 -0800 (PST)
-Received: from localhost.localdomain ([45.93.146.194])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-388c801a8b0sm821799f8f.53.2024.12.13.15.31.01
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 13 Dec 2024 15:31:02 -0800 (PST)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Dorjoy Chowdhury <dorjoychy111@gmail.com>,
- Alexander Graf <graf@amazon.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 01/20] docs/nitro-enclave: Fix terminal commands formatting
+ d=1e100.net; s=20230601; t=1734132639; x=1734737439;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=g7fvn8USEKMq16SLa2wUNwg/HO1Jl6iGLjfEKjPyOMg=;
+ b=UVchIj6UDEd8CeMEXIAaQA6pZDYsW6RznzJjACfwivS99inltfJfnUgO5tcC9vQ1U7
+ 5obWstmlXuvb9TJdt2iceG6pOntd4wd6vXugF+vZYmarFm8ixHSkBkiywgmHdeKUCjr5
+ NVNhYFDv5ik3w27QsgFwhFUDyHJ/7L94zz2wFXsxZbjM3G7iBixi6tHiU5wQtOjFOCB/
+ LGTnZq8+CvrCjZalo5mEde4SIMFnaQOhLBcqg46nT+8eHDd2jDS5BSt0c3WajGdVfXCM
+ 5T7D0CuizOWF5xlaJA8g7+1FueFybMSCtFiH6UFa67Ru6eKiw9hv7EIl+QN2XaUryqBA
+ OT+g==
+X-Gm-Message-State: AOJu0Ywh/HkV6rdHlIPXREsK2bXn2AkdVBe0c49qxVEx5fjXtuT89v0d
+ jlnHjxPwGBEjD+q9Bow6jCXlSdY2SFBhjKufVUfwJdk1pavOxzs/8E2aPO1pzhQ9yiUWfTiTYVU
+ F5Ls=
+X-Gm-Gg: ASbGncsCOOdIeB5esc/ymqbiqwFwXM7Z5yQED+aTTK9TUeHVQgZ13art7tgzMBi9vLF
+ pmo+FWMnf0eKTt7bid84Y3suWTIF1aMIPPLB4Y4KFaI20x+wdZmmCrpDWpsf9PYyIRj/aEwUpCn
+ XZeH9tq8Sc4izQVZNkGr7cDe+THam/wOTjhwlR6JrdWt6fEMdctgQ6EszuKJtC3kD8xyyrR+Y4u
+ eW+g+i1kVLvOsfCn+PoiECI0iFdaJM6M3rvpq3QA3yKkkbdhfwVaPWCjLQljQMQdTx/Mg==
+X-Google-Smtp-Source: AGHT+IGyS0rVLyg/IlTwnsRMoJfyaTbR13a9JlkFswsPPhQ6qJj9qQL/ddXx90NHWDPSn8yS7bGGlw==
+X-Received: by 2002:a05:6000:795:b0:385:e5dc:e285 with SMTP id
+ ffacd0b85a97d-3888e0c0699mr3507368f8f.58.1734132638984; 
+ Fri, 13 Dec 2024 15:30:38 -0800 (PST)
+Received: from [10.1.1.253] ([45.93.146.194]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-4363601406esm7328355e9.3.2024.12.13.15.30.36
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 13 Dec 2024 15:30:37 -0800 (PST)
+Message-ID: <28aa18d8-5015-4fa9-aa43-f988c591b200@linaro.org>
 Date: Sat, 14 Dec 2024 00:30:36 +0100
-Message-ID: <20241213233055.39574-2-philmd@linaro.org>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20241213233055.39574-1-philmd@linaro.org>
-References: <20241213233055.39574-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 0/7] hw/nvram/fw_cfg: Move PCI bus methods out
+To: qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org, Gerd Hoffmann <kraxel@redhat.com>,
+ =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>
+References: <20241213133352.10915-1-philmd@linaro.org>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20241213133352.10915-1-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::433;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,47 +96,16 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Dorjoy Chowdhury <dorjoychy111@gmail.com>
+On 13/12/24 14:33, Philippe Mathieu-Daudé wrote:
 
-Signed-off-by: Dorjoy Chowdhury <dorjoychy111@gmail.com>
-Reviewed-by: Alexander Graf <graf@amazon.com>
-Message-ID: <20241109122844.24057-1-dorjoychy111@gmail.com>
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- docs/system/i386/nitro-enclave.rst | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+> Philippe Mathieu-Daudé (7):
+>    hw/nvram/fw_cfg: Rename fw_cfg_add_[file]_from_generator()
+>    hw/nvram/fw_cfg: Pass QOM parent to fw_cfg_add_file_from_generator()
+>    hw/nvram/fw_cfg: Skip FW_CFG_DATA_GENERATOR when no data to generate
+>    hw/pci: Have PCI_BUS implement TYPE_FW_CFG_DATA_GENERATOR_INTERFACE
+>    hw/pci: Add pci_bus_add_fw_cfg_extra_pci_roots() helper
+>    hw: Use pci_bus_add_fw_cfg_extra_pci_roots()
+>    hw/nvram/fw_cfg: Remove fw_cfg_add_extra_pci_roots()
 
-diff --git a/docs/system/i386/nitro-enclave.rst b/docs/system/i386/nitro-enclave.rst
-index 73e3edefe5b..48eda5bd9ec 100644
---- a/docs/system/i386/nitro-enclave.rst
-+++ b/docs/system/i386/nitro-enclave.rst
-@@ -48,13 +48,13 @@ Running a nitro-enclave VM
- First, run `vhost-device-vsock`__ (or a similar tool that supports vhost-user-vsock).
- The forward-cid option below with value 1 forwards all connections from the enclave
- VM to the host machine and the forward-listen (port numbers separated by '+') is used
--for forwarding connections from the host machine to the enclave VM.
--
--__ https://github.com/rust-vmm/vhost-device/tree/main/vhost-device-vsock#using-the-vsock-backend
-+for forwarding connections from the host machine to the enclave VM::
- 
-   $ vhost-device-vsock \
-      --vm guest-cid=4,forward-cid=1,forward-listen=9001+9002,socket=/tmp/vhost4.socket
- 
-+__ https://github.com/rust-vmm/vhost-device/tree/main/vhost-device-vsock#using-the-vsock-backend
-+
- Now run the necessary applications on the host machine so that the nitro-enclave VM
- applications' vsock communication works. For example, the nitro-enclave VM's init
- process connects to CID 3 and sends a single byte hello heartbeat (0xB7) to let the
-@@ -65,7 +65,7 @@ the applications on the host machine that would typically be running in the pare
- VM for successful communication with the enclave VM.
- 
- Then run the nitro-enclave VM using the following command where ``hello.eif`` is
--an EIF file you would use to spawn a real AWS nitro enclave virtual machine:
-+an EIF file you would use to spawn a real AWS nitro enclave virtual machine::
- 
-   $ qemu-system-x86_64 -M nitro-enclave,vsock=c,id=hello-world \
-      -kernel hello-world.eif -nographic -m 4G --enable-kvm -cpu host \
--- 
-2.45.2
-
+Series queued.
 
