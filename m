@@ -2,77 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60AE69F13EA
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Dec 2024 18:39:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 36AC09F1444
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Dec 2024 18:46:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tM9XO-00077j-7V; Fri, 13 Dec 2024 12:33:15 -0500
+	id 1tM9XX-0007DY-UC; Fri, 13 Dec 2024 12:33:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tM9X7-0006zo-93
+ id 1tM9X7-0006zp-EB
  for qemu-devel@nongnu.org; Fri, 13 Dec 2024 12:32:58 -0500
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tM9X5-0001W8-Ag
+ id 1tM9X5-0001WR-LF
  for qemu-devel@nongnu.org; Fri, 13 Dec 2024 12:32:57 -0500
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-385de9f789cso1543933f8f.2
- for <qemu-devel@nongnu.org>; Fri, 13 Dec 2024 09:32:54 -0800 (PST)
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-4361a50e337so14505035e9.0
+ for <qemu-devel@nongnu.org>; Fri, 13 Dec 2024 09:32:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734111173; x=1734715973; darn=nongnu.org;
+ d=linaro.org; s=google; t=1734111174; x=1734715974; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=Sp4roeRQL1fuJKdKDyKEq4BIrsgp9jAp7oXPidcX4dw=;
- b=cKVneeFFkcdwJJSLwAgOgOMpVHotcTXpy7mK5OB8zF6ervLqbqZCKnBwVL44z4JUo1
- bKOefGR6NqSI0U5W3CGD1pMnA4redChW1We/MNXppFRLS/0onufDzNDecoX5MsM63xmU
- z0BwS3g4LPPovw+mb4Xf7aQRQnSoYyTZBKgLR5caNFIiqcafcA8uCD7tcPwOkKSM7kaG
- /STvejZXbPNGQ6ll5xFvcRgNHZR0oPfp4HoGuanKa+UMN8KFkiL4z6EUCFsNk5xjxPtv
- EED/7KBho7/CihgefRypnJSDX23DkrWYfEAJGzNyx0gClaLdttMVInU9JO0cNCHzFl/6
- 3K1Q==
+ :reply-to; bh=PYN5citoB0ZF3IJroQ8ZdrrceU/Nk4XKS8mCIww2hmM=;
+ b=Px7eehZs/njKPA+3nFtv7joWN7QZeBy+SAY0NVwzX9TTUyWhMIw8SuwCBsQKboLIF2
+ XWmWH0NPWo2kIxCiSN5hXmyKh9fo20pCaW9SvvssSU30G7uZD+eifn09IIO9yi1ao5Sy
+ pMciNShmskSkdeL1NShun6swb0lC42VPQKr7qVV8f23dw2HACLrLxDXnBuzq0wVcwUZW
+ DoTt7tm4LMOTTIC+/aulsHhm0dw76wjI1uxjDX69mJcEmKO4tDEr3gDgqcSkNCce6HMZ
+ KyGV/U1qkpACYbU1EeOUETkdL30OuCPk+Yl5p1VsXoIN7wMmDM9PIq0Q3zz3p5JIg3J5
+ pU7A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734111173; x=1734715973;
+ d=1e100.net; s=20230601; t=1734111174; x=1734715974;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Sp4roeRQL1fuJKdKDyKEq4BIrsgp9jAp7oXPidcX4dw=;
- b=OW/Hep9YulgOaJCuoniaZZG8jmfxqGbbVLC81x4eBh5iaLN/dfrcCVuxjyk2SM7bR8
- xjuRVSLEYE6pMjce2sTgcwCRAUKv3XExOTdD0ka6BOA/cIwgCqfZvKMt3lfceyEPcZUu
- WbP6wKQKdOsKavri3VobrKGzY9PfuRfcmTJXesPV7tXtasvFUwTpnQgovBwFIkORlMWa
- uxdxIgbPAj7vGlCaP2XuubftbffxMpVpJAdMIfaQ75qASa9D71Ar8T8db7Mip1qeWb+9
- BqlKkWAqcQ/nf2HzDlxZBGEIbM7m/QKAyO0KpMMIrvh+F1fMv5qeN4Y+G8MAadpFNzMg
- 2dPg==
-X-Gm-Message-State: AOJu0YyxLTZDwqHriuxt6NSptIME5I6WDwFcBeJkv8DJ1OhUyh8Y9iy9
- tTgKkB6zxIzGAPyb+aOZcaiTGOA2O79L4pYUZV+TT0kqqUA0MGEU7hjW926iFAamvDiiEEsWvxu
- N
-X-Gm-Gg: ASbGncvbMzcHIRFLoX3qbrFGa4hOOmTC9YqugMRslT/tjrzyzkrA/5frhTtBmGV1x8L
- TSqVeUONVH//+IZriYT/rLwrcKQjH5MrkmvDVRJbsGyvipionQqlucCDq/u2PRwCbdgYUIdyUMY
- xRk76RBp0ZwAH5JJomnktdA7wsYVj7vdF3XH9jdEUBPJE1SqPJ0u4j54nBu2KLWSgLCQHZ0pf2x
- Tkhm0DTjq4aoRcWCMaUV51D445CvNXr8zibK5g4ka/2UoH6kVdPynGn0h4xPQ==
-X-Google-Smtp-Source: AGHT+IGeGln2lMj7ZmuAtwrVoqCIXFmzRJHl6bJt5MX5OlpHgGZqyOLLH/aMhEz+jjj6bUTTbJXjSA==
-X-Received: by 2002:a5d:6f1d:0:b0:386:37f5:99e7 with SMTP id
- ffacd0b85a97d-3888e0bbaeemr3200362f8f.33.1734111173067; 
- Fri, 13 Dec 2024 09:32:53 -0800 (PST)
+ bh=PYN5citoB0ZF3IJroQ8ZdrrceU/Nk4XKS8mCIww2hmM=;
+ b=rqgbIYrO39G7DMJnGulVSG3q17jDfTPHI+McMLdllu2AzgUl8W9OYZJuI03cQF8ciV
+ YJ3mrM7Us41PFnYuoiWMpv332fEZv/c6KDfzA5xjx1tg/hQwWkXuvfSB1A1vRzVrkdSB
+ vdZBgs/EL/+OsefK90QNr2cKm5H7MbApoiClFkgV6K48mM8Z9JUEJ4mgGHaxw12/HgdG
+ Tsr9mkiMfnfhPaDbcVll70JaeG6VEe5yCYOJacVDM8ASnSeTVJY2Sq5vORqAnM9biKBs
+ YqCjmAcvsZaQA260ofCwggtcYhm/0yo76MeycORPh6HR0ZIFoy2q8QMiiciQE9L3WB9b
+ QA8Q==
+X-Gm-Message-State: AOJu0YzsV7pidvxuVKef4Lu3zun07ms82X90FQNuCSOm6BHQ5sddut11
+ J6mWPkqhiDTm8VnG5b6vcuW2QLCx3JsiBPGB8T9iPn98+srlZShrNNcydcd8x4RtgosoKxKNhEY
+ g
+X-Gm-Gg: ASbGncvjdQN4md3TLEfMajFXNAK+6Z9O2kEx6R0QtYtKPfRBnj5hOqaLKqEon1lu/BO
+ 12V9Acii3MFN7tJeaUE5aihzhgdmsUPnw42aHwp4UxQTsdN+SQ49u8Iq6ZXW6mfUb2jWgO3BaSp
+ VdjPh+rXFdBQ63fH0Cmb/TZB3FLkDbopEuAR1Cj63zVJeD2DxakENyeFt+LRpbMaqCE3EIQbQfc
+ nemuKNgPgp0+RDXSNqpBNvTMiqgpxW2K//9WlHNGMnzrkPG9LlaUdlitUkWSA==
+X-Google-Smtp-Source: AGHT+IGrzL7VNJEbPAbsPV75NG2duj+JG/PBHFCEuWXeNIUDOQFzWscVmZtYh1ZsEUI3bAn1VWsuqg==
+X-Received: by 2002:a05:600c:511c:b0:434:a7e3:db66 with SMTP id
+ 5b1f17b1804b1-4362aaa9683mr23756105e9.26.1734111174017; 
+ Fri, 13 Dec 2024 09:32:54 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-388c80162ddsm87026f8f.37.2024.12.13.09.32.52
+ ffacd0b85a97d-388c80162ddsm87026f8f.37.2024.12.13.09.32.53
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 13 Dec 2024 09:32:52 -0800 (PST)
+ Fri, 13 Dec 2024 09:32:53 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 20/85] target/arm: Introduce fp_access_check_scalar_hsd
-Date: Fri, 13 Dec 2024 17:31:24 +0000
-Message-Id: <20241213173229.3308926-21-peter.maydell@linaro.org>
+Subject: [PULL 21/85] target/arm: Introduce fp_access_check_vector_hsd
+Date: Fri, 13 Dec 2024 17:31:25 +0000
+Message-Id: <20241213173229.3308926-22-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241213173229.3308926-1-peter.maydell@linaro.org>
 References: <20241213173229.3308926-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::431;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x431.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x329.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,33 +97,34 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Richard Henderson <richard.henderson@linaro.org>
 
-Provide a simple way to check for float64, float32,
-and float16 support, as well as the fpu enabled.
+Provide a simple way to check for float64, float32, and float16
+support vs vector width, as well as the fpu enabled.
 
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20241211163036.2297116-21-richard.henderson@linaro.org
+Message-id: 20241211163036.2297116-22-richard.henderson@linaro.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/tcg/translate-a64.c | 62 ++++++++++++++++++----------------
- 1 file changed, 32 insertions(+), 30 deletions(-)
+ target/arm/tcg/translate-a64.c | 135 +++++++++++++--------------------
+ 1 file changed, 54 insertions(+), 81 deletions(-)
 
 diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
-index 9c6365f5efc..4e47b8a8041 100644
+index 4e47b8a8041..4611ae4ade9 100644
 --- a/target/arm/tcg/translate-a64.c
 +++ b/target/arm/tcg/translate-a64.c
-@@ -1239,6 +1239,27 @@ static bool fp_access_check(DisasContext *s)
-     return true;
+@@ -1260,6 +1260,28 @@ static int fp_access_check_scalar_hsd(DisasContext *s, MemOp esz)
+     return fp_access_check(s);
  }
  
-+/*
-+ * Return <0 for non-supported element sizes, with MO_16 controlled by
-+ * FEAT_FP16; return 0 for fp disabled; otherwise return >0 for success.
-+ */
-+static int fp_access_check_scalar_hsd(DisasContext *s, MemOp esz)
++/* Likewise, but vector MO_64 must have two elements. */
++static int fp_access_check_vector_hsd(DisasContext *s, bool is_q, MemOp esz)
 +{
 +    switch (esz) {
 +    case MO_64:
++        if (!is_q) {
++            return -1;
++        }
++        break;
 +    case MO_32:
 +        break;
 +    case MO_16:
@@ -140,39 +141,19 @@ index 9c6365f5efc..4e47b8a8041 100644
  /*
   * Check that SVE access is enabled.  If it is, return true.
   * If not, emit code to generate an appropriate exception and return false.
-@@ -6628,22 +6649,10 @@ static bool trans_FCSEL(DisasContext *s, arg_FCSEL *a)
+@@ -5420,27 +5442,14 @@ static bool do_fp3_vector(DisasContext *s, arg_qrrr_e *a, int data,
+                           gen_helper_gvec_3_ptr * const fns[3])
  {
-     TCGv_i64 t_true, t_false;
-     DisasCompare64 c;
-+    int check = fp_access_check_scalar_hsd(s, a->esz);
+     MemOp esz = a->esz;
++    int check = fp_access_check_vector_hsd(s, a->q, esz);
  
--    switch (a->esz) {
--    case MO_32:
+-    switch (esz) {
 -    case MO_64:
--        break;
--    case MO_16:
--        if (!dc_isar_feature(aa64_fp16, s)) {
+-        if (!a->q) {
 -            return false;
 -        }
 -        break;
--    default:
--        return false;
--    }
--
--    if (!fp_access_check(s)) {
--        return true;
-+    if (check <= 0) {
-+        return check == 0;
-     }
- 
-     /* Zero extend sreg & hreg inputs to 64 bits now.  */
-@@ -6894,22 +6903,15 @@ TRANS(FMINV_s, do_fp_reduction, a, gen_helper_vfp_mins)
- 
- static bool trans_FMOVI_s(DisasContext *s, arg_FMOVI_s *a)
- {
--    switch (a->esz) {
 -    case MO_32:
--    case MO_64:
 -        break;
 -    case MO_16:
 -        if (!dc_isar_feature(aa64_fp16, s)) {
@@ -183,17 +164,132 @@ index 9c6365f5efc..4e47b8a8041 100644
 -        return false;
 -    }
 -    if (fp_access_check(s)) {
--        uint64_t imm = vfp_expand_imm(a->esz, a->imm);
--        write_fp_dreg(s, a->rd, tcg_constant_i64(imm));
-+    int check = fp_access_check_scalar_hsd(s, a->esz);
-+    uint64_t imm;
-+
+-        gen_gvec_op3_fpst(s, a->q, a->rd, a->rn, a->rm,
+-                          esz == MO_16, data, fns[esz - 1]);
 +    if (check <= 0) {
 +        return check == 0;
      }
 +
-+    imm = vfp_expand_imm(a->esz, a->imm);
-+    write_fp_dreg(s, a->rd, tcg_constant_i64(imm));
++    gen_gvec_op3_fpst(s, a->q, a->rd, a->rn, a->rm,
++                      esz == MO_16, data, fns[esz - 1]);
+     return true;
+ }
+ 
+@@ -5768,34 +5777,24 @@ TRANS_FEAT(FCADD_270, aa64_fcma, do_fp3_vector, a, 1, f_vector_fcadd)
+ 
+ static bool trans_FCMLA_v(DisasContext *s, arg_FCMLA_v *a)
+ {
+-    gen_helper_gvec_4_ptr *fn;
++    static gen_helper_gvec_4_ptr * const fn[] = {
++        [MO_16] = gen_helper_gvec_fcmlah,
++        [MO_32] = gen_helper_gvec_fcmlas,
++        [MO_64] = gen_helper_gvec_fcmlad,
++    };
++    int check;
+ 
+     if (!dc_isar_feature(aa64_fcma, s)) {
+         return false;
+     }
+-    switch (a->esz) {
+-    case MO_64:
+-        if (!a->q) {
+-            return false;
+-        }
+-        fn = gen_helper_gvec_fcmlad;
+-        break;
+-    case MO_32:
+-        fn = gen_helper_gvec_fcmlas;
+-        break;
+-    case MO_16:
+-        if (!dc_isar_feature(aa64_fp16, s)) {
+-            return false;
+-        }
+-        fn = gen_helper_gvec_fcmlah;
+-        break;
+-    default:
+-        return false;
+-    }
+-    if (fp_access_check(s)) {
+-        gen_gvec_op4_fpst(s, a->q, a->rd, a->rn, a->rm, a->rd,
+-                          a->esz == MO_16, a->rot, fn);
++
++    check = fp_access_check_vector_hsd(s, a->q, a->esz);
++    if (check <= 0) {
++        return check == 0;
+     }
++
++    gen_gvec_op4_fpst(s, a->q, a->rd, a->rn, a->rm, a->rd,
++                      a->esz == MO_16, a->rot, fn[a->esz]);
+     return true;
+ }
+ 
+@@ -6337,27 +6336,14 @@ static bool do_fp3_vector_idx(DisasContext *s, arg_qrrx_e *a,
+                               gen_helper_gvec_3_ptr * const fns[3])
+ {
+     MemOp esz = a->esz;
++    int check = fp_access_check_vector_hsd(s, a->q, esz);
+ 
+-    switch (esz) {
+-    case MO_64:
+-        if (!a->q) {
+-            return false;
+-        }
+-        break;
+-    case MO_32:
+-        break;
+-    case MO_16:
+-        if (!dc_isar_feature(aa64_fp16, s)) {
+-            return false;
+-        }
+-        break;
+-    default:
+-        g_assert_not_reached();
+-    }
+-    if (fp_access_check(s)) {
+-        gen_gvec_op3_fpst(s, a->q, a->rd, a->rn, a->rm,
+-                          esz == MO_16, a->idx, fns[esz - 1]);
++    if (check <= 0) {
++        return check == 0;
+     }
++
++    gen_gvec_op3_fpst(s, a->q, a->rd, a->rn, a->rm,
++                      esz == MO_16, a->idx, fns[esz - 1]);
+     return true;
+ }
+ 
+@@ -6383,28 +6369,15 @@ static bool do_fmla_vector_idx(DisasContext *s, arg_qrrx_e *a, bool neg)
+         gen_helper_gvec_fmla_idx_d,
+     };
+     MemOp esz = a->esz;
++    int check = fp_access_check_vector_hsd(s, a->q, esz);
+ 
+-    switch (esz) {
+-    case MO_64:
+-        if (!a->q) {
+-            return false;
+-        }
+-        break;
+-    case MO_32:
+-        break;
+-    case MO_16:
+-        if (!dc_isar_feature(aa64_fp16, s)) {
+-            return false;
+-        }
+-        break;
+-    default:
+-        g_assert_not_reached();
+-    }
+-    if (fp_access_check(s)) {
+-        gen_gvec_op4_fpst(s, a->q, a->rd, a->rn, a->rm, a->rd,
+-                          esz == MO_16, (a->idx << 1) | neg,
+-                          fns[esz - 1]);
++    if (check <= 0) {
++        return check == 0;
+     }
++
++    gen_gvec_op4_fpst(s, a->q, a->rd, a->rn, a->rm, a->rd,
++                      esz == MO_16, (a->idx << 1) | neg,
++                      fns[esz - 1]);
      return true;
  }
  
