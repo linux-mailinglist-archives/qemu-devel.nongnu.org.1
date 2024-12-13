@@ -2,81 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B48229F1A19
-	for <lists+qemu-devel@lfdr.de>; Sat, 14 Dec 2024 00:35:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7966B9F1A20
+	for <lists+qemu-devel@lfdr.de>; Sat, 14 Dec 2024 00:35:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tMF9L-00049h-BO; Fri, 13 Dec 2024 18:32:47 -0500
+	id 1tMF9Z-0004mG-0y; Fri, 13 Dec 2024 18:33:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tMF8f-0003XH-2C
- for qemu-devel@nongnu.org; Fri, 13 Dec 2024 18:32:06 -0500
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tMF8l-0003fI-TE
+ for qemu-devel@nongnu.org; Fri, 13 Dec 2024 18:32:17 -0500
+Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tMF8d-00034g-9U
- for qemu-devel@nongnu.org; Fri, 13 Dec 2024 18:32:04 -0500
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-4361a50e337so16189955e9.0
- for <qemu-devel@nongnu.org>; Fri, 13 Dec 2024 15:32:01 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tMF8g-000358-Tv
+ for qemu-devel@nongnu.org; Fri, 13 Dec 2024 18:32:09 -0500
+Received: by mail-wr1-x42f.google.com with SMTP id
+ ffacd0b85a97d-385e27c75f4so1763665f8f.2
+ for <qemu-devel@nongnu.org>; Fri, 13 Dec 2024 15:32:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734132720; x=1734737520; darn=nongnu.org;
+ d=linaro.org; s=google; t=1734132725; x=1734737525; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=SGu1RWDi+gwgcW3c9gaeL8ccTCliWtLZLUZIPeh5RIQ=;
- b=McfsTDec6PH303IE+3AMfVDtFLUkq0Xg7xwKa9n+SVtfm7HLkaqanGuSD9CMQxVoDy
- B59byVfGHySBpP6UMg5mG7paaIrOWcXIN+5WTnDT/UORdGFKaB7UNNFdR05BJ/x7dDmB
- bpGOIArMh0qPljUjQYeP2NaWNX2+zaGXN3Y740Wwrzyzf2YxknrG0eP/VWPReFf4a13O
- boHI+fka+eBY60a7guXzmkxIDdUtUyk6KRYsW3i/v4dN5TN3zQp/iyCFoCsxSpsaPTZx
- 3Et8JGX576+yAylghw0yMsArhIBPhPLfqvxzpydiiyaIJHtmvLfgHp90MJxMPVGk3kK3
- uafg==
+ bh=MVMMyVcYu4LVL1Yzkvds/PCKbLlLdQN2hgXKn39Ce2s=;
+ b=sZ8mJPsjoVPohgFMzPx0eX/ZeI68Idlja/rqpaadGMRZrAFh1wrwp2lsIsVGd24CRc
+ PCZCUi+BNuJs0AcaE7tkiPNI7e9DIAsSJjk7zrV1EzSQ+fcZLVc/+jDej0d+99dZ7ipi
+ yPyjm+JHJvxh2nKw4hzvrAkb+l3LmFglOql6sleiw7/ajX6e1AjxlYfXupg/mkroxp9z
+ 9f3SnltaZLCjJpABK7NbTRKp/cadpPa4c/MM04Jg+lfSfg9AOOjjoaaGCgH7NK6VIk1L
+ K7NU/Q4/4G5kLSd6Ja00+jf/gHhUIiW5Tc94lwS4Ze+MSvC01WqU/47N8d4krpXRakxE
+ FC6w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734132720; x=1734737520;
+ d=1e100.net; s=20230601; t=1734132725; x=1734737525;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=SGu1RWDi+gwgcW3c9gaeL8ccTCliWtLZLUZIPeh5RIQ=;
- b=VagkIo00tYN5+k0wDlrs6asi1SxZrrYQb8fTi3JIrx5xKvNIuoySuogI/xiBk3gfH2
- lTdz0IslTYz34/EBJ8/OM56dOtJZ2XOAibnLzLHVl1xoAne/C1VkgzG1XRjXm19D1JPK
- hCIQE+CGMEwH0iioyLNB8KUWnAwFJo3nKQE0cOlUicJ9H3aewXtdeVWH3roQa4uygXU0
- DEuv0gv9HEnRd5Qz91wB09aZCQL8OmOn12DnHQQS+WuCo/OQmyEXuMUgcpyE+EgAz9pS
- YZXAwXW+4A4o3ME//0D87yytL/BbJf862ra8foKUQ4HD+nAgCAT4RQ9AtXFBWFAh2rlv
- 9n6g==
-X-Gm-Message-State: AOJu0YxVFSf3TKCne7sk1ktuXDuaOZ1znKC0bjI1QDqj07rJTPSBdxi0
- tBTBhY+V0C+/8kl33q8Y2iODtpPqT6DB02J3zXVaePVWAzB16HGhPq/PCsl7fIWz0BlznFQyTcM
- EZ24=
-X-Gm-Gg: ASbGncvcOaEbWc4JT9V4vAVqQNajWLvlJX1cIJDEPQgMVk+7MN7Uu3ggB0/w88u0rE1
- yPQ3OLz9xHMmqQLEvh5sVCaX0pRCkBat0CT1J0jnRxQcHz8CWRip6pTNvXPQXwx6+Obdnz+WAKw
- IFF5xzoV8j5660rsuyutQJ3VxenKcqamdTMbY43Rm48wqkRE+ZapyH32H7ZS0OX5Hmm+R8yRp0D
- 5bK+lLqs9Hd2V4Mm0Qr2zXaoaOwy69jZxycXrj+XKHS6OpGOa7xE34dl3hwKkp4c4mZhS1zc0X8
- SElMUw==
-X-Google-Smtp-Source: AGHT+IFc1OfMYAjS5qAqCZ4gvTaUB2C9N0qBROnRile59Kq/hUd7/b+TZzGvhx8Nuq3it+v6IjdylQ==
-X-Received: by 2002:a05:600c:3109:b0:434:fdaf:af2d with SMTP id
- 5b1f17b1804b1-4362aab4e5amr39965535e9.30.1734132720170; 
- Fri, 13 Dec 2024 15:32:00 -0800 (PST)
+ bh=MVMMyVcYu4LVL1Yzkvds/PCKbLlLdQN2hgXKn39Ce2s=;
+ b=gEroSdipNcEXloCWabEuatBZo3vnfmx31qLL+ml0kxnNODcQMBD+aQgr+iu2aIs7Sb
+ Jt41YXNutvS6TxsDQZ8dDsLyy3P1rIDxmaBkHjFjLxiQSO3y5E4Pwr9DVS3ge+g36jKS
+ OKIsPxr96FdTr87X4xUEn559OoQlhydIDmP4/E/TvyeHpFIpiz7LINLKtYY7VgSagosg
+ axMEWauSjtTML/p/swWj4KP5DE6x5GE3D6882EB8pbFyYRB0tRShSdmePTz9D67s/7UF
+ RxzYorYakfmwG6TuVkeN+6eNfUSwjTxNyiit1Zqmz5bfyW+13su2HkWK3PJf1/uxFmeT
+ +LcQ==
+X-Gm-Message-State: AOJu0Yz7IZduGb2XBS9C9H7a+f40D4BXLXjc3fRIJctTZ8v8sUs7crvh
+ 0I2TAZqIQQ3RV0mDfiUDkBoN3KYhF+UG8BP/ZVZ+7Jcu2mqlDNK5uvfn6zONpdopjpIH5yJEAZn
+ oyHg=
+X-Gm-Gg: ASbGncuZKB/r37ijCY+PoqgYdQlPJ5I9/iEehsl47jJUyNPUngj5DeuS4LGVAopJgdM
+ 7n8dveLBXPuAx/tSnK8quPNm6HOhkpJFP9pDAAl7raimcKC6jRPPKirE2BB8JHsVLE0KoHQs5yQ
+ jxcOvT0EtPFQGwSORUypFusMKY1MAGJrcVEc0LGBf8vvIjiyfykjBs/KC6XjaHcwq4HFf3XUz3g
+ S5CvtTIKcjoyRbtC8Yc5kzcd/rFPK2F0LEJWB6dU/goOaSJ9/ti/5IZv0RLl3afJeRFOG0EUFCc
+ cOAxwg==
+X-Google-Smtp-Source: AGHT+IHqwFss8Ao8YZJ62/8iDw0BsLag2BNuJcyyb0U7qIAVtmz1jrEApjEPAtHaqnL+Rn095sR48Q==
+X-Received: by 2002:a5d:64eb:0:b0:386:1cd3:8a07 with SMTP id
+ ffacd0b85a97d-38880ac3066mr3254822f8f.7.1734132725046; 
+ Fri, 13 Dec 2024 15:32:05 -0800 (PST)
 Received: from localhost.localdomain ([45.93.146.194])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43625553213sm62212545e9.8.2024.12.13.15.31.58
+ ffacd0b85a97d-388c806ce56sm786880f8f.111.2024.12.13.15.32.03
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 13 Dec 2024 15:31:59 -0800 (PST)
+ Fri, 13 Dec 2024 15:32:04 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Pavel Pisa <pisa@cmp.felk.cvut.cz>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+Cc: Nicholas Piggin <npiggin@gmail.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 12/20] hw/net/can: clean-up unnecessary includes
-Date: Sat, 14 Dec 2024 00:30:47 +0100
-Message-ID: <20241213233055.39574-13-philmd@linaro.org>
+Subject: [PULL 13/20] hw/usb/msd: Add status to usb_msd_packet_complete()
+ function
+Date: Sat, 14 Dec 2024 00:30:48 +0100
+Message-ID: <20241213233055.39574-14-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241213233055.39574-1-philmd@linaro.org>
 References: <20241213233055.39574-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,122 +98,82 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Alex Bennée <alex.bennee@linaro.org>
+From: Nicholas Piggin <npiggin@gmail.com>
 
-The event_notifier, thread and socket includes look like copy and
-paste of standard headers. None of the canbus devices use chardev
-although some relied on chardev to bring in bitops and byte swapping
-headers. In this case include them directly.
+This is a convenience change that accepts a status when completing a
+packet.
 
-Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Acked-by: Pavel Pisa <pisa@cmp.felk.cvut.cz>
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Message-ID: <20241209100635.93243-1-alex.bennee@linaro.org>
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20241110034000.379463-2-npiggin@gmail.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/net/can/can_kvaser_pci.c   | 4 ----
- hw/net/can/can_mioe3680_pci.c | 4 ----
- hw/net/can/can_pcm3680_pci.c  | 4 ----
- hw/net/can/can_sja1000.c      | 2 +-
- hw/net/can/ctucan_core.c      | 3 ++-
- hw/net/can/ctucan_pci.c       | 4 ----
- 6 files changed, 3 insertions(+), 18 deletions(-)
+ hw/usb/dev-storage.c | 17 ++++++++---------
+ 1 file changed, 8 insertions(+), 9 deletions(-)
 
-diff --git a/hw/net/can/can_kvaser_pci.c b/hw/net/can/can_kvaser_pci.c
-index 38434d3a04b..9e363d532f5 100644
---- a/hw/net/can/can_kvaser_pci.c
-+++ b/hw/net/can/can_kvaser_pci.c
-@@ -30,12 +30,8 @@
-  */
+diff --git a/hw/usb/dev-storage.c b/hw/usb/dev-storage.c
+index 341e505bd0a..4f1e8b7f6cb 100644
+--- a/hw/usb/dev-storage.c
++++ b/hw/usb/dev-storage.c
+@@ -177,7 +177,7 @@ static const USBDesc desc = {
+     .str   = desc_strings,
+ };
  
- #include "qemu/osdep.h"
--#include "qemu/event_notifier.h"
- #include "qemu/module.h"
--#include "qemu/thread.h"
--#include "qemu/sockets.h"
- #include "qapi/error.h"
--#include "chardev/char.h"
- #include "hw/irq.h"
- #include "hw/pci/pci_device.h"
- #include "hw/qdev-properties.h"
-diff --git a/hw/net/can/can_mioe3680_pci.c b/hw/net/can/can_mioe3680_pci.c
-index 21659b7afb1..580f099e00a 100644
---- a/hw/net/can/can_mioe3680_pci.c
-+++ b/hw/net/can/can_mioe3680_pci.c
-@@ -26,12 +26,8 @@
-  */
+-static void usb_msd_packet_complete(MSDState *s)
++static void usb_msd_packet_complete(MSDState *s, int status)
+ {
+     USBPacket *p = s->packet;
  
- #include "qemu/osdep.h"
--#include "qemu/event_notifier.h"
- #include "qemu/module.h"
--#include "qemu/thread.h"
--#include "qemu/sockets.h"
- #include "qapi/error.h"
--#include "chardev/char.h"
- #include "hw/irq.h"
- #include "hw/pci/pci_device.h"
- #include "hw/qdev-properties.h"
-diff --git a/hw/net/can/can_pcm3680_pci.c b/hw/net/can/can_pcm3680_pci.c
-index af21dc6855f..3195b79954a 100644
---- a/hw/net/can/can_pcm3680_pci.c
-+++ b/hw/net/can/can_pcm3680_pci.c
-@@ -26,12 +26,8 @@
-  */
+@@ -187,6 +187,7 @@ static void usb_msd_packet_complete(MSDState *s)
+      * usb_packet_complete returns.
+      */
+     trace_usb_msd_packet_complete();
++    p->status = status;
+     s->packet = NULL;
+     usb_packet_complete(&s->dev, p);
+ }
+@@ -196,8 +197,7 @@ static void usb_msd_fatal_error(MSDState *s)
+     trace_usb_msd_fatal_error();
  
- #include "qemu/osdep.h"
--#include "qemu/event_notifier.h"
- #include "qemu/module.h"
--#include "qemu/thread.h"
--#include "qemu/sockets.h"
- #include "qapi/error.h"
--#include "chardev/char.h"
- #include "hw/irq.h"
- #include "hw/pci/pci_device.h"
- #include "hw/qdev-properties.h"
-diff --git a/hw/net/can/can_sja1000.c b/hw/net/can/can_sja1000.c
-index 6694d7bfd84..5b6ba9df6c4 100644
---- a/hw/net/can/can_sja1000.c
-+++ b/hw/net/can/can_sja1000.c
-@@ -27,7 +27,7 @@
+     if (s->packet) {
+-        s->packet->status = USB_RET_STALL;
+-        usb_msd_packet_complete(s);
++        usb_msd_packet_complete(s, USB_RET_STALL);
+     }
  
- #include "qemu/osdep.h"
- #include "qemu/log.h"
--#include "chardev/char.h"
-+#include "qemu/bitops.h"
- #include "hw/irq.h"
- #include "migration/vmstate.h"
- #include "net/can_emu.h"
-diff --git a/hw/net/can/ctucan_core.c b/hw/net/can/ctucan_core.c
-index 812b83e93e1..4402d4cb1f7 100644
---- a/hw/net/can/ctucan_core.c
-+++ b/hw/net/can/ctucan_core.c
-@@ -28,7 +28,8 @@
+     /*
+@@ -255,8 +255,8 @@ void usb_msd_transfer_data(SCSIRequest *req, uint32_t len)
+         usb_msd_copy_data(s, p);
+         p = s->packet;
+         if (p && p->actual_length == p->iov.size) {
+-            p->status = USB_RET_SUCCESS; /* Clear previous ASYNC status */
+-            usb_msd_packet_complete(s);
++            /* USB_RET_SUCCESS status clears previous ASYNC status */
++            usb_msd_packet_complete(s, USB_RET_SUCCESS);
+         }
+     }
+ }
+@@ -295,8 +295,8 @@ void usb_msd_command_complete(SCSIRequest *req, size_t resid)
+                 s->mode = USB_MSDM_CSW;
+             }
+         }
+-        p->status = USB_RET_SUCCESS; /* Clear previous ASYNC status */
+-        usb_msd_packet_complete(s);
++        /* USB_RET_SUCCESS status clears previous ASYNC status */
++        usb_msd_packet_complete(s, USB_RET_SUCCESS);
+     } else if (s->data_len == 0) {
+         s->mode = USB_MSDM_CSW;
+     }
+@@ -332,8 +332,7 @@ void usb_msd_handle_reset(USBDevice *dev)
+     assert(s->req == NULL);
  
- #include "qemu/osdep.h"
- #include "qemu/log.h"
--#include "chardev/char.h"
-+#include "qemu/bswap.h"
-+#include "qemu/bitops.h"
- #include "hw/irq.h"
- #include "migration/vmstate.h"
- #include "net/can_emu.h"
-diff --git a/hw/net/can/ctucan_pci.c b/hw/net/can/ctucan_pci.c
-index 65f1f823030..a8c77b91943 100644
---- a/hw/net/can/ctucan_pci.c
-+++ b/hw/net/can/ctucan_pci.c
-@@ -27,12 +27,8 @@
-  */
+     if (s->packet) {
+-        s->packet->status = USB_RET_STALL;
+-        usb_msd_packet_complete(s);
++        usb_msd_packet_complete(s, USB_RET_STALL);
+     }
  
- #include "qemu/osdep.h"
--#include "qemu/event_notifier.h"
- #include "qemu/module.h"
--#include "qemu/thread.h"
--#include "qemu/sockets.h"
- #include "qapi/error.h"
--#include "chardev/char.h"
- #include "hw/irq.h"
- #include "hw/pci/pci_device.h"
- #include "hw/qdev-properties.h"
+     memset(&s->csw, 0, sizeof(s->csw));
 -- 
 2.45.2
 
