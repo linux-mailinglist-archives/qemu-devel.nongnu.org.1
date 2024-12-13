@@ -2,82 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03E679F1607
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Dec 2024 20:36:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 81EF09F15EC
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Dec 2024 20:34:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tMBO0-0008WM-H2; Fri, 13 Dec 2024 14:31:40 -0500
+	id 1tMBNw-0008Qv-Pe; Fri, 13 Dec 2024 14:31:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tMBNF-0006t3-Te
- for qemu-devel@nongnu.org; Fri, 13 Dec 2024 14:30:54 -0500
-Received: from mail-lj1-x235.google.com ([2a00:1450:4864:20::235])
+ id 1tMBNd-0007ya-5H
+ for qemu-devel@nongnu.org; Fri, 13 Dec 2024 14:31:17 -0500
+Received: from mail-lf1-x12f.google.com ([2a00:1450:4864:20::12f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tMBNE-0004I2-Bz
- for qemu-devel@nongnu.org; Fri, 13 Dec 2024 14:30:53 -0500
-Received: by mail-lj1-x235.google.com with SMTP id
- 38308e7fff4ca-30037784fceso19590961fa.2
- for <qemu-devel@nongnu.org>; Fri, 13 Dec 2024 11:30:50 -0800 (PST)
+ id 1tMBNa-0004K0-TM
+ for qemu-devel@nongnu.org; Fri, 13 Dec 2024 14:31:16 -0500
+Received: by mail-lf1-x12f.google.com with SMTP id
+ 2adb3069b0e04-53df19bf6a9so2911095e87.1
+ for <qemu-devel@nongnu.org>; Fri, 13 Dec 2024 11:31:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734118249; x=1734723049; darn=nongnu.org;
+ d=linaro.org; s=google; t=1734118273; x=1734723073; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=G5t5Kfg88Idn9A8sdeK/3C+aA4Q4/f69T01+9FYpo+k=;
- b=pulcQxxvmsaMNFbCgeKdO0MxoTeoxjO4cqGY2XeFUAZAjlUHZsfNI9pm0NxmAVhDea
- RZA7GqlGA7r2bZJkKlxA0d9NImYjSVwqsoIwvvltH/BvKNWsdYKRNKnYDHbj/KoyI5Bh
- wcuam9pOertvrPjh/wUZtWab1QkrDkFVXGdw4PBcbTZGfvVUxUZVbIp0aWj21slCLz+a
- O1sdxMuJ1p3aXbhwrUOZzOUe9H9fZnTv4s0uJaE2/IpiwPeRG41Wn3m4G6AHgIkAse/5
- p21Acwz0Nj9rvmVBawuEb56Y/E5wkYErUPBKwracWfkPLd6FR9otClfbljWnTcRSgEeS
- kwkA==
+ bh=+4rdkJduZkbXz6JmK4QEKv1jKAaYDuIzC71PHld//xk=;
+ b=B63d/NmfNI69OdSEksZuyj/v8mDEINqLsjO3PNjCLPaDgq6VOF/s8RPa85Itad30Id
+ xL1cnN2gzlyum0zR17UczJrciVNyckVTLJqYjqEJhC0n8HhtPLSlo1HSDgg/yl6Awl9F
+ HIMGtFBxJwVcogpAdDonUpVJQcl5AZvDeoyWBp2lzfrLan5Bp/Wg9Iy2R7ZWQaAX7smr
+ SD7UVtZ1TXyDeVa5kXRQBGyKVT/IV1t2ezsjOJtzGzhLIzaH2E2YlwfP0pKoYHZ9+JRW
+ qxTyNgpD/kVSG/sKsTMfxPNDYDTh2Lc/y1l6wI/zlkXqv1AXNuQvFmd3FXPQPwcP9l4q
+ aCkg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734118249; x=1734723049;
+ d=1e100.net; s=20230601; t=1734118273; x=1734723073;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=G5t5Kfg88Idn9A8sdeK/3C+aA4Q4/f69T01+9FYpo+k=;
- b=pfs+MrRSXsZbfC1tlOXsIaansDdKUBfsoW9va02S1x5a8fXrQc/oIKbZKX6dFfyg9S
- o0+uAAkaAbEL0zbFoCPhJ6ujJJskTcP2g/gCPBboYMycR+adK4rvTBpJ1oO1IKUjydIA
- FXmq1xhygPBIYqs69Adr+GCVRQao4g0t0SHhUzVwckZ+l5LEyifMTtzwt5r2c62nLPof
- r251amQ1PJ1qD3RsXgch2nfjXq8jf5ZYgnsc9LyIA2OEwuGxjC8bN5x5gVVScWmj+EVJ
- vumvP/dt34Asjm9AW6qrD5TvWlz5hfCqXsvrLSeW8bJsPtmO1VozMH1te4hCDaufgpZG
- eiyg==
-X-Gm-Message-State: AOJu0YxzDd5UiXQVMLi5NBfDuOo4Xs7pTXatXdpvuxg0HJTdDxvm6amf
- D0PXyHdJh0gbubsl6SoQ2nWYzUu3wOy20jemRabuzpI/WTlYNXvVPxNt6OiVj/FOeY/XcxgPIEX
- hb8o6cCcI
-X-Gm-Gg: ASbGnct4nI9qCsCzUZqXOuGmPy7t0QvR9EqEGN1tQTFMr+/v41zJHggTtEiBtfYDIvT
- sl3fFH+dSHeFdzoOACLcKVpjQWs+LEmTpDBgOBhe4cBvHiTx/y6IKD8tVtDZcXb8vG4VbkOpK3z
- b19HWs81px/KQm9WdkNYO89V6qDFkRBVBuOoxXh5SNX6PEmySRGihNZHv5nxzM9JBkUc4/FI3Jd
- PbfHgsoUfKpfqIc5b2fzok0/2t4HpLCz8a3BNpCjOpaLzkRBPSBlX9z1quEig==
-X-Google-Smtp-Source: AGHT+IEVWn8s5zP1MGFumvUQTEQ3ffwofWS3mvrYSU47wD3xL4Ll8IZLZ5/xOoizBV+DtpEb6Tf3yA==
-X-Received: by 2002:a05:6512:104d:b0:540:206b:c358 with SMTP id
- 2adb3069b0e04-5409055826bmr965522e87.20.1734118248733; 
- Fri, 13 Dec 2024 11:30:48 -0800 (PST)
+ bh=+4rdkJduZkbXz6JmK4QEKv1jKAaYDuIzC71PHld//xk=;
+ b=PwLEgCHKMRjYDw/ioRqWZQwUqdEKafc1GLsg5ieCOh6rQmsNf6eMTBu2cTWKD97eV/
+ t4D4rd41t4S6TtEkZhWRyijOg7THxqXbnY7P5QgibcEt0CKYV6pG1qVlMUN5N1Py9mLx
+ /1ackE9b8c2BQ00dPSFnlevqNi5WnP1yUhNrAq14tlM+7d4VPsrlzYSQBqBX9934Y3bJ
+ 2unQYz8zvMQJU0Ol0PSUR6HmehylAv8L93xQa9umlxd9QvPa19sQjskv7Z7FI40IMkUW
+ Y2eAmmbB1ST3VrpTlJikyYqSDL7Dw/nwHKHpmr6QuWX0zcL8thUu9Gs/KEAjBYbYDj1+
+ lfNg==
+X-Gm-Message-State: AOJu0YwjhaG0xFXWbyCJeLJ/9Ocr/mNSpUFTc3r3NcMJQ4iP+ik19IRX
+ FtrsvyJBsu0TRvct5VfuRo+AaEZ4rkKgpAfTzftb1TMkj0SBHd6e38jjbWC22Rx5nt+Uf0mRkym
+ nuxHSWqiy
+X-Gm-Gg: ASbGncvuXkjtft6JpERa/h8L0BddCRRvrOR7PrSky86/zrMbUhDn+hC9u1nbzAsZ61D
+ s/tE6dF03czQY0A3tYTo4AtSUYJhcUK2gpJkyynq2RckDNMncyBzgVrFCpvnSg9IpR3tZWcQRVY
+ Ak80bdGla+WAaC2nNJ/wqIwELw7+2L6PMKck8zSpyXz9gJyYtAfs8h7WwyO4jQYiCP6LIt4nKsr
+ xzIndfcndrrBkyl3WNmqge5khxOsrs1yRiR7ZtCXDU294DHLOE5e9+5NpafqQ==
+X-Google-Smtp-Source: AGHT+IGZaw7fo6ASbUtjikNIXECL567eaI66j1GW7LxGSht1RWaflHkAodf93EpmqmK03VfVVYaaWw==
+X-Received: by 2002:a05:6512:1288:b0:540:3572:bb6 with SMTP id
+ 2adb3069b0e04-54090557f0emr1423299e87.15.1734118272736; 
+ Fri, 13 Dec 2024 11:31:12 -0800 (PST)
 Received: from stoup.. ([91.209.212.67]) by smtp.gmail.com with ESMTPSA id
- 2adb3069b0e04-54120c01051sm6972e87.156.2024.12.13.11.30.44
+ 2adb3069b0e04-54120c204ebsm6723e87.250.2024.12.13.11.31.08
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 13 Dec 2024 11:30:48 -0800 (PST)
+ Fri, 13 Dec 2024 11:31:12 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Stefano Stabellini <sstabellini@kernel.org>,
- Anthony PERARD <anthony@xenproject.org>, Paul Durrant <paul@xen.org>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- xen-devel@lists.xenproject.org (open list:X86 Xen CPUs)
-Subject: [PATCH 69/71] hw/xen: Use DEFINE_PROP_END_OF_LIST in
- xen_sysdev_properties
-Date: Fri, 13 Dec 2024 13:30:03 -0600
-Message-ID: <20241213193004.2515684-7-richard.henderson@linaro.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>
+Subject: [PATCH 70/71] tests/unit: Constify all Property
+Date: Fri, 13 Dec 2024 13:31:03 -0600
+Message-ID: <20241213193104.2515757-1-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20241213193004.2515684-1-richard.henderson@linaro.org>
+In-Reply-To: <20241213190750.2513964-1-richard.henderson@linaro.org>
 References: <20241213190750.2513964-1-richard.henderson@linaro.org>
- <20241213193004.2515684-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::235;
- envelope-from=richard.henderson@linaro.org; helo=mail-lj1-x235.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::12f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-lf1-x12f.google.com
 X-Spam_score_int: 12
 X-Spam_score: 1.2
 X-Spam_bar: +
@@ -102,22 +99,22 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- hw/xen/xen-legacy-backend.c | 2 +-
+ tests/unit/test-qdev-global-props.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/xen/xen-legacy-backend.c b/hw/xen/xen-legacy-backend.c
-index b15393e934..f6ad58fe13 100644
---- a/hw/xen/xen-legacy-backend.c
-+++ b/hw/xen/xen-legacy-backend.c
-@@ -675,7 +675,7 @@ static const TypeInfo xensysbus_info = {
+diff --git a/tests/unit/test-qdev-global-props.c b/tests/unit/test-qdev-global-props.c
+index c8862cac5f..1eb95d2429 100644
+--- a/tests/unit/test-qdev-global-props.c
++++ b/tests/unit/test-qdev-global-props.c
+@@ -46,7 +46,7 @@ struct MyType {
+     uint32_t prop2;
  };
  
- static const Property xen_sysdev_properties[] = {
--    {/* end of property list */},
-+    DEFINE_PROP_END_OF_LIST(),
- };
- 
- static void xen_sysdev_class_init(ObjectClass *klass, void *data)
+-static Property static_props[] = {
++static const Property static_props[] = {
+     DEFINE_PROP_UINT32("prop1", MyType, prop1, PROP_DEFAULT),
+     DEFINE_PROP_UINT32("prop2", MyType, prop2, PROP_DEFAULT),
+     DEFINE_PROP_END_OF_LIST()
 -- 
 2.43.0
 
