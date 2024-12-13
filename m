@@ -2,84 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F21389F157B
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Dec 2024 20:09:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A7EC9F1587
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Dec 2024 20:11:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tMB1S-0002Tj-Dg; Fri, 13 Dec 2024 14:08:22 -0500
+	id 1tMB1a-0002Ul-3o; Fri, 13 Dec 2024 14:08:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tMB1Q-0002TI-0C
- for qemu-devel@nongnu.org; Fri, 13 Dec 2024 14:08:20 -0500
-Received: from mail-ot1-x334.google.com ([2607:f8b0:4864:20::334])
+ id 1tMB1X-0002UN-H2
+ for qemu-devel@nongnu.org; Fri, 13 Dec 2024 14:08:27 -0500
+Received: from mail-ot1-x329.google.com ([2607:f8b0:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tMB1L-0006Tu-5m
- for qemu-devel@nongnu.org; Fri, 13 Dec 2024 14:08:19 -0500
-Received: by mail-ot1-x334.google.com with SMTP id
- 46e09a7af769-71e163493efso1026973a34.3
- for <qemu-devel@nongnu.org>; Fri, 13 Dec 2024 11:08:13 -0800 (PST)
+ id 1tMB1O-0006UJ-Db
+ for qemu-devel@nongnu.org; Fri, 13 Dec 2024 14:08:27 -0500
+Received: by mail-ot1-x329.google.com with SMTP id
+ 46e09a7af769-71ddc7325beso207997a34.3
+ for <qemu-devel@nongnu.org>; Fri, 13 Dec 2024 11:08:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734116893; x=1734721693; darn=nongnu.org;
+ d=linaro.org; s=google; t=1734116897; x=1734721697; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=jImwOjJ09GIg50zurORlHyEBWxYYv3iz1UDBPMlQCZc=;
- b=RYIVVx7wCoE1e+avu5fpJbCM00f+8SpJOSrFh/9OX/xYcpf8VXSCSDulPU2+86BUb+
- 32wsrmciW4WQXIMUCypt5QGKvJOjap7Aof6SCnWksc2sHs+Fb9AMOyspn1GX/Oatxw9H
- XGvrrAAdTUnCajb+6tEbmBwVYW8JWmsLWHMe8ZXJADcEWR6WnSl7R3gBG7gbsSXE9SQ8
- gSrye1+ApBB5cPEiXJB82EVPgXFnRyAh52r7ta0NEfsRnFfikFrZrDqXL9UAIXIgEHYN
- IAJHpzsokYwKoDJNCMK4bP7PY71G5gqTrBQ8HSBNNAIq+pwmnDoUFnacY3Et9GRKchbg
- aDww==
+ bh=e2FaMYSRpXTA1aFa03SbQJetzuGw4zyxlsXPWwQbGKI=;
+ b=S6WxsRBRS4xzn1nHaaS9ic2cz/TceRnRcLpefvc3gycLm++U3wEXOU7ms6iql1WhrN
+ SEEukUjFz6ydcHfps7cG6D2eRvh8PM1mATdWjl6cZ6IXccP56YSfdMOzay/FtU+bPUFL
+ Z9Vjve1NwhwFwn2uS8g1LqXGRaTRlnHErJESkRFjuusnXgewIeXdRgCI7HfvOyPVtBL5
+ 1LiwV5SlnkD4z6OBVZbogtG7hWVBsnDQIoVZlqggsgREsHTauqzY0B+8F/7kR/Dg0ppC
+ iRgQs4NZEzBf+rO0XzD2FdwXwt8pUSCQfTFzXw0BRU3rSuPedgWwaADqsQnWgFlIPb9o
+ OeFQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734116893; x=1734721693;
+ d=1e100.net; s=20230601; t=1734116897; x=1734721697;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=jImwOjJ09GIg50zurORlHyEBWxYYv3iz1UDBPMlQCZc=;
- b=jKoWfs1xw+vso6Z9cDlOl/qu+H7bbbQIRfuQnZkBn2f2WmAAGqWwV7oAG+H8e+2pfP
- 6obyO9kJHSClvIwppCXLcRliLjQ0w4vzQzKf7L50H/xmq57rv+67unFG7qjuLfOzg9ul
- 6RqwStyPvPIDJHVhfSLrjG0JbjnBnn3FJ9jUMZbr/nVOEfHpi95OHNJb0FB40zWT73kD
- smOV/cIKwFld2Y1PjbHZMkyICypbzwUA0ZA41IFM4ibLF7mvXRic6qyRdios1P5WiIwH
- cBYouD3mgdFaKrmVrjW6L5Iv8mprOWNyzO1Jb4GznJPrwYt2FovqUXJFwiKYQHosRJfu
- bxBQ==
-X-Gm-Message-State: AOJu0Yw0d3Rb+VIufzVF6OCEKxNytHFIJl6K9ftX9kkwXRzv+tBOWt1S
- wdI0c0qsfLBcym3iEy+KWCye8rmyF2HU1Q2HSpN9V3w+qs6R8534E+jEf4bHouPJgCWSgm3KVZF
- L7h2v23jy
-X-Gm-Gg: ASbGncteutGYQu0paa7+vQ+DrjEa+uCCW4F1Qqpz+C4PiCc1Zzeq1mfCNhIK5xT+oVL
- Ta3n1LQFvlw+W+fy7Sv37nn+3g+rwUF6pPi11sB2DC3H102TcVOPQN2+ZEyeNNz6JdQ8dLUOiCF
- TSdzzB3sQhe5yzdq66Yn+orDavqBxQ1Bgo2dK19bH07RkywiGavMogbwvXv+X6odmeXLYpZOaSq
- mAS1uKRZmW256oiSXNdVxvwbJbEb3UTQ830jFrA7YkMtckB+QwkO/NbY3izJ1rl
-X-Google-Smtp-Source: AGHT+IFABWsnhXiIoWGMmQAbS8lAIh6RqMdZdcNCROKnGNeRQ1ps5qgfTtWM7Ae/bjgFsPgWYJoSAg==
-X-Received: by 2002:a05:6830:388c:b0:71e:240a:47fe with SMTP id
- 46e09a7af769-71e3ba33ad3mr2014950a34.19.1734116892755; 
- Fri, 13 Dec 2024 11:08:12 -0800 (PST)
+ bh=e2FaMYSRpXTA1aFa03SbQJetzuGw4zyxlsXPWwQbGKI=;
+ b=riDtFc03S+psHi3t/beN36vjj7PWJLDLW63Hxkn3q5YzyHZo0qPM9LUauP3Om0cN0h
+ xoYPlEcOh1/K/55YVxJOIr1ak7FLw+PtjZbvtFq59/nwA6KnU3ykG6SH3nHYiOsk128n
+ 2i8nCr/j+ZHQbNDI70QrCJkg3OLH0xD6LI8tJgyT6zb8GXkmvOOUyi0Vb5P3+F+vIMp5
+ kQGTKD3fdHWJhElNFpwn8zGQRXZS+B1SU3AUcx/gSfGnz3WsHZ+ZWS9i4LdXoZoEyPkl
+ sSPQWohVmRr4BH/keizzvdr1ch1Ly/xetX7vGUicN0bbro2L2a6XUi1toeusKIXYCAkN
+ 0O+Q==
+X-Gm-Message-State: AOJu0YyABWAhu1vEA8993STcNIettfJop6J4pb51MSiyLIXURYy1Lkvj
+ ApCZ0yUwfxuVySTo9pMn003AWIKurnr61G3PVCuF+VX75Bfg/n3HEwPcqmd51RWFYht0zl6HsZ0
+ wqNbLAlDS
+X-Gm-Gg: ASbGncuYCjFh3FrRS+iDHxsVv2DVUO9InH7fP228A6HN6x0D+Z/YeWv9XxTErfeARzz
+ KEogTZmHZhEv+eBG6GfiPeC9Yn6iPHNB39nfAlrHGFShX8Q/wRk6xuJwElyDkn6DQAxDOPBJTqQ
+ VpssCJNZ4nxNmLrDcfReBhnfY3OjBQFez4X3N+MeusVEsMhiwWtwroZOoUTGgFomFWImfp/uPoa
+ +GkTIvU2r8t50DHhZdmxuQolFj231mKjKbO4bbVAFnFzb5aX3wLJG2EJJhkZbiI
+X-Google-Smtp-Source: AGHT+IHvPaIqzi9nsQgAqlbVMpPUgAtYJed7d7TChM7R3MvZA2BHTevmR9LxRrfzM3OF+EtKjRCBLg==
+X-Received: by 2002:a05:6830:6a13:b0:71e:1fbe:db2a with SMTP id
+ 46e09a7af769-71e3b8683dcmr2304738a34.12.1734116897208; 
+ Fri, 13 Dec 2024 11:08:17 -0800 (PST)
 Received: from stoup.. ([187.217.227.247]) by smtp.gmail.com with ESMTPSA id
- 46e09a7af769-71e4834da91sm29697a34.18.2024.12.13.11.08.11
+ 46e09a7af769-71e4834da91sm29697a34.18.2024.12.13.11.08.13
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 13 Dec 2024 11:08:12 -0800 (PST)
+ Fri, 13 Dec 2024 11:08:16 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
-Subject: [PATCH 05/71] target/microblaze: Constify all Property
-Date: Fri, 13 Dec 2024 13:06:39 -0600
-Message-ID: <20241213190750.2513964-10-richard.henderson@linaro.org>
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Aurelien Jarno <aurelien@aurel32.net>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ Aleksandar Rikalo <arikalo@gmail.com>
+Subject: [PATCH 06/71] target/mips: Constify all Property
+Date: Fri, 13 Dec 2024 13:06:40 -0600
+Message-ID: <20241213190750.2513964-11-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241213190750.2513964-1-richard.henderson@linaro.org>
 References: <20241213190750.2513964-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::334;
- envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x334.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::329;
+ envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x329.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,22 +99,22 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/microblaze/cpu.c | 2 +-
+ target/mips/cpu.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/target/microblaze/cpu.c b/target/microblaze/cpu.c
-index 0e1e22d1e8..0e41e39c0e 100644
---- a/target/microblaze/cpu.c
-+++ b/target/microblaze/cpu.c
-@@ -339,7 +339,7 @@ static void mb_cpu_initfn(Object *obj)
-     object_property_add_alias(obj, "little-endian", obj, "endianness");
- }
+diff --git a/target/mips/cpu.c b/target/mips/cpu.c
+index 4feacc88c0..02c0e1b0f9 100644
+--- a/target/mips/cpu.c
++++ b/target/mips/cpu.c
+@@ -539,7 +539,7 @@ static const struct SysemuCPUOps mips_sysemu_ops = {
+ };
+ #endif
  
--static Property mb_properties[] = {
-+static const Property mb_properties[] = {
-     /*
-      * Following properties are used by Xilinx DTS conversion tool
-      * do not rename them.
+-static Property mips_cpu_properties[] = {
++static const Property mips_cpu_properties[] = {
+     DEFINE_PROP_BOOL("big-endian", MIPSCPU, is_big_endian, TARGET_BIG_ENDIAN),
+     DEFINE_PROP_END_OF_LIST(),
+ };
 -- 
 2.43.0
 
