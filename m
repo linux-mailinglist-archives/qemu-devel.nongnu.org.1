@@ -2,79 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79C409F157D
+	by mail.lfdr.de (Postfix) with ESMTPS id BA4EC9F157F
 	for <lists+qemu-devel@lfdr.de>; Fri, 13 Dec 2024 20:10:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tMB2J-0003Di-Vv; Fri, 13 Dec 2024 14:09:16 -0500
+	id 1tMB2J-0003An-Kd; Fri, 13 Dec 2024 14:09:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tMB1o-0002Vx-O4
- for qemu-devel@nongnu.org; Fri, 13 Dec 2024 14:08:53 -0500
-Received: from mail-oo1-xc29.google.com ([2607:f8b0:4864:20::c29])
+ id 1tMB1r-0002WK-2d
+ for qemu-devel@nongnu.org; Fri, 13 Dec 2024 14:08:57 -0500
+Received: from mail-ot1-x32a.google.com ([2607:f8b0:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tMB1l-0006YH-Oz
- for qemu-devel@nongnu.org; Fri, 13 Dec 2024 14:08:44 -0500
-Received: by mail-oo1-xc29.google.com with SMTP id
- 006d021491bc7-5f2efd94787so1261754eaf.2
- for <qemu-devel@nongnu.org>; Fri, 13 Dec 2024 11:08:40 -0800 (PST)
+ id 1tMB1o-0006Yq-CI
+ for qemu-devel@nongnu.org; Fri, 13 Dec 2024 14:08:46 -0500
+Received: by mail-ot1-x32a.google.com with SMTP id
+ 46e09a7af769-71e1d6c7738so1117978a34.2
+ for <qemu-devel@nongnu.org>; Fri, 13 Dec 2024 11:08:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734116918; x=1734721718; darn=nongnu.org;
+ d=linaro.org; s=google; t=1734116921; x=1734721721; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=KfKmXC0aO5/KmkpGNbMSuzTs1IA6VJWmA6AglE8msBg=;
- b=qjWhxzLw+f1qeJgL5O8Zc3lFfp3RKZWDtvvi7yqOtsv9sr8orZIXZUsgQr9S4x62yu
- AMeb/m4nkItMS+Ufo/vRok1YVHtjdBM/W47xTo3aw2YqeLrZraCi9jQf4g9dBv/yNXSm
- 9oqePjZT7ibAEF+71SZZaKXJa8OZ7xeacaqk5WEqyjYlLBM/M/5RtCLMLfyK1Fcq7McT
- h6FIgE5FkxPBaU06lribmkfwKT0ht3r40B1RCUjpCts9QI0GlehF9oe6yDL19r9xA9yI
- TLVsX1RAMb7TAJjK/6BvNN2sMMVSkUc/lanDjDMA+RN8qEnZYr/20V4LgQ99ZLHSl6wD
- cA9Q==
+ bh=JKm04qysg/gEgbm4vurn75ARW08p/MAYicuTqcRbj08=;
+ b=StpMa9rJDZms0fqTJSqcDhdfeCIJoHKZ6dKkvjJEw80fEF4v4zcS5yGJIh4oNv+BLS
+ Dy5q7iiSVIhkdLeZ/Nd49V0sMzmstXFQgAMvIbJYujiJrTkA8iPCQM1/WFXtcWazrLFt
+ 8EIN8Ajo6BKPsf/PA8u8Oe5wwrKKpY0L6lZ9p9kXETcbMinefXb4yDTWHLI1YtwZBXp1
+ 0DyN4Osdk9RKo//SeJxHyCpUkVFhNbBPEbTun8KE7W687NqdFsKBpbdNegFkVaN8rWSA
+ 89+f9mD/3LsTWD83+3pIFOJ5nYi7zvvuNU3qTnY4Q55k0eAPEbwnykeW9ARcapI4eJzm
+ tp/A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734116918; x=1734721718;
+ d=1e100.net; s=20230601; t=1734116921; x=1734721721;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=KfKmXC0aO5/KmkpGNbMSuzTs1IA6VJWmA6AglE8msBg=;
- b=glTmQ5HdF0P4AZn3zw2wz8HDxWmm5TbbX6lYMmcjKRFESYttU9HgQxSl7dn0cr8MEv
- SlfeJbIjnMJgrDf+dMQrtmTvbsNTOvaVefLM51qLboCSRPQUh6ov3cJSNaeOtqlEVaZC
- OWyIdQkx2VFk0eP3ZUpXH18l2/YZAtTwk/p0Igc6kVbJ90p2Im9duxOVcDNowjA46fHp
- tUhfhMIv8a1cDZfjjp2KmXIph4WqahT08dextGxziuBghrU8WUcWz8gKIixLLwUuvs5A
- SLlfP9lZc2GSsY+iGljwzjMqXzfHIDorPX67+PHZS4gmiNrQJwYUiSc7RPffw5d8bQ7d
- VwAw==
-X-Gm-Message-State: AOJu0YzvmE5+IUwKBCXzvNbmjU3fZHGDqpm+I0Npi+a4bi3xy9o7GGez
- 2tcL112UvTYsSku7KLePEwiILfyom0uWrbTPXanLBKmC9i//WLTWqL+ZE8aqwKV0NgznlqzMNNl
- CbjtkGOIC
-X-Gm-Gg: ASbGnctt7sPTipTnk+dVMQqihSa8BTfxy1B574vjKfD4jETBK7S3uPPKHgXxBC8a0F8
- TVuEFE/dxYLEPa9u0pVMyNHA6Q6kIUZByhkBOFBvTs18ioLP0aYhorwXLEAoQHtAasJ5lYhZapO
- JLEV1IYpFK+bOwEoPU1iM1fKGFEE1sTKMPWjQshredyg0mglsoY4RXzu71ymFYBQ6Mfm9C5qpzz
- OUoon98k9CRIEOBVb+na3BmBEbXJRWcep0ueavgqhD4IZd/pZl2E9r2SJMnRpoD
-X-Google-Smtp-Source: AGHT+IFBh0w3wiKDbzz+9uNaaz1zJxDy6soOwdiPtR43E72iVjvprcArmIC3+dGDij/2H8+Jeg7Y4A==
-X-Received: by 2002:a05:6820:1ac6:b0:5f2:9d29:2c3f with SMTP id
- 006d021491bc7-5f32948b437mr2513007eaf.6.1734116918140; 
- Fri, 13 Dec 2024 11:08:38 -0800 (PST)
+ bh=JKm04qysg/gEgbm4vurn75ARW08p/MAYicuTqcRbj08=;
+ b=YKQCKH3b2fB3qDKy64NVeLyucE45X6NVxQMXurz26o5ym9sCyJMiigf0NMLTvFxhHD
+ b1MMaTA4IEIsppza2YouHLr4llCCfzwJHQJYILGwnov2hpWWtToPIbKtxXJoqF8+IOLP
+ bDu1UlGdC/CIew+XvLm7B0HpYeNaM2zq/IwiWw+ZtTLwBQuBlocxhc8zMRqIDZyaNSiZ
+ /bHzuUQADj3/IAqMqqxDvZfyXbMblgSeYJy8UITOZUXT2D7LjOEvGr8XkinT9ZBqO1Jy
+ BXsXzIbAZ8LfVevGfD3L8PiO+aId5QIyRI3ktb5u11yWTK0UzzomywpKusnxqmYbq2vB
+ vrRQ==
+X-Gm-Message-State: AOJu0YwXEMpT7PmBSgnRb3eqf9hddP1PdOIsYjhbVRR2boDg5x7EHvmf
+ SRd17hijqofgkuyTT+wdG39dthtW1zICVC7E+h3YivpuWEcx8k8VbtGA0C3F9V22fwvAE8xooGF
+ t9K6IW/P4
+X-Gm-Gg: ASbGnctrkB8HyRjQthqNLgAqBb41R8F4wa67CZ/jiw2/2bsmawmefjo2kA/5rAX6Pnn
+ PcP8l5Cbxza/KgJI26d7oK/sL/MKmxn50hOJlxkQ8bXm2MgbxdUbok90eCeySGviL9heIC20MDv
+ rPhdWzxLmM9dqWKxAvIuXHwpmyj0VXN0qZqEAPocaVRtVNDkhMbfIjA8vXa7ynsFi9OV51+G5bX
+ tJJywHaZqkEBK1cfzN9BcjYJjy0jqox38xU+gEnUqyawZpkby6v54N5CjQIcK3G
+X-Google-Smtp-Source: AGHT+IEXm24ToGc6IqeKoxLAgKPqwB0T7wRd1P5z7PkcgO1t3mvypyaI6PTRDRjo/onweT80OBoifQ==
+X-Received: by 2002:a05:6830:6e09:b0:71d:eb02:baed with SMTP id
+ 46e09a7af769-71e3b8576b6mr2256363a34.8.1734116921476; 
+ Fri, 13 Dec 2024 11:08:41 -0800 (PST)
 Received: from stoup.. ([187.217.227.247]) by smtp.gmail.com with ESMTPSA id
- 46e09a7af769-71e4834da91sm29697a34.18.2024.12.13.11.08.36
+ 46e09a7af769-71e4834da91sm29697a34.18.2024.12.13.11.08.38
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 13 Dec 2024 11:08:37 -0800 (PST)
+ Fri, 13 Dec 2024 11:08:41 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: David Hildenbrand <david@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
- Thomas Huth <thuth@redhat.com>,
- qemu-s390x@nongnu.org (open list:S390 TCG CPUs)
-Subject: [PATCH 09/71] target/s390x: Constify all Property
-Date: Fri, 13 Dec 2024 13:06:43 -0600
-Message-ID: <20241213190750.2513964-14-richard.henderson@linaro.org>
+Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Artyom Tarasenko <atar4qemu@gmail.com>
+Subject: [PATCH 10/71] target/sparc: Constify all Property and PropertyInfo
+Date: Fri, 13 Dec 2024 13:06:44 -0600
+Message-ID: <20241213190750.2513964-15-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241213190750.2513964-1-richard.henderson@linaro.org>
 References: <20241213190750.2513964-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c29;
- envelope-from=richard.henderson@linaro.org; helo=mail-oo1-xc29.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::32a;
+ envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x32a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,22 +98,30 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/s390x/cpu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ target/sparc/cpu.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/target/s390x/cpu.c b/target/s390x/cpu.c
-index adb27504ad..4702761ca3 100644
---- a/target/s390x/cpu.c
-+++ b/target/s390x/cpu.c
-@@ -309,7 +309,7 @@ static const gchar *s390_gdb_arch_name(CPUState *cs)
-     return "s390:64-bit";
+diff --git a/target/sparc/cpu.c b/target/sparc/cpu.c
+index 284df950e0..8f494c286a 100644
+--- a/target/sparc/cpu.c
++++ b/target/sparc/cpu.c
+@@ -874,14 +874,14 @@ static void sparc_set_nwindows(Object *obj, Visitor *v, const char *name,
+     cpu->env.def.nwindows = value;
  }
  
--static Property s390x_cpu_properties[] = {
-+static const Property s390x_cpu_properties[] = {
- #if !defined(CONFIG_USER_ONLY)
-     DEFINE_PROP_UINT32("core-id", S390CPU, env.core_id, 0),
-     DEFINE_PROP_INT32("socket-id", S390CPU, env.socket_id, -1),
+-static PropertyInfo qdev_prop_nwindows = {
++static const PropertyInfo qdev_prop_nwindows = {
+     .name  = "int",
+     .get   = sparc_get_nwindows,
+     .set   = sparc_set_nwindows,
+ };
+ 
+ /* This must match feature_name[]. */
+-static Property sparc_cpu_properties[] = {
++static const Property sparc_cpu_properties[] = {
+     DEFINE_PROP_BIT("float128", SPARCCPU, env.def.features,
+                     CPU_FEATURE_BIT_FLOAT128, false),
+ #ifdef TARGET_SPARC64
 -- 
 2.43.0
 
