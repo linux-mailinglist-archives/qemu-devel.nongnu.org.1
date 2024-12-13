@@ -2,82 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 371C49F1580
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Dec 2024 20:10:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 79C409F157D
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Dec 2024 20:10:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tMB2F-0002qD-TN; Fri, 13 Dec 2024 14:09:11 -0500
+	id 1tMB2J-0003Di-Vv; Fri, 13 Dec 2024 14:09:16 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tMB1i-0002VL-SE
- for qemu-devel@nongnu.org; Fri, 13 Dec 2024 14:08:42 -0500
-Received: from mail-ot1-x330.google.com ([2607:f8b0:4864:20::330])
+ id 1tMB1o-0002Vx-O4
+ for qemu-devel@nongnu.org; Fri, 13 Dec 2024 14:08:53 -0500
+Received: from mail-oo1-xc29.google.com ([2607:f8b0:4864:20::c29])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tMB1h-0006Xc-6m
- for qemu-devel@nongnu.org; Fri, 13 Dec 2024 14:08:38 -0500
-Received: by mail-ot1-x330.google.com with SMTP id
- 46e09a7af769-71e15717a2dso933243a34.3
- for <qemu-devel@nongnu.org>; Fri, 13 Dec 2024 11:08:36 -0800 (PST)
+ id 1tMB1l-0006YH-Oz
+ for qemu-devel@nongnu.org; Fri, 13 Dec 2024 14:08:44 -0500
+Received: by mail-oo1-xc29.google.com with SMTP id
+ 006d021491bc7-5f2efd94787so1261754eaf.2
+ for <qemu-devel@nongnu.org>; Fri, 13 Dec 2024 11:08:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734116916; x=1734721716; darn=nongnu.org;
+ d=linaro.org; s=google; t=1734116918; x=1734721718; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=bMmfxBtIiIXQAk+hQuWMNvOte8CftqHpp2z6mVglAAg=;
- b=PsxB3Kt1Pk8kIaIYCsx4pH3CLcCzmAfQl5wzZhRHjwv2y14bVCXrNxWcztlBvtMqoO
- 58jJvPb7Jn0wJeLovvy8kpVuG6To+UpTXbTqbJARQfTNsEcCNgLhnifJX0re/MJDM1nA
- fCXIz5S25ozjGGYHeXg0EbbXMY0kmtD1mOHEuaYN56ZTcdcrhrJ/DWzGGGY5tx8EPTeg
- mSgm0c28nbL4ykBAKfHGLHj+e+Bw//Xoae+2k0itRS2JeFQ/IvN6Ogk9WWkgFZaaUjcv
- VeMmlFfxrtC2O89CqlJeV/cJGWRZjh/FxTOBWkGJKfNgbK0fX/BbXLjVTRW7Pog7KiK2
- mRoQ==
+ bh=KfKmXC0aO5/KmkpGNbMSuzTs1IA6VJWmA6AglE8msBg=;
+ b=qjWhxzLw+f1qeJgL5O8Zc3lFfp3RKZWDtvvi7yqOtsv9sr8orZIXZUsgQr9S4x62yu
+ AMeb/m4nkItMS+Ufo/vRok1YVHtjdBM/W47xTo3aw2YqeLrZraCi9jQf4g9dBv/yNXSm
+ 9oqePjZT7ibAEF+71SZZaKXJa8OZ7xeacaqk5WEqyjYlLBM/M/5RtCLMLfyK1Fcq7McT
+ h6FIgE5FkxPBaU06lribmkfwKT0ht3r40B1RCUjpCts9QI0GlehF9oe6yDL19r9xA9yI
+ TLVsX1RAMb7TAJjK/6BvNN2sMMVSkUc/lanDjDMA+RN8qEnZYr/20V4LgQ99ZLHSl6wD
+ cA9Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734116916; x=1734721716;
+ d=1e100.net; s=20230601; t=1734116918; x=1734721718;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=bMmfxBtIiIXQAk+hQuWMNvOte8CftqHpp2z6mVglAAg=;
- b=hqjqXjKQocBTGtlYRvCZCOMiXvQsCklesLD8YQvn/2W63dJBW7twQgoNGYWgQUjTp5
- 0mUvqfSZIdLD8aslGiwl4Jibb0RS3V7Dv8TYe0meowIdKk/GNfHrqVoF8mhx4SBgw9X7
- bkhe8wUxHsgutnIX5FHut6CaPwTWT2coqkOFgzO6EgH6RPYs7VFYEcTrMVMep4PuoBXa
- 5boXxieSZwdq44MNLOPyET+zg6FBXor2QCHRF8LAFMvYDRvU5+DKTUr8w/6k5O87RJQn
- t1NXx5vVidzoKVNJdHvj+zcnXIU81EP+oKbLJpeT1jun78Bfq2SYMuyfBJpRDWeZWESr
- 06Fg==
-X-Gm-Message-State: AOJu0Ywir1CN7KxDQge4u6a/IeeMBbsrQ9/J1ZQ8f6ZGDAv2N2Uxt+EA
- 2xj8OWHLXXlOxrILPUP2VAUE/IIvC7rDpUJEANyyB3H9tUuFn7Ztg74cWUdNumMbXFG/MMz/izG
- MgvWd7Ia4
-X-Gm-Gg: ASbGncusHNhXdNjHAk4aY6oDyBf6XfIeCS9TA4msFM2D84JvAHZ10irNABWZwQ04zyA
- HO2SYZKvyE/GbV8ft3kwOgORGFRJz+vL4EO1c755G6ZaJNUKWczeUZabTX2Vfzna+eex5kSS3Ib
- NuY65kBy3i6SuPxeA9bT0sJIwESZnJkCWEBH5ImgcG49JOhj6hvA8sgCFqN0DNE5jVMsmxeZB1N
- S80Oi7iUoRc3Uv5iBbfmnAwdWdjU3HpQ1AbpEvzXFOMYb3Rm6w7olUBVjbJLb3K
-X-Google-Smtp-Source: AGHT+IHR9dtrRL4g/E7x0+FRYpPWMzlKYyihfOxPXAT7iSgrm3iYxLMSyRaqRPWEIdZBAwzGSr5TAQ==
-X-Received: by 2002:a05:6830:380a:b0:718:a52:e1cc with SMTP id
- 46e09a7af769-71e3ba3a182mr2496590a34.25.1734116915785; 
- Fri, 13 Dec 2024 11:08:35 -0800 (PST)
+ bh=KfKmXC0aO5/KmkpGNbMSuzTs1IA6VJWmA6AglE8msBg=;
+ b=glTmQ5HdF0P4AZn3zw2wz8HDxWmm5TbbX6lYMmcjKRFESYttU9HgQxSl7dn0cr8MEv
+ SlfeJbIjnMJgrDf+dMQrtmTvbsNTOvaVefLM51qLboCSRPQUh6ov3cJSNaeOtqlEVaZC
+ OWyIdQkx2VFk0eP3ZUpXH18l2/YZAtTwk/p0Igc6kVbJ90p2Im9duxOVcDNowjA46fHp
+ tUhfhMIv8a1cDZfjjp2KmXIph4WqahT08dextGxziuBghrU8WUcWz8gKIixLLwUuvs5A
+ SLlfP9lZc2GSsY+iGljwzjMqXzfHIDorPX67+PHZS4gmiNrQJwYUiSc7RPffw5d8bQ7d
+ VwAw==
+X-Gm-Message-State: AOJu0YzvmE5+IUwKBCXzvNbmjU3fZHGDqpm+I0Npi+a4bi3xy9o7GGez
+ 2tcL112UvTYsSku7KLePEwiILfyom0uWrbTPXanLBKmC9i//WLTWqL+ZE8aqwKV0NgznlqzMNNl
+ CbjtkGOIC
+X-Gm-Gg: ASbGnctt7sPTipTnk+dVMQqihSa8BTfxy1B574vjKfD4jETBK7S3uPPKHgXxBC8a0F8
+ TVuEFE/dxYLEPa9u0pVMyNHA6Q6kIUZByhkBOFBvTs18ioLP0aYhorwXLEAoQHtAasJ5lYhZapO
+ JLEV1IYpFK+bOwEoPU1iM1fKGFEE1sTKMPWjQshredyg0mglsoY4RXzu71ymFYBQ6Mfm9C5qpzz
+ OUoon98k9CRIEOBVb+na3BmBEbXJRWcep0ueavgqhD4IZd/pZl2E9r2SJMnRpoD
+X-Google-Smtp-Source: AGHT+IFBh0w3wiKDbzz+9uNaaz1zJxDy6soOwdiPtR43E72iVjvprcArmIC3+dGDij/2H8+Jeg7Y4A==
+X-Received: by 2002:a05:6820:1ac6:b0:5f2:9d29:2c3f with SMTP id
+ 006d021491bc7-5f32948b437mr2513007eaf.6.1734116918140; 
+ Fri, 13 Dec 2024 11:08:38 -0800 (PST)
 Received: from stoup.. ([187.217.227.247]) by smtp.gmail.com with ESMTPSA id
- 46e09a7af769-71e4834da91sm29697a34.18.2024.12.13.11.08.27
+ 46e09a7af769-71e4834da91sm29697a34.18.2024.12.13.11.08.36
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 13 Dec 2024 11:08:35 -0800 (PST)
+ Fri, 13 Dec 2024 11:08:37 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>, Bin Meng <bmeng.cn@gmail.com>,
- Weiwei Li <liwei1518@gmail.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- qemu-riscv@nongnu.org (open list:RISC-V TCG CPUs)
-Subject: [PATCH 08/71] target/riscv: Constify all Property
-Date: Fri, 13 Dec 2024 13:06:42 -0600
-Message-ID: <20241213190750.2513964-13-richard.henderson@linaro.org>
+Cc: David Hildenbrand <david@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
+ Thomas Huth <thuth@redhat.com>,
+ qemu-s390x@nongnu.org (open list:S390 TCG CPUs)
+Subject: [PATCH 09/71] target/s390x: Constify all Property
+Date: Fri, 13 Dec 2024 13:06:43 -0600
+Message-ID: <20241213190750.2513964-14-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241213190750.2513964-1-richard.henderson@linaro.org>
 References: <20241213190750.2513964-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::330;
- envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x330.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c29;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oo1-xc29.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,22 +99,22 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/riscv/cpu.c | 2 +-
+ target/s390x/cpu.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 80b09952e7..4329015076 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -2661,7 +2661,7 @@ RISCVCPUImpliedExtsRule *riscv_multi_ext_implied_rules[] = {
-     NULL
- };
+diff --git a/target/s390x/cpu.c b/target/s390x/cpu.c
+index adb27504ad..4702761ca3 100644
+--- a/target/s390x/cpu.c
++++ b/target/s390x/cpu.c
+@@ -309,7 +309,7 @@ static const gchar *s390_gdb_arch_name(CPUState *cs)
+     return "s390:64-bit";
+ }
  
--static Property riscv_cpu_properties[] = {
-+static const Property riscv_cpu_properties[] = {
-     DEFINE_PROP_BOOL("debug", RISCVCPU, cfg.debug, true),
- 
-     {.name = "pmu-mask", .info = &prop_pmu_mask},
+-static Property s390x_cpu_properties[] = {
++static const Property s390x_cpu_properties[] = {
+ #if !defined(CONFIG_USER_ONLY)
+     DEFINE_PROP_UINT32("core-id", S390CPU, env.core_id, 0),
+     DEFINE_PROP_INT32("socket-id", S390CPU, env.socket_id, -1),
 -- 
 2.43.0
 
