@@ -2,78 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EACBD9F162D
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Dec 2024 20:37:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D81789F15BE
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Dec 2024 20:22:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tMB90-0000ZG-Uk; Fri, 13 Dec 2024 14:16:11 -0500
+	id 1tMB98-0000zj-0f; Fri, 13 Dec 2024 14:16:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tMB7A-0006hr-8P
- for qemu-devel@nongnu.org; Fri, 13 Dec 2024 14:14:18 -0500
-Received: from mail-oi1-x233.google.com ([2607:f8b0:4864:20::233])
+ id 1tMB7G-00075u-8W
+ for qemu-devel@nongnu.org; Fri, 13 Dec 2024 14:14:22 -0500
+Received: from mail-oa1-x30.google.com ([2001:4860:4864:20::30])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tMB78-0007ZD-5W
- for qemu-devel@nongnu.org; Fri, 13 Dec 2024 14:14:15 -0500
-Received: by mail-oi1-x233.google.com with SMTP id
- 5614622812f47-3eb880e5ac2so1019985b6e.2
- for <qemu-devel@nongnu.org>; Fri, 13 Dec 2024 11:14:13 -0800 (PST)
+ id 1tMB7C-0007Zk-LA
+ for qemu-devel@nongnu.org; Fri, 13 Dec 2024 14:14:21 -0500
+Received: by mail-oa1-x30.google.com with SMTP id
+ 586e51a60fabf-2a01bcd0143so1103940fac.2
+ for <qemu-devel@nongnu.org>; Fri, 13 Dec 2024 11:14:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734117252; x=1734722052; darn=nongnu.org;
+ d=linaro.org; s=google; t=1734117255; x=1734722055; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=SrDfnd4nexJqpZXbjwhcsQhh4SvuMhCE9tA8eU5koCw=;
- b=t/GUh3GyEu893oPCsyUDxnf1WMNcHlDSoio00NRC6/i5DtXhgKSLz+skx7FEu4OI/N
- kJ2hynA4ifXnKkRdGG0LP6ibsyrA45BBqlNHGIjWDOoathZLTHOtw/zTewbrN6IfpT9C
- pSVRiyCQOkCnGhnXPRG2gfnqS7m0uYAI7ovhC61Sn3Xp45TDpth8Dniy5JmTkJ92lHbx
- u3wYHTa0aG5APkY5dlvBUWbhGCHJaeLP0E6dJxDKFAcIrvkGl/otC+KL7s8cJN62d9A7
- 1yIo3aDtoZgA43LQls6iHAuGcE4+wArWx9QY1NcyeJnZFwG1jd7eQ+5GE3r8dTi+Bkbt
- +WtQ==
+ bh=n5D+8o6Yro+Zz5cVKT8gicnF5oLBwjRb2DvBbHQ0DT4=;
+ b=PpEGeeC9Tu1owfedzcwmhKASjwBf9BxEVafuSIxghO+02QHcu8uYMDCIM95K6BYWUM
+ y6Ns7P+9SbD1dWib5XELepF2lYMIMulfR4bttuwqo6DWlRtW3BkY3zwHrxsOuRKfyA/A
+ OBSVaMwer+XmfQyLFbB1PYS71x2+zJoyI7Zfj6iTJe16dVmvMcUAuozuLoZRtBlXCRhn
+ JBTRXUUfrxgZOliiHMW/BStEVX80NDDXRsjF4Cs0k6UNMaBZ3kDo4uZLEB6l7VYPJ8Ao
+ eTG5Zdf3pS2cqK8Vn15oO9yEY/NW3vyTqIcQ92lirMZjLDhTZew3uYvSzt77aCkLxzLr
+ kFHA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734117252; x=1734722052;
+ d=1e100.net; s=20230601; t=1734117255; x=1734722055;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=SrDfnd4nexJqpZXbjwhcsQhh4SvuMhCE9tA8eU5koCw=;
- b=RZ0OpAy6Vwko9yITvTaKCzu3S52ez2UzkM1jsqCjI3a05vBXm52KiNdZuO63/mEMa/
- 2OFguqwFiWkHegp3G29ENRzSRHHme6f/htaSsW7ejDQO30rgXHyC22WsZba4VNhqbf7J
- s0CXI9YLlcvJM9jqXMItmGq8E4m1XKlc5/t7lOSiHKMzEZQQ+bbzDJbuJjQ/3GkH70S5
- OLameJcj3ECLKEmVsgu8wV0uMg4FcvZb6jb1ekpyYrEHjHgpAZYv+4e87zEOIGiyYdL7
- LRIn/IEhtTomvlK6D/fOUyNaylgz7gFzg/+bRnxU60fNiPs4he/6HMbnmQEEY0Y6HQco
- Tvww==
-X-Gm-Message-State: AOJu0Yyb4FTTIftth+cWFh0kYU9ZDYociuFrlNytFarsGWZuAE22RF5a
- 2LQun76a+R5YALOC7q4X2etXfVygeCiGmjkNcROj7M/3igzOoMoqSGMPuiCI6PNhKi4wKzvBJh5
- l7zE+n5gr
-X-Gm-Gg: ASbGncsuyJCZZjapx7D3rW//jjpaall5uZWkGYXhF9Tac0lTCmdKk3wztEQmEETRPcg
- P74D9UjR90kqCbKp+hCBmDy8RFhDAOaNyjXVgUIuVfMqOs4PV7Okx1znf3ebNlFIHo0ctVuGvJj
- g2LY8VHLaTbUXBfn8vt5mlko88YIdPJ81u8oLr6S5t8zAk+PBds0bimAq7NWO+1TIxEDYTwQlWT
- aExox1P5NluYhJ/3y+m8zgVLlIHjzeearz6GFcHvU6a+k5rOrT2vbSFW9xiJoar
-X-Google-Smtp-Source: AGHT+IHXhM6+cWhPJCruqCEoyGoWYGDjiwRiQ7pUS+Ae3QyN331kWuJNMOv7kOrfzyozCy5qxlE/UQ==
-X-Received: by 2002:a05:6808:3c47:b0:3eb:8eb0:8166 with SMTP id
- 5614622812f47-3eba6983205mr1891627b6e.36.1734117252628; 
- Fri, 13 Dec 2024 11:14:12 -0800 (PST)
+ bh=n5D+8o6Yro+Zz5cVKT8gicnF5oLBwjRb2DvBbHQ0DT4=;
+ b=e74+hGGvb6NHhIN4sxfrBMkPk3jEJxZXCQFFYO1COIUiHPEB+Xki/IQolRWRKSIEg0
+ y3Bkiwc4Xy3POAD2YY2xm5uPwXvL0VriYIHAdTQlZiJo9OgczSDDmlEkzv1Hq+1Z0yVp
+ 1wtnn2i0sKzyDRSAhUA9pwz9dFVIxgPnvaBGIuTJwNUJIHxAhVrwCqe+6CGA/Nw+1gwy
+ +2+fTaHV9I+OaFY+F/haTpqil9YQA9khkY1LWdTKsvjP0miU7X/1L3dcIiJCtpjC+Yeo
+ ZxvAUHoTnc4yUpXjdr0sqTa0S22hxEHaUQUdSWxpP7xYXkvI9NWqp1y1ifhMSzgP7kDk
+ fG2w==
+X-Gm-Message-State: AOJu0YxoPrDyY3YjqApxvBZB3Vp2VFyS2S6p3XP/41Vl3A9a9O1aXaUl
+ eMx/8cDUicpesqEH026EPTbZGnqiMzLXneJr8RW8+gcoPCpBR9i3VYJxlgR8A7aemADUaA9/YQ5
+ 4KiR/IDnZ
+X-Gm-Gg: ASbGncvRwHc9qEieWSKAKa/BpKDVq1xXMrGRqyCwVMKiTgYU6Io+I6O73Qoi43DUGuE
+ v0ej2V2xA9uIw9OXM/iqzSRiHQq8L2fgEiLtX3/QehjWU7jX4U+UPAUvXAVCGahD3bEiXBTTFfN
+ lvDiq3e0Ay7pPnoNth9Y3YPUgo6i+z2bNNmc90TfLNq23PAu+aH98sMB4zpE4o7uU9kKm7lMTTm
+ WkDm72C9opjq3JP5JMpsm84zJMGdTx971RwnGzbXPWcQkuSPyPH3ZaLIX+hkNDr
+X-Google-Smtp-Source: AGHT+IFhcJeeQrJMN361yXRsu4JxFeL9dGBVLt0J+yFd3Tz9woaBSW+oEzuDMMNoGACH9/iM7xP1dQ==
+X-Received: by 2002:a05:6808:1887:b0:3eb:556e:dde6 with SMTP id
+ 5614622812f47-3eba6867bb5mr1879165b6e.12.1734117255043; 
+ Fri, 13 Dec 2024 11:14:15 -0800 (PST)
 Received: from stoup.. ([187.217.227.247]) by smtp.gmail.com with ESMTPSA id
- 5614622812f47-3ebb478a497sm3545b6e.10.2024.12.13.11.14.10
+ 5614622812f47-3ebb478a497sm3545b6e.10.2024.12.13.11.14.12
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 13 Dec 2024 11:14:12 -0800 (PST)
+ Fri, 13 Dec 2024 11:14:14 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Elena Ufimtseva <elena.ufimtseva@oracle.com>,
- Jagannathan Raman <jag.raman@oracle.com>
-Subject: [PATCH 50/71] hw/remote: Constify all Property
-Date: Fri, 13 Dec 2024 13:07:24 -0600
-Message-ID: <20241213190750.2513964-55-richard.henderson@linaro.org>
+Cc: Alistair Francis <Alistair.Francis@wdc.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Bin Meng <bmeng.cn@gmail.com>,
+ Weiwei Li <liwei1518@gmail.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ qemu-riscv@nongnu.org (open list:OpenTitan)
+Subject: [PATCH 51/71] hw/riscv: Constify all Property
+Date: Fri, 13 Dec 2024 13:07:25 -0600
+Message-ID: <20241213190750.2513964-56-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241213190750.2513964-1-richard.henderson@linaro.org>
 References: <20241213190750.2513964-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::233;
- envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x233.google.com
+Received-SPF: pass client-ip=2001:4860:4864:20::30;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x30.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,22 +102,78 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- hw/remote/proxy.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/riscv/opentitan.c       | 2 +-
+ hw/riscv/riscv-iommu-pci.c | 2 +-
+ hw/riscv/riscv-iommu.c     | 2 +-
+ hw/riscv/riscv_hart.c      | 2 +-
+ hw/riscv/sifive_u.c        | 2 +-
+ 5 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/hw/remote/proxy.c b/hw/remote/proxy.c
-index 302a0a4d4d..6f84fdd3fa 100644
---- a/hw/remote/proxy.c
-+++ b/hw/remote/proxy.c
-@@ -191,7 +191,7 @@ static void pci_proxy_write_config(PCIDevice *d, uint32_t addr, uint32_t val,
-     config_op_send(PCI_PROXY_DEV(d), addr, &val, len, MPQEMU_CMD_PCI_CFGWRITE);
+diff --git a/hw/riscv/opentitan.c b/hw/riscv/opentitan.c
+index e2830e9dc2..8ce85ea9f7 100644
+--- a/hw/riscv/opentitan.c
++++ b/hw/riscv/opentitan.c
+@@ -306,7 +306,7 @@ static void lowrisc_ibex_soc_realize(DeviceState *dev_soc, Error **errp)
+         memmap[IBEX_DEV_IBEX_CFG].base, memmap[IBEX_DEV_IBEX_CFG].size);
  }
  
--static Property proxy_properties[] = {
-+static const Property proxy_properties[] = {
-     DEFINE_PROP_STRING("fd", PCIProxyDev, fd),
-     DEFINE_PROP_END_OF_LIST(),
+-static Property lowrisc_ibex_soc_props[] = {
++static const Property lowrisc_ibex_soc_props[] = {
+     DEFINE_PROP_UINT32("resetvec", LowRISCIbexSoCState, resetvec, 0x20000400),
+     DEFINE_PROP_END_OF_LIST()
  };
+diff --git a/hw/riscv/riscv-iommu-pci.c b/hw/riscv/riscv-iommu-pci.c
+index a42242532d..a695314bbe 100644
+--- a/hw/riscv/riscv-iommu-pci.c
++++ b/hw/riscv/riscv-iommu-pci.c
+@@ -157,7 +157,7 @@ static void riscv_iommu_pci_init(Object *obj)
+     iommu->icvec_avail_vectors = RISCV_IOMMU_PCI_ICVEC_VECTORS;
+ }
+ 
+-static Property riscv_iommu_pci_properties[] = {
++static const Property riscv_iommu_pci_properties[] = {
+     DEFINE_PROP_UINT16("vendor-id", RISCVIOMMUStatePci, vendor_id,
+                        PCI_VENDOR_ID_REDHAT),
+     DEFINE_PROP_UINT16("device-id", RISCVIOMMUStatePci, device_id,
+diff --git a/hw/riscv/riscv-iommu.c b/hw/riscv/riscv-iommu.c
+index bbc95425b3..07fed36986 100644
+--- a/hw/riscv/riscv-iommu.c
++++ b/hw/riscv/riscv-iommu.c
+@@ -2235,7 +2235,7 @@ static void riscv_iommu_unrealize(DeviceState *dev)
+     g_hash_table_unref(s->ctx_cache);
+ }
+ 
+-static Property riscv_iommu_properties[] = {
++static const Property riscv_iommu_properties[] = {
+     DEFINE_PROP_UINT32("version", RISCVIOMMUState, version,
+         RISCV_IOMMU_SPEC_DOT_VER),
+     DEFINE_PROP_UINT32("bus", RISCVIOMMUState, bus, 0x0),
+diff --git a/hw/riscv/riscv_hart.c b/hw/riscv/riscv_hart.c
+index 613ea2aaa0..0df454772f 100644
+--- a/hw/riscv/riscv_hart.c
++++ b/hw/riscv/riscv_hart.c
+@@ -27,7 +27,7 @@
+ #include "hw/qdev-properties.h"
+ #include "hw/riscv/riscv_hart.h"
+ 
+-static Property riscv_harts_props[] = {
++static const Property riscv_harts_props[] = {
+     DEFINE_PROP_UINT32("num-harts", RISCVHartArrayState, num_harts, 1),
+     DEFINE_PROP_UINT32("hartid-base", RISCVHartArrayState, hartid_base, 0),
+     DEFINE_PROP_STRING("cpu-type", RISCVHartArrayState, cpu_type),
+diff --git a/hw/riscv/sifive_u.c b/hw/riscv/sifive_u.c
+index c5e74126b1..124ffd4842 100644
+--- a/hw/riscv/sifive_u.c
++++ b/hw/riscv/sifive_u.c
+@@ -936,7 +936,7 @@ static void sifive_u_soc_realize(DeviceState *dev, Error **errp)
+                        qdev_get_gpio_in(DEVICE(s->plic), SIFIVE_U_QSPI2_IRQ));
+ }
+ 
+-static Property sifive_u_soc_props[] = {
++static const Property sifive_u_soc_props[] = {
+     DEFINE_PROP_UINT32("serial", SiFiveUSoCState, serial, OTP_SERIAL),
+     DEFINE_PROP_STRING("cpu-type", SiFiveUSoCState, cpu_type),
+     DEFINE_PROP_END_OF_LIST()
 -- 
 2.43.0
 
