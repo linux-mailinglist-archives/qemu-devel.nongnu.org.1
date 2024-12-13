@@ -2,46 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90BA99F01C0
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Dec 2024 02:14:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F15D39F01E1
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Dec 2024 02:17:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tLuFN-0005VG-5l; Thu, 12 Dec 2024 20:13:37 -0500
+	id 1tLuFR-0005Vu-H2; Thu, 12 Dec 2024 20:13:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tLuFL-0005V7-Km
- for qemu-devel@nongnu.org; Thu, 12 Dec 2024 20:13:35 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tLuFP-0005Vd-Qd
+ for qemu-devel@nongnu.org; Thu, 12 Dec 2024 20:13:39 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tLuFJ-0008Ko-IF
- for qemu-devel@nongnu.org; Thu, 12 Dec 2024 20:13:35 -0500
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tLuFO-0008Td-8d
+ for qemu-devel@nongnu.org; Thu, 12 Dec 2024 20:13:39 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1734052409;
+ s=mimecast20190719; t=1734052416;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=k3CpRjQ1GJybm/62BEt6jxfIDBxWmGB8jmyyWQfuEuA=;
- b=fPzi9aTPGMbRJVzzMWPF27WS8q4b9wxMUfT3MsjhC+m6Ea1exDV3Ahmk8TEyb7Opcw2IUX
- woxQVZrurq+at/z7hr8A8p7+4x/gAP1qRJEmfwOk6u9HKzXCO0EGNuNM5e0PsurKsQXvCz
- FmXc9OrYP6q+5iuqGWsvVkPu4l3nZnc=
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=4VdZDB30eHZhJMRoE6s8/J15E8364oZ3MVURcH7j2XU=;
+ b=QH4nSEpn9hw2jcxjGVjGZ877uF8ALtYhxai4iJU79t1xz8BWUeCSzJbn74zz9ztjQUvtvc
+ OV1pTzUzA/49+3tzcxQK33NLngKfuk+wI8mpli/hWUxptUDxKjLk+TsjrKLReA+zjPVTsJ
+ PItFskM67TIRYEO5iMe2WX8oYpdkZro=
 Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-340-nj9dfImiOTa3erY7LufNIw-1; Thu,
- 12 Dec 2024 20:13:27 -0500
-X-MC-Unique: nj9dfImiOTa3erY7LufNIw-1
-X-Mimecast-MFC-AGG-ID: nj9dfImiOTa3erY7LufNIw
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-499-mWHgrHqjO4eGl0L9essZkQ-1; Thu,
+ 12 Dec 2024 20:13:32 -0500
+X-MC-Unique: mWHgrHqjO4eGl0L9essZkQ-1
+X-Mimecast-MFC-AGG-ID: mWHgrHqjO4eGl0L9essZkQ
 Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 99D3E19560BA; Fri, 13 Dec 2024 01:13:26 +0000 (UTC)
+ id 6DF3619560B8; Fri, 13 Dec 2024 01:13:31 +0000 (UTC)
 Received: from jsnow-thinkpadp16vgen1.westford.csb (unknown [10.22.88.22])
  by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 3E7691956089; Fri, 13 Dec 2024 01:13:20 +0000 (UTC)
+ id E53741956086; Fri, 13 Dec 2024 01:13:27 +0000 (UTC)
 From: John Snow <jsnow@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Michael Roth <michael.roth@amd.com>, Markus Armbruster <armbru@redhat.com>,
@@ -49,14 +50,15 @@ Cc: Michael Roth <michael.roth@amd.com>, Markus Armbruster <armbru@redhat.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Victor Toso de Carvalho <victortoso@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>, John Snow <jsnow@redhat.com>
-Subject: [RFC PATCH v2 00/35] Add qapi-domain Sphinx extension
-Date: Thu, 12 Dec 2024 20:12:29 -0500
-Message-ID: <20241213011307.2942030-1-jsnow@redhat.com>
-Content-Type: text/plain; charset="utf-8"
+Subject: [RFC PATCH v2 01/35] do-not-merge
+Date: Thu, 12 Dec 2024 20:12:30 -0500
+Message-ID: <20241213011307.2942030-2-jsnow@redhat.com>
+In-Reply-To: <20241213011307.2942030-1-jsnow@redhat.com>
+References: <20241213011307.2942030-1-jsnow@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=jsnow@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=jsnow@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -25
 X-Spam_score: -2.6
@@ -81,66 +83,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This series is still a work in progress, but I am sending it to the list=0D
-to serve as a pre-requisite for another series that we need to review=0D
-next instead. Please just ignore this one for now!=0D
-=0D
-Thanks!=0D
-=0D
-Harmonie Snow (1):=0D
-  docs/qapi-domain: add CSS styling=0D
-=0D
-John Snow (34):=0D
-  do-not-merge=0D
-  pylint touchups=0D
-  docs/sphinx: create QAPI domain extension stub=0D
-  docs/sphinx: add compat.py module and nested_parse helper=0D
-  docs/qapi-domain: add qapi:module directive=0D
-  docs/qapi-domain: add QAPI domain object registry=0D
-  docs/qapi-domain: add QAPI index=0D
-  docs/qapi-domain: add resolve_any_xref()=0D
-  docs/qapi-domain: add QAPI xref roles=0D
-  docs/qapi-domain: add compatibility node classes=0D
-  docs/qapi-domain: add qapi:command directive=0D
-  docs/qapi-domain: add :since: directive option=0D
-  docs/qapi-domain: add "Arguments:" field lists=0D
-  docs/qapi-domain: add "Features:" field lists=0D
-  docs/qapi-domain: add "Errors:" field lists=0D
-  docs/qapi-domain: add "Returns:" field lists=0D
-  docs/qapi-domain: add returns-nodesc=0D
-  docs/qapi-domain: add qapi:enum directive=0D
-  docs/qapi-domain: add qapi:alternate directive=0D
-  docs/qapi-domain: add qapi:event directive=0D
-  docs/qapi-domain: add qapi:struct directive=0D
-  docs/qapi-domain: add qapi:union and qapi:branch directives=0D
-  docs/qapi-domain: add :deprecated: directive option=0D
-  docs/qapi-domain: add :unstable: directive option=0D
-  docs/qapi-domain: add :ifcond: directive option=0D
-  docs/qapi-domain: add warnings for malformed field lists=0D
-  docs/qapi-domain: add type cross-refs to field lists=0D
-  docs/qapi-domain: warn when QAPI domain xrefs fail to resolve=0D
-  docs/qapi-domain: implement error context reporting fix=0D
-  docs/qapi-domain: collapsible branches=0D
-  WIP: 3.x - XREF=0D
-  WIP: 3.x ParserFix=0D
-  WIP: 3.x ObjectDesc compat=0D
-  WIP: 3.x css theming for missing xref=0D
-=0D
- docs/conf.py                           |   19 +-=0D
- docs/sphinx-static/theme_overrides.css |  108 ++-=0D
- docs/sphinx/collapse.py                |  200 ++++=0D
- docs/sphinx/compat.py                  |  198 ++++=0D
- docs/sphinx/qapi-domain.py             | 1156 ++++++++++++++++++++++++=0D
- scripts/qapi-lint.sh                   |   55 ++=0D
- scripts/qapi/pylintrc                  |    1 +=0D
- 7 files changed, 1734 insertions(+), 3 deletions(-)=0D
- create mode 100644 docs/sphinx/collapse.py=0D
- create mode 100644 docs/sphinx/compat.py=0D
- create mode 100644 docs/sphinx/qapi-domain.py=0D
- create mode 100755 scripts/qapi-lint.sh=0D
-=0D
--- =0D
-2.47.0=0D
-=0D
+Signed-off-by: John Snow <jsnow@redhat.com>
+---
+ scripts/qapi-lint.sh | 55 ++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 55 insertions(+)
+ create mode 100755 scripts/qapi-lint.sh
+
+diff --git a/scripts/qapi-lint.sh b/scripts/qapi-lint.sh
+new file mode 100755
+index 00000000000..5a8c798001e
+--- /dev/null
++++ b/scripts/qapi-lint.sh
+@@ -0,0 +1,55 @@
++#!/usr/bin/env bash
++set -e
++
++if [[ -f qapi/.flake8 ]]; then
++    echo "flake8 --config=qapi/.flake8 qapi/"
++    flake8 --config=qapi/.flake8 qapi/
++fi
++if [[ -f qapi/pylintrc ]]; then
++    echo "pylint --rcfile=qapi/pylintrc qapi/"
++    pylint --rcfile=qapi/pylintrc qapi/
++fi
++if [[ -f qapi/mypy.ini ]]; then
++    echo "mypy --config-file=qapi/mypy.ini qapi/"
++    mypy --config-file=qapi/mypy.ini qapi/
++fi
++
++if [[ -f qapi/.isort.cfg ]]; then
++    pushd qapi
++    echo "isort -c ."
++    isort -c .
++    popd
++fi
++
++if [[ -f ../docs/sphinx/qapi-domain.py ]]; then
++    files="qapi-domain.py"
++fi
++if [[ -f ../docs/sphinx/compat.py ]]; then
++    files="${files} compat.py"
++fi
++if [[ -f ../docs/sphinx/collapse.py ]]; then
++    files="${files} collapse.py"
++fi
++
++if [[ -f ../docs/sphinx/qapi-domain.py ]]; then
++    pushd ../docs/sphinx
++
++    set -x
++    mypy --strict $files
++    flake8 --max-line-length=80 $files qapidoc.py
++    isort -c $files qapidoc.py
++    black --line-length 80 --check $files qapidoc.py
++    PYTHONPATH=../scripts/ pylint \
++        --rc-file ../../scripts/qapi/pylintrc \
++        qapidoc.py
++    set +x
++
++    popd
++fi
++
++pushd ../build
++make -j13
++make check-qapi-schema
++make docs
++make sphinxdocs
++popd
+-- 
+2.47.0
 
 
