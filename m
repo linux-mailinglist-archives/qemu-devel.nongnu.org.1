@@ -2,85 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B030E9F1417
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Dec 2024 18:41:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BEEC89F13DB
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Dec 2024 18:38:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tM9Yh-000451-Vh; Fri, 13 Dec 2024 12:34:36 -0500
+	id 1tM9av-0001xF-F4; Fri, 13 Dec 2024 12:36:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tM9Y1-0008HU-SZ
+ id 1tM9Y2-0008HX-PO
  for qemu-devel@nongnu.org; Fri, 13 Dec 2024 12:33:57 -0500
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tM9Xx-0001jx-TK
- for qemu-devel@nongnu.org; Fri, 13 Dec 2024 12:33:53 -0500
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-4361a50e337so14511005e9.0
- for <qemu-devel@nongnu.org>; Fri, 13 Dec 2024 09:33:49 -0800 (PST)
+ id 1tM9Xz-0001k6-I5
+ for qemu-devel@nongnu.org; Fri, 13 Dec 2024 12:33:54 -0500
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-4361fe642ddso20466455e9.2
+ for <qemu-devel@nongnu.org>; Fri, 13 Dec 2024 09:33:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734111228; x=1734716028; darn=nongnu.org;
+ d=linaro.org; s=google; t=1734111229; x=1734716029; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=0Sy7P0n6dA4Q78sOSEQL1CmMwGaZp6w4fKZORHOrLdc=;
- b=hFvQV3OoOFvXdEm6204VY/NKuKREf7MzB8uSFhOwVtGBloeIARhCLnl4qpN77+aOTs
- u2xqDL+KqCt9mlnTDp7rZ/BY13vIhQpk93wk5P/ik3wFpxnAFv5KT1U+aTjqOZPl11hV
- y/KZNGe05DjQGjz/zJvNvs996lcqWj0xyJXoxogqhErZ9vNABZSJroRlm/q2anLUIQG2
- ZlQt+qlvoX4j4BauAFR+KwE7yydb58RMp9WYVJCAOpEb3VU7Bcb2OUBnuWVysIHts3K2
- W6gg3SO1TecCC9N6JfQLxK55ovJL1nwb60s5IF5cV425nUrsNw2bmLarXpkF4BMzYjba
- 402A==
+ :reply-to; bh=Iu6/mYPMj4sIgrpfHxPuinFzD7tP6UGxaUnV9V3hRtM=;
+ b=Ffjdv46U3swuZymAhMXNwnDXA2GwW0nqkl0r3ZNpplaF4/dSDbuVnLLeDgck5AMP9s
+ AntVD+hbeRMo7qeZdSYjVTFFE9HU24zuG1BND2wLV0+HKPE7MBsKLr0gFQlYzF6GNNul
+ NFLDfSNHUyL7C5uvflW/eBuep6QROpov55+E1CWKnad40xClLr87Fjlh/9IgXB5NI6nn
+ YcCCGwE5OYwT9VGXNcDCsvu1G2FnC+NiKl9SjM6yHsatm/T+SoEDIjwVwWPTnqRn4IrQ
+ z6jw/LFC1BT1hQLTezCTPs4OT5iSCev+7GteiDOpxF6MWBkOLw+TWW6/cGvHRkvKD0XD
+ XugA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734111228; x=1734716028;
+ d=1e100.net; s=20230601; t=1734111229; x=1734716029;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=0Sy7P0n6dA4Q78sOSEQL1CmMwGaZp6w4fKZORHOrLdc=;
- b=wW06+8nT91GjaufuF0LQRKhoA3iD9FOy2GbDOr1pfGDvNV+YMY6YEPqYH8h2vTJmTN
- Rqb4wvpmNGPBfalxH+vS5jdkQeMxcf2hdzuJnpyPor+4ytgdut6+pUQL7iWGDnyqNEeT
- RN+GYBY6sQHt996/VIY9zaZW5cMxKxJxf1prfbfZ3FLnGbU9d1xrG+Cp/M5eV0bn/jgC
- YP+NcV/g6wt9JKXUSvjjHcofyF7ilFByZ7fo6VDRfPdFeWCixUsYkHFIV+OpVrYn9P7a
- Q5CjtFzfwsZw3/mSnoywYW/efDn+7NWs4rTlI0S7BNkCyVt2SwooXrfS0XOnNprNpBjv
- CiEg==
-X-Gm-Message-State: AOJu0Yyl++PSqWq4EsWEeB8MNS1mvmW4GXOq9V4NN6nWPzLtSndhTfC9
- mhc0DgB+lHRmHLL19NA0hKJ0w1LQ0cxOy3Rtf7erK74pCidUZqkrGOnecJtJQp8F8IIhgfOw7Wb
- f
-X-Gm-Gg: ASbGncv7w69oSlm//zgzR9cHAWYHzVQFoTNj0Tr/WY+pHpueXWH3TpYioVxXh43TVhF
- eDgez95or8OlweAfgvqQBtAYTVMDUS45pVdJ1U3sy6lxTpBhlUV/tPEA1rDNcRKUvsB++UeBBd3
- V4KAw/YDt8l8u/lYIpCUd+4XxNutN78FDGa2JGCNhv1LnJongDf2njbBGaLTrFSA+12gjvSpa2K
- ppNxHn0B9swSLWg9lrL9VgfPfsQZbrgQI74rLo11zrVBvZpNW/k25PBisO33g==
-X-Google-Smtp-Source: AGHT+IHpLZJjEBwF7gRDanGj7TJ3aFrcpLVwFS6fVxV9CRs2+FtBc3EC6/Sal+4CZFS4xHLznkhWxw==
-X-Received: by 2002:a05:600c:468b:b0:434:9f81:76d5 with SMTP id
- 5b1f17b1804b1-4362aaa9a4emr24566445e9.22.1734111228128; 
- Fri, 13 Dec 2024 09:33:48 -0800 (PST)
+ bh=Iu6/mYPMj4sIgrpfHxPuinFzD7tP6UGxaUnV9V3hRtM=;
+ b=lE9hnOurELswquSex+B0/ljLRjvS9oUR09Yls3B6+vLrJf93KYD/x18NaVhbYtnIAi
+ sJl/00J8IcIyg9naCQ0BB6XE3rcOMYTclaJPfyxTwLfnf+9havrrXrIOcYTc1fV+Y87S
+ Anke+YfyTueHKuxXEIPmrRm2gOZ24VUbTS2+tt1uDqQwyluRORJC4WWcPvq9uDSoQZZA
+ z9XYQ0AYSnvS9rFTD2/JwS/2tiAM+Dj46XkcBVFiuYQpmM66wbbGkQht/5vII3hR9kEg
+ uSYFkI3QaDNS225xR37RcNzat8yaomav7Xm3EBpFctcjKneUiXIO9+d1cX31hkU++a0S
+ bJuQ==
+X-Gm-Message-State: AOJu0YwFS62bhQUhHSmew74YuLwwHzEVTrvhw3k1cRdNk0JZbJz6LYlh
+ x9ZTGwi4MSCGWIY100HLoYR06QtJT9wTrlQP0HiraoJp9pywOtPEwVBT0qq6XnJUH3yzA5h1nQQ
+ c
+X-Gm-Gg: ASbGnct5EzQ1pRrWhSt5siCM6BTcKyZYf0gfmLqCLnJubiK0Hgkd7CecuXrUGBvcT0w
+ Lfqn4+b89pvilFa4nELhbXiAmkFUE0Qn1tW/Je49tJyFgP/bjHuR9zZpVA72X/nQYT2l5JS1IO2
+ 50FG5XB1tytmVwg1GqNh7WtaP70IMqAqLyvTzoxGZ7xCp08rh2aOOQqjLWxPz/qt9m6VqktAOIa
+ 5zc1ejbriDfAzMlxByhynxu02p+V2E08SitU2LJwCGRS8p0MvEFllIs/2JgMA==
+X-Google-Smtp-Source: AGHT+IFsA5t4suN2xU6J7LQsz01QLuN4iZPGK+Nfl6Wy8Qlbv5Zm8FeJIlXF8y1gIavY1duRUL9bng==
+X-Received: by 2002:a05:600c:3548:b0:434:f753:600f with SMTP id
+ 5b1f17b1804b1-4362aa408fcmr29869535e9.19.1734111229106; 
+ Fri, 13 Dec 2024 09:33:49 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-388c80162ddsm87026f8f.37.2024.12.13.09.33.47
+ ffacd0b85a97d-388c80162ddsm87026f8f.37.2024.12.13.09.33.48
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 13 Dec 2024 09:33:47 -0800 (PST)
+ Fri, 13 Dec 2024 09:33:48 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 72/85] docs/system/arm/fby35: document execute-in-place property
-Date: Fri, 13 Dec 2024 17:32:16 +0000
-Message-Id: <20241213173229.3308926-73-peter.maydell@linaro.org>
+Subject: [PULL 73/85] docs/system/arm/xlnx-versal-virt: document ospi-flash
+ property
+Date: Fri, 13 Dec 2024 17:32:17 +0000
+Message-Id: <20241213173229.3308926-74-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241213173229.3308926-1-peter.maydell@linaro.org>
 References: <20241213173229.3308926-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x329.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ WEIRD_QUOTING=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,27 +98,28 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Message-id: 20241206192254.3889131-3-pierrick.bouvier@linaro.org
+Message-id: 20241206192254.3889131-4-pierrick.bouvier@linaro.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- docs/system/arm/fby35.rst | 5 +++++
- 1 file changed, 5 insertions(+)
+ docs/system/arm/xlnx-versal-virt.rst | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/docs/system/arm/fby35.rst b/docs/system/arm/fby35.rst
-index bf6da6baa2a..e19274e75c8 100644
---- a/docs/system/arm/fby35.rst
-+++ b/docs/system/arm/fby35.rst
-@@ -45,3 +45,8 @@ process starts.
-     $ screen /dev/tty0 # In a separate TMUX pane, terminal window, etc.
-     $ screen /dev/tty1
-     $ (qemu) c		   # Start the boot process once screen is setup.
+diff --git a/docs/system/arm/xlnx-versal-virt.rst b/docs/system/arm/xlnx-versal-virt.rst
+index 0bafc76469d..c5f35f28e4f 100644
+--- a/docs/system/arm/xlnx-versal-virt.rst
++++ b/docs/system/arm/xlnx-versal-virt.rst
+@@ -178,6 +178,9 @@ Run the following at the U-Boot prompt:
+   fdt set /chosen/dom0 reg <0x00000000 0x40000000 0x0 0x03100000>
+   booti 30000000 - 20000000
+ 
++It's possible to change the OSPI flash model emulated by using the machine model
++option ``ospi-flash``.
 +
-+This machine model supports emulation of the boot from the CE0 flash device by
-+setting option ``execute-in-place``. When using this option, the CPU fetches
-+instructions to execute by reading CE0 and not from a preloaded ROM
-+initialized at machine init time. As a result, execution will be slower.
+ BBRAM File Backend
+ """"""""""""""""""
+ BBRAM can have an optional file backend, which must be a seekable
 -- 
 2.34.1
 
