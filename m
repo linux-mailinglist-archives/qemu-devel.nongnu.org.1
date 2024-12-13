@@ -2,77 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B14389F1418
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Dec 2024 18:41:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 306389F1463
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Dec 2024 18:53:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tM9aU-0000tZ-I5; Fri, 13 Dec 2024 12:36:26 -0500
+	id 1tM9q3-0002Hq-It; Fri, 13 Dec 2024 12:52:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tM9YD-0000Ri-Ky
- for qemu-devel@nongnu.org; Fri, 13 Dec 2024 12:34:06 -0500
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1tM9px-0002Gw-F9
+ for qemu-devel@nongnu.org; Fri, 13 Dec 2024 12:52:25 -0500
+Received: from mail-ot1-x331.google.com ([2607:f8b0:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tM9YB-0001nR-4F
- for qemu-devel@nongnu.org; Fri, 13 Dec 2024 12:34:05 -0500
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-43628e97467so13716405e9.3
- for <qemu-devel@nongnu.org>; Fri, 13 Dec 2024 09:34:02 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1tM9pv-0005Jp-AB
+ for qemu-devel@nongnu.org; Fri, 13 Dec 2024 12:52:24 -0500
+Received: by mail-ot1-x331.google.com with SMTP id
+ 46e09a7af769-71e35be77b5so438563a34.1
+ for <qemu-devel@nongnu.org>; Fri, 13 Dec 2024 09:52:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734111241; x=1734716041; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=N0xxKJ/gejC1AsfVGkch3u9PAoevYxIM+im6oAvRmIA=;
- b=w6UWYQ8cbjdt8AZjs36u0ytJCgLbS+k/czPlRh81A2IlXde8wiWw7oXpU7WanvljSL
- ePYD5Asu0Gq3NjRE0V2YwwQ7UBYxX5ch5P0yIx+VxHn1IEV1PH7Ft67g/LsN/PAUU5Lg
- XrdhjPhiKdaoZHOWca2F4qtcPQfagB2PzEREMTRIbizEw4hzvCjf+DkvuE3E+7QLoee6
- V9k2WG/Femzb4XgX39i3ILZft/3IpxwLUz9qgCPn0m/Tb50KRh5dICZOTbBdsDj3oc3/
- Mm7JuVcU7cpfcQtMJKMuv6Q5SHHVkpSlR/eLwr5mF2tFt1mqkMzAjwQHM3zRgZmF6IEA
- CdTg==
+ d=linaro.org; s=google; t=1734112341; x=1734717141; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=70v0qJMzwA29O3M4+dK8r7dFa6p+GP+1xrZaRYW8aKw=;
+ b=zJbIvYDb2tYkAK2RF7h4v471FEO8rFhlRtrV68OHprVoxtSn4Rx4V1k+pymKIFyNOl
+ +luSt0sUwTXC3f6ssHSx5RgqN/WoV2o0etmjUf3z+3Vb5E+VxWTNYComHGMFWilKMCaZ
+ TnJ6MUNhIUsscIeewdG2jiB4FPyFIaLSrNAvsOIE8h0qYG92yRq2K8fohn/2eXPAD4Ie
+ eChaEhYbiqfbJwnBNhbx1CQ7GpM8XGDqJgmiKkYZftZt6e1HXsjglCxce2BEUlZFmXAA
+ 92OtNT+Jy2wNeTj3kbWChf3XBVHZPvAT4P3JWpm2w3zkeM/1ClN8mEQzvkFo5YYZ3Ev3
+ Hxag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734111241; x=1734716041;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=N0xxKJ/gejC1AsfVGkch3u9PAoevYxIM+im6oAvRmIA=;
- b=OjHqxeeBIysbZrEB4OEzuZRmgjljy2RDm3QctugO4qArTJr071aInxABkhrN6X4V0H
- j6umXDJ86jY6rQa0f5EFon40No0E+kddEgQwKmK11YjevrPb2iekl6ZbkdhvVmxlAJhZ
- uqyuC/kIj61LUSFd+FaQfPeP9C35PmKImk+Wv4Yo7q2UrtCmqWz8bRYCsZGVCo7zBy7C
- LWDR54/4RZ2xmksOY6bqZKR5sHCr8jYS8H5gsDm1U2OyrAYcocWsXkkkuVAySFQGKkZq
- dMLdpEOgiemfNWmIu1zVhPGTjybq/+Sx3+c1cnnIkHuQli49Ax6Sq/b4OKv6+sAaj2Ui
- 24SQ==
-X-Gm-Message-State: AOJu0YxmTx8kKaJnp3PMDtapWozX9D9iArS8O4+Gm/AcgabUY5zwmARo
- OJc1Tq3GaqoJe2YR+3Aw89G376zKBatFZc84BuzFTQQzGM27l7uIVky2wr1//wQeweX9lxMhDZw
- n
-X-Gm-Gg: ASbGncud0QgqfltyeTpKnP3axJC/u85sJzAaKsLymbMbHo250HiYG1rwovmr5NMWm6T
- IOm5omieGws2a2U2+2opZQ2JyEoM0LGOkcQPW+Pb6crrJcycHrp0ko/cVWznljGXPd1vFFYEth5
- dVEnpLr692b1bPVbMYCCeP/+RUceJ76GGmNbiyfP0L7nanKk70yNHY65kVbsTTph6WXu8mAX/fb
- dgeCDaWDLL/PxYUEGPlWTGlqKk06vxTDBtJU3EmqTuGGmhR1jfqX3Qgm2tF5g==
-X-Google-Smtp-Source: AGHT+IEhAyhFV3JQTB/a4H9VoduDwFoFFPAmVF8tGuOlu7hwq4LLg1l3qFiU1ut00icoLo3gvl4dHw==
-X-Received: by 2002:a05:6000:4025:b0:385:e034:8d47 with SMTP id
- ffacd0b85a97d-3888e0b98f6mr2990104f8f.46.1734111241633; 
- Fri, 13 Dec 2024 09:34:01 -0800 (PST)
-Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
+ d=1e100.net; s=20230601; t=1734112341; x=1734717141;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=70v0qJMzwA29O3M4+dK8r7dFa6p+GP+1xrZaRYW8aKw=;
+ b=Yp/uTWBVY+b23PCLl1EVmxCte6HIpfGx0dGfW9b2fdHH/bl8vDLkq0ygRtL4pyaeKJ
+ T+mqn4/EQCDGDczJ/kBjbvFUrRioGYsrKCsGw14BUBmj+gPMNQ1p4gPaZObtbyzfy0X9
+ T+j5QMpsWyrJGvg2gFoLZJT2+1HnGP+vGr0d5P94X+YUjiJuyOWPSvLz0zHbfbzwRQHe
+ mBMAcZUbcr7knHkRvDTN5pOUrfqNmQIiKFhFlcWDjHKLCr6Q0bjoogCpu68rX89e2wzz
+ G7nUMboqINb2j+Oce9IpSscBnzMoh/z09CD8YKa23DZu6edsRlsqDYZvsGEkxLL1AsV2
+ k8MA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXEd8G1cBYgNSOS4xG4N8rihbTdrUUhOqTck3qz6n6/T5o3rh3/Vg8tcplKmb4IcWmM8RfoF14Eef+G@nongnu.org
+X-Gm-Message-State: AOJu0YwzBEWdtUTEAAocZ093hKLQqtQ1kiyJprxgmKfbI08vl2AGOw2F
+ JH60RMpo+cSIU/nMmKyBJbDa/zfigPYrejfJhbTuGLeUy+pJWUxIqJXLp/dsqvo=
+X-Gm-Gg: ASbGncuzZn/y50B2RQhY1msahWbDobPknDHb+ipuG5aUvXWivG6I8ne+imAwpoJtoC9
+ 78UwePEwzvW5+YMeGeA7k9Qw8qdcbnYTNeUEMdHsJdyEkAuADLxYIEECRAOjH9JfX6ZThrPVzaM
+ 8US9mp6XznXw0r+UpOgNB5y0KS9N1hHhs/dLJXm1YWymKmaKFLT9ZZLl+ytNgzcqR3V8q69PiEc
+ U1dxNu58HDxEjcPqW2mjjbA4+tJI/YfDWZ07x9gwNKk9VJ3hs/Cql+XlvI18qyFbKwXa6F2Uw==
+X-Google-Smtp-Source: AGHT+IFNkY1oN+rpuCkcXz9s1Ef5Xt7oFZrdjTFCDDaf7J6eaVeA6n9SgI2oDVfF3LW8p5IZ32O4nw==
+X-Received: by 2002:a05:6830:3496:b0:71d:f068:1ff3 with SMTP id
+ 46e09a7af769-71e3b85711amr1969401a34.8.1734112340980; 
+ Fri, 13 Dec 2024 09:52:20 -0800 (PST)
+Received: from [172.20.4.119] ([187.217.227.247])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-388c80162ddsm87026f8f.37.2024.12.13.09.34.00
- for <qemu-devel@nongnu.org>
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 13 Dec 2024 09:34:00 -0800 (PST)
-From: Peter Maydell <peter.maydell@linaro.org>
-To: qemu-devel@nongnu.org
-Subject: [PULL 85/85] target/arm: Simplify condition for tlbi_el2_cp_reginfo[]
-Date: Fri, 13 Dec 2024 17:32:29 +0000
-Message-Id: <20241213173229.3308926-86-peter.maydell@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241213173229.3308926-1-peter.maydell@linaro.org>
-References: <20241213173229.3308926-1-peter.maydell@linaro.org>
+ 46e09a7af769-71e36eecef4sm607139a34.27.2024.12.13.09.52.19
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 13 Dec 2024 09:52:20 -0800 (PST)
+Message-ID: <68a58b93-8075-46d6-8db1-b4f1282237db@linaro.org>
+Date: Fri, 13 Dec 2024 11:52:17 -0600
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32d.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 3/3] target/riscv: fix the trap generation for conditional
+ store
+To: "Konrad, Frederic" <Frederic.Konrad@amd.com>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+Cc: "palmer@dabbelt.com" <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ "bmeng.cn@gmail.com" <bmeng.cn@gmail.com>,
+ "liwei1518@gmail.com" <liwei1518@gmail.com>,
+ "dbarboza@ventanamicro.com" <dbarboza@ventanamicro.com>,
+ "zhiwei_liu@linux.alibaba.com" <zhiwei_liu@linux.alibaba.com>,
+ "qemu-riscv@nongnu.org" <qemu-riscv@nongnu.org>,
+ "Michel, Luc" <Luc.Michel@amd.com>,
+ "Iglesias, Francisco" <francisco.iglesias@amd.com>
+References: <20241211211933.198792-1-fkonrad@amd.com>
+ <20241211211933.198792-4-fkonrad@amd.com>
+ <b16c4644-04df-41d1-bc6e-f14d706ab4b7@linaro.org>
+ <CY8PR12MB84111EF6057B4862D7BC1DC8E6382@CY8PR12MB8411.namprd12.prod.outlook.com>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <CY8PR12MB84111EF6057B4862D7BC1DC8E6382@CY8PR12MB8411.namprd12.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::331;
+ envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x331.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,47 +112,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We currently register the tlbi_el2_cp_reginfo[] TLBI insns if EL2 is
-implemented, or if EL3 and v8 is implemented.  This is a copy of the
-logic used for el2_cp_reginfo[], but for the specific case of the
-TLBI insns we can simplify it.  This is because we do not need the
-"if EL2 does not exist but EL3 does then EL2 registers should exist
-and be RAZ/WI" handling here: all our cpregs are for instructions,
-which UNDEF when EL3 exists and EL2 does not.
+On 12/13/24 10:31, Konrad, Frederic wrote:
+> +CC maintainers
+> 
+>> -----Original Message-----
+>> From: qemu-devel-bounces+fkonrad=amd.com@nongnu.org <qemu-devel-bounces+fkonrad=amd.com@nongnu.org> On
+>> Behalf Of Richard Henderson
+>> Sent: 11 December 2024 22:43
+>> To: qemu-devel@nongnu.org
+>> Subject: Re: [PATCH 3/3] target/riscv: fix the trap generation for conditional store
+>>
+>> On 12/11/24 15:19, Frederic Konrad wrote:
+>>> +    /*
+>>> +     * A misaligned store trap should be triggered even if the store should
+>>> +     * fail due to the reservation.
+>>> +     */
+>>> +    tcg_gen_andi_tl(tmp, src1, ~((uint64_t)0) << memop_alignment_bits(mop));
+>>
+>> The constant is incorrect for testing the low bits.
+> 
+> Hmm, I don't get it, basically with that I'm trying to do:
+>    MO_8: src1 == (src1 & 0xFFFFFFFF)
+>    MO_16: src1 == (src1 & 0xFFFFFFFE)
+>    MO_32: src1 == (src1 & 0xFFFFFFFC)
+>    etc
+> 
+> what am I missing?
+> 
+>>
+>>> +    tcg_gen_brcond_tl(TCG_COND_EQ, tmp, src1, l3);
 
-Simplify the condition down to just "if EL2 exists".
-This is not a behaviour change because:
- * for AArch64 insns we marked them with ARM_CP_EL3_NO_EL2_UNDEF,
-   which meant that define_arm_cp_regs() would ignore them if
-   EL2 wasn't present
- * for AArch32 insns, the .access = PL2_W meant that if EL2
-   was not present the only way to get at them was from AArch32
-   EL3; but we have no CPUs which have ARM_FEATURE_V8 but
-   start in AArch32
+Ah, I missed the form of the equality.  I had been expecting
 
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20241210160452.2427965-11-peter.maydell@linaro.org
----
- target/arm/tcg/tlb-insns.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+     tmp = src1 & 1
+     brcond tmp != 0
 
-diff --git a/target/arm/tcg/tlb-insns.c b/target/arm/tcg/tlb-insns.c
-index d20d32624da..0f67294edc4 100644
---- a/target/arm/tcg/tlb-insns.c
-+++ b/target/arm/tcg/tlb-insns.c
-@@ -1246,9 +1246,7 @@ void define_tlb_insn_regs(ARMCPU *cpu)
-      * ops (i.e. matching the condition for el2_cp_reginfo[] in
-      * helper.c), but we will be able to simplify this later.
-      */
--    if (arm_feature(env, ARM_FEATURE_EL2)
--        || (arm_feature(env, ARM_FEATURE_EL3)
--            && arm_feature(env, ARM_FEATURE_V8))) {
-+    if (arm_feature(env, ARM_FEATURE_EL2)) {
-         define_arm_cp_regs(cpu, tlbi_el2_cp_reginfo);
-     }
-     if (arm_feature(env, ARM_FEATURE_EL3)) {
--- 
-2.34.1
+and so mis-read the mask.
 
+> About making the fallthrough path be the common case, If I do it I'll need to jump anyway and the
+> end of this instruction ie:
+> 
+>      if not aligned go to misaligned label:
+>      ...
+>      do the normal operation
+>      ...
+>      go to done label
+>      misaligned label
+>      ...
+>      trigger the exception
+>      ...
+>      done label
+> 
+> Is that what you had in mind?
+
+There is another code block in there.  We can sort as
+
+	if not aligned goto misaligned;
+         if reservation mismatch goto mismatch
+
+	normal operation
+	goto done
+
+	misaligned:
+	raise exception
+
+	mismatch:
+	mb, set failure
+
+	done:
+	clear reservation
+
+so that we save adding a branch on the mismatch path.
+
+
+r~
 
