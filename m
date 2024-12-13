@@ -2,80 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56B449F15C7
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Dec 2024 20:28:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FA8E9F15AE
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Dec 2024 20:20:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tMBBS-00055l-WA; Fri, 13 Dec 2024 14:18:44 -0500
+	id 1tMBBk-0005D6-Uh; Fri, 13 Dec 2024 14:19:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tMB9H-0001oD-Rk
- for qemu-devel@nongnu.org; Fri, 13 Dec 2024 14:16:28 -0500
-Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tMB9M-00027I-LH
+ for qemu-devel@nongnu.org; Fri, 13 Dec 2024 14:16:32 -0500
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tMB9G-00085c-2x
- for qemu-devel@nongnu.org; Fri, 13 Dec 2024 14:16:27 -0500
-Received: by mail-wr1-x429.google.com with SMTP id
- ffacd0b85a97d-385e1fcb0e1so1145456f8f.2
- for <qemu-devel@nongnu.org>; Fri, 13 Dec 2024 11:16:25 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tMB9K-00086Q-JO
+ for qemu-devel@nongnu.org; Fri, 13 Dec 2024 14:16:32 -0500
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-436345cc17bso3817585e9.0
+ for <qemu-devel@nongnu.org>; Fri, 13 Dec 2024 11:16:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734117384; x=1734722184; darn=nongnu.org;
+ d=linaro.org; s=google; t=1734117389; x=1734722189; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=GwXJ20o47O0myZ807tC+6WLVB8CtFiG35efK/BxIlqk=;
- b=EBBeUOlgWGoDM3J+0mG5QVCofEG1Jq1Pbp+JPiLesuKjAUWHO/+z7R3GbyjyJdOIX+
- Kifa2plsh9LL8NPIO3+zBNCZxMqOhxOZvDVSTaeeZiRpn+X09JZv2Yj7fQwwtJmk5+ae
- ZsdBTavKKhnaOXm1xF830S5i5bMx0w0bVZ+q2dI2fOrLIpDx8XeO9doMWfm1I/c+YmwD
- eOyPl9quKm3wY+97WIuR2Fyo4HiZ22RjpQ3xW/F+cesYdk9XHUZLb7qXZe1eCEwixHz2
- 7nQYZoeTf+uC5YhyRWjSR1YSDOQ8vUI7Im2vr/LcQHDNwTIHmN2mP5ecykUgiMEKNId8
- yqew==
+ bh=MkwtbKYN92Edw6prtIY013lMT+VdTEfLqeuDLCwuhdg=;
+ b=FuD2KPfFDMvmOopMLuYpng0Tieuf5rsLqaXJ/KtyHJoGI/RkpM0RrY96/PMCPINMZH
+ PUsy9gq7HTEjGH2rAXe/zDdKxw58mvPYhPNoKJzicVC7nm99WDhxdAvTsF610ip+UESo
+ pE3KYkNp4vvTXgY7LIB9msKi2GBXItduo3HSlRsAkbkeDCjoyFmYQxgBhthowdE5KYGx
+ SLr4OvBRvnWfXa4tL8kkO024Iq631cpAChu44oltcoTCbJXcnY3r6bbA5fA+qC/WaNzW
+ t4CdKMuTom0Hyq7cH1uYdJQakQEUj4B9optJME6Fzhy4mOVrq3xVLxzeBd0PJ3exLHKf
+ jg0A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734117384; x=1734722184;
+ d=1e100.net; s=20230601; t=1734117389; x=1734722189;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=GwXJ20o47O0myZ807tC+6WLVB8CtFiG35efK/BxIlqk=;
- b=lbu/ioWGhJ2D5YVum04yakvM/dma9IIivqSCUDmk8KHpY7lg9WwTldeRJBbB8/5dyD
- GHOasK8AdWwdNig+dTTOSgVOYEwnaYxWvNNw2EsSSJteLL8FWSC30HhEfoznrUfkSrjI
- dw1udD/QRhpEk2VuJ3YfQFYvPZhnwqWDmgJj8PYXDPt/+esCvMBLugTmXLLEok4bYNLl
- biKhxaU2mXhkbauiLoqnM1hCxkL5Im0eHCDrBxW1auc4xvKpctbtWozJoYeeCDmmiBun
- 8o9a+hbAaofYJbv0rwdpzfBAPxGFuibeB6PjFnHBs/4NJiohIgbJ9LECtDMTripBBKj0
- WjKQ==
+ bh=MkwtbKYN92Edw6prtIY013lMT+VdTEfLqeuDLCwuhdg=;
+ b=rOWWm+Rp9ax1ETLLnom5CPqY7JR0kt0K8c0gJ2hUSUJsJjA+Lw2sKsrBCb49qYeWZK
+ foLJHge+xtOhwfv3IDp6KSQV9NyhGpuzcw+K/3r/tfwmKMVLEbIbD+Bq4lmQ7lSl225T
+ 0m30upuGWyEt2Cd/q+BkLF1bwLmEkjyMMYp91/pcZHJlMnXQKJ+KVfiKPMrJpvIA/NUV
+ uv85rq97L2AVGR2YQCoSxoMIRfbcCI0BH9JV9Ug5hrOBQW85DV3QbYXHG6pHWfoDFKAg
+ kXFfchSvMB/v5oiLIH6lXUhezm0Q/yQs9QA4sbZFQrizwV6d0EjyKUYHSFruJpedHoUj
+ 1aBg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVpY+3q9z9RzdI21ybgc8utulJdBd1hL42c4Q1Pd2VWQntmnQARvITz0g5or0YsEsQTKyFzwvVeZmdn@nongnu.org
-X-Gm-Message-State: AOJu0Yy565VDOrfF5JGALkJ/9vu75QgRhr/i1vGMrA1R8qkkPzvuObp3
- dxbMLr7hNvrj1RnNjVPdgfVAjduqOJodVtYOjwukLW9qIRDEr4bcXG2I4nlD1nM=
-X-Gm-Gg: ASbGncsr8AZJoNsWwhHWFam9idfGG61PJuwhg+pYzlkSJfvOWJKCVtwpyNkrgeKdaRk
- cHIKEDtoC0nk2Dn7dpQ+Rd9/oYSrKd7g6NqEYXuSj7qgwLHEt8n53rubyJZXj6r19NBVNlQ/Czg
- 7WMPVDS+dNqVNrLl+r0dWBKQvyHFTLJnEVWH/P2ekqPMm8kcYFUArJq7vrz7j5dDwLad0hWSl2k
- tv3mtbvM5yClQJv8D1zjextwoPKfD9ags+G/ZE+7A2JwsYKo/xod678k6rU7z3YIG2fFMPwYxYi
- JWxOCz0nr9sgNQEstxDK
-X-Google-Smtp-Source: AGHT+IE9EaE9q+eOTRyVS+Ej/dZUuzr5P76BaFSUIVzLalx3/4oNdOLXQxFZM43dPSy1rgme1yYiGw==
-X-Received: by 2002:a5d:47c5:0:b0:385:fb66:faee with SMTP id
- ffacd0b85a97d-38880ad0de1mr2688391f8f.18.1734117384499; 
- Fri, 13 Dec 2024 11:16:24 -0800 (PST)
+ AJvYcCU0eD1H7i1yQb7nkqB/qxo0++hDMKJKAo1Xo7YPKYBqNctjSjKrd6wUxc2l5axcrfJzNNfV5lQXDEu7@nongnu.org
+X-Gm-Message-State: AOJu0YxcKdgBJ6IwCeHK++IwfA9jq4LMdY8MIFyHtSXrgPwLd20HbSxO
+ qshkoTIuq+rTvdNJ/S/hY/lvznnWcV0QBlbHyXZHJ/9V+wHNm+YdVNpKGD9WXm8=
+X-Gm-Gg: ASbGncvL0m+BpEuOqt/+cP1THpzKAdr5GNS4BMh6wAaLwubdStq4bOvUUUJSqjxlmPU
+ zlsUkZ/zmYXWHu7dItEqB2vNS7FL/O9ESiKR74VtbSrqLXCBH9CUIR0h8gZdl/7KXtUtcoDSn+Q
+ 39fnpW85XrHkH0tZgggiRVoYWY3CPVurWnyFlTRQkCpRQY9fegTlGRJiNoLhjwD9sf4uSIIiDUx
+ jTzdAe+n0qFxu5rcoOdnVDXXIxkD3nwHq7eS69tl+nSE/3KSIyvOPafgtYKVjCsbq8p6jofbVbh
+ RrLjTENM46LDyqJnhLqb
+X-Google-Smtp-Source: AGHT+IG2xhki/qLW54coKokgzLcQo94AgqnF2lAdaoHbBAJ8MonLO+12ttdlsrZlGtKmIUY0ihzdNw==
+X-Received: by 2002:a05:600c:154c:b0:434:f3a1:b214 with SMTP id
+ 5b1f17b1804b1-4362aab48c4mr28461915e9.28.1734117388701; 
+ Fri, 13 Dec 2024 11:16:28 -0800 (PST)
 Received: from [192.168.224.213] (127.47.205.77.rev.sfr.net. [77.205.47.127])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-388c8046ca6sm297070f8f.83.2024.12.13.11.16.22
+ ffacd0b85a97d-388c8046ca6sm297070f8f.83.2024.12.13.11.16.26
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 13 Dec 2024 11:16:23 -0800 (PST)
-Message-ID: <8011248c-8ed7-46ef-9d8d-78ae05dfc0b4@linaro.org>
-Date: Fri, 13 Dec 2024 20:16:21 +0100
+ Fri, 13 Dec 2024 11:16:27 -0800 (PST)
+Message-ID: <7af8a419-745e-4348-a564-8ef078fd456b@linaro.org>
+Date: Fri, 13 Dec 2024 20:16:25 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] eif: Use stateful qcrypto apis
-To: Dorjoy Chowdhury <dorjoychy111@gmail.com>, qemu-devel@nongnu.org
-Cc: graf@amazon.com, pbonzini@redhat.com, berrange@redhat.com
-References: <20241109123039.24180-1-dorjoychy111@gmail.com>
+Subject: Re: [PATCH] MAINTAINERS: correct my email address
+To: Brian Cain <brian.cain@oss.qualcomm.com>, qemu-devel@nongnu.org
+Cc: richard.henderson@linaro.org, peter.maydell@linaro.org,
+ quic_mathbern@quicinc.com, stefanha@redhat.com, ale@rev.ng, anjo@rev.ng,
+ quic_mliebel@quicinc.com, ltaylorsimpson@gmail.com, alex.bennee@linaro.org,
+ quic_mburton@quicinc.com
+References: <20241209181242.1434231-1-brian.cain@oss.qualcomm.com>
 Content-Language: en-US
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20241109123039.24180-1-dorjoychy111@gmail.com>
+In-Reply-To: <20241209181242.1434231-1-brian.cain@oss.qualcomm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::429;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x429.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,19 +101,15 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/11/24 13:30, Dorjoy Chowdhury wrote:
-> We were storing the pointers to buffers in a GList due to lack of
-> stateful crypto apis and instead doing the final hash computation at
-> the end after we had all the necessary buffers. Now that we have the
-> stateful qcrypto apis available, we can instead update the hashes
-> inline in the read_eif_* functions which makes the code much simpler.
+On 9/12/24 19:12, Brian Cain wrote:
+> Mea culpa, I don't know how I got this wrong in 2dfe93699c.  Still
+> getting used to the new address, I suppose.  Somehow I got it right in the
+> mailmap, though.
 > 
-> Signed-off-by: Dorjoy Chowdhury <dorjoychy111@gmail.com>
+> Signed-off-by: Brian Cain <brian.cain@oss.qualcomm.com>
 > ---
->   hw/core/eif.c                   | 202 ++++++++++++--------------------
->   hw/i386/nitro_enclave.c         |  12 +-
->   include/hw/i386/nitro_enclave.h |  16 +--
->   3 files changed, 91 insertions(+), 139 deletions(-)
+>   MAINTAINERS | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 
 Queued, thanks!
 
