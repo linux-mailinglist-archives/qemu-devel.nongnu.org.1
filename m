@@ -2,78 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F06479F1585
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Dec 2024 20:11:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F2E0B9F15A2
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Dec 2024 20:16:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tMB2N-0003MD-Jx; Fri, 13 Dec 2024 14:09:19 -0500
+	id 1tMB2L-0003JR-09; Fri, 13 Dec 2024 14:09:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tMB1x-0002Wa-2B
+ id 1tMB1x-0002WZ-1M
  for qemu-devel@nongnu.org; Fri, 13 Dec 2024 14:08:58 -0500
-Received: from mail-ot1-x32e.google.com ([2607:f8b0:4864:20::32e])
+Received: from mail-ot1-x32d.google.com ([2607:f8b0:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tMB1t-0006Zg-74
- for qemu-devel@nongnu.org; Fri, 13 Dec 2024 14:08:51 -0500
-Received: by mail-ot1-x32e.google.com with SMTP id
- 46e09a7af769-71e16519031so1052230a34.1
- for <qemu-devel@nongnu.org>; Fri, 13 Dec 2024 11:08:47 -0800 (PST)
+ id 1tMB1u-0006a7-8N
+ for qemu-devel@nongnu.org; Fri, 13 Dec 2024 14:08:52 -0500
+Received: by mail-ot1-x32d.google.com with SMTP id
+ 46e09a7af769-71e3cbd0583so199163a34.1
+ for <qemu-devel@nongnu.org>; Fri, 13 Dec 2024 11:08:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734116925; x=1734721725; darn=nongnu.org;
+ d=linaro.org; s=google; t=1734116928; x=1734721728; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=DK3m2qrYLo1FElKLISrWyflVJNfhiEXCCTPNj+B3ktI=;
- b=IUwYAKCXWVg33ADuClOgHWt+XER1Oh0NjAjIJRz3BBZvhzhg4uuZAJ7ZuUwEC9EmVS
- xOtm8SfU/IzWD+zk44LsHq8reIRHSjECNfXZ1wsPn2ddvFsxuoJLd/GETQkCyNta9YF2
- 0L1GD5GBMI59WpG+T7JpluNH8vaj14a1lq2a8EJqRbjjnGgOEPHxbmRjr7LMrzq3+9ZU
- udGbOvJrljdw0udJ4rUva6woh0LR887pcZ4cLoQzaM0VHzf8k1n6K8qvHMD7gvT4/7oy
- 6mgNf9ugbd80LRJMVndM58JPGHUyK67eRMwW/slQevynNdZB2nP18vIcrmV5QI37zYe+
- jlXQ==
+ bh=CZ5o+wK3lUFPQSBeOoH6IwFw54AejBcTfhRb5vaU2tQ=;
+ b=AreI7Tk7bteZVfF/PRMFP3SBQqw8UQDACiChUJNVR6gtASVMIpmjKKR2vwKo8buQkP
+ 7LynT9Ene+GbMe4fwIcUjbfSfL0ZEjbQnpYwlOcEv4tlkaufXoyAJh5NkK7XEy3bYtmy
+ FFDfOM9PpgbnYXDwhtAaMaPduRGyta14zFqvgrafy0vHyosprfaGHvks6b/Z3N9GCKst
+ ZLeRVc043ZzxE24hhkrRBiWpNaNng5yMOP5bJ8IeE5n9lVvzUlnYmlv1F8+XLgvRLfFZ
+ H6FYTqAuXx0LO3eLyxKO+0o4822tDgJX0cOfgOF35mChQlZOW61MEcPR7gNT19wIJheb
+ wR8Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734116925; x=1734721725;
+ d=1e100.net; s=20230601; t=1734116928; x=1734721728;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=DK3m2qrYLo1FElKLISrWyflVJNfhiEXCCTPNj+B3ktI=;
- b=CX/5vhXqHcxpB0VzbIDk2tD8kDLPTdcAQsQr6NwWDEZhtcokRf3VjnSy/jMaxrYahp
- I5ApbUMph8Jy7qjpXOqSeeovoefpz1klIo+M/dkk25tguHldTdnb4yngct57hTCViX6Y
- D5p3R74hVzVrVxqYxS4cAPkhIJ/SiLMoxb7353FHItm+goW1gjFWdU9hwGakNQY322a4
- cwn8IjkMlzhg5vceA1o0WjCvEORb0D32XrYaQWS2k6pS0lKo5qoyB62UPotIGoAKZ8Mj
- qhz+IP5cnLLkx3vzX/R1yP3iyzQgedttjPMlPr60ZTPjuS9oi1rVRDqrYboaqWIvEnxc
- 1tqw==
-X-Gm-Message-State: AOJu0YwdEJnjWlRr6+0mJsJYzTlpBJqP4q6vSj2LwkRg324L8Vx8HT31
- vOjDOwd4Ki9tvnxGNlqm+jlGcFDBxlB+ehpbUAyZ4AAtYjmcR+Ze92Xur85b0SAPPdiyHVB8jyA
- 03V8MCOKo
-X-Gm-Gg: ASbGncsBgZ3slaMNS6X347wVYMCWRhNHHQReEsLifHBkJJMXEomfjultlkSBWurovJA
- JtWmyq18BMmHuSzBXixt+CLh+vF4hY63c4rcmWyLXiGRa1T/nTbugFHcP9RGIwaId/tYuiziNaw
- wRoRL7STY6OqGeGsYTA0Jwj5fxa12KOk/goh7ETLlTHGfCzpr26fjrKe2AWcjeF3/u+kBCxYxq8
- tHVOiC5cI9TYFzf/kkXkt6MxIBWRRCy2VcIUaKqSuWiKWp78AB0FjjfJ/uo7u4J
-X-Google-Smtp-Source: AGHT+IGgQJUhEEQYm3eXccexiZQ3Ka3v0ZO8L73EAZ8fhhYZUlw4lZyHEhqI6tlAZYFxfvGBhS4yJQ==
-X-Received: by 2002:a05:6830:6a8d:b0:71e:15f7:1a3a with SMTP id
- 46e09a7af769-71e3bd180fdmr1828568a34.2.1734116925411; 
- Fri, 13 Dec 2024 11:08:45 -0800 (PST)
+ bh=CZ5o+wK3lUFPQSBeOoH6IwFw54AejBcTfhRb5vaU2tQ=;
+ b=M7YeSP3bxG+sb6tuKEuTkZ5aRHrs9olWvx7g68nAqoQiwiFlV9gij4ROzNMWr9i35S
+ I4Xc7qY4jw7djbKqtGWuHsVq8J1jQFzDNVGI736anylfNTxPAUjI9rLyfAhXHybJeE/G
+ 8wRzKYFv50EWJmizoxLPrkmSxJuzPAsf96jMCaQjaV7v43Ea/ZeBYfyMka8CimA8DK22
+ ZQCsngjAfscSJeuf7JXDUNDrwClkIjuw5wEtewhsgZ9aBpzWVTUFOrE2oSieJkG6Ylxi
+ YYDfeYTroABH5G/75JojXllu6ojIxaOfVrz1Ia+Mk8DJfllveJbzqDhevBPeyH2Lez6y
+ 47ew==
+X-Gm-Message-State: AOJu0YwnVn+Rm3LtB4f0BU+6n5/DPIt3SwfbqSK5VfTBIAZq9YEgIuS6
+ vOgW5w9Nj749Qi1TE7aMFApkx/LpsggSPVfzHrcLCG7DSk9SnxFVSXmsVxhD74KOk/13p99VKPx
+ cRgRsgeh3
+X-Gm-Gg: ASbGncs2D4OwyXzEdKF0eEyutNC9yU7VYpjCGnubl+CVZYS0pXlak0RuaUORH/HBkUq
+ zocJSA2OPxn0etxsuhaGVKz/NEVkUtLqNIlTzFfoTE4fqWP5R1JDSyrGcxJFyfD+DwSndcAbeNv
+ 3B8mehTfDREfvSc7xpoIa4J7iCmP18K6T+q/pUmAnP1TPCioqqrNd9carWZ8RrsVS9TMFKeFI5g
+ wk8wGXuJAlN9yHcaWqibXwKLY70nMwWjPyfZpvcxkzsOUnoftcklQ2UHQYWS34k
+X-Google-Smtp-Source: AGHT+IHOJPtgViTttcUfFvw76b0ckdZVIlX7g224egEIPf3HEZnH2BdQAgE5qOd2b9N2tJT77qrnzg==
+X-Received: by 2002:a05:6830:917:b0:718:1163:ef8f with SMTP id
+ 46e09a7af769-71e3b812c59mr2293190a34.2.1734116928405; 
+ Fri, 13 Dec 2024 11:08:48 -0800 (PST)
 Received: from stoup.. ([187.217.227.247]) by smtp.gmail.com with ESMTPSA id
- 46e09a7af769-71e4834da91sm29697a34.18.2024.12.13.11.08.43
+ 46e09a7af769-71e4834da91sm29697a34.18.2024.12.13.11.08.46
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 13 Dec 2024 11:08:45 -0800 (PST)
+ Fri, 13 Dec 2024 11:08:48 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: "Michael S. Tsirkin" <mst@redhat.com>, Greg Kurz <groug@kaod.org>,
- Christian Schoenebeck <qemu_oss@crudebyte.com>
-Subject: [PATCH 12/71] hw/9pfs: Constify all Property
-Date: Fri, 13 Dec 2024 13:06:46 -0600
-Message-ID: <20241213190750.2513964-17-richard.henderson@linaro.org>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ Ani Sinha <anisinha@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Aurelien Jarno <aurelien@aurel32.net>
+Subject: [PATCH 13/71] hw/acpi: Constify all Property
+Date: Fri, 13 Dec 2024 13:06:47 -0600
+Message-ID: <20241213190750.2513964-18-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241213190750.2513964-1-richard.henderson@linaro.org>
 References: <20241213190750.2513964-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::32e;
- envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x32e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::32d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,22 +101,64 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- hw/9pfs/virtio-9p-device.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/acpi/erst.c                 | 2 +-
+ hw/acpi/generic_event_device.c | 2 +-
+ hw/acpi/piix4.c                | 2 +-
+ hw/acpi/vmgenid.c              | 2 +-
+ 4 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/hw/9pfs/virtio-9p-device.c b/hw/9pfs/virtio-9p-device.c
-index efa41cfd73..b764e4cd3d 100644
---- a/hw/9pfs/virtio-9p-device.c
-+++ b/hw/9pfs/virtio-9p-device.c
-@@ -243,7 +243,7 @@ static const VMStateDescription vmstate_virtio_9p = {
-     },
- };
+diff --git a/hw/acpi/erst.c b/hw/acpi/erst.c
+index a108cfe49b..5ef5ddccb6 100644
+--- a/hw/acpi/erst.c
++++ b/hw/acpi/erst.c
+@@ -1011,7 +1011,7 @@ static void erst_reset(DeviceState *dev)
+     trace_acpi_erst_reset_out(le32_to_cpu(s->header->record_count));
+ }
  
--static Property virtio_9p_properties[] = {
-+static const Property virtio_9p_properties[] = {
-     DEFINE_PROP_STRING("mount_tag", V9fsVirtioState, state.fsconf.tag),
-     DEFINE_PROP_STRING("fsdev", V9fsVirtioState, state.fsconf.fsdev_id),
+-static Property erst_properties[] = {
++static const Property erst_properties[] = {
+     DEFINE_PROP_LINK(ACPI_ERST_MEMDEV_PROP, ERSTDeviceState, hostmem,
+                      TYPE_MEMORY_BACKEND, HostMemoryBackend *),
+     DEFINE_PROP_UINT32(ACPI_ERST_RECORD_SIZE_PROP, ERSTDeviceState,
+diff --git a/hw/acpi/generic_event_device.c b/hw/acpi/generic_event_device.c
+index 663d9cb093..8c4706f8cf 100644
+--- a/hw/acpi/generic_event_device.c
++++ b/hw/acpi/generic_event_device.c
+@@ -316,7 +316,7 @@ static void acpi_ged_send_event(AcpiDeviceIf *adev, AcpiEventStatusBits ev)
+     qemu_irq_pulse(s->irq);
+ }
+ 
+-static Property acpi_ged_properties[] = {
++static const Property acpi_ged_properties[] = {
+     DEFINE_PROP_UINT32("ged-event", AcpiGedState, ged_event_bitmap, 0),
      DEFINE_PROP_END_OF_LIST(),
+ };
+diff --git a/hw/acpi/piix4.c b/hw/acpi/piix4.c
+index 1de3fe3261..2bfaf5a38d 100644
+--- a/hw/acpi/piix4.c
++++ b/hw/acpi/piix4.c
+@@ -602,7 +602,7 @@ static void piix4_send_gpe(AcpiDeviceIf *adev, AcpiEventStatusBits ev)
+     acpi_send_gpe_event(&s->ar, s->irq, ev);
+ }
+ 
+-static Property piix4_pm_properties[] = {
++static const Property piix4_pm_properties[] = {
+     DEFINE_PROP_UINT32("smb_io_base", PIIX4PMState, smb_io_base, 0),
+     DEFINE_PROP_UINT8(ACPI_PM_PROP_S3_DISABLED, PIIX4PMState, disable_s3, 0),
+     DEFINE_PROP_UINT8(ACPI_PM_PROP_S4_DISABLED, PIIX4PMState, disable_s4, 0),
+diff --git a/hw/acpi/vmgenid.c b/hw/acpi/vmgenid.c
+index e63c8af4c3..9c2ca85cc7 100644
+--- a/hw/acpi/vmgenid.c
++++ b/hw/acpi/vmgenid.c
+@@ -214,7 +214,7 @@ static void vmgenid_realize(DeviceState *dev, Error **errp)
+     vmgenid_update_guest(vms);
+ }
+ 
+-static Property vmgenid_device_properties[] = {
++static const Property vmgenid_device_properties[] = {
+     DEFINE_PROP_UUID(VMGENID_GUID, VmGenIdState, guid),
+     DEFINE_PROP_END_OF_LIST(),
+ };
 -- 
 2.43.0
 
