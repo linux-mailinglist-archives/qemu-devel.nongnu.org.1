@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 918809F13A6
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Dec 2024 18:30:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BB289F139B
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Dec 2024 18:28:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tM9Re-0008Va-Oz; Fri, 13 Dec 2024 12:27:18 -0500
+	id 1tM9Rc-0008UT-7I; Fri, 13 Dec 2024 12:27:16 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <3Z25cZwgKCvYufclbpgiemmejc.amkocks-bctcjlmlels.mpe@flex--whendrik.bounces.google.com>)
- id 1tM9Ra-0008U4-CN
- for qemu-devel@nongnu.org; Fri, 13 Dec 2024 12:27:14 -0500
-Received: from mail-wr1-x44a.google.com ([2a00:1450:4864:20::44a])
+ <3aG5cZwgKCvcvgdmcqhjfnnfkd.bnlpdlt-cdudkmnmfmt.nqf@flex--whendrik.bounces.google.com>)
+ id 1tM9RY-0008TE-Ln
+ for qemu-devel@nongnu.org; Fri, 13 Dec 2024 12:27:12 -0500
+Received: from mail-wm1-x34a.google.com ([2a00:1450:4864:20::34a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from
- <3Z25cZwgKCvYufclbpgiemmejc.amkocks-bctcjlmlels.mpe@flex--whendrik.bounces.google.com>)
- id 1tM9RU-0007pZ-K5
- for qemu-devel@nongnu.org; Fri, 13 Dec 2024 12:27:14 -0500
-Received: by mail-wr1-x44a.google.com with SMTP id
- ffacd0b85a97d-3878ad4bf8cso1306102f8f.1
- for <qemu-devel@nongnu.org>; Fri, 13 Dec 2024 09:27:04 -0800 (PST)
+ <3aG5cZwgKCvcvgdmcqhjfnnfkd.bnlpdlt-cdudkmnmfmt.nqf@flex--whendrik.bounces.google.com>)
+ id 1tM9RT-0007q8-KO
+ for qemu-devel@nongnu.org; Fri, 13 Dec 2024 12:27:12 -0500
+Received: by mail-wm1-x34a.google.com with SMTP id
+ 5b1f17b1804b1-4362b9c15d8so4858625e9.3
+ for <qemu-devel@nongnu.org>; Fri, 13 Dec 2024 09:27:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20230601; t=1734110823; x=1734715623; darn=nongnu.org;
+ d=google.com; s=20230601; t=1734110825; x=1734715625; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:from:subject:message-id:references
  :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
- :reply-to; bh=YqWaCzV/pnA2MoZa7zZ2F5Y69vMXA/gibLEg3WL4oEA=;
- b=EEG8Zy1oufzB1GjoElx/BpFqWBjCqRTovb0tj09DmfXKGUc87zT4mXugLML/K+3nPD
- g0SGsqVyAsMJdZZFGjXQhO/0cEcAoFD91ibP1lqd8yVegWV9xy2P1HEXpb6uJM7uKWUL
- yZtqhLHZkqdvLj4lCVYSEq5TyXJwXIaNrHTYhNv0mNQufVnJZ9UpWBrVJVkciXJYDqR5
- dGFfHAyj/zsN1J2nTkGuDp5yrqCpYzFOjuUfRvLmi8uBvUBAkZrGcFcHFhS1HvaMfsKw
- tos5TOWUQIjrJnsfasDYRWcOKwsluVQtwAU0rouHhe/QenX6NQN+nqFmfW8C8XoU6qMH
- am8w==
+ :reply-to; bh=pGGndzlyEmTL5r3SwAzymXOwQXZlbBFF+E9VZuGkaIQ=;
+ b=kKogyAvf2Q0a9Ycmp8LQoQMKAaL16UlfpMz/mWgAE3mfm/RAhUEgEtxwVsrVdOGYS/
+ gh0jBZcPxhp5T+TDZZpi0ROm/GPJKC2CT9Bc8dU5lwVxQOLqfskly5YQ6oJ0K+bdL6Gx
+ OLefz1csvszcy8fMTJaVzHd5yy3h25CY96pwdXBt5Q5+eOVP057ec6zfqgmOo/SNehp2
+ HXMAf3Rp7E+DRTSo0zu1o987KR1Xq7RDk1V5/jRQJnn+GrEMMNYf66/vdBNEByc/zjhY
+ UdZuKPOfNxL3lMpFLDnZJ/mgNwNa8va8E1CbWdT7DtBF8U25P771ver8u/2laE1WUJ/m
+ zQfg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734110823; x=1734715623;
+ d=1e100.net; s=20230601; t=1734110825; x=1734715625;
  h=content-transfer-encoding:cc:to:from:subject:message-id:references
  :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
  :date:message-id:reply-to;
- bh=YqWaCzV/pnA2MoZa7zZ2F5Y69vMXA/gibLEg3WL4oEA=;
- b=Ger6LGfVJIs6pYSwqENILeZgSJNzk4gqim8Jbwok/QIBCYxGASBbz816fQOItKRltS
- 3CIbpNK9A3xcjYfFr+VrxByb7Xe3nIviWiXd2W+NAu3CdggRKpBDONOItUOqgkdbchNS
- kVqNxL9zfEfelZfXZpwDCRxW+vg0RY9uQsI23S+PG/0/blL7I8aUwMAmgBxOh+TZ6Mfs
- mMyx5AZ3uMyOUR5q/dXSFIATUY9pP9sqkaM5acd9blZoTAv2QwjfBcW3j5qFJb7XIc1w
- SgSsqzSBE2R1z8+0eX0qQp+3/XGIfKN/dVmg2phlgVFQAtsRq4Em3sQMmFDK9BeDhyWn
- zdlA==
-X-Gm-Message-State: AOJu0Yxj9j+oEsdOLMZ7qZS3Aj7rL8A3fZ3qnVj0FIz2JsmvsB/8UpFq
- d3qQJNEG9x3cQBROUOIm6v0Ajjhi3aaJ4h+Oi0q/Fr6fqWPCo79asA9jEf8+aqwDuJWzL+OBkLt
- fhIim1XS4wu3pxoGlWpWPyiMtddKsHE8i/y8LG4MNyVzuMt5i6qXa6H+8Vmu6D20te+0486xs+p
- 12ygBeMxQpiuPzJPkcJaVhM6hzgcczvfrGc+piCTn+9A==
-X-Google-Smtp-Source: AGHT+IF3YsIgjmZoIK4dEn/RQaITQ9Ymxk34HWnChtWLuyv0TJGiWDew8SsQcsJ1qkTzWxUZ9Gzoq4jJWOP0dA==
-X-Received: from wmro18.prod.google.com ([2002:a05:600c:3792:b0:434:a045:c681])
+ bh=pGGndzlyEmTL5r3SwAzymXOwQXZlbBFF+E9VZuGkaIQ=;
+ b=iCRfJHwOmQeyPzEel0g13wrblBTDu/PhVLi+3rxUpQfEZXj8BfJgEDjFQQ96wYpcpY
+ PEcxjKhNJaa4C1rULa7DDgjh2lO8NiRyMX5dWOM7wys1XkkT02dAIMfJ4jJbfKkx/yH9
+ 3YQbn1wxhAY/fKNWIiYx4ce44lFE3VBD+HtUCNCU13mhgZV2T/jpzQNRRC9InIqVy6n5
+ nz8KkMKT6lsim+Y2MUBvquOlcb3h5+ntCgDjaekxfIDQdjEBxXmkgYk7+7490AUE0vwl
+ aJ6iyqFJ7bt+bJFqYkh9ijYzCTXD4bmvHSZU43XQU1PB6nmfVFnBAAb4Gas79nR1kT3z
+ 0d6w==
+X-Gm-Message-State: AOJu0YxYVLY4ZqKICuZ3edtl0ut0pqCtaYi/Rm+4tHOhbhi8YF5iPcBf
+ A9IT0ErsCzm40J3MFZsdREcdx2/YFJ+GURgRTVqzfJPQyTFGKsSh//rpiRRhYuQqR/3+Sznab4x
+ AHt+tHaLQ/+Z7jYGZTarjF5bNRMLEQLyjgFKCSyjVMD2r+/e8KDETPnaK6kPS4l9+6wQXhZ8FcA
+ Rogz54HkAw4cioY1r9oXw1Ea6xeV+bHlSqLDiAE+Sfcg==
+X-Google-Smtp-Source: AGHT+IGhvN4/1yno2Lnqg3uB4M24JpY5kItm0P2r0QcNdzXCqBkl2Jr1zxIh9qssRj4MSfswc3OdK0w0qS+agg==
+X-Received: from wmna1.prod.google.com ([2002:a05:600c:681:b0:434:a2a5:1fb5])
  (user=whendrik job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6000:a19:b0:385:ef39:6cf7 with SMTP id
- ffacd0b85a97d-3888e0bb9d7mr2642313f8f.32.1734110823070; 
- Fri, 13 Dec 2024 09:27:03 -0800 (PST)
-Date: Fri, 13 Dec 2024 17:26:41 +0000
+ 2002:a05:600c:1d86:b0:435:136:75f6 with SMTP id
+ 5b1f17b1804b1-4362a98815cmr33545565e9.0.1734110824963; 
+ Fri, 13 Dec 2024 09:27:04 -0800 (PST)
+Date: Fri, 13 Dec 2024 17:26:42 +0000
 In-Reply-To: <20241213172645.2751696-1-whendrik@google.com>
 Mime-Version: 1.0
 References: <20241213172645.2751696-1-whendrik@google.com>
 X-Mailer: git-send-email 2.47.1.613.gc27f4b7a9f-goog
-Message-ID: <20241213172645.2751696-5-whendrik@google.com>
-Subject: [PATCH v5 4/8] i386: Add RDT device interface through MSRs
+Message-ID: <20241213172645.2751696-6-whendrik@google.com>
+Subject: [PATCH v5 5/8] i386: Add CPUID enumeration for RDT
 From: Hendrik Wuethrich <whendrik@google.com>
 To: qemu-devel@nongnu.org, eduardo@habkost.net, richard.henderson@linaro.org, 
  marcel.apfelbaum@gmail.com, mst@redhat.com, pbonzini@redhat.com, 
@@ -71,15 +71,15 @@ Cc: peternewman@google.com,
  "=?UTF-8?q?=E2=80=AAHendrik=20W=C3=BCthrich?=" <whendrik@google.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::44a;
- envelope-from=3Z25cZwgKCvYufclbpgiemmejc.amkocks-bctcjlmlels.mpe@flex--whendrik.bounces.google.com;
- helo=mail-wr1-x44a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::34a;
+ envelope-from=3aG5cZwgKCvcvgdmcqhjfnnfkd.bnlpdlt-cdudkmnmfmt.nqf@flex--whendrik.bounces.google.com;
+ helo=mail-wm1-x34a.google.com
 X-Spam_score_int: -95
 X-Spam_score: -9.6
 X-Spam_bar: ---------
 X-Spam_report: (-9.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, T_SPF_TEMPERROR=0.01,
  USER_IN_DEF_DKIM_WL=-7.5 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -98,206 +98,253 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: =E2=80=AAHendrik W=C3=BCthrich <whendrik@google.com>
 
-Implement rdmsr and wrmsr for the following MSRs:
-* MSR_IA32_PQR_ASSOC
-* MSR_IA32_QM_EVTSEL
-* MSR_IA32_QM_CTR
-* IA32_L3_QOS_Mask_n
-* IA32_L2_QOS_Mask_n
-* IA32_L2_QoS_Ext_BW_Thrtl_n
-
-This allows for the guest to call RDT-internal functions to
-associate an RMID with a CLOSID / set an active RMID for
-monitoring, read monitoring data, and set classes of service.
+Add CPUID enumeration for intel RDT monitoring and allocation, as well
+as the flags used in the enumeration code.
 
 Signed-off-by: Hendrik W=C3=BCthrich <whendrik@google.com>
 ---
- hw/i386/rdt.c                        |  4 ++
- include/hw/i386/rdt.h                |  4 ++
- target/i386/cpu.h                    | 14 +++++
- target/i386/tcg/sysemu/misc_helper.c | 81 ++++++++++++++++++++++++++++
- 4 files changed, 103 insertions(+)
+ hw/i386/rdt.c         | 30 ++++++++++++++++++
+ include/hw/i386/rdt.h | 31 +++++++++++++++++++
+ target/i386/cpu.c     | 71 +++++++++++++++++++++++++++++++++++++++++++
+ target/i386/cpu.h     |  5 +++
+ 4 files changed, 137 insertions(+)
 
 diff --git a/hw/i386/rdt.c b/hw/i386/rdt.c
-index 01bee79cbe..3a37341bd6 100644
+index 3a37341bd6..7c9170559d 100644
 --- a/hw/i386/rdt.c
 +++ b/hw/i386/rdt.c
-@@ -81,6 +81,10 @@ struct RDTState {
+@@ -35,6 +35,17 @@
+ #define RDT_MAX_L2_MASK_COUNT      63
+ #define RDT_MAX_MBA_THRTL_COUNT    63
+=20
++/* RDT L3 Allocation features */
++#define CPUID_10_1_EAX_CBM_LENGTH       0xf
++#define CPUID_10_1_EBX_CBM              0x0
++#define CPUID_10_1_ECX_CDP              0x0 // to enable, it would be (1U =
+<< 2)
++/* RDT L2 Allocation features*/
++#define CPUID_10_2_EAX_CBM_LENGTH       0xf
++#define CPUID_10_2_EBX_CBM              0x0
++/* RDT MBA features */
++#define CPUID_10_3_EAX_THRTL_MAX        89
++#define CPUID_10_3_ECX_LINEAR_RESPONSE (1U << 2)
++
+ #define TYPE_RDT "rdt"
+ #define RDT_NUM_RMID_PROP "rmids"
+=20
+@@ -81,8 +92,27 @@ struct RDTState {
  struct RDTStateClass {
  };
 =20
-+uint32_t rdt_get_cpuid_10_1_edx_cos_max(void) { return RDT_MAX_L3_MASK_COU=
-NT; }
-+uint32_t rdt_get_cpuid_10_2_edx_cos_max(void) { return RDT_MAX_L2_MASK_COU=
-NT; }
-+uint32_t rdt_get_cpuid_10_3_edx_cos_max(void) { return RDT_MAX_MBA_THRTL_C=
-OUNT; }
++uint32_t rdt_get_cpuid_F_0_edx_l3(void) { return CPUID_F_1_EDX_L3_OCCUPANC=
+Y | CPUID_F_1_EDX_L3_TOTAL_BW | CPUID_F_1_EDX_L3_LOCAL_BW; }
 +
++uint32_t rdt_cpuid_F_1_edx_l3_total_bw_enabled(void) { return CPUID_F_1_ED=
+X_L3_TOTAL_BW; }
++uint32_t rdt_cpuid_F_1_edx_l3_local_bw_enabled(void) { return CPUID_F_1_ED=
+X_L3_LOCAL_BW; }
++uint32_t rdt_cpuid_F_1_edx_l3_occupancy_enabled(void) { return CPUID_F_1_E=
+DX_L3_OCCUPANCY; }
++
++uint32_t rdt_cpuid_10_0_ebx_l3_cat_enabled(void) { return CPUID_10_0_EBX_L=
+3_CAT; }
++uint32_t rdt_cpuid_10_0_ebx_l2_cat_enabled(void) { return CPUID_10_0_EBX_L=
+2_CAT; }
++uint32_t rdt_cpuid_10_0_ebx_l2_mba_enabled(void) { return CPUID_10_0_EBX_M=
+BA; }
++
++uint32_t rdt_get_cpuid_10_1_eax_cbm_length(void) { return CPUID_10_1_EAX_C=
+BM_LENGTH; }
++uint32_t rdt_cpuid_10_1_ebx_cbm_enabled(void) { return CPUID_10_1_EBX_CBM;=
+ }
++uint32_t rdt_cpuid_10_1_ecx_cdp_enabled(void) { return CPUID_10_1_ECX_CDP;=
+ }
+ uint32_t rdt_get_cpuid_10_1_edx_cos_max(void) { return RDT_MAX_L3_MASK_COU=
+NT; }
++
++uint32_t rdt_get_cpuid_10_2_eax_cbm_length(void) { return CPUID_10_2_EAX_C=
+BM_LENGTH; }
++uint32_t rdt_cpuid_10_2_ebx_cbm_enabled(void) { return CPUID_10_2_EBX_CBM;=
+ }
+ uint32_t rdt_get_cpuid_10_2_edx_cos_max(void) { return RDT_MAX_L2_MASK_COU=
+NT; }
++
++uint32_t rdt_get_cpuid_10_3_eax_thrtl_max(void) { return CPUID_10_3_EAX_TH=
+RTL_MAX; }
++uint32_t rdt_cpuid_10_3_eax_linear_response_enabled(void) { return CPUID_1=
+0_3_ECX_LINEAR_RESPONSE; }
+ uint32_t rdt_get_cpuid_10_3_edx_cos_max(void) { return RDT_MAX_MBA_THRTL_C=
+OUNT; }
+=20
  bool rdt_associate_rmid_cos(uint64_t msr_ia32_pqr_assoc)
- {
-     X86CPU *cpu =3D X86_CPU(current_cpu);
 diff --git a/include/hw/i386/rdt.h b/include/hw/i386/rdt.h
-index 14b1c64b72..ec82a149f2 100644
+index ec82a149f2..859fb4871c 100644
 --- a/include/hw/i386/rdt.h
 +++ b/include/hw/i386/rdt.h
-@@ -25,6 +25,10 @@ typedef struct RDTStatePerCore RDTStatePerCore;
+@@ -20,13 +20,44 @@
+ #include <stdbool.h>
+ #include <stdint.h>
+=20
++/* RDT L3 Cache Monitoring Technology */
++#define CPUID_F_0_EDX_L3               (1U << 1)
++#define CPUID_F_1_EDX_L3_OCCUPANCY     (1U << 0)
++#define CPUID_F_1_EDX_L3_TOTAL_BW      (1U << 1)
++#define CPUID_F_1_EDX_L3_LOCAL_BW      (1U << 2)
++
++/* RDT Cache Allocation Technology */
++#define CPUID_10_0_EBX_L3_CAT           (1U << 1)
++#define CPUID_10_0_EBX_L2_CAT           (1U << 2)
++#define CPUID_10_0_EBX_MBA              (1U << 3)
++#define CPUID_10_0_EDX CPUID_10_0_EBX_L3_CAT | CPUID_10_0_EBX_L2_CAT | CPU=
+ID_10_0_EBX_MBA
++
+ typedef struct RDTState RDTState;
+ typedef struct RDTStatePerCore RDTStatePerCore;
  typedef struct RDTMonitor RDTMonitor;
  typedef struct RDTAllocation RDTAllocation;
 =20
-+uint32_t rdt_get_cpuid_10_1_edx_cos_max(void);
-+uint32_t rdt_get_cpuid_10_2_edx_cos_max(void);
-+uint32_t rdt_get_cpuid_10_3_edx_cos_max(void);
++uint32_t rdt_get_cpuid_F_0_edx_l3(void);
 +
- bool rdt_associate_rmid_cos(uint64_t msr_ia32_pqr_assoc);
++uint32_t rdt_cpuid_F_1_edx_l3_total_bw_enabled(void);
++uint32_t rdt_cpuid_F_1_edx_l3_local_bw_enabled(void);
++uint32_t rdt_cpuid_F_1_edx_l3_occupancy_enabled(void);
++
++uint32_t rdt_cpuid_10_0_ebx_l3_cat_enabled(void);
++uint32_t rdt_cpuid_10_0_ebx_l2_cat_enabled(void);
++uint32_t rdt_cpuid_10_0_ebx_l2_mba_enabled(void);
++
++uint32_t rdt_get_cpuid_10_1_eax_cbm_length(void);
++uint32_t rdt_cpuid_10_1_ebx_cbm_enabled(void);
++uint32_t rdt_cpuid_10_1_ecx_cdp_enabled(void);
+ uint32_t rdt_get_cpuid_10_1_edx_cos_max(void);
++
++uint32_t rdt_get_cpuid_10_2_eax_cbm_length(void);
++uint32_t rdt_cpuid_10_2_ebx_cbm_enabled(void);
+ uint32_t rdt_get_cpuid_10_2_edx_cos_max(void);
++
++uint32_t rdt_get_cpuid_10_3_eax_thrtl_max(void);
++uint32_t rdt_cpuid_10_3_eax_linear_response_enabled(void);
+ uint32_t rdt_get_cpuid_10_3_edx_cos_max(void);
 =20
- void rdt_write_msr_l3_mask(uint32_t pos, uint32_t val);
+ bool rdt_associate_rmid_cos(uint64_t msr_ia32_pqr_assoc);
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index 3725dbbc4b..c6e6cff19d 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -41,6 +41,7 @@
+ #include "hw/boards.h"
+ #include "hw/i386/sgx-epc.h"
+ #endif
++#include "hw/i386/rdt.h"
+=20
+ #include "disas/capstone.h"
+ #include "cpu-internal.h"
+@@ -6725,6 +6726,76 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index,=
+ uint32_t count,
+         assert(!(*eax & ~0x1f));
+         *ebx &=3D 0xffff; /* The count doesn't need to be reliable. */
+         break;
++#ifndef CONFIG_USER_ONLY
++    case 0xF:
++        /* Shared Resource Monitoring Enumeration Leaf */
++        *eax =3D 0;
++        *ebx =3D 0;
++        *ecx =3D 0;
++        *edx =3D 0;
++        if (!(env->features[FEAT_7_0_EBX] & CPUID_7_0_EBX_PQM))
++            break;
++        if (!(cpu->rdt)) {
++            warn_report("Intel RDT features enabled in commandline, "
++                        "but rdt device not used");
++            break;
++        }
++        /* Non-zero count is ResId */
++        switch (count) {
++            /* Monitoring Resource Type Enumeration */
++        case 0:
++            *edx =3D env->features[FEAT_RDT_F_0_EDX];
++            *ebx =3D rdt_max_rmid(cpu->rdt);
++            break;
++        case 1:
++            *ebx =3D 1;
++            *ecx =3D rdt_max_rmid(cpu->rdt);
++            *edx =3D rdt_cpuid_F_1_edx_l3_total_bw_enabled() |
++                    rdt_cpuid_F_1_edx_l3_local_bw_enabled() |
++                   rdt_cpuid_F_1_edx_l3_occupancy_enabled();
++            break;
++        }
++        break;
++    case 0x10:
++        /* Shared Resource Director Technology Allocation Enumeration Leaf=
+ */
++        *eax =3D 0;
++        *ebx =3D 0;
++        *ecx =3D 0;
++        *edx =3D 0;
++        if (!(env->features[FEAT_7_0_EBX] & CPUID_7_0_EBX_PQE))
++            break;
++        if (!(cpu->rdt)) {
++            warn_report("Intel RDT features enabled in commandline, "
++                        "but rdt device not used");
++            break;
++        }
++        /* Non-zero count is ResId */
++        switch (count) {
++            /* Cache Allocation Technology Available Resource Types */
++        case 0:
++            *ebx |=3D rdt_cpuid_10_0_ebx_l3_cat_enabled();
++            *ebx |=3D rdt_cpuid_10_0_ebx_l2_cat_enabled();
++            *ebx |=3D rdt_cpuid_10_0_ebx_l2_mba_enabled();
++            break;
++        case 1:
++            *eax =3D rdt_get_cpuid_10_1_eax_cbm_length();
++            *ebx =3D rdt_cpuid_10_1_ebx_cbm_enabled();
++            *ecx |=3D rdt_cpuid_10_1_ecx_cdp_enabled();
++            *edx =3D  rdt_get_cpuid_10_1_edx_cos_max();
++            break;
++        case 2:
++            *eax =3D rdt_get_cpuid_10_2_eax_cbm_length();
++            *ebx =3D rdt_cpuid_10_2_ebx_cbm_enabled();
++            *edx =3D  rdt_get_cpuid_10_2_edx_cos_max();
++            break;
++        case 3:
++            *eax =3D rdt_get_cpuid_10_3_eax_thrtl_max();
++            *ecx =3D rdt_cpuid_10_3_eax_linear_response_enabled();
++            *edx =3D rdt_get_cpuid_10_3_edx_cos_max();
++            break;
++        }
++        break;
++#endif
+     case 0x1C:
+         if (cpu->enable_pmu && (env->features[FEAT_7_0_EDX] & CPUID_7_0_ED=
+X_ARCH_LBR)) {
+             x86_cpu_get_supported_cpuid(0x1C, 0, eax, ebx, ecx, edx);
 diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-index 0f73c1244d..64a53efa30 100644
+index 64a53efa30..a1ec2d5dde 100644
 --- a/target/i386/cpu.h
 +++ b/target/i386/cpu.h
-@@ -576,6 +576,17 @@ typedef enum X86Seg {
- #define MSR_IA32_VMX_TRUE_ENTRY_CTLS     0x00000490
- #define MSR_IA32_VMX_VMFUNC             0x00000491
+@@ -678,6 +678,7 @@ typedef enum FeatureWord {
+     FEAT_7_1_EDX,       /* CPUID[EAX=3D7,ECX=3D1].EDX */
+     FEAT_7_2_EDX,       /* CPUID[EAX=3D7,ECX=3D2].EDX */
+     FEAT_24_0_EBX,      /* CPUID[EAX=3D0x24,ECX=3D0].EBX */
++    FEAT_RDT_F_0_EDX,  /* CPUID[EAX=3D0xf,ECX=3D0].EDX (RDT CMT/MBM) */
+     FEATURE_WORDS,
+ } FeatureWord;
 =20
-+#define MSR_IA32_QM_EVTSEL                  0x0c8d
-+#define MSR_IA32_QM_CTR                     0x0c8e
-+#define MSR_IA32_PQR_ASSOC                  0x0c8f
-+
-+#define MSR_IA32_L3_CBM_BASE                0x0c90
-+#define MSR_IA32_L3_MASKS_END               0x0d0f
-+#define MSR_IA32_L2_CBM_BASE                0x0d10
-+#define MSR_IA32_L2_CBM_END                 0x0d4f
-+#define MSR_IA32_L2_QOS_Ext_BW_Thrtl_BASE   0xd50
-+#define MSR_IA32_L2_QOS_Ext_BW_Thrtl_END    0xd8f
-+
- #define MSR_APIC_START                  0x00000800
- #define MSR_APIC_END                    0x000008ff
-=20
-@@ -1839,6 +1850,9 @@ typedef struct CPUArchState {
-     uint64_t msr_ia32_feature_control;
-     uint64_t msr_ia32_sgxlepubkeyhash[4];
-=20
-+    uint64_t msr_ia32_qm_evtsel;
-+    uint64_t msr_ia32_pqr_assoc;
-+
-     uint64_t msr_fixed_ctr_ctrl;
-     uint64_t msr_global_ctrl;
-     uint64_t msr_global_status;
-diff --git a/target/i386/tcg/sysemu/misc_helper.c b/target/i386/tcg/sysemu/=
-misc_helper.c
-index 094aa56a20..a6c6b11a29 100644
---- a/target/i386/tcg/sysemu/misc_helper.c
-+++ b/target/i386/tcg/sysemu/misc_helper.c
-@@ -25,6 +25,7 @@
- #include "exec/address-spaces.h"
- #include "exec/exec-all.h"
- #include "tcg/helper-tcg.h"
-+#include "hw/i386/rdt.h"
- #include "hw/i386/apic.h"
-=20
- void helper_outb(CPUX86State *env, uint32_t port, uint32_t data)
-@@ -293,6 +294,45 @@ void helper_wrmsr(CPUX86State *env)
-         env->msr_bndcfgs =3D val;
-         cpu_sync_bndcs_hflags(env);
-         break;
-+    case MSR_IA32_QM_EVTSEL:
-+        env->msr_ia32_qm_evtsel =3D val;
-+        break;
-+    case MSR_IA32_PQR_ASSOC:
-+        env->msr_ia32_pqr_assoc =3D val;
-+
-+        if (!rdt_associate_rmid_cos(val))
-+            goto error;
-+        break;
-+    case MSR_IA32_L3_CBM_BASE ... MSR_IA32_L3_MASKS_END:
-+    {
-+        uint32_t pos =3D (uint32_t)env->regs[R_ECX] - MSR_IA32_L3_CBM_BASE=
-;
-+
-+        if (pos > rdt_get_cpuid_10_1_edx_cos_max()) {
-+            goto error;
-+        }
-+        rdt_write_msr_l3_mask(pos, val);
-+        break;
-+    }
-+    case MSR_IA32_L2_CBM_BASE ... MSR_IA32_L2_CBM_END:
-+    {
-+        uint32_t pos =3D (uint32_t)env->regs[R_ECX] - MSR_IA32_L2_CBM_BASE=
-;
-+
-+        if (pos > rdt_get_cpuid_10_2_edx_cos_max()) {
-+            goto error;
-+        }
-+        rdt_write_msr_l2_mask(pos, val);
-+        break;
-+    }
-+    case MSR_IA32_L2_QOS_Ext_BW_Thrtl_BASE ... MSR_IA32_L2_QOS_Ext_BW_Thrt=
-l_END:
-+    {
-+        uint32_t pos =3D (uint32_t)env->regs[R_ECX] - MSR_IA32_L2_QOS_Ext_=
-BW_Thrtl_BASE;
-+
-+        if (pos > rdt_get_cpuid_10_3_edx_cos_max()) {
-+            goto error;
-+        }
-+        rdt_write_mba_thrtl(pos, val);
-+        break;
-+    }
-     case MSR_APIC_START ... MSR_APIC_END: {
-         int ret;
-         int index =3D (uint32_t)env->regs[R_ECX] - MSR_APIC_START;
-@@ -472,6 +512,47 @@ void helper_rdmsr(CPUX86State *env)
-         val =3D (cs->nr_threads * cs->nr_cores) | (cs->nr_cores << 16);
-         break;
-     }
-+    case MSR_IA32_QM_CTR:
-+        val =3D rdt_read_event_count(x86_cpu->rdt,
-+                                   (env->msr_ia32_qm_evtsel >> 32) & 0xff,
-+                                   env->msr_ia32_qm_evtsel & 0xff);
-+        break;
-+    case MSR_IA32_QM_EVTSEL:
-+        val =3D env->msr_ia32_qm_evtsel;
-+        break;
-+    case MSR_IA32_PQR_ASSOC:
-+        val =3D env->msr_ia32_pqr_assoc;
-+        break;
-+    case MSR_IA32_L3_CBM_BASE ... MSR_IA32_L3_MASKS_END:
-+    {
-+        uint32_t pos =3D (uint32_t)env->regs[R_ECX] - MSR_IA32_L3_CBM_BASE=
-;
-+
-+        if (pos >=3D rdt_get_cpuid_10_1_edx_cos_max()) {
-+            raise_exception_err_ra(env, EXCP0D_GPF, 0, GETPC());
-+        }
-+        val =3D rdt_read_l3_mask(pos);
-+        break;
-+    }
-+    case MSR_IA32_L2_CBM_BASE ... MSR_IA32_L2_CBM_END:
-+    {
-+        uint32_t pos =3D (uint32_t)env->regs[R_ECX] - MSR_IA32_L2_CBM_BASE=
-;
-+
-+        if (pos >=3D rdt_get_cpuid_10_2_edx_cos_max()) {
-+            raise_exception_err_ra(env, EXCP0D_GPF, 0, GETPC());
-+        }
-+        val =3D rdt_read_l2_mask(pos);
-+        break;
-+    }
-+    case MSR_IA32_L2_QOS_Ext_BW_Thrtl_BASE ... MSR_IA32_L2_QOS_Ext_BW_Thrt=
-l_END:
-+    {
-+        uint32_t pos =3D (uint32_t)env->regs[R_ECX] - MSR_IA32_L2_QOS_Ext_=
-BW_Thrtl_BASE;
-+
-+        if (pos >=3D rdt_get_cpuid_10_3_edx_cos_max()) {
-+            raise_exception_err_ra(env, EXCP0D_GPF, 0, GETPC());
-+        }
-+        val =3D rdt_read_mba_thrtl(pos);
-+        break;
-+    }
-     case MSR_APIC_START ... MSR_APIC_END: {
-         int ret;
-         int index =3D (uint32_t)env->regs[R_ECX] - MSR_APIC_START;
+@@ -852,8 +853,12 @@ uint64_t x86_cpu_get_supported_feature_word(X86CPU *cp=
+u, FeatureWord w);
+ #define CPUID_7_0_EBX_RTM               (1U << 11)
+ /* Zero out FPU CS and FPU DS */
+ #define CPUID_7_0_EBX_ZERO_FCS_FDS      (1U << 13)
++/* Resource Director Technology Monitoring */
++#define CPUID_7_0_EBX_PQM               (1U << 12)
+ /* Memory Protection Extension */
+ #define CPUID_7_0_EBX_MPX               (1U << 14)
++/* Resource Director Technology Allocation */
++#define CPUID_7_0_EBX_PQE               (1U << 15)
+ /* AVX-512 Foundation */
+ #define CPUID_7_0_EBX_AVX512F           (1U << 16)
+ /* AVX-512 Doubleword & Quadword Instruction */
 --=20
 2.47.1.613.gc27f4b7a9f-goog
 
