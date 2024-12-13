@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFD419F1A18
-	for <lists+qemu-devel@lfdr.de>; Sat, 14 Dec 2024 00:34:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 74ED39F1A09
+	for <lists+qemu-devel@lfdr.de>; Sat, 14 Dec 2024 00:33:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tMF9f-0005ZH-JK; Fri, 13 Dec 2024 18:33:07 -0500
+	id 1tMF9V-0004Sw-Su; Fri, 13 Dec 2024 18:32:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tMF8x-0003nm-K8
- for qemu-devel@nongnu.org; Fri, 13 Dec 2024 18:32:23 -0500
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tMF93-0003us-T8
+ for qemu-devel@nongnu.org; Fri, 13 Dec 2024 18:32:33 -0500
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tMF8v-00037E-P1
- for qemu-devel@nongnu.org; Fri, 13 Dec 2024 18:32:23 -0500
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-4361d5dcf5bso24207425e9.3
- for <qemu-devel@nongnu.org>; Fri, 13 Dec 2024 15:32:20 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tMF91-000381-HH
+ for qemu-devel@nongnu.org; Fri, 13 Dec 2024 18:32:29 -0500
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-436202dd730so16559415e9.2
+ for <qemu-devel@nongnu.org>; Fri, 13 Dec 2024 15:32:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734132739; x=1734737539; darn=nongnu.org;
+ d=linaro.org; s=google; t=1734132745; x=1734737545; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=uFgo5/cFMtDhVHAmYBsAsdqAE3yRetip0LB681CLyVs=;
- b=KVoMYy1kmwVrqX5U5YZ9wf7x3yd6CTzBxgeSFBkuzrTwyazuz9gKqK1zhZ/BX+zUGW
- LX0OoWmh5+2MF+/MgHwEWcgBKKSAhnQPQKIAvo+ANBZTIBexBu8zWnh6lRlP9bbMIM3W
- qetOnXGAbBEx8bE+TqGX84CvQz/6b79KUFOfDVkcfHAccOoorbKZqpkyTD482JxJNcfg
- yPWNxNE6egHUl3kofADRCa9d1qPdTPzwF87KEmH8RYqV4NMRdJx+MT7BBq3tTSj/1ir2
- YJkyCFhpUtPYOEdFauPsS7M43/+quRNvDYq3xAGipDFeEHmg9Y+N3BB7Bc4lkyrdOJ58
- Q2Rw==
+ bh=a3TtnTiO9UzBRUmGvf6bhUHZ7y2QwBk8czB0sZAw/do=;
+ b=KXFgtcybdfezlfy5dRt7cnXcThG2woWVuUIKnmQLprhA3nX6opoJnOg6J17PB6EUBP
+ ORaAaLumpUGqGyquhh8LktSTZLRKYmzcdXTzCkwU8Son7OS2nmazchMqi7KCufJXPNSB
+ Yt5oui2JULdIPoGHdUZ3/Ra7v2OFJr5Ift2gRPPI9zjehEKbTIwdcY4O/UDpM96iGtBC
+ 8jhDS+DzYqVoLfyBywFo/yTenSHhiRZg++lkzYbTS481dgFGEK47mnJk4A+8D3KKDpI1
+ vV11OThlNa0zxcek+n+fIl8Mq1giQzm8ow+nsGJENDw2zkMFuxpahA6S6TC+hImgCT1I
+ iqTA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734132739; x=1734737539;
+ d=1e100.net; s=20230601; t=1734132745; x=1734737545;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=uFgo5/cFMtDhVHAmYBsAsdqAE3yRetip0LB681CLyVs=;
- b=d/Pp5u/q3kSRyAfpWhyKvD16tSuJTK0jyfqy39YDEwTWnHBTzQ+vfMsVZ2Fmt4jgJa
- BRav0xdW4E9NV1C8QncuX4tdf6VrfXwy1RC8dNs5bQBuUWKKpZcJIWgl/+RmJEFa8sPx
- EcxIbQ/PEhcYGiCwaqqIhmfmvSbZ7a+YH6z7oUmRLqflmJJba2LAuHGSalOuhfjbU4Tc
- qsXrnd07FyG7MDydV7yVPz4y8yI0GbNqA5lgPRmVVPCDQbYBuHPCeq1UowpLnMkmZ/VY
- gLad+dsLOb815GK1Ugd0BDUGc5YJpoVyhTwOgRSadHJLT8CvTU+eQtpn1hy0Q1mqPAjs
- 6t9Q==
-X-Gm-Message-State: AOJu0YxBy0Zkx3ScE+76UutJyeiv2RtBTy0Xr2FrJlHBYcW/03vRxgKm
- OTyMi7jHnH3o3+FNK2U5KOQB6jyYwDYkk5MJEE85eQDX4F7Gvn6wn2O5pdpvfhwxVzth6mrckBl
- fFcY=
-X-Gm-Gg: ASbGncu9wLLS7GPRhR+eUuOs4jDlt1z2rrTV13/wpuRxUhOky0kbykngOFC7Jhe7g5H
- gOluVfBzQ+msQogKWt3i5jrni/Ndb4pDE668o87e0IvESKmhGgn27hF69O6sTU4byqNEGTYJrQq
- liJ07SzN6LhF40em4uCbPJqv9v9/Cq2qu/S8CVI5bZP6vi9uUCdpwotxW4BHDntAxcv40vdXIks
- CeaJSqvveA0TOZQBigBC4F6U5Jl339ZlFmHrzQhUwQtuOUrYqcgS/6QwRVkoiKArglbUvKSQ2h4
- En+XWg==
-X-Google-Smtp-Source: AGHT+IF2K5W+YYWu/0e67Th7Crz0XrJobf95gjSCqdpQAQj4NETpewvUX+QBwSt/LxaMMI5d/ySCXg==
-X-Received: by 2002:a05:600c:1da6:b0:434:a7e3:db5c with SMTP id
- 5b1f17b1804b1-4362aa27ef1mr36088575e9.11.1734132739181; 
- Fri, 13 Dec 2024 15:32:19 -0800 (PST)
+ bh=a3TtnTiO9UzBRUmGvf6bhUHZ7y2QwBk8czB0sZAw/do=;
+ b=vYF0+3nVy4g/77fq1ow7gjzI/4wUS4V4egnjNb9pJ6rag+QSIHJHNAmpvDlvLYn0uu
+ dnDhvoOazYH7iHpT8kS/yJ4WYeFHYrFTUOhodIVcvk2h1fKARnIzF1VXHuH8kdGiwVjD
+ /YJcPwcoWvA0TMI8Gka+cVXVMJniCYuoOG7G8Tyh80QFMLu/WMqTMlZOkmWBz1PHqb6a
+ afaWCwrSog+Utszn8hhlCu4ChpR4IsJ9rPqJs0/Cbu3QkvfE7RccRmQMjK6aEn5/x9+F
+ kXRAwy2OiSGU71UOZJs6CJGYXa+waMAARlUAWMMXEJyEwr8bmjmuDBIbYGOeo9bWxmrj
+ jWLQ==
+X-Gm-Message-State: AOJu0YyGlQ/qUEgLj2nP7EAcyHcFZzfK9371gQ+PPCb5e+zmW7nHgJRa
+ 4vpCtQyHE/iAQaIb6yvMwBh4iBBnLFmK5n3RNAk0FC7kWfKwKhoHcd7c0pq9rt9EgO3LBObhPfX
+ DHDw=
+X-Gm-Gg: ASbGnctBlnCB5c7LtE6LA8sn6tv+EUbXCpGThCClFdcPz0Wgj2NchaGJZhOYK31Fbsv
+ tA8zd6cU4NC6o2iLy+yP92kI0VlWbLf4J10Y1ISWsfy2SGMfkVl2Y68zgDQDxsJEXjxg1fNbIZ/
+ KOJT1L0I9fSs2yHBUgcBuCwmKfOx7vVWdfzun6KbEJEFe7lYtbKF9zW47/BW+xRMSPirXVFUjkK
+ nsTOdVan+uQHcIylWraaUeN5O2SQgawrC21fKGTILDvqb0wYnQff2F1A67yWAv2QNhkueJUqY4C
+ elE/HA==
+X-Google-Smtp-Source: AGHT+IFLTaIoPuBlUHMXG89W9bEFd5FgiEdXf6f5G7N+vppsxPfOdbXtlxw+55kx/7hZug8KZ4FZOg==
+X-Received: by 2002:a05:600c:cc9:b0:434:fec5:4ef5 with SMTP id
+ 5b1f17b1804b1-4362aa43bcbmr43962645e9.14.1734132745363; 
+ Fri, 13 Dec 2024 15:32:25 -0800 (PST)
 Received: from localhost.localdomain ([45.93.146.194])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4361e322328sm81348935e9.0.2024.12.13.15.32.17
+ 5b1f17b1804b1-436255531b1sm64714755e9.2.2024.12.13.15.32.22
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 13 Dec 2024 15:32:18 -0800 (PST)
+ Fri, 13 Dec 2024 15:32:23 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Bernhard Beschow <shentey@gmail.com>, Peter Xu <peterx@redhat.com>,
+Cc: Bernhard Beschow <shentey@gmail.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 16/20] hw/ide/ahci: Decouple from PCI
-Date: Sat, 14 Dec 2024 00:30:51 +0100
-Message-ID: <20241213233055.39574-17-philmd@linaro.org>
+Subject: [PULL 17/20] hw/ide/ahci: Extract TYPE_SYSBUS_AHCI into dedicated file
+Date: Sat, 14 Dec 2024 00:30:52 +0100
+Message-ID: <20241213233055.39574-18-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241213233055.39574-1-philmd@linaro.org>
 References: <20241213233055.39574-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,213 +99,285 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Bernhard Beschow <shentey@gmail.com>
 
-In some adhoc profiling booting Linux VMs, it's observed that ahci_irq_lower()
-can be a hot path (10000+ triggers until login prompt appears). Even though the
-parent device never changes, this method re-determines whether the parent device
-is a PCI device or not using the rather expensive object_dynamic_cast()
-function. Avoid this overhead by pushing the interrupt handling to the parent
-device, essentially turning AHCIState into an "IP block".
+Implement in dedicated file, just like TYPE_ICH9_AHCI.
 
-Note that this change also frees AHCIState from the PCI dependency which wasn't
-reflected in Kconfig.
-
-Reported-by: Peter Xu <peterx@redhat.com>
-Inspired-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20241212110926.23548-2-shentey@gmail.com>
+Message-ID: <20241212110926.23548-3-shentey@gmail.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/ide/ahci-internal.h    |  1 -
- include/hw/ide/ahci-pci.h |  2 ++
- include/hw/ide/ahci.h     |  2 --
- hw/ide/ahci.c             | 39 ++++-----------------------------------
- hw/ide/ich.c              | 19 +++++++++++++++----
- 5 files changed, 21 insertions(+), 42 deletions(-)
+ hw/ide/ahci-sysbus.c | 91 ++++++++++++++++++++++++++++++++++++++++++++
+ hw/ide/ahci.c        | 67 --------------------------------
+ hw/arm/Kconfig       | 10 ++---
+ hw/ide/Kconfig       |  4 ++
+ hw/ide/meson.build   |  1 +
+ 5 files changed, 101 insertions(+), 72 deletions(-)
+ create mode 100644 hw/ide/ahci-sysbus.c
 
-diff --git a/hw/ide/ahci-internal.h b/hw/ide/ahci-internal.h
-index 7e63ea23102..a318f36811c 100644
---- a/hw/ide/ahci-internal.h
-+++ b/hw/ide/ahci-internal.h
-@@ -25,7 +25,6 @@
- #define HW_IDE_AHCI_INTERNAL_H
- 
- #include "hw/ide/ahci.h"
--#include "hw/pci/pci_device.h"
- #include "ide-internal.h"
- 
- #define AHCI_MEM_BAR_SIZE         0x1000
-diff --git a/include/hw/ide/ahci-pci.h b/include/hw/ide/ahci-pci.h
-index c2ee6169625..face1a9a4a4 100644
---- a/include/hw/ide/ahci-pci.h
-+++ b/include/hw/ide/ahci-pci.h
-@@ -9,6 +9,7 @@
- #include "qom/object.h"
- #include "hw/ide/ahci.h"
- #include "hw/pci/pci_device.h"
-+#include "hw/irq.h"
- 
- #define TYPE_ICH9_AHCI "ich9-ahci"
- OBJECT_DECLARE_SIMPLE_TYPE(AHCIPCIState, ICH9_AHCI)
-@@ -17,6 +18,7 @@ struct AHCIPCIState {
-     PCIDevice parent_obj;
- 
-     AHCIState ahci;
-+    IRQState irq;
- };
- 
- #endif
-diff --git a/include/hw/ide/ahci.h b/include/hw/ide/ahci.h
-index ba31e75ff9b..ac0292c634f 100644
---- a/include/hw/ide/ahci.h
-+++ b/include/hw/ide/ahci.h
-@@ -37,8 +37,6 @@ typedef struct AHCIControlRegs {
- } AHCIControlRegs;
- 
- typedef struct AHCIState {
--    DeviceState *container;
--
-     AHCIDevice *dev;
-     AHCIControlRegs control_regs;
-     MemoryRegion mem;
+diff --git a/hw/ide/ahci-sysbus.c b/hw/ide/ahci-sysbus.c
+new file mode 100644
+index 00000000000..d43db0923f1
+--- /dev/null
++++ b/hw/ide/ahci-sysbus.c
+@@ -0,0 +1,91 @@
++/*
++ * QEMU AHCI Emulation (MMIO-mapped devices)
++ *
++ * Copyright (c) 2010 qiaochong@loongson.cn
++ * Copyright (c) 2010 Roland Elek <elek.roland@gmail.com>
++ * Copyright (c) 2010 Sebastian Herbszt <herbszt@gmx.de>
++ * Copyright (c) 2010 Alexander Graf <agraf@suse.de>
++ *
++ * This library is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU Lesser General Public
++ * License as published by the Free Software Foundation; either
++ * version 2.1 of the License, or (at your option) any later version.
++ *
++ * This library is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++ * Lesser General Public License for more details.
++ *
++ * You should have received a copy of the GNU Lesser General Public
++ * License along with this library; if not, see <http://www.gnu.org/licenses/>.
++ *
++ */
++
++#include "qemu/osdep.h"
++#include "exec/address-spaces.h"
++#include "hw/qdev-properties.h"
++#include "migration/vmstate.h"
++
++#include "hw/ide/ahci-sysbus.h"
++#include "ahci-internal.h"
++
++static const VMStateDescription vmstate_sysbus_ahci = {
++    .name = "sysbus-ahci",
++    .fields = (const VMStateField[]) {
++        VMSTATE_AHCI(ahci, SysbusAHCIState),
++        VMSTATE_END_OF_LIST()
++    },
++};
++
++static void sysbus_ahci_reset(DeviceState *dev)
++{
++    SysbusAHCIState *s = SYSBUS_AHCI(dev);
++
++    ahci_reset(&s->ahci);
++}
++
++static void sysbus_ahci_init(Object *obj)
++{
++    SysbusAHCIState *s = SYSBUS_AHCI(obj);
++    SysBusDevice *sbd = SYS_BUS_DEVICE(obj);
++
++    ahci_init(&s->ahci, DEVICE(obj));
++
++    sysbus_init_mmio(sbd, &s->ahci.mem);
++    sysbus_init_irq(sbd, &s->ahci.irq);
++}
++
++static void sysbus_ahci_realize(DeviceState *dev, Error **errp)
++{
++    SysbusAHCIState *s = SYSBUS_AHCI(dev);
++
++    ahci_realize(&s->ahci, dev, &address_space_memory);
++}
++
++static Property sysbus_ahci_properties[] = {
++    DEFINE_PROP_UINT32("num-ports", SysbusAHCIState, ahci.ports, 1),
++    DEFINE_PROP_END_OF_LIST(),
++};
++
++static void sysbus_ahci_class_init(ObjectClass *klass, void *data)
++{
++    DeviceClass *dc = DEVICE_CLASS(klass);
++
++    dc->realize = sysbus_ahci_realize;
++    dc->vmsd = &vmstate_sysbus_ahci;
++    device_class_set_props(dc, sysbus_ahci_properties);
++    device_class_set_legacy_reset(dc, sysbus_ahci_reset);
++    set_bit(DEVICE_CATEGORY_STORAGE, dc->categories);
++}
++
++static const TypeInfo sysbus_ahci_types[] = {
++    {
++        .name          = TYPE_SYSBUS_AHCI,
++        .parent        = TYPE_SYS_BUS_DEVICE,
++        .instance_size = sizeof(SysbusAHCIState),
++        .instance_init = sysbus_ahci_init,
++        .class_init    = sysbus_ahci_class_init,
++    },
++};
++
++DEFINE_TYPES(sysbus_ahci_types)
 diff --git a/hw/ide/ahci.c b/hw/ide/ahci.c
-index 0eb24304eef..5836aa924bb 100644
+index 5836aa924bb..c02357735ed 100644
 --- a/hw/ide/ahci.c
 +++ b/hw/ide/ahci.c
-@@ -23,8 +23,6 @@
+@@ -23,16 +23,13 @@
  
  #include "qemu/osdep.h"
  #include "hw/irq.h"
--#include "hw/pci/msi.h"
--#include "hw/pci/pci.h"
- #include "hw/qdev-properties.h"
+-#include "hw/qdev-properties.h"
  #include "migration/vmstate.h"
  
-@@ -34,8 +32,6 @@
- #include "qemu/module.h"
+ #include "qemu/error-report.h"
+ #include "qemu/log.h"
+ #include "qemu/main-loop.h"
+-#include "qemu/module.h"
  #include "sysemu/block-backend.h"
  #include "sysemu/dma.h"
--#include "hw/ide/pci.h"
--#include "hw/ide/ahci-pci.h"
- #include "hw/ide/ahci-sysbus.h"
+-#include "hw/ide/ahci-sysbus.h"
  #include "ahci-internal.h"
  #include "ide-internal.h"
-@@ -179,34 +175,6 @@ static uint32_t ahci_port_read(AHCIState *s, int port, int offset)
-     return val;
- }
  
--static void ahci_irq_raise(AHCIState *s)
--{
--    DeviceState *dev_state = s->container;
--    PCIDevice *pci_dev = (PCIDevice *) object_dynamic_cast(OBJECT(dev_state),
--                                                           TYPE_PCI_DEVICE);
--
--    trace_ahci_irq_raise(s);
--
--    if (pci_dev && msi_enabled(pci_dev)) {
--        msi_notify(pci_dev, 0);
--    } else {
--        qemu_irq_raise(s->irq);
--    }
--}
--
--static void ahci_irq_lower(AHCIState *s)
--{
--    DeviceState *dev_state = s->container;
--    PCIDevice *pci_dev = (PCIDevice *) object_dynamic_cast(OBJECT(dev_state),
--                                                           TYPE_PCI_DEVICE);
--
--    trace_ahci_irq_lower(s);
--
--    if (!pci_dev || !msi_enabled(pci_dev)) {
--        qemu_irq_lower(s->irq);
--    }
--}
--
- static void ahci_check_irq(AHCIState *s)
- {
-     int i;
-@@ -222,9 +190,11 @@ static void ahci_check_irq(AHCIState *s)
-     trace_ahci_check_irq(s, old_irq, s->control_regs.irqstatus);
-     if (s->control_regs.irqstatus &&
-         (s->control_regs.ghc & HOST_CTL_IRQ_EN)) {
--            ahci_irq_raise(s);
-+        trace_ahci_irq_raise(s);
-+        qemu_irq_raise(s->irq);
-     } else {
--        ahci_irq_lower(s);
-+        trace_ahci_irq_lower(s);
-+        qemu_irq_lower(s->irq);
-     }
- }
- 
-@@ -1608,7 +1578,6 @@ static const IDEDMAOps ahci_dma_ops = {
- 
- void ahci_init(AHCIState *s, DeviceState *qdev)
- {
--    s->container = qdev;
-     /* XXX BAR size should be 1k, but that breaks, so bump it to 4k for now */
-     memory_region_init_io(&s->mem, OBJECT(qdev), &ahci_mem_ops, s,
-                           "ahci", AHCI_MEM_BAR_SIZE);
-diff --git a/hw/ide/ich.c b/hw/ide/ich.c
-index b311450c12d..c99a44df8e1 100644
---- a/hw/ide/ich.c
-+++ b/hw/ide/ich.c
-@@ -61,7 +61,6 @@
-  */
- 
- #include "qemu/osdep.h"
--#include "hw/irq.h"
- #include "hw/pci/msi.h"
- #include "hw/pci/pci.h"
- #include "migration/vmstate.h"
-@@ -91,6 +90,19 @@ static const VMStateDescription vmstate_ich9_ahci = {
+@@ -1803,70 +1800,6 @@ const VMStateDescription vmstate_ahci = {
      },
  };
  
-+static void pci_ich9_ahci_update_irq(void *opaque, int irq_num, int level)
-+{
-+    PCIDevice *pci_dev = opaque;
-+
-+    if (msi_enabled(pci_dev)) {
-+        if (level) {
-+            msi_notify(pci_dev, 0);
-+        }
-+    } else {
-+        pci_set_irq(pci_dev, level);
-+    }
-+}
-+
- static void pci_ich9_reset(DeviceState *dev)
- {
-     AHCIPCIState *d = ICH9_AHCI(dev);
-@@ -102,7 +114,9 @@ static void pci_ich9_ahci_init(Object *obj)
- {
-     AHCIPCIState *d = ICH9_AHCI(obj);
- 
-+    qemu_init_irq(&d->irq, pci_ich9_ahci_update_irq, d, 0);
-     ahci_init(&d->ahci, DEVICE(obj));
-+    d->ahci.irq = &d->irq;
- }
- 
- static void pci_ich9_ahci_realize(PCIDevice *dev, Error **errp)
-@@ -125,8 +139,6 @@ static void pci_ich9_ahci_realize(PCIDevice *dev, Error **errp)
-     /* XXX Software should program this register */
-     dev->config[0x90]   = 1 << 6; /* Address Map Register - AHCI mode */
- 
--    d->ahci.irq = pci_allocate_irq(dev);
+-static const VMStateDescription vmstate_sysbus_ahci = {
+-    .name = "sysbus-ahci",
+-    .fields = (const VMStateField[]) {
+-        VMSTATE_AHCI(ahci, SysbusAHCIState),
+-        VMSTATE_END_OF_LIST()
+-    },
+-};
 -
-     pci_register_bar(dev, ICH9_IDP_BAR, PCI_BASE_ADDRESS_SPACE_IO,
-                      &d->ahci.idp);
-     pci_register_bar(dev, ICH9_MEM_BAR, PCI_BASE_ADDRESS_SPACE_MEMORY,
-@@ -161,7 +173,6 @@ static void pci_ich9_uninit(PCIDevice *dev)
+-static void sysbus_ahci_reset(DeviceState *dev)
+-{
+-    SysbusAHCIState *s = SYSBUS_AHCI(dev);
+-
+-    ahci_reset(&s->ahci);
+-}
+-
+-static void sysbus_ahci_init(Object *obj)
+-{
+-    SysbusAHCIState *s = SYSBUS_AHCI(obj);
+-    SysBusDevice *sbd = SYS_BUS_DEVICE(obj);
+-
+-    ahci_init(&s->ahci, DEVICE(obj));
+-
+-    sysbus_init_mmio(sbd, &s->ahci.mem);
+-    sysbus_init_irq(sbd, &s->ahci.irq);
+-}
+-
+-static void sysbus_ahci_realize(DeviceState *dev, Error **errp)
+-{
+-    SysbusAHCIState *s = SYSBUS_AHCI(dev);
+-
+-    ahci_realize(&s->ahci, dev, &address_space_memory);
+-}
+-
+-static Property sysbus_ahci_properties[] = {
+-    DEFINE_PROP_UINT32("num-ports", SysbusAHCIState, ahci.ports, 1),
+-    DEFINE_PROP_END_OF_LIST(),
+-};
+-
+-static void sysbus_ahci_class_init(ObjectClass *klass, void *data)
+-{
+-    DeviceClass *dc = DEVICE_CLASS(klass);
+-
+-    dc->realize = sysbus_ahci_realize;
+-    dc->vmsd = &vmstate_sysbus_ahci;
+-    device_class_set_props(dc, sysbus_ahci_properties);
+-    device_class_set_legacy_reset(dc, sysbus_ahci_reset);
+-    set_bit(DEVICE_CATEGORY_STORAGE, dc->categories);
+-}
+-
+-static const TypeInfo sysbus_ahci_info = {
+-    .name          = TYPE_SYSBUS_AHCI,
+-    .parent        = TYPE_SYS_BUS_DEVICE,
+-    .instance_size = sizeof(SysbusAHCIState),
+-    .instance_init = sysbus_ahci_init,
+-    .class_init    = sysbus_ahci_class_init,
+-};
+-
+-static void sysbus_ahci_register_types(void)
+-{
+-    type_register_static(&sysbus_ahci_info);
+-}
+-
+-type_init(sysbus_ahci_register_types)
+-
+ void ahci_ide_create_devs(AHCIState *ahci, DriveInfo **hd)
+ {
+     int i;
+diff --git a/hw/arm/Kconfig b/hw/arm/Kconfig
+index 1b25e73578e..e779b5af958 100644
+--- a/hw/arm/Kconfig
++++ b/hw/arm/Kconfig
+@@ -71,7 +71,7 @@ config HIGHBANK
+     depends on TCG && ARM
+     select A9MPCORE
+     select A15MPCORE
+-    select AHCI
++    select AHCI_SYSBUS
+     select ARM_TIMER # sp804
+     select ARM_V7M
+     select PL011 if !HAVE_RUST # UART
+@@ -192,7 +192,7 @@ config SBSA_REF
+     depends on TCG && AARCH64
+     imply PCI_DEVICES
+     select DEVICE_TREE
+-    select AHCI
++    select AHCI_SYSBUS
+     select ARM_SMMUV3
+     select GPIO_KEY
+     select PCI_EXPRESS
+@@ -319,7 +319,7 @@ config ARM_V7M
  
-     msi_uninit(dev);
-     ahci_uninit(&d->ahci);
--    qemu_free_irq(d->ahci.irq);
- }
+ config ALLWINNER_A10
+     bool
+-    select AHCI
++    select AHCI_SYSBUS
+     select ALLWINNER_A10_PIT
+     select ALLWINNER_A10_PIC
+     select ALLWINNER_A10_CCM
+@@ -352,7 +352,7 @@ config ALLWINNER_H3
+ config ALLWINNER_R40
+     bool
+     default y if TCG && ARM
+-    select AHCI
++    select AHCI_SYSBUS
+     select ALLWINNER_SRAMC
+     select ALLWINNER_A10_PIT
+     select ALLWINNER_WDT
+@@ -422,7 +422,7 @@ config XLNX_ZYNQMP_ARM
+     bool
+     default y if PIXMAN
+     depends on TCG && AARCH64
+-    select AHCI
++    select AHCI_SYSBUS
+     select ARM_GIC
+     select CADENCE
+     select CPU_CLUSTER
+diff --git a/hw/ide/Kconfig b/hw/ide/Kconfig
+index 2e22b677da3..b55507b836e 100644
+--- a/hw/ide/Kconfig
++++ b/hw/ide/Kconfig
+@@ -54,6 +54,10 @@ config AHCI_ICH9
+     depends on PCI
+     select AHCI
  
- static void ich_ahci_class_init(ObjectClass *klass, void *data)
++config AHCI_SYSBUS
++    bool
++    select AHCI
++
+ config IDE_SII3112
+     bool
+     select IDE_PCI
+diff --git a/hw/ide/meson.build b/hw/ide/meson.build
+index 90ea8614233..ddd70660400 100644
+--- a/hw/ide/meson.build
++++ b/hw/ide/meson.build
+@@ -1,5 +1,6 @@
+ system_ss.add(when: 'CONFIG_AHCI', if_true: files('ahci.c'))
+ system_ss.add(when: 'CONFIG_AHCI_ICH9', if_true: files('ich.c'))
++system_ss.add(when: 'CONFIG_AHCI_SYSBUS', if_true: files('ahci-sysbus.c'))
+ system_ss.add(when: 'CONFIG_ALLWINNER_A10', if_true: files('ahci-allwinner.c'))
+ system_ss.add(when: 'CONFIG_IDE_BUS', if_true: files('ide-bus.c'))
+ system_ss.add(when: 'CONFIG_IDE_CF', if_true: files('cf.c'))
 -- 
 2.45.2
 
