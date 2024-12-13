@@ -2,78 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4DF69F13CA
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Dec 2024 18:34:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DF299F1421
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Dec 2024 18:42:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tM9YG-0000MA-HD; Fri, 13 Dec 2024 12:34:08 -0500
+	id 1tM9Z4-0005OF-BD; Fri, 13 Dec 2024 12:34:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tM9Xb-0007Rc-OC
+ id 1tM9Xb-0007R2-2o
  for qemu-devel@nongnu.org; Fri, 13 Dec 2024 12:33:27 -0500
-Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
+Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tM9XV-0001d0-7c
- for qemu-devel@nongnu.org; Fri, 13 Dec 2024 12:33:27 -0500
-Received: by mail-wr1-x429.google.com with SMTP id
- ffacd0b85a97d-385de9f789cso1544283f8f.2
- for <qemu-devel@nongnu.org>; Fri, 13 Dec 2024 09:33:20 -0800 (PST)
+ id 1tM9XY-0001dF-Dd
+ for qemu-devel@nongnu.org; Fri, 13 Dec 2024 12:33:26 -0500
+Received: by mail-wr1-x432.google.com with SMTP id
+ ffacd0b85a97d-3862d16b4f5so1351840f8f.0
+ for <qemu-devel@nongnu.org>; Fri, 13 Dec 2024 09:33:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734111199; x=1734715999; darn=nongnu.org;
+ d=linaro.org; s=google; t=1734111201; x=1734716001; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=NSpguoVKHkEY8yFMot0pfTmRRiiKpZjSQlyw+H/MBlc=;
- b=M683dYCo2qCy23JGyH6xoUGwuvOTRi0hGqM6GuF7Zt3bOlyip/tdCnGTmtJfDb5WfI
- e70hiK/GcyLpJ/QRcFQRWFktmYbDzHcpg6uYHn/cxppbu8ofN2jAzP4PW/BpEqbzI6NH
- 71qiw2ln0xNiQeRisr/ooUff8mDoUCZFpAdOQQvVgUpB17LhljMAf3BRaYH9CPAvrGc2
- vnzzQHMDUN/dyssyscrGSNp67/jpm4xX1t64g9rcc4MV7kqpZNUBhG/X+qbe7NVY/FAq
- dCEK34azGYilqMNNlB5sr684kgmJUl1NuJTWLQLVzTqoOpgN71hAWTap801d8ZIu8W1W
- fiOg==
+ :reply-to; bh=KV2itz7dcsIBmBVqUMDklJX+m7gDYSi6vqrsd0bJU1o=;
+ b=ur2vzLBUDq9OwbQV/gSYYqEcX85vkc7Fkm86aK0wC9TbS9daRay3LTNui03qn9Xx44
+ bZ6OjWieLlKF9J112HV6OjwkIih/rx5pInAUlx6I542t8UHCMuZauHSpp3WoaKa/Dm1D
+ iDvbrqVOK13i/bj0X/PuTfM2vXVztzSFBUoJ1sLQ4Z2uQ2elk4W0ECs5xO4vojwghPig
+ ODwEbmq+8LGfAjW0ewGnPnqdVfqwQpyhx0Tc996VmeJsbbFPpB0GfXQS3ZNuGjMZ2Ogb
+ zOGcwU/SW5UMkxREbQfUDEtpZkjBaawNn/ya59QN4SOM2fWgFQHis+WJVD9snG5aGhE2
+ dJew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734111199; x=1734715999;
+ d=1e100.net; s=20230601; t=1734111201; x=1734716001;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=NSpguoVKHkEY8yFMot0pfTmRRiiKpZjSQlyw+H/MBlc=;
- b=dWpg7T5d4hArrGSZI7nd0xh/y2SX2PkFWJau5FgE+QW0LtBXV1ZEK/evEWF1jr8PSJ
- yTZPGZBcGx/Qw/pz0doUjTu/X66KM/buKHK8lGjWnqhkqihNP4DuRqD1KJaYBHWNwWTn
- OMIwHE9kVls+KLLcFcBwERqm4Gu5xC8jGVnl76xtEc6fCjlkBaunAvKMhpTYAoGmbrqA
- JfacCWysG5uZkqXkEXmk4Phpm/k/lZoY0vOXw+1ky+MxHO8bb8a8HqITMCcXH1bqqA9H
- 7aE5pEEZO9LZeigybdkf6TqqV7vT3DJMXqOUt8KOOkcKvgD6ZBjRntbzlAUE1yoGV2nd
- 22EA==
-X-Gm-Message-State: AOJu0YxuujQeNf527fsp5gzGgSRg4Yj2sbMH7fgQmKpFBq7iEUXHrqYC
- oQ9okHpTszll4rohEVR8JRc8k44BGeYv+dLFyg8yVBd6VhtABrN2lH28VioKsBR4fkRzu5DUZ7e
- W
-X-Gm-Gg: ASbGncukGxkLsFuvwgxQcrbFYZJLOZ44NS/rYboPd8CPS7cIukdHBfQz19fgWqrPo3v
- c8lChcq0Nz1y44fXL0QodE9SDIGFJSvAB9wwtMi1SS0f6ogUxdLfGhV3z+fZobftdwmTZHA/YKU
- jHbtG5AoJKv9Du5YfSs0ZszTWOUtlhe5DJw1uFHvYRfPMgb/Y9UeW+xNKOn4DEvzG02gsi2d6+X
- RX4WCZWP8SinXsNlXAs7vKYWLvf5709sLlm5PgB99ITuplaVomskmRhWIUhKw==
-X-Google-Smtp-Source: AGHT+IHyIkcNwLq1yawyh1UAzf1t4zwsQgMmK8qVmsIu+tXKxlX890zQJaTIWatyOLFkHtt2qyXgAA==
-X-Received: by 2002:a05:6000:4b12:b0:385:fa26:f0d9 with SMTP id
- ffacd0b85a97d-3886c725060mr3508365f8f.0.1734111199342; 
- Fri, 13 Dec 2024 09:33:19 -0800 (PST)
+ bh=KV2itz7dcsIBmBVqUMDklJX+m7gDYSi6vqrsd0bJU1o=;
+ b=A36sVrzDJHYaw4/ejKg4M4HgQgqXJc1wK5NVqlNF4B/74DcXLgJuUK6/R3LWGUbT3K
+ btMEusmffvfTi5RWWX/7GX+IpKS2tiK488LS3d7mHB+44FuwLNUcR0v8HMKB08uKXT07
+ 4q4SfLnRh9jziqAXVgNEy1MjtOTqaoQLtjXptkQKdwSUO5EdTSlBnD4zWQfL2WW8t/29
+ FiquKR4CyUZ8ecOtSyarNcTbvX/Ml0FH+w8moLJTp3VvIzugBszVrUhJ0F7S5Sw/OM79
+ a7jrH+J6+fwdo6VD3YD62sF51d23Futpw30NYeG6fnvLPK68BxpSh/uaVqXXzBJ44CsF
+ Yzwg==
+X-Gm-Message-State: AOJu0YyCaR73EyW8ujhRqIG9BR7RdVtmmFEgz+agT3npJIMApT3aAivZ
+ U5m3YCkYcvkmkjJqJwlNCMD/znIb+dr8Zp7ITD5Fefd2kvvafcuQb0cNazP3FeZgKho9+BChN1f
+ f
+X-Gm-Gg: ASbGncucr4G2ceB4dPhQy4+wHYXgS3hSJJn5w6I1wj1Jf+kygMppa1RDysJ+OtIci6S
+ AuFBdvyiliwNNNS+xW2SxuCZzigjhrLp9PqSRkfoH7kP599GwcijgcQGUYhk6VNHxRf/5PJa/8t
+ QvrYDUvZij4aKNSFhaYWrSS9VQJAxLa5p2Fe4+I7MaHlPM+VhRkEw6gWjcz4/o3wKwUBIbEAfUL
+ WCoHsp7RXyJSlhwYAbmZNaxvG2lE3iR8OcSawAzvIo1oWHEzCvjDg3DdET3YQ==
+X-Google-Smtp-Source: AGHT+IEESZ35/Guf/aNjjk8GrGhc1myXXJIqfzv0jkTvC4ZIIrAfvcpiqwf2ObUS83gyz3tjDkmMyQ==
+X-Received: by 2002:a05:6000:1543:b0:386:2e8c:e26d with SMTP id
+ ffacd0b85a97d-3878840808emr6807990f8f.0.1734111200659; 
+ Fri, 13 Dec 2024 09:33:20 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-388c80162ddsm87026f8f.37.2024.12.13.09.33.17
+ ffacd0b85a97d-388c80162ddsm87026f8f.37.2024.12.13.09.33.19
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 13 Dec 2024 09:33:18 -0800 (PST)
+ Fri, 13 Dec 2024 09:33:19 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 44/85] target/arm: Move helper_neon_addlp_{s8,
- s16} to neon_helper.c
-Date: Fri, 13 Dec 2024 17:31:48 +0000
-Message-Id: <20241213173229.3308926-45-peter.maydell@linaro.org>
+Subject: [PULL 45/85] target/arm: Introduce gen_gvec_{s,u}{add,ada}lp
+Date: Fri, 13 Dec 2024 17:31:49 +0000
+Message-Id: <20241213173229.3308926-46-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241213173229.3308926-1-peter.maydell@linaro.org>
 References: <20241213173229.3308926-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::429;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x429.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::432;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x432.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,162 +97,492 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Richard Henderson <richard.henderson@linaro.org>
 
-Move from helper-a64.c to neon_helper.c so that these
-functions are available for arm32 code as well.
+Pairwise addition with and without accumulation.
 
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20241211163036.2297116-45-richard.henderson@linaro.org
+Message-id: 20241211163036.2297116-46-richard.henderson@linaro.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/helper.h          |  2 ++
- target/arm/tcg/helper-a64.h  |  2 --
- target/arm/tcg/helper-a64.c  | 43 ------------------------------------
- target/arm/tcg/neon_helper.c | 43 ++++++++++++++++++++++++++++++++++++
- 4 files changed, 45 insertions(+), 45 deletions(-)
+ target/arm/helper.h             |   2 -
+ target/arm/tcg/translate.h      |   9 ++
+ target/arm/tcg/gengvec.c        | 230 ++++++++++++++++++++++++++++++++
+ target/arm/tcg/neon_helper.c    |  22 ---
+ target/arm/tcg/translate-neon.c | 150 +--------------------
+ 5 files changed, 243 insertions(+), 170 deletions(-)
 
 diff --git a/target/arm/helper.h b/target/arm/helper.h
-index 167e331a83e..57e0ce387bb 100644
+index 57e0ce387bb..6369d07d053 100644
 --- a/target/arm/helper.h
 +++ b/target/arm/helper.h
-@@ -399,6 +399,8 @@ DEF_HELPER_2(neon_addl_u16, i64, i64, i64)
+@@ -397,8 +397,6 @@ DEF_HELPER_1(neon_widen_s16, i64, i32)
+ 
+ DEF_HELPER_2(neon_addl_u16, i64, i64, i64)
  DEF_HELPER_2(neon_addl_u32, i64, i64, i64)
- DEF_HELPER_2(neon_paddl_u16, i64, i64, i64)
- DEF_HELPER_2(neon_paddl_u32, i64, i64, i64)
-+DEF_HELPER_FLAGS_1(neon_addlp_s8, TCG_CALL_NO_RWG_SE, i64, i64)
-+DEF_HELPER_FLAGS_1(neon_addlp_s16, TCG_CALL_NO_RWG_SE, i64, i64)
+-DEF_HELPER_2(neon_paddl_u16, i64, i64, i64)
+-DEF_HELPER_2(neon_paddl_u32, i64, i64, i64)
+ DEF_HELPER_FLAGS_1(neon_addlp_s8, TCG_CALL_NO_RWG_SE, i64, i64)
+ DEF_HELPER_FLAGS_1(neon_addlp_s16, TCG_CALL_NO_RWG_SE, i64, i64)
  DEF_HELPER_2(neon_subl_u16, i64, i64, i64)
- DEF_HELPER_2(neon_subl_u32, i64, i64, i64)
- DEF_HELPER_3(neon_addl_saturate_s32, i64, env, i64, i64)
-diff --git a/target/arm/tcg/helper-a64.h b/target/arm/tcg/helper-a64.h
-index 203b7b7ac82..f811bb85dcb 100644
---- a/target/arm/tcg/helper-a64.h
-+++ b/target/arm/tcg/helper-a64.h
-@@ -41,9 +41,7 @@ DEF_HELPER_FLAGS_3(recpsf_f64, TCG_CALL_NO_RWG, f64, f64, f64, ptr)
- DEF_HELPER_FLAGS_3(rsqrtsf_f16, TCG_CALL_NO_RWG, f16, f16, f16, ptr)
- DEF_HELPER_FLAGS_3(rsqrtsf_f32, TCG_CALL_NO_RWG, f32, f32, f32, ptr)
- DEF_HELPER_FLAGS_3(rsqrtsf_f64, TCG_CALL_NO_RWG, f64, f64, f64, ptr)
--DEF_HELPER_FLAGS_1(neon_addlp_s8, TCG_CALL_NO_RWG_SE, i64, i64)
- DEF_HELPER_FLAGS_1(neon_addlp_u8, TCG_CALL_NO_RWG_SE, i64, i64)
--DEF_HELPER_FLAGS_1(neon_addlp_s16, TCG_CALL_NO_RWG_SE, i64, i64)
- DEF_HELPER_FLAGS_1(neon_addlp_u16, TCG_CALL_NO_RWG_SE, i64, i64)
- DEF_HELPER_FLAGS_2(frecpx_f64, TCG_CALL_NO_RWG, f64, f64, ptr)
- DEF_HELPER_FLAGS_2(frecpx_f32, TCG_CALL_NO_RWG, f32, f32, ptr)
-diff --git a/target/arm/tcg/helper-a64.c b/target/arm/tcg/helper-a64.c
-index 3f4d7b9aba6..9b3c407be3c 100644
---- a/target/arm/tcg/helper-a64.c
-+++ b/target/arm/tcg/helper-a64.c
-@@ -306,39 +306,6 @@ float64 HELPER(rsqrtsf_f64)(float64 a, float64 b, void *fpstp)
-     return float64_muladd(a, b, float64_three, float_muladd_halve_result, fpst);
- }
+diff --git a/target/arm/tcg/translate.h b/target/arm/tcg/translate.h
+index 342ebedafcb..edd775d5640 100644
+--- a/target/arm/tcg/translate.h
++++ b/target/arm/tcg/translate.h
+@@ -593,6 +593,15 @@ void gen_gvec_rev32(unsigned vece, uint32_t rd_ofs, uint32_t rn_ofs,
+ void gen_gvec_rev64(unsigned vece, uint32_t rd_ofs, uint32_t rn_ofs,
+                     uint32_t opr_sz, uint32_t max_sz);
  
--/* Pairwise long add: add pairs of adjacent elements into
-- * double-width elements in the result (eg _s8 is an 8x8->16 op)
-- */
--uint64_t HELPER(neon_addlp_s8)(uint64_t a)
--{
--    uint64_t nsignmask = 0x0080008000800080ULL;
--    uint64_t wsignmask = 0x8000800080008000ULL;
--    uint64_t elementmask = 0x00ff00ff00ff00ffULL;
--    uint64_t tmp1, tmp2;
--    uint64_t res, signres;
--
--    /* Extract odd elements, sign extend each to a 16 bit field */
--    tmp1 = a & elementmask;
--    tmp1 ^= nsignmask;
--    tmp1 |= wsignmask;
--    tmp1 = (tmp1 - nsignmask) ^ wsignmask;
--    /* Ditto for the even elements */
--    tmp2 = (a >> 8) & elementmask;
--    tmp2 ^= nsignmask;
--    tmp2 |= wsignmask;
--    tmp2 = (tmp2 - nsignmask) ^ wsignmask;
--
--    /* calculate the result by summing bits 0..14, 16..22, etc,
--     * and then adjusting the sign bits 15, 23, etc manually.
--     * This ensures the addition can't overflow the 16 bit field.
--     */
--    signres = (tmp1 ^ tmp2) & wsignmask;
--    res = (tmp1 & ~wsignmask) + (tmp2 & ~wsignmask);
--    res ^= signres;
--
--    return res;
--}
--
- uint64_t HELPER(neon_addlp_u8)(uint64_t a)
- {
-     uint64_t tmp;
-@@ -348,16 +315,6 @@ uint64_t HELPER(neon_addlp_u8)(uint64_t a)
-     return tmp;
++void gen_gvec_saddlp(unsigned vece, uint32_t rd_ofs, uint32_t rn_ofs,
++                     uint32_t opr_sz, uint32_t max_sz);
++void gen_gvec_sadalp(unsigned vece, uint32_t rd_ofs, uint32_t rn_ofs,
++                     uint32_t opr_sz, uint32_t max_sz);
++void gen_gvec_uaddlp(unsigned vece, uint32_t rd_ofs, uint32_t rn_ofs,
++                     uint32_t opr_sz, uint32_t max_sz);
++void gen_gvec_uadalp(unsigned vece, uint32_t rd_ofs, uint32_t rn_ofs,
++                     uint32_t opr_sz, uint32_t max_sz);
++
+ /*
+  * Forward to the isar_feature_* tests given a DisasContext pointer.
+  */
+diff --git a/target/arm/tcg/gengvec.c b/target/arm/tcg/gengvec.c
+index 33c0a949581..2755da8ac71 100644
+--- a/target/arm/tcg/gengvec.c
++++ b/target/arm/tcg/gengvec.c
+@@ -2467,3 +2467,233 @@ void gen_gvec_rev64(unsigned vece, uint32_t rd_ofs, uint32_t rn_ofs,
+         g_assert_not_reached();
+     }
  }
- 
--uint64_t HELPER(neon_addlp_s16)(uint64_t a)
--{
--    int32_t reslo, reshi;
--
--    reslo = (int32_t)(int16_t)a + (int32_t)(int16_t)(a >> 16);
--    reshi = (int32_t)(int16_t)(a >> 32) + (int32_t)(int16_t)(a >> 48);
--
--    return (uint32_t)reslo | (((uint64_t)reshi) << 32);
--}
--
- uint64_t HELPER(neon_addlp_u16)(uint64_t a)
- {
-     uint64_t tmp;
++
++static void gen_saddlp_vec(unsigned vece, TCGv_vec d, TCGv_vec n)
++{
++    int half = 4 << vece;
++    TCGv_vec t = tcg_temp_new_vec_matching(d);
++
++    tcg_gen_shli_vec(vece, t, n, half);
++    tcg_gen_sari_vec(vece, d, n, half);
++    tcg_gen_sari_vec(vece, t, t, half);
++    tcg_gen_add_vec(vece, d, d, t);
++}
++
++static void gen_saddlp_s_i64(TCGv_i64 d, TCGv_i64 n)
++{
++    TCGv_i64 t = tcg_temp_new_i64();
++
++    tcg_gen_ext32s_i64(t, n);
++    tcg_gen_sari_i64(d, n, 32);
++    tcg_gen_add_i64(d, d, t);
++}
++
++void gen_gvec_saddlp(unsigned vece, uint32_t rd_ofs, uint32_t rn_ofs,
++                     uint32_t opr_sz, uint32_t max_sz)
++{
++    static const TCGOpcode vecop_list[] = {
++        INDEX_op_sari_vec, INDEX_op_shli_vec, INDEX_op_add_vec, 0
++    };
++    static const GVecGen2 g[] = {
++        { .fniv = gen_saddlp_vec,
++          .fni8 = gen_helper_neon_addlp_s8,
++          .opt_opc = vecop_list,
++          .vece = MO_16 },
++        { .fniv = gen_saddlp_vec,
++          .fni8 = gen_helper_neon_addlp_s16,
++          .opt_opc = vecop_list,
++          .vece = MO_32 },
++        { .fniv = gen_saddlp_vec,
++          .fni8 = gen_saddlp_s_i64,
++          .opt_opc = vecop_list,
++          .vece = MO_64 },
++    };
++    assert(vece <= MO_32);
++    tcg_gen_gvec_2(rd_ofs, rn_ofs, opr_sz, max_sz, &g[vece]);
++}
++
++static void gen_sadalp_vec(unsigned vece, TCGv_vec d, TCGv_vec n)
++{
++    TCGv_vec t = tcg_temp_new_vec_matching(d);
++
++    gen_saddlp_vec(vece, t, n);
++    tcg_gen_add_vec(vece, d, d, t);
++}
++
++static void gen_sadalp_b_i64(TCGv_i64 d, TCGv_i64 n)
++{
++    TCGv_i64 t = tcg_temp_new_i64();
++
++    gen_helper_neon_addlp_s8(t, n);
++    tcg_gen_vec_add16_i64(d, d, t);
++}
++
++static void gen_sadalp_h_i64(TCGv_i64 d, TCGv_i64 n)
++{
++    TCGv_i64 t = tcg_temp_new_i64();
++
++    gen_helper_neon_addlp_s16(t, n);
++    tcg_gen_vec_add32_i64(d, d, t);
++}
++
++static void gen_sadalp_s_i64(TCGv_i64 d, TCGv_i64 n)
++{
++    TCGv_i64 t = tcg_temp_new_i64();
++
++    gen_saddlp_s_i64(t, n);
++    tcg_gen_add_i64(d, d, t);
++}
++
++void gen_gvec_sadalp(unsigned vece, uint32_t rd_ofs, uint32_t rn_ofs,
++                     uint32_t opr_sz, uint32_t max_sz)
++{
++    static const TCGOpcode vecop_list[] = {
++        INDEX_op_sari_vec, INDEX_op_shli_vec, INDEX_op_add_vec, 0
++    };
++    static const GVecGen2 g[] = {
++        { .fniv = gen_sadalp_vec,
++          .fni8 = gen_sadalp_b_i64,
++          .opt_opc = vecop_list,
++          .load_dest = true,
++          .vece = MO_16 },
++        { .fniv = gen_sadalp_vec,
++          .fni8 = gen_sadalp_h_i64,
++          .opt_opc = vecop_list,
++          .load_dest = true,
++          .vece = MO_32 },
++        { .fniv = gen_sadalp_vec,
++          .fni8 = gen_sadalp_s_i64,
++          .opt_opc = vecop_list,
++          .load_dest = true,
++          .vece = MO_64 },
++    };
++    assert(vece <= MO_32);
++    tcg_gen_gvec_2(rd_ofs, rn_ofs, opr_sz, max_sz, &g[vece]);
++}
++
++static void gen_uaddlp_vec(unsigned vece, TCGv_vec d, TCGv_vec n)
++{
++    int half = 4 << vece;
++    TCGv_vec t = tcg_temp_new_vec_matching(d);
++    TCGv_vec m = tcg_constant_vec_matching(d, vece, MAKE_64BIT_MASK(0, half));
++
++    tcg_gen_shri_vec(vece, t, n, half);
++    tcg_gen_and_vec(vece, d, n, m);
++    tcg_gen_add_vec(vece, d, d, t);
++}
++
++static void gen_uaddlp_b_i64(TCGv_i64 d, TCGv_i64 n)
++{
++    TCGv_i64 t = tcg_temp_new_i64();
++    TCGv_i64 m = tcg_constant_i64(dup_const(MO_16, 0xff));
++
++    tcg_gen_shri_i64(t, n, 8);
++    tcg_gen_and_i64(d, n, m);
++    tcg_gen_and_i64(t, t, m);
++    /* No carry between widened unsigned elements. */
++    tcg_gen_add_i64(d, d, t);
++}
++
++static void gen_uaddlp_h_i64(TCGv_i64 d, TCGv_i64 n)
++{
++    TCGv_i64 t = tcg_temp_new_i64();
++    TCGv_i64 m = tcg_constant_i64(dup_const(MO_32, 0xffff));
++
++    tcg_gen_shri_i64(t, n, 16);
++    tcg_gen_and_i64(d, n, m);
++    tcg_gen_and_i64(t, t, m);
++    /* No carry between widened unsigned elements. */
++    tcg_gen_add_i64(d, d, t);
++}
++
++static void gen_uaddlp_s_i64(TCGv_i64 d, TCGv_i64 n)
++{
++    TCGv_i64 t = tcg_temp_new_i64();
++
++    tcg_gen_ext32u_i64(t, n);
++    tcg_gen_shri_i64(d, n, 32);
++    tcg_gen_add_i64(d, d, t);
++}
++
++void gen_gvec_uaddlp(unsigned vece, uint32_t rd_ofs, uint32_t rn_ofs,
++                     uint32_t opr_sz, uint32_t max_sz)
++{
++    static const TCGOpcode vecop_list[] = {
++        INDEX_op_shri_vec, INDEX_op_add_vec, 0
++    };
++    static const GVecGen2 g[] = {
++        { .fniv = gen_uaddlp_vec,
++          .fni8 = gen_uaddlp_b_i64,
++          .opt_opc = vecop_list,
++          .vece = MO_16 },
++        { .fniv = gen_uaddlp_vec,
++          .fni8 = gen_uaddlp_h_i64,
++          .opt_opc = vecop_list,
++          .vece = MO_32 },
++        { .fniv = gen_uaddlp_vec,
++          .fni8 = gen_uaddlp_s_i64,
++          .opt_opc = vecop_list,
++          .vece = MO_64 },
++    };
++    assert(vece <= MO_32);
++    tcg_gen_gvec_2(rd_ofs, rn_ofs, opr_sz, max_sz, &g[vece]);
++}
++
++static void gen_uadalp_vec(unsigned vece, TCGv_vec d, TCGv_vec n)
++{
++    TCGv_vec t = tcg_temp_new_vec_matching(d);
++
++    gen_uaddlp_vec(vece, t, n);
++    tcg_gen_add_vec(vece, d, d, t);
++}
++
++static void gen_uadalp_b_i64(TCGv_i64 d, TCGv_i64 n)
++{
++    TCGv_i64 t = tcg_temp_new_i64();
++
++    gen_uaddlp_b_i64(t, n);
++    tcg_gen_vec_add16_i64(d, d, t);
++}
++
++static void gen_uadalp_h_i64(TCGv_i64 d, TCGv_i64 n)
++{
++    TCGv_i64 t = tcg_temp_new_i64();
++
++    gen_uaddlp_h_i64(t, n);
++    tcg_gen_vec_add32_i64(d, d, t);
++}
++
++static void gen_uadalp_s_i64(TCGv_i64 d, TCGv_i64 n)
++{
++    TCGv_i64 t = tcg_temp_new_i64();
++
++    gen_uaddlp_s_i64(t, n);
++    tcg_gen_add_i64(d, d, t);
++}
++
++void gen_gvec_uadalp(unsigned vece, uint32_t rd_ofs, uint32_t rn_ofs,
++                     uint32_t opr_sz, uint32_t max_sz)
++{
++    static const TCGOpcode vecop_list[] = {
++        INDEX_op_shri_vec, INDEX_op_add_vec, 0
++    };
++    static const GVecGen2 g[] = {
++        { .fniv = gen_uadalp_vec,
++          .fni8 = gen_uadalp_b_i64,
++          .load_dest = true,
++          .opt_opc = vecop_list,
++          .vece = MO_16 },
++        { .fniv = gen_uadalp_vec,
++          .fni8 = gen_uadalp_h_i64,
++          .load_dest = true,
++          .opt_opc = vecop_list,
++          .vece = MO_32 },
++        { .fniv = gen_uadalp_vec,
++          .fni8 = gen_uadalp_s_i64,
++          .load_dest = true,
++          .opt_opc = vecop_list,
++          .vece = MO_64 },
++    };
++    assert(vece <= MO_32);
++    tcg_gen_gvec_2(rd_ofs, rn_ofs, opr_sz, max_sz, &g[vece]);
++}
 diff --git a/target/arm/tcg/neon_helper.c b/target/arm/tcg/neon_helper.c
-index 4e501925dec..b92ddd4914d 100644
+index b92ddd4914d..1a22857b5eb 100644
 --- a/target/arm/tcg/neon_helper.c
 +++ b/target/arm/tcg/neon_helper.c
-@@ -866,6 +866,49 @@ uint64_t HELPER(neon_paddl_u32)(uint64_t a, uint64_t b)
-     return low + ((uint64_t)high << 32);
+@@ -844,28 +844,6 @@ uint64_t HELPER(neon_addl_u32)(uint64_t a, uint64_t b)
+     return (a + b) ^ mask;
  }
  
-+/* Pairwise long add: add pairs of adjacent elements into
-+ * double-width elements in the result (eg _s8 is an 8x8->16 op)
-+ */
-+uint64_t HELPER(neon_addlp_s8)(uint64_t a)
-+{
-+    uint64_t nsignmask = 0x0080008000800080ULL;
-+    uint64_t wsignmask = 0x8000800080008000ULL;
-+    uint64_t elementmask = 0x00ff00ff00ff00ffULL;
-+    uint64_t tmp1, tmp2;
-+    uint64_t res, signres;
-+
-+    /* Extract odd elements, sign extend each to a 16 bit field */
-+    tmp1 = a & elementmask;
-+    tmp1 ^= nsignmask;
-+    tmp1 |= wsignmask;
-+    tmp1 = (tmp1 - nsignmask) ^ wsignmask;
-+    /* Ditto for the even elements */
-+    tmp2 = (a >> 8) & elementmask;
-+    tmp2 ^= nsignmask;
-+    tmp2 |= wsignmask;
-+    tmp2 = (tmp2 - nsignmask) ^ wsignmask;
-+
-+    /* calculate the result by summing bits 0..14, 16..22, etc,
-+     * and then adjusting the sign bits 15, 23, etc manually.
-+     * This ensures the addition can't overflow the 16 bit field.
-+     */
-+    signres = (tmp1 ^ tmp2) & wsignmask;
-+    res = (tmp1 & ~wsignmask) + (tmp2 & ~wsignmask);
-+    res ^= signres;
-+
-+    return res;
-+}
-+
-+uint64_t HELPER(neon_addlp_s16)(uint64_t a)
-+{
-+    int32_t reslo, reshi;
-+
-+    reslo = (int32_t)(int16_t)a + (int32_t)(int16_t)(a >> 16);
-+    reshi = (int32_t)(int16_t)(a >> 32) + (int32_t)(int16_t)(a >> 48);
-+
-+    return (uint32_t)reslo | (((uint64_t)reshi) << 32);
-+}
-+
- uint64_t HELPER(neon_subl_u16)(uint64_t a, uint64_t b)
+-uint64_t HELPER(neon_paddl_u16)(uint64_t a, uint64_t b)
+-{
+-    uint64_t tmp;
+-    uint64_t tmp2;
+-
+-    tmp = a & 0x0000ffff0000ffffull;
+-    tmp += (a >> 16) & 0x0000ffff0000ffffull;
+-    tmp2 = b & 0xffff0000ffff0000ull;
+-    tmp2 += (b << 16) & 0xffff0000ffff0000ull;
+-    return    ( tmp         & 0xffff)
+-            | ((tmp  >> 16) & 0xffff0000ull)
+-            | ((tmp2 << 16) & 0xffff00000000ull)
+-            | ( tmp2        & 0xffff000000000000ull);
+-}
+-
+-uint64_t HELPER(neon_paddl_u32)(uint64_t a, uint64_t b)
+-{
+-    uint32_t low = a + (a >> 32);
+-    uint32_t high = b + (b >> 32);
+-    return low + ((uint64_t)high << 32);
+-}
+-
+ /* Pairwise long add: add pairs of adjacent elements into
+  * double-width elements in the result (eg _s8 is an 8x8->16 op)
+  */
+diff --git a/target/arm/tcg/translate-neon.c b/target/arm/tcg/translate-neon.c
+index ca6f5578b4f..19a18018f1a 100644
+--- a/target/arm/tcg/translate-neon.c
++++ b/target/arm/tcg/translate-neon.c
+@@ -2565,152 +2565,6 @@ static bool trans_VDUP_scalar(DisasContext *s, arg_VDUP_scalar *a)
+     return true;
+ }
+ 
+-static bool do_2misc_pairwise(DisasContext *s, arg_2misc *a,
+-                              NeonGenWidenFn *widenfn,
+-                              NeonGenTwo64OpFn *opfn,
+-                              NeonGenTwo64OpFn *accfn)
+-{
+-    /*
+-     * Pairwise long operations: widen both halves of the pair,
+-     * combine the pairs with the opfn, and then possibly accumulate
+-     * into the destination with the accfn.
+-     */
+-    int pass;
+-
+-    if (!arm_dc_feature(s, ARM_FEATURE_NEON)) {
+-        return false;
+-    }
+-
+-    /* UNDEF accesses to D16-D31 if they don't exist. */
+-    if (!dc_isar_feature(aa32_simd_r32, s) &&
+-        ((a->vd | a->vm) & 0x10)) {
+-        return false;
+-    }
+-
+-    if ((a->vd | a->vm) & a->q) {
+-        return false;
+-    }
+-
+-    if (!widenfn) {
+-        return false;
+-    }
+-
+-    if (!vfp_access_check(s)) {
+-        return true;
+-    }
+-
+-    for (pass = 0; pass < a->q + 1; pass++) {
+-        TCGv_i32 tmp;
+-        TCGv_i64 rm0_64, rm1_64, rd_64;
+-
+-        rm0_64 = tcg_temp_new_i64();
+-        rm1_64 = tcg_temp_new_i64();
+-        rd_64 = tcg_temp_new_i64();
+-
+-        tmp = tcg_temp_new_i32();
+-        read_neon_element32(tmp, a->vm, pass * 2, MO_32);
+-        widenfn(rm0_64, tmp);
+-        read_neon_element32(tmp, a->vm, pass * 2 + 1, MO_32);
+-        widenfn(rm1_64, tmp);
+-
+-        opfn(rd_64, rm0_64, rm1_64);
+-
+-        if (accfn) {
+-            TCGv_i64 tmp64 = tcg_temp_new_i64();
+-            read_neon_element64(tmp64, a->vd, pass, MO_64);
+-            accfn(rd_64, tmp64, rd_64);
+-        }
+-        write_neon_element64(rd_64, a->vd, pass, MO_64);
+-    }
+-    return true;
+-}
+-
+-static bool trans_VPADDL_S(DisasContext *s, arg_2misc *a)
+-{
+-    static NeonGenWidenFn * const widenfn[] = {
+-        gen_helper_neon_widen_s8,
+-        gen_helper_neon_widen_s16,
+-        tcg_gen_ext_i32_i64,
+-        NULL,
+-    };
+-    static NeonGenTwo64OpFn * const opfn[] = {
+-        gen_helper_neon_paddl_u16,
+-        gen_helper_neon_paddl_u32,
+-        tcg_gen_add_i64,
+-        NULL,
+-    };
+-
+-    return do_2misc_pairwise(s, a, widenfn[a->size], opfn[a->size], NULL);
+-}
+-
+-static bool trans_VPADDL_U(DisasContext *s, arg_2misc *a)
+-{
+-    static NeonGenWidenFn * const widenfn[] = {
+-        gen_helper_neon_widen_u8,
+-        gen_helper_neon_widen_u16,
+-        tcg_gen_extu_i32_i64,
+-        NULL,
+-    };
+-    static NeonGenTwo64OpFn * const opfn[] = {
+-        gen_helper_neon_paddl_u16,
+-        gen_helper_neon_paddl_u32,
+-        tcg_gen_add_i64,
+-        NULL,
+-    };
+-
+-    return do_2misc_pairwise(s, a, widenfn[a->size], opfn[a->size], NULL);
+-}
+-
+-static bool trans_VPADAL_S(DisasContext *s, arg_2misc *a)
+-{
+-    static NeonGenWidenFn * const widenfn[] = {
+-        gen_helper_neon_widen_s8,
+-        gen_helper_neon_widen_s16,
+-        tcg_gen_ext_i32_i64,
+-        NULL,
+-    };
+-    static NeonGenTwo64OpFn * const opfn[] = {
+-        gen_helper_neon_paddl_u16,
+-        gen_helper_neon_paddl_u32,
+-        tcg_gen_add_i64,
+-        NULL,
+-    };
+-    static NeonGenTwo64OpFn * const accfn[] = {
+-        gen_helper_neon_addl_u16,
+-        gen_helper_neon_addl_u32,
+-        tcg_gen_add_i64,
+-        NULL,
+-    };
+-
+-    return do_2misc_pairwise(s, a, widenfn[a->size], opfn[a->size],
+-                             accfn[a->size]);
+-}
+-
+-static bool trans_VPADAL_U(DisasContext *s, arg_2misc *a)
+-{
+-    static NeonGenWidenFn * const widenfn[] = {
+-        gen_helper_neon_widen_u8,
+-        gen_helper_neon_widen_u16,
+-        tcg_gen_extu_i32_i64,
+-        NULL,
+-    };
+-    static NeonGenTwo64OpFn * const opfn[] = {
+-        gen_helper_neon_paddl_u16,
+-        gen_helper_neon_paddl_u32,
+-        tcg_gen_add_i64,
+-        NULL,
+-    };
+-    static NeonGenTwo64OpFn * const accfn[] = {
+-        gen_helper_neon_addl_u16,
+-        gen_helper_neon_addl_u32,
+-        tcg_gen_add_i64,
+-        NULL,
+-    };
+-
+-    return do_2misc_pairwise(s, a, widenfn[a->size], opfn[a->size],
+-                             accfn[a->size]);
+-}
+-
+ typedef void ZipFn(TCGv_ptr, TCGv_ptr);
+ 
+ static bool do_zip_uzp(DisasContext *s, arg_2misc *a,
+@@ -3071,6 +2925,10 @@ DO_2MISC_VEC(VCLT0, gen_gvec_clt0)
+ DO_2MISC_VEC(VCLS, gen_gvec_cls)
+ DO_2MISC_VEC(VCLZ, gen_gvec_clz)
+ DO_2MISC_VEC(VREV64, gen_gvec_rev64)
++DO_2MISC_VEC(VPADDL_S, gen_gvec_saddlp)
++DO_2MISC_VEC(VPADDL_U, gen_gvec_uaddlp)
++DO_2MISC_VEC(VPADAL_S, gen_gvec_sadalp)
++DO_2MISC_VEC(VPADAL_U, gen_gvec_uadalp)
+ 
+ static bool trans_VMVN(DisasContext *s, arg_2misc *a)
  {
-     uint64_t mask;
 -- 
 2.34.1
 
