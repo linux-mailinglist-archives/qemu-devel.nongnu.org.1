@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA9DD9F1A05
-	for <lists+qemu-devel@lfdr.de>; Sat, 14 Dec 2024 00:32:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 61D779F1A1C
+	for <lists+qemu-devel@lfdr.de>; Sat, 14 Dec 2024 00:35:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tMF9F-0003hq-2a; Fri, 13 Dec 2024 18:32:42 -0500
+	id 1tMF9I-0003sZ-3y; Fri, 13 Dec 2024 18:32:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tMF8W-0003Ky-Au
- for qemu-devel@nongnu.org; Fri, 13 Dec 2024 18:31:59 -0500
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tMF8b-0003S5-Da
+ for qemu-devel@nongnu.org; Fri, 13 Dec 2024 18:32:04 -0500
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tMF8T-00033E-LW
- for qemu-devel@nongnu.org; Fri, 13 Dec 2024 18:31:56 -0500
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-43625c4a50dso15706065e9.0
- for <qemu-devel@nongnu.org>; Fri, 13 Dec 2024 15:31:52 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tMF8X-00033u-Nl
+ for qemu-devel@nongnu.org; Fri, 13 Dec 2024 18:32:01 -0500
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-43622267b2eso23437715e9.0
+ for <qemu-devel@nongnu.org>; Fri, 13 Dec 2024 15:31:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734132710; x=1734737510; darn=nongnu.org;
+ d=linaro.org; s=google; t=1734132715; x=1734737515; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=98G7xGgH42NoM+rpRevb74bw82XH4wpKnmxY8jqwlAI=;
- b=kChkK25VddsA/DX66gokTD61h9FD8XoDkX9/vEITaSZf6YcHKs6jLzeCsfcwCvRhr2
- 2ekLU/xVmcR1upFC+MpoHoTzJSR7Q8KYlQ+mfXsaTtFDfjMviDahmn6D78Cqmocff0jD
- EfFCtPXcmUNdOrnW+lSI6NM+6kTouDwRBZF+BcNsKwAfPIbBVcIA1aSmvifZZQ+H7zEb
- TIOUbF7sFJ4yy3glTGP5DQotex3XFBfYu8mPcc6HAIUzVrovkEFNSDxnXwDD88k2Xn8l
- QipqOo6cfhN3oPCA8MFm74MUuDnN5Ly9ZyS8Q+pLo6j2e0Xc4zZHCGg3R6PG7tI2tTq9
- OzEg==
+ bh=YyF+LNHtlBE2DVWP1MmQDXLiaOmadwbdYe33WN2RQTU=;
+ b=h9UD0YnXfy6POzFYps8+i/+hKyKoBkRiWt8u9jQRbg7gmzhw8m54HpCarEmSvjjnML
+ Ri11zb6yrm2j3QbcIeSsd6AX3C24s0Ek8d9O9xRHN4baOqhWnbz0wBgmIMVDbMWkdaFc
+ Wr1GDEAUiuoltFdoqaY/448HxmguR/wTTUcAjaDK6jILMLH2uwJElXszFebz7XG8S+rR
+ bkoN0nC/V/dBjQJjJSwgtAq8pxKRYO3IN5x5TXT6L5aOKtG0mUgVEEfLXDJM1Jlp+Ule
+ DpoHHT7hs6pwxTX3PzRDt/cvkwh3lVgiOpu5bxgXJF3TzCzJ860qVDNS9tZ2h+tib3+8
+ 86Gg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734132710; x=1734737510;
+ d=1e100.net; s=20230601; t=1734132715; x=1734737515;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=98G7xGgH42NoM+rpRevb74bw82XH4wpKnmxY8jqwlAI=;
- b=YHbLBHg+j7wH4evAMBKod7j7cZCcBk3a8ENBxrZExDBcNxqRgcwaSx/a0kkz/FuAFB
- uRpKYqP3F04eSf+Gfc2GBRQYAkQwan6KvELPQ5fzOVgsJeiJCxagmdHYk9wIkBv7KL7S
- m6oHJo7BYhGd0y3wQ5EqW+xw9gtYJ8PRn/4N48VApXsFgQfTEkMDS+/fsxgWrNh8XAdG
- g13De/6K1G9/mYd/Oc34JqSPX/Tdu5+arYGy6ptXJkNzwm08xJXPl8MQ+13gAsoZmeoc
- t1x9WFsGz8f/guexyeT/erMtkc15EMtcvQ2BWtMHiOO2MQwW9zyHQec6Rl9YDyKfNgE0
- UWCg==
-X-Gm-Message-State: AOJu0YwmauB2chtPeyNZGe4BJNd/xQs6F0/CDkX4lFkH5rK0z1wNS0bY
- por6fxS5575YgAG5sxJvC/G1okHoaF1crPjCxtD8qUBJtW7Cd6Kl5GK5iOdlNELgtLtSzHDHlJu
- nKDY=
-X-Gm-Gg: ASbGncvG4Oh64AlO9grQv0msu1varu6FubfvcQioGYZpa7jrgC6Y8EIWlKr76nFJ/NT
- q4RoyLoZLEEcy4uCwjOscMfrHOfkk+UA2iuQWVvReEF7szJhrThKXn6igmlcKWmYg2QtyIQa2Tg
- yLhalVk9tCMuL7OwF7g/Hzs4N5aIMxi2KyKKF8dgo+iFJVQL3UgMA802Q2kDooH6+IiuALpykL3
- cJomCu9a0NhxrHqMrnpsKtiastS/6xDDKPhXx1w2Vwz6+pfewZ1Bx+AcB4iJNLzOgwM5+b8XxIm
- vbbPgw==
-X-Google-Smtp-Source: AGHT+IGdDfTyJFPa9nDlnyDHRBLkiHX2GHeNgF5fGiJL/xYvN7MrDfaR8PeoB0fHSzh/GhQAFY8Y/A==
-X-Received: by 2002:a05:6000:4710:b0:386:1cd3:8a0b with SMTP id
- ffacd0b85a97d-3888dcd467fmr3133349f8f.17.1734132710462; 
- Fri, 13 Dec 2024 15:31:50 -0800 (PST)
+ bh=YyF+LNHtlBE2DVWP1MmQDXLiaOmadwbdYe33WN2RQTU=;
+ b=pQ7fwmxUdFCIqS516+PBMBC9I2NE8RyzaWVg3/HAsKLBlmO4mAL0AkeMITtYWHSY/N
+ cYRCLu9GgdOZ9GwU8A6eOsI4r1V+RLi3UO3T4IQRK9QDAVQv+supy0EZDWtu25/l3DmR
+ dEkVpHX3MK83L+M/3RxH5FEthdzZujkWyNMOyDkRYqj2u0M182E4IINzxmVHn9/W11T8
+ +GQbw4XJHM7Ev/lbDuRG84UQuLw43wlidYBNyRQVfZiTF39FxXwxsTNA4gSzEu6+9rMB
+ f1rRwTToxdJu7nBjh/OiSk0AP49DMD6EhVIzrRK3HB769bTybyuoSdy2Hzb7E0XkACnu
+ d/0w==
+X-Gm-Message-State: AOJu0Yz2wehmugqfAZJ8u1yCcoeR0N2mGSStd8VuJflB/XQkkALtJnD6
+ BrWLIIz2F0dbqiZcZIWypMtj1VZsF9PlGyihzHBZsHV4La7sa3h1m6NdDeY/6m1pW0cgIoFdESR
+ 1ysE=
+X-Gm-Gg: ASbGncu7baZvp0tO/PjrimyNIsGgnObVHAdG2FocKxpQCN9lhC9KED8f5zAjy9cIREf
+ omMc6FYXYVRfNd6SbfBcwNXCMvFbUL3oxtQ3dfvNx/GTpBD7I19sn5RGAfkbYe76eqeEyXqv5np
+ Io5t79EGbC9hYLP0KENUMPPwrp6XyBRZNfHw8StWCP23JBxzOpe84xD+a3e2LRSd/KiI/olBA1A
+ 5e2Zdd7X4MPyWSB1qGZ90+lay5TRTcAOqwl6XolvcHqtdVjQg1sc2xKrJmlQMhfqdDOjC2ajBOV
+ dPUZ/w==
+X-Google-Smtp-Source: AGHT+IGgKLF4CnuvMYkOzPZjjzPwMGV82HNY9yccmp6vJc4HwqQS2BoXSg98A2w79OvAL1Q9gwDJNA==
+X-Received: by 2002:a5d:6da4:0:b0:385:df73:2f18 with SMTP id
+ ffacd0b85a97d-3888e0c163amr3216961f8f.51.1734132714965; 
+ Fri, 13 Dec 2024 15:31:54 -0800 (PST)
 Received: from localhost.localdomain ([45.93.146.194])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-388c8046c71sm796788f8f.65.2024.12.13.15.31.49
+ 5b1f17b1804b1-4361ec75410sm78729495e9.1.2024.12.13.15.31.54
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 13 Dec 2024 15:31:50 -0800 (PST)
+ Fri, 13 Dec 2024 15:31:54 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PULL 10/20] hw: Use pci_bus_add_fw_cfg_extra_pci_roots()
-Date: Sat, 14 Dec 2024 00:30:45 +0100
-Message-ID: <20241213233055.39574-11-philmd@linaro.org>
+Subject: [PULL 11/20] hw/nvram/fw_cfg: Remove fw_cfg_add_extra_pci_roots()
+Date: Sat, 14 Dec 2024 00:30:46 +0100
+Message-ID: <20241213233055.39574-12-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241213233055.39574-1-philmd@linaro.org>
 References: <20241213233055.39574-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,61 +97,84 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We want to remove fw_cfg_add_extra_pci_roots() which introduced
-PCI bus knowledge within the generic hw/nvram/fw_cfg.c file.
-Replace the calls by the pci_bus_add_fw_cfg_extra_pci_roots()
-which is a 1:1 equivalent, but using correct API.
+Now that all uses of fw_cfg_add_extra_pci_roots() have been
+converted to the newer pci_bus_add_fw_cfg_extra_pci_roots(),
+we can remove that bogus method. hw/nvram/fw_cfg must
+stay generic. Device specific entries have to be implemented
+using TYPE_FW_CFG_DATA_GENERATOR_INTERFACE.
+
+This mostly reverts commit 0abd38885ac0fcdb08653922f339849cad387961
+("fw_cfg: Refactor extra pci roots addition").
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Message-Id: <20241206181352.6836-6-philmd@linaro.org>
+Message-Id: <20241206181352.6836-7-philmd@linaro.org>
 ---
- hw/arm/virt.c     | 3 ++-
- hw/hppa/machine.c | 2 +-
- hw/i386/pc.c      | 3 ++-
- 3 files changed, 5 insertions(+), 3 deletions(-)
+ include/hw/nvram/fw_cfg.h |  9 ---------
+ hw/nvram/fw_cfg.c         | 23 -----------------------
+ 2 files changed, 32 deletions(-)
 
-diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-index 3bd9dd0f863..333eaf67ea3 100644
---- a/hw/arm/virt.c
-+++ b/hw/arm/virt.c
-@@ -1750,7 +1750,8 @@ void virt_machine_done(Notifier *notifier, void *data)
-         exit(1);
-     }
+diff --git a/include/hw/nvram/fw_cfg.h b/include/hw/nvram/fw_cfg.h
+index 6089681f421..c60361dc9ee 100644
+--- a/include/hw/nvram/fw_cfg.h
++++ b/include/hw/nvram/fw_cfg.h
+@@ -315,15 +315,6 @@ bool fw_cfg_add_file_from_generator(FWCfgState *s,
+                                     Object *parent, const char *part,
+                                     const char *filename, Error **errp);
  
--    fw_cfg_add_extra_pci_roots(vms->bus, vms->fw_cfg);
-+    pci_bus_add_fw_cfg_extra_pci_roots(vms->fw_cfg, vms->bus,
-+                                       &error_abort);
+-/**
+- * fw_cfg_add_extra_pci_roots:
+- * @bus: main pci root bus to be scanned from
+- * @s: fw_cfg device being modified
+- *
+- * Add a new fw_cfg item...
+- */
+-void fw_cfg_add_extra_pci_roots(PCIBus *bus, FWCfgState *s);
+-
+ FWCfgState *fw_cfg_init_io_dma(uint32_t iobase, uint32_t dma_iobase,
+                                 AddressSpace *dma_as);
+ FWCfgState *fw_cfg_init_mem(hwaddr ctl_addr, hwaddr data_addr);
+diff --git a/hw/nvram/fw_cfg.c b/hw/nvram/fw_cfg.c
+index 46c62c8f09e..97def3a88b8 100644
+--- a/hw/nvram/fw_cfg.c
++++ b/hw/nvram/fw_cfg.c
+@@ -41,7 +41,6 @@
+ #include "qemu/cutils.h"
+ #include "qapi/error.h"
+ #include "hw/acpi/aml-build.h"
+-#include "hw/pci/pci_bus.h"
+ #include "hw/loader.h"
  
-     virt_acpi_setup(vms);
-     virt_build_smbios(vms);
-diff --git a/hw/hppa/machine.c b/hw/hppa/machine.c
-index a31dc32a9f7..4e673353225 100644
---- a/hw/hppa/machine.c
-+++ b/hw/hppa/machine.c
-@@ -240,7 +240,7 @@ static FWCfgState *create_fw_cfg(MachineState *ms, PCIBus *pci_bus,
-                     g_memdup2(qemu_version, sizeof(qemu_version)),
-                     sizeof(qemu_version));
- 
--    fw_cfg_add_extra_pci_roots(pci_bus, fw_cfg);
-+    pci_bus_add_fw_cfg_extra_pci_roots(fw_cfg, pci_bus, &error_abort);
- 
-     return fw_cfg;
+ #define FW_CFG_FILE_SLOTS_DFLT 0x20
+@@ -1058,28 +1057,6 @@ bool fw_cfg_add_file_from_generator(FWCfgState *s,
+     return true;
  }
-diff --git a/hw/i386/pc.c b/hw/i386/pc.c
-index 99b9b105e26..92047ce8c9d 100644
---- a/hw/i386/pc.c
-+++ b/hw/i386/pc.c
-@@ -631,7 +631,8 @@ void pc_machine_done(Notifier *notifier, void *data)
-     /* set the number of CPUs */
-     x86_rtc_set_cpus_count(x86ms->rtc, x86ms->boot_cpus);
  
--    fw_cfg_add_extra_pci_roots(pcms->pcibus, x86ms->fw_cfg);
-+    pci_bus_add_fw_cfg_extra_pci_roots(x86ms->fw_cfg, pcms->pcibus,
-+                                       &error_abort);
- 
-     acpi_setup();
-     if (x86ms->fw_cfg) {
+-void fw_cfg_add_extra_pci_roots(PCIBus *bus, FWCfgState *s)
+-{
+-    int extra_hosts = 0;
+-
+-    if (!bus) {
+-        return;
+-    }
+-
+-    QLIST_FOREACH(bus, &bus->child, sibling) {
+-        /* look for expander root buses */
+-        if (pci_bus_is_root(bus)) {
+-            extra_hosts++;
+-        }
+-    }
+-
+-    if (extra_hosts && s) {
+-        uint64_t *val = g_malloc(sizeof(*val));
+-        *val = cpu_to_le64(extra_hosts);
+-        fw_cfg_add_file(s, "etc/extra-pci-roots", val, sizeof(*val));
+-    }
+-}
+-
+ static void fw_cfg_machine_reset(void *opaque)
+ {
+     MachineClass *mc = MACHINE_GET_CLASS(qdev_get_machine());
 -- 
 2.45.2
 
