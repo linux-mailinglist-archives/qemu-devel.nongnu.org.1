@@ -2,82 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C351B9F19F0
-	for <lists+qemu-devel@lfdr.de>; Sat, 14 Dec 2024 00:31:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 85C499F1A1D
+	for <lists+qemu-devel@lfdr.de>; Sat, 14 Dec 2024 00:35:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tMF6H-0001BH-P6; Fri, 13 Dec 2024 18:29:37 -0500
+	id 1tMF7j-00026Q-GK; Fri, 13 Dec 2024 18:31:07 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tMF6F-0001B1-PM
- for qemu-devel@nongnu.org; Fri, 13 Dec 2024 18:29:35 -0500
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tMF7h-00026A-Iy
+ for qemu-devel@nongnu.org; Fri, 13 Dec 2024 18:31:05 -0500
+Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tMF6E-0001ml-5G
- for qemu-devel@nongnu.org; Fri, 13 Dec 2024 18:29:35 -0500
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-4361f796586so27036495e9.3
- for <qemu-devel@nongnu.org>; Fri, 13 Dec 2024 15:29:33 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tMF7c-0002xG-2L
+ for qemu-devel@nongnu.org; Fri, 13 Dec 2024 18:31:05 -0500
+Received: by mail-wr1-x42e.google.com with SMTP id
+ ffacd0b85a97d-3862d161947so1035180f8f.3
+ for <qemu-devel@nongnu.org>; Fri, 13 Dec 2024 15:30:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734132572; x=1734737372; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:content-language:references
- :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
- :cc:subject:date:message-id:reply-to;
- bh=Gb4goDicfQxicR5u8nKj+41W/sHVMjmHq/TZvClCsfo=;
- b=MwZcX/lqt9lv043CgO/1Jh9BLLoiGoFYh1QvfmtLdjN3JwHYELSX60tMSOURQRto/I
- QxspP+FQhiJPQ5FDWFSYg6cX7B1CqFpbluOz3AuzWrG3tkDdx49U361byU1PU+G9k38q
- mdvd7vUens7dsFFkXmM4gdck/14Eb1S+QfJbvyu/q8HwAtQQm1xLBYFSSXCIrqFi5K1f
- j55q236pD8brbqpSWqoFsIyQdp/pXECRXjDU7+wxA+SpRk9ISJb2lSMxczR04PuayQz3
- UWcqP5z7KkNROrkdagTdgq99v1KoGpa7pl4+efLTJ9mkBKQNBjWAqknK2GPdmhPdMYiH
- EuaA==
+ d=linaro.org; s=google; t=1734132658; x=1734737458; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=qJqzrK27HC5TEaqb+1BUrxjhcsWle6KpvNsTAkGGR64=;
+ b=ypdWkQZ99cK59OwM3iBR1M6sZNZxdlvM3jPy+7Kf9Zza48ytMyAXzvRZzvlx9b2jno
+ zRE8F4Qs42xMYgth4tADyniuXU6qNB6dx4/CBzlzlgBCW17cTNe48s44zA1urAyPoNYr
+ OyartdzsfBO11et3zkZdpm9PTYVL300nO9xEXIdf4yd0UWspXScDvFbYD8UTdJ0Yv4Wi
+ HEckzrX/8Horw0J51B3I1R6GyRm1pQIodUrpZyAaOQZQJAOiL9ay1sYHOHnlBe0sKpyn
+ 9R/Ikg24GlapU0sKP4s2x+eTRj0hxslvrlC+2zqHKa4sGiP9qLFNMwBttBIZDI7Z3mQI
+ rdxg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734132572; x=1734737372;
- h=content-transfer-encoding:in-reply-to:content-language:references
- :cc:to:from:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Gb4goDicfQxicR5u8nKj+41W/sHVMjmHq/TZvClCsfo=;
- b=sMpVOtEl/Rsra+DY5+OT8zJk1OAx7WFIFgc8biBlp+0K+LUhlISJQj0PEQ/x1EnxC4
- zp+LJT6eLT9Q0KtBlSksmv5teAs++WLNJillFDqWLfYn9ZW/jd5evj0NtHIy3SJNHWNO
- /lP4UAmXAZYD2I+pk2v83HhVx1/RtogTdnNROv1nTcwfeRZr35IGUnVIvFKlMY+n6WXf
- zaTBzi+xaZBs/jOJ8CLxIbCaXXI3zJ6ndcel+tT1r79+6fN099pLqD3C+HGAwPEPpfPx
- oTY3+/ZEW9CHIGHlgr7rStHeWPSC599ctrTRwVx8bZKVDXrgGpAmQW9nv39c4LX2VFt0
- 5vxw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUJd/JdT2rm1u6FKf/BVkRwpijXZPwUPXW0EWf+FcEiDBOhJpA1AgifwoZzzP4rhB7viuic79dyE2qW@nongnu.org
-X-Gm-Message-State: AOJu0Yws3IpILyY8aP1cMKFKhyHfAGOBEj1tm62svmt7XfwSmq1Q8Sml
- 83dHWfGVc/A6FahXNKyjN9Xq01C0CS+K94dUWecdgsZnPoeDSfAz6FmQtk5X510=
-X-Gm-Gg: ASbGncv9h6kraXFsc9xoqvKR1f28lAPtsrcjT0KOA9m9xRJk2s1agXX3q9k1JGihDSU
- 5hGBdK5akbCRBwy0uQmxIaejD8rK+vWjjctNM1SZ5ZxK1d7mIJM99Y7E28xayu7+cwlwLLWOlp2
- JkuUpToz4AYoM6BB3MaIxXx9HOCO94W/Ho+G75KzXkx8dscmTjzTBmMK5sccq7tNCvJvUuNMir5
- HIJ3od938+G8S48k93EtrNixb+S/JkdOaRP/WM8JiPwekLuF7rXU/z/arELwR+rqlxXxA==
-X-Google-Smtp-Source: AGHT+IG3t1WpRAsY1ABuCMl1UNesWjInxEL0qLdAAn67u7zl+WULAng6uQCWP9RnQot+hWIAt+UYhQ==
-X-Received: by 2002:a5d:5f50:0:b0:382:3959:f429 with SMTP id
- ffacd0b85a97d-38880ac5f31mr4213526f8f.5.1734132572340; 
- Fri, 13 Dec 2024 15:29:32 -0800 (PST)
-Received: from [10.1.1.253] ([45.93.146.194]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-388c801a487sm845169f8f.45.2024.12.13.15.29.31
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 13 Dec 2024 15:29:31 -0800 (PST)
-Message-ID: <cbb49707-dfd5-47df-b268-e468130e7cb8@linaro.org>
-Date: Sat, 14 Dec 2024 00:29:30 +0100
+ d=1e100.net; s=20230601; t=1734132658; x=1734737458;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=qJqzrK27HC5TEaqb+1BUrxjhcsWle6KpvNsTAkGGR64=;
+ b=xD8Iwydv0/8oBw/beBKJ6jJnHgIisjizX9MrpIS5wCLCKjuzuITEB4ZO1+8gxHkoy7
+ FUzZ711/VVH/Zuxf1wz1LTHy36tlSj6rwsLrmwBJwrtc/1IdQDWzEu86DhTQYVt+FxCk
+ l5HCiQTUe9+R9aKb1gKao8aSTBY18aIuXCcNPFBxX5y3WFt7rmYb3Ir/81A0f3Ytbk09
+ lOGkmBifOkHDePOanVk+kS4goK0U84h37LsK4Fyv3mKvv5aQcLKu9SLneuhWWDAQJONF
+ P8Tx8oqqir5c/Vp0WsPdVengXQd3oIOcOTzFZnM0VPhGhaYYylSV36V3uwfNCbgc7Spl
+ dmgQ==
+X-Gm-Message-State: AOJu0YzwCrOULbySiKB/9KkKWSfTXelIzbhaD7wo0c8M2CZ5aXixJX/9
+ 4c2VxWlWhRlMq7HXWaH7V10rr5RRxhw4zrJJ7RvWr/Gw2mg9ewdjSEihbB9Gm8HgjS4rUiuOVOB
+ Bh3I=
+X-Gm-Gg: ASbGncvxO4FU8jtNKsI4E0+OPYfuTDJ79ut8dojmapf/yM6ZBoLm36YmrNNlsqFvPO6
+ XMYqiItYdGlr7LUXN0F91VDzhisAR6Hj7e4x/SYAVmuWvWTO9I6Gihpz4gs1x9dMgvo6G7FzkRJ
+ ApJ/1IQtvUgrfnRr+7rQ2ch30K9wQRgoQHRxDG9nwJOJbjlucmFNlRfHzBEaZQSq4CWUc1Oaj87
+ K/BTrb3/ZYLGp1iZm1Ng9pPjuQwcEEhByKC2cow4SM0hhWKkouP0VN223jc7LVOTFwzEF4b0GvI
+ 5hbmDA==
+X-Google-Smtp-Source: AGHT+IHWXq2f3c9cFhy1YIMX9o55yLFH2mja7pAEkNFzNCcEmdzXU9UuHdCXRtOWH6tRSIUHaiz+Lg==
+X-Received: by 2002:a5d:5984:0:b0:385:fc32:1ec6 with SMTP id
+ ffacd0b85a97d-3888e0c081bmr3304716f8f.50.1734132658139; 
+ Fri, 13 Dec 2024 15:30:58 -0800 (PST)
+Received: from localhost.localdomain ([45.93.146.194])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-388c8046ca6sm817664f8f.83.2024.12.13.15.30.56
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Fri, 13 Dec 2024 15:30:56 -0800 (PST)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 00/20] Misc HW patches for 2024-12-14
+Date: Sat, 14 Dec 2024 00:30:35 +0100
+Message-ID: <20241213233055.39574-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.45.2
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] MAINTAINERS: correct my email address
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: Brian Cain <brian.cain@oss.qualcomm.com>, qemu-devel@nongnu.org
-Cc: richard.henderson@linaro.org, peter.maydell@linaro.org,
- quic_mathbern@quicinc.com, stefanha@redhat.com, ale@rev.ng, anjo@rev.ng,
- quic_mliebel@quicinc.com, ltaylorsimpson@gmail.com, alex.bennee@linaro.org,
- quic_mburton@quicinc.com
-References: <20241209181242.1434231-1-brian.cain@oss.qualcomm.com>
- <7af8a419-745e-4348-a564-8ef078fd456b@linaro.org>
-Content-Language: en-US
-In-Reply-To: <7af8a419-745e-4348-a564-8ef078fd456b@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,19 +93,102 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 13/12/24 20:16, Philippe Mathieu-Daudé wrote:
-> On 9/12/24 19:12, Brian Cain wrote:
->> Mea culpa, I don't know how I got this wrong in 2dfe93699c.  Still
->> getting used to the new address, I suppose.  Somehow I got it right in 
->> the
->> mailmap, though.
->>
->> Signed-off-by: Brian Cain <brian.cain@oss.qualcomm.com>
->> ---
->>   MAINTAINERS | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> Queued, thanks!
+The following changes since commit 83aaec1d5a49f158abaa31797a0f976b3c07e5ca:
 
-Dropped, already taken by Peter.
+  Merge tag 'pull-tcg-20241212' of https://gitlab.com/rth7680/qemu into staging (2024-12-12 18:45:39 -0500)
+
+are available in the Git repository at:
+
+  https://github.com/philmd/qemu.git tags/hw-misc-20241214
+
+for you to fetch changes up to 456b247eeab067095b680fa4b0fec48137969593:
+
+  hw/xtensa: Include missing 'exec/tswap.h' header (2024-12-14 00:16:20 +0100)
+
+----------------------------------------------------------------
+Misc HW patch queue
+
+- Support string data for extendPCR in VirtIO NSM device (Dorjoy)
+- Have PCI_BUS implement TYPE_FW_CFG_DATA_GENERATOR_INTERFACE (Phil)
+- Decouple AHCI from PCI (Bernhard)
+- Add status to usb_msd_packet_complete (Nick)
+- Header cleanups (Alex, Phil)
+
+----------------------------------------------------------------
+
+Alex Bennée (1):
+  hw/net/can: clean-up unnecessary includes
+
+Bernhard Beschow (2):
+  hw/ide/ahci: Decouple from PCI
+  hw/ide/ahci: Extract TYPE_SYSBUS_AHCI into dedicated file
+
+Dorjoy Chowdhury (3):
+  docs/nitro-enclave: Fix terminal commands formatting
+  hw/core/eif: Use stateful qcrypto apis
+  hw/virtio/virtio-nsm: Support string data for extendPCR
+
+Nicholas Piggin (1):
+  hw/usb/msd: Add status to usb_msd_packet_complete() function
+
+Phil Dennis-Jordan (1):
+  hw/usb/hcd-xhci-pci: Indentation fix
+
+Philippe Mathieu-Daudé (12):
+  hw/riscv/virt: Remove pointless GPEX_HOST() cast
+  hw/nvram/fw_cfg: Rename fw_cfg_add_[file]_from_generator()
+  hw/nvram/fw_cfg: Pass QOM parent to fw_cfg_add_file_from_generator()
+  hw/nvram/fw_cfg: Skip FW_CFG_DATA_GENERATOR when no data to generate
+  hw/pci: Have PCI_BUS implement TYPE_FW_CFG_DATA_GENERATOR_INTERFACE
+  hw/pci: Add pci_bus_add_fw_cfg_extra_pci_roots() helper
+  hw: Use pci_bus_add_fw_cfg_extra_pci_roots()
+  hw/nvram/fw_cfg: Remove fw_cfg_add_extra_pci_roots()
+  hw/usb/hcd-xhci-nec: Remove unused XHCINecState::flags field
+  hw/mips: Include missing 'exec/tswap.h' header
+  hw/sh4/r2d: Include missing 'exec/tswap.h' header
+  hw/xtensa: Include missing 'exec/tswap.h' header
+
+ docs/system/i386/nitro-enclave.rst |   8 +-
+ hw/ide/ahci-internal.h             |   1 -
+ hw/xtensa/bootparam.h              |   1 +
+ include/hw/i386/nitro_enclave.h    |  16 +--
+ include/hw/ide/ahci-pci.h          |   2 +
+ include/hw/ide/ahci.h              |   2 -
+ include/hw/nvram/fw_cfg.h          |  32 ++---
+ include/hw/pci/pci.h               |   3 +
+ hw/arm/virt.c                      |   3 +-
+ hw/core/eif.c                      | 202 +++++++++++------------------
+ hw/hppa/machine.c                  |   2 +-
+ hw/i386/nitro_enclave.c            |  12 +-
+ hw/i386/pc.c                       |   3 +-
+ hw/ide/ahci-sysbus.c               |  91 +++++++++++++
+ hw/ide/ahci.c                      | 106 +--------------
+ hw/ide/ich.c                       |  19 ++-
+ hw/mips/fuloong2e.c                |   1 +
+ hw/mips/malta.c                    |   1 +
+ hw/net/can/can_kvaser_pci.c        |   4 -
+ hw/net/can/can_mioe3680_pci.c      |   4 -
+ hw/net/can/can_pcm3680_pci.c       |   4 -
+ hw/net/can/can_sja1000.c           |   2 +-
+ hw/net/can/ctucan_core.c           |   3 +-
+ hw/net/can/ctucan_pci.c            |   4 -
+ hw/nvram/fw_cfg.c                  |  37 ++----
+ hw/pci/pci.c                       |  53 ++++++++
+ hw/riscv/virt.c                    |  20 ++-
+ hw/sh4/r2d.c                       |   1 +
+ hw/usb/dev-storage.c               |  17 ++-
+ hw/usb/hcd-xhci-nec.c              |   5 +-
+ hw/usb/hcd-xhci-pci.c              |   2 +-
+ hw/virtio/virtio-nsm.c             |  21 ++-
+ hw/xtensa/xtfpga.c                 |   1 +
+ system/vl.c                        |   3 +-
+ hw/arm/Kconfig                     |  10 +-
+ hw/ide/Kconfig                     |   4 +
+ hw/ide/meson.build                 |   1 +
+ 37 files changed, 343 insertions(+), 358 deletions(-)
+ create mode 100644 hw/ide/ahci-sysbus.c
+
+-- 
+2.45.2
+
 
