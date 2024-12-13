@@ -2,77 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 557249F1583
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Dec 2024 20:10:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BCC7F9F15AD
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Dec 2024 20:20:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tMB2w-0003kR-RA; Fri, 13 Dec 2024 14:09:57 -0500
+	id 1tMB32-0003yX-OQ; Fri, 13 Dec 2024 14:10:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tMB2J-0003Fo-1z
+ id 1tMB2J-0003Gj-Cc
  for qemu-devel@nongnu.org; Fri, 13 Dec 2024 14:09:15 -0500
-Received: from mail-ot1-x330.google.com ([2607:f8b0:4864:20::330])
+Received: from mail-ot1-x336.google.com ([2607:f8b0:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tMB29-0006c2-4Z
+ id 1tMB2C-0006cX-KP
  for qemu-devel@nongnu.org; Fri, 13 Dec 2024 14:09:14 -0500
-Received: by mail-ot1-x330.google.com with SMTP id
- 46e09a7af769-71e3005916aso392507a34.2
- for <qemu-devel@nongnu.org>; Fri, 13 Dec 2024 11:08:59 -0800 (PST)
+Received: by mail-ot1-x336.google.com with SMTP id
+ 46e09a7af769-71e1158fe3eso974844a34.1
+ for <qemu-devel@nongnu.org>; Fri, 13 Dec 2024 11:09:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734116938; x=1734721738; darn=nongnu.org;
+ d=linaro.org; s=google; t=1734116940; x=1734721740; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=yKW55J0w51PNOklb1SowP9V3cdDc2rdAjEh4kWiClk8=;
- b=fKXaCPhmkqmHJwS5CQpeLarPVoxe78RqbY99cLED4XPq2Ojf0nn/w8uoH8TYpIA/do
- P15pxGDGtJy3Y/f5UGj1TOo4yP/26CutqLuL3bzC5hqqYoc2FdcEk3L5K5YPJzUjIzgP
- HzPZ0sTk2tWggfMT8nVmltKony4N1DyQZimlTMC7RBK+QPf4pgCan4qeRRDl9171PWSX
- oJXX0X21lSbDWGEuOAXP/r30CP7sk10/oIum6SSw/u1thL5Yn0ZH9VYXFa+geMwOr9yf
- l2u8BhVWZUBwzxFWHexR1lF3S3WzjmsPsqFAKtSilMlrjrAiZrA0rNSSebNt3BPs+R1k
- eoIA==
+ bh=VBuAnCPgZLHdX0sVpQB+fbM15dWtrtdAGUwOdHBBqsc=;
+ b=HoNt0DaUOEkOA17O5Jr0EGkPPm+xC567V8+SQmEjcc2lQPqAZzgE+wHHEnAH0xfblT
+ 2FYZbKjIQXFHDuPAImQcIu1kepnpq4JfX2CfDSqO26UI5wA8IW+G4z53VEZgV6Y1pMEp
+ rDr0eSfvwGW4vyLtwK6A0AiMVKOv/2Ih3vDIbn1hhmD4EOz3MsJC42qJiuO5g3gESYjQ
+ tGbegkHQaHFRmIOF4o3ysGQpxbY34a4fRDGEoazXmy5POoVPV63TVHfl99rkHqW+kmgR
+ sjCCf8k1Dce9CoxJaK/CDhmAfJnftsoQp3/2kSEvD42Sz4krBktEPDvagOlqrwSKmX+h
+ 7iNw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734116938; x=1734721738;
+ d=1e100.net; s=20230601; t=1734116940; x=1734721740;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=yKW55J0w51PNOklb1SowP9V3cdDc2rdAjEh4kWiClk8=;
- b=XhPBnbzgUS6T2wKQkZxKqOCD4WrZ2xhIYj8BeSG+JjHkSvqnOUQxV8ggq9bDyUdlYZ
- hvKgkdN4JG1cAnq7ft8pKk7qkw9PIYkn2llbzsGZPltLYdwZn2nhpxhJkyP+P0o2wQtA
- fQNIra6LWRHppdsXuB96za1UlvK3LwTnlizC3VDW3aqOb/l3rFvDjEWpYEdT7dc7OQbF
- 22GBrZARY8fIYw15LNPh2DgrIiJVoP2zs1rQaUS9eVb9ZUvUuD9OsmCXwIplXMw/ELDM
- 2WJP9LxHKNUkzfX+eu/MkprBkjggwIQBnJVUjR/D/IZGFIyWRY/EudJPaXoegdq0UEvM
- QOig==
-X-Gm-Message-State: AOJu0Yzh5pcJrs5fL56dokMrlfnC2vL2eN5FDoLemdOdZTlf0x9mv9YT
- 2X2qRzSnKN1lSUFbjm8FsnZLZQB0ScS9rYPiBMA5c9pdTZn2xOVHx0QpOARfiVaY6OX59SEi3Jo
- 8YKUxdWpv
-X-Gm-Gg: ASbGncvICS+po8ZK4f1ve4IAqkz70p7T9LVMSVY05KgZBsWesWYVUxWSsi47jrTLJxp
- ct/LdpJeQOgnEWWGexYfvPJ/urQ+MZAQWcyQuxZG5hRxoZP+H4eEnqX/5woPlHDnJUuYFeZreaz
- A9rvruoJzmKM5Y4sM42gr1RquPBg6misO59pLkwVvAStcQWpA8bGtUb3XKSFNQ83XWuElBFWPJ4
- 4/Z5NDoBC7eU0CiKLYNOz8P9jpqH4YABcRMFgPDvkwia+V7T5FqMuDXP28EkC7o
-X-Google-Smtp-Source: AGHT+IHTabqk9XfY2F1Hg2S4q9hkUEiti58oUoecZnbZxt8jYRhcbgA1BfWl6ZfG0eVePqf9Ii0z2w==
-X-Received: by 2002:a05:6830:6e18:b0:718:9b8b:429d with SMTP id
- 46e09a7af769-71e3b816757mr2008706a34.4.1734116938397; 
- Fri, 13 Dec 2024 11:08:58 -0800 (PST)
+ bh=VBuAnCPgZLHdX0sVpQB+fbM15dWtrtdAGUwOdHBBqsc=;
+ b=Zstm31FmSk0eeVzVbCMv3RRYYWBFGxwSTlScPh2lKJHZFpEw5/EVELSyWy8hPgB0/n
+ 8I0nK7ZfY2zsiifC2A5VE11Ii5nUhfa1utUY0pKoO05V4xGoLCxLs9A46tO1QOwyHQCP
+ eSYfw1uj/Wk0NUWED9RoowQeZaLhnU/pKkCpyi4SdcUHjbbU4+ShFZ38i4BGCfB9K4f3
+ CvtdRzt74mf0+ckeKXEGSfL87GYRyLss8EVKmI2owjLuzHPZ7WDsac/HgH9Ih5pDJ1M6
+ kKaT+YD78w2NrSWn77uWLrNtDVXBXfbK4L4iV9eY+EeC45QHTc/5Px6OenDnudkjnPt6
+ dv5Q==
+X-Gm-Message-State: AOJu0YzqxuT3wtun9yB4fRutI2oo4FtSFIS6aP+w2gL18Ta5GakITVlZ
+ 79iLOm4vCWdqw29p0hONenOYHl9njocGAq71+W0jsddjxP81XD1FGGjONKd+Sqv/KzuWgCAG9Ru
+ GeKjRek97
+X-Gm-Gg: ASbGncu1CzvNAo3fDxP+rcUFTdBmMFP3FcgsIOC+C3RFCm0PnpSvxlVW/vsdqJfW75I
+ /FYpfMcPWxV9G5W9pdJNCUCDc839agYG9vujbx1Vf4H+c/lobz7KJ+rxVGIB8wriL6kY5cOVDIB
+ w/uKWFIVmkb8SUi/30Ynnt80RyAri9pyQZzt7VJxhO9C9LTU5OSyROOFeEC2D+lgKXuLOY2vZ3L
+ Wa52NITk3c5H7R3wtSSl2wONKmu2Mfzce/Pv6ZVpms2Kj5Gd4UKzMiJW64Lv3qH
+X-Google-Smtp-Source: AGHT+IG4Oaa1CFMaif+EnKB8kf2kg/gBi+Er63DHsr2guVeeoIb4v5eKEHl55hIr030QigRhTnJLHA==
+X-Received: by 2002:a05:6830:2a92:b0:71d:f6d3:9fd2 with SMTP id
+ 46e09a7af769-71e3ba3f147mr1411664a34.24.1734116940056; 
+ Fri, 13 Dec 2024 11:09:00 -0800 (PST)
 Received: from stoup.. ([187.217.227.247]) by smtp.gmail.com with ESMTPSA id
- 46e09a7af769-71e4834da91sm29697a34.18.2024.12.13.11.08.57
+ 46e09a7af769-71e4834da91sm29697a34.18.2024.12.13.11.08.58
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 13 Dec 2024 11:08:58 -0800 (PST)
+ Fri, 13 Dec 2024 11:08:59 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Michael Rolnik <mrolnik@gmail.com>
-Subject: [PATCH 17/71] hw/avr: Constify all Property
-Date: Fri, 13 Dec 2024 13:06:51 -0600
-Message-ID: <20241213190750.2513964-22-richard.henderson@linaro.org>
+Cc: Stefano Stabellini <sstabellini@kernel.org>,
+ Anthony PERARD <anthony@xenproject.org>, Paul Durrant <paul@xen.org>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
+ xen-devel@lists.xenproject.org (open list:X86 Xen CPUs),
+ qemu-block@nongnu.org (open list:Block layer core)
+Subject: [PATCH 18/71] hw/block/xen-block: Unexport PropertyInfo
+Date: Fri, 13 Dec 2024 13:06:52 -0600
+Message-ID: <20241213190750.2513964-23-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241213190750.2513964-1-richard.henderson@linaro.org>
 References: <20241213190750.2513964-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::330;
- envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x330.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::336;
+ envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x336.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,24 +100,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+xen_block_prop_vdev is not used outside the file.
+
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- hw/avr/atmega.c | 2 +-
+ hw/block/xen-block.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/avr/atmega.c b/hw/avr/atmega.c
-index 31c8992d75..ce630ec572 100644
---- a/hw/avr/atmega.c
-+++ b/hw/avr/atmega.c
-@@ -355,7 +355,7 @@ static void atmega_realize(DeviceState *dev, Error **errp)
-     create_unimplemented_device("avr-eeprom",       OFFSET_DATA + 0x03f, 3);
- }
- 
--static Property atmega_props[] = {
-+static const Property atmega_props[] = {
-     DEFINE_PROP_UINT64("xtal-frequency-hz", AtmegaMcuState,
-                        xtal_freq_hz, 0),
-     DEFINE_PROP_END_OF_LIST()
+diff --git a/hw/block/xen-block.c b/hw/block/xen-block.c
+index aed1d5c330..72cfd6893a 100644
+--- a/hw/block/xen-block.c
++++ b/hw/block/xen-block.c
+@@ -659,7 +659,7 @@ invalid:
+  *
+  * https://xenbits.xen.org/docs/unstable/man/xen-vbd-interface.7.html
+  */
+-const PropertyInfo xen_block_prop_vdev = {
++static const PropertyInfo xen_block_prop_vdev = {
+     .name  = "str",
+     .description = "Virtual Disk specifier: d*p*/xvd*/hd*/sd*",
+     .get = xen_block_get_vdev,
 -- 
 2.43.0
 
