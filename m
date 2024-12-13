@@ -2,71 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEEC89F13DB
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Dec 2024 18:38:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A07829F13EB
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Dec 2024 18:39:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tM9av-0001xF-F4; Fri, 13 Dec 2024 12:36:53 -0500
+	id 1tM9aG-00089D-LW; Fri, 13 Dec 2024 12:36:12 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tM9Y2-0008HX-PO
+ id 1tM9Y3-0008Ha-55
  for qemu-devel@nongnu.org; Fri, 13 Dec 2024 12:33:57 -0500
 Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tM9Xz-0001k6-I5
+ id 1tM9Xz-0001kJ-Om
  for qemu-devel@nongnu.org; Fri, 13 Dec 2024 12:33:54 -0500
 Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-4361fe642ddso20466455e9.2
- for <qemu-devel@nongnu.org>; Fri, 13 Dec 2024 09:33:50 -0800 (PST)
+ 5b1f17b1804b1-436345cc17bso3210265e9.0
+ for <qemu-devel@nongnu.org>; Fri, 13 Dec 2024 09:33:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734111229; x=1734716029; darn=nongnu.org;
+ d=linaro.org; s=google; t=1734111230; x=1734716030; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=Iu6/mYPMj4sIgrpfHxPuinFzD7tP6UGxaUnV9V3hRtM=;
- b=Ffjdv46U3swuZymAhMXNwnDXA2GwW0nqkl0r3ZNpplaF4/dSDbuVnLLeDgck5AMP9s
- AntVD+hbeRMo7qeZdSYjVTFFE9HU24zuG1BND2wLV0+HKPE7MBsKLr0gFQlYzF6GNNul
- NFLDfSNHUyL7C5uvflW/eBuep6QROpov55+E1CWKnad40xClLr87Fjlh/9IgXB5NI6nn
- YcCCGwE5OYwT9VGXNcDCsvu1G2FnC+NiKl9SjM6yHsatm/T+SoEDIjwVwWPTnqRn4IrQ
- z6jw/LFC1BT1hQLTezCTPs4OT5iSCev+7GteiDOpxF6MWBkOLw+TWW6/cGvHRkvKD0XD
- XugA==
+ :reply-to; bh=LHYKnsZII936z/JzPGS2acHwiW7ATdMySxAu7M3/+ak=;
+ b=lEXY1DNF83rdYg10DecIsEpjMbPDvk8BFAairfAK1zcxe4i6m4XvTISK9Gqs+5ShYJ
+ e1k0ZdtsofSo5yWsLT1xwBw2wZl6m6U+SKFXGV/Ol1hZcgw+JQ9euzYCGxOWJODN6Krg
+ KqNmL9YjQ9+2ymyEUXsEeTyaV1hyMMnOT27CS9+2tcC9NnDPE4FJcYsEzSfpkEkP9b2S
+ 2SEImf2qY3c73T/efX0Hx241wpDKzqk3vi2jvWEDcHqlTF8o7wMBLPsNFLlU+JeQsmbb
+ rytdS5cRJXfqfGkyOQLhzbafba7uj30N5BPXTUn9iVcs+5iJ31UeSGxiGhFxuFdLnVLw
+ vrkQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734111229; x=1734716029;
+ d=1e100.net; s=20230601; t=1734111230; x=1734716030;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Iu6/mYPMj4sIgrpfHxPuinFzD7tP6UGxaUnV9V3hRtM=;
- b=lE9hnOurELswquSex+B0/ljLRjvS9oUR09Yls3B6+vLrJf93KYD/x18NaVhbYtnIAi
- sJl/00J8IcIyg9naCQ0BB6XE3rcOMYTclaJPfyxTwLfnf+9havrrXrIOcYTc1fV+Y87S
- Anke+YfyTueHKuxXEIPmrRm2gOZ24VUbTS2+tt1uDqQwyluRORJC4WWcPvq9uDSoQZZA
- z9XYQ0AYSnvS9rFTD2/JwS/2tiAM+Dj46XkcBVFiuYQpmM66wbbGkQht/5vII3hR9kEg
- uSYFkI3QaDNS225xR37RcNzat8yaomav7Xm3EBpFctcjKneUiXIO9+d1cX31hkU++a0S
- bJuQ==
-X-Gm-Message-State: AOJu0YwFS62bhQUhHSmew74YuLwwHzEVTrvhw3k1cRdNk0JZbJz6LYlh
- x9ZTGwi4MSCGWIY100HLoYR06QtJT9wTrlQP0HiraoJp9pywOtPEwVBT0qq6XnJUH3yzA5h1nQQ
- c
-X-Gm-Gg: ASbGnct5EzQ1pRrWhSt5siCM6BTcKyZYf0gfmLqCLnJubiK0Hgkd7CecuXrUGBvcT0w
- Lfqn4+b89pvilFa4nELhbXiAmkFUE0Qn1tW/Je49tJyFgP/bjHuR9zZpVA72X/nQYT2l5JS1IO2
- 50FG5XB1tytmVwg1GqNh7WtaP70IMqAqLyvTzoxGZ7xCp08rh2aOOQqjLWxPz/qt9m6VqktAOIa
- 5zc1ejbriDfAzMlxByhynxu02p+V2E08SitU2LJwCGRS8p0MvEFllIs/2JgMA==
-X-Google-Smtp-Source: AGHT+IFsA5t4suN2xU6J7LQsz01QLuN4iZPGK+Nfl6Wy8Qlbv5Zm8FeJIlXF8y1gIavY1duRUL9bng==
-X-Received: by 2002:a05:600c:3548:b0:434:f753:600f with SMTP id
- 5b1f17b1804b1-4362aa408fcmr29869535e9.19.1734111229106; 
- Fri, 13 Dec 2024 09:33:49 -0800 (PST)
+ bh=LHYKnsZII936z/JzPGS2acHwiW7ATdMySxAu7M3/+ak=;
+ b=gM2wvCD8jE1vBkNZluxpQKUs8DUwei7/vkTJPyJ3SjSbduo1gxi6+FVnt6eTCyLWtV
+ N0Ho5ND9jXS0F/Q0sGs62CaTZNxyJtjq/W7HSzJFstPQ7Fi/SzpwBLRbJZaf8KMoxGpw
+ XHHvZlADTI6OuMtAOMLFYP1GHgH5Lei1NGcM5ZQZlbmuOUgYAuMH1eHs66QV9LZxrGEd
+ Dv+t7L6764q0bd2zBJ+HDimdfFZmj5+x7dlXw54jAF5/2jO6xskKeru0qVBS3Vade9T0
+ pAjfzZEVi/I065q55J0cHgevLA5pnHEvCCSRcrZtsG9EXwdnF9PSzkMqIZY5XaCiRXIa
+ g4JQ==
+X-Gm-Message-State: AOJu0YyGF+WUMk3qKuNlhj9CRLraHoxrfntindbfXesLxcAvlR3alLrj
+ NRjwQGqmqz56MOHVijqSD8GMzNveLh5GyHK/hfoKEgwesl207pqWBXu+GmcXUbxq+udIUotmTii
+ M
+X-Gm-Gg: ASbGncupv9bcABPTZlUnE34iUiiH982wE+ylCXzZuxXne6z6/Ei4zL3FlLi0h5v5nHk
+ H2QIwIU0BIouF4tJTLbjXKFmqN5CZupihe932JQxGVXM84mHBCOw2NauMqMvmdcC4zc36TfujZB
+ oTBR4GrQte7Tm46SZxtHgObWlkJTYDl4A+bTGOFAG1tewPTVcQAmnQdZJ4KwGf9KVGjPfpLfa8M
+ 7cI7uuH+wCm0twa5N2Mr/bKY+LALRI5aIzkt5oP1k1QXFoqGgR9QJeDsUEL5A==
+X-Google-Smtp-Source: AGHT+IHvRqTw3Den4/0CV4VgouU4mWKCjmlhKKeGPF2vti8T12Rhp/hNMjsfkZ13u8HjzHmeqbaS1w==
+X-Received: by 2002:a05:600c:83c9:b0:431:5044:e388 with SMTP id
+ 5b1f17b1804b1-4362aaa9a2dmr24723545e9.22.1734111230113; 
+ Fri, 13 Dec 2024 09:33:50 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-388c80162ddsm87026f8f.37.2024.12.13.09.33.48
+ ffacd0b85a97d-388c80162ddsm87026f8f.37.2024.12.13.09.33.49
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 13 Dec 2024 09:33:48 -0800 (PST)
+ Fri, 13 Dec 2024 09:33:49 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 73/85] docs/system/arm/xlnx-versal-virt: document ospi-flash
- property
-Date: Fri, 13 Dec 2024 17:32:17 +0000
-Message-Id: <20241213173229.3308926-74-peter.maydell@linaro.org>
+Subject: [PULL 74/85] docs/system/arm/virt: document missing properties
+Date: Fri, 13 Dec 2024 17:32:18 +0000
+Message-Id: <20241213173229.3308926-75-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241213173229.3308926-1-peter.maydell@linaro.org>
 References: <20241213173229.3308926-1-peter.maydell@linaro.org>
@@ -99,27 +98,51 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Message-id: 20241206192254.3889131-4-pierrick.bouvier@linaro.org
+Message-id: 20241206192254.3889131-5-pierrick.bouvier@linaro.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- docs/system/arm/xlnx-versal-virt.rst | 3 +++
- 1 file changed, 3 insertions(+)
+ docs/system/arm/virt.rst | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-diff --git a/docs/system/arm/xlnx-versal-virt.rst b/docs/system/arm/xlnx-versal-virt.rst
-index 0bafc76469d..c5f35f28e4f 100644
---- a/docs/system/arm/xlnx-versal-virt.rst
-+++ b/docs/system/arm/xlnx-versal-virt.rst
-@@ -178,6 +178,9 @@ Run the following at the U-Boot prompt:
-   fdt set /chosen/dom0 reg <0x00000000 0x40000000 0x0 0x03100000>
-   booti 30000000 - 20000000
+diff --git a/docs/system/arm/virt.rst b/docs/system/arm/virt.rst
+index e67e7f0f7c5..f87adeb444c 100644
+--- a/docs/system/arm/virt.rst
++++ b/docs/system/arm/virt.rst
+@@ -167,10 +167,18 @@ iommu
+   ``smmuv3``
+     Create an SMMUv3
  
-+It's possible to change the OSPI flash model emulated by using the machine model
-+option ``ospi-flash``.
++default-bus-bypass-iommu
++  Set ``on``/``off`` to enable/disable `bypass_iommu
++  <https://gitlab.com/qemu-project/qemu/-/blob/master/docs/bypass-iommu.txt>`_
++  for default root bus.
 +
- BBRAM File Backend
- """"""""""""""""""
- BBRAM can have an optional file backend, which must be a seekable
+ ras
+   Set ``on``/``off`` to enable/disable reporting host memory errors to a guest
+   using ACPI and guest external abort exceptions. The default is off.
+ 
++acpi
++  Set ``on``/``off``/``auto`` to enable/disable ACPI.
++
+ dtb-randomness
+   Set ``on``/``off`` to pass random seeds via the guest DTB
+   rng-seed and kaslr-seed nodes (in both "/chosen" and
+@@ -184,6 +192,14 @@ dtb-randomness
+ dtb-kaslr-seed
+   A deprecated synonym for dtb-randomness.
+ 
++x-oem-id
++  Set string (up to 6 bytes) to override the default value of field OEMID in ACPI
++  table header.
++
++x-oem-table-id
++  Set string (up to 8 bytes) to override the default value of field OEM Table ID
++  in ACPI table header.
++
+ Linux guest kernel configuration
+ """"""""""""""""""""""""""""""""
+ 
 -- 
 2.34.1
 
