@@ -2,91 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E512C9F15CF
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Dec 2024 20:30:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A6FC99F1591
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Dec 2024 20:13:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tMB3X-0005Ww-HN; Fri, 13 Dec 2024 14:10:33 -0500
+	id 1tMB3J-0005Lp-HX; Fri, 13 Dec 2024 14:10:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tMB2T-0003kh-G1
- for qemu-devel@nongnu.org; Fri, 13 Dec 2024 14:09:27 -0500
-Received: from mail-ot1-x32e.google.com ([2607:f8b0:4864:20::32e])
+ id 1tMB2W-0003mf-Vh
+ for qemu-devel@nongnu.org; Fri, 13 Dec 2024 14:09:30 -0500
+Received: from mail-ot1-x334.google.com ([2607:f8b0:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tMB2P-0006gM-QY
+ id 1tMB2R-0006go-6e
  for qemu-devel@nongnu.org; Fri, 13 Dec 2024 14:09:25 -0500
-Received: by mail-ot1-x32e.google.com with SMTP id
- 46e09a7af769-71e17ab806bso1118089a34.2
- for <qemu-devel@nongnu.org>; Fri, 13 Dec 2024 11:09:21 -0800 (PST)
+Received: by mail-ot1-x334.google.com with SMTP id
+ 46e09a7af769-71e181fb288so940814a34.2
+ for <qemu-devel@nongnu.org>; Fri, 13 Dec 2024 11:09:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734116960; x=1734721760; darn=nongnu.org;
+ d=linaro.org; s=google; t=1734116962; x=1734721762; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=3BjzBq3rSuTa5TGvVs8KXBIzlYp0tm0GRK6bqPTTYvs=;
- b=fW3wtppkQP5eT+s0jOpjQy7OKcacXlgH8x4jmvOcCN00mZQmAAD9M+ggxj3QOVhb/i
- oG+1kQ6TYqw/6pMzk1GVmSi7Ediv6Mf4DAw5MvkdHMX2AjRqspUFgCsgCFeT//Tz6mCc
- MQGezjuk3zMSoeY20yPiWaEl8YnuMf/pE4hsS2KHBLgWgayVNynCCXxJs7iPzbUr2zTM
- QVUgccNTlg9dPS7JBVkVAAi13695+Jj67DirowDSXTadeYsTa/S7X4fwoIaLmuUSO9cm
- oILpnCBOTywRAdxFuMs0B9Zlz8FrC6XwuoaSMFVqGsLS8hRDo1OgP52yGm8EVgUrhcNK
- axGA==
+ bh=2QX322DCnm5cE0pXBGmrME5GjV/mM7P7qq+mljbXHQc=;
+ b=FYbPsRuLN27DAsU+h5Gq1SIxYwAgHil+XRVB7v44rSfzJWKMCBmU4llcF9VQqWs2LH
+ u4ShZjGNFYwHEhbjj0b7y9+oJzH4jpsfzhVjFR9dS3RMv1Uhry0AaoyyNvz6Pw0GXEbD
+ /AKY17CxHS0ALGDISIWTBqNTVsyZNI9z7DchhMlemCZp67s747PjABjwt2mNYtJrJ9ml
+ 2TVXlBe02fc/OnQoFjq4J1hpds+4Gyhu1OxfDXLugDTGcef/flBdwFKqD/SOuAJ3Lt1w
+ wTNVZrLEck+zoEpD066C7KTo32V48oUmrMJgFjq/sLC3nRUcALmp5K8/TC9U72lWXhSP
+ 8fwg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734116960; x=1734721760;
+ d=1e100.net; s=20230601; t=1734116962; x=1734721762;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=3BjzBq3rSuTa5TGvVs8KXBIzlYp0tm0GRK6bqPTTYvs=;
- b=ReJxWFHf9hxlhJOtp7EIryzU1FWflEBTYgEP3ocCihqUD29G3GoylvQP9PSja6PxE9
- 8TqZq6PZKe9dqOiAvSp3znWLC2yM17QCWk++ZpyQegY8hhhn0CaCx2XeFR00NcxYRBzK
- ZUQ1ZIEtAeWSn3OcqGqO715HD6GIrOg+OdlQT3z1bynxbrWKykbsmGnPdOl3NWv2P+Sd
- E2L3gVi0FGowW5W81K+b0khfLkO2UB4pw3DQDSF9WfAhGguOLzyPy4Y8jrz3h78VssK+
- SuR6jybVvvxPxkOj0DalVf3nFSsQ411n3a8Qu+9s/QUiEMz+6frcN2Tu9VJ2Ca2AbhkS
- Z36w==
-X-Gm-Message-State: AOJu0YwVJAwcVvSEZESNJ2fvQDnDkc3oa9EBdJzB4YvCEZN+HDu1FAI+
- FpZlYJ/5OLf8wvxrjwVy5dodhSHsgtztM4Ub+wqOJwxgjj6ysJgFgScfgtlaADcZ+1x62PShofd
- ykU1LPD4V
-X-Gm-Gg: ASbGnct8PdMtASpfkVza2TWK4oD3o95Th3Y0fInh8OF/jM522U5fVR1bFUuVuM+AuP3
- T2ephglyh+G2eFhVjL/C28k13cKSQjahD9PcpyY3yJxCbkwJ5F67JAmnEx/JB8Ru9MoV1bFc8Gg
- spxwaWf/AxnkRibjxLmlGqSc1eLsVKoDk7zROvWiRhVQDhpIe+q6IhRU7aZUmCRlzc5JXePfnEC
- nS1EI6+N8ULDNrQOAbk8YSQlInbLykjxP3+0C8IyfaAtivZxykHu2viayHBgKH/
-X-Google-Smtp-Source: AGHT+IEWBEyklYcigMhK/f6hw0n6UothVUCUkkFH1OMi5c07uL/f7dtdr7A8MWWTcbYExt4bh5ST7w==
-X-Received: by 2002:a05:6830:4882:b0:71d:4ec6:8600 with SMTP id
- 46e09a7af769-71e3b8a3f7amr2716099a34.13.1734116960513; 
- Fri, 13 Dec 2024 11:09:20 -0800 (PST)
+ bh=2QX322DCnm5cE0pXBGmrME5GjV/mM7P7qq+mljbXHQc=;
+ b=Sg+bX8g1GrvCjVTKnCxN/+mhlZ6+lNq15Ji191lWUQg7QiUqxfajigni20XBhKyMGK
+ hnxmxUdz6mtYiYRxN5Z2JHzN3eInhilxVGM8HwTtc0x6XdgVScJSnXpY1hZEzpAYY0vl
+ qkQDHJy3hL0Y9O940TZEPf8S4TlkZGYEnBQdC0WkBXIHWleEOt7n5gMqA7KNMZ6wvbrX
+ i/OcO7AT9ZSpdv7qKxwGpcn5EnH3Z4J+/E6o8LTwPLJyEm+M4BZHNW6Qfc/H7Rk9logt
+ 09zVneLQKwtaC5LMHZsTxSmBbmJobdxnmw7D6AmuWV13wH39PtxuHBayzaJJaTFMYrmW
+ Pz9g==
+X-Gm-Message-State: AOJu0YwmIyWzsRoqoFRfBhkPw6Wns5oSi/S/D5M9W9SDuApmi2UcrVZR
+ UKthjOowTU/MwXg554+ojuYIT/5RnwM26cHgkHf5Q5k9TZuhvOg8odkTjVP5tTEpEUZADzeOrGn
+ ekzECw6ce
+X-Gm-Gg: ASbGncskEkQ3LSH1DuUlSfKxsAeG8oS+x5knfVu1np4WUq9eCjCJM9fr5d+ToHzmRiO
+ +q7yVPVZKzKZem3Wm2gxHmyUZIttNDpR0nBhkZiTH9OWnpqYFRNfPiq9SfUy3JfApd6g8/fWiYP
+ juvW/QMcxRikOCuZVDs7OW3qFYkn5y8gLbZ7/uUvFJlT2xJy2pNg7r6GF9dDByxC75w6MStHfd3
+ an7wEWztKbUiCHiYdWuTj70i+d1dWSkdhZKzCoEK0NSndjRaD8wWklOxUeg9clJ
+X-Google-Smtp-Source: AGHT+IFDPHpOX/QqcYPt+gU+gLigqJo/Sg/1M3YfPDWbyWLwbfc/o2zOYWTDMoHIzO5ifLqMAWyefg==
+X-Received: by 2002:a05:6830:2b2b:b0:71d:548d:6f76 with SMTP id
+ 46e09a7af769-71e3ba4f66dmr1971252a34.26.1734116961994; 
+ Fri, 13 Dec 2024 11:09:21 -0800 (PST)
 Received: from stoup.. ([187.217.227.247]) by smtp.gmail.com with ESMTPSA id
- 46e09a7af769-71e4834da91sm29697a34.18.2024.12.13.11.09.16
+ 46e09a7af769-71e4834da91sm29697a34.18.2024.12.13.11.09.20
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 13 Dec 2024 11:09:20 -0800 (PST)
+ Fri, 13 Dec 2024 11:09:21 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Helge Deller <deller@gmx.de>, Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Gerd Hoffmann <kraxel@redhat.com>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Igor Mitsyanko <i.mitsyanko@gmail.com>,
- =?UTF-8?q?Herv=C3=A9=20Poussineau?= <hpoussin@reactos.org>,
- Aleksandar Rikalo <arikalo@gmail.com>, Laurent Vivier <laurent@vivier.eu>,
- BALATON Zoltan <balaton@eik.bme.hu>, "Michael S. Tsirkin" <mst@redhat.com>,
- Stefano Garzarella <sgarzare@redhat.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Dmitry Fleytman <dmitry.fleytman@gmail.com>,
- Alistair Francis <alistair@alistair23.me>,
+Cc: =?UTF-8?q?Herv=C3=A9=20Poussineau?= <hpoussin@reactos.org>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
  "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- qemu-arm@nongnu.org (open list:Raspberry Pi),
- qemu-ppc@nongnu.org (open list:sam460ex)
-Subject: [PATCH 24/71] hw/display: Constify all Property
-Date: Fri, 13 Dec 2024 13:06:58 -0600
-Message-ID: <20241213190750.2513964-29-richard.henderson@linaro.org>
+ Alistair Francis <alistair@alistair23.me>,
+ qemu-ppc@nongnu.org (open list:PReP),
+ qemu-arm@nongnu.org (open list:ARM PrimeCell and...)
+Subject: [PATCH 25/71] hw/dma: Constify all Property
+Date: Fri, 13 Dec 2024 13:06:59 -0600
+Message-ID: <20241213190750.2513964-30-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241213190750.2513964-1-richard.henderson@linaro.org>
 References: <20241213190750.2513964-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::32e;
- envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x32e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::334;
+ envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x334.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -111,413 +103,106 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- hw/display/artist.c              | 2 +-
- hw/display/ati.c                 | 2 +-
- hw/display/bcm2835_fb.c          | 2 +-
- hw/display/bochs-display.c       | 2 +-
- hw/display/cg3.c                 | 2 +-
- hw/display/cirrus_vga.c          | 2 +-
- hw/display/cirrus_vga_isa.c      | 2 +-
- hw/display/exynos4210_fimd.c     | 2 +-
- hw/display/g364fb.c              | 2 +-
- hw/display/i2c-ddc.c             | 2 +-
- hw/display/macfb.c               | 4 ++--
- hw/display/pl110.c               | 2 +-
- hw/display/qxl.c                 | 2 +-
- hw/display/ramfb-standalone.c    | 2 +-
- hw/display/sm501.c               | 4 ++--
- hw/display/tcx.c                 | 2 +-
- hw/display/vga-isa.c             | 2 +-
- hw/display/vga-mmio.c            | 2 +-
- hw/display/vga-pci.c             | 4 ++--
- hw/display/vhost-user-gpu.c      | 2 +-
- hw/display/virtio-gpu-gl.c       | 2 +-
- hw/display/virtio-gpu-pci.c      | 2 +-
- hw/display/virtio-gpu-rutabaga.c | 2 +-
- hw/display/virtio-gpu.c          | 2 +-
- hw/display/virtio-vga.c          | 2 +-
- hw/display/vmware_vga.c          | 2 +-
- hw/display/xlnx_dp.c             | 2 +-
- 27 files changed, 30 insertions(+), 30 deletions(-)
+ hw/dma/i82374.c        | 2 +-
+ hw/dma/i8257.c         | 2 +-
+ hw/dma/pl080.c         | 2 +-
+ hw/dma/pl330.c         | 2 +-
+ hw/dma/xilinx_axidma.c | 2 +-
+ hw/dma/xlnx-zdma.c     | 2 +-
+ hw/dma/xlnx_csu_dma.c  | 2 +-
+ 7 files changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/hw/display/artist.c b/hw/display/artist.c
-index 5790b7a64e..49deed328d 100644
---- a/hw/display/artist.c
-+++ b/hw/display/artist.c
-@@ -1474,7 +1474,7 @@ static const VMStateDescription vmstate_artist = {
-     }
+diff --git a/hw/dma/i82374.c b/hw/dma/i82374.c
+index e72aa2e1ce..032afedde2 100644
+--- a/hw/dma/i82374.c
++++ b/hw/dma/i82374.c
+@@ -139,7 +139,7 @@ static void i82374_realize(DeviceState *dev, Error **errp)
+     memset(s->commands, 0, sizeof(s->commands));
+ }
+ 
+-static Property i82374_properties[] = {
++static const Property i82374_properties[] = {
+     DEFINE_PROP_UINT32("iobase", I82374State, iobase, 0x400),
+     DEFINE_PROP_END_OF_LIST()
  };
- 
--static Property artist_properties[] = {
-+static const Property artist_properties[] = {
-     DEFINE_PROP_UINT16("width",        ARTISTState, width, 1280),
-     DEFINE_PROP_UINT16("height",       ARTISTState, height, 1024),
-     DEFINE_PROP_UINT16("depth",        ARTISTState, depth, 8),
-diff --git a/hw/display/ati.c b/hw/display/ati.c
-index 593a25328d..e24e092bbc 100644
---- a/hw/display/ati.c
-+++ b/hw/display/ati.c
-@@ -1039,7 +1039,7 @@ static void ati_vga_exit(PCIDevice *dev)
-     graphic_console_close(s->vga.con);
+diff --git a/hw/dma/i8257.c b/hw/dma/i8257.c
+index 3e6700e53b..8b04177393 100644
+--- a/hw/dma/i8257.c
++++ b/hw/dma/i8257.c
+@@ -585,7 +585,7 @@ static void i8257_realize(DeviceState *dev, Error **errp)
+     d->dma_bh = qemu_bh_new(i8257_dma_run, d);
  }
  
--static Property ati_vga_properties[] = {
-+static const Property ati_vga_properties[] = {
-     DEFINE_PROP_UINT32("vgamem_mb", ATIVGAState, vga.vram_size_mb, 16),
-     DEFINE_PROP_STRING("model", ATIVGAState, model),
-     DEFINE_PROP_UINT16("x-device-id", ATIVGAState, dev_id,
-diff --git a/hw/display/bcm2835_fb.c b/hw/display/bcm2835_fb.c
-index 7005d5bfea..2539fcc8ab 100644
---- a/hw/display/bcm2835_fb.c
-+++ b/hw/display/bcm2835_fb.c
-@@ -429,7 +429,7 @@ static void bcm2835_fb_realize(DeviceState *dev, Error **errp)
-     qemu_console_resize(s->con, s->config.xres, s->config.yres);
+-static Property i8257_properties[] = {
++static const Property i8257_properties[] = {
+     DEFINE_PROP_INT32("base", I8257State, base, 0x00),
+     DEFINE_PROP_INT32("page-base", I8257State, page_base, 0x80),
+     DEFINE_PROP_INT32("pageh-base", I8257State, pageh_base, 0x480),
+diff --git a/hw/dma/pl080.c b/hw/dma/pl080.c
+index 8e76f88a69..3f392822ed 100644
+--- a/hw/dma/pl080.c
++++ b/hw/dma/pl080.c
+@@ -408,7 +408,7 @@ static void pl081_init(Object *obj)
+     s->nchannels = 2;
  }
  
--static Property bcm2835_fb_props[] = {
-+static const Property bcm2835_fb_props[] = {
-     DEFINE_PROP_UINT32("vcram-base", BCM2835FBState, vcram_base, 0),/*required*/
-     DEFINE_PROP_UINT32("vcram-size", BCM2835FBState, vcram_size,
-                        DEFAULT_VCRAM_SIZE),
-diff --git a/hw/display/bochs-display.c b/hw/display/bochs-display.c
-index 3b1d922b6e..9a3263aa01 100644
---- a/hw/display/bochs-display.c
-+++ b/hw/display/bochs-display.c
-@@ -345,7 +345,7 @@ static void bochs_display_exit(PCIDevice *dev)
-     graphic_console_close(s->con);
- }
- 
--static Property bochs_display_properties[] = {
-+static const Property bochs_display_properties[] = {
-     DEFINE_PROP_SIZE("vgamem", BochsDisplayState, vgamem, 16 * MiB),
-     DEFINE_PROP_BOOL("edid", BochsDisplayState, enable_edid, true),
-     DEFINE_EDID_PROPERTIES(BochsDisplayState, edid_info),
-diff --git a/hw/display/cg3.c b/hw/display/cg3.c
-index 95f8f98b99..75b3312c24 100644
---- a/hw/display/cg3.c
-+++ b/hw/display/cg3.c
-@@ -361,7 +361,7 @@ static void cg3_reset(DeviceState *d)
-     qemu_irq_lower(s->irq);
- }
- 
--static Property cg3_properties[] = {
-+static const Property cg3_properties[] = {
-     DEFINE_PROP_UINT32("vram-size",    CG3State, vram_size, -1),
-     DEFINE_PROP_UINT16("width",        CG3State, width,     -1),
-     DEFINE_PROP_UINT16("height",       CG3State, height,    -1),
-diff --git a/hw/display/cirrus_vga.c b/hw/display/cirrus_vga.c
-index 150883a971..198ed9ed9b 100644
---- a/hw/display/cirrus_vga.c
-+++ b/hw/display/cirrus_vga.c
-@@ -2982,7 +2982,7 @@ static void pci_cirrus_vga_realize(PCIDevice *dev, Error **errp)
-     }
- }
- 
--static Property pci_vga_cirrus_properties[] = {
-+static const Property pci_vga_cirrus_properties[] = {
-     DEFINE_PROP_UINT32("vgamem_mb", struct PCICirrusVGAState,
-                        cirrus_vga.vga.vram_size_mb, 4),
-     DEFINE_PROP_BOOL("blitter", struct PCICirrusVGAState,
-diff --git a/hw/display/cirrus_vga_isa.c b/hw/display/cirrus_vga_isa.c
-index 84be51670e..d0d134470f 100644
---- a/hw/display/cirrus_vga_isa.c
-+++ b/hw/display/cirrus_vga_isa.c
-@@ -69,7 +69,7 @@ static void isa_cirrus_vga_realizefn(DeviceState *dev, Error **errp)
-     /* FIXME not qdev yet */
- }
- 
--static Property isa_cirrus_vga_properties[] = {
-+static const Property isa_cirrus_vga_properties[] = {
-     DEFINE_PROP_UINT32("vgamem_mb", struct ISACirrusVGAState,
-                        cirrus_vga.vga.vram_size_mb, 4),
-     DEFINE_PROP_BOOL("blitter", struct ISACirrusVGAState,
-diff --git a/hw/display/exynos4210_fimd.c b/hw/display/exynos4210_fimd.c
-index f3d82498bf..4f097a172c 100644
---- a/hw/display/exynos4210_fimd.c
-+++ b/hw/display/exynos4210_fimd.c
-@@ -1925,7 +1925,7 @@ static const GraphicHwOps exynos4210_fimd_ops = {
-     .gfx_update  = exynos4210_fimd_update,
- };
- 
--static Property exynos4210_fimd_properties[] = {
-+static const Property exynos4210_fimd_properties[] = {
-     DEFINE_PROP_LINK("framebuffer-memory", Exynos4210fimdState, fbmem,
+-static Property pl080_properties[] = {
++static const Property pl080_properties[] = {
+     DEFINE_PROP_LINK("downstream", PL080State, downstream,
                       TYPE_MEMORY_REGION, MemoryRegion *),
      DEFINE_PROP_END_OF_LIST(),
-diff --git a/hw/display/g364fb.c b/hw/display/g364fb.c
-index fa2f184908..a7533c6908 100644
---- a/hw/display/g364fb.c
-+++ b/hw/display/g364fb.c
-@@ -512,7 +512,7 @@ static void g364fb_sysbus_reset(DeviceState *d)
-     g364fb_reset(&s->g364);
+diff --git a/hw/dma/pl330.c b/hw/dma/pl330.c
+index 0668caed7c..d5a0a1caa2 100644
+--- a/hw/dma/pl330.c
++++ b/hw/dma/pl330.c
+@@ -1646,7 +1646,7 @@ static void pl330_realize(DeviceState *dev, Error **errp)
+     pl330_fifo_init(&s->fifo, s->data_width / 4 * s->data_buffer_dep);
  }
  
--static Property g364fb_sysbus_properties[] = {
-+static const Property g364fb_sysbus_properties[] = {
-     DEFINE_PROP_UINT32("vram_size", G364SysBusState, g364.vram_size, 8 * MiB),
-     DEFINE_PROP_END_OF_LIST(),
- };
-diff --git a/hw/display/i2c-ddc.c b/hw/display/i2c-ddc.c
-index 465b00355e..a2d1f2b044 100644
---- a/hw/display/i2c-ddc.c
-+++ b/hw/display/i2c-ddc.c
-@@ -95,7 +95,7 @@ static const VMStateDescription vmstate_i2c_ddc = {
+-static Property pl330_properties[] = {
++static const Property pl330_properties[] = {
+     /* CR0 */
+     DEFINE_PROP_UINT32("num_chnls", PL330State, num_chnls, 8),
+     DEFINE_PROP_UINT8("num_periph_req", PL330State, num_periph_req, 4),
+diff --git a/hw/dma/xilinx_axidma.c b/hw/dma/xilinx_axidma.c
+index 73a480bfbf..f09452d0b5 100644
+--- a/hw/dma/xilinx_axidma.c
++++ b/hw/dma/xilinx_axidma.c
+@@ -611,7 +611,7 @@ static void xilinx_axidma_init(Object *obj)
+     sysbus_init_mmio(sbd, &s->iomem);
+ }
+ 
+-static Property axidma_properties[] = {
++static const Property axidma_properties[] = {
+     DEFINE_PROP_UINT32("freqhz", XilinxAXIDMA, freqhz, 50000000),
+     DEFINE_PROP_LINK("axistream-connected", XilinxAXIDMA,
+                      tx_data_dev, TYPE_STREAM_SINK, StreamSink *),
+diff --git a/hw/dma/xlnx-zdma.c b/hw/dma/xlnx-zdma.c
+index 46f50631ff..1a63d5f3b2 100644
+--- a/hw/dma/xlnx-zdma.c
++++ b/hw/dma/xlnx-zdma.c
+@@ -810,7 +810,7 @@ static const VMStateDescription vmstate_zdma = {
      }
  };
  
--static Property i2c_ddc_properties[] = {
-+static const Property i2c_ddc_properties[] = {
-     DEFINE_EDID_PROPERTIES(I2CDDCState, edid_info),
-     DEFINE_PROP_END_OF_LIST(),
- };
-diff --git a/hw/display/macfb.c b/hw/display/macfb.c
-index a5b4a499f3..977901bfdd 100644
---- a/hw/display/macfb.c
-+++ b/hw/display/macfb.c
-@@ -758,7 +758,7 @@ static void macfb_nubus_reset(DeviceState *d)
-     macfb_reset(&s->macfb);
- }
- 
--static Property macfb_sysbus_properties[] = {
-+static const Property macfb_sysbus_properties[] = {
-     DEFINE_PROP_UINT32("width", MacfbSysBusState, macfb.width, 640),
-     DEFINE_PROP_UINT32("height", MacfbSysBusState, macfb.height, 480),
-     DEFINE_PROP_UINT8("depth", MacfbSysBusState, macfb.depth, 8),
-@@ -777,7 +777,7 @@ static const VMStateDescription vmstate_macfb_sysbus = {
-     }
- };
- 
--static Property macfb_nubus_properties[] = {
-+static const Property macfb_nubus_properties[] = {
-     DEFINE_PROP_UINT32("width", MacfbNubusState, macfb.width, 640),
-     DEFINE_PROP_UINT32("height", MacfbNubusState, macfb.height, 480),
-     DEFINE_PROP_UINT8("depth", MacfbNubusState, macfb.depth, 8),
-diff --git a/hw/display/pl110.c b/hw/display/pl110.c
-index 7f145bbdba..eca00b4279 100644
---- a/hw/display/pl110.c
-+++ b/hw/display/pl110.c
-@@ -535,7 +535,7 @@ static const GraphicHwOps pl110_gfx_ops = {
-     .gfx_update  = pl110_update_display,
- };
- 
--static Property pl110_properties[] = {
-+static const Property pl110_properties[] = {
-     DEFINE_PROP_LINK("framebuffer-memory", PL110State, fbmem,
+-static Property zdma_props[] = {
++static const Property zdma_props[] = {
+     DEFINE_PROP_UINT32("bus-width", XlnxZDMA, cfg.bus_width, 64),
+     DEFINE_PROP_LINK("dma", XlnxZDMA, dma_mr,
                       TYPE_MEMORY_REGION, MemoryRegion *),
-     DEFINE_PROP_END_OF_LIST(),
-diff --git a/hw/display/qxl.c b/hw/display/qxl.c
-index 0c4b1c9bf2..949949d374 100644
---- a/hw/display/qxl.c
-+++ b/hw/display/qxl.c
-@@ -2458,7 +2458,7 @@ static const VMStateDescription qxl_vmstate = {
+diff --git a/hw/dma/xlnx_csu_dma.c b/hw/dma/xlnx_csu_dma.c
+index 43738c4350..d78dc6444b 100644
+--- a/hw/dma/xlnx_csu_dma.c
++++ b/hw/dma/xlnx_csu_dma.c
+@@ -691,7 +691,7 @@ static const VMStateDescription vmstate_xlnx_csu_dma = {
      }
  };
  
--static Property qxl_properties[] = {
-+static const Property qxl_properties[] = {
-         DEFINE_PROP_UINT32("ram_size", PCIQXLDevice, vga.vram_size, 64 * MiB),
-         DEFINE_PROP_UINT64("vram_size", PCIQXLDevice, vram32_size, 64 * MiB),
-         DEFINE_PROP_UINT32("revision", PCIQXLDevice, revision,
-diff --git a/hw/display/ramfb-standalone.c b/hw/display/ramfb-standalone.c
-index 20eab34ff4..e677f44be6 100644
---- a/hw/display/ramfb-standalone.c
-+++ b/hw/display/ramfb-standalone.c
-@@ -60,7 +60,7 @@ static const VMStateDescription ramfb_dev_vmstate = {
-     }
- };
- 
--static Property ramfb_properties[] = {
-+static const Property ramfb_properties[] = {
-     DEFINE_PROP_BOOL("x-migrate", RAMFBStandaloneState, migrate,  true),
-     DEFINE_PROP_END_OF_LIST(),
- };
-diff --git a/hw/display/sm501.c b/hw/display/sm501.c
-index 38d005c168..446b648f1a 100644
---- a/hw/display/sm501.c
-+++ b/hw/display/sm501.c
-@@ -2054,7 +2054,7 @@ static void sm501_realize_sysbus(DeviceState *dev, Error **errp)
-     /* TODO : chain irq to IRL */
- }
- 
--static Property sm501_sysbus_properties[] = {
-+static const Property sm501_sysbus_properties[] = {
-     DEFINE_PROP_UINT32("vram-size", SM501SysBusState, vram_size, 0),
-     /* this a debug option, prefer PROP_UINT over PROP_BIT for simplicity */
-     DEFINE_PROP_UINT8("x-pixman", SM501SysBusState, state.use_pixman, DEFAULT_X_PIXMAN),
-@@ -2143,7 +2143,7 @@ static void sm501_realize_pci(PCIDevice *dev, Error **errp)
-                      &s->state.mmio_region);
- }
- 
--static Property sm501_pci_properties[] = {
-+static const Property sm501_pci_properties[] = {
-     DEFINE_PROP_UINT32("vram-size", SM501PCIState, vram_size, 64 * MiB),
-     DEFINE_PROP_UINT8("x-pixman", SM501PCIState, state.use_pixman, DEFAULT_X_PIXMAN),
-     DEFINE_PROP_END_OF_LIST(),
-diff --git a/hw/display/tcx.c b/hw/display/tcx.c
-index f000288fcd..3eb0a91ff9 100644
---- a/hw/display/tcx.c
-+++ b/hw/display/tcx.c
-@@ -879,7 +879,7 @@ static void tcx_realizefn(DeviceState *dev, Error **errp)
-     qemu_console_resize(s->con, s->width, s->height);
- }
- 
--static Property tcx_properties[] = {
-+static const Property tcx_properties[] = {
-     DEFINE_PROP_UINT32("vram_size", TCXState, vram_size, -1),
-     DEFINE_PROP_UINT16("width",    TCXState, width,     -1),
-     DEFINE_PROP_UINT16("height",   TCXState, height,    -1),
-diff --git a/hw/display/vga-isa.c b/hw/display/vga-isa.c
-index c025632635..a6cbf77103 100644
---- a/hw/display/vga-isa.c
-+++ b/hw/display/vga-isa.c
-@@ -88,7 +88,7 @@ static void vga_isa_realizefn(DeviceState *dev, Error **errp)
-     rom_add_vga(VGABIOS_FILENAME);
- }
- 
--static Property vga_isa_properties[] = {
-+static const Property vga_isa_properties[] = {
-     DEFINE_PROP_UINT32("vgamem_mb", ISAVGAState, state.vram_size_mb, 8),
-     DEFINE_PROP_END_OF_LIST(),
- };
-diff --git a/hw/display/vga-mmio.c b/hw/display/vga-mmio.c
-index be33204517..b759efdde7 100644
---- a/hw/display/vga-mmio.c
-+++ b/hw/display/vga-mmio.c
-@@ -111,7 +111,7 @@ static void vga_mmio_realizefn(DeviceState *dev, Error **errp)
-     s->vga.con = graphic_console_init(dev, 0, s->vga.hw_ops, &s->vga);
- }
- 
--static Property vga_mmio_properties[] = {
-+static const Property vga_mmio_properties[] = {
-     DEFINE_PROP_UINT8("it_shift", VGAMmioState, it_shift, 0),
-     DEFINE_PROP_UINT32("vgamem_mb", VGAMmioState, vga.vram_size_mb, 8),
-     DEFINE_PROP_END_OF_LIST(),
-diff --git a/hw/display/vga-pci.c b/hw/display/vga-pci.c
-index 6b51019966..3145c448f5 100644
---- a/hw/display/vga-pci.c
-+++ b/hw/display/vga-pci.c
-@@ -330,7 +330,7 @@ static void pci_secondary_vga_reset(DeviceState *dev)
-     vga_common_reset(&d->vga);
- }
- 
--static Property vga_pci_properties[] = {
-+static const Property vga_pci_properties[] = {
-     DEFINE_PROP_UINT32("vgamem_mb", PCIVGAState, vga.vram_size_mb, 16),
-     DEFINE_PROP_BIT("mmio", PCIVGAState, flags, PCI_VGA_FLAG_ENABLE_MMIO, true),
-     DEFINE_PROP_BIT("qemu-extended-regs",
-@@ -342,7 +342,7 @@ static Property vga_pci_properties[] = {
-     DEFINE_PROP_END_OF_LIST(),
- };
- 
--static Property secondary_pci_properties[] = {
-+static const Property secondary_pci_properties[] = {
-     DEFINE_PROP_UINT32("vgamem_mb", PCIVGAState, vga.vram_size_mb, 16),
-     DEFINE_PROP_BIT("qemu-extended-regs",
-                     PCIVGAState, flags, PCI_VGA_FLAG_ENABLE_QEXT, true),
-diff --git a/hw/display/vhost-user-gpu.c b/hw/display/vhost-user-gpu.c
-index 14548f1a57..a36eddcb12 100644
---- a/hw/display/vhost-user-gpu.c
-+++ b/hw/display/vhost-user-gpu.c
-@@ -645,7 +645,7 @@ static struct vhost_dev *vhost_user_gpu_get_vhost(VirtIODevice *vdev)
-     return g->vhost ? &g->vhost->dev : NULL;
- }
- 
--static Property vhost_user_gpu_properties[] = {
-+static const Property vhost_user_gpu_properties[] = {
-     VIRTIO_GPU_BASE_PROPERTIES(VhostUserGPU, parent_obj.conf),
-     DEFINE_PROP_END_OF_LIST(),
- };
-diff --git a/hw/display/virtio-gpu-gl.c b/hw/display/virtio-gpu-gl.c
-index 7c0e448b46..6f31149e1e 100644
---- a/hw/display/virtio-gpu-gl.c
-+++ b/hw/display/virtio-gpu-gl.c
-@@ -154,7 +154,7 @@ static void virtio_gpu_gl_device_realize(DeviceState *qdev, Error **errp)
-     virtio_gpu_device_realize(qdev, errp);
- }
- 
--static Property virtio_gpu_gl_properties[] = {
-+static const Property virtio_gpu_gl_properties[] = {
-     DEFINE_PROP_BIT("stats", VirtIOGPU, parent_obj.conf.flags,
-                     VIRTIO_GPU_FLAG_STATS_ENABLED, false),
-     DEFINE_PROP_BIT("venus", VirtIOGPU, parent_obj.conf.flags,
-diff --git a/hw/display/virtio-gpu-pci.c b/hw/display/virtio-gpu-pci.c
-index da6a99f038..89d27c9d85 100644
---- a/hw/display/virtio-gpu-pci.c
-+++ b/hw/display/virtio-gpu-pci.c
-@@ -21,7 +21,7 @@
- #include "hw/virtio/virtio-gpu-pci.h"
- #include "qom/object.h"
- 
--static Property virtio_gpu_pci_base_properties[] = {
-+static const Property virtio_gpu_pci_base_properties[] = {
-     DEFINE_VIRTIO_GPU_PCI_PROPERTIES(VirtIOPCIProxy),
-     DEFINE_PROP_END_OF_LIST(),
- };
-diff --git a/hw/display/virtio-gpu-rutabaga.c b/hw/display/virtio-gpu-rutabaga.c
-index 17bf701a21..f6486acdda 100644
---- a/hw/display/virtio-gpu-rutabaga.c
-+++ b/hw/display/virtio-gpu-rutabaga.c
-@@ -1096,7 +1096,7 @@ static void virtio_gpu_rutabaga_realize(DeviceState *qdev, Error **errp)
-     virtio_gpu_device_realize(qdev, errp);
- }
- 
--static Property virtio_gpu_rutabaga_properties[] = {
-+static const Property virtio_gpu_rutabaga_properties[] = {
-     DEFINE_PROP_BIT64("gfxstream-vulkan", VirtIOGPURutabaga, capset_mask,
-                       RUTABAGA_CAPSET_GFXSTREAM_VULKAN, false),
-     DEFINE_PROP_BIT64("cross-domain", VirtIOGPURutabaga, capset_mask,
-diff --git a/hw/display/virtio-gpu.c b/hw/display/virtio-gpu.c
-index 7d22d03bbf..82741d19e5 100644
---- a/hw/display/virtio-gpu.c
-+++ b/hw/display/virtio-gpu.c
-@@ -1674,7 +1674,7 @@ static const VMStateDescription vmstate_virtio_gpu = {
-     .post_load = virtio_gpu_post_load,
- };
- 
--static Property virtio_gpu_properties[] = {
-+static const Property virtio_gpu_properties[] = {
-     VIRTIO_GPU_BASE_PROPERTIES(VirtIOGPU, parent_obj.conf),
-     DEFINE_PROP_SIZE("max_hostmem", VirtIOGPU, conf_max_hostmem,
-                      256 * MiB),
-diff --git a/hw/display/virtio-vga.c b/hw/display/virtio-vga.c
-index 276f315108..532e4c62d5 100644
---- a/hw/display/virtio-vga.c
-+++ b/hw/display/virtio-vga.c
-@@ -209,7 +209,7 @@ static void virtio_vga_set_big_endian_fb(Object *obj, bool value, Error **errp)
-     d->vga.big_endian_fb = value;
- }
- 
--static Property virtio_vga_base_properties[] = {
-+static const Property virtio_vga_base_properties[] = {
-     DEFINE_VIRTIO_GPU_PCI_PROPERTIES(VirtIOPCIProxy),
-     DEFINE_PROP_END_OF_LIST(),
- };
-diff --git a/hw/display/vmware_vga.c b/hw/display/vmware_vga.c
-index f2d72c3fc7..f49bbf393a 100644
---- a/hw/display/vmware_vga.c
-+++ b/hw/display/vmware_vga.c
-@@ -1332,7 +1332,7 @@ static void pci_vmsvga_realize(PCIDevice *dev, Error **errp)
-                      &s->chip.fifo_ram);
- }
- 
--static Property vga_vmware_properties[] = {
-+static const Property vga_vmware_properties[] = {
-     DEFINE_PROP_UINT32("vgamem_mb", struct pci_vmsvga_state_s,
-                        chip.vga.vram_size_mb, 16),
-     DEFINE_PROP_BOOL("global-vmstate", struct pci_vmsvga_state_s,
-diff --git a/hw/display/xlnx_dp.c b/hw/display/xlnx_dp.c
-index 6ab2335499..7838f28bca 100644
---- a/hw/display/xlnx_dp.c
-+++ b/hw/display/xlnx_dp.c
-@@ -1387,7 +1387,7 @@ static void xlnx_dp_reset(DeviceState *dev)
-     xlnx_dp_update_irq(s);
- }
- 
--static Property xlnx_dp_device_properties[] = {
-+static const Property xlnx_dp_device_properties[] = {
-     DEFINE_AUDIO_PROPERTIES(XlnxDPState, aud_card),
-     DEFINE_PROP_END_OF_LIST(),
- };
+-static Property xlnx_csu_dma_properties[] = {
++static const Property xlnx_csu_dma_properties[] = {
+     /*
+      * Ref PG021, Stream Data Width:
+      * Data width in bits of the AXI S2MM AXI4-Stream Data bus.
 -- 
 2.43.0
 
