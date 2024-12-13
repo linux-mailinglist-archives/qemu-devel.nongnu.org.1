@@ -2,82 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF89D9F11C8
+	by mail.lfdr.de (Postfix) with ESMTPS id B7A029F11C7
 	for <lists+qemu-devel@lfdr.de>; Fri, 13 Dec 2024 17:07:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tM8Bn-0001nK-4r; Fri, 13 Dec 2024 11:06:51 -0500
+	id 1tM8Bn-0001o3-Ol; Fri, 13 Dec 2024 11:06:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <phil@philjordan.eu>)
- id 1tM8BV-0001hM-N0
- for qemu-devel@nongnu.org; Fri, 13 Dec 2024 11:06:35 -0500
-Received: from mail-ej1-x62c.google.com ([2a00:1450:4864:20::62c])
+ id 1tM8BY-0001k5-A1
+ for qemu-devel@nongnu.org; Fri, 13 Dec 2024 11:06:38 -0500
+Received: from mail-ej1-x62a.google.com ([2a00:1450:4864:20::62a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <phil@philjordan.eu>)
- id 1tM8BS-0006fQ-V4
- for qemu-devel@nongnu.org; Fri, 13 Dec 2024 11:06:32 -0500
-Received: by mail-ej1-x62c.google.com with SMTP id
- a640c23a62f3a-aa6a3c42400so326860366b.0
- for <qemu-devel@nongnu.org>; Fri, 13 Dec 2024 08:06:30 -0800 (PST)
+ id 1tM8BV-0006fx-G8
+ for qemu-devel@nongnu.org; Fri, 13 Dec 2024 11:06:35 -0500
+Received: by mail-ej1-x62a.google.com with SMTP id
+ a640c23a62f3a-aa67ac42819so318099866b.0
+ for <qemu-devel@nongnu.org>; Fri, 13 Dec 2024 08:06:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=philjordan-eu.20230601.gappssmtp.com; s=20230601; t=1734105989; x=1734710789;
+ d=philjordan-eu.20230601.gappssmtp.com; s=20230601; t=1734105991; x=1734710791;
  darn=nongnu.org; 
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=k2w4i3aj6eKVqpqsdiYKqEe8MFNmhXhqYUKlcsHv298=;
- b=X9FWKWUB8Zm+jtvk+iahKuYIBwSkX/37CVKhD2RQns9eqMyx6CUi5xhe08Kr99mrZF
- FKDrLTXcdc5qjsehpydE9fGoh2MWxp+9y7VCopUOTG5fqKt6v6sTKT3Rr46pUlw/aCH0
- FNZiaykroaKqd8JtVpz2RpgWVGv/9PeMLsi0TR6hBBdooDN7enTiGLQiKEUzFBFJFW6f
- UWwNAjn6ip1GejKY3YJ3Q/E7mTmTba8c/ER99i1uY8BeVma8v8JrIhLfdv2R6wvSD/nI
- EwwP5PRvKUo6fO4w7yAc9v2EMkAD85KpCP9BXnk2skAeUbgmK2CcMHyvW/Y8rLQDwt3J
- gMGA==
+ bh=TLgf/hBtKPWGX+IefC929iFjKjT8oYxXZ2UyNeVgI20=;
+ b=eMnDd/fBJkNxhXDWMwQpyChErFwycheJWR0E7Dz98qXlPk8FarZjK9inBfsZtVd27q
+ zd1FJJCtZ+MUXnWijrXF5JeYN4mhzrB1ZuMN33xGauwPQ5/kSKRtjs8VD7pvhxJYS4J9
+ /3ek37sxWQGNEql1NTY0KLkJBT6dDXHRyFGL9QDXoXMud5cuVtL+qWUzOsn/Wqr/h1l1
+ 2YLHL9S1LI7y9sQnwteBPMnfSPoG1mctqUYzRB0Hhdz4LaIYRIVOEMrdvcYtx7Dt/BlQ
+ hiyov/z2bmyZGYlCqYoquSFY62DeBcqti7KdRzmUxmmC1J0wO1M5tMdw+OS+1A1WF/+X
+ FgWA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734105989; x=1734710789;
+ d=1e100.net; s=20230601; t=1734105991; x=1734710791;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=k2w4i3aj6eKVqpqsdiYKqEe8MFNmhXhqYUKlcsHv298=;
- b=XCUXjfb6xZeokQGDBzsIAPD5aPDZWnZU1b5hp3xX4p5FAHJepY7hs1EmL3uXVbxBLe
- CgHW1lNDpKdPdQgG3pPfVOgPEe+l+j2R+LqNKFiZTvV8D+rAl3JTEHpq4LX7liEMogbv
- /095inxAmu5OJN3TfJOtltvP02RyRpyef4j2V2aT8Qq/qe8IIgzOercQNP+yHUAvW8H1
- AZdegbSXnLccXgudD1tYmbvmBHHXk8HcVP57s2b+MtgSnJVOwYHk1cRTHvwfCe5NzdES
- 5D+XYXS2nO/kaAynNOYLBMC34SupXDhsE7WidG9zdPMBNcYGENuHDexk0jAd+zzHw1T9
- nrqA==
-X-Gm-Message-State: AOJu0Yxkc8k3kO1dMVWXL7Dpcm5auP2nLnWxNngdeW7fkl8VRX/mzsq5
- cRs7h5URYqa70V5qmndCmWdOFaeM4+tD1mqiQ9/DDC9QKgftZMXM/Jqmop8hkKRWPa0iLTlsvrx
- cTQ==
-X-Gm-Gg: ASbGncu17IcAtUgozd/BXfnWZdlK3i397tOkxc9CCTuC2+ozO+QEZjClGLwxdGF89PO
- Zsui3fhw6qYD2Ljx3negNtR8Wt4yYx+JQbgufi1J42Ex9OexQJTUGwywhkZULlNR0G4KJqOgmZr
- Op5N0pnlqoFuNyBYiub64kvTh/TNyChrFrc50FsS+qBhFl1/cDDDXugh7rx/7YwQYOYrKDYgwpu
- Ut3kM/n49j7YHRd5qyyn24B6oG0a7OJTftL0PQwdFOH8w3ELIvoVqfJfqc1U7b9nazi1OnU1KNH
- y/GrrzkfgjTb96t6MB/1gnP0asj/nw9v
-X-Google-Smtp-Source: AGHT+IEn28kXYjHsxKaPpfWIgBim38t5ITEIG5MMFosEpQleX5BVsdl2Y9BI/UB34FWqk10ze7DULw==
-X-Received: by 2002:a17:907:d92:b0:aa6:ade8:2d8c with SMTP id
- a640c23a62f3a-aa6c40ba702mr883586066b.5.1734105988956; 
- Fri, 13 Dec 2024 08:06:28 -0800 (PST)
+ bh=TLgf/hBtKPWGX+IefC929iFjKjT8oYxXZ2UyNeVgI20=;
+ b=J2jYnhVfFOlntf1Clvcppajzb2gdswQ0nMEhaH4g6Endcr8aICti5ApcDQW/VSn5yi
+ ek4oIdeDf/x0C0wmwwtlXNXO2/uSjKBfnLDarS0/OSRH/YlMh40u2AwkeQlOOD2HL70z
+ JFTBBTPMlbl3pr8lappZHTUXhFPiLKj21HoLkGCPlfiORCcPJGqkx3TeltAYhu4XIoks
+ oU9oFzA6yMuMl97JKuEFHqEZ8VP/NvvmCxnLGbBHwH0e3hnkPktfbMkesJivku0wZznW
+ I7LpoQDvLL8Fh6YLmqwxQeBIKmc95rzR7GzIX/lDHvSrMD681XT64xhHUEJcKgXn7Gt/
+ XdSA==
+X-Gm-Message-State: AOJu0YxmXV6MwIXStxR/l1xxTiWQRHfMKtNNBchVtcADufRss6Q6bkzj
+ 6Xib9UqepieQKRkjce6RSJvBhPb65dBer9EXO2fYm+FXQ3RtLPki5lbgrKyLA0j6LH0Zxh3ogIB
+ m9Q==
+X-Gm-Gg: ASbGncv+9EIELw3OJzXmfsxR9sm7nl9kCrpu/hY8DrXHOqxscTvj2WGg7vefss4m2aX
+ +lTtCk4Xrj/z21Tk45JJr92ySXjwIYTHdKJtOoDAG4EuUvlgwH2XKYRwsOPuabedb8ubdObEo+c
+ sC1rYv1dGSznaptPIiORt5IW7+BC2brRlHUPB5mq4o9mEvlqHhtLQhP25hvMd1npKiVnbxmkiHc
+ WaISUR8cS+t3hqBb48xKIt5qK13147cIRBv1NfVVn+5eqf5UFivA5zATW0Wa1PW4nBBqxuQvdU7
+ J5fMV5vi9ubLDVhGt1VsU6vbAbMaOMYR
+X-Google-Smtp-Source: AGHT+IHaw3W3f56M3kqBelZ34InNyOfGln+ODqqA2m0ooUtMCs6A1BxKnzI5uO0CA8otU6vZGdEHiA==
+X-Received: by 2002:a17:906:a3cc:b0:aab:92bd:1a8f with SMTP id
+ a640c23a62f3a-aab92bd1acamr41468066b.26.1734105989884; 
+ Fri, 13 Dec 2024 08:06:29 -0800 (PST)
 Received: from localhost.localdomain (h082218084190.host.wavenet.at.
  [82.218.84.190]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-aa667843413sm916683166b.24.2024.12.13.08.06.28
+ a640c23a62f3a-aa667843413sm916683166b.24.2024.12.13.08.06.29
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 13 Dec 2024 08:06:28 -0800 (PST)
+ Fri, 13 Dec 2024 08:06:29 -0800 (PST)
 From: Phil Dennis-Jordan <phil@philjordan.eu>
 To: qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org, philmd@linaro.org, thuth@redhat.com,
  zhao1.liu@intel.com, imammedo@redhat.com, akihiko.odaki@daynix.com,
  Phil Dennis-Jordan <phil@philjordan.eu>
-Subject: [PATCH v2 5/6] hw/usb/hcd-xhci-pci: Indentation fix
-Date: Fri, 13 Dec 2024 17:06:18 +0100
-Message-Id: <20241213160619.66509-6-phil@philjordan.eu>
+Subject: [PATCH v2 6/6] hw/vmapple: XHCI controller's interrupt mapping
+ workaround for macOS
+Date: Fri, 13 Dec 2024 17:06:19 +0100
+Message-Id: <20241213160619.66509-7-phil@philjordan.eu>
 X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 In-Reply-To: <20241213160619.66509-1-phil@philjordan.eu>
 References: <20241213160619.66509-1-phil@philjordan.eu>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: neutral client-ip=2a00:1450:4864:20::62c;
- envelope-from=phil@philjordan.eu; helo=mail-ej1-x62c.google.com
+Received-SPF: neutral client-ip=2a00:1450:4864:20::62a;
+ envelope-from=phil@philjordan.eu; helo=mail-ej1-x62a.google.com
 X-Spam_score_int: -10
 X-Spam_score: -1.1
 X-Spam_bar: -
@@ -99,26 +100,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fixes number of spaces used for indentation on one line.
+This change enables the new conditional interrupt mapping support
+property on the vmapple machine type's integrated XHCI controller
+using compat_props.
+
+The macOS guest driver attempts to use event rings 1 and 2 on the XHCI
+controller, despite there being only one (PCI pin) interrupt channel
+available. With conditional interrupt mapping enabled, the XHCI
+controller will only schedule events on interrupter 0 in PCI pin mode.
 
 Signed-off-by: Phil Dennis-Jordan <phil@philjordan.eu>
 ---
- hw/usb/hcd-xhci-pci.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/usb/hcd-xhci-pci.c b/hw/usb/hcd-xhci-pci.c
-index 6027eed2d26..2ac0fd0bf1a 100644
---- a/hw/usb/hcd-xhci-pci.c
-+++ b/hw/usb/hcd-xhci-pci.c
-@@ -110,7 +110,7 @@ static int xhci_pci_vmstate_post_load(void *opaque, int version_id)
-     PCIDevice *pci_dev = PCI_DEVICE(s);
-     int intr;
+v2:
+
+ * Set the "conditional-intr-mapping" property via compat_props, not
+   directly on the created XHCI controller object.
+
+ hw/vmapple/vmapple.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
+
+diff --git a/hw/vmapple/vmapple.c b/hw/vmapple/vmapple.c
+index 66336942c8d..1732334c779 100644
+--- a/hw/vmapple/vmapple.c
++++ b/hw/vmapple/vmapple.c
+@@ -641,8 +641,19 @@ static void machvmapple_machine_init(void)
+ }
+ type_init(machvmapple_machine_init);
  
--   for (intr = 0; intr < s->xhci.numintrs; intr++) {
-+    for (intr = 0; intr < s->xhci.numintrs; intr++) {
-         if (s->xhci.intr[intr].msix_used) {
-             msix_vector_use(pci_dev, intr);
-         } else {
++static GlobalProperty vmapple_compat_defaults[] = {
++    /*
++     * macOS XHCI driver attempts to schedule events onto even rings 1 & 2
++     * even when (as here) there is no MSI(-X) support. Disabling interrupter
++     * mapping in the XHCI controller works around the problem.
++     */
++    { TYPE_QEMU_XHCI, "conditional-intr-mapping", "on" },
++};
++
+ static void vmapple_machine_10_0_options(MachineClass *mc)
+ {
++    compat_props_add(mc->compat_props, vmapple_compat_defaults,
++                     G_N_ELEMENTS(vmapple_compat_defaults));
+ }
+ DEFINE_VMAPPLE_MACHINE_AS_LATEST(10, 0)
+ 
 -- 
 2.39.5 (Apple Git-154)
 
