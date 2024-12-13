@@ -2,77 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 609009F158D
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Dec 2024 20:12:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 008619F1590
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Dec 2024 20:13:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tMB3q-00066D-Jc; Fri, 13 Dec 2024 14:10:51 -0500
+	id 1tMB4B-0006YU-Iy; Fri, 13 Dec 2024 14:11:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tMB3S-0005an-C1
- for qemu-devel@nongnu.org; Fri, 13 Dec 2024 14:10:29 -0500
-Received: from mail-ot1-x336.google.com ([2607:f8b0:4864:20::336])
+ id 1tMB3T-0005bY-UQ
+ for qemu-devel@nongnu.org; Fri, 13 Dec 2024 14:10:31 -0500
+Received: from mail-ot1-x334.google.com ([2607:f8b0:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tMB3P-00071B-GR
- for qemu-devel@nongnu.org; Fri, 13 Dec 2024 14:10:26 -0500
-Received: by mail-ot1-x336.google.com with SMTP id
- 46e09a7af769-71e15d9629bso528382a34.1
- for <qemu-devel@nongnu.org>; Fri, 13 Dec 2024 11:10:23 -0800 (PST)
+ id 1tMB3Q-00071R-PY
+ for qemu-devel@nongnu.org; Fri, 13 Dec 2024 14:10:27 -0500
+Received: by mail-ot1-x334.google.com with SMTP id
+ 46e09a7af769-71e35be77b5so458107a34.1
+ for <qemu-devel@nongnu.org>; Fri, 13 Dec 2024 11:10:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734117022; x=1734721822; darn=nongnu.org;
+ d=linaro.org; s=google; t=1734117023; x=1734721823; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=YNM7GoGVjyi9pb6tl93/GE1pyMMqg1z6U/rJvq0HOPE=;
- b=Kio51QSThz88XZ7IqsIPF0CupWyYUBZT82tpVw4ixlr9pcnKvywGlVqfbQTykxdqg1
- nhuUoRgLlW1Q2Sm7HLgxJb1ppp/9DxHUQ+IXpuiDC527lQUxaL9tGhRS1iBjli9lOTw3
- xbg4WGkX0CAkQUbc6S5dZ8lFOV8uFjtU6n5RcZIxWoVBT/wfjNJLlZFm1kyO/evoP7O5
- xAtgaxBxidYpmjunbJyY5UikNmD4mcr7FuDKj38/ObzaxoXbmhgeaq3fAtxcTtmJnBC/
- EKQD6Fum5atlmXidGrrolpSQb3uNhxP9XmmtzECgq5mfSb3ljn7Vmgsj3pxTKUT/yz3V
- 2GtA==
+ bh=4K+Ow/kpxla1hHfSMb1r5BWBj60XilhZFUT+PuNLeCM=;
+ b=rJ1zB70ld3fkZYYS0SLH3sC+Yp5bJPEKdCsDse0YW66Ci8Oa8wijrkO/QtCUvdUuKK
+ BkTph2MufouxJuk1CoSXxN6ZG+GsTdGYCIqV4WSnaP9wSCyEVqrJMDR/zOlv7c6hPDGT
+ HHRDKl8S8LsgAJeYUmj75S/3vXagjzZe9k/bn9XBoZn+hdiOaFejx89Y9O6voIQITUvv
+ FaGTUiFC3KRuqyUQB1RypQY1FkdRti+5pkJktA9TGbYdVFqWC5/PFGX7HTcm0wqKcI4Q
+ G0zRMu2A3LYBAclAmIsc9WjleMsQFfIrKfpJFsmnndU89iYyz9ZfbbYYTv0xTiOm6cW3
+ c/Mw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734117022; x=1734721822;
+ d=1e100.net; s=20230601; t=1734117023; x=1734721823;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=YNM7GoGVjyi9pb6tl93/GE1pyMMqg1z6U/rJvq0HOPE=;
- b=ccA9puFoMqWAS73QfEtXuQJIbEsccgoRzmJ4cewGFBo4jMEK2Cw1BCb8BS/RjM7RKD
- ehML1HALX0ZzOsz84CVPalJrOpc7oEKXOUZzO9wg31ENpLMXNTgPoCZ7TIW1+BXVGi5h
- XXs7Tr3CYSCfeYw9GC9MuQ3xZX3ImJREs7DAYagSjKL1mMoAINGqFIjO1Kh8DoN36+LT
- hfuDPklgxMqKgYcMWpgh5+FZfxREtdjQBbndrEksMswZJO8Kf5MgNJ+4I0RsNGepLvI9
- aXmmM27wdbksq04SDypCcCxgqp5jRnLFsDub1nbWYS5QvDwQQN6WYXVqetGPVzjpISQb
- RJpQ==
-X-Gm-Message-State: AOJu0YwEXUlE34vD8IALybM5z8v7nmGJ7cVkS7IpNPpdxeUCBhs/X+f2
- jc9VUFLJzpQlUXRQ+V+COXwi/uLEzeXQSPAjoU1GpkSMXma70FRiTVAFSmtJ1nDzaRDx9JL9xvF
- rhUWA5sJU
-X-Gm-Gg: ASbGncuupQnRhnpwL7KzfuwRT8eFoxuqU+ILlkx+qeSa0AUohJ3RUrxToVw/2mbSNrq
- l5gorcRSPYT+qo4UpHdoqw7O1Rq/R8g2qyVEKi37xKqsGgU5hvgvOgu9c+yyQ0AGctu32+/5iii
- 3JvstvZ0WhugXdlMU1WSdoWVHacKdArzbsXpzCmsne04iFn9BLpj9LbGEVA4jV9IXC2HudM/E+4
- 1eCuGEJI210pcw1R6eu3OJX7rPS4BVnjDQ7TX+4f20Dtg1iXcGeLw2+FhtY8N0P
-X-Google-Smtp-Source: AGHT+IHr0INjwVzgtiBXE9quaOGtoLF1XTz33VkEZb2w7XZaCpxw0pkK4Ss/q5sPUZy5df58fe/wsg==
-X-Received: by 2002:a05:6830:658a:b0:71d:e0b8:5f0f with SMTP id
- 46e09a7af769-71e3ba43471mr2152421a34.29.1734117022151; 
- Fri, 13 Dec 2024 11:10:22 -0800 (PST)
+ bh=4K+Ow/kpxla1hHfSMb1r5BWBj60XilhZFUT+PuNLeCM=;
+ b=b9PNUvzlbi1/IjVjUSBHzxyY8Jh85zznaol8fiStpqAP0q3q9xnTNAZnsxoBQ2U8Ug
+ WWlX9mD4i2sK1mNKJci0lOtnCS5k1vKwWwc0Yexu6HxhlNut6wDEeeJ3AKkZJtJe/0UP
+ 2TBq4zkXAkFzC5DDOQ9ZMAzwSihTleun4ahvL49BQPf0eQCurDunQe6O0gs0hVM3faXT
+ lI4yRyvCGwOWmnmyvtMJAeJ0mGWgORd5gjiVMLcs6wlDL3CM7liF35T97gCE5q5soL6c
+ Ozs00Zsn3ClwT+qC+D9GZ76KzLcKCf+aPrVXnuGkVc6rGAjc8KGJSVGYefwpicc0YIWo
+ pBog==
+X-Gm-Message-State: AOJu0YxCwxpvT9JUTQ52FHZHkD+QaPVmCuaum71kURKoFFoejg8PP6bH
+ iV67mQboWTUtar3LQPljCYqiUGk68aYouoBPOhM8isiV7tHx3MbUffitLaHvids5RJZUw1coG0I
+ 4EK0qJaiZ
+X-Gm-Gg: ASbGnct/Ntc+4k36BGxP97MR37UMqyIi3/zXojdhVSuoSsYeDwYUIcLUwiKAwVgdX52
+ 5GfKw9SvRN607+X2GE9R7iQqrLxVHrEil86W2PF0LaNRYDXGsjc5vc6NagU50AMymo6IB5sHF/r
+ yNq2C+vo/DcVWo/Pkd5WYH19dhrJQuSMeLaP+TVthX2MuozjaxlALysBaCmg92MkfHwyzt6NYk6
+ FWpMKs7j0Uy+emyLxgThggElKGk5JsE9+hp41nvsbX5Nc0nFjWa46L+Y/oAq9AT
+X-Google-Smtp-Source: AGHT+IFZH/Qbth4WBfUBFT9Z4/ZH2zjE99ESl/+3I1fhz0CO0ozfa3EVmFNd2aZBP2ZrZzKbflvUVg==
+X-Received: by 2002:a05:6830:258c:b0:710:fef4:3c92 with SMTP id
+ 46e09a7af769-71e3ba26862mr2771330a34.21.1734117023633; 
+ Fri, 13 Dec 2024 11:10:23 -0800 (PST)
 Received: from stoup.. ([187.217.227.247]) by smtp.gmail.com with ESMTPSA id
- 46e09a7af769-71e4834da91sm29697a34.18.2024.12.13.11.10.21
+ 46e09a7af769-71e4834da91sm29697a34.18.2024.12.13.11.10.22
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 13 Dec 2024 11:10:21 -0800 (PST)
+ Fri, 13 Dec 2024 11:10:23 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
-Subject: [PATCH 27/71] hw/hyperv: Constify all Property
-Date: Fri, 13 Dec 2024 13:07:01 -0600
-Message-ID: <20241213190750.2513964-32-richard.henderson@linaro.org>
+Cc: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Steven Lee <steven_lee@aspeedtech.com>, Troy Lee <leetroy@gmail.com>,
+ Jamin Lin <jamin_lin@aspeedtech.com>,
+ Andrew Jeffery <andrew@codeconstruct.com.au>,
+ Joel Stanley <joel@jms.id.au>, Corey Minyard <cminyard@mvista.com>,
+ Patrick Leis <venture@google.com>,
+ qemu-arm@nongnu.org (open list:ASPEED BMCs)
+Subject: [PATCH 28/71] hw/i2c: Constify all Property
+Date: Fri, 13 Dec 2024 13:07:02 -0600
+Message-ID: <20241213190750.2513964-33-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241213190750.2513964-1-richard.henderson@linaro.org>
 References: <20241213190750.2513964-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::336;
- envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x336.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::334;
+ envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x334.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,58 +104,72 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- hw/hyperv/hv-balloon.c | 2 +-
- hw/hyperv/syndbg.c     | 2 +-
- hw/hyperv/vmbus.c      | 4 ++--
- 3 files changed, 4 insertions(+), 4 deletions(-)
+ hw/i2c/aspeed_i2c.c      | 4 ++--
+ hw/i2c/core.c            | 2 +-
+ hw/i2c/i2c_mux_pca954x.c | 2 +-
+ hw/i2c/omap_i2c.c        | 2 +-
+ 4 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/hw/hyperv/hv-balloon.c b/hw/hyperv/hv-balloon.c
-index 3a9ef07691..74897b1604 100644
---- a/hw/hyperv/hv-balloon.c
-+++ b/hw/hyperv/hv-balloon.c
-@@ -1733,7 +1733,7 @@ static void hv_balloon_finalize(Object *obj)
-     hv_balloon_unrealize_finalize_common(balloon);
+diff --git a/hw/i2c/aspeed_i2c.c b/hw/i2c/aspeed_i2c.c
+index 3ae22cb052..2ea68c3090 100644
+--- a/hw/i2c/aspeed_i2c.c
++++ b/hw/i2c/aspeed_i2c.c
+@@ -1258,7 +1258,7 @@ static void aspeed_i2c_realize(DeviceState *dev, Error **errp)
+     }
  }
  
--static Property hv_balloon_properties[] = {
-+static const Property hv_balloon_properties[] = {
-     DEFINE_PROP_BOOL("status-report", HvBalloon,
-                      status_report.enabled, false),
- 
-diff --git a/hw/hyperv/syndbg.c b/hw/hyperv/syndbg.c
-index 065e12fb1e..0193addd42 100644
---- a/hw/hyperv/syndbg.c
-+++ b/hw/hyperv/syndbg.c
-@@ -366,7 +366,7 @@ static const VMStateDescription vmstate_hv_syndbg = {
-     .unmigratable = 1,
- };
- 
--static Property hv_syndbg_properties[] = {
-+static const Property hv_syndbg_properties[] = {
-     DEFINE_PROP_STRING("host_ip", HvSynDbg, host_ip),
-     DEFINE_PROP_UINT16("host_port", HvSynDbg, host_port, 50000),
-     DEFINE_PROP_BOOL("use_hcalls", HvSynDbg, use_hcalls, false),
-diff --git a/hw/hyperv/vmbus.c b/hw/hyperv/vmbus.c
-index b36bd3d67d..3d1f4d14e8 100644
---- a/hw/hyperv/vmbus.c
-+++ b/hw/hyperv/vmbus.c
-@@ -2346,7 +2346,7 @@ static void vmbus_dev_unrealize(DeviceState *dev)
-     free_channels(vdev);
+-static Property aspeed_i2c_properties[] = {
++static const Property aspeed_i2c_properties[] = {
+     DEFINE_PROP_LINK("dram", AspeedI2CState, dram_mr,
+                      TYPE_MEMORY_REGION, MemoryRegion *),
+     DEFINE_PROP_END_OF_LIST(),
+@@ -1446,7 +1446,7 @@ static void aspeed_i2c_bus_realize(DeviceState *dev, Error **errp)
+     sysbus_init_mmio(SYS_BUS_DEVICE(dev), &s->mr_pool);
  }
  
--static Property vmbus_dev_props[] = {
-+static const Property vmbus_dev_props[] = {
-     DEFINE_PROP_UUID("instanceid", VMBusDevice, instanceid),
-     DEFINE_PROP_END_OF_LIST()
- };
-@@ -2653,7 +2653,7 @@ static const VMStateDescription vmstate_vmbus_bridge = {
-     },
- };
+-static Property aspeed_i2c_bus_properties[] = {
++static const Property aspeed_i2c_bus_properties[] = {
+     DEFINE_PROP_UINT8("bus-id", AspeedI2CBus, id, 0),
+     DEFINE_PROP_LINK("controller", AspeedI2CBus, controller, TYPE_ASPEED_I2C,
+                      AspeedI2CState *),
+diff --git a/hw/i2c/core.c b/hw/i2c/core.c
+index 4cf30b2c86..4118d3db50 100644
+--- a/hw/i2c/core.c
++++ b/hw/i2c/core.c
+@@ -18,7 +18,7 @@
  
--static Property vmbus_bridge_props[] = {
-+static const Property vmbus_bridge_props[] = {
-     DEFINE_PROP_UINT8("irq", VMBusBridge, irq, 7),
+ #define I2C_BROADCAST 0x00
+ 
+-static Property i2c_props[] = {
++static const Property i2c_props[] = {
+     DEFINE_PROP_UINT8("address", struct I2CSlave, address, 0),
+     DEFINE_PROP_END_OF_LIST(),
+ };
+diff --git a/hw/i2c/i2c_mux_pca954x.c b/hw/i2c/i2c_mux_pca954x.c
+index db5db956a6..80c570fd10 100644
+--- a/hw/i2c/i2c_mux_pca954x.c
++++ b/hw/i2c/i2c_mux_pca954x.c
+@@ -211,7 +211,7 @@ static void pca954x_init(Object *obj)
+     }
+ }
+ 
+-static Property pca954x_props[] = {
++static const Property pca954x_props[] = {
+     DEFINE_PROP_STRING("name", Pca954xState, name),
      DEFINE_PROP_END_OF_LIST()
+ };
+diff --git a/hw/i2c/omap_i2c.c b/hw/i2c/omap_i2c.c
+index e78505ebdd..172df135f5 100644
+--- a/hw/i2c/omap_i2c.c
++++ b/hw/i2c/omap_i2c.c
+@@ -511,7 +511,7 @@ void omap_i2c_set_fclk(OMAPI2CState *i2c, omap_clk clk)
+     i2c->fclk = clk;
+ }
+ 
+-static Property omap_i2c_properties[] = {
++static const Property omap_i2c_properties[] = {
+     DEFINE_PROP_UINT8("revision", OMAPI2CState, revision, 0),
+     DEFINE_PROP_END_OF_LIST(),
  };
 -- 
 2.43.0
