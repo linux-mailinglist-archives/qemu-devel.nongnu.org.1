@@ -2,75 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85C499F1A1D
-	for <lists+qemu-devel@lfdr.de>; Sat, 14 Dec 2024 00:35:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E23869F1A1A
+	for <lists+qemu-devel@lfdr.de>; Sat, 14 Dec 2024 00:35:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tMF7j-00026Q-GK; Fri, 13 Dec 2024 18:31:07 -0500
+	id 1tMF7m-0002C3-Sk; Fri, 13 Dec 2024 18:31:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tMF7h-00026A-Iy
- for qemu-devel@nongnu.org; Fri, 13 Dec 2024 18:31:05 -0500
-Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tMF7j-00028G-TG
+ for qemu-devel@nongnu.org; Fri, 13 Dec 2024 18:31:08 -0500
+Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tMF7c-0002xG-2L
- for qemu-devel@nongnu.org; Fri, 13 Dec 2024 18:31:05 -0500
-Received: by mail-wr1-x42e.google.com with SMTP id
- ffacd0b85a97d-3862d161947so1035180f8f.3
- for <qemu-devel@nongnu.org>; Fri, 13 Dec 2024 15:30:59 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tMF7i-0002y0-3U
+ for qemu-devel@nongnu.org; Fri, 13 Dec 2024 18:31:07 -0500
+Received: by mail-wr1-x42c.google.com with SMTP id
+ ffacd0b85a97d-385e06af753so1233385f8f.2
+ for <qemu-devel@nongnu.org>; Fri, 13 Dec 2024 15:31:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734132658; x=1734737458; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=qJqzrK27HC5TEaqb+1BUrxjhcsWle6KpvNsTAkGGR64=;
- b=ypdWkQZ99cK59OwM3iBR1M6sZNZxdlvM3jPy+7Kf9Zza48ytMyAXzvRZzvlx9b2jno
- zRE8F4Qs42xMYgth4tADyniuXU6qNB6dx4/CBzlzlgBCW17cTNe48s44zA1urAyPoNYr
- OyartdzsfBO11et3zkZdpm9PTYVL300nO9xEXIdf4yd0UWspXScDvFbYD8UTdJ0Yv4Wi
- HEckzrX/8Horw0J51B3I1R6GyRm1pQIodUrpZyAaOQZQJAOiL9ay1sYHOHnlBe0sKpyn
- 9R/Ikg24GlapU0sKP4s2x+eTRj0hxslvrlC+2zqHKa4sGiP9qLFNMwBttBIZDI7Z3mQI
- rdxg==
+ d=linaro.org; s=google; t=1734132664; x=1734737464; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=o+pQd2baBlmY/N24Ub4eY1nVz17amZBdVdb84Jx0GrY=;
+ b=xfLTB+D8NTb8rId3vns/m1d1yjpal733qY4JlFGTGLXvxldgs3oHfP/WrS09yJQzJg
+ s3iGcLFwtOA7djXoZWKnMNhkT2M3tTFE/hcebiuSan/bZ5aXvlkunwOHIFxdczkWaEBd
+ 9Lz5jr2kpP9UyixOzofJePu5ukIm0cW3jS7/N1m8vs3wrEqGsz8YJLxyr4pSCAxoLtSe
+ C+4wLZSWXb7dCaKQj/umiz7KNPZ02bfoOfjBpcZzYA1EuUU6A2FU2TQW+AnzIYGe/usU
+ b6oBA4OQLzGiHTizR5HJ+IckaOEcR4yGJdYudFwdFOexnePnqUNuaDWTx5iBxhiprE7G
+ P3mA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734132658; x=1734737458;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=qJqzrK27HC5TEaqb+1BUrxjhcsWle6KpvNsTAkGGR64=;
- b=xD8Iwydv0/8oBw/beBKJ6jJnHgIisjizX9MrpIS5wCLCKjuzuITEB4ZO1+8gxHkoy7
- FUzZ711/VVH/Zuxf1wz1LTHy36tlSj6rwsLrmwBJwrtc/1IdQDWzEu86DhTQYVt+FxCk
- l5HCiQTUe9+R9aKb1gKao8aSTBY18aIuXCcNPFBxX5y3WFt7rmYb3Ir/81A0f3Ytbk09
- lOGkmBifOkHDePOanVk+kS4goK0U84h37LsK4Fyv3mKvv5aQcLKu9SLneuhWWDAQJONF
- P8Tx8oqqir5c/Vp0WsPdVengXQd3oIOcOTzFZnM0VPhGhaYYylSV36V3uwfNCbgc7Spl
- dmgQ==
-X-Gm-Message-State: AOJu0YzwCrOULbySiKB/9KkKWSfTXelIzbhaD7wo0c8M2CZ5aXixJX/9
- 4c2VxWlWhRlMq7HXWaH7V10rr5RRxhw4zrJJ7RvWr/Gw2mg9ewdjSEihbB9Gm8HgjS4rUiuOVOB
- Bh3I=
-X-Gm-Gg: ASbGncvxO4FU8jtNKsI4E0+OPYfuTDJ79ut8dojmapf/yM6ZBoLm36YmrNNlsqFvPO6
- XMYqiItYdGlr7LUXN0F91VDzhisAR6Hj7e4x/SYAVmuWvWTO9I6Gihpz4gs1x9dMgvo6G7FzkRJ
- ApJ/1IQtvUgrfnRr+7rQ2ch30K9wQRgoQHRxDG9nwJOJbjlucmFNlRfHzBEaZQSq4CWUc1Oaj87
- K/BTrb3/ZYLGp1iZm1Ng9pPjuQwcEEhByKC2cow4SM0hhWKkouP0VN223jc7LVOTFwzEF4b0GvI
- 5hbmDA==
-X-Google-Smtp-Source: AGHT+IHWXq2f3c9cFhy1YIMX9o55yLFH2mja7pAEkNFzNCcEmdzXU9UuHdCXRtOWH6tRSIUHaiz+Lg==
-X-Received: by 2002:a5d:5984:0:b0:385:fc32:1ec6 with SMTP id
- ffacd0b85a97d-3888e0c081bmr3304716f8f.50.1734132658139; 
- Fri, 13 Dec 2024 15:30:58 -0800 (PST)
+ d=1e100.net; s=20230601; t=1734132664; x=1734737464;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=o+pQd2baBlmY/N24Ub4eY1nVz17amZBdVdb84Jx0GrY=;
+ b=mlVJ03i+rJxwdRrws+AJRDLdiCDCovSJZBwEsRrvH75eOXA3U2Za9/lu50bXTxtTD7
+ QahqcL6mPexCxEZKtQXjMrrLYUmrbvSHqScbSSIhL0RQMQVGHG7iGYI0k4H7UUtczPMR
+ DXLihR9hJUiWXeyUxgJomh6Y9SY4KkfjMHdq4WNYOsUiMcL2ok9xC7bw45NEeTJ982yB
+ snpaP9NTVXlLejEDX3/jAHh2XoWnH8evYFGPrs3CWYbZHRg0+jFkggPbpnaGktPJo8B5
+ BlfceUpCNG7RGMzCveBTqgn9dAJuBQv7pQiOj0wDeuyS/W8QjJ4AIPJTDFhz+zeP3xRy
+ q1Kg==
+X-Gm-Message-State: AOJu0Yzy0e8YzclrWjotsanfn1MDb6vYzrRmuEd1QgUU3hO/uqWNo/sE
+ ULPnF1z163Mi3p3SzRV8GbqoDnZ9oTITButKVwsIgLgV2vPZR0/TLCYRpUi75V+fHi3zh4lM2Qq
+ 1AXs=
+X-Gm-Gg: ASbGncsq7aKP7vNrx2EElTWmI5d93vs9EXXCGGNRNSfKzk0SROTb2O/NZgV/Ieu9oz3
+ /GgZrKu2/OeSmjVNhf5t9UohOTaixzadq7U68mZNtKiMVfq3J2mIDxEEL7IOyhnQr9QDnVDvXlC
+ rt1yZG7IagvHDQt5WK040RKFweYWpdJe8uE0NPqb55LDnEB+oy02z4voOi9/qfxl77z7kwAuw8r
+ YQ1uHHC//ukivTVk6nOZ+q/0dom4FK/8lXQ254ZOpjKKaxmu4Mdhu178affldYnzRZ1xUlhVMyN
+ duiizw==
+X-Google-Smtp-Source: AGHT+IFgwEUAeUvtio+G1STrD/sSIgV+JoHjDmfPQ9W7JDVusM99HHk3BAWEhI9iLu+LDHOiGyjMvA==
+X-Received: by 2002:a5d:588c:0:b0:385:e2c4:1f8d with SMTP id
+ ffacd0b85a97d-3888dcd4760mr3194762f8f.19.1734132664122; 
+ Fri, 13 Dec 2024 15:31:04 -0800 (PST)
 Received: from localhost.localdomain ([45.93.146.194])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-388c8046ca6sm817664f8f.83.2024.12.13.15.30.56
+ ffacd0b85a97d-388c801a8b0sm821799f8f.53.2024.12.13.15.31.01
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 13 Dec 2024 15:30:56 -0800 (PST)
+ Fri, 13 Dec 2024 15:31:02 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 00/20] Misc HW patches for 2024-12-14
-Date: Sat, 14 Dec 2024 00:30:35 +0100
-Message-ID: <20241213233055.39574-1-philmd@linaro.org>
+Cc: Dorjoy Chowdhury <dorjoychy111@gmail.com>,
+ Alexander Graf <graf@amazon.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 01/20] docs/nitro-enclave: Fix terminal commands formatting
+Date: Sat, 14 Dec 2024 00:30:36 +0100
+Message-ID: <20241213233055.39574-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20241213233055.39574-1-philmd@linaro.org>
+References: <20241213233055.39574-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,101 +98,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 83aaec1d5a49f158abaa31797a0f976b3c07e5ca:
+From: Dorjoy Chowdhury <dorjoychy111@gmail.com>
 
-  Merge tag 'pull-tcg-20241212' of https://gitlab.com/rth7680/qemu into staging (2024-12-12 18:45:39 -0500)
+Signed-off-by: Dorjoy Chowdhury <dorjoychy111@gmail.com>
+Reviewed-by: Alexander Graf <graf@amazon.com>
+Message-ID: <20241109122844.24057-1-dorjoychy111@gmail.com>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ docs/system/i386/nitro-enclave.rst | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-are available in the Git repository at:
-
-  https://github.com/philmd/qemu.git tags/hw-misc-20241214
-
-for you to fetch changes up to 456b247eeab067095b680fa4b0fec48137969593:
-
-  hw/xtensa: Include missing 'exec/tswap.h' header (2024-12-14 00:16:20 +0100)
-
-----------------------------------------------------------------
-Misc HW patch queue
-
-- Support string data for extendPCR in VirtIO NSM device (Dorjoy)
-- Have PCI_BUS implement TYPE_FW_CFG_DATA_GENERATOR_INTERFACE (Phil)
-- Decouple AHCI from PCI (Bernhard)
-- Add status to usb_msd_packet_complete (Nick)
-- Header cleanups (Alex, Phil)
-
-----------------------------------------------------------------
-
-Alex Bennée (1):
-  hw/net/can: clean-up unnecessary includes
-
-Bernhard Beschow (2):
-  hw/ide/ahci: Decouple from PCI
-  hw/ide/ahci: Extract TYPE_SYSBUS_AHCI into dedicated file
-
-Dorjoy Chowdhury (3):
-  docs/nitro-enclave: Fix terminal commands formatting
-  hw/core/eif: Use stateful qcrypto apis
-  hw/virtio/virtio-nsm: Support string data for extendPCR
-
-Nicholas Piggin (1):
-  hw/usb/msd: Add status to usb_msd_packet_complete() function
-
-Phil Dennis-Jordan (1):
-  hw/usb/hcd-xhci-pci: Indentation fix
-
-Philippe Mathieu-Daudé (12):
-  hw/riscv/virt: Remove pointless GPEX_HOST() cast
-  hw/nvram/fw_cfg: Rename fw_cfg_add_[file]_from_generator()
-  hw/nvram/fw_cfg: Pass QOM parent to fw_cfg_add_file_from_generator()
-  hw/nvram/fw_cfg: Skip FW_CFG_DATA_GENERATOR when no data to generate
-  hw/pci: Have PCI_BUS implement TYPE_FW_CFG_DATA_GENERATOR_INTERFACE
-  hw/pci: Add pci_bus_add_fw_cfg_extra_pci_roots() helper
-  hw: Use pci_bus_add_fw_cfg_extra_pci_roots()
-  hw/nvram/fw_cfg: Remove fw_cfg_add_extra_pci_roots()
-  hw/usb/hcd-xhci-nec: Remove unused XHCINecState::flags field
-  hw/mips: Include missing 'exec/tswap.h' header
-  hw/sh4/r2d: Include missing 'exec/tswap.h' header
-  hw/xtensa: Include missing 'exec/tswap.h' header
-
- docs/system/i386/nitro-enclave.rst |   8 +-
- hw/ide/ahci-internal.h             |   1 -
- hw/xtensa/bootparam.h              |   1 +
- include/hw/i386/nitro_enclave.h    |  16 +--
- include/hw/ide/ahci-pci.h          |   2 +
- include/hw/ide/ahci.h              |   2 -
- include/hw/nvram/fw_cfg.h          |  32 ++---
- include/hw/pci/pci.h               |   3 +
- hw/arm/virt.c                      |   3 +-
- hw/core/eif.c                      | 202 +++++++++++------------------
- hw/hppa/machine.c                  |   2 +-
- hw/i386/nitro_enclave.c            |  12 +-
- hw/i386/pc.c                       |   3 +-
- hw/ide/ahci-sysbus.c               |  91 +++++++++++++
- hw/ide/ahci.c                      | 106 +--------------
- hw/ide/ich.c                       |  19 ++-
- hw/mips/fuloong2e.c                |   1 +
- hw/mips/malta.c                    |   1 +
- hw/net/can/can_kvaser_pci.c        |   4 -
- hw/net/can/can_mioe3680_pci.c      |   4 -
- hw/net/can/can_pcm3680_pci.c       |   4 -
- hw/net/can/can_sja1000.c           |   2 +-
- hw/net/can/ctucan_core.c           |   3 +-
- hw/net/can/ctucan_pci.c            |   4 -
- hw/nvram/fw_cfg.c                  |  37 ++----
- hw/pci/pci.c                       |  53 ++++++++
- hw/riscv/virt.c                    |  20 ++-
- hw/sh4/r2d.c                       |   1 +
- hw/usb/dev-storage.c               |  17 ++-
- hw/usb/hcd-xhci-nec.c              |   5 +-
- hw/usb/hcd-xhci-pci.c              |   2 +-
- hw/virtio/virtio-nsm.c             |  21 ++-
- hw/xtensa/xtfpga.c                 |   1 +
- system/vl.c                        |   3 +-
- hw/arm/Kconfig                     |  10 +-
- hw/ide/Kconfig                     |   4 +
- hw/ide/meson.build                 |   1 +
- 37 files changed, 343 insertions(+), 358 deletions(-)
- create mode 100644 hw/ide/ahci-sysbus.c
-
+diff --git a/docs/system/i386/nitro-enclave.rst b/docs/system/i386/nitro-enclave.rst
+index 73e3edefe5b..48eda5bd9ec 100644
+--- a/docs/system/i386/nitro-enclave.rst
++++ b/docs/system/i386/nitro-enclave.rst
+@@ -48,13 +48,13 @@ Running a nitro-enclave VM
+ First, run `vhost-device-vsock`__ (or a similar tool that supports vhost-user-vsock).
+ The forward-cid option below with value 1 forwards all connections from the enclave
+ VM to the host machine and the forward-listen (port numbers separated by '+') is used
+-for forwarding connections from the host machine to the enclave VM.
+-
+-__ https://github.com/rust-vmm/vhost-device/tree/main/vhost-device-vsock#using-the-vsock-backend
++for forwarding connections from the host machine to the enclave VM::
+ 
+   $ vhost-device-vsock \
+      --vm guest-cid=4,forward-cid=1,forward-listen=9001+9002,socket=/tmp/vhost4.socket
+ 
++__ https://github.com/rust-vmm/vhost-device/tree/main/vhost-device-vsock#using-the-vsock-backend
++
+ Now run the necessary applications on the host machine so that the nitro-enclave VM
+ applications' vsock communication works. For example, the nitro-enclave VM's init
+ process connects to CID 3 and sends a single byte hello heartbeat (0xB7) to let the
+@@ -65,7 +65,7 @@ the applications on the host machine that would typically be running in the pare
+ VM for successful communication with the enclave VM.
+ 
+ Then run the nitro-enclave VM using the following command where ``hello.eif`` is
+-an EIF file you would use to spawn a real AWS nitro enclave virtual machine:
++an EIF file you would use to spawn a real AWS nitro enclave virtual machine::
+ 
+   $ qemu-system-x86_64 -M nitro-enclave,vsock=c,id=hello-world \
+      -kernel hello-world.eif -nographic -m 4G --enable-kvm -cpu host \
 -- 
 2.45.2
 
