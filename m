@@ -2,89 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AC989F15CB
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Dec 2024 20:29:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 32E749F1605
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Dec 2024 20:36:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tMBBW-00058r-H6; Fri, 13 Dec 2024 14:18:46 -0500
+	id 1tMBL3-0002JA-Jw; Fri, 13 Dec 2024 14:28:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tMBAe-0004Sr-9R
- for qemu-devel@nongnu.org; Fri, 13 Dec 2024 14:17:52 -0500
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ (Exim 4.90_1) (envelope-from <nabihestefan@google.com>)
+ id 1tMBKN-0001vo-P9
+ for qemu-devel@nongnu.org; Fri, 13 Dec 2024 14:28:03 -0500
+Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tMBAc-0008DY-Bs
- for qemu-devel@nongnu.org; Fri, 13 Dec 2024 14:17:52 -0500
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-43635796b48so1334745e9.0
- for <qemu-devel@nongnu.org>; Fri, 13 Dec 2024 11:17:49 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <nabihestefan@google.com>)
+ id 1tMBKH-0002Yx-Dz
+ for qemu-devel@nongnu.org; Fri, 13 Dec 2024 14:27:53 -0500
+Received: by mail-pl1-x636.google.com with SMTP id
+ d9443c01a7336-2155c25e9a4so15755ad.1
+ for <qemu-devel@nongnu.org>; Fri, 13 Dec 2024 11:27:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734117467; x=1734722267; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=4/14a9mDGDa/KnxDonzGqm0gIlizPcSMWgu/6bMOP6I=;
- b=Rcyi9xcJODJP1n2PVW8zppmqOm4d3bffqobpz62vT8DajOP36IfTizOIcCK9x+9NHE
- +rX/KQtUkQZXLUzVeTaKtV2xmzC14CZILs+lk07tBTIV7qJV75IRa9gmCTFXZYlRoNVg
- fhdL9O/629W05bNN7g1MOC1F8IUx/KhkWxFYNHykH28S0PO/tvezUTfYzPm49PuH8TpH
- y/Nr/9a5Hd5lRBNzuyAkHC8+0NehNPwZi7jmd0vqprzaWX3GaPUU7G54fwSuJd7N4I5f
- noZ0zMwJhoBq7flEvaKUdFfmS0dVDLGN1GPqqevllnamozThDbVSR+8SWgBwOpD09Yiv
- CiHw==
+ d=google.com; s=20230601; t=1734118066; x=1734722866; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=n8y6uFm+wmDEuGdgtXjvxyoO93l7Tq9E2jG+Cuw/+z8=;
+ b=WGeq1JSzEd0zsngc2iN2QQTa/s1/VbbY9E7coJtcSlH88ojUTxJFWFnCm8E801pK9d
+ TBQOtWion5uXxoWze0CAXV7+h+AGEa8gIBmjceZuKqemR5xwOQZVRJ6Idd7Hhcy3IPEr
+ 0ymxIOoesFxotZIkhb0NvleWwD2bpczbwcyk8bCrAJt2nSXUXi8MtyVIIoY5paFeJ/y/
+ kZqwUxk/QmYl/cfSZZtF5WBNVCemN8QJrK+3wkNHEYa7DNCYcHHXfvXLmATRASXZRSgR
+ sWBo4krup/VsDdaiVCD2xzdytl551PUYwyg41Dy4kKWdjoUZaGa/B7xDTpMBO5NML4wC
+ 7ajQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734117467; x=1734722267;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=4/14a9mDGDa/KnxDonzGqm0gIlizPcSMWgu/6bMOP6I=;
- b=WvPWsHGQdioTzB2xlPtN2Fc1veCd26DuTLG9zGJnUbF59eGaB/+wAi8qzAT/g20mFg
- GRjfhNVvcv3qA8xNo1fXV0CwzTx1C61zS2sU8YRf3m0gq7Uu5gY++WSfVr6/VFxZi0Nr
- Wvpqs+xKx3pUHR0XNztfDAfC3LxV7kt4uLJtA5TX7oTF78CfE8FYFM+LHFxQuMbOnoiI
- Wsj0XEDraAguFT7qtDzHqQQPWbOhGUypWT1YMbKxKLgkfSxlQWsDib0kbdHPa/KjlrNr
- N+CzA7VjByMYzCLGrFYCHzPD4ZLoJ3nfI1b86Q/LMcUoS2dGhhBrp1gigopg4CqkKJwm
- MTDw==
+ d=1e100.net; s=20230601; t=1734118066; x=1734722866;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=n8y6uFm+wmDEuGdgtXjvxyoO93l7Tq9E2jG+Cuw/+z8=;
+ b=auOrfkp0qAKH7nhWVb4ePoVNK8QV7I5L+jCATkBbV+IshvQqiN6WWtyuTciN+PjZUf
+ ATo/irOXZWDCbT+8yKRAiMQYAWb5jWvacjXBIuf5klJn/KTAYAZBYWwMB4x/EJlQyP63
+ pF1+qxO00x8Sgj6iEKuDC/AAFeauzCFSuz0AiyJ3uIIDupKiy03ZRugHekeysfdJLOzu
+ DH4+kCNq7K/EvXFdGxKiQRuahitw4ille5xby5l+BY/gaWMKW7zXKQiEWndTtCfQ3bwc
+ gHg1nn79xFrJNu72FZZjKfRKuBDpUlOgmp062l5CoMPzEUUW/8cNo/kzeKA5QwbJX+kl
+ 5NpA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXqmwBBc3qGYG5hVOOK6QKR4NXyxI2eMcy88rC/c1YtH3oAoKlvCj/TGH5fOOV+rOjSXO4+n7heb4dX@nongnu.org
-X-Gm-Message-State: AOJu0Yw7VIWfyea18dUQkqndGxYxbQ/vuHzuKiT1jxAiX9B5u5yDQDmQ
- trT6h3iI7i4iD+Oai8exJl9FmB4/0NZfdcfiogWxNLOqQdbFLNl3RPHuUvTmE/M=
-X-Gm-Gg: ASbGncsYD9ZfiwkufpR0ZYwMq8T9t2Uh9M7tJdIVqlgtDXJw8IGpab570YHRqeq8C5u
- CrLiiauT5qfWXsUiN2o8pUJapNmV3KAV+lpC30d2j6Bs1Gg55E93QBJX7V1kBrcQpEUZNaJRQ9Q
- byjRcDVA6+AhVEPzJZ0YELeTNxk5QI0eYy3JTg//ZCw8JAnJGL/gHTAJAgu29HPgAgJ5Xf5Gp1Z
- HwGArVFOYmjfZR9y5g/C+ZPVtsJuBncM5hp5s/+KOm/eax6Mr16wskdg/OlI6j25ZSdNg/6H7Ew
- h7NCgxvsbuP0X/w2alkL
-X-Google-Smtp-Source: AGHT+IGOZbdfit7LhxtPPj4XI6aO+PG6OBk7/M+KqWHI4gjcG0sRxCWVPGu9PbnUk3k/iiKS3d25bw==
-X-Received: by 2002:a05:600c:1c19:b0:434:f2af:6e74 with SMTP id
- 5b1f17b1804b1-4362b16beb1mr30547905e9.15.1734117466747; 
- Fri, 13 Dec 2024 11:17:46 -0800 (PST)
-Received: from [192.168.224.213] (127.47.205.77.rev.sfr.net. [77.205.47.127])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-436362c7d64sm2053645e9.36.2024.12.13.11.17.37
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 13 Dec 2024 11:17:37 -0800 (PST)
-Message-ID: <f8ebff35-907b-4e58-8729-ca5d7b8a06a5@linaro.org>
-Date: Fri, 13 Dec 2024 20:17:35 +0100
+ AJvYcCXJk0VW9M4A+v1YCcKiIq7DSTXBZ5tbOGUTbSKfj3UGZ1EedqbrpoECjuYn1oSHMdyqMasZ6FLBxtNk@nongnu.org
+X-Gm-Message-State: AOJu0Yxr0oVrXRVTnxyrDt69HL8H+9F5ulr9EVO/XHUCah+Ngu2qexGN
+ mAvl/LieAMMLStHoTjSqTXxoeGiJA/oyoRoV5jQy496upwyInPmRpoFVn8utkapNLjBxD8kjiUB
+ wPSsj0WjRFdDeqCtZnveisFcpqNXT7ipS70LR
+X-Gm-Gg: ASbGnctQXcMcfw5n/9S2+Ed7E8wGp16zX9p4LSrk2/agwX0xF5DywUp/WoF6suntlkW
+ LRrS3356nE2Ulfm+Ghr+8lgEHG+5uT6fQlk1T41SQqS3fE6jYfKv5gE2ko5qM1eY0Ea9g
+X-Google-Smtp-Source: AGHT+IFaaf6SHCamj0lIAzIcB33qAgkUq7/qo2KRWtzeMjKPGqKuh4UR42bM+jY1YH8R4A0RiH9pVAfsBjS1pFcWILo=
+X-Received: by 2002:a05:6e02:178b:b0:3a7:a468:69df with SMTP id
+ e9e14a558f8ab-3b2792913a8mr186155ab.3.1734117650559; Fri, 13 Dec 2024
+ 11:20:50 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] hw/intc/arm_gicv3_its: Zero initialize local DTEntry etc
- structs
-To: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
- qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org
-References: <20241213182337.3343068-1-peter.maydell@linaro.org>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20241213182337.3343068-1-peter.maydell@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+References: <20241213002602.4181289-1-nabihestefan@google.com>
+ <f03adc63-5167-4982-90e6-70b65f0c90cc@redhat.com> <87y10jctbd.fsf@suse.de>
+In-Reply-To: <87y10jctbd.fsf@suse.de>
+From: Nabih Estefan <nabihestefan@google.com>
+Date: Fri, 13 Dec 2024 11:20:39 -0800
+Message-ID: <CA+QoejUUQK5L2LOgDPdK=kBgWgQQcvSMzXJ1zAiuwmoNwroPxg@mail.gmail.com>
+Subject: Re: [PATCH] tests/qtest/sse-timer-test: Add watchdog reset to
+ sse-timer test
+To: Fabiano Rosas <farosas@suse.de>
+Cc: Thomas Huth <thuth@redhat.com>, peter.maydell@linaro.org,
+ qemu-arm@nongnu.org, 
+ qemu-devel@nongnu.org, lvivier@redhat.com, pbonzini@redhat.com, 
+ roqueh@google.com, venture@google.com, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
+ envelope-from=nabihestefan@google.com; helo=mail-pl1-x636.google.com
+X-Spam_score_int: -95
+X-Spam_score: -9.6
+X-Spam_bar: ---------
+X-Spam_report: (-9.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, T_SPF_TEMPERROR=0.01,
+ USER_IN_DEF_DKIM_WL=-7.5 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,34 +95,14 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 13/12/24 19:23, Peter Maydell wrote:
-> In the GICv3 ITS model, we have a common coding pattern which has a
-> local C struct like "DTEntry dte", which is a C representation of an
-> in-guest-memory data structure, and we call a function such as
-> get_dte() to read guest memory and fill in the C struct.  These
-> functions to read in the struct sometimes have cases where they will
-> leave early and not fill in the whole struct (for instance get_dte()
-> will set "dte->valid = false" and nothing else for the case where it
-> is passed an entry_addr implying that there is no L2 table entry for
-> the DTE).  This then causes potential use of uninitialized memory
-> later, for instance when we call a trace event which prints all the
-> fields of the struct.  Sufficiently advanced compilers may produce
-> -Wmaybe-uninitialized warnings about this, especially if LTO is
-> enabled.
-> 
-> Rather than trying to carefully separate out these trace events into
-> "only the 'valid' field is initialized" and "all fields can be
-> printed", zero-init all the structs when we define them. None of
-> these structs are large (the biggest is 24 bytes) and having
-> consistent behaviour is less likely to be buggy.
-> 
-> Cc: qemu-stable@nongnu.org
-> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2718
-> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-> ---
->   hw/intc/arm_gicv3_its.c | 44 ++++++++++++++++++++---------------------
->   1 file changed, 22 insertions(+), 22 deletions(-)
+From what I can tell this is the same issue Thomas was looking at yes.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+I saw the failure on the master branch at the v9.2.0 tag (ae35f033) and just
+re-tested it against (83aaec1d) and still see it. I haven't seen it be an
+intermittent failure, it has failed 100% of the time that I have tested it when
+targeting arm-softmmu.
 
+However, you are right that with Phillippe's series on top of my change the
+bug is somehow re-introduced. Not sure what the protocol is here since
+neither patch has landed
 
