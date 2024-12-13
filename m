@@ -2,61 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC9C29F022E
+	by mail.lfdr.de (Postfix) with ESMTPS id 699259F022D
 	for <lists+qemu-devel@lfdr.de>; Fri, 13 Dec 2024 02:26:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tLuQu-0000vu-CE; Thu, 12 Dec 2024 20:25:32 -0500
+	id 1tLuQr-0000sI-9T; Thu, 12 Dec 2024 20:25:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1tLuQc-0000nO-O6
+ id 1tLuQc-0000nP-SB
  for qemu-devel@nongnu.org; Thu, 12 Dec 2024 20:25:16 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1tLuQT-0003DV-S4
- for qemu-devel@nongnu.org; Thu, 12 Dec 2024 20:25:11 -0500
+ id 1tLuQY-0003Dy-8t
+ for qemu-devel@nongnu.org; Thu, 12 Dec 2024 20:25:12 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1734053105;
+ s=mimecast20190719; t=1734053109;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=cUT2lCbV+mVWonr0FQo0GU105YX5Dsk+7EY6xFs1zOA=;
- b=immZHkYAm9zVsrpAho0W064hsblVRWzichkHIrfh207tG1YV7/mqtAW5ke0PpGInsdc3UA
- LiIOD4o2NCwOc0ZYkA0np9U36XE5SU0295zxxA74uGt2Em69gKaVQj1yxOy4rKTC0tCqfE
- K1HbIMjNO5FIzrIi0kH8qwNII9jrM+c=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ bh=9fcP8aOBsKR0g9U63DwKUzKMEA6oafQrK0PCCojdfCs=;
+ b=WwmZH4xpIU1TkNvrl9FjBsoCiDVsKPtO+hGpViFAo16c86tUrOwwtUBfY4gR8r70vTDKYc
+ Y+6hhLAe0JRH6j2p/ZLTgQXdJzNAsJ23h4hT96L9nFLpX36NUfRFEJMA4fjVhUJXGkxe81
+ zIXof8485hgU4hjQ9peUVy+eR5/gx+s=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-467-L-YOSmZINLWNBt7lIaEIKg-1; Thu,
- 12 Dec 2024 20:25:03 -0500
-X-MC-Unique: L-YOSmZINLWNBt7lIaEIKg-1
-X-Mimecast-MFC-AGG-ID: L-YOSmZINLWNBt7lIaEIKg
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-127-lGXC5kqgM4-SBRawsYQ1yA-1; Thu,
+ 12 Dec 2024 20:25:05 -0500
+X-MC-Unique: lGXC5kqgM4-SBRawsYQ1yA-1
+X-Mimecast-MFC-AGG-ID: lGXC5kqgM4-SBRawsYQ1yA
 Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id BB58D19560B2
- for <qemu-devel@nongnu.org>; Fri, 13 Dec 2024 01:25:02 +0000 (UTC)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 0F88D1956046; Fri, 13 Dec 2024 01:25:05 +0000 (UTC)
 Received: from localhost (unknown [10.2.16.40])
  by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 126061955F40; Fri, 13 Dec 2024 01:25:01 +0000 (UTC)
-Date: Thu, 12 Dec 2024 20:21:04 -0500
+ id 7A2FF195605A; Fri, 13 Dec 2024 01:25:04 +0000 (UTC)
+Date: Thu, 12 Dec 2024 20:21:12 -0500
 From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org
-Subject: Re: [PULL 00/49] rust, QOM, kvm changes for 2024-12-11
-Message-ID: <20241213012104.GA395433@fedora>
-References: <20241211162720.320070-1-pbonzini@redhat.com>
+To: Fabiano Rosas <farosas@suse.de>
+Cc: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>
+Subject: Re: [PULL 00/22] QTest patches for 2024-12-12
+Message-ID: <20241213012112.GA395453@fedora>
+References: <20241212150949.16806-1-farosas@suse.de>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="A6YIpAhnzZmqPLRW"
+ protocol="application/pgp-signature"; boundary="VraijbMsm6fbfa8J"
 Content-Disposition: inline
-In-Reply-To: <20241211162720.320070-1-pbonzini@redhat.com>
+In-Reply-To: <20241212150949.16806-1-farosas@suse.de>
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -84,7 +83,7 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
---A6YIpAhnzZmqPLRW
+--VraijbMsm6fbfa8J
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
@@ -92,21 +91,21 @@ Applied, thanks.
 
 Please update the changelog at https://wiki.qemu.org/ChangeLog/10.0 for any user-visible changes.
 
---A6YIpAhnzZmqPLRW
+--VraijbMsm6fbfa8J
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmdbjAAACgkQnKSrs4Gr
-c8iTygf/YunEuzEGtLpK13HWWcgyXC3BR9vjHGGMIbbph4BDaiUuMurJ4SwqynRk
-VdC9kkcrc4TCUCn9YSD1gw+8kqNJDNha/LizZhI9njAiR7n4N0DCDhg9dg9kXfKd
-wV/Di/psm+93dnBanr6MEEdpKIhdYbYKQwxGoegzR03rW/Q/2u+6zn2hEFdUCnbn
-QH0oQOfB6YfdLLYdhKAku+/vAl4xzJxk+5W4xINiTiEKZwAkZlLlxcQ7kLvO8eqH
-geWPCWzEkDGKt4dPUydu511SbeaJfzhS8cu53mQPJxBue2CIgLV1pjgWujseIGs+
-Oh6JsZ2AYCmc9IAVDuQiw1zGcNLDFA==
-=C3Sw
+iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmdbjAgACgkQnKSrs4Gr
+c8gM9Qf/Y3gsfHvMNMWXYFJs4rGoNKMZYpsQLeS7juDDfsN8KirJ/0RsIMd4dZVD
+2+0YHoOKFRrNrS4HpSqtmJOUppqvnYBCUWOpUTnLILTFcQhOE3HrWVkNrc5kqSUL
+iJ/mFMeib4n5XgjvskRAMhMpt5Hsn9L1xL8w0Mjf6krEQYN2rjmo87+8mUq7zYxO
+x0/agR33LwAgEDWTIjC/hzDawPU0fDZ3ex6ubOTux6krafNk1SCzODaOLAYJdDcv
+ZGdBMTWb+9vvByOjiP91JEvO/BGBV3+rU6NjTA9BTQ/G/CDP/pbA9mfVdntrhNsz
+2/Sp1midAxI2rKiBDK9Qtelwc4Y8zQ==
+=9WoW
 -----END PGP SIGNATURE-----
 
---A6YIpAhnzZmqPLRW--
+--VraijbMsm6fbfa8J--
 
 
