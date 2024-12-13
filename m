@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F33839F01F4
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Dec 2024 02:19:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EE369F01D4
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Dec 2024 02:16:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tLuHx-0001ND-KH; Thu, 12 Dec 2024 20:16:18 -0500
+	id 1tLuHy-00017z-Gt; Thu, 12 Dec 2024 20:16:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tLuH6-0000yR-S1
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tLuH6-0000yW-SP
  for qemu-devel@nongnu.org; Thu, 12 Dec 2024 20:15:24 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tLuGw-0000vL-0Q
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tLuH0-0000vv-29
  for qemu-devel@nongnu.org; Thu, 12 Dec 2024 20:15:23 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1734052512;
+ s=mimecast20190719; t=1734052516;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=cXzDH2S44TEsrk3c9xiUrSweb/whHKYC8mLrAY2rHQY=;
- b=PvsCfXf6qhaoQhVTHJK+lSzWdXD1Bc4hS9chFwANA1Ei29fFlZTEZPAwXbLb28Dh/ngGRs
- 1VXTaWJSb+9cLa0T79jmgKjg8svdANfpJ4k0/yZ8l8mSH1b+TBVX5mw62RHLKXmd5/whEt
- gXYzJJFx7lh2PwYE0DNknLr3hG4q2JI=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ bh=E2uBLnCFk7cw9O+LvbpeL9YtAqyFV9HBoqcOf2eGrOU=;
+ b=Qv/3W8XVMBQW5Wea2zIvnEcWa3qzcEa0c2h4N5a+sqDsI8+mohSoj8HPUcnKkZZ1C9GGbB
+ vzR9wFd8eXq9HvhHsvY2vKZwZOj4eBftgMuaxchAOuwG6ECxJiJjZ0oHAkUCc47rRjq7+b
+ HUryIpyMTOzYV48/k7ogdPAVeohfiz4=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-149-hsmOC9QlN-qBOYJorDcc2A-1; Thu,
- 12 Dec 2024 20:15:10 -0500
-X-MC-Unique: hsmOC9QlN-qBOYJorDcc2A-1
-X-Mimecast-MFC-AGG-ID: hsmOC9QlN-qBOYJorDcc2A
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-675-0EitUavIPSe0ikg6VNw1Qw-1; Thu,
+ 12 Dec 2024 20:15:14 -0500
+X-MC-Unique: 0EitUavIPSe0ikg6VNw1Qw-1
+X-Mimecast-MFC-AGG-ID: 0EitUavIPSe0ikg6VNw1Qw
 Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 0912419560AF; Fri, 13 Dec 2024 01:15:10 +0000 (UTC)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 8BA4F19560B3; Fri, 13 Dec 2024 01:15:13 +0000 (UTC)
 Received: from jsnow-thinkpadp16vgen1.westford.csb (unknown [10.22.88.22])
  by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 5655E1956096; Fri, 13 Dec 2024 01:15:08 +0000 (UTC)
+ id CD2BF1956086; Fri, 13 Dec 2024 01:15:10 +0000 (UTC)
 From: John Snow <jsnow@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Michael Roth <michael.roth@amd.com>, Markus Armbruster <armbru@redhat.com>,
@@ -50,13 +50,12 @@ Cc: Michael Roth <michael.roth@amd.com>, Markus Armbruster <armbru@redhat.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Victor Toso de Carvalho <victortoso@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>, John Snow <jsnow@redhat.com>
-Subject: [RFC PATCH v2 31/35] docs/qapi-domain: collapsible branches
-Date: Thu, 12 Dec 2024 20:13:00 -0500
-Message-ID: <20241213011307.2942030-32-jsnow@redhat.com>
+Subject: [RFC PATCH v2 32/35] WIP: 3.x - XREF
+Date: Thu, 12 Dec 2024 20:13:01 -0500
+Message-ID: <20241213011307.2942030-33-jsnow@redhat.com>
 In-Reply-To: <20241213011307.2942030-1-jsnow@redhat.com>
 References: <20241213011307.2942030-1-jsnow@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=jsnow@redhat.com;
@@ -86,460 +85,444 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: John Snow <jsnow@redhat.com>
 ---
- docs/conf.py                           |   1 +
- docs/sphinx-static/theme_overrides.css |  10 ++
- docs/sphinx/collapse.py                | 200 +++++++++++++++++++++++++
- docs/sphinx/qapi-domain.py             | 157 +++++++++++++++----
- 4 files changed, 341 insertions(+), 27 deletions(-)
- create mode 100644 docs/sphinx/collapse.py
+ docs/sphinx/compat.py      | 114 +++++++++++++++++++-
+ docs/sphinx/qapi-domain.py | 207 ++++++++++++-------------------------
+ 2 files changed, 179 insertions(+), 142 deletions(-)
 
-diff --git a/docs/conf.py b/docs/conf.py
-index bad35114351..7998d81f1d9 100644
---- a/docs/conf.py
-+++ b/docs/conf.py
-@@ -61,6 +61,7 @@
- # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
- # ones.
- extensions = [
-+    'collapse',
-     'depfile',
-     'hxtool',
-     'kerneldoc',
-diff --git a/docs/sphinx-static/theme_overrides.css b/docs/sphinx-static/theme_overrides.css
-index 5ceb89eb9a8..2ba98d23bbd 100644
---- a/docs/sphinx-static/theme_overrides.css
-+++ b/docs/sphinx-static/theme_overrides.css
-@@ -296,3 +296,13 @@ dl.field-list > dt {
- dl.field-list > dd:not(:last-child) {
-     padding-bottom: 1em;
- }
-+
-+dl.field-list > dd > details {
-+    border-left: solid 5px #bcc6d2;
-+}
-+
-+dl.field-list > dd > details > summary {
-+    background-color: #eaedf1;
-+    color: black;
-+    padding-left: 0.75em;
-+}
-diff --git a/docs/sphinx/collapse.py b/docs/sphinx/collapse.py
-new file mode 100644
-index 00000000000..519f1f4b95b
---- /dev/null
-+++ b/docs/sphinx/collapse.py
-@@ -0,0 +1,200 @@
-+"""
-+Adds a collapsible section to an HTML page using a details_ element.
-+
-+.. _details: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/details
-+
-+Modified (for formatting, vendoring and removing dependencies) from
-+sphinx_toolbox.collapse, originally by Dominic Davis-Foster
-+<dominic@davis-foster.co.uk>
-+
-+See https://github.com/sphinx-toolbox/sphinx-toolbox/tree/master
-+
-+"""
-+
-+#
-+#  Copyright © 2021 Dominic Davis-Foster <dominic@davis-foster.co.uk>
-+#
-+#  Permission is hereby granted, free of charge, to any person obtaining a copy
-+#  of this software and associated documentation files (the "Software"), to deal
-+#  in the Software without restriction, including without limitation the rights
-+#  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-+#  copies of the Software, and to permit persons to whom the Software is
-+#  furnished to do so, subject to the following conditions:
-+#
-+#  The above copyright notice and this permission notice shall be
-+#  included in all copies or substantial portions of the Software.
-+#
-+#  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-+#  EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-+#  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-+#  IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
-+#  DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
-+#  OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
-+#  OR OTHER DEALINGS IN THE SOFTWARE.
-+#
-+
-+# stdlib
+diff --git a/docs/sphinx/compat.py b/docs/sphinx/compat.py
+index 28cb39161fe..657c05a81a4 100644
+--- a/docs/sphinx/compat.py
++++ b/docs/sphinx/compat.py
+@@ -2,14 +2,32 @@
+ Sphinx cross-version compatibility goop
+ """
+ 
+-from typing import Callable
++import re
 +from typing import (
 +    Any,
-+    ClassVar,
-+    Dict,
++    Callable,
 +    Optional,
-+    Sequence,
++    Type,
 +)
-+
-+# 3rd party
-+from docutils import nodes
-+from docutils.parsers.rst import directives
-+from docutils.parsers.rst.roles import set_classes
-+
-+from sphinx.application import Sphinx
-+from sphinx.util.docutils import SphinxDirective
-+from sphinx.writers.html import HTMLTranslator
-+
-+
-+__all__ = (
-+    "CollapseDirective",
-+    "CollapseNode",
-+    "visit_collapse_node",
-+    "depart_collapse_node",
-+    "setup",
-+)
-+
-+
-+def flag(argument: Any) -> bool:
-+    """
-+    Check for a valid flag option (no argument) and return :py:obj:`True`.
-+
-+    Used in the ``option_spec`` of directives.
-+
-+    .. seealso::
-+
-+       :class:`docutils.parsers.rst.directives.flag`, which returns
-+       :py:obj:`None` instead of :py:obj:`True`.
-+
-+    :raises: :exc:`ValueError` if an argument is given.
-+    """
-+    if argument and argument.strip():
-+        raise ValueError(f"No argument is allowed; {argument!r} supplied")
-+    else:
-+        return True
-+
-+
-+class CollapseDirective(SphinxDirective):
-+    """
-+    A Sphinx directive to add a collapsible section to an HTML page
-+    using a details_ element.
-+
-+    .. _details:
-+       https://developer.mozilla.org/en-US/docs/Web/HTML/Element/details
-+    """
-+
-+    final_argument_whitespace: ClassVar[bool] = True
-+    has_content: ClassVar[bool] = True
-+
-+    # The label
-+    required_arguments: ClassVar[int] = 1
-+
-+    option_spec = {
-+        "class": directives.class_option,
-+        "name": directives.unchanged,
-+        "open": flag,
-+    }
-+
-+    def run(self) -> Sequence[nodes.Node]:
-+        """
-+        Process the content of the directive.
-+        """
-+
-+        set_classes(self.options)
-+        self.assert_has_content()
-+
-+        text = "\n".join(self.content)
-+        label = self.arguments[0]
-+
-+        collapse_node = CollapseNode(text, label, **self.options)
-+
-+        self.add_name(collapse_node)
-+
-+        collapse_node["classes"].append(f"summary-{nodes.make_id(label)}")
-+
-+        self.state.nested_parse(
-+            self.content, self.content_offset, collapse_node
-+        )
-+
-+        return [collapse_node]
-+
-+
-+class CollapseNode(nodes.Body, nodes.Element):
-+    """
-+    Node that represents a collapsible section.
-+
-+    :param rawsource:
-+    :param label:
-+    """
-+
-+    def __init__(
-+        self,
-+        rawsource: str = "",
-+        label: Optional[str] = None,
-+        *children: Any,
-+        **attributes: Any,
-+    ) -> None:
-+        super().__init__(rawsource, *children, **attributes)
-+        self.label = label
-+
-+
-+def visit_collapse_node(translator: HTMLTranslator, node: CollapseNode) -> None:
-+    """
-+    Visit a :class:`~.CollapseNode`.
-+
-+    :param translator:
-+    :param node: The node being visited.
-+    """
-+
-+    tag_parts = ["details"]
-+
-+    if names := node.get("names", None):
-+        tag_parts.append(f'name="{" ".join(names)}"')
-+
-+    if classes := node.get("classes", None):
-+        tag_parts.append(f'class="{" ".join(classes)}"')
-+
-+    if node.attributes.get("open", False):
-+        tag_parts.append("open")
-+
-+    translator.body.append(
-+        f"<{' '.join(tag_parts)}>\n<summary>{node.label}</summary>"
-+    )
-+    translator.context.append("</details>")
-+
-+
-+def depart_collapse_node(
-+    translator: HTMLTranslator, node: CollapseNode
-+) -> None:
-+    """
-+    Depart a :class:`~.CollapseNode`.
-+
-+    :param translator:
-+    :param node: The node being visited.
-+    """
-+    translator.body.append(translator.context.pop())
-+
-+
-+def setup(app: Sphinx) -> Dict[str, Any]:
-+    """
-+    Setup :mod:`sphinx_toolbox.collapse`.
-+
-+    :param app: The Sphinx application.
-+    """
-+    app.add_directive("collapse", CollapseDirective)
-+    app.add_node(
-+        CollapseNode,
-+        html=(visit_collapse_node, depart_collapse_node),
-+        latex=(lambda *args, **kwargs: None, lambda *args, **kwargs: None),
-+    )
-+
-+    return {
-+        "parallel_read_safe": True,
-+        "version": "3.5.0",
-+    }
-diff --git a/docs/sphinx/qapi-domain.py b/docs/sphinx/qapi-domain.py
-index 7cbf12d93f7..ee9b1d056ff 100644
---- a/docs/sphinx/qapi-domain.py
-+++ b/docs/sphinx/qapi-domain.py
-@@ -23,6 +23,7 @@
- from docutils.parsers.rst import directives
- from docutils.statemachine import StringList
  
-+from collapse import CollapseNode
- from compat import keyword_node, nested_parse, space_node
++from docutils import nodes
+ from docutils.nodes import Element, Node, Text
+ 
  import sphinx
  from sphinx import addnodes
-@@ -466,10 +467,7 @@ def _validate_field(self, field: nodes.field) -> None:
-         allowed_fields = set(self.env.app.config.qapi_allowed_fields)
- 
-         field_label = name.astext()
--        if (
--            re.match(r"\[\S+ = \S+\]", field_label)
--            or field_label in allowed_fields
--        ):
-+        if field_label == ":BRANCH:" or field_label in allowed_fields:
-             # okie-dokey. branch entry or known good allowed name.
-             return
- 
-@@ -528,6 +526,8 @@ def before_content(self) -> None:
-             self.content_offset = 0
- 
-     def transform_content(self, contentnode: addnodes.desc_content) -> None:
-+        self.content_node = contentnode
+-from sphinx.util.docutils import SphinxDirective, switch_source_input
++from sphinx.environment import BuildEnvironment
++from sphinx.roles import XRefRole
++from sphinx.util import docfields
++from sphinx.util.docutils import (
++    ReferenceRole,
++    SphinxDirective,
++    switch_source_input,
++)
+ from sphinx.util.nodes import nested_parse_with_titles
++from sphinx.util.typing import TextlikeNode
 +
-         # Sphinx workaround: Inject our parsed content and restore state.
-         if self._temp_node:
-             contentnode += self._temp_node.children
-@@ -547,6 +547,66 @@ def transform_content(self, contentnode: addnodes.desc_content) -> None:
-                     assert isinstance(field, nodes.field)
-                     self._validate_field(field)
++
++MAKE_XREF_WORKAROUND = sphinx.version_info[:3] < (4, 1, 0)
  
-+    def after_content(self) -> None:
-+        # Now that the DocFieldTransformer has been invoked in
-+        # ObjectDescription.run, we can take our branch entries and
-+        # extract their contents and inject them into the preceding
-+        # field list body.
-+
-+        # For example:
-+        #
-+        # Arguments: * lorem
-+        #            * ipsum
-+        # :BRANCH:   <branch stuff here>
-+        #
-+        # will be transformed into:
-+        #
-+        # Arguments: * lorem
-+        #            * ipsum
-+        #            <branch stuff here>
-+
-+        branch_content: List[nodes.Node] = []
-+        insertion_field: Optional[nodes.field] = None
-+
-+        def _inject(
-+            field: Optional[nodes.field], content: List[nodes.Node]
-+        ) -> None:
-+            if not (field or content):
-+                return
-+            if not field:
-+                print(
-+                    "ERROR: qapi:branch directive used without a preceding "
-+                    "Members/Arguments field; there's nowhere to inject the "
-+                    "branch members into!"
-+                )
-+                return
-+            _, body = _unpack_field(field)
-+            body += content
-+
-+        for child in self.content_node:
-+            if isinstance(child, nodes.field_list):
-+                delete_queue: List[nodes.field] = []
-+                for field in child.children:
-+                    assert isinstance(field, nodes.field)
-+                    name, body = _unpack_field(field)
-+                    if name.astext() == ":BRANCH:":
-+                        branch_content.extend(body.children)
-+                        delete_queue.append(field)
-+                    elif not branch_content:
-+                        insertion_field = field
-+                    else:
-+                        # Field is not a branch and branch_content is not empty;
-+                        # we should do the insertion here and now.
-+                        _inject(insertion_field, branch_content)
-+                        insertion_field = None
-+                        branch_content = []
-+
-+                # Delete any branches encountered thus far.
-+                for field in delete_queue:
-+                    child.remove(field)
-+
-+        _inject(insertion_field, branch_content)
-+
-     def _toc_entry_name(self, sig_node: desc_signature) -> str:
-         # This controls the name in the TOC and on the sidebar.
  
-@@ -770,14 +830,27 @@ def run(self) -> List[Node]:
- 
- class Branch(SphinxDirective):
-     """
--    Nested directive which only serves to introduce temporary
--    metadata but return its parsed content nodes unaltered otherwise.
-+    A nested directive to document union Branches.
- 
--    Technically, you can put whatever you want in here, but doing so may
--    prevent proper merging of adjacent field lists.
-+    This directive should contain at most one type of semantic/grouped
-+    field list type, either "memb" or "arg".
-     """
- 
--    doc_field_types: List[Field] = []
-+    # The :BRANCH: name is a placeholder. You can probably get a
-+    # legitimate field list with this name if you try hard
-+    # enough, but it should be difficult to do by accident.
-+    doc_field_types: List[Field] = [
-+        # :arg type name: descr
-+        # :memb type name: descr
-+        QAPITypedField(
-+            "branch-arg-or-memb",
-+            label=":BRANCH:",
-+            names=("arg", "memb"),
-+            typerolename="type",
-+            can_collapse=False,
-+        ),
-+    ]
+ space_node: Callable[[str], Node]
+@@ -46,3 +64,95 @@ def nested_parse(directive: SphinxDirective, content_node: Element) -> None:
+             nested_parse_with_titles(
+                 directive.state, directive.content, content_node
+             )
 +
-     has_content = True
-     required_arguments = 2
-     optional_arguments = 0
-@@ -799,29 +872,59 @@ def run(self) -> list[Node]:
-         discrim = self.arguments[0].strip()
-         value = self.arguments[1].strip()
++
++class CompatFieldMixin:
++    """
++    Compatibility workaround for Sphinx versions prior to 4.1.0.
++
++    Older sphinx versions do not use the domain's XRefRole for parsing
++    and formatting cross-references, so we need to perform this magick
++    ourselves to avoid needing to write the parser/formatter in two
++    separate places.
++
++    This workaround isn't brick-for-brick compatible with modern Sphinx
++    versions, because we do not have access to the parent directive's
++    state during this parsing like we do in more modern versions.
++
++    It's no worse than what pre-Sphinx 4.1.0 does, so... oh well!
++    """
++
++    def make_xref(
++        self,
++        rolename: str,
++        domain: str,
++        target: str,
++        innernode: Type[TextlikeNode] = addnodes.literal_emphasis,
++        contnode: Optional[Node] = None,
++        env: Optional[BuildEnvironment] = None,
++        *args: Any,
++        **kwargs: Any,
++    ) -> Node:
++        print("Using compat make_xref")
++
++        assert env
++        if not rolename:
++            return contnode or innernode(target, target)
++
++        # Get the role instance, but don't *execute it* - we lack the
++        # correct state to do so. Instead, we'll just use its public
++        # methods to do our reference formatting, and emulate the rest.
++        role = env.get_domain(domain).roles[rolename]
++        assert isinstance(role, XRefRole)
++
++        # XRefRole features not supported by this compatibility shim;
++        # these were not supported in Sphinx 3.x either, so nothing of
++        # value is really lost.
++        assert not target.startswith("!")
++        assert not re.match(ReferenceRole.explicit_title_re, target)
++        assert not role.lowercase
++        assert not role.fix_parens
++
++        # Code below based mostly on sphinx.roles.XRefRole; run() and
++        # create_xref_node()
++        options = {
++            "refdoc": env.docname,
++            "refdomain": domain,
++            "reftype": rolename,
++            "refexplicit": False,
++            "refwarn": role.warn_dangling,
++        }
++        refnode = role.nodeclass(target, **options)
++        title, target = role.process_link(env, refnode, False, target, target)
++        refnode["reftarget"] = target
++        classes = ["xref", domain, f"{domain}-{rolename}"]
++        refnode += role.innernodeclass(target, title, classes=classes)
++        result_nodes, messages = role.result_nodes(
++            None,  # FIXME - normally self.inliner.document ...
++            env,
++            refnode,
++            is_ref=True,
++        )
++        return nodes.inline(target, "", *result_nodes)
++
++
++class CompatField(CompatFieldMixin, docfields.Field):
++    pass
++
++
++class CompatGroupedField(CompatFieldMixin, docfields.GroupedField):
++    pass
++
++
++class CompatTypedField(CompatFieldMixin, docfields.TypedField):
++    pass
++
++
++if not MAKE_XREF_WORKAROUND:
++    Field = docfields.Field
++    GroupedField = docfields.GroupedField
++    TypedField = docfields.TypedField
++else:
++    Field = CompatField
++    GroupedField = CompatGroupedField
++    TypedField = CompatTypedField
+diff --git a/docs/sphinx/qapi-domain.py b/docs/sphinx/qapi-domain.py
+index ee9b1d056ff..ebdf9074391 100644
+--- a/docs/sphinx/qapi-domain.py
++++ b/docs/sphinx/qapi-domain.py
+@@ -24,7 +24,14 @@
+ from docutils.statemachine import StringList
  
--        # The label name is dynamically generated per-instance instead
--        # of per-class to incorporate the branch conditions as a label
--        # name.
--        self.doc_field_types = [
--            # :arg type name: descr
--            # :memb type name: descr
--            QAPITypedField(
--                "branch-arg-or-memb",
--                label=f"[{discrim} = {value}]",
--                # In a branch, we don't actually use the name of the
--                # field name to generate the label; so allow either-or.
--                names=("arg", "memb"),
--                typerolename="type",
--            ),
--        ]
+ from collapse import CollapseNode
+-from compat import keyword_node, nested_parse, space_node
++from compat import (
++    Field,
++    GroupedField,
++    TypedField,
++    keyword_node,
++    nested_parse,
++    space_node,
++)
+ import sphinx
+ from sphinx import addnodes
+ from sphinx.addnodes import desc_signature, pending_xref
+@@ -38,24 +45,18 @@
+ from sphinx.locale import _, __
+ from sphinx.roles import XRefRole
+ from sphinx.util import logging
+-from sphinx.util.docfields import (
+-    DocFieldTransformer,
+-    Field,
+-    GroupedField,
+-    TypedField,
+-)
++from sphinx.util.docfields import DocFieldTransformer
+ from sphinx.util.docutils import SphinxDirective
+ from sphinx.util.nodes import make_id, make_refnode
+ 
+ 
+ if TYPE_CHECKING:
+     from docutils.nodes import Element, Node
+-    from docutils.parsers.rst.states import Inliner
+ 
+     from sphinx.application import Sphinx
+     from sphinx.builders import Builder
+     from sphinx.environment import BuildEnvironment
+-    from sphinx.util.typing import OptionSpec, TextlikeNode
++    from sphinx.util.typing import OptionSpec
+ 
+ logger = logging.getLogger(__name__)
+ 
+@@ -82,111 +83,8 @@ class ObjectEntry(NamedTuple):
+     aliased: bool
+ 
+ 
+-class QAPIXrefMixin:
+-    def make_xref(
+-        self,
+-        rolename: str,
+-        domain: str,
+-        target: str,
+-        innernode: type[TextlikeNode] = nodes.literal,
+-        contnode: Optional[Node] = None,
+-        env: Optional[BuildEnvironment] = None,
+-        inliner: Optional[Inliner] = None,
+-        location: Optional[Node] = None,
+-    ) -> Node:
+-        # make_xref apparently has a mode of operation where the inliner
+-        # class argument is passed to the role object
+-        # (e.g. QAPIXRefRole) to construct the final result; passing
+-        # inliner = location = None forces it into its legacy mode where
+-        # it returns a pending_xref node instead.
+-        # (This is how the built-in Python domain behaves.)
+-        result = super().make_xref(  # type: ignore[misc]
+-            rolename,
+-            domain,
+-            target,
+-            innernode=innernode,
+-            contnode=contnode,
+-            env=env,
+-            inliner=None,
+-            location=None,
+-        )
+-        if isinstance(result, pending_xref):
+-            assert env is not None
+-            # Add domain-specific context information to the pending reference.
+-            result["refspecific"] = True
+-            result["qapi:module"] = env.ref_context.get("qapi:module")
 -
--        content_node: addnodes.desc_content = addnodes.desc_content()
-+        content_node = addnodes.desc_content()
-         nested_parse(self, content_node)
-         # DocFieldTransformer usually expects ObjectDescription, but... quack!
-         transformer = DocFieldTransformer(quack(ObjectDescription, self))
-         transformer.transform_all(content_node)
+-        assert isinstance(result, nodes.Node)
+-        return result
+-
+-    def make_xrefs(
+-        self,
+-        rolename: str,
+-        domain: str,
+-        target: str,
+-        innernode: type[TextlikeNode] = nodes.literal,
+-        contnode: Optional[Node] = None,
+-        env: Optional[BuildEnvironment] = None,
+-        inliner: Optional[Inliner] = None,
+-        location: Optional[Node] = None,
+-    ) -> list[Node]:
+-        # Note: this function is called on up to three fields of text:
+-        # (1) The field name argument (e.g. member/arg name)
+-        # (2) The field name type (e.g. member/arg type)
+-        # (3) The field *body* text, for Fields that do not take arguments.
+-
+-        list_type = False
+-        optional = False
+-
+-        # If the rolename is qapi:type, we know we are processing a type
+-        # and not an arg/memb name or field body text.
+-        if rolename == "type":
+-            # force the innernode class to be a literal.
+-            innernode = nodes.literal
+-
+-            # Type names that end with "?" are considered Optional
+-            # arguments and should be documented as such, but it's not
+-            # part of the xref itself.
+-            if target.endswith("?"):
+-                optional = True
+-                target = target[:-1]
+-
+-            # Type names wrapped in brackets denote lists. strip the
+-            # brackets and remember to add them back later.
+-            if target.startswith("[") and target.endswith("]"):
+-                list_type = True
+-                target = target[1:-1]
+-
+-            # When processing Fields with bodyrolename="type", contnode
+-            # will be present, which indicates that the body has already
+-            # been parsed into nodes.  We don't want that, actually:
+-            # we'll re-create our own nodes for it.
+-            contnode = None
+-
+-        results = []
+-        result = self.make_xref(
+-            rolename,
+-            domain,
+-            target,
+-            innernode,
+-            contnode,
+-            env,
+-            inliner,
+-            location,
+-        )
+-        results.append(result)
+-
+-        if list_type:
+-            results.insert(0, nodes.literal("[", "["))
+-            results.append(nodes.literal("]", "]"))
+-        if optional:
+-            results.append(nodes.Text(", "))
+-            results.append(nodes.emphasis("?", "optional"))
+-
+-        return results
+-
+-
+ class QAPIXRefRole(XRefRole):
++
+     def process_link(
+         self,
+         env: BuildEnvironment,
+@@ -196,34 +94,63 @@ def process_link(
+         target: str,
+     ) -> tuple[str, str]:
+         refnode["qapi:module"] = env.ref_context.get("qapi:module")
+-        if not has_explicit_title:
+-            title = title.lstrip(".")  # only has a meaning for the target
+-            target = target.lstrip("~")  # only has a meaning for the title
+-            # if the first character is a tilde, don't display the module
+-            # parts of the contents
+-            if title[0:1] == "~":
+-                title = title[1:]
+-                dot = title.rfind(".")
+-                if dot != -1:
+-                    title = title[dot + 1 :]
+-        # if the first character is a dot, search more specific namespaces first
+-        # else search builtins first
+-        if target[0:1] == ".":
++
++        # Cross-references that begin with a tilde adjust the title to
++        # only show the reference without a leading module, even if one
++        # was provided. This is a Sphinx-standard syntax; give it
++        # priority over QAPI-specific type markup below.
++        hide_module = False
++        if target.startswith("~"):
++            hide_module = True
+             target = target[1:]
+-            refnode["refspecific"] = True
++
++        # Type names that end with "?" are considered optional
++        # arguments and should be documented as such, but it's not
++        # part of the xref itself.
++        if target.endswith("?"):
++            refnode["qapi:optional"] = True
++            target = target[:-1]
++
++        # Type names wrapped in brackets denote lists. strip the
++        # brackets and remember to add them back later.
++        if target.startswith("[") and target.endswith("]"):
++            refnode["qapi:array"] = True
++            target = target[1:-1]
++
++        if has_explicit_title:
++            # Don't mess with the title at all if it was explicitly set.
++            # Explicit title syntax for references is e.g.
++            # :qapi:type:`target <explicit title>`
++            # and this explicit title overrides everything else here.
++            return title, target
++
++        title = target
++        if hide_module:
++            title = target.split(".")[-1]
++
+         return title, target
  
--        return content_node.children
-+        if not content_node.children:
-+            # Empty branch - it happens. Squelch it.
-+            return []
-+
-+        # Now, we're gonna do some surgery.
-+        #
-+        # We're going to find any field lists that contain members/args
-+        # and extract the transformed content from that field list,
-+        # while deleting the field list itself - to avoid having nested
-+        # field lists for branches.
-+
-+        replacements = []
-+        for child in content_node:
-+            if isinstance(child, nodes.field_list):
-+                if len(child.children) != 1:
-+                    # We're only interested in field lists with one field;
-+                    # since these are the semantically grouped/formatted bits.
-+                    continue
-+
-+                field = child.children[0]
-+                assert isinstance(field, nodes.field)
-+                field_name, field_body = _unpack_field(field)
-+
-+                if field_name.astext() == ":BRANCH:":
-+                    replacements.append((child, field_body))
-+
-+        # Delete grouped field lists, replacing them with just their content;
-+        # after field transformation, this should be a list.
-+        for child, field_body in replacements:
-+            child.replace_self(field_body.children)
-+
-+        # Wrap the entire contents up in a collapsible node
-+        collapse_node = CollapseNode(
-+            "", f"When {discrim} is {value}: ...", *content_node.children
-+        )
-+
-+        # Then wrap it all back up in a new field list.
-+        new_content = nodes.field_list(
-+            "",
-+            nodes.field(
-+                "",
-+                nodes.field_name("", ":BRANCH:"),
-+                nodes.field_body("", collapse_node),
-+            ),
-+        )
-+
-+        return [new_content]
++    def result_nodes(
++        self,
++        document: nodes.document,
++        env: BuildEnvironment,
++        node: Element,
++        is_ref: bool,
++    ) -> Tuple[List[nodes.Node], List[nodes.system_message]]:
+ 
+-class QAPIGroupedField(QAPIXrefMixin, GroupedField):
+-    pass
++        # node here is the pending_xref node (or whatever nodeclass was
++        # configured at XRefRole class instantiation time).
++        results: List[nodes.Node] = [node]
+ 
++        if node.get("qapi:array"):
++            results.insert(0, nodes.literal("[", "["))
++            results.append(nodes.literal("]", "]"))
+ 
+-class QAPITypedField(QAPIXrefMixin, TypedField):
+-    pass
++        if node.get("qapi:optional"):
++            results.append(nodes.Text(", "))
++            results.append(nodes.emphasis("?", "optional"))
+ 
+-
+-class QAPIField(QAPIXrefMixin, Field):
+-    pass
++        return results, []
  
  
- class QAPIIndex(Index):
+ def since_validator(param: str) -> str:
+@@ -633,7 +560,7 @@ class QAPICommand(QAPIObject):
+     doc_field_types.extend(
+         [
+             # :arg TypeName ArgName: descr
+-            QAPITypedField(
++            TypedField(
+                 "argument",
+                 label=_("Arguments"),
+                 names=("arg",),
+@@ -648,7 +575,7 @@ class QAPICommand(QAPIObject):
+                 has_arg=False,
+             ),
+             # :returns TypeName: descr
+-            QAPIGroupedField(
++            GroupedField(
+                 "returnvalue",
+                 label=_("Returns"),
+                 rolename="type",
+@@ -656,7 +583,7 @@ class QAPICommand(QAPIObject):
+                 can_collapse=True,
+             ),
+             # :returns-nodesc: TypeName
+-            QAPIField(
++            Field(
+                 "returnvalue",
+                 label=_("Returns"),
+                 names=("returns-nodesc",),
+@@ -691,7 +618,7 @@ class QAPIAlternate(QAPIObject):
+     doc_field_types.extend(
+         [
+             # :choice type name: descr
+-            QAPITypedField(
++            TypedField(
+                 "choice",
+                 label=_("Choices"),
+                 names=("choice",),
+@@ -709,7 +636,7 @@ class QAPIObjectWithMembers(QAPIObject):
+     doc_field_types.extend(
+         [
+             # :member type name: descr
+-            QAPITypedField(
++            TypedField(
+                 "member",
+                 label=_("Members"),
+                 names=("memb",),
+@@ -842,7 +769,7 @@ class Branch(SphinxDirective):
+     doc_field_types: List[Field] = [
+         # :arg type name: descr
+         # :memb type name: descr
+-        QAPITypedField(
++        TypedField(
+             "branch-arg-or-memb",
+             label=":BRANCH:",
+             names=("arg", "memb"),
 -- 
 2.47.0
 
