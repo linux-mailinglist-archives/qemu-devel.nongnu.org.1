@@ -2,85 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D28339F139E
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Dec 2024 18:28:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C09A9F14AC
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Dec 2024 19:06:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tM9Re-0008VT-42; Fri, 13 Dec 2024 12:27:18 -0500
+	id 1tMA1n-0004Tq-5C; Fri, 13 Dec 2024 13:04:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from
- <3bm5cZwgKCv01mjsiwnplttlqj.htrvjrz-ij0jqstslsz.twl@flex--whendrik.bounces.google.com>)
- id 1tM9Ra-0008U5-IN
- for qemu-devel@nongnu.org; Fri, 13 Dec 2024 12:27:14 -0500
-Received: from mail-wm1-x349.google.com ([2a00:1450:4864:20::349])
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
+ id 1tMA1f-0004T9-Ez; Fri, 13 Dec 2024 13:04:31 -0500
+Received: from mail-ej1-x636.google.com ([2a00:1450:4864:20::636])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from
- <3bm5cZwgKCv01mjsiwnplttlqj.htrvjrz-ij0jqstslsz.twl@flex--whendrik.bounces.google.com>)
- id 1tM9RY-0007s5-Ka
- for qemu-devel@nongnu.org; Fri, 13 Dec 2024 12:27:14 -0500
-Received: by mail-wm1-x349.google.com with SMTP id
- 5b1f17b1804b1-434fe2b605eso11611945e9.2
- for <qemu-devel@nongnu.org>; Fri, 13 Dec 2024 09:27:11 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
+ id 1tMA1d-0008Gk-Ia; Fri, 13 Dec 2024 13:04:31 -0500
+Received: by mail-ej1-x636.google.com with SMTP id
+ a640c23a62f3a-aa66e4d1d5aso323946166b.2; 
+ Fri, 13 Dec 2024 10:04:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20230601; t=1734110831; x=1734715631; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:from:subject:message-id:references
- :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
- :reply-to; bh=ZYv+pg+UZazKGCKy29BkEC26GYqoLpWfMbrkqDY73z8=;
- b=WgvxMIWp0xLa5CQibV4Jn2aG7ii1ixPxLqPQckV9L1HrRcjo2lopGPd02VHGeOdW8m
- fv0+4zl0y3j1FznCQNV4CfeOlFbhoYma4oyhRMtyFT6eT+Nbfj6m87t0a/RUEfEgFZMQ
- eqDN4sy0NpjALwQ9bEer01xblo/g3++cZapeczz1AIOJUfKNvs9IPnubhVvv+o6bUryp
- U6aBQ7y6/bdyK1EbJpb15H1HqCDCREik64Fw25OepCAjXg95Q2N3yiqYj7iHSb36VQB/
- ZooGLGolRkVOh0Ne5rjh+4gWTVC6rJNTdmA5fKO+kNxJSGNxJKGFnLuqqwykAu4ZBstX
- yaCA==
+ d=gmail.com; s=20230601; t=1734113065; x=1734717865; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=eZAdsWK52VAb8fudDg9PRQ5VSPYseUmnxkNdC1pBytY=;
+ b=WBqqndd2+iND0uGaDVzWn0GC605mY7rXTkZLpWSTSCKeiN0Oz8F0ip3lLjmfu7eLUY
+ /aV5wMmKs4d7TUSLGzTv11jGDBNgLVzcnOdaIDEXKITXFVk3WYbdHpDeKiNeTXWNdhnQ
+ 37UhbCs/FyEBBgIjTOI90h1irFsK6rDOxnfzNQCin/nGSDB3taZFARMj2gYjmKGWCqI6
+ vFNc7kzpABZdTH+Y08gtAAetENpj6uw65OoKunL0fr6u7oAk8pch1h1kaNI1+hroyv7F
+ EVCY8g09tax7CYl7Bp5XfI5YtHr+1v50LnYxd2YoaO8SXXBU26d1QA4tqiueayH9Qw8f
+ HUdw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734110831; x=1734715631;
- h=content-transfer-encoding:cc:to:from:subject:message-id:references
- :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
- :date:message-id:reply-to;
- bh=ZYv+pg+UZazKGCKy29BkEC26GYqoLpWfMbrkqDY73z8=;
- b=MYr/hnDaRou4TNsZzyQ0Ubix3E37wmi1pmlcXQgKGERkGowEA0ouPZFKQpr88PZ6DA
- DdXXSew0iUiM4e4O6vSVfn+LU3YCvYRLKkRZPIZ7njSLMAMtImQWYLeG1kphwCWTRWq8
- N1HIYgUJt1YNaO0WUG5HDxqJ/D1QxMSEXFG9Kx+nT9iNONdyXqSg1RRtESQWW1oVgo4u
- dybORSqbw9l6KewUp6ijVfidIfdXXdW7yTsjBN/97Vl2ASh0F/S2WMJhKcRwkJ4+nLRU
- gd/pHTmv9doohDGFQGF3V+QmhtLaHWDEr92USXIK4kXF97QZU8xb6CwFpNZBN/HLp8bx
- CBrg==
-X-Gm-Message-State: AOJu0YzOuRfWFQEYwwZ6VNyObHCR6UoHofEVcKr6IYrwgy09k1ojljT0
- DYO2UvUNBQ/dewXRX0PV98lRUoj5/w9v1yrNNTQURSbjrqrgknfQCJybOujty5A0OpxBRZTi+gj
- QR38GGWmxMFeHeDZBOMApFuRYOh2yDB3CfdSm2MGwFy21KbqQlve/6iFdxQkzwsclJZEjRu8S47
- yIm6813mW1gn6pBYrEaCCVvw91WxItsjHkRFxQCG17dg==
-X-Google-Smtp-Source: AGHT+IFy5d157S59NX6/IVic3hAaUU1ydX7QiydKmzSAfk5UGHdRLcDdjm3M8VRzNTQoXC72FxRr0dUevUNaEA==
-X-Received: from wmbdx22.prod.google.com ([2002:a05:600c:63d6:b0:436:3ea:c491])
- (user=whendrik job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:cc9:b0:434:f739:7ce3 with SMTP id
- 5b1f17b1804b1-4362aa2881bmr28110425e9.8.1734110830711; 
- Fri, 13 Dec 2024 09:27:10 -0800 (PST)
-Date: Fri, 13 Dec 2024 17:26:45 +0000
-In-Reply-To: <20241213172645.2751696-1-whendrik@google.com>
-Mime-Version: 1.0
-References: <20241213172645.2751696-1-whendrik@google.com>
-X-Mailer: git-send-email 2.47.1.613.gc27f4b7a9f-goog
-Message-ID: <20241213172645.2751696-9-whendrik@google.com>
-Subject: [PATCH v5 8/8] i386/cpu: Adjust level for RDT on full_cpuid_auto_level
-From: Hendrik Wuethrich <whendrik@google.com>
-To: qemu-devel@nongnu.org, eduardo@habkost.net, richard.henderson@linaro.org, 
- marcel.apfelbaum@gmail.com, mst@redhat.com, pbonzini@redhat.com, 
- zhao1.liu@intel.com, xiaoyao.li@intel.com
-Cc: peternewman@google.com, 
- "=?UTF-8?q?=E2=80=AAHendrik=20W=C3=BCthrich?=" <whendrik@google.com>
-Content-Type: text/plain; charset="UTF-8"
+ d=1e100.net; s=20230601; t=1734113065; x=1734717865;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=eZAdsWK52VAb8fudDg9PRQ5VSPYseUmnxkNdC1pBytY=;
+ b=ddq1dlTQJv28HEDQzidtk5uAjsZm5ErVruLdLNqKzJmlrHeUoolLKy/61pP8fbvuJC
+ kp8ZTBBehbRW9tvrwix83Ar4IAG5Fh+2wmzCvIKvR+TmarKLLl93shSALfb6ltM/dYLZ
+ 6A4rWs7xXnwnI5z5lqFA0zrZJmoaHYW/vZOJxqC+9sWfhaFlEfpU6mAVo5/1znZj2/r/
+ 8wlYyz87gDHlxId+2rokDy1fEpHZIa5KjIEJJ7gYNEId7NJVepf8+rt/aQ7hZk3hXgkP
+ bGxmFOHbK/hT5i8LM1v3pa4uWr7wPodKdcDWmVOWzZG88/eBqNPFjPJd5phhGzr17KtP
+ LtZA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUPGvQovcTj0S3ZVMU/NBVMu5ddX+zBo4Lso3zIU0/WcSWCIYQ1nvXj7Mm6VWDBO9Gkg097mdtrr3CRdQ==@nongnu.org,
+ AJvYcCVCTyvFYjYsfJR7JLXEE5FGnHK4Bn1KnuBMog8imCUkXCKuZD7wNRc20D872E17vyvf438rp3vbGQ==@nongnu.org
+X-Gm-Message-State: AOJu0Yw5AZMcZ4T21BVts4iohzjUPa89HxswRoiS6+X2SHWz5WI1F+dw
+ kjv+7TchwC22bPJPbqStR2E6XVQ8SYDgDUWFmGlZHUs5m0NjqjRX
+X-Gm-Gg: ASbGncu7t/zlOnO90Q719N26R7dKN+oZ34qB7C12AwdXrv95L+39I/Z47KMsRHaFkNf
+ GOGYWDhDXi5dI58T/YW5vvAgqpGcbteLdiHma4wintnv9W/jfonp3vm1dwNyl+sl3J1+1eG5EbG
+ yUx+zWQi4F7xrcbXJG702Khvj6RQ6DL0PkF64dU9akYdzdX8Mwwhwaea/W+ODwHuvkR/Qjncboo
+ qmomdaBoAkPrHlZy4mmPmK6LJTmdQVskNdGa+HIXwsD4inpGV5BwsVbwIqKcgYYrmQ9SVaKFCwH
+ nHTodLVKZOxWtgWNvoJnRKFAdZBYtVY=
+X-Google-Smtp-Source: AGHT+IGlisjCBIYC8gakRR2uLfury218/e1D5fgLj1rr8bc3FmZPjjyi+nlzKMK5FZBIoYhpOczexg==
+X-Received: by 2002:a17:906:23e1:b0:aa6:96be:2bed with SMTP id
+ a640c23a62f3a-aab77ee8ae6mr323074866b.59.1734113064881; 
+ Fri, 13 Dec 2024 10:04:24 -0800 (PST)
+Received: from [127.0.0.1] (dynamic-077-183-249-001.77.183.pool.telefonica.de.
+ [77.183.249.1]) by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-aa69738cc14sm645753566b.105.2024.12.13.10.04.24
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 13 Dec 2024 10:04:24 -0800 (PST)
+Date: Fri, 13 Dec 2024 17:26:52 +0000
+From: Bernhard Beschow <shentey@gmail.com>
+To: =?ISO-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+CC: qemu-block@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+ Peter Xu <peterx@redhat.com>, qemu-arm@nongnu.org,
+ John Snow <jsnow@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [PATCH v4 1/2] hw/ide/ahci: Decouple from PCI
+In-Reply-To: <b87473d2-d132-42a4-8ca3-aaace8da7bf9@linaro.org>
+References: <20241212110926.23548-1-shentey@gmail.com>
+ <20241212110926.23548-2-shentey@gmail.com>
+ <b87473d2-d132-42a4-8ca3-aaace8da7bf9@linaro.org>
+Message-ID: <F723466D-FB22-485A-936E-1C4AAEEFF05E@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::349;
- envelope-from=3bm5cZwgKCv01mjsiwnplttlqj.htrvjrz-ij0jqstslsz.twl@flex--whendrik.bounces.google.com;
- helo=mail-wm1-x349.google.com
-X-Spam_score_int: -95
-X-Spam_score: -9.6
-X-Spam_bar: ---------
-X-Spam_report: (-9.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- USER_IN_DEF_DKIM_WL=-7.5 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::636;
+ envelope-from=shentey@gmail.com; helo=mail-ej1-x636.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,40 +103,83 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: =E2=80=AAHendrik W=C3=BCthrich <whendrik@google.com>
 
-Make sure that RDT monitoring and allocation features are included in
-in full_cpuid_auto_level.
 
-Signed-off-by: Hendrik W=C3=BCthrich <whendrik@google.com>
+Am 13=2E Dezember 2024 14:41:46 UTC schrieb "Philippe Mathieu-Daud=C3=A9" =
+<philmd@linaro=2Eorg>:
+>On 12/12/24 12:09, Bernhard Beschow wrote:
+>> In some adhoc profiling booting Linux VMs, it's observed that ahci_irq_=
+lower()
+>> can be a hot path (10000+ triggers until login prompt appears)=2E Even =
+though the
+>> parent device never changes, this method re-determines whether the pare=
+nt device
+>> is a PCI device or not using the rather expensive object_dynamic_cast()
+>> function=2E Avoid this overhead by pushing the interrupt handling to th=
+e parent
+>> device, essentially turning AHCIState into an "IP block"=2E
+>>=20
+>> Note that this change also frees AHCIState from the PCI dependency whic=
+h wasn't
+>> reflected in Kconfig=2E
+>>=20
+>> Reported-by: Peter Xu <peterx@redhat=2Ecom>
+>> Inspired-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro=2Eorg>
+>> Signed-off-by: Bernhard Beschow <shentey@gmail=2Ecom>
+>> ---
+>>   hw/ide/ahci-internal=2Eh    |  1 -
+>>   include/hw/ide/ahci-pci=2Eh |  2 ++
+>>   include/hw/ide/ahci=2Eh     |  2 --
+>>   hw/ide/ahci=2Ec             | 39 ++++--------------------------------=
 ---
- target/i386/cpu.c | 3 +++
- 1 file changed, 3 insertions(+)
+>>   hw/ide/ich=2Ec              | 19 +++++++++++++++----
+>>   5 files changed, 21 insertions(+), 42 deletions(-)
+>
+>
+>>   static void pci_ich9_reset(DeviceState *dev)
+>>   {
+>>       AHCIPCIState *d =3D ICH9_AHCI(dev);
+>> @@ -102,7 +114,9 @@ static void pci_ich9_ahci_init(Object *obj)
+>>   {
+>>       AHCIPCIState *d =3D ICH9_AHCI(obj);
+>>   +    qemu_init_irq(&d->irq, pci_ich9_ahci_update_irq, d, 0);
+>>       ahci_init(&d->ahci, DEVICE(obj));
+>> +    d->ahci=2Eirq =3D &d->irq;
+>
+>Pre-existing, but we shouldn't set this directly=2E
+>Does the IRQState belong to AHCIState?
 
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index f7904870ed..4f1493043e 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -880,6 +880,7 @@ void x86_cpu_vendor_words2str(char *dst, uint32_t vendo=
-r1,
- #else
- #define TCG_7_0_ECX_RDPID 0
- #endif
-+
- #define TCG_7_0_ECX_FEATURES (CPUID_7_0_ECX_UMIP | CPUID_7_0_ECX_PKU | \
-           /* CPUID_7_0_ECX_OSPKE is dynamic */ \
-           CPUID_7_0_ECX_LA57 | CPUID_7_0_ECX_PKS | CPUID_7_0_ECX_VAES | \
-@@ -7672,6 +7673,8 @@ void x86_cpu_expand_features(X86CPU *cpu, Error **err=
-p)
-         x86_cpu_adjust_feat_level(cpu, FEAT_C000_0001_EDX);
-         x86_cpu_adjust_feat_level(cpu, FEAT_SVM);
-         x86_cpu_adjust_feat_level(cpu, FEAT_XSAVE);
-+        x86_cpu_adjust_feat_level(cpu, FEAT_RDT_F_0_EDX);
-+        x86_cpu_adjust_feat_level(cpu, FEAT_RDT_10_0_EBX);
-=20
-         /* Intel Processor Trace requires CPUID[0x14] */
-         if ((env->features[FEAT_7_0_EBX] & CPUID_7_0_EBX_INTEL_PT)) {
---=20
-2.47.1.613.gc27f4b7a9f-goog
+AHCIState isn't an Object, and therefore can't have any properties, so we =
+can only set it directly=2E In the SysBus devices, d->ahci=2Eirq is treated=
+ with sysbus_init_irq(), so needs to stay a pointer=2E
 
+I tried to convert AHCIState into a SysBusDevice in order to access it via=
+ these APIs, but that would create migration compatibility problems for the=
+ q35 machine which was a rabbit hole I didn't want to get into=2E So I sett=
+led on this solution=2E Any better proposals?
+
+Best regards,
+Bernhard
+
+>
+>>   }
+>>     static void pci_ich9_ahci_realize(PCIDevice *dev, Error **errp)
+>> @@ -125,8 +139,6 @@ static void pci_ich9_ahci_realize(PCIDevice *dev, E=
+rror **errp)
+>>       /* XXX Software should program this register */
+>>       dev->config[0x90]   =3D 1 << 6; /* Address Map Register - AHCI mo=
+de */
+>>   -    d->ahci=2Eirq =3D pci_allocate_irq(dev);
+>> -
+>>       pci_register_bar(dev, ICH9_IDP_BAR, PCI_BASE_ADDRESS_SPACE_IO,
+>>                        &d->ahci=2Eidp);
+>>       pci_register_bar(dev, ICH9_MEM_BAR, PCI_BASE_ADDRESS_SPACE_MEMORY=
+,
+>> @@ -161,7 +173,6 @@ static void pci_ich9_uninit(PCIDevice *dev)
+>>         msi_uninit(dev);
+>>       ahci_uninit(&d->ahci);
+>> -    qemu_free_irq(d->ahci=2Eirq);
+>>   }
+>>     static void ich_ahci_class_init(ObjectClass *klass, void *data)
+>
 
