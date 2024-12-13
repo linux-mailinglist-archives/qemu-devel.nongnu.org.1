@@ -2,82 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C8969F1603
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Dec 2024 20:36:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B6D9D9F15A9
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Dec 2024 20:18:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tMB7s-0007kb-1Z; Fri, 13 Dec 2024 14:15:03 -0500
+	id 1tMB7J-00070J-NA; Fri, 13 Dec 2024 14:14:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tMB72-0006ID-Ek
+ id 1tMB71-0006Hi-7P
  for qemu-devel@nongnu.org; Fri, 13 Dec 2024 14:14:08 -0500
 Received: from mail-oa1-x30.google.com ([2001:4860:4864:20::30])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tMB6v-0007W2-8S
- for qemu-devel@nongnu.org; Fri, 13 Dec 2024 14:14:07 -0500
+ id 1tMB6y-0007WY-1g
+ for qemu-devel@nongnu.org; Fri, 13 Dec 2024 14:14:06 -0500
 Received: by mail-oa1-x30.google.com with SMTP id
- 586e51a60fabf-29ff039dab2so1026455fac.3
- for <qemu-devel@nongnu.org>; Fri, 13 Dec 2024 11:14:00 -0800 (PST)
+ 586e51a60fabf-2a3c075ddb6so324162fac.2
+ for <qemu-devel@nongnu.org>; Fri, 13 Dec 2024 11:14:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734117240; x=1734722040; darn=nongnu.org;
+ d=linaro.org; s=google; t=1734117241; x=1734722041; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=iFwnVaMVK9pfiO5zNGncf7wC5DNSQZHLJ7Ggx4d/5SQ=;
- b=sKnlxahX6wqEJSFG+WnvlZQUoJWj744b+1YJAqBpY08GBHLUHnB2YDrMTpNMT257/B
- Hohe6oxbUDraKwcrTFUWedkiDgN20miNn04AJ8SZ/yt3gZhrwPM+FgOKFWl9i2i0P7u/
- 1Ypp5SXVMWjKNhmkzKQm0brP/ys1vY3yBVS9vqIN3Z7//r5SbfYOZkQiFe70+o0HxJ7K
- cGXcidnw5A2plafY6Slb6T1L8ddn1v0WWvqUjuG+mKfD68lgUZtYYc+UucLD0gT3SjJT
- vYWB4ETPL4KrxVqq6e/cLUthj8/wg/adKdG16hwQ+HnKzqnOBYJqn+oLe83Ts/TWSPqQ
- /Sgg==
+ bh=MdpsJAhLYte2lIkZLag9WCSXb1FF/foqWHpt7GOwf7s=;
+ b=bnHlpISBDSoPoBKNV7266WyYnn1Q63g1/bdLGaJmYHczIG2t6sdSpJZP3h+BzBRwZ3
+ F6qCAfheX4xeGkENvYO6V3K+hJDuyC7S49r4TCsh9OBR68eXnbeaccdYL5vCcqLw+5Wo
+ XTCk19t03acNLQYMFss5R3UOPTqYtM6qOajDFUJcv5L/GBOFtxz57D/jjeYycixTLy6x
+ AV+v4G3sCHW9wVZaxy/WdKIBZ7tM75nZRQ3c8+cWJw5xBS1ed3w/88KzRRvhAaqY3v6+
+ HuGkhfwWZ/dTb7XXqJ5XEKSovNuOjGw8XXOIc1DqsxxS2XgETcE8QIaXFX28jvo3zgnI
+ elFg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734117240; x=1734722040;
+ d=1e100.net; s=20230601; t=1734117241; x=1734722041;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=iFwnVaMVK9pfiO5zNGncf7wC5DNSQZHLJ7Ggx4d/5SQ=;
- b=OG6PI9YnJWwm5Vkkp7D1OkolZLzbePdrTbPWlB6f80AYaS20QPwWRxh2hpKWaMEP8I
- GIJ6fEFBhrr896D0tPF60nN/d6FmnNMqysHW6I/r7hYeIQkAgrVzI3KYxbvt6Mp1IGnY
- 7vf09VA7XbBH7bGAS3k5TYlkWNmFO04JrETL2oPfwGtZsUbAq6LfA3FBj9HPMk6EXxve
- pvehnZdt1D4X/ChQcP61yRIXDK74MoD3zZilssgmOvU2Fmks+RJJgG8eoyOKYwS/q8kJ
- aFIz9pSQqZoA3lGjCZvOHX+BiIs5oOUAo7Vs0RfOl7GofS7aLyeFZDADRgt+D2jRrUxt
- wZSQ==
-X-Gm-Message-State: AOJu0YwJAw6OuHAgey2FMyPFo4jdZsMvJCMZzj36Qa6aYJBBgro7PV4f
- QSimROsCRkrVXfsqWoe7+5gVKpGmNAVvaRaeDCzuCSKtWJxzwrTimh8mfrr9wFlpSYH8RJgn/BN
- dVvCPgtbC
-X-Gm-Gg: ASbGncuagcM7tXM0KVWArAOj8Wk5Y9jbFjpWGuOfhzA6wSk/GOVnQB4Mmw48p9HQ8pl
- FHMBlm+NItxhQjM1X3J7lPRN2tanotGU42nJ7iDTfVgVfOpvC0Ze1857yODxex8vFgi6RuzXx56
- ia3tmo0EUHfIpRHYK7rwqSVMrEJ8vv/QnSDR/6ACS7l88OuS2Gv6MzR+OE9rlMT7tdhp1KZm00F
- fEwnTOjS0EFOgVAsGCh71gcT3eZbc4ito8YBDUEiTb9fqSeMGYNv8+MocDqtCib
-X-Google-Smtp-Source: AGHT+IGqbJHKwR3XfiX8fkYpkN766Cseq6zg4jbpalzyWy9fydQG4CS8AxMkLM3yrrvqR9RZLM/PMA==
-X-Received: by 2002:a05:6808:1596:b0:3ea:37a7:394 with SMTP id
- 5614622812f47-3eba6955bd8mr1970139b6e.34.1734117240023; 
- Fri, 13 Dec 2024 11:14:00 -0800 (PST)
+ bh=MdpsJAhLYte2lIkZLag9WCSXb1FF/foqWHpt7GOwf7s=;
+ b=ftFp0weP535HJ+ZSxb9zZi0N7kNERInQoME8mRBZbT5O9w3rMIuXXfK5J9pVIZTCWv
+ GoU9rBhpdnmXASM9kJIsehVP7gJXR+JMzOXwYVi2gsJu/7GjOpFaeFKo9YulY0YHHWW9
+ d96vBiVYYocyHAb+pAMSq6hs0bAvdjUBdx4+oYABN+hKS0ci2heZAtwh1FiEAloX688q
+ 6h4pVBImFZE58VLRhFytBDdXeIP6vvY/n6ATCZuQErPlSKUODpB+Ou8VIVEO3NMbuxUg
+ qqmcYqwqEPzu0tcOSQxhyf81Yybh2ckjT0Ds1a6rzzEWarU1JIFWgqCJLi3BNF1dyFYJ
+ npRA==
+X-Gm-Message-State: AOJu0YwsyuSVEhA77sTJjs5PEM7xUR+Z3Mw6bLocEte7MoCg7rwn2f2K
+ 4xz4epJpz0uTQ7mSoC5fhpSv5lwS3YHpXhWsa2NiOcux6EYiyRaAi7KlTNNynbw3tqn1fSo9Ho9
+ n9cD3G1ye
+X-Gm-Gg: ASbGncuIetPm1Ut9/pG2ppcfVbjFuCmGLkemx07sNc5jBkXKL++ouhvtG0IqK6dJWsT
+ GbizjHutuFqU8YDcVgJ+S2HYIXyB9kDzi22DU9a/qJjOhTYkZMng+yCcc3QKs7m3HmGD4m/GFiF
+ 1nFtEFIKB4WYtHYw5s/nb3/z8B4Pfo0rR/5Yv99gfBQewu90tLK6ayn8cEbfHDJrznAKz6D5ON+
+ pKCos6+VpQM8Z5+i+JSu5LTuYas+xh+4svcZxC79Gmls9E8WBS6oizkcWj2D7zm
+X-Google-Smtp-Source: AGHT+IFsHptExUFZoIZGsWk4RbguT+pzFk1ZOSTmP02DvjFOwa0fsQPzBP1gF5rpWWL+m1cHt/goag==
+X-Received: by 2002:a05:6808:151f:b0:3eb:5f1a:d083 with SMTP id
+ 5614622812f47-3eba6896469mr2487136b6e.20.1734117241423; 
+ Fri, 13 Dec 2024 11:14:01 -0800 (PST)
 Received: from stoup.. ([187.217.227.247]) by smtp.gmail.com with ESMTPSA id
- 5614622812f47-3ebb478a497sm3545b6e.10.2024.12.13.11.13.57
+ 5614622812f47-3ebb478a497sm3545b6e.10.2024.12.13.11.14.00
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 13 Dec 2024 11:13:59 -0800 (PST)
+ Fri, 13 Dec 2024 11:14:00 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Herv=C3=A9=20Poussineau?= <hpoussin@reactos.org>,
- Aleksandar Rikalo <arikalo@gmail.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Gerd Hoffmann <kraxel@redhat.com>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Joel Stanley <joel@jms.id.au>, Peter Maydell <peter.maydell@linaro.org>,
- Nicholas Piggin <npiggin@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- Alistair Francis <alistair@alistair23.me>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- qemu-ppc@nongnu.org (open list:New World (mac99)),
- qemu-arm@nongnu.org (open list:NRF51)
-Subject: [PATCH 44/71] hw/nvram: Constify all Property
-Date: Fri, 13 Dec 2024 13:07:18 -0600
-Message-ID: <20241213190750.2513964-49-richard.henderson@linaro.org>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Subject: [PATCH 45/71] hw/pci-bridge: Constify all Property
+Date: Fri, 13 Dec 2024 13:07:19 -0600
+Message-ID: <20241213190750.2513964-50-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241213190750.2513964-1-richard.henderson@linaro.org>
 References: <20241213190750.2513964-1-richard.henderson@linaro.org>
@@ -91,7 +80,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -109,180 +98,143 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- hw/nvram/ds1225y.c                 | 2 +-
- hw/nvram/eeprom_at24c.c            | 2 +-
- hw/nvram/fw_cfg.c                  | 6 +++---
- hw/nvram/mac_nvram.c               | 2 +-
- hw/nvram/nrf51_nvm.c               | 2 +-
- hw/nvram/spapr_nvram.c             | 2 +-
- hw/nvram/xlnx-bbram.c              | 2 +-
- hw/nvram/xlnx-efuse.c              | 2 +-
- hw/nvram/xlnx-versal-efuse-cache.c | 2 +-
- hw/nvram/xlnx-versal-efuse-ctrl.c  | 2 +-
- hw/nvram/xlnx-zynqmp-efuse.c       | 2 +-
- 11 files changed, 13 insertions(+), 13 deletions(-)
+ hw/pci-bridge/cxl_downstream.c      | 2 +-
+ hw/pci-bridge/cxl_root_port.c       | 2 +-
+ hw/pci-bridge/cxl_upstream.c        | 2 +-
+ hw/pci-bridge/gen_pcie_root_port.c  | 2 +-
+ hw/pci-bridge/pci_bridge_dev.c      | 2 +-
+ hw/pci-bridge/pci_expander_bridge.c | 4 ++--
+ hw/pci-bridge/pcie_pci_bridge.c     | 2 +-
+ hw/pci-bridge/pcie_root_port.c      | 2 +-
+ hw/pci-bridge/xio3130_downstream.c  | 2 +-
+ 9 files changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/hw/nvram/ds1225y.c b/hw/nvram/ds1225y.c
-index 6d510dcc68..19bf8d2091 100644
---- a/hw/nvram/ds1225y.c
-+++ b/hw/nvram/ds1225y.c
-@@ -142,7 +142,7 @@ static void nvram_sysbus_realize(DeviceState *dev, Error **errp)
-     nvram_post_load(s, 0);
+diff --git a/hw/pci-bridge/cxl_downstream.c b/hw/pci-bridge/cxl_downstream.c
+index c347ac06f3..cfe50e60e9 100644
+--- a/hw/pci-bridge/cxl_downstream.c
++++ b/hw/pci-bridge/cxl_downstream.c
+@@ -212,7 +212,7 @@ static void cxl_dsp_exitfn(PCIDevice *d)
+     pci_bridge_exitfn(d);
  }
  
--static Property nvram_sysbus_properties[] = {
-+static const Property nvram_sysbus_properties[] = {
-     DEFINE_PROP_UINT32("size", SysBusNvRamState, nvram.chip_size, 0x2000),
-     DEFINE_PROP_STRING("filename", SysBusNvRamState, nvram.filename),
-     DEFINE_PROP_END_OF_LIST(),
-diff --git a/hw/nvram/eeprom_at24c.c b/hw/nvram/eeprom_at24c.c
-index ec748e58e7..669920b2b9 100644
---- a/hw/nvram/eeprom_at24c.c
-+++ b/hw/nvram/eeprom_at24c.c
-@@ -234,7 +234,7 @@ void at24c_eeprom_reset(DeviceState *state)
-     ee->haveaddr = 0;
+-static Property cxl_dsp_props[] = {
++static const Property cxl_dsp_props[] = {
+     DEFINE_PROP_PCIE_LINK_SPEED("x-speed", PCIESlot,
+                                 speed, PCIE_LINK_SPEED_64),
+     DEFINE_PROP_PCIE_LINK_WIDTH("x-width", PCIESlot,
+diff --git a/hw/pci-bridge/cxl_root_port.c b/hw/pci-bridge/cxl_root_port.c
+index 5e2156d7ba..5824ba3c75 100644
+--- a/hw/pci-bridge/cxl_root_port.c
++++ b/hw/pci-bridge/cxl_root_port.c
+@@ -199,7 +199,7 @@ static void cxl_rp_reset_hold(Object *obj, ResetType type)
+     latch_registers(crp);
  }
  
--static Property at24c_eeprom_props[] = {
-+static const Property at24c_eeprom_props[] = {
-     DEFINE_PROP_UINT32("rom-size", EEPROMState, rsize, 0),
-     DEFINE_PROP_UINT8("address-size", EEPROMState, asize, 0),
-     DEFINE_PROP_BOOL("writable", EEPROMState, writable, true),
-diff --git a/hw/nvram/fw_cfg.c b/hw/nvram/fw_cfg.c
-index b644577734..fe73a2c1ef 100644
---- a/hw/nvram/fw_cfg.c
-+++ b/hw/nvram/fw_cfg.c
-@@ -1103,7 +1103,7 @@ static void fw_cfg_machine_ready(struct Notifier *n, void *data)
-     qemu_register_reset(fw_cfg_machine_reset, s);
+-static Property gen_rp_props[] = {
++static const Property gen_rp_props[] = {
+     DEFINE_PROP_UINT32("bus-reserve", CXLRootPort, res_reserve.bus, -1),
+     DEFINE_PROP_SIZE("io-reserve", CXLRootPort, res_reserve.io, -1),
+     DEFINE_PROP_SIZE("mem-reserve", CXLRootPort, res_reserve.mem_non_pref, -1),
+diff --git a/hw/pci-bridge/cxl_upstream.c b/hw/pci-bridge/cxl_upstream.c
+index 55f8b0053f..ef94aa3654 100644
+--- a/hw/pci-bridge/cxl_upstream.c
++++ b/hw/pci-bridge/cxl_upstream.c
+@@ -362,7 +362,7 @@ static void cxl_usp_exitfn(PCIDevice *d)
+     pci_bridge_exitfn(d);
  }
  
--static Property fw_cfg_properties[] = {
-+static const Property fw_cfg_properties[] = {
-     DEFINE_PROP_BOOL("acpi-mr-restore", FWCfgState, acpi_mr_restore, true),
-     DEFINE_PROP_END_OF_LIST(),
- };
-@@ -1294,7 +1294,7 @@ static void fw_cfg_file_slots_allocate(FWCfgState *s, Error **errp)
-     s->entry_order = g_new0(int, fw_cfg_max_entry(s));
- }
- 
--static Property fw_cfg_io_properties[] = {
-+static const Property fw_cfg_io_properties[] = {
-     DEFINE_PROP_BOOL("dma_enabled", FWCfgIoState, parent_obj.dma_enabled,
-                      true),
-     DEFINE_PROP_UINT16("x-file-slots", FWCfgIoState, parent_obj.file_slots,
-@@ -1343,7 +1343,7 @@ static const TypeInfo fw_cfg_io_info = {
- };
- 
- 
--static Property fw_cfg_mem_properties[] = {
-+static const Property fw_cfg_mem_properties[] = {
-     DEFINE_PROP_UINT32("data_width", FWCfgMemState, data_width, -1),
-     DEFINE_PROP_BOOL("dma_enabled", FWCfgMemState, parent_obj.dma_enabled,
-                      true),
-diff --git a/hw/nvram/mac_nvram.c b/hw/nvram/mac_nvram.c
-index e47e52a677..d62ad719c8 100644
---- a/hw/nvram/mac_nvram.c
-+++ b/hw/nvram/mac_nvram.c
-@@ -134,7 +134,7 @@ static void macio_nvram_unrealizefn(DeviceState *dev)
-     g_free(s->data);
- }
- 
--static Property macio_nvram_properties[] = {
-+static const Property macio_nvram_properties[] = {
-     DEFINE_PROP_UINT32("size", MacIONVRAMState, size, 0),
-     DEFINE_PROP_UINT32("it_shift", MacIONVRAMState, it_shift, 0),
-     DEFINE_PROP_DRIVE("drive", MacIONVRAMState, blk),
-diff --git a/hw/nvram/nrf51_nvm.c b/hw/nvram/nrf51_nvm.c
-index b1f81752a3..236049462b 100644
---- a/hw/nvram/nrf51_nvm.c
-+++ b/hw/nvram/nrf51_nvm.c
-@@ -354,7 +354,7 @@ static void nrf51_nvm_reset(DeviceState *dev)
-     memset(s->uicr_content, 0xFF, sizeof(s->uicr_content));
- }
- 
--static Property nrf51_nvm_properties[] = {
-+static const Property nrf51_nvm_properties[] = {
-     DEFINE_PROP_UINT32("flash-size", NRF51NVMState, flash_size, 0x40000),
-     DEFINE_PROP_END_OF_LIST(),
- };
-diff --git a/hw/nvram/spapr_nvram.c b/hw/nvram/spapr_nvram.c
-index bfd8aa367e..2251ff2f4c 100644
---- a/hw/nvram/spapr_nvram.c
-+++ b/hw/nvram/spapr_nvram.c
-@@ -252,7 +252,7 @@ static const VMStateDescription vmstate_spapr_nvram = {
-     },
- };
- 
--static Property spapr_nvram_properties[] = {
-+static const Property spapr_nvram_properties[] = {
-     DEFINE_SPAPR_PROPERTIES(SpaprNvram, sdev),
-     DEFINE_PROP_DRIVE("drive", SpaprNvram, blk),
-     DEFINE_PROP_END_OF_LIST(),
-diff --git a/hw/nvram/xlnx-bbram.c b/hw/nvram/xlnx-bbram.c
-index 1bc58e90ad..4fa528f048 100644
---- a/hw/nvram/xlnx-bbram.c
-+++ b/hw/nvram/xlnx-bbram.c
-@@ -520,7 +520,7 @@ static const VMStateDescription vmstate_bbram_ctrl = {
+-static Property cxl_upstream_props[] = {
++static const Property cxl_upstream_props[] = {
+     DEFINE_PROP_UINT64("sn", CXLUpstreamPort, sn, UI64_NULL),
+     DEFINE_PROP_STRING("cdat", CXLUpstreamPort, cxl_cstate.cdat.filename),
+     DEFINE_PROP_PCIE_LINK_SPEED("x-speed", CXLUpstreamPort,
+diff --git a/hw/pci-bridge/gen_pcie_root_port.c b/hw/pci-bridge/gen_pcie_root_port.c
+index 784507c826..c319ca8263 100644
+--- a/hw/pci-bridge/gen_pcie_root_port.c
++++ b/hw/pci-bridge/gen_pcie_root_port.c
+@@ -128,7 +128,7 @@ static const VMStateDescription vmstate_rp_dev = {
      }
  };
  
--static Property bbram_ctrl_props[] = {
-+static const Property bbram_ctrl_props[] = {
-     DEFINE_PROP("drive", XlnxBBRam, blk, bbram_prop_drive, BlockBackend *),
-     DEFINE_PROP_UINT32("crc-zpads", XlnxBBRam, crc_zpads, 1),
-     DEFINE_PROP_END_OF_LIST(),
-diff --git a/hw/nvram/xlnx-efuse.c b/hw/nvram/xlnx-efuse.c
-index f7b849f7de..5dae9e8e9a 100644
---- a/hw/nvram/xlnx-efuse.c
-+++ b/hw/nvram/xlnx-efuse.c
-@@ -265,7 +265,7 @@ static const PropertyInfo efuse_prop_drive = {
-     .release = efuse_prop_release_drive,
- };
- 
--static Property efuse_properties[] = {
-+static const Property efuse_properties[] = {
-     DEFINE_PROP("drive", XlnxEFuse, blk, efuse_prop_drive, BlockBackend *),
-     DEFINE_PROP_UINT8("efuse-nr", XlnxEFuse, efuse_nr, 3),
-     DEFINE_PROP_UINT32("efuse-size", XlnxEFuse, efuse_size, 64 * 32),
-diff --git a/hw/nvram/xlnx-versal-efuse-cache.c b/hw/nvram/xlnx-versal-efuse-cache.c
-index eaec64d785..1aea27afd3 100644
---- a/hw/nvram/xlnx-versal-efuse-cache.c
-+++ b/hw/nvram/xlnx-versal-efuse-cache.c
-@@ -83,7 +83,7 @@ static void efuse_cache_init(Object *obj)
-     sysbus_init_mmio(sbd, &s->iomem);
+-static Property gen_rp_props[] = {
++static const Property gen_rp_props[] = {
+     DEFINE_PROP_BOOL("x-migrate-msix", GenPCIERootPort,
+                      migrate_msix, true),
+     DEFINE_PROP_UINT32("bus-reserve", GenPCIERootPort,
+diff --git a/hw/pci-bridge/pci_bridge_dev.c b/hw/pci-bridge/pci_bridge_dev.c
+index 8e7f926621..35a37e056a 100644
+--- a/hw/pci-bridge/pci_bridge_dev.c
++++ b/hw/pci-bridge/pci_bridge_dev.c
+@@ -168,7 +168,7 @@ static void qdev_pci_bridge_dev_reset(DeviceState *qdev)
+     }
  }
  
--static Property efuse_cache_props[] = {
-+static const Property efuse_cache_props[] = {
-     DEFINE_PROP_LINK("efuse",
-                      XlnxVersalEFuseCache, efuse,
-                      TYPE_XLNX_EFUSE, XlnxEFuse *),
-diff --git a/hw/nvram/xlnx-versal-efuse-ctrl.c b/hw/nvram/xlnx-versal-efuse-ctrl.c
-index 8252a5cabe..599aa126fb 100644
---- a/hw/nvram/xlnx-versal-efuse-ctrl.c
-+++ b/hw/nvram/xlnx-versal-efuse-ctrl.c
-@@ -743,7 +743,7 @@ static const VMStateDescription vmstate_efuse_ctrl = {
-     }
- };
+-static Property pci_bridge_dev_properties[] = {
++static const Property pci_bridge_dev_properties[] = {
+                     /* Note: 0 is not a legal chassis number. */
+     DEFINE_PROP_UINT8(PCI_BRIDGE_DEV_PROP_CHASSIS_NR, PCIBridgeDev, chassis_nr,
+                       0),
+diff --git a/hw/pci-bridge/pci_expander_bridge.c b/hw/pci-bridge/pci_expander_bridge.c
+index 07d411cff5..01997c1ab3 100644
+--- a/hw/pci-bridge/pci_expander_bridge.c
++++ b/hw/pci-bridge/pci_expander_bridge.c
+@@ -420,7 +420,7 @@ static void pxb_dev_exitfn(PCIDevice *pci_dev)
+     pxb_dev_list = g_list_remove(pxb_dev_list, pxb);
+ }
  
--static Property efuse_ctrl_props[] = {
-+static const Property efuse_ctrl_props[] = {
-     DEFINE_PROP_LINK("efuse",
-                      XlnxVersalEFuseCtrl, efuse,
-                      TYPE_XLNX_EFUSE, XlnxEFuse *),
-diff --git a/hw/nvram/xlnx-zynqmp-efuse.c b/hw/nvram/xlnx-zynqmp-efuse.c
-index 4e2d1b9d1e..af53187905 100644
---- a/hw/nvram/xlnx-zynqmp-efuse.c
-+++ b/hw/nvram/xlnx-zynqmp-efuse.c
-@@ -833,7 +833,7 @@ static const VMStateDescription vmstate_efuse = {
-     }
- };
+-static Property pxb_dev_properties[] = {
++static const Property pxb_dev_properties[] = {
+     /* Note: 0 is not a legal PXB bus number. */
+     DEFINE_PROP_UINT8("bus_nr", PXBDev, bus_nr, 0),
+     DEFINE_PROP_UINT16("numa_node", PXBDev, numa_node, NUMA_NODE_UNASSIGNED),
+@@ -507,7 +507,7 @@ static void pxb_cxl_dev_realize(PCIDevice *dev, Error **errp)
+     pxb_cxl_dev_reset(DEVICE(dev));
+ }
  
--static Property zynqmp_efuse_props[] = {
-+static const Property zynqmp_efuse_props[] = {
-     DEFINE_PROP_LINK("efuse",
-                      XlnxZynqMPEFuse, efuse,
-                      TYPE_XLNX_EFUSE, XlnxEFuse *),
+-static Property pxb_cxl_dev_properties[] = {
++static const Property pxb_cxl_dev_properties[] = {
+     DEFINE_PROP_BOOL("hdm_for_passthrough", PXBCXLDev, hdm_for_passthrough, false),
+     DEFINE_PROP_END_OF_LIST(),
+ };
+diff --git a/hw/pci-bridge/pcie_pci_bridge.c b/hw/pci-bridge/pcie_pci_bridge.c
+index 6e8d7d9478..8834ff3dbf 100644
+--- a/hw/pci-bridge/pcie_pci_bridge.c
++++ b/hw/pci-bridge/pcie_pci_bridge.c
+@@ -124,7 +124,7 @@ static void pcie_pci_bridge_write_config(PCIDevice *d,
+     shpc_cap_write_config(d, address, val, len);
+ }
+ 
+-static Property pcie_pci_bridge_dev_properties[] = {
++static const Property pcie_pci_bridge_dev_properties[] = {
+         DEFINE_PROP_ON_OFF_AUTO("msi", PCIEPCIBridge, msi, ON_OFF_AUTO_AUTO),
+         DEFINE_PROP_END_OF_LIST(),
+ };
+diff --git a/hw/pci-bridge/pcie_root_port.c b/hw/pci-bridge/pcie_root_port.c
+index 09a34786bc..a7f87a1bc4 100644
+--- a/hw/pci-bridge/pcie_root_port.c
++++ b/hw/pci-bridge/pcie_root_port.c
+@@ -148,7 +148,7 @@ static void rp_exit(PCIDevice *d)
+     pci_bridge_exitfn(d);
+ }
+ 
+-static Property rp_props[] = {
++static const Property rp_props[] = {
+     DEFINE_PROP_BIT(COMPAT_PROP_PCP, PCIDevice, cap_present,
+                     QEMU_PCIE_SLTCAP_PCP_BITNR, true),
+     DEFINE_PROP_BOOL("disable-acs", PCIESlot, disable_acs, false),
+diff --git a/hw/pci-bridge/xio3130_downstream.c b/hw/pci-bridge/xio3130_downstream.c
+index 473e2dd950..92e5fb72ec 100644
+--- a/hw/pci-bridge/xio3130_downstream.c
++++ b/hw/pci-bridge/xio3130_downstream.c
+@@ -134,7 +134,7 @@ static void xio3130_downstream_exitfn(PCIDevice *d)
+     pci_bridge_exitfn(d);
+ }
+ 
+-static Property xio3130_downstream_props[] = {
++static const Property xio3130_downstream_props[] = {
+     DEFINE_PROP_BIT(COMPAT_PROP_PCP, PCIDevice, cap_present,
+                     QEMU_PCIE_SLTCAP_PCP_BITNR, true),
+     DEFINE_PROP_END_OF_LIST()
 -- 
 2.43.0
 
