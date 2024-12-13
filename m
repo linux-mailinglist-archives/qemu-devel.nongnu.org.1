@@ -2,81 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C92649F1633
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Dec 2024 20:37:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F21389F157B
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Dec 2024 20:09:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tMBTU-0001Yj-9E; Fri, 13 Dec 2024 14:37:20 -0500
+	id 1tMB1S-0002Tj-Dg; Fri, 13 Dec 2024 14:08:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tMBTG-0001OB-4M
- for qemu-devel@nongnu.org; Fri, 13 Dec 2024 14:37:06 -0500
-Received: from mail-oi1-x231.google.com ([2607:f8b0:4864:20::231])
+ id 1tMB1Q-0002TI-0C
+ for qemu-devel@nongnu.org; Fri, 13 Dec 2024 14:08:20 -0500
+Received: from mail-ot1-x334.google.com ([2607:f8b0:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tMBTD-0005D2-Se
- for qemu-devel@nongnu.org; Fri, 13 Dec 2024 14:37:05 -0500
-Received: by mail-oi1-x231.google.com with SMTP id
- 5614622812f47-3eb7ecc3c54so1134603b6e.0
- for <qemu-devel@nongnu.org>; Fri, 13 Dec 2024 11:37:03 -0800 (PST)
+ id 1tMB1L-0006Tu-5m
+ for qemu-devel@nongnu.org; Fri, 13 Dec 2024 14:08:19 -0500
+Received: by mail-ot1-x334.google.com with SMTP id
+ 46e09a7af769-71e163493efso1026973a34.3
+ for <qemu-devel@nongnu.org>; Fri, 13 Dec 2024 11:08:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734118622; x=1734723422; darn=nongnu.org;
+ d=linaro.org; s=google; t=1734116893; x=1734721693; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=LHgc1l1qpRSvTvA+hPA/du3JarE2ikdn84gpIsEZ7/E=;
- b=iS+2DhVNN3hRQAmnW2XhE5lHqcctXIl+XX4NXn/nRyVqcgpBBT3Ykv7td6H95/2Gzu
- OJ48oGovvPCwWZOO7vrpMJSh4MeXqH3MCA2DjUtfFr++sgHdgTYSrNJ4x0hsv1biCc/c
- HGVzYmikJ9IXP/pcaiQqwxktZUhwI1nZ4fsbBS4pbDcLTUgHVgBS/Mn0RtWZjD6Bzzcp
- 8fr9mxb0BwpdVWLvjKpOLfJ7IafmwRD12KpmilyugHxol7AFQYxRRqouK8VCKFPy5Nfm
- tAOxUHJFIXvOoLBe6Ue9a3eeRUuSrdY7v1evxa1DiaZ1hZW/SMgM5lPsvpCI4nSXK/xe
- EWzg==
+ bh=jImwOjJ09GIg50zurORlHyEBWxYYv3iz1UDBPMlQCZc=;
+ b=RYIVVx7wCoE1e+avu5fpJbCM00f+8SpJOSrFh/9OX/xYcpf8VXSCSDulPU2+86BUb+
+ 32wsrmciW4WQXIMUCypt5QGKvJOjap7Aof6SCnWksc2sHs+Fb9AMOyspn1GX/Oatxw9H
+ XGvrrAAdTUnCajb+6tEbmBwVYW8JWmsLWHMe8ZXJADcEWR6WnSl7R3gBG7gbsSXE9SQ8
+ gSrye1+ApBB5cPEiXJB82EVPgXFnRyAh52r7ta0NEfsRnFfikFrZrDqXL9UAIXIgEHYN
+ IAJHpzsokYwKoDJNCMK4bP7PY71G5gqTrBQ8HSBNNAIq+pwmnDoUFnacY3Et9GRKchbg
+ aDww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734118622; x=1734723422;
+ d=1e100.net; s=20230601; t=1734116893; x=1734721693;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=LHgc1l1qpRSvTvA+hPA/du3JarE2ikdn84gpIsEZ7/E=;
- b=bN+hRlWIzypuc5hdgt3SvlgMMsscbqK0O8+IqyXf8CfQL3kmQ7k6LOpcSSkkzYqUjL
- Deharh/myCQxKlT+qmjBtrgmwM3SUWHoBRgzFkZwbQ9atzVD9JplPiXJtGl2Bdk6sYL7
- W1ct84l4KUviUES6Ifa6NeBAd0pbq226peQSNRl6HWdN/fQdB8hXp4/iQW3xYZpj73Sd
- lZ7j3tQlMPVayWoAVcQM4sYGdh4qtDLb8Af7xI/SxI6gTc1/7JWKZUaoqabhJl0PcxWj
- TRlmpJsOAcbevhtpOLSOGVP9SLNvkzLBgWHFwcv6fc0DhW6eWBaL4BacXufYZ/RNF21v
- waaA==
-X-Gm-Message-State: AOJu0Yy7IushDePyMys1NHJZm/6s/fvXaL23SJ7E4HErmMb5xV41NR+T
- +nJfFruLJUEZuBlmZDuqTmwxQq+PnCVw1IO+qfouDUjJAVMU279rXiKiTf4xnvxkMrBDgbWnLtD
- 48cin4okQ
-X-Gm-Gg: ASbGncsHcQUXtC14nLoiNrCoTnZfyElu0kh9AsnLvudJkJOEWaLPYNGV1KJKiy9SaDx
- AYFjT9T+DRzwEmJaJYdIiz19a0gmWVrAlkjMFQmqX2ZjFNGgaXK20yl5mlr9tfm9Pfvg34jinYi
- nubtAYj1XyMJZ20vnLmNYyMiNnYtjpNqTvd7OMY/HqeSP7lEzXf4DSp97BTNY9VR+Vk4JAqahFu
- dKAZu5pNRREGk6taGoBX8vP86dv48KgM743598wL5eTTCagaUsLzEmsQRx0GXfP
-X-Google-Smtp-Source: AGHT+IFG7GCxsgRnm6iDR7NRyLUgDqn6xqLfITFvZAApZrlBiMdjU6ZI9fQftE2p7wcu46JTRRbPxw==
-X-Received: by 2002:a05:6871:4309:b0:29f:9554:9b94 with SMTP id
- 586e51a60fabf-2a3ac6c3984mr2175028fac.18.1734116890717; 
- Fri, 13 Dec 2024 11:08:10 -0800 (PST)
+ bh=jImwOjJ09GIg50zurORlHyEBWxYYv3iz1UDBPMlQCZc=;
+ b=jKoWfs1xw+vso6Z9cDlOl/qu+H7bbbQIRfuQnZkBn2f2WmAAGqWwV7oAG+H8e+2pfP
+ 6obyO9kJHSClvIwppCXLcRliLjQ0w4vzQzKf7L50H/xmq57rv+67unFG7qjuLfOzg9ul
+ 6RqwStyPvPIDJHVhfSLrjG0JbjnBnn3FJ9jUMZbr/nVOEfHpi95OHNJb0FB40zWT73kD
+ smOV/cIKwFld2Y1PjbHZMkyICypbzwUA0ZA41IFM4ibLF7mvXRic6qyRdios1P5WiIwH
+ cBYouD3mgdFaKrmVrjW6L5Iv8mprOWNyzO1Jb4GznJPrwYt2FovqUXJFwiKYQHosRJfu
+ bxBQ==
+X-Gm-Message-State: AOJu0Yw0d3Rb+VIufzVF6OCEKxNytHFIJl6K9ftX9kkwXRzv+tBOWt1S
+ wdI0c0qsfLBcym3iEy+KWCye8rmyF2HU1Q2HSpN9V3w+qs6R8534E+jEf4bHouPJgCWSgm3KVZF
+ L7h2v23jy
+X-Gm-Gg: ASbGncteutGYQu0paa7+vQ+DrjEa+uCCW4F1Qqpz+C4PiCc1Zzeq1mfCNhIK5xT+oVL
+ Ta3n1LQFvlw+W+fy7Sv37nn+3g+rwUF6pPi11sB2DC3H102TcVOPQN2+ZEyeNNz6JdQ8dLUOiCF
+ TSdzzB3sQhe5yzdq66Yn+orDavqBxQ1Bgo2dK19bH07RkywiGavMogbwvXv+X6odmeXLYpZOaSq
+ mAS1uKRZmW256oiSXNdVxvwbJbEb3UTQ830jFrA7YkMtckB+QwkO/NbY3izJ1rl
+X-Google-Smtp-Source: AGHT+IFABWsnhXiIoWGMmQAbS8lAIh6RqMdZdcNCROKnGNeRQ1ps5qgfTtWM7Ae/bjgFsPgWYJoSAg==
+X-Received: by 2002:a05:6830:388c:b0:71e:240a:47fe with SMTP id
+ 46e09a7af769-71e3ba33ad3mr2014950a34.19.1734116892755; 
+ Fri, 13 Dec 2024 11:08:12 -0800 (PST)
 Received: from stoup.. ([187.217.227.247]) by smtp.gmail.com with ESMTPSA id
- 46e09a7af769-71e4834da91sm29697a34.18.2024.12.13.11.08.08
+ 46e09a7af769-71e4834da91sm29697a34.18.2024.12.13.11.08.11
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 13 Dec 2024 11:08:10 -0800 (PST)
+ Fri, 13 Dec 2024 11:08:12 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Artyom Tarasenko <atar4qemu@gmail.com>
-Subject: [PULL 4/4] target/sparc: Use memcpy() and remove memcpy32()
-Date: Fri, 13 Dec 2024 13:06:38 -0600
-Message-ID: <20241213190750.2513964-9-richard.henderson@linaro.org>
+Cc: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
+Subject: [PATCH 05/71] target/microblaze: Constify all Property
+Date: Fri, 13 Dec 2024 13:06:39 -0600
+Message-ID: <20241213190750.2513964-10-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241213190750.2513964-1-richard.henderson@linaro.org>
 References: <20241213190750.2513964-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::231;
- envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x231.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::334;
+ envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x334.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,81 +95,24 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Philippe Mathieu-Daudé <philmd@linaro.org>
-
-Rather than manually copying each register, use
-the libc memcpy(), which is well optimized nowadays.
-
-Suggested-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20241205205418.67613-1-philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/sparc/win_helper.c | 26 ++++++++------------------
- 1 file changed, 8 insertions(+), 18 deletions(-)
+ target/microblaze/cpu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/target/sparc/win_helper.c b/target/sparc/win_helper.c
-index b53fc9ce94..0c4b09f2c1 100644
---- a/target/sparc/win_helper.c
-+++ b/target/sparc/win_helper.c
-@@ -24,29 +24,19 @@
- #include "exec/helper-proto.h"
- #include "trace.h"
- 
--static inline void memcpy32(target_ulong *dst, const target_ulong *src)
--{
--    dst[0] = src[0];
--    dst[1] = src[1];
--    dst[2] = src[2];
--    dst[3] = src[3];
--    dst[4] = src[4];
--    dst[5] = src[5];
--    dst[6] = src[6];
--    dst[7] = src[7];
--}
--
- void cpu_set_cwp(CPUSPARCState *env, int new_cwp)
- {
-     /* put the modified wrap registers at their proper location */
-     if (env->cwp == env->nwindows - 1) {
--        memcpy32(env->regbase, env->regbase + env->nwindows * 16);
-+        memcpy(env->regbase, env->regbase + env->nwindows * 16,
-+               sizeof(env->gregs));
-     }
-     env->cwp = new_cwp;
- 
-     /* put the wrap registers at their temporary location */
-     if (new_cwp == env->nwindows - 1) {
--        memcpy32(env->regbase + env->nwindows * 16, env->regbase);
-+        memcpy(env->regbase + env->nwindows * 16, env->regbase,
-+               sizeof(env->gregs));
-     }
-     env->regwptr = env->regbase + (new_cwp * 16);
- }
-@@ -361,8 +351,8 @@ void cpu_gl_switch_gregs(CPUSPARCState *env, uint32_t new_gl)
-     dst = get_gl_gregset(env, env->gl);
- 
-     if (src != dst) {
--        memcpy32(dst, env->gregs);
--        memcpy32(env->gregs, src);
-+        memcpy(dst, env->gregs, sizeof(env->gregs));
-+        memcpy(env->gregs, src, sizeof(env->gregs));
-     }
+diff --git a/target/microblaze/cpu.c b/target/microblaze/cpu.c
+index 0e1e22d1e8..0e41e39c0e 100644
+--- a/target/microblaze/cpu.c
++++ b/target/microblaze/cpu.c
+@@ -339,7 +339,7 @@ static void mb_cpu_initfn(Object *obj)
+     object_property_add_alias(obj, "little-endian", obj, "endianness");
  }
  
-@@ -393,8 +383,8 @@ void cpu_change_pstate(CPUSPARCState *env, uint32_t new_pstate)
-         /* Switch global register bank */
-         src = get_gregset(env, new_pstate_regs);
-         dst = get_gregset(env, pstate_regs);
--        memcpy32(dst, env->gregs);
--        memcpy32(env->gregs, src);
-+        memcpy(dst, env->gregs, sizeof(env->gregs));
-+        memcpy(env->gregs, src, sizeof(env->gregs));
-     } else {
-         trace_win_helper_no_switch_pstate(new_pstate_regs);
-     }
+-static Property mb_properties[] = {
++static const Property mb_properties[] = {
+     /*
+      * Following properties are used by Xilinx DTS conversion tool
+      * do not rename them.
 -- 
 2.43.0
 
