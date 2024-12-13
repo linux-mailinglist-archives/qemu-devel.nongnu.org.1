@@ -2,84 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B3299F15D5
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Dec 2024 20:31:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 946CF9F15D7
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Dec 2024 20:31:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tMB9M-0001m2-FP; Fri, 13 Dec 2024 14:16:32 -0500
+	id 1tMB9E-00017B-Fv; Fri, 13 Dec 2024 14:16:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tMB7I-0007G8-Ux
- for qemu-devel@nongnu.org; Fri, 13 Dec 2024 14:14:25 -0500
-Received: from mail-oi1-x230.google.com ([2607:f8b0:4864:20::230])
+ id 1tMB7O-0007SV-0c
+ for qemu-devel@nongnu.org; Fri, 13 Dec 2024 14:14:30 -0500
+Received: from mail-oa1-x2e.google.com ([2001:4860:4864:20::2e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tMB7G-0007b2-Hi
- for qemu-devel@nongnu.org; Fri, 13 Dec 2024 14:14:24 -0500
-Received: by mail-oi1-x230.google.com with SMTP id
- 5614622812f47-3eba5848ee4so361576b6e.3
- for <qemu-devel@nongnu.org>; Fri, 13 Dec 2024 11:14:22 -0800 (PST)
+ id 1tMB7I-0007bh-WC
+ for qemu-devel@nongnu.org; Fri, 13 Dec 2024 14:14:26 -0500
+Received: by mail-oa1-x2e.google.com with SMTP id
+ 586e51a60fabf-29ff039dab2so1026653fac.3
+ for <qemu-devel@nongnu.org>; Fri, 13 Dec 2024 11:14:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734117261; x=1734722061; darn=nongnu.org;
+ d=linaro.org; s=google; t=1734117264; x=1734722064; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=4KW4uvX6kcpOG+0vWrOl72mSjdGCdTxn0mYV6Vb8Zew=;
- b=x3IPk8Kk3h8vSS4PoJz3IS4Uqh/aFr7SzpQc6N7VYJIWh5+NQNWH2Xl+4+Z+mDw5YA
- hU0WMZpEzRX3rBfvvDw92dJx/7yfK8WAjLqJT7g0gWS65Dz2q0S3VmvID6vuDNRqxbFz
- KB84KokZXCEFCpWD114LEmHGbpNOZTdgIP9lHIIuPDG/BQJt+7Y14YHAjGQbqwRrTm10
- 0Gy/SIlweehVhmuOAG3TYa8E+bSqNlQEcbK7IIcn+NsulBUrNCR2xXu1+fZmcPKLqmno
- XdJjUGdteZtdlKeeYgY9xz7IgFh9FNmDPiKV6QCHWcXFBC9MAzoRCNL5whEUCfD0aGu4
- CbTw==
+ bh=DWJFCtfZ2w3RHGCdV+UIqP2KUY8RC4HX5Q5Yyp1FU9E=;
+ b=g+eoQ4DnfqQ0kFfK+L/0/A1+hf9mr2ppp0fzdLhPlssE3yIsgDU0HN1OuM1vEerzsm
+ c0pnYy1O5qkU1e4svLA8SLpCXOkqvfecrdRX6cR8rNKVT8QtaMU5cpkCRU4cd/G0WlIP
+ 4ambk8SqVth0ug9lnymhELD192lAh7l0tA8eu1amx95HUvYs1TBt8lbZgovJKQYNA9u4
+ M24N7vycUvO26pftCcd9vR8JdeguonCgFsbv1PsJKb/gYThpShj+WXHCQMBEiJ/KeDxC
+ q7bBBzUytNoHlvS++l+Tr6A//T++Ma3ljKI5VOqNvcz7GZ9saqfiT1pqQFbr1jqj8KEw
+ X7ag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734117261; x=1734722061;
+ d=1e100.net; s=20230601; t=1734117264; x=1734722064;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=4KW4uvX6kcpOG+0vWrOl72mSjdGCdTxn0mYV6Vb8Zew=;
- b=TxK9HRJPzb4z2vwiXbZFTjjRmF8let91se7cX139TDgXQkDwW+Q5QUvep2UjUBZK3y
- MIxhjguD8NIvIuV3EujgwSyV8eb516N0q3rj098mfbEZwWxmFjiM6X3zX9RmZ6lwdtRM
- BKIygPO6JvA26A30p6aXi/qj34lzdLeP0lfpHNwtWqNtSSXSA6ww0CUFdHs0TC4im++6
- LXfMln0xsYeg96yUs/+GOPOwDQr5g/p5wC0gcinMuYtFYVHOsb7Z+UkbJa9HFRqdLOml
- Ok/YbYI7jVb1ZmxNbfFVjQICBYP/N+OhZVUq1cNTUJbTEbnjbLtLh15J9/pfeTruwoF7
- iXrA==
-X-Gm-Message-State: AOJu0YzDNn6CEXNqiZq20BGdm7LRKWiCWxb4oEWL2wHHucBh2WwPUi+P
- 2zlAtgQOc2qvLgKJqZbkOAsKNwYzHpa3SbP2kbg8zzT2eJDT+Ws2ul044fqjzKiWR3b8mCueBCx
- soNCjJUaK
-X-Gm-Gg: ASbGncsWXMh+mibFE57KKlNi6gpsbPTuRW4cdXjYR+BXNz2gTrdq93ZQg5VzHRHShSa
- yiVCNHwbGRLwk/dtiivWwxX8QUXFGT/SIt/QlWZ6FR+73Ac3XWbt6feMQh62D7w/ZIHQiH4rdqV
- ntn/hbBm1m6aJVQ6aNUrMxXJaCeNpSMn4g76cB46F9k51dOvaNbFJiqBzjyQzzG9uA4gvjpnJFp
- HDGS9T4JcgIoLvFqqDE/Iq7YSuoUblkj4wxNr2hqQ7EIpEx/G0x91x5kSsDow3N
-X-Google-Smtp-Source: AGHT+IGCIOfGpB/iF/deXHBGaEbXRJ5JTMEFdSRzqxoHGrhegchaBfH6TvuMWEC8/k/jFTHmx2rElQ==
-X-Received: by 2002:a05:6808:2022:b0:3eb:8442:9fb2 with SMTP id
- 5614622812f47-3eba693a9c3mr2211714b6e.29.1734117261204; 
- Fri, 13 Dec 2024 11:14:21 -0800 (PST)
+ bh=DWJFCtfZ2w3RHGCdV+UIqP2KUY8RC4HX5Q5Yyp1FU9E=;
+ b=BeACEJGKBWOn0vAbiz30dcdM02OO/GoFCwCHV50uC8c8vj9sty4gUsaAmC1BoFlGk/
+ gORdnviSe1cymtAu9CaVENlIqbM9jsivkkweG7zBIAPkI542fkzXR+RJCnYaFxg2PC38
+ jfQnASjttihVSwqFphMawJ1oXbFU+4ip1TKa/e+XTd977b+HOOzThRXENPy0jw4Ri/EU
+ usbYZzXgq0mzaIb1ewHBHTefwOEkgKQ2sMvwYrt20j3madkDWHdsMlIOQuGUShtDNYZ1
+ mWfTKLgzKNWtWJjlJYiYG4QsHJQLmD9X7o7Z8Be3eZfPTbo8RLeWLup0ZY4D++te8w45
+ 7QDw==
+X-Gm-Message-State: AOJu0Yy1IjumYXQEY739RHJi4u1zCHmyCV18mD0RTpSzhZbICZaHLZus
+ 01hbkSNRmSUse5GgoQIq03FIhIj8dKxdj+0jE1Tnms6w6Y/uLm/bo5rHfAqRc3/o6lN0EfWktnV
+ za5CJdQkv
+X-Gm-Gg: ASbGncszxsvyDRESQglFSN34m4cQsZadnsVnPYdAIG9J9BS9hejSXnmPc95s17/LZF5
+ ifSWdbmzhCmZintazOxomB2C1x16D/9sqOApSo4+RIpw2oFJNrLXOJY193dXvjpz2eQ+4c/OrLQ
+ bxeRzxZu/O7i06l8wIht4JDtO1BGgfH+un5xWxrVungEYhKiWX+EeSu0/BkYmGYyNRUTERkKhHt
+ fDLcp8vZI4muXi3ykd0R4bE+Z3D8ioVdwzzdV4vZVGzXNyP6D1kUkmOuX4T0coP
+X-Google-Smtp-Source: AGHT+IGNXrCaGxsBPywxVZ4GCh/w4MPht+bRedsnh2I/OWNK0MSbIhWxY7wlKgBkz6ltwJdlJfdNZA==
+X-Received: by 2002:a05:6808:1596:b0:3ea:37a7:394 with SMTP id
+ 5614622812f47-3eba6955bd8mr1970897b6e.34.1734117263825; 
+ Fri, 13 Dec 2024 11:14:23 -0800 (PST)
 Received: from stoup.. ([187.217.227.247]) by smtp.gmail.com with ESMTPSA id
- 5614622812f47-3ebb478a497sm3545b6e.10.2024.12.13.11.14.19
+ 5614622812f47-3ebb478a497sm3545b6e.10.2024.12.13.11.14.21
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 13 Dec 2024 11:14:20 -0800 (PST)
+ Fri, 13 Dec 2024 11:14:23 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Halil Pasic <pasic@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- David Hildenbrand <david@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
- Eric Farman <farman@linux.ibm.com>, Thomas Huth <thuth@redhat.com>,
- Matthew Rosato <mjrosato@linux.ibm.com>, Cornelia Huck <cohuck@redhat.com>,
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Fam Zheng <fam@euphon.net>,
+ Hannes Reinecke <hare@suse.com>, Nicholas Piggin <npiggin@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
  "Michael S. Tsirkin" <mst@redhat.com>,
  Stefano Garzarella <sgarzare@redhat.com>,
- qemu-s390x@nongnu.org (open list:S390 3270 device)
-Subject: [PATCH 54/71] hw/s390x: Constify all Property
-Date: Fri, 13 Dec 2024 13:07:28 -0600
-Message-ID: <20241213190750.2513964-59-richard.henderson@linaro.org>
+ Raphael Norwitz <raphael@enfabrica.net>,
+ Dmitry Fleytman <dmitry.fleytman@gmail.com>,
+ qemu-block@nongnu.org (open list:megasas),
+ qemu-ppc@nongnu.org (open list:sPAPR (pseries))
+Subject: [PATCH 55/71] hw/scsi: Constify all Property
+Date: Fri, 13 Dec 2024 13:07:29 -0600
+Message-ID: <20241213190750.2513964-60-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241213190750.2513964-1-richard.henderson@linaro.org>
 References: <20241213190750.2513964-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::230;
- envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x230.google.com
+Received-SPF: pass client-ip=2001:4860:4864:20::2e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x2e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -104,288 +106,184 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- hw/s390x/3270-ccw.c           | 2 +-
- hw/s390x/ccw-device.c         | 2 +-
- hw/s390x/css-bridge.c         | 2 +-
- hw/s390x/ipl.c                | 2 +-
- hw/s390x/s390-pci-bus.c       | 2 +-
- hw/s390x/s390-skeys.c         | 2 +-
- hw/s390x/s390-stattrib.c      | 2 +-
- hw/s390x/vhost-scsi-ccw.c     | 2 +-
- hw/s390x/vhost-user-fs-ccw.c  | 2 +-
- hw/s390x/vhost-vsock-ccw.c    | 2 +-
- hw/s390x/virtio-ccw-9p.c      | 2 +-
- hw/s390x/virtio-ccw-balloon.c | 2 +-
- hw/s390x/virtio-ccw-blk.c     | 2 +-
- hw/s390x/virtio-ccw-crypto.c  | 2 +-
- hw/s390x/virtio-ccw-gpu.c     | 2 +-
- hw/s390x/virtio-ccw-input.c   | 2 +-
- hw/s390x/virtio-ccw-net.c     | 2 +-
- hw/s390x/virtio-ccw-rng.c     | 2 +-
- hw/s390x/virtio-ccw-scsi.c    | 2 +-
- hw/s390x/virtio-ccw-serial.c  | 2 +-
- 20 files changed, 20 insertions(+), 20 deletions(-)
+ hw/scsi/megasas.c         | 6 +++---
+ hw/scsi/mptsas.c          | 2 +-
+ hw/scsi/scsi-bus.c        | 2 +-
+ hw/scsi/scsi-disk.c       | 6 +++---
+ hw/scsi/scsi-generic.c    | 2 +-
+ hw/scsi/spapr_vscsi.c     | 2 +-
+ hw/scsi/vhost-scsi.c      | 2 +-
+ hw/scsi/vhost-user-scsi.c | 2 +-
+ hw/scsi/virtio-scsi.c     | 2 +-
+ hw/scsi/vmw_pvscsi.c      | 2 +-
+ 10 files changed, 14 insertions(+), 14 deletions(-)
 
-diff --git a/hw/s390x/3270-ccw.c b/hw/s390x/3270-ccw.c
-index 69e6783ade..f48a14ca2c 100644
---- a/hw/s390x/3270-ccw.c
-+++ b/hw/s390x/3270-ccw.c
-@@ -150,7 +150,7 @@ out_err:
-     g_free(sch);
+diff --git a/hw/scsi/megasas.c b/hw/scsi/megasas.c
+index df58aeb995..8323cd18e3 100644
+--- a/hw/scsi/megasas.c
++++ b/hw/scsi/megasas.c
+@@ -2448,7 +2448,7 @@ static void megasas_scsi_realize(PCIDevice *dev, Error **errp)
+     scsi_bus_init(&s->bus, sizeof(s->bus), DEVICE(dev), &megasas_scsi_info);
  }
  
--static Property emulated_ccw_3270_properties[] = {
-+static const Property emulated_ccw_3270_properties[] = {
+-static Property megasas_properties_gen1[] = {
++static const Property megasas_properties_gen1[] = {
+     DEFINE_PROP_UINT32("max_sge", MegasasState, fw_sge,
+                        MEGASAS_DEFAULT_SGE),
+     DEFINE_PROP_UINT32("max_cmds", MegasasState, fw_cmds,
+@@ -2462,7 +2462,7 @@ static Property megasas_properties_gen1[] = {
      DEFINE_PROP_END_OF_LIST(),
  };
  
-diff --git a/hw/s390x/ccw-device.c b/hw/s390x/ccw-device.c
-index 30f2fb486f..0d10c3ed55 100644
---- a/hw/s390x/ccw-device.c
-+++ b/hw/s390x/ccw-device.c
-@@ -81,7 +81,7 @@ const PropertyInfo ccw_loadparm = {
-     .set = ccw_device_set_loadparm,
- };
+-static Property megasas_properties_gen2[] = {
++static const Property megasas_properties_gen2[] = {
+     DEFINE_PROP_UINT32("max_sge", MegasasState, fw_sge,
+                        MEGASAS_DEFAULT_SGE),
+     DEFINE_PROP_UINT32("max_cmds", MegasasState, fw_cmds,
+@@ -2487,7 +2487,7 @@ typedef struct MegasasInfo {
+     int mmio_bar;
+     int osts;
+     const VMStateDescription *vmsd;
+-    Property *props;
++    const Property *props;
+     InterfaceInfo *interfaces;
+ } MegasasInfo;
  
--static Property ccw_device_properties[] = {
-+static const Property ccw_device_properties[] = {
-     DEFINE_PROP_CSS_DEV_ID("devno", CcwDevice, devno),
-     DEFINE_PROP_CSS_DEV_ID_RO("dev_id", CcwDevice, dev_id),
-     DEFINE_PROP_CSS_DEV_ID_RO("subch_id", CcwDevice, subch_id),
-diff --git a/hw/s390x/css-bridge.c b/hw/s390x/css-bridge.c
-index 8657ff7bf4..860a04a7da 100644
---- a/hw/s390x/css-bridge.c
-+++ b/hw/s390x/css-bridge.c
-@@ -120,7 +120,7 @@ VirtualCssBus *virtual_css_bus_init(void)
- 
- /***************** Virtual-css Bus Bridge Device ********************/
- 
--static Property virtual_css_bridge_properties[] = {
-+static const Property virtual_css_bridge_properties[] = {
-     DEFINE_PROP_BOOL("css_dev_path", VirtualCssBridge, css_dev_path,
-                      true),
-     DEFINE_PROP_END_OF_LIST(),
-diff --git a/hw/s390x/ipl.c b/hw/s390x/ipl.c
-index 30734661ad..88a97f0085 100644
---- a/hw/s390x/ipl.c
-+++ b/hw/s390x/ipl.c
-@@ -291,7 +291,7 @@ static void s390_ipl_realize(DeviceState *dev, Error **errp)
-     qemu_register_reset(resettable_cold_reset_fn, dev);
- }
- 
--static Property s390_ipl_properties[] = {
-+static const Property s390_ipl_properties[] = {
-     DEFINE_PROP_STRING("kernel", S390IPLState, kernel),
-     DEFINE_PROP_STRING("initrd", S390IPLState, initrd),
-     DEFINE_PROP_STRING("cmdline", S390IPLState, cmdline),
-diff --git a/hw/s390x/s390-pci-bus.c b/hw/s390x/s390-pci-bus.c
-index 40b2567aa7..22e6be67af 100644
---- a/hw/s390x/s390-pci-bus.c
-+++ b/hw/s390x/s390-pci-bus.c
-@@ -1481,7 +1481,7 @@ static const PropertyInfo s390_pci_fid_propinfo = {
- #define DEFINE_PROP_S390_PCI_FID(_n, _s, _f) \
-     DEFINE_PROP(_n, _s, _f, s390_pci_fid_propinfo, uint32_t)
- 
--static Property s390_pci_device_properties[] = {
-+static const Property s390_pci_device_properties[] = {
-     DEFINE_PROP_UINT16("uid", S390PCIBusDevice, uid, UID_UNDEFINED),
-     DEFINE_PROP_S390_PCI_FID("fid", S390PCIBusDevice, fid),
-     DEFINE_PROP_STRING("target", S390PCIBusDevice, target),
-diff --git a/hw/s390x/s390-skeys.c b/hw/s390x/s390-skeys.c
-index bf22d6863e..6d0a47ed73 100644
---- a/hw/s390x/s390-skeys.c
-+++ b/hw/s390x/s390-skeys.c
-@@ -475,7 +475,7 @@ static void s390_skeys_realize(DeviceState *dev, Error **errp)
+diff --git a/hw/scsi/mptsas.c b/hw/scsi/mptsas.c
+index c6bc3479e9..a06113d908 100644
+--- a/hw/scsi/mptsas.c
++++ b/hw/scsi/mptsas.c
+@@ -1410,7 +1410,7 @@ static const VMStateDescription vmstate_mptsas = {
      }
- }
- 
--static Property s390_skeys_props[] = {
-+static const Property s390_skeys_props[] = {
-     DEFINE_PROP_BOOL("migration-enabled", S390SKeysState, migration_enabled, true),
-     DEFINE_PROP_END_OF_LIST(),
- };
-diff --git a/hw/s390x/s390-stattrib.c b/hw/s390x/s390-stattrib.c
-index c4259b5327..6c69c01e1f 100644
---- a/hw/s390x/s390-stattrib.c
-+++ b/hw/s390x/s390-stattrib.c
-@@ -360,7 +360,7 @@ static void s390_stattrib_realize(DeviceState *dev, Error **errp)
-                          &savevm_s390_stattrib_handlers, dev);
- }
- 
--static Property s390_stattrib_props[] = {
-+static const Property s390_stattrib_props[] = {
-     DEFINE_PROP_BOOL("migration-enabled", S390StAttribState, migration_enabled, true),
-     DEFINE_PROP_END_OF_LIST(),
- };
-diff --git a/hw/s390x/vhost-scsi-ccw.c b/hw/s390x/vhost-scsi-ccw.c
-index 40dc14bbc7..0be0f8a82c 100644
---- a/hw/s390x/vhost-scsi-ccw.c
-+++ b/hw/s390x/vhost-scsi-ccw.c
-@@ -41,7 +41,7 @@ static void vhost_ccw_scsi_instance_init(Object *obj)
-                                 TYPE_VHOST_SCSI);
- }
- 
--static Property vhost_ccw_scsi_properties[] = {
-+static const Property vhost_ccw_scsi_properties[] = {
-     DEFINE_PROP_UINT32("max_revision", VirtioCcwDevice, max_rev,
-                        VIRTIO_CCW_MAX_REV),
-     DEFINE_PROP_END_OF_LIST(),
-diff --git a/hw/s390x/vhost-user-fs-ccw.c b/hw/s390x/vhost-user-fs-ccw.c
-index 6c6f269293..934378aaec 100644
---- a/hw/s390x/vhost-user-fs-ccw.c
-+++ b/hw/s390x/vhost-user-fs-ccw.c
-@@ -23,7 +23,7 @@ typedef struct VHostUserFSCcw {
-         OBJECT_CHECK(VHostUserFSCcw, (obj), TYPE_VHOST_USER_FS_CCW)
- 
- 
--static Property vhost_user_fs_ccw_properties[] = {
-+static const Property vhost_user_fs_ccw_properties[] = {
-     DEFINE_PROP_BIT("ioeventfd", VirtioCcwDevice, flags,
-                     VIRTIO_CCW_FLAG_USE_IOEVENTFD_BIT, true),
-     DEFINE_PROP_UINT32("max_revision", VirtioCcwDevice, max_rev,
-diff --git a/hw/s390x/vhost-vsock-ccw.c b/hw/s390x/vhost-vsock-ccw.c
-index 07845a9a00..3ba4008b4b 100644
---- a/hw/s390x/vhost-vsock-ccw.c
-+++ b/hw/s390x/vhost-vsock-ccw.c
-@@ -22,7 +22,7 @@ struct VHostVSockCCWState {
-     VHostVSock vdev;
  };
  
--static Property vhost_vsock_ccw_properties[] = {
-+static const Property vhost_vsock_ccw_properties[] = {
-     DEFINE_PROP_UINT32("max_revision", VirtioCcwDevice, max_rev,
-                        VIRTIO_CCW_MAX_REV),
+-static Property mptsas_properties[] = {
++static const Property mptsas_properties[] = {
+     DEFINE_PROP_UINT64("sas_address", MPTSASState, sas_addr, 0),
+     /* TODO: test MSI support under Windows */
+     DEFINE_PROP_ON_OFF_AUTO("msi", MPTSASState, msi, ON_OFF_AUTO_AUTO),
+diff --git a/hw/scsi/scsi-bus.c b/hw/scsi/scsi-bus.c
+index 53eff5dd3d..2f1678d51e 100644
+--- a/hw/scsi/scsi-bus.c
++++ b/hw/scsi/scsi-bus.c
+@@ -1943,7 +1943,7 @@ const VMStateDescription vmstate_scsi_device = {
+     }
+ };
+ 
+-static Property scsi_props[] = {
++static const Property scsi_props[] = {
+     DEFINE_PROP_UINT32("channel", SCSIDevice, channel, 0),
+     DEFINE_PROP_UINT32("scsi-id", SCSIDevice, id, -1),
+     DEFINE_PROP_UINT32("lun", SCSIDevice, lun, -1),
+diff --git a/hw/scsi/scsi-disk.c b/hw/scsi/scsi-disk.c
+index 7f13b0588f..a47b80907f 100644
+--- a/hw/scsi/scsi-disk.c
++++ b/hw/scsi/scsi-disk.c
+@@ -3207,7 +3207,7 @@ static const TypeInfo scsi_disk_base_info = {
+     DEFINE_PROP_BOOL("migrate-emulated-scsi-request", SCSIDiskState, migrate_emulated_scsi_request, true)
+ 
+ 
+-static Property scsi_hd_properties[] = {
++static const Property scsi_hd_properties[] = {
+     DEFINE_SCSI_DISK_PROPERTIES(),
+     DEFINE_PROP_BIT("removable", SCSIDiskState, features,
+                     SCSI_DISK_F_REMOVABLE, false),
+@@ -3267,7 +3267,7 @@ static const TypeInfo scsi_hd_info = {
+     .class_init    = scsi_hd_class_initfn,
+ };
+ 
+-static Property scsi_cd_properties[] = {
++static const Property scsi_cd_properties[] = {
+     DEFINE_SCSI_DISK_PROPERTIES(),
+     DEFINE_PROP_UINT64("wwn", SCSIDiskState, qdev.wwn, 0),
+     DEFINE_PROP_UINT64("port_wwn", SCSIDiskState, qdev.port_wwn, 0),
+@@ -3310,7 +3310,7 @@ static const TypeInfo scsi_cd_info = {
+ };
+ 
+ #ifdef __linux__
+-static Property scsi_block_properties[] = {
++static const Property scsi_block_properties[] = {
+     DEFINE_BLOCK_ERROR_PROPERTIES(SCSIDiskState, qdev.conf),
+     DEFINE_PROP_DRIVE("drive", SCSIDiskState, qdev.conf.blk),
+     DEFINE_PROP_BOOL("share-rw", SCSIDiskState, qdev.conf.share_rw, false),
+diff --git a/hw/scsi/scsi-generic.c b/hw/scsi/scsi-generic.c
+index 76f04a5ee8..d7ae7549d0 100644
+--- a/hw/scsi/scsi-generic.c
++++ b/hw/scsi/scsi-generic.c
+@@ -772,7 +772,7 @@ static SCSIRequest *scsi_new_request(SCSIDevice *d, uint32_t tag, uint32_t lun,
+     return scsi_req_alloc(&scsi_generic_req_ops, d, tag, lun, hba_private);
+ }
+ 
+-static Property scsi_generic_properties[] = {
++static const Property scsi_generic_properties[] = {
+     DEFINE_PROP_DRIVE("drive", SCSIDevice, conf.blk),
+     DEFINE_PROP_BOOL("share-rw", SCSIDevice, conf.share_rw, false),
+     DEFINE_PROP_UINT32("io_timeout", SCSIDevice, io_timeout,
+diff --git a/hw/scsi/spapr_vscsi.c b/hw/scsi/spapr_vscsi.c
+index c75a6c8807..7c55e4d40f 100644
+--- a/hw/scsi/spapr_vscsi.c
++++ b/hw/scsi/spapr_vscsi.c
+@@ -1250,7 +1250,7 @@ static int spapr_vscsi_devnode(SpaprVioDevice *dev, void *fdt, int node_off)
+     return 0;
+ }
+ 
+-static Property spapr_vscsi_properties[] = {
++static const Property spapr_vscsi_properties[] = {
+     DEFINE_SPAPR_PROPERTIES(VSCSIState, vdev),
      DEFINE_PROP_END_OF_LIST(),
-diff --git a/hw/s390x/virtio-ccw-9p.c b/hw/s390x/virtio-ccw-9p.c
-index 6f931f5994..c10b084d40 100644
---- a/hw/s390x/virtio-ccw-9p.c
-+++ b/hw/s390x/virtio-ccw-9p.c
-@@ -41,7 +41,7 @@ static void virtio_ccw_9p_instance_init(Object *obj)
-                                 TYPE_VIRTIO_9P);
+ };
+diff --git a/hw/scsi/vhost-scsi.c b/hw/scsi/vhost-scsi.c
+index 22d16dc26b..effb8dab1f 100644
+--- a/hw/scsi/vhost-scsi.c
++++ b/hw/scsi/vhost-scsi.c
+@@ -343,7 +343,7 @@ static struct vhost_dev *vhost_scsi_get_vhost(VirtIODevice *vdev)
+     return &vsc->dev;
  }
  
--static Property virtio_ccw_9p_properties[] = {
-+static const Property virtio_ccw_9p_properties[] = {
-     DEFINE_PROP_BIT("ioeventfd", VirtioCcwDevice, flags,
-             VIRTIO_CCW_FLAG_USE_IOEVENTFD_BIT, true),
-     DEFINE_PROP_UINT32("max_revision", VirtioCcwDevice, max_rev,
-diff --git a/hw/s390x/virtio-ccw-balloon.c b/hw/s390x/virtio-ccw-balloon.c
-index 44287b9bbe..bbbed494b3 100644
---- a/hw/s390x/virtio-ccw-balloon.c
-+++ b/hw/s390x/virtio-ccw-balloon.c
-@@ -46,7 +46,7 @@ static void virtio_ccw_balloon_instance_init(Object *obj)
-                               "guest-stats-polling-interval");
+-static Property vhost_scsi_properties[] = {
++static const Property vhost_scsi_properties[] = {
+     DEFINE_PROP_STRING("vhostfd", VirtIOSCSICommon, conf.vhostfd),
+     DEFINE_PROP_STRING("wwpn", VirtIOSCSICommon, conf.wwpn),
+     DEFINE_PROP_UINT32("boot_tpgt", VirtIOSCSICommon, conf.boot_tpgt, 0),
+diff --git a/hw/scsi/vhost-user-scsi.c b/hw/scsi/vhost-user-scsi.c
+index 55e4be5b34..d5265c57bc 100644
+--- a/hw/scsi/vhost-user-scsi.c
++++ b/hw/scsi/vhost-user-scsi.c
+@@ -341,7 +341,7 @@ static void vhost_user_scsi_unrealize(DeviceState *dev)
+     virtio_scsi_common_unrealize(dev);
  }
  
--static Property virtio_ccw_balloon_properties[] = {
-+static const Property virtio_ccw_balloon_properties[] = {
-     DEFINE_PROP_BIT("ioeventfd", VirtioCcwDevice, flags,
-                     VIRTIO_CCW_FLAG_USE_IOEVENTFD_BIT, true),
-     DEFINE_PROP_UINT32("max_revision", VirtioCcwDevice, max_rev,
-diff --git a/hw/s390x/virtio-ccw-blk.c b/hw/s390x/virtio-ccw-blk.c
-index 2364432c6e..3182851234 100644
---- a/hw/s390x/virtio-ccw-blk.c
-+++ b/hw/s390x/virtio-ccw-blk.c
-@@ -43,7 +43,7 @@ static void virtio_ccw_blk_instance_init(Object *obj)
-                               "bootindex");
+-static Property vhost_user_scsi_properties[] = {
++static const Property vhost_user_scsi_properties[] = {
+     DEFINE_PROP_CHR("chardev", VirtIOSCSICommon, conf.chardev),
+     DEFINE_PROP_UINT32("boot_tpgt", VirtIOSCSICommon, conf.boot_tpgt, 0),
+     DEFINE_PROP_UINT32("num_queues", VirtIOSCSICommon, conf.num_queues,
+diff --git a/hw/scsi/virtio-scsi.c b/hw/scsi/virtio-scsi.c
+index 6637cfeaf5..c0a4f1a620 100644
+--- a/hw/scsi/virtio-scsi.c
++++ b/hw/scsi/virtio-scsi.c
+@@ -1285,7 +1285,7 @@ static void virtio_scsi_device_unrealize(DeviceState *dev)
+     qemu_mutex_destroy(&s->tmf_bh_lock);
  }
  
--static Property virtio_ccw_blk_properties[] = {
-+static const Property virtio_ccw_blk_properties[] = {
-     DEFINE_PROP_BIT("ioeventfd", VirtioCcwDevice, flags,
-                     VIRTIO_CCW_FLAG_USE_IOEVENTFD_BIT, true),
-     DEFINE_PROP_UINT32("max_revision", VirtioCcwDevice, max_rev,
-diff --git a/hw/s390x/virtio-ccw-crypto.c b/hw/s390x/virtio-ccw-crypto.c
-index 0fa2f89443..b4cd7605c9 100644
---- a/hw/s390x/virtio-ccw-crypto.c
-+++ b/hw/s390x/virtio-ccw-crypto.c
-@@ -44,7 +44,7 @@ static void virtio_ccw_crypto_instance_init(Object *obj)
-                                 TYPE_VIRTIO_CRYPTO);
- }
+-static Property virtio_scsi_properties[] = {
++static const Property virtio_scsi_properties[] = {
+     DEFINE_PROP_UINT32("num_queues", VirtIOSCSI, parent_obj.conf.num_queues,
+                        VIRTIO_SCSI_AUTO_NUM_QUEUES),
+     DEFINE_PROP_UINT32("virtqueue_size", VirtIOSCSI,
+diff --git a/hw/scsi/vmw_pvscsi.c b/hw/scsi/vmw_pvscsi.c
+index 57761b5594..46cec531cc 100644
+--- a/hw/scsi/vmw_pvscsi.c
++++ b/hw/scsi/vmw_pvscsi.c
+@@ -1296,7 +1296,7 @@ static const VMStateDescription vmstate_pvscsi = {
+     }
+ };
  
--static Property virtio_ccw_crypto_properties[] = {
-+static const Property virtio_ccw_crypto_properties[] = {
-     DEFINE_PROP_BIT("ioeventfd", VirtioCcwDevice, flags,
-                     VIRTIO_CCW_FLAG_USE_IOEVENTFD_BIT, true),
-     DEFINE_PROP_UINT32("max_revision", VirtioCcwDevice, max_rev,
-diff --git a/hw/s390x/virtio-ccw-gpu.c b/hw/s390x/virtio-ccw-gpu.c
-index 0642c5281d..c44dc2d355 100644
---- a/hw/s390x/virtio-ccw-gpu.c
-+++ b/hw/s390x/virtio-ccw-gpu.c
-@@ -42,7 +42,7 @@ static void virtio_ccw_gpu_instance_init(Object *obj)
-                                 TYPE_VIRTIO_GPU);
- }
- 
--static Property virtio_ccw_gpu_properties[] = {
-+static const Property virtio_ccw_gpu_properties[] = {
-     DEFINE_PROP_BIT("ioeventfd", VirtioCcwDevice, flags,
-                     VIRTIO_CCW_FLAG_USE_IOEVENTFD_BIT, true),
-     DEFINE_PROP_UINT32("max_revision", VirtioCcwDevice, max_rev,
-diff --git a/hw/s390x/virtio-ccw-input.c b/hw/s390x/virtio-ccw-input.c
-index 61a07ba38d..040a9e04a9 100644
---- a/hw/s390x/virtio-ccw-input.c
-+++ b/hw/s390x/virtio-ccw-input.c
-@@ -43,7 +43,7 @@ static void virtio_ccw_input_realize(VirtioCcwDevice *ccw_dev, Error **errp)
-     qdev_realize(vdev, BUS(&ccw_dev->bus), errp);
- }
- 
--static Property virtio_ccw_input_properties[] = {
-+static const Property virtio_ccw_input_properties[] = {
-     DEFINE_PROP_BIT("ioeventfd", VirtioCcwDevice, flags,
-                     VIRTIO_CCW_FLAG_USE_IOEVENTFD_BIT, true),
-     DEFINE_PROP_UINT32("max_revision", VirtioCcwDevice, max_rev,
-diff --git a/hw/s390x/virtio-ccw-net.c b/hw/s390x/virtio-ccw-net.c
-index a4a3f65c7e..c41d347034 100644
---- a/hw/s390x/virtio-ccw-net.c
-+++ b/hw/s390x/virtio-ccw-net.c
-@@ -46,7 +46,7 @@ static void virtio_ccw_net_instance_init(Object *obj)
-                               "bootindex");
- }
- 
--static Property virtio_ccw_net_properties[] = {
-+static const Property virtio_ccw_net_properties[] = {
-     DEFINE_PROP_BIT("ioeventfd", VirtioCcwDevice, flags,
-                     VIRTIO_CCW_FLAG_USE_IOEVENTFD_BIT, true),
-     DEFINE_PROP_UINT32("max_revision", VirtioCcwDevice, max_rev,
-diff --git a/hw/s390x/virtio-ccw-rng.c b/hw/s390x/virtio-ccw-rng.c
-index a3fffb5138..c9a15c4eb6 100644
---- a/hw/s390x/virtio-ccw-rng.c
-+++ b/hw/s390x/virtio-ccw-rng.c
-@@ -43,7 +43,7 @@ static void virtio_ccw_rng_instance_init(Object *obj)
-                                 TYPE_VIRTIO_RNG);
- }
- 
--static Property virtio_ccw_rng_properties[] = {
-+static const Property virtio_ccw_rng_properties[] = {
-     DEFINE_PROP_BIT("ioeventfd", VirtioCcwDevice, flags,
-                     VIRTIO_CCW_FLAG_USE_IOEVENTFD_BIT, true),
-     DEFINE_PROP_UINT32("max_revision", VirtioCcwDevice, max_rev,
-diff --git a/hw/s390x/virtio-ccw-scsi.c b/hw/s390x/virtio-ccw-scsi.c
-index d003f89f43..bec9a73518 100644
---- a/hw/s390x/virtio-ccw-scsi.c
-+++ b/hw/s390x/virtio-ccw-scsi.c
-@@ -53,7 +53,7 @@ static void virtio_ccw_scsi_instance_init(Object *obj)
-                                 TYPE_VIRTIO_SCSI);
- }
- 
--static Property virtio_ccw_scsi_properties[] = {
-+static const Property virtio_ccw_scsi_properties[] = {
-     DEFINE_PROP_BIT("ioeventfd", VirtioCcwDevice, flags,
-                     VIRTIO_CCW_FLAG_USE_IOEVENTFD_BIT, true),
-     DEFINE_PROP_UINT32("max_revision", VirtioCcwDevice, max_rev,
-diff --git a/hw/s390x/virtio-ccw-serial.c b/hw/s390x/virtio-ccw-serial.c
-index 8f8d2302f8..037d4f9db1 100644
---- a/hw/s390x/virtio-ccw-serial.c
-+++ b/hw/s390x/virtio-ccw-serial.c
-@@ -53,7 +53,7 @@ static void virtio_ccw_serial_instance_init(Object *obj)
-                                 TYPE_VIRTIO_SERIAL);
- }
- 
--static Property virtio_ccw_serial_properties[] = {
-+static const Property virtio_ccw_serial_properties[] = {
-     DEFINE_PROP_BIT("ioeventfd", VirtioCcwDevice, flags,
-                     VIRTIO_CCW_FLAG_USE_IOEVENTFD_BIT, true),
-     DEFINE_PROP_UINT32("max_revision", VirtioCcwDevice, max_rev,
+-static Property pvscsi_properties[] = {
++static const Property pvscsi_properties[] = {
+     DEFINE_PROP_UINT8("use_msg", PVSCSIState, use_msg, 1),
+     DEFINE_PROP_BIT("x-old-pci-configuration", PVSCSIState, compat_flags,
+                     PVSCSI_COMPAT_OLD_PCI_CONFIGURATION_BIT, false),
 -- 
 2.43.0
 
