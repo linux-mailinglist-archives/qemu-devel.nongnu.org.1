@@ -2,85 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 357B69F13E9
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Dec 2024 18:39:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C3B169F1433
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Dec 2024 18:44:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tM9aS-0000ZV-Kr; Fri, 13 Dec 2024 12:36:24 -0500
+	id 1tM9ai-0001hQ-08; Fri, 13 Dec 2024 12:36:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tM9Y5-0008MD-TJ
- for qemu-devel@nongnu.org; Fri, 13 Dec 2024 12:33:58 -0500
-Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
+ id 1tM9Y2-0008HY-Sh
+ for qemu-devel@nongnu.org; Fri, 13 Dec 2024 12:33:57 -0500
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tM9Xy-0001jO-Cj
- for qemu-devel@nongnu.org; Fri, 13 Dec 2024 12:33:57 -0500
-Received: by mail-wr1-x42c.google.com with SMTP id
- ffacd0b85a97d-3862f32a33eso985782f8f.3
- for <qemu-devel@nongnu.org>; Fri, 13 Dec 2024 09:33:47 -0800 (PST)
+ id 1tM9Xy-0001jZ-Jc
+ for qemu-devel@nongnu.org; Fri, 13 Dec 2024 12:33:54 -0500
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-43625c4a50dso13995965e9.0
+ for <qemu-devel@nongnu.org>; Fri, 13 Dec 2024 09:33:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734111226; x=1734716026; darn=nongnu.org;
+ d=linaro.org; s=google; t=1734111227; x=1734716027; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=4Tvdd/VSuAoXtZ7lXIE2S/8K11Z6fStvv2Pl+2QKZyA=;
- b=gwMvsFkVvQvGJ29VHbPGqKdBQkGHMmw/eDvdfFJf7vSd/Rl/uPTgMlIEHwIIDgPQjn
- Pruc5odOJI1itIqQ0sQklSKs2ek6/lqIsN/TAtXjHsC+WNfIdvIodTm7H9RbpTcg88J8
- nQVd/6nKA/6ychrbEKhigUmAiGXBEUEZGztm4ErEz0sQgbdzvdk73IrHJPjq3bUhlVSi
- A7X7jgS+JPHQUyvaDIDnT5buFVZz4dj31ov6WjCWDL0IquXvACTKMRJ0LSO95OnaLzwq
- Ju9BM5V3+v3LySIQ59lQ1eOMen9BhD7hNbZI6cIgYm1JtpbUtVUgvZ8VXDSG03M+HFw4
- fj9A==
+ :reply-to; bh=PBFuTHZDcPncuwYvvsk4kRJzR/9xPxvQn/qSMVquJ4E=;
+ b=dAFIg2uJbAKMMaGaHURNMm0O/wz5nhNk+d4DaabzZAwEj1ZA5M7492iiwxh/8rAx3F
+ 2hNe989kOV0H8fp0wmwpe1mSqJgF6DuK7Aq48aw7FAEL3Vzyb3e9UiEGBNsUvY5NzMQl
+ tf4OpOmMTar32VdLZBVtBIMROkFmpC47vBVFQtVjkkVvNghO3U5GPCplFdUbMjYl8W53
+ m9+3cKKPUzHVuCJ7Z8bQr2TbHAwAwhoCtRUlOfrXzcFKM+zQRI/Bp0d8srDOxdmNkcNF
+ l2x76JeMk9RdmQ91jSujy+aa2beRVxLM1CjdAd7r3cqlQMTCOxVCC/2XAXNwdlySLvp9
+ Sasw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734111226; x=1734716026;
+ d=1e100.net; s=20230601; t=1734111227; x=1734716027;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=4Tvdd/VSuAoXtZ7lXIE2S/8K11Z6fStvv2Pl+2QKZyA=;
- b=rrLeo2oSBhp5BlwgsWYDHvIfalYluUPGNRId3B96pOmf+5SnaDHyUmEQ/EkvikcCwn
- IUq8DfxB+gfSoh5ZGYMT7OQbx3/v2JGtg72N4VnYn1uuTB3l/8+vDBvKCLgZMlaFlBOo
- zbILYvp199p1GhKuQ0mT4pPjNHps96Mf+gbdL78+byzlMMFf4eUHKBR05twzAWgA0PW5
- iV/8BVz71g/DDfieh2rbGh9nWyAW6gNEa4t/ZV4wNEKOAiFYlPdIGh4un+azZIX4xfEo
- yQWeRPz8UJJxG9Sxopmp3h22JpvLkPTCyVMa8gt4aPpuoDgZv8K67sGiZoMM7V1acwFU
- Ejiw==
-X-Gm-Message-State: AOJu0YzigqTunZOhHtGre5sSJBuHbh/eVxGYOxZgZJndmq2Sa2h/ZoK3
- OpM2GyBRGqYfLTqevX7lZVOS2oNamSUi6Oh4WwawuKdNUg8xnlgpCyEsDkHVZpqam4BYJ23+XPl
- F
-X-Gm-Gg: ASbGncvCk5z0jRn8+JfRzufPF12sttJ9pMfK6cBoOH/ImuzxbvHdI4zDifrwdQ5nwd3
- i94mSTZuFeKhUfmxyfKcNm3CnFtWY0F5ud/lbtXyQskkDHkPjG6mhohkSO4L5ZTa9T051lnOj6o
- ZTh3/SuP/XDmjBuj5MQFi2PkLgvY3uUYXcEJzEaddH7lsP+AehUfdvqkkY/BNqeun4edLELP2pF
- K6jrHmNbegiv6lOh/ftf6jDsmYVmUkt5Uc8cbng9k0qmHKEGRY0Hbxb30BLkg==
-X-Google-Smtp-Source: AGHT+IH6fxsdGwKlPeY4Ls4L1pFntrbASM4vE6guJs7aShbp4c5FtupMWuDHNaHRoIz4s5ezd3MESQ==
-X-Received: by 2002:a5d:6d8f:0:b0:385:e43a:4dd8 with SMTP id
- ffacd0b85a97d-38880af1458mr2823540f8f.4.1734111226023; 
- Fri, 13 Dec 2024 09:33:46 -0800 (PST)
+ bh=PBFuTHZDcPncuwYvvsk4kRJzR/9xPxvQn/qSMVquJ4E=;
+ b=eqAVmLJ3OoJZ95Dv0fjgCTYacFE26yOXpEugMZfzkvqYS0vPloz2DCR75dGs33L3AX
+ KHE4e+anyrQ+rvoGJoRknT8WkziVjIMpZtVZ15tw754r/zmGkPpnO5mkMixeExKOi0Cp
+ ZyvZjMNqHq/gk9PfXnruyP6Mw4iUcxnesKiEAsUgoybvyzWycg/f9O79QDRa9qm8HURT
+ RL3X6VBBW0GCsbZCL9usXohNOwGAaxtGt845/SoMMfgEPaoWvn0+ti5RCQfeUyvqotdi
+ SmqFJSjPDkfo45XZi14nGTAWxTKWw3EBwqNL53SPmyAX1OizAWkQgc3gpMIcOxMo73ek
+ aT/Q==
+X-Gm-Message-State: AOJu0YyNZvNYUq+/1qePbeKg3/Ixyk7h4WsaVEV6Py+3weZDCey0uD9H
+ DrM2tn4PmBGVCEIU0vj0jr7VPvJ/gjK15ceyxIfWQn0AIrmmn0vjKjKdMRbLdSHRMScJA9vp9/B
+ D
+X-Gm-Gg: ASbGncszwDkFBProK5boJJ/g0evtB2vyQzKY+RYD/hBKSMOTY7QFG5UMalK55PQA+8b
+ dVtyIDY2r7qendMxDSVU0OXSshCggQEqtXv2/RFGM25Spj8cLg1vPWA3gIyJpvhSOp4iNQYpiyr
+ 9pcUmSkc/1SSAlC+BcV866oOncJHDxvCJfjxJGdvZ7nO4wuQiCFYSnduzgENWu8WZVufrVFBWM+
+ gVMNkIWAy6thmemIUqu/3vSgq2mqNl2kDxlqiu93DNkyeFVM8Ay74QBH1wIAQ==
+X-Google-Smtp-Source: AGHT+IGxtjgfHb+q7+0GuvXQfW8FSLGYbhYFradVpp2OlsHzC55phuN709fBHh7PWf16MZT2CeNZ/Q==
+X-Received: by 2002:a05:600c:3ba1:b0:434:fddf:5bfd with SMTP id
+ 5b1f17b1804b1-4362aa1473bmr25634335e9.5.1734111227103; 
+ Fri, 13 Dec 2024 09:33:47 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-388c80162ddsm87026f8f.37.2024.12.13.09.33.45
+ ffacd0b85a97d-388c80162ddsm87026f8f.37.2024.12.13.09.33.46
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 13 Dec 2024 09:33:45 -0800 (PST)
+ Fri, 13 Dec 2024 09:33:46 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 70/85] target/arm: Use float_round_to_odd in
- helper_fcvtx_f64_to_f32
-Date: Fri, 13 Dec 2024 17:32:14 +0000
-Message-Id: <20241213173229.3308926-71-peter.maydell@linaro.org>
+Subject: [PULL 71/85] docs/system/arm/orangepi: update links
+Date: Fri, 13 Dec 2024 17:32:15 +0000
+Message-Id: <20241213173229.3308926-72-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241213173229.3308926-1-peter.maydell@linaro.org>
 References: <20241213173229.3308926-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x334.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,50 +95,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Richard Henderson <richard.henderson@linaro.org>
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
-Softfloat has native support for round-to-odd.  Use it.
+www.orangepi.org does not support https, it's expected to stick to http.
 
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20241206031428.78634-1-richard.henderson@linaro.org
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Niek Linnenbank <nieklinnenbank@gmail.com>
+Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Message-id: 20241206192254.3889131-2-pierrick.bouvier@linaro.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/tcg/helper-a64.c | 18 ++++--------------
- 1 file changed, 4 insertions(+), 14 deletions(-)
+ docs/system/arm/orangepi.rst | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/target/arm/tcg/helper-a64.c b/target/arm/tcg/helper-a64.c
-index 28de7468cd1..fb6fe0fcaa9 100644
---- a/target/arm/tcg/helper-a64.c
-+++ b/target/arm/tcg/helper-a64.c
-@@ -408,23 +408,13 @@ float64 HELPER(frecpx_f64)(float64 a, void *fpstp)
+diff --git a/docs/system/arm/orangepi.rst b/docs/system/arm/orangepi.rst
+index 9afa54213b0..db87e81fec4 100644
+--- a/docs/system/arm/orangepi.rst
++++ b/docs/system/arm/orangepi.rst
+@@ -119,7 +119,7 @@ Orange Pi PC images
+ Note that the mainline kernel does not have a root filesystem. You may provide it
+ with an official Orange Pi PC image from the official website:
  
- float32 HELPER(fcvtx_f64_to_f32)(float64 a, CPUARMState *env)
- {
--    /* Von Neumann rounding is implemented by using round-to-zero
--     * and then setting the LSB of the result if Inexact was raised.
--     */
-     float32 r;
-     float_status *fpst = &env->vfp.fp_status;
--    float_status tstat = *fpst;
--    int exflags;
-+    int old = get_float_rounding_mode(fpst);
+-  http://www.orangepi.org/downloadresources/
++  http://www.orangepi.org/html/serviceAndSupport/index.html
  
--    set_float_rounding_mode(float_round_to_zero, &tstat);
--    set_float_exception_flags(0, &tstat);
--    r = float64_to_float32(a, &tstat);
--    exflags = get_float_exception_flags(&tstat);
--    if (exflags & float_flag_inexact) {
--        r = make_float32(float32_val(r) | 1);
--    }
--    exflags |= get_float_exception_flags(fpst);
--    set_float_exception_flags(exflags, fpst);
-+    set_float_rounding_mode(float_round_to_odd, fpst);
-+    r = float64_to_float32(a, fpst);
-+    set_float_rounding_mode(old, fpst);
-     return r;
- }
+ Another possibility is to run an Armbian image for Orange Pi PC which
+ can be downloaded from:
+@@ -213,7 +213,7 @@ including the Orange Pi PC. NetBSD 9.0 is known to work best for the Orange Pi P
+ board and provides a fully working system with serial console, networking and storage.
+ For the Orange Pi PC machine, get the 'evbarm-earmv7hf' based image from:
  
+-  https://cdn.netbsd.org/pub/NetBSD/NetBSD-9.0/evbarm-earmv7hf/binary/gzimg/armv7.img.gz
++  https://archive.netbsd.org/pub/NetBSD-archive/NetBSD-9.0/evbarm-earmv7hf/binary/gzimg/armv7.img.gz
+ 
+ The image requires manually installing U-Boot in the image. Build U-Boot with
+ the orangepi_pc_defconfig configuration as described in the previous section.
 -- 
 2.34.1
 
