@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E482F9F0299
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Dec 2024 03:21:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B91D59F028F
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Dec 2024 03:20:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tLvGu-0006UD-PJ; Thu, 12 Dec 2024 21:19:16 -0500
+	id 1tLvGv-0006Uc-Mw; Thu, 12 Dec 2024 21:19:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tLvGt-0006TY-5D
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tLvGt-0006U4-T1
  for qemu-devel@nongnu.org; Thu, 12 Dec 2024 21:19:15 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tLvGr-0007tz-PS
- for qemu-devel@nongnu.org; Thu, 12 Dec 2024 21:19:14 -0500
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tLvGs-0007u3-A9
+ for qemu-devel@nongnu.org; Thu, 12 Dec 2024 21:19:15 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1734056353;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=lvznXCyynZtSUaJmmaJzgBd7MJtVF6rvRBAF1JdsmhU=;
- b=Mw/QUC9pZDzqg7XqdxlfowvwHrAXzD3GxRgUkAc3LpwAJsFonSgjs00lHKwSb/VPnVAwRm
- lFc1PUF32aEaklfrjjioq8QT1yM7ai74v00ztXFh6DtNUMeG8EO9YxBXZlKMODZicZPosP
- MtXB9g0nhUPdlQLlIwT1BiTySiSmDx0=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ bh=cUqnOTl4U2kiflTBzdU9Uwo7gxNdoHwc3kNFF/lp/Bk=;
+ b=FSZhrDMT8Ysl5ID01WcQiA8Gof1w9/+75A/JptWU0aPzS7/8oLZksk1tmRjBRAIK10CYNS
+ u+qKXIKIx8kMstMP7Npf1ObTJrAB2UYMifraBvcMTZWvhsWdDxofFvaaVckphSQnA/90ol
+ lSsBwiQz984nRmStRS/RHFo9yP9MzLg=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-80-Q7D_SD60MPa4932dML9GCg-1; Thu,
- 12 Dec 2024 21:19:09 -0500
-X-MC-Unique: Q7D_SD60MPa4932dML9GCg-1
-X-Mimecast-MFC-AGG-ID: Q7D_SD60MPa4932dML9GCg
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-683-eiILsPGWM1ylv3WQeGCACQ-1; Thu,
+ 12 Dec 2024 21:19:12 -0500
+X-MC-Unique: eiILsPGWM1ylv3WQeGCACQ-1
+X-Mimecast-MFC-AGG-ID: eiILsPGWM1ylv3WQeGCACQ
 Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 885FC1956095; Fri, 13 Dec 2024 02:19:08 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 397A119560A2; Fri, 13 Dec 2024 02:19:11 +0000 (UTC)
 Received: from jsnow-thinkpadp16vgen1.westford.csb (unknown [10.22.88.22])
  by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 25CE5195605A; Fri, 13 Dec 2024 02:19:04 +0000 (UTC)
+ id BA4351955F3C; Fri, 13 Dec 2024 02:19:09 +0000 (UTC)
 From: John Snow <jsnow@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Michael Roth <michael.roth@amd.com>, Markus Armbruster <armbru@redhat.com>,
  John Snow <jsnow@redhat.com>
-Subject: [PATCH 05/23] qapi/schema: add __repr__ to QAPIDoc.Section
-Date: Thu, 12 Dec 2024 21:18:08 -0500
-Message-ID: <20241213021827.2956769-6-jsnow@redhat.com>
+Subject: [PATCH 06/23] docs/qapidoc: add transmogrifier stub
+Date: Thu, 12 Dec 2024 21:18:09 -0500
+Message-ID: <20241213021827.2956769-7-jsnow@redhat.com>
 In-Reply-To: <20241213021827.2956769-1-jsnow@redhat.com>
 References: <20241213021827.2956769-1-jsnow@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=jsnow@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=jsnow@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -25
 X-Spam_score: -2.6
@@ -81,28 +81,104 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Makes debugging far more pleasant when you can just print(section) and
-get something reasonable to display.
+This commit adds a stubbed option to the qapi-doc directive that opts-in
+to the new rST generator; the implementation of which will follow in
+subsequent commits.
+
+Once all QAPI documents have been converted, this option and the old
+qapidoc implementation can be dropped.
+
+Note that moving code outside of the try...except block has no impact
+because the code moved outside of that block does not ever raise a
+QAPIError.
 
 Signed-off-by: John Snow <jsnow@redhat.com>
 ---
- scripts/qapi/parser.py | 3 +++
- 1 file changed, 3 insertions(+)
+ docs/sphinx/qapidoc.py | 41 ++++++++++++++++++++++++++++-------------
+ 1 file changed, 28 insertions(+), 13 deletions(-)
 
-diff --git a/scripts/qapi/parser.py b/scripts/qapi/parser.py
-index fd841725527..3c88f9c7d38 100644
---- a/scripts/qapi/parser.py
-+++ b/scripts/qapi/parser.py
-@@ -670,6 +670,9 @@ def __init__(
-             # section text without tag
-             self.text = ''
+diff --git a/docs/sphinx/qapidoc.py b/docs/sphinx/qapidoc.py
+index 6abdcc884f5..230e67bca23 100644
+--- a/docs/sphinx/qapidoc.py
++++ b/docs/sphinx/qapidoc.py
+@@ -452,9 +452,9 @@ def _parse_text_into_node(self, doctext, node):
+         rstlist.append("", self._cur_doc.info.fname, self._cur_doc.info.line)
+         self._sphinx_directive.do_parse(rstlist, node)
  
-+        def __repr__(self) -> str:
-+            return f"<QAPIDoc.Section tag={self.tag!r} text={self.text!r}>"
+-    def get_document_nodes(self):
+-        """Return the list of docutils nodes which make up the document"""
+-        return self._top_node.children
++    def get_document_node(self):
++        """Return the root docutils node which makes up the document"""
++        return self._top_node
+ 
+ 
+ # Turn the black formatter on for the rest of the file.
+@@ -503,7 +503,10 @@ class QAPIDocDirective(NestedDirective):
+ 
+     required_argument = 1
+     optional_arguments = 1
+-    option_spec = {"qapifile": directives.unchanged_required}
++    option_spec = {
++        "qapifile": directives.unchanged_required,
++        "transmogrify": directives.flag,
++    }
+     has_content = False
+ 
+     def new_serialno(self):
+@@ -511,10 +514,24 @@ def new_serialno(self):
+         env = self.state.document.settings.env
+         return "qapidoc-%d" % env.new_serialno("qapidoc")
+ 
++    def transmogrify(self, schema) -> nodes.Element:
++        raise NotImplementedError
 +
-         def append_line(self, line: str) -> None:
-             self.text += line + '\n'
++    def legacy(self, schema) -> nodes.Element:
++        vis = QAPISchemaGenRSTVisitor(self)
++        vis.visit_begin(schema)
++        for doc in schema.docs:
++            if doc.symbol:
++                vis.symbol(doc, schema.lookup_entity(doc.symbol))
++            else:
++                vis.freeform(doc)
++        return vis.get_document_node()
++
+     def run(self):
+         env = self.state.document.settings.env
+         qapifile = env.config.qapidoc_srctree + "/" + self.arguments[0]
+         qapidir = os.path.dirname(qapifile)
++        transmogrify = "transmogrify" in self.options
  
+         try:
+             schema = QAPISchema(qapifile)
+@@ -522,20 +539,18 @@ def run(self):
+             # First tell Sphinx about all the schema files that the
+             # output documentation depends on (including 'qapifile' itself)
+             schema.visit(QAPISchemaGenDepVisitor(env, qapidir))
+-
+-            vis = QAPISchemaGenRSTVisitor(self)
+-            vis.visit_begin(schema)
+-            for doc in schema.docs:
+-                if doc.symbol:
+-                    vis.symbol(doc, schema.lookup_entity(doc.symbol))
+-                else:
+-                    vis.freeform(doc)
+-            return vis.get_document_nodes()
+         except QAPIError as err:
+             # Launder QAPI parse errors into Sphinx extension errors
+             # so they are displayed nicely to the user
+             raise ExtensionError(str(err)) from err
+ 
++        if transmogrify:
++            contentnode = self.transmogrify(schema)
++        else:
++            contentnode = self.legacy(schema)
++
++        return contentnode.children
++
+ 
+ class QMPExample(CodeBlock, NestedDirective):
+     """
 -- 
 2.47.0
 
