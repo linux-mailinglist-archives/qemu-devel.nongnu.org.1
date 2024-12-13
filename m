@@ -2,87 +2,111 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF7C29F1698
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Dec 2024 20:44:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 21CCD9F1702
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Dec 2024 21:03:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tMBaD-0002mB-24; Fri, 13 Dec 2024 14:44:17 -0500
+	id 1tMBrq-0004mk-KA; Fri, 13 Dec 2024 15:02:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tMBa2-0002lx-6a
- for qemu-devel@nongnu.org; Fri, 13 Dec 2024 14:44:06 -0500
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tMBZw-0007Vs-HS
- for qemu-devel@nongnu.org; Fri, 13 Dec 2024 14:44:05 -0500
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-43621d27adeso15192555e9.2
- for <qemu-devel@nongnu.org>; Fri, 13 Dec 2024 11:43:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734119038; x=1734723838; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id:from
- :to:cc:subject:date:message-id:reply-to;
- bh=9gNXJcmQCHIrAo8+4s0W5awkESMTIQ5Z7OjnDJ8fjj8=;
- b=ZB4xBsdQC/uPHd0oeD+DkM7R98SvuwsdESiCyKkqsjSKP+4tm6d2E088C7LjzaxzWE
- EBUFEqgSryGTFRoP9yIKSodFEQg8Tsq+qASvEgzl98AGNfdfPTmKzCoUMwR/W6kTt4OS
- HFkQ6t3pu8K6xVJ6u+k2nSM97S5KN5leaApKiHreLjTULOjdNlsRyLRrZ7SXdFrarxi8
- j+Qn581n7WE5Ht3FiD/HDMARRESknTl5+h33tdoJRMwD2I4kSOs94w0mvu45/2aSOcHN
- uC0tsDWvTOBuUuBLxYrbXOGO5NMuhHLhzxaqfCuGvZEosDvZzSpLF0K/py4jwVDrsKJZ
- TbLQ==
+ (Exim 4.90_1) (envelope-from <brian.cain@oss.qualcomm.com>)
+ id 1tMBrN-0004gG-LG
+ for qemu-devel@nongnu.org; Fri, 13 Dec 2024 15:02:02 -0500
+Received: from mx0b-0031df01.pphosted.com ([205.220.180.131])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <brian.cain@oss.qualcomm.com>)
+ id 1tMBrK-0002zD-Ao
+ for qemu-devel@nongnu.org; Fri, 13 Dec 2024 15:02:00 -0500
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+ by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BDBhosg018442
+ for <qemu-devel@nongnu.org>; Fri, 13 Dec 2024 20:01:55 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+ cc:content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+ Vmbch0uSHVZX2KNieGeI0a9HN96cM57DNXqGsNX/C6o=; b=FxKF0XHKdLFJ0NL/
+ F36Z1WrJeQd1qkZZ+Xr7ikS7ZneawlWmiXigG5LcSp5yNd0oVh9D5amS4gRgObIA
+ GJ3nQWNAo4YYyPYiHgS+GDQc023QbTETnf75lgOE8HGcytD1SzFUbVeTyM/3JI8i
+ VmzIwL+NxKmITJNtHzrAWvRjkz+L4vx4naqqz4zmSANxmtOdcj6OftMW0B6365XE
+ VuuA+UiCfGHT0JfyzuHEfOoQCZfdIfThZj5dcvaQIiR+8k1v3iVOePO51rqi1Dsj
+ BPgNnZ+7V4S4eD16BNY/aUlAb78F9WihfQxLwpI4Ge4JMQr4Zqrzehw9yMnunLaV
+ bg6ETA==
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
+ [209.85.222.199])
+ by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 43gmac16yq-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+ for <qemu-devel@nongnu.org>; Fri, 13 Dec 2024 20:01:54 +0000 (GMT)
+Received: by mail-qk1-f199.google.com with SMTP id
+ af79cd13be357-7b6e241d34eso283304285a.0
+ for <qemu-devel@nongnu.org>; Fri, 13 Dec 2024 12:01:54 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734119038; x=1734723838;
+ d=1e100.net; s=20230601; t=1734120114; x=1734724914;
  h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=9gNXJcmQCHIrAo8+4s0W5awkESMTIQ5Z7OjnDJ8fjj8=;
- b=i1bB3EUVPzZu7q7yqc8bgTCdwNQBBQrgrtTGhAEIMPqXKlYzPlvccV9NO1pMq4Qak0
- V9WPFgeRneIX5BauxdveARw3rh9/Y4rFx9CluyCIFLhVCDSO50NzbtfjKiH6yPsLkjrI
- wcStBx3ymWBia4B+h9ppVentS2Z4BiTaigJfWuA+0K5Jt4WFxnj3txzXtbS10yGKwwHf
- SepNEpVccfDW++HDGyfIdopPyE80GarBl/8Ri21gc6027NeBwePIpQKChSA+yGUbNhoG
- 4DVxWy/TevkR7w/rQjLqdQdu6HGrCSwXT0hj3GS8jlcCMSq+d1w2qYI78TDopQ2CFhgl
- VIHg==
+ bh=Vmbch0uSHVZX2KNieGeI0a9HN96cM57DNXqGsNX/C6o=;
+ b=WSpU6Ou8lb5yE+x/WfoW6AiGwVTGeFELKRfESBZ8BxENlQwcXF6BRKpo8l45zKJy0n
+ JpyOkibsJD3RlFwOH/7lKkDls482tx382EO4qFKkteZmHOykV/HxUr6FDzRvQEvW9QKi
+ 33nKybEPS8ntmYKK7S0ErVn5Lawk+YSCVT6CanM8sEQp1gMK4/MghjKlNt7intxUJk7b
+ qJwg+tbZNhvztCEsqb7+gkyRDcp12XME9QoExkW2deWtf6AZ85/JaI9bNw85V3w+RO6A
+ tywS4IQZ+pQ52mWFO/gwMBO0NTcY/bFdGtzsErkhshXsCBhjCXEQ5H0Ip0j0sAjOXnqr
+ SJ1w==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXUkw+PWiLz6qXtMdgffdqWVQmiO300TqF5F/9HjxaQ7+4gl73u7vh+jUUWafge7ZxCFJDvP6xmnv/z@nongnu.org
-X-Gm-Message-State: AOJu0YwX6QcO67ueFaA7cpjjufqf4cFOX6OQ6xCwG8FiUbAAn+MOmgYH
- 9Aa4zukzX3QnHxmZDbVqKJXTOGe85AJqcJP0UmPpPngIWxqJNFwPGx0Dxpb4rGdNaythjcjQV/t
- IKSA=
-X-Gm-Gg: ASbGncvb73I1PLOEKc9Czux0qgQZQNgYhd8nSJRttVXT+TQLFZYYfJvdx8WVqtKL+yk
- wzutxmg+NBiD0NGpOP3ggYcykJlcjx90lRlbyGrlsTPbrNTmhuty6PKuOFUI5uizYqL/HIGGPkk
- WzeD/5sTm5NZuk93BeWRDShGLkCz6slsMIcLoKJuIoTDbyjhaJDzUfv6+lQ8+fYKYCKAq6vGX6M
- TwEGMXLysof75t0w1ya0w8qXVuX8A5qUKGM8bX8VHZYP5XgXZVemxswWteG80L40bMZ3A6WKxzm
- uK13XNHd8mtp4LYL2Q2cPFh8XOpQiLjGejsMKN93/N/S2A==
-X-Google-Smtp-Source: AGHT+IFNXcrV54y5fdmnwb218hKFXph2Jnpv6RfEjNOmPptx0U0HdpU6j85KrcSv/Qnc6AbNVVAOkQ==
-X-Received: by 2002:a05:600c:3c8d:b0:431:52f5:f48d with SMTP id
- 5b1f17b1804b1-4362aab939bmr35628035e9.31.1734119037179; 
- Fri, 13 Dec 2024 11:43:57 -0800 (PST)
-Received: from [192.168.224.213] (183.red-95-127-61.dynamicip.rima-tde.net.
- [95.127.61.183]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-388c80470afsm356393f8f.75.2024.12.13.11.43.54
+ AJvYcCWbhw0km/8xTsDxXryHYq8earWk2yZbB1CuYvQAceJpNl2nny8Xdm7Ye26AgOlshr8wPcT4kyfIivOD@nongnu.org
+X-Gm-Message-State: AOJu0YxsyDHVeGakqJiOGZEu6DivcbkHI044f513E78rX8nftWkHnD5E
+ BB7SwYGNNmqEUk5Hwn0OmtEhGsczJzqPUVU+RWBCt5gyZHWx16/VHGwz2s78d2ZYr7JozAVNxGs
+ cFOnoQ3FK0DtUZZDl7/TbZSUHI6CMsssJBkZJ0fetuh/5HgtaKNC+/1H9327F3Q==
+X-Gm-Gg: ASbGncv1vPwecEN8/e6wtFFRvtXF4XTtA0AhJhSiD0hcP5JHovTJMQVqMzoa/4bYEev
+ ScO8c2RrqhmsHhaf/MftnmiOdDE3fDpy0g3pC5BELT1eYBdtM/0XFg5p+8KfCmT84p2jd4dRosA
+ 0b5+eDXstg79xrd5cFRyi3Ix+1THcvbMb7pNwTYLalvx8D1LeNKZmgXgsUvEM5CUiSAtfySNhpN
+ AA1ELxu0VZ8lPerQD2uZyCoQpOMsXy6qf5e6a6l2FU6BkMqGhUqDkEADU+VnpWS0CGj3vOFOJ+v
+ UipipiNeQAkb+F75fNsuajlxwnSXDGqe+9/1+SE=
+X-Received: by 2002:a05:620a:46a6:b0:7b6:d393:c213 with SMTP id
+ af79cd13be357-7b6fbeca5b9mr546893785a.8.1734120114072; 
+ Fri, 13 Dec 2024 12:01:54 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IH/UePEFY738qnCKtbVrBLQ3qfNFzvGo8J3/rDMBRde5I7NnFrLTzGFJp5oFtFQtfE4Z3RcRw==
+X-Received: by 2002:a05:620a:46a6:b0:7b6:d393:c213 with SMTP id
+ af79cd13be357-7b6fbeca5b9mr546890485a.8.1734120113749; 
+ Fri, 13 Dec 2024 12:01:53 -0800 (PST)
+Received: from [10.222.168.90] (Global_NAT1_IAD_FW.qualcomm.com.
+ [129.46.232.65]) by smtp.gmail.com with ESMTPSA id
+ af79cd13be357-7b7047dff17sm9515985a.44.2024.12.13.12.01.52
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 13 Dec 2024 11:43:55 -0800 (PST)
-Message-ID: <67b7a33b-2bf6-41ba-b421-058875e3c0ff@linaro.org>
-Date: Fri, 13 Dec 2024 20:43:51 +0100
+ Fri, 13 Dec 2024 12:01:53 -0800 (PST)
+Message-ID: <8c48018f-e772-4aef-b6e0-ddbe6c7b13d8@oss.qualcomm.com>
+Date: Fri, 13 Dec 2024 14:01:52 -0600
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 00/71] whole-tree: Constify Property structures
+Subject: Re: [PATCH 03/71] target/hexagon: Constify all Property
 To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: Brian Cain <bcain@oss.qualcomm.com>
 References: <20241213190750.2513964-1-richard.henderson@linaro.org>
+ <20241213190750.2513964-7-richard.henderson@linaro.org>
 Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20241213190750.2513964-1-richard.henderson@linaro.org>
+From: Brian Cain <brian.cain@oss.qualcomm.com>
+In-Reply-To: <20241213190750.2513964-7-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-ORIG-GUID: jXfadnA0puJ1m2-oQRqSUlyeWsb2F8SC
+X-Proofpoint-GUID: jXfadnA0puJ1m2-oQRqSUlyeWsb2F8SC
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 mlxscore=0
+ phishscore=0 impostorscore=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 spamscore=0 adultscore=0 mlxlogscore=999 lowpriorityscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2411120000 definitions=main-2412130143
+Received-SPF: pass client-ip=205.220.180.131;
+ envelope-from=brian.cain@oss.qualcomm.com; helo=mx0b-0031df01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,98 +122,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 13/12/24 20:06, Richard Henderson wrote:
-> Since d36f165d952 (qdev: make properties array "const"), we can
-> define our Property structure const.  Do this across the entire tree.
-> 
-> There are a few other minor changes:
->    - Two instances where it was obvious that an empty property list
->      could be removed entirely.  There are other empty lists that
->      probably should be removed, but I didn't look further into usage.
->    - In hw/misc/xlnx-versal-trng.c, adjust a Property to use the
->      correct PropertyInfo in the definition, rather than setting
->      it at runtime.
->    - One instance where { } was used instead of DEFINE_PROP_END_OF_LIST.
->      Not a bug, but wrong style.
-> 
-> 
-> r~
-> 
-> 
-> Richard Henderson (71):
->    target/arm: Constify all Property
->    target/avr: Constify all Property
->    target/hexagon: Constify all Property
->    target/i386: Constify all Property
->    target/microblaze: Constify all Property
->    target/mips: Constify all Property
->    target/ppc: Remove empty property list
->    target/riscv: Constify all Property
->    target/s390x: Constify all Property
->    target/sparc: Constify all Property and PropertyInfo
->    cpu-target: Constify all Property
->    hw/9pfs: Constify all Property
->    hw/acpi: Constify all Property
->    hw/adc: Constify all Property
->    hw/arm: Constify all Property
->    hw/audio: Constify all Property
->    hw/avr: Constify all Property
->    hw/block/xen-block: Unexport PropertyInfo
->    hw/block: Constify all Property
->    hw/char: Constify all Property
->    hw/core: Constify all Property
->    hw/cpu: Constify all Property
->    hw/cxl: Constify all Property
->    hw/display: Constify all Property
->    hw/dma: Constify all Property
->    hw/gpio: Constify all Property
->    hw/hyperv: Constify all Property
->    hw/i2c: Constify all Property
->    hw/i386: Constify all Property
->    hw/ide: Constify all Property
->    hw/input: Constify all Property
->    hw/intc: Constify all Property
->    hw/ipack: Constify all Property
->    hw/ipmi: Constify all Property
->    hw/isa: Constify all Property
->    hw/m68k: Constify all Property
->    hw/mem: Constify all Property
->    hw/mips: Constify all Property
->    hw/misc/xlnx-versal-trng: Constify trng_props
->    hw/misc: Constify all Property
->    hw/net: Constify all Property
->    hw/nubus: Constify all Property
->    hw/nvme: Constify all Property
->    hw/nvram: Constify all Property
->    hw/pci-bridge: Constify all Property
->    hw/pci-host/astro: Remove empty Property list
->    hw/pci-host: Constify all Property
->    hw/pci: Constify all Property
->    hw/ppc: Constify all Property
->    hw/remote: Constify all Property
->    hw/riscv: Constify all Property
->    hw/rtc: Constify all Property
->    hw/rx: Constify all Property
->    hw/s390x: Constify all Property
->    hw/scsi: Constify all Property
->    hw/sd: Constify all Property
->    hw/sparc: Constify all Property
->    hw/sparc64: Constify all Property
->    hw/ssi: Constify all Property
->    hw/timer: Constify all Property
->    hw/tpm: Constify all Property
->    hw/tricore: Constify all Property
->    hw/ufs: Constify all Property
->    hw/usb: Constify all Property
->    hw/vfio: Constify all Property
->    hw/virtio: Constify all Property
->    hw/watchdog: Constify all Property
->    hw/xen: Constify all Property
->    hw/xen: Use DEFINE_PROP_END_OF_LIST in xen_sysdev_properties
->    tests/unit: Constify all Property
->    docs: Constify all Property in examples
 
-Series:
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+On 12/13/2024 1:06 PM, Richard Henderson wrote:
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+>   target/hexagon/cpu.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/target/hexagon/cpu.c b/target/hexagon/cpu.c
+> index c9aa9408ec..a70007245e 100644
+> --- a/target/hexagon/cpu.c
+> +++ b/target/hexagon/cpu.c
+> @@ -48,7 +48,7 @@ static ObjectClass *hexagon_cpu_class_by_name(const char *cpu_model)
+>       return oc;
+>   }
+>   
+> -static Property hexagon_cpu_properties[] = {
+> +static const Property hexagon_cpu_properties[] = {
+>       DEFINE_PROP_BOOL("lldb-compat", HexagonCPU, lldb_compat, false),
+>       DEFINE_PROP_UNSIGNED("lldb-stack-adjust", HexagonCPU, lldb_stack_adjust, 0,
+>                            qdev_prop_uint32, target_ulong),
+
+
+Reviewed-by: Brian Cain <brian.cain@oss.qualcomm.com>
 
 
