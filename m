@@ -2,77 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E650A9F15EE
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Dec 2024 20:34:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F93B9F1627
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Dec 2024 20:37:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tMBAa-00048P-NU; Fri, 13 Dec 2024 14:17:50 -0500
+	id 1tMB90-0000Um-VA; Fri, 13 Dec 2024 14:16:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tMB7y-0008F7-IK
- for qemu-devel@nongnu.org; Fri, 13 Dec 2024 14:15:10 -0500
-Received: from mail-oa1-x2d.google.com ([2001:4860:4864:20::2d])
+ id 1tMB6w-0006CS-5I
+ for qemu-devel@nongnu.org; Fri, 13 Dec 2024 14:14:03 -0500
+Received: from mail-ot1-x32e.google.com ([2607:f8b0:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tMB7l-0007gT-4G
- for qemu-devel@nongnu.org; Fri, 13 Dec 2024 14:15:01 -0500
-Received: by mail-oa1-x2d.google.com with SMTP id
- 586e51a60fabf-29f88004a92so1253117fac.1
- for <qemu-devel@nongnu.org>; Fri, 13 Dec 2024 11:14:51 -0800 (PST)
+ id 1tMB6r-0007V6-PQ
+ for qemu-devel@nongnu.org; Fri, 13 Dec 2024 14:14:01 -0500
+Received: by mail-ot1-x32e.google.com with SMTP id
+ 46e09a7af769-71e3048970eso969353a34.1
+ for <qemu-devel@nongnu.org>; Fri, 13 Dec 2024 11:13:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734117291; x=1734722091; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=LUREKfOZFFX0Cik+qgjY7NL4liaNpXwK6Nn2DyaSOoI=;
- b=eC0FM3C2rRSq6bycK5ik+uEjkDHvH05QdhjOiG0CE/sNE81DH3mxhthguW506lOi/a
- FvWXsP3wdFB4E8vzI/KLTbrKaXUgFSqPqIKhnG8O598KNsSdyzZiT/w9TKINyPYlSwff
- oBHV8INGxivEJKwB9H9Y7j63xmTUXJea7oWNof7xbnBF4bKc7Gw1POtC7XfhbWTy+Hx/
- gZC9kGuQJnXs5iI+Q3kbcYRKGNFROhOvvyOvCjXMUtWsKt+fE0ohRvd+nZpYBXHSjbb2
- y993cCI0f3fTEslcCfGpPbzxs8SdmqyRdhjVBJ/WQNHarfarIk0kiPBzh6yW0E93P9le
- 7q2w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734117291; x=1734722091;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ d=linaro.org; s=google; t=1734117236; x=1734722036; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:content-language:references
+ :to:from:subject:user-agent:mime-version:date:message-id:from:to:cc
  :subject:date:message-id:reply-to;
- bh=LUREKfOZFFX0Cik+qgjY7NL4liaNpXwK6Nn2DyaSOoI=;
- b=rvzUax0TI5G7taX/3yrIj9+a9IsGbPQIoZ2AJkLqS6Keu2nv8v7CokYdZgOwGGUtmr
- L0E7lVcEwoltH5O/1Hm3kYX+FFqBtANp/5utRUY4r3aEvj5qwNK+mJ+nxOEiqyNFrmYG
- A/z6wCaHbW9EKzUAWLC1JlpdfbxyUDPOw0UKNwLOVtro3jjrQctfoAqCvUqZduinVil5
- kOZdbWRWxyGldOHMT/ukibw4MgepufKuV0VaQ7Lh4fX5pMMnVVCkzMdCKTJPP8eXnNBT
- /4ZFFLyjfj+CKfZOr6FQsMN96QUZ4S0W5k91ljhGPKCKIj7YUUFbPMeFM0spwgrksknJ
- hIgQ==
-X-Gm-Message-State: AOJu0YwVjCSSu2ZmLUcOKTgyR7+utGrA5bPnTThod3Rs/9uLXjK04Mxb
- Ko/kB2cFxQY+OsQ/aO6IfvTdXcRaKSvH2S9UerkLATI1125lsn44jnu/HjyKdWqVNy9n76veDCf
- 6ajtD/0OU
-X-Gm-Gg: ASbGncu5+XjzbvtBrN/Lqzdm7+KWqezi33r07aQooh5JahdPcACIIloAaACuTLmBoM7
- H3BazT0vrOBDP4IpEl17pMxIw7Jo1am0puODtc07MVfCjrYIGOuZnvLQBeuvDCHP9+AJ+mPmIlQ
- 6H9vqfGkVeltCZ9jD2sCfYS//oqpY2Uw4Au4zrM9W8AfmU8H2PS/j/oA5Vj/GB0wOPCfEeJK45Z
- 1bGBpbLhCI1t1u3B6NhbGWKkfCs4c1BW/wMO6gO/BIDBjFEihMp91QjMVTZ+uZW
-X-Google-Smtp-Source: AGHT+IGwNMXVxQK/RMcx05Wwv2S9qKBEzz5sbg2HZcZw37JIyPwDDZWjAwkRQZEl4rnqZYnVu/XSSg==
-X-Received: by 2002:a05:6808:2519:b0:3e9:2090:c030 with SMTP id
- 5614622812f47-3eba689dcb4mr1750600b6e.25.1734117291191; 
- Fri, 13 Dec 2024 11:14:51 -0800 (PST)
-Received: from stoup.. ([187.217.227.247]) by smtp.gmail.com with ESMTPSA id
- 5614622812f47-3ebb478a497sm3545b6e.10.2024.12.13.11.14.50
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 13 Dec 2024 11:14:50 -0800 (PST)
+ bh=64LQD24VMAIMkteYN4P5d7TN93Cyp6BtJD4NU+G8oL8=;
+ b=f5hX8SJRNssTBh6nbHRH3Amk2Nkfh0WJb6/tSfVxKwQHeUBdJKpW+5t7joOKHxbCCs
+ kiYmi/3WnIidma9NcXiirIka/TLnAPZMiKFKefEqo6m/vOfgp+Uac2t2Vn2s+VXpEwsf
+ ZYJvYtAZ5Yu/WYQgXN49/gMashCyEQUnYzNrAsvmubNRP1G+bBij89xzQDrNmO4auphW
+ kcy62vM+rC6O23sguyZIAOtObNlWYFAYd8gn0Y5hYsHzdgt9x7e8Q5I27wiNy39AnI72
+ pX997nsT5DKph5Ur7tCqHJAunjx3YN/OOSj6zhHJVd5KeOLx5vQFMVP+OgxyZg+rdebl
+ o/zw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1734117236; x=1734722036;
+ h=content-transfer-encoding:in-reply-to:content-language:references
+ :to:from:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=64LQD24VMAIMkteYN4P5d7TN93Cyp6BtJD4NU+G8oL8=;
+ b=SrQIabeJKqeS7pzO4RkjF1RTJ2jAuR83BqfOoT996PvaQDo3uYutD4Ybd+eaks5WVO
+ 5n2D9cGRTML0QhBp74Jvf/E0k7D7IALSf8F2kgS/PZYw84gUYxtAyOxxSmkwYZbq4EhA
+ 2LsS29thviOAB/LRfHMhcEFMw6ALGoFGnP1p0ExRFuWkDr/rQKcv7YS/7TgE75Q7E1un
+ nOTOHGj3hDShLhUrNZVT31YdvjKHyrKFc7NGdpypvfIEmuzojNQREQ5qk/BApz+QStQs
+ /i9vlGS7SRtEhXje0iJxVh/z9VXuXMTVCwNB/zETKuXv4VbCBgrZczfk8Vmovt5OyFFE
+ TyeA==
+X-Gm-Message-State: AOJu0YyStBIXc/6VTBwlWVk5By1Eygi6xxTNbYA/lkxZi9t/TsA0xs7z
+ zXHT55D1NdPCtUa/5mTgXOQxjp2ReXuvRR0BNd1tvz+/4ejM8rJUN+Xhw3Rh4sHtvn4KpkuURob
+ odxaJAwgy
+X-Gm-Gg: ASbGnctPURN96dT4moKIIaPEqKHUUp/SQAiHXljepsmLuesGQE1UQokrIBQQc8stPp5
+ yhEGo2FE4UpclYzJIRJ2HaMeUyjPFi4R6ClzcM9QbYo4x6Ev3gj0l1nLkxGD5J8ZwJYCAMjLA1r
+ Qqk3UxRtDUvE3HiV7SEL1i+HUozvphWrmfHS0KI3m7ZHQtjOxK/HDttF1DbUnfH9/uVKSMnW/7U
+ ZPCStLVV2TjGyDlwajYhMIRCsrG5elICducEdjULZMB8/RW42ZbaKixr3CC4A4DC71UrFejMw==
+X-Google-Smtp-Source: AGHT+IER03JtsRYIQ+qyF3vhlgkF2pvO9NaBNVpljoO2tEg267KOKPNfUPprD0lKP1LI9VLWVRee7g==
+X-Received: by 2002:a05:6830:3493:b0:71e:4fc:6ee1 with SMTP id
+ 46e09a7af769-71e3b8782c5mr1917948a34.9.1734117236391; 
+ Fri, 13 Dec 2024 11:13:56 -0800 (PST)
+Received: from [172.20.4.119] ([187.217.227.247])
+ by smtp.gmail.com with ESMTPSA id
+ 006d021491bc7-5f33a9392fesm47785eaf.35.2024.12.13.11.13.55
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 13 Dec 2024 11:13:55 -0800 (PST)
+Message-ID: <2a28ca94-8c0c-491b-b763-09e9c09df43f@linaro.org>
+Date: Fri, 13 Dec 2024 13:13:53 -0600
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 00/71] whole-tree: Constify Property structures
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Jeuk Kim <jeuk20.kim@samsung.com>
-Subject: [PATCH 63/71] hw/ufs: Constify all Property
-Date: Fri, 13 Dec 2024 13:07:37 -0600
-Message-ID: <20241213190750.2513964-68-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20241213190750.2513964-1-richard.henderson@linaro.org>
 References: <20241213190750.2513964-1-richard.henderson@linaro.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:4860:4864:20::2d;
- envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x2d.google.com
+Content-Language: en-US
+In-Reply-To: <20241213190750.2513964-1-richard.henderson@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::32e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x32e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,39 +98,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- hw/ufs/lu.c  | 2 +-
- hw/ufs/ufs.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+On 12/13/24 13:06, Richard Henderson wrote:
+> Since d36f165d952 (qdev: make properties array "const"), we can
+> define our Property structure const.  Do this across the entire tree.
+> 
+> There are a few other minor changes:
+>    - Two instances where it was obvious that an empty property list
+>      could be removed entirely.  There are other empty lists that
+>      probably should be removed, but I didn't look further into usage.
+>    - In hw/misc/xlnx-versal-trng.c, adjust a Property to use the
+>      correct PropertyInfo in the definition, rather than setting
+>      it at runtime.
+>    - One instance where { } was used instead of DEFINE_PROP_END_OF_LIST.
+>      Not a bug, but wrong style.
 
-diff --git a/hw/ufs/lu.c b/hw/ufs/lu.c
-index 81bfff9b4e..74ff52ad09 100644
---- a/hw/ufs/lu.c
-+++ b/hw/ufs/lu.c
-@@ -274,7 +274,7 @@ static UfsReqResult ufs_process_scsi_cmd(UfsLu *lu, UfsRequest *req)
-     return UFS_REQUEST_NO_COMPLETE;
- }
- 
--static Property ufs_lu_props[] = {
-+static const Property ufs_lu_props[] = {
-     DEFINE_PROP_DRIVE("drive", UfsLu, conf.blk),
-     DEFINE_PROP_UINT8("lun", UfsLu, lun, 0),
-     DEFINE_PROP_END_OF_LIST(),
-diff --git a/hw/ufs/ufs.c b/hw/ufs/ufs.c
-index 79f786ed4e..fe77158439 100644
---- a/hw/ufs/ufs.c
-+++ b/hw/ufs/ufs.c
-@@ -1752,7 +1752,7 @@ static void ufs_exit(PCIDevice *pci_dev)
-     }
- }
- 
--static Property ufs_props[] = {
-+static const Property ufs_props[] = {
-     DEFINE_PROP_STRING("serial", UfsHc, params.serial),
-     DEFINE_PROP_UINT8("nutrs", UfsHc, params.nutrs, 32),
-     DEFINE_PROP_UINT8("nutmrs", UfsHc, params.nutmrs, 8),
--- 
-2.43.0
+I also meant to report that for qemu-system-aarch64 (the only one I checked), this moves 
+150k from .data to .data.rel.ro.  I'm somewhat surprised there's that many, or that 
+Property is as large as it is at 88 bytes.
+
+
+r~
 
 
