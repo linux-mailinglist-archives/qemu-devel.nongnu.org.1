@@ -2,78 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA4EC9F157F
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Dec 2024 20:10:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E4D999F15A3
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Dec 2024 20:16:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tMB2J-0003An-Kd; Fri, 13 Dec 2024 14:09:15 -0500
+	id 1tMB2H-00033r-Hm; Fri, 13 Dec 2024 14:09:13 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tMB1r-0002WK-2d
+ id 1tMB1q-0002WJ-PB
  for qemu-devel@nongnu.org; Fri, 13 Dec 2024 14:08:57 -0500
-Received: from mail-ot1-x32a.google.com ([2607:f8b0:4864:20::32a])
+Received: from mail-oo1-xc34.google.com ([2607:f8b0:4864:20::c34])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tMB1o-0006Yq-CI
+ id 1tMB1o-0006Z2-C3
  for qemu-devel@nongnu.org; Fri, 13 Dec 2024 14:08:46 -0500
-Received: by mail-ot1-x32a.google.com with SMTP id
- 46e09a7af769-71e1d6c7738so1117978a34.2
- for <qemu-devel@nongnu.org>; Fri, 13 Dec 2024 11:08:42 -0800 (PST)
+Received: by mail-oo1-xc34.google.com with SMTP id
+ 006d021491bc7-5f32de85789so388683eaf.0
+ for <qemu-devel@nongnu.org>; Fri, 13 Dec 2024 11:08:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734116921; x=1734721721; darn=nongnu.org;
+ d=linaro.org; s=google; t=1734116922; x=1734721722; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=JKm04qysg/gEgbm4vurn75ARW08p/MAYicuTqcRbj08=;
- b=StpMa9rJDZms0fqTJSqcDhdfeCIJoHKZ6dKkvjJEw80fEF4v4zcS5yGJIh4oNv+BLS
- Dy5q7iiSVIhkdLeZ/Nd49V0sMzmstXFQgAMvIbJYujiJrTkA8iPCQM1/WFXtcWazrLFt
- 8EIN8Ajo6BKPsf/PA8u8Oe5wwrKKpY0L6lZ9p9kXETcbMinefXb4yDTWHLI1YtwZBXp1
- 0DyN4Osdk9RKo//SeJxHyCpUkVFhNbBPEbTun8KE7W687NqdFsKBpbdNegFkVaN8rWSA
- 89+f9mD/3LsTWD83+3pIFOJ5nYi7zvvuNU3qTnY4Q55k0eAPEbwnykeW9ARcapI4eJzm
- tp/A==
+ bh=w2fQ0c2NIl1a5M4AWrVbc1wnQ6w0xGGZJojz6lR1rxs=;
+ b=Sb6zc0JXs+KIhkH1aS4E3/gDPfzoS+AIUWKNFFubhsxCSW2En1bxKArLMke7cDvivQ
+ uLdjrF+6pu0Megh5X/hw2dO3voMALcF0o1P6NbE8WryhSITPyy+OAE8MImSiVkO1qjPO
+ kXn8DIO8hxgy6NpUWm0bI6+PtOrTYvKRZJq0oKb7Lhy6ora/ou1WJJwRuTKVUpccvXPU
+ HpUqcKirLOwYP+auGU24jz/aa4yukx4/ZT1Bt4jHuOC8A0LeoCmBxtOc5tIyo135oT+f
+ rReEiJ+D7iCp2dvhpmvxrEqGjyN6akhbfIhqUlJgA4978+TCE0pjQMxiUe9I1kEYN3yz
+ QZYQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734116921; x=1734721721;
+ d=1e100.net; s=20230601; t=1734116922; x=1734721722;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=JKm04qysg/gEgbm4vurn75ARW08p/MAYicuTqcRbj08=;
- b=YKQCKH3b2fB3qDKy64NVeLyucE45X6NVxQMXurz26o5ym9sCyJMiigf0NMLTvFxhHD
- b1MMaTA4IEIsppza2YouHLr4llCCfzwJHQJYILGwnov2hpWWtToPIbKtxXJoqF8+IOLP
- bDu1UlGdC/CIew+XvLm7B0HpYeNaM2zq/IwiWw+ZtTLwBQuBlocxhc8zMRqIDZyaNSiZ
- /bHzuUQADj3/IAqMqqxDvZfyXbMblgSeYJy8UITOZUXT2D7LjOEvGr8XkinT9ZBqO1Jy
- BXsXzIbAZ8LfVevGfD3L8PiO+aId5QIyRI3ktb5u11yWTK0UzzomywpKusnxqmYbq2vB
- vrRQ==
-X-Gm-Message-State: AOJu0YwXEMpT7PmBSgnRb3eqf9hddP1PdOIsYjhbVRR2boDg5x7EHvmf
- SRd17hijqofgkuyTT+wdG39dthtW1zICVC7E+h3YivpuWEcx8k8VbtGA0C3F9V22fwvAE8xooGF
- t9K6IW/P4
-X-Gm-Gg: ASbGnctrkB8HyRjQthqNLgAqBb41R8F4wa67CZ/jiw2/2bsmawmefjo2kA/5rAX6Pnn
- PcP8l5Cbxza/KgJI26d7oK/sL/MKmxn50hOJlxkQ8bXm2MgbxdUbok90eCeySGviL9heIC20MDv
- rPhdWzxLmM9dqWKxAvIuXHwpmyj0VXN0qZqEAPocaVRtVNDkhMbfIjA8vXa7ynsFi9OV51+G5bX
- tJJywHaZqkEBK1cfzN9BcjYJjy0jqox38xU+gEnUqyawZpkby6v54N5CjQIcK3G
-X-Google-Smtp-Source: AGHT+IEXm24ToGc6IqeKoxLAgKPqwB0T7wRd1P5z7PkcgO1t3mvypyaI6PTRDRjo/onweT80OBoifQ==
-X-Received: by 2002:a05:6830:6e09:b0:71d:eb02:baed with SMTP id
- 46e09a7af769-71e3b8576b6mr2256363a34.8.1734116921476; 
- Fri, 13 Dec 2024 11:08:41 -0800 (PST)
+ bh=w2fQ0c2NIl1a5M4AWrVbc1wnQ6w0xGGZJojz6lR1rxs=;
+ b=L6Chaxn+RCttUKyTklitpaEAeaHJSsQhP16x10VKV0+RGCjOfHvyjTKXn8IJ74yF2D
+ PT1ITjyoruLBiAfD+Jmf+9gTSZl4pngjCoU/W2Pb8eENZ6b1WvNP2wW5qAl5794l+6oc
+ Ft8N+v0wi8xCgDIz/vR7Va7kZi84jx0fk3H8ZxYq8RzNzTyURIBAhxRGnEH9rrd983oC
+ NB+BOIMkA1oe3kSAjDdH2mi2JuVs7lNMTRvZzCVF7I1RVBfCY++98XZfv1d6qtKD6X0m
+ htj699z+34BkYuSQGxHDU0KxgvE9oHO65a3vkPFFgV07357028e9aG49kwajs5uSTQh+
+ xvZg==
+X-Gm-Message-State: AOJu0YxjWS9a3A7Kjcw1ZYZ1tndx/oW2A7Pg3pP5D/4Gld0tckiQCwjT
+ e9xVNLokblM/vS8iexG1ClMH+VECdUDV+iExEdyPhN8psoyfxTtWPdXrzmcii4YZOJtWPl7eL0/
+ NJTliL6cw
+X-Gm-Gg: ASbGncuyLkdeXtToLFx4RLSpX1ELZ9TWPl8XNmZKNfYTFwdUudYbE6TzccEsqNFPY2F
+ eb6kxhBs0yPbs8hxEfe9WdcMi6ipMZ4Ziwr3B1HzN2WQhfN17CEUQIZfqUQNfYgU/qaHBOoyzj3
+ DBcevvP0YJtYMcMuUOh7w7ZFh0gdoz663BqGKt55SeNvKJUI1vRQKA5I/5xlF+VRaJzCwTQS3AK
+ BAAKAbMmFfSL/Xegb69a5LGTNUf33qSVlx5IPOM05XLqXorL2K67LY1eHL/Fi9/
+X-Google-Smtp-Source: AGHT+IHFh5nZ6gfgOuQi1f3wGPHIYnmSqtkPH0+wClGwyk8K4HQ4zySmO44hh40IMohvguE+kSoRCw==
+X-Received: by 2002:a05:6820:2787:b0:5f2:c5e0:453f with SMTP id
+ 006d021491bc7-5f32b33c095mr1790797eaf.4.1734116922618; 
+ Fri, 13 Dec 2024 11:08:42 -0800 (PST)
 Received: from stoup.. ([187.217.227.247]) by smtp.gmail.com with ESMTPSA id
- 46e09a7af769-71e4834da91sm29697a34.18.2024.12.13.11.08.38
+ 46e09a7af769-71e4834da91sm29697a34.18.2024.12.13.11.08.41
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 13 Dec 2024 11:08:41 -0800 (PST)
+ Fri, 13 Dec 2024 11:08:42 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Artyom Tarasenko <atar4qemu@gmail.com>
-Subject: [PATCH 10/71] target/sparc: Constify all Property and PropertyInfo
-Date: Fri, 13 Dec 2024 13:06:44 -0600
-Message-ID: <20241213190750.2513964-15-richard.henderson@linaro.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH 11/71] cpu-target: Constify all Property
+Date: Fri, 13 Dec 2024 13:06:45 -0600
+Message-ID: <20241213190750.2513964-16-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241213190750.2513964-1-richard.henderson@linaro.org>
 References: <20241213190750.2513964-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::32a;
- envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x32a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c34;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oo1-xc34.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,30 +97,22 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/sparc/cpu.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ cpu-target.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/target/sparc/cpu.c b/target/sparc/cpu.c
-index 284df950e0..8f494c286a 100644
---- a/target/sparc/cpu.c
-+++ b/target/sparc/cpu.c
-@@ -874,14 +874,14 @@ static void sparc_set_nwindows(Object *obj, Visitor *v, const char *name,
-     cpu->env.def.nwindows = value;
- }
- 
--static PropertyInfo qdev_prop_nwindows = {
-+static const PropertyInfo qdev_prop_nwindows = {
-     .name  = "int",
-     .get   = sparc_get_nwindows,
-     .set   = sparc_set_nwindows,
- };
- 
- /* This must match feature_name[]. */
--static Property sparc_cpu_properties[] = {
-+static const Property sparc_cpu_properties[] = {
-     DEFINE_PROP_BIT("float128", SPARCCPU, env.def.features,
-                     CPU_FEATURE_BIT_FLOAT128, false),
- #ifdef TARGET_SPARC64
+diff --git a/cpu-target.c b/cpu-target.c
+index 499facf774..2ae07a779e 100644
+--- a/cpu-target.c
++++ b/cpu-target.c
+@@ -183,7 +183,7 @@ void cpu_exec_unrealizefn(CPUState *cpu)
+  * This can't go in hw/core/cpu.c because that file is compiled only
+  * once for both user-mode and system builds.
+  */
+-static Property cpu_common_props[] = {
++static const Property cpu_common_props[] = {
+ #ifdef CONFIG_USER_ONLY
+     /*
+      * Create a property for the user-only object, so users can
 -- 
 2.43.0
 
