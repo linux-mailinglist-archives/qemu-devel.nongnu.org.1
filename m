@@ -2,85 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 978399F15C3
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Dec 2024 20:24:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 92C819F1581
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Dec 2024 20:10:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tMB9S-0002PL-Nf; Fri, 13 Dec 2024 14:16:38 -0500
+	id 1tMB1D-0002Qp-9a; Fri, 13 Dec 2024 14:08:07 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tMB7X-0007iC-T1
- for qemu-devel@nongnu.org; Fri, 13 Dec 2024 14:14:40 -0500
-Received: from mail-qv1-xf2c.google.com ([2607:f8b0:4864:20::f2c])
+ id 1tMB1A-0002QS-C2
+ for qemu-devel@nongnu.org; Fri, 13 Dec 2024 14:08:04 -0500
+Received: from mail-oo1-xc2a.google.com ([2607:f8b0:4864:20::c2a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tMB7T-0007dh-K8
- for qemu-devel@nongnu.org; Fri, 13 Dec 2024 14:14:38 -0500
-Received: by mail-qv1-xf2c.google.com with SMTP id
- 6a1803df08f44-6d88d3d1eb6so20252836d6.0
- for <qemu-devel@nongnu.org>; Fri, 13 Dec 2024 11:14:35 -0800 (PST)
+ id 1tMB17-0006RP-3T
+ for qemu-devel@nongnu.org; Fri, 13 Dec 2024 14:08:02 -0500
+Received: by mail-oo1-xc2a.google.com with SMTP id
+ 006d021491bc7-5f304ac59b9so1028155eaf.0
+ for <qemu-devel@nongnu.org>; Fri, 13 Dec 2024 11:07:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734117274; x=1734722074; darn=nongnu.org;
+ d=linaro.org; s=google; t=1734116878; x=1734721678; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=UJW4ejE0j+klMS0haexDL6scIL3gCGlkNOuL2SbrH8M=;
- b=ktQzd/6zgZekOWeRE0MQe8IZ7HUTyMPKFtg7QCansZQ9hbTeKduFW4vcPEHv089TFZ
- isH4mqjAsRNpy7nlC/5GAnj7YCT950/w+a2YYG/B+m0HlNRTsSLnuWvavt3F0QkFMWIm
- icG1uvhMoeFsnugpNcjKmN6wxE3sc4TnhLyv0qxiVmUWs2L7tkrHmo6u6T2Foq6Xpx+H
- 2jO9Y2TzqLhd1ZIwkrcL3jk9b4Flr2cQdiAWZ2qf0BC1L9onPrQjLdZg0HbnOehOEz0V
- DblP8W9g5eak8hx/vKZ6zzdrmmiepwakVXHO+uP26BRmhKN13DptSFOyQkwkNgDS5Ngf
- 69dA==
+ bh=fg83bkK5yDHZA4CF6jEqCNLgZcxdUb+0IUzm0zJzq60=;
+ b=yLenxXzWQhLDhPynk8VpDALc6rFiWjmfSifIeS1wa8o+rG4zPmYkeXknqhu4EFuLa0
+ 2l54WQMoQB3l24CrMyCsi2kKx12pLKEtElJdJGX3jj2dmDJmjUAeDVf01EMltH2DcOgr
+ HsI2N6Y0ws8ZRnfuFDE+fTkhMOWCUJ2SEh+6RXke95MlaqS2Ov8M6iGW4WFP7qoNIh2t
+ whwn0uYhd6aUcLxpu6kWFw24wN+lS0asP8JprQFx/a0B+kqdvbb8mQp/PxGyzRmRhW/p
+ Wd9TVoS57QqZQuUFzkqNGyzMFlL1YSuj1UJgRuzAuSuSO8enwOLSiOBE3khU7brrLTuI
+ 5Ctg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734117274; x=1734722074;
+ d=1e100.net; s=20230601; t=1734116878; x=1734721678;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=UJW4ejE0j+klMS0haexDL6scIL3gCGlkNOuL2SbrH8M=;
- b=dPrRE4RFyz3tsNkKC5/eDzbXjbHGjip0HQ6uQGQJM66gNGtG82aPYUv4343vpqUqIe
- Y8fzSVn2pGlvhxEQiOJ+ZbyMA7u/T2XzYzLPiNi7JImE2Z2uoTQ0ndpF0Nlyi0N4AnrY
- U4ZWSKPwcxIjQIW34hApSiUrx0K52wtekejazn+mp5cbmMbYyxz4JZanbnKLzng93PS9
- 8bxIJQZcQRYFZ4qfNaL65ib31gIsVdr+OoMrndgYI/gf6fzUr3BCbHYEf8pPr8+89y/8
- +Xl+KSnSn4dCT6LmGrDdLWZUINGnWNDGG9EpIo0k1nd7BIHuAoYNVfTwnUxnRbMdW3X7
- ycYA==
-X-Gm-Message-State: AOJu0Yy76FH9CXJ4bgeBxrs1CF0KUVKUAepPVkiXMnG6dHpaCOi1acJ0
- cP1MBEloIO2KfVwhgFldMzCKpm0xImQYz0oqaDJYeiVGzz7sfOx5Dtq2mKBve4zN2zSCHcTQkCi
- WjIf/z/cj
-X-Gm-Gg: ASbGncvtdgB5RxssXl28TYikq3lcKjl3jLvj5y9SGUOQtHVUV7f49ikwgqGRoNngOVI
- 8ZHHmPwlsDsuu4y4lom2zDM/+8r4SkH6aDVeXucHNwbkHsynJGZrsBDQCngiKzpS++ZNfA7i/w3
- sZPcoBmLLXpWgJsZdWSFU/M3hXUau0gkGTid7ay7/HGhvgVZFWndM+WTbIYqh7xGLhDSfG8Q+Nf
- CMI6yaUmSVw2f/PIXj155fnxkczxS8pQB1Wzv6EyPVOGeSqoCXEHUCRjZLqxlFw
-X-Google-Smtp-Source: AGHT+IGoX7DkCsi0LrOQqCE3SlKBl45deIuoNHmEoV6qx8FOSJad6TOlAxtUPcVjd1xxAohMPn7HyA==
-X-Received: by 2002:a05:6870:9128:b0:29e:2a06:8405 with SMTP id
- 586e51a60fabf-2a3855b72b8mr4546276fac.19.1734116875763; 
- Fri, 13 Dec 2024 11:07:55 -0800 (PST)
+ bh=fg83bkK5yDHZA4CF6jEqCNLgZcxdUb+0IUzm0zJzq60=;
+ b=l5UFDRTYVx2aWHxgboQ8qibl6dNXtH7jA37vqLu+VejoFnNP18XoaYSMjjZdTu4ma1
+ ODQzURAzTWvI/t71ibtVp6viBgRkS8LtazObn5prOWiCIpeYKDlN3tZ12VHwTqImAU77
+ Ty+FBMB8jLNRSzrJ1OAZmIVO2ZJIU7Bsir2W2a+BtH6OaWw7wO/YC85UCdmz6SafdyLb
+ w2v/z3FUS5i32wX0wEuoKd/c/Bi92XdKp6CHPESpkbJ5/TL5y+xO95AOpFLuycmSNAJf
+ 8y8ZA01vkWrX+c9bIxNZpvMfGMCxGFK7pRUyNo5hE1SiBRQy9Fkjc712V2+lS1AAcyjv
+ uDVg==
+X-Gm-Message-State: AOJu0YxDZdvTeIQxsHghwWTPrqL9HM3dKT2Ad/rZgXHRCu2TjhPaVpQj
+ ViO8THzdcPxENKhtIyBhcyyZk1G4KTtoUNdio3RMaiP6ONYbn1aj2ew0qjS5e2wj1VMEYS5slII
+ RAvYNSgF7
+X-Gm-Gg: ASbGnct0CCwfJsBc/rU39mivrTcR9UUehXFNUiskA3rH9ettt4adkurXO2WQdeNg3pX
+ gjuTWnlmHfnqTD2WSmdVFiTeIw2v9zR53TYtjU6WqBFPOtU279pX0pCpVPTzNJF3aNZ4yHLgwnG
+ HIx1vGqNsZpPvZn4nJiOYLDxbSvyzvJ6YYk5ZxDyxifFocbiZpV0YdFdQrDOHfQKY9ZOS30TMYp
+ NMVvkrLxRXepAnUuPcDHQq12v0eqsTdpAT0wBSKfUN0obohL4xqS30ds7rQyBtD
+X-Google-Smtp-Source: AGHT+IG9mwVMxgF7u9CJXhYmIYbKAqZtEi8lkzzYIBYMlis6b7fu6wuyWXNSxxfv+D1gGuewkW8E5g==
+X-Received: by 2002:a05:6830:6f82:b0:718:9f3e:6bcb with SMTP id
+ 46e09a7af769-71e3b85e5damr2192742a34.10.1734116877764; 
+ Fri, 13 Dec 2024 11:07:57 -0800 (PST)
 Received: from stoup.. ([187.217.227.247]) by smtp.gmail.com with ESMTPSA id
- 46e09a7af769-71e4834da91sm29697a34.18.2024.12.13.11.07.55
+ 46e09a7af769-71e4834da91sm29697a34.18.2024.12.13.11.07.56
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 13 Dec 2024 11:07:55 -0800 (PST)
+ Fri, 13 Dec 2024 11:07:57 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- qemu-arm@nongnu.org (open list:ARM TCG CPUs)
-Subject: [PATCH 01/71] target/arm: Constify all Property
-Date: Fri, 13 Dec 2024 13:06:31 -0600
-Message-ID: <20241213190750.2513964-2-richard.henderson@linaro.org>
+Cc: qemu-stable@nongnu.org, wannacu <wannacu2049@gmail.com>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PULL 1/4] tcg: Reset free_temps before tcg_optimize
+Date: Fri, 13 Dec 2024 13:06:32 -0600
+Message-ID: <20241213190750.2513964-3-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241213190750.2513964-1-richard.henderson@linaro.org>
 References: <20241213190750.2513964-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::f2c;
- envelope-from=richard.henderson@linaro.org; helo=mail-qv1-xf2c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c2a;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oo1-xc2a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,118 +99,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- target/arm/cpu.c       | 26 +++++++++++++-------------
- target/arm/cpu64.c     |  6 +++---
- target/arm/tcg/cpu64.c |  2 +-
- 3 files changed, 17 insertions(+), 17 deletions(-)
+When allocating new temps during tcg_optmize, do not re-use
+any EBB temps that were used within the TB.  We do not have
+any idea what span of the TB in which the temp was live.
 
-diff --git a/target/arm/cpu.c b/target/arm/cpu.c
-index 0cbda76ba0..1afa07511e 100644
---- a/target/arm/cpu.c
-+++ b/target/arm/cpu.c
-@@ -1558,39 +1558,39 @@ static void arm_cpu_initfn(Object *obj)
-  * 0 means "unset, use the default value". That default might vary depending
-  * on the CPU type, and is set in the realize fn.
-  */
--static Property arm_cpu_gt_cntfrq_property =
-+static const Property arm_cpu_gt_cntfrq_property =
-             DEFINE_PROP_UINT64("cntfrq", ARMCPU, gt_cntfrq_hz, 0);
+Introduce tcg_temp_ebb_reset_freed and use before tcg_optimize,
+as well as replacing the equivalent in plugin_gen_inject and
+tcg_func_start.
+
+Cc: qemu-stable@nongnu.org
+Fixes: fb04ab7ddd8 ("tcg/optimize: Lower TCG_COND_TST{EQ,NE} if unsupported")
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2711
+Reported-by: wannacu <wannacu2049@gmail.com>
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ include/tcg/tcg-temp-internal.h | 6 ++++++
+ accel/tcg/plugin-gen.c          | 2 +-
+ tcg/tcg.c                       | 5 ++++-
+ 3 files changed, 11 insertions(+), 2 deletions(-)
+
+diff --git a/include/tcg/tcg-temp-internal.h b/include/tcg/tcg-temp-internal.h
+index 44192c55a9..98f91e68b7 100644
+--- a/include/tcg/tcg-temp-internal.h
++++ b/include/tcg/tcg-temp-internal.h
+@@ -42,4 +42,10 @@ TCGv_i64 tcg_temp_ebb_new_i64(void);
+ TCGv_ptr tcg_temp_ebb_new_ptr(void);
+ TCGv_i128 tcg_temp_ebb_new_i128(void);
  
--static Property arm_cpu_reset_cbar_property =
-+static const Property arm_cpu_reset_cbar_property =
-             DEFINE_PROP_UINT64("reset-cbar", ARMCPU, reset_cbar, 0);
++/* Forget all freed EBB temps, so that new allocations produce new temps. */
++static inline void tcg_temp_ebb_reset_freed(TCGContext *s)
++{
++    memset(s->free_temps, 0, sizeof(s->free_temps));
++}
++
+ #endif /* TCG_TEMP_FREE_H */
+diff --git a/accel/tcg/plugin-gen.c b/accel/tcg/plugin-gen.c
+index 0f47bfbb48..1ef075552c 100644
+--- a/accel/tcg/plugin-gen.c
++++ b/accel/tcg/plugin-gen.c
+@@ -275,7 +275,7 @@ static void plugin_gen_inject(struct qemu_plugin_tb *plugin_tb)
+      * that might be live within the existing opcode stream.
+      * The simplest solution is to release them all and create new.
+      */
+-    memset(tcg_ctx->free_temps, 0, sizeof(tcg_ctx->free_temps));
++    tcg_temp_ebb_reset_freed(tcg_ctx);
  
--static Property arm_cpu_reset_hivecs_property =
-+static const Property arm_cpu_reset_hivecs_property =
-             DEFINE_PROP_BOOL("reset-hivecs", ARMCPU, reset_hivecs, false);
+     QTAILQ_FOREACH_SAFE(op, &tcg_ctx->ops, link, next) {
+         switch (op->opc) {
+diff --git a/tcg/tcg.c b/tcg/tcg.c
+index 0babae1b88..4578b185be 100644
+--- a/tcg/tcg.c
++++ b/tcg/tcg.c
+@@ -1489,7 +1489,7 @@ void tcg_func_start(TCGContext *s)
+     s->nb_temps = s->nb_globals;
  
- #ifndef CONFIG_USER_ONLY
--static Property arm_cpu_has_el2_property =
-+static const Property arm_cpu_has_el2_property =
-             DEFINE_PROP_BOOL("has_el2", ARMCPU, has_el2, true);
+     /* No temps have been previously allocated for size or locality.  */
+-    memset(s->free_temps, 0, sizeof(s->free_temps));
++    tcg_temp_ebb_reset_freed(s);
  
--static Property arm_cpu_has_el3_property =
-+static const Property arm_cpu_has_el3_property =
-             DEFINE_PROP_BOOL("has_el3", ARMCPU, has_el3, true);
+     /* No constant temps have been previously allocated. */
+     for (int i = 0; i < TCG_TYPE_COUNT; ++i) {
+@@ -6120,6 +6120,9 @@ int tcg_gen_code(TCGContext *s, TranslationBlock *tb, uint64_t pc_start)
+     }
  #endif
  
--static Property arm_cpu_cfgend_property =
-+static const Property arm_cpu_cfgend_property =
-             DEFINE_PROP_BOOL("cfgend", ARMCPU, cfgend, false);
++    /* Do not reuse any EBB that may be allocated within the TB. */
++    tcg_temp_ebb_reset_freed(s);
++
+     tcg_optimize(s);
  
--static Property arm_cpu_has_vfp_property =
-+static const Property arm_cpu_has_vfp_property =
-             DEFINE_PROP_BOOL("vfp", ARMCPU, has_vfp, true);
- 
--static Property arm_cpu_has_vfp_d32_property =
-+static const Property arm_cpu_has_vfp_d32_property =
-             DEFINE_PROP_BOOL("vfp-d32", ARMCPU, has_vfp_d32, true);
- 
--static Property arm_cpu_has_neon_property =
-+static const Property arm_cpu_has_neon_property =
-             DEFINE_PROP_BOOL("neon", ARMCPU, has_neon, true);
- 
--static Property arm_cpu_has_dsp_property =
-+static const Property arm_cpu_has_dsp_property =
-             DEFINE_PROP_BOOL("dsp", ARMCPU, has_dsp, true);
- 
--static Property arm_cpu_has_mpu_property =
-+static const Property arm_cpu_has_mpu_property =
-             DEFINE_PROP_BOOL("has-mpu", ARMCPU, has_mpu, true);
- 
- /* This is like DEFINE_PROP_UINT32 but it doesn't set the default value,
-@@ -1598,7 +1598,7 @@ static Property arm_cpu_has_mpu_property =
-  * the right value for that particular CPU type, and we don't want
-  * to override that with an incorrect constant value.
-  */
--static Property arm_cpu_pmsav7_dregion_property =
-+static const Property arm_cpu_pmsav7_dregion_property =
-             DEFINE_PROP_UNSIGNED_NODEFAULT("pmsav7-dregion", ARMCPU,
-                                            pmsav7_dregion,
-                                            qdev_prop_uint32, uint32_t);
-@@ -2644,7 +2644,7 @@ static ObjectClass *arm_cpu_class_by_name(const char *cpu_model)
-     return oc;
- }
- 
--static Property arm_cpu_properties[] = {
-+static const Property arm_cpu_properties[] = {
-     DEFINE_PROP_UINT64("midr", ARMCPU, midr, 0),
-     DEFINE_PROP_UINT64("mp-affinity", ARMCPU,
-                         mp_affinity, ARM64_AFFINITY_INVALID),
-diff --git a/target/arm/cpu64.c b/target/arm/cpu64.c
-index c1cac912a0..ec77c5b34a 100644
---- a/target/arm/cpu64.c
-+++ b/target/arm/cpu64.c
-@@ -547,11 +547,11 @@ void arm_cpu_pauth_finalize(ARMCPU *cpu, Error **errp)
-     cpu->isar.id_aa64isar2 = isar2;
- }
- 
--static Property arm_cpu_pauth_property =
-+static const Property arm_cpu_pauth_property =
-     DEFINE_PROP_BOOL("pauth", ARMCPU, prop_pauth, true);
--static Property arm_cpu_pauth_impdef_property =
-+static const Property arm_cpu_pauth_impdef_property =
-     DEFINE_PROP_BOOL("pauth-impdef", ARMCPU, prop_pauth_impdef, false);
--static Property arm_cpu_pauth_qarma3_property =
-+static const Property arm_cpu_pauth_qarma3_property =
-     DEFINE_PROP_BOOL("pauth-qarma3", ARMCPU, prop_pauth_qarma3, false);
- 
- void aarch64_add_pauth_properties(Object *obj)
-diff --git a/target/arm/tcg/cpu64.c b/target/arm/tcg/cpu64.c
-index 2963d7510f..67c110f021 100644
---- a/target/arm/tcg/cpu64.c
-+++ b/target/arm/tcg/cpu64.c
-@@ -198,7 +198,7 @@ static void cpu_max_get_l0gptsz(Object *obj, Visitor *v, const char *name,
-     visit_type_uint32(v, name, &value, errp);
- }
- 
--static Property arm_cpu_lpa2_property =
-+static const Property arm_cpu_lpa2_property =
-     DEFINE_PROP_BOOL("lpa2", ARMCPU, prop_lpa2, true);
- 
- static void aarch64_a55_initfn(Object *obj)
+     reachable_code_pass(s);
 -- 
 2.43.0
 
