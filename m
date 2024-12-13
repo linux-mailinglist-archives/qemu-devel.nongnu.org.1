@@ -2,86 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 946CF9F15D7
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Dec 2024 20:31:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E48BE9F15CA
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Dec 2024 20:28:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tMB9E-00017B-Fv; Fri, 13 Dec 2024 14:16:25 -0500
+	id 1tMB9N-0001lb-7K; Fri, 13 Dec 2024 14:16:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tMB7O-0007SV-0c
- for qemu-devel@nongnu.org; Fri, 13 Dec 2024 14:14:30 -0500
-Received: from mail-oa1-x2e.google.com ([2001:4860:4864:20::2e])
+ id 1tMB7R-0007Xo-4D
+ for qemu-devel@nongnu.org; Fri, 13 Dec 2024 14:14:33 -0500
+Received: from mail-oa1-x2d.google.com ([2001:4860:4864:20::2d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tMB7I-0007bh-WC
- for qemu-devel@nongnu.org; Fri, 13 Dec 2024 14:14:26 -0500
-Received: by mail-oa1-x2e.google.com with SMTP id
- 586e51a60fabf-29ff039dab2so1026653fac.3
- for <qemu-devel@nongnu.org>; Fri, 13 Dec 2024 11:14:24 -0800 (PST)
+ id 1tMB7M-0007cO-3q
+ for qemu-devel@nongnu.org; Fri, 13 Dec 2024 14:14:31 -0500
+Received: by mail-oa1-x2d.google.com with SMTP id
+ 586e51a60fabf-2a0206590a7so935341fac.0
+ for <qemu-devel@nongnu.org>; Fri, 13 Dec 2024 11:14:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734117264; x=1734722064; darn=nongnu.org;
+ d=linaro.org; s=google; t=1734117266; x=1734722066; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=DWJFCtfZ2w3RHGCdV+UIqP2KUY8RC4HX5Q5Yyp1FU9E=;
- b=g+eoQ4DnfqQ0kFfK+L/0/A1+hf9mr2ppp0fzdLhPlssE3yIsgDU0HN1OuM1vEerzsm
- c0pnYy1O5qkU1e4svLA8SLpCXOkqvfecrdRX6cR8rNKVT8QtaMU5cpkCRU4cd/G0WlIP
- 4ambk8SqVth0ug9lnymhELD192lAh7l0tA8eu1amx95HUvYs1TBt8lbZgovJKQYNA9u4
- M24N7vycUvO26pftCcd9vR8JdeguonCgFsbv1PsJKb/gYThpShj+WXHCQMBEiJ/KeDxC
- q7bBBzUytNoHlvS++l+Tr6A//T++Ma3ljKI5VOqNvcz7GZ9saqfiT1pqQFbr1jqj8KEw
- X7ag==
+ bh=pcaNS/gxnqi2fcS2Nr3KkJaxwBrXTBr+IuvckqUS1nY=;
+ b=ik2eKMeE9ydojWDyHu41qTyvEkbA+sPhBIOG4YCHgph40TD4jQonZb9deJSDeTqo7t
+ 1bYfhNS3wUnqZUL5hmsoSzQL6GhaGfQWAV1HaVJmF0q1DkG6oSSlyRZBs7j0WRj8Ltj8
+ E2ExWOs0kGjd8uFo75Y7rZhJWKg28YdHLn2sMLus//kCL7tZdo+GqYCxRafH+1CvixlD
+ BgKhcehpCha2+KDN3kefZEjOse9ja5e2C3O/4rY4QUXDvTbd7D7eM9LXZVyA/MOfHMUU
+ LPRrWoFbuOPkcCeQ0JvnTQmjGaUSTGVeXgfdPdQnbSXgOS+SpAuB/Gl4Z3z8rlx8R85u
+ XJeA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734117264; x=1734722064;
+ d=1e100.net; s=20230601; t=1734117266; x=1734722066;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=DWJFCtfZ2w3RHGCdV+UIqP2KUY8RC4HX5Q5Yyp1FU9E=;
- b=BeACEJGKBWOn0vAbiz30dcdM02OO/GoFCwCHV50uC8c8vj9sty4gUsaAmC1BoFlGk/
- gORdnviSe1cymtAu9CaVENlIqbM9jsivkkweG7zBIAPkI542fkzXR+RJCnYaFxg2PC38
- jfQnASjttihVSwqFphMawJ1oXbFU+4ip1TKa/e+XTd977b+HOOzThRXENPy0jw4Ri/EU
- usbYZzXgq0mzaIb1ewHBHTefwOEkgKQ2sMvwYrt20j3madkDWHdsMlIOQuGUShtDNYZ1
- mWfTKLgzKNWtWJjlJYiYG4QsHJQLmD9X7o7Z8Be3eZfPTbo8RLeWLup0ZY4D++te8w45
- 7QDw==
-X-Gm-Message-State: AOJu0Yy1IjumYXQEY739RHJi4u1zCHmyCV18mD0RTpSzhZbICZaHLZus
- 01hbkSNRmSUse5GgoQIq03FIhIj8dKxdj+0jE1Tnms6w6Y/uLm/bo5rHfAqRc3/o6lN0EfWktnV
- za5CJdQkv
-X-Gm-Gg: ASbGncszxsvyDRESQglFSN34m4cQsZadnsVnPYdAIG9J9BS9hejSXnmPc95s17/LZF5
- ifSWdbmzhCmZintazOxomB2C1x16D/9sqOApSo4+RIpw2oFJNrLXOJY193dXvjpz2eQ+4c/OrLQ
- bxeRzxZu/O7i06l8wIht4JDtO1BGgfH+un5xWxrVungEYhKiWX+EeSu0/BkYmGYyNRUTERkKhHt
- fDLcp8vZI4muXi3ykd0R4bE+Z3D8ioVdwzzdV4vZVGzXNyP6D1kUkmOuX4T0coP
-X-Google-Smtp-Source: AGHT+IGNXrCaGxsBPywxVZ4GCh/w4MPht+bRedsnh2I/OWNK0MSbIhWxY7wlKgBkz6ltwJdlJfdNZA==
-X-Received: by 2002:a05:6808:1596:b0:3ea:37a7:394 with SMTP id
- 5614622812f47-3eba6955bd8mr1970897b6e.34.1734117263825; 
- Fri, 13 Dec 2024 11:14:23 -0800 (PST)
+ bh=pcaNS/gxnqi2fcS2Nr3KkJaxwBrXTBr+IuvckqUS1nY=;
+ b=ePM/A8OqbEdMZhDETr41jgsrTolWcJ7B1nDBM6+isNf7D2enl6ZkbSbmxW3sE6jwKJ
+ 1w28lHyMWRjz4oKbDbhT1zT5oD1mh6CpaDa+8jGFAviLx5tp/KKlSNhU7vp2xL5kqaJy
+ 2/BvWCjePF+B0QrG6p0ZrEfSPMr6nx/TTPOKIJnRrJhSdD+Ldqih8DctTW7KraH1qi/d
+ 99kvKs5Wk1VwsKSzTCoNDdlcT2jDqxlBLq8ljYTRF08WS8rw7Rt31oGXWq2yQS7ucnBT
+ NWirgZsPHntWwqJ+P/XZN7tJ5S2hWK/50DwJ2J6Cwt6/+rtlUWGk4MgHxOzZ4k06XOM+
+ g8MA==
+X-Gm-Message-State: AOJu0YzMVY/2UNmW+aKu6XZlLa0yZ3pM2W3bU1SCsX50NmADluKH0SlO
+ mhQddjm7eNbjlOP0bMGdn502jeIvcX2kz/EaC7uw7KPOM9l9XOewKUVMLzTfEURqHfmtYkA5Pi0
+ 2fMTLrG7g
+X-Gm-Gg: ASbGncvTCEphAW8TkdaR9Pqgon0XpAjZbWBk+0Bfhp4PcwsAVF/6coDaG9tRTuGY9Td
+ vDInDfDJrCJMh13rfbqPSs3OadnWWZAbpmEzHVU9QenOp8YDYF4d3amU9beo4On2uUvw16ya++m
+ mxOC6YH3z6wnPlczinNJ0b/hzvZpQd9tGSs/BSAJ1s3Xx3BH1tAGCYQ5q3kwddd6aoQu5X16Zys
+ elfNLH68wCN5cu01f95VtsC5ZjQCFWy3pw73CBLNnExB2u7KEH4QA3ox7Mlw/x/
+X-Google-Smtp-Source: AGHT+IEZQOzM8KT/fK5jdnLzpoF2HQUPsIExdGbu7vSU3jXS/UJrRkvC/I406ZLiiB8rMccolcNhWA==
+X-Received: by 2002:a05:6808:14c5:b0:3e7:edd9:8eb1 with SMTP id
+ 5614622812f47-3eba6815da8mr2506800b6e.1.1734117266034; 
+ Fri, 13 Dec 2024 11:14:26 -0800 (PST)
 Received: from stoup.. ([187.217.227.247]) by smtp.gmail.com with ESMTPSA id
- 5614622812f47-3ebb478a497sm3545b6e.10.2024.12.13.11.14.21
+ 5614622812f47-3ebb478a497sm3545b6e.10.2024.12.13.11.14.24
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 13 Dec 2024 11:14:23 -0800 (PST)
+ Fri, 13 Dec 2024 11:14:25 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Fam Zheng <fam@euphon.net>,
- Hannes Reinecke <hare@suse.com>, Nicholas Piggin <npiggin@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Stefano Garzarella <sgarzare@redhat.com>,
- Raphael Norwitz <raphael@enfabrica.net>,
- Dmitry Fleytman <dmitry.fleytman@gmail.com>,
- qemu-block@nongnu.org (open list:megasas),
- qemu-ppc@nongnu.org (open list:sPAPR (pseries))
-Subject: [PATCH 55/71] hw/scsi: Constify all Property
-Date: Fri, 13 Dec 2024 13:07:29 -0600
-Message-ID: <20241213190750.2513964-60-richard.henderson@linaro.org>
+Cc: Beniamino Galvani <b.galvani@gmail.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Strahinja Jankovic <strahinja.p.jankovic@gmail.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ Steven Lee <steven_lee@aspeedtech.com>, Troy Lee <leetroy@gmail.com>,
+ Jamin Lin <jamin_lin@aspeedtech.com>,
+ Andrew Jeffery <andrew@codeconstruct.com.au>,
+ Joel Stanley <joel@jms.id.au>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Bin Meng <bmeng.cn@gmail.com>,
+ qemu-arm@nongnu.org (open list:Allwinner-a10),
+ qemu-block@nongnu.org (open list:SD (Secure Card))
+Subject: [PATCH 56/71] hw/sd: Constify all Property
+Date: Fri, 13 Dec 2024 13:07:30 -0600
+Message-ID: <20241213190750.2513964-61-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241213190750.2513964-1-richard.henderson@linaro.org>
 References: <20241213190750.2513964-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:4860:4864:20::2e;
- envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x2e.google.com
+Received-SPF: pass client-ip=2001:4860:4864:20::2d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x2d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -106,184 +108,91 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- hw/scsi/megasas.c         | 6 +++---
- hw/scsi/mptsas.c          | 2 +-
- hw/scsi/scsi-bus.c        | 2 +-
- hw/scsi/scsi-disk.c       | 6 +++---
- hw/scsi/scsi-generic.c    | 2 +-
- hw/scsi/spapr_vscsi.c     | 2 +-
- hw/scsi/vhost-scsi.c      | 2 +-
- hw/scsi/vhost-user-scsi.c | 2 +-
- hw/scsi/virtio-scsi.c     | 2 +-
- hw/scsi/vmw_pvscsi.c      | 2 +-
- 10 files changed, 14 insertions(+), 14 deletions(-)
+ hw/sd/allwinner-sdhost.c | 2 +-
+ hw/sd/aspeed_sdhci.c     | 2 +-
+ hw/sd/sd.c               | 6 +++---
+ hw/sd/sdhci-pci.c        | 2 +-
+ hw/sd/sdhci.c            | 2 +-
+ 5 files changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/hw/scsi/megasas.c b/hw/scsi/megasas.c
-index df58aeb995..8323cd18e3 100644
---- a/hw/scsi/megasas.c
-+++ b/hw/scsi/megasas.c
-@@ -2448,7 +2448,7 @@ static void megasas_scsi_realize(PCIDevice *dev, Error **errp)
-     scsi_bus_init(&s->bus, sizeof(s->bus), DEVICE(dev), &megasas_scsi_info);
- }
+diff --git a/hw/sd/allwinner-sdhost.c b/hw/sd/allwinner-sdhost.c
+index bcfb4c1322..be39ec2e71 100644
+--- a/hw/sd/allwinner-sdhost.c
++++ b/hw/sd/allwinner-sdhost.c
+@@ -808,7 +808,7 @@ static const VMStateDescription vmstate_allwinner_sdhost = {
+     }
+ };
  
--static Property megasas_properties_gen1[] = {
-+static const Property megasas_properties_gen1[] = {
-     DEFINE_PROP_UINT32("max_sge", MegasasState, fw_sge,
-                        MEGASAS_DEFAULT_SGE),
-     DEFINE_PROP_UINT32("max_cmds", MegasasState, fw_cmds,
-@@ -2462,7 +2462,7 @@ static Property megasas_properties_gen1[] = {
+-static Property allwinner_sdhost_properties[] = {
++static const Property allwinner_sdhost_properties[] = {
+     DEFINE_PROP_LINK("dma-memory", AwSdHostState, dma_mr,
+                      TYPE_MEMORY_REGION, MemoryRegion *),
+     DEFINE_PROP_END_OF_LIST(),
+diff --git a/hw/sd/aspeed_sdhci.c b/hw/sd/aspeed_sdhci.c
+index f82b05397e..99703f1842 100644
+--- a/hw/sd/aspeed_sdhci.c
++++ b/hw/sd/aspeed_sdhci.c
+@@ -204,7 +204,7 @@ static const VMStateDescription vmstate_aspeed_sdhci = {
+     },
+ };
+ 
+-static Property aspeed_sdhci_properties[] = {
++static const Property aspeed_sdhci_properties[] = {
+     DEFINE_PROP_UINT8("num-slots", AspeedSDHCIState, num_slots, 0),
      DEFINE_PROP_END_OF_LIST(),
  };
- 
--static Property megasas_properties_gen2[] = {
-+static const Property megasas_properties_gen2[] = {
-     DEFINE_PROP_UINT32("max_sge", MegasasState, fw_sge,
-                        MEGASAS_DEFAULT_SGE),
-     DEFINE_PROP_UINT32("max_cmds", MegasasState, fw_cmds,
-@@ -2487,7 +2487,7 @@ typedef struct MegasasInfo {
-     int mmio_bar;
-     int osts;
-     const VMStateDescription *vmsd;
--    Property *props;
-+    const Property *props;
-     InterfaceInfo *interfaces;
- } MegasasInfo;
- 
-diff --git a/hw/scsi/mptsas.c b/hw/scsi/mptsas.c
-index c6bc3479e9..a06113d908 100644
---- a/hw/scsi/mptsas.c
-+++ b/hw/scsi/mptsas.c
-@@ -1410,7 +1410,7 @@ static const VMStateDescription vmstate_mptsas = {
-     }
- };
- 
--static Property mptsas_properties[] = {
-+static const Property mptsas_properties[] = {
-     DEFINE_PROP_UINT64("sas_address", MPTSASState, sas_addr, 0),
-     /* TODO: test MSI support under Windows */
-     DEFINE_PROP_ON_OFF_AUTO("msi", MPTSASState, msi, ON_OFF_AUTO_AUTO),
-diff --git a/hw/scsi/scsi-bus.c b/hw/scsi/scsi-bus.c
-index 53eff5dd3d..2f1678d51e 100644
---- a/hw/scsi/scsi-bus.c
-+++ b/hw/scsi/scsi-bus.c
-@@ -1943,7 +1943,7 @@ const VMStateDescription vmstate_scsi_device = {
-     }
- };
- 
--static Property scsi_props[] = {
-+static const Property scsi_props[] = {
-     DEFINE_PROP_UINT32("channel", SCSIDevice, channel, 0),
-     DEFINE_PROP_UINT32("scsi-id", SCSIDevice, id, -1),
-     DEFINE_PROP_UINT32("lun", SCSIDevice, lun, -1),
-diff --git a/hw/scsi/scsi-disk.c b/hw/scsi/scsi-disk.c
-index 7f13b0588f..a47b80907f 100644
---- a/hw/scsi/scsi-disk.c
-+++ b/hw/scsi/scsi-disk.c
-@@ -3207,7 +3207,7 @@ static const TypeInfo scsi_disk_base_info = {
-     DEFINE_PROP_BOOL("migrate-emulated-scsi-request", SCSIDiskState, migrate_emulated_scsi_request, true)
- 
- 
--static Property scsi_hd_properties[] = {
-+static const Property scsi_hd_properties[] = {
-     DEFINE_SCSI_DISK_PROPERTIES(),
-     DEFINE_PROP_BIT("removable", SCSIDiskState, features,
-                     SCSI_DISK_F_REMOVABLE, false),
-@@ -3267,7 +3267,7 @@ static const TypeInfo scsi_hd_info = {
-     .class_init    = scsi_hd_class_initfn,
- };
- 
--static Property scsi_cd_properties[] = {
-+static const Property scsi_cd_properties[] = {
-     DEFINE_SCSI_DISK_PROPERTIES(),
-     DEFINE_PROP_UINT64("wwn", SCSIDiskState, qdev.wwn, 0),
-     DEFINE_PROP_UINT64("port_wwn", SCSIDiskState, qdev.port_wwn, 0),
-@@ -3310,7 +3310,7 @@ static const TypeInfo scsi_cd_info = {
- };
- 
- #ifdef __linux__
--static Property scsi_block_properties[] = {
-+static const Property scsi_block_properties[] = {
-     DEFINE_BLOCK_ERROR_PROPERTIES(SCSIDiskState, qdev.conf),
-     DEFINE_PROP_DRIVE("drive", SCSIDiskState, qdev.conf.blk),
-     DEFINE_PROP_BOOL("share-rw", SCSIDiskState, qdev.conf.share_rw, false),
-diff --git a/hw/scsi/scsi-generic.c b/hw/scsi/scsi-generic.c
-index 76f04a5ee8..d7ae7549d0 100644
---- a/hw/scsi/scsi-generic.c
-+++ b/hw/scsi/scsi-generic.c
-@@ -772,7 +772,7 @@ static SCSIRequest *scsi_new_request(SCSIDevice *d, uint32_t tag, uint32_t lun,
-     return scsi_req_alloc(&scsi_generic_req_ops, d, tag, lun, hba_private);
+diff --git a/hw/sd/sd.c b/hw/sd/sd.c
+index f9bd03f3fd..b994ef581e 100644
+--- a/hw/sd/sd.c
++++ b/hw/sd/sd.c
+@@ -2798,18 +2798,18 @@ static void emmc_realize(DeviceState *dev, Error **errp)
+     sd_realize(dev, errp);
  }
  
--static Property scsi_generic_properties[] = {
-+static const Property scsi_generic_properties[] = {
-     DEFINE_PROP_DRIVE("drive", SCSIDevice, conf.blk),
-     DEFINE_PROP_BOOL("share-rw", SCSIDevice, conf.share_rw, false),
-     DEFINE_PROP_UINT32("io_timeout", SCSIDevice, io_timeout,
-diff --git a/hw/scsi/spapr_vscsi.c b/hw/scsi/spapr_vscsi.c
-index c75a6c8807..7c55e4d40f 100644
---- a/hw/scsi/spapr_vscsi.c
-+++ b/hw/scsi/spapr_vscsi.c
-@@ -1250,7 +1250,7 @@ static int spapr_vscsi_devnode(SpaprVioDevice *dev, void *fdt, int node_off)
-     return 0;
- }
+-static Property sdmmc_common_properties[] = {
++static const Property sdmmc_common_properties[] = {
+     DEFINE_PROP_DRIVE("drive", SDState, blk),
+     DEFINE_PROP_END_OF_LIST()
+ };
  
--static Property spapr_vscsi_properties[] = {
-+static const Property spapr_vscsi_properties[] = {
-     DEFINE_SPAPR_PROPERTIES(VSCSIState, vdev),
+-static Property sd_properties[] = {
++static const Property sd_properties[] = {
+     DEFINE_PROP_UINT8("spec_version", SDState,
+                       spec_version, SD_PHY_SPECv3_01_VERS),
+     DEFINE_PROP_END_OF_LIST()
+ };
+ 
+-static Property emmc_properties[] = {
++static const Property emmc_properties[] = {
+     DEFINE_PROP_UINT64("boot-partition-size", SDState, boot_part_size, 0),
+     DEFINE_PROP_UINT8("boot-config", SDState, boot_config, 0x0),
+     DEFINE_PROP_END_OF_LIST()
+diff --git a/hw/sd/sdhci-pci.c b/hw/sd/sdhci-pci.c
+index 9b7bee8b3f..83892a7a15 100644
+--- a/hw/sd/sdhci-pci.c
++++ b/hw/sd/sdhci-pci.c
+@@ -22,7 +22,7 @@
+ #include "hw/sd/sdhci.h"
+ #include "sdhci-internal.h"
+ 
+-static Property sdhci_pci_properties[] = {
++static const Property sdhci_pci_properties[] = {
+     DEFINE_SDHCI_COMMON_PROPERTIES(SDHCIState),
      DEFINE_PROP_END_OF_LIST(),
  };
-diff --git a/hw/scsi/vhost-scsi.c b/hw/scsi/vhost-scsi.c
-index 22d16dc26b..effb8dab1f 100644
---- a/hw/scsi/vhost-scsi.c
-+++ b/hw/scsi/vhost-scsi.c
-@@ -343,7 +343,7 @@ static struct vhost_dev *vhost_scsi_get_vhost(VirtIODevice *vdev)
-     return &vsc->dev;
- }
+diff --git a/hw/sd/sdhci.c b/hw/sd/sdhci.c
+index 37875c02c3..e697ee05b3 100644
+--- a/hw/sd/sdhci.c
++++ b/hw/sd/sdhci.c
+@@ -1544,7 +1544,7 @@ void sdhci_common_class_init(ObjectClass *klass, void *data)
  
--static Property vhost_scsi_properties[] = {
-+static const Property vhost_scsi_properties[] = {
-     DEFINE_PROP_STRING("vhostfd", VirtIOSCSICommon, conf.vhostfd),
-     DEFINE_PROP_STRING("wwpn", VirtIOSCSICommon, conf.wwpn),
-     DEFINE_PROP_UINT32("boot_tpgt", VirtIOSCSICommon, conf.boot_tpgt, 0),
-diff --git a/hw/scsi/vhost-user-scsi.c b/hw/scsi/vhost-user-scsi.c
-index 55e4be5b34..d5265c57bc 100644
---- a/hw/scsi/vhost-user-scsi.c
-+++ b/hw/scsi/vhost-user-scsi.c
-@@ -341,7 +341,7 @@ static void vhost_user_scsi_unrealize(DeviceState *dev)
-     virtio_scsi_common_unrealize(dev);
- }
+ /* --- qdev SysBus --- */
  
--static Property vhost_user_scsi_properties[] = {
-+static const Property vhost_user_scsi_properties[] = {
-     DEFINE_PROP_CHR("chardev", VirtIOSCSICommon, conf.chardev),
-     DEFINE_PROP_UINT32("boot_tpgt", VirtIOSCSICommon, conf.boot_tpgt, 0),
-     DEFINE_PROP_UINT32("num_queues", VirtIOSCSICommon, conf.num_queues,
-diff --git a/hw/scsi/virtio-scsi.c b/hw/scsi/virtio-scsi.c
-index 6637cfeaf5..c0a4f1a620 100644
---- a/hw/scsi/virtio-scsi.c
-+++ b/hw/scsi/virtio-scsi.c
-@@ -1285,7 +1285,7 @@ static void virtio_scsi_device_unrealize(DeviceState *dev)
-     qemu_mutex_destroy(&s->tmf_bh_lock);
- }
- 
--static Property virtio_scsi_properties[] = {
-+static const Property virtio_scsi_properties[] = {
-     DEFINE_PROP_UINT32("num_queues", VirtIOSCSI, parent_obj.conf.num_queues,
-                        VIRTIO_SCSI_AUTO_NUM_QUEUES),
-     DEFINE_PROP_UINT32("virtqueue_size", VirtIOSCSI,
-diff --git a/hw/scsi/vmw_pvscsi.c b/hw/scsi/vmw_pvscsi.c
-index 57761b5594..46cec531cc 100644
---- a/hw/scsi/vmw_pvscsi.c
-+++ b/hw/scsi/vmw_pvscsi.c
-@@ -1296,7 +1296,7 @@ static const VMStateDescription vmstate_pvscsi = {
-     }
- };
- 
--static Property pvscsi_properties[] = {
-+static const Property pvscsi_properties[] = {
-     DEFINE_PROP_UINT8("use_msg", PVSCSIState, use_msg, 1),
-     DEFINE_PROP_BIT("x-old-pci-configuration", PVSCSIState, compat_flags,
-                     PVSCSI_COMPAT_OLD_PCI_CONFIGURATION_BIT, false),
+-static Property sdhci_sysbus_properties[] = {
++static const Property sdhci_sysbus_properties[] = {
+     DEFINE_SDHCI_COMMON_PROPERTIES(SDHCIState),
+     DEFINE_PROP_BOOL("pending-insert-quirk", SDHCIState, pending_insert_quirk,
+                      false),
 -- 
 2.43.0
 
