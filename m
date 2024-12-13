@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E95639F19FF
-	for <lists+qemu-devel@lfdr.de>; Sat, 14 Dec 2024 00:32:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 73C1D9F19FA
+	for <lists+qemu-devel@lfdr.de>; Sat, 14 Dec 2024 00:32:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tMF8O-000324-AT; Fri, 13 Dec 2024 18:31:48 -0500
+	id 1tMF8O-00033f-HD; Fri, 13 Dec 2024 18:31:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tMF8C-0002kP-6y
- for qemu-devel@nongnu.org; Fri, 13 Dec 2024 18:31:40 -0500
-Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tMF8G-0002nt-TK
+ for qemu-devel@nongnu.org; Fri, 13 Dec 2024 18:31:41 -0500
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tMF8A-000317-Fm
- for qemu-devel@nongnu.org; Fri, 13 Dec 2024 18:31:35 -0500
-Received: by mail-wr1-x42e.google.com with SMTP id
- ffacd0b85a97d-385e1fcb0e1so1249118f8f.2
- for <qemu-devel@nongnu.org>; Fri, 13 Dec 2024 15:31:33 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tMF8F-00031Z-7L
+ for qemu-devel@nongnu.org; Fri, 13 Dec 2024 18:31:40 -0500
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-43624b2d453so27059335e9.2
+ for <qemu-devel@nongnu.org>; Fri, 13 Dec 2024 15:31:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734132692; x=1734737492; darn=nongnu.org;
+ d=linaro.org; s=google; t=1734132697; x=1734737497; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=CzHeNsZnxQi+It9LDPqSmZfWCtnOxBbi6olOAYenQV4=;
- b=QK8WgHlZQmTjj2Tq6aYEGFk9tNsRTXlV4L3CMSBqr6uZeRqQ7zsYnm5oFRJVw+JVZ4
- HSGcbW4NImBXnc1JxBFIoe20OOunClS0qW7SUcxrXX8XC7uqPLa3kDYa6H+5+xKz6iW3
- OduAbKrNP0T2h4WI6F9kv/hWb+Bu7iwoGCbeOhX9xEABZnLyyiOlCdenwbWxyQAyl9zU
- vUUXSSuRtsPRanA6Q+iWgBGL8imyFnB+as4snwHAdTX8fPHzIcOU9O6WwA3qGa0S6FyO
- dxneX2syAD/DkiGVMkDllnC/3pYzkfYAJ/a4jSX5/DFDp3SvlQC2fM17JVXBL5PTWZoD
- Qc7Q==
+ bh=WxphwPmo3ws4n0VvyoWJoeeSK4RqOZYnTK7zd+ejDWM=;
+ b=uhYL9VZJamjij+QtEgJ9KFyjDGAWo1BbThNGLg+nOY8GybQsvS8N52MU9+g2WprDA2
+ Dvf2wfw4yWLX7b4WMJfU2IlFllBilEmFUxHPg6BcYMjUcVXFR2T5kRnjuikw6n4sqI6y
+ nGgpvqUuqwvLS/PmrWGLCrcAIFkDqfu+YomoYnIT14y4dXz+p3zSQkByLcL5gr+wP3od
+ 5CgOEt9Yq8euNrKgmQtFG3R5ucHlifC3VC3hux9OwxlE3dROpAbYDfXW0Tcjj7jjnLAq
+ 3mxlMhXm6JoSunc7cQLW3fOrjZ0207YkXwvmwxwMajO/SCrMFxAZmUVgaR3ZwP8N1L5v
+ uS+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734132692; x=1734737492;
+ d=1e100.net; s=20230601; t=1734132697; x=1734737497;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=CzHeNsZnxQi+It9LDPqSmZfWCtnOxBbi6olOAYenQV4=;
- b=xPr5Ho71afzFrz38gnuRLeBVttbhosS/tchNLAIeOeGd/rxbOgsEUiLR+NTTStV6Fx
- GUaokwc6X9ILIEIQIcVyKxUtXvHNJJb8TZHfZjVADxxUqKysMMHVV9pwabmeXPkcfF2+
- 1o33V1Z04dtCWhSmyqODGz8DB/Gc5LummGMdMtGgBRsGXl07V3Ay22J7EZ+R7eKW00zP
- aBJnlf6V7xY/DNuMA5WdW43aoB9TDIFNaY3uhz4ybJ8NLOnbPkUBrT4Uk91WRMingE2n
- 6v/+iWJzHUVeSvLBh1BettI/W6xH0QFKq/V4SihoHGTtaKUrljWIisep2NCRUUZ41BOF
- P7KQ==
-X-Gm-Message-State: AOJu0Yz75Wt7+VycEbtCzAVtimSdgMscsoACy4gzu1svKnvdWnKZieRx
- GiPRXKCMSxG8W91R0T3spMzM2b1sb8pchfJALsG6nGadKfOTSgHRT8IUukROGEJIXrLdlrF5yB4
- +PbM=
-X-Gm-Gg: ASbGncup+fMSfasuyn6nReflNJd5X6PP0N1E95JpzR6CzsvDQoECqmKc/OjCkxuDE36
- HRw6KT75MhWFt1b9Iy+VooxsIh4W6jkNajs0QSEaU5VrWrwfFFM2x7elaVFwHKWWi8joBkdaRR0
- XNLpTFk94O91Z11zpdHl4g1C1q/usDC2jFxnkQ95UPqA56tKxnFoeotFnFmxtDG3sGohoyfwBnt
- VhyOX2QLQ76ffhMr6tgG/hfjBAGgy3Txq9AoTtHV64R/ZdXnUG4MJ1b3bilaoMUwB/+yUf4wzQ1
- ERgjWA==
-X-Google-Smtp-Source: AGHT+IHjBslLDLMU0bNikTKcI4izg0tmyn+2Bt/EJJxJGAd9F8ZLEcI6ddUzf2A/253O7lHdq2O7+w==
-X-Received: by 2002:a5d:5f8b:0:b0:385:fc97:9c63 with SMTP id
- ffacd0b85a97d-38880ac4dddmr3371282f8f.9.1734132691768; 
- Fri, 13 Dec 2024 15:31:31 -0800 (PST)
+ bh=WxphwPmo3ws4n0VvyoWJoeeSK4RqOZYnTK7zd+ejDWM=;
+ b=u8hEnRmM2z1m+icY4ig7gFxQxTVjHjm2DjTRxhc0YX8XoS3Ye4Fp/1+lUMhT4b+Bxh
+ hVb/GSpSFNqWWSJ2u8qEoMqmM+vI+8vt5LQGKGcmwwDS2SJ8Na7pzpSL3SFt/bBfXvEs
+ arRpw5SiXEWxadM5c7Pb/vJZPe/Gp47ycbwK42fmyMwX+OUlaECjgNEm8JqHKL1pCMoV
+ YhGz5U7XqT+xouEP3qsitXioIvCcPyC8QrIb+XNbwDQQmPA+plrEvHVUnMBj65c/Ptpf
+ X85wjTuU9ZxUTmFc8iw7WYs4rn3x9V1ljShpSLsmu5iGErd8aXsQxYICFFqHT+EimSTf
+ P/+w==
+X-Gm-Message-State: AOJu0Yxrj1f9neT1QXnLDDB4RrHxREHHP2nb63HZAjdcvEDkUv2e3y4Y
+ ++smE6BoSwKsWztCoWYLHx7zuc9XM3VMmZBxachfsg8Z2x1aaITOKQVedV6HbIzVjCHtgPsaSkW
+ go1s=
+X-Gm-Gg: ASbGnctsOYQi0WtMt0sniHlRzI2cSS8QH10JxpwII+MEhJxatdCu4E/UWq9D45ZfJQ2
+ 7wo5WCkX5OgKrVvoCUzGGa23uXbwHDxw4/UqXtxSTwlFwjJyPzGnFhzogwmTYVkFtpWiqMvy14i
+ JXwSd30XuUISqoyvXqENEpZEhoLM4wOSgTpY+4anLwQ0hc2YnA/J8+/m428KFVN4F5+3akrEaMO
+ uAncpxQGLQwEF1QsYBgcdVAFQxQ4/mJ+5ru7k/AyBQ7n/0YebkNsqcvnUMf7yjYEWVBg8915fO8
+ nxjuPg==
+X-Google-Smtp-Source: AGHT+IGKBZ6hFs3GXw17zJ/tbB9Ur/BQhVwWJwPC1SJrRLKyMHp5+X+2+pHY83b3KtYetVMvNxKtxw==
+X-Received: by 2002:a05:6000:18c6:b0:385:fe66:9f32 with SMTP id
+ ffacd0b85a97d-3888e0bfcc4mr3511109f8f.52.1734132696932; 
+ Fri, 13 Dec 2024 15:31:36 -0800 (PST)
 Received: from localhost.localdomain ([45.93.146.194])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-388c801bb00sm820086f8f.62.2024.12.13.15.31.30
+ ffacd0b85a97d-388c8012112sm849517f8f.11.2024.12.13.15.31.35
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 13 Dec 2024 15:31:30 -0800 (PST)
+ Fri, 13 Dec 2024 15:31:36 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PULL 06/20] hw/nvram/fw_cfg: Pass QOM parent to
- fw_cfg_add_file_from_generator()
-Date: Sat, 14 Dec 2024 00:30:41 +0100
-Message-ID: <20241213233055.39574-7-philmd@linaro.org>
+Subject: [PULL 07/20] hw/nvram/fw_cfg: Skip FW_CFG_DATA_GENERATOR when no data
+ to generate
+Date: Sat, 14 Dec 2024 00:30:42 +0100
+Message-ID: <20241213233055.39574-8-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241213233055.39574-1-philmd@linaro.org>
 References: <20241213233055.39574-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,98 +98,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Currently fw_cfg_add_file_from_generator() is restricted
-to command line created objects which reside in the
-'/objects' QOM container. In order to extend to other
-types of containers, pass the QOM parent by argument.
+Allow the FW_CFG_DATA_GENERATOR interface get_data() handler to
+return NULL when there is nothing to generate. In that case
+fw_cfg_add_file_from_generator() will not add any item and
+return %true.
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reported-by: Daniel P. Berrangé <berrange@redhat.com>
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Message-Id: <20241206181352.6836-3-philmd@linaro.org>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-Id: <20241213133352.10915-4-philmd@linaro.org>
 ---
- include/hw/nvram/fw_cfg.h | 10 ++++++----
- hw/nvram/fw_cfg.c         | 11 ++++++-----
- system/vl.c               |  3 ++-
- 3 files changed, 14 insertions(+), 10 deletions(-)
+ include/hw/nvram/fw_cfg.h | 13 ++++++++-----
+ hw/nvram/fw_cfg.c         |  3 ++-
+ 2 files changed, 10 insertions(+), 6 deletions(-)
 
 diff --git a/include/hw/nvram/fw_cfg.h b/include/hw/nvram/fw_cfg.h
-index 14e68966c59..fcb06f18cc3 100644
+index fcb06f18cc3..6089681f421 100644
 --- a/include/hw/nvram/fw_cfg.h
 +++ b/include/hw/nvram/fw_cfg.h
-@@ -294,11 +294,12 @@ void *fw_cfg_modify_file(FWCfgState *s, const char *filename, void *data,
-  * fw_cfg_add_file_from_generator:
-  * @s: fw_cfg device being modified
-  * @filename: name of new fw_cfg file item
-- * @gen_id: name of object implementing FW_CFG_DATA_GENERATOR interface
-+ * @part: name of object implementing FW_CFG_DATA_GENERATOR interface
-+ * @parent: the object in which to resolve the @part
+@@ -30,8 +30,9 @@ struct FWCfgDataGeneratorClass {
+      * @obj: the object implementing this interface
+      * @errp: pointer to a NULL-initialized error object
+      *
+-     * Returns: reference to a byte array containing the data on success,
+-     *          or NULL on error.
++     * Returns: A byte array containing data to add, or NULL without
++     *          @errp set if no data is required, or NULL with @errp
++     *          set on failure.
+      *
+      * The caller should release the reference when no longer
+      * required.
+@@ -298,14 +299,16 @@ void *fw_cfg_modify_file(FWCfgState *s, const char *filename, void *data,
+  * @parent: the object in which to resolve the @part
   * @errp: pointer to a NULL initialized error object
   *
-  * Add a new NAMED fw_cfg item with the content generated from the
-- * @gen_id object. The data generated by the @gen_id object is copied
-+ * @part object. The data generated by the @part object is copied
-  * into the data structure of the fw_cfg device.
+- * Add a new NAMED fw_cfg item with the content generated from the
+- * @part object. The data generated by the @part object is copied
+- * into the data structure of the fw_cfg device.
++ * If the @part object generates content, add a new NAMED fw_cfg item with it.
++ * The data generated by the @part object is copied into the data structure of
++ * the fw_cfg device.
   * The next available (unused) selector key starting at FW_CFG_FILE_FIRST
   * will be used; also, a new entry will be added to the file directory
-@@ -307,8 +308,9 @@ void *fw_cfg_modify_file(FWCfgState *s, const char *filename, void *data,
+  * structure residing at key value FW_CFG_FILE_DIR, containing the item name,
+  * data size, and assigned selector key value.
   *
++ * If the @part object does not generate content, no fw_cfg item is added.
++ *
   * Returns: %true on success, %false on error.
   */
--bool fw_cfg_add_file_from_generator(FWCfgState *s, const char *filename,
--                                    const char *gen_id, Error **errp);
-+bool fw_cfg_add_file_from_generator(FWCfgState *s,
-+                                    Object *parent, const char *part,
-+                                    const char *filename, Error **errp);
- 
- /**
-  * fw_cfg_add_extra_pci_roots:
+ bool fw_cfg_add_file_from_generator(FWCfgState *s,
 diff --git a/hw/nvram/fw_cfg.c b/hw/nvram/fw_cfg.c
-index fe3b86135a7..b94cd27bd85 100644
+index b94cd27bd85..46c62c8f09e 100644
 --- a/hw/nvram/fw_cfg.c
 +++ b/hw/nvram/fw_cfg.c
-@@ -1027,22 +1027,23 @@ void *fw_cfg_modify_file(FWCfgState *s, const char *filename,
-     return NULL;
- }
- 
--bool fw_cfg_add_file_from_generator(FWCfgState *s, const char *filename,
--                                    const char *gen_id, Error **errp)
-+bool fw_cfg_add_file_from_generator(FWCfgState *s,
-+                                    Object *parent, const char *part,
-+                                    const char *filename, Error **errp)
+@@ -1031,6 +1031,7 @@ bool fw_cfg_add_file_from_generator(FWCfgState *s,
+                                     Object *parent, const char *part,
+                                     const char *filename, Error **errp)
  {
++    ERRP_GUARD();
      FWCfgDataGeneratorClass *klass;
      GByteArray *array;
      Object *obj;
-     gsize size;
- 
--    obj = object_resolve_path_component(object_get_objects_root(), gen_id);
-+    obj = object_resolve_path_component(parent, part);
-     if (!obj) {
--        error_setg(errp, "Cannot find object ID '%s'", gen_id);
-+        error_setg(errp, "Cannot find object ID '%s'", part);
-         return false;
-     }
-     if (!object_dynamic_cast(obj, TYPE_FW_CFG_DATA_GENERATOR_INTERFACE)) {
-         error_setg(errp, "Object ID '%s' is not a '%s' subclass",
--                   gen_id, TYPE_FW_CFG_DATA_GENERATOR_INTERFACE);
-+                   part, TYPE_FW_CFG_DATA_GENERATOR_INTERFACE);
-         return false;
+@@ -1048,7 +1049,7 @@ bool fw_cfg_add_file_from_generator(FWCfgState *s,
      }
      klass = FW_CFG_DATA_GENERATOR_GET_CLASS(obj);
-diff --git a/system/vl.c b/system/vl.c
-index f103532a9a1..4a370da624a 100644
---- a/system/vl.c
-+++ b/system/vl.c
-@@ -1184,7 +1184,8 @@ static int parse_fw_cfg(void *opaque, QemuOpts *opts, Error **errp)
-         size = strlen(str); /* NUL terminator NOT included in fw_cfg blob */
-         buf = g_memdup(str, size);
-     } else if (nonempty_str(gen_id)) {
--        if (!fw_cfg_add_file_from_generator(fw_cfg, name, gen_id, errp)) {
-+        if (!fw_cfg_add_file_from_generator(fw_cfg, object_get_objects_root(),
-+                                            gen_id, name, errp)) {
-             return -1;
-         }
-         return 0;
+     array = klass->get_data(obj, errp);
+-    if (!array) {
++    if (*errp || !array) {
+         return false;
+     }
+     size = array->len;
 -- 
 2.45.2
 
