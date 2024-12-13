@@ -2,80 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B56F9F15FF
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Dec 2024 20:35:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0176C9F162E
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Dec 2024 20:37:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tMBNT-0006po-UJ; Fri, 13 Dec 2024 14:31:08 -0500
+	id 1tMBNZ-0007JM-Tk; Fri, 13 Dec 2024 14:31:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tMBMj-0006ew-KH
- for qemu-devel@nongnu.org; Fri, 13 Dec 2024 14:30:25 -0500
-Received: from mail-lf1-x12d.google.com ([2a00:1450:4864:20::12d])
+ id 1tMBMr-0006ft-Ai
+ for qemu-devel@nongnu.org; Fri, 13 Dec 2024 14:30:31 -0500
+Received: from mail-lf1-x12b.google.com ([2a00:1450:4864:20::12b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tMBMf-0004Da-Rm
- for qemu-devel@nongnu.org; Fri, 13 Dec 2024 14:30:20 -0500
-Received: by mail-lf1-x12d.google.com with SMTP id
- 2adb3069b0e04-54026562221so2212632e87.1
- for <qemu-devel@nongnu.org>; Fri, 13 Dec 2024 11:30:16 -0800 (PST)
+ id 1tMBMl-0004ER-3F
+ for qemu-devel@nongnu.org; Fri, 13 Dec 2024 14:30:26 -0500
+Received: by mail-lf1-x12b.google.com with SMTP id
+ 2adb3069b0e04-5401e6efffcso2355401e87.3
+ for <qemu-devel@nongnu.org>; Fri, 13 Dec 2024 11:30:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734118215; x=1734723015; darn=nongnu.org;
+ d=linaro.org; s=google; t=1734118221; x=1734723021; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Wvpp+XTPkfNZBJJN/m6P3L0ojg7FXee//cH/b/ZFxYQ=;
- b=RlexabGbq/QXOCQXAfsJEfE3KmTWac+ECBKhoo/N3jJevocjMXpAyEGEUDKK75xNyJ
- xIJ64cEq6CoULW7uRCy9esYSoka0+Q2foibpxmm3glfcOOexT88CRXat3eKBRnU82EPK
- Pke0xcBM2cQowFci9sOyJ7D/wGNqVHYpamPQYvGKpmkVsRgI/1zIL/o5QvPAAWFGIJyZ
- iPiHvkU0mdExYWswBLT0U6wkTRwNTLPPY8NatKAMgAeRVa4XZONNVMwpDIk50rP2IFOb
- iiA1/UevWLzQSlZKIQDJ2cjABXmCDsfYVLemR7/jPVps4XMWFcRwLvRmbtie7KrFon/X
- WyLA==
+ bh=af94ntL1aP0LTF1ynUhyZnJWEdtzaUCk8WuF/T+fV+g=;
+ b=DhsJOCgN0GNkUIdOv/ra6++4YgPagwNnsBLurVvSbANTwZ/R20i5xU5JA4qdx6jJ9E
+ PTosc/f4znHAiwEld/R363P4Xh/v7ojla/GI7C/aDQDFkEfdmiSSppwd8LEFy35+FGIF
+ LMKBTUMb8p2LEJvJ6iXlAmKbFaUqjJ5c6UbaAufHCDYi0ZV8Qr98KvPHthzD0Ml6dhZm
+ 5WK34jYe+YJVs3Hxojpkvd538btTX3nFYp7dRpcEFlDU25BieMVzL1WHICKq2cqmCymN
+ ql0tZWSzhdXt9X4yHXW2OSxSmROWCUPDlGUOSzJtpG2/bELoVfjf7DEJeoxO4MhtkgUl
+ cvPQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734118215; x=1734723015;
+ d=1e100.net; s=20230601; t=1734118221; x=1734723021;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Wvpp+XTPkfNZBJJN/m6P3L0ojg7FXee//cH/b/ZFxYQ=;
- b=WauIXkroDvW4zPe6B2f1E2BH0LnV3mbR0A/odbCuLK6Uyf/LE7u/LHOxt7JJ8Srlgt
- TrmdNDEnbk6v+tUxbw/m9dlBoEzFJ0pNwiK4rKKej+HrMedq3EvUCr88bZzeSGHHLaUf
- zWwh8H/Fu8d+HAECojXXEr34ybUVVf0Tvgy5kMMinE2I7vcK7inyrhKUqiuc8owXlfP3
- 8gyo03cTbb7FFzY6M/UQQ49PFOaTa2MAmBGWI8jEvTVaVwGvZuJhXPLZa+PzweK9ib5S
- ZuG1meKm0YH1V+Iu0Y05ksWU3pZVmDjKhQY4dKz8O/lhZUH5fITBViOvkC6xo3jwWf2H
- c8jw==
-X-Gm-Message-State: AOJu0YzeEiSizPHoFxEaIdW31inX930UmXPUAGxTxd9epHqZZOs0Diyw
- sJgG9GrSoM+bOxqzllEN4wpfzCKgy1DPPYQ6MWKLayYBu1RcZdE9fgYp8R40UYPtA+milY0k0hj
- 8QLTbJoTO
-X-Gm-Gg: ASbGncswPCoigZB64HUGR+B1roet+Ksg6nS+tBtP8mrnu96cYTtzJnqTwBV4mGolW0m
- 6D8QcRNsdkBmFvNE6Qn78RS7UEFU/BcvqJGFChVOUE+Bi8gEAOep3GmCBaxR0LlGeA3mkCpSmLu
- q03gQcTegkXy31weCu2wf27Gq3RCauAGcoYlNzoF3BDvv3rBDuHdSqOIB9XPBIECZykyUOiV3Ma
- CHI8+FSPxv9lV7kD+jfwEeXPhilXuwUrFx3cvkaMXIrdFuvo1puBG1TehoYcA==
-X-Google-Smtp-Source: AGHT+IFE2SJpQugxNkGgECLYYSoCyLsruKa3fYpNFJ+XSNXzHNSHQBHe0KTRZXBtzB6+aU1DU4R4QQ==
-X-Received: by 2002:a05:6512:1105:b0:53d:ed4e:e5af with SMTP id
- 2adb3069b0e04-5409056405dmr1263441e87.33.1734118215228; 
- Fri, 13 Dec 2024 11:30:15 -0800 (PST)
+ bh=af94ntL1aP0LTF1ynUhyZnJWEdtzaUCk8WuF/T+fV+g=;
+ b=fcXOGauDxQXW47bXjLK/mHCOI8XBm21azgwag3rMxuNtUnWPgjzB8d5wg9be37PzRs
+ h41y5HzxSiPST7BtmARAQhvR4osq+jpsuj+ClUq+y8VkuoKhbG3vLRJpHjjgDgGE6hWG
+ i/pHvPe36lGgw+j9Z9G3EhE/LDGEILZXNljnP/8vVrEA+70zs2JDL0cdrWivChmTGKiX
+ 7DSvh0QVr4EllGg+PKgywoRb/5SvSJDWjG/pSXaKcnRe26ppCWUuGBpHv70FU3PkyHl3
+ gLVTzcxDQb5XGf09alVmH5VuFluwBnOwsEiaBzfW4ayzdtaBfdJxKtNsfu/ltt71f497
+ GUCg==
+X-Gm-Message-State: AOJu0YwuDtMyPDV97vbHRilkBb7WGfigGPnCOMQgSJR+/CqDqDeRgTld
+ LYAbGlB0ylBzR4dZJ51ST27MTFx9r+aQl4QVp8wuocm5FCb9/YT+OVRV6YfEVTJwQV8ucjuLf6U
+ 8CSO6X93b
+X-Gm-Gg: ASbGnctUc1Dpc1uJufAXL3bbfonbvHrzk7ZCMRklmbWR9ZS3qPbIGzRh/8tpWzhNDPp
+ boRFwKQGxgkQLagtDUdW4FmxGc5y8scjA+9Mz5exOB8LAi24asKJsh33ZVYyG9uDmIlzLtMkuKK
+ sMy9p0IdmJcqmEU/oW9HcbPZra9JRSoZuPVNQlGST8f+1zR7DVJwWqBvUybvA6JHUvHTV7yzQEa
+ wcH5AVtvcHWkZ5CZtjZl+j7v9j3+HODaZsjhn44SXG6+31inZtKXPGnWeti0g==
+X-Google-Smtp-Source: AGHT+IFZJahtbpIO34rwarliyJq479V6b+7SCuRWEO589fskOqPBLdkr5T5JDUlJwmlOZKzSAaL27g==
+X-Received: by 2002:a05:6512:3d27:b0:53e:1c3e:34 with SMTP id
+ 2adb3069b0e04-540905974b1mr1348410e87.38.1734118221148; 
+ Fri, 13 Dec 2024 11:30:21 -0800 (PST)
 Received: from stoup.. ([91.209.212.67]) by smtp.gmail.com with ESMTPSA id
- 2adb3069b0e04-54120c01051sm6972e87.156.2024.12.13.11.30.11
+ 2adb3069b0e04-54120c01051sm6972e87.156.2024.12.13.11.30.15
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 13 Dec 2024 11:30:13 -0800 (PST)
+ Fri, 13 Dec 2024 11:30:19 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: "Hongren (Zenithal) Zheng" <i@zenithal.me>,
- "Canokeys.org" <contact@canokeys.org>,
- Samuel Thibault <samuel.thibault@ens-lyon.org>
-Subject: [PATCH 64/71] hw/usb: Constify all Property
-Date: Fri, 13 Dec 2024 13:29:58 -0600
-Message-ID: <20241213193004.2515684-2-richard.henderson@linaro.org>
+Cc: Tony Krowiak <akrowiak@linux.ibm.com>, Halil Pasic <pasic@linux.ibm.com>,
+ Jason Herne <jjherne@linux.ibm.com>, Thomas Huth <thuth@redhat.com>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
+ Eric Farman <farman@linux.ibm.com>,
+ Matthew Rosato <mjrosato@linux.ibm.com>,
+ qemu-s390x@nongnu.org (open list:vfio-ap)
+Subject: [PATCH 65/71] hw/vfio: Constify all Property
+Date: Fri, 13 Dec 2024 13:29:59 -0600
+Message-ID: <20241213193004.2515684-3-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241213193004.2515684-1-richard.henderson@linaro.org>
 References: <20241213190750.2513964-1-richard.henderson@linaro.org>
  <20241213193004.2515684-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12d;
- envelope-from=richard.henderson@linaro.org; helo=mail-lf1-x12d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::12b;
+ envelope-from=richard.henderson@linaro.org; helo=mail-lf1-x12b.google.com
 X-Spam_score_int: 12
 X-Spam_score: 1.2
 X-Spam_bar: +
@@ -100,430 +104,73 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- hw/usb/bus.c                  | 2 +-
- hw/usb/canokey.c              | 2 +-
- hw/usb/ccid-card-emulated.c   | 2 +-
- hw/usb/ccid-card-passthru.c   | 2 +-
- hw/usb/dev-audio.c            | 2 +-
- hw/usb/dev-hid.c              | 6 +++---
- hw/usb/dev-hub.c              | 2 +-
- hw/usb/dev-mtp.c              | 2 +-
- hw/usb/dev-network.c          | 2 +-
- hw/usb/dev-serial.c           | 4 ++--
- hw/usb/dev-smartcard-reader.c | 4 ++--
- hw/usb/dev-storage-classic.c  | 2 +-
- hw/usb/dev-uas.c              | 2 +-
- hw/usb/hcd-dwc2.c             | 2 +-
- hw/usb/hcd-dwc3.c             | 2 +-
- hw/usb/hcd-ehci-pci.c         | 2 +-
- hw/usb/hcd-ehci-sysbus.c      | 2 +-
- hw/usb/hcd-ohci-pci.c         | 2 +-
- hw/usb/hcd-ohci-sysbus.c      | 2 +-
- hw/usb/hcd-uhci.c             | 4 ++--
- hw/usb/hcd-xhci-nec.c         | 2 +-
- hw/usb/hcd-xhci-sysbus.c      | 2 +-
- hw/usb/hcd-xhci.c             | 2 +-
- hw/usb/host-libusb.c          | 2 +-
- hw/usb/redirect.c             | 2 +-
- hw/usb/u2f-emulated.c         | 2 +-
- hw/usb/u2f-passthru.c         | 2 +-
- 27 files changed, 32 insertions(+), 32 deletions(-)
+ hw/vfio/ap.c       | 2 +-
+ hw/vfio/ccw.c      | 2 +-
+ hw/vfio/pci.c      | 4 ++--
+ hw/vfio/platform.c | 2 +-
+ 4 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/hw/usb/bus.c b/hw/usb/bus.c
-index bfab2807d7..80e6a92820 100644
---- a/hw/usb/bus.c
-+++ b/hw/usb/bus.c
-@@ -18,7 +18,7 @@ static char *usb_get_dev_path(DeviceState *dev);
- static char *usb_get_fw_dev_path(DeviceState *qdev);
- static void usb_qdev_unrealize(DeviceState *qdev);
- 
--static Property usb_props[] = {
-+static const Property usb_props[] = {
-     DEFINE_PROP_STRING("port", USBDevice, port_path),
-     DEFINE_PROP_STRING("serial", USBDevice, serial),
-     DEFINE_PROP_BIT("msos-desc", USBDevice, flags,
-diff --git a/hw/usb/canokey.c b/hw/usb/canokey.c
-index b306eeb20e..7cb600e3c8 100644
---- a/hw/usb/canokey.c
-+++ b/hw/usb/canokey.c
-@@ -296,7 +296,7 @@ static void canokey_unrealize(USBDevice *base)
-     trace_canokey_unrealize();
+diff --git a/hw/vfio/ap.c b/hw/vfio/ap.c
+index 4013e7b436..2e6ea2dd93 100644
+--- a/hw/vfio/ap.c
++++ b/hw/vfio/ap.c
+@@ -191,7 +191,7 @@ static void vfio_ap_unrealize(DeviceState *dev)
+     g_free(vapdev->vdev.name);
  }
  
--static Property canokey_properties[] = {
-+static const Property canokey_properties[] = {
-     DEFINE_PROP_STRING("file", CanoKeyState, file),
-     DEFINE_PROP_END_OF_LIST(),
- };
-diff --git a/hw/usb/ccid-card-emulated.c b/hw/usb/ccid-card-emulated.c
-index 3ee9c73b87..dd58333943 100644
---- a/hw/usb/ccid-card-emulated.c
-+++ b/hw/usb/ccid-card-emulated.c
-@@ -582,7 +582,7 @@ static void emulated_unrealize(CCIDCardState *base)
-     qemu_mutex_destroy(&card->event_list_mutex);
- }
- 
--static Property emulated_card_properties[] = {
-+static const Property emulated_card_properties[] = {
-     DEFINE_PROP_STRING("backend", EmulatedState, backend_str),
-     DEFINE_PROP_STRING("cert1", EmulatedState, cert1),
-     DEFINE_PROP_STRING("cert2", EmulatedState, cert2),
-diff --git a/hw/usb/ccid-card-passthru.c b/hw/usb/ccid-card-passthru.c
-index a515703904..f97dcf767f 100644
---- a/hw/usb/ccid-card-passthru.c
-+++ b/hw/usb/ccid-card-passthru.c
-@@ -388,7 +388,7 @@ static const VMStateDescription passthru_vmstate = {
+-static Property vfio_ap_properties[] = {
++static const Property vfio_ap_properties[] = {
+     DEFINE_PROP_STRING("sysfsdev", VFIOAPDevice, vdev.sysfsdev),
+ #ifdef CONFIG_IOMMUFD
+     DEFINE_PROP_LINK("iommufd", VFIOAPDevice, vdev.iommufd,
+diff --git a/hw/vfio/ccw.c b/hw/vfio/ccw.c
+index c1cd7736cd..b96ab27e12 100644
+--- a/hw/vfio/ccw.c
++++ b/hw/vfio/ccw.c
+@@ -655,7 +655,7 @@ static void vfio_ccw_unrealize(DeviceState *dev)
      }
+ }
+ 
+-static Property vfio_ccw_properties[] = {
++static const Property vfio_ccw_properties[] = {
+     DEFINE_PROP_STRING("sysfsdev", VFIOCCWDevice, vdev.sysfsdev),
+     DEFINE_PROP_BOOL("force-orb-pfch", VFIOCCWDevice, force_orb_pfch, false),
+ #ifdef CONFIG_IOMMUFD
+diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
+index 14bcc725c3..93aca850e3 100644
+--- a/hw/vfio/pci.c
++++ b/hw/vfio/pci.c
+@@ -3354,7 +3354,7 @@ static void vfio_instance_init(Object *obj)
+     pci_dev->cap_present |= QEMU_PCI_CAP_EXPRESS;
+ }
+ 
+-static Property vfio_pci_dev_properties[] = {
++static const Property vfio_pci_dev_properties[] = {
+     DEFINE_PROP_PCI_HOST_DEVADDR("host", VFIOPCIDevice, host),
+     DEFINE_PROP_UUID_NODEFAULT("vf-token", VFIOPCIDevice, vf_token),
+     DEFINE_PROP_STRING("sysfsdev", VFIOPCIDevice, vbasedev.sysfsdev),
+@@ -3451,7 +3451,7 @@ static const TypeInfo vfio_pci_dev_info = {
+     },
  };
  
--static Property passthru_card_properties[] = {
-+static const Property passthru_card_properties[] = {
-     DEFINE_PROP_CHR("chardev", PassthruState, cs),
-     DEFINE_PROP_UINT8("debug", PassthruState, debug, 0),
-     DEFINE_PROP_END_OF_LIST(),
-diff --git a/hw/usb/dev-audio.c b/hw/usb/dev-audio.c
-index 1897fff9e6..6007f16d30 100644
---- a/hw/usb/dev-audio.c
-+++ b/hw/usb/dev-audio.c
-@@ -990,7 +990,7 @@ static const VMStateDescription vmstate_usb_audio = {
+-static Property vfio_pci_dev_nohotplug_properties[] = {
++static const Property vfio_pci_dev_nohotplug_properties[] = {
+     DEFINE_PROP_BOOL("ramfb", VFIOPCIDevice, enable_ramfb, false),
+     DEFINE_PROP_ON_OFF_AUTO("x-ramfb-migrate", VFIOPCIDevice, ramfb_migrate,
+                             ON_OFF_AUTO_AUTO),
+diff --git a/hw/vfio/platform.c b/hw/vfio/platform.c
+index a85c199c76..766e8a86ef 100644
+--- a/hw/vfio/platform.c
++++ b/hw/vfio/platform.c
+@@ -629,7 +629,7 @@ static const VMStateDescription vfio_platform_vmstate = {
      .unmigratable = 1,
  };
  
--static Property usb_audio_properties[] = {
-+static const Property usb_audio_properties[] = {
-     DEFINE_AUDIO_PROPERTIES(USBAudioState, card),
-     DEFINE_PROP_UINT32("debug", USBAudioState, debug, 0),
-     DEFINE_PROP_UINT32("buffer", USBAudioState, buffer_user, 0),
-diff --git a/hw/usb/dev-hid.c b/hw/usb/dev-hid.c
-index 9e358c934e..d83f67b984 100644
---- a/hw/usb/dev-hid.c
-+++ b/hw/usb/dev-hid.c
-@@ -793,7 +793,7 @@ static const TypeInfo usb_hid_type_info = {
-     .class_init = usb_hid_class_initfn,
- };
- 
--static Property usb_tablet_properties[] = {
-+static const Property usb_tablet_properties[] = {
-         DEFINE_PROP_UINT32("usb_version", USBHIDState, usb_version, 2),
-         DEFINE_PROP_STRING("display", USBHIDState, display),
-         DEFINE_PROP_UINT32("head", USBHIDState, head, 0),
-@@ -818,7 +818,7 @@ static const TypeInfo usb_tablet_info = {
-     .class_init    = usb_tablet_class_initfn,
- };
- 
--static Property usb_mouse_properties[] = {
-+static const Property usb_mouse_properties[] = {
-         DEFINE_PROP_UINT32("usb_version", USBHIDState, usb_version, 2),
-         DEFINE_PROP_END_OF_LIST(),
- };
-@@ -841,7 +841,7 @@ static const TypeInfo usb_mouse_info = {
-     .class_init    = usb_mouse_class_initfn,
- };
- 
--static Property usb_keyboard_properties[] = {
-+static const Property usb_keyboard_properties[] = {
-         DEFINE_PROP_UINT32("usb_version", USBHIDState, usb_version, 2),
-         DEFINE_PROP_STRING("display", USBHIDState, display),
-         DEFINE_PROP_END_OF_LIST(),
-diff --git a/hw/usb/dev-hub.c b/hw/usb/dev-hub.c
-index 2c3640c705..317ca0b081 100644
---- a/hw/usb/dev-hub.c
-+++ b/hw/usb/dev-hub.c
-@@ -665,7 +665,7 @@ static const VMStateDescription vmstate_usb_hub = {
-     }
- };
- 
--static Property usb_hub_properties[] = {
-+static const Property usb_hub_properties[] = {
-     DEFINE_PROP_UINT32("ports", USBHubState, num_ports, 8),
-     DEFINE_PROP_BOOL("port-power", USBHubState, port_power, false),
-     DEFINE_PROP_END_OF_LIST(),
-diff --git a/hw/usb/dev-mtp.c b/hw/usb/dev-mtp.c
-index 554b397e88..7994727e5e 100644
---- a/hw/usb/dev-mtp.c
-+++ b/hw/usb/dev-mtp.c
-@@ -2078,7 +2078,7 @@ static const VMStateDescription vmstate_usb_mtp = {
-     }
- };
- 
--static Property mtp_properties[] = {
-+static const Property mtp_properties[] = {
-     DEFINE_PROP_STRING("rootdir", MTPState, root),
-     DEFINE_PROP_STRING("desc", MTPState, desc),
-     DEFINE_PROP_BOOL("readonly", MTPState, readonly, true),
-diff --git a/hw/usb/dev-network.c b/hw/usb/dev-network.c
-index d00d68b21d..6c4f5776d4 100644
---- a/hw/usb/dev-network.c
-+++ b/hw/usb/dev-network.c
-@@ -1407,7 +1407,7 @@ static const VMStateDescription vmstate_usb_net = {
-     .unmigratable = 1,
- };
- 
--static Property net_properties[] = {
-+static const Property net_properties[] = {
-     DEFINE_NIC_PROPERTIES(USBNetState, conf),
-     DEFINE_PROP_END_OF_LIST(),
- };
-diff --git a/hw/usb/dev-serial.c b/hw/usb/dev-serial.c
-index 63047d79cf..0c3e9160ec 100644
---- a/hw/usb/dev-serial.c
-+++ b/hw/usb/dev-serial.c
-@@ -634,7 +634,7 @@ static const VMStateDescription vmstate_usb_serial = {
-     .unmigratable = 1,
- };
- 
--static Property serial_properties[] = {
-+static const Property serial_properties[] = {
-     DEFINE_PROP_CHR("chardev", USBSerialState, cs),
-     DEFINE_PROP_BOOL("always-plugged", USBSerialState, always_plugged, false),
-     DEFINE_PROP_END_OF_LIST(),
-@@ -677,7 +677,7 @@ static const TypeInfo serial_info = {
-     .class_init    = usb_serial_class_initfn,
- };
- 
--static Property braille_properties[] = {
-+static const Property braille_properties[] = {
-     DEFINE_PROP_CHR("chardev", USBSerialState, cs),
-     DEFINE_PROP_END_OF_LIST(),
- };
-diff --git a/hw/usb/dev-smartcard-reader.c b/hw/usb/dev-smartcard-reader.c
-index c0d63e0425..c3c02f0aad 100644
---- a/hw/usb/dev-smartcard-reader.c
-+++ b/hw/usb/dev-smartcard-reader.c
-@@ -1171,7 +1171,7 @@ static Answer *ccid_peek_next_answer(USBCCIDState *s)
-         : &s->pending_answers[s->pending_answers_start % PENDING_ANSWERS_NUM];
- }
- 
--static Property ccid_props[] = {
-+static const Property ccid_props[] = {
-     DEFINE_PROP_UINT32("slot", struct CCIDCardState, slot, 0),
-     DEFINE_PROP_END_OF_LIST(),
- };
-@@ -1431,7 +1431,7 @@ static const VMStateDescription ccid_vmstate = {
-     }
- };
- 
--static Property ccid_properties[] = {
-+static const Property ccid_properties[] = {
-     DEFINE_PROP_UINT8("debug", USBCCIDState, debug, 0),
-     DEFINE_PROP_END_OF_LIST(),
- };
-diff --git a/hw/usb/dev-storage-classic.c b/hw/usb/dev-storage-classic.c
-index 6147387dc6..ca037ba96f 100644
---- a/hw/usb/dev-storage-classic.c
-+++ b/hw/usb/dev-storage-classic.c
-@@ -67,7 +67,7 @@ static void usb_msd_storage_realize(USBDevice *dev, Error **errp)
-     s->scsi_dev = scsi_dev;
- }
- 
--static Property msd_properties[] = {
-+static const Property msd_properties[] = {
-     DEFINE_BLOCK_PROPERTIES(MSDState, conf),
-     DEFINE_BLOCK_ERROR_PROPERTIES(MSDState, conf),
-     DEFINE_PROP_BOOL("removable", MSDState, removable, false),
-diff --git a/hw/usb/dev-uas.c b/hw/usb/dev-uas.c
-index 1804cb6799..57e8d20051 100644
---- a/hw/usb/dev-uas.c
-+++ b/hw/usb/dev-uas.c
-@@ -953,7 +953,7 @@ static const VMStateDescription vmstate_usb_uas = {
-     }
- };
- 
--static Property uas_properties[] = {
-+static const Property uas_properties[] = {
-     DEFINE_PROP_UINT32("log-scsi-req", UASDevice, requestlog, 0),
-     DEFINE_PROP_END_OF_LIST(),
- };
-diff --git a/hw/usb/hcd-dwc2.c b/hw/usb/hcd-dwc2.c
-index b4f0652c7d..6a10f3e9cd 100644
---- a/hw/usb/hcd-dwc2.c
-+++ b/hw/usb/hcd-dwc2.c
-@@ -1448,7 +1448,7 @@ const VMStateDescription vmstate_dwc2_state = {
-     }
- };
- 
--static Property dwc2_usb_properties[] = {
-+static const Property dwc2_usb_properties[] = {
-     DEFINE_PROP_UINT32("usb_version", DWC2State, usb_version, 2),
-     DEFINE_PROP_END_OF_LIST(),
- };
-diff --git a/hw/usb/hcd-dwc3.c b/hw/usb/hcd-dwc3.c
-index e7d8c7924b..ff970bd989 100644
---- a/hw/usb/hcd-dwc3.c
-+++ b/hw/usb/hcd-dwc3.c
-@@ -656,7 +656,7 @@ static const VMStateDescription vmstate_usb_dwc3 = {
-     }
- };
- 
--static Property usb_dwc3_properties[] = {
-+static const Property usb_dwc3_properties[] = {
-     DEFINE_PROP_UINT32("DWC_USB3_USERID", USBDWC3, cfg.dwc_usb3_user,
-                        0x12345678),
-     DEFINE_PROP_END_OF_LIST(),
-diff --git a/hw/usb/hcd-ehci-pci.c b/hw/usb/hcd-ehci-pci.c
-index dd06451e23..374f25c5ed 100644
---- a/hw/usb/hcd-ehci-pci.c
-+++ b/hw/usb/hcd-ehci-pci.c
-@@ -135,7 +135,7 @@ static void usb_ehci_pci_write_config(PCIDevice *dev, uint32_t addr,
-     i->ehci.as = busmaster ? pci_get_address_space(dev) : &address_space_memory;
- }
- 
--static Property ehci_pci_properties[] = {
-+static const Property ehci_pci_properties[] = {
-     DEFINE_PROP_UINT32("maxframes", EHCIPCIState, ehci.maxframes, 128),
-     DEFINE_PROP_END_OF_LIST(),
- };
-diff --git a/hw/usb/hcd-ehci-sysbus.c b/hw/usb/hcd-ehci-sysbus.c
-index eb7df93ac2..f4e08aab89 100644
---- a/hw/usb/hcd-ehci-sysbus.c
-+++ b/hw/usb/hcd-ehci-sysbus.c
-@@ -30,7 +30,7 @@ static const VMStateDescription vmstate_ehci_sysbus = {
-     }
- };
- 
--static Property ehci_sysbus_properties[] = {
-+static const Property ehci_sysbus_properties[] = {
-     DEFINE_PROP_UINT32("maxframes", EHCISysBusState, ehci.maxframes, 128),
-     DEFINE_PROP_BOOL("companion-enable", EHCISysBusState, ehci.companion_enable,
-                      false),
-diff --git a/hw/usb/hcd-ohci-pci.c b/hw/usb/hcd-ohci-pci.c
-index 47fb659806..459644cc1b 100644
---- a/hw/usb/hcd-ohci-pci.c
-+++ b/hw/usb/hcd-ohci-pci.c
-@@ -109,7 +109,7 @@ static void usb_ohci_reset_pci(DeviceState *d)
-     ohci_hard_reset(s);
- }
- 
--static Property ohci_pci_properties[] = {
-+static const Property ohci_pci_properties[] = {
-     DEFINE_PROP_STRING("masterbus", OHCIPCIState, masterbus),
-     DEFINE_PROP_UINT32("num-ports", OHCIPCIState, num_ports, 3),
-     DEFINE_PROP_UINT32("firstport", OHCIPCIState, firstport, 0),
-diff --git a/hw/usb/hcd-ohci-sysbus.c b/hw/usb/hcd-ohci-sysbus.c
-index 313e1e71bb..81cf2e558d 100644
---- a/hw/usb/hcd-ohci-sysbus.c
-+++ b/hw/usb/hcd-ohci-sysbus.c
-@@ -57,7 +57,7 @@ static void ohci_sysbus_reset(DeviceState *dev)
-     ohci_hard_reset(ohci);
- }
- 
--static Property ohci_sysbus_properties[] = {
-+static const Property ohci_sysbus_properties[] = {
-     DEFINE_PROP_STRING("masterbus", OHCISysBusState, masterbus),
-     DEFINE_PROP_UINT32("num-ports", OHCISysBusState, num_ports, 3),
-     DEFINE_PROP_UINT32("firstport", OHCISysBusState, firstport, 0),
-diff --git a/hw/usb/hcd-uhci.c b/hw/usb/hcd-uhci.c
-index 65c1f93cc9..245352c231 100644
---- a/hw/usb/hcd-uhci.c
-+++ b/hw/usb/hcd-uhci.c
-@@ -1227,14 +1227,14 @@ static void usb_uhci_exit(PCIDevice *dev)
-     }
- }
- 
--static Property uhci_properties_companion[] = {
-+static const Property uhci_properties_companion[] = {
-     DEFINE_PROP_STRING("masterbus", UHCIState, masterbus),
-     DEFINE_PROP_UINT32("firstport", UHCIState, firstport, 0),
-     DEFINE_PROP_UINT32("bandwidth", UHCIState, frame_bandwidth, 1280),
-     DEFINE_PROP_UINT32("maxframes", UHCIState, maxframes, 128),
-     DEFINE_PROP_END_OF_LIST(),
- };
--static Property uhci_properties_standalone[] = {
-+static const Property uhci_properties_standalone[] = {
-     DEFINE_PROP_UINT32("bandwidth", UHCIState, frame_bandwidth, 1280),
-     DEFINE_PROP_UINT32("maxframes", UHCIState, maxframes, 128),
-     DEFINE_PROP_END_OF_LIST(),
-diff --git a/hw/usb/hcd-xhci-nec.c b/hw/usb/hcd-xhci-nec.c
-index 0c063b3697..b582cf8f8d 100644
---- a/hw/usb/hcd-xhci-nec.c
-+++ b/hw/usb/hcd-xhci-nec.c
-@@ -38,7 +38,7 @@ struct XHCINecState {
-     uint32_t slots;
- };
- 
--static Property nec_xhci_properties[] = {
-+static const Property nec_xhci_properties[] = {
-     DEFINE_PROP_ON_OFF_AUTO("msi", XHCIPciState, msi, ON_OFF_AUTO_AUTO),
-     DEFINE_PROP_ON_OFF_AUTO("msix", XHCIPciState, msix, ON_OFF_AUTO_AUTO),
-     DEFINE_PROP_UINT32("intrs", XHCINecState, intrs, XHCI_MAXINTRS),
-diff --git a/hw/usb/hcd-xhci-sysbus.c b/hw/usb/hcd-xhci-sysbus.c
-index 59cf7fd4ab..f4dbad7cc6 100644
---- a/hw/usb/hcd-xhci-sysbus.c
-+++ b/hw/usb/hcd-xhci-sysbus.c
-@@ -82,7 +82,7 @@ void xhci_sysbus_build_aml(Aml *scope, uint32_t mmio, unsigned int irq)
-     aml_append(scope, dev);
- }
- 
--static Property xhci_sysbus_props[] = {
-+static const Property xhci_sysbus_props[] = {
-     DEFINE_PROP_UINT32("intrs", XHCISysbusState, xhci.numintrs, XHCI_MAXINTRS),
-     DEFINE_PROP_UINT32("slots", XHCISysbusState, xhci.numslots, XHCI_MAXSLOTS),
-     DEFINE_PROP_END_OF_LIST(),
-diff --git a/hw/usb/hcd-xhci.c b/hw/usb/hcd-xhci.c
-index d85adaca0d..3c5006f425 100644
---- a/hw/usb/hcd-xhci.c
-+++ b/hw/usb/hcd-xhci.c
-@@ -3605,7 +3605,7 @@ const VMStateDescription vmstate_xhci = {
-     }
- };
- 
--static Property xhci_properties[] = {
-+static const Property xhci_properties[] = {
-     DEFINE_PROP_BIT("streams", XHCIState, flags,
-                     XHCI_FLAG_ENABLE_STREAMS, true),
-     DEFINE_PROP_UINT32("p2",    XHCIState, numports_2, 4),
-diff --git a/hw/usb/host-libusb.c b/hw/usb/host-libusb.c
-index 691bc881fb..85d33b51ba 100644
---- a/hw/usb/host-libusb.c
-+++ b/hw/usb/host-libusb.c
-@@ -1758,7 +1758,7 @@ static const VMStateDescription vmstate_usb_host = {
-     }
- };
- 
--static Property usb_host_dev_properties[] = {
-+static const Property usb_host_dev_properties[] = {
-     DEFINE_PROP_UINT32("hostbus",  USBHostDevice, match.bus_num,    0),
-     DEFINE_PROP_UINT32("hostaddr", USBHostDevice, match.addr,       0),
-     DEFINE_PROP_STRING("hostport", USBHostDevice, match.port),
-diff --git a/hw/usb/redirect.c b/hw/usb/redirect.c
-index 0f2dd2e504..f72a612d5a 100644
---- a/hw/usb/redirect.c
-+++ b/hw/usb/redirect.c
-@@ -2573,7 +2573,7 @@ static const VMStateDescription usbredir_vmstate = {
-     }
- };
- 
--static Property usbredir_properties[] = {
-+static const Property usbredir_properties[] = {
-     DEFINE_PROP_CHR("chardev", USBRedirDevice, cs),
-     DEFINE_PROP_UINT8("debug", USBRedirDevice, debug, usbredirparser_warning),
-     DEFINE_PROP_STRING("filter", USBRedirDevice, filter_str),
-diff --git a/hw/usb/u2f-emulated.c b/hw/usb/u2f-emulated.c
-index 63cceaa5fc..df86ce97fc 100644
---- a/hw/usb/u2f-emulated.c
-+++ b/hw/usb/u2f-emulated.c
-@@ -369,7 +369,7 @@ static void u2f_emulated_unrealize(U2FKeyState *base)
-     }
- }
- 
--static Property u2f_emulated_properties[] = {
-+static const Property u2f_emulated_properties[] = {
-     DEFINE_PROP_STRING("dir", U2FEmulatedState, dir),
-     DEFINE_PROP_STRING("cert", U2FEmulatedState, cert),
-     DEFINE_PROP_STRING("privkey", U2FEmulatedState, privkey),
-diff --git a/hw/usb/u2f-passthru.c b/hw/usb/u2f-passthru.c
-index c4a783d128..ec4f6165d8 100644
---- a/hw/usb/u2f-passthru.c
-+++ b/hw/usb/u2f-passthru.c
-@@ -516,7 +516,7 @@ static const VMStateDescription u2f_passthru_vmstate = {
-     }
- };
- 
--static Property u2f_passthru_properties[] = {
-+static const Property u2f_passthru_properties[] = {
-     DEFINE_PROP_STRING("hidraw", U2FPassthruState, hidraw),
-     DEFINE_PROP_END_OF_LIST(),
- };
+-static Property vfio_platform_dev_properties[] = {
++static const Property vfio_platform_dev_properties[] = {
+     DEFINE_PROP_STRING("host", VFIOPlatformDevice, vbasedev.name),
+     DEFINE_PROP_STRING("sysfsdev", VFIOPlatformDevice, vbasedev.sysfsdev),
+     DEFINE_PROP_BOOL("x-no-mmap", VFIOPlatformDevice, vbasedev.no_mmap, false),
 -- 
 2.43.0
 
