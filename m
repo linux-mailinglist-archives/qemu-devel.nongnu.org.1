@@ -2,83 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FA8E9F15AE
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Dec 2024 20:20:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DCB19F15B6
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Dec 2024 20:20:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tMBBk-0005D6-Uh; Fri, 13 Dec 2024 14:19:01 -0500
+	id 1tMBAk-0004Fx-BN; Fri, 13 Dec 2024 14:17:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tMB9M-00027I-LH
- for qemu-devel@nongnu.org; Fri, 13 Dec 2024 14:16:32 -0500
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tMB9S-0002oF-KU
+ for qemu-devel@nongnu.org; Fri, 13 Dec 2024 14:16:38 -0500
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tMB9K-00086Q-JO
- for qemu-devel@nongnu.org; Fri, 13 Dec 2024 14:16:32 -0500
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-436345cc17bso3817585e9.0
- for <qemu-devel@nongnu.org>; Fri, 13 Dec 2024 11:16:30 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tMB9Q-00087i-Mg
+ for qemu-devel@nongnu.org; Fri, 13 Dec 2024 14:16:38 -0500
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-43624b2d453so25318045e9.2
+ for <qemu-devel@nongnu.org>; Fri, 13 Dec 2024 11:16:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734117389; x=1734722189; darn=nongnu.org;
+ d=linaro.org; s=google; t=1734117394; x=1734722194; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=MkwtbKYN92Edw6prtIY013lMT+VdTEfLqeuDLCwuhdg=;
- b=FuD2KPfFDMvmOopMLuYpng0Tieuf5rsLqaXJ/KtyHJoGI/RkpM0RrY96/PMCPINMZH
- PUsy9gq7HTEjGH2rAXe/zDdKxw58mvPYhPNoKJzicVC7nm99WDhxdAvTsF610ip+UESo
- pE3KYkNp4vvTXgY7LIB9msKi2GBXItduo3HSlRsAkbkeDCjoyFmYQxgBhthowdE5KYGx
- SLr4OvBRvnWfXa4tL8kkO024Iq631cpAChu44oltcoTCbJXcnY3r6bbA5fA+qC/WaNzW
- t4CdKMuTom0Hyq7cH1uYdJQakQEUj4B9optJME6Fzhy4mOVrq3xVLxzeBd0PJ3exLHKf
- jg0A==
+ bh=yNt7E5LBZnakm8Ca0zGgF/hmGsdBljJHkNF8hUFv1nA=;
+ b=ZEnoNkAF0JHe3KoYbjg3qUCTg2tl7HoxFNp3J1XrlYFrhaXmNa+g9DUyJnC255x+l/
+ P62Ugb5zL6ePBaXa45tK2DRbSwV7+qutJN2uLGDpNAKspx1Na8GIpWH2p4WesloGElox
+ GTLAXpnFIXMOBOyLRiz0OC84vrzDrKEbEhZlR2Q4qGS/ujov/xRTvQPN4fkFanOBiukK
+ 49axyX4cAMiLatLonv2rMEARQI4cwcOk5HxVd38yR2cDMkfZuJij+HgnVdwoEZpFRyOO
+ y7GjbMfxXtHrF5ReqIO/FaqCtZGhbH6gdjHdaYh9iIF/6lZrFqbLGlQQ2ach7buNSz9C
+ Z3/A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734117389; x=1734722189;
+ d=1e100.net; s=20230601; t=1734117394; x=1734722194;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=MkwtbKYN92Edw6prtIY013lMT+VdTEfLqeuDLCwuhdg=;
- b=rOWWm+Rp9ax1ETLLnom5CPqY7JR0kt0K8c0gJ2hUSUJsJjA+Lw2sKsrBCb49qYeWZK
- foLJHge+xtOhwfv3IDp6KSQV9NyhGpuzcw+K/3r/tfwmKMVLEbIbD+Bq4lmQ7lSl225T
- 0m30upuGWyEt2Cd/q+BkLF1bwLmEkjyMMYp91/pcZHJlMnXQKJ+KVfiKPMrJpvIA/NUV
- uv85rq97L2AVGR2YQCoSxoMIRfbcCI0BH9JV9Ug5hrOBQW85DV3QbYXHG6pHWfoDFKAg
- kXFfchSvMB/v5oiLIH6lXUhezm0Q/yQs9QA4sbZFQrizwV6d0EjyKUYHSFruJpedHoUj
- 1aBg==
+ bh=yNt7E5LBZnakm8Ca0zGgF/hmGsdBljJHkNF8hUFv1nA=;
+ b=csMaVUOZEYDFLeO6YJzFB7X0nT1J3pw62xXZmsuuOWow9Zj5Np1frf1wqCelQGEJbI
+ g8PehR0Uj6dgSGkh/0jvJIQyr7ZPOdDlj8zRKuFprMJsPrX0Z84Bm/PW3sEQRUNmaj5F
+ q3W079MJv6bqo057qPTlQnSIgMT3gufvzf89VHgCjU/xQ6wvldECLWpsKGFKFAKPUZkb
+ Lxw+lEb7KyMWOdRnmHUMkrcJwlswec9kdrnb7UNGxj0pdffZS9SjG859Bt5iIZoMvsEA
+ zzbtIZAD9rjuIhSnDdfZhztQtEskQ1q4guybfYrEJv5UCEXWqZyS7jTvKneNNqUkzkOZ
+ VrYw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCU0eD1H7i1yQb7nkqB/qxo0++hDMKJKAo1Xo7YPKYBqNctjSjKrd6wUxc2l5axcrfJzNNfV5lQXDEu7@nongnu.org
-X-Gm-Message-State: AOJu0YxcKdgBJ6IwCeHK++IwfA9jq4LMdY8MIFyHtSXrgPwLd20HbSxO
- qshkoTIuq+rTvdNJ/S/hY/lvznnWcV0QBlbHyXZHJ/9V+wHNm+YdVNpKGD9WXm8=
-X-Gm-Gg: ASbGncvL0m+BpEuOqt/+cP1THpzKAdr5GNS4BMh6wAaLwubdStq4bOvUUUJSqjxlmPU
- zlsUkZ/zmYXWHu7dItEqB2vNS7FL/O9ESiKR74VtbSrqLXCBH9CUIR0h8gZdl/7KXtUtcoDSn+Q
- 39fnpW85XrHkH0tZgggiRVoYWY3CPVurWnyFlTRQkCpRQY9fegTlGRJiNoLhjwD9sf4uSIIiDUx
- jTzdAe+n0qFxu5rcoOdnVDXXIxkD3nwHq7eS69tl+nSE/3KSIyvOPafgtYKVjCsbq8p6jofbVbh
- RrLjTENM46LDyqJnhLqb
-X-Google-Smtp-Source: AGHT+IG2xhki/qLW54coKokgzLcQo94AgqnF2lAdaoHbBAJ8MonLO+12ttdlsrZlGtKmIUY0ihzdNw==
-X-Received: by 2002:a05:600c:154c:b0:434:f3a1:b214 with SMTP id
- 5b1f17b1804b1-4362aab48c4mr28461915e9.28.1734117388701; 
- Fri, 13 Dec 2024 11:16:28 -0800 (PST)
+ AJvYcCWyyJqORtiaE//L9q2fA/EJ/EJSldHjPTE2EdXle3eWQ1cNr6XSRIYszQAkT80n9Xcb5k6IPsj3pP8e@nongnu.org
+X-Gm-Message-State: AOJu0YzNHMW6lSjJz+mJA+Ze6hn6bO+NpM3lfa5/QmsMOcwJYoYVGhd0
+ 3K2P3lgmiBCuf71wD7VadX4lg8zzrqpUjil3lYTpIN5U2TN7lzAsIwc97t+h5bI=
+X-Gm-Gg: ASbGnctW4d3X5g5m/hQvBFxyBfKCYCycPcqJgPR6S8wvVD4KT1tG3uirjClzGgyaaw1
+ USGOd6YUrgYfWxj4pLUBnnmQ2hW6UiqN17dpesbzICbiG3nJuAzEw6Grdy0XkYRvVDIcSpLhEoi
+ yy7KaHMJxXuHUkkwkSgBkGWIOWdBX46EZpBAQO3UfvWiKpOi1xXAPx8UQDi5qsgKqaFwtZ30fM1
+ FODh2GZq6DB/9QDUZV28vMm6aGDTc+pkaAYFy5wlhed1kMrhJpmHOR0q8mOmpOADts0VyHS0b7i
+ acRAmkKgm5X0Yw+CYAKc
+X-Google-Smtp-Source: AGHT+IF/aCMWk44B1CSsW1qN6uuXq/moAVtVCOriJZzrv2OyGBUmFxJIe4vGquCuYDO0/nB1uX5f5w==
+X-Received: by 2002:a05:6000:2c8:b0:385:d143:138b with SMTP id
+ ffacd0b85a97d-3888e0bfb3cmr3745115f8f.51.1734117393976; 
+ Fri, 13 Dec 2024 11:16:33 -0800 (PST)
 Received: from [192.168.224.213] (127.47.205.77.rev.sfr.net. [77.205.47.127])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-388c8046ca6sm297070f8f.83.2024.12.13.11.16.26
+ ffacd0b85a97d-388c8046ca6sm297070f8f.83.2024.12.13.11.16.32
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 13 Dec 2024 11:16:27 -0800 (PST)
-Message-ID: <7af8a419-745e-4348-a564-8ef078fd456b@linaro.org>
-Date: Fri, 13 Dec 2024 20:16:25 +0100
+ Fri, 13 Dec 2024 11:16:33 -0800 (PST)
+Message-ID: <8ce5348d-eba3-4650-8916-ddd17754134a@linaro.org>
+Date: Fri, 13 Dec 2024 20:16:32 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] MAINTAINERS: correct my email address
-To: Brian Cain <brian.cain@oss.qualcomm.com>, qemu-devel@nongnu.org
-Cc: richard.henderson@linaro.org, peter.maydell@linaro.org,
- quic_mathbern@quicinc.com, stefanha@redhat.com, ale@rev.ng, anjo@rev.ng,
- quic_mliebel@quicinc.com, ltaylorsimpson@gmail.com, alex.bennee@linaro.org,
- quic_mburton@quicinc.com
-References: <20241209181242.1434231-1-brian.cain@oss.qualcomm.com>
+Subject: Re: [PATCH] device/virtio-nsm: Support string data for extendPCR
+To: Dorjoy Chowdhury <dorjoychy111@gmail.com>, qemu-devel@nongnu.org
+Cc: graf@amazon.com, pbonzini@redhat.com
+References: <20241109123208.24281-1-dorjoychy111@gmail.com>
 Content-Language: en-US
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20241209181242.1434231-1-brian.cain@oss.qualcomm.com>
+In-Reply-To: <20241109123208.24281-1-dorjoychy111@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,15 +98,14 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/12/24 19:12, Brian Cain wrote:
-> Mea culpa, I don't know how I got this wrong in 2dfe93699c.  Still
-> getting used to the new address, I suppose.  Somehow I got it right in the
-> mailmap, though.
+On 9/11/24 13:32, Dorjoy Chowdhury wrote:
+> NSM device in AWS Nitro Enclaves supports extending with both
+> bytestring and string data.
 > 
-> Signed-off-by: Brian Cain <brian.cain@oss.qualcomm.com>
+> Signed-off-by: Dorjoy Chowdhury <dorjoychy111@gmail.com>
 > ---
->   MAINTAINERS | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+>   hw/virtio/virtio-nsm.c | 21 ++++++++++++++-------
+>   1 file changed, 14 insertions(+), 7 deletions(-)
 
 Queued, thanks!
 
