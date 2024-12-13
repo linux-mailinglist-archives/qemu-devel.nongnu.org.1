@@ -2,95 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 305379F196C
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Dec 2024 23:55:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C351B9F19F0
+	for <lists+qemu-devel@lfdr.de>; Sat, 14 Dec 2024 00:31:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tMEYh-0001KT-L5; Fri, 13 Dec 2024 17:54:55 -0500
+	id 1tMF6H-0001BH-P6; Fri, 13 Dec 2024 18:29:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjrosato@linux.ibm.com>)
- id 1tMEYd-0001J7-RX; Fri, 13 Dec 2024 17:54:51 -0500
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjrosato@linux.ibm.com>)
- id 1tMEYc-000185-48; Fri, 13 Dec 2024 17:54:51 -0500
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BDGfIx2021364;
- Fri, 13 Dec 2024 22:54:47 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=pp1; bh=5uxWVIE9GkIiDnVbr
- J3GtQxqrJYxc8z5vl5RzUf6LA8=; b=HxHfLGq6TsDq8uxREfaRXL+uNhZkhE0r2
- GgzuTuVMxamEGE5eiXpxqAWY8022b5ugGpezaDz8LdGJlkANbEdMXq3+Wib62bRP
- 8aUzYNFm37KEDN+g7Nzyo9j/o2VWUU6dryTVWtHARm4D1DVQFAByGTH1/nr+pBIg
- ZfF7vN7L7yKr9w9+adTIxOQZg2r2tafBYsiCTXnWlKy/T2jvix/sN27JH1qxgnE4
- FM+yEtQ0RFLuFNCoDGYlyGiz2kswyK7c7ogwv4e28DgZtW8+N9k3KtE1be9gwnRO
- 19iyvkR21WycDL19rL2MHrURo1a784vB2F7p9XJ4NxrM6rsPw/r/A==
-Received: from ppma21.wdc07v.mail.ibm.com
- (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 43gddmd0hf-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 13 Dec 2024 22:54:47 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4BDIineN007793;
- Fri, 13 Dec 2024 22:54:45 GMT
-Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
- by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 43ft121j3y-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 13 Dec 2024 22:54:45 +0000
-Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com
- [10.241.53.102])
- by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 4BDMsiZm35455570
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 13 Dec 2024 22:54:44 GMT
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 7054458056;
- Fri, 13 Dec 2024 22:54:44 +0000 (GMT)
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 7F4A65803F;
- Fri, 13 Dec 2024 22:54:43 +0000 (GMT)
-Received: from li-2311da4c-2e09-11b2-a85c-c003041e9174.ibm.com.com (unknown
- [9.61.107.222]) by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Fri, 13 Dec 2024 22:54:43 +0000 (GMT)
-From: Matthew Rosato <mjrosato@linux.ibm.com>
-To: qemu-s390x@nongnu.org
-Cc: farman@linux.ibm.com, schnelle@linux.ibm.com, thuth@redhat.com,
- pasic@linux.ibm.com, borntraeger@linux.ibm.com,
- richard.henderson@linaro.org, david@redhat.com, iii@linux.ibm.com,
- clegoate@redhat.com, qemu-devel@nongnu.org
-Subject: [PATCH v2 2/2] s390x/pci: indicate QEMU supports relaxed translation
- for passthrough
-Date: Fri, 13 Dec 2024 17:54:40 -0500
-Message-ID: <20241213225440.571382-3-mjrosato@linux.ibm.com>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241213225440.571382-1-mjrosato@linux.ibm.com>
-References: <20241213225440.571382-1-mjrosato@linux.ibm.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tMF6F-0001B1-PM
+ for qemu-devel@nongnu.org; Fri, 13 Dec 2024 18:29:35 -0500
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tMF6E-0001ml-5G
+ for qemu-devel@nongnu.org; Fri, 13 Dec 2024 18:29:35 -0500
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-4361f796586so27036495e9.3
+ for <qemu-devel@nongnu.org>; Fri, 13 Dec 2024 15:29:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1734132572; x=1734737372; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:content-language:references
+ :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=Gb4goDicfQxicR5u8nKj+41W/sHVMjmHq/TZvClCsfo=;
+ b=MwZcX/lqt9lv043CgO/1Jh9BLLoiGoFYh1QvfmtLdjN3JwHYELSX60tMSOURQRto/I
+ QxspP+FQhiJPQ5FDWFSYg6cX7B1CqFpbluOz3AuzWrG3tkDdx49U361byU1PU+G9k38q
+ mdvd7vUens7dsFFkXmM4gdck/14Eb1S+QfJbvyu/q8HwAtQQm1xLBYFSSXCIrqFi5K1f
+ j55q236pD8brbqpSWqoFsIyQdp/pXECRXjDU7+wxA+SpRk9ISJb2lSMxczR04PuayQz3
+ UWcqP5z7KkNROrkdagTdgq99v1KoGpa7pl4+efLTJ9mkBKQNBjWAqknK2GPdmhPdMYiH
+ EuaA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1734132572; x=1734737372;
+ h=content-transfer-encoding:in-reply-to:content-language:references
+ :cc:to:from:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Gb4goDicfQxicR5u8nKj+41W/sHVMjmHq/TZvClCsfo=;
+ b=sMpVOtEl/Rsra+DY5+OT8zJk1OAx7WFIFgc8biBlp+0K+LUhlISJQj0PEQ/x1EnxC4
+ zp+LJT6eLT9Q0KtBlSksmv5teAs++WLNJillFDqWLfYn9ZW/jd5evj0NtHIy3SJNHWNO
+ /lP4UAmXAZYD2I+pk2v83HhVx1/RtogTdnNROv1nTcwfeRZr35IGUnVIvFKlMY+n6WXf
+ zaTBzi+xaZBs/jOJ8CLxIbCaXXI3zJ6ndcel+tT1r79+6fN099pLqD3C+HGAwPEPpfPx
+ oTY3+/ZEW9CHIGHlgr7rStHeWPSC599ctrTRwVx8bZKVDXrgGpAmQW9nv39c4LX2VFt0
+ 5vxw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUJd/JdT2rm1u6FKf/BVkRwpijXZPwUPXW0EWf+FcEiDBOhJpA1AgifwoZzzP4rhB7viuic79dyE2qW@nongnu.org
+X-Gm-Message-State: AOJu0Yws3IpILyY8aP1cMKFKhyHfAGOBEj1tm62svmt7XfwSmq1Q8Sml
+ 83dHWfGVc/A6FahXNKyjN9Xq01C0CS+K94dUWecdgsZnPoeDSfAz6FmQtk5X510=
+X-Gm-Gg: ASbGncv9h6kraXFsc9xoqvKR1f28lAPtsrcjT0KOA9m9xRJk2s1agXX3q9k1JGihDSU
+ 5hGBdK5akbCRBwy0uQmxIaejD8rK+vWjjctNM1SZ5ZxK1d7mIJM99Y7E28xayu7+cwlwLLWOlp2
+ JkuUpToz4AYoM6BB3MaIxXx9HOCO94W/Ho+G75KzXkx8dscmTjzTBmMK5sccq7tNCvJvUuNMir5
+ HIJ3od938+G8S48k93EtrNixb+S/JkdOaRP/WM8JiPwekLuF7rXU/z/arELwR+rqlxXxA==
+X-Google-Smtp-Source: AGHT+IG3t1WpRAsY1ABuCMl1UNesWjInxEL0qLdAAn67u7zl+WULAng6uQCWP9RnQot+hWIAt+UYhQ==
+X-Received: by 2002:a5d:5f50:0:b0:382:3959:f429 with SMTP id
+ ffacd0b85a97d-38880ac5f31mr4213526f8f.5.1734132572340; 
+ Fri, 13 Dec 2024 15:29:32 -0800 (PST)
+Received: from [10.1.1.253] ([45.93.146.194]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-388c801a487sm845169f8f.45.2024.12.13.15.29.31
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 13 Dec 2024 15:29:31 -0800 (PST)
+Message-ID: <cbb49707-dfd5-47df-b268-e468130e7cb8@linaro.org>
+Date: Sat, 14 Dec 2024 00:29:30 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] MAINTAINERS: correct my email address
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: Brian Cain <brian.cain@oss.qualcomm.com>, qemu-devel@nongnu.org
+Cc: richard.henderson@linaro.org, peter.maydell@linaro.org,
+ quic_mathbern@quicinc.com, stefanha@redhat.com, ale@rev.ng, anjo@rev.ng,
+ quic_mliebel@quicinc.com, ltaylorsimpson@gmail.com, alex.bennee@linaro.org,
+ quic_mburton@quicinc.com
+References: <20241209181242.1434231-1-brian.cain@oss.qualcomm.com>
+ <7af8a419-745e-4348-a564-8ef078fd456b@linaro.org>
+Content-Language: en-US
+In-Reply-To: <7af8a419-745e-4348-a564-8ef078fd456b@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: bc53z4qIV4312Yvgz7LWswOPZSnArK7R
-X-Proofpoint-GUID: bc53z4qIV4312Yvgz7LWswOPZSnArK7R
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0
- spamscore=0 mlxlogscore=985 suspectscore=0 impostorscore=0 malwarescore=0
- phishscore=0 adultscore=0 bulkscore=0 priorityscore=1501 clxscore=1015
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2411120000 definitions=main-2412130159
-Received-SPF: pass client-ip=148.163.156.1;
- envelope-from=mjrosato@linux.ibm.com; helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H2=-0.001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -107,46 +100,19 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Specifying this bit in the guest CLP response indicates that the guest
-can optionally choose to skip translation and instead use
-identity-mapped operations.
+On 13/12/24 20:16, Philippe Mathieu-Daudé wrote:
+> On 9/12/24 19:12, Brian Cain wrote:
+>> Mea culpa, I don't know how I got this wrong in 2dfe93699c.  Still
+>> getting used to the new address, I suppose.  Somehow I got it right in 
+>> the
+>> mailmap, though.
+>>
+>> Signed-off-by: Brian Cain <brian.cain@oss.qualcomm.com>
+>> ---
+>>   MAINTAINERS | 2 +-
+>>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> Queued, thanks!
 
-Signed-off-by: Matthew Rosato <mjrosato@linux.ibm.com>
----
- hw/s390x/s390-pci-vfio.c        | 5 ++++-
- include/hw/s390x/s390-pci-clp.h | 1 +
- 2 files changed, 5 insertions(+), 1 deletion(-)
-
-diff --git a/hw/s390x/s390-pci-vfio.c b/hw/s390x/s390-pci-vfio.c
-index 7dbbc76823..96d43b067f 100644
---- a/hw/s390x/s390-pci-vfio.c
-+++ b/hw/s390x/s390-pci-vfio.c
-@@ -223,8 +223,11 @@ static void s390_pci_read_group(S390PCIBusDevice *pbdev,
-         pbdev->pci_group = s390_group_create(pbdev->zpci_fn.pfgid, start_gid);
- 
-         resgrp = &pbdev->pci_group->zpci_group;
-+        if (pbdev->rtr_allowed) {
-+            resgrp->fr |= CLP_RSP_QPCIG_MASK_RTR;
-+        }
-         if (cap->flags & VFIO_DEVICE_INFO_ZPCI_FLAG_REFRESH) {
--            resgrp->fr = 1;
-+            resgrp->fr |= CLP_RSP_QPCIG_MASK_REFRESH;
-         }
-         resgrp->dasm = cap->dasm;
-         resgrp->msia = cap->msi_addr;
-diff --git a/include/hw/s390x/s390-pci-clp.h b/include/hw/s390x/s390-pci-clp.h
-index 03b7f9ba5f..6a635d693b 100644
---- a/include/hw/s390x/s390-pci-clp.h
-+++ b/include/hw/s390x/s390-pci-clp.h
-@@ -158,6 +158,7 @@ typedef struct ClpRspQueryPciGrp {
- #define CLP_RSP_QPCIG_MASK_NOI 0xfff
-     uint16_t i;
-     uint8_t version;
-+#define CLP_RSP_QPCIG_MASK_RTR     0x20
- #define CLP_RSP_QPCIG_MASK_FRAME   0x2
- #define CLP_RSP_QPCIG_MASK_REFRESH 0x1
-     uint8_t fr;
--- 
-2.47.1
-
+Dropped, already taken by Peter.
 
