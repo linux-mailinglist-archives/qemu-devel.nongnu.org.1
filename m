@@ -2,90 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CCC39F13A7
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Dec 2024 18:30:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AAD3D9F1423
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Dec 2024 18:43:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tM9RX-0008SK-Bc; Fri, 13 Dec 2024 12:27:11 -0500
+	id 1tM9XZ-0007LY-F3; Fri, 13 Dec 2024 12:33:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1tM9RS-0008Pz-Uy; Fri, 13 Dec 2024 12:27:08 -0500
-Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1tM9Wq-0006rx-Du
+ for qemu-devel@nongnu.org; Fri, 13 Dec 2024 12:32:41 -0500
+Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1tM9RM-0007nA-2C; Fri, 13 Dec 2024 12:27:06 -0500
-Received: by mail-ed1-x529.google.com with SMTP id
- 4fb4d7f45d1cf-5d3d14336f0so3532394a12.3; 
- Fri, 13 Dec 2024 09:26:57 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1tM9Wk-0001RO-Si
+ for qemu-devel@nongnu.org; Fri, 13 Dec 2024 12:32:40 -0500
+Received: by mail-wr1-x42c.google.com with SMTP id
+ ffacd0b85a97d-3862f32a33eso985129f8f.3
+ for <qemu-devel@nongnu.org>; Fri, 13 Dec 2024 09:32:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1734110815; x=1734715615; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
- :message-id:reply-to;
- bh=eZAdsWK52VAb8fudDg9PRQ5VSPYseUmnxkNdC1pBytY=;
- b=cgPvUz3jP9IkmLGtyPwRd33/1+4LayXwEOshMnkSQ8/qf427S63KKunQoRLH/bLns9
- bzKEO9Rl6u3gpQiXEDl/do58Hz0Mxs7vAc1OCzkhN0P2SVhttDmg3sk6NkQBBrZEcTR5
- GrZZy3w6A3OkFNBa+2wCVG/C2IFVmSZVnmq79kE1p/t8U4WK+l+HJL/FBrL/rgZ3M0fK
- IC3FVoNsXhcx7Wfb2ZMT35angcx/Hk62apmzZoQiUhrr/Rf+vRKM0vqe0fh9yX3jNQPX
- Uj3qDDXJ48HRLRLdVxcfD1BfOSqgq/olndQ+pNV3CzVGo7s1V6zqG+s9ogZtdiaeogfQ
- AkHg==
+ d=linaro.org; s=google; t=1734111152; x=1734715952; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=pP6APkB5zDRiL7/tZy5IRL/wZmowU/ekKqLjWtIxsQ0=;
+ b=ok63qE5RC1IJv1FfN6RLio18ESsGVtH7KX0e2pHhc3Zn/GNS5zg3okYk1wUytr/NE2
+ n6SCP7mTauAR1sfTe8HZIL1peujAkZXIhLAxYIrQC0dyJydnGsDXEWBRtpVEtWedFwZl
+ iFBgTD+MKuJpqiIXHpMizR7LzE8AnprSNKPxjN3s/m70060gdbyhut7kQJKhpQDnscNC
+ ISQBHh3+EDSJ4FNcFoRkcBvPXFxmTZJmwDqI3hi7d+6wMp24FuciT8FR8HOWCkWbEajm
+ PZtOCjY+VonFN22kIX4+knU+YKgeZcC2m75yd8NfA+eVDqzfEtewOmmHmPXyTqQZAMZu
+ foUg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734110815; x=1734715615;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=eZAdsWK52VAb8fudDg9PRQ5VSPYseUmnxkNdC1pBytY=;
- b=im6FRDFZolFlljd+GVxsFol1fWyQdNhwhZ7yrf8q7EINoN7BZFLvZ8mceS99Lto6fO
- VYY0BOo8PlB7sQnmCyLOknORohwl+DLTMRAvPGOkV8AUMCrRT+7QUFjGYYAkaH9WM/Jq
- +IDdW254Et/lV037fsEywLpXqaWoYJb8DWmMQsvhdWU9BEOLovAiX7Q1l7DZFuMP1Yc0
- BQaYkzewBIid0QLyjMSOZ/TNWlQXBuHjY+llilnCxZ8tQv0bE+f4uO91jrpo2oDKSgc7
- eptwZlFezluWt5qBBkechv/7USd3hUJFuCmQYZ34giFbuF36+GSs9Gv2Bxv0WDfnfCSl
- cEVw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUfS7TBP3xiZOIp8OuvqOpZh6H6kdrUa+Zg6c5qCD6tbYs0IU33Ia0zXhhIduu+uJ5WgppsEQI1eHCJfg==@nongnu.org,
- AJvYcCVCH6a7cg4S9Evjk2kjD+MqAfLUL0uv3W7kxn6EqI63nedCCEMgU2VUmkaLtb0g6e5DJKP6SUdQiQ==@nongnu.org
-X-Gm-Message-State: AOJu0Yy2ksfLyFINcrxWspimVoqE79wrharlh+1uIV0k7mkNM6toE1/G
- Enyq+EkzV/sy8GCDJ5s0rKfiXdKg0/fcxYY7b1+XnLTs5RzDX7Dg
-X-Gm-Gg: ASbGncsRe9tQ0afhJiftpD3PIXvN6ZP2FjAe7BLEpMr5ZB8507Wi5AT/xPttxerJeFZ
- B6qWRgWSEvp7HN6T1LOEcnCmHwbxUdAIdXGDQS+UkBaIAVxj6al2xQYBhk2H8bbmqKkgE/zQ1UP
- nN8/LUPzV4YdqCQLBv8AHBN4OY+Ut3QX0w+OjnwBmAk7JEewh0m/kCf7asxEckpmdZsYjdGA9wE
- /CnfKD0xVyapMmIcZcN9FzL7oqWFZuh1qo3+d6BTPaC96+lQ1kyQ6Rq4UKpNiYnmTbfx+MAFO8P
- IDAodHRT2l7cB6hRpkvgDqG2aGY5/9I=
-X-Google-Smtp-Source: AGHT+IFuaPKsYeud5IDSK7rt1B38SIlmppDIe43Li8rTuFFkhboRnnBTdzPI60LNTM1KigaR471KkQ==
-X-Received: by 2002:a17:907:6d12:b0:aa6:8096:2048 with SMTP id
- a640c23a62f3a-aab7790a02dmr347318266b.17.1734110815242; 
- Fri, 13 Dec 2024 09:26:55 -0800 (PST)
-Received: from [127.0.0.1] (dynamic-077-183-249-001.77.183.pool.telefonica.de.
- [77.183.249.1]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-aa65d18510asm950478766b.122.2024.12.13.09.26.54
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 13 Dec 2024 09:26:54 -0800 (PST)
-Date: Fri, 13 Dec 2024 17:26:52 +0000
-From: Bernhard Beschow <shentey@gmail.com>
-To: =?ISO-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-CC: qemu-block@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- Peter Xu <peterx@redhat.com>, qemu-arm@nongnu.org,
- John Snow <jsnow@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [PATCH v4 1/2] hw/ide/ahci: Decouple from PCI
-In-Reply-To: <b87473d2-d132-42a4-8ca3-aaace8da7bf9@linaro.org>
-References: <20241212110926.23548-1-shentey@gmail.com>
- <20241212110926.23548-2-shentey@gmail.com>
- <b87473d2-d132-42a4-8ca3-aaace8da7bf9@linaro.org>
-Message-ID: <F723466D-FB22-485A-936E-1C4AAEEFF05E@gmail.com>
+ d=1e100.net; s=20230601; t=1734111152; x=1734715952;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=pP6APkB5zDRiL7/tZy5IRL/wZmowU/ekKqLjWtIxsQ0=;
+ b=pl967eS0+RDqXx7GWIWE+2wHwT3nbAmIkMsQLCoBYkAzwclh+VF+VkK/dqN4hLBA+s
+ ID8H9iAhStFNPp31v9kE8lxNBBZlDrXw1ep233JJl3yvBY+FrJU/q9cRjRD33XznN12R
+ puNHiIlPHGbwkpzbgSTslR0rESkCPeDqDwj2kdl9xB+Zn1+LumIBOjdWMRQxVkgPyr9v
+ zTzIt6gLoqyKQECZJ3jdmY1YCQ5qWCXyb0HaJnUMVtx5YjHVx+SPRx/crTDo27gLWac2
+ QupkDIq6guvXMGv6tGLa0zPcDrQjZ9cpD4uTCgsRSisVYfKFTyr5iIDEhkt/HeL1YfX3
+ CjOQ==
+X-Gm-Message-State: AOJu0YzFxneumu4cyc0I/ZKv0Z9ZasvSX7339Cki87iaLpSRFFUoZtZL
+ evETX/ctKJvGOpxGz+TfKKms5ZiyAQfnoFd7FkA0OLqiIsmTjN726fQ8czdEtLkzK1zFyQkULP7
+ M
+X-Gm-Gg: ASbGncs7nIjqZMhoTvZMQiYg4Ln1WfJmEb5vHiZS7ouDpGlDJQ4/KNgGcp+t1T1o2At
+ j9UcCCO0BNEUr5Nwp70g21NGxIYQi+BUeE3Nh6E9CT8irBWY80udRI8h+5076mKqVSC6HMt6ML/
+ E8L1qndnXFkLHZw+fzzhOfBJ7Rw//Jjo0JnPnTW5d2oF7KfIG+wG/H7BHhO3XLok/lKlXJlW/j6
+ J5od+TNLLV2A6Kb9Kg4sQlIM7EEpXvjhl6sK1mV3qS592Pmx4CObI2GHLzl5w==
+X-Google-Smtp-Source: AGHT+IEUZFCdXJOJlv2rUJhi4dcDzU6TTjHHfSbPEZnuW70joN9UarbCHPiQDRNJt7Ooshvls9u+eQ==
+X-Received: by 2002:a05:6000:702:b0:385:f840:e613 with SMTP id
+ ffacd0b85a97d-3889ad337f9mr2510706f8f.51.1734111151743; 
+ Fri, 13 Dec 2024 09:32:31 -0800 (PST)
+Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-388c80162ddsm87026f8f.37.2024.12.13.09.32.30
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 13 Dec 2024 09:32:30 -0800 (PST)
+From: Peter Maydell <peter.maydell@linaro.org>
+To: qemu-devel@nongnu.org
+Subject: [PULL 00/85] target-arm queue
+Date: Fri, 13 Dec 2024 17:31:04 +0000
+Message-Id: <20241213173229.3308926-1-peter.maydell@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::529;
- envelope-from=shentey@gmail.com; helo=mail-ed1-x529.google.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -103,83 +93,149 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Another very large pullreq (this one mostly because it has
+RTH's decodetree conversion series in it), but this should be
+the last of the really large things in my to-review queue...
 
+thanks
+-- PMM
 
-Am 13=2E Dezember 2024 14:41:46 UTC schrieb "Philippe Mathieu-Daud=C3=A9" =
-<philmd@linaro=2Eorg>:
->On 12/12/24 12:09, Bernhard Beschow wrote:
->> In some adhoc profiling booting Linux VMs, it's observed that ahci_irq_=
-lower()
->> can be a hot path (10000+ triggers until login prompt appears)=2E Even =
-though the
->> parent device never changes, this method re-determines whether the pare=
-nt device
->> is a PCI device or not using the rather expensive object_dynamic_cast()
->> function=2E Avoid this overhead by pushing the interrupt handling to th=
-e parent
->> device, essentially turning AHCIState into an "IP block"=2E
->>=20
->> Note that this change also frees AHCIState from the PCI dependency whic=
-h wasn't
->> reflected in Kconfig=2E
->>=20
->> Reported-by: Peter Xu <peterx@redhat=2Ecom>
->> Inspired-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro=2Eorg>
->> Signed-off-by: Bernhard Beschow <shentey@gmail=2Ecom>
->> ---
->>   hw/ide/ahci-internal=2Eh    |  1 -
->>   include/hw/ide/ahci-pci=2Eh |  2 ++
->>   include/hw/ide/ahci=2Eh     |  2 --
->>   hw/ide/ahci=2Ec             | 39 ++++--------------------------------=
----
->>   hw/ide/ich=2Ec              | 19 +++++++++++++++----
->>   5 files changed, 21 insertions(+), 42 deletions(-)
->
->
->>   static void pci_ich9_reset(DeviceState *dev)
->>   {
->>       AHCIPCIState *d =3D ICH9_AHCI(dev);
->> @@ -102,7 +114,9 @@ static void pci_ich9_ahci_init(Object *obj)
->>   {
->>       AHCIPCIState *d =3D ICH9_AHCI(obj);
->>   +    qemu_init_irq(&d->irq, pci_ich9_ahci_update_irq, d, 0);
->>       ahci_init(&d->ahci, DEVICE(obj));
->> +    d->ahci=2Eirq =3D &d->irq;
->
->Pre-existing, but we shouldn't set this directly=2E
->Does the IRQState belong to AHCIState?
+The following changes since commit 83aaec1d5a49f158abaa31797a0f976b3c07e5ca:
 
-AHCIState isn't an Object, and therefore can't have any properties, so we =
-can only set it directly=2E In the SysBus devices, d->ahci=2Eirq is treated=
- with sysbus_init_irq(), so needs to stay a pointer=2E
+  Merge tag 'pull-tcg-20241212' of https://gitlab.com/rth7680/qemu into staging (2024-12-12 18:45:39 -0500)
 
-I tried to convert AHCIState into a SysBusDevice in order to access it via=
- these APIs, but that would create migration compatibility problems for the=
- q35 machine which was a rabbit hole I didn't want to get into=2E So I sett=
-led on this solution=2E Any better proposals?
+are available in the Git repository at:
 
-Best regards,
-Bernhard
+  https://git.linaro.org/people/pmaydell/qemu-arm.git tags/pull-target-arm-20241213
 
->
->>   }
->>     static void pci_ich9_ahci_realize(PCIDevice *dev, Error **errp)
->> @@ -125,8 +139,6 @@ static void pci_ich9_ahci_realize(PCIDevice *dev, E=
-rror **errp)
->>       /* XXX Software should program this register */
->>       dev->config[0x90]   =3D 1 << 6; /* Address Map Register - AHCI mo=
-de */
->>   -    d->ahci=2Eirq =3D pci_allocate_irq(dev);
->> -
->>       pci_register_bar(dev, ICH9_IDP_BAR, PCI_BASE_ADDRESS_SPACE_IO,
->>                        &d->ahci=2Eidp);
->>       pci_register_bar(dev, ICH9_MEM_BAR, PCI_BASE_ADDRESS_SPACE_MEMORY=
-,
->> @@ -161,7 +173,6 @@ static void pci_ich9_uninit(PCIDevice *dev)
->>         msi_uninit(dev);
->>       ahci_uninit(&d->ahci);
->> -    qemu_free_irq(d->ahci=2Eirq);
->>   }
->>     static void ich_ahci_class_init(ObjectClass *klass, void *data)
->
+for you to fetch changes up to 48e652c4bd9570f6f24def25355cb3009a7300f8:
+
+  target/arm: Simplify condition for tlbi_el2_cp_reginfo[] (2024-12-13 15:41:09 +0000)
+
+----------------------------------------------------------------
+target-arm queue:
+ * Finish conversion of A64 decoder to decodetree
+ * Use float_round_to_odd in helper_fcvtx_f64_to_f32
+ * Move TLBI insn emulation code out to its own source file
+ * docs/system/arm: fix broken links, document undocumented properties
+ * MAINTAINERS: correct an email address
+
+----------------------------------------------------------------
+Brian Cain (1):
+      MAINTAINERS: correct my email address
+
+Peter Maydell (10):
+      target/arm: Move some TLBI insns to their own source file
+      target/arm: Move TLBI insns for AArch32 EL2 to tlbi_insn_helper.c
+      target/arm: Move AArch64 TLBI insns from v8_cp_reginfo[]
+      target/arm: Move the AArch64 EL2 TLBI insns
+      target/arm: Move AArch64 EL3 TLBI insns
+      target/arm: Move TLBI range insns
+      target/arm: Move the TLBI OS insns to tlb-insns.c.
+      target/arm: Move small helper functions to tlb-insns.c
+      target/arm: Move RME TLB insns to tlb-insns.c
+      target/arm: Simplify condition for tlbi_el2_cp_reginfo[]
+
+Pierrick Bouvier (4):
+      docs/system/arm/orangepi: update links
+      docs/system/arm/fby35: document execute-in-place property
+      docs/system/arm/xlnx-versal-virt: document ospi-flash property
+      docs/system/arm/virt: document missing properties
+
+Richard Henderson (70):
+      target/arm: Add section labels for "Data Processing (register)"
+      target/arm: Convert UDIV, SDIV to decodetree
+      target/arm: Convert LSLV, LSRV, ASRV, RORV to decodetree
+      target/arm: Convert CRC32, CRC32C to decodetree
+      target/arm: Convert SUBP, IRG, GMI to decodetree
+      target/arm: Convert PACGA to decodetree
+      target/arm: Convert RBIT, REV16, REV32, REV64 to decodetree
+      target/arm: Convert CLZ, CLS to decodetree
+      target/arm: Convert PAC[ID]*, AUT[ID]* to decodetree
+      target/arm: Convert XPAC[ID] to decodetree
+      target/arm: Convert disas_logic_reg to decodetree
+      target/arm: Convert disas_add_sub_ext_reg to decodetree
+      target/arm: Convert disas_add_sub_reg to decodetree
+      target/arm: Convert disas_data_proc_3src to decodetree
+      target/arm: Convert disas_adc_sbc to decodetree
+      target/arm: Convert RMIF to decodetree
+      target/arm: Convert SETF8, SETF16 to decodetree
+      target/arm: Convert CCMP, CCMN to decodetree
+      target/arm: Convert disas_cond_select to decodetree
+      target/arm: Introduce fp_access_check_scalar_hsd
+      target/arm: Introduce fp_access_check_vector_hsd
+      target/arm: Convert FCMP, FCMPE, FCCMP, FCCMPE to decodetree
+      target/arm: Fix decode of fp16 vector fabs, fneg, fsqrt
+      target/arm: Convert FMOV, FABS, FNEG (scalar) to decodetree
+      target/arm: Pass fpstatus to vfp_sqrt*
+      target/arm: Remove helper_sqrt_f16
+      target/arm: Convert FSQRT (scalar) to decodetree
+      target/arm: Convert FRINT[NPMSAXI] (scalar) to decodetree
+      target/arm: Convert BFCVT to decodetree
+      target/arm: Convert FRINT{32, 64}[ZX] (scalar) to decodetree
+      target/arm: Convert FCVT (scalar) to decodetree
+      target/arm: Convert handle_fpfpcvt to decodetree
+      target/arm: Convert FJCVTZS to decodetree
+      target/arm: Convert handle_fmov to decodetree
+      target/arm: Convert SQABS, SQNEG to decodetree
+      target/arm: Convert ABS, NEG to decodetree
+      target/arm: Introduce gen_gvec_cls, gen_gvec_clz
+      target/arm: Convert CLS, CLZ (vector) to decodetree
+      target/arm: Introduce gen_gvec_cnt, gen_gvec_rbit
+      target/arm: Convert CNT, NOT, RBIT (vector) to decodetree
+      target/arm: Convert CMGT, CMGE, GMLT, GMLE, CMEQ (zero) to decodetree
+      target/arm: Introduce gen_gvec_rev{16,32,64}
+      target/arm: Convert handle_rev to decodetree
+      target/arm: Move helper_neon_addlp_{s8, s16} to neon_helper.c
+      target/arm: Introduce gen_gvec_{s,u}{add,ada}lp
+      target/arm: Convert handle_2misc_pairwise to decodetree
+      target/arm: Remove helper_neon_{add,sub}l_u{16,32}
+      target/arm: Introduce clear_vec
+      target/arm: Convert XTN, SQXTUN, SQXTN, UQXTN to decodetree
+      target/arm: Convert FCVTN, BFCVTN to decodetree
+      target/arm: Convert FCVTXN to decodetree
+      target/arm: Convert SHLL to decodetree
+      target/arm: Implement gen_gvec_fabs, gen_gvec_fneg
+      target/arm: Convert FABS, FNEG (vector) to decodetree
+      target/arm: Convert FSQRT (vector) to decodetree
+      target/arm: Convert FRINT* (vector) to decodetree
+      target/arm: Convert FCVT* (vector, integer) scalar to decodetree
+      target/arm: Convert FCVT* (vector, fixed-point) scalar to decodetree
+      target/arm: Convert [US]CVTF (vector, integer) scalar to decodetree
+      target/arm: Convert [US]CVTF (vector, fixed-point) scalar to decodetree
+      target/arm: Rename helper_gvec_vcvt_[hf][su] with _rz
+      target/arm: Convert [US]CVTF (vector) to decodetree
+      target/arm: Convert FCVTZ[SU] (vector, fixed-point) to decodetree
+      target/arm: Convert FCVT* (vector, integer) to decodetree
+      target/arm: Convert handle_2misc_fcmp_zero to decodetree
+      target/arm: Convert FRECPE, FRECPX, FRSQRTE to decodetree
+      target/arm: Introduce gen_gvec_urecpe, gen_gvec_ursqrte
+      target/arm: Convert URECPE and URSQRTE to decodetree
+      target/arm: Convert FCVTL to decodetree
+      target/arm: Use float_round_to_odd in helper_fcvtx_f64_to_f32
+
+ MAINTAINERS                          |    2 +-
+ docs/system/arm/fby35.rst            |    5 +
+ docs/system/arm/orangepi.rst         |    4 +-
+ docs/system/arm/virt.rst             |   16 +
+ docs/system/arm/xlnx-versal-virt.rst |    3 +
+ target/arm/helper.h                  |   43 +-
+ target/arm/internals.h               |    9 +
+ target/arm/tcg/helper-a64.h          |    7 -
+ target/arm/tcg/translate.h           |   35 +
+ target/arm/tcg/a64.decode            |  502 ++-
+ target/arm/helper.c                  | 1208 +-------
+ target/arm/tcg-stubs.c               |    5 +
+ target/arm/tcg/gengvec.c             |  369 +++
+ target/arm/tcg/helper-a64.c          |  122 +-
+ target/arm/tcg/neon_helper.c         |  106 +-
+ target/arm/tcg/tlb-insns.c           | 1266 ++++++++
+ target/arm/tcg/translate-a64.c       | 5670 +++++++++++-----------------------
+ target/arm/tcg/translate-neon.c      |  337 +-
+ target/arm/tcg/translate-vfp.c       |    6 +-
+ target/arm/tcg/vec_helper.c          |   65 +-
+ target/arm/vfp_helper.c              |   16 +-
+ target/arm/tcg/meson.build           |    1 +
+ 22 files changed, 4203 insertions(+), 5594 deletions(-)
+ create mode 100644 target/arm/tcg/tlb-insns.c
 
