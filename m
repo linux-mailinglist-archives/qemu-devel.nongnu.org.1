@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 710F19F01C2
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Dec 2024 02:14:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C0C29F01C9
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Dec 2024 02:15:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tLuGG-0005zQ-E8; Thu, 12 Dec 2024 20:14:32 -0500
+	id 1tLuGG-00060T-O5; Thu, 12 Dec 2024 20:14:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tLuGA-0005th-Q8
- for qemu-devel@nongnu.org; Thu, 12 Dec 2024 20:14:27 -0500
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tLuGB-0005tm-UR
+ for qemu-devel@nongnu.org; Thu, 12 Dec 2024 20:14:28 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tLuG7-0000ef-TJ
- for qemu-devel@nongnu.org; Thu, 12 Dec 2024 20:14:26 -0500
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tLuGA-0000ed-2w
+ for qemu-devel@nongnu.org; Thu, 12 Dec 2024 20:14:27 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1734052463;
+ s=mimecast20190719; t=1734052462;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=QPdepso8xSmP8leeknmWo8NzlmVarvknHnZdmjkDCPM=;
- b=d5Xzlm2ISEyg+UcKxQdSLbaDBlV4RPrPIuvD6aQa0vnadDbo8yhVc71vbvbcqayOD/kNFa
- YuZ2EN6IoRVCmCq5n/zVI5fm1CsIH6bBiQFg0ibBiN1IWBPijvb1+F05YKuioRCDGfDcBW
- ZPEfh6CGbZe1VQGpH4Cw2k6MvRE9Kr0=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ bh=UzHNygLXVObLJFRUedomApYOH0eIg84xgMKEVnWctDs=;
+ b=R4cjiueGa071Ph3pOjSx17iZXzlP7K+bRQZudfZytttKiHG1o2Lq9prbunXWi+sCPM5ZC2
+ tGsYOzW4aZeHtdoaXZKynkmeRCM8i55prAaHLSeL0Z+sFs2S+pA2u3LsbkgcTlimGRet/G
+ npxejiNNLDFAPc3dOepX+P0qIWBTyzM=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-329-LvusOLgfNxi7H7kPVEnUTA-1; Thu,
- 12 Dec 2024 20:14:16 -0500
-X-MC-Unique: LvusOLgfNxi7H7kPVEnUTA-1
-X-Mimecast-MFC-AGG-ID: LvusOLgfNxi7H7kPVEnUTA
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-495-hhjiugPQN0WED5UGZNSoyw-1; Thu,
+ 12 Dec 2024 20:14:20 -0500
+X-MC-Unique: hhjiugPQN0WED5UGZNSoyw-1
+X-Mimecast-MFC-AGG-ID: hhjiugPQN0WED5UGZNSoyw
 Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 93E5E195604F; Fri, 13 Dec 2024 01:14:15 +0000 (UTC)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 808181955F43; Fri, 13 Dec 2024 01:14:19 +0000 (UTC)
 Received: from jsnow-thinkpadp16vgen1.westford.csb (unknown [10.22.88.22])
  by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 58D931956086; Fri, 13 Dec 2024 01:14:11 +0000 (UTC)
+ id D4030195609D; Fri, 13 Dec 2024 01:14:15 +0000 (UTC)
 From: John Snow <jsnow@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Michael Roth <michael.roth@amd.com>, Markus Armbruster <armbru@redhat.com>,
@@ -50,9 +50,9 @@ Cc: Michael Roth <michael.roth@amd.com>, Markus Armbruster <armbru@redhat.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Victor Toso de Carvalho <victortoso@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>, John Snow <jsnow@redhat.com>
-Subject: [RFC PATCH v2 15/35] docs/qapi-domain: add "Errors:" field lists
-Date: Thu, 12 Dec 2024 20:12:44 -0500
-Message-ID: <20241213011307.2942030-16-jsnow@redhat.com>
+Subject: [RFC PATCH v2 16/35] docs/qapi-domain: add "Returns:" field lists
+Date: Thu, 12 Dec 2024 20:12:45 -0500
+Message-ID: <20241213011307.2942030-17-jsnow@redhat.com>
 In-Reply-To: <20241213011307.2942030-1-jsnow@redhat.com>
 References: <20241213011307.2942030-1-jsnow@redhat.com>
 MIME-Version: 1.0
@@ -83,52 +83,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-``:error: descr`` can now be used to document error conditions,
-naming the type of error object and a description of when the error is
-surfaced.
+Add "Returns:" field list syntax to QAPI Commands.
 
-Like the previous Arguments patch, this patch does not apply any special
-QAPI syntax highlighting or cross-referencing for the types, but this
-can be adjusted in the future if desired.
+Like "Arguments:" and "Errors:", the type name isn't currently processed
+for cross-referencing, but this will be addressed in a forthcoming
+commit.
 
-(At present, I have no commits that add such highlighting. Sphinx also
-does not appear to support Grouped fields with optional (or no)
-parameters, so the ability to exclude error types is currently not
-supported. If you omit the type, Sphinx treats it as a regular field
-list and doesn't apply the special Grouping postprocessing to it.)
+This patch adds "errors" as a GroupedField, which means that multiple
+return values can be annotated - this is only done because Sphinx does
+not seemingly (Maybe I missed it?) support mandatory type arguments to
+Ungrouped fields. Because we want to cross-reference this type
+information later, we want to make the type argument mandatory. As a
+result, you can technically add multiple :return: fields, though I'm not
+aware of any circumstance in which you'd need or want
+to. Recommendation: "Don't do that, then."
 
-Signed-off-by: John Snow <jsnow@redhat.com>
+Since this field describes an action/event instead of describing a list
+of nouns (arguments, features, errors), I added both the imperative and
+indicative forms (:return: and :returns:) to allow doc writers to use
+whichever mood "feels right" in the source document. The rendered output
+will always use the "Returns:" label, however.
 
-qapi-domain fixup - Error field
+I'm sure you'll let me know how you feel about that. O:-)
 
 Signed-off-by: John Snow <jsnow@redhat.com>
 ---
- docs/sphinx/qapi-domain.py | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ docs/sphinx/qapi-domain.py | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
 diff --git a/docs/sphinx/qapi-domain.py b/docs/sphinx/qapi-domain.py
-index 9b83262a0c6..4bfc82aafdf 100644
+index 4bfc82aafdf..c8c8ffc0dce 100644
 --- a/docs/sphinx/qapi-domain.py
 +++ b/docs/sphinx/qapi-domain.py
-@@ -34,7 +34,7 @@
- from sphinx.locale import _, __
- from sphinx.roles import XRefRole
- from sphinx.util import logging
--from sphinx.util.docfields import GroupedField, TypedField
-+from sphinx.util.docfields import Field, GroupedField, TypedField
- from sphinx.util.docutils import SphinxDirective
- from sphinx.util.nodes import make_id, make_refnode
- 
-@@ -261,6 +261,13 @@ class QAPICommand(QAPIObject):
-                 names=("arg",),
-                 can_collapse=False,
+@@ -268,6 +268,13 @@ class QAPICommand(QAPIObject):
+                 names=("error", "errors"),
+                 has_arg=False,
              ),
-+            # :error: descr
-+            Field(
-+                "error",
-+                label=_("Errors"),
-+                names=("error", "errors"),
-+                has_arg=False,
++            # :returns TypeName: descr
++            GroupedField(
++                "returnvalue",
++                label=_("Returns"),
++                names=("return", "returns"),
++                can_collapse=True,
 +            ),
          ]
      )
