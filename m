@@ -2,46 +2,50 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02DB59F1DE6
-	for <lists+qemu-devel@lfdr.de>; Sat, 14 Dec 2024 11:05:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 122C99F1DF3
+	for <lists+qemu-devel@lfdr.de>; Sat, 14 Dec 2024 11:06:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tMP1a-0002rc-Ku; Sat, 14 Dec 2024 05:05:26 -0500
+	id 1tMP1p-00035k-08; Sat, 14 Dec 2024 05:05:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=YvF0=TH=kaod.org=clg@ozlabs.org>)
- id 1tMP1X-0002qn-OZ; Sat, 14 Dec 2024 05:05:23 -0500
+ id 1tMP1k-0002zG-Aw; Sat, 14 Dec 2024 05:05:37 -0500
 Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=YvF0=TH=kaod.org=clg@ozlabs.org>)
- id 1tMP1V-0001R9-OD; Sat, 14 Dec 2024 05:05:23 -0500
+ id 1tMP1i-0001Rq-2a; Sat, 14 Dec 2024 05:05:35 -0500
 Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4Y9MJp2q5mz4wbr;
- Sat, 14 Dec 2024 21:05:14 +1100 (AEDT)
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4Y9MK13s2jz4x07;
+ Sat, 14 Dec 2024 21:05:25 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (Client did not present a certificate)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4Y9MJg4C3pz4wbx;
- Sat, 14 Dec 2024 21:05:07 +1100 (AEDT)
-Message-ID: <54f71e2c-06d4-4855-8595-183c207022d3@kaod.org>
-Date: Sat, 14 Dec 2024 11:04:53 +0100
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4Y9MJq0hprz4w2R;
+ Sat, 14 Dec 2024 21:05:14 +1100 (AEDT)
+Message-ID: <0171e7d1-ef32-4d14-b301-fefd45e2c0d8@kaod.org>
+Date: Sat, 14 Dec 2024 11:05:09 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 56/71] hw/sd: Constify all Property
+Subject: Re: [PATCH 59/71] hw/ssi: Constify all Property
 To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: Beniamino Galvani <b.galvani@gmail.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Strahinja Jankovic <strahinja.p.jankovic@gmail.com>,
+Cc: Peter Maydell <peter.maydell@linaro.org>,
  Steven Lee <steven_lee@aspeedtech.com>, Troy Lee <leetroy@gmail.com>,
  Jamin Lin <jamin_lin@aspeedtech.com>,
  Andrew Jeffery <andrew@codeconstruct.com.au>, Joel Stanley <joel@jms.id.au>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Bin Meng <bmeng.cn@gmail.com>, "open list:Allwinner-a10"
- <qemu-arm@nongnu.org>, "open list:SD (Secure Card)" <qemu-block@nongnu.org>
+ Alistair Francis <alistair@alistair23.me>, Tyrone Ting <kfting@nuvoton.com>,
+ Hao Wu <wuhaotsh@google.com>, Nicholas Piggin <npiggin@gmail.com>,
+ =?UTF-8?B?RnLDqWTDqXJpYyBCYXJyYXQ=?= <fbarrat@linux.ibm.com>,
+ Bin Meng <bmeng.cn@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ Francisco Iglesias <francisco.iglesias@amd.com>,
+ "open list:ASPEED BMCs" <qemu-arm@nongnu.org>,
+ "open list:OpenTitan" <qemu-riscv@nongnu.org>,
+ "open list:PowerNV Non-Virt..." <qemu-ppc@nongnu.org>
 References: <20241213190750.2513964-1-richard.henderson@linaro.org>
- <20241213190750.2513964-61-richard.henderson@linaro.org>
+ <20241213190750.2513964-64-richard.henderson@linaro.org>
 Content-Language: en-US, fr
 From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
 Autocrypt: addr=clg@kaod.org; keydata=
@@ -86,7 +90,7 @@ Autocrypt: addr=clg@kaod.org; keydata=
  3GlqivBNkmYsHYSlFsbxc37E1HpTEaSWsGfAHQoPn9qrDJgsgcbBVc1gkUT6hnxShKPp4Pls
  ZVMNjvPAnr5TEBgHkk54HQRhhwcYv1T2QumQizDiU6iOrUzBThaMhZO3i927SG2DwWDVzZlt
  KrCMD1aMPvb3NU8FOYRhNmIFR3fcalYr+9gDuVKe8BVz4atMOoktmt0GWTOC8P4=
-In-Reply-To: <20241213190750.2513964-61-richard.henderson@linaro.org>
+In-Reply-To: <20241213190750.2513964-64-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
@@ -115,12 +119,16 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 On 12/13/24 20:07, Richard Henderson wrote:
 > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
->   hw/sd/allwinner-sdhost.c | 2 +-
->   hw/sd/aspeed_sdhci.c     | 2 +-
->   hw/sd/sd.c               | 6 +++---
->   hw/sd/sdhci-pci.c        | 2 +-
->   hw/sd/sdhci.c            | 2 +-
->   5 files changed, 7 insertions(+), 7 deletions(-)
+>   hw/ssi/aspeed_smc.c       | 4 ++--
+>   hw/ssi/ibex_spi_host.c    | 2 +-
+>   hw/ssi/npcm7xx_fiu.c      | 2 +-
+>   hw/ssi/pnv_spi.c          | 2 +-
+>   hw/ssi/sifive_spi.c       | 2 +-
+>   hw/ssi/ssi.c              | 2 +-
+>   hw/ssi/xilinx_spi.c       | 2 +-
+>   hw/ssi/xilinx_spips.c     | 4 ++--
+>   hw/ssi/xlnx-versal-ospi.c | 2 +-
+>   9 files changed, 11 insertions(+), 11 deletions(-)
 
 
 For the aspeed part,
@@ -131,83 +139,137 @@ Thanks,
 
 C.
 > 
-> diff --git a/hw/sd/allwinner-sdhost.c b/hw/sd/allwinner-sdhost.c
-> index bcfb4c1322..be39ec2e71 100644
-> --- a/hw/sd/allwinner-sdhost.c
-> +++ b/hw/sd/allwinner-sdhost.c
-> @@ -808,7 +808,7 @@ static const VMStateDescription vmstate_allwinner_sdhost = {
+> diff --git a/hw/ssi/aspeed_smc.c b/hw/ssi/aspeed_smc.c
+> index 033cbbb59b..bbdd4e4786 100644
+> --- a/hw/ssi/aspeed_smc.c
+> +++ b/hw/ssi/aspeed_smc.c
+> @@ -1287,7 +1287,7 @@ static const VMStateDescription vmstate_aspeed_smc = {
 >       }
 >   };
 >   
-> -static Property allwinner_sdhost_properties[] = {
-> +static const Property allwinner_sdhost_properties[] = {
->       DEFINE_PROP_LINK("dma-memory", AwSdHostState, dma_mr,
->                        TYPE_MEMORY_REGION, MemoryRegion *),
+> -static Property aspeed_smc_properties[] = {
+> +static const Property aspeed_smc_properties[] = {
+>       DEFINE_PROP_BOOL("inject-failure", AspeedSMCState, inject_failure, false),
+>       DEFINE_PROP_UINT64("dram-base", AspeedSMCState, dram_base, 0),
+>       DEFINE_PROP_LINK("dram", AspeedSMCState, dram_mr,
+> @@ -1336,7 +1336,7 @@ static void aspeed_smc_flash_realize(DeviceState *dev, Error **errp)
+>       sysbus_init_mmio(SYS_BUS_DEVICE(dev), &s->mmio);
+>   }
+>   
+> -static Property aspeed_smc_flash_properties[] = {
+> +static const Property aspeed_smc_flash_properties[] = {
+>       DEFINE_PROP_UINT8("cs", AspeedSMCFlash, cs, 0),
+>       DEFINE_PROP_LINK("controller", AspeedSMCFlash, controller, TYPE_ASPEED_SMC,
+>                        AspeedSMCState *),
+> diff --git a/hw/ssi/ibex_spi_host.c b/hw/ssi/ibex_spi_host.c
+> index 9e07432f7c..60a0b17b62 100644
+> --- a/hw/ssi/ibex_spi_host.c
+> +++ b/hw/ssi/ibex_spi_host.c
+> @@ -561,7 +561,7 @@ static const MemoryRegionOps ibex_spi_ops = {
+>       .endianness = DEVICE_LITTLE_ENDIAN,
+>   };
+>   
+> -static Property ibex_spi_properties[] = {
+> +static const Property ibex_spi_properties[] = {
+>       DEFINE_PROP_UINT32("num_cs", IbexSPIHostState, num_cs, 1),
 >       DEFINE_PROP_END_OF_LIST(),
-> diff --git a/hw/sd/aspeed_sdhci.c b/hw/sd/aspeed_sdhci.c
-> index f82b05397e..99703f1842 100644
-> --- a/hw/sd/aspeed_sdhci.c
-> +++ b/hw/sd/aspeed_sdhci.c
-> @@ -204,7 +204,7 @@ static const VMStateDescription vmstate_aspeed_sdhci = {
+>   };
+> diff --git a/hw/ssi/npcm7xx_fiu.c b/hw/ssi/npcm7xx_fiu.c
+> index 119c38c415..fdd3ad2fdc 100644
+> --- a/hw/ssi/npcm7xx_fiu.c
+> +++ b/hw/ssi/npcm7xx_fiu.c
+> @@ -541,7 +541,7 @@ static const VMStateDescription vmstate_npcm7xx_fiu = {
 >       },
 >   };
 >   
-> -static Property aspeed_sdhci_properties[] = {
-> +static const Property aspeed_sdhci_properties[] = {
->       DEFINE_PROP_UINT8("num-slots", AspeedSDHCIState, num_slots, 0),
+> -static Property npcm7xx_fiu_properties[] = {
+> +static const Property npcm7xx_fiu_properties[] = {
+>       DEFINE_PROP_INT32("cs-count", NPCM7xxFIUState, cs_count, 0),
 >       DEFINE_PROP_END_OF_LIST(),
 >   };
-> diff --git a/hw/sd/sd.c b/hw/sd/sd.c
-> index f9bd03f3fd..b994ef581e 100644
-> --- a/hw/sd/sd.c
-> +++ b/hw/sd/sd.c
-> @@ -2798,18 +2798,18 @@ static void emmc_realize(DeviceState *dev, Error **errp)
->       sd_realize(dev, errp);
+> diff --git a/hw/ssi/pnv_spi.c b/hw/ssi/pnv_spi.c
+> index c21b2ebb3c..4ca9c469a4 100644
+> --- a/hw/ssi/pnv_spi.c
+> +++ b/hw/ssi/pnv_spi.c
+> @@ -1195,7 +1195,7 @@ static const MemoryRegionOps pnv_spi_xscom_ops = {
+>       .endianness = DEVICE_BIG_ENDIAN,
+>   };
+>   
+> -static Property pnv_spi_properties[] = {
+> +static const Property pnv_spi_properties[] = {
+>       DEFINE_PROP_UINT32("spic_num", PnvSpi, spic_num, 0),
+>       DEFINE_PROP_UINT8("transfer_len", PnvSpi, transfer_len, 4),
+>       DEFINE_PROP_END_OF_LIST(),
+> diff --git a/hw/ssi/sifive_spi.c b/hw/ssi/sifive_spi.c
+> index 08a107792b..7458747779 100644
+> --- a/hw/ssi/sifive_spi.c
+> +++ b/hw/ssi/sifive_spi.c
+> @@ -328,7 +328,7 @@ static void sifive_spi_realize(DeviceState *dev, Error **errp)
+>       fifo8_create(&s->rx_fifo, FIFO_CAPACITY);
 >   }
 >   
-> -static Property sdmmc_common_properties[] = {
-> +static const Property sdmmc_common_properties[] = {
->       DEFINE_PROP_DRIVE("drive", SDState, blk),
->       DEFINE_PROP_END_OF_LIST()
->   };
->   
-> -static Property sd_properties[] = {
-> +static const Property sd_properties[] = {
->       DEFINE_PROP_UINT8("spec_version", SDState,
->                         spec_version, SD_PHY_SPECv3_01_VERS),
->       DEFINE_PROP_END_OF_LIST()
->   };
->   
-> -static Property emmc_properties[] = {
-> +static const Property emmc_properties[] = {
->       DEFINE_PROP_UINT64("boot-partition-size", SDState, boot_part_size, 0),
->       DEFINE_PROP_UINT8("boot-config", SDState, boot_config, 0x0),
->       DEFINE_PROP_END_OF_LIST()
-> diff --git a/hw/sd/sdhci-pci.c b/hw/sd/sdhci-pci.c
-> index 9b7bee8b3f..83892a7a15 100644
-> --- a/hw/sd/sdhci-pci.c
-> +++ b/hw/sd/sdhci-pci.c
-> @@ -22,7 +22,7 @@
->   #include "hw/sd/sdhci.h"
->   #include "sdhci-internal.h"
->   
-> -static Property sdhci_pci_properties[] = {
-> +static const Property sdhci_pci_properties[] = {
->       DEFINE_SDHCI_COMMON_PROPERTIES(SDHCIState),
+> -static Property sifive_spi_properties[] = {
+> +static const Property sifive_spi_properties[] = {
+>       DEFINE_PROP_UINT32("num-cs", SiFiveSPIState, num_cs, 1),
 >       DEFINE_PROP_END_OF_LIST(),
 >   };
-> diff --git a/hw/sd/sdhci.c b/hw/sd/sdhci.c
-> index 37875c02c3..e697ee05b3 100644
-> --- a/hw/sd/sdhci.c
-> +++ b/hw/sd/sdhci.c
-> @@ -1544,7 +1544,7 @@ void sdhci_common_class_init(ObjectClass *klass, void *data)
+> diff --git a/hw/ssi/ssi.c b/hw/ssi/ssi.c
+> index 3f357e8f16..cab0014c3f 100644
+> --- a/hw/ssi/ssi.c
+> +++ b/hw/ssi/ssi.c
+> @@ -108,7 +108,7 @@ static void ssi_peripheral_realize(DeviceState *dev, Error **errp)
+>       ssc->realize(s, errp);
+>   }
 >   
->   /* --- qdev SysBus --- */
+> -static Property ssi_peripheral_properties[] = {
+> +static const Property ssi_peripheral_properties[] = {
+>       DEFINE_PROP_UINT8("cs", SSIPeripheral, cs_index, 0),
+>       DEFINE_PROP_END_OF_LIST(),
+>   };
+> diff --git a/hw/ssi/xilinx_spi.c b/hw/ssi/xilinx_spi.c
+> index 7f1e1808c5..588c1ec071 100644
+> --- a/hw/ssi/xilinx_spi.c
+> +++ b/hw/ssi/xilinx_spi.c
+> @@ -361,7 +361,7 @@ static const VMStateDescription vmstate_xilinx_spi = {
+>       }
+>   };
 >   
-> -static Property sdhci_sysbus_properties[] = {
-> +static const Property sdhci_sysbus_properties[] = {
->       DEFINE_SDHCI_COMMON_PROPERTIES(SDHCIState),
->       DEFINE_PROP_BOOL("pending-insert-quirk", SDHCIState, pending_insert_quirk,
->                        false),
+> -static Property xilinx_spi_properties[] = {
+> +static const Property xilinx_spi_properties[] = {
+>       DEFINE_PROP_UINT8("num-ss-bits", XilinxSPI, num_cs, 1),
+>       DEFINE_PROP_END_OF_LIST(),
+>   };
+> diff --git a/hw/ssi/xilinx_spips.c b/hw/ssi/xilinx_spips.c
+> index aeb462c3ce..f72cb3cbc8 100644
+> --- a/hw/ssi/xilinx_spips.c
+> +++ b/hw/ssi/xilinx_spips.c
+> @@ -1420,12 +1420,12 @@ static const VMStateDescription vmstate_xlnx_zynqmp_qspips = {
+>       }
+>   };
+>   
+> -static Property xilinx_zynqmp_qspips_properties[] = {
+> +static const Property xilinx_zynqmp_qspips_properties[] = {
+>       DEFINE_PROP_UINT32("dma-burst-size", XlnxZynqMPQSPIPS, dma_burst_size, 64),
+>       DEFINE_PROP_END_OF_LIST(),
+>   };
+>   
+> -static Property xilinx_spips_properties[] = {
+> +static const Property xilinx_spips_properties[] = {
+>       DEFINE_PROP_UINT8("num-busses", XilinxSPIPS, num_busses, 1),
+>       DEFINE_PROP_UINT8("num-ss-bits", XilinxSPIPS, num_cs, 4),
+>       DEFINE_PROP_UINT8("num-txrx-bytes", XilinxSPIPS, num_txrx_bytes, 1),
+> diff --git a/hw/ssi/xlnx-versal-ospi.c b/hw/ssi/xlnx-versal-ospi.c
+> index ecc1903b8e..e51abe9de2 100644
+> --- a/hw/ssi/xlnx-versal-ospi.c
+> +++ b/hw/ssi/xlnx-versal-ospi.c
+> @@ -1825,7 +1825,7 @@ static const VMStateDescription vmstate_xlnx_versal_ospi = {
+>       }
+>   };
+>   
+> -static Property xlnx_versal_ospi_properties[] = {
+> +static const Property xlnx_versal_ospi_properties[] = {
+>       DEFINE_PROP_BOOL("dac-with-indac", XlnxVersalOspi, dac_with_indac, false),
+>       DEFINE_PROP_BOOL("indac-write-disabled", XlnxVersalOspi,
+>                        ind_write_disabled, false),
 
 
