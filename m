@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CC389F22D2
-	for <lists+qemu-devel@lfdr.de>; Sun, 15 Dec 2024 10:08:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 81D199F22D8
+	for <lists+qemu-devel@lfdr.de>; Sun, 15 Dec 2024 10:08:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tMkaI-0004X9-9L; Sun, 15 Dec 2024 04:06:42 -0500
+	id 1tMkaM-0004Yr-B5; Sun, 15 Dec 2024 04:06:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tMkaD-0004WF-Hy
- for qemu-devel@nongnu.org; Sun, 15 Dec 2024 04:06:37 -0500
+ id 1tMkaJ-0004YP-Nb
+ for qemu-devel@nongnu.org; Sun, 15 Dec 2024 04:06:44 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tMkaB-0006y3-Tz
- for qemu-devel@nongnu.org; Sun, 15 Dec 2024 04:06:37 -0500
+ id 1tMkaI-0006yZ-0C
+ for qemu-devel@nongnu.org; Sun, 15 Dec 2024 04:06:43 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1734253594;
+ s=mimecast20190719; t=1734253600;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Dafbs10xKmoTxtWUtvU8S+9K7XsF2B4JhpZ07ZD6dXY=;
- b=AQOrrpV55OSwGrT2KjGzsjtvs6ZxV5MEC8rGr/dkRA/DjkgiV+Kdw1WAUhc43HBn+bLHxW
- sKFdszGLb851A3qcqXla8aDTrApmPkjUXNuGelxDdSYHD7sceKATKQhc8xd4FuUPQxxffy
- WpBOo9TvpYx23GtPF7IHJEtRBcAvnII=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=T4DOvj8ea+R+4uCgyE0WisdYjtGttU2oS4PXE8TXzoY=;
+ b=OcjNxbPzix2yBBoXvmkYFSOK0BVWw9DJxzVub9MRSnYM7NESbTSHPdSuRkKYmEwREjCHpU
+ r7L0q8FLK7fhFuOA1GP9XSr9PFo5BvxcOb9U7iMaTxUDn6hBSStsqSzOxXSO1+FULwvJZ3
+ /aL95aaeO+/dEkqJ3DrfoSxO8Ef8dhU=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-515-ckfCmBejMeqgN3rEE8NQSA-1; Sun, 15 Dec 2024 04:06:33 -0500
-X-MC-Unique: ckfCmBejMeqgN3rEE8NQSA-1
-X-Mimecast-MFC-AGG-ID: ckfCmBejMeqgN3rEE8NQSA
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-3878ad4bf8cso1918126f8f.1
- for <qemu-devel@nongnu.org>; Sun, 15 Dec 2024 01:06:33 -0800 (PST)
+ us-mta-523-lQB2gfseO9uiscaMScozzQ-1; Sun, 15 Dec 2024 04:06:36 -0500
+X-MC-Unique: lQB2gfseO9uiscaMScozzQ-1
+X-Mimecast-MFC-AGG-ID: lQB2gfseO9uiscaMScozzQ
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-4361ac8b25fso17281115e9.2
+ for <qemu-devel@nongnu.org>; Sun, 15 Dec 2024 01:06:36 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734253591; x=1734858391;
+ d=1e100.net; s=20230601; t=1734253594; x=1734858394;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Dafbs10xKmoTxtWUtvU8S+9K7XsF2B4JhpZ07ZD6dXY=;
- b=rqwGJTuGeKi3g0NBf/Ja7W7HdjMhjIMEDPlcovcc1J3q+Pfm72MmnM94yl0JNn38Bg
- iT2BWWoZcX+TOWJLtZDBOFGfbgE9uvKC0WC/yVu9dpFE7tcYyIiGG7RYZhoc+vrRiPHn
- Xlz4pPqUayg47UX4zEgN48AcKtKq/CBi1Za59le7zFSUr+r6RfB+2Zurj3/sGmv+JXn9
- RZZupop5so7hVKuFYvp2R/o976hb441RnKz96taT8OdyEMANlIigHucpdSXUI6m7W2h5
- a6KBWxUu9AkEhAU4jG3pAeguX24cj+Na6f05P2aUB2hAwKOXEiMhVY+v07JPEhpqGGlS
- 8LPg==
-X-Gm-Message-State: AOJu0YylUUlCaF+h2bEJs4k2QF46EBD+JJdPGZ+tyymmf5pIu5ow29C1
- x4k1M48Uz0tvF1JQV4aXmSCUPBId2MAIm5MDCgr3gcUH/Ryi73lDe5Rfi0VoWlTOnvykysicaUp
- nKk2Z4mvKmm2fJE4sG+wOVuEXAYq738svivM/jidPKDAKuSittXdq00Nkvc6GuYH0M1ukKZbpd4
- /48oBl18uu0WtS+ejxCf4R+VCRKIl4na41RLyB
-X-Gm-Gg: ASbGncuq70vnOWZvhla01y2URM0nsnBiZBQI5anHw6GbKV3Miay+OoLL2Jnw/qXQVwq
- UDsObJD2U7Ot61PlD9oFcVPxAt2pZ9nSVxYlZmjoai3bebdu53g5UFgs4OaLVibtzZGOPZo/XVK
- mNi45Q9eJ4Ijgyi94y27KQcItAnV1MvQvZ3Yq+AfcvzRDRR7H5Z37hOVqAAXihbjMDMjmBjCcx+
- 5evAZdfrMEpzmvQoncaveEDoGyxwguxy1NahlemplD/giajdopRS0R1LxA=
-X-Received: by 2002:a05:6000:4b1b:b0:385:dedb:a156 with SMTP id
- ffacd0b85a97d-38880af1254mr7564526f8f.6.1734253590910; 
- Sun, 15 Dec 2024 01:06:30 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGAAtuyechW2rSVsAkbBjZvvBUMuQKGDwGU5oAA6RJetN8vKCWSSb9todVJ0OSDiEce0V9oyw==
-X-Received: by 2002:a05:6000:4b1b:b0:385:dedb:a156 with SMTP id
- ffacd0b85a97d-38880af1254mr7564488f8f.6.1734253590433; 
- Sun, 15 Dec 2024 01:06:30 -0800 (PST)
+ bh=T4DOvj8ea+R+4uCgyE0WisdYjtGttU2oS4PXE8TXzoY=;
+ b=HVbS5uFwCV2lbEq208fxjiNPm/amTAiGzmWvlRcaa+wyBtg7JfSzPEVWOXDM8lPoSN
+ yI9y319Qj0pdZx4JGVQkM7tk42BkCk1zl56SojnXIP14l6jVZM8snKaZj+/DWYuavVSB
+ brTEIOaer51a9ZsCg70NilMOK0RKo1t4Y6RMQ8PfW6FNC8n9yd+8zLmFKRLt/LOdQMlp
+ aVfSKkEts9egjImBkNLaxUuOjWypGRjEvsHMjj007pnQY7jncUZDVh7NXwh15x80yP9S
+ +B9nxh1YKo1uFrTRhcc1rzIJBqADP45qq0Y+nEKl3Yyinap9ZzVUfe3cD+q/G9LaWDXa
+ 7ALg==
+X-Gm-Message-State: AOJu0Yzfg0ASLjdHuR5UnL99qjdqa+3GiWwDXGPInym+GEYA9H70oIJh
+ ogP64yNuNj2p/IHL2Ye0bMfw7KQVpV+WJpkD3e+diqjdIv8eheC6rsruopq6fQAeAZp7cKHLmMV
+ 3Z1H6slsziBeAfvzfIFfToWLT12Nk5nBlOo8Nv6+1YMJwzGwOSbltRugeeRFKO8FCaVaGnfypoP
+ AeoZRYWBfmBE9Cz3XQPdl5jBEOl5lhNTtlaOoR
+X-Gm-Gg: ASbGncudvHSVPPk/ZiVmQ2pUO8Msr8YaVs+b74BgXX2FPYx1NF7ubUf4DywRSx0al3T
+ RBvq4RETdHfXOfGglQ4uAoKUik5vc1ag8Oxhxn+S/WdBucXa0Y8crWEBe9CjjD+3E0Aax9gIHBm
+ tGENJHt2hD/TS5Nfav7iqBJJ0My+uJbCuO3ng8epBybclOZt94ByIJ9Qd1TwBOFLQYf0CqWLTCa
+ kNUIAgOMFr+/CwvShzzG62Z1OoOyYf4xDbhoKfpq09eDPiC93ft1jNY7/k=
+X-Received: by 2002:a05:600c:1c07:b0:434:9fac:b158 with SMTP id
+ 5b1f17b1804b1-4362aa34e8amr66686565e9.1.1734253593983; 
+ Sun, 15 Dec 2024 01:06:33 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGc17yO0imPYbv18wiVlrvIXjcZ5jDUNimWVX4Jej1xi0CXP5bbcyUl6dfRb6WIqymS+yt1bg==
+X-Received: by 2002:a05:600c:1c07:b0:434:9fac:b158 with SMTP id
+ 5b1f17b1804b1-4362aa34e8amr66686255e9.1.1734253593497; 
+ Sun, 15 Dec 2024 01:06:33 -0800 (PST)
 Received: from [192.168.10.3] ([151.81.118.45])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-388c80602a1sm4695991f8f.97.2024.12.15.01.06.28
+ 5b1f17b1804b1-4362559ed8dsm106580625e9.23.2024.12.15.01.06.31
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 15 Dec 2024 01:06:28 -0800 (PST)
+ Sun, 15 Dec 2024 01:06:31 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org
-Subject: [PATCH 05/13] target/i386: reorganize ops emitted by do_gen_rep,
- drop repz_opt
-Date: Sun, 15 Dec 2024 10:06:04 +0100
-Message-ID: <20241215090613.89588-6-pbonzini@redhat.com>
+Subject: [PATCH 06/13] target/i386: tcg: move gen_set/reset_* earlier in the
+ file
+Date: Sun, 15 Dec 2024 10:06:05 +0100
+Message-ID: <20241215090613.89588-7-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241215090613.89588-1-pbonzini@redhat.com>
 References: <20241215090613.89588-1-pbonzini@redhat.com>
@@ -106,138 +106,112 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The condition for optimizing repeat instruction is more or less the
-opposite of what you imagine: almost always the string instruction
-was _not_ optimized and optimizing the loop relied on goto_tb.
-This is obviously not great for performance, due to the cost of the
-exit-to-main-loop check, but also wrong.  In fact, after expanding
-dc->jmp_opt and simplifying "!!x" to "x", the condition for looping used
-to be:
-
-   ((cflags & CF_NO_GOTO_TB) ||
-    (flags & (HF_RF_MASK | HF_TF_MASK | HF_INHIBIT_IRQ_MASK))) && !(cflags & CF_USE_ICOUNT)
-
-In other words, setting aside RF (it requires special handling for REP
-instructions and it was completely missing), repeat instruction were
-being optimized if TF or inhibit IRQ flags were set.  This is certainly
-wrong for TF, because string instructions trap after every execution,
-and probably for interrupt shadow too.
-
-Get rid of repz_opt completely.  The next patches will reintroduce the
-optimization, applying it in the common case instead of the unlikely
-and wrong one.
-
-While at it, place the CX/ECX/RCX=0 case is at the end of the function,
-which saves a label and is clearer when reading the generated ops.
-For clarity, mark the cc_op explicitly as DYNAMIC even if at the end
-of the translation block; the cc_op can come from either the previous
-instruction or the string instruction, and currently we rely on
-a gen_update_cc_op() that is hidden in the bowels of gen_jcc() to
-spill cc_op and mark it clean.
+Allow using them in the code that translates REP/REPZ, without
+forward declarations.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/tcg/translate.c | 60 ++++++++-----------------------------
- 1 file changed, 13 insertions(+), 47 deletions(-)
+ target/i386/tcg/translate.c | 80 ++++++++++++++++++-------------------
+ 1 file changed, 40 insertions(+), 40 deletions(-)
 
 diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
-index 63a39d9f15a..3732d05d5f5 100644
+index 3732d05d5f5..0fe7ed4ec8d 100644
 --- a/target/i386/tcg/translate.c
 +++ b/target/i386/tcg/translate.c
-@@ -112,7 +112,6 @@ typedef struct DisasContext {
- #endif
-     bool vex_w; /* used by AVX even on 32-bit processors */
-     bool jmp_opt; /* use direct block chaining for direct jumps */
--    bool repz_opt; /* optimize jumps within repz instructions */
-     bool cc_op_dirty;
- 
-     CCOp cc_op;  /* current CC operation */
-@@ -1205,23 +1204,6 @@ static inline void gen_jcc(DisasContext *s, int b, TCGLabel *l1)
-     }
+@@ -724,6 +724,46 @@ static inline void gen_op_jnz_ecx(DisasContext *s, TCGLabel *label1)
+     gen_op_j_ecx(s, TCG_COND_NE, label1);
  }
  
--/* XXX: does not work with gdbstub "ice" single step - not a
--   serious problem.  The caller can jump to the returned label
--   to stop the REP but, if the flags have changed, it has to call
--   gen_update_cc_op before doing so.  */
--static TCGLabel *gen_jz_ecx_string(DisasContext *s)
++static void gen_set_hflag(DisasContext *s, uint32_t mask)
++{
++    if ((s->flags & mask) == 0) {
++        TCGv_i32 t = tcg_temp_new_i32();
++        tcg_gen_ld_i32(t, tcg_env, offsetof(CPUX86State, hflags));
++        tcg_gen_ori_i32(t, t, mask);
++        tcg_gen_st_i32(t, tcg_env, offsetof(CPUX86State, hflags));
++        s->flags |= mask;
++    }
++}
++
++static void gen_reset_hflag(DisasContext *s, uint32_t mask)
++{
++    if (s->flags & mask) {
++        TCGv_i32 t = tcg_temp_new_i32();
++        tcg_gen_ld_i32(t, tcg_env, offsetof(CPUX86State, hflags));
++        tcg_gen_andi_i32(t, t, ~mask);
++        tcg_gen_st_i32(t, tcg_env, offsetof(CPUX86State, hflags));
++        s->flags &= ~mask;
++    }
++}
++
++static void gen_set_eflags(DisasContext *s, target_ulong mask)
++{
++    TCGv t = tcg_temp_new();
++
++    tcg_gen_ld_tl(t, tcg_env, offsetof(CPUX86State, eflags));
++    tcg_gen_ori_tl(t, t, mask);
++    tcg_gen_st_tl(t, tcg_env, offsetof(CPUX86State, eflags));
++}
++
++static void gen_reset_eflags(DisasContext *s, target_ulong mask)
++{
++    TCGv t = tcg_temp_new();
++
++    tcg_gen_ld_tl(t, tcg_env, offsetof(CPUX86State, eflags));
++    tcg_gen_andi_tl(t, t, ~mask);
++    tcg_gen_st_tl(t, tcg_env, offsetof(CPUX86State, eflags));
++}
++
+ static void gen_helper_in_func(MemOp ot, TCGv v, TCGv_i32 n)
+ {
+     switch (ot) {
+@@ -2083,46 +2123,6 @@ static void gen_interrupt(DisasContext *s, uint8_t intno)
+     s->base.is_jmp = DISAS_NORETURN;
+ }
+ 
+-static void gen_set_hflag(DisasContext *s, uint32_t mask)
 -{
--    TCGLabel *l1 = gen_new_label();
--    TCGLabel *l2 = gen_new_label();
--
--    gen_update_cc_op(s);
--    gen_op_jnz_ecx(s, l1);
--    gen_set_label(l2);
--    gen_jmp_rel_csize(s, 0, 1);
--    gen_set_label(l1);
--    return l2;
+-    if ((s->flags & mask) == 0) {
+-        TCGv_i32 t = tcg_temp_new_i32();
+-        tcg_gen_ld_i32(t, tcg_env, offsetof(CPUX86State, hflags));
+-        tcg_gen_ori_i32(t, t, mask);
+-        tcg_gen_st_i32(t, tcg_env, offsetof(CPUX86State, hflags));
+-        s->flags |= mask;
+-    }
 -}
 -
- static void gen_stos(DisasContext *s, MemOp ot)
- {
-     gen_string_movl_A0_EDI(s);
-@@ -1313,27 +1295,25 @@ static void do_gen_rep(DisasContext *s, MemOp ot,
-                        void (*fn)(DisasContext *s, MemOp ot),
-                        bool is_repz_nz)
- {
--    TCGLabel *l2;
--    l2 = gen_jz_ecx_string(s);
-+    TCGLabel *done = gen_new_label();
-+
-+    gen_update_cc_op(s);
-+    gen_op_jz_ecx(s, done);
-+
-     fn(s, ot);
-     gen_op_add_reg_im(s, s->aflag, R_ECX, -1);
-     if (is_repz_nz) {
-         int nz = (s->prefix & PREFIX_REPNZ) ? 1 : 0;
--        gen_jcc(s, (JCC_Z << 1) | (nz ^ 1), l2);
-+        gen_jcc(s, (JCC_Z << 1) | (nz ^ 1), done);
-     }
--    /*
--     * A loop would cause two single step exceptions if ECX = 1
--     * before rep string_insn
--     */
--    if (s->repz_opt) {
--        gen_op_jz_ecx(s, l2);
+-static void gen_reset_hflag(DisasContext *s, uint32_t mask)
+-{
+-    if (s->flags & mask) {
+-        TCGv_i32 t = tcg_temp_new_i32();
+-        tcg_gen_ld_i32(t, tcg_env, offsetof(CPUX86State, hflags));
+-        tcg_gen_andi_i32(t, t, ~mask);
+-        tcg_gen_st_i32(t, tcg_env, offsetof(CPUX86State, hflags));
+-        s->flags &= ~mask;
 -    }
--    /*
--     * For CMPS/SCAS there is no need to set CC_OP_DYNAMIC: only one iteration
--     * is done at a time, so the translation block ends unconditionally after
--     * this instruction and there is no control flow junction.
--     */
-+
-+    /* Go to the main loop but reenter the same instruction.  */
-     gen_jmp_rel_csize(s, -cur_insn_len(s), 0);
-+
-+    /* CX/ECX/RCX is zero, or REPZ/REPNZ broke the repetition.  */
-+    gen_set_label(done);
-+    set_cc_op(s, CC_OP_DYNAMIC);
-+    gen_jmp_rel_csize(s, 0, 1);
- }
- 
- static void gen_repz(DisasContext *s, MemOp ot,
-@@ -3664,20 +3644,6 @@ static void i386_tr_init_disas_context(DisasContextBase *dcbase, CPUState *cpu)
-     dc->cpuid_xsave_features = env->features[FEAT_XSAVE];
-     dc->jmp_opt = !((cflags & CF_NO_GOTO_TB) ||
-                     (flags & (HF_RF_MASK | HF_TF_MASK | HF_INHIBIT_IRQ_MASK)));
--    /*
--     * If jmp_opt, we want to handle each string instruction individually.
--     * For icount also disable repz optimization so that each iteration
--     * is accounted separately.
--     *
--     * FIXME: this is messy; it makes REP string instructions a lot less
--     * efficient than they should be and it gets in the way of correct
--     * handling of RF (interrupts or traps arriving after any iteration
--     * of a repeated string instruction but the last should set RF to 1).
--     * Perhaps it would be more efficient if REP string instructions were
--     * always at the beginning of the TB, or even their own TB?  That
--     * would even allow accounting up to 64k iterations at once for icount.
--     */
--    dc->repz_opt = !dc->jmp_opt && !(cflags & CF_USE_ICOUNT);
- 
-     dc->T0 = tcg_temp_new();
-     dc->T1 = tcg_temp_new();
+-}
+-
+-static void gen_set_eflags(DisasContext *s, target_ulong mask)
+-{
+-    TCGv t = tcg_temp_new();
+-
+-    tcg_gen_ld_tl(t, tcg_env, offsetof(CPUX86State, eflags));
+-    tcg_gen_ori_tl(t, t, mask);
+-    tcg_gen_st_tl(t, tcg_env, offsetof(CPUX86State, eflags));
+-}
+-
+-static void gen_reset_eflags(DisasContext *s, target_ulong mask)
+-{
+-    TCGv t = tcg_temp_new();
+-
+-    tcg_gen_ld_tl(t, tcg_env, offsetof(CPUX86State, eflags));
+-    tcg_gen_andi_tl(t, t, ~mask);
+-    tcg_gen_st_tl(t, tcg_env, offsetof(CPUX86State, eflags));
+-}
+-
+ /* Clear BND registers during legacy branches.  */
+ static void gen_bnd_jmp(DisasContext *s)
+ {
 -- 
 2.47.1
 
