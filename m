@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E3339F25A7
-	for <lists+qemu-devel@lfdr.de>; Sun, 15 Dec 2024 20:12:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 139579F258D
+	for <lists+qemu-devel@lfdr.de>; Sun, 15 Dec 2024 20:07:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tMtwo-0001eb-HB; Sun, 15 Dec 2024 14:06:34 -0500
+	id 1tMtwq-0001gb-Lr; Sun, 15 Dec 2024 14:06:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tMtwd-0001Pi-Ka
+ id 1tMtwd-0001Sy-QH
  for qemu-devel@nongnu.org; Sun, 15 Dec 2024 14:06:28 -0500
-Received: from mail-oi1-x230.google.com ([2607:f8b0:4864:20::230])
+Received: from mail-oa1-x2e.google.com ([2001:4860:4864:20::2e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tMtwa-0001CU-Dn
+ id 1tMtwc-0001DD-1g
  for qemu-devel@nongnu.org; Sun, 15 Dec 2024 14:06:23 -0500
-Received: by mail-oi1-x230.google.com with SMTP id
- 5614622812f47-3eba7784112so1171245b6e.2
- for <qemu-devel@nongnu.org>; Sun, 15 Dec 2024 11:06:20 -0800 (PST)
+Received: by mail-oa1-x2e.google.com with SMTP id
+ 586e51a60fabf-288fa5ce8f0so933181fac.3
+ for <qemu-devel@nongnu.org>; Sun, 15 Dec 2024 11:06:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734289579; x=1734894379; darn=nongnu.org;
+ d=linaro.org; s=google; t=1734289580; x=1734894380; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=U53muPL2bLLdVoKOwxM9M3Aqazdis5rVRboOucVaBPk=;
- b=pO3HyqEM+ENdMvVcISzSpx4NJU1xqaeQvbhcUAH5ZNgaFTdsHXc8buK9VcVsF/p1b2
- vOetcHOILxS4Jx0QD+LK+xhKEocpBQ5rUCl6gJ+DrDs5t7NoW4B+xRvy1l5ne0nsF1dI
- CHkPTJ3fKG8ubO96bvAWye+vAssqNgtB3leb58nu2mQBW6BPHcsPZP9gjAgGaoKDwPVW
- 7/q14xgKR7fe4/KNTg0u0x8CAF4a0OVzPFnE0wsli6MsiNLgJ7bgCLCkwZYvtjCzCXOQ
- 1G9EgywNmr45KliWr8TBO3mr/PgKomYDcWD9+RiPBbxzMvaGXk6cp1uzj9kA0DXIy/Bo
- B2Og==
+ bh=AXOLh9yZNgpRyWamRBq8wsPa5UlUqVmERW2UrYN4jVU=;
+ b=i2ydotqxMmlpT0Szl5lqLG89dX5gu8MzPKUN1lVfwrIA8DMw7G7rD4jSxhbId4p5EQ
+ bLCSDAmV58hfQRw9unMTkJRx33m4omfp/RiZYCkkMsNuNJqlF32OB0QsAVvJKsONoxJj
+ HG33yfuphRztM7+PHVA/av8NCwIoFpo0rwzcEPKFM2Tnpm1tcXThUERtt3QQnuQVxh4s
+ Bdj4zxBuKIkU3s1PdWvxZdZghFN4lPcV/iu5q9/srjcXBX7OUigb/eYs8v3IcVyrV0Q+
+ +tUPD+oGw8wuxnSCEkmzqyIJv9Yrd9ZqOQAIZ6jPuH1K1AznZnwQ8EdN5kDns7vCpjme
+ rxMQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734289579; x=1734894379;
+ d=1e100.net; s=20230601; t=1734289580; x=1734894380;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=U53muPL2bLLdVoKOwxM9M3Aqazdis5rVRboOucVaBPk=;
- b=qILTJViycN2bc6jsQO9HHQpuq6aTTRBJIQwIHtf6XHGIHPOV0XZxYin3LBVHjbaFs3
- hRgm5PZ4DRYyhpwH15XSurSNQINqjotr446hVGG0veR69tLqXzb3fZCwdUG+ezCgIMXT
- uDA6Rmp9BupTJB/lcT1uOX6dCOirOHYY1aeJTu0m8Bxad4C2yp9AW77SeF1q3Z13LU3v
- waRHGQ4kC6lvO+fi3TtWi2omxlcaRJdOe7pBj96v91lPiI7A5SDYDSSNv0QU1o16gwVh
- kqaB9lwQjnKPfoRkwCjQlQZa0kO6alErS0A1D575TyS5OXRslGybErWYn5uVUsTOF4D5
- pj+A==
-X-Gm-Message-State: AOJu0YyaYn8x6T25a7x5133yusy5TtZsFAocLMDIkHxazQldmosOj9FE
- XJKOCIfNhdsiYxzBdp7moJe1C7xBo8zqqfRWL3gtZwkjhr3PfXxOBK3qIcWOxGSUrqoSQibbd4i
- PVMmH0xmx
-X-Gm-Gg: ASbGncuIRBusmRLnEHaAR6aroQtMyTRxRwtrwLofDRzMytoNFbfMYUKhQSucBFZIT2e
- EcMmFoQviQMevvqZPYZYwQEA1f6Mi0D9z6+q0eurIWooM+nRppxo5p731NL/lp0IFAuOQZ+WNRr
- DRjozPc+/UKt6XN/1VyGSkjsNBgXhMPiTP7Jw+NsK+Wxa3cHKg5nEj3nKBYK+7Lue0asL8Xcs+m
- iRirf3dM6HYmFrpz4CJlP9LVQkSns+ms3UcJqUNWsyLwLEAj1LdpQuZPtuggSHb6Za/RUgfUo3K
- h2DoY+EqwhwenUtbGqB9yaAyZrMgEisKg8RsV7d29ag=
-X-Google-Smtp-Source: AGHT+IGBFYhBH09OjShaFJCpxuiq35SNwAz3WadjuUmJoYQwQM3Y7M8YU3/FnRtY+JaQleJMf9a56w==
-X-Received: by 2002:a05:6870:e247:b0:27b:61df:2160 with SMTP id
- 586e51a60fabf-2a3ac8a887amr4906891fac.31.1734289579061; 
- Sun, 15 Dec 2024 11:06:19 -0800 (PST)
+ bh=AXOLh9yZNgpRyWamRBq8wsPa5UlUqVmERW2UrYN4jVU=;
+ b=e7oqQux8rR732iuLrm83CK6CCxBN3kzZKWOKwDnd8CWoMUE/NZgldkIUZrrqWpKWxR
+ mZZX9WB2gphUleh/X6eT4qOSKXBjV42gJwv6mp2TGJeul5TUpOcigWMWCQi5p+O/iuJh
+ de9m+0NsaZCTjWVYKSxtwLe8thGSiYMkbOdKo1yA8s04enSpWn7Q+Li00xve70v/POGN
+ 36xvXpoazfw7M/bToFEqeM2YzA0kTY/LReONd+yHhW/6LCKlTsuhcT1AAdg5Tn+ImclM
+ 1UIFBKzLpYFW9fL9PIgCEnyus26blPnDvt4bRUdbvBsLnBmpaQoV+yqIfU8wTvHtCge1
+ ZNiA==
+X-Gm-Message-State: AOJu0YxOioWHsxMNRmzy7F9z0s9yYDDZuVPg0uL98mz3nU5C20LO+rOA
+ QY+NtyNSni6UW4S1s+UBf2I3txZT5M4oToPC/Bh9nNePQs6f5zpwF0jqzcXh9rbmMvnQbX6He82
+ osub1MWw/
+X-Gm-Gg: ASbGncvzz89NbI3a3yI8CmuVheJr1tN9m5NqnRUzgLGJGMo6vHc3Xyy97saeKs5FaA1
+ MNhZHor68vVxMPWr5grB9uHMyAYZ4qVAga3pPDE2wEyDa8LLz+I3EUIp/oeNByDzJZDbUsi4KOm
+ ChT4au/b9gN3S7Kutn3nedOIfhANUa+Pimtf3WO+CzTylfLZgGVu18K/oDv4KMA+EgFs+KjciMu
+ 04/SrJfxSAs0NlqD0E6w0omXTCbx8CqHrCcT+ZnM8Q2O/d1iM3mtXot0wFoBTHY3fBk49VRoO4l
+ Zn0oLyHsCrX3R8bjKPVFDP2noUd7IBOE7p2F2o7nNqc=
+X-Google-Smtp-Source: AGHT+IF/DX66qzlGFmPlROxakzib22ndkzEGAgTCL09zZe6EnwyZYS2PYhy8lvAXe+uDGqYzQopt3w==
+X-Received: by 2002:a05:6870:912b:b0:29e:1b72:7586 with SMTP id
+ 586e51a60fabf-2a3ac62d5d6mr5871603fac.18.1734289580401; 
+ Sun, 15 Dec 2024 11:06:20 -0800 (PST)
 Received: from localhost.localdomain (fixed-187-189-51-143.totalplay.net.
  [187.189.51.143]) by smtp.gmail.com with ESMTPSA id
- 586e51a60fabf-2a3d2914ac6sm1423214fac.39.2024.12.15.11.06.18
+ 586e51a60fabf-2a3d2914ac6sm1423214fac.39.2024.12.15.11.06.19
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 15 Dec 2024 11:06:18 -0800 (PST)
+ Sun, 15 Dec 2024 11:06:19 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: stefanha@redhat.com, Bernhard Beschow <shentey@gmail.com>,
+Cc: stefanha@redhat.com,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 29/67] hw/ide: Constify all Property
-Date: Sun, 15 Dec 2024 13:04:55 -0600
-Message-ID: <20241215190533.3222854-30-richard.henderson@linaro.org>
+Subject: [PULL 30/67] hw/input: Constify all Property
+Date: Sun, 15 Dec 2024 13:04:56 -0600
+Message-ID: <20241215190533.3222854-31-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241215190533.3222854-1-richard.henderson@linaro.org>
 References: <20241215190533.3222854-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::230;
- envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x230.google.com
+Received-SPF: pass client-ip=2001:4860:4864:20::2e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x2e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,113 +99,107 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Reviewed-by: Bernhard Beschow <shentey@gmail.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- hw/ide/cf.c      | 2 +-
- hw/ide/cmd646.c  | 2 +-
- hw/ide/ide-dev.c | 6 +++---
- hw/ide/isa.c     | 2 +-
- hw/ide/macio.c   | 2 +-
- hw/ide/mmio.c    | 2 +-
- 6 files changed, 8 insertions(+), 8 deletions(-)
+ hw/input/pckbd.c             | 4 ++--
+ hw/input/stellaris_gamepad.c | 2 +-
+ hw/input/virtio-input-hid.c  | 6 +++---
+ hw/input/virtio-input-host.c | 2 +-
+ hw/input/virtio-input.c      | 2 +-
+ 5 files changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/hw/ide/cf.c b/hw/ide/cf.c
-index 2a425cb0f2..190914f513 100644
---- a/hw/ide/cf.c
-+++ b/hw/ide/cf.c
-@@ -24,7 +24,7 @@ static void ide_cf_realize(IDEDevice *dev, Error **errp)
-     ide_dev_initfn(dev, IDE_CFATA, errp);
+diff --git a/hw/input/pckbd.c b/hw/input/pckbd.c
+index 04c1b3cbf9..24a133fd25 100644
+--- a/hw/input/pckbd.c
++++ b/hw/input/pckbd.c
+@@ -735,7 +735,7 @@ static void i8042_mmio_init(Object *obj)
+                             "ps2-mouse-input-irq", 1);
  }
  
--static Property ide_cf_properties[] = {
-+static const Property ide_cf_properties[] = {
-     DEFINE_IDE_DEV_PROPERTIES(),
-     DEFINE_BLOCK_CHS_PROPERTIES(IDEDrive, dev.conf),
-     DEFINE_PROP_BIOS_CHS_TRANS("bios-chs-trans",
-diff --git a/hw/ide/cmd646.c b/hw/ide/cmd646.c
-index 6b02fc81ec..942f6c470c 100644
---- a/hw/ide/cmd646.c
-+++ b/hw/ide/cmd646.c
-@@ -313,7 +313,7 @@ static void pci_cmd646_ide_exitfn(PCIDevice *dev)
+-static Property i8042_mmio_properties[] = {
++static const Property i8042_mmio_properties[] = {
+     DEFINE_PROP_UINT64("mask", MMIOKBDState, kbd.mask, UINT64_MAX),
+     DEFINE_PROP_UINT32("size", MMIOKBDState, size, -1),
+     DEFINE_PROP_END_OF_LIST(),
+@@ -933,7 +933,7 @@ static void i8042_build_aml(AcpiDevAmlIf *adev, Aml *scope)
+     aml_append(scope, mou);
+ }
+ 
+-static Property i8042_properties[] = {
++static const Property i8042_properties[] = {
+     DEFINE_PROP_BOOL("extended-state", ISAKBDState, kbd.extended_state, true),
+     DEFINE_PROP_BOOL("kbd-throttle", ISAKBDState, kbd_throttle, false),
+     DEFINE_PROP_UINT8("kbd-irq", ISAKBDState, kbd_irq, 1),
+diff --git a/hw/input/stellaris_gamepad.c b/hw/input/stellaris_gamepad.c
+index 17ee42b9fc..b1cc693189 100644
+--- a/hw/input/stellaris_gamepad.c
++++ b/hw/input/stellaris_gamepad.c
+@@ -77,7 +77,7 @@ static void stellaris_gamepad_reset_enter(Object *obj, ResetType type)
+     memset(s->pressed, 0, s->num_buttons * sizeof(uint8_t));
+ }
+ 
+-static Property stellaris_gamepad_properties[] = {
++static const Property stellaris_gamepad_properties[] = {
+     DEFINE_PROP_ARRAY("keycodes", StellarisGamepad, num_buttons,
+                       keycodes, qdev_prop_uint32, uint32_t),
+     DEFINE_PROP_END_OF_LIST(),
+diff --git a/hw/input/virtio-input-hid.c b/hw/input/virtio-input-hid.c
+index 45e4d4c75d..7396385508 100644
+--- a/hw/input/virtio-input-hid.c
++++ b/hw/input/virtio-input-hid.c
+@@ -237,7 +237,7 @@ static void virtio_input_hid_handle_status(VirtIOInput *vinput,
      }
  }
  
--static Property cmd646_ide_properties[] = {
-+static const Property cmd646_ide_properties[] = {
-     DEFINE_PROP_UINT32("secondary", PCIIDEState, secondary, 0),
+-static Property virtio_input_hid_properties[] = {
++static const Property virtio_input_hid_properties[] = {
+     DEFINE_PROP_STRING("display", VirtIOInputHID, display),
+     DEFINE_PROP_UINT32("head", VirtIOInputHID, head, 0),
      DEFINE_PROP_END_OF_LIST(),
- };
-diff --git a/hw/ide/ide-dev.c b/hw/ide/ide-dev.c
-index 03f7967798..cc92531f1c 100644
---- a/hw/ide/ide-dev.c
-+++ b/hw/ide/ide-dev.c
-@@ -29,7 +29,7 @@
- #include "qapi/visitor.h"
- #include "ide-internal.h"
- 
--static Property ide_props[] = {
-+static const Property ide_props[] = {
-     DEFINE_PROP_UINT32("unit", IDEDevice, unit, -1),
-     DEFINE_PROP_BOOL("win2k-install-hack", IDEDevice, win2k_install_hack, false),
-     DEFINE_PROP_END_OF_LIST(),
-@@ -191,7 +191,7 @@ static void ide_cd_realize(IDEDevice *dev, Error **errp)
-     ide_dev_initfn(dev, IDE_CD, errp);
- }
- 
--static Property ide_hd_properties[] = {
-+static const Property ide_hd_properties[] = {
-     DEFINE_IDE_DEV_PROPERTIES(),
-     DEFINE_BLOCK_CHS_PROPERTIES(IDEDrive, dev.conf),
-     DEFINE_PROP_BIOS_CHS_TRANS("bios-chs-trans",
-@@ -218,7 +218,7 @@ static const TypeInfo ide_hd_info = {
-     .class_init    = ide_hd_class_init,
+@@ -380,7 +380,7 @@ static struct virtio_input_config virtio_mouse_config_v2[] = {
+     { /* end of list */ },
  };
  
--static Property ide_cd_properties[] = {
-+static const Property ide_cd_properties[] = {
-     DEFINE_IDE_DEV_PROPERTIES(),
+-static Property virtio_mouse_properties[] = {
++static const Property virtio_mouse_properties[] = {
+     DEFINE_PROP_BOOL("wheel-axis", VirtIOInputHID, wheel_axis, true),
      DEFINE_PROP_END_OF_LIST(),
  };
-diff --git a/hw/ide/isa.c b/hw/ide/isa.c
-index 211ebc9ba7..a0a7e4837c 100644
---- a/hw/ide/isa.c
-+++ b/hw/ide/isa.c
-@@ -101,7 +101,7 @@ ISADevice *isa_ide_init(ISABus *bus, int iobase, int iobase2, int irqnum,
-     return isadev;
- }
+@@ -505,7 +505,7 @@ static struct virtio_input_config virtio_tablet_config_v2[] = {
+     { /* end of list */ },
+ };
  
--static Property isa_ide_properties[] = {
-+static const Property isa_ide_properties[] = {
-     DEFINE_PROP_UINT32("iobase",  ISAIDEState, iobase,  0x1f0),
-     DEFINE_PROP_UINT32("iobase2", ISAIDEState, iobase2, 0x3f6),
-     DEFINE_PROP_UINT32("irq",     ISAIDEState, irqnum,  14),
-diff --git a/hw/ide/macio.c b/hw/ide/macio.c
-index 99477a3d13..25f8403e80 100644
---- a/hw/ide/macio.c
-+++ b/hw/ide/macio.c
-@@ -459,7 +459,7 @@ static void macio_ide_initfn(Object *obj)
-                              qdev_prop_allow_set_link_before_realize, 0);
- }
- 
--static Property macio_ide_properties[] = {
-+static const Property macio_ide_properties[] = {
-     DEFINE_PROP_UINT32("channel", MACIOIDEState, channel, 0),
-     DEFINE_PROP_UINT32("addr", MACIOIDEState, addr, -1),
+-static Property virtio_tablet_properties[] = {
++static const Property virtio_tablet_properties[] = {
+     DEFINE_PROP_BOOL("wheel-axis", VirtIOInputHID, wheel_axis, true),
      DEFINE_PROP_END_OF_LIST(),
-diff --git a/hw/ide/mmio.c b/hw/ide/mmio.c
-index 53d22fb37f..43ab66f347 100644
---- a/hw/ide/mmio.c
-+++ b/hw/ide/mmio.c
-@@ -141,7 +141,7 @@ static void mmio_ide_initfn(Object *obj)
-     sysbus_init_irq(d, &s->irq);
- }
+ };
+diff --git a/hw/input/virtio-input-host.c b/hw/input/virtio-input-host.c
+index fea7139382..2be2c633ab 100644
+--- a/hw/input/virtio-input-host.c
++++ b/hw/input/virtio-input-host.c
+@@ -221,7 +221,7 @@ static const VMStateDescription vmstate_virtio_input_host = {
+     .unmigratable = 1,
+ };
  
--static Property mmio_ide_properties[] = {
-+static const Property mmio_ide_properties[] = {
-     DEFINE_PROP_UINT32("shift", MMIOIDEState, shift, 0),
-     DEFINE_PROP_END_OF_LIST()
+-static Property virtio_input_host_properties[] = {
++static const Property virtio_input_host_properties[] = {
+     DEFINE_PROP_STRING("evdev", VirtIOInputHost, evdev),
+     DEFINE_PROP_END_OF_LIST(),
+ };
+diff --git a/hw/input/virtio-input.c b/hw/input/virtio-input.c
+index 3bcdae41b2..edcd94dedb 100644
+--- a/hw/input/virtio-input.c
++++ b/hw/input/virtio-input.c
+@@ -300,7 +300,7 @@ static const VMStateDescription vmstate_virtio_input = {
+     .post_load = virtio_input_post_load,
+ };
+ 
+-static Property virtio_input_properties[] = {
++static const Property virtio_input_properties[] = {
+     DEFINE_PROP_STRING("serial", VirtIOInput, serial),
+     DEFINE_PROP_END_OF_LIST(),
  };
 -- 
 2.43.0
