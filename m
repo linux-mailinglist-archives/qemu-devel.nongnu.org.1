@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 351A29F2591
-	for <lists+qemu-devel@lfdr.de>; Sun, 15 Dec 2024 20:08:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5980B9F25CC
+	for <lists+qemu-devel@lfdr.de>; Sun, 15 Dec 2024 20:19:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tMtxB-0002f4-UU; Sun, 15 Dec 2024 14:06:58 -0500
+	id 1tMtx4-0001kX-Sz; Sun, 15 Dec 2024 14:06:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tMtwW-0001L2-Mh
- for qemu-devel@nongnu.org; Sun, 15 Dec 2024 14:06:16 -0500
-Received: from mail-oi1-x233.google.com ([2607:f8b0:4864:20::233])
+ id 1tMtwX-0001LE-1U
+ for qemu-devel@nongnu.org; Sun, 15 Dec 2024 14:06:18 -0500
+Received: from mail-oa1-x30.google.com ([2001:4860:4864:20::30])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tMtwT-00018v-Qd
+ id 1tMtwV-00019R-AA
  for qemu-devel@nongnu.org; Sun, 15 Dec 2024 14:06:16 -0500
-Received: by mail-oi1-x233.google.com with SMTP id
- 5614622812f47-3ebadbb14dcso910973b6e.3
- for <qemu-devel@nongnu.org>; Sun, 15 Dec 2024 11:06:13 -0800 (PST)
+Received: by mail-oa1-x30.google.com with SMTP id
+ 586e51a60fabf-29fae583cc8so1738219fac.1
+ for <qemu-devel@nongnu.org>; Sun, 15 Dec 2024 11:06:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734289572; x=1734894372; darn=nongnu.org;
+ d=linaro.org; s=google; t=1734289574; x=1734894374; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ermVyfZ+KD5ml0lXaGRWdiJA/VpXEa7zOPDhDo5E/rU=;
- b=VepLBZkNCfdfnIE5NCWx+n6qBwzkoi1VPcr7BNoT9VCj0XrHrKHcyjpnnURsYX2yv9
- sj/5mMVrac4XHRlpv0FEWOdBcROO/CAAVT5lHEG18Dg2gpQVPXkbxQouq9rU3nXyz33T
- 8iLlruknEj5K+Y27J48Z7TNu+M0GIb+OE1Vmi99Jdhbq3vW5pi/wZ6Upxt+VRxOMUjrv
- uDwFS0Ug4iVkU6WwgFICLiZQOv0UqqkZfRKUZKZBI9dwy3qaQzxn7hqyuYAu8e9l3l/l
- LFbX7NnttQobFv20JCXPBTNrKND4IQGBfUViS32u1+qtAiVbMlkbKg+BZeR+d43JFf3B
- 20Ig==
+ bh=P6dtc5tKm0SDV+tByDsBCG2rfZqXnqrfnrDqNh1eC2Y=;
+ b=gljS5p4gv73CnBlfDuYkx9mATlO/Rol4RjI+MU3woz9GAr5qZh2K9iK8SdZesVpy4G
+ HZB79p/W7NKVBgC2XhW3Y5ljAqSyHGXp/1Dq6S11yO1QSiW34JWdl+Yd3K+4zo58zy6K
+ 2GkgDBRhKr6nE8X0dsfI8x/Q4t/8Aci4QJBk9Ei6uu21RfaKnETx+tkBrt0Kw9B80IIZ
+ FjfTHjlhVIQLV+I4Z/dT3jUv1Xa3Mp/+OZoTD0UilUPgvBHQKD6p5iODDEhsICpKhEyf
+ nv6haiNLfFV+eS5Tl5DkGqxyKAlWj7ydGmW+NyHybpJWkI/TCbJYQkQ26AnI03T7t8cK
+ kUcw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734289572; x=1734894372;
+ d=1e100.net; s=20230601; t=1734289574; x=1734894374;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ermVyfZ+KD5ml0lXaGRWdiJA/VpXEa7zOPDhDo5E/rU=;
- b=VjJNYpPHocyBwgTOZCgLfQrXZbbcnQVmYHtPxl1F3+EN18hDolTls/bdDDx7gvvMsl
- 4t5Aoq/7+CqgWhku5/NjOuPhoZJMBvIBl5rBU/4nNSRjxqYIVcCXj55ELoEXc3MTK5jg
- VYFX3NvGmmWBZK0RXQYqfEAo3wu7M9uj2dHtrOopEmEajUxPDOKubNWMYcSVZ+azO/pk
- 1Dh7UynhrFoxSkOqa3rgypxLujI1j9r5cQYuFowjlxgdL5jlusJDhWwSO5vLpaCCU2aa
- O1IROcSowUoTy9sQv63lgoGY79zSe4Z67QP4XQYjYde8l2TbAwDfme1Bjf4AYN/ceEXc
- esdA==
-X-Gm-Message-State: AOJu0YyPsxlW7N23+ro4blwjRm2dtW2WUO6OLOsT/P8LC9PyIn8VrtG/
- x/G73L5hsr/xnnMuijFBmsd0GsaeNTljPdEKr2UEgJYfT0nNXOK8GZHydvtDX24CFquiqXJzfL+
- DdVzmNU35
-X-Gm-Gg: ASbGncs3sWS2HxTFIbMMLnjQdqPqGMChRUMfh95k5ELJTLRr3yVxbeonLri98qABJ1/
- RlTs8JXswyVXgaNP4N7rzK2XKpv+zAO4IypFjEN7cXIOfaR5pI0WzvCPldVSGe8aOHa1+zqrbeq
- gwG8stwBNUeKEpua26+ZF+jHpSol85a/jSJ7E1v4sHeCR0zuVnIQkZrYRFPbIR0cppEAEa/nzzw
- KMAwz71kI9ipkMhcf/asUvwuhSgIiXXuzorFtndGf+wPdKXnvBYGUnOiiF52dIyb8QL1/FAdcqY
- xPEf0MsCh21jSNFYkNS40yPAj1cEb2VYpOXfEbINZpk=
-X-Google-Smtp-Source: AGHT+IEJz5nfx4mTwCqhfYwWhj3h+O6YqMhRsxq8cO0fgrXGJZ54mkTeK5tdFK17eNo2AiCndUiMXg==
-X-Received: by 2002:a05:6870:6388:b0:297:241b:c48 with SMTP id
- 586e51a60fabf-2a3ac8c10f2mr4638298fac.40.1734289572604; 
- Sun, 15 Dec 2024 11:06:12 -0800 (PST)
+ bh=P6dtc5tKm0SDV+tByDsBCG2rfZqXnqrfnrDqNh1eC2Y=;
+ b=s5nQus3vt44Ay/XBBAzG0n+9Ph8HsuFOTVcOnyrpdsE41n3yJkN4+jyrwuJJ3vvPcU
+ 7Xz8GwGK6vGIyQvr7oNyIZNEHlIjwA/YPgaqF6GWgStvM4snUv9lFgP1W/9NWT/yF4hf
+ 5qA3hMT4jpbQev68rSaej05WIqzG1oCNOyC6We0eblJuRokmmM//JP4ERuMBIwcqRWxt
+ 9o3xteyBybx4OhC9eUzbzwEMsscxIQzdCNGiUTplwytkKXuN8ZFmMQzZwlXsePU6keVD
+ xwVMmkbzogcaYoA4LN+tlc7QYzbnr91IC2IKf1LwmiTTnGFQWl9vdXhIENutOcTQn5KT
+ NCLQ==
+X-Gm-Message-State: AOJu0Yw2YlwPAQjRcL+yw6GaT04BfrS+RctGtXF8upHovCVm35mDPkmX
+ nI5FiXjosTSfNufA/Hzqz3PiA+u79ZTE8kJziV9JnAR0O20nNdC57qNRpZx1R0hvRAEU9LmhJ1L
+ jODHgCfVP
+X-Gm-Gg: ASbGncupzi5eETC0162hfoT3bD8XQTb2SIlHaBur98yAG9PIhVfcYpvsMNngBLj+haH
+ XqutBAJDZ2IIw9P+iWsCLfulh9tAl1GVSeujmmJkNfZCycdnBwctibiOglzDJDCxmkXe4gXAewI
+ EpI2kvUtcfClVXqA001mY8js3s6GK3p/KbhC7j9t8Ht9t35T29/wXhAPXjx1+9K7FUOqm1fvJq5
+ 1Wxnb4O0jIpyQ8qt1/3ESLolLJL8hnYyzF6YSA1tVwUGssJk8jW9S/gzj8D406YLN1C/W3ulxYo
+ KPRdGE1Ne8u9QEHrLjSoxd9ke4/zVAwqIPG3My1Ffk4=
+X-Google-Smtp-Source: AGHT+IHgl2wkhz5wc1Qn4DDZdsF2GT79jrVPlhY1jTWyoUisUtCZYp44j8k1vty/CY2nQwywBIN4mg==
+X-Received: by 2002:a05:6870:7805:b0:29a:ea55:3bfe with SMTP id
+ 586e51a60fabf-2a3af18d1a5mr4296198fac.11.1734289573944; 
+ Sun, 15 Dec 2024 11:06:13 -0800 (PST)
 Received: from localhost.localdomain (fixed-187-189-51-143.totalplay.net.
  [187.189.51.143]) by smtp.gmail.com with ESMTPSA id
- 586e51a60fabf-2a3d2914ac6sm1423214fac.39.2024.12.15.11.06.11
+ 586e51a60fabf-2a3d2914ac6sm1423214fac.39.2024.12.15.11.06.12
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 15 Dec 2024 11:06:12 -0800 (PST)
+ Sun, 15 Dec 2024 11:06:13 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: stefanha@redhat.com,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 24/67] hw/dma: Constify all Property
-Date: Sun, 15 Dec 2024 13:04:50 -0600
-Message-ID: <20241215190533.3222854-25-richard.henderson@linaro.org>
+Subject: [PULL 25/67] hw/gpio: Constify all Property
+Date: Sun, 15 Dec 2024 13:04:51 -0600
+Message-ID: <20241215190533.3222854-26-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241215190533.3222854-1-richard.henderson@linaro.org>
 References: <20241215190533.3222854-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::233;
- envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x233.google.com
+Received-SPF: pass client-ip=2001:4860:4864:20::30;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x30.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,106 +102,120 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- hw/dma/i82374.c        | 2 +-
- hw/dma/i8257.c         | 2 +-
- hw/dma/pl080.c         | 2 +-
- hw/dma/pl330.c         | 2 +-
- hw/dma/xilinx_axidma.c | 2 +-
- hw/dma/xlnx-zdma.c     | 2 +-
- hw/dma/xlnx_csu_dma.c  | 2 +-
- 7 files changed, 7 insertions(+), 7 deletions(-)
+ hw/gpio/imx_gpio.c       | 2 +-
+ hw/gpio/npcm7xx_gpio.c   | 2 +-
+ hw/gpio/omap_gpio.c      | 2 +-
+ hw/gpio/pca9552.c        | 2 +-
+ hw/gpio/pca9554.c        | 2 +-
+ hw/gpio/pl061.c          | 2 +-
+ hw/gpio/sifive_gpio.c    | 2 +-
+ hw/gpio/stm32l4x5_gpio.c | 2 +-
+ 8 files changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/hw/dma/i82374.c b/hw/dma/i82374.c
-index e72aa2e1ce..032afedde2 100644
---- a/hw/dma/i82374.c
-+++ b/hw/dma/i82374.c
-@@ -139,7 +139,7 @@ static void i82374_realize(DeviceState *dev, Error **errp)
-     memset(s->commands, 0, sizeof(s->commands));
- }
- 
--static Property i82374_properties[] = {
-+static const Property i82374_properties[] = {
-     DEFINE_PROP_UINT32("iobase", I82374State, iobase, 0x400),
-     DEFINE_PROP_END_OF_LIST()
+diff --git a/hw/gpio/imx_gpio.c b/hw/gpio/imx_gpio.c
+index 27535a577f..919d53701f 100644
+--- a/hw/gpio/imx_gpio.c
++++ b/hw/gpio/imx_gpio.c
+@@ -290,7 +290,7 @@ static const VMStateDescription vmstate_imx_gpio = {
+     }
  };
-diff --git a/hw/dma/i8257.c b/hw/dma/i8257.c
-index 3e6700e53b..8b04177393 100644
---- a/hw/dma/i8257.c
-+++ b/hw/dma/i8257.c
-@@ -585,7 +585,7 @@ static void i8257_realize(DeviceState *dev, Error **errp)
-     d->dma_bh = qemu_bh_new(i8257_dma_run, d);
+ 
+-static Property imx_gpio_properties[] = {
++static const Property imx_gpio_properties[] = {
+     DEFINE_PROP_BOOL("has-edge-sel", IMXGPIOState, has_edge_sel, true),
+     DEFINE_PROP_BOOL("has-upper-pin-irq", IMXGPIOState, has_upper_pin_irq,
+                      false),
+diff --git a/hw/gpio/npcm7xx_gpio.c b/hw/gpio/npcm7xx_gpio.c
+index ba19b9ebad..db6792b2ad 100644
+--- a/hw/gpio/npcm7xx_gpio.c
++++ b/hw/gpio/npcm7xx_gpio.c
+@@ -386,7 +386,7 @@ static const VMStateDescription vmstate_npcm7xx_gpio = {
+     },
+ };
+ 
+-static Property npcm7xx_gpio_properties[] = {
++static const Property npcm7xx_gpio_properties[] = {
+     /* Bit n set => pin n has pullup enabled by default. */
+     DEFINE_PROP_UINT32("reset-pullup", NPCM7xxGPIOState, reset_pu, 0),
+     /* Bit n set => pin n has pulldown enabled by default. */
+diff --git a/hw/gpio/omap_gpio.c b/hw/gpio/omap_gpio.c
+index a47a2167a6..03ee9e47c6 100644
+--- a/hw/gpio/omap_gpio.c
++++ b/hw/gpio/omap_gpio.c
+@@ -225,7 +225,7 @@ void omap_gpio_set_clk(Omap1GpioState *gpio, omap_clk clk)
+     gpio->clk = clk;
  }
  
--static Property i8257_properties[] = {
-+static const Property i8257_properties[] = {
-     DEFINE_PROP_INT32("base", I8257State, base, 0x00),
-     DEFINE_PROP_INT32("page-base", I8257State, page_base, 0x80),
-     DEFINE_PROP_INT32("pageh-base", I8257State, pageh_base, 0x480),
-diff --git a/hw/dma/pl080.c b/hw/dma/pl080.c
-index 8e76f88a69..3f392822ed 100644
---- a/hw/dma/pl080.c
-+++ b/hw/dma/pl080.c
-@@ -408,7 +408,7 @@ static void pl081_init(Object *obj)
-     s->nchannels = 2;
- }
- 
--static Property pl080_properties[] = {
-+static const Property pl080_properties[] = {
-     DEFINE_PROP_LINK("downstream", PL080State, downstream,
-                      TYPE_MEMORY_REGION, MemoryRegion *),
+-static Property omap_gpio_properties[] = {
++static const Property omap_gpio_properties[] = {
+     DEFINE_PROP_INT32("mpu_model", Omap1GpioState, mpu_model, 0),
      DEFINE_PROP_END_OF_LIST(),
-diff --git a/hw/dma/pl330.c b/hw/dma/pl330.c
-index 0668caed7c..d5a0a1caa2 100644
---- a/hw/dma/pl330.c
-+++ b/hw/dma/pl330.c
-@@ -1646,7 +1646,7 @@ static void pl330_realize(DeviceState *dev, Error **errp)
-     pl330_fifo_init(&s->fifo, s->data_width / 4 * s->data_buffer_dep);
+ };
+diff --git a/hw/gpio/pca9552.c b/hw/gpio/pca9552.c
+index 59b233339a..427419d218 100644
+--- a/hw/gpio/pca9552.c
++++ b/hw/gpio/pca9552.c
+@@ -428,7 +428,7 @@ static void pca955x_realize(DeviceState *dev, Error **errp)
+     qdev_init_gpio_in(dev, pca955x_gpio_in_handler, k->pin_count);
  }
  
--static Property pl330_properties[] = {
-+static const Property pl330_properties[] = {
-     /* CR0 */
-     DEFINE_PROP_UINT32("num_chnls", PL330State, num_chnls, 8),
-     DEFINE_PROP_UINT8("num_periph_req", PL330State, num_periph_req, 4),
-diff --git a/hw/dma/xilinx_axidma.c b/hw/dma/xilinx_axidma.c
-index 73a480bfbf..f09452d0b5 100644
---- a/hw/dma/xilinx_axidma.c
-+++ b/hw/dma/xilinx_axidma.c
-@@ -611,7 +611,7 @@ static void xilinx_axidma_init(Object *obj)
-     sysbus_init_mmio(sbd, &s->iomem);
+-static Property pca955x_properties[] = {
++static const Property pca955x_properties[] = {
+     DEFINE_PROP_STRING("description", PCA955xState, description),
+     DEFINE_PROP_END_OF_LIST(),
+ };
+diff --git a/hw/gpio/pca9554.c b/hw/gpio/pca9554.c
+index 68cc9e1de4..e8b0458aac 100644
+--- a/hw/gpio/pca9554.c
++++ b/hw/gpio/pca9554.c
+@@ -291,7 +291,7 @@ static void pca9554_realize(DeviceState *dev, Error **errp)
+     qdev_init_gpio_in(dev, pca9554_gpio_in_handler, PCA9554_PIN_COUNT);
  }
  
--static Property axidma_properties[] = {
-+static const Property axidma_properties[] = {
-     DEFINE_PROP_UINT32("freqhz", XilinxAXIDMA, freqhz, 50000000),
-     DEFINE_PROP_LINK("axistream-connected", XilinxAXIDMA,
-                      tx_data_dev, TYPE_STREAM_SINK, StreamSink *),
-diff --git a/hw/dma/xlnx-zdma.c b/hw/dma/xlnx-zdma.c
-index 46f50631ff..1a63d5f3b2 100644
---- a/hw/dma/xlnx-zdma.c
-+++ b/hw/dma/xlnx-zdma.c
-@@ -810,7 +810,7 @@ static const VMStateDescription vmstate_zdma = {
+-static Property pca9554_properties[] = {
++static const Property pca9554_properties[] = {
+     DEFINE_PROP_STRING("description", PCA9554State, description),
+     DEFINE_PROP_END_OF_LIST(),
+ };
+diff --git a/hw/gpio/pl061.c b/hw/gpio/pl061.c
+index d5838b8e98..9b8ca6de32 100644
+--- a/hw/gpio/pl061.c
++++ b/hw/gpio/pl061.c
+@@ -562,7 +562,7 @@ static void pl061_realize(DeviceState *dev, Error **errp)
+     }
+ }
+ 
+-static Property pl061_props[] = {
++static const Property pl061_props[] = {
+     DEFINE_PROP_UINT32("pullups", PL061State, pullups, 0xff),
+     DEFINE_PROP_UINT32("pulldowns", PL061State, pulldowns, 0x0),
+     DEFINE_PROP_END_OF_LIST()
+diff --git a/hw/gpio/sifive_gpio.c b/hw/gpio/sifive_gpio.c
+index e85c0406a2..5603f0c235 100644
+--- a/hw/gpio/sifive_gpio.c
++++ b/hw/gpio/sifive_gpio.c
+@@ -349,7 +349,7 @@ static const VMStateDescription vmstate_sifive_gpio = {
      }
  };
  
--static Property zdma_props[] = {
-+static const Property zdma_props[] = {
-     DEFINE_PROP_UINT32("bus-width", XlnxZDMA, cfg.bus_width, 64),
-     DEFINE_PROP_LINK("dma", XlnxZDMA, dma_mr,
-                      TYPE_MEMORY_REGION, MemoryRegion *),
-diff --git a/hw/dma/xlnx_csu_dma.c b/hw/dma/xlnx_csu_dma.c
-index 43738c4350..d78dc6444b 100644
---- a/hw/dma/xlnx_csu_dma.c
-+++ b/hw/dma/xlnx_csu_dma.c
-@@ -691,7 +691,7 @@ static const VMStateDescription vmstate_xlnx_csu_dma = {
+-static Property sifive_gpio_properties[] = {
++static const Property sifive_gpio_properties[] = {
+     DEFINE_PROP_UINT32("ngpio", SIFIVEGPIOState, ngpio, SIFIVE_GPIO_PINS),
+     DEFINE_PROP_END_OF_LIST(),
+ };
+diff --git a/hw/gpio/stm32l4x5_gpio.c b/hw/gpio/stm32l4x5_gpio.c
+index 30d8d6cba4..d1394f3f55 100644
+--- a/hw/gpio/stm32l4x5_gpio.c
++++ b/hw/gpio/stm32l4x5_gpio.c
+@@ -447,7 +447,7 @@ static const VMStateDescription vmstate_stm32l4x5_gpio = {
      }
  };
  
--static Property xlnx_csu_dma_properties[] = {
-+static const Property xlnx_csu_dma_properties[] = {
-     /*
-      * Ref PG021, Stream Data Width:
-      * Data width in bits of the AXI S2MM AXI4-Stream Data bus.
+-static Property stm32l4x5_gpio_properties[] = {
++static const Property stm32l4x5_gpio_properties[] = {
+     DEFINE_PROP_STRING("name", Stm32l4x5GpioState, name),
+     DEFINE_PROP_UINT32("mode-reset", Stm32l4x5GpioState, moder_reset, 0),
+     DEFINE_PROP_UINT32("ospeed-reset", Stm32l4x5GpioState, ospeedr_reset, 0),
 -- 
 2.43.0
 
