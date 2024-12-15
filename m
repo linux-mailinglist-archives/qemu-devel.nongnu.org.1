@@ -2,82 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B1589F259F
-	for <lists+qemu-devel@lfdr.de>; Sun, 15 Dec 2024 20:10:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B5D49F258A
+	for <lists+qemu-devel@lfdr.de>; Sun, 15 Dec 2024 20:07:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tMtwO-0001HA-Ix; Sun, 15 Dec 2024 14:06:08 -0500
+	id 1tMtwQ-0001HT-V3; Sun, 15 Dec 2024 14:06:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tMtwF-0001GE-06
- for qemu-devel@nongnu.org; Sun, 15 Dec 2024 14:05:59 -0500
-Received: from mail-oa1-x29.google.com ([2001:4860:4864:20::29])
+ id 1tMtwF-0001GY-FJ
+ for qemu-devel@nongnu.org; Sun, 15 Dec 2024 14:06:02 -0500
+Received: from mail-oo1-xc31.google.com ([2607:f8b0:4864:20::c31])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tMtwD-000118-Dn
+ id 1tMtwD-00011W-JV
  for qemu-devel@nongnu.org; Sun, 15 Dec 2024 14:05:58 -0500
-Received: by mail-oa1-x29.google.com with SMTP id
- 586e51a60fabf-29fbba47ca4so1352913fac.3
- for <qemu-devel@nongnu.org>; Sun, 15 Dec 2024 11:05:56 -0800 (PST)
+Received: by mail-oo1-xc31.google.com with SMTP id
+ 006d021491bc7-5f32de85789so1034447eaf.0
+ for <qemu-devel@nongnu.org>; Sun, 15 Dec 2024 11:05:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734289555; x=1734894355; darn=nongnu.org;
+ d=linaro.org; s=google; t=1734289556; x=1734894356; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=llJ8necg6Hk67Yi1QiP/nuY6/jPOVfZRsl8P8QhMvXY=;
- b=o6w87x72CphAIoKJoSs1ttGTE0Y+7sUeKHr3Phr1fz/6isTTVyYqtF1sE7PbCZZkSy
- O4JTfhIc0JOF68wXS2QYqPgTf5kRHMTWlytVHWC/q89jnoz71g0qvi4MrUaIz0VkFj2+
- fqdqiO255+dkVjp2i+ZFUAG8aTaT2W9gul/QVHUcHnxZbfq/LuXIDjR08/YZOPDjl1IJ
- WN35CNLzPdPAB0qaEHXwPDibENBiEq2N8E2xUzA24Cy4N/k6/W9FYEYC9gUET/cEU1po
- uRkztH0gc3zPV+25qYoPIlUAf4D3FoNSt+SSQGyucnH4PFCgPohP0UnHPMN5B9uQcco+
- Z2JA==
+ bh=LkTIOJvxAZpwekaMnF4W9WKYdFapWxP/f2wAmpMVyBY=;
+ b=PseLGHiWshvw8/qw0OC5u2R9P3MXXMNvzPRoqllMe44DGX8re6x6worPDJ6TKCa6pU
+ kNZT+il9Y//tyPFILontTfltkblbF9WaUqIoi0qoAk9in+ZOQf7B/T+OGFFPeTseirgW
+ 1CQ7pEMAzjEDr+kMFZ0SIjJFfU9uLpwSe79jACS8ZXyhFVYkSJuhGN0XVybcI+mLVnUt
+ uPpYRdTWdLcOPjC9r73/Sj88ndKmzYBkxX9OHC+JALqnqJ5ER9dE7gVmhajxD7Q82wU9
+ eiNc64alMPw9NGfrsxGTFKkU4YnXECKjbSLjVcuP/sYIZy94DW1ZfSjjZoMOuZBJn7kZ
+ Fiow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734289555; x=1734894355;
+ d=1e100.net; s=20230601; t=1734289556; x=1734894356;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=llJ8necg6Hk67Yi1QiP/nuY6/jPOVfZRsl8P8QhMvXY=;
- b=aVVDEG8Hp6JJaGoeA/fuWfBTOhNKiMgmEsacuW0Q7HnoqO4TALb5Yj57yv79tm6UF1
- oGFMQ9P9fHMfSV6U3WLEZRWBZ9Um+XT/RiE3LycMO3oMFESlSgKPt/3eXlYcyFpMUDl4
- kAx+4IaqPYXM/piA114xJuXbJCXYPaLztXN50ljIu62nhADzCxqIxb9GDzGKgdDBIDNp
- AywMwjvbH7Sfa5U1uYB12uN+IzGZoikhcdATMfdMU+N65dl4b6+96TbdBHrLNsx1GJB8
- uQpp+R0gdWUe2XT/2SllYYAZl+n19lWUze1YzPwDEpqC35UzzE0PTuwhiu7cLMFHV4A2
- LFVA==
-X-Gm-Message-State: AOJu0YxPQdg4tCLSfPmXwdeQXadsJOMm3kS542Ph6pkml0zOj72gC6u6
- /UG5uCsJs480Pp4mOskPnAVnYzAW8E9u3tM8HC7uGr4fKjFo7+8HN/JD7HaGS0ZALGwn6T+iUg8
- Kttd7PPNr
-X-Gm-Gg: ASbGncs/I3mihu9jQpSdWwWtVf4+xmKnr+sZk9PQHRqLuvlnltl8nXGJ0fVpc5CkpzB
- zn+YBif76ZPxq055yh3voDyisekZurb5MmsD6Nq/Od/ffXtM0uOU9913CqnVtEbHRaYepad2qMA
- +dzIRVIlETYlYG6h3ImPlMI9FpRiIWx5US2Tp1+Yuyawk09O9UcF+KJ0qcZnYwoeiMJtSBZ9h63
- ZOxRFkNxmh9YgUCCUsWHOtb7C5xhMbrUVWgjsT4f4MNwRcMjpxMEacGeZfgMzBtBaaaKFN6Qxbv
- 6Sm8aqkyc5sOyCZS6v88WPZxEI8itOuSwlI+gyhqiP8=
-X-Google-Smtp-Source: AGHT+IFTM8+CK5Byz1cfrhHjTwBHAvf7u1BvqMGrYYQOnHmxZ2AV8R1UFSpBl9VhpXsX16zKcbIZAg==
-X-Received: by 2002:a05:6870:e8d:b0:29e:5bb8:fb35 with SMTP id
- 586e51a60fabf-2a3ac8c0fedmr5454400fac.37.1734289555469; 
- Sun, 15 Dec 2024 11:05:55 -0800 (PST)
+ bh=LkTIOJvxAZpwekaMnF4W9WKYdFapWxP/f2wAmpMVyBY=;
+ b=RXpb28Mv/F4+Zq/E8ZbHW5DerjngpI9dL3ehA1W4zS//1cYMdkGxhND9x08sk3Lhow
+ ZOUmufVPqQQGNmJoO8JAbOm2BwC2JkbizkvfqNAxzGLJDzPSg/Nj3bxf0+6rIUneRkqM
+ ZLZDlxlA8jSEXr5SOHNczw4TA29saXUulNNZqzKLzAyNAJKugPfgCgWc6/RVlT0NYMUE
+ WuJa8DrYg11FkkA8p+DVR5JdoSSVIBoieEENZJbx0ZpGrV7IikuaoCuiCtmQHa1wuXQ9
+ 3dqWyZi6Vo53d4+jjaskdz8R0g0e1KtabPaL+Eg9RVAG+MUK9pIsvLo1VLyDPi6l4ex/
+ ewrw==
+X-Gm-Message-State: AOJu0Yxe02NzTBPVwVB5+UVYArgtdipr/32MhsIHeomO076FAK1nUdyf
+ zFl6pMFeokjtnJvgm3GBRJTopIgsu8VKKowZo92ki0UUS8rTj7lM1Yjv2k3hkd9zASho9SEPXR6
+ IAzeGqUoM
+X-Gm-Gg: ASbGncumCUoTgHRONalENsFFqK1q1VX8g1qK0aKUr3wMEL3LZ5VPpqZWAJVIeEZKL6z
+ 0DZ3yqJQl2oOiTsUak2Fms7HrCgCERa+DT032sxmZK6CQ7cd8N/wQECm9hVh6hkMfHo9D1mAYLY
+ MCzG9FSq1Irngmyi/DFjGnXyWZIGEkDFlS8aXdrIR31h/CQHr9BkN66k+O3DBt33HSfa9ZimFss
+ u0ACBpsTxYVmMGmUt+BScTTgbutbvmH1DawuTW69YfsOPiA+uDtkEjtm13TgGDHNGu5eQXva+ZX
+ ow4ndNvL8BB6bXg4OwcOjpcDmekWu1AkTBCnn54um6s=
+X-Google-Smtp-Source: AGHT+IG+M/6zhR5loTcSQyWHKz/7wp55zlbqX0+AJWOLJMWgv8xroVuI7zcQvV8TRc4azMLn6CqcBg==
+X-Received: by 2002:a05:6870:d114:b0:29e:7629:1466 with SMTP id
+ 586e51a60fabf-2a385335461mr7476534fac.7.1734289556543; 
+ Sun, 15 Dec 2024 11:05:56 -0800 (PST)
 Received: from localhost.localdomain (fixed-187-189-51-143.totalplay.net.
  [187.189.51.143]) by smtp.gmail.com with ESMTPSA id
- 586e51a60fabf-2a3d2914ac6sm1423214fac.39.2024.12.15.11.05.54
+ 586e51a60fabf-2a3d2914ac6sm1423214fac.39.2024.12.15.11.05.55
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 15 Dec 2024 11:05:54 -0800 (PST)
+ Sun, 15 Dec 2024 11:05:56 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: stefanha@redhat.com,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Greg Kurz <groug@kaod.org>, Christian Schoenebeck <qemu_oss@crudebyte.com>
-Subject: [PULL 11/67] hw/9pfs: Constify all Property
-Date: Sun, 15 Dec 2024 13:04:37 -0600
-Message-ID: <20241215190533.3222854-12-richard.henderson@linaro.org>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 12/67] hw/acpi: Constify all Property
+Date: Sun, 15 Dec 2024 13:04:38 -0600
+Message-ID: <20241215190533.3222854-13-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241215190533.3222854-1-richard.henderson@linaro.org>
 References: <20241215190533.3222854-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:4860:4864:20::29;
- envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x29.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c31;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oo1-xc31.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,26 +100,66 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Greg Kurz <groug@kaod.org>
-Reviewed-by: Christian Schoenebeck <qemu_oss@crudebyte.com>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- hw/9pfs/virtio-9p-device.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/acpi/erst.c                 | 2 +-
+ hw/acpi/generic_event_device.c | 2 +-
+ hw/acpi/piix4.c                | 2 +-
+ hw/acpi/vmgenid.c              | 2 +-
+ 4 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/hw/9pfs/virtio-9p-device.c b/hw/9pfs/virtio-9p-device.c
-index efa41cfd73..b764e4cd3d 100644
---- a/hw/9pfs/virtio-9p-device.c
-+++ b/hw/9pfs/virtio-9p-device.c
-@@ -243,7 +243,7 @@ static const VMStateDescription vmstate_virtio_9p = {
-     },
- };
+diff --git a/hw/acpi/erst.c b/hw/acpi/erst.c
+index a108cfe49b..5ef5ddccb6 100644
+--- a/hw/acpi/erst.c
++++ b/hw/acpi/erst.c
+@@ -1011,7 +1011,7 @@ static void erst_reset(DeviceState *dev)
+     trace_acpi_erst_reset_out(le32_to_cpu(s->header->record_count));
+ }
  
--static Property virtio_9p_properties[] = {
-+static const Property virtio_9p_properties[] = {
-     DEFINE_PROP_STRING("mount_tag", V9fsVirtioState, state.fsconf.tag),
-     DEFINE_PROP_STRING("fsdev", V9fsVirtioState, state.fsconf.fsdev_id),
+-static Property erst_properties[] = {
++static const Property erst_properties[] = {
+     DEFINE_PROP_LINK(ACPI_ERST_MEMDEV_PROP, ERSTDeviceState, hostmem,
+                      TYPE_MEMORY_BACKEND, HostMemoryBackend *),
+     DEFINE_PROP_UINT32(ACPI_ERST_RECORD_SIZE_PROP, ERSTDeviceState,
+diff --git a/hw/acpi/generic_event_device.c b/hw/acpi/generic_event_device.c
+index 663d9cb093..8c4706f8cf 100644
+--- a/hw/acpi/generic_event_device.c
++++ b/hw/acpi/generic_event_device.c
+@@ -316,7 +316,7 @@ static void acpi_ged_send_event(AcpiDeviceIf *adev, AcpiEventStatusBits ev)
+     qemu_irq_pulse(s->irq);
+ }
+ 
+-static Property acpi_ged_properties[] = {
++static const Property acpi_ged_properties[] = {
+     DEFINE_PROP_UINT32("ged-event", AcpiGedState, ged_event_bitmap, 0),
      DEFINE_PROP_END_OF_LIST(),
+ };
+diff --git a/hw/acpi/piix4.c b/hw/acpi/piix4.c
+index 1de3fe3261..2bfaf5a38d 100644
+--- a/hw/acpi/piix4.c
++++ b/hw/acpi/piix4.c
+@@ -602,7 +602,7 @@ static void piix4_send_gpe(AcpiDeviceIf *adev, AcpiEventStatusBits ev)
+     acpi_send_gpe_event(&s->ar, s->irq, ev);
+ }
+ 
+-static Property piix4_pm_properties[] = {
++static const Property piix4_pm_properties[] = {
+     DEFINE_PROP_UINT32("smb_io_base", PIIX4PMState, smb_io_base, 0),
+     DEFINE_PROP_UINT8(ACPI_PM_PROP_S3_DISABLED, PIIX4PMState, disable_s3, 0),
+     DEFINE_PROP_UINT8(ACPI_PM_PROP_S4_DISABLED, PIIX4PMState, disable_s4, 0),
+diff --git a/hw/acpi/vmgenid.c b/hw/acpi/vmgenid.c
+index e63c8af4c3..9c2ca85cc7 100644
+--- a/hw/acpi/vmgenid.c
++++ b/hw/acpi/vmgenid.c
+@@ -214,7 +214,7 @@ static void vmgenid_realize(DeviceState *dev, Error **errp)
+     vmgenid_update_guest(vms);
+ }
+ 
+-static Property vmgenid_device_properties[] = {
++static const Property vmgenid_device_properties[] = {
+     DEFINE_PROP_UUID(VMGENID_GUID, VmGenIdState, guid),
+     DEFINE_PROP_END_OF_LIST(),
+ };
 -- 
 2.43.0
 
