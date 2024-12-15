@@ -2,81 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4EF49F2585
-	for <lists+qemu-devel@lfdr.de>; Sun, 15 Dec 2024 20:07:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B1589F259F
+	for <lists+qemu-devel@lfdr.de>; Sun, 15 Dec 2024 20:10:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tMtwM-0001H9-BP; Sun, 15 Dec 2024 14:06:06 -0500
+	id 1tMtwO-0001HA-Ix; Sun, 15 Dec 2024 14:06:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tMtwD-0001Fo-Q1
- for qemu-devel@nongnu.org; Sun, 15 Dec 2024 14:05:58 -0500
-Received: from mail-oi1-x22a.google.com ([2607:f8b0:4864:20::22a])
+ id 1tMtwF-0001GE-06
+ for qemu-devel@nongnu.org; Sun, 15 Dec 2024 14:05:59 -0500
+Received: from mail-oa1-x29.google.com ([2001:4860:4864:20::29])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tMtwB-00010R-1B
- for qemu-devel@nongnu.org; Sun, 15 Dec 2024 14:05:56 -0500
-Received: by mail-oi1-x22a.google.com with SMTP id
- 5614622812f47-3eba0f09c3aso971207b6e.1
- for <qemu-devel@nongnu.org>; Sun, 15 Dec 2024 11:05:54 -0800 (PST)
+ id 1tMtwD-000118-Dn
+ for qemu-devel@nongnu.org; Sun, 15 Dec 2024 14:05:58 -0500
+Received: by mail-oa1-x29.google.com with SMTP id
+ 586e51a60fabf-29fbba47ca4so1352913fac.3
+ for <qemu-devel@nongnu.org>; Sun, 15 Dec 2024 11:05:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734289554; x=1734894354; darn=nongnu.org;
+ d=linaro.org; s=google; t=1734289555; x=1734894355; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=J7vC3VBtjcoNOh8750/uU7guz65QUQ+vUNGoylWHOnw=;
- b=NhQR/n6oUg20DqgXV8swsk0xz02mc54rj4hDHGb/baRAfX2hZyTtNJse4bPWkJAOyU
- BG6SeItL7rttXS3NZa0HamCKXOwg2FAporpJKQJT/ldZpbkaBSi81EJzAWDxmLqJToHe
- +fi8vkbg2nMhb8wU/+iyh+oXk9kBet1dVzuowv9c+K5sfSItIYAe3eCslWxe4jnXamcD
- zQnLoSsvMBx3nWY8AZF3jHvS9QaNlx8JB1QO6VI1O0sTrrjBOu1rC6kdbeYgZXa6PQfN
- QU+oSqXi+/ulD/p5AQmMqbjhprOKaot7kkX+3zTfvHuiGBUPE5O4mmSQCfqAdoSE3Mbe
- XKyA==
+ bh=llJ8necg6Hk67Yi1QiP/nuY6/jPOVfZRsl8P8QhMvXY=;
+ b=o6w87x72CphAIoKJoSs1ttGTE0Y+7sUeKHr3Phr1fz/6isTTVyYqtF1sE7PbCZZkSy
+ O4JTfhIc0JOF68wXS2QYqPgTf5kRHMTWlytVHWC/q89jnoz71g0qvi4MrUaIz0VkFj2+
+ fqdqiO255+dkVjp2i+ZFUAG8aTaT2W9gul/QVHUcHnxZbfq/LuXIDjR08/YZOPDjl1IJ
+ WN35CNLzPdPAB0qaEHXwPDibENBiEq2N8E2xUzA24Cy4N/k6/W9FYEYC9gUET/cEU1po
+ uRkztH0gc3zPV+25qYoPIlUAf4D3FoNSt+SSQGyucnH4PFCgPohP0UnHPMN5B9uQcco+
+ Z2JA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734289554; x=1734894354;
+ d=1e100.net; s=20230601; t=1734289555; x=1734894355;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=J7vC3VBtjcoNOh8750/uU7guz65QUQ+vUNGoylWHOnw=;
- b=Oomp9+rvzhPazL5/YJjzbsCOkd2CjIFI8p8X4+TRrhRpUuSB6nDejbVxhVaPXM78qW
- yZU7Tb9T2sk0TJFiLQ/5T8f5Q4M5BbpOiDY+Qc5e3IUbuHTa2g9uhiaqjT5EaTUqc4Eh
- gj4qs3K/2Muun9TprrttR6+ioFRUVkk6fSXiaHy8TOAGO8c95T1ajw+GXQMxyQa0MDxn
- Mx+9wF/QIHYkdy4iVE8d4uoQimkygKZroJA7hicZS0UBIuDGwY3c+w3CenjkbR7/wmu+
- tKVxiut527RHnTY6ZG9erlOaRiKqgyZs9LIzx5jFr5GhhFb/Ul06gn3pgi/nURn7jpQC
- O2cQ==
-X-Gm-Message-State: AOJu0YznUdnuxGIC/gJJeAkIcTLymvZevcGBhkPgjPReSGtFy7uiaZ+k
- sNmtKBAP9petkGKGoj4KgqKb+VUONfEkGqnel48WnRWrYlF35JHuWJkWEbAT5ec+cee1JejL7nY
- k14ZH5U3S
-X-Gm-Gg: ASbGncvtqP/WnvaLhgfAavlqxrUprcX8ZHQNeFObPdjNRR4h5OFZzEa7dPzwlPV0n6B
- Qi0E4N0AJFCjlY9ItoJH2xYWnB4uTcycl8vl5Vjt2jLaXfBOiai65mkRR5Qdqc/uE/KrZYcmT3v
- QdsTEtGurgiOMoy4elhQ3cHM5a7pS390JE7facSFytjqxbMEkh0BY118N9jjL8dQ8NyzVFIVZH/
- 1VJH98+aHWy8+AAdhMHEcTX59Dff3/pRiNiAeHIp4uRNY5ZHiDzVvVKn+/cvQrbURx4LtqYWL9M
- 3l0iRjmpgrSGwSZwhN+LBRitYxEW6avQoBgRtjTHUEA=
-X-Google-Smtp-Source: AGHT+IGXuu8Xi5AahyzYP+jdCm+vqg0lUhsPioOB1OMuLaMN5QfVSyTCyVWPd6tYCZ95Doq/bnHkWQ==
-X-Received: by 2002:a05:6870:ecac:b0:29e:4a6c:4010 with SMTP id
- 586e51a60fabf-2a3ac4ab788mr5111341fac.6.1734289553983; 
- Sun, 15 Dec 2024 11:05:53 -0800 (PST)
+ bh=llJ8necg6Hk67Yi1QiP/nuY6/jPOVfZRsl8P8QhMvXY=;
+ b=aVVDEG8Hp6JJaGoeA/fuWfBTOhNKiMgmEsacuW0Q7HnoqO4TALb5Yj57yv79tm6UF1
+ oGFMQ9P9fHMfSV6U3WLEZRWBZ9Um+XT/RiE3LycMO3oMFESlSgKPt/3eXlYcyFpMUDl4
+ kAx+4IaqPYXM/piA114xJuXbJCXYPaLztXN50ljIu62nhADzCxqIxb9GDzGKgdDBIDNp
+ AywMwjvbH7Sfa5U1uYB12uN+IzGZoikhcdATMfdMU+N65dl4b6+96TbdBHrLNsx1GJB8
+ uQpp+R0gdWUe2XT/2SllYYAZl+n19lWUze1YzPwDEpqC35UzzE0PTuwhiu7cLMFHV4A2
+ LFVA==
+X-Gm-Message-State: AOJu0YxPQdg4tCLSfPmXwdeQXadsJOMm3kS542Ph6pkml0zOj72gC6u6
+ /UG5uCsJs480Pp4mOskPnAVnYzAW8E9u3tM8HC7uGr4fKjFo7+8HN/JD7HaGS0ZALGwn6T+iUg8
+ Kttd7PPNr
+X-Gm-Gg: ASbGncs/I3mihu9jQpSdWwWtVf4+xmKnr+sZk9PQHRqLuvlnltl8nXGJ0fVpc5CkpzB
+ zn+YBif76ZPxq055yh3voDyisekZurb5MmsD6Nq/Od/ffXtM0uOU9913CqnVtEbHRaYepad2qMA
+ +dzIRVIlETYlYG6h3ImPlMI9FpRiIWx5US2Tp1+Yuyawk09O9UcF+KJ0qcZnYwoeiMJtSBZ9h63
+ ZOxRFkNxmh9YgUCCUsWHOtb7C5xhMbrUVWgjsT4f4MNwRcMjpxMEacGeZfgMzBtBaaaKFN6Qxbv
+ 6Sm8aqkyc5sOyCZS6v88WPZxEI8itOuSwlI+gyhqiP8=
+X-Google-Smtp-Source: AGHT+IFTM8+CK5Byz1cfrhHjTwBHAvf7u1BvqMGrYYQOnHmxZ2AV8R1UFSpBl9VhpXsX16zKcbIZAg==
+X-Received: by 2002:a05:6870:e8d:b0:29e:5bb8:fb35 with SMTP id
+ 586e51a60fabf-2a3ac8c0fedmr5454400fac.37.1734289555469; 
+ Sun, 15 Dec 2024 11:05:55 -0800 (PST)
 Received: from localhost.localdomain (fixed-187-189-51-143.totalplay.net.
  [187.189.51.143]) by smtp.gmail.com with ESMTPSA id
- 586e51a60fabf-2a3d2914ac6sm1423214fac.39.2024.12.15.11.05.53
+ 586e51a60fabf-2a3d2914ac6sm1423214fac.39.2024.12.15.11.05.54
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 15 Dec 2024 11:05:53 -0800 (PST)
+ Sun, 15 Dec 2024 11:05:54 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: stefanha@redhat.com,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 10/67] cpu-target: Constify all Property
-Date: Sun, 15 Dec 2024 13:04:36 -0600
-Message-ID: <20241215190533.3222854-11-richard.henderson@linaro.org>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Greg Kurz <groug@kaod.org>, Christian Schoenebeck <qemu_oss@crudebyte.com>
+Subject: [PULL 11/67] hw/9pfs: Constify all Property
+Date: Sun, 15 Dec 2024 13:04:37 -0600
+Message-ID: <20241215190533.3222854-12-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241215190533.3222854-1-richard.henderson@linaro.org>
 References: <20241215190533.3222854-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::22a;
- envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x22a.google.com
+Received-SPF: pass client-ip=2001:4860:4864:20::29;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x29.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,24 +101,26 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Greg Kurz <groug@kaod.org>
+Reviewed-by: Christian Schoenebeck <qemu_oss@crudebyte.com>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- cpu-target.c | 2 +-
+ hw/9pfs/virtio-9p-device.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/cpu-target.c b/cpu-target.c
-index 499facf774..2ae07a779e 100644
---- a/cpu-target.c
-+++ b/cpu-target.c
-@@ -183,7 +183,7 @@ void cpu_exec_unrealizefn(CPUState *cpu)
-  * This can't go in hw/core/cpu.c because that file is compiled only
-  * once for both user-mode and system builds.
-  */
--static Property cpu_common_props[] = {
-+static const Property cpu_common_props[] = {
- #ifdef CONFIG_USER_ONLY
-     /*
-      * Create a property for the user-only object, so users can
+diff --git a/hw/9pfs/virtio-9p-device.c b/hw/9pfs/virtio-9p-device.c
+index efa41cfd73..b764e4cd3d 100644
+--- a/hw/9pfs/virtio-9p-device.c
++++ b/hw/9pfs/virtio-9p-device.c
+@@ -243,7 +243,7 @@ static const VMStateDescription vmstate_virtio_9p = {
+     },
+ };
+ 
+-static Property virtio_9p_properties[] = {
++static const Property virtio_9p_properties[] = {
+     DEFINE_PROP_STRING("mount_tag", V9fsVirtioState, state.fsconf.tag),
+     DEFINE_PROP_STRING("fsdev", V9fsVirtioState, state.fsconf.fsdev_id),
+     DEFINE_PROP_END_OF_LIST(),
 -- 
 2.43.0
 
