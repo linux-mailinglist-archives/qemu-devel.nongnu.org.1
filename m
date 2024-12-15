@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC0009F25A6
-	for <lists+qemu-devel@lfdr.de>; Sun, 15 Dec 2024 20:12:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA21F9F25B9
+	for <lists+qemu-devel@lfdr.de>; Sun, 15 Dec 2024 20:14:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tMu0k-0005GJ-Kc; Sun, 15 Dec 2024 14:10:41 -0500
+	id 1tMu0e-00054y-T6; Sun, 15 Dec 2024 14:10:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tMtzu-0002KF-84
- for qemu-devel@nongnu.org; Sun, 15 Dec 2024 14:09:46 -0500
-Received: from mail-ot1-x330.google.com ([2607:f8b0:4864:20::330])
+ id 1tMtzv-0002Nr-2j
+ for qemu-devel@nongnu.org; Sun, 15 Dec 2024 14:09:47 -0500
+Received: from mail-ot1-x32c.google.com ([2607:f8b0:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tMtzs-0001Vm-Et
- for qemu-devel@nongnu.org; Sun, 15 Dec 2024 14:09:45 -0500
-Received: by mail-ot1-x330.google.com with SMTP id
- 46e09a7af769-71e15d9629bso679077a34.1
+ id 1tMtzt-0001W6-Ba
+ for qemu-devel@nongnu.org; Sun, 15 Dec 2024 14:09:46 -0500
+Received: by mail-ot1-x32c.google.com with SMTP id
+ 46e09a7af769-71e3284f963so1731399a34.1
  for <qemu-devel@nongnu.org>; Sun, 15 Dec 2024 11:09:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734289783; x=1734894583; darn=nongnu.org;
+ d=linaro.org; s=google; t=1734289784; x=1734894584; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=9LgtSkX9l1LaUxdbqZiUu1SCXP9yPXTGRSCaa4j0zPE=;
- b=W5W5UF1MuCs+DcQdnxxDW5R4m8ZqJ/duYNqah1WwgzbYwQCnzur1qqwx0c2xcbUL6T
- SiA0bbIvthOo7iAaHcyd8SehP11QJzvahe/2x9Z94Hd/EH06Vve281ZgwKJL9Le9d2pD
- fxgnBRFmeJ9RJ8Up6VmJm6cx4id86a1HZoOuBWOkwBbHoR0Y6tsk22TfFQtZqy2HlBBr
- GIC7TNFpD+qlMpo36BKoOT/WaRBp8ATsu0/Mm0O6tMS/0XVTahscfPvDYCUr1IUao8J6
- 3e1UjtM17t/oZouiiTGJOaYxs+i8lBa4PCuhy2iwXeg20YMqjnjG+MQ06IObIaQxQzql
- gmFQ==
+ bh=8s/OID5KE9oMd0XN+uqlFnMR3Q80aL2JeEILGul62oQ=;
+ b=PEeEEEvD7dX14nDqFPDWqZhy4EioSj5z7FrIPQWOYF5U9oJ/77ozZTyBLPuGzaIDBK
+ dZmxyoXpcszY06IaadnGs/9lg+CdNUzTIo58ksRgEQZFq9lz1BAhBOixT0w56Kv9/Kim
+ PjaBpq2JSR/JI9rE3EN7MgAjg92kpcBciVqlHMW+hWyhTmX5l5Nah5zn773lC22q1s1K
+ EiGRwDtr3Xfkj7aYDg9rx2bKMhHYC9VP+OmzfbAM+HL3Q2We1jfezuRSsJEkTo/fRyVf
+ IHwt3YW/d4km0nBdiWI7lCTGmvnMFOZqgiNPQQVR2Oeq7WqysHZjhMHbzDnGMUNKCHJk
+ FJ4A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734289783; x=1734894583;
+ d=1e100.net; s=20230601; t=1734289784; x=1734894584;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=9LgtSkX9l1LaUxdbqZiUu1SCXP9yPXTGRSCaa4j0zPE=;
- b=Qs6yV4cQ41jI9cPvsdwLE+nJUufu3oeg//35MCT8CLVCu3fA+TbluSusHujGSehamv
- udWK4C6TaV2XZLCIl6mTZZ79d4xn9RcVDHt4mCwhdCwCIy9cQoR3rTAUZnEwalez/RaN
- 8+P6TdVAtxHdq3Fhc5kvR5VNsa1xCiGMSm2Zpx07Zwaw4zAA04SXJkryVF2vk2H2BCUn
- vdM4dtiIRPnGX/rT1j6wnSKv7s4ZXZE9kNBSKjab9AmE2fnLStDN40P417yCfJT4TL0T
- 0MwcvAkJIdUOHSqoz0t1f/myuLibcO/sdBqXSLnNj7LkHvE3Xasp9sFDlLIv+UMt7bA3
- KXVw==
-X-Gm-Message-State: AOJu0YzvY5P9hym3+cge3te5axrRwCsl+yfon+Y2zGDQRGKngeKZt4Jq
- jIle7VwUcKBMnuwJgbY3OFL7DY9VfwlmwYlvx0aXrBxsx6qCqgg58akcwtf2HQMqlMbOYXl6Iph
- AJZBcLRdq
-X-Gm-Gg: ASbGnct4LYtZuyzPSojmF97uGQcFtAvoJGYBcOGvLql//AhBJA1R+jPFfgye6Rrl9W+
- t7cwUNT9hXtUa1ESVwLLvSDMuhqZ8psTL+/CJLv3ylEN3Yc5OM4T9QW0ReZljoFsaKDODKw0pj8
- yWEfZDMuVJGb0158qoxwf8XPoJ9MXhiu+9U3wFxYX/VLxgRsmJ0lBkbyc2SJS1gEFQIghEk+vOu
- yyFS/U2aJ1mPmNQfDMXeTjCBKM+18QXC9jwaHm/WMNWS+yknnJIbisHl3rbES/BOC0qgA8dE6i7
- bO6EcRvYhRutdadD2uDhCeJzaFCzwK6EkOR7NUzrxOs=
-X-Google-Smtp-Source: AGHT+IGftcpsrxWPpj2iqDoL5KF93ifniCcCkdYiTZxKu193LLSq5D1T1tp1ecgcJGHggWf6OYz5tg==
-X-Received: by 2002:a05:6830:3496:b0:71d:f3be:438f with SMTP id
- 46e09a7af769-71e3b852d73mr5947265a34.7.1734289783369; 
- Sun, 15 Dec 2024 11:09:43 -0800 (PST)
+ bh=8s/OID5KE9oMd0XN+uqlFnMR3Q80aL2JeEILGul62oQ=;
+ b=oT1KnJn1FlQkYKvAHR9x0a6viinQ1odilPWXy5mYmoOG5DSITOK1v5ka3GRAymMON9
+ Gx/PU3F5SP60zP/2d5dG3DI87YE5VnoBVMEv2encpyo4nXEvL5Co0kB5Le4jQTxuSZKK
+ Xy1JZFIVEnY2MWNTuY58vnFpa227nVf046OFENN8vQfXSVvhcdQQLTKR7Bjsk+6Rrf+8
+ vFDud3V3e6OOF5s5s0BSsd3Nm0haH+8vmWmD5FFcXtsvu3hI37JJff7w3gPrfV7c3Uyk
+ d1M2XOUzTvg3EpRE0zybgc7hDEbSzmbry9JPi8v/AlLDRsdiw4Fbl5NrGY07NyibOPy+
+ xMEQ==
+X-Gm-Message-State: AOJu0Yz1ZTG7zcwkoQ5jI2LHDhjZQ91+Ir+OrS4TBwr0AIC8bBhsUQdA
+ uCLs+E2jxNkXMSCmxXKKpA20QcNljNZMTfqAKzX924AUqNHFYnSO9tWFbIrNTiqrOeZd/s58yUl
+ 2Ad6iY/dm
+X-Gm-Gg: ASbGnctL5Pl7g5uKDGaVhNU7Hp59wAgtXv9DH1RR+4Mgr+d8WUxy+/d344vZGJdKJkH
+ 09hbVgsTuYOODvJxWs8BBhQ2Q3QRSV3VT8D4Uh1KpVKOIZJhPaYwycxmI09OKiQ8ZtWFf0HBhvd
+ 6n6Lz5Bqzt6y0y+WBnlVWvdPcUFcTiBIeEJbFqIFvcUApb1V93uaQqdtSTDCxuwiLg7ZZDfVdFa
+ mW3NFVWwH82EatEhcF5J5ALwUm+nGyu/Dh+D7v5TtVFhGwuPk9ZGt1k1cgat2tASCLOFNOTtjDo
+ 0FHPerDcJhtit5epweotkjD4ow0De/8IZhUE02vz5aY=
+X-Google-Smtp-Source: AGHT+IFG6edkwzKvdC/4pz+BakNrOf33Chq4NfoA/aUcggFgEyw3+ChOFWavfks0XHE08gJyxzIz8A==
+X-Received: by 2002:a05:6830:6705:b0:71d:3e4d:becf with SMTP id
+ 46e09a7af769-71e3ba3a756mr6078411a34.27.1734289784325; 
+ Sun, 15 Dec 2024 11:09:44 -0800 (PST)
 Received: from localhost.localdomain (fixed-187-189-51-143.totalplay.net.
  [187.189.51.143]) by smtp.gmail.com with ESMTPSA id
- 46e09a7af769-71e4836f8c2sm1015316a34.34.2024.12.15.11.09.42
+ 46e09a7af769-71e4836f8c2sm1015316a34.34.2024.12.15.11.09.43
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 15 Dec 2024 11:09:43 -0800 (PST)
+ Sun, 15 Dec 2024 11:09:44 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: stefanha@redhat.com, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+Cc: stefanha@redhat.com,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 49/67] hw/riscv: Constify all Property
-Date: Sun, 15 Dec 2024 13:05:15 -0600
-Message-ID: <20241215190533.3222854-50-richard.henderson@linaro.org>
+Subject: [PULL 50/67] hw/rtc: Constify all Property
+Date: Sun, 15 Dec 2024 13:05:16 -0600
+Message-ID: <20241215190533.3222854-51-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241215190533.3222854-1-richard.henderson@linaro.org>
 References: <20241215190533.3222854-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::330;
- envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x330.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::32c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,82 +99,95 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- hw/riscv/opentitan.c       | 2 +-
- hw/riscv/riscv-iommu-pci.c | 2 +-
- hw/riscv/riscv-iommu.c     | 2 +-
- hw/riscv/riscv_hart.c      | 2 +-
- hw/riscv/sifive_u.c        | 2 +-
- 5 files changed, 5 insertions(+), 5 deletions(-)
+ hw/rtc/allwinner-rtc.c | 2 +-
+ hw/rtc/goldfish_rtc.c  | 2 +-
+ hw/rtc/m48t59-isa.c    | 2 +-
+ hw/rtc/m48t59.c        | 2 +-
+ hw/rtc/mc146818rtc.c   | 2 +-
+ hw/rtc/pl031.c         | 2 +-
+ 6 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/hw/riscv/opentitan.c b/hw/riscv/opentitan.c
-index e2830e9dc2..8ce85ea9f7 100644
---- a/hw/riscv/opentitan.c
-+++ b/hw/riscv/opentitan.c
-@@ -306,7 +306,7 @@ static void lowrisc_ibex_soc_realize(DeviceState *dev_soc, Error **errp)
-         memmap[IBEX_DEV_IBEX_CFG].base, memmap[IBEX_DEV_IBEX_CFG].size);
- }
- 
--static Property lowrisc_ibex_soc_props[] = {
-+static const Property lowrisc_ibex_soc_props[] = {
-     DEFINE_PROP_UINT32("resetvec", LowRISCIbexSoCState, resetvec, 0x20000400),
-     DEFINE_PROP_END_OF_LIST()
+diff --git a/hw/rtc/allwinner-rtc.c b/hw/rtc/allwinner-rtc.c
+index 1057d6a57f..838db72136 100644
+--- a/hw/rtc/allwinner-rtc.c
++++ b/hw/rtc/allwinner-rtc.c
+@@ -311,7 +311,7 @@ static const VMStateDescription allwinner_rtc_vmstate = {
+     }
  };
-diff --git a/hw/riscv/riscv-iommu-pci.c b/hw/riscv/riscv-iommu-pci.c
-index a42242532d..a695314bbe 100644
---- a/hw/riscv/riscv-iommu-pci.c
-+++ b/hw/riscv/riscv-iommu-pci.c
-@@ -157,7 +157,7 @@ static void riscv_iommu_pci_init(Object *obj)
-     iommu->icvec_avail_vectors = RISCV_IOMMU_PCI_ICVEC_VECTORS;
+ 
+-static Property allwinner_rtc_properties[] = {
++static const Property allwinner_rtc_properties[] = {
+     DEFINE_PROP_INT32("base-year", AwRtcState, base_year, 0),
+     DEFINE_PROP_END_OF_LIST(),
+ };
+diff --git a/hw/rtc/goldfish_rtc.c b/hw/rtc/goldfish_rtc.c
+index a6dfbf89f3..389f192efa 100644
+--- a/hw/rtc/goldfish_rtc.c
++++ b/hw/rtc/goldfish_rtc.c
+@@ -286,7 +286,7 @@ static void goldfish_rtc_realize(DeviceState *d, Error **errp)
+     s->timer = timer_new_ns(rtc_clock, goldfish_rtc_interrupt, s);
  }
  
--static Property riscv_iommu_pci_properties[] = {
-+static const Property riscv_iommu_pci_properties[] = {
-     DEFINE_PROP_UINT16("vendor-id", RISCVIOMMUStatePci, vendor_id,
-                        PCI_VENDOR_ID_REDHAT),
-     DEFINE_PROP_UINT16("device-id", RISCVIOMMUStatePci, device_id,
-diff --git a/hw/riscv/riscv-iommu.c b/hw/riscv/riscv-iommu.c
-index bbc95425b3..07fed36986 100644
---- a/hw/riscv/riscv-iommu.c
-+++ b/hw/riscv/riscv-iommu.c
-@@ -2235,7 +2235,7 @@ static void riscv_iommu_unrealize(DeviceState *dev)
-     g_hash_table_unref(s->ctx_cache);
+-static Property goldfish_rtc_properties[] = {
++static const Property goldfish_rtc_properties[] = {
+     DEFINE_PROP_BOOL("big-endian", GoldfishRTCState, big_endian,
+                       false),
+     DEFINE_PROP_END_OF_LIST(),
+diff --git a/hw/rtc/m48t59-isa.c b/hw/rtc/m48t59-isa.c
+index b642b82680..51f80d27ef 100644
+--- a/hw/rtc/m48t59-isa.c
++++ b/hw/rtc/m48t59-isa.c
+@@ -77,7 +77,7 @@ static void m48txx_isa_toggle_lock(Nvram *obj, int lock)
+     m48t59_toggle_lock(&d->state, lock);
  }
  
--static Property riscv_iommu_properties[] = {
-+static const Property riscv_iommu_properties[] = {
-     DEFINE_PROP_UINT32("version", RISCVIOMMUState, version,
-         RISCV_IOMMU_SPEC_DOT_VER),
-     DEFINE_PROP_UINT32("bus", RISCVIOMMUState, bus, 0x0),
-diff --git a/hw/riscv/riscv_hart.c b/hw/riscv/riscv_hart.c
-index 613ea2aaa0..0df454772f 100644
---- a/hw/riscv/riscv_hart.c
-+++ b/hw/riscv/riscv_hart.c
-@@ -27,7 +27,7 @@
- #include "hw/qdev-properties.h"
- #include "hw/riscv/riscv_hart.h"
- 
--static Property riscv_harts_props[] = {
-+static const Property riscv_harts_props[] = {
-     DEFINE_PROP_UINT32("num-harts", RISCVHartArrayState, num_harts, 1),
-     DEFINE_PROP_UINT32("hartid-base", RISCVHartArrayState, hartid_base, 0),
-     DEFINE_PROP_STRING("cpu-type", RISCVHartArrayState, cpu_type),
-diff --git a/hw/riscv/sifive_u.c b/hw/riscv/sifive_u.c
-index c5e74126b1..124ffd4842 100644
---- a/hw/riscv/sifive_u.c
-+++ b/hw/riscv/sifive_u.c
-@@ -936,7 +936,7 @@ static void sifive_u_soc_realize(DeviceState *dev, Error **errp)
-                        qdev_get_gpio_in(DEVICE(s->plic), SIFIVE_U_QSPI2_IRQ));
+-static Property m48t59_isa_properties[] = {
++static const Property m48t59_isa_properties[] = {
+     DEFINE_PROP_INT32("base-year", M48txxISAState, state.base_year, 0),
+     DEFINE_PROP_UINT32("iobase", M48txxISAState, io_base, 0x74),
+     DEFINE_PROP_UINT8("irq", M48txxISAState, isairq, 8),
+diff --git a/hw/rtc/m48t59.c b/hw/rtc/m48t59.c
+index 90299ea56f..5a2c7b4abd 100644
+--- a/hw/rtc/m48t59.c
++++ b/hw/rtc/m48t59.c
+@@ -618,7 +618,7 @@ static void m48txx_sysbus_toggle_lock(Nvram *obj, int lock)
+     m48t59_toggle_lock(&d->state, lock);
  }
  
--static Property sifive_u_soc_props[] = {
-+static const Property sifive_u_soc_props[] = {
-     DEFINE_PROP_UINT32("serial", SiFiveUSoCState, serial, OTP_SERIAL),
-     DEFINE_PROP_STRING("cpu-type", SiFiveUSoCState, cpu_type),
-     DEFINE_PROP_END_OF_LIST()
+-static Property m48t59_sysbus_properties[] = {
++static const Property m48t59_sysbus_properties[] = {
+     DEFINE_PROP_INT32("base-year", M48txxSysBusState, state.base_year, 0),
+     DEFINE_PROP_END_OF_LIST(),
+ };
+diff --git a/hw/rtc/mc146818rtc.c b/hw/rtc/mc146818rtc.c
+index 8ccee9a385..973ed9914d 100644
+--- a/hw/rtc/mc146818rtc.c
++++ b/hw/rtc/mc146818rtc.c
+@@ -960,7 +960,7 @@ MC146818RtcState *mc146818_rtc_init(ISABus *bus, int base_year,
+     return s;
+ }
+ 
+-static Property mc146818rtc_properties[] = {
++static const Property mc146818rtc_properties[] = {
+     DEFINE_PROP_INT32("base_year", MC146818RtcState, base_year, 1980),
+     DEFINE_PROP_UINT16("iobase", MC146818RtcState, io_base, RTC_ISA_BASE),
+     DEFINE_PROP_UINT8("irq", MC146818RtcState, isairq, RTC_ISA_IRQ),
+diff --git a/hw/rtc/pl031.c b/hw/rtc/pl031.c
+index 563bb4b446..1dc8e6e00f 100644
+--- a/hw/rtc/pl031.c
++++ b/hw/rtc/pl031.c
+@@ -319,7 +319,7 @@ static const VMStateDescription vmstate_pl031 = {
+     }
+ };
+ 
+-static Property pl031_properties[] = {
++static const Property pl031_properties[] = {
+     /*
+      * True to correctly migrate the tick offset of the RTC. False to
+      * obtain backward migration compatibility with older QEMU versions,
 -- 
 2.43.0
 
