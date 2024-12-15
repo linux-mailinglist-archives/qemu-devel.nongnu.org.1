@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4D919F2597
-	for <lists+qemu-devel@lfdr.de>; Sun, 15 Dec 2024 20:09:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FE869F25C5
+	for <lists+qemu-devel@lfdr.de>; Sun, 15 Dec 2024 20:17:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tMtx7-00028t-Cy; Sun, 15 Dec 2024 14:06:53 -0500
+	id 1tMtx8-0002Hw-GF; Sun, 15 Dec 2024 14:06:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tMtwi-0001Vd-0H
+ id 1tMtwi-0001Ve-3X
  for qemu-devel@nongnu.org; Sun, 15 Dec 2024 14:06:28 -0500
 Received: from mail-oo1-xc2a.google.com ([2607:f8b0:4864:20::c2a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tMtwg-0001FN-Ay
+ id 1tMtwg-0001Fj-JL
  for qemu-devel@nongnu.org; Sun, 15 Dec 2024 14:06:27 -0500
 Received: by mail-oo1-xc2a.google.com with SMTP id
- 006d021491bc7-5f3397bef34so345029eaf.0
- for <qemu-devel@nongnu.org>; Sun, 15 Dec 2024 11:06:24 -0800 (PST)
+ 006d021491bc7-5f340d6db09so449229eaf.1
+ for <qemu-devel@nongnu.org>; Sun, 15 Dec 2024 11:06:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734289584; x=1734894384; darn=nongnu.org;
+ d=linaro.org; s=google; t=1734289585; x=1734894385; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=UfqIQEtvyEll+bEq9eNWxSmYq+UyXT05rhZW4u9iFUI=;
- b=hhtNcTFFMDiyqcvtq1CJ95UFBT0DmH659PqCwYj63d/pSog5dQQr/cfwPbDJEMf2OX
- 68FgWnYCunmldw/T0ow28qHsToAGRPoUam7UfTN+nFSk56IrQBMH2IwPBiFperwd87yx
- KA6DatWDPKqSsY2OOR0wcXf8JVwA0hCNm9hdvH23ObEgkt5JWJjG68/smaMgLOjMDjGv
- 9pBPupwWtUJ6dXCnCobBi0PphJitV81HQ579bmV8lCYrD+k4GA1Gyzx6/dW5Fg9KkwxB
- UazUiX2d04BNv3hxmGpaq2T4Z0NrAajEp7IpAGHm21aV+w7Y1GMOogYwlOtmUZY0I6rV
- xnvQ==
+ bh=4Po02+cPNlfKpjVoSu+8QJp2TLU2nm8crEW/dnzqTYs=;
+ b=qMM9vvdmZbnf1hLMJ9s7uL/d1Qeg0lXm9LGoCaKe20pDf/8AgZjcaubuVhOXwutVJ6
+ lOliSJQJ0BOVkERB/AQPVlqkHKdgrCxbkcpqMqsNlcMuBIl//2GskhHxjbfMj+1AFjb8
+ 5Wrr9WJhJ2d1xpUt9/YJ2URm4hG67x+l/iJMotL4dcHoDfv3PyuspZRs+reau8tMUkWO
+ /pnAT/3QGXOsbuRkFam/3qrt6RVu41dYClA0irnqHWqzx/kTBi47/YdgzTqWfzqPXMWd
+ kCimR4hohEem4TAiGlUbB54FZXFGqBg9TaZ/FOg1Bu+Tspf6I1PqJp/Up7tTBy9Z2Bas
+ z+3Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734289584; x=1734894384;
+ d=1e100.net; s=20230601; t=1734289585; x=1734894385;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=UfqIQEtvyEll+bEq9eNWxSmYq+UyXT05rhZW4u9iFUI=;
- b=t7IAPoefuxRPw7Ziv8oYs8UfEyoYibPusUTNvUf6ZzHzuqRmm6B09WV4KoNrDAfwfK
- nXR83AVDRZFmXxIYCDya9YtQ4cNIW6R6sLegooVnL+9d4ibBe/J9KnoZFCYjbg8lmoex
- SvhZL72cGH4tk0KrPbDxUyKj10y6R4Bxv4ZaM6LJEsznKt7FNgOwBKmrE2ThK+2yC3M6
- 7NTHEuA+xIhOOa/GXV7dbYt5tDha2RoY82ftaFzZXLkl/zd4GTlhVLlWxT+AzQuyNhmp
- r32pCQYW50HCA9y30CqKGGGsSBWjoa8T0AG/gxOZ9hmw7zGX4pLIryOrizOmJ6geb87G
- 5H/g==
-X-Gm-Message-State: AOJu0Yx5IOwe2DzZ1CRr20qH2om4Xcg79SD9/7X4aXIH8a3GBrfcR7fj
- YTdAHdPnUZ7gDtu/5A9Y7VDRyfUXmDWttpQEIAAeMKBe8kmhYlRMWF+jXVkwZDxve5s6H9wxC9s
- hUQUVM8F6
-X-Gm-Gg: ASbGnct38Ns+1YrjlCDxdt23gklZcc3p0ZxnEVTAlRxEvWKXbkGWZp2JIQrLM8ItJmt
- cxgV8v0t4VAM1yomQvDpnWU/CN87cr6n/CebpodWfXL/hvhA81VeXdvRfs3T1UBFnETmIz4jwkp
- jttUEnOBZ/dmNs+KeoZyDBXkNEz6XpfxcCOJMToQgPQO/Wtf0rN1ctBrlejlgQxdgJPijE//Qt8
- Owf472fXHrb5lAJuE6wY0xuY5xxZF+oRmfw4tSouyjCeG9I5Nionlvjb0KeIU7/ile+xGCCDUKx
- DD1LakjZJ5MY53FFsOaoGOf5BEACPzOk8/sMzDKIk5E=
-X-Google-Smtp-Source: AGHT+IFhHpMpm+ocQm/ytiv5cQcRe13Ant3odRXWN3IJGVLz70KhLBOZjhwUtWqfYOTsJwHg2ASntQ==
-X-Received: by 2002:a05:6870:15ca:b0:29e:43ce:a172 with SMTP id
- 586e51a60fabf-2a3ac867f5amr4767151fac.28.1734289584169; 
- Sun, 15 Dec 2024 11:06:24 -0800 (PST)
+ bh=4Po02+cPNlfKpjVoSu+8QJp2TLU2nm8crEW/dnzqTYs=;
+ b=GKb5WGB7QHiL/Gn+GWtdEa8k9ZCTLjKDF/kBMCzhSk6ZRz20mrkxsFrojrHlsZnWr/
+ e1quym1s+MhCcYy4MeXGytz/VzUdlF21mg0isoM7anuyjjHPOpVh2KCcHsH4zBy18b9G
+ aSbnULCpFm8xYV6SHrEFEpTCb0DA9PbzRm3UzDJmkAHZ2lsvV5WYmqNKidtdbQxgCfPY
+ gP54M6bgqmpJnj0PUDM1HrddJSe9LMdV8y93E4nHiMvIO/PCYerJXrDmgw3lcBpE8ZFN
+ QW5i6iCxaOXDfCVbL4AlLChy6l6MGECkFKlWBpagyOkMO0ngSes4i1H4GqEUgfLRTtNz
+ isTA==
+X-Gm-Message-State: AOJu0YwS3cvQ7z6MXANEg8ntiRcl+zAQhmFyFanKtVOWAUorRquX8ptb
+ BX7a5YPC2BZ6wnlTWG0er3xoj8+tkumzRwiShQuzqIcQPmBvsf18FrW2ZQpOtZKh97c7KzOgDU1
+ GAvUVX49r
+X-Gm-Gg: ASbGnct+ao0IX8EsItR2jPcGWVnjXCHasq7rVEhImY1FowdGuLzcpM/YMbcOMHzeP3e
+ rI6wOePubArF7RDxDlNPm6AO+xUdxDRgeW094R4IWLJhMfE2yux9BAa3Sr8098iXG83tecQ5yvo
+ 2AO7Gos24kQD2B5BnRDe7Pytn1NEsL97in75GFZDmfnvkBQ6p0yRtk61cQatTPFgo+fUimjC8Xk
+ DaRRPQm14Z8hhWi/ubYs72TPoH+CXoh2fyVntukFYcieRQlOTApnwUCeV96JS2fuS4a1iq1L4Hf
+ ztZm+8MQ/ZAh8dGaQfCqwNW6zrDOhgswTOp0Saqy2Ms=
+X-Google-Smtp-Source: AGHT+IHBeC2FbkoE5W1WzH0ubjGO27U9sXtga90BHjd6zjtEhwdmt+WpshcTxyBl8ATqpzNz7GwolA==
+X-Received: by 2002:a05:6871:7a0:b0:29d:c6c9:c384 with SMTP id
+ 586e51a60fabf-2a3ac6beb64mr5535822fac.22.1734289585391; 
+ Sun, 15 Dec 2024 11:06:25 -0800 (PST)
 Received: from localhost.localdomain (fixed-187-189-51-143.totalplay.net.
  [187.189.51.143]) by smtp.gmail.com with ESMTPSA id
- 586e51a60fabf-2a3d2914ac6sm1423214fac.39.2024.12.15.11.06.23
+ 586e51a60fabf-2a3d2914ac6sm1423214fac.39.2024.12.15.11.06.24
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 15 Dec 2024 11:06:23 -0800 (PST)
+ Sun, 15 Dec 2024 11:06:24 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: stefanha@redhat.com, Corey Minyard <cminyard@mvista.com>,
+Cc: stefanha@redhat.com, Bernhard Beschow <shentey@gmail.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 33/67] hw/ipmi: Constify all Property
-Date: Sun, 15 Dec 2024 13:04:59 -0600
-Message-ID: <20241215190533.3222854-34-richard.henderson@linaro.org>
+Subject: [PULL 34/67] hw/isa: Constify all Property
+Date: Sun, 15 Dec 2024 13:05:00 -0600
+Message-ID: <20241215190533.3222854-35-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241215190533.3222854-1-richard.henderson@linaro.org>
 References: <20241215190533.3222854-1-richard.henderson@linaro.org>
@@ -99,82 +99,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Acked-by: Corey Minyard <cminyard@mvista.com>
+Reviewed-by: Bernhard Beschow <shentey@gmail.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- hw/ipmi/ipmi.c            | 2 +-
- hw/ipmi/ipmi_bmc_extern.c | 2 +-
- hw/ipmi/ipmi_bmc_sim.c    | 2 +-
- hw/ipmi/isa_ipmi_bt.c     | 2 +-
- hw/ipmi/isa_ipmi_kcs.c    | 2 +-
- 5 files changed, 5 insertions(+), 5 deletions(-)
+ hw/isa/lpc_ich9.c | 2 +-
+ hw/isa/pc87312.c  | 2 +-
+ hw/isa/piix.c     | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/hw/ipmi/ipmi.c b/hw/ipmi/ipmi.c
-index bbb07b151e..850b3bc463 100644
---- a/hw/ipmi/ipmi.c
-+++ b/hw/ipmi/ipmi.c
-@@ -108,7 +108,7 @@ void ipmi_bmc_find_and_link(Object *obj, Object **bmc)
-                              OBJ_PROP_LINK_STRONG);
- }
- 
--static Property ipmi_bmc_properties[] = {
-+static const Property ipmi_bmc_properties[] = {
-     DEFINE_PROP_UINT8("slave_addr",  IPMIBmc, slave_addr, 0x20),
-     DEFINE_PROP_END_OF_LIST(),
+diff --git a/hw/isa/lpc_ich9.c b/hw/isa/lpc_ich9.c
+index dabd1217dd..378244aa8f 100644
+--- a/hw/isa/lpc_ich9.c
++++ b/hw/isa/lpc_ich9.c
+@@ -826,7 +826,7 @@ static const VMStateDescription vmstate_ich9_lpc = {
+     }
  };
-diff --git a/hw/ipmi/ipmi_bmc_extern.c b/hw/ipmi/ipmi_bmc_extern.c
-index 29c5af3cc3..cfec1da87c 100644
---- a/hw/ipmi/ipmi_bmc_extern.c
-+++ b/hw/ipmi/ipmi_bmc_extern.c
-@@ -515,7 +515,7 @@ static void ipmi_bmc_extern_finalize(Object *obj)
-     timer_free(ibe->extern_timer);
- }
  
--static Property ipmi_bmc_extern_properties[] = {
-+static const Property ipmi_bmc_extern_properties[] = {
-     DEFINE_PROP_CHR("chardev", IPMIBmcExtern, chr),
-     DEFINE_PROP_END_OF_LIST(),
+-static Property ich9_lpc_properties[] = {
++static const Property ich9_lpc_properties[] = {
+     DEFINE_PROP_BOOL("noreboot", ICH9LPCState, pin_strap.spkr_hi, false),
+     DEFINE_PROP_BOOL("smm-compat", ICH9LPCState, pm.smm_compat, false),
+     DEFINE_PROP_BOOL("smm-enabled", ICH9LPCState, pm.smm_enabled, false),
+diff --git a/hw/isa/pc87312.c b/hw/isa/pc87312.c
+index f67155498d..7bb2af817d 100644
+--- a/hw/isa/pc87312.c
++++ b/hw/isa/pc87312.c
+@@ -327,7 +327,7 @@ static const VMStateDescription vmstate_pc87312 = {
+     }
  };
-diff --git a/hw/ipmi/ipmi_bmc_sim.c b/hw/ipmi/ipmi_bmc_sim.c
-index 33c839c65a..8a55893e89 100644
---- a/hw/ipmi/ipmi_bmc_sim.c
-+++ b/hw/ipmi/ipmi_bmc_sim.c
-@@ -2191,7 +2191,7 @@ static void ipmi_sim_realize(DeviceState *dev, Error **errp)
-     vmstate_register(NULL, 0, &vmstate_ipmi_sim, ibs);
+ 
+-static Property pc87312_properties[] = {
++static const Property pc87312_properties[] = {
+     DEFINE_PROP_UINT16("iobase", PC87312State, iobase, 0x398),
+     DEFINE_PROP_UINT8("config", PC87312State, config, 1),
+     DEFINE_PROP_END_OF_LIST()
+diff --git a/hw/isa/piix.c b/hw/isa/piix.c
+index b4a402f61b..8ec9c63b8a 100644
+--- a/hw/isa/piix.c
++++ b/hw/isa/piix.c
+@@ -408,7 +408,7 @@ static void pci_piix_init(Object *obj)
+     object_initialize_child(obj, "rtc", &d->rtc, TYPE_MC146818_RTC);
  }
  
--static Property ipmi_sim_properties[] = {
-+static const Property ipmi_sim_properties[] = {
-     DEFINE_PROP_UINT16("fruareasize", IPMIBmcSim, fru.areasize, 1024),
-     DEFINE_PROP_STRING("frudatafile", IPMIBmcSim, fru.filename),
-     DEFINE_PROP_STRING("sdrfile", IPMIBmcSim, sdr_filename),
-diff --git a/hw/ipmi/isa_ipmi_bt.c b/hw/ipmi/isa_ipmi_bt.c
-index 7b36d51494..16062abb31 100644
---- a/hw/ipmi/isa_ipmi_bt.c
-+++ b/hw/ipmi/isa_ipmi_bt.c
-@@ -135,7 +135,7 @@ static void *isa_ipmi_bt_get_backend_data(IPMIInterface *ii)
-     return &iib->bt;
- }
- 
--static Property ipmi_isa_properties[] = {
-+static const Property ipmi_isa_properties[] = {
-     DEFINE_PROP_UINT32("ioport", ISAIPMIBTDevice, bt.io_base,  0xe4),
-     DEFINE_PROP_INT32("irq",   ISAIPMIBTDevice, isairq,  5),
-     DEFINE_PROP_END_OF_LIST(),
-diff --git a/hw/ipmi/isa_ipmi_kcs.c b/hw/ipmi/isa_ipmi_kcs.c
-index f52b32e590..7e7a37659e 100644
---- a/hw/ipmi/isa_ipmi_kcs.c
-+++ b/hw/ipmi/isa_ipmi_kcs.c
-@@ -142,7 +142,7 @@ static void *isa_ipmi_kcs_get_backend_data(IPMIInterface *ii)
-     return &iik->kcs;
- }
- 
--static Property ipmi_isa_properties[] = {
-+static const Property ipmi_isa_properties[] = {
-     DEFINE_PROP_UINT32("ioport", ISAIPMIKCSDevice, kcs.io_base,  0xca2),
-     DEFINE_PROP_INT32("irq",   ISAIPMIKCSDevice, isairq,  5),
-     DEFINE_PROP_END_OF_LIST(),
+-static Property pci_piix_props[] = {
++static const Property pci_piix_props[] = {
+     DEFINE_PROP_UINT32("smb_io_base", PIIXState, smb_io_base, 0),
+     DEFINE_PROP_BOOL("has-acpi", PIIXState, has_acpi, true),
+     DEFINE_PROP_BOOL("has-pic", PIIXState, has_pic, true),
 -- 
 2.43.0
 
