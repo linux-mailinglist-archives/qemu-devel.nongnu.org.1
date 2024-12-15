@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 188679F25B7
-	for <lists+qemu-devel@lfdr.de>; Sun, 15 Dec 2024 20:13:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E2C509F25A5
+	for <lists+qemu-devel@lfdr.de>; Sun, 15 Dec 2024 20:12:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tMtzv-00027N-2P; Sun, 15 Dec 2024 14:09:47 -0500
+	id 1tMu00-0002bD-1c; Sun, 15 Dec 2024 14:09:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tMtzn-0001ww-6m
- for qemu-devel@nongnu.org; Sun, 15 Dec 2024 14:09:40 -0500
-Received: from mail-oa1-x29.google.com ([2001:4860:4864:20::29])
+ id 1tMtzq-00022a-Jn
+ for qemu-devel@nongnu.org; Sun, 15 Dec 2024 14:09:42 -0500
+Received: from mail-ot1-x32e.google.com ([2607:f8b0:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tMtzk-0001Tw-Be
- for qemu-devel@nongnu.org; Sun, 15 Dec 2024 14:09:37 -0500
-Received: by mail-oa1-x29.google.com with SMTP id
- 586e51a60fabf-29e65257182so1629132fac.2
- for <qemu-devel@nongnu.org>; Sun, 15 Dec 2024 11:09:35 -0800 (PST)
+ id 1tMtzm-0001UH-Aq
+ for qemu-devel@nongnu.org; Sun, 15 Dec 2024 14:09:40 -0500
+Received: by mail-ot1-x32e.google.com with SMTP id
+ 46e09a7af769-71deb3745easo616230a34.3
+ for <qemu-devel@nongnu.org>; Sun, 15 Dec 2024 11:09:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734289775; x=1734894575; darn=nongnu.org;
+ d=linaro.org; s=google; t=1734289776; x=1734894576; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=8bRFQMU6GPusRQSSs8tq0WijM+F0esCyWu9EDpKqyNs=;
- b=yBEdIK8kfB5r5grI02lgavYzFJDlBL6K2LW2kLLspuKSKZtsZrERGRAYOHG8ri0NZA
- 7pK+XCVmQ6G23SmJBGZP3uAvc9h3y0OgOA1GqnQM3nND52UzUkBMwgqrpvyE/YxtxTvK
- VawgozlVE+tw9HmFNYIOFnQKf/TJOXWHytKrYshQ2FN5lD6fXg4INPVOSkGmD2T4lwXf
- 84KHYGsgNK0lRgCqfJ+xRzVxfdff0vsfrLjB4HW3WkGNqfAid29g9fS4IMushl7bqKJ4
- LcH8UoXgOX6oNe0E2Xkq+Iw7z8N42ApkuCee3i9XqB52aiHIP5kYKIusf7hWGOydv+Mx
- Q21w==
+ bh=nDIqzhxjX27ujrlP0ogrbhD8JXX/OV81ic1l65WtKDY=;
+ b=v6lqW67Jgx6sWTd7FmesBxUDgYUkCoL8befvHfpB0c+zebJnrKXpwzmwbMiSf2QMUz
+ RZLDgHtwFHOiYLVkcz+iF4IUBRY5HAqZaA4mHGCW1obt0b64HgF/bpLJpX7CGwvHtli4
+ e6MGFKxM58t0/CMZoQk+E77uLnN6Kaq5tIjWCxohjExsWzxJzDZo+NtIw9y/jNj9Zkjc
+ rQ0SSpiDdYh6shuESWav9oOgPBeUSv7DfwNE/7kcZ5GdrePRhtaY664sUToG2ro4Ze/1
+ XvrcG8pHask+0OzBQww/qhNyzm1UQkL+C43wmBinTIXLRdEZpCmg+HyjYLaCXsO/5bnz
+ ZKVw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734289775; x=1734894575;
+ d=1e100.net; s=20230601; t=1734289776; x=1734894576;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=8bRFQMU6GPusRQSSs8tq0WijM+F0esCyWu9EDpKqyNs=;
- b=V2l/WcXfRvCwKqQ0vgFhnxQnwMbrVyJXWHAMD6d1WGjwaKQp0Wl95o89W7im/YH6hT
- 8df7x1x+gLOTKgrb3hDaVDL4Tga9Fto1/5WAYLhJaSDRmZsFA6qXZ3o2SgcqLPPj8LUy
- GE2tcz7/sDLuaty9g+R7S+Xx/SZt1QE8oZaXq/t4DHNP5uHwzyw/Na1kXrA/7sA6Qeot
- i13zDSrqM0MB9s3LGXlUvM1mypSjthryOGhnAj1ceUPeWSelXkaQOTJXWUiKUIRi9tnR
- PuIqnUpg+uuhya4rSTll5U5eMUUsLjf48mToj/jhfyxoV785FgA+IYKTKD0JKOuV1nDX
- XTKA==
-X-Gm-Message-State: AOJu0Yyvc4enJL+1ivUvCBl0EYWpHFiQIHrjBmhDyYxxSkjDifxoelsm
- D+tRtFaVdqA+ScxkuELWqpkburUkDHMxEv3QhUK2kGWCBXA85tTXneMeyomnA0aWp+o8fAz6sTn
- PvxphqBeh
-X-Gm-Gg: ASbGnctVX+d2VSdbXwG5oZbiUcrrgUJ3AXXXozJfW+fULopPyT9zVFWcnM4xZIeFYSU
- Bb6ystuRqbMA1OnP4OTWukCrHU7WkxT1G4kru63tFF1/QMXtPK0ubJKbQzdYah3VWfTLnQdaiNu
- PD5/CGRBZMVLewpXC6/RaJveoPg7PuHKmfjIXTunlrXJOAWrQTBkphzm6fPaKobCxJahxjOZMMf
- AIEs5Kl8drnWp0g9jWGPL8eLZcGJk7kVa5U+sKqsl1mfjeXJrY7/sNUxXYSdC2YQFLE1xnyRaDv
- kpvYA/cC3HrtuXUjw0bfRvjEHN0zSwEoMB7M//gEyiY=
-X-Google-Smtp-Source: AGHT+IElTgnlJLPv57K1O+QDVi1sclk/whma4AX7i2Egh1rclYs4ChzVc9mRDBKhPcuKl56FYB/PyA==
-X-Received: by 2002:a05:6870:8dc4:b0:29e:6b6a:d6f3 with SMTP id
- 586e51a60fabf-2a3ac8c358amr4826615fac.39.1734289774786; 
- Sun, 15 Dec 2024 11:09:34 -0800 (PST)
+ bh=nDIqzhxjX27ujrlP0ogrbhD8JXX/OV81ic1l65WtKDY=;
+ b=C2hgK/ceHbJJPEgOMmqMIEMOG/gl4DmoDsJcpdSUPzWGiOgiDfVEY+Ri+4T48uDrVh
+ Sgtj8oXc/4eXwyk6hcsH/82xxFeqnyCQh3Z2Hudiag0U52/LniVG9TuDfnKUwXt/kBJw
+ dHxPTbgmh8IKhiPEQbzkq/Vz+Z79s2o23lUMf7FYzbKdvt0WigvwuqVazM1+Ek49m7x0
+ 7pjI64EL7ERnE2FB6D3vda3Ii1LLy9RmkNvmkIuiXfJBgQEjNOeArlK7mJGvBJr9RERg
+ 7TZa6gANXTxvJM08Fn9mlAi9VSvZfgHpz9PtPxcO14m+GoyxWJBxJUZmLiOO77OaG8K2
+ lAZg==
+X-Gm-Message-State: AOJu0Ywtt+4s5pKBVm52DaWWnh7xE5LkzJXZziVQaYMDfspK/enQYkxq
+ nJsQXsoUbG9RBFigPxzJ8PI170Us59miD2KMJDQaxcwPqt0osa5WAfFMQBm9kVZAvgZ4lCjaV5e
+ eZu4zhlz5
+X-Gm-Gg: ASbGnctgGUYz79+nwD5U4jJBVq8Yq+2K2t7988N2pPMIWjd5a3wqUE0LGcGMQW3cx7w
+ /Weey8kk+4aCKfMlTLXC/8BR3p137pco0Qn3DCr/gsrAVEQkZ33xrAvka1zHkEuxyI0DZrHqgYe
+ LdRln/Utb954oLaTbjDs4cwxOGEFcIh2nnJQD/uxNRZMW713YRlyisiftu/7wciK5DRwmuu0Tuj
+ Otr9l1zrLz7+4FP7FF5Dg0m00/O9sMOLDM1gIiYPmVRW8ztz2yxu2oH5/ghumG+4K708qI+SYIA
+ 9+bVgBkqJ6q4No3POkK1dpkOlonPPHPsxNDsxVAJ4XI=
+X-Google-Smtp-Source: AGHT+IGLowUD/RQCVv+pN35mQRARNAb6pKBpT1dzVFHohicFrv4NZ2EaBrVRLZI84nhEUsiUKOcjtQ==
+X-Received: by 2002:a05:6830:6a91:b0:718:6da0:72b with SMTP id
+ 46e09a7af769-71e3b84c434mr5638387a34.7.1734289775525; 
+ Sun, 15 Dec 2024 11:09:35 -0800 (PST)
 Received: from localhost.localdomain (fixed-187-189-51-143.totalplay.net.
  [187.189.51.143]) by smtp.gmail.com with ESMTPSA id
- 46e09a7af769-71e4836f8c2sm1015316a34.34.2024.12.15.11.09.33
+ 46e09a7af769-71e4836f8c2sm1015316a34.34.2024.12.15.11.09.34
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 15 Dec 2024 11:09:34 -0800 (PST)
+ Sun, 15 Dec 2024 11:09:35 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: stefanha@redhat.com,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 41/67] hw/nubus: Constify all Property
-Date: Sun, 15 Dec 2024 13:05:07 -0600
-Message-ID: <20241215190533.3222854-42-richard.henderson@linaro.org>
+Subject: [PULL 42/67] hw/nvme: Constify all Property
+Date: Sun, 15 Dec 2024 13:05:08 -0600
+Message-ID: <20241215190533.3222854-43-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241215190533.3222854-1-richard.henderson@linaro.org>
 References: <20241215190533.3222854-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:4860:4864:20::29;
- envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x29.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::32e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x32e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,36 +102,50 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- hw/nubus/nubus-bridge.c | 2 +-
- hw/nubus/nubus-device.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ hw/nvme/ctrl.c   | 2 +-
+ hw/nvme/ns.c     | 2 +-
+ hw/nvme/subsys.c | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/hw/nubus/nubus-bridge.c b/hw/nubus/nubus-bridge.c
-index a42c86080f..83893e5a46 100644
---- a/hw/nubus/nubus-bridge.c
-+++ b/hw/nubus/nubus-bridge.c
-@@ -23,7 +23,7 @@ static void nubus_bridge_init(Object *obj)
-     qdev_init_gpio_out(DEVICE(s), bus->irqs, NUBUS_IRQS);
+diff --git a/hw/nvme/ctrl.c b/hw/nvme/ctrl.c
+index ec75419566..33a3062466 100644
+--- a/hw/nvme/ctrl.c
++++ b/hw/nvme/ctrl.c
+@@ -8927,7 +8927,7 @@ static void nvme_exit(PCIDevice *pci_dev)
+     memory_region_del_subregion(&n->bar0, &n->iomem);
  }
  
--static Property nubus_bridge_properties[] = {
-+static const Property nubus_bridge_properties[] = {
-     DEFINE_PROP_UINT16("slot-available-mask", NubusBridge,
-                        bus.slot_available_mask, 0xffff),
-     DEFINE_PROP_END_OF_LIST()
-diff --git a/hw/nubus/nubus-device.c b/hw/nubus/nubus-device.c
-index 26fbcf29a2..7cafc13427 100644
---- a/hw/nubus/nubus-device.c
-+++ b/hw/nubus/nubus-device.c
-@@ -107,7 +107,7 @@ static void nubus_device_realize(DeviceState *dev, Error **errp)
-     }
+-static Property nvme_props[] = {
++static const Property nvme_props[] = {
+     DEFINE_BLOCK_PROPERTIES(NvmeCtrl, namespace.blkconf),
+     DEFINE_PROP_LINK("pmrdev", NvmeCtrl, pmr.dev, TYPE_MEMORY_BACKEND,
+                      HostMemoryBackend *),
+diff --git a/hw/nvme/ns.c b/hw/nvme/ns.c
+index 526e15aa80..192b80f18d 100644
+--- a/hw/nvme/ns.c
++++ b/hw/nvme/ns.c
+@@ -799,7 +799,7 @@ static void nvme_ns_realize(DeviceState *dev, Error **errp)
+     nvme_attach_ns(n, ns);
  }
  
--static Property nubus_device_properties[] = {
-+static const Property nubus_device_properties[] = {
-     DEFINE_PROP_INT32("slot", NubusDevice, slot, -1),
-     DEFINE_PROP_STRING("romfile", NubusDevice, romfile),
-     DEFINE_PROP_END_OF_LIST()
+-static Property nvme_ns_props[] = {
++static const Property nvme_ns_props[] = {
+     DEFINE_BLOCK_PROPERTIES(NvmeNamespace, blkconf),
+     DEFINE_PROP_BOOL("detached", NvmeNamespace, params.detached, false),
+     DEFINE_PROP_BOOL("shared", NvmeNamespace, params.shared, true),
+diff --git a/hw/nvme/subsys.c b/hw/nvme/subsys.c
+index 77deaf2c2c..3171c3888c 100644
+--- a/hw/nvme/subsys.c
++++ b/hw/nvme/subsys.c
+@@ -216,7 +216,7 @@ static void nvme_subsys_realize(DeviceState *dev, Error **errp)
+     nvme_subsys_setup(subsys, errp);
+ }
+ 
+-static Property nvme_subsystem_props[] = {
++static const Property nvme_subsystem_props[] = {
+     DEFINE_PROP_STRING("nqn", NvmeSubsystem, params.nqn),
+     DEFINE_PROP_BOOL("fdp", NvmeSubsystem, params.fdp.enabled, false),
+     DEFINE_PROP_SIZE("fdp.runs", NvmeSubsystem, params.fdp.runs,
 -- 
 2.43.0
 
