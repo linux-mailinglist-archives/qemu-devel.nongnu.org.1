@@ -2,87 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B5FA9F259D
-	for <lists+qemu-devel@lfdr.de>; Sun, 15 Dec 2024 20:10:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B4D919F2597
+	for <lists+qemu-devel@lfdr.de>; Sun, 15 Dec 2024 20:09:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tMtxA-0002UL-D7; Sun, 15 Dec 2024 14:06:56 -0500
+	id 1tMtx7-00028t-Cy; Sun, 15 Dec 2024 14:06:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tMtwi-0001W0-Ld
+ id 1tMtwi-0001Vd-0H
  for qemu-devel@nongnu.org; Sun, 15 Dec 2024 14:06:28 -0500
-Received: from mail-oo1-xc2e.google.com ([2607:f8b0:4864:20::c2e])
+Received: from mail-oo1-xc2a.google.com ([2607:f8b0:4864:20::c2a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tMtwe-0001Eg-75
- for qemu-devel@nongnu.org; Sun, 15 Dec 2024 14:06:28 -0500
-Received: by mail-oo1-xc2e.google.com with SMTP id
- 006d021491bc7-5f31f8f4062so1383651eaf.3
- for <qemu-devel@nongnu.org>; Sun, 15 Dec 2024 11:06:23 -0800 (PST)
+ id 1tMtwg-0001FN-Ay
+ for qemu-devel@nongnu.org; Sun, 15 Dec 2024 14:06:27 -0500
+Received: by mail-oo1-xc2a.google.com with SMTP id
+ 006d021491bc7-5f3397bef34so345029eaf.0
+ for <qemu-devel@nongnu.org>; Sun, 15 Dec 2024 11:06:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734289583; x=1734894383; darn=nongnu.org;
+ d=linaro.org; s=google; t=1734289584; x=1734894384; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=TVBuRr7KLSLtGzV6O9infIgLbdNJKmSVBAsV5f7mK48=;
- b=sSIu6W1u99Xlr68V05TsIkhQMw+NOkRfUXoG7FYkpniOqiFGzajPqdTdxg9UhZGz8E
- i9bJ1RI0bV1ZnhVguq0HdZvj0mMzL9T/CLEmNdK9wziPgc0zNJRQ80skSiNnDcS9GioQ
- 7XwFgrpAETuDMwI6hOHfwNbaxr+LUb1nx2LJmuhCeK5Y5FiR4+xDvKlaQXTKiTFTOFxI
- Fo1y85iwH/wQsqZ8swnO1og654IOsci43C/xKbuQ6dR9Cw8z3HKAfS2PxIZxb9fr4/n3
- 4sng8jWwHT8tT+fvHAx6eQR7xZt4iZbySQw7c2ufVdRK7jgbrITXcq6spcns6At1xziy
- CPyA==
+ bh=UfqIQEtvyEll+bEq9eNWxSmYq+UyXT05rhZW4u9iFUI=;
+ b=hhtNcTFFMDiyqcvtq1CJ95UFBT0DmH659PqCwYj63d/pSog5dQQr/cfwPbDJEMf2OX
+ 68FgWnYCunmldw/T0ow28qHsToAGRPoUam7UfTN+nFSk56IrQBMH2IwPBiFperwd87yx
+ KA6DatWDPKqSsY2OOR0wcXf8JVwA0hCNm9hdvH23ObEgkt5JWJjG68/smaMgLOjMDjGv
+ 9pBPupwWtUJ6dXCnCobBi0PphJitV81HQ579bmV8lCYrD+k4GA1Gyzx6/dW5Fg9KkwxB
+ UazUiX2d04BNv3hxmGpaq2T4Z0NrAajEp7IpAGHm21aV+w7Y1GMOogYwlOtmUZY0I6rV
+ xnvQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734289583; x=1734894383;
+ d=1e100.net; s=20230601; t=1734289584; x=1734894384;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=TVBuRr7KLSLtGzV6O9infIgLbdNJKmSVBAsV5f7mK48=;
- b=FoqoxGg8ciG8j7TtBinxrN3p38GTGYOZQ0Km7DNMcpYTV/l+V5ReFIL7FBQeQvn9PC
- 7wv9Jr9dLN+Q86Jop10DjfagKJwL0FglYD/jNplhuRecVwdBZUxEwjqZ1YgSERibiPtH
- hB+Aj4aayXVP74auR4EjvccROY2n4fBTYyTPq0EaDxWZpru/iHbW/T7gVG+amTI0v+mp
- qVasU1dL0/+ZDxKZcC58uDd1SgfLYVPjQD2Rp1iGahRWWap9IS7VUh7qTuwtTlV51y/G
- YXR/C39Vl5vu95+qh00Q+0DGsomZrq4u2gAKZNqGSNkPvd1T1yIBAJzuNRW5+OVL5b2B
- F+yQ==
-X-Gm-Message-State: AOJu0YxX8pbP+sCeDMsxAxGJRE/gABhjLLs7g2ufPvsz+3XdkScGkHDs
- NzZZmEEuWS4itgK8tzh5B9L1OrZGSLdINpg1DjHH3vEcjz/Z8JhKzUQZQSkm7rOfqA8o7nKUAFf
- 7KUgHdM8o
-X-Gm-Gg: ASbGncs8PZH0zxXSCQJUhPZyutFJqKRf2mopAlIjruiH/O/+FCH7lZ6kOj7L6d6S9Mx
- uyCK8zngNLsG6OhR63gmJ7dLCVdkD/aAofCmqx/cXsHIQdDToE+SYGMIgeEiASeedOwa7rPV8hz
- uMV9EiUNEV5ZaVz20ivdPzPgq0ZuCIOutq4NCI8KfNzdb/ImPZJYE3mj4P8EPFkh5TRVIqN2CMJ
- wMXGhRHtAGmouwr0ywFcjgiBDWnEP4MsYNQwjm9YzuBcX4lHIpCqyLmo0rVl2ChpWJPyDZ7Ij0Z
- PVAE5GX3abKC/ua6jlNVAVt6n7y+CCQcHWpnLGekEUU=
-X-Google-Smtp-Source: AGHT+IFPxE9zr62JrE71mZ1RHSMTofF6pIAOtwNXqzLJliQRcfokUPyM42EDpJpZZqNm26P+Jp4PlA==
-X-Received: by 2002:a05:6870:40c4:b0:277:caf7:3631 with SMTP id
- 586e51a60fabf-2a3ac53f609mr6036474fac.5.1734289582849; 
- Sun, 15 Dec 2024 11:06:22 -0800 (PST)
+ bh=UfqIQEtvyEll+bEq9eNWxSmYq+UyXT05rhZW4u9iFUI=;
+ b=t7IAPoefuxRPw7Ziv8oYs8UfEyoYibPusUTNvUf6ZzHzuqRmm6B09WV4KoNrDAfwfK
+ nXR83AVDRZFmXxIYCDya9YtQ4cNIW6R6sLegooVnL+9d4ibBe/J9KnoZFCYjbg8lmoex
+ SvhZL72cGH4tk0KrPbDxUyKj10y6R4Bxv4ZaM6LJEsznKt7FNgOwBKmrE2ThK+2yC3M6
+ 7NTHEuA+xIhOOa/GXV7dbYt5tDha2RoY82ftaFzZXLkl/zd4GTlhVLlWxT+AzQuyNhmp
+ r32pCQYW50HCA9y30CqKGGGsSBWjoa8T0AG/gxOZ9hmw7zGX4pLIryOrizOmJ6geb87G
+ 5H/g==
+X-Gm-Message-State: AOJu0Yx5IOwe2DzZ1CRr20qH2om4Xcg79SD9/7X4aXIH8a3GBrfcR7fj
+ YTdAHdPnUZ7gDtu/5A9Y7VDRyfUXmDWttpQEIAAeMKBe8kmhYlRMWF+jXVkwZDxve5s6H9wxC9s
+ hUQUVM8F6
+X-Gm-Gg: ASbGnct38Ns+1YrjlCDxdt23gklZcc3p0ZxnEVTAlRxEvWKXbkGWZp2JIQrLM8ItJmt
+ cxgV8v0t4VAM1yomQvDpnWU/CN87cr6n/CebpodWfXL/hvhA81VeXdvRfs3T1UBFnETmIz4jwkp
+ jttUEnOBZ/dmNs+KeoZyDBXkNEz6XpfxcCOJMToQgPQO/Wtf0rN1ctBrlejlgQxdgJPijE//Qt8
+ Owf472fXHrb5lAJuE6wY0xuY5xxZF+oRmfw4tSouyjCeG9I5Nionlvjb0KeIU7/ile+xGCCDUKx
+ DD1LakjZJ5MY53FFsOaoGOf5BEACPzOk8/sMzDKIk5E=
+X-Google-Smtp-Source: AGHT+IFhHpMpm+ocQm/ytiv5cQcRe13Ant3odRXWN3IJGVLz70KhLBOZjhwUtWqfYOTsJwHg2ASntQ==
+X-Received: by 2002:a05:6870:15ca:b0:29e:43ce:a172 with SMTP id
+ 586e51a60fabf-2a3ac867f5amr4767151fac.28.1734289584169; 
+ Sun, 15 Dec 2024 11:06:24 -0800 (PST)
 Received: from localhost.localdomain (fixed-187-189-51-143.totalplay.net.
  [187.189.51.143]) by smtp.gmail.com with ESMTPSA id
- 586e51a60fabf-2a3d2914ac6sm1423214fac.39.2024.12.15.11.06.21
+ 586e51a60fabf-2a3d2914ac6sm1423214fac.39.2024.12.15.11.06.23
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 15 Dec 2024 11:06:22 -0800 (PST)
+ Sun, 15 Dec 2024 11:06:23 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: stefanha@redhat.com, Alberto Garcia <berto@igalia.com>,
+Cc: stefanha@redhat.com, Corey Minyard <cminyard@mvista.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 32/67] hw/ipack: Constify all Property
-Date: Sun, 15 Dec 2024 13:04:58 -0600
-Message-ID: <20241215190533.3222854-33-richard.henderson@linaro.org>
+Subject: [PULL 33/67] hw/ipmi: Constify all Property
+Date: Sun, 15 Dec 2024 13:04:59 -0600
+Message-ID: <20241215190533.3222854-34-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241215190533.3222854-1-richard.henderson@linaro.org>
 References: <20241215190533.3222854-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c2e;
- envelope-from=richard.henderson@linaro.org; helo=mail-oo1-xc2e.google.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c2a;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oo1-xc2a.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,26 +99,82 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Acked-by: Alberto Garcia <berto@igalia.com>
+Acked-by: Corey Minyard <cminyard@mvista.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- hw/ipack/ipack.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/ipmi/ipmi.c            | 2 +-
+ hw/ipmi/ipmi_bmc_extern.c | 2 +-
+ hw/ipmi/ipmi_bmc_sim.c    | 2 +-
+ hw/ipmi/isa_ipmi_bt.c     | 2 +-
+ hw/ipmi/isa_ipmi_kcs.c    | 2 +-
+ 5 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/hw/ipack/ipack.c b/hw/ipack/ipack.c
-index c39dbb481f..7ffc4ffe6f 100644
---- a/hw/ipack/ipack.c
-+++ b/hw/ipack/ipack.c
-@@ -73,7 +73,7 @@ static void ipack_device_unrealize(DeviceState *dev)
-     qemu_free_irqs(idev->irq, 2);
+diff --git a/hw/ipmi/ipmi.c b/hw/ipmi/ipmi.c
+index bbb07b151e..850b3bc463 100644
+--- a/hw/ipmi/ipmi.c
++++ b/hw/ipmi/ipmi.c
+@@ -108,7 +108,7 @@ void ipmi_bmc_find_and_link(Object *obj, Object **bmc)
+                              OBJ_PROP_LINK_STRONG);
  }
  
--static Property ipack_device_props[] = {
-+static const Property ipack_device_props[] = {
-     DEFINE_PROP_INT32("slot", IPackDevice, slot, -1),
-     DEFINE_PROP_END_OF_LIST()
+-static Property ipmi_bmc_properties[] = {
++static const Property ipmi_bmc_properties[] = {
+     DEFINE_PROP_UINT8("slave_addr",  IPMIBmc, slave_addr, 0x20),
+     DEFINE_PROP_END_OF_LIST(),
  };
+diff --git a/hw/ipmi/ipmi_bmc_extern.c b/hw/ipmi/ipmi_bmc_extern.c
+index 29c5af3cc3..cfec1da87c 100644
+--- a/hw/ipmi/ipmi_bmc_extern.c
++++ b/hw/ipmi/ipmi_bmc_extern.c
+@@ -515,7 +515,7 @@ static void ipmi_bmc_extern_finalize(Object *obj)
+     timer_free(ibe->extern_timer);
+ }
+ 
+-static Property ipmi_bmc_extern_properties[] = {
++static const Property ipmi_bmc_extern_properties[] = {
+     DEFINE_PROP_CHR("chardev", IPMIBmcExtern, chr),
+     DEFINE_PROP_END_OF_LIST(),
+ };
+diff --git a/hw/ipmi/ipmi_bmc_sim.c b/hw/ipmi/ipmi_bmc_sim.c
+index 33c839c65a..8a55893e89 100644
+--- a/hw/ipmi/ipmi_bmc_sim.c
++++ b/hw/ipmi/ipmi_bmc_sim.c
+@@ -2191,7 +2191,7 @@ static void ipmi_sim_realize(DeviceState *dev, Error **errp)
+     vmstate_register(NULL, 0, &vmstate_ipmi_sim, ibs);
+ }
+ 
+-static Property ipmi_sim_properties[] = {
++static const Property ipmi_sim_properties[] = {
+     DEFINE_PROP_UINT16("fruareasize", IPMIBmcSim, fru.areasize, 1024),
+     DEFINE_PROP_STRING("frudatafile", IPMIBmcSim, fru.filename),
+     DEFINE_PROP_STRING("sdrfile", IPMIBmcSim, sdr_filename),
+diff --git a/hw/ipmi/isa_ipmi_bt.c b/hw/ipmi/isa_ipmi_bt.c
+index 7b36d51494..16062abb31 100644
+--- a/hw/ipmi/isa_ipmi_bt.c
++++ b/hw/ipmi/isa_ipmi_bt.c
+@@ -135,7 +135,7 @@ static void *isa_ipmi_bt_get_backend_data(IPMIInterface *ii)
+     return &iib->bt;
+ }
+ 
+-static Property ipmi_isa_properties[] = {
++static const Property ipmi_isa_properties[] = {
+     DEFINE_PROP_UINT32("ioport", ISAIPMIBTDevice, bt.io_base,  0xe4),
+     DEFINE_PROP_INT32("irq",   ISAIPMIBTDevice, isairq,  5),
+     DEFINE_PROP_END_OF_LIST(),
+diff --git a/hw/ipmi/isa_ipmi_kcs.c b/hw/ipmi/isa_ipmi_kcs.c
+index f52b32e590..7e7a37659e 100644
+--- a/hw/ipmi/isa_ipmi_kcs.c
++++ b/hw/ipmi/isa_ipmi_kcs.c
+@@ -142,7 +142,7 @@ static void *isa_ipmi_kcs_get_backend_data(IPMIInterface *ii)
+     return &iik->kcs;
+ }
+ 
+-static Property ipmi_isa_properties[] = {
++static const Property ipmi_isa_properties[] = {
+     DEFINE_PROP_UINT32("ioport", ISAIPMIKCSDevice, kcs.io_base,  0xca2),
+     DEFINE_PROP_INT32("irq",   ISAIPMIKCSDevice, isairq,  5),
+     DEFINE_PROP_END_OF_LIST(),
 -- 
 2.43.0
 
