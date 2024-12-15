@@ -2,88 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24CE29F25B1
-	for <lists+qemu-devel@lfdr.de>; Sun, 15 Dec 2024 20:13:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E76A9F2651
+	for <lists+qemu-devel@lfdr.de>; Sun, 15 Dec 2024 22:38:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tMu2f-0007PT-EG; Sun, 15 Dec 2024 14:12:37 -0500
+	id 1tMwIm-0005Bo-M8; Sun, 15 Dec 2024 16:37:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tMu0F-0004m8-UP
- for qemu-devel@nongnu.org; Sun, 15 Dec 2024 14:10:08 -0500
-Received: from mail-ot1-x32b.google.com ([2607:f8b0:4864:20::32b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tMu0D-0001gX-6Y
- for qemu-devel@nongnu.org; Sun, 15 Dec 2024 14:10:07 -0500
-Received: by mail-ot1-x32b.google.com with SMTP id
- 46e09a7af769-71e2aa8d5e3so1827456a34.2
- for <qemu-devel@nongnu.org>; Sun, 15 Dec 2024 11:10:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734289803; x=1734894603; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=xi4R9boo11xQYFP7RbWeb0vhVfO/Fgh3TkVnelxmyDk=;
- b=uSF2T2bdNQyw5Gxz3t20pC//5nmARodOb+ugscxPvQvPhU5LVHEmKxvNhwd0SdyR+k
- gy1Ms+mQTuzWqUB9MvSuobVnLcTycxO+/Pic0xQxYnvbuEefgJ95dvfi4TlZpoR3wkvX
- tQZdcfA0+1zvNwU7ifHfYeMlnuTQWtQSHe4VGrtT3D2sXCe0JjCOGtVlEA/vPdwCFYzr
- RsrTCURw93uJwTNDotqUgEVBNrv1lb/phD0QnvLl5R+7KBCgqBTLRo5J+KtaIEyshIpJ
- p6Og9/gm0jXCsqi3lTsWYDav0tSXRgTDubT4aWtCOJ9EiyZ3mU8cbkmq1Y5qLOHDePGp
- mhmQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734289803; x=1734894603;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=xi4R9boo11xQYFP7RbWeb0vhVfO/Fgh3TkVnelxmyDk=;
- b=AV5SYR5Ido0WIuJTkKYZSWvOQpL6z9Mvmu/wbPFIeuD+BMwU66BBqiE0ZAuGpMGjRS
- nCrl022t9PrJVuzcKrLKXJqFP0CavNgHeDwyQzAcxV7xhZnF5v1dkXwtrE8hx2L0hPyg
- axJ/gyrHykNJwWZG2BDF4GlokRJQM4Ps2KHBGFNT+0tzLNiVGoUVKtpeVgGJGYRKl040
- ZIaHoqt3AALX/DqslpnNkm+xDvKeR70jv4SOsMaqvqjLCTI1MRhPiVE9dF5kSaivxvn+
- 4RjkrWvO6bMuD9TRIcRlaPA4D0FjJO/NbkoTOT1Dcq/d5pwYRqrknXULkUQCUJzL9adr
- VDpw==
-X-Gm-Message-State: AOJu0Yx5kDIEUSh5697tSlPnycgnphYuQUR8IFPhUyPpbkS/Ih1DeIlA
- WHgVzekpzCCYkEPvy16RmnbquSjBZ9lr7FFr/C1JMWQik+h044FaU8/NUBA6VOf3B7wNRWtnOEt
- KLlgEKgEB
-X-Gm-Gg: ASbGncvKFrAtJXVHx95WehnUi7q0mfWGTU6/LElVnudGV9LUKefqu0FIvUyE2qdFob/
- dl28z7k01olfjY2n+C+JaezIm+O2AF9D7b2mkQS82h58QnEupJq9v4PJQvyxhP0ZrbJv3HNhtgi
- lseEtTlqJ1fOfqrw/BnE+3+dj2Cb1chDr1qSiUf6XUsw++c2V6hCNkaB2/LV9QE+opyvD+7TW2w
- TDvl+UhIOVhub+6HWXf0pv440lD/dWJ6Fx80DVR3UrNM/tJTs/LOKq5iUyJFipd7s+WAxKixxCB
- z0nSlY2IalRoKfRW3cWTrWQ+owDDyAxIauIBn64wYz0=
-X-Google-Smtp-Source: AGHT+IERyFKectWL3Yhb9Cfqn983oniF3orF/38OixBhS8UDpj5qjB1NRuna7RuklLJZ5fcRdLKjfA==
-X-Received: by 2002:a05:6830:2713:b0:71d:eee3:fd26 with SMTP id
- 46e09a7af769-71e3b82a1b8mr5133943a34.4.1734289803742; 
- Sun, 15 Dec 2024 11:10:03 -0800 (PST)
-Received: from localhost.localdomain (fixed-187-189-51-143.totalplay.net.
- [187.189.51.143]) by smtp.gmail.com with ESMTPSA id
- 46e09a7af769-71e4836f8c2sm1015316a34.34.2024.12.15.11.10.02
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 15 Dec 2024 11:10:03 -0800 (PST)
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: stefanha@redhat.com,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 67/67] docs: Constify all Property in examples
-Date: Sun, 15 Dec 2024 13:05:33 -0600
-Message-ID: <20241215190533.3222854-68-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20241215190533.3222854-1-richard.henderson@linaro.org>
-References: <20241215190533.3222854-1-richard.henderson@linaro.org>
+ (Exim 4.90_1) (envelope-from <yfliu2008@qq.com>)
+ id 1tMwIh-000596-Kz; Sun, 15 Dec 2024 16:37:20 -0500
+Received: from out203-205-221-242.mail.qq.com ([203.205.221.242])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <yfliu2008@qq.com>)
+ id 1tMwIe-00015J-QP; Sun, 15 Dec 2024 16:37:19 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+ t=1734298612; bh=TJjZMs7FrhFO7tdzWpuWUKuaFUOpqZNElm73YzJdYRQ=;
+ h=From:To:Cc:Subject:Date;
+ b=Wu6gv/Iit/PFH7iWloIcv6OLm7NfYOUasfHBkPddZqg1C+pnrhK2IwCC8DvX7OaXg
+ 7CS8hWy2TR+7/b1Oii0pefeQERCMB7nQEz50Iai1XTJTyINuy9MRCpvYt5Ee8z2l6+
+ n1zo3oS34XKiNfqgP/3UCA/y2RWP2OQtlKRH9Z64=
+Received: from qq.com ([171.213.183.116])
+ by newxmesmtplogicsvrszb20-0.qq.com (NewEsmtp) with SMTP
+ id 9321843C; Mon, 16 Dec 2024 05:36:50 +0800
+X-QQ-mid: xmsmtpt1734298610t0bi8nnlr
+Message-ID: <tencent_1993B55C24DE7979BF34B200F78287002907@qq.com>
+X-QQ-XMAILINFO: OGZxhFXqN7PJrgxZbfykKsvYPE36Ys8+B6nzHGT2OWpf1cEEihnjVrHL9z5pF2
+ E9s5nHy3n5TsDag3VLkQDyIxPPXbiaMevp7tY16kwo6q8H8uI4kMZ5ZkgqFcTVtXTmJrSQC3mVGH
+ voKM9XYHoz22D36ExidWnnag1zijJRSie9lNgk0F+SAUzAACCs2vKQvRNT+D11O41ayKNTMYy/pC
+ XrAZtxr8gqRo9mZdMUWZNnzWkkPf159mTcDAjbFdbyb0ntnp7ookhlmKgILyb/suPAYsEx20rJE2
+ PfeZwQeznJCfZH2brxUiNyE6gta6MC3hFSFXB0cP3uiS+5OAZPn5FrU0Cxz3fPEBgznDDWUd1DRL
+ iXBPmZH7XSxfzNUeNIofM/caAhBiSOcsGeyn4lLcVB0ZI+ZXsIQBB+vrbopro1EhBXSkDls5ySaj
+ L0M9Guqy7n0o0Bym17x1BTFeQJWIfB8RFg5ivZZ9e3P6Qzs80RTPbzDiE4aH0urCnRGLjkwoJnTp
+ gul+HQLUQXa8/hlK1ap9KJ/CnS7zFm4VJpZ66yKiyQ98pSH8X9LcUuxgqvQQ+oX+RqNN4Sale4BJ
+ sO1EGmcNaXVB9v1hVhNEMb7r9YOEZGTp7j0BH9hTPiic6SO4tMBhrDrSP0HHT84ddhHDtBrI3oiP
+ aITYiEbHAOaKlotMMCMD22V6VVLj9QYNLUQKpNs19x/vTdDXNNgovjcwFghPkv99FDaRwUMb1wnc
+ DgQdF4OD6dRrnps2eySGOC7zkW0lfpwmzRXAT4uB1v7ydj4VEhrh7Bebv6gdBV2pUIrNuYZXPL+i
+ Mnms1jIRO8pB2ExgLUAwV+K16OV/fPjG9BrKu/CMItTWj5Lkip+fXYvflDXz7ANJ3eLAJR1r9iLJ
+ 1L00Y+sAqxd2pXRvk9fFQ8T15A3O/BR0s3NxtuMEiNarhYZQvylt4lLGq2fNzB6VsaaqC/IlxQ+V
+ EE7ZrEM48=
+X-QQ-XMRINFO: NI4Ajvh11aEj8Xl/2s1/T8w=
+From: Yanfeng Liu <yfliu2008@qq.com>
+To: qemu-riscv@nongnu.org
+Cc: qemu-devel@nongnu.org, alistair.francis@wdc.com, alex.bennee@linaro.org,
+ mario.fleischmann@lauterbach.com, Yanfeng Liu <yfliu2008@qq.com>
+Subject: [PATCH v4] riscv/gdbstub: add V bit to priv reg
+Date: Mon, 16 Dec 2024 05:36:35 +0800
+X-OQ-MSGID: <20241215213635.15902-1-yfliu2008@qq.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::32b;
- envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x32b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=203.205.221.242; envelope-from=yfliu2008@qq.com;
+ helo=out203-205-221-242.mail.qq.com
+X-Spam_score_int: 11
+X-Spam_score: 1.1
+X-Spam_bar: +
+X-Spam_report: (1.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
+ DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_ENVFROM_END_DIGIT=0.25,
+ FREEMAIL_FROM=0.001, HELO_DYNAMIC_IPADDR=1.951, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ RDNS_DYNAMIC=0.982, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,49 +78,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- docs/devel/migration/compatibility.rst | 4 ++--
- docs/devel/virtio-backends.rst         | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+This adds virtualization mode (V bit) as bit(2) of register `priv`
+per RiscV debug spec v1.0.0-rc4. Checked with gdb-multiarch v12.1.
 
-diff --git a/docs/devel/migration/compatibility.rst b/docs/devel/migration/compatibility.rst
-index 5a5417ef06..c787f53738 100644
---- a/docs/devel/migration/compatibility.rst
-+++ b/docs/devel/migration/compatibility.rst
-@@ -198,7 +198,7 @@ was done::
+Note that GDB may display `INVALID` tag for `priv` reg when V bit
+is set, this doesn't affect actual access to the bit though.
+
+Signed-off-by: Yanfeng Liu <yfliu2008@qq.com>
+---
+ target/riscv/gdbstub.c | 23 +++++++++++++++++++----
+ 1 file changed, 19 insertions(+), 4 deletions(-)
+
+diff --git a/target/riscv/gdbstub.c b/target/riscv/gdbstub.c
+index c07df972f1..18e88f416a 100644
+--- a/target/riscv/gdbstub.c
++++ b/target/riscv/gdbstub.c
+@@ -213,7 +213,10 @@ static int riscv_gdb_get_virtual(CPUState *cs, GByteArray *buf, int n)
+         RISCVCPU *cpu = RISCV_CPU(cs);
+         CPURISCVState *env = &cpu->env;
  
- The relevant parts for migration are::
+-        return gdb_get_regl(buf, env->priv);
++        /* Per RiscV debug spec v1.0.0 rc4 */
++        target_ulong vbit = (env->virt_enabled) ? BIT(2) : 0;
++
++        return gdb_get_regl(buf, env->priv | vbit);
+ #endif
+     }
+     return 0;
+@@ -226,10 +229,22 @@ static int riscv_gdb_set_virtual(CPUState *cs, uint8_t *mem_buf, int n)
+         RISCVCPU *cpu = RISCV_CPU(cs);
+         CPURISCVState *env = &cpu->env;
  
--    @@ -1281,7 +1284,8 @@ static Property virtio_blk_properties[] = {
-+    @@ -1281,7 +1284,8 @@ static const Property virtio_blk_properties[] = {
-      #endif
-          DEFINE_PROP_BIT("request-merging", VirtIOBlock, conf.request_merging, 0,
-                          true),
-@@ -395,7 +395,7 @@ the old behaviour or the new behaviour::
-     index 8a87ccc8b0..5153ad63d6 100644
-     --- a/hw/pci/pci.c
-     +++ b/hw/pci/pci.c
--    @@ -79,6 +79,8 @@ static Property pci_props[] = {
-+    @@ -79,6 +79,8 @@ static const Property pci_props[] = {
-          DEFINE_PROP_STRING("failover_pair_id", PCIDevice,
-                             failover_pair_id),
-          DEFINE_PROP_UINT32("acpi-index",  PCIDevice, acpi_index, 0),
-diff --git a/docs/devel/virtio-backends.rst b/docs/devel/virtio-backends.rst
-index 9ff092e7a0..a6f9df4845 100644
---- a/docs/devel/virtio-backends.rst
-+++ b/docs/devel/virtio-backends.rst
-@@ -101,7 +101,7 @@ manually instantiated:
-       VirtIOBlock vdev;
-   };
- 
--  static Property virtio_blk_pci_properties[] = {
-+  static const Property virtio_blk_pci_properties[] = {
-       DEFINE_PROP_UINT32("class", VirtIOPCIProxy, class_code, 0),
-       DEFINE_PROP_BIT("ioeventfd", VirtIOPCIProxy, flags,
-                       VIRTIO_PCI_FLAG_USE_IOEVENTFD_BIT, true),
+-        env->priv = ldtul_p(mem_buf) & 0x3;
+-        if (env->priv == PRV_RESERVED) {
+-            env->priv = PRV_S;
++        target_ulong new_priv = ldtul_p(mem_buf) & 0x3;
++        bool new_virt = 0;
++
++        if (new_priv == PRV_RESERVED) {
++            new_priv = PRV_S;
++        }
++
++        if (new_priv != PRV_M) {
++            new_virt = (ldtul_p(mem_buf) & BIT(2)) >> 2;
+         }
++
++        if (riscv_has_ext(env, RVH) && new_virt != env->virt_enabled) {
++            riscv_cpu_swap_hypervisor_regs(env);
++        }
++
++        riscv_cpu_set_mode(env, new_priv, new_virt);
+ #endif
+         return sizeof(target_ulong);
+     }
 -- 
-2.43.0
+2.34.1
 
 
