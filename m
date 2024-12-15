@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67ED99F25BE
-	for <lists+qemu-devel@lfdr.de>; Sun, 15 Dec 2024 20:15:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 37E189F2594
+	for <lists+qemu-devel@lfdr.de>; Sun, 15 Dec 2024 20:08:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tMtx7-0002AW-E0; Sun, 15 Dec 2024 14:06:53 -0500
+	id 1tMtwq-0001gg-Kt; Sun, 15 Dec 2024 14:06:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tMtwk-0001Z5-Ie
+ id 1tMtwk-0001Z7-IV
  for qemu-devel@nongnu.org; Sun, 15 Dec 2024 14:06:30 -0500
-Received: from mail-oo1-xc33.google.com ([2607:f8b0:4864:20::c33])
+Received: from mail-oa1-x31.google.com ([2001:4860:4864:20::31])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tMtwi-0001GL-O8
+ id 1tMtwj-0001Gu-1E
  for qemu-devel@nongnu.org; Sun, 15 Dec 2024 14:06:30 -0500
-Received: by mail-oo1-xc33.google.com with SMTP id
- 006d021491bc7-5f2e2608681so1684308eaf.1
- for <qemu-devel@nongnu.org>; Sun, 15 Dec 2024 11:06:27 -0800 (PST)
+Received: by mail-oa1-x31.google.com with SMTP id
+ 586e51a60fabf-29e149aff1dso1087415fac.1
+ for <qemu-devel@nongnu.org>; Sun, 15 Dec 2024 11:06:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734289586; x=1734894386; darn=nongnu.org;
+ d=linaro.org; s=google; t=1734289588; x=1734894388; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=1ECW39NRqpfZ/PTyPriCYZSRdWHi5xzzMmZM9BZOJCk=;
- b=dC9rJAoR4xIpGIImMB/rUoDvTJsn4zH+rcrPbEoR5Vkc8qAS4oKvFxFGr3HUZLZ6KQ
- BDk57+TFqNQ+gjmmqSs7QfBWrEa2KPd0UaO/brWuy4GX5jRqM2sGzqPOTu/zluFzOgay
- MeuqHb8ysDUn/QcB/YKvcg7H3RnTdSrzmrLRWQbo3Oiz6M0eVaeSwtDx+c8gZIXM290q
- EIl8T0J5oVgpvrwIQ+mf3dEulB3ekCjJDdVQqs123mDfiEBGVYoFPdJC97tnX4G9rI+Y
- EP0adBUDKQd5f1Nevo1Mh1MZCquAgczyKiWwUOtqecIjd7dNLzViTbN58qr4ZCPr8fR9
- 8wZA==
+ bh=/0TsJRbwZmNAO2qYlCgVoT7st3PUvmUAIcZpMw0bU28=;
+ b=UCLon6q2zO/vod7nM6lgj623P1D6/3tF0JVSyKQF66Upze2t7Tc1NGrlR4NC6hkUmV
+ ByMz/C3SO2Ce7l2DqPcVVBo0nmO9n2Bv2SBSRHXMP+I2SI/Y/lTOgjc6y73UqkDoTSsE
+ ZpIuvlkoNdAbel7CA0WU2uQqmQ3XGcJwH5oJWKVGE7yJrwm07fAvCSfhlcQOR8plcpxD
+ Lvx5FyQa3liyOL8SFtqtLWYCPNbkM6y3QiarB2ZToJMM8vYAdfoviaYigv8yPWlfB0/Y
+ xZW9AVbVv+/vj/T1HeDxiunCz6N2QHQ5VPQWwcY3tRPQJldbSBg3COSi8lHpJgAi6PIN
+ +A8A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734289586; x=1734894386;
+ d=1e100.net; s=20230601; t=1734289588; x=1734894388;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=1ECW39NRqpfZ/PTyPriCYZSRdWHi5xzzMmZM9BZOJCk=;
- b=YuW+Rzsi/tO/xaiQsj+KwXuWqO23rm07is6+1WozeqXsmclIR8EJuLR8iri0vhIGcq
- gxVhK6FJhmSwNMqQMy1bv5v8O8C1XJFA2Az590KHU5BVZ2xXkarIBo2E1X/7d8u46lXF
- xsWYoq2zqxYi8beCYL4+7aaxuvuaFoiCWe41dIq0+6sYEB4cjmbgbqdlJA6PlCgPy+Cr
- JTFAmTWGqyavK+IpmpbPrQMkKCui/NpdQHRxwvTGIyX/hPboXWAFtgtFFS9yOqtxnYoZ
- 54LPDAJbOiGLJMRN2M62scozycgOLr0LkwbwAkfEVUi59DFCuWHHRjGlFjFHATWIbAGp
- qAkw==
-X-Gm-Message-State: AOJu0YyhUkSilDxT8Bgcrmva8r5S7bWgJkohTfHy5gImcslddj9GyCCl
- eAFJlDk55SCewQzN+zwAPJgSKRZlu9+JynOzh4Qm0AQbJfu7NN34zg1Stlq6HNgqpZ9FpM12WKn
- SwKVZTs0c
-X-Gm-Gg: ASbGncscBv2Rk+9jQSys5RtuuOYaiQegf/MD4eaDvhl3BfomlUS3Ua+cuE7F7KzFIlS
- S9UjVaZznq2LKAIazC8XlRkqO+8y/eRj4+SZENSZC31H3zatJPjrjPI1rM3bDVuUQl6tvZlcO0t
- ORg3aP5V6K0bUs/6zINus3coPPbbeUSw9r2/XEq6Pp7h9Dp63YnhkC4swBTczPJjQ6Pb0Y1lkw9
- 0jBXPYUyd27z4GSGeZjquPpsBn0hah+GKyTiKVL2s5EjaQmmH8AhKvwVAEyPBnd7khEqedgBZV8
- YZmG1Cs6hntlkIxfjmyuJdRRMNd7xjtl3/N+m4PYuBY=
-X-Google-Smtp-Source: AGHT+IH2hTaEOBrh61FJ8UoPd8ZEa2UrcfXEvROJsOyIYUUp0OyodvKHyHny/+bqAXpW26qKHbCryA==
-X-Received: by 2002:a05:6870:8a10:b0:29e:8068:e089 with SMTP id
- 586e51a60fabf-2a3ac7285demr5901565fac.19.1734289586753; 
- Sun, 15 Dec 2024 11:06:26 -0800 (PST)
+ bh=/0TsJRbwZmNAO2qYlCgVoT7st3PUvmUAIcZpMw0bU28=;
+ b=lfFBtbKWWzuNS/R2OzkQ9dIptgKe47o5721jOwgr/pKCvcPsgTN5Zl9WnEay/M8aqn
+ uFnkrHRBvKOzuamASQHZcK4kSWlqQ2P7VPPaJ7VE/7ZCOITycX2VmA141q1+g155Oqr6
+ xXCmButbYHYaspag4meConTqbQdNcHK0Fz84ZZAErO1TnxJIBJ85TYwn+jMrNBisWUYB
+ FgK9x1fP4QRVGixCcNHWlxYzqb4Z/clv8hA20gNmJjzNthzDl51maK6Xmi03qWt/Qsi+
+ 4znaCLKsoIVmMH9ePBJDmh7DB81f12pyBKOXxrbsT/MbHYFcRg3t9bV3ldx36I2kZ6tm
+ nUUg==
+X-Gm-Message-State: AOJu0YzMscp3bQae6XgrIqQ5U5Y7D+NEJLWHqy1/UIVqJtP7L43e2c5F
+ PT4uo35D0Pl9Cw8owj9BLQ1qm/Vwsr9UQlN0cpwpxVbzcB/kdqyskTCzf5JLqzMFjh16Ww2bXdW
+ 6ktXeVepM
+X-Gm-Gg: ASbGnctXu3vWReokL4wz7QPzAeBmedp0kHgpL6wH+c5KM/JnJ+U1T7HA3O2fZ8bFm/+
+ CRms216SQ6uZMDJmI9LQGdKBUmw7513ETNif7vvQgWtRdEuKLZq7jZTtzsAK6gTrdYW0x/oxxAZ
+ OEtvyag1TttMr0q19++SuF1GzqITMzaCaDgn1mB8W+fe1lHV2qhvOaACVQcCUl6Nh/7uLMdbloo
+ iKXKU1QbXoJuDo0lZ6e+Hl48Szx1FB9zfJgerRB1yF5s1ZzRVMxBazP+ktMv2KW+eAytukK/15m
+ Tfg5lxhZtJdEEZDmHAKoAFQhtUBJq4eeBTLelZv/OaA=
+X-Google-Smtp-Source: AGHT+IEuM7cjgrs6zXdgbC21FMTiEtl03TSCxvQ4KLURz2gOl+OQrJbkOzAY4Nbq8u+EAeyek5Vg4Q==
+X-Received: by 2002:a05:6870:781a:b0:29e:255e:9551 with SMTP id
+ 586e51a60fabf-2a3ac537783mr5486805fac.2.1734289587937; 
+ Sun, 15 Dec 2024 11:06:27 -0800 (PST)
 Received: from localhost.localdomain (fixed-187-189-51-143.totalplay.net.
  [187.189.51.143]) by smtp.gmail.com with ESMTPSA id
- 586e51a60fabf-2a3d2914ac6sm1423214fac.39.2024.12.15.11.06.25
+ 586e51a60fabf-2a3d2914ac6sm1423214fac.39.2024.12.15.11.06.27
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 15 Dec 2024 11:06:26 -0800 (PST)
+ Sun, 15 Dec 2024 11:06:27 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: stefanha@redhat.com, Thomas Huth <huth@tuxfamily.org>,
+Cc: stefanha@redhat.com,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 35/67] hw/m68k: Constify all Property
-Date: Sun, 15 Dec 2024 13:05:01 -0600
-Message-ID: <20241215190533.3222854-36-richard.henderson@linaro.org>
+Subject: [PULL 36/67] hw/mem: Constify all Property
+Date: Sun, 15 Dec 2024 13:05:02 -0600
+Message-ID: <20241215190533.3222854-37-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241215190533.3222854-1-richard.henderson@linaro.org>
 References: <20241215190533.3222854-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c33;
- envelope-from=richard.henderson@linaro.org; helo=mail-oo1-xc33.google.com
+Received-SPF: pass client-ip=2001:4860:4864:20::31;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x31.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,68 +99,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Reviewed-by: Thomas Huth <huth@tuxfamily.org>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- hw/m68k/mcf5206.c   | 2 +-
- hw/m68k/mcf_intc.c  | 2 +-
- hw/m68k/next-cube.c | 2 +-
- hw/m68k/q800-glue.c | 2 +-
+ hw/mem/cxl_type3.c  | 2 +-
+ hw/mem/nvdimm.c     | 2 +-
+ hw/mem/pc-dimm.c    | 2 +-
+ hw/mem/sparse-mem.c | 2 +-
  4 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/hw/m68k/mcf5206.c b/hw/m68k/mcf5206.c
-index 7247cdbe5e..45e5f74600 100644
---- a/hw/m68k/mcf5206.c
-+++ b/hw/m68k/mcf5206.c
-@@ -600,7 +600,7 @@ static void mcf5206_mbar_realize(DeviceState *dev, Error **errp)
-     s->uart[1] = mcf_uart_create(s->pic[13], serial_hd(1));
+diff --git a/hw/mem/cxl_type3.c b/hw/mem/cxl_type3.c
+index 5cf754b38f..12205c4d32 100644
+--- a/hw/mem/cxl_type3.c
++++ b/hw/mem/cxl_type3.c
+@@ -1216,7 +1216,7 @@ static void ct3d_reset(DeviceState *dev)
+ 
  }
  
--static Property mcf5206_mbar_properties[] = {
-+static const Property mcf5206_mbar_properties[] = {
-     DEFINE_PROP_LINK("m68k-cpu", m5206_mbar_state, cpu,
-                      TYPE_M68K_CPU, M68kCPU *),
-     DEFINE_PROP_END_OF_LIST(),
-diff --git a/hw/m68k/mcf_intc.c b/hw/m68k/mcf_intc.c
-index 9fc30b03ba..c24b0b715d 100644
---- a/hw/m68k/mcf_intc.c
-+++ b/hw/m68k/mcf_intc.c
-@@ -177,7 +177,7 @@ static void mcf_intc_instance_init(Object *obj)
-     sysbus_init_mmio(SYS_BUS_DEVICE(obj), &s->iomem);
+-static Property ct3_props[] = {
++static const Property ct3_props[] = {
+     DEFINE_PROP_LINK("memdev", CXLType3Dev, hostmem, TYPE_MEMORY_BACKEND,
+                      HostMemoryBackend *), /* for backward compatibility */
+     DEFINE_PROP_LINK("persistent-memdev", CXLType3Dev, hostpmem,
+diff --git a/hw/mem/nvdimm.c b/hw/mem/nvdimm.c
+index 1631a7d13f..10506d52e4 100644
+--- a/hw/mem/nvdimm.c
++++ b/hw/mem/nvdimm.c
+@@ -246,7 +246,7 @@ static void nvdimm_write_label_data(NVDIMMDevice *nvdimm, const void *buf,
+     memory_region_set_dirty(mr, backend_offset, size);
  }
  
--static Property mcf_intc_properties[] = {
-+static const Property mcf_intc_properties[] = {
-     DEFINE_PROP_LINK("m68k-cpu", mcf_intc_state, cpu,
-                      TYPE_M68K_CPU, M68kCPU *),
-     DEFINE_PROP_END_OF_LIST(),
-diff --git a/hw/m68k/next-cube.c b/hw/m68k/next-cube.c
-index 08886d432c..a37ce00874 100644
---- a/hw/m68k/next-cube.c
-+++ b/hw/m68k/next-cube.c
-@@ -914,7 +914,7 @@ static void next_pc_realize(DeviceState *dev, Error **errp)
-  * this cpu link property and could instead provide outbound IRQ lines
-  * that the board could wire up to the CPU.
-  */
--static Property next_pc_properties[] = {
-+static const Property next_pc_properties[] = {
-     DEFINE_PROP_LINK("cpu", NeXTPC, cpu, TYPE_M68K_CPU, M68kCPU *),
+-static Property nvdimm_properties[] = {
++static const Property nvdimm_properties[] = {
+     DEFINE_PROP_BOOL(NVDIMM_UNARMED_PROP, NVDIMMDevice, unarmed, false),
      DEFINE_PROP_END_OF_LIST(),
  };
-diff --git a/hw/m68k/q800-glue.c b/hw/m68k/q800-glue.c
-index e2ae7c3201..0d8cb8b1cb 100644
---- a/hw/m68k/q800-glue.c
-+++ b/hw/m68k/q800-glue.c
-@@ -203,7 +203,7 @@ static const VMStateDescription vmstate_glue = {
-  * this cpu link property and could instead provide outbound IRQ lines
-  * that the board could wire up to the CPU.
-  */
--static Property glue_properties[] = {
-+static const Property glue_properties[] = {
-     DEFINE_PROP_LINK("cpu", GLUEState, cpu, TYPE_M68K_CPU, M68kCPU *),
-     DEFINE_PROP_END_OF_LIST(),
+diff --git a/hw/mem/pc-dimm.c b/hw/mem/pc-dimm.c
+index 27919ca45d..49c5f9fd44 100644
+--- a/hw/mem/pc-dimm.c
++++ b/hw/mem/pc-dimm.c
+@@ -150,7 +150,7 @@ out:
+     return slot;
+ }
+ 
+-static Property pc_dimm_properties[] = {
++static const Property pc_dimm_properties[] = {
+     DEFINE_PROP_UINT64(PC_DIMM_ADDR_PROP, PCDIMMDevice, addr, 0),
+     DEFINE_PROP_UINT32(PC_DIMM_NODE_PROP, PCDIMMDevice, node, 0),
+     DEFINE_PROP_INT32(PC_DIMM_SLOT_PROP, PCDIMMDevice, slot,
+diff --git a/hw/mem/sparse-mem.c b/hw/mem/sparse-mem.c
+index 6e8f4f84fb..8d681adfc0 100644
+--- a/hw/mem/sparse-mem.c
++++ b/hw/mem/sparse-mem.c
+@@ -96,7 +96,7 @@ static const MemoryRegionOps sparse_mem_ops = {
+         },
  };
+ 
+-static Property sparse_mem_properties[] = {
++static const Property sparse_mem_properties[] = {
+     /* The base address of the memory */
+     DEFINE_PROP_UINT64("baseaddr", SparseMemState, baseaddr, 0x0),
+     /* The length of the sparse memory region */
 -- 
 2.43.0
 
