@@ -2,83 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B638E9F244E
-	for <lists+qemu-devel@lfdr.de>; Sun, 15 Dec 2024 15:11:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 59FFD9F245F
+	for <lists+qemu-devel@lfdr.de>; Sun, 15 Dec 2024 15:20:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tMpKe-0008SD-P2; Sun, 15 Dec 2024 09:10:52 -0500
+	id 1tMpSp-0001du-Ig; Sun, 15 Dec 2024 09:19:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tMpKW-0008RX-Px
- for qemu-devel@nongnu.org; Sun, 15 Dec 2024 09:10:45 -0500
-Received: from mail-oa1-x33.google.com ([2001:4860:4864:20::33])
+ id 1tMpSm-0001dM-JD
+ for qemu-devel@nongnu.org; Sun, 15 Dec 2024 09:19:16 -0500
+Received: from mail-oi1-x22a.google.com ([2607:f8b0:4864:20::22a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tMpKT-0004CJ-WB
- for qemu-devel@nongnu.org; Sun, 15 Dec 2024 09:10:44 -0500
-Received: by mail-oa1-x33.google.com with SMTP id
- 586e51a60fabf-29e65257182so1564183fac.2
- for <qemu-devel@nongnu.org>; Sun, 15 Dec 2024 06:10:41 -0800 (PST)
+ id 1tMpSk-0004t8-U1
+ for qemu-devel@nongnu.org; Sun, 15 Dec 2024 09:19:16 -0500
+Received: by mail-oi1-x22a.google.com with SMTP id
+ 5614622812f47-3eb9de518e2so1556042b6e.2
+ for <qemu-devel@nongnu.org>; Sun, 15 Dec 2024 06:19:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734271840; x=1734876640; darn=nongnu.org;
+ d=linaro.org; s=google; t=1734272353; x=1734877153; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:to:subject:user-agent:mime-version:date:message-id:from
  :to:cc:subject:date:message-id:reply-to;
- bh=7aLOrTTScnrPUmLlfVTQiML7vU4bmvSZgPaNUoqfW3s=;
- b=jaSPjdXU/sOmcnTJilBfXlNwNiNWxCeDCx3iaVm4ei9Mk1fnAmn4aFslaMbeJ98SHM
- Xjux41tAS6ckWFSY6waByo70mJdSROjWGwybBt/CWTu+7lxLwwx4Oz6kjSVMDgOsezh/
- Ib3hc5NlyhfK126rb/CEY5SQkg03KNSUBwDdm69xNyrZJrNz2DmnM0Scf5B66udqzUT2
- T6rnAvLFkzTCs9YDnWKd+lLmYB6WHtkGzdClOJ3m26t41EfoPKxul48d1Kbn6l9ZcV8h
- 8h8vXc74Z6f5wDGBMViZaOkNviEtfPbTBDJsmfXwSoJIDjgdwkgHCxjscUZNxpSBElxI
- YPkA==
+ bh=4fqV0K9zA+8GshNBoiptyOLuhjYqtR205wLwUCFY4j8=;
+ b=nNIc1pNLai86t82/gOzT9b3dCVS/2DBSBtWlEXjAdmbHREBN2jgwc2lMhMydaCKNUn
+ JwNkAUW/phxo05oHuawoHhmiervYQHCEIhoznCbrN/65fS1nSYVxnea3IDj+1xhFJzbu
+ Nf0n/uUAocTDZ/CdeWWgrSO6ueSl9AIiD8s5KFEUf9dekA0LcOZ7mkE1fnB3VSAlBnTy
+ WhpM46YUFFvx/uzDCEt1aleKlb6XjTDZIsz+sdD239H9xh1f1ciLQvmj+KD3ypiiGari
+ kq+2349iwCskQa6k1mkO/NnwqbwHlWAuMtUXKYgoUu6X1PXQGcmDM2KOtoSZwFqXgGcW
+ 0UfQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734271840; x=1734876640;
+ d=1e100.net; s=20230601; t=1734272353; x=1734877153;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=7aLOrTTScnrPUmLlfVTQiML7vU4bmvSZgPaNUoqfW3s=;
- b=TNmv4opj4f2atxSjC0MG4tMGlGm0qjH3t1zWv/Zz0gVUVJBnaeVxXG7Hc4LjXDIc+O
- G3rtVAzeyS/V+4Bj2MvoG0lcEJ9tlN1YjFIWjlNbEBo7xZZVwxlwEu2ocNzV7WTywEWj
- f5wnpjfUJuuLYS9uEAcy4i0oMaQbqVzD4dFNmGEfLuL8VR16bj1J6udcj4KGh4MaGHc7
- 9rokx/D25REhjMS3ei6ga2Jo+U187nOTZOgjKIZv8JdOKRdCFqxPwEwHciaFcXVH+0b4
- WCrsvpUwR3wnA9hyfAB9tE68NvefA+OKoMzty9clhg4CtffnwlW1MLRXwM1AU4nB2cvD
- N8QQ==
+ bh=4fqV0K9zA+8GshNBoiptyOLuhjYqtR205wLwUCFY4j8=;
+ b=K/wZFTQhn7FPH8zZPeg+G0VxadWZxONix+gEY+8sPYCCchDvywsJqi9VRXeyRx6miU
+ 0D922QLtlxO3ROg45n7MCD1adWCZjaUdNkoLleb4ER+zE+//8AGSgDi3UwbOeTeMRu2g
+ HiXN3v8yDHVPY2oxnoN1Ft2CJezUeu9I1emzl/fxPWd60AREu2wzN4IwNGzSVo/QVKbF
+ sB/JmVwQadgt60OlBkHtPXqV/PTmprfEqpUtHCP8J4zWnvCnnGMhAnHqMfyNsMc7bX6S
+ 1pZXujQIJZyB7UMcHxf6GKzn/tQjH7n39LS0H8Bz+UTgt69BoGUdLyd1O5xcSwKEoTJD
+ LCUQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXtxNqWAX5kzqr1STA9GQ1Th91FZzE62Ma+EOADF0IN1PLj/xYpqab1P7+FvQ+51GwXv98ltzbZ7eKA@nongnu.org
-X-Gm-Message-State: AOJu0YzH1JH/RaTBrrLs/D1ynwgIb+amtDCPtSBp5UyBRVgOgEQMhpvy
- 4fdxOlZdCRTFjfOAvs4wVIiYTqIyxQAvfPR+UBDDEWVmZlXcg9Ni/28XFBXjJgk=
-X-Gm-Gg: ASbGnctjxy0Q7eaqC6n9URPDhQ8+zpa52P66/WuYu4y3v3TF6LnBqV9pxkvOPjPT8Xp
- sUo7mRoJsckcXag25Q32Jin6M6YE34HdUkq5KdI+D+WQnNugYuZqSIcnfaHixPcIEDYdcO4ZPGy
- V3Z54Qa5smPsiEOWmsTR5lrgPZpMlCAuBeYALPHxc5D7svqr6qjACPoFW5WT3Ei27uK56BGAwlW
- T/AVBvXnYv0AQ3AoEK5ceaA0xGtPRaHcizB2mOUVbcMtKBOofLvgDvXcJ3vz3SYatebiJii3clA
- Mj1XSLNWfgNZ20FG+g2An/oKY//9hyMa/FY=
-X-Google-Smtp-Source: AGHT+IGs95t95rDztE5Df/O4w/3caEhTYEyhzdNQa5vndD68B6JeH6yf5RbWyR4mtvCDHDTKMJpCUw==
-X-Received: by 2002:a05:6870:e24f:b0:29e:5dfd:1e17 with SMTP id
- 586e51a60fabf-2a3ac6beb8bmr4453117fac.23.1734271840287; 
- Sun, 15 Dec 2024 06:10:40 -0800 (PST)
+ AJvYcCXqh/6N/JksZjzwO+5X9+9xhb9pCumrRw7HJPGPrtq0+P3Cuv930R0ZfFmicQIj6mI8kQBUp7smthTq@nongnu.org
+X-Gm-Message-State: AOJu0YwJ8D0ls2YPWLlPIVVRHV7HtP0y9TdQTr/oEcsvU84+eB8qAVUR
+ 1GJmrmC3s5wiX3EQEFuLoIAXuXzqnJ0zJ9qokeMzhTRwTnQiBaxcZtkqZyMp5TZfhSqRCODh3ut
+ NmPBs/U8u
+X-Gm-Gg: ASbGncuXax3M5oLy2sc4UqgMfgnYlHs/SKBk4II+f+rmP+2P1GV1cgGjg+nhlychDsV
+ FV4/jR5OKfWCkxT0xreMeeiE0cJ0U9bcQ3TXY3Har3nrSV2UKa48CP8cj1hGw0AOHrwR/++5SJC
+ ITdLWo0AJHCCKTgtgwa+FTYZf6PpahAjmv9ROjOpP2fbR+2Wf2mRHAC9VD04I8/UDzvGrBNsf8m
+ cU+plpd14GMRgxpCG8nDOnqk4PjsccdnAgeza5l4gZRzVNAZGoBeIw5g3LBVwIBSXFw/+Gthr0p
+ XYVH1p+6yAEsXVWThJA3G1fG4Xhk3gF1kUE=
+X-Google-Smtp-Source: AGHT+IGmrdtk/bWvhzv+gnRP3cGY0eW9zPrX1B4SvWKtZVt3AvXXvEWV2OYZyuNDNjbDqpOUgCyShQ==
+X-Received: by 2002:a05:6808:189e:b0:3eb:71a4:9854 with SMTP id
+ 5614622812f47-3eba67fe536mr5648450b6e.1.1734272352987; 
+ Sun, 15 Dec 2024 06:19:12 -0800 (PST)
 Received: from [192.168.4.112] (fixed-187-189-51-143.totalplay.net.
  [187.189.51.143]) by smtp.gmail.com with ESMTPSA id
- 586e51a60fabf-2a3d291dd95sm1191770fac.43.2024.12.15.06.10.39
+ 5614622812f47-3ebb4545546sm1026635b6e.0.2024.12.15.06.19.11
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 15 Dec 2024 06:10:39 -0800 (PST)
-Message-ID: <9b83983a-7f1d-4982-aacb-a88b6ca17388@linaro.org>
-Date: Sun, 15 Dec 2024 08:10:37 -0600
+ Sun, 15 Dec 2024 06:19:12 -0800 (PST)
+Message-ID: <63ef3af5-d1dc-42b5-8102-3ae604468555@linaro.org>
+Date: Sun, 15 Dec 2024 08:19:10 -0600
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 04/13] target/i386: unify choice between single and
- repeated string instructions
+Subject: Re: [PATCH 05/13] target/i386: reorganize ops emitted by do_gen_rep, 
+ drop repz_opt
 To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
 References: <20241215090613.89588-1-pbonzini@redhat.com>
- <20241215090613.89588-5-pbonzini@redhat.com>
+ <20241215090613.89588-6-pbonzini@redhat.com>
 Content-Language: en-US
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20241215090613.89588-5-pbonzini@redhat.com>
+In-Reply-To: <20241215090613.89588-6-pbonzini@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2001:4860:4864:20::33;
- envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x33.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::22a;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x22a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,43 +103,44 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 12/15/24 03:06, Paolo Bonzini wrote:
-> The same "if" is present in all generator functions for string instructions.
-> Push it inside gen_repz() and gen_repz_nz() instead.
+> The condition for optimizing repeat instruction is more or less the
+> opposite of what you imagine: almost always the string instruction
+> was_not_ optimized and optimizing the loop relied on goto_tb.
+> This is obviously not great for performance, due to the cost of the
+> exit-to-main-loop check, but also wrong.  In fact, after expanding
+> dc->jmp_opt and simplifying "!!x" to "x", the condition for looping used
+> to be:
 > 
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+>     ((cflags & CF_NO_GOTO_TB) ||
+>      (flags & (HF_RF_MASK | HF_TF_MASK | HF_INHIBIT_IRQ_MASK))) && !(cflags & CF_USE_ICOUNT)
+> 
+> In other words, setting aside RF (it requires special handling for REP
+> instructions and it was completely missing), repeat instruction were
+> being optimized if TF or inhibit IRQ flags were set.  This is certainly
+> wrong for TF, because string instructions trap after every execution,
+> and probably for interrupt shadow too.
+> 
+> Get rid of repz_opt completely.  The next patches will reintroduce the
+> optimization, applying it in the common case instead of the unlikely
+> and wrong one.
+> 
+> While at it, place the CX/ECX/RCX=0 case is at the end of the function,
+> which saves a label and is clearer when reading the generated ops.
+> For clarity, mark the cc_op explicitly as DYNAMIC even if at the end
+> of the translation block; the cc_op can come from either the previous
+> instruction or the string instruction, and currently we rely on
+> a gen_update_cc_op() that is hidden in the bowels of gen_jcc() to
+> spill cc_op and mark it clean.
+> 
+> Signed-off-by: Paolo Bonzini<pbonzini@redhat.com>
 > ---
->   target/i386/tcg/translate.c | 12 +++++++++--
->   target/i386/tcg/emit.c.inc  | 42 +++++++------------------------------
->   2 files changed, 17 insertions(+), 37 deletions(-)
-> 
-> diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
-> index 8bf6aa1fcf6..63a39d9f15a 100644
-> --- a/target/i386/tcg/translate.c
-> +++ b/target/i386/tcg/translate.c
-> @@ -1340,13 +1340,21 @@ static void gen_repz(DisasContext *s, MemOp ot,
->                        void (*fn)(DisasContext *s, MemOp ot))
->   
->   {
-> -    do_gen_rep(s, ot, fn, false);
-> +    if (s->prefix & (PREFIX_REPZ | PREFIX_REPNZ)) {
-> +        do_gen_rep(s, ot, fn, false);
-> +    } else {
-> +        fn(s, ot);
-> +    }
->   }
->   
->   static void gen_repz_nz(DisasContext *s, MemOp ot,
->                           void (*fn)(DisasContext *s, MemOp ot))
->   {
-> -    do_gen_rep(s, ot, fn, true);
-> +    if (s->prefix & (PREFIX_REPZ | PREFIX_REPNZ)) {
-> +        do_gen_rep(s, ot, fn, true);
-> +    } else {
-> +        fn(s, ot);
-> +    }
->   }
+>   target/i386/tcg/translate.c | 60 ++++++++-----------------------------
+>   1 file changed, 13 insertions(+), 47 deletions(-)
 
-Why not push it into do_gen_rep?
+It might have been clearer inlining gen_jz_ecx_string as a separate step, but no need to 
+do that now.  Yes, this is much clearer code generation.
+
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
 
 r~
