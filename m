@@ -2,86 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE3D99F22CE
-	for <lists+qemu-devel@lfdr.de>; Sun, 15 Dec 2024 10:07:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D99C39F22D5
+	for <lists+qemu-devel@lfdr.de>; Sun, 15 Dec 2024 10:08:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tMkaZ-0004fm-Jg; Sun, 15 Dec 2024 04:06:59 -0500
+	id 1tMkae-0004gR-BL; Sun, 15 Dec 2024 04:07:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tMkaY-0004fM-3a
- for qemu-devel@nongnu.org; Sun, 15 Dec 2024 04:06:58 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1tMkac-0004gA-3A
+ for qemu-devel@nongnu.org; Sun, 15 Dec 2024 04:07:02 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tMkaW-000704-Ct
- for qemu-devel@nongnu.org; Sun, 15 Dec 2024 04:06:57 -0500
+ id 1tMkaa-00070L-PX
+ for qemu-devel@nongnu.org; Sun, 15 Dec 2024 04:07:01 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1734253614;
+ s=mimecast20190719; t=1734253617;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=7qSvxAgvi/iO/49Wv7FHDDVXKQuBKeLKv7IQubFUeUk=;
- b=gFXoDpUUeIVUThe6xjT4KzzXSGjC5voAqPWEzxUgkfWnEN7rpOaWU1zFF+y3FC30b67a6C
- GIy0hF/fe7FJoUMVBX4oMtiiDrzeVAGvmeKrSEto6gdeYYEMYqBgAhEmAkEZ+W9eIXCikR
- DSdBlTSLGWMPQ3M2FzfyFw0Bo+wdkNI=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=+7Q/7tH4enxnwW3OhOEz+YJTZLRmROVofkNsXBKXZhI=;
+ b=L+/Ue0PXpGuNgljytng42cNOTd6hMga0/4IjsyBu4/fg1WMAOYspgUlK417ZTDK6xBUshe
+ GgqxL2iEoNrR7MJgBC9VQQXcCuLLwy+S6k5sYLBQwVbl6qwDdiRaZpekF+EZW23no/rHeq
+ 8TQMO31DMmK5WEGaozEuBX5uQS7Dj2I=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-475-578W1KbUNH6t7WV7UQhyOA-1; Sun, 15 Dec 2024 04:06:52 -0500
-X-MC-Unique: 578W1KbUNH6t7WV7UQhyOA-1
-X-Mimecast-MFC-AGG-ID: 578W1KbUNH6t7WV7UQhyOA
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-4362f893bfaso10208085e9.1
- for <qemu-devel@nongnu.org>; Sun, 15 Dec 2024 01:06:52 -0800 (PST)
+ us-mta-58-26Vaq9NLNMCU3kJH_D8Ifw-1; Sun, 15 Dec 2024 04:06:55 -0500
+X-MC-Unique: 26Vaq9NLNMCU3kJH_D8Ifw-1
+X-Mimecast-MFC-AGG-ID: 26Vaq9NLNMCU3kJH_D8Ifw
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-4361ecebc5bso345635e9.1
+ for <qemu-devel@nongnu.org>; Sun, 15 Dec 2024 01:06:55 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734253611; x=1734858411;
+ d=1e100.net; s=20230601; t=1734253613; x=1734858413;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=7qSvxAgvi/iO/49Wv7FHDDVXKQuBKeLKv7IQubFUeUk=;
- b=De6H4LQNUCHod+rzk1PurTaCMYzMNCa8wnWQQM2gHvX5vVjZ6KnQp+0UkhhPm9TR+l
- PatesYvoBQAnj0Dby6EkdRKrx5thnoqbqbRf7AjGwwxa81oc1b9zu49Hi1DQINpEazGK
- GsVuLdADpLyPRGCqQln8GF5/81C3p9Hmrl8aV0G98rpVHxKcCvUIA7uAeedYupRupEjE
- CHr+wMy2y0XsH99RbhhxoCtf1wS161YqLECcj+NaN77s1YbfCVIZOCZKYdebTkEdCjpE
- GEWZRDzfH4YMzLv/jyyZ+X8q2IAB4x6S/lCDnPRXBM69a3reQDfNAK0PkKG/KxB/zzuF
- Wl5w==
-X-Gm-Message-State: AOJu0YzqdjKbLqRUxe2cHsWyCmgl0yNausuM+L90ym4rwAMsi2Btbmtb
- s6FLQHMloSVzvXY6P1TuFI3SPRXoRPLFQGgr5IuZj53kPmR3JBkbN5UxHPTbr6ghHvHAYw9KLVh
- MbOoRFfAYe5f7NkKnjOKNAyU91+1EEKG9BIkIzk5gyH+gPtpznMy5D1S9ovw2GaTRUqrk1xi5LF
- ioQt1vIJjRumeRhmZspadmY0mEuObj7N3mEHdQ
-X-Gm-Gg: ASbGncvRymRu+pxjCS42Nq48qJlsIiz79Uv1Yy6/+73A57TiqTXNcbzP4k0QHWgT4IO
- MB033yYzBw69zMEDf1nBdQuCOuYUmC4N2FjFOcvIKgyF0EQ7aQclEiFnCI2zD06Z809Q6u1aKeh
- RmHUQ+MziglSlMmpPgoBtxkGCZwWDBNnS3qlx+v09nN3kmPxFgAkGAKMhU4LlqxkAAii1zWxrDi
- MRvoTyIac0lWIWCzULcuYMJ6jVFfQl7CXkQVNCx4aRUcSaPmEdspCby738=
-X-Received: by 2002:a05:600c:4709:b0:42c:de2f:da27 with SMTP id
- 5b1f17b1804b1-4362aa34d7bmr88880975e9.2.1734253610927; 
- Sun, 15 Dec 2024 01:06:50 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IE4ISHZrDX6b/xTH4Cf1MN1fyCDJ8scktNcsSMm+1xq/ClLYGUh47DCl2pwO3OwW1MnylMEUw==
-X-Received: by 2002:a05:600c:4709:b0:42c:de2f:da27 with SMTP id
- 5b1f17b1804b1-4362aa34d7bmr88880625e9.2.1734253610500; 
- Sun, 15 Dec 2024 01:06:50 -0800 (PST)
+ bh=+7Q/7tH4enxnwW3OhOEz+YJTZLRmROVofkNsXBKXZhI=;
+ b=GwLlw+skLZyHO8onAN5SM2nNl5HIDtwhldLnUsQtRGN/RDi9E9JSSrDBIaoOXK6s8J
+ +2xeLFYPEe7Z1xY7qrcRDSXwUf2Ao+4lq7oxWNBC4mv4NNRyA314mmCAvooa1Q84o/De
+ kUUUuQFCat/yMBuQxTm1ohoqJx/mGcC2y3GCdJteA/75URj5EyqJL27bLbpgYR31SG4/
+ KfmbySPeyM1xDoiMGmMnTaPYX1WcOw4sOPpjzLcdKGgA11lLkiVKr2D9ALFt52rUUg2I
+ 9JiwjyBiiZnyXtDtYXVfQjIEVD6NFyXoF6T2r3aKp2BbHfj3ved0PeUf7t6bsa6cw5mG
+ VPWA==
+X-Gm-Message-State: AOJu0Yx4tQwe+SlNLKxWOZc+G6FDd5USgvLHT4sa4m1NBqdGuJ7EJU3P
+ LkAw1avYhVJfWs6MTbPmIvg5dvRFVREJ41xQutRoKSIh97NV7ubUKov6z8zgNP37JiL8Dftiq5M
+ iU6eyIAt1zUc6w4rC3DrVhwnvtccILbVtVXtRinMnhL20rOJNB8oqzity/jLQsGWMYzzezfCQ6r
+ //ShkYTG2DpdsxjX7thzw+wVhuDTjJuS2kHGPX
+X-Gm-Gg: ASbGncvKekOkogxaKIe+TBClxXA0+TYw6AiV1iowmcS7A+4J9S1blegYS4wnUFlbb/w
+ DpjA9oyDbErGtDIPxPQ/PVn05OEeDzEezeNEze5Tt+0fkPOBjZDzkwVVduBRZjcxVnypBOh61qj
+ wpaC1bRXjc03o7gpb4IOIHp4ROPuadrleKrFUM1SYW03Gi+Dtd8REuY/7aDVj/XQj1cxkBPNpMo
+ kl02vV37Z0T47GYdpUyeHo2Ug1UHrL+6dus62VakGnk+rXN4cGy0M7jksM=
+X-Received: by 2002:a05:600c:1e0b:b0:434:feb1:adcf with SMTP id
+ 5b1f17b1804b1-4362aa9d2afmr66978665e9.25.1734253613026; 
+ Sun, 15 Dec 2024 01:06:53 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHKptYqJeAQcw0foSrC6OnVaqP26dUMYCfohyYkKVH+u0m3f7ySM+QiB6JZPiv6s6jwCia/Ww==
+X-Received: by 2002:a05:600c:1e0b:b0:434:feb1:adcf with SMTP id
+ 5b1f17b1804b1-4362aa9d2afmr66978315e9.25.1734253612585; 
+ Sun, 15 Dec 2024 01:06:52 -0800 (PST)
 Received: from [192.168.10.3] ([151.81.118.45])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43625706c77sm103226235e9.34.2024.12.15.01.06.48
+ 5b1f17b1804b1-43625553234sm105815575e9.3.2024.12.15.01.06.51
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 15 Dec 2024 01:06:48 -0800 (PST)
+ Sun, 15 Dec 2024 01:06:51 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org
-Subject: [PATCH 12/13] target/i386: pull computation of string update value
- out of loop
-Date: Sun, 15 Dec 2024 10:06:11 +0100
-Message-ID: <20241215090613.89588-13-pbonzini@redhat.com>
+Subject: [PATCH 13/13] target/i386: avoid using s->tmp0 for add to implicit
+ registers
+Date: Sun, 15 Dec 2024 10:06:12 +0100
+Message-ID: <20241215090613.89588-14-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241215090613.89588-1-pbonzini@redhat.com>
 References: <20241215090613.89588-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -23
 X-Spam_score: -2.4
@@ -106,182 +106,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is a common operation that is executed many times in rep
-movs or rep stos loops.  It can improve performance by several
-percentage points.
+For updates to implicit registers (RCX in LOOP instructions, RSI or RDI
+in string instructions, or the stack pointer) do the add directly using
+the registers (with no temporary) if 32-bit or 64-bit, or use a temporary
+created for the occasion if 16-bit.  This is more efficient and removes
+move instructions for the MO_TL case.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/tcg/translate.c | 54 ++++++++++++++++++-------------------
- 1 file changed, 26 insertions(+), 28 deletions(-)
+ target/i386/tcg/translate.c | 23 +++++++++++++++--------
+ 1 file changed, 15 insertions(+), 8 deletions(-)
 
 diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
-index e0f9f7748bc..4b652cc23e1 100644
+index 4b652cc23e1..8de506927b0 100644
 --- a/target/i386/tcg/translate.c
 +++ b/target/i386/tcg/translate.c
-@@ -831,16 +831,13 @@ static bool gen_check_io(DisasContext *s, MemOp ot, TCGv_i32 port,
- #endif
+@@ -504,17 +504,24 @@ static inline void gen_op_jmp_v(DisasContext *s, TCGv dest)
+     s->pc_save = -1;
  }
  
--static void gen_movs(DisasContext *s, MemOp ot)
-+static void gen_movs(DisasContext *s, MemOp ot, TCGv dshift)
- {
--    TCGv dshift;
--
-     gen_string_movl_A0_ESI(s);
-     gen_op_ld_v(s, ot, s->T0, s->A0);
-     gen_string_movl_A0_EDI(s);
-     gen_op_st_v(s, ot, s->T0, s->A0);
- 
--    dshift = gen_compute_Dshift(s, ot);
-     gen_op_add_reg(s, s->aflag, R_ESI, dshift);
-     gen_op_add_reg(s, s->aflag, R_EDI, dshift);
- }
-@@ -1244,22 +1241,22 @@ static inline void gen_jcc(DisasContext *s, int b, TCGLabel *l1)
-     }
- }
- 
--static void gen_stos(DisasContext *s, MemOp ot)
-+static void gen_stos(DisasContext *s, MemOp ot, TCGv dshift)
- {
-     gen_string_movl_A0_EDI(s);
-     gen_op_st_v(s, ot, s->T0, s->A0);
--    gen_op_add_reg(s, s->aflag, R_EDI, gen_compute_Dshift(s, ot));
-+    gen_op_add_reg(s, s->aflag, R_EDI, dshift);
- }
- 
--static void gen_lods(DisasContext *s, MemOp ot)
-+static void gen_lods(DisasContext *s, MemOp ot, TCGv dshift)
- {
-     gen_string_movl_A0_ESI(s);
-     gen_op_ld_v(s, ot, s->T0, s->A0);
-     gen_op_mov_reg_v(s, ot, R_EAX, s->T0);
--    gen_op_add_reg(s, s->aflag, R_ESI, gen_compute_Dshift(s, ot));
-+    gen_op_add_reg(s, s->aflag, R_ESI, dshift);
- }
- 
--static void gen_scas(DisasContext *s, MemOp ot)
-+static void gen_scas(DisasContext *s, MemOp ot, TCGv dshift)
- {
-     gen_string_movl_A0_EDI(s);
-     gen_op_ld_v(s, ot, s->T1, s->A0);
-@@ -1268,13 +1265,11 @@ static void gen_scas(DisasContext *s, MemOp ot)
-     tcg_gen_sub_tl(cpu_cc_dst, s->T0, s->T1);
-     set_cc_op(s, CC_OP_SUBB + ot);
- 
--    gen_op_add_reg(s, s->aflag, R_EDI, gen_compute_Dshift(s, ot));
-+    gen_op_add_reg(s, s->aflag, R_EDI, dshift);
- }
- 
--static void gen_cmps(DisasContext *s, MemOp ot)
-+static void gen_cmps(DisasContext *s, MemOp ot, TCGv dshift)
- {
--    TCGv dshift;
--
-     gen_string_movl_A0_EDI(s);
-     gen_op_ld_v(s, ot, s->T1, s->A0);
-     gen_string_movl_A0_ESI(s);
-@@ -1284,7 +1279,6 @@ static void gen_cmps(DisasContext *s, MemOp ot)
-     tcg_gen_sub_tl(cpu_cc_dst, s->T0, s->T1);
-     set_cc_op(s, CC_OP_SUBB + ot);
- 
--    dshift = gen_compute_Dshift(s, ot);
-     gen_op_add_reg(s, s->aflag, R_ESI, dshift);
-     gen_op_add_reg(s, s->aflag, R_EDI, dshift);
- }
-@@ -1303,7 +1297,7 @@ static void gen_bpt_io(DisasContext *s, TCGv_i32 t_port, int ot)
-     }
- }
- 
--static void gen_ins(DisasContext *s, MemOp ot)
-+static void gen_ins(DisasContext *s, MemOp ot, TCGv dshift)
- {
-     gen_string_movl_A0_EDI(s);
-     /* Note: we must do this dummy write first to be restartable in
-@@ -1314,11 +1308,11 @@ static void gen_ins(DisasContext *s, MemOp ot)
-     tcg_gen_andi_i32(s->tmp2_i32, s->tmp2_i32, 0xffff);
-     gen_helper_in_func(ot, s->T0, s->tmp2_i32);
-     gen_op_st_v(s, ot, s->T0, s->A0);
--    gen_op_add_reg(s, s->aflag, R_EDI, gen_compute_Dshift(s, ot));
-+    gen_op_add_reg(s, s->aflag, R_EDI, dshift);
-     gen_bpt_io(s, s->tmp2_i32, ot);
- }
- 
--static void gen_outs(DisasContext *s, MemOp ot)
-+static void gen_outs(DisasContext *s, MemOp ot, TCGv dshift)
- {
-     gen_string_movl_A0_ESI(s);
-     gen_op_ld_v(s, ot, s->T0, s->A0);
-@@ -1327,14 +1321,14 @@ static void gen_outs(DisasContext *s, MemOp ot)
-     tcg_gen_andi_i32(s->tmp2_i32, s->tmp2_i32, 0xffff);
-     tcg_gen_trunc_tl_i32(s->tmp3_i32, s->T0);
-     gen_helper_out_func(ot, s->tmp2_i32, s->tmp3_i32);
--    gen_op_add_reg(s, s->aflag, R_ESI, gen_compute_Dshift(s, ot));
-+    gen_op_add_reg(s, s->aflag, R_ESI, dshift);
-     gen_bpt_io(s, s->tmp2_i32, ot);
- }
- 
- #define REP_MAX 65535
- 
--static void do_gen_rep(DisasContext *s, MemOp ot,
--                       void (*fn)(DisasContext *s, MemOp ot),
-+static void do_gen_rep(DisasContext *s, MemOp ot, TCGv dshift,
-+                       void (*fn)(DisasContext *s, MemOp ot, TCGv dshift),
-                        bool is_repz_nz)
- {
-     TCGLabel *last = gen_new_label();
-@@ -1399,7 +1393,7 @@ static void do_gen_rep(DisasContext *s, MemOp ot,
-     }
- 
-     gen_set_label(loop);
--    fn(s, ot);
-+    fn(s, ot, dshift);
-     tcg_gen_mov_tl(cpu_regs[R_ECX], cx_next);
-     gen_update_cc_op(s);
- 
-@@ -1434,7 +1428,7 @@ static void do_gen_rep(DisasContext *s, MemOp ot,
-          */
-         gen_set_label(last);
-         set_cc_op(s, CC_OP_DYNAMIC);
--        fn(s, ot);
-+        fn(s, ot, dshift);
-         tcg_gen_mov_tl(cpu_regs[R_ECX], cx_next);
-         gen_update_cc_op(s);
-     }
-@@ -1449,23 +1443,27 @@ static void do_gen_rep(DisasContext *s, MemOp ot,
- }
- 
- static void gen_repz(DisasContext *s, MemOp ot,
--                     void (*fn)(DisasContext *s, MemOp ot))
-+                     void (*fn)(DisasContext *s, MemOp ot, TCGv dshift))
- 
- {
-+    TCGv dshift = gen_compute_Dshift(s, ot);
++static inline void gen_op_add_reg(DisasContext *s, MemOp size, int reg, TCGv val)
++{
++    /* Using cpu_regs[reg] does not work for xH registers.  */
++    assert(size >= MO_16);
++    if (size == MO_16) {
++        TCGv temp = tcg_temp_new();
++        tcg_gen_add_tl(temp, cpu_regs[reg], val);
++        gen_op_mov_reg_v(s, size, reg, temp);
++    } else {
++        tcg_gen_add_tl(cpu_regs[reg], cpu_regs[reg], val);
++        tcg_gen_ext_tl(cpu_regs[reg], cpu_regs[reg], size);
++    }
++}
 +
-     if (s->prefix & (PREFIX_REPZ | PREFIX_REPNZ)) {
--        do_gen_rep(s, ot, fn, false);
-+        do_gen_rep(s, ot, dshift, fn, false);
-     } else {
--        fn(s, ot);
-+        fn(s, ot, dshift);
-     }
- }
- 
- static void gen_repz_nz(DisasContext *s, MemOp ot,
--                        void (*fn)(DisasContext *s, MemOp ot))
-+                        void (*fn)(DisasContext *s, MemOp ot, TCGv dshift))
+ static inline
+ void gen_op_add_reg_im(DisasContext *s, MemOp size, int reg, int32_t val)
  {
-+    TCGv dshift = gen_compute_Dshift(s, ot);
-+
-     if (s->prefix & (PREFIX_REPZ | PREFIX_REPNZ)) {
--        do_gen_rep(s, ot, fn, true);
-+        do_gen_rep(s, ot, dshift, fn, true);
-     } else {
--        fn(s, ot);
-+        fn(s, ot, dshift);
-     }
+-    tcg_gen_addi_tl(s->tmp0, cpu_regs[reg], val);
+-    gen_op_mov_reg_v(s, size, reg, s->tmp0);
+-}
+-
+-static inline void gen_op_add_reg(DisasContext *s, MemOp size, int reg, TCGv val)
+-{
+-    tcg_gen_add_tl(s->tmp0, cpu_regs[reg], val);
+-    gen_op_mov_reg_v(s, size, reg, s->tmp0);
++    gen_op_add_reg(s, size, reg, tcg_constant_tl(val));
  }
  
+ static inline void gen_op_ld_v(DisasContext *s, int idx, TCGv t0, TCGv a0)
 -- 
 2.47.1
 
