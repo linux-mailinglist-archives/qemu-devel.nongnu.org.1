@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5980B9F25CC
-	for <lists+qemu-devel@lfdr.de>; Sun, 15 Dec 2024 20:19:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D02CC9F258C
+	for <lists+qemu-devel@lfdr.de>; Sun, 15 Dec 2024 20:07:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tMtx4-0001kX-Sz; Sun, 15 Dec 2024 14:06:50 -0500
+	id 1tMtx9-0002Or-Fy; Sun, 15 Dec 2024 14:06:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tMtwX-0001LE-1U
- for qemu-devel@nongnu.org; Sun, 15 Dec 2024 14:06:18 -0500
-Received: from mail-oa1-x30.google.com ([2001:4860:4864:20::30])
+ id 1tMtwZ-0001Lw-1p
+ for qemu-devel@nongnu.org; Sun, 15 Dec 2024 14:06:20 -0500
+Received: from mail-oo1-xc36.google.com ([2607:f8b0:4864:20::c36])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tMtwV-00019R-AA
- for qemu-devel@nongnu.org; Sun, 15 Dec 2024 14:06:16 -0500
-Received: by mail-oa1-x30.google.com with SMTP id
- 586e51a60fabf-29fae583cc8so1738219fac.1
- for <qemu-devel@nongnu.org>; Sun, 15 Dec 2024 11:06:14 -0800 (PST)
+ id 1tMtwW-0001AA-D1
+ for qemu-devel@nongnu.org; Sun, 15 Dec 2024 14:06:17 -0500
+Received: by mail-oo1-xc36.google.com with SMTP id
+ 006d021491bc7-5f2da12248fso2170297eaf.1
+ for <qemu-devel@nongnu.org>; Sun, 15 Dec 2024 11:06:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734289574; x=1734894374; darn=nongnu.org;
+ d=linaro.org; s=google; t=1734289575; x=1734894375; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=P6dtc5tKm0SDV+tByDsBCG2rfZqXnqrfnrDqNh1eC2Y=;
- b=gljS5p4gv73CnBlfDuYkx9mATlO/Rol4RjI+MU3woz9GAr5qZh2K9iK8SdZesVpy4G
- HZB79p/W7NKVBgC2XhW3Y5ljAqSyHGXp/1Dq6S11yO1QSiW34JWdl+Yd3K+4zo58zy6K
- 2GkgDBRhKr6nE8X0dsfI8x/Q4t/8Aci4QJBk9Ei6uu21RfaKnETx+tkBrt0Kw9B80IIZ
- FjfTHjlhVIQLV+I4Z/dT3jUv1Xa3Mp/+OZoTD0UilUPgvBHQKD6p5iODDEhsICpKhEyf
- nv6haiNLfFV+eS5Tl5DkGqxyKAlWj7ydGmW+NyHybpJWkI/TCbJYQkQ26AnI03T7t8cK
- kUcw==
+ bh=/7D9unWrlHZoR8A1dN23AeSaSZJKRolZppIb6v+BQvE=;
+ b=BIbGXi3jLljHc1VMbaADM/GoIZj0Wl9xrdqE1BTCt9JlLRWY6AxGNUHXcq/xp55PeQ
+ O9vf2kXziTj3SdooccJxNErmhRecgYAWBd+y69xo3zb8E9jzb0Bdg3BESRdhJVjvOkXp
+ GPoHsbgoZYmyW4f70Eh2gtwvzTrL9ZqF3LYyXnuoqTYU0hAUf/jBiyfocNgQP+XEC6bt
+ Yzd0HfQOk6U6pL2+khC6QbOjxLpoCQ5+GY8KxBsqdGt94oWsdQKwnXptzENS91DqqoA/
+ /anqxHWIthkDdyeq3mvEf7vZLPy/sjP2+jYhyp2DspGq+yTFGpQcjLeUY6futKVVBSa+
+ leWg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734289574; x=1734894374;
+ d=1e100.net; s=20230601; t=1734289575; x=1734894375;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=P6dtc5tKm0SDV+tByDsBCG2rfZqXnqrfnrDqNh1eC2Y=;
- b=s5nQus3vt44Ay/XBBAzG0n+9Ph8HsuFOTVcOnyrpdsE41n3yJkN4+jyrwuJJ3vvPcU
- 7Xz8GwGK6vGIyQvr7oNyIZNEHlIjwA/YPgaqF6GWgStvM4snUv9lFgP1W/9NWT/yF4hf
- 5qA3hMT4jpbQev68rSaej05WIqzG1oCNOyC6We0eblJuRokmmM//JP4ERuMBIwcqRWxt
- 9o3xteyBybx4OhC9eUzbzwEMsscxIQzdCNGiUTplwytkKXuN8ZFmMQzZwlXsePU6keVD
- xwVMmkbzogcaYoA4LN+tlc7QYzbnr91IC2IKf1LwmiTTnGFQWl9vdXhIENutOcTQn5KT
- NCLQ==
-X-Gm-Message-State: AOJu0Yw2YlwPAQjRcL+yw6GaT04BfrS+RctGtXF8upHovCVm35mDPkmX
- nI5FiXjosTSfNufA/Hzqz3PiA+u79ZTE8kJziV9JnAR0O20nNdC57qNRpZx1R0hvRAEU9LmhJ1L
- jODHgCfVP
-X-Gm-Gg: ASbGncupzi5eETC0162hfoT3bD8XQTb2SIlHaBur98yAG9PIhVfcYpvsMNngBLj+haH
- XqutBAJDZ2IIw9P+iWsCLfulh9tAl1GVSeujmmJkNfZCycdnBwctibiOglzDJDCxmkXe4gXAewI
- EpI2kvUtcfClVXqA001mY8js3s6GK3p/KbhC7j9t8Ht9t35T29/wXhAPXjx1+9K7FUOqm1fvJq5
- 1Wxnb4O0jIpyQ8qt1/3ESLolLJL8hnYyzF6YSA1tVwUGssJk8jW9S/gzj8D406YLN1C/W3ulxYo
- KPRdGE1Ne8u9QEHrLjSoxd9ke4/zVAwqIPG3My1Ffk4=
-X-Google-Smtp-Source: AGHT+IHgl2wkhz5wc1Qn4DDZdsF2GT79jrVPlhY1jTWyoUisUtCZYp44j8k1vty/CY2nQwywBIN4mg==
-X-Received: by 2002:a05:6870:7805:b0:29a:ea55:3bfe with SMTP id
- 586e51a60fabf-2a3af18d1a5mr4296198fac.11.1734289573944; 
- Sun, 15 Dec 2024 11:06:13 -0800 (PST)
+ bh=/7D9unWrlHZoR8A1dN23AeSaSZJKRolZppIb6v+BQvE=;
+ b=dd2VdXJEQlmCog4V4aaXG3rfF14svuaBnoemXV3rbwoaLjYh3LSkCLHWEfpQfxH6rs
+ 915DUMKlYclVNKZsMnNg60U6HO0YXolsc8hA4IIuknYidZR5JeAeu64dNG0yGypB8Sm4
+ 6FidPMW7gan8SXqI7ukDIWvrfwHIQfgDfG4U77mJR2GjLUqqyTfR30FS+YXSufIBi/m1
+ LplDDSnCj2C2IY30JUBTn+2xFdLJso9UPilpm2VHHq4QEfj4JNox95QVHh4ufYhV/FMy
+ dBs61C11P5OMWubygCs4yPLty629HjCJ3EffACj0Cej3zGjwQyvAwLFAANhLsup4pkwB
+ RofA==
+X-Gm-Message-State: AOJu0Yy4Qwg5ogPhWee49T5JNPzb2sLhErhu7JtaOwvy/iwXOjUANhDq
+ hyOyLH+4F1s7GkQJMvEtSccRd3pqi5P6h+oif1t/kIKCTe4a8Kcyua0CXS1VVdVBE/IWnF0GR6s
+ nt7OJpeTY
+X-Gm-Gg: ASbGnctpP+fuY2R9PMjMFCBW3TziFjKL7ZNDfzjQNGEukgWijgeUuvCPS61vcqJPuL0
+ TOQuXxLKOLO3NqW2zVIP6qKdOme55F11nx9OYriGSi/8m1miM9dkg5+bKWNSIUdfaZAs54YUufN
+ +G+9B6vXJ4yYN+Ld/Hbew6MlooWJZGvB7sRK7JU/ItzOojTKdghIqGFv0gjCfYi6cZ7r6yECVCf
+ Z+hdGmptvlyollQ9WVWIR1WABpBhnAtowkvjTXBYj74UEVoiSv3d409yeGlzDbQHj3YVVn09L6a
+ HXF7dtqmkZHxehImMB/hmyyHpchxOdchzVM7wE5qLdU=
+X-Google-Smtp-Source: AGHT+IHhyoMuUFa1Wi2ZrHrrsSIkgRylhCcCpewSYlx2G64qXKLgMO5+8oxEEOCpXCOodpB2oeBUDQ==
+X-Received: by 2002:a05:6870:1d1:b0:29e:1962:7a23 with SMTP id
+ 586e51a60fabf-2a3aef703cdmr5561380fac.4.1734289574698; 
+ Sun, 15 Dec 2024 11:06:14 -0800 (PST)
 Received: from localhost.localdomain (fixed-187-189-51-143.totalplay.net.
  [187.189.51.143]) by smtp.gmail.com with ESMTPSA id
- 586e51a60fabf-2a3d2914ac6sm1423214fac.39.2024.12.15.11.06.12
+ 586e51a60fabf-2a3d2914ac6sm1423214fac.39.2024.12.15.11.06.14
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 15 Dec 2024 11:06:13 -0800 (PST)
+ Sun, 15 Dec 2024 11:06:14 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: stefanha@redhat.com,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 25/67] hw/gpio: Constify all Property
-Date: Sun, 15 Dec 2024 13:04:51 -0600
-Message-ID: <20241215190533.3222854-26-richard.henderson@linaro.org>
+Subject: [PULL 26/67] hw/hyperv: Constify all Property
+Date: Sun, 15 Dec 2024 13:04:52 -0600
+Message-ID: <20241215190533.3222854-27-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241215190533.3222854-1-richard.henderson@linaro.org>
 References: <20241215190533.3222854-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:4860:4864:20::30;
- envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x30.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c36;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oo1-xc36.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,120 +102,59 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- hw/gpio/imx_gpio.c       | 2 +-
- hw/gpio/npcm7xx_gpio.c   | 2 +-
- hw/gpio/omap_gpio.c      | 2 +-
- hw/gpio/pca9552.c        | 2 +-
- hw/gpio/pca9554.c        | 2 +-
- hw/gpio/pl061.c          | 2 +-
- hw/gpio/sifive_gpio.c    | 2 +-
- hw/gpio/stm32l4x5_gpio.c | 2 +-
- 8 files changed, 8 insertions(+), 8 deletions(-)
+ hw/hyperv/hv-balloon.c | 2 +-
+ hw/hyperv/syndbg.c     | 2 +-
+ hw/hyperv/vmbus.c      | 4 ++--
+ 3 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/hw/gpio/imx_gpio.c b/hw/gpio/imx_gpio.c
-index 27535a577f..919d53701f 100644
---- a/hw/gpio/imx_gpio.c
-+++ b/hw/gpio/imx_gpio.c
-@@ -290,7 +290,7 @@ static const VMStateDescription vmstate_imx_gpio = {
-     }
+diff --git a/hw/hyperv/hv-balloon.c b/hw/hyperv/hv-balloon.c
+index 3a9ef07691..74897b1604 100644
+--- a/hw/hyperv/hv-balloon.c
++++ b/hw/hyperv/hv-balloon.c
+@@ -1733,7 +1733,7 @@ static void hv_balloon_finalize(Object *obj)
+     hv_balloon_unrealize_finalize_common(balloon);
+ }
+ 
+-static Property hv_balloon_properties[] = {
++static const Property hv_balloon_properties[] = {
+     DEFINE_PROP_BOOL("status-report", HvBalloon,
+                      status_report.enabled, false),
+ 
+diff --git a/hw/hyperv/syndbg.c b/hw/hyperv/syndbg.c
+index 065e12fb1e..0193addd42 100644
+--- a/hw/hyperv/syndbg.c
++++ b/hw/hyperv/syndbg.c
+@@ -366,7 +366,7 @@ static const VMStateDescription vmstate_hv_syndbg = {
+     .unmigratable = 1,
  };
  
--static Property imx_gpio_properties[] = {
-+static const Property imx_gpio_properties[] = {
-     DEFINE_PROP_BOOL("has-edge-sel", IMXGPIOState, has_edge_sel, true),
-     DEFINE_PROP_BOOL("has-upper-pin-irq", IMXGPIOState, has_upper_pin_irq,
-                      false),
-diff --git a/hw/gpio/npcm7xx_gpio.c b/hw/gpio/npcm7xx_gpio.c
-index ba19b9ebad..db6792b2ad 100644
---- a/hw/gpio/npcm7xx_gpio.c
-+++ b/hw/gpio/npcm7xx_gpio.c
-@@ -386,7 +386,7 @@ static const VMStateDescription vmstate_npcm7xx_gpio = {
+-static Property hv_syndbg_properties[] = {
++static const Property hv_syndbg_properties[] = {
+     DEFINE_PROP_STRING("host_ip", HvSynDbg, host_ip),
+     DEFINE_PROP_UINT16("host_port", HvSynDbg, host_port, 50000),
+     DEFINE_PROP_BOOL("use_hcalls", HvSynDbg, use_hcalls, false),
+diff --git a/hw/hyperv/vmbus.c b/hw/hyperv/vmbus.c
+index b36bd3d67d..3d1f4d14e8 100644
+--- a/hw/hyperv/vmbus.c
++++ b/hw/hyperv/vmbus.c
+@@ -2346,7 +2346,7 @@ static void vmbus_dev_unrealize(DeviceState *dev)
+     free_channels(vdev);
+ }
+ 
+-static Property vmbus_dev_props[] = {
++static const Property vmbus_dev_props[] = {
+     DEFINE_PROP_UUID("instanceid", VMBusDevice, instanceid),
+     DEFINE_PROP_END_OF_LIST()
+ };
+@@ -2653,7 +2653,7 @@ static const VMStateDescription vmstate_vmbus_bridge = {
      },
  };
  
--static Property npcm7xx_gpio_properties[] = {
-+static const Property npcm7xx_gpio_properties[] = {
-     /* Bit n set => pin n has pullup enabled by default. */
-     DEFINE_PROP_UINT32("reset-pullup", NPCM7xxGPIOState, reset_pu, 0),
-     /* Bit n set => pin n has pulldown enabled by default. */
-diff --git a/hw/gpio/omap_gpio.c b/hw/gpio/omap_gpio.c
-index a47a2167a6..03ee9e47c6 100644
---- a/hw/gpio/omap_gpio.c
-+++ b/hw/gpio/omap_gpio.c
-@@ -225,7 +225,7 @@ void omap_gpio_set_clk(Omap1GpioState *gpio, omap_clk clk)
-     gpio->clk = clk;
- }
- 
--static Property omap_gpio_properties[] = {
-+static const Property omap_gpio_properties[] = {
-     DEFINE_PROP_INT32("mpu_model", Omap1GpioState, mpu_model, 0),
-     DEFINE_PROP_END_OF_LIST(),
- };
-diff --git a/hw/gpio/pca9552.c b/hw/gpio/pca9552.c
-index 59b233339a..427419d218 100644
---- a/hw/gpio/pca9552.c
-+++ b/hw/gpio/pca9552.c
-@@ -428,7 +428,7 @@ static void pca955x_realize(DeviceState *dev, Error **errp)
-     qdev_init_gpio_in(dev, pca955x_gpio_in_handler, k->pin_count);
- }
- 
--static Property pca955x_properties[] = {
-+static const Property pca955x_properties[] = {
-     DEFINE_PROP_STRING("description", PCA955xState, description),
-     DEFINE_PROP_END_OF_LIST(),
- };
-diff --git a/hw/gpio/pca9554.c b/hw/gpio/pca9554.c
-index 68cc9e1de4..e8b0458aac 100644
---- a/hw/gpio/pca9554.c
-+++ b/hw/gpio/pca9554.c
-@@ -291,7 +291,7 @@ static void pca9554_realize(DeviceState *dev, Error **errp)
-     qdev_init_gpio_in(dev, pca9554_gpio_in_handler, PCA9554_PIN_COUNT);
- }
- 
--static Property pca9554_properties[] = {
-+static const Property pca9554_properties[] = {
-     DEFINE_PROP_STRING("description", PCA9554State, description),
-     DEFINE_PROP_END_OF_LIST(),
- };
-diff --git a/hw/gpio/pl061.c b/hw/gpio/pl061.c
-index d5838b8e98..9b8ca6de32 100644
---- a/hw/gpio/pl061.c
-+++ b/hw/gpio/pl061.c
-@@ -562,7 +562,7 @@ static void pl061_realize(DeviceState *dev, Error **errp)
-     }
- }
- 
--static Property pl061_props[] = {
-+static const Property pl061_props[] = {
-     DEFINE_PROP_UINT32("pullups", PL061State, pullups, 0xff),
-     DEFINE_PROP_UINT32("pulldowns", PL061State, pulldowns, 0x0),
+-static Property vmbus_bridge_props[] = {
++static const Property vmbus_bridge_props[] = {
+     DEFINE_PROP_UINT8("irq", VMBusBridge, irq, 7),
      DEFINE_PROP_END_OF_LIST()
-diff --git a/hw/gpio/sifive_gpio.c b/hw/gpio/sifive_gpio.c
-index e85c0406a2..5603f0c235 100644
---- a/hw/gpio/sifive_gpio.c
-+++ b/hw/gpio/sifive_gpio.c
-@@ -349,7 +349,7 @@ static const VMStateDescription vmstate_sifive_gpio = {
-     }
  };
- 
--static Property sifive_gpio_properties[] = {
-+static const Property sifive_gpio_properties[] = {
-     DEFINE_PROP_UINT32("ngpio", SIFIVEGPIOState, ngpio, SIFIVE_GPIO_PINS),
-     DEFINE_PROP_END_OF_LIST(),
- };
-diff --git a/hw/gpio/stm32l4x5_gpio.c b/hw/gpio/stm32l4x5_gpio.c
-index 30d8d6cba4..d1394f3f55 100644
---- a/hw/gpio/stm32l4x5_gpio.c
-+++ b/hw/gpio/stm32l4x5_gpio.c
-@@ -447,7 +447,7 @@ static const VMStateDescription vmstate_stm32l4x5_gpio = {
-     }
- };
- 
--static Property stm32l4x5_gpio_properties[] = {
-+static const Property stm32l4x5_gpio_properties[] = {
-     DEFINE_PROP_STRING("name", Stm32l4x5GpioState, name),
-     DEFINE_PROP_UINT32("mode-reset", Stm32l4x5GpioState, moder_reset, 0),
-     DEFINE_PROP_UINT32("ospeed-reset", Stm32l4x5GpioState, ospeedr_reset, 0),
 -- 
 2.43.0
 
