@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FE869F25C5
-	for <lists+qemu-devel@lfdr.de>; Sun, 15 Dec 2024 20:17:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 67ED99F25BE
+	for <lists+qemu-devel@lfdr.de>; Sun, 15 Dec 2024 20:15:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tMtx8-0002Hw-GF; Sun, 15 Dec 2024 14:06:54 -0500
+	id 1tMtx7-0002AW-E0; Sun, 15 Dec 2024 14:06:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tMtwi-0001Ve-3X
- for qemu-devel@nongnu.org; Sun, 15 Dec 2024 14:06:28 -0500
-Received: from mail-oo1-xc2a.google.com ([2607:f8b0:4864:20::c2a])
+ id 1tMtwk-0001Z5-Ie
+ for qemu-devel@nongnu.org; Sun, 15 Dec 2024 14:06:30 -0500
+Received: from mail-oo1-xc33.google.com ([2607:f8b0:4864:20::c33])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tMtwg-0001Fj-JL
- for qemu-devel@nongnu.org; Sun, 15 Dec 2024 14:06:27 -0500
-Received: by mail-oo1-xc2a.google.com with SMTP id
- 006d021491bc7-5f340d6db09so449229eaf.1
- for <qemu-devel@nongnu.org>; Sun, 15 Dec 2024 11:06:26 -0800 (PST)
+ id 1tMtwi-0001GL-O8
+ for qemu-devel@nongnu.org; Sun, 15 Dec 2024 14:06:30 -0500
+Received: by mail-oo1-xc33.google.com with SMTP id
+ 006d021491bc7-5f2e2608681so1684308eaf.1
+ for <qemu-devel@nongnu.org>; Sun, 15 Dec 2024 11:06:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734289585; x=1734894385; darn=nongnu.org;
+ d=linaro.org; s=google; t=1734289586; x=1734894386; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=4Po02+cPNlfKpjVoSu+8QJp2TLU2nm8crEW/dnzqTYs=;
- b=qMM9vvdmZbnf1hLMJ9s7uL/d1Qeg0lXm9LGoCaKe20pDf/8AgZjcaubuVhOXwutVJ6
- lOliSJQJ0BOVkERB/AQPVlqkHKdgrCxbkcpqMqsNlcMuBIl//2GskhHxjbfMj+1AFjb8
- 5Wrr9WJhJ2d1xpUt9/YJ2URm4hG67x+l/iJMotL4dcHoDfv3PyuspZRs+reau8tMUkWO
- /pnAT/3QGXOsbuRkFam/3qrt6RVu41dYClA0irnqHWqzx/kTBi47/YdgzTqWfzqPXMWd
- kCimR4hohEem4TAiGlUbB54FZXFGqBg9TaZ/FOg1Bu+Tspf6I1PqJp/Up7tTBy9Z2Bas
- z+3Q==
+ bh=1ECW39NRqpfZ/PTyPriCYZSRdWHi5xzzMmZM9BZOJCk=;
+ b=dC9rJAoR4xIpGIImMB/rUoDvTJsn4zH+rcrPbEoR5Vkc8qAS4oKvFxFGr3HUZLZ6KQ
+ BDk57+TFqNQ+gjmmqSs7QfBWrEa2KPd0UaO/brWuy4GX5jRqM2sGzqPOTu/zluFzOgay
+ MeuqHb8ysDUn/QcB/YKvcg7H3RnTdSrzmrLRWQbo3Oiz6M0eVaeSwtDx+c8gZIXM290q
+ EIl8T0J5oVgpvrwIQ+mf3dEulB3ekCjJDdVQqs123mDfiEBGVYoFPdJC97tnX4G9rI+Y
+ EP0adBUDKQd5f1Nevo1Mh1MZCquAgczyKiWwUOtqecIjd7dNLzViTbN58qr4ZCPr8fR9
+ 8wZA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734289585; x=1734894385;
+ d=1e100.net; s=20230601; t=1734289586; x=1734894386;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=4Po02+cPNlfKpjVoSu+8QJp2TLU2nm8crEW/dnzqTYs=;
- b=GKb5WGB7QHiL/Gn+GWtdEa8k9ZCTLjKDF/kBMCzhSk6ZRz20mrkxsFrojrHlsZnWr/
- e1quym1s+MhCcYy4MeXGytz/VzUdlF21mg0isoM7anuyjjHPOpVh2KCcHsH4zBy18b9G
- aSbnULCpFm8xYV6SHrEFEpTCb0DA9PbzRm3UzDJmkAHZ2lsvV5WYmqNKidtdbQxgCfPY
- gP54M6bgqmpJnj0PUDM1HrddJSe9LMdV8y93E4nHiMvIO/PCYerJXrDmgw3lcBpE8ZFN
- QW5i6iCxaOXDfCVbL4AlLChy6l6MGECkFKlWBpagyOkMO0ngSes4i1H4GqEUgfLRTtNz
- isTA==
-X-Gm-Message-State: AOJu0YwS3cvQ7z6MXANEg8ntiRcl+zAQhmFyFanKtVOWAUorRquX8ptb
- BX7a5YPC2BZ6wnlTWG0er3xoj8+tkumzRwiShQuzqIcQPmBvsf18FrW2ZQpOtZKh97c7KzOgDU1
- GAvUVX49r
-X-Gm-Gg: ASbGnct+ao0IX8EsItR2jPcGWVnjXCHasq7rVEhImY1FowdGuLzcpM/YMbcOMHzeP3e
- rI6wOePubArF7RDxDlNPm6AO+xUdxDRgeW094R4IWLJhMfE2yux9BAa3Sr8098iXG83tecQ5yvo
- 2AO7Gos24kQD2B5BnRDe7Pytn1NEsL97in75GFZDmfnvkBQ6p0yRtk61cQatTPFgo+fUimjC8Xk
- DaRRPQm14Z8hhWi/ubYs72TPoH+CXoh2fyVntukFYcieRQlOTApnwUCeV96JS2fuS4a1iq1L4Hf
- ztZm+8MQ/ZAh8dGaQfCqwNW6zrDOhgswTOp0Saqy2Ms=
-X-Google-Smtp-Source: AGHT+IHBeC2FbkoE5W1WzH0ubjGO27U9sXtga90BHjd6zjtEhwdmt+WpshcTxyBl8ATqpzNz7GwolA==
-X-Received: by 2002:a05:6871:7a0:b0:29d:c6c9:c384 with SMTP id
- 586e51a60fabf-2a3ac6beb64mr5535822fac.22.1734289585391; 
- Sun, 15 Dec 2024 11:06:25 -0800 (PST)
+ bh=1ECW39NRqpfZ/PTyPriCYZSRdWHi5xzzMmZM9BZOJCk=;
+ b=YuW+Rzsi/tO/xaiQsj+KwXuWqO23rm07is6+1WozeqXsmclIR8EJuLR8iri0vhIGcq
+ gxVhK6FJhmSwNMqQMy1bv5v8O8C1XJFA2Az590KHU5BVZ2xXkarIBo2E1X/7d8u46lXF
+ xsWYoq2zqxYi8beCYL4+7aaxuvuaFoiCWe41dIq0+6sYEB4cjmbgbqdlJA6PlCgPy+Cr
+ JTFAmTWGqyavK+IpmpbPrQMkKCui/NpdQHRxwvTGIyX/hPboXWAFtgtFFS9yOqtxnYoZ
+ 54LPDAJbOiGLJMRN2M62scozycgOLr0LkwbwAkfEVUi59DFCuWHHRjGlFjFHATWIbAGp
+ qAkw==
+X-Gm-Message-State: AOJu0YyhUkSilDxT8Bgcrmva8r5S7bWgJkohTfHy5gImcslddj9GyCCl
+ eAFJlDk55SCewQzN+zwAPJgSKRZlu9+JynOzh4Qm0AQbJfu7NN34zg1Stlq6HNgqpZ9FpM12WKn
+ SwKVZTs0c
+X-Gm-Gg: ASbGncscBv2Rk+9jQSys5RtuuOYaiQegf/MD4eaDvhl3BfomlUS3Ua+cuE7F7KzFIlS
+ S9UjVaZznq2LKAIazC8XlRkqO+8y/eRj4+SZENSZC31H3zatJPjrjPI1rM3bDVuUQl6tvZlcO0t
+ ORg3aP5V6K0bUs/6zINus3coPPbbeUSw9r2/XEq6Pp7h9Dp63YnhkC4swBTczPJjQ6Pb0Y1lkw9
+ 0jBXPYUyd27z4GSGeZjquPpsBn0hah+GKyTiKVL2s5EjaQmmH8AhKvwVAEyPBnd7khEqedgBZV8
+ YZmG1Cs6hntlkIxfjmyuJdRRMNd7xjtl3/N+m4PYuBY=
+X-Google-Smtp-Source: AGHT+IH2hTaEOBrh61FJ8UoPd8ZEa2UrcfXEvROJsOyIYUUp0OyodvKHyHny/+bqAXpW26qKHbCryA==
+X-Received: by 2002:a05:6870:8a10:b0:29e:8068:e089 with SMTP id
+ 586e51a60fabf-2a3ac7285demr5901565fac.19.1734289586753; 
+ Sun, 15 Dec 2024 11:06:26 -0800 (PST)
 Received: from localhost.localdomain (fixed-187-189-51-143.totalplay.net.
  [187.189.51.143]) by smtp.gmail.com with ESMTPSA id
- 586e51a60fabf-2a3d2914ac6sm1423214fac.39.2024.12.15.11.06.24
+ 586e51a60fabf-2a3d2914ac6sm1423214fac.39.2024.12.15.11.06.25
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 15 Dec 2024 11:06:24 -0800 (PST)
+ Sun, 15 Dec 2024 11:06:26 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: stefanha@redhat.com, Bernhard Beschow <shentey@gmail.com>,
+Cc: stefanha@redhat.com, Thomas Huth <huth@tuxfamily.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 34/67] hw/isa: Constify all Property
-Date: Sun, 15 Dec 2024 13:05:00 -0600
-Message-ID: <20241215190533.3222854-35-richard.henderson@linaro.org>
+Subject: [PULL 35/67] hw/m68k: Constify all Property
+Date: Sun, 15 Dec 2024 13:05:01 -0600
+Message-ID: <20241215190533.3222854-36-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241215190533.3222854-1-richard.henderson@linaro.org>
 References: <20241215190533.3222854-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c2a;
- envelope-from=richard.henderson@linaro.org; helo=mail-oo1-xc2a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c33;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oo1-xc33.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,54 +99,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Reviewed-by: Bernhard Beschow <shentey@gmail.com>
+Reviewed-by: Thomas Huth <huth@tuxfamily.org>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- hw/isa/lpc_ich9.c | 2 +-
- hw/isa/pc87312.c  | 2 +-
- hw/isa/piix.c     | 2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
+ hw/m68k/mcf5206.c   | 2 +-
+ hw/m68k/mcf_intc.c  | 2 +-
+ hw/m68k/next-cube.c | 2 +-
+ hw/m68k/q800-glue.c | 2 +-
+ 4 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/hw/isa/lpc_ich9.c b/hw/isa/lpc_ich9.c
-index dabd1217dd..378244aa8f 100644
---- a/hw/isa/lpc_ich9.c
-+++ b/hw/isa/lpc_ich9.c
-@@ -826,7 +826,7 @@ static const VMStateDescription vmstate_ich9_lpc = {
-     }
- };
- 
--static Property ich9_lpc_properties[] = {
-+static const Property ich9_lpc_properties[] = {
-     DEFINE_PROP_BOOL("noreboot", ICH9LPCState, pin_strap.spkr_hi, false),
-     DEFINE_PROP_BOOL("smm-compat", ICH9LPCState, pm.smm_compat, false),
-     DEFINE_PROP_BOOL("smm-enabled", ICH9LPCState, pm.smm_enabled, false),
-diff --git a/hw/isa/pc87312.c b/hw/isa/pc87312.c
-index f67155498d..7bb2af817d 100644
---- a/hw/isa/pc87312.c
-+++ b/hw/isa/pc87312.c
-@@ -327,7 +327,7 @@ static const VMStateDescription vmstate_pc87312 = {
-     }
- };
- 
--static Property pc87312_properties[] = {
-+static const Property pc87312_properties[] = {
-     DEFINE_PROP_UINT16("iobase", PC87312State, iobase, 0x398),
-     DEFINE_PROP_UINT8("config", PC87312State, config, 1),
-     DEFINE_PROP_END_OF_LIST()
-diff --git a/hw/isa/piix.c b/hw/isa/piix.c
-index b4a402f61b..8ec9c63b8a 100644
---- a/hw/isa/piix.c
-+++ b/hw/isa/piix.c
-@@ -408,7 +408,7 @@ static void pci_piix_init(Object *obj)
-     object_initialize_child(obj, "rtc", &d->rtc, TYPE_MC146818_RTC);
+diff --git a/hw/m68k/mcf5206.c b/hw/m68k/mcf5206.c
+index 7247cdbe5e..45e5f74600 100644
+--- a/hw/m68k/mcf5206.c
++++ b/hw/m68k/mcf5206.c
+@@ -600,7 +600,7 @@ static void mcf5206_mbar_realize(DeviceState *dev, Error **errp)
+     s->uart[1] = mcf_uart_create(s->pic[13], serial_hd(1));
  }
  
--static Property pci_piix_props[] = {
-+static const Property pci_piix_props[] = {
-     DEFINE_PROP_UINT32("smb_io_base", PIIXState, smb_io_base, 0),
-     DEFINE_PROP_BOOL("has-acpi", PIIXState, has_acpi, true),
-     DEFINE_PROP_BOOL("has-pic", PIIXState, has_pic, true),
+-static Property mcf5206_mbar_properties[] = {
++static const Property mcf5206_mbar_properties[] = {
+     DEFINE_PROP_LINK("m68k-cpu", m5206_mbar_state, cpu,
+                      TYPE_M68K_CPU, M68kCPU *),
+     DEFINE_PROP_END_OF_LIST(),
+diff --git a/hw/m68k/mcf_intc.c b/hw/m68k/mcf_intc.c
+index 9fc30b03ba..c24b0b715d 100644
+--- a/hw/m68k/mcf_intc.c
++++ b/hw/m68k/mcf_intc.c
+@@ -177,7 +177,7 @@ static void mcf_intc_instance_init(Object *obj)
+     sysbus_init_mmio(SYS_BUS_DEVICE(obj), &s->iomem);
+ }
+ 
+-static Property mcf_intc_properties[] = {
++static const Property mcf_intc_properties[] = {
+     DEFINE_PROP_LINK("m68k-cpu", mcf_intc_state, cpu,
+                      TYPE_M68K_CPU, M68kCPU *),
+     DEFINE_PROP_END_OF_LIST(),
+diff --git a/hw/m68k/next-cube.c b/hw/m68k/next-cube.c
+index 08886d432c..a37ce00874 100644
+--- a/hw/m68k/next-cube.c
++++ b/hw/m68k/next-cube.c
+@@ -914,7 +914,7 @@ static void next_pc_realize(DeviceState *dev, Error **errp)
+  * this cpu link property and could instead provide outbound IRQ lines
+  * that the board could wire up to the CPU.
+  */
+-static Property next_pc_properties[] = {
++static const Property next_pc_properties[] = {
+     DEFINE_PROP_LINK("cpu", NeXTPC, cpu, TYPE_M68K_CPU, M68kCPU *),
+     DEFINE_PROP_END_OF_LIST(),
+ };
+diff --git a/hw/m68k/q800-glue.c b/hw/m68k/q800-glue.c
+index e2ae7c3201..0d8cb8b1cb 100644
+--- a/hw/m68k/q800-glue.c
++++ b/hw/m68k/q800-glue.c
+@@ -203,7 +203,7 @@ static const VMStateDescription vmstate_glue = {
+  * this cpu link property and could instead provide outbound IRQ lines
+  * that the board could wire up to the CPU.
+  */
+-static Property glue_properties[] = {
++static const Property glue_properties[] = {
+     DEFINE_PROP_LINK("cpu", GLUEState, cpu, TYPE_M68K_CPU, M68kCPU *),
+     DEFINE_PROP_END_OF_LIST(),
+ };
 -- 
 2.43.0
 
