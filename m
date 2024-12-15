@@ -2,82 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86C5D9F25B0
-	for <lists+qemu-devel@lfdr.de>; Sun, 15 Dec 2024 20:13:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C2B5E9F25B4
+	for <lists+qemu-devel@lfdr.de>; Sun, 15 Dec 2024 20:13:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tMtx5-00021n-F6; Sun, 15 Dec 2024 14:06:51 -0500
+	id 1tMtwn-0001br-6e; Sun, 15 Dec 2024 14:06:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tMtwa-0001M1-KK
- for qemu-devel@nongnu.org; Sun, 15 Dec 2024 14:06:20 -0500
-Received: from mail-oo1-xc33.google.com ([2607:f8b0:4864:20::c33])
+ id 1tMtwc-0001MV-7Q
+ for qemu-devel@nongnu.org; Sun, 15 Dec 2024 14:06:22 -0500
+Received: from mail-oa1-x34.google.com ([2001:4860:4864:20::34])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tMtwY-0001Au-Qp
- for qemu-devel@nongnu.org; Sun, 15 Dec 2024 14:06:20 -0500
-Received: by mail-oo1-xc33.google.com with SMTP id
- 006d021491bc7-5f2d8f62290so1754863eaf.2
- for <qemu-devel@nongnu.org>; Sun, 15 Dec 2024 11:06:17 -0800 (PST)
+ id 1tMtwa-0001Bu-DR
+ for qemu-devel@nongnu.org; Sun, 15 Dec 2024 14:06:21 -0500
+Received: by mail-oa1-x34.google.com with SMTP id
+ 586e51a60fabf-2a3d8857a2bso799143fac.1
+ for <qemu-devel@nongnu.org>; Sun, 15 Dec 2024 11:06:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734289576; x=1734894376; darn=nongnu.org;
+ d=linaro.org; s=google; t=1734289578; x=1734894378; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=FhWboubb5SD2Tb3kEHoXaDk4aNSp8HDO/dk92ZtG/zg=;
- b=umQLr6cEIxKwJLhmN1n0d7G5tJ5s82wNevRaBBDaDwjZlagLhKYidDHzq8PpTI3EES
- znCkrkWW2FomB8efZMALZtyL0bmIxGgCeJTH25FuIgjOZ5JHDqs3KRYjLdgDgiHW/Fc6
- PF0UjdwWbdqkqCuxJuQZNIbfiinvwllh3XWhJNB8H8kDHfMvcQdOFhKEWEm6O8tGUlSf
- lizEc/pLfBVj9ADsIK+CHR103YGbE93o6TGRT92qQ4ykSIm9eOeQwVzVaSb5QMj0mfh6
- lWed2vgLemfdLT1Xrm+pHliurk3YKBrDmK//7M6cW9w+AHbEtWbx9pYc0GOSfeF+OYzI
- nNYA==
+ bh=LKkRdcJjquPMRK8AV+n4N1KuNbPfcZ9HMfXAkb5RCIY=;
+ b=DsXtiugmRaKyUvqp4JfXvlKY0pKoGOO0ckAieOrPXmpsOgcv8YislfzVerAXPlf3wA
+ D9PJppfAYshghRNX3W+L/95WjXUVCXcZ2Sj2MaQApRkmi8BDsvXlYK5rDukLjl9hUOlZ
+ XwssevfJ23nLhIkC4ZVVOyjqnb+/Nj6KatHaf3t1IKAGqzGn06/zfoBlKfbYSX1j4FPu
+ cIQnGhoobgaJ8mXc+Ah30bxDoU9X6zeU9fhyOKa9iL9ZqL3u6e8/nAsLsd0tWEDBdK+P
+ A/y2/2RidU0wdL7sWCY4AsPBkRQWILsBaTOSJ9KDN9zQJiOFS7e/SKGOTxLn1NaSjxyk
+ sXOw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734289576; x=1734894376;
+ d=1e100.net; s=20230601; t=1734289578; x=1734894378;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=FhWboubb5SD2Tb3kEHoXaDk4aNSp8HDO/dk92ZtG/zg=;
- b=rFqbsRbWMEbhpP52q5cM6qQ4CiqbyQFaxNs47Zw/DYfFg9GoXl0lVGifdspNC5vmAx
- eEG2cg5WUVQ1ZrTi/SOCHJkqc/hK5NPuanNMcKNVFO4YZ+AtmoSuTDalOU82AmfKyqsf
- GMJVrxWtLYEuV7d7Azd3cPl2KuMGt4mqsS4YxhwELR9hlJtHHbFT+HyYrPECpKJVIjvM
- gRJ01nwfXhD4drGWMysh1wJwNqQBmD/8loraQLOaCR+5xZeTrz9gMh9nSxSDm3BE/vpa
- W7b0qGYdTH72az4Qs+n0mtGHVMzsi9BUY4ySM+cFrO4sxYLlPN8XPFg6MKBhCU/MjTHb
- 1y9A==
-X-Gm-Message-State: AOJu0Yz/TNpJEZhHfsezuXj+aXk+Tw2yKuRQzq+CVxDzn5+I42h8iBuu
- cU/xRxH+TEdiwMqaqTBuK/7rNQ7thIOgpWkxgP6WxPEzgejciJvjzwAg6qtO8jT0m9blnEUsOQP
- x4GDTsapS
-X-Gm-Gg: ASbGncv56VBOSF+jbBGcvOs4qPZqYvU0xLZOwRZu6lm15BcVXQnAZRJuxSEfZfr4fMS
- F2OMQwmekivGR/V5vNWukBnsNHgiVfJskdaFqFZ0vpvpoaaUjuJftJ4+AHuuz6jZO+MQuP4hJ2O
- i3FTnJnIDLnCclch1R3bgCQ0ZWI8EJ++fnah9DKlzvxSP8dfw5tpWwz+jeFYKxWscl3sNC3z0I7
- Qv89j4nliN22numc7fsuLkEd3Jt2ywwkQW4rlMY47O64G5ySk6hDoX4bKoJHmTDIOWu7ez1fynw
- Af9ZPdDVx3JUemM/1OaTJ5bGBqa4ZSatqA9tkKlwqBs=
-X-Google-Smtp-Source: AGHT+IGkZzE7+yFJQmJC/QjGjfFQbP0LE8HZAYEQwg1hWGqNZ10Gm5KeuxpyVwrAR6FDKtY2hltEJw==
-X-Received: by 2002:a05:6870:e313:b0:29e:443b:edcd with SMTP id
- 586e51a60fabf-2a3ac914920mr5178427fac.37.1734289576737; 
- Sun, 15 Dec 2024 11:06:16 -0800 (PST)
+ bh=LKkRdcJjquPMRK8AV+n4N1KuNbPfcZ9HMfXAkb5RCIY=;
+ b=kOYyKNE7JJvLzxQoOYqZ4pA4qa5NfRtRsAUqlYanBo8bN47nKeliuvnwwIKy9RlBvj
+ siE0wfVxpgqFXVnTmJVCAIEkKeITsiEBk5t1qc/v9xfph4/J6mBO5QzigNOMfzMJJlVr
+ vv38WgeZfn1moud4WxkkSq6BfuPLyyjaGuYRqRGHUWGRoq/zHP1OukuztEaAf88zZHty
+ 1Mq20LeveiTmILfzpxHlizKOIt1E99lMiuPzlgESWRw1EAi1jM9xRyCBupdaaDonNRYb
+ ufjUtBGYNNrFtaR/C2n6fNpPpIvdu7mKSL8YJJOECTaO5KcGwGUUnqyL2zNwx6hWq65S
+ 86gg==
+X-Gm-Message-State: AOJu0YyGumXe/4P3etUx14biTiV8bixaYHzOkd5KLcCpVB1K0Xy5idUN
+ 7ELawpDdUzESKpuXJHLiuoRrc5i9dW0T0TgF6Zt1tMzuV15CM2lUrcWUi6gRbUKzKJ68/I+y3RF
+ 0+clTUDiz
+X-Gm-Gg: ASbGncvJ52bcJHnvTlv7c+zOV0An5Jimnk80WJxNjA6XJr/gXqIy+umTZ9N66p//orU
+ HjKoqGgIzXzdxRicmlXpbp6EvloJBF+tLl96Q4L8PobWeqdZ+5iOoSw3DZC4214G8kyxvF+HaWg
+ x8U58mHZxpcqgApZyJMFi6fxG3d20v1tf8T5yXpNwPQiWOxMwo1Lsm1BjORhSD19jhcKKBCeRTH
+ dNeTZGqpZdOpl3L/uwhL468TF8aU3qmdUuxxapY9GRobjJ+RbZP0kg+N9qzAFL0jhHu1nwwzl1y
+ qGIIfciMt18ZLSYPyHuWbVfoYLB9aw29Qw49Wv0iFEU=
+X-Google-Smtp-Source: AGHT+IHJ7OAoj5Ngsgi2I04KYjVkb0vn9ximm1uJNEfvZdpNwsOk2wXyaMOnb1yaJKM0LSL06MVrhQ==
+X-Received: by 2002:a05:6870:8a0e:b0:29e:4d0e:a2b6 with SMTP id
+ 586e51a60fabf-2a3ac61dc80mr5238322fac.10.1734289578074; 
+ Sun, 15 Dec 2024 11:06:18 -0800 (PST)
 Received: from localhost.localdomain (fixed-187-189-51-143.totalplay.net.
  [187.189.51.143]) by smtp.gmail.com with ESMTPSA id
- 586e51a60fabf-2a3d2914ac6sm1423214fac.39.2024.12.15.11.06.15
+ 586e51a60fabf-2a3d2914ac6sm1423214fac.39.2024.12.15.11.06.16
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 15 Dec 2024 11:06:16 -0800 (PST)
+ Sun, 15 Dec 2024 11:06:17 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: stefanha@redhat.com, Corey Minyard <cminyard@mvista.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
+Cc: stefanha@redhat.com,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 27/67] hw/i2c: Constify all Property
-Date: Sun, 15 Dec 2024 13:04:53 -0600
-Message-ID: <20241215190533.3222854-28-richard.henderson@linaro.org>
+Subject: [PULL 28/67] hw/i386: Constify all Property
+Date: Sun, 15 Dec 2024 13:04:54 -0600
+Message-ID: <20241215190533.3222854-29-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241215190533.3222854-1-richard.henderson@linaro.org>
 References: <20241215190533.3222854-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c33;
- envelope-from=richard.henderson@linaro.org; helo=mail-oo1-xc33.google.com
+Received-SPF: pass client-ip=2001:4860:4864:20::34;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x34.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,78 +99,151 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Acked-by: Corey Minyard <cminyard@mvista.com>
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- hw/i2c/aspeed_i2c.c      | 4 ++--
- hw/i2c/core.c            | 2 +-
- hw/i2c/i2c_mux_pca954x.c | 2 +-
- hw/i2c/omap_i2c.c        | 2 +-
- 4 files changed, 5 insertions(+), 5 deletions(-)
+ hw/i386/amd_iommu.c        | 2 +-
+ hw/i386/intel_iommu.c      | 2 +-
+ hw/i386/kvm/clock.c        | 2 +-
+ hw/i386/kvm/i8254.c        | 2 +-
+ hw/i386/kvm/ioapic.c       | 2 +-
+ hw/i386/sgx-epc.c          | 2 +-
+ hw/i386/vmmouse.c          | 2 +-
+ hw/i386/vmport.c           | 2 +-
+ hw/i386/x86-iommu.c        | 2 +-
+ hw/i386/xen/xen_pvdevice.c | 2 +-
+ 10 files changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/hw/i2c/aspeed_i2c.c b/hw/i2c/aspeed_i2c.c
-index 3ae22cb052..2ea68c3090 100644
---- a/hw/i2c/aspeed_i2c.c
-+++ b/hw/i2c/aspeed_i2c.c
-@@ -1258,7 +1258,7 @@ static void aspeed_i2c_realize(DeviceState *dev, Error **errp)
-     }
+diff --git a/hw/i386/amd_iommu.c b/hw/i386/amd_iommu.c
+index af0f4da1f6..ca3e62a244 100644
+--- a/hw/i386/amd_iommu.c
++++ b/hw/i386/amd_iommu.c
+@@ -1668,7 +1668,7 @@ static void amdvi_sysbus_realize(DeviceState *dev, Error **errp)
+     amdvi_init(s);
  }
  
--static Property aspeed_i2c_properties[] = {
-+static const Property aspeed_i2c_properties[] = {
-     DEFINE_PROP_LINK("dram", AspeedI2CState, dram_mr,
-                      TYPE_MEMORY_REGION, MemoryRegion *),
-     DEFINE_PROP_END_OF_LIST(),
-@@ -1446,7 +1446,7 @@ static void aspeed_i2c_bus_realize(DeviceState *dev, Error **errp)
-     sysbus_init_mmio(SYS_BUS_DEVICE(dev), &s->mr_pool);
- }
- 
--static Property aspeed_i2c_bus_properties[] = {
-+static const Property aspeed_i2c_bus_properties[] = {
-     DEFINE_PROP_UINT8("bus-id", AspeedI2CBus, id, 0),
-     DEFINE_PROP_LINK("controller", AspeedI2CBus, controller, TYPE_ASPEED_I2C,
-                      AspeedI2CState *),
-diff --git a/hw/i2c/core.c b/hw/i2c/core.c
-index 4cf30b2c86..4118d3db50 100644
---- a/hw/i2c/core.c
-+++ b/hw/i2c/core.c
-@@ -18,7 +18,7 @@
- 
- #define I2C_BROADCAST 0x00
- 
--static Property i2c_props[] = {
-+static const Property i2c_props[] = {
-     DEFINE_PROP_UINT8("address", struct I2CSlave, address, 0),
+-static Property amdvi_properties[] = {
++static const Property amdvi_properties[] = {
+     DEFINE_PROP_BOOL("xtsup", AMDVIState, xtsup, false),
      DEFINE_PROP_END_OF_LIST(),
  };
-diff --git a/hw/i2c/i2c_mux_pca954x.c b/hw/i2c/i2c_mux_pca954x.c
-index db5db956a6..80c570fd10 100644
---- a/hw/i2c/i2c_mux_pca954x.c
-+++ b/hw/i2c/i2c_mux_pca954x.c
-@@ -211,7 +211,7 @@ static void pca954x_init(Object *obj)
+diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
+index 4c0d1d7d47..a5b268342f 100644
+--- a/hw/i386/intel_iommu.c
++++ b/hw/i386/intel_iommu.c
+@@ -3404,7 +3404,7 @@ static const MemoryRegionOps vtd_mem_ops = {
+     },
+ };
+ 
+-static Property vtd_properties[] = {
++static const Property vtd_properties[] = {
+     DEFINE_PROP_UINT32("version", IntelIOMMUState, version, 0),
+     DEFINE_PROP_ON_OFF_AUTO("eim", IntelIOMMUState, intr_eim,
+                             ON_OFF_AUTO_AUTO),
+diff --git a/hw/i386/kvm/clock.c b/hw/i386/kvm/clock.c
+index 40aa9a32c3..71150ed2e0 100644
+--- a/hw/i386/kvm/clock.c
++++ b/hw/i386/kvm/clock.c
+@@ -305,7 +305,7 @@ static const VMStateDescription kvmclock_vmsd = {
      }
+ };
+ 
+-static Property kvmclock_properties[] = {
++static const Property kvmclock_properties[] = {
+     DEFINE_PROP_BOOL("x-mach-use-reliable-get-clock", KVMClockState,
+                       mach_use_reliable_get_clock, true),
+     DEFINE_PROP_END_OF_LIST(),
+diff --git a/hw/i386/kvm/i8254.c b/hw/i386/kvm/i8254.c
+index baa4b39582..2933d3f458 100644
+--- a/hw/i386/kvm/i8254.c
++++ b/hw/i386/kvm/i8254.c
+@@ -287,7 +287,7 @@ static void kvm_pit_realizefn(DeviceState *dev, Error **errp)
+     kpc->parent_realize(dev, errp);
  }
  
--static Property pca954x_props[] = {
-+static const Property pca954x_props[] = {
-     DEFINE_PROP_STRING("name", Pca954xState, name),
+-static Property kvm_pit_properties[] = {
++static const Property kvm_pit_properties[] = {
+     DEFINE_PROP_LOSTTICKPOLICY("lost_tick_policy", KVMPITState,
+                                lost_tick_policy, LOST_TICK_POLICY_DELAY),
+     DEFINE_PROP_END_OF_LIST(),
+diff --git a/hw/i386/kvm/ioapic.c b/hw/i386/kvm/ioapic.c
+index 2907b08164..217ff43b98 100644
+--- a/hw/i386/kvm/ioapic.c
++++ b/hw/i386/kvm/ioapic.c
+@@ -133,7 +133,7 @@ static void kvm_ioapic_realize(DeviceState *dev, Error **errp)
+     qdev_init_gpio_in(dev, kvm_ioapic_set_irq, IOAPIC_NUM_PINS);
+ }
+ 
+-static Property kvm_ioapic_properties[] = {
++static const Property kvm_ioapic_properties[] = {
+     DEFINE_PROP_UINT32("gsi_base", KVMIOAPICState, kvm_gsi_base, 0),
      DEFINE_PROP_END_OF_LIST()
  };
-diff --git a/hw/i2c/omap_i2c.c b/hw/i2c/omap_i2c.c
-index e78505ebdd..172df135f5 100644
---- a/hw/i2c/omap_i2c.c
-+++ b/hw/i2c/omap_i2c.c
-@@ -511,7 +511,7 @@ void omap_i2c_set_fclk(OMAPI2CState *i2c, omap_clk clk)
-     i2c->fclk = clk;
+diff --git a/hw/i386/sgx-epc.c b/hw/i386/sgx-epc.c
+index d664829d35..c232e825e0 100644
+--- a/hw/i386/sgx-epc.c
++++ b/hw/i386/sgx-epc.c
+@@ -19,7 +19,7 @@
+ #include "target/i386/cpu.h"
+ #include "exec/address-spaces.h"
+ 
+-static Property sgx_epc_properties[] = {
++static const Property sgx_epc_properties[] = {
+     DEFINE_PROP_UINT64(SGX_EPC_ADDR_PROP, SGXEPCDevice, addr, 0),
+     DEFINE_PROP_UINT32(SGX_EPC_NUMA_NODE_PROP, SGXEPCDevice, node, 0),
+     DEFINE_PROP_LINK(SGX_EPC_MEMDEV_PROP, SGXEPCDevice, hostmem,
+diff --git a/hw/i386/vmmouse.c b/hw/i386/vmmouse.c
+index 76130cd46d..da9c35c1ec 100644
+--- a/hw/i386/vmmouse.c
++++ b/hw/i386/vmmouse.c
+@@ -317,7 +317,7 @@ static void vmmouse_realizefn(DeviceState *dev, Error **errp)
+     vmport_register(VMPORT_CMD_VMMOUSE_DATA, vmmouse_ioport_read, s);
  }
  
--static Property omap_i2c_properties[] = {
-+static const Property omap_i2c_properties[] = {
-     DEFINE_PROP_UINT8("revision", OMAPI2CState, revision, 0),
+-static Property vmmouse_properties[] = {
++static const Property vmmouse_properties[] = {
+     DEFINE_PROP_LINK("i8042", VMMouseState, i8042, TYPE_I8042, ISAKBDState *),
      DEFINE_PROP_END_OF_LIST(),
  };
+diff --git a/hw/i386/vmport.c b/hw/i386/vmport.c
+index 7cc75dbc6d..cab6e72089 100644
+--- a/hw/i386/vmport.c
++++ b/hw/i386/vmport.c
+@@ -252,7 +252,7 @@ static void vmport_realizefn(DeviceState *dev, Error **errp)
+     }
+ }
+ 
+-static Property vmport_properties[] = {
++static const Property vmport_properties[] = {
+     /* Used to enforce compatibility for migration */
+     DEFINE_PROP_BIT("x-read-set-eax", VMPortState, compat_flags,
+                     VMPORT_COMPAT_READ_SET_EAX_BIT, true),
+diff --git a/hw/i386/x86-iommu.c b/hw/i386/x86-iommu.c
+index 60af896225..155f6262ea 100644
+--- a/hw/i386/x86-iommu.c
++++ b/hw/i386/x86-iommu.c
+@@ -125,7 +125,7 @@ static void x86_iommu_realize(DeviceState *dev, Error **errp)
+     }
+ }
+ 
+-static Property x86_iommu_properties[] = {
++static const Property x86_iommu_properties[] = {
+     DEFINE_PROP_ON_OFF_AUTO("intremap", X86IOMMUState,
+                             intr_supported, ON_OFF_AUTO_AUTO),
+     DEFINE_PROP_BOOL("device-iotlb", X86IOMMUState, dt_supported, false),
+diff --git a/hw/i386/xen/xen_pvdevice.c b/hw/i386/xen/xen_pvdevice.c
+index ed621531d8..e71483e6e3 100644
+--- a/hw/i386/xen/xen_pvdevice.c
++++ b/hw/i386/xen/xen_pvdevice.c
+@@ -115,7 +115,7 @@ static void xen_pv_realize(PCIDevice *pci_dev, Error **errp)
+                      &d->mmio);
+ }
+ 
+-static Property xen_pv_props[] = {
++static const Property xen_pv_props[] = {
+     DEFINE_PROP_UINT16("vendor-id", XenPVDevice, vendor_id, PCI_VENDOR_ID_XEN),
+     DEFINE_PROP_UINT16("device-id", XenPVDevice, device_id, 0xffff),
+     DEFINE_PROP_UINT8("revision", XenPVDevice, revision, 0x01),
 -- 
 2.43.0
 
