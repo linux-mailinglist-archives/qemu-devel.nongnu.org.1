@@ -2,115 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA9769F30FA
-	for <lists+qemu-devel@lfdr.de>; Mon, 16 Dec 2024 13:55:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9970D9F30A0
+	for <lists+qemu-devel@lfdr.de>; Mon, 16 Dec 2024 13:35:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tNAcM-00070O-N4; Mon, 16 Dec 2024 07:54:34 -0500
+	id 1tNAJb-0003ab-Ne; Mon, 16 Dec 2024 07:35:12 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
- id 1tNAby-0006dG-G7; Mon, 16 Dec 2024 07:54:10 -0500
-Received: from fout-b4-smtp.messagingengine.com ([202.12.124.147])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1tNAJV-0003PL-No; Mon, 16 Dec 2024 07:35:06 -0500
+Received: from mgamail.intel.com ([198.175.65.16])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
- id 1tNAbw-0004sP-U7; Mon, 16 Dec 2024 07:54:10 -0500
-Received: from phl-compute-11.internal (phl-compute-11.phl.internal
- [10.202.2.51])
- by mailfout.stl.internal (Postfix) with ESMTP id 30B78114010B;
- Mon, 16 Dec 2024 07:54:07 -0500 (EST)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
- by phl-compute-11.internal (MEProxy); Mon, 16 Dec 2024 07:54:07 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=irrelevant.dk;
- h=cc:cc:content-transfer-encoding:content-type:content-type
- :date:date:from:from:in-reply-to:in-reply-to:message-id
- :mime-version:references:reply-to:subject:subject:to:to; s=fm3;
- t=1734353647; x=1734440047; bh=vhSco4gcriDq04rx4WWzfriM2dprAZWn
- sff5e2aVQKE=; b=CZTCVnHgmwtPwMnbgSGutAi+UDX3dlkfpwc7uRWIqb8ku0vl
- B4m7jvrJPeP4NxIVKaCOLsekRzZdpJ2AiUrOARQXB0S9dbIkoq8nB5BcYX83Y9kJ
- wLZmhsaW8UlKd8OYzC8RsVWazFyWS5QVnmMbO2RdFYLjSUDvaCVfn6I/lr8WBCpC
- IcBAzdR0vruLySxNpct9qOTjAc8G/G+Oy/WyNDLtCBLdb7UA6CfCxeM8XjXmykeB
- LNwMnyr/9hGqCCklzzGyzHQShx+/N5I7TNSc1NSW/gf/2DqFKQQhl2NW4P9tG+UK
- kU2Dfe0zPsrfrO1vRk6RbU3t8FsexByjO6SzSw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
- messagingengine.com; h=cc:cc:content-transfer-encoding
- :content-type:content-type:date:date:feedback-id:feedback-id
- :from:from:in-reply-to:in-reply-to:message-id:mime-version
- :references:reply-to:subject:subject:to:to:x-me-proxy
- :x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1734353647; x=
- 1734440047; bh=vhSco4gcriDq04rx4WWzfriM2dprAZWnsff5e2aVQKE=; b=G
- sCBBJ2Qzv1mXfMWhOkzdefNkH3zr7AoLlT2IssJuFT5nja+qs7eugdEzpzB1L8T/
- FOOzlMiZ1xU7ClzAdoRdsuQWwnTt42ERQXXddiG/Y65s+deUE5iWD7na976Scypg
- DffGboP8EKiMzrRpItNOuvAerfzqWQkjCHhbr/UnVGizlrEa3Glrcndj7gcp8X9o
- JPyG0cpHgGMnGEki8cCVYzXJMw+oBZNybO11xaugY45r915FWnjPRYWba2U0KXX8
- CH6t454XsyT35q95kutXp4jRzUgkff7AMsq0pgHPTFdxCvW7b2RqsevRmdxd3Rul
- PQU0PIJnB9YsHxzDrkUJQ==
-X-ME-Sender: <xms:7iJgZ5jAC8vHgMOCKxdK1UmPdhC622rWiDx6PIEQtyEUlNKenbnsKA>
- <xme:7iJgZ-CsH6dcEq7sB3OimlByPGwStmlEMskCJa1wMRssHAsKCIy7jvA4jY-O-Fztj
- pDOzHGNdL_eDJbZvzI>
-X-ME-Received: <xmr:7iJgZ5EzrjPCQWyEr7G2O6JZ3PZqROpj9kG6f35FSElh6CYu7Q-uwETG4WyImmIysAOosy5kc58O1twO8yx2iPE>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrleefgdeghecutefuodetggdotefrodftvf
- curfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdpuffr
- tefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnth
- hsucdlqddutddtmdenucfjughrpefhfffugggtgffkfhgjvfevofesthejredtredtjeen
- ucfhrhhomhepmfhlrghushculfgvnhhsvghnuceoihhtshesihhrrhgvlhgvvhgrnhhtrd
- gukheqnecuggftrfgrthhtvghrnhepkeeivddtueehffefuddtleefkefhiedttdduveeg
- gfffieetveffhfehgfeghfffnecuvehluhhsthgvrhfuihiivgepvdenucfrrghrrghmpe
- hmrghilhhfrhhomhepihhtshesihhrrhgvlhgvvhgrnhhtrdgukhdpnhgspghrtghpthht
- ohepiedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepfhhoshhsseguvghfmhgrtg
- hrohdrihhtpdhrtghpthhtohepqhgvmhhuqdgslhhotghksehnohhnghhnuhdrohhrghdp
- rhgtphhtthhopehithhssehirhhrvghlvghvrghnthdrughkpdhrtghpthhtohepqhgvmh
- huqdguvghvvghlsehnohhnghhnuhdrohhrghdprhgtphhtthhopehksghushgthheskhgv
- rhhnvghlrdhorhhgpdhrtghpthhtohepkhdrjhgvnhhsvghnsehsrghmshhunhhgrdgtoh
- hm
-X-ME-Proxy: <xmx:7iJgZ-SmDxBJX7sZWfK3Z-NIuxf3n1HLgvLnI8rbj12b7rZnBVMt5A>
- <xmx:7iJgZ2yrDrX3X6fiEswhFoOK_OHp_PBpqDQ8-XWZv8c92YkEEdG-_w>
- <xmx:7iJgZ06huHUlDYUfVArU8qAWoZdI8GlIYLkMnUIY9MOEwonJPiX1Zw>
- <xmx:7iJgZ7xTDsvznHVuclPAFxw9e3Fu3huIMG8vr7krJIA2oZanx0-LZg>
- <xmx:7yJgZ9l7ypW2mTlbmOaQxI5KBvRULbzyWjXf_IfqkrcrC3GInMCWuKc5>
-Feedback-ID: idc91472f:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 16 Dec 2024 07:54:05 -0500 (EST)
-From: Klaus Jensen <its@irrelevant.dk>
-Date: Mon, 16 Dec 2024 13:53:10 +0100
-Subject: [PATCH 9/9] hw/nvme: remove nvme_aio_err()
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1tNAJS-0002PX-Ha; Mon, 16 Dec 2024 07:35:05 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1734352502; x=1765888502;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=PJbQUpSzHru3Or0Hsk5sXZKTXf6u8uddRQxbCcbgebA=;
+ b=BvBeivy8Z5E+E3wXfyeovSG6J5WD3P9Zy0IjZhcVrKIC1b/Ho4RVfavV
+ qlNM4lbgyQsdaa2r1IHGGdTiaTcNBdXgtklkyvtXz6XuL1ZA6Gvg5ysyN
+ VzAl7GawO8OTqeHyR6l26Wys68PP8OyZQKRV0TwqoP7j7/cTtdbPbe6fi
+ myJ2vPaaDxFGhyl6lPb1gW9vdly26p79uKuoQOTnQfJ4YBFe6iMF21qdH
+ drW7HQXEEtuyp/rG2ZYefXAAJv4KbatjSM7d7xeXvY5Nt6tEqogNd7f3G
+ XOahy9FmrH1fnK7ySZtWFw0rwzC168War+Y/7oW+kBadj7+5lvDevcnXd A==;
+X-CSE-ConnectionGUID: MXuPkOKaSUqyraAJ+qo4+A==
+X-CSE-MsgGUID: LwjJ6sP2Rw2YYadpXccAiA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11288"; a="34880277"
+X-IronPort-AV: E=Sophos;i="6.12,238,1728975600"; d="scan'208";a="34880277"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+ by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Dec 2024 04:34:58 -0800
+X-CSE-ConnectionGUID: 5v5vmB0NSw+oliPe7HCIzA==
+X-CSE-MsgGUID: YoukiSnhTLyh4FWjfkGsww==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="120442632"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.39])
+ by fmviesa002.fm.intel.com with ESMTP; 16 Dec 2024 04:34:57 -0800
+Date: Mon, 16 Dec 2024 20:53:36 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org,
+ Junjie Mao <junjie.mao@hotmail.com>
+Subject: Re: [PATCH 22/26] rust: qom: add casting functionality
+Message-ID: <Z2Ai0Ipv9RtwQndB@intel.com>
+References: <20241209123717.99077-1-pbonzini@redhat.com>
+ <20241209123717.99077-23-pbonzini@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241216-nvme-queue-v1-9-4e42212b92f7@samsung.com>
-References: <20241216-nvme-queue-v1-0-4e42212b92f7@samsung.com>
-In-Reply-To: <20241216-nvme-queue-v1-0-4e42212b92f7@samsung.com>
-To: Keith Busch <kbusch@kernel.org>, Klaus Jensen <its@irrelevant.dk>, 
- Jesper Devantier <foss@defmacro.it>, qemu-block@nongnu.org, 
- qemu-devel@nongnu.org
-Cc: Klaus Jensen <k.jensen@samsung.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2663; i=k.jensen@samsung.com; 
- h=from:subject:message-id;
- bh=6MFFr7ovftAu1ssrPvwHNYhO0kA83E792RYldng9RiQ=; 
- b=LS0tLS1CRUdJTiBQR1AgTUVTU0FHRS0tLS0tCgpvd0o0bkFGdEFaTCtrQTBEQUFvQlRlR3ZNV
- zFQRGVrQnl5WmlBR2RnSXR0RUo4LzFKVjJTTFpRQW9jcjlId3V2CkhRWWhwRlQrNjY4eTFScHVI
- S2h1aG9rQk13UUFBUW9BSFJZaEJGSW9NNnAxNHR6bW9rZG13RTNocnpGdFR3M3AKQlFKbllDTGJ
- BQW9KRUUzaHJ6RnRUdzNweHNVSUFMUDlUMjFvRjk4cE9nRnc4SzZDMzdiUFk4NVNpQWVQcldkZA
- pOdW8wM2o4WVN3dkxzUHdWMlQ5aC9tNWgyZzF0QjYrcnEzdE14RnIyWVZaT2RyT2JBK28vdUNiU
- URQWW9xR3RtCmxRL0E4N3RIS3BoV2dQSUtaSEcxWlExZzFDZFlmdDc3NWl0NFVHYTRzT1BRSTdT
- YWxCYmhOVE5Ub2tQYVJKN0cKUlN3c1RWZDBMY2hrUGNoNGVMS0ZkdExXT1RYNUNleUZKemtBem5
- BUHNVOXg2SFg1Qm1uYVBYZ2RvOEZ3VS80ZwovUWhwUjVJTmFRZSt4V0ltL1YzMDVPcHRKU0NiaU
- x1d0FBalRDT0dpYjJhakhQdHVkbUJjRGI5YldMTnpYNkdTCitZQXdrMldtOEExd1J1RmQ0UDNLT
- 1BrR3hpNm9kUFl4cDdmWHAxdHFOcy9WRGhTQTdib2srS2R1Cj1lZitTCi0tLS0tRU5EIFBHUCBN
- RVNTQUdFLS0tLS0K
-X-Developer-Key: i=k.jensen@samsung.com; a=openpgp;
- fpr=DDCA4D9C9EF931CC3468427263D56FC5E55DA838
-Received-SPF: pass client-ip=202.12.124.147; envelope-from=its@irrelevant.dk;
- helo=fout-b4-smtp.messagingengine.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
-X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241209123717.99077-23-pbonzini@redhat.com>
+Received-SPF: pass client-ip=198.175.65.16; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -127,97 +80,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Klaus Jensen <k.jensen@samsung.com>
+> +/// Macro to mark superclasses of QOM classes.  This enables type-safe
+> +/// up- and downcasting.
+> +///
+> +/// # Safety
+> +///
+> +/// This macro is a thin wrapper around the [`IsA`] trait and performs
+> +/// no checking whatsoever of what is declared.  It is the caller's
+> +/// responsibility to have $struct begin, directly or indirectly, with
+> +/// a field of type `$parent`.
+> +#[macro_export]
+> +macro_rules! qom_isa {
+> +    ($struct:ty : $($parent:ty),* ) => {
 
-nvme_rw_complete_cb() is the only remaining user of nvme_aio_err(), so
-open code the status code setting instead.
+This macro is quite good, but it requires specifying all the parents...
+So I am thinking if it is possible to move ParentType to ObjectType, and
+then try to traverse the ParentType in the macro, implementing IsA for
+each ParentType... However, the first difficulty has already stopped me:
+I cannot define ParentType for Object itself.
 
-Signed-off-by: Klaus Jensen <k.jensen@samsung.com>
----
- hw/nvme/ctrl.c | 60 ++++++++++++++++++++++------------------------------------
- 1 file changed, 23 insertions(+), 37 deletions(-)
+> +        $(
+> +            // SAFETY: it is the caller responsibility to have $parent as the
+> +            // first field
+> +            unsafe impl $crate::qom::IsA<$parent> for $struct {}
+> +
+> +            impl AsRef<$parent> for $struct {
+> +                fn as_ref(&self) -> &$parent {
+> +                    // SAFETY: follows the same rules as for IsA<U>, which is
+> +                    // declared above.
+> +                    let ptr: *const Self = self;
+> +                    unsafe { &*ptr.cast::<$parent>() }
+> +                }
+> +            }
+> +        )*
+> +    };
+> +}
+>  
+>  unsafe extern "C" fn rust_instance_init<T: ObjectImpl>(obj: *mut Object) {
+>      // SAFETY: obj is an instance of T, since rust_instance_init<T>
+> @@ -94,8 +147,224 @@ pub unsafe trait ObjectType: Sized {
+>      /// The name of the type, which can be passed to `object_new()` to
+>      /// generate an instance of this type.
+>      const TYPE_NAME: &'static CStr;
+> +
+> +    /// Return the receiver as an Object.  This is always safe, even
+> +    /// if this type represents an interface.
 
-diff --git a/hw/nvme/ctrl.c b/hw/nvme/ctrl.c
-index 8192f92227d6509b8d15fde9d9197a59277eb86f..40f535b03316ed45f6cbb2894fd89f9ce258423e 100644
---- a/hw/nvme/ctrl.c
-+++ b/hw/nvme/ctrl.c
-@@ -1756,42 +1756,6 @@ static uint16_t nvme_check_dulbe(NvmeNamespace *ns, uint64_t slba,
-     return NVME_SUCCESS;
- }
- 
--static void nvme_aio_err(NvmeRequest *req, int ret)
--{
--    uint16_t status = NVME_SUCCESS;
--    Error *local_err = NULL;
--
--    switch (req->cmd.opcode) {
--    case NVME_CMD_READ:
--        status = NVME_UNRECOVERED_READ;
--        break;
--    case NVME_CMD_WRITE:
--    case NVME_CMD_WRITE_ZEROES:
--    case NVME_CMD_ZONE_APPEND:
--    case NVME_CMD_COPY:
--        status = NVME_WRITE_FAULT;
--        break;
--    default:
--        status = NVME_INTERNAL_DEV_ERROR;
--        break;
--    }
--
--    trace_pci_nvme_err_aio(nvme_cid(req), strerror(-ret), status);
--
--    error_setg_errno(&local_err, -ret, "aio failed");
--    error_report_err(local_err);
--
--    /*
--     * Set the command status code to the first encountered error but allow a
--     * subsequent Internal Device Error to trump it.
--     */
--    if (req->status && status != NVME_INTERNAL_DEV_ERROR) {
--        return;
--    }
--
--    req->status = status;
--}
--
- static inline uint32_t nvme_zone_idx(NvmeNamespace *ns, uint64_t slba)
- {
-     return ns->zone_size_log2 > 0 ? slba >> ns->zone_size_log2 :
-@@ -2176,8 +2140,30 @@ void nvme_rw_complete_cb(void *opaque, int ret)
-     trace_pci_nvme_rw_complete_cb(nvme_cid(req), blk_name(blk));
- 
-     if (ret) {
-+        Error *err = NULL;
-+
-         block_acct_failed(stats, acct);
--        nvme_aio_err(req, ret);
-+
-+        switch (req->cmd.opcode) {
-+        case NVME_CMD_READ:
-+            req->status = NVME_UNRECOVERED_READ;
-+            break;
-+
-+        case NVME_CMD_WRITE:
-+        case NVME_CMD_WRITE_ZEROES:
-+        case NVME_CMD_ZONE_APPEND:
-+            req->status = NVME_WRITE_FAULT;
-+            break;
-+
-+        default:
-+            req->status = NVME_INTERNAL_DEV_ERROR;
-+            break;
-+        }
-+
-+        trace_pci_nvme_err_aio(nvme_cid(req), strerror(-ret), req->status);
-+
-+        error_setg_errno(&err, -ret, "aio failed");
-+        error_report_err(err);
-     } else {
-         block_acct_done(stats, acct);
-     }
+This comment is a bit confusing to me... EMM, why mention the interface?
+I understand if something implements ObjectType, then it should be an
+Object, so deref/cast here would be valid. And if it is an interface,
+it would need to implement the corresponding trait.
 
--- 
-2.45.2
+...
+
+This cast idea is nice! In the future, class might also need to implement
+similar cast support (e.g., class_init in virtio).
+
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+
 
 
