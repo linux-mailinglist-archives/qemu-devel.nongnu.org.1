@@ -2,55 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E5679F3376
-	for <lists+qemu-devel@lfdr.de>; Mon, 16 Dec 2024 15:47:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB26B9F337E
+	for <lists+qemu-devel@lfdr.de>; Mon, 16 Dec 2024 15:47:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tNCM1-0007n4-Nj; Mon, 16 Dec 2024 09:45:49 -0500
+	id 1tNCNc-0008Ht-1c; Mon, 16 Dec 2024 09:47:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <avihaih@nvidia.com>)
- id 1tNCLy-0007mu-2d
- for qemu-devel@nongnu.org; Mon, 16 Dec 2024 09:45:46 -0500
-Received: from mail-bn7nam10on20609.outbound.protection.outlook.com
- ([2a01:111:f403:2009::609]
- helo=NAM10-BN7-obe.outbound.protection.outlook.com)
+ id 1tNCNN-00089E-KQ
+ for qemu-devel@nongnu.org; Mon, 16 Dec 2024 09:47:17 -0500
+Received: from mail-bn1nam02on20613.outbound.protection.outlook.com
+ ([2a01:111:f403:2407::613]
+ helo=NAM02-BN1-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <avihaih@nvidia.com>)
- id 1tNCLu-0004Q4-VA
- for qemu-devel@nongnu.org; Mon, 16 Dec 2024 09:45:44 -0500
+ id 1tNCNK-0004Tj-PX
+ for qemu-devel@nongnu.org; Mon, 16 Dec 2024 09:47:12 -0500
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=XSm9tsIDgcbguZZj7KEJQBpfmcdHA+ZmzeRR2fAWnM6VWKriVwIm6/5SI5d1IURKOC3clYYGdhlk6rUuin4kJ6X/nzWC7VmJ2aJftBqheoXBpB/R/hUqWEgLsjjYv1ES5+erTp6zLvmBUsLbESrMZwwZF7rgHoRyvnYz2Y+sS0BJb+hvDCQFpqLtT3YRPbiLILD/J+9ZEP1Xgo3gmYm13LtAUJ/7+xyyv52kgZwPRzQ4t7LwLmh4mtZWTcZY803fo36naC4augVuVyDx71DaqcW2lqaS1Oni4KMYLJR3SCQl8GFJXcgRN7xK3eH11W+kId3PM1dN+J+gPIADw7o9ww==
+ b=lX2ZRkVZJpbX5QigjSEEXw2R34sZHvZNrjcgWg9fh4Q2xJFOax9iK1pqQlAICJcwAWgu5HpLQPxaMJEyCrAAysFz2zKw54Vc/C8JCWageZf9MeabmA7pZmqyFW+ykl4IOeAm0RdTOdnWYNaRBLr6MEEv619SrLcw01rMxWuOQ7g3iNWPFuTFwbq9429K81qWRJCL293Iaz7u/yxFy+N/SeTolp07lchdvUHb8azhO2/F6COxigvjVdW9i095NjbxuyCqM4L9lwGgcTLNqxro3US76tTpPzmZHYkhZF0vYidTBON0HEXW0WL1KGidU1hRUi/uhY/x/0g/0PGBca3PnA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=702XPeu+iuDkmKDXVW6kLYH6Y8OTcYRyl0FfaUCG9RE=;
- b=YbF0CAC8lFEX7x9YDS1x1FQSk1nrfMtI8Ahpcuh4jVlO5gnmeUptDqcv2Ru/VOqGMoWXjeBeUt8tWcMh6Vfo90Z8x0dhNEGEExkwUBPB0WBb1GqDIN3trcMcQvu8SYmvmt5M/nOcO0zAuJrdIG8z1z+rbzlU2GWLf0tvHrC76tQfzNHg/oNwC1HtvIxWufC+sCTx2hApIonBqAfQjA7LHtGOjiNvE+WYu6oTwDnfObMp7QgLRTIAsyMAVGin5GkGnvfTIO2LENLct6lgkM4s3M9GcJtELeKImrkfvgsZAwBpmcqJPbtVNNY+SIRBSBavReE8Du4HG7tKlPRQ0eoDqg==
+ bh=fuKVp+UwgYGvKkeR4Ns2kuXDkH0SAZpIZvEGwVAvuh4=;
+ b=G6mEkSQ5uZ/y4u+7tmct/Xulrw2tfMNRqg1Gh765dQd/zbn/JSzdzvHFVFK27amuvACknYZCE6EXu9lRnrWDUhvbeUlblW4YdPxiInbxmWFik9DPmVKIjtHyPQGMN7yp7svjLyBnkF2PUarwkzeMe4rUWffhS6X6j0T8EKHEHdeWrMTuCiq2erpEh0SnT9OEigonK5n3BIwSR/F29+Q2dZX4gLToJK2CRUAUYT1IWoVNvAiq+GnFFi71DhPhbA+zjw0KExL4gEUBNuNN6CXB/Vr1I1ZN6nd8sNDQIX7MH1tH3qY46vzm6iFZtIWTyUYxIaGnmFoH+nOtfye14xlPsw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
  dkim=pass header.d=nvidia.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=702XPeu+iuDkmKDXVW6kLYH6Y8OTcYRyl0FfaUCG9RE=;
- b=UhgdWj3cV/aUo9YBb7vfEXtn3OE5PV3c/JaznFWoL4sZQfH3QlRWxVCAMjZtQBOzq35Tjd+oneRGuPLUzXNSi05FJigz997oK7zgx6xfyzWw2IScHnUtR5+9vPJfpHEbMYNUbg5VuEFNwdh4OXlH++fIXg980m357syGRz5sLRir7PiIaUEgDTUFU7ZCRqYueMuAp8Ah/f0scV0FUfaAjdncg2Vvoi9GUl7CW4n8JAZMgbO9BU2cDx06eTf/IQ5evAOEsJabqyGYHysUcuOXb+CpM49AfL3WlLFkqtSCRgRvuRmbDB5rDDanLhHS+PBApUM75yQmAFONAtF565Vy9w==
+ bh=fuKVp+UwgYGvKkeR4Ns2kuXDkH0SAZpIZvEGwVAvuh4=;
+ b=n8MHrz2kSx+x+CM/HuPl0a4s27ewCIy23sUqHhC4dPC2IMZcEcpKK8SuzrCM4FxDFGaNcHK5fRfoMVn+xgEsYCBgUUf2/bVu8MGfh9nyjbm89O3reBkd+Wh9Oay0zINKLKs7QWxmEZxU6sPRqe0Os1ho0qpmX6RgsyZ+ajuFtX3czb5IRRJSInkjgRP2tcQHPlkq79gU1Aiv3Vo+4igFZ2iByUT3SqYvY7+2iitfLqOg8xrVaKEduQY1uT5eK1FNZf1HeSv9Usm2hJqVkAW5WQ/tMpUuzrx+vwR/9pASit5NHc1ph9qn1OrxlNAilC9rdyo5s/jloyNu7HdWdXwwFA==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nvidia.com;
 Received: from DM6PR12MB5549.namprd12.prod.outlook.com (2603:10b6:5:209::13)
- by CYYPR12MB8889.namprd12.prod.outlook.com (2603:10b6:930:cb::16) with
+ by LV8PR12MB9207.namprd12.prod.outlook.com (2603:10b6:408:187::15) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8251.21; Mon, 16 Dec
- 2024 14:45:37 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8251.19; Mon, 16 Dec
+ 2024 14:47:04 +0000
 Received: from DM6PR12MB5549.namprd12.prod.outlook.com
  ([fe80::e2a0:b00b:806b:dc91]) by DM6PR12MB5549.namprd12.prod.outlook.com
  ([fe80::e2a0:b00b:806b:dc91%6]) with mapi id 15.20.8251.015; Mon, 16 Dec 2024
- 14:45:37 +0000
-Message-ID: <7d753d6e-a71c-4442-96e2-fbf1fd04133f@nvidia.com>
-Date: Mon, 16 Dec 2024 16:45:31 +0200
+ 14:47:04 +0000
+Message-ID: <45da80df-1110-47cc-9a2d-91ea4d1ccdf7@nvidia.com>
+Date: Mon, 16 Dec 2024 16:46:58 +0200
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/9] migration: Drop/unexport migration_is_device() and
- migration_is_active()
+Subject: Re: [PATCH 1/9] vfio/container: Add dirty tracking started flag
 To: Joao Martins <joao.m.martins@oracle.com>
 Cc: Alex Williamson <alex.williamson@redhat.com>,
  =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>,
@@ -58,107 +57,108 @@ Cc: Alex Williamson <alex.williamson@redhat.com>,
  Hyman Huang <yong.huang@smartx.com>, Maor Gottlieb <maorg@nvidia.com>,
  qemu-devel@nongnu.org
 References: <20241216094638.26406-1-avihaih@nvidia.com>
- <934927b9-eaf5-411a-8151-7617218d0cad@oracle.com>
+ <20241216094638.26406-2-avihaih@nvidia.com>
+ <6aeef4b7-728e-47e8-b51f-eb2870d6df7d@oracle.com>
 Content-Language: en-US
 From: Avihai Horon <avihaih@nvidia.com>
-In-Reply-To: <934927b9-eaf5-411a-8151-7617218d0cad@oracle.com>
+In-Reply-To: <6aeef4b7-728e-47e8-b51f-eb2870d6df7d@oracle.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: FR0P281CA0111.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:a8::12) To DM6PR12MB5549.namprd12.prod.outlook.com
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: FR4P281CA0290.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:e7::20) To DM6PR12MB5549.namprd12.prod.outlook.com
  (2603:10b6:5:209::13)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM6PR12MB5549:EE_|CYYPR12MB8889:EE_
-X-MS-Office365-Filtering-Correlation-Id: 02f4a9da-3419-4ac6-0fad-08dd1de04dc9
+X-MS-TrafficTypeDiagnostic: DM6PR12MB5549:EE_|LV8PR12MB9207:EE_
+X-MS-Office365-Filtering-Correlation-Id: 180ac0ec-6da3-4dc3-82ba-08dd1de081dc
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?N3RnWmdmVVVNMHBxYVVNY1lQMjNTNGxxZ2tTR1ROSXhnQml2SnFFK3kvNzhU?=
- =?utf-8?B?cVE2OUlLNUlXRG1RRFFiTnJGNStOeW11bTUxcktwVW1NM3pOaXlYWjl4T3Nn?=
- =?utf-8?B?anBWTS9OTW9hdHcreTVGcFYwdWNic29tV3pPY1lNdzV2VUNQRXc5M2hqZ1pT?=
- =?utf-8?B?TW9XM1RQTG1iRXR1SUFheG82UStyUU84anlpZVNtVUJ0L0ZleHlsTU1zV3Vh?=
- =?utf-8?B?TUptSTZaTDQ0Q3dKaGNQWTlEcjZWMnBjWWhENktFc3YyYkFkcnJ0ZlFnaHNW?=
- =?utf-8?B?TCtIeEw4Z2hVbjZLdTI1Z2J2bjNnTWtBS2Y4WGRuaXpXWlZ6Q2dVSk5zbVVT?=
- =?utf-8?B?c05UZDliamljM25BTmNqakQrUVRwV1dBclVCa2E5UWJxaVBYeFFmaUZTVWZD?=
- =?utf-8?B?azVUeDVtQ2lhQkk1WS80djN3WWpSa0dBTFVaYTJoL0VIeWY3dEl0SDRtVWlz?=
- =?utf-8?B?WmxLUmlHL3lieGJxK2szMGJLdWpSNWlXOWdia01BdjVrRlllR2toV1RRV1JT?=
- =?utf-8?B?SEZLM1VwWERBK1JmZlNvNDUvVWpZcU5DcDJzaUdSYVQvWnY2UnRLcnQzcndF?=
- =?utf-8?B?LzZrSnNDdTg4ZUNWZnRWclliNWpwdW9KeUMzclY3RnRqQjNTTCtQd0dGV2Rn?=
- =?utf-8?B?TkY4Rk1nN0QwWnI0MG43VWpEMmx6enRCem5oaVkvM0M4T2NveUFSaDhHMmF6?=
- =?utf-8?B?UnMzbHJzRnljU2tLL3NtdHV6RmVXd3cwVmVLUFNuaGJpdU12V05WeVhCUC9N?=
- =?utf-8?B?eVpBcWk1RmNFbEptN0cyMTh2bVM5UjRGTzRQVHQwaGl5aDc3ejFkRm9CVENt?=
- =?utf-8?B?OWd6UXJnNnc1dlBSZU84QzBVSjdJcTZwUzFrQm5wMGtUZDJhL1pHamZ6ZUp6?=
- =?utf-8?B?K09YWEI2cUlPbGpSVEcyYzAxRFlpMnZZOVB6clJzVzVYbSsvK281Q0lVS0V4?=
- =?utf-8?B?N0E2a3hJd1lEeVVLOEJqRHhDRjlRMEZuUmh5aTFXWTF2QjFiRmw4WjNNOGNS?=
- =?utf-8?B?UE14eWxvaXhFRm9WOVR3TmF3RWZTVlp3eHpPczM2VGF3aUwrcndXNU1IcTJr?=
- =?utf-8?B?Mkx3U1FVZXNwVFFvZHRCd0ZVYTV3V3IvV0phTVlaZU1Iay84cFVzVlc0bk92?=
- =?utf-8?B?QVlZRitDV1BrRXNhSW5JTlk3NjVnSnhNVU1BUlRBVXc0dHRKd1YrUThGbG9O?=
- =?utf-8?B?LzBnWHY2STFxTTBySUZ1SVhWSEthMjVlK2E1S1pJN2Y3aXRQMFJWREJFN05M?=
- =?utf-8?B?WkdlOTJRVFRCUzhsMHd2UVMyUzhaeUxqZFZUV2FjbzhubkxPQXpteWo5RlZZ?=
- =?utf-8?B?RnM1dW56OUFhaHpVNjdTQnRyZm9kemdjUGxxZFp2R1ExYnJlL1JGY2JtMUVr?=
- =?utf-8?B?K0dTOTExdXkwRkxlWW1BWitXUFAzNHRXNEFlek9CbnFpY1p1TlZpSk9RNFFk?=
- =?utf-8?B?ZU54eXNOclBWTnVwdWR5NUpWTlFXM2xUY2xUYTNKQ3dVVGFVdXJUVzZSaEZK?=
- =?utf-8?B?bGM0b0dLbnJnTFUrUTZ5Ly9Obmh5OUltMmR4WkNtTUhLeCtFM0M0ejhIZVZT?=
- =?utf-8?B?L2ZVdU1MajdndVZqR3BjWGQ3dW1zWGhtd0ZyOU41eE1uQXlrTWpMZkp1bUlz?=
- =?utf-8?B?bEFXajdGN3J1bDRYb2FDSWZ3cnBqWWVxZ3k1NkFaZ3JEcmVKLzZrYmJQd1Mr?=
- =?utf-8?B?RWFuYzJKM1VZbStxL0xtcnZSNEdqck5aS3ZDZ2s4STVUendMeWhqRlc5UXVN?=
- =?utf-8?B?SVNjTUh2SUpwTlF2RGZjMDcxNnQzN3loRkxjLzlzT1E4SEVQUEFTS2xOZ0h6?=
- =?utf-8?B?U2RLNk9vUUNSRlp0dXRMalZNRFZrRUFPcC9jQ3FiSjBDS1FLV1Z6YVpNa0ox?=
- =?utf-8?Q?WjbTauhTRbae+?=
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024|7053199007;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?VVJWQU5QejRxV2pQcUhUZE9vMkRmRnk1SWF1anN1TXN1Sko3ZFNVMzF0eUhx?=
+ =?utf-8?B?aUZzTlVzekM3SHpadU5xUjUrck4ybjMzeXpsREFmVHhpalRzQ3B0NXpTOVRS?=
+ =?utf-8?B?aVV2bmpuRHpFY09tSXE2a2pUWHRsakw1THpVaXI0WGpHdTNpeENRTnRwbkl0?=
+ =?utf-8?B?cnUwSUJnZHUvWHZWMmZsMFVzTFM5endyUE5WaEh3YzlWZXFxaVh1Z0hFTk1k?=
+ =?utf-8?B?RXJMK3R4TFF6ZzJ6RDVkanAvME5SdUFnYTZ0ZVdZdGdTanZaK0o5K01pWnNW?=
+ =?utf-8?B?UkVuLzI0b2g5cEU5SFJsRVNjZG9PYSsyUmVsY2R5K1NEU1NuZS9yNkxGa0hn?=
+ =?utf-8?B?VHlGeWxEdk9yTjQ1TStLU2JFbVZiTVhadTZNekxJWWM3Q2FySDZBWnNwVFQ4?=
+ =?utf-8?B?NXdnT2VEcGt4Y1VhRGVtUDdEYUpURUxDMmZjcnBvVmFDNzQ3OVZTSXBTSkpP?=
+ =?utf-8?B?TE5paFdPUTRaZlRRQ01jSG43Z1BCdEJUajhhV2lQZEpScW5uaWFaVFZaOFF3?=
+ =?utf-8?B?bGN4V1dUdEhEYkM5bVFPSXJxRUZmdklHMnYxY0EvME1oRGtTMHR3YkVNajlS?=
+ =?utf-8?B?dXMycWVmNEIyRnRSOVRIWnduUzlSSkRUem1IUHhNNkRGeWZETmVoczZMcmlU?=
+ =?utf-8?B?a2xncytDdGJBd1VxWDJxd0pYQmNCQ1I2Z2ZrUmFXc0t0ZTBXejRJbEgvdzRx?=
+ =?utf-8?B?aU1OZUJsRE0vNlZQUEJIdVN1bHlxVzlTa0JjdUxGamtOYzh4aE50WWovM3d1?=
+ =?utf-8?B?Sy94RFliKzRqNG9qZm5vMWxrRDRCcHAydTRwOUVheTBZK0RYMjlTRk5JRVpr?=
+ =?utf-8?B?ZGViSVVRNjJ1NmpQSTd6QjRmUnJmdGI3dUU3Q1pNVTJIRVBwOGtIcXhWQTdr?=
+ =?utf-8?B?elBudnMyK3dkZzVqQXZJdU9GZ282UkwwUTBuaDJOMi9pR1ZudmpKWW1CNnNW?=
+ =?utf-8?B?WEJwQUF6ZU9PQ1ZWbzBVbTNPbElyZ3VlbHRVcmM2Q1Q3UmZrV3dQYUk1VEcy?=
+ =?utf-8?B?cklFUFh2bzBjNGFxQmRFR0VkbHNXeXZXWWxuaEZCcmVlcnFYQ1ZhRWZhOEN0?=
+ =?utf-8?B?ckVGaUFTY29rcDg2RlBldkdwaHUvbG9iOTFFZXRKVzg0ajEzOTBvbUErS1ZX?=
+ =?utf-8?B?a1NTYjdPdkJCTlpYaWxZb1A0SG5LbytWUk8vVCtNZVZML0NNMzJJdnllVkVN?=
+ =?utf-8?B?clkrTzl6SFNOdHlpUUFLOVFzVGx5ZWNsOWFMSHV2dTc1N25NaGU3N1M3WDgv?=
+ =?utf-8?B?Y0gvejFyUVVLR3VJNGxjbkpySGVDWVFVanJmQW8xYVlJN2NKMk1UdmRvU3Q0?=
+ =?utf-8?B?a2paOEN4SVRFYmNtQ01WdTNyUmgxZU1NcmlGYXpuQTlCblJzS21SKzNBYmtU?=
+ =?utf-8?B?LzdrQ1Mxbi82NkJlczAzSTUxZzltK1FUUEdOeGszb09PbEltMHZNaWIrcEl6?=
+ =?utf-8?B?VzVtLy96YXorQXF6YmxRWW5SbU9ORXJPZytyZkZ6NUh1ZTROMlJtbFZCRExp?=
+ =?utf-8?B?TmlxaGRhbmFOdDZDcHdqdVRieFBGdnhqOWlITUdZZEpRVW1pbmNMZjh3SDNN?=
+ =?utf-8?B?NEVuSVZXQzliYjlFR1VtTUNSV2JiYjkwSkpBZDZhOXBhWnVpaHA0NkVkRHRO?=
+ =?utf-8?B?aFR4c0EreU5JbmhNcjJ5MDFVQXBwVjE2TTExZmt0WHhTcit5OWVFTFFQTnc5?=
+ =?utf-8?B?UXFTaW5KcHhkQWVRQVh3b2FMeVZuUHZhNjRkenc1eW1HNmFwQklPQW1DZ1Jt?=
+ =?utf-8?B?bmt5VTJqOCs0UnoxcWFuODBnWjNPZGVKSTMrajk5R2NUTVVVYXBKTzI1MHV5?=
+ =?utf-8?B?Vm1ubVY0eHdLR3MzMkptenRpYXdMS3ZZN3l1bWJXSXV4S3JzSWNuV1VNOGhq?=
+ =?utf-8?Q?F9bf2CUptNjiE?=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:DM6PR12MB5549.namprd12.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(1800799024)(376014)(366016); DIR:OUT; SFP:1101; 
+ SFS:(13230040)(366016)(376014)(1800799024)(7053199007); DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?eWFoSHVxeWpnK0QzUDBBYWFrc1V3YVhwQjVlVWxHcjJRU3hrdExYNTFldjk2?=
- =?utf-8?B?UWRES29ldktxdkpOSXJ5cmtaSlBRbm1sSDNvYzZuWC9jREhyRnAxRFAweG52?=
- =?utf-8?B?cjA2ZWZZdHFrOG5qYXp5ZUFCWmk4RnlvU2xFWjg4TkxHTHJmS2wwTGhRUHdE?=
- =?utf-8?B?UlQ3M0ZTbG5JWHFqZ3BHQVRwOTRFVTBJTTdDcVJiRy9BNDBlZ0MwTU1kZFJM?=
- =?utf-8?B?c295bXRBeVdxREhNRkE5VWJvczJKd0Z1NisvdUpReWJON3hpZXprVXFOaHR3?=
- =?utf-8?B?UHdTVWVZd013T0FORFc4MEpta2pqR3JDcTFBWWNBUW0yVG5KVDZOSUxITDJw?=
- =?utf-8?B?dGtRMFZQRFVJTk9zNDZSTXFyalQwOXI2V1FaYjZIamtXMzRvakxpWmYyanYz?=
- =?utf-8?B?a2VRSDExUDBsSG5xRmsxVzZwNVA4YVFlMDVURUhNR3ZBSXJLTk14MGdFTG5S?=
- =?utf-8?B?SWUyYXQ1dVgwVFd4a0lWOTB6NUxWMVlIYjhlQ1lYc2pOL0R1VnNvMUZUQlh6?=
- =?utf-8?B?YW95R0tjcGcwMGJuREd2Y0VmYk1NL1FlMWNoZkNtOEJlR2lVWTFTNy9pbDhs?=
- =?utf-8?B?QS9MaXc1T252MG1NTmVObERHWkhpcHlaWHVPeTg1M1JhcTlGcFJYWjR3TXFQ?=
- =?utf-8?B?aGNlTnZGWi9SYTRjTFQxSStUMVlyZllkczc2WElBQjN2ZG1iK3JiLzU5TmMv?=
- =?utf-8?B?dEtwL25ORS9xMjhzaHpjZFpDWE9FYm50RVJzVkJCYnFoN1dpWng3QlFyKzAx?=
- =?utf-8?B?WTRQQ1BYK0ZjZXVYNFpycElsRmwrTTN6UUlZNUdXdFFqL2FmeThNdUx3bERQ?=
- =?utf-8?B?bzdxR1ZyY1E5OEUvVnFVK3h2RHJ1TjVVbjJVdGNiblg4TUpHMzF3T21xTG1h?=
- =?utf-8?B?b3o4Tk13K0RhSDlyQ3FkWTRVN21Nam5hNkhVSmNZdU9xWEJoQUd5Uk9ZeXNq?=
- =?utf-8?B?Qk52VlFyaGpFcTM1bWhWQ3JSc1JmaDlaZWtIZThUVlNrdG5INlc0OUFxdE9h?=
- =?utf-8?B?Y3pyNkVZV01KVHV3di8rU1ZaNGRPU3E5T1hDQzdBQVhaUzlYYSt4NGFac0NK?=
- =?utf-8?B?dEdxUVVBWTF4UWQwdkdkcWlnSXhoV0RhSXlZVkZMODZNcFJjb1Z2VmVIT0Rh?=
- =?utf-8?B?bFB3VmZRQ1loelBGKy85TjdzMGRjMm5MdS9mTVk1T0NwMU9vWW95aGFqMXcx?=
- =?utf-8?B?RDNQem1TVGlqc29MbjRFdVJoUEd3dUUwWUhicUp2Q0pQT1M0YVZIc1JUVVhY?=
- =?utf-8?B?T2Izdm1wMkRibUdZeVhFWEt5SGFSdnFFMnZLc3RDYUxFaUhCSFpNL0hGWCt5?=
- =?utf-8?B?S0FjeEVjb21QSUlOWXFGUTJiYVhVN1lEZnNraSs3bmJ2L0Y2S284ZzNxSStz?=
- =?utf-8?B?eTBCMmFGL2hJSkI4R3ZicWZoYkZhd1BCOG4vZzB3a0hFaXpyZ204WU5Yai9U?=
- =?utf-8?B?ZkxSNnROTkJOT2dCMis0VDAzcDlOdUR6MXE1eVNKTmt6bzByeWVGdUpsVE8v?=
- =?utf-8?B?dHo3UTg4c3ZtZ25xNmErNjhPM2tMMFdsbDBmenpaVENKRjBDMXlWaTl6QjRh?=
- =?utf-8?B?MlhsZGY2Zk9lMWZtd1VkdkJWQVlrV0JnTyt0L25tQ293SkRpWk9HUmhSaVFD?=
- =?utf-8?B?V0J0SitHMGU0VnFxeGVuaXRzbjg4ZytRSk9QOWJ4ekFVWndNUTQwb0ZNT3Yw?=
- =?utf-8?B?VnFuWTNzZnpwdDNuZVhZbDk1STNhdE1LWEM1bmFzakc3SytzbWxzM0ZDVXg2?=
- =?utf-8?B?Tnh1VHZ1UWpWcHhxK0dpVlpkVStkZWlmZlA3aTVXMFNhYkV6cmFmcWFmY2hI?=
- =?utf-8?B?Mms4bUdDb2YvZXVESW1hb0FZb0l6Tnh3czdUTFprK1VaTlp6dWY1M1RmNVVz?=
- =?utf-8?B?VVM1RUR0Ty9GNUZRbjFKbnBuTWxZTHZDdFNuVjYyNTlMWnk5WDZyWXNLengy?=
- =?utf-8?B?d1BtK3FsczJ4TXZQV3BxM1AxaDYxOVNIeTFjUXkydzBKeWVkL0EyaFhTakdR?=
- =?utf-8?B?NTRSeGEwQkFVbCtyYXpKd1lLVk1kNFMwVmtQSzlmOVFvRW1MVFVuUFlnV0lt?=
- =?utf-8?B?ZHhvS2RPbFVhSzJRc2NzaFdNMHpDL1dMUHQ1cUhKN0IyVzk1bDI3QmdKU3Bp?=
- =?utf-8?Q?BsrhncD9gSSXR5WmvzPU0qHs+?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?NkJ2OE9sTWtUUDNndWN2bkRDS0VmRUhFVU8yYWdGV0pxOWVyd2x5SWFUcS9G?=
+ =?utf-8?B?WURsZjBtS0dhSDhxaTJudTVtOEIvMjhWSzc3d1NUMElkSTFyeFJtV0NpLzQ5?=
+ =?utf-8?B?Mlhqd3F5cU1WV21iVW1MemZaOFVBeEFIdUNuUlYxQ3dGZTBvVVZMMmJVN3pL?=
+ =?utf-8?B?b0NYUGdUdXlkVFRjOHE3Zzc0a2NyOWYybUh0ZnRJcVpndkJxbkFFRjRqaW1J?=
+ =?utf-8?B?T3RWKzlFSXl5OWZVZkxLdktpSytZSWl3ZW5qajZycjV5VTlQWUVtdTFzVXdH?=
+ =?utf-8?B?eFY2QmdTOVpUdE12T0NNd1dTQkhvaEU2R2RHZkdGNDFwVUlwcXNkU1J5ODlM?=
+ =?utf-8?B?eHlyNitDd0JBTk12VVd4d1NYTEFRZzhQNmlLNzd1eDRGZDNWTXl2L2ZmRUpj?=
+ =?utf-8?B?UG8zbkFhS3F6ZnRRZ0lQZzJRQ2FVdzJiMnI2eDZNbUFXMHVkVE5qTDRQU1lU?=
+ =?utf-8?B?enVNMUIvRjVMZnkzVUo0YVZkMCtGdk0rSnRaVExDWTZBVmlPNTRXWTVjRFp2?=
+ =?utf-8?B?MXpNR2pZRDZuNHNGTnpTYmVjc2FuWGhtNjRDRk05b2ZhL0kwZ0QvSjJ0eWxM?=
+ =?utf-8?B?djBlcGRHSzlrMmtkRnBDcW03bjM0ZXE0VFNuMmsxWVdYd0tMcjRiYjhMRVl2?=
+ =?utf-8?B?eHFUK0F0NlVlUjR2UTVTMXpBVk4yMUpId0xDTEFnaFVVYkNmcTV6cTlsbkIx?=
+ =?utf-8?B?b3lnNk5ZOVhEQ21oK290WnNQS0R1dzFVcHZFWmt5WkFldWt1QXlrQ3hQMmNK?=
+ =?utf-8?B?MEZjckk3cDVuT1Myd0Z3K0RNUzJ3SGkxSFB0Z1Mzc0NpZk5laFdGWHF2S2Fl?=
+ =?utf-8?B?RzhDdFBTanpaNmZZUFdlWEhuUTFmM3NhcWZjZTNHZFFxdnNIVDYra3p4Rld4?=
+ =?utf-8?B?SVNKSnh2UWdBak9hNFdxM0VYUTZDbDBBZkhBNVR6cU5JUnR4QXpKek5hRmli?=
+ =?utf-8?B?SkRRMmltNzBmVlJtVDBROHlhcHRGS29xbkp1NzlMUVh1aUtyaU5kMFJaTTJy?=
+ =?utf-8?B?SDVWME9hRm5wYVZVVEJ5MHNpU3JhMXU5ZHFIeVN5S1hEMnd4dDBTWFZKbXJP?=
+ =?utf-8?B?M1lwcXBEQ0o3dDdqdE9PR1NLOURuTVVPNm9UNW5xV09tTFVBZ2NQT3lDU2p4?=
+ =?utf-8?B?RnhGd0NRdDUwYjBWb1hrOTNJb2RkZy85SFdYcUwwUEwrZmRnREZGMERjcmsw?=
+ =?utf-8?B?emQ0Mi9ZaW1ZZ01lT2FmTU9IZ2VxRmVCWTJiWUVPYWFpSS84dDVBMHF1ZjJW?=
+ =?utf-8?B?RlRuU3MvSmovQW5NdHRWalpyTW1zM3VQcnlxS3JzRnRjSEgzVGVleU9lNUV3?=
+ =?utf-8?B?UTgwMThMS2xvamVSTXFiQUxGVldBbVphWXA4dlR6T2gvUjRhOEE4SzRhbWJt?=
+ =?utf-8?B?UUUxOUxEaHhmaTJaKzhaMFZvcU5WTEI5Qy81Q1d6VUIzMmlVMmhOZFZxWGlQ?=
+ =?utf-8?B?UFA2VzMrNkp3TTkvbTZ4SFNKb1RHMGFGbXVRbTQxUzREd1pqWnhvY3ZnczBl?=
+ =?utf-8?B?SXJHb0ZuUUs3TjNoa2lGaWRCWVMzd00rY21kMUNjbjBqMWFJNEhvK0hFZi9I?=
+ =?utf-8?B?QVdoVzhnQmp0d0M3SUI3cUU2RUhmZ2xlaVhwMERqL05sZWJnWkFOS3o4eUxP?=
+ =?utf-8?B?TmlqdVIyRG9pVkRLYk44amttQUsreDdpajJhb09QK1o4cW9nSG9uSklFNmpi?=
+ =?utf-8?B?cE1CTEFDKzFJTDd5NzJ1QmNwaTB1Y3ZwckZzMkwyYStGdGdrc2IyNnhpR0pC?=
+ =?utf-8?B?VzhkWnhpSGlnaVNaQ2dGR0Jpcjl6R3VPTEdRZzhacytxRHpJc3VTY0V0aUxZ?=
+ =?utf-8?B?dC93NXhhL0pJTDJBTkVNTmllWHRhc084WHhJdWl1V0pERGg4UGd4Z3pRaDlp?=
+ =?utf-8?B?dWZoQmdJb29ISnFGa2RoV000eTAxQ3FVSE1tZzl2MDFnaHJtUzFxbittdE8r?=
+ =?utf-8?B?cng3dytpWE84aWltcHM4U3llZC9FdFpGcUNtRnN1c01QNlFmN2xITjZzLzNl?=
+ =?utf-8?B?eHdOVkpPNlpsNS9BelJoNnhoMkFPdk85T1BLamdNUlRrL2Y5dGZUWWpHMStT?=
+ =?utf-8?B?SjBnNHBRZ3VaVEhHcVgrUlg1cXRaZkZ5SlNwZVhiUy9Td1VqdzFyOVVWT1JV?=
+ =?utf-8?Q?GeM8rDKcgvusz0GU+pfFpKN4+?=
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 02f4a9da-3419-4ac6-0fad-08dd1de04dc9
+X-MS-Exchange-CrossTenant-Network-Message-Id: 180ac0ec-6da3-4dc3-82ba-08dd1de081dc
 X-MS-Exchange-CrossTenant-AuthSource: DM6PR12MB5549.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Dec 2024 14:45:37.4207 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Dec 2024 14:47:04.7286 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: vFvRR8a/G0G2wKAiqahu5CE2Qx0KuOe4ByK7Z7XCSbqtK5/RSCXAgc5KXtvNUPC893isrs3LOzM+XEL0MBLuKg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CYYPR12MB8889
-Received-SPF: softfail client-ip=2a01:111:f403:2009::609;
+X-MS-Exchange-CrossTenant-UserPrincipalName: dCIcjt3TDoIKss7hHv6MtByLP1ypLshRe/S6J2Lu3wf4tnFVFlGIu6V20a5NkNhwEJ+73kH7wRnPsEElSlShgA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV8PR12MB9207
+Received-SPF: softfail client-ip=2a01:111:f403:2407::613;
  envelope-from=avihaih@nvidia.com;
- helo=NAM10-BN7-obe.outbound.protection.outlook.com
+ helo=NAM02-BN1-obe.outbound.protection.outlook.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -181,70 +181,80 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
-On 16/12/2024 14:00, Joao Martins wrote:
+On 16/12/2024 14:15, Joao Martins wrote:
 > External email: Use caution opening links or attachments
 >
 >
 > On 16/12/2024 09:46, Avihai Horon wrote:
->> Hello,
+>> Add a flag to VFIOContainerBase that indicates whether dirty tracking
+>> has been started for the container or not.
 >>
->> This follows up on Peter's series [1] to simplify migration status API
->> to a single migration_is_running() function.
+>> This will be used in the following patches to allow dirty page syncs
+>> only if dirty tracking has been started.
 >>
->> Peter's series tried to drop migration_is_device() and
->> migration_is_active(), however VFIO used them to check if dirty page
->> tracking has been started in order to avoid errors in log sync, so they
->> couldn't simply be dropped without some preliminary cleanups.
->>
->> This series handles these preliminary cleanups and eventually drops
->> migration_is_device() and unexports migration_is_active().
->>
->> The series has been migration tested with the following:
->> - VFIO device dirty tracking.
->> - Legacy VFIO iommu dirty tracking.
->> - vIOMMU + Legacy VFIO iommu dirty tracking (migration with vIOMMU is
->>    currently blocked, so I used a patched QEMU to allow it).
->>
-> vIOMMU on IOMMU HW doesn't suffer from the same problems of VF dirty tracking
-> where there's a aggregate limit into how much VFs can track in terms of IOVA
-> space. So we can lift some of those restrictions for IOMMU even right now
-> provided we implement the last remaining pre-requisite.
-
-That would be helpful if there is a user who needs migration (with iommu 
-DPT) + vIOMMU support right now. Otherwise, we don't have to rush and we 
-can do it along with the optimizations or whatever we see fit.
-I only needed migration + vIOMMU to test the vIOMMU dma unmap flow.
-
-> I also have a much
-> smaller series for that sort of unblockage that I can give you a pointer.
-
-Yes, if you have it at hand, that could be useful for testing next versions.
-
-> Though, eventually the optimizations we will do for VF dirty tracking for vIOMMU
-> will apply to IOMMU HW too just so we minimize the amount of calls to get dirty
-> bits.
+>> Signed-off-by: Avihai Horon <avihaih@nvidia.com>
+> Reviewed-by: Joao Martins <joao.m.martins@oracle.com>
 >
->> I didn't test it with iommu DPT as I don't have access to such HW.
->> Cedric, I remember you said that you have such HW, it would be very
->> helpful if you could test it.
+> Just a nit below, but it's optional.
+>
+>> ---
+>>   include/hw/vfio/vfio-container-base.h | 1 +
+>>   hw/vfio/container-base.c              | 8 +++++++-
+>>   2 files changed, 8 insertions(+), 1 deletion(-)
 >>
-> I am starting to prep the unblocking vIOMMU for Qemu 10, so I can validate if
-> this series works as well -- but from what I have looked so far it should be all
-> OK.
+>> diff --git a/include/hw/vfio/vfio-container-base.h b/include/hw/vfio/vfio-container-base.h
+>> index 62a8b60d87..4cff9943ab 100644
+>> --- a/include/hw/vfio/vfio-container-base.h
+>> +++ b/include/hw/vfio/vfio-container-base.h
+>> @@ -44,6 +44,7 @@ typedef struct VFIOContainerBase {
+>>       unsigned long pgsizes;
+>>       unsigned int dma_max_mappings;
+>>       bool dirty_pages_supported;
+>> +    bool dirty_pages_started; /* Protected by BQL */
+>>       QLIST_HEAD(, VFIOGuestIOMMU) giommu_list;
+>>       QLIST_HEAD(, VFIORamDiscardListener) vrdl_list;
+>>       QLIST_ENTRY(VFIOContainerBase) next;
+>> diff --git a/hw/vfio/container-base.c b/hw/vfio/container-base.c
+>> index 6f86c37d97..48fc75cd62 100644
+>> --- a/hw/vfio/container-base.c
+>> +++ b/hw/vfio/container-base.c
+>> @@ -64,13 +64,19 @@ int vfio_container_set_dirty_page_tracking(VFIOContainerBase *bcontainer,
+>>                                              bool start, Error **errp)
+>>   {
+>>       VFIOIOMMUClass *vioc = VFIO_IOMMU_GET_CLASS(bcontainer);
+>> +    int ret;
+>>
+>>       if (!bcontainer->dirty_pages_supported) {
+>>           return 0;
+>>       }
+>>
+> It's a nop when no state is changed; don't know if you wanna capture that here.
+> Something like this below now that you track container dirty tracking status:
+>
+> if (!(bcontainer->dirty_pages_started == start)) {
+>          return 0;
+> }
 
-Thanks, that wouldn't hurt :)
+I guess you mean:
 
-> If it helps I have some pending series that lets you test emulated x86 IOMMU
-> DPT support (either on intel-iommu or amd-iommu) that can help you when you
-> don't have the hardware to test.
+if (bcontainer->dirty_pages_started == start) {
+     return 0;
+}
 
-That would be great, I didn't know such thing existed.
+Yes, I can add it.
 
 Thanks!
 
 >
-> Regarding this series, since you are looking at the the dirty tracking 'status'
-> I'll comment here too as one of your original patches introduced it as it's
-> related to the use of migration_is_running(). And since you're looking at this
-> exact part of the code, might as well cover that too.
+>>       g_assert(vioc->set_dirty_page_tracking);
+>> -    return vioc->set_dirty_page_tracking(bcontainer, start, errp);
+>> +    ret = vioc->set_dirty_page_tracking(bcontainer, start, errp);
+>> +    if (!ret) {
+>> +        bcontainer->dirty_pages_started = start;
+>> +    }
+>> +
+>> +    return ret;
+>>   }
+>
+>>   int vfio_container_query_dirty_bitmap(const VFIOContainerBase *bcontainer,
 
