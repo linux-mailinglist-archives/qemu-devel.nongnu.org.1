@@ -2,70 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D5B69F32E7
-	for <lists+qemu-devel@lfdr.de>; Mon, 16 Dec 2024 15:20:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B94F89F315A
+	for <lists+qemu-devel@lfdr.de>; Mon, 16 Dec 2024 14:16:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tNBvh-0003Xi-VT; Mon, 16 Dec 2024 09:18:37 -0500
+	id 1tNAwV-00014b-D8; Mon, 16 Dec 2024 08:15:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1tNBvd-0003Wm-5F
- for qemu-devel@nongnu.org; Mon, 16 Dec 2024 09:18:33 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1tNAwR-00013Y-8v
+ for qemu-devel@nongnu.org; Mon, 16 Dec 2024 08:15:20 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1tNBvb-00009X-6l
- for qemu-devel@nongnu.org; Mon, 16 Dec 2024 09:18:32 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1tNAwP-000053-AA
+ for qemu-devel@nongnu.org; Mon, 16 Dec 2024 08:15:19 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1734358710;
+ s=mimecast20190719; t=1734354915;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=ZeAs8kqsw4xciRMmniVYl99YNVZa8OC6R0AcvYkLwtQ=;
- b=HOlSSPdO109drcJ/sQZirEQzASxTe3b03cRcZaTbKSic6E2cRcAGlx7HnSm6iysZTEIcpL
- q8uouTVO72fJwNXEgPzTdLkqRUR2tLv6xajfKRyXNMPtXpyCuZkbwACJC8DkL4Q7KVNRxF
- RRMO9476Ofemm8PQpjUbZ0dAQiWJPhU=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ bh=/qKAEzdzhIEGOaRCSbeIKsJLyFVYP0bVwg9LTjrq6Q8=;
+ b=Z9T+B58uvlqC5QTkQe/QyzAGxzC/mVIfW1dnDg71o2oYLnRVaFLyHpb63OaDPeQV1NZ+zk
+ 4p7iK6FWPeXx1L9kcJ+Ushm11bC1czoovU+h4XGWe2cyVX3qbJqnN9E/FplOD3p4WDk6m2
+ ZbHduaJzNk+ltMyfn3a3dY0MFtIqDKM=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-265-06nZiUWvO2Kiz7XqoxBHIw-1; Mon,
- 16 Dec 2024 09:18:25 -0500
-X-MC-Unique: 06nZiUWvO2Kiz7XqoxBHIw-1
-X-Mimecast-MFC-AGG-ID: 06nZiUWvO2Kiz7XqoxBHIw
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-36-rEC1kyDGP8-_Mur25-Wemg-1; Mon,
+ 16 Dec 2024 08:15:10 -0500
+X-MC-Unique: rEC1kyDGP8-_Mur25-Wemg-1
+X-Mimecast-MFC-AGG-ID: rEC1kyDGP8-_Mur25-Wemg
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 924DF1956071; Mon, 16 Dec 2024 14:18:24 +0000 (UTC)
-Received: from localhost (unknown [10.2.16.118])
- by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 28BC3195606B; Mon, 16 Dec 2024 14:18:23 +0000 (UTC)
-Date: Sun, 15 Dec 2024 07:33:37 -0500
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
-Subject: Re: [PULL 00/20] Misc HW patches for 2024-12-14
-Message-ID: <20241215123337.GA496133@fedora>
-References: <20241213233055.39574-1-philmd@linaro.org>
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 5DF5F1955F41; Mon, 16 Dec 2024 13:15:09 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.27])
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id DE417300F9B8; Mon, 16 Dec 2024 13:15:08 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 8A5F821E6682; Mon, 16 Dec 2024 14:15:06 +0100 (CET)
+From: Markus Armbruster <armbru@redhat.com>
+To: John Snow <jsnow@redhat.com>
+Cc: qemu-devel@nongnu.org,  Peter Maydell <peter.maydell@linaro.org>,
+ Michael Roth <michael.roth@amd.com>
+Subject: Re: [PATCH 01/23] docs/qapidoc: support header-less freeform sections
+In-Reply-To: <20241213021827.2956769-2-jsnow@redhat.com> (John Snow's message
+ of "Thu, 12 Dec 2024 21:18:04 -0500")
+References: <20241213021827.2956769-1-jsnow@redhat.com>
+ <20241213021827.2956769-2-jsnow@redhat.com>
+Date: Mon, 16 Dec 2024 14:15:06 +0100
+Message-ID: <877c7zdb1h.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="nSBYccH3afm2Xtkj"
-Content-Disposition: inline
-In-Reply-To: <20241213233055.39574-1-philmd@linaro.org>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_24_48=1.34,
- DKIMWL_WL_HIGH=-0.001, DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1,
- DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-1.13,
+X-Spam_score_int: -31
+X-Spam_score: -3.2
+X-Spam_bar: ---
+X-Spam_report: (-3.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-1.13,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -83,30 +84,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+John Snow <jsnow@redhat.com> writes:
 
---nSBYccH3afm2Xtkj
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+> The code as written can't handle if a header isn't found, because `node`
+> will be uninitialized.
 
-Applied, thanks.
+Yes, we initialize @node only if we have a heading.
 
-Please update the changelog at https://wiki.qemu.org/ChangeLog/10.0 for any user-visible changes.
+Made me wonder what happens when we don't.  So I deleted the = from the
+"# = Subsection" line in doc-good.json, and got:
 
---nSBYccH3afm2Xtkj
-Content-Type: application/pgp-signature; name="signature.asc"
+    Exception occurred:
+      File "/work/armbru/qemu/docs/sphinx/qapidoc.py", line 425, in freeform
+        self._parse_text_into_node(text, node)
+                                         ^^^^
+    UnboundLocalError: cannot access local variable 'node' where it is not associated with a value
 
------BEGIN PGP SIGNATURE-----
+So you're fixing a crash bug, but that's perhaps less than clear from
+the commit message.
 
-iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmdezKEACgkQnKSrs4Gr
-c8j2Rgf/cRTs+6FYbHDeaxwJq1ddANjeHufHXyLNvu2RrRJc0BJIhlNBlx088Hm/
-fYw0ZTcKv8JK1xKtGpPvrxqq/4LY+byaC6IgDyVTaTmXZtWbRam/dV0YAVLDIcSe
-FQuDTwGvULuZflvqhOkfd4oFcxzO97zGZhLZKSHjA1ifXZpEoaWVeDcHNUz5ylG+
-s4ADMisa67r0pFwcAkT5R8pNpLlIawMcx6clDucyVaoIByByqg7j44I4XckBdu0l
-dSqmiBJBbH8xqcsIHZ1EyedYRH/RvSMEvPpSIEWcHxImbJJtpssFroD8Hr+KoBkX
-3RiIgdS5YtuqQyaPUPoj5xhRmhPsPQ==
-=kzvw
------END PGP SIGNATURE-----
+>                        If we don't have a section title, create a
+> generic block to insert text into instead.
+>
+> This patch removes a lingering pylint warning in the QAPIDoc implementation
 
---nSBYccH3afm2Xtkj--
+Can you show me the warning?  My pylint doesn't...
+
+> that prevents getting a clean baseline to use for forthcoming
+> additions.
+>
+> I am not attempting to *fully* clean up the existing QAPIDoc
+> implementation in pylint because I intend to delete it anyway; this
+> patch merely accomplishes a baseline under a specific pylint
+> configuration:
+>
+> PYTHONPATH=../../scripts/ pylint --disable=fixme,too-many-lines,\
+>     consider-using-f-string,missing-docstring,unused-argument,\
+>     too-many-arguments,too-many-positional-arguments,\
+>     too-many-public-methods \
+>     qapidoc.py
+
+What version of pylint?  Mine chokes on too-many-positional-arguments.
+
+> This at least ensures there aren't regressions outside of these general
+> warnings in the new qapidoc.py code to be committed.
+>
+> Signed-off-by: John Snow <jsnow@redhat.com>
+> ---
+>  docs/sphinx/qapidoc.py | 2 ++
+>  1 file changed, 2 insertions(+)
+>
+> diff --git a/docs/sphinx/qapidoc.py b/docs/sphinx/qapidoc.py
+> index 5f96b46270b..5a4d7388b29 100644
+> --- a/docs/sphinx/qapidoc.py
+> +++ b/docs/sphinx/qapidoc.py
+> @@ -421,6 +421,8 @@ def freeform(self, doc):
+>              node = self._start_new_heading(heading, len(leader))
+>              if text == '':
+>                  return
+> +        else:
+> +            node = nodes.container()
+>  
+>          self._parse_text_into_node(text, node)
+>          self._cur_doc = None
+
+Plausible enough (and I acked a similar fix previously, commit
+2664f3176a8), but I'm a Sphinx ignoramus :)
 
 
