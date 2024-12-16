@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22BED9F27A1
-	for <lists+qemu-devel@lfdr.de>; Mon, 16 Dec 2024 01:51:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E0E89F279F
+	for <lists+qemu-devel@lfdr.de>; Mon, 16 Dec 2024 01:51:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tMzJN-0001Ry-Ig; Sun, 15 Dec 2024 19:50:13 -0500
+	id 1tMzJO-0001TY-Mz; Sun, 15 Dec 2024 19:50:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jason.chien@sifive.com>)
- id 1tMzJJ-0001OX-LZ
- for qemu-devel@nongnu.org; Sun, 15 Dec 2024 19:50:09 -0500
-Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
+ id 1tMzJM-0001S2-BI
+ for qemu-devel@nongnu.org; Sun, 15 Dec 2024 19:50:12 -0500
+Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <jason.chien@sifive.com>)
- id 1tMzJG-00078g-6f
- for qemu-devel@nongnu.org; Sun, 15 Dec 2024 19:50:09 -0500
-Received: by mail-pf1-x42f.google.com with SMTP id
- d2e1a72fcca58-725ea1e19f0so2910193b3a.3
- for <qemu-devel@nongnu.org>; Sun, 15 Dec 2024 16:50:03 -0800 (PST)
+ id 1tMzJK-0007JZ-7y
+ for qemu-devel@nongnu.org; Sun, 15 Dec 2024 19:50:12 -0500
+Received: by mail-pf1-x429.google.com with SMTP id
+ d2e1a72fcca58-728f1e66418so2885876b3a.2
+ for <qemu-devel@nongnu.org>; Sun, 15 Dec 2024 16:50:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sifive.com; s=google; t=1734310202; x=1734915002; darn=nongnu.org;
+ d=sifive.com; s=google; t=1734310208; x=1734915008; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=0oPxPHNXebmd2yYjjqR5HgsogRG7IAY4swP2rcEypRg=;
- b=Y7ZlbFodL/B/qZgoU4q8J7NLqnVW809NykVvkjF8zL6JuHQQgfOAZeyz6SQPs+Ggrn
- gLhgOpub5AkwoY1XeFILSp15v8YS3kakXu5DdI79FPNTPoMVcTZSJBbgVaRDBMvZG/d4
- en9WxvIq7cdafhNUTQRS49gLoeg7QN58nvnt/p+0s15a2SnciomInVFWOW+X1Z8czNCX
- KGF/4Xi4imP6LSb2Hxw1VJfJZEDb5fvwWJfXiaLNQGEUClwBdxi+bZYvY3PHEiNwShX2
- 4IXpJ/NhgPwlZdT1vzUUFaCFt4KDMBA68sv3rRxgOiuTkxlyYJTPKOrtY8nPsMNIJaRW
- CztQ==
+ bh=FWmGdfs7I/39bU6vTy0i46WBke+O98sxD/aRcDZSQXA=;
+ b=BEtw417p0hbGy2kmGzuSeU97E0qDM6CoKLm5ZZUe6/GsGhtHD6yWVRoIIgfW+JqQkW
+ qEdUIcATUmN3gHqbXIA13AXG4Ln3zwExn4lxKq/LgUwMsdNVlCrJouGvcU5nQD/iOXQC
+ EBtkdzwEryWQfnBMaLTQFPi8TTXlwhT66nv2YerUd3zXcD71uhbCn/jzK2DRbffqP+Hn
+ x8taTB3HysBOtjZleMrzoauCbmj/t0hLJkNXlBDmJlYcqSntGp5iKd8QKeqmUyjZbiJQ
+ fHxRcybq3TMbcDB9w3E9VLNUBxDbImvzYwF0I/4+rM44OOYap5w/AAH2r2NCcFYFrajN
+ UFlw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734310202; x=1734915002;
+ d=1e100.net; s=20230601; t=1734310208; x=1734915008;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=0oPxPHNXebmd2yYjjqR5HgsogRG7IAY4swP2rcEypRg=;
- b=Ml50Xz2btgpigEUwzUgrc4oK1lYLGrs30n/9ipommaWfDRu2hy2GtORhI1/4McpJIx
- 8jgN8o5Kp4JSJMefdWgUwhrQLxBJwjBK+RsKMWeMXiHdZ6+FdbtcIJR9wOIZi7QtJvQR
- s79ZMhJ556jd7QLkdaJBCK8NK1YHRGtUK9UuC+G7KHb+SbbURiQLAOgyCqYy21WuJ6IB
- JsL9GcL28+Aux41maAmnAF1X/5ojvwMUb9Vnd1pWc/71/lwc1FqY39lodFWPIdciirno
- TGQL2EwBdEPrnHbeQx1FlLYSBzJg/HjAmbCUrQiyFMBDJWNm/c1RNvfTMJcqnyC6X112
- 6lOg==
-X-Gm-Message-State: AOJu0Ywxjbw44GWUgcH7UniaSphi2pjTJmy9Z8pQjih6iwaChr0BAr1/
- +RgsfWCOT1Yxqwb3QkJIC4QOuWZxVJJ3UaeesKETndbqEOtLhVWZhVmo1WymLhigtrohLZSzeX9
- BAlXhW0iKC8d0za/j/iqzFugP6EmXPmXbcZsfWNBUzQ99OP8MSf+3T1aQr9CSr4W32EOz+FIEUv
- c4Xm9sFwx27TUcjwh02tsjtbkHeK/u0T+iaoViYV86WBvYJV8=
-X-Gm-Gg: ASbGncuTuaBgf1bpPjvQnvNzsYppJ6OcXV6emNfg3xFrZZ7G7tiyih4+6lmquBwPWcr
- opUjd2HVfgWunwm8PHSCeJAIgqH9FilNJd6JTE4VEuReeQAEU0Z9MVgQZktDimvivdL+YxkJHzJ
- C6l+2cZrjlToyFLoAABpwK1bq7Z9cN/5rH1GU1+PE3pMm1vQNucGdU6+s9xmIZuGrrZnaqzDsTS
- FLCUy9FouxJ1Oe6aGvow7BcazU3N38fh5sFzHChFUwDSbNn8SNnxmmQ6Sw7pIAL3x5HjPkWYqlc
- s0hLd52M
-X-Google-Smtp-Source: AGHT+IF8RC/+GZEDclJJCvf6VzrlYKa6blK5F29amI6V6WQnB5TzMJSe5092EESxCt6acxqa4ez+BQ==
-X-Received: by 2002:a05:6a21:47c1:b0:1e1:e2d8:fd3a with SMTP id
- adf61e73a8af0-1e1e2d8fd4cmr13975584637.35.1734310201680; 
- Sun, 15 Dec 2024 16:50:01 -0800 (PST)
+ bh=FWmGdfs7I/39bU6vTy0i46WBke+O98sxD/aRcDZSQXA=;
+ b=mr1Q0icLqPw81LqHrD497dYGcyWttw8TK3YqZoGpvbG3CONk+nhKefZfeD1zIhVfTv
+ xK66R+UiM70bDm2kD2HsQeEJd9OlUrCvBZTPCqccLUY1PRkGs+PSVfyNk+MLO7wq8UBB
+ HLwkQI5VhMZz0hK8Jbwu5SdzfWHKNFLl/hBybrrypYmvFpugUO2dsd2TKo3lbnqHYwGU
+ XU2Fg66WbM2SYfcmycXyXIvErx4TcL/GjRXxhtnyhSiK/SkwXGUThvHxB+wxfxe01ZVT
+ 8/m3D+zfPn3sFQ7lKiWzFCPdx+35ihcgb+FMYY936vgBDq9Pgcd4dslJIMTRIvU6Gfds
+ mXvw==
+X-Gm-Message-State: AOJu0Yz3z3ZenQmh5Pqyhx3Ygz8UzR5wOd9cGZgnpNIIs+aeoLJqQs7d
+ i5ypITCVaSxdq8xbq0Pii2P5k0bPsRBWtsvwNUPnlVzMP7zBEUji4HIoi9pKmZaI5vEahg5Ohvp
+ 9ebUMt5zZWOMoygumk2pi6BuLPTRF/w+nmJ5NgdHzolJQ97MtVnsnYf6T3qZM+0FqRiBFBm1xKz
+ 7UgWE9/lwj8NGpQYi8fQIY2B/jAZu3K7Nax36+oWF5wPgdik4=
+X-Gm-Gg: ASbGncvS0qxYjePezCS3cTGmEnbmzZ3Pws+XccW2fy9yAK4qAUGv+9YJfOiWc4Rt/oa
+ HSSWp/oKrh3JbxVSbd1m4YMoeMIaQf/4saa025fR2/NMgDb+rvc+2A+4IID8UY4fBvAfFo9X6As
+ KZTCQ4GlgpSkBjU6GKqQAqrr7Qj63ek7okDEY6vyqUbGZLIG8q7BmPGrUmfeP6b10xQ1xd4DzuM
+ CHfxtNRAoL/opY69Nt/uCI8dN28Qezn9cOTRzOpoLCjohQliPsTGlE7G4725WepYHgeCWKNql3w
+ NWsMzc3W
+X-Google-Smtp-Source: AGHT+IEUS1j5PJe2vcxu53unoG7gkVeDB2mRvah5pKoextxKD6OEt13xB3poaEE9+1mKa223oiQq8g==
+X-Received: by 2002:a05:6a21:7185:b0:1e1:f281:8cfd with SMTP id
+ adf61e73a8af0-1e1f281925dmr8531798637.15.1734310207905; 
+ Sun, 15 Dec 2024 16:50:07 -0800 (PST)
 Received: from hsinchu16.internal.sifive.com ([210.176.154.34])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-801d5addbf9sm3059586a12.47.2024.12.15.16.49.59
+ 41be03b00d2f7-801d5addbf9sm3059586a12.47.2024.12.15.16.50.05
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 15 Dec 2024 16:50:01 -0800 (PST)
+ Sun, 15 Dec 2024 16:50:07 -0800 (PST)
 From: Jason Chien <jason.chien@sifive.com>
 To: qemu-devel@nongnu.org,
 	qemu-riscv@nongnu.org
@@ -77,16 +77,17 @@ Cc: Peter Maydell <peter.maydell@linaro.org>,
  Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
  qemu-arm@nongnu.org (open list:MCIMX7D SABRE / i...),
  Jason Chien <jason.chien@sifive.com>
-Subject: [RFC PATCH 5/6] hw/riscv/riscv-iommu: Acquire device IDs dynamically
-Date: Mon, 16 Dec 2024 08:48:56 +0800
-Message-ID: <20241216004857.9367-6-jason.chien@sifive.com>
+Subject: [RFC PATCH 6/6] include/hw/pci: Send PCI dma requests with memory
+ attributes containing BDF
+Date: Mon, 16 Dec 2024 08:48:57 +0800
+Message-ID: <20241216004857.9367-7-jason.chien@sifive.com>
 X-Mailer: git-send-email 2.43.2
 In-Reply-To: <20241216004857.9367-1-jason.chien@sifive.com>
 References: <20241216004857.9367-1-jason.chien@sifive.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
- envelope-from=jason.chien@sifive.com; helo=mail-pf1-x42f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
+ envelope-from=jason.chien@sifive.com; helo=mail-pf1-x429.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -109,80 +110,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When all memory transactions from a PCIe host write to the same IOMMU
-memory region, we need to distinguish the source device dynamically.
+In order to distinguish which PCIe device sends the request over the IOMMU,
+the requester_id must be set with the BDF of the device.
 
 Signed-off-by: Jason Chien <jason.chien@sifive.com>
 ---
- hw/riscv/riscv-iommu.c | 17 +++++++++++++----
- 1 file changed, 13 insertions(+), 4 deletions(-)
+ include/hw/pci/pci_device.h | 15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
-diff --git a/hw/riscv/riscv-iommu.c b/hw/riscv/riscv-iommu.c
-index f5d53a36b2..e4b7008306 100644
---- a/hw/riscv/riscv-iommu.c
-+++ b/hw/riscv/riscv-iommu.c
-@@ -48,6 +48,7 @@ struct RISCVIOMMUSpace {
-     RISCVIOMMUState *iommu;     /* Managing IOMMU device state */
-     uint32_t devid;             /* Requester identifier, AKA device_id */
-     bool notifier;              /* IOMMU unmap notifier enabled */
-+    bool dynamic_devid;         /* Acquiring device_id dynamically */
-     QLIST_ENTRY(RISCVIOMMUSpace) list;
- };
- 
-@@ -1184,7 +1185,8 @@ static void riscv_iommu_ctx_put(RISCVIOMMUState *s, void *ref)
+diff --git a/include/hw/pci/pci_device.h b/include/hw/pci/pci_device.h
+index 8eaf0d58bb..e22d05dae8 100644
+--- a/include/hw/pci/pci_device.h
++++ b/include/hw/pci/pci_device.h
+@@ -263,8 +263,11 @@ static inline MemTxResult pci_dma_rw(PCIDevice *dev, dma_addr_t addr,
+ static inline MemTxResult pci_dma_read(PCIDevice *dev, dma_addr_t addr,
+                                        void *buf, dma_addr_t len)
+ {
++    MemTxAttrs attrs = {};
++    attrs.requester_id = pci_requester_id(dev);
++
+     return pci_dma_rw(dev, addr, buf, len,
+-                      DMA_DIRECTION_TO_DEVICE, MEMTXATTRS_UNSPECIFIED);
++                      DMA_DIRECTION_TO_DEVICE, attrs);
  }
  
- /* Find or allocate address space for a given device */
--static AddressSpace *riscv_iommu_space(RISCVIOMMUState *s, uint32_t devid)
-+static AddressSpace *riscv_iommu_space(RISCVIOMMUState *s, uint32_t devid,
-+                                       bool dynamic)
+ /**
+@@ -282,8 +285,11 @@ static inline MemTxResult pci_dma_read(PCIDevice *dev, dma_addr_t addr,
+ static inline MemTxResult pci_dma_write(PCIDevice *dev, dma_addr_t addr,
+                                         const void *buf, dma_addr_t len)
  {
-     RISCVIOMMUSpace *as;
- 
-@@ -1203,6 +1205,7 @@ static AddressSpace *riscv_iommu_space(RISCVIOMMUState *s, uint32_t devid)
- 
-         as->iommu = s;
-         as->devid = devid;
-+        as->dynamic_devid = dynamic;
- 
-         snprintf(name, sizeof(name), "riscv-iommu-%04x:%02x.%d-iova",
-             PCI_BUS_NUM(as->devid), PCI_SLOT(as->devid), PCI_FUNC(as->devid));
-@@ -2415,7 +2418,8 @@ static AddressSpace *riscv_iommu_find_as(PCIBus *bus, void *opaque, int devfn)
- 
-     /* Find first matching IOMMU */
-     while (s != NULL && as == NULL) {
--        as = riscv_iommu_space(s, PCI_BUILD_BDF(pci_bus_num(bus), devfn));
-+        as = riscv_iommu_space(s, PCI_BUILD_BDF(pci_bus_num(bus), devfn),
-+                               false);
-         s = s->iommus.le_next;
-     }
- 
-@@ -2438,11 +2442,10 @@ void riscv_iommu_pci_setup_iommu(RISCVIOMMUState *iommu, PCIBus *bus,
-         pci_setup_iommu(bus, &riscv_iommu_ops, iommu);
-     } else if (bus->iommu_ops && bus->iommu_ops->set_memory_region) {
-         /*
--         * TODO:
-          * All memory transactions of this bus will be directed to this AS.
-          * We need to distinguish the source device dynamically.
-          */
--        AddressSpace *as = riscv_iommu_space(iommu, 0);
-+        AddressSpace *as = riscv_iommu_space(iommu, 0, true);
-         pci_setup_iommu_downstream_mem(bus, as->root);
-     } else {
-         error_setg(errp, "can't register secondary IOMMU for PCI bus #%d",
-@@ -2453,6 +2456,12 @@ void riscv_iommu_pci_setup_iommu(RISCVIOMMUState *iommu, PCIBus *bus,
- static int riscv_iommu_memory_region_index(IOMMUMemoryRegion *iommu_mr,
-     MemTxAttrs attrs)
- {
-+    RISCVIOMMUSpace *as = container_of(iommu_mr, RISCVIOMMUSpace, iova_mr);
++    MemTxAttrs attrs = {};
++    attrs.requester_id = pci_requester_id(dev);
 +
-+    if (as->dynamic_devid) {
-+        as->devid = attrs.requester_id;
-+    }
-+
-     return attrs.unspecified ? RISCV_IOMMU_NOPROCID : (int)attrs.pid;
+     return pci_dma_rw(dev, addr, (void *) buf, len,
+-                      DMA_DIRECTION_FROM_DEVICE, MEMTXATTRS_UNSPECIFIED);
++                      DMA_DIRECTION_FROM_DEVICE, attrs);
  }
  
+ #define PCI_DMA_DEFINE_LDST(_l, _s, _bits) \
+@@ -327,8 +333,11 @@ PCI_DMA_DEFINE_LDST(q_be, q_be, 64);
+ static inline void *pci_dma_map(PCIDevice *dev, dma_addr_t addr,
+                                 dma_addr_t *plen, DMADirection dir)
+ {
++    MemTxAttrs attrs = {};
++    attrs.requester_id = pci_requester_id(dev);
++
+     return dma_memory_map(pci_get_address_space(dev), addr, plen, dir,
+-                          MEMTXATTRS_UNSPECIFIED);
++                          attrs);
+ }
+ 
+ static inline void pci_dma_unmap(PCIDevice *dev, void *buffer, dma_addr_t len,
 -- 
 2.43.2
 
