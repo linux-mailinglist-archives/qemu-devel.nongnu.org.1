@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D82DC9F28F0
-	for <lists+qemu-devel@lfdr.de>; Mon, 16 Dec 2024 04:52:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C10D09F28FA
+	for <lists+qemu-devel@lfdr.de>; Mon, 16 Dec 2024 04:52:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tN28q-0007Ey-Lt; Sun, 15 Dec 2024 22:51:33 -0500
+	id 1tN28v-0007HM-KG; Sun, 15 Dec 2024 22:51:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tN28l-0007ET-TU
- for qemu-devel@nongnu.org; Sun, 15 Dec 2024 22:51:27 -0500
-Received: from mail-ot1-x335.google.com ([2607:f8b0:4864:20::335])
+ id 1tN28r-0007G0-U6
+ for qemu-devel@nongnu.org; Sun, 15 Dec 2024 22:51:35 -0500
+Received: from mail-ot1-x32d.google.com ([2607:f8b0:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tN28j-0005xG-Qg
- for qemu-devel@nongnu.org; Sun, 15 Dec 2024 22:51:27 -0500
-Received: by mail-ot1-x335.google.com with SMTP id
- 46e09a7af769-71e17de2816so1922183a34.0
- for <qemu-devel@nongnu.org>; Sun, 15 Dec 2024 19:51:25 -0800 (PST)
+ id 1tN28k-0005xL-Ub
+ for qemu-devel@nongnu.org; Sun, 15 Dec 2024 22:51:33 -0500
+Received: by mail-ot1-x32d.google.com with SMTP id
+ 46e09a7af769-71e2851de95so814203a34.0
+ for <qemu-devel@nongnu.org>; Sun, 15 Dec 2024 19:51:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734321084; x=1734925884; darn=nongnu.org;
+ d=linaro.org; s=google; t=1734321085; x=1734925885; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=wosSj0kWkq5cs0VFJpmmiyQOLWqM761SJCj5OeJxoag=;
- b=PUPch/81oFocagTOpphXXxWyaea56OnqPpQkOfq4EFXtS4UfQAEzErbom6wYVv6xRF
- nGswTss3SPNvcLY+JNoDE6z8BmD48sn5B5uASygrYqVj2D3DVUbVKBRGivaJ1JhyWxCa
- S2p7LeBi764sENrw6VMF6lmVvYpzdNch6PQUlwITbEpQA9YKI22QlnV/DRUAVCicoZWt
- s2CmQFPxHsEo5elxALU0ONxuEITpBNNjbr6cpuCpDrIu5yQslqrKqlOabgF2O/d7oN44
- Is6coveyhb37inJG2qyGVTpEvAnnytbUFhodCg1Clj7EcQsfs7jVmAUqdE376D+CXjbO
- sJhw==
+ :reply-to; bh=erU6zn+OhBWNmEfsxWhLXaeN8yOIETd3sIFSxTHF/88=;
+ b=iSJlBBwDrM6hKE6CS88DFGp7mC9UL4TqFrPBJyZLIDPbpZkkKxCpUsojy4dcGQKx9T
+ pqaXS4UvxHCvTvcT+U7b6ccPltOW8JLCbxISghZLD7PVVJG6ygWWWPY4FM7IQcAw6FBf
+ DNgHn72FaMuTJCDXjnY7wv4D/LI/hr94tdGucvWSyvbhNxKdFA3wtgpQoqlX9pWW6vfG
+ uTwK48BwnxgA0sy8VtSvmMRMiNBiUqXGkY4h5jxYLJ5yPkQ6/mFXMYikURKukXtGQ+Z6
+ oyZJcFfOHeVqbcdf/c6TfZZ6Vlzn+4lLD0rASoWW9wXD3bj4yuaxVWm0lIJ/+VU/0/V0
+ 2ntQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734321084; x=1734925884;
+ d=1e100.net; s=20230601; t=1734321085; x=1734925885;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=wosSj0kWkq5cs0VFJpmmiyQOLWqM761SJCj5OeJxoag=;
- b=QwSfVhEKputhWlLubvqVSP0xVOI03OHzuUOmjRhIFQFH/hSMg4caT8KcLJqY8w7T/n
- idv7Ky0jtW5a4r5UBI5QRrdcJQzRGGTH31Uf4ETmmsr4C2TPOTb+1K93CDmoSQGCcVvN
- W1rphRTjNv34OFRbOKZHyKPaGvTOPi2/1VAO2qfY9Fe+cKW8/v69Qfu4MWNnjwvWUrQd
- gVMJghohOnn+lkWc8FqHCaO25r7xlMtTbP3z6D60Uz4G5v96zFfrcn6ufl1oz7eP/T/8
- 6FnaeTJMFqKuxInA5SSP9sNAV7xZrjQXblEs/BrSX2pjlETcplhdQny3l1kTO5HaNLxj
- o8XA==
-X-Gm-Message-State: AOJu0YxPqhegugWo8b/NXXJSeSSj4m/R0oBho4f56TbTPt8S6wWh5YQ4
- 1c1QxHfgQNA0dXyCG77oQaMm0irQS0iuoxggw6KQWd1o9NT1v3/iMvbprF6r+2FlO49L/iJGoLE
- FvcUAQ/hs
-X-Gm-Gg: ASbGncu3FejGXjzhywYPumPYZW+luTAVcQ8LYqxTlFcMKFHlXNBv3KuOEMouznq9O7h
- WEFgdpE+x3eG64jYvHlVoq5n4kmPspKh2Ls8faN/bmjbEFOYe4SRuxDBNR0nyTnqlofcXh0CGA/
- h0eZkXixgLwLffe47qzD6sxbMuiuyBS71EN5TuOw7cDgsfVa9eCSNoAfI1xXMKxPL6fjuklCOUM
- TU8Ubwz1KI9MS8l0Up5X17zRRDRT83Qc9godLcVy4apE0GIkbKtFXjzfn3ueQi8dmGfJTT4BHyQ
- fuNa/TUmfsKRhDCrMPoDtIMa6qferhWHZ5dUqLc1IPs=
-X-Google-Smtp-Source: AGHT+IHxIjzQF4nqSnR94Y36o62aqj/V79zyE0l0msX9rnwXhMhRov2cmnjoEbDLwz5K+z9RpMqDKw==
-X-Received: by 2002:a05:6830:6995:b0:717:fdb4:c207 with SMTP id
- 46e09a7af769-71e3ba62e68mr7044607a34.26.1734321083930; 
- Sun, 15 Dec 2024 19:51:23 -0800 (PST)
+ bh=erU6zn+OhBWNmEfsxWhLXaeN8yOIETd3sIFSxTHF/88=;
+ b=hHmL7OQcLTK3DAQfgTzVBhFaMNogKPb2d0UrBEn4G77C3JB+2aJ+VRd0FCM3I3AEuV
+ 224tos30QkGL/SMJqzQMNbanCjtg3n4nZlfwkusx/TnLGEyOYHggwdA4+xaQ6Ned55Zl
+ WDXXS2oUeROmm7C5gYiJnsmIpLE8d8SP+8dkvjgH73dM5Yf1qLUKg2e2ATfLTVMY7JQe
+ erRwcqtKMlXsCFlXTTOCxkn8wFkwgs1KvpoG5rwc6E8T9lCSQR6eiKL7RizBPnHn5Y/z
+ 8LwuGDn4ADzlFC/zycRi7fBYZLZqNUL+dh8kLzHI8MrBq8Gsqj9pZLrU6CeDXofpDa3D
+ /upw==
+X-Gm-Message-State: AOJu0YyUg3mSzSQRXvSEisH2WYtyPtJOnzGdTBsQX1680mgYHDMuVivt
+ 0ppW4PorfuOhtI1K8n081igVT/NGhrS5N34IxjUcooDRqLQDq6ec6x1xU0KnsRSDbacb6TfwE7f
+ Ma29M4YF/
+X-Gm-Gg: ASbGncuBN2mv5fC3j+2wPZKUuOjquW0SIHtpxFuEwul5MahZfE6hnyAz1PUJU375T2T
+ EjNOlsWxsQCIXL4YL0jUi+raL7EKfDv4BgCSNTlDAIlUWdZ4PXBs30lZ1qqVBX5ZUsWm0Hxt1qT
+ wjZWPDxogmYFrkWGky2ycJ0c5SwGlJ2q+wM/7IaaUZ3Txpv5/9QDkD+B9qfr7jrxEjOpatFDfiQ
+ lMIxDFxffwR31IPyiJQU6IHS7RJMovAPL0U/1i9yU7QA5txxytyb4woYNB6f8uO8DwVNaNrEZtO
+ BYhNX/nXO2dryhNfb2gcNwjVh6j1RUz66lpfxmli6as=
+X-Google-Smtp-Source: AGHT+IFXSkeOrNahCcS7hlm+hirO28G3W9xhmO+ub7Liq1zm8Gh9YzpUsYI4RY4MQwzu6RintfPNnA==
+X-Received: by 2002:a05:6830:64cb:b0:71d:f239:c0a7 with SMTP id
+ 46e09a7af769-71e3ba2683emr6305262a34.19.1734321085335; 
+ Sun, 15 Dec 2024 19:51:25 -0800 (PST)
 Received: from localhost.localdomain (fixed-187-189-51-143.totalplay.net.
  [187.189.51.143]) by smtp.gmail.com with ESMTPSA id
- 006d021491bc7-5f33a93a6d1sm1287493eaf.33.2024.12.15.19.51.22
+ 006d021491bc7-5f33a93a6d1sm1287493eaf.33.2024.12.15.19.51.24
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 15 Dec 2024 19:51:23 -0800 (PST)
+ Sun, 15 Dec 2024 19:51:24 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 01/24] migration: Constify migration_properties
-Date: Sun, 15 Dec 2024 21:50:46 -0600
-Message-ID: <20241216035109.3486070-2-richard.henderson@linaro.org>
+Subject: [PATCH 02/24] hw/ide: Constify sysbus_ahci_properties
+Date: Sun, 15 Dec 2024 21:50:47 -0600
+Message-ID: <20241216035109.3486070-3-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241216035109.3486070-1-richard.henderson@linaro.org>
 References: <20241216035109.3486070-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::335;
- envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x335.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::32d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,36 +98,22 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- migration/options.h | 2 +-
- migration/options.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ hw/ide/ahci-sysbus.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/migration/options.h b/migration/options.h
-index 79084eed0d..a360f93a44 100644
---- a/migration/options.h
-+++ b/migration/options.h
-@@ -20,7 +20,7 @@
+diff --git a/hw/ide/ahci-sysbus.c b/hw/ide/ahci-sysbus.c
+index d43db0923f..2432039290 100644
+--- a/hw/ide/ahci-sysbus.c
++++ b/hw/ide/ahci-sysbus.c
+@@ -62,7 +62,7 @@ static void sysbus_ahci_realize(DeviceState *dev, Error **errp)
+     ahci_realize(&s->ahci, dev, &address_space_memory);
+ }
  
- /* migration properties */
- 
--extern Property migration_properties[];
-+extern const Property migration_properties[];
- 
- /* capabilities */
- 
-diff --git a/migration/options.c b/migration/options.c
-index ad8d6989a8..24cc8471aa 100644
---- a/migration/options.c
-+++ b/migration/options.c
-@@ -85,7 +85,7 @@
- #define DEFAULT_MIGRATE_VCPU_DIRTY_LIMIT_PERIOD     1000    /* milliseconds */
- #define DEFAULT_MIGRATE_VCPU_DIRTY_LIMIT            1       /* MB/s */
- 
--Property migration_properties[] = {
-+const Property migration_properties[] = {
-     DEFINE_PROP_BOOL("store-global-state", MigrationState,
-                      store_global_state, true),
-     DEFINE_PROP_BOOL("send-configuration", MigrationState,
+-static Property sysbus_ahci_properties[] = {
++static const Property sysbus_ahci_properties[] = {
+     DEFINE_PROP_UINT32("num-ports", SysbusAHCIState, ahci.ports, 1),
+     DEFINE_PROP_END_OF_LIST(),
+ };
 -- 
 2.43.0
 
