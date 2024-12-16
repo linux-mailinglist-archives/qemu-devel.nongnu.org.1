@@ -2,68 +2,108 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C469D9F33E6
-	for <lists+qemu-devel@lfdr.de>; Mon, 16 Dec 2024 16:00:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AEB99F3419
+	for <lists+qemu-devel@lfdr.de>; Mon, 16 Dec 2024 16:11:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tNCaF-0004gZ-S7; Mon, 16 Dec 2024 10:00:31 -0500
+	id 1tNCk5-0008Q5-R1; Mon, 16 Dec 2024 10:10:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tNCaC-0004fh-UH; Mon, 16 Dec 2024 10:00:29 -0500
-Received: from mgamail.intel.com ([198.175.65.10])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tNCa9-0005pc-QT; Mon, 16 Dec 2024 10:00:28 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1734361226; x=1765897226;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=086Y1CHpPXRWVrEoLoDYO6EwZohIB3GkPb4oaK0O9x8=;
- b=MaWksN7B5A5SaOG/7kTxzlpxucfVsJrXUKltvYKt0QlXv1wqvAQPyxGh
- hvJehmmokZHc3K7xnYF/tKDjqJX/Mw1TIkVGOG1bvjTF+LBS+j91Fg3vB
- Gki/viw2glkOpALVSzrinzRxSBNyOKK6mDFxIKXO6p6MHpUilRB9pmnwD
- Y/cVUo0gr86sP6JDdsDUrv2BuM/nzS97+I9hJxKiFFwBgfKTyGLhVzX00
- 2ApFryirpvKu32lXJXIegssRl9HUEQxj5UIRQeMKO28UYI6gEpMVt84E5
- TYRkJCZ6k05MQQjcnfmZwT+q04YvH85NWYxQk/9Pr1layxjbqcdGxFgKN A==;
-X-CSE-ConnectionGUID: GUoT7rpjS7+VkWAXE0ef6w==
-X-CSE-MsgGUID: exqUfo6LQf63a97/dm1x1A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11288"; a="52162491"
-X-IronPort-AV: E=Sophos;i="6.12,238,1728975600"; d="scan'208";a="52162491"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Dec 2024 07:00:22 -0800
-X-CSE-ConnectionGUID: MbtVzZJXRQ2JJyD2XtG+lw==
-X-CSE-MsgGUID: 2tkSCOyZTuGEsVxGZlubNQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="97669579"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by orviesa007.jf.intel.com with ESMTP; 16 Dec 2024 07:00:20 -0800
-Date: Mon, 16 Dec 2024 23:18:59 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org,
- Junjie Mao <junjie.mao@hotmail.com>
-Subject: Re: [PATCH 23/26] rust: qom: add initial subset of methods on Object
-Message-ID: <Z2BE4zgiyv0oFmPV@intel.com>
-References: <20241209123717.99077-1-pbonzini@redhat.com>
- <20241209123717.99077-24-pbonzini@redhat.com>
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>)
+ id 1tNCk1-0008Po-Vs; Mon, 16 Dec 2024 10:10:38 -0500
+Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>)
+ id 1tNCk0-0007Xu-8M; Mon, 16 Dec 2024 10:10:37 -0500
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 0F11A1F37E;
+ Mon, 16 Dec 2024 15:10:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1734361832; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=2s3zaW5SfPkzLlPhHYwpTTuN8ANpdkY0Kay9cEeCacc=;
+ b=nhkll28cMVK0oMXaRR2lKvaIBlj9lB4Sxm/5EqzRiQN1ppkj4RTilR+Vwy+he1SM9vgQpg
+ XVRUkoOTvX01Kb/WetYHvUAGN6K2sWGNs9dqm7ZXdek3feQb9DKCiTWxgx4J8F1sxAhtFx
+ UDKb0r/X9+kmZCeGeTyh72u1oyaoNLk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1734361832;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=2s3zaW5SfPkzLlPhHYwpTTuN8ANpdkY0Kay9cEeCacc=;
+ b=fMvV5B59xJ57geBsEqqe/zN3beYwmz/tbd4W3FoH+rZus7IkKvR1agouAZsXwo59wScm+5
+ Tg8oYBvggm6nZyBQ==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1734361832; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=2s3zaW5SfPkzLlPhHYwpTTuN8ANpdkY0Kay9cEeCacc=;
+ b=nhkll28cMVK0oMXaRR2lKvaIBlj9lB4Sxm/5EqzRiQN1ppkj4RTilR+Vwy+he1SM9vgQpg
+ XVRUkoOTvX01Kb/WetYHvUAGN6K2sWGNs9dqm7ZXdek3feQb9DKCiTWxgx4J8F1sxAhtFx
+ UDKb0r/X9+kmZCeGeTyh72u1oyaoNLk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1734361832;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=2s3zaW5SfPkzLlPhHYwpTTuN8ANpdkY0Kay9cEeCacc=;
+ b=fMvV5B59xJ57geBsEqqe/zN3beYwmz/tbd4W3FoH+rZus7IkKvR1agouAZsXwo59wScm+5
+ Tg8oYBvggm6nZyBQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 82DEF13418;
+ Mon, 16 Dec 2024 15:10:31 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id 6yf1EedCYGeeEAAAD6G6ig
+ (envelope-from <farosas@suse.de>); Mon, 16 Dec 2024 15:10:31 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Peter Xu <peterx@redhat.com>, qemu-devel@nongnu.org
+Cc: peterx@redhat.com, qemu-block@nongnu.org, Vladimir Sementsov-Ogievskiy
+ <vsementsov@yandex-team.ru>, Stefan Hajnoczi <stefanha@redhat.com>, Andrey
+ Drobyshev <andrey.drobyshev@virtuozzo.com>, Eric Blake
+ <eblake@redhat.com>, "Dr . David Alan Gilbert" <dave@treblig.org>, Kevin
+ Wolf <kwolf@redhat.com>, =?utf-8?Q?Daniel_P_=2E_Berrang=C3=A9?=
+ <berrange@redhat.com>, Markus Armbruster <armbru@redhat.com>
+Subject: Re: [PATCH v2 2/6] qmp/cont: Only activate disks if migration
+ completed
+In-Reply-To: <20241206230838.1111496-3-peterx@redhat.com>
+References: <20241206230838.1111496-1-peterx@redhat.com>
+ <20241206230838.1111496-3-peterx@redhat.com>
+Date: Mon, 16 Dec 2024 12:10:28 -0300
+Message-ID: <877c7zy87v.fsf@suse.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241209123717.99077-24-pbonzini@redhat.com>
-Received-SPF: pass client-ip=198.175.65.10; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+Content-Type: text/plain
+X-Spam-Score: -2.66
+X-Spamd-Result: default: False [-2.66 / 50.00]; BAYES_HAM(-2.86)[99.41%];
+ SUSPICIOUS_RECIPS(1.50)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
+ NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
+ TO_MATCH_ENVRCPT_ALL(0.00)[]; FUZZY_BLOCKED(0.00)[rspamd.com];
+ ARC_NA(0.00)[]; MIME_TRACE(0.00)[0:+];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ RCPT_COUNT_TWELVE(0.00)[12]; FROM_HAS_DN(0.00)[];
+ RCVD_TLS_ALL(0.00)[]; MISSING_XM_UA(0.00)[];
+ FROM_EQ_ENVFROM(0.00)[]; TO_DN_SOME(0.00)[];
+ RCVD_COUNT_TWO(0.00)[2]; RCVD_VIA_SMTP_AUTH(0.00)[];
+ MID_RHS_MATCH_FROM(0.00)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid, suse.de:email,
+ imap1.dmz-prg2.suse.org:helo]
+Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
+ envelope-from=farosas@suse.de; helo=smtp-out2.suse.de
+X-Spam_score_int: -27
+X-Spam_score: -2.8
+X-Spam_bar: --
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -80,27 +120,17 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Dec 09, 2024 at 01:37:14PM +0100, Paolo Bonzini wrote:
-> Date: Mon,  9 Dec 2024 13:37:14 +0100
-> From: Paolo Bonzini <pbonzini@redhat.com>
-> Subject: [PATCH 23/26] rust: qom: add initial subset of methods on Object
-> X-Mailer: git-send-email 2.47.1
-> 
-> Add an example of implementing instance methods and converting the
-> result back to a Rust type.  In this case the returned types are a
-> string (actually a Cow<str>; but that's transparent as long as it derefs
-> to &str) and a QOM class.
-> 
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> ---
->  rust/qemu-api/src/prelude.rs |  1 +
->  rust/qemu-api/src/qom.rs     | 56 ++++++++++++++++++++++++++++++++++--
->  rust/qemu-api/tests/tests.rs | 12 ++++++++
->  3 files changed, 66 insertions(+), 3 deletions(-)
-> 
+Peter Xu <peterx@redhat.com> writes:
 
-Good example!
+> As the comment says, the activation of disks is for the case where
+> migration has completed, rather than when QEMU is still during
+> migration (RUN_STATE_INMIGRATE).
+>
+> Move the code over to reflect what the comment is describing.
+>
+> Cc: Kevin Wolf <kwolf@redhat.com>
+> Cc: Markus Armbruster <armbru@redhat.com>
+> Signed-off-by: Peter Xu <peterx@redhat.com>
 
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-
+Reviewed-by: Fabiano Rosas <farosas@suse.de>
 
