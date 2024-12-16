@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CE869F28FE
-	for <lists+qemu-devel@lfdr.de>; Mon, 16 Dec 2024 04:53:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C5CF9F2908
+	for <lists+qemu-devel@lfdr.de>; Mon, 16 Dec 2024 04:54:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tN295-0007Lw-04; Sun, 15 Dec 2024 22:51:47 -0500
+	id 1tN296-0007MZ-Pz; Sun, 15 Dec 2024 22:51:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tN292-0007L1-BQ
+ id 1tN293-0007Lc-Hu
  for qemu-devel@nongnu.org; Sun, 15 Dec 2024 22:51:45 -0500
-Received: from mail-oo1-xc2e.google.com ([2607:f8b0:4864:20::c2e])
+Received: from mail-oo1-xc34.google.com ([2607:f8b0:4864:20::c34])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tN290-00060Y-NG
- for qemu-devel@nongnu.org; Sun, 15 Dec 2024 22:51:43 -0500
-Received: by mail-oo1-xc2e.google.com with SMTP id
- 006d021491bc7-5f1dfb0b44dso790708eaf.2
- for <qemu-devel@nongnu.org>; Sun, 15 Dec 2024 19:51:42 -0800 (PST)
+ id 1tN291-00060i-QV
+ for qemu-devel@nongnu.org; Sun, 15 Dec 2024 22:51:45 -0500
+Received: by mail-oo1-xc34.google.com with SMTP id
+ 006d021491bc7-5f2dee7d218so1601261eaf.2
+ for <qemu-devel@nongnu.org>; Sun, 15 Dec 2024 19:51:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734321101; x=1734925901; darn=nongnu.org;
+ d=linaro.org; s=google; t=1734321103; x=1734925903; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=6kwxpp6H6DpWLzGbf6AeTqxyXU7uHDghdBpIzRPpVmo=;
- b=GePnLH0ip1YYxMhETcuOH4G9Cjyc3FObFV7HqaHZkGBZNayT7h8nHX8OKDIjLynGEG
- AIswKzl9zUjtCdXHafomMis2/aGwnXqfZhFVHdKTxli9nh/3JSp2SKxulgrDvIDy2op4
- M9djGWWongHUayy9FuwAsUlcyKhpjXun/tqiQzXGKnAwZUuXFz8J1CTHrLlOu4fmZSEr
- 5ArID20oL+gsMsPBHfqmaQQYanxjHT5PRNNCSeS1Ovi7i7ishE4yHbpP/kI91F5AdIqa
- jGq3sOJSUUUX6k0iuNcEyxEKVi80rzfP/kRg3iX1Ns4nCFdN0lxVsU9i4v+JeCUDJ4Pu
- gfMw==
+ :reply-to; bh=i447dtSxlHmakblbDXagLB9a51ZdgcT0s439L6Wncxo=;
+ b=RXJDlEinePf/KsJBsKlFJcR6VvQe5w3oP2SBlSD7hQCLLzjPR+oU31Jfv7bzpl0/IT
+ CGujFVwlMod4dbfttGp593Tlhh+PiYgM9TPYAZQ5JRnSrPmT/D+q8YP63d7NrfAO7LbE
+ jRCtTMx7/ZjE4oTQzr1s0Xq5pEcop2+Pa1Co9grkNThrjd19Z4jKv7H1Q+GD03Dz2bvE
+ E9J/fNmZMrYy4SDM/jj+IemTBdR1lPVFHtHmY3Y9qVdTaDy935CjgE8EDsxxpvbeku+S
+ QrcCssnLKfi36S7/NMQtsun+VHyAEJXLuweFsbwSwX8tUXezFtCVme/0tK5voCE3LydE
+ Thjg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734321101; x=1734925901;
+ d=1e100.net; s=20230601; t=1734321103; x=1734925903;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=6kwxpp6H6DpWLzGbf6AeTqxyXU7uHDghdBpIzRPpVmo=;
- b=vJZPNKtnZ93+KTEdYCakLtgYHiBP531hD/v7cgrwAaIaOf6L8r0Dit0yZgIEU3HIsu
- xbDOSnowr4y0RG3ZXhSlh8CV3++u1vATOde0XZgV0x5E2MvvFCLeaSZlSduOECPn3qRG
- orRGnFXnkJvJDQWcD5T55SyCu96wkDyqwNMBLO6FOhWLaKT+XraVdAANXVYzOHXjC/oO
- wGQRUc9NXGkTFGp1dxjkrNz5DekWtF6p6wg1NrnfSnwJQbkYhYZfgLkaMCcgS5P+qFdt
- 3oDmvqmP8oFD2DZSJUDULVKIg1nEdLWqSaKq+jgLHT8qh4a2hoKvR+CZ9RnDtewQST8N
- dwLQ==
-X-Gm-Message-State: AOJu0YyDFyMoC9ohU/u+7OCBRzwuQ08GE+mTqIziyvcsx7XQVEPboWd5
- JeELfzgxnMrG86stI4Ie1pMHAujCV1YikKqfPgYd2Q3KYEOUW2dimspkBKhnxvuU3RcNVyHwvt3
- x5F9F8w3r
-X-Gm-Gg: ASbGncvyM+qf6W8+lvNsCWsriGyUtPKLxBB15MtqNii7ZJqU0wfAJHJkDQfJ35KtYMU
- msCxCTC64CJ9k3Ae0by6ZpioSrd5L2lJapom/+D9WzaPaS82/5vdtksyHWWHiiXHi/1/Siz19Mx
- xvW3FQ9SvhqMYoBds7Ktn9UCr6VSVtAm91jr3D9JscGMvaMXju3An2LQ/QK1wamf79363n3D0sc
- SkhSL7lPCoJVYkdSmQqpqrI+yOX//MZIeZHzvVgGiCdb3Nkzl9HNjZwsWDLq21T9agQU+Jr9PU3
- bhNeys2J6k9XBsDkQuF4QEhX9aSvqnkJbFXrWlrKW0M=
-X-Google-Smtp-Source: AGHT+IFSMgOgEo2PL6SMfZaRgfJ044zBmN1jZjwc2ZSoDID5e18a8ZD4nCzb7487YXJzDyuEIhDFeg==
-X-Received: by 2002:a05:6820:1a0b:b0:5ee:ebcb:e701 with SMTP id
- 006d021491bc7-5f32948e3e2mr7252869eaf.6.1734321101568; 
- Sun, 15 Dec 2024 19:51:41 -0800 (PST)
+ bh=i447dtSxlHmakblbDXagLB9a51ZdgcT0s439L6Wncxo=;
+ b=kKT6BL2ING2kwFoSp7JarfO8jIjIvUfaXn2Xs5qrguZHdBYSzL7gBpRsYz/VyBGmOt
+ KqMtaSP0DeqKWAD8xyfSJP3HyxcDONkAiAa2muqHXzyimtI9FyCtkdmXXfAduBss3oim
+ xL6xAAuI9ZE1eyQuA4OJm49bSrF+y1j8yK8PacXAwyGFVDq03GsA6bJJyzXnMiGX07L3
+ pRFBxYM5v2TBI+yIMygFnjpsG+aPZzGOjR4f0D2RwjW2HxHN5Gj/V6BiRVZfAM32LyzK
+ dB8GvtCR+kGqwqxB2sbMi3iXP4X/iNIaUGufl58of+wp7gDZJXnMw/ENa4tjm8/VV/M7
+ NSkA==
+X-Gm-Message-State: AOJu0YzXZvTnayqsu+DquSHkgoJwY36djnSBMDrT99+EDmQOWAvxcyJ3
+ /632htyTwKlxWhcwOm1igAR+hPvM59Ug6h6WWXihyuutmqftAmnAqXlHYEhZ4NfrzQGqAmp5a9g
+ PRRcA6CdY
+X-Gm-Gg: ASbGncuT8rKyvl6KfPrldGLsYfw1/44KV4BfoAFAfM5YAS3mJ4EgZdrgKnJpeVUiKpi
+ WmWmzbwUcsz5OQhV5pxDo8FCvlza3xfNNdrTS4KFIz3zI7b0fi20G/DVoIr7GzoZxp6ZjUMr12v
+ v72sMSSg9zyMfueQd60pshqMiMIhyaNfPjo0QKcbfYHirri/K13kh4wMuOmLE3WY6wwcivfqey1
+ R+9nMNeOgMalsZk3krUqyap5i2BtEsdBj/zIcnUuokEKbOFj+KlwAkzuiWtZMCtrc9h+RibDULj
+ YXZWpkhxKoeIVpRC8jE6oIIZ3a3aNF66IbUA1E2XYRM=
+X-Google-Smtp-Source: AGHT+IGIIrUSe5gRvsknmfNzMOWx0YHa5jof7EJCqwMnl9/BDSzqomzwQdggOYy54iSFPYp1KDA3lQ==
+X-Received: by 2002:a05:6870:b07:b0:29e:37bb:c0e0 with SMTP id
+ 586e51a60fabf-2a3ac6b9185mr5902576fac.23.1734321102636; 
+ Sun, 15 Dec 2024 19:51:42 -0800 (PST)
 Received: from localhost.localdomain (fixed-187-189-51-143.totalplay.net.
  [187.189.51.143]) by smtp.gmail.com with ESMTPSA id
- 006d021491bc7-5f33a93a6d1sm1287493eaf.33.2024.12.15.19.51.40
+ 006d021491bc7-5f33a93a6d1sm1287493eaf.33.2024.12.15.19.51.41
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 15 Dec 2024 19:51:41 -0800 (PST)
+ Sun, 15 Dec 2024 19:51:42 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 15/24] hw/scsi/megasas: Use device_class_set_props_n
-Date: Sun, 15 Dec 2024 21:51:00 -0600
-Message-ID: <20241216035109.3486070-16-richard.henderson@linaro.org>
+Subject: [PATCH 16/24] hw/arm/armsse: Use device_class_set_props_n
+Date: Sun, 15 Dec 2024 21:51:01 -0600
+Message-ID: <20241216035109.3486070-17-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241216035109.3486070-1-richard.henderson@linaro.org>
 References: <20241216035109.3486070-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c2e;
- envelope-from=richard.henderson@linaro.org; helo=mail-oo1-xc2e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c34;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oo1-xc34.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,62 +100,78 @@ We must remove DEFINE_PROP_END_OF_LIST so the count is correct.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- hw/scsi/megasas.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ hw/arm/armsse.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/hw/scsi/megasas.c b/hw/scsi/megasas.c
-index 8323cd18e3..7f012c218b 100644
---- a/hw/scsi/megasas.c
-+++ b/hw/scsi/megasas.c
-@@ -2459,7 +2459,6 @@ static const Property megasas_properties_gen1[] = {
-     DEFINE_PROP_ON_OFF_AUTO("msix", MegasasState, msix, ON_OFF_AUTO_AUTO),
-     DEFINE_PROP_BIT("use_jbod", MegasasState, flags,
-                     MEGASAS_FLAG_USE_JBOD, false),
--    DEFINE_PROP_END_OF_LIST(),
- };
- 
- static const Property megasas_properties_gen2[] = {
-@@ -2473,7 +2472,6 @@ static const Property megasas_properties_gen2[] = {
-     DEFINE_PROP_ON_OFF_AUTO("msix", MegasasState, msix, ON_OFF_AUTO_AUTO),
-     DEFINE_PROP_BIT("use_jbod", MegasasState, flags,
-                     MEGASAS_FLAG_USE_JBOD, false),
--    DEFINE_PROP_END_OF_LIST(),
- };
- 
- typedef struct MegasasInfo {
-@@ -2488,6 +2486,7 @@ typedef struct MegasasInfo {
-     int osts;
-     const VMStateDescription *vmsd;
+diff --git a/hw/arm/armsse.c b/hw/arm/armsse.c
+index 1cd6b4a4b2..ffd732f806 100644
+--- a/hw/arm/armsse.c
++++ b/hw/arm/armsse.c
+@@ -72,6 +72,7 @@ struct ARMSSEInfo {
+     bool has_cpu_pwrctrl;
+     bool has_sse_counter;
+     bool has_tcms;
++    uint8_t props_count;
      const Property *props;
-+    size_t props_count;
-     InterfaceInfo *interfaces;
- } MegasasInfo;
+     const ARMSSEDeviceInfo *devinfo;
+     const bool *irq_is_common;
+@@ -87,7 +88,6 @@ static const Property iotkit_properties[] = {
+     DEFINE_PROP_BOOL("CPU0_DSP", ARMSSE, cpu_dsp[0], true),
+     DEFINE_PROP_UINT32("CPU0_MPU_NS", ARMSSE, cpu_mpu_ns[0], 8),
+     DEFINE_PROP_UINT32("CPU0_MPU_S", ARMSSE, cpu_mpu_s[0], 8),
+-    DEFINE_PROP_END_OF_LIST()
+ };
  
-@@ -2504,6 +2503,7 @@ static struct MegasasInfo megasas_devices[] = {
-         .osts = MFI_1078_RM | 1,
-         .vmsd = &vmstate_megasas_gen1,
-         .props = megasas_properties_gen1,
-+        .props_count = ARRAY_SIZE(megasas_properties_gen1),
-         .interfaces = (InterfaceInfo[]) {
-             { INTERFACE_CONVENTIONAL_PCI_DEVICE },
-             { },
-@@ -2520,6 +2520,7 @@ static struct MegasasInfo megasas_devices[] = {
-         .osts = MFI_GEN2_RM,
-         .vmsd = &vmstate_megasas_gen2,
-         .props = megasas_properties_gen2,
-+        .props_count = ARRAY_SIZE(megasas_properties_gen2),
-         .interfaces = (InterfaceInfo[]) {
-             { INTERFACE_PCIE_DEVICE },
-             { }
-@@ -2546,7 +2547,7 @@ static void megasas_class_init(ObjectClass *oc, void *data)
-     e->osts = info->osts;
-     e->product_name = info->product_name;
-     e->product_version = info->product_version;
+ static const Property sse200_properties[] = {
+@@ -104,7 +104,6 @@ static const Property sse200_properties[] = {
+     DEFINE_PROP_UINT32("CPU0_MPU_S", ARMSSE, cpu_mpu_s[0], 8),
+     DEFINE_PROP_UINT32("CPU1_MPU_NS", ARMSSE, cpu_mpu_ns[1], 8),
+     DEFINE_PROP_UINT32("CPU1_MPU_S", ARMSSE, cpu_mpu_s[1], 8),
+-    DEFINE_PROP_END_OF_LIST()
+ };
+ 
+ static const Property sse300_properties[] = {
+@@ -117,7 +116,6 @@ static const Property sse300_properties[] = {
+     DEFINE_PROP_BOOL("CPU0_DSP", ARMSSE, cpu_dsp[0], true),
+     DEFINE_PROP_UINT32("CPU0_MPU_NS", ARMSSE, cpu_mpu_ns[0], 8),
+     DEFINE_PROP_UINT32("CPU0_MPU_S", ARMSSE, cpu_mpu_s[0], 8),
+-    DEFINE_PROP_END_OF_LIST()
+ };
+ 
+ static const ARMSSEDeviceInfo iotkit_devices[] = {
+@@ -528,6 +526,7 @@ static const ARMSSEInfo armsse_variants[] = {
+         .has_sse_counter = false,
+         .has_tcms = false,
+         .props = iotkit_properties,
++        .props_count = ARRAY_SIZE(iotkit_properties),
+         .devinfo = iotkit_devices,
+         .irq_is_common = sse200_irq_is_common,
+     },
+@@ -549,6 +548,7 @@ static const ARMSSEInfo armsse_variants[] = {
+         .has_sse_counter = false,
+         .has_tcms = false,
+         .props = sse200_properties,
++        .props_count = ARRAY_SIZE(sse200_properties),
+         .devinfo = sse200_devices,
+         .irq_is_common = sse200_irq_is_common,
+     },
+@@ -570,6 +570,7 @@ static const ARMSSEInfo armsse_variants[] = {
+         .has_sse_counter = true,
+         .has_tcms = true,
+         .props = sse300_properties,
++        .props_count = ARRAY_SIZE(sse300_properties),
+         .devinfo = sse300_devices,
+         .irq_is_common = sse300_irq_is_common,
+     },
+@@ -1699,7 +1700,7 @@ static void armsse_class_init(ObjectClass *klass, void *data)
+ 
+     dc->realize = armsse_realize;
+     dc->vmsd = &armsse_vmstate;
 -    device_class_set_props(dc, info->props);
 +    device_class_set_props_n(dc, info->props, info->props_count);
-     device_class_set_legacy_reset(dc, megasas_scsi_reset);
-     dc->vmsd = info->vmsd;
-     set_bit(DEVICE_CATEGORY_STORAGE, dc->categories);
+     device_class_set_legacy_reset(dc, armsse_reset);
+     iic->check = armsse_idau_check;
+     asc->info = info;
 -- 
 2.43.0
 
