@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BDA19F30F9
-	for <lists+qemu-devel@lfdr.de>; Mon, 16 Dec 2024 13:55:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2250D9F30FB
+	for <lists+qemu-devel@lfdr.de>; Mon, 16 Dec 2024 13:55:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tNAcL-0006vc-1C; Mon, 16 Dec 2024 07:54:33 -0500
+	id 1tNAcM-0006zW-0z; Mon, 16 Dec 2024 07:54:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
- id 1tNAbu-0006bd-L3; Mon, 16 Dec 2024 07:54:06 -0500
-Received: from fout-b4-smtp.messagingengine.com ([202.12.124.147])
+ id 1tNAbw-0006d9-QB; Mon, 16 Dec 2024 07:54:10 -0500
+Received: from fhigh-b5-smtp.messagingengine.com ([202.12.124.156])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
- id 1tNAbt-0004rm-1e; Mon, 16 Dec 2024 07:54:06 -0500
-Received: from phl-compute-12.internal (phl-compute-12.phl.internal
- [10.202.2.52])
- by mailfout.stl.internal (Postfix) with ESMTP id E076F114009C;
- Mon, 16 Dec 2024 07:54:03 -0500 (EST)
+ id 1tNAbu-0004s4-M9; Mon, 16 Dec 2024 07:54:08 -0500
+Received: from phl-compute-09.internal (phl-compute-09.phl.internal
+ [10.202.2.49])
+ by mailfhigh.stl.internal (Postfix) with ESMTP id 8757B254015A;
+ Mon, 16 Dec 2024 07:54:05 -0500 (EST)
 Received: from phl-mailfrontend-02 ([10.202.2.163])
- by phl-compute-12.internal (MEProxy); Mon, 16 Dec 2024 07:54:04 -0500
+ by phl-compute-09.internal (MEProxy); Mon, 16 Dec 2024 07:54:05 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=irrelevant.dk;
  h=cc:cc:content-transfer-encoding:content-type:content-type
  :date:date:from:from:in-reply-to:in-reply-to:message-id
  :mime-version:references:reply-to:subject:subject:to:to; s=fm3;
- t=1734353643; x=1734440043; bh=vVfMVAx+eVbV5OtdkXmcg0eIqsMNcBLL
- hgn4WD9j0D0=; b=YakfKyK/E1wYql1+A8RpuaPA8LtXDTM8zd1nBCMZ1woEt+Kw
- SNO5e17gZB3XdxXm0oVEQ4PG4mhR4ehJhIN+xhISNO6zeV5pSxsZEVOvW51c7/ud
- u3A4I5IYlNc+OZkJlNUV7c6YiyBSTTbrBLIqQgylTk5DppkjoRmkaCGKWdBymz4o
- GArTYcERoFultkzcADkxyFQUu6Q0AII4Vm1hl2KfxAkArLtEej9yMfs19jgmwPE+
- Yg5zFxejXLLZug6qRqNQ8lxSRkhoVM1mrMQQGxGuMobStRuc9Zsh//O8pV6/lNAE
- RbjK0FBQGDpz/NegROfAeckTYpa8K9bkZo8f0Q==
+ t=1734353645; x=1734440045; bh=7VYhBCDI5Xi9dHyV4nyGNN4Y0oYF0wnx
+ 7wNTd3egdec=; b=a5aIyNZiy+H5VgXzFsa/5l+jMIQetDUX9XKOoZuWSrqEVwF9
+ qJaTAevPdJYU8A9LMK4Qajf6xSPyN+PYNU+sn4fW0Bki01QVo8xIEY0C0r/qavbr
+ t7RxQageAthAn2PraxXJNTykPTby/KQAEQjPlqcLRsE2mc7ad+SWcJF8P1g9Fg8k
+ JGM9UfDyPTn/OeqxYBIC/m0WOLHKUmGleZBXV9qy30DdBTQm6kpaFepe4JNrRKMI
+ g3D5ew1RYOH4p6Xy7ahfmCpUNXjguo7iylKsDuSVU9ZHa/f31kHewOkCF1YMKzJB
+ UYRSh2iDbNkbCs7PqGU+oyJ/QBfsPr7Nqu4ScA==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
  messagingengine.com; h=cc:cc:content-transfer-encoding
  :content-type:content-type:date:date:feedback-id:feedback-id
  :from:from:in-reply-to:in-reply-to:message-id:mime-version
  :references:reply-to:subject:subject:to:to:x-me-proxy
- :x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1734353643; x=
- 1734440043; bh=vVfMVAx+eVbV5OtdkXmcg0eIqsMNcBLLhgn4WD9j0D0=; b=R
- vbWzMdViXAwwn+gh0a+AoKbZ3SNZPF7u7B1/ObIjjuY4Zpnm+fnVPwJkbsXsY10p
- rDPvHUsETGphoHfAzeerlnmf9DPH4GESCtpOxIZNmp3ViW/E00Z+FCOLveh4V2Cl
- 4oAOGx+uzbRcs1vxzW+ouiNAXPGWRaDjtmJJEbdp2id2kYqqePv5sqodF8gAJfBP
- Ay8AR6YFj0zSi2eui9Sdn92MDX7z2dXCS4NbEJWmVCcwNb7oNuxyuDgq0dD+zq1h
- NFArJxNCY/7jLQvQU3+XPnZQYmPB2gf+DPcc6G6Rb1MU5FDsws4DEy05YRVBnfMd
- YvMlaAucAsTtbmG0mmCfg==
-X-ME-Sender: <xms:6yJgZ9kaW_0RXDmMBYgpJSrXAbIIghNsbBQr7H7L0_mHDfpAvoFh6g>
- <xme:6yJgZ42A6-81Gp_KNNoxY1H7zEfFGcZAv5dKiUEgzbDybHGzkx27UZxaO9rW7V8SR
- ojql7QPwaf90v7y7uc>
-X-ME-Received: <xmr:6yJgZzrCIHy5oiQBTvo2Rm9PxUlFfL7xOPuoh0Wi5JK8vhWDGnt1ATV4JMq2m3UEuNSbgjnrBE6Hty1NbD8oVog>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrleefgdeghecutefuodetggdotefrodftvf
+ :x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1734353645; x=
+ 1734440045; bh=7VYhBCDI5Xi9dHyV4nyGNN4Y0oYF0wnx7wNTd3egdec=; b=C
+ DgDeoqb7g/2kRJ50g0wNgKPkMN3VFfHlBlNexpUNmi3yceed8VriIhQs8UCK6Z+Z
+ urQ5+7NnT/TOPGxiwA2kEXZKLrrnkL4bPJlKJFD42Su1PIZH+eBbLhYNj4vXz95e
+ +4WIHKRn82y9geK3s9SthkLdVy2paxVPXQ6tETbxFTE2cfgx1/VNCq/rgnJofuXe
+ veo/4yCNfYzaQnf2cHP+8N3yXLBuCCJBoZlr0AqPYrcJhGVktANgupVgNDvtR/rX
+ II/Vor2SWl5bSy2x8BXYhD3bK6HxHU07axg2rMbut1C/0tJBt5pklxbbVA3+m+x6
+ GKhsKI9RpQpWm7ZeLqhJg==
+X-ME-Sender: <xms:7SJgZ1IPTZUqwKYGY1alSVppFySc5uU96cag4z_98RT3LAJ2lh-DLQ>
+ <xme:7SJgZxJOIVG6aIzzcM5CpyeKABGUk6LEpCys3FJD91fhp26O0TQyGclAqGFFGyq8a
+ imtRP-vTF9Fkjv573E>
+X-ME-Received: <xmr:7SJgZ9vBSgP-32s2py9EwHyzWnpFjhniORNbTR-NjrPfcsxMYPBSOJtwQoGCLmK75BqYMeBRUMdlglAIQWFFDG8>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrleefgdegiecutefuodetggdotefrodftvf
  curfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdpuffr
  tefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnth
  hsucdlqddutddtmdenucfjughrpefhfffugggtgffkfhgjvfevofesthejredtredtjeen
  ucfhrhhomhepmfhlrghushculfgvnhhsvghnuceoihhtshesihhrrhgvlhgvvhgrnhhtrd
  gukheqnecuggftrfgrthhtvghrnhepkeeivddtueehffefuddtleefkefhiedttdduveeg
- gfffieetveffhfehgfeghfffnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpe
+ gfffieetveffhfehgfeghfffnecuvehluhhsthgvrhfuihiivgepudenucfrrghrrghmpe
  hmrghilhhfrhhomhepihhtshesihhrrhgvlhgvvhgrnhhtrdgukhdpnhgspghrtghpthht
  ohepiedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepfhhoshhsseguvghfmhgrtg
  hrohdrihhtpdhrtghpthhtohepqhgvmhhuqdgslhhotghksehnohhnghhnuhdrohhrghdp
@@ -64,22 +64,22 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrleefgdeghecutefuodetggdote
  huqdguvghvvghlsehnohhnghhnuhdrohhrghdprhgtphhtthhopehksghushgthheskhgv
  rhhnvghlrdhorhhgpdhrtghpthhtohepkhdrjhgvnhhsvghnsehsrghmshhunhhgrdgtoh
  hm
-X-ME-Proxy: <xmx:6yJgZ9k6zuYwuC5h_Uf4vF9yiIHmFXWf2o4QfoD4i6vndAfCemLs8A>
- <xmx:6yJgZ73I_Tg1LXG-iDXWZXkFRNYQj0JoG8vsmCqxj-Ink_9cBqa17Q>
- <xmx:6yJgZ8viirtYVW1o1nejqKiI1KQm3nF8SpH5VAzjEwR03dJEX0ZGYw>
- <xmx:6yJgZ_WDpjFtGdEX2z5VrHe32KxvPE6Kisu3QgzxXTpAz6mrymgXiQ>
- <xmx:6yJgZ1roGEBZDFezBuPsA5gfyPRmRzfBKR6iijfDthkHGvhwPRU8VdK3>
+X-ME-Proxy: <xmx:7SJgZ2a4xnVWhs8tzPDxITBXqM1CR0tLGqEbPlzfrZis2CZ7SNVYZA>
+ <xmx:7SJgZ8brk10-6JAdqN1Cjeo8MAJESoeiSnaSgYRkeSsV-cuaU4KKig>
+ <xmx:7SJgZ6DjPU0CStEQ3TxAQcKa7VaTWsWnkT8LpD7XnOPhB7hh8L1sYg>
+ <xmx:7SJgZ6Y8-YcETPZvaUi1RaL4t68GuHK4MVLdzyy-1iEeTAi32rnOsQ>
+ <xmx:7SJgZxPtRN-Jy--f5v01rLdeGKUGLEsNsq6M9Ug09d29ODbjnTAGP7un>
 Feedback-ID: idc91472f:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 16 Dec 2024 07:54:02 -0500 (EST)
+ 16 Dec 2024 07:54:04 -0500 (EST)
 From: Klaus Jensen <its@irrelevant.dk>
-Date: Mon, 16 Dec 2024 13:53:08 +0100
-Subject: [PATCH 7/9] hw/nvme: only set command abort requested when
- cancelled due to Abort
+Date: Mon, 16 Dec 2024 13:53:09 +0100
+Subject: [PATCH 8/9] hw/nvme: set error status code explicitly for misc
+ commands
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241216-nvme-queue-v1-7-4e42212b92f7@samsung.com>
+Message-Id: <20241216-nvme-queue-v1-8-4e42212b92f7@samsung.com>
 References: <20241216-nvme-queue-v1-0-4e42212b92f7@samsung.com>
 In-Reply-To: <20241216-nvme-queue-v1-0-4e42212b92f7@samsung.com>
 To: Keith Busch <kbusch@kernel.org>, Klaus Jensen <its@irrelevant.dk>, 
@@ -87,24 +87,24 @@ To: Keith Busch <kbusch@kernel.org>, Klaus Jensen <its@irrelevant.dk>,
  qemu-devel@nongnu.org
 Cc: Klaus Jensen <k.jensen@samsung.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1550; i=k.jensen@samsung.com; 
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3990; i=k.jensen@samsung.com; 
  h=from:subject:message-id;
- bh=Lzmkuk5YaMJzGtZSA4ffX7+4Au6vE0d8ay3Yh5W3tCI=; 
+ bh=hxOM4hD4Xb6bWY7Wjdk928pX9fL0ZwzmOu8los/ey2w=; 
  b=LS0tLS1CRUdJTiBQR1AgTUVTU0FHRS0tLS0tCgpvd0o0bkFGdEFaTCtrQTBEQUFvQlRlR3ZNV
- zFQRGVrQnl5WmlBR2RnSXRwUHlsd3lUeDRic0liN3hPMW9lZHJyClZ4bC9kcEFRMmQ1cXRLc2FW
- Q2c2S1lrQk13UUFBUW9BSFJZaEJGSW9NNnAxNHR6bW9rZG13RTNocnpGdFR3M3AKQlFKbllDTGF
- BQW9KRUUzaHJ6RnRUdzNwdkpVSC8zVk1WMnd6TThjbVdDeXZTeWtsaWF5cUg2WmVxY2UwTVJEZw
- pZMzBvWnRETXN3TU94bVljTkplQk44elJLbGk1RVZmNERhaVpkNU5GV1lxZ05CTDIzOExCdi9GR
- ThkY3VvWUYwClJGb2pRRWxCNUJ4TEhLS1pBR0ZKQnFhbXc2SzZSaGw0KzIwU2VxNXlaalh3TlB2
- STZmeVplWDUzWWNUZG0zL0QKMW9Uc1F1L0k4eHZQTUJrTXhsTEpGKzRQeHJ6dEN5VG5iNXJBZXd
- ZU0JjeGpNTkUycTZsODMyZTFxY2N0K0FGcQo0aDVwejd2OTJYelUwY1BmckJPR1l1RUhZS3F0MF
- ZPakdXTW9GUkVNSUhteU9vdmluR09iSXBWbVhjeWdwVmlqCk96RUVwR1BES1NiUDdzTnh0RThmY
- i93RXFEc01MMk9XcWNYVmRuRm1pQkFOdlcycStjcmVnNmVFCj1pYWVUCi0tLS0tRU5EIFBHUCBN
+ zFQRGVrQnl5WmlBR2RnSXR1OG11bUNIWmcxREtscmZNejZGbXZlCkhRZ1E4YmtNTWVjbjErV29U
+ cGRaVFlrQk13UUFBUW9BSFJZaEJGSW9NNnAxNHR6bW9rZG13RTNocnpGdFR3M3AKQlFKbllDTGJ
+ BQW9KRUUzaHJ6RnRUdzNwcFNBSC9qWVE1bTNKYmtuL1owUlBBMmtsUG0zMXpnTWYreERRVE9hNw
+ o2bWxENmhWRUNKSXBPcHhjS0krWkpBa0VIaVNtODNxeTBqRUFhQkZNS0VvL1UvdWhSSVBlZzhqW
+ DhoMndXd3IwCnZHQ1BtamRMSDRWcFErUlNxbXdqbXk0ZHhvWWZjMHEreENLeStId0w5N0lSd1ZS
+ dzM5UjkzYlNlRG43R25wVHYKNDV1SGs2dTF1N25tM0NiQVhmRFBzYSsvRVliZ3o3YjJpNnRseG1
+ IREh3WnZ0bWRGL0V4R01nL0FHdVU5YUF3SwpFZmVWOVc4Z1VWbEZTK2JDU1BFUGNnVGRSSTYyT1
+ pRbGs0U1Z5YUljNjNkUWRlbHNQdGJFQnBBYzJwR3N4c2hVCnNlLzkrWjZDRzJ0Tnk0TnVUTmMxS
+ ktRc2J6elRKa3MyRkhLRHpjUUFNY0FFVG9ibHVUQ05jS2NzCj1xMVVuCi0tLS0tRU5EIFBHUCBN
  RVNTQUdFLS0tLS0K
 X-Developer-Key: i=k.jensen@samsung.com; a=openpgp;
  fpr=DDCA4D9C9EF931CC3468427263D56FC5E55DA838
-Received-SPF: pass client-ip=202.12.124.147; envelope-from=its@irrelevant.dk;
- helo=fout-b4-smtp.messagingengine.com
+Received-SPF: pass client-ip=202.12.124.156; envelope-from=its@irrelevant.dk;
+ helo=fhigh-b5-smtp.messagingengine.com
 X-Spam_score_int: -27
 X-Spam_score: -2.8
 X-Spam_bar: --
@@ -130,47 +130,124 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Klaus Jensen <k.jensen@samsung.com>
 
-The Command Abort Requested status code should only be set if the
-command was explicitly cancelled due to an Abort command. Or, in the
-case the cancel was due to Submission Queue deletion, set the status
-code to Command Aborted due to SQ Deletion.
+The nvme_aio_err() does not handle Verify, Compare, Copy and other misc
+commands and defaults to setting the error status code to Internal
+Device Error. For some of these commands, we know better, so set it
+explicitly.
+
+For the commands using the nvme_misc_cb() callback (Copy, Flush, ...),
+if no status code has explicitly been set by the lower handlers, default
+to Internal Device Error as previously.
 
 Signed-off-by: Klaus Jensen <k.jensen@samsung.com>
 ---
- hw/nvme/ctrl.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ hw/nvme/ctrl.c       | 28 ++++++++++++++++++++++------
+ include/block/nvme.h |  1 +
+ 2 files changed, 23 insertions(+), 6 deletions(-)
 
 diff --git a/hw/nvme/ctrl.c b/hw/nvme/ctrl.c
-index 8d3f62c40ac14fdc4bdc650e272023558cbbae0f..5b1bac020f049cc2a2f869b12e1d2a7e13cef316 100644
+index 5b1bac020f049cc2a2f869b12e1d2a7e13cef316..8192f92227d6509b8d15fde9d9197a59277eb86f 100644
 --- a/hw/nvme/ctrl.c
 +++ b/hw/nvme/ctrl.c
-@@ -1777,10 +1777,6 @@ static void nvme_aio_err(NvmeRequest *req, int ret)
+@@ -1765,7 +1765,6 @@ static void nvme_aio_err(NvmeRequest *req, int ret)
+     case NVME_CMD_READ:
+         status = NVME_UNRECOVERED_READ;
          break;
+-    case NVME_CMD_FLUSH:
+     case NVME_CMD_WRITE:
+     case NVME_CMD_WRITE_ZEROES:
+     case NVME_CMD_ZONE_APPEND:
+@@ -2151,11 +2150,16 @@ static inline bool nvme_is_write(NvmeRequest *req)
+ static void nvme_misc_cb(void *opaque, int ret)
+ {
+     NvmeRequest *req = opaque;
++    uint16_t cid = nvme_cid(req);
+ 
+-    trace_pci_nvme_misc_cb(nvme_cid(req));
++    trace_pci_nvme_misc_cb(cid);
+ 
+     if (ret) {
+-        nvme_aio_err(req, ret);
++        if (!req->status) {
++            req->status = NVME_INTERNAL_DEV_ERROR;
++        }
++
++        trace_pci_nvme_err_aio(cid, strerror(-ret), req->status);
      }
  
--    if (ret == -ECANCELED) {
--        status = NVME_CMD_ABORT_REQ;
--    }
--
-     trace_pci_nvme_err_aio(nvme_cid(req), strerror(-ret), status);
+     nvme_enqueue_req_completion(nvme_cq(req), req);
+@@ -2258,7 +2262,10 @@ static void nvme_verify_cb(void *opaque, int ret)
  
-     error_setg_errno(&local_err, -ret, "aio failed");
-@@ -4821,6 +4817,7 @@ static uint16_t nvme_del_sq(NvmeCtrl *n, NvmeRequest *req)
-     while (!QTAILQ_EMPTY(&sq->out_req_list)) {
-         r = QTAILQ_FIRST(&sq->out_req_list);
-         assert(r->aiocb);
-+        r->status = NVME_CMD_ABORT_SQ_DEL;
-         blk_aio_cancel(r->aiocb);
+     if (ret) {
+         block_acct_failed(stats, acct);
+-        nvme_aio_err(req, ret);
++        req->status = NVME_UNRECOVERED_READ;
++
++        trace_pci_nvme_err_aio(nvme_cid(req), strerror(-ret), req->status);
++
+         goto out;
      }
  
-@@ -6073,6 +6070,7 @@ static uint16_t nvme_abort(NvmeCtrl *n, NvmeRequest *req)
-     QTAILQ_FOREACH_SAFE(r, &sq->out_req_list, entry, next) {
-         if (r->cqe.cid == cid) {
-             if (r->aiocb) {
-+                r->status = NVME_CMD_ABORT_REQ;
-                 blk_aio_cancel_async(r->aiocb);
-             }
-             break;
+@@ -2357,7 +2364,10 @@ static void nvme_compare_mdata_cb(void *opaque, int ret)
+ 
+     if (ret) {
+         block_acct_failed(stats, acct);
+-        nvme_aio_err(req, ret);
++        req->status = NVME_UNRECOVERED_READ;
++
++        trace_pci_nvme_err_aio(nvme_cid(req), strerror(-ret), req->status);
++
+         goto out;
+     }
+ 
+@@ -2439,7 +2449,10 @@ static void nvme_compare_data_cb(void *opaque, int ret)
+ 
+     if (ret) {
+         block_acct_failed(stats, acct);
+-        nvme_aio_err(req, ret);
++        req->status = NVME_UNRECOVERED_READ;
++
++        trace_pci_nvme_err_aio(nvme_cid(req), strerror(-ret), req->status);
++
+         goto out;
+     }
+ 
+@@ -2918,6 +2931,7 @@ static void nvme_copy_out_completed_cb(void *opaque, int ret)
+ 
+     if (ret < 0) {
+         iocb->ret = ret;
++        req->status = NVME_WRITE_FAULT;
+         goto out;
+     } else if (iocb->ret < 0) {
+         goto out;
+@@ -2982,6 +2996,7 @@ static void nvme_copy_in_completed_cb(void *opaque, int ret)
+ 
+     if (ret < 0) {
+         iocb->ret = ret;
++        req->status = NVME_UNRECOVERED_READ;
+         goto out;
+     } else if (iocb->ret < 0) {
+         goto out;
+@@ -3504,6 +3519,7 @@ static void nvme_flush_ns_cb(void *opaque, int ret)
+ 
+     if (ret < 0) {
+         iocb->ret = ret;
++        iocb->req->status = NVME_WRITE_FAULT;
+         goto out;
+     } else if (iocb->ret < 0) {
+         goto out;
+diff --git a/include/block/nvme.h b/include/block/nvme.h
+index 66d49b641aa1e89c12103e548320d89995fbbfae..3c8a9ba3c7956c1d475857a1068074338643f77f 100644
+--- a/include/block/nvme.h
++++ b/include/block/nvme.h
+@@ -906,6 +906,7 @@ enum NvmeStatusCodes {
+     NVME_SGL_DESCR_TYPE_INVALID = 0x0011,
+     NVME_INVALID_USE_OF_CMB     = 0x0012,
+     NVME_INVALID_PRP_OFFSET     = 0x0013,
++    NVME_COMMAND_INTERRUPTED    = 0x0021,
+     NVME_FDP_DISABLED           = 0x0029,
+     NVME_INVALID_PHID_LIST      = 0x002a,
+     NVME_LBA_RANGE              = 0x0080,
 
 -- 
 2.45.2
