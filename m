@@ -2,101 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEC179F380E
-	for <lists+qemu-devel@lfdr.de>; Mon, 16 Dec 2024 18:55:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 53D5F9F3833
+	for <lists+qemu-devel@lfdr.de>; Mon, 16 Dec 2024 19:00:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tNFJ8-0007oQ-KH; Mon, 16 Dec 2024 12:55:02 -0500
+	id 1tNFO7-0006Pu-2B; Mon, 16 Dec 2024 13:00:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tNFJ7-0007o0-Ab
- for qemu-devel@nongnu.org; Mon, 16 Dec 2024 12:55:01 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tNFJ5-000680-Ar
- for qemu-devel@nongnu.org; Mon, 16 Dec 2024 12:55:01 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1734371696;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=+afSfH+kaJM5EHjOmLFDofGQ5WbKp48HLxRfwG0NX+o=;
- b=hqMh306kkHGMiGY9wpkScBpwHkMwYZrbAjTKflOXraXBGnV1mAt0n02o1hRzyBtpXLadLF
- 0OcMMSqmmHcDndIxhHxAl4bq+ZB+z5MeeHBhNhJ3hkS0MvS7gfFsFEWjrLo7WvQrOgqGOY
- et9cwi7xUfGLdw//4qpzeIYsrI2LgtQ=
-Received: from mail-il1-f200.google.com (mail-il1-f200.google.com
- [209.85.166.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-13-Ano4NFTmNKKwj_rN6O-orw-1; Mon, 16 Dec 2024 12:54:50 -0500
-X-MC-Unique: Ano4NFTmNKKwj_rN6O-orw-1
-X-Mimecast-MFC-AGG-ID: Ano4NFTmNKKwj_rN6O-orw
-Received: by mail-il1-f200.google.com with SMTP id
- e9e14a558f8ab-3a9d303a5ccso89393955ab.3
- for <qemu-devel@nongnu.org>; Mon, 16 Dec 2024 09:54:50 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1tNFNp-0006NC-R3
+ for qemu-devel@nongnu.org; Mon, 16 Dec 2024 12:59:55 -0500
+Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1tNFNl-0006pV-Rj
+ for qemu-devel@nongnu.org; Mon, 16 Dec 2024 12:59:52 -0500
+Received: by mail-pl1-x632.google.com with SMTP id
+ d9443c01a7336-2166651f752so46762865ad.3
+ for <qemu-devel@nongnu.org>; Mon, 16 Dec 2024 09:59:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1734371988; x=1734976788; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=SrQvYRnEHbox0g5DuQ0j8Y65TKsmOnM8siW8nf4t5ic=;
+ b=Vcg0CFpUG2PVfUXyqUHPUKHnH23liX42AtPZXlng7t5QEKqm8J+PfiurkBzAev43IO
+ ihZezTr3nkSUPpXKqWa7WTL/RsSUXQerhGwvEB0cGsi0WIi8naQSeT4M2yEUzzmi/5FU
+ 9xnAa/qqKgEUJTTzR/pRVAKVXi9RwcddIZsbIjuZ32RqNABe0yKL8cBaa2qnOqkCUizK
+ /0bVFnwuQib2leo0ulA1N+DAkMsSM/JnX5RQ5jwm5qNNVgoLqqWyZ/3mJCY2+nm/DK+B
+ yloZF/eM2Aueg9XL8GIGzIrUX7cWnoFBkWEPcZNn6MIVfmdV6pmqeQlZebVvROz6lKaB
+ zTTw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734371690; x=1734976490;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
+ d=1e100.net; s=20230601; t=1734371988; x=1734976788;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=+afSfH+kaJM5EHjOmLFDofGQ5WbKp48HLxRfwG0NX+o=;
- b=UmHJrYXnxCYZzqgSkc7jR2YAMHmvAgIzDuguwUd2baGbE+sdIN/+wr7cOST8eNV3rO
- vSBZHeuJluecBKxFS/oDlFpuRDbJ3OJDpjXJGyr5pxWeIDdFPnMYPHtfYpdTVumq5bpy
- J6EKWczVADAtLM1YGSFrYvbVIeJPi5j0SLGzswhxCcGFhOi2DqrNrDNjHUkv+iTgBbrd
- dttnoGaN3ocOKmWVc9jMv4RUpoSOFtRbyg0YO09FEiCL1O1JUAqyXh+zGHLl13CQh1Nm
- JbB4CEv+unsdQA/tL0Wk9vJBcoDghjHuAH4B3iz/Qtxa+nxX8/IFbp1F8o2yOAgWcxQC
- NbvQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVuLKKuSWXz1vvHBndN1szH++/EyrXWAFT9jaoVY6pBfGLfEdzU/S4eNtneJyXTSofglfbn0Iq8DLi8@nongnu.org
-X-Gm-Message-State: AOJu0YwZi+O+UaLhVPGzchr+RaJ6q+F89dj7oWa6EmGnA93LBn1dLv0w
- Oaaz3bQSHk3HjUF/SjrSEbO/rCpmtssAGFAfGz09sNYRIY8u/eObTWpUhhcDyrKK2TFxlSkUbEk
- aaTxIqeG7LKg/2BO91wObzBk9UMyipYmFbNQISvHIBlSGo/p4wEnB
-X-Gm-Gg: ASbGncvhwQP7Mt64v998VMiLndz8883qT0gew0sqaLaVQxMKhczQiXQ8UvC6pcvVG+j
- RdNfqKJAaqZnWUwr7pDXnu7+yLxWNUvL0FeZicx3tXLdM6Y86XUHV0drlgUh9JSaIxRaErHwFNP
- CYpj0igpktfAoonxVCuCJeEV38KGdJ/riD5ezSYdU/Zeuphk/aL6T1XNt1HS12Ydac1OVnSnnd+
- poJlFx8XKUItp7JyH9c4J/QtS8n/pdXw1RtBriV0dkuScMMKaowNyRQTOkvXPgi0nUFrrE1chVs
- tC3HiRTugKsyVw5caw==
-X-Received: by 2002:a05:6e02:2407:b0:3a7:e539:c27b with SMTP id
- e9e14a558f8ab-3aff7f16c74mr129322955ab.17.1734371690160; 
- Mon, 16 Dec 2024 09:54:50 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGMSfYt16ya4/iZsZiENyJDI4z2PWjCCgoXX0X8MeKn7iYg6oKQpgG4sbl7qAeT9JsJbswKVg==
-X-Received: by 2002:a05:6e02:2407:b0:3a7:e539:c27b with SMTP id
- e9e14a558f8ab-3aff7f16c74mr129322745ab.17.1734371689814; 
- Mon, 16 Dec 2024 09:54:49 -0800 (PST)
-Received: from x1n (pool-99-254-114-190.cpe.net.cable.rogers.com.
- [99.254.114.190]) by smtp.gmail.com with ESMTPSA id
- 8926c6da1cb9f-4e5e3782406sm1296050173.121.2024.12.16.09.54.48
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 16 Dec 2024 09:54:48 -0800 (PST)
-Date: Mon, 16 Dec 2024 12:54:47 -0500
-From: Peter Xu <peterx@redhat.com>
-To: Konstantin Kostiuk <kkostiuk@redhat.com>
-Cc: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org,
- Daniel P =?utf-8?B?LiBCZXJyYW5nw6k=?= <berrange@redhat.com>,
- Michael Roth <michael.roth@amd.com>, Fabiano Rosas <farosas@suse.de>
-Subject: Re: [PATCH 1/3] osdep: Add qemu_mkdir_with_parents()
-Message-ID: <Z2BpZ-Re8ctQPQiC@x1n>
-References: <20241216161413.1644171-1-peterx@redhat.com>
- <20241216161413.1644171-2-peterx@redhat.com>
- <CAFEAcA_u++fJudO1ca9q76NYWTg75PRGAEHBqDyjUDEnR5m8Cw@mail.gmail.com>
- <Z2BfhvPfYNYoHA5Z@x1n>
- <CAPMcbCq6bU_L3xgj1tC9hDpDSG5_ppHgxRYO8qww49PSAGdCWg@mail.gmail.com>
+ bh=SrQvYRnEHbox0g5DuQ0j8Y65TKsmOnM8siW8nf4t5ic=;
+ b=mdjUyHrxRQLYKpiQOt3OWHwmFwVkLbqL3NHIxHyxX40jk6BoTWsixW5WeOGcrZwLjW
+ zirX3MmGaCcddL/7cfYjqCO5sqEkzDaAJIdRgkyaEvbIxBosUAipy/+LFz1wVf1PYIHb
+ 38li96dBGknTCyLstRtBkr0dI6q//kqH8PaQmxsEOA4YirWlrXSk6emMGF59LvVg+7aS
+ KwPiBJsAPW1BuY3h1HZgQKNUPRG0507xbOtQOv1/8S6skJPEaXAXYPZlSQiWPx0RDGcF
+ Z1cZh+/6ruAyn7om/vrrFJyTdHqyerecQlzKAw4OelsUtrVx7sDmx2w+/x088Ng6xC6x
+ iZBg==
+X-Gm-Message-State: AOJu0YyugzekzODxV/6IIPyuFeCkgZNBmV2HBSWKG4aMraeC735rgAMU
+ yQyVX5WFc7Ynm5dS57LLs3e3GI4+edbf6flMdyL/RZqBn8RFbxAMaErn37WkDhpG97wKNoXj7Sy
+ waZE=
+X-Gm-Gg: ASbGncvVPh6nSW3MbuM9QgJdAbdTG2h+jhSDj+JEhzyZLEn8Rr+Vez3cbcGEhdTXHh3
+ TWGYj0IRCdhfu4zxSzj0k4G2iiUJaHb77yc2jWT+jo4FJrCeLBJ47uDO9SOYKfc9HFJIAYURaaD
+ +28GKbvTz1feuiA8R/D2r2ryGPqCovfOx8X7AKybZwvcOHDM4kg8vzuSpk4p3WPTLusQWes7sUl
+ 7eFn57/TPR5ZGx0i7qrRXPZ7lLVkYO8e925fIyYh3L7k70BoWb7CGbH/MVQ3INHjkpA4cubFS60
+ XxdFOkOqeBio0ueGLZUl22FB738/
+X-Google-Smtp-Source: AGHT+IH8bmhskgo3ftpNbwKR076K51ON8MkL81sGZUp+Y52DJhqKJkzMI/kndUCDGNNJ38nJBXuNqA==
+X-Received: by 2002:a17:902:d2c5:b0:216:3297:92a4 with SMTP id
+ d9443c01a7336-21892a76f80mr201271325ad.46.1734371988006; 
+ Mon, 16 Dec 2024 09:59:48 -0800 (PST)
+Received: from [192.168.1.67] (216-180-64-156.dyn.novuscom.net.
+ [216.180.64.156]) by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-218a1db757bsm45668355ad.26.2024.12.16.09.59.47
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 16 Dec 2024 09:59:47 -0800 (PST)
+Message-ID: <131c11d3-853b-4c7c-aee6-f9c7103b179a@linaro.org>
+Date: Mon, 16 Dec 2024 09:59:46 -0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAPMcbCq6bU_L3xgj1tC9hDpDSG5_ppHgxRYO8qww49PSAGdCWg@mail.gmail.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -31
-X-Spam_score: -3.2
-X-Spam_bar: ---
-X-Spam_report: (-3.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-1.13,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] vvfat: fix ubsan issue in create_long_filename
+Content-Language: en-US
+To: qemu-devel@nongnu.org
+Cc: qemu-block@nongnu.org, alex.bennee@linaro.org,
+ Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
+ peter.maydell@linaro.org
+References: <20241204195111.2921141-1-pierrick.bouvier@linaro.org>
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+In-Reply-To: <20241204195111.2921141-1-pierrick.bouvier@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x632.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -112,68 +101,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Dec 16, 2024 at 07:28:19PM +0200, Konstantin Kostiuk wrote:
-> On Mon, Dec 16, 2024 at 7:12 PM Peter Xu <peterx@redhat.com> wrote:
+Hi everyone,
+
+gentle ping on this series.
+
+On 12/4/24 11:51, Pierrick Bouvier wrote:
+> Found with test sbsaref introduced in [1].
 > 
-> > On Mon, Dec 16, 2024 at 04:56:33PM +0000, Peter Maydell wrote:
-> > > On Mon, 16 Dec 2024 at 16:14, Peter Xu <peterx@redhat.com> wrote:
-> > > >
-> > > > QEMU uses g_mkdir_with_parents() a lot, especially in the case where
-> > the
-> > > > failure case is ignored so an abort is expected when happened.
-> > > >
-> > > > Provide a helper qemu_mkdir_with_parents() to do that, and use it in
-> > the
-> > > > two cases in qga/.  To be used in more places later.
-> > > >
-> > > > Signed-off-by: Peter Xu <peterx@redhat.com>
-> > > > ---
-> > > >  include/qemu/osdep.h     | 7 +++++++
-> > > >  qga/commands-posix-ssh.c | 8 ++------
-> > > >  util/osdep.c             | 6 ++++++
-> > > >  3 files changed, 15 insertions(+), 6 deletions(-)
-> > > >
-> > > > diff --git a/include/qemu/osdep.h b/include/qemu/osdep.h
-> > > > index fdff07fd99..dc67fb2e5e 100644
-> > > > --- a/include/qemu/osdep.h
-> > > > +++ b/include/qemu/osdep.h
-> > > > @@ -828,6 +828,13 @@ static inline int
-> > platform_does_not_support_system(const char *command)
-> > > >  }
-> > > >  #endif /* !HAVE_SYSTEM_FUNCTION */
-> > > >
-> > > > +/**
-> > > > + * qemu_mkdir_with_parents:
-> > > > + *
-> > > > + * Create directories with parents.  Abort on failures.
-> > > > + */
-> > > > +void qemu_mkdir_with_parents(const char *dir, int mode);
-> > >
-> > > Don't put new function prototypes into osdep.h, please.
-> > > It is included by every single C file in the codebase.
-> > > There is always somewhere better to put things.
-> > >
-> > > QEMU shouldn't abort on things that are kind of expected
-> > > OS errors like "couldn't create a directory", so I'm
-> > > a bit dubious about this function.
-> >
-> > That's what qga/ is doing right now, rather than a decision made in this
-> > series, though.
-> >
+> [1] https://patchew.org/QEMU/20241203213629.2482806-1-pierrick.bouvier@linaro.org/
 > 
-> I think we need to fix this behavior in QGA and report the real error,
-> instead of wrapping the `assert` into some function that will make
-> it not so obvious.
-
-Even if we want to do that, we can also do that on top, btw.  As this patch
-is as simple as a cleanup to dedup two chunks of code.
-
-But if this patch is not liked by most from different angles, we can simply
-drop it.. together with patch 2, as in my previous reply.
-
-Thanks,
-
--- 
-Peter Xu
+> ../block/vvfat.c:433:24: runtime error: index 14 out of bounds for type 'uint8_t [11]'
+>      #0 0x56151a66b93a in create_long_filename ../block/vvfat.c:433
+>      #1 0x56151a66f3d7 in create_short_and_long_name ../block/vvfat.c:725
+>      #2 0x56151a670403 in read_directory ../block/vvfat.c:804
+>      #3 0x56151a674432 in init_directories ../block/vvfat.c:964
+>      #4 0x56151a67867b in vvfat_open ../block/vvfat.c:1258
+>      #5 0x56151a3b8e19 in bdrv_open_driver ../block.c:1660
+>      #6 0x56151a3bb666 in bdrv_open_common ../block.c:1985
+>      #7 0x56151a3cadb9 in bdrv_open_inherit ../block.c:4153
+>      #8 0x56151a3c8850 in bdrv_open_child_bs ../block.c:3731
+>      #9 0x56151a3ca832 in bdrv_open_inherit ../block.c:4098
+>      #10 0x56151a3cbe40 in bdrv_open ../block.c:4248
+>      #11 0x56151a46344f in blk_new_open ../block/block-backend.c:457
+>      #12 0x56151a388bd9 in blockdev_init ../blockdev.c:612
+>      #13 0x56151a38ab2d in drive_new ../blockdev.c:1006
+>      #14 0x5615190fca41 in drive_init_func ../system/vl.c:649
+>      #15 0x56151aa796dd in qemu_opts_foreach ../util/qemu-option.c:1135
+>      #16 0x5615190fd2b6 in configure_blockdev ../system/vl.c:708
+>      #17 0x56151910a307 in qemu_create_early_backends ../system/vl.c:2004
+>      #18 0x561519113fcf in qemu_init ../system/vl.c:3685
+>      #19 0x56151a7e438e in main ../system/main.c:47
+>      #20 0x7f72d1a46249 in __libc_start_call_main ../sysdeps/nptl/libc_start_call_main.h:58
+>      #21 0x7f72d1a46304 in __libc_start_main_impl ../csu/libc-start.c:360
+>      #22 0x561517e98510 in _start (/home/user/.work/qemu/build/qemu-system-aarch64+0x3b9b510)
+> 
+> The offset used can easily go beyond entry->name size. It's probably a
+> bug, but I don't have the time to dive into vfat specifics for now.
+> 
+> This change solves the ubsan issue, and is functionally equivalent, as
+> anything written past the entry->name array would not be read anyway.
+> 
+> Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+> ---
+>   block/vvfat.c | 4 ++++
+>   1 file changed, 4 insertions(+)
+> 
+> diff --git a/block/vvfat.c b/block/vvfat.c
+> index 8ffe8b3b9bf..f2eafaa9234 100644
+> --- a/block/vvfat.c
+> +++ b/block/vvfat.c
+> @@ -426,6 +426,10 @@ static direntry_t *create_long_filename(BDRVVVFATState *s, const char *filename)
+>           else if(offset<22) offset=14+offset-10;
+>           else offset=28+offset-22;
+>           entry=array_get(&(s->directory),s->directory.next-1-(i/26));
+> +        /* ensure we don't write anything past entry->name */
+> +        if (offset >= sizeof(entry->name)) {
+> +            continue;
+> +        }
+>           if (i >= 2 * length + 2) {
+>               entry->name[offset] = 0xff;
+>           } else if (i % 2 == 0) {
 
 
