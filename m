@@ -2,86 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA13A9F32F5
-	for <lists+qemu-devel@lfdr.de>; Mon, 16 Dec 2024 15:21:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 20A4E9F3350
+	for <lists+qemu-devel@lfdr.de>; Mon, 16 Dec 2024 15:36:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tNBwd-0004Z2-K4; Mon, 16 Dec 2024 09:19:35 -0500
+	id 1tNCBP-0004ej-4z; Mon, 16 Dec 2024 09:34:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1tNBwJ-0004FM-Rx
- for qemu-devel@nongnu.org; Mon, 16 Dec 2024 09:19:16 -0500
-Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1tNBwH-0000F4-Lu
- for qemu-devel@nongnu.org; Mon, 16 Dec 2024 09:19:15 -0500
-Received: by mail-pf1-x430.google.com with SMTP id
- d2e1a72fcca58-728f1e66418so3545675b3a.2
- for <qemu-devel@nongnu.org>; Mon, 16 Dec 2024 06:19:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734358752; x=1734963552; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=94ccA70iDICvEcEEecoRJQseSGw3jJcmWkfmX5CpvjY=;
- b=AWr/Phz6g4sCNr3kVmbk6B/aM9XaFP/blpVT0AGE7X2I1rBYtlrqxdqeAnDjfwX5+x
- H+jyjTI4wEC3k3n08c5Kq/p5NPpQKvgyEH6DHrIubRYcsII+JSlln0EVEBZ0XuOnbWIw
- 3btC0z7H5UZV4ha0VaywLDMi5ehF0rjhWBGNXoWHHwfFTSAb11a8shNXjOH4/fqg/SAM
- 5Ncg9rU1j/jdSmpcJSyOqfKOTB44Lwlavcf3ewrfgYvLMpYxSEKI7AHRh9drWTzpTEL0
- PZi3CuOzJmKU7o/tMFZoWKCyuo960dULDpvBeQhZAx3WlMSwvzn9h8Dx9+d7wcbtnaj4
- QGJQ==
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1tNCBM-0004dr-Oy
+ for qemu-devel@nongnu.org; Mon, 16 Dec 2024 09:34:48 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1tNCBK-0002gK-2X
+ for qemu-devel@nongnu.org; Mon, 16 Dec 2024 09:34:48 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1734359684;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=3rJ0kR8ZbP1U6oTmfbjCP2qS2FAC/drfdwjJDFWcO3A=;
+ b=Zu8ftPHVf1RrLsZ7kWPXnr2j+fz41jq1mqkzEMpVkSh3f/z1eYcCGovegJtruLWA5CLCGI
+ dtWzxvb62AFgCSQ/U/8Zi0ZeV6kL+Gb6fjdH0Po5lRcfBnxZQgfttOnHOBDT/et1RgXAI2
+ ATn1z/TG+uEM926jQMavs95gItIjmn8=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-644-byYvQD3aOmKKKW1uXt_qZg-1; Mon, 16 Dec 2024 09:34:41 -0500
+X-MC-Unique: byYvQD3aOmKKKW1uXt_qZg-1
+X-Mimecast-MFC-AGG-ID: byYvQD3aOmKKKW1uXt_qZg
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-385d52591d6so2117150f8f.1
+ for <qemu-devel@nongnu.org>; Mon, 16 Dec 2024 06:34:41 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734358752; x=1734963552;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1734359680; x=1734964480;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=94ccA70iDICvEcEEecoRJQseSGw3jJcmWkfmX5CpvjY=;
- b=PEjDiKE43jawzPei6QXfXSpuYSVjYFdOk5ac381QDKLkyMEOsq9/lAzDGajnjkeiRQ
- NNIOvr0QAaMfclN7M/U7zmjtxwAzlLkBtW1hTvqPxeIO7UZDMa/Odv8DFnrjPnlLAtnn
- PFajwAKLUoRPND9aYm+QwfNSlv5lBC1YVbm4es4NFWQkCyFGkbuo52++4cObs4RqdBxz
- zA7GDkNkogi2Grb981q5qxH9OBlhAyZ4kHiBFGAFHwNWhkRBGt0jxOeKFnh4DCvWHYJr
- 8kzL/LVOkqAgq9Dke8J8e/Y08u0Kh/QO8j3MuB6VQ4EZsZwgimNDLKb1CXmyRi+7gxXV
- YCBQ==
-X-Gm-Message-State: AOJu0Yz4vfZ4n9hwOWy1m8k9w6gHLT1D/WCNRWczi0R2xlnHu1pWlUT5
- /9NBqYMPuHtRHWfZOnknk8ap3Bf5NQEx1G13JUKmZKq575qPNTF0121GzXJd2aWP06vIW4EoE3R
- 0
-X-Gm-Gg: ASbGncsUw6UalnumxM//tMaETtasSgdjK9NqLn+fb7wE4+dYJ51tLCWsT1iwGKJtNw/
- RsBFb4x5DSch/lrqFB5XePzHA5IvBeud1eUpmho2VGnX1lyO4FbI5McldL1SCSpMAqyBAoi+g21
- /WZRe5TzTilWeNBp4/da6m2QEReanisJd09Wk0FNu/1Z0UAdw6NLW4cB54gpsY8QpXfz3/m7Vs6
- 4CXCsxg+Cz0HrwTIudiMcY1pgH2Z/6UCQjQW/lKO/ADru7PA2CMV3vMXLuGMHk=
-X-Google-Smtp-Source: AGHT+IHZiMKCJVcdmkDgAGPVguj+/fHzriRMCIzGP4HKMXfGp497ep12JcCbEbnCLd4Igqv7ZoG3tQ==
-X-Received: by 2002:a05:6a00:c96:b0:724:bf30:147d with SMTP id
- d2e1a72fcca58-7290c17f109mr17786307b3a.11.1734358751898; 
- Mon, 16 Dec 2024 06:19:11 -0800 (PST)
-Received: from gromero0.. ([177.189.100.90]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-72918bad8acsm4948815b3a.146.2024.12.16.06.19.09
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 16 Dec 2024 06:19:11 -0800 (PST)
-From: Gustavo Romero <gustavo.romero@linaro.org>
-To: qemu-devel@nongnu.org, qemu-arm@nongnu.org, philmd@linaro.org,
- alex.bennee@linaro.org, thuth@redhat.com, armbru@redhat.com
-Cc: gustavo.romero@linaro.org
-Subject: [PATCH v3 7/7] tests/qtest: Add ivshmem-flat test
-Date: Mon, 16 Dec 2024 14:18:18 +0000
-Message-Id: <20241216141818.111255-8-gustavo.romero@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241216141818.111255-1-gustavo.romero@linaro.org>
-References: <20241216141818.111255-1-gustavo.romero@linaro.org>
+ bh=3rJ0kR8ZbP1U6oTmfbjCP2qS2FAC/drfdwjJDFWcO3A=;
+ b=wwdvfdJbhlbH+bTeYBJxgDbX35YuLD+wTAFFlpM4twlM0mr4FoG6npNoQnE9oYnrd5
+ NNvUCV9SRJpzi9lV2sD9hqqi3P1BJebWVIk2TDjz/uDvTwOdDXL3VQKP6BOQEwL9e4pH
+ tmHjGceGheBLcM1axWDKt8dFHBcjtk5plfpIC475DlzPYfTQqRPXlE2Ng7AspdGaQ1Wb
+ LlNrJ5xl0gtYNyzBY/B13spW362VUbRTat3TVQ5iqeRQy2kLyebL7DuhtdTorrb4EjsX
+ wBuVrIEEeRi0TbpfZI5TGIzxaKtD0ENijjReptCRpV3WvrOFNPaE6sDjLvU7aEFwc4bw
+ cSkg==
+X-Gm-Message-State: AOJu0Yz3IK2WkkoCobt6OSSgbo//LOPnR7ilK5tqDkI/tpuWICYlxLWX
+ /qc4kDZdNJxF2DSd4dzeLTdxjvZGp2x/ka3He+zS9qXJiPy+O6rNuRSDRjazpSmspdF3hIGEugH
+ IO8IBD7IvRPk46GKn/or2NXh3GWLUUptPwBUfjksEJ7zxEFH5RdS751YQPsQEZFMf4aSumVR23W
+ 0WA0+4N28Fpg71maWHlKHe/j3XSMI=
+X-Gm-Gg: ASbGncuJIT6/LA8pdWy70u1A5GCqyv6kQbd6FCZb0W490XRVPFaUxBCC8dXRov1c2Wg
+ htXK60xjxLy8XI6K5Q/fvinq/AIcEkP8tWT15kA==
+X-Received: by 2002:a05:6000:1acf:b0:385:faec:d945 with SMTP id
+ ffacd0b85a97d-388c365199bmr10696292f8f.9.1734359680490; 
+ Mon, 16 Dec 2024 06:34:40 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEtmCDgvlJYKHR43kPc8ChMxjGS/kfBsbPnHE5+7+foAzEnZ4LAKuhPTodf475p1+UVWgma9Uxe6FXlY+q7X1I=
+X-Received: by 2002:a05:6000:1acf:b0:385:faec:d945 with SMTP id
+ ffacd0b85a97d-388c365199bmr10696279f8f.9.1734359680191; Mon, 16 Dec 2024
+ 06:34:40 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
- envelope-from=gustavo.romero@linaro.org; helo=mail-pf1-x430.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+References: <20241216035109.3486070-1-richard.henderson@linaro.org>
+ <20241216035109.3486070-18-richard.henderson@linaro.org>
+In-Reply-To: <20241216035109.3486070-18-richard.henderson@linaro.org>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Mon, 16 Dec 2024 15:34:28 +0100
+Message-ID: <CABgObfYZkBmjR-z9rmMo46iJ59aJKMYhJjWmO+1+eEdU2-6coQ@mail.gmail.com>
+Subject: Re: [PATCH 17/24] rust/qemu-api: Use device_class_set_props_n
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -31
+X-Spam_score: -3.2
+X-Spam_bar: ---
+X-Spam_report: (-3.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-1.13,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,382 +99,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This commit adds a qtest for the ivshmem-flat device to test memory
-sharing, IRQ triggering, and the memory mapped registers in the device.
+On Mon, Dec 16, 2024 at 4:54=E2=80=AFAM Richard Henderson
+<richard.henderson@linaro.org> wrote:
+> This means we can update declare_properties to drop the
+> zero terminator at the end of the array as well.
+>
+> Cc: qemu-rust@nongnu.org
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
----
- tests/qtest/ivshmem-flat-test.c | 338 ++++++++++++++++++++++++++++++++
- tests/qtest/meson.build         |   2 +
- 2 files changed, 340 insertions(+)
- create mode 100644 tests/qtest/ivshmem-flat-test.c
+Reviewed-by: Paolo Bonzini <pbonzini@redhat.com>
 
-diff --git a/tests/qtest/ivshmem-flat-test.c b/tests/qtest/ivshmem-flat-test.c
-new file mode 100644
-index 0000000000..b6f59bba54
---- /dev/null
-+++ b/tests/qtest/ivshmem-flat-test.c
-@@ -0,0 +1,338 @@
-+/*
-+ * Inter-VM Shared Memory Flat Device qtests
-+ *
-+ * SPDX-FileCopyrightText: 2023 Linaro Ltd.
-+ * SPDX-FileContributor: Gustavo Romero <gustavo.romero@linaro.org>
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ *
-+ */
-+
-+#include "ivshmem-utils.h"
-+
-+#define IVSHMEM_FLAT_MMR_ADDR 0x400FF000
-+#define IVSHMEM_FLAT_SHM_ADDR 0x40100000
-+#define SHM_SIZE 131072 /* 128k */
-+
-+static ServerThread thread;
-+
-+uint32_t *shm_ptr;
-+char *shm_rel_path;
-+char *server_socket_path;
-+
-+static void cleanup(void)
-+{
-+    if (shm_ptr) {
-+        munmap(shm_ptr, SHM_SIZE);
-+        shm_ptr = NULL;
-+    }
-+
-+    if (shm_rel_path) {
-+        shm_unlink(shm_rel_path);
-+        shm_rel_path = NULL;
-+    }
-+
-+    if (server_socket_path) {
-+        unlink(server_socket_path);
-+        server_socket_path = NULL;
-+    }
-+}
-+
-+static void abort_handler(void *data)
-+{
-+    test_ivshmem_server_stop(&thread);
-+    cleanup();
-+}
-+
-+/*
-+ * Check if exactly 1 positive pulse (low->high->low) on 'irq' qtest IRQ line
-+ * happens. N.B.: 'irq' must be intercepted using qtest_irq_intercept_* before
-+ * this function can be used on it. It returns 0 when pulse is detected,
-+ * otherwise 1.
-+ */
-+static int test_ivshmem_flat_irq_positive_pulse(QTestState *qts, int irq)
-+{
-+    uint64_t num_raises = 0;
-+    uint64_t num_lows = 0;
-+    int attempts = 0;
-+
-+    while (attempts < 5) {
-+        num_raises = qtest_get_irq_raised_counter(qts, 0);
-+        if (num_raises) {
-+            num_lows = qtest_get_irq_lowered_counter(qts, 0);
-+            /* Check for exactly 1 raise and 1 low IRQ event */
-+            if (num_raises == num_lows && num_lows == 1) {
-+                return 0; /* Pulse detected */
-+            }
-+        }
-+
-+	g_usleep(10000);
-+	attempts++;
-+    }
-+
-+    g_message("%s: Timeout expired", __func__);
-+    return 1;
-+}
-+
-+static inline uint32_t read_reg(QTestState *qts, enum Reg reg)
-+{
-+    uint32_t v;
-+
-+    qtest_memread(qts, IVSHMEM_FLAT_MMR_ADDR + reg, &v, sizeof(v));
-+
-+    return v;
-+}
-+
-+static inline void write_reg(QTestState *qts, enum Reg reg, uint32_t v)
-+{
-+    qtest_memwrite(qts, IVSHMEM_FLAT_MMR_ADDR + reg, &v, sizeof(v));
-+}
-+
-+/*
-+ * Setup a test VM with ivshmem-flat device attached, IRQ properly set, and
-+ * connected to the ivshmem-server.
-+ */
-+static QTestState *setup_vm(void)
-+{
-+    QTestState *qts;
-+    const char *cmd_line;
-+
-+    /*
-+     * x-bus-address-{iomem,shmem} are just random addresses that don't conflict
-+     * with any other address in the lm3s6965evb machine. shmem-size used is
-+     * much smaller than the ivshmem server default (4 MiB) to save memory
-+     * resources when testing.
-+     */
-+    cmd_line = g_strdup_printf("-machine lm3s6965evb "
-+                               "-chardev socket,path=%s,id=ivshm "
-+                               "-device ivshmem-flat,chardev=ivshm,"
-+                               "x-irq-qompath='/machine/soc/v7m/nvic/unnamed-gpio-in[0]',"
-+                               "x-bus-address-iomem=%#x,"
-+                               "x-bus-address-shmem=%#x,"
-+                               "shmem-size=%d",
-+                               server_socket_path,
-+                               IVSHMEM_FLAT_MMR_ADDR,
-+                               IVSHMEM_FLAT_SHM_ADDR,
-+                               SHM_SIZE);
-+
-+    qts = qtest_init(cmd_line);
-+
-+    return qts;
-+}
-+
-+static void test_ivshmem_flat_irq(void)
-+{
-+    QTestState *vm_state;
-+    uint16_t own_id;
-+
-+    vm_state = setup_vm();
-+
-+    qtest_irq_intercept_out_named(vm_state,
-+                                  "/machine/peripheral-anon/device[0]",
-+                                  "sysbus-irq");
-+
-+    /* IVPOSTION has the device's own ID distributed by the ivshmem-server. */
-+    own_id = read_reg(vm_state, IVPOSITION);
-+
-+    /* Make device notify itself. */
-+    write_reg(vm_state, DOORBELL, (own_id << 16) | 0 /* vector 0 */);
-+
-+    /*
-+     * Check intercepted device's IRQ output line. 'sysbus-irq' was associated
-+     * to qtest IRQ 0 when intercepted and after self notification qtest IRQ 0
-+     * must be toggled by the device. The test fails if no toggling is detected.
-+     */
-+    g_assert(test_ivshmem_flat_irq_positive_pulse(vm_state,
-+                                                  0 /* qtest IRQ */) == 0);
-+
-+    qtest_quit(vm_state);
-+}
-+
-+static void test_ivshmem_flat_shm_write(void)
-+{
-+    QTestState *vm_state;
-+    int num_elements, i;
-+    uint32_t  *data;
-+
-+    vm_state = setup_vm();
-+
-+    /* Prepare test data with random values. */
-+    data = g_malloc(SHM_SIZE);
-+    num_elements = SHM_SIZE / sizeof(*data);
-+    for (i = 0; i < num_elements; i++) {
-+        data[i] = g_test_rand_int();
-+    }
-+
-+    /*
-+     * Write test data to VM address IVSHMEM_FLAT_SHM_ADDR, where the shared
-+     * memory region is located.
-+     */
-+    qtest_memwrite(vm_state, IVSHMEM_FLAT_SHM_ADDR, data, SHM_SIZE);
-+
-+    /*
-+     * Since the shared memory fd is mmapped into this test process VMA at
-+     * shm_ptr, every byte written by the VM in its shared memory region should
-+     * also be available in the test process via shm_ptr. Thus, data in shm_ptr
-+     * is compared back against the original test data.
-+     */
-+    for (i = 0; i < num_elements; i++) {
-+        g_assert_cmpint(shm_ptr[i], ==, data[i]);
-+    }
-+
-+    qtest_quit(vm_state);
-+}
-+
-+static void test_ivshmem_flat_shm_read(void)
-+{
-+    QTestState *vm_state;
-+    int num_elements, i;
-+    uint32_t  *data;
-+    uint32_t v;
-+
-+    vm_state = setup_vm();
-+
-+    /* Prepare test data with random values. */
-+    data = g_malloc(SHM_SIZE);
-+    num_elements = SHM_SIZE / sizeof(*data);
-+    for (i = 0; i < num_elements; i++) {
-+        data[i] = g_test_rand_int();
-+    }
-+
-+    /*
-+     * Copy test data to the shared memory region so it can be read from the VM
-+     * (IVSHMEM_FLAT_SHM_ADDR location).
-+     */
-+    memcpy(shm_ptr, data, SHM_SIZE);
-+
-+    /* Check data */
-+    for (i = 0; i < num_elements; i++) {
-+        qtest_memread(vm_state, IVSHMEM_FLAT_SHM_ADDR + i * sizeof(v), &v,
-+                      sizeof(v));
-+        g_assert_cmpint(v, ==, data[i]);
-+    }
-+
-+    qtest_quit(vm_state);
-+}
-+
-+static void test_ivshmem_flat_shm_pair(void)
-+{
-+    QTestState *vm0_state, *vm1_state;
-+    uint16_t vm0_peer_id, vm1_peer_id;
-+    int num_elements, i;
-+    uint32_t  *data;
-+    uint32_t v;
-+
-+    vm0_state = setup_vm();
-+    vm1_state = setup_vm();
-+
-+    /* Get peer ID for the VM so it can be used for one notify each other. */
-+    vm0_peer_id = read_reg(vm0_state, IVPOSITION);
-+    vm1_peer_id = read_reg(vm1_state, IVPOSITION);
-+
-+    /* Observe vm1 IRQ output line first. */
-+    qtest_irq_intercept_out_named(vm1_state,
-+                                  "/machine/peripheral-anon/device[0]",
-+                                  "sysbus-irq");
-+
-+    /* Notify (interrupt) VM1 from VM0. */
-+    write_reg(vm0_state, DOORBELL, (vm1_peer_id << 16) | 0 /* vector 0 */);
-+
-+    /* Check if VM1 IRQ output line is toggled after notification from VM0. */
-+    g_assert(test_ivshmem_flat_irq_positive_pulse(vm1_state,
-+                                                  0 /* qtest IRQ */) == 0);
-+
-+    /* Secondly, observe VM0 IRQ output line first. */
-+    qtest_irq_intercept_out_named(vm0_state,
-+                                  "/machine/peripheral-anon/device[0]",
-+                                  "sysbus-irq");
-+
-+    /* ... and do the opposite: notify (interrupt) VM0 from VM1. */
-+    write_reg(vm1_state, DOORBELL, (vm0_peer_id << 16) | 0 /* vector 0 */);
-+
-+    /* Check if VM0 IRQ output line is toggled after notification from VM0. */
-+    g_assert(test_ivshmem_flat_irq_positive_pulse(vm0_state,
-+                                                  0 /* qtest IRQ */) == 0);
-+
-+    /* Prepare test data with random values. */
-+    data = g_malloc(SHM_SIZE);
-+    num_elements = SHM_SIZE / sizeof(*data);
-+    for (i = 0; i < num_elements; i++) {
-+        data[i] = g_test_rand_int();
-+    }
-+
-+    /* Write test data on VM0. */
-+    qtest_memwrite(vm0_state, IVSHMEM_FLAT_SHM_ADDR, data, SHM_SIZE);
-+
-+    /* Check test data on VM1. */
-+    for (i = 0; i < num_elements; i++) {
-+        qtest_memread(vm1_state, IVSHMEM_FLAT_SHM_ADDR + i * sizeof(v), &v,
-+                      sizeof(v));
-+        g_assert_cmpint(v, ==, data[i]);
-+    }
-+
-+    /* Prepare new test data with random values. */
-+    for (i = 0; i < num_elements; i++) {
-+        data[i] = g_test_rand_int();
-+    }
-+
-+    /* Write test data on VM1. */
-+    qtest_memwrite(vm1_state, IVSHMEM_FLAT_SHM_ADDR, data, SHM_SIZE);
-+
-+    /* Check test data on VM0. */
-+    for (i = 0; i < num_elements; i++) {
-+        qtest_memread(vm0_state, IVSHMEM_FLAT_SHM_ADDR + i * sizeof(v), &v,
-+                      sizeof(v));
-+        g_assert_cmpint(v, ==, data[i]);
-+    }
-+
-+    qtest_quit(vm0_state);
-+    qtest_quit(vm1_state);
-+}
-+
-+int main(int argc, char *argv[])
-+{
-+    int shm_fd, r;
-+
-+    g_test_init(&argc, &argv, NULL);
-+
-+    if (!qtest_has_machine("lm3s6965evb")) {
-+        g_test_skip("Machine Stellaris (lm3s6965evb) not found, "
-+                    "skipping ivshmem-flat device test.");
-+        return 0;
-+    }
-+
-+    /* If test fails, stop server, cleanup socket and shm files. */
-+    qtest_add_abrt_handler(abort_handler, NULL);
-+
-+    shm_rel_path = mktempshm(SHM_SIZE, &shm_fd);
-+    g_assert(shm_rel_path);
-+
-+    /*
-+     * Map shm to this test's VMA so it's possible to read/write from/to it. For
-+     * VMs with the ivhsmem-flat device attached, this region will also be
-+     * mapped in their own memory layout, at IVSHMEM_FLAT_SHM_ADDR (default).
-+     */
-+    shm_ptr = mmap(0, SHM_SIZE, PROT_READ | PROT_WRITE, MAP_SHARED, shm_fd, 0);
-+    g_assert(shm_ptr != MAP_FAILED);
-+
-+    server_socket_path = mktempsocket();
-+    /* It never fails, so no assert(). */
-+
-+    /*
-+     * Currently, ivshmem-flat device only supports notification via 1 vector,
-+     * i.e. vector 0.
-+     */
-+    test_ivshmem_server_start(&thread, server_socket_path, shm_rel_path, 1);
-+
-+    /* Register tests. */
-+    qtest_add_func("/ivshmem-flat/irq", test_ivshmem_flat_irq);
-+    qtest_add_func("/ivshmem-flat/shm-write", test_ivshmem_flat_shm_write);
-+    qtest_add_func("/ivshmem-flat/shm-read", test_ivshmem_flat_shm_read);
-+    qtest_add_func("/ivshmem-flat/pair", test_ivshmem_flat_shm_pair);
-+
-+    r = g_test_run();
-+
-+    test_ivshmem_server_stop(&thread);
-+    cleanup();
-+
-+    return r;
-+}
-diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
-index bf1fd12a9e..29e800999b 100644
---- a/tests/qtest/meson.build
-+++ b/tests/qtest/meson.build
-@@ -225,6 +225,7 @@ qtests_stm32l4x5 = \
-    'stm32l4x5_usart-test']
- 
- qtests_arm = \
-+  (config_all_devices.has_key('CONFIG_IVSHMEM_FLAT_DEVICE') ? ['ivshmem-flat-test'] : []) + \
-   (config_all_devices.has_key('CONFIG_MPS2') ? ['sse-timer-test'] : []) + \
-   (config_all_devices.has_key('CONFIG_CMSDK_APB_DUALTIMER') ? ['cmsdk-apb-dualtimer-test'] : []) + \
-   (config_all_devices.has_key('CONFIG_CMSDK_APB_TIMER') ? ['cmsdk-apb-timer-test'] : []) + \
-@@ -362,6 +363,7 @@ qtests = {
-                              'migration/migration-util.c') + dbus_vmstate1,
-   'erst-test': files('erst-test.c'),
-   'ivshmem-test': ['ivshmem-utils.c', '../../contrib/ivshmem-server/ivshmem-server.c'],
-+  'ivshmem-flat-test': ['ivshmem-utils.c', '../../contrib/ivshmem-server/ivshmem-server.c'],
-   'migration-test': migration_files + migration_tls_files,
-   'pxe-test': files('boot-sector.c'),
-   'pnv-xive2-test': files('pnv-xive2-common.c', 'pnv-xive2-flush-sync.c'),
--- 
-2.34.1
+> ---
+>  rust/qemu-api/src/device_class.rs | 11 ++++++-----
+>  1 file changed, 6 insertions(+), 5 deletions(-)
+>
+> diff --git a/rust/qemu-api/src/device_class.rs b/rust/qemu-api/src/device=
+_class.rs
+> index 03d03feee8..cca51fe1a9 100644
+> --- a/rust/qemu-api/src/device_class.rs
+> +++ b/rust/qemu-api/src/device_class.rs
+> @@ -7,7 +7,6 @@
+>  use crate::{
+>      bindings::{self, DeviceClass, DeviceState, Error, ObjectClass, Prope=
+rty, VMStateDescription},
+>      prelude::*,
+> -    zeroable::Zeroable,
+>  };
+>
+>  /// Trait providing the contents of [`DeviceClass`].
+> @@ -31,7 +30,7 @@ pub trait DeviceImpl {
+>      /// device.  Not a `const` because referencing statics in constants
+>      /// is unstable until Rust 1.83.0.
+>      fn properties() -> &'static [Property] {
+> -        &[Zeroable::ZERO; 1]
+> +        &[]
+>      }
+>
+>      /// A `VMStateDescription` providing the migration format for the de=
+vice
+> @@ -87,7 +86,10 @@ fn vmsd() -> Option<&'static VMStateDescription> {
+>          if let Some(vmsd) =3D <T as DeviceImpl>::vmsd() {
+>              dc.vmsd =3D vmsd;
+>          }
+> -        bindings::device_class_set_props(dc, <T as DeviceImpl>::properti=
+es().as_ptr());
+> +        let prop =3D <T as DeviceImpl>::properties();
+> +        if prop.len() !=3D 0 {
+> +            bindings::device_class_set_props_n(dc, prop.as_ptr(), prop.l=
+en());
+> +        }
+>      }
+>  }
+>
+> @@ -134,7 +136,7 @@ macro_rules! define_property {
+>  macro_rules! declare_properties {
+>      ($ident:ident, $($prop:expr),*$(,)*) =3D> {
+>          pub static $ident: [$crate::bindings::Property; {
+> -            let mut len =3D 1;
+> +            let mut len =3D 0;
+>              $({
+>                  _ =3D stringify!($prop);
+>                  len +=3D 1;
+> @@ -142,7 +144,6 @@ macro_rules! declare_properties {
+>              len
+>          }] =3D [
+>              $($prop),*,
+> -            $crate::zeroable::Zeroable::ZERO,
+>          ];
+>      };
+>  }
+> --
+> 2.43.0
+>
+>
 
 
