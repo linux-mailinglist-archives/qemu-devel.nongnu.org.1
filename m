@@ -2,80 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BC9A9F36C1
-	for <lists+qemu-devel@lfdr.de>; Mon, 16 Dec 2024 17:57:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 193619F36EB
+	for <lists+qemu-devel@lfdr.de>; Mon, 16 Dec 2024 18:03:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tNEOu-0004J4-Pq; Mon, 16 Dec 2024 11:56:56 -0500
+	id 1tNESH-0005iL-HM; Mon, 16 Dec 2024 12:00:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tNEOn-0004Ij-D2
- for qemu-devel@nongnu.org; Mon, 16 Dec 2024 11:56:49 -0500
-Received: from mail-yw1-x1136.google.com ([2607:f8b0:4864:20::1136])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tNEOk-0005fM-GD
- for qemu-devel@nongnu.org; Mon, 16 Dec 2024 11:56:47 -0500
-Received: by mail-yw1-x1136.google.com with SMTP id
- 00721157ae682-6efea3c9e6eso30740297b3.0
- for <qemu-devel@nongnu.org>; Mon, 16 Dec 2024 08:56:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734368205; x=1734973005; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=2DkDZEwqGEHB6RYdbqnk6V6GpbtChe+u6hKVPLK8WjI=;
- b=WUfQt1XzcgPD/2k8vhtBGlamQRnEILR4qhYNRJsKp1VjuvAANJMDI9hDHDULs7BONF
- N25C+hxYqOh20FlLQx5NsLLU8Bg1wBAEYaTbb4XUJCKkPF6nUl1yJnIUjd6MhQL+du1N
- iJoab9hGm193zZ1nBFPLyvT3WUlojgzv3a3nUFC/ErxYYD6KaQ5BGeBq2ki+JS361ypo
- UauOW17zPXQ7GxnZv3ldljURL+MezkDWZcDScXoAOcXLobkG/KVhvvfNgKv6rf1kHS0L
- 2ZhYlguoCbK6Ux2ZEg6upWloaIl3Bz43NwA6hOILgn1HkGia3FDsRHzaz0sD81COjE0I
- AEpw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734368205; x=1734973005;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=2DkDZEwqGEHB6RYdbqnk6V6GpbtChe+u6hKVPLK8WjI=;
- b=GV3rOkVA8Joh5nJOxG0m/8HSqyEdvgfP8dc51RF6yLgakfU9pZBzff2xnmaR5BvniZ
- /Ht+DiMjc3CFalJFCeUwbMuMd4eU2LEh5xWB64k0nPcawUr/czBOSYPa0xibIUdz4j/U
- Zmdwb0Hh46eW0hJAiZWaJLoM47+/L9EmeDy3ooiMk3iKQBAOJI29qe6udZVrKgYFRolR
- wc8XNLOYKQn7p90HkNobjUXAhgR6sFFxdxG3l4WQ3g/4GXFnA3iWn2MVsh5KP5k3qBZI
- /PUSYCGeYOEe7jOe6VptoNcZhx4a/9XPZdNxyvq8rACZ1l/ERy4J0z8MFLLvCWa9tqhr
- x/4A==
-X-Gm-Message-State: AOJu0YzrxC3fu9DHgXV528pmTYRIOi5Ljt2xH7aMW99tw+FJpytjMUDp
- X7TD+eMGocENRtXVjz+BtSqNRM6N90AXKvREo8s8j9u/mUa6qafx1dfGGJSwzWdW9Tdhd6g+5E5
- e+MoUZq6pq6rxOfT/gKl3LkrcGtmIIYEEZOefaw==
-X-Gm-Gg: ASbGncvcTWu3sr+NvnlgsKqjfGQ3DIocPQ3gI/lScLf+CtyRKGNOHbHvv4Vgh5LMJrL
- HejpL2VJSDJJRbN15OM4r/9MklD9636X5Mq/bucU=
-X-Google-Smtp-Source: AGHT+IE/A9vIdG9fVbEYKyIBIdquDLITsj0jitt5CHNztNIfg2lHqv0IuS4Y4A9UfBTsZVbdiNMK1R3jIchR3+L3rzo=
-X-Received: by 2002:a05:690c:6a0e:b0:6e2:12e5:35a2 with SMTP id
- 00721157ae682-6f2bb2e857amr2852747b3.4.1734368205237; Mon, 16 Dec 2024
- 08:56:45 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <cohuck@redhat.com>) id 1tNESC-0005hO-Dr
+ for qemu-devel@nongnu.org; Mon, 16 Dec 2024 12:00:22 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <cohuck@redhat.com>) id 1tNES8-00068p-7W
+ for qemu-devel@nongnu.org; Mon, 16 Dec 2024 12:00:18 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1734368414;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=q1Ov2XF8Bfd0lpNvypBIiw/JaUwz0bdBJBIkRN/Bo30=;
+ b=NsoDki/kvORCQByPzPhnMtcGodXqcrFbOIXuRZVsMioaBwRzfdl6cP87/39UJ/K2IW/SI8
+ HAa9pDgEXybO5aA/CkhPnNwk27cIFKyU0+Bjc9We6RRFYyLpunOc3VX9kM7i2DahB+H7bM
+ seNY83t1mgGq5sN5hGKKvg8SFHVn8Bo=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-562-aL26ZOMIOXKwalJGZKkHpA-1; Mon,
+ 16 Dec 2024 11:58:53 -0500
+X-MC-Unique: aL26ZOMIOXKwalJGZKkHpA-1
+X-Mimecast-MFC-AGG-ID: aL26ZOMIOXKwalJGZKkHpA
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id A53311955EC7; Mon, 16 Dec 2024 16:58:45 +0000 (UTC)
+Received: from localhost (dhcp-192-244.str.redhat.com [10.33.192.244])
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id C6ADA1956056; Mon, 16 Dec 2024 16:58:43 +0000 (UTC)
+From: Cornelia Huck <cohuck@redhat.com>
+To: eric.auger@redhat.com, eric.auger.pro@gmail.com, qemu-devel@nongnu.org,
+ qemu-arm@nongnu.org, kvmarm@lists.linux.dev, peter.maydell@linaro.org,
+ richard.henderson@linaro.org, alex.bennee@linaro.org, maz@kernel.org,
+ oliver.upton@linux.dev, sebott@redhat.com,
+ shameerali.kolothum.thodi@huawei.com, armbru@redhat.com,
+ berrange@redhat.com, abologna@redhat.com, jdenemar@redhat.com
+Cc: shahuang@redhat.com, mark.rutland@arm.com, philmd@linaro.org,
+ pbonzini@redhat.com
+Subject: Re: [PATCH RFCv2 00/20] kvm/arm: Introduce a customizable aarch64
+ KVM host model
+In-Reply-To: <87wmfzbmut.fsf@redhat.com>
+Organization: "Red Hat GmbH, Sitz: Werner-von-Siemens-Ring 12, D-85630
+ Grasbrunn, Handelsregister: Amtsgericht =?utf-8?Q?M=C3=BCnchen=2C?= HRB
+ 153243,
+ =?utf-8?Q?Gesch=C3=A4ftsf=C3=BChrer=3A?= Ryan Barnhart, Charles Cachera,
+ Michael O'Neill, Amy Ross"
+References: <20241206112213.88394-1-cohuck@redhat.com>
+ <edc12140-6345-4868-938d-c80c4d2c2004@redhat.com>
+ <87wmfzbmut.fsf@redhat.com>
+User-Agent: Notmuch/0.38.3 (https://notmuchmail.org)
+Date: Mon, 16 Dec 2024 17:58:40 +0100
+Message-ID: <87ttb3bm4f.fsf@redhat.com>
 MIME-Version: 1.0
-References: <20241216161413.1644171-1-peterx@redhat.com>
- <20241216161413.1644171-2-peterx@redhat.com>
-In-Reply-To: <20241216161413.1644171-2-peterx@redhat.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 16 Dec 2024 16:56:33 +0000
-Message-ID: <CAFEAcA_u++fJudO1ca9q76NYWTg75PRGAEHBqDyjUDEnR5m8Cw@mail.gmail.com>
-Subject: Re: [PATCH 1/3] osdep: Add qemu_mkdir_with_parents()
-To: Peter Xu <peterx@redhat.com>
-Cc: qemu-devel@nongnu.org,
- =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- Michael Roth <michael.roth@amd.com>, Fabiano Rosas <farosas@suse.de>, 
- Konstantin Kostiuk <kkostiuk@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1136;
- envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x1136.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=cohuck@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -31
+X-Spam_score: -3.2
+X-Spam_bar: ---
+X-Spam_report: (-3.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-1.13,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,63 +95,116 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 16 Dec 2024 at 16:14, Peter Xu <peterx@redhat.com> wrote:
+On Mon, Dec 16 2024, Cornelia Huck <cohuck@redhat.com> wrote:
+
+> On Thu, Dec 12 2024, Eric Auger <eric.auger@redhat.com> wrote:
 >
-> QEMU uses g_mkdir_with_parents() a lot, especially in the case where the
-> failure case is ignored so an abort is expected when happened.
+>> Connie,
+>>
+>> On 12/6/24 12:21, Cornelia Huck wrote:
+>>> Whether it make sense to continue with the approach of tweaking values =
+in
+>>> the ID registers in general. If we want to be able to migrate between c=
+pus
+>>> that do not differ wildly, we'll encounter differences that cannot be
+>>> expressed via FEAT_xxx -- e.g. when comparing various AmpereAltra Max s=
+ystems,
+>>> they only differ in parts of CTR_EL0 -- which is not a feature register=
+, but
+>>> a writable register.
+>> In v1 most of the commenters said they would prefer to see FEAT props
+>> instead of IDREG field props. I think we shall try to go in this
+>> direction anyway. As you pointed out there will be some cases where FEAT
+>> won't be enough (CTR_EL0 is a good example). So I tend to think the end
+>> solution will be a mix of FEAT and ID reg field props.
 >
-> Provide a helper qemu_mkdir_with_parents() to do that, and use it in the
-> two cases in qga/.  To be used in more places later.
+> Some analysis of FEAT_xxx mappings:
+> https://lore.kernel.org/qemu-devel/87ikstn8sc.fsf@redhat.com/
 >
-> Signed-off-by: Peter Xu <peterx@redhat.com>
-> ---
->  include/qemu/osdep.h     | 7 +++++++
->  qga/commands-posix-ssh.c | 8 ++------
->  util/osdep.c             | 6 ++++++
->  3 files changed, 15 insertions(+), 6 deletions(-)
+> (actually, ~190 of FEAT_xxx map to a single value in a single register,
+> so mappings are easy other than the sheer amount of them)
 >
-> diff --git a/include/qemu/osdep.h b/include/qemu/osdep.h
-> index fdff07fd99..dc67fb2e5e 100644
-> --- a/include/qemu/osdep.h
-> +++ b/include/qemu/osdep.h
-> @@ -828,6 +828,13 @@ static inline int platform_does_not_support_system(const char *command)
->  }
->  #endif /* !HAVE_SYSTEM_FUNCTION */
+> We probably should simply not support FEAT_xxx that are solely defined
+> via dependencies.
 >
-> +/**
-> + * qemu_mkdir_with_parents:
-> + *
-> + * Create directories with parents.  Abort on failures.
-> + */
-> +void qemu_mkdir_with_parents(const char *dir, int mode);
+> Some more real-world examples from some cpu pairings I had looked at:
+> https://lore.kernel.org/qemu-devel/87ldx2krdp.fsf@redhat.com/
+> (but also see Peter's follow-up, the endianness field is actually
+> covered by a feature)
+>
+> The values-in-registers-not-covered-by-features we are currently aware
+> of are:
+> - number of breakpoints
+> - PARange values
+> - GIC
+> - some fields in CTR_EL0
+> (see also
+> https://lore.kernel.org/qemu-devel/4fb49b5b02bb417399ee871b2c85bb35@huawe=
+i.com/
+> for the latter two)
 
-Don't put new function prototypes into osdep.h, please.
-It is included by every single C file in the codebase.
-There is always somewhere better to put things.
+And the differences in GIC might be actually due to a GICv3 not being
+configured, together with running a recent kernel, which will zero the
+field. So we might actually already be able to handle it for most cases.
 
-QEMU shouldn't abort on things that are kind of expected
-OS errors like "couldn't create a directory", so I'm
-a bit dubious about this function.
+>
+> Also, MIDR/REVIDR handling.
+>
+> Given that we'll need a mix if we support FEAT_xxx, should we mandate
+> the FEAT_xxx syntax if there is a mapping and allow direct specification
+> of register fields only if there is none, or allow them as alternatives
+> (with proper priority handling, or alias handling?)
+>
+>>
+>> Personally I would smoothly migrate what we can from ID reg field props
+>> to FEAT props (maybe using prop aliases?), starting from the easiest 1-1
+>> mappings and then adressing the FEAT that are more complex but are
+>> explictly needed to enable the use cases we are interested in, at RedHat:
+>> migration within Ampere AltraMax family, migration within NVidia Grace
+>> family, migration within AmpereOne family and migration between Graviton=
+3/4.
+>
+> For these, we'll already need the mix (my examples above all came from
+> these use cases.)
+>
+> (Of course, the existing legacy props need to be expressed as well. I
+> guess they should map to registers directly.)
+>
+>>
+>> We have no info about other's use cases. If some of you want to see some
+>> other live migration combinations addressed, please raise your voice.
+>> Some CSPs may have their own LM solution/requirements but they don't use
+>> qemu. So I think we shall concentrate on those use cases.
+>>
+>> You did the exercise to identify most prevalent patterns for FEAT to
+>> IDREG fields mappings. I think we should now encode this conversion
+>> table for those which are needed in above use cases.
+>
+> I'd focus on the actually needed features first, as otherwise it's
+> really overwhelming.
+>
+>>
+>> From a named model point of view, since I do not see much traction
+>> upstream besides Red Hat use cases, targetting ARM spec revision
+>> baselines may be overkill. Personally I would try to focus on above
+>> models: AltraMax, AmpereOne, Grace, ... Or maybe the ARM cores they may
+>> be derived from. According to the discussion we had with Marc in [1] it
+>> seems it does not make sense to target migration between very
+>> heterogeneous machines and Dan said we would prefer to avoid adding
+>> plenty of feat add-ons to a named models. So I would rather be as close
+>> as possible to a specific family definition.=C2=A0 =C2=A0
+>
+> Using e.g. Neoverse-V2 as a base currently looks most attractive to
+> me -- going with Armv<x>.<y> would probably give a larger diff (although
+> the diff for Graviton3/4 is pretty large anyway.)
+>
+>>
+>> Thanks
+>>
+>> Eric
+>>
+>> [1]
+>> https://lore.kernel.org/all/c879fda9-db5a-4743-805d-03c0acba8060@redhat.=
+com/#r
 
-The two use cases in this commit seem to be test code,
-so asserting is reasonable. But a "for test code only"
-function should go in a header file that's only included
-by test cases and the comment should be clear about that,
-and it shouldn't have a function name that implies
-"this is the normal way any code in QEMU might want
-to create directories".
-
-For the qtest tests, I currently ignore Coverity
-reports in our test code unless it seems particularly
-worthwhile to fix them. This is especially true for
-complaints about unchecked return values and the like.
-
-Even in a test case it is still not great to call
-g_assert(), because this makes the test binary crash,
-rather than reporting an error. The surrounding TAP
-protocol parsing code then doesn't report the test
-failure the way you might like.
-
-thanks
--- PMM
 
