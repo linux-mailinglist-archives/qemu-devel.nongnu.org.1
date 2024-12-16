@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 880EA9F27A2
-	for <lists+qemu-devel@lfdr.de>; Mon, 16 Dec 2024 01:51:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 22BED9F27A1
+	for <lists+qemu-devel@lfdr.de>; Mon, 16 Dec 2024 01:51:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tMzJK-0001O0-Kh; Sun, 15 Dec 2024 19:50:10 -0500
+	id 1tMzJN-0001Ry-Ig; Sun, 15 Dec 2024 19:50:13 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jason.chien@sifive.com>)
- id 1tMzJG-0001KI-Fq
- for qemu-devel@nongnu.org; Sun, 15 Dec 2024 19:50:06 -0500
-Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
+ id 1tMzJJ-0001OX-LZ
+ for qemu-devel@nongnu.org; Sun, 15 Dec 2024 19:50:09 -0500
+Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <jason.chien@sifive.com>)
- id 1tMzJA-00075b-Ne
- for qemu-devel@nongnu.org; Sun, 15 Dec 2024 19:50:03 -0500
-Received: by mail-pf1-x42b.google.com with SMTP id
- d2e1a72fcca58-725ed193c9eso2789831b3a.1
- for <qemu-devel@nongnu.org>; Sun, 15 Dec 2024 16:49:59 -0800 (PST)
+ id 1tMzJG-00078g-6f
+ for qemu-devel@nongnu.org; Sun, 15 Dec 2024 19:50:09 -0500
+Received: by mail-pf1-x42f.google.com with SMTP id
+ d2e1a72fcca58-725ea1e19f0so2910193b3a.3
+ for <qemu-devel@nongnu.org>; Sun, 15 Dec 2024 16:50:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sifive.com; s=google; t=1734310198; x=1734914998; darn=nongnu.org;
+ d=sifive.com; s=google; t=1734310202; x=1734915002; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=/txMo+Nnraz9AAcWBO+Ht1SEClLczXwE0l/xGp309E0=;
- b=ZQ79rw5yMoXteReU93aya5jSGkqUHK8c1CM55eWycUxoGivb/ogC47OWoNXa57fSyW
- r340yCGHSX3g0vPhdtXNPsrpiuLtJTPEpY7ljMAL1w0ARycHzkMdR+uH4FHTiMeECE2C
- ckwOR5ZiPaD7CB4axXb6UAX4SuwfuEUT0jToKFFsqxkQMxEi4djVVkUpQQdru64LDJ11
- aRX6AiAE8bOFMvjLOvgHYpDyzUgt/vFpdMHhbzzGRYFSivJTlB7BtDwiLrhuJr9e67L0
- YumdacWErYtx3+UoGRdQBiQjrmxXuWGg/eYCz7RWisFfYpvWBtsHRog+n9loLv9P1Z8P
- jouw==
+ bh=0oPxPHNXebmd2yYjjqR5HgsogRG7IAY4swP2rcEypRg=;
+ b=Y7ZlbFodL/B/qZgoU4q8J7NLqnVW809NykVvkjF8zL6JuHQQgfOAZeyz6SQPs+Ggrn
+ gLhgOpub5AkwoY1XeFILSp15v8YS3kakXu5DdI79FPNTPoMVcTZSJBbgVaRDBMvZG/d4
+ en9WxvIq7cdafhNUTQRS49gLoeg7QN58nvnt/p+0s15a2SnciomInVFWOW+X1Z8czNCX
+ KGF/4Xi4imP6LSb2Hxw1VJfJZEDb5fvwWJfXiaLNQGEUClwBdxi+bZYvY3PHEiNwShX2
+ 4IXpJ/NhgPwlZdT1vzUUFaCFt4KDMBA68sv3rRxgOiuTkxlyYJTPKOrtY8nPsMNIJaRW
+ CztQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734310198; x=1734914998;
+ d=1e100.net; s=20230601; t=1734310202; x=1734915002;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=/txMo+Nnraz9AAcWBO+Ht1SEClLczXwE0l/xGp309E0=;
- b=TxYlVTsR4rJLMza8+sL75Uhz6mSJvviZmX2LbThnp8AvkM83uKXHsCxyqO+b3xNNDZ
- UXA0+7wpKzPszXANgmCzk7A/1w+5Q2WBcbyg6Qv/gDAlDAZdDld/Tey/heU7w/8v0Gxq
- dlt8/mWXuFO/RZwpJH4Ci/k8b8WNB2+pJYh7JDw1NrB0RGpw41gB11WSYaoYiFI1k1qt
- aZdVZKXA1Jk90zL5A7hGPr3EVExUiEdRphhiA/JEEvEzevNxz+60ITK2PVG3s14ex90v
- 0vj3xXI5TcZJSsiYNujvltPk2fCthaCagKhSpPW8PbfUxNfiyGSLLvk+KteGDxhZqp80
- BDJA==
-X-Gm-Message-State: AOJu0YyJITMtqfNDe+j8Ux1oh9Le6LqpKexKYz1BQ0BZ9YcHzJqxUWYl
- Ssr6bWJIPkdWLg9pznm5sZU8DdBBnHs15s7cy6NbfecMPwDu5WFKIdG0W933/NX+q2rfjfV2JEX
- vszcVSJUiHcB7I/okRPeZatmj/84L/wo8D9du/y0RgKwL6lBwSFO6n4/nWaKiEzmoJfnUrfcZS4
- XpyJbCj93/cRGMApd0A+jw9n574EhSQoTgMlyn6zqW1Q5Kmjs=
-X-Gm-Gg: ASbGncvCCa7ohwFFJQqxf1XikiTCJfRqzIZazj7uJKTd9+4D1hk8omlQ/R7+ssvvmJk
- PMay7uwihuSMxj0CDqwokor8uVSP/HPhbiG7uby9te2asyK4kBeSuukfihoAAiRrDOfqNRBU2vS
- u5Q1BqOX25SwMSM4zAzRngWuTHKOXnnL4I2azUIgZ4buh4nt1EJNggLGBu58i0vRHkyXSqMg3I3
- pO0d+3Q8kyqGBchOQ11Zt/+Yj1ISiVrDwloWJq6qkDroVLR47f23BEV/EEoyvaGhHmdlgBA54G9
- AmwH7rNA
-X-Google-Smtp-Source: AGHT+IG7C/z9lqXQKhZELwgwHH6ev+PqxHmUpUtpuDtnyBnjuDPC1LlZ9b9OL21KR951RrunYjL69Q==
-X-Received: by 2002:a05:6a20:9f05:b0:1e0:cf9a:87b1 with SMTP id
- adf61e73a8af0-1e1dfbfbcbemr15265933637.6.1734310197718; 
- Sun, 15 Dec 2024 16:49:57 -0800 (PST)
+ bh=0oPxPHNXebmd2yYjjqR5HgsogRG7IAY4swP2rcEypRg=;
+ b=Ml50Xz2btgpigEUwzUgrc4oK1lYLGrs30n/9ipommaWfDRu2hy2GtORhI1/4McpJIx
+ 8jgN8o5Kp4JSJMefdWgUwhrQLxBJwjBK+RsKMWeMXiHdZ6+FdbtcIJR9wOIZi7QtJvQR
+ s79ZMhJ556jd7QLkdaJBCK8NK1YHRGtUK9UuC+G7KHb+SbbURiQLAOgyCqYy21WuJ6IB
+ JsL9GcL28+Aux41maAmnAF1X/5ojvwMUb9Vnd1pWc/71/lwc1FqY39lodFWPIdciirno
+ TGQL2EwBdEPrnHbeQx1FlLYSBzJg/HjAmbCUrQiyFMBDJWNm/c1RNvfTMJcqnyC6X112
+ 6lOg==
+X-Gm-Message-State: AOJu0Ywxjbw44GWUgcH7UniaSphi2pjTJmy9Z8pQjih6iwaChr0BAr1/
+ +RgsfWCOT1Yxqwb3QkJIC4QOuWZxVJJ3UaeesKETndbqEOtLhVWZhVmo1WymLhigtrohLZSzeX9
+ BAlXhW0iKC8d0za/j/iqzFugP6EmXPmXbcZsfWNBUzQ99OP8MSf+3T1aQr9CSr4W32EOz+FIEUv
+ c4Xm9sFwx27TUcjwh02tsjtbkHeK/u0T+iaoViYV86WBvYJV8=
+X-Gm-Gg: ASbGncuTuaBgf1bpPjvQnvNzsYppJ6OcXV6emNfg3xFrZZ7G7tiyih4+6lmquBwPWcr
+ opUjd2HVfgWunwm8PHSCeJAIgqH9FilNJd6JTE4VEuReeQAEU0Z9MVgQZktDimvivdL+YxkJHzJ
+ C6l+2cZrjlToyFLoAABpwK1bq7Z9cN/5rH1GU1+PE3pMm1vQNucGdU6+s9xmIZuGrrZnaqzDsTS
+ FLCUy9FouxJ1Oe6aGvow7BcazU3N38fh5sFzHChFUwDSbNn8SNnxmmQ6Sw7pIAL3x5HjPkWYqlc
+ s0hLd52M
+X-Google-Smtp-Source: AGHT+IF8RC/+GZEDclJJCvf6VzrlYKa6blK5F29amI6V6WQnB5TzMJSe5092EESxCt6acxqa4ez+BQ==
+X-Received: by 2002:a05:6a21:47c1:b0:1e1:e2d8:fd3a with SMTP id
+ adf61e73a8af0-1e1e2d8fd4cmr13975584637.35.1734310201680; 
+ Sun, 15 Dec 2024 16:50:01 -0800 (PST)
 Received: from hsinchu16.internal.sifive.com ([210.176.154.34])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-801d5addbf9sm3059586a12.47.2024.12.15.16.49.55
+ 41be03b00d2f7-801d5addbf9sm3059586a12.47.2024.12.15.16.49.59
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 15 Dec 2024 16:49:57 -0800 (PST)
+ Sun, 15 Dec 2024 16:50:01 -0800 (PST)
 From: Jason Chien <jason.chien@sifive.com>
 To: qemu-devel@nongnu.org,
 	qemu-riscv@nongnu.org
@@ -77,17 +77,16 @@ Cc: Peter Maydell <peter.maydell@linaro.org>,
  Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
  qemu-arm@nongnu.org (open list:MCIMX7D SABRE / i...),
  Jason Chien <jason.chien@sifive.com>
-Subject: [RFC PATCH 4/6] hw/riscv/riscv-iommu: Allow PCI hosts with iommu_ops
- registered connecting to the IOMMU
-Date: Mon, 16 Dec 2024 08:48:55 +0800
-Message-ID: <20241216004857.9367-5-jason.chien@sifive.com>
+Subject: [RFC PATCH 5/6] hw/riscv/riscv-iommu: Acquire device IDs dynamically
+Date: Mon, 16 Dec 2024 08:48:56 +0800
+Message-ID: <20241216004857.9367-6-jason.chien@sifive.com>
 X-Mailer: git-send-email 2.43.2
 In-Reply-To: <20241216004857.9367-1-jason.chien@sifive.com>
 References: <20241216004857.9367-1-jason.chien@sifive.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42b;
- envelope-from=jason.chien@sifive.com; helo=mail-pf1-x42b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
+ envelope-from=jason.chien@sifive.com; helo=mail-pf1-x42f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -110,33 +109,80 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-pci_setup_iommu_downstream_mem() is called to set the downstream memory
-region of the PCIe devices.
+When all memory transactions from a PCIe host write to the same IOMMU
+memory region, we need to distinguish the source device dynamically.
 
 Signed-off-by: Jason Chien <jason.chien@sifive.com>
 ---
- hw/riscv/riscv-iommu.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ hw/riscv/riscv-iommu.c | 17 +++++++++++++----
+ 1 file changed, 13 insertions(+), 4 deletions(-)
 
 diff --git a/hw/riscv/riscv-iommu.c b/hw/riscv/riscv-iommu.c
-index e9a0775d6e..f5d53a36b2 100644
+index f5d53a36b2..e4b7008306 100644
 --- a/hw/riscv/riscv-iommu.c
 +++ b/hw/riscv/riscv-iommu.c
-@@ -2436,6 +2436,14 @@ void riscv_iommu_pci_setup_iommu(RISCVIOMMUState *iommu, PCIBus *bus,
-         QLIST_INSERT_AFTER(last, iommu, iommus);
-     } else if (!bus->iommu_ops && !bus->iommu_opaque) {
+@@ -48,6 +48,7 @@ struct RISCVIOMMUSpace {
+     RISCVIOMMUState *iommu;     /* Managing IOMMU device state */
+     uint32_t devid;             /* Requester identifier, AKA device_id */
+     bool notifier;              /* IOMMU unmap notifier enabled */
++    bool dynamic_devid;         /* Acquiring device_id dynamically */
+     QLIST_ENTRY(RISCVIOMMUSpace) list;
+ };
+ 
+@@ -1184,7 +1185,8 @@ static void riscv_iommu_ctx_put(RISCVIOMMUState *s, void *ref)
+ }
+ 
+ /* Find or allocate address space for a given device */
+-static AddressSpace *riscv_iommu_space(RISCVIOMMUState *s, uint32_t devid)
++static AddressSpace *riscv_iommu_space(RISCVIOMMUState *s, uint32_t devid,
++                                       bool dynamic)
+ {
+     RISCVIOMMUSpace *as;
+ 
+@@ -1203,6 +1205,7 @@ static AddressSpace *riscv_iommu_space(RISCVIOMMUState *s, uint32_t devid)
+ 
+         as->iommu = s;
+         as->devid = devid;
++        as->dynamic_devid = dynamic;
+ 
+         snprintf(name, sizeof(name), "riscv-iommu-%04x:%02x.%d-iova",
+             PCI_BUS_NUM(as->devid), PCI_SLOT(as->devid), PCI_FUNC(as->devid));
+@@ -2415,7 +2418,8 @@ static AddressSpace *riscv_iommu_find_as(PCIBus *bus, void *opaque, int devfn)
+ 
+     /* Find first matching IOMMU */
+     while (s != NULL && as == NULL) {
+-        as = riscv_iommu_space(s, PCI_BUILD_BDF(pci_bus_num(bus), devfn));
++        as = riscv_iommu_space(s, PCI_BUILD_BDF(pci_bus_num(bus), devfn),
++                               false);
+         s = s->iommus.le_next;
+     }
+ 
+@@ -2438,11 +2442,10 @@ void riscv_iommu_pci_setup_iommu(RISCVIOMMUState *iommu, PCIBus *bus,
          pci_setup_iommu(bus, &riscv_iommu_ops, iommu);
-+    } else if (bus->iommu_ops && bus->iommu_ops->set_memory_region) {
-+        /*
-+         * TODO:
-+         * All memory transactions of this bus will be directed to this AS.
-+         * We need to distinguish the source device dynamically.
-+         */
-+        AddressSpace *as = riscv_iommu_space(iommu, 0);
-+        pci_setup_iommu_downstream_mem(bus, as->root);
+     } else if (bus->iommu_ops && bus->iommu_ops->set_memory_region) {
+         /*
+-         * TODO:
+          * All memory transactions of this bus will be directed to this AS.
+          * We need to distinguish the source device dynamically.
+          */
+-        AddressSpace *as = riscv_iommu_space(iommu, 0);
++        AddressSpace *as = riscv_iommu_space(iommu, 0, true);
+         pci_setup_iommu_downstream_mem(bus, as->root);
      } else {
          error_setg(errp, "can't register secondary IOMMU for PCI bus #%d",
-             pci_bus_num(bus));
+@@ -2453,6 +2456,12 @@ void riscv_iommu_pci_setup_iommu(RISCVIOMMUState *iommu, PCIBus *bus,
+ static int riscv_iommu_memory_region_index(IOMMUMemoryRegion *iommu_mr,
+     MemTxAttrs attrs)
+ {
++    RISCVIOMMUSpace *as = container_of(iommu_mr, RISCVIOMMUSpace, iova_mr);
++
++    if (as->dynamic_devid) {
++        as->devid = attrs.requester_id;
++    }
++
+     return attrs.unspecified ? RISCV_IOMMU_NOPROCID : (int)attrs.pid;
+ }
+ 
 -- 
 2.43.2
 
