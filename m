@@ -2,170 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABF7F9F33EA
-	for <lists+qemu-devel@lfdr.de>; Mon, 16 Dec 2024 16:01:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B19E39F33FD
+	for <lists+qemu-devel@lfdr.de>; Mon, 16 Dec 2024 16:07:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tNCaE-0004gC-Tw; Mon, 16 Dec 2024 10:00:30 -0500
+	id 1tNCfW-0006pS-Nh; Mon, 16 Dec 2024 10:05:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <avihaih@nvidia.com>)
- id 1tNCZz-0004eR-GS
- for qemu-devel@nongnu.org; Mon, 16 Dec 2024 10:00:21 -0500
-Received: from mail-dm6nam12on20628.outbound.protection.outlook.com
- ([2a01:111:f403:2417::628]
- helo=NAM12-DM6-obe.outbound.protection.outlook.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <avihaih@nvidia.com>)
- id 1tNCZu-0005dp-By
- for qemu-devel@nongnu.org; Mon, 16 Dec 2024 10:00:14 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ji6Sc94I51wWpRPowDOWgUTq468Hs8e00aGOrQ/D6n7NKBKBatZMfcxGa6wvweilFwxOygupCxGdbuEzcpmH+foOG/il0WQ3f12yZPLozFgWVLccpsaeDu+GsdqibtdWrKkSX84PMjCOSY/+iUUEnDej8c0d1KL7YUeCTYRhyEav6Pc8O6Pye1Ztl6zdZ9gqDEa4bH228qswGLn0YO3O4nj1sTwhZe2JRklDDnBZJjPFcE/2fIm8Inm+/t8KBOyp+MTnnSWHS1ebGPILuQidUH34W58gG6Lip9JQOd1Q2fDNAtt18Xq4wW31dpsWU2PZpB6BTIVz5bYMGnGCI1CEBw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=XdqSdIxO2gzMLp6bbFS2aXmTrYkmo4vl/44DsRz5j0A=;
- b=rQl6rfmCkVdPaK2T0PqABVtCFFm9fBOnj1uu8uc7RnV3zeW9fSzwZ8rWykHMJm+r747HLAh8Gq7ry2GaOJwjS0mK6Hb6iIGUgZ0vjYNef7Ob8OutMpg0R2s8BNa5dwjXU6e50WRdr86HCkK5d08q/QwT2OIb4+YUmlQqSMlo5sPn4VQ81WHQfHwQeranjl/Y03aRM+5viAdYl8C1KUCBnlh650ua+3I3ejzrxrZs7U/RZBdmzDSCCp2K+xGHj9P72839OrweK27ck4dYpSlUDRCyhh/B7H2Tf7YeY6kWRN+nIixX4fXCGgnqEPcuWWXtT47MZ6dM8zDi3panBpewTg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=XdqSdIxO2gzMLp6bbFS2aXmTrYkmo4vl/44DsRz5j0A=;
- b=btgSES9Z5EI3AS1i1tR6/IgelQcM/mDwbdMe0D9p27g5aHbgwMRpURiYlQQUMxorbAsNMzEnU+XmScA2NBztaYu/zHnjHNcNir8v+PDOoSBYOvDw2Lh4tuIlB00oUR5RMQeHTO2DXWTAnGcL9eSGJFly4MQ7FVYtmrsmRdodXZoEvViFtHTBGVCuo3FcMaGct3iIklhmkyk6LdR/toE5gak4UewuuqiknH6nXrj9Odj/zoKZB8sA7/Mux/cBnazfgib+ItgSOG9WdeBuuj5Es+yv6IDeXr+kLbpmhPETGUgnIJgSLVwc+KQWb1NpsWFLdWKIIcJ4sTH+p9k+koiQfQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from DM6PR12MB5549.namprd12.prod.outlook.com (2603:10b6:5:209::13)
- by DM4PR12MB5937.namprd12.prod.outlook.com (2603:10b6:8:68::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8251.22; Mon, 16 Dec
- 2024 15:00:03 +0000
-Received: from DM6PR12MB5549.namprd12.prod.outlook.com
- ([fe80::e2a0:b00b:806b:dc91]) by DM6PR12MB5549.namprd12.prod.outlook.com
- ([fe80::e2a0:b00b:806b:dc91%6]) with mapi id 15.20.8251.015; Mon, 16 Dec 2024
- 15:00:03 +0000
-Message-ID: <8ce838de-e14a-4432-8d14-6b0fcff4e071@nvidia.com>
-Date: Mon, 16 Dec 2024 16:59:59 +0200
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tNCfU-0006pE-57
+ for qemu-devel@nongnu.org; Mon, 16 Dec 2024 10:05:56 -0500
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tNCfR-0006qK-4Q
+ for qemu-devel@nongnu.org; Mon, 16 Dec 2024 10:05:55 -0500
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-4361c705434so30237295e9.3
+ for <qemu-devel@nongnu.org>; Mon, 16 Dec 2024 07:05:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1734361550; x=1734966350; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=7r4iinr4YP0OtNo/6/weqqG2igi7FvWL2mFvwPSm87Q=;
+ b=ZHM1Nz2eR9T5fVp0w18Pm0m1QrA/HrJ6T3HCEycjUOhLS17/FRD7Zd/+/GVuDH4SXV
+ /2JV+JVair1MVvahAixkFdKkB4uNF6ce8Qjd8Yq3DV8GwzJOWJmFnlQJMVSwkG+49amZ
+ /FZ2PMqzSOHUkcsFrcj3qZW013NQn9dL8IEqTegwVl1w3Ng3YA++GSgt/VcXhXWCye25
+ cCtMD2qaQoNjYNVubQo36kknaZ72ZTmTnfPp8r0R3fGP5SIKY1QBzUV+FYOvdDLadDb+
+ 6kIIVGKFZ0IO4+l9SoR9hP1XN6thU//FH95zEq0gF5AB+PSMpzGYNWkBhu/8t0EF3aEI
+ fskg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1734361550; x=1734966350;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=7r4iinr4YP0OtNo/6/weqqG2igi7FvWL2mFvwPSm87Q=;
+ b=mJZCJVEqvkMd5rIxIQgY3fFFAnzTw/QaR1eOCv30pMizDedJ02k7dBqUzEMawS05n5
+ AR9ELyOgDXbdUO4Pbi8DV569LvUPXFsyiZoAsIsz0jqsAhEbzqzs+AVJwA3MjDOr9pdM
+ 2iOV6OJt26dI6XHasXXBvz/I9a61qCLKYUSTTecOfhFnoOP45JBi4R7ZPMMyyprukRxO
+ cACRjF0uGxxgCbEf2336wFBsdtH0a62QYVGjAINC4WjBVMpFiRTckzMKn8sjlCqZzKNo
+ oyEoj5xPJuMw86HECarUS75tZVLfmeaBdrc0fo6LX+MCPRQk5a6JBTmcTSnWSV+Mzqum
+ XhxA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUNSN28Vc/YPxsJM1Pd4ZxoE29UlbIO0T+rMhdjze052njgKDgaLmPEQONMtGj6/9eCnqa1O5IyJAHh@nongnu.org
+X-Gm-Message-State: AOJu0YyTdPH1VBJhm4ssOc9Jsxgf1xUszmqgc6httT3KOA+ovnP89U1r
+ +1gNVEHShJyRavcHGJow+6QtuQ+6JQCjy6hKmHveU+OekLgEOo8pHdDbSluLSgrgOyUNSnaI64o
+ 4
+X-Gm-Gg: ASbGnctjHCXa8vvs24mRVO/X47O2MBzzhriUVAIPFEaUMMuTeLmXjXxwfLZ3U7GNmqp
+ z1ov7It9tBA8YM7Ei4r5+4zkQGaQQfQ7xPsCZyJxNEPlTNqOoi4Y018t5Xd+xo6i/WpXsh7wSxs
+ IsN3PMKwyXtO4p9uTmtZtdWlgzAfnSzYsMo/qcayc7d8V/01Ps94Mh+AG9PPPJFOJnyN/yNRCS9
+ n+I9im79BsyYf/WX0/OrvbA93DFR3e4JVjkeCZOqaMBGhf52ys06whHarfS+sI8w/FTT2dP
+X-Google-Smtp-Source: AGHT+IG68WGFxNS96b0ozgHnekJXBBFxAU/TuhIWxCSXdMTaTtaN7VvFVRO1WyFG6zvhy7vLLFZFdw==
+X-Received: by 2002:a05:6000:1562:b0:385:edd1:2245 with SMTP id
+ ffacd0b85a97d-38880ae114dmr10041756f8f.30.1734361549640; 
+ Mon, 16 Dec 2024 07:05:49 -0800 (PST)
+Received: from [192.168.1.117] ([78.196.4.158])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-4362555053esm143270065e9.1.2024.12.16.07.05.48
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 16 Dec 2024 07:05:48 -0800 (PST)
+Message-ID: <26c97140-6ec5-49f5-b0d4-d4f7f82a12f0@linaro.org>
+Date: Mon, 16 Dec 2024 16:05:47 +0100
+MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5/9] vfio/migration: Drop
- vfio_dma_unmap_dirty_sync_needed()
-To: Joao Martins <joao.m.martins@oracle.com>
-Cc: Alex Williamson <alex.williamson@redhat.com>,
- =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>,
- Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
- Hyman Huang <yong.huang@smartx.com>, Maor Gottlieb <maorg@nvidia.com>,
- qemu-devel@nongnu.org
-References: <20241216094638.26406-1-avihaih@nvidia.com>
- <20241216094638.26406-6-avihaih@nvidia.com>
- <34bd8988-b9be-48fd-82bc-fab465f67f79@oracle.com>
+Subject: Re: [PATCH v2] hw/misc/vmfwupdate: Introduce hypervisor fw-cfg
+ interface support
+To: Ani Sinha <anisinha@redhat.com>, Alex Graf <graf@amazon.com>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Cc: Gerd Hoffman <kraxel@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ Vitaly Kuznetsov <vkuznets@redhat.com>, qemu-devel@nongnu.org
+References: <20241216114841.1025070-1-anisinha@redhat.com>
 Content-Language: en-US
-From: Avihai Horon <avihaih@nvidia.com>
-In-Reply-To: <34bd8988-b9be-48fd-82bc-fab465f67f79@oracle.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20241216114841.1025070-1-anisinha@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: FR2P281CA0054.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:93::8) To DM6PR12MB5549.namprd12.prod.outlook.com
- (2603:10b6:5:209::13)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM6PR12MB5549:EE_|DM4PR12MB5937:EE_
-X-MS-Office365-Filtering-Correlation-Id: a4af0a4c-9b0d-4572-dbca-08dd1de25238
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?YXR6b1FCRDhRblV0eXdMSlBpMFhwZEZueWNFdVVKeXFXRGs3dGE0VUIvdFBF?=
- =?utf-8?B?NlpKN29lVTJaQlgwUm5iNk5JOXcrNldlRm9qRjEybkM1RjVKMFBLOWZYQ05E?=
- =?utf-8?B?NHRvbHlrdXkyVGQxMTNXUmExVHpya29HTlJPUlczOEpLR0JLTDQzVmJSNUhm?=
- =?utf-8?B?ZE5aRVVXT0M4WTZ1ZWF0NmdSbnN4TzdsL1hKa1JkQmpkek85ZGNod3RNT0JC?=
- =?utf-8?B?YUNxWWJnNWphOEdINDRmSTJtdkg5dHFjeHV6SjNreE96RVU2N0tKNmtvUksw?=
- =?utf-8?B?dnBLTUFMS2YwRXRYbis5dyt4NUZYNFp0OUxrK3h6WGU1c05UMkFLVnhHL3BP?=
- =?utf-8?B?NmVjTzdQVEpweUR0ZWdvT244dVgybnVqaElKa3dXQS9HRWl5ME41bVBPWUp2?=
- =?utf-8?B?YzJJNE05WnpObTd2ekRTNVhQM2tuN3B1T3poeXJjb1VHd2xkbmlLTm5mM25O?=
- =?utf-8?B?WUJRL0cxRTBJakNheXpaQzJBUngvSmFTTVZjUHlxUTVMQU9GcTJqdklsZU1D?=
- =?utf-8?B?OThQUDEyTHZDQitVeC9FekcrR0w0SEQzV0xpS1ZHU2ZmaEpIaFVxUnlhTVJJ?=
- =?utf-8?B?ZzZJVXFkVDBKeStOS01uK3B2T3pGdlN0WnlveFVSdkZxTHg3MjZSZENIeVFO?=
- =?utf-8?B?M3RwMk4xNmZPWGl1SHNHRTUrYnV6dC9xS0FaMll2OEMyVVBabE9zU0s2akxv?=
- =?utf-8?B?U2g3aDBEUFNxOGxBeHJtNFVHQzRyNSs3ZWFmKzZUYktEOUpuMVp2cGlSdS9X?=
- =?utf-8?B?OXh5N2R6eTdSRWlTSkhrRDVXeDRoMVZscGdCWDVUUDBsb3VjNXc0a1g3SjJq?=
- =?utf-8?B?bVEyOWRUM1VEVTFvS0I3R3RaU2RLTUZpbmQ4Tk9jaXpQc1E4Q3hLUFA5aVl0?=
- =?utf-8?B?bmtuL2pobmN4V1VJZnFvVExyZVN6UGJmQUgvSlFBOUEwRENJZlgyOFBORUlC?=
- =?utf-8?B?QVZZZHJyekpUdFRub2NTY29JTW0zczN2TFRXbU9Rdkk3Qmd5Z28vcklEN1dz?=
- =?utf-8?B?cFN0YjZpQy9ZMHN6V25sZGxSZWxwQU5vSG0vYVE3SEEvWGloQzlzQkFjTlQ0?=
- =?utf-8?B?UUZ1eC9zVmx5LzNXQkgvWFE4dkpCRjkwdWc2YXZKNGtEVUI2Y29DV2s1ck9E?=
- =?utf-8?B?ZU9TT3BFUGJBOHMxaVlxVTdtWGhnUTBmUkcvdzIwL2lsOUN5K1FYeHB6SmRP?=
- =?utf-8?B?cUtBdFZzdkEvQnZucllpeXlLb1dKejNBY3NDOGVMSEoxS0d5VVVtdmJac29Y?=
- =?utf-8?B?K0Z6anlqa28vY3EzUTZFVThmRnVJR0JxNVV1eWxEVVlNOEZyUGNObmpKa1ZM?=
- =?utf-8?B?WmozQ2RZYkt0ZXEvVmE5ZVMxcXNsTDIrc3dKRDJWSGV5Q3lWclpGYnY1dnUz?=
- =?utf-8?B?Tzlpb3FJV0MyNDVsaXQxRENXSDR0NEtIbURFZzBHaEE0ZDZYTFJkZVYzdVhE?=
- =?utf-8?B?d3NrdS9tNzVzVTl5MWhNU2RrMjJ3OG5zYkRIYWt1OEI1Y1FqTTNZcVZqT2VV?=
- =?utf-8?B?ZVlCdU5BclJnOU1JMjkzRnpYb2dwUGQ2bTR4aWdPL1k4cXEzZDc2c2R3MVg4?=
- =?utf-8?B?ajBJRGMxWXk1OW5XalIyMU1pNW1UaGxMM3ZuZGNuZHpZT0ZVQ3kxbGhGSWJu?=
- =?utf-8?B?THlzb2h5U20wL2p6RjJYbkF3NTJ5VGgydHY4MVc2bkN1TjV0Y0FiMmcwOUs1?=
- =?utf-8?B?SDNHUDJRQ3RmZWZSZ0RTVWFOeENFNXpzNzBWOEhWaXhjUzl6NUE0SWsxeDZ4?=
- =?utf-8?B?ajhPRDBmYjZBK1IyaHVVMTJrekVOWlBKck9wdWM3RWhDS3hYZGd4ejBUL1hP?=
- =?utf-8?B?S2xpbmV2ZXZyWlp4Q1ptQXppeXplaFVMSzdzZjB3MGk3dm0wR1lRQk9YbVRC?=
- =?utf-8?Q?k8mVd480rbGLp?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:DM6PR12MB5549.namprd12.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(376014)(1800799024)(366016); DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?V0ZLMzZvMmFwNXF2Mk1uU01tWTlCUnFkRVlKOUw3VEFVQ0JCWk9GNVJMMWVL?=
- =?utf-8?B?bUlYK0xNUUdPQVZhUEsyMWpieXkwSFhXOFBXSWdHTlJqVTMvKzBvbEZuZ2xK?=
- =?utf-8?B?ZTM0bXJsQlJ2MHN5UlRXOGtOYzEvb1Q3TlI5NklJUzE0UEd2UktTd09DNnF1?=
- =?utf-8?B?NnFYZWxWeFp4Vm9LSy82Tk12eTBsTUhrMk9hakc5cW1iZ2Nza2VEUm9ndzc2?=
- =?utf-8?B?SWFHQWVueFE2S3ErTXByK0JVTEJySWxyRG9jcjhxdzc5WVJtNkxSbGFoNWxJ?=
- =?utf-8?B?cEk1UTRDeXdwdVdUS1RERDVsWTkvdUtKaDd6R3Rac1JKZTZ3SXdKNHRMYU5C?=
- =?utf-8?B?dno5TWZKaERucG56bXd4OHUrbnFKekFBNm9UOU1ZaEQ1N3ZGNnRodlJXRS9P?=
- =?utf-8?B?UUhKZHdlOThTS2xMbTNpM2IvaCtJRzFXd2NRL1U1aFE5c1NIdlloK2VCQzNP?=
- =?utf-8?B?U2ZaUHhQOHU2a2lHWXZIcWFYeDdoYlJOTS9jdzQ1T0pmcURickF3M2REUmpK?=
- =?utf-8?B?QjBMV1B4MzBwUytscWZkT0t5Qm91U0xEUFhCUktid1lHUGtOTE1ub2VFRzlh?=
- =?utf-8?B?ODZyTHdtQmdjZDBONEYrOUhxSWt3bFRhbjZxcnZqU2FnTElqZk1ENkM0Zjg1?=
- =?utf-8?B?OXVaYzE1THlyUzNMNkJubjNrMy9BRGxMU2xjTjFuNEhpWnFNdUlEWnQ0WDdZ?=
- =?utf-8?B?RXdKaUJTdmVMamN3ZDcwNGRDSGxOTm5CeHRqdjF2dkZDdHNSVXZUcWNPc2tY?=
- =?utf-8?B?dkFvOGZMalhTbGdoLzJ4UG5xcFlHSEdUMkxEeHp3SkNRQTQ4alFpZXBOemgz?=
- =?utf-8?B?QURDM0JnUUlaMzBza09BTDliYW9Db1pMUVd3ODZBakJ5WWVkSzBJM3dERlhZ?=
- =?utf-8?B?Qml3aWxSRElSZkR3dE10WEFQR1Q4V29LSVdqQ2hrQVRxUmluV1RvWnd5ZHZ4?=
- =?utf-8?B?bEYwMEIxVC93bFhqUnZJNXBCc1d6SzV5OXFFVkkyTnVZVExFd2JiaktRKzRt?=
- =?utf-8?B?N3kxYjdBdmJrVVV4eDhXSkh3ZWdsWDYrVDkzN2cxTzdnbkcwMGpSSHdYZVMx?=
- =?utf-8?B?V0I4NFpkVDI2aHNOSU0vREhRMHFHMGMxWWxpU2JkeHN0V3hCL3N0Zmx6M1V2?=
- =?utf-8?B?UjEwUGUzckVBR05vbW5hWjZqTWhjRzBpSFZTaGd0cVpYeTlnLzhpZzhTblFF?=
- =?utf-8?B?WHRTK3VBRXlaMWhuVFhZZ0cyUzZINDN6a3MvbW91bWhDeW5Ba203akRJdGd5?=
- =?utf-8?B?R3E3Q2hzNkZSN0tZb2tsMk9vdlhPQmpZOXVEeXgrQWhSV0pnMUhmb0lQMXpw?=
- =?utf-8?B?MjZBMEQ3dXQxYTFpRFJveHQvb2EwbDFuS05IOWV6em0wMFdOM1VNbjFRUDJo?=
- =?utf-8?B?WTFuNXpYMURrY3VIWTNVWmZjNG9NL2dZcEpwOEg5SVNEbzNlN1dzWDdIK1Zp?=
- =?utf-8?B?VGg4eU5jSXp3cUtjRlRaWkg4V2gxVVl2N0docksrRVQ4OEE1SUsxTDBoaGFD?=
- =?utf-8?B?UU5RNS9PbmppR2pPZ2IvaS9uYmd1S2Y0aEJVbURZOThUa0dZeWRHTWQyUkhU?=
- =?utf-8?B?cnN0UENpSng5ZGhXcTdJK1hGM3lwbHZjemlscHltYk9JaDVNdnBZcFIyWVZI?=
- =?utf-8?B?bjBxYnBESHUvd0d0OFpHaE9aS3BTZ3pibUNYVFhBSFhpOGRnYUFDVUo0RGNh?=
- =?utf-8?B?MGxiZDhYeVFicVZxdGNCT0dhckxvek5qT0hmRmxmTEVBUHNDNzAyaUwxTmdn?=
- =?utf-8?B?RW9Xb1didFVoaUxuOHhGT2lsY3dSQXJKc3BBWU9DemJMaXJ5SFlaZlk0S2Ns?=
- =?utf-8?B?Z1dnR0FsSFJsbHErdWNKUXlXSjFmWTgvR1ZXb1duVTZkKzFWYTFNcjZGdnJF?=
- =?utf-8?B?UUJwOXQ1VTFkT215TXhqR3BMMWt5YXpWRFJUZ3BzWjFOdnVaeXp2ZnBxTWY2?=
- =?utf-8?B?VEpRdFV1ZXhuMHFQTTdIdHQwTlZLZjgyTDgzc0FLTjI4eUVwTDE0NzJZcjZn?=
- =?utf-8?B?Q0RteXQ4dlVZY3dEcWdEbXF1NzJGNUxMNnlzQkxlajZ6dFFIQVhEN1VWQ2hL?=
- =?utf-8?B?VkRDM3Iwc2NyZXNNYm8xbGJLMnM0ZDZ5cDB1Yy91bTY3TjNSTjFwRmhrSzdj?=
- =?utf-8?Q?HuVNt+sUFcK46uVyW4BRiHzgY?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a4af0a4c-9b0d-4572-dbca-08dd1de25238
-X-MS-Exchange-CrossTenant-AuthSource: DM6PR12MB5549.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Dec 2024 15:00:03.8204 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: /o31gT0A5dqrmdef7OgyTwkHTU1Z5iVYVSlfw1ZCgXERpjYsDa887ckWsGgSBMyLQTU3aLxs0CZfQEhKj04MnA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB5937
-Received-SPF: softfail client-ip=2a01:111:f403:2417::628;
- envelope-from=avihaih@nvidia.com;
- helo=NAM12-DM6-obe.outbound.protection.outlook.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -181,92 +101,345 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Hi Ani,
 
-On 16/12/2024 14:57, Joao Martins wrote:
-> External email: Use caution opening links or attachments
->
->
-> On 16/12/2024 09:46, Avihai Horon wrote:
->> There is no need for vfio_dma_unmap_dirty_sync_needed(), as it simply
->> calls vfio_devices_all_dirty_tracking_started().
->>
->> Drop vfio_dma_unmap_dirty_sync_needed(), export
->> vfio_devices_all_dirty_tracking_started() and use it instead.
->>
->> Signed-off-by: Avihai Horon <avihaih@nvidia.com>
->> ---
->>   include/hw/vfio/vfio-common.h | 3 ++-
->>   hw/vfio/common.c              | 9 ++-------
->>   hw/vfio/container.c           | 2 +-
->>   3 files changed, 5 insertions(+), 9 deletions(-)
->>
->> diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
->> index c23ca34871..c5aa606890 100644
->> --- a/include/hw/vfio/vfio-common.h
->> +++ b/include/hw/vfio/vfio-common.h
->> @@ -296,7 +296,8 @@ bool vfio_migration_realize(VFIODevice *vbasedev, Error **errp);
->>   void vfio_migration_exit(VFIODevice *vbasedev);
->>
->>   int vfio_bitmap_alloc(VFIOBitmap *vbmap, hwaddr size);
->> -bool vfio_dma_unmap_dirty_sync_needed(const VFIOContainerBase *bcontainer);
->> +bool vfio_devices_all_dirty_tracking_started(
->> +    const VFIOContainerBase *bcontainer);
->>   bool
->>   vfio_devices_all_device_dirty_tracking(const VFIOContainerBase *bcontainer);
->>   int vfio_devices_query_dirty_bitmap(const VFIOContainerBase *bcontainer,
->> diff --git a/hw/vfio/common.c b/hw/vfio/common.c
->> index 45783982c9..6e4654218a 100644
->> --- a/hw/vfio/common.c
->> +++ b/hw/vfio/common.c
->> @@ -184,8 +184,8 @@ static bool vfio_devices_all_device_dirty_tracking_started(
->>       return true;
->>   }
->>
->> -static bool
->> -vfio_devices_all_dirty_tracking_started(const VFIOContainerBase *bcontainer)
->> +bool vfio_devices_all_dirty_tracking_started(
->> +    const VFIOContainerBase *bcontainer)
->>   {
->>       if (!migration_is_running()) {
->>           return false;
->> @@ -235,11 +235,6 @@ bool vfio_devices_all_device_dirty_tracking(const VFIOContainerBase *bcontainer)
->>       return true;
->>   }
->>
->> -bool vfio_dma_unmap_dirty_sync_needed(const VFIOContainerBase *bcontainer)
->> -{
->> -    return vfio_devices_all_dirty_tracking_started(bcontainer);
->> -}
->> -
-> Why not just renaming vfio_dma_unmap_dirty_sync_needed to
-> vfio_devices_all_dirty_tracking_started() off from the start? We are introducing
-> that helper name to just remove it again. And this patch wouldn't be needed anymore
+On 16/12/24 12:48, Ani Sinha wrote:
+> VM firmware update is a mechanism where the virtual machines can use their
+> preferred and trusted firmware image in their execution environment without
+> having to depend on a untrusted party to provide the firmware bundle. This is
+> particularly useful for confidential virtual machines that are deployed in the
+> cloud where the tenant and the cloud provider are two different entities. In
+> this scenario, virtual machines can bring their own trusted firmware image
+> bundled as a part of their filesystem (using UKIs for example[1]) and then use
+> this hypervisor interface to update to their trusted firmware image. This also
+> allows the guests to have a consistent measurements on the firmware image.
+> 
+> This change introduces basic support for the fw-cfg based hypervisor interface
+> and the corresponding device. The change also includes the
+> specification document for this interface. The interface is made generic
+> enough so that guests are free to use their own ABI to pass required
+> information between initial and trusted execution contexts (where they are
+> running their own trusted firmware image) without the hypervisor getting
+> involved in between. In subsequent patches, we will introduce other minimal
+> changes on the hypervisor that are required to make the mechanism work.
+> 
+> [1] See systemd pull requests https://github.com/systemd/systemd/pull/35091
+> and https://github.com/systemd/systemd/pull/35281 for some discussions on
+> how we can bundle firmware image within an UKI.
+> 
+> CC: Alex Graf <graf@amazon.com>
+> CC: Paolo Bonzini <pbonzini@redhat.com>
+> CC: Gerd Hoffman <kraxel@redhat.com>
+> CC: Igor Mammedov <imammedo@redhat.com>
+> CC: Vitaly Kuznetsov <vkuznets@redhat.com>
+> Signed-off-by: Ani Sinha <anisinha@redhat.com>
+> ---
+>   MAINTAINERS                  |   9 ++
+>   docs/specs/index.rst         |   1 +
+>   docs/specs/vmfwupdate.rst    | 109 ++++++++++++++++++++++++
+>   hw/misc/meson.build          |   2 +
+>   hw/misc/vmfwupdate.c         | 157 +++++++++++++++++++++++++++++++++++
+>   include/hw/misc/vmfwupdate.h | 103 +++++++++++++++++++++++
+>   6 files changed, 381 insertions(+)
+>   create mode 100644 docs/specs/vmfwupdate.rst
+>   create mode 100644 hw/misc/vmfwupdate.c
+>   create mode 100644 include/hw/misc/vmfwupdate.h
 
-That's what I did at first, however there are several DPT helpers with 
-similar names that check similar things but with subtle differences, so 
-I thought that having a few changes in a single commit might be confusing.
-To ease review and make it super clear I split it to be a step-by-step 
-cleanup.
+Can we have a test?
 
-I like it this way, but if you think it's redundant I can merge it again.
+> diff --git a/hw/misc/meson.build b/hw/misc/meson.build
+> index d02d96e403..4c5bdb0de2 100644
+> --- a/hw/misc/meson.build
+> +++ b/hw/misc/meson.build
+> @@ -148,6 +148,8 @@ specific_ss.add(when: 'CONFIG_MAC_VIA', if_true: files('mac_via.c'))
+>   specific_ss.add(when: 'CONFIG_MIPS_CPS', if_true: files('mips_cmgcr.c', 'mips_cpc.c'))
+>   specific_ss.add(when: 'CONFIG_MIPS_ITU', if_true: files('mips_itu.c'))
+>   
+> +specific_ss.add(when: 'CONFIG_FW_CFG_DMA', if_true: files('vmfwupdate.c'))
+> +
+>   system_ss.add(when: 'CONFIG_SBSA_REF', if_true: files('sbsa_ec.c'))
+>   
+>   # HPPA devices
+> diff --git a/hw/misc/vmfwupdate.c b/hw/misc/vmfwupdate.c
+> new file mode 100644
+> index 0000000000..1e29a610c0
+> --- /dev/null
+> +++ b/hw/misc/vmfwupdate.c
+> @@ -0,0 +1,157 @@
+> +/*
+> + * Guest driven VM boot component update device
+> + * For details and specification, please look at docs/specs/vmfwupdate.rst.
+> + *
+> + * Copyright (C) 2024 Red Hat, Inc.
+> + *
+> + * Authors: Ani Sinha <anisinha@redhat.com>
+> + *
+> + * This work is licensed under the terms of the GNU GPL, version 2 or later.
+> + * See the COPYING file in the top-level directory.
+> + *
+> + */
+> +
+> +#include "qemu/osdep.h"
+> +#include "qapi/error.h"
+> +#include "qemu/module.h"
+> +#include "sysemu/reset.h"
+> +#include "hw/nvram/fw_cfg.h"
+> +#include "hw/i386/pc.h"
+> +#include "hw/qdev-properties.h"
+> +#include "hw/misc/vmfwupdate.h"
+> +#include "qemu/error-report.h"
+> +
+> +static void fw_update_reset(void *dev)
+> +{
+> +    /* a NOOP at present */
+> +    return;
+> +}
+> +
+> +
+> +static uint64_t get_max_fw_size(void)
+> +{
+> +    Object *m_obj = qdev_get_machine();
+> +    PCMachineState *pcms = PC_MACHINE(m_obj);
+> +
+> +    if (pcms) {
+> +        return pcms->max_fw_size;
+> +    } else {
+> +        return 0;
+> +    }
+> +}
+> +
+> +static void fw_blob_write(void *dev, off_t offset, size_t len)
+> +{
+> +    VMFwUpdateState *s = VMFWUPDATE(dev);
+> +
+> +    /* for non-pc platform, we do not allow changing bios_size yet */
+> +    if (!s->plat_bios_size) {
+> +        return;
+> +    }
+> +
+> +    /*
+> +     * in order to change the bios size, appropriate capability
+> +     * must be enabled
+> +     */
+> +    if (s->fw_blob.bios_size &&
+> +        !(s->capability & VMFWUPDATE_CAP_BIOS_RESIZE)) {
+> +        warn_report("vmfwupdate: VMFWUPDATE_CAP_BIOS_RESIZE not enabled");
+> +        return;
+> +    }
+> +
+> +    s->plat_bios_size = s->fw_blob.bios_size;
+> +
+> +    return;
+> +}
+> +
+> +static void vmfwupdate_realize(DeviceState *dev, Error **errp)
+> +{
+> +    VMFwUpdateState *s = VMFWUPDATE(dev);
+> +    FWCfgState *fw_cfg = fw_cfg_find();
+> +
+> +    /* multiple devices are not supported */
+> +    if (!vmfwupdate_find()) {
+> +        error_setg(errp, "at most one %s device is permitted",
+> +                   TYPE_VMFWUPDATE);
+> +        return;
+> +    }
+> +
+> +    /* fw_cfg with DMA support is necessary to support this device */
+> +    if (!fw_cfg || !fw_cfg_dma_enabled(fw_cfg)) {
+> +        error_setg(errp, "%s device requires fw_cfg",
+> +                   TYPE_VMFWUPDATE);
+> +        return;
+> +    }
+> +
+> +    memset(&s->fw_blob, 0, sizeof(s->fw_blob));
+> +    memset(&s->opaque_blobs, 0, sizeof(s->opaque_blobs));
+> +
+> +    fw_cfg_add_file_callback(fw_cfg, FILE_VMFWUPDATE_OBLOB,
+> +                             NULL, NULL, s,
+> +                             &s->opaque_blobs,
+> +                             sizeof(s->opaque_blobs),
+> +                             false);
+> +
+> +    fw_cfg_add_file_callback(fw_cfg, FILE_VMFWUPDATE_FWBLOB,
+> +                             NULL, fw_blob_write, s,
+> +                             &s->fw_blob,
+> +                             sizeof(s->fw_blob),
+> +                             false);
+> +
+> +    /*
+> +     * Add global capability fw_cfg file. This will be used by the guest to
+> +     * check capability of the hypervisor.
+> +     */
+> +    s->capability = cpu_to_le16(CAP_VMFWUPD_MASK | VMFWUPDATE_CAP_EDKROM);
+> +    fw_cfg_add_file(fw_cfg, FILE_VMFWUPDATE_CAP,
+> +                    &s->capability, sizeof(s->capability));
+> +
+> +    s->plat_bios_size = get_max_fw_size(); /* for non-pc, this is 0 */
+> +    /* size of bios region for the platform - read only by the guest */
+> +    fw_cfg_add_file(fw_cfg, FILE_VMFWUPDATE_BIOS_SIZE,
+> +                    &s->plat_bios_size, sizeof(s->plat_bios_size));
+> +    /*
+> +     * add fw cfg control file to disable the hypervisor interface.
+> +     */
+> +    fw_cfg_add_file_callback(fw_cfg, FILE_VMFWUPDATE_CONTROL,
+> +                             NULL, NULL, s,
+> +                             &s->disable,
+> +                             sizeof(s->disable),
+> +                             false);
+> +    /*
+> +     * This device requires to register a global reset because it is
+> +     * not plugged to a bus (which, as its QOM parent, would reset it).
+> +     */
+> +    qemu_register_reset(fw_update_reset, dev);
+> +}
+> +
+> +static Property vmfwupdate_properties[] = {
+> +    DEFINE_PROP_UINT8("disable", VMFwUpdateState, disable, 0),
+> +    DEFINE_PROP_END_OF_LIST(),
+> +};
+> +
+> +static void vmfwupdate_device_class_init(ObjectClass *klass, void *data)
+> +{
+> +    DeviceClass *dc = DEVICE_CLASS(klass);
+> +
+> +    /* we are not interested in migration - so no need to populate dc->vmsd */
+> +    dc->desc = "VM firmware blob update device";
+> +    dc->realize = vmfwupdate_realize;
+> +    dc->hotpluggable = false;
+> +    device_class_set_props(dc, vmfwupdate_properties);
+> +    set_bit(DEVICE_CATEGORY_MISC, dc->categories);
 
-Thanks.
+How is this device instantiated?
 
->
->>   static bool vfio_listener_skipped_section(MemoryRegionSection *section)
->>   {
->>       return (!memory_region_is_ram(section->mr) &&
->> diff --git a/hw/vfio/container.c b/hw/vfio/container.c
->> index 8107873534..15deffe3e4 100644
->> --- a/hw/vfio/container.c
->> +++ b/hw/vfio/container.c
->> @@ -131,7 +131,7 @@ static int vfio_legacy_dma_unmap(const VFIOContainerBase *bcontainer,
->>       int ret;
->>       Error *local_err = NULL;
->>
->> -    if (iotlb && vfio_dma_unmap_dirty_sync_needed(bcontainer)) {
->> +    if (iotlb && vfio_devices_all_dirty_tracking_started(bcontainer)) {
->>           if (!vfio_devices_all_device_dirty_tracking(bcontainer) &&
->>               bcontainer->dirty_pages_supported) {
->>               return vfio_dma_unmap_bitmap(container, iova, size, iotlb);
+> +}
+> +
+> +static const TypeInfo vmfwupdate_device_info = {
+> +    .name          = TYPE_VMFWUPDATE,
+> +    .parent        = TYPE_DEVICE,
+> +    .instance_size = sizeof(VMFwUpdateState),
+> +    .class_init    = vmfwupdate_device_class_init,
+> +};
+> +
+> +static void vmfwupdate_register_types(void)
+> +{
+> +    type_register_static(&vmfwupdate_device_info);
+
+New models should use DEFINE_TYPES().
+
+> +}
+> +
+> +type_init(vmfwupdate_register_types);
+> diff --git a/include/hw/misc/vmfwupdate.h b/include/hw/misc/vmfwupdate.h
+> new file mode 100644
+> index 0000000000..e9229d807b
+> --- /dev/null
+> +++ b/include/hw/misc/vmfwupdate.h
+> @@ -0,0 +1,103 @@
+> +/*
+> + * Guest driven VM boot component update device
+> + * For details and specification, please look at docs/specs/vmfwupdate.rst.
+> + *
+> + * Copyright (C) 2024 Red Hat, Inc.
+> + *
+> + * Authors: Ani Sinha <anisinha@redhat.com>
+> + *
+> + * This work is licensed under the terms of the GNU GPL, version 2 or later.
+> + * See the COPYING file in the top-level directory.
+> + *
+> + */
+> +#ifndef VMFWUPDATE_H
+> +#define VMFWUPDATE_H
+> +
+> +#include "hw/qdev-core.h"
+> +#include "qom/object.h"
+> +#include "qemu/units.h"
+> +
+> +#define TYPE_VMFWUPDATE "vmfwupdate"
+> +
+> +#define VMFWUPDCAPMSK  0xffff /* least significant 16 capability bits */
+> +
+> +#define VMFWUPDATE_CAP_EDKROM 0x08 /* bit 4 represents support for EDKROM */
+> +#define VMFWUPDATE_CAP_BIOS_RESIZE 0x04 /* guests may resize bios region */
+> +#define CAP_VMFWUPD_MASK 0x80
+> +
+> +#define VMFWUPDATE_OPAQUE_SIZE (1024 * MiB)
+> +
+> +/* fw_cfg file definitions */
+> +#define FILE_VMFWUPDATE_OBLOB "etc/vmfwupdate/opaque-blob"
+> +#define FILE_VMFWUPDATE_FWBLOB "etc/vmfwupdate/fw-blob"
+> +#define FILE_VMFWUPDATE_CAP "etc/vmfwupdate/cap"
+> +#define FILE_VMFWUPDATE_BIOS_SIZE "etc/vmfwupdate/bios-size"
+> +#define FILE_VMFWUPDATE_CONTROL "etc/vmfwupdate/disable"
+> +
+> +/*
+> + * Address and length of the guest provided firmware blob.
+> + * The blob itself is passed using the guest shared memory to QEMU.
+> + * This is then copied to the guest private memeory in the secure vm
+> + * by the hypervisor.
+> + */
+> +typedef struct {
+> +    uint32_t bios_size; /*
+> +                         * this is used by the guest to update plat_bios_size
+> +                         * when VMFWUPDATE_CAP_BIOS_RESIZE is set.
+> +                         */
+> +    uint64_t bios_paddr; /*
+> +                          * starting gpa where the blob is in shared guest
+> +                          * memory. Cleared upon system reset.
+> +                          */
+> +} VMFwUpdateFwBlob;
+> +
+> +typedef struct VMFwUpdateState {
+> +    DeviceState parent_obj;
+> +
+> +    /*
+> +     * capabilities - 64 bits.
+> +     * Little endian format.
+> +     */
+> +    uint64_t capability;
+> +
+> +    /*
+> +     * size of the bios region - architecture dependent.
+> +     * Read-only by the guest unless VMFWUPDATE_CAP_BIOS_RESIZE
+> +     * capability is set.
+> +     */
+> +    uint32_t plat_bios_size;
+> +
+> +    /*
+> +     * disable - disables the interface when non-zero value is written to it.
+> +     * Writing 0 to this file enables the interface.
+> +     */
+> +    uint8_t disable;
+> +
+> +    /*
+> +     * The first stage boot uses this opaque blob to convey to the next stage
+> +     * where the next stage components are loaded. The exact structure and
+> +     * number of entries are unknown to the hypervisor and the hypervisor
+> +     * does not touch this memory or do any validations.
+> +     * The contents of this memory needs to be validated by the guest and
+> +     * must be ABI compatible between the first and second stages.
+> +     */
+> +    unsigned char opaque_blobs[VMFWUPDATE_OPAQUE_SIZE];
+> +
+> +    /*
+> +     * firmware blob addresses and sizes. These are moved to guest
+> +     * private memory.
+> +     */
+> +    VMFwUpdateFwBlob fw_blob;
+> +} VMFwUpdateState;
+> +
+> +OBJECT_DECLARE_SIMPLE_TYPE(VMFwUpdateState, VMFWUPDATE);
+> +
+> +/* returns NULL unless there is exactly one device */
+> +static inline VMFwUpdateState *vmfwupdate_find(void)
+
+What is the point of this helper? Why inline it in header?
+
+> +{
+> +    Object *o = object_resolve_path_type("", TYPE_VMFWUPDATE, NULL);
+> +
+> +    return o ? VMFWUPDATE(o) : NULL;
+> +}
+> +
+> +#endif
+
 
