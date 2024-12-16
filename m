@@ -2,83 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC8FC9F3204
-	for <lists+qemu-devel@lfdr.de>; Mon, 16 Dec 2024 14:54:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BD0C29F3208
+	for <lists+qemu-devel@lfdr.de>; Mon, 16 Dec 2024 14:55:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tNBXt-0001Fo-LD; Mon, 16 Dec 2024 08:54:01 -0500
+	id 1tNBXs-0001FU-CN; Mon, 16 Dec 2024 08:54:00 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tNBXi-0001ET-Bg
- for qemu-devel@nongnu.org; Mon, 16 Dec 2024 08:53:50 -0500
-Received: from mail-ot1-x336.google.com ([2607:f8b0:4864:20::336])
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1tNBXj-0001Ea-H0
+ for qemu-devel@nongnu.org; Mon, 16 Dec 2024 08:53:52 -0500
+Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tNBXg-0005TV-Fg
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1tNBXh-0005Tk-3e
  for qemu-devel@nongnu.org; Mon, 16 Dec 2024 08:53:50 -0500
-Received: by mail-ot1-x336.google.com with SMTP id
- 46e09a7af769-71e15d9629bso823520a34.1
- for <qemu-devel@nongnu.org>; Mon, 16 Dec 2024 05:53:46 -0800 (PST)
+Received: by mail-pf1-x429.google.com with SMTP id
+ d2e1a72fcca58-728e78c4d7bso2950055b3a.0
+ for <qemu-devel@nongnu.org>; Mon, 16 Dec 2024 05:53:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734357225; x=1734962025; darn=nongnu.org;
+ d=ventanamicro.com; s=google; t=1734357227; x=1734962027; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=RLtCAf+eVXoNIIuW1G6Wd/uZqC+dL8Cvt6AJHo37q+k=;
- b=mO/2Oh6BQ2yu/NSnOKni0+CBMcMZUxzjFSYAkfK9bZxM6tAl0zxAfixQyjfb0CEHY/
- Z9ydO2YeCF/TZscLZ1cqtG5fcVzkGeSxAT8dEb7D4QtrB9UDQpN8grtAWBndKptV9//D
- 3+/pF3LCLUFEaKyRlQXwvfErl5hU2Ln40R0j9milUxTw8EaaTUfqM5lejQ1H0vFrRUEA
- kmYSpRm/jsKUer0HOMOjr4YO6pQItuc1nLwUPT4qpeZtQgBfgDkSR7HCYG06v7YaQuR/
- yPwBWsZrxBnPRaDhCh/+2d1IhmaPXfBW0bPFx4KJ013MQBVf5Zs5sfE2tqi92NiZOYeG
- Czsg==
+ bh=yaDCrhNFZ3VskkX9nHUszSgsRxopCsMl5xDPmeAyCJc=;
+ b=RiBE71Rc/MXPzLh0+VLmNFyfbjeL/E8jieElaVj9pvC7DbZ1bYQVlXP16DkNtsoO/p
+ qEZraa4SelexvYIdpPJnMm/f/cz2ggpXq6ZM2LaKQ9iFSfw1R3xMNcJoAo4m8SIEyBQ2
+ T5rN6pP39mHFXFmqqe97GLjad4cYG70f18x3pJ3uMdDVx/w7uIlLAfRoJjjqal01bBoW
+ QZPL1YTce59sDqPwp3JvSxC7syp0J/OAAXVnx5efFTvRHmJFsVpwYGx1OllZ6bIs4J0s
+ 2hCt7qpAXTAfGrjnNqcD7B+DLVYxjRpOu3pi2xTecpTelcoXSgqWQ90IEd8/h8Q9wDKb
+ 4RTA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734357225; x=1734962025;
+ d=1e100.net; s=20230601; t=1734357227; x=1734962027;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=RLtCAf+eVXoNIIuW1G6Wd/uZqC+dL8Cvt6AJHo37q+k=;
- b=sVhXQL3NYXDhnddI4XauIINDji3s1Cg85/L2GxpBhPeYMkbQKrUUyxF5DWdUw0C4hy
- qFJ1IWY36kL/CqQGXn3sHNp9qFYbAEcmG6+f0L5e7wBTidr3ntAQEqKWcnDMa3qHwNp4
- U6Zyax1ujyf3l/ow9QT2Q/XCYjXMP5T8Gw3SV/Lx5bOP4dx8ScTXJKurW/4kE1ieTb7q
- TfCIrhtPdJWcFisT4XTDv78U1K9BbRVAvIe/8MvM4Sm8t7THczx7PY3Dd/qGZsx+tHDU
- tAldunpurpzqmvpgPfIkPeTayN1Ax+tFAxlEDiZuXWTQziaiOMf1AEfFUL7DdzLC61EZ
- e7SQ==
-X-Gm-Message-State: AOJu0YxIIzkHLqrT7PNoe1yW5XBeLOL55OrJdYrXdPqauFLx6L1i8PvE
- wuP8AQNW5181jndx8PVsnbvDd5Z3rieLIxIzu+46L/GFMrm93bP3LZO0QwvrFBI=
-X-Gm-Gg: ASbGncuZiNIlGxk4hw3VnPUYbyg5YRQP67MFxeHQ9CIPZ5jFEng7DDlfTczSouzaMra
- fSR/vbLKUZTVkEgv64Z0gPyotLIqU/PXAomBXFT2hioEuNGq9wCKusZHJB78/yHl0ixltc4A+6f
- 4e57hwC5SFPbNBcTQFQvjCwhAMYHmNp7a9+WPX6esHTJ0E/8vBm4AAEV3IuI0qMqpUdBS2gNBqJ
- 7N15b5ytmzwHaQV14NHRASy0cPNMLfqM9BeEQHbD9XfSfsTlrvLjmJ4zooMFl38y16fDMgKZ5O8
- j/RmRuVoTYahO3DHkpJr8vVXbQ+WlAJYf0E=
-X-Google-Smtp-Source: AGHT+IH/Pzqv0pgnXsbVVjDm3Isce94PPqSUfUnscAPQUUDL5kBowVZVn4PrNxCLbEZCBqJdxWC6KA==
-X-Received: by 2002:a05:6830:4113:b0:71d:4b52:4e46 with SMTP id
- 46e09a7af769-71e3b8916aamr6660441a34.15.1734357224332; 
- Mon, 16 Dec 2024 05:53:44 -0800 (PST)
-Received: from [192.168.4.112] (fixed-187-189-51-143.totalplay.net.
- [187.189.51.143]) by smtp.gmail.com with ESMTPSA id
- 46e09a7af769-71e48353346sm1371019a34.16.2024.12.16.05.53.43
+ bh=yaDCrhNFZ3VskkX9nHUszSgsRxopCsMl5xDPmeAyCJc=;
+ b=sZlR3Yl3WX2NFPWG59KRxyd2eW2HFuEnQQXRmMRRK2vWFMrk0KGeF47eDbpzZCXGel
+ wsiWCfKkkBbC/u+TGFF1OfIofKGmY70GMwxb52WxOVFIwCY4rjt8mbEEYzW4q94pFcS3
+ +21pnSwYKH3cga0S1Tqtlq2FqO5EPgXPa+1OqQYzdHrmgR9DdPJMH552Wc6cmBeirn6c
+ sANgJhW1pQK11FAZtmvIg5RemaKRm1HQgVx75kUyH6tV7zwy5yZ2YO3sivS3ZuOJZQaX
+ lpr31U6WrKflLoHkRW1F9oi3nX12QyF4sJJ894nb7OvQqkvL6CCvXdlftB9MHVCptBPF
+ eLcw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUscar6uPILMgByCLoY9dUMyRuHl9tWaak9wGhmUS0YOzlfR1jM30rLpMjMg27B1UcY6qa3StRGB+TI@nongnu.org
+X-Gm-Message-State: AOJu0YzjsBqvqaEi+ohgRC9pdmsdGApfAFQFhkiggNWjkYQuS+Xs+x+g
+ EgQ/9r5MLBcW0sxLFYLKt4UlUZhh/LmSKFkRjzs5ekZIY8VxWcVwdEvZFY4piKc=
+X-Gm-Gg: ASbGncvboIXRtnMwh8tz1yvJxSNgT4vC2MPsooj3eIhaTpv9slUWGvs4OWmu1yC8e47
+ l/EtTbM6jZvueKTSS/0U8/CXAwyOjdU9CbTxl1d32tndWoYKlVkOwJc/hiUYvLNXv45cjtWVDfZ
+ gSZv0kgjw5jsTx4okLp7TEd+sm7FeG9QaQe4nhVg6AlHcofmgYv40YJGfJLFCXq9HJaq64aM9UJ
+ dNYq6TEYktckWjM1wJ+XsXuKLeFNGJa1+fzxyiomGT5CB0j8lI0Ni9KSjxstBGRoZggOQ==
+X-Google-Smtp-Source: AGHT+IEWtWAfe7Nye2d08QH7Rck6AWUWZkxlEg6Yn1nCBSQ3Gu8FPgYDScB7I0hevMNLQqMVP2fUuw==
+X-Received: by 2002:a05:6a00:2905:b0:724:db17:f975 with SMTP id
+ d2e1a72fcca58-7290c74ca77mr20357409b3a.12.1734357227497; 
+ Mon, 16 Dec 2024 05:53:47 -0800 (PST)
+Received: from [192.168.68.110] ([187.101.65.72])
+ by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-72918ac52d7sm4717603b3a.3.2024.12.16.05.53.44
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 16 Dec 2024 05:53:43 -0800 (PST)
-Message-ID: <f9d9fffb-acf2-4bbe-aa60-2eed0aa8ee21@linaro.org>
-Date: Mon, 16 Dec 2024 07:53:40 -0600
+ Mon, 16 Dec 2024 05:53:47 -0800 (PST)
+Message-ID: <d5880ccb-fa39-4f50-b0a9-2dc5ae3cf470@ventanamicro.com>
+Date: Mon, 16 Dec 2024 10:53:43 -0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 06/24] hw/ppc: Only register spapr_nvdimm_properties if
- CONFIG_LIBPMEM
-To: BALATON Zoltan <balaton@eik.bme.hu>
-Cc: qemu-devel@nongnu.org
-References: <20241216035109.3486070-1-richard.henderson@linaro.org>
- <20241216035109.3486070-7-richard.henderson@linaro.org>
- <1738e531-0f61-9b0e-c4ab-9879812e8d3e@eik.bme.hu>
+Subject: Re: [PATCH v13 3/7] target/riscv: Add helper functions to calculate
+ current number of masked bits for pointer masking
+To: baturo.alexey@gmail.com
+Cc: richard.henderson@linaro.org, zhiwei_liu@linux.alibaba.com,
+ liwei1518@gmail.com, alistair23@gmail.com, frank.chang@sifive.com,
+ palmer@dabbelt.com, Alistair.Francis@wdc.com, sagark@eecs.berkeley.edu,
+ kbastian@mail.uni-paderborn.de, qemu-devel@nongnu.org, qemu-riscv@nongnu.org
+References: <20241216121907.660504-1-baturo.alexey@gmail.com>
+ <20241216121907.660504-4-baturo.alexey@gmail.com>
 Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <1738e531-0f61-9b0e-c4ab-9879812e8d3e@eik.bme.hu>
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+In-Reply-To: <20241216121907.660504-4-baturo.alexey@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::336;
- envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x336.google.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pf1-x429.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,35 +104,121 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/16/24 05:36, BALATON Zoltan wrote:
-> On Sun, 15 Dec 2024, Richard Henderson wrote:
->> Do not register an empty set of properties.
->>
->> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
->> ---
->> hw/ppc/spapr_nvdimm.c | 10 +++++-----
->> 1 file changed, 5 insertions(+), 5 deletions(-)
->>
->> diff --git a/hw/ppc/spapr_nvdimm.c b/hw/ppc/spapr_nvdimm.c
->> index 2ef6f29f3d..6f875d73b2 100644
->> --- a/hw/ppc/spapr_nvdimm.c
->> +++ b/hw/ppc/spapr_nvdimm.c
->> @@ -884,22 +884,22 @@ static void spapr_nvdimm_unrealize(NVDIMMDevice *dimm)
->>     vmstate_unregister(NULL, &vmstate_spapr_nvdimm_states, dimm);
->> }
->>
->> -static const Property spapr_nvdimm_properties[] = {
->> #ifdef CONFIG_LIBPMEM
->> +static const Property spapr_nvdimm_properties[] = {
->>     DEFINE_PROP_BOOL("pmem-override", SpaprNVDIMMDevice, pmem_override, false),
->> -#endif
->> -    DEFINE_PROP_END_OF_LIST(),
+
+
+On 12/16/24 9:19 AM, baturo.alexey@gmail.com wrote:
+> From: Alexey Baturo <baturo.alexey@gmail.com>
 > 
-> Is it too early to remove END_OF_LIST in this patch?
+> Signed-off-by: Alexey Baturo <baturo.alexey@gmail.com>
+> ---
 
-Yes.  I thought I'd fixed this when shuffling the patches around.
-Ho hum.
+Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 
+>   target/riscv/cpu.h        |  5 +++
+>   target/riscv/cpu_helper.c | 73 +++++++++++++++++++++++++++++++++++++++
+>   2 files changed, 78 insertions(+)
+> 
+> diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
+> index 417ff45544..e7f346ff6b 100644
+> --- a/target/riscv/cpu.h
+> +++ b/target/riscv/cpu.h
+> @@ -768,8 +768,13 @@ void cpu_get_tb_cpu_state(CPURISCVState *env, vaddr *pc,
+>   
+>   bool riscv_cpu_is_32bit(RISCVCPU *cpu);
+>   
+> +bool riscv_cpu_virt_mem_enabled(CPURISCVState *env);
+> +RISCVPmPmm riscv_pm_get_pmm(CPURISCVState *env);
+> +uint32_t riscv_pm_get_pmlen(RISCVPmPmm pmm);
+> +
+>   RISCVException riscv_csrr(CPURISCVState *env, int csrno,
+>                             target_ulong *ret_value);
+> +
+>   RISCVException riscv_csrrw(CPURISCVState *env, int csrno,
+>                              target_ulong *ret_value,
+>                              target_ulong new_value, target_ulong write_mask);
+> diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
+> index dba04851d5..ed0d275e84 100644
+> --- a/target/riscv/cpu_helper.c
+> +++ b/target/riscv/cpu_helper.c
+> @@ -214,6 +214,79 @@ void cpu_get_tb_cpu_state(CPURISCVState *env, vaddr *pc,
+>       *pflags = flags;
+>   }
+>   
+> +RISCVPmPmm riscv_pm_get_pmm(CPURISCVState *env)
+> +{
+> +    RISCVPmPmm pmm = PMM_FIELD_DISABLED;
+> +#ifndef CONFIG_USER_ONLY
+> +    if (get_field(env->mstatus, MSTATUS_MPRV) &&
+> +        get_field(env->mstatus, MSTATUS_MXR)) {
+> +        return pmm;
+> +    }
+> +    int priv_mode = cpu_address_mode(env);
+> +    /* Get current PMM field */
+> +    switch (priv_mode) {
+> +    case PRV_M:
+> +        if (riscv_cpu_cfg(env)->ext_smmpm) {
+> +            pmm = get_field(env->mseccfg, MSECCFG_PMM);
+> +        }
+> +        break;
+> +    case PRV_S:
+> +        if (riscv_cpu_cfg(env)->ext_smnpm) {
+> +            if (get_field(env->mstatus, MSTATUS_MPV)) {
+> +                pmm = get_field(env->henvcfg, HENVCFG_PMM);
+> +            } else {
+> +                pmm = get_field(env->menvcfg, MENVCFG_PMM);
+> +            }
+> +        }
+> +        break;
+> +    case PRV_U:
+> +        if (riscv_has_ext(env, RVS)) {
+> +            if (riscv_cpu_cfg(env)->ext_ssnpm) {
+> +                pmm = get_field(env->senvcfg, SENVCFG_PMM);
+> +            }
+> +        } else {
+> +            if (riscv_cpu_cfg(env)->ext_smnpm) {
+> +                pmm = get_field(env->menvcfg, MENVCFG_PMM);
+> +            }
+> +        }
+> +        break;
+> +    default:
+> +        g_assert_not_reached();
+> +    }
+> +#endif
+> +    return pmm;
+> +}
+> +
+> +bool riscv_cpu_virt_mem_enabled(CPURISCVState *env)
+> +{
+> +    bool virt_mem_en = false;
+> +#ifndef CONFIG_USER_ONLY
+> +    int satp_mode = 0;
+> +    int priv_mode = cpu_address_mode(env);
+> +    if (riscv_cpu_mxl(env) == MXL_RV32) {
+> +        satp_mode = get_field(env->satp, SATP32_MODE);
+> +    } else {
+> +        satp_mode = get_field(env->satp, SATP64_MODE);
+> +    }
+> +    virt_mem_en = ((satp_mode != VM_1_10_MBARE) && (priv_mode != PRV_M));
+> +#endif
+> +    return virt_mem_en;
+> +}
+> +
+> +uint32_t riscv_pm_get_pmlen(RISCVPmPmm pmm)
+> +{
+> +    switch (pmm) {
+> +    case PMM_FIELD_DISABLED:
+> +        return 0;
+> +    case PMM_FIELD_PMLEN7:
+> +        return 7;
+> +    case PMM_FIELD_PMLEN16:
+> +        return 16;
+> +    default:
+> +        g_assert_not_reached();
+> +    }
+> +}
+> +
+>   #ifndef CONFIG_USER_ONLY
+>   
+>   /*
 
-r~
 
