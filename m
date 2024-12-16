@@ -2,79 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E3E09F28F9
-	for <lists+qemu-devel@lfdr.de>; Mon, 16 Dec 2024 04:52:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 54DE39F28F3
+	for <lists+qemu-devel@lfdr.de>; Mon, 16 Dec 2024 04:52:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tN28v-0007HO-Sa; Sun, 15 Dec 2024 22:51:37 -0500
+	id 1tN28w-0007Hj-FY; Sun, 15 Dec 2024 22:51:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tN28s-0007G1-1P
+ id 1tN28t-0007GL-Nm
  for qemu-devel@nongnu.org; Sun, 15 Dec 2024 22:51:35 -0500
-Received: from mail-ot1-x32f.google.com ([2607:f8b0:4864:20::32f])
+Received: from mail-ot1-x32e.google.com ([2607:f8b0:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tN28q-0005yf-LN
- for qemu-devel@nongnu.org; Sun, 15 Dec 2024 22:51:33 -0500
-Received: by mail-ot1-x32f.google.com with SMTP id
- 46e09a7af769-71e2aa8d5e3so1947394a34.2
- for <qemu-devel@nongnu.org>; Sun, 15 Dec 2024 19:51:32 -0800 (PST)
+ id 1tN28s-0005yz-2O
+ for qemu-devel@nongnu.org; Sun, 15 Dec 2024 22:51:35 -0500
+Received: by mail-ot1-x32e.google.com with SMTP id
+ 46e09a7af769-71e2851de95so814206a34.0
+ for <qemu-devel@nongnu.org>; Sun, 15 Dec 2024 19:51:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734321091; x=1734925891; darn=nongnu.org;
+ d=linaro.org; s=google; t=1734321093; x=1734925893; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=4CpHjWxyM4MviuiMSkrydePOGdO/jcnUzBym98D8q1M=;
- b=ehW1yYcl5O1iDs0/2PrL5DfEaDuFWiOPwut/azK8I/xYwgqrhDpcoqoHY6FmGYxOqK
- 8vRKYj938P/J6HS4zFWPeOILA8c/U6/xZIwI3PEpbwXuDlPGiGCltvgorPBi9Fajz6el
- 3QHRdn4PVtLoM2njaRB1Xx4uuWmKC7aepc2rWWECBxqNXS4k6/IIEbf/EZ5/dJmPr3m+
- MRDaEiU/CpfyLudVQFlf1sYXWUGGy+5gdr9bovURn4GZycRS3Njh/DPWiNMQmZIQ66gD
- HyBBHnXAEO92OEjxQirSDGHP3Q/R804D8UWFpHXucoVMQf5oiY2HAgmNwdYmgdRogsTV
- z2cw==
+ :reply-to; bh=iyJAxwEKb2I5MPVS5DJzWXO9WaSZYlw8mVsU36qO0T4=;
+ b=XlWgCH4LVC07xHxfWmSToyFBLrXP4SLR1YvVJyETI0IwOV2A1nteEsnBfkgQiJPZbJ
+ 65SIcwmychAkYQIjbPh6cyYn7idbd2jokuPQo7SHkLjbqBWYpdtWhLyEql0DAAdL5Zvs
+ gq8LfNe7uAoXkpVv93No6ByhW1ZorCzpY2lFniO/9sthHcOlTPi9whW7y5lnDsbd76DZ
+ w3zGfCR2vUNjAi1G4IFM+cgbwPmj3q4Dxj/gihOAGGWDv/bCl2SR+XypkFmYxQR3oTth
+ pFBkHokvEPmHc+Q5Sq0H6/hFWFTrj1fJeJntcFM5Z0GbMYZH+KQWr1ldAr3vNl6DBnal
+ mJkA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734321091; x=1734925891;
+ d=1e100.net; s=20230601; t=1734321093; x=1734925893;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=4CpHjWxyM4MviuiMSkrydePOGdO/jcnUzBym98D8q1M=;
- b=oH5mKyFoRSTO0O+0h6Z1i3XSWlGxmt992kOSFhxYoITVaVdEeClg6SEa9bmmRPxAAX
- bsi2UyO5pl9kiuEbw32xP5/BYN8MsDy98hLgGarLT3KGmobc9mN4faKx25VEs1ThUDYV
- uH4fMMK3iawujq/i5hxpG7s4eCh5Iayr7PF/LNLF8BhYzJdAbcHrrR2PWo5FM7dah6uR
- c9Wpf08oz8A/a8NEfyp5Pjnkz66Yks2zz8Gjxv0lOPf2p0CPzXYAwYhGlA+/xDKaPp0D
- gPYfpL9gxWnzr1iz9hhMI9gVVukq0NH3KX0AxlnxWj4LVx155IfWzKx/7k8PsB5j0LVF
- EcMQ==
-X-Gm-Message-State: AOJu0Yw6vB1j+ULGEf8HMru3TGAdL8bTfMkp90mP1wcI/y+0DB8C2lBF
- xz/u1w7hxH7+XzwKc8yrffjQMPAGBPfYCJcPIJRTPiSPmeS+GACg7R1h8QBnHFlpXzDi1+WcBvf
- RGi0ykjZx
-X-Gm-Gg: ASbGncvZMORX+QP+2v7up2DTIh7Izd/gwD6ovorb7ABisBhUvRDfBng0C9fwQbHU6Kg
- cuEBpy4nalkHAN0NXX/6xndaUxHec/S8R/1Wjm+CFw4MNwJouXsc5AVCFeHcgGkWTKYDkFrSjnz
- 9g4ufPOutCi5lG4WBc93Z8+7JQZABYGnBZLH/nyUekpBh26WiPD39WbaOa73BMNtlEg8N6ZtPk9
- Ll3xW2l8lXkIhWdUJWVE/h0hyXOB9KvctoimDgrKVaUqsZjkJgsskW8T9FyDOdsGCOouDeP04Dw
- vxotQ9kQdePRUAuR+uyJUvDI9HeRQ21T7P5SzL3azAI=
-X-Google-Smtp-Source: AGHT+IGTE4LUM32BHMIB8p2vW2F9dRJs5AlEfz95rpHN5jAHx14vpTw7fUB6g65H2mSx3KU1byti+A==
-X-Received: by 2002:a05:6830:2107:b0:71d:415a:5d18 with SMTP id
- 46e09a7af769-71e3b82a420mr6827534a34.3.1734321091381; 
- Sun, 15 Dec 2024 19:51:31 -0800 (PST)
+ bh=iyJAxwEKb2I5MPVS5DJzWXO9WaSZYlw8mVsU36qO0T4=;
+ b=pdf+FHoFWHdEdBtFZyrRsKAqf+ZVdy7M9cx7MgGTUIT8Dib2T2BUFgBordkaroaJrA
+ il3wQjyXKvWOQGAzpGEAR+dcijilJFQ/ui0hnyZX5DHtvUFA4YJop+qW9VNo2EhJ6/0o
+ X6uWnbNKEDRCU/8naycWMAx8TDpVw1ofuK58rmTR70v0GUv26ZLq0T3R1lMoZsNJ6Lmw
+ 7/H7JfAJBAfPFdeNolpitqQlhRfzWN8h1ZTcKr9On81YgMjEXCEAKwmYQxqLfIiNtEtL
+ LXKcsCw7i+6LV+awhgOBkSwVysIGmvRrWo2VaOrcUhsq+OMA37c/RpiHLiyDcYKNxHIu
+ J3hw==
+X-Gm-Message-State: AOJu0YwpXfp2eN133x5lJOb+nn5mnhvHazBvIDzceKCG7K9LQ7YqMDhl
+ Rkr9QdEmrTIgloUG8GbuMw4nAT4FxlBeJKIWPBIzeD4CEiemzIoPF10/pGmxPgH+pR3OgxRTImp
+ KWV3LhyBF
+X-Gm-Gg: ASbGncvfgoSLkIyx8O4o/XDYx5Z2mReTQtfjY8RSJHFXUXoM+rTWIUtOXSOfmF2QQG9
+ l3wGUIg7U3PXTETL3BAGypMIoppGR/vsDpWREAPEEiPrEiODlHVmiP/CJv2UU4FBg1vjHgLWrsV
+ L8XrRA8+5fgxRb8iO3f/oM2BYZNKLRejaqPnOG8tunwbntE5JrsDiS4hZuEt0zWE5gKyikorhyH
+ OHS9zWFAw2t0C9k0NGgUGiIH0nvjtrmmyxPgETRoHD094/RXhN0ai33DAPZGmSN3fq6AnilpxZt
+ MiCwa524QzC+oqjS6qMsuv5XcYS/pkoI17sPZNvw1/8=
+X-Google-Smtp-Source: AGHT+IGEkbAWfNJHhJbzQPBOnqRB8jt9fgFm8Rft3ZFDTTXs5F+GU7kzJXRG5JI8pHmaR/qNDzGBhA==
+X-Received: by 2002:a05:6830:3103:b0:71d:3fe2:2051 with SMTP id
+ 46e09a7af769-71e3ba26766mr6051708a34.22.1734321092658; 
+ Sun, 15 Dec 2024 19:51:32 -0800 (PST)
 Received: from localhost.localdomain (fixed-187-189-51-143.totalplay.net.
  [187.189.51.143]) by smtp.gmail.com with ESMTPSA id
- 006d021491bc7-5f33a93a6d1sm1287493eaf.33.2024.12.15.19.51.30
+ 006d021491bc7-5f33a93a6d1sm1287493eaf.33.2024.12.15.19.51.31
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 15 Dec 2024 19:51:30 -0800 (PST)
+ Sun, 15 Dec 2024 19:51:32 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 06/24] hw/ppc: Only register spapr_nvdimm_properties if
- CONFIG_LIBPMEM
-Date: Sun, 15 Dec 2024 21:50:51 -0600
-Message-ID: <20241216035109.3486070-7-richard.henderson@linaro.org>
+Subject: [PATCH 07/24] hw/tricore: Remove empty Property lists
+Date: Sun, 15 Dec 2024 21:50:52 -0600
+Message-ID: <20241216035109.3486070-8-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241216035109.3486070-1-richard.henderson@linaro.org>
 References: <20241216035109.3486070-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::32f;
- envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x32f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::32e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x32e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,45 +96,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Do not register an empty set of properties.
-
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- hw/ppc/spapr_nvdimm.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ hw/tricore/tc27x_soc.c          | 5 -----
+ hw/tricore/tricore_testdevice.c | 5 -----
+ 2 files changed, 10 deletions(-)
 
-diff --git a/hw/ppc/spapr_nvdimm.c b/hw/ppc/spapr_nvdimm.c
-index 2ef6f29f3d..6f875d73b2 100644
---- a/hw/ppc/spapr_nvdimm.c
-+++ b/hw/ppc/spapr_nvdimm.c
-@@ -884,22 +884,22 @@ static void spapr_nvdimm_unrealize(NVDIMMDevice *dimm)
-     vmstate_unregister(NULL, &vmstate_spapr_nvdimm_states, dimm);
+diff --git a/hw/tricore/tc27x_soc.c b/hw/tricore/tc27x_soc.c
+index ecd92717b5..81bb16d89b 100644
+--- a/hw/tricore/tc27x_soc.c
++++ b/hw/tricore/tc27x_soc.c
+@@ -201,16 +201,11 @@ static void tc27x_soc_init(Object *obj)
+     object_initialize_child(obj, "tc27x", &s->cpu, sc->cpu_type);
  }
  
--static const Property spapr_nvdimm_properties[] = {
- #ifdef CONFIG_LIBPMEM
-+static const Property spapr_nvdimm_properties[] = {
-     DEFINE_PROP_BOOL("pmem-override", SpaprNVDIMMDevice, pmem_override, false),
--#endif
+-static Property tc27x_soc_properties[] = {
 -    DEFINE_PROP_END_OF_LIST(),
- };
-+#endif
- 
- static void spapr_nvdimm_class_init(ObjectClass *oc, void *data)
+-};
+-
+ static void tc27x_soc_class_init(ObjectClass *klass, void *data)
  {
--    DeviceClass *dc = DEVICE_CLASS(oc);
-     NVDIMMClass *nvc = NVDIMM_CLASS(oc);
+     DeviceClass *dc = DEVICE_CLASS(klass);
  
-     nvc->realize = spapr_nvdimm_realize;
-     nvc->unrealize = spapr_nvdimm_unrealize;
- 
--    device_class_set_props(dc, spapr_nvdimm_properties);
-+#ifdef CONFIG_LIBPMEM
-+    device_class_set_props(DEVICE_CLASS(oc), spapr_nvdimm_properties);
-+#endif
+     dc->realize = tc27x_soc_realize;
+-    device_class_set_props(dc, tc27x_soc_properties);
  }
  
- static void spapr_nvdimm_init(Object *obj)
+ static void tc277d_soc_class_init(ObjectClass *oc, void *data)
+diff --git a/hw/tricore/tricore_testdevice.c b/hw/tricore/tricore_testdevice.c
+index ae95c49565..e60866d76f 100644
+--- a/hw/tricore/tricore_testdevice.c
++++ b/hw/tricore/tricore_testdevice.c
+@@ -58,15 +58,10 @@ static void tricore_testdevice_init(Object *obj)
+                           "tricore_testdevice", 0x4);
+ }
+ 
+-static Property tricore_testdevice_properties[] = {
+-    DEFINE_PROP_END_OF_LIST()
+-};
+-
+ static void tricore_testdevice_class_init(ObjectClass *klass, void *data)
+ {
+     DeviceClass *dc = DEVICE_CLASS(klass);
+ 
+-    device_class_set_props(dc, tricore_testdevice_properties);
+     device_class_set_legacy_reset(dc, tricore_testdevice_reset);
+ }
+ 
 -- 
 2.43.0
 
