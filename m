@@ -2,27 +2,27 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BA4B9F2B33
-	for <lists+qemu-devel@lfdr.de>; Mon, 16 Dec 2024 08:55:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 047DF9F2B36
+	for <lists+qemu-devel@lfdr.de>; Mon, 16 Dec 2024 08:55:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tN5vh-0004Tp-A4; Mon, 16 Dec 2024 02:54:13 -0500
+	id 1tN5vp-0004Up-J4; Mon, 16 Dec 2024 02:54:21 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1tN5ve-0004T5-Ah; Mon, 16 Dec 2024 02:54:10 -0500
+ id 1tN5vl-0004U8-Qe; Mon, 16 Dec 2024 02:54:17 -0500
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1tN5vZ-000791-US; Mon, 16 Dec 2024 02:54:09 -0500
+ id 1tN5ve-000791-3g; Mon, 16 Dec 2024 02:54:17 -0500
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.12; Mon, 16 Dec
- 2024 15:53:53 +0800
+ 2024 15:53:54 +0800
 Received: from localhost.localdomain (192.168.10.10) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server id 15.2.1258.12 via Frontend
- Transport; Mon, 16 Dec 2024 15:53:53 +0800
+ Transport; Mon, 16 Dec 2024 15:53:54 +0800
 To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  <peter.maydell@linaro.org>, Steven Lee <steven_lee@aspeedtech.com>, Troy Lee
  <leetroy@gmail.com>, Andrew Jeffery <andrew@codeconstruct.com.au>, "Joel
@@ -30,13 +30,15 @@ To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  "open list:All patches CC here" <qemu-devel@nongnu.org>
 CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>,
  <yunlin.tang@aspeedtech.com>
-Subject: [PATCH v1 0/3] Support timer for AST2700
-Date: Mon, 16 Dec 2024 15:53:49 +0800
-Message-ID: <20241216075353.1308043-1-jamin_lin@aspeedtech.com>
+Subject: [PATCH v1 1/3] hw/timer/aspeed: Support different memory region ops
+Date: Mon, 16 Dec 2024 15:53:50 +0800
+Message-ID: <20241216075353.1308043-2-jamin_lin@aspeedtech.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20241216075353.1308043-1-jamin_lin@aspeedtech.com>
+References: <20241216075353.1308043-1-jamin_lin@aspeedtech.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 Received-SPF: pass client-ip=211.20.114.72;
  envelope-from=jamin_lin@aspeedtech.com; helo=TWMBX01.aspeed.com
 X-Spam_score_int: -18
@@ -62,23 +64,103 @@ From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-v1:
-  - Support timer for AST2700
-  - Introduce new "aspeed_2700_timer_read" and "aspeed_2700_timer_write"
-    callback functions and "aspeed_2700_timer_ops" memory
-    region operation for AST2700.
-    Introduce a new ast2700 class to support AST2700.
+It set "aspeed_timer_ops" struct which containing read and write callbacks
+to be used when I/O is performed on the TIMER region.
 
-Jamin Lin (3):
-  hw/timer/aspeed: Support different memory region ops
-  hw/timer/aspeed: Add AST2700 Support
-  aspeed/soc: Support Timer for AST2700
+Besides, in the previous design of ASPEED SOCs, the timer registers address
+space are contiguous.
 
- hw/arm/aspeed_ast27x0.c         |  17 +++
- hw/timer/aspeed_timer.c         | 231 +++++++++++++++++++++++++++++++-
- include/hw/timer/aspeed_timer.h |   2 +
- 3 files changed, 249 insertions(+), 1 deletion(-)
+ex: TMC00-TMC0C are used for TIMER0.
+ex: TMC10-TMC1C are used for TIMER1.
+ex: TMC80-TMC8C are used for TIMER7.
 
+The TMC30 is a control register and TMC34 is an interrupt status register for
+TIMER0-TIMER7.
+
+However, the register set have a significant change in AST2700. The TMC00-TMC3C
+are used for TIMER0 and TMC40-TMC7C are used for TIMER1. In additional,
+TMC20-TMC3C and TMC60-TMC7C are reserved registers for TIMER0 and TIMER1,
+respectively.
+
+Besides, each TIMER has their own control and interrupt status register.
+In other words, users are able to set control and interrupt status for TIMER0
+in one register. Both aspeed_timer_read and aspeed_timer_write callback
+functions are not compatible AST2700.
+
+Introduce a new "const MemoryRegionOps *" attribute in AspeedTIMERClass and use
+it in aspeed_timer_realize function.
+
+Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
+---
+ hw/timer/aspeed_timer.c         | 7 ++++++-
+ include/hw/timer/aspeed_timer.h | 1 +
+ 2 files changed, 7 insertions(+), 1 deletion(-)
+
+diff --git a/hw/timer/aspeed_timer.c b/hw/timer/aspeed_timer.c
+index 149f7cc5a6..970bf1d79d 100644
+--- a/hw/timer/aspeed_timer.c
++++ b/hw/timer/aspeed_timer.c
+@@ -606,6 +606,7 @@ static void aspeed_timer_realize(DeviceState *dev, Error **errp)
+     int i;
+     SysBusDevice *sbd = SYS_BUS_DEVICE(dev);
+     AspeedTimerCtrlState *s = ASPEED_TIMER(dev);
++    AspeedTimerClass *atc = ASPEED_TIMER_GET_CLASS(s);
+ 
+     assert(s->scu);
+ 
+@@ -613,7 +614,7 @@ static void aspeed_timer_realize(DeviceState *dev, Error **errp)
+         aspeed_init_one_timer(s, i);
+         sysbus_init_irq(sbd, &s->timers[i].irq);
+     }
+-    memory_region_init_io(&s->iomem, OBJECT(s), &aspeed_timer_ops, s,
++    memory_region_init_io(&s->iomem, OBJECT(s), atc->reg_ops, s,
+                           TYPE_ASPEED_TIMER, 0x1000);
+     sysbus_init_mmio(sbd, &s->iomem);
+ }
+@@ -708,6 +709,7 @@ static void aspeed_2400_timer_class_init(ObjectClass *klass, void *data)
+     dc->desc = "ASPEED 2400 Timer";
+     awc->read = aspeed_2400_timer_read;
+     awc->write = aspeed_2400_timer_write;
++    awc->reg_ops = &aspeed_timer_ops;
+ }
+ 
+ static const TypeInfo aspeed_2400_timer_info = {
+@@ -724,6 +726,7 @@ static void aspeed_2500_timer_class_init(ObjectClass *klass, void *data)
+     dc->desc = "ASPEED 2500 Timer";
+     awc->read = aspeed_2500_timer_read;
+     awc->write = aspeed_2500_timer_write;
++    awc->reg_ops = &aspeed_timer_ops;
+ }
+ 
+ static const TypeInfo aspeed_2500_timer_info = {
+@@ -740,6 +743,7 @@ static void aspeed_2600_timer_class_init(ObjectClass *klass, void *data)
+     dc->desc = "ASPEED 2600 Timer";
+     awc->read = aspeed_2600_timer_read;
+     awc->write = aspeed_2600_timer_write;
++    awc->reg_ops = &aspeed_timer_ops;
+ }
+ 
+ static const TypeInfo aspeed_2600_timer_info = {
+@@ -756,6 +760,7 @@ static void aspeed_1030_timer_class_init(ObjectClass *klass, void *data)
+     dc->desc = "ASPEED 1030 Timer";
+     awc->read = aspeed_2600_timer_read;
+     awc->write = aspeed_2600_timer_write;
++    awc->reg_ops = &aspeed_timer_ops;
+ }
+ 
+ static const TypeInfo aspeed_1030_timer_info = {
+diff --git a/include/hw/timer/aspeed_timer.h b/include/hw/timer/aspeed_timer.h
+index 07dc6b6f2c..8d0b15f055 100644
+--- a/include/hw/timer/aspeed_timer.h
++++ b/include/hw/timer/aspeed_timer.h
+@@ -73,6 +73,7 @@ struct AspeedTimerClass {
+ 
+     uint64_t (*read)(AspeedTimerCtrlState *s, hwaddr offset);
+     void (*write)(AspeedTimerCtrlState *s, hwaddr offset, uint64_t value);
++    const MemoryRegionOps *reg_ops;
+ };
+ 
+ #endif /* ASPEED_TIMER_H */
 -- 
 2.25.1
 
