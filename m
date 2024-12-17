@@ -2,92 +2,119 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 793359F4CBD
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Dec 2024 14:47:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B66AB9F4D21
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Dec 2024 15:08:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tNXti-0000YI-Cl; Tue, 17 Dec 2024 08:46:02 -0500
+	id 1tNYDi-00053c-7I; Tue, 17 Dec 2024 09:06:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tNXtW-0000Xe-1M
- for qemu-devel@nongnu.org; Tue, 17 Dec 2024 08:45:50 -0500
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tNYDd-00052z-Vm
+ for qemu-devel@nongnu.org; Tue, 17 Dec 2024 09:06:39 -0500
+Received: from smtp-out1.suse.de ([195.135.223.130])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tNXtU-00065k-BT
- for qemu-devel@nongnu.org; Tue, 17 Dec 2024 08:45:49 -0500
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-434b3e32e9dso58007605e9.2
- for <qemu-devel@nongnu.org>; Tue, 17 Dec 2024 05:45:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734443146; x=1735047946; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=do9a+GsoK8fyYZPzjPqZjR9Y9T+197O23pdyi+E4q7E=;
- b=opNmQTC7QRZqz1JuQz4xCQdaz4lDB3yabKWsp4t1ThQdZPqeirAMv1xaZ4HsD4D3HN
- iPkMuw//6MInS6ccqN4QAmXYJxxPE/3QT4ML8qHEvyFGeX8hqcjcoOpwJTIe6908hg5A
- kH/rTX7wC/3KYLW7K9sUMPfNxY+1O+RtVyS1TEQjws5v1YSM/A1pPXmI2IhLZb4QJq8g
- Fi3qFLjA9Huc3Be41LUdPW+OC+mLo4loFVqJMsdEGhT9fO3tgVoRrP/eMcbtg5R0nm5B
- gWIcTcgbw4W+ET5gcPHO76gGXfYJ4uc40PZp9SIAzBUuXTvhCbqvQfwqFPUtWgh1l/4c
- fdEg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734443146; x=1735047946;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=do9a+GsoK8fyYZPzjPqZjR9Y9T+197O23pdyi+E4q7E=;
- b=t6/8BDy00QDAoSrrNj9ljA2qjBGA+ohnii7C4YQoDs66MfhCUmzJ/q48N23SwOW2RA
- DK88GC3IekYGvh7GD1XU6tRRbcW6h1xuRdF/Mb+S04rcAodAO3Eea9dlz0/BiBE/pba2
- H9LcPluvO/nMu8+m7+BGCLzskQtMJC7BuThiJ8hRT/3iD/ryh44i8qGwWWs7ZoAKvsBz
- +S5NkeCef7ZoClxqTD9CXdRVjEimYnISPIYgW9qdK9ZAcCMAu4Q29ut4cDhm/086Fhsj
- Dv5w4j9ut5YdUpkmxhjTASDH0kZkZ3E+Lo8ytA85b0FXdTyn99DExU9QWaaM9eTJ8Ob1
- hJvg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVSW93tLYbJ9MaTl0Jqbp6PFcPAuiMNV1NkrD+QWQ8ESjODXcum11OZzds97/Olt/yyvS/XbGa2Rn6W@nongnu.org
-X-Gm-Message-State: AOJu0YwV+UEjDqj3NdUhY0S2DSPntzxz8+oLLqjze9QpFFIEkW8C74xY
- ozgnRMvBKxrMDNNdZ0pagH1FzqCQl9JEf0q35zBN7ZDlkBLfOwdK2WyCH1OrxhE=
-X-Gm-Gg: ASbGncvjgsPSWWLXm2loPJkVMEsiqKSdaVLGkm62ubTvC4aJgwizzaytV4sW0//N4AV
- lEun9PkrSJGey9ghV6Y7C+BTq/hERZj3qdSVSVUzrqJJ6gV43FRVURddDu/KyT6ejkwt/0hhvOi
- 9ORo/4YwnzJOpeYiVefFNU5Do4iS0KdrbvfQ3PAag7E79zKOLnSwmQlAN4X2yEJGIXCdWoa72YJ
- /mmOkCPLDL2FMx4D+cseS95pfxp+TsDd3wxcGdKfkkKenxuxRA5H7y6EBa8kFAeX3bfIh0O
-X-Google-Smtp-Source: AGHT+IErONB06oDQw+OW61g+ZSdGOxbhHavS4H42eeUXsV9NMojxvTOgJJPcMe80ni7TivzTHQ9DGg==
-X-Received: by 2002:a05:600c:83cf:b0:434:edcf:7474 with SMTP id
- 5b1f17b1804b1-4362aaa1ee4mr135626515e9.33.1734443146600; 
- Tue, 17 Dec 2024 05:45:46 -0800 (PST)
-Received: from [192.168.1.117] ([78.196.4.158])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4362559ebe1sm172971525e9.19.2024.12.17.05.45.45
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 17 Dec 2024 05:45:46 -0800 (PST)
-Message-ID: <2cc30514-15a8-4765-8463-8d14ad270e51@linaro.org>
-Date: Tue, 17 Dec 2024 14:45:45 +0100
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tNYDc-0000zX-17
+ for qemu-devel@nongnu.org; Tue, 17 Dec 2024 09:06:37 -0500
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
+ [IPv6:2a07:de40:b281:104:10:150:64:97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 4ACB521157;
+ Tue, 17 Dec 2024 14:06:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1734444394; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=pI+60FbCbSJOiya0c6FkhgtYYGYWEos+b98NcfhA04o=;
+ b=K1dWdEcCZpuRXXdcusIlzKWGnpJ9W4q0W0lCzZh14wZ+rd8x0dbUkyvZIFggBf7NokdvrJ
+ 9fRlMd2zSCtSNhe6YPt7tDS8xlww/qX8cbvVOdsUjfCR1/LI8koY6+pNNcHqoa/3etI0FW
+ 0RxxJNdJ+hxCMAXeEHcUnZ4Mg+NDvJc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1734444394;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=pI+60FbCbSJOiya0c6FkhgtYYGYWEos+b98NcfhA04o=;
+ b=RzaNKAnnHuE25EHXsD+AwISBRLs38LNNrN9GVm1uz6sppnXpgN5yU1OellGtKTn15/u2yb
+ xTQIhB1HJ+KZkGDA==
+Authentication-Results: smtp-out1.suse.de;
+ dkim=pass header.d=suse.de header.s=susede2_rsa header.b=K1dWdEcC;
+ dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=RzaNKAnn
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1734444394; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=pI+60FbCbSJOiya0c6FkhgtYYGYWEos+b98NcfhA04o=;
+ b=K1dWdEcCZpuRXXdcusIlzKWGnpJ9W4q0W0lCzZh14wZ+rd8x0dbUkyvZIFggBf7NokdvrJ
+ 9fRlMd2zSCtSNhe6YPt7tDS8xlww/qX8cbvVOdsUjfCR1/LI8koY6+pNNcHqoa/3etI0FW
+ 0RxxJNdJ+hxCMAXeEHcUnZ4Mg+NDvJc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1734444394;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=pI+60FbCbSJOiya0c6FkhgtYYGYWEos+b98NcfhA04o=;
+ b=RzaNKAnnHuE25EHXsD+AwISBRLs38LNNrN9GVm1uz6sppnXpgN5yU1OellGtKTn15/u2yb
+ xTQIhB1HJ+KZkGDA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C20B513A4B;
+ Tue, 17 Dec 2024 14:06:33 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id J0bHIWmFYWdbCQAAD6G6ig
+ (envelope-from <farosas@suse.de>); Tue, 17 Dec 2024 14:06:33 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
+ qemu-devel@nongnu.org, peterx@redhat.com
+Cc: linuxarm@huawei.com, zhangfei.gao@linaro.org
+Subject: Re: [PATCH] tests/qtest/migration: Fix compile errors when
+ CONFIG_UADK is set
+In-Reply-To: <20241217131046.83844-1-shameerali.kolothum.thodi@huawei.com>
+References: <20241217131046.83844-1-shameerali.kolothum.thodi@huawei.com>
+Date: Tue, 17 Dec 2024 11:06:31 -0300
+Message-ID: <87msguwgig.fsf@suse.de>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] hw/misc/vmfwupdate: Introduce hypervisor fw-cfg
- interface support
-To: Ani Sinha <anisinha@redhat.com>
-Cc: Alexander Graf <graf@amazon.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Gerd Hoffmann <kraxel@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
- Vitaly Kuznetsov <vkuznets@redhat.com>, qemu-devel <qemu-devel@nongnu.org>
-References: <20241216114841.1025070-1-anisinha@redhat.com>
- <26c97140-6ec5-49f5-b0d4-d4f7f82a12f0@linaro.org>
- <E18F7A48-BA4D-46B3-BD73-38322BF33CEC@redhat.com>
- <0d6d208a-00ee-47c9-8d47-bb5758133ecb@linaro.org>
- <FE6D8668-84D4-457E-994A-8066D52AD9B5@redhat.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <FE6D8668-84D4-457E-994A-8066D52AD9B5@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 4ACB521157
+X-Spam-Score: -4.51
+X-Rspamd-Action: no action
+X-Spamd-Result: default: False [-4.51 / 50.00]; BAYES_HAM(-3.00)[99.99%];
+ NEURAL_HAM_LONG(-1.00)[-1.000];
+ R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
+ MX_GOOD(-0.01)[]; RCVD_VIA_SMTP_AUTH(0.00)[]; ARC_NA(0.00)[];
+ RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from]; 
+ RCVD_TLS_ALL(0.00)[]; MIME_TRACE(0.00)[0:+];
+ MISSING_XM_UA(0.00)[];
+ SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+ TO_DN_SOME(0.00)[];
+ RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+ MID_RHS_MATCH_FROM(0.00)[]; FUZZY_BLOCKED(0.00)[rspamd.com];
+ FROM_EQ_ENVFROM(0.00)[]; FROM_HAS_DN(0.00)[];
+ RCPT_COUNT_FIVE(0.00)[5]; RCVD_COUNT_TWO(0.00)[2];
+ TO_MATCH_ENVRCPT_ALL(0.00)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ DKIM_TRACE(0.00)[suse.de:+]
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+Received-SPF: pass client-ip=195.135.223.130; envelope-from=farosas@suse.de;
+ helo=smtp-out1.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -104,43 +131,16 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 17/12/24 12:09, Ani Sinha wrote:
-> 
-> 
->> On 17 Dec 2024, at 4:11 PM, Philippe Mathieu-Daudé <philmd@linaro.org> wrote:
->>
->> On 17/12/24 11:06, Ani Sinha wrote:
->>>> On 16 Dec 2024, at 8:35 PM, Philippe Mathieu-Daudé <philmd@linaro.org> wrote:
->>>>
->>>> Hi Ani,
+Shameer Kolothum via <qemu-devel@nongnu.org> writes:
 
+> Removes accidental inclusion of unrelated functions within CONFIG_UADK
+> as this causes compile errors like:
+>
+> error: redefinition of =E2=80=98migrate_hook_start_xbzrle=E2=80=99
+>
+> Fixes: 932f74f3fe6e ("tests/qtest/migration: Split compression tests from=
+ migration-test.c")
+> Signed-off-by: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
 
->>>>> +static void vmfwupdate_device_class_init(ObjectClass *klass, void *data)
->>>>> +{
->>>>> +    DeviceClass *dc = DEVICE_CLASS(klass);
->>>>> +
->>>>> +    /* we are not interested in migration - so no need to populate dc->vmsd */
->>>>> +    dc->desc = "VM firmware blob update device";
->>>>> +    dc->realize = vmfwupdate_realize;
->>>>> +    dc->hotpluggable = false;
->>>>> +    device_class_set_props(dc, vmfwupdate_properties);
->>>>> +    set_bit(DEVICE_CATEGORY_MISC, dc->categories);
->>>>
->>>> How is this device instantiated?
->>> Something like this:
->>> $ ./qemu-system-x86_64 -device vmfwupdate
->>> VNC server running on ::1:5900
->>
->> But this device is not marked as allowed to be created on the
->> command line with:
->>
->>     dc->user_creatable = true;
->>
->> Am I missing something?
-> 
-> Isnt’ it true by default? See device_class_init(). Only when it’s a private device we need to set it explicitly to false.
-> 
-> Let me know if its me who is missing something :-)
-
-Indeed, you are correct! I forgot about that default.
+Reviewed-by: Fabiano Rosas <farosas@suse.de>
 
