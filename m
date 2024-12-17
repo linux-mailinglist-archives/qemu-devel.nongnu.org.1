@@ -2,99 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B5429F4F69
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Dec 2024 16:27:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C4E839F4F6B
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Dec 2024 16:27:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tNZT4-0000qg-6L; Tue, 17 Dec 2024 10:26:38 -0500
+	id 1tNZTS-00014i-Dj; Tue, 17 Dec 2024 10:27:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tNZT1-0000qF-Jz
- for qemu-devel@nongnu.org; Tue, 17 Dec 2024 10:26:35 -0500
-Received: from smtp-out2.suse.de ([195.135.223.131])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>)
+ id 1tNZTK-00013x-JS; Tue, 17 Dec 2024 10:26:55 -0500
+Received: from smtp-out1.suse.de ([195.135.223.130])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tNZSz-00057M-TF
- for qemu-devel@nongnu.org; Tue, 17 Dec 2024 10:26:35 -0500
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>)
+ id 1tNZTF-00059S-91; Tue, 17 Dec 2024 10:26:54 -0500
 Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 8D4211F392;
- Tue, 17 Dec 2024 15:26:28 +0000 (UTC)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 4775321157;
+ Tue, 17 Dec 2024 15:26:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1734449188; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1734449207; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=gZDB3fcFVU4129eajeeMY2oMjHdmlUIrEBkrQ99A6cU=;
- b=F0n+RaPa8+cviV23Yy4KZQDYzVfn6qKkky5Vz45O4KSVKtea8LO7/zjnt24o2rjQ6VyRFJ
- dbrRToFOsyPjZrCzh0kZ5/WOgE1YBlYQS+c+QAJ+guYsYK7XXZsn4EzJTmAZsCuLpzpUFF
- 3IoOlxH7TR8dCMgc70+QmuZuEeJ5Zsg=
+ bh=AKRNRuFju2hq/ZYAhw2F1m7cfBcgkqHN6/9anGtjvOA=;
+ b=WEGAK8uPNYPzT0Y3KdTEoqvbVreIqZyV7q1rbFVA97Z2j3qOUYby1shZAIoEkYJxc/00rY
+ aILWbVNqarRHJVtOyXMqG6pr27OQ0ygvjrZSFgIFUVIk4cJbsFQyCbNMS5/iPeSqf3IUUp
+ jtMBs2Xx7/WWFWA6/+k2SKd1LKf5CDM=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1734449188;
+ s=susede2_ed25519; t=1734449207;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=gZDB3fcFVU4129eajeeMY2oMjHdmlUIrEBkrQ99A6cU=;
- b=IlAy/kG5YjYY+SeLVVM18uQKEWa3wiiLMZXFtzQMg/hPRop7XQkkhvwbVEHNX0o0L9sdJe
- XBauNt0Iiefa93CQ==
-Authentication-Results: smtp-out2.suse.de;
+ bh=AKRNRuFju2hq/ZYAhw2F1m7cfBcgkqHN6/9anGtjvOA=;
+ b=kZ0trdVx1vEV9bumJ+SeG8JRK+69Lxc/hmCm87MMum+wcvLp/tHTep2SLIee5Z4pWa+egE
+ MT2V09deH8l6YpDw==
+Authentication-Results: smtp-out1.suse.de;
 	none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1734449188; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1734449207; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=gZDB3fcFVU4129eajeeMY2oMjHdmlUIrEBkrQ99A6cU=;
- b=F0n+RaPa8+cviV23Yy4KZQDYzVfn6qKkky5Vz45O4KSVKtea8LO7/zjnt24o2rjQ6VyRFJ
- dbrRToFOsyPjZrCzh0kZ5/WOgE1YBlYQS+c+QAJ+guYsYK7XXZsn4EzJTmAZsCuLpzpUFF
- 3IoOlxH7TR8dCMgc70+QmuZuEeJ5Zsg=
+ bh=AKRNRuFju2hq/ZYAhw2F1m7cfBcgkqHN6/9anGtjvOA=;
+ b=WEGAK8uPNYPzT0Y3KdTEoqvbVreIqZyV7q1rbFVA97Z2j3qOUYby1shZAIoEkYJxc/00rY
+ aILWbVNqarRHJVtOyXMqG6pr27OQ0ygvjrZSFgIFUVIk4cJbsFQyCbNMS5/iPeSqf3IUUp
+ jtMBs2Xx7/WWFWA6/+k2SKd1LKf5CDM=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1734449188;
+ s=susede2_ed25519; t=1734449207;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=gZDB3fcFVU4129eajeeMY2oMjHdmlUIrEBkrQ99A6cU=;
- b=IlAy/kG5YjYY+SeLVVM18uQKEWa3wiiLMZXFtzQMg/hPRop7XQkkhvwbVEHNX0o0L9sdJe
- XBauNt0Iiefa93CQ==
+ bh=AKRNRuFju2hq/ZYAhw2F1m7cfBcgkqHN6/9anGtjvOA=;
+ b=kZ0trdVx1vEV9bumJ+SeG8JRK+69Lxc/hmCm87MMum+wcvLp/tHTep2SLIee5Z4pWa+egE
+ MT2V09deH8l6YpDw==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 122F1132EA;
- Tue, 17 Dec 2024 15:26:27 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C399C132EA;
+ Tue, 17 Dec 2024 15:26:46 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id QMU+MiOYYWfdIwAAD6G6ig
- (envelope-from <farosas@suse.de>); Tue, 17 Dec 2024 15:26:27 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id pHkQIjaYYWcCJAAAD6G6ig
+ (envelope-from <farosas@suse.de>); Tue, 17 Dec 2024 15:26:46 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: Peter Xu <peterx@redhat.com>, qemu-devel@nongnu.org
-Cc: Prasad Pandit <ppandit@redhat.com>, "Maciej S . Szmigiero"
- <mail@maciej.szmigiero.name>, =?utf-8?Q?C=C3=A9dric?= Le Goater
- <clg@redhat.com>, Alex
- Williamson <alex.williamson@redhat.com>, peterx@redhat.com, Avihai Horon
- <avihaih@nvidia.com>
-Subject: Re: [PATCH v3 0/7] migration/multifd: Some VFIO / postcopy
- preparations on flush
-In-Reply-To: <20241206224755.1108686-1-peterx@redhat.com>
-References: <20241206224755.1108686-1-peterx@redhat.com>
-Date: Tue, 17 Dec 2024 12:26:25 -0300
-Message-ID: <87jzbywcta.fsf@suse.de>
+Cc: peterx@redhat.com, qemu-block@nongnu.org, Vladimir Sementsov-Ogievskiy
+ <vsementsov@yandex-team.ru>, Stefan Hajnoczi <stefanha@redhat.com>, Andrey
+ Drobyshev <andrey.drobyshev@virtuozzo.com>, Eric Blake
+ <eblake@redhat.com>, "Dr . David Alan Gilbert" <dave@treblig.org>, Kevin
+ Wolf <kwolf@redhat.com>, =?utf-8?Q?Daniel_P_=2E_Berrang=C3=A9?=
+ <berrange@redhat.com>
+Subject: Re: [PATCH v2 0/6] migration/block: disk activation rewrite
+In-Reply-To: <20241206230838.1111496-1-peterx@redhat.com>
+References: <20241206230838.1111496-1-peterx@redhat.com>
+Date: Tue, 17 Dec 2024 12:26:44 -0300
+Message-ID: <87h672wcsr.fsf@suse.de>
 MIME-Version: 1.0
 Content-Type: text/plain
-X-Spamd-Result: default: False [-4.30 / 50.00]; BAYES_HAM(-3.00)[99.99%];
- NEURAL_HAM_LONG(-1.00)[-1.000];
+X-Spamd-Result: default: False [-2.80 / 50.00]; BAYES_HAM(-3.00)[100.00%];
+ SUSPICIOUS_RECIPS(1.50)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
  NEURAL_HAM_SHORT(-0.20)[-0.999]; MIME_GOOD(-0.10)[text/plain];
- MIME_TRACE(0.00)[0:+]; TO_MATCH_ENVRCPT_ALL(0.00)[];
- ARC_NA(0.00)[]; FUZZY_BLOCKED(0.00)[rspamd.com];
+ RCVD_VIA_SMTP_AUTH(0.00)[]; RCPT_COUNT_SEVEN(0.00)[11];
+ ARC_NA(0.00)[]; RCVD_TLS_ALL(0.00)[]; MIME_TRACE(0.00)[0:+];
+ MISSING_XM_UA(0.00)[]; MID_RHS_MATCH_FROM(0.00)[];
  DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- RCVD_TLS_ALL(0.00)[]; FROM_HAS_DN(0.00)[];
- MISSING_XM_UA(0.00)[]; RCVD_COUNT_TWO(0.00)[2];
- FROM_EQ_ENVFROM(0.00)[]; TO_DN_SOME(0.00)[];
- MID_RHS_MATCH_FROM(0.00)[]; RCVD_VIA_SMTP_AUTH(0.00)[];
- RCPT_COUNT_SEVEN(0.00)[8];
+ FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_HAS_DN(0.00)[];
+ TO_DN_SOME(0.00)[]; FROM_EQ_ENVFROM(0.00)[];
+ RCVD_COUNT_TWO(0.00)[2]; TO_MATCH_ENVRCPT_ALL(0.00)[];
  DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid]
-X-Spam-Score: -4.30
-Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
- helo=smtp-out2.suse.de
+X-Spam-Score: -2.80
+Received-SPF: pass client-ip=195.135.223.130; envelope-from=farosas@suse.de;
+ helo=smtp-out1.suse.de
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -123,52 +122,97 @@ Peter Xu <peterx@redhat.com> writes:
 > CI: https://gitlab.com/peterx/qemu/-/pipelines/1577280033
 >  (note: it's a pipeline of two patchsets, to save CI credits and time)
 >
-> v1: https://lore.kernel.org/r/20241205185303.897010-1-peterx@redhat.com
-> v2: https://lore.kernel.org/r/20241206005834.1050905-1-peterx@redhat.com
+> v1: https://lore.kernel.org/r/20241204005138.702289-1-peterx@redhat.com
 >
-> v3 changelog:
-> - R-bs collected
-> - Update commit message of patch 1 [Fabiano]
-> - English updates [Fabiano]
-> - Update comment for MULTIFD_SYNC_ALL [Fabiano]
-> - In multifd_send_sync_main(), assert on req type [Fabiano]
-> - Some more comments and cleanup for RAM_SAVE_FLAG_* movement [Fabiano]
-> - Update the last document patch [Fabiano]
+> This is v2 of the series, removing RFC tag, because my goal is to have them
+> (or some newer version) merged.
 >
-> This series provides some changes that may be helpful for either VFIO or
-> postcopy integration on top of multifd.
+> The major change is I merged last three patches, and did quite some changes
+> here and there, to make sure the global disk activation status is always
+> consistent.  The whole idea is still the same.  I say changelog won't help.
 >
-> For VFIO, only patches 1 & 2 are relevant.
+> I also temporarily dropped Fabiano's ping-pong test cases to avoid
+> different versions floating on the list (as I know a new version is coming
+> at some point. Fabiano: you're taking over the 10.0 pulls, so I assume
+> you're aware so there's no concern on order of merges).  I'll review the
+> test cases separately when they're ready, but this series is still tested
+> with that pingpong test and it keeps working.
 >
-> For postcopy, it's about patches 3-7, but it needs to be based on 1+2
-> because of a context dependency.
+> I started looking at this problem as a whole when reviewing Fabiano's
+> series, especially the patch (for a QEMU crash [1]):
 >
-> All these patches can be seen as cleanups / slight optimizations on top of
-> master branch with/without the VFIO/postcopy work.
+> https://lore.kernel.org/r/20241125144612.16194-5-farosas@suse.de
 >
-> Besides CI, qtests, and some real-world multifd tests just to monitor the
-> sync events happen all correct, I made sure to cover 7.2 machine type
-> (which uses the legacy sync) so it still works as before - basically sync
-> will be more frequent, but all thing keeps working smoothly so far.
+> The proposed patch could work, but it's unwanted to add such side effect to
+> migration.  So I start to think about whether we can provide a cleaner
+> approach, because migration doesn't need the disks to be active to work at
+> all.  Hence we should try to avoid adding a migration ABI (which doesn't
+> matter now, but may matter some day) into prepare phase on disk activation
+> status.  Migration should happen with disks inactivated.
 >
-> Thanks,
+> It's also a pure wish that, if bdrv_inactivate_all() could be benign to be
+> called even if all disks are already inactive.  Then the bug is also gone.
+> After all, similar call on bdrv_activate_all() upon all-active disks is all
+> fine.  I hope that wish could still be fair.  But I don't know well on
+> block layer to say anything meaningful.
 >
-> Peter Xu (7):
->   migration/multifd: Further remove the SYNC on complete
->   migration/multifd: Allow to sync with sender threads only
->   migration/ram: Move RAM_SAVE_FLAG* into ram.h
->   migration/multifd: Unify RAM_SAVE_FLAG_MULTIFD_FLUSH messages
->   migration/multifd: Remove sync processing on postcopy
->   migration/multifd: Cleanup src flushes on condition check
->   migration/multifd: Document the reason to sync for save_setup()
+> And when I was looking at that, I found more things spread all over the
+> place on disk activation.  I decided to clean all of them up, while
+> hopefully fixing the QEMU crash [1] too.
 >
->  migration/multifd.h        | 27 ++++++++++--
->  migration/ram.h            | 28 ++++++++++++
->  migration/rdma.h           |  7 ---
->  migration/multifd-nocomp.c | 74 ++++++++++++++++++++++++++++++-
->  migration/multifd.c        | 17 +++++---
->  migration/ram.c            | 89 +++++++++++++++++---------------------
->  6 files changed, 173 insertions(+), 69 deletions(-)
+> For this v2, I did some more tests, I want to make sure all the past paths
+> keep working at least on failure or cancel races, also in postcopy failure
+> cases.  So I did below and they all run pass (when I said "emulated" below,
+> I meant I hacked something to trigger those race / rare failures, because
+> they aren't easy to trigger with vanilla binary):
+>
+> - Tested generic migrate_cancel during precopy, disk activation won't be
+>   affected.  Disk status reports correct values in tracepoints.
+>
+> - Test Fabiano's ping-pong migration tests on PAUSED state VM.
+>
+> - Emulated precopy failure before sending non-iterable, disk inactivation
+>   won't happen, and also activation won't trigger after migration cleanups
+>   (even if activation on top of activate disk is benign, I checked traces
+>   to make sure it'll provide consistent disk status, skipping activation).
+>
+> - Emulated precopy failure right after sending non-iterable. Disks will be
+>   inactivated, but then can be reactivated properly before VM starts.
+>
+> - Emulated postcopy failure when sending the packed data (which is after
+>   disk invalidated), and making sure src VM will get back to live properly,
+>   re-activate the disks before starting.
+>
+> - Emulated concurrent migrate_cancel at the end of migration_completion()
+>   of precopy, after disk inactivated.  Disks can be reactivated properly.
+>
+>   NOTE: here if dest QEMU didn't quit before migrate_cancel,
+>   bdrv_activate_all() can crash src QEMU.  This behavior should be the same
+>   before/after this patch.
+>
+> Comments welcomed, thanks.
+>
+> [1] https://gitlab.com/qemu-project/qemu/-/issues/2395
+>
+> Peter Xu (6):
+>   migration: Add helper to get target runstate
+>   qmp/cont: Only activate disks if migration completed
+>   migration/block: Make late-block-active the default
+>   migration/block: Apply late-block-active behavior to postcopy
+>   migration/block: Fix possible race with block_inactive
+>   migration/block: Rewrite disk activation
+>
+>  include/migration/misc.h |   4 ++
+>  migration/migration.h    |   6 +-
+>  migration/block-active.c |  94 +++++++++++++++++++++++++++
+>  migration/colo.c         |   2 +-
+>  migration/migration.c    | 136 +++++++++++++++------------------------
+>  migration/savevm.c       |  46 ++++++-------
+>  monitor/qmp-cmds.c       |  22 +++----
+>  migration/meson.build    |   1 +
+>  migration/trace-events   |   3 +
+>  9 files changed, 188 insertions(+), 126 deletions(-)
+>  create mode 100644 migration/block-active.c
 
 Queued, thanks!
 
