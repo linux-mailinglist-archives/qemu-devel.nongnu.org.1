@@ -2,77 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 061D79F5088
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Dec 2024 17:12:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B74739F5081
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Dec 2024 17:11:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tNaAp-0000FD-91; Tue, 17 Dec 2024 11:11:51 -0500
+	id 1tNaA7-00048n-73; Tue, 17 Dec 2024 11:11:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tNaAk-0008Sj-Sf
- for qemu-devel@nongnu.org; Tue, 17 Dec 2024 11:11:47 -0500
-Received: from mgamail.intel.com ([192.198.163.17])
+ id 1tNa9z-000465-LL
+ for qemu-devel@nongnu.org; Tue, 17 Dec 2024 11:11:02 -0500
+Received: from mgamail.intel.com ([198.175.65.11])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tNaAf-0003op-Hv
- for qemu-devel@nongnu.org; Tue, 17 Dec 2024 11:11:46 -0500
+ id 1tNa9x-0003jO-Ql
+ for qemu-devel@nongnu.org; Tue, 17 Dec 2024 11:10:59 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1734451902; x=1765987902;
+ t=1734451858; x=1765987858;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=ADb5LrrPM45Iltt7daJmxHcrLCSyT/62xcSAmOFT7SE=;
- b=Gdo3MioeXLe/hvxQHGRJBSIWdWWmGd7RN1tucQc5mIZcrpY+en9nEqyY
- hc0YsVbhK8+iyLJ48jalCQT9z/bbIM7zXSVo45rFo0VfUZdjx0oKalg0i
- BCM46zjJUewWSTGWn//1tiLblzLjwNIBtmhNmzEywVRONBc6VM9MQH9cY
- zUcYRPbxSyocKGSEcjhCEd3HF7NTzkc+MJMn7gvdbJ0+soXaPCtI5rNX1
- 8UeOQSlgoYc/29s4wyMDjH7d1o+3fk46GEpOtPuFYyUpaJRVbhAKDUfNY
- f6XUbB+w8EusVfrDGGihOKACCLZ0QKEhj8DNt9FxuHL2w3voqMeXBdZ7k w==;
-X-CSE-ConnectionGUID: KuCxuSyQQ2ucXCzpLDTLoA==
-X-CSE-MsgGUID: ZMjf6emnTV6DRwPuPolmvQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11288"; a="34778435"
-X-IronPort-AV: E=Sophos;i="6.12,242,1728975600"; d="scan'208";a="34778435"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
- by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Dec 2024 08:06:08 -0800
-X-CSE-ConnectionGUID: rozFU8KBSmWf/b67cOyFeA==
-X-CSE-MsgGUID: 8ivHx4rvS5SaWz8EmpyQAQ==
+ mime-version:in-reply-to;
+ bh=Cm18FwdZ3kQgmti/Jxvk4pWT5jZnF2x7ce6Gw47H9Ew=;
+ b=TbOS980kfsp+LpqJy2tpCVFzInwiGQq0x8ZHnZRmA/q+Zys3Sc6cdRF5
+ LDXoa2B/S2PYnCu+RE/7LMNLoXyfXJTKMr42/fXK0mtNe0ZWyn02SaTmm
+ kX9O9xLPrKYfMMIsw06gl3iG933RZUzlgUtPcVyOIKUgtIyPzEx4A/yfm
+ 0WYeTWu+k8w5nclyZqRHteUCNLFaaJlZCYU/UwK/p9buXdgn9frBYn1tB
+ BuoJuqqaCjVXV8xgg3Yr/YwOmBZ0zOPaP9umPadlFifJw4TZXJ5hv+k7g
+ mtcdc51PmS930jr9P8KcJp4Pc9lkay4bMxQJaWvtDbI46j5Hwd/NabpCI g==;
+X-CSE-ConnectionGUID: 82+P/02jQeqazzGo2AWORA==
+X-CSE-MsgGUID: b8NoMcoKQGWg+4Ur25NNiA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11282"; a="45371634"
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="45371634"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+ by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Dec 2024 08:10:54 -0800
+X-CSE-ConnectionGUID: LxfpRyQmRYKpT7cLTu7iyA==
+X-CSE-MsgGUID: UcpQ+NkHSCCQgNdhLxD23Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,242,1728975600"; d="scan'208";a="98151026"
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="98386534"
 Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
  ([10.239.160.39])
- by fmviesa009.fm.intel.com with ESMTP; 17 Dec 2024 08:06:06 -0800
-Date: Wed, 18 Dec 2024 00:24:45 +0800
+ by orviesa008.jf.intel.com with ESMTP; 17 Dec 2024 08:10:53 -0800
+Date: Wed, 18 Dec 2024 00:29:32 +0800
 From: Zhao Liu <zhao1.liu@intel.com>
-To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, Stefano Stabellini <sstabellini@kernel.org>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Paul Durrant <paul@xen.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>, Anton Johansson <anjo@rev.ng>,
- Anthony PERARD <anthony@xenproject.org>, xen-devel@lists.xenproject.org
-Subject: Re: [PATCH 3/3] system/accel-ops: Remove unnecessary
- 'exec/cpu-common.h' header
-Message-ID: <Z2Glzcf9pWE3BVLq@intel.com>
-References: <20241217151305.29196-1-philmd@linaro.org>
- <20241217151305.29196-4-philmd@linaro.org>
+To: Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
+Subject: Re: [PATCH 1/2] i386: Remove unused parameter "uint32_t bit" in
+ feature_word_description()
+Message-ID: <Z2Gm7EFvxigbI9ze@intel.com>
+References: <20241217123932.948789-1-xiaoyao.li@intel.com>
+ <20241217123932.948789-2-xiaoyao.li@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20241217151305.29196-4-philmd@linaro.org>
-Received-SPF: pass client-ip=192.198.163.17; envelope-from=zhao1.liu@intel.com;
+In-Reply-To: <20241217123932.948789-2-xiaoyao.li@intel.com>
+Received-SPF: pass client-ip=198.175.65.11; envelope-from=zhao1.liu@intel.com;
  helo=mgamail.intel.com
-X-Spam_score_int: -54
-X-Spam_score: -5.5
-X-Spam_bar: -----
-X-Spam_report: (-5.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H2=-1.116,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,21 +82,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Dec 17, 2024 at 04:13:05PM +0100, Philippe Mathieu-Daudé wrote:
-> Date: Tue, 17 Dec 2024 16:13:05 +0100
-> From: Philippe Mathieu-Daudé <philmd@linaro.org>
-> Subject: [PATCH 3/3] system/accel-ops: Remove unnecessary
->  'exec/cpu-common.h' header
-> X-Mailer: git-send-email 2.45.2
+On Tue, Dec 17, 2024 at 07:39:31AM -0500, Xiaoyao Li wrote:
+> Date: Tue, 17 Dec 2024 07:39:31 -0500
+> From: Xiaoyao Li <xiaoyao.li@intel.com>
+> Subject: [PATCH 1/2] i386: Remove unused parameter "uint32_t bit" in
+>  feature_word_description()
+> X-Mailer: git-send-email 2.34.1
 > 
-> Since commit c4b3f46c151 ("include/exec: Move vaddr defines to
-> separate file") we only need to include "exec/vaddr.h" to get
-> the 'vaddr' type definition, no need for "exec/cpu-common.h".
+> From: Lei Wang <lei4.wang@intel.com>
 > 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Parameter "uint32_t bit" is not used in function feature_word_description(),
+> so remove it.
+> 
+> Signed-off-by: Lei Wang <lei4.wang@intel.com>
+> Reviewed-by: Igor Mammedov <imammedo@redhat.com>
+> Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
+> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
 > ---
->  include/sysemu/accel-ops.h | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  target/i386/cpu.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
 
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
