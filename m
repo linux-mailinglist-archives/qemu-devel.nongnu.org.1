@@ -2,75 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CDCD9F4F47
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Dec 2024 16:22:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2785A9F4F53
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Dec 2024 16:23:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tNZOA-0005W7-CJ; Tue, 17 Dec 2024 10:21:34 -0500
+	id 1tNZQ4-0006zg-NQ; Tue, 17 Dec 2024 10:23:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1tNZO7-0005VV-N6
- for qemu-devel@nongnu.org; Tue, 17 Dec 2024 10:21:31 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1tNZO5-0004W2-Pt
- for qemu-devel@nongnu.org; Tue, 17 Dec 2024 10:21:31 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1734448887;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=yLXIcfhEljzQGKGN6Spe/86GGKOa6LWHXnv/zAkDeQw=;
- b=G0TgHaLDvqRtoqHpmDeOvw+tqwAKsRsQ96u/pa4SbJ2HL7j9MMMvT1wcQbe4F563k3rmyR
- UWH1MIIOqqsBCIvqYixU+bD2+ILz+/I9hPpTt1HsfTMMfIjW7G0SDHIv5Pe3CHcUHdj8Jr
- p++l5QnSGXX1ux/AWA+csZT0LIswMMI=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-368-zHj2tfTzNMy9l1G9k50q_Q-1; Tue,
- 17 Dec 2024 10:21:24 -0500
-X-MC-Unique: zHj2tfTzNMy9l1G9k50q_Q-1
-X-Mimecast-MFC-AGG-ID: zHj2tfTzNMy9l1G9k50q_Q
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 0DAA11955F2B; Tue, 17 Dec 2024 15:21:23 +0000 (UTC)
-Received: from sirius.home.kraxel.org (unknown [10.39.192.88])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 744BA195395A; Tue, 17 Dec 2024 15:21:22 +0000 (UTC)
-Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
- id 430E01800399; Tue, 17 Dec 2024 16:21:20 +0100 (CET)
-Date: Tue, 17 Dec 2024 16:21:20 +0100
-From: Gerd Hoffman <kraxel@redhat.com>
-To: Ani Sinha <anisinha@redhat.com>
-Cc: Alex Graf <graf@amazon.com>, Paolo Bonzini <pbonzini@redhat.com>, 
- Igor Mammedov <imammedo@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>,
- qemu-devel@nongnu.org
-Subject: Re: [PATCH v2] hw/misc/vmfwupdate: Introduce hypervisor fw-cfg
- interface support
-Message-ID: <rnhi7vmax2vicc56xpaltjbfnffto3k7awaum4eblqlts4uhd2@ivqgxapmdnj2>
-References: <20241216114841.1025070-1-anisinha@redhat.com>
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1tNZQ2-0006zT-HK
+ for qemu-devel@nongnu.org; Tue, 17 Dec 2024 10:23:30 -0500
+Received: from mail-qv1-xf2d.google.com ([2607:f8b0:4864:20::f2d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1tNZPx-0004ga-V4
+ for qemu-devel@nongnu.org; Tue, 17 Dec 2024 10:23:30 -0500
+Received: by mail-qv1-xf2d.google.com with SMTP id
+ 6a1803df08f44-6d8fd060e27so44765226d6.1
+ for <qemu-devel@nongnu.org>; Tue, 17 Dec 2024 07:23:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1734449004; x=1735053804; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=S8n/b40YqN8YOJUL/vNnP/8gd8jY2MrA/ZCcqfJu+EQ=;
+ b=BCuG13As7HDeaPP/+HbkY+8PRTs+OSQ5gGGmAf4cJHSjX0TwQ5p5xDM4LMouWoU9Ss
+ 5g5Mh6LP0O2z2VDD3lJ3diL+3Omm9c3SM+T/Q4reYlGyya9acLaWsyKwO80vrTHxUPXC
+ lbDRb5uSrXqs4P1D3vFzF9EwzcOBXvi4cqCxjDrjCgoO/z2NxMNpimOZ/rs7SKsRkubk
+ WXcDraqBobGyl5USsrikbOrvfRLB87Fb2HhNUsAsQs0ku3xoP5GsA8QBfwJd2hvfPvw3
+ GuhkHfwpEUPk5YMVgTCJvqJrYU51v2KtzLKKUMJp+hwBAfFG6oN7YVn0ptmvLIiZSGPG
+ jsqw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1734449004; x=1735053804;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=S8n/b40YqN8YOJUL/vNnP/8gd8jY2MrA/ZCcqfJu+EQ=;
+ b=WzrfpT9cKOBMnx0xUbfeF5exmONwZUEtDqb1vUq11G8qLC0rOTsWPoAWdK+K6MOufX
+ agsQZMB8wN/zRTD0rZe7efFeiQ57lAPq4BJjzQELO9srGKMqJswnbselmNntWePQMlI2
+ aRraoh8YawqJ8uy6vnqK59hYuSS7QW5jY5C1ESayHh6sPpkqaEHoDHs6bAGlwbZIcmrs
+ uEwiNzNKjonqSHTZB0/0Vt6rFeTJldl0IwUvvsRegHZe4fVShO4k3WgTsoA8EHqBlDeH
+ G3yB5sWThnlg6UGiIyIuDE9bllGPEnu4ElcckDm2mx0g5hWR18vM1pIJ8ZVG2wSfwpId
+ dAcw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCW0Sw0fLqXoQ4UniJTEQbwoOrewYU1XpIFMMxiHiVf7eg3YpKW7JsQPU2PCT/iNb4R5OfE/R2dsk8P1@nongnu.org
+X-Gm-Message-State: AOJu0Ywn1oHnt3iVYsPxELZ/KSSAu1mdpO3ZM/FADQzTyYLVyhXWUsLo
+ HgobAfqS6e2hduqkagiP6DiaYW3ZrIhF/RVfjQy3q3q9yh+gjEzhR7OW+P5PFt8=
+X-Gm-Gg: ASbGncsfQPn6L/kt8GssnW1XGPH8l9ivgmCZEN76/2YtrcqZVOUXppk02z8djagwhhs
+ knJRgLhiKaxRAJjZ7OGUrhBok6fA9Vv75OVRhHvxO5zpPXdASWsPWfpJ5RXAqCn/29IujRDXWzx
+ rditdv8qzLPw1Y/636IOY4RXnOhoeTGbsy683Xo46J4lRRYH63KPvLzEA5P67/beDbzTa/SqNzU
+ I3V6kLAo4XyW1ghcN4GLj9p3b933M2/D7DcEtJ7I5vejJYFEyJcFwfkIt8u57aJuLuBXBX7Ag==
+X-Google-Smtp-Source: AGHT+IFunO5uDHzKBFW35RDmWjypGrTsE0h533xgwbjv9A8vxGVNOpabFT5sFpVswOskfVm2Zj4p4g==
+X-Received: by 2002:a05:6214:2a4c:b0:6d8:821d:7370 with SMTP id
+ 6a1803df08f44-6dc9698f0afmr251713366d6.49.1734449004491; 
+ Tue, 17 Dec 2024 07:23:24 -0800 (PST)
+Received: from [172.20.0.130] ([187.217.227.247])
+ by smtp.gmail.com with ESMTPSA id
+ 6a1803df08f44-6dccd2570d7sm39502536d6.34.2024.12.17.07.23.20
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 17 Dec 2024 07:23:24 -0800 (PST)
+Message-ID: <6a5d4c63-72b9-47b1-a247-bc90ec0ffe43@linaro.org>
+Date: Tue, 17 Dec 2024 09:23:15 -0600
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20241216114841.1025070-1-anisinha@redhat.com>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kraxel@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -31
-X-Spam_score: -3.2
-X-Spam_bar: ---
-X-Spam_report: (-3.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-1.116,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 05/13] tests/tcg/plugins/syscall: fix 32-bit build
+To: Pierrick Bouvier <pierrick.bouvier@linaro.org>, qemu-devel@nongnu.org
+Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Alexandre Iooss <erdnaxe@crans.org>, Paolo Bonzini <pbonzini@redhat.com>,
+ Mahmoud Mandour <ma.mandourr@gmail.com>, Thomas Huth <thuth@redhat.com>,
+ philmd@linaro.org
+References: <20241217010707.2557258-1-pierrick.bouvier@linaro.org>
+ <20241217010707.2557258-6-pierrick.bouvier@linaro.org>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20241217010707.2557258-6-pierrick.bouvier@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::f2d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-qv1-xf2d.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_PASS=-0.001,
+ T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,66 +103,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-  Hi,
+On 12/16/24 19:06, Pierrick Bouvier wrote:
+> Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+> ---
+>   tests/tcg/plugins/syscall.c | 6 +++---
+>   1 file changed, 3 insertions(+), 3 deletions(-)
 
-> +Fw-cfg Files
-> +************
-> +
-> +Guests drive vmfwupdate through special ``fw-cfg`` files that control its flow
-> +followed by a standard system reset operation. When vmfwupdate is available,
-> +it provides the following ``fw-cfg`` files:
-> +
-> +* ``vmfwupdate/cap`` (``u64``) - Read-only Little Endian encoded bitmap of additional
-> +  capabilities the interface supports. List of available capabilities:
-> +
-> +     ``VMFWUPDATE_CAP_BIOS_RESIZE        0x0000000000000001``
-> +
-> +* ``vmfwupdate/bios-size`` (``u32``) - Little Endian encoded size of the BIOS region.
-> +  Read-only by default. Optionally Read-write if ``vmfwupdate/cap`` contains
-> +  ``VMFWUPDATE_CAP_BIOS_RESIZE``. On write, the BIOS region may resize. Guests are
-> +  required to read the value after writing and compare it with the requested size
-> +  to determine whether the resize was successful. Note, x86 BIOS regions always
-> +  start at 4GiB - bios-size.
-> +
-> +* ``vmfwupdate/opaque`` (``1024 bytes``) - A 1KiB buffer that survives the BIOS replacement
-> +  flow. Can be used by the guest to propagate guest physical addresses of payloads
-> +  to its BIOS stage. It’s recommended to make the new BIOS clear this file on boot
-> +  if it exists. Contents of this file are under control by the hypervisor. In an
-> +  environment that considers the hypervisor outside of its trust boundary, guests
-> +  are advised to validate its contents before consumption.
-> +
-> +* ``vmfwupdate/disable`` (``u8``) - Indicates whether the interface is disabled.
-> +  Returns 0 for enabled, 1 for disabled. Writing any value disables it. Writing is
-> +  only allowed if the value is 0. When the interface is disabled, the replace file
-> +  is ignored on reset. This value resets to 0 on system reset.
-> +
-> +* ``vmfwupdate/bios-addr`` (``u64``) - A 64bit Little Endian encoded guest physical address
-> +  at the beginning of the replacement BIOS region. The provided payload must reside
-> +  in shared memory. 0 on system reset.
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
-I'd suggest to make all integers u64 (little endian).
+r~
 
-Any specific reason why vmfwupdate/opaque is 1024 bytes?
-How about using 4096 (aka PAGE_SIZE) bytes?
-
-> +On reset, the hypervisor evaluates whether ``vmfwupdate/disable`` is ``1``. If it is, it ignores
-> +any other vmfwupdate values and performs a standard system reset.
-> +
-> +If ``vmfwupdate/disable`` is ``0``, the hypervisor checks if bios-addr is ``0``. If it is, it
-> +performs a standard system reset.
-
-What is 'standard system reset' in SEV-SNP mode?  I think qemu does not
-support it right now and will simply poweroff the guest instead.  Will
-that continue to be the case?  Or should qemu re-create the VM context
-in that case, simliar to the firmware update case, except that qemu
-would have to use the default firmware image then?
-
-Will the vmfwupdate be supported without SEV-SNP too?  Might be useful
-for development + testing.  If so the spec should clarify what happens
-in that case, because the concept of "shared memory" does not exist
-then.
-
-take care,
-  Gerd
+> 
+> diff --git a/tests/tcg/plugins/syscall.c b/tests/tcg/plugins/syscall.c
+> index ff452178b18..47aad55fc1b 100644
+> --- a/tests/tcg/plugins/syscall.c
+> +++ b/tests/tcg/plugins/syscall.c
+> @@ -76,12 +76,12 @@ static int64_t write_sysno = -1;
+>   static SyscallStats *get_or_create_entry(int64_t num)
+>   {
+>       SyscallStats *entry =
+> -        (SyscallStats *) g_hash_table_lookup(statistics, GINT_TO_POINTER(num));
+> +        (SyscallStats *) g_hash_table_lookup(statistics, &num);
+>   
+>       if (!entry) {
+>           entry = g_new0(SyscallStats, 1);
+>           entry->num = num;
+> -        g_hash_table_insert(statistics, GINT_TO_POINTER(num), (gpointer) entry);
+> +        g_hash_table_insert(statistics, &entry->num, entry);
+>       }
+>   
+>       return entry;
+> @@ -232,7 +232,7 @@ QEMU_PLUGIN_EXPORT int qemu_plugin_install(qemu_plugin_id_t id,
+>       }
+>   
+>       if (!do_print) {
+> -        statistics = g_hash_table_new_full(NULL, g_direct_equal, NULL, g_free);
+> +        statistics = g_hash_table_new_full(g_int64_hash, g_int64_equal, NULL, g_free);
+>       }
+>   
+>       if (do_log_writes) {
 
 
