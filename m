@@ -2,77 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51B929F4D51
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Dec 2024 15:14:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 330579F4D58
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Dec 2024 15:14:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tNYJY-0007zl-5C; Tue, 17 Dec 2024 09:12:44 -0500
+	id 1tNYKU-0008WS-I7; Tue, 17 Dec 2024 09:13:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1tNYJW-0007zR-7B
- for qemu-devel@nongnu.org; Tue, 17 Dec 2024 09:12:42 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1tNYJU-0001xp-R9
- for qemu-devel@nongnu.org; Tue, 17 Dec 2024 09:12:41 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1734444759;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=P8FCoh5d8PjZU4dSBocn837/7dxxwurYY9CqN5r2LyU=;
- b=SXyQfPljfOnN3KeOuQn44ry+zGCuao4iJv7rlZRCRc6iVKSRjfwtlTLtTaUyZirJa0jnhm
- jwLQSlQVGr9DLQOt2lQTLKbEtGzyYxHQNfb5YI6vtC7W5I2KoxkPdka84wWDiPQHADQSnL
- 2gDl/AlBt5XNjcLkmtv4W0WPhL2wozU=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-613-cLCDRGthNSyg2oAGjIoP6A-1; Tue,
- 17 Dec 2024 09:12:34 -0500
-X-MC-Unique: cLCDRGthNSyg2oAGjIoP6A-1
-X-Mimecast-MFC-AGG-ID: cLCDRGthNSyg2oAGjIoP6A
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 6CAA71955F2F; Tue, 17 Dec 2024 14:12:30 +0000 (UTC)
-Received: from sirius.home.kraxel.org (unknown [10.39.192.88])
- by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id AF09619560A2; Tue, 17 Dec 2024 14:12:28 +0000 (UTC)
-Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
- id 7D12F1800399; Tue, 17 Dec 2024 15:12:26 +0100 (CET)
-Date: Tue, 17 Dec 2024 15:12:26 +0100
-From: Gerd Hoffmann <kraxel@redhat.com>
-To: Michael Tokarev <mjt@tls.msk.ru>
-Cc: qemu-devel@nongnu.org, Eduardo Habkost <eduardo@habkost.net>, 
- Richard Henderson <richard.henderson@linaro.org>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
- "Michael S. Tsirkin" <mst@redhat.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
- Paolo Bonzini <pbonzini@redhat.com>, Yanan Wang <wangyanan55@huawei.com>
-Subject: Re: [PATCH 2/5] x86/loader: only patch linux kernels
-Message-ID: <3gl2kpllzfyuo2hydjj6usmt7jundqzottquxylwzgxae755m2@kpvy6t2qvevj>
-References: <20240411094830.1337658-1-kraxel@redhat.com>
- <20240411094830.1337658-3-kraxel@redhat.com>
- <bbc28a3a-7e4b-4f36-b072-f803e48b6198@tls.msk.ru>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tNYKQ-0008Vt-Uq
+ for qemu-devel@nongnu.org; Tue, 17 Dec 2024 09:13:39 -0500
+Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tNYKP-00025f-F6
+ for qemu-devel@nongnu.org; Tue, 17 Dec 2024 09:13:38 -0500
+Received: by mail-pf1-x436.google.com with SMTP id
+ d2e1a72fcca58-725ee27e905so6826772b3a.2
+ for <qemu-devel@nongnu.org>; Tue, 17 Dec 2024 06:13:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1734444816; x=1735049616; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=WnrPo6CEMaC1ncbSc6+SgkbANPFnAxbQUbfs+Lkqs1E=;
+ b=ORyjIXCq6keQBkRxXDyZSz0uv6zDj+E6MnJ/2k52Uq2gDx0khqUphqM95fgRtc98gU
+ yNulhQ8+EgXqkvNpSF0Ruc47Z1Sf5toKONRcOC07Tke4TiYFsmlp1sd55snYXalljydS
+ pCzaXBeLqb4y2uE82RH+xkJ9ugkkF5X9yqF0vLfzc+D8HXRbbhoIqvqLKciWrqQiT7D/
+ G1CjjJxdbsC5lwXnQMew235rRzkn0beUXJ3V07eQHI589bInG2gGAc/8DoWXFh3vuZ1O
+ PzP/x3VLbtxoDexvex3XBS2KWP3IvH7JcqYo+DTRELMeNKBKBYr/xkPSBFTQ6H/KKkv9
+ tXNw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1734444816; x=1735049616;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=WnrPo6CEMaC1ncbSc6+SgkbANPFnAxbQUbfs+Lkqs1E=;
+ b=NZd4Xr0yWiOC3DLpcX3W50k6N5AltwHxGhLPKr+cZTNrNZfhyMH8jWJ3M4QtLmkthS
+ Sc+ENesa75uwjRXY63sBXHF+bgmzaFdUF5rskYEOTYwoo74HfpRBBX/qyjOj9CEilbfr
+ uxsnZACdzh9v/UI2SYlKjiHX3z7zN6d9KU6ywUPH2+Mt5udS5Tgf9meHa1H5u8cI6zRW
+ DoDT2B22itTB7Cb90c5dlGlZuEAUHJrHe1PD1hqXANR1SRXXQZIdaA0IsjW4ZnBOnD5P
+ 0dipp9GVwaj7tXQxxHj7atbrnNZu3VSg9P5f7ChsJd7KerPYJj8Ua6U3aX5vwDHy6JMe
+ wOWg==
+X-Gm-Message-State: AOJu0Yw54yhAu1fgby0Iu1ZiDHEhZXF8yRP9CrXpvQyPtOFap0tHP1lY
+ jonGK577O55GB30o9sVGBReqGqdOnOr6YkWpsDibi+Y0KPhBr5wUoTPMY0sp0A/3hCpdpdajn3I
+ 8
+X-Gm-Gg: ASbGnct81nyeZkTpS44563NRhd058pxAfD9KQC2TqpFAbN16FOYugGK45OYbHFDpa8V
+ DjqF7D+AG7Sdk35VgXEDlGSiDqTtB2Y8YrhALPYeH0fmyMYb5m43O7A6Q4vJQE6gMsnb2CHrXH5
+ vdaOMil3A7Qvg6W88ossMdOR/CK7bn4d18Jdz4FtzbUaiz5eQweoz7hG+d//+PWMqZSNtTA9KLZ
+ IGIxO1p7rWWq5XezevrvY5A3D1z8i+UtZQAv8Uzn2kskfGrmd2VHWCCl/mi7CXhP5T+P9zKXzGo
+ 9nDl
+X-Google-Smtp-Source: AGHT+IEJ7CnJNRfvMJwnd9iL3OqVe8L0PHONq2mDBjpwiDcDzi9HOFVI+QLx/dqB3rOHkXuc/+GBuA==
+X-Received: by 2002:a05:6a00:8d5:b0:726:41e:b32e with SMTP id
+ d2e1a72fcca58-7290c111609mr24558119b3a.4.1734444815723; 
+ Tue, 17 Dec 2024 06:13:35 -0800 (PST)
+Received: from localhost.localdomain ([78.196.4.158])
+ by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-72918bcdf06sm6937397b3a.184.2024.12.17.06.13.31
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Tue, 17 Dec 2024 06:13:35 -0800 (PST)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: qemu-block@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
+ Stefan Hajnoczi <stefanha@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
+ Ilya Leoshkevich <iii@linux.ibm.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH 0/2] include: Two cleanups around missing 'qemu/atomic.h'
+Date: Tue, 17 Dec 2024 15:13:24 +0100
+Message-ID: <20241217141326.98947-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.45.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <bbc28a3a-7e4b-4f36-b072-f803e48b6198@tls.msk.ru>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kraxel@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -31
-X-Spam_score: -3.2
-X-Spam_bar: ---
-X-Spam_report: (-3.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-1.116,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
+ envelope-from=philmd@linaro.org; helo=mail-pf1-x436.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,26 +96,24 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Dec 17, 2024 at 02:09:30PM +0300, Michael Tokarev wrote:
-> 11.04.2024 12:48, Gerd Hoffmann wrote:
-> > If the binary loaded via -kernel is *not* a linux kernel (in which
-> > case protocol == 0), do not patch the linux kernel header fields.
-> > 
-> > It's (a) pointless and (b) might break binaries by random patching
-> > and (c) changes the binary hash which in turn breaks secure boot
-> > verification.
-> > 
-> > Background: OVMF happily loads and runs not only linux kernels but
-> > any efi binary via direct kernel boot.
-> > 
-> > Note: Breaking the secure boot verification is a problem for linux
-> > kernels too, but fixed that is left for another day ...
-> 
-> Shouldn't this one be picked up for -stable?
+We have 2 headers using qatomic_read() without including
+its declaration from "qemu/atomic.h". Include the missing
+header. For my own convenience I plan to merge these 2 patches
+via my tree.
 
-yes, please.
+Regards,
 
-thanks,
-  Gerd
+Phil.
+
+Philippe Mathieu-Daudé (2):
+  exec/translation-block: Include missing 'qemu/atomic.h' header
+  qemu/coroutine: Include missing 'qemu/atomic.h' header
+
+ include/exec/translation-block.h | 1 +
+ include/qemu/coroutine.h         | 1 +
+ 2 files changed, 2 insertions(+)
+
+-- 
+2.45.2
 
 
