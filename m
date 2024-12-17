@@ -2,55 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B997C9F4B51
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Dec 2024 13:55:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C70CB9F4B50
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Dec 2024 13:55:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tNX5K-0000A1-HX; Tue, 17 Dec 2024 07:53:58 -0500
+	id 1tNX5L-0000Ar-Gu; Tue, 17 Dec 2024 07:53:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1tNX5H-00009b-GS
+ id 1tNX5H-00009d-KL
  for qemu-devel@nongnu.org; Tue, 17 Dec 2024 07:53:55 -0500
 Received: from mgamail.intel.com ([198.175.65.18])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1tNX5F-0005DQ-6g
+ id 1tNX5G-0005Dm-4r
  for qemu-devel@nongnu.org; Tue, 17 Dec 2024 07:53:55 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1734440033; x=1765976033;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=9k/m0mTKdFDTyLClgbunE6OdVwthgmh4AeguZdPXB1g=;
- b=gnCPwjx04zqqqRMhMGAWGN0C8fTViMjeCc/EFddfKBiObfVKa16hKfRU
- hhZK8kAe9IvHvtJkOVxwlZ/s41eiqykW4cHwEgBqnUuARwGl0U7AnrWoJ
- pKp+w91eLdiVzVm1FkoX1vietvjTgM1cEyEWwenlmMFmsh701AzqqyTWS
- nsf7eg5zaKqaf/v2WiGVaSJfzm+qtFOYP35MhN6cnC8I/C2Jh3B5mAKuO
- QsEQ3cdv3kRZSrg5P4pFeBDqfNZqrtSHOmBe2Zd7M6qhQ0CsaEXX6czu5
- sZODMT6q1+6i7fF8+wMTb72kS2fAi0xYjeaQBWVEWtyD3jZmOJ/Ux0Xlp w==;
-X-CSE-ConnectionGUID: 3ewEgwXmRmSpGS1DKO+a9Q==
-X-CSE-MsgGUID: WRNgHXYNScGZ3JI4mlHNuw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11288"; a="34993234"
-X-IronPort-AV: E=Sophos;i="6.12,241,1728975600"; d="scan'208";a="34993234"
+ t=1734440034; x=1765976034;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=eP9ccYSBy7WauejSMKCP7v6630KiEs32C3sTsU8g46Y=;
+ b=Nh+B6fmib3jYwKAGkNOkx9X80zujMIc7YRlbUq0wjvN5cRF41amblvMv
+ J4udurNbWiRrhHGUmFqHHkUwSsTMre21GzrA3D3Zw1NFPJkSAHIR8gyI4
+ GLf0WQts9lclD+kxjazHeMYq0D+Hxk1DBPHBxQhHGYGEifP6G4/POe4f4
+ hul1F+ZHszrewu/KQ6d0pv1RlPFM56tqFeZX+aAvmVF9bjoPzASyojP4H
+ +USSjQxfXEYU+5+EW9W8KF7kB4BK44WwsCxV6c8wCeJJ3NF7d5V2hB83y
+ ozafkH6mcGsIRLabmxNfvQVGBxMcQv9S81+w37vtxZ0tZpgj3hO6I/AnW Q==;
+X-CSE-ConnectionGUID: zOQtWqgTShqNNGS4z0D3oA==
+X-CSE-MsgGUID: zdWApjetQEyWaad8ug11ww==
+X-IronPort-AV: E=McAfee;i="6700,10204,11288"; a="34993238"
+X-IronPort-AV: E=Sophos;i="6.12,241,1728975600"; d="scan'208";a="34993238"
 Received: from fmviesa008.fm.intel.com ([10.60.135.148])
  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Dec 2024 04:53:50 -0800
-X-CSE-ConnectionGUID: TjtosO/ZRNWpqNDA9tw3aQ==
-X-CSE-MsgGUID: 3X7IEfaTTHKHiMP3zrVnYw==
+ 17 Dec 2024 04:53:51 -0800
+X-CSE-ConnectionGUID: M4b/ap9nSbyKrtqK9UQIUw==
+X-CSE-MsgGUID: eGgFOjKxScaJfq4ryYMwOA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,241,1728975600"; d="scan'208";a="97760173"
+X-IronPort-AV: E=Sophos;i="6.12,241,1728975600"; d="scan'208";a="97760190"
 Received: from lxy-clx-4s.sh.intel.com ([10.239.48.52])
- by fmviesa008.fm.intel.com with ESMTP; 17 Dec 2024 04:53:49 -0800
+ by fmviesa008.fm.intel.com with ESMTP; 17 Dec 2024 04:53:50 -0800
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>
 Cc: Zhao Liu <zhao1.liu@intel.com>,
 	qemu-devel@nongnu.org
-Subject: [PATCH 0/2] Clean up and enhance of feature_word_description()
-Date: Tue, 17 Dec 2024 07:39:30 -0500
-Message-Id: <20241217123932.948789-1-xiaoyao.li@intel.com>
+Subject: [PATCH 1/2] i386: Remove unused parameter "uint32_t bit" in
+ feature_word_description()
+Date: Tue, 17 Dec 2024 07:39:31 -0500
+Message-Id: <20241217123932.948789-2-xiaoyao.li@intel.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20241217123932.948789-1-xiaoyao.li@intel.com>
+References: <20241217123932.948789-1-xiaoyao.li@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=198.175.65.18; envelope-from=xiaoyao.li@intel.com;
@@ -78,24 +81,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This series grabs two patches related to feature_word_description() from
-two different old threads, they are simple and straightforward. 
+From: Lei Wang <lei4.wang@intel.com>
 
-Patch 1 is grabbed from [1] while patch 2 is grabbed from [2].
+Parameter "uint32_t bit" is not used in function feature_word_description(),
+so remove it.
 
-[1]: https://lore.kernel.org/qemu-devel/20230106083826.5384-3-lei4.wang@intel.com/
-[2]: https://lore.kernel.org/qemu-devel/20220808085834.3227541-2-xiaoyao.li@intel.com/
+Signed-off-by: Lei Wang <lei4.wang@intel.com>
+Reviewed-by: Igor Mammedov <imammedo@redhat.com>
+Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
+Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+---
+ target/i386/cpu.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Lei Wang (1):
-  i386: Remove unused parameter "uint32_t bit" in
-    feature_word_description()
-
-Xiaoyao Li (1):
-  target/i386: Print CPUID subleaf info for unsupported feature
-
- target/i386/cpu.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
-
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index 525339945920..d09e2f868c35 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -5451,7 +5451,7 @@ static const TypeInfo max_x86_cpu_type_info = {
+     .class_init = max_x86_cpu_class_init,
+ };
+ 
+-static char *feature_word_description(FeatureWordInfo *f, uint32_t bit)
++static char *feature_word_description(FeatureWordInfo *f)
+ {
+     assert(f->type == CPUID_FEATURE_WORD || f->type == MSR_FEATURE_WORD);
+ 
+@@ -5490,6 +5490,7 @@ static void mark_unavailable_features(X86CPU *cpu, FeatureWord w, uint64_t mask,
+     CPUX86State *env = &cpu->env;
+     FeatureWordInfo *f = &feature_word_info[w];
+     int i;
++    g_autofree char *feat_word_str = feature_word_description(f);
+ 
+     if (!cpu->force_features) {
+         env->features[w] &= ~mask;
+@@ -5502,7 +5503,6 @@ static void mark_unavailable_features(X86CPU *cpu, FeatureWord w, uint64_t mask,
+ 
+     for (i = 0; i < 64; ++i) {
+         if ((1ULL << i) & mask) {
+-            g_autofree char *feat_word_str = feature_word_description(f, i);
+             warn_report("%s: %s%s%s [bit %d]",
+                         verbose_prefix,
+                         feat_word_str,
 -- 
 2.34.1
 
