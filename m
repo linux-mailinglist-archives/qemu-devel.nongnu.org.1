@@ -2,90 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 045449F4F44
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Dec 2024 16:21:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 837A69F4F48
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Dec 2024 16:22:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tNZN1-0004KX-9s; Tue, 17 Dec 2024 10:20:23 -0500
+	id 1tNZOB-0005WD-04; Tue, 17 Dec 2024 10:21:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tNZMx-0004HH-9L
- for qemu-devel@nongnu.org; Tue, 17 Dec 2024 10:20:19 -0500
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tNZMv-00048A-HO
- for qemu-devel@nongnu.org; Tue, 17 Dec 2024 10:20:19 -0500
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-43635796b48so22032075e9.0
- for <qemu-devel@nongnu.org>; Tue, 17 Dec 2024 07:20:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734448815; x=1735053615; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=3XBk8Jjn5DR2szWJNgkjKw+0Pf3QK5WLRr6yAt6muaw=;
- b=vAFy2EYMTTYQxWYenrEoDlVNv1bRcy8N9+azomCniTooiZuaWrGyZNWQ5QsOritzLu
- AoAx0E+Ti9DKLZm47ElRmoEp2Dq32pZ4LX3W1cf28xzhqhRhTfVQp3rJ7rtw5wUxsNHs
- PLDGnEyVoEGTx+CCjxGsWhjDvd+pOsKMt1FzdKVV6MsEAZ+5/ceJa+qEKMiV7GKLwdZu
- DofP965u5M2R23UF6ZirWIriMGVy86JKIYqvVIBWNEw3Aj1xvDkXO6d7rWiXn53R/ajh
- KwOopyqElXB/HTPEOg3HUbn98q3o/zyIIA1CCPg5KiaWWA7kq3k3ugFAkm1qayoW2QgF
- JIUw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734448815; x=1735053615;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=3XBk8Jjn5DR2szWJNgkjKw+0Pf3QK5WLRr6yAt6muaw=;
- b=ufQpPcvwJYPxPtgXmObcrmJjTF+uYc7KlV9z0nkjS6AeB8c6hH1QvjDzfKQYUJWNAk
- zW4//cG+zdumnSXwWurFvRFj8UfvAMfrVuUAvtuxRApLlxt3c9WfcN/8LaopUQSFDxr8
- +qzxwlrclirtxB3MJxo1CL2Dz+1riodQ5pnv740OP20vIJksLNUMowNNUDWwhCOxkkbZ
- XmMi6d0n30Ixt7ZEHGjc7HzCcvkCXbNBjjMHJOry0Mgj+W8Z/BHlIhn0BCSI0rcbl4Z8
- 7DhSdCwh8zXI7f/PHGtd3TinO2JisclzcTGezSpos60E1Fe73vAPCkqFi05+F/gEuEJf
- VYvw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCX4ZM4JV5HFasjAsrVLpHUgb/wZKW4+c04rzu50OMRzWmLXWCpfz3ALyPowUpfO32PzoHZiTrQ/SqET@nongnu.org
-X-Gm-Message-State: AOJu0YzV0jypVUF/AsMLU3N6wMJJq9bZIgtEszfk5YTBQ9IJrxp9vt16
- NYRoEI7EnrPxjpPW7VDDabS4SXsYAdlfDVBC+LhKBEcYJouS92qFJl5nqXg7rg4=
-X-Gm-Gg: ASbGncsqzMoYAPXnBujSqAhdpL3rnDtgSecjxOB9C+INVybNr9WJswtgY+RGFlNrYSd
- LKiaerxRoPgyV8lIUZIeVJCSLrRl8Z1mM4J/LmBhMRutBsROp28YquL93QBL75W4IpKFaIOHOec
- TxIz4v5eOPJhMB5A1Eoi6lqIvwpmIZnuu4aidjQ83l+RvLpjOlgK8sijkQtNyf71bbOsit+9BnB
- +AcFQdZVtNDWexDNIhv4PJcRQYcdjLx2cPwIAJNFUghAiz/F2wae3Ehvht3+KEh5z6qqcgz
-X-Google-Smtp-Source: AGHT+IEVeqsXuNFGqhhhRpdo+vYacFvNZidciwLuAAkJJnA+nopy+oDMdfNqlV+x/GjuVVn+4XAlqg==
-X-Received: by 2002:a05:600c:3516:b0:436:1b77:b5aa with SMTP id
- 5b1f17b1804b1-4364815c7d6mr36013015e9.8.1734448815574; 
- Tue, 17 Dec 2024 07:20:15 -0800 (PST)
-Received: from [192.168.1.117] ([78.196.4.158])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4364a376846sm22946685e9.0.2024.12.17.07.20.14
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 17 Dec 2024 07:20:14 -0800 (PST)
-Message-ID: <e8b9c9d8-c838-4418-8af0-b1e009b41e3c@linaro.org>
-Date: Tue, 17 Dec 2024 16:20:13 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 4/9] hw/arm: Include missing 'exec/tswap.h' header
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org,
- Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-ppc@nongnu.org, qemu-arm@nongnu.org,
- =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>
-References: <20241211230357.97036-1-philmd@linaro.org>
- <20241211230357.97036-5-philmd@linaro.org>
- <0cd4b1da-eebe-425c-9a6b-b712e0a877e0@linaro.org>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <0cd4b1da-eebe-425c-9a6b-b712e0a877e0@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ (Exim 4.90_1) (envelope-from <maz@kernel.org>)
+ id 1tNZO8-0005Vd-TO; Tue, 17 Dec 2024 10:21:33 -0500
+Received: from dfw.source.kernel.org ([139.178.84.217])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <maz@kernel.org>)
+ id 1tNZO6-0004VS-IP; Tue, 17 Dec 2024 10:21:32 -0500
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+ by dfw.source.kernel.org (Postfix) with ESMTP id D2CC25C5F9B;
+ Tue, 17 Dec 2024 15:20:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8116C4CED3;
+ Tue, 17 Dec 2024 15:21:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1734448880;
+ bh=dK879g794qcUQiGAgdNVuQBSKvfyXP7Cb2+vlps/UdM=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+ b=Ks4qRnM1VWBZ826cl6ud0LvujlH1rhUFb5oKLHh23WXwfM9W2R1BxYpGRUz/gUWPf
+ WaOPoCao0yC6vHs8k52a9MxwDXezc5aMrwXm31tizLJ33Vd+/c9FmknPjITbj4wCL5
+ h76X3y92fMtaRN29NBQR/VrpQI6e7EbYEAzKfwPgIJFLe2j6TElSXzSEuRVDIAOyc6
+ 1rzkyAHVqOxB8+SDfwd2y2Reo+2w+0Amw8WP2zbCjzBlNwdsvfPkUqGIOEdwCGV0m3
+ E+tMsEcK3EVDQcN1Ql+Fn6K/p0z/DfXJ14C5FYXRhebIP5FvptLddhTY1NvNdCu55n
+ PZsbH6l5Vb23w==
+Received: from sofa.misterjones.org ([185.219.108.64]
+ helo=goblin-girl.misterjones.org)
+ by disco-boy.misterjones.org with esmtpsa (TLS1.3) tls
+ TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 (Exim 4.95)
+ (envelope-from <maz@kernel.org>) id 1tNZNu-004bpm-PV;
+ Tue, 17 Dec 2024 15:21:18 +0000
+Date: Tue, 17 Dec 2024 15:21:18 +0000
+Message-ID: <86r066qqs1.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Cornelia Huck <cohuck@redhat.com>
+Cc: eric.auger.pro@gmail.com, eric.auger@redhat.com, qemu-devel@nongnu.org,
+ qemu-arm@nongnu.org, kvmarm@lists.linux.dev, peter.maydell@linaro.org,
+ richard.henderson@linaro.org, alex.bennee@linaro.org,
+ oliver.upton@linux.dev, sebott@redhat.com,
+ shameerali.kolothum.thodi@huawei.com, armbru@redhat.com,
+ berrange@redhat.com, abologna@redhat.com, jdenemar@redhat.com,
+ shahuang@redhat.com, mark.rutland@arm.com, philmd@linaro.org,
+ pbonzini@redhat.com
+Subject: Re: [PATCH RFCv2 00/20] kvm/arm: Introduce a customizable aarch64 KVM
+ host model
+In-Reply-To: <20241206112213.88394-1-cohuck@redhat.com>
+References: <20241206112213.88394-1-cohuck@redhat.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/29.4
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: cohuck@redhat.com, eric.auger.pro@gmail.com,
+ eric.auger@redhat.com, qemu-devel@nongnu.org, qemu-arm@nongnu.org,
+ kvmarm@lists.linux.dev, peter.maydell@linaro.org, richard.henderson@linaro.org,
+ alex.bennee@linaro.org, oliver.upton@linux.dev, sebott@redhat.com,
+ shameerali.kolothum.thodi@huawei.com, armbru@redhat.com, berrange@redhat.com,
+ abologna@redhat.com, jdenemar@redhat.com, shahuang@redhat.com,
+ mark.rutland@arm.com, philmd@linaro.org, pbonzini@redhat.com
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org);
+ SAEximRunCond expanded to false
+Received-SPF: pass client-ip=139.178.84.217; envelope-from=maz@kernel.org;
+ helo=dfw.source.kernel.org
+X-Spam_score_int: -70
+X-Spam_score: -7.1
+X-Spam_bar: -------
+X-Spam_report: (-7.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_HI=-5, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -102,44 +94,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/12/24 00:53, Richard Henderson wrote:
-> On 12/11/24 17:03, Philippe Mathieu-Daudé wrote:
->> Some files indirectly get "exec/tswap.h" declarations via
->> "exec/cpu-all.h". Include it directly to be able to remove
->> the former from the latter, otherwise we get:
->>
->>    hw/arm/boot.c:175:19: error: call to undeclared function 'tswap32'; 
->> ISO C99 and later do not support implicit function declarations [- 
->> Wimplicit-function-declaration]
->>      175 |         code[i] = tswap32(insn);
->>          |                   ^
->>    hw/arm/npcm7xx.c:326:26: error: call to undeclared function 
->> 'tswap32'; ISO C99 and later do not support implicit function 
->> declarations [-Wimplicit-function-declaration]
->>      326 |         board_setup[i] = tswap32(board_setup[i]);
->>          |                          ^
->>
->> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->> ---
->>   hw/arm/boot.c    | 1 +
->>   hw/arm/npcm7xx.c | 1 +
->>   2 files changed, 2 insertions(+)
->>
+On Fri, 06 Dec 2024 11:21:53 +0000,
+Cornelia Huck <cohuck@redhat.com> wrote:
 > 
-> These could all be cpu_to_le32, since TARGET_BIG_ENDIAN is always false 
-> for qemu-system-arm.
+> A respin/update on the aarch64 KVM cpu models. Also available at
+> gitlab.com/cohuck/qemu arm-cpu-model-rfcv2
+> 
+> Find Eric's original cover letter below, so that I do not need to
+> repeat myself on the aspects that have not changed since RFCv1 :)
 
-I agree, but last time I did that Peter insisted for tswap():
-https://lore.kernel.org/qemu-devel/CAFEAcA8Exn0VMzM1h048q4Nm7toxkpaOv4B-ZE4FEXKgHoqy7A@mail.gmail.com/
+Does anyone have a branch containing both this series and Eric's KVM
+NV support series?
 
-Peter, was my wording in that previous series not clear (in that case
-I can try to clarify) or was it OK but you reject the possibility of
-using cpu_to_le32() to remove tswap() calls?
+Asking for a friend...
 
-(Here my goal is to have a single binary, so I start removing target-
-specific endianness).
+	M.
 
-Thanks,
-
-Phil.
+-- 
+Without deviation from the norm, progress is not possible.
 
