@@ -2,75 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A9409F5061
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Dec 2024 17:09:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 684379F5068
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Dec 2024 17:10:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tNa1D-0006f2-5b; Tue, 17 Dec 2024 11:01:57 -0500
+	id 1tNa1T-0006me-9L; Tue, 17 Dec 2024 11:02:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1tNa12-00066s-04
- for qemu-devel@nongnu.org; Tue, 17 Dec 2024 11:01:45 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1tNa0x-0002H4-5N
- for qemu-devel@nongnu.org; Tue, 17 Dec 2024 11:01:43 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1734451298;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=uBq4gWrXk9b7m3TiygA89cqA2sa3jmGreZJ1+JibDZA=;
- b=QE9o0vrpQCi7wkod6hMmJFW7uoNDnDUKvlTZ6U8c/FJSjerfYaSZyx7IwyPCt4eQJHkq10
- qn2OrMtidnk9RlknKbXHJd6BsWqWJbv5NWBMMSMEkXAAWlsVp5mY80CVk4VguV/KTshk2F
- fJhvsmwIDiUhQEizVht6NzM6b915l/c=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-332-ekt2H3Y5OGW82uE70t8k_Q-1; Tue,
- 17 Dec 2024 11:01:35 -0500
-X-MC-Unique: ekt2H3Y5OGW82uE70t8k_Q-1
-X-Mimecast-MFC-AGG-ID: ekt2H3Y5OGW82uE70t8k_Q
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 157BD19560A2; Tue, 17 Dec 2024 16:01:34 +0000 (UTC)
-Received: from toolbox.redhat.com (unknown [10.42.28.136])
- by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 0907D30044C1; Tue, 17 Dec 2024 16:01:31 +0000 (UTC)
-From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Thomas Huth <huth@tuxfamily.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH v3 32/32] MAINTAINERS: add myself as reviewer for functional
- test suite
-Date: Tue, 17 Dec 2024 15:59:53 +0000
-Message-ID: <20241217155953.3950506-33-berrange@redhat.com>
-In-Reply-To: <20241217155953.3950506-1-berrange@redhat.com>
-References: <20241217155953.3950506-1-berrange@redhat.com>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1tNa0u-0005t6-Ns
+ for qemu-devel@nongnu.org; Tue, 17 Dec 2024 11:01:40 -0500
+Received: from mail-yw1-x112f.google.com ([2607:f8b0:4864:20::112f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1tNa0r-0002Fq-Pj
+ for qemu-devel@nongnu.org; Tue, 17 Dec 2024 11:01:36 -0500
+Received: by mail-yw1-x112f.google.com with SMTP id
+ 00721157ae682-6ef7640e484so62915677b3.3
+ for <qemu-devel@nongnu.org>; Tue, 17 Dec 2024 08:01:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1734451292; x=1735056092; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=6rvr1pDFmp2BQW3QOEsi6mwCNhkrwstgFWp2nCEUrpg=;
+ b=GpaeFVcl/JBzRNlxe3dv7frId+SYH2wEj7dRcBVRCCHs6Lau6WmQNKziKZbqMjab3W
+ dzf28AGPXg64M0CuZQtgfyz4cG8g5g/mLIIYblPsuOP3oI97UXZDbke/+zPwn0MIAWqJ
+ 4pYRhqFgLCs1vzzUe2LgdqX0WERo8985lf5Zj4vHiHP5iMe4B3XaAl1NeJSnhKpqxfY4
+ u/OjmbVd8M5FS+p0z8OGpGd0QxoWxvCcy0ZdrYHZX6HIOI7J/6H+Yq3kFFTybMD9GtwD
+ Fz3t/QFVldd131+qmi34Kc1jVVt20nmTDVIaWt9TxZxvoWZ01wz13vPTr9kak9Mfe5U7
+ bcKA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1734451292; x=1735056092;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=6rvr1pDFmp2BQW3QOEsi6mwCNhkrwstgFWp2nCEUrpg=;
+ b=KZx1xJOkuZC4+Yirx5n1l/MwK9Z3CFPzE+AwC6VHHEoPFdigHIvTmXMnIxxBMXCSop
+ dFIx8De1s1X/A+oDOIWb1NhTuQ7afMvlFwVZfXhgePuKnsoq7AE2n445GGk8o7R7LitN
+ Cl2nwwVcIrt4AnkdPApfT14SjNI7AJ4gu7nvlIq8z23s0gzimqMIPrPSGFrSoSB8z06O
+ mUN/z//04Hvf2CS4YbIX0k4MaL3DRdjCjvyjTIvQBFIUqCoGsaDmKJ+RsfTzJw1L1ac7
+ +sgY2ENJdJAkv4bXetoJLunSArsRSvUUR3Hp+/fOsxNtmz4koqcUG3lT9PN6/OU2ILir
+ LJJQ==
+X-Gm-Message-State: AOJu0Ywva3gdJsiNV0mURKVBq0vYtZKJFRwEYb723CvDIgrqebPfh3ab
+ xNRVJafxWvgKOx5BLflz9OHjntzV/WyGqZdcsmGqZlrKnBqU/TInkrmNnj365zcufM8QUO+BOlM
+ B62gO3ycfNHRaYVn80DzewLrybB72mghrDyNf9oNym2t8HWKj
+X-Gm-Gg: ASbGncubfX/QwLQioERgIlODzXScUTSMi0RTDBHw3FKP2pHWUZkJOlKdQu88YBYbGS3
+ JglY5Kkg5hcZ9IWqlfC9xQVRLhQ0fKBtdCuK3pXA=
+X-Google-Smtp-Source: AGHT+IHN2I+zbFtCtrw5kE84f8aTezXrK5u+qrtIzidP4bsaw6mWEjDSR5hJqPvt7lrF24pZfUn3cQRQuGz8cMI0HzY=
+X-Received: by 2002:a05:690c:317:b0:6ef:9dbe:9f82 with SMTP id
+ 00721157ae682-6f2d1c4b3dfmr773267b3.29.1734451291684; Tue, 17 Dec 2024
+ 08:01:31 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -31
-X-Spam_score: -3.2
-X-Spam_bar: ---
-X-Spam_report: (-3.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-1.116,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+References: <cover.1730549443.git.balaton@eik.bme.hu>
+ <1bb0d0e91ba14aca13056df3b0a774f89cbf966c.1730549443.git.balaton@eik.bme.hu>
+In-Reply-To: <1bb0d0e91ba14aca13056df3b0a774f89cbf966c.1730549443.git.balaton@eik.bme.hu>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 17 Dec 2024 16:01:18 +0000
+Message-ID: <CAFEAcA-+-YRfYN5+RDscaaBr-fqKL0xKTBK5yG7SAJYRDvtOGA@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] log: Add separate debug option for logging invalid
+ memory accesses
+To: BALATON Zoltan <balaton@eik.bme.hu>
+Cc: qemu-devel@nongnu.org, philmd@linaro.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::112f;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x112f.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,24 +89,19 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
----
- MAINTAINERS | 1 +
- 1 file changed, 1 insertion(+)
+On Sat, 2 Nov 2024 at 12:18, BALATON Zoltan <balaton@eik.bme.hu> wrote:
+>
+> Currently -d guest_errors enables logging of different invalid actions
+> by the guest such as misusing hardware, accessing missing features or
+> invalid memory areas. The memory access logging can be quite verbose
+> which obscures the other messages enabled by this debug switch so
+> separate it by adding a new -d invalid_mem option to make it possible
+> to control it independently of other guest error logs.
+>
+> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 822f34344b..54201da578 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -4157,6 +4157,7 @@ W: https://cirrus-ci.com/github/qemu/qemu
- Functional testing framework
- M: Thomas Huth <thuth@redhat.com>
- R: Philippe Mathieu-Daudé <philmd@linaro.org>
-+R: Daniel P. Berrange <berrange@redhat.com>
- F: tests/functional/qemu_test/
- 
- Windows Hosted Continuous Integration
--- 
-2.46.0
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 
+thanks
+-- PMM
 
