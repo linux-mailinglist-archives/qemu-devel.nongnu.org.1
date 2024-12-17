@@ -2,70 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F39C9F507E
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Dec 2024 17:11:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB39B9F5082
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Dec 2024 17:11:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tNa5W-000210-DZ; Tue, 17 Dec 2024 11:06:24 -0500
+	id 1tNa8d-0006GD-MX; Tue, 17 Dec 2024 11:09:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tNa3i-0001GN-Vh
- for qemu-devel@nongnu.org; Tue, 17 Dec 2024 11:04:31 -0500
-Received: from mail-yw1-x112b.google.com ([2607:f8b0:4864:20::112b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tNa8R-00062H-Ne
+ for qemu-devel@nongnu.org; Tue, 17 Dec 2024 11:09:25 -0500
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tNa3f-0002Wr-OH
- for qemu-devel@nongnu.org; Tue, 17 Dec 2024 11:04:29 -0500
-Received: by mail-yw1-x112b.google.com with SMTP id
- 00721157ae682-6f26c517979so40637247b3.2
- for <qemu-devel@nongnu.org>; Tue, 17 Dec 2024 08:04:27 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tNa8K-0003Kv-7m
+ for qemu-devel@nongnu.org; Tue, 17 Dec 2024 11:09:23 -0500
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-4361c705434so39991495e9.3
+ for <qemu-devel@nongnu.org>; Tue, 17 Dec 2024 08:09:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734451466; x=1735056266; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=dIZOgxF/tRYx2sIQR6Y3DY+73cDyS/9EAfk34n4Xl5A=;
- b=qOPoVmIvgllw/pyllIt6s0AfMjZj0xzebVbBarhOZbRBpPrpqUIls5tilT5BWZLStE
- MUD7FaUkFYQKxlfA3NkE8GU+PDvynHsfqoplREzvZpgxIkLj0AcNOlXd83lq+O5ebTh4
- sRjUytMzrYh4zF3PRBh65fyHdqiwmHP9fLYvzVFOWvX0jKm3hc+dlqEtlOcbomFCaRBY
- Lp00oDU99pzZ0yYZVRh+Q7oF1Uzk+mC6r7Vsc4m2EWn29CLqZfmVHENSVPgVvTAkHaUU
- SJc/70H8RJPIE0igldO+gdCtINejyh0Bn3ETgkr28mVpRdL42eMlKhYvbH1LWWxrVpha
- /B+Q==
+ d=linaro.org; s=google; t=1734451754; x=1735056554; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=Ev53uTb7NbwG8SyhMg5j33gklzQzPRup2l9rzIa3A9k=;
+ b=V8nqcCB0UdndmN3ME4nSYaV/fPNMkp4zFZwRYUUtiZn16Z/MUnfkPun60qoBXMfQQA
+ eywO6WAYRNc1FKIYVWbxG1Ya37BGLUtdk5JM995zN4veEWMRf4hoELNMsEX/sScjd/k5
+ WKV8khayxDC/63N5+J6Ke9KJQuJkM3UWTpx1qo0tzFmYVB+l0/HH4RbU6MkIe3e99fjK
+ 9N2D8cf3aOEh0JoKDM/JYzMqOfBqLYs2+DjMhAAoF0Jq+yvGqLVGJYss9EkJT1KJ0Jzk
+ sKGCUknARV4lQs80am51/EPFYXSNfNKeLCArZn7kF24QPh0yqkJjKfhH7BfDOmx7DRGu
+ rVWA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734451466; x=1735056266;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=dIZOgxF/tRYx2sIQR6Y3DY+73cDyS/9EAfk34n4Xl5A=;
- b=fKXsyGQTSdYNbGoFQfHxL5/eg5LVoYVxHp30lMj2dTFsYVfn5BXorKQUh4QejjDmWi
- BteMLFYYj+qTOOiB6wIeJYJzVMBoBYL0bnji+jjHhPVcSU88d2VICqw8dg9bqfC0T1Kd
- r+ifHCGug6kxg4YM9eO1ajLvHtC9eAa2BPKZSCgVBUkVnUUpafPmy0XexBjiSitv7fxQ
- s/Fg3oFxAGkcskTuYe6Rme3vbbhRqGCHc9Uv8wRsuy7oM5eeRpu2d543yBuRitRW8C8J
- Gi/MxbtnJ8EnDsRDhGOI2OIXehCp73hUCRfquvsv9TxbwJbq4AYUIzmPEn6+F8HioDkQ
- F84g==
-X-Gm-Message-State: AOJu0Yw1A3c9ayia9IK0GvCyGjbEnuN54Uz4Z/z/masyqDxUrgexPRwj
- jr2seSd7wc70WNdvyMEEVHVHiC4FkvG5bz6eyXKU+IShs7+cfAyfzEfnsYONGhx0pjUlEFrdNFD
- dq6R+09jV/kbOABQTazcjm7vy3mcFaH36Ac6KJw==
-X-Gm-Gg: ASbGncvZIs8Lo+06pklZbNCUWf57LG3hmZx6Ufs3CKNRSVsf/67pYI9mA1hWSwzPIfD
- CPiVVVIxB4pkmtdlRYvpkJZQ2jAGp+6iLpA5dJKE=
-X-Google-Smtp-Source: AGHT+IF54cnKa352eM/Tn5bIfVGqRcPNrdxqeLawidmh2oLK383q7mSy8kaTimg9AlBnANP0/Q2YmP85pFsnEnNAXmk=
-X-Received: by 2002:a05:690c:4b86:b0:6ef:761e:cfc with SMTP id
- 00721157ae682-6f279b3bca1mr127690777b3.25.1734451466606; Tue, 17 Dec 2024
- 08:04:26 -0800 (PST)
+ d=1e100.net; s=20230601; t=1734451754; x=1735056554;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Ev53uTb7NbwG8SyhMg5j33gklzQzPRup2l9rzIa3A9k=;
+ b=fT2xWuyxC3OGGqF2wNIxJ3/KbBLfmXRbYQRjCr9R8x5i4wa07jKRPKUFe10E3pixTd
+ VEuQDR2XCYrMn67op12rQi+VC4EGC6TYhTUK2oAL1xp3cy2G/ARYwX7lwp1RpwWP+jS+
+ cTPkyEUWQcWO68Y0hUMy5hEEqm8njhNdBEcM8yOaess/w01u8uxUdRhklmVkLCRXE7cV
+ EvWww0b2/7CPuXIgfFuKQKIClyQ8iThpPTmo0ntHl3JI8TkexOUnNIV9EX70xXjZ+dcf
+ uVu0qjXJ46zpeteeRdLUO6ufCh1WTJRMB0axRhOlrOaHW8ZVSMkZXaSYFmzD1MbTK3tW
+ C1Ag==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCX3L1sTU81JCw9nukJzX5QPaxSgzCEIcgvkMINu71Imo907Wlu7FPcRllxjej/h2JlD7UfWE0hoA1sA@nongnu.org
+X-Gm-Message-State: AOJu0YywGTSsomxe91cdnyPyqRYmIqjmuaD01PwjdIZOAmo+zgLsSGo1
+ BU2V8QBr1foR1KOoq1lHqa8S9uOQ2OecjKfn3UQtKNfr6Q5oAtEvXujQ271flkU=
+X-Gm-Gg: ASbGncv8lxbOWXt194pJ0dJKfxHnadlBxcM37COH1hiknoh6NpnMU9ObtASIJz2CuTW
+ YlAdQI7YW1f5Ad6l50BTA+cj5MAuS4SX2pYiDBgwqQXRayHLz2xd9GzWl11T/ZgeF1iJhlOfYFt
+ e2zzwYiMwSGkBXQo1hvxvEUL+/3dFCHcwyr5TgULhqfz6e8I7B0Mm3vC/5S4LJVwDslEqsVCrtk
+ k78/TKhRMHxPZ0wTX51GXoAGolGTNu2nLkvJc0YMm6o/JaLOSQSOeHoRJrpdwECouFW16TI
+X-Google-Smtp-Source: AGHT+IH1B0203uqa1ZBzymIiHUN46OWj/roDzbXuqjV4OkBHJAQrZOv/XEZie+aKPuVksQjj3WupCA==
+X-Received: by 2002:a5d:6d8a:0:b0:385:fc97:9c71 with SMTP id
+ ffacd0b85a97d-388da380bf0mr3290044f8f.12.1734451754327; 
+ Tue, 17 Dec 2024 08:09:14 -0800 (PST)
+Received: from [192.168.1.117] ([78.196.4.158])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-388c8012081sm11475313f8f.19.2024.12.17.08.09.13
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 17 Dec 2024 08:09:13 -0800 (PST)
+Message-ID: <127fb329-901a-4561-80b8-baebef099812@linaro.org>
+Date: Tue, 17 Dec 2024 17:09:13 +0100
 MIME-Version: 1.0
-References: <cover.1730549443.git.balaton@eik.bme.hu>
- <a8f9fa5e-62e3-61b5-36d2-ab37a1f18ff0@eik.bme.hu>
-In-Reply-To: <a8f9fa5e-62e3-61b5-36d2-ab37a1f18ff0@eik.bme.hu>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 17 Dec 2024 16:04:14 +0000
-Message-ID: <CAFEAcA9HNay784yf21GgyxzOqkRdWmPSLBM8Qi9yY+UpB0gM1w@mail.gmail.com>
-Subject: Re: [PATCH v2 0/2] Separate memory access logs from guest_errors
-To: BALATON Zoltan <balaton@eik.bme.hu>
-Cc: qemu-devel@nongnu.org, philmd@linaro.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::112b;
- envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x112b.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] tests/functional: Convert the hotplug_cpu avocado test
+To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Marcelo Tosatti
+ <mtosatti@redhat.com>, =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?=
+ <berrange@redhat.com>
+References: <20241217142020.155776-1-thuth@redhat.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20241217142020.155776-1-thuth@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -88,44 +99,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 13 Dec 2024 at 12:41, BALATON Zoltan <balaton@eik.bme.hu> wrote:
->
-> On Sat, 2 Nov 2024, BALATON Zoltan wrote:
-> > Originally memory access logs were a debug define that then were
-> > converted to log messages but were classified as guest_errors which
-> > already logs misc errors. As invalid memory access logs can come from
-> > accessing not emulated peripherals or memory areas, these often
-> > generate a lot of messages that are better be controlled separately
-> > from other errors to avoid obscuring those. As an example try
-> > 'qemu-system-ppc -d guest_errors' to see the problem. After this
-> > series the actual guest error logs are easier to spot. I've tried to
-> > submit this before but there were some people who liked the current
-> > behaviour so now this series has another patch that preserves the old
-> > option printing a warning to allow time to get used to the new
-> > behaviour (which actually brings back the old behaviour when mem
-> > access logs were a debug define). This second patch is optional if
-> > changing the behaviour without notice is acceptable. As these are
-> > debug switches no deprecation period is needed so the second patch
-> > could be omitted. I leave that decision to the maintainers.
-> >
-> > v2: Rename the option from memaccess to invalid_mem as suggested by
-> > Peter Maydell
->
-> Ping? <https://patchew.org/QEMU/cover.1730549443.git.balaton@eik.bme.hu/>
+On 17/12/24 15:20, Thomas Huth wrote:
+> Since we don't have ssh support in the functional test framework yet,
+> simply use the serial console for this test instead. It's also
+> sufficient to only boot into an initrd here, no need to fire up a
+> full-blown guest, so the test now finishes much faster.
+> 
+> While we're at it, also unplug the CPU now and check that it is gone
+> in the guest.
+> 
+> Signed-off-by: Thomas Huth <thuth@redhat.com>
+> ---
+>   MAINTAINERS                                   |  1 +
+>   tests/functional/meson.build                  |  1 +
+>   .../test_x86_64_hotplug_cpu.py}               | 58 ++++++++++++++-----
+>   3 files changed, 47 insertions(+), 13 deletions(-)
+>   rename tests/{avocado/hotplug_cpu.py => functional/test_x86_64_hotplug_cpu.py} (25%)
+>   mode change 100644 => 100755
 
-Personally I do not think we need the back-compat handling so
-I would be happy with just patch 1.
 
-(I think the way I envisaged this working was that if there
-were cases where some missing device generates a ton of
-errors that we would stick in a TYPE_UNIMPLEMENTED_DEVICE in
-that region, so that the logging in the invalid access
-paths in memory.c would not be hit except where the guest
-was doing something wrong. But obviously we haven't actually
-done that, and I don't think there's a strong reason not
-to split out the invalid-access logging into its own
-category.)
+> -        self.ssh_command('test -e /sys/devices/system/cpu/cpu0')
+> -        with self.assertRaises(AssertionError):
+> -            self.ssh_command('test -e /sys/devices/system/cpu/cpu1')
+> +        exec_command_and_wait_for_pattern(self,
+> +                                          'cd /sys/devices/system/cpu/cpu0',
+> +                                          'cpu0#')
+> +        exec_command_and_wait_for_pattern(self,
+> +                                          'cd /sys/devices/system/cpu/cpu1',
+> +                                          'No such file or directory')
+>   
+>           self.vm.cmd('device_add',
+>                       driver='Haswell-x86_64-cpu',
+> +                    id='c1',
+>                       socket_id=0,
+>                       core_id=1,
+>                       thread_id=0)
+> -        self.ssh_command('test -e /sys/devices/system/cpu/cpu1')
+> +        self.wait_for_console_pattern('CPU1 has been hot-added')
+> +
+> +        exec_command_and_wait_for_pattern(self,
+> +                                          'cd /sys/devices/system/cpu/cpu1',
+> +                                          'cpu1#')
+> +
+> +        self.vm.cmd('device_del', id='c1')
+> +
+> +        exec_command_and_wait_for_pattern(self,
+> +                                          'cd /sys/devices/system/cpu/cpu1',
+> +                                          'No such file or directory')
 
-thanks
--- PMM
+Good idea to expand a bit the test testing removal.
+
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
 
