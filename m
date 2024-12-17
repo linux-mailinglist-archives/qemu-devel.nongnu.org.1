@@ -2,71 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 684379F5068
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Dec 2024 17:10:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F39C9F507E
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Dec 2024 17:11:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tNa1T-0006me-9L; Tue, 17 Dec 2024 11:02:22 -0500
+	id 1tNa5W-000210-DZ; Tue, 17 Dec 2024 11:06:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tNa0u-0005t6-Ns
- for qemu-devel@nongnu.org; Tue, 17 Dec 2024 11:01:40 -0500
-Received: from mail-yw1-x112f.google.com ([2607:f8b0:4864:20::112f])
+ id 1tNa3i-0001GN-Vh
+ for qemu-devel@nongnu.org; Tue, 17 Dec 2024 11:04:31 -0500
+Received: from mail-yw1-x112b.google.com ([2607:f8b0:4864:20::112b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tNa0r-0002Fq-Pj
- for qemu-devel@nongnu.org; Tue, 17 Dec 2024 11:01:36 -0500
-Received: by mail-yw1-x112f.google.com with SMTP id
- 00721157ae682-6ef7640e484so62915677b3.3
- for <qemu-devel@nongnu.org>; Tue, 17 Dec 2024 08:01:33 -0800 (PST)
+ id 1tNa3f-0002Wr-OH
+ for qemu-devel@nongnu.org; Tue, 17 Dec 2024 11:04:29 -0500
+Received: by mail-yw1-x112b.google.com with SMTP id
+ 00721157ae682-6f26c517979so40637247b3.2
+ for <qemu-devel@nongnu.org>; Tue, 17 Dec 2024 08:04:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734451292; x=1735056092; darn=nongnu.org;
+ d=linaro.org; s=google; t=1734451466; x=1735056266; darn=nongnu.org;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=6rvr1pDFmp2BQW3QOEsi6mwCNhkrwstgFWp2nCEUrpg=;
- b=GpaeFVcl/JBzRNlxe3dv7frId+SYH2wEj7dRcBVRCCHs6Lau6WmQNKziKZbqMjab3W
- dzf28AGPXg64M0CuZQtgfyz4cG8g5g/mLIIYblPsuOP3oI97UXZDbke/+zPwn0MIAWqJ
- 4pYRhqFgLCs1vzzUe2LgdqX0WERo8985lf5Zj4vHiHP5iMe4B3XaAl1NeJSnhKpqxfY4
- u/OjmbVd8M5FS+p0z8OGpGd0QxoWxvCcy0ZdrYHZX6HIOI7J/6H+Yq3kFFTybMD9GtwD
- Fz3t/QFVldd131+qmi34Kc1jVVt20nmTDVIaWt9TxZxvoWZ01wz13vPTr9kak9Mfe5U7
- bcKA==
+ bh=dIZOgxF/tRYx2sIQR6Y3DY+73cDyS/9EAfk34n4Xl5A=;
+ b=qOPoVmIvgllw/pyllIt6s0AfMjZj0xzebVbBarhOZbRBpPrpqUIls5tilT5BWZLStE
+ MUD7FaUkFYQKxlfA3NkE8GU+PDvynHsfqoplREzvZpgxIkLj0AcNOlXd83lq+O5ebTh4
+ sRjUytMzrYh4zF3PRBh65fyHdqiwmHP9fLYvzVFOWvX0jKm3hc+dlqEtlOcbomFCaRBY
+ Lp00oDU99pzZ0yYZVRh+Q7oF1Uzk+mC6r7Vsc4m2EWn29CLqZfmVHENSVPgVvTAkHaUU
+ SJc/70H8RJPIE0igldO+gdCtINejyh0Bn3ETgkr28mVpRdL42eMlKhYvbH1LWWxrVpha
+ /B+Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734451292; x=1735056092;
+ d=1e100.net; s=20230601; t=1734451466; x=1735056266;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=6rvr1pDFmp2BQW3QOEsi6mwCNhkrwstgFWp2nCEUrpg=;
- b=KZx1xJOkuZC4+Yirx5n1l/MwK9Z3CFPzE+AwC6VHHEoPFdigHIvTmXMnIxxBMXCSop
- dFIx8De1s1X/A+oDOIWb1NhTuQ7afMvlFwVZfXhgePuKnsoq7AE2n445GGk8o7R7LitN
- Cl2nwwVcIrt4AnkdPApfT14SjNI7AJ4gu7nvlIq8z23s0gzimqMIPrPSGFrSoSB8z06O
- mUN/z//04Hvf2CS4YbIX0k4MaL3DRdjCjvyjTIvQBFIUqCoGsaDmKJ+RsfTzJw1L1ac7
- +sgY2ENJdJAkv4bXetoJLunSArsRSvUUR3Hp+/fOsxNtmz4koqcUG3lT9PN6/OU2ILir
- LJJQ==
-X-Gm-Message-State: AOJu0Ywva3gdJsiNV0mURKVBq0vYtZKJFRwEYb723CvDIgrqebPfh3ab
- xNRVJafxWvgKOx5BLflz9OHjntzV/WyGqZdcsmGqZlrKnBqU/TInkrmNnj365zcufM8QUO+BOlM
- B62gO3ycfNHRaYVn80DzewLrybB72mghrDyNf9oNym2t8HWKj
-X-Gm-Gg: ASbGncubfX/QwLQioERgIlODzXScUTSMi0RTDBHw3FKP2pHWUZkJOlKdQu88YBYbGS3
- JglY5Kkg5hcZ9IWqlfC9xQVRLhQ0fKBtdCuK3pXA=
-X-Google-Smtp-Source: AGHT+IHN2I+zbFtCtrw5kE84f8aTezXrK5u+qrtIzidP4bsaw6mWEjDSR5hJqPvt7lrF24pZfUn3cQRQuGz8cMI0HzY=
-X-Received: by 2002:a05:690c:317:b0:6ef:9dbe:9f82 with SMTP id
- 00721157ae682-6f2d1c4b3dfmr773267b3.29.1734451291684; Tue, 17 Dec 2024
- 08:01:31 -0800 (PST)
+ bh=dIZOgxF/tRYx2sIQR6Y3DY+73cDyS/9EAfk34n4Xl5A=;
+ b=fKXsyGQTSdYNbGoFQfHxL5/eg5LVoYVxHp30lMj2dTFsYVfn5BXorKQUh4QejjDmWi
+ BteMLFYYj+qTOOiB6wIeJYJzVMBoBYL0bnji+jjHhPVcSU88d2VICqw8dg9bqfC0T1Kd
+ r+ifHCGug6kxg4YM9eO1ajLvHtC9eAa2BPKZSCgVBUkVnUUpafPmy0XexBjiSitv7fxQ
+ s/Fg3oFxAGkcskTuYe6Rme3vbbhRqGCHc9Uv8wRsuy7oM5eeRpu2d543yBuRitRW8C8J
+ Gi/MxbtnJ8EnDsRDhGOI2OIXehCp73hUCRfquvsv9TxbwJbq4AYUIzmPEn6+F8HioDkQ
+ F84g==
+X-Gm-Message-State: AOJu0Yw1A3c9ayia9IK0GvCyGjbEnuN54Uz4Z/z/masyqDxUrgexPRwj
+ jr2seSd7wc70WNdvyMEEVHVHiC4FkvG5bz6eyXKU+IShs7+cfAyfzEfnsYONGhx0pjUlEFrdNFD
+ dq6R+09jV/kbOABQTazcjm7vy3mcFaH36Ac6KJw==
+X-Gm-Gg: ASbGncvZIs8Lo+06pklZbNCUWf57LG3hmZx6Ufs3CKNRSVsf/67pYI9mA1hWSwzPIfD
+ CPiVVVIxB4pkmtdlRYvpkJZQ2jAGp+6iLpA5dJKE=
+X-Google-Smtp-Source: AGHT+IF54cnKa352eM/Tn5bIfVGqRcPNrdxqeLawidmh2oLK383q7mSy8kaTimg9AlBnANP0/Q2YmP85pFsnEnNAXmk=
+X-Received: by 2002:a05:690c:4b86:b0:6ef:761e:cfc with SMTP id
+ 00721157ae682-6f279b3bca1mr127690777b3.25.1734451466606; Tue, 17 Dec 2024
+ 08:04:26 -0800 (PST)
 MIME-Version: 1.0
 References: <cover.1730549443.git.balaton@eik.bme.hu>
- <1bb0d0e91ba14aca13056df3b0a774f89cbf966c.1730549443.git.balaton@eik.bme.hu>
-In-Reply-To: <1bb0d0e91ba14aca13056df3b0a774f89cbf966c.1730549443.git.balaton@eik.bme.hu>
+ <a8f9fa5e-62e3-61b5-36d2-ab37a1f18ff0@eik.bme.hu>
+In-Reply-To: <a8f9fa5e-62e3-61b5-36d2-ab37a1f18ff0@eik.bme.hu>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 17 Dec 2024 16:01:18 +0000
-Message-ID: <CAFEAcA-+-YRfYN5+RDscaaBr-fqKL0xKTBK5yG7SAJYRDvtOGA@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] log: Add separate debug option for logging invalid
- memory accesses
+Date: Tue, 17 Dec 2024 16:04:14 +0000
+Message-ID: <CAFEAcA9HNay784yf21GgyxzOqkRdWmPSLBM8Qi9yY+UpB0gM1w@mail.gmail.com>
+Subject: Re: [PATCH v2 0/2] Separate memory access logs from guest_errors
 To: BALATON Zoltan <balaton@eik.bme.hu>
 Cc: qemu-devel@nongnu.org, philmd@linaro.org
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::112f;
- envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x112f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::112b;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x112b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -89,18 +88,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sat, 2 Nov 2024 at 12:18, BALATON Zoltan <balaton@eik.bme.hu> wrote:
+On Fri, 13 Dec 2024 at 12:41, BALATON Zoltan <balaton@eik.bme.hu> wrote:
 >
-> Currently -d guest_errors enables logging of different invalid actions
-> by the guest such as misusing hardware, accessing missing features or
-> invalid memory areas. The memory access logging can be quite verbose
-> which obscures the other messages enabled by this debug switch so
-> separate it by adding a new -d invalid_mem option to make it possible
-> to control it independently of other guest error logs.
+> On Sat, 2 Nov 2024, BALATON Zoltan wrote:
+> > Originally memory access logs were a debug define that then were
+> > converted to log messages but were classified as guest_errors which
+> > already logs misc errors. As invalid memory access logs can come from
+> > accessing not emulated peripherals or memory areas, these often
+> > generate a lot of messages that are better be controlled separately
+> > from other errors to avoid obscuring those. As an example try
+> > 'qemu-system-ppc -d guest_errors' to see the problem. After this
+> > series the actual guest error logs are easier to spot. I've tried to
+> > submit this before but there were some people who liked the current
+> > behaviour so now this series has another patch that preserves the old
+> > option printing a warning to allow time to get used to the new
+> > behaviour (which actually brings back the old behaviour when mem
+> > access logs were a debug define). This second patch is optional if
+> > changing the behaviour without notice is acceptable. As these are
+> > debug switches no deprecation period is needed so the second patch
+> > could be omitted. I leave that decision to the maintainers.
+> >
+> > v2: Rename the option from memaccess to invalid_mem as suggested by
+> > Peter Maydell
 >
-> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
+> Ping? <https://patchew.org/QEMU/cover.1730549443.git.balaton@eik.bme.hu/>
 
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Personally I do not think we need the back-compat handling so
+I would be happy with just patch 1.
+
+(I think the way I envisaged this working was that if there
+were cases where some missing device generates a ton of
+errors that we would stick in a TYPE_UNIMPLEMENTED_DEVICE in
+that region, so that the logging in the invalid access
+paths in memory.c would not be hit except where the guest
+was doing something wrong. But obviously we haven't actually
+done that, and I don't think there's a strong reason not
+to split out the invalid-access logging into its own
+category.)
 
 thanks
 -- PMM
