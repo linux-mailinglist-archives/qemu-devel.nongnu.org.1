@@ -2,63 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0F049F4DC0
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Dec 2024 15:31:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AB9F9F4DC1
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Dec 2024 15:31:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tNYae-0002HM-V2; Tue, 17 Dec 2024 09:30:25 -0500
+	id 1tNYaa-0001oz-QX; Tue, 17 Dec 2024 09:30:21 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1tNYZN-0000xd-Fq
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1tNYZO-0000xg-6b
  for qemu-devel@nongnu.org; Tue, 17 Dec 2024 09:29:10 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1tNYZJ-0004w9-W7
- for qemu-devel@nongnu.org; Tue, 17 Dec 2024 09:29:04 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1tNYZM-0004wR-4w
+ for qemu-devel@nongnu.org; Tue, 17 Dec 2024 09:29:05 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1734445740;
+ s=mimecast20190719; t=1734445742;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=rGnPqYnVB92EV7EXj5JzVc7YMdWCsFD7SGGXuGweevk=;
- b=cf0qorDg/bk2ryDXAX6ejaU+wVG+WitemxrIaxeUhOLsdBvtjSEI0Ku8zef7a3zW2voUNT
- 8xjTkTtJ3z3JmLNGGQDsnT5/F99oqRqq4zAmH9Wup6bDdRVLRHC3NIkUexvaGEx/6gxzPt
- zNDsP8amsPsIXFyfky3OdRgrUqdwiTI=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ bh=FPzOHjVETNGAqdsG7EQpmY5dkKRFCfWVL5M7/yQ1yDY=;
+ b=cuNz9yVuRO175sODtCi2LMfvyL4Nw4HIhAK5MeOZNhT7fnd1tgNYFDWkEah2Ge3vCRopn9
+ 0YCmzBYa4+b2Bbo3qfHcxgJmXpOIw6/LQss+Hnl64Tv7BSWwKMIq20wa7kwFOtS0LZ3zLl
+ DVfzFyZNxxFycCqVx2+UWSGNyrnkVHA=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-582-lzrYoSneN96v5zjZOyb5jg-1; Tue,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-589-WpNrUqLVOnmqvNvAdPjfNQ-1; Tue,
  17 Dec 2024 09:28:58 -0500
-X-MC-Unique: lzrYoSneN96v5zjZOyb5jg-1
-X-Mimecast-MFC-AGG-ID: lzrYoSneN96v5zjZOyb5jg
+X-MC-Unique: WpNrUqLVOnmqvNvAdPjfNQ-1
+X-Mimecast-MFC-AGG-ID: WpNrUqLVOnmqvNvAdPjfNQ
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 8A1781955E9D; Tue, 17 Dec 2024 14:28:57 +0000 (UTC)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 9FE7919560A2; Tue, 17 Dec 2024 14:28:57 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.192.27])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 487EF1955F41; Tue, 17 Dec 2024 14:28:57 +0000 (UTC)
+ id 60C1D1955F54; Tue, 17 Dec 2024 14:28:57 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 0A25B21E6698; Tue, 17 Dec 2024 15:28:55 +0100 (CET)
+ id 0D2D921E6605; Tue, 17 Dec 2024 15:28:55 +0100 (CET)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: pbonzini@redhat.com,
 	berrange@redhat.com,
 	eduardo@habkost.net
-Subject: [PATCH 1/6] qdev: Delete unused qdev_prop_enum
-Date: Tue, 17 Dec 2024 15:28:49 +0100
-Message-ID: <20241217142855.3805068-2-armbru@redhat.com>
+Subject: [PATCH 2/6] qdev: Change qdev_prop_pci_devfn member @name from
+ "int32" to "str"
+Date: Tue, 17 Dec 2024 15:28:50 +0100
+Message-ID: <20241217142855.3805068-3-armbru@redhat.com>
 In-Reply-To: <20241217142855.3805068-1-armbru@redhat.com>
 References: <20241217142855.3805068-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -31
 X-Spam_score: -3.2
@@ -83,42 +84,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Properties using qdev_prop_pci_devfn initially accepted a string of
+the form "DEV.FN" or "DEV" where DEV and FN are in hexadecimal.
+Member @name was "pci-devfn" initially.
+
+Commit b403298adb5 (qdev: make the non-legacy pci address property
+accept an integer) changed them to additionally accept integers: bits
+3..7 are DEV, and bits 0..2 are FN.  This is inaccessible externally
+in device_add so far.
+
+The commit also changed @name to "int32", and set member @legacy-name
+to "pci-devfn".  Together, this kept QMP command
+device-list-properties unaffected: it used @name only when
+@legacy_name was null.
+
+Commit 07d09c58dbb (qmp: Print descriptions of object properties)
+quietly dumbed that down to use @name always, and the next commit
+18b91a3e082q (qdev: Drop legacy_name from qdev properties) dropped
+member @legacy_name.  This changed the value of @type reported by QMP
+command device-list-properties from "pci-devfn" to "int32".
+
+But "int32" is misleading: device_add actually wants QAPI type "str".
+So change @name to that.
+
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
 ---
- include/hw/qdev-properties.h | 1 -
- hw/core/qdev-properties.c    | 7 -------
- 2 files changed, 8 deletions(-)
+ hw/core/qdev-properties-system.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/hw/qdev-properties.h b/include/hw/qdev-properties.h
-index 26ebd23068..1e7ae2e01a 100644
---- a/include/hw/qdev-properties.h
-+++ b/include/hw/qdev-properties.h
-@@ -49,7 +49,6 @@ struct PropertyInfo {
- extern const PropertyInfo qdev_prop_bit;
- extern const PropertyInfo qdev_prop_bit64;
- extern const PropertyInfo qdev_prop_bool;
--extern const PropertyInfo qdev_prop_enum;
- extern const PropertyInfo qdev_prop_uint8;
- extern const PropertyInfo qdev_prop_uint16;
- extern const PropertyInfo qdev_prop_uint32;
-diff --git a/hw/core/qdev-properties.c b/hw/core/qdev-properties.c
-index 315196bd85..cfd8abb2f9 100644
---- a/hw/core/qdev-properties.c
-+++ b/hw/core/qdev-properties.c
-@@ -122,13 +122,6 @@ void qdev_propinfo_set_default_value_enum(ObjectProperty *op,
-         qapi_enum_lookup(prop->info->enum_table, prop->defval.i));
+diff --git a/hw/core/qdev-properties-system.c b/hw/core/qdev-properties-system.c
+index 22ea1ed358..3177678861 100644
+--- a/hw/core/qdev-properties-system.c
++++ b/hw/core/qdev-properties-system.c
+@@ -882,7 +882,7 @@ static int print_pci_devfn(Object *obj, Property *prop, char *dest,
  }
  
--const PropertyInfo qdev_prop_enum = {
--    .name  = "enum",
--    .get   = qdev_propinfo_get_enum,
--    .set   = qdev_propinfo_set_enum,
--    .set_default_value = qdev_propinfo_set_default_value_enum,
--};
--
- /* Bit */
- 
- static uint32_t qdev_get_prop_mask(Property *prop)
+ const PropertyInfo qdev_prop_pci_devfn = {
+-    .name  = "int32",
++    .name  = "str",
+     .description = "Slot and optional function number, example: 06.0 or 06",
+     .print = print_pci_devfn,
+     .get   = qdev_propinfo_get_int32,
 -- 
 2.47.0
 
