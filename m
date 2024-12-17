@@ -2,59 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A7BB9F501B
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Dec 2024 17:01:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A89D9F506D
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Dec 2024 17:10:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tNZzm-0004En-Ob; Tue, 17 Dec 2024 11:00:26 -0500
+	id 1tNZzj-0004Dk-4Z; Tue, 17 Dec 2024 11:00:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1tNZzh-0004E7-8n
- for qemu-devel@nongnu.org; Tue, 17 Dec 2024 11:00:21 -0500
+ id 1tNZzd-0004CG-Aj
+ for qemu-devel@nongnu.org; Tue, 17 Dec 2024 11:00:17 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1tNZza-000250-2A
- for qemu-devel@nongnu.org; Tue, 17 Dec 2024 11:00:20 -0500
+ id 1tNZzY-00024n-Kx
+ for qemu-devel@nongnu.org; Tue, 17 Dec 2024 11:00:17 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1734451213;
+ s=mimecast20190719; t=1734451211;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=7k+tEYKrr5XUuCj4cGmAGM2/Boaa8pNKMmysiZtXWvs=;
- b=aRpRk5htQO5VyDGAJR2ckm2Wcs0qMPw0HPlCy7fX0YqoeeIkptYtxUVW9LB4jSfNuWqi86
- RjkzXgmMLZG0CN+Xhv7FaOCed1EOyCfwPBvRLbFFG+KS+koBeCxDnbGd1lOQCY1ja07UK1
- Av5N+qwtxKBRA0O9X1AZBF0MNIgX37I=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ bh=fhKdokIULRGPGWSO9LdGxnmdKKDtG0WAE0bknPnTpHU=;
+ b=ZSx7Qn2LoKjwMiSXzLjE1/jGS6H5xOPSDmA5aT6LiC9bru94cQzO7Paaf1Z7Qn+ae3X5cm
+ Ek4b+OlontE9wQM0ZevJSBIy5TuBW328J+CvqXyELqZNA4CtCEAxdrVOa9zjujTmGMZi+A
+ pxoDq2t5qA1DrvNPGSsDmhyG7GRIOS0=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-63-I_MvxSsWNnq2nbpymWb8JQ-1; Tue,
- 17 Dec 2024 11:00:09 -0500
-X-MC-Unique: I_MvxSsWNnq2nbpymWb8JQ-1
-X-Mimecast-MFC-AGG-ID: I_MvxSsWNnq2nbpymWb8JQ
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-627-UeNu2OibNdupKLdV7cSmOQ-1; Tue,
+ 17 Dec 2024 11:00:10 -0500
+X-MC-Unique: UeNu2OibNdupKLdV7cSmOQ-1
+X-Mimecast-MFC-AGG-ID: UeNu2OibNdupKLdV7cSmOQ
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id CDBAF1955F3D; Tue, 17 Dec 2024 16:00:05 +0000 (UTC)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 67C671956052; Tue, 17 Dec 2024 16:00:08 +0000 (UTC)
 Received: from toolbox.redhat.com (unknown [10.42.28.136])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 8A51630044C1; Tue, 17 Dec 2024 16:00:03 +0000 (UTC)
+ id 6A5F730044C1; Tue, 17 Dec 2024 16:00:06 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Thomas Huth <huth@tuxfamily.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH v3 03/32] tests/functional: resolve str(Asset) to cache file
- path
-Date: Tue, 17 Dec 2024 15:59:24 +0000
-Message-ID: <20241217155953.3950506-4-berrange@redhat.com>
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: [PATCH v3 04/32] tests/functional: remove duplicated 'which' function
+ impl
+Date: Tue, 17 Dec 2024 15:59:25 +0000
+Message-ID: <20241217155953.3950506-5-berrange@redhat.com>
 In-Reply-To: <20241217155953.3950506-1-berrange@redhat.com>
 References: <20241217155953.3950506-1-berrange@redhat.com>
 MIME-Version: 1.0
@@ -63,12 +64,11 @@ Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -31
-X-Spam_score: -3.2
-X-Spam_bar: ---
-X-Spam_report: (-3.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-1.116,
+X-Spam_score_int: -27
+X-Spam_score: -2.8
+X-Spam_bar: --
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-1.116,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -86,29 +86,112 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Allow an Asset object to be used in place of a filename but
-making its string representation resolve to the cache file
-path.
+Put the 'which' function into shared code.
 
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- tests/functional/qemu_test/asset.py | 3 +++
- 1 file changed, 3 insertions(+)
+ tests/functional/qemu_test/__init__.py |  2 +-
+ tests/functional/qemu_test/cmd.py      | 10 ++++++++++
+ tests/functional/test_acpi_bits.py     | 13 +------------
+ tests/functional/test_ppc64_hv.py      | 13 +------------
+ 4 files changed, 13 insertions(+), 25 deletions(-)
 
-diff --git a/tests/functional/qemu_test/asset.py b/tests/functional/qemu_test/asset.py
-index 559af0351f..c5d3e73c4b 100644
---- a/tests/functional/qemu_test/asset.py
-+++ b/tests/functional/qemu_test/asset.py
-@@ -39,6 +39,9 @@ def __repr__(self):
-         return "Asset: url=%s hash=%s cache=%s" % (
-             self.url, self.hash, self.cache_file)
+diff --git a/tests/functional/qemu_test/__init__.py b/tests/functional/qemu_test/__init__.py
+index 67f87be9c4..8fddddbe67 100644
+--- a/tests/functional/qemu_test/__init__.py
++++ b/tests/functional/qemu_test/__init__.py
+@@ -10,6 +10,6 @@
+ from .config import BUILD_DIR
+ from .cmd import has_cmd, has_cmds, run_cmd, is_readable_executable_file, \
+     interrupt_interactive_console_until_pattern, wait_for_console_pattern, \
+-    exec_command, exec_command_and_wait_for_pattern, get_qemu_img
++    exec_command, exec_command_and_wait_for_pattern, get_qemu_img, which
+ from .testcase import QemuBaseTest, QemuUserTest, QemuSystemTest
+ from .linuxkernel import LinuxKernelTest
+diff --git a/tests/functional/qemu_test/cmd.py b/tests/functional/qemu_test/cmd.py
+index 11c8334a7c..4106f1ee7c 100644
+--- a/tests/functional/qemu_test/cmd.py
++++ b/tests/functional/qemu_test/cmd.py
+@@ -18,6 +18,16 @@
  
-+    def __str__(self):
-+        return str(self.cache_file)
-+
-     def _check(self, cache_file):
-         if self.hash is None:
-             return True
+ from .config import BUILD_DIR
+ 
++def which(tool):
++    """ looks up the full path for @tool, returns None if not found
++        or if @tool does not have executable permissions.
++    """
++    paths=os.getenv('PATH')
++    for p in paths.split(os.path.pathsep):
++        p = os.path.join(p, tool)
++        if os.path.exists(p) and os.access(p, os.X_OK):
++            return p
++    return None
+ 
+ def has_cmd(name, args=None):
+     """
+diff --git a/tests/functional/test_acpi_bits.py b/tests/functional/test_acpi_bits.py
+index 3df9562394..1e6d082ecb 100755
+--- a/tests/functional/test_acpi_bits.py
++++ b/tests/functional/test_acpi_bits.py
+@@ -47,7 +47,7 @@
+ )
+ from qemu.machine import QEMUMachine
+ from unittest import skipIf
+-from qemu_test import QemuSystemTest, Asset
++from qemu_test import QemuSystemTest, Asset, which
+ 
+ deps = ["xorriso", "mformat"] # dependent tools needed in the test setup/box.
+ supported_platforms = ['x86_64'] # supported test platforms.
+@@ -55,17 +55,6 @@
+ # default timeout of 120 secs is sometimes not enough for bits test.
+ BITS_TIMEOUT = 200
+ 
+-def which(tool):
+-    """ looks up the full path for @tool, returns None if not found
+-        or if @tool does not have executable permissions.
+-    """
+-    paths=os.getenv('PATH')
+-    for p in paths.split(os.path.pathsep):
+-        p = os.path.join(p, tool)
+-        if os.path.exists(p) and os.access(p, os.X_OK):
+-            return p
+-    return None
+-
+ def missing_deps():
+     """ returns True if any of the test dependent tools are absent.
+     """
+diff --git a/tests/functional/test_ppc64_hv.py b/tests/functional/test_ppc64_hv.py
+index d97b62e364..7c6f8234f5 100755
+--- a/tests/functional/test_ppc64_hv.py
++++ b/tests/functional/test_ppc64_hv.py
+@@ -11,7 +11,7 @@
+ 
+ from unittest import skipIf, skipUnless
+ from qemu_test import QemuSystemTest, Asset
+-from qemu_test import wait_for_console_pattern, exec_command
++from qemu_test import wait_for_console_pattern, exec_command, which
+ import os
+ import time
+ import subprocess
+@@ -19,17 +19,6 @@
+ 
+ deps = ["xorriso"] # dependent tools needed in the test setup/box.
+ 
+-def which(tool):
+-    """ looks up the full path for @tool, returns None if not found
+-        or if @tool does not have executable permissions.
+-    """
+-    paths=os.getenv('PATH')
+-    for p in paths.split(os.path.pathsep):
+-        p = os.path.join(p, tool)
+-        if os.path.exists(p) and os.access(p, os.X_OK):
+-            return p
+-    return None
+-
+ def missing_deps():
+     """ returns True if any of the test dependent tools are absent.
+     """
 -- 
 2.46.0
 
