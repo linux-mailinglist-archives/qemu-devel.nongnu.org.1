@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 327F79F52E7
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Dec 2024 18:23:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D7C39F52D6
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Dec 2024 18:23:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tNbF5-00081z-Jd; Tue, 17 Dec 2024 12:20:19 -0500
+	id 1tNbF1-00080T-HX; Tue, 17 Dec 2024 12:20:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tNbEw-0007z3-7P
+ id 1tNbEw-0007z4-95
  for qemu-devel@nongnu.org; Tue, 17 Dec 2024 12:20:10 -0500
-Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tNbEi-0006DM-31
- for qemu-devel@nongnu.org; Tue, 17 Dec 2024 12:20:08 -0500
-Received: by mail-wr1-x429.google.com with SMTP id
- ffacd0b85a97d-3862b364538so3245691f8f.1
- for <qemu-devel@nongnu.org>; Tue, 17 Dec 2024 09:19:54 -0800 (PST)
+ id 1tNbEi-0006Dc-8f
+ for qemu-devel@nongnu.org; Tue, 17 Dec 2024 12:20:09 -0500
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-4361f796586so62296505e9.3
+ for <qemu-devel@nongnu.org>; Tue, 17 Dec 2024 09:19:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734455992; x=1735060792; darn=nongnu.org;
+ d=linaro.org; s=google; t=1734455993; x=1735060793; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=qu7n5SMfurjzkPz6Mh3VSolF3Qw9b8ZT5LnuFsdfpCY=;
- b=MJPqB2yW/FW+/dIQhjnSV8kPxzktMNX+IiHp+37+r3eEgzLmHBGZPUcZct2pRyjcAW
- JhLnR/qkNwEuRiPYTmuJR9Jpr/KS53LYLgSWVjUzXRSL28+6ssMLs20j6VaUgevTFUes
- 5Jy9/WbXpIUMSgCXv5W1fXeg+ZyRtqBPcHNWjaxcPZpanwZ1Lw3X6db/RwK/HpKnBx29
- TJTN2y0iYzTKe6Ky8o/6KKzwg2/EdbaH3aClpPL4ROy/+SYRq+3WX9rMBMUfHv47n+C9
- vfuZHCeVbwEAXbCFD63tn/qrcEwZwr0OcpHo2SckCa8Mt/heuoRU68DQ5HiX1Tk0cKDD
- WEdA==
+ :reply-to; bh=hC9M0XpdNJx8hwrzBQKl1ZaJYPNdEGDotHyFjhLEqJ4=;
+ b=vQQdfec977TCsgpPW124Y72axHemMyeW7ZDzj0ZhkqzRofpEih2tAExGvIZR7jFkyO
+ atbACmMSvNTCceCaeV2FPHLNcY0r79VowgyvPYKA8ntwRS2ng8rAMvpR1gpmv/6T/tXu
+ U/lv7/4oiw9ZgM1CUWAgD/M0tRJIws2V86bVdxysoyZzhAIr1kKgjHzStVYb6m5DbblK
+ KtV1pUXiwEmPTROqlg0AvsckW/d0P8u4sqis8bAMvX7EKTv/T36u4YeWMd05xJC1DJYo
+ eVBiukz8pXbgfud5DqnqtFN4O+h6MOPY0ucYofPx2B3uulLYCei1U46dUQcEeBSjeKxS
+ qj1w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734455992; x=1735060792;
+ d=1e100.net; s=20230601; t=1734455993; x=1735060793;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=qu7n5SMfurjzkPz6Mh3VSolF3Qw9b8ZT5LnuFsdfpCY=;
- b=avBBfQjVFrYDmc0Ri/1/q3THwFczgesxcaFX2tNOdUT12r4hyLhBSoTUBvqjK64kQj
- uzzwyO3qsISnvmoT8YenLLAdIi8x7fbS8URUhXL27hGciHHgR/zwMrq5YPxH3cQ8VyZG
- ItXxbxkb8gpwG41x5Ami0g0Gbsm3a9c+OxetlccSs5V/k7UcRjtM3p3oXPS0o/As0OtS
- IBnyH1YiDWBFQyzRycsXKh7vV5ZaI+sm9Tz3Kc8HQFP/RxnMhAUJSNk4ixu2zhetyXPA
- SSoIHooOloxSW9G2muoKixJO9Q8NV11CF2/PA0dcFqSKQwL6aQ3C/8tWqdi7qcHViRvr
- 9qAg==
-X-Gm-Message-State: AOJu0Yzk5D6xCqgMIhxt6E9bra4otFAxoAQdIxwLfeK6//Bci8FP2Ils
- RJ1Gu2zPJpJ4ilzei4wMU+U8pT9pbUyk81Ov9gzmAeYyVCxQSxp1N7pPGPXoD3SF1NtkVdb6loj
- S
-X-Gm-Gg: ASbGnctYGtERCX1DqK+liMgMtOmWS4NAdw2vZhuWe8+yxKWdyQ8HmFPiU5QRF+2/gcH
- PDbwQionf8YCIOUKDRfH3GZOECjGYqIK6t1d1tUXJmIIFoIZLKX27LfMK6e4/5gi0DVa21hc8Sp
- tIOzePML+keaFhVjRLMaNVajchgpR3tHklKqlbb3kuf6o+KVXSMYzgXidl8F2dB7hAzysubOn7X
- C/Psmn7i5rZnMQs0G+jtjQ/rf9gApjZ0u9UXtAI5HeWRHAEqOqlqLF2v1jGVVY=
-X-Google-Smtp-Source: AGHT+IFVeC4pUB7v1Jj5/UlFinktIcDBnioe3qyD5qpPCY8WJO4+cXmanU2sKzYGF4i37Qs+zNEEpw==
-X-Received: by 2002:a05:6000:987:b0:382:3211:6b7e with SMTP id
- ffacd0b85a97d-388db266e4amr2913090f8f.31.1734455992187; 
- Tue, 17 Dec 2024 09:19:52 -0800 (PST)
+ bh=hC9M0XpdNJx8hwrzBQKl1ZaJYPNdEGDotHyFjhLEqJ4=;
+ b=qruboN+2VvTTDnxq3gssYkKKHciut4iDkOkdwTFQidlJ8DDA5OhTNN7jr4l2sN1yiP
+ 7uIWIB7/p8VtlS0RCTPviYVWApDETfCCf4ewiaRqwVmWRwZrL7KLLO0vthNRVoOzLMuS
+ /JZbXzQBkjXbZPutPeIcvNSTxub5stsUhzF3+738Rtw38DeQn+U3oZTuI+0i9O0mcLFK
+ v6duTjXDeD+iYnrP18RR3phlurTCkSpd2lYLw0KWqlxOMGPyywxPpVwYFkKf2DAG6abP
+ FvkThUrSvljGpLLeS17a35wvthWUcp0S/nrAkuZPmZqbwsylOl4vW+zTowx92FdKteUM
+ 7Dmg==
+X-Gm-Message-State: AOJu0Yzep6hGakRleuBiTNsaiyBEQY29NGTOZoP8x5pnWpb4ag4lh1xq
+ 8TSBLMpZ3C3l95dxqHDXqmZUVF7D4tXRDo1Jcn6Rqj51glBXb2CMQc1ILAfKZJZzz/4RqssGRn6
+ Z
+X-Gm-Gg: ASbGncseXsbCqRHkBXofXmUFPbWLC63UY701e56f9Lv6bPZG+db63Y2Lo4YW5r65L7v
+ iLb8E+PFECl+6DWvN7LQwBAW/uO+Cxp0l6UBRr9dhcewW9tzdielinpmAZMXe1DdYrErJ1HPKNs
+ pdo5dDIqtH4Tz7p9fqvEGHqVlerVIFQaRI5H+A1f2JlSic17gEKSFgXzYWJNzKYSdL1+bg8DzTf
+ /cB8Ewh8zpynrwCQ1JzwHh1/649UMammlt6TlWbbzc0TbKbJ1ywjBhDS+zuA6Y=
+X-Google-Smtp-Source: AGHT+IE9glgKAMtf/ySxxi40oKwnxGiLQkUfJTDm9SpaIl4PvjILtamL9DzJchF//22DdKFUSV/BCw==
+X-Received: by 2002:a5d:648b:0:b0:385:f17b:de5a with SMTP id
+ ffacd0b85a97d-38880ae13c4mr17519610f8f.28.1734455993089; 
+ Tue, 17 Dec 2024 09:19:53 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-388c8016389sm11569728f8f.32.2024.12.17.09.19.51
+ ffacd0b85a97d-388c8016389sm11569728f8f.32.2024.12.17.09.19.52
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 17 Dec 2024 09:19:51 -0800 (PST)
+ Tue, 17 Dec 2024 09:19:52 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 12/19] target/arm: Implement fine-grained-trap handling for
- FEAT_XS
-Date: Tue, 17 Dec 2024 17:19:30 +0000
-Message-Id: <20241217171937.3899947-13-peter.maydell@linaro.org>
+Subject: [PULL 13/19] target/arm: Add ARM_CP_ADD_TLBI_NXS type flag for NXS
+ insns
+Date: Tue, 17 Dec 2024 17:19:31 +0000
+Message-Id: <20241217171937.3899947-14-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241217171937.3899947-1-peter.maydell@linaro.org>
 References: <20241217171937.3899947-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::429;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x429.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x334.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,196 +96,85 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-FEAT_XS introduces a set of new TLBI maintenance instructions with an
-"nXS" qualifier.  These behave like the stardard ones except that
-they do not wait for memory accesses with the XS attribute to
-complete.  They have an interaction with the fine-grained-trap
-handling: the FGT bits that a hypervisor can use to trap TLBI
-maintenance instructions normally trap also the nXS variants, but the
-hypervisor can elect to not trap the nXS variants by setting
-HCRX_EL2.FGTnXS to 1.
+All of the TLBI insns with an NXS variant put that variant at the
+same encoding but with a CRn field that is one greater than for the
+original TLBI insn.  To avoid having to define every TLBI insn
+effectively twice, once in the normal way and once in a set of cpreg
+arrays that are only registered when FEAT_XS is present, we define a
+new ARM_CP_ADD_TLB_NXS type flag for cpregs.  When this flag is set
+in a cpreg struct and FEAT_XS is present,
+define_one_arm_cp_reg_with_opaque() will automatically add a second
+cpreg to the hash table for the TLBI NXS insn with:
+ * the crn+1 encoding
+ * an FGT field that indicates that it should honour HCR_EL2.FGTnXS
+ * a name with the "NXS" suffix
 
-Add support to our FGT mechanism for these TLBI bits. For each
-TLBI-trapping FGT bit we define, for example:
- * FGT_TLBIVAE1 -- the same value we do at present for the
-   normal variant of the insn
- * FGT_TLBIVAE1NXS -- for the nXS qualified insn; the value of
-   this enum has an NXS bit ORed into it
-
-In access_check_cp_reg() we can then ignore the trap bit for an
-access where ri->fgt has the NXS bit set and HCRX_EL2.FGTnXS is 1.
+(If there are future TLBI NXS insns that don't use this same
+encoding convention, it is also possible to define them manually.)
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20241211144440.2700268-2-peter.maydell@linaro.org
+Message-id: 20241211144440.2700268-3-peter.maydell@linaro.org
 ---
- target/arm/cpregs.h        | 72 ++++++++++++++++++++++----------------
- target/arm/cpu-features.h  |  5 +++
- target/arm/helper.c        |  5 ++-
- target/arm/tcg/op_helper.c | 11 +++++-
- 4 files changed, 61 insertions(+), 32 deletions(-)
+ target/arm/cpregs.h |  8 ++++++++
+ target/arm/helper.c | 25 +++++++++++++++++++++++++
+ 2 files changed, 33 insertions(+)
 
 diff --git a/target/arm/cpregs.h b/target/arm/cpregs.h
-index cc7c54378f4..87704762ef9 100644
+index 87704762ef9..1759d9defbe 100644
 --- a/target/arm/cpregs.h
 +++ b/target/arm/cpregs.h
-@@ -621,6 +621,7 @@ FIELD(HDFGWTR_EL2, NBRBCTL, 60, 1)
- FIELD(HDFGWTR_EL2, NBRBDATA, 61, 1)
- FIELD(HDFGWTR_EL2, NPMSNEVFR_EL1, 62, 1)
+@@ -126,6 +126,14 @@ enum {
+      * equivalent EL1 register when FEAT_NV2 is enabled.
+      */
+     ARM_CP_NV2_REDIRECT          = 1 << 20,
++    /*
++     * Flag: this is a TLBI insn which (when FEAT_XS is present) also has
++     * an NXS variant at the same encoding except that crn is 1 greater,
++     * so when registering this cpreg automatically also register one
++     * for the TLBI NXS variant. (For QEMU the NXS variant behaves
++     * identically to the normal one, other than FGT trapping handling.)
++     */
++    ARM_CP_ADD_TLBI_NXS          = 1 << 21,
+ };
  
-+FIELD(FGT, NXS, 13, 1) /* Honour HCR_EL2.FGTnXS to suppress FGT */
- /* Which fine-grained trap bit register to check, if any */
- FIELD(FGT, TYPE, 10, 3)
- FIELD(FGT, REV, 9, 1) /* Is bit sense reversed? */
-@@ -639,6 +640,17 @@ FIELD(FGT, BITPOS, 0, 6) /* Bit position within the uint64_t */
- #define DO_REV_BIT(REG, BITNAME)                                        \
-     FGT_##BITNAME = FGT_##REG | FGT_REV | R_##REG##_EL2_##BITNAME##_SHIFT
- 
-+/*
-+ * The FGT bits for TLBI maintenance instructions accessible at EL1 always
-+ * affect the "normal" TLBI insns; they affect the corresponding TLBI insns
-+ * with the nXS qualifier only if HCRX_EL2.FGTnXS is 0. We define e.g.
-+ * FGT_TLBIVAE1 to use for the normal insn, and FGT_TLBIVAE1NXS to use
-+ * for the nXS qualified insn.
-+ */
-+#define DO_TLBINXS_BIT(REG, BITNAME)                             \
-+    FGT_##BITNAME = FGT_##REG | R_##REG##_EL2_##BITNAME##_SHIFT, \
-+    FGT_##BITNAME##NXS = FGT_##BITNAME | R_FGT_NXS_MASK
-+
- typedef enum FGTBit {
-     /*
-      * These bits tell us which register arrays to use:
-@@ -772,36 +784,36 @@ typedef enum FGTBit {
-     DO_BIT(HFGITR, ATS1E0W),
-     DO_BIT(HFGITR, ATS1E1RP),
-     DO_BIT(HFGITR, ATS1E1WP),
--    DO_BIT(HFGITR, TLBIVMALLE1OS),
--    DO_BIT(HFGITR, TLBIVAE1OS),
--    DO_BIT(HFGITR, TLBIASIDE1OS),
--    DO_BIT(HFGITR, TLBIVAAE1OS),
--    DO_BIT(HFGITR, TLBIVALE1OS),
--    DO_BIT(HFGITR, TLBIVAALE1OS),
--    DO_BIT(HFGITR, TLBIRVAE1OS),
--    DO_BIT(HFGITR, TLBIRVAAE1OS),
--    DO_BIT(HFGITR, TLBIRVALE1OS),
--    DO_BIT(HFGITR, TLBIRVAALE1OS),
--    DO_BIT(HFGITR, TLBIVMALLE1IS),
--    DO_BIT(HFGITR, TLBIVAE1IS),
--    DO_BIT(HFGITR, TLBIASIDE1IS),
--    DO_BIT(HFGITR, TLBIVAAE1IS),
--    DO_BIT(HFGITR, TLBIVALE1IS),
--    DO_BIT(HFGITR, TLBIVAALE1IS),
--    DO_BIT(HFGITR, TLBIRVAE1IS),
--    DO_BIT(HFGITR, TLBIRVAAE1IS),
--    DO_BIT(HFGITR, TLBIRVALE1IS),
--    DO_BIT(HFGITR, TLBIRVAALE1IS),
--    DO_BIT(HFGITR, TLBIRVAE1),
--    DO_BIT(HFGITR, TLBIRVAAE1),
--    DO_BIT(HFGITR, TLBIRVALE1),
--    DO_BIT(HFGITR, TLBIRVAALE1),
--    DO_BIT(HFGITR, TLBIVMALLE1),
--    DO_BIT(HFGITR, TLBIVAE1),
--    DO_BIT(HFGITR, TLBIASIDE1),
--    DO_BIT(HFGITR, TLBIVAAE1),
--    DO_BIT(HFGITR, TLBIVALE1),
--    DO_BIT(HFGITR, TLBIVAALE1),
-+    DO_TLBINXS_BIT(HFGITR, TLBIVMALLE1OS),
-+    DO_TLBINXS_BIT(HFGITR, TLBIVAE1OS),
-+    DO_TLBINXS_BIT(HFGITR, TLBIASIDE1OS),
-+    DO_TLBINXS_BIT(HFGITR, TLBIVAAE1OS),
-+    DO_TLBINXS_BIT(HFGITR, TLBIVALE1OS),
-+    DO_TLBINXS_BIT(HFGITR, TLBIVAALE1OS),
-+    DO_TLBINXS_BIT(HFGITR, TLBIRVAE1OS),
-+    DO_TLBINXS_BIT(HFGITR, TLBIRVAAE1OS),
-+    DO_TLBINXS_BIT(HFGITR, TLBIRVALE1OS),
-+    DO_TLBINXS_BIT(HFGITR, TLBIRVAALE1OS),
-+    DO_TLBINXS_BIT(HFGITR, TLBIVMALLE1IS),
-+    DO_TLBINXS_BIT(HFGITR, TLBIVAE1IS),
-+    DO_TLBINXS_BIT(HFGITR, TLBIASIDE1IS),
-+    DO_TLBINXS_BIT(HFGITR, TLBIVAAE1IS),
-+    DO_TLBINXS_BIT(HFGITR, TLBIVALE1IS),
-+    DO_TLBINXS_BIT(HFGITR, TLBIVAALE1IS),
-+    DO_TLBINXS_BIT(HFGITR, TLBIRVAE1IS),
-+    DO_TLBINXS_BIT(HFGITR, TLBIRVAAE1IS),
-+    DO_TLBINXS_BIT(HFGITR, TLBIRVALE1IS),
-+    DO_TLBINXS_BIT(HFGITR, TLBIRVAALE1IS),
-+    DO_TLBINXS_BIT(HFGITR, TLBIRVAE1),
-+    DO_TLBINXS_BIT(HFGITR, TLBIRVAAE1),
-+    DO_TLBINXS_BIT(HFGITR, TLBIRVALE1),
-+    DO_TLBINXS_BIT(HFGITR, TLBIRVAALE1),
-+    DO_TLBINXS_BIT(HFGITR, TLBIVMALLE1),
-+    DO_TLBINXS_BIT(HFGITR, TLBIVAE1),
-+    DO_TLBINXS_BIT(HFGITR, TLBIASIDE1),
-+    DO_TLBINXS_BIT(HFGITR, TLBIVAAE1),
-+    DO_TLBINXS_BIT(HFGITR, TLBIVALE1),
-+    DO_TLBINXS_BIT(HFGITR, TLBIVAALE1),
-     DO_BIT(HFGITR, CFPRCTX),
-     DO_BIT(HFGITR, DVPRCTX),
-     DO_BIT(HFGITR, CPPRCTX),
-diff --git a/target/arm/cpu-features.h b/target/arm/cpu-features.h
-index e806f138b8f..30302d6c5b4 100644
---- a/target/arm/cpu-features.h
-+++ b/target/arm/cpu-features.h
-@@ -474,6 +474,11 @@ static inline bool isar_feature_aa64_fcma(const ARMISARegisters *id)
-     return FIELD_EX64(id->id_aa64isar1, ID_AA64ISAR1, FCMA) != 0;
- }
- 
-+static inline bool isar_feature_aa64_xs(const ARMISARegisters *id)
-+{
-+    return FIELD_EX64(id->id_aa64isar1, ID_AA64ISAR1, XS) != 0;
-+}
-+
  /*
-  * These are the values from APA/API/APA3.
-  * In general these must be compared '>=', per the normal Arm ARM
 diff --git a/target/arm/helper.c b/target/arm/helper.c
-index 910ae62c476..8e62769ec0d 100644
+index 8e62769ec0d..c2a70f8c053 100644
 --- a/target/arm/helper.c
 +++ b/target/arm/helper.c
-@@ -5346,10 +5346,13 @@ static void hcrx_write(CPUARMState *env, const ARMCPRegInfo *ri,
-         valid_mask |= HCRX_TALLINT | HCRX_VINMI | HCRX_VFNMI;
-     }
-     /* FEAT_CMOW adds CMOW */
--
-     if (cpu_isar_feature(aa64_cmow, cpu)) {
-         valid_mask |= HCRX_CMOW;
-     }
-+    /* FEAT_XS adds FGTnXS, FnXS */
-+    if (cpu_isar_feature(aa64_xs, cpu)) {
-+        valid_mask |= HCRX_FGTNXS | HCRX_FNXS;
-+    }
- 
-     /* Clear RES0 bits.  */
-     env->cp15.hcrx_el2 = value & valid_mask;
-diff --git a/target/arm/tcg/op_helper.c b/target/arm/tcg/op_helper.c
-index 1ecb4659889..1161d301b71 100644
---- a/target/arm/tcg/op_helper.c
-+++ b/target/arm/tcg/op_helper.c
-@@ -817,6 +817,7 @@ const void *HELPER(access_check_cp_reg)(CPUARMState *env, uint32_t key,
-         unsigned int idx = FIELD_EX32(ri->fgt, FGT, IDX);
-         unsigned int bitpos = FIELD_EX32(ri->fgt, FGT, BITPOS);
-         bool rev = FIELD_EX32(ri->fgt, FGT, REV);
-+        bool nxs = FIELD_EX32(ri->fgt, FGT, NXS);
-         bool trapbit;
- 
-         if (ri->fgt & FGT_EXEC) {
-@@ -830,7 +831,15 @@ const void *HELPER(access_check_cp_reg)(CPUARMState *env, uint32_t key,
-             trapword = env->cp15.fgt_write[idx];
-         }
- 
--        trapbit = extract64(trapword, bitpos, 1);
-+        if (nxs && (arm_hcrx_el2_eff(env) & HCRX_FGTNXS)) {
-+            /*
-+             * If HCRX_EL2.FGTnXS is 1 then the fine-grained trap for
-+             * TLBI maintenance insns does *not* apply to the nXS variant.
-+             */
-+            trapbit = 0;
-+        } else {
-+            trapbit = extract64(trapword, bitpos, 1);
-+        }
-         if (trapbit != rev) {
-             res = CP_ACCESS_TRAP_EL2;
-             goto fail;
+@@ -9146,6 +9146,31 @@ void define_one_arm_cp_reg_with_opaque(ARMCPU *cpu,
+                     if (r->state != state && r->state != ARM_CP_STATE_BOTH) {
+                         continue;
+                     }
++                    if ((r->type & ARM_CP_ADD_TLBI_NXS) &&
++                        cpu_isar_feature(aa64_xs, cpu)) {
++                        /*
++                         * This is a TLBI insn which has an NXS variant. The
++                         * NXS variant is at the same encoding except that
++                         * crn is +1, and has the same behaviour except for
++                         * fine-grained trapping. Add the NXS insn here and
++                         * then fall through to add the normal register.
++                         * add_cpreg_to_hashtable() copies the cpreg struct
++                         * and name that it is passed, so it's OK to use
++                         * a local struct here.
++                         */
++                        ARMCPRegInfo nxs_ri = *r;
++                        g_autofree char *name = g_strdup_printf("%sNXS", r->name);
++
++                        assert(state == ARM_CP_STATE_AA64);
++                        assert(nxs_ri.crn < 0xf);
++                        nxs_ri.crn++;
++                        if (nxs_ri.fgt) {
++                            nxs_ri.fgt |= R_FGT_NXS_MASK;
++                        }
++                        add_cpreg_to_hashtable(cpu, &nxs_ri, opaque, state,
++                                               ARM_CP_SECSTATE_NS,
++                                               crm, opc1, opc2, name);
++                    }
+                     if (state == ARM_CP_STATE_AA32) {
+                         /*
+                          * Under AArch32 CP registers can be common
 -- 
 2.34.1
 
