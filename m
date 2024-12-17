@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D73799F3FB3
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Dec 2024 02:08:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 799699F3FC9
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Dec 2024 02:10:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tNM3a-0008G0-7z; Mon, 16 Dec 2024 20:07:26 -0500
+	id 1tNM3b-0008GO-I0; Mon, 16 Dec 2024 20:07:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1tNM3Y-0008F1-42
+ id 1tNM3Y-0008F9-Lk
  for qemu-devel@nongnu.org; Mon, 16 Dec 2024 20:07:24 -0500
-Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
+Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1tNM3W-0004wx-I1
- for qemu-devel@nongnu.org; Mon, 16 Dec 2024 20:07:23 -0500
-Received: by mail-pf1-x42e.google.com with SMTP id
- d2e1a72fcca58-725ea1e19f0so4061837b3a.3
- for <qemu-devel@nongnu.org>; Mon, 16 Dec 2024 17:07:21 -0800 (PST)
+ id 1tNM3X-0004xF-19
+ for qemu-devel@nongnu.org; Mon, 16 Dec 2024 20:07:24 -0500
+Received: by mail-pl1-x636.google.com with SMTP id
+ d9443c01a7336-21644e6140cso44505455ad.1
+ for <qemu-devel@nongnu.org>; Mon, 16 Dec 2024 17:07:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1734397641; x=1735002441; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=cpYSyAxaLUq+FGwtpjTxiPWQf+sG11OxsgGPSOFXX90=;
- b=BAmxLpaWwOebhMXJ9kmN0RLdGULlDqhR6LTk70deW7jMBwMOxKTuH+Iv2tJPf7cJGZ
- YVjNpKfleITGxjCxfHAmqTerH6neLR1F5xzJklD4nNTdlWjrp7M/PpA1MKpIJ+Vh27ea
- HzsfwYO4cOjDvkHH2apzJe1AM1mgSLSs5schFqbc1xwN2TnpWfiRXfoFNHwYJJR3+mGU
- 8UJvCUujW60kYvCAWEQYVBz9vPOHfur4ueQ1p0dMMyagXSPW8vuDILia4C2FiOx6upcA
- AAutqQtC/a6VPmPT7o5WFlOXBaGGBbZKUqbnQmgZr7bakLmw5kF0VIBIVVblF8wRkztM
- cHVg==
+ bh=kntzVB1MiyL7bevKjAuLTyrUWmHMkhYgMIBRD8JjWYI=;
+ b=CpzI3AA9cQ4XB246Icho+c+lwPNhKHVvLda3u5kpJQKLJtWahN6446ZTm1QHYqoMFI
+ uyw3IFBexQB2TZYXlk1i6r+M+bP+SZezASdCakQOCNdcNQfyaew47XG6pgkmbKFSxBuT
+ eG3j9QtGy2laxOhgWNSGkCB6id0lOZ+5WDJn2DNvTN6KL25IXPGxuA4kBO0L6/o48qWm
+ yk9s0Dfqudg6DhpOH4RfhbegfJUvK9lQGogEns1uOqYB8SGMXypjHN1X6ZJl3dZp6ZuI
+ hGh3CFbv5wBvXHdLBP76aqtadoAWenJJ7jXTfeTymqwTnNms3S7hpHKMbkpXMgs7aIuo
+ rKTg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1734397641; x=1735002441;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=cpYSyAxaLUq+FGwtpjTxiPWQf+sG11OxsgGPSOFXX90=;
- b=uhcgrVA3Ze7zQAKQ3s7nwmwUbx002mF/6Q7aH3zKv9KyGVsrPDwm2OQGr4UPWhcYJ7
- 0kBBYVvlAgxXdsvxL3FshEc9jvfBaSDiC4KjmCuRx44sBlv1ujEJiIiJP1aMlv+zSF0P
- ZfUsIh0AVvnKPHflXMvnyLF4cvTdIOq6XdhdUa+WeJZ0vgfNRy7HccJBF4P98SmnMj2x
- QaYSyGRjtOciz/3E9SsBmnjerEWK5Z27o3tWe3If81TjPmrAI+PR69vBqTkf67qnvs50
- L3Z39lYhgTcljq7leHWpoGbuTQBRtuWDVKlv73uwOW6BmUsGbXtLzs3WHcVIN/KsKCBG
- hW/g==
-X-Gm-Message-State: AOJu0Ywt1EjQnNx7Ps97iTKHvTa306E8ZADJqG+lr8mY2lyKLUA9Hr3K
- D7pErUrgMK0IS09OarBnBK8eCQOuZTud5QNfwyFN2vLuE+WloimmteB/xCgxzRzEaMwHe1NmuKc
- 3JWE=
-X-Gm-Gg: ASbGncsk22szbEUqwlFy+Oycu+rBaml67pJkJ8UsRjh8NdiGQuMgSWHTg+Fn88L/Ik8
- FM0EoYBwrDKr8tNXmAzWQz82Qh3w+/6IyHIcbtO7DK0qG8HdArw249kGPxunzc252W3H5JTE38C
- 3YOxMBf+Jd/ukzC89efO2swgMLTn/y5hWDLy9GG2RXeKurOLsv73eeaXnW7A2kDAQnZ09Re2By0
- yXRrlckKvYiikvRZQLxDMMspm6Da3w+nXQ4rr8QiVWA+i61waAB1lVhmjfgPIfKvs+U8ruvv6LR
- 6nhDtr4o8UN7O5w=
-X-Google-Smtp-Source: AGHT+IGgMwLIejFXHA2j+fWM6tnhOclw65kr1QPJbd5X1JjU6qa+UxtcQNaOJrCSBYQVQzaOzjJd9w==
-X-Received: by 2002:a17:902:db09:b0:215:83e1:99ff with SMTP id
- d9443c01a7336-218929c7077mr182728545ad.27.1734397640793; 
- Mon, 16 Dec 2024 17:07:20 -0800 (PST)
+ bh=kntzVB1MiyL7bevKjAuLTyrUWmHMkhYgMIBRD8JjWYI=;
+ b=WItOxb6+hS67cWTquSIInYvtKPrKUwY1ouQhPQiF5RWNytyq6WXvjR+bMx/RQwRUCd
+ dlv3fZRPG28KIuD9YTUY0/Yyn13NfZtLG7h8T6WricMx8qzDsEQZ/SdobTQef5mWuGsl
+ /y9Fefaep8k1Kw5oVXJMPmXAEHHjLwl6/uIPhSzUOn5oQaxNIQxPpfpWcZsC/OzCh9wI
+ iWIH3c9lp/68nNx2qOwTBOnsyMKKwQukBMtg1Wb89L3CylmqfZnOnNISgcIfRKULOjgY
+ BkLKqWM2EFL4vNSBPaU9uJGIHm77GcwMlqxNW+aiOh+miqVyt8PVGLBMIT9r8lTffFot
+ 3Sqg==
+X-Gm-Message-State: AOJu0Yws6lU83PaqZ2yQ6YvaZ3kzgnSFvP74FbUinOK3YFYu8ovhLJdu
+ agFOJ61EfXW30aea8P9ybazIBWJ68flfxuDsATQRPm5J1ttg/oBIXGK9mxxwKT/60KFXr1vkJrP
+ Hfi8=
+X-Gm-Gg: ASbGncstmNolICb2RZnWQMtBist5xTOaRhXGynqOZropqWJnbVqgXdQ77TGOmPSkF9X
+ Xg8wzFyYHHl+09Lw5IH7WVpRVYpO+H0ocup6ZkjjkQiz2N3FOiv1DppK2UHkYY2meTBP09LoTMP
+ j5gtB9QhR7nMkFlG1Q296Lmuy2G2lw9KVmypTqnXpqUJwy4SqiI+OXkH7ZkDjbwj5fL0JC4Xtxb
+ 5lVGoFd737jHKjH/bk+aeCh7hzgo4xQ9zlbvmAj56VpqQINd6W97M9bvrVDO4wrNX6POyo5/LN3
+ NwTiNsaWsLCVVVY=
+X-Google-Smtp-Source: AGHT+IFRXVdNKNMxJlyTksiEPszX7f9vq64ae2N8gkxAsH3rW5VfVbXTSewSIMl+q96E6m17Brq0nA==
+X-Received: by 2002:a17:902:eccf:b0:215:2f00:67b1 with SMTP id
+ d9443c01a7336-218929f1fe1mr175448485ad.6.1734397641651; 
+ Mon, 16 Dec 2024 17:07:21 -0800 (PST)
 Received: from pc.. (216-180-64-156.dyn.novuscom.net. [216.180.64.156])
  by smtp.gmail.com with ESMTPSA id
  d9443c01a7336-218a1e6d0e4sm48746595ad.261.2024.12.16.17.07.20
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 16 Dec 2024 17:07:20 -0800 (PST)
+ Mon, 16 Dec 2024 17:07:21 -0800 (PST)
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
@@ -70,16 +70,17 @@ Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Alexandre Iooss <erdnaxe@crans.org>, Paolo Bonzini <pbonzini@redhat.com>,
  Mahmoud Mandour <ma.mandourr@gmail.com>, Thomas Huth <thuth@redhat.com>,
  philmd@linaro.org
-Subject: [PATCH 03/13] tests/tcg/plugins/insn: remove unused callback parameter
-Date: Mon, 16 Dec 2024 17:06:57 -0800
-Message-Id: <20241217010707.2557258-4-pierrick.bouvier@linaro.org>
+Subject: [PATCH 04/13] contrib/plugins/howvec: ensure we don't regress if this
+ plugin is extended
+Date: Mon, 16 Dec 2024 17:06:58 -0800
+Message-Id: <20241217010707.2557258-5-pierrick.bouvier@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241217010707.2557258-1-pierrick.bouvier@linaro.org>
 References: <20241217010707.2557258-1-pierrick.bouvier@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x42e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x636.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -104,25 +105,41 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- tests/tcg/plugins/insn.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ contrib/plugins/howvec.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/tests/tcg/plugins/insn.c b/tests/tcg/plugins/insn.c
-index baf2d07205d..0c723cb9ed8 100644
---- a/tests/tcg/plugins/insn.c
-+++ b/tests/tcg/plugins/insn.c
-@@ -150,10 +150,8 @@ static void vcpu_tb_trans(qemu_plugin_id_t id, struct qemu_plugin_tb *tb)
-             qemu_plugin_register_vcpu_insn_exec_inline_per_vcpu(
-                 insn, QEMU_PLUGIN_INLINE_ADD_U64, insn_count, 1);
-         } else {
--            uint64_t vaddr = qemu_plugin_insn_vaddr(insn);
-             qemu_plugin_register_vcpu_insn_exec_cb(
--                insn, vcpu_insn_exec_before, QEMU_PLUGIN_CB_NO_REGS,
--                GUINT_TO_POINTER(vaddr));
-+                insn, vcpu_insn_exec_before, QEMU_PLUGIN_CB_NO_REGS, NULL);
-         }
+diff --git a/contrib/plugins/howvec.c b/contrib/plugins/howvec.c
+index 9be67f74534..2aa9029c3f0 100644
+--- a/contrib/plugins/howvec.c
++++ b/contrib/plugins/howvec.c
+@@ -253,6 +253,8 @@ static struct qemu_plugin_scoreboard *find_counter(
+     int i;
+     uint64_t *cnt = NULL;
+     uint32_t opcode = 0;
++    /* if opcode is greater than 32 bits, we should refactor insn hash table. */
++    G_STATIC_ASSERT(sizeof(opcode) == sizeof(uint32_t));
+     InsnClassExecCount *class = NULL;
  
-         if (do_size) {
+     /*
+@@ -284,7 +286,7 @@ static struct qemu_plugin_scoreboard *find_counter(
+ 
+         g_mutex_lock(&lock);
+         icount = (InsnExecCount *) g_hash_table_lookup(insns,
+-                                                       GUINT_TO_POINTER(opcode));
++                                                       (gpointer)(intptr_t) opcode);
+ 
+         if (!icount) {
+             icount = g_new0(InsnExecCount, 1);
+@@ -295,8 +297,7 @@ static struct qemu_plugin_scoreboard *find_counter(
+                 qemu_plugin_scoreboard_new(sizeof(uint64_t));
+             icount->count = qemu_plugin_scoreboard_u64(score);
+ 
+-            g_hash_table_insert(insns, GUINT_TO_POINTER(opcode),
+-                                (gpointer) icount);
++            g_hash_table_insert(insns, (gpointer)(intptr_t) opcode, icount);
+         }
+         g_mutex_unlock(&lock);
+ 
 -- 
 2.39.5
 
