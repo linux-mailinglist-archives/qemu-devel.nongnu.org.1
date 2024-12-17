@@ -2,116 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 422739F4F6D
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Dec 2024 16:27:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E6A1C9F4F78
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Dec 2024 16:30:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tNZTZ-0001Mm-R4; Tue, 17 Dec 2024 10:27:09 -0500
+	id 1tNZW1-00039n-K3; Tue, 17 Dec 2024 10:29:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tNZTX-0001FZ-DM
- for qemu-devel@nongnu.org; Tue, 17 Dec 2024 10:27:07 -0500
-Received: from smtp-out1.suse.de ([195.135.223.130])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1tNZVy-00039b-Fr
+ for qemu-devel@nongnu.org; Tue, 17 Dec 2024 10:29:38 -0500
+Received: from mail-qt1-x832.google.com ([2607:f8b0:4864:20::832])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tNZTS-0005BF-Iw
- for qemu-devel@nongnu.org; Tue, 17 Dec 2024 10:27:07 -0500
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
- [IPv6:2a07:de40:b281:104:10:150:64:97])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 2A50F21153;
- Tue, 17 Dec 2024 15:27:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1734449221; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=d+5J6yZPjVYpQtjLESjqLkV5VUHmeUmTowMeXp+QIQ4=;
- b=jaxoeYhfZjJQBL6UGxMDY3VnxuXteqxMzC5xzieTzW/I4no4KGcGZRhrM0Z/6r60okd28l
- 1E3JSjJfXBCMHCCvIewGPkenbBF0wsOva3CLQYQ0Czcm/2RCn+YJRo1xp+QumQRZBjZWt/
- GTHM5jKE2z1xXSm5tOZTx6rbCBiuNTc=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1734449221;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=d+5J6yZPjVYpQtjLESjqLkV5VUHmeUmTowMeXp+QIQ4=;
- b=dUgc94RIytmgBxLm9jbmVCfMjsVucumDjwU3IiKjWYw3bgdEI3kSwUolhKMOVuxDaxwPKk
- u2az/zx2rxVh6WDw==
-Authentication-Results: smtp-out1.suse.de;
- dkim=pass header.d=suse.de header.s=susede2_rsa header.b=jaxoeYhf;
- dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=dUgc94RI
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1734449221; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=d+5J6yZPjVYpQtjLESjqLkV5VUHmeUmTowMeXp+QIQ4=;
- b=jaxoeYhfZjJQBL6UGxMDY3VnxuXteqxMzC5xzieTzW/I4no4KGcGZRhrM0Z/6r60okd28l
- 1E3JSjJfXBCMHCCvIewGPkenbBF0wsOva3CLQYQ0Czcm/2RCn+YJRo1xp+QumQRZBjZWt/
- GTHM5jKE2z1xXSm5tOZTx6rbCBiuNTc=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1734449221;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=d+5J6yZPjVYpQtjLESjqLkV5VUHmeUmTowMeXp+QIQ4=;
- b=dUgc94RIytmgBxLm9jbmVCfMjsVucumDjwU3IiKjWYw3bgdEI3kSwUolhKMOVuxDaxwPKk
- u2az/zx2rxVh6WDw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A666E132EA;
- Tue, 17 Dec 2024 15:27:00 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id 26jJGkSYYWcXJAAAD6G6ig
- (envelope-from <farosas@suse.de>); Tue, 17 Dec 2024 15:27:00 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
- qemu-devel@nongnu.org, peterx@redhat.com
-Cc: linuxarm@huawei.com, zhangfei.gao@linaro.org
-Subject: Re: [PATCH] tests/qtest/migration: Fix compile errors when
- CONFIG_UADK is set
-In-Reply-To: <20241217131046.83844-1-shameerali.kolothum.thodi@huawei.com>
-References: <20241217131046.83844-1-shameerali.kolothum.thodi@huawei.com>
-Date: Tue, 17 Dec 2024 12:26:58 -0300
-Message-ID: <87ed26wcsd.fsf@suse.de>
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1tNZVw-0005oK-Tj
+ for qemu-devel@nongnu.org; Tue, 17 Dec 2024 10:29:38 -0500
+Received: by mail-qt1-x832.google.com with SMTP id
+ d75a77b69052e-467725245a2so52553271cf.3
+ for <qemu-devel@nongnu.org>; Tue, 17 Dec 2024 07:29:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1734449375; x=1735054175; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=oU/r0i563De0NrV2eXivMK70+lBQ9PWriyHQbatCaUY=;
+ b=N+ehyc7bdDtEOCxpQB0fV9rSFHy8aw1xbZVA+JiU8MSOQLgYP2nYTZEvf86a+DyzGw
+ 59E6KTAs9dk4LPTZOTym6Wnu4enWlEgcBUZd88LNFCbOYz1vVtlwTqBf20qeS2P49vJt
+ 8ed0rvDz+P0s+g9dQsigtJdfsRcxPNJK6K7j0gGM90zgFKp9GJE9GlDtbZxJ1CxP5QLo
+ gb/H/S/H0RY1qcXMpH0b2NgCQHZxxAeQaXAtAAz+joHcSq8iBH5D6tM/692DPCUehOHn
+ opQ4zGFClLL+dvHs76Q29AIu8ofTzThxn/AYGz9Zv6HXPwdwoAk9lPncz7RvKASDF+YW
+ boZw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1734449375; x=1735054175;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=oU/r0i563De0NrV2eXivMK70+lBQ9PWriyHQbatCaUY=;
+ b=BXeGVYmuv6Zwrt6w6hymN8ZVRm+HuMwUx4oClaMNgA6RtI38eGRkfNAGeqF5jpsx0u
+ lS2+kzHWNQpJx9Qj88EsuaZZBOKaND8+rK+dCpx2cVDnrEL3gxgGOODB8UQ94omFyM/f
+ npEyCUxNcZ0byPCvyUU+lj4wnYn33POya/1yclphoMO2vvNKo6hJ/rprw4W70LEFMuwQ
+ RncAgpugD0+nXZTZVUqUZEpKgNaUOgziFp02t+k0bR07S9CLQarUBcSLhTK8ulqrxPcg
+ 8bDF1fY/I3HYzHDX31XI9kHtJ5FVfl7WQzS+jtgEcPBGTU9juSGcINj3Nnxc+MY2biRj
+ xPIA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWOqmePbR7dfpn563rkxBsklPXG3wPlQwnMx0IsX3/Su9y34HW2U8n2G1ElwdsI03ASe4+RK3MJXCE+@nongnu.org
+X-Gm-Message-State: AOJu0YxL+wgNTwYKZLPrGMFOASlM7YAp6VLGaxP/8KQlakRJPSUvbGnj
+ F6RrllYiXUvc+ym2fCBxWn69Ap/SBarXXS5Ru3lZWEw2aWpErFuLcLXbpWhLdXA=
+X-Gm-Gg: ASbGnctQ/GyYwjhSb3uKK4JLj35MWA1bBBIJZgaEyPoPm6h2eqfdW2uYvP0jHmFeqwy
+ 4OjkRFVZJ9Zwtr/5hRzE7amO9Jo09Py1kWrLUxIBgFqi4gaUwFt/6PyEf5zTIzqn20zSxEreOk2
+ z3E7PBoYYTdR4epf0cHNHFm5+2Bp4oBz+y0/YXjH2no9Se9sLVxVJVOdTNsznC6UUdsbTWyfx+D
+ sVPs6tye8YzDdrZbzYsUB0Ah0mokDfZdtg6DgqidiuekVLADKFlEdZexJ14bu04dELDHGnqFA==
+X-Google-Smtp-Source: AGHT+IF0QiF9xbqSCNoECU7YpaM2n8y0YmtZR3EDerhP4V9kcAYBBkCwhau8ehbvx3sTyUKT2BPpEA==
+X-Received: by 2002:ac8:5d10:0:b0:466:8eb7:59c5 with SMTP id
+ d75a77b69052e-467a580242bmr284934981cf.34.1734449375417; 
+ Tue, 17 Dec 2024 07:29:35 -0800 (PST)
+Received: from [172.20.0.130] ([187.217.227.247])
+ by smtp.gmail.com with ESMTPSA id
+ d75a77b69052e-467b2e83181sm40232001cf.62.2024.12.17.07.29.33
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 17 Dec 2024 07:29:35 -0800 (PST)
+Message-ID: <600bd66a-5b76-4e12-884a-4cf8182ba992@linaro.org>
+Date: Tue, 17 Dec 2024 09:29:31 -0600
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 2A50F21153
-X-Spamd-Result: default: False [-4.51 / 50.00]; BAYES_HAM(-3.00)[99.99%];
- NEURAL_HAM_LONG(-1.00)[-1.000];
- R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
- MX_GOOD(-0.01)[]; RCVD_VIA_SMTP_AUTH(0.00)[];
- MISSING_XM_UA(0.00)[]; MIME_TRACE(0.00)[0:+]; ARC_NA(0.00)[];
- TO_DN_SOME(0.00)[]; MID_RHS_MATCH_FROM(0.00)[];
- RCVD_TLS_ALL(0.00)[]; RCPT_COUNT_FIVE(0.00)[5];
- FROM_EQ_ENVFROM(0.00)[]; FROM_HAS_DN(0.00)[];
- FUZZY_BLOCKED(0.00)[rspamd.com]; RCVD_COUNT_TWO(0.00)[2];
- TO_MATCH_ENVRCPT_ALL(0.00)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:mid];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- DKIM_TRACE(0.00)[suse.de:+]
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Rspamd-Action: no action
-X-Spam-Score: -4.51
-Received-SPF: pass client-ip=195.135.223.130; envelope-from=farosas@suse.de;
- helo=smtp-out1.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 06/13] tests/tcg/plugins/mem: fix 32-bit build
+To: Pierrick Bouvier <pierrick.bouvier@linaro.org>, qemu-devel@nongnu.org
+Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Alexandre Iooss <erdnaxe@crans.org>, Paolo Bonzini <pbonzini@redhat.com>,
+ Mahmoud Mandour <ma.mandourr@gmail.com>, Thomas Huth <thuth@redhat.com>,
+ philmd@linaro.org
+References: <20241217010707.2557258-1-pierrick.bouvier@linaro.org>
+ <20241217010707.2557258-7-pierrick.bouvier@linaro.org>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20241217010707.2557258-7-pierrick.bouvier@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::832;
+ envelope-from=richard.henderson@linaro.org; helo=mail-qt1-x832.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -127,97 +103,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Shameer Kolothum via <qemu-devel@nongnu.org> writes:
-
-> Removes accidental inclusion of unrelated functions within CONFIG_UADK
-> as this causes compile errors like:
->
-> error: redefinition of =E2=80=98migrate_hook_start_xbzrle=E2=80=99
->
-> Fixes: 932f74f3fe6e ("tests/qtest/migration: Split compression tests from=
- migration-test.c")
-> Signed-off-by: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
+On 12/16/24 19:07, Pierrick Bouvier wrote:
+> Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 > ---
->  tests/qtest/migration/compression-tests.c | 54 -----------------------
->  1 file changed, 54 deletions(-)
->
-> diff --git a/tests/qtest/migration/compression-tests.c b/tests/qtest/migr=
-ation/compression-tests.c
-> index 6de87bc47d..d78f1f11f1 100644
-> --- a/tests/qtest/migration/compression-tests.c
-> +++ b/tests/qtest/migration/compression-tests.c
-> @@ -88,59 +88,6 @@ migrate_hook_start_precopy_tcp_multifd_uadk(QTestState=
- *from,
->      return migrate_hook_start_precopy_tcp_multifd_common(from, to, "uadk=
-");
->  }
->=20=20
-> -static void *
-> -migrate_hook_start_xbzrle(QTestState *from,
-> -                          QTestState *to)
-> -{
-> -    migrate_set_parameter_int(from, "xbzrle-cache-size", 33554432);
-> -
-> -    migrate_set_capability(from, "xbzrle", true);
-> -    migrate_set_capability(to, "xbzrle", true);
-> -
-> -    return NULL;
-> -}
-> -
-> -static void test_precopy_unix_xbzrle(void)
-> -{
-> -    g_autofree char *uri =3D g_strdup_printf("unix:%s/migsocket", tmpfs);
-> -    MigrateCommon args =3D {
-> -        .connect_uri =3D uri,
-> -        .listen_uri =3D uri,
-> -        .start_hook =3D migrate_hook_start_xbzrle,
-> -        .iterations =3D 2,
-> -        /*
-> -         * XBZRLE needs pages to be modified when doing the 2nd+ round
-> -         * iteration to have real data pushed to the stream.
-> -         */
-> -        .live =3D true,
-> -    };
-> -
-> -    test_precopy_common(&args);
-> -}
-> -
-> -static void *
-> -migrate_hook_start_precopy_tcp_multifd_zlib(QTestState *from,
-> -                                            QTestState *to)
-> -{
-> -    /*
-> -     * Overloading this test to also check that set_parameter does not e=
-rror.
-> -     * This is also done in the tests for the other compression methods.
-> -     */
-> -    migrate_set_parameter_int(from, "multifd-zlib-level", 2);
-> -    migrate_set_parameter_int(to, "multifd-zlib-level", 2);
-> -
-> -    return migrate_hook_start_precopy_tcp_multifd_common(from, to, "zlib=
-");
-> -}
-> -
-> -static void test_multifd_tcp_zlib(void)
-> -{
-> -    MigrateCommon args =3D {
-> -        .listen_uri =3D "defer",
-> -        .start_hook =3D migrate_hook_start_precopy_tcp_multifd_zlib,
-> -    };
-> -    test_precopy_common(&args);
-> -}
-> -
->  static void test_multifd_tcp_uadk(void)
->  {
->      MigrateCommon args =3D {
-> @@ -151,7 +98,6 @@ static void test_multifd_tcp_uadk(void)
->  }
->  #endif /* CONFIG_UADK */
->=20=20
-> -
->  static void *
->  migrate_hook_start_xbzrle(QTestState *from,
->                            QTestState *to)
+>   tests/tcg/plugins/mem.c | 6 +++---
+>   1 file changed, 3 insertions(+), 3 deletions(-)
 
-Queued, thanks!
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+
+r~
+
+> 
+> diff --git a/tests/tcg/plugins/mem.c b/tests/tcg/plugins/mem.c
+> index b0fa8a9f277..d87d6628e09 100644
+> --- a/tests/tcg/plugins/mem.c
+> +++ b/tests/tcg/plugins/mem.c
+> @@ -135,14 +135,14 @@ static void update_region_info(uint64_t region, uint64_t offset,
+>       g_assert(offset + size <= region_size);
+>   
+>       g_mutex_lock(&lock);
+> -    ri = (RegionInfo *) g_hash_table_lookup(regions, GUINT_TO_POINTER(region));
+> +    ri = (RegionInfo *) g_hash_table_lookup(regions, &region);
+>   
+>       if (!ri) {
+>           ri = g_new0(RegionInfo, 1);
+>           ri->region_address = region;
+>           ri->data = g_malloc0(region_size);
+>           ri->seen_all = true;
+> -        g_hash_table_insert(regions, GUINT_TO_POINTER(region), (gpointer) ri);
+> +        g_hash_table_insert(regions, &ri->region_address, ri);
+>       }
+>   
+>       if (is_store) {
+> @@ -392,7 +392,7 @@ QEMU_PLUGIN_EXPORT int qemu_plugin_install(qemu_plugin_id_t id,
+>   
+>       if (do_region_summary) {
+>           region_mask = (region_size - 1);
+> -        regions = g_hash_table_new(NULL, g_direct_equal);
+> +        regions = g_hash_table_new(g_int64_hash, g_int64_equal);
+>       }
+>   
+>       counts = qemu_plugin_scoreboard_new(sizeof(CPUCount));
+
 
