@@ -2,40 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 706F49F499E
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Dec 2024 12:11:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F1DC09F49A3
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Dec 2024 12:13:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tNVSi-0006Ot-Qj; Tue, 17 Dec 2024 06:10:00 -0500
+	id 1tNVV4-0007iM-VT; Tue, 17 Dec 2024 06:12:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1tNVSf-0006ON-Jx
- for qemu-devel@nongnu.org; Tue, 17 Dec 2024 06:09:57 -0500
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1tNVV1-0007hg-Pb; Tue, 17 Dec 2024 06:12:23 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1tNVSZ-00044R-1l
- for qemu-devel@nongnu.org; Tue, 17 Dec 2024 06:09:57 -0500
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1tNVV0-0004lC-7E; Tue, 17 Dec 2024 06:12:23 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id A641BC608E;
- Tue, 17 Dec 2024 14:09:07 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id A5AE6C60A1;
+ Tue, 17 Dec 2024 14:11:56 +0300 (MSK)
 Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id F1C6318A66D;
- Tue, 17 Dec 2024 14:09:30 +0300 (MSK)
-Message-ID: <bbc28a3a-7e4b-4f36-b072-f803e48b6198@tls.msk.ru>
-Date: Tue, 17 Dec 2024 14:09:30 +0300
+ by tsrv.corpit.ru (Postfix) with ESMTP id 0619F18A672;
+ Tue, 17 Dec 2024 14:12:19 +0300 (MSK)
+Message-ID: <1108ce53-aa02-4909-b974-e90d99eb67fb@tls.msk.ru>
+Date: Tue, 17 Dec 2024 14:12:19 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/5] x86/loader: only patch linux kernels
-To: Gerd Hoffmann <kraxel@redhat.com>, qemu-devel@nongnu.org
-Cc: Eduardo Habkost <eduardo@habkost.net>,
- Richard Henderson <richard.henderson@linaro.org>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
+Subject: Re: [PATCH 1/1] pc-bios: add missing riscv64 descriptor
+To: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>,
  =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Yanan Wang <wangyanan55@huawei.com>
-References: <20240411094830.1337658-1-kraxel@redhat.com>
- <20240411094830.1337658-3-kraxel@redhat.com>
+ Gerd Hoffmann <kraxel@redhat.com>
+Cc: qemu-devel@nongnu.org, qemu-stable <qemu-stable@nongnu.org>
+References: <20241212090059.94167-1-heinrich.schuchardt@canonical.com>
 Content-Language: en-US, ru-RU
 From: Michael Tokarev <mjt@tls.msk.ru>
 Autocrypt: addr=mjt@tls.msk.ru; keydata=
@@ -81,15 +77,15 @@ Autocrypt: addr=mjt@tls.msk.ru; keydata=
  YPkzzso6HT7rlapB5nulYmplJZSZ4RmE1ATZKf+wUPocDu6N10LtBNbwHWTT5NLtxNJAJAvl
  ojis6H1kRWZE/n5buyPY2NYeyWfjjrerOYt3er55n4C1I88RSCTGeejVmXWuo65QD2epvzE6
  3GgKngeVm7shlp7+d3D3+fAAHTvulQQqV3jOodz+B4yzuZ7WljkNrmrWrH8aI4uA98c=
-In-Reply-To: <20240411094830.1337658-3-kraxel@redhat.com>
+In-Reply-To: <20241212090059.94167-1-heinrich.schuchardt@canonical.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+X-Spam_score_int: -68
+X-Spam_score: -6.9
+X-Spam_bar: ------
+X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -107,49 +103,13 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-11.04.2024 12:48, Gerd Hoffmann wrote:
-> If the binary loaded via -kernel is *not* a linux kernel (in which
-> case protocol == 0), do not patch the linux kernel header fields.
-> 
-> It's (a) pointless and (b) might break binaries by random patching
-> and (c) changes the binary hash which in turn breaks secure boot
-> verification.
-> 
-> Background: OVMF happily loads and runs not only linux kernels but
-> any efi binary via direct kernel boot.
-> 
-> Note: Breaking the secure boot verification is a problem for linux
-> kernels too, but fixed that is left for another day ...
+12.12.2024 12:00, Heinrich Schuchardt wrote:
+> Without descriptor libvirt cannot discover the EDK II binaries via
+> the qemu:///system connection.
 
-Shouldn't this one be picked up for -stable?
+Shouldn't this one be picked up for qemu-stable@?
 
 Thanks,
 
 /mjt
-
-> Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
-> ---
->   hw/i386/x86.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/hw/i386/x86.c b/hw/i386/x86.c
-> index ffbda48917fd..765899eebe43 100644
-> --- a/hw/i386/x86.c
-> +++ b/hw/i386/x86.c
-> @@ -1108,7 +1108,7 @@ void x86_load_linux(X86MachineState *x86ms,
->        * kernel on the other side of the fw_cfg interface matches the hash of the
->        * file the user passed in.
->        */
-> -    if (!sev_enabled()) {
-> +    if (!sev_enabled() && protocol > 0) {
->           memcpy(setup, header, MIN(sizeof(header), setup_size));
->       }
->   
-
-
--- 
-GPG Key transition (from rsa2048 to rsa4096) since 2024-04-24.
-New key: rsa4096/61AD3D98ECDF2C8E  9D8B E14E 3F2A 9DD7 9199  28F1 61AD 3D98 ECDF 2C8E
-Old key: rsa2048/457CE0A0804465C5  6EE1 95D1 886E 8FFB 810D  4324 457C E0A0 8044 65C5
-Transition statement: http://www.corpit.ru/mjt/gpg-transition-2024.txt
 
