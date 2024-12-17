@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E57BE9F5079
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Dec 2024 17:11:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 639009F504A
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Dec 2024 17:07:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tNa0g-00057t-DG; Tue, 17 Dec 2024 11:01:22 -0500
+	id 1tNa0c-0004qj-GU; Tue, 17 Dec 2024 11:01:18 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1tNa0G-0004Qx-LJ
- for qemu-devel@nongnu.org; Tue, 17 Dec 2024 11:01:00 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1tNa0H-0004R3-Pq
+ for qemu-devel@nongnu.org; Tue, 17 Dec 2024 11:01:02 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1tNa0B-0002AC-Fz
- for qemu-devel@nongnu.org; Tue, 17 Dec 2024 11:00:53 -0500
+ id 1tNa0D-0002AR-Ec
+ for qemu-devel@nongnu.org; Tue, 17 Dec 2024 11:00:56 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1734451250;
+ s=mimecast20190719; t=1734451252;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=2mGODSMuPQz9KoSxfoSlSzJp+nFYF+zH6/PXo6OcUQA=;
- b=Rik4VOFfjMQCqVuC7VgX6eGT8HeKY5lt7k3MYeyXeupKK17S7YnfF1mhRDJVGsP055gqv3
- ovjZPIo5Zazum2+u1Lh8Tlqkau3OWvHbykE7bDNX2BmdCa0yJu3V7V4FvKnFFB6iJJu3pM
- CgH1TBN3U269iqE9KFB1b80O0HzgHNg=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ bh=ZqMTiiD0E5HRxNd/+TqSUc1lmXPbcBRNJkAvf7IW0KA=;
+ b=DbuK7A56tjP/2OTFMw/fdgzf5zdmbv09xCjC3egCPS1A28EyBskSTXUR1pAs90U/qYgXp1
+ 0fwHPDZ5HhScHPs8XUXXxBXpjanDiFAQ6x2fuV/9Gjf0Fa/BwdIZux5bPu4gGPphoLtquH
+ EBXwPHI3kkEMaXVd2z/mwNDsj689eVc=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-595-vLSkMs52Ob6KEwrXK4FOmw-1; Tue,
- 17 Dec 2024 11:00:46 -0500
-X-MC-Unique: vLSkMs52Ob6KEwrXK4FOmw-1
-X-Mimecast-MFC-AGG-ID: vLSkMs52Ob6KEwrXK4FOmw
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-22-HGdXTIe9OMqHmTScjQfeRg-1; Tue,
+ 17 Dec 2024 11:00:49 -0500
+X-MC-Unique: HGdXTIe9OMqHmTScjQfeRg-1
+X-Mimecast-MFC-AGG-ID: HGdXTIe9OMqHmTScjQfeRg
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 72267195608B; Tue, 17 Dec 2024 16:00:45 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 399FE19560A3; Tue, 17 Dec 2024 16:00:48 +0000 (UTC)
 Received: from toolbox.redhat.com (unknown [10.42.28.136])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id F162A30044C1; Tue, 17 Dec 2024 16:00:42 +0000 (UTC)
+ id DB45C300F9B5; Tue, 17 Dec 2024 16:00:45 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
@@ -52,16 +52,17 @@ Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Thomas Huth <thuth@redhat.com>
-Subject: [PATCH v3 15/32] tests/functional: remove redundant 'rmtree' call
-Date: Tue, 17 Dec 2024 15:59:36 +0000
-Message-ID: <20241217155953.3950506-16-berrange@redhat.com>
+Subject: [PATCH v3 16/32] tests/functional: move archive handling into new
+ archive.py file
+Date: Tue, 17 Dec 2024 15:59:37 +0000
+Message-ID: <20241217155953.3950506-17-berrange@redhat.com>
 In-Reply-To: <20241217155953.3950506-1-berrange@redhat.com>
 References: <20241217155953.3950506-1-berrange@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -31
 X-Spam_score: -3.2
@@ -86,37 +87,104 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Everything in the scratch directory is automatically purged. Calling
-'rmtree' again breaks the ability to optionally preserve the scratch
-directory contents.
+More archive related code will be added shortly, so having a
+separate file makes more sense.
+
+The utils.py imports the functions from archive.py, so that
+existing callers don't need to be modified. This avoids
+redundant code churn until later in the series when all
+calls will be adapted for other reasons.
 
 Reviewed-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- tests/functional/test_sh4eb_r2d.py | 3 ---
- 1 file changed, 3 deletions(-)
+ tests/functional/qemu_test/archive.py | 31 +++++++++++++++++++++++++++
+ tests/functional/qemu_test/utils.py   | 23 +++-----------------
+ 2 files changed, 34 insertions(+), 20 deletions(-)
+ create mode 100644 tests/functional/qemu_test/archive.py
 
-diff --git a/tests/functional/test_sh4eb_r2d.py b/tests/functional/test_sh4eb_r2d.py
-index b8dadabf3c..c8954c93eb 100755
---- a/tests/functional/test_sh4eb_r2d.py
-+++ b/tests/functional/test_sh4eb_r2d.py
-@@ -4,8 +4,6 @@
- #
- # SPDX-License-Identifier: GPL-2.0-or-later
+diff --git a/tests/functional/qemu_test/archive.py b/tests/functional/qemu_test/archive.py
+new file mode 100644
+index 0000000000..9872f08d23
+--- /dev/null
++++ b/tests/functional/qemu_test/archive.py
+@@ -0,0 +1,31 @@
++# SPDX-License-Identifier: GPL-2.0-or-later
++#
++# Utilities for python-based QEMU tests
++#
++# Copyright 2024 Red Hat, Inc.
++#
++# Authors:
++#  Thomas Huth <thuth@redhat.com>
++
++import os
++import subprocess
++import tarfile
++
++
++def tar_extract(archive, dest_dir, member=None):
++    with tarfile.open(archive) as tf:
++        if hasattr(tarfile, 'data_filter'):
++            tf.extraction_filter = getattr(tarfile, 'data_filter',
++                                           (lambda member, path: member))
++        if member:
++            tf.extract(member=member, path=dest_dir)
++        else:
++            tf.extractall(path=dest_dir)
++
++def cpio_extract(cpio_handle, output_path):
++    cwd = os.getcwd()
++    os.chdir(output_path)
++    subprocess.run(['cpio', '-i'],
++                   input=cpio_handle.read(),
++                   stderr=subprocess.DEVNULL)
++    os.chdir(cwd)
+diff --git a/tests/functional/qemu_test/utils.py b/tests/functional/qemu_test/utils.py
+index 1bf1c410d5..5ce1c4388e 100644
+--- a/tests/functional/qemu_test/utils.py
++++ b/tests/functional/qemu_test/utils.py
+@@ -12,8 +12,9 @@
+ import lzma
+ import os
+ import shutil
+-import subprocess
+-import tarfile
++
++from .archive import tar_extract as archive_extract
++from .archive import cpio_extract
  
--import shutil
+ """
+ Round up to next power of 2
+@@ -36,16 +37,6 @@ def image_pow2ceil_expand(path):
+             with open(path, 'ab+') as fd:
+                 fd.truncate(size_aligned)
+ 
+-def archive_extract(archive, dest_dir, member=None):
+-    with tarfile.open(archive) as tf:
+-        if hasattr(tarfile, 'data_filter'):
+-            tf.extraction_filter = getattr(tarfile, 'data_filter',
+-                                           (lambda member, path: member))
+-        if member:
+-            tf.extract(member=member, path=dest_dir)
+-        else:
+-            tf.extractall(path=dest_dir)
 -
- from qemu_test import LinuxKernelTest, Asset
- from qemu_test import exec_command_and_wait_for_pattern
- from qemu_test.utils import archive_extract
-@@ -26,7 +24,6 @@ def test_sh4eb_r2d(self):
-                                                     'initramfs.cpio.gz'),
-                            console_index=1, wait_for='Type exit when done')
-         exec_command_and_wait_for_pattern(self, 'exit', 'Restarting system')
--        shutil.rmtree(self.scratch_file('sh4eb'))
- 
- if __name__ == '__main__':
-     LinuxKernelTest.main()
+ def gzip_uncompress(gz_path, output_path):
+     if os.path.exists(output_path):
+         return
+@@ -67,11 +58,3 @@ def lzma_uncompress(xz_path, output_path):
+         except:
+             os.remove(output_path)
+             raise
+-
+-def cpio_extract(cpio_handle, output_path):
+-    cwd = os.getcwd()
+-    os.chdir(output_path)
+-    subprocess.run(['cpio', '-i'],
+-                   input=cpio_handle.read(),
+-                   stderr=subprocess.DEVNULL)
+-    os.chdir(cwd)
 -- 
 2.46.0
 
