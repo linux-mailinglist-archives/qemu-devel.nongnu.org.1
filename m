@@ -2,85 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E37B9F5324
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Dec 2024 18:25:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C47AF9F529C
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Dec 2024 18:21:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tNbEl-0007te-QZ; Tue, 17 Dec 2024 12:19:59 -0500
+	id 1tNbEj-0007sI-0M; Tue, 17 Dec 2024 12:19:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tNbEi-0007sH-HF
- for qemu-devel@nongnu.org; Tue, 17 Dec 2024 12:19:56 -0500
-Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
+ id 1tNbEd-0007rK-SO
+ for qemu-devel@nongnu.org; Tue, 17 Dec 2024 12:19:51 -0500
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tNbEa-00069N-Ep
- for qemu-devel@nongnu.org; Tue, 17 Dec 2024 12:19:56 -0500
-Received: by mail-wr1-x42c.google.com with SMTP id
- ffacd0b85a97d-388cae9eb9fso1992508f8f.3
- for <qemu-devel@nongnu.org>; Tue, 17 Dec 2024 09:19:44 -0800 (PST)
+ id 1tNbEZ-00069V-7c
+ for qemu-devel@nongnu.org; Tue, 17 Dec 2024 12:19:51 -0500
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-4361f664af5so60638495e9.1
+ for <qemu-devel@nongnu.org>; Tue, 17 Dec 2024 09:19:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1734455983; x=1735060783; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=3YD6YV4WlQDZBnY8Dkjl2MqG+rfrDomogT/cpe8SvJk=;
- b=EErKLSITuroKZL4FyhZO3d4ctMvlMarz3WIXgzTSuTbzcTscS14quC6VWpvF5VvCFU
- 3e06efjeqW9jlzH9505omsHTwQw1nbcFFGDJgsGbBUhO04E0ukP3fPocbZExq+mq17af
- Vms8wMTlkA8rrDp+0q9OM6ec1aXV6Km1rqZlNivVPScwnnVxzYK+ZM2vOeb8b7PZjxmb
- IUIvBaYn7441Alc5SWZA49dKIHztmmoJGzffX4JGpqZ8Nr/C7Xnar8t48X8XOS2LLgrY
- 4IDtSShoq/QQrV7CQLIFc0oNem2S+mzDraqqVgXJwZyhC7i09XRz/+RFI5yebrptOFQM
- 2E3g==
+ :reply-to; bh=ahv5uE67Du1OI8fNWrJ58JFfvDykgnbrnsg5xcHCSec=;
+ b=DyIT61xXINA8lA9R5PZr0d0p6LQcXXZlaCUsda5VjJnJ6WT6KgDF+IY7EHcAZ5Q6xw
+ CRWCNlzCqRTzgim8kvPGYwHaquXCx68g94TFa5jxSVj3znotEwHpEzyiWTFJPLIlCVRq
+ hsEW79k3/dGD6DS8o9fDDNb6nQrcksYT3okGympweu02er83UCmabhVBL1hcWx2iPUDE
+ FovfHWkpGsDvEfGYJkmdQcuLQszzTllaDRcSSKioHJnqpqcH/DXgJJrnZn897/7U+3Lq
+ 3tTkPQn5/8/4S92w26iEMZq7HpLJZ9RsUVv2Flhnvb/4rPrH8DlvyxlbuAnzvwD3OcyM
+ Xntw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1734455983; x=1735060783;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=3YD6YV4WlQDZBnY8Dkjl2MqG+rfrDomogT/cpe8SvJk=;
- b=a5FFxVYddPCo2G3K/C2Pm5OgFN6bNcgIGZ625cGEqmCX78QjvU96q9vfvXKNyJK4U1
- 6EiukP9tmInMGvxHSsMlfn+ZL+TNPBpokwkCNayHYhzi8DI2+vyZFReV3kxHtj/uvYsa
- 708IPi4dTrxxxmV95Isj2lc3p9GBnBQc2Cywl5em5xf+1lmUY0OYmx/LtoEbRsozqC4X
- ZfKl77ohv8Vyk2Azb8dvA26sVsLLZQjRN517SQhL8JOSR1FnjHNFKjXTTyU450CGCSOE
- KJxmsjWG3dfN474iy0zkrDRqC/Eu/0ly2kO39WdJREEmBAOwmdp6UXWpmg1ZDmzINHQJ
- DtGw==
-X-Gm-Message-State: AOJu0Yw/eRFN/xmQaG1zaje5iZYX7mepR/86D+S8Ot7qwpoAe/cuUv8B
- bq31+qGXopIiXR5XwFTqqCFgETucqZm2I0vYDRbjBnWr7UfT0kxb5dxyKmto+cXwMhLc417bmL6
- N
-X-Gm-Gg: ASbGnctXW7MVpusc0mG56siZdqvWx4HP7Oid7ydF1T2JHbF4KO8KNyZ8fAj5tiQcV0L
- sy2IkkHBiTLU/OzALi7vDhidlumcqW/1COWKYIkeowZ3aW/31DsCoSdsPmA8dVjK+10xNuBIl9U
- bG2KaWHj/JSSSdUe/dfXE5HqG8sxql6jERL2g746tXrblItcZRF1Dm+JN3Iu9YUpZn074AFqgXX
- J2QAa1ORx8jHVBW3VHZtYpewnroh3e0DVHoU7x2VOowfXimeg4tkXK8V1fYuv0=
-X-Google-Smtp-Source: AGHT+IGGVmftKYecIyMGiC+E3CBlhhtZ8Am20NhVGkQ/ljqihv7QUuVyVouUzq6RHMPUOKZC0vpxNQ==
-X-Received: by 2002:a05:6000:1544:b0:386:2bac:139 with SMTP id
- ffacd0b85a97d-3888e0c088amr12388280f8f.54.1734455981981; 
- Tue, 17 Dec 2024 09:19:41 -0800 (PST)
+ bh=ahv5uE67Du1OI8fNWrJ58JFfvDykgnbrnsg5xcHCSec=;
+ b=cHUmLWxtmVcf9K2vMaYAMiMSB1ZIJegzyOoEL25iDO6ySmZNjAnE/Td/vE8tEPALYA
+ qA/24wWKmYsFSUVTqAXE+h3DtjIAYTYoJ2rKMx2tOrYyAXlc0I1dBSt2gySrWhUdn28i
+ p6P4Ykuj7etXc0L8ZMJKrdT4ffOiAIwTZgb6FDZ2pJJgoRY3QyDDSgHoLm4qtfRUwZfo
+ RBX6bbKlzl5LYEWkgD/p8vIT2+OaVMI50fOAk1FAEu0ljMg/aY+Umer0em4MXECaakS+
+ PNIKu2+A966DIQtTpfrM04qSx1lOQX/GT7OJj+gKzoUOgP9msw9f+FArwx7UoDMuH5QE
+ ouLg==
+X-Gm-Message-State: AOJu0Yz2DoUOWpo3230I6q/smn3+8kcTTH4k2OP21pRiFsm0dqwymfcG
+ qU+lIjskFyuwjasG5KVuQbg7uWfEQ1tvPK4TrvAK2Sb0lR9qsxBZR89wRkl4JKxd9ZLiUtIrt1I
+ 5
+X-Gm-Gg: ASbGnctHXtwfDW0oXuxdIk6qIPTZcxZVX0pDxvMvWCiGO9IvuolO/tgV3ZEezgai6rk
+ FKQeSm3/WC4SzX6LgFXZ5QsMz3JoN80FSbFXB1RdqiW6cY1nKRd9RzVGrUzpCcCVVJ7Tb+G3i9w
+ FGGB+Pafc9MMweLu3iA+Ik7d+womMFlx4G2Xs34maCuAcvVRhaBEuZJL+qr+wz9FTfRU4nh12ie
+ Nv47Q88eiCL3/n6HZkIZ43G9fE4UD9ye+EQhR/Lzd5TvCM6V91HgClUx59/s9k=
+X-Google-Smtp-Source: AGHT+IHdq7fUrZp0JeUiPUbMG6sUIJKgn2D45o6u+lmFIrjlEsUvHVmv7vvgQvTnJysgdIUt1PiRpw==
+X-Received: by 2002:a05:600c:154b:b0:435:172:5052 with SMTP id
+ 5b1f17b1804b1-4362aa113e3mr130323935e9.1.1734455983133; 
+ Tue, 17 Dec 2024 09:19:43 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-388c8016389sm11569728f8f.32.2024.12.17.09.19.41
+ ffacd0b85a97d-388c8016389sm11569728f8f.32.2024.12.17.09.19.42
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 17 Dec 2024 09:19:41 -0800 (PST)
+ Tue, 17 Dec 2024 09:19:42 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 02/19] target/arm: Convert vfp_helper.c to fpst alias
-Date: Tue, 17 Dec 2024 17:19:20 +0000
-Message-Id: <20241217171937.3899947-3-peter.maydell@linaro.org>
+Subject: [PULL 03/19] target/arm: Convert helper-a64.c to fpst alias
+Date: Tue, 17 Dec 2024 17:19:21 +0000
+Message-Id: <20241217171937.3899947-4-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241217171937.3899947-1-peter.maydell@linaro.org>
 References: <20241217171937.3899947-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_PASS=-0.001,
- T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,717 +100,434 @@ From: Richard Henderson <richard.henderson@linaro.org>
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-id: 20241206031224.78525-3-richard.henderson@linaro.org
+Message-id: 20241206031224.78525-4-richard.henderson@linaro.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/helper.h     | 268 ++++++++++++++++++++--------------------
- target/arm/vfp_helper.c | 120 ++++++++----------
- 2 files changed, 186 insertions(+), 202 deletions(-)
+ target/arm/tcg/helper-a64.h | 94 +++++++++++++++++------------------
+ target/arm/tcg/helper-a64.c | 98 +++++++++++++------------------------
+ 2 files changed, 80 insertions(+), 112 deletions(-)
 
-diff --git a/target/arm/helper.h b/target/arm/helper.h
-index 9919b1367b7..5f7bb88067c 100644
---- a/target/arm/helper.h
-+++ b/target/arm/helper.h
-@@ -109,33 +109,33 @@ DEF_HELPER_FLAGS_5(probe_access, TCG_CALL_NO_WG, void, env, tl, i32, i32, i32)
- DEF_HELPER_1(vfp_get_fpscr, i32, env)
- DEF_HELPER_2(vfp_set_fpscr, void, env, i32)
+diff --git a/target/arm/tcg/helper-a64.h b/target/arm/tcg/helper-a64.h
+index 3c0774139b2..f1bac6688ae 100644
+--- a/target/arm/tcg/helper-a64.h
++++ b/target/arm/tcg/helper-a64.h
+@@ -23,57 +23,57 @@ DEF_HELPER_2(msr_i_spsel, void, env, i32)
+ DEF_HELPER_2(msr_i_daifset, void, env, i32)
+ DEF_HELPER_2(msr_i_daifclear, void, env, i32)
+ DEF_HELPER_1(msr_set_allint_el1, void, env)
+-DEF_HELPER_3(vfp_cmph_a64, i64, f16, f16, ptr)
+-DEF_HELPER_3(vfp_cmpeh_a64, i64, f16, f16, ptr)
+-DEF_HELPER_3(vfp_cmps_a64, i64, f32, f32, ptr)
+-DEF_HELPER_3(vfp_cmpes_a64, i64, f32, f32, ptr)
+-DEF_HELPER_3(vfp_cmpd_a64, i64, f64, f64, ptr)
+-DEF_HELPER_3(vfp_cmped_a64, i64, f64, f64, ptr)
++DEF_HELPER_3(vfp_cmph_a64, i64, f16, f16, fpst)
++DEF_HELPER_3(vfp_cmpeh_a64, i64, f16, f16, fpst)
++DEF_HELPER_3(vfp_cmps_a64, i64, f32, f32, fpst)
++DEF_HELPER_3(vfp_cmpes_a64, i64, f32, f32, fpst)
++DEF_HELPER_3(vfp_cmpd_a64, i64, f64, f64, fpst)
++DEF_HELPER_3(vfp_cmped_a64, i64, f64, f64, fpst)
+ DEF_HELPER_FLAGS_4(simd_tblx, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
+-DEF_HELPER_FLAGS_3(vfp_mulxs, TCG_CALL_NO_RWG, f32, f32, f32, ptr)
+-DEF_HELPER_FLAGS_3(vfp_mulxd, TCG_CALL_NO_RWG, f64, f64, f64, ptr)
+-DEF_HELPER_FLAGS_3(neon_ceq_f64, TCG_CALL_NO_RWG, i64, i64, i64, ptr)
+-DEF_HELPER_FLAGS_3(neon_cge_f64, TCG_CALL_NO_RWG, i64, i64, i64, ptr)
+-DEF_HELPER_FLAGS_3(neon_cgt_f64, TCG_CALL_NO_RWG, i64, i64, i64, ptr)
+-DEF_HELPER_FLAGS_3(recpsf_f16, TCG_CALL_NO_RWG, f16, f16, f16, ptr)
+-DEF_HELPER_FLAGS_3(recpsf_f32, TCG_CALL_NO_RWG, f32, f32, f32, ptr)
+-DEF_HELPER_FLAGS_3(recpsf_f64, TCG_CALL_NO_RWG, f64, f64, f64, ptr)
+-DEF_HELPER_FLAGS_3(rsqrtsf_f16, TCG_CALL_NO_RWG, f16, f16, f16, ptr)
+-DEF_HELPER_FLAGS_3(rsqrtsf_f32, TCG_CALL_NO_RWG, f32, f32, f32, ptr)
+-DEF_HELPER_FLAGS_3(rsqrtsf_f64, TCG_CALL_NO_RWG, f64, f64, f64, ptr)
+-DEF_HELPER_FLAGS_2(frecpx_f64, TCG_CALL_NO_RWG, f64, f64, ptr)
+-DEF_HELPER_FLAGS_2(frecpx_f32, TCG_CALL_NO_RWG, f32, f32, ptr)
+-DEF_HELPER_FLAGS_2(frecpx_f16, TCG_CALL_NO_RWG, f16, f16, ptr)
++DEF_HELPER_FLAGS_3(vfp_mulxs, TCG_CALL_NO_RWG, f32, f32, f32, fpst)
++DEF_HELPER_FLAGS_3(vfp_mulxd, TCG_CALL_NO_RWG, f64, f64, f64, fpst)
++DEF_HELPER_FLAGS_3(neon_ceq_f64, TCG_CALL_NO_RWG, i64, i64, i64, fpst)
++DEF_HELPER_FLAGS_3(neon_cge_f64, TCG_CALL_NO_RWG, i64, i64, i64, fpst)
++DEF_HELPER_FLAGS_3(neon_cgt_f64, TCG_CALL_NO_RWG, i64, i64, i64, fpst)
++DEF_HELPER_FLAGS_3(recpsf_f16, TCG_CALL_NO_RWG, f16, f16, f16, fpst)
++DEF_HELPER_FLAGS_3(recpsf_f32, TCG_CALL_NO_RWG, f32, f32, f32, fpst)
++DEF_HELPER_FLAGS_3(recpsf_f64, TCG_CALL_NO_RWG, f64, f64, f64, fpst)
++DEF_HELPER_FLAGS_3(rsqrtsf_f16, TCG_CALL_NO_RWG, f16, f16, f16, fpst)
++DEF_HELPER_FLAGS_3(rsqrtsf_f32, TCG_CALL_NO_RWG, f32, f32, f32, fpst)
++DEF_HELPER_FLAGS_3(rsqrtsf_f64, TCG_CALL_NO_RWG, f64, f64, f64, fpst)
++DEF_HELPER_FLAGS_2(frecpx_f64, TCG_CALL_NO_RWG, f64, f64, fpst)
++DEF_HELPER_FLAGS_2(frecpx_f32, TCG_CALL_NO_RWG, f32, f32, fpst)
++DEF_HELPER_FLAGS_2(frecpx_f16, TCG_CALL_NO_RWG, f16, f16, fpst)
+ DEF_HELPER_FLAGS_2(fcvtx_f64_to_f32, TCG_CALL_NO_RWG, f32, f64, env)
+ DEF_HELPER_FLAGS_3(crc32_64, TCG_CALL_NO_RWG_SE, i64, i64, i64, i32)
+ DEF_HELPER_FLAGS_3(crc32c_64, TCG_CALL_NO_RWG_SE, i64, i64, i64, i32)
+-DEF_HELPER_FLAGS_3(advsimd_maxh, TCG_CALL_NO_RWG, f16, f16, f16, ptr)
+-DEF_HELPER_FLAGS_3(advsimd_minh, TCG_CALL_NO_RWG, f16, f16, f16, ptr)
+-DEF_HELPER_FLAGS_3(advsimd_maxnumh, TCG_CALL_NO_RWG, f16, f16, f16, ptr)
+-DEF_HELPER_FLAGS_3(advsimd_minnumh, TCG_CALL_NO_RWG, f16, f16, f16, ptr)
+-DEF_HELPER_3(advsimd_addh, f16, f16, f16, ptr)
+-DEF_HELPER_3(advsimd_subh, f16, f16, f16, ptr)
+-DEF_HELPER_3(advsimd_mulh, f16, f16, f16, ptr)
+-DEF_HELPER_3(advsimd_divh, f16, f16, f16, ptr)
+-DEF_HELPER_3(advsimd_ceq_f16, i32, f16, f16, ptr)
+-DEF_HELPER_3(advsimd_cge_f16, i32, f16, f16, ptr)
+-DEF_HELPER_3(advsimd_cgt_f16, i32, f16, f16, ptr)
+-DEF_HELPER_3(advsimd_acge_f16, i32, f16, f16, ptr)
+-DEF_HELPER_3(advsimd_acgt_f16, i32, f16, f16, ptr)
+-DEF_HELPER_3(advsimd_mulxh, f16, f16, f16, ptr)
+-DEF_HELPER_4(advsimd_muladdh, f16, f16, f16, f16, ptr)
+-DEF_HELPER_3(advsimd_add2h, i32, i32, i32, ptr)
+-DEF_HELPER_3(advsimd_sub2h, i32, i32, i32, ptr)
+-DEF_HELPER_3(advsimd_mul2h, i32, i32, i32, ptr)
+-DEF_HELPER_3(advsimd_div2h, i32, i32, i32, ptr)
+-DEF_HELPER_3(advsimd_max2h, i32, i32, i32, ptr)
+-DEF_HELPER_3(advsimd_min2h, i32, i32, i32, ptr)
+-DEF_HELPER_3(advsimd_maxnum2h, i32, i32, i32, ptr)
+-DEF_HELPER_3(advsimd_minnum2h, i32, i32, i32, ptr)
+-DEF_HELPER_3(advsimd_mulx2h, i32, i32, i32, ptr)
+-DEF_HELPER_4(advsimd_muladd2h, i32, i32, i32, i32, ptr)
+-DEF_HELPER_2(advsimd_rinth_exact, f16, f16, ptr)
+-DEF_HELPER_2(advsimd_rinth, f16, f16, ptr)
++DEF_HELPER_FLAGS_3(advsimd_maxh, TCG_CALL_NO_RWG, f16, f16, f16, fpst)
++DEF_HELPER_FLAGS_3(advsimd_minh, TCG_CALL_NO_RWG, f16, f16, f16, fpst)
++DEF_HELPER_FLAGS_3(advsimd_maxnumh, TCG_CALL_NO_RWG, f16, f16, f16, fpst)
++DEF_HELPER_FLAGS_3(advsimd_minnumh, TCG_CALL_NO_RWG, f16, f16, f16, fpst)
++DEF_HELPER_3(advsimd_addh, f16, f16, f16, fpst)
++DEF_HELPER_3(advsimd_subh, f16, f16, f16, fpst)
++DEF_HELPER_3(advsimd_mulh, f16, f16, f16, fpst)
++DEF_HELPER_3(advsimd_divh, f16, f16, f16, fpst)
++DEF_HELPER_3(advsimd_ceq_f16, i32, f16, f16, fpst)
++DEF_HELPER_3(advsimd_cge_f16, i32, f16, f16, fpst)
++DEF_HELPER_3(advsimd_cgt_f16, i32, f16, f16, fpst)
++DEF_HELPER_3(advsimd_acge_f16, i32, f16, f16, fpst)
++DEF_HELPER_3(advsimd_acgt_f16, i32, f16, f16, fpst)
++DEF_HELPER_3(advsimd_mulxh, f16, f16, f16, fpst)
++DEF_HELPER_4(advsimd_muladdh, f16, f16, f16, f16, fpst)
++DEF_HELPER_3(advsimd_add2h, i32, i32, i32, fpst)
++DEF_HELPER_3(advsimd_sub2h, i32, i32, i32, fpst)
++DEF_HELPER_3(advsimd_mul2h, i32, i32, i32, fpst)
++DEF_HELPER_3(advsimd_div2h, i32, i32, i32, fpst)
++DEF_HELPER_3(advsimd_max2h, i32, i32, i32, fpst)
++DEF_HELPER_3(advsimd_min2h, i32, i32, i32, fpst)
++DEF_HELPER_3(advsimd_maxnum2h, i32, i32, i32, fpst)
++DEF_HELPER_3(advsimd_minnum2h, i32, i32, i32, fpst)
++DEF_HELPER_3(advsimd_mulx2h, i32, i32, i32, fpst)
++DEF_HELPER_4(advsimd_muladd2h, i32, i32, i32, i32, fpst)
++DEF_HELPER_2(advsimd_rinth_exact, f16, f16, fpst)
++DEF_HELPER_2(advsimd_rinth, f16, f16, fpst)
  
--DEF_HELPER_3(vfp_addh, f16, f16, f16, ptr)
--DEF_HELPER_3(vfp_adds, f32, f32, f32, ptr)
--DEF_HELPER_3(vfp_addd, f64, f64, f64, ptr)
--DEF_HELPER_3(vfp_subh, f16, f16, f16, ptr)
--DEF_HELPER_3(vfp_subs, f32, f32, f32, ptr)
--DEF_HELPER_3(vfp_subd, f64, f64, f64, ptr)
--DEF_HELPER_3(vfp_mulh, f16, f16, f16, ptr)
--DEF_HELPER_3(vfp_muls, f32, f32, f32, ptr)
--DEF_HELPER_3(vfp_muld, f64, f64, f64, ptr)
--DEF_HELPER_3(vfp_divh, f16, f16, f16, ptr)
--DEF_HELPER_3(vfp_divs, f32, f32, f32, ptr)
--DEF_HELPER_3(vfp_divd, f64, f64, f64, ptr)
--DEF_HELPER_3(vfp_maxh, f16, f16, f16, ptr)
--DEF_HELPER_3(vfp_maxs, f32, f32, f32, ptr)
--DEF_HELPER_3(vfp_maxd, f64, f64, f64, ptr)
--DEF_HELPER_3(vfp_minh, f16, f16, f16, ptr)
--DEF_HELPER_3(vfp_mins, f32, f32, f32, ptr)
--DEF_HELPER_3(vfp_mind, f64, f64, f64, ptr)
--DEF_HELPER_3(vfp_maxnumh, f16, f16, f16, ptr)
--DEF_HELPER_3(vfp_maxnums, f32, f32, f32, ptr)
--DEF_HELPER_3(vfp_maxnumd, f64, f64, f64, ptr)
--DEF_HELPER_3(vfp_minnumh, f16, f16, f16, ptr)
--DEF_HELPER_3(vfp_minnums, f32, f32, f32, ptr)
--DEF_HELPER_3(vfp_minnumd, f64, f64, f64, ptr)
--DEF_HELPER_2(vfp_sqrth, f16, f16, ptr)
--DEF_HELPER_2(vfp_sqrts, f32, f32, ptr)
--DEF_HELPER_2(vfp_sqrtd, f64, f64, ptr)
-+DEF_HELPER_3(vfp_addh, f16, f16, f16, fpst)
-+DEF_HELPER_3(vfp_adds, f32, f32, f32, fpst)
-+DEF_HELPER_3(vfp_addd, f64, f64, f64, fpst)
-+DEF_HELPER_3(vfp_subh, f16, f16, f16, fpst)
-+DEF_HELPER_3(vfp_subs, f32, f32, f32, fpst)
-+DEF_HELPER_3(vfp_subd, f64, f64, f64, fpst)
-+DEF_HELPER_3(vfp_mulh, f16, f16, f16, fpst)
-+DEF_HELPER_3(vfp_muls, f32, f32, f32, fpst)
-+DEF_HELPER_3(vfp_muld, f64, f64, f64, fpst)
-+DEF_HELPER_3(vfp_divh, f16, f16, f16, fpst)
-+DEF_HELPER_3(vfp_divs, f32, f32, f32, fpst)
-+DEF_HELPER_3(vfp_divd, f64, f64, f64, fpst)
-+DEF_HELPER_3(vfp_maxh, f16, f16, f16, fpst)
-+DEF_HELPER_3(vfp_maxs, f32, f32, f32, fpst)
-+DEF_HELPER_3(vfp_maxd, f64, f64, f64, fpst)
-+DEF_HELPER_3(vfp_minh, f16, f16, f16, fpst)
-+DEF_HELPER_3(vfp_mins, f32, f32, f32, fpst)
-+DEF_HELPER_3(vfp_mind, f64, f64, f64, fpst)
-+DEF_HELPER_3(vfp_maxnumh, f16, f16, f16, fpst)
-+DEF_HELPER_3(vfp_maxnums, f32, f32, f32, fpst)
-+DEF_HELPER_3(vfp_maxnumd, f64, f64, f64, fpst)
-+DEF_HELPER_3(vfp_minnumh, f16, f16, f16, fpst)
-+DEF_HELPER_3(vfp_minnums, f32, f32, f32, fpst)
-+DEF_HELPER_3(vfp_minnumd, f64, f64, f64, fpst)
-+DEF_HELPER_2(vfp_sqrth, f16, f16, fpst)
-+DEF_HELPER_2(vfp_sqrts, f32, f32, fpst)
-+DEF_HELPER_2(vfp_sqrtd, f64, f64, fpst)
- DEF_HELPER_3(vfp_cmph, void, f16, f16, env)
- DEF_HELPER_3(vfp_cmps, void, f32, f32, env)
- DEF_HELPER_3(vfp_cmpd, void, f64, f64, env)
-@@ -145,110 +145,110 @@ DEF_HELPER_3(vfp_cmped, void, f64, f64, env)
- 
- DEF_HELPER_2(vfp_fcvtds, f64, f32, env)
- DEF_HELPER_2(vfp_fcvtsd, f32, f64, env)
--DEF_HELPER_FLAGS_2(bfcvt, TCG_CALL_NO_RWG, i32, f32, ptr)
--DEF_HELPER_FLAGS_2(bfcvt_pair, TCG_CALL_NO_RWG, i32, i64, ptr)
-+DEF_HELPER_FLAGS_2(bfcvt, TCG_CALL_NO_RWG, i32, f32, fpst)
-+DEF_HELPER_FLAGS_2(bfcvt_pair, TCG_CALL_NO_RWG, i32, i64, fpst)
- 
--DEF_HELPER_2(vfp_uitoh, f16, i32, ptr)
--DEF_HELPER_2(vfp_uitos, f32, i32, ptr)
--DEF_HELPER_2(vfp_uitod, f64, i32, ptr)
--DEF_HELPER_2(vfp_sitoh, f16, i32, ptr)
--DEF_HELPER_2(vfp_sitos, f32, i32, ptr)
--DEF_HELPER_2(vfp_sitod, f64, i32, ptr)
-+DEF_HELPER_2(vfp_uitoh, f16, i32, fpst)
-+DEF_HELPER_2(vfp_uitos, f32, i32, fpst)
-+DEF_HELPER_2(vfp_uitod, f64, i32, fpst)
-+DEF_HELPER_2(vfp_sitoh, f16, i32, fpst)
-+DEF_HELPER_2(vfp_sitos, f32, i32, fpst)
-+DEF_HELPER_2(vfp_sitod, f64, i32, fpst)
- 
--DEF_HELPER_2(vfp_touih, i32, f16, ptr)
--DEF_HELPER_2(vfp_touis, i32, f32, ptr)
--DEF_HELPER_2(vfp_touid, i32, f64, ptr)
--DEF_HELPER_2(vfp_touizh, i32, f16, ptr)
--DEF_HELPER_2(vfp_touizs, i32, f32, ptr)
--DEF_HELPER_2(vfp_touizd, i32, f64, ptr)
--DEF_HELPER_2(vfp_tosih, s32, f16, ptr)
--DEF_HELPER_2(vfp_tosis, s32, f32, ptr)
--DEF_HELPER_2(vfp_tosid, s32, f64, ptr)
--DEF_HELPER_2(vfp_tosizh, s32, f16, ptr)
--DEF_HELPER_2(vfp_tosizs, s32, f32, ptr)
--DEF_HELPER_2(vfp_tosizd, s32, f64, ptr)
-+DEF_HELPER_2(vfp_touih, i32, f16, fpst)
-+DEF_HELPER_2(vfp_touis, i32, f32, fpst)
-+DEF_HELPER_2(vfp_touid, i32, f64, fpst)
-+DEF_HELPER_2(vfp_touizh, i32, f16, fpst)
-+DEF_HELPER_2(vfp_touizs, i32, f32, fpst)
-+DEF_HELPER_2(vfp_touizd, i32, f64, fpst)
-+DEF_HELPER_2(vfp_tosih, s32, f16, fpst)
-+DEF_HELPER_2(vfp_tosis, s32, f32, fpst)
-+DEF_HELPER_2(vfp_tosid, s32, f64, fpst)
-+DEF_HELPER_2(vfp_tosizh, s32, f16, fpst)
-+DEF_HELPER_2(vfp_tosizs, s32, f32, fpst)
-+DEF_HELPER_2(vfp_tosizd, s32, f64, fpst)
- 
--DEF_HELPER_3(vfp_toshh_round_to_zero, i32, f16, i32, ptr)
--DEF_HELPER_3(vfp_toslh_round_to_zero, i32, f16, i32, ptr)
--DEF_HELPER_3(vfp_touhh_round_to_zero, i32, f16, i32, ptr)
--DEF_HELPER_3(vfp_toulh_round_to_zero, i32, f16, i32, ptr)
--DEF_HELPER_3(vfp_toshs_round_to_zero, i32, f32, i32, ptr)
--DEF_HELPER_3(vfp_tosls_round_to_zero, i32, f32, i32, ptr)
--DEF_HELPER_3(vfp_touhs_round_to_zero, i32, f32, i32, ptr)
--DEF_HELPER_3(vfp_touls_round_to_zero, i32, f32, i32, ptr)
--DEF_HELPER_3(vfp_toshd_round_to_zero, i64, f64, i32, ptr)
--DEF_HELPER_3(vfp_tosld_round_to_zero, i64, f64, i32, ptr)
--DEF_HELPER_3(vfp_tosqd_round_to_zero, i64, f64, i32, ptr)
--DEF_HELPER_3(vfp_touhd_round_to_zero, i64, f64, i32, ptr)
--DEF_HELPER_3(vfp_tould_round_to_zero, i64, f64, i32, ptr)
--DEF_HELPER_3(vfp_touqd_round_to_zero, i64, f64, i32, ptr)
--DEF_HELPER_3(vfp_touhh, i32, f16, i32, ptr)
--DEF_HELPER_3(vfp_toshh, i32, f16, i32, ptr)
--DEF_HELPER_3(vfp_toulh, i32, f16, i32, ptr)
--DEF_HELPER_3(vfp_toslh, i32, f16, i32, ptr)
--DEF_HELPER_3(vfp_touqh, i64, f16, i32, ptr)
--DEF_HELPER_3(vfp_tosqh, i64, f16, i32, ptr)
--DEF_HELPER_3(vfp_toshs, i32, f32, i32, ptr)
--DEF_HELPER_3(vfp_tosls, i32, f32, i32, ptr)
--DEF_HELPER_3(vfp_tosqs, i64, f32, i32, ptr)
--DEF_HELPER_3(vfp_touhs, i32, f32, i32, ptr)
--DEF_HELPER_3(vfp_touls, i32, f32, i32, ptr)
--DEF_HELPER_3(vfp_touqs, i64, f32, i32, ptr)
--DEF_HELPER_3(vfp_toshd, i64, f64, i32, ptr)
--DEF_HELPER_3(vfp_tosld, i64, f64, i32, ptr)
--DEF_HELPER_3(vfp_tosqd, i64, f64, i32, ptr)
--DEF_HELPER_3(vfp_touhd, i64, f64, i32, ptr)
--DEF_HELPER_3(vfp_tould, i64, f64, i32, ptr)
--DEF_HELPER_3(vfp_touqd, i64, f64, i32, ptr)
--DEF_HELPER_3(vfp_shtos, f32, i32, i32, ptr)
--DEF_HELPER_3(vfp_sltos, f32, i32, i32, ptr)
--DEF_HELPER_3(vfp_sqtos, f32, i64, i32, ptr)
--DEF_HELPER_3(vfp_uhtos, f32, i32, i32, ptr)
--DEF_HELPER_3(vfp_ultos, f32, i32, i32, ptr)
--DEF_HELPER_3(vfp_uqtos, f32, i64, i32, ptr)
--DEF_HELPER_3(vfp_shtod, f64, i64, i32, ptr)
--DEF_HELPER_3(vfp_sltod, f64, i64, i32, ptr)
--DEF_HELPER_3(vfp_sqtod, f64, i64, i32, ptr)
--DEF_HELPER_3(vfp_uhtod, f64, i64, i32, ptr)
--DEF_HELPER_3(vfp_ultod, f64, i64, i32, ptr)
--DEF_HELPER_3(vfp_uqtod, f64, i64, i32, ptr)
--DEF_HELPER_3(vfp_shtoh, f16, i32, i32, ptr)
--DEF_HELPER_3(vfp_uhtoh, f16, i32, i32, ptr)
--DEF_HELPER_3(vfp_sltoh, f16, i32, i32, ptr)
--DEF_HELPER_3(vfp_ultoh, f16, i32, i32, ptr)
--DEF_HELPER_3(vfp_sqtoh, f16, i64, i32, ptr)
--DEF_HELPER_3(vfp_uqtoh, f16, i64, i32, ptr)
-+DEF_HELPER_3(vfp_toshh_round_to_zero, i32, f16, i32, fpst)
-+DEF_HELPER_3(vfp_toslh_round_to_zero, i32, f16, i32, fpst)
-+DEF_HELPER_3(vfp_touhh_round_to_zero, i32, f16, i32, fpst)
-+DEF_HELPER_3(vfp_toulh_round_to_zero, i32, f16, i32, fpst)
-+DEF_HELPER_3(vfp_toshs_round_to_zero, i32, f32, i32, fpst)
-+DEF_HELPER_3(vfp_tosls_round_to_zero, i32, f32, i32, fpst)
-+DEF_HELPER_3(vfp_touhs_round_to_zero, i32, f32, i32, fpst)
-+DEF_HELPER_3(vfp_touls_round_to_zero, i32, f32, i32, fpst)
-+DEF_HELPER_3(vfp_toshd_round_to_zero, i64, f64, i32, fpst)
-+DEF_HELPER_3(vfp_tosld_round_to_zero, i64, f64, i32, fpst)
-+DEF_HELPER_3(vfp_tosqd_round_to_zero, i64, f64, i32, fpst)
-+DEF_HELPER_3(vfp_touhd_round_to_zero, i64, f64, i32, fpst)
-+DEF_HELPER_3(vfp_tould_round_to_zero, i64, f64, i32, fpst)
-+DEF_HELPER_3(vfp_touqd_round_to_zero, i64, f64, i32, fpst)
-+DEF_HELPER_3(vfp_touhh, i32, f16, i32, fpst)
-+DEF_HELPER_3(vfp_toshh, i32, f16, i32, fpst)
-+DEF_HELPER_3(vfp_toulh, i32, f16, i32, fpst)
-+DEF_HELPER_3(vfp_toslh, i32, f16, i32, fpst)
-+DEF_HELPER_3(vfp_touqh, i64, f16, i32, fpst)
-+DEF_HELPER_3(vfp_tosqh, i64, f16, i32, fpst)
-+DEF_HELPER_3(vfp_toshs, i32, f32, i32, fpst)
-+DEF_HELPER_3(vfp_tosls, i32, f32, i32, fpst)
-+DEF_HELPER_3(vfp_tosqs, i64, f32, i32, fpst)
-+DEF_HELPER_3(vfp_touhs, i32, f32, i32, fpst)
-+DEF_HELPER_3(vfp_touls, i32, f32, i32, fpst)
-+DEF_HELPER_3(vfp_touqs, i64, f32, i32, fpst)
-+DEF_HELPER_3(vfp_toshd, i64, f64, i32, fpst)
-+DEF_HELPER_3(vfp_tosld, i64, f64, i32, fpst)
-+DEF_HELPER_3(vfp_tosqd, i64, f64, i32, fpst)
-+DEF_HELPER_3(vfp_touhd, i64, f64, i32, fpst)
-+DEF_HELPER_3(vfp_tould, i64, f64, i32, fpst)
-+DEF_HELPER_3(vfp_touqd, i64, f64, i32, fpst)
-+DEF_HELPER_3(vfp_shtos, f32, i32, i32, fpst)
-+DEF_HELPER_3(vfp_sltos, f32, i32, i32, fpst)
-+DEF_HELPER_3(vfp_sqtos, f32, i64, i32, fpst)
-+DEF_HELPER_3(vfp_uhtos, f32, i32, i32, fpst)
-+DEF_HELPER_3(vfp_ultos, f32, i32, i32, fpst)
-+DEF_HELPER_3(vfp_uqtos, f32, i64, i32, fpst)
-+DEF_HELPER_3(vfp_shtod, f64, i64, i32, fpst)
-+DEF_HELPER_3(vfp_sltod, f64, i64, i32, fpst)
-+DEF_HELPER_3(vfp_sqtod, f64, i64, i32, fpst)
-+DEF_HELPER_3(vfp_uhtod, f64, i64, i32, fpst)
-+DEF_HELPER_3(vfp_ultod, f64, i64, i32, fpst)
-+DEF_HELPER_3(vfp_uqtod, f64, i64, i32, fpst)
-+DEF_HELPER_3(vfp_shtoh, f16, i32, i32, fpst)
-+DEF_HELPER_3(vfp_uhtoh, f16, i32, i32, fpst)
-+DEF_HELPER_3(vfp_sltoh, f16, i32, i32, fpst)
-+DEF_HELPER_3(vfp_ultoh, f16, i32, i32, fpst)
-+DEF_HELPER_3(vfp_sqtoh, f16, i64, i32, fpst)
-+DEF_HELPER_3(vfp_uqtoh, f16, i64, i32, fpst)
- 
--DEF_HELPER_3(vfp_shtos_round_to_nearest, f32, i32, i32, ptr)
--DEF_HELPER_3(vfp_sltos_round_to_nearest, f32, i32, i32, ptr)
--DEF_HELPER_3(vfp_uhtos_round_to_nearest, f32, i32, i32, ptr)
--DEF_HELPER_3(vfp_ultos_round_to_nearest, f32, i32, i32, ptr)
--DEF_HELPER_3(vfp_shtod_round_to_nearest, f64, i64, i32, ptr)
--DEF_HELPER_3(vfp_sltod_round_to_nearest, f64, i64, i32, ptr)
--DEF_HELPER_3(vfp_uhtod_round_to_nearest, f64, i64, i32, ptr)
--DEF_HELPER_3(vfp_ultod_round_to_nearest, f64, i64, i32, ptr)
--DEF_HELPER_3(vfp_shtoh_round_to_nearest, f16, i32, i32, ptr)
--DEF_HELPER_3(vfp_uhtoh_round_to_nearest, f16, i32, i32, ptr)
--DEF_HELPER_3(vfp_sltoh_round_to_nearest, f16, i32, i32, ptr)
--DEF_HELPER_3(vfp_ultoh_round_to_nearest, f16, i32, i32, ptr)
-+DEF_HELPER_3(vfp_shtos_round_to_nearest, f32, i32, i32, fpst)
-+DEF_HELPER_3(vfp_sltos_round_to_nearest, f32, i32, i32, fpst)
-+DEF_HELPER_3(vfp_uhtos_round_to_nearest, f32, i32, i32, fpst)
-+DEF_HELPER_3(vfp_ultos_round_to_nearest, f32, i32, i32, fpst)
-+DEF_HELPER_3(vfp_shtod_round_to_nearest, f64, i64, i32, fpst)
-+DEF_HELPER_3(vfp_sltod_round_to_nearest, f64, i64, i32, fpst)
-+DEF_HELPER_3(vfp_uhtod_round_to_nearest, f64, i64, i32, fpst)
-+DEF_HELPER_3(vfp_ultod_round_to_nearest, f64, i64, i32, fpst)
-+DEF_HELPER_3(vfp_shtoh_round_to_nearest, f16, i32, i32, fpst)
-+DEF_HELPER_3(vfp_uhtoh_round_to_nearest, f16, i32, i32, fpst)
-+DEF_HELPER_3(vfp_sltoh_round_to_nearest, f16, i32, i32, fpst)
-+DEF_HELPER_3(vfp_ultoh_round_to_nearest, f16, i32, i32, fpst)
- 
--DEF_HELPER_FLAGS_2(set_rmode, TCG_CALL_NO_RWG, i32, i32, ptr)
-+DEF_HELPER_FLAGS_2(set_rmode, TCG_CALL_NO_RWG, i32, i32, fpst)
- 
--DEF_HELPER_FLAGS_3(vfp_fcvt_f16_to_f32, TCG_CALL_NO_RWG, f32, f16, ptr, i32)
--DEF_HELPER_FLAGS_3(vfp_fcvt_f32_to_f16, TCG_CALL_NO_RWG, f16, f32, ptr, i32)
--DEF_HELPER_FLAGS_3(vfp_fcvt_f16_to_f64, TCG_CALL_NO_RWG, f64, f16, ptr, i32)
--DEF_HELPER_FLAGS_3(vfp_fcvt_f64_to_f16, TCG_CALL_NO_RWG, f16, f64, ptr, i32)
-+DEF_HELPER_FLAGS_3(vfp_fcvt_f16_to_f32, TCG_CALL_NO_RWG, f32, f16, fpst, i32)
-+DEF_HELPER_FLAGS_3(vfp_fcvt_f32_to_f16, TCG_CALL_NO_RWG, f16, f32, fpst, i32)
-+DEF_HELPER_FLAGS_3(vfp_fcvt_f16_to_f64, TCG_CALL_NO_RWG, f64, f16, fpst, i32)
-+DEF_HELPER_FLAGS_3(vfp_fcvt_f64_to_f16, TCG_CALL_NO_RWG, f16, f64, fpst, i32)
- 
--DEF_HELPER_4(vfp_muladdd, f64, f64, f64, f64, ptr)
--DEF_HELPER_4(vfp_muladds, f32, f32, f32, f32, ptr)
--DEF_HELPER_4(vfp_muladdh, f16, f16, f16, f16, ptr)
-+DEF_HELPER_4(vfp_muladdd, f64, f64, f64, f64, fpst)
-+DEF_HELPER_4(vfp_muladds, f32, f32, f32, f32, fpst)
-+DEF_HELPER_4(vfp_muladdh, f16, f16, f16, f16, fpst)
- 
--DEF_HELPER_FLAGS_2(recpe_f16, TCG_CALL_NO_RWG, f16, f16, ptr)
--DEF_HELPER_FLAGS_2(recpe_f32, TCG_CALL_NO_RWG, f32, f32, ptr)
--DEF_HELPER_FLAGS_2(recpe_f64, TCG_CALL_NO_RWG, f64, f64, ptr)
--DEF_HELPER_FLAGS_2(rsqrte_f16, TCG_CALL_NO_RWG, f16, f16, ptr)
--DEF_HELPER_FLAGS_2(rsqrte_f32, TCG_CALL_NO_RWG, f32, f32, ptr)
--DEF_HELPER_FLAGS_2(rsqrte_f64, TCG_CALL_NO_RWG, f64, f64, ptr)
-+DEF_HELPER_FLAGS_2(recpe_f16, TCG_CALL_NO_RWG, f16, f16, fpst)
-+DEF_HELPER_FLAGS_2(recpe_f32, TCG_CALL_NO_RWG, f32, f32, fpst)
-+DEF_HELPER_FLAGS_2(recpe_f64, TCG_CALL_NO_RWG, f64, f64, fpst)
-+DEF_HELPER_FLAGS_2(rsqrte_f16, TCG_CALL_NO_RWG, f16, f16, fpst)
-+DEF_HELPER_FLAGS_2(rsqrte_f32, TCG_CALL_NO_RWG, f32, f32, fpst)
-+DEF_HELPER_FLAGS_2(rsqrte_f64, TCG_CALL_NO_RWG, f64, f64, fpst)
- DEF_HELPER_FLAGS_1(recpe_u32, TCG_CALL_NO_RWG, i32, i32)
- DEF_HELPER_FLAGS_1(rsqrte_u32, TCG_CALL_NO_RWG, i32, i32)
- DEF_HELPER_FLAGS_4(neon_tbl, TCG_CALL_NO_RWG, i64, env, i32, i64, i64)
-@@ -258,15 +258,15 @@ DEF_HELPER_3(shr_cc, i32, env, i32, i32)
- DEF_HELPER_3(sar_cc, i32, env, i32, i32)
- DEF_HELPER_3(ror_cc, i32, env, i32, i32)
- 
--DEF_HELPER_FLAGS_2(rinth_exact, TCG_CALL_NO_RWG, f16, f16, ptr)
--DEF_HELPER_FLAGS_2(rints_exact, TCG_CALL_NO_RWG, f32, f32, ptr)
--DEF_HELPER_FLAGS_2(rintd_exact, TCG_CALL_NO_RWG, f64, f64, ptr)
--DEF_HELPER_FLAGS_2(rinth, TCG_CALL_NO_RWG, f16, f16, ptr)
--DEF_HELPER_FLAGS_2(rints, TCG_CALL_NO_RWG, f32, f32, ptr)
--DEF_HELPER_FLAGS_2(rintd, TCG_CALL_NO_RWG, f64, f64, ptr)
-+DEF_HELPER_FLAGS_2(rinth_exact, TCG_CALL_NO_RWG, f16, f16, fpst)
-+DEF_HELPER_FLAGS_2(rints_exact, TCG_CALL_NO_RWG, f32, f32, fpst)
-+DEF_HELPER_FLAGS_2(rintd_exact, TCG_CALL_NO_RWG, f64, f64, fpst)
-+DEF_HELPER_FLAGS_2(rinth, TCG_CALL_NO_RWG, f16, f16, fpst)
-+DEF_HELPER_FLAGS_2(rints, TCG_CALL_NO_RWG, f32, f32, fpst)
-+DEF_HELPER_FLAGS_2(rintd, TCG_CALL_NO_RWG, f64, f64, fpst)
- 
- DEF_HELPER_FLAGS_2(vjcvt, TCG_CALL_NO_RWG, i32, f64, env)
--DEF_HELPER_FLAGS_2(fjcvtzs, TCG_CALL_NO_RWG, i64, f64, ptr)
-+DEF_HELPER_FLAGS_2(fjcvtzs, TCG_CALL_NO_RWG, i64, f64, fpst)
- 
- DEF_HELPER_FLAGS_3(check_hcr_el2_trap, TCG_CALL_NO_WG, void, env, i32, i32)
- 
-@@ -867,10 +867,10 @@ DEF_HELPER_FLAGS_5(gvec_fmlal_idx_a32, TCG_CALL_NO_RWG,
- DEF_HELPER_FLAGS_5(gvec_fmlal_idx_a64, TCG_CALL_NO_RWG,
-                    void, ptr, ptr, ptr, ptr, i32)
- 
--DEF_HELPER_FLAGS_2(frint32_s, TCG_CALL_NO_RWG, f32, f32, ptr)
--DEF_HELPER_FLAGS_2(frint64_s, TCG_CALL_NO_RWG, f32, f32, ptr)
--DEF_HELPER_FLAGS_2(frint32_d, TCG_CALL_NO_RWG, f64, f64, ptr)
--DEF_HELPER_FLAGS_2(frint64_d, TCG_CALL_NO_RWG, f64, f64, ptr)
-+DEF_HELPER_FLAGS_2(frint32_s, TCG_CALL_NO_RWG, f32, f32, fpst)
-+DEF_HELPER_FLAGS_2(frint64_s, TCG_CALL_NO_RWG, f32, f32, fpst)
-+DEF_HELPER_FLAGS_2(frint32_d, TCG_CALL_NO_RWG, f64, f64, fpst)
-+DEF_HELPER_FLAGS_2(frint64_d, TCG_CALL_NO_RWG, f64, f64, fpst)
- 
- DEF_HELPER_FLAGS_3(gvec_ceq0_b, TCG_CALL_NO_RWG, void, ptr, ptr, i32)
- DEF_HELPER_FLAGS_3(gvec_ceq0_h, TCG_CALL_NO_RWG, void, ptr, ptr, i32)
-diff --git a/target/arm/vfp_helper.c b/target/arm/vfp_helper.c
-index df4ff464792..8a56936751b 100644
---- a/target/arm/vfp_helper.c
-+++ b/target/arm/vfp_helper.c
-@@ -289,19 +289,16 @@ void vfp_set_fpscr(CPUARMState *env, uint32_t val)
- #define VFP_HELPER(name, p) HELPER(glue(glue(vfp_,name),p))
- 
- #define VFP_BINOP(name) \
--dh_ctype_f16 VFP_HELPER(name, h)(dh_ctype_f16 a, dh_ctype_f16 b, void *fpstp) \
-+dh_ctype_f16 VFP_HELPER(name, h)(dh_ctype_f16 a, dh_ctype_f16 b, float_status *fpst) \
- { \
--    float_status *fpst = fpstp; \
-     return float16_ ## name(a, b, fpst); \
- } \
--float32 VFP_HELPER(name, s)(float32 a, float32 b, void *fpstp) \
-+float32 VFP_HELPER(name, s)(float32 a, float32 b, float_status *fpst) \
- { \
--    float_status *fpst = fpstp; \
-     return float32_ ## name(a, b, fpst); \
- } \
--float64 VFP_HELPER(name, d)(float64 a, float64 b, void *fpstp) \
-+float64 VFP_HELPER(name, d)(float64 a, float64 b, float_status *fpst) \
- { \
--    float_status *fpst = fpstp; \
-     return float64_ ## name(a, b, fpst); \
+ DEF_HELPER_2(exception_return, void, env, i64)
+ DEF_HELPER_FLAGS_2(dc_zva, TCG_CALL_NO_WG, void, env, i64)
+diff --git a/target/arm/tcg/helper-a64.c b/target/arm/tcg/helper-a64.c
+index fb6fe0fcaa9..ff48bac1a8e 100644
+--- a/target/arm/tcg/helper-a64.c
++++ b/target/arm/tcg/helper-a64.c
+@@ -130,40 +130,38 @@ static inline uint32_t float_rel_to_flags(int res)
+     return flags;
  }
- VFP_BINOP(add)
-@@ -314,19 +311,19 @@ VFP_BINOP(minnum)
- VFP_BINOP(maxnum)
- #undef VFP_BINOP
  
--dh_ctype_f16 VFP_HELPER(sqrt, h)(dh_ctype_f16 a, void *fpstp)
-+dh_ctype_f16 VFP_HELPER(sqrt, h)(dh_ctype_f16 a, float_status *fpst)
+-uint64_t HELPER(vfp_cmph_a64)(uint32_t x, uint32_t y, void *fp_status)
++uint64_t HELPER(vfp_cmph_a64)(uint32_t x, uint32_t y, float_status *fp_status)
  {
--    return float16_sqrt(a, fpstp);
-+    return float16_sqrt(a, fpst);
+     return float_rel_to_flags(float16_compare_quiet(x, y, fp_status));
  }
  
--float32 VFP_HELPER(sqrt, s)(float32 a, void *fpstp)
-+float32 VFP_HELPER(sqrt, s)(float32 a, float_status *fpst)
+-uint64_t HELPER(vfp_cmpeh_a64)(uint32_t x, uint32_t y, void *fp_status)
++uint64_t HELPER(vfp_cmpeh_a64)(uint32_t x, uint32_t y, float_status *fp_status)
  {
--    return float32_sqrt(a, fpstp);
-+    return float32_sqrt(a, fpst);
+     return float_rel_to_flags(float16_compare(x, y, fp_status));
  }
  
--float64 VFP_HELPER(sqrt, d)(float64 a, void *fpstp)
-+float64 VFP_HELPER(sqrt, d)(float64 a, float_status *fpst)
+-uint64_t HELPER(vfp_cmps_a64)(float32 x, float32 y, void *fp_status)
++uint64_t HELPER(vfp_cmps_a64)(float32 x, float32 y, float_status *fp_status)
  {
--    return float64_sqrt(a, fpstp);
-+    return float64_sqrt(a, fpst);
+     return float_rel_to_flags(float32_compare_quiet(x, y, fp_status));
  }
  
- static void softfloat_to_vfp_compare(CPUARMState *env, FloatRelation cmp)
-@@ -371,16 +368,14 @@ DO_VFP_cmp(d, float64, float64, fp_status)
- /* Integer to float and float to integer conversions */
- 
- #define CONV_ITOF(name, ftype, fsz, sign)                           \
--ftype HELPER(name)(uint32_t x, void *fpstp)                         \
-+ftype HELPER(name)(uint32_t x, float_status *fpst)                  \
- {                                                                   \
--    float_status *fpst = fpstp;                                     \
-     return sign##int32_to_##float##fsz((sign##int32_t)x, fpst);     \
- }
- 
- #define CONV_FTOI(name, ftype, fsz, sign, round)                \
--sign##int32_t HELPER(name)(ftype x, void *fpstp)                \
-+sign##int32_t HELPER(name)(ftype x, float_status *fpst)         \
- {                                                               \
--    float_status *fpst = fpstp;                                 \
-     if (float##fsz##_is_any_nan(x)) {                           \
-         float_raise(float_flag_invalid, fpst);                  \
-         return 0;                                               \
-@@ -415,12 +410,12 @@ float32 VFP_HELPER(fcvts, d)(float64 x, CPUARMState *env)
-     return float64_to_float32(x, &env->vfp.fp_status);
- }
- 
--uint32_t HELPER(bfcvt)(float32 x, void *status)
-+uint32_t HELPER(bfcvt)(float32 x, float_status *status)
+-uint64_t HELPER(vfp_cmpes_a64)(float32 x, float32 y, void *fp_status)
++uint64_t HELPER(vfp_cmpes_a64)(float32 x, float32 y, float_status *fp_status)
  {
-     return float32_to_bfloat16(x, status);
+     return float_rel_to_flags(float32_compare(x, y, fp_status));
  }
  
--uint32_t HELPER(bfcvt_pair)(uint64_t pair, void *status)
-+uint32_t HELPER(bfcvt_pair)(uint64_t pair, float_status *status)
+-uint64_t HELPER(vfp_cmpd_a64)(float64 x, float64 y, void *fp_status)
++uint64_t HELPER(vfp_cmpd_a64)(float64 x, float64 y, float_status *fp_status)
  {
-     bfloat16 lo = float32_to_bfloat16(extract64(pair, 0, 32), status);
-     bfloat16 hi = float32_to_bfloat16(extract64(pair, 32, 32), status);
-@@ -436,26 +431,25 @@ uint32_t HELPER(bfcvt_pair)(uint64_t pair, void *status)
-  */
- #define VFP_CONV_FIX_FLOAT(name, p, fsz, ftype, isz, itype)            \
- ftype HELPER(vfp_##name##to##p)(uint##isz##_t  x, uint32_t shift,      \
--                                     void *fpstp) \
--{ return itype##_to_##float##fsz##_scalbn(x, -shift, fpstp); }
-+                                float_status *fpst)                    \
-+{ return itype##_to_##float##fsz##_scalbn(x, -shift, fpst); }
+     return float_rel_to_flags(float64_compare_quiet(x, y, fp_status));
+ }
  
- #define VFP_CONV_FIX_FLOAT_ROUND(name, p, fsz, ftype, isz, itype)      \
-     ftype HELPER(vfp_##name##to##p##_round_to_nearest)(uint##isz##_t  x, \
-                                                      uint32_t shift,   \
--                                                     void *fpstp)      \
-+                                                     float_status *fpst) \
-     {                                                                  \
-         ftype ret;                                                     \
--        float_status *fpst = fpstp;                                    \
-         FloatRoundMode oldmode = fpst->float_rounding_mode;            \
-         fpst->float_rounding_mode = float_round_nearest_even;          \
--        ret = itype##_to_##float##fsz##_scalbn(x, -shift, fpstp);      \
-+        ret = itype##_to_##float##fsz##_scalbn(x, -shift, fpst);       \
-         fpst->float_rounding_mode = oldmode;                           \
-         return ret;                                                    \
-     }
- 
- #define VFP_CONV_FLOAT_FIX_ROUND(name, p, fsz, ftype, isz, itype, ROUND, suff) \
- uint##isz##_t HELPER(vfp_to##name##p##suff)(ftype x, uint32_t shift,      \
--                                            void *fpst)                   \
-+                                            float_status *fpst)           \
- {                                                                         \
-     if (unlikely(float##fsz##_is_any_nan(x))) {                           \
-         float_raise(float_flag_invalid, fpst);                            \
-@@ -508,10 +502,8 @@ VFP_CONV_FLOAT_FIX_ROUND(uq, d, 64, float64, 64, uint64,
- /* Set the current fp rounding mode and return the old one.
-  * The argument is a softfloat float_round_ value.
-  */
--uint32_t HELPER(set_rmode)(uint32_t rmode, void *fpstp)
-+uint32_t HELPER(set_rmode)(uint32_t rmode, float_status *fp_status)
+-uint64_t HELPER(vfp_cmped_a64)(float64 x, float64 y, void *fp_status)
++uint64_t HELPER(vfp_cmped_a64)(float64 x, float64 y, float_status *fp_status)
  {
--    float_status *fp_status = fpstp;
+     return float_rel_to_flags(float64_compare(x, y, fp_status));
+ }
+ 
+-float32 HELPER(vfp_mulxs)(float32 a, float32 b, void *fpstp)
++float32 HELPER(vfp_mulxs)(float32 a, float32 b, float_status *fpst)
+ {
+-    float_status *fpst = fpstp;
 -
-     uint32_t prev_rmode = get_float_rounding_mode(fp_status);
-     set_float_rounding_mode(rmode, fp_status);
+     a = float32_squash_input_denormal(a, fpst);
+     b = float32_squash_input_denormal(b, fpst);
  
-@@ -519,12 +511,12 @@ uint32_t HELPER(set_rmode)(uint32_t rmode, void *fpstp)
+@@ -176,10 +174,8 @@ float32 HELPER(vfp_mulxs)(float32 a, float32 b, void *fpstp)
+     return float32_mul(a, b, fpst);
  }
  
- /* Half precision conversions.  */
--float32 HELPER(vfp_fcvt_f16_to_f32)(uint32_t a, void *fpstp, uint32_t ahp_mode)
-+float32 HELPER(vfp_fcvt_f16_to_f32)(uint32_t a, float_status *fpst,
-+                                    uint32_t ahp_mode)
+-float64 HELPER(vfp_mulxd)(float64 a, float64 b, void *fpstp)
++float64 HELPER(vfp_mulxd)(float64 a, float64 b, float_status *fpst)
  {
-     /* Squash FZ16 to 0 for the duration of conversion.  In this case,
-      * it would affect flushing input denormals.
-      */
 -    float_status *fpst = fpstp;
-     bool save = get_flush_inputs_to_zero(fpst);
-     set_flush_inputs_to_zero(false, fpst);
-     float32 r = float16_to_float32(a, !ahp_mode, fpst);
-@@ -532,12 +524,12 @@ float32 HELPER(vfp_fcvt_f16_to_f32)(uint32_t a, void *fpstp, uint32_t ahp_mode)
-     return r;
+-
+     a = float64_squash_input_denormal(a, fpst);
+     b = float64_squash_input_denormal(b, fpst);
+ 
+@@ -193,21 +189,18 @@ float64 HELPER(vfp_mulxd)(float64 a, float64 b, void *fpstp)
  }
  
--uint32_t HELPER(vfp_fcvt_f32_to_f16)(float32 a, void *fpstp, uint32_t ahp_mode)
-+uint32_t HELPER(vfp_fcvt_f32_to_f16)(float32 a, float_status *fpst,
-+                                     uint32_t ahp_mode)
+ /* 64bit/double versions of the neon float compare functions */
+-uint64_t HELPER(neon_ceq_f64)(float64 a, float64 b, void *fpstp)
++uint64_t HELPER(neon_ceq_f64)(float64 a, float64 b, float_status *fpst)
  {
-     /* Squash FZ16 to 0 for the duration of conversion.  In this case,
-      * it would affect flushing output denormals.
-      */
 -    float_status *fpst = fpstp;
-     bool save = get_flush_to_zero(fpst);
-     set_flush_to_zero(false, fpst);
-     float16 r = float32_to_float16(a, !ahp_mode, fpst);
-@@ -545,12 +537,12 @@ uint32_t HELPER(vfp_fcvt_f32_to_f16)(float32 a, void *fpstp, uint32_t ahp_mode)
-     return r;
+     return -float64_eq_quiet(a, b, fpst);
  }
  
--float64 HELPER(vfp_fcvt_f16_to_f64)(uint32_t a, void *fpstp, uint32_t ahp_mode)
-+float64 HELPER(vfp_fcvt_f16_to_f64)(uint32_t a, float_status *fpst,
-+                                    uint32_t ahp_mode)
+-uint64_t HELPER(neon_cge_f64)(float64 a, float64 b, void *fpstp)
++uint64_t HELPER(neon_cge_f64)(float64 a, float64 b, float_status *fpst)
  {
-     /* Squash FZ16 to 0 for the duration of conversion.  In this case,
-      * it would affect flushing input denormals.
-      */
 -    float_status *fpst = fpstp;
-     bool save = get_flush_inputs_to_zero(fpst);
-     set_flush_inputs_to_zero(false, fpst);
-     float64 r = float16_to_float64(a, !ahp_mode, fpst);
-@@ -558,12 +550,12 @@ float64 HELPER(vfp_fcvt_f16_to_f64)(uint32_t a, void *fpstp, uint32_t ahp_mode)
-     return r;
+     return -float64_le(b, a, fpst);
  }
  
--uint32_t HELPER(vfp_fcvt_f64_to_f16)(float64 a, void *fpstp, uint32_t ahp_mode)
-+uint32_t HELPER(vfp_fcvt_f64_to_f16)(float64 a, float_status *fpst,
-+                                     uint32_t ahp_mode)
+-uint64_t HELPER(neon_cgt_f64)(float64 a, float64 b, void *fpstp)
++uint64_t HELPER(neon_cgt_f64)(float64 a, float64 b, float_status *fpst)
  {
-     /* Squash FZ16 to 0 for the duration of conversion.  In this case,
-      * it would affect flushing output denormals.
-      */
 -    float_status *fpst = fpstp;
-     bool save = get_flush_to_zero(fpst);
-     set_flush_to_zero(false, fpst);
-     float16 r = float64_to_float16(a, !ahp_mode, fpst);
-@@ -664,9 +656,8 @@ static bool round_to_inf(float_status *fpst, bool sign_bit)
+     return -float64_lt(b, a, fpst);
+ }
+ 
+@@ -216,10 +209,8 @@ uint64_t HELPER(neon_cgt_f64)(float64 a, float64 b, void *fpstp)
+  * multiply-add-and-halve.
+  */
+ 
+-uint32_t HELPER(recpsf_f16)(uint32_t a, uint32_t b, void *fpstp)
++uint32_t HELPER(recpsf_f16)(uint32_t a, uint32_t b, float_status *fpst)
+ {
+-    float_status *fpst = fpstp;
+-
+     a = float16_squash_input_denormal(a, fpst);
+     b = float16_squash_input_denormal(b, fpst);
+ 
+@@ -231,10 +222,8 @@ uint32_t HELPER(recpsf_f16)(uint32_t a, uint32_t b, void *fpstp)
+     return float16_muladd(a, b, float16_two, 0, fpst);
+ }
+ 
+-float32 HELPER(recpsf_f32)(float32 a, float32 b, void *fpstp)
++float32 HELPER(recpsf_f32)(float32 a, float32 b, float_status *fpst)
+ {
+-    float_status *fpst = fpstp;
+-
+     a = float32_squash_input_denormal(a, fpst);
+     b = float32_squash_input_denormal(b, fpst);
+ 
+@@ -246,10 +235,8 @@ float32 HELPER(recpsf_f32)(float32 a, float32 b, void *fpstp)
+     return float32_muladd(a, b, float32_two, 0, fpst);
+ }
+ 
+-float64 HELPER(recpsf_f64)(float64 a, float64 b, void *fpstp)
++float64 HELPER(recpsf_f64)(float64 a, float64 b, float_status *fpst)
+ {
+-    float_status *fpst = fpstp;
+-
+     a = float64_squash_input_denormal(a, fpst);
+     b = float64_squash_input_denormal(b, fpst);
+ 
+@@ -261,10 +248,8 @@ float64 HELPER(recpsf_f64)(float64 a, float64 b, void *fpstp)
+     return float64_muladd(a, b, float64_two, 0, fpst);
+ }
+ 
+-uint32_t HELPER(rsqrtsf_f16)(uint32_t a, uint32_t b, void *fpstp)
++uint32_t HELPER(rsqrtsf_f16)(uint32_t a, uint32_t b, float_status *fpst)
+ {
+-    float_status *fpst = fpstp;
+-
+     a = float16_squash_input_denormal(a, fpst);
+     b = float16_squash_input_denormal(b, fpst);
+ 
+@@ -276,10 +261,8 @@ uint32_t HELPER(rsqrtsf_f16)(uint32_t a, uint32_t b, void *fpstp)
+     return float16_muladd(a, b, float16_three, float_muladd_halve_result, fpst);
+ }
+ 
+-float32 HELPER(rsqrtsf_f32)(float32 a, float32 b, void *fpstp)
++float32 HELPER(rsqrtsf_f32)(float32 a, float32 b, float_status *fpst)
+ {
+-    float_status *fpst = fpstp;
+-
+     a = float32_squash_input_denormal(a, fpst);
+     b = float32_squash_input_denormal(b, fpst);
+ 
+@@ -291,10 +274,8 @@ float32 HELPER(rsqrtsf_f32)(float32 a, float32 b, void *fpstp)
+     return float32_muladd(a, b, float32_three, float_muladd_halve_result, fpst);
+ }
+ 
+-float64 HELPER(rsqrtsf_f64)(float64 a, float64 b, void *fpstp)
++float64 HELPER(rsqrtsf_f64)(float64 a, float64 b, float_status *fpst)
+ {
+-    float_status *fpst = fpstp;
+-
+     a = float64_squash_input_denormal(a, fpst);
+     b = float64_squash_input_denormal(b, fpst);
+ 
+@@ -307,9 +288,8 @@ float64 HELPER(rsqrtsf_f64)(float64 a, float64 b, void *fpstp)
+ }
+ 
+ /* Floating-point reciprocal exponent - see FPRecpX in ARM ARM */
+-uint32_t HELPER(frecpx_f16)(uint32_t a, void *fpstp)
++uint32_t HELPER(frecpx_f16)(uint32_t a, float_status *fpst)
+ {
+-    float_status *fpst = fpstp;
+     uint16_t val16, sbit;
+     int16_t exp;
+ 
+@@ -340,9 +320,8 @@ uint32_t HELPER(frecpx_f16)(uint32_t a, void *fpstp)
      }
  }
  
--uint32_t HELPER(recpe_f16)(uint32_t input, void *fpstp)
-+uint32_t HELPER(recpe_f16)(uint32_t input, float_status *fpst)
+-float32 HELPER(frecpx_f32)(float32 a, void *fpstp)
++float32 HELPER(frecpx_f32)(float32 a, float_status *fpst)
  {
 -    float_status *fpst = fpstp;
-     float16 f16 = float16_squash_input_denormal(input, fpst);
-     uint32_t f16_val = float16_val(f16);
-     uint32_t f16_sign = float16_is_neg(f16);
-@@ -714,9 +705,8 @@ uint32_t HELPER(recpe_f16)(uint32_t input, void *fpstp)
-     return make_float16(f16_val);
+     uint32_t val32, sbit;
+     int32_t exp;
+ 
+@@ -373,9 +352,8 @@ float32 HELPER(frecpx_f32)(float32 a, void *fpstp)
+     }
  }
  
--float32 HELPER(recpe_f32)(float32 input, void *fpstp)
-+float32 HELPER(recpe_f32)(float32 input, float_status *fpst)
+-float64 HELPER(frecpx_f64)(float64 a, void *fpstp)
++float64 HELPER(frecpx_f64)(float64 a, float_status *fpst)
  {
 -    float_status *fpst = fpstp;
-     float32 f32 = float32_squash_input_denormal(input, fpst);
-     uint32_t f32_val = float32_val(f32);
-     bool f32_sign = float32_is_neg(f32);
-@@ -764,9 +754,8 @@ float32 HELPER(recpe_f32)(float32 input, void *fpstp)
-     return make_float32(f32_val);
+     uint64_t val64, sbit;
+     int64_t exp;
+ 
+@@ -453,9 +431,8 @@ uint64_t HELPER(crc32c_64)(uint64_t acc, uint64_t val, uint32_t bytes)
+ #define ADVSIMD_HELPER(name, suffix) HELPER(glue(glue(advsimd_, name), suffix))
+ 
+ #define ADVSIMD_HALFOP(name) \
+-uint32_t ADVSIMD_HELPER(name, h)(uint32_t a, uint32_t b, void *fpstp) \
++uint32_t ADVSIMD_HELPER(name, h)(uint32_t a, uint32_t b, float_status *fpst) \
+ { \
+-    float_status *fpst = fpstp; \
+     return float16_ ## name(a, b, fpst);    \
  }
  
--float64 HELPER(recpe_f64)(float64 input, void *fpstp)
-+float64 HELPER(recpe_f64)(float64 input, float_status *fpst)
+@@ -469,11 +446,11 @@ ADVSIMD_HALFOP(minnum)
+ ADVSIMD_HALFOP(maxnum)
+ 
+ #define ADVSIMD_TWOHALFOP(name)                                         \
+-uint32_t ADVSIMD_HELPER(name, 2h)(uint32_t two_a, uint32_t two_b, void *fpstp) \
++uint32_t ADVSIMD_HELPER(name, 2h)(uint32_t two_a, uint32_t two_b,       \
++                                  float_status *fpst)                   \
+ { \
+     float16  a1, a2, b1, b2;                        \
+     uint32_t r1, r2;                                \
+-    float_status *fpst = fpstp;                     \
+     a1 = extract32(two_a, 0, 16);                   \
+     a2 = extract32(two_a, 16, 16);                  \
+     b1 = extract32(two_b, 0, 16);                   \
+@@ -493,10 +470,8 @@ ADVSIMD_TWOHALFOP(minnum)
+ ADVSIMD_TWOHALFOP(maxnum)
+ 
+ /* Data processing - scalar floating-point and advanced SIMD */
+-static float16 float16_mulx(float16 a, float16 b, void *fpstp)
++static float16 float16_mulx(float16 a, float16 b, float_status *fpst)
  {
 -    float_status *fpst = fpstp;
-     float64 f64 = float64_squash_input_denormal(input, fpst);
-     uint64_t f64_val = float64_val(f64);
-     bool f64_sign = float64_is_neg(f64);
-@@ -865,9 +854,8 @@ static uint64_t recip_sqrt_estimate(int *exp , int exp_off, uint64_t frac)
-     return extract64(estimate, 0, 8) << 44;
- }
+-
+     a = float16_squash_input_denormal(a, fpst);
+     b = float16_squash_input_denormal(b, fpst);
  
--uint32_t HELPER(rsqrte_f16)(uint32_t input, void *fpstp)
-+uint32_t HELPER(rsqrte_f16)(uint32_t input, float_status *s)
- {
--    float_status *s = fpstp;
-     float16 f16 = float16_squash_input_denormal(input, s);
-     uint16_t val = float16_val(f16);
-     bool f16_sign = float16_is_neg(f16);
-@@ -880,7 +868,7 @@ uint32_t HELPER(rsqrte_f16)(uint32_t input, void *fpstp)
-         if (float16_is_signaling_nan(f16, s)) {
-             float_raise(float_flag_invalid, s);
-             if (!s->default_nan_mode) {
--                nan = float16_silence_nan(f16, fpstp);
-+                nan = float16_silence_nan(f16, s);
-             }
-         }
-         if (s->default_nan_mode) {
-@@ -911,9 +899,8 @@ uint32_t HELPER(rsqrte_f16)(uint32_t input, void *fpstp)
-     return make_float16(val);
- }
+@@ -514,16 +489,14 @@ ADVSIMD_TWOHALFOP(mulx)
  
--float32 HELPER(rsqrte_f32)(float32 input, void *fpstp)
-+float32 HELPER(rsqrte_f32)(float32 input, float_status *s)
- {
--    float_status *s = fpstp;
-     float32 f32 = float32_squash_input_denormal(input, s);
-     uint32_t val = float32_val(f32);
-     uint32_t f32_sign = float32_is_neg(f32);
-@@ -926,7 +913,7 @@ float32 HELPER(rsqrte_f32)(float32 input, void *fpstp)
-         if (float32_is_signaling_nan(f32, s)) {
-             float_raise(float_flag_invalid, s);
-             if (!s->default_nan_mode) {
--                nan = float32_silence_nan(f32, fpstp);
-+                nan = float32_silence_nan(f32, s);
-             }
-         }
-         if (s->default_nan_mode) {
-@@ -957,9 +944,8 @@ float32 HELPER(rsqrte_f32)(float32 input, void *fpstp)
-     return make_float32(val);
- }
- 
--float64 HELPER(rsqrte_f64)(float64 input, void *fpstp)
-+float64 HELPER(rsqrte_f64)(float64 input, float_status *s)
- {
--    float_status *s = fpstp;
-     float64 f64 = float64_squash_input_denormal(input, s);
-     uint64_t val = float64_val(f64);
-     bool f64_sign = float64_is_neg(f64);
-@@ -971,7 +957,7 @@ float64 HELPER(rsqrte_f64)(float64 input, void *fpstp)
-         if (float64_is_signaling_nan(f64, s)) {
-             float_raise(float_flag_invalid, s);
-             if (!s->default_nan_mode) {
--                nan = float64_silence_nan(f64, fpstp);
-+                nan = float64_silence_nan(f64, s);
-             }
-         }
-         if (s->default_nan_mode) {
-@@ -1026,41 +1012,40 @@ uint32_t HELPER(rsqrte_u32)(uint32_t a)
- 
- /* VFPv4 fused multiply-accumulate */
- dh_ctype_f16 VFP_HELPER(muladd, h)(dh_ctype_f16 a, dh_ctype_f16 b,
--                                   dh_ctype_f16 c, void *fpstp)
-+                                   dh_ctype_f16 c, float_status *fpst)
+ /* fused multiply-accumulate */
+ uint32_t HELPER(advsimd_muladdh)(uint32_t a, uint32_t b, uint32_t c,
+-                                 void *fpstp)
++                                 float_status *fpst)
  {
 -    float_status *fpst = fpstp;
      return float16_muladd(a, b, c, 0, fpst);
  }
  
--float32 VFP_HELPER(muladd, s)(float32 a, float32 b, float32 c, void *fpstp)
-+float32 VFP_HELPER(muladd, s)(float32 a, float32 b, float32 c,
-+                              float_status *fpst)
+ uint32_t HELPER(advsimd_muladd2h)(uint32_t two_a, uint32_t two_b,
+-                                  uint32_t two_c, void *fpstp)
++                                  uint32_t two_c, float_status *fpst)
  {
 -    float_status *fpst = fpstp;
-     return float32_muladd(a, b, c, 0, fpst);
- }
+     float16  a1, a2, b1, b2, c1, c2;
+     uint32_t r1, r2;
+     a1 = extract32(two_a, 0, 16);
+@@ -545,31 +518,27 @@ uint32_t HELPER(advsimd_muladd2h)(uint32_t two_a, uint32_t two_b,
  
--float64 VFP_HELPER(muladd, d)(float64 a, float64 b, float64 c, void *fpstp)
-+float64 VFP_HELPER(muladd, d)(float64 a, float64 b, float64 c,
-+                              float_status *fpst)
+ #define ADVSIMD_CMPRES(test) (test) ? 0xffff : 0
+ 
+-uint32_t HELPER(advsimd_ceq_f16)(uint32_t a, uint32_t b, void *fpstp)
++uint32_t HELPER(advsimd_ceq_f16)(uint32_t a, uint32_t b, float_status *fpst)
  {
 -    float_status *fpst = fpstp;
-     return float64_muladd(a, b, c, 0, fpst);
+     int compare = float16_compare_quiet(a, b, fpst);
+     return ADVSIMD_CMPRES(compare == float_relation_equal);
  }
  
- /* ARMv8 round to integral */
--dh_ctype_f16 HELPER(rinth_exact)(dh_ctype_f16 x, void *fp_status)
-+dh_ctype_f16 HELPER(rinth_exact)(dh_ctype_f16 x, float_status *fp_status)
+-uint32_t HELPER(advsimd_cge_f16)(uint32_t a, uint32_t b, void *fpstp)
++uint32_t HELPER(advsimd_cge_f16)(uint32_t a, uint32_t b, float_status *fpst)
+ {
+-    float_status *fpst = fpstp;
+     int compare = float16_compare(a, b, fpst);
+     return ADVSIMD_CMPRES(compare == float_relation_greater ||
+                           compare == float_relation_equal);
+ }
+ 
+-uint32_t HELPER(advsimd_cgt_f16)(uint32_t a, uint32_t b, void *fpstp)
++uint32_t HELPER(advsimd_cgt_f16)(uint32_t a, uint32_t b, float_status *fpst)
+ {
+-    float_status *fpst = fpstp;
+     int compare = float16_compare(a, b, fpst);
+     return ADVSIMD_CMPRES(compare == float_relation_greater);
+ }
+ 
+-uint32_t HELPER(advsimd_acge_f16)(uint32_t a, uint32_t b, void *fpstp)
++uint32_t HELPER(advsimd_acge_f16)(uint32_t a, uint32_t b, float_status *fpst)
+ {
+-    float_status *fpst = fpstp;
+     float16 f0 = float16_abs(a);
+     float16 f1 = float16_abs(b);
+     int compare = float16_compare(f0, f1, fpst);
+@@ -577,9 +546,8 @@ uint32_t HELPER(advsimd_acge_f16)(uint32_t a, uint32_t b, void *fpstp)
+                           compare == float_relation_equal);
+ }
+ 
+-uint32_t HELPER(advsimd_acgt_f16)(uint32_t a, uint32_t b, void *fpstp)
++uint32_t HELPER(advsimd_acgt_f16)(uint32_t a, uint32_t b, float_status *fpst)
+ {
+-    float_status *fpst = fpstp;
+     float16 f0 = float16_abs(a);
+     float16 f1 = float16_abs(b);
+     int compare = float16_compare(f0, f1, fpst);
+@@ -587,12 +555,12 @@ uint32_t HELPER(advsimd_acgt_f16)(uint32_t a, uint32_t b, void *fpstp)
+ }
+ 
+ /* round to integral */
+-uint32_t HELPER(advsimd_rinth_exact)(uint32_t x, void *fp_status)
++uint32_t HELPER(advsimd_rinth_exact)(uint32_t x, float_status *fp_status)
  {
      return float16_round_to_int(x, fp_status);
  }
  
--float32 HELPER(rints_exact)(float32 x, void *fp_status)
-+float32 HELPER(rints_exact)(float32 x, float_status *fp_status)
- {
-     return float32_round_to_int(x, fp_status);
- }
- 
--float64 HELPER(rintd_exact)(float64 x, void *fp_status)
-+float64 HELPER(rintd_exact)(float64 x, float_status *fp_status)
- {
-     return float64_round_to_int(x, fp_status);
- }
- 
--dh_ctype_f16 HELPER(rinth)(dh_ctype_f16 x, void *fp_status)
-+dh_ctype_f16 HELPER(rinth)(dh_ctype_f16 x, float_status *fp_status)
+-uint32_t HELPER(advsimd_rinth)(uint32_t x, void *fp_status)
++uint32_t HELPER(advsimd_rinth)(uint32_t x, float_status *fp_status)
  {
      int old_flags = get_float_exception_flags(fp_status), new_flags;
      float16 ret;
-@@ -1076,7 +1061,7 @@ dh_ctype_f16 HELPER(rinth)(dh_ctype_f16 x, void *fp_status)
-     return ret;
- }
- 
--float32 HELPER(rints)(float32 x, void *fp_status)
-+float32 HELPER(rints)(float32 x, float_status *fp_status)
- {
-     int old_flags = get_float_exception_flags(fp_status), new_flags;
-     float32 ret;
-@@ -1092,7 +1077,7 @@ float32 HELPER(rints)(float32 x, void *fp_status)
-     return ret;
- }
- 
--float64 HELPER(rintd)(float64 x, void *fp_status)
-+float64 HELPER(rintd)(float64 x, float_status *fp_status)
- {
-     int old_flags = get_float_exception_flags(fp_status), new_flags;
-     float64 ret;
-@@ -1122,9 +1107,8 @@ const FloatRoundMode arm_rmode_to_sf_map[] = {
-  * Implement float64 to int32_t conversion without saturation;
-  * the result is supplied modulo 2^32.
-  */
--uint64_t HELPER(fjcvtzs)(float64 value, void *vstatus)
-+uint64_t HELPER(fjcvtzs)(float64 value, float_status *status)
- {
--    float_status *status = vstatus;
-     uint32_t frac, e_old, e_new;
-     bool inexact;
- 
-@@ -1196,12 +1180,12 @@ static float32 frint_s(float32 f, float_status *fpst, int intsize)
-     return (0x100u + 126u + intsize) << 23;
- }
- 
--float32 HELPER(frint32_s)(float32 f, void *fpst)
-+float32 HELPER(frint32_s)(float32 f, float_status *fpst)
- {
-     return frint_s(f, fpst, 32);
- }
- 
--float32 HELPER(frint64_s)(float32 f, void *fpst)
-+float32 HELPER(frint64_s)(float32 f, float_status *fpst)
- {
-     return frint_s(f, fpst, 64);
- }
-@@ -1244,12 +1228,12 @@ static float64 frint_d(float64 f, float_status *fpst, int intsize)
-     return (uint64_t)(0x800 + 1022 + intsize) << 52;
- }
- 
--float64 HELPER(frint32_d)(float64 f, void *fpst)
-+float64 HELPER(frint32_d)(float64 f, float_status *fpst)
- {
-     return frint_d(f, fpst, 32);
- }
- 
--float64 HELPER(frint64_d)(float64 f, void *fpst)
-+float64 HELPER(frint64_d)(float64 f, float_status *fpst)
- {
-     return frint_d(f, fpst, 64);
- }
 -- 
 2.34.1
 
