@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D7C39F52D6
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Dec 2024 18:23:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EC449F530F
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Dec 2024 18:25:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tNbF1-00080T-HX; Tue, 17 Dec 2024 12:20:15 -0500
+	id 1tNbF2-00081B-UV; Tue, 17 Dec 2024 12:20:16 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tNbEw-0007z4-95
- for qemu-devel@nongnu.org; Tue, 17 Dec 2024 12:20:10 -0500
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ id 1tNbEy-00080I-8K
+ for qemu-devel@nongnu.org; Tue, 17 Dec 2024 12:20:12 -0500
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tNbEi-0006Dc-8f
- for qemu-devel@nongnu.org; Tue, 17 Dec 2024 12:20:09 -0500
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-4361f796586so62296505e9.3
- for <qemu-devel@nongnu.org>; Tue, 17 Dec 2024 09:19:55 -0800 (PST)
+ id 1tNbEl-0006EX-T8
+ for qemu-devel@nongnu.org; Tue, 17 Dec 2024 12:20:11 -0500
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-4361f65ca01so54484735e9.1
+ for <qemu-devel@nongnu.org>; Tue, 17 Dec 2024 09:19:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734455993; x=1735060793; darn=nongnu.org;
+ d=linaro.org; s=google; t=1734455994; x=1735060794; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=hC9M0XpdNJx8hwrzBQKl1ZaJYPNdEGDotHyFjhLEqJ4=;
- b=vQQdfec977TCsgpPW124Y72axHemMyeW7ZDzj0ZhkqzRofpEih2tAExGvIZR7jFkyO
- atbACmMSvNTCceCaeV2FPHLNcY0r79VowgyvPYKA8ntwRS2ng8rAMvpR1gpmv/6T/tXu
- U/lv7/4oiw9ZgM1CUWAgD/M0tRJIws2V86bVdxysoyZzhAIr1kKgjHzStVYb6m5DbblK
- KtV1pUXiwEmPTROqlg0AvsckW/d0P8u4sqis8bAMvX7EKTv/T36u4YeWMd05xJC1DJYo
- eVBiukz8pXbgfud5DqnqtFN4O+h6MOPY0ucYofPx2B3uulLYCei1U46dUQcEeBSjeKxS
- qj1w==
+ :reply-to; bh=kcgLUfRYDbXaA7/bZ3PHpMs9VlR5s7ORG7gU7L8xSS8=;
+ b=EyJVBiJ8RSK1PsmH/3QvwFl3Q9MEaEn1n+N1zC9SAsO9BOdt3ECAhydp0yTS4oz3nG
+ ZP0/xpubusrF3yNLzVdEJFASxInhfRaF4kj9zVmGApwwnwI7idS9zNVnr2KecYP0e0va
+ fjrgkvgzCsrjHOezIN3PfCHf7e6/ciwfb97bON0u9rD2lr5Lz6bGvNNjukSkhJW4Qml6
+ ImUfzTREvSPAtq+/7NNZCdAn+QFTTX8fna2HgeLYbP2STvgMr0knDPMcbS4yH+c9b95f
+ xppKztqICVMhQFLl/VwMrdKcuZfssHtELXXyKkQPQOF5RgGZF4Ffiq1N25a7Cd4qettt
+ wITg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734455993; x=1735060793;
+ d=1e100.net; s=20230601; t=1734455994; x=1735060794;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=hC9M0XpdNJx8hwrzBQKl1ZaJYPNdEGDotHyFjhLEqJ4=;
- b=qruboN+2VvTTDnxq3gssYkKKHciut4iDkOkdwTFQidlJ8DDA5OhTNN7jr4l2sN1yiP
- 7uIWIB7/p8VtlS0RCTPviYVWApDETfCCf4ewiaRqwVmWRwZrL7KLLO0vthNRVoOzLMuS
- /JZbXzQBkjXbZPutPeIcvNSTxub5stsUhzF3+738Rtw38DeQn+U3oZTuI+0i9O0mcLFK
- v6duTjXDeD+iYnrP18RR3phlurTCkSpd2lYLw0KWqlxOMGPyywxPpVwYFkKf2DAG6abP
- FvkThUrSvljGpLLeS17a35wvthWUcp0S/nrAkuZPmZqbwsylOl4vW+zTowx92FdKteUM
- 7Dmg==
-X-Gm-Message-State: AOJu0Yzep6hGakRleuBiTNsaiyBEQY29NGTOZoP8x5pnWpb4ag4lh1xq
- 8TSBLMpZ3C3l95dxqHDXqmZUVF7D4tXRDo1Jcn6Rqj51glBXb2CMQc1ILAfKZJZzz/4RqssGRn6
- Z
-X-Gm-Gg: ASbGncseXsbCqRHkBXofXmUFPbWLC63UY701e56f9Lv6bPZG+db63Y2Lo4YW5r65L7v
- iLb8E+PFECl+6DWvN7LQwBAW/uO+Cxp0l6UBRr9dhcewW9tzdielinpmAZMXe1DdYrErJ1HPKNs
- pdo5dDIqtH4Tz7p9fqvEGHqVlerVIFQaRI5H+A1f2JlSic17gEKSFgXzYWJNzKYSdL1+bg8DzTf
- /cB8Ewh8zpynrwCQ1JzwHh1/649UMammlt6TlWbbzc0TbKbJ1ywjBhDS+zuA6Y=
-X-Google-Smtp-Source: AGHT+IE9glgKAMtf/ySxxi40oKwnxGiLQkUfJTDm9SpaIl4PvjILtamL9DzJchF//22DdKFUSV/BCw==
-X-Received: by 2002:a5d:648b:0:b0:385:f17b:de5a with SMTP id
- ffacd0b85a97d-38880ae13c4mr17519610f8f.28.1734455993089; 
- Tue, 17 Dec 2024 09:19:53 -0800 (PST)
+ bh=kcgLUfRYDbXaA7/bZ3PHpMs9VlR5s7ORG7gU7L8xSS8=;
+ b=qWZjZGXTwB84dN8umyq9nEti6KAXcaivdmWx/K7Tqz+rhi1N4OjxcQDkID8InZhuWZ
+ fnU0xVcvJ2FafemSJOHC+TBDR7AN+nhkGX6gCydjk6DBS28jgLbOMBBaw7/YM8O6AuKB
+ qCgcygEbeSf0ml/BgO7Ba81zKax5wvdC5PrNljdO7ACqU3vepYqc/6au+cY8Syj/BQFv
+ 4RAYytfFu4oYHMI1uKcK+7oA7+nXbaBeRTy3thWK2OKFnHTJoVgHzsSu2LTufXApcGgf
+ zCJNcgRkP5tRn0KCs/nR7IPy64BnLlXpylu9eYL0OuEfkxdm5D4OYbcZeRhXVCt27uvF
+ oBlA==
+X-Gm-Message-State: AOJu0YzvcqsDi6k4k2cotEfUd02NUwlKqdGGwU3ERJz00wWcqdaeSRAv
+ L6Fr+eK2cT+o4kZKYjeIKrqnWFCygZ3Y4LfUF5HuF4hU/w/pizm9FKVbRaa9mfOYR5pbfTqW2l1
+ Q
+X-Gm-Gg: ASbGncuFyYUMPqpxTo+gbJbNUatzpwYyxwM4mtD0Dea+h+ieKg+hIhqOvT9uSgeF3ve
+ rCygZPz77DdGju2Hl9ffG8ZXKNJhmuvRd1yMUBnMBTIIzencvLdEcahu13BXBQpmYlu4MbO57Jq
+ O7niBcgOiTeBK6k8IB7Rgx3a0pesFKZgm/xwM+FbTcM5Z0SJx+Vw1dXKKN10NluGzTJYbQ9Zh7c
+ rb6ZAT8tQF0evESUF5feb6FpKRuJ841XHEsoVaFC+tcM9r5iiAbbtUWcCFPQl0=
+X-Google-Smtp-Source: AGHT+IGMLKYnH6F58PXAShvQiqMX2Vj1hzqQTvU7qHSWLDCy4yOOlEbp1MxPb0Vn6IRuzwVT9WV2yw==
+X-Received: by 2002:a05:600c:a4f:b0:435:21a1:b109 with SMTP id
+ 5b1f17b1804b1-4362aa26d8dmr180071605e9.2.1734455994141; 
+ Tue, 17 Dec 2024 09:19:54 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-388c8016389sm11569728f8f.32.2024.12.17.09.19.52
+ ffacd0b85a97d-388c8016389sm11569728f8f.32.2024.12.17.09.19.53
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 17 Dec 2024 09:19:52 -0800 (PST)
+ Tue, 17 Dec 2024 09:19:53 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 13/19] target/arm: Add ARM_CP_ADD_TLBI_NXS type flag for NXS
+Subject: [PULL 14/19] target/arm: Add ARM_CP_ADD_TLBI_NXS type flag to TLBI
  insns
-Date: Tue, 17 Dec 2024 17:19:31 +0000
-Message-Id: <20241217171937.3899947-14-peter.maydell@linaro.org>
+Date: Tue, 17 Dec 2024 17:19:32 +0000
+Message-Id: <20241217171937.3899947-15-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241217171937.3899947-1-peter.maydell@linaro.org>
 References: <20241217171937.3899947-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x334.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,85 +96,501 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-All of the TLBI insns with an NXS variant put that variant at the
-same encoding but with a CRn field that is one greater than for the
-original TLBI insn.  To avoid having to define every TLBI insn
-effectively twice, once in the normal way and once in a set of cpreg
-arrays that are only registered when FEAT_XS is present, we define a
-new ARM_CP_ADD_TLB_NXS type flag for cpregs.  When this flag is set
-in a cpreg struct and FEAT_XS is present,
-define_one_arm_cp_reg_with_opaque() will automatically add a second
-cpreg to the hash table for the TLBI NXS insn with:
- * the crn+1 encoding
- * an FGT field that indicates that it should honour HCR_EL2.FGTnXS
- * a name with the "NXS" suffix
-
-(If there are future TLBI NXS insns that don't use this same
-encoding convention, it is also possible to define them manually.)
+Add the ARM_CP_ADD_TLBI_NXS to the TLBI insns with an NXS variant.
+This is every AArch64 TLBI encoding except for the four FEAT_RME TLBI
+insns.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20241211144440.2700268-3-peter.maydell@linaro.org
+Message-id: 20241211144440.2700268-4-peter.maydell@linaro.org
 ---
- target/arm/cpregs.h |  8 ++++++++
- target/arm/helper.c | 25 +++++++++++++++++++++++++
- 2 files changed, 33 insertions(+)
+ target/arm/tcg/tlb-insns.c | 202 +++++++++++++++++++++++--------------
+ 1 file changed, 124 insertions(+), 78 deletions(-)
 
-diff --git a/target/arm/cpregs.h b/target/arm/cpregs.h
-index 87704762ef9..1759d9defbe 100644
---- a/target/arm/cpregs.h
-+++ b/target/arm/cpregs.h
-@@ -126,6 +126,14 @@ enum {
-      * equivalent EL1 register when FEAT_NV2 is enabled.
-      */
-     ARM_CP_NV2_REDIRECT          = 1 << 20,
-+    /*
-+     * Flag: this is a TLBI insn which (when FEAT_XS is present) also has
-+     * an NXS variant at the same encoding except that crn is 1 greater,
-+     * so when registering this cpreg automatically also register one
-+     * for the TLBI NXS variant. (For QEMU the NXS variant behaves
-+     * identically to the normal one, other than FGT trapping handling.)
-+     */
-+    ARM_CP_ADD_TLBI_NXS          = 1 << 21,
+diff --git a/target/arm/tcg/tlb-insns.c b/target/arm/tcg/tlb-insns.c
+index 0f67294edc4..fadc61a76e9 100644
+--- a/target/arm/tcg/tlb-insns.c
++++ b/target/arm/tcg/tlb-insns.c
+@@ -617,95 +617,107 @@ static const ARMCPRegInfo tlbi_v8_cp_reginfo[] = {
+     /* AArch64 TLBI operations */
+     { .name = "TLBI_VMALLE1IS", .state = ARM_CP_STATE_AA64,
+       .opc0 = 1, .opc1 = 0, .crn = 8, .crm = 3, .opc2 = 0,
+-      .access = PL1_W, .accessfn = access_ttlbis, .type = ARM_CP_NO_RAW,
++      .access = PL1_W, .accessfn = access_ttlbis,
++      .type = ARM_CP_NO_RAW | ARM_CP_ADD_TLBI_NXS,
+       .fgt = FGT_TLBIVMALLE1IS,
+       .writefn = tlbi_aa64_vmalle1is_write },
+     { .name = "TLBI_VAE1IS", .state = ARM_CP_STATE_AA64,
+       .opc0 = 1, .opc1 = 0, .crn = 8, .crm = 3, .opc2 = 1,
+-      .access = PL1_W, .accessfn = access_ttlbis, .type = ARM_CP_NO_RAW,
++      .access = PL1_W, .accessfn = access_ttlbis,
++      .type = ARM_CP_NO_RAW | ARM_CP_ADD_TLBI_NXS,
+       .fgt = FGT_TLBIVAE1IS,
+       .writefn = tlbi_aa64_vae1is_write },
+     { .name = "TLBI_ASIDE1IS", .state = ARM_CP_STATE_AA64,
+       .opc0 = 1, .opc1 = 0, .crn = 8, .crm = 3, .opc2 = 2,
+-      .access = PL1_W, .accessfn = access_ttlbis, .type = ARM_CP_NO_RAW,
++      .access = PL1_W, .accessfn = access_ttlbis,
++      .type = ARM_CP_NO_RAW | ARM_CP_ADD_TLBI_NXS,
+       .fgt = FGT_TLBIASIDE1IS,
+       .writefn = tlbi_aa64_vmalle1is_write },
+     { .name = "TLBI_VAAE1IS", .state = ARM_CP_STATE_AA64,
+       .opc0 = 1, .opc1 = 0, .crn = 8, .crm = 3, .opc2 = 3,
+-      .access = PL1_W, .accessfn = access_ttlbis, .type = ARM_CP_NO_RAW,
++      .access = PL1_W, .accessfn = access_ttlbis,
++      .type = ARM_CP_NO_RAW | ARM_CP_ADD_TLBI_NXS,
+       .fgt = FGT_TLBIVAAE1IS,
+       .writefn = tlbi_aa64_vae1is_write },
+     { .name = "TLBI_VALE1IS", .state = ARM_CP_STATE_AA64,
+       .opc0 = 1, .opc1 = 0, .crn = 8, .crm = 3, .opc2 = 5,
+-      .access = PL1_W, .accessfn = access_ttlbis, .type = ARM_CP_NO_RAW,
++      .access = PL1_W, .accessfn = access_ttlbis,
++      .type = ARM_CP_NO_RAW | ARM_CP_ADD_TLBI_NXS,
+       .fgt = FGT_TLBIVALE1IS,
+       .writefn = tlbi_aa64_vae1is_write },
+     { .name = "TLBI_VAALE1IS", .state = ARM_CP_STATE_AA64,
+       .opc0 = 1, .opc1 = 0, .crn = 8, .crm = 3, .opc2 = 7,
+-      .access = PL1_W, .accessfn = access_ttlbis, .type = ARM_CP_NO_RAW,
++      .access = PL1_W, .accessfn = access_ttlbis,
++      .type = ARM_CP_NO_RAW | ARM_CP_ADD_TLBI_NXS,
+       .fgt = FGT_TLBIVAALE1IS,
+       .writefn = tlbi_aa64_vae1is_write },
+     { .name = "TLBI_VMALLE1", .state = ARM_CP_STATE_AA64,
+       .opc0 = 1, .opc1 = 0, .crn = 8, .crm = 7, .opc2 = 0,
+-      .access = PL1_W, .accessfn = access_ttlb, .type = ARM_CP_NO_RAW,
++      .access = PL1_W, .accessfn = access_ttlb,
++      .type = ARM_CP_NO_RAW | ARM_CP_ADD_TLBI_NXS,
+       .fgt = FGT_TLBIVMALLE1,
+       .writefn = tlbi_aa64_vmalle1_write },
+     { .name = "TLBI_VAE1", .state = ARM_CP_STATE_AA64,
+       .opc0 = 1, .opc1 = 0, .crn = 8, .crm = 7, .opc2 = 1,
+-      .access = PL1_W, .accessfn = access_ttlb, .type = ARM_CP_NO_RAW,
++      .access = PL1_W, .accessfn = access_ttlb,
++      .type = ARM_CP_NO_RAW | ARM_CP_ADD_TLBI_NXS,
+       .fgt = FGT_TLBIVAE1,
+       .writefn = tlbi_aa64_vae1_write },
+     { .name = "TLBI_ASIDE1", .state = ARM_CP_STATE_AA64,
+       .opc0 = 1, .opc1 = 0, .crn = 8, .crm = 7, .opc2 = 2,
+-      .access = PL1_W, .accessfn = access_ttlb, .type = ARM_CP_NO_RAW,
++      .access = PL1_W, .accessfn = access_ttlb,
++      .type = ARM_CP_NO_RAW | ARM_CP_ADD_TLBI_NXS,
+       .fgt = FGT_TLBIASIDE1,
+       .writefn = tlbi_aa64_vmalle1_write },
+     { .name = "TLBI_VAAE1", .state = ARM_CP_STATE_AA64,
+       .opc0 = 1, .opc1 = 0, .crn = 8, .crm = 7, .opc2 = 3,
+-      .access = PL1_W, .accessfn = access_ttlb, .type = ARM_CP_NO_RAW,
++      .access = PL1_W, .accessfn = access_ttlb,
++      .type = ARM_CP_NO_RAW | ARM_CP_ADD_TLBI_NXS,
+       .fgt = FGT_TLBIVAAE1,
+       .writefn = tlbi_aa64_vae1_write },
+     { .name = "TLBI_VALE1", .state = ARM_CP_STATE_AA64,
+       .opc0 = 1, .opc1 = 0, .crn = 8, .crm = 7, .opc2 = 5,
+-      .access = PL1_W, .accessfn = access_ttlb, .type = ARM_CP_NO_RAW,
++      .access = PL1_W, .accessfn = access_ttlb,
++      .type = ARM_CP_NO_RAW | ARM_CP_ADD_TLBI_NXS,
+       .fgt = FGT_TLBIVALE1,
+       .writefn = tlbi_aa64_vae1_write },
+     { .name = "TLBI_VAALE1", .state = ARM_CP_STATE_AA64,
+       .opc0 = 1, .opc1 = 0, .crn = 8, .crm = 7, .opc2 = 7,
+-      .access = PL1_W, .accessfn = access_ttlb, .type = ARM_CP_NO_RAW,
++      .access = PL1_W, .accessfn = access_ttlb,
++      .type = ARM_CP_NO_RAW | ARM_CP_ADD_TLBI_NXS,
+       .fgt = FGT_TLBIVAALE1,
+       .writefn = tlbi_aa64_vae1_write },
+     { .name = "TLBI_IPAS2E1IS", .state = ARM_CP_STATE_AA64,
+       .opc0 = 1, .opc1 = 4, .crn = 8, .crm = 0, .opc2 = 1,
+-      .access = PL2_W, .type = ARM_CP_NO_RAW,
++      .access = PL2_W, .type = ARM_CP_NO_RAW | ARM_CP_ADD_TLBI_NXS,
+       .writefn = tlbi_aa64_ipas2e1is_write },
+     { .name = "TLBI_IPAS2LE1IS", .state = ARM_CP_STATE_AA64,
+       .opc0 = 1, .opc1 = 4, .crn = 8, .crm = 0, .opc2 = 5,
+-      .access = PL2_W, .type = ARM_CP_NO_RAW,
++      .access = PL2_W, .type = ARM_CP_NO_RAW | ARM_CP_ADD_TLBI_NXS,
+       .writefn = tlbi_aa64_ipas2e1is_write },
+     { .name = "TLBI_ALLE1IS", .state = ARM_CP_STATE_AA64,
+       .opc0 = 1, .opc1 = 4, .crn = 8, .crm = 3, .opc2 = 4,
+-      .access = PL2_W, .type = ARM_CP_NO_RAW,
++      .access = PL2_W, .type = ARM_CP_NO_RAW | ARM_CP_ADD_TLBI_NXS,
+       .writefn = tlbi_aa64_alle1is_write },
+     { .name = "TLBI_VMALLS12E1IS", .state = ARM_CP_STATE_AA64,
+       .opc0 = 1, .opc1 = 4, .crn = 8, .crm = 3, .opc2 = 6,
+-      .access = PL2_W, .type = ARM_CP_NO_RAW,
++      .access = PL2_W, .type = ARM_CP_NO_RAW | ARM_CP_ADD_TLBI_NXS,
+       .writefn = tlbi_aa64_alle1is_write },
+     { .name = "TLBI_IPAS2E1", .state = ARM_CP_STATE_AA64,
+       .opc0 = 1, .opc1 = 4, .crn = 8, .crm = 4, .opc2 = 1,
+-      .access = PL2_W, .type = ARM_CP_NO_RAW,
++      .access = PL2_W, .type = ARM_CP_NO_RAW | ARM_CP_ADD_TLBI_NXS,
+       .writefn = tlbi_aa64_ipas2e1_write },
+     { .name = "TLBI_IPAS2LE1", .state = ARM_CP_STATE_AA64,
+       .opc0 = 1, .opc1 = 4, .crn = 8, .crm = 4, .opc2 = 5,
+-      .access = PL2_W, .type = ARM_CP_NO_RAW,
++      .access = PL2_W, .type = ARM_CP_NO_RAW | ARM_CP_ADD_TLBI_NXS,
+       .writefn = tlbi_aa64_ipas2e1_write },
+     { .name = "TLBI_ALLE1", .state = ARM_CP_STATE_AA64,
+       .opc0 = 1, .opc1 = 4, .crn = 8, .crm = 7, .opc2 = 4,
+-      .access = PL2_W, .type = ARM_CP_NO_RAW,
++      .access = PL2_W, .type = ARM_CP_NO_RAW | ARM_CP_ADD_TLBI_NXS,
+       .writefn = tlbi_aa64_alle1_write },
+     { .name = "TLBI_VMALLS12E1", .state = ARM_CP_STATE_AA64,
+       .opc0 = 1, .opc1 = 4, .crn = 8, .crm = 7, .opc2 = 6,
+-      .access = PL2_W, .type = ARM_CP_NO_RAW,
++      .access = PL2_W, .type = ARM_CP_NO_RAW | ARM_CP_ADD_TLBI_NXS,
+       .writefn = tlbi_aa64_alle1is_write },
  };
  
- /*
-diff --git a/target/arm/helper.c b/target/arm/helper.c
-index 8e62769ec0d..c2a70f8c053 100644
---- a/target/arm/helper.c
-+++ b/target/arm/helper.c
-@@ -9146,6 +9146,31 @@ void define_one_arm_cp_reg_with_opaque(ARMCPU *cpu,
-                     if (r->state != state && r->state != ARM_CP_STATE_BOTH) {
-                         continue;
-                     }
-+                    if ((r->type & ARM_CP_ADD_TLBI_NXS) &&
-+                        cpu_isar_feature(aa64_xs, cpu)) {
-+                        /*
-+                         * This is a TLBI insn which has an NXS variant. The
-+                         * NXS variant is at the same encoding except that
-+                         * crn is +1, and has the same behaviour except for
-+                         * fine-grained trapping. Add the NXS insn here and
-+                         * then fall through to add the normal register.
-+                         * add_cpreg_to_hashtable() copies the cpreg struct
-+                         * and name that it is passed, so it's OK to use
-+                         * a local struct here.
-+                         */
-+                        ARMCPRegInfo nxs_ri = *r;
-+                        g_autofree char *name = g_strdup_printf("%sNXS", r->name);
-+
-+                        assert(state == ARM_CP_STATE_AA64);
-+                        assert(nxs_ri.crn < 0xf);
-+                        nxs_ri.crn++;
-+                        if (nxs_ri.fgt) {
-+                            nxs_ri.fgt |= R_FGT_NXS_MASK;
-+                        }
-+                        add_cpreg_to_hashtable(cpu, &nxs_ri, opaque, state,
-+                                               ARM_CP_SECSTATE_NS,
-+                                               crm, opc1, opc2, name);
-+                    }
-                     if (state == ARM_CP_STATE_AA32) {
-                         /*
-                          * Under AArch32 CP registers can be common
+@@ -732,54 +744,60 @@ static const ARMCPRegInfo tlbi_el2_cp_reginfo[] = {
+       .writefn = tlbimva_hyp_is_write },
+     { .name = "TLBI_ALLE2", .state = ARM_CP_STATE_AA64,
+       .opc0 = 1, .opc1 = 4, .crn = 8, .crm = 7, .opc2 = 0,
+-      .access = PL2_W, .type = ARM_CP_NO_RAW | ARM_CP_EL3_NO_EL2_UNDEF,
++      .access = PL2_W,
++      .type = ARM_CP_NO_RAW | ARM_CP_ADD_TLBI_NXS | ARM_CP_EL3_NO_EL2_UNDEF,
+       .writefn = tlbi_aa64_alle2_write },
+     { .name = "TLBI_VAE2", .state = ARM_CP_STATE_AA64,
+       .opc0 = 1, .opc1 = 4, .crn = 8, .crm = 7, .opc2 = 1,
+-      .access = PL2_W, .type = ARM_CP_NO_RAW | ARM_CP_EL3_NO_EL2_UNDEF,
++      .access = PL2_W,
++      .type = ARM_CP_NO_RAW | ARM_CP_ADD_TLBI_NXS | ARM_CP_EL3_NO_EL2_UNDEF,
+       .writefn = tlbi_aa64_vae2_write },
+     { .name = "TLBI_VALE2", .state = ARM_CP_STATE_AA64,
+       .opc0 = 1, .opc1 = 4, .crn = 8, .crm = 7, .opc2 = 5,
+-      .access = PL2_W, .type = ARM_CP_NO_RAW | ARM_CP_EL3_NO_EL2_UNDEF,
++      .access = PL2_W,
++      .type = ARM_CP_NO_RAW | ARM_CP_ADD_TLBI_NXS | ARM_CP_EL3_NO_EL2_UNDEF,
+       .writefn = tlbi_aa64_vae2_write },
+     { .name = "TLBI_ALLE2IS", .state = ARM_CP_STATE_AA64,
+       .opc0 = 1, .opc1 = 4, .crn = 8, .crm = 3, .opc2 = 0,
+-      .access = PL2_W, .type = ARM_CP_NO_RAW | ARM_CP_EL3_NO_EL2_UNDEF,
++      .access = PL2_W,
++      .type = ARM_CP_NO_RAW | ARM_CP_ADD_TLBI_NXS | ARM_CP_EL3_NO_EL2_UNDEF,
+       .writefn = tlbi_aa64_alle2is_write },
+     { .name = "TLBI_VAE2IS", .state = ARM_CP_STATE_AA64,
+       .opc0 = 1, .opc1 = 4, .crn = 8, .crm = 3, .opc2 = 1,
+-      .access = PL2_W, .type = ARM_CP_NO_RAW | ARM_CP_EL3_NO_EL2_UNDEF,
++      .access = PL2_W,
++      .type = ARM_CP_NO_RAW | ARM_CP_ADD_TLBI_NXS | ARM_CP_EL3_NO_EL2_UNDEF,
+       .writefn = tlbi_aa64_vae2is_write },
+     { .name = "TLBI_VALE2IS", .state = ARM_CP_STATE_AA64,
+       .opc0 = 1, .opc1 = 4, .crn = 8, .crm = 3, .opc2 = 5,
+-      .access = PL2_W, .type = ARM_CP_NO_RAW | ARM_CP_EL3_NO_EL2_UNDEF,
++      .access = PL2_W,
++      .type = ARM_CP_NO_RAW | ARM_CP_ADD_TLBI_NXS | ARM_CP_EL3_NO_EL2_UNDEF,
+       .writefn = tlbi_aa64_vae2is_write },
+ };
+ 
+ static const ARMCPRegInfo tlbi_el3_cp_reginfo[] = {
+     { .name = "TLBI_ALLE3IS", .state = ARM_CP_STATE_AA64,
+       .opc0 = 1, .opc1 = 6, .crn = 8, .crm = 3, .opc2 = 0,
+-      .access = PL3_W, .type = ARM_CP_NO_RAW,
++      .access = PL3_W, .type = ARM_CP_NO_RAW | ARM_CP_ADD_TLBI_NXS,
+       .writefn = tlbi_aa64_alle3is_write },
+     { .name = "TLBI_VAE3IS", .state = ARM_CP_STATE_AA64,
+       .opc0 = 1, .opc1 = 6, .crn = 8, .crm = 3, .opc2 = 1,
+-      .access = PL3_W, .type = ARM_CP_NO_RAW,
++      .access = PL3_W, .type = ARM_CP_NO_RAW | ARM_CP_ADD_TLBI_NXS,
+       .writefn = tlbi_aa64_vae3is_write },
+     { .name = "TLBI_VALE3IS", .state = ARM_CP_STATE_AA64,
+       .opc0 = 1, .opc1 = 6, .crn = 8, .crm = 3, .opc2 = 5,
+-      .access = PL3_W, .type = ARM_CP_NO_RAW,
++      .access = PL3_W, .type = ARM_CP_NO_RAW | ARM_CP_ADD_TLBI_NXS,
+       .writefn = tlbi_aa64_vae3is_write },
+     { .name = "TLBI_ALLE3", .state = ARM_CP_STATE_AA64,
+       .opc0 = 1, .opc1 = 6, .crn = 8, .crm = 7, .opc2 = 0,
+-      .access = PL3_W, .type = ARM_CP_NO_RAW,
++      .access = PL3_W, .type = ARM_CP_NO_RAW | ARM_CP_ADD_TLBI_NXS,
+       .writefn = tlbi_aa64_alle3_write },
+     { .name = "TLBI_VAE3", .state = ARM_CP_STATE_AA64,
+       .opc0 = 1, .opc1 = 6, .crn = 8, .crm = 7, .opc2 = 1,
+-      .access = PL3_W, .type = ARM_CP_NO_RAW,
++      .access = PL3_W, .type = ARM_CP_NO_RAW | ARM_CP_ADD_TLBI_NXS,
+       .writefn = tlbi_aa64_vae3_write },
+     { .name = "TLBI_VALE3", .state = ARM_CP_STATE_AA64,
+       .opc0 = 1, .opc1 = 6, .crn = 8, .crm = 7, .opc2 = 5,
+-      .access = PL3_W, .type = ARM_CP_NO_RAW,
++      .access = PL3_W, .type = ARM_CP_NO_RAW | ARM_CP_ADD_TLBI_NXS,
+       .writefn = tlbi_aa64_vae3_write },
+ };
+ 
+@@ -981,204 +999,232 @@ static void tlbi_aa64_ripas2e1is_write(CPUARMState *env,
+ static const ARMCPRegInfo tlbirange_reginfo[] = {
+     { .name = "TLBI_RVAE1IS", .state = ARM_CP_STATE_AA64,
+       .opc0 = 1, .opc1 = 0, .crn = 8, .crm = 2, .opc2 = 1,
+-      .access = PL1_W, .accessfn = access_ttlbis, .type = ARM_CP_NO_RAW,
++      .access = PL1_W, .accessfn = access_ttlbis,
++      .type = ARM_CP_NO_RAW | ARM_CP_ADD_TLBI_NXS,
+       .fgt = FGT_TLBIRVAE1IS,
+       .writefn = tlbi_aa64_rvae1is_write },
+     { .name = "TLBI_RVAAE1IS", .state = ARM_CP_STATE_AA64,
+       .opc0 = 1, .opc1 = 0, .crn = 8, .crm = 2, .opc2 = 3,
+-      .access = PL1_W, .accessfn = access_ttlbis, .type = ARM_CP_NO_RAW,
++      .access = PL1_W, .accessfn = access_ttlbis,
++      .type = ARM_CP_NO_RAW | ARM_CP_ADD_TLBI_NXS,
+       .fgt = FGT_TLBIRVAAE1IS,
+       .writefn = tlbi_aa64_rvae1is_write },
+    { .name = "TLBI_RVALE1IS", .state = ARM_CP_STATE_AA64,
+       .opc0 = 1, .opc1 = 0, .crn = 8, .crm = 2, .opc2 = 5,
+-      .access = PL1_W, .accessfn = access_ttlbis, .type = ARM_CP_NO_RAW,
++      .access = PL1_W, .accessfn = access_ttlbis,
++      .type = ARM_CP_NO_RAW | ARM_CP_ADD_TLBI_NXS,
+       .fgt = FGT_TLBIRVALE1IS,
+       .writefn = tlbi_aa64_rvae1is_write },
+     { .name = "TLBI_RVAALE1IS", .state = ARM_CP_STATE_AA64,
+       .opc0 = 1, .opc1 = 0, .crn = 8, .crm = 2, .opc2 = 7,
+-      .access = PL1_W, .accessfn = access_ttlbis, .type = ARM_CP_NO_RAW,
++      .access = PL1_W, .accessfn = access_ttlbis,
++      .type = ARM_CP_NO_RAW | ARM_CP_ADD_TLBI_NXS,
+       .fgt = FGT_TLBIRVAALE1IS,
+       .writefn = tlbi_aa64_rvae1is_write },
+     { .name = "TLBI_RVAE1OS", .state = ARM_CP_STATE_AA64,
+       .opc0 = 1, .opc1 = 0, .crn = 8, .crm = 5, .opc2 = 1,
+-      .access = PL1_W, .accessfn = access_ttlbos, .type = ARM_CP_NO_RAW,
++      .access = PL1_W, .accessfn = access_ttlbos,
++      .type = ARM_CP_NO_RAW | ARM_CP_ADD_TLBI_NXS,
+       .fgt = FGT_TLBIRVAE1OS,
+       .writefn = tlbi_aa64_rvae1is_write },
+     { .name = "TLBI_RVAAE1OS", .state = ARM_CP_STATE_AA64,
+       .opc0 = 1, .opc1 = 0, .crn = 8, .crm = 5, .opc2 = 3,
+-      .access = PL1_W, .accessfn = access_ttlbos, .type = ARM_CP_NO_RAW,
++      .access = PL1_W, .accessfn = access_ttlbos,
++      .type = ARM_CP_NO_RAW | ARM_CP_ADD_TLBI_NXS,
+       .fgt = FGT_TLBIRVAAE1OS,
+       .writefn = tlbi_aa64_rvae1is_write },
+    { .name = "TLBI_RVALE1OS", .state = ARM_CP_STATE_AA64,
+       .opc0 = 1, .opc1 = 0, .crn = 8, .crm = 5, .opc2 = 5,
+-      .access = PL1_W, .accessfn = access_ttlbos, .type = ARM_CP_NO_RAW,
++      .access = PL1_W, .accessfn = access_ttlbos,
++      .type = ARM_CP_NO_RAW | ARM_CP_ADD_TLBI_NXS,
+       .fgt = FGT_TLBIRVALE1OS,
+       .writefn = tlbi_aa64_rvae1is_write },
+     { .name = "TLBI_RVAALE1OS", .state = ARM_CP_STATE_AA64,
+       .opc0 = 1, .opc1 = 0, .crn = 8, .crm = 5, .opc2 = 7,
+-      .access = PL1_W, .accessfn = access_ttlbos, .type = ARM_CP_NO_RAW,
++      .access = PL1_W, .accessfn = access_ttlbos,
++      .type = ARM_CP_NO_RAW | ARM_CP_ADD_TLBI_NXS,
+       .fgt = FGT_TLBIRVAALE1OS,
+       .writefn = tlbi_aa64_rvae1is_write },
+     { .name = "TLBI_RVAE1", .state = ARM_CP_STATE_AA64,
+       .opc0 = 1, .opc1 = 0, .crn = 8, .crm = 6, .opc2 = 1,
+-      .access = PL1_W, .accessfn = access_ttlb, .type = ARM_CP_NO_RAW,
++      .access = PL1_W, .accessfn = access_ttlb,
++      .type = ARM_CP_NO_RAW | ARM_CP_ADD_TLBI_NXS,
+       .fgt = FGT_TLBIRVAE1,
+       .writefn = tlbi_aa64_rvae1_write },
+     { .name = "TLBI_RVAAE1", .state = ARM_CP_STATE_AA64,
+       .opc0 = 1, .opc1 = 0, .crn = 8, .crm = 6, .opc2 = 3,
+-      .access = PL1_W, .accessfn = access_ttlb, .type = ARM_CP_NO_RAW,
++      .access = PL1_W, .accessfn = access_ttlb,
++      .type = ARM_CP_NO_RAW | ARM_CP_ADD_TLBI_NXS,
+       .fgt = FGT_TLBIRVAAE1,
+       .writefn = tlbi_aa64_rvae1_write },
+    { .name = "TLBI_RVALE1", .state = ARM_CP_STATE_AA64,
+       .opc0 = 1, .opc1 = 0, .crn = 8, .crm = 6, .opc2 = 5,
+-      .access = PL1_W, .accessfn = access_ttlb, .type = ARM_CP_NO_RAW,
++      .access = PL1_W, .accessfn = access_ttlb,
++      .type = ARM_CP_NO_RAW | ARM_CP_ADD_TLBI_NXS,
+       .fgt = FGT_TLBIRVALE1,
+       .writefn = tlbi_aa64_rvae1_write },
+     { .name = "TLBI_RVAALE1", .state = ARM_CP_STATE_AA64,
+       .opc0 = 1, .opc1 = 0, .crn = 8, .crm = 6, .opc2 = 7,
+-      .access = PL1_W, .accessfn = access_ttlb, .type = ARM_CP_NO_RAW,
++      .access = PL1_W, .accessfn = access_ttlb,
++      .type = ARM_CP_NO_RAW | ARM_CP_ADD_TLBI_NXS,
+       .fgt = FGT_TLBIRVAALE1,
+       .writefn = tlbi_aa64_rvae1_write },
+     { .name = "TLBI_RIPAS2E1IS", .state = ARM_CP_STATE_AA64,
+       .opc0 = 1, .opc1 = 4, .crn = 8, .crm = 0, .opc2 = 2,
+-      .access = PL2_W, .type = ARM_CP_NO_RAW,
++      .access = PL2_W, .type = ARM_CP_NO_RAW | ARM_CP_ADD_TLBI_NXS,
+       .writefn = tlbi_aa64_ripas2e1is_write },
+     { .name = "TLBI_RIPAS2LE1IS", .state = ARM_CP_STATE_AA64,
+       .opc0 = 1, .opc1 = 4, .crn = 8, .crm = 0, .opc2 = 6,
+-      .access = PL2_W, .type = ARM_CP_NO_RAW,
++      .access = PL2_W, .type = ARM_CP_NO_RAW | ARM_CP_ADD_TLBI_NXS,
+       .writefn = tlbi_aa64_ripas2e1is_write },
+     { .name = "TLBI_RVAE2IS", .state = ARM_CP_STATE_AA64,
+       .opc0 = 1, .opc1 = 4, .crn = 8, .crm = 2, .opc2 = 1,
+-      .access = PL2_W, .type = ARM_CP_NO_RAW | ARM_CP_EL3_NO_EL2_UNDEF,
++      .access = PL2_W,
++      .type = ARM_CP_NO_RAW | ARM_CP_ADD_TLBI_NXS | ARM_CP_EL3_NO_EL2_UNDEF,
+       .writefn = tlbi_aa64_rvae2is_write },
+    { .name = "TLBI_RVALE2IS", .state = ARM_CP_STATE_AA64,
+       .opc0 = 1, .opc1 = 4, .crn = 8, .crm = 2, .opc2 = 5,
+-      .access = PL2_W, .type = ARM_CP_NO_RAW | ARM_CP_EL3_NO_EL2_UNDEF,
++      .access = PL2_W,
++      .type = ARM_CP_NO_RAW | ARM_CP_ADD_TLBI_NXS | ARM_CP_EL3_NO_EL2_UNDEF,
+       .writefn = tlbi_aa64_rvae2is_write },
+     { .name = "TLBI_RIPAS2E1", .state = ARM_CP_STATE_AA64,
+       .opc0 = 1, .opc1 = 4, .crn = 8, .crm = 4, .opc2 = 2,
+-      .access = PL2_W, .type = ARM_CP_NO_RAW,
++      .access = PL2_W, .type = ARM_CP_NO_RAW | ARM_CP_ADD_TLBI_NXS,
+       .writefn = tlbi_aa64_ripas2e1_write },
+     { .name = "TLBI_RIPAS2LE1", .state = ARM_CP_STATE_AA64,
+       .opc0 = 1, .opc1 = 4, .crn = 8, .crm = 4, .opc2 = 6,
+-      .access = PL2_W, .type = ARM_CP_NO_RAW,
++      .access = PL2_W, .type = ARM_CP_NO_RAW | ARM_CP_ADD_TLBI_NXS,
+       .writefn = tlbi_aa64_ripas2e1_write },
+    { .name = "TLBI_RVAE2OS", .state = ARM_CP_STATE_AA64,
+       .opc0 = 1, .opc1 = 4, .crn = 8, .crm = 5, .opc2 = 1,
+-      .access = PL2_W, .type = ARM_CP_NO_RAW | ARM_CP_EL3_NO_EL2_UNDEF,
++      .access = PL2_W,
++      .type = ARM_CP_NO_RAW | ARM_CP_ADD_TLBI_NXS | ARM_CP_EL3_NO_EL2_UNDEF,
+       .writefn = tlbi_aa64_rvae2is_write },
+    { .name = "TLBI_RVALE2OS", .state = ARM_CP_STATE_AA64,
+       .opc0 = 1, .opc1 = 4, .crn = 8, .crm = 5, .opc2 = 5,
+-      .access = PL2_W, .type = ARM_CP_NO_RAW | ARM_CP_EL3_NO_EL2_UNDEF,
++      .access = PL2_W,
++      .type = ARM_CP_NO_RAW | ARM_CP_ADD_TLBI_NXS | ARM_CP_EL3_NO_EL2_UNDEF,
+       .writefn = tlbi_aa64_rvae2is_write },
+     { .name = "TLBI_RVAE2", .state = ARM_CP_STATE_AA64,
+       .opc0 = 1, .opc1 = 4, .crn = 8, .crm = 6, .opc2 = 1,
+-      .access = PL2_W, .type = ARM_CP_NO_RAW | ARM_CP_EL3_NO_EL2_UNDEF,
++      .access = PL2_W,
++      .type = ARM_CP_NO_RAW | ARM_CP_ADD_TLBI_NXS | ARM_CP_EL3_NO_EL2_UNDEF,
+       .writefn = tlbi_aa64_rvae2_write },
+    { .name = "TLBI_RVALE2", .state = ARM_CP_STATE_AA64,
+       .opc0 = 1, .opc1 = 4, .crn = 8, .crm = 6, .opc2 = 5,
+-      .access = PL2_W, .type = ARM_CP_NO_RAW | ARM_CP_EL3_NO_EL2_UNDEF,
++      .access = PL2_W,
++      .type = ARM_CP_NO_RAW | ARM_CP_ADD_TLBI_NXS | ARM_CP_EL3_NO_EL2_UNDEF,
+       .writefn = tlbi_aa64_rvae2_write },
+    { .name = "TLBI_RVAE3IS", .state = ARM_CP_STATE_AA64,
+       .opc0 = 1, .opc1 = 6, .crn = 8, .crm = 2, .opc2 = 1,
+-      .access = PL3_W, .type = ARM_CP_NO_RAW,
++      .access = PL3_W, .type = ARM_CP_NO_RAW | ARM_CP_ADD_TLBI_NXS,
+       .writefn = tlbi_aa64_rvae3is_write },
+    { .name = "TLBI_RVALE3IS", .state = ARM_CP_STATE_AA64,
+       .opc0 = 1, .opc1 = 6, .crn = 8, .crm = 2, .opc2 = 5,
+-      .access = PL3_W, .type = ARM_CP_NO_RAW,
++      .access = PL3_W, .type = ARM_CP_NO_RAW | ARM_CP_ADD_TLBI_NXS,
+       .writefn = tlbi_aa64_rvae3is_write },
+    { .name = "TLBI_RVAE3OS", .state = ARM_CP_STATE_AA64,
+       .opc0 = 1, .opc1 = 6, .crn = 8, .crm = 5, .opc2 = 1,
+-      .access = PL3_W, .type = ARM_CP_NO_RAW,
++      .access = PL3_W, .type = ARM_CP_NO_RAW | ARM_CP_ADD_TLBI_NXS,
+       .writefn = tlbi_aa64_rvae3is_write },
+    { .name = "TLBI_RVALE3OS", .state = ARM_CP_STATE_AA64,
+       .opc0 = 1, .opc1 = 6, .crn = 8, .crm = 5, .opc2 = 5,
+-      .access = PL3_W, .type = ARM_CP_NO_RAW,
++      .access = PL3_W, .type = ARM_CP_NO_RAW | ARM_CP_ADD_TLBI_NXS,
+       .writefn = tlbi_aa64_rvae3is_write },
+    { .name = "TLBI_RVAE3", .state = ARM_CP_STATE_AA64,
+       .opc0 = 1, .opc1 = 6, .crn = 8, .crm = 6, .opc2 = 1,
+-      .access = PL3_W, .type = ARM_CP_NO_RAW,
++      .access = PL3_W, .type = ARM_CP_NO_RAW | ARM_CP_ADD_TLBI_NXS,
+       .writefn = tlbi_aa64_rvae3_write },
+    { .name = "TLBI_RVALE3", .state = ARM_CP_STATE_AA64,
+       .opc0 = 1, .opc1 = 6, .crn = 8, .crm = 6, .opc2 = 5,
+-      .access = PL3_W, .type = ARM_CP_NO_RAW,
++      .access = PL3_W, .type = ARM_CP_NO_RAW | ARM_CP_ADD_TLBI_NXS,
+       .writefn = tlbi_aa64_rvae3_write },
+ };
+ 
+ static const ARMCPRegInfo tlbios_reginfo[] = {
+     { .name = "TLBI_VMALLE1OS", .state = ARM_CP_STATE_AA64,
+       .opc0 = 1, .opc1 = 0, .crn = 8, .crm = 1, .opc2 = 0,
+-      .access = PL1_W, .accessfn = access_ttlbos, .type = ARM_CP_NO_RAW,
++      .access = PL1_W, .accessfn = access_ttlbos,
++      .type = ARM_CP_NO_RAW | ARM_CP_ADD_TLBI_NXS,
+       .fgt = FGT_TLBIVMALLE1OS,
+       .writefn = tlbi_aa64_vmalle1is_write },
+     { .name = "TLBI_VAE1OS", .state = ARM_CP_STATE_AA64,
+       .opc0 = 1, .opc1 = 0, .crn = 8, .crm = 1, .opc2 = 1,
+       .fgt = FGT_TLBIVAE1OS,
+-      .access = PL1_W, .accessfn = access_ttlbos, .type = ARM_CP_NO_RAW,
++      .access = PL1_W, .accessfn = access_ttlbos,
++      .type = ARM_CP_NO_RAW | ARM_CP_ADD_TLBI_NXS,
+       .writefn = tlbi_aa64_vae1is_write },
+     { .name = "TLBI_ASIDE1OS", .state = ARM_CP_STATE_AA64,
+       .opc0 = 1, .opc1 = 0, .crn = 8, .crm = 1, .opc2 = 2,
+-      .access = PL1_W, .accessfn = access_ttlbos, .type = ARM_CP_NO_RAW,
++      .access = PL1_W, .accessfn = access_ttlbos,
++      .type = ARM_CP_NO_RAW | ARM_CP_ADD_TLBI_NXS,
+       .fgt = FGT_TLBIASIDE1OS,
+       .writefn = tlbi_aa64_vmalle1is_write },
+     { .name = "TLBI_VAAE1OS", .state = ARM_CP_STATE_AA64,
+       .opc0 = 1, .opc1 = 0, .crn = 8, .crm = 1, .opc2 = 3,
+-      .access = PL1_W, .accessfn = access_ttlbos, .type = ARM_CP_NO_RAW,
++      .access = PL1_W, .accessfn = access_ttlbos,
++      .type = ARM_CP_NO_RAW | ARM_CP_ADD_TLBI_NXS,
+       .fgt = FGT_TLBIVAAE1OS,
+       .writefn = tlbi_aa64_vae1is_write },
+     { .name = "TLBI_VALE1OS", .state = ARM_CP_STATE_AA64,
+       .opc0 = 1, .opc1 = 0, .crn = 8, .crm = 1, .opc2 = 5,
+-      .access = PL1_W, .accessfn = access_ttlbos, .type = ARM_CP_NO_RAW,
++      .access = PL1_W, .accessfn = access_ttlbos,
++      .type = ARM_CP_NO_RAW | ARM_CP_ADD_TLBI_NXS,
+       .fgt = FGT_TLBIVALE1OS,
+       .writefn = tlbi_aa64_vae1is_write },
+     { .name = "TLBI_VAALE1OS", .state = ARM_CP_STATE_AA64,
+       .opc0 = 1, .opc1 = 0, .crn = 8, .crm = 1, .opc2 = 7,
+-      .access = PL1_W, .accessfn = access_ttlbos, .type = ARM_CP_NO_RAW,
++      .access = PL1_W, .accessfn = access_ttlbos,
++      .type = ARM_CP_NO_RAW | ARM_CP_ADD_TLBI_NXS,
+       .fgt = FGT_TLBIVAALE1OS,
+       .writefn = tlbi_aa64_vae1is_write },
+     { .name = "TLBI_ALLE2OS", .state = ARM_CP_STATE_AA64,
+       .opc0 = 1, .opc1 = 4, .crn = 8, .crm = 1, .opc2 = 0,
+-      .access = PL2_W, .type = ARM_CP_NO_RAW | ARM_CP_EL3_NO_EL2_UNDEF,
++      .access = PL2_W,
++      .type = ARM_CP_NO_RAW | ARM_CP_ADD_TLBI_NXS | ARM_CP_EL3_NO_EL2_UNDEF,
+       .writefn = tlbi_aa64_alle2is_write },
+     { .name = "TLBI_VAE2OS", .state = ARM_CP_STATE_AA64,
+       .opc0 = 1, .opc1 = 4, .crn = 8, .crm = 1, .opc2 = 1,
+-      .access = PL2_W, .type = ARM_CP_NO_RAW | ARM_CP_EL3_NO_EL2_UNDEF,
++      .access = PL2_W,
++      .type = ARM_CP_NO_RAW | ARM_CP_ADD_TLBI_NXS | ARM_CP_EL3_NO_EL2_UNDEF,
+       .writefn = tlbi_aa64_vae2is_write },
+    { .name = "TLBI_ALLE1OS", .state = ARM_CP_STATE_AA64,
+       .opc0 = 1, .opc1 = 4, .crn = 8, .crm = 1, .opc2 = 4,
+-      .access = PL2_W, .type = ARM_CP_NO_RAW,
++      .access = PL2_W,
++      .type = ARM_CP_NO_RAW | ARM_CP_ADD_TLBI_NXS,
+       .writefn = tlbi_aa64_alle1is_write },
+     { .name = "TLBI_VALE2OS", .state = ARM_CP_STATE_AA64,
+       .opc0 = 1, .opc1 = 4, .crn = 8, .crm = 1, .opc2 = 5,
+-      .access = PL2_W, .type = ARM_CP_NO_RAW | ARM_CP_EL3_NO_EL2_UNDEF,
++      .access = PL2_W,
++      .type = ARM_CP_NO_RAW | ARM_CP_ADD_TLBI_NXS | ARM_CP_EL3_NO_EL2_UNDEF,
+       .writefn = tlbi_aa64_vae2is_write },
+     { .name = "TLBI_VMALLS12E1OS", .state = ARM_CP_STATE_AA64,
+       .opc0 = 1, .opc1 = 4, .crn = 8, .crm = 1, .opc2 = 6,
+-      .access = PL2_W, .type = ARM_CP_NO_RAW,
++      .access = PL2_W, .type = ARM_CP_NO_RAW | ARM_CP_ADD_TLBI_NXS,
+       .writefn = tlbi_aa64_alle1is_write },
+     { .name = "TLBI_IPAS2E1OS", .state = ARM_CP_STATE_AA64,
+       .opc0 = 1, .opc1 = 4, .crn = 8, .crm = 4, .opc2 = 0,
+-      .access = PL2_W, .type = ARM_CP_NOP },
++      .access = PL2_W, .type = ARM_CP_NOP | ARM_CP_ADD_TLBI_NXS },
+     { .name = "TLBI_RIPAS2E1OS", .state = ARM_CP_STATE_AA64,
+       .opc0 = 1, .opc1 = 4, .crn = 8, .crm = 4, .opc2 = 3,
+-      .access = PL2_W, .type = ARM_CP_NOP },
++      .access = PL2_W, .type = ARM_CP_NOP | ARM_CP_ADD_TLBI_NXS },
+     { .name = "TLBI_IPAS2LE1OS", .state = ARM_CP_STATE_AA64,
+       .opc0 = 1, .opc1 = 4, .crn = 8, .crm = 4, .opc2 = 4,
+-      .access = PL2_W, .type = ARM_CP_NOP },
++      .access = PL2_W, .type = ARM_CP_NOP | ARM_CP_ADD_TLBI_NXS },
+     { .name = "TLBI_RIPAS2LE1OS", .state = ARM_CP_STATE_AA64,
+       .opc0 = 1, .opc1 = 4, .crn = 8, .crm = 4, .opc2 = 7,
+-      .access = PL2_W, .type = ARM_CP_NOP },
++      .access = PL2_W, .type = ARM_CP_NOP | ARM_CP_ADD_TLBI_NXS },
+     { .name = "TLBI_ALLE3OS", .state = ARM_CP_STATE_AA64,
+       .opc0 = 1, .opc1 = 6, .crn = 8, .crm = 1, .opc2 = 0,
+-      .access = PL3_W, .type = ARM_CP_NO_RAW,
++      .access = PL3_W, .type = ARM_CP_NO_RAW | ARM_CP_ADD_TLBI_NXS,
+       .writefn = tlbi_aa64_alle3is_write },
+     { .name = "TLBI_VAE3OS", .state = ARM_CP_STATE_AA64,
+       .opc0 = 1, .opc1 = 6, .crn = 8, .crm = 1, .opc2 = 1,
+-      .access = PL3_W, .type = ARM_CP_NO_RAW,
++      .access = PL3_W, .type = ARM_CP_NO_RAW | ARM_CP_ADD_TLBI_NXS,
+       .writefn = tlbi_aa64_vae3is_write },
+     { .name = "TLBI_VALE3OS", .state = ARM_CP_STATE_AA64,
+       .opc0 = 1, .opc1 = 6, .crn = 8, .crm = 1, .opc2 = 5,
+-      .access = PL3_W, .type = ARM_CP_NO_RAW,
++      .access = PL3_W, .type = ARM_CP_NO_RAW | ARM_CP_ADD_TLBI_NXS,
+       .writefn = tlbi_aa64_vae3is_write },
+ };
+ 
 -- 
 2.34.1
 
