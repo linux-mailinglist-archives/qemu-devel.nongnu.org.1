@@ -2,81 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F19299F5505
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Dec 2024 18:52:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 612179F54FE
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Dec 2024 18:51:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tNbh4-0005of-B3; Tue, 17 Dec 2024 12:49:14 -0500
+	id 1tNbhE-0005tI-B8; Tue, 17 Dec 2024 12:49:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tNbgu-0005m8-Fj
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tNbgv-0005mB-86
  for qemu-devel@nongnu.org; Tue, 17 Dec 2024 12:49:07 -0500
-Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
+Received: from smtp-out2.suse.de ([195.135.223.131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tNbgr-0007aQ-Oo
- for qemu-devel@nongnu.org; Tue, 17 Dec 2024 12:49:04 -0500
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tNbgt-0007b5-IJ
+ for qemu-devel@nongnu.org; Tue, 17 Dec 2024 12:49:05 -0500
 Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 5F62E1F394;
- Tue, 17 Dec 2024 17:49:00 +0000 (UTC)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id C30551F399;
+ Tue, 17 Dec 2024 17:49:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1734457740; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1734457741; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=tEplQfT+yNi2INrr+tAujXmMK9gQpBsqLlBhgcXapZs=;
- b=gKeIQe1qybXOCdNlEsbN0KKI3GQ5or1nV0/gL53paHj+byLMTcSGOiGN/Uess6fgBy+u0x
- SDjKlEOEsoLEX+c3RhP+2+OT47PR4VooZdqYljZ81uPv4qNmnoGqtElkRNhKKQQfa46/oP
- ueLOZQojy/IX6BaC33qHzobOFpolums=
+ bh=s+yXZcJYj8zSZveRtKl4HvxlxluWjQXqcySZ3+l6k6c=;
+ b=h9GgHySJKweR93YF3mctLqdVsn297ZuD7SM0qSrtGjTGJ7+wlOtYA5prrITi/TeF1TMk3N
+ JaWkkGphfs3qoE0OMlN0DUqHBa7KmMdvMDebQVraz6tqMzQq3V0t+qYlNHGaVnIC2pk969
+ TP5NvgfvDbZd5luTLhzE1lhZL60+nwk=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1734457740;
+ s=susede2_ed25519; t=1734457741;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=tEplQfT+yNi2INrr+tAujXmMK9gQpBsqLlBhgcXapZs=;
- b=zgnVtBABFQA3YkKNu0R7do4rSbFj8wQyDV1hk8o7cM82VabhxNJSYDmtGKzQ/F7UsEdnlg
- 0BPk05A92r2Yv+Dg==
+ bh=s+yXZcJYj8zSZveRtKl4HvxlxluWjQXqcySZ3+l6k6c=;
+ b=WZPBXIiTASfi0uSZ+ZUZzxDaDhiL2S58DeNzmbMY8hy5uu4QIxXZcjp5RroQ3RdnHv8fII
+ sXv8EeOgNL+APgCA==
 Authentication-Results: smtp-out2.suse.de;
 	none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1734457740; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1734457741; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=tEplQfT+yNi2INrr+tAujXmMK9gQpBsqLlBhgcXapZs=;
- b=gKeIQe1qybXOCdNlEsbN0KKI3GQ5or1nV0/gL53paHj+byLMTcSGOiGN/Uess6fgBy+u0x
- SDjKlEOEsoLEX+c3RhP+2+OT47PR4VooZdqYljZ81uPv4qNmnoGqtElkRNhKKQQfa46/oP
- ueLOZQojy/IX6BaC33qHzobOFpolums=
+ bh=s+yXZcJYj8zSZveRtKl4HvxlxluWjQXqcySZ3+l6k6c=;
+ b=h9GgHySJKweR93YF3mctLqdVsn297ZuD7SM0qSrtGjTGJ7+wlOtYA5prrITi/TeF1TMk3N
+ JaWkkGphfs3qoE0OMlN0DUqHBa7KmMdvMDebQVraz6tqMzQq3V0t+qYlNHGaVnIC2pk969
+ TP5NvgfvDbZd5luTLhzE1lhZL60+nwk=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1734457740;
+ s=susede2_ed25519; t=1734457741;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=tEplQfT+yNi2INrr+tAujXmMK9gQpBsqLlBhgcXapZs=;
- b=zgnVtBABFQA3YkKNu0R7do4rSbFj8wQyDV1hk8o7cM82VabhxNJSYDmtGKzQ/F7UsEdnlg
- 0BPk05A92r2Yv+Dg==
+ bh=s+yXZcJYj8zSZveRtKl4HvxlxluWjQXqcySZ3+l6k6c=;
+ b=WZPBXIiTASfi0uSZ+ZUZzxDaDhiL2S58DeNzmbMY8hy5uu4QIxXZcjp5RroQ3RdnHv8fII
+ sXv8EeOgNL+APgCA==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 2FE3A13A3C;
- Tue, 17 Dec 2024 17:48:58 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id CCD2A13A3C;
+ Tue, 17 Dec 2024 17:49:00 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id oOJmOYq5YWd1TwAAD6G6ig
- (envelope-from <farosas@suse.de>); Tue, 17 Dec 2024 17:48:58 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id QBX6I4y5YWd1TwAAD6G6ig
+ (envelope-from <farosas@suse.de>); Tue, 17 Dec 2024 17:49:00 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
-Cc: Peter Xu <peterx@redhat.com>,
- Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
-Subject: [PULL 01/17] migration/multifd: Fix compile error caused by page_size
- usage
-Date: Tue, 17 Dec 2024 14:48:39 -0300
-Message-Id: <20241217174855.24971-2-farosas@suse.de>
+Cc: Peter Xu <peterx@redhat.com>
+Subject: [PULL 02/17] migration/multifd: Further remove the SYNC on complete
+Date: Tue, 17 Dec 2024 14:48:40 -0300
+Message-Id: <20241217174855.24971-3-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20241217174855.24971-1-farosas@suse.de>
 References: <20241217174855.24971-1-farosas@suse.de>
@@ -85,23 +83,25 @@ Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-2.80 / 50.00]; BAYES_HAM(-3.00)[99.99%];
  MID_CONTAINS_FROM(1.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
  R_MISSING_CHARSET(0.50)[]; NEURAL_HAM_SHORT(-0.20)[-1.000];
- MIME_GOOD(-0.10)[text/plain]; MIME_TRACE(0.00)[0:+];
- TO_DN_SOME(0.00)[]; RCVD_VIA_SMTP_AUTH(0.00)[]; ARC_NA(0.00)[];
+ MIME_GOOD(-0.10)[text/plain]; RCPT_COUNT_TWO(0.00)[2];
+ RCVD_VIA_SMTP_AUTH(0.00)[]; MIME_TRACE(0.00)[0:+];
+ ARC_NA(0.00)[];
  DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
  FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
- FROM_HAS_DN(0.00)[]; RCPT_COUNT_THREE(0.00)[3];
+ FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
  RCVD_COUNT_TWO(0.00)[2]; TO_MATCH_ENVRCPT_ALL(0.00)[];
  DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.de:email,suse.de:mid];
  RCVD_TLS_ALL(0.00)[]
 X-Spam-Score: -2.80
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
- envelope-from=farosas@suse.de; helo=smtp-out2.suse.de
-X-Spam_score_int: -27
-X-Spam_score: -2.8
-X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
+ helo=smtp-out2.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -118,36 +118,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
+From: Peter Xu <peterx@redhat.com>
 
->From Commit 90fa121c6c07 ("migration/multifd: Inline page_size and
-page_count") onwards page_size is not part of MutiFD*Params but uses
-an inline constant instead.
+Commit 637280aeb2 ("migration/multifd: Avoid the final FLUSH in
+complete()") stopped sending the RAM_SAVE_FLAG_MULTIFD_FLUSH flag at
+ram_save_complete(), because the sync on the destination side is not
+needed due to the last iteration of find_dirty_block() having already
+done it.
 
-However, it missed updating an old usage, causing a compile error.
+However, that commit overlooked that multifd_ram_flush_and_sync() on the
+source side is also not needed at ram_save_complete(), for the same
+reason.
 
-Fixes: 90fa121c6c07 ("migration/multifd: Inline page_size and page_count")
-Signed-off-by: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
+Moreover, removing the RAM_SAVE_FLAG_MULTIFD_FLUSH but keeping the
+multifd_ram_flush_and_sync() means that currently the recv threads will
+hang when receiving the MULTIFD_FLAG_SYNC message, waiting for the
+destination sync which only happens when RAM_SAVE_FLAG_MULTIFD_FLUSH is
+received.
+
+Luckily, multifd is still all working fine because recv side cleanup
+code (mostly multifd_recv_sync_main()) is smart enough to make sure even
+if recv threads are stuck at SYNC it'll get kicked out. And since this
+is the completion phase of migration, nothing else will be sent after
+the SYNCs.
+
+This needs to be fixed because in the future VFIO will have data to push
+after ram_save_complete() and we don't want the recv thread to be stuck
+in the MULTIFD_FLAG_SYNC message.
+
+Remove the unnecessary (and buggy) invocation of
+multifd_ram_flush_and_sync().
+
+For very old binaries (multifd_flush_after_each_section==true), the
+flush_and_sync is still needed because each EOS received on destination
+will enforce all-channel sync once.
+
+Stable branches do not need this patch, as no real bug I can think of
+that will go wrong there.. so not attaching Fixes to be clear on the
+backport not needed.
+
 Reviewed-by: Fabiano Rosas <farosas@suse.de>
-Message-Id: <20241203124943.52572-1-shameerali.kolothum.thodi@huawei.com>
+Signed-off-by: Peter Xu <peterx@redhat.com>
+Message-Id: <20241206224755.1108686-2-peterx@redhat.com>
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- migration/multifd-uadk.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ migration/ram.c | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/migration/multifd-uadk.c b/migration/multifd-uadk.c
-index 6e6a290ae9..6895c1f65a 100644
---- a/migration/multifd-uadk.c
-+++ b/migration/multifd-uadk.c
-@@ -169,7 +169,7 @@ static int multifd_uadk_send_prepare(MultiFDSendParams *p, Error **errp)
-             .src_len = page_size,
-             .dst     = buf,
-             /* Set dst_len to double the src in case compressed out >= page_size */
--            .dst_len = p->page_size * 2,
-+            .dst_len = page_size * 2,
-         };
+diff --git a/migration/ram.c b/migration/ram.c
+index 05ff9eb328..7284c34bd8 100644
+--- a/migration/ram.c
++++ b/migration/ram.c
+@@ -3283,9 +3283,16 @@ static int ram_save_complete(QEMUFile *f, void *opaque)
+         }
+     }
  
-         if (uadk_data->handle) {
+-    ret = multifd_ram_flush_and_sync();
+-    if (ret < 0) {
+-        return ret;
++    if (migrate_multifd() &&
++        migrate_multifd_flush_after_each_section()) {
++        /*
++         * Only the old dest QEMU will need this sync, because each EOS
++         * will require one SYNC message on each channel.
++         */
++        ret = multifd_ram_flush_and_sync();
++        if (ret < 0) {
++            return ret;
++        }
+     }
+ 
+     if (migrate_mapped_ram()) {
 -- 
 2.35.3
 
