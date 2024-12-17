@@ -2,71 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 998779F4DBC
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Dec 2024 15:30:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1973E9F4DF7
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Dec 2024 15:39:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tNYa6-0001Gy-Fw; Tue, 17 Dec 2024 09:29:52 -0500
+	id 1tNYhg-0000Qe-92; Tue, 17 Dec 2024 09:37:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1tNYZN-0000xc-Fo
- for qemu-devel@nongnu.org; Tue, 17 Dec 2024 09:29:07 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
+ id 1tNYhd-0000QK-FE; Tue, 17 Dec 2024 09:37:37 -0500
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1tNYZL-0004wY-8G
- for qemu-devel@nongnu.org; Tue, 17 Dec 2024 09:29:05 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1734445742;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=r4wK3v+/PfbFX1aitYHsoHtsQk/8x2gQh7RTaACX+R0=;
- b=MQu+IKpLoD348uepTeoPULsZskUBkczFXBelz7l1oItbZllOUy9e9vSsSV1A6H0h4un4Sx
- qoH2L07sTNaqmU5mSXiUqFQKp/ubtk77FAyeBTlPWE/MspkWdgoiXQ7CWpxaKeTA8JPN0+
- TlpV1VB5thfyd9zrc+fj0mKbmXXzlF8=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-661-gcwfWr0wPiqrNlsqhCpcOQ-1; Tue,
- 17 Dec 2024 09:29:01 -0500
-X-MC-Unique: gcwfWr0wPiqrNlsqhCpcOQ-1
-X-Mimecast-MFC-AGG-ID: gcwfWr0wPiqrNlsqhCpcOQ
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 41FEC195605A; Tue, 17 Dec 2024 14:29:00 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.27])
- by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 023FF19560B0; Tue, 17 Dec 2024 14:28:59 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 197B321EC340; Tue, 17 Dec 2024 15:28:55 +0100 (CET)
-From: Markus Armbruster <armbru@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: pbonzini@redhat.com,
-	berrange@redhat.com,
-	eduardo@habkost.net
-Subject: [PATCH 6/6] qdev: Improve a few more PropertyInfo @description members
-Date: Tue, 17 Dec 2024 15:28:54 +0100
-Message-ID: <20241217142855.3805068-7-armbru@redhat.com>
-In-Reply-To: <20241217142855.3805068-1-armbru@redhat.com>
-References: <20241217142855.3805068-1-armbru@redhat.com>
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
+ id 1tNYhX-00065L-Np; Tue, 17 Dec 2024 09:37:37 -0500
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BH85lI8032685;
+ Tue, 17 Dec 2024 14:37:28 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=pp1; bh=xy6ApJ
+ IStjwTjsJV4f9Emd0vn3cRDHkWbDwTtpZ6bBA=; b=DUjbsy9fRFdwjb6wWTTCaX
+ +cq22mkR1NArhz9/hjW5NdGWPX/6MsFrEck5AwC2YXP1mNCtJfiMfQ5RI/T1LIGH
+ 3Le56bUb4oq1kRsKIoG1M5kiNFIdZcEzzA918vBMGhl52B92kmx0PEHD55cEJo0Y
+ otc0cFONENX8P/WmjwsZhwCtftC9ohu+aZ7OLHOz28h3l8jOIol3bcsNP03c7bJK
+ Fyq2Y+qbDn1fEX6TGEdBIIFpNRW0PehrXMI8mv9SH3vUG22oBaej/PMwwQZ1EbnZ
+ J5VzB9Fxu7gR+SuSZRK/i3/nO6AznedW8uROJdkPQzlfUOJLolKoD3mppR+DBy5g
+ ==
+Received: from ppma12.dal12v.mail.ibm.com
+ (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 43k5g2hpxy-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 17 Dec 2024 14:37:27 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4BHAoERJ029773;
+ Tue, 17 Dec 2024 14:37:27 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+ by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 43hmbskcer-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 17 Dec 2024 14:37:26 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com
+ [10.20.54.102])
+ by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 4BHEbPlR38207902
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 17 Dec 2024 14:37:25 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 5402920080;
+ Tue, 17 Dec 2024 14:37:25 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id DFF672007F;
+ Tue, 17 Dec 2024 14:37:24 +0000 (GMT)
+Received: from [127.0.0.1] (unknown [9.152.108.100])
+ by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Tue, 17 Dec 2024 14:37:24 +0000 (GMT)
+Message-ID: <6ff0009bb7079735feacb477c0285f83bf2a7b3d.camel@linux.ibm.com>
+Subject: Re: [PATCH 0/2] include: Two cleanups around missing 'qemu/atomic.h'
+From: Ilya Leoshkevich <iii@linux.ibm.com>
+To: Philippe =?ISO-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: qemu-block@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
+ Stefan Hajnoczi <stefanha@redhat.com>, Kevin Wolf <kwolf@redhat.com>
+Date: Tue, 17 Dec 2024 15:37:24 +0100
+In-Reply-To: <20241217141326.98947-1-philmd@linaro.org>
+References: <20241217141326.98947-1-philmd@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.4 (3.52.4-2.fc40) 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -31
-X-Spam_score: -3.2
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: HoFfXBjzuBUFqOXM329zU63vlBy0mpV_
+X-Proofpoint-GUID: HoFfXBjzuBUFqOXM329zU63vlBy0mpV_
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 bulkscore=0
+ phishscore=0 clxscore=1011 priorityscore=1501 lowpriorityscore=0
+ impostorscore=0 suspectscore=0 spamscore=0 mlxlogscore=720 malwarescore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2411120000 definitions=main-2412170115
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=iii@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -37
+X-Spam_score: -3.8
 X-Spam_bar: ---
-X-Spam_report: (-3.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-1.116,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+X-Spam_report: (-3.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H2=-1.116, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -83,81 +106,24 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Markus Armbruster <armbru@redhat.com>
----
- hw/block/xen-block.c             | 2 +-
- hw/core/qdev-properties-system.c | 2 +-
- hw/core/qdev-properties.c        | 1 +
- hw/s390x/ccw-device.c            | 4 ++--
- target/sparc/cpu.c               | 1 +
- 5 files changed, 6 insertions(+), 4 deletions(-)
+On Tue, 2024-12-17 at 15:13 +0100, Philippe Mathieu-Daud=C3=A9 wrote:
+> We have 2 headers using qatomic_read() without including
+> its declaration from "qemu/atomic.h". Include the missing
+> header. For my own convenience I plan to merge these 2 patches
+> via my tree.
+>=20
+> Regards,
+>=20
+> Phil.
+>=20
+> Philippe Mathieu-Daud=C3=A9 (2):
+> =C2=A0 exec/translation-block: Include missing 'qemu/atomic.h' header
+> =C2=A0 qemu/coroutine: Include missing 'qemu/atomic.h' header
+>=20
+> =C2=A0include/exec/translation-block.h | 1 +
+> =C2=A0include/qemu/coroutine.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0 | 1 +
+> =C2=A02 files changed, 2 insertions(+)
 
-diff --git a/hw/block/xen-block.c b/hw/block/xen-block.c
-index 1303c9dcc9..722e8723f5 100644
---- a/hw/block/xen-block.c
-+++ b/hw/block/xen-block.c
-@@ -661,7 +661,7 @@ invalid:
-  */
- const PropertyInfo xen_block_prop_vdev = {
-     .type  = "str",
--    .description = "Virtual Disk specifier: d*p*/xvd*/hd*/sd*",
-+    .description = "Virtual Disk specifier (d*p*/xvd*/hd*/sd*)",
-     .get = xen_block_get_vdev,
-     .set = xen_block_set_vdev,
- };
-diff --git a/hw/core/qdev-properties-system.c b/hw/core/qdev-properties-system.c
-index 9d1f358263..986123d188 100644
---- a/hw/core/qdev-properties-system.c
-+++ b/hw/core/qdev-properties-system.c
-@@ -985,7 +985,7 @@ inval:
- 
- const PropertyInfo qdev_prop_pci_host_devaddr = {
-     .type = "str",
--    .description = "Address (bus/device/function) of "
-+    .description = "Address (bus:device.function) of "
-                    "the host device, example: 04:10.0",
-     .get = get_pci_host_devaddr,
-     .set = set_pci_host_devaddr,
-diff --git a/hw/core/qdev-properties.c b/hw/core/qdev-properties.c
-index 67b17848b8..02f9b0850a 100644
---- a/hw/core/qdev-properties.c
-+++ b/hw/core/qdev-properties.c
-@@ -247,6 +247,7 @@ static void set_bool(Object *obj, Visitor *v, const char *name, void *opaque,
- 
- const PropertyInfo qdev_prop_bool = {
-     .type  = "bool",
-+    .description = "on/off",
-     .get   = get_bool,
-     .set   = set_bool,
-     .set_default_value = set_default_value_bool,
-diff --git a/hw/s390x/ccw-device.c b/hw/s390x/ccw-device.c
-index ecf735e9fe..ae66d846b3 100644
---- a/hw/s390x/ccw-device.c
-+++ b/hw/s390x/ccw-device.c
-@@ -75,8 +75,8 @@ static void ccw_device_set_loadparm(Object *obj, Visitor *v,
- 
- const PropertyInfo ccw_loadparm = {
-     .type  = "str",
--    .description = "Up to 8 chars in set of [A-Za-z0-9. ] to pass"
--            " to the guest loader/kernel",
-+    .description = "Up to 8 chars in set of [A-Za-z0-9. ] to select"
-+            " a guest kernel",
-     .get = ccw_device_get_loadparm,
-     .set = ccw_device_set_loadparm,
- };
-diff --git a/target/sparc/cpu.c b/target/sparc/cpu.c
-index c3572b8a57..7d2833b2b2 100644
---- a/target/sparc/cpu.c
-+++ b/target/sparc/cpu.c
-@@ -870,6 +870,7 @@ static void sparc_set_nwindows(Object *obj, Visitor *v, const char *name,
- 
- static PropertyInfo qdev_prop_nwindows = {
-     .type  = "int",
-+    .description = "Number of register windows",
-     .get   = sparc_get_nwindows,
-     .set   = sparc_set_nwindows,
- };
--- 
-2.47.0
-
+Acked-by: Ilya Leoshkevich <iii@linux.ibm.com>
 
