@@ -2,68 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0DF19F4147
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Dec 2024 04:41:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F0E019F417F
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Dec 2024 05:02:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tNOR3-0005Gv-Qs; Mon, 16 Dec 2024 22:39:50 -0500
+	id 1tNOm7-0002Ge-Uq; Mon, 16 Dec 2024 23:01:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tNOQr-0005GS-RC; Mon, 16 Dec 2024 22:39:38 -0500
-Received: from mgamail.intel.com ([192.198.163.14])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tNOQn-0001Yf-2R; Mon, 16 Dec 2024 22:39:37 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1734406773; x=1765942773;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=1lKqA14A+q7aPJdRP/DccKwQ8mg3UVxW3vBWti0y9/g=;
- b=Fsa5aVrnEb4PGByXTHuQvacMHaNcWL8pTAoa4Yti/ca/AS3LItq375iV
- ejzg0EbVKtghQ+sp31ddgeE1aMfJjUClTTXlIDHcLzFjp/VuS1vzrFPG4
- OVxz+4E+okONk12ycnaNaV9Ze2NU1KSbKRxFMa/zBS4sC72X8RT0jdgBu
- bJjs4K2msIntDfg5xSiPJl9ijJ//1wfwWZEhKdbnPWd+VPA7hSchcvCS2
- 5OyN4/apRSud3nUXnoagE3EJkMpkydNlit7jRwYIfPgzCe5wKpqEK91Fs
- 4ux2uH+80dT59YEieqg6L74OtjHykyATIsLH8URHfdPf3GbCtwv2XPLDJ A==;
-X-CSE-ConnectionGUID: VPMbF/lqREaaGVIFyda7+g==
-X-CSE-MsgGUID: lMsednBQQM6dhvzaIFyLIg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11288"; a="35043055"
-X-IronPort-AV: E=Sophos;i="6.12,240,1728975600"; d="scan'208";a="35043055"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Dec 2024 19:39:28 -0800
-X-CSE-ConnectionGUID: nE2bIs7RRzCXKEMu/Pf2Mg==
-X-CSE-MsgGUID: 8qEa4zJVRGueQ2UJONimRg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,240,1728975600"; d="scan'208";a="97445348"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by orviesa006.jf.intel.com with ESMTP; 16 Dec 2024 19:39:27 -0800
-Date: Tue, 17 Dec 2024 11:58:06 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org,
- Junjie Mao <junjie.mao@hotmail.com>
-Subject: Re: [PATCH 24/26] rust: qom: move device_id to PL011 class side
-Message-ID: <Z2D2zk2Wdlqc5q2k@intel.com>
-References: <20241209123717.99077-1-pbonzini@redhat.com>
- <20241209123717.99077-25-pbonzini@redhat.com>
+ (Exim 4.90_1) (envelope-from <jim.shu@sifive.com>)
+ id 1tNOm2-0002GF-Od
+ for qemu-devel@nongnu.org; Mon, 16 Dec 2024 23:01:32 -0500
+Received: from mail-ej1-x62b.google.com ([2a00:1450:4864:20::62b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <jim.shu@sifive.com>)
+ id 1tNOly-0004wO-GJ
+ for qemu-devel@nongnu.org; Mon, 16 Dec 2024 23:01:30 -0500
+Received: by mail-ej1-x62b.google.com with SMTP id
+ a640c23a62f3a-aa68b513abcso800666866b.0
+ for <qemu-devel@nongnu.org>; Mon, 16 Dec 2024 20:01:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=sifive.com; s=google; t=1734408083; x=1735012883; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=FWeN2GzDDOZl+npV0CFqa5drd9E46PYMXIXJG+0M5Gk=;
+ b=nuZ0ilk7EtM+SWKB/6nSbiKuRPPiMtjrPcwhOI/EpxyHCeGQqsOJEtHFJQYUOX37T0
+ bI8QuNyKcMdcDHVOVzn5fWXZyf74sY++0ZH4m/u7FvP87b2gmTFyp1Ulye+SeyDXUs6D
+ yJNwhk/dDupNHw7FPRkbvcUdbhMbu+Q+FAyjpsKyxxBvEFFw7uIwgVOuv3eR9QSEHNwi
+ gFwcY5EW8sEEY+dnav6AKLqWoCiSc/01djhqiMqHyXNjLttfMhgESZo22vMNS0CMtrVZ
+ skWWoeaqq+5sV1iC/z2aFfADvu9cDidN77mZNWeAs1KztrZC3RBwzCkhmJjXtXNXHcZv
+ LTFw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1734408083; x=1735012883;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=FWeN2GzDDOZl+npV0CFqa5drd9E46PYMXIXJG+0M5Gk=;
+ b=OPh6Olg+qibuS65pAG1/bl8+H0zPOpW7+9e0n/dOkOU7gtjQmN0N44H00oVqk97dfT
+ GFygF5SmPgvZ5lswSy4vOfNRozNa/vJYVszc5KUt1SNW0gmQb/zUFVP0d0PYPVsIgdJN
+ t/stnmNQYrDLUJe6DLcfIb7SciGV9uRifPi6qfBBDFFHN4IwjiTcgg6TORB6qUEwFSuW
+ 3CjtzuwW9+gxhX2s4Vvh9Gb+aEM1YEPO2gDQ+x2opvZLP1RhrXj+jWtu+oCyk3sYsgPG
+ G7C7CzrXV+88FT9jpIfd/02PWH9HWbfcOK7RA/zhhVdxmQC76RxDLivxnzRK5Iz5rftu
+ XthQ==
+X-Gm-Message-State: AOJu0YzFz3DYRaufQFG6jaI0jPoKv/SRsL5mCxi/8rvXFVxY4leD/EmR
+ gkySRfy1LrznIw5jEyZrpDelPiciPcBomvSlTRaKjKjhwBid5sG4sIhqwVqzZXFUhUVQytq0tMm
+ AaKrAQOaRVtivC9rxGkHmRpJfmkjfK+sRNYRsOH/rPM+i9Vei
+X-Gm-Gg: ASbGncuLdA8hrzE0+E9mr1lo7S9+rLLsSAElchCkmA6OVqg40bhPf+96Cx24n51Hn7u
+ J0CUKiyJN18W2Nr39RxHDJGXTcya+HYH1aeU4cjJB
+X-Google-Smtp-Source: AGHT+IENrKKOXCqQe/fMbDZQaZQCIIr/qAaPuoG4s6QDnJvYCEpi47NdQdGUHomYLWJ7CYDtHu2cnOHSsoanYMYyr1w=
+X-Received: by 2002:a17:907:7707:b0:aa6:87e8:1d12 with SMTP id
+ a640c23a62f3a-aab77e7fb68mr1133423866b.45.1734408083479; Mon, 16 Dec 2024
+ 20:01:23 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241209123717.99077-25-pbonzini@redhat.com>
-Received-SPF: pass client-ip=192.198.163.14; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+References: <20241120153935.24706-1-jim.shu@sifive.com>
+In-Reply-To: <20241120153935.24706-1-jim.shu@sifive.com>
+From: Jim Shu <jim.shu@sifive.com>
+Date: Tue, 17 Dec 2024 12:01:13 +0800
+Message-ID: <CALw707rhW_XpQ4GQbPnpadGN2kw1KQf5gBzGTzoLgXx7ZXCEOQ@mail.gmail.com>
+Subject: Re: [PATCH v4 0/3] Support 64-bit address of initrd
+To: qemu-devel@nongnu.org, qemu-riscv@nongnu.org
+Cc: Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>, 
+ Bin Meng <bmeng.cn@gmail.com>, Weiwei Li <liwei1518@gmail.com>, 
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::62b;
+ envelope-from=jim.shu@sifive.com; helo=mail-ej1-x62b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -80,35 +93,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-> +impl ClassInitImpl<PL011Class> for PL011State {
-> +    fn class_init(klass: &mut PL011Class) {
-> +        klass.device_id = DeviceId::ARM;
-> +        <Self as ClassInitImpl<SysBusDeviceClass>>::class_init(&mut klass.parent_class);
+Hi,
 
-This seems a bit of a conflict with the C version of QOM semantics. In C,
-class_init is registered in TypeInfo, and then the QOM code will
-automatically call the parent's class_init without needing to explicitly
-call the parent's in the child's class_init.
+Gentle ping on this patch
 
-However, SysBusDevice (and Device) is a bit different. Its TypeInfo is
-registered on the C side, and the class_init method on the Rust side is not
-actually a real QOM class_init (because it is not registered on the Rust
-side).
+Thanks,
+Jim Shu
 
-Therefore, the call here seems valid from the code logic's perspective.
-But, when there is deeper class inheritance, it seems impossible to
-prevent class_init from being called both by the C side's QOM code and by
-this kind of recursive case on the Rust side.
 
-So, for devices like SysBusDevice that are registered on the C side,
-should we not implement class_init and also not call it explicitly?
 
-Or should we distinguish between two different usages of class_init? One
-is registered in TypeInfo (only as a callback in rust_class_init) - perhaps
-rename it as qom_class_init, and the other is used as a helper for Rust-side
-calls (similar to the recursive usage here) - maybe rename it as
-class_inter_init.
 
-> +    }
-> +}
+
+On Wed, Nov 20, 2024 at 11:39=E2=80=AFPM Jim Shu <jim.shu@sifive.com> wrote=
+:
+>
+> Support to load DTB after 3GB on RV64 system, so that larger initrd
+> doesn't be overlapped to DTB. DTB loading now will check if overlapping
+> to kernel/initrd and report this error.
+>
+> Verify the patch via running 4GB initramfs on the virt machine.
+>
+>
+> Changes for v4:
+>
+>   - Update the comments of loading DTB in 64-bit CPU
+>   - Align image_[low|high]_addr's type with initrd_start (hwaddr)
+>   - Fix commit 2 to avoid unnecessary change .h file of board
+>
+> Changes for v3:
+>
+>   - Change struct RISCVBootInfo from machine state to local variables.
+>
+> Changes for v2:
+>
+>   - Add DTB overlapping checking and struct RISCVBootInfo
+>   - Remove the commit to change #address-cell of 'initrd-[start|end]'
+>
+> Jim Shu (3):
+>   hw/riscv: Support to load DTB after 3GB memory on 64-bit system.
+>   hw/riscv: Add a new struct RISCVBootInfo
+>   hw/riscv: Add the checking if DTB overlaps to kernel or initrd
+>
+>  hw/riscv/boot.c            | 100 +++++++++++++++++++++++++------------
+>  hw/riscv/microchip_pfsoc.c |  13 +++--
+>  hw/riscv/opentitan.c       |   4 +-
+>  hw/riscv/sifive_e.c        |   4 +-
+>  hw/riscv/sifive_u.c        |  14 +++---
+>  hw/riscv/spike.c           |  14 +++---
+>  hw/riscv/virt.c            |  13 +++--
+>  include/hw/riscv/boot.h    |  28 ++++++++---
+>  8 files changed, 127 insertions(+), 63 deletions(-)
+>
+> --
+> 2.17.1
+>
 
