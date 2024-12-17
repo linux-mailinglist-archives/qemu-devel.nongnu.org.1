@@ -2,80 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E7E59F411D
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Dec 2024 04:03:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D36AA9F4148
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Dec 2024 04:41:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tNNqP-0000HO-FU; Mon, 16 Dec 2024 22:01:57 -0500
+	id 1tNORI-0005JN-GC; Mon, 16 Dec 2024 22:40:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1tNNqM-0000Gp-AK
- for qemu-devel@nongnu.org; Mon, 16 Dec 2024 22:01:54 -0500
-Received: from mail-oo1-xc34.google.com ([2607:f8b0:4864:20::c34])
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1tNORD-0005J7-Qh; Mon, 16 Dec 2024 22:39:59 -0500
+Received: from mail-vs1-xe36.google.com ([2607:f8b0:4864:20::e36])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1tNNqJ-0002zZ-8W
- for qemu-devel@nongnu.org; Mon, 16 Dec 2024 22:01:54 -0500
-Received: by mail-oo1-xc34.google.com with SMTP id
- 006d021491bc7-5f2dee7d218so2043567eaf.2
- for <qemu-devel@nongnu.org>; Mon, 16 Dec 2024 19:01:49 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1tNORC-0001kY-0J; Mon, 16 Dec 2024 22:39:59 -0500
+Received: by mail-vs1-xe36.google.com with SMTP id
+ ada2fe7eead31-4aff1c57377so2570203137.0; 
+ Mon, 16 Dec 2024 19:39:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1734404508; x=1735009308;
- darn=nongnu.org; 
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=99sTfcxkpVttkMcJNRBz5EeqlxZno4A0EzwAzLhHQjk=;
- b=pf4moVNdnZDFVBl/Bz5LvCZMMB2kjBH9QUsjljrQ+Jsgy+Th/HUYsIYyGgZcFMkV4W
- kQ8Ghu2ZnMTZjnQFNYedhqNut6qQCtbdly4EOVFpL9IUcljsk7k1KoXPZ3NZ72HSTVHr
- TVDJ+iluMQ/csuGhlBDzKnP0iFXYCL9tF6aLGyNw0be390Ukh/VYqUPPaGfG8scoZuwv
- Sfc7GicFf2Sk0Q7pibPV94ma89hGZRxF7cEHic8kPsuM3/bXeVgfu3sf8vRf/f4U0bhy
- SYndLzOLsbJ6jf2H/ZpOdykgWkHcFXWXMxJQNsC/Uaeg20iGI4pVQeolDTTdcNFQGWiY
- sIPg==
+ d=gmail.com; s=20230601; t=1734406795; x=1735011595; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=e0QNTPLjcwfUBSTQjEvcVF/2fKXU6mt6AS/45tw3vE4=;
+ b=KNvDY/Y3FNhVbO09mDGRyL34tqvCi2HVs3lygcgDoj+/5Qo/1VZ2PNGgYx0XfELmpB
+ wd/JUm56rWPd6n20h0Nr0gEsgUZjo5MWTJmN8uIqYZJRAdcUU/bfT9kh+OAGxnOxi42V
+ Fvg+p7T6ezuyvGaGjLr4vvbuY4GCgwgbyjB9JH6+qNhQKgLTZ+6k4ZIsw3Q09k4ACx3K
+ 3G+zOm4QOiPd7uKn62FNIQ0VSQPEEp4ku3nWdduMWP9Z4VIWourvT47drGiNjmCLpyOQ
+ LWWSECQPge42pkaohH00O0hyq82XjfHCbjxGHq8gnLBWnJptDT+O+/c8Vi4i0NzqCmfL
+ qvbA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734404508; x=1735009308;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=99sTfcxkpVttkMcJNRBz5EeqlxZno4A0EzwAzLhHQjk=;
- b=ehrr78yEKTB2Dcbf3Wzdh/1DMkltLsdaPUuldUYufpLJUC8tVYLC6JHftLXB+a8nFs
- GO2qVHflAeGLTa5p1+2MdL7Esrnw/7h126W717+IF1C+3NVYMYAIrdYPDWaqF9WPtdfw
- kblWT+dgcAZ80mi85aJfWz9PNGB75JsQ1vTo6PjoZFXFeujouYaIzEsBUeXjjmhk2AQp
- 2jR0P6k/dSC+VwfhoaLzgNC1hhatbavItxdHX8PVVnrE7u/5Y4Vth6KTQvIsrhdn8iwj
- t6YFzY941H6CxD6f59z/KXEPcGGUwu3tTGFFeH+X64LfPrJPaT3FNbf2HyHUuC0AVRdp
- 01Jg==
-X-Gm-Message-State: AOJu0YziPInqcPhcbci+L71zLAoOenwoV9RiEv9+u65Cx2XhRxob67U5
- V0i+SyMHXg1wF1W5kyewhpT0l5/hkkS1hg/hCoO+/N4ofJGCOjFK46fSq1uVNs1EbDQYrAjVQms
- 1uySfNiXEgMorWL6AUKW+BZLM2oGqzUCrt559mQ==
-X-Gm-Gg: ASbGnctcNIHeVfyhVk2i8z7Y+fJ4M+SZWw3tVCTo4i/BYRw7Y6/6DeJaKnljnRdVx3+
- QErrKa1AQsTyf+S8T7p5TESCQuID3Sn2soX7ca+s=
-X-Google-Smtp-Source: AGHT+IHoBi10y1CbHFUqfjUHTFuWduSYYgmOBSV/LyFAztYw6VCSWQtmvvpay7+HQzwOOSid/R3n2jgkcoROzzanugM=
-X-Received: by 2002:a05:6870:3c15:b0:29e:491b:96db with SMTP id
- 586e51a60fabf-2a3ac49fa7emr8821952fac.5.1734404508171; Mon, 16 Dec 2024
- 19:01:48 -0800 (PST)
+ d=1e100.net; s=20230601; t=1734406795; x=1735011595;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=e0QNTPLjcwfUBSTQjEvcVF/2fKXU6mt6AS/45tw3vE4=;
+ b=wKWW5cu84Bp2gE62Sib+QifIrQGthPRaChTJHdjzb38cNfOvTGOai7Yr7Dpq1OIIzu
+ lHVq1sLpOI8BezGwIScfPvpfUuCqcPWW0rJVjOeQEHLdU40RGgqwYQfruplxZX5oRDQ2
+ U/go7GB6127nZ0pLxAT41jrNhKCpwHYTH8yCggkcs86cxGSXUBwt8afgR+tGeckdIugD
+ EfHNo/BuQKaTmWz3jYEpVAB4F8pZrHX/6b3i8SbqW+2Mh3wV5UFg+ef+FvE5aUjW/kZq
+ 528xfOGG2UySrsmdWqxH9CQqLydrPCTkUhESaBZPCeJK/cnpAYRIm72e/IRB3I72wtfc
+ d7HA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCU3/QQ44e5VZXYF6xQOb+OYjXydrS9dsRfgfRtCDiWaIhaupNM8LsoiRea6eYp1WCs+c+HJYOmovJI8@nongnu.org
+X-Gm-Message-State: AOJu0Yxgd1m/hvZtuQ/SWB6SUJlTWEWkTPCU9oMcvDZLgLvtJn9cGM9Z
+ CP3KgRjQnmNJSa3cwJktFs6R0Rtcc+2tu31Nm2btw3UbRLoz1ny4tM5DCgJHfsc74WE9b4WM9+/
+ hoEBm5GksfGgIPFgqgzhW+NpYVjk=
+X-Gm-Gg: ASbGncuu/0PTCAhfxN8HX6tbQzmssdA1jzyTD/lZ5bmmX6n7LOSv+ORmXaA8mltgw8y
+ ffifDiN5LLWJGMhsOX68JHZ/s9slIQrP8O7iw7NTJDmXvoFyDU7Eqe4t8gxkhiBbSJBRb
+X-Google-Smtp-Source: AGHT+IHFiIeTPAyKiUiNnIDUxhtnpGkOwL5yujW4LtZCgpd6qTAp5+V4B4lFxnTh9nK8UQVJM4oP+/FBnK29yMk/9W4=
+X-Received: by 2002:a67:ebd6:0:b0:4b1:f903:98d3 with SMTP id
+ ada2fe7eead31-4b29dc54ee8mr1822566137.7.1734406795097; Mon, 16 Dec 2024
+ 19:39:55 -0800 (PST)
 MIME-Version: 1.0
-References: <20241216094638.26406-1-avihaih@nvidia.com>
- <20241216094638.26406-8-avihaih@nvidia.com>
-In-Reply-To: <20241216094638.26406-8-avihaih@nvidia.com>
-From: Yong Huang <yong.huang@smartx.com>
-Date: Tue, 17 Dec 2024 11:01:32 +0800
-Message-ID: <CAK9dgmYowKNMD=5-PXGTL71K=sa22tuusZZPojkRQeMbaHyd3w@mail.gmail.com>
-Subject: Re: [PATCH 7/9] system/dirtylimit: Don't use migration_is_active()
-To: Avihai Horon <avihaih@nvidia.com>
-Cc: qemu-devel@nongnu.org, Alex Williamson <alex.williamson@redhat.com>, 
- =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>, 
- Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
- Maor Gottlieb <maorg@nvidia.com>
-Content-Type: multipart/alternative; boundary="0000000000009b588d06296e84df"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c34;
- envelope-from=yong.huang@smartx.com; helo=mail-oo1-xc34.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
+References: <20241120153935.24706-1-jim.shu@sifive.com>
+ <20241120153935.24706-2-jim.shu@sifive.com>
+In-Reply-To: <20241120153935.24706-2-jim.shu@sifive.com>
+From: Alistair Francis <alistair23@gmail.com>
+Date: Tue, 17 Dec 2024 13:39:29 +1000
+Message-ID: <CAKmqyKOTBkNpwvuGonW80T6LQtMu4sBWA_cu58S4+pMMkZAvcw@mail.gmail.com>
+Subject: Re: [PATCH v4 1/3] hw/riscv: Support to load DTB after 3GB memory on
+ 64-bit system.
+To: Jim Shu <jim.shu@sifive.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, 
+ Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>, 
+ Bin Meng <bmeng.cn@gmail.com>, Weiwei Li <liwei1518@gmail.com>, 
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::e36;
+ envelope-from=alistair23@gmail.com; helo=mail-vs1-xe36.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
 X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,111 +97,148 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---0000000000009b588d06296e84df
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-On Mon, Dec 16, 2024 at 5:47=E2=80=AFPM Avihai Horon <avihaih@nvidia.com> w=
-rote:
-
-> vcpu_dirty_rate_stat_collect() uses migration_is_active() to detect
-> whether migration is running or not, in order to get the correct dirty
-> rate period value.
+On Thu, Nov 21, 2024 at 1:41=E2=80=AFAM Jim Shu <jim.shu@sifive.com> wrote:
 >
-> However, recently there has been an effort to simplify the migration
-> status API and reduce it to a single migration_is_running() function.
+> Larger initrd image will overlap the DTB at 3GB address. Since 64-bit
+> system doesn't have 32-bit addressable issue, we just load DTB to the end
+> of dram in 64-bit system.
 >
-
-Could you post the related links?
-
-
->
-> To accommodate this, and since the same functionality can be achieved
-> with migration_is_running(), use it instead of migration_is_active().
->
-> Signed-off-by: Avihai Horon <avihaih@nvidia.com>
+> Signed-off-by: Jim Shu <jim.shu@sifive.com>
 > ---
->  system/dirtylimit.c | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
+>  hw/riscv/boot.c            | 14 +++++++++-----
+>  hw/riscv/microchip_pfsoc.c |  4 ++--
+>  hw/riscv/sifive_u.c        |  4 ++--
+>  hw/riscv/spike.c           |  4 ++--
+>  hw/riscv/virt.c            |  2 +-
+>  include/hw/riscv/boot.h    |  2 +-
+>  6 files changed, 17 insertions(+), 13 deletions(-)
 >
-> diff --git a/system/dirtylimit.c b/system/dirtylimit.c
-> index ab20da34bb..d7a855c603 100644
-> --- a/system/dirtylimit.c
-> +++ b/system/dirtylimit.c
-> @@ -80,8 +80,7 @@ static void vcpu_dirty_rate_stat_collect(void)
->      int i =3D 0;
->      int64_t period =3D DIRTYLIMIT_CALC_TIME_MS;
+> diff --git a/hw/riscv/boot.c b/hw/riscv/boot.c
+> index 2e319168db..d36d3a7104 100644
+> --- a/hw/riscv/boot.c
+> +++ b/hw/riscv/boot.c
+> @@ -293,7 +293,7 @@ out:
+>   * The FDT is fdt_packed() during the calculation.
+>   */
+>  uint64_t riscv_compute_fdt_addr(hwaddr dram_base, hwaddr dram_size,
+> -                                MachineState *ms)
+> +                                MachineState *ms, RISCVHartArrayState *h=
+arts)
+>  {
+>      int ret =3D fdt_pack(ms->fdt);
+>      hwaddr dram_end, temp;
+> @@ -317,11 +317,15 @@ uint64_t riscv_compute_fdt_addr(hwaddr dram_base, h=
+waddr dram_size,
 >
-> -    if (migrate_dirty_limit() &&
-> -        migration_is_active()) {
-> +    if (migrate_dirty_limit() && migration_is_running()) {
->          period =3D migrate_vcpu_dirty_limit_period();
->      }
+>      /*
+>       * We should put fdt as far as possible to avoid kernel/initrd overw=
+riting
+> -     * its content. But it should be addressable by 32 bit system as wel=
+l.
+> -     * Thus, put it at an 2MB aligned address that less than fdt size fr=
+om the
+> -     * end of dram or 3GB whichever is lesser.
+> +     * its content. But it should be addressable by 32 bit system as wel=
+l in RV32.
+> +     * Thus, put it near to the end of dram in RV64, and put it near to =
+the end
+> +     * of dram or 3GB whichever is lesser in RV32.
+>       */
+> -    temp =3D (dram_base < 3072 * MiB) ? MIN(dram_end, 3072 * MiB) : dram=
+_end;
+> +    if (!riscv_is_32bit(harts)) {
+> +        temp =3D dram_end;
+> +    } else {
+> +        temp =3D (dram_base < 3072 * MiB) ? MIN(dram_end, 3072 * MiB) : =
+dram_end;
+> +    }
 >
-> --
-> 2.40.1
+>      return QEMU_ALIGN_DOWN(temp - fdtsize, 2 * MiB);
+>  }
+> diff --git a/hw/riscv/microchip_pfsoc.c b/hw/riscv/microchip_pfsoc.c
+> index f9a3b43d2e..ba8b0a2c26 100644
+> --- a/hw/riscv/microchip_pfsoc.c
+> +++ b/hw/riscv/microchip_pfsoc.c
+> @@ -519,7 +519,7 @@ static void microchip_icicle_kit_machine_init(Machine=
+State *machine)
+>      bool kernel_as_payload =3D false;
+>      target_ulong firmware_end_addr, kernel_start_addr;
+>      uint64_t kernel_entry;
+> -    uint32_t fdt_load_addr;
+> +    uint64_t fdt_load_addr;
+>      DriveInfo *dinfo =3D drive_get(IF_SD, 0, 0);
 >
+>      /* Sanity check on RAM size */
+> @@ -625,7 +625,7 @@ static void microchip_icicle_kit_machine_init(Machine=
+State *machine)
+>          /* Compute the fdt load address in dram */
+>          fdt_load_addr =3D riscv_compute_fdt_addr(memmap[MICROCHIP_PFSOC_=
+DRAM_LO].base,
+>                                                 memmap[MICROCHIP_PFSOC_DR=
+AM_LO].size,
+> -                                               machine);
+> +                                               machine, &s->soc.u_cpus);
+>          riscv_load_fdt(fdt_load_addr, machine->fdt);
 >
+>          /* Load the reset vector */
+> diff --git a/hw/riscv/sifive_u.c b/hw/riscv/sifive_u.c
+> index c5e74126b1..05467e833a 100644
+> --- a/hw/riscv/sifive_u.c
+> +++ b/hw/riscv/sifive_u.c
+> @@ -519,7 +519,7 @@ static void sifive_u_machine_init(MachineState *machi=
+ne)
+>      const char *firmware_name;
+>      uint32_t start_addr_hi32 =3D 0x00000000;
+>      int i;
+> -    uint32_t fdt_load_addr;
+> +    uint64_t fdt_load_addr;
+>      uint64_t kernel_entry;
+>      DriveInfo *dinfo;
+>      BlockBackend *blk;
+> @@ -606,7 +606,7 @@ static void sifive_u_machine_init(MachineState *machi=
+ne)
+>
+>      fdt_load_addr =3D riscv_compute_fdt_addr(memmap[SIFIVE_U_DEV_DRAM].b=
+ase,
+>                                             memmap[SIFIVE_U_DEV_DRAM].siz=
+e,
+> -                                           machine);
+> +                                           machine, &s->soc.u_cpus);
 
---=20
-Best regards
+This patch breaks boots with the sifive_u board.
 
---0000000000009b588d06296e84df
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+This diff fixes it, I'm going to squash the diff into this patch
 
-<div dir=3D"ltr"><div dir=3D"ltr"><div class=3D"gmail_default" style=3D"fon=
-t-family:&quot;comic sans ms&quot;,sans-serif"><br></div></div><br><div cla=
-ss=3D"gmail_quote gmail_quote_container"><div dir=3D"ltr" class=3D"gmail_at=
-tr">On Mon, Dec 16, 2024 at 5:47=E2=80=AFPM Avihai Horon &lt;<a href=3D"mai=
-lto:avihaih@nvidia.com">avihaih@nvidia.com</a>&gt; wrote:<br></div><blockqu=
-ote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left-wid=
-th:1px;border-left-style:solid;border-left-color:rgb(204,204,204);padding-l=
-eft:1ex">vcpu_dirty_rate_stat_collect() uses migration_is_active() to detec=
-t<br>
-whether migration is running or not, in order to get the correct dirty<br>
-rate period value.<br>
-<br>
-However, recently there has been an effort to simplify the migration<br>
-status API and reduce it to a single migration_is_running() function.<br></=
-blockquote><div><br></div><div><div style=3D"font-family:&quot;comic sans m=
-s&quot;,sans-serif" class=3D"gmail_default">Could you post the related link=
-s?</div></div><div>=C2=A0</div><blockquote class=3D"gmail_quote" style=3D"m=
-argin:0px 0px 0px 0.8ex;border-left-width:1px;border-left-style:solid;borde=
-r-left-color:rgb(204,204,204);padding-left:1ex">
-<br>
-To accommodate this, and since the same functionality can be achieved<br>
-with migration_is_running(), use it instead of migration_is_active().<br>
-<br>
-Signed-off-by: Avihai Horon &lt;<a href=3D"mailto:avihaih@nvidia.com" targe=
-t=3D"_blank">avihaih@nvidia.com</a>&gt;<br>
----<br>
-=C2=A0system/dirtylimit.c | 3 +--<br>
-=C2=A01 file changed, 1 insertion(+), 2 deletions(-)<br>
-<br>
-diff --git a/system/dirtylimit.c b/system/dirtylimit.c<br>
-index ab20da34bb..d7a855c603 100644<br>
---- a/system/dirtylimit.c<br>
-+++ b/system/dirtylimit.c<br>
-@@ -80,8 +80,7 @@ static void vcpu_dirty_rate_stat_collect(void)<br>
-=C2=A0 =C2=A0 =C2=A0int i =3D 0;<br>
-=C2=A0 =C2=A0 =C2=A0int64_t period =3D DIRTYLIMIT_CALC_TIME_MS;<br>
-<br>
--=C2=A0 =C2=A0 if (migrate_dirty_limit() &amp;&amp;<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0 migration_is_active()) {<br>
-+=C2=A0 =C2=A0 if (migrate_dirty_limit() &amp;&amp; migration_is_running())=
- {<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0period =3D migrate_vcpu_dirty_limit_perio=
-d();<br>
-=C2=A0 =C2=A0 =C2=A0}<br>
-<br>
--- <br>
-2.40.1<br>
-<br>
-</blockquote></div><div><br clear=3D"all"></div><div><br></div><span class=
-=3D"gmail_signature_prefix">-- </span><br><div dir=3D"ltr" class=3D"gmail_s=
-ignature"><div dir=3D"ltr"><font face=3D"comic sans ms, sans-serif">Best re=
-gards</font></div></div></div>
+diff --git a/hw/riscv/sifive_u.c b/hw/riscv/sifive_u.c
+index ff6e26dec8..fd59124500 100644
+--- a/hw/riscv/sifive_u.c
++++ b/hw/riscv/sifive_u.c
+@@ -518,6 +518,7 @@ static void sifive_u_machine_init(MachineState *machine=
+)
+    target_ulong firmware_end_addr, kernel_start_addr;
+    const char *firmware_name;
+    uint32_t start_addr_hi32 =3D 0x00000000;
++    uint32_t fdt_load_addr_hi32 =3D 0x00000000;
+    int i;
+    uint64_t fdt_load_addr;
+    uint64_t kernel_entry;
+@@ -611,6 +612,7 @@ static void sifive_u_machine_init(MachineState *machine=
+)
 
---0000000000009b588d06296e84df--
+    if (!riscv_is_32bit(&s->soc.u_cpus)) {
+        start_addr_hi32 =3D (uint64_t)start_addr >> 32;
++        fdt_load_addr_hi32 =3D fdt_load_addr >> 32;
+    }
+
+    /* reset vector */
+@@ -625,7 +627,7 @@ static void sifive_u_machine_init(MachineState *machine=
+)
+        start_addr,                    /* start: .dword */
+        start_addr_hi32,
+        fdt_load_addr,                 /* fdt_laddr: .dword */
+-        0x00000000,
++        fdt_load_addr_hi32,
+        0x00000000,
+                                       /* fw_dyn: */
+    };
 
