@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE5FD9F43A9
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Dec 2024 07:27:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE5BF9F43A8
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Dec 2024 07:27:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tNR1U-0003Ao-2H; Tue, 17 Dec 2024 01:25:36 -0500
+	id 1tNR1R-000371-6e; Tue, 17 Dec 2024 01:25:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <frank.chang@sifive.com>)
- id 1tNR1H-00031X-HC
- for qemu-devel@nongnu.org; Tue, 17 Dec 2024 01:25:24 -0500
-Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
+ id 1tNR1J-00033Q-IZ
+ for qemu-devel@nongnu.org; Tue, 17 Dec 2024 01:25:26 -0500
+Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <frank.chang@sifive.com>)
- id 1tNR1D-00055Q-Qr
- for qemu-devel@nongnu.org; Tue, 17 Dec 2024 01:25:22 -0500
-Received: by mail-pf1-x42a.google.com with SMTP id
- d2e1a72fcca58-728e3826211so3869414b3a.0
- for <qemu-devel@nongnu.org>; Mon, 16 Dec 2024 22:25:18 -0800 (PST)
+ id 1tNR1F-00055e-Rc
+ for qemu-devel@nongnu.org; Tue, 17 Dec 2024 01:25:24 -0500
+Received: by mail-pf1-x432.google.com with SMTP id
+ d2e1a72fcca58-728f1525565so5815167b3a.1
+ for <qemu-devel@nongnu.org>; Mon, 16 Dec 2024 22:25:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sifive.com; s=google; t=1734416716; x=1735021516; darn=nongnu.org;
+ d=sifive.com; s=google; t=1734416719; x=1735021519; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=1bK2ArkonOP0houuEuxLWOOOjjUDvLRrzXIxB3WX61g=;
- b=WRoWqIn0G11IPA3N9oyO2EwAbilzWqKz9qfeK35mqEO2AGBISlhYwFNAOkpqir7jdL
- euCoPgbftAHBQenffQNut4IJRfWT+pSLnFbtrN+LXWpy5d77GabsPGs0LG7ugC8OYVUv
- BKBoFRu6cj6OdrYZy/0dDw+9ZgYPsuy2Ic+OgFYjE1mpaFWh+eRCcX2UtnlDFiK9ofIa
- a2qc9cL+/nD+2BNVILleVVQC+4vAX3aPEN1pmfdwZ32iZDRmQjC7WflZb19PRNNr4MCv
- OWOkafgqKqn2KlcdaFLmB/ULEUq5/3GubHInl9kDon5ShH+y4/WEUlYmqJa+keFovLPJ
- Bh/A==
+ bh=tl/PDO9SOOn4SJKgZz+HudXPKCnTCdotF3cwk73STA0=;
+ b=MzDCMtkYWA01WKyxuu8tH0hxi0dWYmK3bZHoofdWCi2P82euhsUfMGfZ40BquCTE+Q
+ 8NKVtWl+sVJ5sAvWoN/p4S9A1cA4XvkJrpUY/cW46v2KB0vo1tRuhgjziGFQdo41fk8J
+ H2DPv8z88BxE0CyQwgdVJW3TMwvGWRgWwghJyCOrLwOKTsGCWJLDRMxExpzMwP1iv5ns
+ mzKfMVXHmi+03qPKdopte6R+UBEXcccZIvxz/26N6kUPXkFkKeDJAQGesR6YQC5Yw2py
+ 1ZiKjZL9z3S/rrfJ6+CfU2I3GyaK0CYNbsZHpFgDe7lzElZlAKHf+99SmyRv7BSXztzL
+ wTcQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734416716; x=1735021516;
+ d=1e100.net; s=20230601; t=1734416719; x=1735021519;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=1bK2ArkonOP0houuEuxLWOOOjjUDvLRrzXIxB3WX61g=;
- b=cOPlheOXvkPCzRqzIXfOxZAbF4kvvL8gjbSUNtz5aF+UJHdAQm3ZSJuPJbUVf7TPGN
- YFYZZ7+TeJ9N9hYuFvVvSXdJAoHccGPfxIh9uhmMWZHNq9TpPgCxCdEF5VQvJRvh59zz
- H5OJw2YqxKGMQlMNH5V3TOFQLfugTvkCDIaLAbo0p1IpwBWQgdO837HYemCNNTAr5rey
- nvIKSkoo7EHUllO1SV9Ox0ucllgNWQH4p2z1/t+mwU1w5pMQrqlCoLIReByUdvlfLbve
- AguhENxfTA6Fz5EhJLqTkGuA53HoRIE9GQXDTjxOv8va7lTTm64kotFm4VoqmZ0fVPqJ
- vcGA==
-X-Gm-Message-State: AOJu0YxFNypb3GbcZEs6Cxm3mnwMHN7ItehSDgUyZsKxcgFUFXZOz7kf
- DMq8yYR4/3Q0kX7i0HYwEaoB51K4A8pGjMjah0uh89qLsleLDteBd+kfF8M3JAjoDG3BvLXKRXM
- fQ+anU0e80GHqUbDOmsp+0MjwMiiGDJwJnrWGlq5yfYtHqi46OHYEKM697dNTky+ode0RSUuPjM
- OE94e7gMH9pmy8pTB+dRFtW94xqVee/kVcHYegrTmR+A==
-X-Gm-Gg: ASbGncsq6Y6B9SRJul+6JoVuqbd2fNJPTycllXZduwIKEIZMS50yCdVxmSYwNY3p1bY
- t8U4VSPJ3LlqWMS7/0oGg6h1svDcNijX6r1JY/8xZAFadR3DJQsnLlDuh5Utsfso8d5YMG1nKdW
- XfZFnNPQfLOq3Yuta58w+4f98WcxVZ6ggqq4rSjrzOTqjhX78GWkQyKK7hRjpiZU/BYqDyAixH3
- 67LLyFDtHXF7UsRPF7RuJdZZSZJEZTgx6TTCI1K7OkBTeEUHT2sVG3VsDZphaSp76IkhKmm9KnE
- g8chQpLCb2s=
-X-Google-Smtp-Source: AGHT+IFuAMSns6PhkQ/yfA7NVjy2jjCp9gCmIn8Lk1qea84ycwOZHml7k11L9CYGzSG/T7/1at8XgQ==
-X-Received: by 2002:a05:6a20:cf8d:b0:1e1:a094:f20e with SMTP id
- adf61e73a8af0-1e45ab381d0mr4876969637.17.1734416716474; 
- Mon, 16 Dec 2024 22:25:16 -0800 (PST)
+ bh=tl/PDO9SOOn4SJKgZz+HudXPKCnTCdotF3cwk73STA0=;
+ b=eoq8KMcU7/JrLrHgpXNodkw/KnJ6SLWa1bJliQ0t1wN2z7vhlSqPNnRv0CWZsCg/DW
+ 1ZLLf7k/rKpCuCIk9rfYcpjRQtEEhRQPcs8pKAkvs5GeIWTKwn+J9HsrVyA+tAQgH8+o
+ UI2kDPTRpLHXHfzuY+FEj6gtEHdimdExbLKJxRHA4GlzWFOvVMaUuE/78TRaG+hdtRW5
+ a4zdDt1ex8vCOeB6oWgg9y2YLZ6VAWv8JsYYvAiOp2hCmlnf5SXkJwJw+x8fHYGZJbIL
+ pBVCIlbyT04s9ZHSVVULAnRDhiBvf5mQr86cZAy5+gYY9CnfuHiL/4HAcGd2pZagawxI
+ iDlg==
+X-Gm-Message-State: AOJu0Yyjvg9d0i6kddQGAk/yCtt3aSDp0Kqkcd54X8FWtYk6r78Zb+8v
+ WxqT9DKte5SbBhANJJ8VCIXlO3njBP3C54qMtD9DuSAVGZYV4hfXFF4cG9yaAGNhBAB5apDD58x
+ gUq+6twUg/gjZK6X1YXcwC3NE5vkTysCDzuMDd9D4A2MAZxBOaKbpS7jwAqhGJchohno/aPeFgx
+ uvhSuaM3wsy14ul/FygdJUMUMGibuRFkgEKxDhrczgxw==
+X-Gm-Gg: ASbGnctCE+PlkRsUF1b7VeREZ6iLy024fHJbHANZm1HF+ZYV9YMalW6ze73LcB8DTSe
+ io1mhoL0zuTWzv9W90c+86D4fry15r0Hd1lzUlp3ZtOIQlMDgP8dMoqlT+KD1raMusO5fyWVsCv
+ 7+2N36vSCovPHtfmSnfdH10f4SR2PhxilRoyUQKesC3QTziBZE3PnNGlcHTL4SebIlXUwx16tOA
+ aVBaXRIVNrvJaf7BMIbhzDd8tiHxPHsXYCqUxks+UuNSQbh/XH2Xe+A2lXmu8yyphPfGM+qVk9x
+ rL8XFMEZtLo=
+X-Google-Smtp-Source: AGHT+IGEzxKvdwsW3/o8+hACJ64Q7X4/KJM+RPkNXJ2J2uih2Ep2XnbA9al+Pcu1PUrUCbHwnJ2kmg==
+X-Received: by 2002:a05:6a00:ac02:b0:725:ebab:bb32 with SMTP id
+ d2e1a72fcca58-7290c27c888mr22537423b3a.26.1734416718898; 
+ Mon, 16 Dec 2024 22:25:18 -0800 (PST)
 Received: from fchang-1826.internal.sifive.com ([210.176.154.33])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-72925e6e8b1sm4354301b3a.139.2024.12.16.22.25.14
+ d2e1a72fcca58-72925e6e8b1sm4354301b3a.139.2024.12.16.22.25.16
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 16 Dec 2024 22:25:16 -0800 (PST)
+ Mon, 16 Dec 2024 22:25:18 -0800 (PST)
 From: frank.chang@sifive.com
 To: qemu-devel@nongnu.org,
 	qemu-riscv@nongnu.org
@@ -72,16 +72,16 @@ Cc: Palmer Dabbelt <palmer@dabbelt.com>,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
  Frank Chang <frank.chang@sifive.com>
-Subject: [PATCH v10 6/7] target/riscv: Add Zicfilp support for Smrnmi
-Date: Tue, 17 Dec 2024 14:24:39 +0800
-Message-Id: <20241217062440.884261-7-frank.chang@sifive.com>
+Subject: [PATCH v10 7/7] target/riscv: Disable Smrnmi for the 'max' type CPU
+Date: Tue, 17 Dec 2024 14:24:40 +0800
+Message-Id: <20241217062440.884261-8-frank.chang@sifive.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241217062440.884261-1-frank.chang@sifive.com>
 References: <20241217062440.884261-1-frank.chang@sifive.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
- envelope-from=frank.chang@sifive.com; helo=mail-pf1-x42a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::432;
+ envelope-from=frank.chang@sifive.com; helo=mail-pf1-x432.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -106,82 +106,35 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Frank Chang <frank.chang@sifive.com>
 
-Zicfilp extension introduces the MNPELP (bit 9) in mnstatus.
-The MNPELP field holds the previous ELP.
-
-When a RNMI trap is delivered, the MNPELP is set to ELP and ELP set
-to NO_LP_EXPECTED. Upon a mnret, if the mnstatus.MNPP holds the
-value y, then ELP is set to the value of MNPELP if yLPE is 1;
-otherwise, it is set to NO_LP_EXPECTED.
+When Smrnmi is present, the firmware (e.g., OpenSBI) must set
+mnstatus.NMIE to 1 before enabling any interrupts. Otherwise, all
+interrupts will be disabled. Since our current OpenSBI does not
+support Smrnmi yet, let's disable Smrnmi for the 'max' type CPU for
+now. We can re-enable it once OpenSBI includes proper support for it.
 
 Signed-off-by: Frank Chang <frank.chang@sifive.com>
+Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 ---
- target/riscv/cpu_bits.h   |  1 +
- target/riscv/cpu_helper.c | 11 ++++++++++-
- target/riscv/op_helper.c  |  9 +++++++++
- 3 files changed, 20 insertions(+), 1 deletion(-)
+ target/riscv/tcg/tcg-cpu.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/target/riscv/cpu_bits.h b/target/riscv/cpu_bits.h
-index 17787fd693..be9d0f5c05 100644
---- a/target/riscv/cpu_bits.h
-+++ b/target/riscv/cpu_bits.h
-@@ -643,6 +643,7 @@ typedef enum {
- /* RNMI mnstatus CSR mask */
- #define MNSTATUS_NMIE       0x00000008
- #define MNSTATUS_MNPV       0x00000080
-+#define MNSTATUS_MNPELP     0x00000200
- #define MNSTATUS_MNPP       0x00001800
- 
- /* VM modes (satp.mode) privileged ISA 1.10 */
-diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
-index e5ffbbbd83..1fb1e31031 100644
---- a/target/riscv/cpu_helper.c
-+++ b/target/riscv/cpu_helper.c
-@@ -1918,6 +1918,10 @@ void riscv_cpu_do_interrupt(CPUState *cs)
-         env->mnepc = env->pc;
-         env->pc = env->rnmi_irqvec;
- 
-+        if (cpu_get_fcfien(env)) {
-+            env->mnstatus = set_field(env->mnstatus, MNSTATUS_MNPELP, env->elp);
-+        }
+diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
+index 3480767b35..f3fb1c432b 100644
+--- a/target/riscv/tcg/tcg-cpu.c
++++ b/target/riscv/tcg/tcg-cpu.c
+@@ -1429,6 +1429,12 @@ static void riscv_init_max_cpu_extensions(Object *obj)
+     if (env->misa_mxl != MXL_RV32) {
+         isa_ext_update_enabled(cpu, CPU_CFG_OFFSET(ext_zcf), false);
+     }
 +
-         /* Trapping to M mode, virt is disabled */
-         riscv_cpu_set_mode(env, PRV_M, false);
- 
-@@ -2085,7 +2089,12 @@ void riscv_cpu_do_interrupt(CPUState *cs)
-         /* handle the trap in M-mode */
-         /* save elp status */
-         if (cpu_get_fcfien(env)) {
--            env->mstatus = set_field(env->mstatus, MSTATUS_MPELP, env->elp);
-+            if (nnmi_excep) {
-+                env->mnstatus = set_field(env->mnstatus, MNSTATUS_MNPELP,
-+                                          env->elp);
-+            } else {
-+                env->mstatus = set_field(env->mstatus, MSTATUS_MPELP, env->elp);
-+            }
-         }
- 
-         if (riscv_has_ext(env, RVH)) {
-diff --git a/target/riscv/op_helper.c b/target/riscv/op_helper.c
-index 63ec53e992..a4b625fcd9 100644
---- a/target/riscv/op_helper.c
-+++ b/target/riscv/op_helper.c
-@@ -402,6 +402,15 @@ target_ulong helper_mnret(CPURISCVState *env)
- 
-     riscv_cpu_set_mode(env, prev_priv, prev_virt);
- 
 +    /*
-+     * If forward cfi enabled for new priv, restore elp status
-+     * and clear mnpelp in mnstatus
++     * ext_smrnmi requires OpenSBI changes that our current
++     * image does not have. Disable it for now.
 +     */
-+    if (cpu_get_fcfien(env)) {
-+        env->elp = get_field(env->mnstatus, MNSTATUS_MNPELP);
-+    }
-+    env->mnstatus = set_field(env->mnstatus, MNSTATUS_MNPELP, 0);
-+
-     return retpc;
++    isa_ext_update_enabled(cpu, CPU_CFG_OFFSET(ext_smrnmi), false);
  }
  
+ static bool riscv_cpu_has_max_extensions(Object *cpu_obj)
 -- 
 2.34.1
 
