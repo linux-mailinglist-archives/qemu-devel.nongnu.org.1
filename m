@@ -2,83 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEAA79F46BF
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Dec 2024 10:01:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 81CB89F46DE
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Dec 2024 10:08:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tNTS6-0003R5-FW; Tue, 17 Dec 2024 04:01:14 -0500
+	id 1tNTY9-0008Pe-KV; Tue, 17 Dec 2024 04:07:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <baturo.alexey@gmail.com>)
- id 1tNTRg-0003Mb-QJ; Tue, 17 Dec 2024 04:00:49 -0500
-Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
+ (Exim 4.90_1) (envelope-from <cleger@rivosinc.com>)
+ id 1tNTXy-0008Ju-Dm
+ for qemu-devel@nongnu.org; Tue, 17 Dec 2024 04:07:19 -0500
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <baturo.alexey@gmail.com>)
- id 1tNTRd-0000cG-Pc; Tue, 17 Dec 2024 04:00:48 -0500
-Received: by mail-ej1-x62f.google.com with SMTP id
- a640c23a62f3a-aa543c4db92so1011945866b.0; 
- Tue, 17 Dec 2024 01:00:44 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <cleger@rivosinc.com>)
+ id 1tNTXu-0001VZ-2h
+ for qemu-devel@nongnu.org; Tue, 17 Dec 2024 04:07:17 -0500
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-43622354a3eso34966865e9.1
+ for <qemu-devel@nongnu.org>; Tue, 17 Dec 2024 01:07:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1734426043; x=1735030843; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=+LzTP/3ziMWZyIgIt6J9ELxiRIaifAzMwsXoTIUOeYw=;
- b=Th1VVqt2epLB+ZBGbyZXA+W9GPsuLVtU+woRt49wKno72BNpWWS35aWRPhFZbcf45H
- bQ1I6WAhmNPDdFeIl8P0JsVtGcvqzykXe/4F+H+e232XVT4rpSwm+GmK240vsG99xSxu
- +acqCA+6FP5AToqClQecSbDQpij57oV2CiJK/LlU1e7phjOMr7AFl/t0IM5R+4Qp7qwV
- nrC5EC9vJgbz+1FQkZUjTmAiNf0ve/ypCz2lJjCbsgJoq4hrK+49nrYzhCHEIelbcujN
- W2kA5qEvIbZy4wg3krjKTvCyCoFZCVuZkh4HQBtebz1KEmcTGO4G+ci0AScFtxEO9QzL
- Txjw==
+ d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1734426431; x=1735031231;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=NOHHINvhoRfGxvFe05+iuh9d4d/E1jsYWXcrC0439Bg=;
+ b=LfZysxziJFKsayFG00aOJTdi0MNZG5jOPICQuvz6uY04AAyxzmy05IWVKT78K/zzvI
+ LKtFYOgi/sCBWniSoaTi2P0cKurm08ZOxPzas9ZWevHpto6KtHsaxB/ZjRLwSJY3QHQ4
+ wymUZAMT6wRLZGRRDZ0TfcE5nw33SdAOlfgJblM87waxvfJPQoZIUAml3W9vy62Cvziz
+ mcAx1LbWleVsM82Fl8Vcc/8+BDoouGTkbYzzXp1+SF/JSQ/D4d9ZpTDOtnVWAFaifBKq
+ b+cD1dcaHIDBQCfVzKxxrGkg2O9H6bcQo/TmODmWKMjp4xh6OkveE0QyBmii/s60kZec
+ n+NQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734426043; x=1735030843;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20230601; t=1734426431; x=1735031231;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=+LzTP/3ziMWZyIgIt6J9ELxiRIaifAzMwsXoTIUOeYw=;
- b=Zz3+sZvKpz1lOh9jeLJjJGUqlB0yvaa3qILO98tpl07Sw9pFQybLWnDACkkFECH5Z0
- VSi5nBUUfYVuNXaspH6pWup04PxJYDGk8I6C6bYKkRyNhCtKk7TwVTEtRFRe1tlrJOip
- ct7jVvu1UzQeAHHZvhMVme42mfhbp32rBQolAFdddxdQA0Sbd7joxjwZxBAf6dD4s03m
- qWGXfrK71YPiqIeyQi72UcJXUf1XVpcIeZkj1M144qDeLOOBD4Bz39dd/MWB37j8xQSp
- r3NwitTuDAWYSJc2MMMszFSQZxgpxmENhBOSqqvR8oeF5c6+LYeqRYfoeSi53t8KoA2Q
- Ltpw==
+ bh=NOHHINvhoRfGxvFe05+iuh9d4d/E1jsYWXcrC0439Bg=;
+ b=chYwb+1N8nItq7dDzklQGs9TQu8k7A8E4rCsByVu+GW7YzIzCYy4MyYDCm1obzT7o+
+ k9/OD0W9V+anmB3DujeqDj/8ffvGY53gPB+a2r2f1ipda1IF+bTfBmS9oFOahP7N4aYJ
+ gBXg1l/RaxL/X7NcYzkk8ke7eiWuBBOtJImDpBE3kXWwhiwjPm3TwOTZG4miHIDBYyqC
+ HdL3kupsf5uBa3QwnGnbO+jIzUrpF3JokAq2MbKypeLJrRRAwaSY1ds6ViqhxYvjjML4
+ 7bkAE2TcRlmzUULCJffbM550/68TW+d08qhjEZxBjoQv5cYOzcL5xpWj0lfQYALIDEZ6
+ npBw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXquonQEplMwmoxcC3vva0vgEqcmAO6DfdaTBSI5M/9yxxKmwSrsmP9a4Kc11EExEoQCWBIi5n2CPS+@nongnu.org,
- AJvYcCXueTwILho//EpOfDXn57KFP0hfP4XaNwPEuCtOPj8eTlmPYeBnKOljmqUd3kbVssod+CorBnrKNpUyHA==@nongnu.org
-X-Gm-Message-State: AOJu0Yzv1d7/EssY62MUT86qKP1kar/IdmV3E5Qx+68GWZs+1zNpYJ0M
- Z3nwB2Sog44tzNxW4VEb/M6XQEuLFrve3BziDcGgBZiOX8jQJRNF40O0Hg9QokD7bTcYITA60Ph
- Rcdz3ZKkYJ0E2CtyLh07I0R9VS6M=
-X-Gm-Gg: ASbGncuiDqd5zh3OtnsXuhX6zZReZkldW4pMKxR14OwlXVE5HxCGJx3Y46/vLsPdDQO
- NL538BtpsHb1mfG6S58jvdxGQgoG3+s6vtcifwQ==
-X-Google-Smtp-Source: AGHT+IHNfeR2QAgCUWM9CY6Dyjs94vp09Cn+HT/EidpRBHnlEhrC9mBl6fmCstv5gHaaHqGf+FD8Hy13vhdHeZjX7s0=
-X-Received: by 2002:a17:906:d552:b0:aa6:4494:e354 with SMTP id
- a640c23a62f3a-aab77e7b8d0mr1458869766b.42.1734426043249; Tue, 17 Dec 2024
- 01:00:43 -0800 (PST)
+ AJvYcCV+qoTIvMjpvzyY5cLlCTRjtob+vcPcInIhoUhDQSS++g9oqyXLjXF2dbSM9RSdf/goHsx13Z3s8Ahb@nongnu.org
+X-Gm-Message-State: AOJu0Yw1eOXpArsQZfZXTBOd3bY73VnbYwS00izmSRTdigbpCT5ULEbR
+ PTSL+NFktIBWnmRqQTxBbLWtC6aGc7lgLl5T88V5JZzaXhQeyFFCkwiI8nRJILI=
+X-Gm-Gg: ASbGncsN8gaK0/QH5Eks6Y5b1jRlXfZmQ2miEXXjzkROuzpSDshTjGMm0MGP6W2/ypX
+ 1H8QAc/UUWCGek1R+4skDg7ZakyI2eWY+kTlK8cu4Qe0dCkSS+5f0MmhNJvHoaUVh5KfAduikzK
+ IYbbHnIg5JcgVH4xih3D9tiEuoSei3ZytWdJ+7hJn7ZtanMTtqn+p5RpL+XV3FT0gNGWRKva5Hj
+ bMUUmn4bG4szlf6tAN1iTdiv1mh4kr9ugpWV38NuGqNf5LOj2EzyvXn7A==
+X-Google-Smtp-Source: AGHT+IESBxyRbP2Oy9/2jnhACm+d+wQWQ+pf6mLxJVKYzHObFs0wzs+XOysrdFfWjBtNTJVnX4juuw==
+X-Received: by 2002:a5d:47a9:0:b0:386:34cb:37b with SMTP id
+ ffacd0b85a97d-3888e0c15f1mr12565454f8f.56.1734426430735; 
+ Tue, 17 Dec 2024 01:07:10 -0800 (PST)
+Received: from carbon-x1.. ([2a01:e0a:e17:9700:16d2:7456:6634:9626])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-388c8046c46sm10704122f8f.71.2024.12.17.01.07.09
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 17 Dec 2024 01:07:10 -0800 (PST)
+From: =?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <cleger@rivosinc.com>
+To: qemu-riscv@nongnu.org, Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Bin Meng <bin.meng@windriver.com>
+Cc: =?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <cleger@rivosinc.com>,
+ Weiwei Li <liwei1518@gmail.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Ved Shanbhogue <ved@rivosinc.com>, Atish Patra <atishp@rivosinc.com>,
+ qemu-devel@nongnu.org, Frank Chang <frank.chang@sifive.com>
+Subject: [PATCH v7 0/9] target/riscv: Add support for Smdbltrp and Ssdbltrp
+ extensions
+Date: Tue, 17 Dec 2024 10:06:56 +0100
+Message-ID: <20241217090707.3511160-1-cleger@rivosinc.com>
+X-Mailer: git-send-email 2.45.2
 MIME-Version: 1.0
-References: <20241216121907.660504-1-baturo.alexey@gmail.com>
- <20241216121907.660504-7-baturo.alexey@gmail.com>
- <CAKmqyKMSmjJ5953vDcyDzwoYrk1CpBgYZ2yoGxQ80CYdXevhcQ@mail.gmail.com>
-In-Reply-To: <CAKmqyKMSmjJ5953vDcyDzwoYrk1CpBgYZ2yoGxQ80CYdXevhcQ@mail.gmail.com>
-From: Alexey Baturo <baturo.alexey@gmail.com>
-Date: Tue, 17 Dec 2024 12:00:32 +0300
-Message-ID: <CAFukJ-DFHzxNrf1xXVGOfSv7oHcxTr1e68PFpnbsH1iWV8a3jg@mail.gmail.com>
-Subject: Re: [PATCH v13 6/7] target/riscv: Apply pointer masking for
- virtualized memory accesses
-To: Alistair Francis <alistair23@gmail.com>
-Cc: richard.henderson@linaro.org, zhiwei_liu@linux.alibaba.com, 
- dbarboza@ventanamicro.com, liwei1518@gmail.com, frank.chang@sifive.com, 
- palmer@dabbelt.com, Alistair.Francis@wdc.com, sagark@eecs.berkeley.edu, 
- kbastian@mail.uni-paderborn.de, qemu-devel@nongnu.org, qemu-riscv@nongnu.org
-Content-Type: multipart/alternative; boundary="000000000000328122062973886d"
-Received-SPF: pass client-ip=2a00:1450:4864:20::62f;
- envelope-from=baturo.alexey@gmail.com; helo=mail-ej1-x62f.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=cleger@rivosinc.com; helo=mail-wm1-x330.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,590 +103,209 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000328122062973886d
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+A double trap typically arises during a sensitive phase in trap handling
+operations — when an exception or interrupt occurs while the trap
+handler (the component responsible for managing these events) is in a
+non-reentrant state. This non-reentrancy usually occurs in the early
+phase of trap handling, wherein the trap handler has not yet preserved
+the necessary state to handle and resume from the trap. The occurrence
+of such event is unlikely but can happen when dealing with hardware
+errors.
 
-Hi Alistair,
+This series adds support for Ssdbltrp and Smdbltrp ratified ISA
+extensions [1]. It is based on the Smrnmi series [5].
 
-Thanks for the review. I've tried to address your comments and submitted a
-new version.
-Could you please take a look if it's ok with you and if so, could you
-please put these patches to the queue for the next qemu update?
+Ssdbltrp can be tested using qemu[2], opensbi (master branch), linux[3] and
+kvm-unit-tests[4]. Assuming you have a riscv environment available and
+configured (CROSS_COMPILE), it can be built for riscv64 using the
+following instructions:
 
-Thanks!
+Qemu:
+  $ git clone https://github.com/rivosinc/qemu.git
+  $ cd qemu
+  $ git switch -C dbltrp_v6 dev/cleger/dbltrp_v6
+  $ mkdir build && cd build
+  $ ../configure --target-list=riscv64-softmmu
+  $ make
 
-=D0=B2=D1=82, 17 =D0=B4=D0=B5=D0=BA. 2024=E2=80=AF=D0=B3. =D0=B2 09:13, Ali=
-stair Francis <alistair23@gmail.com>:
+OpenSBI:
+  $ git clone https://github.com/rivosinc/opensbi.git
+  $ cd opensbi
+  $ make O=build PLATFORM_RISCV_XLEN=64 PLATFORM=generic
 
-> On Mon, Dec 16, 2024 at 10:19=E2=80=AFPM <baturo.alexey@gmail.com> wrote:
-> >
-> > From: Alexey Baturo <baturo.alexey@gmail.com>
-> >
-> > Signed-off-by: Alexey Baturo <baturo.alexey@gmail.com>
-> > ---
-> >  target/riscv/cpu.h           |  1 +
-> >  target/riscv/cpu_helper.c    | 18 +++++++++++++++
-> >  target/riscv/internals.h     | 44 ++++++++++++++++++++++++++++++++++++
-> >  target/riscv/op_helper.c     | 16 ++++++-------
-> >  target/riscv/vector_helper.c | 21 -----------------
-> >  5 files changed, 71 insertions(+), 29 deletions(-)
-> >
-> > diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-> > index 38231fe21e..536ad20fdd 100644
-> > --- a/target/riscv/cpu.h
-> > +++ b/target/riscv/cpu.h
-> > @@ -773,6 +773,7 @@ bool riscv_cpu_is_32bit(RISCVCPU *cpu);
-> >
-> >  bool riscv_cpu_virt_mem_enabled(CPURISCVState *env);
-> >  RISCVPmPmm riscv_pm_get_pmm(CPURISCVState *env);
-> > +RISCVPmPmm riscv_pm_get_virt_pmm(CPURISCVState *env);
-> >  uint32_t riscv_pm_get_pmlen(RISCVPmPmm pmm);
-> >
-> >  RISCVException riscv_csrr(CPURISCVState *env, int csrno,
-> > diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
-> > index 480d2c2c8b..471d8d40a1 100644
-> > --- a/target/riscv/cpu_helper.c
-> > +++ b/target/riscv/cpu_helper.c
-> > @@ -260,6 +260,24 @@ RISCVPmPmm riscv_pm_get_pmm(CPURISCVState *env)
-> >      return pmm;
-> >  }
-> >
-> > +RISCVPmPmm riscv_pm_get_virt_pmm(CPURISCVState *env)
-> > +{
-> > +    RISCVPmPmm pmm =3D PMM_FIELD_DISABLED;
-> > +#ifndef CONFIG_USER_ONLY
-> > +    int priv_mode =3D cpu_address_mode(env);
-> > +    if (priv_mode =3D=3D PRV_U) {
-> > +        pmm =3D get_field(env->hstatus, HSTATUS_HUPMM);
-> > +    } else {
-> > +        if (get_field(env->hstatus, HSTATUS_SPVP)) {
-> > +            pmm =3D get_field(env->henvcfg, HENVCFG_PMM);
-> > +        } else {
-> > +            pmm =3D get_field(env->senvcfg, SENVCFG_PMM);
-> > +        }
-> > +    }
-> > +#endif
-> > +    return pmm;
-> > +}
-> > +
-> >  bool riscv_cpu_virt_mem_enabled(CPURISCVState *env)
-> >  {
-> >      bool virt_mem_en =3D false;
-> > diff --git a/target/riscv/internals.h b/target/riscv/internals.h
-> > index ddbdee885b..017f33af1f 100644
-> > --- a/target/riscv/internals.h
-> > +++ b/target/riscv/internals.h
-> > @@ -142,4 +142,48 @@ static inline float16 check_nanbox_h(CPURISCVState
-> *env, uint64_t f)
-> >  /* Our implementation of CPUClass::has_work */
-> >  bool riscv_cpu_has_work(CPUState *cs);
-> >
-> > +/* Zjpm addr masking routine */
-> > +static inline target_ulong adjust_addr_body(CPURISCVState *env,
-> > +                                            target_ulong addr,
-> > +                                            bool is_virt)
->
-> Maybe is_virt_addr to be clear it's an address and not hypervisor
-> virtulisation.
->
-> > +{
-> > +    if (riscv_cpu_mxl(env) =3D=3D MXL_RV32) {
-> > +        return addr;
-> > +    }
-> > +    RISCVPmPmm pmm =3D PMM_FIELD_DISABLED;
->
-> Same comment about mixed code and declarations and some newlines would
-> be great :)
->
-> > +    if (is_virt) {
-> > +        pmm =3D riscv_pm_get_virt_pmm(env);
-> > +    } else {
-> > +        pmm =3D riscv_pm_get_pmm(env);
-> > +    }
-> > +    if (pmm =3D=3D PMM_FIELD_DISABLED) {
-> > +        return addr;
-> > +    }
-> > +    uint32_t pmlen =3D riscv_pm_get_pmlen(pmm);
-> > +    bool signext =3D false;
-> > +    if (!is_virt) {
-> > +        signext =3D riscv_cpu_virt_mem_enabled(env);
-> > +    }
-> > +    addr =3D addr << pmlen;
-> > +    /* sign/zero extend masked address by N-1 bit */
-> > +    if (signext) {
-> > +        addr =3D (target_long)addr >> pmlen;
-> > +    } else {
-> > +        addr =3D addr >> pmlen;
-> > +    }
-> > +    return addr;
-> > +}
-> > +
-> > +static inline target_ulong adjust_addr(CPURISCVState *env,
-> > +                                       target_ulong addr)
-> > +{
-> > +    return adjust_addr_body(env, addr, false);
-> > +}
-> > +
-> > +static inline target_ulong adjust_addr_virt(CPURISCVState *env,
-> > +                                            target_ulong addr)
-> > +{
-> > +    return adjust_addr_body(env, addr, true);
-> > +}
->
-> Otherwise looks good
->
-> Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
->
-> Alistair
->
-> > +
-> >  #endif
-> > diff --git a/target/riscv/op_helper.c b/target/riscv/op_helper.c
-> > index eddedacf4b..20e5bd5088 100644
-> > --- a/target/riscv/op_helper.c
-> > +++ b/target/riscv/op_helper.c
-> > @@ -472,7 +472,7 @@ target_ulong helper_hyp_hlv_bu(CPURISCVState *env,
-> target_ulong addr)
-> >      int mmu_idx =3D check_access_hlsv(env, false, ra);
-> >      MemOpIdx oi =3D make_memop_idx(MO_UB, mmu_idx);
-> >
-> > -    return cpu_ldb_mmu(env, addr, oi, ra);
-> > +    return cpu_ldb_mmu(env, adjust_addr_virt(env, addr), oi, ra);
-> >  }
-> >
-> >  target_ulong helper_hyp_hlv_hu(CPURISCVState *env, target_ulong addr)
-> > @@ -481,7 +481,7 @@ target_ulong helper_hyp_hlv_hu(CPURISCVState *env,
-> target_ulong addr)
-> >      int mmu_idx =3D check_access_hlsv(env, false, ra);
-> >      MemOpIdx oi =3D make_memop_idx(MO_TEUW, mmu_idx);
-> >
-> > -    return cpu_ldw_mmu(env, addr, oi, ra);
-> > +    return cpu_ldw_mmu(env, adjust_addr_virt(env, addr), oi, ra);
-> >  }
-> >
-> >  target_ulong helper_hyp_hlv_wu(CPURISCVState *env, target_ulong addr)
-> > @@ -490,7 +490,7 @@ target_ulong helper_hyp_hlv_wu(CPURISCVState *env,
-> target_ulong addr)
-> >      int mmu_idx =3D check_access_hlsv(env, false, ra);
-> >      MemOpIdx oi =3D make_memop_idx(MO_TEUL, mmu_idx);
-> >
-> > -    return cpu_ldl_mmu(env, addr, oi, ra);
-> > +    return cpu_ldl_mmu(env, adjust_addr_virt(env, addr), oi, ra);
-> >  }
-> >
-> >  target_ulong helper_hyp_hlv_d(CPURISCVState *env, target_ulong addr)
-> > @@ -499,7 +499,7 @@ target_ulong helper_hyp_hlv_d(CPURISCVState *env,
-> target_ulong addr)
-> >      int mmu_idx =3D check_access_hlsv(env, false, ra);
-> >      MemOpIdx oi =3D make_memop_idx(MO_TEUQ, mmu_idx);
-> >
-> > -    return cpu_ldq_mmu(env, addr, oi, ra);
-> > +    return cpu_ldq_mmu(env, adjust_addr_virt(env, addr), oi, ra);
-> >  }
-> >
-> >  void helper_hyp_hsv_b(CPURISCVState *env, target_ulong addr,
-> target_ulong val)
-> > @@ -508,7 +508,7 @@ void helper_hyp_hsv_b(CPURISCVState *env,
-> target_ulong addr, target_ulong val)
-> >      int mmu_idx =3D check_access_hlsv(env, false, ra);
-> >      MemOpIdx oi =3D make_memop_idx(MO_UB, mmu_idx);
-> >
-> > -    cpu_stb_mmu(env, addr, val, oi, ra);
-> > +    cpu_stb_mmu(env, adjust_addr_virt(env, addr), val, oi, ra);
-> >  }
-> >
-> >  void helper_hyp_hsv_h(CPURISCVState *env, target_ulong addr,
-> target_ulong val)
-> > @@ -517,7 +517,7 @@ void helper_hyp_hsv_h(CPURISCVState *env,
-> target_ulong addr, target_ulong val)
-> >      int mmu_idx =3D check_access_hlsv(env, false, ra);
-> >      MemOpIdx oi =3D make_memop_idx(MO_TEUW, mmu_idx);
-> >
-> > -    cpu_stw_mmu(env, addr, val, oi, ra);
-> > +    cpu_stw_mmu(env, adjust_addr_virt(env, addr), val, oi, ra);
-> >  }
-> >
-> >  void helper_hyp_hsv_w(CPURISCVState *env, target_ulong addr,
-> target_ulong val)
-> > @@ -526,7 +526,7 @@ void helper_hyp_hsv_w(CPURISCVState *env,
-> target_ulong addr, target_ulong val)
-> >      int mmu_idx =3D check_access_hlsv(env, false, ra);
-> >      MemOpIdx oi =3D make_memop_idx(MO_TEUL, mmu_idx);
-> >
-> > -    cpu_stl_mmu(env, addr, val, oi, ra);
-> > +    cpu_stl_mmu(env, adjust_addr_virt(env, addr), val, oi, ra);
-> >  }
-> >
-> >  void helper_hyp_hsv_d(CPURISCVState *env, target_ulong addr,
-> target_ulong val)
-> > @@ -535,7 +535,7 @@ void helper_hyp_hsv_d(CPURISCVState *env,
-> target_ulong addr, target_ulong val)
-> >      int mmu_idx =3D check_access_hlsv(env, false, ra);
-> >      MemOpIdx oi =3D make_memop_idx(MO_TEUQ, mmu_idx);
-> >
-> > -    cpu_stq_mmu(env, addr, val, oi, ra);
-> > +    cpu_stq_mmu(env, adjust_addr_virt(env, addr), val, oi, ra);
-> >  }
-> >
-> >  /*
-> > diff --git a/target/riscv/vector_helper.c b/target/riscv/vector_helper.=
-c
-> > index 37c6c198a5..a0093bcc9c 100644
-> > --- a/target/riscv/vector_helper.c
-> > +++ b/target/riscv/vector_helper.c
-> > @@ -105,27 +105,6 @@ static inline uint32_t vext_max_elems(uint32_t
-> desc, uint32_t log2_esz)
-> >      return scale < 0 ? vlenb >> -scale : vlenb << scale;
-> >  }
-> >
-> > -static inline target_ulong adjust_addr(CPURISCVState *env, target_ulon=
-g
-> addr)
-> > -{
-> > -    if (riscv_cpu_mxl(env) =3D=3D MXL_RV32) {
-> > -        return addr;
-> > -    }
-> > -    RISCVPmPmm pmm =3D riscv_pm_get_pmm(env);
-> > -    if (pmm =3D=3D PMM_FIELD_DISABLED) {
-> > -        return addr;
-> > -    }
-> > -    int pmlen =3D riscv_pm_get_pmlen(pmm);
-> > -    bool signext =3D riscv_cpu_virt_mem_enabled(env);
-> > -    addr =3D addr << pmlen;
-> > -    /* sign/zero extend masked address by N-1 bit */
-> > -    if (signext) {
-> > -        addr =3D (target_long)addr >> pmlen;
-> > -    } else {
-> > -        addr =3D addr >> pmlen;
-> > -    }
-> > -    return addr;
-> > -}
-> > -
-> >  /*
-> >   * This function checks watchpoint before real load operation.
-> >   *
-> > --
-> > 2.39.5
-> >
->
+Linux:
+  $ git clone https://github.com/rivosinc/linux.git
+  $ cd linux
+  $ git switch -C dbltrp_v1 dev/cleger/dbltrp_v1
+  $ export ARCH=riscv
+  $ make O=build defconfig
+  $ ./script/config --file build/.config --enable RISCV_DBLTRP
+  $ make O=build
 
---000000000000328122062973886d
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+kvm-unit-tests:
+  $ git clone https://github.com/clementleger/kvm-unit-tests.git
+  $ cd kvm-unit-tests
+  $ git switch -C dbltrp_v1 dev/cleger/dbltrp_v1
+  $ ./configure --arch=riscv64 --cross-prefix=$CROSS_COMPILE
+  $ make
 
-<div dir=3D"ltr">Hi Alistair,<div><br></div><div>Thanks for the review. I&#=
-39;ve tried to address your comments and submitted a new version.</div><div=
->Could you please take a look if it&#39;s ok with you and if so, could you =
-please put these patches to the queue for the next qemu update?</div><div><=
-br></div><div>Thanks!</div></div><br><div class=3D"gmail_quote gmail_quote_=
-container"><div dir=3D"ltr" class=3D"gmail_attr">=D0=B2=D1=82, 17 =D0=B4=D0=
-=B5=D0=BA. 2024=E2=80=AF=D0=B3. =D0=B2 09:13, Alistair Francis &lt;<a href=
-=3D"mailto:alistair23@gmail.com">alistair23@gmail.com</a>&gt;:<br></div><bl=
-ockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-lef=
-t:1px solid rgb(204,204,204);padding-left:1ex">On Mon, Dec 16, 2024 at 10:1=
-9=E2=80=AFPM &lt;<a href=3D"mailto:baturo.alexey@gmail.com" target=3D"_blan=
-k">baturo.alexey@gmail.com</a>&gt; wrote:<br>
-&gt;<br>
-&gt; From: Alexey Baturo &lt;<a href=3D"mailto:baturo.alexey@gmail.com" tar=
-get=3D"_blank">baturo.alexey@gmail.com</a>&gt;<br>
-&gt;<br>
-&gt; Signed-off-by: Alexey Baturo &lt;<a href=3D"mailto:baturo.alexey@gmail=
-.com" target=3D"_blank">baturo.alexey@gmail.com</a>&gt;<br>
-&gt; ---<br>
-&gt;=C2=A0 target/riscv/cpu.h=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0|=C2=
-=A0 1 +<br>
-&gt;=C2=A0 target/riscv/cpu_helper.c=C2=A0 =C2=A0 | 18 +++++++++++++++<br>
-&gt;=C2=A0 target/riscv/internals.h=C2=A0 =C2=A0 =C2=A0| 44 +++++++++++++++=
-+++++++++++++++++++++<br>
-&gt;=C2=A0 target/riscv/op_helper.c=C2=A0 =C2=A0 =C2=A0| 16 ++++++-------<b=
-r>
-&gt;=C2=A0 target/riscv/vector_helper.c | 21 -----------------<br>
-&gt;=C2=A0 5 files changed, 71 insertions(+), 29 deletions(-)<br>
-&gt;<br>
-&gt; diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h<br>
-&gt; index 38231fe21e..536ad20fdd 100644<br>
-&gt; --- a/target/riscv/cpu.h<br>
-&gt; +++ b/target/riscv/cpu.h<br>
-&gt; @@ -773,6 +773,7 @@ bool riscv_cpu_is_32bit(RISCVCPU *cpu);<br>
-&gt;<br>
-&gt;=C2=A0 bool riscv_cpu_virt_mem_enabled(CPURISCVState *env);<br>
-&gt;=C2=A0 RISCVPmPmm riscv_pm_get_pmm(CPURISCVState *env);<br>
-&gt; +RISCVPmPmm riscv_pm_get_virt_pmm(CPURISCVState *env);<br>
-&gt;=C2=A0 uint32_t riscv_pm_get_pmlen(RISCVPmPmm pmm);<br>
-&gt;<br>
-&gt;=C2=A0 RISCVException riscv_csrr(CPURISCVState *env, int csrno,<br>
-&gt; diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c<br>
-&gt; index 480d2c2c8b..471d8d40a1 100644<br>
-&gt; --- a/target/riscv/cpu_helper.c<br>
-&gt; +++ b/target/riscv/cpu_helper.c<br>
-&gt; @@ -260,6 +260,24 @@ RISCVPmPmm riscv_pm_get_pmm(CPURISCVState *env)<b=
-r>
-&gt;=C2=A0 =C2=A0 =C2=A0 return pmm;<br>
-&gt;=C2=A0 }<br>
-&gt;<br>
-&gt; +RISCVPmPmm riscv_pm_get_virt_pmm(CPURISCVState *env)<br>
-&gt; +{<br>
-&gt; +=C2=A0 =C2=A0 RISCVPmPmm pmm =3D PMM_FIELD_DISABLED;<br>
-&gt; +#ifndef CONFIG_USER_ONLY<br>
-&gt; +=C2=A0 =C2=A0 int priv_mode =3D cpu_address_mode(env);<br>
-&gt; +=C2=A0 =C2=A0 if (priv_mode =3D=3D PRV_U) {<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 pmm =3D get_field(env-&gt;hstatus, HSTATU=
-S_HUPMM);<br>
-&gt; +=C2=A0 =C2=A0 } else {<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 if (get_field(env-&gt;hstatus, HSTATUS_SP=
-VP)) {<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 pmm =3D get_field(env-&gt;h=
-envcfg, HENVCFG_PMM);<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 } else {<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 pmm =3D get_field(env-&gt;s=
-envcfg, SENVCFG_PMM);<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 }<br>
-&gt; +=C2=A0 =C2=A0 }<br>
-&gt; +#endif<br>
-&gt; +=C2=A0 =C2=A0 return pmm;<br>
-&gt; +}<br>
-&gt; +<br>
-&gt;=C2=A0 bool riscv_cpu_virt_mem_enabled(CPURISCVState *env)<br>
-&gt;=C2=A0 {<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 bool virt_mem_en =3D false;<br>
-&gt; diff --git a/target/riscv/internals.h b/target/riscv/internals.h<br>
-&gt; index ddbdee885b..017f33af1f 100644<br>
-&gt; --- a/target/riscv/internals.h<br>
-&gt; +++ b/target/riscv/internals.h<br>
-&gt; @@ -142,4 +142,48 @@ static inline float16 check_nanbox_h(CPURISCVStat=
-e *env, uint64_t f)<br>
-&gt;=C2=A0 /* Our implementation of CPUClass::has_work */<br>
-&gt;=C2=A0 bool riscv_cpu_has_work(CPUState *cs);<br>
-&gt;<br>
-&gt; +/* Zjpm addr masking routine */<br>
-&gt; +static inline target_ulong adjust_addr_body(CPURISCVState *env,<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 target_ulong addr,<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 bool is_virt)<br>
-<br>
-Maybe is_virt_addr to be clear it&#39;s an address and not hypervisor virtu=
-lisation.<br>
-<br>
-&gt; +{<br>
-&gt; +=C2=A0 =C2=A0 if (riscv_cpu_mxl(env) =3D=3D MXL_RV32) {<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 return addr;<br>
-&gt; +=C2=A0 =C2=A0 }<br>
-&gt; +=C2=A0 =C2=A0 RISCVPmPmm pmm =3D PMM_FIELD_DISABLED;<br>
-<br>
-Same comment about mixed code and declarations and some newlines would<br>
-be great :)<br>
-<br>
-&gt; +=C2=A0 =C2=A0 if (is_virt) {<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 pmm =3D riscv_pm_get_virt_pmm(env);<br>
-&gt; +=C2=A0 =C2=A0 } else {<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 pmm =3D riscv_pm_get_pmm(env);<br>
-&gt; +=C2=A0 =C2=A0 }<br>
-&gt; +=C2=A0 =C2=A0 if (pmm =3D=3D PMM_FIELD_DISABLED) {<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 return addr;<br>
-&gt; +=C2=A0 =C2=A0 }<br>
-&gt; +=C2=A0 =C2=A0 uint32_t pmlen =3D riscv_pm_get_pmlen(pmm);<br>
-&gt; +=C2=A0 =C2=A0 bool signext =3D false;<br>
-&gt; +=C2=A0 =C2=A0 if (!is_virt) {<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 signext =3D riscv_cpu_virt_mem_enabled(en=
-v);<br>
-&gt; +=C2=A0 =C2=A0 }<br>
-&gt; +=C2=A0 =C2=A0 addr =3D addr &lt;&lt; pmlen;<br>
-&gt; +=C2=A0 =C2=A0 /* sign/zero extend masked address by N-1 bit */<br>
-&gt; +=C2=A0 =C2=A0 if (signext) {<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 addr =3D (target_long)addr &gt;&gt; pmlen=
-;<br>
-&gt; +=C2=A0 =C2=A0 } else {<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 addr =3D addr &gt;&gt; pmlen;<br>
-&gt; +=C2=A0 =C2=A0 }<br>
-&gt; +=C2=A0 =C2=A0 return addr;<br>
-&gt; +}<br>
-&gt; +<br>
-&gt; +static inline target_ulong adjust_addr(CPURISCVState *env,<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0targe=
-t_ulong addr)<br>
-&gt; +{<br>
-&gt; +=C2=A0 =C2=A0 return adjust_addr_body(env, addr, false);<br>
-&gt; +}<br>
-&gt; +<br>
-&gt; +static inline target_ulong adjust_addr_virt(CPURISCVState *env,<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 target_ulong addr)<br>
-&gt; +{<br>
-&gt; +=C2=A0 =C2=A0 return adjust_addr_body(env, addr, true);<br>
-&gt; +}<br>
-<br>
-Otherwise looks good<br>
-<br>
-Reviewed-by: Alistair Francis &lt;<a href=3D"mailto:alistair.francis@wdc.co=
-m" target=3D"_blank">alistair.francis@wdc.com</a>&gt;<br>
-<br>
-Alistair<br>
-<br>
-&gt; +<br>
-&gt;=C2=A0 #endif<br>
-&gt; diff --git a/target/riscv/op_helper.c b/target/riscv/op_helper.c<br>
-&gt; index eddedacf4b..20e5bd5088 100644<br>
-&gt; --- a/target/riscv/op_helper.c<br>
-&gt; +++ b/target/riscv/op_helper.c<br>
-&gt; @@ -472,7 +472,7 @@ target_ulong helper_hyp_hlv_bu(CPURISCVState *env,=
- target_ulong addr)<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 int mmu_idx =3D check_access_hlsv(env, false, ra);=
-<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 MemOpIdx oi =3D make_memop_idx(MO_UB, mmu_idx);<br=
->
-&gt;<br>
-&gt; -=C2=A0 =C2=A0 return cpu_ldb_mmu(env, addr, oi, ra);<br>
-&gt; +=C2=A0 =C2=A0 return cpu_ldb_mmu(env, adjust_addr_virt(env, addr), oi=
-, ra);<br>
-&gt;=C2=A0 }<br>
-&gt;<br>
-&gt;=C2=A0 target_ulong helper_hyp_hlv_hu(CPURISCVState *env, target_ulong =
-addr)<br>
-&gt; @@ -481,7 +481,7 @@ target_ulong helper_hyp_hlv_hu(CPURISCVState *env,=
- target_ulong addr)<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 int mmu_idx =3D check_access_hlsv(env, false, ra);=
-<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 MemOpIdx oi =3D make_memop_idx(MO_TEUW, mmu_idx);<=
-br>
-&gt;<br>
-&gt; -=C2=A0 =C2=A0 return cpu_ldw_mmu(env, addr, oi, ra);<br>
-&gt; +=C2=A0 =C2=A0 return cpu_ldw_mmu(env, adjust_addr_virt(env, addr), oi=
-, ra);<br>
-&gt;=C2=A0 }<br>
-&gt;<br>
-&gt;=C2=A0 target_ulong helper_hyp_hlv_wu(CPURISCVState *env, target_ulong =
-addr)<br>
-&gt; @@ -490,7 +490,7 @@ target_ulong helper_hyp_hlv_wu(CPURISCVState *env,=
- target_ulong addr)<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 int mmu_idx =3D check_access_hlsv(env, false, ra);=
-<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 MemOpIdx oi =3D make_memop_idx(MO_TEUL, mmu_idx);<=
-br>
-&gt;<br>
-&gt; -=C2=A0 =C2=A0 return cpu_ldl_mmu(env, addr, oi, ra);<br>
-&gt; +=C2=A0 =C2=A0 return cpu_ldl_mmu(env, adjust_addr_virt(env, addr), oi=
-, ra);<br>
-&gt;=C2=A0 }<br>
-&gt;<br>
-&gt;=C2=A0 target_ulong helper_hyp_hlv_d(CPURISCVState *env, target_ulong a=
-ddr)<br>
-&gt; @@ -499,7 +499,7 @@ target_ulong helper_hyp_hlv_d(CPURISCVState *env, =
-target_ulong addr)<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 int mmu_idx =3D check_access_hlsv(env, false, ra);=
-<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 MemOpIdx oi =3D make_memop_idx(MO_TEUQ, mmu_idx);<=
-br>
-&gt;<br>
-&gt; -=C2=A0 =C2=A0 return cpu_ldq_mmu(env, addr, oi, ra);<br>
-&gt; +=C2=A0 =C2=A0 return cpu_ldq_mmu(env, adjust_addr_virt(env, addr), oi=
-, ra);<br>
-&gt;=C2=A0 }<br>
-&gt;<br>
-&gt;=C2=A0 void helper_hyp_hsv_b(CPURISCVState *env, target_ulong addr, tar=
-get_ulong val)<br>
-&gt; @@ -508,7 +508,7 @@ void helper_hyp_hsv_b(CPURISCVState *env, target_u=
-long addr, target_ulong val)<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 int mmu_idx =3D check_access_hlsv(env, false, ra);=
-<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 MemOpIdx oi =3D make_memop_idx(MO_UB, mmu_idx);<br=
->
-&gt;<br>
-&gt; -=C2=A0 =C2=A0 cpu_stb_mmu(env, addr, val, oi, ra);<br>
-&gt; +=C2=A0 =C2=A0 cpu_stb_mmu(env, adjust_addr_virt(env, addr), val, oi, =
-ra);<br>
-&gt;=C2=A0 }<br>
-&gt;<br>
-&gt;=C2=A0 void helper_hyp_hsv_h(CPURISCVState *env, target_ulong addr, tar=
-get_ulong val)<br>
-&gt; @@ -517,7 +517,7 @@ void helper_hyp_hsv_h(CPURISCVState *env, target_u=
-long addr, target_ulong val)<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 int mmu_idx =3D check_access_hlsv(env, false, ra);=
-<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 MemOpIdx oi =3D make_memop_idx(MO_TEUW, mmu_idx);<=
-br>
-&gt;<br>
-&gt; -=C2=A0 =C2=A0 cpu_stw_mmu(env, addr, val, oi, ra);<br>
-&gt; +=C2=A0 =C2=A0 cpu_stw_mmu(env, adjust_addr_virt(env, addr), val, oi, =
-ra);<br>
-&gt;=C2=A0 }<br>
-&gt;<br>
-&gt;=C2=A0 void helper_hyp_hsv_w(CPURISCVState *env, target_ulong addr, tar=
-get_ulong val)<br>
-&gt; @@ -526,7 +526,7 @@ void helper_hyp_hsv_w(CPURISCVState *env, target_u=
-long addr, target_ulong val)<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 int mmu_idx =3D check_access_hlsv(env, false, ra);=
-<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 MemOpIdx oi =3D make_memop_idx(MO_TEUL, mmu_idx);<=
-br>
-&gt;<br>
-&gt; -=C2=A0 =C2=A0 cpu_stl_mmu(env, addr, val, oi, ra);<br>
-&gt; +=C2=A0 =C2=A0 cpu_stl_mmu(env, adjust_addr_virt(env, addr), val, oi, =
-ra);<br>
-&gt;=C2=A0 }<br>
-&gt;<br>
-&gt;=C2=A0 void helper_hyp_hsv_d(CPURISCVState *env, target_ulong addr, tar=
-get_ulong val)<br>
-&gt; @@ -535,7 +535,7 @@ void helper_hyp_hsv_d(CPURISCVState *env, target_u=
-long addr, target_ulong val)<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 int mmu_idx =3D check_access_hlsv(env, false, ra);=
-<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 MemOpIdx oi =3D make_memop_idx(MO_TEUQ, mmu_idx);<=
-br>
-&gt;<br>
-&gt; -=C2=A0 =C2=A0 cpu_stq_mmu(env, addr, val, oi, ra);<br>
-&gt; +=C2=A0 =C2=A0 cpu_stq_mmu(env, adjust_addr_virt(env, addr), val, oi, =
-ra);<br>
-&gt;=C2=A0 }<br>
-&gt;<br>
-&gt;=C2=A0 /*<br>
-&gt; diff --git a/target/riscv/vector_helper.c b/target/riscv/vector_helper=
-.c<br>
-&gt; index 37c6c198a5..a0093bcc9c 100644<br>
-&gt; --- a/target/riscv/vector_helper.c<br>
-&gt; +++ b/target/riscv/vector_helper.c<br>
-&gt; @@ -105,27 +105,6 @@ static inline uint32_t vext_max_elems(uint32_t de=
-sc, uint32_t log2_esz)<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 return scale &lt; 0 ? vlenb &gt;&gt; -scale : vlen=
-b &lt;&lt; scale;<br>
-&gt;=C2=A0 }<br>
-&gt;<br>
-&gt; -static inline target_ulong adjust_addr(CPURISCVState *env, target_ulo=
-ng addr)<br>
-&gt; -{<br>
-&gt; -=C2=A0 =C2=A0 if (riscv_cpu_mxl(env) =3D=3D MXL_RV32) {<br>
-&gt; -=C2=A0 =C2=A0 =C2=A0 =C2=A0 return addr;<br>
-&gt; -=C2=A0 =C2=A0 }<br>
-&gt; -=C2=A0 =C2=A0 RISCVPmPmm pmm =3D riscv_pm_get_pmm(env);<br>
-&gt; -=C2=A0 =C2=A0 if (pmm =3D=3D PMM_FIELD_DISABLED) {<br>
-&gt; -=C2=A0 =C2=A0 =C2=A0 =C2=A0 return addr;<br>
-&gt; -=C2=A0 =C2=A0 }<br>
-&gt; -=C2=A0 =C2=A0 int pmlen =3D riscv_pm_get_pmlen(pmm);<br>
-&gt; -=C2=A0 =C2=A0 bool signext =3D riscv_cpu_virt_mem_enabled(env);<br>
-&gt; -=C2=A0 =C2=A0 addr =3D addr &lt;&lt; pmlen;<br>
-&gt; -=C2=A0 =C2=A0 /* sign/zero extend masked address by N-1 bit */<br>
-&gt; -=C2=A0 =C2=A0 if (signext) {<br>
-&gt; -=C2=A0 =C2=A0 =C2=A0 =C2=A0 addr =3D (target_long)addr &gt;&gt; pmlen=
-;<br>
-&gt; -=C2=A0 =C2=A0 } else {<br>
-&gt; -=C2=A0 =C2=A0 =C2=A0 =C2=A0 addr =3D addr &gt;&gt; pmlen;<br>
-&gt; -=C2=A0 =C2=A0 }<br>
-&gt; -=C2=A0 =C2=A0 return addr;<br>
-&gt; -}<br>
-&gt; -<br>
-&gt;=C2=A0 /*<br>
-&gt;=C2=A0 =C2=A0* This function checks watchpoint before real load operati=
-on.<br>
-&gt;=C2=A0 =C2=A0*<br>
-&gt; --<br>
-&gt; 2.39.5<br>
-&gt;<br>
-</blockquote></div>
+You will also need kvmtool in your rootfs.
 
---000000000000328122062973886d--
+Run with kvm-unit-test test as kernel:
+  $ qemu-system-riscv64 \
+    -M virt \
+    -cpu rv64,ssdbltrp=true,smdbltrp=true \
+    -nographic \
+    -serial mon:stdio \
+    -bios opensbi/build/platform/generic/firmware/fw_jump.bin \
+    -kernel kvm-unit-tests-dbltrp/riscv/sbi_dbltrp.flat
+  ...
+  [OpenSBI boot partially elided]
+  Boot HART ISA Extensions  : sscofpmf,sstc,zicntr,zihpm,zicboz,zicbom,sdtrig,svadu,ssdbltrp
+  ...
+  ##########################################################################
+  #    kvm-unit-tests
+  ##########################################################################
+
+  PASS: sbi: fwft: FWFT extension probing no error
+  PASS: sbi: fwft: FWFT extension is present
+  PASS: sbi: fwft: dbltrp: Get double trap enable feature value
+  PASS: sbi: fwft: dbltrp: Set double trap enable feature value == 0
+  PASS: sbi: fwft: dbltrp: Get double trap enable feature value == 0
+  PASS: sbi: fwft: dbltrp: Double trap disabled, trap first time ok
+  PASS: sbi: fwft: dbltrp: Set double trap enable feature value == 1
+  PASS: sbi: fwft: dbltrp: Get double trap enable feature value == 1
+  PASS: sbi: fwft: dbltrp: Trapped twice allowed ok
+  INFO: sbi: fwft: dbltrp: Should generate a double trap and crash !
+
+  sbi_trap_error: hart0: trap0: double trap handler failed (error -10)
+
+  sbi_trap_error: hart0: trap0: mcause=0x0000000000000010 mtval=0x0000000000000000
+  sbi_trap_error: hart0: trap0: mtval2=0x0000000000000003 mtinst=0x0000000000000000
+  sbi_trap_error: hart0: trap0: mepc=0x00000000802000d8 mstatus=0x8000000a01006900
+  sbi_trap_error: hart0: trap0: ra=0x00000000802001fc sp=0x0000000080213e70
+  sbi_trap_error: hart0: trap0: gp=0x0000000000000000 tp=0x0000000080088000
+  sbi_trap_error: hart0: trap0: s0=0x0000000080213e80 s1=0x0000000000000001
+  sbi_trap_error: hart0: trap0: a0=0x0000000080213e80 a1=0x0000000080208193
+  sbi_trap_error: hart0: trap0: a2=0x000000008020dc20 a3=0x000000000000000f
+  sbi_trap_error: hart0: trap0: a4=0x0000000080210cd8 a5=0x00000000802110d0
+  sbi_trap_error: hart0: trap0: a6=0x00000000802136e4 a7=0x0000000046574654
+  sbi_trap_error: hart0: trap0: s2=0x0000000080210cd9 s3=0x0000000000000000
+  sbi_trap_error: hart0: trap0: s4=0x0000000000000000 s5=0x0000000000000000
+  sbi_trap_error: hart0: trap0: s6=0x0000000000000000 s7=0x0000000000000001
+  sbi_trap_error: hart0: trap0: s8=0x0000000000002000 s9=0x0000000080083700
+  sbi_trap_error: hart0: trap0: s10=0x0000000000000000 s11=0x0000000000000000
+  sbi_trap_error: hart0: trap0: t0=0x0000000000000000 t1=0x0000000080213ed8
+  sbi_trap_error: hart0: trap0: t2=0x0000000000001000 t3=0x0000000080213ee0
+  sbi_trap_error: hart0: trap0: t4=0x0000000000000000 t5=0x000000008020f8d0
+  sbi_trap_error: hart0: trap0: t6=0x0000000000000000
+
+Run with linux and kvm-unit-test test in kvm (testing VS-mode):
+  $ qemu-system-riscv64 \
+    -M virt \
+    -cpu rv64,ssdbltrp=true,smdbltrp=true \
+    -nographic \
+    -serial mon:stdio \
+    -bios opensbi/build/platform/generic/firmware/fw_jump.bin \
+    -kernel linux/build/arch/riscv/boot/Image
+  ...
+  [Linux boot partially elided]
+  [    0.735079] riscv-dbltrp: Double trap handling registered
+  ...
+
+  $ lkvm run -k sbi_dbltrp.flat -m 128 -c 2
+  ##########################################################################
+  #    kvm-unit-tests
+  ##########################################################################
+
+  PASS: sbi: fwft: FWFT extension probing no error
+  PASS: sbi: fwft: FWFT extension is present
+  PASS: sbi: fwft: dbltrp: Get double trap enable feature value
+  PASS: sbi: fwft: dbltrp: Set double trap enable feature value == 0
+  PASS: sbi: fwft: dbltrp: Get double trap enable feature value == 0
+  PASS: sbi: fwft: dbltrp: Double trap disabled, trap first time ok
+  PASS: sbi: fwft: dbltrp: Set double trap enable feature value == 1
+  PASS: sbi: fwft: dbltrp: Get double trap enable feature value == 1
+  PASS: sbi: fwft: dbltrp: Trapped twice allowed ok
+  INFO: sbi: fwft: dbltrp: Should generate a double trap and crash !
+  [   51.939077] Guest double trap
+  [   51.939323] kvm [93]: VCPU exit error -95
+  [   51.939683] kvm [93]: SEPC=0x802000d8 SSTATUS=0x200004520 HSTATUS=0x200200180
+  [   51.939947] kvm [93]: SCAUSE=0x10 STVAL=0x0 HTVAL=0x3 HTINST=0x0
+  KVM_RUN failed: Operation not supported
+  $
+
+Testing Smbdbltrp can be done using gdb and trigger some trap. For
+instance, interrupt M-mode firmware at some point, set mstatus.mdt = 1
+and corrupt some register to generate a NULL pointer exception.
+
+Link: https://github.com/riscv/riscv-isa-manual/commit/52a5742d5ab5a0792019033631b2035a493ad981 [1]
+Link: https://github.com/rivosinc/qemu/tree/dev/cleger/dbltrp_v7 [2]
+Link: https://github.com/rivosinc/linux/tree/dev/cleger/dbltrp_v1 [3]
+Link: https://github.com/clementleger/kvm-unit-tests/tree/dev/cleger/dbltrp_v1 [4]
+Link: https://lore.kernel.org/qemu-riscv/20241217062440.884261-1-frank.chang@sifive.com/ [5]
+
+---
+
+V7:
+ - Rebased on riscv-to-apply.next, on top of snrmi v10 series
+
+V6:
+ - Simplify and fix write_henvcfg() masking by assigning the written
+   value to henvcfg and mask the value to be written as well as clearing
+   the upper part of henvcfgh upon writing.
+ - Rebased on RNMI v9 series.
+
+V5:
+ - Use 0 instead of false to set MSTATUS_MDT in helper_mnret()
+ - Added explicit comments about henvcfg write mask being tricky.
+ - Fixed a invalid menvcfg_mask in write_henvcfgh
+
+V4:
+ - Remove DTE from sstatus_v1_10_mask variable and add specific if for
+   DTE masking where it's used.
+ - Use mstatus_hs.sdt field rather than setting DTE to 0 in
+   riscv_do_cpu_interrupt().
+ - Add a fix for henvcfg value which was incorrectly set after changing
+   menvcfg
+ - Remove useless ext_ssdbltrp check in
+   riscv_env_smode_dbltrp_enabled().
+ - Remove useless mstatus clear in write_mstatus().
+ - Add proper handling of SDT writing to vsstatus.
+ - Add clearing of vsstatus//mstatus SDT field when DTE is disabled.
+ - Fix wrong value being written for MDT/MIE in write_mstatush().
+ - Rebased on Frank Snrnmi v7
+
+V3:
+ - Fix spec version from 1.12 to 1.13 for Smdbltrp and Ssdbltrp
+ - Add better comments for dte/sdt computation in
+   riscv_cpu_do_interrupt().
+ - Move some CSR related changes to the CSRs related commits.
+
+V2:
+ - Squashed commits that added ext_s{s|m}dbltrp as suggested by Daniel
+
+Clément Léger (9):
+  target/riscv: Fix henvcfg potentially containing stale bits
+  target/riscv: Add Ssdbltrp CSRs handling
+  target/riscv: Implement Ssdbltrp sret, mret and mnret behavior
+  target/riscv: Implement Ssdbltrp exception handling
+  target/riscv: Add Ssdbltrp ISA extension enable switch
+  target/riscv: Add Smdbltrp CSRs handling
+  target/riscv: Implement Smdbltrp sret, mret and mnret behavior
+  target/riscv: Implement Smdbltrp behavior
+  target/riscv: Add Smdbltrp ISA extension enable switch
+
+ target/riscv/cpu.c        |   9 ++-
+ target/riscv/cpu.h        |   1 +
+ target/riscv/cpu_bits.h   |   8 +++
+ target/riscv/cpu_cfg.h    |   2 +
+ target/riscv/cpu_helper.c | 115 +++++++++++++++++++++++++++++++-------
+ target/riscv/csr.c        |  95 ++++++++++++++++++++++++++-----
+ target/riscv/op_helper.c  |  47 +++++++++++++++-
+ 7 files changed, 239 insertions(+), 38 deletions(-)
+
+-- 
+2.45.2
+
 
