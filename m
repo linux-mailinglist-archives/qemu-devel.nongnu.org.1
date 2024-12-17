@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5CB09F46DD
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Dec 2024 10:08:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CCFA49F46DF
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Dec 2024 10:08:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tNTY8-0008PM-Tn; Tue, 17 Dec 2024 04:07:29 -0500
+	id 1tNTYJ-0008U9-2T; Tue, 17 Dec 2024 04:07:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <cleger@rivosinc.com>)
- id 1tNTXy-0008Jt-Dq
- for qemu-devel@nongnu.org; Tue, 17 Dec 2024 04:07:19 -0500
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ id 1tNTY4-0008NC-3n
+ for qemu-devel@nongnu.org; Tue, 17 Dec 2024 04:07:25 -0500
+Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <cleger@rivosinc.com>)
- id 1tNTXu-0001W3-Eh
- for qemu-devel@nongnu.org; Tue, 17 Dec 2024 04:07:18 -0500
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-4361f664af5so54970925e9.1
- for <qemu-devel@nongnu.org>; Tue, 17 Dec 2024 01:07:14 -0800 (PST)
+ id 1tNTY1-0001Z7-Qr
+ for qemu-devel@nongnu.org; Tue, 17 Dec 2024 04:07:23 -0500
+Received: by mail-wr1-x436.google.com with SMTP id
+ ffacd0b85a97d-385e1fcb0e1so2734123f8f.2
+ for <qemu-devel@nongnu.org>; Tue, 17 Dec 2024 01:07:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1734426433; x=1735031233;
+ d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1734426440; x=1735031240;
  darn=nongnu.org; 
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=QYpbcNDKidwUTaLq8aLaT90ICRuTp8bnHoMUPFgDtCc=;
- b=Gt1yP72T1I+VNef6unkSZYlKTrgXM75q7VMFVo9VqKX5hNji1/o4MUG2erDpl2DUKp
- 3/jW89aQzvDuvF2NonZfogONzKLV5p8kiQUzrmghsRI+bIlBEMD3exbiKJx0ct5r0wFX
- 2uD1z5oHApaALSWAlFVqeEv7d2u/Ri0bFX1UaSQS9xc+Evo37Skj2KTZ+Mvvtsy97PDx
- hs0lftUkoxSqJ5KGdsY7M+nyKa1v+LhRMuheUmp3zl9QHC3WTT0gJz6VhBOlS0S3ehIt
- eE1jj8cY4uoTYVT9O+p4+nrS5nVMxNXMwUhOV5uchdKopWkKHq5URSWLogyjpiC++YH+
- 2W+Q==
+ bh=vCg28i4MG0lkw6euk86rkXCzW2QK+WzYLzj3FP0/alY=;
+ b=zUZzJ8PMz1Wv95DaFSYVM5SWfDfzFX1/rshm1Cq/GqFOmGgAoNxwx1y76/bGqz1k9R
+ ZSGL7U75CDvu82Soqz03uey7faI9qKYMr4cO9wfw3AgcJ4yiXt5esywbs++I7YZiNNa8
+ TSb1ny64Z4B5iEHwf7uH8D+FVuX0MoNR6eZVDf70n/eeztVmAez+nwQEX1r6KBZ8gvlG
+ lUZi0sXPnmgW5qzPeR8cWizJfIdPf+shs3HYk1pohkiypk6nKDMPcSSsbGf0n5BjeY/p
+ AxYPBa25YuqsEgMyTo1lRaJZHTJrYO2rVXLLQVUJzGZuqKw8RfBNMciOJ6RAN2kG590l
+ //7g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734426433; x=1735031233;
+ d=1e100.net; s=20230601; t=1734426440; x=1735031240;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=QYpbcNDKidwUTaLq8aLaT90ICRuTp8bnHoMUPFgDtCc=;
- b=Qu/iuuKQaXzz5P+vxLxq5gYMNeX/jxw0h+I53Q91ZLqe6BOeUbe4wFdgemI61sdY+r
- fcGvY68xJMTkWnrhJJkipskWI0vytiSDH6WcUh734GXU+ltRHEiMyixPO96KPtj7YqF1
- IxH9Y+4UgO7ctCgoeZ3MS36Kd8lh5dzrjVeVSStughkAyg90VFTjcmu3Ru/liwWm9XRn
- wLspj68aPcErnTOdTSDnOUX6o9aBxsFm2glLqDAV0ARdkyKkeQe6CErX7p5nP91uMydl
- bA9w/oOy8sxGviktLww3vwq2T32WOuSEx9ujDqumJy3Nf6zajhjGzSj6HhFE1AksaDax
- /cdw==
+ bh=vCg28i4MG0lkw6euk86rkXCzW2QK+WzYLzj3FP0/alY=;
+ b=baHa7YVXF4qAagoJaQJhbs7TPtxKIMb6RlAtGmKBmwzEEoZYKbBRtvu5kKDLcDHWDg
+ ngYCGkkO5DiSZRZZmGZjXv7FcTLslFjSVplz5cY728FtRYZhs1tjWxC5l/neGeL3skDw
+ bO5ur7x5V1+/Mi4LTNGAPJhDiA/DOwGMZSh5nMvUnSI/Ml1v/phTOZmE/x4Yki+qCUj5
+ yG0JFtZttskAskZDNM7/J/jucMUIyX3sQPlb2IIe8PvUaHCmJTyI0KYvEfsLBRXUIG0h
+ byQ+7Tz9YWI6W8MjcG7lHMtgTRgSdW77I5Idvjb4DEAehqTNwrWq9+U/EoVGZ2cSvBix
+ 2hhQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVHT+ZEYvw8j4lPLTAs3NMiry2WRmakzUurfXhHtNymEt0EJtfD9EqaxyBwJQ21XESKebD8+PuhCEeb@nongnu.org
-X-Gm-Message-State: AOJu0YzjQ1sKw7GWTuoOb74fd6ijuVj8aIBPt1UfO8hq7gPZUeSvOpgm
- ZNQArP8Bw2xN3sIVBs2WHvIamwVT9euI5AosbxCzrxuklSHuQxhXKW01dtSDGes=
-X-Gm-Gg: ASbGncsxWTHhjquskTZTcHnBUt5Wops+h5EfK1wYWvFJBI4LOLJkumh8dgxZ+NHYP53
- +LQF6SITTjyLHKo8stowcZABkZsH92nEjQhF18DpVVUvJPNExflcgZEnPga1dsl+ZupxgUSKKsC
- 1Uk4DbxZp7LzwWq7kctLnqTLUzy5nF3gePJw6N2snTd1tja5bIYMb5RXHw8CKHDiBZXouSsnuwR
- nc3Qumn7V366hDnESXCBO7rE0OwYg/L9Md77PzRpAXaOUU+BdkJrKRNqQ==
-X-Google-Smtp-Source: AGHT+IGfn7WoQQJ/8Uu5l/MjCvU27PdikQ5MzuHRLeQafrD3BAkULmSRvrs8XfmFT6ZUF4v3KRUAFA==
-X-Received: by 2002:a05:600c:3ba1:b0:434:a765:7f9c with SMTP id
- 5b1f17b1804b1-4362aa13613mr136499835e9.6.1734426432924; 
- Tue, 17 Dec 2024 01:07:12 -0800 (PST)
+ AJvYcCXFvWQG/Owf7xGxsscWDppr0AS1XZeDAp4TclECPh+68r47V65B2GMXPMtIKKE9Tx18sXRJcH3SY7X7@nongnu.org
+X-Gm-Message-State: AOJu0Yxz59mI6ZTfe5ehQ0pJrCTspCS1hmN8BlIaLDgsPRydZck2edyP
+ wa17H68Sk6almNnyrvVcFeems/Tk/PdA3d+dVSRF4luaR2f7I53ovRNJCFADbfM=
+X-Gm-Gg: ASbGncs9YgXXUO5/y4hkAW9Aq3QotZsNihVedmEqzRMdz/nO9Gpu937mexM/nX9UuA7
+ RCsON7X/bVR+lHo2IgrELJqoukmxEiOHSxeDfrYZeyR5XxUqhMryMoKUbLNjrJQd5cMEO4xtOoK
+ U5wZXAvIkoeD+4nIOSFAu9mpVf0SwCm1Nn4cWOdIjCeAIcfzFtKHQemHIrzHQaOoizUMJYZNjFL
+ JbQVpuTBVcrw+y+8JH1fB1sR5sIgdTpwwyYyiqeifDy8+4b/4nIkYzy6w==
+X-Google-Smtp-Source: AGHT+IGWTCP6sFTgOlfzC5opaKGlRIWR9mmwsF6kiZgjz4DM9QbiduFGHi2OOKwXdIT/t9BsKP1poA==
+X-Received: by 2002:a5d:6d06:0:b0:382:6f3:a20f with SMTP id
+ ffacd0b85a97d-388da380c5amr2568890f8f.11.1734426440148; 
+ Tue, 17 Dec 2024 01:07:20 -0800 (PST)
 Received: from carbon-x1.. ([2a01:e0a:e17:9700:16d2:7456:6634:9626])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-388c8046c46sm10704122f8f.71.2024.12.17.01.07.11
+ ffacd0b85a97d-388c8046c46sm10704122f8f.71.2024.12.17.01.07.19
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 17 Dec 2024 01:07:12 -0800 (PST)
+ Tue, 17 Dec 2024 01:07:19 -0800 (PST)
 From: =?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <cleger@rivosinc.com>
 To: qemu-riscv@nongnu.org, Palmer Dabbelt <palmer@dabbelt.com>,
  Alistair Francis <alistair.francis@wdc.com>,
@@ -73,17 +73,17 @@ Cc: =?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <cleger@rivosinc.com>,
  Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
  Ved Shanbhogue <ved@rivosinc.com>, Atish Patra <atishp@rivosinc.com>,
  qemu-devel@nongnu.org, Frank Chang <frank.chang@sifive.com>
-Subject: [PATCH v7 2/9] target/riscv: Add Ssdbltrp CSRs handling
-Date: Tue, 17 Dec 2024 10:06:58 +0100
-Message-ID: <20241217090707.3511160-3-cleger@rivosinc.com>
+Subject: [PATCH v7 8/9] target/riscv: Implement Smdbltrp behavior
+Date: Tue, 17 Dec 2024 10:07:04 +0100
+Message-ID: <20241217090707.3511160-9-cleger@rivosinc.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241217090707.3511160-1-cleger@rivosinc.com>
 References: <20241217090707.3511160-1-cleger@rivosinc.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=cleger@rivosinc.com; helo=mail-wm1-x334.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::436;
+ envelope-from=cleger@rivosinc.com; helo=mail-wr1-x436.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -105,323 +105,102 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add ext_ssdbltrp in RISCVCPUConfig and implement MSTATUS.SDT,
-{H|M}ENVCFG.DTE and modify the availability of MTVAL2 based on the
-presence of the Ssdbltrp ISA extension.
+When the Smsdbltrp ISA extension is enabled, if a trap happens while
+MSTATUS.MDT is already set, it will trigger an abort or an NMI is the
+Smrnmi extension is available.
 
 Signed-off-by: Clément Léger <cleger@rivosinc.com>
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/cpu.h        |  1 +
- target/riscv/cpu_bits.h   |  6 ++++
- target/riscv/cpu_cfg.h    |  1 +
- target/riscv/cpu_helper.c | 17 +++++++++
- target/riscv/csr.c        | 72 ++++++++++++++++++++++++++++++++-------
- 5 files changed, 84 insertions(+), 13 deletions(-)
+ target/riscv/cpu_helper.c | 56 ++++++++++++++++++++++++++++-----------
+ 1 file changed, 40 insertions(+), 16 deletions(-)
 
-diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-index 8dc5b4d002..02e502768e 100644
---- a/target/riscv/cpu.h
-+++ b/target/riscv/cpu.h
-@@ -569,6 +569,7 @@ void riscv_cpu_set_virt_enabled(CPURISCVState *env, bool enable);
- int riscv_env_mmu_index(CPURISCVState *env, bool ifetch);
- bool cpu_get_fcfien(CPURISCVState *env);
- bool cpu_get_bcfien(CPURISCVState *env);
-+bool riscv_env_smode_dbltrp_enabled(CPURISCVState *env, bool virt);
- G_NORETURN void  riscv_cpu_do_unaligned_access(CPUState *cs, vaddr addr,
-                                                MMUAccessType access_type,
-                                                int mmu_idx, uintptr_t retaddr);
-diff --git a/target/riscv/cpu_bits.h b/target/riscv/cpu_bits.h
-index be9d0f5c05..b8acc11e65 100644
---- a/target/riscv/cpu_bits.h
-+++ b/target/riscv/cpu_bits.h
-@@ -562,6 +562,7 @@
- #define MSTATUS_TW          0x00200000 /* since: priv-1.10 */
- #define MSTATUS_TSR         0x00400000 /* since: priv-1.10 */
- #define MSTATUS_SPELP       0x00800000 /* zicfilp */
-+#define MSTATUS_SDT         0x01000000
- #define MSTATUS_MPELP       0x020000000000 /* zicfilp */
- #define MSTATUS_GVA         0x4000000000ULL
- #define MSTATUS_MPV         0x8000000000ULL
-@@ -594,6 +595,7 @@ typedef enum {
- #define SSTATUS_SUM         0x00040000 /* since: priv-1.10 */
- #define SSTATUS_MXR         0x00080000
- #define SSTATUS_SPELP       MSTATUS_SPELP   /* zicfilp */
-+#define SSTATUS_SDT         MSTATUS_SDT
- 
- #define SSTATUS64_UXL       0x0000000300000000ULL
- 
-@@ -792,11 +794,13 @@ typedef enum RISCVException {
- #define MENVCFG_CBIE                       (3UL << 4)
- #define MENVCFG_CBCFE                      BIT(6)
- #define MENVCFG_CBZE                       BIT(7)
-+#define MENVCFG_DTE                        (1ULL << 59)
- #define MENVCFG_ADUE                       (1ULL << 61)
- #define MENVCFG_PBMTE                      (1ULL << 62)
- #define MENVCFG_STCE                       (1ULL << 63)
- 
- /* For RV32 */
-+#define MENVCFGH_DTE                       BIT(27)
- #define MENVCFGH_ADUE                      BIT(29)
- #define MENVCFGH_PBMTE                     BIT(30)
- #define MENVCFGH_STCE                      BIT(31)
-@@ -815,11 +819,13 @@ typedef enum RISCVException {
- #define HENVCFG_CBIE                       MENVCFG_CBIE
- #define HENVCFG_CBCFE                      MENVCFG_CBCFE
- #define HENVCFG_CBZE                       MENVCFG_CBZE
-+#define HENVCFG_DTE                        MENVCFG_DTE
- #define HENVCFG_ADUE                       MENVCFG_ADUE
- #define HENVCFG_PBMTE                      MENVCFG_PBMTE
- #define HENVCFG_STCE                       MENVCFG_STCE
- 
- /* For RV32 */
-+#define HENVCFGH_DTE                        MENVCFGH_DTE
- #define HENVCFGH_ADUE                       MENVCFGH_ADUE
- #define HENVCFGH_PBMTE                      MENVCFGH_PBMTE
- #define HENVCFGH_STCE                       MENVCFGH_STCE
-diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
-index 28b43932db..7638660651 100644
---- a/target/riscv/cpu_cfg.h
-+++ b/target/riscv/cpu_cfg.h
-@@ -79,6 +79,7 @@ struct RISCVCPUConfig {
-     bool ext_smstateen;
-     bool ext_sstc;
-     bool ext_smcntrpmf;
-+    bool ext_ssdbltrp;
-     bool ext_svadu;
-     bool ext_svinval;
-     bool ext_svnapot;
 diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
-index 1fb1e31031..f284f94a04 100644
+index 06d5dc6a3d..a29483f48d 100644
 --- a/target/riscv/cpu_helper.c
 +++ b/target/riscv/cpu_helper.c
-@@ -120,6 +120,19 @@ bool cpu_get_bcfien(CPURISCVState *env)
-     }
+@@ -1890,6 +1890,23 @@ static target_ulong promote_load_fault(target_ulong orig_cause)
+     /* if no promotion, return original cause */
+     return orig_cause;
  }
- 
-+bool riscv_env_smode_dbltrp_enabled(CPURISCVState *env, bool virt)
++
++static void riscv_do_nmi(CPURISCVState *env, target_ulong cause, bool virt)
 +{
-+#ifdef CONFIG_USER_ONLY
-+    return false;
-+#else
-+    if (virt) {
-+        return (env->henvcfg & HENVCFG_DTE) != 0;
-+    } else {
-+        return (env->menvcfg & MENVCFG_DTE) != 0;
++    env->mnstatus = set_field(env->mnstatus, MNSTATUS_NMIE, false);
++    env->mnstatus = set_field(env->mnstatus, MNSTATUS_MNPV, virt);
++    env->mnstatus = set_field(env->mnstatus, MNSTATUS_MNPP, env->priv);
++    env->mncause = cause;
++    env->mnepc = env->pc;
++    env->pc = env->rnmi_irqvec;
++
++    if (cpu_get_fcfien(env)) {
++        env->mnstatus = set_field(env->mnstatus, MNSTATUS_MNPELP, env->elp);
 +    }
-+#endif
++
++    riscv_cpu_set_mode(env, PRV_M, false);
 +}
 +
- void cpu_get_tb_cpu_state(CPURISCVState *env, vaddr *pc,
-                           uint64_t *cs_base, uint32_t *pflags)
- {
-@@ -642,6 +655,10 @@ void riscv_cpu_swap_hypervisor_regs(CPURISCVState *env)
+ /*
+  * Handle Traps
+  *
+@@ -1929,22 +1946,8 @@ void riscv_cpu_do_interrupt(CPUState *cs)
+     bool nnmi_excep = false;
  
-     g_assert(riscv_has_ext(env, RVH));
- 
-+    if (riscv_env_smode_dbltrp_enabled(env, current_virt)) {
-+        mstatus_mask |= MSTATUS_SDT;
-+    }
-+
-     if (current_virt) {
-         /* Current V=1 and we are about to change to V=0 */
-         env->vsstatus = env->mstatus & mstatus_mask;
-diff --git a/target/riscv/csr.c b/target/riscv/csr.c
-index c2cec37d28..db87fd8726 100644
---- a/target/riscv/csr.c
-+++ b/target/riscv/csr.c
-@@ -559,6 +559,15 @@ static RISCVException aia_hmode32(CPURISCVState *env, int csrno)
-     return hmode32(env, csrno);
- }
- 
-+static RISCVException dbltrp_hmode(CPURISCVState *env, int csrno)
-+{
-+    if (riscv_cpu_cfg(env)->ext_ssdbltrp) {
-+        return RISCV_EXCP_NONE;
-+    }
-+
-+    return hmode(env, csrno);
-+}
-+
- static RISCVException pmp(CPURISCVState *env, int csrno)
- {
-     if (riscv_cpu_cfg(env)->pmp) {
-@@ -1633,6 +1642,13 @@ static RISCVException write_mstatus(CPURISCVState *env, int csrno,
-         mask |= MSTATUS_VS;
+     if (cpu->cfg.ext_smrnmi && env->rnmip && async) {
+-        env->mnstatus = set_field(env->mnstatus, MNSTATUS_NMIE, false);
+-        env->mnstatus = set_field(env->mnstatus, MNSTATUS_MNPV,
+-                                  env->virt_enabled);
+-        env->mnstatus = set_field(env->mnstatus, MNSTATUS_MNPP,
+-                                  env->priv);
+-        env->mncause = cause | ((target_ulong)1U << (TARGET_LONG_BITS - 1));
+-        env->mnepc = env->pc;
+-        env->pc = env->rnmi_irqvec;
+-
+-        if (cpu_get_fcfien(env)) {
+-            env->mnstatus = set_field(env->mnstatus, MNSTATUS_MNPELP, env->elp);
+-        }
+-
+-        /* Trapping to M mode, virt is disabled */
+-        riscv_cpu_set_mode(env, PRV_M, false);
+-
++        riscv_do_nmi(env, cause | ((target_ulong)1U << (TARGET_LONG_BITS - 1)),
++                     virt);
+         return;
      }
  
-+    if (riscv_env_smode_dbltrp_enabled(env, env->virt_enabled)) {
-+        mask |= MSTATUS_SDT;
-+        if ((val & MSTATUS_SDT) != 0) {
-+            val &= ~MSTATUS_SIE;
-+        }
-+    }
-+
-     if (xl != MXL_RV32 || env->debugger) {
-         if (riscv_has_ext(env, RVH)) {
-             mask |= MSTATUS_MPV | MSTATUS_GVA;
-@@ -2394,7 +2410,8 @@ static RISCVException write_menvcfg(CPURISCVState *env, int csrno,
-     if (riscv_cpu_mxl(env) == MXL_RV64) {
-         mask |= (cfg->ext_svpbmt ? MENVCFG_PBMTE : 0) |
-                 (cfg->ext_sstc ? MENVCFG_STCE : 0) |
--                (cfg->ext_svadu ? MENVCFG_ADUE : 0);
-+                (cfg->ext_svadu ? MENVCFG_ADUE : 0) |
-+                (cfg->ext_ssdbltrp ? MENVCFG_DTE : 0);
- 
-         if (env_archcpu(env)->cfg.ext_zicfilp) {
-             mask |= MENVCFG_LPE;
-@@ -2403,6 +2420,10 @@ static RISCVException write_menvcfg(CPURISCVState *env, int csrno,
-         if (env_archcpu(env)->cfg.ext_zicfiss) {
-             mask |= MENVCFG_SSE;
+@@ -2156,11 +2159,32 @@ void riscv_cpu_do_interrupt(CPUState *cs)
+             /* Trapping to M mode, virt is disabled */
+             virt = false;
          }
++        /*
++         * If the hart encounters an exception while executing in M-mode,
++         * with the mnstatus.NMIE bit clear, the program counter is set to
++         * the RNMI exception trap handler address.
++         */
++        nnmi_excep = cpu->cfg.ext_smrnmi &&
++                     !get_field(env->mnstatus, MNSTATUS_NMIE) &&
++                     !async;
+ 
+         s = env->mstatus;
+         s = set_field(s, MSTATUS_MPIE, get_field(s, MSTATUS_MIE));
+         s = set_field(s, MSTATUS_MPP, env->priv);
+         s = set_field(s, MSTATUS_MIE, 0);
++        if (cpu->cfg.ext_smdbltrp) {
++            if (env->mstatus & MSTATUS_MDT) {
++                assert(env->priv == PRV_M);
++                if (!cpu->cfg.ext_smrnmi || nnmi_excep) {
++                    cpu_abort(CPU(cpu), "M-mode double trap\n");
++                } else {
++                    riscv_do_nmi(env, cause, false);
++                    return;
++                }
++            }
 +
-+        if ((val & MENVCFG_DTE) == 0) {
-+            env->mstatus &= ~MSTATUS_SDT;
++            s = set_field(s, MSTATUS_MDT, 1);
 +        }
-     }
-     env->menvcfg = (env->menvcfg & ~mask) | (val & mask);
-     write_henvcfg(env, CSR_HENVCFG, env->henvcfg);
-@@ -2425,9 +2446,14 @@ static RISCVException write_menvcfgh(CPURISCVState *env, int csrno,
-     const RISCVCPUConfig *cfg = riscv_cpu_cfg(env);
-     uint64_t mask = (cfg->ext_svpbmt ? MENVCFG_PBMTE : 0) |
-                     (cfg->ext_sstc ? MENVCFG_STCE : 0) |
--                    (cfg->ext_svadu ? MENVCFG_ADUE : 0);
-+                    (cfg->ext_svadu ? MENVCFG_ADUE : 0) |
-+                    (cfg->ext_ssdbltrp ? MENVCFG_DTE : 0);
-     uint64_t valh = (uint64_t)val << 32;
- 
-+    if ((valh & MENVCFG_DTE) == 0) {
-+        env->mstatus &= ~MSTATUS_SDT;
-+    }
-+
-     env->menvcfg = (env->menvcfg & ~mask) | (valh & mask);
-     write_henvcfgh(env, CSR_HENVCFGH, env->henvcfg >> 32);
- 
-@@ -2492,9 +2518,10 @@ static RISCVException read_henvcfg(CPURISCVState *env, int csrno,
-      * henvcfg.pbmte is read_only 0 when menvcfg.pbmte = 0
-      * henvcfg.stce is read_only 0 when menvcfg.stce = 0
-      * henvcfg.adue is read_only 0 when menvcfg.adue = 0
-+     * henvcfg.dte is read_only 0 when menvcfg.dte = 0
-      */
--    *val = env->henvcfg & (~(HENVCFG_PBMTE | HENVCFG_STCE | HENVCFG_ADUE) |
--                           env->menvcfg);
-+    *val = env->henvcfg & (~(HENVCFG_PBMTE | HENVCFG_STCE | HENVCFG_ADUE |
-+                             HENVCFG_DTE) | env->menvcfg);
-     return RISCV_EXCP_NONE;
- }
- 
-@@ -2510,7 +2537,8 @@ static RISCVException write_henvcfg(CPURISCVState *env, int csrno,
-     }
- 
-     if (riscv_cpu_mxl(env) == MXL_RV64) {
--        mask |= env->menvcfg & (HENVCFG_PBMTE | HENVCFG_STCE | HENVCFG_ADUE);
-+        mask |= env->menvcfg & (HENVCFG_PBMTE | HENVCFG_STCE | HENVCFG_ADUE |
-+                                HENVCFG_DTE);
- 
-         if (env_archcpu(env)->cfg.ext_zicfilp) {
-             mask |= HENVCFG_LPE;
-@@ -2524,6 +2552,9 @@ static RISCVException write_henvcfg(CPURISCVState *env, int csrno,
-     }
- 
-     env->henvcfg = val & mask;
-+    if ((env->henvcfg & HENVCFG_DTE) == 0) {
-+        env->vsstatus &= ~MSTATUS_SDT;
-+    }
- 
-     return RISCV_EXCP_NONE;
- }
-@@ -2538,8 +2569,8 @@ static RISCVException read_henvcfgh(CPURISCVState *env, int csrno,
-         return ret;
-     }
- 
--    *val = (env->henvcfg & (~(HENVCFG_PBMTE | HENVCFG_STCE | HENVCFG_ADUE) |
--                            env->menvcfg)) >> 32;
-+    *val = (env->henvcfg & (~(HENVCFG_PBMTE | HENVCFG_STCE | HENVCFG_ADUE |
-+                              HENVCFG_DTE) | env->menvcfg)) >> 32;
-     return RISCV_EXCP_NONE;
- }
- 
-@@ -2547,7 +2578,7 @@ static RISCVException write_henvcfgh(CPURISCVState *env, int csrno,
-                                      target_ulong val)
- {
-     uint64_t mask = env->menvcfg & (HENVCFG_PBMTE | HENVCFG_STCE |
--                                    HENVCFG_ADUE);
-+                                    HENVCFG_ADUE | HENVCFG_DTE);
-     uint64_t valh = (uint64_t)val << 32;
-     RISCVException ret;
- 
-@@ -2555,8 +2586,10 @@ static RISCVException write_henvcfgh(CPURISCVState *env, int csrno,
-     if (ret != RISCV_EXCP_NONE) {
-         return ret;
-     }
--
-     env->henvcfg = (env->henvcfg & 0xFFFFFFFF) | (valh & mask);
-+    if ((env->henvcfg & HENVCFG_DTE) == 0) {
-+        env->vsstatus &= ~MSTATUS_SDT;
-+    }
-     return RISCV_EXCP_NONE;
- }
- 
-@@ -2984,6 +3017,9 @@ static RISCVException read_sstatus_i128(CPURISCVState *env, int csrno,
-     if (env->xl != MXL_RV32 || env->debugger) {
-         mask |= SSTATUS64_UXL;
-     }
-+    if (riscv_cpu_cfg(env)->ext_ssdbltrp) {
-+        mask |= SSTATUS_SDT;
-+    }
- 
-     if (env_archcpu(env)->cfg.ext_zicfilp) {
-         mask |= SSTATUS_SPELP;
-@@ -3000,11 +3036,12 @@ static RISCVException read_sstatus(CPURISCVState *env, int csrno,
-     if (env->xl != MXL_RV32 || env->debugger) {
-         mask |= SSTATUS64_UXL;
-     }
--
-     if (env_archcpu(env)->cfg.ext_zicfilp) {
-         mask |= SSTATUS_SPELP;
-     }
--
-+    if (riscv_cpu_cfg(env)->ext_ssdbltrp) {
-+        mask |= SSTATUS_SDT;
-+    }
-     /* TODO: Use SXL not MXL. */
-     *val = add_status_sd(riscv_cpu_mxl(env), env->mstatus & mask);
-     return RISCV_EXCP_NONE;
-@@ -3024,7 +3061,9 @@ static RISCVException write_sstatus(CPURISCVState *env, int csrno,
-     if (env_archcpu(env)->cfg.ext_zicfilp) {
-         mask |= SSTATUS_SPELP;
-     }
--
-+    if (riscv_cpu_cfg(env)->ext_ssdbltrp) {
-+        mask |= SSTATUS_SDT;
-+    }
-     target_ulong newval = (env->mstatus & ~mask) | (val & mask);
-     return write_mstatus(env, CSR_MSTATUS, newval);
- }
-@@ -4133,6 +4172,13 @@ static RISCVException write_vsstatus(CPURISCVState *env, int csrno,
-     if ((val & VSSTATUS64_UXL) == 0) {
-         mask &= ~VSSTATUS64_UXL;
-     }
-+    if ((env->henvcfg & HENVCFG_DTE)) {
-+        if ((val & SSTATUS_SDT) != 0) {
-+            val &= ~SSTATUS_SIE;
-+        }
-+    } else {
-+        val &= ~SSTATUS_SDT;
-+    }
-     env->vsstatus = (env->vsstatus & ~mask) | (uint64_t)val;
-     return RISCV_EXCP_NONE;
- }
-@@ -5343,7 +5389,7 @@ riscv_csr_operations csr_ops[CSR_TABLE_SIZE] = {
-     [CSR_VSATP]       = { "vsatp",       hmode,   read_vsatp,    write_vsatp,
-                           .min_priv_ver = PRIV_VERSION_1_12_0                },
- 
--    [CSR_MTVAL2]      = { "mtval2",      hmode,   read_mtval2,   write_mtval2,
-+    [CSR_MTVAL2]      = { "mtval2", dbltrp_hmode, read_mtval2, write_mtval2,
-                           .min_priv_ver = PRIV_VERSION_1_12_0                },
-     [CSR_MTINST]      = { "mtinst",      hmode,   read_mtinst,   write_mtinst,
-                           .min_priv_ver = PRIV_VERSION_1_12_0                },
+         env->mstatus = s;
+         mxlen = 16 << riscv_cpu_mxl(env);
+         env->mcause = cause | ((target_ulong)async << (mxlen - 1));
 -- 
 2.45.2
 
