@@ -2,80 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B59B9F4DAA
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Dec 2024 15:27:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 091B39F4DB1
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Dec 2024 15:28:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tNYXD-0007H3-FQ; Tue, 17 Dec 2024 09:26:51 -0500
+	id 1tNYXp-0007Q8-C8; Tue, 17 Dec 2024 09:27:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1tNYXB-0007Gv-Bi
- for qemu-devel@nongnu.org; Tue, 17 Dec 2024 09:26:49 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1tNYX9-0004PA-KL
- for qemu-devel@nongnu.org; Tue, 17 Dec 2024 09:26:49 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1734445603;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=qlXkPTAUPgAQk/KE1ogCn//sOqeM09bS3+zz3uX3ovU=;
- b=N4EV1M0Uf1ZT73dGP1D0kqpWtLfy6Hvlw2WEQ+FbiUbXFvyOGtNAUmdmGL6EX3V5wz9iLw
- K8DTxK39hlDPVqAj1S88cTScOqU1Fb85f6stYJzieSbxUKuLheOiIWapOGCcYRt9RJIY9/
- kfsnYgynKVw5gC9TEPKX34xwEz0M9JU=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-498-QF1fihowMZ-hp9WSmXDVzw-1; Tue,
- 17 Dec 2024 09:26:40 -0500
-X-MC-Unique: QF1fihowMZ-hp9WSmXDVzw-1
-X-Mimecast-MFC-AGG-ID: QF1fihowMZ-hp9WSmXDVzw
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 999F51955F41; Tue, 17 Dec 2024 14:26:38 +0000 (UTC)
-Received: from sirius.home.kraxel.org (unknown [10.39.192.88])
- by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id CBF4330044C1; Tue, 17 Dec 2024 14:26:37 +0000 (UTC)
-Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
- id 836EF1800399; Tue, 17 Dec 2024 15:26:35 +0100 (CET)
-Date: Tue, 17 Dec 2024 15:26:35 +0100
-From: Gerd Hoffmann <kraxel@redhat.com>
-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-Cc: qemu-devel@nongnu.org, Zhao Liu <zhao1.liu@intel.com>, 
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Yanan Wang <wangyanan55@huawei.com>, 
- Paolo Bonzini <pbonzini@redhat.com>, Eduardo Habkost <eduardo@habkost.net>, 
- "Michael S. Tsirkin" <mst@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>, 
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: Re: [PULL 3/7] x86/loader: expose unpatched kernel
-Message-ID: <52zucjcan5q4dwgsdchkwqi6bhdfx3ziw7ud52rratqhyzikci@3ainfgz6e4yp>
-References: <20241216105053.246204-1-kraxel@redhat.com>
- <20241216105053.246204-4-kraxel@redhat.com>
- <Z2GHc5qwDub89qCa@redhat.com>
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1tNYXe-0007NU-NY
+ for qemu-devel@nongnu.org; Tue, 17 Dec 2024 09:27:20 -0500
+Received: from mail-oi1-x234.google.com ([2607:f8b0:4864:20::234])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1tNYXW-0004Rp-0p
+ for qemu-devel@nongnu.org; Tue, 17 Dec 2024 09:27:17 -0500
+Received: by mail-oi1-x234.google.com with SMTP id
+ 5614622812f47-3eb7e725aa0so2497540b6e.0
+ for <qemu-devel@nongnu.org>; Tue, 17 Dec 2024 06:27:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1734445628; x=1735050428; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=GsyXWVa1gTMAclEmkq2u33yD7kGsA26S3gQAbXi9QGM=;
+ b=pajBoo9OmX4tGP2EskQlO5i+eBE5mEbF3sYjP14gG/KzixJLphDHVkg+UbMdlsmlk/
+ 37tV0wahYtUJqmh/f7VIDJlGCZ+YQBy6U32e1xIl80sYMv8UFrpm9Df6IqawnI5fStt/
+ fgx9MINBEl9XQKrMnsrnnObvsyAivHWhAwDgT8Xz071PjCFtbF1oUBziDBEBbmkZdsEL
+ orYYP7cuzW9hidkA1jLmHth+FFnOYzPkwxu9bqpdXSQX4yO3CUv5pZccbtOrNwnR3foU
+ 702E2crzRKxNMucyy/31k624h606jpUfHyAamq0f0ZOnVju79oizrvinaPGowsO6TZin
+ rLmA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1734445628; x=1735050428;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=GsyXWVa1gTMAclEmkq2u33yD7kGsA26S3gQAbXi9QGM=;
+ b=stkZqhp661hsK7slIDxYQGbh9DgHWZbT8w3jlxYkyRYKXr6gwVk7YPAzDvwHuF942d
+ qUsswhf0SYa5o2YC6PJmAyPyor90bLc3FLMzGolnnrnVlW51hm5wVvqDbEWYobaeCsvd
+ XWoxYpDdMCb+l6bTD4Q93VQ1P8YBK2Az0+2xk/ren7YnPngKOgl/lbHUE7RPBgCyRD8t
+ v6dhadWnd+BSlMC5xggLuHGK/JKvKzLcbTCPDlaAiRUv2tUfn5/yJtsIpK82AteyG2lC
+ g/368M2+z3WE2m5qrZ3NiwGG7hYlgtnUbw68STak8icBsbl34LLPSQuQX7Syjr0FG66f
+ 9UTQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVH6YaddmVW50klYqEFBvcDmWdC9KdNHnCludeGn8BtcDAJt+v80+c+86MUTVJ4eMOPjzEGEGOAGDl8@nongnu.org
+X-Gm-Message-State: AOJu0YylDcZVpFeGot0WLm7InMZ/VCRswODhPymlaFf21JzgX/SlgBbQ
+ bOi9/Vbeh772RNZ9i6qRrH+nydSvV54nD8h3VIyswMOXi3rChQVRYD1c/OEtEkg=
+X-Gm-Gg: ASbGncvn3HBFRFyw6a1d+eRYeRUlJVCHNElBDDQH8pAHQyvn93zx8aLZl4srpdxa6oA
+ /f2O2bzFqI3lRDA0cOosbFuTH4cOLCcZzv4PAext5dey3ki5S4RDYuiVn4eoqemc0sJrBAZ+BTr
+ c+QqT7a0ycIjBR56reJDJI9jlecXK081r14AmT3LzM0EVmN5Z4i+902QtHOtg3JwAcHDfuPo2Eg
+ c+5U+vA71w2Zj47wcezT8TRMU5PXAUw0qZzvqFN1UIRsG9Xxvcze86P1tQ4c1qm9dnQg60blKRr
+ VaSd2pKK3dQpvXRC1yS+MhOrF5P2E1VchBs=
+X-Google-Smtp-Source: AGHT+IECci/ivsrEMzYhXJhplB5FPPyQGqsmyrJDHvJT7/HayPjU5AwJl7S2Wa9Rr1XSanBFdC/Npg==
+X-Received: by 2002:a05:6808:1987:b0:3eb:777c:184e with SMTP id
+ 5614622812f47-3ebcb271462mr1808803b6e.13.1734445628205; 
+ Tue, 17 Dec 2024 06:27:08 -0800 (PST)
+Received: from [192.168.4.112] (fixed-187-189-51-143.totalplay.net.
+ [187.189.51.143]) by smtp.gmail.com with ESMTPSA id
+ 46e09a7af769-71e48371490sm1999987a34.33.2024.12.17.06.27.07
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 17 Dec 2024 06:27:07 -0800 (PST)
+Message-ID: <0efe16ad-f34b-4a7e-b872-c3f2eb67f977@linaro.org>
+Date: Tue, 17 Dec 2024 08:27:05 -0600
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] accel/tcg: Declare cpu_loop_exit_requested() in
+ 'exec/cpu-common.h'
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org, qemu-s390x@nongnu.org
+References: <20241217140648.98538-1-philmd@linaro.org>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20241217140648.98538-1-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <Z2GHc5qwDub89qCa@redhat.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kraxel@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -31
-X-Spam_score: -3.2
-X-Spam_bar: ---
-X-Spam_report: (-3.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-1.116,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::234;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x234.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,40 +102,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Dec 17, 2024 at 02:15:15PM +0000, Daniel P. Berrang� wrote:
-> On Mon, Dec 16, 2024 at 11:50:49AM +0100, Gerd Hoffmann wrote:
-> > Add a new "etc/boot/kernel" fw_cfg file, containing the kernel without
-> > the setup header patches.  Intended use is booting in UEFI with secure
-> > boot enabled, where the setup header patching breaks secure boot
-> > verification.
-> > 
-> > Needs OVMF changes too to be actually useful.
-> > 
-> > Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
-> > Message-ID: <20240905141211.1253307-5-kraxel@redhat.com>
-> > ---
-> >  hw/i386/x86-common.c | 3 +++
-> >  1 file changed, 3 insertions(+)
-> > 
-> > diff --git a/hw/i386/x86-common.c b/hw/i386/x86-common.c
-> > index 28341b42d949..1cef3045ad83 100644
-> > --- a/hw/i386/x86-common.c
-> > +++ b/hw/i386/x86-common.c
-> > @@ -962,6 +962,9 @@ void x86_load_linux(X86MachineState *x86ms,
-> >      sev_load_ctx.setup_data = (char *)setup;
-> >      sev_load_ctx.setup_size = setup_size;
-> >  
-> > +    /* kernel without setup header patches */
-> > +    fw_cfg_add_file(fw_cfg, "etc/boot/kernel", kernel, kernel_size);
-> > +
+On 12/17/24 08:06, Philippe Mathieu-Daudé wrote:
+> Move cpu_loop_exit_requested() declaration to "exec/cpu-common.h",
+> along with the related cpu_loop_exit_noexc(), cpu_loop_exit(),
+> cpu_loop_exit_atomic() and cpu_loop_exit_restore() methods.
 > 
-> How concerned should we be about the memory duplication overhead
-> from loading the kernel image twice ?
+> Signed-off-by: Philippe Mathieu-Daudé<philmd@linaro.org>
+> ---
+> Based-on:<20241212185341.2857-19-philmd@linaro.org>
+> ---
+>   include/exec/cpu-common.h     | 18 ++++++++++++++++++
+>   include/exec/exec-all.h       | 17 -----------------
+>   accel/tcg/cpu-exec.c          |  2 +-
+>   target/arm/tcg/helper-a64.c   |  1 +
+>   target/s390x/tcg/mem_helper.c |  1 +
+>   5 files changed, 21 insertions(+), 18 deletions(-)
 
-It's not loaded twice, see 214191f6b574 ("x86/loader: read complete
-kernel"), both fw_cfg entries point to the same memory block.
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
-take care,
-  Gerd
-
+r~
 
