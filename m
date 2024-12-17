@@ -2,63 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 680459F59B5
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Dec 2024 23:44:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5635D9F59B3
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Dec 2024 23:44:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tNgHd-0004Ig-OZ; Tue, 17 Dec 2024 17:43:17 -0500
+	id 1tNgHe-0004J5-MX; Tue, 17 Dec 2024 17:43:18 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1tNgHb-0004I8-3U
- for qemu-devel@nongnu.org; Tue, 17 Dec 2024 17:43:15 -0500
-Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
+ id 1tNgHc-0004Ij-Sv
+ for qemu-devel@nongnu.org; Tue, 17 Dec 2024 17:43:16 -0500
+Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1tNgHY-00018S-RN
- for qemu-devel@nongnu.org; Tue, 17 Dec 2024 17:43:14 -0500
-Received: by mail-pf1-x433.google.com with SMTP id
- d2e1a72fcca58-728eccf836bso5151592b3a.1
+ id 1tNgHZ-00018j-39
+ for qemu-devel@nongnu.org; Tue, 17 Dec 2024 17:43:15 -0500
+Received: by mail-pf1-x434.google.com with SMTP id
+ d2e1a72fcca58-728f28744c5so5443533b3a.1
  for <qemu-devel@nongnu.org>; Tue, 17 Dec 2024 14:43:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734475390; x=1735080190; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=JC4GxJz38t3F03j+PKDd/gQkOP6CLd7q7r5tKLCpngM=;
- b=UhDz7pdQQce6uzxkrFdiVcXc8U9NjBAWc/1GiBH7tbH+h1C+xP/Ys3KhPif3k7BxKg
- ahMOCkMfgC0J0BA8ujOYvTjWpXGoXzuJ9yttF/Fh/xvUPs2Ub0gD0kASo57pKyTVhoNw
- tgupT4BrVGA0ANQtNwAg+Mmq39wvVsy/lBrummea2HacybLNcpFBZPdfS5bRhUQaGQJW
- zTnvThjv6Thj3iZJldZaaRXHq5owtiRQYE67faXCe9AinDnwyHBkRvvdTizXnNPesN6K
- jQBZbOvwVAoCwE5XEBrW5fkWPyTjIyb7Pq1tBaern2vCS8L+MS6quhUUfL/WC6lO7yDS
- rY3w==
+ d=linaro.org; s=google; t=1734475391; x=1735080191; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=pMDwQlE3l0KKa7P5lbeW0nhoWgR5/Mui2HXPodnjcRo=;
+ b=EZaar5tKTrCAjHivfNNmdLuo7DHj2zJTPwLO3+tQ2/tsN0Dn7hX0AbVvN7YoEtuipj
+ qzk3+eR4DJiXyE10e446UXMn15j42j7lXCs8PII+1qnW65EwxdLw9nzsuGDfQt8LjT5t
+ ZeBLzUCer8fKiuoPZkrUjzl4ESra/1NlHCm8amURJFK6QVipTJMh6TfipxAW1FQsNmlz
+ ydbkdVGXq8QqQAzrbuwn0/aB3vbWxBnL3q0T56/x/8hJcGEjerwN+GYBdj3AMo4txjs9
+ VGgpKTkNLJILWe6WyHjhR0TXu5vlOpAF0z812eaKjJB743dCNM/fGLrwhJYVTarfEey8
+ cTRA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734475390; x=1735080190;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=JC4GxJz38t3F03j+PKDd/gQkOP6CLd7q7r5tKLCpngM=;
- b=SbX913sFfKmR+v5uJdgYHQqQjKg1mmzaD0XozobUXI0ypTC0Z7XXfZchmuiU9CMrhv
- QMLuorvA2t9Iooyz81vrjC9v5E5qba6d60F1X89JWj6qidlJ9iPP0rmfYWuSNRDJLbxb
- viTjDY6r3sdHzW/tQes5ci8vm4S/polylOP+DT/NUeVE0CREI0So0SWwBtdE4NrGSdDJ
- pYCyQ1f8Pxlo8urjJSvl1JSx+m6BzTtg9vBhqdZl0rTU50wqIhnXrs5ncdhXnfFq1jf0
- BpjkUP2jzadv78u1WHyWiDy5uEtt6I258JEsJoFCstMQUS8C3bSkYpaV4wrNlBtBwb3b
- kmgw==
-X-Gm-Message-State: AOJu0YzhI3ZFGCllyOzxWSkLtHa5AJtDlXpB194X8qmirrEB2X7d6rrU
- xu9aUZlD7F/hf3xKAXuC0Ger1FpGRFGfl4OxdAxxIicJBiK8AS7HUpiJYaRxc/iZt2O0vs2q5i9
- YiOI=
-X-Gm-Gg: ASbGncveuL58r0aAO+klyLXhQrDx49ljPuKZbPO4EiMkORt8SLq8W5JKo0lDcDMFxRg
- 0m/O9Yo+AXK0mXfrtOWZslo4/3nsbhKTucwaAR8VoSFzJR5yzoM8hOCLkZV8rPjDFQXubG8sqiD
- 2JMFkQs9eY9t3hOArTjnnmCfz70P/sQPiSJDt0ALB0TyJO3Z+tP9RE/GrdfqT2SP0TgRGXSP9e9
- UwB8jDKB3QW+CpSc321a17psvMSosW0Mr1KK7kyQRklmaHozMlKcGCD
-X-Google-Smtp-Source: AGHT+IHJpV31k8QAKjDi4oz5R5Jgde/bPz6tlQJ8cmo4qIzIyp/PhswW8uLHfkodELdcpIG/pUln7Q==
-X-Received: by 2002:a05:6a00:1941:b0:725:b347:c3cc with SMTP id
- d2e1a72fcca58-72a8d2f0b7amr989542b3a.23.1734475390623; 
- Tue, 17 Dec 2024 14:43:10 -0800 (PST)
+ d=1e100.net; s=20230601; t=1734475391; x=1735080191;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=pMDwQlE3l0KKa7P5lbeW0nhoWgR5/Mui2HXPodnjcRo=;
+ b=nbWHA2naut8nT4P3b3HPGCenPM0ScApzQAYqs3fcVn3hyDJu1lVjWXT8JffoEvivyV
+ Cq5vKxvNs2nFJ06/UUZWh0vsuresIMXX0lFGs1UgwligcStxcbVP7uCzYVEb0RhQb3Iv
+ EsSzLNhjyQddAFjF0OlarzYO6juuVIUxd+La3NfPjDPpJHMCiFXkoi1+9uZcx0gJVAXY
+ L6RRE01kGFlR5yEjKTPcowr7xL8BKurZDednRhznM7I2kPgswSJBxU7EU5DBYG/aPoQI
+ AnbwxZYi3P6JyOLhrNfHxj1L9cskDaZUpBNm92jZVepaRzitgMM/otd3FW2unDJG9WIS
+ cwuA==
+X-Gm-Message-State: AOJu0YzxojLQRmcnBBz/Ncnc4/95RiuW3EFyBl5BE2ejdKeXL7mJscPD
+ ilgsKzH/CxUGEiby0BIcYXT0+2WmIClM39VEwyJVw85owh16RXV7+WlJTNIxgXI0tMwuedMY634
+ cuco=
+X-Gm-Gg: ASbGncv9/sQH7l0wmcD944MWCqsS72FxHBMjxzTicCBbM71vsTJx6OfWVIzwDys0POh
+ X4TYPtpw4EZecHps9BFFoqt46ZZQz7vVmfAAPWtj2Dcc7X1CbY6aBOhk68gTvBUblSx2GoDod+5
+ nMv4wMMo2JoBzeUGmkJRMBbrDVyEY9oH5PgNPSyi8arNli5iMhBVMZ5oGst8361O7I/izhXUWS0
+ RDF6Tr9DGDH9JkGrufq0wyI7xB2z8xaZnwPYObfJ4k8RK9NM3CH/g0o
+X-Google-Smtp-Source: AGHT+IE8f34zBMELnL4l1SA+4UpYCaULbwZkjbMJqC5q/RbITjhIlarLbDGtwX+LOYyZbtm8SNZwWw==
+X-Received: by 2002:a05:6a20:6a1d:b0:1db:df34:a1d6 with SMTP id
+ adf61e73a8af0-1e5b48a4612mr1126803637.42.1734475391556; 
+ Tue, 17 Dec 2024 14:43:11 -0800 (PST)
 Received: from pc.. ([38.39.164.180]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-72918ac53f3sm7463214b3a.27.2024.12.17.14.43.09
+ d2e1a72fcca58-72918ac53f3sm7463214b3a.27.2024.12.17.14.43.10
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 17 Dec 2024 14:43:10 -0800 (PST)
+ Tue, 17 Dec 2024 14:43:11 -0800 (PST)
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
@@ -67,15 +68,18 @@ Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  Alexandre Iooss <erdnaxe@crans.org>,
  Mahmoud Mandour <ma.mandourr@gmail.com>, Thomas Huth <thuth@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH v3 00/11] Fix 32-bit build for plugins
-Date: Tue, 17 Dec 2024 14:42:55 -0800
-Message-Id: <20241217224306.2900490-1-pierrick.bouvier@linaro.org>
+Subject: [PATCH v3 01/11] tests/tcg/plugins/insn: remove unused callback
+ parameter
+Date: Tue, 17 Dec 2024 14:42:56 -0800
+Message-Id: <20241217224306.2900490-2-pierrick.bouvier@linaro.org>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20241217224306.2900490-1-pierrick.bouvier@linaro.org>
+References: <20241217224306.2900490-1-pierrick.bouvier@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x433.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x434.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,66 +102,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since 9.2.0 release, we are building contrib plugins using the QEMU build system
-(before, it was external makefiles). When building for 32-bit host platform,
-some warnings are triggered and build fail.
+Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+---
+ tests/tcg/plugins/insn.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-Thus, at the time, the decision was to not fix those plugins, and
-disable by default plugins for 32-bit host platforms (see cf2a78cb).
-
-This series fix plugins to have the same behaviour on 32-bit and 64-bit
-platform, and reenable plugins for 32-bit platforms.
-
-There are two portability issues:
-- we use hash tables, and use data as key directly. As key has a pointer size,
-  it limits its size for 32-bit platform.
-  The fix is to use pointer as a key, and point to allocated 64-bit data. The
-  change is pretty straightforward for concerned plugins, and does not imply a
-  memory overhead, as hash table entry is already heap allocated usually.
-- we use plugins callback data to pass a pc. This does not work on 32-bit
-  platform, as we are limited to a pointer size.
-  To avoid doing memory allocations, we simply we simply use
-  inline operations and a scoreboard to achieve the same result.
-
-Tested (for every plugin modified) on i686 and x86_64.
-The behaviour before and after this series was checked as well, and there is no
-difference, apart from bug fixing (some pc were clipped at 32-bit values, even
-on the 64-bit platform).
-
-v2:
-- do not modify qemu_plugin_insn_haddr signature
-- fix cache plugin to use a correct hash/equal function
-
-v3:
-- add missing Reviewed-by tags
-
-Pierrick Bouvier (11):
-  tests/tcg/plugins/insn: remove unused callback parameter
-  contrib/plugins/howvec: ensure we don't regress if this plugin is
-    extended
-  tests/tcg/plugins/syscall: fix 32-bit build
-  tests/tcg/plugins/mem: fix 32-bit build
-  contrib/plugins/stoptrigger: fix 32-bit build
-  contrib/plugins/cache: fix 32-bit build
-  contrib/plugins/hotblocks: fix 32-bit build
-  contrib/plugins/cflow: fix 32-bit build
-  contrib/plugins/hwprofile: fix 32-bit build
-  contrib/plugins/hotpages: fix 32-bit build
-  configure: reenable plugins by default for 32-bit hosts
-
- configure                     | 21 +--------------
- contrib/plugins/cache.c       | 18 +++++--------
- contrib/plugins/cflow.c       | 17 ++++++++-----
- contrib/plugins/hotblocks.c   | 29 +++++++++++++++++----
- contrib/plugins/hotpages.c    |  6 ++---
- contrib/plugins/howvec.c      |  7 ++---
- contrib/plugins/hwprofile.c   | 27 ++++++++++++--------
- contrib/plugins/stoptrigger.c | 48 ++++++++++++++++++++---------------
- tests/tcg/plugins/insn.c      |  4 +--
- tests/tcg/plugins/mem.c       |  6 ++---
- tests/tcg/plugins/syscall.c   |  6 ++---
- 11 files changed, 99 insertions(+), 90 deletions(-)
-
+diff --git a/tests/tcg/plugins/insn.c b/tests/tcg/plugins/insn.c
+index baf2d07205d..0c723cb9ed8 100644
+--- a/tests/tcg/plugins/insn.c
++++ b/tests/tcg/plugins/insn.c
+@@ -150,10 +150,8 @@ static void vcpu_tb_trans(qemu_plugin_id_t id, struct qemu_plugin_tb *tb)
+             qemu_plugin_register_vcpu_insn_exec_inline_per_vcpu(
+                 insn, QEMU_PLUGIN_INLINE_ADD_U64, insn_count, 1);
+         } else {
+-            uint64_t vaddr = qemu_plugin_insn_vaddr(insn);
+             qemu_plugin_register_vcpu_insn_exec_cb(
+-                insn, vcpu_insn_exec_before, QEMU_PLUGIN_CB_NO_REGS,
+-                GUINT_TO_POINTER(vaddr));
++                insn, vcpu_insn_exec_before, QEMU_PLUGIN_CB_NO_REGS, NULL);
+         }
+ 
+         if (do_size) {
 -- 
 2.39.5
 
