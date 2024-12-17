@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 941649F5027
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Dec 2024 17:02:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED7189F5025
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Dec 2024 17:02:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tNa19-0006PU-JC; Tue, 17 Dec 2024 11:01:51 -0500
+	id 1tNa1I-0006jt-Rv; Tue, 17 Dec 2024 11:02:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1tNa0v-0005tC-CP
+ id 1tNa0x-0005up-8h
  for qemu-devel@nongnu.org; Tue, 17 Dec 2024 11:01:40 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1tNa0r-0002Fr-Bh
- for qemu-devel@nongnu.org; Tue, 17 Dec 2024 11:01:36 -0500
+ id 1tNa0v-0002Gn-GC
+ for qemu-devel@nongnu.org; Tue, 17 Dec 2024 11:01:38 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1734451292;
+ s=mimecast20190719; t=1734451296;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=tlB1PN4HKsqWwJiz+Iw+8YRN7XwwJoyAT4q/5izh0W4=;
- b=CoiBHV6CpZC5KQdwcTyPapJllrbDy96p31syVfgfZCkso0pxaU6bkfT0Cj6Vdy3Zw0kxkK
- k+9bb033JSuC3IUMVQ58MoghVfVMJDNsuvg/tluQ5ppXN9HWgNKpDRVUL7S1adGacRK+/g
- YBrbgDM45/U5fbKhSQkzT5+2Zk6rR+U=
+ bh=ujZ23YBoEtRTbeD5bsCjK9gju82WtT8tPgmcvcVFHr4=;
+ b=d/eU3LyenXSF+SgzaRmg2lOXjUvFO9rOgW4razbcGPYDEx+4QIDSBeNSFWafmoOaMKoWDB
+ DEW2ACpVXCBPBbLuNyD986jxX3pWPmfEf5gO8ZQtkL3YC40a2934s/rLGFbttdGQ7y1pM2
+ Jk5+DoDLkcOYSYh6vw0FHy+8Lrp6uH8=
 Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-534-8qf2bvrNNlCEsOpIIJRhjw-1; Tue,
- 17 Dec 2024 11:01:29 -0500
-X-MC-Unique: 8qf2bvrNNlCEsOpIIJRhjw-1
-X-Mimecast-MFC-AGG-ID: 8qf2bvrNNlCEsOpIIJRhjw
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-437-fRLLplPAPVWc0E1F0YbL2Q-1; Tue,
+ 17 Dec 2024 11:01:32 -0500
+X-MC-Unique: fRLLplPAPVWc0E1F0YbL2Q-1
+X-Mimecast-MFC-AGG-ID: fRLLplPAPVWc0E1F0YbL2Q
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 5C2AD1955F41; Tue, 17 Dec 2024 16:01:28 +0000 (UTC)
+ id 6CA3F19560B2; Tue, 17 Dec 2024 16:01:31 +0000 (UTC)
 Received: from toolbox.redhat.com (unknown [10.42.28.136])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id F33EA300F9B5; Tue, 17 Dec 2024 16:01:25 +0000 (UTC)
+ id EC50230044C1; Tue, 17 Dec 2024 16:01:28 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
@@ -52,17 +52,17 @@ Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Thomas Huth <thuth@redhat.com>
-Subject: [PATCH v3 30/32] tests/functional: skip tests if assets are not
- available
-Date: Tue, 17 Dec 2024 15:59:51 +0000
-Message-ID: <20241217155953.3950506-31-berrange@redhat.com>
+Subject: [PATCH v3 31/32] tests/functional: ignore errors when caching assets,
+ except for 404
+Date: Tue, 17 Dec 2024 15:59:52 +0000
+Message-ID: <20241217155953.3950506-32-berrange@redhat.com>
 In-Reply-To: <20241217155953.3950506-1-berrange@redhat.com>
 References: <20241217155953.3950506-1-berrange@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -31
 X-Spam_score: -3.2
@@ -87,71 +87,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-If downloading of assets has been disabled, then skip running a
-test if the assets it has registered are not already downloaded.
+We see periodic errors caching assets due to a combination of transient
+networking and server problems. With the previous patch to skip running
+a test when it has missing assets, we can now treat most cache download
+errors as non-fatal.
+
+Only HTTP 404 is retained as fatal, since it is a strong indicator of
+a fully broken test rather than a transient error.
 
 Reviewed-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- tests/functional/qemu_test/asset.py    |  8 +++++++-
- tests/functional/qemu_test/testcase.py | 11 +++++++++++
- 2 files changed, 18 insertions(+), 1 deletion(-)
+ tests/functional/qemu_test/asset.py | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
 
 diff --git a/tests/functional/qemu_test/asset.py b/tests/functional/qemu_test/asset.py
-index c5d3e73c4b..39832b2587 100644
+index 39832b2587..f0730695f0 100644
 --- a/tests/functional/qemu_test/asset.py
 +++ b/tests/functional/qemu_test/asset.py
-@@ -65,6 +65,12 @@ def _check(self, cache_file):
-     def valid(self):
-         return self.cache_file.exists() and self._check(self.cache_file)
+@@ -15,6 +15,7 @@
+ from time import sleep
+ from pathlib import Path
+ from shutil import copyfileobj
++from urllib.error import HTTPError
  
-+    def fetchable(self):
-+        return not os.environ.get("QEMU_TEST_NO_DOWNLOAD", False)
+ 
+ # Instances of this class must be declared as class level variables
+@@ -170,7 +171,18 @@ def precache_test(test):
+         for name, asset in vars(test.__class__).items():
+             if name.startswith("ASSET_") and type(asset) == Asset:
+                 log.info("Attempting to cache '%s'" % asset)
+-                asset.fetch()
++                try:
++                    asset.fetch()
++                except HTTPError as e:
++                    # Treat 404 as fatal, since it is highly likely to
++                    # indicate a broken test rather than a transient
++                    # server or networking problem
++                    if e.code == 404:
++                        raise
 +
-+    def available(self):
-+        return self.valid() or self.fetchable()
++                    log.debug(f"HTTP error {e.code} from {asset.url} " +
++                              "skipping asset precache")
 +
-     def _wait_for_other_download(self, tmp_cache_file):
-         # Another thread already seems to download the asset, so wait until
-         # it is done, while also checking the size to see whether it is stuck
-@@ -103,7 +109,7 @@ def fetch(self):
-                            self.cache_file, self.url)
-             return str(self.cache_file)
+         log.removeHandler(handler)
  
--        if os.environ.get("QEMU_TEST_NO_DOWNLOAD", False):
-+        if not self.fetchable():
-             raise Exception("Asset cache is invalid and downloads disabled")
- 
-         self.log.info("Downloading %s to %s...", self.url, self.cache_file)
-diff --git a/tests/functional/qemu_test/testcase.py b/tests/functional/qemu_test/testcase.py
-index aa6c9c0d64..869f3949fe 100644
---- a/tests/functional/qemu_test/testcase.py
-+++ b/tests/functional/qemu_test/testcase.py
-@@ -184,6 +184,14 @@ def scratch_file(self, *args):
-     def log_file(self, *args):
-         return str(Path(self.outputdir, *args))
- 
-+    def assets_available(self):
-+        for name, asset in vars(self.__class__).items():
-+            if name.startswith("ASSET_") and type(asset) == Asset:
-+                if not asset.available():
-+                    self.log.debug(f"Asset {asset.url} not available")
-+                    return False
-+        return True
-+
-     def setUp(self, bin_prefix):
-         self.assertIsNotNone(self.qemu_bin, 'QEMU_TEST_QEMU_BINARY must be set')
-         self.arch = self.qemu_bin.split('-')[-1]
-@@ -209,6 +217,9 @@ def setUp(self, bin_prefix):
-         self.machinelog.setLevel(logging.DEBUG)
-         self.machinelog.addHandler(self._log_fh)
- 
-+        if not self.assets_available():
-+            self.skipTest('One or more assets is not available')
-+
-     def tearDown(self):
-         if "QEMU_TEST_KEEP_SCRATCH" not in os.environ:
-             shutil.rmtree(self.workdir)
+     def precache_suite(suite):
 -- 
 2.46.0
 
