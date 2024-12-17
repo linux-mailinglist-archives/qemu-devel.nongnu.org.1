@@ -2,68 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BE369F4B52
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Dec 2024 13:55:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 74B369F4B2F
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Dec 2024 13:44:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tNX5L-0000As-F1; Tue, 17 Dec 2024 07:53:59 -0500
+	id 1tNWtx-0005BJ-On; Tue, 17 Dec 2024 07:42:13 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1tNX5J-0000AC-Rr
- for qemu-devel@nongnu.org; Tue, 17 Dec 2024 07:53:57 -0500
-Received: from mgamail.intel.com ([198.175.65.18])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tNWtp-0005Ar-ER
+ for qemu-devel@nongnu.org; Tue, 17 Dec 2024 07:42:05 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1tNX5H-0005DQ-RX
- for qemu-devel@nongnu.org; Tue, 17 Dec 2024 07:53:57 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1734440036; x=1765976036;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=FxrxvgyTxe7v2slGilL0hs9RicUqXHpApITr+EHT6TU=;
- b=ALXJ5zmQ4AnEDBgy+/xdfQEoI9UfcbfjLIR9Ul3+2Mg9Mk0dtzlVekVJ
- 98rCOjBWVbZjirs0Y4dTeXjrE6UpOudegvDNaX9F7LrGDYxL7kPMtHxbw
- W5D6BIWjUCsOBbA0FcamWP+vAxx/GvZmqHZxeyaxzIw2mzjWjsgGMWmL3
- axHIlgn4nOtQsQYfWO/BEwmruO3AYw1y6phr2A6/mA+MjzLqBic89T0sx
- jKUDc/E6F2zxcDagFXBDvqnSk9Fri/kkjuvx5KZyqo14WXGnqkb9VRq3g
- a9uuTAh2yBVEGme3JjjpYJVXCgPPI7/bJOP3+UWAMNsBfXhTTJUSCHaw6 w==;
-X-CSE-ConnectionGUID: d7WDq8bjSmWMmhbdigzwUQ==
-X-CSE-MsgGUID: JTEPH3nsSI2cBIwBgqaAkA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11288"; a="34993244"
-X-IronPort-AV: E=Sophos;i="6.12,241,1728975600"; d="scan'208";a="34993244"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
- by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Dec 2024 04:53:52 -0800
-X-CSE-ConnectionGUID: Xrux9+hATXWF/a9AVGVCdQ==
-X-CSE-MsgGUID: rfymQn0eRoqLK8H1V60LZg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,241,1728975600"; d="scan'208";a="97760211"
-Received: from lxy-clx-4s.sh.intel.com ([10.239.48.52])
- by fmviesa008.fm.intel.com with ESMTP; 17 Dec 2024 04:53:51 -0800
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Zhao Liu <zhao1.liu@intel.com>,
-	qemu-devel@nongnu.org
-Subject: [PATCH 2/2] target/i386: Print CPUID subleaf info for unsupported
- feature
-Date: Tue, 17 Dec 2024 07:39:32 -0500
-Message-Id: <20241217123932.948789-3-xiaoyao.li@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241217123932.948789-1-xiaoyao.li@intel.com>
-References: <20241217123932.948789-1-xiaoyao.li@intel.com>
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tNWtl-0003OE-GF
+ for qemu-devel@nongnu.org; Tue, 17 Dec 2024 07:42:03 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1734439307;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=9vsTGjpT995nBSScRodX+d95bnmCNkwLraykxKT7HPk=;
+ b=WeLuSaPGOGKTZH6GxgLdl8i+F75hVcCuz0fj//KVrrxlIP7fe988cQF97JWdPZSt0Ln7gP
+ FBQNhJOkTe5JWMtU7+/vM5jBG7kAqaJD8g2I8rtwRLPAhMdTpWH7O18Yir0NnP0ogoRHPP
+ 8x/tSXtV+fQDVNE7tq2Jo88VGuJuhJQ=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-313-wEv52gM6MAKCA2mpeFoOaQ-1; Tue, 17 Dec 2024 07:41:45 -0500
+X-MC-Unique: wEv52gM6MAKCA2mpeFoOaQ-1
+X-Mimecast-MFC-AGG-ID: wEv52gM6MAKCA2mpeFoOaQ
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-385e1339790so3093969f8f.2
+ for <qemu-devel@nongnu.org>; Tue, 17 Dec 2024 04:41:45 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1734439304; x=1735044104;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=9vsTGjpT995nBSScRodX+d95bnmCNkwLraykxKT7HPk=;
+ b=Npy7N+lb4OqE+bqCt6xsiPzL8X4fFDVdxzWz/lxvQm9p/ukP610VmngLtS7Lb9pW81
+ VvJAMHT2vHN5hTf6TZnmnElu8Oto40fEhd6NNET0UlD/Om2o6ErPRB63iXjbjIOfMn7p
+ BkFDyFYcoeYt6ZDxG7eM3O+hrzCCmYN9Jy4JjCEYY8oLfokAii8YxgQ7ku6OSWN6rs8R
+ usz9LoIJrjY467uHcTDTFXnsfVE5MiCtS55zHynQyyqakdpVruCxLb7J9JEQMIfaNEeY
+ sOWUbDG/hq6xjUvi0YU1WnLJ3mEtqi+PuPq88G3LksLFA530fI/AUXFuZ/334bd24TeQ
+ PFTQ==
+X-Gm-Message-State: AOJu0Yy6jGLbRt8QIldKCumplUBQudDhDI640Dy/4Bb7735KIbOhm4kb
+ ShchnjONx27z/S3I8QXofKDVWq/QLeqiiVFGCLXaLPaCLeFlLJvtikLNxY4UOKHn80z41K3nH/H
+ 77kfrnLwTzIcRIov2GWMqqSQT4DVkfKX+ZHFJ58/9uFC0S9WmgFvS
+X-Gm-Gg: ASbGncsP8k/t1oc+UhLy8AIbkOqRkjT4rkWuJdX8ql1fR6LY5ov3lpdB/6WPuyDoc/8
+ ICW5YqNAxqCN8yphf17F8laAcqEqpGwwQWN75jJyB14bq3CYTWkEHipptKN8u7pwlmdG8TlkXzd
+ ct3oDKIdqA3quwjvIe1y6LZMV7jNnkFOgnuo5FM5r76fhGxuHzGB6Gggh9Hrfr3YXZwBfgBHezr
+ +xwU6CthvkRfwjher7xdLXmRW5Qz5H8sAxvZ+3ZxpsY56JFA5g=
+X-Received: by 2002:a05:6000:471b:b0:386:3835:9fff with SMTP id
+ ffacd0b85a97d-3888e0c06c7mr15616917f8f.59.1734439304570; 
+ Tue, 17 Dec 2024 04:41:44 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IE2x162+dU56dRRqFXnpTJkePC0pcIHkhRm9zsYVGWOqow2UoeQ9s/8QIrtggPa4n9USGM+ew==
+X-Received: by 2002:a05:6000:471b:b0:386:3835:9fff with SMTP id
+ ffacd0b85a97d-3888e0c06c7mr15616894f8f.59.1734439304270; 
+ Tue, 17 Dec 2024 04:41:44 -0800 (PST)
+Received: from redhat.com ([2a02:14f:1ed:dd96:e5cc:8b38:146f:2e38])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-388c804a297sm10974189f8f.67.2024.12.17.04.41.42
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 17 Dec 2024 04:41:43 -0800 (PST)
+Date: Tue, 17 Dec 2024 07:41:40 -0500
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Thomas Huth <thuth@redhat.com>
+Cc: qemu-devel@nongnu.org,
+ Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ =?iso-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>,
+ Eric Auger <eric.auger@redhat.com>,
+ =?iso-8859-1?Q?Cl=E9ment?= Mathieu--Drif <clement.mathieu--drif@eviden.com>,
+ Yi Liu <yi.l.liu@intel.com>, Jason Wang <jasowang@redhat.com>
+Subject: Re: [PATCH v3 0/2] Convert the intel_iommu avocado test
+Message-ID: <20241217074128-mutt-send-email-mst@kernel.org>
+References: <20241217121550.141072-1-thuth@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=198.175.65.18; envelope-from=xiaoyao.li@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -33
-X-Spam_score: -3.4
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241217121550.141072-1-thuth@redhat.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -31
+X-Spam_score: -3.2
 X-Spam_bar: ---
-X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_report: (-3.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=0.998, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-1.116,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -81,32 +107,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Some CPUID leaves have meaningful subleaf index. Print the subleaf info
-in feature_word_description for CPUID features.
+On Tue, Dec 17, 2024 at 01:15:48PM +0100, Thomas Huth wrote:
+> The first patch introduces a helper function for retrieving the
+> hostfwd ports from QEMU.
+> We then use this helper function to run a HTTP server in the guest
+> in the second patch to exercise the network of the guest.
 
-Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Reviewed-by: Eduardo Habkost <ehabkost@redhat.com>
----
- target/i386/cpu.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+Good stuff
 
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index d09e2f868c35..3a697834e3ad 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -5460,8 +5460,9 @@ static char *feature_word_description(FeatureWordInfo *f)
-         {
-             const char *reg = get_register_name_32(f->cpuid.reg);
-             assert(reg);
--            return g_strdup_printf("CPUID.%02XH:%s",
--                                   f->cpuid.eax, reg);
-+            return g_strdup_printf("CPUID.%02XH_%02XH:%s",
-+                                   f->cpuid.eax,
-+                                   f->cpuid.needs_ecx ? f->cpuid.ecx : 0, reg);
-         }
-     case MSR_FEATURE_WORD:
-         return g_strdup_printf("MSR(%02XH)",
--- 
-2.34.1
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+
+
+> v3:
+> - Use the new hostfwd helper function instead of trying to probe
+>   for an unused port on the host
+> - Use a constant for the guest port 8080
+> 
+> Thomas Huth (2):
+>   tests/functional: Add a helper function for retrieving the hostfwd
+>     port
+>   tests/functional: Convert the intel_iommu avocado test
+> 
+>  MAINTAINERS                                   |   1 +
+>  tests/functional/meson.build                  |   2 +
+>  tests/functional/qemu_test/utils.py           |   7 +
+>  tests/functional/test_info_usernet.py         |   8 +-
+>  .../test_intel_iommu.py}                      | 191 +++++++++++-------
+>  5 files changed, 135 insertions(+), 74 deletions(-)
+>  rename tests/{avocado/intel_iommu.py => functional/test_intel_iommu.py} (26%)
+>  mode change 100644 => 100755
+> 
+> -- 
+> 2.47.1
 
 
