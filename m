@@ -2,86 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 904E19F4F0D
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Dec 2024 16:14:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F8749F4F24
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Dec 2024 16:17:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tNZGK-0008Sg-6V; Tue, 17 Dec 2024 10:13:28 -0500
+	id 1tNZK6-0002VL-Ag; Tue, 17 Dec 2024 10:17:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tNZGH-0008SA-SF
- for qemu-devel@nongnu.org; Tue, 17 Dec 2024 10:13:26 -0500
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1tNZJy-0002Uz-Ga
+ for qemu-devel@nongnu.org; Tue, 17 Dec 2024 10:17:14 -0500
+Received: from mail-ot1-x333.google.com ([2607:f8b0:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tNZGG-0003JS-Bh
- for qemu-devel@nongnu.org; Tue, 17 Dec 2024 10:13:25 -0500
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-436249df846so38163535e9.3
- for <qemu-devel@nongnu.org>; Tue, 17 Dec 2024 07:13:23 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1tNZJv-0003qT-Sw
+ for qemu-devel@nongnu.org; Tue, 17 Dec 2024 10:17:13 -0500
+Received: by mail-ot1-x333.google.com with SMTP id
+ 46e09a7af769-71e287897ceso3567471a34.0
+ for <qemu-devel@nongnu.org>; Tue, 17 Dec 2024 07:17:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734448402; x=1735053202; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=/B5TIPsV17x+5MyZKSnFfy23Cjqmxw2Z95LPImc4y+o=;
- b=RcKF4jHP00vX01FACY9u41Wo0GMfnnCeCjqMgqod5iRn/UyCiwqrBnFvXjSS5SmGtA
- SSjRp0rim3nZNwF7r2++7E0AZAckmrDdDjYXsF5PC9vvjMzXIgry9k6tcKHFtXCgAxaq
- 6wlKiya3hwKmmBT7ahEskckukBdV6Kb9EF1diWVBesXNghyeAW2FqalhyJhy5BWeTx6A
- T6WcuGnO5OMh7gkgUp2xGH58NrT9doV9xzF++c79YXPgP3XJcNhqsmTJWkBkp0RZnYl6
- /V165wVt9laDsn3ArVV3SmAad93fUO6+IHiBDsNOLdgx5iCvCm+DEt2kY9ZS8V+pa/y9
- XmMA==
+ d=linaro.org; s=google; t=1734448630; x=1735053430; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=uuFn9hApZFPfN1Devut5zdupFenLSDgfUMfN1rpJQwk=;
+ b=PvzLZ1+IC53vdeXurWkvxKbAV0MYFII0Bk9SHuvNEZA85fTDg2u/Dzy2hMw9hUJi3z
+ E3wsCY2Ij+VOzFJyZXtPy2fcw+YZbUERTX8zxqU8uwkX0Il8CeMVEMilIYfLCS96zWgD
+ iSxM0ACrQhmXVvWoTUfO0pXTNzX0yNho/ejv3Z7tZBugnA/CyFZEJSh8xd+ooj1iLy2h
+ MtkzAhqrEOmePntWT1/rgShSmAKi2SemWjKqXJYDgiu1Nu3Duv/ZwZ7VzbsdLHf0uynw
+ 4eqmEfUOtPtK6tdpofcPmUyIsWzlfGQHiL++/VCJH6GzYEgm/vcqUvJHfTVP7MVqmWv2
+ QIfQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734448402; x=1735053202;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=/B5TIPsV17x+5MyZKSnFfy23Cjqmxw2Z95LPImc4y+o=;
- b=ptFbqP2hUUpT786/6RujAd8JeVmy+uumcJbmf+fDL5Swj94sUE/aco+jiaL/L6FZAz
- iXxxnsugVmSnYZfG7mNUp5hi9Hj8GjF03jf+bDkOrIyw/BZYjla4CHGaEk0LQlvWRZcz
- oaiFgfNN5gP7lLsu4ZkQdX5aXg4WLgXTLROB/BNW+9Duedd41gn/XImGyjwXhewOK2sN
- 2NFthvAx6pP1bG5CbK59A93xXTGncAXiiM/Plyj3m1vCSJlm5VAOod45S4unOSZ/v8oy
- 6gixSy0Qk5OR8N7g6aLBy5BmxSY7mMpXE+5hTjH6WYfUnnSpHCYP/vVx+whX4XpOOy8N
- KXKA==
-X-Gm-Message-State: AOJu0YyLoyE0ZwNqcvRZKYeuGpQ6jQsCkCx/Pwdv1fHaNxB7MXvmXUcD
- 1xtTiWLXHTry6yhBacwSLBGN7oV0qd4YfFu7szwCYpVwwHJucD6QjZ1zJZNdxLRiBmY8kTZYAL4
- g
-X-Gm-Gg: ASbGncujIFveIwfHCa8YKLninarhaFrVS1/guQRzisi5urcCT7ljYdm4EPjaoAmK8E0
- IihLKqM7c2ODr4gjCW1N/xQv/ezRDHD6mDOEQfmCe+FubzXnBuTsbakqKHVJENK5PN7WegYMl7c
- eJq+xlUpaAPARtcRdQrsjG3zEG/fjOj4n8rcll+BtYSLb0872MyWPi2gwt5FI0duCCO4WGUSN1K
- OKN6c49dm88ooHU1DBM+IJv8enlzU67nwTeZRYWJtthlZRPzP0PY/Dt/ZpnuvutX5QRNw3b89eT
- Vmr7
-X-Google-Smtp-Source: AGHT+IEfxORkyLYhuHxnONvt8y0GcoDDWqUCnUhwhZJaAe+AjTE0GlknrUlywXXPAdaaiQJ2vymGXQ==
-X-Received: by 2002:a05:600c:b95:b0:434:f925:f5c9 with SMTP id
- 5b1f17b1804b1-4362aa28ddemr150403075e9.6.1734448402549; 
- Tue, 17 Dec 2024 07:13:22 -0800 (PST)
-Received: from localhost.localdomain ([78.196.4.158])
+ d=1e100.net; s=20230601; t=1734448630; x=1735053430;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=uuFn9hApZFPfN1Devut5zdupFenLSDgfUMfN1rpJQwk=;
+ b=TDU+DgkqzETfsZw5b82JHQauHly42BLxnUdA5Q48aSlatwF6YGBFNvYPqcQa4XZ0+Z
+ CN7iV2UUDQ1wNkwFyoIKTwkRkO7xUfqmCjjWCWUg3smf8Yez2cb5Md/Jpw4FxUX+GQug
+ ryU31kLfKe6rWk/yjpa+B2wrPDPZ1O+g/j5jMZ22BdoVC07qjQfBxAaj6mWiliJbCeXc
+ DwRkV2UtVG0rbYHzkD6JztuEqnQZJ+RQ0zm0ZnOxJcs/wdxN4gZQOKhs8RI73bxUdbVP
+ q3fgJ+HysfwSKJaZ9vw8uUgGq0pGzTT2DWjFOnFTWiOnyng6J7p4Xh7RmeEorqWQwOdt
+ lhZQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXh/zJiZ1LLF/wYZp+n9JChb4g+L7iPdBcENqT+f/h8f8C71pIofAfNKjUc28YuDhjeeGfZMmWy4ADg@nongnu.org
+X-Gm-Message-State: AOJu0YxxPxmtYAEmdlr2VQjfgsP3egzVucGf4LNki97og2Xdicr1K6sS
+ tKgmKGah4R8E3biRCERoYzR5w4MvmqP/uEDDlQqK//P/k7WkNVdsFyAUVeq8VgY=
+X-Gm-Gg: ASbGncvDBmUJZ5CSGg8UjmAZcMc+PAFC2RoPL6DIEzTyAYuK/mzXYbTHTNmqQNmcSZJ
+ G73ddG2rotgzwa6YEKDZSuee+qwwM1LOYJ6qs7TuOygN71ZWvRNsZfL3u7kts7D9GI72KgCscsd
+ XOsiOJbc/B1LS8VIPSKWp9rJcHtlTHcrYiDgZg/yeRKofWNo1LpZOEYzXfX7dHuZzpv7xg3nNQl
+ YYYyOFiSofzUedlvYhTNa/tSYcDSM/Hk9TYYa2eQFb2TZK0xcORqCCCvqciDNWoZX/kz7CzSA==
+X-Google-Smtp-Source: AGHT+IHgbgKDwj+Syt9Y6IgnHHdCEBjizcH+X/VLdsnHjY8iSGyI5q5OtEdSR2hpNC6XzWRiRrrHfw==
+X-Received: by 2002:a05:6830:3890:b0:713:ce15:d4d3 with SMTP id
+ 46e09a7af769-71e3b8d826amr8744650a34.1.1734448630071; 
+ Tue, 17 Dec 2024 07:17:10 -0800 (PST)
+Received: from [172.20.0.130] ([187.217.227.247])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4364a376846sm22805905e9.0.2024.12.17.07.13.21
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 17 Dec 2024 07:13:22 -0800 (PST)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Stefano Stabellini <sstabellini@kernel.org>,
- Zhao Liu <zhao1.liu@intel.com>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Paul Durrant <paul@xen.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>, Anton Johansson <anjo@rev.ng>,
- Anthony PERARD <anthony@xenproject.org>, xen-devel@lists.xenproject.org
-Subject: [PATCH 3/3] system/accel-ops: Remove unnecessary 'exec/cpu-common.h'
- header
-Date: Tue, 17 Dec 2024 16:13:05 +0100
-Message-ID: <20241217151305.29196-4-philmd@linaro.org>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20241217151305.29196-1-philmd@linaro.org>
-References: <20241217151305.29196-1-philmd@linaro.org>
+ 46e09a7af769-71e4836fbd8sm2031222a34.35.2024.12.17.07.17.08
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 17 Dec 2024 07:17:09 -0800 (PST)
+Message-ID: <924121e8-7536-4212-b178-95d98b64d2f5@linaro.org>
+Date: Tue, 17 Dec 2024 09:17:04 -0600
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 03/13] tests/tcg/plugins/insn: remove unused callback
+ parameter
+To: Pierrick Bouvier <pierrick.bouvier@linaro.org>, qemu-devel@nongnu.org
+Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Alexandre Iooss <erdnaxe@crans.org>, Paolo Bonzini <pbonzini@redhat.com>,
+ Mahmoud Mandour <ma.mandourr@gmail.com>, Thomas Huth <thuth@redhat.com>,
+ philmd@linaro.org
+References: <20241217010707.2557258-1-pierrick.bouvier@linaro.org>
+ <20241217010707.2557258-4-pierrick.bouvier@linaro.org>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20241217010707.2557258-4-pierrick.bouvier@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::333;
+ envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -104,29 +104,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since commit c4b3f46c151 ("include/exec: Move vaddr defines to
-separate file") we only need to include "exec/vaddr.h" to get
-the 'vaddr' type definition, no need for "exec/cpu-common.h".
+On 12/16/24 19:06, Pierrick Bouvier wrote:
+> Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+> ---
+>   tests/tcg/plugins/insn.c | 4 +---
+>   1 file changed, 1 insertion(+), 3 deletions(-)
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- include/sysemu/accel-ops.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
-diff --git a/include/sysemu/accel-ops.h b/include/sysemu/accel-ops.h
-index a0886722305..137fb96d444 100644
---- a/include/sysemu/accel-ops.h
-+++ b/include/sysemu/accel-ops.h
-@@ -10,7 +10,7 @@
- #ifndef ACCEL_OPS_H
- #define ACCEL_OPS_H
- 
--#include "exec/cpu-common.h"
-+#include "exec/vaddr.h"
- #include "qom/object.h"
- 
- #define ACCEL_OPS_SUFFIX "-ops"
--- 
-2.45.2
+r~
+
+> 
+> diff --git a/tests/tcg/plugins/insn.c b/tests/tcg/plugins/insn.c
+> index baf2d07205d..0c723cb9ed8 100644
+> --- a/tests/tcg/plugins/insn.c
+> +++ b/tests/tcg/plugins/insn.c
+> @@ -150,10 +150,8 @@ static void vcpu_tb_trans(qemu_plugin_id_t id, struct qemu_plugin_tb *tb)
+>               qemu_plugin_register_vcpu_insn_exec_inline_per_vcpu(
+>                   insn, QEMU_PLUGIN_INLINE_ADD_U64, insn_count, 1);
+>           } else {
+> -            uint64_t vaddr = qemu_plugin_insn_vaddr(insn);
+>               qemu_plugin_register_vcpu_insn_exec_cb(
+> -                insn, vcpu_insn_exec_before, QEMU_PLUGIN_CB_NO_REGS,
+> -                GUINT_TO_POINTER(vaddr));
+> +                insn, vcpu_insn_exec_before, QEMU_PLUGIN_CB_NO_REGS, NULL);
+>           }
+>   
+>           if (do_size) {
 
 
