@@ -2,94 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96BE29F4CC8
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Dec 2024 14:49:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E0FED9F4BAC
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Dec 2024 14:12:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tNXw9-0001TQ-1d; Tue, 17 Dec 2024 08:48:35 -0500
+	id 1tNXMR-0006D1-Sl; Tue, 17 Dec 2024 08:11:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <tony.lindgren@linux.intel.com>)
- id 1tNXO5-0007rl-A5
- for qemu-devel@nongnu.org; Tue, 17 Dec 2024 08:13:26 -0500
-Received: from mgamail.intel.com ([198.175.65.11])
+ (Exim 4.90_1) (envelope-from <shameerali.kolothum.thodi@huawei.com>)
+ id 1tNXMD-0006Ci-Oc
+ for qemu-devel@nongnu.org; Tue, 17 Dec 2024 08:11:26 -0500
+Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <tony.lindgren@linux.intel.com>)
- id 1tNXNw-0000cv-4h
- for qemu-devel@nongnu.org; Tue, 17 Dec 2024 08:13:20 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1734441192; x=1765977192;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=l/tSsKwm1ajCw0tcf2ezdFuLqMXsca6a9KbydnDlM4c=;
- b=cqj8/FME9Fh22TvrYLNUCQ3mAGbGvUroLZGCIYLB3F1cEpR1/VUOJLYu
- W6HbmYLA/H59JZq+gSN3wyTfCap7cbPMbMb2v2pz0WYgEdypjo2nE+U8x
- yPzmlZcl9ou4KzNwtPvIhDLvuZBa7G4dR2ThQ76tsrE3vNHNxdrGf9fSf
- KQXUBFKNuYATfkoN0lUNb2OUl0eds87fJSOPwFgqnZtZYdmK1oJM9oT5g
- yjnboBxR/r1qtix3CBIyviS8FlsjgGnRs+bzF9PJ9A66HNghgSP0uGkmv
- cF1AA4MIT7EfBzyJdPbPr0mA+XUZHwDTEiL85+iAzH4aIzpxnDzLCniza Q==;
-X-CSE-ConnectionGUID: D/cMU/cnSkamYz85WOgpaQ==
-X-CSE-MsgGUID: Z7apz0kZSRSr09ZZbLLSuw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11282"; a="45352918"
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="45352918"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
- by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Dec 2024 05:10:37 -0800
-X-CSE-ConnectionGUID: glnTXi45RiaU01TPwBjpew==
-X-CSE-MsgGUID: RNq2sGcITpqbtNjk+X0dhg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,241,1728975600"; d="scan'208";a="98100974"
-Received: from lfiedoro-mobl.ger.corp.intel.com (HELO localhost)
- ([10.245.246.36])
- by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Dec 2024 05:10:29 -0800
-Date: Tue, 17 Dec 2024 15:10:23 +0200
-From: Tony Lindgren <tony.lindgren@linux.intel.com>
-To: Ira Weiny <ira.weiny@intel.com>
-Cc: Xiaoyao Li <xiaoyao.li@intel.com>,
- "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
- "riku.voipio@iki.fi" <riku.voipio@iki.fi>,
- "imammedo@redhat.com" <imammedo@redhat.com>,
- "Liu, Zhao1" <zhao1.liu@intel.com>,
- "marcel.apfelbaum@gmail.com" <marcel.apfelbaum@gmail.com>,
- "anisinha@redhat.com" <anisinha@redhat.com>,
- "mst@redhat.com" <mst@redhat.com>,
- "pbonzini@redhat.com" <pbonzini@redhat.com>,
- "richard.henderson@linaro.org" <richard.henderson@linaro.org>,
- "armbru@redhat.com" <armbru@redhat.com>,
- "philmd@linaro.org" <philmd@linaro.org>,
- "cohuck@redhat.com" <cohuck@redhat.com>,
- "mtosatti@redhat.com" <mtosatti@redhat.com>,
- "eblake@redhat.com" <eblake@redhat.com>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
- "wangyanan55@huawei.com" <wangyanan55@huawei.com>,
- "berrange@redhat.com" <berrange@redhat.com>
-Subject: Re: [PATCH v6 09/60] i386/tdx: Initialize TDX before creating TD vcpus
-Message-ID: <Z2F3mBlIqbf9h4QM@tlindgre-MOBL1>
-References: <20241105062408.3533704-1-xiaoyao.li@intel.com>
- <20241105062408.3533704-10-xiaoyao.li@intel.com>
- <1235bac6ffe7be6662839adb2630c1a97d1cc4c5.camel@intel.com>
- <c0ef6c19-756e-43f3-8342-66b032238265@intel.com>
- <Zyr7FA10pmLhZBxL@tlindgre-MOBL1> <Z1scMzIdT2cI4F5T@iweiny-mobl>
+ (Exim 4.90_1) (envelope-from <shameerali.kolothum.thodi@huawei.com>)
+ id 1tNXMA-0000Mz-Af
+ for qemu-devel@nongnu.org; Tue, 17 Dec 2024 08:11:25 -0500
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4YCHCq57qRz67j73;
+ Tue, 17 Dec 2024 21:07:35 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
+ by mail.maildlp.com (Postfix) with ESMTPS id 957AA140B2F;
+ Tue, 17 Dec 2024 21:11:08 +0800 (CST)
+Received: from A2303104131.china.huawei.com (10.203.177.241) by
+ frapeml500008.china.huawei.com (7.182.85.71) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Tue, 17 Dec 2024 14:11:05 +0100
+To: <qemu-devel@nongnu.org>, <peterx@redhat.com>, <farosas@suse.de>
+CC: <linuxarm@huawei.com>, <zhangfei.gao@linaro.org>
+Subject: [PATCH] tests/qtest/migration: Fix compile errors when CONFIG_UADK is
+ set
+Date: Tue, 17 Dec 2024 13:10:46 +0000
+Message-ID: <20241217131046.83844-1-shameerali.kolothum.thodi@huawei.com>
+X-Mailer: git-send-email 2.12.0.windows.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <Z1scMzIdT2cI4F5T@iweiny-mobl>
-Received-SPF: none client-ip=198.175.65.11;
- envelope-from=tony.lindgren@linux.intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -42
-X-Spam_score: -4.3
-X-Spam_bar: ----
-X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
+X-Originating-IP: [10.203.177.241]
+X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
+ frapeml500008.china.huawei.com (7.182.85.71)
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=shameerali.kolothum.thodi@huawei.com;
+ helo=frasgout.his.huawei.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
+X-Spam_bar: --
+X-Spam_report: (-2.8 / 5.0 requ) AC_FROM_MANY_DOTS=2.497, BAYES_00=-1.9,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H2=-1.116,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Tue, 17 Dec 2024 08:48:20 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -101,64 +63,95 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
+From:  Shameer Kolothum via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Dec 12, 2024 at 11:24:03AM -0600, Ira Weiny wrote:
-> On Wed, Nov 06, 2024 at 07:13:56AM +0200, Tony Lindgren wrote:
-> > On Wed, Nov 06, 2024 at 10:01:04AM +0800, Xiaoyao Li wrote:
-> > > On 11/6/2024 4:51 AM, Edgecombe, Rick P wrote:
-> > > > +Tony
-> > > > 
-> > > > On Tue, 2024-11-05 at 01:23 -0500, Xiaoyao Li wrote:
-> > > > > +int tdx_pre_create_vcpu(CPUState *cpu, Error **errp)
-> > > > > +{
-> > > > > +    X86CPU *x86cpu = X86_CPU(cpu);
-> > > > > +    CPUX86State *env = &x86cpu->env;
-> > > > > +    g_autofree struct kvm_tdx_init_vm *init_vm = NULL;
-> > > > > +    int r = 0;
-> > > > > +
-> > > > > +    QEMU_LOCK_GUARD(&tdx_guest->lock);
-> > > > > +    if (tdx_guest->initialized) {
-> > > > > +        return r;
-> > > > > +    }
-> > > > > +
-> > > > > +    init_vm = g_malloc0(sizeof(struct kvm_tdx_init_vm) +
-> > > > > +                        sizeof(struct kvm_cpuid_entry2) * KVM_MAX_CPUID_ENTRIES);
-> > > > > +
-> > > > > +    r = setup_td_xfam(x86cpu, errp);
-> > > > > +    if (r) {
-> > > > > +        return r;
-> > > > > +    }
-> > > > > +
-> > > > > +    init_vm->cpuid.nent = kvm_x86_build_cpuid(env, init_vm->cpuid.entries, 0);
-> > > > > +    tdx_filter_cpuid(&init_vm->cpuid);
-> > > > > +
-> > > > > +    init_vm->attributes = tdx_guest->attributes;
-> > > > > +    init_vm->xfam = tdx_guest->xfam;
-> > > > > +
-> > > > > +    do {
-> > > > > +        r = tdx_vm_ioctl(KVM_TDX_INIT_VM, 0, init_vm);
-> > > > > +    } while (r == -EAGAIN);
-> > > > 
-> > > > KVM_TDX_INIT_VM can also return EBUSY. This should check for it, or KVM should
-> > > > standardize on one for both conditions. In KVM, both cases handle
-> > > > TDX_RND_NO_ENTROPY, but one tries to save some of the initialization for the
-> > > > next attempt. I don't know why userspace would need to differentiate between the
-> > > > two cases though, which makes me think we should just change the KVM side.
-> > > 
-> > > I remember I tested retrying on the two cases and no surprise showed.
-> > > 
-> > > I agree to change KVM side to return -EAGAIN for the two cases.
-> > 
-> > OK yeah let's patch KVM for it.
-> 
-> Will the patch to KVM converge such that it is ok for qemu to loop forever?
+Removes accidental inclusion of unrelated functions within CONFIG_UADK
+as this causes compile errors like:
 
-Hmm I don't think we should loop forever anywhere, the retries needed should
-be only a few. Or what do you have in mind?
+error: redefinition of â€˜migrate_hook_start_xbzrleâ€™
 
-Regards,
+Fixes: 932f74f3fe6e ("tests/qtest/migration: Split compression tests from migration-test.c")
+Signed-off-by: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
+---
+ tests/qtest/migration/compression-tests.c | 54 -----------------------
+ 1 file changed, 54 deletions(-)
 
-Tony
+diff --git a/tests/qtest/migration/compression-tests.c b/tests/qtest/migration/compression-tests.c
+index 6de87bc47d..d78f1f11f1 100644
+--- a/tests/qtest/migration/compression-tests.c
++++ b/tests/qtest/migration/compression-tests.c
+@@ -88,59 +88,6 @@ migrate_hook_start_precopy_tcp_multifd_uadk(QTestState *from,
+     return migrate_hook_start_precopy_tcp_multifd_common(from, to, "uadk");
+ }
+ 
+-static void *
+-migrate_hook_start_xbzrle(QTestState *from,
+-                          QTestState *to)
+-{
+-    migrate_set_parameter_int(from, "xbzrle-cache-size", 33554432);
+-
+-    migrate_set_capability(from, "xbzrle", true);
+-    migrate_set_capability(to, "xbzrle", true);
+-
+-    return NULL;
+-}
+-
+-static void test_precopy_unix_xbzrle(void)
+-{
+-    g_autofree char *uri = g_strdup_printf("unix:%s/migsocket", tmpfs);
+-    MigrateCommon args = {
+-        .connect_uri = uri,
+-        .listen_uri = uri,
+-        .start_hook = migrate_hook_start_xbzrle,
+-        .iterations = 2,
+-        /*
+-         * XBZRLE needs pages to be modified when doing the 2nd+ round
+-         * iteration to have real data pushed to the stream.
+-         */
+-        .live = true,
+-    };
+-
+-    test_precopy_common(&args);
+-}
+-
+-static void *
+-migrate_hook_start_precopy_tcp_multifd_zlib(QTestState *from,
+-                                            QTestState *to)
+-{
+-    /*
+-     * Overloading this test to also check that set_parameter does not error.
+-     * This is also done in the tests for the other compression methods.
+-     */
+-    migrate_set_parameter_int(from, "multifd-zlib-level", 2);
+-    migrate_set_parameter_int(to, "multifd-zlib-level", 2);
+-
+-    return migrate_hook_start_precopy_tcp_multifd_common(from, to, "zlib");
+-}
+-
+-static void test_multifd_tcp_zlib(void)
+-{
+-    MigrateCommon args = {
+-        .listen_uri = "defer",
+-        .start_hook = migrate_hook_start_precopy_tcp_multifd_zlib,
+-    };
+-    test_precopy_common(&args);
+-}
+-
+ static void test_multifd_tcp_uadk(void)
+ {
+     MigrateCommon args = {
+@@ -151,7 +98,6 @@ static void test_multifd_tcp_uadk(void)
+ }
+ #endif /* CONFIG_UADK */
+ 
+-
+ static void *
+ migrate_hook_start_xbzrle(QTestState *from,
+                           QTestState *to)
+-- 
+2.34.1
+
 
