@@ -2,71 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B74739F5081
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Dec 2024 17:11:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A8AC59F50E2
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Dec 2024 17:23:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tNaA7-00048n-73; Tue, 17 Dec 2024 11:11:08 -0500
+	id 1tNaL8-0005S8-M0; Tue, 17 Dec 2024 11:22:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tNa9z-000465-LL
- for qemu-devel@nongnu.org; Tue, 17 Dec 2024 11:11:02 -0500
-Received: from mgamail.intel.com ([198.175.65.11])
+ id 1tNaL6-0005QG-EH
+ for qemu-devel@nongnu.org; Tue, 17 Dec 2024 11:22:28 -0500
+Received: from mgamail.intel.com ([192.198.163.17])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tNa9x-0003jO-Ql
- for qemu-devel@nongnu.org; Tue, 17 Dec 2024 11:10:59 -0500
+ id 1tNaL0-0005rK-1l
+ for qemu-devel@nongnu.org; Tue, 17 Dec 2024 11:22:27 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1734451858; x=1765987858;
+ t=1734452542; x=1765988542;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=Cm18FwdZ3kQgmti/Jxvk4pWT5jZnF2x7ce6Gw47H9Ew=;
- b=TbOS980kfsp+LpqJy2tpCVFzInwiGQq0x8ZHnZRmA/q+Zys3Sc6cdRF5
- LDXoa2B/S2PYnCu+RE/7LMNLoXyfXJTKMr42/fXK0mtNe0ZWyn02SaTmm
- kX9O9xLPrKYfMMIsw06gl3iG933RZUzlgUtPcVyOIKUgtIyPzEx4A/yfm
- 0WYeTWu+k8w5nclyZqRHteUCNLFaaJlZCYU/UwK/p9buXdgn9frBYn1tB
- BuoJuqqaCjVXV8xgg3Yr/YwOmBZ0zOPaP9umPadlFifJw4TZXJ5hv+k7g
- mtcdc51PmS930jr9P8KcJp4Pc9lkay4bMxQJaWvtDbI46j5Hwd/NabpCI g==;
-X-CSE-ConnectionGUID: 82+P/02jQeqazzGo2AWORA==
-X-CSE-MsgGUID: b8NoMcoKQGWg+4Ur25NNiA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11282"; a="45371634"
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="45371634"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Dec 2024 08:10:54 -0800
-X-CSE-ConnectionGUID: LxfpRyQmRYKpT7cLTu7iyA==
-X-CSE-MsgGUID: UcpQ+NkHSCCQgNdhLxD23Q==
+ bh=bSSJtAhFi9+wn70gIbA8jtwpLbdp/CJSIX5+4YACGcU=;
+ b=gKMwlF0tnAvI3Z+4ffCDBAFKNVbty+5ljP+IdbWr+qJHlFSOu+k/3Btg
+ DtEJsptOcrmP4ynSB1vofvisjzE5BAwrzDWeSsN0yv4XTPMW8ZbxaywKf
+ w8EKKtfEcg3L3p/JewHrJlaGMuRx2nO3NHw35XBm1LyYchvDiR4o8b8VS
+ mOblobyXSZX/fy9Zg4JC/CSbSXhlX5m+4nNo6K447k3rhsne4CetZxUBq
+ tTsFgSCqzC/dcybHA6GbjPOepiJ0KR0nW+PbBf9LOx1HBu7+vUVZNObfA
+ R9ePS78KyglRGgBHXwDVkDjZOMLU3jwzw4G8qhcJyHe9+mbdq6WW2+Gcf g==;
+X-CSE-ConnectionGUID: MQYIVFNkT/KjNbLfhE+JmQ==
+X-CSE-MsgGUID: J69zs9FBRHahbZe+PM+vtQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11288"; a="34780158"
+X-IronPort-AV: E=Sophos;i="6.12,242,1728975600"; d="scan'208";a="34780158"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+ by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Dec 2024 08:13:06 -0800
+X-CSE-ConnectionGUID: gtGARqVeRha+l45LWCoExA==
+X-CSE-MsgGUID: FyrE7Um2R0K/hTZIkP7hBg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="98386534"
+X-IronPort-AV: E=Sophos;i="6.12,242,1728975600"; d="scan'208";a="97615422"
 Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
  ([10.239.160.39])
- by orviesa008.jf.intel.com with ESMTP; 17 Dec 2024 08:10:53 -0800
-Date: Wed, 18 Dec 2024 00:29:32 +0800
+ by orviesa006.jf.intel.com with ESMTP; 17 Dec 2024 08:13:04 -0800
+Date: Wed, 18 Dec 2024 00:31:43 +0800
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Xiaoyao Li <xiaoyao.li@intel.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
-Subject: Re: [PATCH 1/2] i386: Remove unused parameter "uint32_t bit" in
- feature_word_description()
-Message-ID: <Z2Gm7EFvxigbI9ze@intel.com>
+Subject: Re: [PATCH 2/2] target/i386: Print CPUID subleaf info for
+ unsupported feature
+Message-ID: <Z2Gnb4zL9NwWNZTf@intel.com>
 References: <20241217123932.948789-1-xiaoyao.li@intel.com>
- <20241217123932.948789-2-xiaoyao.li@intel.com>
+ <20241217123932.948789-3-xiaoyao.li@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241217123932.948789-2-xiaoyao.li@intel.com>
-Received-SPF: pass client-ip=198.175.65.11; envelope-from=zhao1.liu@intel.com;
+In-Reply-To: <20241217123932.948789-3-xiaoyao.li@intel.com>
+Received-SPF: pass client-ip=192.198.163.17; envelope-from=zhao1.liu@intel.com;
  helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_score_int: -54
+X-Spam_score: -5.5
+X-Spam_bar: -----
+X-Spam_report: (-5.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H2=-1.116,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_PASS=-0.001, T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,26 +82,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Dec 17, 2024 at 07:39:31AM -0500, Xiaoyao Li wrote:
-> Date: Tue, 17 Dec 2024 07:39:31 -0500
+On Tue, Dec 17, 2024 at 07:39:32AM -0500, Xiaoyao Li wrote:
+> Date: Tue, 17 Dec 2024 07:39:32 -0500
 > From: Xiaoyao Li <xiaoyao.li@intel.com>
-> Subject: [PATCH 1/2] i386: Remove unused parameter "uint32_t bit" in
->  feature_word_description()
+> Subject: [PATCH 2/2] target/i386: Print CPUID subleaf info for unsupported
+>  feature
 > X-Mailer: git-send-email 2.34.1
 > 
-> From: Lei Wang <lei4.wang@intel.com>
+> Some CPUID leaves have meaningful subleaf index. Print the subleaf info
+> in feature_word_description for CPUID features.
 > 
-> Parameter "uint32_t bit" is not used in function feature_word_description(),
-> so remove it.
-> 
-> Signed-off-by: Lei Wang <lei4.wang@intel.com>
-> Reviewed-by: Igor Mammedov <imammedo@redhat.com>
-> Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
 > Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+> Reviewed-by: Eduardo Habkost <ehabkost@redhat.com>
 > ---
->  target/i386/cpu.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
+>  target/i386/cpu.c | 5 +++--
+>  1 file changed, 3 insertions(+), 2 deletions(-)
 
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
