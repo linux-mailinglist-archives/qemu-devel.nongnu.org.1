@@ -2,65 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91B799F3FCA
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Dec 2024 02:10:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D926C9F3FB4
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Dec 2024 02:08:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tNM3Z-0008Fp-OW; Mon, 16 Dec 2024 20:07:25 -0500
+	id 1tNM3Y-0008Eg-HC; Mon, 16 Dec 2024 20:07:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1tNM3W-0008EB-4f
+ id 1tNM3W-0008EK-CK
  for qemu-devel@nongnu.org; Mon, 16 Dec 2024 20:07:22 -0500
-Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
+Received: from mail-pj1-x1032.google.com ([2607:f8b0:4864:20::1032])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1tNM3U-0004wi-7i
- for qemu-devel@nongnu.org; Mon, 16 Dec 2024 20:07:21 -0500
-Received: by mail-pl1-x62e.google.com with SMTP id
- d9443c01a7336-2166651f752so50049345ad.3
- for <qemu-devel@nongnu.org>; Mon, 16 Dec 2024 17:07:19 -0800 (PST)
+ id 1tNM3U-0004wk-NH
+ for qemu-devel@nongnu.org; Mon, 16 Dec 2024 20:07:22 -0500
+Received: by mail-pj1-x1032.google.com with SMTP id
+ 98e67ed59e1d1-2ee8e8e29f6so3626402a91.0
+ for <qemu-devel@nongnu.org>; Mon, 16 Dec 2024 17:07:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734397638; x=1735002438; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=oad9B0AQNcIsrUgWQ2hwmUjwMCOEE19BjdFvmSTNXFQ=;
- b=ozbpYbnlWYAufOXGPsbpL6CPQ1HK3BJxRr88LMlNCRuL5gYRCpx5gqY+bq562o7QjE
- mUTUpo8sMxNGZsLWP522gy8M7R5+wS/OGddgyfCE/E7KE8Z0D295Mr831TwuxRCavSbj
- LYjDves5Tl44FvmSxLJxaVGGnaFV/vTPWmMA2JHbeGJpMgLh0NcNjsF2YahDjt5uipHn
- Q6wquSnac+RJdmy4lQRyagcJcmoyAmLoy//lPWGpCCUJQ3OkgHzj5So87IRYeGOGJtfT
- zDvqWypfWEXhrOsnG2uZHIejYBNusVtPPUPUJQXx0c4yh7WtihtMdxMZXgd5uTAGE/Vr
- MU0Q==
+ d=linaro.org; s=google; t=1734397639; x=1735002439; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=kHLhWvJzE9yDVjpN1hr16j3rbknmxcBsd3hvunSMfeU=;
+ b=vSRHyDF79BOA/Gm9L54V2toLii+Jzg9uJiX8PcrovvQswTU/fXaBWm+TTr95eiFYWb
+ 8tSpCRB77pDjCEcU7UpG5PvUPI6ZwMgv7VgnTQZ7LhdRwK8jeeBHrz3sdTsUXfKRe/o6
+ d/ZnEYVNjM45+XwjnbMRF1yJ4Kur72gHgkCe5NiADVZmsDbff5qUMixJU6k6vKcTyEuz
+ bLI4QuG1itQAyd4VMAoscsPbfksvOb4T8SfRBrtwf/wGR5l5EO2Wsg0/hKAsQkKSoCg8
+ 0pwKmyDts0H3OEwfziBw5FP4zY3teBEIlk+dsOBrlAsQEbp6hMP4rvTWmu1HvCtGFYkW
+ zF5A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734397638; x=1735002438;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=oad9B0AQNcIsrUgWQ2hwmUjwMCOEE19BjdFvmSTNXFQ=;
- b=T/6CFVgBkfWQA5WT+fVCCph0ZR9/MrlEIHCkONozerYqGIGQKZEbJFPnBwifFc76h0
- pu5BlXBb0X/bKIcqRZ6ix2lwW4ZHDdlBYxXlSOfhSO7QBx4x6NhsmfWU6C6ABgNm/fan
- znKzdhsjSzodOXLgDmrhqQSr5ua5XDUajug9JrEJP/fViq6OM8RYx/hFhAzrtAuUIaXx
- vflIXXicXMm1wuENGQn6awUd6+pUQNw4BHq3cW6qn1i/6tbfufhmiMId2YKO+m1HmB7B
- lGcT9h02aHUYO6QO2a0Ab1rd/fcWiJBVzX+TxNROdeWJd5Zkkc6ylBBOS6mcgK8eeYgX
- 8K5Q==
-X-Gm-Message-State: AOJu0YzwL/P3bOG4uGO/BOfS12n2aizlTU2ycTht8C+9CfHuydZ+b/55
- YZ0xAuseQFzOzbM6P8fieT25alJoHvDKFWZgPMXgA0aK7O7LKTHG9M4pF5IcpJKuE2LDjnG0Riz
- Zl14=
-X-Gm-Gg: ASbGncvyaGG9HSc9q5/OSuVIpExNisApzhh+tvMkaLqRV42i6UstHDQnFCC44mrjI/A
- vrbkpk5p+JU6voFwGUPLX4Fx82KrhDtjtaFTxSOkygd9fc0awgLX3exK1O6kKE0oH41Ql0IP4Nh
- u4y9T4GDI3LR9bn1xiDdIpGUDwsKuBao/GZ3NQbbPT+rVhHe0/KO6DZnD1jXPfdDGJf6wYEDPKB
- QxT2UWwk4RZe1LvHeXsEHtkYBL0qvRKlRwrCC1IbWbFQgv8RMrUbeJdTAtUUPp+liJ15P1IuBPe
- tBrmHugUk6HbAJ4=
-X-Google-Smtp-Source: AGHT+IEq71n6wHkJ5WSqHQNcUNwu8NvVUYN4mp5W+yXlGUYcsw0yMGmYRB9nDrLkSehQfa7/oOEDOg==
-X-Received: by 2002:a17:902:ea0b:b0:215:5625:885b with SMTP id
- d9443c01a7336-21892a7a858mr213452265ad.52.1734397638124; 
- Mon, 16 Dec 2024 17:07:18 -0800 (PST)
+ d=1e100.net; s=20230601; t=1734397639; x=1735002439;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=kHLhWvJzE9yDVjpN1hr16j3rbknmxcBsd3hvunSMfeU=;
+ b=wg5bVTnifFh7eQAePH+VoCX35l+x1S3AbbdOG7K62SwbhbGWS3g4ryjya2rgCqyhZp
+ VheXB98Im07oj6qy1qJ3lqvBNzXltM2oB9t1GoM0p9OyWDeGmq2wVmkTYzpUilx58Abc
+ Al0IL+k7uM3x7Vd0fi4AvBJ3FdCSNvtOwfAhSk/BuP19nCvrg8U5sYeAYjumnX3rSPPj
+ EnCdndytbh6Y1XeCLd1qu0xUIQqcRbupENTDgdiseXmwYzoszyEeMF2uB80p0WsV+XP4
+ wpXOINEO0mhvNTzrYK0y5zIeoxVKYOCE84PrVWg34w3plduB8OmY27mfotHB9GyY/Lnu
+ Ob6Q==
+X-Gm-Message-State: AOJu0YxlEtoKu7QHsK0U5HJuBsv6bBl8JWRCZp/DNPTUnMSSs5AVCHLA
+ eO43xp091tCYiG0YlskpmPOg8aGPAT5K/0nJDSeG1Kre7Pbz0G1xl3CKOG8fm8GT3DIQuX1weHy
+ W6tE=
+X-Gm-Gg: ASbGncs5RX+jY5VYKGm/+0Isxem3cp2obeLVunQC5krp7ADtQEstIjLPrwd1WdxKio3
+ Et6s1PkfZ8jgOEiACT0KrrEHlsqFO1vkxo+lQgFBHGiyQ+e+OYDhNwPGAetkQDC7FQwETAzCa8j
+ ZLpIZj/5Zb2rF2mJCZ0tYjA2bzEk6iZe/UNUBKa5nT92QwXGDKWtcU0MQ0RW0t5FoxI4+Idze5L
+ vFkfGmGzHUlMMi0wktooVoVWS5a8T77CF0+surpI9zm2zaNM5VgeIx2c4KZMWo6rE/agqjTAyi4
+ J+CoAUYeekLTPHU=
+X-Google-Smtp-Source: AGHT+IHza6cg6eyKEENmsA6Iq+520XWEenY5dUIP7iHqsZ84vBE6hXHET+dhMEV+nkX8NGXH8TJxbQ==
+X-Received: by 2002:a17:90b:2b45:b0:2ee:d7d3:3008 with SMTP id
+ 98e67ed59e1d1-2f28fb63badmr26648042a91.12.1734397639024; 
+ Mon, 16 Dec 2024 17:07:19 -0800 (PST)
 Received: from pc.. (216-180-64-156.dyn.novuscom.net. [216.180.64.156])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-218a1e6d0e4sm48746595ad.261.2024.12.16.17.07.17
+ d9443c01a7336-218a1e6d0e4sm48746595ad.261.2024.12.16.17.07.18
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 16 Dec 2024 17:07:17 -0800 (PST)
+ Mon, 16 Dec 2024 17:07:18 -0800 (PST)
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
@@ -69,15 +70,16 @@ Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Alexandre Iooss <erdnaxe@crans.org>, Paolo Bonzini <pbonzini@redhat.com>,
  Mahmoud Mandour <ma.mandourr@gmail.com>, Thomas Huth <thuth@redhat.com>,
  philmd@linaro.org
-Subject: [PATCH 00/13] Fix 32-bit build for plugins
-Date: Mon, 16 Dec 2024 17:06:54 -0800
-Message-Id: <20241217010707.2557258-1-pierrick.bouvier@linaro.org>
+Subject: [PATCH 01/13] plugins: change signature of qemu_plugin_insn_haddr
+Date: Mon, 16 Dec 2024 17:06:55 -0800
+Message-Id: <20241217010707.2557258-2-pierrick.bouvier@linaro.org>
 X-Mailer: git-send-email 2.39.5
-Content-Type: text/plain; charset="utf-8"
+In-Reply-To: <20241217010707.2557258-1-pierrick.bouvier@linaro.org>
+References: <20241217010707.2557258-1-pierrick.bouvier@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x62e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1032;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pj1-x1032.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,64 +102,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since 9.2.0 release, we are building contrib plugins using the QEMU build system
-(before, it was external makefiles). When building for 32-bit host platform,
-some warnings are triggered and build fail.
+It makes more sense to return the same type than qemu_plugin_insn_vaddr.
 
-Thus, at the time, the decision was to not fix those plugins, and
-disable by default plugins for 32-bit host platforms (see cf2a78cb).
+Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+---
+ include/qemu/qemu-plugin.h |  2 +-
+ plugins/api.c              | 12 ++++++------
+ 2 files changed, 7 insertions(+), 7 deletions(-)
 
-This series fix plugins to have the same behaviour on 32-bit and 64-bit
-platform, and reenable plugins for 32-bit platforms.
-
-There are two portability issues:
-- we use hash tables, and use data as key directly. As key has a pointer size,
-  it limits its size for 32-bit platform.
-  The fix is to use pointer as a key, and point to allocated 64-bit data. The
-  change is pretty straightforward for concerned plugins, and does not imply a
-  memory overhead, as hash table entry is already heap allocated usually.
-- we use plugins callback data to pass a pc. This does not work on 32-bit
-  platform, as we are limited to a pointer size.
-  To avoid doing memory allocations, we simply we simply use
-  inline operations and a scoreboard to achieve the same result.
-
-Tested (for every plugin modified) on i686 and x86_64.
-The behaviour before and after this series was checked as well, and there is no
-difference, apart from bug fixing (some pc were clipped at 32-bit values, even
-on the 64-bit platform).
-
-Pierrick Bouvier (13):
-  plugins: change signature of qemu_plugin_insn_haddr
-  plugins: bump API version
-  tests/tcg/plugins/insn: remove unused callback parameter
-  contrib/plugins/howvec: ensure we don't regress if this plugin is
-    extended
-  tests/tcg/plugins/syscall: fix 32-bit build
-  tests/tcg/plugins/mem: fix 32-bit build
-  contrib/plugins/stoptrigger: fix 32-bit build
-  contrib/plugins/cache: fix 32-bit build
-  contrib/plugins/hotblocks: fix 32-bit build
-  contrib/plugins/cflow: fix 32-bit build
-  contrib/plugins/hwprofile: fix 32-bit build
-  contrib/plugins/hotpages: fix 32-bit build
-  configure: reenable plugins by default for 32-bit hosts
-
- configure                     | 21 +--------------
- include/qemu/qemu-plugin.h    |  8 ++++--
- plugins/plugin.h              |  2 +-
- contrib/plugins/cache.c       | 18 +++++--------
- contrib/plugins/cflow.c       | 17 ++++++++-----
- contrib/plugins/hotblocks.c   |  8 +++---
- contrib/plugins/hotpages.c    |  6 ++---
- contrib/plugins/howvec.c      |  7 ++---
- contrib/plugins/hwprofile.c   | 27 ++++++++++++--------
- contrib/plugins/stoptrigger.c | 48 ++++++++++++++++++++---------------
- plugins/api.c                 | 12 ++++-----
- tests/tcg/plugins/insn.c      |  4 +--
- tests/tcg/plugins/mem.c       |  6 ++---
- tests/tcg/plugins/syscall.c   |  6 ++---
- 14 files changed, 93 insertions(+), 97 deletions(-)
-
+diff --git a/include/qemu/qemu-plugin.h b/include/qemu/qemu-plugin.h
+index 0fba36ae028..1fbcff6e1d2 100644
+--- a/include/qemu/qemu-plugin.h
++++ b/include/qemu/qemu-plugin.h
+@@ -537,7 +537,7 @@ uint64_t qemu_plugin_insn_vaddr(const struct qemu_plugin_insn *insn);
+  * Returns: hardware (physical) target address of instruction
+  */
+ QEMU_PLUGIN_API
+-void *qemu_plugin_insn_haddr(const struct qemu_plugin_insn *insn);
++uint64_t qemu_plugin_insn_haddr(const struct qemu_plugin_insn *insn);
+ 
+ /**
+  * typedef qemu_plugin_meminfo_t - opaque memory transaction handle
+diff --git a/plugins/api.c b/plugins/api.c
+index 24ea64e2de5..17b3a65e773 100644
+--- a/plugins/api.c
++++ b/plugins/api.c
+@@ -283,13 +283,13 @@ uint64_t qemu_plugin_insn_vaddr(const struct qemu_plugin_insn *insn)
+     return insn->vaddr;
+ }
+ 
+-void *qemu_plugin_insn_haddr(const struct qemu_plugin_insn *insn)
++uint64_t qemu_plugin_insn_haddr(const struct qemu_plugin_insn *insn)
+ {
+     const DisasContextBase *db = tcg_ctx->plugin_db;
+     vaddr page0_last = db->pc_first | ~TARGET_PAGE_MASK;
+ 
+     if (db->fake_insn) {
+-        return NULL;
++        return 0;
+     }
+ 
+     /*
+@@ -300,14 +300,14 @@ void *qemu_plugin_insn_haddr(const struct qemu_plugin_insn *insn)
+      */
+     if (insn->vaddr <= page0_last) {
+         if (db->host_addr[0] == NULL) {
+-            return NULL;
++            return 0;
+         }
+-        return db->host_addr[0] + insn->vaddr - db->pc_first;
++        return (uintptr_t) (db->host_addr[0] + insn->vaddr - db->pc_first);
+     } else {
+         if (db->host_addr[1] == NULL) {
+-            return NULL;
++            return 0;
+         }
+-        return db->host_addr[1] + insn->vaddr - (page0_last + 1);
++        return (uintptr_t) (db->host_addr[1] + insn->vaddr - (page0_last + 1));
+     }
+ }
+ 
 -- 
 2.39.5
 
