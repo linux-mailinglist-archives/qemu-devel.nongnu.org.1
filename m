@@ -2,96 +2,103 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74B369F4B2F
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Dec 2024 13:44:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D8499F4B5E
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Dec 2024 13:57:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tNWtx-0005BJ-On; Tue, 17 Dec 2024 07:42:13 -0500
+	id 1tNX8b-00023N-4j; Tue, 17 Dec 2024 07:57:21 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tNWtp-0005Ar-ER
- for qemu-devel@nongnu.org; Tue, 17 Dec 2024 07:42:05 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <heinrich.schuchardt@canonical.com>)
+ id 1tNX8Z-000235-FE
+ for qemu-devel@nongnu.org; Tue, 17 Dec 2024 07:57:19 -0500
+Received: from smtp-relay-internal-1.canonical.com ([185.125.188.123])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1tNWtl-0003OE-GF
- for qemu-devel@nongnu.org; Tue, 17 Dec 2024 07:42:03 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1734439307;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=9vsTGjpT995nBSScRodX+d95bnmCNkwLraykxKT7HPk=;
- b=WeLuSaPGOGKTZH6GxgLdl8i+F75hVcCuz0fj//KVrrxlIP7fe988cQF97JWdPZSt0Ln7gP
- FBQNhJOkTe5JWMtU7+/vM5jBG7kAqaJD8g2I8rtwRLPAhMdTpWH7O18Yir0NnP0ogoRHPP
- 8x/tSXtV+fQDVNE7tq2Jo88VGuJuhJQ=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-313-wEv52gM6MAKCA2mpeFoOaQ-1; Tue, 17 Dec 2024 07:41:45 -0500
-X-MC-Unique: wEv52gM6MAKCA2mpeFoOaQ-1
-X-Mimecast-MFC-AGG-ID: wEv52gM6MAKCA2mpeFoOaQ
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-385e1339790so3093969f8f.2
- for <qemu-devel@nongnu.org>; Tue, 17 Dec 2024 04:41:45 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <heinrich.schuchardt@canonical.com>)
+ id 1tNX8W-0005pF-O5
+ for qemu-devel@nongnu.org; Tue, 17 Dec 2024 07:57:18 -0500
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id 0E8F03F637
+ for <qemu-devel@nongnu.org>; Tue, 17 Dec 2024 12:57:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+ s=20210705; t=1734440233;
+ bh=Rhi7HFzE3FornoPkY++ubVfWbvJGQt7urPEmXmbiH9I=;
+ h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+ In-Reply-To:Content-Type;
+ b=I0swwLNQaw3zpx3KmnlFYGTUTuX6xR7upvQCcvkmqRE0Ol4W51Jkhihsn93vqPFlb
+ 5YNP0g/3m9Op1Kg1qE+7jHT94zJOf701n9NfsLr/kJEGveeriXBWqwg/RcUNTtuzo7
+ 7cE9cwuRp+VBMXEvxm1kBxJgKURIVn1+MuMz/FmrmZ0tu4VNt87IcSGFp6R2PnpihQ
+ CD+fjLNKkI2BAnUfaU8E+gf1Ktahtd5yJBDlSXZgBSDgSsKPs5brBylLNmebkE//du
+ RTR1+OOzrIo8pwlXFguuhijw80ouAqWei0hZKaUC6VhCePKyZzRrAHc2AtJ3mMw0Pc
+ 47cQ7gAWJkb4A==
+Received: by mail-ej1-f69.google.com with SMTP id
+ a640c23a62f3a-aa680e17f6dso367904466b.1
+ for <qemu-devel@nongnu.org>; Tue, 17 Dec 2024 04:57:12 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734439304; x=1735044104;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=9vsTGjpT995nBSScRodX+d95bnmCNkwLraykxKT7HPk=;
- b=Npy7N+lb4OqE+bqCt6xsiPzL8X4fFDVdxzWz/lxvQm9p/ukP610VmngLtS7Lb9pW81
- VvJAMHT2vHN5hTf6TZnmnElu8Oto40fEhd6NNET0UlD/Om2o6ErPRB63iXjbjIOfMn7p
- BkFDyFYcoeYt6ZDxG7eM3O+hrzCCmYN9Jy4JjCEYY8oLfokAii8YxgQ7ku6OSWN6rs8R
- usz9LoIJrjY467uHcTDTFXnsfVE5MiCtS55zHynQyyqakdpVruCxLb7J9JEQMIfaNEeY
- sOWUbDG/hq6xjUvi0YU1WnLJ3mEtqi+PuPq88G3LksLFA530fI/AUXFuZ/334bd24TeQ
- PFTQ==
-X-Gm-Message-State: AOJu0Yy6jGLbRt8QIldKCumplUBQudDhDI640Dy/4Bb7735KIbOhm4kb
- ShchnjONx27z/S3I8QXofKDVWq/QLeqiiVFGCLXaLPaCLeFlLJvtikLNxY4UOKHn80z41K3nH/H
- 77kfrnLwTzIcRIov2GWMqqSQT4DVkfKX+ZHFJ58/9uFC0S9WmgFvS
-X-Gm-Gg: ASbGncsP8k/t1oc+UhLy8AIbkOqRkjT4rkWuJdX8ql1fR6LY5ov3lpdB/6WPuyDoc/8
- ICW5YqNAxqCN8yphf17F8laAcqEqpGwwQWN75jJyB14bq3CYTWkEHipptKN8u7pwlmdG8TlkXzd
- ct3oDKIdqA3quwjvIe1y6LZMV7jNnkFOgnuo5FM5r76fhGxuHzGB6Gggh9Hrfr3YXZwBfgBHezr
- +xwU6CthvkRfwjher7xdLXmRW5Qz5H8sAxvZ+3ZxpsY56JFA5g=
-X-Received: by 2002:a05:6000:471b:b0:386:3835:9fff with SMTP id
- ffacd0b85a97d-3888e0c06c7mr15616917f8f.59.1734439304570; 
- Tue, 17 Dec 2024 04:41:44 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IE2x162+dU56dRRqFXnpTJkePC0pcIHkhRm9zsYVGWOqow2UoeQ9s/8QIrtggPa4n9USGM+ew==
-X-Received: by 2002:a05:6000:471b:b0:386:3835:9fff with SMTP id
- ffacd0b85a97d-3888e0c06c7mr15616894f8f.59.1734439304270; 
- Tue, 17 Dec 2024 04:41:44 -0800 (PST)
-Received: from redhat.com ([2a02:14f:1ed:dd96:e5cc:8b38:146f:2e38])
+ d=1e100.net; s=20230601; t=1734440232; x=1735045032;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Rhi7HFzE3FornoPkY++ubVfWbvJGQt7urPEmXmbiH9I=;
+ b=qoAh9x6CG+zaCsWx3uUNeSNVcZTlPiPiWa0o/oHFSTQ28p6m3jr0Id4ped6w+S3kxv
+ 4BSjtTJ/Q+u0oQCNgMAEpcRkH4Nq9tYFXfeVn0QxcsLUJNiMkzknF6kQlNE59z97owPT
+ OGp6P/JFXla+oE9RoscB320w4ibIwwoXPXeqyOKkSJNz6iJ5axq3dv/PLOoELIgS6hx/
+ 6OtuFJRXT67rEbo13Tx7YX9zBQx38hYx/MOSaKt4ulv8vqjGh3f+m4LVgQ9Eia4TPZcn
+ 83lW5EdLLj1jQUtjbHUSJS2F5jL+U3h73snSNs3fJSX4Ex13gQBVvx7j7yPCtcu64Acp
+ HNFQ==
+X-Gm-Message-State: AOJu0YxfLFu7gVZVGDu08ce3IJJoF3lmS1HiVDcLhvomwEZgbo5KCKK3
+ SULRfpcO7iLMfBgFeaviBHqUtQbryujQ/SoLEgCyj11/n0X2a8w9WWq0Uc1Shtmfps1bt0nMTqV
+ MVvuhgtSp20y6HS1BQD2GICVvvhD1SdvTkLqQBUm65/3LZqPoaTETn1Z6a7rA1qjX1tNX
+X-Gm-Gg: ASbGnctwhC267mGWh9kWQlM2R4e0miWwjMAIQr6UB6307SS4JxTGmQCB/w32tvminv9
+ gY9EgNZkykHNe2hywHeIVbc9Awlt58Lp1atye+rj9Cj0wYM/MsGXokM7FWP1DhofU94ekoOh45t
+ jsa/hQhdzXUhOf1JW5aLWX31wVsxsXWojaoD9tmLqWGv6pllI6P1qzW6gkDSFmCUdeGgAu4eglR
+ Yyg4Kxxo4AWI59TO5KE08VAvQEOXPU00EjdfvHHxlWILdtzewPL+hJSqBsuB6znkpxYlUsLBsNq
+ 7S46kiS+ER0Ck/dk877nLFYNDBGbkRDy/Fvus6P+s+Fqydy+KvvOeg==
+X-Received: by 2002:a05:6402:40d4:b0:5d0:e73c:b7f0 with SMTP id
+ 4fb4d7f45d1cf-5d63c405fbbmr42102945a12.28.1734440232437; 
+ Tue, 17 Dec 2024 04:57:12 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IH7SHUQGCStRoC8LvakOy6u8zaCN65EXejY1KM+xHIiICg2pgg0INnIQYHZ42nfMHfCpwtQgQ==
+X-Received: by 2002:a05:6402:40d4:b0:5d0:e73c:b7f0 with SMTP id
+ 4fb4d7f45d1cf-5d63c405fbbmr42102899a12.28.1734440232136; 
+ Tue, 17 Dec 2024 04:57:12 -0800 (PST)
+Received: from [192.168.103.102]
+ (ip-005-147-080-091.um06.pools.vodafone-ip.de. [5.147.80.91])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-388c804a297sm10974189f8f.67.2024.12.17.04.41.42
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 17 Dec 2024 04:41:43 -0800 (PST)
-Date: Tue, 17 Dec 2024 07:41:40 -0500
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Thomas Huth <thuth@redhat.com>
-Cc: qemu-devel@nongnu.org,
- Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- =?iso-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>,
- Eric Auger <eric.auger@redhat.com>,
- =?iso-8859-1?Q?Cl=E9ment?= Mathieu--Drif <clement.mathieu--drif@eviden.com>,
- Yi Liu <yi.l.liu@intel.com>, Jason Wang <jasowang@redhat.com>
-Subject: Re: [PATCH v3 0/2] Convert the intel_iommu avocado test
-Message-ID: <20241217074128-mutt-send-email-mst@kernel.org>
-References: <20241217121550.141072-1-thuth@redhat.com>
+ a640c23a62f3a-aab960684fesm442291366b.56.2024.12.17.04.57.10
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 17 Dec 2024 04:57:10 -0800 (PST)
+Message-ID: <830d04a3-04ec-4ab8-9485-baa88ca9f855@canonical.com>
+Date: Tue, 17 Dec 2024 13:57:09 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241217121550.141072-1-thuth@redhat.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -31
-X-Spam_score: -3.2
-X-Spam_bar: ---
-X-Spam_report: (-3.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/1] pc-bios: add missing riscv64 descriptor
+To: Michael Tokarev <mjt@tls.msk.ru>
+Cc: qemu-devel@nongnu.org, qemu-stable <qemu-stable@nongnu.org>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Gerd Hoffmann <kraxel@redhat.com>
+References: <20241212090059.94167-1-heinrich.schuchardt@canonical.com>
+ <1108ce53-aa02-4909-b974-e90d99eb67fb@tls.msk.ru>
+Content-Language: en-US
+From: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
+In-Reply-To: <1108ce53-aa02-4909-b974-e90d99eb67fb@tls.msk.ru>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=185.125.188.123;
+ envelope-from=heinrich.schuchardt@canonical.com;
+ helo=smtp-relay-internal-1.canonical.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-1.116,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,37 +114,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Dec 17, 2024 at 01:15:48PM +0100, Thomas Huth wrote:
-> The first patch introduces a helper function for retrieving the
-> hostfwd ports from QEMU.
-> We then use this helper function to run a HTTP server in the guest
-> in the second patch to exercise the network of the guest.
-
-Good stuff
-
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
-
-
-> v3:
-> - Use the new hostfwd helper function instead of trying to probe
->   for an unused port on the host
-> - Use a constant for the guest port 8080
+On 17.12.24 12:12, Michael Tokarev wrote:
+> 12.12.2024 12:00, Heinrich Schuchardt wrote:
+>> Without descriptor libvirt cannot discover the EDK II binaries via
+>> the qemu:///system connection.
 > 
-> Thomas Huth (2):
->   tests/functional: Add a helper function for retrieving the hostfwd
->     port
->   tests/functional: Convert the intel_iommu avocado test
+> Shouldn't this one be picked up for qemu-stable@?
 > 
->  MAINTAINERS                                   |   1 +
->  tests/functional/meson.build                  |   2 +
->  tests/functional/qemu_test/utils.py           |   7 +
->  tests/functional/test_info_usernet.py         |   8 +-
->  .../test_intel_iommu.py}                      | 191 +++++++++++-------
->  5 files changed, 135 insertions(+), 74 deletions(-)
->  rename tests/{avocado/intel_iommu.py => functional/test_intel_iommu.py} (26%)
->  mode change 100644 => 100755
+> Thanks,
 > 
-> -- 
-> 2.47.1
+> /mjt
+
+Hello Michael,
+
+Yes, please, the patch should be backported.
+
+The relevant prerequisite patch is Gerd's
+b0494f131ed4 ("edk2: update build config")
+which appeared in v8.2.0.
+
+Best regards
+
+Heinrich
 
 
