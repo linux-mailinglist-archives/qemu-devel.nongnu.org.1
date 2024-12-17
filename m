@@ -2,75 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 940B49F52D7
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Dec 2024 18:23:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 765F79F529B
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Dec 2024 18:21:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tNbEi-0007rI-DL; Tue, 17 Dec 2024 12:19:56 -0500
+	id 1tNbEm-0007td-K9; Tue, 17 Dec 2024 12:20:00 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tNbEc-0007qm-Cv
- for qemu-devel@nongnu.org; Tue, 17 Dec 2024 12:19:50 -0500
-Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
+ id 1tNbEg-0007rq-AL
+ for qemu-devel@nongnu.org; Tue, 17 Dec 2024 12:19:54 -0500
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tNbEW-00068M-0U
- for qemu-devel@nongnu.org; Tue, 17 Dec 2024 12:19:49 -0500
-Received: by mail-wr1-x432.google.com with SMTP id
- ffacd0b85a97d-3862d6d5765so3831726f8f.3
- for <qemu-devel@nongnu.org>; Tue, 17 Dec 2024 09:19:41 -0800 (PST)
+ id 1tNbEW-00068g-0l
+ for qemu-devel@nongnu.org; Tue, 17 Dec 2024 12:19:54 -0500
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-43634b570c1so27798835e9.0
+ for <qemu-devel@nongnu.org>; Tue, 17 Dec 2024 09:19:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734455980; x=1735060780; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:from:to:cc:subject:date:message-id:reply-to;
- bh=9/36KvWVh5CZpYM1n8Wct054yNOoZi4upNBiJ3viOns=;
- b=uLY7yeMH+u7ZkBBm02yse0gSqzDxBKDQyKGWGxpSmXWmixVyQrVK/3LkullV3Nkwrh
- VRM93nGffXv4pHBMeo0LoxV+HWTWgnlK14KBspvtV9cU7nNF7wZKn2eLh5jXwHa7Ljmd
- nEu0+QwUrdpivlhGAZ3yyxvfOQQu7iX6polm7Xkpb1R1DUHRgOJk2iSVGCxqz2pNKUws
- b3ZwXFdtKY/j0y+rb+JlWDw2/6F07ZurI6V32sGdhmnvHP2RXkfXHZh2FKul+rwb329z
- I1jnKpSxsW05j0JHVD6zUSQgHZUQR36XlZx6A0Y+up59CrF2pPiHhV8TBxJ0x9bJu2eT
- QxfA==
+ d=linaro.org; s=google; t=1734455981; x=1735060781; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=Dwa35LLkmv8iDK28O9YyGE+GvD3JdAOZsdGwZZf/LYg=;
+ b=npyIEQ2+PkhDp/wQKQcnMJuWuyA3QCTxQ9KGAd3eCoXsrGaqxH3QX9POcWprfJrGtz
+ pv4NtR6/q2pwTL0gAeRU+0fgnkiAaNrW+2l1la7iheg6yskITcT6IRgGMCvNgQHLo71f
+ 1M8uVNUES4j+45rxDqpPYMFJODRsshLtVUWmsYvfCmVfl6CySqQh4V0fR/vKCLeAUgok
+ O+YBcl8T9aYqoQDnI1XBkQ9QNXxnSg7uEETEtbwIlre2/VdPImZgmS/AHkx5brKAVWVv
+ 1ODNdj48cRIVlc8dqJKn67k6n0kZFmtNt3066iOt8uKPi1XMHO+WpmL1cKj+CC91SiDF
+ ggig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734455980; x=1735060780;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=9/36KvWVh5CZpYM1n8Wct054yNOoZi4upNBiJ3viOns=;
- b=FvOdBQPtulakhcT5Z95pG+/Z6jHFqmaMObZ/RzTlP87axXm0//+HYUWWTv1L37htA0
- +xn7PWXd9iJKcDhjxfRLS4a2quwVBF19tOobB5J8WOd4ApYVwGTU1EUri9sqtsoHseVQ
- jVs+0iDpoCAE5eopdbzLgGqkkJZcJWlQVsWAFNzoztMpv2qLazEUeaa2nR8rFBOxtQr3
- sGF17WoxNKql8jC7yXdzwr7R8MLtWgErEfb22gEWARlGIDwlPegDrnGqshNpccpfBkq/
- bwHj2faHfCYeslqsOZ/MAXCNpP1O6u9JOWP0+HypjU84jSOBw1/RtVEpnSeZ0127QKST
- S2hw==
-X-Gm-Message-State: AOJu0Yz7W6PV/Qt4e2udORpFALS9cIVLjjDOmGfC5dVcFstNea0ZuB9N
- AVXs3gHyrcWKBov/WkuqE7232a93CdAYD+w8hyBoMestS4Bec+3abf1Y7lfqUrfSsGsKhu+v6Ac
- u
-X-Gm-Gg: ASbGncul0AwRIE3xCpZiebML+DM+bhcnB5USqFwfZkMzC0L1N7SYmIloPDdILgF5i5t
- O1N9tbgZKLav0gLGPoSXGiJhdkTyN06nhvNrtl5HDJd/TxG6PYbcpwc6okrP9q/Bn5xPjZUtMzp
- gOynrH1gaMGITabpo3YDidqJTG2Eq7dbbrUXe3yGFNNgvC4elC+7218y8Yl9zsxiWRErtJ7OcBS
- 6ll4iZudwLyHDf5Vpv9WZh0NDOxIoSzwk0wH05FjDxJ8KJalaoN4xmANSe6R8o=
-X-Google-Smtp-Source: AGHT+IEUx0HjN97ZhpkgAc7gtWPknB+L7wQ9/ZvLa96RPam2PUnMziY/a9yhDIkFnCYTIyEhLMaefA==
-X-Received: by 2002:a05:6000:188f:b0:386:5b2:a9d9 with SMTP id
- ffacd0b85a97d-3888e0c04aemr14523523f8f.53.1734455980033; 
+ d=1e100.net; s=20230601; t=1734455981; x=1735060781;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=Dwa35LLkmv8iDK28O9YyGE+GvD3JdAOZsdGwZZf/LYg=;
+ b=tnB+fekfkm+2iPcgg9kjYCKM5wVWmqiOqRKo1jkGecl10MGCB2wlZO0Jq2/4xIGaJR
+ qXlA+dCfDw4MpdQ+tV9oMgbHkrmMZxvDeqzvek9xMSfaNBtzJc1G6wgWa8MHI8kkki8g
+ 3MR1vd+KlRHxxBJhnJSouVENRKJBjBVxpAS1tRj4UM47I0TkNn3kunjQOn4YYMvNEWbl
+ VDoFwXGYCRsIrl+l/7321g1RvT7tKWVEuEkBM5qhO9QUqMQsIttdFz7OXLMosxHGsnea
+ LTweSR+Y4Qi/zL1qEoyxbjGd9pJGf21T3sNWHJliR2wOg8qnKeoFaTo9iv0cVCKrS1aE
+ NhWQ==
+X-Gm-Message-State: AOJu0YzM7a/bdgwPCI3N0jwEGCIRkXALzNZfqTzShwr9dwYUY6azig14
+ xI+uoCFbTpaFvnd5lfmBuPvglX+FQX1lbtdahZ/KHgmzI7adtFryZKOp4HDQ9i2nl+y3mCI+ZPs
+ G
+X-Gm-Gg: ASbGncs5T6C+Ze+0E8FCLgD9LBu2OY/vpe+Cuk1iwnHoTuyRSqHmg5UU+9nvrfJB7jI
+ zMy6uLkhifbjuppTI4hkJJ93mhx40XPFiW6+jjDC58JZT+B2Ei/tvS3/hDQGMVf+RrS5dNgqkft
+ S5G9jxQvlTnDYRohKvuU+1Rz7A72nug0K3+0cbPn+PZuUyQsYrrgEsxXuY937QqhxkutehadWfK
+ S3sNwjXvDwqWgnK4zZbVBTWIL3oyIkZbHwtcxGgqzPdsSOPcuL8vR7FHCzykTE=
+X-Google-Smtp-Source: AGHT+IFxh3gfvHI+E1B55LjVoKYOs0RDmTsf+7gEjYgAEws8TbMic2IKWr/NqxASdwG7webNSWsimw==
+X-Received: by 2002:a05:600c:3491:b0:435:b064:7dce with SMTP id
+ 5b1f17b1804b1-4362aa66f9fmr176100025e9.18.1734455980955; 
  Tue, 17 Dec 2024 09:19:40 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-388c8016389sm11569728f8f.32.2024.12.17.09.19.39
+ ffacd0b85a97d-388c8016389sm11569728f8f.32.2024.12.17.09.19.40
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 17 Dec 2024 09:19:39 -0800 (PST)
+ Tue, 17 Dec 2024 09:19:40 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 00/19] target-arm queue
-Date: Tue, 17 Dec 2024 17:19:18 +0000
-Message-Id: <20241217171937.3899947-1-peter.maydell@linaro.org>
+Subject: [PULL 01/19] target/arm: remove redundant code
+Date: Tue, 17 Dec 2024 17:19:19 +0000
+Message-Id: <20241217171937.3899947-2-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20241217171937.3899947-1-peter.maydell@linaro.org>
+References: <20241217171937.3899947-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::432;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x432.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x329.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,88 +95,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi; this is one last arm pullreq before the end of the year.
-Mostly minor cleanups, and also implementation of the
-FEAT_XS architectural feature.
+From: Denis Rastyogin <gerben@altlinux.org>
 
-thanks
--- PMM
+This call is redundant as it only retrieves a value that is not used further.
 
-The following changes since commit 8032c78e556cd0baec111740a6c636863f9bd7c8:
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-  Merge tag 'firmware-20241216-pull-request' of https://gitlab.com/kraxel/qemu into staging (2024-12-16 14:20:33 -0500)
+Signed-off-by: Denis Rastyogin <gerben@altlinux.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-id: 20241212120618.518369-1-gerben@altlinux.org
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+---
+ target/arm/vfp_helper.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-are available in the Git repository at:
+diff --git a/target/arm/vfp_helper.c b/target/arm/vfp_helper.c
+index 5a19af509c3..df4ff464792 100644
+--- a/target/arm/vfp_helper.c
++++ b/target/arm/vfp_helper.c
+@@ -1099,8 +1099,6 @@ float64 HELPER(rintd)(float64 x, void *fp_status)
+ 
+     ret = float64_round_to_int(x, fp_status);
+ 
+-    new_flags = get_float_exception_flags(fp_status);
+-
+     /* Suppress any inexact exceptions the conversion produced */
+     if (!(old_flags & float_flag_inexact)) {
+         new_flags = get_float_exception_flags(fp_status);
+-- 
+2.34.1
 
-  https://git.linaro.org/people/pmaydell/qemu-arm.git tags/pull-target-arm-20241217
-
-for you to fetch changes up to e91254250acb8570bd7b8a8f89d30e6d18291d02:
-
-  tests/functional: update sbsa-ref firmware used in test (2024-12-17 15:21:06 +0000)
-
-----------------------------------------------------------------
-target-arm queue:
- * remove a line of redundant code
- * convert various TCG helper fns to use 'fpst' alias
- * Use float_status in helper_fcvtx_f64_to_f32
- * Use float_status in helper_vfp_fcvt{ds,sd}
- * Implement FEAT_XS
- * hw/intc/arm_gicv3_its: Zero initialize local DTEntry etc structs
- * tests/functional: update sbsa-ref firmware used in test
-
-----------------------------------------------------------------
-Denis Rastyogin (1):
-      target/arm: remove redundant code
-
-Manos Pitsidianakis (3):
-      target/arm: Add decodetree entry for DSB nXS variant
-      target/arm: Enable FEAT_XS for the max cpu
-      tests/tcg/aarch64: add system test for FEAT_XS
-
-Marcin Juszkiewicz (1):
-      tests/functional: update sbsa-ref firmware used in test
-
-Peter Maydell (4):
-      target/arm: Implement fine-grained-trap handling for FEAT_XS
-      target/arm: Add ARM_CP_ADD_TLBI_NXS type flag for NXS insns
-      target/arm: Add ARM_CP_ADD_TLBI_NXS type flag to TLBI insns
-      hw/intc/arm_gicv3_its: Zero initialize local DTEntry etc structs
-
-Richard Henderson (10):
-      target/arm: Convert vfp_helper.c to fpst alias
-      target/arm: Convert helper-a64.c to fpst alias
-      target/arm: Convert vec_helper.c to fpst alias
-      target/arm: Convert neon_helper.c to fpst alias
-      target/arm: Convert sve_helper.c to fpst alias
-      target/arm: Convert sme_helper.c to fpst alias
-      target/arm: Convert vec_helper.c to use env alias
-      target/arm: Convert neon_helper.c to use env alias
-      target/arm: Use float_status in helper_fcvtx_f64_to_f32
-      target/arm: Use float_status in helper_vfp_fcvt{ds,sd}
-
- docs/system/arm/emulation.rst            |   1 +
- target/arm/cpregs.h                      |  80 ++--
- target/arm/cpu-features.h                |   5 +
- target/arm/helper.h                      | 638 +++++++++++++++----------------
- target/arm/tcg/helper-a64.h              | 116 +++---
- target/arm/tcg/helper-sme.h              |   4 +-
- target/arm/tcg/helper-sve.h              | 426 ++++++++++-----------
- target/arm/tcg/a64.decode                |   3 +
- hw/intc/arm_gicv3_its.c                  |  44 +--
- target/arm/helper.c                      |  30 +-
- target/arm/tcg/cpu64.c                   |   1 +
- target/arm/tcg/helper-a64.c              | 101 ++---
- target/arm/tcg/neon_helper.c             |  27 +-
- target/arm/tcg/op_helper.c               |  11 +-
- target/arm/tcg/sme_helper.c              |   8 +-
- target/arm/tcg/sve_helper.c              |  96 ++---
- target/arm/tcg/tlb-insns.c               | 202 ++++++----
- target/arm/tcg/translate-a64.c           |  26 +-
- target/arm/tcg/translate-vfp.c           |   4 +-
- target/arm/tcg/vec_helper.c              |  81 ++--
- target/arm/vfp_helper.c                  | 130 +++----
- tests/tcg/aarch64/system/feat-xs.c       |  27 ++
- tests/functional/test_aarch64_sbsaref.py |  20 +-
- 23 files changed, 1083 insertions(+), 998 deletions(-)
- create mode 100644 tests/tcg/aarch64/system/feat-xs.c
 
