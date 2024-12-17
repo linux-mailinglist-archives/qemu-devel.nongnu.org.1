@@ -2,64 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 917499F59BF
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Dec 2024 23:45:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B0879F59B4
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Dec 2024 23:44:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tNgHj-0004LJ-UL; Tue, 17 Dec 2024 17:43:24 -0500
+	id 1tNgHf-0004J9-CV; Tue, 17 Dec 2024 17:43:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1tNgHf-0004JG-8K
- for qemu-devel@nongnu.org; Tue, 17 Dec 2024 17:43:19 -0500
-Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
+ id 1tNgHc-0004Ii-Sb
+ for qemu-devel@nongnu.org; Tue, 17 Dec 2024 17:43:16 -0500
+Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1tNgHa-00018u-De
- for qemu-devel@nongnu.org; Tue, 17 Dec 2024 17:43:19 -0500
-Received: by mail-pf1-x434.google.com with SMTP id
- d2e1a72fcca58-725ef0397aeso5228161b3a.2
- for <qemu-devel@nongnu.org>; Tue, 17 Dec 2024 14:43:13 -0800 (PST)
+ id 1tNgHa-000194-SX
+ for qemu-devel@nongnu.org; Tue, 17 Dec 2024 17:43:16 -0500
+Received: by mail-pf1-x432.google.com with SMTP id
+ d2e1a72fcca58-725abf74334so5130225b3a.3
+ for <qemu-devel@nongnu.org>; Tue, 17 Dec 2024 14:43:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734475392; x=1735080192; darn=nongnu.org;
+ d=linaro.org; s=google; t=1734475393; x=1735080193; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=NOzYfBh0zmSLp+iKqt+C5cDNqScuCpesF/tusP6QFbo=;
- b=rEWGNR369wdoc06ayRxkHSUnPdDE9NKxzf5Kivzx16yYZPMZSaStqaMJTKNMeVeZGZ
- jfDawKWGULon7JIXsAzEevh0LKshkStIbusreQ5ANzduQtp7LjBQlUlJ5+mPd+7sGkJV
- L/L1RGJfPiyj3FFWvDFePVTCyzNxKLfFV15XjTsJJqW/bkKNz1rmCG61zmvChtSmFgVn
- c/ZM32y3GyTB/08AAC2Z56GcQrQRHeQhhaeLXPNA5gMrApzQv1ZAGqjHelT8BwHLIEOg
- LSGOYWNrvzR4gW0eSw9P2etLExL8qa2X3keST39vey9GjEYbraRUC2aiPcgRSTF0N3uT
- UejQ==
+ bh=FtDnDxoim/xhxV1Wp1Am01Tmaf0WaBzRac6ychlNj2g=;
+ b=vgrUOOB9Bm9Qh4mcnM3QtJ9vigBbpDj2gykRBjWtvCJk6/D7ribXa5KlRq2/gr/X+2
+ 7tisHupeBuYUPZ1GQLOEZDnNCriHlbSVeuy+djXgSYS4swJqZAslGEYGoyfGWDfdrdlq
+ lZyhevSKhsVrOzYhGRnfF8Fpdzb0utKbsNgMGcYW2d1vYx6gIQaA2YpqNxlZOqVyYJhk
+ 8EvjXIV/rZTRJJ5CyLaep3j/Kna6KrAJtzS/bPC0WnWU5aoUQnXtjOfhXNMNcqMtmgOI
+ p39v/8Y7OXHW4jaqU5znf7q/FvLkzxTIRPvhiLc9Bi/nCIGQ7uAk4JHrl1K9fGFoYYUS
+ QI0A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734475392; x=1735080192;
+ d=1e100.net; s=20230601; t=1734475393; x=1735080193;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=NOzYfBh0zmSLp+iKqt+C5cDNqScuCpesF/tusP6QFbo=;
- b=hp91nQqv+pP2Zx59YmmyvRZfyaCG5RL4rlmkugwQ2L0a81ZQFVg72OhSBG5npg9Fj4
- jvRurS1OZjo4I5TKfGAOd6Unzwn+CHyzir8yQUKJe2aqH0drLmIEDGv0WZj56ZoxCnjg
- b+Dw9gqMLYQEda9P2FTeez7zwDfdAuOLemfHZVRixiIBGTUfsuit9kJZDwDlxhgquokq
- J6BLQTOcth2XpF4V/xbkd+rwjCVX3CUbGHDSvYh6ObiM0eRt5QwTu1b5/XxZtX78gzKK
- f+ob4rVJFHKUa74FIjzUiKV8KBaMkDIsYPO5C4YLQi1wXfn0Um4VBT0VSLa4a4wIQitu
- M8zg==
-X-Gm-Message-State: AOJu0YxTC/V/h2+UrxrieZqfnSCytU9jJOfqUe0Rky5vcKqs/wpPT6Rv
- pujUCQEfGogzI8er0GYOsSr2+9yBQX+CAB7C8mn/E7xrDQYF9bBjoUTgb9Dp477gUbus+n7lkx8
- j/2M=
-X-Gm-Gg: ASbGncsvZbz2mnwS1jNYTRkFgiG8mKpDwqCCMtsasIWzqx7FoZ9be3pwpHUxymumsqw
- CK+y8NWMGxZSJhXGIEebnOd7pxvb2c8+3kHpmfCG/aHjLMdIRzGREQW7BqFSJ2nVUYVR1MUqxQp
- Bai/sB9+CPhUMvcw7Udtq7gm02fahZ6TqyzRz1Nmbdwxq8gVxPWxUY+Zc5K/+0yYws64b3gUkN2
- fHxqkDH5s4g07GtleXonesZ6Z9WMSnl5yiQRE22Tf96IdLIppzaUF35
-X-Google-Smtp-Source: AGHT+IEUxcPkbKMgJH8DF+rpWL0LnbAVVqUrC6NlUMoZ/OUexBFb6RJ9bcwqusG3AvdU7hFLKEfDCw==
-X-Received: by 2002:a05:6a00:21c6:b0:728:eb32:356c with SMTP id
- d2e1a72fcca58-72a8d2611f2mr991827b3a.11.1734475392496; 
- Tue, 17 Dec 2024 14:43:12 -0800 (PST)
+ bh=FtDnDxoim/xhxV1Wp1Am01Tmaf0WaBzRac6ychlNj2g=;
+ b=jCt4f+yNdJW3sHw3G8yJw1mlioAmF+juGWbWxmz1h6es49+GTrcYpAaR9L+dB7Y2yo
+ i269zl1bTmMBCYB5KId6qPAG8ugipK4iihey5tTy1lgmL0jxT/p4o252aA8Ztbs3rLcx
+ Yu+N+28OvOu8Z1kHAUAvGC1Ud6d6pDMsuQW0CXDo+OdOoV7M9iD4LoelHLr3/JfICf1Y
+ rsiJeQqBSxGi7ug/o4s7l/LM5sRqLK367zptNQ3e6/yC1Gu6CUlXX5TTowikMvmVAyH+
+ 594M+yzgxCmHkMf2gIA3o6/mJjbUlpWQ5zndg8FhHohbyWB2FsFEKKJSwxiAzTpnQ5Qk
+ dVmg==
+X-Gm-Message-State: AOJu0YyeFYGc4iFZ2jnVGGV5IiKca3MX02YUaC32/y7vrk//tFSzfA6S
+ B0O03RnSy3JFpUYkNXXZ7bR6QuHnT+pFJ+x4nQHrjlkGUt0fXx+105UE9TB+BucUaLMr/dm/aOb
+ 5Sys=
+X-Gm-Gg: ASbGncvMN8/yYV97u5KfFf//MP8TZPwct63FG0PWueUCsDFJZLC5CU7HWi1VbQRUnr2
+ JaOYK+SGsp7OzjVHgtUU3BPQxkEgpwMy3MHXE65V7lWyNtj67jr4fqbEDO7N4ylG3rqpO3byRX9
+ XmNOdSmgxIGSHqs3rIXNptv48vLJZ1ijhUgFFAizXABxaFrpleJdYi7lqQsze1zLs5vCi7fXa9t
+ MdHCl6h97d8r2j47+UxTslEtMfb1pIwUMQNTkmkbddChdGVkwhstkNW
+X-Google-Smtp-Source: AGHT+IHZvji7vI6NXTxDkqPGf7cm9WpgcjO9tCO+7PdQI9oDOSSnUb4p/D9NiyVWNZjZTw6ITCFtMw==
+X-Received: by 2002:a05:6a20:9183:b0:1e2:2e4:689a with SMTP id
+ adf61e73a8af0-1e5b489b0c1mr1147195637.41.1734475393437; 
+ Tue, 17 Dec 2024 14:43:13 -0800 (PST)
 Received: from pc.. ([38.39.164.180]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-72918ac53f3sm7463214b3a.27.2024.12.17.14.43.11
+ d2e1a72fcca58-72918ac53f3sm7463214b3a.27.2024.12.17.14.43.12
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 17 Dec 2024 14:43:12 -0800 (PST)
+ Tue, 17 Dec 2024 14:43:13 -0800 (PST)
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
@@ -68,24 +68,23 @@ Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  Alexandre Iooss <erdnaxe@crans.org>,
  Mahmoud Mandour <ma.mandourr@gmail.com>, Thomas Huth <thuth@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH v3 02/11] contrib/plugins/howvec: ensure we don't regress if
- this plugin is extended
-Date: Tue, 17 Dec 2024 14:42:57 -0800
-Message-Id: <20241217224306.2900490-3-pierrick.bouvier@linaro.org>
+Subject: [PATCH v3 03/11] tests/tcg/plugins/syscall: fix 32-bit build
+Date: Tue, 17 Dec 2024 14:42:58 -0800
+Message-Id: <20241217224306.2900490-4-pierrick.bouvier@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241217224306.2900490-1-pierrick.bouvier@linaro.org>
 References: <20241217224306.2900490-1-pierrick.bouvier@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x434.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::432;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x432.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,41 +103,37 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- contrib/plugins/howvec.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ tests/tcg/plugins/syscall.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/contrib/plugins/howvec.c b/contrib/plugins/howvec.c
-index 9be67f74534..2aa9029c3f0 100644
---- a/contrib/plugins/howvec.c
-+++ b/contrib/plugins/howvec.c
-@@ -253,6 +253,8 @@ static struct qemu_plugin_scoreboard *find_counter(
-     int i;
-     uint64_t *cnt = NULL;
-     uint32_t opcode = 0;
-+    /* if opcode is greater than 32 bits, we should refactor insn hash table. */
-+    G_STATIC_ASSERT(sizeof(opcode) == sizeof(uint32_t));
-     InsnClassExecCount *class = NULL;
+diff --git a/tests/tcg/plugins/syscall.c b/tests/tcg/plugins/syscall.c
+index ff452178b18..47aad55fc1b 100644
+--- a/tests/tcg/plugins/syscall.c
++++ b/tests/tcg/plugins/syscall.c
+@@ -76,12 +76,12 @@ static int64_t write_sysno = -1;
+ static SyscallStats *get_or_create_entry(int64_t num)
+ {
+     SyscallStats *entry =
+-        (SyscallStats *) g_hash_table_lookup(statistics, GINT_TO_POINTER(num));
++        (SyscallStats *) g_hash_table_lookup(statistics, &num);
  
-     /*
-@@ -284,7 +286,7 @@ static struct qemu_plugin_scoreboard *find_counter(
+     if (!entry) {
+         entry = g_new0(SyscallStats, 1);
+         entry->num = num;
+-        g_hash_table_insert(statistics, GINT_TO_POINTER(num), (gpointer) entry);
++        g_hash_table_insert(statistics, &entry->num, entry);
+     }
  
-         g_mutex_lock(&lock);
-         icount = (InsnExecCount *) g_hash_table_lookup(insns,
--                                                       GUINT_TO_POINTER(opcode));
-+                                                       (gpointer)(intptr_t) opcode);
+     return entry;
+@@ -232,7 +232,7 @@ QEMU_PLUGIN_EXPORT int qemu_plugin_install(qemu_plugin_id_t id,
+     }
  
-         if (!icount) {
-             icount = g_new0(InsnExecCount, 1);
-@@ -295,8 +297,7 @@ static struct qemu_plugin_scoreboard *find_counter(
-                 qemu_plugin_scoreboard_new(sizeof(uint64_t));
-             icount->count = qemu_plugin_scoreboard_u64(score);
+     if (!do_print) {
+-        statistics = g_hash_table_new_full(NULL, g_direct_equal, NULL, g_free);
++        statistics = g_hash_table_new_full(g_int64_hash, g_int64_equal, NULL, g_free);
+     }
  
--            g_hash_table_insert(insns, GUINT_TO_POINTER(opcode),
--                                (gpointer) icount);
-+            g_hash_table_insert(insns, (gpointer)(intptr_t) opcode, icount);
-         }
-         g_mutex_unlock(&lock);
- 
+     if (do_log_writes) {
 -- 
 2.39.5
 
