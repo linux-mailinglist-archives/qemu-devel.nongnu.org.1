@@ -2,104 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D8499F4B5E
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Dec 2024 13:57:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 96BE29F4CC8
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Dec 2024 14:49:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tNX8b-00023N-4j; Tue, 17 Dec 2024 07:57:21 -0500
+	id 1tNXw9-0001TQ-1d; Tue, 17 Dec 2024 08:48:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <heinrich.schuchardt@canonical.com>)
- id 1tNX8Z-000235-FE
- for qemu-devel@nongnu.org; Tue, 17 Dec 2024 07:57:19 -0500
-Received: from smtp-relay-internal-1.canonical.com ([185.125.188.123])
+ (Exim 4.90_1) (envelope-from <tony.lindgren@linux.intel.com>)
+ id 1tNXO5-0007rl-A5
+ for qemu-devel@nongnu.org; Tue, 17 Dec 2024 08:13:26 -0500
+Received: from mgamail.intel.com ([198.175.65.11])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <heinrich.schuchardt@canonical.com>)
- id 1tNX8W-0005pF-O5
- for qemu-devel@nongnu.org; Tue, 17 Dec 2024 07:57:18 -0500
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id 0E8F03F637
- for <qemu-devel@nongnu.org>; Tue, 17 Dec 2024 12:57:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
- s=20210705; t=1734440233;
- bh=Rhi7HFzE3FornoPkY++ubVfWbvJGQt7urPEmXmbiH9I=;
- h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
- In-Reply-To:Content-Type;
- b=I0swwLNQaw3zpx3KmnlFYGTUTuX6xR7upvQCcvkmqRE0Ol4W51Jkhihsn93vqPFlb
- 5YNP0g/3m9Op1Kg1qE+7jHT94zJOf701n9NfsLr/kJEGveeriXBWqwg/RcUNTtuzo7
- 7cE9cwuRp+VBMXEvxm1kBxJgKURIVn1+MuMz/FmrmZ0tu4VNt87IcSGFp6R2PnpihQ
- CD+fjLNKkI2BAnUfaU8E+gf1Ktahtd5yJBDlSXZgBSDgSsKPs5brBylLNmebkE//du
- RTR1+OOzrIo8pwlXFguuhijw80ouAqWei0hZKaUC6VhCePKyZzRrAHc2AtJ3mMw0Pc
- 47cQ7gAWJkb4A==
-Received: by mail-ej1-f69.google.com with SMTP id
- a640c23a62f3a-aa680e17f6dso367904466b.1
- for <qemu-devel@nongnu.org>; Tue, 17 Dec 2024 04:57:12 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734440232; x=1735045032;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Rhi7HFzE3FornoPkY++ubVfWbvJGQt7urPEmXmbiH9I=;
- b=qoAh9x6CG+zaCsWx3uUNeSNVcZTlPiPiWa0o/oHFSTQ28p6m3jr0Id4ped6w+S3kxv
- 4BSjtTJ/Q+u0oQCNgMAEpcRkH4Nq9tYFXfeVn0QxcsLUJNiMkzknF6kQlNE59z97owPT
- OGp6P/JFXla+oE9RoscB320w4ibIwwoXPXeqyOKkSJNz6iJ5axq3dv/PLOoELIgS6hx/
- 6OtuFJRXT67rEbo13Tx7YX9zBQx38hYx/MOSaKt4ulv8vqjGh3f+m4LVgQ9Eia4TPZcn
- 83lW5EdLLj1jQUtjbHUSJS2F5jL+U3h73snSNs3fJSX4Ex13gQBVvx7j7yPCtcu64Acp
- HNFQ==
-X-Gm-Message-State: AOJu0YxfLFu7gVZVGDu08ce3IJJoF3lmS1HiVDcLhvomwEZgbo5KCKK3
- SULRfpcO7iLMfBgFeaviBHqUtQbryujQ/SoLEgCyj11/n0X2a8w9WWq0Uc1Shtmfps1bt0nMTqV
- MVvuhgtSp20y6HS1BQD2GICVvvhD1SdvTkLqQBUm65/3LZqPoaTETn1Z6a7rA1qjX1tNX
-X-Gm-Gg: ASbGnctwhC267mGWh9kWQlM2R4e0miWwjMAIQr6UB6307SS4JxTGmQCB/w32tvminv9
- gY9EgNZkykHNe2hywHeIVbc9Awlt58Lp1atye+rj9Cj0wYM/MsGXokM7FWP1DhofU94ekoOh45t
- jsa/hQhdzXUhOf1JW5aLWX31wVsxsXWojaoD9tmLqWGv6pllI6P1qzW6gkDSFmCUdeGgAu4eglR
- Yyg4Kxxo4AWI59TO5KE08VAvQEOXPU00EjdfvHHxlWILdtzewPL+hJSqBsuB6znkpxYlUsLBsNq
- 7S46kiS+ER0Ck/dk877nLFYNDBGbkRDy/Fvus6P+s+Fqydy+KvvOeg==
-X-Received: by 2002:a05:6402:40d4:b0:5d0:e73c:b7f0 with SMTP id
- 4fb4d7f45d1cf-5d63c405fbbmr42102945a12.28.1734440232437; 
- Tue, 17 Dec 2024 04:57:12 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IH7SHUQGCStRoC8LvakOy6u8zaCN65EXejY1KM+xHIiICg2pgg0INnIQYHZ42nfMHfCpwtQgQ==
-X-Received: by 2002:a05:6402:40d4:b0:5d0:e73c:b7f0 with SMTP id
- 4fb4d7f45d1cf-5d63c405fbbmr42102899a12.28.1734440232136; 
- Tue, 17 Dec 2024 04:57:12 -0800 (PST)
-Received: from [192.168.103.102]
- (ip-005-147-080-091.um06.pools.vodafone-ip.de. [5.147.80.91])
- by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-aab960684fesm442291366b.56.2024.12.17.04.57.10
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 17 Dec 2024 04:57:10 -0800 (PST)
-Message-ID: <830d04a3-04ec-4ab8-9485-baa88ca9f855@canonical.com>
-Date: Tue, 17 Dec 2024 13:57:09 +0100
+ (Exim 4.90_1) (envelope-from <tony.lindgren@linux.intel.com>)
+ id 1tNXNw-0000cv-4h
+ for qemu-devel@nongnu.org; Tue, 17 Dec 2024 08:13:20 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1734441192; x=1765977192;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=l/tSsKwm1ajCw0tcf2ezdFuLqMXsca6a9KbydnDlM4c=;
+ b=cqj8/FME9Fh22TvrYLNUCQ3mAGbGvUroLZGCIYLB3F1cEpR1/VUOJLYu
+ W6HbmYLA/H59JZq+gSN3wyTfCap7cbPMbMb2v2pz0WYgEdypjo2nE+U8x
+ yPzmlZcl9ou4KzNwtPvIhDLvuZBa7G4dR2ThQ76tsrE3vNHNxdrGf9fSf
+ KQXUBFKNuYATfkoN0lUNb2OUl0eds87fJSOPwFgqnZtZYdmK1oJM9oT5g
+ yjnboBxR/r1qtix3CBIyviS8FlsjgGnRs+bzF9PJ9A66HNghgSP0uGkmv
+ cF1AA4MIT7EfBzyJdPbPr0mA+XUZHwDTEiL85+iAzH4aIzpxnDzLCniza Q==;
+X-CSE-ConnectionGUID: D/cMU/cnSkamYz85WOgpaQ==
+X-CSE-MsgGUID: Z7apz0kZSRSr09ZZbLLSuw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11282"; a="45352918"
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="45352918"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Dec 2024 05:10:37 -0800
+X-CSE-ConnectionGUID: glnTXi45RiaU01TPwBjpew==
+X-CSE-MsgGUID: RNq2sGcITpqbtNjk+X0dhg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,241,1728975600"; d="scan'208";a="98100974"
+Received: from lfiedoro-mobl.ger.corp.intel.com (HELO localhost)
+ ([10.245.246.36])
+ by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Dec 2024 05:10:29 -0800
+Date: Tue, 17 Dec 2024 15:10:23 +0200
+From: Tony Lindgren <tony.lindgren@linux.intel.com>
+To: Ira Weiny <ira.weiny@intel.com>
+Cc: Xiaoyao Li <xiaoyao.li@intel.com>,
+ "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
+ "riku.voipio@iki.fi" <riku.voipio@iki.fi>,
+ "imammedo@redhat.com" <imammedo@redhat.com>,
+ "Liu, Zhao1" <zhao1.liu@intel.com>,
+ "marcel.apfelbaum@gmail.com" <marcel.apfelbaum@gmail.com>,
+ "anisinha@redhat.com" <anisinha@redhat.com>,
+ "mst@redhat.com" <mst@redhat.com>,
+ "pbonzini@redhat.com" <pbonzini@redhat.com>,
+ "richard.henderson@linaro.org" <richard.henderson@linaro.org>,
+ "armbru@redhat.com" <armbru@redhat.com>,
+ "philmd@linaro.org" <philmd@linaro.org>,
+ "cohuck@redhat.com" <cohuck@redhat.com>,
+ "mtosatti@redhat.com" <mtosatti@redhat.com>,
+ "eblake@redhat.com" <eblake@redhat.com>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+ "wangyanan55@huawei.com" <wangyanan55@huawei.com>,
+ "berrange@redhat.com" <berrange@redhat.com>
+Subject: Re: [PATCH v6 09/60] i386/tdx: Initialize TDX before creating TD vcpus
+Message-ID: <Z2F3mBlIqbf9h4QM@tlindgre-MOBL1>
+References: <20241105062408.3533704-1-xiaoyao.li@intel.com>
+ <20241105062408.3533704-10-xiaoyao.li@intel.com>
+ <1235bac6ffe7be6662839adb2630c1a97d1cc4c5.camel@intel.com>
+ <c0ef6c19-756e-43f3-8342-66b032238265@intel.com>
+ <Zyr7FA10pmLhZBxL@tlindgre-MOBL1> <Z1scMzIdT2cI4F5T@iweiny-mobl>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] pc-bios: add missing riscv64 descriptor
-To: Michael Tokarev <mjt@tls.msk.ru>
-Cc: qemu-devel@nongnu.org, qemu-stable <qemu-stable@nongnu.org>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Gerd Hoffmann <kraxel@redhat.com>
-References: <20241212090059.94167-1-heinrich.schuchardt@canonical.com>
- <1108ce53-aa02-4909-b974-e90d99eb67fb@tls.msk.ru>
-Content-Language: en-US
-From: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
-In-Reply-To: <1108ce53-aa02-4909-b974-e90d99eb67fb@tls.msk.ru>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=185.125.188.123;
- envelope-from=heinrich.schuchardt@canonical.com;
- helo=smtp-relay-internal-1.canonical.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <Z1scMzIdT2cI4F5T@iweiny-mobl>
+Received-SPF: none client-ip=198.175.65.11;
+ envelope-from=tony.lindgren@linux.intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -42
+X-Spam_score: -4.3
 X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Tue, 17 Dec 2024 08:48:20 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -114,27 +104,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 17.12.24 12:12, Michael Tokarev wrote:
-> 12.12.2024 12:00, Heinrich Schuchardt wrote:
->> Without descriptor libvirt cannot discover the EDK II binaries via
->> the qemu:///system connection.
+On Thu, Dec 12, 2024 at 11:24:03AM -0600, Ira Weiny wrote:
+> On Wed, Nov 06, 2024 at 07:13:56AM +0200, Tony Lindgren wrote:
+> > On Wed, Nov 06, 2024 at 10:01:04AM +0800, Xiaoyao Li wrote:
+> > > On 11/6/2024 4:51 AM, Edgecombe, Rick P wrote:
+> > > > +Tony
+> > > > 
+> > > > On Tue, 2024-11-05 at 01:23 -0500, Xiaoyao Li wrote:
+> > > > > +int tdx_pre_create_vcpu(CPUState *cpu, Error **errp)
+> > > > > +{
+> > > > > +    X86CPU *x86cpu = X86_CPU(cpu);
+> > > > > +    CPUX86State *env = &x86cpu->env;
+> > > > > +    g_autofree struct kvm_tdx_init_vm *init_vm = NULL;
+> > > > > +    int r = 0;
+> > > > > +
+> > > > > +    QEMU_LOCK_GUARD(&tdx_guest->lock);
+> > > > > +    if (tdx_guest->initialized) {
+> > > > > +        return r;
+> > > > > +    }
+> > > > > +
+> > > > > +    init_vm = g_malloc0(sizeof(struct kvm_tdx_init_vm) +
+> > > > > +                        sizeof(struct kvm_cpuid_entry2) * KVM_MAX_CPUID_ENTRIES);
+> > > > > +
+> > > > > +    r = setup_td_xfam(x86cpu, errp);
+> > > > > +    if (r) {
+> > > > > +        return r;
+> > > > > +    }
+> > > > > +
+> > > > > +    init_vm->cpuid.nent = kvm_x86_build_cpuid(env, init_vm->cpuid.entries, 0);
+> > > > > +    tdx_filter_cpuid(&init_vm->cpuid);
+> > > > > +
+> > > > > +    init_vm->attributes = tdx_guest->attributes;
+> > > > > +    init_vm->xfam = tdx_guest->xfam;
+> > > > > +
+> > > > > +    do {
+> > > > > +        r = tdx_vm_ioctl(KVM_TDX_INIT_VM, 0, init_vm);
+> > > > > +    } while (r == -EAGAIN);
+> > > > 
+> > > > KVM_TDX_INIT_VM can also return EBUSY. This should check for it, or KVM should
+> > > > standardize on one for both conditions. In KVM, both cases handle
+> > > > TDX_RND_NO_ENTROPY, but one tries to save some of the initialization for the
+> > > > next attempt. I don't know why userspace would need to differentiate between the
+> > > > two cases though, which makes me think we should just change the KVM side.
+> > > 
+> > > I remember I tested retrying on the two cases and no surprise showed.
+> > > 
+> > > I agree to change KVM side to return -EAGAIN for the two cases.
+> > 
+> > OK yeah let's patch KVM for it.
 > 
-> Shouldn't this one be picked up for qemu-stable@?
-> 
-> Thanks,
-> 
-> /mjt
+> Will the patch to KVM converge such that it is ok for qemu to loop forever?
 
-Hello Michael,
+Hmm I don't think we should loop forever anywhere, the retries needed should
+be only a few. Or what do you have in mind?
 
-Yes, please, the patch should be backported.
+Regards,
 
-The relevant prerequisite patch is Gerd's
-b0494f131ed4 ("edk2: update build config")
-which appeared in v8.2.0.
-
-Best regards
-
-Heinrich
-
+Tony
 
