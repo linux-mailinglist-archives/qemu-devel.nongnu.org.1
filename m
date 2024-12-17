@@ -2,74 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E879C9F52EE
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Dec 2024 18:23:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 47F369F5334
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Dec 2024 18:26:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tNbF8-00084n-Fi; Tue, 17 Dec 2024 12:20:22 -0500
+	id 1tNbF2-00080i-1K; Tue, 17 Dec 2024 12:20:16 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tNbEz-00080j-Io
- for qemu-devel@nongnu.org; Tue, 17 Dec 2024 12:20:13 -0500
+ id 1tNbEw-0007zV-W7
+ for qemu-devel@nongnu.org; Tue, 17 Dec 2024 12:20:11 -0500
 Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tNbEn-0006Fk-9j
- for qemu-devel@nongnu.org; Tue, 17 Dec 2024 12:20:13 -0500
+ id 1tNbEl-0006GI-Li
+ for qemu-devel@nongnu.org; Tue, 17 Dec 2024 12:20:10 -0500
 Received: by mail-wr1-x436.google.com with SMTP id
- ffacd0b85a97d-385ef8b64b3so4893963f8f.0
- for <qemu-devel@nongnu.org>; Tue, 17 Dec 2024 09:19:58 -0800 (PST)
+ ffacd0b85a97d-385de59c1a0so3640441f8f.2
+ for <qemu-devel@nongnu.org>; Tue, 17 Dec 2024 09:19:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734455997; x=1735060797; darn=nongnu.org;
+ d=linaro.org; s=google; t=1734455998; x=1735060798; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=zJbnqmRHNrJNWStxjTRA7dO/k15ETO+R8z1PbejIlpc=;
- b=PLa0BL+Q3yHWuhJ031wBUrkKvRfDczf7jTRDw1oj4X59R+7Rhnzomhq0OE7nK3H2IF
- 96l60IVrGOxn3R0Z2WDh0Ki0VOALiEN0kFgg7AoyupGDlClZJ1szHnDrWhwVQ12yYCEi
- bNyUBD2qZNP4T3Ee8WlaSFJyMkIZOESpuoKmWOu+fcAA1oknTb125G1w0GeeCgeZOHak
- zw9VVvIbKImi6Axd5DANuxLQ8lafdxUwrx9nezyGD/8BcDeLaY7jla2FCIkY9FMDdbk3
- 2HSBcPSnGeztraOXzopCon/0QVo1RNJeDrsYD2ta4WzE7gpmxzOkZ67E2Qn0/uNxw4rG
- +XkA==
+ :reply-to; bh=673gMgKWT3TLRKI285qFmHPbfGLkvDLWeFaKIf5VVwQ=;
+ b=mm+QtEs6kMdUJrkiMRXHHADtrMxmOIBUp0dQp4ZtvGUlBoRlpJAVKjY2DE8rmEu7zx
+ 2bdmNrU3wmW7Fq+up2PDCsVU/pCuM6yVjdvRdSeT77fsbU+UYf5H7d1X0MV1O+5pBjVE
+ xa0fhQRyw9fQYQv1cKMNtRYfaLUMbjPnpf1CSIC9igdnUqMfIdA+8+MMF/h7p4PcjnIs
+ UsKri+hy9XC0HkTaZyFdTdaR6iHEQvYaLX7Y7Tdx4AOFOex1NH/S5IP11+bf+w3k5vlJ
+ 40jqvL+LbmXQJ3M/r/G4pU8rDy3e+RyJQHNORVgun6spl0M/yY7haO0ErxbcDZlZAArw
+ jEiA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734455997; x=1735060797;
+ d=1e100.net; s=20230601; t=1734455998; x=1735060798;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=zJbnqmRHNrJNWStxjTRA7dO/k15ETO+R8z1PbejIlpc=;
- b=lpEaJ3TtrkUYXxNW7lq/F0Alvyg+zHflQWB33g5qu9505sOMBlVgjJFIvNnitiKw1M
- 4BuEH5dNvkaASGIwqDgAQxrRfq9/4BSznnywsX+glz4tLPfAur0xsA+gnQrMekXXFV6X
- IESFTtFPvuMw33/Y+ZVzdye97q8pUXGj0gyERE6EDDOLuwRIZPtmQdgFugvwNT5Kb/+l
- U5JOw3d00lsQXxstRqKGWSo08qlNivTglqWVTgQBG3v1gbD9owsR3m9tNgXdUeKLl/+4
- 1ocB6WKqQia34Uw3qBWQ9iQrhz2YEFnY6hZ/cwDxDFQEaMNSHdcu7LjBmdy2nzSx9xkd
- iUJg==
-X-Gm-Message-State: AOJu0YxuBgw5mGTKb+zi8vojFIge3Ns0DSIxpPv9hbYEokivZyCrGul1
- k4zBKDtVX1tnVOcAFIHNAUpxuzOjZqpitnpHc/Cz8KyHj6KoBL1OH6BBZ0h3rfE4fzH0mXGFqKq
- X
-X-Gm-Gg: ASbGncu3G41QIjRc2ssHWHVmFgT8A8KY3guLeXJeRyzfvqfFzvXpT7HVqX4xfUmbjhi
- g7WenFVnd2DZyUj/ByQAar0t/uJQW972nCM7bT/ow35vG+7A0aXSIXUCsdT3YtU3rKduwu1Xs+l
- u+KladK6G6xIfvTaahTeHtyJaecaxSVFJfHBxG9tcJFnoTY8F3cr1aq3LPEZLCe2yj7EpIgMOZm
- Z4gRteEDKpTiMBvO0mjztK0RJgNcU7vvTa2cSlIzd4MIz7BUjFsrB7cjK0debw=
-X-Google-Smtp-Source: AGHT+IEZDRALqr/t8Qy0U7nNaSxr/TCAD+kdafIs9Laaiks643hoN2W7XG3VBrhgSVoTj1Vtrt/YlA==
-X-Received: by 2002:a05:6000:4012:b0:385:fc70:80e with SMTP id
- ffacd0b85a97d-38880af13b2mr13931161f8f.3.1734455997081; 
- Tue, 17 Dec 2024 09:19:57 -0800 (PST)
+ bh=673gMgKWT3TLRKI285qFmHPbfGLkvDLWeFaKIf5VVwQ=;
+ b=cvQV/aK23JckS8rwAEv6PaPCGRm+BmO1VrzzOICsNnnh7SFRnAO/GJwhQCDQ9Vo07E
+ B2anP2m7K+gZtru/R4gLNI79dreCSUwruLc5ZXps+dk+oLArkNcNHKNW7c3QwY1MbOo5
+ IPs6zz9iE1SG8Lp33RH/NLnc+LOKTPInGA+cFl1T7NuJoRdstyMMhbUX2Dn09kpga6XO
+ XWsXvmeoOaZ8wHw1ZkT8IBcQAPkV5c84ds88mMVJURCIRHk49pdvn4YQd9GI1bbjNGeq
+ nQCveMuLZZpdO5nqOvIXCYD3bN2Y/5jSc69+2LaS1pegnH1wGcI0xcbH6M+4W3kaq828
+ wPNg==
+X-Gm-Message-State: AOJu0Yw7dBnR8iB6cXhTKGCM6C7hQyn+TWKu2SA0a1IF7lwLJiubJWCX
+ DA0Ux1aAOjXXBcJb/QG+ET+BopTUoMBl24dYJfvi8vFEjsUnvijwVRew8NSmgIbXcgkTbkPcFZR
+ 4
+X-Gm-Gg: ASbGncssSmr20EbsDkRsfiNTtrwY7sUCwLPeZFOlRoTaQm6I4PENhBbmHFwYHF1LgDn
+ rwCKzCEvaZ8VAKc9C5l+eKDi+mjwh9LuCP+DAkn9ZfuT6iTHya1wcTFAbf/jULoh2NDhICKlbxx
+ DYZ2vlsSaaVa8ZWDuxaZmIPLo6torCrf/WYqOkqnvSe+UukGRdcHiAG0cJkUUVt0WfZMOchS3mb
+ E04rgj7olYhHc5116hUBkFaygkchnL9kS8tSEvUqNJazOodw97oMboVxT79we0=
+X-Google-Smtp-Source: AGHT+IH0tOPNuWiD53itQaNu2HLTWCiUr77EnqnzWs6MhyYQI2PEMYaRLqVgXIOCqJiJ66rN4xTgOA==
+X-Received: by 2002:a05:6000:144d:b0:385:e37a:2a56 with SMTP id
+ ffacd0b85a97d-3888e0bb669mr12691509f8f.52.1734455998044; 
+ Tue, 17 Dec 2024 09:19:58 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-388c8016389sm11569728f8f.32.2024.12.17.09.19.56
+ ffacd0b85a97d-388c8016389sm11569728f8f.32.2024.12.17.09.19.57
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 17 Dec 2024 09:19:56 -0800 (PST)
+ Tue, 17 Dec 2024 09:19:57 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 17/19] tests/tcg/aarch64: add system test for FEAT_XS
-Date: Tue, 17 Dec 2024 17:19:35 +0000
-Message-Id: <20241217171937.3899947-18-peter.maydell@linaro.org>
+Subject: [PULL 18/19] hw/intc/arm_gicv3_its: Zero initialize local DTEntry etc
+ structs
+Date: Tue, 17 Dec 2024 17:19:36 +0000
+Message-Id: <20241217171937.3899947-19-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241217171937.3899947-1-peter.maydell@linaro.org>
 References: <20241217171937.3899947-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=2a00:1450:4864:20::436;
  envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x436.google.com
@@ -95,57 +97,168 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+In the GICv3 ITS model, we have a common coding pattern which has a
+local C struct like "DTEntry dte", which is a C representation of an
+in-guest-memory data structure, and we call a function such as
+get_dte() to read guest memory and fill in the C struct.  These
+functions to read in the struct sometimes have cases where they will
+leave early and not fill in the whole struct (for instance get_dte()
+will set "dte->valid = false" and nothing else for the case where it
+is passed an entry_addr implying that there is no L2 table entry for
+the DTE).  This then causes potential use of uninitialized memory
+later, for instance when we call a trace event which prints all the
+fields of the struct.  Sufficiently advanced compilers may produce
+-Wmaybe-uninitialized warnings about this, especially if LTO is
+enabled.
 
-Add system test to make sure FEAT_XS is enabled for max cpu emulation
-and that QEMU doesn't crash when encountering an NXS instruction
-variant.
+Rather than trying to carefully separate out these trace events into
+"only the 'valid' field is initialized" and "all fields can be
+printed", zero-init all the structs when we define them. None of
+these structs are large (the biggest is 24 bytes) and having
+consistent behaviour is less likely to be buggy.
 
-Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Cc: qemu-stable@nongnu.org
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2718
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Message-id: 20241211144440.2700268-7-peter.maydell@linaro.org
-[PMM: In ISAR field test, mask with 0xf, not 0xff; use < rather
- than an equality test to follow the standard ID register field
- check guidelines]
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-id: 20241213182337.3343068-1-peter.maydell@linaro.org
 ---
- tests/tcg/aarch64/system/feat-xs.c | 27 +++++++++++++++++++++++++++
- 1 file changed, 27 insertions(+)
- create mode 100644 tests/tcg/aarch64/system/feat-xs.c
+ hw/intc/arm_gicv3_its.c | 44 ++++++++++++++++++++---------------------
+ 1 file changed, 22 insertions(+), 22 deletions(-)
 
-diff --git a/tests/tcg/aarch64/system/feat-xs.c b/tests/tcg/aarch64/system/feat-xs.c
-new file mode 100644
-index 00000000000..f310fc837e0
---- /dev/null
-+++ b/tests/tcg/aarch64/system/feat-xs.c
-@@ -0,0 +1,27 @@
-+/*
-+ * FEAT_XS Test
-+ *
-+ * Copyright (c) 2024 Linaro Ltd
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+
-+#include <minilib.h>
-+#include <stdint.h>
-+
-+int main(void)
-+{
-+    uint64_t isar1;
-+
-+    asm volatile ("mrs %0, id_aa64isar1_el1" : "=r"(isar1));
-+    if (((isar1 >> 56) & 0xf) < 1) {
-+        ml_printf("FEAT_XS not supported by CPU");
-+        return 1;
-+    }
-+    /* VMALLE1NXS */
-+    asm volatile (".inst 0xd508971f");
-+    /* VMALLE1OSNXS */
-+    asm volatile (".inst 0xd508911f");
-+
-+    return 0;
-+}
+diff --git a/hw/intc/arm_gicv3_its.c b/hw/intc/arm_gicv3_its.c
+index f50b1814eaf..0de76430089 100644
+--- a/hw/intc/arm_gicv3_its.c
++++ b/hw/intc/arm_gicv3_its.c
+@@ -465,7 +465,7 @@ static ItsCmdResult lookup_vte(GICv3ITSState *s, const char *who,
+ static ItsCmdResult process_its_cmd_phys(GICv3ITSState *s, const ITEntry *ite,
+                                          int irqlevel)
+ {
+-    CTEntry cte;
++    CTEntry cte = {};
+     ItsCmdResult cmdres;
+ 
+     cmdres = lookup_cte(s, __func__, ite->icid, &cte);
+@@ -479,7 +479,7 @@ static ItsCmdResult process_its_cmd_phys(GICv3ITSState *s, const ITEntry *ite,
+ static ItsCmdResult process_its_cmd_virt(GICv3ITSState *s, const ITEntry *ite,
+                                          int irqlevel)
+ {
+-    VTEntry vte;
++    VTEntry vte = {};
+     ItsCmdResult cmdres;
+ 
+     cmdres = lookup_vte(s, __func__, ite->vpeid, &vte);
+@@ -514,8 +514,8 @@ static ItsCmdResult process_its_cmd_virt(GICv3ITSState *s, const ITEntry *ite,
+ static ItsCmdResult do_process_its_cmd(GICv3ITSState *s, uint32_t devid,
+                                        uint32_t eventid, ItsCmdType cmd)
+ {
+-    DTEntry dte;
+-    ITEntry ite;
++    DTEntry dte = {};
++    ITEntry ite = {};
+     ItsCmdResult cmdres;
+     int irqlevel;
+ 
+@@ -583,8 +583,8 @@ static ItsCmdResult process_mapti(GICv3ITSState *s, const uint64_t *cmdpkt,
+     uint32_t pIntid = 0;
+     uint64_t num_eventids;
+     uint16_t icid = 0;
+-    DTEntry dte;
+-    ITEntry ite;
++    DTEntry dte = {};
++    ITEntry ite = {};
+ 
+     devid = (cmdpkt[0] & DEVID_MASK) >> DEVID_SHIFT;
+     eventid = cmdpkt[1] & EVENTID_MASK;
+@@ -651,8 +651,8 @@ static ItsCmdResult process_vmapti(GICv3ITSState *s, const uint64_t *cmdpkt,
+ {
+     uint32_t devid, eventid, vintid, doorbell, vpeid;
+     uint32_t num_eventids;
+-    DTEntry dte;
+-    ITEntry ite;
++    DTEntry dte = {};
++    ITEntry ite = {};
+ 
+     if (!its_feature_virtual(s)) {
+         return CMD_CONTINUE;
+@@ -761,7 +761,7 @@ static bool update_cte(GICv3ITSState *s, uint16_t icid, const CTEntry *cte)
+ static ItsCmdResult process_mapc(GICv3ITSState *s, const uint64_t *cmdpkt)
+ {
+     uint16_t icid;
+-    CTEntry cte;
++    CTEntry cte = {};
+ 
+     icid = cmdpkt[2] & ICID_MASK;
+     cte.valid = cmdpkt[2] & CMD_FIELD_VALID_MASK;
+@@ -822,7 +822,7 @@ static bool update_dte(GICv3ITSState *s, uint32_t devid, const DTEntry *dte)
+ static ItsCmdResult process_mapd(GICv3ITSState *s, const uint64_t *cmdpkt)
+ {
+     uint32_t devid;
+-    DTEntry dte;
++    DTEntry dte = {};
+ 
+     devid = (cmdpkt[0] & DEVID_MASK) >> DEVID_SHIFT;
+     dte.size = cmdpkt[1] & SIZE_MASK;
+@@ -886,9 +886,9 @@ static ItsCmdResult process_movi(GICv3ITSState *s, const uint64_t *cmdpkt)
+ {
+     uint32_t devid, eventid;
+     uint16_t new_icid;
+-    DTEntry dte;
+-    CTEntry old_cte, new_cte;
+-    ITEntry old_ite;
++    DTEntry dte = {};
++    CTEntry old_cte = {}, new_cte = {};
++    ITEntry old_ite = {};
+     ItsCmdResult cmdres;
+ 
+     devid = FIELD_EX64(cmdpkt[0], MOVI_0, DEVICEID);
+@@ -965,7 +965,7 @@ static bool update_vte(GICv3ITSState *s, uint32_t vpeid, const VTEntry *vte)
+ 
+ static ItsCmdResult process_vmapp(GICv3ITSState *s, const uint64_t *cmdpkt)
+ {
+-    VTEntry vte;
++    VTEntry vte = {};
+     uint32_t vpeid;
+ 
+     if (!its_feature_virtual(s)) {
+@@ -1030,7 +1030,7 @@ static void vmovp_callback(gpointer data, gpointer opaque)
+      */
+     GICv3ITSState *s = data;
+     VmovpCallbackData *cbdata = opaque;
+-    VTEntry vte;
++    VTEntry vte = {};
+     ItsCmdResult cmdres;
+ 
+     cmdres = lookup_vte(s, __func__, cbdata->vpeid, &vte);
+@@ -1085,9 +1085,9 @@ static ItsCmdResult process_vmovi(GICv3ITSState *s, const uint64_t *cmdpkt)
+ {
+     uint32_t devid, eventid, vpeid, doorbell;
+     bool doorbell_valid;
+-    DTEntry dte;
+-    ITEntry ite;
+-    VTEntry old_vte, new_vte;
++    DTEntry dte = {};
++    ITEntry ite = {};
++    VTEntry old_vte = {}, new_vte = {};
+     ItsCmdResult cmdres;
+ 
+     if (!its_feature_virtual(s)) {
+@@ -1186,10 +1186,10 @@ static ItsCmdResult process_vinvall(GICv3ITSState *s, const uint64_t *cmdpkt)
+ static ItsCmdResult process_inv(GICv3ITSState *s, const uint64_t *cmdpkt)
+ {
+     uint32_t devid, eventid;
+-    ITEntry ite;
+-    DTEntry dte;
+-    CTEntry cte;
+-    VTEntry vte;
++    ITEntry ite = {};
++    DTEntry dte = {};
++    CTEntry cte = {};
++    VTEntry vte = {};
+     ItsCmdResult cmdres;
+ 
+     devid = FIELD_EX64(cmdpkt[0], INV_0, DEVICEID);
 -- 
 2.34.1
 
