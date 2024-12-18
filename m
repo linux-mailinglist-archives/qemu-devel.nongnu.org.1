@@ -2,99 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62CFC9F6AAA
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Dec 2024 17:00:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E61C29F6AAB
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Dec 2024 17:01:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tNwSV-0006Eo-LN; Wed, 18 Dec 2024 10:59:35 -0500
+	id 1tNwTm-0007W7-S9; Wed, 18 Dec 2024 11:00:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tNwSP-0006E4-5Q
- for qemu-devel@nongnu.org; Wed, 18 Dec 2024 10:59:29 -0500
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tNwSN-0007t4-AP
- for qemu-devel@nongnu.org; Wed, 18 Dec 2024 10:59:28 -0500
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-4361dc6322fso44790555e9.3
- for <qemu-devel@nongnu.org>; Wed, 18 Dec 2024 07:59:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734537565; x=1735142365; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=HVrC/xB4J4W5X585RY4Zqal4Bi+Ph7neB+RzuTzMwMY=;
- b=J6Sq7t1fQoSlxAZ7SgPjiepzVQwPI4H3leMSsX/0tLr6Y1Lk8Aj4FRf4HOulyZQujw
- Rjk14SB2oUe8fnU+3gnnmie59wBJ0KhnRRWscXgJB23kUjQw7L9Ov9f2mhU3Iu3xlK9o
- xlt6eqAPwZ7kXVfN5iNcojedeKdCx5WNJlqrvUJCOteCidfTE75B3S1W0Bn8nuh3pXpC
- 5ODfgYpy64+M7Gft4QwVjagaEBUxBz2ggljxs/Ftzo6G6bQXOi/QWBqtuKa0Er5e4pWg
- 5JgtvHT7GYPQIIIv1c6tD9krKbvN0jkGKpsjAWIyh9MWjdwwJwCGCI7Bd0CHlpWv0ezq
- rNqQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734537565; x=1735142365;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=HVrC/xB4J4W5X585RY4Zqal4Bi+Ph7neB+RzuTzMwMY=;
- b=JP4sNUao9Adgz6F0ezO5PZoLcCqFucq9HMo7pn7PvB/rs8+A02j9pFLNtboUlpQXto
- OfhCbU/uS+XUi1M5+AQM94BYR9tY1X2roF1mH+Ai6ZzAFqZ/H08PAu+gvVBAPlCvdgVD
- 2arkTY7TT/wuauZhRTmdJpQQZpj3KRpVldBRP5pITM6XzNiyBGNfFakpFhKkJ+AOyBRA
- t5ScRUtRHgehc+5li4l1OaCqhc2f3ufKecsgjKGHenI/vvajXvmFUr/QnP5rV1BmgW/1
- brQSVH9deexCFc9vRCo5wz0qDaP0qQUzyjzRtXilS2RVtaqfWM/adWVPqiI4ofcTuXvj
- l4+g==
-X-Gm-Message-State: AOJu0Yz50qDco28uhddXB54xJm0ONr/Ieo/Egdr1Av1Og/cLxbfXQMFe
- g18CF1CUCNsBRBWzFPdlEU9GFqKAf4iQX62pHQus2Hq3/UEK7HAh7Mc/dDGvDbTEOV9wUK88Bfr
- 4
-X-Gm-Gg: ASbGncukiZV4STRCUk41HJiTPRZBZx1FrEfCg8qqneRwawRl9Md8VmqQ8tbXGv3kr0i
- 1BRD8e/jT9XguKHMJoB6IT48tS5GIU+cJiErRJ3fSDmdyCD870IFdQVuSOpYqUa2fqcn/q7ahGh
- X/hxaCfqhzaJ7gDNRcV3zdVWIS1lcAWFJK/DJWkTCrX44ZLTxfBuE4vZyj6rseyGyNQ98kAJVR0
- vl8lyiQSBmuKoGyhZqj+Wb0Lohod+VMl3iEJWXcyIrF8MRPuBQZyiFcY5kvCywWrEA4fpJhfYyA
- WUpl
-X-Google-Smtp-Source: AGHT+IE/GsnVIVpBHu0FzqISExQ4TN/zyNddvEngW8uvxopkfrRRPMhL0arlvZB2uk9iMPH3fG20pg==
-X-Received: by 2002:a05:600c:35cb:b0:434:ff9d:a370 with SMTP id
- 5b1f17b1804b1-436550b0fe8mr35114405e9.0.1734537565061; 
- Wed, 18 Dec 2024 07:59:25 -0800 (PST)
-Received: from localhost.localdomain ([78.196.4.158])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43656b01b73sm24760955e9.14.2024.12.18.07.59.23
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 18 Dec 2024 07:59:24 -0800 (PST)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Eric Farman <farman@linux.ibm.com>, kvm@vger.kernel.org,
- Marcelo Tosatti <mtosatti@redhat.com>,
- David Hildenbrand <david@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
- Nicholas Piggin <npiggin@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Thomas Huth <thuth@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- qemu-ppc@nongnu.org, Zhao Liu <zhao1.liu@intel.com>, qemu-s390x@nongnu.org,
- Yanan Wang <wangyanan55@huawei.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- "Michael S. Tsirkin" <mst@redhat.com>, Halil Pasic <pasic@linux.ibm.com>
-Subject: [PATCH 2/2] target/i386/sev: Reduce system specific declarations
-Date: Wed, 18 Dec 2024 16:59:13 +0100
-Message-ID: <20241218155913.72288-3-philmd@linaro.org>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20241218155913.72288-1-philmd@linaro.org>
-References: <20241218155913.72288-1-philmd@linaro.org>
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1tNwTG-00073h-F3
+ for qemu-devel@nongnu.org; Wed, 18 Dec 2024 11:00:27 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1tNwTE-00089g-KK
+ for qemu-devel@nongnu.org; Wed, 18 Dec 2024 11:00:22 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1734537617;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=s0X84kExHg3oacrlQZ9Uy/VSgjWiPJSewAt63suJqD0=;
+ b=TWXtJVHSrlNse2PYRqLyuZpZbZo4CUm1NOjL27Yu8c7Ls7Gk4yNFEDrCO3fG15qFwpl402
+ CZ+7uFKKEYlfCJFX5zi4ZBXrbrP5DlB1AgLPFW+Nx71+b/msNQtuC7WfBTLjKFm3Nf9Ia6
+ gwJg4y2qkri1eSk8sVaYKOK6EeOaO8Q=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-152-OCq_Hcn4PISCDQ-oVXIEzA-1; Wed,
+ 18 Dec 2024 11:00:15 -0500
+X-MC-Unique: OCq_Hcn4PISCDQ-oVXIEzA-1
+X-Mimecast-MFC-AGG-ID: OCq_Hcn4PISCDQ-oVXIEzA
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 8A98A1955F2C; Wed, 18 Dec 2024 16:00:14 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.61])
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 4470A1955F57; Wed, 18 Dec 2024 16:00:11 +0000 (UTC)
+Date: Wed, 18 Dec 2024 16:00:07 +0000
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Thomas Huth <thuth@redhat.com>
+Cc: Fabiano Rosas <farosas@suse.de>, qemu-devel@nongnu.org,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Peter Xu <peterx@redhat.com>
+Subject: Re: [PATCH v2 5/5] tests/functional: Convert the migration avocado
+ test
+Message-ID: <Z2Lxh22H_ZcdmREg@redhat.com>
+References: <20241218131439.255841-1-thuth@redhat.com>
+ <20241218131439.255841-6-thuth@redhat.com> <87o719umj5.fsf@suse.de>
+ <3399461b-b623-4950-a800-9e244dd10785@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <3399461b-b623-4950-a800-9e244dd10785@redhat.com>
+User-Agent: Mutt/2.2.13 (2024-03-09)
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -31
+X-Spam_score: -3.2
+X-Spam_bar: ---
+X-Spam_report: (-3.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-1.116,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,85 +84,89 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-"system/confidential-guest-support.h" is not needed,
-remove it. Reorder #ifdef'ry to reduce declarations
-exposed on user emulation.
+On Wed, Dec 18, 2024 at 04:51:24PM +0100, Thomas Huth wrote:
+> On 18/12/2024 14.51, Fabiano Rosas wrote:
+> > Thomas Huth <thuth@redhat.com> writes:
+> > 
+> > > Now that we've got a find_free_port() function in the functional
+> > > test framework, we can convert the migration test, too.
+> > > While the original avocado test was only meant to run on aarch64,
+> > > ppc64 and x86, we can turn this into a more generic test by now
+> > > and run it on all architectures that have a default machine that
+> > > ships with a working firmware.
+> > 
+> > I'd rather drop this test. I haven't looked at it in ages and it has
+> > never been useful.
+> 
+> I think I agree for the scope of the old avocado test - x86, ppc64 and
+> aarch64 certainly have better test coverage by the qtest already... but we
+> don't have any test coverage for other architectures at all yet, which is
+> bad (see below).
+> 
+> So if you like I can change the patch so that the test is not run on x86,
+> ppc64 and aarch64 anymore, just on the other architectures that do not have
+> test coverage by the qtest yet?
+> 
+> > I haven't been following the development of the
+> > functional suite so this might not apply this time (fingers crossed),
+> > but Python tests have always been a pain to work with.
+> 
+> Well, one of the motivations with the functional test framework was to
+> simplify things. You can now run the individual tests without any test
+> runner at all, what makes debugging way easier (see
+> docs/devel/testing/functional.rst for details)!
+> 
+> > About adding more architectures to the set, this is not simply enabling
+> > more testing, it is also adding workload to maintain these other arches
+> > that were never tested with migration. Is that something we want?
+> 
+> I think yes. Otherwise the bugs are just dormant until someone hits the
+> issue, making bisection way more complicated later.
+> Remember this one for example:
+> 
+>  https://mail.gnu.org/archive/html/qemu-commits/2023-02/msg00030.html
+> 
+> ?
+> 
+> It would have been good to have a migration test for alpha in the CI, then
+> we could have prevented that bug from being merged.
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- target/i386/sev.h  | 29 ++++++++++++++++-------------
- hw/i386/pc_sysfw.c |  2 +-
- 2 files changed, 17 insertions(+), 14 deletions(-)
+IIUC, we run the migration-test  qtest for *every* softmmu target.
 
-diff --git a/target/i386/sev.h b/target/i386/sev.h
-index 2664c0b1b6c..373669eaace 100644
---- a/target/i386/sev.h
-+++ b/target/i386/sev.h
-@@ -18,7 +18,17 @@
- #include CONFIG_DEVICES /* CONFIG_SEV */
- #endif
- 
--#include "system/confidential-guest-support.h"
-+#if !defined(CONFIG_SEV) || defined(CONFIG_USER_ONLY)
-+#define sev_enabled() 0
-+#define sev_es_enabled() 0
-+#define sev_snp_enabled() 0
-+#else
-+bool sev_enabled(void);
-+bool sev_es_enabled(void);
-+bool sev_snp_enabled(void);
-+#endif
-+
-+#if !defined(CONFIG_USER_ONLY)
- 
- #define TYPE_SEV_COMMON "sev-common"
- #define TYPE_SEV_GUEST "sev-guest"
-@@ -45,18 +55,6 @@ typedef struct SevKernelLoaderContext {
-     size_t cmdline_size;
- } SevKernelLoaderContext;
- 
--#ifdef CONFIG_SEV
--bool sev_enabled(void);
--bool sev_es_enabled(void);
--bool sev_snp_enabled(void);
--#else
--#define sev_enabled() 0
--#define sev_es_enabled() 0
--#define sev_snp_enabled() 0
--#endif
--
--uint32_t sev_get_cbit_position(void);
--uint32_t sev_get_reduced_phys_bits(void);
- bool sev_add_kernel_loader_hashes(SevKernelLoaderContext *ctx, Error **errp);
- 
- int sev_encrypt_flash(hwaddr gpa, uint8_t *ptr, uint64_t len, Error **errp);
-@@ -68,4 +66,9 @@ void sev_es_set_reset_vector(CPUState *cpu);
- 
- void pc_system_parse_sev_metadata(uint8_t *flash_ptr, size_t flash_size);
- 
-+#endif /* !CONFIG_USER_ONLY */
-+
-+uint32_t sev_get_cbit_position(void);
-+uint32_t sev_get_reduced_phys_bits(void);
-+
- #endif
-diff --git a/hw/i386/pc_sysfw.c b/hw/i386/pc_sysfw.c
-index da7ed121292..1eeb58ab37f 100644
---- a/hw/i386/pc_sysfw.c
-+++ b/hw/i386/pc_sysfw.c
-@@ -36,7 +36,7 @@
- #include "hw/qdev-properties.h"
- #include "hw/block/flash.h"
- #include "system/kvm.h"
--#include "sev.h"
-+#include "target/i386/sev.h"
- 
- #define FLASH_SECTOR_SIZE 4096
- 
+So, assuming you're referring to alpha guest, we were already
+exercising it.
+
+The migration qtest as it exists today is pushing the boundaries of
+what a qtest is. I'd actually call the migration qtest a functional
+test that happens to use the qtest framework for historical reasons.
+
+The only slight thing that makes it not a functional test is that it
+is using a specialized guest, which is just the custom boot sector
+that dirties ram.
+
+A true migration functional test is conceptually interesting, as we
+have had bugs in the past which only hit when using real guest OS
+in certain ways. The trouble is that worst bugs have been pretty
+niche, such that its unlikely we would have pre-empatively have
+a test combination that would have hit them.
+
+
+Anyway, I think a true functional test for migration is relevant
+to keep, as long as we make it clearly different from the qtest.
+A simple smoke test using a real Linux guest is different enough
+from our hand crafted boot sector that I think it is valuable
+coverage. Even better if we make the functional test add *lots*
+of different devices.
+
+With regards,
+Daniel
 -- 
-2.45.2
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
