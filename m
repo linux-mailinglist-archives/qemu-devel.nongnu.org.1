@@ -2,82 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A30E9F6ADB
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Dec 2024 17:17:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EC389F6B41
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Dec 2024 17:35:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tNwiz-0003HF-TM; Wed, 18 Dec 2024 11:16:39 -0500
+	id 1tNx0g-0002Ka-OM; Wed, 18 Dec 2024 11:34:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tNwiM-0003G4-66; Wed, 18 Dec 2024 11:15:59 -0500
-Received: from mgamail.intel.com ([192.198.163.17])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tNwiJ-0003Cq-Jx; Wed, 18 Dec 2024 11:15:57 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1734538556; x=1766074556;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=ZDuCEKT0/oRRNImm1XMVi47v0lb6hMFRoy25AeCBJaw=;
- b=hs5unfKaj6L6rs5Za2gWQmuJhmBPpBlfOTaLwj8lE8rMPyo4+G6SR80Q
- B9UY+ECeobBqnop2WsmWz2HYK6XmeYqdF/bKmOmHhXQ6g/lTUoRNfcXTo
- 9ijEVfdRTNPz3Ql03Dt0Y8x4rqx5VGbzSk8b08BR61Afz6Uv6ebfr10AH
- lMBVJ2mcxLI02J2eJP8M2Lg3rhDjmsb8nU4wPMW1CIw/deBvoLs7dANSM
- lIaUxlurulRx1s4KxEet+taWPNQn420iEy9b94D/eQ0kE79mGw/Ni/Pod
- Mj8/t7qKzhgkBLN3FklKKdndw+nOR0MHY+OM6v2WvDnvUoVFNH+m9/Z/G g==;
-X-CSE-ConnectionGUID: nL1VGdUxSeGdTJ1sYs6v/w==
-X-CSE-MsgGUID: TDiVPVK7Q/uDF/7WbGmulw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11290"; a="34911668"
-X-IronPort-AV: E=Sophos;i="6.12,245,1728975600"; d="scan'208";a="34911668"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
- by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Dec 2024 08:15:52 -0800
-X-CSE-ConnectionGUID: aEJDl8zWTMqdq1zsFDQVMA==
-X-CSE-MsgGUID: or0tceHkRTuUzrBj/QC8pA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,245,1728975600"; d="scan'208";a="98464566"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by fmviesa009.fm.intel.com with ESMTP; 18 Dec 2024 08:15:46 -0800
-Date: Thu, 19 Dec 2024 00:34:26 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, Eric Farman <farman@linux.ibm.com>,
- kvm@vger.kernel.org, Marcelo Tosatti <mtosatti@redhat.com>,
- David Hildenbrand <david@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
- Nicholas Piggin <npiggin@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Thomas Huth <thuth@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- qemu-ppc@nongnu.org, qemu-s390x@nongnu.org,
- Yanan Wang <wangyanan55@huawei.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Halil Pasic <pasic@linux.ibm.com>
-Subject: Re: [PATCH 2/2] target/i386/sev: Reduce system specific declarations
-Message-ID: <Z2L5kvVIr3JpvMzu@intel.com>
-References: <20241218155913.72288-1-philmd@linaro.org>
- <20241218155913.72288-3-philmd@linaro.org>
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1tNx0e-0002K6-3x
+ for qemu-devel@nongnu.org; Wed, 18 Dec 2024 11:34:52 -0500
+Received: from mail-lj1-x230.google.com ([2a00:1450:4864:20::230])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1tNx0Y-0002hy-OG
+ for qemu-devel@nongnu.org; Wed, 18 Dec 2024 11:34:50 -0500
+Received: by mail-lj1-x230.google.com with SMTP id
+ 38308e7fff4ca-3003c0c43c0so70590961fa.1
+ for <qemu-devel@nongnu.org>; Wed, 18 Dec 2024 08:34:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1734539682; x=1735144482; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=TZNMU5mJp4n3DAzXD6l59ElxvfOJRtsCerBsyZUvp2o=;
+ b=vty4dO908GfKxlfxs+Y4wx6Rk7KB7dtTyYW6s1786xQhnM8G492x/1lHWZCjsvbJyy
+ /UtKOdD7qmcK9VkT3mHp+E/kK7pNwcnZRwOLY8uEVWW6KbBG/LnfCeqcV6EHBgszeS0+
+ xGb7Q8m8uVI5SA8My/7/3CQHUKaAQk52QahCea/juRjA7WlJ2VW0XAoTaa6fsvvJjMuR
+ jEU6POZD3W0QuVahX2B70zw3zuKWBVvIK2N9eBTRemmLlgk02/muGrEFcDFCmrBYmFUJ
+ WsnGjUcNSy/BIE+RM7hD5LEiOtt+q2QQmv5daQ3KhbIBKjMr2RGJVlMUXuMTXq9GBDJM
+ LgZw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1734539682; x=1735144482;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=TZNMU5mJp4n3DAzXD6l59ElxvfOJRtsCerBsyZUvp2o=;
+ b=IDss/jHx1SbrUJNRB3/20EJBnUuli+6rdt2dCEefs+8pwRSj7FYAJP1/sk8XiBcu52
+ ggG/dqWxLWJtqfwa0ctWqo0nXpQmsjJGF8hHvfBqR2D4ljP2xWjbOVxkL8n7+wLUoVLA
+ jV4yMfBUWpB3UOmRVExkEBn0+H/g3+K2Lq+GtEMnYIt9uCgMVQgiYAMy62zjnipRL2gf
+ obiB08pF5UqBYnnIvtHc38WuYe4nFRZBYZVBkzjLa2XH4ft55wDEMeGxupmZo0pqTLqS
+ lbPO8Z4ZY0B/1IZaKPiDcMeQTTPRcrrnPYb51nBJcAKSXOhmSXJriRozWcmeSpmG8s8b
+ ZMrw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWQsqmmO7Zfb6W3zQVd4gcm8M0J/IvWpxH+GzK9wz85zIJyNqY9O5EjxhNkPn3vIVpKFY1yanyOI0XA@nongnu.org
+X-Gm-Message-State: AOJu0YyIcgrzLi3mDY1e42fiGGR+o5WUrOMzgh6GydQUd6eRlmqrNqId
+ 6xJaUUtwq4O4SKGs1oDLG1JCfMIqcL5AyEc+JPp1C2aZy1gdVtu31V/XVxH5h+c=
+X-Gm-Gg: ASbGncs45XElJ0cm9luHyBGEjZn77YHRAztVAj6nLOudv/yo3Q3xMcgaHgdrHn7QmX/
+ RLTCVNxEk5I4nbB2DVZ2YdADnZsxbTbq1kp8W9XCUobRJ1XkBlvrZkAViDfD19CKFS/09m4HW8B
+ SP8WSP50o/CVSy505zYvbg2FoMIWy+kHTntUMfuGPnVo1y9l+bVumyosd88TqFk99PrtNIH9l0E
+ FXGCaeu5fooaNe8Bqav2xiU+EsvSt6bIhK8D+iP0nibD6XQly3JkpRSM+wXIq+cFkVy97u0oPU=
+X-Google-Smtp-Source: AGHT+IGsTDeaY2n3Z3ZUPUyJw8KH+LhtCLF6gJs9F2k5QDDm2AySFesG+r9FvrR+JmbZ8vJpbhPk2A==
+X-Received: by 2002:a2e:93cf:0:b0:302:210d:3b5a with SMTP id
+ 38308e7fff4ca-3044db52b29mr10969621fa.39.1734539681726; 
+ Wed, 18 Dec 2024 08:34:41 -0800 (PST)
+Received: from [192.168.242.227] ([91.209.212.65])
+ by smtp.gmail.com with ESMTPSA id
+ 38308e7fff4ca-303440452a8sm16464311fa.40.2024.12.18.08.34.35
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 18 Dec 2024 08:34:41 -0800 (PST)
+Message-ID: <4eed5256-ca6f-4916-8a9e-5c874eacbe5e@linaro.org>
+Date: Wed, 18 Dec 2024 10:34:32 -0600
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20241218155913.72288-3-philmd@linaro.org>
-Received-SPF: pass client-ip=192.198.163.17; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -54
-X-Spam_score: -5.5
-X-Spam_bar: -----
-X-Spam_report: (-5.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H2=-1.116,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 1/2] target/riscv: rvv: fix typo in vext continuous
+ ldst function names
+To: Craig Blackmore <craig.blackmore@embecosm.com>, qemu-devel@nongnu.org,
+ qemu-riscv@nongnu.org
+Cc: Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>, Bin Meng <bmeng.cn@gmail.com>,
+ Weiwei Li <liwei1518@gmail.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Helene Chelin <helene.chelin@embecosm.com>, Nathan Egge <negge@google.com>,
+ Max Chou <max.chou@sifive.com>, Paolo Savini <paolo.savini@embecosm.com>
+References: <14dfb7b7-98bb-4e8c-a223-c568512180b7@embecosm.com>
+ <20241218142353.1027938-2-craig.blackmore@embecosm.com>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20241218142353.1027938-2-craig.blackmore@embecosm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::230;
+ envelope-from=richard.henderson@linaro.org; helo=mail-lj1-x230.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,23 +108,15 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Dec 18, 2024 at 04:59:13PM +0100, Philippe Mathieu-Daudé wrote:
-> Date: Wed, 18 Dec 2024 16:59:13 +0100
-> From: Philippe Mathieu-Daudé <philmd@linaro.org>
-> Subject: [PATCH 2/2] target/i386/sev: Reduce system specific declarations
-> X-Mailer: git-send-email 2.45.2
+On 12/18/24 08:23, Craig Blackmore wrote:
+> Replace `continus` with `continuous`.
 > 
-> "system/confidential-guest-support.h" is not needed,
-> remove it. Reorder #ifdef'ry to reduce declarations
-> exposed on user emulation.
-> 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Signed-off-by: Craig Blackmore<craig.blackmore@embecosm.com>
 > ---
->  target/i386/sev.h  | 29 ++++++++++++++++-------------
->  hw/i386/pc_sysfw.c |  2 +-
->  2 files changed, 17 insertions(+), 14 deletions(-)
-> 
+>   target/riscv/vector_helper.c | 10 +++++-----
+>   1 file changed, 5 insertions(+), 5 deletions(-)
 
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
+r~
 
