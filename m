@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4FFB9F7031
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Dec 2024 23:41:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 475E59F7025
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Dec 2024 23:38:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tO2cl-0007Ja-8E; Wed, 18 Dec 2024 17:34:37 -0500
+	id 1tO2eD-0000ax-KS; Wed, 18 Dec 2024 17:36:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1tO2aN-00049t-Sa
- for qemu-devel@nongnu.org; Wed, 18 Dec 2024 17:32:11 -0500
-Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
+ id 1tO2aQ-0004Bt-D0
+ for qemu-devel@nongnu.org; Wed, 18 Dec 2024 17:32:13 -0500
+Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1tO2aL-0003Vd-PN
- for qemu-devel@nongnu.org; Wed, 18 Dec 2024 17:32:06 -0500
-Received: by mail-pl1-x62f.google.com with SMTP id
- d9443c01a7336-21669fd5c7cso1588875ad.3
- for <qemu-devel@nongnu.org>; Wed, 18 Dec 2024 14:32:05 -0800 (PST)
+ id 1tO2aO-0003Vw-LA
+ for qemu-devel@nongnu.org; Wed, 18 Dec 2024 17:32:09 -0500
+Received: by mail-pl1-x634.google.com with SMTP id
+ d9443c01a7336-2165448243fso2042235ad.1
+ for <qemu-devel@nongnu.org>; Wed, 18 Dec 2024 14:32:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1734561124; x=1735165924; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1734561127; x=1735165927; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Hja11IV5nNA1bZBHCKOlY+QF4apsmUpXaGb/2G3nPWw=;
- b=jGe4rP/HYGJivCwbj7bqau2QNzTl4x262ENRYQL/okS2k8Q5ynbhBwa8nyP3CoEcBn
- DiHH3sbhxjZMRNpwnpi5fIVx57u7FHeKP8h9uZaEU+5M5NsRsUdgC3CDemFYQtvvroV7
- XAB2KvbZ1DXwRGcXCYC1P0BJQSoOQlIMedFIjkAn3APu0E3NpamvafbbrkLSzKOqx7Ai
- SUAiazkOOnVHbgiXmuFeQ//iocZjZ49VoQKqh+ynjS/uNkYYk6mYqjE4ukNwlZDpgrjg
- v0f2MXQOBJBKMa9hSZx9M1NYDrJ6vcY8GSxtfsSyh6tEsRdxtbDclSEMsebHL+moIEhm
- ygUg==
+ bh=jxMLDcONSvYYPpx6U61hKxGfs4I1jXSi4kLYiSJ5F/M=;
+ b=HU9uhzcIaaK1VsF+cpHRY9C6VYa7n/yDz9Lerr9vSWMmsYcBwmChSjIYZbCJj0v3EA
+ WjOfdG6IYe9NOxlWAK1jYBiMLQjYdQxbDix7v5obpsjYJu4/esId21awtxXOV5vIi3Ut
+ lswLAsdqPmoOqAwUIpDs7O7mgha5sw+g9snf/A/1VokwfzCpV16ROAiXdD7YLv0J61wY
+ eDMD+Q/IjI41NhseQFmGXsmTgHkMrADsz0iUkBeHP7mnAZL8+r/TtYWDM1ekc+DTSUgs
+ sDFSoIc/Iq/tt/2pzBs3N9a83aZjOToAWi8h0ydlPiqRrlQAvhLZvH03Ijzq9OVcceBz
+ e4bQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734561124; x=1735165924;
+ d=1e100.net; s=20230601; t=1734561127; x=1735165927;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Hja11IV5nNA1bZBHCKOlY+QF4apsmUpXaGb/2G3nPWw=;
- b=woT+hI4GH3t9R53fO4/8fpAC19lrnr7VHcc5h51CxXxG9JiJHrPB0mOAZaInMtWygC
- ZdkGM2wlHmwogzjHye6SSg5iKcIZIFNscKMFkZqAGPdnXoHDbfKXrfAQ7XdWxm2ms5iY
- UjGa01wyq44VKddBc4SBjfo11W33X8nyJWSxOdBmXx/jW0QTlV4Jq3usf6Aw+NSgR4Fa
- BUQBaJALnwP/QcMLSCYGUHIRp6ekljiFXSO2zTqmzJg5kU7lh4fo++ZKpqqz1jASbpWc
- jkMKyCKXWpwXtRZQn6JmzfTH/Q7YTFVrquD1M6R6cytE/okDiDIvp+/XzpYEkJZTCIB9
- kl3A==
-X-Gm-Message-State: AOJu0YxLLMfmL3L1/atsVok1fK5qtlU8aqaCZn9ExOb8nUDxAf9jXbq7
- pScSZbJIkG2OWDyUT4m+qTj264ITOg3JU1cQXXTa9ce+p3qsWZgLL42/oNkN
-X-Gm-Gg: ASbGncuhJrx8+t/RQQmiySv9a0SXa0+7PiDeCGDAWolmT33z6jlCWLPzugPg8ne3Xmg
- +8WW0bFpCEL00nfVfIb8mA/dvbBGSgdl7xQfkcWR13VbKFTl9HkkkA4KnikUZlmMqRJpPOOAvsN
- Mv0DNuqoaF5VgzZupJe9wn89sBnBTzuBjLoLIqNvwTAgjTrcn2E/Ca/Hc89t8YmClEbbebVVrzx
- T2RF7+r/wuRlO6z9sBS3iLZNXBgOi6zX+Vj/PvwL0w2v8kPvd3/RrDswPtwGlnMY3ruAjCCD+eq
- jNJjCl4RKZe8V0urgTGtPYHiRNo2MLNDWWLTqzJPmymyIyoabUx7QYA/Y7cc06s=
-X-Google-Smtp-Source: AGHT+IEVa2JA97mkD1gKEtaY0Co6q+GESgmOKX1HsgpuEpyt3UPs15rZwvN59mARCDWNvRNMyX0e5w==
-X-Received: by 2002:a17:902:e5cd:b0:215:a2e2:53fe with SMTP id
- d9443c01a7336-218d725a604mr68662315ad.40.1734561124169; 
- Wed, 18 Dec 2024 14:32:04 -0800 (PST)
+ bh=jxMLDcONSvYYPpx6U61hKxGfs4I1jXSi4kLYiSJ5F/M=;
+ b=On5X1zUBuNHftZSNUfr4erezeBVPc3l/cESciJnhV34msF4pTdhQBEOyf4ffxyJsu7
+ bmyxulKAoGwKQu8uuVdXJh+8kn7/moqpcZ7oz8S2IOpx6MBHV8+mpQeWzy5+M+X9ZOE6
+ sIHXZZpnsATQKGGS/neEm6m3ADnAqlK1VTWa5QSWGW76vyftp89L+tbw/ApOZLaTzF2W
+ pCGuLAO+KX+2XBW7SKSuXINtqrob56B9Pvqa02J9Mqrh14tXSYJEB69lTw1ty6KOaweY
+ 1c8l7OrmBWdxhtm3XsMRrdoCC+C1H5tIbztbCdcyp+3ATzO8h6kakYk+glI6fpcj543y
+ JhTg==
+X-Gm-Message-State: AOJu0YzCJAR1qy2dE2fF+2/oiOvFcwD9HRHP5NLQL3IFhyHAiFYDdEEq
+ AkCVuE8lhPaJ4YZAjXrgHDl87AIvSTFczpp8AfoIRR2iAD+OpveHypsgRGGL
+X-Gm-Gg: ASbGncs16pbbrTZUMzwBYRQBseCDu6wvTI6veOQQtN3VLOxfqz3HaJSVxOyptUmQE1h
+ cxd8hMYHB74pA6EA/71o57kOXXTrrsSErrdoe9HLpLUjwHiDgKT47uysHFhOysu/GXjB3QCpLcD
+ l5kRVP4SfB5Op8ri42gbzsdIMeGiWeZS7xz7uiFGdc7dlASJc4GcyQpZEdXAnZRTgBRastz703/
+ LpxoXCrVuZgZEyuaX49GJd9rhAhYvq6Noo+9lJ8uct34nfVHb/qzSA/c36h5zTgGNkLUaxIgrrC
+ A1RU96QVp1MYrSNKRRNXCc4zrmWD3z3j4wfW9uMxUuUgqh8dXLwEzRc2uW8Y3NU=
+X-Google-Smtp-Source: AGHT+IF3rriY4P5A3Rt8ahehMaI0RWgOE7hlhajjb9NqKHoJ8DLW5CHyc9VIaMT7EHlAqjNvkl5oFw==
+X-Received: by 2002:a17:902:e542:b0:216:7d7e:c010 with SMTP id
+ d9443c01a7336-218d7252c97mr62049165ad.37.1734561127143; 
+ Wed, 18 Dec 2024 14:32:07 -0800 (PST)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-219dc9705d7sm375775ad.102.2024.12.18.14.32.01
+ d9443c01a7336-219dc9705d7sm375775ad.102.2024.12.18.14.32.04
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 18 Dec 2024 14:32:03 -0800 (PST)
+ Wed, 18 Dec 2024 14:32:06 -0800 (PST)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
@@ -70,18 +70,17 @@ Cc: alistair23@gmail.com,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Alistair Francis <alistair.francis@wdc.com>,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PULL 35/39] target/riscv: Include missing headers in
- 'vector_internals.h'
-Date: Thu, 19 Dec 2024 08:30:05 +1000
-Message-ID: <20241218223010.1931245-36-alistair.francis@wdc.com>
+Subject: [PULL 36/39] target/riscv: Include missing headers in 'internals.h'
+Date: Thu, 19 Dec 2024 08:30:06 +1000
+Message-ID: <20241218223010.1931245-37-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241218223010.1931245-1-alistair.francis@wdc.com>
 References: <20241218223010.1931245-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
- envelope-from=alistair23@gmail.com; helo=mail-pl1-x62f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
+ envelope-from=alistair23@gmail.com; helo=mail-pl1-x634.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -110,31 +109,41 @@ From: Philippe Mathieu-Daudé <philmd@linaro.org>
 Rather than relying on implicit includes, explicit them,
 in order to avoid when refactoring unrelated headers:
 
-  target/riscv/vector_internals.h:36:12: error: call to undeclared function 'FIELD_EX32'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-     36 |     return FIELD_EX32(simd_data(desc), VDATA, NF);
-        |            ^
+  target/riscv/internals.h:49:15: error: use of undeclared identifier 'PRV_S'
+     49 |         ret = PRV_S;
+        |               ^
+  target/riscv/internals.h:93:9: error: call to undeclared function 'env_archcpu'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+     93 |     if (env_archcpu(env)->cfg.ext_zfinx) {
+        |         ^
+  target/riscv/internals.h:101:15: error: unknown type name 'float32'; did you mean 'float'?
+    101 | static inline float32 check_nanbox_s(CPURISCVState *env, uint64_t f)
+        |               ^~~~~~~
+        |               float
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
 Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Message-ID: <20241203200828.47311-2-philmd@linaro.org>
+Message-ID: <20241203200828.47311-3-philmd@linaro.org>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/vector_internals.h | 1 +
- 1 file changed, 1 insertion(+)
+ target/riscv/internals.h | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/target/riscv/vector_internals.h b/target/riscv/vector_internals.h
-index 9e1e15b575..a11cc8366d 100644
---- a/target/riscv/vector_internals.h
-+++ b/target/riscv/vector_internals.h
-@@ -20,6 +20,7 @@
- #define TARGET_RISCV_VECTOR_INTERNALS_H
+diff --git a/target/riscv/internals.h b/target/riscv/internals.h
+index ddbdee885b..76934eaa7b 100644
+--- a/target/riscv/internals.h
++++ b/target/riscv/internals.h
+@@ -19,7 +19,10 @@
+ #ifndef RISCV_CPU_INTERNALS_H
+ #define RISCV_CPU_INTERNALS_H
  
- #include "qemu/bitops.h"
-+#include "hw/registerfields.h"
- #include "cpu.h"
- #include "tcg/tcg-gvec-desc.h"
- #include "internals.h"
++#include "exec/cpu-common.h"
+ #include "hw/registerfields.h"
++#include "fpu/softfloat-types.h"
++#include "target/riscv/cpu_bits.h"
+ 
+ /*
+  * The current MMU Modes are:
 -- 
 2.47.1
 
