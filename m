@@ -2,55 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2559C9F612E
+	by mail.lfdr.de (Postfix) with ESMTPS id A18389F6131
 	for <lists+qemu-devel@lfdr.de>; Wed, 18 Dec 2024 10:15:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tNq8T-0006Yy-T5; Wed, 18 Dec 2024 04:14:29 -0500
+	id 1tNq8U-0006ZH-KZ; Wed, 18 Dec 2024 04:14:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <yuan1.liu@intel.com>)
- id 1tNq8R-0006Y6-7j
- for qemu-devel@nongnu.org; Wed, 18 Dec 2024 04:14:27 -0500
+ id 1tNq8S-0006YG-EA
+ for qemu-devel@nongnu.org; Wed, 18 Dec 2024 04:14:28 -0500
 Received: from mgamail.intel.com ([192.198.163.13])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <yuan1.liu@intel.com>)
- id 1tNq8P-0001mR-2o
- for qemu-devel@nongnu.org; Wed, 18 Dec 2024 04:14:26 -0500
+ id 1tNq8P-0001ms-A3
+ for qemu-devel@nongnu.org; Wed, 18 Dec 2024 04:14:28 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1734513265; x=1766049265;
+ t=1734513266; x=1766049266;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=VhK6YJCxy3UNdY56dm9LpsnVCa7MhAkw47y80bUy74U=;
- b=YOX4+En+aGoBoj0jB96BPTx+E5qeVU25kLvkfc8PT3YSqQrIIZMqGzXp
- ONWo44mFKRJl9yaynB/5ummmRYOIJoXBu0MvC+Pbikh3tWqKM1flN4Whp
- EcP/66QkO4ldEzgot7EOOg8Mkj5Q9FOiOt7wPvijzo/9Hm8KUKJKzBo6b
- wEkuY8DK3WJPgtIhQ9YuBypvGoR+QkFtDNKmLgrx2ScTKcrNt0q/K5f7b
- BmjSuPEjc4dTEFaLkys2HD1bTb9vRQoBZWYy49qKeSoBvMcWBeljH0Nox
- PjRWTjbqR3nEkjSxpRKIGWuM76Z0i82EWbhAE8yWtIjA8fjd9AAiggqkR A==;
-X-CSE-ConnectionGUID: mouUqFitQUiVJz4mjcy/5w==
-X-CSE-MsgGUID: AemB7ed9RcaAAl0XzgY6ug==
-X-IronPort-AV: E=McAfee;i="6700,10204,11289"; a="37815600"
-X-IronPort-AV: E=Sophos;i="6.12,244,1728975600"; d="scan'208";a="37815600"
+ bh=SsQyQYlE/+wDejDYWwjUjjhhdveMqSUSALy6nEYsHk4=;
+ b=Bi3HgeqEm4i8a/0dbakiixY6kjXUX6aFiFSE0Q2+f/jf1wLTDYzTGS3k
+ hAMud8vHrPWJ42pwyzoCevft+0OD+6EzyaDYHDfRTDqRPw6awmCtZGBYM
+ OagxMOlog4WwX6MKtr+ec6k1EyYyOC+YInJT0YecV6J+M4CYVFGx52EeO
+ jL/EKRPzw+ZxNxuzby9vSWrKFMUKA6slaE9q9wc80leNpxwCjknR1Y3y3
+ mVxO5PdSf9UdARuB4Y0homIafen9IDn6++SVi6VD+OMi+IvYjKwxEyo5m
+ gPULXvK3Kckki2V8GKpcwaac1met0asrJugqD4mxtxNvvu1jYAT32xqeB Q==;
+X-CSE-ConnectionGUID: QkvvU8wuT7yqV8W6I4D+Yw==
+X-CSE-MsgGUID: VBEUOL34Rhu5HK0TjIUf3g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11289"; a="37815606"
+X-IronPort-AV: E=Sophos;i="6.12,244,1728975600"; d="scan'208";a="37815606"
 Received: from fmviesa002.fm.intel.com ([10.60.135.142])
  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Dec 2024 01:14:18 -0800
-X-CSE-ConnectionGUID: mdKrFj6XToKvQIOU6dUTqg==
-X-CSE-MsgGUID: 7PxwsLOQRpetzpbqHhFP5w==
+ 18 Dec 2024 01:14:21 -0800
+X-CSE-ConnectionGUID: oF0LLJ6TRRKuWRzpfqnV8w==
+X-CSE-MsgGUID: STAJwx1ISMKrq9DMLCYmWg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="121066394"
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="121066402"
 Received: from sae-gw02.sh.intel.com (HELO localhost) ([10.239.45.110])
- by fmviesa002.fm.intel.com with ESMTP; 18 Dec 2024 01:14:16 -0800
+ by fmviesa002.fm.intel.com with ESMTP; 18 Dec 2024 01:14:19 -0800
 From: Yuan Liu <yuan1.liu@intel.com>
 To: peterx@redhat.com,
 	farosas@suse.de
 Cc: qemu-devel@nongnu.org, yuan1.liu@intel.com, jason.zeng@intel.com,
  yichen.wang@bytedance.com
-Subject: [PATCH 1/3] multifd: bugfix for migration using compression methods
-Date: Wed, 18 Dec 2024 17:14:11 +0800
-Message-ID: <20241218091413.140396-2-yuan1.liu@intel.com>
+Subject: [PATCH 2/3] multifd: bugfix for incorrect migration data with QPL
+ compression
+Date: Wed, 18 Dec 2024 17:14:12 +0800
+Message-ID: <20241218091413.140396-3-yuan1.liu@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241218091413.140396-1-yuan1.liu@intel.com>
 References: <20241218091413.140396-1-yuan1.liu@intel.com>
@@ -81,46 +82,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When compression is enabled on the migration channel and
-the pages processed are all zero pages, these pages will
-not be sent and updated on the target side, resulting in
-incorrect memory data on the source and target sides.
+When QPL compression is enabled on the migration channel and the same
+dirty page changes from a normal page to a zero page in the iterative
+memory copy, the dirty page will not be updated to a zero page again
+on the target side, resulting in incorrect memory data on the source
+and target sides.
 
-The root cause is that all compression methods call
-multifd_send_prepare_common to determine whether to compress
-dirty pages, but multifd_send_prepare_common does not update
-the IOV of MultiFDPacket_t when all dirty pages are zero pages.
+The root cause is that the target side does not record the normal pages
+to the receivedmap.
 
-The solution is to always update the IOV of MultiFDPacket_t
-regardless of whether the dirty pages are all zero pages.
+The solution is to add ramblock_recv_bitmap_set_offset in target side
+to record the normal pages.
 
 Signed-off-by: Yuan Liu <yuan1.liu@intel.com>
 Reviewed-by: Jason Zeng <jason.zeng@intel.com>
 ---
- migration/multifd-nocomp.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ migration/multifd-qpl.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/migration/multifd-nocomp.c b/migration/multifd-nocomp.c
-index 55191152f9..2e4aaac285 100644
---- a/migration/multifd-nocomp.c
-+++ b/migration/multifd-nocomp.c
-@@ -362,6 +362,7 @@ int multifd_ram_flush_and_sync(void)
- bool multifd_send_prepare_common(MultiFDSendParams *p)
- {
-     MultiFDPages_t *pages = &p->data->u.ram;
-+    multifd_send_prepare_header(p);
-     multifd_send_zero_page_detect(p);
- 
-     if (!pages->normal_num) {
-@@ -369,8 +370,6 @@ bool multifd_send_prepare_common(MultiFDSendParams *p)
-         return false;
+diff --git a/migration/multifd-qpl.c b/migration/multifd-qpl.c
+index bbe466617f..88e2344af2 100644
+--- a/migration/multifd-qpl.c
++++ b/migration/multifd-qpl.c
+@@ -679,6 +679,7 @@ static int multifd_qpl_recv(MultiFDRecvParams *p, Error **errp)
+         qpl->zlen[i] = be32_to_cpu(qpl->zlen[i]);
+         assert(qpl->zlen[i] <= multifd_ram_page_size());
+         zbuf_len += qpl->zlen[i];
++        ramblock_recv_bitmap_set_offset(p->block, p->normal[i]);
      }
  
--    multifd_send_prepare_header(p);
--
-     return true;
- }
- 
+     /* read compressed pages */
 -- 
 2.43.0
 
