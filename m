@@ -2,68 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 399869F6EB7
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Dec 2024 21:09:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 33B2E9F6E13
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Dec 2024 20:20:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tO0LG-0004XQ-Mc; Wed, 18 Dec 2024 15:08:22 -0500
+	id 1tNzZa-0002x9-0j; Wed, 18 Dec 2024 14:19:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from
- <BATV+6cdea2fcdec3a6535aff+7787+infradead.org+dwmw2@desiato.srs.infradead.org>)
- id 1tO0LB-0004Wr-F8
- for qemu-devel@nongnu.org; Wed, 18 Dec 2024 15:08:17 -0500
-Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1tNzZO-0002vh-Dk; Wed, 18 Dec 2024 14:18:54 -0500
+Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from
- <BATV+6cdea2fcdec3a6535aff+7787+infradead.org+dwmw2@desiato.srs.infradead.org>)
- id 1tO0L9-0006q0-1x
- for qemu-devel@nongnu.org; Wed, 18 Dec 2024 15:08:16 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:Content-Type
- :MIME-Version:Message-ID:References:In-Reply-To:Subject:CC:To:From:Date:
- Sender:Reply-To:Content-ID:Content-Description;
- bh=u+bRP8+tZGWoefo8rX/G+qPMh7HbJvKkGR1u4cxtjNM=; b=NIUAm1rjLQOGoEF/7ouL1ZdQnn
- PjISBk4uqykkpHGxy/n8e+EGS3npGAWi1hy4nU38fCtpUZAfU7epXdYQwXJ2JR5x+RfOdylxx4/Vr
- jm6QHarZWlLtu7dw9AfCpu+xKygEaO3Rk137/NDAduSDc3K0S+y9QzC87bPmMk5SUqzIGN/PqqvI8
- IJu6ySglNjk71rOXKfQ26c1vBswiD9sK4hIX2pLZNpnqNbDtafNDDjYGTVJp0ByGEh7nxJMn1QqSl
- UTSnOyS7v1+zmAKqk+sK+VYnzZi2ANx1bDZEiWEFpHvBfMZHJmkjS/QqGT4YqCU+seah4IF2z3LPJ
- T/pk0gsQ==;
-Received: from [82.144.38.251] (helo=[127.0.0.1])
- by desiato.infradead.org with esmtpsa (Exim 4.98 #2 (Red Hat Linux))
- id 1tO0L4-00000005KQ7-0UOh; Wed, 18 Dec 2024 20:08:10 +0000
-Date: Wed, 18 Dec 2024 20:11:31 +0100
-From: David Woodhouse <dwmw2@infradead.org>
-To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org
-CC: Paul Durrant <paul@xen.org>
-Subject: Re: [PATCH] tests/functional: Convert the kvm_xen_guest avocado test
-User-Agent: K-9 Mail for Android
-In-Reply-To: <eba79212-95c2-4747-babd-cbd67605fce9@redhat.com>
-References: <20241218113255.232356-1-thuth@redhat.com>
- <9B5DDDDB-769B-4654-BEF1-D3F853EA05E5@infradead.org>
- <31e85f4d-66f2-4790-8597-f43e291bcbea@redhat.com>
- <61cadf31-8656-4216-a345-e364bb85e45b@redhat.com>
- <44c87114343dc57b248ff0f86e5f4e0683533efb.camel@infradead.org>
- <f987b60d-9e73-4f6a-ae48-857f7af6cddc@redhat.com>
- <eba79212-95c2-4747-babd-cbd67605fce9@redhat.com>
-Message-ID: <B2AC746C-4911-456E-A47B-5069959152BB@infradead.org>
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1tNzZM-0001ls-Hi; Wed, 18 Dec 2024 14:18:54 -0500
+Received: from zero.eik.bme.hu (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 751AB4E603D;
+ Wed, 18 Dec 2024 20:18:45 +0100 (CET)
+X-Virus-Scanned: amavisd-new at eik.bme.hu
+Received: from zero.eik.bme.hu ([127.0.0.1])
+ by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
+ with ESMTP id VXNnF758QW_b; Wed, 18 Dec 2024 20:18:43 +0100 (CET)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id 2E0A94E602D; Wed, 18 Dec 2024 20:18:43 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 27430746F60;
+ Wed, 18 Dec 2024 20:18:43 +0100 (CET)
+Date: Wed, 18 Dec 2024 20:18:43 +0100 (CET)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: =?ISO-8859-15?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>
+cc: qemu-devel@nongnu.org, Harsh Prateek Bora <harshpb@linux.ibm.com>, 
+ Nicholas Piggin <npiggin@gmail.com>, 
+ Daniel Henrique Barboza <danielhb413@gmail.com>, 
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>, 
+ =?ISO-8859-15?Q?Daniel_P=2E_Berrang=E9?= <berrange@redhat.com>, 
+ qemu-ppc@nongnu.org, 
+ =?ISO-8859-15?Q?Marc-Andr=E9_Lureau?= <marcandre.lureau@redhat.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>, 
+ Peter Maydell <peter.maydell@linaro.org>
+Subject: Re: [PATCH v3 7/7] hw/ppc/epapr: Do not swap ePAPR magic value
+In-Reply-To: <20241218182106.78800-8-philmd@linaro.org>
+Message-ID: <277eeed4-0467-1529-f52d-2c128d8d46bb@eik.bme.hu>
+References: <20241218182106.78800-1-philmd@linaro.org>
+ <20241218182106.78800-8-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by
- desiato.infradead.org. See http://www.infradead.org/rpr.html
-Received-SPF: none client-ip=2001:8b0:10b:1:d65d:64ff:fe57:4e05;
- envelope-from=BATV+6cdea2fcdec3a6535aff+7787+infradead.org+dwmw2@desiato.srs.infradead.org;
- helo=desiato.infradead.org
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+Content-Type: multipart/mixed;
+ boundary="3866299591-1690185780-1734549523=:80922"
+Received-SPF: pass client-ip=2001:738:2001:2001::2001;
+ envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -79,66 +70,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 18 December 2024 18:16:13 CET, Thomas Huth <thuth@redhat=2Ecom> wrote:
->On 18/12/2024 17=2E19, Thomas Huth wrote:
->> On 18/12/2024 15=2E11, David Woodhouse wrote:
->>> On Wed, 2024-12-18 at 14:38 +0100, Thomas Huth wrote:
->> =2E=2E=2E
->>>> But FWIW, there seems to be another issue with this test=2E While run=
-ning it
->>>> multiple times, I sometimes see test_kvm_xen_guest_novector_noapic ha=
-nging=2E
->>>> According to the console output, the guest waits in vain for a device=
-:
->>>>=20
->>>> 2024-12-18 14:32:58,606: Initializing XFRM netlink socket
->>>> 2024-12-18 14:32:58,607: NET: Registered PF_INET6 protocol family
->>>> 2024-12-18 14:32:58,609: Segment Routing with IPv6
->>>> 2024-12-18 14:32:58,609: In-situ OAM (IOAM) with IPv6
->>>> 2024-12-18 14:32:58,610: NET: Registered PF_PACKET protocol family
->>>> 2024-12-18 14:32:58,610: 8021q: 802=2E1Q VLAN Support v1=2E8
->>>> 2024-12-18 14:32:58,611: 9pnet: Installing 9P2000 support
->>>> 2024-12-18 14:32:58,613: NET: Registered PF_VSOCK protocol family
->>>> 2024-12-18 14:32:58,614: IPI shorthand broadcast: enabled
->>>> 2024-12-18 14:32:58,619: sched_clock: Marking stable (551147059, -677=
-8955)->(590359530, -45991426)
->>>> 2024-12-18 14:32:59,507: tsc: Refined TSC clocksource calibration: 24=
-95=2E952 MHz
->>>> 2024-12-18 14:32:59,508: clocksource: tsc: mask: 0xffffffffffffffff m=
-ax_cycles: 0x23fa49fc138, max_idle_ns: 440795295059 ns
->>>> 2024-12-18 14:32:59,509: clocksource: Switched to clocksource tsc
->>>> 2024-12-18 14:33:28,667: xenbus_probe_frontend: Waiting for devices t=
-o initialise: 25s=2E=2E=2E20s=2E=2E=2E15s=2E=2E=2E10s=2E=2E=2E5s=2E=2E=2E0s=
-=2E=2E=2E
->>>>=20
->>>> Have you seen this problem before?
->>>=20
->>> That seems like event channel interrupts aren't being routed to the
->>> legacy i8259 PIC=2E I've certainly seen that kind of thing before,
->>> especially when asserted level-triggered interrupts weren't correctly
->>> being asserted=2E But I don't expect that of QEMU=2E I'll see if I can
->>> reproduce; thanks=2E
->>>=20
->>> How often does it happen?
->>=20
->> With the new functional test, it happens maybe 2 times out of 100 test =
-runs=2E
->>=20
->> I wasn't able to reproduce it with the avocado version yet, but that al=
-so runs 10x slower, so it takes a longer time to get to that many runs=2E=
-=2E=2E
->
->Ok, FWIW, I've now also seen the problem with the old avocado version of =
-the test, so it's nothing that has been introduced by my patch=2E I just ha=
-d to downgrade to Avocado v88 again since the current version v103 does not=
- seem to correctly output the console anymore :-/ (which is another good in=
-dicator that we really need to get the stuff moved over to the functional f=
-ramework now)=2E
->
-> Thomas
->
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-I have reproduced it, will look into it=2E I'm fairly sure this was all wo=
-rking reliably at the time the Xen support was merged; that's why I wrote t=
-hese test cases after all=2E
+--3866299591-1690185780-1734549523=:80922
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8BIT
+
+On Wed, 18 Dec 2024, Philippe Mathieu-Daudé wrote:
+> The ePAPR magic value in $r6 doesn't need to be byte swapped.
+>
+> See ePAPR-v1.1.pdf chapter 5.4.1 "Boot CPU Initial Register State"
+> and the following mailing-list thread:
+> https://lore.kernel.org/qemu-devel/CAFEAcA_NR4XW5DNL4nq7vnH4XRH5UWbhQCxuLyKqYk6_FCBrAA@mail.gmail.com/
+>
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
+> hw/ppc/sam460ex.c     | 2 +-
+> hw/ppc/virtex_ml507.c | 2 +-
+> 2 files changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/hw/ppc/sam460ex.c b/hw/ppc/sam460ex.c
+> index 78e2a46e753..db9c8f3fa6e 100644
+> --- a/hw/ppc/sam460ex.c
+> +++ b/hw/ppc/sam460ex.c
+> @@ -234,7 +234,7 @@ static void main_cpu_reset(void *opaque)
+>
+>         /* Create a mapping for the kernel.  */
+>         booke_set_tlb(&env->tlb.tlbe[0], 0, 0, 1 << 31);
+> -        env->gpr[6] = tswap32(EPAPR_MAGIC);
+> +        env->gpr[6] = EPAPR_MAGIC;
+
+I don't know how to test this (or if anything actually uses it). What I'm 
+not sure about is what endianness env->gpr is? It's a host array so maybe 
+it needs to match the host endianness which is little endian most of the 
+time as opposed to PPC big endian on this machine. So maybe tswap is wrong 
+but is removing it right? Maybe we need to only swap on LE hosts. I think 
+it's only used by Linux kernels so maybe trying to boot one could test 
+this change but I'm not sure.
+
+Regards,
+BALATON Zoltan
+
+>         env->gpr[7] = (16 * MiB) - 8; /* bi->ima_size; */
+>
+>     } else {
+> diff --git a/hw/ppc/virtex_ml507.c b/hw/ppc/virtex_ml507.c
+> index f378e5c4a90..6197d31d88f 100644
+> --- a/hw/ppc/virtex_ml507.c
+> +++ b/hw/ppc/virtex_ml507.c
+> @@ -119,7 +119,7 @@ static void main_cpu_reset(void *opaque)
+>     /* Create a mapping spanning the 32bit addr space. */
+>     booke_set_tlb(&env->tlb.tlbe[0], 0, 0, 1U << 31);
+>     booke_set_tlb(&env->tlb.tlbe[1], 0x80000000, 0x80000000, 1U << 31);
+> -    env->gpr[6] = tswap32(EPAPR_MAGIC);
+> +    env->gpr[6] = EPAPR_MAGIC;
+>     env->gpr[7] = bi->ima_size;
+> }
+>
+>
+--3866299591-1690185780-1734549523=:80922--
 
