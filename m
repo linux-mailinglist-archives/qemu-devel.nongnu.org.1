@@ -2,63 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 155299F6AA2
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Dec 2024 17:00:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 825719F6AA9
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Dec 2024 17:00:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tNwSL-0006Cu-Jc; Wed, 18 Dec 2024 10:59:25 -0500
+	id 1tNwSM-0006DO-QU; Wed, 18 Dec 2024 10:59:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tNwSJ-0006CD-OA
- for qemu-devel@nongnu.org; Wed, 18 Dec 2024 10:59:23 -0500
-Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tNwSL-0006DD-Mg
+ for qemu-devel@nongnu.org; Wed, 18 Dec 2024 10:59:25 -0500
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tNwSC-0007qs-Ut
- for qemu-devel@nongnu.org; Wed, 18 Dec 2024 10:59:23 -0500
-Received: by mail-wr1-x436.google.com with SMTP id
- ffacd0b85a97d-3862b364538so559674f8f.1
- for <qemu-devel@nongnu.org>; Wed, 18 Dec 2024 07:59:16 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tNwSJ-0007rk-ME
+ for qemu-devel@nongnu.org; Wed, 18 Dec 2024 10:59:25 -0500
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-436249df846so46468655e9.3
+ for <qemu-devel@nongnu.org>; Wed, 18 Dec 2024 07:59:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734537555; x=1735142355; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=o7TTefP9nXOqik7RDcZbvdDuVx9jkgFOarBEq8+dT6A=;
- b=L8qGclipZYUTUnrEkDx3vS4FssAWFCFMldyg6gUnWEFBWAVloY/fYQ9Leh6Imwtd1h
- HcztumT3g/1E/ZIGNg8rYVNUM7do6SChEvZgrCnrr7/4kOyq7uOc6A8rtoYo9aFciRFv
- mJeWGwGcOsCZ5ytLee2ywHqNScOoTVkoWUK/9E5UZuUhbkLKDiNfKUa2Y4WfUN7yl8dh
- 6LWZXgr3eT/I1Blzz4e4FC3eAJ3qDYuVZilAGZP9yPj67vX1DA8MuubVTGzr1rRpjVza
- EUNbscoDmoUbuWNeoq0CtooC39a60RsgVP6nHGtAAAJAiDVXytrcwq8ACpo0xI4aDpX6
- cXkA==
+ d=linaro.org; s=google; t=1734537560; x=1735142360; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=i1PtiwkJt/+DijNbqUoe227vdUj70+KPR5ybVcrTmE4=;
+ b=EaHL89Sjk0Ntujul6Q5s+BlRnBaZ25PomvHGy4XuFzYkYNtLK1rYcj67qu2WdgutYu
+ EnzKY3j0YB4MLqNldIhlseasgpEBPjZ+JFcPHg5rnEsFPsBl3ZVCbP3ldTyNEaPe/Ezc
+ UQ47sIT3wkIdZLbK9pmyjW244LTL2A7kQFIDvDK2BSEp7IBN9+ZlER0aqFtB8f952oru
+ 64lv6FkLIUPZGC4fHCxc0A1WGKjdB74NoAIJJjcjNxFphVnkPu2x3tc3SOHpW5juEVXX
+ F2g8BhiqxCGmBMCKozWADeMIa6pRBztsIUa3iWVssIhfEPanVTe3mOAvYl1vxNU0Uxhr
+ 6pmA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734537555; x=1735142355;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=o7TTefP9nXOqik7RDcZbvdDuVx9jkgFOarBEq8+dT6A=;
- b=mUtlX+aZVNk+lP4eZUENwacwLFpez9Li9ZhrAleHD7A3GVUxHX/yKo3MX57rm/IA/O
- E8MM0nJTAxZwAeynEqna9vFJu3YE7gFJXQ15OOHtX6jNgoBL+BPEFX9pnAj1bktTUXo/
- aP1qKDxLps8fUS7TjN3M4oQ8Jws6skQNxPq8BC+P+93D0aiU/g2TeD8mjGuhae0a210A
- ykytm3A1sJhO44c8uNa5deV4WsHfGhmcBdoMgeTmAt6ts60ifSHTlcwgj92wLQBifB7n
- YnMBuk9aVIfs8twgghlajmkme8N7HE5VH6wXsj0NJWpZIKZPxMtevLycjPMVyFLjtuqm
- 7t7A==
-X-Gm-Message-State: AOJu0Yx/+K23X1NDpCwGlRT+TRYdV7UnNz0FsnblfKpxH4J9cEC0H3xY
- ImHfhwUtiJl7AbpWZ6eTCwuIilOF2TkRuP4lCB1z65jNnDXwKy0hyppeLV1trQKI7KIercrtFvw
- 4
-X-Gm-Gg: ASbGncsRgj8KHBjyBOUK0z/S5HsgetBP4Xsgli+D9rIG79lL0h7YXBsyyEZljfIQsn+
- F84M8MwKOOENVPr/TY6HuncI8TprT79A5alGa+cDC/FtTSqNXdZq/JbEN9y0RHgbGUd4H2CWOZu
- dG182HoE8Gin/5MMLKL0dct7NEF7UfbjqxX1IdK7H8O69Vjgf6RviTh2Z0QC2sLrRUzvcstdQCw
- 7aEKiJmThMYI2nUjgHrcrauiUyqYarqnqndwXY6bKctbFlCfxlvhE4y0fJAHbn804GEKMsrmO+L
- DCg+
-X-Google-Smtp-Source: AGHT+IELZ+GggeTZx48MEhW7+44jizCcSkYTHAep0mIEWWuSZqv0/tl8cNaTNgN3QB2V/mBJ1CUGnQ==
-X-Received: by 2002:adf:fa0f:0:b0:386:4570:ee3d with SMTP id
- ffacd0b85a97d-388e4e79284mr2556298f8f.24.1734537554946; 
- Wed, 18 Dec 2024 07:59:14 -0800 (PST)
+ d=1e100.net; s=20230601; t=1734537560; x=1735142360;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=i1PtiwkJt/+DijNbqUoe227vdUj70+KPR5ybVcrTmE4=;
+ b=A35WpXllJxazDmNLOc+wqqAxHNDm1+y3fnUKDC7pihqlQx000a7jn36yLM773Mhts1
+ aiNfcEgVIAbIoe19u8c5pvSYx2Pa6EXIBjR4LfnekQbAsRNxxwr0w7anIyOxqqWNnXvG
+ JnMyXgzRiPivpeeg2TOyn1Ov8C9C7UwGBybrKIPRST5M1pzqydWEhhUjdVSy52lwa8ue
+ 3EYGzvggD31E3BeFMYE4Y5mWIvTI5S0MbfuqlDbzmgojDWHhrIUlsKdUBlFAqWEVYsvs
+ xWjovM7obKSBYGDk2MrhIngT8oEyDaDgQfbtedv4ODTjGaiXbQ2YyiRyhLQGEkV4ZycA
+ vTsg==
+X-Gm-Message-State: AOJu0YzvdKdekkrVUddpA9wGtK9s8S0OtuxahK2fto1sEUpg1x5NTPo+
+ ClsNzxof2hS35OkZWytVemdH7+LwzjbxbrEvc5f2FAZzkc8d/WgWjlC2n782goQjsa/Vzk+oKPV
+ i
+X-Gm-Gg: ASbGncs+T6XjNhmVtor9H4VCVAV5mQChYsen8UofcjdbXtce2f/nJrfI8JwsP30X5C+
+ OK+Y6COQABFFoAStrI5MJOsGKdeZpgMLpITLTMbSVrSIU88Y/ppAKy4jXh14ZOgNBH7G2W1UPc3
+ jpIWmsOSNLpNLNKzCpBhXeBzz5K8q6ykNqIf1SBVoDBqq+xzKOT0sGGZpi983CipqMnERtjMdKA
+ DDvyqwopGhEG4a+w9Pq9eesrB6qBKcAHt9l8EYQMJ6j/wUSCTbzfL5S+WfGSPQm6bCQv7p4CNOe
+ nr3L
+X-Google-Smtp-Source: AGHT+IHmkwoIYW6Cp/iqDz90yD50zgbZisO+B/FzbG+TIKWUEJjeysPGArnAL3+O3AtChZFuiI545w==
+X-Received: by 2002:a05:600c:5103:b0:434:ff9d:a3a1 with SMTP id
+ 5b1f17b1804b1-436553445f5mr32035875e9.2.1734537559916; 
+ Wed, 18 Dec 2024 07:59:19 -0800 (PST)
 Received: from localhost.localdomain ([78.196.4.158])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-388c801a628sm14684705f8f.47.2024.12.18.07.59.13
+ 5b1f17b1804b1-43656b01d17sm23876155e9.16.2024.12.18.07.59.18
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 18 Dec 2024 07:59:14 -0800 (PST)
+ Wed, 18 Dec 2024 07:59:19 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Eric Farman <farman@linux.ibm.com>, kvm@vger.kernel.org,
@@ -76,21 +77,25 @@ Cc: Eric Farman <farman@linux.ibm.com>, kvm@vger.kernel.org,
  Harsh Prateek Bora <harshpb@linux.ibm.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  "Michael S. Tsirkin" <mst@redhat.com>, Halil Pasic <pasic@linux.ibm.com>
-Subject: [PATCH 0/2] system/confidential-guest-support: Header cleanups
-Date: Wed, 18 Dec 2024 16:59:11 +0100
-Message-ID: <20241218155913.72288-1-philmd@linaro.org>
+Subject: [PATCH 1/2] system: Move 'exec/confidential-guest-support.h' to
+ system/
+Date: Wed, 18 Dec 2024 16:59:12 +0100
+Message-ID: <20241218155913.72288-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20241218155913.72288-1-philmd@linaro.org>
+References: <20241218155913.72288-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::436;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,27 +111,171 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Restrict "confidential-guest-support.h" to system
-emulation, remove few SEV declarations on user mode.
+"exec/confidential-guest-support.h" is specific to system
+emulation, so move it under the system/ namespace.
+Mechanical change doing:
 
-Philippe Mathieu-Daudé (2):
-  system: Move 'exec/confidential-guest-support.h' to system/
-  target/i386/sev: Reduce system specific declarations
+  $ sed -i \
+    -e 's,exec/confidential-guest-support.h,sysemu/confidential-guest-support.h,' \
+        $(git grep -l exec/confidential-guest-support.h)
 
- .../confidential-guest-support.h              |  6 ++--
- target/i386/confidential-guest.h              |  2 +-
- target/i386/sev.h                             | 29 ++++++++++---------
- backends/confidential-guest-support.c         |  2 +-
- hw/core/machine.c                             |  2 +-
- hw/i386/pc_sysfw.c                            |  2 +-
- hw/ppc/pef.c                                  |  2 +-
- hw/ppc/spapr.c                                |  2 +-
- hw/s390x/s390-virtio-ccw.c                    |  2 +-
- system/vl.c                                   |  2 +-
- target/s390x/kvm/pv.c                         |  2 +-
- 11 files changed, 28 insertions(+), 25 deletions(-)
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ include/{exec => system}/confidential-guest-support.h | 6 +++---
+ target/i386/confidential-guest.h                      | 2 +-
+ target/i386/sev.h                                     | 2 +-
+ backends/confidential-guest-support.c                 | 2 +-
+ hw/core/machine.c                                     | 2 +-
+ hw/ppc/pef.c                                          | 2 +-
+ hw/ppc/spapr.c                                        | 2 +-
+ hw/s390x/s390-virtio-ccw.c                            | 2 +-
+ system/vl.c                                           | 2 +-
+ target/s390x/kvm/pv.c                                 | 2 +-
+ 10 files changed, 12 insertions(+), 12 deletions(-)
  rename include/{exec => system}/confidential-guest-support.h (96%)
 
+diff --git a/include/exec/confidential-guest-support.h b/include/system/confidential-guest-support.h
+similarity index 96%
+rename from include/exec/confidential-guest-support.h
+rename to include/system/confidential-guest-support.h
+index 02dc4e518f0..b68c4bebbc1 100644
+--- a/include/exec/confidential-guest-support.h
++++ b/include/system/confidential-guest-support.h
+@@ -18,7 +18,9 @@
+ #ifndef QEMU_CONFIDENTIAL_GUEST_SUPPORT_H
+ #define QEMU_CONFIDENTIAL_GUEST_SUPPORT_H
+ 
+-#ifndef CONFIG_USER_ONLY
++#ifdef CONFIG_USER_ONLY
++#error Cannot include system/confidential-guest-support.h from user emulation
++#endif
+ 
+ #include "qom/object.h"
+ 
+@@ -94,6 +96,4 @@ static inline int confidential_guest_kvm_reset(ConfidentialGuestSupport *cgs,
+     return 0;
+ }
+ 
+-#endif /* !CONFIG_USER_ONLY */
+-
+ #endif /* QEMU_CONFIDENTIAL_GUEST_SUPPORT_H */
+diff --git a/target/i386/confidential-guest.h b/target/i386/confidential-guest.h
+index 7342d2843aa..0afb8317b58 100644
+--- a/target/i386/confidential-guest.h
++++ b/target/i386/confidential-guest.h
+@@ -14,7 +14,7 @@
+ 
+ #include "qom/object.h"
+ 
+-#include "exec/confidential-guest-support.h"
++#include "system/confidential-guest-support.h"
+ 
+ #define TYPE_X86_CONFIDENTIAL_GUEST "x86-confidential-guest"
+ 
+diff --git a/target/i386/sev.h b/target/i386/sev.h
+index 858005a119c..2664c0b1b6c 100644
+--- a/target/i386/sev.h
++++ b/target/i386/sev.h
+@@ -18,7 +18,7 @@
+ #include CONFIG_DEVICES /* CONFIG_SEV */
+ #endif
+ 
+-#include "exec/confidential-guest-support.h"
++#include "system/confidential-guest-support.h"
+ 
+ #define TYPE_SEV_COMMON "sev-common"
+ #define TYPE_SEV_GUEST "sev-guest"
+diff --git a/backends/confidential-guest-support.c b/backends/confidential-guest-support.c
+index 052fde8db04..1cd9bed505d 100644
+--- a/backends/confidential-guest-support.c
++++ b/backends/confidential-guest-support.c
+@@ -13,7 +13,7 @@
+ 
+ #include "qemu/osdep.h"
+ 
+-#include "exec/confidential-guest-support.h"
++#include "system/confidential-guest-support.h"
+ 
+ OBJECT_DEFINE_ABSTRACT_TYPE(ConfidentialGuestSupport,
+                             confidential_guest_support,
+diff --git a/hw/core/machine.c b/hw/core/machine.c
+index ba819fec0af..0e8af37194f 100644
+--- a/hw/core/machine.c
++++ b/hw/core/machine.c
+@@ -30,7 +30,7 @@
+ #include "hw/pci/pci_bridge.h"
+ #include "hw/mem/nvdimm.h"
+ #include "migration/global_state.h"
+-#include "exec/confidential-guest-support.h"
++#include "system/confidential-guest-support.h"
+ #include "hw/virtio/virtio-pci.h"
+ #include "hw/virtio/virtio-net.h"
+ #include "hw/virtio/virtio-iommu.h"
+diff --git a/hw/ppc/pef.c b/hw/ppc/pef.c
+index cffda44602e..8b2d726e008 100644
+--- a/hw/ppc/pef.c
++++ b/hw/ppc/pef.c
+@@ -14,7 +14,7 @@
+ #include "qom/object_interfaces.h"
+ #include "system/kvm.h"
+ #include "migration/blocker.h"
+-#include "exec/confidential-guest-support.h"
++#include "system/confidential-guest-support.h"
+ 
+ #define TYPE_PEF_GUEST "pef-guest"
+ OBJECT_DECLARE_SIMPLE_TYPE(PefGuest, PEF_GUEST)
+diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
+index ad21018b5aa..623842f8064 100644
+--- a/hw/ppc/spapr.c
++++ b/hw/ppc/spapr.c
+@@ -75,7 +75,7 @@
+ #include "hw/virtio/vhost-scsi-common.h"
+ 
+ #include "exec/ram_addr.h"
+-#include "exec/confidential-guest-support.h"
++#include "system/confidential-guest-support.h"
+ #include "hw/usb.h"
+ #include "qemu/config-file.h"
+ #include "qemu/error-report.h"
+diff --git a/hw/s390x/s390-virtio-ccw.c b/hw/s390x/s390-virtio-ccw.c
+index f4d64d64f94..b45d8963b36 100644
+--- a/hw/s390x/s390-virtio-ccw.c
++++ b/hw/s390x/s390-virtio-ccw.c
+@@ -14,7 +14,7 @@
+ #include "qemu/osdep.h"
+ #include "qapi/error.h"
+ #include "exec/ram_addr.h"
+-#include "exec/confidential-guest-support.h"
++#include "system/confidential-guest-support.h"
+ #include "hw/boards.h"
+ #include "hw/s390x/s390-virtio-hcall.h"
+ #include "hw/s390x/sclp.h"
+diff --git a/system/vl.c b/system/vl.c
+index a271ecc1acf..4785b3ff09a 100644
+--- a/system/vl.c
++++ b/system/vl.c
+@@ -107,7 +107,7 @@
+ #include "qemu/plugin.h"
+ #include "qemu/queue.h"
+ #include "system/arch_init.h"
+-#include "exec/confidential-guest-support.h"
++#include "system/confidential-guest-support.h"
+ 
+ #include "ui/qemu-spice.h"
+ #include "qapi/string-input-visitor.h"
+diff --git a/target/s390x/kvm/pv.c b/target/s390x/kvm/pv.c
+index e4b0d17a48a..69c1811e156 100644
+--- a/target/s390x/kvm/pv.c
++++ b/target/s390x/kvm/pv.c
+@@ -19,7 +19,7 @@
+ #include "system/kvm.h"
+ #include "system/cpus.h"
+ #include "qom/object_interfaces.h"
+-#include "exec/confidential-guest-support.h"
++#include "system/confidential-guest-support.h"
+ #include "hw/s390x/ipl.h"
+ #include "hw/s390x/sclp.h"
+ #include "target/s390x/kvm/kvm_s390x.h"
 -- 
 2.45.2
 
