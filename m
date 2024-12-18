@@ -2,77 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2FB49F6784
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Dec 2024 14:43:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D38F09F6789
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Dec 2024 14:44:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tNuKb-0001JR-0O; Wed, 18 Dec 2024 08:43:17 -0500
+	id 1tNuKv-0001Km-3L; Wed, 18 Dec 2024 08:43:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tNuKQ-0001Go-1N
- for qemu-devel@nongnu.org; Wed, 18 Dec 2024 08:43:06 -0500
-Received: from mail-oi1-x22f.google.com ([2607:f8b0:4864:20::22f])
+ id 1tNuKS-0001IU-Nh
+ for qemu-devel@nongnu.org; Wed, 18 Dec 2024 08:43:08 -0500
+Received: from mail-oi1-x231.google.com ([2607:f8b0:4864:20::231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tNuKO-0005eV-Hr
- for qemu-devel@nongnu.org; Wed, 18 Dec 2024 08:43:05 -0500
-Received: by mail-oi1-x22f.google.com with SMTP id
- 5614622812f47-3eb8bdcac2eso1214603b6e.0
- for <qemu-devel@nongnu.org>; Wed, 18 Dec 2024 05:43:04 -0800 (PST)
+ id 1tNuKQ-0005en-Un
+ for qemu-devel@nongnu.org; Wed, 18 Dec 2024 08:43:08 -0500
+Received: by mail-oi1-x231.google.com with SMTP id
+ 5614622812f47-3eb6b16f1a0so2044367b6e.3
+ for <qemu-devel@nongnu.org>; Wed, 18 Dec 2024 05:43:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734529383; x=1735134183; darn=nongnu.org;
+ d=linaro.org; s=google; t=1734529385; x=1735134185; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=iyJAxwEKb2I5MPVS5DJzWXO9WaSZYlw8mVsU36qO0T4=;
- b=LEJLoPCYcosDRVdqJEJ+fWd22omGdmOEb3NLe/p2w7lkvCvgSar9kqN3M41FzgyXbT
- uYjwK9FVXDD7UdzoxyBTQcst2yn0cVD91n83fraqB4uxA6mqyKMH2HKGZM9ggqyoh0Ns
- i7phf7tObwG2qmC3k07sZa3Dr9L/yKtiqhGa0OJBhVryteieEbGeEqEXeOl+WaucDo49
- Pc2j6V7SCK+cgFxXaLaWm1gl4h4Yx3C+YCmNt8UdRzzZHugdXmJTHAWrbn1SUCy3QK05
- aVVNHk1GMpuuspxOnSlm29KQ8ARzw8AYWNzpvK+UgnfC+EBe2afyTjJEYZ73raXMYkUR
- h2HQ==
+ bh=8Da/WqYqvOtbbG4N3/jUJ/9lxe1TiWeaeAujQBtwkcw=;
+ b=uXGzIsfr7tWaBj+TNfw+lh70w/pNi8mD6N3XxbAG30fg37U+eQW56iVQfb3nzhqm/6
+ 0B/AQ0MUAvL+4V8kbsA2yuG4Fw2MkiGTP4uTRlauIyssV8aXVK12TEDCP0jK1VLkTRKw
+ z7f52qIPTuOxzY8jAw8gbRBSp+cDBWdACvrwOTbPgxWN1wPZfd9z+QfVcsSEgGmSAIvo
+ BCcT4UJBjkX3z9BzyqWQriBO4MIBkQcJgAgKgHqMSrJS4qYEEjjI/07W9xcK7UL0RoQv
+ eQzQS1SitoI8aojaMe2bFjcrFUIlRgq49qB6Yh9lg9UYcR0aGgXlDdpvROgw5OGlB9h5
+ hOUg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734529383; x=1735134183;
+ d=1e100.net; s=20230601; t=1734529385; x=1735134185;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=iyJAxwEKb2I5MPVS5DJzWXO9WaSZYlw8mVsU36qO0T4=;
- b=N8F621PQp5bxSPJUDNppw+jErAtQCSA+ifXijPObDDyN/uyKuHtEDE0RtidXrYPl/z
- nq8ACAZXxPV8WpClO0H6cciAvT/QK4zgP1rRPnndMDcDhgiBtCkVBa6+yQDLTDah+fIh
- aMIhF25HfxohR6sO3u3hMnkM17Hk6gYMIKl1F40LIW9KhrqFHkcD2v+tOeywrhEyfncF
- ITsTKxXSuBuoQxxVkmBUFjwYG7W7us8RIEwSTOTv0hgfP44wG/VPOcffgxVHbjiH2Xb2
- 5uQurt5Bd/E9xDyzkluFo4mmrHvuNdzWAti74gwwo7QJdF/t9vputWLOLFoYgKZqMcLz
- UGGQ==
-X-Gm-Message-State: AOJu0YwRWPTWQSWiq55b0AFHPo60a1XHlXMdu+yDWMNKD56TnrmgOZmw
- f7XxlK0tBV1igvzkrViAYos7DzU1aVfz3g/EIQ6//aBDOkzuv/NTEj8L3/ERcJhrHAfBhbK64zh
- FwA/iQnZ1
-X-Gm-Gg: ASbGncuo/U7pZqGC6oAWjBMsfrPki5ep7MgndJPmJ3FD1aqAjprGB3eePE+BWgr9Hap
- qFhtVJsleK04YUhKZ2Q1rwurH0bjfjAdl2Z2VgpbBnhXK6loxTrCUt1J53xArYVHDWmzSNS8V0v
- tsb4Syob0as164Ny7BQTRoEfrK0lHELKlGgm/naQVzsQLo6dwoh2tCDu28KYUNFPKry/Ap6cMrF
- MzFiNYRVhOzRAZX9Ci0gObnTHoFjsA8iAKwbC6ovA6XLYXse0HPw8Bz3EWfWGeb
-X-Google-Smtp-Source: AGHT+IGSAsvXBcA7n8cGyuLNW9n/e9uOoGuntCeDVfdGHIvjD3t6SF0xU3/b1e9gL1db1IhfRodLpQ==
-X-Received: by 2002:a05:6808:3a12:b0:3eb:4b4c:80c9 with SMTP id
- 5614622812f47-3eccbeaefe0mr1973170b6e.0.1734529383377; 
- Wed, 18 Dec 2024 05:43:03 -0800 (PST)
+ bh=8Da/WqYqvOtbbG4N3/jUJ/9lxe1TiWeaeAujQBtwkcw=;
+ b=Njgn/THfszBvWU2/LUOtcI61/ZJz3RGzs8I1Q0NUm95OaOXavn1JoakgUqUHrvY/TH
+ eJt7eDUpiEQXy4HgI3Bx8sZd7NCOfva37cTXxPf/7GOe9hLyoZ6+OpBkky9vF8L65z+z
+ yXhGRhWTyqRx6M02Tb9iSE20K5b0Dn4wRBNgo8dPp8HZ/KE8TC8t35GvOa8rQ/BctYJA
+ 7mbEnKdzY/kpvvirZVbgr+uVmuvwWIKUf0RmuX2xFN0beDzfpWgmzNp5rOhG+6AcVIjC
+ t1cQ4jqeUA26Q6/eTaMRQR1IzoTpU/AeHOfGxk6yHw/PchdwMMeNjmQfys+t2k6Ksejp
+ qQng==
+X-Gm-Message-State: AOJu0Yyp/VTkav0bWyP08RGrgMlGwlYesNEomD8rM3vTHmYGFBt9+lD2
+ 76p4vSH1Aot/1i8/035hnl1p/4Gsr76UyULc4MFDLqtX+6GzWlBnJRhHTxNhSlet2QohA2OSDXT
+ +wa2Uep8g
+X-Gm-Gg: ASbGncuGjAldx3Yvb3yOoWdCiGLYD5LbNbDHmPz33ZwE6TaC65jaow2I4nJJQouRHnV
+ OGUA2AgoYpnzhSxzaK6LE2UlVf5gqXPcekqDK9ZNQCl89vduKRIlo6tznfbBp61G6s43/hWqXNP
+ Lxt0p4HMYOAqCWU5nbomE2pzFpz/FtcoSi95tJEP974GsJFjXUXZ96Nbm+DtrQcAPY2270qQ893
+ MqGE+sJg/P6YHeILqb0PKGGNB2E6yvwEupXtsFXnhVV/n7HaptmjR3LIcqRXrLt
+X-Google-Smtp-Source: AGHT+IFQFJYPMZAWOGxOyyW9orQ2xVkaN6hE0kMa1De2Hn9KH5R8+mN0FLNKqZm0ndIdIYPmY1n3Pw==
+X-Received: by 2002:a05:6808:4494:b0:3e9:1750:426d with SMTP id
+ 5614622812f47-3eccbf5450bmr1837066b6e.13.1734529384666; 
+ Wed, 18 Dec 2024 05:43:04 -0800 (PST)
 Received: from stoup.. ([187.217.227.247]) by smtp.gmail.com with ESMTPSA id
- 5614622812f47-3ebb478a502sm2870951b6e.9.2024.12.18.05.43.02
+ 5614622812f47-3ebb478a502sm2870951b6e.9.2024.12.18.05.43.03
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 18 Dec 2024 05:43:02 -0800 (PST)
+ Wed, 18 Dec 2024 05:43:04 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: pbonzini@redhat.com
-Subject: [PATCH v2 07/24] hw/tricore: Remove empty Property lists
-Date: Wed, 18 Dec 2024 07:42:34 -0600
-Message-ID: <20241218134251.4724-8-richard.henderson@linaro.org>
+Subject: [PATCH v2 08/24] hw/s390x: Remove empty Property lists
+Date: Wed, 18 Dec 2024 07:42:35 -0600
+Message-ID: <20241218134251.4724-9-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241218134251.4724-1-richard.henderson@linaro.org>
 References: <20241218134251.4724-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::22f;
- envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x22f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::231;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x231.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,51 +97,29 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- hw/tricore/tc27x_soc.c          | 5 -----
- hw/tricore/tricore_testdevice.c | 5 -----
- 2 files changed, 10 deletions(-)
+ hw/s390x/3270-ccw.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
-diff --git a/hw/tricore/tc27x_soc.c b/hw/tricore/tc27x_soc.c
-index ecd92717b5..81bb16d89b 100644
---- a/hw/tricore/tc27x_soc.c
-+++ b/hw/tricore/tc27x_soc.c
-@@ -201,16 +201,11 @@ static void tc27x_soc_init(Object *obj)
-     object_initialize_child(obj, "tc27x", &s->cpu, sc->cpu_type);
+diff --git a/hw/s390x/3270-ccw.c b/hw/s390x/3270-ccw.c
+index 69e6783ade..3a8930dfd1 100644
+--- a/hw/s390x/3270-ccw.c
++++ b/hw/s390x/3270-ccw.c
+@@ -150,15 +150,10 @@ out_err:
+     g_free(sch);
  }
  
--static Property tc27x_soc_properties[] = {
+-static Property emulated_ccw_3270_properties[] = {
 -    DEFINE_PROP_END_OF_LIST(),
 -};
 -
- static void tc27x_soc_class_init(ObjectClass *klass, void *data)
+ static void emulated_ccw_3270_class_init(ObjectClass *klass, void *data)
  {
      DeviceClass *dc = DEVICE_CLASS(klass);
  
-     dc->realize = tc27x_soc_realize;
--    device_class_set_props(dc, tc27x_soc_properties);
- }
- 
- static void tc277d_soc_class_init(ObjectClass *oc, void *data)
-diff --git a/hw/tricore/tricore_testdevice.c b/hw/tricore/tricore_testdevice.c
-index ae95c49565..e60866d76f 100644
---- a/hw/tricore/tricore_testdevice.c
-+++ b/hw/tricore/tricore_testdevice.c
-@@ -58,15 +58,10 @@ static void tricore_testdevice_init(Object *obj)
-                           "tricore_testdevice", 0x4);
- }
- 
--static Property tricore_testdevice_properties[] = {
--    DEFINE_PROP_END_OF_LIST()
--};
--
- static void tricore_testdevice_class_init(ObjectClass *klass, void *data)
- {
-     DeviceClass *dc = DEVICE_CLASS(klass);
- 
--    device_class_set_props(dc, tricore_testdevice_properties);
-     device_class_set_legacy_reset(dc, tricore_testdevice_reset);
- }
- 
+-    device_class_set_props(dc, emulated_ccw_3270_properties);
+     dc->realize = emulated_ccw_3270_realize;
+     dc->hotpluggable = false;
+     set_bit(DEVICE_CATEGORY_DISPLAY, dc->categories);
 -- 
 2.43.0
 
