@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A09709F701D
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Dec 2024 23:37:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E7B3C9F700B
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Dec 2024 23:32:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tO2ZD-00035k-7M; Wed, 18 Dec 2024 17:30:55 -0500
+	id 1tO2ZH-00037r-0v; Wed, 18 Dec 2024 17:30:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1tO2ZA-00033o-08
- for qemu-devel@nongnu.org; Wed, 18 Dec 2024 17:30:52 -0500
-Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
+ id 1tO2ZB-00034t-O5
+ for qemu-devel@nongnu.org; Wed, 18 Dec 2024 17:30:53 -0500
+Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1tO2Z3-0002kq-Bk
- for qemu-devel@nongnu.org; Wed, 18 Dec 2024 17:30:51 -0500
-Received: by mail-pl1-x632.google.com with SMTP id
- d9443c01a7336-2166022c5caso1492755ad.2
- for <qemu-devel@nongnu.org>; Wed, 18 Dec 2024 14:30:39 -0800 (PST)
+ id 1tO2Z9-0002qY-1O
+ for qemu-devel@nongnu.org; Wed, 18 Dec 2024 17:30:53 -0500
+Received: by mail-pl1-x62b.google.com with SMTP id
+ d9443c01a7336-216634dd574so1118745ad.2
+ for <qemu-devel@nongnu.org>; Wed, 18 Dec 2024 14:30:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1734561038; x=1735165838; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1734561040; x=1735165840; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=bQY3VcjBPjxrbcjSRiagBQ+xXLrlFjWQYHXXCoIwN2Q=;
- b=jIVd5c8ggzAm2c0vkmrSeuyNplJxzBX56n8VsX4cSZKtuKl1Waqa3iXyi/7I+Fvz7m
- QKkcOxib/zE7VH7KVUvmdN+zn3cr0vuxMqzCr3k15r7rsPAjQSThAHescdbGrsfXihFE
- aMGCrrgXKVBW9c1drsr7MKbCuYMPPDpHSOZ21EZpwbftTRwvGcr0QhzaReSjteDVfTSa
- OzzBeehYdTD8Z1ZScVbgjBYhGg3EN0uBWGqAChVIuuEJj6zGnCXopu6EBW4gynEno7F5
- w26RGERDbZXGTuWZ5k4cBaVUwAf7FWI/9mq7jPRrFDcF44xJFELbs3acEUb90Ub6DHIw
- GcSQ==
+ bh=kbjp0RN4WVBTHLzHs0l1pkCDARbcgb47+aZu1+7vjBY=;
+ b=PE8iOl4fhvWDvywpPqFYfTpQOlz7XbJHt8heaKeuOetq9J7F59ffvhoM0D2MPQZ0zB
+ HgQB7rP/2/72aY/IR2jO/1CqvYUsgdvxi+KS46HekBMZb7rNuwEyKJ/uWGYUgIjwiu/C
+ 2oRTRZgztkKV/o5x4TtCsZErSn1/QCfhPE1JxduKIAWyTx9A9sjjh3nKhhoezXSZsf7U
+ 5I1IIN8wr0hUokrlvX8fRTmt/MF4ONF+NMnT02jzcvAqf1vs1MfaC3o6gCGR7xTix0bn
+ mpZ5n7g7NYipUqkp+bUhb5tENaf7AFycJOZutsx54dXOJjwcL8ZIdnXotLA/VNS2BdFX
+ O3JQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734561038; x=1735165838;
+ d=1e100.net; s=20230601; t=1734561040; x=1735165840;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=bQY3VcjBPjxrbcjSRiagBQ+xXLrlFjWQYHXXCoIwN2Q=;
- b=nk65MUl5EJK0tmo70aBNyMxNfrgJm+lu/4zuFVqOrAdvzMs1cNKleA9aneBeOFp00d
- y+6pLdTEjc9P5XEKc8BXJPJVm9uf9/WbZlCsNN8xlHC69OJUoiRN67GnAyXjIwo4HS1r
- 2sEqaZh8xmcmXIOGJTL6WabVj5c8MMTGSk4oU2xS3VMEjYUFg1n10+BcMkH7oau/DoFb
- u9jS4caWVrYhdnd18vIWK+uyCl4CzVDy7M5cI2vzGObaJN+IBxM04GvtYLQagnSsIs15
- E3UEhgEkeu5niiWNQDjC1hZNHEeUhUiK39U4bu6E1a7jMtDJwn6mb/N/USU+vzQkcDWG
- 3hFQ==
-X-Gm-Message-State: AOJu0YxueK66WwrJg05YkIZkBphE1X3W3WsFXFXFY/tPqvD62GrfmzUq
- Ekx0rgwtlCYn7S/Bsgd8VufC3xdQKaZvkNUUXA91H8bvXmAlvJ0irLyIBJbL
-X-Gm-Gg: ASbGncsdCaZmCo13QWqmbm6B79zGxHaqfFE/jHc/Qfwi/NU4X0v06wcvXKWEnOaQqH/
- sOkMPpjtBt82KnHGw47Eu+QlDRPyyfkfX51Sx3GHjU19FU0lFZrRAG4hBCUjGfyB+FKrc/uztQt
- tWngIhbhx1PhrVB6TAgLPPuAf7zU0uP7CIevdzzDtSFaP/julOgDaA9f13jJhbboQPw/QznyPuH
- MFFwNrWedwd5gvOz49iJXztAlmqaAM/Lzs5hwKSY6SRdarQH/73tZKMHEk7tb5qDnaW25T19O6H
- XB8b1GyfvVzMfAYi2+dsW0dq6KXG3z50ttBlOIMfHam+W8vi/6lPTR0M2vC9z74=
-X-Google-Smtp-Source: AGHT+IGN9aWczH2D1sypf6xY/UgV5umsWdWBNSXvfolg9RpSKVutDdL1klaCweIyoTfugFhPFMNSYQ==
-X-Received: by 2002:a17:902:ceca:b0:215:6fcd:6cd1 with SMTP id
- d9443c01a7336-218d6fc3a10mr50475845ad.7.1734561037818; 
- Wed, 18 Dec 2024 14:30:37 -0800 (PST)
+ bh=kbjp0RN4WVBTHLzHs0l1pkCDARbcgb47+aZu1+7vjBY=;
+ b=rIHdkbPQ7qnwKtu9bqXkTTuPBGxo5qkR+QcB1gv78CpAkhilZUys9W89zHKJizg9kg
+ RDDzcp2G1WagJI+OJWxYw1htrpkzTeH7h3MJOJtrJmu08s1R21EIOvfWkbe7l97YKA1b
+ 5gBZ7KzPh4WSKa6dY7LAqCzFKmi6R5QURtmRLkkvN+K+CXLs1jUkX1BXqpo/CW5vRw9j
+ UlS77DX3SyDcxTRiPweFKHrLdTbI/wbwtcGFOEeWpDxtyeywCf2Cn0LDD3o4KaBtP1uW
+ dQI68OnP9rnc+DJipqWGhl2MNsUhUMSxiLupxH9dD6/xu4CXBU/zfBFAnBApGmupXfht
+ IpRA==
+X-Gm-Message-State: AOJu0Yxkwqq86jXJDAP/KLUOFv2K4VH+Sy+m/5xrMBxUMC4n1nFPJjo6
+ udx9K4D3d3FVU2JdvcGx7kTTG8+I1C6GV7rQHxMzegv929ELC5a56Gfyn4IF
+X-Gm-Gg: ASbGncvLhzYdD627FYUY8uY0YtVw32c8h6wISMUxttzEeytufGx1HB4kAyIvS1ven74
+ A+PsuSnwvq+3N1eDeM/9C6FVPtd7nlZH/8NcVkREjD9Zesri9Ui+lN9PHTweQjHidMzlbKb8Dej
+ e1OLUR807cyKR7YxUt65x9lLQK4SYbSkiQr3qz5zwnigY7FT1tp1vMf0qxFB9rhfjLWRzi7mNim
+ L/XHFGmgDtia08kEE0k3NEdgML7tdhSOkTzKXpHt8S7LAGgfDj4GbTSi/ssTog+HizvFu+fONCD
+ YX2FgIRcF45Lx2tgpz/7rSJLHq2gfftkKTiPQbWZSqBq/UZWBENDJ74+YiSvxuE=
+X-Google-Smtp-Source: AGHT+IEW1XHvP1iV0ZIjSTvDze2tkFvl1S2p2Qv19rlPhuI4niOW+Qaul6oSx6r4TwlXlJQiMWra7A==
+X-Received: by 2002:a17:902:fc4e:b0:216:5268:9aab with SMTP id
+ d9443c01a7336-219d97004f8mr19844395ad.46.1734561040590; 
+ Wed, 18 Dec 2024 14:30:40 -0800 (PST)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-219dc9705d7sm375775ad.102.2024.12.18.14.30.35
+ d9443c01a7336-219dc9705d7sm375775ad.102.2024.12.18.14.30.38
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 18 Dec 2024 14:30:37 -0800 (PST)
+ Wed, 18 Dec 2024 14:30:40 -0800 (PST)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
 Cc: alistair23@gmail.com, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 07/39] hw/riscv/virt.c, riscv-iommu-sys.c: add MSIx support
-Date: Thu, 19 Dec 2024 08:29:37 +1000
-Message-ID: <20241218223010.1931245-8-alistair.francis@wdc.com>
+Subject: [PULL 08/39] hw/riscv/riscv-iommu: implement reset protocol
+Date: Thu, 19 Dec 2024 08:29:38 +1000
+Message-ID: <20241218223010.1931245-9-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241218223010.1931245-1-alistair.francis@wdc.com>
 References: <20241218223010.1931245-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
- envelope-from=alistair23@gmail.com; helo=mail-pl1-x632.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
+ envelope-from=alistair23@gmail.com; helo=mail-pl1-x62b.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -103,250 +103,204 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 
-MSIx support is added in the RISC-V IOMMU platform device by including
-the required MSIx facilities to alow software to properly setup the MSIx
-subsystem.
+Add a riscv_iommu_reset() helper in the base emulation code that
+implements the expected reset behavior as defined by the riscv-iommu
+spec.
 
-We took inspiration of what is being done in the riscv-iommu-pci device,
-mainly msix_init() and msix_notify(), while keeping in mind that
-riscv-iommu-sys isn't a true PCI device and we don't need to copy/paste
-all the contents of these MSIx functions.
-
-Two extra MSI MemoryRegions were added: 'msix-table' and 'msix-pba'.
-They are used to manage r/w of the MSI table and Pending Bit Array (PBA)
-respectively. Both are subregions of the main IOMMU memory region,
-iommu->regs_mr, initialized during riscv_iommu_realize(), and each one
-has their own handlers for MSIx reads and writes.
-
-This is the expected memory map when using this device in the 'virt'
-machine:
-
-    0000000003010000-0000000003010fff (prio 0, i/o): riscv-iommu-regs
-      0000000003010300-000000000301034f (prio 0, i/o): msix-table
-      0000000003010400-0000000003010407 (prio 0, i/o): msix-pba
-
-We're now able to set IGS to RISCV_IOMMU_CAP_IGS_BOTH, and userspace is
-free to decide which interrupt model to use.
-
-Enabling MSIx support for this device in the 'virt' machine requires
-adding 'msi-parent' in the iommu-sys DT.
+Devices can then use this helper in their own reset callbacks.
 
 Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 Acked-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <20241106133407.604587-6-dbarboza@ventanamicro.com>
+Message-ID: <20241106133407.604587-7-dbarboza@ventanamicro.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- hw/riscv/riscv-iommu-sys.c | 116 +++++++++++++++++++++++++++++++++++--
- hw/riscv/virt.c            |   6 +-
- hw/riscv/trace-events      |   2 +
- 3 files changed, 119 insertions(+), 5 deletions(-)
+ hw/riscv/riscv-iommu.h     |  1 +
+ include/hw/riscv/iommu.h   |  6 ++++--
+ hw/riscv/riscv-iommu-pci.c | 20 ++++++++++++++++++++
+ hw/riscv/riscv-iommu-sys.c | 20 ++++++++++++++++++++
+ hw/riscv/riscv-iommu.c     | 35 +++++++++++++++++++++++++++++++++++
+ hw/riscv/trace-events      |  2 ++
+ 6 files changed, 82 insertions(+), 2 deletions(-)
 
-diff --git a/hw/riscv/riscv-iommu-sys.c b/hw/riscv/riscv-iommu-sys.c
-index 4b82046ce9..a0ef67a20b 100644
---- a/hw/riscv/riscv-iommu-sys.c
-+++ b/hw/riscv/riscv-iommu-sys.c
-@@ -26,11 +26,15 @@
- #include "qemu/host-utils.h"
- #include "qemu/module.h"
- #include "qom/object.h"
-+#include "exec/exec-all.h"
+diff --git a/hw/riscv/riscv-iommu.h b/hw/riscv/riscv-iommu.h
+index f9f2827808..9424989df4 100644
+--- a/hw/riscv/riscv-iommu.h
++++ b/hw/riscv/riscv-iommu.h
+@@ -89,6 +89,7 @@ struct RISCVIOMMUState {
+ void riscv_iommu_pci_setup_iommu(RISCVIOMMUState *iommu, PCIBus *bus,
+          Error **errp);
+ void riscv_iommu_set_cap_igs(RISCVIOMMUState *s, riscv_iommu_igs_mode mode);
++void riscv_iommu_reset(RISCVIOMMUState *s);
+ 
+ /* private helpers */
+ 
+diff --git a/include/hw/riscv/iommu.h b/include/hw/riscv/iommu.h
+index 8a8acfc3f0..b03339d75c 100644
+--- a/include/hw/riscv/iommu.h
++++ b/include/hw/riscv/iommu.h
+@@ -30,12 +30,14 @@ typedef struct RISCVIOMMUState RISCVIOMMUState;
+ typedef struct RISCVIOMMUSpace RISCVIOMMUSpace;
+ 
+ #define TYPE_RISCV_IOMMU_PCI "riscv-iommu-pci"
+-OBJECT_DECLARE_SIMPLE_TYPE(RISCVIOMMUStatePci, RISCV_IOMMU_PCI)
++OBJECT_DECLARE_TYPE(RISCVIOMMUStatePci, RISCVIOMMUPciClass, RISCV_IOMMU_PCI)
+ typedef struct RISCVIOMMUStatePci RISCVIOMMUStatePci;
++typedef struct RISCVIOMMUPciClass RISCVIOMMUPciClass;
+ 
+ #define TYPE_RISCV_IOMMU_SYS "riscv-iommu-device"
+-OBJECT_DECLARE_SIMPLE_TYPE(RISCVIOMMUStateSys, RISCV_IOMMU_SYS)
++OBJECT_DECLARE_TYPE(RISCVIOMMUStateSys, RISCVIOMMUSysClass, RISCV_IOMMU_SYS)
+ typedef struct RISCVIOMMUStateSys RISCVIOMMUStateSys;
++typedef struct RISCVIOMMUSysClass RISCVIOMMUSysClass;
+ 
+ #define FDT_IRQ_TYPE_EDGE_LOW 1
+ 
+diff --git a/hw/riscv/riscv-iommu-pci.c b/hw/riscv/riscv-iommu-pci.c
+index a95d0f74c8..2c1ae72461 100644
+--- a/hw/riscv/riscv-iommu-pci.c
++++ b/hw/riscv/riscv-iommu-pci.c
+@@ -31,6 +31,7 @@
+ #include "cpu_bits.h"
+ #include "riscv-iommu.h"
+ #include "riscv-iommu-bits.h"
 +#include "trace.h"
  
- #include "riscv-iommu.h"
+ /* RISC-V IOMMU PCI Device Emulation */
+ #define RISCV_PCI_CLASS_SYSTEM_IOMMU     0x0806
+@@ -66,6 +67,12 @@ typedef struct RISCVIOMMUStatePci {
+     RISCVIOMMUState  iommu;   /* common IOMMU state */
+ } RISCVIOMMUStatePci;
  
- #define RISCV_IOMMU_SYSDEV_ICVEC_VECTORS 0x3333
- 
-+#define RISCV_IOMMU_PCI_MSIX_VECTORS 5
-+
- /* RISC-V IOMMU System Platform Device Emulation */
- 
- struct RISCVIOMMUStateSys {
-@@ -39,21 +43,123 @@ struct RISCVIOMMUStateSys {
-     uint32_t         base_irq;
-     DeviceState      *irqchip;
-     RISCVIOMMUState  iommu;
-+
-+    /* Wired int support */
-     qemu_irq         irqs[RISCV_IOMMU_INTR_COUNT];
-+
-+    /* Memory Regions for MSIX table and pending bit entries. */
-+    MemoryRegion msix_table_mmio;
-+    MemoryRegion msix_pba_mmio;
-+    uint8_t *msix_table;
-+    uint8_t *msix_pba;
++struct RISCVIOMMUPciClass {
++    /*< public >*/
++    DeviceRealize parent_realize;
++    ResettablePhases parent_phases;
 +};
 +
-+static uint64_t msix_table_mmio_read(void *opaque, hwaddr addr,
-+                                     unsigned size)
-+{
-+    RISCVIOMMUStateSys *s = opaque;
-+
-+    g_assert(addr + size <= RISCV_IOMMU_PCI_MSIX_VECTORS * PCI_MSIX_ENTRY_SIZE);
-+    return pci_get_long(s->msix_table + addr);
-+}
-+
-+static void msix_table_mmio_write(void *opaque, hwaddr addr,
-+                                  uint64_t val, unsigned size)
-+{
-+    RISCVIOMMUStateSys *s = opaque;
-+
-+    g_assert(addr + size <= RISCV_IOMMU_PCI_MSIX_VECTORS * PCI_MSIX_ENTRY_SIZE);
-+    pci_set_long(s->msix_table + addr, val);
-+}
-+
-+static const MemoryRegionOps msix_table_mmio_ops = {
-+    .read = msix_table_mmio_read,
-+    .write = msix_table_mmio_write,
-+    .endianness = DEVICE_LITTLE_ENDIAN,
-+    .valid = {
-+        .min_access_size = 4,
-+        .max_access_size = 8,
-+    },
-+    .impl = {
-+        .max_access_size = 4,
-+    },
-+};
-+
-+static uint64_t msix_pba_mmio_read(void *opaque, hwaddr addr,
-+                                   unsigned size)
-+{
-+    RISCVIOMMUStateSys *s = opaque;
-+
-+    return pci_get_long(s->msix_pba + addr);
-+}
-+
-+static void msix_pba_mmio_write(void *opaque, hwaddr addr,
-+                                uint64_t val, unsigned size)
-+{
-+}
-+
-+static const MemoryRegionOps msix_pba_mmio_ops = {
-+    .read = msix_pba_mmio_read,
-+    .write = msix_pba_mmio_write,
-+    .endianness = DEVICE_LITTLE_ENDIAN,
-+    .valid = {
-+        .min_access_size = 4,
-+        .max_access_size = 8,
-+    },
-+    .impl = {
-+        .max_access_size = 4,
-+    },
+ /* interrupt delivery callback */
+ static void riscv_iommu_pci_notify(RISCVIOMMUState *iommu, unsigned vector)
+ {
+@@ -167,10 +174,23 @@ static const Property riscv_iommu_pci_properties[] = {
+     DEFINE_PROP_END_OF_LIST(),
  };
  
-+static void riscv_iommu_sysdev_init_msi(RISCVIOMMUStateSys *s,
-+                                        uint32_t n_vectors)
++static void riscv_iommu_pci_reset_hold(Object *obj, ResetType type)
 +{
-+    RISCVIOMMUState *iommu = &s->iommu;
-+    uint32_t table_size = table_size = n_vectors * PCI_MSIX_ENTRY_SIZE;
-+    uint32_t table_offset = RISCV_IOMMU_REG_MSI_CONFIG;
-+    uint32_t pba_size = QEMU_ALIGN_UP(n_vectors, 64) / 8;
-+    uint32_t pba_offset = RISCV_IOMMU_REG_MSI_CONFIG + 256;
++    RISCVIOMMUStatePci *pci = RISCV_IOMMU_PCI(obj);
++    RISCVIOMMUState *iommu = &pci->iommu;
 +
-+    s->msix_table = g_malloc0(table_size);
-+    s->msix_pba = g_malloc0(pba_size);
++    riscv_iommu_reset(iommu);
 +
-+    memory_region_init_io(&s->msix_table_mmio, OBJECT(s), &msix_table_mmio_ops,
-+                          s, "msix-table", table_size);
-+    memory_region_add_subregion(&iommu->regs_mr, table_offset,
-+                                &s->msix_table_mmio);
-+
-+    memory_region_init_io(&s->msix_pba_mmio, OBJECT(s), &msix_pba_mmio_ops, s,
-+                          "msix-pba", pba_size);
-+    memory_region_add_subregion(&iommu->regs_mr, pba_offset,
-+                                &s->msix_pba_mmio);
++    trace_riscv_iommu_pci_reset_hold(type);
 +}
 +
-+static void riscv_iommu_sysdev_send_MSI(RISCVIOMMUStateSys *s,
-+                                        uint32_t vector)
-+{
-+    uint8_t *table_entry = s->msix_table + vector * PCI_MSIX_ENTRY_SIZE;
-+    uint64_t msi_addr = pci_get_quad(table_entry + PCI_MSIX_ENTRY_LOWER_ADDR);
-+    uint32_t msi_data = pci_get_long(table_entry + PCI_MSIX_ENTRY_DATA);
-+    MemTxResult result;
+ static void riscv_iommu_pci_class_init(ObjectClass *klass, void *data)
+ {
+     DeviceClass *dc = DEVICE_CLASS(klass);
+     PCIDeviceClass *k = PCI_DEVICE_CLASS(klass);
++    ResettableClass *rc = RESETTABLE_CLASS(klass);
 +
-+    address_space_stl_le(&address_space_memory, msi_addr,
-+                         msi_data, MEMTXATTRS_UNSPECIFIED, &result);
-+    trace_riscv_iommu_sys_msi_sent(vector, msi_addr, msi_data, result);
++    rc->phases.hold = riscv_iommu_pci_reset_hold;
+ 
+     k->realize = riscv_iommu_pci_realize;
+     k->exit = riscv_iommu_pci_exit;
+diff --git a/hw/riscv/riscv-iommu-sys.c b/hw/riscv/riscv-iommu-sys.c
+index a0ef67a20b..605979a0ac 100644
+--- a/hw/riscv/riscv-iommu-sys.c
++++ b/hw/riscv/riscv-iommu-sys.c
+@@ -54,6 +54,12 @@ struct RISCVIOMMUStateSys {
+     uint8_t *msix_pba;
+ };
+ 
++struct RISCVIOMMUSysClass {
++    /*< public >*/
++    DeviceRealize parent_realize;
++    ResettablePhases parent_phases;
++};
++
+ static uint64_t msix_table_mmio_read(void *opaque, hwaddr addr,
+                                      unsigned size)
+ {
+@@ -212,9 +218,23 @@ static Property riscv_iommu_sys_properties[] = {
+     DEFINE_PROP_END_OF_LIST(),
+ };
+ 
++static void riscv_iommu_sys_reset_hold(Object *obj, ResetType type)
++{
++    RISCVIOMMUStateSys *sys = RISCV_IOMMU_SYS(obj);
++    RISCVIOMMUState *iommu = &sys->iommu;
++
++    riscv_iommu_reset(iommu);
++
++    trace_riscv_iommu_sys_reset_hold(type);
 +}
 +
- static void riscv_iommu_sysdev_notify(RISCVIOMMUState *iommu,
-                                       unsigned vector)
+ static void riscv_iommu_sys_class_init(ObjectClass *klass, void *data)
  {
-     RISCVIOMMUStateSys *s = container_of(iommu, RISCVIOMMUStateSys, iommu);
-     uint32_t fctl =  riscv_iommu_reg_get32(iommu, RISCV_IOMMU_REG_FCTL);
- 
--    /* We do not support MSIs yet */
--    if (!(fctl & RISCV_IOMMU_FCTL_WSI)) {
-+    if (fctl & RISCV_IOMMU_FCTL_WSI) {
-+        qemu_irq_pulse(s->irqs[vector]);
-+        trace_riscv_iommu_sys_irq_sent(vector);
-         return;
-     }
- 
--    qemu_irq_pulse(s->irqs[vector]);
-+    riscv_iommu_sysdev_send_MSI(s, vector);
- }
- 
- static void riscv_iommu_sys_realize(DeviceState *dev, Error **errp)
-@@ -82,6 +188,8 @@ static void riscv_iommu_sys_realize(DeviceState *dev, Error **errp)
-         irq = qdev_get_gpio_in(s->irqchip, s->base_irq + i);
-         sysbus_connect_irq(sysdev, i, irq);
-     }
+     DeviceClass *dc = DEVICE_CLASS(klass);
++    ResettableClass *rc = RESETTABLE_CLASS(klass);
 +
-+    riscv_iommu_sysdev_init_msi(s, RISCV_IOMMU_PCI_MSIX_VECTORS);
- }
- 
- static void riscv_iommu_sys_init(Object *obj)
-@@ -93,7 +201,7 @@ static void riscv_iommu_sys_init(Object *obj)
-     qdev_alias_all_properties(DEVICE(iommu), obj);
- 
-     iommu->icvec_avail_vectors = RISCV_IOMMU_SYSDEV_ICVEC_VECTORS;
--    riscv_iommu_set_cap_igs(iommu, RISCV_IOMMU_CAP_IGS_WSI);
-+    riscv_iommu_set_cap_igs(iommu, RISCV_IOMMU_CAP_IGS_BOTH);
- }
- 
- static Property riscv_iommu_sys_properties[] = {
-diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
-index c5ada635f1..5d058511be 100644
---- a/hw/riscv/virt.c
-+++ b/hw/riscv/virt.c
-@@ -1043,6 +1043,7 @@ static void create_fdt_virtio_iommu(RISCVVirtState *s, uint16_t bdf)
- }
- 
- static void create_fdt_iommu_sys(RISCVVirtState *s, uint32_t irq_chip,
-+                                 uint32_t msi_phandle,
-                                  uint32_t *iommu_sys_phandle)
- {
-     const char comp[] = "riscv,iommu";
-@@ -1077,6 +1078,8 @@ static void create_fdt_iommu_sys(RISCVVirtState *s, uint32_t irq_chip,
-         iommu_irq_map[2], FDT_IRQ_TYPE_EDGE_LOW,
-         iommu_irq_map[3], FDT_IRQ_TYPE_EDGE_LOW);
- 
-+    qemu_fdt_setprop_cell(fdt, iommu_node, "msi-parent", msi_phandle);
++    rc->phases.hold = riscv_iommu_sys_reset_hold;
 +
-     *iommu_sys_phandle = iommu_phandle;
+     dc->realize = riscv_iommu_sys_realize;
+     set_bit(DEVICE_CATEGORY_MISC, dc->categories);
+     device_class_set_props(dc, riscv_iommu_sys_properties);
+diff --git a/hw/riscv/riscv-iommu.c b/hw/riscv/riscv-iommu.c
+index 9137217cb7..72e607c9eb 100644
+--- a/hw/riscv/riscv-iommu.c
++++ b/hw/riscv/riscv-iommu.c
+@@ -2262,6 +2262,41 @@ static void riscv_iommu_unrealize(DeviceState *dev)
+     g_hash_table_unref(s->ctx_cache);
  }
  
-@@ -1117,7 +1120,8 @@ static void finalize_fdt(RISCVVirtState *s)
-     create_fdt_virtio(s, virt_memmap, irq_virtio_phandle);
- 
-     if (virt_is_iommu_sys_enabled(s)) {
--        create_fdt_iommu_sys(s, irq_mmio_phandle, &iommu_sys_phandle);
-+        create_fdt_iommu_sys(s, irq_mmio_phandle, msi_pcie_phandle,
-+                             &iommu_sys_phandle);
-     }
-     create_fdt_pcie(s, virt_memmap, irq_pcie_phandle, msi_pcie_phandle,
-                     iommu_sys_phandle);
++void riscv_iommu_reset(RISCVIOMMUState *s)
++{
++    uint32_t reg_clr;
++    int ddtp_mode;
++
++    /*
++     * Clear DDTP while setting DDTP_mode back to user
++     * initial setting.
++     */
++    ddtp_mode = s->enable_off ?
++                RISCV_IOMMU_DDTP_MODE_OFF : RISCV_IOMMU_DDTP_MODE_BARE;
++    s->ddtp = set_field(0, RISCV_IOMMU_DDTP_MODE, ddtp_mode);
++    riscv_iommu_reg_set64(s, RISCV_IOMMU_REG_DDTP, s->ddtp);
++
++    reg_clr = RISCV_IOMMU_CQCSR_CQEN | RISCV_IOMMU_CQCSR_CIE |
++              RISCV_IOMMU_CQCSR_CQON | RISCV_IOMMU_CQCSR_BUSY;
++    riscv_iommu_reg_mod32(s, RISCV_IOMMU_REG_CQCSR, 0, reg_clr);
++
++    reg_clr = RISCV_IOMMU_FQCSR_FQEN | RISCV_IOMMU_FQCSR_FIE |
++              RISCV_IOMMU_FQCSR_FQON | RISCV_IOMMU_FQCSR_BUSY;
++    riscv_iommu_reg_mod32(s, RISCV_IOMMU_REG_FQCSR, 0, reg_clr);
++
++    reg_clr = RISCV_IOMMU_PQCSR_PQEN | RISCV_IOMMU_PQCSR_PIE |
++              RISCV_IOMMU_PQCSR_PQON | RISCV_IOMMU_PQCSR_BUSY;
++    riscv_iommu_reg_mod32(s, RISCV_IOMMU_REG_PQCSR, 0, reg_clr);
++
++    riscv_iommu_reg_mod64(s, RISCV_IOMMU_REG_TR_REQ_CTL, 0,
++                          RISCV_IOMMU_TR_REQ_CTL_GO_BUSY);
++
++    riscv_iommu_reg_set32(s, RISCV_IOMMU_REG_IPSR, 0);
++
++    g_hash_table_remove_all(s->ctx_cache);
++    g_hash_table_remove_all(s->iot_cache);
++}
++
+ static const Property riscv_iommu_properties[] = {
+     DEFINE_PROP_UINT32("version", RISCVIOMMUState, version,
+         RISCV_IOMMU_SPEC_DOT_VER),
 diff --git a/hw/riscv/trace-events b/hw/riscv/trace-events
-index 0527c56c91..94facbb8b1 100644
+index 94facbb8b1..aaa2c0eb94 100644
 --- a/hw/riscv/trace-events
 +++ b/hw/riscv/trace-events
-@@ -15,3 +15,5 @@ riscv_iommu_icvec_write(uint32_t orig, uint32_t actual) "ICVEC write: incoming 0
- riscv_iommu_ats(const char *id, unsigned b, unsigned d, unsigned f, uint64_t iova) "%s: translate request %04x:%02x.%u iova: 0x%"PRIx64
- riscv_iommu_ats_inval(const char *id) "%s: dev-iotlb invalidate"
+@@ -17,3 +17,5 @@ riscv_iommu_ats_inval(const char *id) "%s: dev-iotlb invalidate"
  riscv_iommu_ats_prgr(const char *id) "%s: dev-iotlb page request group response"
-+riscv_iommu_sys_irq_sent(uint32_t vector) "IRQ sent to vector %u"
-+riscv_iommu_sys_msi_sent(uint32_t vector, uint64_t msi_addr, uint32_t msi_data, uint32_t result) "MSI sent to vector %u msi_addr 0x%lx msi_data 0x%x result %u"
+ riscv_iommu_sys_irq_sent(uint32_t vector) "IRQ sent to vector %u"
+ riscv_iommu_sys_msi_sent(uint32_t vector, uint64_t msi_addr, uint32_t msi_data, uint32_t result) "MSI sent to vector %u msi_addr 0x%lx msi_data 0x%x result %u"
++riscv_iommu_sys_reset_hold(int reset_type) "reset type %d"
++riscv_iommu_pci_reset_hold(int reset_type) "reset type %d"
 -- 
 2.47.1
 
