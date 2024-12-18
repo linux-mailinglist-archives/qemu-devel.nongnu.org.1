@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1E249F6B2C
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Dec 2024 17:30:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 97A649F6B21
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Dec 2024 17:29:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tNwoT-0008Sp-Mu; Wed, 18 Dec 2024 11:22:17 -0500
+	id 1tNwoZ-0000Ie-PB; Wed, 18 Dec 2024 11:22:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tNwo1-0007zm-Ad
- for qemu-devel@nongnu.org; Wed, 18 Dec 2024 11:21:49 -0500
-Received: from mail-ej1-x631.google.com ([2a00:1450:4864:20::631])
+ id 1tNwo5-000880-Gx
+ for qemu-devel@nongnu.org; Wed, 18 Dec 2024 11:21:53 -0500
+Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tNwnZ-0006ry-KS
- for qemu-devel@nongnu.org; Wed, 18 Dec 2024 11:21:49 -0500
-Received: by mail-ej1-x631.google.com with SMTP id
- a640c23a62f3a-a9f1d76dab1so1326884866b.0
- for <qemu-devel@nongnu.org>; Wed, 18 Dec 2024 08:21:18 -0800 (PST)
+ id 1tNwnk-0006sj-Ot
+ for qemu-devel@nongnu.org; Wed, 18 Dec 2024 11:21:53 -0500
+Received: by mail-ej1-x633.google.com with SMTP id
+ a640c23a62f3a-aa670ffe302so1225149766b.2
+ for <qemu-devel@nongnu.org>; Wed, 18 Dec 2024 08:21:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734538878; x=1735143678; darn=nongnu.org;
+ d=linaro.org; s=google; t=1734538879; x=1735143679; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=sbIajMA3E3GTrFxU+Daap9kPiHkc5XfXpPO7y+547RQ=;
- b=N3P2tDY8UQ9FUmNk4zkUUnJaN5p6bF6XZDBjmTbtL/YM61LWt24FSJnYtoDrqfruxv
- 27Pk2v6/ByjIH9ZEYToXMAMKD7CWReicEDjISLq1NTd90GcuKxuyYGrquimba4VuMAuN
- HJ7YuAPOT54gwQH06+1L7kY6yrV190JDs/7QgwZFSiZqjQ1PzxAV7JG6uTCsyLuVLd9E
- LD8epxOzhfQA9G2d9XnjJ543TGqYzLFl86LXcympr2a39/xagEUrlZ0XSwvHzX8o+e7I
- fcVVTEQ2E8UH20cRNPDAj+g6rsO8gE7pvFDQGQsaedt9BSiXmCyYQD3qLNX2dNwKjd0c
- a6Sw==
+ bh=nxAQFaJXoc/P8ebO9Xx4HWpXX3GuRaIneijbgyMKrCk=;
+ b=ee3bgqhDE3PhuMQIN+V7YsLhtLCdcXQs5x/wDDGp18LHKaja9+ySJmKST23aP8v7A0
+ BmDu1OZ1bvX4xIu3njulVEWVW8Lxe+jsSnH/7gh9pzyzy0VJlMDctXpRX5NQD7aq7S4n
+ ZzdP57jai4OwfKBQ+gI0PD/O6TFOHQQygCar2Z9MxdX1dc5+oEab72s476bWYXFwp8WL
+ 0ODeFO8j8jLyQsaGF2iPpy/DnTeUdJ4Y/Jea2MKL8l0HQO9rVXNaCeT/G9ImLn4LSfnn
+ elNjVzu+0QlCUXEmOkl6NPuP+ThbZ5DqquqtmRAJgiUCQgoytAOWq2AY9qE0blVBTboC
+ 6zUg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734538878; x=1735143678;
+ d=1e100.net; s=20230601; t=1734538879; x=1735143679;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=sbIajMA3E3GTrFxU+Daap9kPiHkc5XfXpPO7y+547RQ=;
- b=S9c5qOnh83+qBYBRkfQyhTlksOqOoEQOBYd8E9lsKgPMn5xf5K3ho/NyP4yx1TdOGc
- gOEdamX2pFf5K7z30fcrO2IsQu+UTQFTCA7Lq2RrP9keunOtiXnuozHGXieD/sS+clD2
- cEFtaP1tvdtefyIp+VHLoov92gHUzFnSbIHW02FL816qfR0ILqcnAXxRNHDE19PBwiAn
- SEc1/YGNtLduqN1haUECIVUwiSvEKsXcnRBt8MqVA796idEt/3YESkQTraUzqo46FiKi
- U5Y371zChx9b7C33ETKJpgSGAD8254yDxOFDWCmtSwYj+lP09/FUfdQne+2ZU6p1OlO4
- ytag==
-X-Gm-Message-State: AOJu0YzwB3uU+J2STUZqy40PkyhmBISa3/KVi5/rrXp7kRZcygbL+TeQ
- GYYKrri0xKz8A/509uZ8DjZdZpbHpwxfJkSEPr20mW5IucHOUXuTZhP50oCheNo=
-X-Gm-Gg: ASbGnctvVIxnVRxtH60LiX/CFbkdofnHUrE+DEPTLf3fEI/90tQ1outVqi08O6CO3xA
- MrRRGoyjaB9/ZTVZYQImdyqwW68vF/WSQH2XyBsus+r6Wc3biCnvvfaaqU1CxF65giAL+ErhCl8
- ErlAtkf2rau60NFkcu/zA1YoOwcjzx1lquV+rVK/qXHyOTOf79zn9PjzxOds4jTYeOSg4zr52RJ
- DwmXr/Q+yor9OWQVVo6de+0oWrMdyH2jV8MRm+7vXi9FyGRVCqnsos=
-X-Google-Smtp-Source: AGHT+IGV5gAclFKkhebwGJqSJnRG+/Cc/aTLLbVkx+me2jgc1mgkQSTr13Ltv7daxK9OdHcavT3Y8A==
-X-Received: by 2002:a17:907:7fa4:b0:aa6:715a:75b5 with SMTP id
- a640c23a62f3a-aabf48d52afmr296990066b.46.1734538877632; 
- Wed, 18 Dec 2024 08:21:17 -0800 (PST)
+ bh=nxAQFaJXoc/P8ebO9Xx4HWpXX3GuRaIneijbgyMKrCk=;
+ b=qUiY/GzCCLmmfHxX2p13TLfy/XXvSKgi8IPz4h2yHYKwGcOHKJaQ7TZvCuVlgBCmNM
+ X9o0vpaef2cbjo5j3WHzpxUsIzwm5XAFrt9zBNSeZzS2qdUOLzYOypylUV3lDc5L2+/T
+ q7OSdhjTeG54o9wqWxs9iYEsCvW418rLx/kybFZ2gbRGs6NdkKTf+2/QT1thN+TBPcXC
+ va04bMRawSHCwBkjskjCDKqWn+ZWhaM4qXJwH56K0dIToEGeBPXWGYuO5cqVwt3JVo6o
+ ceNcOK8F6qOBSsQlX2pwVNoT8/npyhLadB9xNG58TaYEHgG7xfuRLhYxE6QYatsa96aQ
+ YRtg==
+X-Gm-Message-State: AOJu0YxqD+LcStE2Mpz0QAM7Tc6KGqCPLBI5P6dJzIlZRAkdHeRLFJBo
+ F4uU6ZEuQSKd1NMbBXWQEPd23lDLLrpyrE8aHPBO6Utb5vxp+OWGeBKknYHjHBE=
+X-Gm-Gg: ASbGncseR3QBeIyA5SXnkGlNhIWhdkaMDuzyWa08tUv3trR8evuWm9lylganyHJH+LG
+ UuzPqyCmndrcX2IHacnSrYfUrMQe3KiGnK0rEdJnmFERHIT6/8aCjeu1mWLaKqiYyPEJczofRkA
+ +LotuOYvBTEMenhBOBzL+xCxaoPDO2O4kK3ZtbFlHOPR+cY6EV9tVI5RtVwffGHsd8uYWUO4eVq
+ PlDoLsfDz8b0QmAjTRaXCgk6mLJ99zR0JWru4WtA6HKrL6kqMrZmfQ=
+X-Google-Smtp-Source: AGHT+IGgaTwJUux9q8sBUuMnle1GDRzn+BhwZEPamzK9w1wgelKWNlxScrWnl/3I7O4LbI6gD+7jrw==
+X-Received: by 2002:a17:906:d552:b0:aa5:43c4:da78 with SMTP id
+ a640c23a62f3a-aabf4904571mr291370566b.51.1734538879017; 
+ Wed, 18 Dec 2024 08:21:19 -0800 (PST)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-aab96006b34sm572991366b.13.2024.12.18.08.21.11
+ a640c23a62f3a-aab9600611csm574999266b.34.2024.12.18.08.21.12
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 18 Dec 2024 08:21:13 -0800 (PST)
+ Wed, 18 Dec 2024 08:21:15 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 17B4260B86;
+ by draig.lan (Postfix) with ESMTP id 317A660B9F;
  Wed, 18 Dec 2024 16:21:06 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -98,18 +98,17 @@ Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Laurent Vivier <lvivier@redhat.com>,
  Alistair Francis <alistair.francis@wdc.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PATCH v2 20/27] tests/functional: extend test_aarch64_virt with
- vulkan test
-Date: Wed, 18 Dec 2024 16:20:56 +0000
-Message-Id: <20241218162104.3493551-21-alex.bennee@linaro.org>
+Subject: [PATCH v2 21/27] tests/lcitool: bump to latest version of libvirt-ci
+Date: Wed, 18 Dec 2024 16:20:57 +0000
+Message-Id: <20241218162104.3493551-22-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241218162104.3493551-1-alex.bennee@linaro.org>
 References: <20241218162104.3493551-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::631;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x631.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::633;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x633.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -132,137 +131,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now we have virtio-gpu Vulkan support lets add a test for it.
-Currently this is using images build by buildroot:
-
-  https://lists.buildroot.org/pipermail/buildroot/2024-December/768196.html
+We will shortly need this to build our riscv64 cross container.
+However to keep the delta down just do the bump first. As ccache4 is
+now preferred for FreeBSD to get the latest version there is a little
+update in the FreeBSD metadata.
 
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-
 ---
-v2
-  - use decorator for has_cmd(zstd)
-  - move set_machine/require_accelerator to top of test
-  - un-handled->unhandled
-  - drop extra - from --snapshot
-  - drop unneeded virtualization=on
-  - only show 1s of each scene
-  - fix long lines
----
- tests/functional/test_aarch64_virt.py | 84 ++++++++++++++++++++++++++-
- 1 file changed, 81 insertions(+), 3 deletions(-)
+ .gitlab-ci.d/cirrus/freebsd-14.vars | 2 +-
+ tests/lcitool/libvirt-ci            | 2 +-
+ tests/vm/generated/freebsd.json     | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/tests/functional/test_aarch64_virt.py b/tests/functional/test_aarch64_virt.py
-index 453e84c39f..4ac66905b8 100755
---- a/tests/functional/test_aarch64_virt.py
-+++ b/tests/functional/test_aarch64_virt.py
-@@ -13,11 +13,14 @@
- import os
- import logging
- 
-+from qemu.machine.machine import VMLaunchFailure
-+
- from qemu_test import BUILD_DIR
- from qemu_test import QemuSystemTest, Asset
- from qemu_test import exec_command, wait_for_console_pattern
--from qemu_test import get_qemu_img, run_cmd
--
-+from qemu_test import exec_command_and_wait_for_pattern
-+from qemu_test import has_cmd, get_qemu_img, run_cmd
-+from unittest import skipUnless
- 
- class Aarch64VirtMachine(QemuSystemTest):
-     KERNEL_COMMON_COMMAND_LINE = 'printk.time=0 '
-@@ -101,7 +104,9 @@ def common_aarch64_virt(self, machine):
- 
-         # Add the device
-         self.vm.add_args('-blockdev',
--                         f"driver=qcow2,file.driver=file,file.filename={image_path},node-name=scratch")
-+                         "driver=qcow2,file."
-+                         "driver=file,file."
-+                         f"filename={image_path},node-name=scratch")
-         self.vm.add_args('-device',
-                          'virtio-blk-device,drive=scratch')
- 
-@@ -130,5 +135,78 @@ def test_aarch64_virt_gicv2(self):
-         self.common_aarch64_virt("virt,gic-version=2")
- 
- 
-+    ASSET_VIRT_GPU_KERNEL = Asset(
-+        ('https://fileserver.linaro.org/s/ce5jXBFinPxtEdx/'
-+         'download?path=%2F&files='
-+         'Image'),
-+        '89e5099d26166204cc5ca4bb6d1a11b92c217e1f82ec67e3ba363d09157462f6')
-+
-+    ASSET_VIRT_GPU_ROOTFS = Asset(
-+        ('https://fileserver.linaro.org/s/ce5jXBFinPxtEdx/'
-+         'download?path=%2F&files='
-+         'rootfs.ext4.zstd'),
-+        '792da7573f5dc2913ddb7c638151d4a6b2d028a4cb2afb38add513c1924bdad4')
-+
-+    @skipUnless(*has_cmd('zstd'))
-+    def test_aarch64_virt_with_gpu(self):
-+        # This tests boots with a buildroot test image that contains
-+        # vkmark and other GPU exercising tools. We run a headless
-+        # weston that nevertheless still exercises the virtio-gpu
-+        # backend.
-+
-+        self.set_machine('virt')
-+        self.require_accelerator("tcg")
-+
-+        image_path_zst = self.ASSET_VIRT_GPU_ROOTFS.fetch()
-+        kernel_path = self.ASSET_VIRT_GPU_KERNEL.fetch()
-+
-+        image_path = self.workdir + "/rootfs.ext4"
-+
-+        run_cmd(['zstd', "-f", "-d", image_path_zst,
-+                 "-o", image_path])
-+
-+        self.vm.set_console()
-+        kernel_command_line = (self.KERNEL_COMMON_COMMAND_LINE +
-+                               'console=ttyAMA0 root=/dev/vda')
-+
-+        self.vm.add_args("-accel", "tcg")
-+        self.vm.add_args("-cpu", "neoverse-v1,pauth-impdef=on")
-+        self.vm.add_args("-machine", "virt,gic-version=max",
-+                         '-kernel', kernel_path,
-+                         '-append', kernel_command_line)
-+        self.vm.add_args("-smp", "2", "-m", "2048")
-+        self.vm.add_args("-device",
-+                         "virtio-gpu-gl-pci,hostmem=4G,blob=on,venus=on")
-+        self.vm.add_args("-display", "egl-headless")
-+        self.vm.add_args("-display", "dbus,gl=on")
-+        self.vm.add_args("-device", "virtio-blk-device,drive=hd0")
-+        self.vm.add_args("-blockdev",
-+                         "driver=raw,file.driver=file,"
-+                         "node-name=hd0,read-only=on,"
-+                         f"file.filename={image_path}")
-+        self.vm.add_args("-snapshot")
-+
-+        try:
-+            self.vm.launch()
-+        except VMLaunchFailure as excp:
-+            if "old virglrenderer, blob resources unsupported" in excp.output:
-+                self.skipTest("No blob support for virtio-gpu")
-+            elif "old virglrenderer, venus unsupported" in excp.output:
-+                self.skipTest("No venus support for virtio-gpu")
-+            else:
-+                self.log.info("unhandled launch failure: {excp.output}")
-+                raise excp
-+
-+        self.wait_for_console_pattern('buildroot login:')
-+        exec_command(self, 'root')
-+        exec_command(self, 'export XDG_RUNTIME_DIR=/tmp')
-+        exec_command_and_wait_for_pattern(self,
-+                                          "weston -B headless "
-+                                          "--renderer gl "
-+                                          "--shell kiosk "
-+                                          "-- vkmark -b:duration=1.0",
-+                                          "vkmark Score")
-+
-+
- if __name__ == '__main__':
-     QemuSystemTest.main()
+diff --git a/.gitlab-ci.d/cirrus/freebsd-14.vars b/.gitlab-ci.d/cirrus/freebsd-14.vars
+index 0a7ac5e0e1..0997c47af5 100644
+--- a/.gitlab-ci.d/cirrus/freebsd-14.vars
++++ b/.gitlab-ci.d/cirrus/freebsd-14.vars
+@@ -11,6 +11,6 @@ MAKE='/usr/local/bin/gmake'
+ NINJA='/usr/local/bin/ninja'
+ PACKAGING_COMMAND='pkg'
+ PIP3='/usr/local/bin/pip'
+-PKGS='alsa-lib bash bison bzip2 ca_root_nss capstone4 ccache cmocka ctags curl cyrus-sasl dbus diffutils dtc flex fusefs-libs3 gettext git glib gmake gnutls gsed gtk-vnc gtk3 json-c libepoxy libffi libgcrypt libjpeg-turbo libnfs libslirp libspice-server libssh libtasn1 llvm lzo2 meson mtools ncurses nettle ninja opencv pixman pkgconf png py311-numpy py311-pillow py311-pip py311-pyyaml py311-sphinx py311-sphinx_rtd_theme py311-tomli python3 rpm2cpio rust rust-bindgen-cli sdl2 sdl2_image snappy sndio socat spice-protocol tesseract usbredir virglrenderer vte3 xorriso zstd'
++PKGS='alsa-lib bash bison bzip2 ca_root_nss capstone4 ccache4 cmocka ctags curl cyrus-sasl dbus diffutils dtc flex fusefs-libs3 gettext git glib gmake gnutls gsed gtk-vnc gtk3 json-c libepoxy libffi libgcrypt libjpeg-turbo libnfs libslirp libspice-server libssh libtasn1 llvm lzo2 meson mtools ncurses nettle ninja opencv pixman pkgconf png py311-numpy py311-pillow py311-pip py311-pyyaml py311-sphinx py311-sphinx_rtd_theme py311-tomli python3 rpm2cpio rust rust-bindgen-cli sdl2 sdl2_image snappy sndio socat spice-protocol tesseract usbredir virglrenderer vte3 xorriso zstd'
+ PYPI_PKGS=''
+ PYTHON='/usr/local/bin/python3'
+diff --git a/tests/lcitool/libvirt-ci b/tests/lcitool/libvirt-ci
+index 9ad3f70bde..b6a65806bc 160000
+--- a/tests/lcitool/libvirt-ci
++++ b/tests/lcitool/libvirt-ci
+@@ -1 +1 @@
+-Subproject commit 9ad3f70bde9865d5ad18f36d256d472e72b5cbf3
++Subproject commit b6a65806bc9b2b56985f5e97c936b77c7e7a99fc
+diff --git a/tests/vm/generated/freebsd.json b/tests/vm/generated/freebsd.json
+index 3cb7fb7060..81fc38d798 100644
+--- a/tests/vm/generated/freebsd.json
++++ b/tests/vm/generated/freebsd.json
+@@ -13,7 +13,7 @@
+     "bzip2",
+     "ca_root_nss",
+     "capstone4",
+-    "ccache",
++    "ccache4",
+     "cmocka",
+     "ctags",
+     "curl",
 -- 
 2.39.5
 
