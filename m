@@ -2,140 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25E449F6A88
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Dec 2024 16:55:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 155299F6AA2
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Dec 2024 17:00:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tNwO8-0002RN-H5; Wed, 18 Dec 2024 10:55:05 -0500
+	id 1tNwSL-0006Cu-Jc; Wed, 18 Dec 2024 10:59:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tNwNf-0001zc-GB
- for qemu-devel@nongnu.org; Wed, 18 Dec 2024 10:54:39 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tNwNS-0007L0-1g
- for qemu-devel@nongnu.org; Wed, 18 Dec 2024 10:54:34 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1734537256;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=BYIxrVRBO1ZFqiOvSjzqbq9o8XrcxFx1fWOC/Jr1xOE=;
- b=BD5GalgAYhVtgCaKIyNi3P2g57gaPzlMVEylvN2qs1j+QysxaHrqLerLGEqp87fDtBUFce
- FD0WeH6x0E1+DGIvVBpBh77pDMTuvDOi/M6yUzR8C+QVYVjxSUGnViAtvgTWlzLKVoLR3C
- jhjhZplqjwBlAV1Tgtc+pRtqD/L7eOo=
-Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
- [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-358-tYaXrgCqMRyR7Y9y9shMkg-1; Wed, 18 Dec 2024 10:54:14 -0500
-X-MC-Unique: tYaXrgCqMRyR7Y9y9shMkg-1
-X-Mimecast-MFC-AGG-ID: tYaXrgCqMRyR7Y9y9shMkg
-Received: by mail-qv1-f69.google.com with SMTP id
- 6a1803df08f44-6d884999693so108794446d6.0
- for <qemu-devel@nongnu.org>; Wed, 18 Dec 2024 07:54:14 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tNwSJ-0006CD-OA
+ for qemu-devel@nongnu.org; Wed, 18 Dec 2024 10:59:23 -0500
+Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tNwSC-0007qs-Ut
+ for qemu-devel@nongnu.org; Wed, 18 Dec 2024 10:59:23 -0500
+Received: by mail-wr1-x436.google.com with SMTP id
+ ffacd0b85a97d-3862b364538so559674f8f.1
+ for <qemu-devel@nongnu.org>; Wed, 18 Dec 2024 07:59:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1734537555; x=1735142355; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=o7TTefP9nXOqik7RDcZbvdDuVx9jkgFOarBEq8+dT6A=;
+ b=L8qGclipZYUTUnrEkDx3vS4FssAWFCFMldyg6gUnWEFBWAVloY/fYQ9Leh6Imwtd1h
+ HcztumT3g/1E/ZIGNg8rYVNUM7do6SChEvZgrCnrr7/4kOyq7uOc6A8rtoYo9aFciRFv
+ mJeWGwGcOsCZ5ytLee2ywHqNScOoTVkoWUK/9E5UZuUhbkLKDiNfKUa2Y4WfUN7yl8dh
+ 6LWZXgr3eT/I1Blzz4e4FC3eAJ3qDYuVZilAGZP9yPj67vX1DA8MuubVTGzr1rRpjVza
+ EUNbscoDmoUbuWNeoq0CtooC39a60RsgVP6nHGtAAAJAiDVXytrcwq8ACpo0xI4aDpX6
+ cXkA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734537254; x=1735142054;
- h=content-transfer-encoding:in-reply-to:autocrypt:content-language
- :from:references:cc:to:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20230601; t=1734537555; x=1735142355;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=BYIxrVRBO1ZFqiOvSjzqbq9o8XrcxFx1fWOC/Jr1xOE=;
- b=eQdZTL5t5RIZsWmeGS2Hv1FRTAVkR/CKTY42xfiU77N+FDih/q2y0/pVIQC6KlTYgZ
- UKrXy+voixo3yrrCmi4/6geMK+FWqwn20LJMG7ENklxW0X6sN/5lDcsGEEm1E5fxvWKC
- VtFQ4Ko1fGzhonNGBAQpRuKqvYpbNxnNh8/exsrUwMKQ1ahOu+COx/ycvGKMWMjVzq34
- crPy+xyvTGa7YcOEBUzPNvNWakGB2esh47TrjTVFFm17agQkc4GLX/t1z9iiJJqXTBkV
- OmSQJWMiC0pXT/fxEIT8EY2f6OVv//+PBMkIScpgvTFmyHV6mfCCOfXXJF0CsowPngqS
- FJ/w==
-X-Forwarded-Encrypted: i=1;
- AJvYcCX3SwC8df3y9WZcJNUpH/xayosKMxdhzTVl/EgcGMwfCrUROEXlJUlS0DAHFftZIk7f9lvZ8fEZf5/t@nongnu.org
-X-Gm-Message-State: AOJu0Yw80z3R3slN8RW5inntUjm2x12RerFPvH57oxSwJpVUUEipfoHU
- 2EE1eP7Onb7mYwlBIgfD55+8BrnNy2aGLXVjq4uzHAaLl0MF3rOyzU4zWrHZgl0vIhYR+vYDy1r
- 9tRFzsPC47CVZYNiLEpJf26Jx+gFhc5fMJcJjRabUAAfwiyTTTJf/
-X-Gm-Gg: ASbGncsrWKqDi38OXWGZ/hS4tWHKUx8cVn0RPOL1TTW536Fgb3UZlR+2HWOkPgJdT71
- HPx73bUOUh0er7XseUGdX6UHndG+SV45v8EQIX0IP1blYbZ3LZjaMNF5LjRdyDcfyC0lZ9aimdx
- VWKXl7/vcfPFcfBPJ7aDOee1d2dicCT4lwKVkwWkpbdFIfhbvE9UQGuVV/8unkbYgNYc5PRPFgv
- 2L3BBk6t0iQg3HAv5uMyMdVGY5EODr4l/OsDxJ4JO4FwM1+7ZUdrxgVlyu7/i9/bMcUyerSrW4g
- 1xYNSf6ZkwMR
-X-Received: by 2002:a05:6214:1d09:b0:6d4:36ff:4356 with SMTP id
- 6a1803df08f44-6dd091b26e3mr65609706d6.19.1734537252339; 
- Wed, 18 Dec 2024 07:54:12 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFm5fbPd/gAPw0Of4+336L+Qtl6DgbVbHFFR+S1AXlrxyEv7sCUeWreyNEddhkigMcnznT7jg==
-X-Received: by 2002:a05:6214:1d09:b0:6d4:36ff:4356 with SMTP id
- 6a1803df08f44-6dd091b26e3mr65608606d6.19.1734537251251; 
- Wed, 18 Dec 2024 07:54:11 -0800 (PST)
-Received: from [192.168.0.6] (ip-109-42-49-186.web.vodafone.de.
- [109.42.49.186]) by smtp.gmail.com with ESMTPSA id
- 6a1803df08f44-6dccd26c852sm50909576d6.53.2024.12.18.07.54.10
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 18 Dec 2024 07:54:10 -0800 (PST)
-Message-ID: <1d4faf8e-b2cd-42b8-a6a7-9034b9512b86@redhat.com>
-Date: Wed, 18 Dec 2024 16:54:08 +0100
+ bh=o7TTefP9nXOqik7RDcZbvdDuVx9jkgFOarBEq8+dT6A=;
+ b=mUtlX+aZVNk+lP4eZUENwacwLFpez9Li9ZhrAleHD7A3GVUxHX/yKo3MX57rm/IA/O
+ E8MM0nJTAxZwAeynEqna9vFJu3YE7gFJXQ15OOHtX6jNgoBL+BPEFX9pnAj1bktTUXo/
+ aP1qKDxLps8fUS7TjN3M4oQ8Jws6skQNxPq8BC+P+93D0aiU/g2TeD8mjGuhae0a210A
+ ykytm3A1sJhO44c8uNa5deV4WsHfGhmcBdoMgeTmAt6ts60ifSHTlcwgj92wLQBifB7n
+ YnMBuk9aVIfs8twgghlajmkme8N7HE5VH6wXsj0NJWpZIKZPxMtevLycjPMVyFLjtuqm
+ 7t7A==
+X-Gm-Message-State: AOJu0Yx/+K23X1NDpCwGlRT+TRYdV7UnNz0FsnblfKpxH4J9cEC0H3xY
+ ImHfhwUtiJl7AbpWZ6eTCwuIilOF2TkRuP4lCB1z65jNnDXwKy0hyppeLV1trQKI7KIercrtFvw
+ 4
+X-Gm-Gg: ASbGncsRgj8KHBjyBOUK0z/S5HsgetBP4Xsgli+D9rIG79lL0h7YXBsyyEZljfIQsn+
+ F84M8MwKOOENVPr/TY6HuncI8TprT79A5alGa+cDC/FtTSqNXdZq/JbEN9y0RHgbGUd4H2CWOZu
+ dG182HoE8Gin/5MMLKL0dct7NEF7UfbjqxX1IdK7H8O69Vjgf6RviTh2Z0QC2sLrRUzvcstdQCw
+ 7aEKiJmThMYI2nUjgHrcrauiUyqYarqnqndwXY6bKctbFlCfxlvhE4y0fJAHbn804GEKMsrmO+L
+ DCg+
+X-Google-Smtp-Source: AGHT+IELZ+GggeTZx48MEhW7+44jizCcSkYTHAep0mIEWWuSZqv0/tl8cNaTNgN3QB2V/mBJ1CUGnQ==
+X-Received: by 2002:adf:fa0f:0:b0:386:4570:ee3d with SMTP id
+ ffacd0b85a97d-388e4e79284mr2556298f8f.24.1734537554946; 
+ Wed, 18 Dec 2024 07:59:14 -0800 (PST)
+Received: from localhost.localdomain ([78.196.4.158])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-388c801a628sm14684705f8f.47.2024.12.18.07.59.13
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Wed, 18 Dec 2024 07:59:14 -0800 (PST)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Eric Farman <farman@linux.ibm.com>, kvm@vger.kernel.org,
+ Marcelo Tosatti <mtosatti@redhat.com>,
+ David Hildenbrand <david@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Thomas Huth <thuth@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ qemu-ppc@nongnu.org, Zhao Liu <zhao1.liu@intel.com>, qemu-s390x@nongnu.org,
+ Yanan Wang <wangyanan55@huawei.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Halil Pasic <pasic@linux.ibm.com>
+Subject: [PATCH 0/2] system/confidential-guest-support: Header cleanups
+Date: Wed, 18 Dec 2024 16:59:11 +0100
+Message-ID: <20241218155913.72288-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.45.2
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] tests/functional: Convert the kvm_xen_guest avocado test
-To: David Woodhouse <dwmw2@infradead.org>, qemu-devel@nongnu.org
-Cc: Paul Durrant <paul@xen.org>
-References: <20241218113255.232356-1-thuth@redhat.com>
- <9B5DDDDB-769B-4654-BEF1-D3F853EA05E5@infradead.org>
-From: Thomas Huth <thuth@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <9B5DDDDB-769B-4654-BEF1-D3F853EA05E5@infradead.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -31
-X-Spam_score: -3.2
-X-Spam_bar: ---
-X-Spam_report: (-3.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-1.116,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::436;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -151,21 +106,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 18/12/2024 12.48, David Woodhouse wrote:
-> On 18 December 2024 12:32:49 CET, Thomas Huth <thuth@redhat.com> wrote:
->> Use the serial console to execute the commands in the guest instead
->> of using ssh since we don't have ssh support in the functional
->> framework yet.
->>
->> Signed-off-by: Thomas Huth <thuth@redhat.com>
-> 
-> Hm, but serial is lossy and experience shows that it leads to flaky tests if the guest (or host) misses bytes. While SSH would just go slower.
+Restrict "confidential-guest-support.h" to system
+emulation, remove few SEV declarations on user mode.
 
-I now noticed some issue with the serial console in this test, too.
-Looks like the "Starting dropbear sshd: OK" is not print in an atomic way by 
-the guest, sometimes there are other kernel messages between the ":" and the 
-"OK". It works reliable when removing the "OK" from the string.
+Philippe Mathieu-Daudé (2):
+  system: Move 'exec/confidential-guest-support.h' to system/
+  target/i386/sev: Reduce system specific declarations
 
-  Thomas
+ .../confidential-guest-support.h              |  6 ++--
+ target/i386/confidential-guest.h              |  2 +-
+ target/i386/sev.h                             | 29 ++++++++++---------
+ backends/confidential-guest-support.c         |  2 +-
+ hw/core/machine.c                             |  2 +-
+ hw/i386/pc_sysfw.c                            |  2 +-
+ hw/ppc/pef.c                                  |  2 +-
+ hw/ppc/spapr.c                                |  2 +-
+ hw/s390x/s390-virtio-ccw.c                    |  2 +-
+ system/vl.c                                   |  2 +-
+ target/s390x/kvm/pv.c                         |  2 +-
+ 11 files changed, 28 insertions(+), 25 deletions(-)
+ rename include/{exec => system}/confidential-guest-support.h (96%)
+
+-- 
+2.45.2
 
 
