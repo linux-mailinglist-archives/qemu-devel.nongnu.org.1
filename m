@@ -2,86 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B33E59F6C03
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Dec 2024 18:10:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B6E59F6C01
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Dec 2024 18:10:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tNxXn-0000Qa-Ue; Wed, 18 Dec 2024 12:09:08 -0500
+	id 1tNxXt-0000hj-BN; Wed, 18 Dec 2024 12:09:13 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tNxXa-0000NJ-ON
- for qemu-devel@nongnu.org; Wed, 18 Dec 2024 12:08:56 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tNxXg-0000PA-Nt
+ for qemu-devel@nongnu.org; Wed, 18 Dec 2024 12:09:02 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tNxXY-0003nk-T9
- for qemu-devel@nongnu.org; Wed, 18 Dec 2024 12:08:54 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tNxXf-0003on-Cj
+ for qemu-devel@nongnu.org; Wed, 18 Dec 2024 12:09:00 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1734541730;
+ s=mimecast20190719; t=1734541738;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=DiYDW3/4hTeAzOzKzCZM18SSCie/twi/yI1bPqLhxpw=;
- b=bDx3SGWV6xJX6DmaQI5U6zPXAVdlXMh4vdOR+zXeW/4BsjRsszTGyakJ3c5NwIWik0rE8y
- YNXdw62woEEsZ5UsEmGWaWulYdj7RMfyGTZlxXgPJlJ7zCm4AO4W13cvG9pLx1ZZKnkZAw
- Qg5IVcq9fnuHJDjlMN8+OvIFVL6QvLU=
-Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
- [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=cURjf1wKJXJy49cj12PWLMpzRcP6bzYap0XS7DZk/YE=;
+ b=WUBu0hcPCM6PSn9zBt8IAOExn1jdUloEwzOF2jO0Hfr93ZiH8CXfMzbm74C3GNJYbzvvwM
+ 5r7rGkmdT6awH3YDOv/e+oXme4ap5ntrEu89KAuGY3vTeqnoOMqiogbB6bqOh9eLD4Z7z5
+ SCxCfXGxOiT4EcAf/a2vsqBmR49MJ+8=
+Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
+ [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-45-XcSls4u5NZ2p6YvZWL59kw-1; Wed, 18 Dec 2024 12:08:49 -0500
-X-MC-Unique: XcSls4u5NZ2p6YvZWL59kw-1
-X-Mimecast-MFC-AGG-ID: XcSls4u5NZ2p6YvZWL59kw
-Received: by mail-qv1-f70.google.com with SMTP id
- 6a1803df08f44-6dcd1e4a051so124048996d6.2
- for <qemu-devel@nongnu.org>; Wed, 18 Dec 2024 09:08:49 -0800 (PST)
+ us-mta-653-VWJEiy4xPFi2GQQnwzUuEQ-1; Wed, 18 Dec 2024 12:08:57 -0500
+X-MC-Unique: VWJEiy4xPFi2GQQnwzUuEQ-1
+X-Mimecast-MFC-AGG-ID: VWJEiy4xPFi2GQQnwzUuEQ
+Received: by mail-qt1-f200.google.com with SMTP id
+ d75a77b69052e-468f7e0aef7so55378721cf.2
+ for <qemu-devel@nongnu.org>; Wed, 18 Dec 2024 09:08:56 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734541729; x=1735146529;
+ d=1e100.net; s=20230601; t=1734541736; x=1735146536;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=DiYDW3/4hTeAzOzKzCZM18SSCie/twi/yI1bPqLhxpw=;
- b=dynCIV7IwGC/r5yFj2Wvz3WZjdFztydZFCg1rX2ymIu70SQ2ADBkrqOcUX0H8G5kJM
- CpBcd5SJoFWB1Iw8cJCtP8um6wAfQKyJVKb3J+gj9sv/cnmVjbdE0orbg++rO8pLapYb
- KA6AWduiGYOtMS5n/MsZKqu36/n0ZomgH0vv1MZeA6uIOIm1qcM1RZzpsOJWXk0hNeKg
- oBbC0XmDfwPmXVdaHhK719tjVmz8BoR3Gxe/oHZHvwG4H2o8VyPdRDiPTW7vNz9imWLv
- FU0PiP61gmDHHLFOGQf7UD3Em3pOTCZg0Vo0Utzf4IjjT9f/VMT1x2m+VsmOOmVzW7RF
- EAHg==
+ bh=cURjf1wKJXJy49cj12PWLMpzRcP6bzYap0XS7DZk/YE=;
+ b=sRRWILXf8aL6996mIgV9IHmgTA1WRsmCQPUj0Bo9e8p/tqRkvjdFswKM24LXKVzcdl
+ iIcMqYiuk7b2rcQv+hRafl8qStiRNKpE/7JxVpr9oM3GWaP8dTx5BLP/GhbbEjwlQviX
+ 0SKvs5sHQ3wSLJljDQZlao6w4oqe6QQDMUa4ydLx2t/Q8PGLCcGQdCxjRhcdtjgH9qte
+ mdA91gV5SO4eFgZWR8MxCE6lP5JNwXSEaRLCAD3ykc0GEm0CFcTdP+sakkWqQc8pVTzh
+ C7mPIIIWFVCEYEa/y2bKqgfSpHxy0rc/0SWKIelzto0LUm3XQed+ttPco0cdFnNGya2U
+ IA5Q==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWPiL0qGV2YnDI09P4N81a//4qeOyf5UpHFMUgEP1/qeMvvsijc06/I+eMrIWMFZ7pG9CAPA8hfFoU9@nongnu.org
-X-Gm-Message-State: AOJu0YzwDAumMoE8Sul3Dkr6bYeX+8lCEYqTvkupldquJJljXSWJRb6v
- hXxgtcRzj/2+d1V3tHiM3VmXU13V+5E88JBZ+8QXeMsROU7gH/e6rHsw6GcRJHT5Z/YromXsOI6
- bLzpL0eEemGAMMRexHHKJW0emDP4PU12DCmZNfjJK2E9tb5SEAhln
-X-Gm-Gg: ASbGnctthk3cZNdvmfBCEuMdW2IXFFDFgvda9pGiEIcTHlrYWgXaMiL6VulZdmQ2uLy
- snCOCGVXzk7S0WcMl7KdSg7jz9VMqEqlmcNDjBNI2BlNOtMEE/exLThirt/PRB81pNPoZgUQA1J
- JnGAP0BckjSvzuDVk8Vpf3A4Vi8aRu1BZJMsayUslL2Kmwr82geaiKuEYUTVVc2m6uuzwIoYakG
- gI3Vc+h5gH9gNAhA/ynjz4N4ptS8Da/2c5yNsOcJLVbDu0A0YuGhfkm9t2eMsfx4DqSHxvCbTzp
- mozOwZAO5tRjq9cSeA==
-X-Received: by 2002:ad4:5dc8:0:b0:6d4:1425:6d2d with SMTP id
- 6a1803df08f44-6dd09259bf5mr52768796d6.43.1734541729063; 
- Wed, 18 Dec 2024 09:08:49 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEvau6hKf2uFJbPcAvlNEVMQ7bCghdMASB68OLdeFKG4gTwDWgYUm3f25KwVlLR7Yk167Yesg==
-X-Received: by 2002:ad4:5dc8:0:b0:6d4:1425:6d2d with SMTP id
- 6a1803df08f44-6dd09259bf5mr52768576d6.43.1734541728823; 
- Wed, 18 Dec 2024 09:08:48 -0800 (PST)
+ AJvYcCVF+WYKuv7dEJEkY0buEk/Z6BBriY1OXckoSykNpDdYvCXln6MXXcBdlMMY40ltE07+FmwRaXfd5YYu@nongnu.org
+X-Gm-Message-State: AOJu0YyzWJ+VEq4sMIdOWvQj7zljVhZ4k41NhdWhSGA9xDcBL0wrj3OL
+ 7Esjjsl2vrH23xQjWfZCtmP5XoXbxsr/AT4xWwBpOlZzDwK/JHrACuCGC1eHryMIy/M5NTGRI2p
+ +pR2yV9QNHJNt+hS+6z8DmSFeW3PqfBzQBWS5Ix02UpdBZ21RqvL0
+X-Gm-Gg: ASbGncuotTMx3gMDDOGv3qw8zNz53QssqXxXFdOFgSDh2ztYOD/WIPKC5N6JykX3Sht
+ agA3puyKOsHtx7fc4pIwmTjeNScF5kEu6l/FjfelHBliH7qt2PxPK45d9AfikvWMJ7OwE57iMiR
+ JScKo0ULMYTXhqjHN6LMq7CmQFkb68R16NHOzXitvMEZPd98n911poMoUer4p/h5I9O/sPyIJV0
+ z5qYJ/uMo+DazthBGMw9JlVpduGYbnpq0NUNG06JLhZEAQbLzwhntoQqg8EAwfhpFZZNZc85ddX
+ Kj/navSTc4x89SsI9g==
+X-Received: by 2002:ac8:588a:0:b0:461:646c:b8fc with SMTP id
+ d75a77b69052e-46908e1eefdmr59137391cf.23.1734541736509; 
+ Wed, 18 Dec 2024 09:08:56 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGmK1MKhE0zInqpSThP6HiI3TSHZOhpB2+slU5FSbc2Z8Z1gRBHrLiDr/mgtjziz3u/SJFpzw==
+X-Received: by 2002:ac8:588a:0:b0:461:646c:b8fc with SMTP id
+ d75a77b69052e-46908e1eefdmr59136881cf.23.1734541736149; 
+ Wed, 18 Dec 2024 09:08:56 -0800 (PST)
 Received: from x1n (pool-99-254-114-190.cpe.net.cable.rogers.com.
  [99.254.114.190]) by smtp.gmail.com with ESMTPSA id
- 6a1803df08f44-6dccd3a9c21sm52175536d6.128.2024.12.18.09.08.47
+ d75a77b69052e-467b2e93bb7sm52860501cf.70.2024.12.18.09.08.55
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 18 Dec 2024 09:08:48 -0800 (PST)
-Date: Wed, 18 Dec 2024 12:08:46 -0500
+ Wed, 18 Dec 2024 09:08:55 -0800 (PST)
+Date: Wed, 18 Dec 2024 12:08:54 -0500
 From: Peter Xu <peterx@redhat.com>
 To: Yuan Liu <yuan1.liu@intel.com>
 Cc: farosas@suse.de, qemu-devel@nongnu.org, jason.zeng@intel.com,
  yichen.wang@bytedance.com
-Subject: Re: [PATCH 2/3] multifd: bugfix for incorrect migration data with
- QPL compression
-Message-ID: <Z2MBnuUwjh7tT1Hx@x1n>
+Subject: Re: [PATCH 3/3] multifd: bugfix for incorrect migration data with
+ qatzip compression
+Message-ID: <Z2MBpsa8lWC4U5x-@x1n>
 References: <20241218091413.140396-1-yuan1.liu@intel.com>
- <20241218091413.140396-3-yuan1.liu@intel.com>
+ <20241218091413.140396-4-yuan1.liu@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20241218091413.140396-3-yuan1.liu@intel.com>
+In-Reply-To: <20241218091413.140396-4-yuan1.liu@intel.com>
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -31
@@ -107,7 +107,7 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Dec 18, 2024 at 05:14:12PM +0800, Yuan Liu wrote:
+On Wed, Dec 18, 2024 at 05:14:13PM +0800, Yuan Liu wrote:
 > When QPL compression is enabled on the migration channel and the same
 > dirty page changes from a normal page to a zero page in the iterative
 > memory copy, the dirty page will not be updated to a zero page again
