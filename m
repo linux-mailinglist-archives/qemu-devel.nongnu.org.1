@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 078C09F6475
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Dec 2024 12:13:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D5AF39F6466
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Dec 2024 12:12:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tNrxQ-0007A9-NX; Wed, 18 Dec 2024 06:11:12 -0500
+	id 1tNrxW-0007OH-Mc; Wed, 18 Dec 2024 06:11:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tNrxM-000751-DX
- for qemu-devel@nongnu.org; Wed, 18 Dec 2024 06:11:08 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tNrxS-0007K0-9M
+ for qemu-devel@nongnu.org; Wed, 18 Dec 2024 06:11:14 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tNrxK-0005sp-KH
- for qemu-devel@nongnu.org; Wed, 18 Dec 2024 06:11:08 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tNrxN-0005tB-QZ
+ for qemu-devel@nongnu.org; Wed, 18 Dec 2024 06:11:14 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1734520266;
+ s=mimecast20190719; t=1734520268;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=65MiMhA4jSO6oLI4hjrqt0Dpnla7RPH3avVMrOtkE1s=;
- b=GwOXSInBHHiPCp4fKBzWdjfeUXKrmHx1pq1mKTX4P+54XVvD7H4bHvik0VGM+9i11acPNB
- tePnp1BQx1+YNvkyi1rflvTtzvoj2cbwAwBTIOlHLxuXf3qmGFNsHKvt8oW6dicJCYzhfG
- 4UOtIGUFrC1UxkoiP0ASqbRj50RdfXE=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ bh=vvLqDeZxftPTdh15J7PVqYr0pTAOYiofqxvrCYh7t+s=;
+ b=SpbMIaI/WGBYjZTQY1paln17aCQ157aj1uTEpdRERJzaEgog5CCWo9TDBU04dRcbuLVE7X
+ r6p6E0ODx4OyqEmVKjyJRKxcy88LG2H0UBWCJDfhYV51b1fV9pg5nCpOrvkr1U/X/rn1A1
+ niv6hzBwTOE71lfqdlw7W3h134Ls3wE=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-486-Flz_xKLcOvCZ0d-v0Nzaxg-1; Wed,
- 18 Dec 2024 06:11:04 -0500
-X-MC-Unique: Flz_xKLcOvCZ0d-v0Nzaxg-1
-X-Mimecast-MFC-AGG-ID: Flz_xKLcOvCZ0d-v0Nzaxg
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-70-gblCkewxNmWtb3SDRTccXA-1; Wed,
+ 18 Dec 2024 06:11:07 -0500
+X-MC-Unique: gblCkewxNmWtb3SDRTccXA-1
+X-Mimecast-MFC-AGG-ID: gblCkewxNmWtb3SDRTccXA
 Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id C50C719560B4
- for <qemu-devel@nongnu.org>; Wed, 18 Dec 2024 11:11:03 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 3F76E1955D4C
+ for <qemu-devel@nongnu.org>; Wed, 18 Dec 2024 11:11:06 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.192.114])
  by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id DC748195606B; Wed, 18 Dec 2024 11:10:56 +0000 (UTC)
+ id 47CD619560AD; Wed, 18 Dec 2024 11:11:04 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Stefan Hajnoczi <stefanha@redhat.com>
-Subject: [PULL 24/38] tests/functional: add a generalized uncompress helper
-Date: Wed, 18 Dec 2024 12:09:44 +0100
-Message-ID: <20241218110958.226932-25-thuth@redhat.com>
+Subject: [PULL 25/38] tests/functional: add 'uncompress' to QemuBaseTest
+Date: Wed, 18 Dec 2024 12:09:45 +0100
+Message-ID: <20241218110958.226932-26-thuth@redhat.com>
 In-Reply-To: <20241218110958.226932-1-thuth@redhat.com>
 References: <20241218110958.226932-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -83,90 +83,61 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Daniel P. Berrangé <berrange@redhat.com>
 
-There are many types of compression that the tests deal with, and
-it makes sense to have a single helper 'uncompress' that can deal
-with all.
+This helper wrappers utils.uncompress, forcing the use of the scratch
+directory, to ensure any uncompressed files are cleaned at test
+termination.
 
 Reviewed-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
-Message-ID: <20241217155953.3950506-25-berrange@redhat.com>
+Message-ID: <20241217155953.3950506-26-berrange@redhat.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- tests/functional/qemu_test/__init__.py   |  1 +
- tests/functional/qemu_test/uncompress.py | 47 ++++++++++++++++++++++++
- 2 files changed, 48 insertions(+)
+ tests/functional/qemu_test/testcase.py | 25 +++++++++++++++++++++++++
+ 1 file changed, 25 insertions(+)
 
-diff --git a/tests/functional/qemu_test/__init__.py b/tests/functional/qemu_test/__init__.py
-index 665c482d13..3bd043e608 100644
---- a/tests/functional/qemu_test/__init__.py
-+++ b/tests/functional/qemu_test/__init__.py
-@@ -17,3 +17,4 @@
-     skipFlakyTest, skipUntrustedTest, skipBigDataTest, \
-     skipIfMissingImports
- from .archive import archive_extract
+diff --git a/tests/functional/qemu_test/testcase.py b/tests/functional/qemu_test/testcase.py
+index 19fb1d0c07..d0bb3141d5 100644
+--- a/tests/functional/qemu_test/testcase.py
++++ b/tests/functional/qemu_test/testcase.py
+@@ -29,6 +29,7 @@
+ from .asset import Asset
+ from .cmd import run_cmd
+ from .config import BUILD_DIR
 +from .uncompress import uncompress
-diff --git a/tests/functional/qemu_test/uncompress.py b/tests/functional/qemu_test/uncompress.py
-index 955170df65..6d02ded066 100644
---- a/tests/functional/qemu_test/uncompress.py
-+++ b/tests/functional/qemu_test/uncompress.py
-@@ -11,6 +11,9 @@
- import lzma
- import os
- import shutil
-+from urllib.parse import urlparse
-+
-+from .asset import Asset
  
  
- def gzip_uncompress(gz_path, output_path):
-@@ -34,3 +37,47 @@ def lzma_uncompress(xz_path, output_path):
-         except:
-             os.remove(output_path)
-             raise
+ class QemuBaseTest(unittest.TestCase):
+@@ -40,6 +41,30 @@ class QemuBaseTest(unittest.TestCase):
+     log = None
+     logdir = None
+ 
++    '''
++    @params compressed: filename, Asset, or file-like object to uncompress
++    @params format: optional compression format (gzip, lzma)
 +
-+'''
-+@params compressed: filename, Asset, or file-like object to uncompress
-+@params uncompressed: filename to uncompress into
-+@params format: optional compression format (gzip, lzma)
++    Uncompresses @compressed into the scratch directory.
 +
-+Uncompresses @compressed into @uncompressed
++    If @format is None, heuristics will be applied to guess the format
++    from the filename or Asset URL. @format must be non-None if @uncompressed
++    is a file-like object.
 +
-+If @format is None, heuristics will be applied to guess the format
-+from the filename or Asset URL. @format must be non-None if @uncompressed
-+is a file-like object.
++    Returns the fully qualified path to the uncompressed file
++    '''
++    def uncompress(self, compressed, format=None):
++        self.log.debug(f"Uncompress {compressed} format={format}")
++        if type(compressed) == Asset:
++            compressed.fetch()
 +
-+Returns the fully qualified path to the uncompessed file
-+'''
-+def uncompress(compressed, uncompressed, format=None):
-+    if format is None:
-+        format = guess_uncompress_format(compressed)
++        (name, ext) = os.path.splitext(str(compressed))
++        uncompressed = self.scratch_file(os.path.basename(name))
 +
-+    if format == "xz":
-+        lzma_uncompress(str(compressed), uncompressed)
-+    elif format == "gz":
-+        gzip_uncompress(str(compressed), uncompressed)
-+    else:
-+        raise Exception(f"Unknown compression format {format}")
++        uncompress(compressed, uncompressed, format)
 +
-+'''
-+@params compressed: filename, Asset, or file-like object to guess
++        return uncompressed
 +
-+Guess the format of @compressed, raising an exception if
-+no format can be determined
-+'''
-+def guess_uncompress_format(compressed):
-+    if type(compressed) == Asset:
-+        compressed = urlparse(compressed.url).path
-+    elif type(compressed) != str:
-+        raise Exception(f"Unable to guess compression cformat for {compressed}")
-+
-+    (name, ext) = os.path.splitext(compressed)
-+    if ext == ".xz":
-+        return "xz"
-+    elif ext == ".gz":
-+        return "gz"
-+    else:
-+        raise Exception(f"Unknown compression format for {compressed}")
+     '''
+     @params archive: filename, Asset, or file-like object to extract
+     @params format: optional archive format (tar, zip, deb, cpio)
 -- 
 2.47.1
 
