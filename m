@@ -2,63 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2AF39F5EB6
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Dec 2024 07:41:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F002B9F5EDA
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Dec 2024 07:52:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tNniQ-0007EE-Sn; Wed, 18 Dec 2024 01:39:26 -0500
+	id 1tNntD-000190-Ad; Wed, 18 Dec 2024 01:50:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tNniN-0007Ct-9N; Wed, 18 Dec 2024 01:39:23 -0500
-Received: from mgamail.intel.com ([198.175.65.15])
+ id 1tNntA-000186-Kd; Wed, 18 Dec 2024 01:50:32 -0500
+Received: from mgamail.intel.com ([198.175.65.17])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tNniK-0001KA-3o; Wed, 18 Dec 2024 01:39:22 -0500
+ id 1tNnt8-00050N-5x; Wed, 18 Dec 2024 01:50:32 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1734503960; x=1766039960;
+ t=1734504630; x=1766040630;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=0j7yWL1ku3s8tx6AjaydGcnQsUTd3IjyXBmPGFmWXw4=;
- b=GvFvsplt2pUE2lgTitB1sbsiAQXoGTlk/lNcZ17yPMZngwJvAiEs/V+6
- /SfcNnxAboJqciCm3Zsq3UoyFne1OSFXhdriCynMQfmtuI8ksoPXNnyVv
- is5PTBBG5ownrfGD45WFiQWm7wpTk/pCQ9rBMJGKGTRfrqOyYOkOaikQC
- OhNjj1bMoBp3FbgXUpaGF8KId1uh3UnOoXkRKAzNMm/lWRidyRAqpayRT
- O9db9d1RCyJ9zXi0u+8K1GpErwm9qXasvuQZ0YIwCbZP4wneQW6xdhDJJ
- a5aJiTExrjAnWhkhFNsmJ7BqASg667RO6ae3iC7a4BGBpHjSzo1Or8UWi g==;
-X-CSE-ConnectionGUID: 7d4lqVZhQ8KqsxyM7AZeww==
-X-CSE-MsgGUID: MYBb8/2/TnuYxp+LGqMWgA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11289"; a="38639578"
-X-IronPort-AV: E=Sophos;i="6.12,244,1728975600"; d="scan'208";a="38639578"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
- by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Dec 2024 22:39:16 -0800
-X-CSE-ConnectionGUID: miwF27DHQMy1dnIxi9voKQ==
-X-CSE-MsgGUID: VCB4b5HMSme3Hf7isY3xtQ==
+ mime-version:in-reply-to;
+ bh=Coeb0/EJZfk8W8t/7szNv8f/QMvQSM5Hksl+GpfjeW0=;
+ b=GmIh4Y4QJBKlBYJ0SEUrlbUzfWfVdMZv8JzGwSuv2WD9i0g3beJAdFxN
+ v2LFC1+KwbNrCP8ZJM1KiH+2jUiDfhubo7rlp7Gtvi0xuEvZbVsufCLU0
+ w+EX4cLy51+wi9GoIEmvZSULYyaKbnmLkwdv71U+HvxowiM9FPnraIItq
+ T25gZT52bpFc7hVxzyTwTQ/FBlHaD+Vb29eGpuW30F/teEYbgbebneo0G
+ 5MzH5WbRqaw/6sSaKq/Sb+/3sPLygKD1fzzej215lLXuGaTY7/gulevA6
+ UIoJOucqAgWtIoubWSDnCskD5HtP+11+s5ujh3AyldVOsYJhyRPF0imj6 A==;
+X-CSE-ConnectionGUID: eUvdtILERM66kspsupBvEg==
+X-CSE-MsgGUID: kAP/p5AsR+eGe8frTlsFqw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11289"; a="34998226"
+X-IronPort-AV: E=Sophos;i="6.12,244,1728975600"; d="scan'208";a="34998226"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Dec 2024 22:50:26 -0800
+X-CSE-ConnectionGUID: UdqYtNE4R62+jjyMZ5EzKw==
+X-CSE-MsgGUID: cClgMYqtTW6kPRukSwZBdQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,244,1728975600"; d="scan'208";a="102604995"
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="101902041"
 Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
  ([10.239.160.39])
- by fmviesa004.fm.intel.com with ESMTP; 17 Dec 2024 22:39:14 -0800
-Date: Wed, 18 Dec 2024 14:57:54 +0800
+ by fmviesa003.fm.intel.com with ESMTP; 17 Dec 2024 22:50:24 -0800
+Date: Wed, 18 Dec 2024 15:09:04 +0800
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>
 Cc: qemu-devel <qemu-devel@nongnu.org>, qemu-rust@nongnu.org,
  Junjie Mao <junjie.mao@hotmail.com>
-Subject: Re: [PATCH 24/26] rust: qom: move device_id to PL011 class side
-Message-ID: <Z2JycooziPsfV8vX@intel.com>
+Subject: Re: [PATCH 26/26] rust: callbacks: allow passing optional callbacks
+ as ()
+Message-ID: <Z2J1EI+R51GqPhVA@intel.com>
 References: <20241209123717.99077-1-pbonzini@redhat.com>
- <20241209123717.99077-25-pbonzini@redhat.com>
- <Z2D2zk2Wdlqc5q2k@intel.com>
- <CABgObfY=jyu96eZ+ZcU9GXU+amt2wRm53vpvubHYTaeY9MWd2A@mail.gmail.com>
+ <20241209123717.99077-27-pbonzini@redhat.com>
+ <Z2GjLOppRcHFBpAT@intel.com>
+ <CABgObfYE8z5QeVSWT7odaPcZYNfW0Ox1gNmGyCvj0YRTsDEGrg@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CABgObfY=jyu96eZ+ZcU9GXU+amt2wRm53vpvubHYTaeY9MWd2A@mail.gmail.com>
-Received-SPF: pass client-ip=198.175.65.15; envelope-from=zhao1.liu@intel.com;
+In-Reply-To: <CABgObfYE8z5QeVSWT7odaPcZYNfW0Ox1gNmGyCvj0YRTsDEGrg@mail.gmail.com>
+Received-SPF: pass client-ip=198.175.65.17; envelope-from=zhao1.liu@intel.com;
  helo=mgamail.intel.com
 X-Spam_score_int: -43
 X-Spam_score: -4.4
@@ -83,188 +83,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Dec 17, 2024 at 05:50:09PM +0100, Paolo Bonzini wrote:
-> Date: Tue, 17 Dec 2024 17:50:09 +0100
+On Tue, Dec 17, 2024 at 05:40:14PM +0100, Paolo Bonzini wrote:
+> Date: Tue, 17 Dec 2024 17:40:14 +0100
 > From: Paolo Bonzini <pbonzini@redhat.com>
-> Subject: Re: [PATCH 24/26] rust: qom: move device_id to PL011 class side
+> Subject: Re: [PATCH 26/26] rust: callbacks: allow passing optional
+>  callbacks as ()
 > 
-> Il mar 17 dic 2024, 04:39 Zhao Liu <zhao1.liu@intel.com> ha scritto:
+> Il mar 17 dic 2024, 16:55 Zhao Liu <zhao1.liu@intel.com> ha scritto:
 > 
-> > > +impl ClassInitImpl<PL011Class> for PL011State {
-> > > +    fn class_init(klass: &mut PL011Class) {
-> > > +        klass.device_id = DeviceId::ARM;
-> > > +        <Self as ClassInitImpl<SysBusDeviceClass>>::class_init(&mut
-> > klass.parent_class);
+> > On Mon, Dec 09, 2024 at 01:37:17PM +0100, Paolo Bonzini wrote:
+> > > Date: Mon,  9 Dec 2024 13:37:17 +0100
+> > > From: Paolo Bonzini <pbonzini@redhat.com>
+> > > Subject: [PATCH 26/26] rust: callbacks: allow passing optional callbacks
+> > as
+> > >  ()
+> > > X-Mailer: git-send-email 2.47.1
+> > >
+> > > In some cases, callbacks are optional.  Using "Some(function)" and "None"
+> > > does not work well, because when someone writes "None" the compiler does
+> > > not know what to use for "F" in "Option<F>".
 > >
-> > This seems a bit of a conflict with the C version of QOM semantics. In C,
-> > class_init is registered in TypeInfo, and then the QOM code will
-> > automatically call the parent's class_init without needing to explicitly
-> > call the parent's in the child's class_init.
-> >
-> 
-> This is the same in Rust.
-> 
-> The difference is that in C you have a single class_init function that sets
-> all members of ObjectClass, DeviceClass, etc. In Rust each class has one
-> trait and there is a chain of ClassInitImpl implementations—one filling in
-> "oc" from ObjectImpl, one filling in "dc" from DeviceImpl and so on.
->
-> But in both cases you get a chain of calls from qom/object.c.
-> 
-> Therefore, the call here seems valid from the code logic's perspective.
-
-I supposed a case, where there is such a QOM (QEMU Object Model)
-structure relationship:
-
-* DummyState / DummyClass: defined in Rust side, and registered the
-  TypeInfo by `Object` macro.
-
-  - So its class_init will be called by C QOM code.
-
-* DummyChildState / DummyChildClass: defined in Rust side as the
-  child-object of DummyState, and registered the TypeInfo by `Object`
-  macro. And suppose it can inherit the trait of DummyClass -
-  ClassInitImpl<DummyClass> (but I found a gap here, as detailed later;
-  I expect it should be able to inherit normally).
-
- - So its class_init will be called by C QOM code. In C code call chain,
-   its parent's class_init should be called by C before its own
-   class_init.
- - However, note that according to the Rust class initialization call
-   chain, it should also call the parent's class_init within its own
-   class_init.
- - :( the parent's class_init gets called twice.
-
-If you agree this case indeed exists, then I think we should distinguish
-between different class_init methods for the Rust and C call chains.
-
-Moving on to another topic, about the gap (or question :-)) where a
-child class inherits the ClassInitImpl trait from the parent, please see
-my test case example below: Doing something similar to SysBusDevice and
-DeviceState using a generic T outside of the QOM library would violate
-the orphan rule.
-
-diff --git a/rust/qemu-api/tests/tests.rs b/rust/qemu-api/tests/tests.rs
-index 7edadf911cca..8cae222a37be 100644
---- a/rust/qemu-api/tests/tests.rs
-+++ b/rust/qemu-api/tests/tests.rs
-@@ -13,8 +13,8 @@
- use qemu_api::{
-     bindings::*,
-     c_str, declare_properties, define_property,
--    qdev::{DeviceImpl, DeviceState, Property},
--    qom::{ObjectCast, ObjectCastMut, ObjectImpl, ObjectMethods, ObjectType},
-+    qdev::{DeviceClass, DeviceImpl, DeviceState, Property},
-+    qom::{ClassInitImpl, ObjectCast, ObjectCastMut, ObjectImpl, ObjectMethods, ObjectType},
-     qom_isa,
-     vmstate::VMStateDescription,
-     zeroable::Zeroable,
-@@ -37,6 +37,10 @@ pub struct DummyState {
-
- qom_isa!(DummyState: Object, DeviceState);
-
-+pub struct DummyClass {
-+    parent_class: <DeviceState as ObjectType>::Class,
-+}
-+
- declare_properties! {
-     DUMMY_PROPERTIES,
-         define_property!(
-@@ -49,7 +53,7 @@ pub struct DummyState {
- }
-
- unsafe impl ObjectType for DummyState {
--    type Class = <DeviceState as ObjectType>::Class;
-+    type Class = DummyClass;
-     const TYPE_NAME: &'static CStr = c_str!("dummy");
- }
-
-@@ -67,6 +71,51 @@ fn vmsd() -> Option<&'static VMStateDescription> {
-     }
- }
-
-+// `impl<T> ClassInitImpl<DummyClass> for T` doesn't work since it violates orphan rule.
-+impl ClassInitImpl<DummyClass> for DummyState {
-+    fn class_init(klass: &mut DummyClass) {
-+        <Self as ClassInitImpl<DeviceClass>>::class_init(&mut klass.parent_class);
-+    }
-+}
-+
-+#[derive(qemu_api_macros::offsets)]
-+#[repr(C)]
-+#[derive(qemu_api_macros::Object)]
-+pub struct DummyChildState {
-+    parent: DummyState,
-+    migrate_clock: bool,
-+}
-+
-+qom_isa!(DummyChildState: Object, DeviceState, DummyState);
-+
-+pub struct DummyChildClass {
-+    parent_class: <DummyState as ObjectType>::Class,
-+}
-+
-+unsafe impl ObjectType for DummyChildState {
-+    type Class = DummyChildClass;
-+    const TYPE_NAME: &'static CStr = c_str!("dummy_child");
-+}
-+
-+impl ObjectImpl for DummyChildState {
-+    type ParentType = DummyState;
-+    const ABSTRACT: bool = false;
-+}
-+
-+impl DeviceImpl for DummyChildState {}
-+
-+impl ClassInitImpl<DummyClass> for DummyChildState {
-+    fn class_init(klass: &mut DummyClass) {
-+        <Self as ClassInitImpl<DeviceClass>>::class_init(&mut klass.parent_class);
-+    }
-+}
-+
-+impl ClassInitImpl<DummyChildClass> for DummyChildState {
-+    fn class_init(klass: &mut DummyChildClass) {
-+        <Self as ClassInitImpl<DummyClass>>::class_init(&mut klass.parent_class);
-+    }
-+}
-+
- fn init_qom() {
-     static ONCE: Mutex<Cell<bool>> = Mutex::new(Cell::new(false));
-
-@@ -85,6 +134,7 @@ fn test_object_new() {
-     init_qom();
-     unsafe {
-         object_unref(object_new(DummyState::TYPE_NAME.as_ptr()).cast());
-+        object_unref(object_new(DummyChildState::TYPE_NAME.as_ptr()).cast());
-     }
- }
-
-> > But, when there is deeper class inheritance, it seems impossible to
-> > prevent class_init from being called both by the C side's QOM code and by
-> > this kind of recursive case on the Rust side.
+> > I understand the direct use case is MemoryRegionOps, which has optional
+> > callbacks. However, I'm not quite sure how exactly it should be applied
+> > to C bindings and how it will play with Option<callback>.
 > >
 > 
-> Note that here you have two parameters: what class is being filled (the
-> argument C of ClassInitImpl<C>) *and* what type is being initialized
-> (that's Self).
-> 
-> The "recursion" is only on the argument C, and matches the way C code
-> implements class_init.
+> You wouldn't use Option<callback> at all, using () instead of None; the
+> difference is that () does not have a parameter while None does (and the
+> compiler cannot infer it). But I am okay with leaving this patch behind
+> until there's a need.
 
-For Rust side, PL011Class' class_init calls SysBusDeviceClass' class_init,
-and SysBusDeviceClass will also call DeviceClass' class_init. So this is
-also recursion, right?
+Am I using the wrong terminology? Function pointers in a structure should
+be called a vtable, rather than callbacks (for example, methods in TypeInfo,
+read/write methods in MemoryRegionOps). Callbacks are typically function
+pointers used as function parameters (for example, timer/gpio). So, is the
+callback implementation here only used for the latter case?
 
-> Maybe the confusion is because I implemented class_init twice instead of
-> using a separate trait "PL011Impl"?
-
-Ah, yes! But I think the Rust call chain should not use class_init anymore
-but should use a different method. This way, the original class_init would
-only serve the C QOM. A separate trait might break the inheritance
-relationship similar to ClassInitImpl.
-
-Regards,
+Thanks,
 Zhao
-
 
 
