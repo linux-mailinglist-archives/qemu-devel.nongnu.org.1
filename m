@@ -2,73 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3D659F680E
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Dec 2024 15:13:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4809C9F6899
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Dec 2024 15:35:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tNumh-0001HL-Ho; Wed, 18 Dec 2024 09:12:19 -0500
+	id 1tNv8n-0003gp-2s; Wed, 18 Dec 2024 09:35:09 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tNumb-0001Er-0B; Wed, 18 Dec 2024 09:12:13 -0500
-Received: from mgamail.intel.com ([192.198.163.12])
+ (Exim 4.90_1) (envelope-from <lvivier@redhat.com>)
+ id 1tNv8j-0003eh-Vt
+ for qemu-devel@nongnu.org; Wed, 18 Dec 2024 09:35:06 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tNumZ-00071h-3j; Wed, 18 Dec 2024 09:12:12 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1734531131; x=1766067131;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=dtVLVjcGMGv3WzoMW4E+eWrZx/eWQnpVTKr7VONHlTo=;
- b=VX76J87rYiF8BFmZL72T0+X+vltH7DihieAJSag1RjkepjWBN9ShELuu
- pl9+7d04dk8xEXvGKQcQ/xneTkPL7Cb4jhQQPGHeATxcKmTE6YTCQqp+N
- yT23houl82k2haruutBadHTntyy4+KemnFFcBROsRpU/M+1aSsqByOP9J
- 9oAsp91wCm4OgItPZhX0CISHPSKq9duDnIEDhCSAF+P+7tzZZm6QVjV7N
- cMyXBi0tKRT8vpZZIp41AXv/ReL0ybrf6pIk4zHo0qZqeIAPB+oRkQlkD
- b7Wykkq6+4+Co2Tur/W1nRdV+del222+EEBd7fxyrKhV5T0coP/J+2288 Q==;
-X-CSE-ConnectionGUID: URT38MyeTj2S2CrUSCzEMQ==
-X-CSE-MsgGUID: 4KPdqzYpR+GLxD6hzPcLmQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11290"; a="38943293"
-X-IronPort-AV: E=Sophos;i="6.12,244,1728975600"; d="scan'208";a="38943293"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
- by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Dec 2024 06:12:07 -0800
-X-CSE-ConnectionGUID: ESr1MCOKTDadDkh6reX+EQ==
-X-CSE-MsgGUID: g6334WAQRTmn3sVaDB6Ebg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="102483547"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by fmviesa005.fm.intel.com with ESMTP; 18 Dec 2024 06:12:06 -0800
-Date: Wed, 18 Dec 2024 22:30:45 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel <qemu-devel@nongnu.org>, qemu-rust@nongnu.org,
- Junjie Mao <junjie.mao@hotmail.com>
-Subject: Re: [PATCH 24/26] rust: qom: move device_id to PL011 class side
-Message-ID: <Z2LclR0SuCdEV03z@intel.com>
-References: <20241209123717.99077-1-pbonzini@redhat.com>
- <20241209123717.99077-25-pbonzini@redhat.com>
- <Z2D2zk2Wdlqc5q2k@intel.com>
- <CABgObfY=jyu96eZ+ZcU9GXU+amt2wRm53vpvubHYTaeY9MWd2A@mail.gmail.com>
- <Z2JycooziPsfV8vX@intel.com>
- <CABgObfboJFTRMsuqO055g11ZWNx1qKNxrLgvYLc-Hh6RcmWtOw@mail.gmail.com>
+ (Exim 4.90_1) (envelope-from <lvivier@redhat.com>)
+ id 1tNv8h-0004nn-9O
+ for qemu-devel@nongnu.org; Wed, 18 Dec 2024 09:35:05 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1734532501;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=WAC+Qzi4qSgi/qGI+XlVOgbDADD7acZ2ZVxkQEaki70=;
+ b=Pxsyonwy3/zUgVbqrJG1NHTabK3QfIjMtSTmTgsRg4s/zfiRq7MjC1Nvdy7odn92lHGzYA
+ FX9t+o08eepWO8Nomaku+yN0quR0lU9UhKZouWBmUtLuUxGsUowTIKeBNXa2v/0gJxglFN
+ ViSWJlerhL6b0rR1ncmVOoHRg4QvyQw=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-384-xNMR8A9sNs-mR9PhDef9iA-1; Wed,
+ 18 Dec 2024 09:34:58 -0500
+X-MC-Unique: xNMR8A9sNs-mR9PhDef9iA-1
+X-Mimecast-MFC-AGG-ID: xNMR8A9sNs-mR9PhDef9iA
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 1250A19560BE
+ for <qemu-devel@nongnu.org>; Wed, 18 Dec 2024 14:34:57 +0000 (UTC)
+Received: from lenovo-t14s.redhat.com (unknown [10.39.192.130])
+ by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 6B1F9195605F; Wed, 18 Dec 2024 14:34:55 +0000 (UTC)
+From: Laurent Vivier <lvivier@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Hanna Czenczek <hreitz@redhat.com>, Jason Wang <jasowang@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>
+Subject: [PATCH] virtio-net: vhost-user: Implement internal migration
+Date: Wed, 18 Dec 2024 15:34:53 +0100
+Message-ID: <20241218143453.1573185-1-lvivier@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CABgObfboJFTRMsuqO055g11ZWNx1qKNxrLgvYLc-Hh6RcmWtOw@mail.gmail.com>
-Received-SPF: pass client-ip=192.198.163.12; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=lvivier@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -31
+X-Spam_score: -3.2
+X-Spam_bar: ---
+X-Spam_report: (-3.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-1.116,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,36 +80,176 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-> No, Self is not PL011Class. Self is PL011State (or PL011Luminary/ and it
-> always remains the same. What changes is *what part* of the class is
-> overwritten, but the order of calls from qom/object.c follows the same
-> logic in both C and Rust.
+Add support of VHOST_USER_PROTOCOL_F_DEVICE_STATE in virtio-net
+with vhost-user backend.
 
-Thanks! Now I feel I see!
+Cc: Hanna Czenczek <hreitz@redhat.com>
+Signed-off-by: Laurent Vivier <lvivier@redhat.com>
+---
+ hw/net/virtio-net.c | 135 ++++++++++++++++++++++++++++++++++++--------
+ 1 file changed, 112 insertions(+), 23 deletions(-)
 
-For C side, type_initialize() will allocate a new class instance by
-`ti->class = g_malloc0(ti->class_size)`, then actually C side's parent
-class_init will initialize that new class instance.
-
-For Rust side, the initialization call chain will initialize Self's
-embedded parent class, one by one.
-
-So that's fine!
-
-> > Maybe the confusion is because I implemented class_init twice instead of
-> > > using a separate trait "PL011Impl"?
-> >
-> > Ah, yes! But I think the Rust call chain should not use class_init anymore
-> > but should use a different method. This way, the original class_init would
-> > only serve the C QOM. A separate trait might break the inheritance
-> > relationship similar to ClassInitImpl.
-> >
-> 
-> Do you still think that this is the case?
-
-No, now this patch is fine for me!
-
-Thanks,
-Zhao
+diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
+index 6e8c51a2dbce..b4d9e96dc0d7 100644
+--- a/hw/net/virtio-net.c
++++ b/hw/net/virtio-net.c
+@@ -3337,6 +3337,117 @@ static const VMStateDescription vmstate_virtio_net_rss = {
+     },
+ };
+ 
++static struct vhost_dev *virtio_net_get_vhost(VirtIODevice *vdev)
++{
++    VirtIONet *n = VIRTIO_NET(vdev);
++    NetClientState *nc;
++    struct vhost_net *net;
++
++    if (!n->nic) {
++        return NULL;
++    }
++
++    nc = qemu_get_queue(n->nic);
++    if (!nc) {
++        return NULL;
++    }
++
++    net = get_vhost_net(nc->peer);
++    if (!net) {
++        return NULL;
++    }
++
++    return &net->dev;
++}
++
++static int vhost_user_net_save_state(QEMUFile *f, void *pv, size_t size,
++                                     const VMStateField *field,
++                                     JSONWriter *vmdesc)
++{
++    VirtIONet *n = pv;
++    VirtIODevice *vdev = VIRTIO_DEVICE(n);
++    struct vhost_dev *vhdev;
++    Error *local_error = NULL;
++    int ret;
++
++    vhdev = virtio_net_get_vhost(vdev);
++    if (vhdev == NULL) {
++        error_reportf_err(local_error,
++                          "Error getting vhost back-end of %s device %s: ",
++                          vdev->name, vdev->parent_obj.canonical_path);
++        return -1;
++    }
++
++    ret = vhost_save_backend_state(vhdev, f, &local_error);
++    if (ret < 0) {
++        error_reportf_err(local_error,
++                          "Error saving back-end state of %s device %s: ",
++                          vdev->name, vdev->parent_obj.canonical_path);
++        return ret;
++    }
++
++    return 0;
++}
++
++static int vhost_user_net_load_state(QEMUFile *f, void *pv, size_t size,
++                                     const VMStateField *field)
++{
++    VirtIONet *n = pv;
++    VirtIODevice *vdev = VIRTIO_DEVICE(n);
++    struct vhost_dev *vhdev;
++    Error *local_error = NULL;
++    int ret;
++
++    vhdev = virtio_net_get_vhost(vdev);
++    if (vhdev == NULL) {
++        error_reportf_err(local_error,
++                          "Error getting vhost back-end of %s device %s: ",
++                          vdev->name, vdev->parent_obj.canonical_path);
++        return -1;
++    }
++
++    ret = vhost_load_backend_state(vhdev, f, &local_error);
++    if (ret < 0) {
++        error_reportf_err(local_error,
++                          "Error loading  back-end state of %s device %s: ",
++                          vdev->name, vdev->parent_obj.canonical_path);
++        return ret;
++    }
++
++    return 0;
++}
++
++static bool vhost_user_net_is_internal_migration(void *opaque)
++{
++    VirtIONet *n = opaque;
++    VirtIODevice *vdev = VIRTIO_DEVICE(n);
++    struct vhost_dev *vhdev;
++
++    vhdev = virtio_net_get_vhost(vdev);
++    if (vhdev == NULL) {
++        return false;
++    }
++
++    return vhost_supports_device_state(vhdev);
++}
++
++static const VMStateDescription vhost_user_net_backend_state = {
++    .name = "virtio-net-device/backend",
++    .version_id = 0,
++    .needed = vhost_user_net_is_internal_migration,
++    .fields = (const VMStateField[]) {
++        {
++            .name = "backend",
++            .info = &(const VMStateInfo) {
++                .name = "virtio-net vhost-user backend state",
++                .get = vhost_user_net_load_state,
++                .put = vhost_user_net_save_state,
++            },
++         },
++         VMSTATE_END_OF_LIST()
++    }
++};
++
+ static const VMStateDescription vmstate_virtio_net_device = {
+     .name = "virtio-net-device",
+     .version_id = VIRTIO_NET_VM_VERSION,
+@@ -3389,6 +3500,7 @@ static const VMStateDescription vmstate_virtio_net_device = {
+     },
+     .subsections = (const VMStateDescription * const []) {
+         &vmstate_virtio_net_rss,
++        &vhost_user_net_backend_state,
+         NULL
+     }
+ };
+@@ -3950,29 +4062,6 @@ static bool dev_unplug_pending(void *opaque)
+     return vdc->primary_unplug_pending(dev);
+ }
+ 
+-static struct vhost_dev *virtio_net_get_vhost(VirtIODevice *vdev)
+-{
+-    VirtIONet *n = VIRTIO_NET(vdev);
+-    NetClientState *nc;
+-    struct vhost_net *net;
+-
+-    if (!n->nic) {
+-        return NULL;
+-    }
+-
+-    nc = qemu_get_queue(n->nic);
+-    if (!nc) {
+-        return NULL;
+-    }
+-
+-    net = get_vhost_net(nc->peer);
+-    if (!net) {
+-        return NULL;
+-    }
+-
+-    return &net->dev;
+-}
+-
+ static const VMStateDescription vmstate_virtio_net = {
+     .name = "virtio-net",
+     .minimum_version_id = VIRTIO_NET_VM_VERSION,
+-- 
+2.47.1
 
 
