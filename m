@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C68EE9F6482
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Dec 2024 12:14:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 13CD99F647F
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Dec 2024 12:14:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tNrx3-0006XW-FW; Wed, 18 Dec 2024 06:10:49 -0500
+	id 1tNrx4-0006Y8-Lb; Wed, 18 Dec 2024 06:10:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tNrx1-0006X6-2V
- for qemu-devel@nongnu.org; Wed, 18 Dec 2024 06:10:47 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tNrx2-0006XX-Kb
+ for qemu-devel@nongnu.org; Wed, 18 Dec 2024 06:10:48 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tNrwz-0005Sj-Fh
- for qemu-devel@nongnu.org; Wed, 18 Dec 2024 06:10:46 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tNrx0-0005av-Q8
+ for qemu-devel@nongnu.org; Wed, 18 Dec 2024 06:10:48 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1734520242;
+ s=mimecast20190719; t=1734520245;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=PR/5MqTtNFFd2UJsVh8lixPNUBQdzfVc0rIa7tdDUEo=;
- b=OwqMMaPMX62n8rK7vRbtEiMwwPbDRTcB2aX0WygBbzKQr5PPwsll3+TrBntaI45YNmt2VV
- g209XgyO50G0yk/ck2Di4f+kW11S3K3h1lqZfQe+IagvywLYH0laOEsdLrpVQLBvJHvLaM
- BE6M/L31TklppzZlpaTPpnJGmECqJTc=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ bh=qs5dlXSPnSiSRt+HDWuEqrKKDqyGCdmAxE6Hu1wPZYI=;
+ b=JD+Zz5E8zBbdO5s/rnt0yg/1nNTq7oXvFPD/fQ8SZxClZ21ptWLuiHT4HIiQBPQ8TnxA8T
+ BQPfgfu6ml3PgZma4atPMh/D5+cKyjtVGxt7WeK9Rl4s36JgDwIuQu9EtX1SpGxrKpQYtB
+ nYkq/L0tflAnpQ8Wn2GmF9yEL8XBiWU=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-509-I3jz4ngmOEey5ZJ8-Wtayg-1; Wed,
- 18 Dec 2024 06:10:41 -0500
-X-MC-Unique: I3jz4ngmOEey5ZJ8-Wtayg-1
-X-Mimecast-MFC-AGG-ID: I3jz4ngmOEey5ZJ8-Wtayg
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-635-sClXd2QzPVuu2ohxGjrPrQ-1; Wed,
+ 18 Dec 2024 06:10:43 -0500
+X-MC-Unique: sClXd2QzPVuu2ohxGjrPrQ-1
+X-Mimecast-MFC-AGG-ID: sClXd2QzPVuu2ohxGjrPrQ
 Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 4154B19560A7
- for <qemu-devel@nongnu.org>; Wed, 18 Dec 2024 11:10:40 +0000 (UTC)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 9721519560B8
+ for <qemu-devel@nongnu.org>; Wed, 18 Dec 2024 11:10:42 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.192.114])
  by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 36CB019560AD; Wed, 18 Dec 2024 11:10:37 +0000 (UTC)
+ id 408F319560AD; Wed, 18 Dec 2024 11:10:40 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Stefan Hajnoczi <stefanha@redhat.com>
-Subject: [PULL 16/38] tests/functional: move archive handling into new
- archive.py file
-Date: Wed, 18 Dec 2024 12:09:36 +0100
-Message-ID: <20241218110958.226932-17-thuth@redhat.com>
+Subject: [PULL 17/38] tests/functional: move uncompress handling into new
+ uncompress.py file
+Date: Wed, 18 Dec 2024 12:09:37 +0100
+Message-ID: <20241218110958.226932-18-thuth@redhat.com>
 In-Reply-To: <20241218110958.226932-1-thuth@redhat.com>
 References: <20241218110958.226932-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -84,7 +84,7 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Daniel P. Berrangé <berrange@redhat.com>
 
-More archive related code will be added shortly, so having a
+More uncompress related code will be added shortly, so having a
 separate file makes more sense.
 
 The utils.py imports the functions from archive.py, so that
@@ -94,20 +94,20 @@ calls will be adapted for other reasons.
 
 Reviewed-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
-Message-ID: <20241217155953.3950506-17-berrange@redhat.com>
+Message-ID: <20241217155953.3950506-18-berrange@redhat.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- tests/functional/qemu_test/archive.py | 31 +++++++++++++++++++++++++++
- tests/functional/qemu_test/utils.py   | 23 +++-----------------
- 2 files changed, 34 insertions(+), 20 deletions(-)
- create mode 100644 tests/functional/qemu_test/archive.py
+ tests/functional/qemu_test/uncompress.py | 36 ++++++++++++++++++++++++
+ tests/functional/qemu_test/utils.py      | 27 ++----------------
+ 2 files changed, 38 insertions(+), 25 deletions(-)
+ create mode 100644 tests/functional/qemu_test/uncompress.py
 
-diff --git a/tests/functional/qemu_test/archive.py b/tests/functional/qemu_test/archive.py
+diff --git a/tests/functional/qemu_test/uncompress.py b/tests/functional/qemu_test/uncompress.py
 new file mode 100644
-index 0000000000..9872f08d23
+index 0000000000..955170df65
 --- /dev/null
-+++ b/tests/functional/qemu_test/archive.py
-@@ -0,0 +1,31 @@
++++ b/tests/functional/qemu_test/uncompress.py
+@@ -0,0 +1,36 @@
 +# SPDX-License-Identifier: GPL-2.0-or-later
 +#
 +# Utilities for python-based QEMU tests
@@ -117,73 +117,79 @@ index 0000000000..9872f08d23
 +# Authors:
 +#  Thomas Huth <thuth@redhat.com>
 +
++import gzip
++import lzma
 +import os
-+import subprocess
-+import tarfile
++import shutil
 +
 +
-+def tar_extract(archive, dest_dir, member=None):
-+    with tarfile.open(archive) as tf:
-+        if hasattr(tarfile, 'data_filter'):
-+            tf.extraction_filter = getattr(tarfile, 'data_filter',
-+                                           (lambda member, path: member))
-+        if member:
-+            tf.extract(member=member, path=dest_dir)
-+        else:
-+            tf.extractall(path=dest_dir)
++def gzip_uncompress(gz_path, output_path):
++    if os.path.exists(output_path):
++        return
++    with gzip.open(gz_path, 'rb') as gz_in:
++        try:
++            with open(output_path, 'wb') as raw_out:
++                shutil.copyfileobj(gz_in, raw_out)
++        except:
++            os.remove(output_path)
++            raise
 +
-+def cpio_extract(cpio_handle, output_path):
-+    cwd = os.getcwd()
-+    os.chdir(output_path)
-+    subprocess.run(['cpio', '-i'],
-+                   input=cpio_handle.read(),
-+                   stderr=subprocess.DEVNULL)
-+    os.chdir(cwd)
++def lzma_uncompress(xz_path, output_path):
++    if os.path.exists(output_path):
++        return
++    with lzma.open(xz_path, 'rb') as lzma_in:
++        try:
++            with open(output_path, 'wb') as raw_out:
++                shutil.copyfileobj(lzma_in, raw_out)
++        except:
++            os.remove(output_path)
++            raise
 diff --git a/tests/functional/qemu_test/utils.py b/tests/functional/qemu_test/utils.py
-index 1bf1c410d5..5ce1c4388e 100644
+index 5ce1c4388e..6b87af4414 100644
 --- a/tests/functional/qemu_test/utils.py
 +++ b/tests/functional/qemu_test/utils.py
-@@ -12,8 +12,9 @@
- import lzma
+@@ -8,13 +8,12 @@
+ # This work is licensed under the terms of the GNU GPL, version 2 or
+ # later.  See the COPYING file in the top-level directory.
+ 
+-import gzip
+-import lzma
  import os
- import shutil
--import subprocess
--import tarfile
-+
-+from .archive import tar_extract as archive_extract
-+from .archive import cpio_extract
+-import shutil
+ 
+ from .archive import tar_extract as archive_extract
+ from .archive import cpio_extract
++from .uncompress import gzip_uncompress
++from .uncompress import lzma_uncompress
  
  """
  Round up to next power of 2
-@@ -36,16 +37,6 @@ def image_pow2ceil_expand(path):
+@@ -36,25 +35,3 @@ def image_pow2ceil_expand(path):
+         if size != size_aligned:
              with open(path, 'ab+') as fd:
                  fd.truncate(size_aligned)
- 
--def archive_extract(archive, dest_dir, member=None):
--    with tarfile.open(archive) as tf:
--        if hasattr(tarfile, 'data_filter'):
--            tf.extraction_filter = getattr(tarfile, 'data_filter',
--                                           (lambda member, path: member))
--        if member:
--            tf.extract(member=member, path=dest_dir)
--        else:
--            tf.extractall(path=dest_dir)
 -
- def gzip_uncompress(gz_path, output_path):
-     if os.path.exists(output_path):
-         return
-@@ -67,11 +58,3 @@ def lzma_uncompress(xz_path, output_path):
-         except:
-             os.remove(output_path)
-             raise
+-def gzip_uncompress(gz_path, output_path):
+-    if os.path.exists(output_path):
+-        return
+-    with gzip.open(gz_path, 'rb') as gz_in:
+-        try:
+-            with open(output_path, 'wb') as raw_out:
+-                shutil.copyfileobj(gz_in, raw_out)
+-        except:
+-            os.remove(output_path)
+-            raise
 -
--def cpio_extract(cpio_handle, output_path):
--    cwd = os.getcwd()
--    os.chdir(output_path)
--    subprocess.run(['cpio', '-i'],
--                   input=cpio_handle.read(),
--                   stderr=subprocess.DEVNULL)
--    os.chdir(cwd)
+-def lzma_uncompress(xz_path, output_path):
+-    if os.path.exists(output_path):
+-        return
+-    with lzma.open(xz_path, 'rb') as lzma_in:
+-        try:
+-            with open(output_path, 'wb') as raw_out:
+-                shutil.copyfileobj(lzma_in, raw_out)
+-        except:
+-            os.remove(output_path)
+-            raise
 -- 
 2.47.1
 
