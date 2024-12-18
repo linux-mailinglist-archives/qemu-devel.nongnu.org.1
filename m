@@ -2,61 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD9279F646C
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Dec 2024 12:12:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 363899F6480
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Dec 2024 12:14:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tNry8-00013p-Px; Wed, 18 Dec 2024 06:11:57 -0500
+	id 1tNry4-0000pT-Fr; Wed, 18 Dec 2024 06:11:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tNrxz-0000vh-Qs
- for qemu-devel@nongnu.org; Wed, 18 Dec 2024 06:11:47 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tNrxx-0000fc-95
+ for qemu-devel@nongnu.org; Wed, 18 Dec 2024 06:11:45 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tNrxt-0005zy-Af
- for qemu-devel@nongnu.org; Wed, 18 Dec 2024 06:11:47 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tNrxu-00060K-Gk
+ for qemu-devel@nongnu.org; Wed, 18 Dec 2024 06:11:45 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1734520299;
+ s=mimecast20190719; t=1734520301;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=icK9mZ+BTwutXpAcicRi0lYfEt7an4Ag3b0ftFSB2fE=;
- b=fCLQhPPcqKiDkXsOA/RwBuvqJvq/Tty3zn/RJR+AC4UsIXdpziKHfAZKspnTMaSjPIP0nP
- UC01RY+4eX61yaqtVYBIe5IjD6KkoRD5IpqqJ+kChYYLZvzB0qM7rnjiturFd7tjjJ+hkh
- pI6QPMD6ivdNXtsul865AOEBQdVnmV0=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ bh=RLvJpCwwLpnoPeYc8xU07cbaU7PHI2UhHEMNtb6DWps=;
+ b=NxYNwiuW8LS7e7PPCWYDkDCV3mPedzRXTnhh2Zt/2lwFU7PPOrOY+iDIPlZPyNtkpvyHfP
+ Zrulpf6aDdz6o18AY7vaS2Tg9ln5WlGok/jUez61CBe/X4Upjd8hmYITjRpyrSm95HtECW
+ EOIuanHO4/aioX4ci+S/C5XD8z9Z6/o=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-137-uBRrxH4FM562Q-Uac020Dw-1; Wed,
- 18 Dec 2024 06:11:37 -0500
-X-MC-Unique: uBRrxH4FM562Q-Uac020Dw-1
-X-Mimecast-MFC-AGG-ID: uBRrxH4FM562Q-Uac020Dw
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-532-nxCM_ZwVN2SSFlft-UIzZQ-1; Wed,
+ 18 Dec 2024 06:11:40 -0500
+X-MC-Unique: nxCM_ZwVN2SSFlft-UIzZQ-1
+X-Mimecast-MFC-AGG-ID: nxCM_ZwVN2SSFlft-UIzZQ
 Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 52E1C195421D
- for <qemu-devel@nongnu.org>; Wed, 18 Dec 2024 11:11:36 +0000 (UTC)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id A8E2F19560B2
+ for <qemu-devel@nongnu.org>; Wed, 18 Dec 2024 11:11:39 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.192.114])
  by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 05F5819560AD; Wed, 18 Dec 2024 11:11:34 +0000 (UTC)
+ id 1BE4C19560AD; Wed, 18 Dec 2024 11:11:36 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Stefan Hajnoczi <stefanha@redhat.com>
-Subject: [PULL 37/38] tests/functional: Convert the hotplug_cpu avocado test
-Date: Wed, 18 Dec 2024 12:09:57 +0100
-Message-ID: <20241218110958.226932-38-thuth@redhat.com>
+Subject: [PULL 38/38] meson.build: Disallow libnfs v6 to fix the broken macOS
+ build
+Date: Wed, 18 Dec 2024 12:09:58 +0100
+Message-ID: <20241218110958.226932-39-thuth@redhat.com>
 In-Reply-To: <20241218110958.226932-1-thuth@redhat.com>
 References: <20241218110958.226932-1-thuth@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -31
 X-Spam_score: -3.2
@@ -81,155 +82,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since we don't have ssh support in the functional test framework yet,
-simply use the serial console for this test instead. It's also
-sufficient to only boot into an initrd here, no need to fire up a
-full-blown guest, so the test now finishes much faster.
+The macOS builds in our CI (and possibly other very recent distros)
+are currently broken since the update to libnfs version 6 there.
+That version apparently comes with a big API breakage. v5.0.3 was
+the final release of the old API (see the libnfs commit here:
+https://github.com/sahlberg/libnfs/commit/4379837 ).
 
-While we're at it, also unplug the CPU now and check that it is gone
-in the guest.
+Disallow version 6.x for now to get the broken CI job working
+again. Once somebody had enough time to adapt our code in
+block/nfs.c, we can revert this change again.
 
-Message-ID: <20241217142020.155776-1-thuth@redhat.com>
+Message-ID: <20241218065157.209020-1-thuth@redhat.com>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- tests/avocado/hotplug_cpu.py                | 37 -----------
- tests/functional/meson.build                |  1 +
- tests/functional/test_x86_64_hotplug_cpu.py | 69 +++++++++++++++++++++
- 3 files changed, 70 insertions(+), 37 deletions(-)
- delete mode 100644 tests/avocado/hotplug_cpu.py
- create mode 100755 tests/functional/test_x86_64_hotplug_cpu.py
+ meson.build | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tests/avocado/hotplug_cpu.py b/tests/avocado/hotplug_cpu.py
-deleted file mode 100644
-index 342c838539..0000000000
---- a/tests/avocado/hotplug_cpu.py
-+++ /dev/null
-@@ -1,37 +0,0 @@
--# Functional test that hotplugs a CPU and checks it on a Linux guest
--#
--# Copyright (c) 2021 Red Hat, Inc.
--#
--# Author:
--#  Cleber Rosa <crosa@redhat.com>
--#
--# This work is licensed under the terms of the GNU GPL, version 2 or
--# later.  See the COPYING file in the top-level directory.
--
--from avocado_qemu.linuxtest import LinuxTest
--
--
--class HotPlugCPU(LinuxTest):
--
--    def test(self):
--        """
--        :avocado: tags=arch:x86_64
--        :avocado: tags=machine:q35
--        :avocado: tags=accel:kvm
--        """
--        self.require_accelerator('kvm')
--        self.vm.add_args('-accel', 'kvm')
--        self.vm.add_args('-cpu', 'Haswell')
--        self.vm.add_args('-smp', '1,sockets=1,cores=2,threads=1,maxcpus=2')
--        self.launch_and_wait()
--
--        self.ssh_command('test -e /sys/devices/system/cpu/cpu0')
--        with self.assertRaises(AssertionError):
--            self.ssh_command('test -e /sys/devices/system/cpu/cpu1')
--
--        self.vm.cmd('device_add',
--                    driver='Haswell-x86_64-cpu',
--                    socket_id=0,
--                    core_id=1,
--                    thread_id=0)
--        self.ssh_command('test -e /sys/devices/system/cpu/cpu1')
-diff --git a/tests/functional/meson.build b/tests/functional/meson.build
-index d03fe0ca36..24f7f8f2f1 100644
---- a/tests/functional/meson.build
-+++ b/tests/functional/meson.build
-@@ -233,6 +233,7 @@ tests_x86_64_system_thorough = [
-   'multiprocess',
-   'netdev_ethtool',
-   'virtio_gpu',
-+  'x86_64_hotplug_cpu',
-   'x86_64_tuxrun',
- ]
+diff --git a/meson.build b/meson.build
+index 85f7485473..6149b50db2 100644
+--- a/meson.build
++++ b/meson.build
+@@ -1145,7 +1145,7 @@ endif
  
-diff --git a/tests/functional/test_x86_64_hotplug_cpu.py b/tests/functional/test_x86_64_hotplug_cpu.py
-new file mode 100755
-index 0000000000..b1d5156c72
---- /dev/null
-+++ b/tests/functional/test_x86_64_hotplug_cpu.py
-@@ -0,0 +1,69 @@
-+#!/usr/bin/env python3
-+#
-+# Functional test that hotplugs a CPU and checks it on a Linux guest
-+#
-+# Copyright (c) 2021 Red Hat, Inc.
-+#
-+# Author:
-+#  Cleber Rosa <crosa@redhat.com>
-+#
-+# This work is licensed under the terms of the GNU GPL, version 2 or
-+# later.  See the COPYING file in the top-level directory.
-+
-+from qemu_test import LinuxKernelTest, Asset, exec_command_and_wait_for_pattern
-+
-+
-+class HotPlugCPU(LinuxKernelTest):
-+
-+    ASSET_KERNEL = Asset(
-+        ('https://archives.fedoraproject.org/pub/archive/fedora/linux/releases'
-+         '/31/Server/x86_64/os/images/pxeboot/vmlinuz'),
-+        'd4738d03dbbe083ca610d0821d0a8f1488bebbdccef54ce33e3adb35fda00129')
-+
-+    ASSET_INITRD = Asset(
-+        ('https://archives.fedoraproject.org/pub/archive/fedora/linux/releases'
-+         '/31/Server/x86_64/os/images/pxeboot/initrd.img'),
-+        '277cd6c7adf77c7e63d73bbb2cded8ef9e2d3a2f100000e92ff1f8396513cd8b')
-+
-+    def test_hotplug(self):
-+
-+        self.require_accelerator('kvm')
-+        self.vm.add_args('-accel', 'kvm')
-+        self.vm.add_args('-cpu', 'Haswell')
-+        self.vm.add_args('-smp', '1,sockets=1,cores=2,threads=1,maxcpus=2')
-+        self.vm.add_args('-m', '1G')
-+        self.vm.add_args('-append', 'console=ttyS0 rd.rescue')
-+
-+        self.launch_kernel(self.ASSET_KERNEL.fetch(),
-+                           self.ASSET_INITRD.fetch(),
-+                           wait_for='Entering emergency mode.')
-+        prompt = '# '
-+        self.wait_for_console_pattern(prompt)
-+
-+        exec_command_and_wait_for_pattern(self,
-+                                          'cd /sys/devices/system/cpu/cpu0',
-+                                          'cpu0#')
-+        exec_command_and_wait_for_pattern(self,
-+                                          'cd /sys/devices/system/cpu/cpu1',
-+                                          'No such file or directory')
-+
-+        self.vm.cmd('device_add',
-+                    driver='Haswell-x86_64-cpu',
-+                    id='c1',
-+                    socket_id=0,
-+                    core_id=1,
-+                    thread_id=0)
-+        self.wait_for_console_pattern('CPU1 has been hot-added')
-+
-+        exec_command_and_wait_for_pattern(self,
-+                                          'cd /sys/devices/system/cpu/cpu1',
-+                                          'cpu1#')
-+
-+        self.vm.cmd('device_del', id='c1')
-+
-+        exec_command_and_wait_for_pattern(self,
-+                                          'cd /sys/devices/system/cpu/cpu1',
-+                                          'No such file or directory')
-+
-+if __name__ == '__main__':
-+    LinuxKernelTest.main()
+ libnfs = not_found
+ if not get_option('libnfs').auto() or have_block
+-  libnfs = dependency('libnfs', version: '>=1.9.3',
++  libnfs = dependency('libnfs', version: ['>=1.9.3', '<6.0.0'],
+                       required: get_option('libnfs'),
+                       method: 'pkg-config')
+ endif
 -- 
 2.47.1
 
