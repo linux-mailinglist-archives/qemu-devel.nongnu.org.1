@@ -2,78 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F01239F67A1
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Dec 2024 14:47:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E4B259F6795
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Dec 2024 14:45:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tNuKx-0001d6-4n; Wed, 18 Dec 2024 08:43:39 -0500
+	id 1tNuLQ-0002NY-04; Wed, 18 Dec 2024 08:44:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tNuKZ-0001Kj-AF
- for qemu-devel@nongnu.org; Wed, 18 Dec 2024 08:43:16 -0500
-Received: from mail-oi1-x22a.google.com ([2607:f8b0:4864:20::22a])
+ id 1tNuKb-0001L6-60
+ for qemu-devel@nongnu.org; Wed, 18 Dec 2024 08:43:20 -0500
+Received: from mail-oi1-x229.google.com ([2607:f8b0:4864:20::229])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tNuKW-0005g7-Ai
- for qemu-devel@nongnu.org; Wed, 18 Dec 2024 08:43:14 -0500
-Received: by mail-oi1-x22a.google.com with SMTP id
- 5614622812f47-3ebadbb14dcso2195546b6e.3
- for <qemu-devel@nongnu.org>; Wed, 18 Dec 2024 05:43:11 -0800 (PST)
+ id 1tNuKX-0005gO-HQ
+ for qemu-devel@nongnu.org; Wed, 18 Dec 2024 08:43:16 -0500
+Received: by mail-oi1-x229.google.com with SMTP id
+ 5614622812f47-3eba7784112so2534797b6e.2
+ for <qemu-devel@nongnu.org>; Wed, 18 Dec 2024 05:43:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734529390; x=1735134190; darn=nongnu.org;
+ d=linaro.org; s=google; t=1734529392; x=1735134192; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=7otA0Xs37HZk5bLiR85IqtklV+XPFMVBtNOQNXWuvqQ=;
- b=oR1o/S85y3DQ3vqMmq7A6jhFtyfqeiHWQE/XqsU2a8RCSYf1BMo0K394+gWHWSPVJw
- mjDNCJMm4s/h2z2pINgvSfdHgZSEHR2ThTjdYwuO3OedX5SLYytmKsDyplmvFzlhBirB
- 06NRDjv8oAI+zUmlMvMrwV6j1OOg675WGCZHh20V+tT+pl9J8KMBnpyrx9g9ShfUFJRW
- /YmD7lcxJpkMzY/RWlpq+efJEdsOr71kOLDN0QyGk2bJrVTpEUsbHqQMyaR5ksBVCWiI
- 2Cj1QsvdXq0XtW1L1yqBh5r1Zc8b22/r/FWGIRkFTfiO+tTGXuMOOBRqvbgN0FS94lVV
- gFjg==
+ bh=V9uuK3Bi0zd4Ff4jmnl20vwDce29dx6gKCtTc6/W2eI=;
+ b=nrndXKItF/MXHbV2uQeq8FXyG4BoQE+jFmPd8P9qhdYnHwVSa51MNRWgYJhD0P1AVi
+ YF5ypy0uzbI3TQBhkOtEC8JBj265ktgtY2ogM3sGSa1pg59UgO2pIlDWgUGyFuYAEc6O
+ bo/9jLxFa99HPUaAT+jG/vJ0HGutzIJce2Sz9PeqecryB60z7Qyrmllo/y0wAPCb6eYb
+ M53iV7e+KaCTw0ljW9HiTt993jPwq5vJ5x5VlPiGFY01F55AvugjmMwrR8ViWckuKxvC
+ RPx0BlIf+Uoo2nqdhGfJYmTsIwqAZ8HvehkfdhA7pJqI3fzNJy+L6dCACWCfUSUG1BlS
+ HsfA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734529390; x=1735134190;
+ d=1e100.net; s=20230601; t=1734529392; x=1735134192;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=7otA0Xs37HZk5bLiR85IqtklV+XPFMVBtNOQNXWuvqQ=;
- b=GANnTq3yR/9Tbm3Yf60OXt8dsK1KSNGiYh5nOm5Q330Wd3mQHLmWy736bsIqo8qv08
- UZeO90vRtzEyQ9EAiIrbu0IGEIkgpk7FUvSMYGOU8gH6WLqFQ2dNQY79+pYnr5g/QKFz
- X03hwNgUq4zADQaOegnHNlNSF5PlONyqY4HrMHlz+ZTYRBpjq92cyR7tLPxTb6L3yXwz
- WPhaTn3iK8KOuySfhEOiFzlTZfOrY2U50gbPsW88r5xDPKdOEykxadYs8+JkxaeJiI+v
- 77IXgPOr7bHT3n3y0/ejPMcIsBNOuT4vbRnC0Z2JbMt+n33Degx9MXaW1AITcWmyuE7V
- rm1g==
-X-Gm-Message-State: AOJu0YzBOqqDB99LUReEhO8xT2CTACYPAQWTajDp9LWhIIaYt/YxkDF9
- QmiZJ1E9jixncCOgJ04I00oBThqKFGH4i03cfOCJsHc0m2OwmRo/atmf9UfFeY7lHURV5ckHu4P
- fOlmPHYWh
-X-Gm-Gg: ASbGnctJkvd8UByHxUxZkamLYfkLjCctiZ4Ie0gc5BHbW00CmgtzFsUC6vTCJ0f5R4S
- rzU9BiBu79BgXmkOzVsMpi1k07JXYFQtNsxasqLr1JykUzqwlKGVxu6dHiIHneOyo1Dcby60HPi
- HdmiXEGbZ6edVDvztJHyokwv4Syg0B5FuzFYd+qr9bjqEzIMMkwlcead/+95KC9g3lsMPb2oAzg
- 7bCLAKVt8o2xXm45OwZUTCDqQ3fTyn1zRm5EOrCaUm1gtBJC9407BvwwphIhmPT
-X-Google-Smtp-Source: AGHT+IHHPgJWtqc7Mm4YgLMJNiro4Ltq0dCspVGJOHWJgtXiGMbiZwpj1Sq5z023ocWmRjPmQtZkiw==
-X-Received: by 2002:a05:6808:38cb:b0:3e6:35da:8f2b with SMTP id
- 5614622812f47-3eccbf2d5c0mr2134084b6e.4.1734529390677; 
- Wed, 18 Dec 2024 05:43:10 -0800 (PST)
+ bh=V9uuK3Bi0zd4Ff4jmnl20vwDce29dx6gKCtTc6/W2eI=;
+ b=pgOplSqnIofjsvhEXIs8+7/bAYBGR7Bwgt5+svZz91OOHpppOpXT57/Iuq+MMPwbhD
+ XY4YJFgcb0+XmP3YMTy2ujUwgJBNm2Z+QOat6zVrOD88VGkeczbgDu9qYsMnqeIvGgjG
+ 1l2wn665WVfZMYAS3FfzJ5NoECbtAuvvGUrMKcZekJeza552i3Nwdo3hWdox48gkab/A
+ f4g2kU4Lnhb1PPVApShfPQ/mRzL8+djYIEDqJ/IFhGr2G1Sfuy3wlNgGWw5y3TpzyigB
+ T2wau1vxBxeTREwr9daR+AHQ4wBjP9qMxfIFbnly+db7HNCwGpVD1wCNfd29ys/Sw90t
+ y1mQ==
+X-Gm-Message-State: AOJu0Yzs0gV5josniNKyNJXFgD0UvddZH+FE3b+9iWEXyhFfC68TNOxS
+ UsGe/BU4qx647Il59/w48hHeYxiGN9wZLt/SW4JJKZYEs2pbuEi3dhYL8a4pgaTNRPfH05NHKQq
+ +zx19RLov
+X-Gm-Gg: ASbGncvjyKpw/g7NPR89HBnFHNCSeZw4tAn3I3oh71Pm8Tne1t2rJsqkg5J0BvTbSKk
+ dzTTNr8vxms9QMjOfLlXAGCLMXMo7Dx1c9hQHXH5koPI4m4rsUnO7HAGSLUISIo7aSNa8XwGv9g
+ Fd7WVTBaQYN54ZdGFgf/Ri9M27uHov5mQX9J2lsCMMObSoTiwmbLi46jmnne34O6IINZLpx+WcI
+ q8V1a17PtfdTGcfLCPmY1ezCXs3YFXtpli6xJvNY0uwj4VQEHtdmq8uPol6+96x
+X-Google-Smtp-Source: AGHT+IGfpXWL8Db16m9vhNyuIoAW+9MKkMNmbqv9I6nACbioUYuBY85DBlSAWS4GQyTwG8TMu4/Dzw==
+X-Received: by 2002:a05:6808:1383:b0:3eb:394b:83f5 with SMTP id
+ 5614622812f47-3eccc0b9fc9mr1598569b6e.16.1734529392181; 
+ Wed, 18 Dec 2024 05:43:12 -0800 (PST)
 Received: from stoup.. ([187.217.227.247]) by smtp.gmail.com with ESMTPSA id
- 5614622812f47-3ebb478a502sm2870951b6e.9.2024.12.18.05.43.09
+ 5614622812f47-3ebb478a502sm2870951b6e.9.2024.12.18.05.43.10
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 18 Dec 2024 05:43:10 -0800 (PST)
+ Wed, 18 Dec 2024 05:43:11 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: pbonzini@redhat.com
-Subject: [PATCH v2 12/24] include/hw/qdev-core: Detect most empty Property
- lists at compile time
-Date: Wed, 18 Dec 2024 07:42:39 -0600
-Message-ID: <20241218134251.4724-13-richard.henderson@linaro.org>
+Subject: [PATCH v2 13/24] hw/core: Introduce device_class_set_props_n
+Date: Wed, 18 Dec 2024 07:42:40 -0600
+Message-ID: <20241218134251.4724-14-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241218134251.4724-1-richard.henderson@linaro.org>
 References: <20241218134251.4724-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::22a;
- envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x22a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::229;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x229.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,76 +95,180 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add a macro expansion of device_class_set_props which can check
-on the type and size of PROPS before calling the function.
-
-Avoid the macro in migration.c because migration_properties
-is defined externally with indeterminate size.
+Record the size of the array in DeviceClass.props_count_.
+Iterate with known count in qdev_prop_walk.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/hw/qdev-core.h    | 17 +++++++++++++++++
- hw/core/qdev-properties.c |  2 +-
- migration/migration.c     |  2 +-
- 3 files changed, 19 insertions(+), 2 deletions(-)
+ include/hw/qdev-core.h    | 18 ++++++++++++++++++
+ hw/core/qdev-properties.c | 39 +++++++++++++++++++++++++++++----------
+ hw/core/qdev.c            |  1 +
+ system/qdev-monitor.c     | 15 +++++++--------
+ 4 files changed, 55 insertions(+), 18 deletions(-)
 
 diff --git a/include/hw/qdev-core.h b/include/hw/qdev-core.h
-index 5be9844412..cbce3cf0b4 100644
+index cbce3cf0b4..e9b4891f55 100644
 --- a/include/hw/qdev-core.h
 +++ b/include/hw/qdev-core.h
-@@ -940,9 +940,26 @@ char *qdev_get_own_fw_dev_path_from_handler(BusState *bus, DeviceState *dev);
-  * This will add a set of properties to the object. It will fault if
-  * you attempt to add an existing property defined by a parent class.
-  * To modify an inherited property you need to use????
-+ *
-+ * Validate that @props has at least one Property plus the terminator.
-+ * Validate that the array is terminated at compile-time (with -O2),
-+ * which requires the array to be const.
-  */
- void device_class_set_props(DeviceClass *dc, const Property *props);
+@@ -138,6 +138,12 @@ struct DeviceClass {
+      */
+     const Property *props_;
  
-+#define device_class_set_props(dc, props) \
-+    do {                                                                \
-+        QEMU_BUILD_BUG_ON(sizeof(props) != sizeof(const Property *) &&  \
-+                          sizeof(props) < 2 * sizeof(Property));        \
-+        if (sizeof(props) != sizeof(const Property *)) {                \
-+            size_t props_count_ = sizeof(props) / sizeof(Property) - 1; \
-+            if ((props)[props_count_].name != NULL) {                   \
-+                qemu_build_not_reached();                               \
-+            }                                                           \
-+        }                                                               \
-+        (device_class_set_props)((dc), (props));                        \
-+    } while (0)
++    /**
++     * @props_count_: number of elements in @props_; should only be
++     * assigned by using device_class_set_props().
++     */
++    uint16_t props_count_;
++
+     /**
+      * @user_creatable: Can user instantiate with -device / device_add?
+      *
+@@ -960,6 +966,18 @@ void device_class_set_props(DeviceClass *dc, const Property *props);
+         (device_class_set_props)((dc), (props));                        \
+     } while (0)
+ 
++/**
++ * device_class_set_props_n(): add a set of properties to an device
++ * @dc: the parent DeviceClass all devices inherit
++ * @props: an array of properties, not terminated by DEFINE_PROP_END_OF_LIST.
++ * @n: ARRAY_SIZE(@props)
++ *
++ * This will add a set of properties to the object. It will fault if
++ * you attempt to add an existing property defined by a parent class.
++ * To modify an inherited property you need to use????
++ */
++void device_class_set_props_n(DeviceClass *dc, const Property *props, size_t n);
 +
  /**
   * device_class_set_parent_realize() - set up for chaining realize fns
   * @dc: The device class
 diff --git a/hw/core/qdev-properties.c b/hw/core/qdev-properties.c
-index 315196bd85..de618a964a 100644
+index de618a964a..31e3072b55 100644
 --- a/hw/core/qdev-properties.c
 +++ b/hw/core/qdev-properties.c
-@@ -1061,7 +1061,7 @@ static void qdev_class_add_legacy_property(DeviceClass *dc, const Property *prop
-         NULL, NULL, (Property *)prop);
- }
+@@ -749,16 +749,13 @@ const PropertyInfo qdev_prop_array = {
  
--void device_class_set_props(DeviceClass *dc, const Property *props)
-+void (device_class_set_props)(DeviceClass *dc, const Property *props)
+ /* --- public helpers --- */
+ 
+-static const Property *qdev_prop_walk(const Property *props, const char *name)
++static const Property *qdev_prop_walk(DeviceClass *cls, const char *name)
+ {
+-    if (!props) {
+-        return NULL;
+-    }
+-    while (props->name) {
+-        if (strcmp(props->name, name) == 0) {
+-            return props;
++    for (int i = 0, n = cls->props_count_; i < n; ++i) {
++        const Property *prop = &cls->props_[i];
++        if (strcmp(prop->name, name) == 0) {
++            return prop;
+         }
+-        props++;
+     }
+     return NULL;
+ }
+@@ -771,7 +768,7 @@ static const Property *qdev_prop_find(DeviceState *dev, const char *name)
+     /* device properties */
+     class = object_get_class(OBJECT(dev));
+     do {
+-        prop = qdev_prop_walk(DEVICE_CLASS(class)->props_, name);
++        prop = qdev_prop_walk(DEVICE_CLASS(class), name);
+         if (prop) {
+             return prop;
+         }
+@@ -1064,9 +1061,31 @@ static void qdev_class_add_legacy_property(DeviceClass *dc, const Property *prop
+ void (device_class_set_props)(DeviceClass *dc, const Property *props)
  {
      const Property *prop;
++    size_t n;
  
-diff --git a/migration/migration.c b/migration/migration.c
-index 8c5bd0a75c..6b3b85d31e 100644
---- a/migration/migration.c
-+++ b/migration/migration.c
-@@ -3822,7 +3822,7 @@ static void migration_class_init(ObjectClass *klass, void *data)
-     DeviceClass *dc = DEVICE_CLASS(klass);
- 
-     dc->user_creatable = false;
--    device_class_set_props(dc, migration_properties);
-+    (device_class_set_props)(dc, migration_properties);
+     dc->props_ = props;
+-    for (prop = props; prop && prop->name; prop++) {
++    for (prop = props, n = 0; prop && prop->name; prop++, n++) {
++        qdev_class_add_legacy_property(dc, prop);
++        qdev_class_add_property(dc, prop->name, prop);
++    }
++
++    /* We used a hole in DeviceClass because that's still a lot. */
++    assert(n <= UINT16_MAX);
++    dc->props_count_ = n;
++}
++
++void device_class_set_props_n(DeviceClass *dc, const Property *props, size_t n)
++{
++    /* We used a hole in DeviceClass because that's still a lot. */
++    assert(n <= UINT16_MAX);
++    assert(n != 0);
++
++    dc->props_ = props;
++    dc->props_count_ = n;
++
++    for (size_t i = 0; i < n; ++i) {
++        const Property *prop = &props[i];
++        assert(prop->name);
+         qdev_class_add_legacy_property(dc, prop);
+         qdev_class_add_property(dc, prop->name, prop);
+     }
+diff --git a/hw/core/qdev.c b/hw/core/qdev.c
+index 5f13111b77..57c1d9df3a 100644
+--- a/hw/core/qdev.c
++++ b/hw/core/qdev.c
+@@ -703,6 +703,7 @@ static void device_class_base_init(ObjectClass *class, void *data)
+      * so do not propagate them to the subclasses.
+      */
+     klass->props_ = NULL;
++    klass->props_count_ = 0;
  }
  
- static void migration_instance_finalize(Object *obj)
+ static void device_unparent(Object *obj)
+diff --git a/system/qdev-monitor.c b/system/qdev-monitor.c
+index 03ae610649..6831fffd9d 100644
+--- a/system/qdev-monitor.c
++++ b/system/qdev-monitor.c
+@@ -752,19 +752,18 @@ DeviceState *qdev_device_add(QemuOpts *opts, Error **errp)
+ 
+ #define qdev_printf(fmt, ...) monitor_printf(mon, "%*s" fmt, indent, "", ## __VA_ARGS__)
+ 
+-static void qdev_print_props(Monitor *mon, DeviceState *dev, const Property *props,
++static void qdev_print_props(Monitor *mon, DeviceState *dev, DeviceClass *dc,
+                              int indent)
+ {
+-    if (!props)
+-        return;
+-    for (; props->name; props++) {
++    for (int i = 0, n = dc->props_count_; i < n; ++i) {
++        const Property *prop = &dc->props_[i];
+         char *value;
+-        char *legacy_name = g_strdup_printf("legacy-%s", props->name);
++        char *legacy_name = g_strdup_printf("legacy-%s", prop->name);
+ 
+         if (object_property_get_type(OBJECT(dev), legacy_name, NULL)) {
+             value = object_property_get_str(OBJECT(dev), legacy_name, NULL);
+         } else {
+-            value = object_property_print(OBJECT(dev), props->name, true,
++            value = object_property_print(OBJECT(dev), prop->name, true,
+                                           NULL);
+         }
+         g_free(legacy_name);
+@@ -772,7 +771,7 @@ static void qdev_print_props(Monitor *mon, DeviceState *dev, const Property *pro
+         if (!value) {
+             continue;
+         }
+-        qdev_printf("%s = %s\n", props->name,
++        qdev_printf("%s = %s\n", prop->name,
+                     *value ? value : "<null>");
+         g_free(value);
+     }
+@@ -812,7 +811,7 @@ static void qdev_print(Monitor *mon, DeviceState *dev, int indent)
+     }
+     class = object_get_class(OBJECT(dev));
+     do {
+-        qdev_print_props(mon, dev, DEVICE_CLASS(class)->props_, indent);
++        qdev_print_props(mon, dev, DEVICE_CLASS(class), indent);
+         class = object_class_get_parent(class);
+     } while (class != object_class_by_name(TYPE_DEVICE));
+     bus_print_dev(dev->parent_bus, mon, dev, indent);
 -- 
 2.43.0
 
