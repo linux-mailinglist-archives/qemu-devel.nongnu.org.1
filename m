@@ -2,68 +2,139 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CBC39F6FE9
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Dec 2024 23:13:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A236D9F7020
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Dec 2024 23:38:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tO2Gz-000845-3x; Wed, 18 Dec 2024 17:12:05 -0500
+	id 1tO2Yt-00031j-B1; Wed, 18 Dec 2024 17:30:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from
- <BATV+c0487ad289ff35856000+7787+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1tO2Gw-00083d-F2
- for qemu-devel@nongnu.org; Wed, 18 Dec 2024 17:12:02 -0500
-Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
+ (Exim 4.90_1) (envelope-from <Michael.Roth@amd.com>)
+ id 1tO2Yj-000307-Fr
+ for qemu-devel@nongnu.org; Wed, 18 Dec 2024 17:30:25 -0500
+Received: from mail-dm6nam11on20624.outbound.protection.outlook.com
+ ([2a01:111:f403:2415::624]
+ helo=NAM11-DM6-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from
- <BATV+c0487ad289ff35856000+7787+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1tO2Gt-00069f-RY
- for qemu-devel@nongnu.org; Wed, 18 Dec 2024 17:12:02 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
- In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=/C2U3vOwdzkVgUrUNCvroNDiPUxTMo2xMCebvF7Rbxk=; b=aqXQOlGXCzdZ9Mawd3nDvdvZRA
- opl/XkL4PYZkh+1VSJhplkmQFVhUglg83+VESqUu7taEatx5A2KoJZJ5spj8FWaWkitnngqG3wyzv
- VvhUFNE4GXDToxHLo7cxkPSvm0SGxvJ7GJwZny2cy5ydKS3Cna7iNIXoNJuI/WmdSvk51RUMO0Mn6
- xiXp3MnPgcdZz6yAQrgV1/jESXMZr2DIa2HRQRjgZsaQ3uniIHFilpFBm+toL6cNK8EFFbIsS2v+D
- roxgExZpdneYfS9jHW4FBdGCHg65gzRt5D0aeofUr69UWL2pm8uNhrqQrhvdMJYB6PjwNsk9xkXHK
- DGINOp5A==;
-Received: from [54.239.6.189] (helo=u09cd745991455d.ant.amazon.com)
- by casper.infradead.org with esmtpsa (Exim 4.98 #2 (Red Hat Linux))
- id 1tO2Go-00000000jEL-36AU; Wed, 18 Dec 2024 22:11:55 +0000
-Message-ID: <42f8f20edb250b650a322124f5993a9d45730445.camel@infradead.org>
-Subject: Re: [PATCH] tests/functional: Convert the kvm_xen_guest avocado test
-From: David Woodhouse <dwmw2@infradead.org>
-To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org
-Cc: Paul Durrant <paul@xen.org>
-Date: Wed, 18 Dec 2024 23:11:54 +0100
-In-Reply-To: <999a8203f0c800f1305aacdb500dbf6038ebf147.camel@infradead.org>
-References: <20241218113255.232356-1-thuth@redhat.com>
- <9B5DDDDB-769B-4654-BEF1-D3F853EA05E5@infradead.org>
- <31e85f4d-66f2-4790-8597-f43e291bcbea@redhat.com>
- <61cadf31-8656-4216-a345-e364bb85e45b@redhat.com>
- <44c87114343dc57b248ff0f86e5f4e0683533efb.camel@infradead.org>
- <f987b60d-9e73-4f6a-ae48-857f7af6cddc@redhat.com>
- <999a8203f0c800f1305aacdb500dbf6038ebf147.camel@infradead.org>
-Content-Type: multipart/signed; micalg="sha-256";
- protocol="application/pkcs7-signature"; 
- boundary="=-pGbfU3LQnNDblr7/9znK"
-User-Agent: Evolution 3.52.3-0ubuntu1 
+ (Exim 4.90_1) (envelope-from <Michael.Roth@amd.com>)
+ id 1tO2Yg-0001t3-Py
+ for qemu-devel@nongnu.org; Wed, 18 Dec 2024 17:30:25 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=pOPGfQDg81wUOM6pPJxswEvgUhhqauCoP84Fp/VkYh3idQYI2YySAtNYbdr3heZUVkpZeis6cYnfD0TrzvBJ6W7I6mq7VKfAcnFbwUrzEQUMQTR2EhSI4A49FzpV5UCWYYRUQvkdOQA/qJI+j9meC6fN35coDfHElPyRQc/0BfL00nRt6drnWjpqIPbUhtTBMK7UV2YSs4BMUKf28FoZuMjGhaFEQ6EmUcBfFrix74YZNmy40EhynUPUz42iaI49muQ6XZnImRXDIvrzOiWmP8QIQoYeSqUfTPtnCMWBXuX9WjP4I239aqLkp0NbAtQQgqnzdcRNAh+aToDpNnAqkA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=RzRUx43/pQzb0PPL+y+7BOy/p7SkCX4E5bvR8i4vk9o=;
+ b=Qy0vqelDyiGFDgFSWB/b59QdVCueiByar86qfna7sC6WXUb5GP6LvRgLE/eiz8xIzD+awrJWT9Z4/qdRu6Sf8wNDuzF6mXbeIG+jX26lHwllnVjXJb4PfqnlAZDRd3w41lQ14UUUOrO2GQOCp3YDGkHvOlPccE+z8TxPy86WOcN0Sjodw/Go2q8zkbATNr0uDpNPhZ4EENhgPqdmHTby2I6IJJMlz/LEr5uDFAQd+DPGjOklCx0XBRjfyjArq4F0KgPuTYfR0JocPpESKfI6h0GNNvpDIr4UwBUu0gjSqgPgSnYWmEs2C4sjzZ/fiuYbeREitgpcgvqLxtj15mHCPg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=redhat.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=RzRUx43/pQzb0PPL+y+7BOy/p7SkCX4E5bvR8i4vk9o=;
+ b=fplIfvm9pgOnxRFCVhb9zZNHuaC9BeVvOabLMs4PMRHLTJeJhdQF6OoEz4PcVQZVLcq9mQzPOjSNWoHicnwiAsb/3P5tF8vXI3flIBKW98nueeU0rZt+58NHV76GfPC/5TsezKcroz3ecmSeZvl8sX3MqZhF7728JGQ6Ygv5gcQ=
+Received: from CH0PR03CA0318.namprd03.prod.outlook.com (2603:10b6:610:118::26)
+ by PH7PR12MB8053.namprd12.prod.outlook.com (2603:10b6:510:279::17)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8251.21; Wed, 18 Dec
+ 2024 22:30:09 +0000
+Received: from CH2PEPF00000142.namprd02.prod.outlook.com
+ (2603:10b6:610:118:cafe::bd) by CH0PR03CA0318.outlook.office365.com
+ (2603:10b6:610:118::26) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8251.22 via Frontend Transport; Wed,
+ 18 Dec 2024 22:30:08 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ CH2PEPF00000142.mail.protection.outlook.com (10.167.244.75) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.8251.15 via Frontend Transport; Wed, 18 Dec 2024 22:30:08 +0000
+Received: from localhost (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Wed, 18 Dec
+ 2024 16:30:06 -0600
+Date: Wed, 18 Dec 2024 16:14:44 -0600
+From: Michael Roth <michael.roth@amd.com>
+To: Markus Armbruster <armbru@redhat.com>
+CC: <qemu-devel@nongnu.org>, <pbonzini@redhat.com>, <berrange@redhat.com>,
+ <eduardo@habkost.net>, <pankaj.gupta@amd.com>, <huibo.wang@amd.com>,
+ <jroedel@suse.com>
+Subject: Re: [PATCH v1 3/3] i386/sev: Add KVM_EXIT_SNP_REQ_CERTS support for
+ certificate-fetching
+Message-ID: <20241218221444.guswafcjvsbyiuoa@amd.com>
+References: <20241218154939.1114831-1-michael.roth@amd.com>
+ <20241218154939.1114831-4-michael.roth@amd.com>
+ <878qscrj6y.fsf@pond.sub.org>
 MIME-Version: 1.0
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by
- casper.infradead.org. See http://www.infradead.org/rpr.html
-Received-SPF: none client-ip=2001:8b0:10b:1236::1;
- envelope-from=BATV+c0487ad289ff35856000+7787+infradead.org+dwmw2@casper.srs.infradead.org;
- helo=casper.infradead.org
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <878qscrj6y.fsf@pond.sub.org>
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PEPF00000142:EE_|PH7PR12MB8053:EE_
+X-MS-Office365-Filtering-Correlation-Id: d4b48512-dad2-4e7d-14be-08dd1fb3876a
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|376014|36860700013|1800799024|82310400026; 
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?zq4FpWvxKRK5ecp49tpeyHt5ROsdTj2sm0QB+L4XzXe6wvjJ9ZzbzaZMhD2E?=
+ =?us-ascii?Q?jVkjoIj4J2FB2s2voZyC1ONugzTASm9I/ucT/vua8LqJljKnaAHeCuKiBxy/?=
+ =?us-ascii?Q?l0LD46JI+ezemuwNfWKtv73ppXPY8IoTQVqsD+iSW2dkwKs8q6a8nbLXBgZ3?=
+ =?us-ascii?Q?wHb7LkudD4K3WFcGm145E5Jl9hSN7PVQEwKExH5wLV2MTysH7FXvgu+Lzywv?=
+ =?us-ascii?Q?3848kkOg1rYl/sR/RYqV/Wap/29nYYZZeKcpilRpO13lbcplwZjXwPVdFC27?=
+ =?us-ascii?Q?c84r0I1/pwb6Smvvm57l6JT60pD8nofdVKGhhfcAXXBqGnmDGMwYRdso1yHW?=
+ =?us-ascii?Q?ajcdW6vrxXV8tbJcGAEv5pSslxMaP7dsWKIse4A1mx8RAycBv4/JEu9v+QPS?=
+ =?us-ascii?Q?jqZ/KWKCvHrzZcySoMdQ59J2DmduR0sLvET8KwpjYeqKbfSbe21lItLVbp12?=
+ =?us-ascii?Q?leEvhRz3gyI09GA/nlYi94w21/VbPAhgwQewLtfyxLBQvePt8EILPCn/iD6L?=
+ =?us-ascii?Q?IYBF+/S1d9bcGaEte0un3OIgZA0vVwu7mdGIhvkL850BXlSNoWpy+ZZsEH11?=
+ =?us-ascii?Q?/rkartHI/MpETuUZjuc2w7tflnylzTOBoUMbun82NmHyeo1SL5+8msNYU3hw?=
+ =?us-ascii?Q?kjc/ZnY1XzivzEeydwXD4EnRh4jGnXy6qNVdjT1dhe1udRpvrynnPyZoPVvg?=
+ =?us-ascii?Q?H8JHJdkJQHrJ5nc1w1zaLygqn2/yy5Z11Q+kfJ4tNVO2LD6Q9veIsHwwvp14?=
+ =?us-ascii?Q?ehSyAqZ4UwhEMMYb+E229brF2G6Lb4hp4kbNXc8s4qqvVvvO90cHMYdKUaeJ?=
+ =?us-ascii?Q?oVFkQk4ak8eVgrQ/qJs6HQmDaRTFhuSQjxzga99WFc1BQPVO5hoXrrl4O4CW?=
+ =?us-ascii?Q?EztK2M77c3CQbOshw8wC4PTkjsZ4TYFRVOtXh/Ozgu5DGjmOKrjQSqfFLJLL?=
+ =?us-ascii?Q?v5/xdVoF6++ewo7d92hubm3Ddb7vWyqn0b/2r+76uA918hGaLuIt4bwsVqOj?=
+ =?us-ascii?Q?0MO/q7207HzLQ3AqUX4kPvaTVMDv+QzexKlPYk4qpmb+flQUj6IT0rtrToTw?=
+ =?us-ascii?Q?B6iQyXROu80tIhZUouLPleCQbJTk17JqvltbReynp3YeIwan2xjxqI9SD76b?=
+ =?us-ascii?Q?WawHywck989TGkf7YPN31NsqSMGdsPlciRsfJngpQvH/hb6XDkuYmTDyEwqA?=
+ =?us-ascii?Q?OCj/LCXIpjH7Ud91/tJyqyeAE9LSBJ7Z2Ez2SlUXa5jmL8Me8O51+m0+1nFD?=
+ =?us-ascii?Q?FxsUp6bB4/PXcXhCcQQeFiMBQJXUGAdun3RKwse7y74SOu7HFoqr+XOgmk3g?=
+ =?us-ascii?Q?xvnPl88xqI7i9zvChEAIjXJvry+YYQgWF6N9c3E9pu+/Y/CpBoT3KLcDnXJf?=
+ =?us-ascii?Q?V2dDO1lObvsCbBEN3nPDAoJM+ARmYetdAi/pyJikeTbWit33kZf/gz/qXKVO?=
+ =?us-ascii?Q?2qJPqNkFjIYazzPcvsF4Bwl2MJMzU2K8yClZYE9uprNyXMD3l90hMPaKIdTg?=
+ =?us-ascii?Q?KjfNMWVfVvL8J0g=3D?=
+X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230040)(376014)(36860700013)(1800799024)(82310400026); DIR:OUT;
+ SFP:1101; 
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Dec 2024 22:30:08.7180 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: d4b48512-dad2-4e7d-14be-08dd1fb3876a
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
+ Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: CH2PEPF00000142.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB8053
+Received-SPF: permerror client-ip=2a01:111:f403:2415::624;
+ envelope-from=Michael.Roth@amd.com;
+ helo=NAM11-DM6-obe.outbound.protection.outlook.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -79,189 +150,182 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Wed, Dec 18, 2024 at 06:32:05PM +0100, Markus Armbruster wrote:
+> Michael Roth <michael.roth@amd.com> writes:
+> 
+> > The GHCB specification[1] defines a VMGEXIT-based Guest Request
+> > hypercall to allow an SNP guest to issue encrypted requests directly to
+> > SNP firmware to do things like query the attestation report for the
+> > guest. These are generally handled purely in the kernel.
+> >
+> > In some some cases, it's useful for the host to be able to additionally
+> > supply the certificate chain for the signing key that SNP firmware uses
+> > to sign these attestation reports. To allow for this, the GHCB
+> > specification defines an Extended Guest Request where this certificate
+> > data can be provided in a special format described in the GHCB spec.
+> > This certificate data may be global or guest-specific depending on how
+> > the guest was configured. Rather than providing interfaces to manage
+> > these within the kernel, KVM provides a new KVM_EXIT_SNP_REQ_CERTS exit
+> > to request the certificate contents from userspace. Implement support
+> > for that here.
+> >
+> > To synchronize delivery of the certificates to the guest in a way where
+> > they will not be rendered invalid by updates to SNP firmware or
+> > attestation singing/endorsement keys by management tools outside the
+> > purview of QEMU, it is expected by users of KVM_EXIT_SNP_REQ_CERTS to
+> > obtain a shared/read lock on the certificate file prior to delivering
+> > them back to KVM. Only after this will the attestation report be
+> > retrieved from firmware and bundled with the certificate data, so QEMU
+> > must continue to hold the file lock until KVM confirms that the
+> > attestation report has been retrieved/bundled. This confirmation is done
+> > by way of the kvm_immediate_exit callback infrastructure that was
+> > introduced in a previous patch.
+> 
+> The "management tools outside the purview of QEMU" will all obtain the
+> same kind of file lock?
 
---=-pGbfU3LQnNDblr7/9znK
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Yes, this is meant for a cooperative environment where the cloud provider
+has opted to provide guest certificates in this manner and needs a way
+to synchronize guest attestation requests with other parts of their
+stack handling management duties like updating firmware/endorsement
+keys/etc. which might occur between the time a certificate is fetched
+and the time the attestation report is generated by firmware.
 
-On Wed, 2024-12-18 at 22:42 +0100, David Woodhouse wrote:
->=20
-> It seems like it's because of the way QEMU handles shared level-
-> triggered interrupts.
+The idea is to provide a path of least resistance using a common
+framework like filesystem locks, then heavily suggest that approach on
+the kernel documentation side, so that tools purposely or naturally opt
+to use this mechanism rather than every service provider coming up with
+some separate thing that they'll need to work into some custom QEMU/VMM
+to solve the same problem.
 
-Yeah, this hack seems to confirm it. As I said, PCI INTx manages to
-demux correctly, but any time you have non-PCI interrupt sharing, it's
-hosed because they all just set/clear the GSI as if they own it, and
-there's no OR gate in sight.
+Of course, userspace is free to implement their own completely separate
+mechanism for handling all this and completely ignore file-locking. But
+QEMU is only trying to play nice with this above-mentioned reference
+implementation and cooperative management tools, and not trying to
+profess to provide any sort of synchronization for cases where those
+sorts of management-level updates are performed without utilizing this
+reference implementation for synchronization.
 
-Now I have to decide if this is going to provoke me into attempting to
-fix it for the general case with callbacks and fixing VFIO resampling
-too, or whether I paper over it for QEMU with something *slightly* less
-icky than this (which ideally would not lose levels from PCI devices
-either)...
+I should have touched on this in the schema documentation. I'll make
+sure to add that in the next spin.
 
-diff --git a/hw/i386/kvm/xen_evtchn.c b/hw/i386/kvm/xen_evtchn.c
-index 07bd0c9ab8..4c2e8876e5 100644
---- a/hw/i386/kvm/xen_evtchn.c
-+++ b/hw/i386/kvm/xen_evtchn.c
-@@ -301,7 +301,20 @@ static void gsi_assert_bh(void *opaque)
-         xen_evtchn_set_callback_level(!!vi->evtchn_upcall_pending);
-     }
- }
--
-+int xen_evtchn_check_gsi(int n, int level)
-+{
-+    struct vcpu_info *vi =3D kvm_xen_get_vcpu_info_hva(0);
-+    XenEvtchnState *s =3D xen_evtchn_singleton;
-+    if (!s || n !=3D s->callback_gsi || !vi) {
-+        return level;
-+    }
-+    if (vi->evtchn_upcall_pending && !level) {
-+        printf("Refusing to deassert GSI#%d which is asserted by Xen\n",
-+               n);
-+        return 1;
-+    }
-+    return level;
-+}
- void xen_evtchn_create(unsigned int nr_gsis, qemu_irq *system_gsis)
- {
-     XenEvtchnState *s =3D XEN_EVTCHN(sysbus_create_simple(TYPE_XEN_EVTCHN,
-diff --git a/hw/i386/kvm/xen_evtchn.h b/hw/i386/kvm/xen_evtchn.h
-index b740acfc0d..c1f56869b3 100644
---- a/hw/i386/kvm/xen_evtchn.h
-+++ b/hw/i386/kvm/xen_evtchn.h
-@@ -31,6 +31,7 @@ struct kvm_irq_routing_entry;
- int xen_evtchn_translate_pirq_msi(struct kvm_irq_routing_entry *route,
-                                   uint64_t address, uint32_t data);
- bool xen_evtchn_deliver_pirq_msi(uint64_t address, uint32_t data);
-+int xen_evtchn_check_gsi(int n, int level);
-=20
-=20
- /*
-diff --git a/hw/i386/x86-common.c b/hw/i386/x86-common.c
-index dc031af662..4185f467ee 100644
---- a/hw/i386/x86-common.c
-+++ b/hw/i386/x86-common.c
-@@ -452,6 +452,7 @@ void gsi_handler(void *opaque, int n, int level)
-     GSIState *s =3D opaque;
-=20
-     trace_x86_gsi_interrupt(n, level);
-+    level =3D xen_evtchn_check_gsi(n, level);
-     switch (n) {
-     case 0 ... ISA_NUM_IRQS - 1:
-         if (s->i8259_irq[n]) {
+> 
+> > [1] "Guest Hypervisor Communication Block (GHCB) Standardization",
+> >     https://www.amd.com/en/developer/sev.html
+> >
+> > Signed-off-by: Michael Roth <michael.roth@amd.com>
+> > ---
+> >  qapi/qom.json                 |  23 +++-
+> >  target/i386/kvm/kvm.c         |  10 ++
+> >  target/i386/sev-sysemu-stub.c |   5 +
+> >  target/i386/sev.c             | 249 ++++++++++++++++++++++++++++++++++
+> >  target/i386/sev.h             |   2 +
+> >  5 files changed, 288 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/qapi/qom.json b/qapi/qom.json
+> > index 28ce24cd8d..6eaf0e7721 100644
+> > --- a/qapi/qom.json
+> > +++ b/qapi/qom.json
+> > @@ -1034,6 +1034,25 @@
+> >  #     firmware.  Set this to true to disable the use of VCEK.
+> >  #     (default: false) (since: 9.1)
+> >  #
+> > +# @certs-path: Path to certificate data that can be passed to guests via
+> > +#              SNP Extended Guest Requests. File should be in the format
+> > +#              described in the GHCB specification. (default: none)
+> > +#              (since: 10.0)
+> 
+> I prefer "filename" to "path".  We have many kinds of paths: pathnames
+> (denoting files), QOM paths (denoting objects), qdev paths, search
+> paths, ...  With "filename", your readers immediately know what you're
+> talking about.
+> 
+> SevGuestProperties has a member 'dh-cert-file'.  Whether that's related
+> to your file I can't tell from its documentation.
+> 
+> > +#
+> > +# @certs-timeout: Max time in milliseconds to wait to obtain a read lock
+> 
+> Please don't abbreviate "Maximum" here.
+> 
+> Confident millisecond granularity will suffice forever?
 
---=-pGbfU3LQnNDblr7/9znK
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Transfer-Encoding: base64
+I believe so.
 
-MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCEkQw
-ggYQMIID+KADAgECAhBNlCwQ1DvglAnFgS06KwZPMA0GCSqGSIb3DQEBDAUAMIGIMQswCQYDVQQG
-EwJVUzETMBEGA1UECBMKTmV3IEplcnNleTEUMBIGA1UEBxMLSmVyc2V5IENpdHkxHjAcBgNVBAoT
-FVRoZSBVU0VSVFJVU1QgTmV0d29yazEuMCwGA1UEAxMlVVNFUlRydXN0IFJTQSBDZXJ0aWZpY2F0
-aW9uIEF1dGhvcml0eTAeFw0xODExMDIwMDAwMDBaFw0zMDEyMzEyMzU5NTlaMIGWMQswCQYDVQQG
-EwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYD
-VQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50
-aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKC
-AQEAyjztlApB/975Rrno1jvm2pK/KxBOqhq8gr2+JhwpKirSzZxQgT9tlC7zl6hn1fXjSo5MqXUf
-ItMltrMaXqcESJuK8dtK56NCSrq4iDKaKq9NxOXFmqXX2zN8HHGjQ2b2Xv0v1L5Nk1MQPKA19xeW
-QcpGEGFUUd0kN+oHox+L9aV1rjfNiCj3bJk6kJaOPabPi2503nn/ITX5e8WfPnGw4VuZ79Khj1YB
-rf24k5Ee1sLTHsLtpiK9OjG4iQRBdq6Z/TlVx/hGAez5h36bBJMxqdHLpdwIUkTqT8se3ed0PewD
-ch/8kHPo5fZl5u1B0ecpq/sDN/5sCG52Ds+QU5O5EwIDAQABo4IBZDCCAWAwHwYDVR0jBBgwFoAU
-U3m/WqorSs9UgOHYm8Cd8rIDZsswHQYDVR0OBBYEFAnA8vwL2pTbX/4r36iZQs/J4K0AMA4GA1Ud
-DwEB/wQEAwIBhjASBgNVHRMBAf8ECDAGAQH/AgEAMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEF
-BQcDBDARBgNVHSAECjAIMAYGBFUdIAAwUAYDVR0fBEkwRzBFoEOgQYY/aHR0cDovL2NybC51c2Vy
-dHJ1c3QuY29tL1VTRVJUcnVzdFJTQUNlcnRpZmljYXRpb25BdXRob3JpdHkuY3JsMHYGCCsGAQUF
-BwEBBGowaDA/BggrBgEFBQcwAoYzaHR0cDovL2NydC51c2VydHJ1c3QuY29tL1VTRVJUcnVzdFJT
-QUFkZFRydXN0Q0EuY3J0MCUGCCsGAQUFBzABhhlodHRwOi8vb2NzcC51c2VydHJ1c3QuY29tMA0G
-CSqGSIb3DQEBDAUAA4ICAQBBRHUAqznCFfXejpVtMnFojADdF9d6HBA4kMjjsb0XMZHztuOCtKF+
-xswhh2GqkW5JQrM8zVlU+A2VP72Ky2nlRA1GwmIPgou74TZ/XTarHG8zdMSgaDrkVYzz1g3nIVO9
-IHk96VwsacIvBF8JfqIs+8aWH2PfSUrNxP6Ys7U0sZYx4rXD6+cqFq/ZW5BUfClN/rhk2ddQXyn7
-kkmka2RQb9d90nmNHdgKrwfQ49mQ2hWQNDkJJIXwKjYA6VUR/fZUFeCUisdDe/0ABLTI+jheXUV1
-eoYV7lNwNBKpeHdNuO6Aacb533JlfeUHxvBz9OfYWUiXu09sMAviM11Q0DuMZ5760CdO2VnpsXP4
-KxaYIhvqPqUMWqRdWyn7crItNkZeroXaecG03i3mM7dkiPaCkgocBg0EBYsbZDZ8bsG3a08LwEsL
-1Ygz3SBsyECa0waq4hOf/Z85F2w2ZpXfP+w8q4ifwO90SGZZV+HR/Jh6rEaVPDRF/CEGVqR1hiuQ
-OZ1YL5ezMTX0ZSLwrymUE0pwi/KDaiYB15uswgeIAcA6JzPFf9pLkAFFWs1QNyN++niFhsM47qod
-x/PL+5jR87myx5uYdBEQkkDc+lKB1Wct6ucXqm2EmsaQ0M95QjTmy+rDWjkDYdw3Ms6mSWE3Bn7i
-5ZgtwCLXgAIe5W8mybM2JzCCBhQwggT8oAMCAQICEQDGvhmWZ0DEAx0oURL6O6l+MA0GCSqGSIb3
-DQEBCwUAMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVyMRAwDgYD
-VQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNlY3RpZ28g
-UlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBMB4XDTIyMDEwNzAw
-MDAwMFoXDTI1MDEwNjIzNTk1OVowJDEiMCAGCSqGSIb3DQEJARYTZHdtdzJAaW5mcmFkZWFkLm9y
-ZzCCAiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBALQ3GpC2bomUqk+91wLYBzDMcCj5C9m6
-oZaHwvmIdXftOgTbCJXADo6G9T7BBAebw2JV38EINgKpy/ZHh7htyAkWYVoFsFPrwHounto8xTsy
-SSePMiPlmIdQ10BcVSXMUJ3Juu16GlWOnAMJY2oYfEzmE7uT9YgcBqKCo65pTFmOnR/VVbjJk4K2
-xE34GC2nAdUQkPFuyaFisicc6HRMOYXPuF0DuwITEKnjxgNjP+qDrh0db7PAjO1D4d5ftfrsf+kd
-RR4gKVGSk8Tz2WwvtLAroJM4nXjNPIBJNT4w/FWWc/5qPHJy2U+eITZ5LLE5s45mX2oPFknWqxBo
-bQZ8a9dsZ3dSPZBvE9ZrmtFLrVrN4eo1jsXgAp1+p7bkfqd3BgBEmfsYWlBXO8rVXfvPgLs32VdV
-NZxb/CDWPqBsiYv0Hv3HPsz07j5b+/cVoWqyHDKzkaVbxfq/7auNVRmPB3v5SWEsH8xi4Bez2V9U
-KxfYCnqsjp8RaC2/khxKt0A552Eaxnz/4ly/2C7wkwTQnBmdlFYhAflWKQ03Ufiu8t3iBE3VJbc2
-5oMrglj7TRZrmKq3CkbFnX0fyulB+kHimrt6PIWn7kgyl9aelIl6vtbhMA+l0nfrsORMa4kobqQ5
-C5rveVgmcIad67EDa+UqEKy/GltUwlSh6xy+TrK1tzDvAgMBAAGjggHMMIIByDAfBgNVHSMEGDAW
-gBQJwPL8C9qU21/+K9+omULPyeCtADAdBgNVHQ4EFgQUzMeDMcimo0oz8o1R1Nver3ZVpSkwDgYD
-VR0PAQH/BAQDAgWgMAwGA1UdEwEB/wQCMAAwHQYDVR0lBBYwFAYIKwYBBQUHAwQGCCsGAQUFBwMC
-MEAGA1UdIAQ5MDcwNQYMKwYBBAGyMQECAQEBMCUwIwYIKwYBBQUHAgEWF2h0dHBzOi8vc2VjdGln
-by5jb20vQ1BTMFoGA1UdHwRTMFEwT6BNoEuGSWh0dHA6Ly9jcmwuc2VjdGlnby5jb20vU2VjdGln
-b1JTQUNsaWVudEF1dGhlbnRpY2F0aW9uYW5kU2VjdXJlRW1haWxDQS5jcmwwgYoGCCsGAQUFBwEB
-BH4wfDBVBggrBgEFBQcwAoZJaHR0cDovL2NydC5zZWN0aWdvLmNvbS9TZWN0aWdvUlNBQ2xpZW50
-QXV0aGVudGljYXRpb25hbmRTZWN1cmVFbWFpbENBLmNydDAjBggrBgEFBQcwAYYXaHR0cDovL29j
-c3Auc2VjdGlnby5jb20wHgYDVR0RBBcwFYETZHdtdzJAaW5mcmFkZWFkLm9yZzANBgkqhkiG9w0B
-AQsFAAOCAQEAyW6MUir5dm495teKqAQjDJwuFCi35h4xgnQvQ/fzPXmtR9t54rpmI2TfyvcKgOXp
-qa7BGXNFfh1JsqexVkIqZP9uWB2J+uVMD+XZEs/KYNNX2PvIlSPrzIB4Z2wyIGQpaPLlYflrrVFK
-v9CjT2zdqvy2maK7HKOQRt3BiJbVG5lRiwbbygldcALEV9ChWFfgSXvrWDZspnU3Gjw/rMHrGnql
-Htlyebp3pf3fSS9kzQ1FVtVIDrL6eqhTwJxe+pXSMMqFiN0whpBtXdyDjzBtQTaZJ7zTT/vlehc/
-tDuqZwGHm/YJy883Ll+GP3NvOkgaRGWEuYWJJ6hFCkXYjyR9IzCCBhQwggT8oAMCAQICEQDGvhmW
-Z0DEAx0oURL6O6l+MA0GCSqGSIb3DQEBCwUAMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3Jl
-YXRlciBNYW5jaGVzdGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0
-ZWQxPjA8BgNVBAMTNVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJl
-IEVtYWlsIENBMB4XDTIyMDEwNzAwMDAwMFoXDTI1MDEwNjIzNTk1OVowJDEiMCAGCSqGSIb3DQEJ
-ARYTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBALQ3
-GpC2bomUqk+91wLYBzDMcCj5C9m6oZaHwvmIdXftOgTbCJXADo6G9T7BBAebw2JV38EINgKpy/ZH
-h7htyAkWYVoFsFPrwHounto8xTsySSePMiPlmIdQ10BcVSXMUJ3Juu16GlWOnAMJY2oYfEzmE7uT
-9YgcBqKCo65pTFmOnR/VVbjJk4K2xE34GC2nAdUQkPFuyaFisicc6HRMOYXPuF0DuwITEKnjxgNj
-P+qDrh0db7PAjO1D4d5ftfrsf+kdRR4gKVGSk8Tz2WwvtLAroJM4nXjNPIBJNT4w/FWWc/5qPHJy
-2U+eITZ5LLE5s45mX2oPFknWqxBobQZ8a9dsZ3dSPZBvE9ZrmtFLrVrN4eo1jsXgAp1+p7bkfqd3
-BgBEmfsYWlBXO8rVXfvPgLs32VdVNZxb/CDWPqBsiYv0Hv3HPsz07j5b+/cVoWqyHDKzkaVbxfq/
-7auNVRmPB3v5SWEsH8xi4Bez2V9UKxfYCnqsjp8RaC2/khxKt0A552Eaxnz/4ly/2C7wkwTQnBmd
-lFYhAflWKQ03Ufiu8t3iBE3VJbc25oMrglj7TRZrmKq3CkbFnX0fyulB+kHimrt6PIWn7kgyl9ae
-lIl6vtbhMA+l0nfrsORMa4kobqQ5C5rveVgmcIad67EDa+UqEKy/GltUwlSh6xy+TrK1tzDvAgMB
-AAGjggHMMIIByDAfBgNVHSMEGDAWgBQJwPL8C9qU21/+K9+omULPyeCtADAdBgNVHQ4EFgQUzMeD
-Mcimo0oz8o1R1Nver3ZVpSkwDgYDVR0PAQH/BAQDAgWgMAwGA1UdEwEB/wQCMAAwHQYDVR0lBBYw
-FAYIKwYBBQUHAwQGCCsGAQUFBwMCMEAGA1UdIAQ5MDcwNQYMKwYBBAGyMQECAQEBMCUwIwYIKwYB
-BQUHAgEWF2h0dHBzOi8vc2VjdGlnby5jb20vQ1BTMFoGA1UdHwRTMFEwT6BNoEuGSWh0dHA6Ly9j
-cmwuc2VjdGlnby5jb20vU2VjdGlnb1JTQUNsaWVudEF1dGhlbnRpY2F0aW9uYW5kU2VjdXJlRW1h
-aWxDQS5jcmwwgYoGCCsGAQUFBwEBBH4wfDBVBggrBgEFBQcwAoZJaHR0cDovL2NydC5zZWN0aWdv
-LmNvbS9TZWN0aWdvUlNBQ2xpZW50QXV0aGVudGljYXRpb25hbmRTZWN1cmVFbWFpbENBLmNydDAj
-BggrBgEFBQcwAYYXaHR0cDovL29jc3Auc2VjdGlnby5jb20wHgYDVR0RBBcwFYETZHdtdzJAaW5m
-cmFkZWFkLm9yZzANBgkqhkiG9w0BAQsFAAOCAQEAyW6MUir5dm495teKqAQjDJwuFCi35h4xgnQv
-Q/fzPXmtR9t54rpmI2TfyvcKgOXpqa7BGXNFfh1JsqexVkIqZP9uWB2J+uVMD+XZEs/KYNNX2PvI
-lSPrzIB4Z2wyIGQpaPLlYflrrVFKv9CjT2zdqvy2maK7HKOQRt3BiJbVG5lRiwbbygldcALEV9Ch
-WFfgSXvrWDZspnU3Gjw/rMHrGnqlHtlyebp3pf3fSS9kzQ1FVtVIDrL6eqhTwJxe+pXSMMqFiN0w
-hpBtXdyDjzBtQTaZJ7zTT/vlehc/tDuqZwGHm/YJy883Ll+GP3NvOkgaRGWEuYWJJ6hFCkXYjyR9
-IzGCBMcwggTDAgEBMIGsMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVz
-dGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMT
-NVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBAhEA
-xr4ZlmdAxAMdKFES+jupfjANBglghkgBZQMEAgEFAKCCAeswGAYJKoZIhvcNAQkDMQsGCSqGSIb3
-DQEHATAcBgkqhkiG9w0BCQUxDxcNMjQxMjE4MjIxMTU0WjAvBgkqhkiG9w0BCQQxIgQgxV7I24g4
-zFGtlxYnXf5akO91NHP2EnfTSxUvfPFu3/swgb0GCSsGAQQBgjcQBDGBrzCBrDCBljELMAkGA1UE
-BhMCR0IxGzAZBgNVBAgTEkdyZWF0ZXIgTWFuY2hlc3RlcjEQMA4GA1UEBxMHU2FsZm9yZDEYMBYG
-A1UEChMPU2VjdGlnbyBMaW1pdGVkMT4wPAYDVQQDEzVTZWN0aWdvIFJTQSBDbGllbnQgQXV0aGVu
-dGljYXRpb24gYW5kIFNlY3VyZSBFbWFpbCBDQQIRAMa+GZZnQMQDHShREvo7qX4wgb8GCyqGSIb3
-DQEJEAILMYGvoIGsMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVy
-MRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNl
-Y3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBAhEAxr4Z
-lmdAxAMdKFES+jupfjANBgkqhkiG9w0BAQEFAASCAgBiB0hzzpr7zmbRKlRSdPWfGw5Kjgc4eHld
-7qJP0p9VhiaPniejkZU5FM6U8CjXZMx7+n1kq3Wgx1ojAEqsiyeZ+zhhgm+DA0Lk+B3r+F1f9NyD
-PUkpwwdgO8sUu6AG3nry2zrxxgBdN8UBk4FalLzZTOXOtS+NcGti1sngzYMJPS/n6Yuza+eeXEP1
-XNq3PQcvlJ6EnifWIXU/HQzJUy8JYOQmUjo6JNKuWuTanZ6Xm2f2Y0bCl5/ts7SX4yHOKUjJ8h9J
-HUhccGFwId8vyJM1kSJ0X0CxfcDEJ3lI0Jdd3edSpYTpzXlVtoeRxCRvO23O8RluerKOj67QLmPf
-DdjBxvebbt5pWpng3UjXOQNZ2PwGlDC9nn84fxmOTOw2q4MCVNFW/+7CYe/87t2OyFCLPXvOJ++y
-e5pqr/ELGUcfRWLTgMqCO5vyiSj2iA6urY5RYrhrXngOAgyA4RHYsT7WGYsgUqALFtbfkG9tw9OS
-RpbkouJ13dRauEqjhk8vO9AHwRXaVN+xNjvfgnwEwhp6r3DQJcJDlEWavVCoDAhBrKmilqIk8+Wk
-LMf+lh2Z6p/w7TCcrmO3Y9WyY4eHOV1VOUi5luUOchaOHCxBg57p0I1zaucMpokGZ2v9A+3R9G0p
-lkWfuB7QVUcxYd5X4y2OLlyohyxINrW1rRF3thyRoQAAAAAAAA==
+There will likely be some form of rate-limiting added to KVM along the lines
+of this patch, with proposals on the order of 2 requests per second for guest
+requests to avoid DoS'ing each other:
 
+  https://lore.kernel.org/all/20230119213426.379312-1-dionnaglaze@google.com/
 
---=-pGbfU3LQnNDblr7/9znK--
+I believe guest kernels already voluntarily limit themselves to
+something similar before retrying requests.
+
+So the only case I can think of where a sub-1ms interval would be
+desired would be cases where the guest has very aggressive soft-lockup
+detection settings, in which case we might as well just set the timeout
+to 0 and not busy-wait at all, which should be allowed for here.
+(There's more documentation in the related handling in
+target/i386/sev.c, but in such cases the guest will get an EAGAIN and
+generally retry the request later).
+
+> 
+> > +#                 on the certificate file specified by @certs-path. This
+> > +#                 is not a cumulative value and only affects how long
+> > +#                 QEMU waits before returning execution to the vCPU and
+> > +#                 informing the guest of the timeout, so the guest can
+> > +#                 still continuing retrying for as long as it likes
+> > +#                 (which will be about 60 seconds for linux guests at
+> > +#                 the time of this writing). If the guest-side timeout
+> > +#                 is insufficient, set this higher to allow more time to
+> > +#                 fetch the certificate. If the guest-side timeout is
+> > +#                 sufficient, set this lower to reduce the likelihood of
+> > +#                 soft lockups in the guest.
+> > +#                 (default: 100) (since: 10.0)
+> > +#
+> >  # Since: 9.1
+> >  ##
+> 
+> Please format like
+> 
+>    # @certs-path: Path to certificate data that can be passed to guests
+>    #     via SNP Extended Guest Requests.  File should be in the format
+>    #     described in the GHCB specification.
+>    #     (default: none) (since: 10.0)
+>    #
+>    # @certs-timeout: Max time in milliseconds to wait to obtain a read
+>    #     lock on the certificate file specified by @certs-path.  This is
+>    #     not a cumulative value and only affects how long QEMU waits
+>    #     before returning execution to the vCPU and informing the guest
+>    #     of the timeout, so the guest can still continuing retrying for
+>    #     as long as it likes (which will be about 60 seconds for linux
+>    #     guests at the time of this writing).  If the guest-side timeout
+>    #     is insufficient, set this higher to allow more time to fetch the
+>    #     certificate.  If the guest-side timeout is sufficient, set this
+>    #     lower to reduce the likelihood of soft lockups in the guest.
+>    #     (default: 100) (since: 10.0)
+> 
+> to blend in with commit a937b6aa739 (qapi: Reformat doc comments to
+> conform to current conventions).
+
+Will do!
+
+-Mike
+
+> 
+> >  { 'struct': 'SevSnpGuestProperties',
+> > @@ -1045,7 +1064,9 @@
+> >              '*id-auth': 'str',
+> >              '*author-key-enabled': 'bool',
+> >              '*host-data': 'str',
+> > -            '*vcek-disabled': 'bool' } }
+> > +            '*vcek-disabled': 'bool',
+> > +            '*certs-path': 'str',
+> > +            '*certs-timeout': 'uint32' } }
+> >  
+> >  ##
+> >  # @ThreadContextProperties:
+> 
+> [...]
+> 
 
