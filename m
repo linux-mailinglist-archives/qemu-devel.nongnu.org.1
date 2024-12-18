@@ -2,57 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CB479F66E1
+	by mail.lfdr.de (Postfix) with ESMTPS id 607129F66E0
 	for <lists+qemu-devel@lfdr.de>; Wed, 18 Dec 2024 14:16:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tNttx-0002Uv-Lp; Wed, 18 Dec 2024 08:15:45 -0500
+	id 1tNttx-0002Ku-Ko; Wed, 18 Dec 2024 08:15:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tNttW-0002F4-FJ
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tNttX-0002F6-2k
  for qemu-devel@nongnu.org; Wed, 18 Dec 2024 08:15:20 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tNttK-0005SH-TQ
- for qemu-devel@nongnu.org; Wed, 18 Dec 2024 08:15:14 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tNttO-0005St-KO
+ for qemu-devel@nongnu.org; Wed, 18 Dec 2024 08:15:16 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1734527704;
+ s=mimecast20190719; t=1734527708;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=k6WQibGLd1aga+l8qnQklbyV4ow8VYthM36dgdoA6Cs=;
- b=K3zw3YkqfHZSx4UdbBvYaruimTeA5Q2TKCU++jAN0GwPkxk5r95PEADFvMcwB278gXXMmq
- tTtymXBdRkyneXYdHLJNaVErVRimnSk49m/jtb8pKKmEi/Gv2xGHlSJj26QdSaLkuak1Ga
- 0RqrXholDHGCpR1Yn9GMTaIleVgVbC0=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ bh=4rjPuN3IFld4pUl6SnjEFUI6gXUHq4mMQ5h7w8p42HE=;
+ b=N4RMihkzFhwVIaJtmAfloT87vvOmgCam+TjCBE3xnp/KhHkM09IDva6hkyfKY6U8wxpyP6
+ EJyWEzRAE41ieG3wh4vXAJpmgIODasS6CGZED/QZ3NKumWotw0X+KOWaErZjzhcJ3LW1ya
+ 9KJhF5N5aGKKlDIYn1t3670EIukI8k8=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-575-B3bVr2seP4qUWUxS1BJo6g-1; Wed,
- 18 Dec 2024 08:15:01 -0500
-X-MC-Unique: B3bVr2seP4qUWUxS1BJo6g-1
-X-Mimecast-MFC-AGG-ID: B3bVr2seP4qUWUxS1BJo6g
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-625-ZdyBwAPxM5S0QEwqJqhMAg-1; Wed,
+ 18 Dec 2024 08:15:05 -0500
+X-MC-Unique: ZdyBwAPxM5S0QEwqJqhMAg-1
+X-Mimecast-MFC-AGG-ID: ZdyBwAPxM5S0QEwqJqhMAg
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 6B82E19560B3; Wed, 18 Dec 2024 13:15:00 +0000 (UTC)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 3D0A51955F42; Wed, 18 Dec 2024 13:15:04 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.192.114])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 97C4B30044C1; Wed, 18 Dec 2024 13:14:57 +0000 (UTC)
+ id 2662E30044C1; Wed, 18 Dec 2024 13:15:00 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 Cc: Peter Xu <peterx@redhat.com>,
 	Fabiano Rosas <farosas@suse.de>
-Subject: [PATCH v2 4/5] tests/functional: Extract the find_free_ports()
- function into a helper file
-Date: Wed, 18 Dec 2024 14:14:38 +0100
-Message-ID: <20241218131439.255841-5-thuth@redhat.com>
+Subject: [PATCH v2 5/5] tests/functional: Convert the migration avocado test
+Date: Wed, 18 Dec 2024 14:14:39 +0100
+Message-ID: <20241218131439.255841-6-thuth@redhat.com>
 In-Reply-To: <20241218131439.255841-1-thuth@redhat.com>
 References: <20241218131439.255841-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -83,155 +82,277 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We'll need this functionality in other functional tests, too, so
-let's extract it into the qemu_test module.
-Also add  an __enter__ and __exit__ function that can be used for
-using this functionality in a locked context, so that tests that
-are running in parallel don't try to compete for the same ports
-later.
-Also make sure to only use ports in the "Dynamic Ports" range
-(see https://www.rfc-editor.org/rfc/rfc6335) and "randomize" the
-start of the probed range with the PID of the test process to
-further avoid possible clashes with other competing processes.
+Now that we've got a find_free_port() function in the functional
+test framework, we can convert the migration test, too.
+While the original avocado test was only meant to run on aarch64,
+ppc64 and x86, we can turn this into a more generic test by now
+and run it on all architectures that have a default machine that
+ships with a working firmware.
 
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- tests/functional/qemu_test/ports.py | 56 +++++++++++++++++++++++++++++
- tests/functional/test_vnc.py        | 36 +++++--------------
- 2 files changed, 64 insertions(+), 28 deletions(-)
- create mode 100644 tests/functional/qemu_test/ports.py
+ MAINTAINERS                                   |   1 +
+ tests/functional/meson.build                  |  19 +++
+ .../test_migration.py}                        | 121 +++++-------------
+ 3 files changed, 54 insertions(+), 87 deletions(-)
+ rename tests/{avocado/migration.py => functional/test_migration.py} (41%)
+ mode change 100644 => 100755
 
-diff --git a/tests/functional/qemu_test/ports.py b/tests/functional/qemu_test/ports.py
-new file mode 100644
-index 0000000000..cc39939d48
---- /dev/null
-+++ b/tests/functional/qemu_test/ports.py
-@@ -0,0 +1,56 @@
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 389b390de1..704648d57a 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -3429,6 +3429,7 @@ F: include/migration/
+ F: include/qemu/userfaultfd.h
+ F: migration/
+ F: scripts/vmstate-static-checker.py
++F: tests/functional/test_migration.py
+ F: tests/vmstate-static-checker-data/
+ F: tests/qtest/migration/
+ F: tests/qtest/migration-*
+diff --git a/tests/functional/meson.build b/tests/functional/meson.build
+index 781bd7eae6..8c3d1c26da 100644
+--- a/tests/functional/meson.build
++++ b/tests/functional/meson.build
+@@ -70,6 +70,10 @@ tests_aarch64_system_thorough = [
+   'multiprocess',
+ ]
+ 
++tests_alpha_system_quick = [
++  'migration',
++]
++
+ tests_alpha_system_thorough = [
+   'alpha_clipper',
+ ]
+@@ -167,6 +171,10 @@ tests_ppc_system_thorough = [
+   'ppc_virtex_ml507',
+ ]
+ 
++tests_ppc64_system_quick = [
++  'migration',
++]
++
+ tests_ppc64_system_thorough = [
+   'ppc64_e500',
+   'ppc64_hv',
+@@ -176,6 +184,7 @@ tests_ppc64_system_thorough = [
+ ]
+ 
+ tests_riscv32_system_quick = [
++  'migration',
+   'riscv_opensbi',
+ ]
+ 
+@@ -184,6 +193,7 @@ tests_riscv32_system_thorough = [
+ ]
+ 
+ tests_riscv64_system_quick = [
++  'migration',
+   'riscv_opensbi',
+ ]
+ 
+@@ -210,10 +220,18 @@ tests_sh4eb_system_thorough = [
+   'sh4eb_r2d',
+ ]
+ 
++tests_sparc_system_quick = [
++  'migration',
++]
++
+ tests_sparc_system_thorough = [
+   'sparc_sun4m',
+ ]
+ 
++tests_sparc64_system_quick = [
++  'migration',
++]
++
+ tests_sparc64_system_thorough = [
+   'sparc64_sun4u',
+   'sparc64_tuxrun',
+@@ -222,6 +240,7 @@ tests_sparc64_system_thorough = [
+ tests_x86_64_system_quick = [
+   'cpu_queries',
+   'mem_addr_space',
++  'migration',
+   'pc_cpu_hotplug_props',
+   'virtio_version',
+   'x86_cpu_model_versions',
+diff --git a/tests/avocado/migration.py b/tests/functional/test_migration.py
+old mode 100644
+new mode 100755
+similarity index 41%
+rename from tests/avocado/migration.py
+rename to tests/functional/test_migration.py
+index be6234b3c2..5607d601eb
+--- a/tests/avocado/migration.py
++++ b/tests/functional/test_migration.py
+@@ -1,3 +1,5 @@
 +#!/usr/bin/env python3
 +#
-+# Simple functional tests for VNC functionality
-+#
-+# Copyright 2018, 2024 Red Hat, Inc.
-+#
-+# This work is licensed under the terms of the GNU GPL, version 2 or
-+# later.  See the COPYING file in the top-level directory.
-+
-+import fcntl
-+import os
-+import socket
-+import sys
-+import tempfile
-+
-+from .config import BUILD_DIR
-+from typing import List
-+
-+class Ports():
-+
-+    PORTS_ADDR = '127.0.0.1'
-+    PORTS_RANGE_SIZE = 1024
-+    PORTS_START = 49152 + ((os.getpid() * PORTS_RANGE_SIZE) % 16384)
-+    PORTS_END = PORTS_START + PORTS_RANGE_SIZE
-+
-+    def __enter__(self):
-+        lock_file = os.path.join(BUILD_DIR, "tests", "functional", "port_lock")
-+        self.lock_fh = os.open(lock_file, os.O_CREAT)
-+        fcntl.flock(self.lock_fh, fcntl.LOCK_EX)
-+        return self
-+
-+    def __exit__(self, exc_type, exc_value, traceback):
-+        fcntl.flock(self.lock_fh, fcntl.LOCK_UN)
-+        os.close(self.lock_fh)
-+
-+    def check_bind(self, port: int) -> bool:
-+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
-+            try:
-+                sock.bind((self.PORTS_ADDR, port))
-+            except OSError:
-+                return False
-+
-+        return True
-+
-+    def find_free_ports(self, count: int) -> List[int]:
-+        result = []
-+        for port in range(self.PORTS_START, self.PORTS_END):
-+            if self.check_bind(port):
-+                result.append(port)
-+                if len(result) >= count:
-+                    break
-+        assert len(result) == count
-+        return result
-+
-+    def find_free_port(self) -> int:
-+        return self.find_free_ports(1)[0]
-diff --git a/tests/functional/test_vnc.py b/tests/functional/test_vnc.py
-index e600d75234..1916be0103 100755
---- a/tests/functional/test_vnc.py
-+++ b/tests/functional/test_vnc.py
-@@ -14,22 +14,9 @@
- from typing import List
+ # Migration test
+ #
+ # Copyright (c) 2019 Red Hat, Inc.
+@@ -9,22 +11,14 @@
+ # This work is licensed under the terms of the GNU GPL, version 2 or
+ # later.  See the COPYING file in the top-level directory.
  
- from qemu_test import QemuSystemTest
 -
+-import tempfile
+ import os
++import tempfile
++import time
+ 
+-from avocado_qemu import QemuSystemTest
+-from avocado import skipUnless
+-
+-from avocado.utils.network import ports
+-from avocado.utils import wait
+-from avocado.utils.path import find_command
+-
++from qemu_test import QemuSystemTest, skipIfMissingCommands
 +from qemu_test.ports import Ports
  
- VNC_ADDR = '127.0.0.1'
--VNC_PORT_START = 32768
--VNC_PORT_END = VNC_PORT_START + 1024
--
--
--def check_bind(port: int) -> bool:
--    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
--        try:
--            sock.bind((VNC_ADDR, port))
--        except OSError:
--            return False
--
--    return True
--
+ class MigrationTest(QemuSystemTest):
+-    """
+-    :avocado: tags=migration
+-    """
  
- def check_connect(port: int) -> bool:
-     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
-@@ -40,18 +27,6 @@ def check_connect(port: int) -> bool:
+     timeout = 10
  
-     return True
+@@ -33,103 +27,56 @@ def migration_finished(vm):
+         return vm.cmd('query-migrate')['status'] in ('completed', 'failed')
  
--
--def find_free_ports(count: int) -> List[int]:
--    result = []
--    for port in range(VNC_PORT_START, VNC_PORT_END):
--        if check_bind(port):
--            result.append(port)
--            if len(result) >= count:
--                break
--    assert len(result) == count
--    return result
--
--
- class Vnc(QemuSystemTest):
+     def assert_migration(self, src_vm, dst_vm):
+-        wait.wait_for(self.migration_finished,
+-                      timeout=self.timeout,
+-                      step=0.1,
+-                      args=(src_vm,))
+-        wait.wait_for(self.migration_finished,
+-                      timeout=self.timeout,
+-                      step=0.1,
+-                      args=(dst_vm,))
++
++        end = time.monotonic() + self.timeout
++        while time.monotonic() < end and not self.migration_finished(src_vm):
++           time.sleep(0.1)
++
++        end = time.monotonic() + self.timeout
++        while time.monotonic() < end and not self.migration_finished(dst_vm):
++           time.sleep(0.1)
++
+         self.assertEqual(src_vm.cmd('query-migrate')['status'], 'completed')
+         self.assertEqual(dst_vm.cmd('query-migrate')['status'], 'completed')
+         self.assertEqual(dst_vm.cmd('query-status')['status'], 'running')
+         self.assertEqual(src_vm.cmd('query-status')['status'],'postmigrate')
  
-     def test_no_vnc_change_password(self):
-@@ -85,8 +60,7 @@ def test_change_password(self):
-         self.vm.cmd('change-vnc-password',
-                     password='new_password')
+     def do_migrate(self, dest_uri, src_uri=None):
+-        dest_vm = self.get_vm('-incoming', dest_uri)
++        dest_vm = self.get_vm('-incoming', dest_uri, name="dest-qemu")
+         dest_vm.add_args('-nodefaults')
+         dest_vm.launch()
+         if src_uri is None:
+             src_uri = dest_uri
+-        source_vm = self.get_vm()
++        source_vm = self.get_vm(name="source-qemu")
+         source_vm.add_args('-nodefaults')
+         source_vm.launch()
+         source_vm.qmp('migrate', uri=src_uri)
+         self.assert_migration(source_vm, dest_vm)
  
--    def test_change_listen(self):
--        a, b, c = find_free_ports(3)
-+    def do_test_change_listen(self, a, b, c):
-         self.assertFalse(check_connect(a))
-         self.assertFalse(check_connect(b))
-         self.assertFalse(check_connect(c))
-@@ -108,5 +82,11 @@ def test_change_listen(self):
-         self.assertTrue(check_connect(b))
-         self.assertTrue(check_connect(c))
+-    def _get_free_port(self):
++    def _get_free_port(self, ports):
+         port = ports.find_free_port()
+         if port is None:
+-            self.cancel('Failed to find a free port')
++            self.skipTest('Failed to find a free port')
+         return port
  
-+    def test_change_listen(self):
+-    def migration_with_tcp_localhost(self):
+-        dest_uri = 'tcp:localhost:%u' % self._get_free_port()
+-        self.do_migrate(dest_uri)
++    def test_migration_with_tcp_localhost(self):
 +        with Ports() as ports:
-+            a, b, c = ports.find_free_ports(3)
-+            self.do_test_change_listen(a, b, c)
++            dest_uri = 'tcp:localhost:%u' % self._get_free_port(ports)
++            self.do_migrate(dest_uri)
+ 
+-    def migration_with_unix(self):
++    def test_migration_with_unix(self):
+         with tempfile.TemporaryDirectory(prefix='socket_') as socket_path:
+             dest_uri = 'unix:%s/qemu-test.sock' % socket_path
+             self.do_migrate(dest_uri)
+ 
+-    @skipUnless(find_command('nc', default=False), "'nc' command not found")
+-    def migration_with_exec(self):
+-        """The test works for both netcat-traditional and netcat-openbsd packages."""
+-        free_port = self._get_free_port()
+-        dest_uri = 'exec:nc -l localhost %u' % free_port
+-        src_uri = 'exec:nc localhost %u' % free_port
+-        self.do_migrate(dest_uri, src_uri)
+-
+-
+-@skipUnless('aarch64' in os.uname()[4], "host != target")
+-class Aarch64(MigrationTest):
+-    """
+-    :avocado: tags=arch:aarch64
+-    :avocado: tags=machine:virt
+-    :avocado: tags=cpu:max
+-    """
+-
+-    def test_migration_with_tcp_localhost(self):
+-        self.migration_with_tcp_localhost()
+-
+-    def test_migration_with_unix(self):
+-        self.migration_with_unix()
+-
+-    def test_migration_with_exec(self):
+-        self.migration_with_exec()
+-
+-
+-@skipUnless('x86_64' in os.uname()[4], "host != target")
+-class X86_64(MigrationTest):
+-    """
+-    :avocado: tags=arch:x86_64
+-    :avocado: tags=machine:pc
+-    :avocado: tags=cpu:qemu64
+-    """
+-
+-    def test_migration_with_tcp_localhost(self):
+-        self.migration_with_tcp_localhost()
+-
+-    def test_migration_with_unix(self):
+-        self.migration_with_unix()
+-
++    @skipIfMissingCommands('nc')
+     def test_migration_with_exec(self):
+-        self.migration_with_exec()
+-
+-
+-@skipUnless('ppc64le' in os.uname()[4], "host != target")
+-class PPC64(MigrationTest):
+-    """
+-    :avocado: tags=arch:ppc64
+-    :avocado: tags=machine:pseries
+-    """
+-
+-    def test_migration_with_tcp_localhost(self):
+-        self.migration_with_tcp_localhost()
+-
+-    def test_migration_with_unix(self):
+-        self.migration_with_unix()
+-
+-    def test_migration_with_exec(self):
+-        self.migration_with_exec()
++        """The test works for both netcat-traditional and netcat-openbsd packages."""
++        with Ports() as ports:
++            free_port = self._get_free_port(ports)
++            dest_uri = 'exec:nc -l localhost %u' % free_port
++            src_uri = 'exec:nc localhost %u' % free_port
++            self.do_migrate(dest_uri, src_uri)
 +
-+
- if __name__ == '__main__':
-     QemuSystemTest.main()
++if __name__ == '__main__':
++    QemuSystemTest.main()
 -- 
 2.47.1
 
