@@ -2,82 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8D3C9F7023
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Dec 2024 23:38:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D22C19F702D
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Dec 2024 23:41:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tO2ZQ-00038T-9V; Wed, 18 Dec 2024 17:31:10 -0500
+	id 1tO2ZV-00038W-UQ; Wed, 18 Dec 2024 17:31:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1tO2ZD-00035v-7L
- for qemu-devel@nongnu.org; Wed, 18 Dec 2024 17:30:55 -0500
-Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
+ id 1tO2ZG-00037P-0a
+ for qemu-devel@nongnu.org; Wed, 18 Dec 2024 17:30:58 -0500
+Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1tO2ZB-0003EO-Op
- for qemu-devel@nongnu.org; Wed, 18 Dec 2024 17:30:54 -0500
-Received: by mail-pl1-x634.google.com with SMTP id
- d9443c01a7336-2156e078563so1507205ad.2
- for <qemu-devel@nongnu.org>; Wed, 18 Dec 2024 14:30:53 -0800 (PST)
+ id 1tO2ZE-0003F8-BU
+ for qemu-devel@nongnu.org; Wed, 18 Dec 2024 17:30:57 -0500
+Received: by mail-pl1-x635.google.com with SMTP id
+ d9443c01a7336-2164b1f05caso1577605ad.3
+ for <qemu-devel@nongnu.org>; Wed, 18 Dec 2024 14:30:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1734561052; x=1735165852; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1734561055; x=1735165855; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=OfBsTLHHJAqAyiojHCc+AdM1qTiCchVJT8tynBYysmo=;
- b=XNksyxaxyYwDBBO8gtlkOrQxCAPT0ma1tU3Ie7AKnmt6a0bgoNvwAHRT329txN/v1q
- SuXIKQV5Y+X2WxRjRl8I1TnF+lnu1YhPBApMoJ01YXz2VDzv4sBEoKO7XdpAMXx7ZB4X
- 6uqTTqi30/QhJHktLaRrkdthYh9rgkLNVX7ElH692iXZSekq1SkanCiHousNZgO0lF9w
- CRAsUIO3L9obS8qbdAY51Ij6JAFmDvFL8OHZQdorWg0x2SEhVZRDhXSX4EucIOJfeFgt
- dm+YEwST6zkH3KFpkCpxkaOHCiBs3yjuCDO47tmCYr8vb7+QCWub4KWXRByVjURSVi1e
- plZw==
+ bh=w9kGRz8yBDn3xNhaRpjl5eLNif1NBmGaYms609zt52g=;
+ b=UQy8oaq1Q+IynoiIYPpZqXz/BWX0OjcMh3zT900ELNARF/+MCHa/uZpzVFyyI2FqRh
+ KSuzHTc36RYDO3WuzA2s+AbNkMIFWiA17ao+uSPuGI7nawl7dg8iY6qRwMN9qSMahyJm
+ ZH6lxwQRe3F9RmF+fPUjQ2ijId8NZwD9aFPqktsKrXZTbOPdhSEJ9A1aBPfFCrNq+FXL
+ 6tbWNevCLXrC/q//Sg/cjJQr5G1xVdGAjqmCzrZTIbjy07ADMOty9eflXhEK3nnBR2pB
+ GJBXjZBSKT8yCVEmMvLmbFM/2oOPeLTF8GAktKfij3nllJJNkxW33xasBpvmlhWjiZzJ
+ YoYw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734561052; x=1735165852;
+ d=1e100.net; s=20230601; t=1734561055; x=1735165855;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=OfBsTLHHJAqAyiojHCc+AdM1qTiCchVJT8tynBYysmo=;
- b=U8UxtkmEip29jKpmWwIJ+ctIxmNlyzqw4I21isAlowbDGd6Vj89zwMFQSJd6YTkJXO
- C4Nq+GNe+o+t7dxFqxzVJIV8S3fmKk7HzCULLqjPoTmnF2/z/q6RPSQrDnXNZc9KYbP8
- hvFXuOIWWErvkrLnZzH4/f85k0uWeQ77fiuvTYNV3/GWB/sXFiBNqaN8IGOi6mzADXn+
- zp5l9ASjGT5kuRCdsA21qDKydV/Kz/1CEN+KRa+IU2Ev3aZLuPka5KVUgyp0CV17YO4w
- 79umLJME1g5TViL/pStrBc1a7piP8zn3ULavZIOOHrhzWbH3RlNAIH15XwniSoE38a+T
- vfCA==
-X-Gm-Message-State: AOJu0Yw20jIAB1xze7Wy5RB5N6RaIE9O65Md09pY9O+9MuUIW/A8lTHs
- +dZo/4hTnr5gNPOxpKYWKirR5uTY00QmGXPm8EuTJX9u1y1t1t5nGTh6Hs85
-X-Gm-Gg: ASbGnctahRW8UNE4o6ewpfLtNogfEqueSlxUQxm70eTKYuWr7pWJug408lbLTE8Oyo0
- gvhqI4MObrCQAaM6lxKruBzp1ToV/OoowFD9tKdBbqac0M3u5A91/zwid21uKpToW+pOsZi388G
- Kne0T75Fv9woS4G+xBTpqoF5Iu75BgbYMXWLQZKD44OZk4JjRsz1eqqLmb4hDBTM+/RMOjZ0DnA
- +/2cmJasGqRxSTI9tH2rQl7OdGyjFSyMtquZ+mQq9WbBUte/xUaK9479l3LX2BBPFMxVwXeoYTL
- pFEVowUNZKvqcvVgV1iQ3Q9RE8r+RVGuxilbMW2Q59qEQQMKCNHwWXRC6VN7DlU=
-X-Google-Smtp-Source: AGHT+IEGgCpMAx4JQ/oVktsslne4mSumHJuI0Itb4gIliA/h6dWXq3cN6fz1G76+gNd7R0Q6qCZlIQ==
-X-Received: by 2002:a17:902:da87:b0:20c:9821:6998 with SMTP id
- d9443c01a7336-218d70fe3fdmr63676855ad.10.1734561051992; 
- Wed, 18 Dec 2024 14:30:51 -0800 (PST)
+ bh=w9kGRz8yBDn3xNhaRpjl5eLNif1NBmGaYms609zt52g=;
+ b=lX/fduyOkzDufWVP9QRvhygP3K7XdRfVqVSctyz+Il1jO0FVftds0V3U/cGXl72rTp
+ JAXbF8hZJ1vj58LOhDTrL3lgg0yycqwaddl9peecxJbhPrJyiO/dRCE2CSE33QuJkoPc
+ wtnXhuqa2FUbztNGggrRb7gE2z0VThhhq8YxnQt/vWsyvsUYgbn003PptI9I9LnSf0UW
+ UkoDRWDljyzalHLnIMhWZesXSpR7uknLN7fhF3aUz4H5QdCryrs6yzP7GKYJ0BRwVGuS
+ hrYWw9qWQdlqajEFEtkgt2H63lmbvyyG5RcQHaloTDz/i0YCKtBBbskZEQxGmG8fHOmm
+ RWTQ==
+X-Gm-Message-State: AOJu0YxDFVhxKalOcM2JMj9qi/PhHHKEpw9gEaeeNO4/ytwzF9q7WGx/
+ 0sypEe9dX3F8jvtrTvR3B0Vye3JYWJRrqqVRqF8s/eArnXsvJ0iSVUS/rL8/
+X-Gm-Gg: ASbGncs62P2bUyM6/imHLeAsCegduBsnsbMQVF4xC2q09J6pQxM/xgmRVIfJwgo1N+D
+ dV6CX1bAnveo7pURQvlxZGaFlaMDhPvptZTXmEb3gl3caFsHE/FMBhj4amlFpCTLcrp7o+9gsd1
+ MKTQgRmj0GE7RwU7XnV5IcVLzFc0lLOAb4HHq4pi7PI/OJ5ylKunBAqRMVmN17i08amJR0aibyH
+ 0IMoeGtVbIu0QA5aHTC0O8dI+hDt/L++4UaqjdD4u0pJ1akdn8vjFUishwRxMDk7CEtkBwQ6Eyg
+ KdC9L2ob8On28mY3E/JC1/bmYWm5C3LIhTLC0EMM5ScLGmePuVbya2HQxWm5ovM=
+X-Google-Smtp-Source: AGHT+IGPqEWuwEry06U5g4/L1T2HfYDkIDdSkl3cm2TvsZtZroBSzVw3YdCJMzx+lc2ToJvExsZCVA==
+X-Received: by 2002:a17:903:22c4:b0:215:5c1a:f369 with SMTP id
+ d9443c01a7336-218d6fca33bmr62402215ad.11.1734561054867; 
+ Wed, 18 Dec 2024 14:30:54 -0800 (PST)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-219dc9705d7sm375775ad.102.2024.12.18.14.30.49
+ d9443c01a7336-219dc9705d7sm375775ad.102.2024.12.18.14.30.52
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 18 Dec 2024 14:30:51 -0800 (PST)
+ Wed, 18 Dec 2024 14:30:54 -0800 (PST)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
 Cc: alistair23@gmail.com, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 12/39] hw/riscv/virt.c: reduce virt_use_kvm_aia() usage
-Date: Thu, 19 Dec 2024 08:29:42 +1000
-Message-ID: <20241218223010.1931245-13-alistair.francis@wdc.com>
+Subject: [PULL 13/39] hw/riscv/virt.c: rename helper to
+ virt_use_kvm_aia_aplic_imsic()
+Date: Thu, 19 Dec 2024 08:29:43 +1000
+Message-ID: <20241218223010.1931245-14-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241218223010.1931245-1-alistair.francis@wdc.com>
 References: <20241218223010.1931245-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
- envelope-from=alistair23@gmail.com; helo=mail-pl1-x634.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
+ envelope-from=alistair23@gmail.com; helo=mail-pl1-x635.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -103,59 +104,60 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 
-In create_fdt_sockets() we have the following pattern:
+Similar to the riscv_is_kvm_aia_aplic_imsic() helper from riscv_aplic.c,
+the existing virt_use_kvm_aia() is testing for KVM aia=aplic-imsic with
+in-kernel irqchip enabled. It is not checking for a generic AIA support.
 
-    if (kvm_enabled() && virt_use_kvm_aia(s)) {
-        (... do stuff ...)
-    } else {
-        (... do other stuff ...)
-    }
-    if (kvm_enabled() && virt_use_kvm_aia(s)) {
-        (... do more stuff ...)
-    } else {
-        (... do more other stuff)
-    }
-
-Do everything in a single if/else clause to reduce the usage of
-virt_use_kvm_aia() helper and to make the code a bit less repetitive.
+Rename the helper to virt_use_kvm_aia_aplic_imsic() to reflect what the
+helper is doing, and use the existing riscv_is_kvm_aia_aplic_imsic() to
+obscure details such as the presence of the in-kernel irqchip.
 
 Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <20241119191706.718860-3-dbarboza@ventanamicro.com>
+Message-ID: <20241119191706.718860-4-dbarboza@ventanamicro.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- hw/riscv/virt.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ hw/riscv/virt.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
 diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
-index 5d058511be..e54e1257c0 100644
+index e54e1257c0..a67ab80b16 100644
 --- a/hw/riscv/virt.c
 +++ b/hw/riscv/virt.c
-@@ -783,6 +783,10 @@ static void create_fdt_sockets(RISCVVirtState *s, const MemMapEntry *memmap,
+@@ -59,9 +59,11 @@
+ #include "hw/virtio/virtio-iommu.h"
+ 
+ /* KVM AIA only supports APLIC MSI. APLIC Wired is always emulated by QEMU. */
+-static bool virt_use_kvm_aia(RISCVVirtState *s)
++static bool virt_use_kvm_aia_aplic_imsic(RISCVVirtAIAType aia_type)
+ {
+-    return kvm_irqchip_in_kernel() && s->aia_type == VIRT_AIA_TYPE_APLIC_IMSIC;
++    bool msimode = aia_type == VIRT_AIA_TYPE_APLIC_IMSIC;
++
++    return riscv_is_kvm_aia_aplic_imsic(msimode);
+ }
+ 
+ static bool virt_aclint_allowed(void)
+@@ -777,8 +779,8 @@ static void create_fdt_sockets(RISCVVirtState *s, const MemMapEntry *memmap,
+         *msi_pcie_phandle = msi_s_phandle;
+     }
+ 
+-    /* KVM AIA only has one APLIC instance */
+-    if (kvm_enabled() && virt_use_kvm_aia(s)) {
++    /* KVM AIA aplic-imsic only has one APLIC instance */
++    if (kvm_enabled() && virt_use_kvm_aia_aplic_imsic(s->aia_type)) {
+         create_fdt_socket_aplic(s, memmap, 0,
                                  msi_m_phandle, msi_s_phandle, phandle,
                                  &intc_phandles[0], xplic_phandles,
-                                 ms->smp.cpus);
-+
-+        *irq_mmio_phandle = xplic_phandles[0];
-+        *irq_virtio_phandle = xplic_phandles[0];
-+        *irq_pcie_phandle = xplic_phandles[0];
-     } else {
-         phandle_pos = ms->smp.cpus;
-         for (socket = (socket_count - 1); socket >= 0; socket--) {
-@@ -800,13 +804,7 @@ static void create_fdt_sockets(RISCVVirtState *s, const MemMapEntry *memmap,
-                                         s->soc[socket].num_harts);
-             }
+@@ -1619,7 +1621,7 @@ static void virt_machine_init(MachineState *machine)
          }
--    }
+     }
  
 -    if (kvm_enabled() && virt_use_kvm_aia(s)) {
--        *irq_mmio_phandle = xplic_phandles[0];
--        *irq_virtio_phandle = xplic_phandles[0];
--        *irq_pcie_phandle = xplic_phandles[0];
--    } else {
-         for (socket = 0; socket < socket_count; socket++) {
-             if (socket == 0) {
-                 *irq_mmio_phandle = xplic_phandles[socket];
++    if (kvm_enabled() && virt_use_kvm_aia_aplic_imsic(s->aia_type)) {
+         kvm_riscv_aia_create(machine, IMSIC_MMIO_GROUP_MIN_SHIFT,
+                              VIRT_IRQCHIP_NUM_SOURCES, VIRT_IRQCHIP_NUM_MSIS,
+                              memmap[VIRT_APLIC_S].base,
 -- 
 2.47.1
 
