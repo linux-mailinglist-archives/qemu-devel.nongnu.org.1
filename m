@@ -2,93 +2,139 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A59B9F701F
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Dec 2024 23:38:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 03A339F700D
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Dec 2024 23:32:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tO2ac-0003tn-KA; Wed, 18 Dec 2024 17:32:23 -0500
+	id 1tO2ZH-00037s-Fi; Wed, 18 Dec 2024 17:30:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1tO2Zf-0003TP-Un
- for qemu-devel@nongnu.org; Wed, 18 Dec 2024 17:31:28 -0500
-Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1tO2Zd-0003IQ-KI
- for qemu-devel@nongnu.org; Wed, 18 Dec 2024 17:31:23 -0500
-Received: by mail-pl1-x62f.google.com with SMTP id
- d9443c01a7336-2167141dfa1so1640445ad.1
- for <qemu-devel@nongnu.org>; Wed, 18 Dec 2024 14:31:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1734561079; x=1735165879; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=tXiMs7faKyZmCOi20Vpzvry683l81D2FYIjjSmSNVsA=;
- b=l64AmjlP8781V9FEXxjXh/iD4rf9i0w5+0PYfhon9vWqqrhDJ6n3xSI8ziPURknpJE
- oQYeXJg15PFjmgLgF9YJStkhFz4bQ82cBzlima1ygAluyMzO7u5Nv/pKgs+YXzPcqgh6
- FwJHqx4FEVsBSsq5OIHaX5Ja+OSOyWDGYISZwbWeRejJwbfTfCr7RsRvxeniVDyk9+Tq
- 2PTG7slZA8ueIBbc1leNd7TT41SC/vFzA8N91FfNl1Wal3ID6ooXU6XSG6y0hliv97XF
- iDHKlkEQoFZJPmof1RtPn9G8z35WrMNYlv7FRY0GP92jCdXHkxepRMZVMS4H3yiijXHq
- zhFw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734561079; x=1735165879;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=tXiMs7faKyZmCOi20Vpzvry683l81D2FYIjjSmSNVsA=;
- b=VI23wghOaia0A8aWqEwy1hO0ll0w5kmqsXwlyz4bBro3nk3F4zTDVyit9XtlLWl7PH
- e3RoOEKr2BOf2+IBdsRQzU0vq6EzgVpFM03rRWuJEfAXAFK3sSBkFSEt1/hUUB6N0R+J
- mIbqXjs75Qd7OecCArExoTVTuZVGRldnt7FF90No7EqHDtFiwTy0WuwIb27mGQHtCVWc
- XnGQeCe+AoZTAG+njwBp/HuKODVZuM2tGIfBlKddCxfi7M+DuHy+T3vzHNPgFKMMd93f
- Fr/6NtuZEN/Bfe1vlfZ1zCw04s2oNaEhKiDZr660JfqxTm23pLc6/fak21LPedF+w8ly
- cJJw==
-X-Gm-Message-State: AOJu0YwpcvUyRH9Ji+nZoUdIoN4jOFfb4+LyTorcKZUbjnMrzHny5Unj
- qAeYkVJ4umA3hf975D6ivALD9cm3Bo9mf3q61wnXKOYnideNiIPqvGb1/tst
-X-Gm-Gg: ASbGnctvKv60AZS1/DKGc8/wQHd8dYSS/cFVwFkASUw9XwSAJW4/x2l0FcwZ8vEw4zY
- cMM07Sg4CTwdzufibdlJk1RqvgQktwPTV3UvTsfHSdYIQlrjSU3bwNq6dPRtIJk44myewSIRIW+
- japLXYW7BLqDFENg8LdiSRszVyJacR0RpuMmm56WFUkT8U0yXgTc4KFFMvPHszLbUClShOxZ320
- ul70DIZQtvvM6d7p3PiDjC1vtJRzr4elVqakjm97h1nDsANRb1EKqQ1uBHO59DyaX8stBxWm5Zb
- NeIuzAjnx388Ju79nBRsJIsR7A5KPeK0VfRQyLPFqpkIWmo9Cvt71i5UD709vEs=
-X-Google-Smtp-Source: AGHT+IFsn8UxnKodlKaXrl0VvgfgsVuHwglpbPxX6poZZeRLc4Ox3hYz8S+azjmo9QyqE9foK7a7bw==
-X-Received: by 2002:a17:902:da81:b0:216:59f1:c7d9 with SMTP id
- d9443c01a7336-219da6eabaemr12761605ad.19.1734561079359; 
- Wed, 18 Dec 2024 14:31:19 -0800 (PST)
-Received: from toolbox.alistair23.me
- (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
- [2403:580b:97e8:0:82ce:f179:8a79:69f4])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-219dc9705d7sm375775ad.102.2024.12.18.14.31.16
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 18 Dec 2024 14:31:18 -0800 (PST)
-From: Alistair Francis <alistair23@gmail.com>
-X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
-To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Sia Jee Heng <jeeheng.sia@starfivetech.com>,
- Sunil V L <sunilvl@ventanamicro.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Alistair Francis <alistair.francis@wdc.com>, Bibo Mao <maobibo@loongson.cn>
-Subject: [PULL 21/39] hw/acpi: Upgrade ACPI SPCR table to support SPCR table
- revision 4 format
-Date: Thu, 19 Dec 2024 08:29:51 +1000
-Message-ID: <20241218223010.1931245-22-alistair.francis@wdc.com>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241218223010.1931245-1-alistair.francis@wdc.com>
-References: <20241218223010.1931245-1-alistair.francis@wdc.com>
+ (Exim 4.90_1) (envelope-from <Michael.Roth@amd.com>)
+ id 1tO2Z9-00033n-8C
+ for qemu-devel@nongnu.org; Wed, 18 Dec 2024 17:30:52 -0500
+Received: from mail-bn8nam12on2061f.outbound.protection.outlook.com
+ ([2a01:111:f403:2418::61f]
+ helo=NAM12-BN8-obe.outbound.protection.outlook.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <Michael.Roth@amd.com>)
+ id 1tO2Yu-0002YQ-Lu
+ for qemu-devel@nongnu.org; Wed, 18 Dec 2024 17:30:43 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=x7ChWEN6xYzbyAngF+kx1jVbzgj/hcXj2HtITsb0lJeVu8S3JGt3Wn2OEeKabW8uDyT/8PK4f5Z80Noy7MY1KEdgy79sP/ZjnR20EHhFmd5X3rKO6mTA8GGZv/FRyWyEvmVUq/smhrivkuQCR+YzoIt7tyKsT2GPCPniwltZV/Ip6OmxS9xiniG8JFmE+0yVirn51GDaBZST+XfXW+6LOHOmZkeKtCLkvHuhHYCk4djBMRIuX3wjpgBBobfmlzTPeqZntuuzIIH5lE9v4ikuloPuzjHkZF0W+twjfMl/g/AlScpRSdIc2GizV+FA4cdfa53Q7ZRgaA4xko4DdSNhKw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=5TFi1xDkLezLfz4Fm0/7n8YihFX+OnXb/GLPqDPCuPU=;
+ b=QfuBREjDmyp09+mTBGiOLgluSOAN2/q2lh9HpSz8LPEJbsMD+DNAEE9t3JdxBwdEq0kv2ikMcjX3DeQQ0nQNRNUZf9A48LJ4l0nQngT53+leS9apKT2X0AfwVNr96ltG4EVNpgkpd3qY4hdWqmiahrdbAAEI8WAkjkMsEM5BXKs53Lx6GSwWIrFGjYRfRtfwT2fF6mh1mcMl6lLrj7X0/+uaQuwGbNfjI/5wxMVcR3QHQ/AhyfN1xxPJBGI07/jLfRgODQigdzG5HN9iRJyOH0tAB/qAhW5IZNEZZpSGH0mmjw8Vv7ynEiLVkUlz+PdbLIYvTdHNBvXFnIEE9slDuA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=redhat.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=5TFi1xDkLezLfz4Fm0/7n8YihFX+OnXb/GLPqDPCuPU=;
+ b=j8m627aHTRZ/VgTO3uNxg1CSufXRKeQdlOvZjnw/CdlABUianYLFrpXTGR1LlTjPiWgk2yKIdOnVzzz6p5tDk4gSxRl5QSqMyjVGwqbrUefwJwjLVqMLxVoovBKyZS8ylieO/OmdeKmYdeH2+VdQ5ycfqTh6HXij91feHkW+TTs=
+Received: from CH0PR08CA0011.namprd08.prod.outlook.com (2603:10b6:610:33::16)
+ by CH0PR12MB8462.namprd12.prod.outlook.com (2603:10b6:610:190::20)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8251.21; Wed, 18 Dec
+ 2024 22:30:28 +0000
+Received: from CH2PEPF00000141.namprd02.prod.outlook.com
+ (2603:10b6:610:33:cafe::96) by CH0PR08CA0011.outlook.office365.com
+ (2603:10b6:610:33::16) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8251.23 via Frontend Transport; Wed,
+ 18 Dec 2024 22:30:28 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ CH2PEPF00000141.mail.protection.outlook.com (10.167.244.74) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.8251.15 via Frontend Transport; Wed, 18 Dec 2024 22:30:28 +0000
+Received: from localhost (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Wed, 18 Dec
+ 2024 16:30:27 -0600
+Date: Wed, 18 Dec 2024 16:29:51 -0600
+To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+CC: <qemu-devel@nongnu.org>, <pbonzini@redhat.com>, <eduardo@habkost.net>,
+ <armbru@redhat.com>, <pankaj.gupta@amd.com>, <huibo.wang@amd.com>,
+ <jroedel@suse.com>
+Subject: Re: [PATCH v1 3/3] i386/sev: Add KVM_EXIT_SNP_REQ_CERTS support for
+ certificate-fetching
+Message-ID: <20241218222951.v6yjhcd7j6uojcs4@amd.com>
+References: <20241218154939.1114831-1-michael.roth@amd.com>
+ <20241218154939.1114831-4-michael.roth@amd.com>
+ <Z2MLfIFzzyEWEy5T@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
- envelope-from=alistair23@gmail.com; helo=mail-pl1-x62f.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
+In-Reply-To: <Z2MLfIFzzyEWEy5T@redhat.com>
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PEPF00000141:EE_|CH0PR12MB8462:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3060ee72-51c3-4b89-92ac-08dd1fb392f2
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|82310400026|1800799024|376014|36860700013; 
+X-Microsoft-Antispam-Message-Info: =?iso-8859-1?Q?VpyXbfqc2nSeX+vJdAYlq4Q6dV0JcQlw+lQIkxP7dcA4WEM5ybcpIzrh5Q?=
+ =?iso-8859-1?Q?jtUykXnoMAADRrkoHGHcrkBtgiMswifn8Hi4L8JklDEG93WVPZMooGI/yo?=
+ =?iso-8859-1?Q?3gPoXZWrD0lPOuqWc4TXdqdNJ7NzXj7nDp2QngsarDvlQUYNQCiJU6CrYQ?=
+ =?iso-8859-1?Q?ELMieC+g9J0N6bSXWRFDjmINKfTv/JCnD0Hw96hxKY7N0QEZHNcQv1ae9l?=
+ =?iso-8859-1?Q?fapl1p0QX67Db6cx50mTIoXtP5R08dHpbzoWw094V3HIj65mojl6pbMeU0?=
+ =?iso-8859-1?Q?6lXEKmHJUrT7eegs20NMzaCWasdldk9Hxihjz21p0EFCe/d0U4EnYo8q2l?=
+ =?iso-8859-1?Q?vDgh8b+GqebqVqNP55rqqq36DsPV+ByAthKLicW/VsXT8bDyTIzllsNbhR?=
+ =?iso-8859-1?Q?BGQkZ5BNAzSnx8cElEaELL1n1APLmFExlIwFITs3bb3eQmH2Pp9zBjx86S?=
+ =?iso-8859-1?Q?gLs7PWvqxZBZMqk49ccccGXaK1Syj9eoSZANWU30CMGoYdmeL0aJlKVgEQ?=
+ =?iso-8859-1?Q?zkHFDfOBUWsyzZFfS7OsvxwnD/rDyo5O/KYOjuPj9zDq/fULaowc+qDELK?=
+ =?iso-8859-1?Q?M5IErmoEoY/+yBvJDsjZ5q4rkbax6gdQWTqt8RkAEqHiiymtwkxRpU7IXZ?=
+ =?iso-8859-1?Q?lKKvzZ3pjIGcL3OvW9wzpiEf3AAV6JrNqU42FoCDsxCaASVXkyR2A0++Av?=
+ =?iso-8859-1?Q?l3qLiZ4pCs+VO3EchOpewgA6ac45NWBQJ1N8luWO9ODy8rfRMJnGkvcbg+?=
+ =?iso-8859-1?Q?W3t4ujM6S6gQtKhh9D5StoE+kvCELuX/jNt307o1h3HAGYYBYCYOJjRZ7I?=
+ =?iso-8859-1?Q?KGhvX6XWqdslVWOf0S80M4r8W3cQpo3OUZa1nW7t09TtUsVZVvhiX1Es9v?=
+ =?iso-8859-1?Q?TXKNgbSQz2awnpYv2KvPmBKu0FBT35by/N+Uz9ry5Nzb6Ikfe7yvPDtzQa?=
+ =?iso-8859-1?Q?8w8IHS95ee1DmYKXUgrNr/UpE+eT8WfOzQ/mn5roVIZc3XpsQH6Vj92eQf?=
+ =?iso-8859-1?Q?7/fO1NWkWt5LqVfYGxCxMwzLIDbJAs5oy9Yi3pO1MJxX+VIvQv3XD8ceYm?=
+ =?iso-8859-1?Q?ffJ5+J8Hnl3O3792A6jyHPIzOpgf/cxtcC6Bc/wrkM2i06YBFci7QhJi2M?=
+ =?iso-8859-1?Q?ub92aWX9RAgVWtrDtOCXiJiMTSMgmwqBWBYKZQ4wQibtJI2rpkHZjO3+Lt?=
+ =?iso-8859-1?Q?3DCn7QbpMN1PLUn60+xS3K6cURbftS+35EZKNVZIIynCmEQOAuECoKGD2k?=
+ =?iso-8859-1?Q?dr9lvGCdQAKc3LvtFa0ku7wgygABiubDduseMdWmbxNeHoZ0zNTCqvBwo+?=
+ =?iso-8859-1?Q?UCXYxvGyt2B/x/6vZS6tX9Al+eMi+Y9gQnTm8HbPzY2hMSClHSTCd/2Y+q?=
+ =?iso-8859-1?Q?7WlIcnMleCus65ULpM0IM/VI32NasaiYHQUtWgiaMGEJafACUdAFoHfjf8?=
+ =?iso-8859-1?Q?YUw/urP/XMeweRvPGNIECWaZ43qyF5ehaqjl6MmiMJAdIYymBW20oWbhsF?=
+ =?iso-8859-1?Q?Yu7DGx5IngsJbBaIjH9jHl?=
+X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230040)(82310400026)(1800799024)(376014)(36860700013); DIR:OUT;
+ SFP:1101; 
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Dec 2024 22:30:28.0675 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3060ee72-51c3-4b89-92ac-08dd1fb392f2
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
+ Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: CH2PEPF00000141.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH0PR12MB8462
+Received-SPF: permerror client-ip=2a01:111:f403:2418::61f;
+ envelope-from=Michael.Roth@amd.com;
+ helo=NAM12-BN8-obe.outbound.protection.outlook.com
+X-Spam_score_int: -16
+X-Spam_score: -1.7
 X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,183 +147,161 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Michael Roth <michael.roth@amd.com>
+From:  Michael Roth via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Sia Jee Heng <jeeheng.sia@starfivetech.com>
+On Wed, Dec 18, 2024 at 05:50:52PM +0000, Daniel P. Berrangé wrote:
+> On Wed, Dec 18, 2024 at 09:49:39AM -0600, Michael Roth wrote:
+> > The GHCB specification[1] defines a VMGEXIT-based Guest Request
+> > hypercall to allow an SNP guest to issue encrypted requests directly to
+> > SNP firmware to do things like query the attestation report for the
+> > guest. These are generally handled purely in the kernel.
+> > 
+> > In some some cases, it's useful for the host to be able to additionally
+> > supply the certificate chain for the signing key that SNP firmware uses
+> > to sign these attestation reports. To allow for this, the GHCB
+> > specification defines an Extended Guest Request where this certificate
+> > data can be provided in a special format described in the GHCB spec.
+> > This certificate data may be global or guest-specific depending on how
+> > the guest was configured. Rather than providing interfaces to manage
+> > these within the kernel, KVM provides a new KVM_EXIT_SNP_REQ_CERTS exit
+> > to request the certificate contents from userspace. Implement support
+> > for that here.
+> > 
+> > To synchronize delivery of the certificates to the guest in a way where
+> > they will not be rendered invalid by updates to SNP firmware or
+> > attestation singing/endorsement keys by management tools outside the
+> > purview of QEMU, it is expected by users of KVM_EXIT_SNP_REQ_CERTS to
+> > obtain a shared/read lock on the certificate file prior to delivering
+> > them back to KVM. Only after this will the attestation report be
+> > retrieved from firmware and bundled with the certificate data, so QEMU
+> > must continue to hold the file lock until KVM confirms that the
+> > attestation report has been retrieved/bundled. This confirmation is done
+> > by way of the kvm_immediate_exit callback infrastructure that was
+> > introduced in a previous patch.
+> > 
+> > [1] "Guest Hypervisor Communication Block (GHCB) Standardization",
+> >     https://www.amd.com/en/developer/sev.html
+> > 
+> > Signed-off-by: Michael Roth <michael.roth@amd.com>
+> > ---
+> >  qapi/qom.json                 |  23 +++-
+> >  target/i386/kvm/kvm.c         |  10 ++
+> >  target/i386/sev-sysemu-stub.c |   5 +
+> >  target/i386/sev.c             | 249 ++++++++++++++++++++++++++++++++++
+> >  target/i386/sev.h             |   2 +
+> >  5 files changed, 288 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/qapi/qom.json b/qapi/qom.json
+> > index 28ce24cd8d..6eaf0e7721 100644
+> > --- a/qapi/qom.json
+> > +++ b/qapi/qom.json
+> > @@ -1034,6 +1034,25 @@
+> >  #     firmware.  Set this to true to disable the use of VCEK.
+> >  #     (default: false) (since: 9.1)
+> >  #
+> > +# @certs-path: Path to certificate data that can be passed to guests via
+> > +#              SNP Extended Guest Requests. File should be in the format
+> > +#              described in the GHCB specification. (default: none)
+> > +#              (since: 10.0)
+> 
+> Can we document the required format here explicitly, rather than expecting
+> users to go searching for specs which are often practically impossible
+> to find, and even harder to read & interpret ?
 
-Update the SPCR table to accommodate the SPCR Table revision 4 [1].
-The SPCR table has been modified to adhere to the revision 4 format [2].
+It'll be difficult to summarize in a way that will be self-reliant,
+since knowing the certificate format is not sufficient to make sure
+it coincides with the endorsement key being used by firmware. So I can't
+promise to completely reduce reliance on external specs, but at least
+give a better of the format and where those external specs will come
+into play in filling out the data.
 
-[1]: https://learn.microsoft.com/en-us/windows-hardware/drivers/serports/serial-port-console-redirection-table
-[2]: https://github.com/acpica/acpica/pull/931
+If it needs to be at least somewhat self-sufficient then that might
+warrant a separate document in docs/system/i386/amd-memory-encryption.rst
+or somewhere thereabouts that summarizes the whole attestation flow and
+how certificates tie into that.
 
-Signed-off-by: Sia Jee Heng <jeeheng.sia@starfivetech.com>
-Reviewed-by: Sunil V L <sunilvl@ventanamicro.com>
-Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-Acked-by: Alistair Francis <alistair.francis@wdc.com>
-Reviewed-by: Bibo Mao <maobibo@loongson.cn>
-Message-ID: <20241028015744.624943-3-jeeheng.sia@starfivetech.com>
-Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
----
- include/hw/acpi/acpi-defs.h |  7 +++++--
- include/hw/acpi/aml-build.h |  2 +-
- hw/acpi/aml-build.c         | 20 ++++++++++++++++----
- hw/arm/virt-acpi-build.c    |  8 ++++++--
- hw/loongarch/acpi-build.c   |  6 +++++-
- hw/riscv/virt-acpi-build.c  | 12 +++++++++---
- 6 files changed, 42 insertions(+), 13 deletions(-)
+Any preferences?
 
-diff --git a/include/hw/acpi/acpi-defs.h b/include/hw/acpi/acpi-defs.h
-index 0e6e82b339..2e6e341998 100644
---- a/include/hw/acpi/acpi-defs.h
-+++ b/include/hw/acpi/acpi-defs.h
-@@ -112,7 +112,6 @@ typedef struct AcpiSpcrData {
-     uint8_t flow_control;
-     uint8_t terminal_type;
-     uint8_t language;
--    uint8_t reserved1;
-     uint16_t pci_device_id;    /* Must be 0xffff if not PCI device */
-     uint16_t pci_vendor_id;    /* Must be 0xffff if not PCI device */
-     uint8_t pci_bus;
-@@ -120,7 +119,11 @@ typedef struct AcpiSpcrData {
-     uint8_t pci_function;
-     uint32_t pci_flags;
-     uint8_t pci_segment;
--    uint32_t reserved2;
-+    uint32_t uart_clk_freq;
-+    uint32_t precise_baudrate;
-+    uint32_t namespace_string_length;
-+    uint32_t namespace_string_offset;
-+    char namespace_string[];
- } AcpiSpcrData;
- 
- #define ACPI_FADT_ARM_PSCI_COMPLIANT  (1 << 0)
-diff --git a/include/hw/acpi/aml-build.h b/include/hw/acpi/aml-build.h
-index 4fd5da49e7..c18f681342 100644
---- a/include/hw/acpi/aml-build.h
-+++ b/include/hw/acpi/aml-build.h
-@@ -507,5 +507,5 @@ void build_tpm2(GArray *table_data, BIOSLinker *linker, GArray *tcpalog,
- 
- void build_spcr(GArray *table_data, BIOSLinker *linker,
-                 const AcpiSpcrData *f, const uint8_t rev,
--                const char *oem_id, const char *oem_table_id);
-+                const char *oem_id, const char *oem_table_id, const char *name);
- #endif
-diff --git a/hw/acpi/aml-build.c b/hw/acpi/aml-build.c
-index 72282b173e..e4d58d7051 100644
---- a/hw/acpi/aml-build.c
-+++ b/hw/acpi/aml-build.c
-@@ -2078,7 +2078,7 @@ static void build_processor_hierarchy_node(GArray *tbl, uint32_t flags,
- 
- void build_spcr(GArray *table_data, BIOSLinker *linker,
-                 const AcpiSpcrData *f, const uint8_t rev,
--                const char *oem_id, const char *oem_table_id)
-+                const char *oem_id, const char *oem_table_id, const char *name)
- {
-     AcpiTable table = { .sig = "SPCR", .rev = rev, .oem_id = oem_id,
-                         .oem_table_id = oem_table_id };
-@@ -2124,9 +2124,21 @@ void build_spcr(GArray *table_data, BIOSLinker *linker,
-     build_append_int_noprefix(table_data, f->pci_flags, 4);
-     /* PCI Segment */
-     build_append_int_noprefix(table_data, f->pci_segment, 1);
--    /* Reserved */
--    build_append_int_noprefix(table_data, 0, 4);
--
-+    if (rev < 4) {
-+        /* Reserved */
-+        build_append_int_noprefix(table_data, 0, 4);
-+    } else {
-+        /* UartClkFreq */
-+        build_append_int_noprefix(table_data, f->uart_clk_freq, 4);
-+        /* PreciseBaudrate */
-+        build_append_int_noprefix(table_data, f->precise_baudrate, 4);
-+        /* NameSpaceStringLength */
-+        build_append_int_noprefix(table_data, f->namespace_string_length, 2);
-+        /* NameSpaceStringOffset */
-+        build_append_int_noprefix(table_data, f->namespace_string_offset, 2);
-+        /* NamespaceString[] */
-+        g_array_append_vals(table_data, name, f->namespace_string_length);
-+    }
-     acpi_table_end(linker, &table);
- }
- /*
-diff --git a/hw/arm/virt-acpi-build.c b/hw/arm/virt-acpi-build.c
-index 620992c92c..e92d3bddc8 100644
---- a/hw/arm/virt-acpi-build.c
-+++ b/hw/arm/virt-acpi-build.c
-@@ -463,8 +463,12 @@ spcr_setup(GArray *table_data, BIOSLinker *linker, VirtMachineState *vms)
-         .pci_flags = 0,
-         .pci_segment = 0,
-     };
--
--    build_spcr(table_data, linker, &serial, 2, vms->oem_id, vms->oem_table_id);
-+    /*
-+     * Passing NULL as the SPCR Table for Revision 2 doesn't support
-+     * NameSpaceString.
-+     */
-+    build_spcr(table_data, linker, &serial, 2, vms->oem_id, vms->oem_table_id,
-+               NULL);
- }
- 
- /*
-diff --git a/hw/loongarch/acpi-build.c b/hw/loongarch/acpi-build.c
-index 50709bda0f..4e04f7b6c1 100644
---- a/hw/loongarch/acpi-build.c
-+++ b/hw/loongarch/acpi-build.c
-@@ -276,8 +276,12 @@ spcr_setup(GArray *table_data, BIOSLinker *linker, MachineState *machine)
-     };
- 
-     lvms = LOONGARCH_VIRT_MACHINE(machine);
-+    /*
-+     * Passing NULL as the SPCR Table for Revision 2 doesn't support
-+     * NameSpaceString.
-+     */
-     build_spcr(table_data, linker, &serial, 2, lvms->oem_id,
--               lvms->oem_table_id);
-+               lvms->oem_table_id, NULL);
- }
- 
- typedef
-diff --git a/hw/riscv/virt-acpi-build.c b/hw/riscv/virt-acpi-build.c
-index 36d6a3a412..68ef15acac 100644
---- a/hw/riscv/virt-acpi-build.c
-+++ b/hw/riscv/virt-acpi-build.c
-@@ -200,14 +200,15 @@ acpi_dsdt_add_uart(Aml *scope, const MemMapEntry *uart_memmap,
- 
- /*
-  * Serial Port Console Redirection Table (SPCR)
-- * Rev: 1.07
-+ * Rev: 1.10
-  */
- 
- static void
- spcr_setup(GArray *table_data, BIOSLinker *linker, RISCVVirtState *s)
- {
-+    const char name[] = ".";
-     AcpiSpcrData serial = {
--        .interface_type = 0,       /* 16550 compatible */
-+        .interface_type = 0x12,       /* 16550 compatible */
-         .base_addr.id = AML_AS_SYSTEM_MEMORY,
-         .base_addr.width = 32,
-         .base_addr.offset = 0,
-@@ -229,9 +230,14 @@ spcr_setup(GArray *table_data, BIOSLinker *linker, RISCVVirtState *s)
-         .pci_function = 0,
-         .pci_flags = 0,
-         .pci_segment = 0,
-+        .uart_clk_freq = 0,
-+        .precise_baudrate = 0,
-+        .namespace_string_length = sizeof(name),
-+        .namespace_string_offset = 88,
-     };
- 
--    build_spcr(table_data, linker, &serial, 2, s->oem_id, s->oem_table_id);
-+    build_spcr(table_data, linker, &serial, 4, s->oem_id, s->oem_table_id,
-+               name);
- }
- 
- /* RHCT Node[N] starts at offset 56 */
--- 
-2.47.1
+> 
+> > diff --git a/target/i386/sev.c b/target/i386/sev.c
+> > index 1a4eb1ada6..2c41bdbccf 100644
+> > --- a/target/i386/sev.c
+> > +++ b/target/i386/sev.c
+> > @@ -157,6 +157,9 @@ struct SevSnpGuestState {
+> >      char *id_auth_base64;
+> >      uint8_t *id_auth;
+> >      char *host_data;
+> > +    char *certs_path;
+> > +    int certs_fd;
+> > +    uint32_t certs_timeout;
+> >  
+> >      struct kvm_sev_snp_launch_start kvm_start_conf;
+> >      struct kvm_sev_snp_launch_finish kvm_finish_conf;
+> > @@ -1355,6 +1358,215 @@ sev_snp_launch_finish(SevCommonState *sev_common)
+> >      }
+> >  }
+> >  
+> > +static int open_certs_locked(SevSnpGuestState *sev_snp_guest)
+> > +{
+> > +    int fd, ret;
+> > +
+> > +    if (sev_snp_guest->certs_fd != -1) {
+> > +        return 0;
+> > +    }
+> > +
+> > +    fd = qemu_open(sev_snp_guest->certs_path, O_RDONLY, NULL);
+> > +    if (fd == -1) {
+> > +        error_report("Unable to open certificate blob at path %s, ret %d",
+> > +                     sev_snp_guest->certs_path, fd);
+> > +        return fd;
+> > +    }
+> > +
+> > +    ret = qemu_lock_fd(fd, 0, 0, false);
+> > +    if (ret == -EAGAIN || ret == -EACCES) {
+> > +        ret = -EAGAIN;
+> > +        goto out_close;
+> > +    } else if (ret) {
+> > +        goto out_close;
+> > +    }
+> 
+> This locking scheme is likely unsafe. Consider this sequence
+> 
+>   * QEMU runs qemu_open(path)
+>   * External mgmt app runs unlink(path)
+>   * External mgmt app runs open(path)
+>   * External mgmt app runs lock(fd)
+>   * QEMU runs qemu_lock_fd(fd)
+> 
+> QEMU has successfully acquired a lock on an FD that corresponds to a
+> deleted file, not the current existing file.
+> 
+> Avoiding this problem requires either that the external mgmt app agrees
+> to *NEVER* unlink() the files under any circumstance, or for QEMU to
+> run its open + lock logic in a loop, checking 'stat' and 'fstat' before
+> opening and after locking, in order to detect a replaced file from its
+> changed inode.
+> 
+> I'm not inclined to rely on mgmt apps never unlink()ing as that's to
+> easy to mess up IMHO.
 
+Yah I went into more detail in my response to Markus, but long story
+short is that we are assuming mgmt is cooperative in this case, and
+so as you mentioned, it would never unlink files while SNP guests are
+running, but instead take an exclusive lock on them and update them in
+place with the understanding that doing anything otherwise would open
+a race window where guests might get stale certificates.
+
+-Mike
+
+> 
+> With regards,
+> Daniel
+> -- 
+> |: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+> |: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+> |: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+> 
 
