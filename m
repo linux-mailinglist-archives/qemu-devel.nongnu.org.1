@@ -2,84 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DA539F7016
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Dec 2024 23:33:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AD0B9F7033
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Dec 2024 23:41:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tO2be-0005Yl-Vi; Wed, 18 Dec 2024 17:33:33 -0500
+	id 1tO2cR-0007Bh-LL; Wed, 18 Dec 2024 17:34:18 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1tO2a0-0003sv-QZ
- for qemu-devel@nongnu.org; Wed, 18 Dec 2024 17:31:46 -0500
-Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
+ id 1tO2a3-0003ts-M0
+ for qemu-devel@nongnu.org; Wed, 18 Dec 2024 17:31:49 -0500
+Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1tO2Zy-0003Ky-K3
- for qemu-devel@nongnu.org; Wed, 18 Dec 2024 17:31:44 -0500
-Received: by mail-pl1-x62b.google.com with SMTP id
- d9443c01a7336-216426b0865so1797825ad.0
- for <qemu-devel@nongnu.org>; Wed, 18 Dec 2024 14:31:42 -0800 (PST)
+ id 1tO2a2-0003Lt-0u
+ for qemu-devel@nongnu.org; Wed, 18 Dec 2024 17:31:47 -0500
+Received: by mail-pl1-x635.google.com with SMTP id
+ d9443c01a7336-216401de828so1626935ad.3
+ for <qemu-devel@nongnu.org>; Wed, 18 Dec 2024 14:31:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1734561101; x=1735165901; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1734561104; x=1735165904; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=RCANHJZzdmh7o/b4Y2SxAZxP9CzPNdbu0e2gMuhfVd8=;
- b=LyuC4/sVuRo8Tw+TbfpQbPV1JiHZ5iUu91Z26Nq8biZ49n2GJbaM0vHz04NkqAziC5
- nLwgCgEHmINLMI0CyjBiF8b27Lzykvn7Negwn2oTVp9bBmkxNVYH83tW3b3E1sTtlexn
- 9SbLNaJhy6EBNJPI0gMAV95ONtjtOT/OIDdI4Hl2V8AGqGmd2Df0O8Tbb/J2mgdXye6h
- tGz+h+a9ITp8Tjw9ACxxsK/4oIIBjqolOFqrWI4ITOWuuQzGRnGaCaH1vBqAWp2z4ZwT
- xEegundVfGRWsHqhtdLDNsPW7cd4wwc6/eBb2Qyki6VTZibkilP/C/GX+9lSM2l3rCWj
- Egqg==
+ bh=/2jazWrbuU7Wql6HgnR4OcxPEdzrMN59Mrc21VP922M=;
+ b=XGVDuWs0YjxZUJrcXm9O5zSjGuKexPEQKlfaqBvr5cpBVYwHTaaDd5iKKLcfVXyZ+0
+ SnS0LMOGm4ZCZNgdLMdg/4RI86eNZnZl49wnMcdNcS64H3BKEnOAITCFegjBX3rGFumK
+ zCcdFyjwlMqNpdwI/s66nVYT8286ls2hoo7vmPxsL2gmRBhm5hTxvLG3COPZy6P3NnnM
+ W4mGI8yiDf7+6GkZolF5rE4H+bNwK/5siKmQ9YEkqOfjPGK9sF7boK+jWunWWdGQwNnp
+ GtxWB7V5mPf8CUSKw8BCPL1Qh/ACwJ0+vK7ITYKWDto61Hn5hPfjftFAN+kGLpVC/oit
+ 0FnQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734561101; x=1735165901;
+ d=1e100.net; s=20230601; t=1734561104; x=1735165904;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=RCANHJZzdmh7o/b4Y2SxAZxP9CzPNdbu0e2gMuhfVd8=;
- b=ulJTd96ZDbeplXBAL19qZjBCFLDsp2Q5zAwmLtdXJ19/lsBOTp5R1L732W8xO+tB7N
- RaU+ggvVRTayCchb1zOMbiBNPjEebnyI7SBFn3V1oEKYTBzPZxQTXNIV0PlDP98CyRWz
- 1wvwA40bVKTigQd+Y2gKwRklA51igFnJ3g7x987UzGu6jLDRK2TMw5BdhhwwNt09NZ1X
- vLJo+kXM5pnNPQuVQ5tkY0A6k5i4kSShQCEa4SlEt2PJH8AURoJIxmwFcGfeskA4k4Kf
- R1YZzypjQ3Z8C2v6RPUnbb9WrH3WHAxCb61N9hOW+/tziVrTgQFM1k6zG25Ni9ups0AP
- iyWw==
-X-Gm-Message-State: AOJu0YxfeYEtVS41l4UnG8cJdhmZsIKyYQjfYCePHWXQhci1Ym1tOFfr
- g1febASpav0XWhe/1WU3Ha1a3JHWv0MdVNFLZuK21kDn/WyfXxPgsaNHJlLx
-X-Gm-Gg: ASbGncu0KLaJUFoHkBq9pIxvq4cJFIgpflPeZHoCQOUO5wZq22ObAosu7IuM33YAcxV
- WacF9mdhf1cZOKefkRc6+aUgqZBVN9Yt71hBNBAMXNPuuZ2G8rOlnMZ/5pyXv5AvrOVFDDzQumS
- mrbtv471YxIolHagV/O5IZpOHJwM7mlxXDRkriUhHvFt25zC3WXGEVuuRFmbj6lnvO46HoV557q
- EOz8rMU1dGgXUneoLW0lSUOWiATo7NdhBBfX7WPnMWeSyiqZaZ84nn4U7EHUj9o9HAc5T68MX5f
- ORBkBosu/TJP2viHU7aAzRTNN8ORX1TwkdDqbgO3QT/AMnIcM4bZxirenVF6HNA=
-X-Google-Smtp-Source: AGHT+IHCWGFlo7VI5J18KznEOphYSvukB2w/g9pyxwF3JBopV5RpW6eJHIm4aO7WSue9+WAC1Ie7yg==
-X-Received: by 2002:a17:903:22c5:b0:216:7ee9:2235 with SMTP id
- d9443c01a7336-219d96ff2c0mr17973605ad.43.1734561100931; 
- Wed, 18 Dec 2024 14:31:40 -0800 (PST)
+ bh=/2jazWrbuU7Wql6HgnR4OcxPEdzrMN59Mrc21VP922M=;
+ b=BoN/v7TXllJNxMmAOVtQXISqEWOAailYXTxewuip83kOpKP4is4KEF+8RKp4FTKxqK
+ RMugmtDGhekSjwprpINCNJzEViXfwXchgtSAQ0I524I5y+CcKBZnl7i3AcZBr6i+C3q5
+ d/FHR4ki+7kpvBYcFtkIvr0R3SCreEfIyxX9hFyyzuROujqqd/0Tmta4ePccBTvyqaif
+ JgyrnUTVtDlpXyPk7cpmFiZesQuv4rOih73oqaYCwwqPZgKIxSSoztWKBS79b200/2u4
+ BamUuiXjJ1XcdTydixqAKmIGywDSH3pu53VYlxTEVwRmfQ1gTN99CA9M4PEq0C6jNPva
+ +7rQ==
+X-Gm-Message-State: AOJu0YwpazNV10nJwmuCBUKFn+DNqYmWaO8ADb2FYwpTyhsVolNid+on
+ RxQoHfsMHoyzWraW//bwySCqw8gbHhTsExj84GfgY/McLYXuCfigZ8M+oEJe
+X-Gm-Gg: ASbGncsQC/vmNUo/bKQvhqWKwDyO3YG/LCKH0s2thfmw+hVL75pXTHXhjZruT5+X+5T
+ y9MBdhqVEVYy93KkAcx3pMhig5ddoDymd2gsVtIyIEK0JnB1AUeBYOTCCeKtaY3YidxhlWQl+yW
+ 15vt07A9iOj94ThILlXD/rUxOb9+1pTwL5vJ93f1vjV5cjbnVRWA9b+15tkUeT7XsEJueqXyAgW
+ jqTKeU+gZOBEzKMbAn76zCK2B0JUx/Q/C/6V20WVwjKcdVI8YNsiCnc0BOvFbhUCfAGaMxMj5Ev
+ eY7S62duL1gys32ptFhK458tcNft9t/tb/kLEcROx86R95gOG5FmBGVtd5JB0g4=
+X-Google-Smtp-Source: AGHT+IEDsr3ELmuUqB6JM96gcqwzwXHDhN3T7BUx07Vr5D9jXhYi3Ok8kAkTxaUMJ5EqZdQZP44wCw==
+X-Received: by 2002:a17:902:ebd1:b0:215:b087:5d62 with SMTP id
+ d9443c01a7336-219d96ff1c1mr21228645ad.36.1734561104568; 
+ Wed, 18 Dec 2024 14:31:44 -0800 (PST)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-219dc9705d7sm375775ad.102.2024.12.18.14.31.38
+ d9443c01a7336-219dc9705d7sm375775ad.102.2024.12.18.14.31.41
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 18 Dec 2024 14:31:40 -0800 (PST)
+ Wed, 18 Dec 2024 14:31:44 -0800 (PST)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Jim Shu <jim.shu@sifive.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PULL 28/39] hw/riscv: Add the checking if DTB overlaps to kernel or
- initrd
-Date: Thu, 19 Dec 2024 08:29:58 +1000
-Message-ID: <20241218223010.1931245-29-alistair.francis@wdc.com>
+Cc: alistair23@gmail.com, "Fea.Wang" <fea.wang@sifive.com>,
+ Frank Chang <frank.chang@sifive.com>, Jim Shu <jim.shu@sifive.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Alistair Francis <alistair.francis@wdc.com>
+Subject: [PULL 29/39] target/riscv: Add svukte extension capability variable
+Date: Thu, 19 Dec 2024 08:29:59 +1000
+Message-ID: <20241218223010.1931245-30-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241218223010.1931245-1-alistair.francis@wdc.com>
 References: <20241218223010.1931245-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
- envelope-from=alistair23@gmail.com; helo=mail-pl1-x62b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
+ envelope-from=alistair23@gmail.com; helo=mail-pl1-x635.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -103,99 +103,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Jim Shu <jim.shu@sifive.com>
+From: "Fea.Wang" <fea.wang@sifive.com>
 
-DTB is placed to the end of memory, so we will check if the start
-address of DTB overlaps to the address of kernel/initrd.
+Refer to the draft of svukte extension from:
+https://github.com/riscv/riscv-isa-manual/pull/1564
 
-Signed-off-by: Jim Shu <jim.shu@sifive.com>
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+Svukte provides a means to make user-mode accesses to supervisor memory
+raise page faults in constant time, mitigating attacks that attempt to
+discover the supervisor software's address-space layout.
+
+Signed-off-by: Fea.Wang <fea.wang@sifive.com>
+Reviewed-by: Frank Chang <frank.chang@sifive.com>
+Reviewed-by: Jim Shu <jim.shu@sifive.com>
 Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Message-ID: <20241120153935.24706-4-jim.shu@sifive.com>
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+Message-ID: <20241203034932.25185-2-fea.wang@sifive.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- include/hw/riscv/boot.h |  3 +++
- hw/riscv/boot.c         | 25 ++++++++++++++++++++++++-
- 2 files changed, 27 insertions(+), 1 deletion(-)
+ target/riscv/cpu_cfg.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/hw/riscv/boot.h b/include/hw/riscv/boot.h
-index 06b51ed086..7d59b2e6c6 100644
---- a/include/hw/riscv/boot.h
-+++ b/include/hw/riscv/boot.h
-@@ -32,6 +32,9 @@ typedef struct RISCVBootInfo {
-     hwaddr image_low_addr;
-     hwaddr image_high_addr;
- 
-+    hwaddr initrd_start;
-+    ssize_t initrd_size;
-+
-     bool is_32bit;
- } RISCVBootInfo;
- 
-diff --git a/hw/riscv/boot.c b/hw/riscv/boot.c
-index 81d27f935e..bc8074fec8 100644
---- a/hw/riscv/boot.c
-+++ b/hw/riscv/boot.c
-@@ -70,6 +70,7 @@ char *riscv_plic_hart_config_string(int hart_count)
- void riscv_boot_info_init(RISCVBootInfo *info, RISCVHartArrayState *harts)
- {
-     info->kernel_size = 0;
-+    info->initrd_size = 0;
-     info->is_32bit = riscv_is_32bit(harts);
- }
- 
-@@ -213,6 +214,9 @@ static void riscv_load_initrd(MachineState *machine, RISCVBootInfo *info)
-         }
-     }
- 
-+    info->initrd_start = start;
-+    info->initrd_size = size;
-+
-     /* Some RISC-V machines (e.g. opentitan) don't have a fdt. */
-     if (fdt) {
-         end = start + size;
-@@ -309,6 +313,7 @@ uint64_t riscv_compute_fdt_addr(hwaddr dram_base, hwaddr dram_size,
-     int ret = fdt_pack(ms->fdt);
-     hwaddr dram_end, temp;
-     int fdtsize;
-+    uint64_t dtb_start, dtb_start_limit;
- 
-     /* Should only fail if we've built a corrupted tree */
-     g_assert(ret == 0);
-@@ -319,6 +324,17 @@ uint64_t riscv_compute_fdt_addr(hwaddr dram_base, hwaddr dram_size,
-         exit(1);
-     }
- 
-+    if (info->initrd_size) {
-+        /* If initrd is successfully loaded, place DTB after it. */
-+        dtb_start_limit = info->initrd_start + info->initrd_size;
-+    } else if (info->kernel_size) {
-+        /* If only kernel is successfully loaded, place DTB after it. */
-+        dtb_start_limit = info->image_high_addr;
-+    } else {
-+        /* Otherwise, do not check DTB overlapping */
-+        dtb_start_limit = 0;
-+    }
-+
-     /*
-      * A dram_size == 0, usually from a MemMapEntry[].size element,
-      * means that the DRAM block goes all the way to ms->ram_size.
-@@ -338,7 +354,14 @@ uint64_t riscv_compute_fdt_addr(hwaddr dram_base, hwaddr dram_size,
-         temp = (dram_base < 3072 * MiB) ? MIN(dram_end, 3072 * MiB) : dram_end;
-     }
- 
--    return QEMU_ALIGN_DOWN(temp - fdtsize, 2 * MiB);
-+    dtb_start = QEMU_ALIGN_DOWN(temp - fdtsize, 2 * MiB);
-+
-+    if (dtb_start_limit && (dtb_start < dtb_start_limit)) {
-+        error_report("No enough memory to place DTB after kernel/initrd");
-+        exit(1);
-+    }
-+
-+    return dtb_start;
- }
- 
- /*
+diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
+index 59d6fc445d..d8771ca641 100644
+--- a/target/riscv/cpu_cfg.h
++++ b/target/riscv/cpu_cfg.h
+@@ -84,6 +84,7 @@ struct RISCVCPUConfig {
+     bool ext_svnapot;
+     bool ext_svpbmt;
+     bool ext_svvptc;
++    bool ext_svukte;
+     bool ext_zdinx;
+     bool ext_zaamo;
+     bool ext_zacas;
 -- 
 2.47.1
 
