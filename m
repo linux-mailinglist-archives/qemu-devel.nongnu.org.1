@@ -2,71 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 363899F6480
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Dec 2024 12:14:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C5D029F64A1
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Dec 2024 12:17:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tNry4-0000pT-Fr; Wed, 18 Dec 2024 06:11:52 -0500
+	id 1tNs3P-00037i-Mh; Wed, 18 Dec 2024 06:17:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tNrxx-0000fc-95
- for qemu-devel@nongnu.org; Wed, 18 Dec 2024 06:11:45 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tNrxu-00060K-Gk
- for qemu-devel@nongnu.org; Wed, 18 Dec 2024 06:11:45 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1734520301;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=RLvJpCwwLpnoPeYc8xU07cbaU7PHI2UhHEMNtb6DWps=;
- b=NxYNwiuW8LS7e7PPCWYDkDCV3mPedzRXTnhh2Zt/2lwFU7PPOrOY+iDIPlZPyNtkpvyHfP
- Zrulpf6aDdz6o18AY7vaS2Tg9ln5WlGok/jUez61CBe/X4Upjd8hmYITjRpyrSm95HtECW
- EOIuanHO4/aioX4ci+S/C5XD8z9Z6/o=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-532-nxCM_ZwVN2SSFlft-UIzZQ-1; Wed,
- 18 Dec 2024 06:11:40 -0500
-X-MC-Unique: nxCM_ZwVN2SSFlft-UIzZQ-1
-X-Mimecast-MFC-AGG-ID: nxCM_ZwVN2SSFlft-UIzZQ
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id A8E2F19560B2
- for <qemu-devel@nongnu.org>; Wed, 18 Dec 2024 11:11:39 +0000 (UTC)
-Received: from thuth-p1g4.redhat.com (unknown [10.39.192.114])
- by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 1BE4C19560AD; Wed, 18 Dec 2024 11:11:36 +0000 (UTC)
-From: Thomas Huth <thuth@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Stefan Hajnoczi <stefanha@redhat.com>
-Subject: [PULL 38/38] meson.build: Disallow libnfs v6 to fix the broken macOS
- build
-Date: Wed, 18 Dec 2024 12:09:58 +0100
-Message-ID: <20241218110958.226932-39-thuth@redhat.com>
-In-Reply-To: <20241218110958.226932-1-thuth@redhat.com>
-References: <20241218110958.226932-1-thuth@redhat.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tNs3N-00033A-3c
+ for qemu-devel@nongnu.org; Wed, 18 Dec 2024 06:17:21 -0500
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tNs3K-00086R-7f
+ for qemu-devel@nongnu.org; Wed, 18 Dec 2024 06:17:20 -0500
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-436341f575fso50631925e9.1
+ for <qemu-devel@nongnu.org>; Wed, 18 Dec 2024 03:17:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1734520635; x=1735125435; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=S+DB6N73yHGvsAXmUommk/ZUinIeBiSObIv3EDMmrBc=;
+ b=DvgxtCf8qbud83AuklimUURy8pEUd4rDBSqpoYQgu5J2I/uwdrgA+wq2pSbjwQtBuM
+ 05SfkgO4hccdUYcGTru5/djL0A/U8R+SFvfOX5IdGbi0IMiRUawD/68Zjh3yNdt0dv6o
+ g62YlW+huFOEf5sPTx5P1J7iPeHcmc2RqecdHi+oRDWxMvdsBOvhqsCrk9ng/0xK7EWu
+ F07j7aiJcdzxuDDskzN2yd2opqw8SML20L6gd0/no+VJfTuuW9ohhEu+upBWSDpJJ69Q
+ tzV3/TjgMz4AEd/djy6a9znSK617cdJ7etOtMGVvZ70J4vawMw5j8XAxACgaWcBKlMR9
+ Vdkw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1734520635; x=1735125435;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=S+DB6N73yHGvsAXmUommk/ZUinIeBiSObIv3EDMmrBc=;
+ b=J+7BWAXy3wGPA3x2fxpGQ1pOcLANBrJ3toj7amLnT5RUFiaQSuU9M4qUuioqoPihyQ
+ zoxe0ZcxRLv/OoLolq1VhZWPaqi/P/MVonqPpDNqlB0UlOBnLzAbs9mbT2xtgCW/moTt
+ J5Zx5mYE86AAS79pcAyKty2mPIuaM+suLenC8f0P/SP/V57U92RJfeRFD8j+jMyoTkpo
+ CgXoOTkGb+eu58EJ8jQkQ3qEiqukK8PbYAkAlALD32Bu8RMMEcMH0gOORavWDGYYpf6y
+ p1FwL61cLwUgCEcXCgjG9gzbTw1/Ifqrbltdkoyhbcq53O9JCeLaCRC40oaIsKHt2a3B
+ YOSA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWlQKYpzoTMccaq+3AB2CT7xSvarLP7Pv5fdZZ9nLii+Imxb8j5JliRlFvCA+Rxon+sv8uFnS8ymy13@nongnu.org
+X-Gm-Message-State: AOJu0Yw1AHBK54NL/SKhpqTZKInTdab2rE7kXNLIXKxjsAqeexhu3C1Q
+ P+3oTN1sdDNJLGi+hJgnlgnOiUMZY5BrQceM0QTnW2LG/pSnWrvxs8NOzAMfXuE=
+X-Gm-Gg: ASbGncsfyeMHO3VjWApbjIJdDFzRLisYrTONQzEciQQM5/pC0DbPUTuN6sdg3pHsLPa
+ /yySzsh05TttCCeiDJBWy+WPsQMHC2C7oNmCEILYr4qc9WrcvP5JuJtAfITWbxPgPIY6hhaE2nK
+ oKnCCMfdbhod45LeZ7fN2NSNjfM4W2cY0kC32dGQ+Mdz8ReH6HZ7/pIa6G/hWkSx/Yoe6Fc3dL/
+ euWExyxN26Hkb0oBW6TmTOY2Khe58bUm2zlftt8R0M4dcxd7lL5GD0DVZUr8yvoa53uCC1b
+X-Google-Smtp-Source: AGHT+IGbWE0XttpHCE/SxeKtb2o43ZYzjwwHRxUlBlCCjHUwO3Qcs+aRXoJ+9uhRfvcCUGr4NB/K8Q==
+X-Received: by 2002:a05:6000:2a4:b0:385:f66a:4271 with SMTP id
+ ffacd0b85a97d-388e4d6a338mr1994183f8f.4.1734520634899; 
+ Wed, 18 Dec 2024 03:17:14 -0800 (PST)
+Received: from [192.168.1.117] ([78.196.4.158])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-388c801a487sm14070763f8f.45.2024.12.18.03.17.14
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 18 Dec 2024 03:17:14 -0800 (PST)
+Message-ID: <ecac6a6d-163d-42ba-83f5-e4e5980c9ee3@linaro.org>
+Date: Wed, 18 Dec 2024 12:17:13 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -31
-X-Spam_score: -3.2
-X-Spam_bar: ---
-X-Spam_report: (-3.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-1.116,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/7] rust: pl011: bug fixes
+To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
+Cc: qemu-rust@nongnu.org, Zhao Liu <zhao1.liu@intel.com>
+References: <20241212172209.533779-1-pbonzini@redhat.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20241212172209.533779-1-pbonzini@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,38 +97,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The macOS builds in our CI (and possibly other very recent distros)
-are currently broken since the update to libnfs version 6 there.
-That version apparently comes with a big API breakage. v5.0.3 was
-the final release of the old API (see the libnfs commit here:
-https://github.com/sahlberg/libnfs/commit/4379837 ).
+On 12/12/24 18:21, Paolo Bonzini wrote:
+> While preparing the comparison at
+> https://lists.nongnu.org/archive/html/qemu-rust/2024-12/msg00006.html,
+> I noticed some bugs in the code.  These are the corresponding fixes.
+> 
+> CCing Philippe because he expressed interest in bringing the Rust
+> version on par with the C version of the pl011 device.
 
-Disallow version 6.x for now to get the broken CI job working
-again. Once somebody had enough time to adapt our code in
-block/nfs.c, we can revert this change again.
+Also cc'ing Zhao.
 
-Message-ID: <20241218065157.209020-1-thuth@redhat.com>
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Signed-off-by: Thomas Huth <thuth@redhat.com>
----
- meson.build | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/meson.build b/meson.build
-index 85f7485473..6149b50db2 100644
---- a/meson.build
-+++ b/meson.build
-@@ -1145,7 +1145,7 @@ endif
- 
- libnfs = not_found
- if not get_option('libnfs').auto() or have_block
--  libnfs = dependency('libnfs', version: '>=1.9.3',
-+  libnfs = dependency('libnfs', version: ['>=1.9.3', '<6.0.0'],
-                       required: get_option('libnfs'),
-                       method: 'pkg-config')
- endif
--- 
-2.47.1
+> Paolo Bonzini (7):
+>    rust: pl011: fix declaration of LineControl bits
+>    rust: pl011: match break logic of C version
+>    rust: pl011: always use reset() method on registers
+>    rust: pl011: fix break errors and definition of Data struct
+>    rust: pl011: extend registers to 32 bits
+>    rust: pl011: fix migration stream
+>    rust: pl011: simplify handling of the FIFO enabled bit in LCR
+> 
+>   rust/hw/char/pl011/src/device.rs       | 119 +++++++++++-------
+>   rust/hw/char/pl011/src/device_class.rs |   8 +-
+>   rust/hw/char/pl011/src/lib.rs          | 161 +++++++++++++------------
+>   rust/qemu-api/src/vmstate.rs           |  22 ----
+>   4 files changed, 160 insertions(+), 150 deletions(-)
+> 
 
 
