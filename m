@@ -2,88 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EFEF9F6521
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Dec 2024 12:43:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6934A9F651D
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Dec 2024 12:42:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tNsQI-0007Ys-OD; Wed, 18 Dec 2024 06:41:02 -0500
+	id 1tNsQj-0007l4-Lg; Wed, 18 Dec 2024 06:41:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1tNsQE-0007YE-27
- for qemu-devel@nongnu.org; Wed, 18 Dec 2024 06:40:58 -0500
-Received: from mail-pg1-x535.google.com ([2607:f8b0:4864:20::535])
+ id 1tNsQL-0007a6-Hb
+ for qemu-devel@nongnu.org; Wed, 18 Dec 2024 06:41:06 -0500
+Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1tNsQC-0007v8-GU
- for qemu-devel@nongnu.org; Wed, 18 Dec 2024 06:40:57 -0500
-Received: by mail-pg1-x535.google.com with SMTP id
- 41be03b00d2f7-801c8164ef9so508327a12.1
- for <qemu-devel@nongnu.org>; Wed, 18 Dec 2024 03:40:56 -0800 (PST)
+ id 1tNsQF-0007vo-Gg
+ for qemu-devel@nongnu.org; Wed, 18 Dec 2024 06:41:05 -0500
+Received: by mail-pl1-x632.google.com with SMTP id
+ d9443c01a7336-2162c0f6a39so5849875ad.0
+ for <qemu-devel@nongnu.org>; Wed, 18 Dec 2024 03:40:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1734522055; x=1735126855; darn=nongnu.org;
+ d=ventanamicro.com; s=google; t=1734522057; x=1735126857; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=iNTvqcQvDiPTLItRbovaMEM3ypoPCWocSxqCoBEoP38=;
- b=eE77p4mFQBh6oLZl6wSAIyo9hXwmkqV3jf1+R+u3qn96tfl3ETGWvnlo8wOoIBF7/Q
- 8C/MdqJ9ZHkUUOVmTtthfVKjKLeS8uFrPWRL/lPep4AE1/OnNY+9oFFFc6uRLaX+Wn6Z
- hz98Z3THQqzbWqG34TQwmU9IkkwhWl0J0s1HNG4cdvhcbGe99hw0QnnbiV4wAIyDSi3a
- TJCsGfmw0Uj7xK+kBSiQJQEF+/bTa2+zBkooDLdLT/Mx8aJpguggbNp0oa/7ilp+HYUb
- 9AFgvF14aI/TYihlXjZgiAV6KqsXR6m1QPtJVfJ1V3Sz16MAaDbRT2xFZBKvw8aAIhbv
- 6plQ==
+ bh=O//YerG7ZIihFW2lGVZjhXBesNDkTOryi2FknShtqrA=;
+ b=DVBel1beqOULjwMV3hPzRB/hug7byTyN1j1I6U4I4Yfgp5MVxjh/TS5jOUOIfQEMmo
+ 10Pkmw+ypvyKQy3xyOawFDh0giqXeKbCWV663x8S6+Ur6iwTqjaCZqN3JtHN668wUKBu
+ 91E4QZU40YPWJ9Pwk7wyer9MG9yfy0GJ+AS0oxua5Xx6qnZ90jyrYHNV6kgAwDuvlx9m
+ kZMxi2RCVcnzMwzKZyfyU+UGRe+btudcavHt0A1rUsdFxZ2b4KtIW6G/ML5Q+Fzk3Zue
+ G93dC7h9ZBVaj99S2xxcWHy5i23QN180dWIcvjcTPw1cJK7rG46rWT0T01/fONCaq0Sz
+ ri5g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734522055; x=1735126855;
+ d=1e100.net; s=20230601; t=1734522057; x=1735126857;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=iNTvqcQvDiPTLItRbovaMEM3ypoPCWocSxqCoBEoP38=;
- b=VBTanyI4RfHC6qKECa7qRe9PXxCvnSg7WvNhp1xqWgJtcSTtQ0aCxrVpTK3RqU1rMa
- kFIO3E40N9hNZrE8ce0tWeAeVdYfoZwk1c10rOSs1Ln4UYHpX+N1eZuL10t88hWrmjzF
- InGGivSzLZRkQiykbOuALvNPlt9t3bb1P+EJdZXI/ZYhbJya2xRwA5W3gBvFHZd4T22U
- jICxBKB83tMmqCbd/zNK8AMdX184wG90UpnQRsxRfFH6Rqw1A6CiyPy/SV7S2IGvpEJT
- WlsFDEy9NR4VCxygT5GkGkUgt+X4Dd5axwomPAdrEjGlVnlr81errg72URrArcAzIEFb
- daBw==
-X-Gm-Message-State: AOJu0YyMKpUKxHQgXBTj8wjfp71gJWLxz0kjD3+i71FKYU0q0x94nA7D
- a8hS0sOXZfdBOJsCDPNuhPK6vUh+Il+On3e1VG4eQvh2xiFu0B2Ttkpm5fKLbXinJbjwPULVBv+
- FtHo=
-X-Gm-Gg: ASbGncu1VdtnBNcFhNv/bTmn5HkSMIz+ncEscLKT+oB1ibl3P7ibaYiYn1wB8c7YXqR
- vi0XGhK4u/ZtfqXWFjmViDsZS6iQsJbfuH7BI0o/l+iC1tz4+X5w4M+CZCDwb86VomJhv8VhtQ/
- 5e25lzBY4au/Mj4+e8TBrzZQpUsYN8olk+B8E9vyxXxmrDmxuJ/UPVWvwMVNfFZvtEZNJZsfCXN
- ZtFPme6axyQdUwXJzHTVT3mlzHow+jgVm6V276m57Srf+H6NBobmX4X8jQf1d1gZ1j5YOtU2WMy
- oA==
-X-Google-Smtp-Source: AGHT+IHGvEpwznqrZEgLJCBktXBDSR5v/dhgWI+rrZnOQnWj0j8a3qcdFM4COnZInDN+b5ofxGHpSg==
-X-Received: by 2002:a17:90b:33cd:b0:2ee:463d:8e8d with SMTP id
- 98e67ed59e1d1-2f2d8860fcbmr10741403a91.14.1734522054828; 
- Wed, 18 Dec 2024 03:40:54 -0800 (PST)
+ bh=O//YerG7ZIihFW2lGVZjhXBesNDkTOryi2FknShtqrA=;
+ b=BSpVjz6StsDoiB29nn4hfv7ZjdNhFDOsju3IGLnNdDGDRKKl8XoCvSOAsoHi6ky/QB
+ M2yAhMtwR02nVYt5O0R2Kkoh9LgYSeB2lgEZXCG0sOMFLbMdSQ/xrajEWZU2MGXNrfDn
+ PxJwmrTmkZFVmTMsuS0Su9cpVBbqXdz28wlUnKnKphx/jjp2eKf1r2N+OpMYK1ymPlmH
+ NwgbWu+PPiYerGfbENH9phksCDXSRJesbKcRs1JgKBloPNjOg1MhZXACMqgaF2aQaYT1
+ DZ4G5TY/mOe8QUTn8rEjBx63pPXOcdUbb/smiiiTZU27lY30rG6JdeF7sBGmKdZDpBtB
+ k+Yw==
+X-Gm-Message-State: AOJu0YxXjMh0PtYckY7Rk8VcYaFfJtGKWZC/mCh7MI2Wh8iSX6FBOQlH
+ DBgRCVtihMxYjtTzDBpU9p5pOt8UDy/ELSrL3qjB+96IbmHVdUTJWssCI56Du3+L7a5pgxaQ8J9
+ Xwnk=
+X-Gm-Gg: ASbGncsV9g+NFT3lIa4DSll50QwX6vZPfc5WPE4QJEkR+n1gEDYZ2ndrXHrT8ftJDer
+ yRHMfvcY5XzvMFjWr826FMieX46eCtJ7NI+zC3K7+KhObCyZFOOYRCu2qy/nLjqbs9DSbXZby+n
+ 0MVWxk8VIx2ffxFDcuDeYjAIGTS1eYVqMBasUfb4cM0D7Qud0I4nlZ9DxjN0QrjBO84hBarKCp9
+ V1mn74casiM2I+OeXSaqRgP5aQ2k2AXMwlKOatdKd35iAlL683k2pF5vbwarLHDtqxwqnNqxLcZ
+ XQ==
+X-Google-Smtp-Source: AGHT+IFgI3wCgzOcWsy3RuqYgCXKX/lvGEoPoZrR8SIP96nwYfoTdmgSstBeLPzZGf1Hnp4H+koF5g==
+X-Received: by 2002:a17:902:c402:b0:215:7e49:8202 with SMTP id
+ d9443c01a7336-218d73b30f7mr37655845ad.13.1734522057522; 
+ Wed, 18 Dec 2024 03:40:57 -0800 (PST)
 Received: from localhost.localdomain ([2804:7f0:bcc0:51cf:9cf:d2f2:d49e:7bd9])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-218a1dcb447sm74462285ad.68.2024.12.18.03.40.52
+ d9443c01a7336-218a1dcb447sm74462285ad.68.2024.12.18.03.40.55
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 18 Dec 2024 03:40:54 -0800 (PST)
+ Wed, 18 Dec 2024 03:40:57 -0800 (PST)
 From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
  liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PATCH v2 4/9] target/riscv: add shvstvala
-Date: Wed, 18 Dec 2024 08:40:21 -0300
-Message-ID: <20241218114026.1652352-5-dbarboza@ventanamicro.com>
+Subject: [PATCH v2 5/9] target/riscv: add shtvala
+Date: Wed, 18 Dec 2024 08:40:22 -0300
+Message-ID: <20241218114026.1652352-6-dbarboza@ventanamicro.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241218114026.1652352-1-dbarboza@ventanamicro.com>
 References: <20241218114026.1652352-1-dbarboza@ventanamicro.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::535;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pg1-x535.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x632.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,50 +99,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-shvstvala is defined in RVA22 as:
+shtvala is described in RVA22 as:
 
-"vstval must be written in all cases described above for stval."
+"htval must be written with the faulting guest physical address
+in all circumstances permitted by the ISA."
 
-By "cases describe above" the doc refer to the description of sstvala:
-
-"stval must be written with the faulting virtual address for load,
-store, and instruction page-fault, access-fault, and misaligned
-exceptions, and for breakpoint exceptions other than those caused by
-execution of the EBREAK or C.EBREAK instructions. For
-virtual-instruction and illegal-instruction exceptions, stval must be
-written with the faulting instruction."
-
-We already have sstvala, and our vstval follows the same rules as stval,
-so we can claim to support shvstvala too.
+This is the case since commit 3067553993, so claim support for shtvala.
 
 Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
 ---
  target/riscv/cpu.c                |   1 +
- tests/data/acpi/riscv64/virt/RHCT | Bin 346 -> 356 bytes
+ tests/data/acpi/riscv64/virt/RHCT | Bin 356 -> 364 bytes
  2 files changed, 1 insertion(+)
 
 diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 7091eb683e..f4997f488e 100644
+index f4997f488e..70301def20 100644
 --- a/target/riscv/cpu.c
 +++ b/target/riscv/cpu.c
 @@ -184,6 +184,7 @@ const RISCVIsaExtData isa_edata_arr[] = {
      ISA_EXT_DATA_ENTRY(zhinx, PRIV_VERSION_1_12_0, ext_zhinx),
      ISA_EXT_DATA_ENTRY(zhinxmin, PRIV_VERSION_1_12_0, ext_zhinxmin),
      ISA_EXT_DATA_ENTRY(shcounterenw, PRIV_VERSION_1_12_0, has_priv_1_12),
-+    ISA_EXT_DATA_ENTRY(shvstvala, PRIV_VERSION_1_12_0, has_priv_1_12),
++    ISA_EXT_DATA_ENTRY(shtvala, PRIV_VERSION_1_12_0, has_priv_1_12),
+     ISA_EXT_DATA_ENTRY(shvstvala, PRIV_VERSION_1_12_0, has_priv_1_12),
      ISA_EXT_DATA_ENTRY(smaia, PRIV_VERSION_1_12_0, ext_smaia),
      ISA_EXT_DATA_ENTRY(smcntrpmf, PRIV_VERSION_1_12_0, ext_smcntrpmf),
-     ISA_EXT_DATA_ENTRY(smepmp, PRIV_VERSION_1_12_0, ext_smepmp),
 diff --git a/tests/data/acpi/riscv64/virt/RHCT b/tests/data/acpi/riscv64/virt/RHCT
-index 460808d017baef93ccdd8fd8d1d4722edefd3b86..15b82b5bb1cf24cf501e74cb82682742e0041ea6 100644
+index 15b82b5bb1cf24cf501e74cb82682742e0041ea6..065f894010272e7f27834b2c8d5d5fb0c21066a1 100644
 GIT binary patch
-delta 48
-zcmcb`^n{5k$iq1#g^_`Q@%ltA16C$RMuwjg?YDDelogkhCFUef{1V4u#mK<m!pOh?
-E09kzvYXATM
+delta 46
+zcmaFD^oEHm$iq1#hmnDSF=ir{0UH-1BLgGjM2GFHC1r^@i4(tMa5ynCF!(SsFaQ7$
+CAPVCE
 
-delta 39
-vcmaFDbc=~A$iq1#ijjeV(RCu10qYM2Muztj?YB>2jNvd~WMHsjWMBXQ)M*Jp
+delta 40
+wcmaFE^n{5k$iq1#g^_`Q@%ltA12!f`MuwjZ6CJis{GZBU#mK<m!pOh?0OjfmAOHXW
 
 -- 
 2.47.1
