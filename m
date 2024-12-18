@@ -2,90 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E6A79F5F89
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Dec 2024 08:44:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 307ED9F6016
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Dec 2024 09:24:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tNoiI-0007nt-7T; Wed, 18 Dec 2024 02:43:22 -0500
+	id 1tNpL3-0006h7-Su; Wed, 18 Dec 2024 03:23:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1tNoi9-0007m9-G0
- for qemu-devel@nongnu.org; Wed, 18 Dec 2024 02:43:15 -0500
-Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1tNoi3-0006kZ-VZ
- for qemu-devel@nongnu.org; Wed, 18 Dec 2024 02:43:12 -0500
-Received: by mail-pf1-x42d.google.com with SMTP id
- d2e1a72fcca58-728e729562fso5308943b3a.0
- for <qemu-devel@nongnu.org>; Tue, 17 Dec 2024 23:43:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1734507785; x=1735112585; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=08v+xDHjDPrZZfAoWPfyiDvPE6FENcKOOzunpUkbwIo=;
- b=Z9u26s6FQbF10aK1G4MiOHA4B7H9C/WIVNxw4iEf8DzDUMeZx3X8dR5khpCJamv3Bg
- w59huRYCjs+Ovfsxu8g7eQc8yTqgA8GDiT0ywdbdi5o8BOwLxnH/C1xDnev+0ywayrFT
- uf2sH5s8fvyat3OvTXabcG6rY6rZlCQaYshjlRIf7FpExPtNElbaQ85zZY7fJP7HdzkV
- 1lJ+KjX3DOk6F9QbgD6tqqCLcCHZEQWyD1P1VMFUhk23kGLVTd8idDWgxVJIAgnKUV5R
- nbTuD5ShVDMRSB9EKNEhWrbWymr/RFGsSJykx+tDJSRy7EYbdM8LlTiPs5Vls5jKZ3re
- fEOg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734507785; x=1735112585;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=08v+xDHjDPrZZfAoWPfyiDvPE6FENcKOOzunpUkbwIo=;
- b=uYkIs7uT122ZImRQ7hcTeiGktlAspa0AL7TuEIwAZCXqgDl6V3IlHiqLQsZ0J8xccz
- Hf3B2NHbCpgJKkCMuUiFfXUhPPLc+fO3OLDnx8gBEAN1py3PjVlIEEy6cqzRScNVBtvq
- /iZxE35+r2D+nuM8ayFL+Va6jfGATC+wvad3oNkR91UrXkKttVqVDEILoeHhh3zK9uOF
- LLmFwQ9FSfkrafZI9OIBLlXouZW878ZDvFlza/Qhup+tcbnSsjI0F+jyB1ATU7dPtvGQ
- cvPj74ku7CGUmQxHqgjXpgc2GbQcNq8p9s9raw4DfsEtqNhWLkkwLEnD4uXKr+EPIRzR
- QfYg==
-X-Gm-Message-State: AOJu0YxTGKrqoNaypTSDR+bPEo1WHAhsUIuLOC1R8h1bZARNLJm3T3rF
- fo1yLuY2ws0dNH6IyQhHDtbl3RJQGSMozy2v/ljsyqD9yaL2zQw1Hs7IOA==
-X-Gm-Gg: ASbGnctUorV+45VsGxy0wLdkReBWMQ3+f3TAQBhYvmCt5duzVbHrpCWiND5tGWmaG/K
- 4NWZ+6ozOpPHfXPavP+kaafinHyN7ue9BGNp+9O+Kr0ur0SNezclbYfPLOZy8fn2NfjZzkqeLMx
- JWSNOaoJ07Qyci7cmnVoSCpRIabOOVFlgrl8LbDuCW8tL3+eFaEqjyFtGS7YDrKvCZRSI5MiP//
- nSilTCvjSGzUT4qUwISTGehcp63e1lUjvoDDQbyK3BxL6KoVJQMcM6QHsDR8hXOyOkB7qZhrJQ8
- fvSvCmiL9A==
-X-Google-Smtp-Source: AGHT+IGVg8Gc8pHg52oXwWAukS8IUHRQP0TWGKsu1WZE4Mgwv71gynqBFA6vuUgUdn69Xj+xvXXlgA==
-X-Received: by 2002:a05:6a21:1011:b0:1e1:a671:7122 with SMTP id
- adf61e73a8af0-1e5b4603989mr3396529637.2.1734507785053; 
- Tue, 17 Dec 2024 23:43:05 -0800 (PST)
-Received: from wheely.local0.net (14-200-18-130.tpgi.com.au. [14.200.18.130])
- by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-72918af0caesm7900933b3a.86.2024.12.17.23.43.00
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 17 Dec 2024 23:43:04 -0800 (PST)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: Nicholas Piggin <npiggin@gmail.com>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Dmitry Fleytman <dmitry.fleytman@gmail.com>,
- Akihiko Odaki <akihiko.odaki@daynix.com>,
- Sriram Yagnaraman <sriram.yagnaraman@ericsson.com>,
- Fabiano Rosas <farosas@suse.de>, Laurent Vivier <lvivier@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH 5/5] qtest/e1000e|igb: Fix msix to re-trigger interrupts
-Date: Wed, 18 Dec 2024 17:42:31 +1000
-Message-ID: <20241218074232.1784427-6-npiggin@gmail.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20241218074232.1784427-1-npiggin@gmail.com>
-References: <20241218074232.1784427-1-npiggin@gmail.com>
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1tNpKs-0006go-MV
+ for qemu-devel@nongnu.org; Wed, 18 Dec 2024 03:23:15 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1tNpKq-0002kN-RJ
+ for qemu-devel@nongnu.org; Wed, 18 Dec 2024 03:23:14 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1734510189;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=CMG0BuNFUSNQu+0OpuDh9un1TA3STho6EeJwGU16lmY=;
+ b=Ji8aXemWgZcKsixq/s+98VCovuTSZQnP8wxb0imvF6InF0CIGE0dF9rnbR2LI4mX/Y2oQD
+ YvelJTgCvOMd/7XXY2LGg5uIxbP0lEWQ4jO2uFgPdowSCOJ3uWxAjnpyO51ggWyfSzkjdS
+ ziJ8Wxpt/+0mBm6lI6FK7cWBnDjKyZY=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-556-JIQA4E7fMrqkojuoL_Z7SA-1; Wed,
+ 18 Dec 2024 03:23:05 -0500
+X-MC-Unique: JIQA4E7fMrqkojuoL_Z7SA-1
+X-Mimecast-MFC-AGG-ID: JIQA4E7fMrqkojuoL_Z7SA
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id BEE871955DCD; Wed, 18 Dec 2024 08:23:04 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.61])
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 9B3DB300F9B5; Wed, 18 Dec 2024 08:23:02 +0000 (UTC)
+Date: Wed, 18 Dec 2024 08:22:58 +0000
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Peter Xu <peterx@redhat.com>
+Cc: Fabiano Rosas <farosas@suse.de>, qemu-devel@nongnu.org
+Subject: Re: [PATCH] tests/qtest/migration: Restore include for postcopy
+Message-ID: <Z2KGUnQIcxZNohzi@redhat.com>
+References: <20241217212201.23376-1-farosas@suse.de>
+ <Z2Hxe0PyVACaKIlZ@x1n>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x42d.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <Z2Hxe0PyVACaKIlZ@x1n>
+User-Agent: Mutt/2.2.13 (2024-03-09)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -31
+X-Spam_score: -3.2
+X-Spam_bar: ---
+X-Spam_report: (-3.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-1.116,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,240 +80,44 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The e1000e and igb tests don't clear the msix pending bit after waiting
-for it, as it is masked so the irq doesn't get sent. Failing to clear
-the pending interrupt means all subsequent waits for that interrupt
-after the first do not actually wait for an interrupt genreated by the
-device.
+On Tue, Dec 17, 2024 at 04:47:39PM -0500, Peter Xu wrote:
+> On Tue, Dec 17, 2024 at 06:22:01PM -0300, Fabiano Rosas wrote:
+> > Commit 124a3c58b8 ("tests/qtest/migration: Move ufd_version_check to
+> > utils") moved the ufd_version_check() function to another file but
+> > failed to bring along the <sys/syscall> include, which is necessary to
+> > pull in <asm/unistd.h> for __NR_userfaultd.
+> > 
+> > Restore the missing include.
+> 
+> Ohhhhhhh.. so postcopy tests will always be skipped as of now?  Maybe worth
+> explicit mention that in the commit message if so, only when you merge.
+> 
+> > 
+> > While here, remove the ifdef __linux__ that's redundant and fix a
+> > couple of typos.
+> > 
+> > Fixes: 124a3c58b8 ("tests/qtest/migration: Move ufd_version_check to utils")
+> > Signed-off-by: Fabiano Rosas <farosas@suse.de>
+> 
+> Reviewed-by: Peter Xu <peterx@redhat.com>
+> 
+> Maybe we don't need to be as careful on old kernels anymore especially in
+> tests, because userfaultfd syscall existed for ~10 years. So if we want we
+> can start requiring __NR_userfaultfd present for __linux__, then no way to
+> miss such spot next time.
 
-This affects the multiple_transfers tests, they never actually verify
-more than one interrupt is generated. So for those tests, enable the
-msix vectors for the queue interrupts so they are delivered and the
-pending bit is cleared.
+Yes, I think that check is obsolete, based on our supported platforms
+list. It would suffice to just check __linux__.
 
-Add assertions to ensure the masked pending tests are not used to test
-an interrupt multiple times.
-
-Cc: Michael S. Tsirkin <mst@redhat.com>
-Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Cc: Dmitry Fleytman <dmitry.fleytman@gmail.com>
-Cc: Akihiko Odaki <akihiko.odaki@daynix.com>
-Cc: Sriram Yagnaraman <sriram.yagnaraman@ericsson.com>
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
- tests/qtest/libqos/e1000e.h |   8 +++
- tests/qtest/e1000e-test.c   |   2 +
- tests/qtest/igb-test.c      |   2 +
- tests/qtest/libqos/e1000e.c | 113 +++++++++++++++++++++++++++++++++++-
- 4 files changed, 122 insertions(+), 3 deletions(-)
-
-diff --git a/tests/qtest/libqos/e1000e.h b/tests/qtest/libqos/e1000e.h
-index 30643c80949..6cc1a9732b1 100644
---- a/tests/qtest/libqos/e1000e.h
-+++ b/tests/qtest/libqos/e1000e.h
-@@ -25,6 +25,9 @@
- #define E1000E_RX0_MSG_ID           (0)
- #define E1000E_TX0_MSG_ID           (1)
- 
-+#define E1000E_RX0_MSIX_DATA        (0x12345678)
-+#define E1000E_TX0_MSIX_DATA        (0xabcdef00)
-+
- #define E1000E_ADDRESS { 0x52, 0x54, 0x00, 0x12, 0x34, 0x56 }
- 
- typedef struct QE1000E QE1000E;
-@@ -40,6 +43,10 @@ struct QE1000E_PCI {
-     QPCIDevice pci_dev;
-     QPCIBar mac_regs;
-     QE1000E e1000e;
-+    uint64_t msix_rx0_addr;
-+    uint64_t msix_tx0_addr;
-+    bool msix_found_rx0_pending;
-+    bool msix_found_tx0_pending;
- };
- 
- static inline void e1000e_macreg_write(QE1000E *d, uint32_t reg, uint32_t val)
-@@ -57,5 +64,6 @@ static inline uint32_t e1000e_macreg_read(QE1000E *d, uint32_t reg)
- void e1000e_wait_isr(QE1000E *d, uint16_t msg_id);
- void e1000e_tx_ring_push(QE1000E *d, void *descr);
- void e1000e_rx_ring_push(QE1000E *d, void *descr);
-+void e1000e_pci_msix_enable_rxtxq_vectors(QE1000E *d, QGuestAllocator *alloc);
- 
- #endif
-diff --git a/tests/qtest/e1000e-test.c b/tests/qtest/e1000e-test.c
-index a69759da70e..4921a141ffe 100644
---- a/tests/qtest/e1000e-test.c
-+++ b/tests/qtest/e1000e-test.c
-@@ -185,6 +185,8 @@ static void test_e1000e_multiple_transfers(void *obj, void *data,
-         return;
-     }
- 
-+    /* Triggering msix interrupts multiple times so must enable vectors */
-+    e1000e_pci_msix_enable_rxtxq_vectors(d, alloc);
-     for (i = 0; i < iterations; i++) {
-         e1000e_send_verify(d, data, alloc);
-         e1000e_receive_verify(d, data, alloc);
-diff --git a/tests/qtest/igb-test.c b/tests/qtest/igb-test.c
-index 2f22c4fb208..06082cbe7ff 100644
---- a/tests/qtest/igb-test.c
-+++ b/tests/qtest/igb-test.c
-@@ -188,6 +188,8 @@ static void test_igb_multiple_transfers(void *obj, void *data,
-         return;
-     }
- 
-+    /* Triggering msix interrupts multiple times so must enable vectors */
-+    e1000e_pci_msix_enable_rxtxq_vectors(d, alloc);
-     for (i = 0; i < iterations; i++) {
-         igb_send_verify(d, data, alloc);
-         igb_receive_verify(d, data, alloc);
-diff --git a/tests/qtest/libqos/e1000e.c b/tests/qtest/libqos/e1000e.c
-index 925654c7fd4..7b7e811bce7 100644
---- a/tests/qtest/libqos/e1000e.c
-+++ b/tests/qtest/libqos/e1000e.c
-@@ -19,6 +19,7 @@
- #include "qemu/osdep.h"
- #include "hw/net/e1000_regs.h"
- #include "hw/pci/pci_ids.h"
-+#include "hw/pci/pci_regs.h"
- #include "../libqtest.h"
- #include "pci-pc.h"
- #include "qemu/sockets.h"
-@@ -77,16 +78,77 @@ static void e1000e_foreach_callback(QPCIDevice *dev, int devfn, void *data)
-     g_free(dev);
- }
- 
-+static bool e1000e_test_msix_irq(QE1000E *d, uint16_t msg_id,
-+                                 uint64_t guest_msix_addr,
-+                                 uint32_t msix_data)
-+{
-+    QE1000E_PCI *d_pci = container_of(d, QE1000E_PCI, e1000e);
-+    QPCIDevice *pci_dev = &d_pci->pci_dev;
-+
-+    if (msg_id == E1000E_RX0_MSG_ID) {
-+        g_assert(!d_pci->msix_found_rx0_pending);
-+    } else if (msg_id == E1000E_TX0_MSG_ID) {
-+        g_assert(!d_pci->msix_found_tx0_pending);
-+    } else {
-+        /* Must enable MSI-X vector to test multiple messages */
-+        g_assert_not_reached();
-+    }
-+
-+    if (pci_dev->msix_enabled) {
-+        if (qpci_msix_masked(pci_dev, msg_id)) {
-+            /* No ISR checking should be done if masked, but read anyway */
-+            bool p = qpci_msix_pending(pci_dev, msg_id);
-+            if (p) {
-+                if (msg_id == E1000E_RX0_MSG_ID) {
-+                    d_pci->msix_found_rx0_pending = true;
-+                } else if (msg_id == E1000E_TX0_MSG_ID) {
-+                    d_pci->msix_found_tx0_pending = true;
-+                } else {
-+                    g_assert_not_reached();
-+                }
-+            }
-+            return p;
-+        } else {
-+            uint32_t data = qtest_readl(pci_dev->bus->qts, guest_msix_addr);
-+            if (data == msix_data) {
-+                qtest_writel(pci_dev->bus->qts, guest_msix_addr, 0);
-+                return true;
-+            } else if (data == 0) {
-+                return false;
-+            } else {
-+                g_assert_not_reached();
-+            }
-+        }
-+    } else {
-+        g_assert_not_reached();
-+    }
-+}
-+
- void e1000e_wait_isr(QE1000E *d, uint16_t msg_id)
- {
-     QE1000E_PCI *d_pci = container_of(d, QE1000E_PCI, e1000e);
--    guint64 end_time = g_get_monotonic_time() + 5 * G_TIME_SPAN_SECOND;
-+    QPCIDevice *pci_dev = &d_pci->pci_dev;
-+    uint64_t end_time = g_get_monotonic_time() + 5 * G_TIME_SPAN_SECOND;
-+    uint64_t guest_msix_addr;
-+    uint32_t msix_data;
-+
-+    assert(pci_dev->msix_enabled);
-+
-+    if (msg_id == E1000E_RX0_MSG_ID) {
-+        guest_msix_addr = d_pci->msix_rx0_addr;
-+        msix_data = E1000E_RX0_MSIX_DATA;
-+    } else if (msg_id == E1000E_TX0_MSG_ID) {
-+        guest_msix_addr = d_pci->msix_tx0_addr;
-+        msix_data = E1000E_TX0_MSIX_DATA;
-+    } else {
-+        g_assert_not_reached();
-+    }
- 
-     do {
--        if (qpci_msix_pending(&d_pci->pci_dev, msg_id)) {
-+        if (e1000e_test_msix_irq(d, msg_id, guest_msix_addr, msix_data)) {
-             return;
-         }
--        qtest_clock_step(d_pci->pci_dev.bus->qts, 10000);
-+        qtest_clock_step(pci_dev->bus->qts, 10000);
-     } while (g_get_monotonic_time() < end_time);
- 
-     g_error("Timeout expired");
-@@ -99,6 +161,51 @@ static void e1000e_pci_destructor(QOSGraphObject *obj)
-     qpci_msix_disable(&epci->pci_dev);
- }
- 
-+static void e1000e_pci_msix_enable_vector(QE1000E *d, uint16_t msg_id,
-+                                          uint64_t guest_msix_addr,
-+                                          uint32_t msix_data)
-+{
-+    QE1000E_PCI *d_pci = container_of(d, QE1000E_PCI, e1000e);
-+    QPCIDevice *pci_dev = &d_pci->pci_dev;
-+    uint32_t control;
-+    uint64_t off;
-+
-+    g_assert_cmpint(msg_id , >=, 0);
-+    g_assert_cmpint(msg_id , <, qpci_msix_table_size(pci_dev));
-+
-+    off = pci_dev->msix_table_off + (msg_id * 16);
-+
-+    qpci_io_writel(pci_dev, pci_dev->msix_table_bar,
-+                   off + PCI_MSIX_ENTRY_LOWER_ADDR, guest_msix_addr & ~0UL);
-+    qpci_io_writel(pci_dev, pci_dev->msix_table_bar,
-+                   off + PCI_MSIX_ENTRY_UPPER_ADDR,
-+                   (guest_msix_addr >> 32) & ~0UL);
-+    qpci_io_writel(pci_dev, pci_dev->msix_table_bar,
-+                   off + PCI_MSIX_ENTRY_DATA, msix_data);
-+
-+    control = qpci_io_readl(pci_dev, pci_dev->msix_table_bar,
-+                            off + PCI_MSIX_ENTRY_VECTOR_CTRL);
-+    qpci_io_writel(pci_dev, pci_dev->msix_table_bar,
-+                   off + PCI_MSIX_ENTRY_VECTOR_CTRL,
-+                   control & ~PCI_MSIX_ENTRY_CTRL_MASKBIT);
-+}
-+
-+void e1000e_pci_msix_enable_rxtxq_vectors(QE1000E *d, QGuestAllocator *alloc)
-+{
-+    QE1000E_PCI *d_pci = container_of(d, QE1000E_PCI, e1000e);
-+    QPCIDevice *pci_dev = &d_pci->pci_dev;
-+
-+    g_assert(pci_dev->msix_enabled);
-+
-+    d_pci->msix_rx0_addr = guest_alloc(alloc, 4);
-+    d_pci->msix_tx0_addr = guest_alloc(alloc, 4);
-+
-+    e1000e_pci_msix_enable_vector(d, E1000E_RX0_MSG_ID,
-+                                  d_pci->msix_rx0_addr, E1000E_RX0_MSIX_DATA);
-+    e1000e_pci_msix_enable_vector(d, E1000E_TX0_MSG_ID,
-+                                  d_pci->msix_tx0_addr, E1000E_TX0_MSIX_DATA);
-+}
-+
- static void e1000e_pci_start_hw(QOSGraphObject *obj)
- {
-     QE1000E_PCI *d = (QE1000E_PCI *) obj;
+With regards,
+Daniel
 -- 
-2.45.2
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
