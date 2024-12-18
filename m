@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B06D19F6B13
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Dec 2024 17:26:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BD2E9F6B1B
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Dec 2024 17:27:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tNwsc-00037L-4v; Wed, 18 Dec 2024 11:26:35 -0500
+	id 1tNwos-0000ve-HF; Wed, 18 Dec 2024 11:22:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tNwsY-0002wT-VV
- for qemu-devel@nongnu.org; Wed, 18 Dec 2024 11:26:31 -0500
-Received: from mail-ej1-x62d.google.com ([2a00:1450:4864:20::62d])
+ id 1tNwoA-0008FG-Nd
+ for qemu-devel@nongnu.org; Wed, 18 Dec 2024 11:22:02 -0500
+Received: from mail-ej1-x636.google.com ([2a00:1450:4864:20::636])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tNwsT-0007qN-O5
- for qemu-devel@nongnu.org; Wed, 18 Dec 2024 11:26:30 -0500
-Received: by mail-ej1-x62d.google.com with SMTP id
- a640c23a62f3a-aabbb507998so671163066b.2
- for <qemu-devel@nongnu.org>; Wed, 18 Dec 2024 08:26:24 -0800 (PST)
+ id 1tNwnl-0006v1-Eu
+ for qemu-devel@nongnu.org; Wed, 18 Dec 2024 11:21:56 -0500
+Received: by mail-ej1-x636.google.com with SMTP id
+ a640c23a62f3a-a9a68480164so1087753166b.3
+ for <qemu-devel@nongnu.org>; Wed, 18 Dec 2024 08:21:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734539183; x=1735143983; darn=nongnu.org;
+ d=linaro.org; s=google; t=1734538882; x=1735143682; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=kwAIsSbR5veQrsYYHH6aBtjqtWXUUTPWi9UM3AxwMO8=;
- b=uNBk5n711lLEFpEg/zrkTVXePrVkP6VFMVI0xl0f9lT4IJS5nsIbLMW4qlS6bKwRlW
- ESKodf34qJYzqzj300OcIBuC6Ys+gf83z3SbmY/pv4luDkNTzmsYfPtWrOd3R4e0oHXM
- UhCLYUFgJsd9uFrfthg6e4O38JmLKj8hzyZGQzw2Lf3qDqlqq7Pfz6+4iFy3iXEM4Bie
- Bhsbv0v3j6TomCsZR44ia47m6VpWaer7B8D12FYz7yO4bUAGBNfJzxz9qGfGf4b2Rvh1
- 7Em09fgoTHiPrpTq3DeSkVRIQcm2Qt9YFDg3ZcjNBV9IdU2vvkniIjawjguPbh/1m/qi
- eTmA==
+ bh=PdsXyF3OC+6k01wdvpRGDBTvPRZa71R2EiA5i0mTRfY=;
+ b=mCt/XKeevqFcUeaAFdo8/4jI+v0v7BmPv+SZKaqvYL11kmwxxWJ4Fh57WSTk8lBd59
+ vva11JARS9GNCaD0JSSc8TJtNPpUtkN3/6B0fa0BTzMpTXE04Xl8JNbvFzRNb3UG5eci
+ AhuXeI6N5jppjIrgMkcrcylqZd6SeCnblgMvCzKnrQLSfeMEwfqgWJ5ejjNmRY1o4K9l
+ fV0hCGwmQ2LzirgjDf2ozbbTSjDNqSFCfUPVBJUmy8JXWt4VCXQSBO3ILsV3bZ7wTl71
+ XzL9mHbu/KvL2ZQz0qYhIX2zJ/V2yCVHnLtOfH8w63EwL+LmpGfrlJCcWhf/UnhnIMr0
+ wkIw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734539183; x=1735143983;
+ d=1e100.net; s=20230601; t=1734538882; x=1735143682;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=kwAIsSbR5veQrsYYHH6aBtjqtWXUUTPWi9UM3AxwMO8=;
- b=EUy40IVcb5/pCZEBv90yWbcXmDVH164oJGxR+6sByFwWECH1EmixyE344sVeLIxkBb
- /UfGUxS6ll4Ykbz8/DUxvYEeYbmsX4RpCDefl6fUBpQ9HVDgvuPNK15457Sv8TJGhsfz
- 5xJqyHhAnY2c9hA0LKWFIOOiTQ5FXBlyVvsASqB8fO1BeQ7mPfKcQ6MAgJmn5ZPQ+Xyd
- vwAaRn6JcnX54up/m/QdO+Tmd0zr/P2p9jn8IrURMS8n7QxLzYWV3yZuVLLQb8NmH0Ef
- AQ1O8VOD0pdGkgVpI5KM2pjQYCgAltrAMd28/S1My0BliFc2AYBL/ujempsLTd78s+0W
- BEiQ==
-X-Gm-Message-State: AOJu0Yy3LXv1g42Qda/ELwVD0mDgn97jiZZEV8/BzwiDKnyuzd0ikCe+
- jhhqohVIf/nurH5BwQlA/4Oq4xy5FRruKZyxXMkl8V+4kSexmGhBqoNjw2vyhd4=
-X-Gm-Gg: ASbGncsbA9aoi1IJCqXYeHzFoHMZeE2QQd8SMAyDiwCWIAMi6oMLPb1Vk+eL1uzEshn
- CxgVrJ2aQ9deoFjkxdW1Tkw4gCTtK9V/yDlZvakSGlGwDDuqHElrxIq3dzwyOlgsN92QbxqJYi+
- nstInGe2dOvD4euQ0deGOxHKat9Par1W0737Uo6/jKDPO3xH4CpdHckVmTxFUP1kfF+LrTK4mnK
- 3GlEN7M0tlPoyMS4R7lZZnqFLidqWfIbtMQj6OARqNCiIY2RLZ/Umc=
-X-Google-Smtp-Source: AGHT+IHg1F86CcF7hn20hdzHgrr0FKN41xOvPAKkaI+8wWX+OFZ0zj4mIVBO5co2NaZSSUoj4lOVng==
-X-Received: by 2002:a17:906:318c:b0:aa6:82e8:e89b with SMTP id
- a640c23a62f3a-aabf479ec52mr303668666b.28.1734539182982; 
- Wed, 18 Dec 2024 08:26:22 -0800 (PST)
+ bh=PdsXyF3OC+6k01wdvpRGDBTvPRZa71R2EiA5i0mTRfY=;
+ b=PuJbVBlIrpmqJAOXY+4JdX9v4fjpQ9BrQHBE+6cr3a76TD+nzuByrnWr262lZN7aH3
+ qA4QS5Usmy0hw8VkZ60r4Uu1SfkqqCq4dPOajQ7Qfa4/ADFEWV84n2e2ecRqviLktnnt
+ BhOK03hcMX9jVWE6IJt5oeZ/Vh8+3R2we0onXUrnaA0WXpEwaD6KKI+vUBLuV0ZF/0v1
+ eniUFNEzJHBol4mk3ZB/jaSXMfce45h9vXgQuOkJ1v01UvWhulBDspVqT1u7aNwHesXm
+ 0M1+in7pssfN6ToCIOdTKk1Q9dYXMg1Sd5EiiKXcONR43HUyFtXvJzLZpRQcn1edGtj8
+ K8nw==
+X-Gm-Message-State: AOJu0YxB+7++IY5fdhXGZ4+wAuTeJ+EzaCTPtyKAkftLhTlU4xB1AtvZ
+ EfhXIo6sMNgPGjphmaeRa5bMBbsNBk2q4OcxQPAHbPomnonLBintzKyUl/VGcWo=
+X-Gm-Gg: ASbGncu+Run3HtL1wfNIX2o31Mol/HWDets8AvycvVfNXz/ytAVn0mUsb95C4CMrZyZ
+ oVrqck/UqIgwg4fOmH4T258odbguHeOn18z2BSVrgIhyrcmFFE8fCsE38ej0poopANViue9jop4
+ VMHcuNV7e4SGkdZEIM/zxS9JF4qUm38R1LwL2jMDmRiXrG6aNi7WvaYxaG0IavKmXodTLr+NFu3
+ J/pztiWTIR06eZNwg2dXYGdhyvg19NmCe3ZhEuVQ5+loGtV4eKURzg=
+X-Google-Smtp-Source: AGHT+IGTxUZXO7yFbI9sh2Q11ZePUMnJWKylZVeka4mA3KpIR4gYKu2HSvUvfFi9pJ2qkO54dWQOLg==
+X-Received: by 2002:a17:907:c0f:b0:aa5:2a57:1779 with SMTP id
+ a640c23a62f3a-aabf4966c66mr274241466b.59.1734538882107; 
+ Wed, 18 Dec 2024 08:21:22 -0800 (PST)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-aab96006133sm581741166b.25.2024.12.18.08.26.21
+ 4fb4d7f45d1cf-5d652f35365sm5747835a12.80.2024.12.18.08.21.13
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 18 Dec 2024 08:26:22 -0800 (PST)
+ Wed, 18 Dec 2024 08:21:17 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id A79F860BD3;
+ by draig.lan (Postfix) with ESMTP id BE41B60C08;
  Wed, 18 Dec 2024 16:21:06 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -98,17 +98,17 @@ Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Laurent Vivier <lvivier@redhat.com>,
  Alistair Francis <alistair.francis@wdc.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PATCH v2 26/27] tests/vm: allow interactive login as root
-Date: Wed, 18 Dec 2024 16:21:02 +0000
-Message-Id: <20241218162104.3493551-27-alex.bennee@linaro.org>
+Subject: [PATCH v2 27/27] pc-bios: ensure keymaps dependencies set vnc tests
+Date: Wed, 18 Dec 2024 16:21:03 +0000
+Message-Id: <20241218162104.3493551-28-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241218162104.3493551-1-alex.bennee@linaro.org>
 References: <20241218162104.3493551-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62d;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x62d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::636;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x636.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -131,62 +131,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is useful when debugging and you want to add packages to an
-image.
+I was seeing failures on vnc-display-test on FreeBSD:
+
+  make vm-build-freebsd V=1 TARGET_LIST=aarch64-softmmu BUILD_TARGET=check-qtest QEMU_LOCAL=1 DEBUG=1
+
+Leads to:
+
+  qemu-system-aarch64: -vnc none: could not read keymap file: 'en-us'
+  Broken pipe
+  ../src/tests/qtest/libqtest.c:196: kill_qemu() tried to terminate QEMU process but encountered exit status 1 (expected 0)
+
+which was as far as I could tell because we don't populate the
+$BLD/pc-bios/keymaps (although something attempts to symlink
+qemu-bundle/usr/local/share/qemu/keymaps/ to that dir).
 
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>
 ---
- tests/vm/Makefile.include | 3 ++-
- tests/vm/basevm.py        | 9 +++++++--
- 2 files changed, 9 insertions(+), 3 deletions(-)
+ pc-bios/keymaps/meson.build | 17 ++++++++---------
+ tests/qtest/meson.build     |  2 +-
+ 2 files changed, 9 insertions(+), 10 deletions(-)
 
-diff --git a/tests/vm/Makefile.include b/tests/vm/Makefile.include
-index d80ca79a28..14188bba1c 100644
---- a/tests/vm/Makefile.include
-+++ b/tests/vm/Makefile.include
-@@ -66,6 +66,7 @@ endif
- 	@echo "Special variables:"
- 	@echo "    BUILD_TARGET=foo              - Override the build target"
- 	@echo "    DEBUG=1                       - Enable verbose output on host and interactive debugging"
-+	@echo "    ROOT_USER=1                   - Login as root user for interactive shell"
- 	@echo '    EXTRA_CONFIGURE_OPTS="..."    - Pass to configure step'
- 	@echo "    J=[0..9]*                     - Override the -jN parameter for make commands"
- 	@echo "    LOG_CONSOLE=1                 - Log console to file in: ~/.cache/qemu-vm "
-@@ -141,6 +142,6 @@ vm-boot-ssh-%: $(IMAGES_DIR)/%.img $(VM_VENV)
- 		$(if $(EFI_AARCH64),--efi-aarch64 $(EFI_AARCH64)) \
- 		$(if $(LOG_CONSOLE),--log-console) \
- 		--image "$<" \
--		--interactive \
-+		$(if $(ROOT_USER),--interactive-root,-interactive) \
- 		false, \
- 		"  VM-BOOT-SSH $*") || true
-diff --git a/tests/vm/basevm.py b/tests/vm/basevm.py
-index 6f3f2e76df..6d41ac7574 100644
---- a/tests/vm/basevm.py
-+++ b/tests/vm/basevm.py
-@@ -612,8 +612,11 @@ def get_default_jobs():
-     parser.add_argument("--source-path", default=None,
-                         help="Path of source directory, "\
-                         "for finding additional files. ")
--    parser.add_argument("--interactive", "-I", action="store_true",
--                        help="Interactively run command")
-+    int_ops = parser.add_mutually_exclusive_group()
-+    int_ops.add_argument("--interactive", "-I", action="store_true",
-+                         help="Interactively run command")
-+    int_ops.add_argument("--interactive-root", action="store_true",
-+                         help="Interactively run command as root")
-     parser.add_argument("--snapshot", "-s", action="store_true",
-                         help="run tests with a snapshot")
-     parser.add_argument("--genisoimage", default="genisoimage",
-@@ -675,6 +678,8 @@ def main(vmcls, config=None):
-         exitcode = 3
-     if args.interactive:
-         vm.ssh()
-+    elif args.interactive_root:
-+        vm.ssh_root()
+diff --git a/pc-bios/keymaps/meson.build b/pc-bios/keymaps/meson.build
+index 0bd8ce0077..a79a09b276 100644
+--- a/pc-bios/keymaps/meson.build
++++ b/pc-bios/keymaps/meson.build
+@@ -39,19 +39,18 @@ else
+   native_qemu_keymap = qemu_keymap
+ endif
  
-     if not args.snapshot:
-         vm.graceful_shutdown()
++keymap_targets = []
+ if native_qemu_keymap.found()
+-  t = []
+   foreach km, args: keymaps
+     # generate with qemu-kvm
+-    t += custom_target(km,
+-                       build_by_default: true,
+-                       output: km,
+-                       command: [native_qemu_keymap, '-f', '@OUTPUT@', args.split()],
+-                       install: have_system,
+-                       install_dir: qemu_datadir / 'keymaps')
++    keymap_targets += custom_target(km,
++                                    build_by_default: true,
++                                    output: km,
++                                    command: [native_qemu_keymap, '-f', '@OUTPUT@', args.split()],
++                                    install: have_system,
++                                    install_dir: qemu_datadir / 'keymaps')
+   endforeach
+-
+-  alias_target('update-keymaps', t)
++  alias_target('update-keymaps', keymap_targets)
+ else
+   install_data(keymaps.keys(), install_dir: qemu_datadir / 'keymaps')
+ endif
+diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
+index c5a70021c5..f75c1057a4 100644
+--- a/tests/qtest/meson.build
++++ b/tests/qtest/meson.build
+@@ -383,7 +383,7 @@ qtests = {
+ if vnc.found()
+   gvnc = dependency('gvnc-1.0', method: 'pkg-config', required: false)
+   if gvnc.found()
+-    qtests += {'vnc-display-test': [gvnc]}
++    qtests += {'vnc-display-test': [gvnc, keymap_targets]}
+     qtests_generic += [ 'vnc-display-test' ]
+   endif
+ endif
 -- 
 2.39.5
 
