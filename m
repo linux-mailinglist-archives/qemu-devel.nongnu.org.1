@@ -2,77 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68B339F6797
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Dec 2024 14:45:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D92B09F6796
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Dec 2024 14:45:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tNuLO-0002Hx-0j; Wed, 18 Dec 2024 08:44:06 -0500
+	id 1tNuLQ-0002aF-Sg; Wed, 18 Dec 2024 08:44:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tNuKc-0001NA-IR
+ id 1tNuKf-0001NF-0R
  for qemu-devel@nongnu.org; Wed, 18 Dec 2024 08:43:25 -0500
-Received: from mail-oi1-x235.google.com ([2607:f8b0:4864:20::235])
+Received: from mail-oi1-x230.google.com ([2607:f8b0:4864:20::230])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tNuKa-0005h2-VH
- for qemu-devel@nongnu.org; Wed, 18 Dec 2024 08:43:18 -0500
-Received: by mail-oi1-x235.google.com with SMTP id
- 5614622812f47-3eb8accbde3so381525b6e.0
- for <qemu-devel@nongnu.org>; Wed, 18 Dec 2024 05:43:16 -0800 (PST)
+ id 1tNuKc-0005hO-Ce
+ for qemu-devel@nongnu.org; Wed, 18 Dec 2024 08:43:20 -0500
+Received: by mail-oi1-x230.google.com with SMTP id
+ 5614622812f47-3ebb669df2eso336230b6e.1
+ for <qemu-devel@nongnu.org>; Wed, 18 Dec 2024 05:43:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734529396; x=1735134196; darn=nongnu.org;
+ d=linaro.org; s=google; t=1734529397; x=1735134197; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=i447dtSxlHmakblbDXagLB9a51ZdgcT0s439L6Wncxo=;
- b=GLpCgRqVWDlDgig33YG/KYOL4ZJsN71m6EJBiKcmf7yXpX6gfgMqLSZoxIli7Py+LH
- O/b1bv6BEXltJpjNaBbbnm5UOHcem+3rb9lAzZL8HJQOaaavRMT75P66vf9ndiKzljAY
- rPnjBWizeaRA+csnhFH9qk8hQdYZQWjRktU2ArKLHzZammFnlHVnmhxN9I26zUbLjqzq
- OlDHoF60FYAaKtyq4GnQZH3iWagstkE7YP5AxiMImuqMnE+T4LBwVBoauu6Y4GIUcDnX
- B87SUzwYcOeprVYFwWmPE1Zq8BQQ2X/LfUmk3WHxdR7JAkUOyzrDbYvGMOM6y8r4ydBI
- qbzw==
+ bh=ub08HVX45BPcHxWhYRhQRxpr3H7LZw9OUR4p1/1w0V8=;
+ b=aeHjGcRQ8UmLvHLhMTNyaZKTxugBTm8/dhskHisjIXdmFcovryndxeCuhJ5A6X4yru
+ YecDkdCYTXrzZubBf8BR3SeyXxh9uktx0S+wMcog+GmXfu3BVjLR4UOgvB+HL6ydQYEv
+ DazU+oEGLk2i1OE9fsWfSW2vm+LxC00lka9RnID7ID+ubs96byA3fK03ry4e4WgrdKrF
+ ZZleAOHsVo2jmRzRygukiDhLLjXeaSPh3dsy5aQNoHbqyO3ndrUt5ha4noCbShGg/yOd
+ X7LXS5uum3ElhZHvZfbyVl3gwDhfQOW+dUMFLY/MlUs/qk8ZaBBU4af03P09ZysuL4s3
+ M/iw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734529396; x=1735134196;
+ d=1e100.net; s=20230601; t=1734529397; x=1735134197;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=i447dtSxlHmakblbDXagLB9a51ZdgcT0s439L6Wncxo=;
- b=Kg+Jh9Pt63RouYQdMPUZ2uuWAAMhX29BgKwEzWHpMDVy3Jlxm7mFbhf2iFFY4+/VEW
- Tv5MyKVbQWxhDjyXSZrv2nBFseCJPRuxDLgOls2XTShKH7JEUicMyv30dltugaWixJwF
- 7A70h9HT7Al7lsu9+44gE1h/b5myAK3IpqItKlUCve9sCLOVtSRu8GmljJeWxL6OiLPt
- aXaRiRzdocD9iyon9Eskbzlq7tWD43REPXlndhI9Ua1MM5Ab6iceM3xIdnyTu19F1mX/
- P+C4m2lWOFBBt/jnbjztE5M3+NtH1VRfbrr0BF9tV7R4qJWB51Nm6WZzhduDIr4+clGu
- UqhQ==
-X-Gm-Message-State: AOJu0YwffNccq1YhxQz/FyqIu7PU9gzrp3fqtYcuD4hBwnIN9BQjfDQK
- LcqBYmcPpG9Dlv0yPCd9KbJhUiuvfhg9ZB1eMWi5H8oXGIRazzuT5LlqQA5KevA92CqNjOJphs4
- HvancH07M
-X-Gm-Gg: ASbGncsbm46dBrlCRJaQGmAptu6LFASo1LBh1rt3RVFlzbP2tFTFJNyiPOWxnw8dHDi
- lwKlvWM6gDjD/sd69FXBm6sw3GtFXZDOCr5G47wqN4v0JAs89mIgEa6ni8tJzKA0WS9HfEhSULe
- WLt80dsDcu8sAu8dXHMhJqMfEndid59GZPwx9VGByj3a1V0U4ONmSe9M/DkvK6YVQYfugOcHFra
- qkhaRji1i7s4HUo6V22ezEcHnYRvp8g66SPThiTGWmEMCSxP9BoIOdoz4Rhy/iJ
-X-Google-Smtp-Source: AGHT+IFgBLJJYR4hu0zn1ogaAmLoQeoG/vcw/r76W/2d4Mg1wDpq9iKen7/HYMIv//JwC6fU7WnMPA==
-X-Received: by 2002:a05:6808:3c4f:b0:3e7:bd4e:5b98 with SMTP id
- 5614622812f47-3ecccd8f720mr1552235b6e.0.1734529395814; 
- Wed, 18 Dec 2024 05:43:15 -0800 (PST)
+ bh=ub08HVX45BPcHxWhYRhQRxpr3H7LZw9OUR4p1/1w0V8=;
+ b=JX6eKSrwzV3AFqeaEg4OKmIllRjXD0NEwRFlzh1ixtvOqmlxghHZqZ9Y7CjrBVKGvC
+ 5Ou10N9k3iwSqYHx8oFnlk+iMma/TOj4rRh5l7ZgornX9db37tDpkcGAKtDjeHdOOL4c
+ G9BbufjQZZyp0Fz3qWywsMhY0n2sXO/yIrzjjHWeQNzWhlSVSz4GRibnngK+6DwX0a6o
+ oIZQV4VSXz3+Jq6wuhCLJaBZQmIg4Y49pdnuTd9KQajs57oa0xg2WYnDrZ9jx21b3l/c
+ sr8/P2PVBRiQKbweWMW/7e2Eeo+bs4UVFNxkg/qEfYvGHdPo8WNiPt0k9RJwnIl0kLwA
+ HOJA==
+X-Gm-Message-State: AOJu0YyEUKgGlOuvhDipf+v6q7ITBWRQ+VtOIkie/3zfmPnP/9JoPcwc
+ 9aHmzoUGl++OnW2/ISI/bjTbQnzlMDbiAMlrl+p8voC+CuLtzO/rBjdbPVIwIfhTr+gH4V1O7I3
+ Mmpgh7EQt
+X-Gm-Gg: ASbGnct+wuERGEGXBEqpEe4OY+EUtOEoUO8IZsmDUnPP8wtOCl7iD3maVhyaltjA3MK
+ mgTnGKag/69FKCk+N9sPH/YN0aldl2OQgcV5t0s//xX9odqK8eEZZW2tEupijv+HHd0nORBs0gA
+ I/QPH3f1j+VdfslsmSuc1hKesmp5ddTdZzmb9MQXy1imZYBYNQ3Pg2XQ2kHL41KBFpAPqZJaKr/
+ TeSWi+UX6Cw6ayMJidW/jqa6oJaT7xxLEzWYUgYXKVsa9p3uaa8JiIts0pi69jV
+X-Google-Smtp-Source: AGHT+IGofGh6snlqxq10wUz77IzrU1jPA1UwWlQ4Lg+TdHboXjn8kLolfPZfx3NYxs/lvzJ/hke57Q==
+X-Received: by 2002:a05:6808:4494:b0:3eb:52e6:1b3e with SMTP id
+ 5614622812f47-3eccd001d55mr1577443b6e.1.1734529397129; 
+ Wed, 18 Dec 2024 05:43:17 -0800 (PST)
 Received: from stoup.. ([187.217.227.247]) by smtp.gmail.com with ESMTPSA id
- 5614622812f47-3ebb478a502sm2870951b6e.9.2024.12.18.05.43.14
+ 5614622812f47-3ebb478a502sm2870951b6e.9.2024.12.18.05.43.15
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 18 Dec 2024 05:43:15 -0800 (PST)
+ Wed, 18 Dec 2024 05:43:16 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: pbonzini@redhat.com
-Subject: [PATCH v2 16/24] hw/arm/armsse: Use device_class_set_props_n
-Date: Wed, 18 Dec 2024 07:42:43 -0600
-Message-ID: <20241218134251.4724-17-richard.henderson@linaro.org>
+Subject: [PATCH v2 17/24] rust/qemu-api: Use device_class_set_props_n
+Date: Wed, 18 Dec 2024 07:42:44 -0600
+Message-ID: <20241218134251.4724-18-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241218134251.4724-1-richard.henderson@linaro.org>
 References: <20241218134251.4724-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::235;
- envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x235.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::230;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x230.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,82 +95,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We must remove DEFINE_PROP_END_OF_LIST so the count is correct.
+This means we can update declare_properties to drop the
+zero terminator at the end of the array as well.
 
+Reviewed-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- hw/arm/armsse.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ rust/qemu-api/src/device_class.rs | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/hw/arm/armsse.c b/hw/arm/armsse.c
-index 1cd6b4a4b2..ffd732f806 100644
---- a/hw/arm/armsse.c
-+++ b/hw/arm/armsse.c
-@@ -72,6 +72,7 @@ struct ARMSSEInfo {
-     bool has_cpu_pwrctrl;
-     bool has_sse_counter;
-     bool has_tcms;
-+    uint8_t props_count;
-     const Property *props;
-     const ARMSSEDeviceInfo *devinfo;
-     const bool *irq_is_common;
-@@ -87,7 +88,6 @@ static const Property iotkit_properties[] = {
-     DEFINE_PROP_BOOL("CPU0_DSP", ARMSSE, cpu_dsp[0], true),
-     DEFINE_PROP_UINT32("CPU0_MPU_NS", ARMSSE, cpu_mpu_ns[0], 8),
-     DEFINE_PROP_UINT32("CPU0_MPU_S", ARMSSE, cpu_mpu_s[0], 8),
--    DEFINE_PROP_END_OF_LIST()
+diff --git a/rust/qemu-api/src/device_class.rs b/rust/qemu-api/src/device_class.rs
+index 03d03feee8..cca51fe1a9 100644
+--- a/rust/qemu-api/src/device_class.rs
++++ b/rust/qemu-api/src/device_class.rs
+@@ -7,7 +7,6 @@
+ use crate::{
+     bindings::{self, DeviceClass, DeviceState, Error, ObjectClass, Property, VMStateDescription},
+     prelude::*,
+-    zeroable::Zeroable,
  };
  
- static const Property sse200_properties[] = {
-@@ -104,7 +104,6 @@ static const Property sse200_properties[] = {
-     DEFINE_PROP_UINT32("CPU0_MPU_S", ARMSSE, cpu_mpu_s[0], 8),
-     DEFINE_PROP_UINT32("CPU1_MPU_NS", ARMSSE, cpu_mpu_ns[1], 8),
-     DEFINE_PROP_UINT32("CPU1_MPU_S", ARMSSE, cpu_mpu_s[1], 8),
--    DEFINE_PROP_END_OF_LIST()
- };
+ /// Trait providing the contents of [`DeviceClass`].
+@@ -31,7 +30,7 @@ pub trait DeviceImpl {
+     /// device.  Not a `const` because referencing statics in constants
+     /// is unstable until Rust 1.83.0.
+     fn properties() -> &'static [Property] {
+-        &[Zeroable::ZERO; 1]
++        &[]
+     }
  
- static const Property sse300_properties[] = {
-@@ -117,7 +116,6 @@ static const Property sse300_properties[] = {
-     DEFINE_PROP_BOOL("CPU0_DSP", ARMSSE, cpu_dsp[0], true),
-     DEFINE_PROP_UINT32("CPU0_MPU_NS", ARMSSE, cpu_mpu_ns[0], 8),
-     DEFINE_PROP_UINT32("CPU0_MPU_S", ARMSSE, cpu_mpu_s[0], 8),
--    DEFINE_PROP_END_OF_LIST()
- };
+     /// A `VMStateDescription` providing the migration format for the device
+@@ -87,7 +86,10 @@ fn vmsd() -> Option<&'static VMStateDescription> {
+         if let Some(vmsd) = <T as DeviceImpl>::vmsd() {
+             dc.vmsd = vmsd;
+         }
+-        bindings::device_class_set_props(dc, <T as DeviceImpl>::properties().as_ptr());
++        let prop = <T as DeviceImpl>::properties();
++        if prop.len() != 0 {
++            bindings::device_class_set_props_n(dc, prop.as_ptr(), prop.len());
++        }
+     }
+ }
  
- static const ARMSSEDeviceInfo iotkit_devices[] = {
-@@ -528,6 +526,7 @@ static const ARMSSEInfo armsse_variants[] = {
-         .has_sse_counter = false,
-         .has_tcms = false,
-         .props = iotkit_properties,
-+        .props_count = ARRAY_SIZE(iotkit_properties),
-         .devinfo = iotkit_devices,
-         .irq_is_common = sse200_irq_is_common,
-     },
-@@ -549,6 +548,7 @@ static const ARMSSEInfo armsse_variants[] = {
-         .has_sse_counter = false,
-         .has_tcms = false,
-         .props = sse200_properties,
-+        .props_count = ARRAY_SIZE(sse200_properties),
-         .devinfo = sse200_devices,
-         .irq_is_common = sse200_irq_is_common,
-     },
-@@ -570,6 +570,7 @@ static const ARMSSEInfo armsse_variants[] = {
-         .has_sse_counter = true,
-         .has_tcms = true,
-         .props = sse300_properties,
-+        .props_count = ARRAY_SIZE(sse300_properties),
-         .devinfo = sse300_devices,
-         .irq_is_common = sse300_irq_is_common,
-     },
-@@ -1699,7 +1700,7 @@ static void armsse_class_init(ObjectClass *klass, void *data)
- 
-     dc->realize = armsse_realize;
-     dc->vmsd = &armsse_vmstate;
--    device_class_set_props(dc, info->props);
-+    device_class_set_props_n(dc, info->props, info->props_count);
-     device_class_set_legacy_reset(dc, armsse_reset);
-     iic->check = armsse_idau_check;
-     asc->info = info;
+@@ -134,7 +136,7 @@ macro_rules! define_property {
+ macro_rules! declare_properties {
+     ($ident:ident, $($prop:expr),*$(,)*) => {
+         pub static $ident: [$crate::bindings::Property; {
+-            let mut len = 1;
++            let mut len = 0;
+             $({
+                 _ = stringify!($prop);
+                 len += 1;
+@@ -142,7 +144,6 @@ macro_rules! declare_properties {
+             len
+         }] = [
+             $($prop),*,
+-            $crate::zeroable::Zeroable::ZERO,
+         ];
+     };
+ }
 -- 
 2.43.0
 
