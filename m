@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56C329F645F
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Dec 2024 12:11:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B80B89F6460
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Dec 2024 12:11:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tNrww-0006Vh-K5; Wed, 18 Dec 2024 06:10:42 -0500
+	id 1tNrwx-0006WI-N3; Wed, 18 Dec 2024 06:10:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tNrwu-0006V4-1u
- for qemu-devel@nongnu.org; Wed, 18 Dec 2024 06:10:40 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tNrwv-0006VZ-9S
+ for qemu-devel@nongnu.org; Wed, 18 Dec 2024 06:10:41 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tNrwo-0005JU-Qs
- for qemu-devel@nongnu.org; Wed, 18 Dec 2024 06:10:39 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tNrws-0005Ji-Eb
+ for qemu-devel@nongnu.org; Wed, 18 Dec 2024 06:10:41 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1734520233;
+ s=mimecast20190719; t=1734520235;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=JT8UzJi5z7TY7wn9HUyaWCIMSynOf1E1G97gzTKRu6w=;
- b=bL+GdGRdEV5zRNo23jxtWDJdUzAu9JNGNJEc+lKfO5OccU9KSVQBrw7Enbmc0ikf7/BPpC
- FoW/RXPTOlrqbB/sMz3V80XYkIO2Fz3r66sNC0lZIoXX9potNwKhs1buqw0KkhdsCVhI2u
- tGMTEi0iVOXtKFlD3virIa+kKG/AVHQ=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ bh=p/QjKv1R0AhQuUFehQsQg9Di7Nd4MAmaklYof9ekMiQ=;
+ b=OEzMkOIOGbsPodhAaLsFgLOItuUdtXgMUnsr24hMFggsdhgairzXisGS8r/lNfvNuqP3lw
+ ez2UlHCk/XTLagQnckpWZOi9ZLpLUhTCdgRMuFT/f4kluesf/+DavgqhPEM6qjfzI0umbI
+ 7SnRC1G5irPLuryqH7KfOhlnbsk9xeo=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-453-9olMasc6O6ytJTsdz7ApcA-1; Wed,
- 18 Dec 2024 06:10:31 -0500
-X-MC-Unique: 9olMasc6O6ytJTsdz7ApcA-1
-X-Mimecast-MFC-AGG-ID: 9olMasc6O6ytJTsdz7ApcA
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-281-HQJy2N4tO-CkcwlLKCUQQg-1; Wed,
+ 18 Dec 2024 06:10:33 -0500
+X-MC-Unique: HQJy2N4tO-CkcwlLKCUQQg-1
+X-Mimecast-MFC-AGG-ID: HQJy2N4tO-CkcwlLKCUQQg
 Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id CEC7F1956087
- for <qemu-devel@nongnu.org>; Wed, 18 Dec 2024 11:10:30 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id F271C195608F
+ for <qemu-devel@nongnu.org>; Wed, 18 Dec 2024 11:10:32 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.192.114])
  by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 3928119560AD; Wed, 18 Dec 2024 11:10:28 +0000 (UTC)
+ id 8756119560AD; Wed, 18 Dec 2024 11:10:31 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Stefan Hajnoczi <stefanha@redhat.com>
-Subject: [PULL 12/38] tests/functional: switch over to using
- self.build_file(...)
-Date: Wed, 18 Dec 2024 12:09:32 +0100
-Message-ID: <20241218110958.226932-13-thuth@redhat.com>
+Subject: [PULL 13/38] tests/functional: switch over to using
+ self.data_file(...)
+Date: Wed, 18 Dec 2024 12:09:33 +0100
+Message-ID: <20241218110958.226932-14-thuth@redhat.com>
 In-Reply-To: <20241218110958.226932-1-thuth@redhat.com>
 References: <20241218110958.226932-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -84,118 +84,79 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Daniel P. Berrangé <berrange@redhat.com>
 
-This removes direct access of the 'BUILD_DIR' variable.
+This removes direct path manipulation to figure out the source dir
 
 Reviewed-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
-Message-ID: <20241217155953.3950506-13-berrange@redhat.com>
+Message-ID: <20241217155953.3950506-14-berrange@redhat.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- tests/functional/qemu_test/cmd.py      |  5 ++---
- tests/functional/qemu_test/testcase.py |  4 ++--
- tests/functional/test_aarch64_virt.py  |  5 ++---
- tests/functional/test_virtio_gpu.py    | 11 +++--------
- 4 files changed, 9 insertions(+), 16 deletions(-)
+ tests/functional/test_acpi_bits.py | 22 +++++++---------------
+ 1 file changed, 7 insertions(+), 15 deletions(-)
 
-diff --git a/tests/functional/qemu_test/cmd.py b/tests/functional/qemu_test/cmd.py
-index bebcd46dcf..c8971de00a 100644
---- a/tests/functional/qemu_test/cmd.py
-+++ b/tests/functional/qemu_test/cmd.py
-@@ -16,7 +16,6 @@
- import os.path
- import subprocess
+diff --git a/tests/functional/test_acpi_bits.py b/tests/functional/test_acpi_bits.py
+index 8763ea0822..59d0383563 100755
+--- a/tests/functional/test_acpi_bits.py
++++ b/tests/functional/test_acpi_bits.py
+@@ -38,7 +38,6 @@
+ import tarfile
+ import zipfile
  
--from .config import BUILD_DIR
+-from pathlib import Path
+ from typing import (
+     List,
+     Optional,
+@@ -119,7 +118,6 @@ class AcpiBitsTest(QemuSystemTest): #pylint: disable=too-many-instance-attribute
+     def __init__(self, *args, **kwargs):
+         super().__init__(*args, **kwargs)
+         self._vm = None
+-        self._baseDir = None
  
- def which(tool):
-     """ looks up the full path for @tool, returns None if not found
-@@ -205,10 +204,10 @@ def get_qemu_img(test):
+         self._debugcon_addr = '0x403'
+         self._debugcon_log = 'debugcon-log.txt'
+@@ -134,26 +132,22 @@ def _print_log(self, log):
+     def copy_bits_config(self):
+         """ copies the bios bits config file into bits.
+         """
+-        config_file = 'bits-cfg.txt'
+-        bits_config_dir = os.path.join(self._baseDir, 'acpi-bits',
+-                                       'bits-config')
++        bits_config_file = self.data_file('acpi-bits',
++                                          'bits-config',
++                                          'bits-cfg.txt')
+         target_config_dir = os.path.join(self.workdir,
+                                          'bits-%d' %self.BITS_INTERNAL_VER,
+                                          'boot')
+-        self.assertTrue(os.path.exists(bits_config_dir))
++        self.assertTrue(os.path.exists(bits_config_file))
+         self.assertTrue(os.path.exists(target_config_dir))
+-        self.assertTrue(os.access(os.path.join(bits_config_dir,
+-                                               config_file), os.R_OK))
+-        shutil.copy2(os.path.join(bits_config_dir, config_file),
+-                     target_config_dir)
++        shutil.copy2(bits_config_file, target_config_dir)
+         self.logger.info('copied config file %s to %s',
+-                         config_file, target_config_dir)
++                         bits_config_file, target_config_dir)
  
-     # If qemu-img has been built, use it, otherwise the system wide one
-     # will be used.
--    qemu_img = os.path.join(BUILD_DIR, 'qemu-img')
-+    qemu_img = test.build_file('qemu-img')
-     if os.path.exists(qemu_img):
-         return qemu_img
-     qemu_img = which('qemu-img')
-     if qemu_img is not None:
-         return qemu_img
--    test.skipTest(f"qemu-img not found in {BUILD_DIR} or '$PATH'")
-+    test.skipTest(f"qemu-img not found in build dir or '$PATH'")
-diff --git a/tests/functional/qemu_test/testcase.py b/tests/functional/qemu_test/testcase.py
-index 2174fbb155..493938240c 100644
---- a/tests/functional/qemu_test/testcase.py
-+++ b/tests/functional/qemu_test/testcase.py
-@@ -133,8 +133,8 @@ def setUp(self, bin_prefix):
-         self.arch = self.qemu_bin.split('-')[-1]
-         self.socketdir = None
+     def copy_test_scripts(self):
+         """copies the python test scripts into bits. """
  
--        self.outputdir = os.path.join(BUILD_DIR, 'tests', 'functional',
--                                      self.arch, self.id())
-+        self.outputdir = self.build_file('tests', 'functional',
-+                                         self.arch, self.id())
-         self.workdir = os.path.join(self.outputdir, 'scratch')
-         os.makedirs(self.workdir, exist_ok=True)
+-        bits_test_dir = os.path.join(self._baseDir, 'acpi-bits',
+-                                     'bits-tests')
++        bits_test_dir = self.data_file('acpi-bits', 'bits-tests')
+         target_test_dir = os.path.join(self.workdir,
+                                        'bits-%d' %self.BITS_INTERNAL_VER,
+                                        'boot', 'python')
+@@ -256,8 +250,6 @@ def setUp(self): # pylint: disable=arguments-differ
+         super().setUp()
+         self.logger = self.log
  
-diff --git a/tests/functional/test_aarch64_virt.py b/tests/functional/test_aarch64_virt.py
-index c967da41b4..5bc461b482 100755
---- a/tests/functional/test_aarch64_virt.py
-+++ b/tests/functional/test_aarch64_virt.py
-@@ -14,7 +14,6 @@
- import os
- import logging
- 
--from qemu_test import BUILD_DIR
- from qemu_test import QemuSystemTest, Asset
- from qemu_test import exec_command, wait_for_console_pattern
- from qemu_test import get_qemu_img, run_cmd
-@@ -54,8 +53,8 @@ def test_alpine_virt_tcg_gic_max(self):
-                          "mte=on,"
-                          "gic-version=max,iommu=smmuv3")
-         self.vm.add_args("-smp", "2", "-m", "1024")
--        self.vm.add_args('-bios', os.path.join(BUILD_DIR, 'pc-bios',
--                                               'edk2-aarch64-code.fd'))
-+        self.vm.add_args('-bios', self.build_file('pc-bios',
-+                                                  'edk2-aarch64-code.fd'))
-         self.vm.add_args("-drive", f"file={iso_path},media=cdrom,format=raw")
-         self.vm.add_args('-device', 'virtio-rng-pci,rng=rng0')
-         self.vm.add_args('-object', 'rng-random,id=rng0,filename=/dev/urandom')
-diff --git a/tests/functional/test_virtio_gpu.py b/tests/functional/test_virtio_gpu.py
-index 7654421e6b..81c9156d63 100755
---- a/tests/functional/test_virtio_gpu.py
-+++ b/tests/functional/test_virtio_gpu.py
-@@ -6,7 +6,6 @@
- # later.  See the COPYING file in the top-level directory.
- 
- 
--from qemu_test import BUILD_DIR
- from qemu_test import QemuSystemTest, Asset
- from qemu_test import wait_for_console_pattern
- from qemu_test import exec_command_and_wait_for_pattern
-@@ -18,12 +17,8 @@
- import subprocess
- 
- 
--def pick_default_vug_bin():
--    relative_path = "./contrib/vhost-user-gpu/vhost-user-gpu"
--    if is_readable_executable_file(relative_path):
--        return relative_path
+-        self._baseDir = Path(__file__).parent
 -
--    bld_dir_path = os.path.join(BUILD_DIR, relative_path)
-+def pick_default_vug_bin(test):
-+    bld_dir_path = test.build_file("contrib", "vhost-user-gpu", "vhost-user-gpu")
-     if is_readable_executable_file(bld_dir_path):
-         return bld_dir_path
- 
-@@ -86,7 +81,7 @@ def test_vhost_user_vga_virgl(self):
-         # FIXME: should check presence of vhost-user-gpu, virgl, memfd etc
-         self.require_accelerator('kvm')
- 
--        vug = pick_default_vug_bin()
-+        vug = pick_default_vug_bin(self)
-         if not vug:
-             self.skipTest("Could not find vhost-user-gpu")
- 
+         prebuiltDir = os.path.join(self.workdir, 'prebuilt')
+         if not os.path.isdir(prebuiltDir):
+             os.mkdir(prebuiltDir, mode=0o775)
 -- 
 2.47.1
 
