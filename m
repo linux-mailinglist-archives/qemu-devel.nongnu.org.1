@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97A649F6B21
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Dec 2024 17:29:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 63CE89F6B17
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Dec 2024 17:27:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tNwoZ-0000Ie-PB; Wed, 18 Dec 2024 11:22:23 -0500
+	id 1tNwof-0000QL-6n; Wed, 18 Dec 2024 11:22:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tNwo5-000880-Gx
- for qemu-devel@nongnu.org; Wed, 18 Dec 2024 11:21:53 -0500
-Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
+ id 1tNwnz-0007ww-NF
+ for qemu-devel@nongnu.org; Wed, 18 Dec 2024 11:21:47 -0500
+Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tNwnk-0006sj-Ot
- for qemu-devel@nongnu.org; Wed, 18 Dec 2024 11:21:53 -0500
-Received: by mail-ej1-x633.google.com with SMTP id
- a640c23a62f3a-aa670ffe302so1225149766b.2
- for <qemu-devel@nongnu.org>; Wed, 18 Dec 2024 08:21:21 -0800 (PST)
+ id 1tNwnb-0006uf-8n
+ for qemu-devel@nongnu.org; Wed, 18 Dec 2024 11:21:47 -0500
+Received: by mail-ed1-x532.google.com with SMTP id
+ 4fb4d7f45d1cf-5d3d14336f0so11925067a12.3
+ for <qemu-devel@nongnu.org>; Wed, 18 Dec 2024 08:21:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734538879; x=1735143679; darn=nongnu.org;
+ d=linaro.org; s=google; t=1734538881; x=1735143681; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=nxAQFaJXoc/P8ebO9Xx4HWpXX3GuRaIneijbgyMKrCk=;
- b=ee3bgqhDE3PhuMQIN+V7YsLhtLCdcXQs5x/wDDGp18LHKaja9+ySJmKST23aP8v7A0
- BmDu1OZ1bvX4xIu3njulVEWVW8Lxe+jsSnH/7gh9pzyzy0VJlMDctXpRX5NQD7aq7S4n
- ZzdP57jai4OwfKBQ+gI0PD/O6TFOHQQygCar2Z9MxdX1dc5+oEab72s476bWYXFwp8WL
- 0ODeFO8j8jLyQsaGF2iPpy/DnTeUdJ4Y/Jea2MKL8l0HQO9rVXNaCeT/G9ImLn4LSfnn
- elNjVzu+0QlCUXEmOkl6NPuP+ThbZ5DqquqtmRAJgiUCQgoytAOWq2AY9qE0blVBTboC
- 6zUg==
+ bh=lG7MbUBeLhp7BGSne5jxjhgnKJrC/8a0zBr1FqLJA6g=;
+ b=NHLUoErNvU9DqJVIJpPuZ8CFdRXyY1MvthEUfBAPu44QQtSazJk9luOO938QSx88Zx
+ Z+HnqMkNpiCoRQWfljC1xFU+S6ap2SbFhBSroYrm97ORcbSEw7/b1Zcs0LRAYd02YeuI
+ rCj4E97EaBffYeqLQYfm6a99VQg9oHirXxsT9opnU5iIibR9OzAz/MQ6ICT6zHtYuILs
+ wE5+BtYuNFsZHiwtKuUJGS5N7kJNPUg8i86OelVND6kuNvdENDReeV85zVTiai/e29mJ
+ nij46xNey75gRNMFX9GRJWoGpg1v0REyDHFt96JfoTRdP1kNVNA6RpuRnuydIoBw/Plg
+ sEOw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734538879; x=1735143679;
+ d=1e100.net; s=20230601; t=1734538881; x=1735143681;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=nxAQFaJXoc/P8ebO9Xx4HWpXX3GuRaIneijbgyMKrCk=;
- b=qUiY/GzCCLmmfHxX2p13TLfy/XXvSKgi8IPz4h2yHYKwGcOHKJaQ7TZvCuVlgBCmNM
- X9o0vpaef2cbjo5j3WHzpxUsIzwm5XAFrt9zBNSeZzS2qdUOLzYOypylUV3lDc5L2+/T
- q7OSdhjTeG54o9wqWxs9iYEsCvW418rLx/kybFZ2gbRGs6NdkKTf+2/QT1thN+TBPcXC
- va04bMRawSHCwBkjskjCDKqWn+ZWhaM4qXJwH56K0dIToEGeBPXWGYuO5cqVwt3JVo6o
- ceNcOK8F6qOBSsQlX2pwVNoT8/npyhLadB9xNG58TaYEHgG7xfuRLhYxE6QYatsa96aQ
- YRtg==
-X-Gm-Message-State: AOJu0YxqD+LcStE2Mpz0QAM7Tc6KGqCPLBI5P6dJzIlZRAkdHeRLFJBo
- F4uU6ZEuQSKd1NMbBXWQEPd23lDLLrpyrE8aHPBO6Utb5vxp+OWGeBKknYHjHBE=
-X-Gm-Gg: ASbGncseR3QBeIyA5SXnkGlNhIWhdkaMDuzyWa08tUv3trR8evuWm9lylganyHJH+LG
- UuzPqyCmndrcX2IHacnSrYfUrMQe3KiGnK0rEdJnmFERHIT6/8aCjeu1mWLaKqiYyPEJczofRkA
- +LotuOYvBTEMenhBOBzL+xCxaoPDO2O4kK3ZtbFlHOPR+cY6EV9tVI5RtVwffGHsd8uYWUO4eVq
- PlDoLsfDz8b0QmAjTRaXCgk6mLJ99zR0JWru4WtA6HKrL6kqMrZmfQ=
-X-Google-Smtp-Source: AGHT+IGgaTwJUux9q8sBUuMnle1GDRzn+BhwZEPamzK9w1wgelKWNlxScrWnl/3I7O4LbI6gD+7jrw==
-X-Received: by 2002:a17:906:d552:b0:aa5:43c4:da78 with SMTP id
- a640c23a62f3a-aabf4904571mr291370566b.51.1734538879017; 
- Wed, 18 Dec 2024 08:21:19 -0800 (PST)
+ bh=lG7MbUBeLhp7BGSne5jxjhgnKJrC/8a0zBr1FqLJA6g=;
+ b=BeqryL3ev8xrbdvjGLrvrmaaeXRnsez4QrtE6Wpd9eCixXOEYI/70dUTq5G8/+/2ZY
+ NKTu6IUvGdTbhW2FKACUKV3p6Y3MERvP8QvcKJEJMuel7bLymL/+v4XVjUB0vu3QuLeZ
+ jru7OqFRdVHF37o9oGn5B8idnkg7GHEdCHyjzO7X+7gXd1CC6NQkiE2Jo/7GhTr5Gs7E
+ w/kHCfBgYz/R3r6fv2TsnJJpV3ev89A+4BLiqx9slCVDmKGIciXWoCuIShaDtfLx1xHr
+ RUm70cYaAK7xFvDK2ntPKI1jmJ3WGo3VGE+dZf9xN0tCPYWTfRWvQPMM9g2RhOrro0zZ
+ Oryg==
+X-Gm-Message-State: AOJu0YxiIsvb8bK/yhp/UCzM50cT8kLHXACimf3caTA1kZMBW8kzUCRD
+ 1Rx8QIhgllaXS9FLzc01KsqkwF6urlx1PA+REYmetNnGBMS2qkRQcXu+gCLNZVo=
+X-Gm-Gg: ASbGncsPwtXCGMS3pXO8QGBMZ1jtzc7zTfp2iKsavqMq8herEkk0yCAyUMj7SnUS1hT
+ vOgfnmlulH06VOk/OBUOezdtr57hVfJ/DDfpakyKI/xNu8s7YD+qWXc0rgIkFsSkKeC1tXiE6hj
+ 1YPIvJS3Bbk6JXaumFk+7gKRKDL3vs4RdpjtyFMqwNqDb/67bAXGhVKUetLx3qb/NMmmDyBtWG9
+ 1HCepBAGoZ3YoakTBFAmzHVa9U1SRWwu1DzfJ4F564DGCdQtmVuKbU=
+X-Google-Smtp-Source: AGHT+IFcp+j4tlely32MlF+oeAn5yKl27JROY39I7hFbPS58gikkauyhkL5DTdLtqO+uRgsdZoj3DA==
+X-Received: by 2002:a05:6402:4001:b0:5d0:81f3:18bc with SMTP id
+ 4fb4d7f45d1cf-5d7ee37660emr2710751a12.1.1734538881527; 
+ Wed, 18 Dec 2024 08:21:21 -0800 (PST)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-aab9600611csm574999266b.34.2024.12.18.08.21.12
+ 4fb4d7f45d1cf-5d652f25afbsm5752895a12.55.2024.12.18.08.21.12
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Wed, 18 Dec 2024 08:21:15 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 317A660B9F;
+ by draig.lan (Postfix) with ESMTP id 48D2860BA3;
  Wed, 18 Dec 2024 16:21:06 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -98,24 +98,25 @@ Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Laurent Vivier <lvivier@redhat.com>,
  Alistair Francis <alistair.francis@wdc.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PATCH v2 21/27] tests/lcitool: bump to latest version of libvirt-ci
-Date: Wed, 18 Dec 2024 16:20:57 +0000
-Message-Id: <20241218162104.3493551-22-alex.bennee@linaro.org>
+Subject: [PATCH v2 22/27] tests/docker: move riscv64 cross container from sid
+ to trixie
+Date: Wed, 18 Dec 2024 16:20:58 +0000
+Message-Id: <20241218162104.3493551-23-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241218162104.3493551-1-alex.bennee@linaro.org>
 References: <20241218162104.3493551-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::633;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x633.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::532;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x532.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -131,50 +132,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We will shortly need this to build our riscv64 cross container.
-However to keep the delta down just do the bump first. As ccache4 is
-now preferred for FreeBSD to get the latest version there is a little
-update in the FreeBSD metadata.
+Although riscv64 isn't going to be a release architecture for trixie
+the packages are still built while it is testing. Moving from sid will
+also avoid some of the volatility we get from tracking the bleeding
+edge.
 
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- .gitlab-ci.d/cirrus/freebsd-14.vars | 2 +-
- tests/lcitool/libvirt-ci            | 2 +-
- tests/vm/generated/freebsd.json     | 2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
+ tests/docker/dockerfiles/debian-riscv64-cross.docker | 4 ++--
+ tests/lcitool/refresh                                | 4 +++-
+ 2 files changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/.gitlab-ci.d/cirrus/freebsd-14.vars b/.gitlab-ci.d/cirrus/freebsd-14.vars
-index 0a7ac5e0e1..0997c47af5 100644
---- a/.gitlab-ci.d/cirrus/freebsd-14.vars
-+++ b/.gitlab-ci.d/cirrus/freebsd-14.vars
-@@ -11,6 +11,6 @@ MAKE='/usr/local/bin/gmake'
- NINJA='/usr/local/bin/ninja'
- PACKAGING_COMMAND='pkg'
- PIP3='/usr/local/bin/pip'
--PKGS='alsa-lib bash bison bzip2 ca_root_nss capstone4 ccache cmocka ctags curl cyrus-sasl dbus diffutils dtc flex fusefs-libs3 gettext git glib gmake gnutls gsed gtk-vnc gtk3 json-c libepoxy libffi libgcrypt libjpeg-turbo libnfs libslirp libspice-server libssh libtasn1 llvm lzo2 meson mtools ncurses nettle ninja opencv pixman pkgconf png py311-numpy py311-pillow py311-pip py311-pyyaml py311-sphinx py311-sphinx_rtd_theme py311-tomli python3 rpm2cpio rust rust-bindgen-cli sdl2 sdl2_image snappy sndio socat spice-protocol tesseract usbredir virglrenderer vte3 xorriso zstd'
-+PKGS='alsa-lib bash bison bzip2 ca_root_nss capstone4 ccache4 cmocka ctags curl cyrus-sasl dbus diffutils dtc flex fusefs-libs3 gettext git glib gmake gnutls gsed gtk-vnc gtk3 json-c libepoxy libffi libgcrypt libjpeg-turbo libnfs libslirp libspice-server libssh libtasn1 llvm lzo2 meson mtools ncurses nettle ninja opencv pixman pkgconf png py311-numpy py311-pillow py311-pip py311-pyyaml py311-sphinx py311-sphinx_rtd_theme py311-tomli python3 rpm2cpio rust rust-bindgen-cli sdl2 sdl2_image snappy sndio socat spice-protocol tesseract usbredir virglrenderer vte3 xorriso zstd'
- PYPI_PKGS=''
- PYTHON='/usr/local/bin/python3'
-diff --git a/tests/lcitool/libvirt-ci b/tests/lcitool/libvirt-ci
-index 9ad3f70bde..b6a65806bc 160000
---- a/tests/lcitool/libvirt-ci
-+++ b/tests/lcitool/libvirt-ci
-@@ -1 +1 @@
--Subproject commit 9ad3f70bde9865d5ad18f36d256d472e72b5cbf3
-+Subproject commit b6a65806bc9b2b56985f5e97c936b77c7e7a99fc
-diff --git a/tests/vm/generated/freebsd.json b/tests/vm/generated/freebsd.json
-index 3cb7fb7060..81fc38d798 100644
---- a/tests/vm/generated/freebsd.json
-+++ b/tests/vm/generated/freebsd.json
-@@ -13,7 +13,7 @@
-     "bzip2",
-     "ca_root_nss",
-     "capstone4",
--    "ccache",
-+    "ccache4",
-     "cmocka",
-     "ctags",
-     "curl",
+diff --git a/tests/docker/dockerfiles/debian-riscv64-cross.docker b/tests/docker/dockerfiles/debian-riscv64-cross.docker
+index 4d8ca83cb3..b0386cd3a1 100644
+--- a/tests/docker/dockerfiles/debian-riscv64-cross.docker
++++ b/tests/docker/dockerfiles/debian-riscv64-cross.docker
+@@ -1,10 +1,10 @@
+ # THIS FILE WAS AUTO-GENERATED
+ #
+-#  $ lcitool dockerfile --layers all --cross-arch riscv64 debian-sid qemu-minimal
++#  $ lcitool dockerfile --layers all --cross-arch riscv64 debian-13 qemu-minimal
+ #
+ # https://gitlab.com/libvirt/libvirt-ci
+ 
+-FROM docker.io/library/debian:sid-slim
++FROM docker.io/library/debian:trixie-slim
+ 
+ RUN export DEBIAN_FRONTEND=noninteractive && \
+     apt-get update && \
+diff --git a/tests/lcitool/refresh b/tests/lcitool/refresh
+index 6720516b94..53f8d2585f 100755
+--- a/tests/lcitool/refresh
++++ b/tests/lcitool/refresh
+@@ -220,7 +220,9 @@ try:
+                         trailer=cross_build("powerpc64le-linux-gnu-",
+                                             "ppc64-softmmu,ppc64-linux-user"))
+ 
+-    generate_dockerfile("debian-riscv64-cross", "debian-sid",
++    # while not yet a release architecture the packages are still
++    # build while part of testing
++    generate_dockerfile("debian-riscv64-cross", "debian-13",
+                         project="qemu-minimal",
+                         cross="riscv64",
+                         trailer=cross_build("riscv64-linux-gnu-",
 -- 
 2.39.5
 
