@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 584959F6B22
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Dec 2024 17:29:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC12E9F6B27
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Dec 2024 17:29:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tNwsg-0003Ta-RN; Wed, 18 Dec 2024 11:26:39 -0500
+	id 1tNwsd-0003Bh-Hw; Wed, 18 Dec 2024 11:26:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tNwsc-0003HT-Hd
- for qemu-devel@nongnu.org; Wed, 18 Dec 2024 11:26:34 -0500
-Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
+ id 1tNwsY-0002wK-UB
+ for qemu-devel@nongnu.org; Wed, 18 Dec 2024 11:26:31 -0500
+Received: from mail-ej1-x631.google.com ([2a00:1450:4864:20::631])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tNwsV-0007rc-8U
- for qemu-devel@nongnu.org; Wed, 18 Dec 2024 11:26:34 -0500
-Received: by mail-ed1-x532.google.com with SMTP id
- 4fb4d7f45d1cf-5d3dce16a3dso1780898a12.1
- for <qemu-devel@nongnu.org>; Wed, 18 Dec 2024 08:26:26 -0800 (PST)
+ id 1tNwsS-0007qD-9M
+ for qemu-devel@nongnu.org; Wed, 18 Dec 2024 11:26:30 -0500
+Received: by mail-ej1-x631.google.com with SMTP id
+ a640c23a62f3a-aa66c1345caso242702166b.3
+ for <qemu-devel@nongnu.org>; Wed, 18 Dec 2024 08:26:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734539185; x=1735143985; darn=nongnu.org;
+ d=linaro.org; s=google; t=1734539183; x=1735143983; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=QVtfGj1mN7IE9EjKx57fAetrjTJp1RBBY+kA+VK2230=;
- b=XmFu5YhYoKsCJIzA8Gj+zZNN4m3yfFkF2U7DR7z9lSd738xmHixsEnc0voLR5sCHv7
- Vn4bQzV91R4jhcEyQZovRoRtN/m4NOwp3td8Kz/MCd4pmPYOeJCBgHOjPwFJJwdu5XRL
- CHcFS8jZ3HubFcrbY8D0G+i5ocwI0CArCx5sY8QKUDv0VTr3v4XQk6BizN17MOFGPnmc
- S1fMeLFpZJBCDslXDb4dWATrk+EAsr7m84vZ3Ky8gKWQ3B2E3aTEiv2rEoe6mfjdUldj
- SJ+orEyKlQWzGUt293bM/tSbiOO+mDq9T7v/K/G+m8WuhmYoel73Fz+gZSo3OUOnI/TN
- tebA==
+ bh=EpM6m6rbJjz/cMmDUZY1x5tfWrWucIQIPNslhUNIhio=;
+ b=TrxUhxUpsPk5jmnO61aIMx17VcbPXyVhtpinRZbwkJyyNXMZfbleBUzc16OE5xpmoW
+ ie+6gSodM4fn9nu3ilVePh+WekbjeZOXMBpdxVLk3vjW1h7WNGOfoqR0CVsk6PrdGqkm
+ 9H5KO5A0Ww2PLRWuZEWR6myseAUv6lAA09D/vZvPbgOOlr67iNpCTWhHBmpFJ+8qdJV/
+ jsWq1WM/p9mDkIPA94PZPBE92RjFQfal+PhFGEfo6+NfxAtc1OssIPyp3iY2GbvsqzQL
+ 5m4Xxe/sn+/oyqR/0XMk7MdUGK3c2Lr/MBZh2WQFWsSXu52E6RnEaT3krzgf+Jd66skp
+ oLCA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734539185; x=1735143985;
+ d=1e100.net; s=20230601; t=1734539183; x=1735143983;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=QVtfGj1mN7IE9EjKx57fAetrjTJp1RBBY+kA+VK2230=;
- b=xLr+8mBLP0W3kd/bM4c9p9kox3MjhVbZ9/AmdmkO3NWCo/d46M6285DzjOjtB9xsXH
- 90yxtb+WQ6wh+brQHzGzdkfimA2MxE7WRmBHty8ZYj1E+OKfxCJykjrWrXkDR4F+uOfK
- lMVdEEhHh3b5wCxqQQz65H+8fjmU/5Wo1MgYo4lC2rVrYGQBAjCowqwx/L/AWbhwlP2Q
- YOmTCi5yvGsIxolLeRwX7nWUKxWnu2ry8ck4UvNe8R3sn+gkgqXTrRuUhQOV8ZJqewwS
- GyLKCVKibYjvNyKo6nXIDFWmS0c7GxOlxGBcO9kjkTJLfKYZ82YPDJRRA5NgnyT6NaMe
- Zt0g==
-X-Gm-Message-State: AOJu0YyKqTs+aQX5BzobrvYOy6nrda+m6ERa0wv/VdxyXD29WqKWHoXN
- lUhEN3UYMlIs6ylakEpFBbnladMh205X4C5eRiWCu3QQZinyYf0kG+6WcLAp8PQ=
-X-Gm-Gg: ASbGncv8J552zwkcxjFnxqctsCen5c9w8kvuzE+SoTJIj8E6JLHIoEp6LOx0Hxo8mNS
- 8I0FJIPHYQ7P9YInubH4GuE9lOY/K6y4TUzB4FjJBcsNV/etM0YbHhxsnl4FlkeBUQ/09eexokG
- zXJsIhDkOgNaMlX3NH0cLqZK9S3FdOwgdn/qF6VQF0i1HwJKqXjlgPj+YiBmoSmWkSV23fUfMtR
- CWr+dprTq6pR+khPtVoJH0LnZvbhTXdapgJY6C56n6W1lekxjsOj2s=
-X-Google-Smtp-Source: AGHT+IGomb4hxWiC7e6PCkn97aH7TQJwsHI4AvtNFMO+kaSQIbmzD4q1dayzAYda4S+IO0gz6xnC9Q==
-X-Received: by 2002:a05:6402:2482:b0:5d0:d2b1:6831 with SMTP id
- 4fb4d7f45d1cf-5d7efac5041mr3182443a12.14.1734539184676; 
- Wed, 18 Dec 2024 08:26:24 -0800 (PST)
+ bh=EpM6m6rbJjz/cMmDUZY1x5tfWrWucIQIPNslhUNIhio=;
+ b=L3hvGIBUUrfHBHOChWfYxSlagid/zhDoYb+uSg61Qm2nzHnDNIrHfZeWx240ozA3nQ
+ i+sFQonR40dnFm+8Ng2actyGJ+dyIAZEVqZy4Cg7Zk4xl6H4acdcZyftr0cYIoTskaCx
+ RyXynle0FioYr/RjVLlsOErozqOc0YbavD5JVs6Hd8QN/z8C77B17YRamWbHKKoaTCWb
+ Mx9SPDV47Xa6w4nUdXdsi1Irsa0rAwfdCjB1Iic66y4DlaOvo0upIESJ3W5Up4RFXKzc
+ Q1z95ckICmmLgth6qlZBleetj/mRQs7C+DULeKNmzzaLGq35JBz+tL8ljod8Y/djp1Fp
+ Y24w==
+X-Gm-Message-State: AOJu0YyWGQO6RP09muXOPmaaZcJAALJUBABWvDTMsS4EydkzgwrjqdoU
+ j2So4XXES269RFcUNpg2mDaWPZnxUtdvyFfLlB+1mKfOvtrbUKaznIN++1e/qho=
+X-Gm-Gg: ASbGncu79exLXCNUUdKvsUEUHdnIWu1HRhxS666f/UYten0sPibOdZDLc4wjZ68DBry
+ OklXZBbcTblkPI05cP5LxxJGyqcKJ0g+tZxk04DiSmn0SDdwZpHXPVRNSrqUW1qYW8ZpOz5rr2X
+ uSy4XkLDK5br3BNI0SWrxmHcuFtyYEnDnrSWfdaoSgLxJVS2+KVb5/JweUFBHGOAVm2u5AEciu7
+ 46RGa/n5me1+JeSDucVXpNCnLzRI6kdyivUeqZabytPBZWLs+93qtU=
+X-Google-Smtp-Source: AGHT+IFapxkwVsPLPzFoFbqL+z/NDXwozy+vqNy1gcAdFchAqxOSbjpZ0BB+/d4JmJ7opndBPVhTSg==
+X-Received: by 2002:a17:907:7e8d:b0:aa6:9624:78fd with SMTP id
+ a640c23a62f3a-aabf48f99f7mr304528966b.48.1734539182644; 
+ Wed, 18 Dec 2024 08:26:22 -0800 (PST)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5d652ad1bf4sm5494985a12.34.2024.12.18.08.26.21
+ a640c23a62f3a-aab960062d3sm573350166b.16.2024.12.18.08.26.21
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 18 Dec 2024 08:26:23 -0800 (PST)
+ Wed, 18 Dec 2024 08:26:22 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id A95EE603BD;
+ by draig.lan (Postfix) with ESMTP id C1EAE603E4;
  Wed, 18 Dec 2024 16:21:05 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -98,17 +98,17 @@ Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Laurent Vivier <lvivier@redhat.com>,
  Alistair Francis <alistair.francis@wdc.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PATCH v2 16/27] util/qemu-timer: fix indentation
-Date: Wed, 18 Dec 2024 16:20:52 +0000
-Message-Id: <20241218162104.3493551-17-alex.bennee@linaro.org>
+Subject: [PATCH v2 17/27] tests/qtest: remove clock_steps from virtio tests
+Date: Wed, 18 Dec 2024 16:20:53 +0000
+Message-Id: <20241218162104.3493551-18-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241218162104.3493551-1-alex.bennee@linaro.org>
 References: <20241218162104.3493551-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::532;
- envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x532.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::631;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x631.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -131,26 +131,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Purely cosmetic.
+In the qtest environment time will not step forward if the system is
+paused (timers disabled) or we have no timer events to fire. As a
+result VirtIO events are responded to directly and we don't need to
+step time forward.
+
+We still do timeout processing to handle the fact the target QEMU may
+not be ready to respond right away. This will usually be due to a slow
+CI system or if QEMU is running under something like rr.
+
+Future qtest patches will assert that time actually changes when a
+step is requested.
 
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
----
- util/qemu-timer.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/util/qemu-timer.c b/util/qemu-timer.c
-index ffe9a3c5c1..7b71655416 100644
---- a/util/qemu-timer.c
-+++ b/util/qemu-timer.c
-@@ -680,7 +680,7 @@ int64_t qemu_clock_advance_virtual_time(int64_t dest)
-     aio_context = qemu_get_aio_context();
+---
+v2
+  - s/with/when/
+  - drop clock_step entirely
+---
+ tests/qtest/libqos/virtio.c | 4 ----
+ 1 file changed, 4 deletions(-)
+
+diff --git a/tests/qtest/libqos/virtio.c b/tests/qtest/libqos/virtio.c
+index a21b6eee9c..2e7979652f 100644
+--- a/tests/qtest/libqos/virtio.c
++++ b/tests/qtest/libqos/virtio.c
+@@ -170,7 +170,6 @@ void qvirtio_wait_queue_isr(QTestState *qts, QVirtioDevice *d,
+     gint64 start_time = g_get_monotonic_time();
  
-     deadline = qemu_clock_deadline_ns_all(QEMU_CLOCK_VIRTUAL,
--                                                      QEMU_TIMER_ATTR_ALL);
-+                                          QEMU_TIMER_ATTR_ALL);
-     /*
-      * A deadline of < 0 indicates this timer is not enabled, so we
-      * won't get far trying to run it forward.
+     for (;;) {
+-        qtest_clock_step(qts, 100);
+         if (d->bus->get_queue_isr_status(d, vq)) {
+             return;
+         }
+@@ -192,7 +191,6 @@ uint8_t qvirtio_wait_status_byte_no_isr(QTestState *qts, QVirtioDevice *d,
+     uint8_t val;
+ 
+     while ((val = qtest_readb(qts, addr)) == 0xff) {
+-        qtest_clock_step(qts, 100);
+         g_assert(!d->bus->get_queue_isr_status(d, vq));
+         g_assert(g_get_monotonic_time() - start_time <= timeout_us);
+     }
+@@ -219,14 +217,12 @@ void qvirtio_wait_used_elem(QTestState *qts, QVirtioDevice *d,
+     for (;;) {
+         uint32_t got_desc_idx;
+ 
+-        qtest_clock_step(qts, 100);
+ 
+         if (d->bus->get_queue_isr_status(d, vq) &&
+             qvirtqueue_get_buf(qts, vq, &got_desc_idx, len)) {
+             g_assert_cmpint(got_desc_idx, ==, desc_idx);
+             return;
+         }
+-
+         g_assert(g_get_monotonic_time() - start_time <= timeout_us);
+     }
+ }
 -- 
 2.39.5
 
