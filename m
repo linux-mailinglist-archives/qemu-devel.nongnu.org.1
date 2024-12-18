@@ -2,143 +2,151 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10DB79F6AEB
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Dec 2024 17:20:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FA569F6B6C
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Dec 2024 17:43:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tNwmA-0006e4-Cy; Wed, 18 Dec 2024 11:19:54 -0500
+	id 1tNx9A-0002sO-4b; Wed, 18 Dec 2024 11:43:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tNwm7-0006dv-2D
- for qemu-devel@nongnu.org; Wed, 18 Dec 2024 11:19:51 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <markus.lavin@ericsson.com>)
+ id 1tNx95-0002po-Rx
+ for qemu-devel@nongnu.org; Wed, 18 Dec 2024 11:43:36 -0500
+Received: from mail-db8eur05on20620.outbound.protection.outlook.com
+ ([2a01:111:f403:2614::620]
+ helo=EUR05-DB8-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tNwm5-00050r-Ic
- for qemu-devel@nongnu.org; Wed, 18 Dec 2024 11:19:50 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1734538787;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=j3XyJ5bpmJgpMxCqNdRPyXMasy9LSv/6OnPBGcNEsCI=;
- b=cfMCTdKXxMY3vB/odUdDy8846APHgofMrq0VPEdjWrz6sUJI8RwA/JOUZnAiJrUugPURTa
- 7Wl9GW3GEfbz48XE4kIcnqbfrfcpjihNXpO5rt8XuHKEC4qR4NKKSHfFyBaryqBBkc9RmG
- Ru5lxbfw/fUoOjLVpKUOluxMFtXh1g4=
-Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
- [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-492-IG0tFgMeNQ21I7sBvDOzUw-1; Wed, 18 Dec 2024 11:19:46 -0500
-X-MC-Unique: IG0tFgMeNQ21I7sBvDOzUw-1
-X-Mimecast-MFC-AGG-ID: IG0tFgMeNQ21I7sBvDOzUw
-Received: by mail-qv1-f72.google.com with SMTP id
- 6a1803df08f44-6d889fd0fd6so17479696d6.0
- for <qemu-devel@nongnu.org>; Wed, 18 Dec 2024 08:19:46 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734538786; x=1735143586;
- h=content-transfer-encoding:in-reply-to:autocrypt:content-language
- :from:references:cc:to:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=j3XyJ5bpmJgpMxCqNdRPyXMasy9LSv/6OnPBGcNEsCI=;
- b=bre3iaXNVpwxST0aw1PUfS/rsnm5PrysBkFVohR5jbDECkOzhfF1aPNq2l3Pc11bmV
- b3C7uWEUDKwYCewoJFcooSp5cjywXQyUtxflwpOJNCbd2omO7XB9BmWnBT/8ufJ5C9OA
- q+KYBXU0iGhR4197aTYq8zD/O0hiHPOkToFZkpf/xUQUXlOaOn/VraLOv0Gc2kjvTzYb
- adg7Ujqq7Bd5/XrQw4w4oomEDFPkHtcSD46HAYbcxvTp3OqHevqodQEmdR1JUfoycjdR
- VSZFceu8r4SYf/HowHrorNwFCvEvpqIkyu6m+mGCsIYtwW+mx+ytOduaRDwYjEWxYTzS
- arSw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUH2vaFAYB8+FDF7YLlTnL8bIQ3o/bbx4G7CPU25QzYmYoUNDqcijGe/ixCyfmAalzuAcWNvHsI7tIg@nongnu.org
-X-Gm-Message-State: AOJu0YyZwPuqkWk7htXBmZ+u1KWj4INoE0brZavcFmPYTnXHNkRgdcAw
- taShgLA3dMudfkOAIDu0MeuJAYHThAcWW3kK8t014ANKnJwFr5roozxOOrv2NIWWpMTpYy+vCdt
- aLJqPqc+NWxy1i1ag9T+6wMCNdD8GYHRB4wwzEPhG0YnSfaEC+HcEIMExzlv4
-X-Gm-Gg: ASbGncs+oFkFWsjXnBZKPFaI+Bh5OMXZtxbzmCbNAmmg1cbW1Htc6RPa6dzh413YD5u
- VOa0m3n/s0UmcHh8iiREC6ES2uyVS4AscEU5o7Lv385ArcEGea7R3OOxo9zp+z5ry2CnP2MES3+
- OgtAZqu/tsW1iCHaBiFxu2LZS5OilEXw6LF/8cn5lD/EMpappC6LsSrBBpUTtR31P0CDW5GR4mL
- 78/BLwr900SJ+uuLH1eHDcPMWVyV8lNHOtQaCx/T5GaVQIUugQGCkiXV+1B2Hs9ZAaVXXHJISiC
- jdKFQVovsb9x
-X-Received: by 2002:ad4:4ea1:0:b0:6d8:98a0:23b6 with SMTP id
- 6a1803df08f44-6dd09967a9dmr51220346d6.4.1734538784747; 
- Wed, 18 Dec 2024 08:19:44 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGULovIGtPfp+N6I0Guq3apKUWMPq2Q72WU52J0fzZl/tf8Tf4D236zGdb2zWxhJJUthUioqA==
-X-Received: by 2002:ad4:4ea1:0:b0:6d8:98a0:23b6 with SMTP id
- 6a1803df08f44-6dd09967a9dmr51220016d6.4.1734538784424; 
- Wed, 18 Dec 2024 08:19:44 -0800 (PST)
-Received: from [192.168.0.6] (ip-109-42-49-186.web.vodafone.de.
- [109.42.49.186]) by smtp.gmail.com with ESMTPSA id
- 6a1803df08f44-6dccd26d07asm51919876d6.58.2024.12.18.08.19.43
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 18 Dec 2024 08:19:44 -0800 (PST)
-Message-ID: <f987b60d-9e73-4f6a-ae48-857f7af6cddc@redhat.com>
-Date: Wed, 18 Dec 2024 17:19:40 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] tests/functional: Convert the kvm_xen_guest avocado test
-To: David Woodhouse <dwmw2@infradead.org>, qemu-devel@nongnu.org
-Cc: Paul Durrant <paul@xen.org>
-References: <20241218113255.232356-1-thuth@redhat.com>
- <9B5DDDDB-769B-4654-BEF1-D3F853EA05E5@infradead.org>
- <31e85f4d-66f2-4790-8597-f43e291bcbea@redhat.com>
- <61cadf31-8656-4216-a345-e364bb85e45b@redhat.com>
- <44c87114343dc57b248ff0f86e5f4e0683533efb.camel@infradead.org>
-From: Thomas Huth <thuth@redhat.com>
+ (Exim 4.90_1) (envelope-from <markus.lavin@ericsson.com>)
+ id 1tNx90-0005Le-5r
+ for qemu-devel@nongnu.org; Wed, 18 Dec 2024 11:43:35 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=pqnLr2xYcrL44NS+nLLHCXXEdVmrFYALqnmgAZcEOVW32OVCCjqODGSE8Xw72QMRtdSF+zQdaAL8KcU0Ad8uSuFAq9ICU32y2H6/3m/1QfVDvUNtecio7l/Ru/N9rsb0thVlmD7YETRj+JHWCKqzDdPZAJqHIAeN1QrCAlPaOC1g1AYT9LSi1vna18H0O0sY2GGtRKpR5UdzeIPo1iGmyMZbZNpkQRVwsvIjZ1V8m8bZxMMDbVDYnuhxbioJ/iyW8XZ1gROpnXbYap7zy8OTvlSz9Itq/b+hDUezSD4enSduLr4aPFWaYrZvGlDK5WTLzeSYbom4l/8fdjwZg2ZIRQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=JJThzpV2vm2hYerznfU2Db8ajKVT4MPbuYDQPWwa0xk=;
+ b=P9NP/dJNp3AKqR6s4jbqPoDIhB4/FmzWbRvQ/hNAx0wW7uzcC65lmLnjBIw8WVUaIJOb3Nz3FiNAn08bboBTJLM4x60rrnj0U3SxLFc9Tpy2FSov54SgxX1Q5S+qiMccTuPhNrgzB33HH+LY6O/Grd15SwbM3kTTzFK8zA5hx8KI+4DFAET7/D1rcWfMvs8BkjaK22/+DusGT5TiUVGCF4BFIiPkwRgx/50m0QJBu8BWjpjjUiS1iqoWCEqJInDDoXOYZN6vu5Nz4/+bEmnwPEucFB6gAAZrpFaxnqgAX8n4/3XXlgwBY5Je1u4sSiD+aXP0g7tZl2iuXBkxQ0JDjg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=ericsson.com; dmarc=pass action=none header.from=ericsson.com;
+ dkim=pass header.d=ericsson.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ericsson.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=JJThzpV2vm2hYerznfU2Db8ajKVT4MPbuYDQPWwa0xk=;
+ b=mkjgnF33SdaNZtPLdCmcACU8mWYImIsSILmtfnmzHx56k8ppSvD4+Ik0MPWUJvXacskMj9ET6sOmE1/ZZIl0cJXblV74X1Mt6tFzdi/3H8QRF3s8s2tdvs/TiYei8qtchlw5iE+Sr8x8JUHi30eUGrtwhlhSwA9nzYvt8zsUTtpJlh7Gk0HoZhSQUof1XJRlGoG8PKQfQPZMkTWIHy4ecWeHyaBvkAi2RJZOppID2x+0deLozKVyjc+kiZbWYzBXJYcYzfW2YyZn6skWDvH9fuRDtIgrLpwypY9TtUnbrmiS/mic9Mt6KmY2ijbYpxrId8nd+yA3WE9LhSOy6CSuAg==
+Received: from DU2PR07MB8179.eurprd07.prod.outlook.com (2603:10a6:10:274::6)
+ by AM7PR07MB6261.eurprd07.prod.outlook.com (2603:10a6:20b:13f::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8272.13; Wed, 18 Dec
+ 2024 16:19:48 +0000
+Received: from DU2PR07MB8179.eurprd07.prod.outlook.com
+ ([fe80::5f27:3841:f232:78e3]) by DU2PR07MB8179.eurprd07.prod.outlook.com
+ ([fe80::5f27:3841:f232:78e3%3]) with mapi id 15.20.8272.005; Wed, 18 Dec 2024
+ 16:19:47 +0000
+From: Markus Lavin <markus.lavin@ericsson.com>
+To: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+Subject: Use of BQL from thread in PCIe device
+Thread-Topic: Use of BQL from thread in PCIe device
+Thread-Index: AQHbUWT1ESgMkIDn00u5tBZba8frkw==
+Date: Wed, 18 Dec 2024 16:19:47 +0000
+Message-ID: <DU2PR07MB8179DBDD123A4615CBD1688EE8052@DU2PR07MB8179.eurprd07.prod.outlook.com>
+Accept-Language: en-US
 Content-Language: en-US
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <44c87114343dc57b248ff0f86e5f4e0683533efb.camel@infradead.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -31
-X-Spam_score: -3.2
-X-Spam_bar: ---
-X-Spam_report: (-3.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+msip_labels: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=ericsson.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: DU2PR07MB8179:EE_|AM7PR07MB6261:EE_
+x-ms-office365-filtering-correlation-id: d4a37af9-f4ca-451d-fed1-08dd1f7fcabe
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+ ARA:13230040|376014|366016|1800799024|8096899003|38070700018; 
+x-microsoft-antispam-message-info: =?iso-8859-1?Q?cylZWJJ7q96h8nRTAmCw7zk1/GGSj5JsQO59I83P9pRGhaDYHuX7vGFf2t?=
+ =?iso-8859-1?Q?ytXx2wRG88Kj9gyeYoQ1rBgIz7JaR+GTsN0fV3OVvfvOmrWKJRL5fttXkP?=
+ =?iso-8859-1?Q?KeC7bD5Iy/vlQqbT4RiSJO6VCgeDsmBX6q32rmk3g51v9R7OXeth/NESO2?=
+ =?iso-8859-1?Q?CwDJyFcDvOtpFuu2IlmctLZyFIKXLWr5qfm04max66iBoGSloSZYdW0kre?=
+ =?iso-8859-1?Q?1rdnM5/hPdgf/3E4XN8SJGNgtaC1y1T6iV/r8xKeTQ53JGA7p1wLTAJlrR?=
+ =?iso-8859-1?Q?zatJUFcUJxCCibSM5MMb3aPprohCE4b8HL3XQu04ogeRCckyj2JMos3U/t?=
+ =?iso-8859-1?Q?9cc/GKTrJbZOPpCCTMJflfOMQv2PthKv3cFT8XLohtIHwhUlKNN9MP0zHX?=
+ =?iso-8859-1?Q?nipYJxm2Fmj9QVbsnSHuMONX6aAP7X9778RFkm6rkNECZoFUhub3454KFI?=
+ =?iso-8859-1?Q?B/qY04o2eyufjwNQSNyDaT4bFUIP9JO1SJ8tm1zq6WAvmfhKDoxmX4dLlU?=
+ =?iso-8859-1?Q?qluOk134SHFVndbuFi6o0eRFL2GTBHNDMljR1KSfpCFm4VsqeDId+AZiN9?=
+ =?iso-8859-1?Q?Sw4LIn1RdLnaB6+Hewnz7wOH8xLIwywxWDp+pfvVQ1lDRnHK0t8dlfCvSe?=
+ =?iso-8859-1?Q?V7KBkgpVHnAMaNSegC5NgnJZHL933RsibyAgP44FQmoxjT4S4WOPC+e6Wy?=
+ =?iso-8859-1?Q?/ajyJw3Ukct92VTKPGzEygRxHZL4OxUWJdbufQaGuCPKqXcw0JsFqrBXub?=
+ =?iso-8859-1?Q?8a874+wp9Kd2JDNZVw84+c1JaiIqoeVCWYXkqAnnO1B0QKyqOdy9bcuHoh?=
+ =?iso-8859-1?Q?QY0DfyRggsRQ4knRvZbYvcKlLwNEdvmrrzcCvYq3MM9hRg5wKNu2H+OCMA?=
+ =?iso-8859-1?Q?08Zr8WOlWKCuaq9GQ+4LPc21g0PVz2jdOYGvsgYjYISunnn680jOOpDHtO?=
+ =?iso-8859-1?Q?GccaosiXZdp/vjcMo9sYJrReJSJfDRI8XFzZEyEdTHVPRX9aiOOC+ZkxCw?=
+ =?iso-8859-1?Q?mRxLUPBes1cDcsYqCxtSp59tBOLmpK+aKIb6vC5XyTHuSKfi7bdWxH4JbP?=
+ =?iso-8859-1?Q?HUwyXXZRtSipf6uKIZSAeMESZlBlJ1RZMWjXlGA4OqynUlaVkUyZQqHzAH?=
+ =?iso-8859-1?Q?GQwXUYHner+FECeEV6RHU7nW2cYUomVcwTY4TVmExsxKdfBDX2FiOK4XnZ?=
+ =?iso-8859-1?Q?Cd9eeS3OFUToaKEdJIV6WPBVHhbQgmLqnkj6J7YVR8RjxlYtoo9vWoE2Am?=
+ =?iso-8859-1?Q?FRLyYR33EY2+USs088bC9V879pY2iID03XDC80IizrcilfMpxTU4xBfGAL?=
+ =?iso-8859-1?Q?59aY/kYn5HQGAMS8+a8Ni7lk2VFIDe4Km3JHGw5/7QSwr2z+ELT7XhVa4G?=
+ =?iso-8859-1?Q?vChXHiSpYPF2BktooYRiAw9PRUKV0QjuyYFHeB1x6GfWCeXYKzE+/4aVZO?=
+ =?iso-8859-1?Q?XsyH+a0Q5JV2HFuuteKDFSR2HAg1keEendAu+XYBkDfE4PYA9i24V5PY1t?=
+ =?iso-8859-1?Q?neH80tz4ylBGwlPNRKe2yi?=
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:DU2PR07MB8179.eurprd07.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(376014)(366016)(1800799024)(8096899003)(38070700018); DIR:OUT;
+ SFP:1101; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?ShBGMo6GSbljrgEwNBxN9HIQEYUt52uKfDegq/w8VDK0kdl/fQjwY1RGen?=
+ =?iso-8859-1?Q?Tc8v/3MjUnf3H+R1Kj0SIiVQW3dhCsirec30XgBu25WlSkUhsTfnq08598?=
+ =?iso-8859-1?Q?X0CkSyPvbxFYoSAvDiXw+LDX0McuTHtFQ7pE0TYLcTm/mrnDr0rE7VPFWS?=
+ =?iso-8859-1?Q?k4zftwg3n9bJQu0RP/mWU58C4WWSgvdSEpBh1dmmqTpvBI74/fIbXXgaAm?=
+ =?iso-8859-1?Q?D/ueC86bSmdBlGWMgffcFQfyB2gztad6kcgLlqp5fDajiqAqMOe34BYgoq?=
+ =?iso-8859-1?Q?0eh7bxltSplfdnNWkUuC71e+pVaw8lC1vnaWp/GklgJJVFFM4ZCpgnyo10?=
+ =?iso-8859-1?Q?QJhzyqARLccqG26KRHFU0jiWnSmyZU6IhUGCPXU/7zVqNT3l2koPcgwOSj?=
+ =?iso-8859-1?Q?DwccfdWIhbJLd5s2mWuD6UJMHMh79JVpzzdo5HRnsPuovDlbRkNvQuSUZg?=
+ =?iso-8859-1?Q?7mtb7KAwcGzt9uRygNhEJzUCozAlsbi6OJJ5IOGPmne/YlPUO0Bdy526og?=
+ =?iso-8859-1?Q?sUOLAaEfwbXTYR2sb+C/YHi0lWMDhRz+KZ6MJ9RLY9d4eVREtFuDrPdsVK?=
+ =?iso-8859-1?Q?Lz1oceUr/fcWBqSYQ7gZtbqKROTwAdcKNBta6NmDl23cc+6HTePuyIvJ60?=
+ =?iso-8859-1?Q?wy5OpcUNIOAt5R5cnoVWn0WVuQuz3WV+z4eNFI9QPnV2I0373IED1fxz3S?=
+ =?iso-8859-1?Q?hZvrVJBV8RrhlACow5fLYmolw9IUU4OVOllNqwQIM3lg+MsAVHss3dO9R2?=
+ =?iso-8859-1?Q?sxF5WOs5fCkRkMyfksWD3W0t8fDXEEgCbIVIN5QhH+b9o4F8/bmzQQlKva?=
+ =?iso-8859-1?Q?oeV91/SPoggzPY5hddACikJzUMUBj475qcAvqCmi4O/azZByOi31BEp8wk?=
+ =?iso-8859-1?Q?62A5meQrzDpakeIvYo/gl/yDWzRFxnYbH6un1zVNY9BmezUXPB0xG7txYv?=
+ =?iso-8859-1?Q?sMLIcYnURyCsb+oDLXENIXmjF0crqrtw5JmCjX9nYFn7TjkeDK6JrZyqEI?=
+ =?iso-8859-1?Q?9pr0VXkpQnIxSj+ELuCSQxzfvju94PQQo9URMiJUlH5KpzcOTZ328oKGLN?=
+ =?iso-8859-1?Q?0xFa/KX+Y8yFllxZ9lw7beKH/BV4QbDR2z80KR2jAmoFX3V+hDYbHmQOjp?=
+ =?iso-8859-1?Q?eyQhzk2jM7kXlLZwBR+ozZWyviR66TsPO1xr6ku4sIL8nTHVO6QHHpfz1x?=
+ =?iso-8859-1?Q?xps4nxZt/duZ3vklgBYf181F5kIzUamMTRQvTKvMIb2m7cJpyMSxfGaMTz?=
+ =?iso-8859-1?Q?uAgt9tREazLcMQTMk5twN4fXoJvs/5OtzkhnpNTnQEoVDn9PpYzqag8r2z?=
+ =?iso-8859-1?Q?A9iBEeykTFtzy4zVSyXWYqlmi/7RUYzn0+1r/UzZCcee+8K3KuSHRx4iMl?=
+ =?iso-8859-1?Q?egtix6RuWf0KTK1aqldVWCPD8hb7F8fx+yVmAgnfiGuTeR49adQFcyePE8?=
+ =?iso-8859-1?Q?j1j+memxlSyJpqxJmIcz7Bi5bWC24OUUw47f0AfzmJfEtLKMg0kA4xbj5A?=
+ =?iso-8859-1?Q?u4eAEKlH+2OnDwhVhkP8fXXqjTRDK7LwxdGRUGmoaZVI/mQuruPYD79Y6o?=
+ =?iso-8859-1?Q?O7XnuNMji09aYXSApdI/PBeWjRGvzimYOVTWHXPFT3gO2ceA8/8PZmE18g?=
+ =?iso-8859-1?Q?rv5Bk/svWhk0QRn7j3j63zMgF4PbxGlL/U?=
+Content-Type: multipart/alternative;
+ boundary="_000_DU2PR07MB8179DBDD123A4615CBD1688EE8052DU2PR07MB8179eurp_"
+MIME-Version: 1.0
+X-OriginatorOrg: ericsson.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: DU2PR07MB8179.eurprd07.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d4a37af9-f4ca-451d-fed1-08dd1f7fcabe
+X-MS-Exchange-CrossTenant-originalarrivaltime: 18 Dec 2024 16:19:47.8841 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 92e84ceb-fbfd-47ab-be52-080c6b87953f
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 7gmwu+19eUELSTvA4fqQvAliztnyPc7qj1/GUED2zsYyFj2pKPrs/zEBVqu0ZGN0qVgrQT5iZjucNyas6VyeXSM3VNfqiDF4iyYTGy8UnPw=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM7PR07MB6261
+Received-SPF: pass client-ip=2a01:111:f403:2614::620;
+ envelope-from=markus.lavin@ericsson.com;
+ helo=EUR05-DB8-obe.outbound.protection.outlook.com
+X-Spam_score_int: -10
+X-Spam_score: -1.1
+X-Spam_bar: -
+X-Spam_report: (-1.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-1.116,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ FORGED_SPF_HELO=1, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_PASS=-0.001, T_SPF_TEMPERROR=0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -154,44 +162,141 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 18/12/2024 15.11, David Woodhouse wrote:
-> On Wed, 2024-12-18 at 14:38 +0100, Thomas Huth wrote:
-...
->> But FWIW, there seems to be another issue with this test. While running it
->> multiple times, I sometimes see test_kvm_xen_guest_novector_noapic hanging.
->> According to the console output, the guest waits in vain for a device:
->>
->> 2024-12-18 14:32:58,606: Initializing XFRM netlink socket
->> 2024-12-18 14:32:58,607: NET: Registered PF_INET6 protocol family
->> 2024-12-18 14:32:58,609: Segment Routing with IPv6
->> 2024-12-18 14:32:58,609: In-situ OAM (IOAM) with IPv6
->> 2024-12-18 14:32:58,610: NET: Registered PF_PACKET protocol family
->> 2024-12-18 14:32:58,610: 8021q: 802.1Q VLAN Support v1.8
->> 2024-12-18 14:32:58,611: 9pnet: Installing 9P2000 support
->> 2024-12-18 14:32:58,613: NET: Registered PF_VSOCK protocol family
->> 2024-12-18 14:32:58,614: IPI shorthand broadcast: enabled
->> 2024-12-18 14:32:58,619: sched_clock: Marking stable (551147059, -6778955)->(590359530, -45991426)
->> 2024-12-18 14:32:59,507: tsc: Refined TSC clocksource calibration: 2495.952 MHz
->> 2024-12-18 14:32:59,508: clocksource: tsc: mask: 0xffffffffffffffff max_cycles: 0x23fa49fc138, max_idle_ns: 440795295059 ns
->> 2024-12-18 14:32:59,509: clocksource: Switched to clocksource tsc
->> 2024-12-18 14:33:28,667: xenbus_probe_frontend: Waiting for devices to initialise: 25s...20s...15s...10s...5s...0s...
->>
->> Have you seen this problem before?
-> 
-> That seems like event channel interrupts aren't being routed to the
-> legacy i8259 PIC. I've certainly seen that kind of thing before,
-> especially when asserted level-triggered interrupts weren't correctly
-> being asserted. But I don't expect that of QEMU. I'll see if I can
-> reproduce; thanks.
-> 
-> How often does it happen?
+--_000_DU2PR07MB8179DBDD123A4615CBD1688EE8052DU2PR07MB8179eurp_
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 
-With the new functional test, it happens maybe 2 times out of 100 test runs.
+Hi,
 
-I wasn't able to reproduce it with the avocado version yet, but that also 
-runs 10x slower, so it takes a longer time to get to that many runs...
+I think that I might have misunderstood something fundamental about the BQL=
+ (or possibly Qemu in general).
 
-  Thomas
+I have a custom PCIe device that connects to an outside simulation environm=
+ent using Unix domain sockets. To deal with bus-mastering from this outside=
+ environment I have a thread created with qemu_thread_create listening to t=
+he socket.
+
+If I get a read/write/interrupt request over the socket then the thread sho=
+uld perform a pci_dma_read/pci_dma_write/msix_notify. Since this is called =
+from the threads context I assumed I should first grab the BQL. Issuing a b=
+ql_lock from the thread however hangs Qemu.
+
+Is my thinking flawed?
+
+I think looks very similar to what is going on in hw/misc/edu.c where bql_l=
+ock is called from a thread.
+
+Thanks,
+Markus
 
 
+
+
+
+--_000_DU2PR07MB8179DBDD123A4615CBD1688EE8052DU2PR07MB8179eurp_
+Content-Type: text/html; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<html>
+<head>
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Diso-8859-=
+1">
+<style type=3D"text/css" style=3D"display:none;"> P {margin-top:0;margin-bo=
+ttom:0;} </style>
+</head>
+<body dir=3D"ltr">
+<div class=3D"elementToProof" style=3D"font-family: Aptos, Aptos_EmbeddedFo=
+nt, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; c=
+olor: rgb(0, 0, 0);">
+Hi,</div>
+<div class=3D"elementToProof" style=3D"font-family: Aptos, Aptos_EmbeddedFo=
+nt, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; c=
+olor: rgb(0, 0, 0);">
+<br>
+</div>
+<div class=3D"elementToProof" style=3D"font-family: Aptos, Aptos_EmbeddedFo=
+nt, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; c=
+olor: rgb(0, 0, 0);">
+I think that I might have misunderstood something fundamental about the BQL=
+ (or possibly Qemu in general).</div>
+<div class=3D"elementToProof" style=3D"font-family: Aptos, Aptos_EmbeddedFo=
+nt, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; c=
+olor: rgb(0, 0, 0);">
+<br>
+</div>
+<div class=3D"elementToProof" style=3D"font-family: Aptos, Aptos_EmbeddedFo=
+nt, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; c=
+olor: rgb(0, 0, 0);">
+I have a custom PCIe device that connects to an outside simulation environm=
+ent using Unix domain sockets. To deal with bus-mastering from this outside=
+ environment I have a thread created with qemu_thread_create listening to t=
+he socket.</div>
+<div class=3D"elementToProof" style=3D"font-family: Aptos, Aptos_EmbeddedFo=
+nt, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; c=
+olor: rgb(0, 0, 0);">
+<br>
+</div>
+<div class=3D"elementToProof" style=3D"font-family: Aptos, Aptos_EmbeddedFo=
+nt, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; c=
+olor: rgb(0, 0, 0);">
+If I get a read/write/interrupt request over the socket then the thread sho=
+uld perform a pci_dma_read/pci_dma_write/msix_notify. Since this is called =
+from the threads context I assumed I should first grab the BQL. Issuing a b=
+ql_lock from the thread however
+ hangs Qemu.</div>
+<div class=3D"elementToProof" style=3D"font-family: Aptos, Aptos_EmbeddedFo=
+nt, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; c=
+olor: rgb(0, 0, 0);">
+<br>
+</div>
+<div class=3D"elementToProof" style=3D"font-family: Aptos, Aptos_EmbeddedFo=
+nt, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; c=
+olor: rgb(0, 0, 0);">
+Is my thinking flawed?</div>
+<div class=3D"elementToProof" style=3D"font-family: Aptos, Aptos_EmbeddedFo=
+nt, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; c=
+olor: rgb(0, 0, 0);">
+<br>
+</div>
+<div class=3D"elementToProof" style=3D"font-family: Aptos, Aptos_EmbeddedFo=
+nt, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; c=
+olor: rgb(0, 0, 0);">
+I think looks very similar to what is going on in hw/misc/edu.c where bql_l=
+ock is called from a thread.</div>
+<div class=3D"elementToProof" style=3D"font-family: Aptos, Aptos_EmbeddedFo=
+nt, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; c=
+olor: rgb(0, 0, 0);">
+<br>
+</div>
+<div class=3D"elementToProof" style=3D"font-family: Aptos, Aptos_EmbeddedFo=
+nt, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; c=
+olor: rgb(0, 0, 0);">
+Thanks,</div>
+<div class=3D"elementToProof" style=3D"font-family: Aptos, Aptos_EmbeddedFo=
+nt, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; c=
+olor: rgb(0, 0, 0);">
+Markus</div>
+<div class=3D"elementToProof" style=3D"font-family: Aptos, Aptos_EmbeddedFo=
+nt, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; c=
+olor: rgb(0, 0, 0);">
+<br>
+</div>
+<div class=3D"elementToProof" style=3D"font-family: Aptos, Aptos_EmbeddedFo=
+nt, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; c=
+olor: rgb(0, 0, 0);">
+<br>
+</div>
+<div class=3D"elementToProof" style=3D"font-family: Aptos, Aptos_EmbeddedFo=
+nt, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; c=
+olor: rgb(0, 0, 0);">
+<br>
+</div>
+<div class=3D"elementToProof" style=3D"font-family: Aptos, Aptos_EmbeddedFo=
+nt, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; c=
+olor: rgb(0, 0, 0);">
+&nbsp;</div>
+</body>
+</html>
+
+--_000_DU2PR07MB8179DBDD123A4615CBD1688EE8052DU2PR07MB8179eurp_--
 
