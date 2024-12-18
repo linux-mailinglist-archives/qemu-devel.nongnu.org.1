@@ -2,66 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21E139F6D06
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Dec 2024 19:18:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D41B59F6D05
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Dec 2024 19:18:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tNybH-0001s0-MB; Wed, 18 Dec 2024 13:16:47 -0500
+	id 1tNybA-0001hh-UN; Wed, 18 Dec 2024 13:16:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tNya2-0001B9-BR
- for qemu-devel@nongnu.org; Wed, 18 Dec 2024 13:15:30 -0500
-Received: from mail-ej1-x630.google.com ([2a00:1450:4864:20::630])
+ id 1tNya3-0001BF-ER
+ for qemu-devel@nongnu.org; Wed, 18 Dec 2024 13:15:39 -0500
+Received: from mail-ej1-x631.google.com ([2a00:1450:4864:20::631])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tNyZy-0007Uy-Bv
- for qemu-devel@nongnu.org; Wed, 18 Dec 2024 13:15:28 -0500
-Received: by mail-ej1-x630.google.com with SMTP id
- a640c23a62f3a-aa67f31a858so1249098766b.2
- for <qemu-devel@nongnu.org>; Wed, 18 Dec 2024 10:15:14 -0800 (PST)
+ id 1tNyZy-0007Vo-CI
+ for qemu-devel@nongnu.org; Wed, 18 Dec 2024 13:15:29 -0500
+Received: by mail-ej1-x631.google.com with SMTP id
+ a640c23a62f3a-aa6c0d1833eso1217956566b.1
+ for <qemu-devel@nongnu.org>; Wed, 18 Dec 2024 10:15:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734545714; x=1735150514; darn=nongnu.org;
+ d=linaro.org; s=google; t=1734545715; x=1735150515; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=qgbFUsQ4LmsnQTjxQWiCGeGbjUd9LSSKaKM5ICyfigY=;
- b=UjyIva9XScvdl7q79LKn/PUlbq9D16pI1nvHdhX0+h2WOJnPsLt6YjgmcwrnJdMGXB
- YFDI0pp4MjyT7bVtwV4EFkXo2b9Aaghz5UDNkOrWQ1htemxd+0LzsKaEDVCkuShLvkGc
- 8jaNiuxjcRyyShpq2r/6hCmJSj/ijZbZwqq0DN9irLjQ27exab5Ya+3oLDW7rpweEEWe
- ETfRFJP50eLwlzvhZhV3/iBEv0vlgQ3u27p1Sk+DenKYXWjIQ3iTpSnZ9/nE8bduoe9O
- WgGvqeZ52B2nMNQYKxkujFxvLROtsMoCIRTkOUCCf65MeCAKFaGjBJR+h/FYPxHSBSR5
- NnrA==
+ bh=qe//gJViys+yhtB7j7EeuPsosME5JBmgNhwY0OmT6DE=;
+ b=fuV+O5jGEazW/kMYEL7vhf1bv9G3mcDeXU8uivlmCmHvNiYD/hWOfNK5G8merW+b9f
+ URvjLqlN3iex0D/v9K/6/xcbOQCj/tZ9udBvh4C1+DZbGjm21o/BIoOfR5Eus+cceh1E
+ nw+uUCd8pyfA5pG1ChLFs6Gh2b2wVzsG2mva7W2corRMNKC17PbI5ezuo58ZvHNd0jMb
+ klncAtK6KRY2+MQlQ6Zoafvcl0Y2iBHcHo8fdmUSKk9+EXJeoxJxHInk7tYjRqi4mJsN
+ XRjOr1LIkILD7NE/LgHYGlxRakPcLr+wKHiir4FucDhuukS3yjVE3ab7MB6U64aArGSA
+ ShFg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734545714; x=1735150514;
+ d=1e100.net; s=20230601; t=1734545715; x=1735150515;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=qgbFUsQ4LmsnQTjxQWiCGeGbjUd9LSSKaKM5ICyfigY=;
- b=P+qFghOrDwfEypZwKB+h5tLsyELE6GXUU5HNnV2Cc21Kkac3FiM12Pk9fkEAW784KC
- wStBUtjcOJOkDnjoM0HEjUMcIeiM5xZ5s7f/phBNXkH5jyz3OJpcGBgV/eXSLOr+AgyA
- OCnVUz4Z/lMWSeVjOQkeGwParnXCUJSOPs0QFwO4v8n53RSFz9b4qABxF3iqM6CEgoAM
- kGQqJEeyrgrbVwGFIBsZyuUz5HH6MRflsslUE5JqsUyIWTYp8KNEgE9HAXiZcrjXjJTf
- yJEjq6SZZJtVv39hZ2NyvY/Jj1XTHRVaa1UCG8ssMuejlB20rQuIehA/gpf3X8YfXrsy
- ZHAA==
-X-Gm-Message-State: AOJu0YyLYC07PHSF2EfiytxgRodgt58NZhd6yQxiHSARc8WXafkm9iEq
- dR5/mU8iKQIEza1KCNqyxnvuBLDdC9O6bp6UIjnchjhuNbBDG0M0YdCeno5+ji7LuDuoJTpCVn2
- 5oV0=
-X-Gm-Gg: ASbGncsWzDQtc/Py+0c0I/yWbYtnds+w6yBRTq0NGaFY6/gL62hTRwMwR2P3FWQqjcC
- ytEhWOutl66BDM4R9742fFBeLMAEz0mcGmpo2NRS5jNNKuLLOj6baSy4g8lwsxzRxcoJ1gQBxfQ
- OHydbGHN/BrdYFwTlWJn6UCg6AokoVDy5BPliQcPoACXXXzaSUOG6NArKsan/+HcDAczGaDZp0x
- amUNvKzVybykoVk5S9hl1y7rObbV1OCwoXJ9LYsNg7ozj/VDPoSqHs=
-X-Google-Smtp-Source: AGHT+IGlI3D037XhUxhdKceDV/mqTJVrlNN1aGxKmJ3y4eteF39E3EeesiGODWa8khyF92qV+qfM+w==
-X-Received: by 2002:a17:906:31da:b0:aa6:691f:20a9 with SMTP id
- a640c23a62f3a-aac078bfe69mr39233966b.4.1734545713494; 
- Wed, 18 Dec 2024 10:15:13 -0800 (PST)
+ bh=qe//gJViys+yhtB7j7EeuPsosME5JBmgNhwY0OmT6DE=;
+ b=uWGDtA0NdD3BiV9g9QkbxpYCOUgd76jyncyUMunq2+4qVKuZcLBjoZWDeZvBgORz+V
+ HcQ1H8WlRZS0jblWnp5NeKNcTlYue3SaSKKSwOkeA4Q6AUmB610TvZo0KqP4VQ6sZFck
+ eoUVk/GJPeN24/JR9lJbuo0xDUVmleba6u8sQMzRC7g2rbTFEAUPAkLSTI3wQ5VwpD85
+ 6bsKX4HW1YSO6XZkF+42eog2/VnxYxfRKkNe+LnWxE55AkI14ne9Zl/RqzMY377oSzS1
+ kbsoqUGBbzi5IY714JbFCmuseQG1fup7Ykwy7XHLGxTl/ZkeObLQ78G+RJUpZWoVuts8
+ ljTQ==
+X-Gm-Message-State: AOJu0Yyzq2OeNBwGpkf7nE4kfRZKmuirf0kgIRLHA1P+ZYigWu2chmiS
+ Qs9GCKr/eMygGxd5w6AyxD5/1q8RHITK0kijHNqkH3BSbkfPBvmPD3H1vKizKH0=
+X-Gm-Gg: ASbGncvON4ZkjB6e9mA3qDLAeR6lR2yvQv2FpIgo4ZXE0Vz2E58P5Jwl1Nhy2pnHWAo
+ qzvJ6Jnsux0sBjp7bTkvt0qkRpZu7qjglNdf72okr0VBCarZxOEprZVCkNEb8+PjYAaq4VB/RlQ
+ wfW6YGyYzczvuTaq5HwAGfD1an4zNLLJcYhuyDjDnqGfleyabDYYaBFEqRiwKl7wV6VahKfuRz5
+ Y7gIjfuxa7BZPKWqPz1/N4fix5Y8dBF0Pf9+wCbJxoIpVe8p5F1Q7s=
+X-Google-Smtp-Source: AGHT+IEWg0lGJTdmj7iVoVggh5TZTrqiosrV2csXvzuMSzzLJdVA/ws4t9a4otc43XJj/nNSQO8Xfg==
+X-Received: by 2002:a17:906:319a:b0:aab:7467:3f70 with SMTP id
+ a640c23a62f3a-aabf471905bmr341369766b.2.1734545715455; 
+ Wed, 18 Dec 2024 10:15:15 -0800 (PST)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-aabc71ef8fbsm338376766b.165.2024.12.18.10.15.12
+ a640c23a62f3a-aab96006c2fsm578533666b.9.2024.12.18.10.15.13
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 18 Dec 2024 10:15:12 -0800 (PST)
+ Wed, 18 Dec 2024 10:15:14 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id CF6495FC8A;
+ by draig.lan (Postfix) with ESMTP id E685B5FC9D;
  Wed, 18 Dec 2024 18:15:11 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -72,17 +71,17 @@ Cc: Leif Lindholm <quic_llindhol@quicinc.com>,
  Radoslaw Biernacki <rad@semihalf.com>, qemu-arm@nongnu.org,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  qemu-stable@nongnu.org
-Subject: [PATCH v2 4/5] hw/arm: enable secure EL2 timers for virt machine
-Date: Wed, 18 Dec 2024 18:15:10 +0000
-Message-Id: <20241218181511.3575613-5-alex.bennee@linaro.org>
+Subject: [PATCH v2 5/5] hw/arm: enable secure EL2 timers for sbsa machine
+Date: Wed, 18 Dec 2024 18:15:11 +0000
+Message-Id: <20241218181511.3575613-6-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241218181511.3575613-1-alex.bennee@linaro.org>
 References: <20241218181511.3575613-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::630;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x630.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::631;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x631.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -108,14 +107,14 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 Cc: qemu-stable@nongnu.org
 ---
- hw/arm/virt.c | 2 ++
+ hw/arm/sbsa-ref.c | 2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-index 333eaf67ea..5e3589dc6a 100644
---- a/hw/arm/virt.c
-+++ b/hw/arm/virt.c
-@@ -873,6 +873,8 @@ static void create_gic(VirtMachineState *vms, MemoryRegion *mem)
+diff --git a/hw/arm/sbsa-ref.c b/hw/arm/sbsa-ref.c
+index e3195d5449..c02344004e 100644
+--- a/hw/arm/sbsa-ref.c
++++ b/hw/arm/sbsa-ref.c
+@@ -484,6 +484,8 @@ static void create_gic(SBSAMachineState *sms, MemoryRegion *mem)
              [GTIMER_HYP]  = ARCH_TIMER_NS_EL2_IRQ,
              [GTIMER_SEC]  = ARCH_TIMER_S_EL1_IRQ,
              [GTIMER_HYPVIRT] = ARCH_TIMER_NS_EL2_VIRT_IRQ,
@@ -123,7 +122,7 @@ index 333eaf67ea..5e3589dc6a 100644
 +            [GTIMER_SEC_VEL2] = ARCH_TIMER_S_EL2_VIRT_IRQ,
          };
  
-         for (unsigned irq = 0; irq < ARRAY_SIZE(timer_irq); irq++) {
+         for (irq = 0; irq < ARRAY_SIZE(timer_irq); irq++) {
 -- 
 2.39.5
 
