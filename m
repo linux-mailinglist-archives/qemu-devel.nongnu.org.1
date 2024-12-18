@@ -2,77 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D38F09F6789
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Dec 2024 14:44:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 704DA9F679D
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Dec 2024 14:46:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tNuKv-0001Km-3L; Wed, 18 Dec 2024 08:43:37 -0500
+	id 1tNuL1-0001l5-2Z; Wed, 18 Dec 2024 08:43:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tNuKS-0001IU-Nh
- for qemu-devel@nongnu.org; Wed, 18 Dec 2024 08:43:08 -0500
-Received: from mail-oi1-x231.google.com ([2607:f8b0:4864:20::231])
+ id 1tNuKS-0001IZ-UI
+ for qemu-devel@nongnu.org; Wed, 18 Dec 2024 08:43:09 -0500
+Received: from mail-oi1-x233.google.com ([2607:f8b0:4864:20::233])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tNuKQ-0005en-Un
+ id 1tNuKR-0005f2-Cs
  for qemu-devel@nongnu.org; Wed, 18 Dec 2024 08:43:08 -0500
-Received: by mail-oi1-x231.google.com with SMTP id
- 5614622812f47-3eb6b16f1a0so2044367b6e.3
+Received: by mail-oi1-x233.google.com with SMTP id
+ 5614622812f47-3eb8559b6b0so3467247b6e.1
  for <qemu-devel@nongnu.org>; Wed, 18 Dec 2024 05:43:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734529385; x=1735134185; darn=nongnu.org;
+ d=linaro.org; s=google; t=1734529386; x=1735134186; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=8Da/WqYqvOtbbG4N3/jUJ/9lxe1TiWeaeAujQBtwkcw=;
- b=uXGzIsfr7tWaBj+TNfw+lh70w/pNi8mD6N3XxbAG30fg37U+eQW56iVQfb3nzhqm/6
- 0B/AQ0MUAvL+4V8kbsA2yuG4Fw2MkiGTP4uTRlauIyssV8aXVK12TEDCP0jK1VLkTRKw
- z7f52qIPTuOxzY8jAw8gbRBSp+cDBWdACvrwOTbPgxWN1wPZfd9z+QfVcsSEgGmSAIvo
- BCcT4UJBjkX3z9BzyqWQriBO4MIBkQcJgAgKgHqMSrJS4qYEEjjI/07W9xcK7UL0RoQv
- eQzQS1SitoI8aojaMe2bFjcrFUIlRgq49qB6Yh9lg9UYcR0aGgXlDdpvROgw5OGlB9h5
- hOUg==
+ bh=8juOusyYDwgDek08M8B/UbOOdf1Iwz3qnbDYJf9UoPA=;
+ b=FUZJNOLz1yK89kwwZ2S9V0ATVLDJfuHtlK7HoI/GPVZTUxT5vmf2T6uLRPCeh5LHlz
+ 8ppi/iPeQSVESQOIovVh25iX5MSAZCoHT/1q4ewEkYV7ZGVG1h8q9m3wDP5uoBACKXIt
+ MI5QJMpnXyELBi3lMeSBJb2vSRbS8WcURd1ddKLgcOXSx/JQz6RBJ3CAdc0q0OyQ7YUZ
+ 0Ag0H7u8t8bbfoIy3OzZEpWeWgOy5MZ+M5Ob2T6BiypVGs4zDBDo6Gx7nQ1qM6aAvotJ
+ TK9NEJw0yzY5Rc0ObDmWEOEQxhfxKdj88D+poV2qC3Tk2xlljojNvGwAbJbK0L+t1tPN
+ 8Dtw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734529385; x=1735134185;
+ d=1e100.net; s=20230601; t=1734529386; x=1735134186;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=8Da/WqYqvOtbbG4N3/jUJ/9lxe1TiWeaeAujQBtwkcw=;
- b=Njgn/THfszBvWU2/LUOtcI61/ZJz3RGzs8I1Q0NUm95OaOXavn1JoakgUqUHrvY/TH
- eJt7eDUpiEQXy4HgI3Bx8sZd7NCOfva37cTXxPf/7GOe9hLyoZ6+OpBkky9vF8L65z+z
- yXhGRhWTyqRx6M02Tb9iSE20K5b0Dn4wRBNgo8dPp8HZ/KE8TC8t35GvOa8rQ/BctYJA
- 7mbEnKdzY/kpvvirZVbgr+uVmuvwWIKUf0RmuX2xFN0beDzfpWgmzNp5rOhG+6AcVIjC
- t1cQ4jqeUA26Q6/eTaMRQR1IzoTpU/AeHOfGxk6yHw/PchdwMMeNjmQfys+t2k6Ksejp
- qQng==
-X-Gm-Message-State: AOJu0Yyp/VTkav0bWyP08RGrgMlGwlYesNEomD8rM3vTHmYGFBt9+lD2
- 76p4vSH1Aot/1i8/035hnl1p/4Gsr76UyULc4MFDLqtX+6GzWlBnJRhHTxNhSlet2QohA2OSDXT
- +wa2Uep8g
-X-Gm-Gg: ASbGncuGjAldx3Yvb3yOoWdCiGLYD5LbNbDHmPz33ZwE6TaC65jaow2I4nJJQouRHnV
- OGUA2AgoYpnzhSxzaK6LE2UlVf5gqXPcekqDK9ZNQCl89vduKRIlo6tznfbBp61G6s43/hWqXNP
- Lxt0p4HMYOAqCWU5nbomE2pzFpz/FtcoSi95tJEP974GsJFjXUXZ96Nbm+DtrQcAPY2270qQ893
- MqGE+sJg/P6YHeILqb0PKGGNB2E6yvwEupXtsFXnhVV/n7HaptmjR3LIcqRXrLt
-X-Google-Smtp-Source: AGHT+IFQFJYPMZAWOGxOyyW9orQ2xVkaN6hE0kMa1De2Hn9KH5R8+mN0FLNKqZm0ndIdIYPmY1n3Pw==
-X-Received: by 2002:a05:6808:4494:b0:3e9:1750:426d with SMTP id
- 5614622812f47-3eccbf5450bmr1837066b6e.13.1734529384666; 
- Wed, 18 Dec 2024 05:43:04 -0800 (PST)
+ bh=8juOusyYDwgDek08M8B/UbOOdf1Iwz3qnbDYJf9UoPA=;
+ b=jGkc1E3vEnpiGH5OSiCshjUDOENjyP4XQjgyqOLc5iy4DxLEezYugKvJuR78tCxUQf
+ /74qFJPm/v+yUkvJUfplQsneE+eoi0iOj0sdEZZl1jnF5YX/+ajbdOsiYPR/Wi6/H8yz
+ OAWabo97oBjUnZbWDGX0GeoIqDU5jUA+bqTiSu/0zNO+t4BnTprlok+ZRLtGPEJRILxS
+ P8zEy25J9qohHo/lnFpYbAY0La4iSLrxsRT6TCTtgOU7pYWtIDxChQq0bVU/yUC0wXQb
+ kGoQBz4GZeYIhi5t4p8nRptErD24OQG1ZyUgLohwpoyD1G/rzmdPNsQCQKxk6Qrm42v5
+ 0sSA==
+X-Gm-Message-State: AOJu0Yz70iDZdxmm9b1T7auKCI5rkQcqqbtsdD2CV62NB1GvxoJ9HObG
+ spABTTn3who9uJLfku0/RAmLluNuEsJlooSAOHrZcpfg+pkSsmw7HXiAaOIOS3RK6j1r5CnMMdg
+ zAIdtMc/J
+X-Gm-Gg: ASbGncu369TIxoeW9pQeqiSH0CGwVaJr4kofMt7FiRgRjqsausrSAGhuwu63whP1f1L
+ y79PnWu1ZCKUkRmNWA5wCkmz0+QIdH/+CCUkub78C+ecGC7sI31iUbivBN8ZHy2zvjZ7i4HNkIk
+ Go6YVNDVEGShvPiNytoajmAEphokU+m/kbNVCP5uo4JKxzWef8yjz/CWZ4+tCQP3KhRMRavu1wX
+ iS6MxBNlbNpHIFzHo3nkndLvHjFVp1xgEdOz6GVjRT+byWxy2DzEYuJMOJzAzxG
+X-Google-Smtp-Source: AGHT+IE2mPW4A1nkNSPHwZ91fcCDPeJU1rLR3To0171pF5lI8bk7ApjCaG1zJYrv5SI9NcgQjyfTcA==
+X-Received: by 2002:a05:6808:bc4:b0:3ea:aa8a:c115 with SMTP id
+ 5614622812f47-3eccbf93f8emr1818768b6e.21.1734529386361; 
+ Wed, 18 Dec 2024 05:43:06 -0800 (PST)
 Received: from stoup.. ([187.217.227.247]) by smtp.gmail.com with ESMTPSA id
- 5614622812f47-3ebb478a502sm2870951b6e.9.2024.12.18.05.43.03
+ 5614622812f47-3ebb478a502sm2870951b6e.9.2024.12.18.05.43.04
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 18 Dec 2024 05:43:04 -0800 (PST)
+ Wed, 18 Dec 2024 05:43:05 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: pbonzini@redhat.com
-Subject: [PATCH v2 08/24] hw/s390x: Remove empty Property lists
-Date: Wed, 18 Dec 2024 07:42:35 -0600
-Message-ID: <20241218134251.4724-9-richard.henderson@linaro.org>
+Subject: [PATCH v2 09/24] hw/xen: Remove empty Property lists
+Date: Wed, 18 Dec 2024 07:42:36 -0600
+Message-ID: <20241218134251.4724-10-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241218134251.4724-1-richard.henderson@linaro.org>
 References: <20241218134251.4724-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::231;
- envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x231.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::233;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x233.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,31 +95,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+There is no point in registering no properties.
+Remove xen_sysdev_class_init entirely, as it did nothing else.
+
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- hw/s390x/3270-ccw.c | 5 -----
- 1 file changed, 5 deletions(-)
+ hw/xen/xen-legacy-backend.c | 17 -----------------
+ 1 file changed, 17 deletions(-)
 
-diff --git a/hw/s390x/3270-ccw.c b/hw/s390x/3270-ccw.c
-index 69e6783ade..3a8930dfd1 100644
---- a/hw/s390x/3270-ccw.c
-+++ b/hw/s390x/3270-ccw.c
-@@ -150,15 +150,10 @@ out_err:
-     g_free(sch);
+diff --git a/hw/xen/xen-legacy-backend.c b/hw/xen/xen-legacy-backend.c
+index e8e1ee4f7d..118c571b3a 100644
+--- a/hw/xen/xen-legacy-backend.c
++++ b/hw/xen/xen-legacy-backend.c
+@@ -635,15 +635,10 @@ int xen_be_bind_evtchn(struct XenLegacyDevice *xendev)
  }
  
--static Property emulated_ccw_3270_properties[] = {
+ 
+-static Property xendev_properties[] = {
 -    DEFINE_PROP_END_OF_LIST(),
 -};
 -
- static void emulated_ccw_3270_class_init(ObjectClass *klass, void *data)
+ static void xendev_class_init(ObjectClass *klass, void *data)
  {
      DeviceClass *dc = DEVICE_CLASS(klass);
  
--    device_class_set_props(dc, emulated_ccw_3270_properties);
-     dc->realize = emulated_ccw_3270_realize;
-     dc->hotpluggable = false;
-     set_bit(DEVICE_CATEGORY_DISPLAY, dc->categories);
+-    device_class_set_props(dc, xendev_properties);
+     set_bit(DEVICE_CATEGORY_MISC, dc->categories);
+     /* xen-backend devices can be plugged/unplugged dynamically */
+     dc->user_creatable = true;
+@@ -674,22 +669,10 @@ static const TypeInfo xensysbus_info = {
+     }
+ };
+ 
+-static Property xen_sysdev_properties[] = {
+-    {/* end of property list */},
+-};
+-
+-static void xen_sysdev_class_init(ObjectClass *klass, void *data)
+-{
+-    DeviceClass *dc = DEVICE_CLASS(klass);
+-
+-    device_class_set_props(dc, xen_sysdev_properties);
+-}
+-
+ static const TypeInfo xensysdev_info = {
+     .name          = TYPE_XENSYSDEV,
+     .parent        = TYPE_SYS_BUS_DEVICE,
+     .instance_size = sizeof(SysBusDevice),
+-    .class_init    = xen_sysdev_class_init,
+ };
+ 
+ static void xenbe_register_types(void)
 -- 
 2.43.0
 
