@@ -2,112 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 169259F6CFE
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Dec 2024 19:17:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E87069F6D02
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Dec 2024 19:18:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tNybC-0001kt-3l; Wed, 18 Dec 2024 13:16:43 -0500
+	id 1tNyb8-0001e8-Jp; Wed, 18 Dec 2024 13:16:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tNya7-0001Bb-Qa
- for qemu-devel@nongnu.org; Wed, 18 Dec 2024 13:15:39 -0500
-Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1tNya2-0001B7-26
+ for qemu-devel@nongnu.org; Wed, 18 Dec 2024 13:15:30 -0500
+Received: from mail-ej1-x62b.google.com ([2a00:1450:4864:20::62b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tNya3-0007Wh-7G
- for qemu-devel@nongnu.org; Wed, 18 Dec 2024 13:15:33 -0500
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
- [IPv6:2a07:de40:b281:104:10:150:64:97])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id A9D7C1F396;
- Wed, 18 Dec 2024 18:15:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1734545724; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=Fr4PCJWf1z/7qkA7bpPemTrE0aKfLWoErXYMz9di20A=;
- b=Xpm4TfGSaF7ptGoi32chqmwwCbi4AjW7e8y4xqY6ddCCcVvyMikZf2JQ4ez6GW9wogCFke
- YJKYxXWtFOUkcmtqJcSF3p/hDOWrGm4Se+8q+AKzZ5FjRS+cfoAU0kduOdaWUboPx4tgy8
- /QQya1Bf3TZ6jvY8X33M1ATze8klfhI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1734545724;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=Fr4PCJWf1z/7qkA7bpPemTrE0aKfLWoErXYMz9di20A=;
- b=WOPBcAKc5/BwU7O93XxqLiDK+qTsDglJpxVNmBcXe5DjVnjJP2aO6UcgjnuxUx6sy8DSIw
- K74IsqbMKzJc0MCA==
-Authentication-Results: smtp-out2.suse.de;
- dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Xpm4TfGS;
- dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=WOPBcAKc
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1734545724; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=Fr4PCJWf1z/7qkA7bpPemTrE0aKfLWoErXYMz9di20A=;
- b=Xpm4TfGSaF7ptGoi32chqmwwCbi4AjW7e8y4xqY6ddCCcVvyMikZf2JQ4ez6GW9wogCFke
- YJKYxXWtFOUkcmtqJcSF3p/hDOWrGm4Se+8q+AKzZ5FjRS+cfoAU0kduOdaWUboPx4tgy8
- /QQya1Bf3TZ6jvY8X33M1ATze8klfhI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1734545724;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=Fr4PCJWf1z/7qkA7bpPemTrE0aKfLWoErXYMz9di20A=;
- b=WOPBcAKc5/BwU7O93XxqLiDK+qTsDglJpxVNmBcXe5DjVnjJP2aO6UcgjnuxUx6sy8DSIw
- K74IsqbMKzJc0MCA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id CC5D4137CF;
- Wed, 18 Dec 2024 18:15:23 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id SQDIIzsRY2fWaQAAD6G6ig
- (envelope-from <farosas@suse.de>); Wed, 18 Dec 2024 18:15:23 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Peter Xu <peterx@redhat.com>
-Cc: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- =?utf-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>, Alex
- =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [PATCH v2 19/22] tests/qtest/migration: Add migration-test-smoke
-In-Reply-To: <Z2MKesakYn3fn2ue@x1n>
-References: <20241113194630.3385-1-farosas@suse.de>
- <20241113194630.3385-20-farosas@suse.de> <Z2MKesakYn3fn2ue@x1n>
-Date: Wed, 18 Dec 2024 15:13:08 -0300
-Message-ID: <87h670vozv.fsf@suse.de>
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1tNyZw-0007Uj-6o
+ for qemu-devel@nongnu.org; Wed, 18 Dec 2024 13:15:26 -0500
+Received: by mail-ej1-x62b.google.com with SMTP id
+ a640c23a62f3a-aabbb507998so694098366b.2
+ for <qemu-devel@nongnu.org>; Wed, 18 Dec 2024 10:15:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1734545713; x=1735150513; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=azFqJlxIjTGm0wEZy+3M3fkeckUkOp2SpgqHMWP2R3I=;
+ b=p4QWyqyWnIUyusVO1/lBUV6Mr+/BBh/6AHw0zgc58rqo80vfldYhU/KlxsnNDLTJjA
+ f9dzSnJ/slsHbsdZRAe/Rcj+0StHRdb1oC9fIMPxinC7UvdUDVfaxO7ckOB1iAb5F8so
+ lxmBThCPjfqu5AewK7KIgrSUGhKtYUqhkquM4tXoT3bhafltzQ9k1lel8CGw6P/cyJxa
+ oHuGree0wyKsN2Zv7ANy9J/LyaDXE4U1afXtzgTi4oLbeT8bGod47LuqkppkDKJ+UJel
+ ZmMpT5gAUyywp5dfnDZHf8VmamNhEfe4LTSM4zIEPe3OMaiJ4LxcW3ylVNclb7DglmkB
+ tRyA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1734545713; x=1735150513;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=azFqJlxIjTGm0wEZy+3M3fkeckUkOp2SpgqHMWP2R3I=;
+ b=QyVRL11ZS1kvIWPRRivXr2rUG7AeuoiT6xqCioyQqJ8uD0MEYrQt5MD4CBv0u9SRM5
+ 1oQyvjDGg4xVlNmBwPqcFjizXKZA4KkRisEuw/BR/aeNTqAkFWV89kXLa5AZRZZ9l3TB
+ hFiNgU+oOYaG/14zU52fqkNtOPYYwHfhVQhbHIAMIlCOvKgonMK9O3FRw0cbN8/KkBdT
+ yMaSCW62yb3BrDAueATGr+wVNFRidOx66zOFVAGvna4/fFgJdIc89D+KFOkG5IvteU6l
+ Agk6oVroHGT6xlMhjyQB74qZupE3/sj9oR2Y3zQBWXEWE30MCdRzyaAzd/AyOwxCsYDL
+ otTw==
+X-Gm-Message-State: AOJu0Yx1SL9VY9dK9zRMXjNt4Cun/NdCX3ushTYK9hBsmNvY37TJITjV
+ eJhc7Z2e8sC5+ayzctKi9Jmv/qBguezFMOUpuVhVaYb+7sGURL1qLgxTAkP5NXM=
+X-Gm-Gg: ASbGncsbrsdTg48+ZvQM62QqY53ObI4Cem06cwH2MkBfcpChBzjW94hwlOOV9c2CdiZ
+ psWJr3dFhvW5MQUH46Rt2D8AOy2YjMGIqCRcb8er+rheQa+B+YkTehjPru35lWZfOsctMEuCETe
+ 2J4eZSTSzwHJ4W9lp7j6Qn+52J1YuE9oZ0GEi48AA8e66ca4CkF/wUwH8w60xfl2wLykDQcxVwg
+ bDl6s0qR4OhmSK+4jWRmzrqxK2KyvEtztt+Y5STBgVLzPd/9UC1Kk0=
+X-Google-Smtp-Source: AGHT+IG5mhXRuBBm5tMf3SGw/Pj8C8HnOnbm3m5jWm5L+ObcI1uhDlS35AUwlpka62avbmamy+YZ5w==
+X-Received: by 2002:a17:907:9410:b0:aa6:6e02:e885 with SMTP id
+ a640c23a62f3a-aabf490cf1cmr333794466b.47.1734545712936; 
+ Wed, 18 Dec 2024 10:15:12 -0800 (PST)
+Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-aab963ce2f2sm580246466b.201.2024.12.18.10.15.12
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 18 Dec 2024 10:15:12 -0800 (PST)
+Received: from draig.lan (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 77E245F796;
+ Wed, 18 Dec 2024 18:15:11 +0000 (GMT)
+From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Leif Lindholm <quic_llindhol@quicinc.com>,
+ Leif Lindholm <leif.lindholm@oss.qualcomm.com>,
+ Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Radoslaw Biernacki <rad@semihalf.com>, qemu-arm@nongnu.org,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+Subject: [PATCH v2 0/5] target/arm: implement SEL2 physical and virtual timers
+Date: Wed, 18 Dec 2024 18:15:06 +0000
+Message-Id: <20241218181511.3575613-1-alex.bennee@linaro.org>
+X-Mailer: git-send-email 2.39.5
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Rspamd-Queue-Id: A9D7C1F396
-X-Spamd-Result: default: False [-4.51 / 50.00]; BAYES_HAM(-3.00)[100.00%];
- NEURAL_HAM_LONG(-1.00)[-1.000];
- R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
- MX_GOOD(-0.01)[]; RCVD_VIA_SMTP_AUTH(0.00)[]; ARC_NA(0.00)[];
- MISSING_XM_UA(0.00)[]; RCPT_COUNT_SEVEN(0.00)[7];
- MIME_TRACE(0.00)[0:+]; MID_RHS_MATCH_FROM(0.00)[];
- RCVD_TLS_ALL(0.00)[]; TO_DN_SOME(0.00)[];
- FROM_EQ_ENVFROM(0.00)[]; FROM_HAS_DN(0.00)[];
- FUZZY_BLOCKED(0.00)[rspamd.com]; RCVD_COUNT_TWO(0.00)[2];
- TO_MATCH_ENVRCPT_ALL(0.00)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:mid,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- DKIM_TRACE(0.00)[suse.de:+]
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Rspamd-Action: no action
-X-Spam-Score: -4.51
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
- envelope-from=farosas@suse.de; helo=smtp-out2.suse.de
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::62b;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x62b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -123,100 +100,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Peter Xu <peterx@redhat.com> writes:
+Follow Peter's review I've split this into a several patches as there
+are some other fixes that should be made to other EL2 times that
+shouldn't be rolled together.
 
-> On Wed, Nov 13, 2024 at 04:46:27PM -0300, Fabiano Rosas wrote:
->> diff --git a/tests/qtest/migration-test-smoke.c b/tests/qtest/migration-test-smoke.c
->> new file mode 100644
->> index 0000000000..ff2d72881f
->> --- /dev/null
->> +++ b/tests/qtest/migration-test-smoke.c
->> @@ -0,0 +1,39 @@
->> +/* SPDX-License-Identifier: GPL-2.0-or-later */
->> +
->> +#include "qemu/osdep.h"
->> +#include "libqtest.h"
->> +#include "migration/test-framework.h"
->> +#include "qemu/module.h"
->> +
->> +int main(int argc, char **argv)
->> +{
->> +    MigrationTestEnv *env;
->> +    int ret;
->> +
->> +    g_test_init(&argc, &argv, NULL);
->> +    env = migration_get_env();
->> +    module_call_init(MODULE_INIT_QOM);
->> +
->> +    if (env->has_kvm) {
->> +        g_test_message(
->> +            "Smoke tests already run as part of the full suite on KVM hosts");
->> +        goto out;
->> +    }
->
-> So the "smoke" here is almost "tcg".. and if i want to run a smoke test on
-> a kvm-enabled host, it's noop.. which isn't easy to understand why.
->
-> If to rethink our goal, we have two requirements:
->
->   (1) We want to categorize migration tests, so some are quick, some are
->       slow, some might be flacky.  Maybe more, but it's about putting one
->       test into only one bucket, and there're >1 buckets.
+v2
+  - split machine enabling into patches
+  - rename IRQ
+  - use CP_ACCESS_TRAP_UNCATEGORIZED for UNDEF cases
 
-It's true that the smoke test should never have slow or flaky tests, but
-we can't use this categorization for anything else. IOW, what you
-describe here is not a goal. If a test is found to be slow we put it
-under slow and it will only run with -m slow/thorough, that's it. We can
-just ignore this.
+v1
+  - improve GTIMER docs
+  - fix gt_recalc bug
+  - address review comments for the main patch
+  - cc qemu-stable (no rush for 9.2.0)
 
->
->   (2) We want to run only a small portion of tests on tcg, more tests on
->       kvm.
+The following still need review:
 
-Yes. Guests are fast with KVM and slow with TCG (generally) and the KVM
-hosts are the ones where it's actually important to ensure all migration
-features work OK. Non-KVM will only care about save/restore of
-snapshots. Therefore we don't need to have all tests running with TCG,
-only the smoke set.
+  hw/arm: enable secure EL2 timers for sbsa machine
+  hw/arm: enable secure EL2 timers for virt machine
+  target/arm: implement SEL2 physical and virtual timers
+  target/arm: ensure cntvoff_el2 also used for EL2 virt timer
 
-And "smoke set" is arbitrary, not tied to speed, but of course no slow
-tests please (which already happens because we don't pass -m slow to
-migration-test-smoke).
+Alex.
 
->
-> Ideally, we don't need two separate main test files, do we?
->
-> I mean, we can do (1) with the existing migration-test.c, with the help of
-> either gtest's "-m" or something we invent.  The only unfortunate part is
-> qtest only have quick/slow, afaiu the "thorough" mode is the same as
-> "slow".. while we don't yet have real "perf" tests.  It means we only have
-> two buckets if we want to reuse gtest's "-m".
->
-> Maybe it's enough?  If not, we can implement >2 categories in whatever
-> form, either custom argv/argc cmdline, or env variable.
->
-> Then, if we always categorize one test (let me try to not reuse glib's
-> terms to be clear) into any of: FAST|NORMAL|SLOW|..., then we have a single
+Alex Bennée (5):
+  target/arm: document the architectural names of our GTIMERs
+  target/arm: ensure cntvoff_el2 also used for EL2 virt timer
+  target/arm: implement SEL2 physical and virtual timers
+  hw/arm: enable secure EL2 timers for virt machine
+  hw/arm: enable secure EL2 timers for sbsa machine
 
-It's either normal or slow. Because we only know a test is only after it
-bothers us.
+ include/hw/arm/bsa.h |   2 +
+ target/arm/cpu.h     |   2 +
+ target/arm/gtimer.h  |  14 ++--
+ hw/arm/sbsa-ref.c    |   2 +
+ hw/arm/virt.c        |   2 +
+ target/arm/cpu.c     |   4 +
+ target/arm/helper.c  | 179 +++++++++++++++++++++++++++++++++++++++++--
+ 7 files changed, 194 insertions(+), 11 deletions(-)
 
-> migration-test that have different level of tests.  We can invoke
-> "migration-test --mode FAST" if kvm is not supported, and invoke the same
-> "migration-test --mode SLOW" if kvm is supported.
+-- 
+2.39.5
 
-This is messy due to how qtest/meson.build works. Having two tests is
-the clean change. Otherwise we'll have to add "if migration-test" or
-create artificial test names to be able to restrict the arguments that
-are passed to the test per arch.
-
-I also *think* we cannot have anything extra in argv because gtester
-expects to be able to parse those.
-
->
-> Would this be nicer?  At least we can still run a pretty fast smoke / FAST
-> test even on kvm. Basically, untangle accel v.s. "test category".
-
-We could just remove the restriction from migration-test-smoke if that's
-an issue.
 
