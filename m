@@ -2,104 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E8F59F6BCB
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Dec 2024 18:03:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F1FDB9F6BCE
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Dec 2024 18:03:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tNxPU-0001sI-GM; Wed, 18 Dec 2024 12:00:32 -0500
+	id 1tNxRm-0003QL-K4; Wed, 18 Dec 2024 12:02:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tNxPP-0001rV-13
- for qemu-devel@nongnu.org; Wed, 18 Dec 2024 12:00:27 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tNxPL-0000yc-Rk
- for qemu-devel@nongnu.org; Wed, 18 Dec 2024 12:00:26 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1734541222;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=h2aO8kmL2KMm8mSXw9LciMurDISEGaiKXTbO0ASy1Oc=;
- b=O1X6pwrviRgO45T8oPAWV+TxS387PRtp4DeSf446InLmmPr53bGtWua9MaDh+b7uzdSiCS
- JY2Y32SyD8BhWmAUozLA/wwl8rHMJBdM9PjJDJ6sGv0Ui0sJtpiFtVQ45h2Z/CUo2mX21b
- GjnjCExawVf5SCCEyNpry5FSoxopD4E=
-Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
- [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-479-Ykd2wx4eM6KfzeEH6LM2wA-1; Wed, 18 Dec 2024 12:00:16 -0500
-X-MC-Unique: Ykd2wx4eM6KfzeEH6LM2wA-1
-X-Mimecast-MFC-AGG-ID: Ykd2wx4eM6KfzeEH6LM2wA
-Received: by mail-qv1-f72.google.com with SMTP id
- 6a1803df08f44-6d87d6c09baso100318446d6.3
- for <qemu-devel@nongnu.org>; Wed, 18 Dec 2024 09:00:16 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734541216; x=1735146016;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1tNxRb-0003Eu-1v
+ for qemu-devel@nongnu.org; Wed, 18 Dec 2024 12:02:43 -0500
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1tNxRW-0001NL-PN
+ for qemu-devel@nongnu.org; Wed, 18 Dec 2024 12:02:40 -0500
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-4363ae65100so44395565e9.0
+ for <qemu-devel@nongnu.org>; Wed, 18 Dec 2024 09:02:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1734541356; x=1735146156; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=h2aO8kmL2KMm8mSXw9LciMurDISEGaiKXTbO0ASy1Oc=;
- b=pSs7AHmsn1R4PWgdJKh7paBWL0id7ghJboo2UQRrGaLTobH7fuP527jwWeBuJ9cFcu
- UeSdI7vLSajgor4NpszeA2di+pZhDIxee/DEd1T7/92y84KbLNTXqYGYC1MVBHocoyjt
- e64BoM05yHq3AtL2EsGK+7aOwiLXr7IW9XavfiidgPj9rKCs+J49Y43rsq1jOan+DSDq
- B3V3DscZAtGBBc4qvPKgjDbMXbrulW0Cht66kVpt5YHJZ75dDJGgZI84CRTDu0mejSDE
- mAD9KNCPe4F/EFxrsIbbe/RycLquZQM+NepteHv3OX1BbWIWEYNisF5ewgXwSgtGQ+mT
- 3krA==
-X-Gm-Message-State: AOJu0YxJ2Nw8yFF7YNiU/ujFvHaCUKOg0zn3Ifgh1kz8rdfgqiVmzgdn
- 8xShcQk69iLL9lZEjmbp2WXxNw7yD4kGFzO0U993maptkzJxcPpIhYumoj+Z+0ZRZMmPUKTgN4D
- 5ducSqgpV6uAUvCL8QQ7V6DP9N3/hqr5ydOhGUsLYRYehGBWBBnA+
-X-Gm-Gg: ASbGnctwsA1bvVvUvrom0YrlY0Vywz1Jwa7nB7eYQsUtLCeQe6MeHnX5G23Tfghcwxc
- T/ilA9klLd9bLmG+/l4and5J6JVSZi3YhPz/k5U6bgdzKW11QY1cLm9iDO9NXwYWriD4iHQ1gMZ
- 6aTDd2UDfeFlJIM+ZWC7owgFiFQw21YIf8LK8liBo13jptC1g3X4a/tEuD7LjL/KAgaAdxfGzSm
- 2AHkqKc6Zen0hjv6mn/8VIJ09EioXT+/p7U77wRuX3MPb8UZAE5vhicPUzquCBWLINTXvIQh6Fa
- JuxNNJ8/it/HziqDkQ==
-X-Received: by 2002:ad4:4ea1:0:b0:6d8:ab7e:e54f with SMTP id
- 6a1803df08f44-6dd09239f60mr62947736d6.34.1734541215854; 
- Wed, 18 Dec 2024 09:00:15 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFf5MNbJUflwoLfkhSOEBlaKYFOnX7IkCvHitXx1BNH4TGxp57hsHlRORaunSvB6fyAyF22sA==
-X-Received: by 2002:ad4:4ea1:0:b0:6d8:ab7e:e54f with SMTP id
- 6a1803df08f44-6dd09239f60mr62946936d6.34.1734541215352; 
- Wed, 18 Dec 2024 09:00:15 -0800 (PST)
-Received: from x1n (pool-99-254-114-190.cpe.net.cable.rogers.com.
- [99.254.114.190]) by smtp.gmail.com with ESMTPSA id
- 6a1803df08f44-6dccd38078fsm51727126d6.119.2024.12.18.09.00.13
+ bh=4oi1V5/2EqfFiyQXMNJY799ulFtXAnzfv5cyWO1EIjs=;
+ b=TAfK79GgiOl5KkP3weHL7MbCSlUMAi3h5ynlpS0zqIjrntrbN6VeznL8EdON2O5R1O
+ tyVJKiqbebkk/+Cx2B07oe8SUAAydtdKItZyFrHjOvmuHe0GB7GdY5luy7QWm8ClukDD
+ VEDd5AaqlHwxxg/avFZFRIQMBWozA6XtjGCuiEFYDV7KliOni+W6tRPWUOVhldtCv7Pl
+ CluxelTXy5NaPMzJoI2dXswsIew2lRL2iBhdT8HJKMbkyao9Dnlxxn3MJzS66IhlJVKV
+ n0Rqd4/rZ3sYsJgYuhvlxoHgJd810mEtd+sFznXXPepWvcx8N8f54B7tfXDlkafeCHUJ
+ GXRw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1734541356; x=1735146156;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=4oi1V5/2EqfFiyQXMNJY799ulFtXAnzfv5cyWO1EIjs=;
+ b=XjoHG1ml8zvAIAgwa0uz2hjerAeU4BVCELVLwTbmFb4+CEZfCzfgZe9nRK4Xsxxprh
+ 53DIxBKvboC9b3FWrSGHLG7vBY7EYa6ZdPtAyZantmZOWk1saJLZC7klSNvlWqZBjfNx
+ EhfXuCSgnuOsu+ScQHwiowvvWsmniqBMqpHcltkAyx/qJlKcGMm8+iHOrhhEiLmXeH9r
+ Uh947BiJqM3R41/zvBYmbrLqcZQfCTH4Ogol+aAn//KBzJUNKn3NYnag3kQ7yvDYh5EX
+ dZiffeVi4kd/1L9NfpgnMzw++9I2pqQlGGWHm8NIkK+C4DFjZUR/hIRFnBqM9wJD63u3
+ +u8A==
+X-Gm-Message-State: AOJu0Yy8H9esJNO0WBQtTsjBNg1dxORtPUTnVa1F9NIFRgn/iaSGieYQ
+ 0ldOiHpLMn7SxFeebdcl873p9HvE7SOVD8u0+m+zbQciGBWZtnlB9j8ir6FpMq7l6Sap2O1/p75
+ UflU=
+X-Gm-Gg: ASbGnct7UGvoteWyQv2+9hzYf2aOCi6Oe0jEzj9P5jbnPf9x3tkIvQ09CGgq2VbK0Gm
+ qIdM2T9OWrAUl7mJEQvfUSkWDHyU3a92Yji540X09ZXxWudcOgeb0dwmyOnpobuNnXz1oMBrlvC
+ 1WJRQBcQcur7lnULQMzIqP8aIKpmNNKXB1HiSVauv8RKXuUUFcBvaMCjvzL+Xr0inQjYJzeWoVp
+ IrqYemxirdLIodoePsf2+ipA8yLUwSggpOoAmGPRh+nIvtsDsIUnos=
+X-Google-Smtp-Source: AGHT+IGrYSN9Hep9RC/lEJHNnaqSc0mDYT3c2GE6H+mN2G34BcMXFcti2eo90mraZu/iq4qOcbms1Q==
+X-Received: by 2002:a05:6512:1254:b0:540:fb1a:af1f with SMTP id
+ 2adb3069b0e04-542210255fbmr119120e87.39.1734541342383; 
+ Wed, 18 Dec 2024 09:02:22 -0800 (PST)
+Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-aabc80d4178sm334725466b.28.2024.12.18.09.02.21
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 18 Dec 2024 09:00:14 -0800 (PST)
-Date: Wed, 18 Dec 2024 12:00:11 -0500
-From: Peter Xu <peterx@redhat.com>
-To: Steven Sistare <steven.sistare@oracle.com>
-Cc: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>,
- David Hildenbrand <david@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Philippe Mathieu-Daude <philmd@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>,
- "Daniel P. Berrange" <berrange@redhat.com>,
- Markus Armbruster <armbru@redhat.com>
-Subject: Re: [PATCH V4 06/19] physmem: preserve ram blocks for cpr
-Message-ID: <Z2L_mwAAEjbGRI0r@x1n>
-References: <1733145611-62315-1-git-send-email-steven.sistare@oracle.com>
- <1733145611-62315-7-git-send-email-steven.sistare@oracle.com>
- <Z1dOBioqzQmEwW16@x1n>
- <bbb7b4a9-6078-4cb1-89c9-ec2d57b996f0@oracle.com>
- <Z1toIxDzI56ODYcC@x1n> <Z1xREcVCi-hn4BlW@x1n>
- <58935fbe-bb53-457d-b4d6-70c1d7b09e8c@oracle.com>
- <8406c79f-b7fb-4536-8d6a-126bb03a6c9f@oracle.com>
+ Wed, 18 Dec 2024 09:02:21 -0800 (PST)
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id B40175F796;
+ Wed, 18 Dec 2024 17:02:20 +0000 (GMT)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Itaru Kitayama <itaru.kitayama@linux.dev>
+Cc: qemu-devel@nongnu.org,  Jean-Philippe Brucker
+ <jean-philippe@linaro.org>,  Mathieu Poirier <mathieu.poirier@linaro.org>,
+ Leonardo Garcia <leonardo.garcia@linaro.org>, Markus Armbruster
+ <armbru@redhat.com>, Eduardo Habkost <eduardo@habkost.net>, Marcel
+ Apfelbaum <marcel.apfelbaum@gmail.com>
+Subject: Re: CCA capability qeury QMP command
+In-Reply-To: <A96F9591-F80E-4193-AEFF-5E23B4E0FD5C@linux.dev> (Itaru
+ Kitayama's message of "Wed, 25 Sep 2024 17:44:21 +0900")
+References: <A96F9591-F80E-4193-AEFF-5E23B4E0FD5C@linux.dev>
+User-Agent: mu4e 1.12.7; emacs 29.4
+Date: Wed, 18 Dec 2024 17:02:20 +0000
+Message-ID: <87cyho53hf.fsf@draig.linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <8406c79f-b7fb-4536-8d6a-126bb03a6c9f@oracle.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -31
-X-Spam_score: -3.2
-X-Spam_bar: ---
-X-Spam_report: (-3.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-1.116,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -115,47 +104,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Dec 18, 2024 at 11:34:34AM -0500, Steven Sistare wrote:
-> After adding resizable support to qemu_ram_alloc_from_fd, I can also tweak it
-> to grow the file while preserving error checking for the general case, and
-> delete the explicit ftruncate in its caller:
-> 
->     /*
->      * Allow file_ram_alloc to grow the file during CPR, if a resizable
->      * memory region wants a larger block than the incoming current size.
->      */
->     file_size = get_file_size(fd);
->     if (file_size && file_size < offset + max_size && size == max_size &&
->         migrate_mode() != MIG_MODE_CPR_TRANSFER) {
+Itaru Kitayama <itaru.kitayama@linux.dev> writes:
 
-Firstly, this check is growing too long, maybe worthwhile to have a helper
-already.
+(+CC Markus, Eduardo, Marcel for QMP API)
 
-file_size_check():
-    // COMMENTS...
-    if (migrate_mode() == XXX) {
-        return true;
-    }
+> Hi,
+> I=E2=80=99ve been looking at the libvirt code to add Arm=E2=80=99s CCA su=
+pport for
+> some time and I am wondering how QEMU folk want to implement the CCA
+> query command. Any pointer would be appreciated.
 
-Said that, I think it's better we also add the flag to enforce the
-truncation, only if cpr found a fd.  E.g. we may want to keep the old
-behavior even if the user sets migrate mode to CPR (even without a
-migration happening at all), then create a fd ramblock.
+Jean-Philippe's latest posting is here:
 
->         error_setg(errp, "backing store size 0x%" PRIx64
->                    " does not match 'size' option 0x" RAM_ADDR_FMT,
->                    file_size, max_size);
->         return NULL;
->     }
->     ...
->     new_block->host = file_ram_alloc(new_block, max_size, fd,
->                                      file_size < offset + max_size,
->                                      offset, errp);
-> 
-> - Steve
-> 
+  Message-ID: <20241125195626.856992-2-jean-philippe@linaro.org>
+  Date: Mon, 25 Nov 2024 19:55:59 +0000
+  Subject: [PATCH v3 00/26] arm: Run Arm CCA VMs with KVM
+  From: Jean-Philippe Brucker <jean-philippe@linaro.org>
 
--- 
-Peter Xu
+In that series the following objects are created:
 
+  static void rme_guest_class_init(ObjectClass *oc, void *data)
+  {
+      object_class_property_add_str(oc, "personalization-value", rme_get_rp=
+v,
+                                    rme_set_rpv);
+      object_class_property_set_description(oc, "personalization-value",
+              "Realm personalization value (512-bit hexadecimal number)");
+
+      object_class_property_add_enum(oc, "measurement-algorithm",
+                                     "RmeGuestMeasurementAlgorithm",
+                                     &RmeGuestMeasurementAlgorithm_lookup,
+                                     rme_get_measurement_algo,
+                                     rme_set_measurement_algo);
+      object_class_property_set_description(oc, "measurement-algorithm",
+              "Realm measurement algorithm ('sha256', 'sha512')");
+
+      object_class_property_add_bool(oc, "measurement-log",
+                                     rme_get_measurement_log,
+                                     rme_set_measurement_log);
+      object_class_property_set_description(oc, "measurement-log",
+              "Enable/disable Realm measurement log");
+  }
+
+So I guess we could probe for the personalization-value. However that
+seems very arch specific.
+
+All confidential guests (PPC PEF, s390x, CCA and x86 SEV) seem to set up
+ConfidentialGuestSupport with the ->ready field to true and a
+confidential-guest-support property associated with the machine. But I
+don't think that is currently exposed via QMP.
+
+I suspect from libvirt's point of view we want to have a common probing
+for CCA capable accelerators before we dive into architectural specifics?
+
+>
+> Thanks,
+> Itaru.=20
+
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
