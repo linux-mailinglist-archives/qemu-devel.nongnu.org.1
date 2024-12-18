@@ -2,82 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A794B9F701B
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Dec 2024 23:35:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 54E3A9F7035
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Dec 2024 23:41:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tO2bz-00069M-OR; Wed, 18 Dec 2024 17:33:47 -0500
+	id 1tO2c2-0006fN-TG; Wed, 18 Dec 2024 17:33:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1tO2ZR-0003Go-8t
- for qemu-devel@nongnu.org; Wed, 18 Dec 2024 17:31:11 -0500
-Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
+ id 1tO2ZV-0003NO-As
+ for qemu-devel@nongnu.org; Wed, 18 Dec 2024 17:31:15 -0500
+Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1tO2ZP-0003Gi-R1
- for qemu-devel@nongnu.org; Wed, 18 Dec 2024 17:31:09 -0500
-Received: by mail-pl1-x62d.google.com with SMTP id
- d9443c01a7336-21661be2c2dso1518125ad.1
- for <qemu-devel@nongnu.org>; Wed, 18 Dec 2024 14:31:07 -0800 (PST)
+ id 1tO2ZT-0003HH-Kz
+ for qemu-devel@nongnu.org; Wed, 18 Dec 2024 17:31:13 -0500
+Received: by mail-pl1-x633.google.com with SMTP id
+ d9443c01a7336-2156e078563so1508615ad.2
+ for <qemu-devel@nongnu.org>; Wed, 18 Dec 2024 14:31:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1734561066; x=1735165866; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1734561069; x=1735165869; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Q96eOcWLcysQ07uIP/ggdqasxYbE2mH1LAUugO2htPo=;
- b=GHJw9qwohTmWteVzks9TwQofFJaFMFd6FQxwa7+kmJR1rgkMwzjrL3JLwfApCzcmlV
- ZeWzifXHBWczJuMA2MylnNuEK7D89VJ4jF0APE/PQv1MvecnFxM7pgnXa/JXItBCewie
- tSt8Z37Az4V8QW98x/HSrz114clGOD59AM6MGpBiSXovKkipr0+ThHNU/w3HO1QLn/VP
- eeFNQFKzTsQmKH6n+1vWF4i2rEEELe7ZjpBqT3zj35gYJ/I/4gIx86ufRSmMbvDNTUF5
- GqT9XppkUobQWXHKlGNuqHkzPZU3dnfkGWp6wvGCo8cnSgAFCZEag7+5vqJqIRl1RzKX
- 6V8Q==
+ bh=NZnQvDJEi7HXlOXLCKLwDPej2YMr4PBU00RujiRp/TU=;
+ b=ZHI9/FhR3BKQvde8hUjT4fNdJVmzwFX9iouo7eRGW4xHiEXI/uj+YLPqrJC/++1rGQ
+ YrdpesfBJDmOQ/btk3Egbk43wWwOM3R09jyCNoLU7i7KDlQ2O6bTOTmF74wPU9g0IG4y
+ NuN9CSqlm7MmHSI7WraZpTjqgAfV4JYBB+Sz2LmvfdEgYvqLghD8lQWazkaSwE7SERXj
+ IcmgbpqmUc9P+vDuR9UyQHh9rB3HFpacoxs3f+qv45qPjNQcDcGEAwWPI6gAgtODcIbf
+ Kcz4oFF1guBA0O8VO7D0RSo7WDq+/Ih01cRP56b0V9vBvPqxetGUE3Ia89oDOsjcXOAi
+ +AZg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734561066; x=1735165866;
+ d=1e100.net; s=20230601; t=1734561069; x=1735165869;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Q96eOcWLcysQ07uIP/ggdqasxYbE2mH1LAUugO2htPo=;
- b=M2UcELByxxoD8Sh+Bq+iyF3GG/P6RC7Ebdbo88BdMhQjjZ/kFbFnkgudDgl6B6tWQY
- NDWb3+wioMUdQQYkGnwkOMB242zhwQfqebBZCA5Kw4mjciyt0HyYUhOKsuh4gcrQ7Rzg
- 2PkU7/qr5gmc83u89VTuaeekYcVmeB+6xYD5iuW4BYCP4HEJHRu6C/1wF6QSnwvrIu9E
- WS4RfeosuBv/LR/yUbxVovJbCfY0Za/8K1ZpIrD1Qpq9Uv6HwCV34rk/o3Z3RZDejFaX
- vcTyjw4RbNnIJavao+Btv0LaJaOSIAV9kCmZNbkqgm0IGr/bWdEE2vUmJ23h08f6Akpg
- AS8A==
-X-Gm-Message-State: AOJu0Yz8AlM3PRiHwQCPxaDCDOtMz3423jeQzyICtRjy0y3iGl08e/sN
- 0kKrxjTHi/U80vpHlh63UnMc7BDAH69usqIOiK1cCV3AagZ0U2ZyvMWeG+Dd
-X-Gm-Gg: ASbGncuSZZR7+9VRtsCEfJzI5rr/nKAG+yUxi/AS4/eOQo5pmqcH1bNZY4l0T2zWX8r
- moTGJixJc7wopKEr3zMmgzm0hOnT/F3RIag1nhbdQsQ6/IslAd/r2kBkPQ/7ORVqjDCzO0RAPWO
- bOhnTmvkW5Vu7N8KpdjlHrEq5NZshKco4ix/tv+JFO+qsdtLw/couI9Yyfgj188Te+mH5VKZ7r2
- r6bxEkPC+oKqBZwsRgCcGeb3OZnRi52DPzzSQBUbgD3/SBJviPX45DI3cHMhZH0vXX4+AdSryzE
- qZ9/ITROxZ/alDJlGBysQ9zN+iTvFmPRd6opEXRe48qBpZ6hpQ7073DYyhjt6L4=
-X-Google-Smtp-Source: AGHT+IGOFqzCh6UwAdZ+Yt8PsBJUjNlohB45SVF3HRATGGzLIyAowl5VGMAHf3Fnpwmb29exOYnU7A==
-X-Received: by 2002:a17:902:fc8e:b0:216:282d:c692 with SMTP id
- d9443c01a7336-219d9652b51mr21243285ad.34.1734561066128; 
- Wed, 18 Dec 2024 14:31:06 -0800 (PST)
+ bh=NZnQvDJEi7HXlOXLCKLwDPej2YMr4PBU00RujiRp/TU=;
+ b=C0qoUPYVDNIwyZqZiyRd+ID2Yj9roCtEYih8gebVvE6CLxmDLMOwptJFuFMT00ZbZv
+ VfuK9BUa/rOa3S0WoCc/euJ5sX+1klyCdimraF85EbQE8JycL1pz7ftUmiZg6pSm4np5
+ i1Kqngx1UxOScwjFaqkliNtmDzVuSgPLlT+MSbrFM4dfPm6ncASvzwuiiqBS1PqNn3iV
+ TGxsEj7L2nzZZOQ0DXRAt8Us//u8y1KmuxjTJBV9my+GY1aS0rGnVOuEl8s2XS5yJkRd
+ Pszsz4Ixv2DXWB2UgaFWA60Z3asVeJx+HhU2cvFa/Hg1J4mtUzX/ibVRJ8wPheS1shZf
+ bodQ==
+X-Gm-Message-State: AOJu0Yz9Ugrl6kUeWhuQ75WZcIVfDy3WEqd8Qubs/Ox22Qm/Mvyxfffr
+ tLJBBU/JoycthDZXmXySwY+8n/9gLDVier2JfqCkdkiRGOZiVid2R3pG/HRk
+X-Gm-Gg: ASbGnctBgvKkRjTN5/yWpJNdpL7/WbsDSxyx1I6yWrAGNyAbUZcQFUpzINq0WSkZ3MV
+ ZE+LAYHrWgXxJvnIWyHwE42vmzd9AvpM9A+9IPvq/lVchlb7cG4hVoN7glaLG+2k8R7zHL7OF5A
+ 416E0atKmzAn4/qDAFFw305RV/G3yKtYpidruq6OPrp4U+SmJZIU1UyaTpZbfWaXh3386GX1CUN
+ 3W3JEOtseahlhgiVe8G62IeUOiFaBj0bdycCFH/RlepSW93FP/iFY+enC+eLgmVN83wpTseu6xT
+ dEfnSWvyUWP7G618yXJ9jkl2nCeBevduIJyVgYdCRI7BwpZcNCLrqj5CHh/PNQ8=
+X-Google-Smtp-Source: AGHT+IG0f75gXePw1ESh1kSdjuCv3aKSIzB8YVGGUH5dc7e3OriVD4tKoy1OsIlYR/nHW1K2/NXHLA==
+X-Received: by 2002:a17:902:da89:b0:215:e98c:c5c1 with SMTP id
+ d9443c01a7336-218d722cf3amr69630515ad.30.1734561069068; 
+ Wed, 18 Dec 2024 14:31:09 -0800 (PST)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-219dc9705d7sm375775ad.102.2024.12.18.14.31.03
+ d9443c01a7336-219dc9705d7sm375775ad.102.2024.12.18.14.31.06
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 18 Dec 2024 14:31:05 -0800 (PST)
+ Wed, 18 Dec 2024 14:31:08 -0800 (PST)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
 Cc: alistair23@gmail.com, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 17/39] target/riscv/kvm: remove irqchip_split() restriction
-Date: Thu, 19 Dec 2024 08:29:47 +1000
-Message-ID: <20241218223010.1931245-18-alistair.francis@wdc.com>
+Subject: [PULL 18/39] docs: update riscv/virt.rst with kernel-irqchip=split
+ support
+Date: Thu, 19 Dec 2024 08:29:48 +1000
+Message-ID: <20241218223010.1931245-19-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241218223010.1931245-1-alistair.francis@wdc.com>
 References: <20241218223010.1931245-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
- envelope-from=alistair23@gmail.com; helo=mail-pl1-x62d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
+ envelope-from=alistair23@gmail.com; helo=mail-pl1-x633.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -103,33 +104,137 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 
-Remove the 'irqchip_split()' restriction in kvm_arch_init() now that
-we have support for "-accel kvm,kernel-irqchip=split".
+Also add a new page, docs/specs/riscv-aia.rst, where we're documenting
+the state of AIA support in QEMU w.r.t the controllers being emulated or
+not depending on the AIA and accelerator settings.
 
 Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <20241119191706.718860-8-dbarboza@ventanamicro.com>
+Message-ID: <20241119191706.718860-9-dbarboza@ventanamicro.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/kvm/kvm-cpu.c | 5 -----
- 1 file changed, 5 deletions(-)
+ docs/specs/index.rst       |  1 +
+ docs/specs/riscv-aia.rst   | 83 ++++++++++++++++++++++++++++++++++++++
+ docs/system/riscv/virt.rst |  7 ++++
+ 3 files changed, 91 insertions(+)
+ create mode 100644 docs/specs/riscv-aia.rst
 
-diff --git a/target/riscv/kvm/kvm-cpu.c b/target/riscv/kvm/kvm-cpu.c
-index a9680f2447..aaff4a0f42 100644
---- a/target/riscv/kvm/kvm-cpu.c
-+++ b/target/riscv/kvm/kvm-cpu.c
-@@ -1408,11 +1408,6 @@ int kvm_arch_init(MachineState *ms, KVMState *s)
+diff --git a/docs/specs/index.rst b/docs/specs/index.rst
+index ff5a1f03da..d7675cebc2 100644
+--- a/docs/specs/index.rst
++++ b/docs/specs/index.rst
+@@ -37,3 +37,4 @@ guest hardware that is specific to QEMU.
+    rapl-msr
+    rocker
+    riscv-iommu
++   riscv-aia
+diff --git a/docs/specs/riscv-aia.rst b/docs/specs/riscv-aia.rst
+new file mode 100644
+index 0000000000..8097e2f897
+--- /dev/null
++++ b/docs/specs/riscv-aia.rst
+@@ -0,0 +1,83 @@
++.. _riscv-aia:
++
++RISC-V AIA support for RISC-V machines
++======================================
++
++AIA (Advanced Interrupt Architecture) support is implemented in the ``virt``
++RISC-V machine for TCG and KVM accelerators.
++
++The support consists of two main modes:
++
++- "aia=aplic": adds one or more APLIC (Advanced Platform Level Interrupt Controller)
++  devices
++- "aia=aplic-imsic": adds one or more APLIC device and an IMSIC (Incoming MSI
++   Controller) device for each CPU
++
++From an user standpoint, these modes will behave the same regardless of the accelerator
++used.  From a developer standpoint the accelerator settings will change what it being
++emulated in userspace versus what is being emulated by an in-kernel irqchip.
++
++When running TCG, all controllers are emulated in userspace, including machine mode
++(m-mode) APLIC and IMSIC (when applicable).
++
++When running KVM:
++
++- no m-mode is provided, so there is no m-mode APLIC or IMSIC emulation regardless of
++  the AIA mode chosen
++- with "aia=aplic", s-mode APLIC will be emulated by userspace
++- with "aia=aplic-imsic" there are two possibilities.  If no additional KVM option
++  is provided there will be no APLIC or IMSIC emulation in userspace, and the virtual
++  machine will use the provided in-kernel APLIC and IMSIC controllers.  If the user
++  chooses to use the irqchip in split mode via "-accel kvm,kernel-irqchip=split",
++  s-mode APLIC will be emulated while using the s-mode IMSIC from the irqchip
++
++The following table summarizes how the AIA and accelerator options defines what
++we will emulate in userspace:
++
++
++.. list-table:: How AIA and accel options changes controller emulation
++   :widths: 25 25 25 25 25 25 25
++   :header-rows: 1
++
++   * - Accel
++     - Accel props
++     - AIA type
++     - APLIC m-mode
++     - IMSIC m-mode
++     - APLIC s-mode
++     - IMSIC s-mode
++   * - tcg
++     - ---
++     - aplic
++     - emul
++     - n/a
++     - emul
++     - n/a
++   * - tcg
++     - ---
++     - aplic-imsic
++     - emul
++     - emul
++     - emul
++     - emul
++   * - kvm
++     - ---
++     - aplic
++     - n/a
++     - n/a
++     - emul
++     - n/a
++   * - kvm
++     - none
++     - aplic-imsic
++     - n/a
++     - n/a
++     - in-kernel
++     - in-kernel
++   * - kvm
++     - irqchip=split
++     - aplic-imsic
++     - n/a
++     - n/a
++     - emul
++     - in-kernel
+diff --git a/docs/system/riscv/virt.rst b/docs/system/riscv/virt.rst
+index 537aac0340..60850970ce 100644
+--- a/docs/system/riscv/virt.rst
++++ b/docs/system/riscv/virt.rst
+@@ -129,6 +129,13 @@ The following machine-specific options are supported:
+   MSIs. When not specified, this option is assumed to be "none" which selects
+   SiFive PLIC to handle wired interrupts.
  
- int kvm_arch_irqchip_create(KVMState *s)
- {
--    if (kvm_kernel_irqchip_split()) {
--        error_report("-machine kernel_irqchip=split is not supported on RISC-V.");
--        exit(1);
--    }
--
-     /*
-      * We can create the VAIA using the newer device control API.
-      */
++  This option also interacts with '-accel kvm'.  When using "aia=aplic-imsic"
++  with KVM, it is possible to set the use of the kernel irqchip in split mode
++  by using "-accel kvm,kernel-irqchip=split".  In this case the ``virt`` machine
++  will emulate the APLIC controller instead of using the APLIC controller from
++  the irqchip.  See :ref:`riscv-aia` for more details on all available AIA
++  modes.
++
+ - aia-guests=nnn
+ 
+   The number of per-HART VS-level AIA IMSIC pages to be emulated for a guest
 -- 
 2.47.1
 
