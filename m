@@ -2,64 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E87069F6D02
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Dec 2024 19:18:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E4A549F6D03
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Dec 2024 19:18:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tNyb8-0001e8-Jp; Wed, 18 Dec 2024 13:16:38 -0500
+	id 1tNyb7-0001Wm-Da; Wed, 18 Dec 2024 13:16:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tNya2-0001B7-26
+ id 1tNya2-0001B8-BB
  for qemu-devel@nongnu.org; Wed, 18 Dec 2024 13:15:30 -0500
-Received: from mail-ej1-x62b.google.com ([2a00:1450:4864:20::62b])
+Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tNyZw-0007Uj-6o
- for qemu-devel@nongnu.org; Wed, 18 Dec 2024 13:15:26 -0500
-Received: by mail-ej1-x62b.google.com with SMTP id
- a640c23a62f3a-aabbb507998so694098366b.2
- for <qemu-devel@nongnu.org>; Wed, 18 Dec 2024 10:15:14 -0800 (PST)
+ id 1tNyZx-0007VW-ON
+ for qemu-devel@nongnu.org; Wed, 18 Dec 2024 13:15:27 -0500
+Received: by mail-ed1-x531.google.com with SMTP id
+ 4fb4d7f45d1cf-5d647d5df90so8558689a12.2
+ for <qemu-devel@nongnu.org>; Wed, 18 Dec 2024 10:15:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734545713; x=1735150513; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=azFqJlxIjTGm0wEZy+3M3fkeckUkOp2SpgqHMWP2R3I=;
- b=p4QWyqyWnIUyusVO1/lBUV6Mr+/BBh/6AHw0zgc58rqo80vfldYhU/KlxsnNDLTJjA
- f9dzSnJ/slsHbsdZRAe/Rcj+0StHRdb1oC9fIMPxinC7UvdUDVfaxO7ckOB1iAb5F8so
- lxmBThCPjfqu5AewK7KIgrSUGhKtYUqhkquM4tXoT3bhafltzQ9k1lel8CGw6P/cyJxa
- oHuGree0wyKsN2Zv7ANy9J/LyaDXE4U1afXtzgTi4oLbeT8bGod47LuqkppkDKJ+UJel
- ZmMpT5gAUyywp5dfnDZHf8VmamNhEfe4LTSM4zIEPe3OMaiJ4LxcW3ylVNclb7DglmkB
- tRyA==
+ d=linaro.org; s=google; t=1734545715; x=1735150515; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=/YHnueKZJegjzPbCxN1afH6WivB/pbe8W0/PepPUkRc=;
+ b=rr2BFHW4/2pHdpsU8btR4ZmSVGABZ5BGF4ObCs7+9nvCsVZ36yg9oHZncUb8Nl8579
+ qM7W9P5yyS1mOnW0j///Ew6L1fR4ub5zORvTPmHUfIdbCGUsd1TGNIeKqeMlNJ/9S/QG
+ 9iDa00Ai859gRLmVhguWcR3h56vLu7CDC9X4Sfw+WbQgsZAmm9aiMY/gRQncndFneK2C
+ 7+MROGzCfsr9iZr5bbOnh54MaZbgdmdRtYsKeE9918/VzER3aWTeVP0cYlIBVP5geYCL
+ NbIkPPvVpVH3jP5ylUiq9MCeYuoL5OSTOpltUbrS03bn9GF1UaXUCbn8uQ3oNmwAMq+L
+ DwDw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734545713; x=1735150513;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=azFqJlxIjTGm0wEZy+3M3fkeckUkOp2SpgqHMWP2R3I=;
- b=QyVRL11ZS1kvIWPRRivXr2rUG7AeuoiT6xqCioyQqJ8uD0MEYrQt5MD4CBv0u9SRM5
- 1oQyvjDGg4xVlNmBwPqcFjizXKZA4KkRisEuw/BR/aeNTqAkFWV89kXLa5AZRZZ9l3TB
- hFiNgU+oOYaG/14zU52fqkNtOPYYwHfhVQhbHIAMIlCOvKgonMK9O3FRw0cbN8/KkBdT
- yMaSCW62yb3BrDAueATGr+wVNFRidOx66zOFVAGvna4/fFgJdIc89D+KFOkG5IvteU6l
- Agk6oVroHGT6xlMhjyQB74qZupE3/sj9oR2Y3zQBWXEWE30MCdRzyaAzd/AyOwxCsYDL
- otTw==
-X-Gm-Message-State: AOJu0Yx1SL9VY9dK9zRMXjNt4Cun/NdCX3ushTYK9hBsmNvY37TJITjV
- eJhc7Z2e8sC5+ayzctKi9Jmv/qBguezFMOUpuVhVaYb+7sGURL1qLgxTAkP5NXM=
-X-Gm-Gg: ASbGncsbrsdTg48+ZvQM62QqY53ObI4Cem06cwH2MkBfcpChBzjW94hwlOOV9c2CdiZ
- psWJr3dFhvW5MQUH46Rt2D8AOy2YjMGIqCRcb8er+rheQa+B+YkTehjPru35lWZfOsctMEuCETe
- 2J4eZSTSzwHJ4W9lp7j6Qn+52J1YuE9oZ0GEi48AA8e66ca4CkF/wUwH8w60xfl2wLykDQcxVwg
- bDl6s0qR4OhmSK+4jWRmzrqxK2KyvEtztt+Y5STBgVLzPd/9UC1Kk0=
-X-Google-Smtp-Source: AGHT+IG5mhXRuBBm5tMf3SGw/Pj8C8HnOnbm3m5jWm5L+ObcI1uhDlS35AUwlpka62avbmamy+YZ5w==
-X-Received: by 2002:a17:907:9410:b0:aa6:6e02:e885 with SMTP id
- a640c23a62f3a-aabf490cf1cmr333794466b.47.1734545712936; 
- Wed, 18 Dec 2024 10:15:12 -0800 (PST)
+ d=1e100.net; s=20230601; t=1734545715; x=1735150515;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=/YHnueKZJegjzPbCxN1afH6WivB/pbe8W0/PepPUkRc=;
+ b=OJdwWrXidrpoFOZs7NO3VJBU2urQ0Rus8oMrCeGiMzO4xS5/PoSOIlV75SOgXwp/eR
+ Y/cz0uRNHkF3/QgJwQBpxHUa0CLcaWcUW0R/Yv47MGI/FRirCB3J6GACZPNDTkyTsBXL
+ oc1sh6jAXyXcsE+PMLT1fAaPG8yHJeBBmImU5nUX5xDjnUQs9fNwiQPKHOr12V1mkqd5
+ cTGcXRA41XMDCQvbeRNn7hJJrKQw3DfVKAs/qVWXPpHf06XqVAP/JGz8K9KlTbVe7AxE
+ EsdBkbsjtypatfjIiZm/b04TtiokH8GZGPVZ8knboHI2psuXFPO3EuG7ffKfrrlLrr0v
+ nlGQ==
+X-Gm-Message-State: AOJu0Yyiabry7qFSAXnxielRBVQZbAD/tmR/ErKsosrmoL1H/FfvTBXX
+ HDoanFq56F0xje8hOA6Bv/WVc5jsB5VlM3sOq7RCLg49a7OZQMvvT4GJEUsllnc=
+X-Gm-Gg: ASbGncvCSR/TKPwCWpOIwXRPzPjYQyeYEeIeJf0iwLjMkKxvSRiDgIz3lpJmYQZrBht
+ TWkATa6Thbwjz+lf0vP/5w/JX1wTZzj2UIdsL/LzR8nJS9vIp4oUm3chOJ88A9u1nTasuns/m85
+ keVoGT36xkUCHS4hgFGDDUvGZrnddVkYxj4iEU5pLoDpv4/xBOrDXzJCHiuC9h9UWwx1S894SYn
+ Kr0Rje3hydgoH5K+JI+9FzP4wpsG4MW6MihYYun3Zk71W30OPof6Zo=
+X-Google-Smtp-Source: AGHT+IHoCskYOF9lwlHh4GLBO5KCKL26eP2BiRg5NDAUzzVE0wco+2Ookj78VwJPhpJhoYW112NEpA==
+X-Received: by 2002:a05:6402:2790:b0:5d3:ba42:ea03 with SMTP id
+ 4fb4d7f45d1cf-5d7ee3c857emr3887517a12.8.1734545714813; 
+ Wed, 18 Dec 2024 10:15:14 -0800 (PST)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-aab963ce2f2sm580246466b.201.2024.12.18.10.15.12
+ 4fb4d7f45d1cf-5d652ae137bsm5608894a12.51.2024.12.18.10.15.12
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Wed, 18 Dec 2024 10:15:12 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 77E245F796;
+ by draig.lan (Postfix) with ESMTP id 8B4B55F86B;
  Wed, 18 Dec 2024 18:15:11 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -68,16 +69,20 @@ Cc: Leif Lindholm <quic_llindhol@quicinc.com>,
  Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
  Peter Maydell <peter.maydell@linaro.org>,
  Radoslaw Biernacki <rad@semihalf.com>, qemu-arm@nongnu.org,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PATCH v2 0/5] target/arm: implement SEL2 physical and virtual timers
-Date: Wed, 18 Dec 2024 18:15:06 +0000
-Message-Id: <20241218181511.3575613-1-alex.bennee@linaro.org>
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ qemu-stable@nongnu.org
+Subject: [PATCH v2 1/5] target/arm: document the architectural names of our
+ GTIMERs
+Date: Wed, 18 Dec 2024 18:15:07 +0000
+Message-Id: <20241218181511.3575613-2-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20241218181511.3575613-1-alex.bennee@linaro.org>
+References: <20241218181511.3575613-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62b;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x62b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::531;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x531.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,46 +105,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Follow Peter's review I've split this into a several patches as there
-are some other fixes that should be made to other EL2 times that
-shouldn't be rolled together.
+As we are about to add more physical and virtual timers lets make it
+clear what each timer does.
 
-v2
-  - split machine enabling into patches
-  - rename IRQ
-  - use CP_ACCESS_TRAP_UNCATEGORIZED for UNDEF cases
+Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-stable@nongnu.org
+---
+ target/arm/gtimer.h | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-v1
-  - improve GTIMER docs
-  - fix gt_recalc bug
-  - address review comments for the main patch
-  - cc qemu-stable (no rush for 9.2.0)
-
-The following still need review:
-
-  hw/arm: enable secure EL2 timers for sbsa machine
-  hw/arm: enable secure EL2 timers for virt machine
-  target/arm: implement SEL2 physical and virtual timers
-  target/arm: ensure cntvoff_el2 also used for EL2 virt timer
-
-Alex.
-
-Alex Bennée (5):
-  target/arm: document the architectural names of our GTIMERs
-  target/arm: ensure cntvoff_el2 also used for EL2 virt timer
-  target/arm: implement SEL2 physical and virtual timers
-  hw/arm: enable secure EL2 timers for virt machine
-  hw/arm: enable secure EL2 timers for sbsa machine
-
- include/hw/arm/bsa.h |   2 +
- target/arm/cpu.h     |   2 +
- target/arm/gtimer.h  |  14 ++--
- hw/arm/sbsa-ref.c    |   2 +
- hw/arm/virt.c        |   2 +
- target/arm/cpu.c     |   4 +
- target/arm/helper.c  | 179 +++++++++++++++++++++++++++++++++++++++++--
- 7 files changed, 194 insertions(+), 11 deletions(-)
-
+diff --git a/target/arm/gtimer.h b/target/arm/gtimer.h
+index b992941bef..de016e6da3 100644
+--- a/target/arm/gtimer.h
++++ b/target/arm/gtimer.h
+@@ -10,11 +10,11 @@
+ #define TARGET_ARM_GTIMER_H
+ 
+ enum {
+-    GTIMER_PHYS     = 0,
+-    GTIMER_VIRT     = 1,
+-    GTIMER_HYP      = 2,
+-    GTIMER_SEC      = 3,
+-    GTIMER_HYPVIRT  = 4,
++    GTIMER_PHYS     = 0, /* EL1 physical timer */
++    GTIMER_VIRT     = 1, /* EL1 virtual timer */
++    GTIMER_HYP      = 2, /* EL2 physical timer */
++    GTIMER_SEC      = 3, /* EL3 physical timer */
++    GTIMER_HYPVIRT  = 4, /* EL2 virtual timer */
+ #define NUM_GTIMERS   5
+ };
+ 
 -- 
 2.39.5
 
