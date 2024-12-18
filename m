@@ -2,86 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D41B59F6D05
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Dec 2024 19:18:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 886F99F6D2B
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Dec 2024 19:23:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tNybA-0001hh-UN; Wed, 18 Dec 2024 13:16:41 -0500
+	id 1tNyfc-00005y-UD; Wed, 18 Dec 2024 13:21:16 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tNya3-0001BF-ER
- for qemu-devel@nongnu.org; Wed, 18 Dec 2024 13:15:39 -0500
-Received: from mail-ej1-x631.google.com ([2a00:1450:4864:20::631])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tNyfZ-0008QR-28
+ for qemu-devel@nongnu.org; Wed, 18 Dec 2024 13:21:13 -0500
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tNyZy-0007Vo-CI
- for qemu-devel@nongnu.org; Wed, 18 Dec 2024 13:15:29 -0500
-Received: by mail-ej1-x631.google.com with SMTP id
- a640c23a62f3a-aa6c0d1833eso1217956566b.1
- for <qemu-devel@nongnu.org>; Wed, 18 Dec 2024 10:15:16 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tNyfX-0001kE-D8
+ for qemu-devel@nongnu.org; Wed, 18 Dec 2024 13:21:12 -0500
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-43625c4a50dso47922655e9.0
+ for <qemu-devel@nongnu.org>; Wed, 18 Dec 2024 10:21:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734545715; x=1735150515; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=qe//gJViys+yhtB7j7EeuPsosME5JBmgNhwY0OmT6DE=;
- b=fuV+O5jGEazW/kMYEL7vhf1bv9G3mcDeXU8uivlmCmHvNiYD/hWOfNK5G8merW+b9f
- URvjLqlN3iex0D/v9K/6/xcbOQCj/tZ9udBvh4C1+DZbGjm21o/BIoOfR5Eus+cceh1E
- nw+uUCd8pyfA5pG1ChLFs6Gh2b2wVzsG2mva7W2corRMNKC17PbI5ezuo58ZvHNd0jMb
- klncAtK6KRY2+MQlQ6Zoafvcl0Y2iBHcHo8fdmUSKk9+EXJeoxJxHInk7tYjRqi4mJsN
- XRjOr1LIkILD7NE/LgHYGlxRakPcLr+wKHiir4FucDhuukS3yjVE3ab7MB6U64aArGSA
- ShFg==
+ d=linaro.org; s=google; t=1734546069; x=1735150869; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=rjw+OVRcrKaViPr2n2sn4Q8Gz6HM/7SEwuqxJQ/MKXY=;
+ b=OfEOAr1NzJNWRI+SXEHSKfrSouxg7gtnMIwCTWNLQPW4WwRSLK4dyfF04Ikm5thXke
+ 3uwNNSttbqyC78Z7KL0JlsErr1RfUGKI6LIpVQErgywWIFVwUT+VubAfO4gLP4L5ZbIj
+ YyYo487g3atiLbE8Oni+/664c9zSAdGLXVqWPDhld7CHSc4ZyEXAPXNk56+QS52A9KIJ
+ J+GS+E0oedGwOfY6xJMuAHrdEHTg7RkB2PR+kSwD0J3Ft+wApfK1exxs6+N2Aws4s+J/
+ SOq0RGB48V4Epp8Se3Q7stghao9WV9ir5wLveWk4JQmZ9gOAJurI+h8zXsIIK//+GSAZ
+ lUNA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734545715; x=1735150515;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=qe//gJViys+yhtB7j7EeuPsosME5JBmgNhwY0OmT6DE=;
- b=uWGDtA0NdD3BiV9g9QkbxpYCOUgd76jyncyUMunq2+4qVKuZcLBjoZWDeZvBgORz+V
- HcQ1H8WlRZS0jblWnp5NeKNcTlYue3SaSKKSwOkeA4Q6AUmB610TvZo0KqP4VQ6sZFck
- eoUVk/GJPeN24/JR9lJbuo0xDUVmleba6u8sQMzRC7g2rbTFEAUPAkLSTI3wQ5VwpD85
- 6bsKX4HW1YSO6XZkF+42eog2/VnxYxfRKkNe+LnWxE55AkI14ne9Zl/RqzMY377oSzS1
- kbsoqUGBbzi5IY714JbFCmuseQG1fup7Ykwy7XHLGxTl/ZkeObLQ78G+RJUpZWoVuts8
- ljTQ==
-X-Gm-Message-State: AOJu0Yyzq2OeNBwGpkf7nE4kfRZKmuirf0kgIRLHA1P+ZYigWu2chmiS
- Qs9GCKr/eMygGxd5w6AyxD5/1q8RHITK0kijHNqkH3BSbkfPBvmPD3H1vKizKH0=
-X-Gm-Gg: ASbGncvON4ZkjB6e9mA3qDLAeR6lR2yvQv2FpIgo4ZXE0Vz2E58P5Jwl1Nhy2pnHWAo
- qzvJ6Jnsux0sBjp7bTkvt0qkRpZu7qjglNdf72okr0VBCarZxOEprZVCkNEb8+PjYAaq4VB/RlQ
- wfW6YGyYzczvuTaq5HwAGfD1an4zNLLJcYhuyDjDnqGfleyabDYYaBFEqRiwKl7wV6VahKfuRz5
- Y7gIjfuxa7BZPKWqPz1/N4fix5Y8dBF0Pf9+wCbJxoIpVe8p5F1Q7s=
-X-Google-Smtp-Source: AGHT+IEWg0lGJTdmj7iVoVggh5TZTrqiosrV2csXvzuMSzzLJdVA/ws4t9a4otc43XJj/nNSQO8Xfg==
-X-Received: by 2002:a17:906:319a:b0:aab:7467:3f70 with SMTP id
- a640c23a62f3a-aabf471905bmr341369766b.2.1734545715455; 
- Wed, 18 Dec 2024 10:15:15 -0800 (PST)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-aab96006c2fsm578533666b.9.2024.12.18.10.15.13
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 18 Dec 2024 10:15:14 -0800 (PST)
-Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id E685B5FC9D;
- Wed, 18 Dec 2024 18:15:11 +0000 (GMT)
-From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+ d=1e100.net; s=20230601; t=1734546069; x=1735150869;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=rjw+OVRcrKaViPr2n2sn4Q8Gz6HM/7SEwuqxJQ/MKXY=;
+ b=sNQKTm527KlZzJVHJ+vWgHyQ//uKMSbAboi1joh0npKKpb2xcuUkSS6Bxst30N+V/y
+ DEcw2gYhdpIMjnX6MsMLvSVW/+I5bJuTaz9+USpVcDMoNKgCCwWpeReWqJJ7ODxIF4LS
+ G4pYu+SD7nO06NJvYJDg+CiCr1vpYNE4ye4VW9N1n+A/qPkeIzUhqmLE3M1zsjPGLbe6
+ Myu7qzAU3w0Ra16AwfHxPbC3SwSJw/E35+F+UpfDF7yYyEdqodE+vaTNe7rNmBiRP9pY
+ PQZyc9WPHmaZ0h8S0rnjEqhDPSRqL8vm2g6C/ll7bxaQFGVb/KctzMrXsHfKWeUsO4ao
+ 75+g==
+X-Gm-Message-State: AOJu0YxtPuOOuASWNIlNYS5bf5+U6184n8U62w/nF/Ld2NzuKN9XxCMS
+ 6ZvTWd1GuKi2uIkrzDAPrqH78YpQINZRue8u/iRoirBuEJbrhSKMBiXW7ED4GPdclzZxK90p6y6
+ 8
+X-Gm-Gg: ASbGncuqnewK1G/BWBYOp6SgAhz4L/O3Wfrl8LfU49BDrrwNY9pXmGaEuggWbYKyBFJ
+ C/WT75UvyXRuahtiut5jV16FJOKDVhp+o/2rLqkf/kmEPVjSKb5TKDOXqcrYdT0B4zanLFdhrJl
+ rn2SUmld/GyNJ/hYwTBZq+lHVUK7K6cODXKxIQ2D49gAvvLFPGhGzNmv3dLapLEp0aUnWMzkZvI
+ YEs/uWgobxF3u/bKhZjP4AKEz4BQzduEWSHBtXuOi+uHl6RVLffk767s3aHYXMt56atGEHjjNwW
+ D1/4
+X-Google-Smtp-Source: AGHT+IHxjnmyDbYVAgDXPpHu25OKjfiutLfU/WTGxBEswmrpAPypthNe6/aSQMrriAkQo2mBEAO6pQ==
+X-Received: by 2002:a05:600c:35cb:b0:434:a386:6ae with SMTP id
+ 5b1f17b1804b1-43655347ed6mr31691665e9.7.1734546068966; 
+ Wed, 18 Dec 2024 10:21:08 -0800 (PST)
+Received: from localhost.localdomain ([78.196.4.158])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-43656b2038asm27331455e9.44.2024.12.18.10.21.07
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Wed, 18 Dec 2024 10:21:08 -0800 (PST)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Leif Lindholm <quic_llindhol@quicinc.com>,
- Leif Lindholm <leif.lindholm@oss.qualcomm.com>,
- Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>,
- Radoslaw Biernacki <rad@semihalf.com>, qemu-arm@nongnu.org,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- qemu-stable@nongnu.org
-Subject: [PATCH v2 5/5] hw/arm: enable secure EL2 timers for sbsa machine
-Date: Wed, 18 Dec 2024 18:15:11 +0000
-Message-Id: <20241218181511.3575613-6-alex.bennee@linaro.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20241218181511.3575613-1-alex.bennee@linaro.org>
-References: <20241218181511.3575613-1-alex.bennee@linaro.org>
+Cc: Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ BALATON Zoltan <balaton@eik.bme.hu>, qemu-ppc@nongnu.org,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>
+Subject: [PATCH v3 0/7] hw/ppc: Remove tswap() calls
+Date: Wed, 18 Dec 2024 19:20:59 +0100
+Message-ID: <20241218182106.78800-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.45.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::631;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x631.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -104,26 +102,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Cc: qemu-stable@nongnu.org
----
- hw/arm/sbsa-ref.c | 2 ++
- 1 file changed, 2 insertions(+)
+Remove the tswap() calls on ePAPR, and convert
+them to big-endian LD/ST API on sPAPR.
 
-diff --git a/hw/arm/sbsa-ref.c b/hw/arm/sbsa-ref.c
-index e3195d5449..c02344004e 100644
---- a/hw/arm/sbsa-ref.c
-+++ b/hw/arm/sbsa-ref.c
-@@ -484,6 +484,8 @@ static void create_gic(SBSAMachineState *sms, MemoryRegion *mem)
-             [GTIMER_HYP]  = ARCH_TIMER_NS_EL2_IRQ,
-             [GTIMER_SEC]  = ARCH_TIMER_S_EL1_IRQ,
-             [GTIMER_HYPVIRT] = ARCH_TIMER_NS_EL2_VIRT_IRQ,
-+            [GTIMER_SEC_PEL2] = ARCH_TIMER_S_EL2_IRQ,
-+            [GTIMER_SEC_VEL2] = ARCH_TIMER_S_EL2_VIRT_IRQ,
-         };
- 
-         for (irq = 0; irq < ARRAY_SIZE(timer_irq); irq++) {
+Build-tested only.
+
+Philippe Mathieu-Daudé (7):
+  meson: Run some compiler checks using -Wno-unused-value
+  hw/ppc/spapr: Convert HPTE() macro as hpte_get() method
+  hw/ppc/spapr: Convert HPTE_VALID() macro as hpte_is_valid() method
+  hw/ppc/spapr: Convert HPTE_DIRTY() macro as hpte_is_dirty() method
+  hw/ppc/spapr: Convert CLEAN_HPTE() macro as hpte_set_clean() method
+  hw/ppc/spapr: Convert DIRTY_HPTE() macro as hpte_set_dirty() method
+  hw/ppc/epapr: Do not swap ePAPR magic value
+
+ meson.build           | 11 +++++---
+ hw/ppc/sam460ex.c     |  2 +-
+ hw/ppc/spapr.c        | 63 +++++++++++++++++++++++++++++--------------
+ hw/ppc/virtex_ml507.c |  2 +-
+ 4 files changed, 52 insertions(+), 26 deletions(-)
+
 -- 
-2.39.5
+2.45.2
 
 
