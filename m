@@ -2,153 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15B829F6AB5
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Dec 2024 17:06:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9321E9F6A7D
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Dec 2024 16:53:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tNwY3-0004AQ-QX; Wed, 18 Dec 2024 11:05:19 -0500
+	id 1tNwLp-0007cC-Lg; Wed, 18 Dec 2024 10:52:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tNwXd-00048b-E9
- for qemu-devel@nongnu.org; Wed, 18 Dec 2024 11:04:55 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1tNwLm-0007bJ-HL
+ for qemu-devel@nongnu.org; Wed, 18 Dec 2024 10:52:38 -0500
+Received: from mgamail.intel.com ([192.198.163.8])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tNwXR-0000QD-Jw
- for qemu-devel@nongnu.org; Wed, 18 Dec 2024 11:04:52 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1734537877;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=eijY6uFF4aHcithl4FrOqhaAxTgCEPVuy4PHaqDgwrY=;
- b=S/O+TCApW2O437V7i9KiwrxmMYzgM3+eySKx0XBpJeNWpwqmTYmUu/EiZKUMaUpCdErZ5u
- 2hJjRDpWiE3WVkd/f2MBD4ZBmvFLE4vFw7tpv5rPngWYXIijjgX660k+TeLU9klnF+CdWx
- C2sxYkwXtmkKzr1+v9sGZEXxv/D8iu0=
-Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
- [209.85.160.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-620-28gS744uMaWJ_uJFwBP2dA-1; Wed, 18 Dec 2024 11:04:34 -0500
-X-MC-Unique: 28gS744uMaWJ_uJFwBP2dA-1
-X-Mimecast-MFC-AGG-ID: 28gS744uMaWJ_uJFwBP2dA
-Received: by mail-qt1-f198.google.com with SMTP id
- d75a77b69052e-467944446a0so118314661cf.1
- for <qemu-devel@nongnu.org>; Wed, 18 Dec 2024 08:04:34 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734537874; x=1735142674;
- h=content-transfer-encoding:in-reply-to:autocrypt:content-language
- :from:references:cc:to:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=eijY6uFF4aHcithl4FrOqhaAxTgCEPVuy4PHaqDgwrY=;
- b=aUfTtG6lqLs1kgbwdQOKH9kmKaknjRZq/SyffvhX45OwXM2AgNrwAamdlhkz57oXWL
- zKazuv9d0zKEx/71btNvBHr2TnLGjbLJlC2LpgBiiPS9+F5UyiEMP4DcalZZO2tZI/da
- to7yN4SYZTGDcveUk8BSgSHEIbwF9KiPnk1DGZX6xfBqYmNYlogO3yRMQVeRxbfSvu17
- iNlyTSDCOEJdaU/BHdR6qyjMYkq/4b/QVSY+e/8rvg/kHkAFdC3Sy9dEaFUILxZuZLaa
- YzcbcAW4IY+lxPRZmO6uH9z/HmKMMr2wxINz0wbHBnhdAR6Iphgc09Pxg8ZLd1hXIqJc
- izdA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUCbwYb3EcDXU8hwljm5kXfLvB0/wGBmRYaK0GGeNG6Q3SkQkZOozv6U6WYsFnVEIMN7xzKxSmZrqRX@nongnu.org
-X-Gm-Message-State: AOJu0Yz4z0eYPWejaPXjr0wbD88Q76oGO2kk5h2asj7LRhP25wS8/utx
- gM6X3MZPj+k6YGXFlag/sagLOEVAm9WZQAYnrwga88FJf21V1C+BT7hx5k2cFuqItfkMfApMtMb
- FvwKiB48Kv1fnIgmLT3X4u9O9FU1W/QZ740P25Evjj2Hh7adNvK0d1F61KiTI
-X-Gm-Gg: ASbGncsblu/iSpHtY+AD2+HXLYfILHrzE2QlRLLwpoZMbEJPDXFvOs3dkRiPcP0CTpV
- bDJ6aL8LbbyV4F5h5Ag6xIvWUZ/mW6Z8btuEXNf+l9TB5JlZLwey8lXSdFjdwgLsv/oijUgz70A
- ThYe75Lqs6uTyXFOutEuS8s3C+wku1rL6BR0xBd3p/nML1B1kLh8o9W5TrbrVaI9ojGKhTzUiZe
- hr4PxVHHOva5FicxvK0SsZclf/I0Q03xXtRmckyNo0vN+85GnSMgEi+Bqlaszfe3fovRB9isaeG
- 1a4RFEx/EtjS
-X-Received: by 2002:ac8:5d09:0:b0:463:788e:7912 with SMTP id
- d75a77b69052e-46a3a8dc8d7mr263211cf.56.1734537874032; 
- Wed, 18 Dec 2024 08:04:34 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IH5eVeUSsIFvvfwdP4DtQxkyrCvGf5+mj8b7Ot8GVwFXCI/qUzKVfb7SeZDSgBcKmd4E/+UEQ==
-X-Received: by 2002:ac8:5d09:0:b0:463:788e:7912 with SMTP id
- d75a77b69052e-46a3a8dc8d7mr262521cf.56.1734537873547; 
- Wed, 18 Dec 2024 08:04:33 -0800 (PST)
-Received: from [192.168.0.6] (ip-109-42-49-186.web.vodafone.de.
- [109.42.49.186]) by smtp.gmail.com with ESMTPSA id
- d75a77b69052e-467b2e8097asm52098001cf.63.2024.12.18.08.04.28
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 18 Dec 2024 08:04:33 -0800 (PST)
-Message-ID: <b126810a-c6a8-492d-8fdd-652019dd0b7b@redhat.com>
-Date: Wed, 18 Dec 2024 17:04:27 +0100
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1tNwLd-0006SJ-G4
+ for qemu-devel@nongnu.org; Wed, 18 Dec 2024 10:52:36 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1734537149; x=1766073149;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=xYWUY6FUMgKVBTt036jB/3WZ6VA/zqwqAeU/dvEoRC4=;
+ b=LDKstJp9JaQOm3hPUtFdwkXuLD7qzhGdqunfUBz89AfpWdhZMkBANpRW
+ c9esEC3nEdNGoy+eAPqSoljX/75myPFac26DxSjNY9afAPtOktIQsY0nF
+ P5zxcJnbgqv9jRqXYa5KFL1mML32xzNM3p+JB8IeGmqPFWDDdJeKtqnja
+ tC/AxjRmkDTVtv1FmYQUSnihQwH8gjp6cgE4O7tbc71mdT76Z+1jsz6dM
+ +ictaUZy1rJEklKEUf9ucl8i8lUZn2wDVg1g2z2StnBI7xTPU4KgUSxSs
+ x6d5IIu7EjsE/016Mzf861VBG/WjVJsVg7Bn/QjXly32HG2R3ohDG+5zP g==;
+X-CSE-ConnectionGUID: XEdHfkbFRDCdw+JnL50thg==
+X-CSE-MsgGUID: 3xCcR9LcS3+eKpHwZrE7IA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11290"; a="52545640"
+X-IronPort-AV: E=Sophos;i="6.12,245,1728975600"; d="scan'208";a="52545640"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Dec 2024 07:52:20 -0800
+X-CSE-ConnectionGUID: 0ly9LiB0QR6pyWIDjIZd9Q==
+X-CSE-MsgGUID: NkUpujlVQWSjE1Jjly+1zg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,245,1728975600"; d="scan'208";a="98459076"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.39])
+ by fmviesa009.fm.intel.com with ESMTP; 18 Dec 2024 07:52:19 -0800
+Date: Thu, 19 Dec 2024 00:10:59 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org
+Subject: Re: [PATCH v5 00/11] i386: miscellaneous cleanup
+Message-ID: <Z2L0E1tTCRdv9z6G@intel.com>
+References: <20241106030728.553238-1-zhao1.liu@intel.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] target/i386/sev: Reduce system specific declarations
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Eric Farman <farman@linux.ibm.com>, kvm@vger.kernel.org,
- Marcelo Tosatti <mtosatti@redhat.com>, David Hildenbrand <david@redhat.com>,
- Ilya Leoshkevich <iii@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, qemu-ppc@nongnu.org,
- Zhao Liu <zhao1.liu@intel.com>, qemu-s390x@nongnu.org,
- Yanan Wang <wangyanan55@huawei.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Halil Pasic <pasic@linux.ibm.com>
-References: <20241218155913.72288-1-philmd@linaro.org>
- <20241218155913.72288-3-philmd@linaro.org>
-From: Thomas Huth <thuth@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <20241218155913.72288-3-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
-X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-1.116,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241106030728.553238-1-zhao1.liu@intel.com>
+Received-SPF: pass client-ip=192.198.163.8; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_PASS=-0.001,
+ T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -164,17 +80,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 18/12/2024 16.59, Philippe Mathieu-Daudé wrote:
-> "system/confidential-guest-support.h" is not needed,
-> remove it. Reorder #ifdef'ry to reduce declarations
-> exposed on user emulation.
+Hi Paolo,
+
+A kindly ping.
+
+Thanks,
+Zhao
+
+On Wed, Nov 06, 2024 at 11:07:17AM +0800, Zhao Liu wrote:
+> Date: Wed, 6 Nov 2024 11:07:17 +0800
+> From: Zhao Liu <zhao1.liu@intel.com>
+> Subject: [PATCH v5 00/11] i386: miscellaneous cleanup
+> X-Mailer: git-send-email 2.34.1
 > 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Hi Paolo and all,
+> 
+> Is it necessary to include the first patch (AVX10 cleanup/fix) in v9.2?
+> 
+> Others are for v10.0.
+> 
+> Compared with v4 [1],
+>  * patch 1 (AVX10 fix) and patch 9 (RAPL cleanup) are newly added.
+>  * rebased on commit 9a7b0a8618b1 ("Merge tag 'pull-aspeed-20241104' of
+>    https://github.com/legoater/qemu into staging").
+> 
+> 
+> Background and Introduction
+> ===========================
+> 
+> This series picks cleanup from my previous kvmclock [2] (as other
+> renaming attempts were temporarily put on hold).
+> 
+> In addition, this series also include the cleanup on a historically
+> workaround, recent comment of coco interface [3] and error handling
+> corner cases in kvm_arch_init().
+> 
+> Avoiding the fragmentation of these misc cleanups, I consolidated them
+> all in one series and was able to tackle them in one go!
+> 
+> [1]: https://lore.kernel.org/qemu-devel/20240716161015.263031-1-zhao1.liu@intel.com/
+> [2]: https://lore.kernel.org/qemu-devel/20240329101954.3954987-1-zhao1.liu@linux.intel.com/
+> [3]: https://lore.kernel.org/qemu-devel/2815f0f1-9e20-4985-849c-d74c6cdc94ae@intel.com/
+> 
+> Thanks and Best Regards,
+> Zhao
 > ---
->   target/i386/sev.h  | 29 ++++++++++++++++-------------
->   hw/i386/pc_sysfw.c |  2 +-
->   2 files changed, 17 insertions(+), 14 deletions(-)
-
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-
+> Zhao Liu (11):
+>   i386/cpu: Mark avx10_version filtered when prefix is NULL
+>   target/i386/kvm: Add feature bit definitions for KVM CPUID
+>   target/i386/kvm: Remove local MSR_KVM_WALL_CLOCK and
+>     MSR_KVM_SYSTEM_TIME definitions
+>   target/i386/kvm: Only save/load kvmclock MSRs when kvmclock enabled
+>   target/i386/kvm: Save/load MSRs of kvmclock2
+>     (KVM_FEATURE_CLOCKSOURCE2)
+>   target/i386/kvm: Drop workaround for KVM_X86_DISABLE_EXITS_HTL typo
+>   target/i386/confidential-guest: Fix comment of
+>     x86_confidential_guest_kvm_type()
+>   target/i386/kvm: Clean up return values of MSR filter related
+>     functions
+>   target/i386/kvm: Return -1 when kvm_msr_energy_thread_init() fails
+>   target/i386/kvm: Clean up error handling in kvm_arch_init()
+>   target/i386/kvm: Replace ARRAY_SIZE(msr_handlers) with
+>     KVM_MSR_FILTER_MAX_RANGES
+> 
+>  hw/i386/kvm/clock.c              |   5 +-
+>  target/i386/confidential-guest.h |   2 +-
+>  target/i386/cpu.c                |   6 +-
+>  target/i386/cpu.h                |  25 ++++
+>  target/i386/kvm/kvm.c            | 211 +++++++++++++++++--------------
+>  5 files changed, 145 insertions(+), 104 deletions(-)
+> 
+> -- 
+> 2.34.1
+> 
 
