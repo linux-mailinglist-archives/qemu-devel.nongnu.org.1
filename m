@@ -2,136 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA18D9F6ACF
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Dec 2024 17:13:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B13F69F6ADC
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Dec 2024 17:17:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tNweU-0008JX-N1; Wed, 18 Dec 2024 11:11:58 -0500
+	id 1tNwjK-0003MQ-EI; Wed, 18 Dec 2024 11:16:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tNweR-0008J3-M4
- for qemu-devel@nongnu.org; Wed, 18 Dec 2024 11:11:56 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tNwir-0003J8-FU
+ for qemu-devel@nongnu.org; Wed, 18 Dec 2024 11:16:31 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tNweP-000228-Et
- for qemu-devel@nongnu.org; Wed, 18 Dec 2024 11:11:55 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tNwip-0003F9-7i
+ for qemu-devel@nongnu.org; Wed, 18 Dec 2024 11:16:28 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1734538311;
+ s=mimecast20190719; t=1734538585;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=U50nqGJcACoDyMdVZyzvlg6Dpr93yl67LRTSu4Dw3o8=;
- b=jQOH9j6Xl8rMarnMQWl6pdAnJhHABgh4YQuiueYmG6g5L1PcSPt6RKj8LPy3hqzVrdyKKC
- qYole91LsMkOFIZ8CcwnwaDVa40na0N8264CeSnkcOQa6a9gvt00EvR1myh1HHWwOtOpUG
- udphnZfkeEk2BEd6DCrxM5ellI+TDpQ=
-Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
- [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ in-reply-to:in-reply-to:references:references;
+ bh=RdpAgcnLTtvnlPjY1iLiDRL0CiQY7xovIC0/pqPpahc=;
+ b=IPYs7SDiK67sIO3stvS7GjnR7XwXYYGF4axY9ns6rkjHqIiGydAAcISef8vzTjXg9kpSjr
+ 6U8icqY6r/d2A4VBJuqOZRCNmYL50wGDPQUdgyCOW/5fmilbIC50DvgyRxWJPV4qWQaVDR
+ 0yMfObkOwGHuVsvflz0s0hJuryDvEyk=
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
+ [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-53-eFg1Eo4RNIyK6iCTZfQc3Q-1; Wed, 18 Dec 2024 11:11:49 -0500
-X-MC-Unique: eFg1Eo4RNIyK6iCTZfQc3Q-1
-X-Mimecast-MFC-AGG-ID: eFg1Eo4RNIyK6iCTZfQc3Q
-Received: by mail-qv1-f71.google.com with SMTP id
- 6a1803df08f44-6d8eb5ea994so76401626d6.1
- for <qemu-devel@nongnu.org>; Wed, 18 Dec 2024 08:11:48 -0800 (PST)
+ us-mta-486-SjveGxJ-NaGQw1T_8w0lXg-1; Wed, 18 Dec 2024 11:16:24 -0500
+X-MC-Unique: SjveGxJ-NaGQw1T_8w0lXg-1
+X-Mimecast-MFC-AGG-ID: SjveGxJ-NaGQw1T_8w0lXg
+Received: by mail-qk1-f198.google.com with SMTP id
+ af79cd13be357-7b6ee0af16dso1091392185a.3
+ for <qemu-devel@nongnu.org>; Wed, 18 Dec 2024 08:16:24 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734538308; x=1735143108;
- h=content-transfer-encoding:in-reply-to:autocrypt:content-language
- :from:references:cc:to:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=U50nqGJcACoDyMdVZyzvlg6Dpr93yl67LRTSu4Dw3o8=;
- b=BqHFLtncKNbXk7SoT03nbo3UzK/43bJC72ejiau787RyetWYqPp+xk5E6SlbXLGvSv
- Scmv8VtOl4VVnG/Cb9GmbnpAADVSxTw4TJnNdeMEzc8E516qODnhmqz6vCAuod4fGATX
- hR66ZprPpB8ocrhaqlIvobD/HkTTuaNm6cpJOXsIiGAsnhzoHKd9GWwZYErAyqAAa42P
- YrrANvjtNGmuK+HNS5M3zbE1IQT3/FPvXWP3YFOo2EXAo1WlyAWrP1Hzrym1tZOksAF2
- xEhXwTMPuD3xOqU0CboQsha425Z14PT1+t86jE3GwrmxXxJCcUIiQ8lNlgPtP7yvcz5v
- R/Rg==
+ d=1e100.net; s=20230601; t=1734538583; x=1735143383;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=RdpAgcnLTtvnlPjY1iLiDRL0CiQY7xovIC0/pqPpahc=;
+ b=PcCZpurTFAXGSNv87amECAa31YmWdjcdq+fNiaEmv+IQRrGja/ZfWfhmLlwwphgVd1
+ ME5AfV+WqCPJjstbVr05uHMvjmI/FcSAHlfY3/IYjLf6dF3Gkjj2bxtuRziUlZeIYNhi
+ CWKLSCFIBIj5SxFLdGyGOCEWr3CPS1CNLii06aONwB06ahgi2/KG/eexTLbsjo/NfUBR
+ 8GeP3q5yQXOZQER7uRsikluZSCakPT7vZyOx+L8kmb+4vueFaBCyaFb1mRBv92CGy+O4
+ vO9zDlXeSpRIORWLM0c1Bi9dO1cApHbmzLa/XYvnYKt0XCrTZEASLj6rk1g1FusVqRIm
+ 8Dfw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVCDZuvIPEUam35kCbn+Pqn0wa7JjPqz63xAs7aRSebAcVN+s01+4tAYqTCEnPVdWZOS+JsP7xIfjAa@nongnu.org
-X-Gm-Message-State: AOJu0Yzo7OmNF2oRFucI/SYSchtIEnFynX48bHzdU9MvrzPe0cFVCXIC
- 5UlZ+jvjmceD7jBl0NjhnflHkP0QQUOKxZWm71OfjIL4oxXRCZBj42qrfgnSuuzzbO/dR6/EB/J
- R5URdGEMV8fx5fULwm6Pxsm65Sevcv4HdntGUgz4rjkrK+g+K0Glo
-X-Gm-Gg: ASbGncvTfdv9BBhX/8yS6HdCDhvaPZ+KC1CDKpnVllyktUnwN9p5zcyz/i5yUY0owrn
- ofV3/Hr9sAMNC0v36plV55vNOQwOgQH9nZ4tDEsa+Pm1+Nr2KiqgQk7t5QipF3IPp0a1+EczcJZ
- dWEWbm1eN85Vd7L4h5GDITT+iP+596RN8NBcwYV6694P6d679Ro+Hq/SD2rpJwTufERMkZuScJP
- is4e/4RLUmUUNw48ukaVefhI+G7NVz/V9hfDsnvNymGuFLy18G2Mav51aRAsP4TBkqNLdYdivqc
- L9Bi1Va4hGhf
-X-Received: by 2002:a05:622a:5a93:b0:46a:389d:17b1 with SMTP id
- d75a77b69052e-46a389d1992mr13182191cf.26.1734538308226; 
- Wed, 18 Dec 2024 08:11:48 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFIIjK8G8NZOFXUDhshyTJzfk57ehROmbhjfQcnAoi0mBTT8GUxJXi/xVNxsHMFGyU7iSSXNA==
-X-Received: by 2002:a05:622a:5a93:b0:46a:389d:17b1 with SMTP id
- d75a77b69052e-46a389d1992mr13181891cf.26.1734538307867; 
- Wed, 18 Dec 2024 08:11:47 -0800 (PST)
-Received: from [192.168.0.6] (ip-109-42-49-186.web.vodafone.de.
- [109.42.49.186]) by smtp.gmail.com with ESMTPSA id
- d75a77b69052e-467b2e831a2sm52080241cf.64.2024.12.18.08.11.46
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 18 Dec 2024 08:11:47 -0800 (PST)
-Message-ID: <7a1117c0-8a07-4907-8584-d71a7bc46d3b@redhat.com>
-Date: Wed, 18 Dec 2024 17:11:43 +0100
+ AJvYcCWhMENLSzSs6bAAqDB2cKAeZEZTfU3SjmFhWcmqpEuSv8NNi37lZHAGPTO2V61y73fZSFSTBeaiGrJs@nongnu.org
+X-Gm-Message-State: AOJu0Yy1uX3LlXVL+fF/0vZstyJHuShp4mCzltvHLz5tfX4TtXGjt87V
+ 7o4Y7HeFCqpLE+4S5QLRy/nn7P2yVUhGOyUTzHhKxvQjlPaYHfDWKO56RFVrdClfe4MWfftfzQL
+ hNEO/erNqd27wOk94BUI5k7aiOT/U8sZ3R2rkhluEInUy9QSsxExZwu2LU9J8
+X-Gm-Gg: ASbGncu1AhjiroS5R0eD9ZKtlK7Hm2ZOgH+aJkcZUEyRCoq2aCD5cfkVKdhH6lnD+6z
+ spjGynOQxD4Er86+e1iJSPaeky6RnqkobMDNhH5df68EVXsdVnQzN8/tiUROUJSEmwGiV5HtIg4
+ cNtrj3sxt1zDXDHCpFGwZmrZYs1uDj6h22llKsz7wn+2SRuYnDOrlMxoRj0UBbfF493nOtTN25Q
+ I9eUWGoUAg4u7rgRJoMmYvuuiFUWf/7LOJA8MbnH8tgh9+dYDd6d7xxqCF2pdzcpVcVFl6pY5go
+ IaTfVfK7HkuupMwssg==
+X-Received: by 2002:a05:620a:1a2a:b0:7b6:d88e:f187 with SMTP id
+ af79cd13be357-7b86375aa33mr560661385a.35.1734538583691; 
+ Wed, 18 Dec 2024 08:16:23 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IG3YVCFZ4rYt2oUz58rKWi+ENusPUG00+AXKtqiQwD2cueAfZtk/VIG/xtfeJazDhNeGysYlA==
+X-Received: by 2002:a05:620a:1a2a:b0:7b6:d88e:f187 with SMTP id
+ af79cd13be357-7b86375aa33mr560657385a.35.1734538583320; 
+ Wed, 18 Dec 2024 08:16:23 -0800 (PST)
+Received: from x1n (pool-99-254-114-190.cpe.net.cable.rogers.com.
+ [99.254.114.190]) by smtp.gmail.com with ESMTPSA id
+ af79cd13be357-7b7048c9f62sm440312285a.111.2024.12.18.08.16.22
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 18 Dec 2024 08:16:22 -0800 (PST)
+Date: Wed, 18 Dec 2024 11:16:20 -0500
+From: Peter Xu <peterx@redhat.com>
+To: Fabiano Rosas <farosas@suse.de>
+Cc: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>,
+ qemu-devel@nongnu.org
+Subject: Re: [PATCH] tests/qtest/migration: Restore include for postcopy
+Message-ID: <Z2L1VNu-wKy_6pOv@x1n>
+References: <20241217212201.23376-1-farosas@suse.de> <Z2Hxe0PyVACaKIlZ@x1n>
+ <Z2KGUnQIcxZNohzi@redhat.com> <87ldwduit0.fsf@suse.de>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 5/5] tests/functional: Convert the migration avocado
- test
-To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
-Cc: Fabiano Rosas <farosas@suse.de>, qemu-devel@nongnu.org,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Peter Xu <peterx@redhat.com>
-References: <20241218131439.255841-1-thuth@redhat.com>
- <20241218131439.255841-6-thuth@redhat.com> <87o719umj5.fsf@suse.de>
- <3399461b-b623-4950-a800-9e244dd10785@redhat.com>
- <Z2Lxh22H_ZcdmREg@redhat.com>
-From: Thomas Huth <thuth@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <Z2Lxh22H_ZcdmREg@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+In-Reply-To: <87ldwduit0.fsf@suse.de>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -31
 X-Spam_score: -3.2
@@ -156,74 +108,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 18/12/2024 17.00, Daniel P. Berrangé wrote:
-> On Wed, Dec 18, 2024 at 04:51:24PM +0100, Thomas Huth wrote:
->> On 18/12/2024 14.51, Fabiano Rosas wrote:
->>> Thomas Huth <thuth@redhat.com> writes:
->>>
->>>> Now that we've got a find_free_port() function in the functional
->>>> test framework, we can convert the migration test, too.
->>>> While the original avocado test was only meant to run on aarch64,
->>>> ppc64 and x86, we can turn this into a more generic test by now
->>>> and run it on all architectures that have a default machine that
->>>> ships with a working firmware.
->>>
->>> I'd rather drop this test. I haven't looked at it in ages and it has
->>> never been useful.
->>
->> I think I agree for the scope of the old avocado test - x86, ppc64 and
->> aarch64 certainly have better test coverage by the qtest already... but we
->> don't have any test coverage for other architectures at all yet, which is
->> bad (see below).
->>
->> So if you like I can change the patch so that the test is not run on x86,
->> ppc64 and aarch64 anymore, just on the other architectures that do not have
->> test coverage by the qtest yet?
->>
->>> I haven't been following the development of the
->>> functional suite so this might not apply this time (fingers crossed),
->>> but Python tests have always been a pain to work with.
->>
->> Well, one of the motivations with the functional test framework was to
->> simplify things. You can now run the individual tests without any test
->> runner at all, what makes debugging way easier (see
->> docs/devel/testing/functional.rst for details)!
->>
->>> About adding more architectures to the set, this is not simply enabling
->>> more testing, it is also adding workload to maintain these other arches
->>> that were never tested with migration. Is that something we want?
->>
->> I think yes. Otherwise the bugs are just dormant until someone hits the
->> issue, making bisection way more complicated later.
->> Remember this one for example:
->>
->>   https://mail.gnu.org/archive/html/qemu-commits/2023-02/msg00030.html
->>
->> ?
->>
->> It would have been good to have a migration test for alpha in the CI, then
->> we could have prevented that bug from being merged.
+On Wed, Dec 18, 2024 at 12:12:11PM -0300, Fabiano Rosas wrote:
+> Daniel P. Berrangé <berrange@redhat.com> writes:
 > 
-> IIUC, we run the migration-test  qtest for *every* softmmu target.
+> > On Tue, Dec 17, 2024 at 04:47:39PM -0500, Peter Xu wrote:
+> >> On Tue, Dec 17, 2024 at 06:22:01PM -0300, Fabiano Rosas wrote:
+> >> > Commit 124a3c58b8 ("tests/qtest/migration: Move ufd_version_check to
+> >> > utils") moved the ufd_version_check() function to another file but
+> >> > failed to bring along the <sys/syscall> include, which is necessary to
+> >> > pull in <asm/unistd.h> for __NR_userfaultd.
+> >> > 
+> >> > Restore the missing include.
+> >> 
+> >> Ohhhhhhh.. so postcopy tests will always be skipped as of now?  Maybe worth
+> >> explicit mention that in the commit message if so, only when you merge.
+> >> 
+> >> > 
+> >> > While here, remove the ifdef __linux__ that's redundant and fix a
+> >> > couple of typos.
+> >> > 
+> >> > Fixes: 124a3c58b8 ("tests/qtest/migration: Move ufd_version_check to utils")
+> >> > Signed-off-by: Fabiano Rosas <farosas@suse.de>
+> >> 
+> >> Reviewed-by: Peter Xu <peterx@redhat.com>
+> >> 
+> >> Maybe we don't need to be as careful on old kernels anymore especially in
+> >> tests, because userfaultfd syscall existed for ~10 years. So if we want we
+> >> can start requiring __NR_userfaultfd present for __linux__, then no way to
+> >> miss such spot next time.
+> >
+> > Yes, I think that check is obsolete, based on our supported platforms
+> > list. It would suffice to just check __linux__.
 > 
-> So, assuming you're referring to alpha guest, we were already
-> exercising it.
+> This breaks the cross builds. It seems the __NR_userfaultfd was actually
+> stopping several archs from reaching ufd_version_check(). Since
+> <sys/ioctl.h> is under HOST_X86_64, these new instances now fail to find
+> the 'ioctl' symbol:
+> 
+> https://gitlab.com/farosas/qemu/-/pipelines/1594332399
+> 
+> Of course I could just include <sys/ioctl.h> unconditionally, but the
+> fact that new code is not being built means the assumption that we can
+> imply __NR_userfaultfd from __linux__ alone is not correct.
 
-Unless I missed something, you got that wrong. Have a look at 
-tests/qtest/meson.build: The migration-test is only added for i386/x86_64, 
-ppc64, aarch64 and s390x (since you need a special boot / guest code for 
-this test).
+What is the new code referenced here?  I still don't yet understand how it
+would fail if we move sys/ioctl.h out.
 
-> Anyway, I think a true functional test for migration is relevant
-> to keep, as long as we make it clearly different from the qtest.
-> A simple smoke test using a real Linux guest is different enough
-> from our hand crafted boot sector that I think it is valuable
-> coverage. Even better if we make the functional test add *lots*
-> of different devices.
+PS: we don't necessarily need to do it right now to remove that ifdef, but
+I'm just curious.
 
-Agreed, that's a good idea. But for a start, I'd first like to convert the 
-avocado test so that we finally can clean the tests/avocado folder.
-
-  Thomas
+-- 
+Peter Xu
 
 
