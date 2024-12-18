@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 570559F6783
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Dec 2024 14:43:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CEFA39F67A2
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Dec 2024 14:47:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tNuKT-0001Iy-Nh; Wed, 18 Dec 2024 08:43:09 -0500
+	id 1tNuKR-0001Hg-Sm; Wed, 18 Dec 2024 08:43:07 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tNuKQ-0001HU-Vq
- for qemu-devel@nongnu.org; Wed, 18 Dec 2024 08:43:06 -0500
-Received: from mail-ot1-x32f.google.com ([2607:f8b0:4864:20::32f])
+ id 1tNuKN-0001DZ-IY
+ for qemu-devel@nongnu.org; Wed, 18 Dec 2024 08:43:03 -0500
+Received: from mail-oi1-x230.google.com ([2607:f8b0:4864:20::230])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tNuKJ-0005dm-7X
- for qemu-devel@nongnu.org; Wed, 18 Dec 2024 08:43:06 -0500
-Received: by mail-ot1-x32f.google.com with SMTP id
- 46e09a7af769-71e1b1767b3so3251443a34.3
- for <qemu-devel@nongnu.org>; Wed, 18 Dec 2024 05:42:58 -0800 (PST)
+ id 1tNuKL-0005e2-9r
+ for qemu-devel@nongnu.org; Wed, 18 Dec 2024 08:43:03 -0500
+Received: by mail-oi1-x230.google.com with SMTP id
+ 5614622812f47-3ebb2d8dac4so2576658b6e.0
+ for <qemu-devel@nongnu.org>; Wed, 18 Dec 2024 05:42:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734529378; x=1735134178; darn=nongnu.org;
+ d=linaro.org; s=google; t=1734529379; x=1735134179; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=zNGor91Xjo2TrZjyvRxbPbQsjTfqqtcCX9NnnDYkm1I=;
- b=sAUU+ZVzLAjJF5QOnlLmA1e/gzRdTAqpQQ3iNGJ8svoh5cL308gW0/BEHus8dnEbjf
- wG6waJItVtzTMUqWi5weKKZtdfBhxmf0AQ58+A4QXlgMx+oQ369n7aOd1x6Yq9Ylswa4
- TWVAPTQmzXH7kXaHwIS4M6tKCQkr6feoYi06BGdf7e/VkpXGshqvF5j+GGAYMedGYIF8
- fBiJF2Xjw0WosIsRTUTEPsSHj0vfl8ONGjt09+JC5aNexdIQE3eZGKseJBCuy9Cnrfep
- 1Cln9M8k9g9UfwpANIibdhfa8uVKNNOKBZsp2kZ7byDNrqRHXujH7i27WKcbCiBCqKU/
- KtxQ==
+ bh=bp/oRY40UFC3tdQVPiyIpJHiv7h6gPdhenpcH06yx70=;
+ b=N9YgPBuJFb9eK593NYv0y9VQ7CRFGaUKe+rGoo/z5GYbjRj25qa7iL1Uovfo9zQYK7
+ qyuceYZqZrflhBRWj2zTNTF8HMWyvHq8XrrucReWwXGHjiLrj/PtXsbiU0/miZ7VvCpY
+ 3AMgUyd9WApJDn9gJtv5rFIiIdJlYU+9EnyPO95n2Y5TzDpttrXvP1yrK58CFX8TDn5e
+ ppVJ3ch6fu64Do3+k9ZDtsdDMAUbiayP8JeXJZUGo0ceDwvJUrPoEEVa9PO7VNuoR1ZS
+ GeK3LVTLW0hqfLbgVwqXTkCXowJtOFtvPSybDdWpiQ/Ry0oH0UTz4ZO9TXHCADw1qLSx
+ Fu1w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734529378; x=1735134178;
+ d=1e100.net; s=20230601; t=1734529379; x=1735134179;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=zNGor91Xjo2TrZjyvRxbPbQsjTfqqtcCX9NnnDYkm1I=;
- b=gs+t+FMdvXh5kIJWpa/QKwIMlyZQpS3nICfjB4exu/bHZytUWbn/TafkQbBeHf6sXu
- h29OmJugvLFXP/eoTTHmY42QZ/CD3Ac3Zv9MimebIoMDESpidc+d8jGE0u9Vf81OGbas
- rjQW0mx7XjszH/1Sn4za0plTPf6t/FFht449vYZ4MG3aPxXvt9CNhtqYJMwiqK+1NCcH
- 8hwH7HzN322nGRIGQ/XCjlxy4KzdvdEXYQl7sTbScAvbVVLKlnPzoEBEBYvHnSN/ypS4
- 2ozerszzwnOTM/TUT+FnGG7qFRdfiUZ1gZKRg6m9eLoCM3TJtya9RWMSCnDqUSK10U3C
- EGCg==
-X-Gm-Message-State: AOJu0YyGdCio6C4l7V3F+5pMaGMyt7SNtOR0sqSjT1TSsi2ubrjFV1jL
- abW/G3A4z4c770Nsrn3Cq/PBoYEfVWIHWFEPVemFOHZ4XjsINCosDPpxsvwC8sXz0MfnMs+98bW
- T8HW3Y3RT
-X-Gm-Gg: ASbGncuwpXlrhp3cF6IJdZLPN63TOjUdcqbwpO6v1Okl6OScgAQYi95TKDpGCSpkS3l
- 3SwsW7EX8X7Riu5tUwa9W96F6VsVtdcTMtsGn22gqY5lTUFAATORgnAaqwi4XE0CqHaPZZlsoAl
- TXKKxZBLJrng7Zsy6x3PIwZZb1FvsXu01Iz9E1L44+VirFSvSgtgL1JogsdTrh9nqQ41WQYLHrC
- KYDsJFlwU8m7NAOU/SWi/H4BLrLhbPFfoWbsOmegiNDS9Y2lgv+TPNHacnUwIdO
-X-Google-Smtp-Source: AGHT+IE0BnyQT4GcKPLlMeBBxHPrIQvgpbbGzj75GFH7ZcRy+UqmTPOfZ+NJrqre06m5sLovv6PmRA==
-X-Received: by 2002:a05:6808:4441:b0:3e7:b2b4:ee7a with SMTP id
- 5614622812f47-3eccc09c9b8mr2100634b6e.26.1734529377767; 
- Wed, 18 Dec 2024 05:42:57 -0800 (PST)
+ bh=bp/oRY40UFC3tdQVPiyIpJHiv7h6gPdhenpcH06yx70=;
+ b=Xl9SYSSf1GGPD8ba4Ae0BvP93b8V+wziJo4GFy+U8lQB3w/mTnEV8+evI2MI+f7g0N
+ kyYYCjmjr/TGF1gMbu2HQ5K5u2EKa9OhXqlPViDdDKKdiXo2OM5hjD4hlaCofZ5eS9A0
+ b+VfkwyH+a/5qtrcGCcq0VP91tVcFANvZ5nsyfmEGf90WeBuvyhZ9avomAK1s7NNyGvt
+ W2AbbWRD2HVVfdGJeq06DXL8tVn2m+vQlT4whQPdvmZozjb4+ksDEK+B+ERSi0BGuW9m
+ i5iryddLL2f4D1Enp9iGH6ICWTe+o2Y096ruzukeaEDtsNQtAxBnj7SMXkXKBH8TvJhD
+ TPGg==
+X-Gm-Message-State: AOJu0Yz4muiKeYHsGSrQWZ+ovv9EFIHsTBIqcS97a6KQaLn3xc/VuPoz
+ VsXiOgxeSOxEpc6k1paLeQe+mi01C/s8cWEkhD77acIkJhGTWOQscU+8Ol+qj/DMOMtBVsQwn2j
+ xZYXRkt2H
+X-Gm-Gg: ASbGncvBagh8eifPZCKEbB2JWQM9hYWuKlA7DnStSd9iyyigJc534sv7a18jjUR1DS/
+ IH/MnyC+7mayN6fHwDZJEhf5Rc88UGLVXK0FxrKpzXPCvv/15kTiA5JkuTkJXK7lKGDG1YoEbLl
+ FXfs/GfIVSvnk23/Eyr0ZcC5bx0+7NgUm8bQpI+0liJ/rMosPZznSupY4Cr4JQWqam7NfdwwzSD
+ pMRBUL5ETECu/wdcTuXWT99vYYewXvPX6pHjAixcm2kWGX34vzansQD1nytGpcc
+X-Google-Smtp-Source: AGHT+IHV0W+3ly8Xsm/UZtoDMgYER5DMGx2Fd0rh3/PEJgad/nyRQRp4/vyy/WuqLpgNo2NSCF2gZw==
+X-Received: by 2002:a05:6808:13c2:b0:3ea:3db5:ffd4 with SMTP id
+ 5614622812f47-3eccc1b652amr1803909b6e.32.1734529379159; 
+ Wed, 18 Dec 2024 05:42:59 -0800 (PST)
 Received: from stoup.. ([187.217.227.247]) by smtp.gmail.com with ESMTPSA id
- 5614622812f47-3ebb478a502sm2870951b6e.9.2024.12.18.05.42.56
+ 5614622812f47-3ebb478a502sm2870951b6e.9.2024.12.18.05.42.57
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 18 Dec 2024 05:42:57 -0800 (PST)
+ Wed, 18 Dec 2024 05:42:58 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: pbonzini@redhat.com,
-	Harsh Prateek Bora <harshpb@linux.ibm.com>
-Subject: [PATCH v2 03/24] target/ppc: Remove empty property list
-Date: Wed, 18 Dec 2024 07:42:30 -0600
-Message-ID: <20241218134251.4724-4-richard.henderson@linaro.org>
+Cc: pbonzini@redhat.com
+Subject: [PATCH v2 04/24] target/s390x: Use s390x_cpu_properties for system
+ mode only
+Date: Wed, 18 Dec 2024 07:42:31 -0600
+Message-ID: <20241218134251.4724-5-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241218134251.4724-1-richard.henderson@linaro.org>
 References: <20241218134251.4724-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::32f;
- envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x32f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::230;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x230.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,36 +96,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Reviewed-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
+Avoid the empty property list for user-only mode.
+
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/ppc/cpu_init.c | 6 ------
- 1 file changed, 6 deletions(-)
+ target/s390x/cpu.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
-index 1253dbf622..5e95790def 100644
---- a/target/ppc/cpu_init.c
-+++ b/target/ppc/cpu_init.c
-@@ -7414,11 +7414,6 @@ static void ppc_disas_set_info(CPUState *cs, disassemble_info *info)
- #endif
+diff --git a/target/s390x/cpu.c b/target/s390x/cpu.c
+index 4702761ca3..263f9e84ed 100644
+--- a/target/s390x/cpu.c
++++ b/target/s390x/cpu.c
+@@ -309,8 +309,8 @@ static const gchar *s390_gdb_arch_name(CPUState *cs)
+     return "s390:64-bit";
  }
  
--static Property ppc_cpu_properties[] = {
--    /* add default property here */
--    DEFINE_PROP_END_OF_LIST(),
--};
--
++#ifndef CONFIG_USER_ONLY
+ static const Property s390x_cpu_properties[] = {
+-#if !defined(CONFIG_USER_ONLY)
+     DEFINE_PROP_UINT32("core-id", S390CPU, env.core_id, 0),
+     DEFINE_PROP_INT32("socket-id", S390CPU, env.socket_id, -1),
+     DEFINE_PROP_INT32("book-id", S390CPU, env.book_id, -1),
+@@ -318,9 +318,9 @@ static const Property s390x_cpu_properties[] = {
+     DEFINE_PROP_BOOL("dedicated", S390CPU, env.dedicated, false),
+     DEFINE_PROP_CPUS390ENTITLEMENT("entitlement", S390CPU, env.entitlement,
+                                    S390_CPU_ENTITLEMENT_AUTO),
+-#endif
+     DEFINE_PROP_END_OF_LIST()
+ };
++#endif
+ 
+ #ifdef CONFIG_TCG
+ #include "hw/core/tcg-cpu-ops.h"
+@@ -388,7 +388,6 @@ static void s390_cpu_class_init(ObjectClass *oc, void *data)
+ 
+     device_class_set_parent_realize(dc, s390_cpu_realizefn,
+                                     &scc->parent_realize);
+-    device_class_set_props(dc, s390x_cpu_properties);
+     dc->user_creatable = true;
+ 
+     resettable_class_set_parent_phases(rc, NULL, s390_cpu_reset_hold, NULL,
+@@ -404,6 +403,7 @@ static void s390_cpu_class_init(ObjectClass *oc, void *data)
+     cc->gdb_read_register = s390_cpu_gdb_read_register;
+     cc->gdb_write_register = s390_cpu_gdb_write_register;
  #ifndef CONFIG_USER_ONLY
- #include "hw/core/sysemu-cpu-ops.h"
- 
-@@ -7468,7 +7463,6 @@ static void ppc_cpu_class_init(ObjectClass *oc, void *data)
-     device_class_set_parent_unrealize(dc, ppc_cpu_unrealize,
-                                       &pcc->parent_unrealize);
-     pcc->pvr_match = ppc_pvr_match_default;
--    device_class_set_props(dc, ppc_cpu_properties);
- 
-     resettable_class_set_parent_phases(rc, NULL, ppc_cpu_reset_hold, NULL,
-                                        &pcc->parent_phases);
++    device_class_set_props(dc, s390x_cpu_properties);
+     s390_cpu_class_init_sysemu(cc);
+ #endif
+     cc->disas_set_info = s390_cpu_disas_set_info;
 -- 
 2.43.0
 
