@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DEF49F6401
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Dec 2024 11:56:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AAFF9F63F4
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Dec 2024 11:55:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tNriK-0001kS-Fv; Wed, 18 Dec 2024 05:55:36 -0500
+	id 1tNrhK-0000dr-L9; Wed, 18 Dec 2024 05:54:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dhildenb@redhat.com>)
- id 1tNrhs-0000nG-Uo
- for qemu-devel@nongnu.org; Wed, 18 Dec 2024 05:55:13 -0500
+ id 1tNrhF-0000dd-W4
+ for qemu-devel@nongnu.org; Wed, 18 Dec 2024 05:54:30 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dhildenb@redhat.com>)
- id 1tNrho-0006zg-5y
- for qemu-devel@nongnu.org; Wed, 18 Dec 2024 05:55:07 -0500
+ id 1tNrhE-0006n2-6j
+ for qemu-devel@nongnu.org; Wed, 18 Dec 2024 05:54:29 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1734519303;
+ s=mimecast20190719; t=1734519267;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=7uM+FWljAFEQKRezuys6B3I8zqsZ9FHnISAqVX/2eZI=;
- b=Y9+58KlfYcugPgy6DW3gP8ygF362rn+5tykTj/0/AZFltF6FVQp3ucMsNJBaFZc9NRoZPZ
- OP3gwClGmYwLdZkLfAvCv5lGdNloasOCf2lbntCEYLX5loKHTkwv0fqn2xYFqEhw0DVhvr
- MebUbJCVt2PGdsfzel3Cp+rYvSvmmMw=
+ bh=Zvokl2JFZjrf2TkNRlzgYIlGm36Z91ZjxT6UTdHIqvs=;
+ b=QCKeEICib9Fdroke1YGnFp53+yKTF6Ec86sbgUCVn2OlHtRtVntfB7vzqxLpjysX+JTpBA
+ AZc4wwdLeT4H3/KCMNtSGvlIbN49KSmHtfm/qzm9g9hgrZKJDlOW0O9UP7rC96TMaXq1q9
+ 3+rLld0wRHenzaex+oPygK0ReaZUBR8=
 Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
  [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-226-6acG3tf4MYq-6N3JVdz1MQ-1; Wed, 18 Dec 2024 05:53:17 -0500
-X-MC-Unique: 6acG3tf4MYq-6N3JVdz1MQ-1
-X-Mimecast-MFC-AGG-ID: 6acG3tf4MYq-6N3JVdz1MQ
+ us-mta-657-HabVR3UzPQq-p0f9FJb9vQ-1; Wed, 18 Dec 2024 05:53:20 -0500
+X-MC-Unique: HabVR3UzPQq-p0f9FJb9vQ-1
+X-Mimecast-MFC-AGG-ID: HabVR3UzPQq-p0f9FJb9vQ
 Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-38629a685fdso2004056f8f.2
- for <qemu-devel@nongnu.org>; Wed, 18 Dec 2024 02:53:17 -0800 (PST)
+ ffacd0b85a97d-385e9c698e7so362679f8f.0
+ for <qemu-devel@nongnu.org>; Wed, 18 Dec 2024 02:53:20 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734519196; x=1735123996;
+ d=1e100.net; s=20230601; t=1734519199; x=1735123999;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=7uM+FWljAFEQKRezuys6B3I8zqsZ9FHnISAqVX/2eZI=;
- b=bbMBUQoDz+o9kINMSg+2uhaK99RklPHxGv9vHUZWiestqbxfBgcH9k9oNzX6FBNrTR
- HVO5AwaZZLOt4/nr+T0dBzZXqA5JxboyuraDOfnae0ZRy2PYxsW59JMqkKSsenlkvJt/
- e3/R3aomLIHD7FCSzZw3VZl9nGOkdeWNn9CFJrlHXS77lKGqjd1TcRmNJOu6KzymxRNd
- kr538dzsFDyBeW1y6JgAZ2r8RdyfDabJyUYePpxiozgn7Wsb2QuRxkvUFEfwA3NHNPjQ
- TH3Qa04gZLACGeGuE/6LzJpBizKfsvMiIGQ2C1NjU06STnYERI9cb02zoUwSBmMlOk46
- mwlA==
-X-Gm-Message-State: AOJu0Yxa7wigh8HF4pSRypasu4iQcpAVRyyEbuawkmE2WVwFD25Gl7ye
- X26TYgdiZgK0x/FiekusiLX63l9v7xdV0jqx4x8Z/nDtuONU6D8viU6YLsGc6sd2Ot24Y/vokVy
- folf99/+KAKabeG5GEJEtg9eq/8zpDbTm3Pqu6vddWHT9ra8e57B1bll5iZgjVChL5mXWSR2hUp
- ZdPy6oQM8iQbya6nk2DOTkvjb/ulZqmQ7iGHs=
-X-Gm-Gg: ASbGncvISHgaQzsAk5kkjyxUDBKVCcBKpVXbw2pEt0bv9/gp2JGnplYKQ/BcJl0HJqO
- gwS10OqPrc0JPYRb24MMejSguBhEzCTuGYEr2ElTRfdjZa+CHFF0vXL6EdRoklHStM/TVYNjwAj
- jG3xnPlllQ4g9E/9DznRWrsWzoeDO//OKGvSkacIodGTD0Na/618VNzrlsdYY5iK3vigK7YF/0M
- K9gAT7DmBTYiY3QFv/8eFiixkSV73g8gryRr+V94KXNggl4+ncrO6doqmTmp/joWGghEMEGRsVh
- Z1bWPOj3tdz1AA4HMhH4zq9WqP8/+ucYlGr0npFD7w==
-X-Received: by 2002:a5d:47a3:0:b0:386:34cb:37b with SMTP id
- ffacd0b85a97d-388e4d96d2fmr1534625f8f.56.1734519196326; 
- Wed, 18 Dec 2024 02:53:16 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IF/sWSUM6eFz9e0Fj2ehZix+pCZAtX4z9ddKA37lVSDdVWFlMJSod4Dayo4sxctiSlixawauw==
-X-Received: by 2002:a5d:47a3:0:b0:386:34cb:37b with SMTP id
- ffacd0b85a97d-388e4d96d2fmr1534598f8f.56.1734519195851; 
- Wed, 18 Dec 2024 02:53:15 -0800 (PST)
+ bh=Zvokl2JFZjrf2TkNRlzgYIlGm36Z91ZjxT6UTdHIqvs=;
+ b=BRSArODTVQQywPL/FldAG7UWpCzaBpAnsUgmmT/YjTwRPRPW6exj9Hj6IIbOMW4cB1
+ 7P35JZv3dJqL9nhROvtSAwZuMTKfiCMr+tXDnarmfolBOrh70uXRBmpPxUzoa47RlMZy
+ DM8Yi0+H8hX+Eq5gMEGvbYa9Hc30i247Ce3pQD67qQhW98lnA25g8uAaDrhrAZTgY3rq
+ JZsLLmNnDxzzPB/wyzkj/XZKiuJwrsqb7be7xz7/hjJlntVP/Q4JXezetW6PckMtXIfy
+ U9KZ7b8jn0+OGhQeNJZBnrW/a7dT6S/OyM3IhZPIN4CnKO91zw1nc+Y88tGsK2ebgaB/
+ +pag==
+X-Gm-Message-State: AOJu0Yy4ZjUGALV96N1aKGPT5lMr32IBqN/6CtWVm8hFSA5EWUw572W4
+ eUO0rA2TzDInw+tfNpe2t0/eEouBl6VKz9L7LPKhkyFwDqtLJcDtWh6dC562fMxYyWY86cr7Phy
+ OelBFMzfRfiarsFBTLW/n+S6qyD/LWYbG8uNQuhibgtgPzVBnHdZnu/8ZDsEi5vZZiRbbQQFubu
+ FNt9dBpS4jzeErUNsN4dbJbLork31t0nTje3I=
+X-Gm-Gg: ASbGncvlUGVCRWC+XRoeyFo9gCu2Jdx63RQU+Nh6TeQR4eXKH85PrdoUOiba4HQBMhy
+ 0RqVof3C405qGEhKpO1htcnFsvo5J9SUPvA5WTY+pKY/yhGTBNb9pv0gaikmh3Xd9l40Lz1O7B8
+ m5UctyGyRiW8cXXMNoaOYOdW08VT1nSOM1y+FVaWmjff9PX319eN97Bw/zrIODoVe+PsuzLE+kX
+ 0NzvxrTQ+hYDfBHuOeKoWCJo+rph0Lonb+KbdraOMkUZBXLeWxBpcxbT4bESMZYjxyWiXSk8kMD
+ SJ66oaA0duSwJux1lVk0/I4A/3Iy0G+QmSVkzt33GQ==
+X-Received: by 2002:a05:6000:1ac8:b0:385:e95b:bb46 with SMTP id
+ ffacd0b85a97d-388e4e79255mr1488520f8f.22.1734519199113; 
+ Wed, 18 Dec 2024 02:53:19 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEEngxYrOZ9O8x5obWISSGDHmBHNXG7U1bKMTOcXzBMprW2ys74s+PRO4w+pQACLPWt8wRpVA==
+X-Received: by 2002:a05:6000:1ac8:b0:385:e95b:bb46 with SMTP id
+ ffacd0b85a97d-388e4e79255mr1488495f8f.22.1734519198770; 
+ Wed, 18 Dec 2024 02:53:18 -0800 (PST)
 Received: from localhost
  (p200300cbc73f8300a5d5c21badd3cf50.dip0.t-ipconnect.de.
  [2003:cb:c73f:8300:a5d5:c21b:add3:cf50])
  by smtp.gmail.com with UTF8SMTPSA id
- ffacd0b85a97d-388c8046ca6sm13922120f8f.83.2024.12.18.02.53.14
+ ffacd0b85a97d-388c80473c6sm13910919f8f.80.2024.12.18.02.53.16
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 18 Dec 2024 02:53:15 -0800 (PST)
+ Wed, 18 Dec 2024 02:53:17 -0800 (PST)
 From: David Hildenbrand <david@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Halil Pasic <pasic@linux.ibm.com>,
@@ -80,10 +80,9 @@ Cc: Halil Pasic <pasic@linux.ibm.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  "Michael S . Tsirkin" <mst@redhat.com>,
  David Hildenbrand <david@redhat.com>
-Subject: [PULL 04/15] s390x/s390-virtio-hcall: prepare for more diag500
- hypercalls
-Date: Wed, 18 Dec 2024 11:52:52 +0100
-Message-ID: <20241218105303.1966303-5-david@redhat.com>
+Subject: [PULL 05/15] s390x: rename s390-virtio-hcall* to s390-hypercall*
+Date: Wed, 18 Dec 2024 11:52:53 +0100
+Message-ID: <20241218105303.1966303-6-david@redhat.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241218105303.1966303-1-david@redhat.com>
 References: <20241218105303.1966303-1-david@redhat.com>
@@ -114,145 +113,102 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Let's generalize, abstracting the virtio bits. diag500 is now a generic
-hypercall to handle QEMU/KVM specific things. Explicitly specify all
-already defined subcodes, including legacy ones (so we know what we can
-use for new hypercalls).
+Let's make it clearer that we are talking about general
+QEMU/KVM-specific hypercalls.
 
-Move the PGM_SPECIFICATION injection into the renamed function
-handle_diag_500(), so we can turn it into a void function.
-
-We'll rename the files separately, so git properly detects the rename.
-
-Message-ID: <20241008105455.2302628-4-david@redhat.com>
+Message-ID: <20241008105455.2302628-5-david@redhat.com>
 Acked-by: Michael S. Tsirkin <mst@redhat.com>
 Reviewed-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: David Hildenbrand <david@redhat.com>
 ---
- hw/s390x/s390-virtio-hcall.c   | 15 ++++++++-------
- hw/s390x/s390-virtio-hcall.h   | 11 ++++++-----
- target/s390x/kvm/kvm.c         | 16 +---------------
- target/s390x/tcg/misc_helper.c |  5 +++--
- 4 files changed, 18 insertions(+), 29 deletions(-)
+ hw/s390x/meson.build                               | 2 +-
+ hw/s390x/{s390-virtio-hcall.c => s390-hypercall.c} | 2 +-
+ hw/s390x/{s390-virtio-hcall.h => s390-hypercall.h} | 6 +++---
+ target/s390x/kvm/kvm.c                             | 2 +-
+ target/s390x/tcg/misc_helper.c                     | 2 +-
+ 5 files changed, 7 insertions(+), 7 deletions(-)
+ rename hw/s390x/{s390-virtio-hcall.c => s390-hypercall.c} (97%)
+ rename hw/s390x/{s390-virtio-hcall.h => s390-hypercall.h} (86%)
 
-diff --git a/hw/s390x/s390-virtio-hcall.c b/hw/s390x/s390-virtio-hcall.c
-index ca49e3cd22..5fb78a719e 100644
+diff --git a/hw/s390x/meson.build b/hw/s390x/meson.build
+index 482fd13420..71ec747f4c 100644
+--- a/hw/s390x/meson.build
++++ b/hw/s390x/meson.build
+@@ -12,7 +12,7 @@ s390x_ss.add(files(
+   's390-pci-inst.c',
+   's390-skeys.c',
+   's390-stattrib.c',
+-  's390-virtio-hcall.c',
++  's390-hypercall.c',
+   'sclp.c',
+   'sclpcpu.c',
+   'sclpquiesce.c',
+diff --git a/hw/s390x/s390-virtio-hcall.c b/hw/s390x/s390-hypercall.c
+similarity index 97%
+rename from hw/s390x/s390-virtio-hcall.c
+rename to hw/s390x/s390-hypercall.c
+index 5fb78a719e..f816c2b1ef 100644
 --- a/hw/s390x/s390-virtio-hcall.c
-+++ b/hw/s390x/s390-virtio-hcall.c
-@@ -1,5 +1,5 @@
- /*
-- * Support for virtio hypercalls on s390
-+ * Support for QEMU/KVM hypercalls on s390
-  *
-  * Copyright 2012 IBM Corp.
-  * Author(s): Cornelia Huck <cornelia.huck@de.ibm.com>
-@@ -57,18 +57,19 @@ static int handle_virtio_ccw_notify(uint64_t subch_id, uint64_t data)
-     return 0;
- }
- 
--int s390_virtio_hypercall(CPUS390XState *env)
-+void handle_diag_500(S390CPU *cpu, uintptr_t ra)
- {
-+    CPUS390XState *env = &cpu->env;
-     const uint64_t subcode = env->regs[1];
- 
-     switch (subcode) {
--    case KVM_S390_VIRTIO_NOTIFY:
-+    case DIAG500_VIRTIO_NOTIFY:
-         env->regs[2] = handle_virtio_notify(env->regs[2]);
--        return 0;
--    case KVM_S390_VIRTIO_CCW_NOTIFY:
-+        break;
-+    case DIAG500_VIRTIO_CCW_NOTIFY:
-         env->regs[2] = handle_virtio_ccw_notify(env->regs[2], env->regs[3]);
--        return 0;
-+        break;
-     default:
--        return -EINVAL;
-+        s390_program_interrupt(env, PGM_SPECIFICATION, ra);
-     }
- }
-diff --git a/hw/s390x/s390-virtio-hcall.h b/hw/s390x/s390-virtio-hcall.h
-index 3d9fe147d2..dca456b926 100644
++++ b/hw/s390x/s390-hypercall.c
+@@ -12,7 +12,7 @@
+ #include "qemu/osdep.h"
+ #include "cpu.h"
+ #include "hw/boards.h"
+-#include "hw/s390x/s390-virtio-hcall.h"
++#include "hw/s390x/s390-hypercall.h"
+ #include "hw/s390x/ioinst.h"
+ #include "hw/s390x/css.h"
+ #include "virtio-ccw.h"
+diff --git a/hw/s390x/s390-virtio-hcall.h b/hw/s390x/s390-hypercall.h
+similarity index 86%
+rename from hw/s390x/s390-virtio-hcall.h
+rename to hw/s390x/s390-hypercall.h
+index dca456b926..2fa81dbfdd 100644
 --- a/hw/s390x/s390-virtio-hcall.h
-+++ b/hw/s390x/s390-virtio-hcall.h
-@@ -1,5 +1,5 @@
- /*
-- * Support for virtio hypercalls on s390x
-+ * Support for QEMU/KVM hypercalls on s390x
-  *
-  * Copyright IBM Corp. 2012, 2017
-  * Author(s): Cornelia Huck <cornelia.huck@de.ibm.com>
-@@ -12,12 +12,13 @@
- #ifndef HW_S390_VIRTIO_HCALL_H
- #define HW_S390_VIRTIO_HCALL_H
++++ b/hw/s390x/s390-hypercall.h
+@@ -9,8 +9,8 @@
+  * directory.
+  */
  
--#include "standard-headers/asm-s390/virtio-ccw.h"
+-#ifndef HW_S390_VIRTIO_HCALL_H
+-#define HW_S390_VIRTIO_HCALL_H
++#ifndef HW_S390_HYPERCALL_H
++#define HW_S390_HYPERCALL_H
+ 
  #include "cpu.h"
  
--/* The only thing that we need from the old kvm_virtio.h file */
--#define KVM_S390_VIRTIO_NOTIFY 0
-+#define DIAG500_VIRTIO_NOTIFY           0 /* legacy, implemented as a NOP */
-+#define DIAG500_VIRTIO_RESET            1 /* legacy */
-+#define DIAG500_VIRTIO_SET_STATUS       2 /* legacy */
-+#define DIAG500_VIRTIO_CCW_NOTIFY       3 /* KVM_S390_VIRTIO_CCW_NOTIFY */
+@@ -21,4 +21,4 @@
  
--int s390_virtio_hypercall(CPUS390XState *env);
-+void handle_diag_500(S390CPU *cpu, uintptr_t ra);
+ void handle_diag_500(S390CPU *cpu, uintptr_t ra);
  
- #endif /* HW_S390_VIRTIO_HCALL_H */
+-#endif /* HW_S390_VIRTIO_HCALL_H */
++#endif /* HW_S390_HYPERCALL_H */
 diff --git a/target/s390x/kvm/kvm.c b/target/s390x/kvm/kvm.c
-index dd0322c43a..9fbb7db163 100644
+index 9fbb7db163..7e4bce5337 100644
 --- a/target/s390x/kvm/kvm.c
 +++ b/target/s390x/kvm/kvm.c
-@@ -1491,20 +1491,6 @@ static int handle_e3(S390CPU *cpu, struct kvm_run *run, uint8_t ipbl)
-     return r;
- }
+@@ -49,7 +49,7 @@
+ #include "hw/s390x/ebcdic.h"
+ #include "exec/memattrs.h"
+ #include "hw/s390x/s390-virtio-ccw.h"
+-#include "hw/s390x/s390-virtio-hcall.h"
++#include "hw/s390x/s390-hypercall.h"
+ #include "target/s390x/kvm/pv.h"
  
--static int handle_hypercall(S390CPU *cpu, struct kvm_run *run)
--{
--    CPUS390XState *env = &cpu->env;
--    int ret;
--
--    ret = s390_virtio_hypercall(env);
--    if (ret == -EINVAL) {
--        kvm_s390_program_interrupt(cpu, PGM_SPECIFICATION);
--        return 0;
--    }
--
--    return ret;
--}
--
- static void kvm_handle_diag_288(S390CPU *cpu, struct kvm_run *run)
- {
-     uint64_t r1, r3;
-@@ -1601,7 +1587,7 @@ static int handle_diag(S390CPU *cpu, struct kvm_run *run, uint32_t ipb)
-         handle_diag_318(cpu, run);
-         break;
-     case DIAG_KVM_HYPERCALL:
--        r = handle_hypercall(cpu, run);
-+        handle_diag_500(cpu, RA_IGNORED);
-         break;
-     case DIAG_KVM_BREAKPOINT:
-         r = handle_sw_breakpoint(cpu, run);
+ #define kvm_vm_check_mem_attr(s, attr) \
 diff --git a/target/s390x/tcg/misc_helper.c b/target/s390x/tcg/misc_helper.c
-index 303f86d363..0ab2bf36cf 100644
+index 0ab2bf36cf..3732d79185 100644
 --- a/target/s390x/tcg/misc_helper.c
 +++ b/target/s390x/tcg/misc_helper.c
-@@ -117,10 +117,11 @@ void HELPER(diag)(CPUS390XState *env, uint32_t r1, uint32_t r3, uint32_t num)
- 
-     switch (num) {
-     case 0x500:
--        /* KVM hypercall */
-+        /* QEMU/KVM hypercall */
-         bql_lock();
--        r = s390_virtio_hypercall(env);
-+        handle_diag_500(env_archcpu(env), GETPC());
-         bql_unlock();
-+        r = 0;
-         break;
-     case 0x44:
-         /* yield */
+@@ -36,7 +36,7 @@
+ #include "sysemu/cpus.h"
+ #include "sysemu/sysemu.h"
+ #include "hw/s390x/ebcdic.h"
+-#include "hw/s390x/s390-virtio-hcall.h"
++#include "hw/s390x/s390-hypercall.h"
+ #include "hw/s390x/sclp.h"
+ #include "hw/s390x/s390_flic.h"
+ #include "hw/s390x/ioinst.h"
 -- 
 2.47.1
 
