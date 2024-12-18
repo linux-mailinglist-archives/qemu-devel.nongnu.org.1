@@ -2,86 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 435F39F6A7C
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Dec 2024 16:53:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 743F79F6A84
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Dec 2024 16:54:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tNwLc-0007WM-Vn; Wed, 18 Dec 2024 10:52:30 -0500
+	id 1tNwLe-0007XN-D5; Wed, 18 Dec 2024 10:52:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tNwLa-0007VI-Ih
- for qemu-devel@nongnu.org; Wed, 18 Dec 2024 10:52:26 -0500
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tNwLc-0007WS-5t
+ for qemu-devel@nongnu.org; Wed, 18 Dec 2024 10:52:28 -0500
+Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tNwLT-0006LC-Cb
- for qemu-devel@nongnu.org; Wed, 18 Dec 2024 10:52:25 -0500
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-4363ae65100so43471445e9.0
- for <qemu-devel@nongnu.org>; Wed, 18 Dec 2024 07:52:15 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tNwLY-0006QP-Tj
+ for qemu-devel@nongnu.org; Wed, 18 Dec 2024 10:52:27 -0500
+Received: by mail-wr1-x434.google.com with SMTP id
+ ffacd0b85a97d-3863703258fso624677f8f.1
+ for <qemu-devel@nongnu.org>; Wed, 18 Dec 2024 07:52:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734537133; x=1735141933; darn=nongnu.org;
+ d=linaro.org; s=google; t=1734537138; x=1735141938; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=43o9dEO1jQoTM4ynX/IY3hHbA9yVH/+x2ZTghLcMeMM=;
- b=olHJO3Sx/i01QdRhLt+HQLXs0JCTFBHlUp0nljMQAm1pRoI7dXLzVLW1TyfJTPDsKv
- 3dC5ihedAADI/9DKlV42cZEmmZqg4DbCZzNRKhm/oBaT9MeKe4d7L9oFdaZhRXwCYgnP
- kvudIVALvh7WE+qHIP5rnXACXGYXHQMm27Pt+nbRSTr/8scPq5PVzXZtV5ODxsvqaxXO
- t3n4jEdlyJqD7GXMIIytiTeHkc01TRoEplhjpokSASO/V9EhO4qL9Ee0Juhyoc40EGjX
- sfQW5Ll5hs+u1b4iM23HRtfMtKfAQAu45i2HDcEVlPeLUVceXNb7NRnEPcQ4Ctqlwhyd
- 9a9g==
+ bh=ib9+afMAQlHaOpnPQrKm50FlQeuT4/NIcMi4TUV3nMU=;
+ b=LjgXGtJKT7zOZJOUdMsBIpBQe1wcgl8Tsap8FWqqGrBxqwUMHBMbpFPM7wvruq/c62
+ SCeE/UqgxnUllBd1UaoOiO3vHUjrHDj1ZRUR5gj15eTKwL2iMlnvUKRdLSFi/CWbGtBE
+ q9GtfJhbsc2FEfMTCsPbq+5NYi3fGKSShh8t4DkDU7+0vOv8jj2ag54tpDu8kIxc2b7K
+ Yet8rgczkMxelGgqUHI2J8iMirnyicg+0rauhr0pmTc2nRIcoFUhpAWKQSoICZXDzoPf
+ dJSGgEad8H3PYxle2JihpQ35Qs00v+wPfR3z06cXWTVO8O6vX+N5T3+kODKihKI05GiK
+ Tl0A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734537133; x=1735141933;
+ d=1e100.net; s=20230601; t=1734537138; x=1735141938;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=43o9dEO1jQoTM4ynX/IY3hHbA9yVH/+x2ZTghLcMeMM=;
- b=fs0ET3ahrC47U5Oj3++hvgCrMUFjaaBLy+UmWgu4hrmTfxEMHh37xmUJsn4bgxzXRT
- fkVOJnDPFb/Uj8XHVkRhGp8cn90EkdtiuAe/S7PC72rhQ1t6tABLQvP7uSpOrabAztBj
- iaAwytfSNjGGAQTsb6+N5JENrLyU1H1Brlq9ll96PIoV0T6uvbvNW4Rh8kzNxi1POAD7
- Vp1JLiUlx69Ix5/d4AuS9tXVOLePnWgO1Jh5JgxY7YNvckTybj1ikrrxtdClOpDto7r+
- rLdZCf0LxRymgZf6W/axNSZb6Xf+BNIIuV+Kos4R9e8IO6vgEyBTzl3GJlp63/7aVHKC
- lVXQ==
-X-Gm-Message-State: AOJu0YxsTsdPxc6lLbb8I8XckgZos9lpVSGmQf5HrqiTUvKQVeFck0Nr
- xSstGev/PFMjJ5F1I8bplK3f//xawLpC3+lFDy0lLugYjoZcj8Hvw1zOAFqveaUpej3ICvDjiKd
- Q
-X-Gm-Gg: ASbGncvYOvlsempbvSsknJRt/AU370A0RYDbciTecXB33KKjnbVEQ+6sT/V/EU968KN
- /MMmTYS3yhKYC8cNEK52RhiXOomTodmfi3bbs2FC4RuaAq91SUacWsCYE0gfYcKmGYUZ7hhu6sz
- XCm5M0ipMQTTY/Tca79oitfsMUgrVLMUdvfOv/Mh/nSTR76nyBZs6Fkt7rMJ5LTM/jG2WtWgirC
- es5cvIhmCYoZRW+sgmHW/q1TCxe5XIJSAMVYa1J1EF6EFPgCFHBJe/gTDxU7mJsMa8vDA/Aa9DN
- SWEO
-X-Google-Smtp-Source: AGHT+IEsaC6V3GYn8cY+jQ5UtKyHo0/kS6vyBPmxF3hRbh6FBxgYv+uGh72kfs4SbFGav+LHBgHjWw==
-X-Received: by 2002:a05:600c:468c:b0:431:542d:2599 with SMTP id
- 5b1f17b1804b1-436553ed055mr29615055e9.22.1734537133598; 
- Wed, 18 Dec 2024 07:52:13 -0800 (PST)
+ bh=ib9+afMAQlHaOpnPQrKm50FlQeuT4/NIcMi4TUV3nMU=;
+ b=sp5LcizP7a96zg/JCBKXX4+WmvHZPtS5mtvhbVqZbWEFwxqDV0PEfbUWQlkJP+qrnm
+ Yv+W7njs9YO4aPSclFoTaohWnDh18eqFW1+pvzipZmOO3H6sti/4LeF6e+qHWVyyuA85
+ uYFDtEYz8g39Q94bgmvZoMqZS0gKtm9MurJTzjdA4VR1NuNtZRbgPtzFRsjPLZ/FoGdY
+ fQvUcQm9+IIrOCrwi3l9rLSIGNGI+fVJ54xwRl+keDmJngCoAhB6p5ftKfUw3I4JBgpZ
+ 5e4xee93GG7fYOPo0XDgd+jHb4+rYe5l1V85vxBWMCE5Zy61645gNUW5GgZcCPL7HOAa
+ wosQ==
+X-Gm-Message-State: AOJu0YxJdiYPea1io24dIWLYIxjSznoobpNNETgATl0SwvP9+7PjJvZL
+ KLiK8Zmk22eqoVrflqjRul2PqmHL/7qyTVsVceYjwZRFYJNKoIaeuD3/kEeizIVgAbzXJl6eVKr
+ y
+X-Gm-Gg: ASbGncvWBJPHDpnBJt9nLks+y2zpEAR5leF86qx4Tcfd09sBslg9s4by7124K6jtrmz
+ SNLyjmgWDE+e3FTcfVRKpx22tpUHIGpqRBbd4iclCBlP/bbIoHqv6LKXBBlWNtNLuZkCKpMS3db
+ mNPSGHshe0X27B5d14+XyLaASeiIJ4MAMuyBm+KtZksklVviArfpZxASD1WFyG1LlOATK3netLm
+ xH1urt0FzKeI/x+0i7aYAjZUmFNf1Vqk2RLBq7gWe4MWpynZHhdb8Z7ryAEJMfygIIEBDrnWX88
+ SXjR
+X-Google-Smtp-Source: AGHT+IFTyLIZf6A6Nqzke5YYkTYXKwQnGKfsmfXbDs/d0yw7/wEkszEx61K+95hulLsoOeTyyyOTpg==
+X-Received: by 2002:a5d:5f53:0:b0:385:e3e7:547b with SMTP id
+ ffacd0b85a97d-388e4e95107mr3183389f8f.25.1734537138228; 
+ Wed, 18 Dec 2024 07:52:18 -0800 (PST)
 Received: from localhost.localdomain ([78.196.4.158])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43656afd57esm24251025e9.5.2024.12.18.07.52.12
+ ffacd0b85a97d-388c80601desm14330975f8f.90.2024.12.18.07.52.17
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 18 Dec 2024 07:52:13 -0800 (PST)
+ Wed, 18 Dec 2024 07:52:17 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>, qemu-ppc@nongnu.org,
  Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 2/4] tcg/tci: Include missing 'disas/dis-asm.h' header
-Date: Wed, 18 Dec 2024 16:52:00 +0100
-Message-ID: <20241218155202.71931-3-philmd@linaro.org>
+Subject: [PATCH 3/4] exec/ram_addr: Include missing 'exec/hwaddr.h' and
+ 'exec/cpu-common.h'
+Date: Wed, 18 Dec 2024 16:52:01 +0100
+Message-ID: <20241218155202.71931-4-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241218155202.71931-1-philmd@linaro.org>
 References: <20241218155202.71931-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::434;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x434.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,34 +99,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-"disas/dis-asm.h" defines bfd_vma and disassemble_info,
-include it in order to avoid (when refactoring other
-headers):
+'hwaddr' is defined in "exec/hwaddr.h", 'ram_addr_t' in
+"exec/cpu-common.h". Include these headers in order to
+avoid when refactoring unrelated headers:
 
-  tcg/tci.c:1066:20: error: unknown type name 'bfd_vma'
-  int print_insn_tci(bfd_vma addr, disassemble_info *info)
-                     ^
-  tcg/tci.c:1066:34: error: unknown type name 'disassemble_info'
-  int print_insn_tci(bfd_vma addr, disassemble_info *info)
-                                   ^
+  In file included from ../../hw/s390x/s390-virtio-ccw.c:17:
+  include/sysemu/physmem-target.h:37:24: error: unknown type name 'hwaddr'
+     37 |     (MemoryRegion *mr, hwaddr offset, hwaddr length, unsigned client);
+        |                        ^
+  In file included from ../../hw/s390x/s390-virtio-ccw.c:16:
+  include/exec/ram_addr.h:52:36: error: unknown type name 'ram_addr_t'
+     52 | RAMBlock *qemu_ram_alloc_from_file(ram_addr_t size, MemoryRegion *mr,
+        |                                    ^
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- tcg/tci.c | 1 +
- 1 file changed, 1 insertion(+)
+ include/exec/ram_addr.h | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/tcg/tci.c b/tcg/tci.c
-index 3afb2235285..3eb95e20b65 100644
---- a/tcg/tci.c
-+++ b/tcg/tci.c
-@@ -21,6 +21,7 @@
- #include "tcg/tcg.h"
- #include "tcg/helper-info.h"
- #include "tcg/tcg-ldst.h"
-+#include "disas/dis-asm.h"
- #include <ffi.h>
+diff --git a/include/exec/ram_addr.h b/include/exec/ram_addr.h
+index 53785cdb87c..ff157c1f42a 100644
+--- a/include/exec/ram_addr.h
++++ b/include/exec/ram_addr.h
+@@ -28,6 +28,9 @@
+ #include "exec/exec-all.h"
+ #include "qemu/rcu.h"
  
++#include "exec/hwaddr.h"
++#include "exec/cpu-common.h"
++
+ extern uint64_t total_dirty_pages;
  
+ /**
 -- 
 2.45.2
 
