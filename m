@@ -2,69 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D61A69F687D
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Dec 2024 15:31:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A26509F690D
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Dec 2024 15:51:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tNv4M-0000h9-8s; Wed, 18 Dec 2024 09:30:34 -0500
+	id 1tNvN3-0007qQ-9S; Wed, 18 Dec 2024 09:49:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tNv3w-0000Ya-Tf; Wed, 18 Dec 2024 09:30:14 -0500
-Received: from mgamail.intel.com ([192.198.163.8])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tNv3v-0004FM-4U; Wed, 18 Dec 2024 09:30:08 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1734532207; x=1766068207;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=ECYa1ISu3mUk8ZxqBTRCpB9mnPeFUyXwRxUzf2tDNLM=;
- b=QZug9hUmeUKuryWNIv2Wj43ArMGCPglxDLJzP0FqwJ8b+inXs5IFK+Zg
- 6HELaz8rLTV4osT1xvpz5k3OupICyoz5ESnq7OFrUy2KG/az5NwDOeXLD
- TucPkndSlGj9IM+0km+ZDYhvK4eR65ojCzrqP2l4E/mq2HF55sd48JETG
- /O9s9o/K6+4k8fuIRC8+ewyr43kkoEc1h6sQt6ifO6ZyiyDQA+CgO+W0e
- 1SHqYHRcm8BFueP3nhKlYS0HqBci3ujkw1Q3t8KBH/6bNO+dSju0yv96G
- 9z1QFx0h7sp/giXWfoMoi9jpaLWTpBGj+C7IJvbhQrfTMMBj0YA7BA0sF g==;
-X-CSE-ConnectionGUID: hy2up2pAQzS23wSrWgoY6A==
-X-CSE-MsgGUID: k7oD2YOsQRepm4oPV0JIOg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11290"; a="52535594"
-X-IronPort-AV: E=Sophos;i="6.12,244,1728975600"; d="scan'208";a="52535594"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Dec 2024 06:28:44 -0800
-X-CSE-ConnectionGUID: 5u3AVuLqSxukXA4SqUdiBw==
-X-CSE-MsgGUID: rCfhBhv+Qb+DBddVO2/law==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="102019948"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by fmviesa003.fm.intel.com with ESMTP; 18 Dec 2024 06:28:43 -0800
-Date: Wed, 18 Dec 2024 22:47:23 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org,
- Junjie Mao <junjie.mao@hotmail.com>
-Subject: Re: [PATCH 24/26] rust: qom: move device_id to PL011 class side
-Message-ID: <Z2Lge39BPLR2dTAt@intel.com>
-References: <20241209123717.99077-1-pbonzini@redhat.com>
- <20241209123717.99077-25-pbonzini@redhat.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tNvMg-0007iw-Hv
+ for qemu-devel@nongnu.org; Wed, 18 Dec 2024 09:49:32 -0500
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tNvMd-0002CG-Tq
+ for qemu-devel@nongnu.org; Wed, 18 Dec 2024 09:49:30 -0500
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-4361b0ec57aso63832525e9.0
+ for <qemu-devel@nongnu.org>; Wed, 18 Dec 2024 06:49:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1734533366; x=1735138166; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=4kV0TrM5vXEjLmE4aVQ534+ohvFmNs1MBI0iT9dxc1g=;
+ b=KXib3GcuspfWVrF8xmZQ5uXk27fjo+5iPTzqNzAaIwK4g6g2cgSoh5behhkh7nQDIn
+ TOgjYp/EuC8NrHpOpbQn3kfSzCUhRxDe2IUXAGsBZSZjKobH5beQI76aJi5RQazLgUIq
+ EPnGqyPtURLOa9Gp8N3hROPN+EQemUM6BLcYnVfpJxrXuB5Lop9ceCZzZtiux6ZRSWSv
+ iaShFjOfkmVa8eDAVvD0qj0ipnxqAbYWpXqGIpNuRZUjmQFtpduZcMzRM3XUC2GDyBDM
+ 5GVtiiq9mYkkHtyAF01L4dNCejt3iJjXMf0coXDi+EuL1acTkwQqqxUHfMjZkxDyyslB
+ C0MQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1734533366; x=1735138166;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=4kV0TrM5vXEjLmE4aVQ534+ohvFmNs1MBI0iT9dxc1g=;
+ b=WYjz/0f+XOcKJpdvHUkmiXSAXG4j/JUUaqwhz5NOdVQTGSNf7zP46cnmKm3Cu+3UTf
+ +7K3l/FWqBblYRF5Y4NFolDWQtPNZ+rK9xfX5CIMMsFSEtu0x7jMUaEYF8gbpnwKI9Do
+ qFyrZUV9GVPKPQYG81xBbK4OxppHmqftBmDQ/aEClrDILTMek4jKp1HSB0fobCdSoQqG
+ H6eoySqfoL3shY2XjbZoEwGzqdirUQ27YhJjdYtYtPh6h9OuS/c9yl6jxVZbk+vAjTx6
+ WaRuUoVrwxGEI3OZ1XskT8fjrnmMQCDTdDiLzWiuAqyoC1bKr1XohEvaIHXHe6UOEfU0
+ AIxw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWLGZ+yc6k3Dct++QRXPanSFQQn0eRqslJpkwf537O4A/KrMQ384qPbpdZ/WxG3D1Flwg30xyMBybHE@nongnu.org
+X-Gm-Message-State: AOJu0YyI2igJWoaKORWAbv7QPfkFnoXY32D7KldiV/5hVQNML7IqSenA
+ XCfe9bwgJC/1XracYXqnCTgv7F5GYurCcU0Rfbpj1EUTcEaSxjt5cCMd+TL5hVU=
+X-Gm-Gg: ASbGnctUiYfVzL6lJA0ZsHvpuO3GUeU77S2oT3L/cvPx2/2ZwQ4mmQjUprW7nKk3O3I
+ OB+iFTagFgZqOQzaVd71zS2N5N9jV0xdP2OX3jntz2mBIEDmZTpG3sXYY4VejzNtLg/oCW6geoA
+ 8Qj2vMv5/jjAyEPbFeUZdkimp5QqcHsU/gPZhDFLxRV4lIqTapto1z2nfX9gWl2x5IpXK3WeAAL
+ mmBAvGXUH/AZoJ2sjBApZ40n9mLntQXYJTfu9b4J7TTumGKO7YBxjosc5dCq3oc338BG9uy
+X-Google-Smtp-Source: AGHT+IFBRx4+vK2c46DM8pfUlmCHwxs107An27sJpE1PzAPVZFQ/oBHa3UqMV2jIqh+6YYWfDxMD9w==
+X-Received: by 2002:a05:6000:1843:b0:37d:4647:154e with SMTP id
+ ffacd0b85a97d-388e4d2f463mr3138723f8f.9.1734533366007; 
+ Wed, 18 Dec 2024 06:49:26 -0800 (PST)
+Received: from [192.168.1.117] ([78.196.4.158])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-43656b11495sm22577465e9.19.2024.12.18.06.49.25
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 18 Dec 2024 06:49:25 -0800 (PST)
+Message-ID: <10443a91-8329-4501-96a7-9f40d9045ae8@linaro.org>
+Date: Wed, 18 Dec 2024 15:49:24 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241209123717.99077-25-pbonzini@redhat.com>
-Received-SPF: pass client-ip=192.198.163.8; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 4/7] rust: pl011: fix break errors and definition of Data
+ struct
+To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
+Cc: qemu-rust@nongnu.org
+References: <20241212172209.533779-1-pbonzini@redhat.com>
+ <20241212172209.533779-5-pbonzini@redhat.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20241212172209.533779-5-pbonzini@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,24 +99,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Dec 09, 2024 at 01:37:15PM +0100, Paolo Bonzini wrote:
-> Date: Mon,  9 Dec 2024 13:37:15 +0100
-> From: Paolo Bonzini <pbonzini@redhat.com>
-> Subject: [PATCH 24/26] rust: qom: move device_id to PL011 class side
-> X-Mailer: git-send-email 2.47.1
+On 12/12/24 18:22, Paolo Bonzini wrote:
+> The Data struct is wrong, and does not show how bits 8-15 of DR
+> are the receive status.  Fix it, and use it to fix break
+> errors ("c >> 8" in the C code does not translate to
+> "c.to_be_bytes()[3]").
 > 
-> There is no need to monkeypatch DeviceId::Luminary into the already-initialized
-> PL011State.  Instead, now that we can define a class hierarchy, we can define
-> PL011Class and make device_id a field in there.
-> 
-> There is also no need anymore to have "Arm" as zero, so change DeviceId into a
-> wrapper for the array; all it does is provide an Index<hwaddr> implementation
-> because arrays can only be indexed by usize.
 > Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 > ---
->  rust/hw/char/pl011/src/device.rs | 59 +++++++++++++++-----------------
->  1 file changed, 28 insertions(+), 31 deletions(-)
+>   rust/hw/char/pl011/src/device.rs | 15 ++++++------
+>   rust/hw/char/pl011/src/lib.rs    | 41 ++++++++++++++++++++++----------
+>   2 files changed, 36 insertions(+), 20 deletions(-)
 
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+
+>       impl ReceiveStatusErrorClear {
+> +        pub fn set_from_data(&mut self, data: Data) {
+> +            self.set_errors(data.errors());
+
+It took me some time to understand where is 'c >> 8'.
+
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
+> +        }
+> +
 
 
