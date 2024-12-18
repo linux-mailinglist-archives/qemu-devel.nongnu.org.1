@@ -2,73 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5989B9F6435
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Dec 2024 11:58:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 68F919F6445
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Dec 2024 12:05:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tNrkz-0001sG-L9; Wed, 18 Dec 2024 05:58:21 -0500
+	id 1tNrqa-00042J-Ja; Wed, 18 Dec 2024 06:04:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1tNrkv-0001ca-ET
- for qemu-devel@nongnu.org; Wed, 18 Dec 2024 05:58:17 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1tNrkp-0000CH-Dv
- for qemu-devel@nongnu.org; Wed, 18 Dec 2024 05:58:16 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1734519489;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=VQnkA9wurQNI2ERFpWeQxW3K9XFEWmubu/lIfSrW7OA=;
- b=SjbnoB+6pFJQeMhHZ6xjN/OoEQ+wAZdcXyf+ZobZgcrjHpVLsuyM29rQNdqOaSBsBJ43Jn
- NsLig+AiRs1jf+nO3+8gax4am7GQ62xSvW76ma8PwtR6F0XzY/fudDtE4SUBk+2Xb9j4rO
- HWqMJ8fexlqJDmRstoumKciY4PUMljI=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-689-S0igBtF-MgSEV-8RbJozTg-1; Wed,
- 18 Dec 2024 05:58:06 -0500
-X-MC-Unique: S0igBtF-MgSEV-8RbJozTg-1
-X-Mimecast-MFC-AGG-ID: S0igBtF-MgSEV-8RbJozTg
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 796E0195607D; Wed, 18 Dec 2024 10:58:04 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.27])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id F15921956053; Wed, 18 Dec 2024 10:58:03 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 9D82021E6827; Wed, 18 Dec 2024 11:58:01 +0100 (CET)
-From: Markus Armbruster <armbru@redhat.com>
-To: John Snow <jsnow@redhat.com>
-Cc: qemu-devel@nongnu.org,  Peter Maydell <peter.maydell@linaro.org>,
- Michael Roth <michael.roth@amd.com>
-Subject: Re: [PATCH 04/23] qapi: expand tags to all doc sections
-In-Reply-To: <20241213021827.2956769-5-jsnow@redhat.com> (John Snow's message
- of "Thu, 12 Dec 2024 21:18:07 -0500")
-References: <20241213021827.2956769-1-jsnow@redhat.com>
- <20241213021827.2956769-5-jsnow@redhat.com>
-Date: Wed, 18 Dec 2024 11:58:01 +0100
-Message-ID: <87y10dtg06.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1tNrqP-00041T-17
+ for qemu-devel@nongnu.org; Wed, 18 Dec 2024 06:03:57 -0500
+Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1tNrqH-0001cI-8g
+ for qemu-devel@nongnu.org; Wed, 18 Dec 2024 06:03:55 -0500
+Received: by mail-pl1-x635.google.com with SMTP id
+ d9443c01a7336-21634338cfdso75945865ad.2
+ for <qemu-devel@nongnu.org>; Wed, 18 Dec 2024 03:03:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1734519827; x=1735124627; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=5X8wu85NI9VQoYk+JtbHSheI96U8+39HiJCa2Lyf14A=;
+ b=MP9C3EYVjtkisGFo1tu4ZKLmhta9njqrkdt/chIjeeAL6yaoOBVBz6VWfGSd//7ESH
+ aJDMKtMrIOmp12CliiU6ZyXAAKEhP6Cg1CuUQ6yMZLX7rvStN1OXBoc2N/ESEJ9IbDY0
+ FXRN4lEA3lJJprJIbY7N1lYkdQN48VBjKPQxVP8kdr0Rpl/15dM1nbBFiSJNahjmmGWk
+ yppaqsvvgAERn9qv632jUAbhdX7hsofeEu9dJebCJ4ZGxpOp52QB8gU91t6rCWnm6SLN
+ 5NpzdOofdBh26KkliYscf1V/h2bJBX+YSxAlUw0juuFKDtJcTzN+i/d+6j1TFPnLytRb
+ pAGQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1734519827; x=1735124627;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=5X8wu85NI9VQoYk+JtbHSheI96U8+39HiJCa2Lyf14A=;
+ b=GCobEIfRMZ8dk3lYjnddXHS+G1H07M8pzOxRJa3QtXPrtSsO4YZ3ER0kU2qMxuNxZP
+ OnBO2oxOMCLCiWTfOwpW0I975ZxSXYFpM8mKhsmOjLgGHXUBhjDGkjrgZXgXjV4dDkx8
+ nWPap/1hHIBFLgpG6unjgiHqwn+7i3pK/kjQBjuDOm5ZQE7zOmXhV1DH0Rv45w4HAT2S
+ iPFxt+mH7rP0/d5uSWqVCfSD4E3vJVXT3p4AdQmdHCwDkjHocbsaJ/Bh/WJlRnaQ4/PI
+ 99BqRr8cDLmR4axZF78fOn1is0/qWSAS95Frii3oVdrbW09/PlXe/38bwFqVV0okcI7h
+ v0AQ==
+X-Gm-Message-State: AOJu0Yw7J8PXFuDR9TSexoQRBKEKWP/cPePOcHxUkCdNnR0hmwYajUTL
+ 4wTYbPNdIsCz7v1MBDVToSSWuKZ6RKWJGM27qao5s8gufaUnND1/NxpFz1a8p6h8s5sula1L273
+ d
+X-Gm-Gg: ASbGnct8X5ecblXDCoa4NaVOe1dcZDQtntRke84IHEwXpLjJLAhqRpCrlo8+OVv9Sm9
+ PQE5jYfzEUvL/Unc5YdNbzg2TmqkK4gwskGmzvGi2pfFztfbbrRBPI58/gQz4soiJLz+3pmP4Lc
+ eLqZnA7LSnMk8ciQ3+N1hdNEQnkpdaRAEV21tSzlSLA8MJ1gKCPtkxyuoggaoYfwMUCyu+ztc1R
+ BE0j01dxsC5u1aRo6e+P9KlLn5h+NqlrXzfTMLT8dGYhcu+nTjA3UkSCpnWemB9NjpX2yj+iZ/Y
+ SmH4bGcbpc36+sVo+SNyo8e7KERThRly
+X-Google-Smtp-Source: AGHT+IGCc3s+Gl6vriD+LrydMSVCcztnPvCe9b/V7J7RGKPnnOo5M8xSOaHGjMxfmfrKFLir2ATd9w==
+X-Received: by 2002:a17:902:eccc:b0:215:5ea2:654b with SMTP id
+ d9443c01a7336-218d6fcd6famr37115435ad.1.1734519827049; 
+ Wed, 18 Dec 2024 03:03:47 -0800 (PST)
+Received: from ?IPV6:2804:7f0:bcc0:51cf:9cf:d2f2:d49e:7bd9?
+ ([2804:7f0:bcc0:51cf:9cf:d2f2:d49e:7bd9])
+ by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-218d31fde88sm16047415ad.231.2024.12.18.03.03.44
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 18 Dec 2024 03:03:46 -0800 (PST)
+Message-ID: <53a8a96b-e727-4f9a-b3a3-a92100ca580e@ventanamicro.com>
+Date: Wed, 18 Dec 2024 08:03:42 -0300
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -31
-X-Spam_score: -3.2
-X-Spam_bar: ---
-X-Spam_report: (-3.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-1.116,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH for-10.0 3/9] target/riscv: add shcounterenw
+To: Alistair Francis <alistair23@gmail.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com,
+ bmeng@tinylab.org, liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com,
+ palmer@rivosinc.com
+References: <20241113171755.978109-1-dbarboza@ventanamicro.com>
+ <20241113171755.978109-4-dbarboza@ventanamicro.com>
+ <CAKmqyKMiFAduuiQDuo2Zcs0FXHG3e+VT2BsB5cE1rQjL2+5FFg@mail.gmail.com>
+Content-Language: en-US
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+In-Reply-To: <CAKmqyKMiFAduuiQDuo2Zcs0FXHG3e+VT2BsB5cE1rQjL2+5FFg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x635.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,104 +104,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-John Snow <jsnow@redhat.com> writes:
-
-> This patch adds an explicit section tag to all QAPIDoc
-> sections. Members/Features are now explicitly tagged as such, with the
-> name now being stored in a dedicated "name" field (which qapidoc.py was
-> not actually using anyway.)
->
-> WIP: Yeah, the difference between "tagged" and "untagged" sections is
-> now pretty poorly named, and explicitly giving "untagged" sections an
-> "UNTAGGED" tag is ... well, worse. but mechanically, this accomplishes
-> what I need for the series.
->
-> Please suggest better naming conventions, keeping in mind that I
-> currently have plans for a future patch that splits the "UNTAGGED" tag
-> into "INTRO" and "DETAILS" tags. But, we still need a meta-name for the
-> category of sections that are "formerly known as untagged" but cannot be
-> called "freeform" because that name is used for the category of
-> docblocks that are not attached to an entity (but happens to be
-> comprised entirely of "formerly known as untagged" sections.)
->
-> Signed-off-by: John Snow <jsnow@redhat.com>
-
-Doesn't pass 'make check' for me.  Diff appended.  It shows the error
-messages get worse.
 
 
-diff --git a/tests/qapi-schema/doc-duplicated-return.err b/tests/qapi-schema/doc-duplicated-return.err
-index 503b916b25..c0036fe8aa 100644
---- a/tests/qapi-schema/doc-duplicated-return.err
-+++ b/tests/qapi-schema/doc-duplicated-return.err
-@@ -1 +1 @@
--doc-duplicated-return.json:8: duplicated 'Returns' section
-+doc-duplicated-return.json:8: duplicated 'Tag.RETURNS' section
-diff --git a/tests/qapi-schema/doc-duplicated-since.err b/tests/qapi-schema/doc-duplicated-since.err
-index a9b60c0c3d..1066040560 100644
---- a/tests/qapi-schema/doc-duplicated-since.err
-+++ b/tests/qapi-schema/doc-duplicated-since.err
-@@ -1 +1 @@
--doc-duplicated-since.json:8: duplicated 'Since' section
-+doc-duplicated-since.json:8: duplicated 'Tag.SINCE' section
-diff --git a/tests/qapi-schema/doc-empty-section.err b/tests/qapi-schema/doc-empty-section.err
-index 711a0d629c..3eae1b93c9 100644
---- a/tests/qapi-schema/doc-empty-section.err
-+++ b/tests/qapi-schema/doc-empty-section.err
-@@ -1 +1 @@
--doc-empty-section.json:6: text required after 'Errors:'
-+doc-empty-section.json:6: text required after 'Tag.ERRORS:'
-diff --git a/tests/qapi-schema/doc-good.out b/tests/qapi-schema/doc-good.out
-index ec277be91e..87d2f074cf 100644
---- a/tests/qapi-schema/doc-good.out
-+++ b/tests/qapi-schema/doc-good.out
-@@ -110,7 +110,7 @@ The _one_ {and only}, description on the same line
- Also _one_ {and only}
-     feature=enum-member-feat
- a member feature
--    section=None
-+    section=Tag.UNTAGGED
- @two is undocumented
- doc symbol=Base
-     body=
-@@ -168,15 +168,15 @@ description starts on the same line
- a feature
-     feature=cmd-feat2
- another feature
--    section=None
-+    section=Tag.UNTAGGED
- .. note:: @arg3 is undocumented
--    section=Returns
-+    section=Tag.RETURNS
- @Object
--    section=Errors
-+    section=Tag.ERRORS
- some
--    section=TODO
-+    section=Tag.TODO
- frobnicate
--    section=None
-+    section=Tag.UNTAGGED
- .. admonition:: Notes
- 
-  - Lorem ipsum dolor sit amet
-@@ -200,7 +200,7 @@ Examples::
- 
- Note::
-     Ceci n'est pas une note
--    section=Since
-+    section=Tag.SINCE
- 2.10
- doc symbol=cmd-boxed
-     body=
-@@ -209,7 +209,7 @@ If you're bored enough to read this, go see a video of boxed cats
- a feature
-     feature=cmd-feat2
- another feature
--    section=None
-+    section=Tag.UNTAGGED
- .. qmp-example::
- 
-    -> "this example"
+On 12/17/24 9:34 PM, Alistair Francis wrote:
+> On Thu, Nov 14, 2024 at 3:20 AM Daniel Henrique Barboza
+> <dbarboza@ventanamicro.com> wrote:
+>>
+>> shcounterenw is defined in RVA22 as:
+>>
+>> "For any hpmcounter that is not read-only zero, the corresponding bit in
+>> hcounteren must be writable."
+>>
+>> This is always true in TCG so let's claim support for it.
+>>
+>> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+> 
+> This seems to break `make check`, specifically the
+> `qtest-riscv64/bios-tables-test` test
+
+In fact every patch that ended up adding a new riscv,isa that is always
+enabled in rv64 will trigger a change in bios-tables-test. Figures.
+
+I`ll re-send. Thanks,
+
+
+Daniel
+
+> 
+> Alistair
+> 
+>> ---
+>>   target/riscv/cpu.c | 1 +
+>>   1 file changed, 1 insertion(+)
+>>
+>> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+>> index 4ad91722a0..6bfb1b1530 100644
+>> --- a/target/riscv/cpu.c
+>> +++ b/target/riscv/cpu.c
+>> @@ -183,6 +183,7 @@ const RISCVIsaExtData isa_edata_arr[] = {
+>>       ISA_EXT_DATA_ENTRY(zvkt, PRIV_VERSION_1_12_0, ext_zvkt),
+>>       ISA_EXT_DATA_ENTRY(zhinx, PRIV_VERSION_1_12_0, ext_zhinx),
+>>       ISA_EXT_DATA_ENTRY(zhinxmin, PRIV_VERSION_1_12_0, ext_zhinxmin),
+>> +    ISA_EXT_DATA_ENTRY(shcounterenw, PRIV_VERSION_1_12_0, has_priv_1_12),
+>>       ISA_EXT_DATA_ENTRY(smaia, PRIV_VERSION_1_12_0, ext_smaia),
+>>       ISA_EXT_DATA_ENTRY(smcntrpmf, PRIV_VERSION_1_12_0, ext_smcntrpmf),
+>>       ISA_EXT_DATA_ENTRY(smepmp, PRIV_VERSION_1_12_0, ext_smepmp),
+>> --
+>> 2.47.0
+>>
+>>
 
 
