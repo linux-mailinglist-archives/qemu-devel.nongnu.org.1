@@ -2,96 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF2EA9F687E
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Dec 2024 15:31:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D3D659F680E
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Dec 2024 15:13:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tNv3t-0000Y4-VW; Wed, 18 Dec 2024 09:30:05 -0500
+	id 1tNumh-0001HL-Ho; Wed, 18 Dec 2024 09:12:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <craig.blackmore@embecosm.com>)
- id 1tNv3s-0000Xr-8f
- for qemu-devel@nongnu.org; Wed, 18 Dec 2024 09:30:04 -0500
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <craig.blackmore@embecosm.com>)
- id 1tNv3q-00047R-6s
- for qemu-devel@nongnu.org; Wed, 18 Dec 2024 09:30:03 -0500
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-432d86a3085so43969555e9.2
- for <qemu-devel@nongnu.org>; Wed, 18 Dec 2024 06:30:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=embecosm.com; s=google; t=1734532200; x=1735137000; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=DP93KB0owwkFFsz3BszVpTFgYFRBoYBfyVmESKBcPk4=;
- b=TPw3esqmfAMOXmP/L8P1Ns23WVwwWojnCwLx1M5cgB0x/8JpkLRT9TKTlAdv9mJcUz
- bdyCVDov0WP35DeGCxWue4SPYOzChso9JT0PFWM5JiXBInT5P/SURa2v+7fMRRZO7IGR
- 7c//2x8S0nmi18wswZ0bWi1ziTWrQ3UY8MgxxZlEfgyM8KBW4E1ayC43IJ090WuNrOzm
- 9c/+zFXyzA2pJR/FjAUxUrwBO+JCel3Y++mw2s/hueUkRupA29GOwsL630UprwwEpkGm
- 6+A3tMErTcafwonCUUDKmE9c9o74ikMKrmzslebP8c3yuFM6KNGFo1h6Dy7/+jTm6Tzm
- bClA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734532200; x=1735137000;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=DP93KB0owwkFFsz3BszVpTFgYFRBoYBfyVmESKBcPk4=;
- b=iU10g8mEbL84Ygl4x6Mqz1oyEGsGFjNIIFPcTmLlSe03G/YXeAejFogi/3C66/5Hhz
- jctNhx9E4bghyjq+FF57Qlk0w1X89a/YEUh46cvIx+0donnnKmGIrKzb0zLMQX+VOnYn
- 5IsCn/8j62ukERTzZAHjR1YbPsLsvJKs+kS9ppYsMaxs+LyQVeoSWoQ0GnDYDsTPWdV0
- GX/8c4f8AEvlGAi+ofCoxY97hZZkfE7sgKn2GIDSV111auUfutc57RiXpIeuLY+7Gb15
- n8curiuvd5IfnBd8Wi9KsBblIGy/ycA3KPi9w9n1+nzX0hKfMVyqy0JqZwlhEPlCAOMC
- H+uw==
-X-Gm-Message-State: AOJu0Ywh5sqtDgnbh4qNl4vYzR0rP9ogtOzKYAh6eydXm73qZ6UCYEY/
- RMJUMAqgl36B3MHLSelnAnNcVYbCxTM2O6dE8lf1q9ZbrLQPxjKPWaRhNfyOCI7ZfIY9PSIe33V
- XvPY=
-X-Gm-Gg: ASbGncsXSdOIepRq8UxQ/ZG7mlGP/iOabuiqk7HabxWZ/qObVq/cwg9q1xTjfxfEBMN
- 57io5VMwAwhsEtXkp6/7bAfMEqdIDB3P8CeUv/sO5I4x8zjm7H9Z96KileoR4wn8S/P4EvMNhH3
- VW7vKJbxROvRmqPKhD5oJHPi26dhmQQEsKhPZZdBPHrXADijju8XLXQcnZr3NGgxToYhwNmuC3k
- yjP0r+7kLfsGf+o+KzK/fS4zCyfXi6usID7AsQxIDV2EDbASGQDOf4iq+oJNPxvLlNtAPi+Zyrw
- YLLLAbzIdEu0YoygFC5qhdfZSxwPE5J+T5AMb1ejS/YNp+Gh
-X-Google-Smtp-Source: AGHT+IFKtsjRBw08odJMBmzWnrfHc4hS8a5sXUUpWUB298rVWki9jvut5u9mMZVRk9Aa9OmG/2Qtmw==
-X-Received: by 2002:a05:600c:4e88:b0:436:488f:50a with SMTP id
- 5b1f17b1804b1-4365537128dmr30062895e9.17.1734532200572; 
- Wed, 18 Dec 2024 06:30:00 -0800 (PST)
-Received: from dorian..
- (sals-04-b2-v4wan-167965-cust660.vm36.cable.virginm.net. [80.3.10.149])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-388c801a47csm14330046f8f.44.2024.12.18.06.29.59
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 18 Dec 2024 06:29:59 -0800 (PST)
-From: Craig Blackmore <craig.blackmore@embecosm.com>
-To: qemu-devel@nongnu.org,
-	qemu-riscv@nongnu.org
-Cc: Craig Blackmore <craig.blackmore@embecosm.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>, Bin Meng <bmeng.cn@gmail.com>,
- Weiwei Li <liwei1518@gmail.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Helene Chelin <helene.chelin@embecosm.com>, Nathan Egge <negge@google.com>,
- Max Chou <max.chou@sifive.com>, Paolo Savini <paolo.savini@embecosm.com>
-Subject: [PATCH v6 1/1] target/riscv: rvv: Use wider accesses for unit stride
- load/store
-Date: Wed, 18 Dec 2024 14:29:37 +0000
-Message-ID: <20241218142937.1028602-2-craig.blackmore@embecosm.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20241218142937.1028602-1-craig.blackmore@embecosm.com>
-References: <20241218142937.1028602-1-craig.blackmore@embecosm.com>
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1tNumb-0001Er-0B; Wed, 18 Dec 2024 09:12:13 -0500
+Received: from mgamail.intel.com ([192.198.163.12])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1tNumZ-00071h-3j; Wed, 18 Dec 2024 09:12:12 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1734531131; x=1766067131;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=dtVLVjcGMGv3WzoMW4E+eWrZx/eWQnpVTKr7VONHlTo=;
+ b=VX76J87rYiF8BFmZL72T0+X+vltH7DihieAJSag1RjkepjWBN9ShELuu
+ pl9+7d04dk8xEXvGKQcQ/xneTkPL7Cb4jhQQPGHeATxcKmTE6YTCQqp+N
+ yT23houl82k2haruutBadHTntyy4+KemnFFcBROsRpU/M+1aSsqByOP9J
+ 9oAsp91wCm4OgItPZhX0CISHPSKq9duDnIEDhCSAF+P+7tzZZm6QVjV7N
+ cMyXBi0tKRT8vpZZIp41AXv/ReL0ybrf6pIk4zHo0qZqeIAPB+oRkQlkD
+ b7Wykkq6+4+Co2Tur/W1nRdV+del222+EEBd7fxyrKhV5T0coP/J+2288 Q==;
+X-CSE-ConnectionGUID: URT38MyeTj2S2CrUSCzEMQ==
+X-CSE-MsgGUID: 4KPdqzYpR+GLxD6hzPcLmQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11290"; a="38943293"
+X-IronPort-AV: E=Sophos;i="6.12,244,1728975600"; d="scan'208";a="38943293"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Dec 2024 06:12:07 -0800
+X-CSE-ConnectionGUID: ESr1MCOKTDadDkh6reX+EQ==
+X-CSE-MsgGUID: g6334WAQRTmn3sVaDB6Ebg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; d="scan'208";a="102483547"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.39])
+ by fmviesa005.fm.intel.com with ESMTP; 18 Dec 2024 06:12:06 -0800
+Date: Wed, 18 Dec 2024 22:30:45 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel <qemu-devel@nongnu.org>, qemu-rust@nongnu.org,
+ Junjie Mao <junjie.mao@hotmail.com>
+Subject: Re: [PATCH 24/26] rust: qom: move device_id to PL011 class side
+Message-ID: <Z2LclR0SuCdEV03z@intel.com>
+References: <20241209123717.99077-1-pbonzini@redhat.com>
+ <20241209123717.99077-25-pbonzini@redhat.com>
+ <Z2D2zk2Wdlqc5q2k@intel.com>
+ <CABgObfY=jyu96eZ+ZcU9GXU+amt2wRm53vpvubHYTaeY9MWd2A@mail.gmail.com>
+ <Z2JycooziPsfV8vX@intel.com>
+ <CABgObfboJFTRMsuqO055g11ZWNx1qKNxrLgvYLc-Hh6RcmWtOw@mail.gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=craig.blackmore@embecosm.com; helo=mail-wm1-x333.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CABgObfboJFTRMsuqO055g11ZWNx1qKNxrLgvYLc-Hh6RcmWtOw@mail.gmail.com>
+Received-SPF: pass client-ip=192.198.163.12; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -108,168 +84,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Use atomic load/store functions to access multiple elements from host.
+> No, Self is not PL011Class. Self is PL011State (or PL011Luminary/ and it
+> always remains the same. What changes is *what part* of the class is
+> overwritten, but the order of calls from qom/object.c follows the same
+> logic in both C and Rust.
 
-Co-authored-by: Paolo Savini <paolo.savini@embecosm.com>
+Thanks! Now I feel I see!
 
-Signed-off-by: Paolo Savini <paolo.savini@embecosm.com>
-Signed-off-by: Craig Blackmore <craig.blackmore@embecosm.com>
----
- target/riscv/trace-events    | 12 +++++
- target/riscv/vector_helper.c | 95 +++++++++++++++++++++++++++++++++---
- 2 files changed, 101 insertions(+), 6 deletions(-)
+For C side, type_initialize() will allocate a new class instance by
+`ti->class = g_malloc0(ti->class_size)`, then actually C side's parent
+class_init will initialize that new class instance.
 
-diff --git a/target/riscv/trace-events b/target/riscv/trace-events
-index 49ec4d3b7d..9db6b274db 100644
---- a/target/riscv/trace-events
-+++ b/target/riscv/trace-events
-@@ -9,3 +9,15 @@ pmpaddr_csr_write(uint64_t mhartid, uint32_t addr_index, uint64_t val) "hart %"
- 
- mseccfg_csr_read(uint64_t mhartid, uint64_t val) "hart %" PRIu64 ": read mseccfg, val: 0x%" PRIx64
- mseccfg_csr_write(uint64_t mhartid, uint64_t val) "hart %" PRIu64 ": write mseccfg, val: 0x%" PRIx64
-+
-+# ldst_atomicity
-+load_atom2_fallback(uint32_t memop, uintptr_t ra) "mop:0x%"PRIx32", ra:0x%"PRIxPTR""
-+load_atom4_fallback(uint32_t memop, uintptr_t ra) "mop:0x%"PRIx32", ra:0x%"PRIxPTR""
-+load_atom8_or_exit_fallback(uintptr_t ra) "ra:0x%"PRIxPTR""
-+load_atom8_fallback(uint32_t memop, uintptr_t ra) "mop:0x%"PRIx32", ra:0x%"PRIxPTR""
-+load_atom16_fallback(uint32_t memop, uintptr_t ra) "mop:0x%"PRIx32", ra:0x%"PRIxPTR""
-+load_atom16_or_exit_fallback(uintptr_t ra) "ra:0x%"PRIxPTR""
-+store_atom2_fallback(uint32_t memop, uintptr_t ra) "mop:0x%"PRIx32", ra:0x%"PRIxPTR""
-+store_atom4_fallback(uint32_t memop, uintptr_t ra) "mop:0x%"PRIx32", ra:0x%"PRIxPTR""
-+store_atom8_fallback(uint32_t memop, uintptr_t ra) "mop:0x%"PRIx32", ra:0x%"PRIxPTR""
-+store_atom16_fallback(uint32_t memop, uintptr_t ra) "mop:0x%"PRIx32", ra:0x%"PRIxPTR""
-diff --git a/target/riscv/vector_helper.c b/target/riscv/vector_helper.c
-index a85dd1d200..63c76a24d1 100644
---- a/target/riscv/vector_helper.c
-+++ b/target/riscv/vector_helper.c
-@@ -31,6 +31,12 @@
- #include "vector_internals.h"
- #include <math.h>
- 
-+#if CONFIG_TCG && !HOST_BIG_ENDIAN
-+#include "trace.h"
-+#include "../accel/tcg/internal-common.h"
-+#include "../accel/tcg/ldst_atomicity.c.inc"
-+#endif
-+
- target_ulong HELPER(vsetvl)(CPURISCVState *env, target_ulong s1,
-                             target_ulong s2)
- {
-@@ -206,10 +212,84 @@ vext_continus_ldst_tlb(CPURISCVState *env, vext_ldst_elem_fn_tlb *ldst_tlb,
-     }
- }
- 
-+#if CONFIG_TCG && !HOST_BIG_ENDIAN
-+/* Atomic operations for load/store */
-+
-+/*
-+ * Return true if there are enough elements for this size access and the
-+ * alignment guarantees atomicity with {load,store}_atom_<size>.
-+ */
-+
-+static inline QEMU_ALWAYS_INLINE bool
-+ok_for_atomic(uint32_t size, void *host, uint32_t reg_start, uint32_t evl,
-+              uint32_t log2_esz)
-+{
-+  return (reg_start + (size >> log2_esz)) <= evl
-+         && ((uintptr_t) host % size) == 0;
-+}
-+
-+#define GEN_VEXT_LDST_ATOMIC_HOST(SIZE, TYPE, MEMOP)                         \
-+static inline QEMU_ALWAYS_INLINE void                                        \
-+vext_ldst_atom_##SIZE##_host(CPURISCVState *env, void *vd,                   \
-+                             uint32_t byte_offset, void *host, bool is_load, \
-+                             uintptr_t ra)                                   \
-+{                                                                            \
-+    TYPE *vd_ptr = (TYPE *) (vd + byte_offset);                              \
-+    if (is_load) {                                                           \
-+        *vd_ptr = load_atom_##SIZE(env_cpu(env), ra, host, MEMOP);           \
-+    } else {                                                                 \
-+        store_atom_##SIZE(env_cpu(env), ra, host, MEMOP, *vd_ptr);           \
-+    }                                                                        \
-+}                                                                            \
-+
-+GEN_VEXT_LDST_ATOMIC_HOST(2, uint16_t, MO_16)
-+GEN_VEXT_LDST_ATOMIC_HOST(4, uint32_t, MO_32)
-+GEN_VEXT_LDST_ATOMIC_HOST(8, uint64_t, MO_64)
-+GEN_VEXT_LDST_ATOMIC_HOST(16, Int128, MO_128)
-+#endif
-+
-+/* Perform the largest atomic load/store possible for the evl and alignment.  */
-+
-+static inline QEMU_ALWAYS_INLINE uint32_t
-+vext_ldst_atomic_chunk_host(CPURISCVState *env,
-+                            vext_ldst_elem_fn_host *ldst_host,
-+                            void *vd, uint32_t evl, uint32_t reg_start,
-+                            void *host, uint32_t esz, bool is_load,
-+                            uint32_t log2_esz, uintptr_t ra)
-+{
-+#if CONFIG_TCG && !HOST_BIG_ENDIAN
-+    uint32_t byte_offset = reg_start * esz;
-+
-+    if (ok_for_atomic(16, host, reg_start, evl, log2_esz)) {
-+        vext_ldst_atom_16_host(env, vd, byte_offset, host, is_load, ra);
-+        return 16;
-+    }
-+
-+    if (ok_for_atomic(8, host, reg_start, evl, log2_esz)) {
-+        vext_ldst_atom_8_host(env, vd, byte_offset, host, is_load, ra);
-+        return 8;
-+    }
-+
-+    if (ok_for_atomic(4, host, reg_start, evl, log2_esz)) {
-+        vext_ldst_atom_4_host(env, vd, byte_offset, host, is_load, ra);
-+        return 4;
-+    }
-+
-+    if (ok_for_atomic(2, host, reg_start, evl, log2_esz)) {
-+        vext_ldst_atom_2_host(env, vd, byte_offset, host, is_load, ra);
-+        return 2;
-+    }
-+#endif
-+
-+    ldst_host(vd, reg_start, host);
-+    return 1;
-+}
-+
- static inline QEMU_ALWAYS_INLINE void
- vext_continus_ldst_host(CPURISCVState *env, vext_ldst_elem_fn_host *ldst_host,
-                         void *vd, uint32_t evl, uint32_t reg_start, void *host,
--                        uint32_t esz, bool is_load)
-+                        uint32_t esz, bool is_load, uint32_t log2_esz,
-+                        uintptr_t ra)
- {
- #if HOST_BIG_ENDIAN
-     for (; reg_start < evl; reg_start++, host += esz) {
-@@ -225,10 +305,13 @@ vext_continus_ldst_host(CPURISCVState *env, vext_ldst_elem_fn_host *ldst_host,
-         } else {
-             memcpy(host, vd + byte_offset, size);
-         }
--    } else {
--        for (; reg_start < evl; reg_start++, host += esz) {
--            ldst_host(vd, reg_start, host);
--        }
-+        return;
-+    }
-+    uint32_t chunk = 0;
-+    for (; reg_start < evl; reg_start += (chunk >> log2_esz),
-+                            host += chunk) {
-+        chunk = vext_ldst_atomic_chunk_host(env, ldst_host, vd, evl, reg_start,
-+                                            host, esz, is_load, log2_esz, ra);
-     }
- #endif
- }
-@@ -343,7 +426,7 @@ vext_page_ldst_us(CPURISCVState *env, void *vd, target_ulong addr,
-     if (flags == 0) {
-         if (nf == 1) {
-             vext_continus_ldst_host(env, ldst_host, vd, evl, env->vstart, host,
--                                    esz, is_load);
-+                                    esz, is_load, log2_esz, ra);
-         } else {
-             for (i = env->vstart; i < evl; ++i) {
-                 k = 0;
--- 
-2.43.0
+For Rust side, the initialization call chain will initialize Self's
+embedded parent class, one by one.
+
+So that's fine!
+
+> > Maybe the confusion is because I implemented class_init twice instead of
+> > > using a separate trait "PL011Impl"?
+> >
+> > Ah, yes! But I think the Rust call chain should not use class_init anymore
+> > but should use a different method. This way, the original class_init would
+> > only serve the C QOM. A separate trait might break the inheritance
+> > relationship similar to ClassInitImpl.
+> >
+> 
+> Do you still think that this is the case?
+
+No, now this patch is fine for me!
+
+Thanks,
+Zhao
 
 
