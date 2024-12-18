@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AD0B9F7033
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Dec 2024 23:41:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC9B89F702A
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Dec 2024 23:40:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tO2cR-0007Bh-LL; Wed, 18 Dec 2024 17:34:18 -0500
+	id 1tO2eI-0000t2-T4; Wed, 18 Dec 2024 17:36:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1tO2a3-0003ts-M0
- for qemu-devel@nongnu.org; Wed, 18 Dec 2024 17:31:49 -0500
-Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
+ id 1tO2aA-00041S-OO
+ for qemu-devel@nongnu.org; Wed, 18 Dec 2024 17:31:58 -0500
+Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1tO2a2-0003Lt-0u
- for qemu-devel@nongnu.org; Wed, 18 Dec 2024 17:31:47 -0500
-Received: by mail-pl1-x635.google.com with SMTP id
- d9443c01a7336-216401de828so1626935ad.3
- for <qemu-devel@nongnu.org>; Wed, 18 Dec 2024 14:31:45 -0800 (PST)
+ id 1tO2a8-0003Rv-AJ
+ for qemu-devel@nongnu.org; Wed, 18 Dec 2024 17:31:53 -0500
+Received: by mail-pl1-x62b.google.com with SMTP id
+ d9443c01a7336-2164b1f05caso1581625ad.3
+ for <qemu-devel@nongnu.org>; Wed, 18 Dec 2024 14:31:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1734561104; x=1735165904; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1734561108; x=1735165908; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=/2jazWrbuU7Wql6HgnR4OcxPEdzrMN59Mrc21VP922M=;
- b=XGVDuWs0YjxZUJrcXm9O5zSjGuKexPEQKlfaqBvr5cpBVYwHTaaDd5iKKLcfVXyZ+0
- SnS0LMOGm4ZCZNgdLMdg/4RI86eNZnZl49wnMcdNcS64H3BKEnOAITCFegjBX3rGFumK
- zCcdFyjwlMqNpdwI/s66nVYT8286ls2hoo7vmPxsL2gmRBhm5hTxvLG3COPZy6P3NnnM
- W4mGI8yiDf7+6GkZolF5rE4H+bNwK/5siKmQ9YEkqOfjPGK9sF7boK+jWunWWdGQwNnp
- GtxWB7V5mPf8CUSKw8BCPL1Qh/ACwJ0+vK7ITYKWDto61Hn5hPfjftFAN+kGLpVC/oit
- 0FnQ==
+ bh=KFA5ekI+kAcNMU4k/jpblMJI0Pebf31uGHT3NoHxS7k=;
+ b=mZn6eemLlyFtdnX3WeP43hkQA5vC8JIcKb2eY66OObdfIcK/O6ajLjlEAgK6f7dcyu
+ IYIsy4xby1Hgd4sIs4/95gtDs1iyQzKuPA4eQUe/FuDrtDBM9Xtmbqz1IcxigSXP20dN
+ b9+8zMCqBxNwGZBVeBByDv81vPK2zBdk7GGy9FkjyyQthsJD6MnkD+3LbulG0fpfEcbF
+ /Lwm4DbLfdxYLOYN1I9lkm/dF5VzluTmdJrzSy/gpS375ar126l/X8vflrBKKXK5c38G
+ tAPc725GgSRZDN+9MncJPtN36TBbIP4WXsPRCO24cemXZaWgJQ/mNU117e1i7P2n1l3L
+ ABWg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734561104; x=1735165904;
+ d=1e100.net; s=20230601; t=1734561108; x=1735165908;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=/2jazWrbuU7Wql6HgnR4OcxPEdzrMN59Mrc21VP922M=;
- b=BoN/v7TXllJNxMmAOVtQXISqEWOAailYXTxewuip83kOpKP4is4KEF+8RKp4FTKxqK
- RMugmtDGhekSjwprpINCNJzEViXfwXchgtSAQ0I524I5y+CcKBZnl7i3AcZBr6i+C3q5
- d/FHR4ki+7kpvBYcFtkIvr0R3SCreEfIyxX9hFyyzuROujqqd/0Tmta4ePccBTvyqaif
- JgyrnUTVtDlpXyPk7cpmFiZesQuv4rOih73oqaYCwwqPZgKIxSSoztWKBS79b200/2u4
- BamUuiXjJ1XcdTydixqAKmIGywDSH3pu53VYlxTEVwRmfQ1gTN99CA9M4PEq0C6jNPva
- +7rQ==
-X-Gm-Message-State: AOJu0YwpazNV10nJwmuCBUKFn+DNqYmWaO8ADb2FYwpTyhsVolNid+on
- RxQoHfsMHoyzWraW//bwySCqw8gbHhTsExj84GfgY/McLYXuCfigZ8M+oEJe
-X-Gm-Gg: ASbGncsQC/vmNUo/bKQvhqWKwDyO3YG/LCKH0s2thfmw+hVL75pXTHXhjZruT5+X+5T
- y9MBdhqVEVYy93KkAcx3pMhig5ddoDymd2gsVtIyIEK0JnB1AUeBYOTCCeKtaY3YidxhlWQl+yW
- 15vt07A9iOj94ThILlXD/rUxOb9+1pTwL5vJ93f1vjV5cjbnVRWA9b+15tkUeT7XsEJueqXyAgW
- jqTKeU+gZOBEzKMbAn76zCK2B0JUx/Q/C/6V20WVwjKcdVI8YNsiCnc0BOvFbhUCfAGaMxMj5Ev
- eY7S62duL1gys32ptFhK458tcNft9t/tb/kLEcROx86R95gOG5FmBGVtd5JB0g4=
-X-Google-Smtp-Source: AGHT+IEDsr3ELmuUqB6JM96gcqwzwXHDhN3T7BUx07Vr5D9jXhYi3Ok8kAkTxaUMJ5EqZdQZP44wCw==
-X-Received: by 2002:a17:902:ebd1:b0:215:b087:5d62 with SMTP id
- d9443c01a7336-219d96ff1c1mr21228645ad.36.1734561104568; 
- Wed, 18 Dec 2024 14:31:44 -0800 (PST)
+ bh=KFA5ekI+kAcNMU4k/jpblMJI0Pebf31uGHT3NoHxS7k=;
+ b=WV4ZBe8evpaitobOeTXlaTAgJdRfOJx66Yj+k7kULYUcg2GoRCWSI1JGCPADymfu9m
+ 1VcbQwaQxIcgwPtxwJj4wzXWF3EAW79gB/nyuXvnHN9iESbql8xoTjSuyxlIqAnRZ2MK
+ 0K3G7Y8jjCOsLDG+2pKCiltR6pQcxfT++M6faAb+PlxyrUiKHXgRCA6/X2d5wNLIKl7/
+ Z5ZuYV6RPCxSH2bs7oDDnma277AS7w3xRpq5Dy4Zv0caX2io7QKVyyxtOs4WUqPWR2kf
+ 9Dxp3R7EcxAlcpP1Ptp+XQvDdS9U+UmrcPiwF9gRsi4yx++YEPA2yO1FY9HxfVAz5TPJ
+ c4aQ==
+X-Gm-Message-State: AOJu0YzgWa6mqxpcU/UHdQwIFJa1sVILuhI7dQIg1qccl2FmGs/EzeSm
+ UA3AnrKgM3dgvc+bg5QdF/fIXwWev30/p4WcTAqbMwlYxRxYC6DSp2iwz+nA
+X-Gm-Gg: ASbGnct6AoY2AKZF8FgN+yindzNBoPFDElc6D/Xr49OqH0IF2JcHnkXOKf7CQLSjQFV
+ +LETq0H/vT2ovVvtO+PnU3j2f9DtVlKicn3Dsj/ipVAFYF70qDZMBg7gKtNxHholLgp9KVLhsvP
+ 9Wqn8nl9TgeNg5mmZcVQ27Ixp5nCE7E8Dsel5RGEGKYa565ZSVfMooZBRIQ8E/ob8M1Dwv1mPt0
+ RtNpD6Fx17Aikmr/Ujq6EkTxWResufKIXM6r/Bja+sIHp6QtHir5axaA7QHWNngkLt50z2lq/pY
+ dWPvGDCsMMEupXEEYRhkdr0wRxdduXhi91+5EesYRImnRwp35HLN9PIPz0tPN2E=
+X-Google-Smtp-Source: AGHT+IFwk8S9YGDVvKrniUQxpzk4r7fcwjwjLB4R803OSbLdNPuqSMUMtarqwiup9yz/5k9EC5e4VA==
+X-Received: by 2002:a17:903:2bce:b0:216:7ee9:2227 with SMTP id
+ d9443c01a7336-218d724d328mr66790935ad.36.1734561108166; 
+ Wed, 18 Dec 2024 14:31:48 -0800 (PST)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-219dc9705d7sm375775ad.102.2024.12.18.14.31.41
+ d9443c01a7336-219dc9705d7sm375775ad.102.2024.12.18.14.31.44
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 18 Dec 2024 14:31:44 -0800 (PST)
+ Wed, 18 Dec 2024 14:31:47 -0800 (PST)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
@@ -70,16 +70,17 @@ Cc: alistair23@gmail.com, "Fea.Wang" <fea.wang@sifive.com>,
  Frank Chang <frank.chang@sifive.com>, Jim Shu <jim.shu@sifive.com>,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 29/39] target/riscv: Add svukte extension capability variable
-Date: Thu, 19 Dec 2024 08:29:59 +1000
-Message-ID: <20241218223010.1931245-30-alistair.francis@wdc.com>
+Subject: [PULL 30/39] target/riscv: Support senvcfg[UKTE] bit when svukte
+ extension is enabled
+Date: Thu, 19 Dec 2024 08:30:00 +1000
+Message-ID: <20241218223010.1931245-31-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241218223010.1931245-1-alistair.francis@wdc.com>
 References: <20241218223010.1931245-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
- envelope-from=alistair23@gmail.com; helo=mail-pl1-x635.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
+ envelope-from=alistair23@gmail.com; helo=mail-pl1-x62b.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -105,36 +106,52 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: "Fea.Wang" <fea.wang@sifive.com>
 
-Refer to the draft of svukte extension from:
-https://github.com/riscv/riscv-isa-manual/pull/1564
+Svukte extension add UKTE bit, bit[8] in senvcfg CSR. The bit will be
+supported when the svukte extension is enabled.
 
-Svukte provides a means to make user-mode accesses to supervisor memory
-raise page faults in constant time, mitigating attacks that attempt to
-discover the supervisor software's address-space layout.
+When senvcfg[UKTE] bit is set, the memory access from U-mode should do
+the svukte check only except HLV/HLVX/HSV H-mode instructions which
+depend on hstatus[HUKTE].
 
 Signed-off-by: Fea.Wang <fea.wang@sifive.com>
 Reviewed-by: Frank Chang <frank.chang@sifive.com>
 Reviewed-by: Jim Shu <jim.shu@sifive.com>
 Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <20241203034932.25185-2-fea.wang@sifive.com>
+Message-ID: <20241203034932.25185-3-fea.wang@sifive.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/cpu_cfg.h | 1 +
- 1 file changed, 1 insertion(+)
+ target/riscv/cpu_bits.h | 1 +
+ target/riscv/csr.c      | 4 ++++
+ 2 files changed, 5 insertions(+)
 
-diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
-index 59d6fc445d..d8771ca641 100644
---- a/target/riscv/cpu_cfg.h
-+++ b/target/riscv/cpu_cfg.h
-@@ -84,6 +84,7 @@ struct RISCVCPUConfig {
-     bool ext_svnapot;
-     bool ext_svpbmt;
-     bool ext_svvptc;
-+    bool ext_svukte;
-     bool ext_zdinx;
-     bool ext_zaamo;
-     bool ext_zacas;
+diff --git a/target/riscv/cpu_bits.h b/target/riscv/cpu_bits.h
+index 385a2c67c2..4b9f899217 100644
+--- a/target/riscv/cpu_bits.h
++++ b/target/riscv/cpu_bits.h
+@@ -785,6 +785,7 @@ typedef enum RISCVException {
+ #define SENVCFG_CBIE                       MENVCFG_CBIE
+ #define SENVCFG_CBCFE                      MENVCFG_CBCFE
+ #define SENVCFG_CBZE                       MENVCFG_CBZE
++#define SENVCFG_UKTE                       BIT(8)
+ 
+ #define HENVCFG_FIOM                       MENVCFG_FIOM
+ #define HENVCFG_LPE                        MENVCFG_LPE
+diff --git a/target/riscv/csr.c b/target/riscv/csr.c
+index 9846770820..1936a6f32a 100644
+--- a/target/riscv/csr.c
++++ b/target/riscv/csr.c
+@@ -2453,6 +2453,10 @@ static RISCVException write_senvcfg(CPURISCVState *env, int csrno,
+         mask |= SENVCFG_SSE;
+     }
+ 
++    if (env_archcpu(env)->cfg.ext_svukte) {
++        mask |= SENVCFG_UKTE;
++    }
++
+     env->senvcfg = (env->senvcfg & ~mask) | (val & mask);
+     return RISCV_EXCP_NONE;
+ }
 -- 
 2.47.1
 
