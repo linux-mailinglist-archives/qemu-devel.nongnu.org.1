@@ -2,79 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 744EF9F777F
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Dec 2024 09:37:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A7A629F7776
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Dec 2024 09:36:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tOBxs-0004Wg-4e; Thu, 19 Dec 2024 03:33:00 -0500
+	id 1tOBxt-0004X6-Nh; Thu, 19 Dec 2024 03:33:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tOBxp-0004Vm-Cl
- for qemu-devel@nongnu.org; Thu, 19 Dec 2024 03:32:58 -0500
+ id 1tOBxr-0004W6-4P
+ for qemu-devel@nongnu.org; Thu, 19 Dec 2024 03:32:59 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tOBxn-00056w-I5
- for qemu-devel@nongnu.org; Thu, 19 Dec 2024 03:32:56 -0500
+ id 1tOBxp-00057G-IL
+ for qemu-devel@nongnu.org; Thu, 19 Dec 2024 03:32:58 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1734597175;
+ s=mimecast20190719; t=1734597176;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=BRvXaOIiQljc+ZwkCS91Aq82+cVbl1J4OCKByiO2hkw=;
- b=HzxEuJPsYJPiHcnngpOs14x7B0HVKNAp4Q2NsYAv6PSageFa6Du4BcSAjgaDRjR0d8gas6
- MSXkl86dWtbYsfMBMQVeLLPW9NAq+n9R3Dzr046Ygi0yngA3i+fc7TvZ2aT81/whO4hM0y
- jGZz9lm0keD80zUuNL4cgNUiXEbFJj8=
+ bh=DHSMfA4p8emdOQqYqGttRQGDx+jWhVOuqAnBtD1lJmc=;
+ b=F9Eg08Gu/My/SBjChcEsAba6D38DPuuaAZbP/jdoYxL69Diu52v/t+I1iRuNabaKt6iP6P
+ uX/2OT66agDRwJLMBtGuooE0hVm/wnoYEM81nWYVa2yYGy08RshJr5vCbMz8Lj9dc0JRa7
+ 2n2uM8AbVJYV8P+Ocr7Dh4Oys3UXPrI=
 Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
  [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-570-GW3S7Ww-NSqGBZ1UG82NMw-1; Thu, 19 Dec 2024 03:32:53 -0500
-X-MC-Unique: GW3S7Ww-NSqGBZ1UG82NMw-1
-X-Mimecast-MFC-AGG-ID: GW3S7Ww-NSqGBZ1UG82NMw
+ us-mta-594-_vHX8csXO9eKvQ8A6EoJRg-1; Thu, 19 Dec 2024 03:32:55 -0500
+X-MC-Unique: _vHX8csXO9eKvQ8A6EoJRg-1
+X-Mimecast-MFC-AGG-ID: _vHX8csXO9eKvQ8A6EoJRg
 Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-385df115300so257124f8f.2
- for <qemu-devel@nongnu.org>; Thu, 19 Dec 2024 00:32:53 -0800 (PST)
+ ffacd0b85a97d-3862b364578so826203f8f.1
+ for <qemu-devel@nongnu.org>; Thu, 19 Dec 2024 00:32:55 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734597172; x=1735201972;
+ d=1e100.net; s=20230601; t=1734597174; x=1735201974;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=BRvXaOIiQljc+ZwkCS91Aq82+cVbl1J4OCKByiO2hkw=;
- b=egXkdGDbP02XaX1zfILcAceJn5lMcIzQKblU9rTwCC3L9GyD8d+avnIvBaigvQKGlB
- czSqKBf4uLJWEhy+Dqp5cEfNqWV09iOHMhEXn2oAfcsJQBD14iXzsDNK74GvQcBZwOUj
- jEXWKPkI3/aP4w4R+e/d5/+DilTzSP3biI5ReRBGUOy1WU7jWqovA879w2EkqGHYDIpS
- K4TfWH/dR1A+I1a3QhBjnbXxBp+xBkGfXgucqcF7RhajEbEAEAnByiDzEvSDgQeQ8otZ
- UNELxVSf9rn9twr5exBoHVGGgIcooI86hz3+a90m4rLHZtSmC3okAxwk6+3QUpYOX+ZA
- wevA==
-X-Gm-Message-State: AOJu0YwRZZUNXSzg0Gt3ZK9lPr/TJtg6lLtWE2ECK8Yj+ilOfjRqJWiX
- 0VyxP6mgDzTnIslBY1ZduV1uBcsuGYuGcyblb/kFwHr4bVCOQQ4Gv1btplSOaD+TDRBOWf3fqeK
- WPYnxiXm7S75qx/AqUv2kKPjVoQiKTlJMUNxtA9SmQaqO9QZWKM8qjyYahjjBS74McekK+AlEKp
- YZesNmYOsQMJm54EY9KWfNPM5b5Sey5OVIIfwx
-X-Gm-Gg: ASbGnct2y76S1fKCxCGFcmXF9vHwESTo0p5852SnNN9TqP4nCsWo+gwW1faJU56k9Lo
- CLLEi7UITNk877KjGaDOVqUHhlp2CVpOegCtXDgo8rqXca34XKskLcnLngYArP6oXdGlKN3r/PZ
- 976hfK0k5MFDCkiI4O6wAZjnN35E+i0bp07W5y7+aeufU1QcbQ/7uGl0ZOyU4oHWnM1DySTCiSI
- 6QtUdeRQwgV7f71Zm6VPsUUeKdhiXSbhuJICU/ISGcMcLOEYMZz0CyBdTGN
-X-Received: by 2002:a5d:59a3:0:b0:374:c4e2:3ca7 with SMTP id
- ffacd0b85a97d-388e4d4b63cmr5617955f8f.5.1734597171799; 
- Thu, 19 Dec 2024 00:32:51 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFJ09Z+lsYrzmr5vyDxKKNjJvs02a0DcXYW666qQbSnNJ3MgDr8R8G96myg3ZKg4BSKuWpmGQ==
-X-Received: by 2002:a5d:59a3:0:b0:374:c4e2:3ca7 with SMTP id
- ffacd0b85a97d-388e4d4b63cmr5617929f8f.5.1734597171359; 
- Thu, 19 Dec 2024 00:32:51 -0800 (PST)
+ bh=DHSMfA4p8emdOQqYqGttRQGDx+jWhVOuqAnBtD1lJmc=;
+ b=Uvxru+Fg6eNDIcbzzIyrZnXfgCboaeneKpQKkJ6OXqBbY3RddBDSy5AnqGsFMszDpw
+ H0zJ7gXaroke+ipVzDt6Lujx0RjOgIc7Y3Dgz79h+HaqSzw8+jpWENDlEg+OECbwkAv+
+ ffUKWuUez+VGyPzh8lN0gB8qnDweHNuhe9mRq7DtrNlbZcNoICQrAF5Xd3PWYOkEvlT6
+ uW6YGhMkuSSY6j6XbZmfFvHQFsc5a2EugmPAD7FrGTRA0bJgSe6wwN3Tedw9gLUemiNy
+ Rrzm3xAcwqEcUYoFvPnS9Ld0+RT2q42PAuw0GVYxh/4983c12v9QEphSa+3xp71sjXvw
+ d5UA==
+X-Gm-Message-State: AOJu0Yy5YNsvZ84cN+fAusuHLH3oyHyYXJcl9n15UE/yhsKV5O271ABw
+ 6l58OzQFkpzzcMoqAux2M39tZ3il5O4hodjc4E954KDddATs+ZiqAR+CSsoduTGEA0LeTCg1lEY
+ d1ROmEDzkD0NW0bMdrYpfX8etdTqOMhn8FSGCmdtDkUpo8hNJmiaFEk2V4NX2Be97QwKxdv+8y9
+ YqfvNiRD9VJJBJp8J0ZLsuQNYuvULhAtpIK8pm
+X-Gm-Gg: ASbGncuvvyXs0Gn1vbpJ9cdFQE7NR+uaiwxJcaSjmN1Mvi18Hn7egrcL+Ti95nN5Cla
+ 73Fqx7y6mntiLNtF61cK/uoDqER9QxTHq4jdsNW2CaEmET/cstZYz4SS2kgSHw+LepZIuKgpo4N
+ cjYXjczWY5kxMkJyseL9EQlA/qErSenpEJGrE+9jpLqv9dyJtaOrWbh8jgqv8BEqNi1372kPyBV
+ k+Fa/j3YPdNps9JTkmD/zM59qGs0fD2u7jSt56Y39k/nixUpkz8GB0H0dXZ
+X-Received: by 2002:a5d:6c64:0:b0:385:e90a:b7de with SMTP id
+ ffacd0b85a97d-38a1a1f9f38mr1570178f8f.5.1734597173846; 
+ Thu, 19 Dec 2024 00:32:53 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFpzVp+rdUfEwhoS9mPfpLdBoyJEXuXG6TC4MXMoEbWgKhwSaBr1kmImIx1MuCXBch0+1WNpQ==
+X-Received: by 2002:a5d:6c64:0:b0:385:e90a:b7de with SMTP id
+ ffacd0b85a97d-38a1a1f9f38mr1570157f8f.5.1734597173446; 
+ Thu, 19 Dec 2024 00:32:53 -0800 (PST)
 Received: from [192.168.10.47] ([151.81.118.45])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38a1c89e2d2sm988883f8f.71.2024.12.19.00.32.49
+ ffacd0b85a97d-38a1c8acc02sm971232f8f.104.2024.12.19.00.32.51
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 19 Dec 2024 00:32:49 -0800 (PST)
+ Thu, 19 Dec 2024 00:32:52 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 11/41] hw/virtio: Remove empty Property lists
-Date: Thu, 19 Dec 2024 09:31:58 +0100
-Message-ID: <20241219083228.363430-12-pbonzini@redhat.com>
+Subject: [PULL 12/41] include/hw/qdev-core: Detect most empty Property lists
+ at compile time
+Date: Thu, 19 Dec 2024 09:31:59 +0100
+Message-ID: <20241219083228.363430-13-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241219083228.363430-1-pbonzini@redhat.com>
 References: <20241219083228.363430-1-pbonzini@redhat.com>
@@ -108,59 +109,59 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 From: Richard Henderson <richard.henderson@linaro.org>
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Link: https://lore.kernel.org/r/20241216035109.3486070-12-richard.henderson@linaro.org
+Link: https://lore.kernel.org/r/20241216035109.3486070-13-richard.henderson@linaro.org
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- hw/virtio/vdpa-dev-pci.c       | 5 -----
- hw/virtio/vhost-user-snd-pci.c | 5 -----
- 2 files changed, 10 deletions(-)
+ include/hw/qdev-core.h    | 8 ++++++++
+ hw/core/qdev-properties.c | 2 +-
+ migration/migration.c     | 2 +-
+ 3 files changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/hw/virtio/vdpa-dev-pci.c b/hw/virtio/vdpa-dev-pci.c
-index 5446e6b393e..787926801a1 100644
---- a/hw/virtio/vdpa-dev-pci.c
-+++ b/hw/virtio/vdpa-dev-pci.c
-@@ -48,10 +48,6 @@ static void vhost_vdpa_device_pci_instance_init(Object *obj)
-                               "bootindex");
+diff --git a/include/hw/qdev-core.h b/include/hw/qdev-core.h
+index 5be9844412f..b2859d1e39e 100644
+--- a/include/hw/qdev-core.h
++++ b/include/hw/qdev-core.h
+@@ -943,6 +943,14 @@ char *qdev_get_own_fw_dev_path_from_handler(BusState *bus, DeviceState *dev);
+  */
+ void device_class_set_props(DeviceClass *dc, const Property *props);
+ 
++/* Validate at least one Property, plus the terminator. */
++#define device_class_set_props(DC, PROPS) \
++    do {                                                                \
++        QEMU_BUILD_BUG_ON(sizeof(PROPS) != sizeof(const Property *) &&  \
++                          sizeof(PROPS) < 2 * sizeof(Property));        \
++        (device_class_set_props)(DC, PROPS);                            \
++    } while (0)
++
+ /**
+  * device_class_set_parent_realize() - set up for chaining realize fns
+  * @dc: The device class
+diff --git a/hw/core/qdev-properties.c b/hw/core/qdev-properties.c
+index 315196bd85a..de618a964a9 100644
+--- a/hw/core/qdev-properties.c
++++ b/hw/core/qdev-properties.c
+@@ -1061,7 +1061,7 @@ static void qdev_class_add_legacy_property(DeviceClass *dc, const Property *prop
+         NULL, NULL, (Property *)prop);
  }
  
--static Property vhost_vdpa_device_pci_properties[] = {
--    DEFINE_PROP_END_OF_LIST(),
--};
--
- static int vhost_vdpa_device_pci_post_init(VhostVdpaDevice *v, Error **errp)
+-void device_class_set_props(DeviceClass *dc, const Property *props)
++void (device_class_set_props)(DeviceClass *dc, const Property *props)
  {
-     VhostVdpaDevicePCI *dev = container_of(v, VhostVdpaDevicePCI, vdev);
-@@ -80,7 +76,6 @@ static void vhost_vdpa_device_pci_class_init(ObjectClass *klass, void *data)
-     VirtioPCIClass *k = VIRTIO_PCI_CLASS(klass);
+     const Property *prop;
  
-     set_bit(DEVICE_CATEGORY_MISC, dc->categories);
--    device_class_set_props(dc, vhost_vdpa_device_pci_properties);
-     k->realize = vhost_vdpa_device_pci_realize;
+diff --git a/migration/migration.c b/migration/migration.c
+index 8c5bd0a75c8..6b3b85d31e5 100644
+--- a/migration/migration.c
++++ b/migration/migration.c
+@@ -3822,7 +3822,7 @@ static void migration_class_init(ObjectClass *klass, void *data)
+     DeviceClass *dc = DEVICE_CLASS(klass);
+ 
+     dc->user_creatable = false;
+-    device_class_set_props(dc, migration_properties);
++    (device_class_set_props)(dc, migration_properties);
  }
  
-diff --git a/hw/virtio/vhost-user-snd-pci.c b/hw/virtio/vhost-user-snd-pci.c
-index d61cfdae631..0cb86b7d85d 100644
---- a/hw/virtio/vhost-user-snd-pci.c
-+++ b/hw/virtio/vhost-user-snd-pci.c
-@@ -23,10 +23,6 @@ typedef struct VHostUserSoundPCI VHostUserSoundPCI;
- DECLARE_INSTANCE_CHECKER(VHostUserSoundPCI, VHOST_USER_SND_PCI,
-                          TYPE_VHOST_USER_SND_PCI)
- 
--static Property vhost_user_snd_pci_properties[] = {
--    DEFINE_PROP_END_OF_LIST(),
--};
--
- static void vhost_user_snd_pci_realize(VirtIOPCIProxy *vpci_dev, Error **errp)
- {
-     VHostUserSoundPCI *dev = VHOST_USER_SND_PCI(vpci_dev);
-@@ -44,7 +40,6 @@ static void vhost_user_snd_pci_class_init(ObjectClass *klass, void *data)
-     PCIDeviceClass *pcidev_k = PCI_DEVICE_CLASS(klass);
-     k->realize = vhost_user_snd_pci_realize;
-     set_bit(DEVICE_CATEGORY_SOUND, dc->categories);
--    device_class_set_props(dc, vhost_user_snd_pci_properties);
-     pcidev_k->vendor_id = PCI_VENDOR_ID_REDHAT_QUMRANET;
-     pcidev_k->device_id = 0; /* Set by virtio-pci based on virtio id */
-     pcidev_k->revision = 0x00;
+ static void migration_instance_finalize(Object *obj)
 -- 
 2.47.1
 
