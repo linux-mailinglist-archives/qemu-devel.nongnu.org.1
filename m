@@ -2,71 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB9319F808A
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Dec 2024 17:49:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C4969F7FBF
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Dec 2024 17:29:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tOJhB-0000U5-Ea; Thu, 19 Dec 2024 11:48:17 -0500
+	id 1tOJGS-0002iE-5D; Thu, 19 Dec 2024 11:20:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1tOJh2-0000TG-Kj
- for qemu-devel@nongnu.org; Thu, 19 Dec 2024 11:48:09 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1tOFo7-0001nD-PI
+ for qemu-devel@nongnu.org; Thu, 19 Dec 2024 07:39:11 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1tOJh1-0000oM-0f
- for qemu-devel@nongnu.org; Thu, 19 Dec 2024 11:48:08 -0500
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1tOFo6-000539-0v
+ for qemu-devel@nongnu.org; Thu, 19 Dec 2024 07:39:11 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1734626886;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ s=mimecast20190719; t=1734611947;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=EItUpOlPqmr3nU661wORxb/VGtmQG1PbYDpUcuC08uQ=;
- b=hsam78Ldted5N0kSuZdUwn/uf0a1nShcKWpL7x1wbvZVfl+5+1ebZ/SYUY/XkkbgdULIxS
- 5etAR/bRMLMqPJaS6IkIPsm6lPNV807WWVLPggeqXhcE37iI0BKH0eLMKacect3ImvQCPA
- nLq6VCWDqzIO1ZUoNvF+X0fO04yg4zY=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ bh=fhiPUPZQ0AMGEuAyDVsE8XZthGjbA0R6smLyaEHnnpU=;
+ b=BYlaiUwGtZRJxOl0kq/m4Emz6mt8HZIVWQw8Sa5ySvYtqYfSQl4iDbOCqfxOL7EtxZ0are
+ 0O/JhcCp1YAMh4ni2KaJzrU/Ha6kbD2I6ppGLsh3JuZklrJlDsEWq/C9PxnllnWoqNZRWM
+ CNK7B/QfRgASPcugrzOvdKqMYd41Vw0=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-684-XobKkIEaPo-hXAPsd5aAAw-1; Thu,
- 19 Dec 2024 11:48:04 -0500
-X-MC-Unique: XobKkIEaPo-hXAPsd5aAAw-1
-X-Mimecast-MFC-AGG-ID: XobKkIEaPo-hXAPsd5aAAw
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-205-jNgmZASkP-i0LclUZH_bkA-1; Thu,
+ 19 Dec 2024 07:39:04 -0500
+X-MC-Unique: jNgmZASkP-i0LclUZH_bkA-1
+X-Mimecast-MFC-AGG-ID: jNgmZASkP-i0LclUZH_bkA
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 9F30F1956086; Thu, 19 Dec 2024 16:48:03 +0000 (UTC)
-Received: from localhost (unknown [10.2.16.70])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id CC7181953953; Thu, 19 Dec 2024 16:48:02 +0000 (UTC)
-Date: Thu, 19 Dec 2024 07:32:13 -0500
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Fabiano Rosas <farosas@suse.de>
-Cc: qemu-devel@nongnu.org, Peter Xu <peterx@redhat.com>
-Subject: Re: [PULL 00/17] Migration patches for 2024-12-17
-Message-ID: <20241219123213.GA692742@fedora>
-References: <20241217174855.24971-1-farosas@suse.de>
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 1C3D61955F3E; Thu, 19 Dec 2024 12:39:02 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.54])
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 9C891300F9B5; Thu, 19 Dec 2024 12:38:54 +0000 (UTC)
+Date: Thu, 19 Dec 2024 12:38:50 +0000
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Marc Zyngier <maz@kernel.org>
+Cc: Kashyap Chamarthy <kchamart@redhat.com>,
+ Eric Auger <eric.auger@redhat.com>,
+ Cornelia Huck <cohuck@redhat.com>, eric.auger.pro@gmail.com,
+ qemu-devel@nongnu.org, qemu-arm@nongnu.org, kvmarm@lists.linux.dev,
+ peter.maydell@linaro.org, richard.henderson@linaro.org,
+ alex.bennee@linaro.org, oliver.upton@linux.dev, sebott@redhat.com,
+ shameerali.kolothum.thodi@huawei.com, armbru@redhat.com,
+ abologna@redhat.com, jdenemar@redhat.com, shahuang@redhat.com,
+ mark.rutland@arm.com, philmd@linaro.org, pbonzini@redhat.com
+Subject: Re: [PATCH RFCv2 00/20] kvm/arm: Introduce a customizable aarch64
+ KVM host model
+Message-ID: <Z2QT2tPbC1GsTJVL@redhat.com>
+References: <20241206112213.88394-1-cohuck@redhat.com>
+ <edc12140-6345-4868-938d-c80c4d2c2004@redhat.com>
+ <Z1qoa8yXscTSAJ9e@redhat.com> <8734it1bv6.fsf@redhat.com>
+ <1fea79e4-7a31-4592-8495-7b18cd82d02b@redhat.com>
+ <Z2QE9AqZnpGM5sWD@gezellig> <8634ijrh8q.wl-maz@kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="Q7H7AVznsKd9CwNQ"
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20241217174855.24971-1-farosas@suse.de>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <8634ijrh8q.wl-maz@kernel.org>
+User-Agent: Mutt/2.2.13 (2024-03-09)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -15
-X-Spam_score: -1.6
-X-Spam_bar: -
-X-Spam_report: (-1.6 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_03_06=1.592,
- DKIMWL_WL_HIGH=-0.001, DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1,
- DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-1.116,
+X-Spam_score_int: -31
+X-Spam_score: -3.2
+X-Spam_bar: ---
+X-Spam_report: (-3.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-1.116,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -79,84 +95,103 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Thu, Dec 19, 2024 at 12:26:29PM +0000, Marc Zyngier wrote:
+> On Thu, 19 Dec 2024 11:35:16 +0000,
+> Kashyap Chamarthy <kchamart@redhat.com> wrote:
+> > 
+> > On Thu, Dec 12, 2024 at 11:04:30AM +0100, Eric Auger wrote:
+> > 
+> > Hi Eric,
+> > 
+> > > On 12/12/24 10:36, Cornelia Huck wrote:
+> > > > On Thu, Dec 12 2024, Daniel P. Berrangé <berrange@redhat.com> wrote:
+> > 
+> > [...]
+> > 
+> > > >> Consider you mgmt app wants to set a CPU model that's common across
+> > > >> heterogeneous hardware. They don't neccessarily want/need to be
+> > > >> able to live migrate between heterogeneous CPUs, but for simplicity
+> > > >> of configuration desire to set a single named CPU across all guests,
+> > > >> irrespective of what host hey are launched on. The ARM spec baseline
+> > > >> named models would give you that config simplicity.
+> > > > If we use architecture extensions (i.e. Armv8.x/9.x) as baseline, I'm
+> > > > seeing some drawbacks:
+> > > > - a lot of work before we can address some specific use cases
+> > > > - old models can get new optional features
+> > > > - a specific cpu might have a huge set of optional features on top of
+> > > >   the baseline model
+> > > >
+> > > > Using a reference core such as Neoverse-V2 probably makes more sense
+> > > > (easier to get started, less feature diff?) It would still make a good
+> > > > starting point for a simple config.
+> > > >
+> > > Actually from a dev point of view I am not sure it changes much to have
+> > > either ARM spec rev baseline or CPU ref core named model.
+> > > 
+> > > One remark is that if you look at
+> > > https://developer.arm.com/documentation/109697/2024_09?lang=en
+> > > you will see there are quite a lot of spec revisions and quite a few of
+> > > them are actually meaningful in the light of currently avaiable and
+> > > relevant HW we want to address. What I would like to avoid is to be
+> > > obliged to look at all of them in a generic manner while we just want to
+> > > address few cpu ref models.
+> > > 
+> > > Also starting from the ARM spec rev baseline the end-user may need to
+> > > add more feature opt-ins to be close to a specific cpu model. So I
+> > > foresee extra complexity for the end-user.
+> > 
+> > (Assuming I'm parsing your last para right; correct me if not.)
+> > 
+> > Isn't a user wanting to add extra CPU flags (on top of a baseline) a
+> > "normal behaviour" and not "extra complexity"?  Besides coming close to
+> > a specific CPU model, there's the additional important use-case of CPU
+> > flags that provide security mitigation.
+> > 
+> > Consider this:
+> > 
+> > Say, there's a serious security issue in a released ARM CPU.  As part of
+> > the fix, two new CPU flags need to be exposed to the guest OS, call them
+> > "secflag1" and "secflag2".  Here, the user is configuring a baseline
+> > model + two extra CPU flags, not to get close to some other CPU model
+> > but to mitigate itself against a serious security flaw.
+> 
+> If there's such a security issue, that the hypervisor's job to do so,
+> not userspace. See what KVM does for CSV3, for example (and all the
+> rest of the side-channel stuff).
+> 
+> You can't rely on userspace for security, that'd be completely
+> ludicrous.
 
---Q7H7AVznsKd9CwNQ
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Actually that's a normal situation QEMU has to deal with.
 
-Hi Fabiano,
-Please take a look at this CI failure:
+QEMU needs to be able to expose a deterministic fixed ABI to the guest
+VM, and that includes control over what CPU features are exposed to
+it. In most cases, the hypervisor cannot arbitrary force enable new
+guest features without agreement from QEMU.
 
->>> MALLOC_PERTURB_=3D61 QTEST_QEMU_BINARY=3D./qemu-system-s390x UBSAN_OPTI=
-ONS=3Dhalt_on_error=3D1:abort_on_error=3D1:print_summary=3D1:print_stacktra=
-ce=3D1 QTEST_QEMU_IMG=3D./qemu-img MESON_TEST_ITERATION=3D1 MSAN_OPTIONS=3D=
-halt_on_error=3D1:abort_on_error=3D1:print_summary=3D1:print_stacktrace=3D1=
- ASAN_OPTIONS=3Dhalt_on_error=3D1:abort_on_error=3D1:print_summary=3D1 PYTH=
-ON=3D/home/gitlab-runner/builds/4S3awx_3/0/qemu-project/qemu/build/pyvenv/b=
-in/python3 QTEST_QEMU_STORAGE_DAEMON_BINARY=3D./storage-daemon/qemu-storage=
--daemon G_TEST_DBUS_DAEMON=3D/home/gitlab-runner/builds/4S3awx_3/0/qemu-pro=
-ject/qemu/tests/dbus-vmstate-daemon.sh /home/gitlab-runner/builds/4S3awx_3/=
-0/qemu-project/qemu/build/tests/qtest/migration-test --tap -k
-=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=
-=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=
-=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=
-=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=
-=80=95=E2=80=95=E2=80=95=E2=80=95 =E2=9C=80  =E2=80=95=E2=80=95=E2=80=95=E2=
-=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=
-=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=
-=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=
-=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=
-=95
-stderr:
-Traceback (most recent call last):
-  File "/home/gitlab-runner/builds/4S3awx_3/0/qemu-project/qemu/build/scrip=
-ts/analyze-migration.py", line 688, in <module>
-    dump.read(dump_memory =3D args.memory)
-  File "/home/gitlab-runner/builds/4S3awx_3/0/qemu-project/qemu/build/scrip=
-ts/analyze-migration.py", line 625, in read
-    section.read()
-  File "/home/gitlab-runner/builds/4S3awx_3/0/qemu-project/qemu/build/scrip=
-ts/analyze-migration.py", line 461, in read
-    field['data'] =3D reader(field, self.file)
-  File "/home/gitlab-runner/builds/4S3awx_3/0/qemu-project/qemu/build/scrip=
-ts/analyze-migration.py", line 434, in __init__
-    for field in self.desc['struct']['fields']:
-KeyError: 'fields'
-warning: fd: migration to a file is deprecated. Use file: instead.
-warning: fd: migration to a file is deprecated. Use file: instead.
-**
-ERROR:../tests/qtest/migration-test.c:36:main: assertion failed (ret =3D=3D=
- 0): (1 =3D=3D 0)
-(test program exited with status code -6)
+If a guest happens to be using '-cpu host', then when a new CPU flag
+arrives as part of a security fix, there is at least no CPU config
+change required. QEMU may or may not need changes, in order that
+the behaviour associated with the new CPU flag is correctly handled.
 
-https://gitlab.com/qemu-project/qemu/-/jobs/8681858344#L8190
+If the guest is using a named CPU model, as well as modifying QEMU
+to know about the new flag, the host admin needs to explicitly
+decide whether & when to expose the new CPU flag for each guest VM
+on the host.
 
-If you find this pull request caused the failure, please send a new
-revision. Otherwise please let me know so we can continue to
-investigate.
+Until the new CPU flag is exposed to the guest, while the host itself
+may be able to remain protected to the new security issue, the guest
+OS is likely remain vulnerable, or have degraded operation in some way.
 
-Thanks,
-Stefan
-
---Q7H7AVznsKd9CwNQ
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmdkEk0ACgkQnKSrs4Gr
-c8h2DQf/bBPkqwfHPnC6r44lfoHjp0G+mrrDEWvknsCXaVGw8LmoC9+sCpyS1Cun
-lcR57+qBlfyAkKGNXO/L9yF6u+jse4K+IUCuRGeW6XiCxPZA65hkXACutO+wDleY
-+9a1c58IU+G25M7qxc5MRARSANrV4IMgfNroZunHNvIWCv60EqKh3h6qi98tWqVF
-ZHj9W1Me3QQN9fzthzzr7LJuVZfTKy0lLsykW/VJ5M/81XVwviNMsHsbNpHfLf1/
-Tyn3bGFvK94H5Qcn/Ts7WwBYJd/8CY2LCe8GY28AWXY261WFn8OXa5pFFh8udKS5
-z+aG/YErQweBPT+1jf+84WR6k1CXZg==
-=xe41
------END PGP SIGNATURE-----
-
---Q7H7AVznsKd9CwNQ--
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
