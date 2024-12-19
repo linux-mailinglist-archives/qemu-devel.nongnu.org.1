@@ -2,144 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC37A9F7F62
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Dec 2024 17:22:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C5669F7FC4
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Dec 2024 17:29:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tOJGH-0002Cs-A7; Thu, 19 Dec 2024 11:20:29 -0500
+	id 1tOJFa-0001o2-VH; Thu, 19 Dec 2024 11:19:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tOFaK-00077y-1X
- for qemu-devel@nongnu.org; Thu, 19 Dec 2024 07:24:56 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <maz@kernel.org>)
+ id 1tOFc0-0008Cx-QO; Thu, 19 Dec 2024 07:26:40 -0500
+Received: from nyc.source.kernel.org ([2604:1380:45d1:ec00::3])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tOFaI-0002eG-7y
- for qemu-devel@nongnu.org; Thu, 19 Dec 2024 07:24:55 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1734611092;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=MLsExxvW2uxQy9Fkm0fQiOUG+nFA2eJZT63Xk4MA0/U=;
- b=YpS5vTv5p6S1jUuuJ4perVXX6/p9k4ooDE50e5oVb5h/j8S0dpu0lZN/oLlG5eEU3OBdk8
- dFWFMBxOpGYxp5JZTjW04rx9gLPkCfMrawm7NO5nE+q05FXkZxRXM/ZhxquNx2+0eL+1ZM
- DdeYZSOp05dnfnKH1+xHMT+t9iiNnrE=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-144-c1jbjqK2PL-0DPkpq9k21g-1; Thu, 19 Dec 2024 07:24:50 -0500
-X-MC-Unique: c1jbjqK2PL-0DPkpq9k21g-1
-X-Mimecast-MFC-AGG-ID: c1jbjqK2PL-0DPkpq9k21g
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-385e1339790so430530f8f.2
- for <qemu-devel@nongnu.org>; Thu, 19 Dec 2024 04:24:50 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734611089; x=1735215889;
- h=content-transfer-encoding:in-reply-to:autocrypt:content-language
- :from:references:cc:to:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=MLsExxvW2uxQy9Fkm0fQiOUG+nFA2eJZT63Xk4MA0/U=;
- b=R9oma1nCyAMkjax6TR/YOFpTi0W+DyH64lXC/L/UNCxcjvYC8W/dPkstHgFfHu/Qb9
- lszB9gaiEz32CEt8jexoD9ZjG7KodcQiBBfCRxrWaHyZvNlIFD0so4Q3uEt0hCfz6vcQ
- h9xzANeLnndUgqOhGSSmwj+wiooq6GXTDCIL/yefhN7xM8qZMVbuGUqFK9dsaKrJIEqy
- 7Q2+h9j1rktzUtPUI0olqHF+aeJTkfUel7iw3eWU//cmVyK0l2gyt39yhxuIFZUPXry0
- sZI44jwfpx/EGlMWJGRYyvVcCpuzy+CsqdfIDNrVHaeX4nBppsRJTUx/fFG5J1GsiKUe
- jNpw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUiVbrKy5opyrN6Wxic0hFnCV8P/nVEV96QV57VKhUrDNTc+TWUFtclnDussCIHxo3xuVDtkQk3NXY0@nongnu.org
-X-Gm-Message-State: AOJu0YxWfQbQXHbUJJjR7d2WDDrW7uB4MCgClsb1rbNJmEjfuGzh0hQe
- P9Oe8iGYP626zcVvO3691YI6m8d1NBO1HhzPH4LObZeiaR7FHVA/V4rggWlK+OwRP8jPxQ1vrNw
- hTntU5s+Fraa759lcN1LeIda+bCi1IzkypCdZ3cI99RyPA3M86ZYgatZqNdd0
-X-Gm-Gg: ASbGncttszE3iIPHpPr+6d0u5hWPQ3qagG7Eg8/EYt3Nl02EzUcwn+jO2oAKqOHjv2D
- c82ylb9gwCs0oVpJYBBwpob8ahrUo/XqoPGGcRwwE0WuEkLfYnUPXuIRlpLW3Snjm2q0D3vmYNj
- cBxulcTvlO8wEZmzpHtZjt9xHABk6EKByPsmvF2mWsTL+f0bOW/xH686xC7QmcxcFuf1mk0vOAg
- Qc5HSpAr6mpsIdrPmqGIH13Pl1WGx3fr1afS9nghlhUH1F7bzKFqQj/uYE7iHr0DT2cnKg2QNwV
- 0JUy/nMDxYNl
-X-Received: by 2002:a5d:588a:0:b0:385:ef8e:a652 with SMTP id
- ffacd0b85a97d-38a19b3ccd0mr2946099f8f.56.1734611089550; 
- Thu, 19 Dec 2024 04:24:49 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEmU5KXnPM+uCwmg4aTTEwyfDMLWqneT0wght1DQrVwhxetApkLSutpM023WS4NN9feNIIqdQ==
-X-Received: by 2002:a5d:588a:0:b0:385:ef8e:a652 with SMTP id
- ffacd0b85a97d-38a19b3ccd0mr2946066f8f.56.1734611089147; 
- Thu, 19 Dec 2024 04:24:49 -0800 (PST)
-Received: from [192.168.0.6] (ip-109-42-49-186.web.vodafone.de.
- [109.42.49.186]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38a1c8a6dd3sm1442353f8f.96.2024.12.19.04.24.48
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 19 Dec 2024 04:24:48 -0800 (PST)
-Message-ID: <6b1e4f73-b53f-4929-8be4-4c07115af626@redhat.com>
-Date: Thu, 19 Dec 2024 13:24:47 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] tests/functional: Convert the kvm_xen_guest avocado test
-To: David Woodhouse <dwmw2@infradead.org>, qemu-devel@nongnu.org
-Cc: Paul Durrant <paul@xen.org>
-References: <20241218113255.232356-1-thuth@redhat.com>
- <9B5DDDDB-769B-4654-BEF1-D3F853EA05E5@infradead.org>
- <1d4faf8e-b2cd-42b8-a6a7-9034b9512b86@redhat.com>
- <8cef1bf9ffde6779ad322534c4469e6687b9c9d7.camel@infradead.org>
- <7e6fd4ed-ee93-48eb-ab12-fd9aa30e6898@redhat.com>
- <72B07F94-036B-4789-B5DF-103CA913278C@infradead.org>
-From: Thomas Huth <thuth@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <72B07F94-036B-4789-B5DF-103CA913278C@infradead.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -31
-X-Spam_score: -3.2
-X-Spam_bar: ---
-X-Spam_report: (-3.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ (Exim 4.90_1) (envelope-from <maz@kernel.org>)
+ id 1tOFby-0002ye-7U; Thu, 19 Dec 2024 07:26:40 -0500
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+ by nyc.source.kernel.org (Postfix) with ESMTP id 625B0A41FF7;
+ Thu, 19 Dec 2024 12:24:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 876BBC4CECE;
+ Thu, 19 Dec 2024 12:26:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1734611192;
+ bh=04mrj61m5M0eK5uxb9qdhTTuprN8gSJHsEGg321+jug=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+ b=Tu9FO8H01Fn5WM+XuIr+y7JwK+/oOLnvU7jJj6ovl99TvBJD/McqbMYuu/kRbpU5a
+ K2prrYhSmM+4J7InIx/NZQxGvujabU4YHkeem9PDUqPerCX8sIyvrd9wDt2WiAmoQ2
+ fb5WjxJtfKZ26gD6kte0oWo81onM79tkmTEJnMjRZ5XRkB1iJkqM4YuzFw2ql5mCGP
+ qB2yBT57i+/oPAmpWl66JkjZil1tK+3QyEr5m6PFs+YGnu9cz8G49sXcQnLrM00iTb
+ nEpRbn/Iy3XEYXXM5mWr73rY8PXQLZzX3th8PBIFiPC2alQZOdiEVpTWkyI12f8nO5
+ SBIo6VxjVFSWw==
+Received: from sofa.misterjones.org ([185.219.108.64]
+ helo=goblin-girl.misterjones.org)
+ by disco-boy.misterjones.org with esmtpsa (TLS1.3) tls
+ TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 (Exim 4.95)
+ (envelope-from <maz@kernel.org>) id 1tOFbq-005GKK-DH;
+ Thu, 19 Dec 2024 12:26:30 +0000
+Date: Thu, 19 Dec 2024 12:26:29 +0000
+Message-ID: <8634ijrh8q.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Kashyap Chamarthy <kchamart@redhat.com>
+Cc: Eric Auger <eric.auger@redhat.com>,	Cornelia Huck <cohuck@redhat.com>,
+ Daniel =?UTF-8?B?IlAuIEJlcnJhbmfDqSI=?= <berrange@redhat.com>,
+ eric.auger.pro@gmail.com,	qemu-devel@nongnu.org,	qemu-arm@nongnu.org,
+ kvmarm@lists.linux.dev,	peter.maydell@linaro.org,
+ richard.henderson@linaro.org,	alex.bennee@linaro.org,
+ oliver.upton@linux.dev,	sebott@redhat.com,
+ shameerali.kolothum.thodi@huawei.com,	armbru@redhat.com,
+ abologna@redhat.com,	jdenemar@redhat.com,	shahuang@redhat.com,
+ mark.rutland@arm.com,	philmd@linaro.org,	pbonzini@redhat.com
+Subject: Re: [PATCH RFCv2 00/20] kvm/arm: Introduce a customizable aarch64 KVM
+ host model
+In-Reply-To: <Z2QE9AqZnpGM5sWD@gezellig>
+References: <20241206112213.88394-1-cohuck@redhat.com>
+ <edc12140-6345-4868-938d-c80c4d2c2004@redhat.com>
+ <Z1qoa8yXscTSAJ9e@redhat.com> <8734it1bv6.fsf@redhat.com>
+ <1fea79e4-7a31-4592-8495-7b18cd82d02b@redhat.com>
+ <Z2QE9AqZnpGM5sWD@gezellig>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/29.4
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: kchamart@redhat.com, eric.auger@redhat.com,
+ cohuck@redhat.com, berrange@redhat.com, eric.auger.pro@gmail.com,
+ qemu-devel@nongnu.org, qemu-arm@nongnu.org, kvmarm@lists.linux.dev,
+ peter.maydell@linaro.org, richard.henderson@linaro.org, alex.bennee@linaro.org,
+ oliver.upton@linux.dev, sebott@redhat.com,
+ shameerali.kolothum.thodi@huawei.com, armbru@redhat.com, abologna@redhat.com,
+ jdenemar@redhat.com, shahuang@redhat.com, mark.rutland@arm.com,
+ philmd@linaro.org, pbonzini@redhat.com
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org);
+ SAEximRunCond expanded to false
+Received-SPF: pass client-ip=2604:1380:45d1:ec00::3;
+ envelope-from=maz@kernel.org; helo=nyc.source.kernel.org
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-1.116,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -155,45 +100,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 19/12/2024 09.49, David Woodhouse wrote:
-> On 19 December 2024 09:35:13 CET, Thomas Huth <thuth@redhat.com> wrote:
->> On 18/12/2024 23.14, David Woodhouse wrote:
->>> On Wed, 2024-12-18 at 16:54 +0100, Thomas Huth wrote:
->>>> On 18/12/2024 12.48, David Woodhouse wrote:
->>>>> On 18 December 2024 12:32:49 CET, Thomas Huth <thuth@redhat.com> wrote:
->>>>>> Use the serial console to execute the commands in the guest instead
->>>>>> of using ssh since we don't have ssh support in the functional
->>>>>> framework yet.
->>>>>>
->>>>>> Signed-off-by: Thomas Huth <thuth@redhat.com>
->>>>>
->>>>> Hm, but serial is lossy and experience shows that it leads to flaky tests if the guest (or host) misses bytes. While SSH would just go slower.
->>>>
->>>> I now noticed some issue with the serial console in this test, too.
->>>> Looks like the "Starting dropbear sshd: OK" is not print in an atomic way by
->>>> the guest, sometimes there are other kernel messages between the ":" and the
->>>> "OK". It works reliable when removing the "OK" from the string.
->>>
->>> Nah, that still isn't atomic; you just got lucky because the race
->>> window is smaller. It's not like serial ports are at a premium; can't
->>> you have a separate port for kernel vs. userspace messages?
->>
->> Maybe easiest solution: Simply add "quiet" to the kernel command line, then it does not write the kernel messages to the serial console anymore.
-> 
-> Want to resend the bug report about that test failing again? But without the kernel messages this time... :)
+On Thu, 19 Dec 2024 11:35:16 +0000,
+Kashyap Chamarthy <kchamart@redhat.com> wrote:
+>=20
+> On Thu, Dec 12, 2024 at 11:04:30AM +0100, Eric Auger wrote:
+>=20
+> Hi Eric,
+>=20
+> > On 12/12/24 10:36, Cornelia Huck wrote:
+> > > On Thu, Dec 12 2024, Daniel P. Berrang=C3=A9 <berrange@redhat.com> wr=
+ote:
+>=20
+> [...]
+>=20
+> > >> Consider you mgmt app wants to set a CPU model that's common across
+> > >> heterogeneous hardware. They don't neccessarily want/need to be
+> > >> able to live migrate between heterogeneous CPUs, but for simplicity
+> > >> of configuration desire to set a single named CPU across all guests,
+> > >> irrespective of what host hey are launched on. The ARM spec baseline
+> > >> named models would give you that config simplicity.
+> > > If we use architecture extensions (i.e. Armv8.x/9.x) as baseline, I'm
+> > > seeing some drawbacks:
+> > > - a lot of work before we can address some specific use cases
+> > > - old models can get new optional features
+> > > - a specific cpu might have a huge set of optional features on top of
+> > >   the baseline model
+> > >
+> > > Using a reference core such as Neoverse-V2 probably makes more sense
+> > > (easier to get started, less feature diff?) It would still make a good
+> > > starting point for a simple config.
+> > >
+> > Actually from a dev point of view I am not sure it changes much to have
+> > either ARM spec rev baseline or CPU ref core named model.
+> >=20
+> > One remark is that if you look at
+> > https://developer.arm.com/documentation/109697/2024_09?lang=3Den
+> > you will see there are quite a lot of spec revisions and quite a few of
+> > them are actually meaningful in the light of currently avaiable and
+> > relevant HW we want to address. What I would like to avoid is to be
+> > obliged to look at all of them in a generic manner while we just want to
+> > address few cpu ref models.
+> >=20
+> > Also starting from the ARM spec rev baseline the end-user may need to
+> > add more feature opt-ins to be close to a specific cpu model. So I
+> > foresee extra complexity for the end-user.
+>=20
+> (Assuming I'm parsing your last para right; correct me if not.)
+>=20
+> Isn't a user wanting to add extra CPU flags (on top of a baseline) a
+> "normal behaviour" and not "extra complexity"?  Besides coming close to
+> a specific CPU model, there's the additional important use-case of CPU
+> flags that provide security mitigation.
+>=20
+> Consider this:
+>=20
+> Say, there's a serious security issue in a released ARM CPU.  As part of
+> the fix, two new CPU flags need to be exposed to the guest OS, call them
+> "secflag1" and "secflag2".  Here, the user is configuring a baseline
+> model + two extra CPU flags, not to get close to some other CPU model
+> but to mitigate itself against a serious security flaw.
 
-With "quiet", the output just looks like this when it hangs:
+If there's such a security issue, that the hypervisor's job to do so,
+not userspace. See what KVM does for CSV3, for example (and all the
+rest of the side-channel stuff).
 
-  Cannot get hvm parameter CONSOLE_EVTCHN (18): -22!
-  Spectre V2 : Kernel not compiled with retpoline; no mitigation available!
-  kvm_intel: VMX not supported by CPU 0
-  Cannot get hvm parameter CONSOLE_EVTCHN (18): -22!
-  fail to initialize ptp_kvm
+You can't rely on userspace for security, that'd be completely
+ludicrous.
 
-Anyway, to properly track this, I've now created a ticket with the full log:
+	M.
 
-  https://gitlab.com/qemu-project/qemu/-/issues/2731
-
-  Thomas
-
+--=20
+Without deviation from the norm, progress is not possible.
 
