@@ -2,98 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43DCE9F790A
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Dec 2024 10:56:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C03B59F790D
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Dec 2024 10:58:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tODGN-00006L-3O; Thu, 19 Dec 2024 04:56:11 -0500
+	id 1tODIX-0001I2-4L; Thu, 19 Dec 2024 04:58:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1tODGK-000064-4F
- for qemu-devel@nongnu.org; Thu, 19 Dec 2024 04:56:08 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1tODGI-0006Mc-5B
- for qemu-devel@nongnu.org; Thu, 19 Dec 2024 04:56:07 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1734602164;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=/mpMMVJZMXsFFgWtKqG1jVEAHUrlSUxk9h1r1mO9+0g=;
- b=guZSbHvKVrAlefcjnsC03C3OUGkgfJv74qWGve9Cqiantb3aaDynrfMv2QPEAnqAMw6tMl
- vLi2DawZABxGM7uTlihpcFwrIDhhyCKm0sGbct/pkjA+6GytqX7pdmQvuAnPoFQRAcglSk
- Dn20w+WPv2l3e0lNuSw9VvnOsaDqTog=
-Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com
- [209.85.215.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-499-SgEc7G6COQ6yHk0Y4QW3lQ-1; Thu, 19 Dec 2024 04:56:01 -0500
-X-MC-Unique: SgEc7G6COQ6yHk0Y4QW3lQ-1
-X-Mimecast-MFC-AGG-ID: SgEc7G6COQ6yHk0Y4QW3lQ
-Received: by mail-pg1-f200.google.com with SMTP id
- 41be03b00d2f7-7fd4e26676dso611561a12.2
- for <qemu-devel@nongnu.org>; Thu, 19 Dec 2024 01:56:01 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734602161; x=1735206961;
- h=to:references:message-id:content-transfer-encoding:cc:date
- :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=/mpMMVJZMXsFFgWtKqG1jVEAHUrlSUxk9h1r1mO9+0g=;
- b=b2q2BSBg0FdCWVyMTdyrHdSMBh19MCEoyoAsuPad2gCrySey+qlQkgI3U1vHZir6uH
- ikvFAYcnUs7X2+6Yx0X+Y9+IjYHsJXNve9A8QoOz2jCYzm41+fMj3UqgQjWn0AEmL24H
- KPquG1+cwty1Pm2SVqUj3DQZyfNLMIa9nhtesQUzyh1ipY4bpGPfIKp0CmghIsgTKPbe
- DBzIv895wEosWZR0wiXV1tQhN5Mc/c/j8zcIWWuPDQgB5s2tfLRAWiy1jAnukZ2tXMtt
- 4jWluyz8g62q9rQSeP2AbRgKPuVIruiDVdu7scRFLmC09WhnFGuZLs+nqhhFfIFpvTmn
- pirQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVTM5E3VoOjNU4dgS9zjyTGL0OkCW23hEBQqBAjZS+bDPLMry9wGf7GSVfuG1mnFFySwwsE+OLx2soN@nongnu.org
-X-Gm-Message-State: AOJu0YzgBxdHR5vTIaiUU5kzm49HeYgoKKzoIx6NOlnvO43goUSQ/I0r
- Pb/7fIjvmfcUH3bLFVhNr5XTqm4TKzCMimsOMMlvFeRiAZi2C0iQjqnKBN7YTiFxJSBkbZU7nxf
- dhrI6iaU47eavXGC8HGVMUouISQDbJthc0XIzubZcX2Qx9ut09lFf
-X-Gm-Gg: ASbGncuFyiReqMl/wydbcimYPMEs/D6a+z6rt3foQwzOytkAtEa5RXsiq0SX7G/OIJt
- uraKEkEXm8USoNLd8Ng8EhERwnWSLdpZvk0YKP4fHrTeT9/87HlSvNyGPEfqHUlScVF5/gDfaZJ
- 1wRcW+zdABZWdDciDlQWDIbVV4+7M3wCrhzk24DGoPS0or8g/gG6vR8uHmfoPBmWdxdjdPGHEAw
- uQYnxt3OzqEQABLI1MaovoF0PsqhSE+HcBk3z9dDPtCF6Sbawr8kLusDEaf2M+j2fBdMQbS8w==
-X-Received: by 2002:a05:6a20:d80b:b0:1e1:f281:8d36 with SMTP id
- adf61e73a8af0-1e5b47fc194mr11264858637.10.1734602160709; 
- Thu, 19 Dec 2024 01:56:00 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IF/joEDmZ9yh4JWiYG9j0p3gGKi3RCg0ITK4ougL54TLQJrVsPVoUg5oPkF6ox9kvE6M6B83A==
-X-Received: by 2002:a05:6a20:d80b:b0:1e1:f281:8d36 with SMTP id
- adf61e73a8af0-1e5b47fc194mr11264832637.10.1734602160362; 
- Thu, 19 Dec 2024 01:56:00 -0800 (PST)
-Received: from smtpclient.apple ([116.73.135.226])
- by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-842e32f5f00sm811221a12.72.2024.12.19.01.55.57
- (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
- Thu, 19 Dec 2024 01:55:59 -0800 (PST)
-Content-Type: text/plain;
-	charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3776.700.51.11.1\))
-Subject: Re: [PATCH v3] hw/misc/vmfwupdate: Introduce hypervisor fw-cfg
- interface support
-From: Ani Sinha <anisinha@redhat.com>
-In-Reply-To: <20241219093749.15794-1-anisinha@redhat.com>
-Date: Thu, 19 Dec 2024 15:25:44 +0530
-Cc: Gerd Hoffmann <kraxel@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
- Vitaly Kuznetsov <vkuznets@redhat.com>, qemu-devel <qemu-devel@nongnu.org>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <59FED971-E9B2-41DF-B898-8B683709E9FE@redhat.com>
-References: <20241219093749.15794-1-anisinha@redhat.com>
-To: Ani Sinha <anisinha@redhat.com>, Alexander Graf <graf@amazon.com>,
- Paolo Bonzini <pbonzini@redhat.com>
-X-Mailer: Apple Mail (2.3776.700.51.11.1)
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=anisinha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -31
-X-Spam_score: -3.2
-X-Spam_bar: ---
-X-Spam_report: (-3.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-1.116,
+ (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
+ id 1tODIT-0001Ho-8C
+ for qemu-devel@nongnu.org; Thu, 19 Dec 2024 04:58:21 -0500
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <maobibo@loongson.cn>) id 1tODIP-0006V2-Da
+ for qemu-devel@nongnu.org; Thu, 19 Dec 2024 04:58:20 -0500
+Received: from loongson.cn (unknown [10.20.42.62])
+ by gateway (Coremail) with SMTP id _____8BxuuAw7mNnbYJYAA--.43779S3;
+ Thu, 19 Dec 2024 17:58:09 +0800 (CST)
+Received: from [10.20.42.62] (unknown [10.20.42.62])
+ by front1 (Coremail) with SMTP id qMiowMCx3sUt7mNncUQCAA--.5110S3;
+ Thu, 19 Dec 2024 17:58:06 +0800 (CST)
+Subject: Re: [PATCH] feat: add loongarch page table walker support for
+ debugger memory access
+To: Miao Hao <haomiao23s@ict.ac.cn>, gaosong@loongson.cn
+Cc: qemu-devel@nongnu.org, "lixianglai@loongson.cn" <lixianglai@loongson.cn>
+References: <20241219032455.28608-1-haomiao23s@ict.ac.cn>
+From: bibo mao <maobibo@loongson.cn>
+Message-ID: <b041dacf-df2f-f25f-33c5-a53ad9cc2059@loongson.cn>
+Date: Thu, 19 Dec 2024 17:57:23 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
+MIME-Version: 1.0
+In-Reply-To: <20241219032455.28608-1-haomiao23s@ict.ac.cn>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: qMiowMCx3sUt7mNncUQCAA--.5110S3
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoW3GrWxXr15Zw17WFW7tFW7ZFc_yoWxKry5pF
+ WxCFWayF48KrZrAas3X34YvFn8Zr43Kw4aga1fKF9YkwsxXryfZFWvg3sxJF48Jw4kWw4I
+ gan8AF45Ca4UXFgCm3ZEXasCq-sJn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7KY7ZEXa
+ sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+ 0xBIdaVrnRJUUUv2b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+ IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+ e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+ 0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
+ xVW8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx
+ 1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r106r15McIj6I8E87Iv
+ 67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07
+ AlzVAYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02
+ F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw
+ 1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7Cj
+ xVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r
+ 1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7IU1wL
+ 05UUUUU==
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -39
+X-Spam_score: -4.0
+X-Spam_bar: ----
+X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-2.107,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -111,135 +80,221 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Hi Miao,
 
+Thanks for doing this. It is useful to debug VM.
 
-> On 19 Dec 2024, at 3:07=E2=80=AFPM, Ani Sinha <anisinha@redhat.com> =
-wrote:
->=20
-> VM firmware update is a mechanism where the virtual machines can use =
-their
-> preferred and trusted firmware image in their execution environment =
-without
-> having to depend on a untrusted party to provide the firmware bundle. =
-This is
-> particularly useful for confidential virtual machines that are =
-deployed in the
-> cloud where the tenant and the cloud provider are two different =
-entities. In
-> this scenario, virtual machines can bring their own trusted firmware =
-image
-> bundled as a part of their filesystem (using UKIs for example[1]) and =
-then use
-> this hypervisor interface to update to their trusted firmware image. =
-This also
-> allows the guests to have a consistent measurements on the firmware =
-image.
->=20
-> This change introduces basic support for the fw-cfg based hypervisor =
-interface
-> and the corresponding device. The change also includes the
-> specification document for this interface. The interface is made =
-generic
-> enough so that guests are free to use their own ABI to pass required
-> information between initial and trusted execution contexts (where they =
-are
-> running their own trusted firmware image) without the hypervisor =
-getting
-> involved in between. In subsequent patches, we will introduce other =
-minimal
-> changes on the hypervisor that are required to make the mechanism =
-work.
->=20
-> A functional test has been added to test basic device creation and =
-failure mode
-> in cases where the user tries to create more than one device.
->=20
-> [1] See systemd pull requests =
-https://github.com/systemd/systemd/pull/35091
-> and https://github.com/systemd/systemd/pull/35281 for some discussions =
-on
-> how we can bundle firmware image within an UKI.
->=20
-> CC: Alex Graf <graf@amazon.com>
-> CC: Paolo Bonzini <pbonzini@redhat.com>
-> CC: Gerd Hoffman <kraxel@redhat.com>
-> CC: Igor Mammedov <imammedo@redhat.com>
-> CC: Vitaly Kuznetsov <vkuznets@redhat.com>
-> Signed-off-by: Ani Sinha <anisinha@redhat.com>
+On 2024/12/19 上午11:24, Miao Hao wrote:
+> Signed-off-by: Miao Hao <haomiao23s@ict.ac.cn>
 > ---
-> MAINTAINERS                         |   9 ++
-> docs/specs/index.rst                |   1 +
-> docs/specs/vmfwupdate.rst           | 119 +++++++++++++++++++++
-> hw/misc/meson
-
-<snip>
-
-> #endif
-> diff --git a/tests/functional/meson.build =
-b/tests/functional/meson.build
-> index 758145d1e5..ac495fd026 100644
-> --- a/tests/functional/meson.build
-> +++ b/tests/functional/meson.build
-> @@ -201,6 +201,7 @@ tests_x86_64_system_quick =3D [
->   'pc_cpu_hotplug_props',
->   'virtio_version',
->   'x86_cpu_model_versions',
-> +  'vmfwupdate',
-> ]
->=20
-> tests_x86_64_system_thorough =3D [
-> diff --git a/tests/functional/test_vmfwupdate.py =
-b/tests/functional/test_vmfwupdate.py
-> new file mode 100644
-> index 0000000000..4ca203d53f
-> --- /dev/null
-> +++ b/tests/functional/test_vmfwupdate.py
-> @@ -0,0 +1,36 @@
-> +#!/usr/bin/env python3
-> +#
-> +# Check for vmfwupdate device.
-> +#
-> +# Copyright (c) 2024 Red Hat, Inc.
-> +#
-> +# Author:
-> +#  Ani Sinha <anisinha@redhat.com>
-> +#
-> +# SPDX-License-Identifier: GPL-2.0-or-later
+>   target/loongarch/cpu_helper.c     | 104 ++++++++++++++++++++++++++++--
+>   target/loongarch/internals.h      |   4 +-
+>   target/loongarch/tcg/tlb_helper.c |   4 +-
+>   3 files changed, 104 insertions(+), 8 deletions(-)
+> 
+> diff --git a/target/loongarch/cpu_helper.c b/target/loongarch/cpu_helper.c
+> index 580362ac3e..c0828a813d 100644
+> --- a/target/loongarch/cpu_helper.c
+> +++ b/target/loongarch/cpu_helper.c
+> @@ -141,9 +141,95 @@ bool loongarch_tlb_search(CPULoongArchState *env, target_ulong vaddr,
+>       return false;
+>   }
+>   
+> +static int loongarch_page_table_walker(CPULoongArchState *env, hwaddr *physical,
+> +                                 int *prot, target_ulong address)
+> +{
+> +    CPUState *cs = env_cpu(env);
+> +    target_ulong index, phys;
+> +    int shift;
+> +    uint64_t dir_base, dir_width;
+> +    uint64_t base;
+> +    int level;
 > +
-> +from qemu_test import QemuSystemTest
+> +    /* 0:64bit, 1:128bit, 2:192bit, 3:256bit */
+> +    shift = FIELD_EX64(env->CSR_PWCL, CSR_PWCL, PTEWIDTH);
+> +    shift = (shift + 1) * 3;
 > +
-> +class VmFwUpdateDeviceCheck(QemuSystemTest):
-> +    # after launch, in order to generate the logs from QEMU we need =
-to
-> +    # wait for some time. Launching and then immediately shutting =
-down
-> +    # the VM generates empty logs. A delay of 1 second is added for
-> +    # this reason.
-> +    DELAY_Q35_BOOT_SEQUENCE =3D 1
+> +    if ((address >> 63) & 0x1) {
+> +        base = env->CSR_PGDH;
+> +    } else {
+> +        base = env->CSR_PGDL;
+> +    }
+> +    base &= TARGET_PHYS_MASK;
+> +
+> +    for (level = 4; level > 0; level--) {
+> +        get_dir_base_width(env, &dir_base, &dir_width, level);
+> +
+> +        if (dir_width != 0) {
+how about check whether it equeal to 0 firstly like this?
+            if (dir_width == 0)
+                continue;
 
-Sorry, sent too soon. This is not needed yet. Will remove in v4.
+> +            /* get next level page directory */
+> +            index = (address >> dir_base) & ((1 << dir_width) - 1);
+> +            phys = base | index << shift;
+Here will only load first 64bit if shift is not 0, such as 1:128bit, 
+2:192bit, 3:256bit
 
+> +            base = ldq_phys(cs->as, phys) & TARGET_PHYS_MASK;
+> +            if (!FIELD_EX64(base, TLBENTRY, HUGE)) {
+> +                /* mask off page dir permission bits */
+> +                base &= TARGET_PAGE_MASK;
+> +            } else {
+> +                /* base is a huge pte */
+> +                break;
+> +            }
 > +
-> +    def test_multiple_device_fail(self):
-> +        """
-> +        Only one vmfwdevice can be instantiated. Ensure failure if
-> +        user tries to create more than one device.
-> +        """
-> +        self.vm.add_args('-device', 'vmfwupdate,id=3Dfwupd1',
-> +                         '-device', 'vmfwupdate,id=3Dfwupd2')
-> +        self.vm.set_qmp_monitor(enabled=3DFalse)
-> +        self.vm.launch()
-> +        self.vm.wait()
-> +        self.assertEqual(self.vm.exitcode(), 1, "QEMU exit code =
-should be 1")
-> +        self.assertRegex(self.vm.get_log(),
-> +                         r'at most one vmfwupdate device is =
-permitted')
+> +            if (base == 0) {
+physical adddress 0 is valid and Valid bit will be checked in later. 
+Can we remove this?
+> +                return TLBRET_NOMATCH;
+> +            }
+
+> +        }
+> +    }
 > +
-> +if __name__ =3D=3D '__main__':
-> +    QemuSystemTest.main()
-> --=20
-> 2.42.0
->=20
+> +    /* pte */
+> +    if (FIELD_EX64(base, TLBENTRY, HUGE)) {
+> +        /* Huge Page. base is pte */
+> +        base = FIELD_DP64(base, TLBENTRY, LEVEL, 0);
+> +        base = FIELD_DP64(base, TLBENTRY, HUGE, 0);
+> +        if (FIELD_EX64(base, TLBENTRY, HGLOBAL)) {
+> +            base = FIELD_DP64(base, TLBENTRY, HGLOBAL, 0);
+> +            base = FIELD_DP64(base, TLBENTRY, G, 1);
+> +        }
+> +    } else {
+> +        /* Normal Page. base points to pte */
+> +        get_dir_base_width(env, &dir_base, &dir_width, 0);
+> +        index = (address >> dir_base) & ((1 << dir_width) - 1);
+> +        phys = base | index << shift;
+Ditto, shift may be wider than 64-bit.
+
+Regards
+Bibo Mao
+> +        base = ldq_phys(cs->as, phys);
+> +    }
+> +
+> +    /* TODO: check plv and other bits? */
+> +
+> +    /* base is pte, in normal pte format */
+> +    if (!FIELD_EX64(base, TLBENTRY, V)) {
+> +        return TLBRET_NOMATCH;
+> +    }
+> +
+> +    if (!FIELD_EX64(base, TLBENTRY, D)) {
+> +        *prot = PAGE_READ;
+> +    } else {
+> +        *prot = PAGE_READ | PAGE_WRITE;
+> +    }
+> +
+> +    /* get TARGET_PAGE_SIZE aligned physical address */
+> +    base += (address & TARGET_PHYS_MASK) & ((1 << dir_base) - 1);
+> +    /* mask RPLV, NX, NR bits */
+> +    base = FIELD_DP64(base, TLBENTRY_64, RPLV, 0);
+> +    base = FIELD_DP64(base, TLBENTRY_64, NX, 0);
+> +    base = FIELD_DP64(base, TLBENTRY_64, NR, 0);
+> +    /* mask other attribute bits */
+> +    *physical = base & TARGET_PAGE_MASK;
+> +
+> +    return 0;
+> +}
+> +
+>   static int loongarch_map_address(CPULoongArchState *env, hwaddr *physical,
+>                                    int *prot, target_ulong address,
+> -                                 MMUAccessType access_type, int mmu_idx)
+> +                                 MMUAccessType access_type, int mmu_idx,
+> +                                 int is_debug)
+>   {
+>       int index, match;
+>   
+> @@ -151,6 +237,13 @@ static int loongarch_map_address(CPULoongArchState *env, hwaddr *physical,
+>       if (match) {
+>           return loongarch_map_tlb_entry(env, physical, prot,
+>                                          address, access_type, index, mmu_idx);
+> +    } else if (is_debug) {
+> +        /*
+> +         * For debugger memory access, we want to do the map when there is a
+> +         * legal mapping, even if the mapping is not yet in TLB. return 0 if
+> +         * there is a valid map, else none zero.
+> +         */
+> +        return loongarch_page_table_walker(env, physical, prot, address);
+>       }
+>   
+>       return TLBRET_NOMATCH;
+> @@ -158,7 +251,8 @@ static int loongarch_map_address(CPULoongArchState *env, hwaddr *physical,
+>   #else
+>   static int loongarch_map_address(CPULoongArchState *env, hwaddr *physical,
+>                                    int *prot, target_ulong address,
+> -                                 MMUAccessType access_type, int mmu_idx)
+> +                                 MMUAccessType access_type, int mmu_idx,
+> +                                 int is_debug)
+>   {
+>       return TLBRET_NOMATCH;
+>   }
+> @@ -178,7 +272,7 @@ static hwaddr dmw_va2pa(CPULoongArchState *env, target_ulong va,
+>   
+>   int get_physical_address(CPULoongArchState *env, hwaddr *physical,
+>                            int *prot, target_ulong address,
+> -                         MMUAccessType access_type, int mmu_idx)
+> +                         MMUAccessType access_type, int mmu_idx, int is_debug)
+>   {
+>       int user_mode = mmu_idx == MMU_USER_IDX;
+>       int kernel_mode = mmu_idx == MMU_KERNEL_IDX;
+> @@ -222,7 +316,7 @@ int get_physical_address(CPULoongArchState *env, hwaddr *physical,
+>   
+>       /* Mapped address */
+>       return loongarch_map_address(env, physical, prot, address,
+> -                                 access_type, mmu_idx);
+> +                                 access_type, mmu_idx, is_debug);
+>   }
+>   
+>   hwaddr loongarch_cpu_get_phys_page_debug(CPUState *cs, vaddr addr)
+> @@ -232,7 +326,7 @@ hwaddr loongarch_cpu_get_phys_page_debug(CPUState *cs, vaddr addr)
+>       int prot;
+>   
+>       if (get_physical_address(env, &phys_addr, &prot, addr, MMU_DATA_LOAD,
+> -                             cpu_mmu_index(cs, false)) != 0) {
+> +                             cpu_mmu_index(cs, false), 1) != 0) {
+>           return -1;
+>       }
+>       return phys_addr;
+> diff --git a/target/loongarch/internals.h b/target/loongarch/internals.h
+> index 1a02427627..bc2ca30746 100644
+> --- a/target/loongarch/internals.h
+> +++ b/target/loongarch/internals.h
+> @@ -56,7 +56,9 @@ bool loongarch_tlb_search(CPULoongArchState *env, target_ulong vaddr,
+>                             int *index);
+>   int get_physical_address(CPULoongArchState *env, hwaddr *physical,
+>                            int *prot, target_ulong address,
+> -                         MMUAccessType access_type, int mmu_idx);
+> +                         MMUAccessType access_type, int mmu_idx, int is_debug);
+> +void get_dir_base_width(CPULoongArchState *env, uint64_t *dir_base,
+> +                               uint64_t *dir_width, target_ulong level);
+>   hwaddr loongarch_cpu_get_phys_page_debug(CPUState *cpu, vaddr addr);
+>   
+>   #ifdef CONFIG_TCG
+> diff --git a/target/loongarch/tcg/tlb_helper.c b/target/loongarch/tcg/tlb_helper.c
+> index 97f38fc391..564f336df9 100644
+> --- a/target/loongarch/tcg/tlb_helper.c
+> +++ b/target/loongarch/tcg/tlb_helper.c
+> @@ -18,7 +18,7 @@
+>   #include "exec/log.h"
+>   #include "cpu-csr.h"
+>   
+> -static void get_dir_base_width(CPULoongArchState *env, uint64_t *dir_base,
+> +void get_dir_base_width(CPULoongArchState *env, uint64_t *dir_base,
+>                                  uint64_t *dir_width, target_ulong level)
+>   {
+>       switch (level) {
+> @@ -485,7 +485,7 @@ bool loongarch_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
+>   
+>       /* Data access */
+>       ret = get_physical_address(env, &physical, &prot, address,
+> -                               access_type, mmu_idx);
+> +                               access_type, mmu_idx, 0);
+>   
+>       if (ret == TLBRET_MATCH) {
+>           tlb_set_page(cs, address & TARGET_PAGE_MASK,
+> 
 
 
