@@ -2,79 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52BCD9F7FF3
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Dec 2024 17:36:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EDB5F9F7FF2
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Dec 2024 17:36:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tOJIt-0002Be-Ep; Thu, 19 Dec 2024 11:23:11 -0500
+	id 1tOJIf-000119-4Y; Thu, 19 Dec 2024 11:22:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOId5-0004vb-5X
- for qemu-devel@nongnu.org; Thu, 19 Dec 2024 10:39:59 -0500
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOIeR-0005e1-1v
+ for qemu-devel@nongnu.org; Thu, 19 Dec 2024 10:41:23 -0500
 Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOId3-0004ZZ-Cj
- for qemu-devel@nongnu.org; Thu, 19 Dec 2024 10:39:58 -0500
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOIeO-0004tx-Lq
+ for qemu-devel@nongnu.org; Thu, 19 Dec 2024 10:41:22 -0500
 Received: by mail-wr1-x42a.google.com with SMTP id
- ffacd0b85a97d-38632b8ae71so741999f8f.0
- for <qemu-devel@nongnu.org>; Thu, 19 Dec 2024 07:39:57 -0800 (PST)
+ ffacd0b85a97d-385de59c1a0so567533f8f.2
+ for <qemu-devel@nongnu.org>; Thu, 19 Dec 2024 07:41:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734622795; x=1735227595; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=8jM7iK7CzjLBlq0GL2o2lmBr4BfhFWF4uDH24qr2bSs=;
- b=iqajmz2Tx9hR5muu1ccV6gqGBpBLH6QT5nNHZiqcYXc28xWOQq9toGzfqrOjACuTd0
- T4bZGS0RQ7ClcCMJIlh/IxNrdiGI7WicqHLj0tnvvRKyYunz2P65J6ZZV8nv4CBd3beB
- HRx7gQ4/fSQV/5ZXXtKadvEiAjbhM+ZPsekUaN14LY9YtdvTSGQ94RnbEq9dAmavgoeN
- bt3YsYtFBt3vDOy0zUagKiUhX+Nn2BqKSXW5MTxETBhQl7FSF14tVaYfuJoeTGcZaDQ2
- DrlzlUrZha1+Roj9p2ukXTM30nts2wJSCithlp+lmkQbOxVliVszkXOLpVTzvprXNtpu
- KZ8A==
+ d=linaro.org; s=google; t=1734622879; x=1735227679; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=230voEAVIdoM3GiK2Lk/6qE75mi3X3jK00czcVLjJHM=;
+ b=NJs9iwepgZ9SkjIld9rzM35Zto1E1VUGfWhRQFo5iY7aSrLga5QNDdqzzs0T+Lxx7Y
+ V182fIQcx16gSLnuqs8Uh2MPs3ItWKspWZxIxjG9/T2E9e0m2QjU9X9FOYo7kJ2tCBiJ
+ D/+GwW23Nro0leqksOlK7+dl8psynNpLP7aqZkWUQhPxalNRrU1jUB7ZWt8SxMwhb8Ox
+ MBmT/u0e92lASPy+07wEcIWQH6C10MJfGLM29EDCte9pKsF0Et7X8P3HriEnNrA2D5mg
+ NKUg5rfeNHY79IlMKPjuowkMBSXnEKhCHkvIGxWibyCtGU7LfMhRK6ISyxZIO+2WL0BU
+ xx+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734622795; x=1735227595;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=8jM7iK7CzjLBlq0GL2o2lmBr4BfhFWF4uDH24qr2bSs=;
- b=hVFtiE/5ionemynn5AgUyUL+8X4Ez+2OTHu1Y5kj3UKWBR9g4YqccD1qfDG3G7eASN
- HknC2HgscIKCQFTdTeV4rYTxDkj/KOfsg2XggA9KWVFlzrdlcUrQgYYYVZSutnDY8hF2
- E57IZ/JUgpb2kD8sSw/lAnMXe8GyCMKvXvNDoo1rki5OkppizSMmqpGB/a5Y79ID1hgw
- Kpa4MCVDu+VLWjsbZixFGXg7dDUJzJk1SBwZ+vGiH8zqSsZRp8dyxlGVhPW2ckCtx8oj
- y2Nu1S+oeejPAJqEs97si2Ct27+XPqcfJVhpb4xamUCRt2rD6YcxvpDBCC8U3HYJQbso
- eWeA==
-X-Gm-Message-State: AOJu0Yx10wCowDmu0D4H7kwKqkL4phT2mYlOVgD5K+1Io4SOcfBrutOg
- T6156hyCUODe7elcTbU7yuxs18i/AIp7UGUp4/7qE7MEe+uJ30hqyFnX7xqjRe/6RXHl4AmV1hG
- q
-X-Gm-Gg: ASbGnctqKeMN/yAVg5aSelYk89fHdkgZanivYKCdCaeCwxy5cU6Rg2xFDtLg3rU3tix
- +GEexLDyciPCBANR1gJc4AYxL/jrOmPhahmm306ynaJHtsLSh9j/7zs2KapVtvwfHNdU2u4Vty1
- 0P8YdfoH7hBITsQbUndTcavUsPNhPmflTjJ5ICOuQjglG/PfEb45xJJUY9HPLus7Lb7VggQXJgn
- +EbxvPZVSw/RLZke0k52ITdrCWTnhqBno6NN7ZKAZaK/msfv8ow74r2SWav0/WDGpG1Bln8bjsk
- McoP
-X-Google-Smtp-Source: AGHT+IFDP3fNJA6xBv/hfaKPgC0bZEnVC+6UMLDZJxil0bxoO2WYS57R0WmK+DgL2vSBssckSHhikA==
-X-Received: by 2002:a05:6000:178b:b0:386:3835:9fec with SMTP id
- ffacd0b85a97d-388e4d8fbc0mr7568848f8f.44.1734622795613; 
- Thu, 19 Dec 2024 07:39:55 -0800 (PST)
-Received: from localhost.localdomain ([78.196.4.158])
+ d=1e100.net; s=20230601; t=1734622879; x=1735227679;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=230voEAVIdoM3GiK2Lk/6qE75mi3X3jK00czcVLjJHM=;
+ b=bjkDzi8o+5YRMIylDW2P7T80HS1f2mJ1hQue/58YwTZlVBkh78bQtKHQ99hfTxJHJR
+ /a4YEPjKM2skVKqeCybm5R/qB5xjY7GQaxDLHLt6rCTrW74D6hZkb4XchxO83uge6Ank
+ ERVr1HLSz3bcph/mFRFSCr2aRWJnLu2KvuQeNGGu1+cxUP8puhGX5RTYPNBAAuMyxbIl
+ YCCTmQouRwse4oj1Vmq72Hu9o9Wtj1L6qODW/ETotr9wlmF8rAxx/EvyX0RgVmKfEc1W
+ sHQp+3ODLFARvSvmq0ZhbUuiT2xAsuzUQlsgoHYU3dILj21QOqSqzgZ1IRXl77QmsPv2
+ D8uQ==
+X-Gm-Message-State: AOJu0YwHBiRchSLtjww3Q6x54R69F0/926lXFGIWgxY+jnHoaYg3ycUe
+ YDV3OHGf8gHCKD/OTM7VNTq3/RyDf3q5D7xCczOMndYHvSv+bA62k1k4PhMQhf8=
+X-Gm-Gg: ASbGncv/l8EprxZP+c36Yer7ccv/gd/239ZvhXZAuGetThZXeFtn8OQAWtOmVTSGd6c
+ t3ZX/jRvE5ZgBqtjw7ZDbfwmHaA/JBmV38p+UFVTnjIHJgsDp6aLjaVTv8xcrtUREe2IqbijE0h
+ KvVOjue4Qo44std3fxuPrzXFxH5A2RJbJdGPm96ED3XcoiETqxtk2PZ0/idppJ/4wkuozI5E8pZ
+ vMTBu/Qfy83+UuT3aVAZXCB1Z53sGZpbbL/ev//CydmebzuR2xb9oyC25ytsN0nxfK9TkI=
+X-Google-Smtp-Source: AGHT+IGw9wLPsUC1lVFMDShijNyJD3LuSIx1BfJ0c+rxN6rVJs/z27L+ARehDuPZZSW9uFPbDeO8Qg==
+X-Received: by 2002:a05:6000:18a4:b0:385:e013:b842 with SMTP id
+ ffacd0b85a97d-388e4d42b6emr8066863f8f.14.1734622878841; 
+ Thu, 19 Dec 2024 07:41:18 -0800 (PST)
+Received: from [192.168.1.67] ([78.196.4.158])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4364a376846sm79508525e9.0.2024.12.19.07.39.54
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 19 Dec 2024 07:39:55 -0800 (PST)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Ani Sinha <anisinha@redhat.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- devel@lists.libvirt.org,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [RFC PATCH-for-10.2 10/10] hw/misc/vmcoreinfo: Remove legacy '-device
- vmcoreinfo'
-Date: Thu, 19 Dec 2024 16:38:57 +0100
-Message-ID: <20241219153857.57450-11-philmd@linaro.org>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241219153857.57450-1-philmd@linaro.org>
-References: <20241219153857.57450-1-philmd@linaro.org>
+ ffacd0b85a97d-38a1c828f8fsm1809189f8f.12.2024.12.19.07.41.17
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 19 Dec 2024 07:41:18 -0800 (PST)
+Message-ID: <bd138636-6895-4e71-8cd8-715799f3c28b@linaro.org>
+Date: Thu, 19 Dec 2024 16:41:16 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PULL 00/15] Host Memory Backends and Memory devices queue
+ 2024-12-18
+To: David Hildenbrand <david@redhat.com>, Stefan Hajnoczi <stefanha@gmail.com>
+Cc: qemu-devel@nongnu.org, Halil Pasic <pasic@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Eric Farman <farman@linux.ibm.com>, Thomas Huth <thuth@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ "Michael S . Tsirkin" <mst@redhat.com>
+References: <20241218105303.1966303-1-david@redhat.com>
+ <CAJSP0QUoerckBWX=0PD_82jFwVbmtvftWf5QqSWxpK0Ttc+uvQ@mail.gmail.com>
+ <2e6400d9-6fee-41ed-a317-329f275912c6@redhat.com>
+ <d19ab3d3-737d-4faa-a7d7-639b4ea3b172@redhat.com>
+ <4080b391-95d3-4cd8-a9fc-d68fda6bc160@linaro.org>
+ <ea932dfd-df30-43d8-9cdb-ecbb5db92a7e@redhat.com>
+ <233f096f-5707-4a18-858e-50471ecebf67@redhat.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <233f096f-5707-4a18-858e-50471ecebf67@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
  envelope-from=philmd@linaro.org; helo=mail-wr1-x42a.google.com
@@ -100,158 +106,265 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- docs/about/deprecated.rst       |  5 ----
- docs/about/removed-features.rst |  5 ++++
- include/hw/misc/vmcoreinfo.h    |  3 +--
- hw/misc/vmcoreinfo.c            | 44 ++++++---------------------------
- 4 files changed, 13 insertions(+), 44 deletions(-)
+On 19/12/24 15:05, David Hildenbrand wrote:
+> On 19.12.24 14:11, David Hildenbrand wrote:
+>> On 19.12.24 14:04, Philippe Mathieu-Daudé wrote:
+>>> Hi,
+>>>
+>>> On 19/12/24 12:18, David Hildenbrand wrote:
+>>>> On 19.12.24 01:04, David Hildenbrand wrote:
+>>>>> On 18.12.24 22:09, Stefan Hajnoczi wrote:
+>>>>>> On Wed, 18 Dec 2024 at 05:55, David Hildenbrand <david@redhat.com>
+>>>
+>>>
+>>>>>> Please take a look at the following s390x-related CI failures:
+>>>>>
+>>>>> Thanks, most of them seem related to this PULL.
+>>>>>
+>>>>>
+>>>>>> https://gitlab.com/qemu-project/qemu/-/jobs/8679972912
+>>>>>> https://gitlab.com/qemu-project/qemu/-/jobs/8679972809
+>>>>>> https://gitlab.com/qemu-project/qemu/-/jobs/8679972931
+>>>>>
+>>>>> ../hw/s390x/s390-virtio-ccw.c: In function ‘s390_set_memory_limit’:
+>>>>> ../hw/s390x/s390-virtio-ccw.c:138:9: error: ‘hw_limit’ may be used
+>>>>> uninitialized [-Werror=maybe-uninitialized]
+>>>>>       138 |         error_report("host supports a maximum of %" 
+>>>>> PRIu64 "
+>>>>> GB",
+>>>>>           |
+>>>>> ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+>>>>>       139 |                      hw_limit / GiB);
+>>>>>           |                      ~~~~~~~~~~~~~~~
+>>>>> ../hw/s390x/s390-virtio-ccw.c:130:14: note: ‘hw_limit’ declared here
+>>>>>       130 |     uint64_t hw_limit;
+>>>>>           |              ^~~~~~~~
+>>>>>
+>>>>> Looks weird. Without kvm_enabled() ret = 0, so ret cannot be
+>>>>> -E2BIG and consequently that code won't be executed.
+>>>>>
+>>>>> Anyhow, I'll simply initialize hw_limit to 0 to silence the warning.
+>>>>>
+>>>>>
+>>>>>>
+>>>>>> https://gitlab.com/qemu-project/qemu/-/jobs/8679972861
+>>>>>
+>>>>> /usr/bin/ld: libqemu-s390x-softmmu.a.p/hw_s390x_s390-skeys.c.o: in
+>>>>> function `qemu_s390_enable_skeys':
+>>>>> /builds/qemu-project/qemu/build/../hw/s390x/s390-skeys.c:256:
+>>>>> undefined reference to `s390_get_memory_limit'
+>>>>> /usr/bin/ld: libqemu-s390x-softmmu.a.p/hw_s390x_s390-hypercall.c.o: in
+>>>>> function `handle_virtio_ccw_notify':
+>>>>> /builds/qemu-project/qemu/build/../hw/s390x/s390-hypercall.c:46:
+>>>>> undefined reference to `virtio_ccw_get_vdev'
+>>>>> /usr/bin/ld: /builds/qemu-project/qemu/build/../hw/s390x/s390-
+>>>>> hypercall.c:47: undefined reference to `virtio_queue_get_num'
+>>>>> /usr/bin/ld: /builds/qemu-project/qemu/build/../hw/s390x/s390-
+>>>>> hypercall.c:56: undefined reference to `virtio_queue_notify'
+>>>>> /usr/bin/ld: libqemu-s390x-softmmu.a.p/hw_s390x_s390-hypercall.c.o: in
+>>>>> function `handle_storage_limit':
+>>>>> /builds/qemu-project/qemu/build/../hw/s390x/s390-hypercall.c:64:
+>>>>> undefined reference to `s390_get_memory_limit'
+>>>>> /usr/bin/ld: libqemu-s390x-softmmu.a.p/hw_s390x_s390-hypercall.c.o: in
+>>>>> function `handle_virtio_ccw_notify':
+>>>>> /builds/qemu-project/qemu/build/../hw/s390x/s390-hypercall.c:52:
+>>>>> undefined reference to `virtio_get_queue'
+>>>>> /usr/bin/ld: /builds/qemu-project/qemu/build/../hw/s390x/s390-
+>>>>> hypercall.c:52: undefined reference to
+>>>>> `virtio_queue_set_shadow_avail_idx'
+>>>>>
+>>>>> We're building with "--without-default-devices' '--without-default-
+>>>>> feature".
+>>>>> Consequently, we won't even have CONFIG_S390_CCW_VIRTIO
+>>>>>
+>>>>> So we won't compile s390-virtio-ccw.c, but we will compile things like
+>>>>> s390-stattrib.c,
+>>>>> s390-hypercall.c, ... which to me is extremely odd.
+>>>>>
+>>>>> Is this maybe a leftover from the time when we had the old machine
+>>>>> type? What value
+>>>>> is it to compile all these files without even having a machine that
+>>>>> could make use
+>>>>> of these?
+>>>
+>>>
+>>>> The following on top seems to make everything happy. I wish the
+>>>> CONFIG_S390_CCW_VIRTIO stuff would't have to be so complicated, just to
+>>>> handle odd configs that don't really make sense.
+>>>>
+>>>>
+>>>> I'll do some more testing, then squash the changes into the respective
+>>>> patches and resend.
+>>>>
+>>>>
+>>>> diff --git a/hw/s390x/meson.build b/hw/s390x/meson.build
+>>>> index 094435cd3b..3bbebfd817 100644
+>>>> --- a/hw/s390x/meson.build
+>>>> +++ b/hw/s390x/meson.build
+>>>> @@ -12,7 +12,6 @@ s390x_ss.add(files(
+>>>>       's390-pci-inst.c',
+>>>>       's390-skeys.c',
+>>>>       's390-stattrib.c',
+>>>> -  's390-hypercall.c',
+>>>>       'sclp.c',
+>>>>       'sclpcpu.c',
+>>>>       'sclpquiesce.c',
+>>>> @@ -28,7 +27,10 @@ s390x_ss.add(when: 'CONFIG_KVM', if_true: files(
+>>>>     s390x_ss.add(when: 'CONFIG_TCG', if_true: files(
+>>>>       'tod-tcg.c',
+>>>>     ))
+>>>> -s390x_ss.add(when: 'CONFIG_S390_CCW_VIRTIO', if_true: files('s390-
+>>>> virtio-ccw.c'))
+>>>> +s390x_ss.add(when: 'CONFIG_S390_CCW_VIRTIO', if_true: files(
+>>>> +  's390-virtio-ccw.c',
+>>>> +  's390-hypercall.c',
+>>>> +))
+>>>>     s390x_ss.add(when: 'CONFIG_TERMINAL3270', if_true: files('3270- 
+>>>> ccw.c'))
+>>>>     s390x_ss.add(when: 'CONFIG_VFIO', if_true: files('s390-pci- 
+>>>> vfio.c'))
+>>>>
+>>>> diff --git a/hw/s390x/s390-virtio-ccw.c b/hw/s390x/s390-virtio-ccw.c
+>>>> index 248566f8dc..097ec78826 100644
+>>>> --- a/hw/s390x/s390-virtio-ccw.c
+>>>> +++ b/hw/s390x/s390-virtio-ccw.c
+>>>> @@ -127,7 +127,7 @@ static void subsystem_reset(void)
+>>>>     static void s390_set_memory_limit(S390CcwMachineState *s390ms,
+>>>>                                       uint64_t new_limit)
+>>>>     {
+>>>> -    uint64_t hw_limit;
+>>>> +    uint64_t hw_limit = 0;
+>>>>         int ret = 0;
+>>>>
+>>>>         assert(!s390ms->memory_limit && new_limit);
+>>>> @@ -145,13 +145,6 @@ static void
+>>>> s390_set_memory_limit(S390CcwMachineState *s390ms,
+>>>>         s390ms->memory_limit = new_limit;
+>>>>     }
+>>>>
+>>>> -uint64_t s390_get_memory_limit(S390CcwMachineState *s390ms)
+>>>> -{
+>>>> -    /* We expect to be called only after the limit was set. */
+>>>> -    assert(s390ms->memory_limit);
+>>>> -    return s390ms->memory_limit;
+>>>> -}
+>>>> -
+>>>>     static void s390_set_max_pagesize(S390CcwMachineState *s390ms,
+>>>>                                       uint64_t pagesize)
+>>>>     {
+>>>> diff --git a/include/hw/s390x/s390-virtio-ccw.h b/include/hw/s390x/ 
+>>>> s390-
+>>>> virtio-ccw.h
+>>>> index 5a730f5d07..599740a998 100644
+>>>> --- a/include/hw/s390x/s390-virtio-ccw.h
+>>>> +++ b/include/hw/s390x/s390-virtio-ccw.h
+>>>> @@ -35,7 +35,12 @@ struct S390CcwMachineState {
+>>>>         SCLPDevice *sclp;
+>>>>     };
+>>>>
+>>>> -uint64_t s390_get_memory_limit(S390CcwMachineState *s390ms);
+>>>
+>>> Pre-existing, I'm surprised this hw/ declaration is used
+>>> in s390_pv_vm_try_disable_async() in target/s390x/kvm/pv.c.
+>>
+>> That is added in patch #12, though.
+>>
+>>>
+>>>
+>>> In hw/s390x/Kconfig, S390_CCW_VIRTIO doesn't depend on KVM,
+>>
+>> Right.
+>>
+>>> but due to this call, KVM depends on S390_CCW_VIRTIO...
+>>
+>> Right, that's why I opted for inlining for now.
+>>
+>>>
+>>>> +static inline uint64_t s390_get_memory_limit(S390CcwMachineState 
+>>>> *s390ms)
+>>>> +{
+>>>> +    /* We expect to be called only after the limit was set. */
+>>>> +    assert(s390ms->memory_limit);
+>>>> +    return s390ms->memory_limit;
+>>>> +}
+>>>
+>>> Short term, no better suggestion than inlining :(
+>>
+>> Yes. And I suspect we do have similar compilation problems, that simply
+>> nobody noticed so far.
+>>
+>> For example, hpage_1m_allowed() resides in hw/s390x/s390-virtio-ccw.c,
+>> but is called from target/s390x/kvm/kvm.c ...
+>>
+>> So building QEMU with KVM but without CONFIG_S390_CCW_VIRTIO should make
+>> the linker unhappy :/ :(
+> 
+> And indeed with KVM, what a mess.
+> 
+> /usr/bin/ld: libqemu-s390x-softmmu.a.p/target_s390x_kvm_kvm.c.o: in 
+> function `kvm_s390_set_max_pagesize':
+> /home/dhildenb/qemu/build/../target/s390x/kvm/kvm.c:300: undefined 
+> reference to `hpage_1m_allowed'
+> /usr/bin/ld: libqemu-s390x-softmmu.a.p/target_s390x_kvm_kvm.c.o: in 
+> function `kvm_arch_init':
+> /home/dhildenb/qemu/build/../target/s390x/kvm/kvm.c:376: undefined 
+> reference to `ri_allowed'
+> /usr/bin/ld: /home/dhildenb/qemu/build/../target/s390x/kvm/kvm.c:381: 
+> undefined reference to `cpu_model_allowed'
+> /usr/bin/ld: /home/dhildenb/qemu/build/../target/s390x/kvm/kvm.c:391: 
+> undefined reference to `cpu_model_allowed'
+> /usr/bin/ld: /home/dhildenb/qemu/build/../target/s390x/kvm/kvm.c:381: 
+> undefined reference to `cpu_model_allowed'
+> /usr/bin/ld: /home/dhildenb/qemu/build/../target/s390x/kvm/kvm.c:391: 
+> undefined reference to `cpu_model_allowed'
+> /usr/bin/ld: libqemu-s390x-softmmu.a.p/target_s390x_kvm_kvm.c.o: in 
+> function `handle_diag':
+> /home/dhildenb/qemu/build/../target/s390x/kvm/kvm.c:1590: undefined 
+> reference to `handle_diag_500'
+> /usr/bin/ld: libqemu-s390x-softmmu.a.p/target_s390x_kvm_kvm.c.o: in 
+> function `kvm_s390_cpu_models_supported':
+> /home/dhildenb/qemu/build/../target/s390x/kvm/kvm.c:2354: undefined 
+> reference to `cpu_model_allowed'
+> 
+> I can fix the handle_diag_500() similarly up here as done for TCG, 
+> although I think
+> we want to clean this up differently.
+> 
+> Most code doesn't make any sense without an actual s390x machine.
 
-diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
-index 57a3d734081..d6809f94ea1 100644
---- a/docs/about/deprecated.rst
-+++ b/docs/about/deprecated.rst
-@@ -79,11 +79,6 @@ described with -smp are supported by the target machine.
- 
- Use ``-run-with user=..`` instead.
- 
--``-device vmcoreinfo`` (since 10.0)
--'''''''''''''''''''''''''''''''''''
--
--Use ``-object vmcore-info`` instead.
--
- 
- User-mode emulator command line arguments
- -----------------------------------------
-diff --git a/docs/about/removed-features.rst b/docs/about/removed-features.rst
-index cb1388049a8..6fedf13c133 100644
---- a/docs/about/removed-features.rst
-+++ b/docs/about/removed-features.rst
-@@ -555,6 +555,11 @@ to produce an odd effect (rotating input but not display output). But
- this was never intended or documented behaviour, so we have dropped
- the options along with the machine models they were intended for.
- 
-+``-device vmcoreinfo`` (removed in 10.2)
-+''''''''''''''''''''''''''''''''''''''''
-+
-+``-device vmcoreinfo`` has been replaced by ``-object vmcore-info``.
-+
- User-mode emulator command line arguments
- -----------------------------------------
- 
-diff --git a/include/hw/misc/vmcoreinfo.h b/include/hw/misc/vmcoreinfo.h
-index d4cce42cee6..56af12d33a4 100644
---- a/include/hw/misc/vmcoreinfo.h
-+++ b/include/hw/misc/vmcoreinfo.h
-@@ -12,7 +12,6 @@
- #ifndef VMCOREINFO_H
- #define VMCOREINFO_H
- 
--#include "hw/qdev-core.h"
- #include "standard-headers/linux/qemu_fw_cfg.h"
- #include "qom/object.h"
- 
-@@ -26,7 +25,7 @@ DECLARE_INSTANCE_CHECKER(VMCoreInfoState, VMCOREINFO_DEVICE,
- typedef struct fw_cfg_vmcoreinfo FWCfgVMCoreInfo;
- 
- struct VMCoreInfoState {
--    DeviceState parent_obj;
-+    Object parent_obj;
- 
-     bool has_vmcoreinfo;
-     FWCfgVMCoreInfo vmcoreinfo;
-diff --git a/hw/misc/vmcoreinfo.c b/hw/misc/vmcoreinfo.c
-index e2258e08fb1..36d1143722e 100644
---- a/hw/misc/vmcoreinfo.c
-+++ b/hw/misc/vmcoreinfo.c
-@@ -54,8 +54,9 @@ static void vmcoreinfo_reset_hold(Object *obj, ResetType type)
-     s->vmcoreinfo.host_format = cpu_to_le16(FW_CFG_VMCOREINFO_FORMAT_ELF);
- }
- 
--static void vmcoreinfo_realize(VMCoreInfoState *s, Error **errp)
-+static void vmcoreinfo_complete(UserCreatable *uc, Error **errp)
- {
-+    VMCoreInfoState *s = VMCOREINFO(uc);
-     FWCfgState *fw_cfg = fw_cfg_find();
-     /* for gdb script dump-guest-memory.py */
-     static VMCoreInfoState * volatile vmcoreinfo_state G_GNUC_UNUSED;
-@@ -76,6 +77,10 @@ static void vmcoreinfo_realize(VMCoreInfoState *s, Error **errp)
-         return;
-     }
- 
-+    if (vmstate_register_any(VMSTATE_IF(s), &vmstate_vmcoreinfo, s) < 0) {
-+        error_setg(errp, "%s: Failed to register vmstate", TYPE_VMCOREINFO);
-+    }
-+
-     fw_cfg_add_file_callback(fw_cfg, FW_CFG_VMCOREINFO_FILENAME,
-                              NULL, fw_cfg_vmci_write, s,
-                              &s->vmcoreinfo, sizeof(s->vmcoreinfo), false);
-@@ -88,25 +93,11 @@ static void vmcoreinfo_realize(VMCoreInfoState *s, Error **errp)
-     vmcoreinfo_state = s;
- }
- 
--static void vmcoreinfo_device_realize(DeviceState *dev, Error **errp)
--{
--    vmcoreinfo_realize(VMCOREINFO_DEVICE(dev), errp);
--}
--
- static bool vmcoreinfo_can_be_deleted(UserCreatable *uc)
- {
-     return false;
- }
- 
--static void vmcoreinfo_complete(UserCreatable *uc, Error **errp)
--{
--    if (vmstate_register_any(VMSTATE_IF(uc), &vmstate_vmcoreinfo, uc) < 0) {
--        error_setg(errp, "%s: Failed to register vmstate", TYPE_VMCOREINFO);
--    }
--
--    vmcoreinfo_realize(VMCOREINFO(uc), errp);
--}
--
- static void vmcoreinfo_class_init(ObjectClass *oc, void *data)
- {
-     UserCreatableClass *ucc = USER_CREATABLE_CLASS(oc);
-@@ -119,25 +110,7 @@ static void vmcoreinfo_class_init(ObjectClass *oc, void *data)
-     rc->phases.hold = vmcoreinfo_reset_hold;
- }
- 
--static void vmcoreinfo_device_class_init(ObjectClass *klass, void *data)
--{
--    DeviceClass *dc = DEVICE_CLASS(klass);
--    ResettableClass *rc = RESETTABLE_CLASS(klass);
--
--    dc->vmsd = &vmstate_vmcoreinfo;
--    dc->realize = vmcoreinfo_device_realize;
--    dc->hotpluggable = false;
--    set_bit(DEVICE_CATEGORY_MISC, dc->categories);
--    rc->phases.hold = vmcoreinfo_reset_hold;
--}
--
- static const TypeInfo vmcoreinfo_types[] = {
--    {
--        .name           = TYPE_VMCOREINFO_DEVICE,
--        .parent         = TYPE_DEVICE,
--        .instance_size  = sizeof(VMCoreInfoState),
--        .class_init     = vmcoreinfo_device_class_init,
--    },
-     {
-         .name           = TYPE_VMCOREINFO,
-         .parent         = TYPE_OBJECT,
-@@ -158,10 +131,7 @@ VMCoreInfoState *vmcoreinfo_find(void)
- {
-     Object *obj;
- 
--    obj = object_resolve_path_type("", TYPE_VMCOREINFO_DEVICE, NULL);
--    if (!obj) {
--        obj = object_resolve_path_type("", TYPE_VMCOREINFO, NULL);
--    }
-+    obj = object_resolve_path_type("", TYPE_VMCOREINFO, NULL);
- 
-     return obj ? (VMCoreInfoState *)obj : NULL;
- }
--- 
-2.47.1
+Agreed, don't waste time on that now, I'll likely have a look at
+that in few months.
 
+> 
+> diff --git a/target/s390x/kvm/kvm.c b/target/s390x/kvm/kvm.c
+> index dd0322c43a..32cf70bb19 100644
+> --- a/target/s390x/kvm/kvm.c
+> +++ b/target/s390x/kvm/kvm.c
+> @@ -51,6 +51,7 @@
+>   #include "hw/s390x/s390-virtio-ccw.h"
+>   #include "hw/s390x/s390-virtio-hcall.h"
+>   #include "target/s390x/kvm/pv.h"
+> +#include CONFIG_DEVICES
+> 
+>   #define kvm_vm_check_mem_attr(s, attr) \
+>       kvm_vm_check_attr(s, KVM_S390_VM_MEM_CTRL, attr)
+> @@ -1494,9 +1495,11 @@ static int handle_e3(S390CPU *cpu, struct kvm_run 
+> *run, uint8_t ipbl)
+>   static int handle_hypercall(S390CPU *cpu, struct kvm_run *run)
+>   {
+>       CPUS390XState *env = &cpu->env;
+> -    int ret;
+> +    int ret = -EINVAL;
+> 
+> +#ifdef CONFIG_S390_CCW_VIRTIO
+>       ret = s390_virtio_hypercall(env);
+> +#endif /* CONFIG_S390_CCW_VIRTIO */
+>       if (ret == -EINVAL) {
+>           kvm_s390_program_interrupt(cpu, PGM_SPECIFICATION);
+>           return 0;
+> 
+> stupid "none"-only configs that probably nobody needs ...
+
+I'm using it as starting point for heterogeneous machines...
+This is why I noticed your PR comment and jumped in =)
 
