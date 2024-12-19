@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 800179F7A2B
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Dec 2024 12:17:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F3FBE9F7A35
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Dec 2024 12:18:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tOEVk-0004Y2-16; Thu, 19 Dec 2024 06:16:08 -0500
+	id 1tOEVo-0004a1-MA; Thu, 19 Dec 2024 06:16:12 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1tOEVb-0004Vz-Ud
+ id 1tOEVb-0004Vy-UV
  for qemu-devel@nongnu.org; Thu, 19 Dec 2024 06:16:00 -0500
 Received: from mgamail.intel.com ([198.175.65.19])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1tOEVY-0005HS-P7
+ id 1tOEVZ-0005Hq-O1
  for qemu-devel@nongnu.org; Thu, 19 Dec 2024 06:15:59 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1734606957; x=1766142957;
+ t=1734606958; x=1766142958;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=DxXDnN+O/WwzGOcacl7nzyyO6E4y6vh1Z1+71dP+W94=;
- b=cJ6jG4M+HxGdgcQGCXzKebyHizokYHvXr19ThhQOf2bBbasCfkOdVRSa
- VBR5XC92MtmjN4y/1QGsOzXAiwfHhh4r/6TzI+XCBY1EktVXAF4fuHgP1
- +8sUpqO+RFDYX/sejefN9AcsgjfFbWgPNnymyX85QRxycU4l9X1y8PpKr
- KroMB8drthlggd0urBc1ocUj+cWpJxPTi6yN62/TNdsRDM7CtTXIkgLhr
- 3QHQddrnJtan7A5B32FTNbq6qA49DH17xszZ1JOiUPsNBFuoACODMmQXt
- 4SXIJKwmZC0WZBR03qG/KQ8PmUkYe0OSCe2eZVg3cx6QY4Bbe5M2sCvOr w==;
-X-CSE-ConnectionGUID: HH80fenOSdmlrChVBDKMiQ==
-X-CSE-MsgGUID: amVDAtymSDudAZQ0mdHkoA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11290"; a="34994924"
-X-IronPort-AV: E=Sophos;i="6.12,247,1728975600"; d="scan'208";a="34994924"
+ bh=hGrOY+aNrIOBOmNFWeGMrcHfpcpocdtMH4I0QQYaVbU=;
+ b=gv1BFoMFLXIO0vp2k9mtC5B/8EKzi2Rm1pzaWmL+ZW17P6FVZOhHDXuw
+ yk/s7WcayS34/L0AWLwSX2Fsx7Ln5BVPyOlHN6E0Nc4Kim4u+aa5frBz1
+ Rjnocf4XObyY77UvnesdkqIjZnV9LiUkdMEBAgVmceFQbmQYeuVPHu4IN
+ ETpP6JfuYm8Ix8MvW7creQhYv2z17Azodvp/HXrKT7HVq740JBpepBVM4
+ vhiUkGp0qW0fiAyz19qDqiBpbgezDwB2nktgRA8rx3H/2IGd86FkRWcI1
+ UwjcAufHU9JPJb/BJsRZ3GBM3Cf4VTUKNK5PmvF1xeJNsFt3NyVAJiPls g==;
+X-CSE-ConnectionGUID: j1Z6gqtaQKO1A4uBRcD5uQ==
+X-CSE-MsgGUID: brA0zVM6Q5iyt/kXFRtkEA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11290"; a="34994936"
+X-IronPort-AV: E=Sophos;i="6.12,247,1728975600"; d="scan'208";a="34994936"
 Received: from fmviesa006.fm.intel.com ([10.60.135.146])
  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Dec 2024 03:15:54 -0800
-X-CSE-ConnectionGUID: 3ZhCPKwkQLubGHKE5dqV7g==
-X-CSE-MsgGUID: GBEQRhl2RGWufLAoiN2N7Q==
+ 19 Dec 2024 03:15:57 -0800
+X-CSE-ConnectionGUID: 5rMX38JKSW25WC+VA1ccpg==
+X-CSE-MsgGUID: 8lFa2maCSp+EKjOnCa9BEQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,247,1728975600"; d="scan'208";a="97956108"
+X-IronPort-AV: E=Sophos;i="6.12,247,1728975600"; d="scan'208";a="97956125"
 Received: from lxy-clx-4s.sh.intel.com ([10.239.48.52])
- by fmviesa006.fm.intel.com with ESMTP; 19 Dec 2024 03:15:50 -0800
+ by fmviesa006.fm.intel.com with ESMTP; 19 Dec 2024 03:15:53 -0800
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
@@ -50,10 +50,10 @@ To: Paolo Bonzini <pbonzini@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
 Cc: qemu-devel@nongnu.org, Yanan Wang <wangyanan55@huawei.com>,
  Zhao Liu <zhao1.liu@intel.com>, "Michael S. Tsirkin" <mst@redhat.com>,
  Marcelo Tosatti <mtosatti@redhat.com>, xiaoyao.li@intel.com
-Subject: [PATCH v2 01/10] i386/cpu: Extract a common fucntion to setup value
- of MSR_CORE_THREAD_COUNT
-Date: Thu, 19 Dec 2024 06:01:16 -0500
-Message-Id: <20241219110125.1266461-2-xiaoyao.li@intel.com>
+Subject: [PATCH v2 02/10] i386/cpu: Drop the variable smp_cores and
+ smp_threads in x86_cpu_pre_plug()
+Date: Thu, 19 Dec 2024 06:01:17 -0500
+Message-Id: <20241219110125.1266461-3-xiaoyao.li@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241219110125.1266461-1-xiaoyao.li@intel.com>
 References: <20241219110125.1266461-1-xiaoyao.li@intel.com>
@@ -84,98 +84,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-There are duplicated code to setup the value of MSR_CORE_THREAD_COUNT.
-Extract a common function for it.
+No need to define smp_cores and smp_threads, just using ms->smp.cores
+and ms->smp.threads is straightforward. It's also consistent with other
+checks of socket/die/module.
 
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
 ---
-Changes in v2:
-- move the implementation of cpu_x86_get_msr_core_thread_count() to
-  target/i386/cpu-sysemu.c;
----
- target/i386/cpu-sysemu.c             | 11 +++++++++++
- target/i386/cpu.h                    |  2 ++
- target/i386/hvf/x86_emu.c            |  3 +--
- target/i386/kvm/kvm.c                |  5 +----
- target/i386/tcg/sysemu/misc_helper.c |  3 +--
- 5 files changed, 16 insertions(+), 8 deletions(-)
+ hw/i386/x86-common.c | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
-diff --git a/target/i386/cpu-sysemu.c b/target/i386/cpu-sysemu.c
-index 227ac021f62f..4e9df0bc0156 100644
---- a/target/i386/cpu-sysemu.c
-+++ b/target/i386/cpu-sysemu.c
-@@ -309,3 +309,14 @@ void x86_cpu_get_crash_info_qom(Object *obj, Visitor *v,
-                                      errp);
-     qapi_free_GuestPanicInformation(panic_info);
- }
-+
-+uint64_t cpu_x86_get_msr_core_thread_count(X86CPU *cpu)
-+{
-+    CPUState *cs = CPU(cpu);
-+    uint64_t val;
-+
-+    val = cs->nr_threads * cs->nr_cores;  /* thread count, bits 15..0 */
-+    val |= ((uint32_t)cs->nr_cores << 16); /* core count, bits 31..16 */
-+
-+    return val;
-+}
-diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-index 4c239a6970fd..5e1beca94a62 100644
---- a/target/i386/cpu.h
-+++ b/target/i386/cpu.h
-@@ -2390,6 +2390,8 @@ static inline void cpu_x86_load_seg_cache_sipi(X86CPU *cpu,
-     cs->halted = 0;
- }
+diff --git a/hw/i386/x86-common.c b/hw/i386/x86-common.c
+index 3f7818269234..32a8d7a9db87 100644
+--- a/hw/i386/x86-common.c
++++ b/hw/i386/x86-common.c
+@@ -248,8 +248,6 @@ void x86_cpu_pre_plug(HotplugHandler *hotplug_dev,
+     CPUX86State *env = &cpu->env;
+     MachineState *ms = MACHINE(hotplug_dev);
+     X86MachineState *x86ms = X86_MACHINE(hotplug_dev);
+-    unsigned int smp_cores = ms->smp.cores;
+-    unsigned int smp_threads = ms->smp.threads;
+     X86CPUTopoInfo topo_info;
  
-+uint64_t cpu_x86_get_msr_core_thread_count(X86CPU *cpu);
-+
- int cpu_x86_get_descr_debug(CPUX86State *env, unsigned int selector,
-                             target_ulong *base, unsigned int *limit,
-                             unsigned int *flags);
-diff --git a/target/i386/hvf/x86_emu.c b/target/i386/hvf/x86_emu.c
-index 015f760acb39..69c61c9c0737 100644
---- a/target/i386/hvf/x86_emu.c
-+++ b/target/i386/hvf/x86_emu.c
-@@ -765,8 +765,7 @@ void simulate_rdmsr(CPUX86State *env)
-         val = env->mtrr_deftype;
-         break;
-     case MSR_CORE_THREAD_COUNT:
--        val = cs->nr_threads * cs->nr_cores;  /* thread count, bits 15..0 */
--        val |= ((uint32_t)cs->nr_cores << 16); /* core count, bits 31..16 */
-+        val = cpu_x86_get_msr_core_thread_count(cpu);
-         break;
-     default:
-         /* fprintf(stderr, "%s: unknown msr 0x%x\n", __func__, msr); */
-diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-index 8e17942c3ba1..18a1bd1297a4 100644
---- a/target/i386/kvm/kvm.c
-+++ b/target/i386/kvm/kvm.c
-@@ -2602,10 +2602,7 @@ static bool kvm_rdmsr_core_thread_count(X86CPU *cpu,
-                                         uint32_t msr,
-                                         uint64_t *val)
- {
--    CPUState *cs = CPU(cpu);
--
--    *val = cs->nr_threads * cs->nr_cores; /* thread count, bits 15..0 */
--    *val |= ((uint32_t)cs->nr_cores << 16); /* core count, bits 31..16 */
-+    *val = cpu_x86_get_msr_core_thread_count(cpu);
+     if (!object_dynamic_cast(OBJECT(cpu), ms->cpu_type)) {
+@@ -329,17 +327,17 @@ void x86_cpu_pre_plug(HotplugHandler *hotplug_dev,
+         if (cpu->core_id < 0) {
+             error_setg(errp, "CPU core-id is not set");
+             return;
+-        } else if (cpu->core_id > (smp_cores - 1)) {
++        } else if (cpu->core_id > (ms->smp.cores - 1)) {
+             error_setg(errp, "Invalid CPU core-id: %u must be in range 0:%u",
+-                       cpu->core_id, smp_cores - 1);
++                       cpu->core_id, ms->smp.cores - 1);
+             return;
+         }
+         if (cpu->thread_id < 0) {
+             error_setg(errp, "CPU thread-id is not set");
+             return;
+-        } else if (cpu->thread_id > (smp_threads - 1)) {
++        } else if (cpu->thread_id > (ms->smp.threads - 1)) {
+             error_setg(errp, "Invalid CPU thread-id: %u must be in range 0:%u",
+-                       cpu->thread_id, smp_threads - 1);
++                       cpu->thread_id, ms->smp.threads - 1);
+             return;
+         }
  
-     return true;
- }
-diff --git a/target/i386/tcg/sysemu/misc_helper.c b/target/i386/tcg/sysemu/misc_helper.c
-index 094aa56a20d1..ff7b201b44d8 100644
---- a/target/i386/tcg/sysemu/misc_helper.c
-+++ b/target/i386/tcg/sysemu/misc_helper.c
-@@ -468,8 +468,7 @@ void helper_rdmsr(CPUX86State *env)
-         val = x86_cpu->ucode_rev;
-         break;
-     case MSR_CORE_THREAD_COUNT: {
--        CPUState *cs = CPU(x86_cpu);
--        val = (cs->nr_threads * cs->nr_cores) | (cs->nr_cores << 16);
-+        val = cpu_x86_get_msr_core_thread_count(x86_cpu);
-         break;
-     }
-     case MSR_APIC_START ... MSR_APIC_END: {
 -- 
 2.34.1
 
