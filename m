@@ -2,89 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 717AB9F7FFC
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Dec 2024 17:37:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 71B489F8004
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Dec 2024 17:37:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tOJGu-0004G4-55; Thu, 19 Dec 2024 11:21:08 -0500
+	id 1tOJKD-0005Ey-Ew; Thu, 19 Dec 2024 11:24:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOIpU-0006fS-Kj
- for qemu-devel@nongnu.org; Thu, 19 Dec 2024 10:52:48 -0500
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tOIpS-0007BS-W9
- for qemu-devel@nongnu.org; Thu, 19 Dec 2024 10:52:48 -0500
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-4361fe642ddso9745025e9.2
- for <qemu-devel@nongnu.org>; Thu, 19 Dec 2024 07:52:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1734623565; x=1735228365; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=GPXeRSGyjZ0gYXKU9wNEYO46Esb50lQRGDHAWVN/JVM=;
- b=RnpGpsLlFSo9+/NBAOFpIBOQHHieFqGhZRzjbS6q+SvGYtWg5onQOdn3wAXejqWFhz
- 19HjbXazKSHGGmpq8n+eEvJii3yU0K8pxSVqTxekAND7ZhAZ5duZszJNBIECuFogkpMi
- zxV7UnyjNktu6NeHu3woZneW1oK92EU05dgl7SP/MOXQF1xlW1GAig0z7X/Vf5cmvYBy
- VSpKfEp4BvVWWCz3mn8DIOI5vQYqfiH6+gCPYt7hqEhKCucov68NYI4uOQwMxdeQC/2H
- nCWL+75oJE9yLL70X80RWgR/qGphRDxMinphJhk1Yj3Ihp7/MhlgMCUAVOhr0yvO1C4/
- psZg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734623565; x=1735228365;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=GPXeRSGyjZ0gYXKU9wNEYO46Esb50lQRGDHAWVN/JVM=;
- b=EcDrfSQ6+DTz1H/0H8AURyirA5iBp0vs4CVezO5p2DJd5yqqmjfYqMqcbfIvgZ1klZ
- qd3n53SX7jEjw8s2nZrc9e3Zha5Xy9pdkvQXFX91xCGifVPJdLZLfwEUsmirOQyc3QTl
- HUHmmVtxpn64LbUuGLlmSvVn8vVt8YtxAu/W8L4CKmCDHu4yWksUPO2mzUWKIDlpjlj8
- OFOtwa/RdpZoqDbCp1g7vaNY4eaQVM7pa0rq7zrH4Fsnlm30xpwwj/w25FVnsc2GMjgR
- iAlDtfhM2pkpWP229uXur6DREjgD7s96IfD6sadqmBf+x0EEdhdkaoGD/Sw0FCikbun1
- 3lrw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCX5daHPa1ue2IgrGBqjNr9dKLIPRSNlxixch2oGMl1hqoWbm6nCugZdxw4hhsysHf5hZaPyMWMggfXY@nongnu.org
-X-Gm-Message-State: AOJu0YwJvrvl3jY3ROM0IElaLhK033fNlK5gBH/7/nikN9KJjaFUQTi5
- Z0FYAzTZCJ05OqZTOf5gD6+MQpByp8QRbDU6W3PV+JRcF0+LC6xA0mKoEwHkPSU=
-X-Gm-Gg: ASbGnctAsfAIeXGeUTzCwEMVwUD3/eCwfLST3k9YnbcHQz2eArPcr6y0phgOOv/7UYo
- wPnDfV76eZZBnq2Z2uO65vRUb7Ecw756+0Hqqz8mGznWRWqK33P2tiiu/irOzV0HPTemZNqjKak
- goKzAIHQapFxG3qpWk1fZQviT7lX0Lm7Aow9Zw0E49wNNhFADE3wn5XhVacrf5UcpT2TE6Tmr5v
- qaYgl4ADMInKEcMQM3onODI9GYfzdfFzND185wHxxemO2Oy7dFQtpqahAn+FQ2ciUspdGI=
-X-Google-Smtp-Source: AGHT+IHrtY2I9vntk9kX4h4+kZhDiu/0kSPInps6pMvOK2W0P1GqY/NTTtDGfQKMK1JnWaMS9DtksA==
-X-Received: by 2002:a05:6000:2a4:b0:385:fb2c:6034 with SMTP id
- ffacd0b85a97d-388e4d91e80mr6888157f8f.47.1734623565376; 
- Thu, 19 Dec 2024 07:52:45 -0800 (PST)
-Received: from [192.168.1.67] ([78.196.4.158])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-436611ea3d5sm22017145e9.5.2024.12.19.07.52.44
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 19 Dec 2024 07:52:44 -0800 (PST)
-Message-ID: <3b2e9941-e5a3-4981-adda-f5121bc98e9a@linaro.org>
-Date: Thu, 19 Dec 2024 16:52:43 +0100
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1tOIuH-0007Ok-G7
+ for qemu-devel@nongnu.org; Thu, 19 Dec 2024 10:57:45 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1tOIuE-0007j4-HY
+ for qemu-devel@nongnu.org; Thu, 19 Dec 2024 10:57:45 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1734623858;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=9jvfSuxYNPQ5/ctxMNVu0yYWuX2n7QJya0YHrfYmu8A=;
+ b=BOaWZcHRBx8fxKsRdFZoK85vCw+46fS9ca0qzMFb0f40J1G3lGFN3tgic4VsL59wGDWH0P
+ r8n+rVNQbQHawl1zG+kqqRPzm4QDDYfLVLdQzuOXwmgJJy/dP1JmUNGOnNKUpmh39VIfOZ
+ Yy5JB1cyN5Wv4ANQBx7YYw9UduxwzcA=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-638-RVwFgWIhOq6rFDLN6J9IIg-1; Thu,
+ 19 Dec 2024 10:57:37 -0500
+X-MC-Unique: RVwFgWIhOq6rFDLN6J9IIg-1
+X-Mimecast-MFC-AGG-ID: RVwFgWIhOq6rFDLN6J9IIg
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 7118A1956060; Thu, 19 Dec 2024 15:57:36 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.54])
+ by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 5202719560AD; Thu, 19 Dec 2024 15:57:33 +0000 (UTC)
+Date: Thu, 19 Dec 2024 15:57:29 +0000
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, Ani Sinha <anisinha@redhat.com>,
+ =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
+ devel@lists.libvirt.org
+Subject: Re: [RFC PATCH 00/10] hw/misc/vmcoreinfo: Convert from QDev to plain
+ Object
+Message-ID: <Z2RCaZrwjYSM3NpV@redhat.com>
+References: <20241219153857.57450-1-philmd@linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] hw/misc/vmfwupdate: Introduce hypervisor fw-cfg
- interface support
-To: Ani Sinha <anisinha@redhat.com>, Alex Graf <graf@amazon.com>,
- Paolo Bonzini <pbonzini@redhat.com>
-Cc: Gerd Hoffman <kraxel@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
- Vitaly Kuznetsov <vkuznets@redhat.com>, qemu-devel@nongnu.org
-References: <20241216114841.1025070-1-anisinha@redhat.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20241216114841.1025070-1-anisinha@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20241219153857.57450-1-philmd@linaro.org>
+User-Agent: Mutt/2.2.13 (2024-03-09)
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -31
+X-Spam_score: -3.2
+X-Spam_bar: ---
+X-Spam_report: (-3.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-1.116,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,85 +85,43 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 16/12/24 12:48, Ani Sinha wrote:
+On Thu, Dec 19, 2024 at 04:38:47PM +0100, Philippe Mathieu-Daudé wrote:
+> No reason for vmcoreinfo to be based on QDev, since it
+> doesn't use any QDev API. Demote to plain Object.
 
-> diff --git a/hw/misc/meson.build b/hw/misc/meson.build
-> index d02d96e403..4c5bdb0de2 100644
-> --- a/hw/misc/meson.build
-> +++ b/hw/misc/meson.build
-> @@ -148,6 +148,8 @@ specific_ss.add(when: 'CONFIG_MAC_VIA', if_true: files('mac_via.c'))
->   specific_ss.add(when: 'CONFIG_MIPS_CPS', if_true: files('mips_cmgcr.c', 'mips_cpc.c'))
->   specific_ss.add(when: 'CONFIG_MIPS_ITU', if_true: files('mips_itu.c'))
->   
-> +specific_ss.add(when: 'CONFIG_FW_CFG_DMA', if_true: files('vmfwupdate.c'))
+I'm not especially convinced by that rationale, at least in the short
+term[1].
 
-FW_CFG_DMA is offered by multiple targets ...:
+As a user of QEMU, I would tend to view -device  as being the way to
+create devices that are visible to the guest, and -object as being
+for dealing with host backends.
 
-$ git grep -w FW_CFG_DMA
-hw/arm/Kconfig:19:    select FW_CFG_DMA
-hw/i386/Kconfig:82:    select FW_CFG_DMA
-hw/i386/Kconfig:113:    select FW_CFG_DMA
-hw/loongarch/Kconfig:22:    select FW_CFG_DMA
-hw/riscv/Kconfig:59:    select FW_CFG_DMA
+vmcoreinfo is quite an unusal device, in that if only exists as a
+fwcfg field, but that's an internal impl detail from a user's POV,
+and it is still a guest visible device type.
 
-> diff --git a/hw/misc/vmfwupdate.c b/hw/misc/vmfwupdate.c
-> new file mode 100644
-> index 0000000000..1e29a610c0
-> --- /dev/null
-> +++ b/hw/misc/vmfwupdate.c
-> @@ -0,0 +1,157 @@
-> +/*
-> + * Guest driven VM boot component update device
-> + * For details and specification, please look at docs/specs/vmfwupdate.rst.
-> + *
-> + * Copyright (C) 2024 Red Hat, Inc.
-> + *
-> + * Authors: Ani Sinha <anisinha@redhat.com>
-> + *
-> + * This work is licensed under the terms of the GNU GPL, version 2 or later.
-> + * See the COPYING file in the top-level directory.
-> + *
-> + */
-> +
-> +#include "qemu/osdep.h"
-> +#include "qapi/error.h"
-> +#include "qemu/module.h"
-> +#include "sysemu/reset.h"
-> +#include "hw/nvram/fw_cfg.h"
-> +#include "hw/i386/pc.h"
+So while it may not leverage QDev API, I still feel it is more of
+a fit for -device, than -object.  Is there any functional benefit
+to moving it to -object, that outweighs the disruption ?
 
-... however ...
 
-> +#include "hw/qdev-properties.h"
-> +#include "hw/misc/vmfwupdate.h"
-> +#include "qemu/error-report.h"
-> +
-> +static void fw_update_reset(void *dev)
-> +{
-> +    /* a NOOP at present */
-> +    return;
-> +}
-> +
-> +
-> +static uint64_t get_max_fw_size(void)
-> +{
-> +    Object *m_obj = qdev_get_machine();
-> +    PCMachineState *pcms = PC_MACHINE(m_obj);
-> +
-> +    if (pcms) {
-> +        return pcms->max_fw_size;
+With regards,
+Daniel
 
-... this code depends on x86/PC.
+[1] I say "short term", because overall I'm of the opinion that
+-device, -machine, -cpu, -chardev, etc should not exist, and
+-object ought to be made capable of instantiating any type of
+object whatever subclass it might be. I doubt that will change
+any time in the forseeable future though, so it is more of a
+hypothetical point.
 
-Could it be wiser to add a new VM_FWUPDATE Kconfig
-symbol, having it depending on FW_CFG_DMA && I386?
-
-> +    } else {
-> +        return 0;
-> +    }
-> +}
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
