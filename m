@@ -2,82 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C14889F7FC2
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Dec 2024 17:29:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 83E1C9F7FC0
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Dec 2024 17:29:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tOJGS-0002iD-5d; Thu, 19 Dec 2024 11:20:40 -0500
+	id 1tOJKF-0005SP-A5; Thu, 19 Dec 2024 11:24:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1tOJCK-0001ZV-Eh
- for qemu-devel@nongnu.org; Thu, 19 Dec 2024 11:16:25 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1tOJFa-0001op-9X
+ for qemu-devel@nongnu.org; Thu, 19 Dec 2024 11:19:46 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1tOJCI-0002y4-4e
- for qemu-devel@nongnu.org; Thu, 19 Dec 2024 11:16:24 -0500
+ id 1tOJFX-0003qU-LP
+ for qemu-devel@nongnu.org; Thu, 19 Dec 2024 11:19:46 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1734624981;
+ s=mimecast20190719; t=1734625182;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=YKev/gR3vimWwOJ3HYhnfvaWkDaBzX6jXWS5q1E1pmo=;
- b=giD0QUUUAr8jZdMJ8CBaortva83xCIGtC/ldoiH7RWG7I1nmNeQAkmnMirC8Y5tzXsrSyZ
- qR+lgnlsWKFhqPyKIxpbC7CfG4nO+tAIVaY1LeWA+DMlIRKnlbL300OEn836MvPoCE4K2q
- lh4JQ0BhTyewu4ZoctcytbkIfS0hRKI=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=EGqG8eofY0QYFV4VZnkq3s9w1HpOkxUlQP+WE2YUKnk=;
+ b=INOke80+u0+ozYxH6/BZ6df57Kv5+9+95F4hUoeMjhqkbFoqzrZmaV3Bcvj3G+O+x0o+0Q
+ zv3CA4Onoxet3RULojC6KAhi++0fTY8anXhZHSEHXNwAMtRVef/6FRYw9sV+XCorjkYcgF
+ r1FQeE8ttgNCHaxcHtqbNIb+ekYAm4M=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-538-4bRlzzQlPVuZzfjZ5Azcag-1; Thu, 19 Dec 2024 11:16:18 -0500
-X-MC-Unique: 4bRlzzQlPVuZzfjZ5Azcag-1
-X-Mimecast-MFC-AGG-ID: 4bRlzzQlPVuZzfjZ5Azcag
-Received: by mail-ej1-f71.google.com with SMTP id
- a640c23a62f3a-aa6a1bf7a82so100764266b.1
- for <qemu-devel@nongnu.org>; Thu, 19 Dec 2024 08:16:17 -0800 (PST)
+ us-mta-25-4sM4N9XYP0OfxnQ8uz3G6g-1; Thu, 19 Dec 2024 11:19:40 -0500
+X-MC-Unique: 4sM4N9XYP0OfxnQ8uz3G6g-1
+X-Mimecast-MFC-AGG-ID: 4sM4N9XYP0OfxnQ8uz3G6g
+Received: by mail-ej1-f70.google.com with SMTP id
+ a640c23a62f3a-aa68203d288so66817666b.1
+ for <qemu-devel@nongnu.org>; Thu, 19 Dec 2024 08:19:40 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734624977; x=1735229777;
+ d=1e100.net; s=20230601; t=1734625179; x=1735229979;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=YKev/gR3vimWwOJ3HYhnfvaWkDaBzX6jXWS5q1E1pmo=;
- b=OnsS/1zQGW7OWBdNKkjKErdFmLZ1PBJZcRwqcZJmBGBUqsyvJ57AC9mKRlEItBKIuB
- OjtiAivMLF0vcjN0aLTmMAotxpIkr8DnNOXxcxz1Qotce2vKf2smtD/12lDurWLCg2rD
- 24EV6rokj8c3j5/47dbSdCSAG0DoyOQrWK3Jpe/LpqljfQzL+msNcEXQDJ7ZVTUAEag5
- UYSQ/3U1v9GniA1yo3PCfETaLmSMNrWqNmr99ts9FyDWwSxuRhcxX8ENJlfwmM3Rqz7X
- 0eruaxaSN/qgJwV6ia+vSStaZsDtTX8rsybxTU9T9l5td1ZLAvGQ2dtMGnaSuCkarEEW
- xzmw==
+ bh=EGqG8eofY0QYFV4VZnkq3s9w1HpOkxUlQP+WE2YUKnk=;
+ b=RGwiE1i6WiHVZyZVYU4xKt/pb7lLLgNG4jqyLc4YmrxttZKoIncNyOegXLRpSjzfO4
+ qGtAxK3+8JFzopf9BetJHoHncYLrM6+ezYoUASSGRTg/s+SsPuHY8lg+fgEO5sht7wQ9
+ hi29B9DwoLwPWXuda+2JuCAMQtvS1etBw+yVhmc6dfGXx1hdBtET3hOwHIfs5d8scU9q
+ 10cySpna4Uh3cN2H7YUlKc6gNbn/dOT4GuIHXSfAhSg4WmO63IkACfESBBPXtFuaGO8d
+ 4b9tsz+HSFUtklH+EA2GK4wVPoKa/qVrJzde5GzUy5c1ldDIL3cFzPK42u5FHV9Zw/zG
+ AlHg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWTQZO9l5QtlF/PcPcmtLohVmVEk6/XRypcmfTGjXZbI22G6WEo5k96XcjtUfLXo/wPv2AYG/XxkJ+A@nongnu.org
-X-Gm-Message-State: AOJu0YzA589gdpQ3vPk2YLO+zwghXec/h2nSoa5krGg/B4o4xhc4Qhs7
- XfQM+Ab23uIgMzhiEPlQ+3eI/XdalF+WBb1fvWUiINrRFqiqfUXZRhOF81kjxco3oTGUbrSKQqj
- huOF4t/eHTSQaAOs25FXleEQOvAviyzSvfrrYv+FDM58xCUrsdoeGbtdzmXuxZJh0c/H68WUSWI
- uy16/RuEU87VwicoDNSkEfy89Bn5I=
-X-Gm-Gg: ASbGncs3sUQ284gWSMnYuphsYUNfnSRsP4pXE5pgqgDbtrAvf4uv7KFLF+zV5iZoXew
- yReRekdb3nZm29ud7bDZ9AJFXvc0Sm2cs7iFdUeM=
-X-Received: by 2002:a17:907:7f89:b0:aa6:87e8:1d0e with SMTP id
- a640c23a62f3a-aabf478a57cmr623777666b.34.1734624976794; 
- Thu, 19 Dec 2024 08:16:16 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEZMglEsU7MTy0bUjgF4gGawngFvIS8xLzr1gPwdUS07HILykdHIYmIw5Jfjlmp9o+6CNG2i+9+wC4p7KlR7g0=
-X-Received: by 2002:a17:907:7f89:b0:aa6:87e8:1d0e with SMTP id
- a640c23a62f3a-aabf478a57cmr623774566b.34.1734624976445; Thu, 19 Dec 2024
- 08:16:16 -0800 (PST)
+ AJvYcCWYcqr1QEJCIJwWrHSlLW2vSTin28wrQ7N7Z0pYsN1ZRDnuPzBM+XmxpCS5BJNMo1dEBPwvPmgAL4F0@nongnu.org
+X-Gm-Message-State: AOJu0YyKk2nn2e4MIO3G8LlBYVe6kU9DS2EGXaVzgRmsX7HJR4DQzTZM
+ KkRUPGAty12IskLBPkAlLN11J+9qN5Ynjw8uuMhP2VVs6ti+hsRwc1WZP4S23ZfOnHJzlM5Rhy5
+ kI41whQh7v4KazohHycgjOYMZQnsPMaXHoIA3G3D0BkRs0fZzv6rB5b13mnLa5ijb+B/S1qQuPZ
+ RQX1+DM4YtzVF9a4gNEBdDuFswzoQ=
+X-Gm-Gg: ASbGnct54LMDLxSgniQN8YxVKjaF4ecAQNX0NFfJzriAEL2KICwOUSfT104CSZdyNSx
+ 0gAfRp0g++VvX9dhgVw93GBYmALEoN21vTpWtGtg=
+X-Received: by 2002:a17:907:72c7:b0:aab:d4f0:c598 with SMTP id
+ a640c23a62f3a-aabf478a5d0mr732261066b.27.1734625179493; 
+ Thu, 19 Dec 2024 08:19:39 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFRCVSsKbNuzxvwV6fK2Xf/kPDAbHHv69iAXol4T5wT0zDOzuJuXfJXZwmDdNpIS3H02IrKi1Ay/fYk2tpVQzI=
+X-Received: by 2002:a17:907:72c7:b0:aab:d4f0:c598 with SMTP id
+ a640c23a62f3a-aabf478a5d0mr732258066b.27.1734625179079; Thu, 19 Dec 2024
+ 08:19:39 -0800 (PST)
 MIME-Version: 1.0
-References: <20241216114841.1025070-1-anisinha@redhat.com>
- <3b2e9941-e5a3-4981-adda-f5121bc98e9a@linaro.org>
-In-Reply-To: <3b2e9941-e5a3-4981-adda-f5121bc98e9a@linaro.org>
+References: <20241219153857.57450-1-philmd@linaro.org>
+ <Z2RCaZrwjYSM3NpV@redhat.com>
+In-Reply-To: <Z2RCaZrwjYSM3NpV@redhat.com>
 From: Ani Sinha <anisinha@redhat.com>
-Date: Thu, 19 Dec 2024 21:46:03 +0530
-Message-ID: <CAK3XEhNVXZDD0i3pxpSgnogheyJO7dfQ4p0UdvhqU3DrFXJ_ZA@mail.gmail.com>
-Subject: Re: [PATCH v2] hw/misc/vmfwupdate: Introduce hypervisor fw-cfg
- interface support
-To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Cc: Alex Graf <graf@amazon.com>, Paolo Bonzini <pbonzini@redhat.com>, 
- Gerd Hoffman <kraxel@redhat.com>, Igor Mammedov <imammedo@redhat.com>, 
- Vitaly Kuznetsov <vkuznets@redhat.com>, qemu-devel <qemu-devel@nongnu.org>
-Content-Type: multipart/alternative; boundary="0000000000008a39880629a1d93e"
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=anisinha@redhat.com;
+Date: Thu, 19 Dec 2024 21:49:26 +0530
+Message-ID: <CAK3XEhNVb8pcUrZD=cYEC_Y5bO_hdPHizde2K=Keqdgo7+xxpw@mail.gmail.com>
+Subject: Re: [RFC PATCH 00/10] hw/misc/vmcoreinfo: Convert from QDev to plain
+ Object
+To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Cc: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ qemu-devel <qemu-devel@nongnu.org>,
+ =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
+ devel@lists.libvirt.org
+Content-Type: multipart/alternative; boundary="0000000000009e2a5b0629a1e5f6"
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=anisinha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -31
 X-Spam_score: -3.2
@@ -102,208 +103,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---0000000000008a39880629a1d93e
+--0000000000009e2a5b0629a1e5f6
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, 19 Dec, 2024, 9:22 pm Philippe Mathieu-Daud=C3=A9, <philmd@linaro.o=
-rg>
+On Thu, 19 Dec, 2024, 9:27 pm Daniel P. Berrang=C3=A9, <berrange@redhat.com=
+>
 wrote:
 
-> On 16/12/24 12:48, Ani Sinha wrote:
+> On Thu, Dec 19, 2024 at 04:38:47PM +0100, Philippe Mathieu-Daud=C3=A9 wro=
+te:
+> > No reason for vmcoreinfo to be based on QDev, since it
+> > doesn't use any QDev API. Demote to plain Object.
 >
-> > diff --git a/hw/misc/meson.build b/hw/misc/meson.build
-> > index d02d96e403..4c5bdb0de2 100644
-> > --- a/hw/misc/meson.build
-> > +++ b/hw/misc/meson.build
-> > @@ -148,6 +148,8 @@ specific_ss.add(when: 'CONFIG_MAC_VIA', if_true:
-> files('mac_via.c'))
-> >   specific_ss.add(when: 'CONFIG_MIPS_CPS', if_true:
-> files('mips_cmgcr.c', 'mips_cpc.c'))
-> >   specific_ss.add(when: 'CONFIG_MIPS_ITU', if_true: files('mips_itu.c')=
-)
-> >
-> > +specific_ss.add(when: 'CONFIG_FW_CFG_DMA', if_true:
-> files('vmfwupdate.c'))
+> I'm not especially convinced by that rationale, at least in the short
+> term[1].
 >
-> FW_CFG_DMA is offered by multiple targets ...:
+> As a user of QEMU, I would tend to view -device  as being the way to
+> create devices that are visible to the guest, and -object as being
+> for dealing with host backends.
 >
-> $ git grep -w FW_CFG_DMA
-> hw/arm/Kconfig:19:    select FW_CFG_DMA
-> hw/i386/Kconfig:82:    select FW_CFG_DMA
-> hw/i386/Kconfig:113:    select FW_CFG_DMA
-> hw/loongarch/Kconfig:22:    select FW_CFG_DMA
-> hw/riscv/Kconfig:59:    select FW_CFG_DMA
+> vmcoreinfo is quite an unusal device, in that if only exists as a
+> fwcfg field, but that's an internal impl detail from a user's POV,
+> and it is still a guest visible device type.
 >
-> > diff --git a/hw/misc/vmfwupdate.c b/hw/misc/vmfwupdate.c
-> > new file mode 100644
-> > index 0000000000..1e29a610c0
-> > --- /dev/null
-> > +++ b/hw/misc/vmfwupdate.c
-> > @@ -0,0 +1,157 @@
-> > +/*
-> > + * Guest driven VM boot component update device
-> > + * For details and specification, please look at
-> docs/specs/vmfwupdate.rst.
-> > + *
-> > + * Copyright (C) 2024 Red Hat, Inc.
-> > + *
-> > + * Authors: Ani Sinha <anisinha@redhat.com>
-> > + *
-> > + * This work is licensed under the terms of the GNU GPL, version 2 or
-> later.
-> > + * See the COPYING file in the top-level directory.
-> > + *
-> > + */
-> > +
-> > +#include "qemu/osdep.h"
-> > +#include "qapi/error.h"
-> > +#include "qemu/module.h"
-> > +#include "sysemu/reset.h"
-> > +#include "hw/nvram/fw_cfg.h"
-> > +#include "hw/i386/pc.h"
->
-> ... however ...
->
-> > +#include "hw/qdev-properties.h"
-> > +#include "hw/misc/vmfwupdate.h"
-> > +#include "qemu/error-report.h"
-> > +
-> > +static void fw_update_reset(void *dev)
-> > +{
-> > +    /* a NOOP at present */
-> > +    return;
-> > +}
-> > +
-> > +
-> > +static uint64_t get_max_fw_size(void)
-> > +{
-> > +    Object *m_obj =3D qdev_get_machine();
-> > +    PCMachineState *pcms =3D PC_MACHINE(m_obj);
-> > +
-> > +    if (pcms) {
-> > +        return pcms->max_fw_size;
->
-> ... this code depends on x86/PC.
->
-> Could it be wiser to add a new VM_FWUPDATE Kconfig
-> symbol, having it depending on FW_CFG_DMA && I386?
->
-
-There is no reason why vmfwupdate would be limited to x86 only. There is
-minimal support needed from hypervisor side for this mechanism. That
-mechanism has little dependency on specific platform.
+> So while it may not leverage QDev API, I still feel it is more of
+> a fit for -device, than -object.
 
 
-> +    } else {
-> > +        return 0;
-> > +    }
-> > +}
->
++1 to this.
+
+Is there any functional benefit
+> to moving it to -object, that outweighs the disruption ?
+
+
 >
 
---0000000000008a39880629a1d93e
+--0000000000009e2a5b0629a1e5f6
 Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
 <div dir=3D"auto"><div><br><br><div class=3D"gmail_quote gmail_quote_contai=
-ner"><div dir=3D"ltr" class=3D"gmail_attr">On Thu, 19 Dec, 2024, 9:22 pm Ph=
-ilippe Mathieu-Daud=C3=A9, &lt;<a href=3D"mailto:philmd@linaro.org">philmd@=
-linaro.org</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=
-=3D"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex">On 16/12=
-/24 12:48, Ani Sinha wrote:<br>
+ner"><div dir=3D"ltr" class=3D"gmail_attr">On Thu, 19 Dec, 2024, 9:27 pm Da=
+niel P. Berrang=C3=A9, &lt;<a href=3D"mailto:berrange@redhat.com">berrange@=
+redhat.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=
+=3D"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex">On Thu, =
+Dec 19, 2024 at 04:38:47PM +0100, Philippe Mathieu-Daud=C3=A9 wrote:<br>
+&gt; No reason for vmcoreinfo to be based on QDev, since it<br>
+&gt; doesn&#39;t use any QDev API. Demote to plain Object.<br>
 <br>
-&gt; diff --git a/hw/misc/meson.build b/hw/misc/meson.build<br>
-&gt; index d02d96e403..4c5bdb0de2 100644<br>
-&gt; --- a/hw/misc/meson.build<br>
-&gt; +++ b/hw/misc/meson.build<br>
-&gt; @@ -148,6 +148,8 @@ specific_ss.add(when: &#39;CONFIG_MAC_VIA&#39;, if=
-_true: files(&#39;mac_via.c&#39;))<br>
-&gt;=C2=A0 =C2=A0specific_ss.add(when: &#39;CONFIG_MIPS_CPS&#39;, if_true: =
-files(&#39;mips_cmgcr.c&#39;, &#39;mips_cpc.c&#39;))<br>
-&gt;=C2=A0 =C2=A0specific_ss.add(when: &#39;CONFIG_MIPS_ITU&#39;, if_true: =
-files(&#39;mips_itu.c&#39;))<br>
-&gt;=C2=A0 =C2=A0<br>
-&gt; +specific_ss.add(when: &#39;CONFIG_FW_CFG_DMA&#39;, if_true: files(&#3=
-9;vmfwupdate.c&#39;))<br>
+I&#39;m not especially convinced by that rationale, at least in the short<b=
+r>
+term[1].<br>
 <br>
-FW_CFG_DMA is offered by multiple targets ...:<br>
+As a user of QEMU, I would tend to view -device=C2=A0 as being the way to<b=
+r>
+create devices that are visible to the guest, and -object as being<br>
+for dealing with host backends.<br>
 <br>
-$ git grep -w FW_CFG_DMA<br>
-hw/arm/Kconfig:19:=C2=A0 =C2=A0 select FW_CFG_DMA<br>
-hw/i386/Kconfig:82:=C2=A0 =C2=A0 select FW_CFG_DMA<br>
-hw/i386/Kconfig:113:=C2=A0 =C2=A0 select FW_CFG_DMA<br>
-hw/loongarch/Kconfig:22:=C2=A0 =C2=A0 select FW_CFG_DMA<br>
-hw/riscv/Kconfig:59:=C2=A0 =C2=A0 select FW_CFG_DMA<br>
+vmcoreinfo is quite an unusal device, in that if only exists as a<br>
+fwcfg field, but that&#39;s an internal impl detail from a user&#39;s POV,<=
+br>
+and it is still a guest visible device type.<br>
 <br>
-&gt; diff --git a/hw/misc/vmfwupdate.c b/hw/misc/vmfwupdate.c<br>
-&gt; new file mode 100644<br>
-&gt; index 0000000000..1e29a610c0<br>
-&gt; --- /dev/null<br>
-&gt; +++ b/hw/misc/vmfwupdate.c<br>
-&gt; @@ -0,0 +1,157 @@<br>
-&gt; +/*<br>
-&gt; + * Guest driven VM boot component update device<br>
-&gt; + * For details and specification, please look at docs/specs/vmfwupdat=
-e.rst.<br>
-&gt; + *<br>
-&gt; + * Copyright (C) 2024 Red Hat, Inc.<br>
-&gt; + *<br>
-&gt; + * Authors: Ani Sinha &lt;<a href=3D"mailto:anisinha@redhat.com" targ=
-et=3D"_blank" rel=3D"noreferrer">anisinha@redhat.com</a>&gt;<br>
-&gt; + *<br>
-&gt; + * This work is licensed under the terms of the GNU GPL, version 2 or=
- later.<br>
-&gt; + * See the COPYING file in the top-level directory.<br>
-&gt; + *<br>
-&gt; + */<br>
-&gt; +<br>
-&gt; +#include &quot;qemu/osdep.h&quot;<br>
-&gt; +#include &quot;qapi/error.h&quot;<br>
-&gt; +#include &quot;qemu/module.h&quot;<br>
-&gt; +#include &quot;sysemu/reset.h&quot;<br>
-&gt; +#include &quot;hw/nvram/fw_cfg.h&quot;<br>
-&gt; +#include &quot;hw/i386/pc.h&quot;<br>
-<br>
-... however ...<br>
-<br>
-&gt; +#include &quot;hw/qdev-properties.h&quot;<br>
-&gt; +#include &quot;hw/misc/vmfwupdate.h&quot;<br>
-&gt; +#include &quot;qemu/error-report.h&quot;<br>
-&gt; +<br>
-&gt; +static void fw_update_reset(void *dev)<br>
-&gt; +{<br>
-&gt; +=C2=A0 =C2=A0 /* a NOOP at present */<br>
-&gt; +=C2=A0 =C2=A0 return;<br>
-&gt; +}<br>
-&gt; +<br>
-&gt; +<br>
-&gt; +static uint64_t get_max_fw_size(void)<br>
-&gt; +{<br>
-&gt; +=C2=A0 =C2=A0 Object *m_obj =3D qdev_get_machine();<br>
-&gt; +=C2=A0 =C2=A0 PCMachineState *pcms =3D PC_MACHINE(m_obj);<br>
-&gt; +<br>
-&gt; +=C2=A0 =C2=A0 if (pcms) {<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 return pcms-&gt;max_fw_size;<br>
-<br>
-... this code depends on x86/PC.<br>
-<br>
-Could it be wiser to add a new VM_FWUPDATE Kconfig<br>
-symbol, having it depending on FW_CFG_DMA &amp;&amp; I386?<br></blockquote>=
-</div></div><div dir=3D"auto"><br></div><div dir=3D"auto">There is no reaso=
-n why vmfwupdate would be limited to x86 only. There is minimal support nee=
-ded from hypervisor side for this mechanism. That mechanism has little depe=
-ndency on specific platform.=C2=A0</div><div dir=3D"auto"><br></div><div di=
-r=3D"auto"><br></div><div dir=3D"auto"><div class=3D"gmail_quote gmail_quot=
-e_container"><blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;b=
-order-left:1px #ccc solid;padding-left:1ex">
-&gt; +=C2=A0 =C2=A0 } else {<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 return 0;<br>
-&gt; +=C2=A0 =C2=A0 }<br>
-&gt; +}<br>
-<br>
+So while it may not leverage QDev API, I still feel it is more of<br>
+a fit for -device, than -object.=C2=A0</blockquote></div></div><div dir=3D"=
+auto"><br></div><div dir=3D"auto">+1 to this.</div><div dir=3D"auto"><br></=
+div><div dir=3D"auto"><div class=3D"gmail_quote gmail_quote_container"><blo=
+ckquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:1px #c=
+cc solid;padding-left:1ex"> Is there any functional benefit<br>
+to moving it to -object, that outweighs the disruption ?</blockquote></div>=
+</div><div dir=3D"auto"><div class=3D"gmail_quote gmail_quote_container"><b=
+lockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:1px =
+#ccc solid;padding-left:1ex"><br>
 </blockquote></div></div></div>
 
---0000000000008a39880629a1d93e--
+--0000000000009e2a5b0629a1e5f6--
 
 
