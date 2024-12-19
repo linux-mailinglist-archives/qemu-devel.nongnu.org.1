@@ -2,85 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83DBB9F777B
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Dec 2024 09:36:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 886D29F7783
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Dec 2024 09:37:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tOBxo-0004UL-Hg; Thu, 19 Dec 2024 03:32:56 -0500
+	id 1tOBxo-0004UJ-LF; Thu, 19 Dec 2024 03:32:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tOBxf-0004Sg-Lz
+ id 1tOBxg-0004Sh-3H
  for qemu-devel@nongnu.org; Thu, 19 Dec 2024 03:32:48 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tOBxe-00054t-2B
+ id 1tOBxe-00055C-Fm
  for qemu-devel@nongnu.org; Thu, 19 Dec 2024 03:32:47 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1734597163;
+ s=mimecast20190719; t=1734597165;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=inDs3wrtPcf3Fxmch4fAFhjkkRLJg4db13zJUiW/S3Y=;
- b=UmCFgRMkKV3xIH3DYkXGhBY1uFOU7iXgwVXGXjKrFkl/5i3LCXC2WsclZX31umFiLoQt3k
- FYjCaON36Pdmb+YtjtZMBc2/b+IIbioVJoMET9rzWVcQw6IzQOKRT/CoqUVL1KKSqV1HQE
- Oal1/OJY1dJfnCj1sfT/88H6pj7CknM=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=m3TnyK753dqDu4koeMykmPOwEc/VEMfDm3HvpCbzTwI=;
+ b=Gjj1n3Ecu0rLf9aECsRNK7xq1xd6vCqCSxR1nb7lEXr0PeAvxKItQiYjXA7odemiijJU/h
+ tK8s79xrrLSR3AELaJ+KVISg5M2Uep0apQ+Hu+UAo4v6iunrxKKnDbj5FktwFV/spRl9SF
+ L2ckn9S8eF/a5Y8Y2nA32eUDTaXR10w=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-97-H2uSaLUCPqqom8f-rgcNpA-1; Thu, 19 Dec 2024 03:32:42 -0500
-X-MC-Unique: H2uSaLUCPqqom8f-rgcNpA-1
-X-Mimecast-MFC-AGG-ID: H2uSaLUCPqqom8f-rgcNpA
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-436289a570eso4197195e9.0
- for <qemu-devel@nongnu.org>; Thu, 19 Dec 2024 00:32:41 -0800 (PST)
+ us-mta-624-tHqClV4eOImpFE4EAib5QA-1; Thu, 19 Dec 2024 03:32:44 -0500
+X-MC-Unique: tHqClV4eOImpFE4EAib5QA-1
+X-Mimecast-MFC-AGG-ID: tHqClV4eOImpFE4EAib5QA
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-3862a49fbdaso235233f8f.1
+ for <qemu-devel@nongnu.org>; Thu, 19 Dec 2024 00:32:44 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1734597160; x=1735201960;
+ d=1e100.net; s=20230601; t=1734597162; x=1735201962;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=inDs3wrtPcf3Fxmch4fAFhjkkRLJg4db13zJUiW/S3Y=;
- b=TQc1f4pf+fAj15BN596kr2Zde4jr0umqPhbA0eC1Sg/Z7H/I3nFhRFcvnd2FbrZ/5K
- UinrVKs5z/65hn51108pYdDsoyKch+hMJITXhxBbWv8x+8c84S3XNoMy2oORCkKukSsG
- 9SbCoaArr/rQTh+tjtlwsV0tp/ahi7MlsAKKkI3yi2Zw5T13h81PLEsWLhe9UZZG/8sA
- RuOvWnwb5VuBZzz1fuUiDf88dp4WtixA29Ip///MXrVI3O9HRhX6ZmFDVx7KM3pA5SbE
- 7wnHVdWuEoViBD10B868h5no+aYogvW7ZpwUGVS/+8WX2/L6VRmh/W5dxIRv+xc9iuCR
- i8lw==
-X-Gm-Message-State: AOJu0Yztlr1QCBkuiDxlCJLbtekKwgEFH/mGpO5keMrjodlVaqc6N6Oo
- DfpeVMZY47G4zaR68rhZVs9hMt20i3ppvkkTwwwxs78D1lFSlmyreak1aSOyUTK87rPL73kXYpn
- skMnREmU1+9mEwX0jeUHi/VXiFdRviLnlPkGD+q5GLFM6Kbn1yR56jFybQ6vBMW4qb8nO8qKBdv
- d4xVC1EBYdtwcRMlGMU9Q+EBqkKW9c+t9mDMhu
-X-Gm-Gg: ASbGnctQ36J4POM2LOofRqngO5OHhAnlO5345zSmxaBonFHLJWLEl/GkypDJpnF3KEP
- KAfF5S7Z6GCmIJwKge980+aa7WH2crP/G4sPWnyzxNDdbPEpqz02425reFE7UfT3zr2PbGt27x/
- Kyhd7HNL06J+GtWMAyl3lB1JC4BcFgATQsQyUCNkCPYDZ93dEvXK1IrwdHobevqvMNlY43JxpIw
- MT5kMBpOkmoa98wu5ySM0X53gtN9Ic+BXG5VdTON+spkgs94jMVAhdiGsPn
-X-Received: by 2002:a05:6000:1866:b0:385:df73:2f42 with SMTP id
- ffacd0b85a97d-38a19b139cbmr2130653f8f.32.1734597160226; 
- Thu, 19 Dec 2024 00:32:40 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGWgeOHhNpzuDJdD5wojsTkJp/zHVITJypv/L16EMxrJFrh02K5V+C7O/sTT5pF88I8FSpDuQ==
-X-Received: by 2002:a05:6000:1866:b0:385:df73:2f42 with SMTP id
- ffacd0b85a97d-38a19b139cbmr2130616f8f.32.1734597159742; 
- Thu, 19 Dec 2024 00:32:39 -0800 (PST)
+ bh=m3TnyK753dqDu4koeMykmPOwEc/VEMfDm3HvpCbzTwI=;
+ b=enoSZVmN8yFL2pg511hN++MHEW71DalOb0PMWr8toG+FAjrI/gYoi7qObfDC3sL1+L
+ wn5Tf7ZoE/FKsv/4YQ1CQrujG6PqN7cmwimdJszQcExF/n3MvVKsPNlEob6m2V3TNOzA
+ rQqHUUbkQkItrzGT5ycGqfG9MlEGs1vECeiMJGtuDptDXwN/LB/9mZHEA3cUtLrFmi+R
+ 1oe8MUW7K4nz3GfB29t+55mIRUFDVYZqL5M4mzMBJUfpFfd476q4fiDLUbEJZky1EU5p
+ xEdKfZCtCiBmQyda3I98h+WOqHsKC27bJ8vDpmIKMtzyK6CEFLVUIAvtBJ6JVLeLLCjj
+ vlOg==
+X-Gm-Message-State: AOJu0Yx/B7igWUtMI8e0ohG/jXci17C2/tUa+RxWX/xv+8KQptaF4aVk
+ kLXYlhnndlsB42dRcx86OyF41e1Fd14lIJ4aR3xJzXcJjAdi7BzYly4tTpwQ8KEY5rgH3wMUWt/
+ xhU9/0qSixFmUy3z8qFZhfzaDUHGmIzTnak7fnddwXtjIo5HQPgDVg7CKHiEgLnFzg59kgrFOEw
+ c+U6S7T0kxXKAHE9w88uo4JjYnngTT3p4DEWgn
+X-Gm-Gg: ASbGncv4s20dO/K0v2nelfRtj2fzPKBwF4Hx/o1HirFCUPqKGORXUImihOU00m7zpxC
+ m8b/HuaN3CKsF1VmgHYBj22mLp59oCBEMJKcFS9JKy2M2DQgN7E1nztI4b/fxAi7O5U3YFgkD8A
+ yeFDp2uQA5C8MeRFArLTLvvJKlCrXCVUAzLzWYrYhZpnlyYHGg8NPJhKqXBm0F2+kWuxAwNOwrv
+ GcVRQXrWceAwpIahsqqD2GKuC/UkTZDXsWY/fN0OZc6pkqUuiT7zqguUL6x
+X-Received: by 2002:a5d:5f83:0:b0:385:e38f:8dd with SMTP id
+ ffacd0b85a97d-38a19b3702cmr2366435f8f.46.1734597162237; 
+ Thu, 19 Dec 2024 00:32:42 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHOSLx+ewTZ0Dw46r7I5GSRtFsA+5Px+cgdxviXxYvN9v4DnHCRbbJc6QRD1wgm6eyxwCiRpQ==
+X-Received: by 2002:a5d:5f83:0:b0:385:e38f:8dd with SMTP id
+ ffacd0b85a97d-38a19b3702cmr2366399f8f.46.1734597161765; 
+ Thu, 19 Dec 2024 00:32:41 -0800 (PST)
 Received: from [192.168.10.47] ([151.81.118.45])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-38a1c8bb4d3sm974303f8f.110.2024.12.19.00.32.39
+ ffacd0b85a97d-38a1c828a8dsm1004177f8f.2.2024.12.19.00.32.40
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 19 Dec 2024 00:32:39 -0800 (PST)
+ Thu, 19 Dec 2024 00:32:40 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 05/41] hw/pci-host/astro: Remove empty Property list
-Date: Thu, 19 Dec 2024 09:31:52 +0100
-Message-ID: <20241219083228.363430-6-pbonzini@redhat.com>
+Subject: [PULL 06/41] hw/ppc: Only register spapr_nvdimm_properties if
+ CONFIG_LIBPMEM
+Date: Thu, 19 Dec 2024 09:31:53 +0100
+Message-ID: <20241219083228.363430-7-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241219083228.363430-1-pbonzini@redhat.com>
 References: <20241219083228.363430-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -31
 X-Spam_score: -3.2
@@ -107,36 +108,47 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Richard Henderson <richard.henderson@linaro.org>
 
+Do not register an empty set of properties.
+
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Link: https://lore.kernel.org/r/20241216035109.3486070-6-richard.henderson@linaro.org
+Link: https://lore.kernel.org/r/20241216035109.3486070-7-richard.henderson@linaro.org
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- hw/pci-host/astro.c | 5 -----
- 1 file changed, 5 deletions(-)
+ hw/ppc/spapr_nvdimm.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/hw/pci-host/astro.c b/hw/pci-host/astro.c
-index 379095b3566..62e9c8acbf4 100644
---- a/hw/pci-host/astro.c
-+++ b/hw/pci-host/astro.c
-@@ -461,10 +461,6 @@ static void elroy_pcihost_init(Object *obj)
-     qdev_init_gpio_in(DEVICE(obj), elroy_set_irq, ELROY_IRQS);
+diff --git a/hw/ppc/spapr_nvdimm.c b/hw/ppc/spapr_nvdimm.c
+index 2ef6f29f3dd..8bcce4146a5 100644
+--- a/hw/ppc/spapr_nvdimm.c
++++ b/hw/ppc/spapr_nvdimm.c
+@@ -884,22 +884,23 @@ static void spapr_nvdimm_unrealize(NVDIMMDevice *dimm)
+     vmstate_unregister(NULL, &vmstate_spapr_nvdimm_states, dimm);
  }
  
--static Property elroy_pcihost_properties[] = {
--    DEFINE_PROP_END_OF_LIST(),
--};
--
- static const VMStateDescription vmstate_elroy = {
-     .name = "Elroy",
-     .version_id = 1,
-@@ -490,7 +486,6 @@ static void elroy_pcihost_class_init(ObjectClass *klass, void *data)
-     DeviceClass *dc = DEVICE_CLASS(klass);
+-static const Property spapr_nvdimm_properties[] = {
+ #ifdef CONFIG_LIBPMEM
++static const Property spapr_nvdimm_properties[] = {
+     DEFINE_PROP_BOOL("pmem-override", SpaprNVDIMMDevice, pmem_override, false),
+-#endif
+     DEFINE_PROP_END_OF_LIST(),
+ };
++#endif
  
-     device_class_set_legacy_reset(dc, elroy_reset);
--    device_class_set_props(dc, elroy_pcihost_properties);
-     dc->vmsd = &vmstate_elroy;
-     dc->user_creatable = false;
+ static void spapr_nvdimm_class_init(ObjectClass *oc, void *data)
+ {
+-    DeviceClass *dc = DEVICE_CLASS(oc);
+     NVDIMMClass *nvc = NVDIMM_CLASS(oc);
+ 
+     nvc->realize = spapr_nvdimm_realize;
+     nvc->unrealize = spapr_nvdimm_unrealize;
+ 
+-    device_class_set_props(dc, spapr_nvdimm_properties);
++#ifdef CONFIG_LIBPMEM
++    device_class_set_props(DEVICE_CLASS(oc), spapr_nvdimm_properties);
++#endif
  }
+ 
+ static void spapr_nvdimm_init(Object *obj)
 -- 
 2.47.1
 
